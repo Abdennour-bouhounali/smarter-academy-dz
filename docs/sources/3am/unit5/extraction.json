@@ -253,33 +253,61 @@
      "n": 14,
      "question": "المدوّر إلى الجزء من 10 لحاصل القسمة 135/14 هو ……",
      "options": [
-      "9,6",
+      "9",
       "10",
-      "9"
+      "9,6"
      ],
      "correct": [
-      0
-     ]
+      2
+     ],
+     "note": "options relues p. 71 à 200 dpi : (1) = 9, (2) = 10, (3) = 9,6 (la transcription brève avait inversé l’ordre)"
     },
     {
      "n": 15,
-     "question": "شاشة حاسبة: 46 ÷ 6 = 7.666666667. المدوّر إلى الوحدة هو ……؛ إلى 1/10 ……؛ إلى 1/100 ……",
-     "options": [
-      "7,67",
-      "7,7",
-      "8"
+     "question": "شاشة حاسبة: 46 ÷ 6 = 7.666666667 (ثلاثة أسئلة: إلى الوحدة ؛ إلى 1/10 ؛ إلى 1/100)",
+     "options": null,
+     "correct": null,
+     "rows": [
+      {
+       "question": "المدوّر إلى الوحدة لحاصل القسمة 46/6 هو ……",
+       "options": [
+        "7",
+        "7,6",
+        "8"
+       ],
+       "correct": [
+        2
+       ]
+      },
+      {
+       "question": "المدوّر إلى الجزء من 10 لحاصل القسمة 46/6 هو ……",
+       "options": [
+        "7,6",
+        "7,7",
+        "8"
+       ],
+       "correct": [
+        1
+       ]
+      },
+      {
+       "question": "المدوّر إلى الجزء من 100 لحاصل القسمة 46/6 هو ……",
+       "options": [
+        "7,67",
+        "7,66",
+        "8"
+       ],
+       "correct": [
+        0
+       ]
+      }
      ],
-     "correct": [
-      0,
-      1,
-      2
-     ],
-     "note": "colonne (1) = 7,67 (1/100), (2) = 7,7 (1/10), (3) = 8 (unité)"
+     "note": "p. 71 à 200 dpi : TROIS lignes de trois options chacune — unité : 7 / 7,6 / 8 → 8 ; 1/10 : 7,6 / 7,7 / 8 → 7,7 ; 1/100 : 7,67 / 7,66 / 8 → 7,67 (la transcription brève avait mélangé les trois lignes)."
     }
    ],
    "columns": "[(1), (2), (3)] ; (1) = colonne de droite",
    "answerSource": "computed",
-   "reading": "p. 71 relue à 220 dpi : lignes 1–8 nettes ; 5 « 3 ÷ x = 3 » (x = 1) ; 11 lu « (1 − x)(1 + x) » (seule option cohérente : 1 − x²)."
+   "reading": "p. 71 relue à 220 dpi (items 1–12) puis 200 dpi (13–15, 2026-10-26) : 13 : 9,6 / 10 / 9 → 10 ; 14 : 9 / 10 / 9,6 → 9,6 ; 15 : trois lignes (voir items[14].rows)."
   },
   {
    "id": "act-1",
@@ -302,7 +330,7 @@
    "kind": "activity",
    "page": 72,
    "section": "أنشطة 2 — المتباينات والعمليات",
-   "verified": false,
+   "verified": true,
    "text": "المتباينات والجمع: 1) أنقل وأتمم الجدول (a, b, a − b, « قارن بين a و b ») : (3 ; 7), (−5 ; 1), (−2 ; −4), (5 ; −3). 2) أكمل: « إذا كان a … b فإن a − b > 0 » ؛ « إذا كان a … b فإن a − b < 0 ». 3) هل النص صحيح؟ برّر: « a + c < b + c إذا كان a < b ». 4) « a − c < b − c إذا كان a < b ». 5) a < b : أكمل بأحد الرمزين < ، > : a − 7/2 … b − 9/2 ؛ a + 3/5 … b + 6/5 ؛ a − 4 … b − 4 ؛ a + 3 … b + 3.",
    "answer": {
     "table": [
@@ -330,17 +358,29 @@
       "a-b": 8,
       "cmp": ">"
      }
-    ]
+    ],
+    "2": [
+     ">",
+     "<"
+    ],
+    "3": true,
+    "4": true,
+    "5": {
+     "a-7/2 … b-9/2": "indécidable (a−b)+1 de signe inconnu : peut être <, = ou >",
+     "a+3/5 … b+6/5": "<",
+     "a-4 … b-4": "<",
+     "a+3 … b+3": "<"
+    }
    },
    "answerSource": "computed",
-   "reading": "act-2 5) : les deux premiers compléments comparent des termes de la forme a − 7/2 et b − 9/2 (constantes différentes : aucun symbole sûr)."
+   "reading": "act-2 relue à 170 dpi (pp. 72–73). Partie 5 (p. 73, en haut) : « a − 7/2 … b − 9/2 ؛ a + 3/5 … b + 6/5 ؛ a − 4 … b − 4 ؛ a + 3 … b + 3 » avec « أكمل، إن أمكن ». La table est en 72, les parties 1)–4) y finissent, la partie 5) est en 73."
   },
   {
    "id": "act-2b",
    "kind": "activity",
    "page": 73,
    "section": "أنشطة 2 — المتباينات والضرب",
-   "verified": false,
+   "verified": true,
    "text": "1) أتمم الجدول (a, b, c, ac, bc, قارن بين ac و bc) : (1/3 ; 2/5 ; 4), (−1/3 ; −2/9 ; −3), (2/9 ; −4/5 ; 5/4), (−7/3 ; 6/7 ; −1/2). 2) a < b : قارن بين ac و bc. 3) k < l : أكمل بأحد الرمزين: k/(−6) … l/(−6) ؛ k/5 … l/5 ؛ −3k … −3l ؛ 2k … 2l.",
    "answer": {
     "rows": [
@@ -364,27 +404,43 @@
       "bc": "-3/7",
       "cmp": ">"
      }
+    ],
+    "2": "a < b : ac < bc si c > 0, ac > bc si c < 0",
+    "3": [
+     ">",
+     "<",
+     ">",
+     "<"
     ]
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "act-2b relue à 170 dpi (p. 73) : les quatre lignes (1/3 ; 2/5 ; 4), (−1/3 ; −2/9 ; −3), (2/9 ; −4/5 ; 5/4), (−7/3 ; 6/7 ; −1/2) confirmées ; k/(−6), k/5, −3k, 2k."
   },
   {
    "id": "act-3",
    "kind": "activity",
    "page": 73,
    "section": "أنشطة 3 — حصر عدد عشري موجب",
-   "verified": false,
+   "verified": true,
    "text": "1) محيط مربع هو P ، مدوّر P إلى الجزء من 10 هو 10,7 (cm). أعط ثلاث قيم ممكنة للعدد P. انقل المستقيم المدرّج (10,5 … 11) ثم حدّد المنطقة التي يقع فيها P. أعط حصرا لقيم P. 2) استعمال حاسبة: 247 ÷ 83 = 2.975903614 ، A = 247/83 : 2 < A < 3 تسمّى حصرا بالعددين الطبيعيين 2 و 3؛ 2 قيمة مقرّبة بالنقصان إلى الوحدة و 3 قيمة مقرّبة بالزيادة. أعط حصرا للعدد A باستعمال قيم مقرّبة بالزيادة وبالنقصان إلى 1/10 ، 1/100 ، 1/1000.",
    "answer": {
     "P": "10,65 ≤ P < 10,75",
+    "P_values": [
+     "10,65",
+     "10,7",
+     "10,74"
+    ],
     "A": {
+     "unit": "2 < A < 3",
      "1/10": "2,9 ≤ A < 3",
      "1/100": "2,97 ≤ A < 2,98",
      "1/1000": "2,975 ≤ A < 2,976",
-     "value": "2.9759036144"
+     "screen": "2.975903614",
+     "trueDigits": "2.97590361445…"
     }
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "p. 73 relue à 200 dpi : le texte est conforme. Écran « 247 ÷ 83 = 2.975903614 » : dernier chiffre ARRONDI par la calculatrice (chiffres exacts 2.97590361445…). P (cm) : mesure arrondie à 0,1 = 10,7 ; droite graduée de 10,5 à 11."
   },
   {
    "id": "act-4",
@@ -434,46 +490,63 @@
    "kind": "knowledge",
    "page": 74,
    "section": "معارف 2 — المتباينات والجمع",
-   "verified": false,
+   "verified": true,
    "text": "خاصية: إذا كان a < b فإن a + c < b + c و a − c < b − c. لا يتغير اتجاه متباينة عندما نضيف إلى (أو نطرح من) طرفيها نفس العدد الناطق. ملاحظة: يمكن استبدال < بأحد الرمزين ≤ ، ≥ و تبقى الخاصيتان صحيحتين؛ a ≤ b يُقرأ a أصغر أو يساوي b.",
    "answer": {
     "example": [
-     "7"
+     "y < 3 ⟹ y + 4 < 7",
+     "y − 1/2 < 5/2"
+    ],
+    "readings": [
+     "≤ : أصغر أو يساوي",
+     "≥ : أكبر أو يساوي",
+     "< : أصغر تماما",
+     "> : أكبر تماما"
     ]
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "p. 74 relue à 170 dpi : exemples y < 3 ⟹ y + 4 < 7 et y − 1/2 < 5/2 ; remarque sur ≤ ≥ et lectures « أصغر / أكبر (تماما) »."
   },
   {
    "id": "know-2b",
    "kind": "knowledge",
    "page": 74,
    "section": "معارف 2 — المتباينات والضرب",
-   "verified": false,
+   "verified": true,
    "text": "خاصية: إذا كان a < b و c > 0 فإن ac < bc و a/c < b/c. إذا كان a < b و c < 0 فإن ac > bc و a/c > b/c. إذا ضربنا طرفي متباينة في (أو قسمناهما على) نفس العدد الناطق السالب تماما فإننا نغيّر اتجاهها. مثال: z < −4 ⟹ 2z < −8 ؛ x < 15 ⟹ x/(−3) > −5.",
    "answer": {
     "example": [
-     "2z < -8",
-     "-5"
+     "z < -4 ⟹ 2z < -8",
+     "x < 15 ⟹ x/(-3) > -5"
     ]
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "p. 74 relue à 170 dpi : c > 0 conserve ; c < 0 renverse (ac > bc et a/c > b/c)."
   },
   {
    "id": "know-3",
    "kind": "knowledge",
    "page": 76,
    "section": "معارف 3 — حصر عدد عشري موجب",
-   "verified": false,
+   "verified": true,
    "text": "x عدد عشري موجب مدوّره إلى الوحدة هو 15: لا يمكن أن يساوي 14,4 ولا 15,5 ؛ 14,5 ≤ x < 15,5 هي حصر لكل عدد مدوّره إلى الوحدة هو 15. المدوّر إلى الوحدة للعدد 3,647 هو 4 ؛ المدوّر إلى 1/10 هو 3,6 ؛ المدوّر إلى 1/100 هو 3,65.",
    "answer": {
+    "range for rounding 15": "14,5 ≤ x < 15,5",
+    "14,4 → 14": true,
+    "15,5 → 16": true,
     "3,647": {
      "unit": 4,
      "1/10": "3,6",
-     "1/100": "3,65"
+     "1/100": "3,65",
+     "brackets": [
+      "3 ≤ 3,647 < 4",
+      "3,6 ≤ 3,647 < 3,7",
+      "3,64 ≤ 3,647 < 3,65"
+     ]
     }
    },
    "answerSource": "computed",
-   "reading": "معارف 3 : « المدوّر » est ici la valeur approchée par excès ou défaut selon le chiffre suivant ; 3,647 → 4 ; 3,6 (le chiffre suivant est 4) ; 3,65 (le chiffre suivant est 7) — lu tel quel."
+   "reading": "p. 76 relue à 200 dpi : conforme ; figure = droite avec 14,5 · 15 · 15,5 et la bulle « الأعداد العشرية التي مدوّرها إلى الوحدة هو 15 » ; le livre écrit aussi 14 ≤ x < 14,5 ⟹ 14 et 15,5 ≤ x < 16 ⟹ 16 (vrais, bornes à demi-unité)."
   },
   {
    "id": "know-4",
@@ -535,7 +608,7 @@
    "kind": "method",
    "page": 75,
    "section": "طرائق — توظيف خواص المتباينات والعمليات",
-   "verified": false,
+   "verified": true,
    "text": "تمرين: x عدد ناطق حيث x > 7/5. A = 3x − 2 و B = 5 − 2x. قارن بين A و B من أجل x = 3/2 ثم x = 10. ضع تخمينا حول مقارنة العددين A و B. أثبت صحة هذا التخمين. حل: x = 3/2 : A = 5/2 و B = 2 ؛ x = 10 : A = 28 و B = −15 : A > B. A − B = 5x − 7 ، x > 7/5 إذن 5x > 7 ومنه A − B > 0.",
    "answer": {
     "3/2": [
@@ -545,50 +618,56 @@
     "10": [
      "28",
      "-15"
-    ]
+    ],
+    "conjecture": "A > B",
+    "A-B": "5x − 7 > 0"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "p. 75 relue à 170 dpi (x > 7/5 ; A = 3x − 2 ; B = 5 − 2x ; x = 3/2 puis x = 10 ; A − B = 5x − 7)."
   },
   {
    "id": "now-75-1",
    "kind": "now",
    "page": 75,
    "section": "دوري الآن — 1",
-   "verified": false,
+   "verified": true,
    "text": "x عدد ناطق حيث x < −6. ما هي المتباينة التي يمكن كتابتها من أجل x + 4 ؟ −6x ؟ x/12 ؟",
    "answer": {
     "x+4": "< -2",
     "-6x": "> 36",
     "x/12": "< -1/2"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "« x < −6 » lu à 600 dpi (le « −6 » est imprimé « 6- » à droite de « x < »)."
   },
   {
    "id": "now-75-2",
    "kind": "now",
    "page": 75,
    "section": "دوري الآن — 2",
-   "verified": false,
-   "text": "في كل حالة مما يلي: 7 > x − 8 ؛ −3x > 15 ؛ −x/4 < 9. استعمل خواص المتباينات للحصول على متباينة من الشكل x > … أو x < …",
+   "verified": true,
+   "text": "في كل حالة مما يلي: x − 8 > 7 ؛ −3x > 15 ؛ 9 > −x/4. استعمل خواص المتباينات للحصول على متباينة من الشكل x > … أو x < …",
    "answer": {
-    "1": "x < 15",
+    "1": "x > 15",
     "2": "x < -5",
     "3": "x > -36"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relue à 400–600 dpi : la première inégalité est imprimée « x − 8 > 7 » (x à gauche du symbole « > », 7 à droite) : x > 15 — et NON « 7 > x − 8 ⟹ x < 15 » comme transcrit avant (voir DISCREPANCIES). −3x > 15 ⟹ x < −5 ; 9 > −x/4 ⟹ x > −36."
   },
   {
    "id": "method-3",
    "kind": "method",
    "page": 77,
    "section": "طرائق — حصر عدد عشري موجب",
-   "verified": false,
+   "verified": true,
    "text": "تمرين: 1) احصر العدد 4,679 بين عددين طبيعيين متتاليين. 2) عيّن حصرا لهذا العدد باستعمال قيم مقرّبة بالنقصان وبالزيادة إلى 1/10. حل: 4 ≤ 4,679 < 5 ؛ 4,6 ≤ 4,679 < 4,7.",
    "answer": {
     "1": "4 ≤ 4,679 < 5",
     "2": "4,6 ≤ 4,679 < 4,7"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "p. 77 relue à 200 dpi : conforme ; commentaire du livre « on emploie les valeurs approchées par défaut et par excès à un rang pour encadrer un décimal positif »."
   },
   {
    "id": "method-4",
@@ -624,16 +703,16 @@
    "kind": "now",
    "page": 77,
    "section": "دوري الآن — 1",
-   "verified": false,
+   "verified": true,
    "text": "a ، 8,34 هو المدوّر إلى الجزء من 100 للعدد a. هل يمكن أن يكون a يساوي 8,342 ؟ 8,336 ؟ 8,345 ؟ أعط حصرا للعدد a باستعمال قيمتين تقريبيتين إلى الجزء من 100 للعدد a.",
    "answer": {
     "8,342": true,
-    "8,336": false,
-    "8,345": true,
+    "8,336": true,
+    "8,345": false,
     "range": "8,335 ≤ a < 8,345"
    },
    "answerSource": "computed",
-   "reading": "« 8,345 » : selon la convention du manuel (arrondi au plus proche, demi vers le haut) 8,345 donne 8,35 : réponse « non » ; lu tel quel par la leçon hasr-adad-ushri."
+   "reading": "p. 77 relue à 200 dpi (2026-10-26) : texte conforme (« 8,34 هو المدوّر إلى الجزء من 100 للعدد a ; هل يمكن أن يكون a يساوي 8,342 ؟ 8,336 ؟ 8,345 ؟ ») ; le livre ne donne pas la réponse. Recalculé par rnd() ET Decimal ROUND_HALF_UP : 8,342 oui, 8,336 oui, 8,345 NON (→ 8,35) ; encadrement 8,335 ≤ a < 8,345."
   },
   {
    "id": "now-77-2",
@@ -729,207 +808,327 @@
    "kind": "exercise",
    "page": 78,
    "section": "أوظّف تعلّماتي — 6",
-   "verified": false,
+   "verified": true,
    "text": "x عدد ناطق. أكمل: إذا كان x > 10 فإن x − 10 > … ؛ x < −3 فإن x + 3 < … ؛ x ≥ −2 فإن x + 2 ≥ … ؛ x ≤ 1/2 فإن x − 1/2 ≤ …",
-   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+   "reading": "p. 78 relue à 170 dpi : x > 10, x < −3, x ≥ −2, x ≤ 1/2 ; les quatre réponses sont « … 0 ».",
+   "answer": [
+    {
+     "x-10": "> 0",
+     "x+3": "< 0",
+     "x+2": "≥ 0",
+     "x-1/2": "≤ 0"
+    }
+   ],
+   "answerSource": "computed"
   },
   {
    "id": "ex-7",
    "kind": "exercise",
    "page": 78,
    "section": "أوظّف تعلّماتي — 7",
-   "verified": false,
-   "text": "m عدد ناطق، أكمل: إذا كان m ≥ 0 فإن 5m ≥ … ؛ m ≤ 0 … ؛ m − 1 ≤ 0 … ؛ 1 + 4m > 0 … ؛ 3 − 2m < 0 …",
-   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+   "verified": true,
+   "text": "m عدد ناطق، أكمل كل جملة مما يلي: إذا كان 5m ≥ 0 فإن m ≥ … ؛ إذا كان m − 1 ≤ 0 فإن m ≤ … ؛ إذا كان 1 + 4m > 0 فإن m > … ؛ إذا كان 3 − 2m < 0 فإن m > …",
+   "reading": "p. 78 relue à 170 dpi : l’HYPOTHÈSE est imprimée à droite (5m ≥ 0, m − 1 ≤ 0, 1 + 4m > 0, 3 − 2m < 0) et la CONCLUSION à compléter « m ≥ … » etc. La transcription brève avait inversé hypothèse et conclusion et perdu la ligne « m ≤ 0 … ». Réponses : m ≥ 0 ; m ≤ 1 ; m > −1/4 ; m > 3/2.",
+   "answer": [
+    {
+     "cond": "m ≥ 0"
+    },
+    {
+     "cond": "m ≤ 1"
+    },
+    {
+     "cond": "m > -1/4"
+    },
+    {
+     "cond": "m > 3/2"
+    }
+   ],
+   "answerSource": "computed"
   },
   {
    "id": "ex-8",
    "kind": "exercise",
    "page": 78,
    "section": "أوظّف تعلّماتي — 8",
-   "verified": false,
+   "verified": true,
    "text": "قارن بين العددين الناطقين 6/5 و 5/4.",
-   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+   "reading": "p. 78 : 6/5 et 5/4 ; 24/20 < 25/20.",
+   "answer": "6/5 < 5/4",
+   "answerSource": "computed"
   },
   {
    "id": "ex-9",
    "kind": "exercise",
    "page": 78,
    "section": "أوظّف تعلّماتي — 9",
-   "verified": false,
-   "text": "قارن بين العددين الناطقين a و b في كل حالة: أ) a = 4/3 ، b = −9/14 ؛ ب) …",
-   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+   "verified": true,
+   "text": "قارن بين العددين الناطقين a و b في كل حالة مما يلي: أ) a = 4/3 ، b = 24/21 ؛ ب) a = −4/7 ، b = −9/14 ؛ جـ) a = 4/15 ، b = −15/4 ؛ د) a = 2/3 ، b = 3/2",
+   "reading": "p. 78 relue à 170 dpi : quatre paires (4/3 ; 24/21), (−4/7 ; −9/14), (4/15 ; −15/4), (2/3 ; 3/2) → > ; > ; > ; < (la transcription brève ne donnait que a = 4/3, b = −9/14 mélangées).",
+   "answer": [
+    ">",
+    ">",
+    ">",
+    "<"
+   ],
+   "answerSource": "computed"
   },
   {
    "id": "ex-10",
    "kind": "exercise",
    "page": 78,
    "section": "أوظّف تعلّماتي — 10",
-   "verified": false,
+   "verified": true,
    "text": "تحصلت ليلى على علامتين في الرياضيات، إحداهما ثلاثة أخماس والأخرى إحدى عشرة على عشرين. أي علامة أكبر؟",
-   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+   "reading": "p. 78 : 3/5 = 12/20 > 11/20.",
+   "answer": "3/5 > 11/20",
+   "answerSource": "computed"
   },
   {
    "id": "ex-11",
    "kind": "exercise",
    "page": 78,
    "section": "أوظّف تعلّماتي — 11",
-   "verified": false,
+   "verified": true,
    "text": "إذا كان a عددا أصغر من 2000، فما الذي يمكن قوله عن العدد a + 18 ؟",
-   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+   "reading": "p. 78.",
+   "answer": "a + 18 < 2018",
+   "answerSource": "computed"
   },
   {
    "id": "ex-12",
    "kind": "exercise",
    "page": 78,
    "section": "أوظّف تعلّماتي — 12",
-   "verified": false,
+   "verified": true,
    "text": "إذا كان x عددا أكبر من أو يساوي 5، فما الذي يمكن قوله عن العدد x − 10 ؟",
-   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+   "reading": "p. 78.",
+   "answer": "x − 10 ≥ −5",
+   "answerSource": "computed"
   },
   {
    "id": "ex-13",
    "kind": "exercise",
    "page": 78,
    "section": "أوظّف تعلّماتي — 13",
-   "verified": false,
-   "text": "m عدد نسبي حيث m > 3. استنتج متباينة يحققها كل عدد مما يلي: m + 3 ؛ m − 3 ؛ −5 + m ؛ 3m ؛ −3m ؛ −1/4 m + 4",
-   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+   "verified": true,
+   "text": "m عدد نسبي حيث m > 3. استنتج متباينة يحققها كل عدد مما يلي: أ) m + 3 ؛ ب) m − 3 ؛ جـ) −5 + m ؛ د) 3m ؛ هـ) −3m ؛ و) −1/4 m + 4",
+   "reading": "p. 78 relue à 170 dpi.",
+   "answer": [
+    "m + 3 > 6",
+    "m − 3 > 0",
+    "−5 + m > −2",
+    "3m > 9",
+    "−3m < −9",
+    "−1/4 m + 4 < 13/4"
+   ],
+   "answerSource": "computed"
   },
   {
    "id": "ex-14",
    "kind": "exercise",
    "page": 78,
    "section": "أوظّف تعلّماتي — 14",
-   "verified": false,
+   "verified": true,
    "text": "x عدد ناطق حيث −2x + 3 ≤ 18. استنتج متباينة يكون فيها x هو الحد الأول.",
-   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+   "reading": "p. 78 : −2x + 3 ≤ 18.",
+   "answer": "x ≥ -15/2",
+   "answerSource": "computed"
   },
   {
    "id": "ex-15",
    "kind": "exercise",
    "page": 78,
    "section": "أوظّف تعلّماتي — 15",
-   "verified": false,
+   "verified": true,
    "text": "y عدد ناطق حيث 3y + 5 ≤ −5. استنتج متباينة يكون فيها y هو الحد الأول.",
-   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+   "reading": "p. 78 : 3y + 5 ≤ −5.",
+   "answer": "y ≤ -10/3",
+   "answerSource": "computed"
   },
   {
    "id": "ex-16",
    "kind": "exercise",
    "page": 78,
    "section": "أوظّف تعلّماتي — 16",
-   "verified": false,
+   "verified": true,
    "text": "z عدد ناطق حيث −2z ≥ −7. استنتج متباينة يكون فيها z هو الحد الأول.",
-   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+   "reading": "p. 78 : −2z ≥ −7.",
+   "answer": "z ≤ 7/2",
+   "answerSource": "computed"
   },
   {
    "id": "ex-17",
    "kind": "exercise",
    "page": 78,
    "section": "أوظّف تعلّماتي — 17",
-   "verified": false,
-   "text": "انقل وأكمل: إذا كان a ≥ b فإن a … b ؛ … ",
-   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+   "verified": true,
+   "text": "انقل وأكمل كل جملة مما يلي: إذا كان a ≥ b فإن b … a ؛ إذا كان a ≥ b فإن b − a … 0 ؛ إذا كان 3a ≤ 5b − 1 فإن 5b − 3a … 1 ؛ إذا كان a + 10 ≥ b − 10 فإن a − b … −20",
+   "reading": "pp. 78–79 relue à 170 dpi : la 1re ligne est en bas de p. 78, les trois autres en haut de p. 79. Réponses ≤ ; ≤ ; ≥ ; ≥ (la transcription brève avait perdu les trois dernières lignes).",
+   "answer": [
+    "≤",
+    "≤",
+    "≥",
+    "≥"
+   ],
+   "answerSource": "computed"
   },
   {
    "id": "ex-18",
    "kind": "exercise",
    "page": 79,
    "section": "أوظّف تعلّماتي — 18",
-   "verified": false,
-   "text": "a و b عددان ناطقان. انقل وأكمل: إذا كان a ≥ b فإن 7a … 7b ؛ إذا كان a > b فإن −2/5 a … −2/5 b ؛ …",
-   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+   "verified": true,
+   "text": "a و b عددان ناطقان. انقل وأكمل كل جملة مما يلي: إذا كان a ≥ b فإن 7a … 7b ؛ إذا كان a > b فإن −2/5 a … −2/5 b ؛ إذا كان a ≤ b فإن 4a + 1 … 4b + 1 ؛ إذا كان a < b فإن −a + 3 … −b + 3",
+   "reading": "p. 79 relue à 170 dpi : ≥ ; < ; ≤ ; > (quatre lignes, la transcription brève s’arrêtait à la première).",
+   "answer": [
+    "≥",
+    "<",
+    "≤",
+    ">"
+   ],
+   "answerSource": "computed"
   },
   {
    "id": "ex-19",
    "kind": "exercise",
    "page": 79,
    "section": "أوظّف تعلّماتي — 19 (حصر عدد عشري موجب)",
-   "verified": false,
+   "verified": true,
    "text": "t عدد عشري موجب حيث 1 ≤ t ≤ 3 : أعط حصرا لكل عبارة: t + 10 ؛ 3t − 1 ؛ 1/2 t ؛ 14/3 t − 2.",
-   "reading": "transcription brève (leçon hasr-adad-ushri à relire)"
+   "reading": "p. 79 relue à 170 dpi : 1 ≤ t ≤ 3 ; expressions t + 10, 3t − 1, 1/2 t, 14/3 t − 2.",
+   "answer": [
+    "11 ≤ t + 10 ≤ 13",
+    "2 ≤ 3t − 1 ≤ 8",
+    "1/2 ≤ t/2 ≤ 3/2",
+    "8/3 ≤ 14/3 t − 2 ≤ 12"
+   ],
+   "answerSource": "computed"
   },
   {
    "id": "ex-20",
    "kind": "exercise",
    "page": 79,
    "section": "أوظّف تعلّماتي — 20 (حصر عدد عشري موجب)",
-   "verified": false,
+   "verified": true,
    "text": "أثبت أنّ 17/19 < 1 < 19/17.",
-   "reading": "transcription brève (leçon hasr-adad-ushri à relire)"
+   "reading": "p. 79 relue à 200 dpi : « أثبت أنّ 17/19 < 1 < 19/17 ».",
+   "answer": {
+    "17/19 < 1": true,
+    "1 < 19/17": true
+   },
+   "answerSource": "computed"
   },
   {
    "id": "ex-21",
    "kind": "exercise",
    "page": 79,
    "section": "أوظّف تعلّماتي — 21 (حصر عدد عشري موجب)",
-   "verified": false,
+   "verified": true,
    "text": "استعمل حاسبة لإثبات أنّ 3 + 10/71 < π < 3 + 1/7.",
-   "reading": "transcription brève (leçon hasr-adad-ushri à relire)"
+   "reading": "p. 79 relue à 200 dpi : « استعمل حاسبة لإثبات أنّ 3 + 10/71 < π < 3 + 1/7 ». 3 + 10/71 = 3.1408450… ; 3 + 1/7 = 3.1428571….",
+   "answer": {
+    "lowerValue": "3.1408450",
+    "pi": "3.14159265…",
+    "upperValue": "3.1428571",
+    "chain": "3,14084… < 3,14159… < 3,14285…"
+   },
+   "answerSource": "computed"
   },
   {
    "id": "ex-22",
    "kind": "exercise",
    "page": 79,
    "section": "أوظّف تعلّماتي — 22 (حصر عدد عشري موجب)",
-   "verified": false,
+   "verified": true,
    "text": "أثبت أنّ 2/5 < 33/50 < 3/4.",
-   "reading": "transcription brève (leçon hasr-adad-ushri à relire)"
+   "reading": "p. 79 relue à 200 dpi : « أثبت أنّ 2/5 < 33/50 < 3/4 ».",
+   "answer": {
+    "2/5 = 0,4": true,
+    "33/50 = 0,66": true,
+    "3/4 = 0,75": true,
+    "chain": "0,4 < 0,66 < 0,75"
+   },
+   "answerSource": "computed"
   },
   {
    "id": "ex-23",
    "kind": "exercise",
    "page": 79,
    "section": "أوظّف تعلّماتي — 23 (حصر عدد عشري موجب)",
-   "verified": false,
-   "text": "x هو طول ضلع معيّن 3 < x < 8 (cm). عيّن حصرا لمحيط هذا المعيّن.",
-   "reading": "transcription brève (leçon hasr-adad-ushri à relire)"
+   "verified": true,
+   "text": "x هو طول ضلع معيّن حيث 3 < x < 8 (الوحدة cm). عيّن حصرا لمحيط هذا المعيّن.",
+   "reading": "p. 79 : le losange a quatre côtés égaux, P = 4x ; 3 < x < 8.",
+   "answer": {
+    "P": "12 < 4x < 32"
+   },
+   "answerSource": "computed"
   },
   {
    "id": "ex-24",
    "kind": "exercise",
    "page": 79,
    "section": "أوظّف تعلّماتي — 24 (حصر عدد عشري موجب)",
-   "verified": false,
+   "verified": true,
    "text": "ABC مثلث متقايس الأضلاع محيطه P محصور بين 5cm و 6cm. عيّن حصرا لطول ضلع هذا المثلث.",
-   "reading": "transcription brève (leçon hasr-adad-ushri à relire)"
+   "reading": "p. 79 : triangle équilatéral de périmètre P « محصور بين 5cm و 6cm » (les symboles ne sont pas imprimés : lu 5 < P < 6, comme le plan) ; côté = P/3.",
+   "answer": {
+    "side": "5/3 < P/3 < 2"
+   },
+   "answerSource": "computed"
   },
   {
    "id": "ex-25",
    "kind": "exercise",
    "page": 79,
    "section": "أوظّف تعلّماتي — 25 (حصر عدد عشري موجب)",
-   "verified": false,
+   "verified": true,
    "text": "a ، b ، c أعداد عشرية حيث a = 5,12 ؛ b = 5,3 ؛ c = 5,115. أثبت أنّ c < a < b.",
-   "reading": "transcription brève (leçon hasr-adad-ushri à relire)"
+   "reading": "p. 79 relue à 200 dpi : a = 5,12 ; b = 5,3 ; c = 5,115 (l’ordre imprimé est « a = 5,12 ، b = 5,3 و c = 5,115 »).",
+   "answer": {
+    "order": "c < a < b",
+    "values": "c = 5,115 < a = 5,12 < b = 5,3 (5,115 < 5,120 < 5,300)"
+   },
+   "answerSource": "computed"
   },
   {
    "id": "ex-26",
    "kind": "exercise",
    "page": 79,
    "section": "أوظّف تعلّماتي — 26 (حصر عدد عشري موجب)",
-   "verified": false,
+   "verified": true,
    "text": "x عدد عشري حيث 1 ≤ 2x + 1 < 3. استنتج حصرا للعدد x.",
-   "reading": "transcription brève (leçon hasr-adad-ushri à relire)"
+   "reading": "p. 79 : 1 ≤ 2x + 1 < 3 (x décimal).",
+   "answer": {
+    "x": "0 ≤ x < 1"
+   },
+   "answerSource": "computed"
   },
   {
    "id": "ex-27",
    "kind": "exercise",
    "page": 79,
    "section": "أوظّف تعلّماتي — 27 (حصر عدد عشري موجب)",
-   "verified": false,
+   "verified": true,
    "text": "طول ملعب كرة القدم محصور بين 100m و 110m وعرضه محصور بين 64m و 75m. علما أن الملعب مستطيل الشكل، عيّن حصرا لمساحة هذا الملعب.",
-   "reading": "transcription brève (leçon hasr-adad-ushri à relire)"
+   "reading": "p. 79 : 100 ≤ L ≤ 110 et 64 ≤ ℓ ≤ 75 (m) ; A = L × ℓ ; les bornes sont des produits de bornes positives.",
+   "answer": {
+    "A": "6400 ≤ A ≤ 8250"
+   },
+   "answerSource": "computed"
   },
   {
    "id": "ex-28",
    "kind": "exercise",
    "page": 79,
    "section": "أوظّف تعلّماتي — 28 (حصر عدد عشري موجب)",
-   "verified": false,
+   "verified": true,
    "text": "الشكل متوازي مستطيلات 5cm × 3cm × h. 1) عيّن حصرا للارتفاع h علما أن المدوّر إلى الجزء من 100 لـ h هو 5,41. 2) استنتج حصرا للحجم V.",
-   "reading": "transcription brève (leçon hasr-adad-ushri à relire)"
+   "reading": "p. 79 relue à 200 dpi : parallélépipède 5cm × 3cm × h ; 1) h tel que son arrondi à 1/100 soit 5,41 ; 2) en déduire un encadrement de V.",
+   "answer": {
+    "h": "5,405 ≤ h < 5,415",
+    "V": "V = 5 × 3 × h = 15h ; 81,075 ≤ V < 81,225"
+   },
+   "answerSource": "computed"
   },
   {
    "id": "ex-29",
@@ -1326,13 +1525,14 @@
    "kind": "exercise",
    "page": 83,
    "section": "أتعمّق — 62",
-   "verified": false,
+   "verified": true,
    "text": "مسبح دائري نصف قطر قاعدته 2,5m. احسب القيمة المضبوطة لمحيط قاعدة المسبح. عيّن حصرا لمحيط هذه القاعدة إذا علمت أن 3,14 < π < 3,15.",
    "answer": {
-    "exact": "5π",
+    "exact": "5π (2π × 2,5)",
     "bounds": "15,7 < P < 15,75"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "p. 83 relue à 200 dpi : rayon 2,5 m ; encadrement imprimé 3,14 < π < 3,15 (inégalités strictes)."
   },
   {
    "id": "ex-63",
@@ -1397,36 +1597,40 @@
    "kind": "self",
    "page": 81,
    "section": "أؤكّد تعلّماتي — 3",
-   "verified": false,
+   "verified": true,
    "text": "x عدد ناطق. أكمل: إذا كان x < −3 فإن −x > …",
    "answer": "3",
    "answerSource": "computed",
-   "retour": "74 و 75"
+   "retour": "74 و 75",
+   "reading": "p. 81 relue à 170 dpi : x < −3 ⟹ −x > … ; réponse 3."
   },
   {
    "id": "self-4",
    "kind": "self",
    "page": 81,
    "section": "أؤكّد تعلّماتي — 4",
-   "verified": false,
+   "verified": true,
    "text": "y عدد ناطق. أكمل: إذا كان 2y − 2 ≥ 4 فإن y ≥ …",
    "answer": "3",
    "answerSource": "computed",
-   "retour": "74 و 75"
+   "retour": "74 و 75",
+   "reading": "p. 81 relue à 170 dpi : 2y − 2 ≥ 4 ⟹ y ≥ … ; réponse 3."
   },
   {
    "id": "self-5",
    "kind": "self",
    "page": 81,
    "section": "أؤكّد تعلّماتي — 5",
-   "verified": false,
+   "verified": true,
    "text": "عيّن المدوّر إلى الوحدة لحاصل القسمة 136/14. احصر هذا العدد بين عددين طبيعيين متتاليين.",
    "answer": {
     "rounded": 10,
-    "bracket": "9 ≤ 136/14 < 10"
+    "bracket": "9 ≤ 136/14 < 10",
+    "value": "9,714…"
    },
    "answerSource": "computed",
-   "retour": "76 و 77"
+   "retour": "76 و 77",
+   "reading": "p. 81 relue à 200 dpi : « عيّن المدوّر إلى الوحدة لحاصل القسمة 136/14 ; احصر هذا العدد بين عددين طبيعيين متتاليين » ; retour 76 و 77."
   },
   {
    "id": "self-6",
@@ -1595,9 +1799,89 @@
    "text": "« يبلغ عمر ابنه فيفضل 6 سنوات » est ambigu ; lu : le fils a 6 ans (45 + n = 2(6 + n), n = 33)."
   },
   {
+   "elementId": "act-2",
+   "kind": "reading",
+   "text": "Partie 5) (p. 73) : « a − 7/2 … b − 9/2 » est INDÉCIDABLE ((a − 7/2) − (b − 9/2) = (a − b) + 1 de signe inconnu : <, = ou > selon a, b) ; « a + 3/5 … b + 6/5 » est DÉCIDABLE : « < » (a + 3/5 < b + 3/5 < b + 6/5) ; a − 4 < b − 4 ; a + 3 < b + 3. La lecture antérieure disait qu’aucune des deux premières n’était décidable (fausse pour la seconde). Contrôlé par balayage exact. Confirmé sur le scan (le plan avait raison)."
+  },
+  {
+   "elementId": "ex-7",
+   "kind": "reading",
+   "text": "Hypothèse et conclusion étaient inversées dans la transcription brève : le scan imprime « إذا كان 5m ≥ 0 فإن m ≥ … ؛ m − 1 ≤ 0 ⟹ m ≤ … ؛ 1 + 4m > 0 ⟹ m > … ؛ 3 − 2m < 0 ⟹ m > … » ; réponses 0 ; 1 ; −1/4 ; 3/2 (le plan avait raison). La ligne « m ≤ 0 … » de la transcription n’existe pas."
+  },
+  {
+   "elementId": "ex-9",
+   "kind": "reading",
+   "text": "Quatre paires : (4/3 ; 24/21), (−4/7 ; −9/14), (4/15 ; −15/4), (2/3 ; 3/2) → > ; > ; > ; < (le plan avait raison ; la transcription brève mélangeait a de la 1re paire et b de la 2e)."
+  },
+  {
+   "elementId": "ex-17",
+   "kind": "reading",
+   "text": "Quatre lignes (la 1re en bas de p. 78, les trois autres en haut de p. 79) : b … a ; b − a … 0 ; 5b − 3a … 1 (hyp. 3a ≤ 5b − 1) ; a − b … −20 (hyp. a + 10 ≥ b − 10) → ≤ ; ≤ ; ≥ ; ≥ (le plan avait raison)."
+  },
+  {
+   "elementId": "ex-18",
+   "kind": "reading",
+   "text": "Quatre lignes (p. 79) : 7a … 7b ; −2/5 a … −2/5 b ; 4a + 1 … 4b + 1 ; −a + 3 … −b + 3 → ≥ ; < ; ≤ ; > (le plan avait raison)."
+  },
+  {
+   "elementId": "now-75-2",
+   "kind": "reading",
+   "text": "DIFFÉRENCE AVEC LE PLAN (le scan l’emporte) : la 1re inégalité est imprimée « x − 8 > 7 » (p. 75, relue à 400–600 dpi, forme du symbole et ordre des glyphes contrôlés par analyse de pixels) et NON « 7 > x − 8 » ; réponse x > 15 (l’ancienne réponse « x < 15 » et le plan « 7 > x − 8 » sont faux). Les deux autres sont conformes : −3x > 15 ⟹ x < −5 ; 9 > −x/4 ⟹ x > −36. Aucune réponse n’est montrée à l’élève : la leçon utilise ses propres nombres."
+  },
+  {
+   "elementId": "ex-24",
+   "kind": "reading",
+   "text": "« محيطه P محصور بين 5cm و 6cm » : aucun symbole imprimé ; lu 5 < P < 6 (le plan) ; la leçon peut aussi poser ≤ sans conséquence."
+  },
+  {
+   "elementId": "now-77-1",
+   "kind": "textbook-error",
+   "text": "Appartient à hasr-adad-ushri. Les DEUX réponses stockées étaient fausses : 8,336 s’arrondit à 8,34 (oui, pas « non ») ; 8,345 s’arrondit à 8,35 (demi vers le haut) donc NON (pas « oui »). Recalculé par rnd() : 8,342 oui, 8,336 oui, 8,345 non ; encadrement 8,335 ≤ a < 8,345. Ne jamais le montrer à l’élève."
+  },
+  {
+   "elementId": "prep",
+   "kind": "transcription-error",
+   "text": "hasr-adad-ushri, p. 71 relue à 200 dpi : ligne 14 (arrondi à 1/10 de 135/14) imprimée (1) = 9, (2) = 10, (3) = 9,6 ; la transcription brève avait [9,6 ; 10 ; 9] avec l’indice 0 juste (faux ordre) : corrigé en [9 ; 10 ; 9,6], juste = (3) = 9,6. Ligne 13 conforme (9,6 / 10 / 9 → 10). Ligne 15 : ce sont TROIS lignes de trois options — unité : 7 / 7,6 / 8 → 8 ; 1/10 : 7,6 / 7,7 / 8 → 7,7 ; 1/100 : 7,67 / 7,66 / 8 → 7,67 (items[14].rows) ; la transcription brève avait fusionné les colonnes. Écran imprimé 7.666666667 (dernier chiffre arrondi par la calculatrice ; vrai 7,6666…)."
+  },
+  {
+   "elementId": "act-3",
+   "kind": "reading",
+   "text": "hasr-adad-ushri : l’écran imprimé « 2.975903614 » est l’AFFICHAGE d’une calculatrice dont le dernier chiffre est arrondi : les chiffres exacts de 247/83 sont 2.97590361445… ; les encadrements 2,9 ≤ A < 3 ; 2,97 ≤ A < 2,98 ; 2,975 ≤ A < 2,976 sont corrects. P (cm) : arrondi à 0,1 égal à 10,7 ⟺ 10,65 ≤ P < 10,75."
+  },
+  {
+   "elementId": "know-3",
+   "kind": "reading",
+   "text": "hasr-adad-ushri, p. 76 à 200 dpi : conforme (14,5 ≤ x < 15,5 ; 3,647 → 4 / 3,6 / 3,65 ; encadrements 3 ≤ 3,647 < 4, 3,6 ≤ 3,647 < 3,7, 3,64 ≤ 3,647 < 3,65). Le livre écrit aussi 14 ≤ x < 14,5 ⟹ 14 et 15,5 ≤ x < 16 ⟹ 16 (vrais)."
+  },
+  {
+   "elementId": "ex-28",
+   "kind": "reading",
+   "text": "hasr-adad-ushri : h arrondi à 1/100 = 5,41 ⟺ 5,405 ≤ h < 5,415 ; V = 5 × 3 × h = 15h ⟹ 81,075 ≤ V < 81,225 (bornes calculées exactement, borne haute exclue)."
+  },
+  {
+   "elementId": "ex-62",
+   "kind": "reading",
+   "text": "hasr-adad-ushri : P = 2π × 2,5 = 5π ; 3,14 < π < 3,15 ⟹ 15,7 < P < 15,75 (strict, comme imprimé)."
+  },
+  {
+   "elementId": "ex-21",
+   "kind": "reading",
+   "text": "hasr-adad-ushri : 3 + 10/71 = 3,140845… < π = 3,141592… < 3 + 1/7 = 3,142857… (vérifié exactement)."
+  },
+  {
+   "elementId": "ex-25",
+   "kind": "reading",
+   "text": "hasr-adad-ushri : a = 5,12 ; b = 5,3 ; c = 5,115 imprimés dans cet ordre ; c < a < b (5,115 < 5,120 < 5,300)."
+  },
+  {
+   "elementId": "self-5",
+   "kind": "reading",
+   "text": "hasr-adad-ushri : 136/14 = 9,714… ; arrondi à l’unité 10 ; 9 ≤ 136/14 < 10 (le livre demande « entre deux naturels consécutifs » : borne basse atteinte possible, ici stricte des deux côtés pour un non-entier)."
+  },
+  {
    "elementId": "unit",
    "kind": "scope",
-   "text": "Pages 70–85 complètes. Éléments des leçons non générées transcrits brièvement à 110 dpi (verified: false) ; figures des ex-47, 48, 52, 54, 59, 60, 64 à relire par leur leçon (réponses « à lire sur la figure »)."
+   "text": "Pages 70–85 complètes. Éléments de mutabayinat-amaliyat relus et vérifiés le 2026-10-26 ; hasr-adad-ushri relus et vérifiés le 2026-10-26 (200 dpi) ; ceux de la synthèse transcrits brièvement à 110 dpi (verified: false) ; figures des ex-47, 48, 52, 54, 59, 60, 64 à relire par leur leçon (réponses « à lire sur la figure »)."
   }
  ],
  "destinations": {
@@ -1624,11 +1908,11 @@
     },
     "7-8": {
      "lesson": "mutabayinat-amaliyat",
-     "module": null
+     "module": 0
     },
     "13-14-15": {
      "lesson": "hasr-adad-ushri",
-     "module": null
+     "module": 0
     },
     "2-5-6-10-11-12": {
      "lesson": "muadalat-darajat-ula",
@@ -1643,15 +1927,18 @@
   },
   "act-2": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": 4,
+   "note": "أتمرّن E1–E2 (« إن أمكن » avec une ligne indécidable) ; la table de signe de a − b est RAPPELÉE (r04), jamais ré-enseignée."
   },
   "act-2b": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": 4,
+   "note": "أتمرّن E3 (entrée candidate rejetée : le tableau se répond par calcul, l’entrée conçue est le lab loom-threads)."
   },
   "act-3": {
    "lesson": "hasr-adad-ushri",
-   "module": null
+   "module": 1,
+   "note": "module 1 : le lab « ميزان العطّار » (entrée conçue, l’activité du livre est reposée) ; module 4 : أتمرّن E1 (1) et E2 (2) avec nombres propres."
   },
   "act-4": {
    "lesson": "muadalat-darajat-ula",
@@ -1667,15 +1954,16 @@
   },
   "know-2a": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": 2
   },
   "know-2b": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": 2
   },
   "know-3": {
    "lesson": "hasr-adad-ushri",
-   "module": null
+   "module": 2,
+   "note": "معارف, avec les nombres du lab et des exemples propres."
   },
   "know-4": {
    "lesson": "muadalat-darajat-ula",
@@ -1695,23 +1983,28 @@
   },
   "method-2": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": 3,
+   "note": "طريقة B : comparer deux expressions (conjecture sur deux valeurs puis preuve par A − B)."
   },
   "now-75-1": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": 4,
+   "note": "أتمرّن E4 (avec ex-13)."
   },
   "now-75-2": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": 3,
+   "note": "طريقة A (déduire « x seul ») ; repris aussi en أتمرّن E5 (module 4) avec ex-14, 15, 16."
   },
   "method-3": {
    "lesson": "hasr-adad-ushri",
-   "module": null
+   "module": 3,
+   "note": "طريقة A (encadrer à un rang) ; B (encadrer depuis un arrondi) ; C (quotient à la calculatrice) : nombres propres."
   },
   "now-77-1": {
    "lesson": "hasr-adad-ushri",
-   "module": null
+   "module": 4,
+   "note": "أتمرّن E3 (nombres propres) ; l’élément stocké avait deux réponses fausses, voir discrepancies."
   },
   "method-4": {
    "lesson": "muadalat-darajat-ula",
@@ -1747,99 +2040,123 @@
   },
   "ex-6": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": 4,
+   "note": "E1"
   },
   "ex-7": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": 4,
+   "note": "E6 (condition sur m : sens inverse) ; aussi banque niveau 2."
   },
   "ex-8": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": null,
+   "note": "cited by the bank (comparaison / mot « أصغر من » : niveau 1 adapté ; la comparaison pure est 3am.m5.r04)"
   },
   "ex-9": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": null,
+   "note": "cited by the bank (comparaison / mot « أصغر من » : niveau 1 adapté ; la comparaison pure est 3am.m5.r04)"
   },
   "ex-10": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": null,
+   "note": "cited by the bank (comparaison / mot « أصغر من » : niveau 1 adapté ; la comparaison pure est 3am.m5.r04)"
   },
   "ex-11": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": null,
+   "note": "cited by the bank (comparaison / mot « أصغر من » : niveau 1 adapté ; la comparaison pure est 3am.m5.r04)"
   },
   "ex-12": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": null,
+   "note": "cited by the bank (comparaison / mot « أصغر من » : niveau 1 adapté ; la comparaison pure est 3am.m5.r04)"
   },
   "ex-13": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": 4,
+   "note": "E4"
   },
   "ex-14": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": 4,
+   "note": "E5 (déduire une inégalité de premier terme x)"
   },
   "ex-15": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": 4,
+   "note": "E5 (déduire une inégalité de premier terme x)"
   },
   "ex-16": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": 4,
+   "note": "E5 (déduire une inégalité de premier terme x)"
   },
   "ex-17": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": 4,
+   "note": "E6"
   },
   "ex-18": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": null,
+   "note": "cited by the bank"
   },
   "ex-19": {
-   "lesson": "hasr-adad-ushri",
-   "module": null
+   "lesson": "mutabayinat-amaliyat",
+   "module": 3,
+   "note": "RE-ROUTÉ depuis hasr-adad-ushri : طريقة C (encadrer ax + b) ; aussi banque."
   },
   "ex-20": {
    "lesson": "hasr-adad-ushri",
-   "module": null
+   "module": 4,
+   "note": "E7 (encadrer par écritures décimales) + banque niveau 1."
   },
   "ex-21": {
    "lesson": "hasr-adad-ushri",
-   "module": null
+   "module": 4,
+   "note": "E5 (3,14 < π < 3,15 puis 8π) ; aussi banque."
   },
   "ex-22": {
    "lesson": "hasr-adad-ushri",
-   "module": null
-  },
-  "ex-23": {
-   "lesson": "hasr-adad-ushri",
-   "module": null
-  },
-  "ex-24": {
-   "lesson": "hasr-adad-ushri",
-   "module": null
+   "module": 4,
+   "note": "E7 + banque niveau 1."
   },
   "ex-25": {
    "lesson": "hasr-adad-ushri",
-   "module": null
-  },
-  "ex-26": {
-   "lesson": "hasr-adad-ushri",
-   "module": null
-  },
-  "ex-27": {
-   "lesson": "hasr-adad-ushri",
-   "module": null
+   "module": 4,
+   "note": "E7 (échauffement : ordre de décimaux par encadrement) + banque niveau 1."
   },
   "ex-28": {
    "lesson": "hasr-adad-ushri",
-   "module": null
+   "module": 4,
+   "note": "E6 (arrondi → encadrement de h → encadrement du volume 15h) ; aussi banque."
   },
   "ex-62": {
    "lesson": "hasr-adad-ushri",
-   "module": null
+   "module": null,
+   "note": "banque (niveau 3, adapté) : seulement inspire la banque, pas de module."
+  },
+  "ex-23": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": 4,
+   "note": "RE-ROUTÉ depuis hasr-adad-ushri : E7"
+  },
+  "ex-24": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": 4,
+   "note": "RE-ROUTÉ depuis hasr-adad-ushri : E7"
+  },
+  "ex-26": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": 4,
+   "note": "RE-ROUTÉ depuis hasr-adad-ushri : E8 (encadrer « à rebours »)"
+  },
+  "ex-27": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": 7,
+   "note": "RE-ROUTÉ depuis hasr-adad-ushri : مسألة 3 (deux produits de bornes positives)"
   },
   "ex-29": {
    "lesson": "muadalat-darajat-ula",
@@ -1995,15 +2312,16 @@
   },
   "self-3": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": 8
   },
   "self-4": {
    "lesson": "mutabayinat-amaliyat",
-   "module": null
+   "module": 8
   },
   "self-5": {
    "lesson": "hasr-adad-ushri",
-   "module": null
+   "module": 8,
+   "note": "إختبار أولي item 1 (nombres propres)."
   },
   "self-6": {
    "lesson": "muadalat-darajat-ula",

@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   frac, parseNumber, linear, linLatex, linAt, solveEquation, solveInequality, satisfies, inRay,
-  applyBoth, factors, productAt, fracText, fracLatex, fracDecimal, holds, cmp,
+  applyBoth, factors, productAt, fracText, fracLatex, fracDecimal, holds, cmp, imageRay, boundAffine, lin, add as addF, mul as mulF,
 } from './linear.js';
 
 // Les nombres sont ceux du manuel (docs/sources/4am/unit4/extraction.json).
@@ -117,5 +117,53 @@ describe('produits nuls', () => {
   });
   it('linAt reste exact', () => {
     expect(t(linAt(linear('2,5x+100'), frac(21)))).toBe('305/2');
+  });
+});
+
+describe('imageRay — la demi-droite transportée', () => {
+  const R = { rel: '<', bound: frac(3) };
+  it('ajouter garde le sens, × positif garde le sens, × négatif le renverse, × 0 écrase', () => {
+    expect(imageRay(R, [{ op: 'add', k: -9 }])).toEqual({ rel: '<', bound: frac(-6) });
+    expect(imageRay(R, [{ op: 'mul', k: 2 }])).toEqual({ rel: '<', bound: frac(6) });
+    expect(imageRay(R, [{ op: 'mul', k: -2 }])).toEqual({ rel: '>', bound: frac(-6) });
+    expect(imageRay(R, [{ op: 'mul', k: -1 }, { op: 'add', k: -3 }])).toEqual({ rel: '>', bound: frac(-6) });
+    expect(imageRay(R, [{ op: 'mul', k: 0 }])).toEqual({ collapsed: true });
+    expect(imageRay({ rel: '>=', bound: frac(1, 2) }, [{ op: 'mul', k: frac(-1, 2) }])).toEqual({ rel: '<=', bound: frac(-1, 4) });
+  });
+  it('balayage : x est dans la demi-droite ⇔ son image est dans la demi-droite image', () => {
+    for (const rel of ['<', '<=', '>', '>=']) {
+      for (const k of [-3, -1, frac(-1, 2), 2, frac(1, 3)]) {
+        for (const c of [-4, 0, 5]) {
+          const img = imageRay({ rel, bound: frac(3) }, [{ op: 'mul', k }, { op: 'add', k: c }]);
+          for (let n = -40; n <= 40; n += 1) {
+            const x = frac(n, 4);
+            const y = addF(mulF(x, k), c);
+            expect(inRay(img, y), `${rel} ${fracText(frac(3))} ×${t(frac(1) && k)} +${c} @ ${n}/4`).toBe(inRay({ rel, bound: frac(3) }, x));
+          }
+        }
+      }
+    }
+  });
+});
+
+describe('boundAffine — encadrer p·x + q', () => {
+  const I = { lo: frac(2), loRel: '<=', hi: frac(5), hiRel: '<=' };
+  it('p > 0 garde l\'ordre, p < 0 échange les bouts (ordre croissant, rigueur héritée)', () => {
+    expect(boundAffine(I, lin(3, -1))).toEqual({ lo: frac(5), loRel: '<=', hi: frac(14), hiRel: '<=' });
+    expect(boundAffine(I, lin(-2, 4))).toEqual({ lo: frac(-6), loRel: '<=', hi: frac(0), hiRel: '<=' });
+    expect(boundAffine({ lo: frac(1), loRel: '<', hi: frac(3), hiRel: '<=' }, lin(-1, 0))).toEqual({ lo: frac(-3), loRel: '<=', hi: frac(-1), hiRel: '<' });
+    expect(boundAffine(I, lin(0, 7))).toEqual({ lo: frac(7), loRel: '<=', hi: frac(7), hiRel: '<=' });
+  });
+  it('balayage : tout x de l\'intervalle donne une valeur dans l\'encadrement, et les bouts sont atteints', () => {
+    for (const p of [-3, frac(-1, 2), 1, 4, frac(14, 3)]) {
+      for (const q of [-2, 0, 5]) {
+        const B = boundAffine(I, lin(p, q));
+        expect(cmp(B.lo, B.hi)).toBeLessThanOrEqual(0);
+        for (let n = 8; n <= 20; n += 1) {
+          const v = addF(mulF(p, frac(n, 4)), q);
+          expect(cmp(B.lo, v) <= 0 && cmp(v, B.hi) <= 0).toBe(true);
+        }
+      }
+    }
   });
 });

@@ -768,6 +768,38 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { left: '10', right: '4x-2', x: '3', tasks: [[['add', -2]], [['add', 2]], [['mul', 3]], [['div', 2]]] }, ...P },
     advanced: { numbers: { left: '5', right: '-3x+1', x: '-4/3', tasks: [[['mul', -2]], [['mul', 2], ['add', -3]], [['add', -1], ['div', -3]]] }, ...T('method-1b') },
   },
+  // LE NŒUD SOUS LA MAIN (loom-threads, thème loom, 3AM unité 5, leçon « المتباينات والعمليات », 2026-10-26) : deux poutres graduées reliées par des fils de laine ; la main tient UN nœud
+  // de la poutre basse (le fil de 0 avec le peigne + c, le fil de 1 avec le clou × c) et tout x arrive en x + c ou en c·x. مبتدئ (plateforme, pas 1) : 1 < 3 — faire passer le rouge à droite du bleu,
+  // atteindre 6 et 3 depuis −2 < −1, faire se rejoindre les deux nœuds. متقدم (know-2b, pas 1/2, deux poutres au plus) : atteindre 5 et 0 depuis −3/2 et 1 (deux étapes), transporter la bande
+  // x < 3 au bord −6 avec la bande à droite, atteindre −1 et −3/2 depuis 2 et 3 (clou −1/2). Le test des niveaux mesure la paire par le nombre d'étapes permises, la bande et la finesse du pas.
+  'loom-threads': {
+    beginner: { numbers: { step: '1', tasks: [
+      { id: 't1', kind: 'swap', a: '1', b: '3' },
+      { id: 't2', kind: 'reach', a: '-2', b: '-1', target: ['6', '3'] },
+      { id: 't3', kind: 'meet', a: '1', b: '3' },
+    ] }, ...P },
+    advanced: { numbers: { step: '1/2', tasks: [
+      { id: 'a1', kind: 'reach', a: '-3/2', b: '1', target: ['5', '0'], maxStages: 2 },
+      { id: 'a2', kind: 'band', band: { rel: '<', bound: '3' }, goal: { rel: '>', bound: '-6' }, maxStages: 2 },
+      { id: 'a3', kind: 'reach', a: '2', b: '3', target: ['-1', '-3/2'] },
+    ] }, ...T('know-2b') },
+  },
+  // LA MASSE SOUS LA MAIN (scoop-scale, thème attar, 3AM unité 5, leçon « حصر عدد عشري موجب », 2026-10-26) : une balance dont l'écran ARRONDIT ; la main verse et pince la masse jusqu'à l'endroit où
+  // l'écran bascule. مبتدئ (plateforme) : t1 la plus petite masse qui se lit 1,3 (écran à 0,1, bande à 0,01 : 1,25), t2 la plus grande (1,34 ; 1,35 se lit 1,4), t3 l'échelle des gros sacs (rang 0) : 1,50 et 2,49 pour « 2 ».
+  // متقدم (act-3, know-3) : écran à 0,01 et bande à 0,001 (5,675 et 5,684 pour 5,68), puis le piège : le sachet modèle pèse 2/7 kg, l'écran donne le gramme (0,285 puis 0,286, la lampe ne dit jamais « égal »).
+  // Le test des niveaux mesure la paire par la FINESSE du rang (0,1 puis 0,01) et par la tâche piège (متقدم seul).
+  'scoop-scale': {
+    beginner: { numbers: { tasks: [
+      { id: 't1', kind: 'least', rank: 1, res: 2, reading: '1,3', start: '1,00' },
+      { id: 't2', kind: 'most', rank: 1, res: 2, reading: '1,3', start: '1,25' },
+      { id: 't3', kind: 'both', rank: 0, res: 2, reading: '2', start: '1,00', coarse: true },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', kind: 'least', rank: 2, res: 3, reading: '5,68', start: '5,600' },
+      { id: 'a2', kind: 'most', rank: 2, res: 3, reading: '5,68', start: '5,675' },
+      { id: 'a3', kind: 'trap', rank: 3, res: 3, ref: { a: 2, b: 7 }, start: '0,250' },
+    ] }, ...T('act-3') },
+  },
   // LE SIGNE D'UN TERME SOUS LA MAIN (term-ferry, thème river) : l'équation a une solution CACHÉE ; la main porte chaque caisse (terme) d'une rive à
   // l'autre en choisissant son signe, puis le diviseur. مبتدئ (plateforme) : 3x + 2 = x + 8 (x = 3) puis 4x − 3 = 2x + 7 (x = 5), x se rassemble à gauche.
   // متقدم (طريقة p. 77) : 9x + 1 = 5x − 7 (x = −2), puis −2x + 5 = 3x − 10 (un coefficient NÉGATIF : on divise par −5), puis 7x − 190 = 6x + 110 (x = 300).
@@ -775,6 +807,48 @@ export const LEVELS = Object.freeze({
   'term-ferry': {
     beginner: { numbers: { tasks: [{ left: '3x+2', right: 'x+8' }, { left: '4x-3', right: '2x+7' }] }, ...P },
     advanced: { numbers: { tasks: [{ left: '9x+1', right: '5x-7' }, { left: '-2x+5', right: '3x-10' }, { left: '7x-190', right: '6x+110' }] }, ...T('method-4') },
+  },
+  // ── 3AM, unité 1 « الأعداد النسبية » (2026-10-26) ──
+  // LE TEMPS SIGNÉ SOUS LA MAIN (elevator-reel, thème mallElevator) : un ascenseur passe par l'étage 0 à l'instant 0 d'un film, à vitesse r (étages/minute,
+  // signée) ; à l'instant t (signé) il est à l'étage r × t. مبتدئ (plateforme, pas 1, r imposée) : m1 r = −2 → étage −6, m2 r = −2 → étage 4 (le film est
+  // REMBOBINÉ : t = −2), m3 r = 3 → 6, m4 r = 3 → −9. متقدم (know-1, pas 0,5, la main tient AUSSI r) : a1 prédire l'étage de (−3, −2) AVANT de voir (cartes), a2 l'étage −6
+  // en montant PUIS en descendant, a3 r = −2 → 3 (t = −1,5), a4 r = 2 → −5 (t = −2,5). Le test des niveaux mesure la paire par la finesse du pas et la prédiction.
+  'elevator-reel': {
+    beginner: { numbers: { step: '1', tasks: [
+      { id: 'm1', r: '-2', floor: '-6' }, { id: 'm2', r: '-2', floor: '4' }, { id: 'm3', r: '3', floor: '6' }, { id: 'm4', r: '3', floor: '-9' },
+    ] }, ...P },
+    advanced: { numbers: { step: '0,5', tasks: [
+      { id: 'a1', kind: 'predict', r: '-3', t: '-2', options: ['6', '-6', '-5', '1'], key: '6' },
+      { id: 'a2', kind: 'both', floor: '-6' }, { id: 'a3', r: '-2', floor: '3' }, { id: 'a4', r: '2', floor: '-5' },
+    ] }, ...T('know-1') },
+  },
+  // ── 3AM, unité 4 « الحساب الحرفي », leçon 3 (2026-10-26) ──
+  // LA VALEUR SOUS LA MAIN (marble-run, thème marblerun) : un mur de billes calcule une expression ; la main lâche une bille dans le réservoir de la lettre, ÉCRIT la ligne de la
+  // substitution (× et parenthèses) puis lance. مبتدئ (plateforme, les puces des stations pendant la course) : r1 4x + 7 en 3 (le × manquant fond 4 et 3 en 43), r2 4x + 7 en −2 (parenthèses),
+  // r3 x² − 3x en −2 (la copieuse : (−2)² et non −2²). متقدم (know-4 : deux lettres, des valeurs rationnelles) : la valeur est PRÉDITE avant le lancement, pas de puces pendant la course :
+  // r4 5 − 2x² en −3, r5 6x − 1 en −1/2, r6 3x − 2y en (−1 ; 4). Le monde `twins` (deux murs, un contre-exemple) se pose seul dans la طريقة avec `world="twins"`, ses `tasks` et `levels={false}`.
+  // Le test des niveaux mesure la paire par la PRÉDICTION (متقدم seul) et par les deux lettres.
+  'marble-run': {
+    beginner: { numbers: { world: 'run', predict: false, tasks: [
+      { id: 'r1', expr: '4x+7', target: { x: '3' } }, { id: 'r2', expr: '4x+7', target: { x: '-2' } }, { id: 'r3', expr: 'x²-3x', target: { x: '-2' } },
+    ] }, ...P },
+    advanced: { numbers: { world: 'run', predict: true, tasks: [
+      { id: 'r4', expr: '5-2x²', target: { x: '-3' } }, { id: 'r5', expr: '6x-1', target: { x: '-1/2' } }, { id: 'r6', expr: '3x-2y', target: { x: '-1', y: '4' } },
+    ] }, ...T('know-4') },
+  },
+  // LE CODE MANQUANT SOUS LA MAIN (code-lockers, thème libraryLockers, 3AM unité 1, leçon 3, 2026-10-26) : le cadenas d'un casier de la bibliothèque municipale porte une règle « b × ? = a » ;
+  // la main roule les MOLETTES du code (signe + chiffres) et tire la poignée. مبتدئ (plateforme, l'écran multiplie en direct) : m1 (−6) × ? = 48 → −8, m2 9 × ? = −54 → −6, m3 ? × (−7) = −63 → 9
+  // (l'inconnue écrite en premier), m4 (−12) × ? = −60 → 5 (−5 refusé avec 60). متقدم (know-8 : le SIGNE est posé et « ثبّت » pressé avant que les molettes de chiffres se débloquent ; l'écran ne
+  // multiplie qu'après un essai) : a1 (−8) × ? = −2 → 0,25, a2 2,5 × ? = −7,5 → −3, a3 (−0,4) × ? = 1,2 → −3, a4 ? × (−5) = 0 → 0 (l'une ou l'autre signe). Le monde `fraction` (معارف) est posé par la leçon.
+  // Le test des niveaux mesure la paire par le SIGNE POSÉ AVANT les chiffres (commit, متقدم seul) et par le code DÉCIMAL.
+  'code-lockers': {
+    beginner: { numbers: { world: 'lockers', tasks: [
+      { id: 'm1', b: '-6', a: '48' }, { id: 'm2', b: '9', a: '-54' }, { id: 'm3', b: '-7', a: '-63', qFirst: true }, { id: 'm4', b: '-12', a: '-60' },
+    ] }, ...P },
+    advanced: { numbers: { world: 'lockers', tasks: [
+      { id: 'a1', b: '-8', a: '-2', layout: 'dec', commit: true }, { id: 'a2', b: '2,5', a: '-7,5', layout: 'dec', commit: true },
+      { id: 'a3', b: '-0,4', a: '1,2', layout: 'dec', commit: true }, { id: 'a4', b: '-5', a: '0', qFirst: true, layout: 'dec', commit: true },
+    ] }, ...T('know-8') },
   },
   // ── 2AM, unité 3 « الأعداد النسبية » (2026-10-21) ──
   // LA DISTANCE À ZÉRO SOUS LA MAIN (zero-probe, thème researchBoat) : la main tient la longueur d'un câble qui descend (ou monte)
@@ -796,6 +870,175 @@ export const LEVELS = Object.freeze({
     ] }, ...T('method-1') },
   },
   // ── 3AM, unité 6 « التناسبية » (2026-10-21) ──
+  // LES SIGNES ET L'ORDRE DES CARTES SOUS LA MAIN (robot-track, thème roboticsClub, 3AM unité 1, leçon 2) : un robot part de 1 ; chaque carte multiplie sa position.
+  // مبتدئ (plateforme, le produit courant et les arcs visibles) : m1 placer −1 → −5, m2 une seule carte ramène à 5 (2 → −10, −5 → 25 refusées), m3 les cartes 2, 3, 4
+  // au drapeau −24 (signes à la main : un ou trois négatifs), m4 le drapeau 24 avec au moins deux négatives. متقدم (know-5, ni produit ni arcs avant « شغّل ») : a1 prédire
+  // le côté et la distance d'un programme fixe, a2 ordonner −5, 4, −0,5, 2 pour être à −2 après deux cartes (l'arrêt final reste 20), a3 la carte 3 puis (−1) répétée n fois
+  // (prédire n = 15, puis −3 et 3). Le monde `square` (module 2) est posé par la leçon. Le test des niveaux mesure la paire par la PRÉDICTION écrite avant « شغّل ».
+  'robot-track': {
+    beginner: { numbers: { world: 'track', tasks: [
+      { id: 'm1', flag: '-5', placed: ['5'], tray: ['-1'], need: 2, lock: true },
+      { id: 'm2', flag: '5', placed: ['5', '-1'], tray: ['-1', '2', '-5'], need: 3, lock: true },
+      { id: 'm3', flag: '-24', placed: ['2', '3', '4'], tray: [], need: 3, flip: true },
+      { id: 'm4', flag: '24', placed: ['2', '3', '4'], tray: [], need: 3, flip: true, minNeg: 2 },
+    ] }, ...P },
+    advanced: { numbers: { world: 'track', tasks: [
+      { id: 'a1', kind: 'predict', cards: ['-2', '3', '-1', '-4', '0,5'] },
+      { id: 'a2', flag: '-2', placed: [], tray: ['-5', '4', '-0,5', '2'], need: 4, at: 2 },
+      { id: 'a3', kind: 'repeat', card: '3', unit: '-1', goals: ['-3', '3'], predictN: 15 },
+    ] }, ...T('know-5') },
+  },
+  // ── 3AM, unité 2 « العمليات على الكسور والأعداد الناطقة » (2026-10-25) ──
+  // LA DIVISION PAR UN RAPPORT SOUS LA MAIN (gear-crank, thème bikestand) : la manivelle d'une درّاجة ; une tâche est `{ id, F, R, target, predict? }` (F dents au plateau,
+  // R au pignon, target = tours de roue jusqu'au drapeau). مبتدئ (plateforme, compteurs ouverts) : m1 48/24 → 3 (3/2 tour de pédale), m2 24/32 → 6 (8 tours de pédale :
+  // PLUS que 6), m3 24/32 → 1 (4/3). متقدم (method : le texte du manuel sur la division, prédiction écrite AVANT de partir, compteurs voilés) : a1 36/48 → 9/2, a2 40/24 → 5/2,
+  // a3 30/42 → 10/3, puis a4 : 42/30 → 1 et, la chaîne déplacée, 30/42 → 1. Le monde `reverse` (module 2) est posé par la leçon (`tasks` r1, r2). Le test des niveaux mesure la paire par
+  // le nombre de tâches et par la prédiction demandée.
+  'gear-crank': {
+    beginner: { numbers: { tasks: [
+      { id: 'm1', F: 48, R: 24, target: '3' }, { id: 'm2', F: 24, R: 32, target: '6' }, { id: 'm3', F: 24, R: 32, target: '1' },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', F: 36, R: 48, target: '9/2', predict: true }, { id: 'a2', F: 40, R: 24, target: '5/2', predict: true },
+      { id: 'a3', F: 30, R: 42, target: '10/3', predict: true }, { id: 'a4a', F: 42, R: 30, target: '1', predict: true },
+      { id: 'a4b', F: 30, R: 42, target: '1', predict: true },
+    ] }, ...T('know-2') },
+  },
+  // LE NUMÉRATEUR SOUS LA MAIN (shade-match, thème paintshop, 2026-10-26) : la main verse c mesures de bleu dans un seau de d blancs pour égaler (ou comparer) la teinte
+  // d'une référence a/b ; une tâche est `{ id, a, b, d, veil? }` (ou `{ kind: 'compare', a, b, c, d }`). مبتدئ (plateforme, mesureur visible) : s1 3/4 sur 8 → 6, s2 2/3 sur 9 → 6,
+  // s3 3/4 sur 10 → AUCUN entier (7 plus clair, 8 plus foncé). متقدم (method : le manuel compare des fractions « par la méthode qui convient », mesureur VOILÉ jusqu'à l'engagement) :
+  // a1 5/6 sur 18 → 15, a2 4/7 sur 12 → aucun (6 et 7), a3 9/12 sur 8 → 6, a4 compare 7/9 et 10/13. Le monde `equal` (معارف) est posé par la leçon. Le test des niveaux mesure la
+  // paire par le NOMBRE DE TÂCHES et par le VOILE.
+  'shade-match': {
+    beginner: { numbers: { tasks: [
+      { id: 's1', a: 3, b: 4, d: 8 }, { id: 's2', a: 2, b: 3, d: 9 }, { id: 's3', a: 3, b: 4, d: 10 },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', a: 5, b: 6, d: 18, veil: true }, { id: 'a2', a: 4, b: 7, d: 12, veil: true },
+      { id: 'a3', a: 9, b: 12, d: 8, veil: true }, { id: 'a4', kind: 'compare', a: 7, b: 9, c: 10, d: 13, veil: true },
+    ] }, ...T('method-4') },
+  },
+  // L'ESPACEMENT SOUS LA MAIN (seed-rake, thème seedbed, 2026-10-26) : la main étire un râteau (espacement 1/N m) sur un حوض de 1 m peint de zones ; une tâche est
+  // `{ id, kind?, terms: [{ p, sub? }], need?, needRefusal?, widest? }`. مبتدئ (plateforme, décomptes visibles) : g1 1/4 + 1/6 (deux espacements et un refus → 5/12), g2 2/3 + 1/5,
+  // g3 3/4 puis 1/6 récolté. متقدم (method-6 : le manuel cherche un multiple commun, râteau BLOQUÉ, on écrit N et le total) : a1 5/6 + 3/8, a2 7/10 − 4/15, a3 1/2 + 1/3 + 1/4,
+  // a4 3/8 + 5/12 « أوسع مسافة ». Le monde `fewest` (معارف) est posé par la leçon. Le test des niveaux mesure la paire par le NOMBRE DE TÂCHES et par la PRÉDICTION.
+  'seed-rake': {
+    beginner: { numbers: { tasks: [
+      { id: 'g1', terms: [{ p: '1/4' }, { p: '1/6' }], need: 2, needRefusal: true },
+      { id: 'g2', terms: [{ p: '2/3' }, { p: '1/5' }] },
+      { id: 'g3', terms: [{ p: '3/4' }, { p: '1/6', sub: true }] },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', kind: 'predict', terms: [{ p: '5/6' }, { p: '3/8' }] },
+      { id: 'a2', kind: 'predict', terms: [{ p: '7/10' }, { p: '4/15', sub: true }] },
+      { id: 'a3', kind: 'predict', terms: [{ p: '1/2' }, { p: '1/3' }, { p: '1/4' }] },
+      { id: 'a4', kind: 'predict', terms: [{ p: '3/8' }, { p: '5/12' }], widest: true },
+    ] }, ...T('method-6') },
+  },
+  // LE SIGNE PRÉDIT SOUS LA MAIN (merge-board, thème arcade, 3AM unité 2, leçon 5, 2026-10-26) : une chaîne de calcul est une rangée de tuiles ; la main PRÉDIT le signe de chaque fusion, RETOURNE le diviseur d'une division
+  // et choisit l'ORDRE des fusions (aimants = priorité, bulles = parenthèses). Une tâche est `{ id, chain, hidden?, signOnly? }`. مبتدئ (plateforme, barres et aimants visibles) : c1 −5/4 + 11/6, c2 7/13 × (−8/5), c3 −9/8 ÷ (−3/4),
+  // c4 7/3 − 8/15 ÷ 11/20 (l'aimant force la division d'abord). متقدم (method-9 : une chaîne à priorité ; barres CACHÉES jusqu'à la fusion, trois fautes les ramènent) : a1 (2/3 − 5/2) × (−6/11), a2 −3/4 + 5/6 × (−9/10),
+  // a3 la fraction composée, a4 4/5 − 3/5 ÷ (−9/10) + (−2). Le monde `signs` (معارف) est posé par la leçon. Le test des niveaux mesure la paire par le NOMBRE DE TÂCHES et par les BARRES CACHÉES (متقدم seul).
+  'merge-board': {
+    beginner: { numbers: { tasks: [
+      { id: 'c1', chain: '-5/4 + 11/6' },
+      { id: 'c2', chain: '7/13 × -8/5' },
+      { id: 'c3', chain: '-9/8 ÷ -3/4' },
+      { id: 'c4', chain: '7/3 - 8/15 ÷ 11/20' },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', chain: '(2/3 - 5/2) × -6/11', hidden: true },
+      { id: 'a2', chain: '-3/4 + 5/6 × -9/10', hidden: true },
+      { id: 'a3', chain: '(1/2 - 4/3)@(5/6 + -3/4)', hidden: true },
+      { id: 'a4', chain: '4/5 - 3/5 ÷ -9/10 + -2', hidden: true },
+    ] }, ...T('method-9') },
+  },
+  // L'AIGUILLE QUI LIT UNE DIFFÉRENCE (difference-meter, thème physicslab, 3AM unité 4, leçon 4, 2026-10-26) : une rail de verre graduée porte deux perles a et b ; un galvanomètre à deux sondes lit « rouge MOINS noir » ; la main
+  // BRANCHE chaque sonde (quel nombre est soustrait), lit UNE aiguille et choisit la carte d'ordre. مبتدئ (plateforme, aiguille visible dès que les deux sondes sont branchées) : d1 5/4 et 3/4 (loin l'une de l'autre),
+  // d2 −3/2 et −1/2 (l'aiguille va à GAUCHE ; « بدّل المجسّين » exigé une fois), d3 9/11 et 13/16 (0,85 px : les perles se chevauchent). متقدم (know-5 : « de la différence seule ») : un VOLET couvre l'aiguille tant que la
+  // différence n'est pas ÉCRITE (d4 17/12 et 10/7, d5 −7/6 et −9/8) ; d6 le RIDEAU : seule la carte « a − b = −0,3 » est donnée. Le monde `race` (deux expressions, la main tient x) se pose seul dans la طريقة (`levels={false}`).
+  // Le test des niveaux mesure la paire par le VOLET d'écriture et le RIDEAU (متقدم seul).
+  'difference-meter': {
+    beginner: { numbers: { world: 'rail', tasks: [
+      { id: 'd1', a: '5/4', b: '3/4', range: [-2, 2] },
+      { id: 'd2', a: '-3/2', b: '-1/2', range: [-2, 2], mustSwap: true },
+      { id: 'd3', a: '9/11', b: '13/16', range: [-2, 2] },
+    ] }, ...P },
+    advanced: { numbers: { world: 'rail', tasks: [
+      { id: 'd4', a: '17/12', b: '10/7', range: [-2, 2], write: true },
+      { id: 'd5', a: '-7/6', b: '-9/8', range: [-2, 2], write: true },
+      { id: 'd6', a: '2/5', b: '7/10', range: [-2, 2], curtain: { left: 'a', value: '-0,3' } },
+    ] }, ...T('ex-27') },
+  },
+  // LA BAGUE QUI ZOOME PAR DIX (ten-zoom, thème science-lens, 3AM unité 3, leçon 1, 2026-10-26) : la main tient le nombre de crans n d'un cadre carré qui part de la table (1 m) ; chaque cran ×10 ou ÷10 ; la plaque lit le côté en
+  // décimal. مبتدئ (plateforme, « tally » 1 × 10 × 10 sous la plaque) : z1 « 1 000 م » (3 crans) · z2 « 1 000 000 م » avec la PRÉDICTION « كم نقرة ؟ » 6 / 7 / 1 000 000 · z3 « 0,001 م » · z4 retour à « 1 م ». متقدم (act-2 :
+  // 10⁻¹ … 10⁻⁴ par ÷10, sans tally ; la carte est un nom ou une autre unité) : z5 « مليار متر » · z6 « ميكرومتر » défini · z7 « 0,0000001 م » avec la prédiction 6 / 7 / 8 · z8 « 10 كم ». Le monde `prefixes` (cartes = unités)
+  // se pose seul dans معارف (`levels={false}`). Le test des niveaux mesure l'absence de tally et les cartes en NOMS / UNITÉS (متقدم seul).
+  'ten-zoom': {
+    beginner: { numbers: { world: 'zoom', tally: true, discovery: 'count', tasks: [
+      { id: 'z1', target: 3, card: { dec: 3 } },
+      { id: 'z2', target: 6, card: { dec: 6 }, predict: { q: 'out', options: [6, 7, 1000000], correct: 0 } },
+      { id: 'z3', target: -3, card: { dec: -3 } },
+      { id: 'z4', target: 0, card: { dec: 0 }, startAt: 'prev' },
+    ] }, ...P },
+    advanced: { numbers: { world: 'zoom', tally: false, discovery: 'rank', tasks: [
+      { id: 'z5', target: 9, card: { name: 9 } },
+      { id: 'z6', target: -6, card: { unit: -6, def: true } },
+      { id: 'z7', target: -7, card: { dec: -7 }, predict: { q: 'in', options: [6, 7, 8], correct: 1 } },
+      { id: 'z8', target: 4, card: { km: 10 } },
+    ] }, ...T('act-2') },
+  },
+  // LA RÈGLE QUI CONVERTIT (unit-ladder, thème tech-bench, 3AM unité 3, leçon 2, 2026-10-26) : la main tend un RUBAN entre deux plaques d'unités sur une règle de colonnes (entre deux colonnes : ×10) et lit le nombre de colonnes ;
+  // en متقدم elle CHOISIT le mode (longueur / aire / volume : 1, 2 ou 3 colonnes par unité). مبتدئ (plateforme, mode longueur figé, facteur écrit le long du ruban, prédiction avant) : u1 km→m→mm (deux rubans enchaînés, total 6 ;
+  // prédiction 6 / 9 / 3) · u2 km→cm (de part et d'autre du mètre, 5 ; prédiction 5 / 1 / 6) · u3 mm→µm. متقدم (aucun facteur écrit avant « ثبّت ») : u4 km²→m² (6) · u5 m³→cm³ (6) · u6 mm²→m² (−6) · u7 m³→dm³ (3).
+  'unit-ladder': {
+    beginner: { numbers: { mode: 1, fixedMode: true, showFactor: true, discovery: 'gap', tasks: [
+      { id: 'u1', path: ['km', 'm', 'mm'], mode: 1, predict: { q: 'total', options: [6, 9, 3], correct: 0 } },
+      { id: 'u2', path: ['km', 'cm'], mode: 1, predict: { q: 'across', options: [5, 1, 6], correct: 0 } },
+      { id: 'u3', path: ['mm', 'um'], mode: 1 },
+    ] }, ...P },
+    advanced: { numbers: { mode: 1, fixedMode: false, showFactor: false, discovery: 'tables', tasks: [
+      { id: 'u4', path: ['km', 'm'], mode: 2 },
+      { id: 'u5', path: ['m', 'cm'], mode: 3 },
+      { id: 'u6', path: ['mm', 'm'], mode: 2 },
+      { id: 'u7', path: ['m', 'dm'], mode: 3 },
+    ] }, ...T('ex-14') },
+  },
+  // LE SLIDE DES DÉCADES (size-ladder, thème fair-wall, 3AM unité 3, leçon 3, 2026-10-26) : la main tient la POSITION d'une carte de longueur sur un mur à barreaux de décades (10ⁿ → 10ⁿ⁺¹, graduations 1 … 10 LOGARITHMIQUES) :
+  // d'abord son BARREAU n, puis sa CASE (la partie entière de a), puis l'AIMANT (arrondi à l'unité : a'). مبتدئ (plateforme, longueurs décimales, l'écriture scientifique s'écrit seule) : c1 le minaret 265 m · c2 un trajet
+  // de 1 950 000 m · c3 une feuille de cahier 0,0001 m (sur le bord gauche du barreau −4) · c4 comparer 0,0006 m et 0,0001 m (même barreau). متقدم (platform + act-5 : écritures NON scientifiques ou autres unités, on ÉCRIT a et n
+  // avant de suspendre) : c5 1 200 km · c6 0,048 × 10⁻³ m · c7 12 742 km · c8 comparer 9,8 × 10⁻⁵ et 1,2 × 10⁻⁴ (deux barreaux). Le test des niveaux mesure la SAISIE préalable (متقدم seul) et les écritures non décimales.
+  'size-ladder': {
+    beginner: { numbers: { discovery: 'order', tasks: [
+      { id: 'c1', kind: 'hang', cards: [{ id: 'minaret', key: 'minaret', given: '265', magnet: true }] },
+      { id: 'c2', kind: 'hang', cards: [{ id: 'bus', key: 'bus', given: '1 950 000', magnet: true }] },
+      { id: 'c3', kind: 'hang', cards: [{ id: 'sheet', key: 'sheet', given: '0,0001', magnet: true }] },
+      { id: 'c4', kind: 'compare', cards: [{ id: 'sugar', key: 'sugar', given: '0,0006' }, { id: 'sheet2', key: 'sheet', given: '0,0001' }] },
+    ] }, ...P },
+    advanced: { numbers: { discovery: 'sci', tasks: [
+      { id: 'c5', kind: 'hang', cards: [{ id: 'coast', key: 'coast', given: '1 200', unit: 'km', typed: true, magnet: true }] },
+      { id: 'c6', kind: 'hang', cards: [{ id: 'hair', key: 'hair', given: '0,048 × 10^-3', typed: true, magnet: true }] },
+      { id: 'c7', kind: 'hang', cards: [{ id: 'earth', key: 'earth', given: '12 742', unit: 'km', typed: true, magnet: true }] },
+      { id: 'c8', kind: 'compare', cards: [{ id: 'cardA', key: 'cardA', given: '9,8 × 10^-5' }, { id: 'cardB', key: 'cardB', given: '1,2 × 10^-4' }] },
+    ] }, ...T('act-5') },
+  },
+  // LA POSITION D'UNE ÉCRITURE SOUS LA MAIN (number-line-pegs, thème clothesline, 3AM unité 2, leçon 4, 2026-10-26) : la main PORTE une carte d'écriture a/b et l'ACCROCHE sur un حبل gradué ; le vent la fait
+  // glisser à son vrai piquet. Une tâche est `{ id, kind?: 'hang' | 'order', cards: ['6/-8', …], range?: [lo, hi] }`. مبتدئ (plateforme, pas 1/12, loupe ×3, « تحقّق » à volonté) : w1 6/(−8), (−3)/4, 3/4,
+  // (−9)/(−12) → deux piles ; w2 −7/3, 7/(−3), −14/6, 14/6 (−28 douzièmes ×3, +28) ; w3 −1,5, 2, (−20)/(−8), −3. متقدم (method-10 : ordre par un même dénominateur ; pas 1/48, ni graduation entre les
+  // entiers ni loupe, TOUTES les cartes puis UN verdict d'ordre) : a1 six cartes, a2 −9/4, −11/4, −10/4, a3 15/(−20), −6/8, −5/6. Le monde `writings` (معارف) est posé par la leçon. Le test des niveaux mesure la
+  // paire par le NOMBRE DE TÂCHES et par le VERDICT D'ORDRE (متقدم seul).
+  'number-line-pegs': {
+    beginner: { numbers: { tasks: [
+      { id: 'w1', cards: ['6/-8', '-3/4', '3/4', '-9/-12'], range: [-2, 2] },
+      { id: 'w2', cards: ['-7/3', '7/-3', '-14/6', '14/6'], range: [-3, 3] },
+      { id: 'w3', cards: ['-1,5', '2', '-20/-8', '-3'], range: [-4, 4] },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', kind: 'order', cards: ['-7/4', '5/6', '-2/3', '-13/6', '3/2', '-1/12'], range: [-3, 3] },
+      { id: 'a2', kind: 'order', cards: ['9/-4', '-11/4', '-10/4'], range: [-4, 0] },
+      { id: 'a3', kind: 'order', cards: ['15/-20', '-6/8', '-5/6'], range: [-2, 1] },
+    ] }, ...T('method-10') },
+  },
   // LE POURCENTAGE SOUS LA MAIN (hundred-grid, thème pantry) : un stock coupé en 100 paquets égaux (10 × 10 cases) ; la main PEINT t cases, le panier
   // reçoit t paquets (x × t/100). مبتدئ (plateforme) : 15 % de 240 (la réponse écrite AVANT l'ouverture), le taux qui remplit un panier de 60 sur 150, +15 %
   // de 200 puis −20 % de 250. متقدم (platform + method-2) : 70 % de 75 et 25 % de 32 (taux cherchés), 84 est 60 % de ? (le stock entier), puis la chaîne

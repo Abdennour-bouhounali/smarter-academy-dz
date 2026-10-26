@@ -115,14 +115,42 @@ export const MANIPULATION_COMPONENTS = {
   'power-train': lazy(() => import('./operations/PowerTrain')),
   // 3AM, unité 5 « المساويات – المتباينات – المعادلات » : le nombre d'une opération sous la main — le مضمار des deux membres (2026-10-21).
   'equality-lanes': lazy(() => import('./operations/EqualityLanes')),
+  'loom-threads': lazy(() => import('./algebra/LoomThreads')),
+  // 3AM, unité 5, leçon « حصر عدد عشري موجب » : la masse sous la main — ميزان العطّار dont l'écran arrondit (2026-10-26).
+  'scoop-scale': lazy(() => import('./operations/ScoopScale')),
   // 3AM, unité 5 : le signe d'un terme sous la main — la عبّارة des caisses d'une équation (2026-10-21).
   'term-ferry': lazy(() => import('./algebra/TermFerry')),
+  // 3AM, unité 1 « الأعداد النسبية » : le temps signé sous la main — le شريط المصعد (2026-10-26).
+  'elevator-reel': lazy(() => import('./operations/ElevatorReel')),
+  // 3AM, unité 4 « الحساب الحرفي », leçon 3 : la valeur sous la main — le مسار الكريات (2026-10-26).
+  'marble-run': lazy(() => import('./algebra/MarbleRun')),
   // 2AM, unité 3 « الأعداد النسبية » : la distance à zéro sous la main — le مسبار (2026-10-21).
   'zero-probe': lazy(() => import('./operations/ZeroProbe')),
   // 3AM, unité 6 « التناسبية » : le pourcentage sous la main — l'inconnue est le nombre de cases peintes d'un plateau de 100 (2026-10-21).
   'hundred-grid': lazy(() => import('./proportion/HundredGrid')),
   // 3AM, unité 6 « التناسبية » : la punaise sur sa rainure et la règle sur deux nœuds — du tableau au graphique d'une situation proportionnelle (2026-10-21).
   'pin-rails': lazy(() => import('./proportion/PinRails')),
+  // 3AM, unité 1, 3e leçon : le code manquant sous la main — les خزائن الأمانات (2026-10-26).
+  'code-lockers': lazy(() => import('./operations/CodeLockers')),
+  // 3AM, unité 1, 2e leçon : les signes et l'ordre des cartes sous la main — le مسار الروبوت (2026-10-26).
+  'robot-track': lazy(() => import('./operations/RobotTrack')),
+  // 3AM, unité 2 « العمليات على الكسور والأعداد الناطقة » : la division par un rapport sous la main — la manivelle de la درّاجة (2026-10-25).
+  'gear-crank': lazy(() => import('./proportion/GearCrank')),
+  // 3AM, unité 2 : le numérateur sous la main — la machine à teinter (آلة مزج الألوان, 2026-10-26).
+  'shade-match': lazy(() => import('./operations/ShadeMatch')),
+  // 3AM, unité 2, leçon 3 : l'espacement sous la main — le مشط الشتلات (2026-10-26).
+  'seed-rake': lazy(() => import('./operations/SeedRake')),
+  // 3AM, unité 2, leçon 4 : la position d'une écriture sous la main — le حبل الأعداد (2026-10-26).
+  'number-line-pegs': lazy(() => import('./operations/NumberLinePegs')),
+  // 3AM, unité 2, leçon 5 : le signe prédit, le diviseur retourné, l'ordre des fusions — la لوحة الدمج (2026-10-26).
+  'merge-board': lazy(() => import('./operations/MergeBoard')),
+  // 3AM, unité 4, leçon 4 : l'aiguille qui lit une différence — le مقياس الفرق (2026-10-26).
+  'difference-meter': lazy(() => import('./operations/DifferenceMeter')),
+  // 3AM, unité 3, leçon 2 : le ruban entre deux plaques d'unités — la مسطرة التحويل (2026-10-26).
+  'unit-ladder': lazy(() => import('./operations/UnitLadder')),
+  // 3AM, unité 3, leçon 1 : l'exposant de 10 sous la main — la عدسة القوى (2026-10-26).
+  'size-ladder': lazy(() => import('./operations/SizeLadder')),
+  'ten-zoom': lazy(() => import('./operations/TenZoom')),
   // 2AM, unité 5 « التناسبية » : le nombre qui manque sous la main — les موازين الرابع المتناسب (2026-10-21).
   'fourth-gauges': lazy(() => import('./operations/FourthGauges')),
 };

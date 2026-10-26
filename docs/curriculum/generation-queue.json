@@ -2,6 +2,24 @@
   "_comment": "Généré par scripts/learning-net-queue.mjs — ne pas éditer.",
   "queue": [
     {
+      "code": "wadiya-idmajiya-quwa-nisbiya",
+      "grade": "3am",
+      "unit": "quwa-nisbiya",
+      "titleAr": "أدمج تعلّماتي — القوى ذات أسس نسبية صحيحة",
+      "kind": "synthesis",
+      "trigger": "unité quwa-nisbiya complète",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-musawiyat-mutabayinat",
+      "grade": "3am",
+      "unit": "musawiyat-mutabayinat",
+      "titleAr": "أدمج تعلّماتي — المساويات – المتباينات – المعادلات",
+      "kind": "synthesis",
+      "trigger": "unité musawiyat-mutabayinat complète",
+      "via": []
+    },
+    {
       "code": "haraka-muntazama-sura",
       "grade": "3am",
       "unit": "tanasubiya-sura",
@@ -20,17 +38,6 @@
       "kind": "synthesis",
       "trigger": "unité tanasubiya-sura complète",
       "via": []
-    },
-    {
-      "code": "qimat-ibara-harfiya",
-      "grade": "3am",
-      "unit": "ibarat-harfiya-3",
-      "titleAr": "حساب قيمة عبارة حرفية",
-      "kind": "lesson",
-      "trigger": "mafhum-taalufiya",
-      "via": [
-        "3am.m5.r03"
-      ]
     },
     {
       "code": "fiat-takrarat",
@@ -53,17 +60,6 @@
       "trigger": "mada-wasit-mutawassit",
       "via": [
         "3am.m7.r11"
-      ]
-    },
-    {
-      "code": "amaliyat-natiqa",
-      "grade": "3am",
-      "unit": "kusur-natiqa",
-      "titleAr": "العمليات على الأعداد الناطقة",
-      "kind": "lesson",
-      "trigger": "talis-hisab-atwal",
-      "via": [
-        "3am.m1.r08"
       ]
     },
     {
@@ -343,17 +339,6 @@
       ]
     },
     {
-      "code": "jidaa-adadayn-nisbiyayn",
-      "grade": "3am",
-      "unit": "aadad-nisbiya",
-      "titleAr": "جداء عددين نسبيين",
-      "kind": "lesson",
-      "trigger": "jidhr-tarbii",
-      "via": [
-        "3am.m1.r01"
-      ]
-    },
-    {
       "code": "silsila-bi-aqwas",
       "grade": "2am",
       "unit": "amaliyat-tabiiya-ushriya",
@@ -417,51 +402,6 @@
       "trigger": "amaliyat-judhur",
       "via": [
         "2am.m1.r09"
-      ]
-    },
-    {
-      "code": "qismat-nisbiyayn",
-      "grade": "3am",
-      "unit": "aadad-nisbiya",
-      "titleAr": "حاصل قسمة عددين نسبيين",
-      "kind": "lesson",
-      "trigger": "amaliyat-judhur",
-      "via": [
-        "3am.m1.r02"
-      ]
-    },
-    {
-      "code": "maqlub-qismat-kasrayn",
-      "grade": "3am",
-      "unit": "kusur-natiqa",
-      "titleAr": "مقلوب عدد وقسمة كسرين",
-      "kind": "lesson",
-      "trigger": "amaliyat-judhur",
-      "via": [
-        "3am.m1.r04",
-        "3am.m1.r03"
-      ]
-    },
-    {
-      "code": "jam-tarh-kasrayn",
-      "grade": "3am",
-      "unit": "kusur-natiqa",
-      "titleAr": "جمع وطرح كسرين",
-      "kind": "lesson",
-      "trigger": "amaliyat-judhur",
-      "via": [
-        "3am.m1.r06"
-      ]
-    },
-    {
-      "code": "adad-natiq",
-      "grade": "3am",
-      "unit": "kusur-natiqa",
-      "titleAr": "العدد الناطق",
-      "kind": "lesson",
-      "trigger": "amaliyat-judhur",
-      "via": [
-        "3am.m1.r07"
       ]
     },
     {
@@ -964,60 +904,6 @@
       ]
     },
     {
-      "code": "jidaa-ida-nisbiya",
-      "grade": "3am",
-      "unit": "aadad-nisbiya",
-      "titleAr": "جداء عدة أعداد نسبية",
-      "kind": "lesson",
-      "trigger": "jidaa-ida-nisbiya",
-      "via": []
-    },
-    {
-      "code": "wadiya-idmajiya-aadad-nisbiya",
-      "grade": "3am",
-      "unit": "aadad-nisbiya",
-      "titleAr": "أدمج تعلّماتي — الأعداد النسبية",
-      "kind": "synthesis",
-      "trigger": "unité aadad-nisbiya complète",
-      "via": []
-    },
-    {
-      "code": "tasawi-muqaranat-kasrayn",
-      "grade": "3am",
-      "unit": "kusur-natiqa",
-      "titleAr": "تساوي كسرين ومقارنتهما",
-      "kind": "lesson",
-      "trigger": "tasawi-muqaranat-kasrayn",
-      "via": []
-    },
-    {
-      "code": "wadiya-idmajiya-kusur-natiqa",
-      "grade": "3am",
-      "unit": "kusur-natiqa",
-      "titleAr": "أدمج تعلّماتي — العمليات على الكسور والأعداد الناطقة",
-      "kind": "synthesis",
-      "trigger": "unité kusur-natiqa complète",
-      "via": []
-    },
-    {
-      "code": "quwa-adad-ashara",
-      "grade": "3am",
-      "unit": "quwa-nisbiya",
-      "titleAr": "قوى العدد 10",
-      "kind": "lesson",
-      "trigger": "quwa-adad-ashara",
-      "via": []
-    },
-    {
-      "code": "qawaid-quwa-ashara",
-      "grade": "3am",
-      "unit": "quwa-nisbiya",
-      "titleAr": "قواعد الحساب على قوى العدد 10",
-      "kind": "lesson",
-      "trigger": "qawaid-quwa-ashara",
-      "via": []
-    },
-    {
       "code": "rutbat-miqdar-jam",
       "grade": "1am",
       "unit": "jam-tarh-ashriya",
@@ -1027,51 +913,6 @@
       "via": [
         "1am.m1.r06"
       ]
-    },
-    {
-      "code": "kitaba-ilmiya-rutba",
-      "grade": "3am",
-      "unit": "quwa-nisbiya",
-      "titleAr": "الكتابة العلمية ورتبة القدر",
-      "kind": "lesson",
-      "trigger": "kitaba-ilmiya-rutba",
-      "via": []
-    },
-    {
-      "code": "wadiya-idmajiya-quwa-nisbiya",
-      "grade": "3am",
-      "unit": "quwa-nisbiya",
-      "titleAr": "أدمج تعلّماتي — القوى ذات أسس نسبية صحيحة",
-      "kind": "synthesis",
-      "trigger": "unité quwa-nisbiya complète",
-      "via": []
-    },
-    {
-      "code": "muqaranat-natiqayn",
-      "grade": "3am",
-      "unit": "ibarat-harfiya-3",
-      "titleAr": "مقارنة عددين ناطقين",
-      "kind": "lesson",
-      "trigger": "muqaranat-natiqayn",
-      "via": []
-    },
-    {
-      "code": "wadiya-idmajiya-ibarat-harfiya-3",
-      "grade": "3am",
-      "unit": "ibarat-harfiya-3",
-      "titleAr": "أدمج تعلّماتي — الحساب الحرفي",
-      "kind": "synthesis",
-      "trigger": "unité ibarat-harfiya-3 complète",
-      "via": []
-    },
-    {
-      "code": "mutabayinat-amaliyat",
-      "grade": "3am",
-      "unit": "musawiyat-mutabayinat",
-      "titleAr": "المتباينات والعمليات",
-      "kind": "lesson",
-      "trigger": "mutabayinat-amaliyat",
-      "via": []
     },
     {
       "code": "hasr-qiyam-muqarraba",
@@ -1091,24 +932,6 @@
       "titleAr": "أدمج تعلّماتي — الأعداد الطبيعية والأعداد العشرية",
       "kind": "synthesis",
       "trigger": "unité adad-tabiiya-ashriya complète",
-      "via": []
-    },
-    {
-      "code": "hasr-adad-ushri",
-      "grade": "3am",
-      "unit": "musawiyat-mutabayinat",
-      "titleAr": "حصر عدد عشري موجب",
-      "kind": "lesson",
-      "trigger": "hasr-adad-ushri",
-      "via": []
-    },
-    {
-      "code": "wadiya-idmajiya-musawiyat-mutabayinat",
-      "grade": "3am",
-      "unit": "musawiyat-mutabayinat",
-      "titleAr": "أدمج تعلّماتي — المساويات – المتباينات – المعادلات",
-      "kind": "synthesis",
-      "trigger": "unité musawiyat-mutabayinat complète",
       "via": []
     },
     {

@@ -91,7 +91,7 @@
    "items": [
     {
      "n": 1,
-     "question": "$2\\times5-8$ يساوي",
+     "question": "$8-5\\times2$ يساوي",
      "options": [
       "6",
       "-2",
@@ -100,13 +100,14 @@
      "correct": [
       1
      ],
-     "why": "$2\\times5=10$ ثم $10-8=2$ (نعم 2 وليس −2)",
-     "note": "Le manuel imprime « 2 × 5 − 8 » : 10 − 8 = 2 ; aucune des trois réponses n’est 2 — lecture à confirmer par qimat-ibara-harfiya (items 1–4 = priorité des opérations).",
+     "why": "$5\\times2=10$ ثم $8-10=-2$ (الضرب قبل الطرح ؛ أمّا $6$ فهي نتيجة من أجرى العمليتين من اليسار إلى اليمين: $(8-5)\\times2$)",
+     "verified": true,
+     "note": "Relu à 250 dpi (2026-10-26) : le manuel imprime « 8 − 5 × 2 » (de gauche à droite) = −2 = option (2). L’ancienne note « aucune bonne réponse » lisait à tort « 2 × 5 − 8 ».",
      "destination": "qimat-ibara-harfiya"
     },
     {
      "n": 2,
-     "question": "$(8-5)\\times2$ يساوي",
+     "question": "$2\\times(8-5)$ يساوي",
      "options": [
       "6",
       "-2",
@@ -115,7 +116,9 @@
      "correct": [
       0
      ],
-     "why": "$3\\times2=6$",
+     "why": "$8-5=3$ ثم $2\\times3=6$",
+     "verified": true,
+     "note": "Relu à 250 dpi : le manuel imprime « 2 × (8 − 5) » (et non « (8 − 5) × 2 »), options 6 / −2 / 18 ; réponse (1).",
      "destination": "qimat-ibara-harfiya"
     },
     {
@@ -129,7 +132,9 @@
      "correct": [
       2
      ],
-     "why": "$3-9=-6$",
+     "why": "$3^2=9$ ثم $3-9=-6$",
+     "verified": true,
+     "note": "Relu à 250 dpi : options 0 / 3 / −6 ; réponse (3).",
      "destination": "qimat-ibara-harfiya"
     },
     {
@@ -145,6 +150,8 @@
       2
      ],
      "why": "$a\\times a\\times a=a^3=a\\times a^2$",
+     "verified": true,
+     "note": "Relu à 250 dpi : options a³ / 3a / a × a² ; deux bonnes réponses (1) et (3).",
      "destination": "qimat-ibara-harfiya"
     },
     {
@@ -263,7 +270,7 @@
     }
    ],
    "answerSource": "computed",
-   "reading": "Items 5–8 (la leçon tabsit-hadhf-aqwas) relus à 110 dpi : réponses recalculées. Item 1 : le manuel imprime « 2 × 5 − 8 » = 2 mais le tableau propose 6 / −2 / 18 — l’item est celui de qimat-ibara-harfiya, qui tranche la lecture (« 2 × 5 − 8 » ou « 2 × (5 − 8) = −6 »). Items 1–4 → qimat-ibara-harfiya, 9–12 → nashr-jabri-3am."
+   "reading": "Items 5–8 (la leçon tabsit-hadhf-aqwas) relus à 110 dpi : réponses recalculées. Items 1–4 (qimat-ibara-harfiya) relus à 250 dpi le 2026-10-26 : « 8 − 5 × 2 » = −2 (option 2), « 2 × (8 − 5) » = 6 (option 1), « 3 − 3² » = −6 (option 3), « a × a × a » = a³ = a × a² (options 1 et 3) ; les colonnes du tableau se lisent de droite à gauche (1)(2)(3). Items 9–12 → nashr-jabri-3am."
   },
   {
    "id": "act-1",
@@ -377,7 +384,7 @@
    "page": 57,
    "section": "أنشطة",
    "title": "حساب قيمة عبارة حرفية",
-   "verified": false,
+   "verified": true,
    "text": "أ) احسب قيمة العبارة $A=(3x+2)(x-5)$ من أجل كل من $x=1$ و $x=-1$ و $x=5$. ب) هذا نشر أحد التلاميذ للعبارة $A$ : $A=3x^2-17x-6$. بيّن كيف تستعمل قيم $A$ من أجل $x=1$ و $x=-1$ و $x=5$ لتبرير عدم صحة عمل هذا التلميذ.",
    "answer": {
     "a": {
@@ -387,7 +394,8 @@
     },
     "b": "(3x+2)(x−5) = 3x^2 - 13x - 10 ; l’élève écrit 3x² − 17x − 6 : même valeur −20 à x = 1, mais 14 ≠ 6 à x = −1 et −16 ≠ 0 à x = 5 (x = 1 seul ne suffit pas)"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu à 250 dpi (2026-10-26) : A = (3x + 2)(x − 5) à x = 1, −1, 5 ; la réponse de l’élève est écrite à la main « A = 3x² − 17x − 6 » (17x lisible). Valeurs : A(1) = 5 × (−4) = −20 ; A(−1) = (−1)(−6) = 6 ; A(5) = 17 × 0 = 0. Le vrai développement est 3x² − 13x − 10."
   },
   {
    "id": "act-5",
@@ -396,8 +404,10 @@
    "page": 57,
    "section": "أنشطة",
    "title": "مقارنة عددين ناطقين",
-   "verified": false,
-   "text": "أ) انقل الجدول المقابل وأكمله (لإتمام العمود الثالث يمكن استعمال مستقيم مدرّج في كل حالة لتعليم النقطة A ذات الفاصلة a، والنقطة B ذات الفاصلة b). الأزواج (a ; b): (5/7 ; 2/3) ، (3/4 ; 7/9) ، (−8/3 ; 5/9) ، (−1/7 ; −4/9) ، (−5/3 ; −2/7). ب) a و b عددان. انقل وأكمل ما يلي بما يناسب (موجبا، سالبا، أكبر، أصغر): « إذا كان $a-b$ ........ يكون $a$ ........ من $b$ » و « إذا كان $a-b$ ........ يكون $a$ ........ من $b$ ». جـ) كيف يصبح الفرق $a-b$ عندما يكون $a$ يساوي $b$؟"
+   "verified": true,
+   "text": "أ) انقل الجدول المقابل وأكمله (لإتمام العمود الثالث يمكن استعمال مستقيم مدرّج في كل حالة لتعليم النقطة A ذات الفاصلة a، والنقطة B ذات الفاصلة b). الأزواج (a ; b): (5/7 ; 2/3) ، (3/4 ; 7/9) ، (−8/3 ; 5/9) ، (−1/7 ; −4/9) ، (−5/3 ; −2/7). ب) a و b عددان. انقل وأكمل ما يلي بما يناسب (موجبا، سالبا، أكبر، أصغر): « إذا كان $a-b$ ........ يكون $a$ ........ من $b$ » و « إذا كان $a-b$ ........ يكون $a$ ........ من $b$ ». جـ) كيف يصبح الفرق $a-b$ عندما يكون $a$ يساوي $b$؟",
+   "reading": "Relu (2026-10-26) : tableau de cinq paires (a ; b) = (5/7 ; 2/3), (3/4 ; 7/9), (−8/3 ; 5/9), (−1/7 ; −4/9), (−5/3 ; −2/7) ; colonnes « مقارنة a و b » et « إشارة a − b » ; puis « إذا كان a − b … يكون a … من b » (positif, négatif, plus grand, plus petit) et « كيف يصبح الفرق a − b عندما يكون a يساوي b ». Différences : 1/21, −1/36, −29/9, 19/63, −29/21.",
+   "answerSource": "computed"
   },
   {
    "id": "know-1",
@@ -503,8 +513,14 @@
    "page": 60,
    "section": "معارف",
    "title": "حساب قيمة عبارة حرفية",
-   "verified": false,
-   "text": "لحساب قيمة عبارة حرفية من أجل بعض قيم للحرف أو للحروف في العبارة، نعوّض الحروف بهذه القيم ونجري الحسابات باحترام قواعد أولوية العمليات. مثال: $A=3x^2-7x-4$ من أجل $x=2$: $A=3\\times2^2-7\\times2-4=12-14-4=-6$. مثال: $B=(-5x+7)(2-y)$ من أجل $x=-1{,}4$ و $y=-9$ : $B=14\\times11=154$. ملاحظة: عند التعويض نكتب إشارة الضرب $\\times$ بين العددين، وفي حالة التعويض بعدد سالب نستعمل الأقواس."
+   "verified": true,
+   "text": "لحساب قيمة عبارة حرفية من أجل بعض قيم للحرف أو للحروف في العبارة، نعوّض الحروف بهذه القيم ونجري الحسابات باحترام قواعد أولوية العمليات. مثال: $A=3x^2-7x-4$ من أجل $x=2$: $A=3\\times2^2-7\\times2-4=12-14-4=-6$. مثال: $B=(-5x+7)(2-y)$ من أجل $x=-1{,}4$ و $y=-9$ : $B=14\\times11=154$. ملاحظة: عند التعويض نكتب إشارة الضرب $\\times$ بين العددين، وفي حالة التعويض بعدد سالب نستعمل الأقواس. مثال 1: عند تعويض $x$ بالعدد 3 في العبارة $5x$ ، نكتب $5\\times3$. مثال 2: عند تعويض $x$ بالعدد $-3{,}2$ في العبارة $5x$ ، نكتب $5\\times(-3{,}2)$.",
+   "answer": {
+    "A(x=2)": -6,
+    "B(x=-1,4 ; y=-9)": "14 × 11 = 154"
+   },
+   "answerSource": "computed",
+   "reading": "Relu à 250 dpi (2026-10-26) : les deux exemples et la remarque (5x avec x = 3 → 5 × 3 ; avec x = −3,2 → 5 × (−3,2)). Le manuel écrit « x = −1,4 » : virgule décimale, soit −1,4 = −7/5."
   },
   {
    "id": "know-5",
@@ -513,8 +529,10 @@
    "page": 60,
    "section": "معارف",
    "title": "مقارنة عددين ناطقين",
-   "verified": false,
-   "text": "يمكّن إشارة الفرق $a-b$ من ترتيب العددين $a$ و $b$ : $a>b$ معناه $a-b>0$ ؛ $a<b$ معناه $a-b<0$ ؛ $a=b$ معناه $a-b=0$. أمثلة: $\\frac53-\\frac97=\\frac{8}{21}>0$ فإن $\\frac53>\\frac97$ ؛ $-\\frac{13}{9}-\\left(-\\frac65\\right)=-\\frac{11}{45}<0$ فإن $-\\frac{13}{9}<-\\frac65$."
+   "verified": true,
+   "text": "يمكّن إشارة الفرق $a-b$ من ترتيب العددين $a$ و $b$ : $a>b$ معناه $a-b>0$ ؛ $a<b$ معناه $a-b<0$ ؛ $a=b$ معناه $a-b=0$. أمثلة: $\\frac53-\\frac97=\\frac{8}{21}>0$ فإن $\\frac53>\\frac97$ ؛ $-\\frac{13}{9}-\\left(-\\frac65\\right)=-\\frac{11}{45}<0$ فإن $-\\frac{13}{9}<-\\frac65$.",
+   "reading": "Relu (2026-10-26) : a > b معناه a − b > 0 ; a < b معناه a − b < 0 ; a = b معناه a − b = 0 ; exemples 5/3 − 9/7 = 8/21 > 0 et −13/9 − (−6/5) = −11/45 < 0.",
+   "answerSource": "computed"
   },
   {
    "id": "method-4",
@@ -523,9 +541,20 @@
    "page": 61,
    "section": "طرائق",
    "title": "توظيف قيمة عبارة حرفية والحساب الحرفي",
-   "verified": false,
+   "verified": true,
    "text": "تمرين: إليك العبارات الحرفية: $A=2x^2-6$ ، $B=(x-1)(2x+6)$ ، $C=2(x^2+x)+2(x-3)$. 1) احسب قيمة كل من A و B و C من أجل $x=1$. 2) هل العبارتان A و B متساويتان؟ برّر إجابتك. 3) هل العبارتان B و C متساويتان؟ برّر إجابتك. حل: 1) A = 4 ؛ B = 0 ؛ C = 0. 2) A و B غير متساويتين لأن من أجل $x=1$ ليس لهما نفس القيمة. 3) نلاحظ أنّ من أجل $x=1$ فإن للعبارتين B و C نفس القيمة، ومنه يمكن أن تكونا متساويتين: ننشر B فنجد $2x^2+4x-6$ وننشر C فنجد $2x^2+4x-6$ ومنه نجد أنّ العبارتين B و C متساويتان. ملاحظة: لا يكفي تساوي قيمتي عبارتين للحكم على تساوي هاتين العبارتين. مثال: العبارتان $x^2+19$ و $x^2-7x+19$ غير متساويتين، ولكن لهما نفس القيمة 19 من أجل $x=0$.",
-   "reading": "A(1) = 2 × 1² − 6 = −4 (le manuel écrit « 2 × 1² − 6 = 2 − 6 = 4 » : coquille de signe, corrigée : −4). B = C = 2x² + 4x − 6."
+   "reading": "Relu à 250 dpi (2026-10-26) : A(1) = 2 × 1² − 6 = −4 (le manuel écrit « 2 × (1)² − 6 = 2 × 1 − 6 = 2 − 6 = 4 » : coquille de signe, corrigée : −4). B(1) = (1 − 1)(2 × 1 + 6) = 0 ; C(1) = 2 × (1² + 1) + 2 × (1 − 3) = 4 − 4 = 0 ; B = C = 2x² + 4x − 6 (encadré). Remarque : x² + 19 et x² − 7x + 19 valent 19 en x = 0.",
+   "answer": {
+    "1": {
+     "A": -4,
+     "B": 0,
+     "C": 0
+    },
+    "2": "A ≠ B (valeurs différentes en x = 1)",
+    "3": "B = C = 2x² + 4x − 6 (par développement)",
+    "remark": "x² + 19 et x² − 7x + 19 : même valeur 19 en x = 0, pourtant différentes"
+   },
+   "answerSource": "computed"
   },
   {
    "id": "method-5",
@@ -534,8 +563,10 @@
    "page": 61,
    "section": "طرائق",
    "title": "مقارنة عددين ناطقين",
-   "verified": false,
-   "text": "تمرين: قارن بين العددين بحساب فرقهما في كل حالة: $\\frac{14}{13}$ و $\\frac87$ ؛ $\\frac{-5}{9}$ و $\\frac{3}{-4}$. حل: $\\frac{14}{13}-\\frac87=-\\frac{6}{91}<0$ فإن $\\frac{14}{13}<\\frac87$ ؛ $\\frac{-5}{9}-\\frac{3}{-4}=\\frac{7}{36}>0$ فإن $\\frac{-5}{9}>\\frac{3}{-4}$. ملاحظة: لمقارنة عددين ناطقين يمكن كتابتهما على شكل كسرين لهما نفس المقام الموجب، ثم ترتيبهما حسب ترتيب بسطيهما."
+   "verified": true,
+   "text": "تمرين: قارن بين العددين بحساب فرقهما في كل حالة: $\\frac{14}{13}$ و $\\frac87$ ؛ $\\frac{-5}{9}$ و $\\frac{3}{-4}$. حل: $\\frac{14}{13}-\\frac87=-\\frac{6}{91}<0$ فإن $\\frac{14}{13}<\\frac87$ ؛ $\\frac{-5}{9}-\\frac{3}{-4}=\\frac{7}{36}>0$ فإن $\\frac{-5}{9}>\\frac{3}{-4}$. ملاحظة: لمقارنة عددين ناطقين يمكن كتابتهما على شكل كسرين لهما نفس المقام الموجب، ثم ترتيبهما حسب ترتيب بسطيهما.",
+   "reading": "Relu (2026-10-26) : 14/13 − 8/7 = −6/91 < 0 donc 14/13 < 8/7 ; −5/9 − 3/(−4) = 7/36 > 0 donc −5/9 > 3/(−4) ; remarque : deux rationnels s’écrivent avec le même dénominateur positif puis on ordonne les numérateurs (méthode de la 2AM / de l’unité 2, rappelée et non enseignée).",
+   "answerSource": "computed"
   },
   {
    "id": "now-61",
@@ -543,8 +574,17 @@
    "page": 61,
    "section": "دوري الآن",
    "title": "دوري الآن",
-   "verified": false,
-   "text": "1) أ) احسب قيمة كل من العبارات $A=(x+4)(x-3)$ من أجل $x=-4$ ، $B=x^2-12$ من أجل $x=-4$. ب) هل العبارتان A و B متساويتان؟ برّر إجابتك. 2) قارن بحساب فرقهما في كل حالة: $\\frac{13}{6}$ و $\\frac{35}{17}$ ؛ $-\\frac{2}{3}$ و $-\\frac{4}{5}$."
+   "verified": true,
+   "text": "1) أ) احسب قيمة كل من العبارات $A=(x+4)(x-3)$ من أجل $x=-4$ ، $B=x^2-12$ من أجل $x=-4$. ب) هل العبارتان A و B متساويتان؟ برّر إجابتك. 2) قارن بحساب فرقهما في كل حالة: $\\frac{13}{6}$ و $\\frac{35}{17}$ ؛ $\\frac{-4}{5}$ و $\\frac{2}{-3}$.",
+   "answer": {
+    "1": {
+     "A(-4)": 0,
+     "B(-4)": 4,
+     "equal": false
+    }
+   },
+   "answerSource": "computed",
+   "reading": "Relu à 250 dpi (2026-10-26). Item 1 (qimat-ibara-harfiya) : A(−4) = 0 × (−7) = 0 ; B(−4) = 16 − 12 = 4 ; A ≠ B. Item 2 (muqaranat-natiqayn) : les nombres sont 13/6 et 35/17 ; −4/5 et 2/(−3) (le signe moins du second est SOUS la barre : 2 sur −3 ; le premier « −4/5 » porte son moins devant) — l’ancienne transcription « −2/3 » ne changeait pas la valeur."
   },
   {
    "id": "ex-1",
@@ -553,7 +593,14 @@
    "page": 62,
    "section": "حساب قيمة عبارة حرفية",
    "text": "لتكن العبارة الحرفية $A=-2x+5$. احسب قيمة $A$ من أجل: أ) $x=7$ ؛ ب) $x=-1$ ؛ جـ) $x=-3$.",
-   "verified": false
+   "verified": true,
+   "answer": {
+    "أ": -9,
+    "ب": 7,
+    "جـ": 11
+   },
+   "answerSource": "computed",
+   "reading": "Relu à 250 dpi (2026-10-26) : A = −2x + 5 ; x = 7, −1, −3 → −9, 7, 11."
   },
   {
    "id": "ex-2",
@@ -562,7 +609,14 @@
    "page": 62,
    "section": "حساب قيمة عبارة حرفية",
    "text": "لتكن العبارة الحرفية $B=x^2-4x+3$. احسب قيمة $B$ من أجل: أ) $x=0$ ؛ ب) $x=2$ ؛ جـ) $x=-2$.",
-   "verified": false
+   "verified": true,
+   "answer": {
+    "أ": 3,
+    "ب": -1,
+    "جـ": 15
+   },
+   "answerSource": "computed",
+   "reading": "Relu à 250 dpi : B = x² − 4x + 3 ; x = 0, 2, −2 → 3, −1, 15 (le cas x = −2 : (−2)² − 4 × (−2) + 3)."
   },
   {
    "id": "ex-3",
@@ -571,7 +625,14 @@
    "page": 62,
    "section": "حساب قيمة عبارة حرفية",
    "text": "اختبر صحة كل مساواة من المساواتين الآتيتين من أجل $x=1$: $(3x-1)(2-x)=-3x^2+7x-2$ ؛ $14x-7x^2=-7x(x-2)$.",
-   "verified": false
+   "verified": true,
+   "answer": {
+    "1": "(3 × 1 − 1)(2 − 1) = 2 et −3 + 7 − 2 = 2 : égalité vérifiée à x = 1",
+    "2": "14 − 7 = 7 et −7 × 1 × (1 − 2) = 7 : égalité vérifiée à x = 1",
+    "note": "un test en x = 1 ne PROUVE pas l’égalité ; ici les deux égalités sont vraies pour tout x (développer : −3x² + 7x − 2 ; −7x² + 14x)"
+   },
+   "answerSource": "computed",
+   "reading": "Relu à 250 dpi : (3x − 1)(2 − x) = −3x² + 7x − 2 ; 14x − 7x² = −7x(x − 2) ; à tester pour x = 1 (« اختبر صحة »)."
   },
   {
    "id": "ex-4",
@@ -580,7 +641,14 @@
    "page": 62,
    "section": "حساب قيمة عبارة حرفية",
    "text": "يبيّن اللحظة التي يرى فيها سائق السيارة عائقا أمامه ولحظة توقف السيارة بفعل عملية الكبح، هناك مسافة تقطعها السيارة تعرف بمسافة التوقف. يمكن حساب قيمة تقريبية لها باستعمال العبارة $d=0{,}0064v^2+0{,}5v$ حيث $v$ سرعة السيارة قبيل عملية الكبح. احسب مسافة التوقف في الحالات الآتية: أ) $v=50\\text{ km/h}$ ؛ ب) $v=90\\text{ km/h}$ ؛ جـ) $v=130\\text{ km/h}$.",
-   "verified": false
+   "verified": true,
+   "answer": {
+    "v=50": "41",
+    "v=90": "96,84",
+    "v=130": "173,16"
+   },
+   "answerSource": "computed",
+   "reading": "Relu à 250 dpi : d = 0,0064v² + 0,5v ; les vitesses sont imprimées « 50 k.h⁻¹, 90 k.h⁻¹, 130 k.h⁻¹ » (km/h) ; d en mètres : 0,0064 × 2500 + 25 = 41 ; 0,0064 × 8100 + 45 = 96,84 ; 0,0064 × 16900 + 65 = 173,16. La valeur est « approchée » (le texte dit قيمة تقريبية) mais le calcul est exact."
   },
   {
    "id": "ex-5",
@@ -932,7 +1000,9 @@
    "page": 64,
    "section": "مقارنة عددين ناطقين",
    "text": "قارن بين العددين الناطقين $a$ و $b$ في كل حالة مما يأتي: أ) $a-b=0{,}1$ ؛ ب) $a-b=-\\frac52$ ؛ جـ) $b-a=7$ ؛ د) $b-a=-10^{-2}$ ؛ هـ) $a-b=\\frac25$ ؛ و) $b-a\\geqslant1$.",
-   "verified": false
+   "verified": true,
+   "reading": "Relu (2026-10-26) : a) a − b = 0,1 ; b) a − b = −5/2 ; c) b − a = 7 ; d) b − a = −10⁻² ; e) a − b = 2/5 ; f) b − a ≥ 1 — ordonner a et b à partir de la différence SEULE.",
+   "answerSource": "computed"
   },
   {
    "id": "ex-28",
@@ -941,7 +1011,9 @@
    "page": 64,
    "section": "مقارنة عددين ناطقين",
    "text": "في كل حالة مما يأتي: أ) $x=12$ و $y=4$ ؛ ب) $x=-5$ و $y=-9$ ؛ جـ) $x=-11$ و $y=7$ ؛ د) $x=3$ و $y=-8$. 1) قارن شفاهيا بين العددين $x$ و $y$ ثم استنتج إشارة $x-y$ دون حسابه. 2) تحقق من إجاباتك من خلال حساب $x-y$ في كل حالة مما سبق.",
-   "verified": false
+   "verified": true,
+   "reading": "Relu (2026-10-26) : (x ; y) = (12 ; 4), (−5 ; −9), (−11 ; 7), (3 ; −8) : 1) comparer puis déduire le signe de x − y sans le calculer ; 2) vérifier en calculant x − y = 8, 4, −18, 11.",
+   "answerSource": "computed"
   },
   {
    "id": "ex-29",
@@ -950,7 +1022,9 @@
    "page": 64,
    "section": "مقارنة عددين ناطقين",
    "text": "1) أ) احسب باستعمال الآلة الحاسبة $\\frac{53{,}4}{7{,}89}-\\frac{23{,}55}{3{,}48}$. ب) استعمل النتيجة الظاهرة على الشاشة لمقارنة العددين $\\frac{53{,}4}{7{,}89}$ و $\\frac{23{,}55}{3{,}48}$. 2) قارن بين العددين $\\frac{1{,}28}{7}$ و $\\frac{0{,}441}{2{,}4}$ (يمكنك استعمال الحاسبة).",
-   "verified": false
+   "verified": true,
+   "reading": "Relu (2026-10-26) : 1) a) calculer 53,4/7,89 − 23,55/3,48 à la calculatrice ; b) comparer 53,4/7,89 et 23,55/3,48 ; 2) comparer 1,28/7 et 0,441/2,4. Exact : 53,4/7,89 − 23,55/3,48 = 25/30508 > 0 ; 1,28/7 − 0,441/2,4 = −1/1120.",
+   "answerSource": "computed"
   },
   {
    "id": "ex-30",
@@ -958,8 +1032,10 @@
    "number": 30,
    "page": 64,
    "section": "مقارنة عددين ناطقين",
-   "text": "قارن بين العددين الناطقين في كل حالة مما يأتي: أ) $\\frac37$ و $\\frac{13}{28}$ ؛ ب) $-\\frac54$ و $-\\frac{13}{12}$ ؛ جـ) $\\frac73$ و $\\frac{15}{7}$ ؛ د) $\\frac56$ و $-\\frac78$.",
-   "verified": false
+   "text": "قارن بين العددين الناطقين في كل حالة مما يأتي: أ) $\\frac37$ و $\\frac{13}{28}$ ؛ ب) $-\\frac54$ و $-\\frac{13}{12}$ ؛ جـ) $\\frac73$ و $\\frac{15}{7}$ ؛ د) $-\\frac56$ و $-\\frac78$.",
+   "verified": true,
+   "reading": "Relu (2026-10-26) : a) 3/7 et 13/28 ; b) −5/4 et −13/12 ; c) 7/3 et 15/7 ; d) −5/6 et −7/8. Différences −1/28, −1/6, 4/21, 1/24 (d) est −5/6 et −7/8, les DEUX négatifs : relu à 300 dpi ; l’ancienne transcription « 5/6 et −7/8 » (différence 41/24) était une erreur de lecture).",
+   "answerSource": "computed"
   },
   {
    "id": "ex-31",
@@ -968,7 +1044,9 @@
    "page": 64,
    "section": "مقارنة عددين ناطقين",
    "text": "طلب الأستاذ من التلاميذ مقارنة العددين $\\frac{25{,}96}{35{,}89}$ و $\\frac{38{,}94}{53{,}89}$ مع السماح باستعمال الآلة الحاسبة. 1) قامت مريم بحساب حاصل القسمة $\\frac{25{,}96}{35{,}89}$ باستعمال الآلة الحاسبة. أ) ما هي النتيجة التي ستظهر على الشاشة؟ ب) ما الذي يجب على مريم فعله بعد ذلك؟ 2) قام يونس بحساب الفرق باستعمال الآلة الحاسبة. أ) ما هي النتيجة التي ستظهر على الشاشة؟ ب) ما الذي يمكن استنتاجه؟ 3) أي الطريقتين أفضل برأيك؟",
-   "verified": false
+   "verified": true,
+   "reading": "Relu (2026-10-26) : Maryam divise 25,96/35,89 à la calculatrice ; Younes calcule 25,96/35,89 − 38,94/53,89 ; quelle méthode est la meilleure ? Exact : 14278/19341121 ≈ 0,000738 > 0.",
+   "answerSource": "computed"
   },
   {
    "id": "ex-32",
@@ -977,7 +1055,9 @@
    "page": 64,
    "section": "مقارنة عددين ناطقين",
    "text": "إليك العبارتين: $B=4x+3$ ؛ $A=5x-4$. 1) حدّد إشارة كل من A و B من أجل: أ) $x=0$ ؛ ب) $x=7$ ؛ جـ) $x=9$. 2) بسّط العبارة $A-B$ ثم استنتج إشارتها من أجل $x>7$. 3) قارن بين A و B من أجل $x>7$.",
-   "verified": false
+   "verified": true,
+   "reading": "Relu (2026-10-26) : A = 5x − 4, B = 4x + 3 ; 1) signe de A et de B en x = 0, 7, 9 (A : −4, 31, 41 ; B : 3, 31, 39) ; 2) simplifier A − B = x − 7 puis en déduire le signe pour x > 7 ; 3) comparer A et B pour x > 7.",
+   "answerSource": "computed"
   },
   {
    "id": "self-1",
@@ -1023,7 +1103,8 @@
     "value": -20
    },
    "answerSource": "computed",
-   "returnPage": 60
+   "returnPage": 60,
+   "reading": "Relu à 250 dpi (2026-10-26) : A = (x + 7)(x − 2) à x = −3 ; renvoi « عند الحاجة أعود إلى الصفحة 60 ». (−3 + 7)(−3 − 2) = 4 × (−5) = −20."
   },
   {
    "id": "self-4",
@@ -1116,9 +1197,11 @@
    "number": 9,
    "page": 65,
    "section": "أؤكّد تعلّماتي",
-   "verified": false,
+   "verified": true,
    "text": "نضع $a=\\frac12\\pi$ و $b=\\frac13\\pi$. احسب $a-b$ ثم قارن بين $a$ و $b$.",
-   "returnPage": "60 و 61"
+   "returnPage": "60 و 61",
+   "reading": "Relu (2026-10-26) : a = π/2, b = π/3 ; a − b = π/6 > 0 donc a > b (sans approcher π).",
+   "answerSource": "computed"
   },
   {
    "id": "self-10",
@@ -1126,9 +1209,11 @@
    "number": 10,
    "page": 65,
    "section": "أؤكّد تعلّماتي",
-   "verified": false,
+   "verified": true,
    "text": "قارن بين العددين $\\frac{4}{13}$ و $\\frac{0{,}91}{3}$.",
-   "returnPage": "60 و 61"
+   "returnPage": "60 و 61",
+   "reading": "Relu (2026-10-26) : comparer 4/13 et 0,91/3 ; 4/13 − 91/300 = 17/3900 > 0.",
+   "answerSource": "computed"
   },
   {
    "id": "deep-35",
@@ -1138,7 +1223,8 @@
    "section": "أتعمّق",
    "title": "الحساب الحرفي والهندسة",
    "text": "ABCD مستطيل حيث AB = 5cm و AD = 4cm. E نقطة من [AB] حيث AE = 1cm. F نقطة من [BC]. نرمز بـ $x$ لطول القطعة [BF] معبّرا عنه بالسنتيمتر. 1) احسب $\\mathcal{A}_1$ مساحة المثلث AED. 2) عبّر بدلالة $x$ عن $\\mathcal{A}_2$ مساحة المثلث EBF. 3) عبّر بدلالة $x$ عن $\\mathcal{A}_3$ مساحة المثلث DFC. 4) بيّن أنّ $\\mathcal{A}_1+\\mathcal{A}_2+\\mathcal{A}_3=12-0{,}5x$. 5) عبّر بدلالة $x$ عن مساحة المثلث EDF. 6) تحقّق أنّه من أجل $x=4$ تكون مساحة المثلث EDF تساوي $\\mathcal{A}_1+\\mathcal{A}_2+\\mathcal{A}_3$. ما هو حينئذ موضع النقطة F؟",
-   "verified": false
+   "verified": true,
+   "reading": "Élément relu (p. 66) : trois triangles dans un rectangle, BF = x, somme des aires 12 − 0,5x ; la plateforme pose ses propres nombres (module 5 : AB = 6, AD = 4, AE = 2 ; somme 16 − x)."
   },
   {
    "id": "deep-36",
@@ -1164,7 +1250,16 @@
    "section": "أتعمّق",
    "title": "أميّز بين قيمة مضبوطة وقيمة مقرّبة",
    "text": "احسب القيمة المضبوطة بالسنتيمتر مربع لمساحة الحيّز الأزرق في الشكل المرفق. أعط قيمة مقرّبة بالنقصان لهذه المساحة إلى 0,01.",
-   "verified": false
+   "verified": true,
+   "answer": {
+    "exact": "32π cm²",
+    "value": "≈ 100,5309… cm²",
+    "truncated_0.01": "100,53",
+    "computation": "½π·8² − ½π·4² + ½π·4² = 32π (les deux demi-disques de rayon 4 se compensent : l’aire est celle du demi-disque de rayon 8)"
+   },
+   "answerSource": "computed",
+   "figure": "segment horizontal de 16 cm, 5 points marqués, 4 parties égales (traits « // » : 4 cm chacune) ; en haut le demi-disque de diamètre 16 cm (rayon 8) ; dans sa moitié droite un demi-disque de diamètre 8 cm (rayon 4, blanc, retiré) ; sous la moitié gauche un demi-disque de diamètre 8 cm (rayon 4, ajouté) : l’aire bleue est en forme de « yin-yang »",
+   "reading": "Relu à 250 dpi (2026-10-26) : figure LISIBLE (contours nets, remplissage bleu du scan par plaques) : 16 cm = 4 × 4 cm ; aire bleue = ½π·8² − ½π·4² + ½π·4² = 32π ≈ 100,53 cm² (« بالنقصان » = valeur approchée par défaut à 0,01 : 100,5309… → 100,53). Confirme la lecture du planificateur."
   },
   {
    "id": "deep-38",
@@ -1174,7 +1269,9 @@
    "section": "أتعمّق",
    "title": "أقارن محيطين وأقارن مساحتين",
    "text": "$x$ يرمز إلى عدد موجب وأصغر من 7. فاطمة: «الشكلان المرفقان لهما دائما نفس المحيط». مريم: «الشكلان المرفقان لهما دائما نفس المساحة». ما رأيك في هذين التأكيدين؟ مع التبرير.",
-   "verified": false
+   "verified": true,
+   "reading": "Relu à 130 dpi (2026-10-26) : « أقارن محيطين وأقارن مساحتين » — x est un nombre positif plus petit que 7 ; Fatima : « les deux figures ont toujours le même périmètre » ; Maryam : « les deux figures ont toujours la même aire ». Figure : un rectangle de longueur 7 et de hauteur x, et une figure en L dont la base mesure 7 − x ; les repères de côtés égaux (petits carrés / traits) sont trop fins à cette résolution pour être transcrits avec certitude. La plateforme pose SA propre paire (un rectangle (x + 5) × (x + 1) et un carré de côté x + 3 : périmètres 4x + 12 égaux, aires x² + 6x + 5 et x² + 6x + 9, écart de 4) et cite l’élément.",
+   "answerSource": "computed"
   },
   {
    "id": "deep-39",
@@ -1183,8 +1280,26 @@
    "page": 66,
    "section": "أتعمّق",
    "title": "أستعمل مثالا مضادا",
-   "text": "$a$ عدد نسبي. $D=9a+6$ ، $C=(2+a)(3+2a)$. تؤكد مريم أن $C=D$ من أجل أي قيمة لـ $a$. احسب قيمة كل من D و C من أجل $a=1$ ، ثم من أجل $a=0$. كيف ترى تأكيد مريم؟ احسب قيمة كل من D و C من أجل قيمة أخرى لـ $a$. ماذا يمكننا القول عن تأكيد مريم؟",
-   "verified": false
+   "text": "$a$ عدد نسبي. $D=9a+6$ ، $C=(2+a)(3+2a)$. تؤكد مريم أن $C=D$ من أجل أي قيمة لـ $a$. احسب قيمة كل من D و C من أجل $a=1$ ، ثم من أجل $a=0$. كيف ترى تأكيد مريم؟ احسب قيمة كل من D و C من أجل قيمة أخرى لـ $a$. ماذا يمكننا القول عن تأكيد مريم؟ (إطار أصفر: لكي أثبت أن تأكيدا خاطئ يكفي إعطاء مثال مضاد.)",
+   "verified": true,
+   "answer": {
+    "a=1": {
+     "D": 15,
+     "C": 15
+    },
+    "a=0": {
+     "D": 6,
+     "C": 6
+    },
+    "verdict": "deux valeurs qui s’accordent ne prouvent rien",
+    "a=2": {
+     "D": 24,
+     "C": 28
+    },
+    "conclusion": "a = 2 est un contre-exemple : l’affirmation de Maryam est fausse (C − D = 2a(a − 1))"
+   },
+   "answerSource": "computed",
+   "reading": "Relu à 250 dpi (2026-10-26) : D = 9a + 6 ; C = (2 + a)(3 + 2a) ; a = 1 puis a = 0 imposés, puis « une autre valeur » libre ; le cadre jaune énonce le principe du contre-exemple."
   },
   {
    "id": "deep-40",
@@ -1315,8 +1430,8 @@
    "section": "أتعمّق",
    "title": "المربع السحري",
    "text": "انقل وأتمم للحصول على مربع سحري (المجموع على كل سطر وعلى كل عمود وعلى كل قطر هو نفسه). الخانات المعطاة: $a-2$ ، $2a-4$ ، $a-3$ ، $2-2a$ ، وخانات فارغة.",
-   "verified": false,
-   "reading": "Grille 3 × 3 dont 4 cases sont lisibles (a − 2, 2a − 4, a − 3, 2 − 2a) ; positions à relire par la leçon qui l’emploie (à 110 dpi : colonne de gauche a−2, a−3, 2−2a ; case en haut à droite 2a−4)."
+   "verified": true,
+   "reading": "Relu à 110 dpi (2026-10-26) : grille 3 × 3 dont quatre cases sont imprimées : a − 2 (haut gauche), 2a − 4 (haut droite), a − 3 (milieu gauche), 2 − 2a (bas gauche) ; la grille du manuel reste sous-déterminée pour une lecture sûre, la plateforme pose sa propre grille complète (module 1)."
   },
   {
    "id": "integration",
@@ -1324,12 +1439,13 @@
    "page": 68,
    "section": "أدمج تعلّماتي",
    "title": "وضعية: انطلاقات متفاوتة",
-   "verified": false,
+   "verified": true,
    "text": "يُمثّل المخطّط المرفق أروقة العدو داخل ملعب لألعاب القوى، حيث مثّلنا كل رواق بخط أحمر. يتكوّن مسار كل رواق من خطين متوازيين ونصفي دائرة. ترمز النقط A و B و C إلى ثلاثة عدّائين في وضعية الانطلاق. كيف تفسّر التفاوت الموجود بين مكان تواجد عدّاء وآخر لحظة الانطلاق؟ قدّم الشروحات اللازمة. (الأطوال معبّر عنها بالمتر).",
    "answer": {
     "approx_gap": "6,28 (≈ 2π)"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu à 110 dpi : x = largeur du terrain intérieur, y = longueur des droits ; trois couloirs (rouges), trois départs A, B, C ; écart d’un couloir à l’autre pour 1 m de largeur ≈ 6,28 ≈ 2π. La plateforme pose la piste de l’école (couloirs de 1,2 m : écarts 2,4π ≈ 7,54 m et 4,8π ≈ 15,08 m)."
   },
   {
    "id": "evaluation",
@@ -1337,15 +1453,16 @@
    "page": 68,
    "section": "وضعية للتقويم",
    "title": "هل يتم تفادي الاصطدام؟",
-   "verified": false,
-   "text": "يسير سائق سيارة بسرعة 90km/h على طريق مبلّل، رأى فجأة أمامه بقرة تبعد عنه مسافة 85m، فشرع في الفرملة. حسب السندات الآتية، هل يحدث الاصطدام بالبقرة؟ $D_A=D_F+D_R$ (مسافة التوقف $D_A$ ، المسافة المقطوعة خلال الفرملة $D_F$ ، مسافة رؤية العائق وبداية الفرملة $D_R$) ؛ على طريق مبلل $D_F=\\frac{3\\times V^2}{400}$ و $D_R=\\frac{3\\times V}{10}$ (السرعة V مقدّرة بـ km/h).",
+   "verified": true,
+   "text": "يسير سائق سيارة بسرعة 90km/h على طريق غير مبلّل، رأى فجأة أمامه بقرة تبعد عنه مسافة 85m، فشرع في الفرملة. حسب السندات الآتية، هل يحدث الاصطدام بالبقرة؟ $D_A=D_F+D_R$ (مسافة التوقف $D_A$ ، المسافة المقطوعة خلال الفرملة $D_F$ ، مسافة رؤية العائق وبداية الفرملة $D_R$) ؛ على طريق غير مبلّل $D_F=\\frac{3\\times V^2}{400}$ و $D_R=\\frac{3\\times V}{10}$ (السرعة V مقدّرة بـ km/h).",
    "answer": {
     "D_R": "27",
     "D_F": "60,75",
     "D_A": "87,75",
     "collision": "oui (87,75 > 85)"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu à 250 dpi (2026-10-26) : le texte imprime « على طريق غير مبلّل » (route SÈCHE) deux fois — dans l’énoncé et sous les formules D_R = 3V/10 et D_F = 3V²/400 ; l’ancienne transcription « مبلل » était fausse. Valeurs (V = 90) : 27 ; 60,75 ; 87,75 > 85 : collision, inchangé."
   },
   {
    "id": "ict",
@@ -1353,8 +1470,15 @@
    "page": 69,
    "section": "أوظّف تكنولوجيات الإعلام والاتصال",
    "title": "استعمال مجدول لحساب قيمة عبارة حرفية ومراقبة صحة مساواة",
-   "verified": false,
-   "text": "هذا نشر لتلميذين للعبارة $A=(5x-7)(3x+2)$ : التلميذ 1 : $A=15x^2+10x-14$ ؛ التلميذ 2 : $A=15x^2-11x-14$. راقب، باستعمال مجدول، صحة نشر كل منهما: 1) افتح المجدول وحضّر ورقة حساب مثل المعروضة. 2) احجز الصيغ الموافقة لكل عبارة (B2 = (5*A2-7)*(3*A2+2) ، C2 = 15*A2^2+10*A2-14 ، D2 = 15*A2^2-11*A2-14). 3) احجز القيمة -6 في الخلية A2 و -5 في A3 ثم عمّم إلى A14. 4) عمّم محتوى B2 و C2 و D2. الاستنتاج: أ) نشر التلميذ 1 خاطئ لأن القيم في العمودين B و C ليست نفسها. ب) نشر التلميذ 2 قد يكون صحيحا لأن القيم في العمودين B و D هي نفسها. 5) للتأكد من صحة نشر التلميذ 2 ننشر العبارة A المعطاة: $15x^2-11x-14$. دوري الآن: راقب باستعمال مجدول صحة المساواة: $(x+13)(x-4)+27=(x+5)(x-5)$."
+   "verified": true,
+   "text": "هذا نشر لتلميذين للعبارة $A=(5x-7)(3x+2)$ : التلميذ 1 : $A=15x^2+10x-14$ ؛ التلميذ 2 : $A=15x^2-11x-14$. راقب، باستعمال مجدول، صحة نشر كل منهما: 1) افتح المجدول وحضّر ورقة حساب مثل المعروضة. 2) احجز الصيغ الموافقة لكل عبارة (B2 = (5*A2-7)*(3*A2+2) ، C2 = 15*A2^2+10*A2-14 ، D2 = 15*A2^2-11*A2-14). 3) احجز القيمة -6 في الخلية A2 و -5 في A3 ثم عمّم إلى A14. 4) عمّم محتوى B2 و C2 و D2. الاستنتاج: أ) نشر التلميذ 1 خاطئ لأن القيم في العمودين B و C ليست نفسها. ب) نشر التلميذ 2 قد يكون صحيحا لأن القيم في العمودين B و D هي نفسها. 5) للتأكد من صحة نشر التلميذ 2 ننشر العبارة A المعطاة: $15x^2-11x-14$. دوري الآن: راقب باستعمال مجدول صحة المساواة: $(x+13)(x-4)+27=(x+5)(x-5)$.",
+   "answer": {
+    "student1": "faux : 15x² + 10x − 14 ≠ A (x = −6 : 466 contre 592 ; seulement égale en x = 0)",
+    "student2": "juste : 15x² − 11x − 14 (mêmes valeurs sur les 13 lignes x = −6…6), prouvé par le développement 5x(3x) + 5x × 2 − 7(3x) − 7 × 2 = 15x² + 10x − 21x − 14",
+    "doriAlan": "(x + 13)(x − 4) + 27 = x² + 9x − 25 ≠ x² − 25 = (x + 5)(x − 5) : égalité fausse, valeurs égales seulement en x = 0 (la différence vaut 9x)"
+   },
+   "answerSource": "computed",
+   "reading": "Relu à 250 dpi (2026-10-26) : tableau de 13 lignes x = −6…6 ; colonnes B = (5x − 7)(3x + 2), C = 15x² + 10x − 14, D = 15x² − 11x − 14 ; première ligne 592 / 466 / 592 (cadre « حيّز الانتقاء ») ; ligne x = 0 : −14 dans les trois colonnes. Le développement de la 5) donne 15x² − 11x − 14. « دوري الآن » : (x + 13)(x − 4) + 27 = (x + 5)(x − 5) à contrôler. Le tableur du manuel n’existe pas sur la plateforme : l’idée gardée est « un tableau de valeurs teste en masse, le développement prouve »."
   }
  ],
  "discrepancies": [
@@ -1366,7 +1490,42 @@
   {
    "elementId": "prep",
    "kind": "reading",
-   "text": "Item 1 : « 2 × 5 − 8 » vaut 2 mais le tableau propose 6 / −2 / 18 (aucune bonne réponse) : probable coquille (ou « 2 × (5 − 8) = −6 »). L’item appartient à qimat-ibara-harfiya, qui le relira. Items 5–8 de la leçon relus : 5x ; (x+5)(2−x) ; 5x ; 10x²."
+   "text": "Item 1 (qimat-ibara-harfiya, relu à 250 dpi le 2026-10-26) : le manuel imprime « 8 − 5 × 2 » (de gauche à droite), PAS « 2 × 5 − 8 » : valeur −2 = option (2) ; « 6 » est le piège de qui calcule de gauche à droite (8 − 5) × 2. L’ancienne note « aucune bonne réponse » était une erreur de lecture ; items 2–4 relus : « 2 × (8 − 5) » = 6 (option 1, et non « (8 − 5) × 2 »), « 3 − 3² » = −6 (option 3), « a × a × a » = a³ = a × a² (options 1 et 3) ; colonnes du tableau (1)(2)(3) de droite à gauche. Items 5–8 de la leçon tabsit-hadhf-aqwas relus : 5x ; (x+5)(2−x) ; 5x ; 10x².",
+   "correction": {
+    "decidedBy": "platform",
+    "decidedOn": "2026-10-26",
+    "text": "item 1 = « 8 − 5 × 2 » = −2"
+   }
+  },
+  {
+   "elementId": "now-61",
+   "kind": "reading",
+   "text": "Item 2 (muqaranat-natiqayn) : transcription corrigée (250 dpi, 2026-10-26) : 13/6 et 35/17 ; −4/5 et 2/(−3) (le « 2 sur −3 » a son moins sous la barre ; l’ancienne transcription « −2/3 » donnait la même valeur mais pas la même écriture : l’élève doit écrire 2/(−3) = −2/3). Item 1 (qimat-ibara-harfiya) : A(−4) = 0, B(−4) = 4, donc A ≠ B."
+  },
+  {
+   "elementId": "know-4",
+   "kind": "reading",
+   "text": "Relu à 250 dpi (2026-10-26) : « x = −1,4 » est une virgule décimale (−1,4 = −7/5) : B = [−5 × (−1,4) + 7][2 − (−9)] = 14 × 11 = 154 ; la remarque donne 5 × 3 et 5 × (−3,2)."
+  },
+  {
+   "elementId": "ex-3",
+   "kind": "scope",
+   "text": "Relu à 250 dpi : les deux égalités à tester en x = 1 sont VRAIES pour tout x (3x−1)(2−x) = −3x² + 7x − 2 et 14x − 7x² = −7x(x − 2) : le test en x = 1 les confirme sans les prouver (idée du contre-exemple, à tirer à l’envers)."
+  },
+  {
+   "elementId": "ex-4",
+   "kind": "reading",
+   "text": "Les vitesses sont imprimées « k.h⁻¹ » (km·h⁻¹) ; d = 0,0064v² + 0,5v donne 41 ; 96,84 ; 173,16 (exact, Fraction) ; le texte dit « valeur approchée » (modèle), non le calcul."
+  },
+  {
+   "elementId": "deep-37",
+   "kind": "reading",
+   "text": "Figure relue à 250 dpi : segment de 16 cm en 4 parties de 4 cm ; demi-disque de rayon 8 au-dessus, moins le demi-disque de rayon 4 de la moitié droite, plus le demi-disque de rayon 4 sous la moitié gauche : aire bleue = 32π ≈ 100,5309 cm² ; « بالنقصان » = 100,53 à 0,01 (valeur approchée par défaut)."
+  },
+  {
+   "elementId": "ict",
+   "kind": "reading",
+   "text": "Relu à 250 dpi : TD 1 (15x² + 10x − 14) faux, TD 2 (15x² − 11x − 14) vrai ; ligne x = 0 : −14 partout (la seule où TD 1 concorde) ; « دوري الآن » : (x+13)(x−4)+27 = x² + 9x − 25 ≠ x² − 25 (égaux seulement en x = 0)."
   },
   {
    "elementId": "act-2",
@@ -1419,9 +1578,29 @@
    "text": "La remarque ب du manuel justifie la règle des parenthèses par la distributivité. La leçon tabsit-hadhf-aqwas ne la prouve pas ainsi (elle la fait découvrir par la valeur) ; la distributivité est l’objet de nashr-jabri-3am."
   },
   {
+   "elementId": "ex-30",
+   "kind": "reading",
+   "text": "Relu à 300 dpi (2026-10-26) : le cas d) est −5/6 et −7/8 (les deux nombres sont négatifs) ; la transcription initiale « 5/6 et −7/8 » (différence 41/24) était fausse : la bonne différence est −5/6 − (−7/8) = 1/24 > 0."
+  },
+  {
+   "elementId": "deep-38",
+   "kind": "reading",
+   "text": "Relu à 130 dpi : les repères de côtés égaux sont trop fins pour une transcription sûre ; la plateforme pose sa propre paire (E8) et cite l’élément."
+  },
+  {
    "elementId": "unit",
    "kind": "scope",
-   "text": "Les éléments de nashr-jabri-3am, qimat-ibara-harfiya, muqaranat-natiqayn et de la synthèse sont transcrits plus brièvement (verified: false) : leur leçon les relira."
+   "text": "Les éléments de la synthèse sont transcrits plus brièvement (verified: false) : sa leçon les relira. Ceux de muqaranat-natiqayn (act-5, know-5, method-5, now-61 ②, ex-27…ex-32, self-9, self-10, deep-38) sont relus (verified: true, 2026-10-26). Ceux de tabsit-hadhf-aqwas, nashr-jabri-3am et qimat-ibara-harfiya (prep 1–4, act-4, know-4, method-4, now-61 ①, ex-1…ex-4, self-3, deep-37, deep-39, ict) sont relus à 250 dpi (verified: true)."
+  },
+  {
+   "elementId": "evaluation",
+   "kind": "reading",
+   "text": "Relu à 250 dpi (2026-10-26) : « طريق غير مبلّل » = route sèche (et non mouillée comme transcrit auparavant) ; les formules et les valeurs 27, 60,75, 87,75 sont inchangées. Jamais montré à l’élève : la plateforme pose ses propres formules (sec / mouillé).",
+   "correction": {
+    "decidedBy": "platform",
+    "decidedOn": "2026-10-26",
+    "text": "route sèche"
+   }
   }
  ],
  "destinations": {
@@ -1450,7 +1629,7 @@
     },
     "1-2-3-4": {
      "lesson": "qimat-ibara-harfiya",
-     "module": null
+     "module": 0
     },
     "9-10-11-12": {
      "lesson": "nashr-jabri-3am",
@@ -1475,11 +1654,13 @@
   },
   "act-4": {
    "lesson": "qimat-ibara-harfiya",
-   "module": null
+   "module": 4,
+   "note": "APPLICATION : un élève développe mal ; UNE valeur (x = 1) concorde, les autres réfutent — le contre-exemple naît d’une erreur"
   },
   "act-5": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 4,
+   "note": "APPLICATION (guide §4ter) : les paires du tableau sont assez éloignées pour s’ordonner à l’œil, la différence n’y est pas NÉCESSAIRE ; l’entrée conçue par la plateforme est le labo `difference-meter` (une paire que l’œil ne sépare pas, 0,85 px) ; le tableau devient E1 d’أتمرّن avec d’autres paires"
   },
   "know-1": {
    "lesson": "tabsit-hadhf-aqwas",
@@ -1495,11 +1676,11 @@
   },
   "know-4": {
    "lesson": "qimat-ibara-harfiya",
-   "module": null
+   "module": 2
   },
   "know-5": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 2
   },
   "method-1": {
    "lesson": "tabsit-hadhf-aqwas",
@@ -1529,41 +1710,41 @@
   },
   "method-4": {
    "lesson": "qimat-ibara-harfiya",
-   "module": null
+   "module": 3
   },
   "method-5": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 3
   },
   "now-61": {
    "lesson": "qimat-ibara-harfiya",
-   "module": null,
+   "module": 4,
    "items": {
     "1": {
      "lesson": "qimat-ibara-harfiya",
-     "module": null
+     "module": 4
     },
     "2": {
      "lesson": "muqaranat-natiqayn",
-     "module": null
+     "module": 4
     }
    }
   },
   "ex-1": {
    "lesson": "qimat-ibara-harfiya",
-   "module": null
+   "module": 4
   },
   "ex-2": {
    "lesson": "qimat-ibara-harfiya",
-   "module": null
+   "module": 4
   },
   "ex-3": {
    "lesson": "qimat-ibara-harfiya",
-   "module": null
+   "module": 4
   },
   "ex-4": {
    "lesson": "qimat-ibara-harfiya",
-   "module": null
+   "module": 4
   },
   "ex-5": {
    "lesson": "tabsit-hadhf-aqwas",
@@ -1655,27 +1836,27 @@
   },
   "ex-27": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 4
   },
   "ex-28": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 4
   },
   "ex-29": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 4
   },
   "ex-30": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 4
   },
   "ex-31": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 4
   },
   "ex-32": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 4
   },
   "self-1": {
    "lesson": "tabsit-hadhf-aqwas",
@@ -1687,7 +1868,8 @@
   },
   "self-3": {
    "lesson": "qimat-ibara-harfiya",
-   "module": null
+   "module": 4,
+   "note": "cité aussi par le test final de la leçon, mais un seul numéro de module : 4"
   },
   "self-4": {
    "lesson": "nashr-jabri-3am",
@@ -1711,16 +1893,16 @@
   },
   "self-9": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 4
   },
   "self-10": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 4
   },
   "deep-35": {
    "lesson": "wadiya-idmajiya-ibarat-harfiya-3",
-   "module": null,
-   "note": "le raisonnement sur trois triangles en x et une aire totale : exercice d’intégration de la synthèse (réaffecté le 2026-10-21)"
+   "module": 5,
+   "note": "trois triangles dans un rectangle 6 × 4 (AE = 2, BF = x) : aire totale 16 − x, EDF = 8 + x, comparaison (module 5)"
   },
   "deep-36": {
    "lesson": "tabsit-hadhf-aqwas",
@@ -1729,15 +1911,16 @@
   },
   "deep-37": {
    "lesson": "qimat-ibara-harfiya",
-   "module": null
+   "module": 4
   },
   "deep-38": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 4,
+   "note": "la paire est REDESSINÉE par la plateforme (rectangle contre carré en x) ; élément cité en E8"
   },
   "deep-39": {
    "lesson": "qimat-ibara-harfiya",
-   "module": null
+   "module": 4
   },
   "deep-40": {
    "lesson": "nashr-jabri-3am",
@@ -1779,20 +1962,22 @@
   },
   "deep-47": {
    "lesson": "wadiya-idmajiya-ibarat-harfiya-3",
-   "module": null,
-   "note": "المربع السحري : des sommes d’expressions en a — la grille n’est lisible qu’en partie (4 cases) : réaffecté à la synthèse le 2026-10-21"
+   "module": 1,
+   "note": "carré magique : grille complète de la plateforme (module 1)"
   },
   "integration": {
    "lesson": "wadiya-idmajiya-ibarat-harfiya-3",
-   "module": null
+   "module": 7,
+   "note": "départs décalés : modules 7 (analyse) et 8 (test) ; un seul numéro de module : 7"
   },
   "evaluation": {
    "lesson": "wadiya-idmajiya-ibarat-harfiya-3",
-   "module": null
+   "module": 6,
+   "note": "distance d’arrêt : formules et nombres de la plateforme (module 6)"
   },
   "ict": {
    "lesson": "qimat-ibara-harfiya",
-   "module": null
+   "module": 4
   }
  }
 }

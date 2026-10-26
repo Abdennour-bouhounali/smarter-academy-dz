@@ -24,7 +24,7 @@ content was never the cost; *coupling* was.
 index.html
   └─ entry chunk (index-*.js)           shell: React, router, i18n (eager namespaces),
      │                                  auth/context providers, layouts, landing page,
-     │                                  login/register, the catalogue, the LESSON INDEX
+     │                                  login/register, the grade summary (NOT the catalogue, §3), the LESSON INDEX
      │                                  (lessonIndex.generated.json, ≈ 20 B gzip per lesson)
      ├─ lessonLoaders chunk             the two lazy globs (config + routes.jsx per lesson)
      │    └─ a lesson's routes chunk    its routes.jsx + lesson.config.js, loaded by the
@@ -75,7 +75,8 @@ Nothing below a line is fetched until the level above needs it.
 | Photo answers + teacher review (2026-10-06, every BEM exam-sheet lesson) | lazy routes `TeacherReviewsPage` (`/enseignant/tashih`, with `AnnotationEditor`) and `AnswerReviewPage` (`/espace/tashih/:id`); the picker and gallery live in the `PracticeSession` chunk | the review queue, the canvas annotation editor and the read-only correction page | — . In the ENTRY, because `StudentLayout` is eager: `NotificationBell.jsx` + `notificationService.js` (React, lucide and `apiRequest` only, no new dependency; ≈1 KB gzip) and the `nav.notifications.*` keys. Keep the bell dependency-free |
 | Page tours « جولة تعريفية » (2026-10-07) | `features/tours/PageTourProvider.jsx` → `React.lazy(() => import('./TourOverlay'))`; `tour` namespace in `i18n/index.js` `onDemandBackend` | the card, spotlight and keyboard handling (`TourOverlay` chunk) and every tour text (`tour` chunk) | fetched when a page's tour opens (first visit or « جولة في الصفحة »). In the ENTRY, because `StudentLayout` is eager: the provider, the pure model, the registry (keys and selectors only), `tourService.js`, `TourReplayButton` and `nav.tourReplay`, with no new dependency. `PAGE_TOURS.md` §3 |
 | Learning net resolver (2026-10-13; dynamic since 2026-10-14) | `kit/ReviewLinks.jsx` (static, inside the lesson runtime) and `features/learning/EarlierYearReview.jsx` (`import()` on the first wrong answer, practice and lesson final test) | `learningNet.js` + `official_programme_moyen.json` + `learning_net_moyen.json` — its own chunk `learningNet-*.js` (≈ 80 KB). **Never import it from the barrel, a layout, a provider or an eager page** (`LEARNING_NET.md` §2) | — |
-| The catalogue of 1AM–3AM (2026-10-14) — **IN the entry, measured** | `coursesData.js` (core barrel) imports `lessons_/units_/programme_{1,2,3}am_2026_2027.json` | not a boundary: the catalogue is synchronous by design (navigation, grade choice, `getLessonById`). Cost measured: initial JS **576.5 → 629.2 KB gzip (+52.7 KB)**, 2,532 → 2,803 KB raw; of it ≈ 47 KB is the Arabic text of 196 draft lessons (الكفاءات 14.6, descriptions 5.8, unit objectives + challenges 7.3 KB). A per-grade lazy catalogue is the follow-up if this must come down | — |
+| The catalogue, all four grades (2026-10-26) — **OUT of the entry** | `utils/gradeSummary.js` reads `virtual:grade-summary` (plugin `gradeSummary`, `vite.config.js`): `getAllGrades()`, the landing page's grade chips and the published-lesson count, computed at build by the catalogue itself (a child Node process; the catalogue files are watched) — ≈ 0.4 KB. `StudentLayout`, `StudentNavbar` and `TrustRelevanceSection` use it. `Home.jsx` mounts `StudentHomeBanner` (resume lesson = full catalogue) as a `lazy()` only for `role === 'student'`. `packages/core/package.json` has `"sideEffects": false` and `coursesData.js` marks its top-level builders pure, so a barrel import that uses no catalogue name (`hasRequiredRole`, `ACTIVE_GRADE_IDS`, `getFlatAvailableLessons`…) no longer drags the JSON in | `coursesData.js` + `lessons_/units_/programme_{1..4}am_2026_2027.json` (≈ 95 KB gzip, +0.2–0.3 KB per published lesson): now the shared chunk `coursesData-*.js`, fetched in parallel with the first page that reads `courseLevels` / `getLessonById` / `getUnitById` (every student, teacher and admin page that shows lessons). Measured: entry **329.7 → 233.1 KB gzip** (1,293 → 802 KB raw, −96.6 KB). **Rule: no module of the entry graph imports a catalogue name** (find the culprit with `--chain packages/core/curriculum/coursesData.js`; the budget is now 245) | on demand |
+| ~~The catalogue of 1AM–3AM (2026-10-14) — IN the entry, measured~~ (superseded by the row above) | `coursesData.js` (core barrel) imports `lessons_/units_/programme_{1,2,3}am_2026_2027.json` | not a boundary: the catalogue is synchronous by design (navigation, grade choice, `getLessonById`). Cost measured: initial JS **576.5 → 629.2 KB gzip (+52.7 KB)**, 2,532 → 2,803 KB raw; of it ≈ 47 KB is the Arabic text of 196 draft lessons (الكفاءات 14.6, descriptions 5.8, unit objectives + challenges 7.3 KB). A per-grade lazy catalogue is the follow-up if this must come down | — |
 | KaTeX dedupe | `vite.config.js` `resolve.dedupe: ['katex']` | a **second** KaTeX copy (react-katex/mafs nested 0.16) | — |
 
 ## 4. Rules (for every future change)
@@ -121,10 +122,9 @@ Nothing below a line is fetched until the level above needs it.
 9. **The core barrel holds only what eager code needs.** A module whose top
    level computes data (unit maths, registries) is imported by path, never
    re-exported (`packages/core/barrel.test.js`).
-10. **The entry has a budget: 330 KB gzip** (set 2026-10-14 just above the
-    measured 322.1 KB). `npm run check:entry-budget` (in `check:lessons`, own
+10. **The entry has a budget: 245 KB gzip** (330 until 2026-10-26; lowered to 245 after the catalogue left the entry, measured 233.1 KB, so it cannot silently come back — never raise it). `npm run check:entry-budget` (in `check:lessons`, own
     analysis build) and CI (`analyze-entry-bundle.mjs --dist apps/web/dist
-    --budget 330`, after « Build ») fail above it. Find the leak with
+    --budget 245`, after « Build ») fail above it. Find the leak with
     `--chain`; raise the budget only for a deliberate, measured, documented
     entry cost (a row in §3).
 11. **A page waits only for what it renders, and nothing waits in series** (2026-10-17, §9). Start a page's data
@@ -241,6 +241,16 @@ A published lesson now costs the entry ONE line of the index (≈ 20 bytes gzip)
 lessons ≈ +4 KB instead of ≈ +0.9 MB. What remains is the shell: framer-motion (§7), the catalogue JSON of four grades
 (≈ 95 KB gzip, synchronous by design — the next candidate if the budget must come down), the eager i18n namespaces
 (`admin`, `student`, `teacher`, `marketing` …), React, React Router, i18next.
+
+### Entry fix, 2026-10-26 — 329.7 → 233.1 KB gzip (catalogue out of the entry)
+
+The entry had reached 329.7 of 330 KB and grew ≈ 0.2–0.3 KB with every published 1AM–3AM lesson (≈ 150 more to come).
+`--chain` showed the whole catalogue (four grades' lessons / units / programme JSON, ≈ 95 KB gzip, 1,293 KB raw
+entry) was pulled by `StudentLayout → core barrel → coursesData.js`, for three tiny answers. Fix: the virtual module
+`virtual:grade-summary` for those answers, a lazy `StudentHomeBanner` (students only), and tree-shaking of the barrel
+(`sideEffects: false`, pure annotations in `coursesData.js`; without the former the JSON modules stayed because
+`JSON.parse(...)` is a top-level call). No behaviour change; the catalogue is now a shared lazy chunk. Gates: `npm test`,
+`check:lessons`, `npm run build`; smoke on a dev server (landing, a student's `/espace`, `/courses`, a lesson index).
 
 ## 6. How to measure
 

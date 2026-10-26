@@ -51,7 +51,7 @@ jobs:
       # une leçon, un namespace ou un moteur qui y fuit fait échouer la CI
       # (docs/architecture/BUNDLE_BOUNDARIES.md §4 règle 10). Mesuré sur le build ci-dessus.
       - name: Entry bundle budget
-        run: node scripts/analyze-entry-bundle.mjs --dist apps/web/dist --budget 330
+        run: node scripts/analyze-entry-bundle.mjs --dist apps/web/dist --budget 245
 
       # L'index des leçons (lessons/lessonIndex.generated.json) suit leurs lesson.config.js.
       - name: Lesson index is fresh

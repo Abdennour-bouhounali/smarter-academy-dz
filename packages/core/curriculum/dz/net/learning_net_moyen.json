@@ -1278,8 +1278,13 @@
       "type": "requires"
     },
     {
-      "from": "3am.m3.r02",
+      "from": "3am.m3.r01",
       "to": "3am.m3.r03",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m3.r02",
+      "to": "3am.m3.r04",
       "type": "requires"
     },
     {

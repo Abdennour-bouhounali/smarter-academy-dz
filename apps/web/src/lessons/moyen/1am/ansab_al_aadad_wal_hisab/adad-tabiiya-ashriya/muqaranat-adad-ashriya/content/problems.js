@@ -165,7 +165,7 @@ export const PROBLEMS = [
     id: 'masala-3',
     title: 'مسألة 3 — بطاقات الأرقام',
     context: 'ألعاب الحساب',
-    emoji: '🃏',
+    emoji: '🧩',
     tone: 'violet',
     source: addition('exam_style_problem'),
     illustration: { kind: 'tags', cards: [

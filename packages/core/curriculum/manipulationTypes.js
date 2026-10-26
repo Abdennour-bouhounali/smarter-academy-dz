@@ -672,6 +672,28 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'القوة $a^n$ جداء $n$ عاملًا كلّها تساوي $a$ ، وإشارتها سالبة فقط إذا كان $a$ سالبًا و $n$ فرديًا ؛ $a^0 = 1$ و $a^{-n} = \\frac{1}{a^n}$ ؛ و $a^m \\times a^n = a^{m+n}$ و $\\frac{a^m}{a^n} = a^{m-n}$',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 3AM, unité 1 « الأعداد النسبية » (2026-10-26) — le produit de deux nombres relatifs.
+  'elevator-reel': {
+    // LE TEMPS SIGNÉ SOUS LA MAIN : un ascenseur de charge passe par le rez-de-chaussée à l'instant 0 d'un film de surveillance, à vitesse
+    // constante r (étages par minute, SIGNÉE : r < 0 = il descend). À l'instant t (minutes, SIGNÉ : t < 0 = avant son passage) il est à
+    // l'étage r × t. La main tient t (curseur sur la ligne du temps, −/+, flèches) et, en متقدم, le sens et la distance de r (levier, −/+).
+    // Pour t > 0 la cabine suit la somme répétée ; pour t < 0 le film est REMBOBINÉ et la cabine apparaît de l'autre côté de la rue :
+    // (−) × (−) = (+) est un fait du monde. Chaque temps lâché est un essai jugé exactement : MANUEL (§6bis).
+    shows: 'جداء عددين نسبيين لهما الإشارة نفسها موجب، ولهما إشارتان مختلفتان سالب، ومسافته إلى الصفر هي جداء المسافتين إلى الصفر ؛ و $a \\times 0 = 0$',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 4 « الحساب الحرفي » (2026-10-26) — calculer la valeur d'une expression, le contre-exemple.
+  'marble-run': {
+    // LA VALEUR SOUS LA MAIN : le club de sciences a bâti un mur de billes qui CALCULE une expression — ses stations sont les opérations
+    // de l'expression (la copieuse du carré, la presse du produit, le basculeur du moins, la jonction du + et du −). La main choisit la
+    // VALEUR de la lettre (une bille lâchée dans le réservoir, qui envoie une bille identique à chaque endroit de la lettre), ÉCRIT sous
+    // le mur la ligne de la substitution (parenthèses autour d'une case, signe × devant une case) puis lance la glissière : le mur calcule
+    // ce que l'expression SIGNIFIE, un lecteur strict ce que la LIGNE dit, et la première station où ils se séparent s'allume. Monde
+    // `twins` : deux murs sous UN réservoir, la main compare les paniers et déclare « contre-exemple » ou « égales » (انشر prouve).
+    // Chaque course est un essai jugé exactement : MANUEL (§6bis).
+    shows: 'نعوّض الحرف بالعدد نفسه في كل مكان منه، ونُظهر علامة الضرب، ونضع العدد السالب بين قوسين، ثم نحسب باحترام أولوية العمليات ؛ وقيمة واحدة تختلف عندها عبارتان تثبت أنهما غير متساويتين، أمّا تساوي القيم فلا يثبت التساوي',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 2AM, unité 3 « الأعداد النسبية » (2026-10-21) — comparer et ranger des relatifs.
   'zero-probe': {
     // LA DISTANCE À ZÉRO SOUS LA MAIN : un capteur A est fixé à un nombre relatif (une altitude en mètres) ; un second capteur B
@@ -690,6 +712,24 @@ export const MANIPULATION_TYPES = Object.freeze({
     // sur un seul elle se casse du poids de c. Diviser par 0 est refusé, multiplier par 0 vide l'égalité (0 = 0). Chaque pression est
     // un essai : MANUEL (§6bis).
     shows: 'لا تتغيّر مساواة عندما نضيف إلى طرفيها (أو نطرح منهما) العدد نفسه، ولا عندما نضرب طرفيها (أو نقسمهما) في العدد نفسه غير المعدوم؛ أمّا إذا مسّت العملية طرفًا واحدًا فتنكسر المساواة',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 5, leçon « المتباينات والعمليات » (2026-10-26) — les opérations sur les deux membres d'une inégalité.
+  'loom-threads': {
+    // LE NŒUD SOUS LA MAIN : deux poutres graduées (haute et basse) reliées par des fils de laine ; chaque nombre x de la poutre haute est relié à son
+    // image. Deux fils portent a (rouge) et b (bleu), a < b. La main tient UN nœud de la poutre basse : le PEIGNE (+ c) le pose à l'image du fil de 0,
+    // le CLOU (× c, le fil de 0 cloué en 0) à l'image du fil de 1 ; sa position EST c. Les fils rouge et bleu se croisent ⇔ le facteur est strictement
+    // négatif ; × 0 écrase tout sur 0. Déposer le nœud est un essai jugé exactement : MANUEL (§6bis). `loom-threads` n'énonce jamais la règle.
+    shows: 'إذا كان $a<b$ فإنّ $a+c<b+c$ ؛ وإذا كان $c>0$ فإنّ $ac<bc$ ؛ وإذا كان $c<0$ فإنّ $ac>bc$ : نغيّر اتجاه المتباينة فقط عند الضرب (أو القسمة) في عدد سالب تمامًا',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 5, leçon « حصر عدد عشري موجب » (2026-10-26) — le tadwir et l'intervalle d'une lecture arrondie.
+  'scoop-scale': {
+    // LA MASSE SOUS LA MAIN : une balance de دكّان العطّار dont l'ÉCRAN arrondit la masse à un rang (le kilo, 0,1 ou 0,01 kg) pendant qu'une bande de
+    // précision écrit la masse exacte. La main VERSE (appui long sur la louche), pince (+1) ou reprend (−1) une pincée : la masse EST le nombre tenu. La commande
+    // « أقلّ (ou أكبر) كمّية que l'écran lit R » oblige à trouver où l'écran bascule ; « سلّم الكيس » est l'essai, refusé avec le voisin en chiffres de l'élève.
+    // Au niveau متقدم un sachet modèle pèse 2/7 kg : une lampe dit plus léger / plus lourd et ne dit jamais « égal ». Chaque dépôt est un essai : MANUEL (§6bis).
+    shows: 'المدوَّر r إلى الرتبة $10^{-k}$ يعني أنّ $r-\\frac{1}{2}\\times10^{-k}\\le x<r+\\frac{1}{2}\\times10^{-k}$ ؛ وحاصل قسمة غير عشري لا تبلغه قيمة مقرّبة بل يُحصَر بينها',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
   // 3AM, unité 5 (2026-10-21) — résoudre ax + b = cx + d en traversant les termes avec leur signe, puis en divisant.
@@ -719,6 +759,108 @@ export const MANIPULATION_TYPES = Object.freeze({
     // une augmentation AJOUTE t cases aux 100, une diminution en RETIRE t ; une hausse puis une baisse du même t % ne ramène pas au départ. Chaque
     // « انقل » est un essai jugé exactement : MANUEL (§6bis).
     shows: 'لحساب $t\\%$ من عدد نضرب هذا العدد في $\\frac{t}{100}$ ؛ ونحسب نسبة مئوية من المساواة $\\frac{a}{b}=\\frac{t}{100}$ ؛ والزيادة بـ $t\\%$ هي الضرب في $1+\\frac{t}{100}$ والتخفيض هو الضرب في $1-\\frac{t}{100}$',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 1, 2e leçon (2026-10-26) — le produit de PLUSIEURS nombres relatifs.
+  'robot-track': {
+    // LES SIGNES ET L'ORDRE SOUS LA MAIN : un robot part de 1 sur un tapis gradué ; chaque carte de son programme multiplie sa position. Une carte
+    // positive l'éloigne du poteau 0 du MÊME côté ; une carte négative le fait en plus SAUTER par-dessus le poteau (le symétrique) : × (−1) est le
+    // demi-tour. La main tient le SIGNE de chaque carte (le badge) et l'ORDRE / la PRÉSENCE des cartes (porter, échanger). Le côté d'arrivée ne dépend
+    // que du NOMBRE de demi-tours, jamais de l'ordre ; une carte posée DEUX FOIS (le monde `square`) fait deux demi-tours identiques ou aucun. Chaque
+    // changement du programme est un essai jugé exactement : MANUEL (§6bis).
+    shows: 'إشارة جداء عدة أعداد نسبية غير معدومة سالبة إذا كان عدد عوامله السالبة فرديًا وموجبة إذا كان زوجيًا مهما كان ترتيبها، و $(-1) \\times a = -a$ ، ومربع عدد نسبي لا يكون سالبًا',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 1, 3e leçon (2026-10-26) — le quotient de deux nombres relatifs.
+  'code-lockers': {
+    // LE CODE MANQUANT SOUS LA MAIN : un casier de la bibliothèque municipale s'ouvre avec le code q qui rend vraie la règle écrite sur sa porte, « b × ? = a ». La main ROULE les molettes du
+    // code (une molette de SIGNE et des molettes de chiffres, ou — en mode fraction — trois signes et deux nombres) et tire la poignée : chaque tirage est un essai jugé exactement (MANUEL §6bis).
+    // L'écran multiplie en direct (b × code) : la définition « a ÷ b est le nombre q tel que b × q = a » EST le mécanisme ; le signe de q se lit sur le refus (même distance, signe faux). Quand
+    // aucun code décimal n'existe, trois écritures (−a/b, a/−b, −(a/b)) ouvrent la même porte ; avec b = 0 aucun code n'ouvre (a ≠ 0) ou tous ouvrent (a = 0). `code-lockers` n'énonce jamais la règle.
+    shows: 'حاصل قسمة $a$ على $b$ ($b \\neq 0$) هو العدد $q$ الذي يحقّق $b \\times q = a$ ؛ موجب إذا كان للعددين الإشارة نفسها وسالب إذا اختلفت إشارتاهما، ومسافته إلى الصفر هي حاصل قسمة المسافتين ؛ و $\\frac{-a}{b} = \\frac{a}{-b} = -\\frac{a}{b}$',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 2 « العمليات على الكسور والأعداد الناطقة » (2026-10-25) — le مقلوب et la division de deux fractions.
+  'gear-crank': {
+    // LA DIVISION PAR UN RAPPORT SOUS LA MAIN : une درّاجة dont le plateau (F dents) entraîne un pignon (R dents) par la chaîne. La main TOURNE la manivelle ;
+    // la chaîne avance de n dents, la pédale a fait n/F tour, la roue n/R tour. Le drapeau est à des tours de roue donnés (un entier ou une fraction) : combien de
+    // tours de pédale ? Un tour de pédale ne fait faire à la roue que F/R tour, donc la roue demande plus (ou moins) de tours de pédale que de tours de roue :
+    // diviser par F/R, c'est multiplier par R/F — le mouvement inverse échange le plateau et le pignon. En متقدم la manivelle est bloquée tant que l'élève n'a pas
+    // écrit sa prédiction (une fraction), les compteurs sont voilés jusqu'au lâcher et une prédiction fausse est réfutée par la course. Chaque lâcher est un essai
+    // jugé exactement : MANUEL (§6bis). « جرّب أعدادك » : toujours ouvert (12 … 52 dents, un drapeau p/q).
+    shows: 'قسمة عدد على كسر هي الضرب في مقلوبه: مقلوب $\\frac{a}{b}$ هو $\\frac{b}{a}$ لأنّ جداءهما $1$ ؛ ودورات الدوّاسة اللازمة لعدد من دورات العجلة تساوي هذا العدد مضروبًا في مقلوب $\\frac{F}{R}$ حيث $F$ و$R$ عدد أسنان الصحن والترس',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 2 « العمليات على الكسور والأعداد الناطقة » (2026-10-26) — l'égalité et la comparaison de deux fractions (produits en croix).
+  'shade-match': {
+    // LE NUMÉRATEUR SOUS LA MAIN : un seau de référence A (a mesures de bleu pour b de blanc) et un seau B qui reçoit d mesures de blanc ; la main VERSE c mesures de
+    // bleu avec la manette (appui prolongé = une mesure toutes les 0,45 s, un clic = une mesure, « تصريف » en ôte une). La teinte est calculée de la part de bleu
+    // exacte c/(c+d) : à rapports égaux les deux couleurs sont IDENTIQUES ; un mesureur à aiguille penche selon le signe de c × b − a × d (plus clair / plus foncé)
+    // et allume « تطابق » à l'égalité. Quand a × d ÷ b n'est pas entier aucun c ne convient : deux voisins restent de part et d'autre du zéro — les produits en croix
+    // COMPARENT. En متقدم le mesureur est voilé jusqu'à l'engagement (un c, ou « لا يوجد عدد صحيح » avec les deux voisins écrits). Chaque lâcher est un essai
+    // jugé exactement : MANUEL (§6bis). « جرّب أعدادك » : toujours ouvert (a, b, d ∈ 1 … 20).
+    shows: 'الكسران $\\frac{a}{b}$ و $\\frac{c}{d}$ متساويان إذا وفقط إذا كان $a \\times d = b \\times c$ ؛ وإذا كان $a \\times d < b \\times c$ فالأوّل أصغر من الثاني ؛ ولمقارنة كسرين نكتبهما بنفس المقام (مضاعف مشترك للمقامين)',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 2 (2026-10-26) — la somme et la différence de deux fractions : le dénominateur commun.
+  'seed-rake': {
+    // L'ESPACEMENT SOUS LA MAIN : un حوض de 1 m, des zones de cultures peintes l'une après l'autre (1/4 puis 1/6…). La main ÉTIRE un râteau : elle tient l'espacement 1/N m ;
+    // « ازرع » plante un plant par case. Un espacement convient ⇔ chaque zone contient un nombre ENTIER de cases (N multiple commun des dénominateurs) ; sinon un plant tombe
+    // sur la frontière de deux zones et rien n'est compté. La somme se lit en plants (5 × 1/12 m) et reste la même pour tout espacement qui convient ; le plus large est le
+    // plus petit multiple commun. Une zone RÉCOLTÉE se retire (différence). En متقدم le râteau est bloqué : on écrit N et la longueur avant de semer. Chaque semis est un essai jugé exactement : MANUEL (§6bis).
+    shows: 'لجمع كسرين أو طرحهما نكتبهما بنفس المقام، وهو مضاعف مشترك للمقامين: $\\frac{1}{4}+\\frac{1}{6}=\\frac{3}{12}+\\frac{2}{12}=\\frac{5}{12}$ ؛ وأصغر مضاعف مشترك يعطي أبسط حساب',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 2, leçon 4 (2026-10-26) — le nombre rationnel : une écriture a/b, une place sur la droite.
+  'number-line-pegs': {
+    // LA POSITION D'UNE ÉCRITURE SOUS LA MAIN : un حبل tendu dans la cour, gradué aux entiers ; des cartes portent une écriture a/b (a et b relatifs). La main PORTE une carte et l'ACCROCHE où elle croit
+    // que le nombre habite ; « تحقّق » laisse le vent la faire glisser jusqu'à son vrai piquet : les écritures du MÊME nombre s'empilent, une carte du mauvais côté du zéro le traverse. En متقدم toutes les
+    // cartes sont accrochées sans graduation entre les entiers et UN verdict juge l'ordre. Chaque accrochage et chaque « تحقّق » est un essai jugé exactement : MANUEL §6bis. `number-line-pegs` n'énonce jamais la règle.
+    shows: 'العدد الناطق هو حاصل قسمة عدد نسبي على عدد نسبي غير معدوم $\\frac{a}{b}$ ، وله كتابات كثيرة ومكان واحد على المستقيم المدرّج ؛ كتابته المعيارية بمقام موجب ؛ ولمقارنة أعداد ناطقة نكتبها بنفس المقام الموجب ثم نقارنها كأعداد نسبية',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 2, leçon 5 (2026-10-26) — les quatre opérations sur les rationnels : le signe d'abord, puis la fraction.
+  'merge-board': {
+    // LE SIGNE PRÉDIT, LE DIVISEUR RETOURNÉ, L'ORDRE DES FUSIONS : une chaîne de calcul est une rangée de tuiles (fraction + barre signée) ; deux tuiles voisines se FUSIONNENT. La main prédit le signe
+    // du résultat AVANT chaque fusion (une prédiction fausse est refusée, les barres montrent pourquoi), retourne le DIVISEUR d'une division (son signe gardé) et choisit l'ORDRE des fusions : un aimant tient
+    // les × ÷ (priorité), une bulle tient ses tuiles (parenthèses), les + − vont de gauche à droite. Chaque fusion et chaque refus est un essai jugé exactement : MANUEL §6bis. `merge-board` n'énonce jamais la règle.
+    shows: 'لجمع عددين ناطقين أو طرحهما نحدّد إشارة الناتج ثم نوحّد المقامين؛ وفي الضرب والقسمة تكون الإشارة موجبة إذا تشابهت الإشارتان وسالبة إذا اختلفتا، ونقسم بالضرب في مقلوب القاسم $\\frac{a}{b}\\div\\frac{c}{d}=\\frac{a}{b}\\times\\frac{d}{c}$ ؛ وفي سلسلة حسابات: الأقواس ثم الضرب والقسمة ثم الجمع والطرح',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 4, leçon 4 (2026-10-26) — comparer par l'aiguille d'une différence.
+  'difference-meter': {
+    // L'AIGUILLE QUI LIT UNE DIFFÉRENCE : sur la rail de verre du labo de physique, deux perles portent les nombres a et b ; un galvanomètre à deux sondes lit « rouge MOINS noir ». La main BRANCHE chaque sonde sur une perle
+    // (c'est elle qui décide quel nombre est soustrait), lit UNE aiguille — à droite, à gauche, sur 0 — puis choisit la carte d'ordre ; « بدّل المجسّين » fait traverser l'aiguille, pas l'ordre. Au niveau متقدم un volet couvre
+    // l'aiguille tant que la différence n'est pas ÉCRITE, et un rideau cache les perles : seule la différence est donnée. Monde `race` : les perles sont les valeurs de deux expressions, la main tient x, l'aiguille lit A − B et la main
+    // remplit une carte d'ordre par région de x. Chaque branchement, lecture, écriture et verdict est un essai jugé exactement : MANUEL §6bis. `difference-meter` n'énonce jamais la règle.
+    shows: 'العدد الأكبر هو الذي يكون الفرق $a-b$ معه موجبًا: $a>b$ معناه $a-b>0$ ، و $a<b$ معناه $a-b<0$ ، و $a=b$ معناه $a-b=0$ ؛ فنعرف الترتيب من إشارة الفرق وحدها، وتبديل العددين يبدّل إشارة الفرق لا الترتيب. ولمقارنة عبارتين $A$ و $B$ نبسّط $A-B$ ثم نعيّن إشارته حسب قيم $x$.',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 3, leçon 1 (2026-10-26) — la puissance de 10 comme nombre de crans d'un zoom : l'exposant sous la main.
+  'ten-zoom': {
+    // LA BAGUE QUI ZOOME PAR DIX : le club de sciences a une lentille de laiton dont la bague crantée multiplie par 10 (cadre plus grand) ou divise par 10 (cadre plus petit) le côté d'un cadre carré,
+    // qui part du dessus d'une table (1 m). La main TIENT le nombre de crans n : elle tourne la bague (ou pince, ou molette, ou boutons) jusqu'à ce que le côté du cadre égale la carte (« 1 000 000 م »,
+    // « 0,001 م », « مليار متر », « ميكرومتر »), puis « ثبّت الإطار ». La plaque lit le côté en DÉCIMAL (1 000 000 m : le 1 et ses zéros ; 0,001 m : le 1 au rang 3 après la virgule) ; sans cran le cadre est
+    // la table (1 m). Monde `prefixes` : la carte est une unité (كيلومتر … نانومتر). Chaque cran, prédiction et verdict est un essai jugé exactement : MANUEL §6bis. `ten-zoom` n'énonce jamais la règle.
+    shows: 'نقرأ $10^n$ : 1 متبوع بـ $n$ صفرًا إذا كان $n$ موجبًا، و $10^0 = 1$ ، و $10^{-n} = \\frac{1}{10^n}$ هو العدد الذي رقم 1 فيه في الرتبة $n$ بعد الفاصلة ؛ وكل بادئة (كيلو، ميلي، ميكرو، نانو …) هي قوة للعدد 10',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 3, leçon 2 (2026-10-26) — les trois règles sur les puissances de 10 lues comme des COLONNES entre deux plaques d'unités.
+  'unit-ladder': {
+    // LA RÈGLE QUI CONVERTIT : au club de technologie, une règle de laiton est gravée de colonnes égales (entre deux colonnes voisines on multiplie par 10) et des plaques d'unités pendent au-dessus (les grandes à gauche).
+    // La main TEND un ruban entre deux plaques et lit le nombre de colonnes qu'il traverse : deux rubans enchaînés s'ajoutent, un ruban de part et d'autre du mètre mesure l'ÉCART entre deux rangs, et les tables d'aire et de
+    // volume re-pavent la règle (2 ou 3 colonnes par unité) — la main CHOISIT alors le mode. Une extrémité au milieu d'une plaque, ou le mauvais mode, est refusé avec le calcul. Chaque ruban, prédiction et verdict est un
+    // essai jugé exactement : MANUEL §6bis. `unit-ladder` n'énonce jamais la règle avant la phase formelle.
+    shows: 'نكتب $10^m \\times 10^n = 10^{m+n}$ و $\\frac{10^m}{10^n} = 10^{m-n}$ و $(10^m)^n = 10^{m \\times n}$ ؛ فعدد الأعمدة بين لوحتين هو الأس، وفي جدول المساحة أو الحجم تُضاعف الأعمدة بمرتين أو ثلاث',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 3, leçon 3 (2026-10-26) — l'écriture scientifique, l'encadrement entre deux puissances de 10 et le rang de grandeur lus comme une POSITION sur un slide de décades.
+  'size-ladder': {
+    // LE SLIDE DES DÉCADES : dans le couloir de la foire des sciences, un grand mur porte un slide de barreaux de bois ; chaque barreau va d'une puissance de 10 à la suivante et porte neuf cases entre les graduations 1 … 10
+    // (placées LOGARITHMIQUEMENT). La main tient la POSITION d'une carte de longueur : d'abord son BARREAU (haut / bas), puis sa CASE (gauche / droite), puis l'AIMANT qui la tire vers la graduation entière la plus proche.
+    // Une carte posée sur un mauvais barreau, ou dans une mauvaise case, retombe avec le calcul ; sur son barreau et dans sa case elle s'écrit « a × 10ⁿ ». En متقدم on ÉCRIT a et n avant de suspendre. Chaque dépôt,
+    // saisie, aimant et choix est un essai jugé exactement : MANUEL §6bis. `size-ladder` n'énonce jamais la règle avant la phase formelle.
+    shows: 'نكتب $A=a\\times10^n$ حيث $1\\le a<10$ ، فيكون $10^n\\le A<10^{n+1}$ ؛ ورتبة قدر $A$ هي $a^{\\prime}\\times10^n$ حيث $a^{\\prime}$ مدوّر $a$ إلى الوحدة ؛ ولمقارنة عددين نقارن أسّيهما ثم العددين $a$',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
   'pin-rails': {

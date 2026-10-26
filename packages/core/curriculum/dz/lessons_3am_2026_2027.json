@@ -42,11 +42,22 @@
         "jam-tarh-nisbiya"
       ],
       "pointsToLearn": [
-        "حساب جداء عدد سالب في عدد موجب بالرجوع إلى معنى الضرب كجمع متكرر",
-        "اكتشاف قاعدة الإشارات: جداء عددين نسبيين لهما نفس الإشارة موجب، ومختلفين في الإشارة سالب",
-        "تبرير قاعدة إشارة جداء عددين سالبين باستعمال الخاصية التوزيعية",
-        "حساب جداء عددين نسبيين بضرب المسافتين إلى الصفر وتطبيق قاعدة الإشارات"
+        "حساب جداء عدد سالب في عدد موجب بالرجوع إلى معنى الضرب كجمع متكرر، مثل $(-2)\\times3=(-2)+(-2)+(-2)=-6$",
+        "تعيين إشارة جداء عددين نسبيين بقاعدة الإشارات: يكون موجبًا إذا كان للعددين الإشارة نفسها، وسالبًا إذا اختلفت إشارتاهما",
+        "تبرير إشارة جداء عددين سالبين بالخاصية التوزيعية، مثل $(-3)\\times4+(-3)\\times(-4)=(-3)\\times0=0$ إذن $(-3)\\times(-4)=12$",
+        "حساب جداء عددين نسبيين (صحيحين أو عشريين) بتعيين إشارته ثم ضرب المسافتين إلى الصفر، ومعرفة أنّ $a\\times0=0$"
       ],
+      "pointPrerequisites": {
+        "P2": [
+          "3am_jidaa-adadayn-nisbiyayn_P1"
+        ],
+        "P3": [
+          "3am_jidaa-adadayn-nisbiyayn_P2"
+        ],
+        "P4": [
+          "3am_jidaa-adadayn-nisbiyayn_P2"
+        ]
+      },
       "programmeItems": [
         "3am.m1.r01"
       ],
@@ -67,7 +78,10 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 62,
+      "difficulty": "متوسط",
+      "icon": "🛗"
     },
     {
       "code": "jidaa-ida-nisbiya",
@@ -80,7 +94,7 @@
       "decisionStatus": "draft",
       "titleSource": "textbook",
       "title": "جداء عدة أعداد نسبية",
-      "description": "يعيّن التلميذ إشارة جداء عدة أعداد نسبية من عدد العوامل السالبة، ويوظّف الضرب في (1-) ومربع عدد نسبي وتوزيع الضرب في الحساب.",
+      "description": "يعيّن التلميذ إشارة جداء عدة أعداد نسبية من عدد عوامله السالبة، ويوظّف الضرب في (−1) ومربّع عدد نسبي وتوزيع الضرب في الحساب الذهني.",
       "prerequisites": [
         "جداء عددين نسبيين",
         "الأعداد الزوجية والفردية"
@@ -89,32 +103,38 @@
         "jam-tarh-nisbiya"
       ],
       "pointsToLearn": [
-        "ضرب عدد نسبي في $(-1)$ وتفسير $(-1)\\times a=-a$ كمعاكس العدد $a$",
-        "تعيين إشارة جداء عدة أعداد نسبية حسب زوجية عدد العوامل السالبة",
-        "معرفة أن مربع عدد نسبي موجب دائما: $(-a)^2=a^2$",
-        "توظيف توزيع الضرب على الجمع أو الطرح لتبسيط حساب"
+        "ضرب عدد نسبي في $(-1)$ وتفسير $(-1) \\times a = -a$ كمعاكس العدد $a$ وتمييز أدوار الإشارة $-$",
+        "تعيين إشارة جداء عدة أعداد نسبية غير معدومة حسب زوجية عدد عوامله السالبة ثم حسابه بضرب المسافات إلى الصفر مع تغيير ترتيب العوامل",
+        "معرفة أنّ مربّع عدد نسبي $a^2 = a \\times a$ موجب دائمًا وأنّ $(-a)^2 = a^2$",
+        "توظيف توزيع الضرب على الجمع أو الطرح في الاتجاهين لتبسيط حساب عددي على أعداد نسبية"
       ],
+      "pointPrerequisites": {
+        "P1": ["3am_jidaa-adadayn-nisbiyayn_P2"],
+        "P2": ["3am_jidaa-ida-nisbiya_P1", "3am_jidaa-adadayn-nisbiyayn_P4"],
+        "P3": ["3am_jidaa-ida-nisbiya_P2", "3am_jidaa-adadayn-nisbiyayn_P2"],
+        "P4": ["3am_jidaa-ida-nisbiya_P2", "3am_jidaa-adadayn-nisbiyayn_P4"]
+      },
       "programmeItems": [
         "3am.m1.r01"
       ],
       "textbookRef": {
         "unit": 1,
         "pages": {
-          "activity": [
-            9,
-            9
-          ],
+          "activity": null,
           "knowledge": [
             10,
             12
           ],
           "method": [
             11,
-            11
+            13
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 64,
+      "difficulty": "متوسط",
+      "icon": "🤖"
     },
     {
       "code": "qismat-nisbiyayn",
@@ -133,14 +153,33 @@
         "أولوية العمليات والأقواس"
       ],
       "prerequisiteLessonCodes": [
-        "jidaa-adadayn-nisbiyayn"
+        "jidaa-adadayn-nisbiyayn",
+        "jidaa-ida-nisbiya"
       ],
       "pointsToLearn": [
-        "ربط القسمة بالضرب: $a\\div b=q$ معناه $b\\times q=a$ مع $b\\neq 0$",
-        "تعيين إشارة حاصل قسمة عددين نسبيين بقاعدة الإشارات",
-        "حساب حاصل قسمة عددين نسبيين ومعرفة أن $\\frac{-a}{b}=\\frac{a}{-b}=-\\frac{a}{b}$",
-        "تنظيم وتبسيط سلسلة حسابات باحترام أولوية العمليات"
+        "ربط القسمة بالضرب: $a \\div b = q$ معناه $b \\times q = a$ مع $b \\neq 0$ ، وإيجاد عامل مجهول في جداء، مثل $(-6) \\times q = 48$ يعطي $q = 48 \\div (-6) = -8$",
+        "تعيين إشارة حاصل قسمة عددين نسبيين بقاعدة الإشارات (موجب إذا كان لهما الإشارة نفسها، وسالب إذا اختلفت إشارتاهما)، وإشارة حاصل قسمة جداءين بعدّ العوامل السالبة",
+        "حساب حاصل قسمة عددين نسبيين (عشريًا أو على شكل كسر حين لا يكون عشريًا)، ومعرفة أنّ $\\frac{-a}{b} = \\frac{a}{-b} = -\\frac{a}{b}$ و $\\frac{-a}{-b} = \\frac{a}{b}$",
+        "تنظيم سلسلة حسابات على الأعداد النسبية وتبسيطها باحترام أولوية العمليات: الأقواس أوّلًا، ثم الضرب والقسمة، ثم الجمع والطرح"
       ],
+      "pointPrerequisites": {
+        "P1": [
+          "3am_jidaa-adadayn-nisbiyayn_P4"
+        ],
+        "P2": [
+          "3am_qismat-nisbiyayn_P1",
+          "3am_jidaa-adadayn-nisbiyayn_P2",
+          "3am_jidaa-ida-nisbiya_P2"
+        ],
+        "P3": [
+          "3am_qismat-nisbiyayn_P1",
+          "3am_qismat-nisbiyayn_P2"
+        ],
+        "P4": [
+          "3am_qismat-nisbiyayn_P3",
+          "3am_jidaa-ida-nisbiya_P2"
+        ]
+      },
       "programmeItems": [
         "3am.m1.r02"
       ],
@@ -161,7 +200,10 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 64,
+      "difficulty": "متوسط",
+      "icon": "🔐"
     },
     {
       "code": "wadiya-idmajiya-aadad-nisbiya",
@@ -174,14 +216,23 @@
       "decisionStatus": "draft",
       "titleSource": "textbook",
       "title": "أدمج تعلّماتي — الأعداد النسبية",
-      "description": "",
+      "description": "وضعية إدماجية (مقارنة درجتي حرارة بسلّمي سيلسيوس وفهرنهايت) تُعبّئ جداء الأعداد النسبية وحاصل قسمتها وسلاسل الحسابات، تسبقها ست وضعيات تدريبية.",
       "prerequisites": [],
       "prerequisiteLessonCodes": [
         "jidaa-adadayn-nisbiyayn",
         "jidaa-ida-nisbiya",
         "qismat-nisbiyayn"
       ],
-      "pointsToLearn": [],
+      "pointsToLearn": [
+        "حل وضعية إدماجية بتوظيف جداء وحاصل قسمة الأعداد النسبية وسلسلة حسابات عليها"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "3am_jidaa-adadayn-nisbiyayn_P4",
+          "3am_jidaa-ida-nisbiya_P2",
+          "3am_qismat-nisbiyayn_P4"
+        ]
+      },
       "programmeItems": [],
       "textbookRef": {
         "unit": 1,
@@ -191,7 +242,10 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 30,
+      "difficulty": "متقدم",
+      "icon": "🌡️"
     },
     {
       "code": "maqlub-qismat-kasrayn",
@@ -214,9 +268,9 @@
         "qismat-nisbiyayn"
       ],
       "pointsToLearn": [
-        "تعيين مقلوب عدد غير معدوم: مقلوب $a$ هو $\\frac{1}{a}$ ومقلوب $\\frac{a}{b}$ هو $\\frac{b}{a}$",
-        "التعبير عن القسمة على عدد غير معدوم بالضرب في مقلوبه",
-        "قسمة كسرين: $\\frac{a}{b}\\div\\frac{c}{d}=\\frac{a}{b}\\times\\frac{d}{c}$"
+        "تعيين مقلوب عدد غير معدوم (طبيعي أو عشري أو كسر موجب): مقلوب $a$ هو $\\frac{1}{a}$ ومقلوب $\\frac{a}{b}$ هو $\\frac{b}{a}$ ، وجداء عدد ومقلوبه يساوي $1$ ؛ والعدد $0$ ليس له مقلوب",
+        "التعبير عن القسمة على عدد غير معدوم بالضرب في مقلوبه: $a\\div b=a\\times\\frac{1}{b}$",
+        "قسمة كسرين: $\\frac{a}{b}\\div\\frac{c}{d}=\\frac{a}{b}\\times\\frac{d}{c}$ ، مع الاختزال قبل الضرب وكتابة الناتج على أبسط شكل"
       ],
       "programmeItems": [
         "3am.m1.r03",
@@ -233,13 +287,21 @@
             26,
             26
           ],
-          "method": [
-            27,
-            27
-          ]
+          "method": null
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "pointPrerequisites": {
+        "P2": [
+          "3am_maqlub-qismat-kasrayn_P1"
+        ],
+        "P3": [
+          "3am_maqlub-qismat-kasrayn_P2"
+        ]
+      },
+      "durationMinutes": 63,
+      "difficulty": "متوسط",
+      "icon": "🚲"
     },
     {
       "code": "tasawi-muqaranat-kasrayn",
@@ -261,10 +323,16 @@
         "muqarana-kasrayn"
       ],
       "pointsToLearn": [
-        "التعرّف على تساوي كسرين بالجداءين المتصالبين: $\\frac{a}{b}=\\frac{c}{d}$ يكافئ $a\\times d=b\\times c$",
-        "مقارنة كسرين لهما نفس المقام أو نفس البسط",
-        "مقارنة كسرين مقاماهما مختلفان بتوحيد المقامات أو بالجداءين المتصالبين"
+        "التعرّف على تساوي كسرين بالجداءين المتصالبين: $\\frac{a}{b}=\\frac{c}{d}$ يكافئ $a\\times d=b\\times c$ ، وإيجاد حدّ مجهول في تساوي كسرين",
+        "مقارنة كسرين مقاماهما مختلفان (ليس أحدهما مضاعفًا للآخر) بكتابتهما بنفس المقام، باستعمال مضاعف مشترك للمقامين",
+        "اختيار طريقة مناسبة لمقارنة كسرين: الجداءان المتصالبان، أو المقارنة بالعدد $1$ أو بكسر وسيط، أو نفس البسط"
       ],
+      "pointPrerequisites": {
+        "P3": [
+          "3am_tasawi-muqaranat-kasrayn_P1",
+          "3am_tasawi-muqaranat-kasrayn_P2"
+        ]
+      },
       "programmeItems": [
         "3am.m1.r05"
       ],
@@ -285,7 +353,10 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 63,
+      "difficulty": "متوسط",
+      "icon": "🎨"
     },
     {
       "code": "jam-tarh-kasrayn",
@@ -307,10 +378,18 @@
         "jam-tarh-kusur"
       ],
       "pointsToLearn": [
-        "جمع وطرح كسرين لهما نفس المقام",
-        "جمع وطرح كسرين مقاماهما مختلفان بتوحيد المقامات",
-        "اختيار مضاعف مشترك مناسب للمقامين لتبسيط الحساب"
+        "إدراك أنّنا لا نجمع (أو نطرح) إلا أجزاءً من النوع نفسه: كتابة كسرين مقاماهما كيفيان بمقام مشترك هو مضاعف مشترك للمقامين",
+        "جمع وطرح كسرين (أو أكثر) مقاماهما مختلفان بتوحيد المقامات، ومنها عدد طبيعي يُكتب كسرًا، ثم اختزال الناتج",
+        "اختيار أصغر مضاعف مشترك للمقامين (أوّل مضاعف للمقام الأكبر يقبل القسمة على المقام الآخر) لتبسيط الحساب"
       ],
+      "pointPrerequisites": {
+        "P2": [
+          "3am_jam-tarh-kasrayn_P1"
+        ],
+        "P3": [
+          "3am_jam-tarh-kasrayn_P1"
+        ]
+      },
       "programmeItems": [
         "3am.m1.r06"
       ],
@@ -331,7 +410,10 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 63,
+      "difficulty": "متوسط",
+      "icon": "🌱"
     },
     {
       "code": "adad-natiq",
@@ -354,10 +436,15 @@
         "qismat-nisbiyayn"
       ],
       "pointsToLearn": [
-        "التعرّف على العدد الناطق كحاصل قسمة عدد نسبي على عدد نسبي غير معدوم $\\frac{a}{b}$",
-        "تعيين إشارة عدد ناطق وكتابته بمقام موجب",
-        "تمثيل أعداد ناطقة على مستقيم مدرج وترتيبها"
+        "التعرّف على العدد الناطق كحاصل قسمة عدد نسبي على عدد نسبي غير معدوم $\\frac{a}{b}$ ، ومعرفة أنّ الأعداد الطبيعية والأعداد الصحيحة النسبية والأعداد العشرية النسبية أعداد ناطقة",
+        "كتابة عدد ناطق على الشكل $\\frac{a}{b}$ أو $-\\frac{a}{b}$ بمقام موجب ($a$ و $b$ طبيعيان)، والتعرّف على الكتابات المتساوية لنفس العدد الناطق",
+        "تمثيل أعداد ناطقة على مستقيم مدرّج، ومقارنتها وترتيبها بكتابتها بنفس المقام الموجب وبقواعد مقارنة الأعداد النسبية"
       ],
+      "pointPrerequisites": {
+        "P1": ["1am_hasil-qisma-kasr_P1"],
+        "P2": ["3am_qismat-nisbiyayn_P3", "3am_adad-natiq_P1"],
+        "P3": ["3am_adad-natiq_P2"]
+      },
       "programmeItems": [
         "3am.m1.r07"
       ],
@@ -378,7 +465,10 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 65,
+      "difficulty": "متوسط",
+      "icon": "🧺"
     },
     {
       "code": "amaliyat-natiqa",
@@ -391,7 +481,7 @@
       "decisionStatus": "draft",
       "titleSource": "textbook",
       "title": "العمليات على الأعداد الناطقة",
-      "description": "يحسب التلميذ مجموع وفرق وجداء وحاصل قسمة عددين ناطقين ويقارنهما، موسّعا قواعد الكسور إلى الأعداد النسبية.",
+      "description": "يحسب التلميذ مجموع وفرق وجداء وحاصل قسمة عددين ناطقين بتعيين إشارة الناتج أوّلًا، ويقسم بالضرب في المقلوب، وينظّم سلسلة حسابات باحترام الأولوية.",
       "prerequisites": [
         "العدد الناطق",
         "العمليات على الكسور",
@@ -404,11 +494,17 @@
         "adad-natiq"
       ],
       "pointsToLearn": [
-        "حساب مجموع وفرق عددين ناطقين بتوحيد المقامات",
-        "حساب جداء عددين ناطقين: $\\frac{a}{b}\\times\\frac{c}{d}=\\frac{a\\times c}{b\\times d}$",
-        "حساب حاصل قسمة عددين ناطقين بالضرب في المقلوب",
-        "تنظيم سلسلة حسابات على الأعداد الناطقة باحترام أولوية العمليات"
+        "حساب مجموع وفرق عددين ناطقين بتوحيد المقامات مع تعيين إشارة الناتج (منها ناطق بسطه عشري)",
+        "حساب جداء عددين ناطقين: $\\frac{a}{b}\\times\\frac{c}{d}=\\frac{a\\times c}{b\\times d}$ مع تعيين الإشارة أوّلًا",
+        "تعيين مقلوب عدد ناطق غير معدوم (مقلوب $-3$ هو $-\\frac{1}{3}$) وحساب حاصل قسمة عددين ناطقين بالضرب في مقلوب القاسم",
+        "تنظيم سلسلة حسابات على الأعداد الناطقة باحترام أولوية العمليات والأقواس، ومنها الكتابات الكسرية المركّبة"
       ],
+      "pointPrerequisites": {
+        "P1": ["3am_jam-tarh-kasrayn_P2", "3am_adad-natiq_P2"],
+        "P2": ["3am_jidaa-adadayn-nisbiyayn_P4"],
+        "P3": ["3am_maqlub-qismat-kasrayn_P3"],
+        "P4": ["3am_amaliyat-natiqa_P1", "3am_amaliyat-natiqa_P2", "3am_amaliyat-natiqa_P3"]
+      },
       "programmeItems": [
         "3am.m1.r08"
       ],
@@ -429,7 +525,10 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 66,
+      "difficulty": "متقدم",
+      "icon": "🕹️"
     },
     {
       "code": "wadiya-idmajiya-kusur-natiqa",
@@ -442,7 +541,7 @@
       "decisionStatus": "draft",
       "titleSource": "textbook",
       "title": "أدمج تعلّماتي — العمليات على الكسور والأعداد الناطقة",
-      "description": "",
+      "description": "وضعية إدماجية (حصّالة مريم: كسور من الكلّ وكسور من الباقي ثم المبلغ الكلّي) تُعبّئ المقلوب وقسمة الكسور والمقارنة والجمع والطرح والأعداد الناطقة، تسبقها ست وضعيات تدريبية.",
       "prerequisites": [],
       "prerequisiteLessonCodes": [
         "maqlub-qismat-kasrayn",
@@ -451,17 +550,34 @@
         "adad-natiq",
         "amaliyat-natiqa"
       ],
-      "pointsToLearn": [],
+      "pointsToLearn": [
+        "حل وضعية إدماجية بتوظيف العمليات على الكسور والأعداد الناطقة: المقلوب والقسمة، المقارنة، الجمع والطرح، وسلاسل الحساب"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "3am_maqlub-qismat-kasrayn_P3",
+          "3am_tasawi-muqaranat-kasrayn_P3",
+          "3am_jam-tarh-kasrayn_P2",
+          "3am_adad-natiq_P3",
+          "3am_amaliyat-natiqa_P4"
+        ]
+      },
       "programmeItems": [],
       "textbookRef": {
         "unit": 2,
         "pages": {
           "integration": [
             36
+          ],
+          "challenge": [
+            22
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 30,
+      "difficulty": "متقدم",
+      "icon": "💰"
     },
     {
       "code": "quwa-adad-ashara",
@@ -483,11 +599,16 @@
         "kusur-ashriya-kitaba"
       ],
       "pointsToLearn": [
-        "تعريف $10^n$ كجداء $n$ عاملا كلها تساوي 10 من أجل $n$ عدد طبيعي غير معدوم",
-        "تعريف $10^{-n}=\\frac{1}{10^n}$ كمقلوب $10^n$ و $10^0=1$",
-        "الانتقال بين الكتابة العشرية وكتابة قوة للعدد 10 (عدد الأصفار ورتبة الرقم 1)",
-        "كتابة عدد عشري باستعمال قوى 10"
+        "تعريف $10^n$ ، من أجل $n$ عدد طبيعي غير معدوم، جداءً لـ $n$ عاملًا كلّها تساوي 10 وقراءته « 10 أس $n$ »، مع $10^1=10$",
+        "معرفة أنّ $10^0=1$ وأنّ $10^{-n}=\\frac{1}{10^n}$ هو مقلوب $10^n$",
+        "الانتقال بين الكتابة العشرية لقوة للعدد 10 وكتابتها $10^n$ : 1 متبوعًا بـ $n$ صفرًا، أو 1 في الرتبة $n$ بعد الفاصلة، وقراءتها بالأسماء (ألف، مليون، مليار، جزء من ألف، جزء من مليون…) والبادئات (كيلو، ميلي، ميكرو، نانو…)",
+        "كتابة عدد عشري باستعمال قوى 10: مفكوكه مثل $3985=3\\times10^3+9\\times10^2+8\\times10^1+5\\times10^0$ و $0{,}407=4\\times10^{-1}+7\\times10^{-3}$ ، وكتابات مثل $45\\,000=45\\times10^3$ و $0{,}07=7\\times10^{-2}$"
       ],
+      "pointPrerequisites": {
+        "P2": ["3am_quwa-adad-ashara_P1"],
+        "P3": ["3am_quwa-adad-ashara_P1", "1am_kusur-ashriya-kitaba_P4"],
+        "P4": ["3am_quwa-adad-ashara_P3"]
+      },
       "programmeItems": [
         "3am.m3.r01",
         "3am.m3.r03"
@@ -509,7 +630,10 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 62,
+      "difficulty": "سهل",
+      "icon": "🔭"
     },
     {
       "code": "qawaid-quwa-ashara",
@@ -531,11 +655,17 @@
         "quwa-adad-ashara"
       ],
       "pointsToLearn": [
-        "استعمال القاعدة $10^m\\times 10^n=10^{m+n}$",
-        "استعمال القاعدة $\\frac{10^m}{10^n}=10^{m-n}$",
-        "استعمال القاعدة $(10^m)^n=10^{m\\times n}$",
-        "تبسيط عبارات تتضمن قوى العدد 10 وكتابتها على شكل قوة واحدة"
+        "استعمال القاعدة $10^m\\times10^n=10^{m+n}$ من أجل $m$ و $n$ عددين صحيحين نسبيين",
+        "استعمال القاعدة $\\frac{10^m}{10^n}=10^{m-n}$ من أجل $m$ و $n$ عددين صحيحين نسبيين",
+        "استعمال القاعدة $(10^m)^n=10^{m\\times n}$ من أجل $m$ و $n$ عددين صحيحين نسبيين",
+        "تبسيط عبارة تتضمّن قوى العدد 10 وكتابتها على شكل قوة واحدة، وحساب جداء أو حاصل قسمة أعداد مكتوبة على الشكل $a\\times10^p$ (مثل $7\\times10^3\\times3\\times10^9=21\\times10^{12}$)"
       ],
+      "pointPrerequisites": {
+        "P1": ["3am_quwa-adad-ashara_P1"],
+        "P2": ["3am_qawaid-quwa-ashara_P1", "3am_quwa-adad-ashara_P2"],
+        "P3": ["3am_qawaid-quwa-ashara_P1"],
+        "P4": ["3am_qawaid-quwa-ashara_P1", "3am_qawaid-quwa-ashara_P2", "3am_qawaid-quwa-ashara_P3"]
+      },
       "programmeItems": [
         "3am.m3.r02"
       ],
@@ -556,7 +686,10 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 62,
+      "difficulty": "متوسط",
+      "icon": "📏"
     },
     {
       "code": "kitaba-ilmiya-rutba",
@@ -576,13 +709,26 @@
       ],
       "prerequisiteLessonCodes": [
         "rutbat-miqdar-jam",
-        "quwa-adad-ashara"
+        "quwa-adad-ashara",
+        "qawaid-quwa-ashara"
       ],
       "pointsToLearn": [
-        "تعيين الكتابة العلمية لعدد عشري $a\\times 10^n$ حيث $1\\le a<10$",
-        "حصر عدد عشري بين قوتين متتاليتين للعدد 10 انطلاقا من كتابته العلمية",
-        "إعطاء رتبة قدر عدد ومقارنة مقادير كبيرة أو صغيرة جدا"
+        "تعيين الكتابة العلمية لعدد عشري: $a\\times10^n$ حيث $1\\le a<10$ (و $a$ مسبوق بإشارته إن كان العدد سالبًا) و $n$ عدد صحيح نسبي، انطلاقًا من كتابته العشرية أو من كتابة مثل $35{,}2\\times10^4$ أو من نتيجة حساب بقوى العدد 10",
+        "حصر عدد عشري موجب بين قوتين متتاليتين للعدد 10 انطلاقًا من كتابته العلمية: إذا كان $A=a\\times10^n$ فإنّ $10^n\\le A<10^{n+1}$",
+        "إعطاء رتبة قدر عدد موجب $a'\\times10^n$ حيث $a'$ مدوّر $a$ إلى الوحدة، واستعمال الكتابة العلمية لمقارنة مقادير كبيرة جدًا أو صغيرة جدًا وترتيبها"
       ],
+      "pointPrerequisites": {
+        "P1": [
+          "3am_quwa-adad-ashara_P4",
+          "3am_qawaid-quwa-ashara_P4"
+        ],
+        "P2": [
+          "3am_kitaba-ilmiya-rutba_P1"
+        ],
+        "P3": [
+          "3am_kitaba-ilmiya-rutba_P1"
+        ]
+      },
       "programmeItems": [
         "3am.m3.r04",
         "3am.m3.r05"
@@ -604,7 +750,10 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 63,
+      "difficulty": "متوسط",
+      "icon": "🪜"
     },
     {
       "code": "quwat-adad-nisbi",
@@ -854,9 +1003,9 @@
         "amaliyat-natiqa"
       ],
       "pointsToLearn": [
-        "تعويض الحرف بقيمة نسبية في عبارة حرفية وحساب قيمتها باحترام أولوية العمليات",
-        "إعادة كتابة علامة الضرب واستعمال الأقواس عند تعويض الحرف بعدد سالب",
-        "استعمال قيم عددية لإثبات أن عبارتين غير متساويتين (مثال مضاد)"
+        "تعويض الحرف (أو الحرفين) بقيمة نسبية أو ناطقة في عبارة حرفية وحساب قيمتها باحترام أولوية العمليات، مثل قيمة $2x^2-5x+1$ من أجل $x=3$",
+        "إظهار علامة الضرب المضمَرة ووضع القيمة السالبة بين قوسين عند التعويض: $5x$ من أجل $x=-3$ تُكتب $5\\times(-3)$ ، و $x^2$ تُكتب $(-3)^2=9$ لا $-3^2$",
+        "الحكم على تساوي عبارتين بالقيم: قيمة واحدة تختلف عندها العبارتان تثبت أنهما غير متساويتين (مثال مضاد)، أمّا تساوي قيمتيهما من أجل بعض القيم فلا يثبت تساويهما"
       ],
       "programmeItems": [
         "3am.m5.r03"
@@ -878,7 +1027,22 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "pointPrerequisites": {
+        "P1": [
+          "3am_amaliyat-natiqa_P4"
+        ],
+        "P2": [
+          "3am_qimat-ibara-harfiya_P1"
+        ],
+        "P3": [
+          "3am_qimat-ibara-harfiya_P1",
+          "3am_qimat-ibara-harfiya_P2"
+        ]
+      },
+      "durationMinutes": 64,
+      "difficulty": "متوسط",
+      "icon": "🎯"
     },
     {
       "code": "muqaranat-natiqayn",
@@ -900,9 +1064,9 @@
         "tasawi-muqaranat-kasrayn"
       ],
       "pointsToLearn": [
-        "الربط بين ترتيب عددين وإشارة فرقهما: $a>b$ يكافئ $a-b>0$",
-        "مقارنة عددين ناطقين بحساب فرقهما وتعيين إشارته",
-        "مقارنة عبارتين حرفيتين بدراسة إشارة الفرق"
+        "الربط بين ترتيب عددين وإشارة فرقهما: $a>b$ معناه $a-b>0$ ، و $a<b$ معناه $a-b<0$ ، و $a=b$ معناه $a-b=0$ ، ومعرفة الترتيب من الفرق وحده",
+        "مقارنة عددين ناطقين (موجبين أو سالبين، بكتابة كسرية أو عشرية) بحساب فرقهما وتعيين إشارته",
+        "مقارنة عبارتين حرفيتين بتبسيط فرقهما وتعيين إشارته حسب قيم $x$ ، مثل $A-B=x-4$ موجب عندما $x>4$"
       ],
       "programmeItems": [
         "3am.m5.r04"
@@ -924,7 +1088,19 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "pointPrerequisites": {
+        "P2": [
+          "3am_muqaranat-natiqayn_P1",
+          "3am_tasawi-muqaranat-kasrayn_P2"
+        ],
+        "P3": [
+          "3am_muqaranat-natiqayn_P1"
+        ]
+      },
+      "durationMinutes": 64,
+      "difficulty": "متوسط",
+      "icon": "⚖️"
     },
     {
       "code": "wadiya-idmajiya-ibarat-harfiya-3",
@@ -937,7 +1113,7 @@
       "decisionStatus": "draft",
       "titleSource": "textbook",
       "title": "أدمج تعلّماتي — الحساب الحرفي",
-      "description": "",
+      "description": "وضعية إدماجية (انطلاقات متفاوتة في مضمار المدرسة: أطوال بالحروف، فروق مبسَّطة، قيم تقريبية وقرار) تُعبّئ التبسيط والنشر وحساب القيمة والمقارنة بإشارة الفرق، تسبقها ست وضعيات تدريبية.",
       "prerequisites": [],
       "prerequisiteLessonCodes": [
         "tabsit-hadhf-aqwas",
@@ -945,7 +1121,22 @@
         "qimat-ibara-harfiya",
         "muqaranat-natiqayn"
       ],
-      "pointsToLearn": [],
+      "pointsToLearn": [
+        "تجنيد مكتسبات الحساب الحرفي (التبسيط، النشر، حساب القيمة، المقارنة بإشارة الفرق) لحلّ وضعيات هندسية وعددية مركّبة",
+        "ترييض وضعية بعبارة حرفية، ثم اتخاذ قرار مبرَّر بحساب قيمتها أو بمقارنة عبارتين"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "3am_tabsit-hadhf-aqwas_P1",
+          "3am_nashr-jabri-3am_P4",
+          "3am_qimat-ibara-harfiya_P1",
+          "3am_muqaranat-natiqayn_P2"
+        ],
+        "P2": [
+          "3am_qimat-ibara-harfiya_P3",
+          "3am_muqaranat-natiqayn_P3"
+        ]
+      },
       "programmeItems": [],
       "textbookRef": {
         "unit": 4,
@@ -955,7 +1146,10 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 30,
+      "difficulty": "متقدم",
+      "icon": "🏃"
     },
     {
       "code": "musawiyat-amaliyat",
@@ -1027,7 +1221,7 @@
       "decisionStatus": "draft",
       "titleSource": "textbook",
       "title": "المتباينات والعمليات",
-      "description": "يكتشف التلميذ أثر الجمع والضرب في عدد موجب أو سالب على اتجاه متباينة.",
+      "description": "يكتشف التلميذ أنّ الإزاحة والتمديد بعدد موجب يحفظان ترتيب عددين وأنّ التمديد بعدد سالب يعكسه، ثم يستنتج متباينة من أخرى ويقارن عبارتين ويحصر عبارة.",
       "prerequisites": [
         "مقارنة عددين ناطقين",
         "المساويات والعمليات"
@@ -1037,10 +1231,10 @@
         "jidaa-adadayn-nisbiyayn"
       ],
       "pointsToLearn": [
-        "معرفة أنه إذا كان $a<b$ فإن $a+c<b+c$ و $a-c<b-c$",
-        "معرفة أن ضرب طرفي متباينة في عدد موجب تماما لا يغيّر اتجاهها",
-        "معرفة أن ضرب طرفي متباينة في عدد سالب تماما يغيّر اتجاهها",
-        "توظيف خواص المتباينات لمقارنة عبارات أو لحصرها"
+        "معرفة أنّه إذا كان $a<b$ فإنّ $a+c<b+c$ و $a-c<b-c$ ($c$ عدد ناطق): لا يتغيّر اتجاه متباينة عندما نضيف إلى طرفيها (أو نطرح منهما) العدد نفسه",
+        "معرفة أنّه إذا كان $a<b$ و $c>0$ فإنّ $ac<bc$ و $\\frac{a}{c}<\\frac{b}{c}$ : ضرب طرفي متباينة في (أو قسمتهما على) العدد الموجب تمامًا نفسه لا يغيّر اتجاهها",
+        "معرفة أنّه إذا كان $a<b$ و $c<0$ فإنّ $ac>bc$ و $\\frac{a}{c}>\\frac{b}{c}$ : ضرب طرفي متباينة في (أو قسمتهما على) العدد السالب تمامًا نفسه يغيّر اتجاهها",
+        "توظيف خواص المتباينات (وكذلك $\\leq$ و $\\geq$) لاستنتاج متباينة من أخرى، ولحصر عبارة من الشكل $ax+b$ علمًا بحصر $x$ ، ولمقارنة عبارتين"
       ],
       "programmeItems": [
         "3am.m5.r05"
@@ -1062,7 +1256,28 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "pointPrerequisites": {
+        "P1": [
+          "3am_musawiyat-amaliyat_P1"
+        ],
+        "P2": [
+          "3am_mutabayinat-amaliyat_P1",
+          "3am_musawiyat-amaliyat_P2"
+        ],
+        "P3": [
+          "3am_mutabayinat-amaliyat_P2",
+          "3am_musawiyat-amaliyat_P2"
+        ],
+        "P4": [
+          "3am_mutabayinat-amaliyat_P1",
+          "3am_mutabayinat-amaliyat_P2",
+          "3am_mutabayinat-amaliyat_P3"
+        ]
+      },
+      "durationMinutes": 61,
+      "difficulty": "متوسط",
+      "icon": "🧶"
     },
     {
       "code": "hasr-adad-ushri",
@@ -1084,10 +1299,10 @@
         "hasr-qiyam-muqarraba"
       ],
       "pointsToLearn": [
-        "حصر عدد عشري موجب بين عددين طبيعيين متتاليين",
-        "إعطاء القيمة المقرّبة بالنقصان وبالزيادة إلى $\\frac{1}{10}$ أو $\\frac{1}{100}$ أو $\\frac{1}{1000}$",
-        "تعيين مدوّر عدد عشري إلى رتبة معيّنة",
-        "حصر حاصل قسمة باستعمال الآلة الحاسبة"
+        "حصر عدد عشري موجب بين عددين طبيعيين متتاليين، وتسمية طرفي الحصر قيمتين مقرّبتين إلى الوحدة بالنقصان وبالزيادة",
+        "إعطاء القيمتين المقرّبتين بالنقصان وبالزيادة إلى $\\frac{1}{10}$ أو $\\frac{1}{100}$ أو $\\frac{1}{1000}$ لعدد عشري موجب، وحصره بهما (مثل $4{,}6 \\le 4{,}679 < 4{,}7$)",
+        "تعيين مدوّر عدد عشري موجب إلى رتبة معيّنة (أقرب القيمتين المقرّبتين)، وحصر عدد عُلم مدوّره: مدوّره إلى $0{,}1$ هو $10{,}7$ يعني $10{,}65 \\le x < 10{,}75$",
+        "حصر حاصل قسمة إلى رتبة معيّنة بقراءة شاشة الآلة الحاسبة، وتعيين مدوّره"
       ],
       "programmeItems": [
         "3am.m5.x1"
@@ -1109,7 +1324,22 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "pointPrerequisites": {
+        "P2": [
+          "3am_hasr-adad-ushri_P1"
+        ],
+        "P3": [
+          "3am_hasr-adad-ushri_P2"
+        ],
+        "P4": [
+          "3am_hasr-adad-ushri_P2",
+          "3am_hasr-adad-ushri_P3"
+        ]
+      },
+      "durationMinutes": 58,
+      "difficulty": "متوسط",
+      "icon": "⚖️"
     },
     {
       "code": "muadalat-darajat-ula",

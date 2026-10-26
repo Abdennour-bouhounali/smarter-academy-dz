@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import SidebarToggle from '../common/SidebarToggle';
 import { AuthContext } from '../../context/AuthContext';
 import { studentNavLinks } from '../../data/studentNavigation';
-import { getAllGrades } from '@smarter-academy/core';
+import { getAllGradesSummary } from '../../utils/gradeSummary';
 import { getDisplayName, getInitials } from '../../utils/userDisplay';
 import { useWorkspaceLayout } from '../../context/WorkspaceLayoutContext';
 import { usePremiumStatus } from '../../hooks/usePremiumStatus';
@@ -48,7 +48,7 @@ export default function StudentNavbar() {
   const { sidebarCollapsed } = useWorkspaceLayout();
   const { isPremium, hasSubscription, canSeeUpgrade } = usePremiumStatus();
 
-  const grade = user?.grade ? getAllGrades().find((g) => g.id === user.grade) : null;
+  const grade = user?.grade ? getAllGradesSummary().find((g) => g.id === user.grade) : null;
 
   const handleLogout = async () => {
     await logout();

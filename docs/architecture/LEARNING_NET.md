@@ -247,7 +247,7 @@ their cross-year links come from the net at run time.
 **Database — imported, closed, ignored by Mastery V2.**
 
 - `exportCurriculum.mjs` → `smarter:import-curriculum` imports the three grades, their units, the 196 lessons and
-  **all 523 learning points** (`{g}_{code}_P{n}`), as D2 requires.
+  **all 524 learning points (523 drafts + the unit-1 synthesis P1, 2026-10-26)** (`{g}_{code}_P{n}`), as D2 requires.
 - **The importer creates a `coming_soon` lesson with `publication_status = draft`** (`CurriculumImporter::
   publicationOnCreate`). The column defaults to `published`: without this rule the 196 empty lessons would be open
   on the server, since every server gate (`ContentAccess`, `visibleToStudents`) reads `publication_status`, not
@@ -313,6 +313,10 @@ Lessons are generated **along the net, not grade by grade**. `scripts/learning-n
 `docs/curriculum/GENERATION_QUEUE.md` (readable) and `docs/curriculum/generation-queue.json` (machine). Batches take
 the queue's first entries that are still `coming_soon`, in order.
 
+0. **Phase 0 — owner priority** (owner, 2026-10-25). The remaining lessons of the 3AM units 1–5 (`aadad-nisbiya`, `kusur-natiqa`,
+   `quwa-nisbiya`, `ibarat-harfiya-3`, `musawiyat-mutabayinat`, in that order; `OWNER_FIRST_UNITS` in the script) come first, in
+   catalogue order, each synthesis after its unit's last lesson — 20 entries. Each one has a written generation plan
+   (`docs/sources/3am/unit<N>/plan/<code>.md`, index `docs/curriculum/PLAN_3AM_UNITS_1_5.md`) that the generator executes.
 1. **Phase A — what the 4AM student needs NOW** (owner, 2026-10-20). The 4AM students already use the platform, so their
    current needs come first, before lessons they will need later in the year or not at all in 4AM. The 4AM units are taken in
    textbook order (`units_4am › number`, 1 → 14), and their lessons in catalogue order. For each lesson:
@@ -339,6 +343,12 @@ On 2026-10-20 (10 lessons published): 186 — A 35 (34 lessons + 1 synthesis), B
 Phase A does not change what a lesson builds. A Phase-A lesson whose own earlier prerequisites are not generated yet still
 reviews them in its « أستعدّ » (« راجع قبل أن تنطلق »), and they come in Phase B.
 
+**Net fix 2026-10-26 (3AM unit 3 « القوى ذات أسس نسبية صحيحة »).** The unit teaches r01/r03 (`quwa-adad-ashara`) BEFORE r02
+(`qawaid-quwa-ashara`): the link `3am.m3.r02 → 3am.m3.r03` would have made the first lesson's « أستعدّ » measure a rule taught in the
+NEXT lesson. It is replaced by `3am.m3.r01 → 3am.m3.r03`, and `3am.m3.r02 → 3am.m3.r04` is added (the scientific writing of a computation
+needs the rules); `kitaba-ilmiya-rutba › prerequisiteLessonCodes` gained `qawaid-quwa-ashara`. General rule shown by the case: a `requires`
+link must follow the textbook order of the LESSONS that own its two items; when it does not, the link is wrong, not the order.
+
 ## 5. Editing the net
 
 - **Fix a transcription:** edit the item's `textAr` in `official_programme_moyen.json`. Never change its id.
@@ -356,7 +366,7 @@ reviews them in its « أستعدّ » (« راجع قبل أن تنطلق »), 
 | Gate | What it checks |
 |---|---|
 | `packages/core/curriculum/dz/net/learningNet.test.js` (19 tests) | items (format, uniqueness, official numbering), links (existence, direction, acyclicity, `extends`/`consolidates` fields, one base), threads (partition), lessons (every item homed, 4AM fully covered by published lessons, closed recall list, unique codes, every unit of every grade ends with its synthesis, no planned layer left in the net, lesson order), resolver behaviour (review links, earlier-year review after an error) |
-| `packages/core/curriculum/coursesData.test.js` | the five grades; `lessonCount` counts published lessons; 1AM–3AM lessons all `coming_soon` with no routable path; their 523 LP ids; prerequisites exist and precede |
+| `packages/core/curriculum/coursesData.test.js` | the five grades; `lessonCount` counts published lessons; 1AM–3AM lessons all `coming_soon` with no routable path; their 524 LP ids; prerequisites exist and precede |
 | `apps/api/tests/Feature/MoyenComingSoonImportTest.php` | coming_soon imported `draft` with its LPs; cross-year lesson prerequisite; publishing opens without touching the tier; admin authority kept; no recommendation to a draft prerequisite |
 | `npm run check:learning-net` (in `check:lessons`) | the generated maps and the generation queue are up to date; the queue also fails if a planned lesson is missing from it |
 

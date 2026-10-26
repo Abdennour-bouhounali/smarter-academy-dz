@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { MANIPULATION_TYPE_IDS, MANIPULATION_TYPES } from '@smarter-academy/core/curriculum/manipulationTypes.js';
 import * as linearSystem from '@smarter-academy/core/arithmetic/linearSystem.js';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 import * as levelsModule from './levels';
 import { LEVELS, levelsFor, levelMatching, resolveManipulationLevels } from './levels';
 import { STORIES } from './logic/storyBars';
@@ -64,6 +65,21 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         const ops = (n) => n.tasks.flat().length;
         expect(ops(advanced.numbers), type).toBeGreaterThan(ops(beginner.numbers));
       }
+      // Unité 5 de 3AM, leçon 2 : `loom-threads` se mesure par le NOMBRE D'ÉTAPES permis (متقدم seul : deux poutres), la BANDE transportée et la finesse du pas (1 puis 1/2).
+      else if (type === 'loom-threads') {
+        const stepsAllowed = (n) => Math.max(...n.tasks.map((tk) => tk.maxStages ?? 1));
+        expect(stepsAllowed(advanced.numbers), type).toBeGreaterThan(stepsAllowed(beginner.numbers));
+        expect(advanced.numbers.tasks.some((tk) => tk.kind === 'band'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.kind === 'band'), type).toBe(false);
+        expect(Lin.toNumber(Lin.parseNumber(advanced.numbers.step)), type).toBeLessThan(Lin.toNumber(Lin.parseNumber(beginner.numbers.step)));
+      }
+      // Unité 5 de 3AM, leçon 3 : `scoop-scale` se mesure par la FINESSE du rang de l'écran (0,1 puis 0,01 pour les tâches principales) et par la tâche PIÈGE (متقدم seul : 2/7 jamais atteint).
+      else if (type === 'scoop-scale') {
+        const rankOf = (n) => Math.max(...n.tasks.filter((tk) => tk.kind !== 'trap').map((tk) => tk.rank));
+        expect(rankOf(advanced.numbers), type).toBeGreaterThan(rankOf(beginner.numbers));
+        expect(advanced.numbers.tasks.some((tk) => tk.kind === 'trap'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.kind === 'trap'), type).toBe(false);
+      }
       // Unité 5 de 3AM : `term-ferry` se mesure par le NOMBRE DE TÂCHES (2 équations, puis 3 dont un coefficient négatif et un grand nombre).
       else if (type === 'term-ferry') expect(advanced.numbers.tasks.length, type).toBeGreaterThan(beginner.numbers.tasks.length);
       // Unité 3 de 2AM : `zero-probe` se mesure par la FINESSE du pas (1 puis 0,1) et le nombre de décimales des nombres à juger.
@@ -85,6 +101,100 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(advanced.numbers.tasks.length, type).toBeGreaterThan(beginner.numbers.tasks.length);
         expect(new Set(advanced.numbers.tasks.map((tk) => tk.kind)).has('whole'), type).toBe(true);
         expect(advanced.numbers.tasks.some((tk) => tk.carry), type).toBe(true);
+      }
+      // Unité 1 de 3AM : `elevator-reel` se mesure par la FINESSE du pas (1 puis 0,5), la PRÉDICTION écrite avant de voir (متقدم seul) et les missions où la main tient aussi la vitesse.
+      else if (type === 'elevator-reel') {
+        const stepOf = (n) => Number(String(n.step).replace(',', '.'));
+        expect(stepOf(advanced.numbers), type).toBeLessThan(stepOf(beginner.numbers));
+        expect(advanced.numbers.tasks.some((tk) => tk.kind === 'predict'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.kind === 'predict'), type).toBe(false);
+        expect(advanced.numbers.tasks.some((tk) => tk.kind === 'both'), type).toBe(true);
+      }
+      // Unité 4 de 3AM, leçon 3 : `marble-run` se mesure par la PRÉDICTION écrite avant le lancement (متقدم seul) et par les DEUX lettres (r6).
+      else if (type === 'marble-run') {
+        expect(advanced.numbers.predict, type).toBe(true);
+        expect(beginner.numbers.predict, type).toBe(false);
+        expect(advanced.numbers.tasks.some((tk) => Object.keys(tk.target).length === 2), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => Object.keys(tk.target).length === 1), type).toBe(true);
+      }
+      // Unité 1 de 3AM, leçon 2 : `robot-track` se mesure par la PRÉDICTION écrite avant « شغّل » (متقدم seul) et par l'ORDRE à choisir.
+      else if (type === 'robot-track') {
+        expect(advanced.numbers.tasks.some((tk) => tk.kind === 'predict'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.kind === 'predict' || tk.kind === 'repeat'), type).toBe(false);
+        expect(advanced.numbers.tasks.some((tk) => tk.at), type).toBe(true);
+      }
+      // Unité 1 de 3AM, leçon 3 : `code-lockers` se mesure par le SIGNE POSÉ AVANT les chiffres (« ثبّت », متقدم seul) et par le code DÉCIMAL.
+      else if (type === 'code-lockers') {
+        expect(advanced.numbers.tasks.every((tk) => tk.commit), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.commit), type).toBe(false);
+        expect(advanced.numbers.tasks.every((tk) => tk.layout === 'dec'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.qFirst), type).toBe(true);
+      }
+      // Unité 2 de 3AM : `gear-crank` se mesure par le NOMBRE DE TÂCHES et par la PRÉDICTION écrite avant de partir (متقدم seul : manivelle bloquée, compteurs voilés).
+      else if (type === 'gear-crank') {
+        expect(advanced.numbers.tasks.length, type).toBeGreaterThan(beginner.numbers.tasks.length);
+        expect(advanced.numbers.tasks.every((tk) => tk.predict), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.predict), type).toBe(false);
+      }
+      // Unité 2 de 3AM, leçon 2 : `shade-match` se mesure par le NOMBRE DE TÂCHES et par le VOILE du mesureur (متقدم seul).
+      else if (type === 'shade-match') {
+        expect(advanced.numbers.tasks.length, type).toBeGreaterThan(beginner.numbers.tasks.length);
+        expect(advanced.numbers.tasks.every((tk) => tk.veil), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.veil), type).toBe(false);
+        expect(advanced.numbers.tasks.some((tk) => tk.kind === 'compare'), type).toBe(true);
+      }
+      // Unité 2 de 3AM, leçon 3 : `seed-rake` se mesure par le NOMBRE DE TÂCHES et par la PRÉDICTION écrite avant de semer (متقدم seul : râteau bloqué).
+      else if (type === 'seed-rake') {
+        expect(advanced.numbers.tasks.length, type).toBeGreaterThan(beginner.numbers.tasks.length);
+        expect(advanced.numbers.tasks.every((tk) => tk.kind === 'predict'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.kind === 'predict'), type).toBe(false);
+      }
+      // Unité 4 de 3AM, leçon 4 : `difference-meter` se mesure par le VOLET d'écriture (la différence se ÉCRIT avant de voir l'aiguille) et le RIDEAU (l'ordre se lit sur la différence seule) — متقدم seul.
+      else if (type === 'difference-meter') {
+        expect(advanced.numbers.tasks.filter((tk) => tk.write).length, type).toBeGreaterThanOrEqual(2);
+        expect(advanced.numbers.tasks.some((tk) => tk.curtain), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.write || tk.curtain), type).toBe(false);
+        expect(beginner.numbers.tasks.some((tk) => tk.mustSwap), type).toBe(true);
+      }
+      // Unité 3 de 3AM, leçon 1 : `ten-zoom` se mesure par la TALLY (les opérations écrites sous la plaque, مبتدئ seul), les cartes en NOMS / UNITÉS (متقدم seul) et la prédiction vers le PETIT.
+      else if (type === 'ten-zoom') {
+        expect(beginner.numbers.tally, type).toBe(true);
+        expect(advanced.numbers.tally, type).toBe(false);
+        expect(advanced.numbers.tasks.some((tk) => 'name' in tk.card || 'unit' in tk.card || 'km' in tk.card), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => 'dec' in tk.card), type).toBe(true);
+        expect(advanced.numbers.tasks.filter((tk) => tk.predict).length, type).toBeGreaterThanOrEqual(1);
+        expect(advanced.numbers.tasks.some((tk) => tk.target <= -7), type).toBe(true);
+      }
+      // Unité 3 de 3AM, leçon 2 : `unit-ladder` se mesure par le MODE CHOISI (متقدم seul), le facteur écrit le long du ruban (مبتدئ seul) et le ruban enchaîné.
+      else if (type === 'unit-ladder') {
+        expect(beginner.numbers.fixedMode, type).toBe(true);
+        expect(advanced.numbers.fixedMode, type).toBe(false);
+        expect(beginner.numbers.showFactor, type).toBe(true);
+        expect(advanced.numbers.showFactor, type).toBe(false);
+        expect(beginner.numbers.tasks.every((tk) => tk.mode === 1), type).toBe(true);
+        expect(advanced.numbers.tasks.every((tk) => tk.mode > 1), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.path.length === 3), type).toBe(true);
+        expect(advanced.numbers.tasks.some((tk) => tk.path.at(-1) === 'm' && tk.path[0] === 'mm'), type).toBe(true);
+      }
+      // Unité 3 de 3AM, leçon 3 : `size-ladder` se mesure par la SAISIE de a et n avant de suspendre (متقدم seul) et par les écritures qui ne sont pas des décimales simples (k × 10ᵖ, km).
+      else if (type === 'size-ladder') {
+        expect(advanced.numbers.tasks.filter((tk) => tk.cards.every((c) => c.typed || tk.kind === 'compare')).length, type).toBeGreaterThanOrEqual(3);
+        expect(beginner.numbers.tasks.some((tk) => tk.cards.some((c) => c.typed)), type).toBe(false);
+        expect(advanced.numbers.tasks.some((tk) => tk.cards.some((c) => c.unit === 'km' || /×/.test(c.given))), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => tk.cards.every((c) => !c.unit && !/×/.test(c.given))), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.kind === 'compare') && advanced.numbers.tasks.some((tk) => tk.kind === 'compare'), type).toBe(true);
+      }
+      // Unité 2 de 3AM, leçon 5 : `merge-board` se mesure par le NOMBRE DE TÂCHES et par les BARRES CACHÉES (متقدم seul).
+      else if (type === 'merge-board') {
+        expect(advanced.numbers.tasks.length, type).toBeGreaterThanOrEqual(beginner.numbers.tasks.length);
+        expect(advanced.numbers.tasks.every((tk) => tk.hidden === true), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.hidden), type).toBe(false);
+      }
+      // Unité 2 de 3AM, leçon 4 : `number-line-pegs` se mesure par le NOMBRE DE TÂCHES et par le VERDICT D'ORDRE (متقدم seul : toutes les cartes, puis un seul « تحقّق »).
+      else if (type === 'number-line-pegs') {
+        expect(advanced.numbers.tasks.length, type).toBeGreaterThanOrEqual(beginner.numbers.tasks.length);
+        expect(advanced.numbers.tasks.every((tk) => tk.kind === 'order'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.kind === 'order'), type).toBe(false);
       }
       // Unité 6 de 3AM : `pin-rails` se mesure par le NOMBRE DE TÂCHES et par les LECTURES sur la droite (متقدم seul).
       else if (type === 'pin-rails') {

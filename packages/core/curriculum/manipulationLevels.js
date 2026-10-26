@@ -254,10 +254,34 @@ export const VISUAL_THEMES = Object.freeze({
   //                 câble qui descend ou monte, un drone au-dessus, un robot plongeur dessous, une chercheuse (KidFigure, hijab) sur le
   //                 pont (`zero-probe`)
   researchBoat: { kind: 'objects', shows: 'سفينة بحث في عرض البحر: مسبار ثابت وآخر معلّق بحبل يهبط تحت سطح الماء أو يرتفع فوقه' },
+  // 3AM, unité 1 (2026-10-26) :
+  //   mallElevator  un مصعد شحن de centre commercial en coupe : des étages au-dessus de la rue et un parking en dessous, et l'écran de
+  //                 rediffusion de la caméra de surveillance avec sa ligne du temps (`elevator-reel`)
+  mallElevator: { kind: 'objects', shows: 'مصعد مركز تجاري: طوابق فوق الشارع وطوابق مرآب تحته، وشاشة إعادة تسجيل كاميرا المراقبة' },
+  // 3AM, unité 4, leçon 3 (2026-10-26) :
+  //   marblerun  le mur à chevilles du نادي العلوم pour la journée portes ouvertes : des rails de bois et des tubes de verre, un réservoir par lettre, des
+  //              stations (copieuse, presse, basculeur, jonction), une ligne écrite et un lecteur à laiton, une élève (KidFigure, hijab) devant le mur (`marble-run`)
+  marblerun: { kind: 'objects', shows: 'مسار كريات على لوحة نادي العلوم: خزّان لكل حرف ومحطات للضرب والتربيع والجمع وسلّة للنتيجة وسطر مكتوب تحت المسار' },
+  // 3AM, unité 1, 2e leçon (2026-10-26) :
+  //   roboticsClub  le نادي الروبوتيك : un tapis gradué posé au sol (la droite des nombres), le poteau 0 au milieu comme un petit portique-miroir, un
+  //                 robot à roues et ses cartes de programme (`robot-track`)
+  roboticsClub: { kind: 'objects', shows: 'نادي الروبوتيك: مسار مدرّج على الأرض وعمود الصفر في وسطه وروبوت صغير يتبع بطاقات برنامجه' },
+  // 3AM, unité 1, 3e leçon (2026-10-26) :
+  //   libraryLockers  le hall de la bibliothèque municipale : un mur de casiers numérotés, étagères de livres, une lampe et l'affiche « الكتاب صديق » ; le casier actif au premier plan
+  //                   avec sa plaque de laiton (la règle), son cadenas à molettes de code et un petit écran vert qui multiplie ; une élève (KidFigure, hijab) au comptoir (`code-lockers`)
+  libraryLockers: { kind: 'objects', shows: 'خزائن الأمانات في المكتبة البلدية: لكل خزانة قفل بعجلات رمز وشاشة صغيرة تضرب الرمز في عدد القفل' },
   // 3AM, unité 5 (2026-10-21) :
   //   stadium  le مضمار de la cour de l'école : un mur de graduations et deux coureurs (KidFigure, une élève en hijab et un élève), chacun
   //            à la valeur d'un membre d'une égalité ; ils se tiennent sur la même graduation tant que l'égalité est vraie (`equality-lanes`)
   stadium: { kind: 'objects', shows: 'مضمار مدرسة: متسابقان يقفان على جدار مدرّج، كلّ عند قيمة أحد طرفي مساواة' },
+  // 3AM, unité 5, leçon « المتباينات والعمليات » (2026-10-26) :
+  //   loom  l'atelier de tissage de Ghardaïa vu de face : un métier à tisser aux deux poutres de bois gravées de graduations, des fils de chaîne entre elles, deux fils de laine
+  //         (rouge et bleu) à pompons, un tapis à demi tissé derrière, une élève (KidFigure, hijab) au métier (`loom-threads`)
+  loom: { kind: 'objects', shows: 'ورشة نسيج في غرداية: نول بعارضتين مدرّجتين وخيوط صوف حمراء وزرقاء تنزل من العارضة العليا إلى السفلى' },
+  // 3AM, unité 5, leçon « حصر عدد عشري موجب » (2026-10-26) :
+  //   attar  le دكّان العطّار d'un souk : des étagères de bocaux d'épices, un sac de cumin avec sa louche de laiton, une balance numérique dont le grand écran à sept segments ARRONDIT la masse,
+  //          un plateau où un cône d'épice grandit avec la masse, une bande de précision en dessous, une élève (KidFigure, hijab) au comptoir (`scoop-scale`)
+  attar: { kind: 'objects', shows: 'دكّان عطّار: ميزان رقمي يدوِّر الكتلة على شاشته وكيس كمّون ومغرفة نحاسية وشريط دقّة' },
   // 3AM, unité 4 (2026-10-21) :
   //   schoolgarden  le jardin de l'école vu d'en haut : un terrain rectangulaire (pelouse, massif de fleurs, allée dallée) que la
   //                 main coupe en parcelles, et une jardinière (KidFigure, hijab) à son bord (`area-split`)
@@ -277,6 +301,45 @@ export const VISUAL_THEMES = Object.freeze({
   //   stall  l'étal d'une papeterie de quartier : un repère quadrillé sur une planche de liège, des boîtes de punaises, une règle de laiton, une
   //          vendeuse (KidFigure, hijab) à côté du tableau de prix (`pin-rails`)
   stall: { kind: 'objects', shows: 'دكّان أدوات مدرسية: لوحة فلّين فيها معلم مربّعات ودبابيس ومسطرة من نحاس وبائعة بجانب جدول الأسعار' },
+  // 3AM, unité 2 (2026-10-25) :
+  //   bikestand  la cour de l'école et la درّاجة du نادي : un plateau et un pignon dessinés avec leur VRAI nombre de dents, une chaîne dont les maillons
+  //              avancent dent par dent, une roue à valve colorée, une manivelle qu'on tourne, un drapeau craie à la distance voulue (à l'échelle) et une
+  //              élève (KidFigure, hijab) qui l'attend (`gear-crank`)
+  bikestand: { kind: 'objects', shows: 'درّاجة جبلية: دوّاسة وصحن أمامي وترس خلفي وسلسلة وعجلة' },
+  // 3AM, unité 2, leçon 2 (2026-10-26) :
+  //   paintshop  la machine à teinter d'un magasin de peinture de quartier : un bec de laiton au-dessus du seau B et une manette, le seau de référence A
+  //              scellé avec son étiquette et sa pastille, deux grandes pastilles de couleur côte à côte et un mesureur à aiguille « أفتح · أغمق »,
+  //              un élève (KidFigure) au rouleau devant l'esquisse de la fresque (`shade-match`)
+  paintshop: { kind: 'objects', shows: 'آلة مزج الألوان في محلّ الطلاء: دلوان وعلب أبيض ورافعة للأزرق' },
+  // 3AM, unité 2, leçon 3 (2026-10-26) :
+  //   seedbed  un حوض غرس d'un jardin d'école de 1 m : une règle en bois le long du bord (0 … 1 m), des zones de cultures peintes à partir de la gauche
+  //            (tomates, piments, oignons) avec leur pancarte, un râteau de jardin dont l'espacement des dents est la variable, des plants dans des cases
+  //            de terre, un second حوض qui glisse dessous quand le total dépasse 1 m, une élève (KidFigure, hijab) à l'arrosoir (`seed-rake`)
+  seedbed: { kind: 'lengths', shows: 'حوض غرس في حديقة المدرسة: مشط زراعي وشتلات ومسطرة متر' },
+  // 3AM, unité 2, leçon 4 (2026-10-26) :
+  //   clothesline  un حبل tendu entre deux poteaux peints dans la cour de l'école pour « يوم الرياضيات » : des étiquettes en bois aux entiers (côté négatif bleu avec « − », côté positif orange avec « + »),
+  //                des pinces qui glissent, un panier de cartes d'écritures a/b au sol, une élève (KidFigure, hijab) près du panier (`number-line-pegs`)
+  clothesline: { kind: 'objects', shows: 'حبل مشدود في ساحة المدرسة بين عمودين، عليه ملاقط وبطاقات أعداد' },
+  // 3AM, unité 2, leçon 5 (2026-10-26) :
+  //   arcade  une borne d'arcade du club de l'école : un tableau lumineux où les NOMBRES sont de grosses tuiles arrondies (fraction + barre signée, bleue vers la droite pour +, rouge vers la gauche pour −),
+  //           des jetons d'opération, un aimant dessiné qui tient un × ou ÷ à ses voisines, des bulles translucides pour les parenthèses, trois pavés de signe, un garçon (KidFigure, sweat) aux commandes (`merge-board`)
+  arcade: { kind: 'objects', shows: 'لوحة ألغاز في خزانة ألعاب بنادي المتوسطة: بلاطات أعداد ومغناطيس وفقاعات' },
+  // 3AM, unité 4, leçon 4 (2026-10-26) :
+  //   physicslab  la paillasse du labo de physique : une rail de verre graduée (zéro doré) avec deux perles de verre, un galvanomètre en laiton (cadran à zéro central, moitié gauche rouge, moitié droite verte)
+  //               et deux fils à sondes, une rouge et une noire ; une élève (KidFigure, hijab) tient les fils (`difference-meter`)
+  physicslab: { kind: 'objects', shows: 'سكّة زجاجية مدرّجة عليها حبّتان ومقياس بإبرة بمجسّين أحمر وأسود في مختبر الفيزياء' },
+  // 3AM, unité 3, leçon 1 (2026-10-26) :
+  //   science-lens  la table du club de sciences de la متوسطة : une grande lentille de laiton au bord relevé, une BAGUE de zoom crantée (44 px de prise), un cadre carré lumineux et le décor à son échelle (virus … orbite de la Lune),
+  //                 sous la lentille une plaque de laiton « ضلع الإطار » qui lit le côté en décimal ; une élève (KidFigure, hijab) du club à côté (`ten-zoom`)
+  'science-lens': { kind: 'objects', shows: 'عدسة نادي العلوم بحلقة تكبير مسنّنة وإطار مربّع تقرأ لوحة نحاسية ضلعه بالمتر' },
+  // 3AM, unité 3, leçon 2 (2026-10-26) :
+  //   tech-bench  l'établi du club de technologie : une longue règle de laiton gravée de colonnes égales, des plaques d'unités émaillées (km … nm) suspendues au-dessus, un cadran de mode (طول / مساحة / حجم),
+  //               un ruban de mesure rouge à deux poignées de 44 px ; un élève (KidFigure) à l'établi (`unit-ladder`)
+  'tech-bench': { kind: 'objects', shows: 'مسطرة نحاسية مقسّمة إلى أعمدة تتدلّى فوقها لوحات الوحدات وشريط قياس بمقبضين' },
+  // 3AM, unité 3, leçon 3 (2026-10-26) :
+  //   fair-wall  le couloir de la foire des sciences de la متوسطة : un grand mur peint portant un SLIDE de barreaux de bois (un par décade 10ⁿ → 10ⁿ⁺¹, neuf cases logarithmiques), des cartes d'objets avec leur longueur
+  //              sur une étiquette, un aimant ; une élève (KidFigure, hijab) exposante à côté (`size-ladder`)
+  'fair-wall': { kind: 'objects', shows: 'جدار معرض العلوم عليه سلّم من درجات خشبية وبطاقات أطوال ومغناطيس' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));
