@@ -94,6 +94,13 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(beginner.numbers.tasks.some((tk) => tk.kind === 'predict'), type).toBe(false);
         expect(advanced.numbers.tasks.some((tk) => tk.kind === 'both'), type).toBe(true);
       }
+      // Unité 4 de 3AM, leçon 3 : `marble-run` se mesure par la PRÉDICTION écrite avant le lancement (متقدم seul) et par les DEUX lettres (r6).
+      else if (type === 'marble-run') {
+        expect(advanced.numbers.predict, type).toBe(true);
+        expect(beginner.numbers.predict, type).toBe(false);
+        expect(advanced.numbers.tasks.some((tk) => Object.keys(tk.target).length === 2), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => Object.keys(tk.target).length === 1), type).toBe(true);
+      }
       // Unité 1 de 3AM, leçon 2 : `robot-track` se mesure par la PRÉDICTION écrite avant « شغّل » (متقدم seul) et par l'ORDRE à choisir.
       else if (type === 'robot-track') {
         expect(advanced.numbers.tasks.some((tk) => tk.kind === 'predict'), type).toBe(true);
@@ -125,6 +132,12 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(advanced.numbers.tasks.length, type).toBeGreaterThan(beginner.numbers.tasks.length);
         expect(advanced.numbers.tasks.every((tk) => tk.kind === 'predict'), type).toBe(true);
         expect(beginner.numbers.tasks.some((tk) => tk.kind === 'predict'), type).toBe(false);
+      }
+      // Unité 2 de 3AM, leçon 5 : `merge-board` se mesure par le NOMBRE DE TÂCHES et par les BARRES CACHÉES (متقدم seul).
+      else if (type === 'merge-board') {
+        expect(advanced.numbers.tasks.length, type).toBeGreaterThanOrEqual(beginner.numbers.tasks.length);
+        expect(advanced.numbers.tasks.every((tk) => tk.hidden === true), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.hidden), type).toBe(false);
       }
       // Unité 2 de 3AM, leçon 4 : `number-line-pegs` se mesure par le NOMBRE DE TÂCHES et par le VERDICT D'ORDRE (متقدم seul : toutes les cartes, puis un seul « تحقّق »).
       else if (type === 'number-line-pegs') {

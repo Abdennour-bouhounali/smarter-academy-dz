@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **353** liens (312 requires, 31 extends, 10 consolidates) · **102** leçons publiées · **168** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **353** liens (312 requires, 31 extends, 10 consolidates) · **104** leçons publiées · **166** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -971,7 +971,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | `3am.m1.r05` | مقارنة كسرين. | `tasawi-muqaranat-kasrayn` | يمدّد `2am.m1.r08` |
 | `3am.m1.r06` | جمع وطرح كسرين. | `jam-tarh-kasrayn` | يمدّد `2am.m1.r09` |
 | `3am.m1.r07` | التعرّف على العدد الناطق. | `adad-natiq` | `3am.m1.r02`، `1am.m5.r01` |
-| `3am.m1.r08` | حساب مجموع وفرق وجداء وحاصل قسمة عددين ناطقين. | `amaliyat-natiqa` _(prévue)_ | `3am.m1.r07`، `3am.m1.r04`، `3am.m1.r06`، `3am.m1.r01` |
+| `3am.m1.r08` | حساب مجموع وفرق وجداء وحاصل قسمة عددين ناطقين. | `amaliyat-natiqa` | `3am.m1.r07`، `3am.m1.r04`، `3am.m1.r06`، `3am.m1.r01` |
 
 #### المقطع 2 — المثلثات (`3am.m2`, 4 أسابيع)
 
@@ -1017,7 +1017,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 |---|---|---|---|
 | `3am.m5.r01` | تبسيط عبارة جبرية. | `tabsit-hadhf-aqwas` | `2am.m1.r03`، `3am.m1.r08` |
 | `3am.m5.r02` | نشر عبارات جبرية من الشكل: (a + b)(c + d) حيث a، b، c و d أعداد نسبية. | `nashr-jabri-3am` | `3am.m5.r01`، `3am.m1.r01` |
-| `3am.m5.r03` | حساب قيمة عبارة حرفية. | `qimat-ibara-harfiya` _(prévue)_ | `3am.m1.r08`، يمدّد `1am.m5.r08` |
+| `3am.m5.r03` | حساب قيمة عبارة حرفية. | `qimat-ibara-harfiya` | `3am.m1.r08`، يمدّد `1am.m5.r08` |
 | `3am.m5.r04` | مقارنة عددين ناطقين. | `muqaranat-natiqayn` _(prévue)_ | يرسّخ `3am.m1.r05` |
 | `3am.m5.r05` | معرفة الخواص المتعلقة بالمساويات (أو المتباينات) والعمليات واستعمالها في وضعيات بسيطة. | `musawiyat-amaliyat` | `2am.m4.r09`، `3am.m1.r01` |
 | `3am.m5.r06` | ترييض مشكلات وحلّها بتوظيف المعادلات من الدرجة الأولى ذات مجهول واحد. | `muadalat-darajat-ula` | `3am.m5.r05`، `3am.m5.r01`، يمدّد `2am.m4.r08` |
@@ -1300,7 +1300,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 6 | `tasawi-muqaranat-kasrayn` — تساوي كسرين ومقارنتهما | publiée | `3am.m1.r05` |
 | 7 | `jam-tarh-kasrayn` — جمع وطرح كسرين | publiée | `3am.m1.r06` |
 | 8 | `adad-natiq` — العدد الناطق | publiée | `3am.m1.r07` |
-| 9 | `amaliyat-natiqa` — العمليات على الأعداد الناطقة | prévue | `3am.m1.r08` |
+| 9 | `amaliyat-natiqa` — العمليات على الأعداد الناطقة | publiée | `3am.m1.r08` |
 | 10 | `wadiya-idmajiya-kusur-natiqa` — أدمج تعلّماتي — العمليات على الكسور والأعداد الناطقة | synthèse | — |
 | 11 | `quwa-adad-ashara` — قوى العدد 10 | prévue | `3am.m3.r01` `3am.m3.r03` |
 | 12 | `qawaid-quwa-ashara` — قواعد الحساب على قوى العدد 10 | prévue | `3am.m3.r02` |
@@ -1309,7 +1309,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 15 | `wadiya-idmajiya-quwa-nisbiya` — أدمج تعلّماتي — القوى ذات أسس نسبية صحيحة | synthèse | — |
 | 16 | `tabsit-hadhf-aqwas` — تبسيط عبارة جبرية وحذف الأقواس | publiée | `3am.m5.r01` |
 | 17 | `nashr-jabri-3am` — نشر عبارات جبرية | publiée | `3am.m5.r02` |
-| 18 | `qimat-ibara-harfiya` — حساب قيمة عبارة حرفية | prévue | `3am.m5.r03` |
+| 18 | `qimat-ibara-harfiya` — حساب قيمة عبارة حرفية | publiée | `3am.m5.r03` |
 | 19 | `muqaranat-natiqayn` — مقارنة عددين ناطقين | prévue | `3am.m5.r04` |
 | 20 | `wadiya-idmajiya-ibarat-harfiya-3` — أدمج تعلّماتي — الحساب الحرفي | synthèse | — |
 | 21 | `musawiyat-amaliyat` — المساويات والعمليات | publiée | `3am.m5.r05` |

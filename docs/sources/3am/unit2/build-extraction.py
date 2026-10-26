@@ -476,6 +476,40 @@ _E['self-9']['note'] = 'Seule (أ) « ≠ » est juste ; (جـ) imprimée « > �
 assert 39 * 1000 // 17 / 1000 == 2.294
 _E['self-4']['answer'] = {'39/17 par défaut à 1/1000': '2,294'}
 
+# ── Leçon 5 `amaliyat-natiqa` (2026-10-26) : ses éléments relus à 120–150 dpi (pp. 25, 28, 29, 31, 32, 33, 34, 35 du livre = PDF 26, 29, 30, 32, 33, 34, 35, 36) ──────
+_L5_TEXT = {
+    'ex-48': 'a = (8/11)/3 ، b = (6/7)/9 ، c = (−5/3)/(10/9) ، d = (−25/21)/(5/−7) .',
+    'ex-49': 'e = 7/5 + (8/15)/(2/5) − 11/12 ، f = −7/8 + (5/6)/4 − 1 ، g = −3/4 + (3/7)/5 + 2 ، h = (2 − 7/6)/(2 + 7/6) .',
+    'ex-50': 'x = (1/4 + 5/6)/(1/2 − 1/3) ، y = (1 + 1/3 − 1/4)/(1 − 1/3 + 1/4) ، z = (5/9 − 11 × 3/44)/(5/9 + 2/3 × 7/4) .',
+    'ex-51': 'K = 7/5 ÷ (7/18 − 2/9) ، L = (−3/2 + 4/5) ÷ (−1/6 − 9/4) .',
+    'ex-52': 'M = (8/11 − 7/5) × (−1/6 + 2/9) ؛ N = −2/5 + 3/15 ÷ 2/3 .',
+}
+for _k, _t in _L5_TEXT.items():
+    _E[_k]['text'] = _t
+_a = F(8, 11) / 3; _b = F(6, 7) / 9; _c = F(-5, 3) / F(10, 9); _d = F(-25, 21) / F(5, -7)
+assert (_a, _b, _c, _d) == (F(8, 33), F(2, 21), F(-3, 2), F(5, 3))
+_e = F(7, 5) + F(8, 15) / F(2, 5) - F(11, 12); _f = F(-7, 8) + F(5, 6) / 4 - 1; _g = F(-3, 4) + F(3, 7) / 5 + 2; _h = (2 - F(7, 6)) / (2 + F(7, 6))
+assert (_e, _f, _g, _h) == (F(109, 60), F(-5, 3), F(187, 140), F(5, 19))
+_x = (F(1, 4) + F(5, 6)) / (F(1, 2) - F(1, 3)); _y = (1 + F(1, 3) - F(1, 4)) / (1 - F(1, 3) + F(1, 4)); _z = (F(5, 9) - 11 * F(3, 44)) / (F(5, 9) + F(2, 3) * F(7, 4))
+assert (_x, _y, _z) == (F(13, 2), F(13, 11), F(-7, 62))
+_K = F(7, 5) / (F(7, 18) - F(2, 9)); _L = (F(-3, 2) + F(4, 5)) / (F(-1, 6) - F(9, 4)); _M = (F(8, 11) - F(7, 5)) * (F(-1, 6) + F(2, 9)); _N = F(-2, 5) + F(3, 15) / F(2, 3)
+assert (_K, _L, _M, _N) == (F(42, 5), F(42, 145), F(-37, 990), F(-1, 10))
+_E['ex-48']['answer'] = {'a': '8/33', 'b': '2/21', 'c': '-3/2', 'd': '5/3'}
+_E['ex-49']['answer'] = {'e': '109/60', 'f': '-5/3', 'g': '187/140', 'h': '5/19'}
+_E['ex-50']['answer'] = {'x': '13/2', 'y': '13/11', 'z': '-7/62'}
+_E['ex-51']['answer'] = {'K': '42/5', 'L': '42/145'}
+_E['ex-52']['answer'] = {'M': '-37/990', 'N': '-1/10'}
+assert F(11, 7) - F(2, 5) == F(41, 35) and (F(11, 7) - F(2, 5)) * F(24, 7) == F(984, 245)                 # now-3 A
+assert F(11) / (F(2, 3) - F(5, 2)) == F(-6)                                                              # now-3 B
+assert F(-3, 14) - F(3, 7) / 5 + 2 == F(-15 - 6 + 140, 70) == F(17, 10)                                  # now-3 C
+assert (F(3, 2) - F(1, 3)) / (F(3, 4) + F(2, 3)) == F(14, 17)                                            # now-3 D
+_E['now-3']['answer'] = {'A': '984/245', 'B': '-6', 'C': '17/10', 'D': '14/17'}
+assert F(-5, 4) + F(11, 6) == F(7, 12) and F(-4, 9) + q('1,5') / 6 == F(-7, 36)
+for _id in ('prep', 'act-6', 'know-6', 'method-7', 'method-8', 'method-9', 'now-3', 'ex-3', 'ex-34', 'ex-35', 'ex-36', 'ex-37', 'ex-38', 'ex-39', 'ex-40', 'ex-41', 'ex-42', 'ex-43', 'ex-44', 'ex-45', 'ex-46', 'ex-47',
+            'ex-48', 'ex-49', 'ex-50', 'ex-51', 'ex-52', 'ex-53', 'ex-54', 'self-5', 'self-6', 'deep-57', 'deep-58', 'deep-60', 'deep-63', 'deep-64', 'deep-66', 'deep-68', 'deep-73', 'deep-76', 'deep-77', 'deep-79'):
+    _E[_id]['verified'] = True
+    _E[_id]['reading'] = (_E[_id].get('reading', '') + ' Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi).').strip()
+
 # ── destinations ──────────────────────────────────────────────────────────────────────────────────
 
 
@@ -504,6 +538,15 @@ DEST = {
 }
 for n in range(34, 55):
     DEST[f'ex-{n}'] = d(L5)
+# `amaliyat-natiqa` (2026-10-26) : les éléments rendus en أتمرّن (module 4), en مسائل (5–7) ; le reste est la banque (module None)
+for _n in (34, 35, 36, 37, 40, 42, 43, 44, 48, 50, 53, 54):
+    DEST[f'ex-{_n}'] = d(L5, 4)
+for _id in ('deep-60', 'deep-63', 'deep-64'):
+    DEST[_id] = d(L5, 4)
+DEST['deep-79'] = d(L5, 5)
+DEST['deep-58'] = d(L5, 6); DEST['deep-76'] = d(L5, 6)
+DEST['deep-73'] = d(L5, 7); DEST['deep-77'] = d(L5, 7)
+DEST['ict'] = d(L5, 7)
 # ex-41 (pyramide), ex-46 (grille) : la leçon L5 les relit.
 
 DISCREPANCIES = [
@@ -527,7 +570,8 @@ DISCREPANCIES = [
     {'elementId': 'deep-71', 'kind': 'ambiguity', 'text': 'Le texte dit « ثلاثة أرباع من 5/6 تلاميذ القسم » : lu 15 = 3/4 de (5/6 de la classe) ⇒ 15 ÷ 5/8 = 24.'},
     {'elementId': 'deep-74', 'kind': 'ambiguity', 'text': '3/8 + 2/5 + 1/8 = 9/10 : il manque 1/10 du prix, soit une remise de 10 % ; « نسبة التخفيض » = 10 %.'},
     {'elementId': 'ex-48', 'kind': 'scan', 'text': 'Les fractions composées des exercices 48 à 52 sont à relire à 250 dpi par `amaliyat-natiqa` (ne sont transcrites ici que par leur nom de variable).'},
-    {'elementId': 'ict', 'kind': 'scan', 'text': 'Page 37 du livre (« أوظّف تكنولوجيات الإعلام والاتصال ») MANQUE au scan : non transcrite. Question au propriétaire : activité calculatrice plateforme (D11) pour `amaliyat-natiqa` m7, ou note d’absence.'},
+    {'elementId': 'ict', 'kind': 'scan', 'text': 'Page 37 du livre (« أوظّف تكنولوجيات الإعلام والاتصال ») MANQUE au scan : non transcrite. Décision (défaut du README du plan, 2026-10-26) : `amaliyat-natiqa` m7 GÉNÈRE sa propre activité calculatrice, déclarée ajout de la plateforme (D11).'},
+    {'elementId': 'ex-50', 'kind': 'reading', 'text': 'Relu à 150 dpi par L5 : y = (1 + 1/3 − 1/4)/(1 − 1/3 + 1/4) = 13/11 ; z = (5/9 − 11 × 3/44)/(5/9 + 2/3 × 7/4) = −7/62 ; ex-48 : a = (8/11)/3 … d = (−25/21)/(5/−7) = 5/3 (transcrits).'},
 ]
 
 doc = {

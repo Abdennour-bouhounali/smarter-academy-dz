@@ -9,8 +9,10 @@ RE-vérifié par `check()`.
 L'unité est générée LEÇON PAR LEÇON (cycle moyen, phase 3). Première leçon générée : tabsit-hadhf-aqwas (2026-10-20, Phase A, #3 de la
 file) ; deuxième : nashr-jabri-3am (2026-10-21, Phase A, #4) — ses éléments sont relus à 100–220 dpi (`verified: True`) et ses destinations
 précisées plus bas (modules : 0 أستعدّ · 1 نشاط (labo area-split, monde plot) · 2 معارف · 3 طريقة (même labo, monde arrows) · 4 أتمرّن ·
-5–7 مسائل · 8 إختبار أولي ; `None` = banque d'exercices). Ses éléments sont transcrits avec soin (`verified: True` quand relus à 200 dpi) ; ceux de nashr-jabri-3am (générée au lot suivant),
-qimat-ibara-harfiya, muqaranat-natiqayn et de la synthèse sont transcrits plus brièvement et marqués `verified: False` : leur leçon les relira.
+5–7 مسائل · 8 إختبار أولي ; `None` = banque d'exercices). Troisième : qimat-ibara-harfiya (2026-10-26, Phase 0 #15) : prep 1–4, act-4, know-4, method-4, now-61 ①, ex-1…ex-4, self-3, deep-37, deep-39 et ict sont
+relus à 250 dpi (`verified: True`, réponses recalculées avec `Poly` / `Fraction`) ; modules : 0 أستعدّ · 2 معارف · 3 طريقة · 4 أتمرّن. Les éléments de tabsit et de nashr
+sont transcrits avec soin (`verified: True` quand relus à 200 dpi) ; ceux de muqaranat-natiqayn et de la synthèse sont transcrits plus brièvement et marqués
+`verified: False` : leur leçon les relira.
 
 FRONTIÈRE ENTRE LES DEUX PREMIÈRES LEÇONS (à écrire une fois) :
   • tabsit-hadhf-aqwas (3am.m5.r01 « تبسيط عبارة جبرية ») = SIMPLIFIER : regrouper les termes semblables (3x + 5x = 8x ; x et x² ne se
@@ -23,10 +25,19 @@ FRONTIÈRE ENTRE LES DEUX PREMIÈRES LEÇONS (à écrire une fois) :
     2010 × 81 sont des applications du développement ; elle ne factorise pas (4AM `tahlil-ibara`) : ex-11 n'y sert qu'à LIRE l'égalité
     de droite à gauche et à la contrôler en développant ; une valeur n'y sert que de VÉRIFICATION d'un développement, jamais de
     leçon (r03) ; ni contre-exemple (deep-39 → qimat-ibara-harfiya).
-  • qimat-ibara-harfiya (r03) : remplacer la lettre par un nombre rationnel (parenthèses pour un nombre négatif), contre-exemple.
-    La valeur d'une expression est utilisée ICI seulement comme VÉRIFICATION (la valeur ne change pas quand on supprime les parenthèses
-    ou qu'on réduit) ; ses cas négatifs, puissances et contre-exemples appartiennent à qimat-ibara-harfiya.
-  • muqaranat-natiqayn (r04) : comparer par le signe de la différence.
+  • qimat-ibara-harfiya (r03) POSSÈDE : substituer une valeur relative ou rationnelle (une lettre ou deux) et calculer avec la priorité des
+    opérations ; écrire le × caché et les parenthèses autour d’une valeur négative (et autour d’une fraction élevée à une puissance) ; la
+    valeur exacte avec π face à la valeur arrondie ; et la LOGIQUE « une valeur où deux expressions diffèrent PROUVE qu’elles ne sont pas égales ;
+    des valeurs égales ne prouvent rien — on développe pour prouver l’égalité ». Elle ne compare jamais deux nombres par le signe d’une différence
+    et ne résout jamais d’équation (une égalité « vérifiée pour quel x ? » se traite en TESTANT les valeurs proposées). La valeur d’une expression
+    n’est utilisée dans tabsit / nashr que comme VÉRIFICATION (la valeur ne change pas quand on supprime les parenthèses, qu’on réduit ou qu’on développe).
+  • muqaranat-natiqayn (r04) POSSÈDE : « a > b ⟺ a − b > 0 » (et < / =), l’ordre lu sur la différence SEULE, la comparaison de deux rationnels par leur
+    différence (fractions de signes quelconques, quotients de décimaux par une différence à la calculatrice, multiples de π) et la comparaison de deux
+    EXPRESSIONS en simplifiant A − B jusqu’à une forme dont le signe se lit directement : une constante, x − c ou c − x, ou un produit de facteurs de signe
+    connu. Elle NE refait PAS la comparaison de deux fractions par dénominateur commun positif ou par produits en croix (3AM unité 2
+    `tasawi-muqaranat-kasrayn`, item 3am.m1.r05 : un seul encadré « تذكّر »), et n’ajoute/retranche/multiplie/divise pas les deux membres d’une inéquation
+    (3AM unité 5 `mutabayinat-amaliyat`, 4AM inéquations) : quand A − B = k(x − c) avec k > 0, le signe vient de la règle des signes d’un produit.
+  Source de ces deux frontières : docs/sources/3am/unit4/plan/README.md « Boundaries — who owns what ».
 
 Usage : python3 docs/sources/3am/unit4/build-extraction.py
 """
@@ -88,10 +99,10 @@ assert F('191.7') * 10 + 100 == 2017
 
 # ── p. 55 : أستعدّ (12 items) ───────────────────────────────────────────────────────────────────
 PREP = [
-    {'n': 1, 'question': '$2\\times5-8$ يساوي', 'options': ['6', '-2', '18'], 'correct': [1], 'why': '$2\\times5=10$ ثم $10-8=2$ (نعم 2 وليس −2)', 'note': 'Le manuel imprime « 2 × 5 − 8 » : 10 − 8 = 2 ; aucune des trois réponses n’est 2 — lecture à confirmer par qimat-ibara-harfiya (items 1–4 = priorité des opérations).', 'destination': 'qimat-ibara-harfiya'},
-    {'n': 2, 'question': '$(8-5)\\times2$ يساوي', 'options': ['6', '-2', '18'], 'correct': [0], 'why': '$3\\times2=6$', 'destination': 'qimat-ibara-harfiya'},
-    {'n': 3, 'question': '$3-3^2$ يساوي', 'options': ['0', '3', '-6'], 'correct': [2], 'why': '$3-9=-6$', 'destination': 'qimat-ibara-harfiya'},
-    {'n': 4, 'question': '$a\\times a\\times a$ يساوي', 'options': ['$a^3$', '$3a$', '$a\\times a^2$'], 'correct': [0, 2], 'why': '$a\\times a\\times a=a^3=a\\times a^2$', 'destination': 'qimat-ibara-harfiya'},
+    {'n': 1, 'question': '$8-5\\times2$ يساوي', 'options': ['6', '-2', '18'], 'correct': [1], 'why': '$5\\times2=10$ ثم $8-10=-2$ (الضرب قبل الطرح ؛ أمّا $6$ فهي نتيجة من أجرى العمليتين من اليسار إلى اليمين: $(8-5)\\times2$)', 'verified': True, 'note': 'Relu à 250 dpi (2026-10-26) : le manuel imprime « 8 − 5 × 2 » (de gauche à droite) = −2 = option (2). L’ancienne note « aucune bonne réponse » lisait à tort « 2 × 5 − 8 ».', 'destination': 'qimat-ibara-harfiya'},
+    {'n': 2, 'question': '$2\\times(8-5)$ يساوي', 'options': ['6', '-2', '18'], 'correct': [0], 'why': '$8-5=3$ ثم $2\\times3=6$', 'verified': True, 'note': 'Relu à 250 dpi : le manuel imprime « 2 × (8 − 5) » (et non « (8 − 5) × 2 »), options 6 / −2 / 18 ; réponse (1).', 'destination': 'qimat-ibara-harfiya'},
+    {'n': 3, 'question': '$3-3^2$ يساوي', 'options': ['0', '3', '-6'], 'correct': [2], 'why': '$3^2=9$ ثم $3-9=-6$', 'verified': True, 'note': 'Relu à 250 dpi : options 0 / 3 / −6 ; réponse (3).', 'destination': 'qimat-ibara-harfiya'},
+    {'n': 4, 'question': '$a\\times a\\times a$ يساوي', 'options': ['$a^3$', '$3a$', '$a\\times a^2$'], 'correct': [0, 2], 'why': '$a\\times a\\times a=a^3=a\\times a^2$', 'verified': True, 'note': 'Relu à 250 dpi : options a³ / 3a / a × a² ; deux bonnes réponses (1) et (3).', 'destination': 'qimat-ibara-harfiya'},
     {'n': 5, 'question': '$x+x+x+x+x$ يساوي', 'options': ['$x^5$', '$5x$', '$x+5$'], 'correct': [1], 'why': 'خمس مرّات $x$ مجموعة: $5x$ لا $x^5$'},
     {'n': 6, 'question': 'أي العبارات هي عبارة جداء؟', 'options': ['$3x+4$', '$7+(x-3)$', '$(x+5)(2-x)$'], 'correct': [2], 'why': 'آخر عملية في $(x+5)(2-x)$ ضرب'},
     {'n': 7, 'question': '$3x+2x$ يساوي', 'options': ['$5x$', '$6x$', '$2x+3$'], 'correct': [0], 'why': '$3x+2x=(3+2)x=5x$'},
@@ -103,8 +114,16 @@ PREP = [
 ]
 E.append({'id': 'prep', 'kind': 'prerequisites', 'page': 55, 'section': 'أستعدّ', 'verified': True,
           'instruction': 'جد الإجابة الصحيحة (أو الإجابات الصحيحة) في كل حالة، مبرّرا إياها.', 'items': PREP, 'answerSource': 'computed',
-          'reading': 'Items 5–8 (la leçon tabsit-hadhf-aqwas) relus à 110 dpi : réponses recalculées. Item 1 : le manuel imprime « 2 × 5 − 8 » = 2 mais le tableau propose 6 / −2 / 18 — l’item est celui de qimat-ibara-harfiya, qui tranche la lecture (« 2 × 5 − 8 » ou « 2 × (5 − 8) = −6 »). Items 1–4 → qimat-ibara-harfiya, 9–12 → nashr-jabri-3am.'})
+          'reading': 'Items 5–8 (la leçon tabsit-hadhf-aqwas) relus à 110 dpi : réponses recalculées. Items 1–4 (qimat-ibara-harfiya) relus à 250 dpi le 2026-10-26 : « 8 − 5 × 2 » = −2 (option 2), « 2 × (8 − 5) » = 6 (option 1), « 3 − 3² » = −6 (option 3), « a × a × a » = a³ = a × a² (options 1 et 3) ; les colonnes du tableau se lisent de droite à gauche (1)(2)(3). Items 9–12 → nashr-jabri-3am.'})
 assert (3 * X + 2 * X) == kx(5) and kx(5) * kx(2) == kx(10, 2)
+# prep 1–4 (qimat-ibara-harfiya) : les réponses sont CALCULÉES, pas tapées
+_a = 8 - 5 * 2; _b = 2 * (8 - 5); _c = 3 - 3 ** 2
+assert (_a, _b, _c) == (-2, 6, -6) and (8 - 5) * 2 == 6        # 6 = lecture « de gauche à droite » de 8 − 5 × 2 : le piège
+assert [PREP[0]['options'][i] for i in PREP[0]['correct']] == [str(_a)]
+assert [PREP[1]['options'][i] for i in PREP[1]['correct']] == [str(_b)]
+assert [PREP[2]['options'][i] for i in PREP[2]['correct']] == [str(_c)]
+_A = X * X * X
+assert _A == kx(1, 3) and X * (X * X) == _A and kx(3) != _A and PREP[3]['correct'] == [0, 2]
 
 # ── p. 56 : أنشطة 1 et 2 ─────────────────────────────────────────────────────────────────────────
 E.append({'id': 'act-1', 'kind': 'activity', 'number': 1, 'page': 56, 'section': 'أنشطة', 'title': 'تبسيط عبارة جبرية', 'verified': True,
@@ -128,11 +147,14 @@ assert 5 + (3 - 7) == 1 and 9 + (-13 - 6) == -10 and F('3.4') - (-3 + 7) == F('-
 
 E.append({'id': 'act-3', 'kind': 'activity', 'number': 3, 'page': 57, 'section': 'أنشطة', 'title': 'نشر عبارات جبرية', 'verified': False,
           'text': '1) نشر عبارات من الشكل $a(b+c)$ حيث $a$ و $b$ و $c$ أعداد نسبية: أ) يرمز $x$ إلى طول المستطيل ABEF (العرض 5). • عبّر، بدلالة $x$، عن طول AD (AD = x + 3). • عبّر، بطريقتين مختلفتين، عن مساحة المستطيل ABCD بدلالة $x$. • استنتج مساواة بين عبارتي مساحة ABCD. ب) انشر كلا مما يأتي: $A=5\\times(x-3)$ ، $B=-2\\times(3-y)$ ، $C=x(y+z)$. 2) نشر عبارات من الشكل $(a+b)(c+d)$: في الشكل المرفق LMPQ مستطيل ... أ) عبّر، بدلالة $a, b, c, d$ عن بعدي LMPQ. • عبّر عن مساحة LMPQ مرّة كجداء لبعديه، ومرّة كمجموع أربع مساحات. • استنتج مساواة بين عبارتي مساحة LMPQ. ب) انشر كلا مما يأتي: $A=(x+2)(x+3)$ ، $B=(x-5)(3-y)$ ، $C=(2x-5)(x-7)$.', 'reading': 'transcrit à 110 dpi (à relire par nashr-jabri-3am).'})
-E.append({'id': 'act-4', 'kind': 'activity', 'number': 4, 'page': 57, 'section': 'أنشطة', 'title': 'حساب قيمة عبارة حرفية', 'verified': False,
+E.append({'id': 'act-4', 'kind': 'activity', 'number': 4, 'page': 57, 'section': 'أنشطة', 'title': 'حساب قيمة عبارة حرفية', 'verified': True,
           'text': 'أ) احسب قيمة العبارة $A=(3x+2)(x-5)$ من أجل كل من $x=1$ و $x=-1$ و $x=5$. ب) هذا نشر أحد التلاميذ للعبارة $A$ : $A=3x^2-17x-6$. بيّن كيف تستعمل قيم $A$ من أجل $x=1$ و $x=-1$ و $x=5$ لتبرير عدم صحة عمل هذا التلميذ.',
           'answer': {'a': {'x=1': -20, 'x=-1': 6, 'x=5': 0}, 'b': 'le vrai développement est 3x² − 13x − 10 : à x = 1 il vaut −20 ... voir ci-dessous'}, 'answerSource': 'computed'})
 A = (3 * X + n(2)) * (X - n(5))
 assert [A.at(1), A.at(-1), A.at(5)] == [-20, 6, 0], [A.at(1), A.at(-1), A.at(5)]
+assert A == 3 * X * X - kx(13) - n(10)
+E[-1]['reading'] = ('Relu à 250 dpi (2026-10-26) : A = (3x + 2)(x − 5) à x = 1, −1, 5 ; la réponse de l’élève est écrite à la main « A = 3x² − 17x − 6 » (17x lisible). '
+                    'Valeurs : A(1) = 5 × (−4) = −20 ; A(−1) = (−1)(−6) = 6 ; A(5) = 17 × 0 = 0. Le vrai développement est 3x² − 13x − 10.')
 E[-1]['answer']['b'] = f'(3x+2)(x−5) = {A.text()} ; l’élève écrit 3x² − 17x − 6 : même valeur −20 à x = 1, mais 14 ≠ 6 à x = −1 et −16 ≠ 0 à x = 5 (x = 1 seul ne suffit pas)'
 W = 3 * X * X - kx(17) - n(6)
 assert (W.at(1), W.at(-1), W.at(5)) == (-20, 14, -16)
@@ -174,33 +196,69 @@ E.append({'id': 'now-59', 'kind': 'now', 'page': 59, 'section': 'دوري الآ
 assert N1 == -kx(7, 2) - kx(8) + n(8)
 
 # ── p. 60–61 : معارف 4–5, طرائق ──────────────────────────────────────────────────────────────────
-E.append({'id': 'know-4', 'kind': 'knowledge', 'number': 4, 'page': 60, 'section': 'معارف', 'title': 'حساب قيمة عبارة حرفية', 'verified': False,
-          'text': 'لحساب قيمة عبارة حرفية من أجل بعض قيم للحرف أو للحروف في العبارة، نعوّض الحروف بهذه القيم ونجري الحسابات باحترام قواعد أولوية العمليات. مثال: $A=3x^2-7x-4$ من أجل $x=2$: $A=3\\times2^2-7\\times2-4=12-14-4=-6$. مثال: $B=(-5x+7)(2-y)$ من أجل $x=-1{,}4$ و $y=-9$ : $B=14\\times11=154$. ملاحظة: عند التعويض نكتب إشارة الضرب $\\times$ بين العددين، وفي حالة التعويض بعدد سالب نستعمل الأقواس.'})
-assert (3 * X * X - kx(7) - n(4)).at(2) == -6 and ((-kx(5) + n(7)).at(F('-1.4'))) * (2 - F(-9)) == 154
+E.append({'id': 'know-4', 'kind': 'knowledge', 'number': 4, 'page': 60, 'section': 'معارف', 'title': 'حساب قيمة عبارة حرفية', 'verified': True,
+          'text': 'لحساب قيمة عبارة حرفية من أجل بعض قيم للحرف أو للحروف في العبارة، نعوّض الحروف بهذه القيم ونجري الحسابات باحترام قواعد أولوية العمليات. مثال: $A=3x^2-7x-4$ من أجل $x=2$: $A=3\\times2^2-7\\times2-4=12-14-4=-6$. مثال: $B=(-5x+7)(2-y)$ من أجل $x=-1{,}4$ و $y=-9$ : $B=14\\times11=154$. ملاحظة: عند التعويض نكتب إشارة الضرب $\\times$ بين العددين، وفي حالة التعويض بعدد سالب نستعمل الأقواس. مثال 1: عند تعويض $x$ بالعدد 3 في العبارة $5x$ ، نكتب $5\\times3$. مثال 2: عند تعويض $x$ بالعدد $-3{,}2$ في العبارة $5x$ ، نكتب $5\\times(-3{,}2)$.',
+          'answer': {'A(x=2)': -6, 'B(x=-1,4 ; y=-9)': '14 × 11 = 154'}, 'answerSource': 'computed',
+          'reading': 'Relu à 250 dpi (2026-10-26) : les deux exemples et la remarque (5x avec x = 3 → 5 × 3 ; avec x = −3,2 → 5 × (−3,2)). Le manuel écrit « x = −1,4 » : virgule décimale, soit −1,4 = −7/5.'})
+_A60 = 3 * X * X - kx(7) - n(4)
+assert _A60.at(2) == 3 * 2 ** 2 - 7 * 2 - 4 == 12 - 14 - 4 == -6
+_x, _y = F('-1.4'), F(-9)
+assert (-5 * _x + 7) == 14 and (2 - _y) == 11 and (-5 * _x + 7) * (2 - _y) == 154 and _x == F(-7, 5)
+assert 5 * 3 == 15 and 5 * F('-3.2') == -16
 E.append({'id': 'know-5', 'kind': 'knowledge', 'number': 5, 'page': 60, 'section': 'معارف', 'title': 'مقارنة عددين ناطقين', 'verified': False,
           'text': 'يمكّن إشارة الفرق $a-b$ من ترتيب العددين $a$ و $b$ : $a>b$ معناه $a-b>0$ ؛ $a<b$ معناه $a-b<0$ ؛ $a=b$ معناه $a-b=0$. أمثلة: $\\frac53-\\frac97=\\frac{8}{21}>0$ فإن $\\frac53>\\frac97$ ؛ $-\\frac{13}{9}-\\left(-\\frac65\\right)=-\\frac{11}{45}<0$ فإن $-\\frac{13}{9}<-\\frac65$.'})
 assert F(5, 3) - F(9, 7) == F(8, 21) and F(-13, 9) + F(6, 5) == F(-11, 45)
-E.append({'id': 'method-4', 'kind': 'method', 'number': 4, 'page': 61, 'section': 'طرائق', 'title': 'توظيف قيمة عبارة حرفية والحساب الحرفي', 'verified': False,
+E.append({'id': 'method-4', 'kind': 'method', 'number': 4, 'page': 61, 'section': 'طرائق', 'title': 'توظيف قيمة عبارة حرفية والحساب الحرفي', 'verified': True,
           'text': 'تمرين: إليك العبارات الحرفية: $A=2x^2-6$ ، $B=(x-1)(2x+6)$ ، $C=2(x^2+x)+2(x-3)$. 1) احسب قيمة كل من A و B و C من أجل $x=1$. 2) هل العبارتان A و B متساويتان؟ برّر إجابتك. 3) هل العبارتان B و C متساويتان؟ برّر إجابتك. حل: 1) A = 4 ؛ B = 0 ؛ C = 0. 2) A و B غير متساويتين لأن من أجل $x=1$ ليس لهما نفس القيمة. 3) نلاحظ أنّ من أجل $x=1$ فإن للعبارتين B و C نفس القيمة، ومنه يمكن أن تكونا متساويتين: ننشر B فنجد $2x^2+4x-6$ وننشر C فنجد $2x^2+4x-6$ ومنه نجد أنّ العبارتين B و C متساويتان. ملاحظة: لا يكفي تساوي قيمتي عبارتين للحكم على تساوي هاتين العبارتين. مثال: العبارتان $x^2+19$ و $x^2-7x+19$ غير متساويتين، ولكن لهما نفس القيمة 19 من أجل $x=0$.'})
 B4 = (X - n(1)) * (kx(2) + n(6)); C4 = 2 * (X * X + X) + 2 * (X - n(3)); A4 = 2 * X * X - n(6)
-assert (A4.at(1), B4.at(1), C4.at(1)) == (-4, 0, 0) or True
-assert B4 == C4 == kx(2, 2) + kx(4) - n(6) and A4.at(1) == -4
-E[-1]['reading'] = 'A(1) = 2 × 1² − 6 = −4 (le manuel écrit « 2 × 1² − 6 = 2 − 6 = 4 » : coquille de signe, corrigée : −4). B = C = 2x² + 4x − 6.'
+assert (A4.at(1), B4.at(1), C4.at(1)) == (-4, 0, 0)
+assert B4 == C4 == kx(2, 2) + kx(4) - n(6) and A4.at(1) == 2 * 1 ** 2 - 6 == 2 - 6 == -4 != 4 and A4 != B4
+assert (X * X + n(19)).at(0) == (X * X - kx(7) + n(19)).at(0) == 19 and (X * X + n(19)) != (X * X - kx(7) + n(19))
+assert (X * X + n(19)).at(1) != (X * X - kx(7) + n(19)).at(1)
+E[-1]['reading'] = 'Relu à 250 dpi (2026-10-26) : A(1) = 2 × 1² − 6 = −4 (le manuel écrit « 2 × (1)² − 6 = 2 × 1 − 6 = 2 − 6 = 4 » : coquille de signe, corrigée : −4). B(1) = (1 − 1)(2 × 1 + 6) = 0 ; C(1) = 2 × (1² + 1) + 2 × (1 − 3) = 4 − 4 = 0 ; B = C = 2x² + 4x − 6 (encadré). Remarque : x² + 19 et x² − 7x + 19 valent 19 en x = 0.'
+E[-1]['answer'] = {'1': {'A': -4, 'B': 0, 'C': 0}, '2': 'A ≠ B (valeurs différentes en x = 1)', '3': 'B = C = 2x² + 4x − 6 (par développement)', 'remark': 'x² + 19 et x² − 7x + 19 : même valeur 19 en x = 0, pourtant différentes'}
+E[-1]['answerSource'] = 'computed'
 E.append({'id': 'method-5', 'kind': 'method', 'number': 5, 'page': 61, 'section': 'طرائق', 'title': 'مقارنة عددين ناطقين', 'verified': False,
           'text': 'تمرين: قارن بين العددين بحساب فرقهما في كل حالة: $\\frac{14}{13}$ و $\\frac87$ ؛ $\\frac{-5}{9}$ و $\\frac{3}{-4}$. حل: $\\frac{14}{13}-\\frac87=-\\frac{6}{91}<0$ فإن $\\frac{14}{13}<\\frac87$ ؛ $\\frac{-5}{9}-\\frac{3}{-4}=\\frac{7}{36}>0$ فإن $\\frac{-5}{9}>\\frac{3}{-4}$. ملاحظة: لمقارنة عددين ناطقين يمكن كتابتهما على شكل كسرين لهما نفس المقام الموجب، ثم ترتيبهما حسب ترتيب بسطيهما.'})
 assert F(14, 13) - F(8, 7) == F(-6, 91) and F(-5, 9) - F(3, -4) == F(7, 36)
-E.append({'id': 'now-61', 'kind': 'now', 'page': 61, 'section': 'دوري الآن', 'title': 'دوري الآن', 'verified': False,
-          'text': '1) أ) احسب قيمة كل من العبارات $A=(x+4)(x-3)$ من أجل $x=-4$ ، $B=x^2-12$ من أجل $x=-4$. ب) هل العبارتان A و B متساويتان؟ برّر إجابتك. 2) قارن بحساب فرقهما في كل حالة: $\\frac{13}{6}$ و $\\frac{35}{17}$ ؛ $-\\frac{2}{3}$ و $-\\frac{4}{5}$.'})
+E.append({'id': 'now-61', 'kind': 'now', 'page': 61, 'section': 'دوري الآن', 'title': 'دوري الآن', 'verified': True,
+          'text': '1) أ) احسب قيمة كل من العبارات $A=(x+4)(x-3)$ من أجل $x=-4$ ، $B=x^2-12$ من أجل $x=-4$. ب) هل العبارتان A و B متساويتان؟ برّر إجابتك. 2) قارن بحساب فرقهما في كل حالة: $\\frac{13}{6}$ و $\\frac{35}{17}$ ؛ $\\frac{-4}{5}$ و $\\frac{2}{-3}$.',
+          'answer': {'1': {'A(-4)': 0, 'B(-4)': 4, 'equal': False}},  'answerSource': 'computed',
+          'reading': 'Relu à 250 dpi (2026-10-26). Item 1 (qimat-ibara-harfiya) : A(−4) = 0 × (−7) = 0 ; B(−4) = 16 − 12 = 4 ; A ≠ B. Item 2 (muqaranat-natiqayn) : les nombres sont 13/6 et 35/17 ; −4/5 et 2/(−3) (le signe moins du second est SOUS la barre : 2 sur −3 ; le premier « −4/5 » porte son moins devant) — l’ancienne transcription « −2/3 » ne changeait pas la valeur.'})
+assert ((X + n(4)) * (X - n(3))).at(-4) == 0 and (X * X - n(12)).at(-4) == 4 and F(13, 6) - F(35, 17) == F(11, 102) and F(-4, 5) - F(2, -3) == F(-2, 15)
 
 # ── pp. 62–64 : أوظّف تعلّماتي (1–32) ───────────────────────────────────────────────────────────
 def ex(n_, text, dest_note=None, verified=False, **kw):
     E.append({'id': f'ex-{n_}', 'kind': 'exercise', 'number': n_, 'page': kw.pop('page'), 'section': kw.pop('section'), 'text': text, 'verified': verified, **kw})
 
 SEC_V, SEC_D, SEC_B, SEC_N, SEC_C = 'حساب قيمة عبارة حرفية', 'توزيعية الضرب', 'حذف الأقواس', 'نشر العبارة $(a+b)(c+d)$', 'مقارنة عددين ناطقين'
-ex(1, 'لتكن العبارة الحرفية $A=-2x+5$. احسب قيمة $A$ من أجل: أ) $x=7$ ؛ ب) $x=-1$ ؛ جـ) $x=-3$.', page=62, section=SEC_V)
-ex(2, 'لتكن العبارة الحرفية $B=x^2-4x+3$. احسب قيمة $B$ من أجل: أ) $x=0$ ؛ ب) $x=2$ ؛ جـ) $x=-2$.', page=62, section=SEC_V)
-ex(3, 'اختبر صحة كل مساواة من المساواتين الآتيتين من أجل $x=1$: $(3x-1)(2-x)=-3x^2+7x-2$ ؛ $14x-7x^2=-7x(x-2)$.', page=62, section=SEC_V)
-ex(4, 'يبيّن اللحظة التي يرى فيها سائق السيارة عائقا أمامه ولحظة توقف السيارة بفعل عملية الكبح، هناك مسافة تقطعها السيارة تعرف بمسافة التوقف. يمكن حساب قيمة تقريبية لها باستعمال العبارة $d=0{,}0064v^2+0{,}5v$ حيث $v$ سرعة السيارة قبيل عملية الكبح. احسب مسافة التوقف في الحالات الآتية: أ) $v=50\\text{ km/h}$ ؛ ب) $v=90\\text{ km/h}$ ؛ جـ) $v=130\\text{ km/h}$.', page=62, section=SEC_V)
+ex(1, 'لتكن العبارة الحرفية $A=-2x+5$. احسب قيمة $A$ من أجل: أ) $x=7$ ؛ ب) $x=-1$ ؛ جـ) $x=-3$.', page=62, section=SEC_V, verified=True)
+_A1 = -kx(2) + n(5)
+V1 = {'أ': _A1.at(7), 'ب': _A1.at(-1), 'جـ': _A1.at(-3)}
+assert list(V1.values()) == [-9, 7, 11] and (-2 * 7 + 5, -2 * (-1) + 5, -2 * (-3) + 5) == (-9, 7, 11)
+E[-1]['answer'] = {k: int(v) for k, v in V1.items()}; E[-1]['answerSource'] = 'computed'
+E[-1]['reading'] = 'Relu à 250 dpi (2026-10-26) : A = −2x + 5 ; x = 7, −1, −3 → −9, 7, 11.'
+ex(2, 'لتكن العبارة الحرفية $B=x^2-4x+3$. احسب قيمة $B$ من أجل: أ) $x=0$ ؛ ب) $x=2$ ؛ جـ) $x=-2$.', page=62, section=SEC_V, verified=True)
+_B2 = X * X - kx(4) + n(3)
+V2 = {'أ': _B2.at(0), 'ب': _B2.at(2), 'جـ': _B2.at(-2)}
+assert list(V2.values()) == [3, -1, 15] and ((-2) ** 2 - 4 * (-2) + 3) == 4 + 8 + 3 == 15
+E[-1]['answer'] = {k: int(v) for k, v in V2.items()}; E[-1]['answerSource'] = 'computed'
+E[-1]['reading'] = 'Relu à 250 dpi : B = x² − 4x + 3 ; x = 0, 2, −2 → 3, −1, 15 (le cas x = −2 : (−2)² − 4 × (−2) + 3).'
+ex(3, 'اختبر صحة كل مساواة من المساواتين الآتيتين من أجل $x=1$: $(3x-1)(2-x)=-3x^2+7x-2$ ؛ $14x-7x^2=-7x(x-2)$.', page=62, section=SEC_V, verified=True)
+_L1, _R1 = (3 * X - n(1)) * (n(2) - X), -3 * X * X + kx(7) - n(2)
+_L2, _R2 = kx(14) - kx(7, 2), (-7 * X) * (X - n(2))
+assert (_L1.at(1), _R1.at(1)) == (2, 2) and (_L2.at(1), _R2.at(1)) == (7, 7)
+assert _L1 == _R1 and _L2 == _R2        # les deux égalités sont VRAIES pour tout x ; le test en x = 1 ne fait que les « confirmer »
+E[-1]['answer'] = {'1': '(3 × 1 − 1)(2 − 1) = 2 et −3 + 7 − 2 = 2 : égalité vérifiée à x = 1', '2': '14 − 7 = 7 et −7 × 1 × (1 − 2) = 7 : égalité vérifiée à x = 1',
+                   'note': 'un test en x = 1 ne PROUVE pas l’égalité ; ici les deux égalités sont vraies pour tout x (développer : −3x² + 7x − 2 ; −7x² + 14x)'}
+E[-1]['answerSource'] = 'computed'
+E[-1]['reading'] = 'Relu à 250 dpi : (3x − 1)(2 − x) = −3x² + 7x − 2 ; 14x − 7x² = −7x(x − 2) ; à tester pour x = 1 (« اختبر صحة »).'
+ex(4, 'يبيّن اللحظة التي يرى فيها سائق السيارة عائقا أمامه ولحظة توقف السيارة بفعل عملية الكبح، هناك مسافة تقطعها السيارة تعرف بمسافة التوقف. يمكن حساب قيمة تقريبية لها باستعمال العبارة $d=0{,}0064v^2+0{,}5v$ حيث $v$ سرعة السيارة قبيل عملية الكبح. احسب مسافة التوقف في الحالات الآتية: أ) $v=50\\text{ km/h}$ ؛ ب) $v=90\\text{ km/h}$ ؛ جـ) $v=130\\text{ km/h}$.', page=62, section=SEC_V, verified=True)
+_d = lambda v: F('0.0064') * F(v) ** 2 + F('0.5') * F(v)
+assert (_d(50), _d(90), _d(130)) == (F(41), F('96.84'), F('173.16'))
+assert 0.0064 * 50 ** 2 + 0.5 * 50 - 41 < 1e-9
+E[-1]['answer'] = {'v=50': '41', 'v=90': '96,84', 'v=130': '173,16'}; E[-1]['answerSource'] = 'computed'
+E[-1]['reading'] = 'Relu à 250 dpi : d = 0,0064v² + 0,5v ; les vitesses sont imprimées « 50 k.h⁻¹, 90 k.h⁻¹, 130 k.h⁻¹ » (km/h) ; d en mètres : 0,0064 × 2500 + 25 = 41 ; 0,0064 × 8100 + 45 = 96,84 ; 0,0064 × 16900 + 65 = 173,16. La valeur est « approchée » (le texte dit قيمة تقريبية) mais le calcul est exact.'
 ex(5, 'اكتب على أبسط شكل ممكن كل عبارة جبرية من العبارات الآتية: أ) $7x\\times5x$ ؛ ب) $3\\times2x\\times6x$ ؛ جـ) $4\\times8x\\times x$ ؛ د) $7x+5x$ ؛ هـ) $7x+5x+9x$ ؛ و) $3x+x$.', page=62, section=SEC_D, verified=True,
    answer={'a': '35x^2', 'b': '36x^2', 'c': '32x^2', 'd': '12x', 'e': '21x', 'f': '4x'}, answerSource='computed')
 assert [kx(7) * kx(5), 3 * kx(2) * kx(6), 4 * kx(8) * X, kx(7) + kx(5), kx(7) + kx(5) + kx(9), 3 * X + X] == [kx(35, 2), kx(36, 2), kx(32, 2), kx(12), kx(21), kx(4)]
@@ -251,8 +309,9 @@ E.append({'id': 'self-2', 'kind': 'self', 'number': 2, 'page': 65, 'section': SE
           'text': 'بسّط كل عبارة من العبارات الآتية: $A=-7x+3x$ ؛ $B=-7x\\times3x$ ؛ $C=-7x^2+3x^2$.',
           'answer': {'A': '-4x', 'B': '-21x^2', 'C': '-4x^2'}, 'answerSource': 'computed', 'returnPage': 58})
 assert (-kx(7) + kx(3), -kx(7) * kx(3), -kx(7, 2) + kx(3, 2)) == (-kx(4), -kx(21, 2), -kx(4, 2))
-E.append({'id': 'self-3', 'kind': 'self', 'number': 3, 'page': 65, 'section': SELF_SEC, 'verified': True, 'text': 'احسب قيمة العبارة $A=(x+7)(x-2)$ من أجل $x=-3$.', 'answer': {'value': -20}, 'answerSource': 'computed', 'returnPage': 60})
-assert (-3 + 7) * (-3 - 2) == -20
+E.append({'id': 'self-3', 'kind': 'self', 'number': 3, 'page': 65, 'section': SELF_SEC, 'verified': True, 'text': 'احسب قيمة العبارة $A=(x+7)(x-2)$ من أجل $x=-3$.', 'answer': {'value': -20}, 'answerSource': 'computed', 'returnPage': 60,
+          'reading': 'Relu à 250 dpi (2026-10-26) : A = (x + 7)(x − 2) à x = −3 ; renvoi « عند الحاجة أعود إلى الصفحة 60 ». (−3 + 7)(−3 − 2) = 4 × (−5) = −20.'})
+assert (-3 + 7) * (-3 - 2) == -20 == ((X + n(7)) * (X - n(2))).at(-3)
 E.append({'id': 'self-4', 'kind': 'self', 'number': 4, 'page': 65, 'section': SELF_SEC, 'verified': True,
           'text': 'اختر الإجابة الصحيحة من بين الاقتراحات الثلاثة الآتية: $-5(2x-1)=\\ldots$ (أ) $-10x-1$ ؛ (ب) $-7x-1$ ؛ (جـ) $-10x+5$. $15-3x=\\ldots$ (أ) $12x$ ؛ (ب) $-3(-5+x)$ ؛ (جـ) $-3(-5-x)$.',
           'answer': {'1': 'جـ', '2': 'ب'}, 'answerSource': 'computed', 'returnPage': '58 و 59'})
@@ -283,9 +342,31 @@ deep(36, 66, 'محيط مثلث', '$x$ عدد موجب. عبّر عن محيط �
      answer={'perimeter': (kx(4) + n(12) + kx(3) + n(9) + kx(5) + n(15)).text(), 'also': '12(x + 3)'}, answerSource='computed',
      reading='Relu à 110 dpi : un triangle rectangle de côtés 4x+12, 3x+9, 5x+15 (3-4-5 × (x+3)).')
 assert (kx(4) + n(12)) + (kx(3) + n(9)) + (kx(5) + n(15)) == kx(12) + n(36)
-deep(37, 66, 'أميّز بين قيمة مضبوطة وقيمة مقرّبة', 'احسب القيمة المضبوطة بالسنتيمتر مربع لمساحة الحيّز الأزرق في الشكل المرفق. أعط قيمة مقرّبة بالنقصان لهذه المساحة إلى 0,01.')
+deep(37, 66, 'أميّز بين قيمة مضبوطة وقيمة مقرّبة', 'احسب القيمة المضبوطة بالسنتيمتر مربع لمساحة الحيّز الأزرق في الشكل المرفق. أعط قيمة مقرّبة بالنقصان لهذه المساحة إلى 0,01.', verified=True)
+# La figure (relue à 250 dpi) : un segment de 16 cm coupé en 4 parties égales (5 points, 4 tirets « // » de 4 cm) ; le HAUT est le demi-disque de diamètre 16 cm
+# (rayon 8) dont on ENLÈVE le demi-disque de diamètre 8 cm (rayon 4) de la moitié DROITE (blanc), et le BAS est le demi-disque de diamètre 8 cm de la moitié GAUCHE (bleu).
+from decimal import Decimal, ROUND_FLOOR
+_pi_coef = F(1, 2) * 8 ** 2 - F(1, 2) * 4 ** 2 + F(1, 2) * 4 ** 2
+assert _pi_coef == 32 and 16 / 4 == 4
+_pi = Decimal('3.14159265358979323846')
+_v = _pi_coef.numerator * _pi
+assert _v.quantize(Decimal('0.01'), rounding=ROUND_FLOOR) == Decimal('100.53') and Decimal('100.53') < _v < Decimal('100.54')
+E[-1]['answer'] = {'exact': '32π cm²', 'value': '≈ 100,5309… cm²', 'truncated_0.01': '100,53', 'computation': '½π·8² − ½π·4² + ½π·4² = 32π (les deux demi-disques de rayon 4 se compensent : l’aire est celle du demi-disque de rayon 8)'}
+E[-1]['answerSource'] = 'computed'
+E[-1]['figure'] = ('segment horizontal de 16 cm, 5 points marqués, 4 parties égales (traits « // » : 4 cm chacune) ; en haut le demi-disque de diamètre 16 cm (rayon 8) ; '
+                   'dans sa moitié droite un demi-disque de diamètre 8 cm (rayon 4, blanc, retiré) ; sous la moitié gauche un demi-disque de diamètre 8 cm (rayon 4, ajouté) : l’aire bleue est en forme de « yin-yang »')
+E[-1]['reading'] = ('Relu à 250 dpi (2026-10-26) : figure LISIBLE (contours nets, remplissage bleu du scan par plaques) : 16 cm = 4 × 4 cm ; aire bleue = ½π·8² − ½π·4² + ½π·4² = 32π ≈ 100,53 cm² '
+                    '(« بالنقصان » = valeur approchée par défaut à 0,01 : 100,5309… → 100,53). Confirme la lecture du planificateur.')
 deep(38, 66, 'أقارن محيطين وأقارن مساحتين', '$x$ يرمز إلى عدد موجب وأصغر من 7. فاطمة: «الشكلان المرفقان لهما دائما نفس المحيط». مريم: «الشكلان المرفقان لهما دائما نفس المساحة». ما رأيك في هذين التأكيدين؟ مع التبرير.')
-deep(39, 66, 'أستعمل مثالا مضادا', '$a$ عدد نسبي. $D=9a+6$ ، $C=(2+a)(3+2a)$. تؤكد مريم أن $C=D$ من أجل أي قيمة لـ $a$. احسب قيمة كل من D و C من أجل $a=1$ ، ثم من أجل $a=0$. كيف ترى تأكيد مريم؟ احسب قيمة كل من D و C من أجل قيمة أخرى لـ $a$. ماذا يمكننا القول عن تأكيد مريم؟')
+deep(39, 66, 'أستعمل مثالا مضادا', '$a$ عدد نسبي. $D=9a+6$ ، $C=(2+a)(3+2a)$. تؤكد مريم أن $C=D$ من أجل أي قيمة لـ $a$. احسب قيمة كل من D و C من أجل $a=1$ ، ثم من أجل $a=0$. كيف ترى تأكيد مريم؟ احسب قيمة كل من D و C من أجل قيمة أخرى لـ $a$. ماذا يمكننا القول عن تأكيد مريم؟ (إطار أصفر: لكي أثبت أن تأكيدا خاطئ يكفي إعطاء مثال مضاد.)', verified=True)
+_D39 = 9 * X + n(6); _C39 = (n(2) + X) * (n(3) + 2 * X)
+assert (_D39.at(1), _C39.at(1)) == (15, 15) and (_D39.at(0), _C39.at(0)) == (6, 6)
+assert (_D39.at(2), _C39.at(2)) == (24, 28) and _C39 - _D39 == 2 * X * X - kx(2) and _C39 != _D39
+assert [a for a in range(-10, 11) if _C39.at(a) == _D39.at(a)] == [0, 1]   # C = D seulement en a = 0 et a = 1
+E[-1]['answer'] = {'a=1': {'D': 15, 'C': 15}, 'a=0': {'D': 6, 'C': 6}, 'verdict': 'deux valeurs qui s’accordent ne prouvent rien',
+                   'a=2': {'D': 24, 'C': 28}, 'conclusion': 'a = 2 est un contre-exemple : l’affirmation de Maryam est fausse (C − D = 2a(a − 1))'}
+E[-1]['answerSource'] = 'computed'
+E[-1]['reading'] = 'Relu à 250 dpi (2026-10-26) : D = 9a + 6 ; C = (2 + a)(3 + 2a) ; a = 1 puis a = 0 imposés, puis « une autre valeur » libre ; le cadre jaune énonce le principe du contre-exemple.'
 deep(40, 66, 'أبرّر صحة مساواة', '$x$ عدد نسبي. $A=(3x-2)(2x+1)$ ، $B=(3x-2)(x+1)+x(3x-2)$. تؤكّد فاطمة أنه من أجل أي قيمة مختارة لـ $x$ فإنّ $A=B$. أثبت أنّ تأكيد فاطمة صحيح.')
 deep(41, 67, 'أضع تخمينا وأبرّره', '1) أ) تحقق من صحة كل مساواة: $2^2-1^2=2+1$ ؛ $3^2-2^2=3+2$ ؛ $4^2-3^2=4+3$ ؛ $5^2-4^2=5+4$. ب) ما هو التخمين الذي يمكن وضعه؟ 2) $n$ لعدد طبيعي أكبر من أو يساوي 1. أ) انشر وبسّط $(n+1)(n+1)-n^2$ [ainsi imprimé : $(n+1)^2-n^2$]. ب) برّر التخمين الذي وضعته في السؤال 1) ب). 3) احسب ذهنيا $1000^2-999^2$ ، اشرح.', reading='Taches d’encre sur p. 67 : lecture partielle (carré sur n).')
 deep(42, 67, 'أدرس برنامج حساب', 'برنامج حساب: اختر عددا. اطرح 2. اضرب الناتج في مجموع العدد المُختار والعدد 2. اطرح من الناتج مربع العدد المُختار. 1) ما هو العدد الذي نحصل عليه، إذا اخترنا من البداية العدد: أ) 0 ؛ ب) 3 ؛ جـ) -5 ؛ د) 6؟ ماذا تلاحظ؟ 2) تقول فاطمة: «وجدت تبريرا، يسمح بإعطاء النتيجة دون المرور على خطوات البرنامج». ما هو التبرير الذي وجدته فاطمة؟')
@@ -308,9 +389,23 @@ E.append({'id': 'evaluation', 'kind': 'integration', 'page': 68, 'section': 'و�
           'text': 'يسير سائق سيارة بسرعة 90km/h على طريق مبلّل، رأى فجأة أمامه بقرة تبعد عنه مسافة 85m، فشرع في الفرملة. حسب السندات الآتية، هل يحدث الاصطدام بالبقرة؟ $D_A=D_F+D_R$ (مسافة التوقف $D_A$ ، المسافة المقطوعة خلال الفرملة $D_F$ ، مسافة رؤية العائق وبداية الفرملة $D_R$) ؛ على طريق مبلل $D_F=\\frac{3\\times V^2}{400}$ و $D_R=\\frac{3\\times V}{10}$ (السرعة V مقدّرة بـ km/h).',
           'answer': {'D_R': '27', 'D_F': '60,75', 'D_A': '87,75', 'collision': 'oui (87,75 > 85)'}, 'answerSource': 'computed'})
 assert F(3 * 90, 10) == 27 and F(3 * 90 * 90, 400) == F('60.75') and 27 + F('60.75') == F('87.75') > 85
-E.append({'id': 'ict', 'kind': 'ict', 'page': 69, 'section': 'أوظّف تكنولوجيات الإعلام والاتصال', 'title': 'استعمال مجدول لحساب قيمة عبارة حرفية ومراقبة صحة مساواة', 'verified': False,
+E.append({'id': 'ict', 'kind': 'ict', 'page': 69, 'section': 'أوظّف تكنولوجيات الإعلام والاتصال', 'title': 'استعمال مجدول لحساب قيمة عبارة حرفية ومراقبة صحة مساواة', 'verified': True,
           'text': 'هذا نشر لتلميذين للعبارة $A=(5x-7)(3x+2)$ : التلميذ 1 : $A=15x^2+10x-14$ ؛ التلميذ 2 : $A=15x^2-11x-14$. راقب، باستعمال مجدول، صحة نشر كل منهما: 1) افتح المجدول وحضّر ورقة حساب مثل المعروضة. 2) احجز الصيغ الموافقة لكل عبارة (B2 = (5*A2-7)*(3*A2+2) ، C2 = 15*A2^2+10*A2-14 ، D2 = 15*A2^2-11*A2-14). 3) احجز القيمة -6 في الخلية A2 و -5 في A3 ثم عمّم إلى A14. 4) عمّم محتوى B2 و C2 و D2. الاستنتاج: أ) نشر التلميذ 1 خاطئ لأن القيم في العمودين B و C ليست نفسها. ب) نشر التلميذ 2 قد يكون صحيحا لأن القيم في العمودين B و D هي نفسها. 5) للتأكد من صحة نشر التلميذ 2 ننشر العبارة A المعطاة: $15x^2-11x-14$. دوري الآن: راقب باستعمال مجدول صحة المساواة: $(x+13)(x-4)+27=(x+5)(x-5)$.'})
 assert (5 * X - n(7)) * (3 * X + n(2)) == kx(15, 2) - kx(11) - n(14)
+_A69 = (5 * X - n(7)) * (3 * X + n(2)); _S1 = kx(15, 2) + kx(10) - n(14); _S2 = kx(15, 2) - kx(11) - n(14)
+assert _A69 == _S2 and _A69 != _S1                        # le TD 2 est juste, le TD 1 est faux
+assert [v for v in range(-6, 7) if _A69.at(v) == _S1.at(v)] == [0]    # colonnes B et C ne s'accordent qu'en x = 0 (la ligne x = 0 : −14 = −14)
+assert all(_A69.at(v) == _S2.at(v) for v in range(-6, 7)) and _A69.at(-6) == 592 and _S1.at(-6) == 466 and _S2.at(-6) == 592 and _A69.at(0) == -14
+assert (5 * 0 - 7) * (3 * 0 + 2) == -14
+_NOW = (X + n(13)) * (X - n(4)) + n(27); _RHS = (X + n(5)) * (X - n(5))
+assert _NOW == X * X + kx(9) - n(25) and _RHS == X * X - n(25) and _NOW != _RHS
+assert [v for v in range(-30, 31) if _NOW.at(v) == _RHS.at(v)] == [0] and (_NOW - _RHS) == kx(9)
+E[-1]['answer'] = {'student1': 'faux : 15x² + 10x − 14 ≠ A (x = −6 : 466 contre 592 ; seulement égale en x = 0)', 'student2': 'juste : 15x² − 11x − 14 (mêmes valeurs sur les 13 lignes x = −6…6), prouvé par le développement 5x(3x) + 5x × 2 − 7(3x) − 7 × 2 = 15x² + 10x − 21x − 14',
+                   'doriAlan': '(x + 13)(x − 4) + 27 = x² + 9x − 25 ≠ x² − 25 = (x + 5)(x − 5) : égalité fausse, valeurs égales seulement en x = 0 (la différence vaut 9x)'}
+E[-1]['answerSource'] = 'computed'
+E[-1]['reading'] = ('Relu à 250 dpi (2026-10-26) : tableau de 13 lignes x = −6…6 ; colonnes B = (5x − 7)(3x + 2), C = 15x² + 10x − 14, D = 15x² − 11x − 14 ; première ligne 592 / 466 / 592 (cadre « حيّز الانتقاء ») ; '
+                    'ligne x = 0 : −14 dans les trois colonnes. Le développement de la 5) donne 15x² − 11x − 14. « دوري الآن » : (x + 13)(x − 4) + 27 = (x + 5)(x − 5) à contrôler. '
+                    'Le tableur du manuel n’existe pas sur la plateforme : l’idée gardée est « un tableau de valeurs teste en masse, le développement prouve ».')
 
 # ── Destinations ────────────────────────────────────────────────────────────────────────────────
 L, N, Q, M, SYN = 'tabsit-hadhf-aqwas', 'nashr-jabri-3am', 'qimat-ibara-harfiya', 'muqaranat-natiqayn', 'wadiya-idmajiya-ibarat-harfiya-3'
@@ -319,32 +414,38 @@ DEST = {
     '_comment': 'elementId → { lesson, module } ; `items` répartit un élément ; une leçon encore coming_soon est une destination EN ATTENTE (check-textbook-coverage.mjs). Modules de tabsit-hadhf-aqwas : 0 أستعدّ · 1 نشاط (lab collect) · 2 معارف · 3 طريقة (lab brackets) · 4 أتمرّن · 5–7 مسائل · 8 إختبار أولي.',
     'objectives': d('unit', 'page'), 'opener': d(L, 2, note='النص التاريخي: une carte « من أين جاءت الحروف في العبارات؟ » qui clôt معارف'),
     'challenge': d(N, None, note='(a+10)(b+10) − ab = 10(a+b) + 100 = 2017 : nécessite le développement — exercice de la banque (nashr-jabri-3am)'),
-    'prep': d(L, 0, items={'5-6-7-8': d(L, 0), '1-2-3-4': d(Q, None), '9-10-11-12': d(N, 0)}),
+    'prep': d(L, 0, items={'5-6-7-8': d(L, 0), '1-2-3-4': d(Q, 0), '9-10-11-12': d(N, 0)}),
     'act-1': d(L, 4, note='APPLICATION (guide §4ter) : le labo `like-terms` (world collect) est l’entrée conçue par la plateforme ; la figure du ℓ et le rectangle de 15 carrés sont posés dans أتمرّن'),
     'act-2': d(L, 4, note='APPLICATION : les trois élèves de l’activité 2 deviennent une comparaison de chaînes de calculs en أتمرّن ; la règle est DÉCOUVERTE d’abord dans le labo world `brackets` (module 3)'),
-    'act-3': d(N, 4, note='APPLICATION (guide §4ter) : l\u2019entrée conçue par la plateforme est le labo `area-split` (monde plot : un terrain de jardin coupé par la main) ; les rectangles ABEF/ABCD et LMPQ du manuel, avec leurs développements ب), sont des exercices d\u2019أتمرّن'), 'act-4': d(Q), 'act-5': d(M),
-    'know-1': d(L, 2), 'know-2': d(L, 2), 'know-3': d(N, 2), 'know-4': d(Q), 'know-5': d(M),
+    'act-3': d(N, 4, note='APPLICATION (guide §4ter) : l\u2019entrée conçue par la plateforme est le labo `area-split` (monde plot : un terrain de jardin coupé par la main) ; les rectangles ABEF/ABCD et LMPQ du manuel, avec leurs développements ب), sont des exercices d\u2019أتمرّن'), 'act-4': d(Q, 4, note='APPLICATION : un élève développe mal ; UNE valeur (x = 1) concorde, les autres réfutent — le contre-exemple naît d’une erreur'), 'act-5': d(M),
+    'know-1': d(L, 2), 'know-2': d(L, 2), 'know-3': d(N, 2), 'know-4': d(Q, 2), 'know-5': d(M),
     'method-1': d(L, 3), 'method-2': d(N, 3), 'method-3': d(N, 3),
     'now-59': d(L, 4, items={'1': d(L, 4), '2': d(N, 4)}),
-    'method-4': d(Q), 'method-5': d(M), 'now-61': d(Q, None, items={'1': d(Q, None), '2': d(M, None)}),
-    **{f'ex-{k}': d(Q) for k in (1, 2, 3, 4)},
+    'method-4': d(Q, 3), 'method-5': d(M), 'now-61': d(Q, 4, items={'1': d(Q, 4), '2': d(M, None)}),
+    **{f'ex-{k}': d(Q, 4) for k in (1, 2, 3, 4)},
     'ex-5': d(L, 4), 'ex-6': d(L, 4), 'ex-7': d(L, 4),
     'ex-8': d(N, 4), 'ex-9': d(N), 'ex-10': d(N), 'ex-11': d(N),
     'ex-12': d(L, 4), 'ex-13': d(L, 4), 'ex-14': d(L, 4),
     'ex-15': d(N, 4), 'ex-16': d(N, 4), **{f'ex-{k}': d(N) for k in (17, 18, 19, 20, 21, 22, 23, 24, 25, 26)},
     **{f'ex-{k}': d(M) for k in range(27, 33)},
-    'self-1': d(L, 8), 'self-2': d(L, 8), 'self-3': d(Q), 'self-4': d(N), 'self-5': d(N), 'self-6': d(L, 8),
+    'self-1': d(L, 8), 'self-2': d(L, 8), 'self-3': d(Q, 4, note='cité aussi par le test final de la leçon, mais un seul numéro de module : 4'), 'self-4': d(N), 'self-5': d(N), 'self-6': d(L, 8),
     'self-7': d(N), 'self-8': d(N), 'self-9': d(M), 'self-10': d(M),
-    'deep-35': d(SYN, None, note='le raisonnement sur trois triangles en x et une aire totale : exercice d\u2019intégration de la synthèse (réaffecté le 2026-10-21)'), 'deep-36': d(L, 5, note='مسألة 1 : محيط مثلث بدلالة x'), 'deep-37': d(Q), 'deep-38': d(M), 'deep-39': d(Q), 'deep-40': d(N),
+    'deep-35': d(SYN, None, note='le raisonnement sur trois triangles en x et une aire totale : exercice d\u2019intégration de la synthèse (réaffecté le 2026-10-21)'), 'deep-36': d(L, 5, note='مسألة 1 : محيط مثلث بدلالة x'), 'deep-37': d(Q, 4), 'deep-38': d(M), 'deep-39': d(Q, 4), 'deep-40': d(N),
     'deep-41': d(N), 'deep-42': d(N),
     'deep-43': d(L, 4, items={'أ-د': d(L, 4), 'ب-جـ': d(N, 4)}),
     'deep-44': d(N), 'deep-45': d(N), 'deep-46': d(N), 'deep-47': d(SYN, None, note='المربع السحري : des sommes d\u2019expressions en a — la grille n\u2019est lisible qu\u2019en partie (4 cases) : réaffecté à la synthèse le 2026-10-21'),
-    'integration': d(SYN), 'evaluation': d(SYN), 'ict': d(Q),
+    'integration': d(SYN), 'evaluation': d(SYN), 'ict': d(Q, 4),
 }
 
 DISCREPANCIES = [
     {'elementId': 'unit', 'kind': 'scan', 'text': 'Pages 54–69 complètes ; PDF = page imprimée dans toute l’unité (textbook-map.json). Les pages 62–64 (exercices 1–32) sont sur deux colonnes ; la page 67 porte une tache d’encre violette (exercices 41, 44 : lecture partielle).'},
-    {'elementId': 'prep', 'kind': 'reading', 'text': 'Item 1 : « 2 × 5 − 8 » vaut 2 mais le tableau propose 6 / −2 / 18 (aucune bonne réponse) : probable coquille (ou « 2 × (5 − 8) = −6 »). L’item appartient à qimat-ibara-harfiya, qui le relira. Items 5–8 de la leçon relus : 5x ; (x+5)(2−x) ; 5x ; 10x².'},
+    {'elementId': 'prep', 'kind': 'reading', 'text': 'Item 1 (qimat-ibara-harfiya, relu à 250 dpi le 2026-10-26) : le manuel imprime « 8 − 5 × 2 » (de gauche à droite), PAS « 2 × 5 − 8 » : valeur −2 = option (2) ; « 6 » est le piège de qui calcule de gauche à droite (8 − 5) × 2. L’ancienne note « aucune bonne réponse » était une erreur de lecture ; items 2–4 relus : « 2 × (8 − 5) » = 6 (option 1, et non « (8 − 5) × 2 »), « 3 − 3² » = −6 (option 3), « a × a × a » = a³ = a × a² (options 1 et 3) ; colonnes du tableau (1)(2)(3) de droite à gauche. Items 5–8 de la leçon tabsit-hadhf-aqwas relus : 5x ; (x+5)(2−x) ; 5x ; 10x².', 'correction': {'decidedBy': 'platform', 'decidedOn': '2026-10-26', 'text': 'item 1 = « 8 − 5 × 2 » = −2'}},
+    {'elementId': 'now-61', 'kind': 'reading', 'text': 'Item 2 (muqaranat-natiqayn) : transcription corrigée (250 dpi, 2026-10-26) : 13/6 et 35/17 ; −4/5 et 2/(−3) (le « 2 sur −3 » a son moins sous la barre ; l’ancienne transcription « −2/3 » donnait la même valeur mais pas la même écriture : l’élève doit écrire 2/(−3) = −2/3). Item 1 (qimat-ibara-harfiya) : A(−4) = 0, B(−4) = 4, donc A ≠ B.'},
+    {'elementId': 'know-4', 'kind': 'reading', 'text': 'Relu à 250 dpi (2026-10-26) : « x = −1,4 » est une virgule décimale (−1,4 = −7/5) : B = [−5 × (−1,4) + 7][2 − (−9)] = 14 × 11 = 154 ; la remarque donne 5 × 3 et 5 × (−3,2).'},
+    {'elementId': 'ex-3', 'kind': 'scope', 'text': 'Relu à 250 dpi : les deux égalités à tester en x = 1 sont VRAIES pour tout x (3x−1)(2−x) = −3x² + 7x − 2 et 14x − 7x² = −7x(x − 2) : le test en x = 1 les confirme sans les prouver (idée du contre-exemple, à tirer à l’envers).'},
+    {'elementId': 'ex-4', 'kind': 'reading', 'text': 'Les vitesses sont imprimées « k.h⁻¹ » (km·h⁻¹) ; d = 0,0064v² + 0,5v donne 41 ; 96,84 ; 173,16 (exact, Fraction) ; le texte dit « valeur approchée » (modèle), non le calcul.'},
+    {'elementId': 'deep-37', 'kind': 'reading', 'text': 'Figure relue à 250 dpi : segment de 16 cm en 4 parties de 4 cm ; demi-disque de rayon 8 au-dessus, moins le demi-disque de rayon 4 de la moitié droite, plus le demi-disque de rayon 4 sous la moitié gauche : aire bleue = 32π ≈ 100,5309 cm² ; « بالنقصان » = 100,53 à 0,01 (valeur approchée par défaut).'},
+    {'elementId': 'ict', 'kind': 'reading', 'text': 'Relu à 250 dpi : TD 1 (15x² + 10x − 14) faux, TD 2 (15x² − 11x − 14) vrai ; ligne x = 0 : −14 partout (la seule où TD 1 concorde) ; « دوري الآن » : (x+13)(x−4)+27 = x² + 9x − 25 ≠ x² − 25 (égaux seulement en x = 0).'},
     {'elementId': 'act-2', 'kind': 'reading', 'text': 'Relu à 250 dpi. Élève 3 : le signe de « 50 ? (14 − 17) » est effacé : lu « − » (la réponse fausse : 53). Les bonnes réponses sont celles des élèves 1 et 2 (problème 1) et 1 et 3 (problème 2). La question (د) demande la conjecture de la règle des parenthèses : la plateforme la fait DÉCOUVRIR par le labo (module 3) avant de la nommer.'},
     {'elementId': 'method-4', 'kind': 'misprint', 'text': 'Le manuel écrit A(1) = 2 × 1² − 6 = 2 − 6 = 4 : 2 − 6 = −4. Corrigé en −4 ; la conclusion (A ≠ B car B(1) = 0) est inchangée.', 'correction': {'decidedBy': 'platform', 'decidedOn': '2026-10-20', 'text': 'A = −4 pour x = 1'}},
     {'elementId': 'ex-6', 'kind': 'reading', 'text': 'Le scan imprime « 5x − 3 = 2x » (et non « 5x·3 ») : l’erreur est la réunion de deux termes qui ne sont pas semblables.'},
@@ -354,7 +455,7 @@ DISCREPANCIES = [
     {'elementId': 'know-3', 'kind': 'reading', 'text': 'Relu à 100 dpi (2026-10-21). Les exemples du manuel : 5(x+2) = 5x+10 ; −2x(7 − 1,5x) = −14x + 3x² ; +(7−b) = 7−b ; −(−2x−y) = 2x+y (justifications par (+1)×[…] et (−1)×[…]) ; (2x−3)(−4+x) = 2x² − 11x + 12. La remarque ب (la règle des parenthèses est la distributivité de ±1) est reprise par la plateforme en معارف comme PONT avec la leçon précédente.'},
     {'elementId': 'deep-43', 'kind': 'scope', 'text': 'Éléments partagés : أ et د (simplification, d’une somme) → tabsit-hadhf-aqwas ; ب et جـ (développement) → nashr-jabri-3am.'},
     {'elementId': 'know-3', 'kind': 'scope', 'text': 'La remarque ب du manuel justifie la règle des parenthèses par la distributivité. La leçon tabsit-hadhf-aqwas ne la prouve pas ainsi (elle la fait découvrir par la valeur) ; la distributivité est l’objet de nashr-jabri-3am.'},
-    {'elementId': 'unit', 'kind': 'scope', 'text': 'Les éléments de nashr-jabri-3am, qimat-ibara-harfiya, muqaranat-natiqayn et de la synthèse sont transcrits plus brièvement (verified: false) : leur leçon les relira.'},
+    {'elementId': 'unit', 'kind': 'scope', 'text': 'Les éléments de muqaranat-natiqayn et de la synthèse sont transcrits plus brièvement (verified: false) : leur leçon les relira. Ceux de tabsit-hadhf-aqwas, nashr-jabri-3am et qimat-ibara-harfiya (prep 1–4, act-4, know-4, method-4, now-61 ①, ex-1…ex-4, self-3, deep-37, deep-39, ict) sont relus à 250 dpi (verified: true).'},
 ]
 
 doc = {

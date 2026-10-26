@@ -258,6 +258,10 @@ export const VISUAL_THEMES = Object.freeze({
   //   mallElevator  un مصعد شحن de centre commercial en coupe : des étages au-dessus de la rue et un parking en dessous, et l'écran de
   //                 rediffusion de la caméra de surveillance avec sa ligne du temps (`elevator-reel`)
   mallElevator: { kind: 'objects', shows: 'مصعد مركز تجاري: طوابق فوق الشارع وطوابق مرآب تحته، وشاشة إعادة تسجيل كاميرا المراقبة' },
+  // 3AM, unité 4, leçon 3 (2026-10-26) :
+  //   marblerun  le mur à chevilles du نادي العلوم pour la journée portes ouvertes : des rails de bois et des tubes de verre, un réservoir par lettre, des
+  //              stations (copieuse, presse, basculeur, jonction), une ligne écrite et un lecteur à laiton, une élève (KidFigure, hijab) devant le mur (`marble-run`)
+  marblerun: { kind: 'objects', shows: 'مسار كريات على لوحة نادي العلوم: خزّان لكل حرف ومحطات للضرب والتربيع والجمع وسلّة للنتيجة وسطر مكتوب تحت المسار' },
   // 3AM, unité 1, 2e leçon (2026-10-26) :
   //   roboticsClub  le نادي الروبوتيك : un tapis gradué posé au sol (la droite des nombres), le poteau 0 au milieu comme un petit portique-miroir, un
   //                 robot à roues et ses cartes de programme (`robot-track`)
@@ -308,6 +312,10 @@ export const VISUAL_THEMES = Object.freeze({
   //   clothesline  un حبل tendu entre deux poteaux peints dans la cour de l'école pour « يوم الرياضيات » : des étiquettes en bois aux entiers (côté négatif bleu avec « − », côté positif orange avec « + »),
   //                des pinces qui glissent, un panier de cartes d'écritures a/b au sol, une élève (KidFigure, hijab) près du panier (`number-line-pegs`)
   clothesline: { kind: 'objects', shows: 'حبل مشدود في ساحة المدرسة بين عمودين، عليه ملاقط وبطاقات أعداد' },
+  // 3AM, unité 2, leçon 5 (2026-10-26) :
+  //   arcade  une borne d'arcade du club de l'école : un tableau lumineux où les NOMBRES sont de grosses tuiles arrondies (fraction + barre signée, bleue vers la droite pour +, rouge vers la gauche pour −),
+  //           des jetons d'opération, un aimant dessiné qui tient un × ou ÷ à ses voisines, des bulles translucides pour les parenthèses, trois pavés de signe, un garçon (KidFigure, sweat) aux commandes (`merge-board`)
+  arcade: { kind: 'objects', shows: 'لوحة ألغاز في خزانة ألعاب بنادي المتوسطة: بلاطات أعداد ومغناطيس وفقاعات' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

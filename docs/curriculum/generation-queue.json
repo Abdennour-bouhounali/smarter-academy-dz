@@ -2,15 +2,6 @@
   "_comment": "Généré par scripts/learning-net-queue.mjs — ne pas éditer.",
   "queue": [
     {
-      "code": "amaliyat-natiqa",
-      "grade": "3am",
-      "unit": "kusur-natiqa",
-      "titleAr": "العمليات على الأعداد الناطقة",
-      "kind": "lesson",
-      "trigger": "priorité propriétaire",
-      "via": []
-    },
-    {
       "code": "wadiya-idmajiya-kusur-natiqa",
       "grade": "3am",
       "unit": "kusur-natiqa",
@@ -53,15 +44,6 @@
       "titleAr": "أدمج تعلّماتي — القوى ذات أسس نسبية صحيحة",
       "kind": "synthesis",
       "trigger": "unité quwa-nisbiya complète",
-      "via": []
-    },
-    {
-      "code": "qimat-ibara-harfiya",
-      "grade": "3am",
-      "unit": "ibarat-harfiya-3",
-      "titleAr": "حساب قيمة عبارة حرفية",
-      "kind": "lesson",
-      "trigger": "priorité propriétaire",
       "via": []
     },
     {

@@ -119,6 +119,8 @@ export const MANIPULATION_COMPONENTS = {
   'term-ferry': lazy(() => import('./algebra/TermFerry')),
   // 3AM, unité 1 « الأعداد النسبية » : le temps signé sous la main — le شريط المصعد (2026-10-26).
   'elevator-reel': lazy(() => import('./operations/ElevatorReel')),
+  // 3AM, unité 4 « الحساب الحرفي », leçon 3 : la valeur sous la main — le مسار الكريات (2026-10-26).
+  'marble-run': lazy(() => import('./algebra/MarbleRun')),
   // 2AM, unité 3 « الأعداد النسبية » : la distance à zéro sous la main — le مسبار (2026-10-21).
   'zero-probe': lazy(() => import('./operations/ZeroProbe')),
   // 3AM, unité 6 « التناسبية » : le pourcentage sous la main — l'inconnue est le nombre de cases peintes d'un plateau de 100 (2026-10-21).
@@ -137,6 +139,8 @@ export const MANIPULATION_COMPONENTS = {
   'seed-rake': lazy(() => import('./operations/SeedRake')),
   // 3AM, unité 2, leçon 4 : la position d'une écriture sous la main — le حبل الأعداد (2026-10-26).
   'number-line-pegs': lazy(() => import('./operations/NumberLinePegs')),
+  // 3AM, unité 2, leçon 5 : le signe prédit, le diviseur retourné, l'ordre des fusions — la لوحة الدمج (2026-10-26).
+  'merge-board': lazy(() => import('./operations/MergeBoard')),
   // 2AM, unité 5 « التناسبية » : le nombre qui manque sous la main — les موازين الرابع المتناسب (2026-10-21).
   'fourth-gauges': lazy(() => import('./operations/FourthGauges')),
 };

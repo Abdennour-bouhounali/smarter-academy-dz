@@ -459,3 +459,17 @@ the literal statement string.
 - [ ] Gates: `npm test`, `validate:lessons`, `check:textbook`, `check:lessons`, `build`.
 - [ ] Bank (50) + oracle + JSON entries.
 - [ ] Publish (guide §11, coordinator).
+
+## 12. Generator notes (2026-10-26)
+
+Generated from this plan. Fixes and decisions, none a redesign:
+1. **`ex-48` … `ex-52` were not transcribed** (the extraction named only the variables). Re-read at 150 dpi: a = (8/11)/3, b = (6/7)/9, c = (−5/3)/(10/9), d = (−25/21)/(5/−7) (= 8/33, 2/21, −3/2, 5/3); e, f, g, h; x, y, z with z = (5/9 − 11 × 3/44)/(5/9 + 2/3 × 7/4) = **−7/62** (not −7/72); K = 7/5 ÷ (7/18 − 2/9) = 42/5, L = 42/145; M = −37/990, N = −1/10. Recorded in `build-extraction.py` (asserted with `Fraction`) and in `discrepancies`; the bank and the lesson use their own numbers.
+2. **The theme `arcade` is `kind: 'objects'`**, not `abstract` (the registry has no `abstract` kind: `lengths` · `objects` · `people` · `tiles`).
+3. **The ICT page (book p. 37, missing from the scan) is generated** (README default): part 4 of مسألة 3 — « التحقّق بالحاسبة » — asks which key sequence gives D (brackets decide) and what the calculator's `0,0833333333` for 5/6 − 3/4 means (an approximation of the non-decimal 1/12; the exact answer is the fraction). Declared `addition('ict_replacement')`; the element `ict` and the textbook calculator exercises `ex-39` and `ex-45` are cited by `masala-3`'s `sourceElementIds`.
+4. **Pad « 0 ».** The plan has two pads (« + » / « − »). A free chain can produce a zero sum (1/2 − 1/2), so a third pad « معدوم » exists in « جرّب أعدادك » ONLY; guided chains never have a zero result.
+5. **Refusals are decided at two moments.** A pair separated by a bubble, a magnet or the left-to-right order is refused when the pair is SELECTED (the tile shakes, the banner says why); `noflip` (÷ without a flipped divisor) and `sign` are decided by the pad press. The chain reads LEFT TO RIGHT (`dir="ltr"` on the board) inside the RTL page.
+6. **Order rule of the board.** A × ÷ link is refused (`order`) when the previous link is also × ÷ (in a ÷ b × c the product b × c is never done first); a + − link is refused (`magnet`) next to a × ÷ link, and (`order`) when the previous link is + −. This makes every legal order give the SAME value (tested: the canonical `nextLink` solves every preset).
+7. **`signs` world.** The pair is pre-selected and a division needs no flip (only the sign is asked); a wrong prediction restarts the streak at the first chain (never blocks).
+8. **M2 shows four « تذكّر » boxes with links** (`jidaa-adadayn-nisbiyayn`, `maqlub-qismat-kasrayn`, `jam-tarh-kasrayn`, `adad-natiq`), one per step, after the matching question.
+9. **Bank** (helper): 50 sheets, 16 `term_exam` (modelled on the corpus items listed in §9: the exam text itself was not readable, so each sheet follows the index's topic and question type with new numbers), 26 `term_exam_modelled`, 8 `adapted`; L5 is 2 `term_exam` + 7 modelled + 1 adapted (§9 said 1–2 + 8 modelled). Nine `MISC-AMAL-*` entries.
+10. **Catalogue.** `durationMinutes` 66 (modules without the مسائل; 90 with them), `pointPrerequisites` P1 ← `3am_jam-tarh-kasrayn_P2` + `3am_adad-natiq_P2`, P2 ← `3am_jidaa-adadayn-nisbiyayn_P4`, P3 ← `3am_maqlub-qismat-kasrayn_P3`, P4 ← P1, P2, P3; الكفاءات reworded as §2 proposes.

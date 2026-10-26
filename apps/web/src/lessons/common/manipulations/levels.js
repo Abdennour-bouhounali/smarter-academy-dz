@@ -790,6 +790,20 @@ export const LEVELS = Object.freeze({
       { id: 'a2', kind: 'both', floor: '-6' }, { id: 'a3', r: '-2', floor: '3' }, { id: 'a4', r: '2', floor: '-5' },
     ] }, ...T('know-1') },
   },
+  // ── 3AM, unité 4 « الحساب الحرفي », leçon 3 (2026-10-26) ──
+  // LA VALEUR SOUS LA MAIN (marble-run, thème marblerun) : un mur de billes calcule une expression ; la main lâche une bille dans le réservoir de la lettre, ÉCRIT la ligne de la
+  // substitution (× et parenthèses) puis lance. مبتدئ (plateforme, les puces des stations pendant la course) : r1 4x + 7 en 3 (le × manquant fond 4 et 3 en 43), r2 4x + 7 en −2 (parenthèses),
+  // r3 x² − 3x en −2 (la copieuse : (−2)² et non −2²). متقدم (know-4 : deux lettres, des valeurs rationnelles) : la valeur est PRÉDITE avant le lancement, pas de puces pendant la course :
+  // r4 5 − 2x² en −3, r5 6x − 1 en −1/2, r6 3x − 2y en (−1 ; 4). Le monde `twins` (deux murs, un contre-exemple) se pose seul dans la طريقة avec `world="twins"`, ses `tasks` et `levels={false}`.
+  // Le test des niveaux mesure la paire par la PRÉDICTION (متقدم seul) et par les deux lettres.
+  'marble-run': {
+    beginner: { numbers: { world: 'run', predict: false, tasks: [
+      { id: 'r1', expr: '4x+7', target: { x: '3' } }, { id: 'r2', expr: '4x+7', target: { x: '-2' } }, { id: 'r3', expr: 'x²-3x', target: { x: '-2' } },
+    ] }, ...P },
+    advanced: { numbers: { world: 'run', predict: true, tasks: [
+      { id: 'r4', expr: '5-2x²', target: { x: '-3' } }, { id: 'r5', expr: '6x-1', target: { x: '-1/2' } }, { id: 'r6', expr: '3x-2y', target: { x: '-1', y: '4' } },
+    ] }, ...T('know-4') },
+  },
   // LE CODE MANQUANT SOUS LA MAIN (code-lockers, thème libraryLockers, 3AM unité 1, leçon 3, 2026-10-26) : le cadenas d'un casier de la bibliothèque municipale porte une règle « b × ? = a » ;
   // la main roule les MOLETTES du code (signe + chiffres) et tire la poignée. مبتدئ (plateforme, l'écran multiplie en direct) : m1 (−6) × ? = 48 → −8, m2 9 × ? = −54 → −6, m3 ? × (−7) = −63 → 9
   // (l'inconnue écrite en premier), m4 (−12) × ? = −60 → 5 (−5 refusé avec 60). متقدم (know-8 : le SIGNE est posé et « ثبّت » pressé avant que les molettes de chiffres se débloquent ; l'écran ne
@@ -888,6 +902,24 @@ export const LEVELS = Object.freeze({
       { id: 'a3', kind: 'predict', terms: [{ p: '1/2' }, { p: '1/3' }, { p: '1/4' }] },
       { id: 'a4', kind: 'predict', terms: [{ p: '3/8' }, { p: '5/12' }], widest: true },
     ] }, ...T('method-6') },
+  },
+  // LE SIGNE PRÉDIT SOUS LA MAIN (merge-board, thème arcade, 3AM unité 2, leçon 5, 2026-10-26) : une chaîne de calcul est une rangée de tuiles ; la main PRÉDIT le signe de chaque fusion, RETOURNE le diviseur d'une division
+  // et choisit l'ORDRE des fusions (aimants = priorité, bulles = parenthèses). Une tâche est `{ id, chain, hidden?, signOnly? }`. مبتدئ (plateforme, barres et aimants visibles) : c1 −5/4 + 11/6, c2 7/13 × (−8/5), c3 −9/8 ÷ (−3/4),
+  // c4 7/3 − 8/15 ÷ 11/20 (l'aimant force la division d'abord). متقدم (method-9 : une chaîne à priorité ; barres CACHÉES jusqu'à la fusion, trois fautes les ramènent) : a1 (2/3 − 5/2) × (−6/11), a2 −3/4 + 5/6 × (−9/10),
+  // a3 la fraction composée, a4 4/5 − 3/5 ÷ (−9/10) + (−2). Le monde `signs` (معارف) est posé par la leçon. Le test des niveaux mesure la paire par le NOMBRE DE TÂCHES et par les BARRES CACHÉES (متقدم seul).
+  'merge-board': {
+    beginner: { numbers: { tasks: [
+      { id: 'c1', chain: '-5/4 + 11/6' },
+      { id: 'c2', chain: '7/13 × -8/5' },
+      { id: 'c3', chain: '-9/8 ÷ -3/4' },
+      { id: 'c4', chain: '7/3 - 8/15 ÷ 11/20' },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', chain: '(2/3 - 5/2) × -6/11', hidden: true },
+      { id: 'a2', chain: '-3/4 + 5/6 × -9/10', hidden: true },
+      { id: 'a3', chain: '(1/2 - 4/3)@(5/6 + -3/4)', hidden: true },
+      { id: 'a4', chain: '4/5 - 3/5 ÷ -9/10 + -2', hidden: true },
+    ] }, ...T('method-9') },
   },
   // LA POSITION D'UNE ÉCRITURE SOUS LA MAIN (number-line-pegs, thème clothesline, 3AM unité 2, leçon 4, 2026-10-26) : la main PORTE une carte d'écriture a/b et l'ACCROCHE sur un حبل gradué ; le vent la fait
   // glisser à son vrai piquet. Une tâche est `{ id, kind?: 'hang' | 'order', cards: ['6/-8', …], range?: [lo, hi] }`. مبتدئ (plateforme, pas 1/12, loupe ×3, « تحقّق » à volonté) : w1 6/(−8), (−3)/4, 3/4,

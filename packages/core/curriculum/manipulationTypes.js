@@ -682,6 +682,18 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'جداء عددين نسبيين لهما الإشارة نفسها موجب، ولهما إشارتان مختلفتان سالب، ومسافته إلى الصفر هي جداء المسافتين إلى الصفر ؛ و $a \\times 0 = 0$',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 3AM, unité 4 « الحساب الحرفي » (2026-10-26) — calculer la valeur d'une expression, le contre-exemple.
+  'marble-run': {
+    // LA VALEUR SOUS LA MAIN : le club de sciences a bâti un mur de billes qui CALCULE une expression — ses stations sont les opérations
+    // de l'expression (la copieuse du carré, la presse du produit, le basculeur du moins, la jonction du + et du −). La main choisit la
+    // VALEUR de la lettre (une bille lâchée dans le réservoir, qui envoie une bille identique à chaque endroit de la lettre), ÉCRIT sous
+    // le mur la ligne de la substitution (parenthèses autour d'une case, signe × devant une case) puis lance la glissière : le mur calcule
+    // ce que l'expression SIGNIFIE, un lecteur strict ce que la LIGNE dit, et la première station où ils se séparent s'allume. Monde
+    // `twins` : deux murs sous UN réservoir, la main compare les paniers et déclare « contre-exemple » ou « égales » (انشر prouve).
+    // Chaque course est un essai jugé exactement : MANUEL (§6bis).
+    shows: 'نعوّض الحرف بالعدد نفسه في كل مكان منه، ونُظهر علامة الضرب، ونضع العدد السالب بين قوسين، ثم نحسب باحترام أولوية العمليات ؛ وقيمة واحدة تختلف عندها عبارتان تثبت أنهما غير متساويتين، أمّا تساوي القيم فلا يثبت التساوي',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 2AM, unité 3 « الأعداد النسبية » (2026-10-21) — comparer et ranger des relatifs.
   'zero-probe': {
     // LA DISTANCE À ZÉRO SOUS LA MAIN : un capteur A est fixé à un nombre relatif (une altitude en mètres) ; un second capteur B
@@ -787,6 +799,14 @@ export const MANIPULATION_TYPES = Object.freeze({
     // que le nombre habite ; « تحقّق » laisse le vent la faire glisser jusqu'à son vrai piquet : les écritures du MÊME nombre s'empilent, une carte du mauvais côté du zéro le traverse. En متقدم toutes les
     // cartes sont accrochées sans graduation entre les entiers et UN verdict juge l'ordre. Chaque accrochage et chaque « تحقّق » est un essai jugé exactement : MANUEL §6bis. `number-line-pegs` n'énonce jamais la règle.
     shows: 'العدد الناطق هو حاصل قسمة عدد نسبي على عدد نسبي غير معدوم $\\frac{a}{b}$ ، وله كتابات كثيرة ومكان واحد على المستقيم المدرّج ؛ كتابته المعيارية بمقام موجب ؛ ولمقارنة أعداد ناطقة نكتبها بنفس المقام الموجب ثم نقارنها كأعداد نسبية',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 2, leçon 5 (2026-10-26) — les quatre opérations sur les rationnels : le signe d'abord, puis la fraction.
+  'merge-board': {
+    // LE SIGNE PRÉDIT, LE DIVISEUR RETOURNÉ, L'ORDRE DES FUSIONS : une chaîne de calcul est une rangée de tuiles (fraction + barre signée) ; deux tuiles voisines se FUSIONNENT. La main prédit le signe
+    // du résultat AVANT chaque fusion (une prédiction fausse est refusée, les barres montrent pourquoi), retourne le DIVISEUR d'une division (son signe gardé) et choisit l'ORDRE des fusions : un aimant tient
+    // les × ÷ (priorité), une bulle tient ses tuiles (parenthèses), les + − vont de gauche à droite. Chaque fusion et chaque refus est un essai jugé exactement : MANUEL §6bis. `merge-board` n'énonce jamais la règle.
+    shows: 'لجمع عددين ناطقين أو طرحهما نحدّد إشارة الناتج ثم نوحّد المقامين؛ وفي الضرب والقسمة تكون الإشارة موجبة إذا تشابهت الإشارتان وسالبة إذا اختلفتا، ونقسم بالضرب في مقلوب القاسم $\\frac{a}{b}\\div\\frac{c}{d}=\\frac{a}{b}\\times\\frac{d}{c}$ ؛ وفي سلسلة حسابات: الأقواس ثم الضرب والقسمة ثم الجمع والطرح',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
   'pin-rails': {

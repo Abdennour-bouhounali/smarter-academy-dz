@@ -380,3 +380,18 @@ lesson `nashr-jabri-3am`, published, same term S2; an equation step of `3am-s3-4
   discrepancies updated, header boundary rewritten.
 - Publish (coordinator, guide §11): gates `npm test`, `npm run check:lessons`, `npm run build`, `node scripts/learning-net-queue.mjs --check`;
   one commit; push `dev`; local DB handshake; publish the 9 modules and 50 exercises locally; progress report entry.
+
+## 12. Generator notes (2026-10-26, Sonnet lead)
+
+Minimal deviations from the plan, all recorded here:
+- **`prep` item 2** is `2 × (8 − 5)` = 6 (re-read at 250 dpi by the extraction helper; the plan/extraction had `(8 − 5) × 2`); item 1 confirmed `8 − 5 × 2` = −2.
+- **Not seeding**: the unit and its extraction already existed (seeded by `tabsit-hadhf-aqwas`); the extraction was updated (elements verified, destinations with module numbers, header boundary rewritten, `now-61` ② transcription fixed).
+- **Lab**: `marble-run` as planned; two simplifications — the lever is a button (not a drag), and the « inlet » marbles are the slots of the written line (they all fill at once), no separate row. The reveal of the run is station by station (≈ 340 ms each, none under reduced motion); the verdict and the basket wait for its end. The plan's `LabFold` for the free panel was NOT used (the panel is always open, compacted).
+- **`pointPrerequisites`**: `P2 ← P1`, `P3 ← P1, P2` and, because `amaliyat-natiqa` was published in the same batch, `P1 ← 3am_amaliyat-natiqa_P4` (its final « تنظيم سلسلة حسابات … باحترام أولوية العمليات والأقواس »). No edge toward `tabsit-hadhf-aqwas` / `nashr-jabri-3am`.
+- **Bricks**: `ithar-darb`, `aqwas-salib`, `nafs-al-adad`, `harfan` (module 1), `tawid-qimat` (module 2), `mithal-mudad`, `nashr-yuthbit` (module 3; the plan named only `mithal-mudad`).
+- **Module 2** opens on two numeric questions (3 then −1) then the gated brick, the box and the example; the second step has B at (−1,5 ; −7) and a remark on the exact value with π (`deep-37`). Both « تذكّر » boxes are always present and show their link only when `getLessonPath` answers (`amaliyat-natiqa` became available during the batch; `tatbiq-qaida-harfiya` is still `coming_soon`).
+- **Module 4** exercises: ids `act-4` (E1), `ex-1` (E2, cites `ex-2`), `ex-3`, `ex-4`, `now-61`, `self-3`, `deep-39`, `deep-37` (with a `GeoFigure`: square + semicircle on its top side, measured in the test), `ict`; E4's ball keeps the plan's numbers (15, 20, 0, 18,75).
+- **Primary الكفاءة** of the exercises: P1 `ex-4`, `deep-37`; P2 `ex-1`, `self-3`; P3 the five counter-example items. Final test: P1 E1, E4 · P2 E2, E3 · P3 E5.
+- **`durationMinutes`** 64 (modules without the مسائل; 88 with them, cap 90).
+- **Unit challenge card** (`units_3am › ibarat-harfiya-3.challenge.textAr`) rewritten with own numbers (« عددان مجموعهما 126,4 … لكل منهما 5 » → 657); its element `challenge` stays destined to `nashr-jabri-3am`'s bank, no `sourceElementId`.
+- **Bank**: see the helper's counts in `MOYEN_ROLLOUT_PROGRESS.md` (50 sheets; 14 `term_exam` modelled, 36 `term_exam_modelled`, 0 adapted). Corpus facts found: `3am-s3-47` ex 1 is a 4-point MCQ (item III is the r03 one); `3am-s2-82` ex 5 part II is a Pythagoras tree (replaced by a budget decision); `3am-s3-49` ex 1 has no separate value step (its equation step is dropped: unit 5).

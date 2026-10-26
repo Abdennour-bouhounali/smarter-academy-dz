@@ -244,7 +244,7 @@
    ],
    "columns": "[(1), (2), (3)] ; (1) = colonne de droite",
    "answerSource": "computed",
-   "reading": "p. 23 (pdf 24) relue à 110 dpi, items 1, 2 à 220 dpi. Le surlignage jaune de la colonne (2) est un artefact du scan, PAS une clé. Item 4 : figures non analysées (L2)."
+   "reading": "p. 23 (pdf 24) relue à 110 dpi, items 1, 2 à 220 dpi. Le surlignage jaune de la colonne (2) est un artefact du scan, PAS une clé. Item 4 : figures non analysées (L2). Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "act-1",
@@ -322,7 +322,7 @@
    "kind": "activity",
    "page": 25,
    "section": "أنشطة 6 — العمليات على الأعداد الناطقة",
-   "verified": false,
+   "verified": true,
    "text": "1) الضرب: أ) احسب الجداء 5/8 × 7/6 ثم استنتج قيمة a = −5/8 × −7/6 . ب) احسب b = ((−5) × (−7)) / (8 × 6) ثم قارن بين a و b . جـ) احسب −12 × (−2/7) ، 7/13 × −8/5 ، −6/5 × 15/−4 ، أعط طريقة لحساب جداء عددين ناطقين. 2) الجمع: نريد حساب 5/4 + −11/6 . أ) انقل وأكمل: 5/4 = …/8 = …/12 = …/16 و −11/6 = −…/12 = −…/18 = −…/24 . ب) استعمل ما سبق واحسب 5/4 + −11/6 . جـ) احسب بطريقة مماثلة: 3/8 + −9/20 ، −4/9 + 5/6 ، أعط طريقة لحساب مجموع عددين ناطقين. 3) القسمة: أ) احسب ما يلي: a = 2/7 ÷ 4/5 ، b = −7 ÷ 3/2 ، c = −2/9 ÷ 6 ، d = −2/9 ÷ −11/8 . ب) أعط طريقة لقسمة عددين ناطقين.",
    "answer": {
     "3a": {
@@ -333,7 +333,8 @@
     },
     "2b": "-7/12"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "know-1",
@@ -405,8 +406,9 @@
    "kind": "knowledge",
    "page": 28,
    "section": "معارف 6 — العمليات على الأعداد الناطقة",
-   "verified": false,
-   "text": "الجمع والطرح: لهما نفس المقام نجمع (نطرح) بسطيهما ونحتفظ بنفس المقام؛ a/c + b/c = (a+b)/c ؛ مقاماهما مختلفان نكتبهما بنفس المقام. الضرب: نضرب بسطيهما ونضرب مقامهما: a/b × c/d = (a×c)/(b×d). مقلوب العدد الناطق a/b هو العدد الناطق b/a (مقلوب −3 هو 1/−3 أي −1/3). القسمة: القسمة على عدد غير معدوم هي الضرب في مقلوب هذا العدد: a ÷ b = a/b = a × 1/b ; a/b ÷ c/d = a/b × d/c ."
+   "verified": true,
+   "text": "الجمع والطرح: لهما نفس المقام نجمع (نطرح) بسطيهما ونحتفظ بنفس المقام؛ a/c + b/c = (a+b)/c ؛ مقاماهما مختلفان نكتبهما بنفس المقام. الضرب: نضرب بسطيهما ونضرب مقامهما: a/b × c/d = (a×c)/(b×d). مقلوب العدد الناطق a/b هو العدد الناطق b/a (مقلوب −3 هو 1/−3 أي −1/3). القسمة: القسمة على عدد غير معدوم هي الضرب في مقلوب هذا العدد: a ÷ b = a/b = a × 1/b ; a/b ÷ c/d = a/b × d/c .",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "method-1",
@@ -518,36 +520,39 @@
    "kind": "method",
    "page": 29,
    "section": "طرائق — جمع عددين ناطقين",
-   "verified": false,
+   "verified": true,
    "text": "احسب A = −5/7 + 3,2/4 : أصغر مضاعف مشترك غير معدوم للعددين 4 و 7 هو 28: A = −20/28 + 22,4/28 = 2,4/28 .",
    "answer": {
     "A": "3/35"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "method-8",
    "kind": "method",
    "page": 29,
    "section": "طرائق — طرح عددين ناطقين",
-   "verified": false,
+   "verified": true,
    "text": "احسب B = −4,7/12 − 5,1/16 : نختار 48 (من مضاعفات 16 ، وهو من مضاعفات 12): B = −18,8/48 − 15,3/48 = −34,1/48 .",
    "answer": {
     "B": "-341/480"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "method-9",
    "kind": "method",
    "page": 29,
    "section": "طرائق — ضرب وقسمة عددين ناطقين",
-   "verified": false,
+   "verified": true,
    "text": "احسب D = 7/3 − 8/15 ÷ 11/20 : D = 7/3 − 8/15 × 20/11 = 7/3 − 32/33 ؛ (الكتاب يكتب 55/33 − 32/33 = 23/33 : خطأ مطبعي).",
    "answer": {
     "D": "15/11"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "method-10",
@@ -567,8 +572,15 @@
    "kind": "now",
    "page": 29,
    "section": "دورك الآن (p. 29)",
-   "verified": false,
-   "text": "احسب واكتب النتيجة على شكل كسر غير قابل للاختزال: A = (11/7 − 2/5) × 24/7 ، B = 11 ÷ (2/3 − 5/2) ، C = −3/14 − 3/7 / 5 + 2 ، D = (3/2 − 1/3)/(3/4 + 2/3) ."
+   "verified": true,
+   "text": "احسب واكتب النتيجة على شكل كسر غير قابل للاختزال: A = (11/7 − 2/5) × 24/7 ، B = 11 ÷ (2/3 − 5/2) ، C = −3/14 − 3/7 / 5 + 2 ، D = (3/2 − 1/3)/(3/4 + 2/3) .",
+   "answer": {
+    "A": "984/245",
+    "B": "-6",
+    "C": "17/10",
+    "D": "14/17"
+   },
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-1",
@@ -607,9 +619,10 @@
    "kind": "exercise",
    "page": 30,
    "section": "أوظّف تعلّماتي — 3",
-   "verified": false,
+   "verified": true,
    "text": "انقل وأكمل الجدول: العدد x : 2/3 ، 1,8 ، 3 (ومقلوبه المطبوع 0,33) ، −8 ؛ مقلوب x ؛ معاكس x ؛ (خانات: −5/9 ، …).",
-   "note": "0,33 est imprimé comme le مقلوب de 3 : c’est une valeur approchée (1/3 ≈ 0,33), pas le مقلوب — gardé comme PIÈGE jamais comme clé."
+   "note": "0,33 est imprimé comme le مقلوب de 3 : c’est une valeur approchée (1/3 ≈ 0,33), pas le مقلوب — gardé comme PIÈGE jamais comme clé.",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-4",
@@ -1024,160 +1037,204 @@
    "kind": "exercise",
    "page": 31,
    "section": "أوظّف تعلّماتي — 34",
-   "verified": false,
-   "text": "احسب ذهنيا: −2/3 − 5/6 ، −5/10 − 1/2 ، −1 − 1/3 ، −1/2 + 1/4 ."
+   "verified": true,
+   "text": "احسب ذهنيا: −2/3 − 5/6 ، −5/10 − 1/2 ، −1 − 1/3 ، −1/2 + 1/4 .",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-35",
    "kind": "exercise",
    "page": 31,
    "section": "أوظّف تعلّماتي — 35",
-   "verified": false,
-   "text": "احسب ما يلي: 2/5 + −7/5 ، −1/4 + 5/8 ، 6 + −4,5/5 ، −3/2 + 12/5 ، −5/16 + 3/4 + 7/12 ، 8/55 + −7/44 ، 1,3/8 + −23/−1,6 ."
+   "verified": true,
+   "text": "احسب ما يلي: 2/5 + −7/5 ، −1/4 + 5/8 ، 6 + −4,5/5 ، −3/2 + 12/5 ، −5/16 + 3/4 + 7/12 ، 8/55 + −7/44 ، 1,3/8 + −23/−1,6 .",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-36",
    "kind": "exercise",
    "page": 31,
    "section": "أوظّف تعلّماتي — 36",
-   "verified": false,
-   "text": "احسب ما يلي: −2/5 − 17/5 ، 5/11 − 8/11 ، −5/8 − 5/12 ، −4/−5 − 5/7 ، 7/15 − 3/10 ، −13/25 − 2/5 ، −31/−18 − 4/3 ، 1 − 5/42 ."
+   "verified": true,
+   "text": "احسب ما يلي: −2/5 − 17/5 ، 5/11 − 8/11 ، −5/8 − 5/12 ، −4/−5 − 5/7 ، 7/15 − 3/10 ، −13/25 − 2/5 ، −31/−18 − 4/3 ، 1 − 5/42 .",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-37",
    "kind": "exercise",
    "page": 31,
    "section": "أوظّف تعلّماتي — 37",
-   "verified": false,
-   "text": "احسب x و y بتجميع الحدود: x = 2/3 − 5/7 − 1/3 + 2/7 + 8/3 − 3/7 ؛ y = 3/4 − 1/6 + 1/4 − 2/3 + 7/6 − 1/3 ."
+   "verified": true,
+   "text": "احسب x و y بتجميع الحدود: x = 2/3 − 5/7 − 1/3 + 2/7 + 8/3 − 3/7 ؛ y = 3/4 − 1/6 + 1/4 − 2/3 + 7/6 − 1/3 .",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-38",
    "kind": "exercise",
    "page": 31,
    "section": "أوظّف تعلّماتي — 38",
-   "verified": false,
-   "text": "احسب ما يلي: B = 1/4 + 5/8 − 12/5 ، A = −25/12 + 7/6 − 5/9 ، C = −9/16 + 2/3 ."
+   "verified": true,
+   "text": "احسب ما يلي: B = 1/4 + 5/8 − 12/5 ، A = −25/12 + 7/6 − 5/9 ، C = −9/16 + 2/3 .",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-39",
    "kind": "exercise",
    "page": 31,
    "section": "أوظّف تعلّماتي — 39",
-   "verified": false,
-   "text": "استعمل الحاسبة واكتب النتيجة على أبسط شكل: −28/32 − (−62/48) ، 58/100 − 27/147 ، −42/75 − 17/10 ."
+   "verified": true,
+   "text": "استعمل الحاسبة واكتب النتيجة على أبسط شكل: −28/32 − (−62/48) ، 58/100 − 27/147 ، −42/75 − 17/10 .",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-40",
    "kind": "exercise",
    "page": 32,
    "section": "أوظّف تعلّماتي — 40",
-   "verified": false,
-   "text": "جد قيمة x في كل حالة ممّا يلي: 6/8 + x = −5/7 ، x − 3/4 = −11/6 ، 2/7 = 5/9 − x ."
+   "verified": true,
+   "text": "جد قيمة x في كل حالة ممّا يلي: 6/8 + x = −5/7 ، x − 3/4 = −11/6 ، 2/7 = 5/9 − x .",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-41",
    "kind": "exercise",
    "page": 32,
    "section": "أوظّف تعلّماتي — 41",
-   "verified": false,
-   "text": "انقل وأكمل الهرم وفق القاعدة المعطاة (a + b) واكتب كل عدد على أبسط شكل (1/2 ، −3 ، −13/6 ، 2/3)."
+   "verified": true,
+   "text": "انقل وأكمل الهرم وفق القاعدة المعطاة (a + b) واكتب كل عدد على أبسط شكل (1/2 ، −3 ، −13/6 ، 2/3).",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-42",
    "kind": "exercise",
    "page": 32,
    "section": "أوظّف تعلّماتي — 42",
-   "verified": false,
-   "text": "احسب واكتب الناتج على شكل عدد ناطق مبسّط: −4/7 × −5/11 ، 0,4/5 × 6/5 ، −9/2,6 × 1,4/3 ، −3/8 × (−5) ."
+   "verified": true,
+   "text": "احسب واكتب الناتج على شكل عدد ناطق مبسّط: −4/7 × −5/11 ، 0,4/5 × 6/5 ، −9/2,6 × 1,4/3 ، −3/8 × (−5) .",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-43",
    "kind": "exercise",
    "page": 32,
    "section": "أوظّف تعلّماتي — 43",
-   "verified": false,
-   "text": "احسب واكتب الناتج على شكل عدد ناطق مبسّط: 8 ÷ 3/4 ، 1 ÷ 11/12 ، −7/11 ÷ 13 ، 5/6 ÷ 6/5 ، 2/9 ÷ −5/3 ."
+   "verified": true,
+   "text": "احسب واكتب الناتج على شكل عدد ناطق مبسّط: 8 ÷ 3/4 ، 1 ÷ 11/12 ، −7/11 ÷ 13 ، 5/6 ÷ 6/5 ، 2/9 ÷ −5/3 .",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-44",
    "kind": "exercise",
    "page": 32,
    "section": "أوظّف تعلّماتي — 44",
-   "verified": false,
-   "text": "احسب واكتب الناتج على شكل عدد ناطق مبسّط: 5/4 ÷ −18/7 ، 0,15/2,7 ÷ 0,25/3 ، −39/4,2 ÷ 26/−0,56 ."
+   "verified": true,
+   "text": "احسب واكتب الناتج على شكل عدد ناطق مبسّط: 5/4 ÷ −18/7 ، 0,15/2,7 ÷ 0,25/3 ، −39/4,2 ÷ 26/−0,56 .",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-45",
    "kind": "exercise",
    "page": 32,
    "section": "أوظّف تعلّماتي — 45",
-   "verified": false,
-   "text": "استعمل الحاسبة واكتب النتيجة على أبسط شكل: −42/25 × (−45) ، 28/48 × −62/48 ، 14/9 × −49/7 × (−18/143) ."
+   "verified": true,
+   "text": "استعمل الحاسبة واكتب النتيجة على أبسط شكل: −42/25 × (−45) ، 28/48 × −62/48 ، 14/9 × −49/7 × (−18/143) .",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-46",
    "kind": "exercise",
    "page": 32,
    "section": "أوظّف تعلّماتي — 46",
-   "verified": false,
-   "text": "انقل وأكمل شبكة الأعداد (جداءات في الأسطر والأعمدة: 4/5 ، 8/15 ، 5/4 ، 4/9 …)."
+   "verified": true,
+   "text": "انقل وأكمل شبكة الأعداد (جداءات في الأسطر والأعمدة: 4/5 ، 8/15 ، 5/4 ، 4/9 …).",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-47",
    "kind": "exercise",
    "page": 32,
    "section": "أوظّف تعلّماتي — 47",
-   "verified": false,
-   "text": "تحقّق من صحة كل مساواة: 5/6 − 8/5 × 15/28 = (8/7 − 1) × (5/6 − 1) ؛ 1/5 ÷ (3/4 − 5/6) = (4/5 − 8) ÷ 3 ."
+   "verified": true,
+   "text": "تحقّق من صحة كل مساواة: 5/6 − 8/5 × 15/28 = (8/7 − 1) × (5/6 − 1) ؛ 1/5 ÷ (3/4 − 5/6) = (4/5 − 8) ÷ 3 .",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-48",
    "kind": "exercise",
    "page": 32,
    "section": "أوظّف تعلّماتي — 48…52",
-   "verified": false,
-   "text": "في التمارين 48 ، 49 ، 50 ، 51 ، 52 احسب واكتب الناتج على شكل عدد ناطق مبسّط: كسور مركّبة a ، b ، c ، d ، e ، f ، g ، h ، x ، y ، z ، K ، L ، M ، N .",
-   "note": "Les TERMES des fractions composées de 48 à 52 sont à relire à 250 dpi par `amaliyat-natiqa`."
+   "verified": true,
+   "text": "a = (8/11)/3 ، b = (6/7)/9 ، c = (−5/3)/(10/9) ، d = (−25/21)/(5/−7) .",
+   "note": "Les TERMES des fractions composées de 48 à 52 sont à relire à 250 dpi par `amaliyat-natiqa`.",
+   "answer": {
+    "a": "8/33",
+    "b": "2/21",
+    "c": "-3/2",
+    "d": "5/3"
+   },
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-49",
    "kind": "exercise",
    "page": 32,
    "section": "أوظّف تعلّماتي — 49",
-   "verified": false,
-   "text": "عبارات من نفس النمط (كسور مركّبة وأقواس) : انظر ex-48."
+   "verified": true,
+   "text": "e = 7/5 + (8/15)/(2/5) − 11/12 ، f = −7/8 + (5/6)/4 − 1 ، g = −3/4 + (3/7)/5 + 2 ، h = (2 − 7/6)/(2 + 7/6) .",
+   "answer": {
+    "e": "109/60",
+    "f": "-5/3",
+    "g": "187/140",
+    "h": "5/19"
+   },
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-50",
    "kind": "exercise",
    "page": 32,
    "section": "أوظّف تعلّماتي — 50",
-   "verified": false,
-   "text": "عبارات من نفس النمط (كسور مركّبة وأقواس) : انظر ex-48."
+   "verified": true,
+   "text": "x = (1/4 + 5/6)/(1/2 − 1/3) ، y = (1 + 1/3 − 1/4)/(1 − 1/3 + 1/4) ، z = (5/9 − 11 × 3/44)/(5/9 + 2/3 × 7/4) .",
+   "answer": {
+    "x": "13/2",
+    "y": "13/11",
+    "z": "-7/62"
+   },
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-51",
    "kind": "exercise",
    "page": 32,
    "section": "أوظّف تعلّماتي — 51",
-   "verified": false,
-   "text": "عبارات من نفس النمط (كسور مركّبة وأقواس) : انظر ex-48."
+   "verified": true,
+   "text": "K = 7/5 ÷ (7/18 − 2/9) ، L = (−3/2 + 4/5) ÷ (−1/6 − 9/4) .",
+   "answer": {
+    "K": "42/5",
+    "L": "42/145"
+   },
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-52",
    "kind": "exercise",
    "page": 32,
    "section": "أوظّف تعلّماتي — 52",
-   "verified": false,
-   "text": "عبارات من نفس النمط (كسور مركّبة وأقواس) : انظر ex-48."
+   "verified": true,
+   "text": "M = (8/11 − 7/5) × (−1/6 + 2/9) ؛ N = −2/5 + 3/15 ÷ 2/3 .",
+   "answer": {
+    "M": "-37/990",
+    "N": "-1/10"
+   },
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-53",
    "kind": "exercise",
    "page": 32,
    "section": "أوظّف تعلّماتي — 53",
-   "verified": false,
+   "verified": true,
    "text": "نعتبر العددين a = −2/21 و b = 5/−7 . احسب ما يلي واكتب الناتج على شكل عدد ناطق مبسّط: a − b ، a + b ، a × b ، a ÷ b ، b ÷ a .",
    "answer": {
     "a−b": "13/21",
@@ -1186,21 +1243,23 @@
     "a÷b": "2/15",
     "b÷a": "15/2"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "ex-54",
    "kind": "exercise",
    "page": 32,
    "section": "أوظّف تعلّماتي — 54",
-   "verified": false,
+   "verified": true,
    "text": "جد قيمة x في كل حالة: −3/5 x = −6/7 ؛ x ÷ 5/4 = −5/8 ؛ −7/2 = 5/9 ÷ x .",
    "answer": {
     "x1": "10/7",
     "x2": "-25/32",
     "x3": "-10/63"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "self-1",
@@ -1281,24 +1340,26 @@
    "kind": "qcm",
    "page": 33,
    "section": "أؤكّد تعلّماتي — 5",
-   "verified": false,
+   "verified": true,
    "text": "المجموع 2,2/3 + −5,3/4 يساوي: أ) −7,1/12 ؛ ب) 7,5/7 ؛ جـ) −71/120 .",
    "answerSource": "computed",
    "answer": {
     "value": "-71/120"
-   }
+   },
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "self-6",
    "kind": "qcm",
    "page": 33,
    "section": "أؤكّد تعلّماتي — 6",
-   "verified": false,
+   "verified": true,
    "text": "نضع A = 2/3 − 2/3 × 5/7 : أ) A = 0 ؛ ب) A = 4/21 ؛ جـ) A = 5/7 .",
    "answerSource": "computed",
    "answer": {
     "A": "4/21"
-   }
+   },
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "self-7",
@@ -1427,16 +1488,18 @@
    "kind": "deep",
    "page": 34,
    "section": "أتعمّق — 57",
-   "verified": false,
-   "text": "احسب A = 3 + 1/(7 + 1/15). أعط قيمة مقرّبة إلى 1/100 لـ A ، بما تذكّرك هذه النتيجة؟"
+   "verified": true,
+   "text": "احسب A = 3 + 1/(7 + 1/15). أعط قيمة مقرّبة إلى 1/100 لـ A ، بما تذكّرك هذه النتيجة؟",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "deep-58",
    "kind": "deep",
    "page": 34,
    "section": "أتعمّق — 58",
-   "verified": false,
-   "text": "تعطى الأعداد x = −1 ، y = 1/3 ، z = 2/5 : احسب ما يلي واكتب الناتج على شكل عدد ناطق مبسّط: x/y + z ، (x+y)/z ، x/(y+z) ."
+   "verified": true,
+   "text": "تعطى الأعداد x = −1 ، y = 1/3 ، z = 2/5 : احسب ما يلي واكتب الناتج على شكل عدد ناطق مبسّط: x/y + z ، (x+y)/z ، x/(y+z) .",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "deep-59",
@@ -1455,8 +1518,9 @@
    "kind": "deep",
    "page": 34,
    "section": "أتعمّق — 60",
-   "verified": false,
-   "text": "تعطى الأعداد الناطقة: −5/3 ، 3/4 ، 4/7 ، 11/6 ، −7/2 . عيّن من القائمة السابقة عددين: أ) جداؤهما −2 ؛ ب) فرقهما 7/2 ؛ جـ) مجموعهما −11/4 ؛ د) حاصل قسمتهما −14/3 ."
+   "verified": true,
+   "text": "تعطى الأعداد الناطقة: −5/3 ، 3/4 ، 4/7 ، 11/6 ، −7/2 . عيّن من القائمة السابقة عددين: أ) جداؤهما −2 ؛ ب) فرقهما 7/2 ؛ جـ) مجموعهما −11/4 ؛ د) حاصل قسمتهما −14/3 .",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "deep-61",
@@ -1488,16 +1552,18 @@
    "kind": "deep",
    "page": 34,
    "section": "أتعمّق — 63",
-   "verified": false,
-   "text": "تعطى الأعداد: 7/2 ، −7/3 ، −1 ، 22/5 ، −3/4 . رتّب تصاعديا: أ) الأعداد المعطاة ب) معاكسات هذه الأعداد ج) مقلوبات هذه الأعداد د) معاكسات مقلوبات هذه الأعداد."
+   "verified": true,
+   "text": "تعطى الأعداد: 7/2 ، −7/3 ، −1 ، 22/5 ، −3/4 . رتّب تصاعديا: أ) الأعداد المعطاة ب) معاكسات هذه الأعداد ج) مقلوبات هذه الأعداد د) معاكسات مقلوبات هذه الأعداد.",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "deep-64",
    "kind": "deep",
    "page": 34,
    "section": "أتعمّق — 64",
-   "verified": false,
-   "text": "احسب بتمعن واكتب النتيجة على أبسط شكل: A = 1/(1+1) ، B = 1 + 1/(1 + 1/(1+1)) ، C ، D (كسور مركّبة متداخلة)."
+   "verified": true,
+   "text": "احسب بتمعن واكتب النتيجة على أبسط شكل: A = 1/(1+1) ، B = 1 + 1/(1 + 1/(1+1)) ، C ، D (كسور مركّبة متداخلة).",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "deep-65",
@@ -1517,12 +1583,13 @@
    "kind": "deep",
    "page": 34,
    "section": "أتعمّق — 66",
-   "verified": false,
+   "verified": true,
    "text": "احسب A حيث A = (1 − 1/2) × (1 − 1/3) × (1 − 1/4) × … × (1 − 1/100) .",
    "answer": {
     "A": "1/100"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "deep-67",
@@ -1537,8 +1604,9 @@
    "kind": "deep",
    "page": 34,
    "section": "أتعمّق — 68",
-   "verified": false,
-   "text": "قارن بين A = (5+x)/8 و B = 5/(x+3) في كل حالة: x = 3 ؛ x = 0 ؛ x = −2/5 ؛ x = 2/3 ."
+   "verified": true,
+   "text": "قارن بين A = (5+x)/8 و B = 5/(x+3) في كل حالة: x = 3 ؛ x = 0 ؛ x = −2/5 ؛ x = 2/3 .",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "deep-69",
@@ -1592,13 +1660,14 @@
    "kind": "deep",
    "page": 35,
    "section": "أتعمّق — 73",
-   "verified": false,
+   "verified": true,
    "text": "نعتبر العددين A = 1/3 − 1/3 × 4/7 ، B = 6/5 ÷ (1/5 − 1/15) . احسب A و B واكتبه على أبسط شكل ممكن، و تحقّق أنه عدد طبيعي.",
    "answer": {
     "A": "1/7",
     "B": "9"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "deep-74",
@@ -1632,26 +1701,28 @@
    "kind": "deep",
    "page": 35,
    "section": "أتعمّق — 76",
-   "verified": false,
+   "verified": true,
    "text": "تعطى الأعداد x = 3/4 ، y = −1/6 ، z = −5/3 . احسب A = x + 2y − z ، B = (x + y) ÷ z ، C = 2x − y + xz واكتب الناتج على شكل كسر غير قابل للاختزال.",
    "answer": {
     "A": "25/12",
     "B": "-7/20",
     "C": "5/12"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "deep-77",
    "kind": "deep",
    "page": 35,
    "section": "أتعمّق — 77",
-   "verified": false,
+   "verified": true,
    "text": "بيّن أنّ العدد A عدد طبيعي حيث A = (3/5 + 5/6) ÷ (11/6 − 2/5) .",
    "answer": {
     "A": "1"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "deep-78",
@@ -1666,14 +1737,15 @@
    "kind": "deep",
    "page": 35,
    "section": "أتعمّق — 79",
-   "verified": false,
+   "verified": true,
    "text": "برنامج حساب: اختر عددا، اضربه في 2/3 ، اطرح من النتيجة 5/8 . ما هو العدد الذي نحصل عليه إذا اخترنا 5 ؟ 7/8 ؟ ما العدد الذي نختاره حتى يكون الناتج معدوما؟",
    "answer": {
     "5": "65/24",
     "7/8": "-1/24",
     "zero at": "15/16"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 5 (2026-10-26) à 120–150 dpi : conforme ; ex-48 à 52 transcrits (fractions composées lisibles à 150 dpi)."
   },
   {
    "id": "deep-80",
@@ -1835,7 +1907,12 @@
   {
    "elementId": "ict",
    "kind": "scan",
-   "text": "Page 37 du livre (« أوظّف تكنولوجيات الإعلام والاتصال ») MANQUE au scan : non transcrite. Question au propriétaire : activité calculatrice plateforme (D11) pour `amaliyat-natiqa` m7, ou note d’absence."
+   "text": "Page 37 du livre (« أوظّف تكنولوجيات الإعلام والاتصال ») MANQUE au scan : non transcrite. Décision (défaut du README du plan, 2026-10-26) : `amaliyat-natiqa` m7 GÉNÈRE sa propre activité calculatrice, déclarée ajout de la plateforme (D11)."
+  },
+  {
+   "elementId": "ex-50",
+   "kind": "reading",
+   "text": "Relu à 150 dpi par L5 : y = (1 + 1/3 − 1/4)/(1 − 1/3 + 1/4) = 13/11 ; z = (5/9 − 11 × 3/44)/(5/9 + 2/3 × 7/4) = −7/62 ; ex-48 : a = (8/11)/3 … d = (−25/21)/(5/−7) = 5/3 (transcrits)."
   }
  ],
  "destinations": {
@@ -2112,19 +2189,19 @@
   },
   "ex-34": {
    "lesson": "amaliyat-natiqa",
-   "module": null
+   "module": 4
   },
   "ex-35": {
    "lesson": "amaliyat-natiqa",
-   "module": null
+   "module": 4
   },
   "ex-36": {
    "lesson": "amaliyat-natiqa",
-   "module": null
+   "module": 4
   },
   "ex-37": {
    "lesson": "amaliyat-natiqa",
-   "module": null
+   "module": 4
   },
   "ex-38": {
    "lesson": "amaliyat-natiqa",
@@ -2136,7 +2213,7 @@
   },
   "ex-40": {
    "lesson": "amaliyat-natiqa",
-   "module": null
+   "module": 4
   },
   "ex-41": {
    "lesson": "amaliyat-natiqa",
@@ -2144,15 +2221,15 @@
   },
   "ex-42": {
    "lesson": "amaliyat-natiqa",
-   "module": null
+   "module": 4
   },
   "ex-43": {
    "lesson": "amaliyat-natiqa",
-   "module": null
+   "module": 4
   },
   "ex-44": {
    "lesson": "amaliyat-natiqa",
-   "module": null
+   "module": 4
   },
   "ex-45": {
    "lesson": "amaliyat-natiqa",
@@ -2168,7 +2245,7 @@
   },
   "ex-48": {
    "lesson": "amaliyat-natiqa",
-   "module": null
+   "module": 4
   },
   "ex-49": {
    "lesson": "amaliyat-natiqa",
@@ -2176,7 +2253,7 @@
   },
   "ex-50": {
    "lesson": "amaliyat-natiqa",
-   "module": null
+   "module": 4
   },
   "ex-51": {
    "lesson": "amaliyat-natiqa",
@@ -2188,11 +2265,11 @@
   },
   "ex-53": {
    "lesson": "amaliyat-natiqa",
-   "module": null
+   "module": 4
   },
   "ex-54": {
    "lesson": "amaliyat-natiqa",
-   "module": null
+   "module": 4
   },
   "self-1": {
    "lesson": "maqlub-qismat-kasrayn",
@@ -2288,19 +2365,19 @@
   },
   "deep-58": {
    "lesson": "amaliyat-natiqa",
-   "module": null
+   "module": 6
   },
   "deep-60": {
    "lesson": "amaliyat-natiqa",
-   "module": null
+   "module": 4
   },
   "deep-63": {
    "lesson": "amaliyat-natiqa",
-   "module": null
+   "module": 4
   },
   "deep-64": {
    "lesson": "amaliyat-natiqa",
-   "module": null
+   "module": 4
   },
   "deep-66": {
    "lesson": "amaliyat-natiqa",
@@ -2312,19 +2389,19 @@
   },
   "deep-73": {
    "lesson": "amaliyat-natiqa",
-   "module": null
+   "module": 7
   },
   "deep-76": {
    "lesson": "amaliyat-natiqa",
-   "module": null
+   "module": 6
   },
   "deep-77": {
    "lesson": "amaliyat-natiqa",
-   "module": null
+   "module": 7
   },
   "deep-79": {
    "lesson": "amaliyat-natiqa",
-   "module": null
+   "module": 5
   },
   "deep-62": {
    "lesson": "jam-tarh-kasrayn",
@@ -2355,8 +2432,8 @@
    "module": null
   },
   "ict": {
-   "lesson": "wadiya-idmajiya-kusur-natiqa",
-   "module": null
+   "lesson": "amaliyat-natiqa",
+   "module": 7
   }
  }
 }

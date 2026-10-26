@@ -180,3 +180,82 @@ describe('fractions3 — leçon 4 `adad-natiq` : le nombre rationnel', () => {
     expect(F.sortRationals(['5/6', '-7/4', '-2/3'])).toEqual(['-7/4', '-2/3', '5/6']);
   });
 });
+
+describe('fractions3 — leçon 5 `amaliyat-natiqa` : la chaîne de calcul', () => {
+  const ev = (t) => ratText(F.evaluateChain(t).value);
+  it('chaque chaîne du plan s\'évalue à la valeur exacte, dans l\'ordre des priorités', () => {
+    expect(ev('-5/4 + 11/6')).toBe('7/12');
+    expect(ev('7/13 × -8/5')).toBe('-56/65');
+    expect(ev('-9/8 ÷ -3/4')).toBe('3/2');
+    expect(ev('7/3 - 8/15 ÷ 11/20')).toBe('15/11');
+    expect(ev('(2/3 - 5/2) × -6/11')).toBe('1');
+    expect(ev('-3/4 + 5/6 × -9/10')).toBe('-3/2');
+    expect(ev('(1/2 - 4/3)@(5/6 + -3/4)')).toBe('-10');
+    expect(ev('4/5 - 3/5 ÷ -9/10 + -2')).toBe('-8/15');
+    expect(ev('-4/9 + 1,5/6')).toBe('-7/36');
+    expect(ev('-2,5/14 - 3,1/21')).toBe('-137/420');
+    expect(ev('5/2 - 9/14 ÷ 3/7')).toBe('1');
+    expect(ev('3/4 - 5/6 - 1/12')).toBe('-1/6');          // de gauche à droite
+    expect(ev('8 ÷ 4 ÷ 2')).toBe('1');
+    expect(ev('(5/6 - 3/4) ÷ -1/24')).toBe('-2');
+  });
+  it('parseChain : le signe, la soustraction, les bulles d\'un seul nombre, les erreurs', () => {
+    expect(ev('5/4 - -11/6')).toBe('37/12');
+    expect(ev('2 × (-3)')).toBe('-6');
+    expect(F.parseChain('(−5/4)').t).toBe('g');
+    expect(() => F.parseChain('1/0 + 2')).toThrow();
+    expect(() => F.parseChain('1/2 +')).toThrow();
+    expect(() => F.evaluateChain('1/2 ÷ 0')).toThrow();
+  });
+  it('resultSign : les quatre opérations', () => {
+    expect(F.resultSign('+', '-5/4', '11/6')).toBe(1);
+    expect(F.resultSign('-', '5/6', '7/8')).toBe(-1);
+    expect(F.resultSign('×', '-3/5', '-10/9')).toBe(1);
+    expect(F.resultSign('÷', '4/7', '-2/21')).toBe(-1);
+    expect(F.resultSign('+', '1/2', '-1/2')).toBe(0);
+    expect(() => F.resultSign('÷', '1', '0')).toThrow();
+  });
+  it('linkStatus : l\'aimant (priorité), la bulle, de gauche à droite, le retournement', () => {
+    const r = F.parseChain('7/3 - 8/15 ÷ 11/20');
+    const [minus, div] = F.links(r);
+    expect(F.linkStatus(r, minus)).toEqual({ ok: false, reason: 'magnet' });
+    expect(F.linkStatus(r, div)).toEqual({ ok: false, reason: 'noflip' });
+    const b = F.parseChain('(1/2 + 1/3) × 2');
+    const ls = F.links(b);
+    expect(ls.find((l) => l.op === '×').ready).toBe(false);
+    expect(F.linkStatus(b, ls.find((l) => l.op === '×')).reason).toBe('bubble');
+    const lr = F.parseChain('1 - 2 + 3');
+    expect(F.linkStatus(lr, F.links(lr)[1]).reason).toBe('order');
+    const md = F.parseChain('8 ÷ 4 × 2');
+    expect(F.linkStatus(md, F.links(md)[1]).reason).toBe('order');
+  });
+  it('flipStatus : seul le diviseur ; le signe est gardé ; 0 refusé', () => {
+    const r = F.parseChain('-9/8 ÷ -3/4');
+    const [d] = F.links(r);
+    expect(F.flipStatus(r, d.left.id)).toEqual({ ok: false, reason: 'dividend' });
+    expect(F.flipStatus(r, d.right.id).ok).toBe(true);
+    const f = F.flipTile(r, d.right.id);
+    expect(ratText(F.tileValue(F.findTile(f, d.right.id)))).toBe('-4/3');
+    expect(F.flipStatus(F.parseChain('1 + 2'), 'zz').reason).toBe('notdiv');
+    expect(F.flipStatus(F.parseChain('3 ÷ 0'), F.links(F.parseChain('3 ÷ 0'))[0].right.id).ok).toBe(false);
+  });
+  it('mergeLink : la tuile résultat, la bulle qui s\'efface, la trace du dénominateur commun', () => {
+    let r = F.parseChain('-5/4 + 11/6');
+    const { root, step } = F.mergeLink(r, F.links(r)[0]);
+    expect(step.den).toBe(12);
+    expect(step.sign).toBe(1);
+    expect(step.trail).toContain('\\frac{-15}{12}');
+    expect(step.trail).toContain('\\frac{22}{12}');
+    expect(F.tileCount(root)).toBe(1);
+    r = F.parseChain('(1/2 + 1/3) × 2');
+    const m = F.mergeLink(r, F.links(r)[0]);
+    expect(m.root.items).toHaveLength(3);
+    expect(m.root.items[0].t).toBe('n');
+    expect(F.parseChain('-2,5/14 - 3,1/21') && F.stepOf(F.links(F.parseChain('-2,5/14 - 3,1/21'))[0]).den).toBe(42);
+    expect(() => F.mergeLink(F.parseChain('1 + 2 × 3'), F.links(F.parseChain('1 + 2 × 3'))[0])).toThrow();
+  });
+  it('chainScale : au moins 1, au plus 8', () => {
+    expect(F.chainScale('-5/4 + 11/6')).toBe(1.8333333333333333);
+    expect(F.chainScale('1/2 × 1/3')).toBe(1);
+  });
+});
