@@ -67,7 +67,9 @@ opens with **Phase A « what 4AM needs NOW »** (owner): 4AM units in textbook o
 the most recent year (3AM, otherwise 2AM, otherwise 1AM) — 35 entries; the full chains come after (`LEARNING_NET.md` §4bis). A unit's extraction is
 written whole (`docs/sources/<g>/unit<N>/`), elements of lessons not yet generated are « pending » in `check:textbook`; the textbook's tape
 diagram « مخطط بأقواس » is the shared figure `ArcTape` (statement figure `kind: 'tape'`). Owner rule: a generated lesson is also imported
-and its modules/exercises published in the LOCAL database so the owner can browse it.
+and its modules/exercises published in the LOCAL database so the owner can browse it. **Nothing generated stays `draft`** (owner,
+2026-10-26): every lesson, module and exercise you generate must end `published` — never leave a `draft` module or exercise behind
+(guide §11 « Publish a lesson », step 4).
 
 Since 2026-10-17 the platform has a **printed-books store** (`/books`, `/books/:slug`, admin « الكتب » at `/admin/livres/*`): orders WITHOUT online
 payment, delivery fee set later by the admin, payments recorded as lines; the first book is « بروتوكول SMART » (`BookSeeder`, slug
@@ -135,6 +137,10 @@ shared with the student too, on the link page as well. The parent pages are phon
 - **Every manipulation has the onboarding** (owner, 2026-10-14): `LabCoach` — at each moment a ring + one-sentence bubble on the button or
   gesture needed now, shown once, hidable, re-summonable; same design in every lab, every lesson, every grade
   (`MANIPULATION_CONTRACT.md` §8quater, `MANIPULATION_DNA.md` §17.11; rollout and its prompt: `docs/reports/LAB_COACH_ROLLOUT.md`).
+- **Respect Islam in every generated string, icon and emoji** (owner, 2026-10-26): never use the pig (🐷 — a piggy bank is drawn as 💰/a money box),
+  alcohol, gambling (cards, dice as a game, casino, lottery), usury/interest, pork, non-Islamic festivals or religious symbols, or any word or
+  situation that touches them — in lesson text, contexts, problems, bank sheets, icons and badges. Use neutral Algerian everyday contexts.
+  Checked by `LESSON_DEVELOPMENT_GUIDE.md` § « Cultural and religious respect ».
 - Terminology: a learning point is « الكفاءة / الكفاءات » in every visible
   string since 2026-10-05 — never « نقطة التعلّم / نقاط التعلّم »; identifiers
   (`learningPoint`…) are unchanged (`docs/architecture/ARABIC_RTL_CONTRACT.md`).

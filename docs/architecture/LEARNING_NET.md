@@ -343,6 +343,12 @@ On 2026-10-20 (10 lessons published): 186 — A 35 (34 lessons + 1 synthesis), B
 Phase A does not change what a lesson builds. A Phase-A lesson whose own earlier prerequisites are not generated yet still
 reviews them in its « أستعدّ » (« راجع قبل أن تنطلق »), and they come in Phase B.
 
+**Net fix 2026-10-26 (3AM unit 3 « القوى ذات أسس نسبية صحيحة »).** The unit teaches r01/r03 (`quwa-adad-ashara`) BEFORE r02
+(`qawaid-quwa-ashara`): the link `3am.m3.r02 → 3am.m3.r03` would have made the first lesson's « أستعدّ » measure a rule taught in the
+NEXT lesson. It is replaced by `3am.m3.r01 → 3am.m3.r03`, and `3am.m3.r02 → 3am.m3.r04` is added (the scientific writing of a computation
+needs the rules); `kitaba-ilmiya-rutba › prerequisiteLessonCodes` gained `qawaid-quwa-ashara`. General rule shown by the case: a `requires`
+link must follow the textbook order of the LESSONS that own its two items; when it does not, the link is wrong, not the order.
+
 ## 5. Editing the net
 
 - **Fix a transcription:** edit the item's `textAr` in `official_programme_moyen.json`. Never change its id.

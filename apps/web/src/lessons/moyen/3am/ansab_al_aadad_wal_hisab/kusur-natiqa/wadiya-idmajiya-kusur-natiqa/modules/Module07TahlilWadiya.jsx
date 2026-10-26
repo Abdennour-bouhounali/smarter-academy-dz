@@ -26,7 +26,7 @@ export default function Module07TahlilWadiya() {
     <ContentModule
       objectives={['أيّ الكسور من المبلغ كلّه، وأيّها من الباقي؟', 'ما ترتيب الحسابات؟ وما الذي نحتاجه قبل أخذ كسر من الباقي؟', 'كيف نكشف أنّ «ثلاثة أخماس المبلغ كلّه» تفسير مستحيل؟']}
       ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="تحليل الوضعية النهائية للاختبار" moduleSubtitle="حصّالة مريم: كم ادّخرت؟" estimatedTime="12 دقيقة"
-      brief={{ tag: 'أدمج تعلّماتي — الوضعية النهائية', headline: 'ما في حصّالة مريم', emoji: '🐷', title: SITUATION.title, tone: 'amber', body: <p><MathText>{SITUATION.text}</MathText></p>, footer: <SourceTag source={SITUATION.source} /> }}
+      brief={{ tag: 'أدمج تعلّماتي — الوضعية النهائية', headline: 'ما في حصّالة مريم', emoji: '💰', title: SITUATION.title, tone: 'amber', body: <p><MathText>{SITUATION.text}</MathText></p>, footer: <SourceTag source={SITUATION.source} /> }}
       steps={[
         { num: 1, title: 'ما المعطيات المفيدة؟', done: sorted,
           content: <div className="space-y-3"><p className="text-sm text-slate-700">اسحب كل معطى إلى «مفيد» أو «غير مفيد» لمعرفة ما ادّخرته مريم.</p><InfoSorter items={SITUATION.data} formative onSolved={() => setSorted(true)} /></div> },

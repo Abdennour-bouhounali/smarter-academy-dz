@@ -143,6 +143,8 @@ export const MANIPULATION_COMPONENTS = {
   'merge-board': lazy(() => import('./operations/MergeBoard')),
   // 3AM, unité 4, leçon 4 : l'aiguille qui lit une différence — le مقياس الفرق (2026-10-26).
   'difference-meter': lazy(() => import('./operations/DifferenceMeter')),
+  // 3AM, unité 3, leçon 1 : l'exposant de 10 sous la main — la عدسة القوى (2026-10-26).
+  'ten-zoom': lazy(() => import('./operations/TenZoom')),
   // 2AM, unité 5 « التناسبية » : le nombre qui manque sous la main — les موازين الرابع المتناسب (2026-10-21).
   'fourth-gauges': lazy(() => import('./operations/FourthGauges')),
 };

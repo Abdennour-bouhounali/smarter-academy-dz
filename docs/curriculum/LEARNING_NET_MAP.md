@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **353** liens (312 requires, 31 extends, 10 consolidates) · **106** leçons publiées · **164** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **108** leçons publiées · **162** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -207,7 +207,8 @@ flowchart LR
     n_4am_m1_r07["4am.m1.r07<br/>معرفة قواعد الحساب على الجذور التربيعية واستعما…"]
   end
   n_3am_m3_r01 --> n_3am_m3_r02
-  n_3am_m3_r02 --> n_3am_m3_r03
+  n_3am_m3_r01 --> n_3am_m3_r03
+  n_3am_m3_r02 --> n_3am_m3_r04
   n_3am_m3_r03 --> n_3am_m3_r04
   n_3am_m3_r04 --> n_3am_m3_r05
   n_3am_m3_r06 --> n_3am_m3_r07
@@ -987,10 +988,10 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 
 | item | المورد المعرفي (نص البرنامج) | leçon d’accueil | repart de |
 |---|---|---|---|
-| `3am.m3.r01` | تعيين القوة من الرتبة n للعدد 10. | `quwa-adad-ashara` _(prévue)_ | `1am.m1.r03` |
+| `3am.m3.r01` | تعيين القوة من الرتبة n للعدد 10. | `quwa-adad-ashara` | `1am.m1.r03` |
 | `3am.m3.r02` | معرفة واستعمال قواعد الحساب على قوى العدد 10. | `qawaid-quwa-ashara` _(prévue)_ | `3am.m3.r01` |
-| `3am.m3.r03` | كتابة عدد عشري باستعمال قوى 10. | `quwa-adad-ashara` _(prévue)_ | `3am.m3.r02` |
-| `3am.m3.r04` | تعيين الكتابة العلمية لعدد عشري. | `kitaba-ilmiya-rutba` _(prévue)_ | `3am.m3.r03` |
+| `3am.m3.r03` | كتابة عدد عشري باستعمال قوى 10. | `quwa-adad-ashara` | `3am.m3.r01` |
+| `3am.m3.r04` | تعيين الكتابة العلمية لعدد عشري. | `kitaba-ilmiya-rutba` _(prévue)_ | `3am.m3.r02`، `3am.m3.r03` |
 | `3am.m3.r05` | استعمال الكتابة العلمية لحصر عدد عشري ولإيجاد رتبة مقدار عدد. | `kitaba-ilmiya-rutba` _(prévue)_ | `3am.m3.r04`، يمدّد `1am.m1.r06` |
 | `3am.m3.r06` | حساب قوة عدد نسبي. | `quwat-adad-nisbi` | `3am.m1.r01` |
 | `3am.m3.r07` | معرفة قواعد الحساب على قوة عدد نسبي واستعمالها في وضعيات بسيطة. | `quwat-adad-nisbi` | `3am.m3.r06`، `3am.m3.r02` |
@@ -1302,7 +1303,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 8 | `adad-natiq` — العدد الناطق | publiée | `3am.m1.r07` |
 | 9 | `amaliyat-natiqa` — العمليات على الأعداد الناطقة | publiée | `3am.m1.r08` |
 | 10 | `wadiya-idmajiya-kusur-natiqa` — أدمج تعلّماتي — العمليات على الكسور والأعداد الناطقة | synthèse | — |
-| 11 | `quwa-adad-ashara` — قوى العدد 10 | prévue | `3am.m3.r01` `3am.m3.r03` |
+| 11 | `quwa-adad-ashara` — قوى العدد 10 | publiée | `3am.m3.r01` `3am.m3.r03` |
 | 12 | `qawaid-quwa-ashara` — قواعد الحساب على قوى العدد 10 | prévue | `3am.m3.r02` |
 | 13 | `kitaba-ilmiya-rutba` — الكتابة العلمية ورتبة القدر | prévue | `3am.m3.r04` `3am.m3.r05` |
 | 14 | `quwat-adad-nisbi` — قوة عدد نسبي | publiée | `3am.m3.r06` `3am.m3.r07` `3am.m3.r08` |

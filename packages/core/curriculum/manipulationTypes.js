@@ -818,6 +818,15 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'العدد الأكبر هو الذي يكون الفرق $a-b$ معه موجبًا: $a>b$ معناه $a-b>0$ ، و $a<b$ معناه $a-b<0$ ، و $a=b$ معناه $a-b=0$ ؛ فنعرف الترتيب من إشارة الفرق وحدها، وتبديل العددين يبدّل إشارة الفرق لا الترتيب. ولمقارنة عبارتين $A$ و $B$ نبسّط $A-B$ ثم نعيّن إشارته حسب قيم $x$.',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 3AM, unité 3, leçon 1 (2026-10-26) — la puissance de 10 comme nombre de crans d'un zoom : l'exposant sous la main.
+  'ten-zoom': {
+    // LA BAGUE QUI ZOOME PAR DIX : le club de sciences a une lentille de laiton dont la bague crantée multiplie par 10 (cadre plus grand) ou divise par 10 (cadre plus petit) le côté d'un cadre carré,
+    // qui part du dessus d'une table (1 m). La main TIENT le nombre de crans n : elle tourne la bague (ou pince, ou molette, ou boutons) jusqu'à ce que le côté du cadre égale la carte (« 1 000 000 م »,
+    // « 0,001 م », « مليار متر », « ميكرومتر »), puis « ثبّت الإطار ». La plaque lit le côté en DÉCIMAL (1 000 000 m : le 1 et ses zéros ; 0,001 m : le 1 au rang 3 après la virgule) ; sans cran le cadre est
+    // la table (1 m). Monde `prefixes` : la carte est une unité (كيلومتر … نانومتر). Chaque cran, prédiction et verdict est un essai jugé exactement : MANUEL §6bis. `ten-zoom` n'énonce jamais la règle.
+    shows: 'نقرأ $10^n$ : 1 متبوع بـ $n$ صفرًا إذا كان $n$ موجبًا، و $10^0 = 1$ ، و $10^{-n} = \\frac{1}{10^n}$ هو العدد الذي رقم 1 فيه في الرتبة $n$ بعد الفاصلة ؛ وكل بادئة (كيلو، ميلي، ميكرو، نانو …) هي قوة للعدد 10',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   'pin-rails': {
     // LA PUNAISE SUR SA RAINURE ET LA RÈGLE SUR DEUX NŒUDS : un tableau de prix devient des points d'un repère — la main GLISSE chaque punaise
     // le long de la rainure de sa colonne jusqu'à son prix (la punaise posée au mauvais prix retombe, le tableau fait foi) puis POSE une règle

@@ -938,6 +938,24 @@ export const LEVELS = Object.freeze({
       { id: 'd6', a: '2/5', b: '7/10', range: [-2, 2], curtain: { left: 'a', value: '-0,3' } },
     ] }, ...T('ex-27') },
   },
+  // LA BAGUE QUI ZOOME PAR DIX (ten-zoom, thème science-lens, 3AM unité 3, leçon 1, 2026-10-26) : la main tient le nombre de crans n d'un cadre carré qui part de la table (1 m) ; chaque cran ×10 ou ÷10 ; la plaque lit le côté en
+  // décimal. مبتدئ (plateforme, « tally » 1 × 10 × 10 sous la plaque) : z1 « 1 000 م » (3 crans) · z2 « 1 000 000 م » avec la PRÉDICTION « كم نقرة ؟ » 6 / 7 / 1 000 000 · z3 « 0,001 م » · z4 retour à « 1 م ». متقدم (act-2 :
+  // 10⁻¹ … 10⁻⁴ par ÷10, sans tally ; la carte est un nom ou une autre unité) : z5 « مليار متر » · z6 « ميكرومتر » défini · z7 « 0,0000001 م » avec la prédiction 6 / 7 / 8 · z8 « 10 كم ». Le monde `prefixes` (cartes = unités)
+  // se pose seul dans معارف (`levels={false}`). Le test des niveaux mesure l'absence de tally et les cartes en NOMS / UNITÉS (متقدم seul).
+  'ten-zoom': {
+    beginner: { numbers: { world: 'zoom', tally: true, discovery: 'count', tasks: [
+      { id: 'z1', target: 3, card: { dec: 3 } },
+      { id: 'z2', target: 6, card: { dec: 6 }, predict: { q: 'out', options: [6, 7, 1000000], correct: 0 } },
+      { id: 'z3', target: -3, card: { dec: -3 } },
+      { id: 'z4', target: 0, card: { dec: 0 }, startAt: 'prev' },
+    ] }, ...P },
+    advanced: { numbers: { world: 'zoom', tally: false, discovery: 'rank', tasks: [
+      { id: 'z5', target: 9, card: { name: 9 } },
+      { id: 'z6', target: -6, card: { unit: -6, def: true } },
+      { id: 'z7', target: -7, card: { dec: -7 }, predict: { q: 'in', options: [6, 7, 8], correct: 1 } },
+      { id: 'z8', target: 4, card: { km: 10 } },
+    ] }, ...T('act-2') },
+  },
   // LA POSITION D'UNE ÉCRITURE SOUS LA MAIN (number-line-pegs, thème clothesline, 3AM unité 2, leçon 4, 2026-10-26) : la main PORTE une carte d'écriture a/b et l'ACCROCHE sur un حبل gradué ; le vent la fait
   // glisser à son vrai piquet. Une tâche est `{ id, kind?: 'hang' | 'order', cards: ['6/-8', …], range?: [lo, hi] }`. مبتدئ (plateforme, pas 1/12, loupe ×3, « تحقّق » à volonté) : w1 6/(−8), (−3)/4, 3/4,
   // (−9)/(−12) → deux piles ; w2 −7/3, 7/(−3), −14/6, 14/6 (−28 douzièmes ×3, +28) ; w3 −1,5, 2, (−20)/(−8), −3. متقدم (method-10 : ordre par un même dénominateur ; pas 1/48, ni graduation entre les

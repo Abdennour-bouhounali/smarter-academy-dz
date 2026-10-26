@@ -4,8 +4,10 @@
 
 Transcription VISUELLE (pages rendues à 110 dpi ; le scan n'a pas de couche texte). Tout ce qui va à la leçon
 quwat-adad-nisbi a été RELU à 220–800 dpi (exposants des act-6, ex-34 … ex-53, self-22 … self-25, معارف 6–8, طريقة p. 45) :
-`verified: True`. Les éléments des leçons non encore générées (quwa-adad-ashara, qawaid-quwa-ashara, kitaba-ilmiya-rutba,
-la synthèse) sont transcrits plus brièvement et marqués `verified: False` : leur leçon les relira. Les réponses sont
+`verified: True`. Depuis le 2026-10-26 les éléments de quwa-adad-ashara (prep 1–15 et 18–25, act-1 … act-3, know-1, know-2,
+method-43a/b, ex-1 … ex-13, self-1, self-2, self-3, self-11) sont RELUS à 220–500 dpi : `verified: True` (corrections et doutes
+dans DISCREPANCIES). Les éléments des leçons non encore générées (qawaid-quwa-ashara, kitaba-ilmiya-rutba, la synthèse) sont
+transcrits plus brièvement et marqués `verified: False` : leur leçon les relira. Les réponses sont
 CALCULÉES ici (Fraction exacte), jamais tapées.
 
 FRONTIÈRE entre les leçons de l'unité (ce que chacune possède) :
@@ -20,8 +22,9 @@ FRONTIÈRE entre les leçons de l'unité (ce que chacune possède) :
     a^1 = a, a^0 = 1, a^-n = 1/a^n, le SIGNE de (−a)^n selon la parité de n (et −a^n ≠ (−a)^n), les CINQ règles
     a^m × a^n, a^m / a^n, (a^m)^n, (ab)^n = a^n b^n, (a/b)^n = a^n / b^n, et la PRIORITÉ des puissances dans une chaîne
     de calculs. Les puissances de 10 y sont un cas particulier déjà connu (rappel), jamais réenseigné.
-  • wadiya-idmajiya-quwa-nisbiya — أدمج تعلّماتي (CO2), وضعية للتقويم (globules rouges), ICT (l'échiquier 2^n), et les
-    أتعمّق 63, 64, 68, 69 (problèmes de puissances gardés pour la synthèse comme enrichissement).
+  • wadiya-idmajiya-quwa-nisbiya — أدمج تعلّماتي (CO2), وضعية للتقويم (globules rouges), ICT (l'échiquier 2^n).
+    Les أتعمّق 63, 64, 68, 69 (puissances de 2 / 8, doublement) NE sont PAS dans la synthèse (MASAIL §14 : pas d'أتعمّق dans
+    أدمج تعلّماتي) : déclarés `notIntegrated` (décision du propriétaire en attente : adaptation dans la banque de quwat-adad-nisbi).
 
 Colonnes des QCM (أستعدّ p. 39, أؤكّد p. 49) : les options sont rangées [(1), (2), (3)] avec (1) la colonne la plus À DROITE
 (à côté de la question) ; `correct` donne les indices 0-based des options justes.
@@ -176,19 +179,19 @@ E.append({'id': 'prep', 'kind': 'prerequisites', 'page': 39, 'section': 'أست�
           'note': 'Items 16–17 (puissance d’un entier, d’un négatif) mesurent les prérequis de quwat-adad-nisbi ; 19–20 (aire, volume) sont des carrés/cubes ; 18 = 10^5.'})
 
 # ── pp. 40–41 : أنشطة ──────────────────────────────────────────────────────────────────────────────
-E.append({'id': 'act-1', 'kind': 'activity', 'number': 1, 'page': 40, 'section': 'أنشطة', 'title': 'قوى ذات أسس صحيحة موجبة', 'verified': False,
+E.append({'id': 'act-1', 'kind': 'activity', 'number': 1, 'page': 40, 'section': 'أنشطة', 'title': 'قوى ذات أسس صحيحة موجبة', 'verified': True,
           'text': '1) اكتشاف قوة عدد ذي أس موجب: تنقسم خلية إلى 10 خلايا خلال ساعة. أ) كم يصبح عدد الخلايا في: 3 ساعات ؛ 5 ساعات ؛ 9 ساعات. عبّر عن هذه الأعداد بـ 10 و × فقط. ب) كم يصبح عدد الخلايا في n ساعة؟ جـ) ما هو عدد الساعات اللازم حتى يكون عدد الخلايا عشرة ملايير؟ 2) الترميز 10^n: نرمز إلى 10 × 10 بـ 10^2 ونكتب 10^2 = 10 × 10 ؛ نرمز إلى 10 × 10 × 10 بـ 10^3 … نرمز إلى 10 × 10 × …… × 10 (n عاملا) بـ 10^n. استعمل الترميز 10^n للتعبير عن: مساحة مربع طول ضلعه 10cm • حجم مكعب طول حرفه 10dm.',
           'figure': 'صورة: انقسام الخلية.',
           'answer': {'cells': {'3': '10^3', '5': '10^5', '9': '10^9'}, 'n': '10^n', 'tenBillion': 10, 'square': '10^2 cm²', 'cube': '10^3 dm³'},
           'answerSource': 'computed'})
 assert P(10, 10) == 10_000_000_000
-E.append({'id': 'act-2', 'kind': 'activity', 'number': 2, 'page': 40, 'section': 'أنشطة', 'title': 'قوى ذات أسس صحيحة سالبة', 'verified': False,
+E.append({'id': 'act-2', 'kind': 'activity', 'number': 2, 'page': 40, 'section': 'أنشطة', 'title': 'قوى ذات أسس صحيحة سالبة', 'verified': True,
           'text': '1) انقل ثم أتمم الجدول الموالي: (سطر « ترميز 10^n »: 10^4 ؛ 10^… ؛ 10^2 ؛ 10^1 ؛ 10^… ؛ 10^… … ؛ سطر « كتابة عشرية »: …) مع أسهم « ÷ 10 » بين الخانات (اثنتان « ÷ …. » للإتمام). 2) ماذا يساوي 10^0 ؛ 10^1 ؟ 3) عبّر بعدد كسري عن كل من 10^-1 ؛ 10^-2 ؛ 10^-3 ؛ 10^-4 . 4) اكتب مساواة تعبّر على أنّ 10^-n هو مقلوب 10^n .',
-          'reading': 'exposants de la ligne « ترميز » à demi effacés (on lit 10^4 … 10^2, 10^1, puis 10 sans exposant) : le tableau va de 10^4 à 10^-4',
+          'reading': 'relu à 220 dpi : 9 colonnes (de droite à gauche 10^4, 10^3, 10^2, 10^1, 10^0, 10^-1, 10^-2, 10^-3, 10^-4) ; les exposants des 5 dernières colonnes sont à demi effacés (« 10 » sans exposant, « 10^-… ») mais la suite des flèches ÷ 10 les impose ; 8 flèches, dont 2 cases « ÷ …. » à compléter',
           'answer': {'table': {f'10^{k}': fr(P(10, k)) for k in range(4, -5, -1)}, '10^0': 1, '10^1': 10,
                      'fractions': [f'1/{10 ** k}' for k in range(1, 5)], 'reciprocal': '10^-n = 1/10^n'},
           'answerSource': 'computed'})
-E.append({'id': 'act-3', 'kind': 'activity', 'number': 3, 'page': 40, 'section': 'أنشطة', 'title': 'الكتابة العشرية لقوة العدد 10', 'verified': False,
+E.append({'id': 'act-3', 'kind': 'activity', 'number': 3, 'page': 40, 'section': 'أنشطة', 'title': 'الكتابة العشرية لقوة العدد 10', 'verified': True,
           'text': '1) أعط الكتابة العشرية للأعداد التالية: 10^2 ؛ 10^6 ؛ 10^9 . 2) انقل وأتمم: «الكتابة العشرية لـ 10^12 هي 1 متبوعا بـ …… صفرا». 3) اكتب على شكل قوة العدد 10 الأعداد التالية: 100 ؛ 10 000 ؛ 100 000 ؛ 1 000 000 ؛ 1 000 000 000 . 4) أعط الكتابة العشرية للأعداد التالية: 10^-2 ؛ 10^-3 ؛ 10^-5 ؛ 10^-9 . 5) انقل وأتمم: «الكتابة العشرية للعدد 10^-11 تحتوي على …… صفرا متبوعة بـ 1. الفاصلة موضوعة بعد …… الأول» «في الكتابة العشرية للعدد 10^-13 رتبة العدد 1 بعد الفاصلة هي ……».',
           'answer': {'1': [str(10 ** k) for k in (2, 6, 9)], '2': 12, '3': ['10^2', '10^4', '10^5', '10^6', '10^9'],
                      '4': [fr(P(10, k)) for k in (-2, -3, -5, -9)], '5': {'zeros': 11, 'after': 'الصفر', 'rank13': 13}},
@@ -233,10 +236,10 @@ E.append({'id': 'act-6', 'kind': 'activity', 'number': 6, 'page': 41, 'section':
           'answerSource': 'computed'})
 
 # ── p. 42 : معارف 1–3 ───────────────────────────────────────────────────────────────────────────────
-E.append({'id': 'know-1', 'kind': 'knowledge', 'number': 1, 'page': 42, 'section': 'معارف', 'title': 'قوى 10 ذات أسس موجبة', 'verified': False,
+E.append({'id': 'know-1', 'kind': 'knowledge', 'number': 1, 'page': 42, 'section': 'معارف', 'title': 'قوى 10 ذات أسس موجبة', 'verified': True,
           'text': 'تدل الكتابة 10^n على جداء n عاملا كلها مساوية للعدد 10. يُقرأ 10^n : « 10 أس n ». 10^n = 10 × 10 × 10 × …… × 10 (n عاملا) ؛ 10^n = 100……0 (n صفرا). ملاحظة: 10^1 = 10 ؛ 10^0 = 1 . أمثلة: • 10^5 = 10 × 10 × 10 × 10 × 10 ، 10^5 = 100 000 . • 10^19 = 10 × 10 × …… × 10 (19 عاملا) ، 10^19 = 10 000 000……000 (19 صفرا).',
           'answer': {'10^5': P(10, 5).numerator, '10^19zeros': len(str(10 ** 19)) - 1}, 'answerSource': 'computed'})
-E.append({'id': 'know-2', 'kind': 'knowledge', 'number': 2, 'page': 42, 'section': 'معارف', 'title': 'قوى ذات أسس سالبة', 'verified': False,
+E.append({'id': 'know-2', 'kind': 'knowledge', 'number': 2, 'page': 42, 'section': 'معارف', 'title': 'قوى ذات أسس سالبة', 'verified': True,
           'text': 'تدل الكتابة 10^-n على مقلوب 10^n. 10^-n = 1/10^n = 1/(10 × …… × 10) (n عاملا) = 1/10……0 (n صفرا). 10^-n = 0,000……01 (n صفرا) ، 1 في الرتبة n بعد الفاصلة. أمثلة: • 10^-5 = 1/10^5 ، 10^-5 = 0,00001 ، رتبة العدد 1 هي 5 بعد الفاصلة. • 10^-23 = 1/10^23 = 0,000………0001 (23 صفرا) ، رتبة العدد 1 هي 23 بعد الفاصلة.',
           'answer': {'10^-5': fr(P(10, -5))}, 'answerSource': 'computed'})
 KNOW3 = [('10^3 × 10^5', P(10, 3) * P(10, 5), 8), ('10^4 × 10^-6', P(10, 4) * P(10, -6), -2), ('10^7 / 10^2', P(10, 7) / P(10, 2), 5),
@@ -248,10 +251,10 @@ E.append({'id': 'know-3', 'kind': 'knowledge', 'number': 3, 'page': 42, 'section
           'answer': {e: f'10^{n}' for e, _, n in KNOW3}, 'answerSource': 'computed'})
 
 # ── p. 43 : طرائق + دوري الآن ───────────────────────────────────────────────────────────────────────
-E.append({'id': 'method-43a', 'kind': 'method', 'page': 43, 'section': 'طرائق', 'title': 'قوة 10 ذات أس موجب', 'verified': False,
+E.append({'id': 'method-43a', 'kind': 'method', 'page': 43, 'section': 'طرائق', 'title': 'قوة 10 ذات أس موجب', 'verified': True,
           'text': 'تمرين: 1) اكتب على شكل قوة 10: a = 10 000 ؛ b = 100 000 ؛ c = 1000 000 . 2) اكتب كتابة عشرية للعدد e = 10^9 . حلّ: a = 10^4 ؛ b = 10^5 ؛ c = 10^6 ؛ e = 1000 000 000 . طريقة: لكتابة a ؛ b ؛ c على شكل قوة 10 نكتب 10^n حيث n عدد الأصفار. لكتابة e على شكل عشري نكتب 1 متبوعًا بـ 9 أصفار.',
           'answer': {'a': '10^4', 'b': '10^5', 'c': '10^6', 'e': 10 ** 9}, 'answerSource': 'computed'})
-E.append({'id': 'method-43b', 'kind': 'method', 'page': 43, 'section': 'طرائق', 'title': 'قوة 10 ذات أس سالب', 'verified': False,
+E.append({'id': 'method-43b', 'kind': 'method', 'page': 43, 'section': 'طرائق', 'title': 'قوة 10 ذات أس سالب', 'verified': True,
           'text': 'تمرين: 1) اكتب على شكل قوة 10: f = 0,01 ؛ g = 0,001 ؛ h = 0,0001 . 2) أعط كتابة عشرية للعدد i = 10^-6 . حلّ: f = 10^-2 ؛ g = 10^-3 ؛ h = 10^-4 ؛ i = 0,000001 . طريقة: لكتابة f ؛ g ؛ h على شكل قوة للعدد 10 نكتب 10^-n حيث n رتبة 1 بعد الفاصلة. لكتابة i على الشكل العشري نكتب i = 0,00…..1 حيث 1 في الرتبة 6 بعد الفاصلة (5 أصفار بين الفاصلة و 1).',
           'answer': {'f': '10^-2', 'g': '10^-3', 'h': '10^-4', 'i': fr(P(10, -6))}, 'answerSource': 'computed'})
 M43C = {'A': (P(10, 3) * P(10, 5), 8), 'B': (P(10, -3) * P(10, 5), 2), 'C': (P(10, -4) * P(10, -5), -9), 'D': (P(10, 7) / P(10, 3), 4),
@@ -329,7 +332,9 @@ E.append({'id': 'now-45', 'kind': 'practice', 'page': 45, 'section': 'دوري �
 # ── pp. 46–48 : أوظّف تعلّماتي ─────────────────────────────────────────────────────────────────────
 
 
-def exercise(n, page, group, text, verified=False, **extra):
+def exercise(n, page, group, text, verified=None, **extra):
+    if verified is None:
+        verified = n <= 13   # ex-1 … ex-13 relus le 2026-10-26 (quwa-adad-ashara) ; les autres : voir l'appel
     E.append({'id': f'ex-{n}', 'kind': 'exercise', 'number': n, 'page': page, 'section': 'أوظّف تعلّماتي', 'group': group, 'verified': verified, 'text': text, **extra})
 
 
@@ -338,25 +343,33 @@ exercise(1, 46, G1, 'اكتب الأعداد التالية كتابة عشري�
 exercise(2, 46, G1, 'عبّر لغويا عن الأعداد التالية: 10^1 ؛ 10^2 ؛ 10^3 ؛ 10^6 ؛ 10^9 .', answer=['عشرة', 'مئة', 'ألف', 'مليون', 'مليار'])
 exercise(3, 46, G1, 'اكتب الأعداد التالية كتابة عشرية: 10^-5 ؛ 10^-7 ؛ 10^-9 .', answer=[fr(P(10, k)) for k in (-5, -7, -9)], answerSource='computed')
 exercise(4, 46, G1, 'عبّر لغويا عن الأعداد التالية: 10^-1 ؛ 10^-2 ؛ 10^-3 ؛ 10^-6 ؛ 10^-9 .', answer=['جزء من عشرة', 'جزء من مئة', 'جزء من ألف', 'جزء من مليون', 'جزء من مليار'])
-exercise(5, 46, G1, 'اكتب الأعداد التالية على شكل قوة 10 ثم كتابة عشرية: 1/10^2 ؛ 1/10^3 ؛ 1/10^5 ؛ 1/10^4 ؛ 1/10^6 ؛ 1/10^9 .',
-         answer={f'1/10^{k}': [f'10^-{k}', fr(P(10, -k))] for k in (2, 3, 5, 4, 6, 9)}, answerSource='computed')
+exercise(5, 46, G1, 'اكتب الأعداد التالية على شكل قوة 10 ثم كتابة عشرية: 1/10^2 ؛ 1/10^3 ؛ 1/10^5 ؛ 1/10^-4 ؛ 1/10^-6 ؛ 1/10^-9 .',
+         reading='relu à 500 dpi : les trois derniers dénominateurs portent un exposant NÉGATIF (10^-4, 10^-6, 10^-9) ; 1/10^2 (exposant pâle) lu 2',
+         answer={f'1/10^{k}': [f'10^{-k}', fr(P(10, -k))] for k in (2, 3, 5, -4, -6, -9)}, answerSource='computed')
 EX6 = ['10000', '100000', '100000000', '1000000000', '0,01', '0,0001', '0,0000001', '0,000000001']
-exercise(6, 46, G1, 'اكتب على شكل قوة 10: 10 000 ؛ 100 000 ؛ 100 000 000 ؛ 1 000 000 000 ؛ 0,01 ؛ 0,0001 ؛ 0,0000001 ؛ 0,000000001 ؛ 1/10^3 ؛ 1/10^-5 ؛ 1/10^9 ؛ 1/10^-4 ؛ 1/10^-6 ؛ 1/10^-7 .',
-         reading='la ligne 1/10^… est en partie coupée à gauche (exposants à relire)', answer={s: f'10^{sci(q(s))[1]}' for s in EX6}, answerSource='computed')
+exercise(6, 46, G1, 'اكتب على شكل قوة 10: 10 000 ؛ 100 000 ؛ 100 000 000 ؛ 1 000 000 000 ؛ 0,01 ؛ 0,0001 ؛ 0,0000001 ؛ 0,000000001 ؛ 1/10^3 ؛ 1/10^+5 ؛ 1/10^9 ؛ 1/10^-4 ؛ 1/10^-6 ؛ 1/10^-7 .',
+         reading='relu à 500 dpi : dernière ligne (de droite à gauche) 1/10^3 ؛ 1/10^+5 (signe + imprimé) ؛ 1/10^9 ؛ 1/10^-4 ؛ 1/10^-6 (exposant pâle, 6 plutôt que 0/8) ؛ 1/10^-7. 1 000 000 000 est imprimé avec un zéro épais',
+         answer={**{s: f'10^{sci(q(s))[1]}' for s in EX6}, **{f'1/10^{k}': f'10^{-k}' for k in (3, 5, 9, -4, -6, -7)}}, answerSource='computed')
 exercise(7, 46, G1, 'اكتب الأعداد التالية على شكل قوة للعدد 10: مئة ؛ ألف ؛ مليون ؛ مئة ألف ؛ مئة مليون ؛ مئة مليار.', answer=['10^2', '10^3', '10^6', '10^5', '10^8', '10^11'])
 EX8 = {'أ': P(10, 3) * P(10, 2), 'ب': F(6_000_000), 'جـ': P(10, 2) ** 3, 'د': P(10, 6)}
 exercise(8, 46, G1, 'اختر الإجابات الصحيحة: 10^6 يساوي: أ) 10^3 × 10^2 ؛ ب) 6 000 000 ؛ جـ) (10^2)^3 ؛ د) 10×10×10×10×10×10 .',
          answer=[k for k, v in EX8.items() if v == P(10, 6)], answerSource='computed')
 exercise(9, 46, G1, 'انقل الكتابات التي تدل على نفس العدد، وعبّر عنها لغويا: 0,001 ؛ 0,000001 ؛ 10 000 000 ؛ 10^-8 ؛ 10^-3 ؛ 0,0001 ؛ 10^-4 ؛ 10^9 ؛ 10^7 ؛ 10^-9 ؛ 1/10^3 ؛ 1 000 000 001 ؛ 0,000000001 .',
          answer={'0,001': ['10^-3', '1/10^3'], '10 000 000': ['10^7'], '0,0001': ['10^-4'], '0,000000001': ['10^-9']}, answerSource='computed')
-exercise(10, 46, G1, 'انقل وأتمم بالوحدة المناسبة: 1kg = 10^3 …. ؛ 1hm = 10^5 …. ؛ 1m² = 10^4 …. ؛ 1mL = 10^-3 …. ؛ 1cm³ = 10^-6 …. ؛ 1dam = 10^3 …. .',
-         answer={'1kg': 'g', '1hm': 'cm', '1m²': 'cm²', '1mL': 'L', '1cm³': 'm³', '1dam': 'cm'}, reading='exposants lus à 170 dpi')
+exercise(10, 46, G1, 'انقل وأتمم بالوحدة المناسبة: 1hm = 10^5 …. ؛ 1kg = 10^3 …. ؛ 1mL = 10^-2 …. ؛ 1m² = 10^4 …. ؛ 1dam = 10^3 …. ؛ 1cm³ = 10^-9 …. .',
+         answer={'1hm': 'cm', '1kg': 'g', '1mL': 'dL', '1m²': 'cm²', '1dam': 'cm', '1cm³': 'dam³'},
+         reading='relu à 500 dpi : 1mL = 10^-2 …. (dL, pas L) et 1cm³ = 10^-9 …. (dam³, pas m³) ; les quatre autres : 10^5, 10^3, 10^4, 10^3')
+assert 10 ** 5 == 1 * 10 ** 3 * 10 ** 2 and F(1, 10 ** 2) * 100 == 1 and F(1, 10 ** 9) * 10 ** 9 == 1
 exercise(11, 46, G1, 'املأ الفراغ بقوة للعدد 10: 1hm = …..m ؛ 1km = …..cm ؛ 1g = …..mg ؛ 1dag = …..dg ؛ 10^4 mm = …..m ؛ 10^2 cm = …..m ؛ 10^5 g = …..kg ؛ 10^1 kg = …..mg .',
          answer=['10^2', '10^5', '10^3', '10^2', '10^1', '10^0', '10^2', '10^7'], answerSource='computed')
 exercise(12, 46, G1, 'في ميدان الإعلام الآلي الأكتي (octet) هو وحدة كمية المعلومات التي تخزّن ؛ مضاعفات هذه الوحدة هي: • كيلو أكتي 1Ko = 1000 octets • ميغا أكتي 1Mo = 1000Ko • جيغا أكتي 1Go = 1000Mo • تيرا أكتي 1To = 1000Go (Ko : Kilooctet - Mo : Mégaoctet - Go : Gigaoctet - To : Téraoctet). اكتب هذه الوحدات بدلالة الأكتي (octet) مستعملا قوى العدد 10.',
          answer={'Ko': '10^3', 'Mo': '10^6', 'Go': '10^9', 'To': '10^12'}, answerSource='computed')
 exercise(13, 46, G1, 'اكتب على شكل قوة العدد 10: 1) ألف مليار لألف كتاب. 2) مئة ألف مليار قصة. 3) جزء من المئة لجزء من المليون.',
-         answer=['10^12 × 10^3 = 10^15 ؟ (énoncé ambigu)', '10^2 × 10^3 × 10^9 = 10^14', '10^-2 × 10^-6 = 10^-8'], reading='énoncé court, sens à préciser par la leçon')
+         answer={'1': {'ألف مليار': '10^3 × 10^9 = 10^12', 'ألف': '10^3', 'ratioReading': '10^12 / 10^3 = 10^9'},
+                 '2': '10^2 × 10^3 × 10^9 = 10^14',
+                 '3': {'جزء من المئة': '10^-2', 'جزء من المليون': '10^-6', 'ratioReading': '10^-2 / 10^-6 = 10^4', 'productReading': '10^-2 × 10^-6 = 10^-8'}},
+         reading='relu à 500 dpi, énoncé exact : « 1) ألف مليار لألف كتاب. 2) مئة ألف مليار قصة. 3) جزء من المئة لجزء من المليون. » La préposition « ل » de 1) et 3) est ambiguë (rapport « pour » ou composition) : la leçon qui s’en sert doit fixer le sens ; la lecture « rapport » (÷) donne 10^9 et 10^4, la lecture « produit » 10^15 et 10^-8',
+         note='Reçoit les règles 10^m × 10^n et 10^m / 10^n : destiné à qawaid-quwa-ashara ; sa banque l’adapte.')
 exercise(14, 46, G2, 'عبّر ذهنيا بدلالة قوة على الشكل 10^n : 10^4 × 10^7 ؛ 10^9/10^3 ؛ 10^4/10^-5 ؛ (10^3)^2 ؛ (10^-4)^3 ؛ (10^5)^-3 ؛ 10^5 × 10^4 ؛ 10^-6 × 10^-3 ؛ (10^4 × 10^6)/10^5 ؛ (10^-6 × 10^3)/10^-7 ؛ 10^5(10^3)^2 .',
          reading='un terme coupé à gauche (« (10^-4)^… »)',
          answer=['10^11', '10^6', '10^9', '10^6', '10^-12', '10^-15', '10^9', '10^-9', '10^5', '10^4', '10^11'], answerSource='computed')
@@ -523,9 +536,9 @@ for n_, opts in S_OPTS.items():
         continue
     for o in opts:
         OPT[o] = ev(o)
-self_item(1, [42, 43], '10^5 = ……', S_OPTS[1], P(10, 5))
-self_item(2, [42, 43], '10^4 = ……', S_OPTS[2], P(10, 4), reading='« 10 ⁴ » : un blanc avant l’exposant, le signe « − » est peut-être tombé (10^-4 = 0,0001, et le leurre -40 vise 10^-4) — voir discrepancies')
-self_item(3, [42, 43], '10^-1 = ……', S_OPTS[3], P(10, -1))
+self_item(1, [42, 43], '10^5 = ……', S_OPTS[1], P(10, 5), verified=True)
+self_item(2, [42, 43], '10^4 = ……', S_OPTS[2], P(10, 4), verified=True, reading='relu à 500 dpi : « 10 ⁴ », exposant 4 imprimé positif, précédé d’un blanc (celui de 10^-1 en dessous est collé) ; le signe « − » est peut-être tombé — voir discrepancies')
+self_item(3, [42, 43], '10^-1 = ……', S_OPTS[3], P(10, -1), verified=True)
 self_item(4, [42, 43], '10^3 × 10^2 = ……', S_OPTS[4], P(10, 5))
 self_item(5, [42, 43], '10^3 × 10^-3 = ……', S_OPTS[5], F(1))
 self_item(6, [42, 43], '(10^3)^2 = ……', S_OPTS[6], P(10, 6))
@@ -533,7 +546,7 @@ self_item(7, [42, 43], '10^2 + 10^-2 = ……', S_OPTS[7], P(10, 2) + P(10, -2),
 self_item(8, [42, 43], '10^2 - 10^-2 = ……', S_OPTS[8], P(10, 2) - P(10, -2))
 self_item(9, [42, 43], '(10^-1 + 10^1)/10 = ……', S_OPTS[9], (P(10, -1) + 10) / 10)
 self_item(10, [42, 43], '10^17 ÷ 10^20 = ……', S_OPTS[10], P(10, -3), note='0,010 = 10^-2 ≠ 10^-3')
-self_item(11, [42, 43], '36 مليون تُكتب: ……', S_OPTS[11], F(36_000_000), note='3,6 × 10^8 imprimé (3,6 × 10^7 serait juste) : seule 36 × 10^6 est juste')
+self_item(11, [42, 43], '36 مليون تُكتب: ……', S_OPTS[11], F(36_000_000), verified=True, note='3,6 × 10^8 imprimé (3,6 × 10^7 serait juste) : seule 36 × 10^6 est juste')
 self_item(12, [44, 45], 'الكتابة العلمية لـ 5 200 000 هي ……', S_OPTS[12], [2], check=sci(5_200_000)[0])
 self_item(13, [44, 45], 'الكتابة العلمية لـ 432,6 × 10^7 هي ……', S_OPTS[13], q('432,6') * P(10, 7))
 self_item(14, [44, 45], 'الكتابة العلمية لـ 0,012 × 10^-3 هي ……', S_OPTS[14], q('0,012') * P(10, -3))
@@ -685,27 +698,29 @@ E.append({'id': 'ict', 'kind': 'ict', 'page': 53, 'section': 'أوظّف تكن�
 Q, L1, L2, L3, SYN = 'quwat-adad-nisbi', 'quwa-adad-ashara', 'qawaid-quwa-ashara', 'kitaba-ilmiya-rutba', 'wadiya-idmajiya-quwa-nisbiya'
 PREP_REST = '1-2-3-4-5-6-7-8-9-10-11-12-13-14-15-18-19-20-21-22-23-24-25'
 DEST = {
-    '_comment': 'elementId → { lesson, module } ; `items` répartit un élément ; une leçon encore coming_soon est une destination EN ATTENTE (check-textbook-coverage.mjs). Modules de quwat-adad-nisbi : 0 أستعدّ · 1 نشاط (lab) · 2 معارف · 3 طريقة · 4 أتمرّن · 5–7 مسائل · 8 إختبار أولي.',
+    '_comment': 'elementId → { lesson, module } (ou { notIntegrated: raison }) ; `items` répartit un élément ; une leçon encore coming_soon est une destination EN ATTENTE (check-textbook-coverage.mjs). Modules de quwat-adad-nisbi : 0 أستعدّ · 1 نشاط (lab) · 2 معارف · 3 طريقة · 4 أتمرّن · 5–7 مسائل · 8 إختبار أولي.',
     'objectives': {'lesson': 'unit', 'module': 'page'},
     'opener': {'lesson': L3, 'module': None},
     'challenge': {'lesson': Q, 'module': 5},
-    'prep': {'lesson': Q, 'module': 0, 'items': {'16-17': {'lesson': Q, 'module': 0}, PREP_REST: {'lesson': L1, 'module': None}}},
-    'act-1': {'lesson': L1, 'module': None}, 'act-2': {'lesson': L1, 'module': None}, 'act-3': {'lesson': L1, 'module': None},
+    'prep': {'lesson': Q, 'module': 0, 'items': {'16-17': {'lesson': Q, 'module': 0}, PREP_REST: {'lesson': L1, 'module': 0}}},
+    'act-1': {'lesson': L1, 'module': 4}, 'act-2': {'lesson': L1, 'module': 2}, 'act-3': {'lesson': L1, 'module': 1},
     'act-4': {'lesson': L2, 'module': None}, 'act-5': {'lesson': L3, 'module': None},
     'act-6': {'lesson': Q, 'module': 4, 'note': 'APPLICATION (guide §4ter) : le lab de la plateforme est l’entrée conçue ; l’activité du manuel est posée en أتمرّن.'},
-    'know-1': {'lesson': L1, 'module': None}, 'know-2': {'lesson': L1, 'module': None}, 'know-3': {'lesson': L2, 'module': None},
+    'know-1': {'lesson': L1, 'module': 2}, 'know-2': {'lesson': L1, 'module': 2}, 'know-3': {'lesson': L2, 'module': None},
     'know-4': {'lesson': L3, 'module': None}, 'know-5': {'lesson': L3, 'module': None},
     'know-6': {'lesson': Q, 'module': 2}, 'know-7': {'lesson': Q, 'module': 2}, 'know-8': {'lesson': Q, 'module': 3},
-    'method-43a': {'lesson': L1, 'module': None}, 'method-43b': {'lesson': L1, 'module': None}, 'method-43c': {'lesson': L2, 'module': None},
+    'method-43a': {'lesson': L1, 'module': 3}, 'method-43b': {'lesson': L1, 'module': 3}, 'method-43c': {'lesson': L2, 'module': None},
     'now-43': {'lesson': L2, 'module': None},
     'method-45a': {'lesson': L3, 'module': None}, 'method-45b': {'lesson': L3, 'module': None}, 'method-45c': {'lesson': Q, 'module': 3},
     'now-45': {'lesson': Q, 'module': 3, 'items': {'1': {'lesson': L3, 'module': None}, '2': {'lesson': Q, 'module': 3}}},
-    **{f'ex-{n}': {'lesson': L1, 'module': None} for n in range(1, 14)},
+    **{f'ex-{n}': {'lesson': L1, 'module': 4} for n in range(1, 13)},
+    'ex-13': {'lesson': L2, 'module': None, 'note': 'Le libellé (« ألف مليار لألف كتاب », « جزء من المئة لجزء من المليون ») demande le produit 10^m × 10^n ou le rapport 10^m / 10^n : il appartient à qawaid-quwa-ashara, dont la banque l’adapte.'},
     **{f'ex-{n}': {'lesson': L2, 'module': None} for n in (*range(14, 21), 50, 55, 56)},
     **{f'ex-{n}': {'lesson': L3, 'module': None} for n in (*range(21, 34), 52, 54, 57, 58, 59, 60, 61, 62, 65, 66, 67, 70)},
     **{f'ex-{n}': {'lesson': Q, 'module': 4} for n in (*range(34, 50), 51, 53)},
-    **{f'ex-{n}': {'lesson': SYN, 'module': None, 'note': 'أتعمّق problem on powers kept for the synthesis as enrichment'} for n in (63, 64, 68, 69)},
-    **{f'self-{n}': {'lesson': L1, 'module': None} for n in (1, 2, 3, 11)},
+    **{f'ex-{n}': {'notIntegrated': 'أتعمّق sur les puissances de 2 / de 8 et le doublement : exclu de la synthèse (MASAIL §14, pas d’أتعمّق dans أدمج تعلّماتي) ; à adapter dans la banque de quwat-adad-nisbi lors d’une passe ultérieure — décision du propriétaire en attente'} for n in (63, 64, 68, 69)},
+    **{f'self-{n}': {'lesson': L1, 'module': 8} for n in (1, 2, 3)},
+    'self-11': {'lesson': L1, 'module': 4},
     **{f'self-{n}': {'lesson': L2, 'module': None} for n in range(4, 11)},
     **{f'self-{n}': {'lesson': L3, 'module': None} for n in range(12, 22)},
     **{f'self-{n}': {'lesson': Q, 'module': 8} for n in range(22, 26)},
@@ -726,6 +741,15 @@ DISCREPANCIES = [
     {'elementId': 'ex-40', 'kind': 'reading', 'text': 'L’exposant de (−1/2) se lit « −4 » à 600 dpi (→ 16) ; « −1 » (→ −2) n’est pas exclu. Les 14 autres sont nets.'},
     {'elementId': 'ex-48', 'kind': 'reading', 'text': 'Exposants pâles : 15^4/3^4 (→ 5^4) et 9^6/27^6 (→ 3^-6) ; si le dénominateur est 27^4, 9^6/27^4 = 3^12/3^12 = 3^0 = 1.'},
     {'elementId': 'ex-51', 'kind': 'reading', 'text': 'Le 3e terme de « 2^60 + 2^60 + 2^?0 + 2^60 » ressemble à 2^50 sur le scan ; lu 2^60 (4 × 2^60 = 2^62), seule lecture qui donne une puissance.'},
+    {'elementId': 'prep', 'kind': 'reading', 'text': 'Relus à 220 dpi (p. 39) : les 25 questions et leurs 3 colonnes (1)(2)(3) = ordre du script, aucune erreur de transcription ; items 1–15 et 18–25 `verified: true`. Rappel de la convention : options rangées [(1) colonne la plus à droite, (2), (3)].'},
+    {'elementId': 'act-2', 'kind': 'reading', 'text': 'Tableau relu à 220 dpi : 9 colonnes 10^4 … 10^-4 (de droite à gauche), exposants des 5 dernières à demi effacés mais imposés par la suite ÷ 10 ; 8 cases d’opérations (6 « ÷ 10 », 2 « ÷ …. »). Questions 2–4 : 10^0, 10^1 ; 10^-1 … 10^-4 en fractions ; 10^-n = 1/10^n.'},
+    {'elementId': 'ex-5', 'kind': 'reading', 'text': 'Erreur de transcription corrigée (500 dpi) : les dénominateurs sont 10^2, 10^3, 10^5 puis 10^-4, 10^-6, 10^-9 (exposants NÉGATIFS pour les trois derniers) — l’ancienne lecture mettait 4, 6, 9 positifs. Réponses : 10^-2, 10^-3, 10^-5, 10^4, 10^6, 10^9.'},
+    {'elementId': 'ex-6', 'kind': 'reading', 'text': 'Ligne de fractions relue à 500 dpi (de droite à gauche) : 1/10^3 ; 1/10^+5 (signe + imprimé, ancienne lecture « 10^-5 » fausse) ; 1/10^9 ; 1/10^-4 ; 1/10^-6 (exposant pâle, lu 6) ; 1/10^-7. Réponses : 10^-3, 10^-5, 10^-9, 10^4, 10^6, 10^7. Les huit premiers nombres : 10 000 ; 100 000 ; 100 000 000 ; 1 000 000 000 ; 0,01 ; 0,0001 ; 0,0000001 ; 0,000000001.'},
+    {'elementId': 'ex-9', 'kind': 'reading', 'text': 'Relu à 500 dpi : 0,001 ; 0,000001 ; 10 000 000 ; 10^-8 ; 10^-3 ; 0,0001 ; 10^-4 ; 10^9 ; 10^7 ; 10^-9 ; 1/10^3 ; 1 000 000 001 ; 0,000000001. Le glyphe de « 10^-8 » est ambigu (8 ou 6, boucles fermées : lu 8) ; avec 10^-6 il s’apparierait à 0,000001. Paires retenues : 0,001 = 10^-3 = 1/10^3 ; 10 000 000 = 10^7 ; 0,0001 = 10^-4 ; 0,000000001 = 10^-9 (sans doute 10^-9 imprimé à la fin de la 3e ligne). Leurres : 10^-8, 0,000001, 10^9, 1 000 000 001.'},
+    {'elementId': 'ex-10', 'kind': 'reading', 'text': 'Erreur de transcription corrigée (500 dpi) : 1mL = 10^-2 …. (réponse dL) et 1cm³ = 10^-9 …. (réponse dam³) ; l’ancienne lecture 10^-3 (L) et 10^-6 (m³) était fausse. Les autres : 1hm = 10^5 cm ; 1kg = 10^3 g ; 1m² = 10^4 cm² ; 1dam = 10^3 cm.'},
+    {'elementId': 'ex-11', 'kind': 'reading', 'text': 'Relu à 500 dpi, disposition 2 colonnes (de droite à gauche) : 1hm = …m (10^2) ; 1km = …cm (10^5) ; 1g = …mg (10^3) ; 1dag = …dg (10^2) ; 10^4 mm = …m (10^1) ; 10^2 cm = …m (10^0) ; 10^5 g = …kg (10^2) ; 10^1 kg = …mg (10^7). Aucune erreur.'},
+    {'elementId': 'ex-13', 'kind': 'reading', 'text': 'Énoncé exact (500 dpi) : « اكتب على شكل قوة العدد 10 : 1) ألف مليار لألف كتاب. 2) مئة ألف مليار قصة. 3) جزء من المئة لجزء من المليون. » La préposition « ل » (1 et 3) est ambiguë : rapport (10^12/10^3 = 10^9 ; 10^-2/10^-6 = 10^4) ou produit (10^15 ; 10^-8). Destiné à qawaid-quwa-ashara (règles du produit et du quotient), dont la banque l’adapte.'},
+    {'elementId': 'ex-63', 'kind': 'scope', 'text': 'ex-63, ex-64, ex-68, ex-69 (أتعمّق) : plus destinés à la synthèse (MASAIL §14) ; déclarés notIntegrated, adaptation dans la banque de quwat-adad-nisbi en attente d’une décision du propriétaire (plan/README issue 3).'},
     {'elementId': 'self-2', 'kind': 'reading', 'text': '« 10 ⁴ » avec un blanc avant l’exposant : tel quel la réponse est 10 000 (option (3)) ; le leurre −40 et l’option 0,0001 suggèrent que « 10^-4 » était voulu (réponse 0,0001, option (2)). `correct` suit l’imprimé.'},
     {'elementId': 'self-7', 'kind': 'misprint', 'text': '10^2 + 10^-2 = 100,01 n’est dans aucune option (imprimé « 100,001 ») : aucune réponse juste.'},
     {'elementId': 'self-10', 'kind': 'reading', 'text': 'L’option (3) « 0,010 » vaut 10^-2 ≠ 10^-3 : seule 10^-3 (option (2)) est juste.'},
@@ -765,11 +789,11 @@ assert not missing, f'éléments sans destination : {missing}'
 extra = [k for k in DEST if k != '_comment' and k not in ids]
 assert not extra, f'destinations sans élément : {extra}'
 for e in E:
-    if DEST[e['id']]['lesson'] == Q:
+    if DEST[e['id']].get('lesson') == Q:
         assert e.get('verified') is True, f'{e["id"]} va à {Q} sans relecture'
 
 out = Path(__file__).with_name('extraction.json')
 out.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
-toQ = sum(1 for k, v in DEST.items() if k != '_comment' and v['lesson'] == Q)
-pending = sum(1 for k, v in DEST.items() if k != '_comment' and v['lesson'] not in ('unit', Q))
+toQ = sum(1 for k, v in DEST.items() if k != '_comment' and v.get('lesson') == Q)
+pending = sum(1 for k, v in DEST.items() if k != '_comment' and v.get('lesson') not in ('unit', Q, None))
 print(f'{out} — {len(E)} éléments ({toQ} pour {Q}, {pending} pour les autres leçons, en attente)')

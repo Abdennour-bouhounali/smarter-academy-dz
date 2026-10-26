@@ -140,6 +140,15 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(beginner.numbers.tasks.some((tk) => tk.write || tk.curtain), type).toBe(false);
         expect(beginner.numbers.tasks.some((tk) => tk.mustSwap), type).toBe(true);
       }
+      // Unité 3 de 3AM, leçon 1 : `ten-zoom` se mesure par la TALLY (les opérations écrites sous la plaque, مبتدئ seul), les cartes en NOMS / UNITÉS (متقدم seul) et la prédiction vers le PETIT.
+      else if (type === 'ten-zoom') {
+        expect(beginner.numbers.tally, type).toBe(true);
+        expect(advanced.numbers.tally, type).toBe(false);
+        expect(advanced.numbers.tasks.some((tk) => 'name' in tk.card || 'unit' in tk.card || 'km' in tk.card), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => 'dec' in tk.card), type).toBe(true);
+        expect(advanced.numbers.tasks.filter((tk) => tk.predict).length, type).toBeGreaterThanOrEqual(1);
+        expect(advanced.numbers.tasks.some((tk) => tk.target <= -7), type).toBe(true);
+      }
       // Unité 2 de 3AM, leçon 5 : `merge-board` se mesure par le NOMBRE DE TÂCHES et par les BARRES CACHÉES (متقدم seul).
       else if (type === 'merge-board') {
         expect(advanced.numbers.tasks.length, type).toBeGreaterThanOrEqual(beginner.numbers.tasks.length);

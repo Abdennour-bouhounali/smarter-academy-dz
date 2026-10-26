@@ -33,7 +33,7 @@ export const PROBLEMS = [
     title: 'مسألة 1 — بطاقات سلمى',
     context: LESSON_CONFIG.lessonProblem.title,
     headline: 'مسألة الدرس',
-    emoji: '🃏',
+    emoji: '🧩',
     tone: 'indigo',
     source: SOURCE,
     illustration: LESSON_CONFIG.lessonProblem.illustration,

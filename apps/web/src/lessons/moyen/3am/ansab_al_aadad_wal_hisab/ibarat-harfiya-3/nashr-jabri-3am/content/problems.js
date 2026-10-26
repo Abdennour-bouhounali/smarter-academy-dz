@@ -80,7 +80,7 @@ export const PROBLEMS = [
     id: 'masala-2',
     title: 'مسألة 2 — برنامج حساب',
     context: 'لعبة في نادي الأعداد',
-    emoji: '🎲',
+    emoji: '🎯',
     tone: 'emerald',
     source: addition('exam_style_problem'),
     illustration: { kind: 'tags', cards: [

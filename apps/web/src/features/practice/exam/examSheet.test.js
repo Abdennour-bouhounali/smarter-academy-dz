@@ -118,7 +118,7 @@ describe('bascule d\'une leçon au format examen — content/practice/exam-style
     }
   // Toutes les feuilles de toutes les leçons basculées sont chargées : plusieurs centaines
   // d'imports, au-delà des 5 s par défaut quand toute la suite tourne en parallèle.
-  }, 60_000);
+  }, 180_000);
 });
 
 describe('corrigé d\'une étape coupée en plusieurs questions — solutionReady', () => {

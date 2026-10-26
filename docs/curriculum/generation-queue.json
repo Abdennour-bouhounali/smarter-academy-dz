@@ -2,15 +2,6 @@
   "_comment": "Généré par scripts/learning-net-queue.mjs — ne pas éditer.",
   "queue": [
     {
-      "code": "quwa-adad-ashara",
-      "grade": "3am",
-      "unit": "quwa-nisbiya",
-      "titleAr": "قوى العدد 10",
-      "kind": "lesson",
-      "trigger": "priorité propriétaire",
-      "via": []
-    },
-    {
       "code": "qawaid-quwa-ashara",
       "grade": "3am",
       "unit": "quwa-nisbiya",
@@ -35,15 +26,6 @@
       "titleAr": "أدمج تعلّماتي — القوى ذات أسس نسبية صحيحة",
       "kind": "synthesis",
       "trigger": "unité quwa-nisbiya complète",
-      "via": []
-    },
-    {
-      "code": "wadiya-idmajiya-ibarat-harfiya-3",
-      "grade": "3am",
-      "unit": "ibarat-harfiya-3",
-      "titleAr": "أدمج تعلّماتي — الحساب الحرفي",
-      "kind": "synthesis",
-      "trigger": "unité ibarat-harfiya-3 complète",
       "via": []
     },
     {

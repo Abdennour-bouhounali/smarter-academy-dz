@@ -634,6 +634,21 @@ EL['deep-45']['answerSource'] = 'computed'
 assert 3 * 5 == 4 ** 2 - 1 and 2 * 4 == 3 ** 2 - 1 and 1 * 3 == 2 ** 2 - 1 and 100002 * 100004 == 100003 ** 2 - 1
 EL['deep-46']['answer'] = {'2': '(n − 1)(n + 1) = n² − 1 avec n = 100003'}
 EL['deep-46']['answerSource'] = 'computed'
+# ── wadiya-idmajiya-ibarat-harfiya-3 (synthèse, généré le 2026-10-26, Phase 0 #17) : relecture à 110–250 dpi des pp. 66, 67, 68 ; destinations avec numéros de module ──
+for _i in ('deep-35', 'deep-47', 'integration', 'evaluation'):
+    EL[_i]['verified'] = True
+DEST['deep-35'] = d(SYN, 5, note='trois triangles dans un rectangle 6 × 4 (AE = 2, BF = x) : aire totale 16 − x, EDF = 8 + x, comparaison (module 5)')
+DEST['deep-47'] = d(SYN, 1, note='carré magique : grille complète de la plateforme (module 1)')
+DEST['evaluation'] = d(SYN, 6, note='distance d’arrêt : formules et nombres de la plateforme (module 6)')
+DEST['integration'] = d(SYN, 7, note='départs décalés : modules 7 (analyse) et 8 (test) ; un seul numéro de module : 7')
+EL['deep-47']['reading'] = 'Relu à 110 dpi (2026-10-26) : grille 3 × 3 dont quatre cases sont imprimées : a − 2 (haut gauche), 2a − 4 (haut droite), a − 3 (milieu gauche), 2 − 2a (bas gauche) ; la grille du manuel reste sous-déterminée pour une lecture sûre, la plateforme pose sa propre grille complète (module 1).'
+EL['deep-35']['reading'] = 'Élément relu (p. 66) : trois triangles dans un rectangle, BF = x, somme des aires 12 − 0,5x ; la plateforme pose ses propres nombres (module 5 : AB = 6, AD = 4, AE = 2 ; somme 16 − x).'
+EL['integration']['reading'] = 'Relu à 110 dpi : x = largeur du terrain intérieur, y = longueur des droits ; trois couloirs (rouges), trois départs A, B, C ; écart d’un couloir à l’autre pour 1 m de largeur ≈ 6,28 ≈ 2π. La plateforme pose la piste de l’école (couloirs de 1,2 m : écarts 2,4π ≈ 7,54 m et 4,8π ≈ 15,08 m).'
+EL['evaluation']['reading'] = 'Relu à 250 dpi (2026-10-26) : le texte imprime « على طريق غير مبلّل » (route SÈCHE) deux fois — dans l’énoncé et sous les formules D_R = 3V/10 et D_F = 3V²/400 ; l’ancienne transcription « مبلل » était fausse. Valeurs (V = 90) : 27 ; 60,75 ; 87,75 > 85 : collision, inchangé.'
+DISCREPANCIES.append({'elementId': 'evaluation', 'kind': 'reading', 'text': 'Relu à 250 dpi (2026-10-26) : « طريق غير مبلّل » = route sèche (et non mouillée comme transcrit auparavant) ; les formules et les valeurs 27, 60,75, 87,75 sont inchangées. Jamais montré à l’élève : la plateforme pose ses propres formules (sec / mouillé).',
+                      'correction': {'decidedBy': 'platform', 'decidedOn': '2026-10-26', 'text': 'route sèche'}})
+EL['evaluation']['text'] = EL['evaluation']['text'].replace('على طريق مبلّل', 'على طريق غير مبلّل').replace('على طريق مبلل', 'على طريق غير مبلّل')
+assert (-2 * X - n(2)) + (X - n(1)) + 4 * X == 3 * X - n(3) and (2 * X - n(4)) + (X - n(1)) + n(2) == 3 * X - n(3)
 ids = [e['id'] for e in E]
 assert len(ids) == len(set(ids)), 'id en double'
 missing = [i for i in ids if i not in DEST]

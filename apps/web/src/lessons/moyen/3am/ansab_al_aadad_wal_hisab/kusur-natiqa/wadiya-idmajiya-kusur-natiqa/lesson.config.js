@@ -27,7 +27,7 @@ export const LESSON_CONFIG = {
   chapterTitle: 'ميدان الأنشطة العددية',
   passingScore: 4,
   masteryThreshold: 0.8,
-  emoji: '🐷',
+  emoji: '💰',
   estimatedDurationMin: 30,
   textbookRef: { unit: 2, pages: '22, 33, 34, 35, 36' },
   skills: ['حل وضعية إدماجية بتوظيف العمليات على الكسور والأعداد الناطقة: المقلوب والقسمة، المقارنة، الجمع والطرح، وسلاسل الحساب'],

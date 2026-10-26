@@ -320,6 +320,10 @@ export const VISUAL_THEMES = Object.freeze({
   //   physicslab  la paillasse du labo de physique : une rail de verre graduée (zéro doré) avec deux perles de verre, un galvanomètre en laiton (cadran à zéro central, moitié gauche rouge, moitié droite verte)
   //               et deux fils à sondes, une rouge et une noire ; une élève (KidFigure, hijab) tient les fils (`difference-meter`)
   physicslab: { kind: 'objects', shows: 'سكّة زجاجية مدرّجة عليها حبّتان ومقياس بإبرة بمجسّين أحمر وأسود في مختبر الفيزياء' },
+  // 3AM, unité 3, leçon 1 (2026-10-26) :
+  //   science-lens  la table du club de sciences de la متوسطة : une grande lentille de laiton au bord relevé, une BAGUE de zoom crantée (44 px de prise), un cadre carré lumineux et le décor à son échelle (virus … orbite de la Lune),
+  //                 sous la lentille une plaque de laiton « ضلع الإطار » qui lit le côté en décimal ; une élève (KidFigure, hijab) du club à côté (`ten-zoom`)
+  'science-lens': { kind: 'objects', shows: 'عدسة نادي العلوم بحلقة تكبير مسنّنة وإطار مربّع تقرأ لوحة نحاسية ضلعه بالمتر' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

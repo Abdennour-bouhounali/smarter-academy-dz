@@ -577,7 +577,7 @@
       "status": "available",
       "durationMinutes": 30,
       "difficulty": "متقدم",
-      "icon": "🐷"
+      "icon": "💰"
     },
     {
       "code": "quwa-adad-ashara",
@@ -599,11 +599,16 @@
         "kusur-ashriya-kitaba"
       ],
       "pointsToLearn": [
-        "تعريف $10^n$ كجداء $n$ عاملا كلها تساوي 10 من أجل $n$ عدد طبيعي غير معدوم",
-        "تعريف $10^{-n}=\\frac{1}{10^n}$ كمقلوب $10^n$ و $10^0=1$",
-        "الانتقال بين الكتابة العشرية وكتابة قوة للعدد 10 (عدد الأصفار ورتبة الرقم 1)",
-        "كتابة عدد عشري باستعمال قوى 10"
+        "تعريف $10^n$ ، من أجل $n$ عدد طبيعي غير معدوم، جداءً لـ $n$ عاملًا كلّها تساوي 10 وقراءته « 10 أس $n$ »، مع $10^1=10$",
+        "معرفة أنّ $10^0=1$ وأنّ $10^{-n}=\\frac{1}{10^n}$ هو مقلوب $10^n$",
+        "الانتقال بين الكتابة العشرية لقوة للعدد 10 وكتابتها $10^n$ : 1 متبوعًا بـ $n$ صفرًا، أو 1 في الرتبة $n$ بعد الفاصلة، وقراءتها بالأسماء (ألف، مليون، مليار، جزء من ألف، جزء من مليون…) والبادئات (كيلو، ميلي، ميكرو، نانو…)",
+        "كتابة عدد عشري باستعمال قوى 10: مفكوكه مثل $3985=3\\times10^3+9\\times10^2+8\\times10^1+5\\times10^0$ و $0{,}407=4\\times10^{-1}+7\\times10^{-3}$ ، وكتابات مثل $45\\,000=45\\times10^3$ و $0{,}07=7\\times10^{-2}$"
       ],
+      "pointPrerequisites": {
+        "P2": ["3am_quwa-adad-ashara_P1"],
+        "P3": ["3am_quwa-adad-ashara_P1", "1am_kusur-ashriya-kitaba_P4"],
+        "P4": ["3am_quwa-adad-ashara_P3"]
+      },
       "programmeItems": [
         "3am.m3.r01",
         "3am.m3.r03"
@@ -625,7 +630,10 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 62,
+      "difficulty": "سهل",
+      "icon": "🔭"
     },
     {
       "code": "qawaid-quwa-ashara",
@@ -692,7 +700,8 @@
       ],
       "prerequisiteLessonCodes": [
         "rutbat-miqdar-jam",
-        "quwa-adad-ashara"
+        "quwa-adad-ashara",
+        "qawaid-quwa-ashara"
       ],
       "pointsToLearn": [
         "تعيين الكتابة العلمية لعدد عشري $a\\times 10^n$ حيث $1\\le a<10$",
@@ -1080,7 +1089,7 @@
       "decisionStatus": "draft",
       "titleSource": "textbook",
       "title": "أدمج تعلّماتي — الحساب الحرفي",
-      "description": "",
+      "description": "وضعية إدماجية (انطلاقات متفاوتة في مضمار المدرسة: أطوال بالحروف، فروق مبسَّطة، قيم تقريبية وقرار) تُعبّئ التبسيط والنشر وحساب القيمة والمقارنة بإشارة الفرق، تسبقها ست وضعيات تدريبية.",
       "prerequisites": [],
       "prerequisiteLessonCodes": [
         "tabsit-hadhf-aqwas",
@@ -1088,7 +1097,22 @@
         "qimat-ibara-harfiya",
         "muqaranat-natiqayn"
       ],
-      "pointsToLearn": [],
+      "pointsToLearn": [
+        "تجنيد مكتسبات الحساب الحرفي (التبسيط، النشر، حساب القيمة، المقارنة بإشارة الفرق) لحلّ وضعيات هندسية وعددية مركّبة",
+        "ترييض وضعية بعبارة حرفية، ثم اتخاذ قرار مبرَّر بحساب قيمتها أو بمقارنة عبارتين"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "3am_tabsit-hadhf-aqwas_P1",
+          "3am_nashr-jabri-3am_P4",
+          "3am_qimat-ibara-harfiya_P1",
+          "3am_muqaranat-natiqayn_P2"
+        ],
+        "P2": [
+          "3am_qimat-ibara-harfiya_P3",
+          "3am_muqaranat-natiqayn_P3"
+        ]
+      },
       "programmeItems": [],
       "textbookRef": {
         "unit": 4,
@@ -1098,7 +1122,10 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 30,
+      "difficulty": "متقدم",
+      "icon": "🏃"
     },
     {
       "code": "musawiyat-amaliyat",

@@ -1223,7 +1223,8 @@
    "section": "أتعمّق",
    "title": "الحساب الحرفي والهندسة",
    "text": "ABCD مستطيل حيث AB = 5cm و AD = 4cm. E نقطة من [AB] حيث AE = 1cm. F نقطة من [BC]. نرمز بـ $x$ لطول القطعة [BF] معبّرا عنه بالسنتيمتر. 1) احسب $\\mathcal{A}_1$ مساحة المثلث AED. 2) عبّر بدلالة $x$ عن $\\mathcal{A}_2$ مساحة المثلث EBF. 3) عبّر بدلالة $x$ عن $\\mathcal{A}_3$ مساحة المثلث DFC. 4) بيّن أنّ $\\mathcal{A}_1+\\mathcal{A}_2+\\mathcal{A}_3=12-0{,}5x$. 5) عبّر بدلالة $x$ عن مساحة المثلث EDF. 6) تحقّق أنّه من أجل $x=4$ تكون مساحة المثلث EDF تساوي $\\mathcal{A}_1+\\mathcal{A}_2+\\mathcal{A}_3$. ما هو حينئذ موضع النقطة F؟",
-   "verified": false
+   "verified": true,
+   "reading": "Élément relu (p. 66) : trois triangles dans un rectangle, BF = x, somme des aires 12 − 0,5x ; la plateforme pose ses propres nombres (module 5 : AB = 6, AD = 4, AE = 2 ; somme 16 − x)."
   },
   {
    "id": "deep-36",
@@ -1429,8 +1430,8 @@
    "section": "أتعمّق",
    "title": "المربع السحري",
    "text": "انقل وأتمم للحصول على مربع سحري (المجموع على كل سطر وعلى كل عمود وعلى كل قطر هو نفسه). الخانات المعطاة: $a-2$ ، $2a-4$ ، $a-3$ ، $2-2a$ ، وخانات فارغة.",
-   "verified": false,
-   "reading": "Grille 3 × 3 dont 4 cases sont lisibles (a − 2, 2a − 4, a − 3, 2 − 2a) ; positions à relire par la leçon qui l’emploie (à 110 dpi : colonne de gauche a−2, a−3, 2−2a ; case en haut à droite 2a−4)."
+   "verified": true,
+   "reading": "Relu à 110 dpi (2026-10-26) : grille 3 × 3 dont quatre cases sont imprimées : a − 2 (haut gauche), 2a − 4 (haut droite), a − 3 (milieu gauche), 2 − 2a (bas gauche) ; la grille du manuel reste sous-déterminée pour une lecture sûre, la plateforme pose sa propre grille complète (module 1)."
   },
   {
    "id": "integration",
@@ -1438,12 +1439,13 @@
    "page": 68,
    "section": "أدمج تعلّماتي",
    "title": "وضعية: انطلاقات متفاوتة",
-   "verified": false,
+   "verified": true,
    "text": "يُمثّل المخطّط المرفق أروقة العدو داخل ملعب لألعاب القوى، حيث مثّلنا كل رواق بخط أحمر. يتكوّن مسار كل رواق من خطين متوازيين ونصفي دائرة. ترمز النقط A و B و C إلى ثلاثة عدّائين في وضعية الانطلاق. كيف تفسّر التفاوت الموجود بين مكان تواجد عدّاء وآخر لحظة الانطلاق؟ قدّم الشروحات اللازمة. (الأطوال معبّر عنها بالمتر).",
    "answer": {
     "approx_gap": "6,28 (≈ 2π)"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu à 110 dpi : x = largeur du terrain intérieur, y = longueur des droits ; trois couloirs (rouges), trois départs A, B, C ; écart d’un couloir à l’autre pour 1 m de largeur ≈ 6,28 ≈ 2π. La plateforme pose la piste de l’école (couloirs de 1,2 m : écarts 2,4π ≈ 7,54 m et 4,8π ≈ 15,08 m)."
   },
   {
    "id": "evaluation",
@@ -1451,15 +1453,16 @@
    "page": 68,
    "section": "وضعية للتقويم",
    "title": "هل يتم تفادي الاصطدام؟",
-   "verified": false,
-   "text": "يسير سائق سيارة بسرعة 90km/h على طريق مبلّل، رأى فجأة أمامه بقرة تبعد عنه مسافة 85m، فشرع في الفرملة. حسب السندات الآتية، هل يحدث الاصطدام بالبقرة؟ $D_A=D_F+D_R$ (مسافة التوقف $D_A$ ، المسافة المقطوعة خلال الفرملة $D_F$ ، مسافة رؤية العائق وبداية الفرملة $D_R$) ؛ على طريق مبلل $D_F=\\frac{3\\times V^2}{400}$ و $D_R=\\frac{3\\times V}{10}$ (السرعة V مقدّرة بـ km/h).",
+   "verified": true,
+   "text": "يسير سائق سيارة بسرعة 90km/h على طريق غير مبلّل، رأى فجأة أمامه بقرة تبعد عنه مسافة 85m، فشرع في الفرملة. حسب السندات الآتية، هل يحدث الاصطدام بالبقرة؟ $D_A=D_F+D_R$ (مسافة التوقف $D_A$ ، المسافة المقطوعة خلال الفرملة $D_F$ ، مسافة رؤية العائق وبداية الفرملة $D_R$) ؛ على طريق غير مبلّل $D_F=\\frac{3\\times V^2}{400}$ و $D_R=\\frac{3\\times V}{10}$ (السرعة V مقدّرة بـ km/h).",
    "answer": {
     "D_R": "27",
     "D_F": "60,75",
     "D_A": "87,75",
     "collision": "oui (87,75 > 85)"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu à 250 dpi (2026-10-26) : le texte imprime « على طريق غير مبلّل » (route SÈCHE) deux fois — dans l’énoncé et sous les formules D_R = 3V/10 et D_F = 3V²/400 ; l’ancienne transcription « مبلل » était fausse. Valeurs (V = 90) : 27 ; 60,75 ; 87,75 > 85 : collision, inchangé."
   },
   {
    "id": "ict",
@@ -1588,6 +1591,16 @@
    "elementId": "unit",
    "kind": "scope",
    "text": "Les éléments de la synthèse sont transcrits plus brièvement (verified: false) : sa leçon les relira. Ceux de muqaranat-natiqayn (act-5, know-5, method-5, now-61 ②, ex-27…ex-32, self-9, self-10, deep-38) sont relus (verified: true, 2026-10-26). Ceux de tabsit-hadhf-aqwas, nashr-jabri-3am et qimat-ibara-harfiya (prep 1–4, act-4, know-4, method-4, now-61 ①, ex-1…ex-4, self-3, deep-37, deep-39, ict) sont relus à 250 dpi (verified: true)."
+  },
+  {
+   "elementId": "evaluation",
+   "kind": "reading",
+   "text": "Relu à 250 dpi (2026-10-26) : « طريق غير مبلّل » = route sèche (et non mouillée comme transcrit auparavant) ; les formules et les valeurs 27, 60,75, 87,75 sont inchangées. Jamais montré à l’élève : la plateforme pose ses propres formules (sec / mouillé).",
+   "correction": {
+    "decidedBy": "platform",
+    "decidedOn": "2026-10-26",
+    "text": "route sèche"
+   }
   }
  ],
  "destinations": {
@@ -1888,8 +1901,8 @@
   },
   "deep-35": {
    "lesson": "wadiya-idmajiya-ibarat-harfiya-3",
-   "module": null,
-   "note": "le raisonnement sur trois triangles en x et une aire totale : exercice d’intégration de la synthèse (réaffecté le 2026-10-21)"
+   "module": 5,
+   "note": "trois triangles dans un rectangle 6 × 4 (AE = 2, BF = x) : aire totale 16 − x, EDF = 8 + x, comparaison (module 5)"
   },
   "deep-36": {
    "lesson": "tabsit-hadhf-aqwas",
@@ -1949,16 +1962,18 @@
   },
   "deep-47": {
    "lesson": "wadiya-idmajiya-ibarat-harfiya-3",
-   "module": null,
-   "note": "المربع السحري : des sommes d’expressions en a — la grille n’est lisible qu’en partie (4 cases) : réaffecté à la synthèse le 2026-10-21"
+   "module": 1,
+   "note": "carré magique : grille complète de la plateforme (module 1)"
   },
   "integration": {
    "lesson": "wadiya-idmajiya-ibarat-harfiya-3",
-   "module": null
+   "module": 7,
+   "note": "départs décalés : modules 7 (analyse) et 8 (test) ; un seul numéro de module : 7"
   },
   "evaluation": {
    "lesson": "wadiya-idmajiya-ibarat-harfiya-3",
-   "module": null
+   "module": 6,
+   "note": "distance d’arrêt : formules et nombres de la plateforme (module 6)"
   },
   "ict": {
    "lesson": "qimat-ibara-harfiya",

@@ -144,3 +144,18 @@ synthesis; sub-steps of a single lesson stay counted (it is the synthesis). Orac
 - Catalogue: `available`, `durationMinutes` ≈ 70 (≤ 90), `difficulty: "متقدم"`, `icon: "🏃"`, the two الكفاءات, `pointPrerequisites`;
   `generate:learning-net`; extraction destinations with module numbers. The unit becomes complete: the unit page shows no « قيد الإعداد » card.
 - Publish: coordinator, guide §11.
+
+## 12. Generator notes (Sonnet 5.5, 2026-10-26)
+
+Generated INTO the catalogue entry (`status: available`, `durationMinutes: 30` = modules 0 + 7 + 8 as `validate:lessons` computes — the plan's « ≈ 70 » was the sum of all nine modules, which is `estimatedDurationMin: 70` in the config). Minimal fixes to the plan:
+
+1. **Module 7 shows no formula of the solution.** § « Module 7 » listed stage (1) as `P_k = 2y + π(x + 2,4(k − 1))`, which is the answer of the boss's S1. The analysis describes the stages in words only (what changes between lanes, why letters, simplify before substituting); `content.test.js` greps the module-7 source (comments included) for `2{,}4`, `4{,}8`, `7{,}54`, `15{,}08`, `399`, `2y`, `170`.
+2. **S3 rounding.** `π ≈ 3,14` gives 7,536 and **15,072 → 15,07**, not 15,08. The key 15,08 needs the calculator's π (4,8π = 15,0796…): the prompt of E3 says « بمفتاح π في الآلة الحاسبة وتدوير النتيجة إلى 0,01 », and E4 (399,34 = 170 + 73π, π from the calculator) follows. The 3,14 estimate is never displayed.
+3. **Extraction `evaluation` misread** (recorded in `build-extraction.py › DISCREPANCIES`): the scan prints « على طريق **غير مبلّل** » (a DRY road) in the statement and under the formulas; the old transcription said « مبلّل ». Values (27 ; 60,75 ; 87,75 > 85) unchanged. The platform's own formulas (dry `V²/250`, wet `V²/125`) never use the book's.
+4. **Boss shape**: four graded épreuves (E1 = S1 P1 · E2 = S2 P1 · E3 = S3 P2 · E4 = S4 + the decision sentence P2) and the plan's « تحدٍّ » as an UNCOUNTED bonus card in the `synthese` slot (a `TapQuestion`, no `assessment`, answer 210); `passingScore: 3`.
+5. **Unit تحدّ**: the unit card carries the text rewritten by the `qimat-ibara-harfiya` lead (126,4 / 5 → 657, `units_3am_2026_2027.json`); the synthesis's own analog (48,5 / 4 → 210) is deliberately different and does not cite the `challenge` element (it stays `nashr-jabri-3am`'s bank).
+6. **Kit limits**: `GuidedProblem` has no `selfCheck` step kind — the check lines are `numeric` / `choice conclude` steps; the magic grid is a `problem.table` (rows with a row header, `؟` for an empty cell); the stopping-distance picture is a `route` illustration (digits taken from the statement only); the rectangle of situation 5 is a `GeoFigure`.
+7. **`requires` ids** are the unit's lesson ids (`tabsit-hadhf-aqwas-3am`, `nashr-jabri-3am`, `qimat-ibara-harfiya-3am`, `muqaranat-natiqayn-3am`) = the config's `priorKnowledge`.
+8. **الكفاءات**: P1 / P2 as proposed; `pointPrerequisites` as the plan (final codes verified in the catalogue); the LP total of `coursesData.test.js` is now 527.
+9. **Bank**: 5 × 10 sheets, 285 questions, 6 `term_exam` (`3am-s2-81`, `3am-s2-82`, `3am-s2-80`, `3am-s3-47`, `2am-s2-65`, `3am-s2-69` — all read, re-numbered), 44 `term_exam_modelled`; oracle `scripts/practice-oracle/wadiya-idmajiya-ibarat-harfiya-3.mjs`; 11 `MISC-SYN-HARF-*`. The sheets are text-only (no GeoFigure).
+10. **e2e**: `apps/web/e2e/lesson-kit/3am-unit4-wadiya-idmajiya-ibarat-harfiya-3.mjs` (the plan's name carried the unit code twice).

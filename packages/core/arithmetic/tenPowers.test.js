@@ -1,0 +1,125 @@
+import { describe, it, expect } from 'vitest';
+import * as T from './tenPowers.js';
+import { ratText } from './powers.js';
+
+describe('tenPowers — décimaux exacts', () => {
+  it('parseDec lit les écritures du manuel et rejette le reste', () => {
+    expect(T.parseDec('1 000 000')).toEqual({ m: 1n, e: 6 });
+    expect(T.parseDec('1 000')).toEqual({ m: 1n, e: 3 });
+    expect(T.parseDec('0,000001')).toEqual({ m: 1n, e: -6 });
+    expect(T.parseDec('0.0001')).toEqual({ m: 1n, e: -4 });
+    expect(T.parseDec('45 × 10^3')).toEqual({ m: 45n, e: 3 });
+    expect(T.parseDec('3,52 × 10^5')).toEqual({ m: 352n, e: 3 });
+    expect(T.parseDec('−6,5 × 10^7')).toEqual({ m: -65n, e: 6 });
+    expect(T.parseDec('7 × 10^{-2}')).toEqual({ m: 7n, e: -2 });
+    expect(T.parseDec('10^-4')).toEqual({ m: 1n, e: -4 });
+    expect(T.parseDec('٠٫٠١')).toEqual({ m: 1n, e: -2 });
+    for (const bad of ['', 'abc', '1 0', '1,0 5', '12 34', '× 10^3', '1,2,3', '--3']) expect(T.parseDec(bad), bad).toBeNull();
+  });
+
+  it('decText groupe la partie entière seulement (U+00A0), signe typographique', () => {
+    expect(T.decText({ m: 1n, e: 6 })).toBe('1 000 000');
+    expect(T.decText({ m: 1n, e: 6 }, { group: false })).toBe('1000000');
+    expect(T.decText({ m: 1n, e: -6 })).toBe('0,000001');
+    expect(T.decText({ m: 45n, e: 3 })).toBe('45 000');
+    expect(T.decText({ m: -65n, e: 6 })).toBe('−65 000 000');
+    expect(T.decText({ m: 12345n, e: -2 })).toBe('123,45');
+    expect(T.decText(T.norm(0n))).toBe('0');
+  });
+
+  it('aller-retour parseDec ∘ decText sur toutes les puissances de 10 de −12 à 12 et sur les k × 10^p', () => {
+    for (let n = -12; n <= 12; n += 1) {
+      expect(T.parseDec(T.pow10Text(n)), String(n)).toEqual(T.pow10(n));
+      expect(T.parseDec(T.pow10Text(n, { group: false })), String(n)).toEqual(T.pow10(n));
+    }
+    for (const k of [1, 2, 7, 25, 36, 999, 12345, 54321]) {
+      for (let p = -9; p <= 9; p += 1) {
+        const v = T.timesPow10(T.parseDec(String(k)), p);
+        expect(T.parseDec(T.decText(v)), `${k}e${p}`).toEqual(v);
+        expect(T.parseDec(`${k} × 10^${p}`), `${k} × 10^${p}`).toEqual(v);
+      }
+    }
+  });
+
+  it('norm, compareDec, toRat', () => {
+    expect(T.norm(1200n, -2)).toEqual({ m: 12n, e: 0 });
+    expect(T.compareDec(T.parseDec('0,001'), T.parseDec('0,01'))).toBe(-1);
+    expect(T.compareDec(T.parseDec('1 000'), T.parseDec('10^3'))).toBe(0);
+    expect(T.compareDec(T.parseDec('-2'), T.parseDec('-3'))).toBe(1);
+    expect(ratText(T.toRat(T.parseDec('0,0001')))).toBe('1/10000');
+    expect(ratText(T.toRat(T.parseDec('45 × 10^3')))).toBe('45000');
+  });
+});
+
+describe('tenPowers — puissances de 10', () => {
+  it('exponentOfPow10', () => {
+    expect(T.exponentOfPow10('100 000')).toBe(5);
+    expect(T.exponentOfPow10('0,0001')).toBe(-4);
+    expect(T.exponentOfPow10('1')).toBe(0);
+    expect(T.exponentOfPow10('10')).toBe(1);
+    expect(T.exponentOfPow10('120')).toBeNull();
+    expect(T.exponentOfPow10('6 000 000')).toBeNull();
+    expect(T.exponentOfPow10('-100')).toBeNull();
+    expect(T.exponentOfPow10('abc')).toBeNull();
+    expect(T.exponentOfPow10('0,0000001')).toBe(-7);
+  });
+
+  it('les comptes : zéros, rang du 1, zéros avant le 1', () => {
+    expect(T.zerosOf(15)).toBe(15);
+    expect(T.rankOfOne(-14)).toBe(14);
+    expect(T.zerosBeforeOne(-7)).toBe(7);
+    expect(T.zerosAfterComma(-7)).toBe(6);
+    // contrôle contre l'écriture décimale elle-même
+    for (let n = 1; n <= 12; n += 1) expect(T.pow10Text(n, { group: false }).length - 1, String(n)).toBe(T.zerosOf(n));
+    for (let n = -12; n <= -1; n += 1) {
+      const s = T.pow10Text(n, { group: false });
+      expect(s.indexOf('1') - 1 - 1 + 1, String(n)).toBe(T.zerosBeforeOne(n)); // « 0, » + zéros : position du 1 − virgule = rang
+      expect(s.length - 2, String(n)).toBe(T.rankOfOne(n));
+      expect(s.slice(2).indexOf('1'), String(n)).toBe(T.zerosAfterComma(n));
+    }
+    expect(() => T.zerosOf(-1)).toThrow();
+    expect(() => T.rankOfOne(0)).toThrow();
+  });
+
+  it('noms et préfixes', () => {
+    expect(T.pow10Name(3)).toBe('ألف');
+    expect(T.pow10Name(5)).toBe('مئة ألف');
+    expect(T.pow10Name(9)).toBe('مليار');
+    expect(T.pow10Name(11)).toBe('مئة مليار');
+    expect(T.pow10Name(12)).toBe('ألف مليار');
+    expect(T.pow10Name(-3)).toBe('جزء من ألف');
+    expect(T.pow10Name(-6)).toBe('جزء من مليون');
+    expect(T.pow10Name(-9)).toBe('جزء من مليار');
+    expect(T.pow10Name(13)).toBeNull();
+    for (let n = -12; n <= 12; n += 1) expect(T.nameToExponent(T.pow10Name(n)), String(n)).toBe(n);
+    expect(T.nameToExponent('مائة ألف')).toBe(5);
+    expect(T.nameToExponent('عشرين')).toBeNull();
+    expect(T.prefixOf(3)).toMatchObject({ symbol: 'k', name: 'كيلو' });
+    expect(T.prefixOf(-9).name).toBe('نانو');
+    expect(T.prefixOf(12).name).toBe('تيرا');
+    expect(T.prefixOf(-12).name).toBe('بيكو');
+    expect(T.prefixOf(4)).toBeNull();
+    expect(T.PREFIXES).toHaveLength(13);
+    expect(T.prefixByName('ميكرو').exp).toBe(-6);
+  });
+});
+
+describe('tenPowers — le مفكوك', () => {
+  it('3985, 0,407, 5 030,07 : rangs vides absents', () => {
+    expect(T.expanded(T.parseDec('3985'))).toEqual([{ digit: 3, exp: 3 }, { digit: 9, exp: 2 }, { digit: 8, exp: 1 }, { digit: 5, exp: 0 }]);
+    expect(T.expandedTex(T.parseDec('0,407'))).toBe('4\\times10^{-1}+7\\times10^{-3}');
+    expect(T.expandedTex(T.parseDec('5030,07'))).toBe('5\\times10^{3}+3\\times10^{1}+7\\times10^{-2}');
+    expect(T.expandedTex(T.parseDec('7 040 300'))).toBe('7\\times10^{6}+4\\times10^{4}+3\\times10^{2}');
+    expect(() => T.expanded(T.parseDec('-3'))).toThrow();
+  });
+  it('la somme du développement redonne le nombre (tous les décimaux de 1 à 5 chiffres significatifs testés)', () => {
+    for (const s of ['3985', '0,407', '5030,07', '40075', '1207,035', '0,0509', '60 000 000', '0,000304']) {
+      const v = T.parseDec(s);
+      expect(T.sumExpanded(T.expanded(v)), s).toEqual(v);
+    }
+  });
+  it('timesPow10 : 36 millions, 25 micromètres', () => {
+    expect(T.decText(T.timesPow10(T.parseDec('36'), 6))).toBe('36 000 000');
+    expect(T.decText(T.timesPow10(T.parseDec('25'), -6))).toBe('0,000025');
+  });
+});

@@ -27,7 +27,7 @@ export const PROBLEMS = [
     title: 'مسألة 1 — لعبة «الزوج الرابح»',
     context: LESSON_CONFIG.lessonProblem.title,
     headline: 'مسألة الدرس',
-    emoji: '🃏',
+    emoji: '🧩',
     source: SOURCE,
     illustration: LESSON_CONFIG.lessonProblem.illustration,
     statement: LESSON_CONFIG.lessonProblem.statement,

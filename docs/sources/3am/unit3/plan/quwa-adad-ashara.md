@@ -278,3 +278,13 @@ $3\times10^5+4\times10^2$ (-MAFKUK). Badges: « أقرأ قوى العدد 10 »
 - [ ] `npm run generate:lesson-index`, `npm test`, `npm run check:lessons` (validate:lessons, predict prompts, entry budget ≤ 330 KB), `npm run build`.
 - [ ] Catalogue: final pointsToLearn, `pointPrerequisites`, `status: available`, `durationMinutes` ≤ 90 (module total), `difficulty: 'سهل'`, `icon: '🔭'`.
 - [ ] Coordinator: guide §11 « Publish a lesson » (export/import, local DB publish of lesson + 9 modules + 50 exercises, commit, push `dev`).
+
+## 12. Generator notes (2026-10-26)
+
+- **Net** (README issue 1) applied by the coordinator before generation: `r01 → r03`, `r02 → r04`, `kitaba-ilmiya-rutba` lists `qawaid-quwa-ashara`. « أستعدّ » therefore measures only the review link `1am.m1.r03` plus `maqlub` and `wahdat` (platform additions, not blocking).
+- **Extraction** re-read at 220–500 dpi (pp. 39, 40, 42, 43, 46, 49): the plan's reading of `ex-5` / `ex-6` / `ex-10` was wrong in the details (§ 4 table row ex-5: the last three denominators are `10^-4`, `10^-6`, `10^-9`; ex-6 has `1/10^+5`; ex-10 is `1 mL = 10^-2 dL` and `1 cm³ = 10^-9 dam³`); `ex-13` re-destined to `qawaid-quwa-ashara` (pending: it needs a product); `ex-63/64/68/69` are `notIntegrated` (not destined to the synthesis); `self-2` (`10 ⁴`) is read `10⁻²` in the test (E2) and cited with `self-3`.
+- **Module 1** teaches P1, P2 AND P3 (Q2 « why six zeros » is P3), not P1 P2 only. The coach has the steps `predict · ring · plate · dock · next · free` (the plan's `card` step is dropped: it could not end by a gesture; `dock` is added: nothing else showed where to confirm). The lab's `discovery` is `count` for مبتدئ and `rank` for متقدم (one each, instead of two in a level).
+- **Boundary**: the plan's bank option « 10³ × 10² » for ex-8 (§ 9 L4) and the sentence « 10⁴ mm in m » were changed to decimal / factor-count forms (they break the README boundary).
+- **Knowledge map**: the « empty rank » mistake node was dropped (it failed the 328 / 400 px layout test); `GUIDE.mafkuk` still feeds the module-3 explanation.
+- **Catalogue**: `icon` 🔭, `durationMinutes` 62, `difficulty` سهل; final الكفاءات wording as proposed in § 2 with P3 extended by names and prefixes (owner question 2 of § 10: kept, to confirm).
+- **Vignettes** (§ 10 question 3): all 17 are drawn (n from −7 to 9), sizes typical and labelled « حجمه تقريبي » where needed; no political borders (coast and relief only).

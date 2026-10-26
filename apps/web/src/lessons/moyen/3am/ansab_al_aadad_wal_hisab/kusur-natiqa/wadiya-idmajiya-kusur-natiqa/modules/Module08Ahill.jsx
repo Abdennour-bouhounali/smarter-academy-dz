@@ -46,7 +46,7 @@ export default function Module08Ahill() {
           options: opts(['$9000$ DA ؛ أكبر إنفاق هو الحقيبة ($3000$ DA)', '$250$ DA ؛ أكبر إنفاق هو الحقيبة', '$9000$ DA ؛ أكبر إنفاق هو الهدية لأنّ $\\frac{3}{5} > \\frac{1}{3}$', '$6000$ DA ؛ أكبر إنفاق هو الحقيبة ($2000$ DA)']), correct: 0, cols: 1,
           explain: <MathText>{'$1500 \\div \\frac{1}{6} = 1500 \\times 6 = 9000$ DA . الحقيبة $\\frac{1}{3} \\times 9000 = 3000$ ، والكتب $\\frac{1}{4} \\times 9000 = 2250$ ، والهدية $\\frac{1}{4} \\times 9000 = 2250$ . لا نقارن $\\frac{3}{5}$ بـ $\\frac{1}{3}$ لأنّهما كسران من شيئين مختلفين.'}</MathText>, assessment: { enabled: true, type: 'assessment', learningPointIds: ['3am_wadiya-idmajiya-kusur-natiqa_P1'] } },
       ]}
-      badges={[{ id: 'idmaj', emoji: '🐷', label: 'أدمجت تعلّماتي', test: (m) => (m.jam ?? 0) + (m.rest ?? 0) + (m.gift ?? 0) + (m.left ?? 0) + (m.total ?? 0) === 0 }]}
+      badges={[{ id: 'idmaj', emoji: '💰', label: 'أدمجت تعلّماتي', test: (m) => (m.jam ?? 0) + (m.rest ?? 0) + (m.gift ?? 0) + (m.left ?? 0) + (m.total ?? 0) === 0 }]}
       synthese={<KnowledgeSnapshot complete variant="complete" />}
       completion={{
         masterTitle: 'أنهيت الوحدة 2', title: 'العمليات على الكسور والأعداد الناطقة',

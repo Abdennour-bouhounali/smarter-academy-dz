@@ -113,3 +113,7 @@ computing step to `qawaid-quwa-ashara`). Honest faithful `term_exam` counts: L1 
 - [`qawaid-quwa-ashara.md`](./qawaid-quwa-ashara.md)
 - [`kitaba-ilmiya-rutba.md`](./kitaba-ilmiya-rutba.md)
 - [`wadiya-idmajiya-quwa-nisbiya.md`](./wadiya-idmajiya-quwa-nisbiya.md)
+
+## Status of the four coordinator issues (2026-10-26)
+
+1 and 2 applied (net + `kitaba-ilmiya-rutba` prerequisite codes; `LEARNING_NET.md` § 4bis). 3 applied: `ex-13` → `qawaid-quwa-ashara` (pending), `ex-63/64/68/69` → `notIntegrated` (owner decision pending; they were NOT left on the synthesis). 4 open (the unit challenge card follows the synthesis).
