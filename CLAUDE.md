@@ -75,6 +75,16 @@ Since 2026-10-17 the platform has a **printed-books store** (`/books`, `/books/:
 payment, delivery fee set later by the admin, payments recorded as lines; the first book is « بروتوكول SMART » (`BookSeeder`, slug
 `smart-protocol`). Contract: `docs/architecture/BOOKS_STORE.md`.
 
+Since 2026-10-26 a **school is a first-class object** with its **director** (« فضاء الإدارة », `/idara`, role `school_admin`,
+created ONLY by the platform admin in « المؤسسات » `/admin/etablissements` with a one-time password). Owner decisions: the school buys a
+licence of seats, the director may enrol students directly (the student confirms), one role (the director), teacher activity shown as
+facts the teacher sees too, a student without e-mail gets a generated school login. The school reads a student only through `SchoolAccess` (active member of an active class of that school
+WITH `school_consent_at`), never an e-mail, never an average; every new `/school` read joins `SchoolPrivacyContractTest`. Phases 0–7 are
+built (structure: terms, teachers by link + « مؤسستي », classes, roster import with generated « معرّف الدخول » (no mail ever sent to it),
+transfer, login cards; tracking: the الكفاءات map class by class as COUNTS, the student file = the parent's « التقدّم بالتفصيل », no study
+time; reports FROZEN as snapshots, A4 print, CSV built in the browser; the meeting view `/idara/ijtimaa/:id` with « إخفاء الأسماء »);
+and the school LICENCE (model C: access reason `school_licence` before `teacher_subscription`; a covered class uses the school's seats). Contract: `docs/architecture/SCHOOL_ADMIN_SPACE.md`.
+
 Since 2026-10-22 the platform answers parents' fear of an open laptop (« فضاء الوليّ »).
 It works in three layers and claims nothing more, because a web page cannot block other sites:
 - since 2026-10-23 the parent needs **NO account** (owner): they read through « رابط الوليّ », a private link `/w/:token`. The student creates it

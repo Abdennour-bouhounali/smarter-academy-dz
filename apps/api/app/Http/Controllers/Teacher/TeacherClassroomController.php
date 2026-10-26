@@ -142,6 +142,8 @@ class TeacherClassroomController extends Controller
             'description' => $c->description,
             'grade' => $c->grade,
             'academicYear' => $c->academic_year,
+            // Rattachée à l'établissement de l'enseignant (SCHOOL_ADMIN_SPACE.md) ?
+            'schoolId' => $c->school_id,
             'status' => $c->status,
             'joinCode' => $c->join_code,
             // « الانضمام مفتوح » : ferme le lien ET le code (nom historique).

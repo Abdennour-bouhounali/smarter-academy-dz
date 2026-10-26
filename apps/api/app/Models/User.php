@@ -15,8 +15,9 @@ use Laravel\Sanctum\HasApiTokens;
 /**
  * `role` is a free-text string, not an enum: 'admin', 'student' ("Élève") and
  * 'teacher' ("Enseignant", added without any migration — exactly the additive
- * path this note used to promise) and, since 2026-10-22, 'parent' (« وليّ
- * الأمر », the family account — docs/architecture/PARENT_SPACE.md).
+ * path this note used to promise), since 2026-10-22, 'parent' (« وليّ
+ * الأمر », the family account — docs/architecture/PARENT_SPACE.md) and, since
+ * 2026-10-26, 'school_admin' (« المدير » — docs/architecture/SCHOOL_ADMIN_SPACE.md).
  */
 #[Hidden(['password', 'remember_token', 'pending_class_join_token'])]
 class User extends Authenticatable implements HasLocalePreference
@@ -72,6 +73,7 @@ class User extends Authenticatable implements HasLocalePreference
             'last_activity_at' => 'datetime',
             'legal_consent_at' => 'datetime',
             'is_ambassador' => 'boolean',
+            'birth_date' => 'date:Y-m-d',
             'ambassador_since' => 'datetime',
         ];
     }
@@ -93,6 +95,14 @@ class User extends Authenticatable implements HasLocalePreference
      * (ParentLink). Aucune progression, aucune offre (PARENT_SPACE.md).
      */
     public const ROLE_PARENT = 'parent';
+
+    /**
+     * Le DIRECTEUR d'un établissement (« المدير », 2026-10-26). Créé par
+     * l'administration de la plateforme seulement, jamais par une inscription.
+     * Ce n'est PAS `admin` : il gère SON établissement (school_staff), jamais
+     * la plateforme (SCHOOL_ADMIN_SPACE.md).
+     */
+    public const ROLE_SCHOOL_ADMIN = 'school_admin';
 
     /**
      * Les rôles qu'une inscription publique peut choisir. Jamais admin.
@@ -144,6 +154,31 @@ class User extends Authenticatable implements HasLocalePreference
     public function isParent(): bool
     {
         return $this->role === self::ROLE_PARENT;
+    }
+
+    public function isSchoolAdmin(): bool
+    {
+        return $this->role === self::ROLE_SCHOOL_ADMIN;
+    }
+
+    /**
+     * Un « معرّف الدخول » généré par l'établissement (SCHOOL_ADMIN_SPACE.md §7,
+     * décision du propriétaire 2026-10-26) : la forme d'une adresse, sans boîte
+     * aux lettres derrière. Un mot de passe perdu se réédite sur une carte.
+     */
+    public function hasSchoolLogin(): bool
+    {
+        return str_ends_with(mb_strtolower((string) $this->email), '@'.config('school.student_login_domain'));
+    }
+
+    /**
+     * Aucun courriel vers un identifiant d'établissement : le canal mail de
+     * Laravel saute un destinataire sans route. Toutes les notifications
+     * (mot de passe, rapport, code) passent par ici.
+     */
+    public function routeNotificationForMail(): ?string
+    {
+        return $this->hasSchoolLogin() ? null : $this->email;
     }
 
     /**

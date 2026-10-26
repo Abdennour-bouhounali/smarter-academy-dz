@@ -36,6 +36,14 @@ class ClassroomMembership extends Model
      */
     public const VIA_INVITATION = 'invitation';
 
+    /** Inscrit par la direction de l'établissement (SCHOOL_ADMIN_SPACE.md, D2). */
+    public const VIA_SCHOOL_ENROLMENT = 'school_enrolment';
+
+    /** Qui a ouvert la lecture de l'ÉTABLISSEMENT : l'élève, ou l'inscription par la direction. */
+    public const SCHOOL_CONSENT_BY_STUDENT = 'student';
+
+    public const SCHOOL_CONSENT_BY_SCHOOL = 'school';
+
     protected $fillable = ['status', 'joined_at', 'left_at', 'joined_via', 'invitation_id', 'removed_by'];
 
     protected $attributes = [
@@ -48,6 +56,7 @@ class ClassroomMembership extends Model
             'joined_at' => 'datetime',
             'left_at' => 'datetime',
             'consented_at' => 'datetime',
+            'school_consent_at' => 'datetime',
         ];
     }
 

@@ -91,6 +91,25 @@ const DeviceGuidePage = lazy(() => import('./pages/parent/DeviceGuidePage'));
 const StudentParentView = lazy(() => import('./pages/student/ParentView'));
 // « رابط الوليّ » : la page PUBLIQUE du parent, sans compte (owner, 2026-10-23).
 const ParentLinkPage = lazy(() => import('./pages/parent/ParentLinkPage'));
+// « فضاء الإدارة » : le directeur d'un établissement (SCHOOL_ADMIN_SPACE.md).
+// Tout est paresseux ; les chaînes sont dans `idara` (à la demande).
+const SchoolLayout = lazy(() => import('./components/layout/SchoolLayout'));
+const SchoolHome = lazy(() => import('./pages/school/SchoolHome'));
+const SchoolClassrooms = lazy(() => import('./pages/school/SchoolClassrooms'));
+const SchoolTeachers = lazy(() => import('./pages/school/SchoolTeachers'));
+const SchoolStudents = lazy(() => import('./pages/school/SchoolStudents'));
+const SchoolSettings = lazy(() => import('./pages/school/SchoolSettings'));
+const SchoolLearningMap = lazy(() => import('./pages/school/SchoolLearningMap'));
+const SchoolStudentFile = lazy(() => import('./pages/school/SchoolStudentFile'));
+const SchoolReports = lazy(() => import('./pages/school/SchoolReports'));
+const SchoolReport = lazy(() => import('./pages/school/SchoolReport'));
+const SchoolMeeting = lazy(() => import('./pages/school/SchoolMeeting'));
+// « مؤسستي » : l'établissement vu par l'enseignant, et son lien d'adhésion.
+const TeacherSchoolPage = lazy(() => import('./pages/teacher/TeacherSchoolPage'));
+const TeacherSchoolJoin = lazy(() => import('./pages/teacher/TeacherSchoolJoin'));
+// « المؤسسات », côté administration de la plateforme.
+const AdminSchoolList = lazy(() => import('./pages/admin/schools/SchoolList'));
+const AdminSchoolDetail = lazy(() => import('./pages/admin/schools/SchoolDetail'));
 // L'élève et sa classe (« قسمي »), et le lien public d'une classe.
 const Qism = lazy(() => import('./pages/student/Qism'));
 const JoinClassLink = lazy(() => import('./pages/JoinClassLink'));
@@ -288,6 +307,8 @@ function AppRoutes() {
           <Route path="enseignants/:id" element={<AdminTeacherDetail />} />
           <Route path="classes" element={<AdminClassroomList />} />
           <Route path="classes/:id" element={<AdminClassroomDetail />} />
+          <Route path="etablissements" element={<AdminSchoolList />} />
+          <Route path="etablissements/:id" element={<AdminSchoolDetail />} />
           <Route path="offres" element={<AdminPlanList />} />
           <Route path="offres/demandes" element={<AdminSubscriptionRequests />} />
           <Route path="offres/abonnements" element={<AdminSubscriptions />} />
@@ -403,6 +424,8 @@ function AppRoutes() {
           <Route path="tashih" element={<TeacherReviews />} />
           <Route path="offre" element={<TeacherSubscription />} />
           <Route path="profil" element={<TeacherProfile />} />
+          <Route path="muassasa" element={<TeacherSchoolPage />} />
+          <Route path="muassasa/rejoindre/:token" element={<TeacherSchoolJoin />} />
           {/* L'ENSEIGNANT APPREND COMME UN ÉLÈVE — mêmes pages, même
               moteur, dans SON espace : le catalogue (Explorer), le
               مختبر et son cahier (à lui : le serveur ne sert que les
@@ -449,6 +472,25 @@ function AppRoutes() {
           <Route index element={<ParentHome />} />
           <Route path="abnaa/:studentId" element={<ParentChildReport />} />
           <Route path="himaya" element={<DeviceGuidePage />} />
+        </Route>
+      </Route>
+
+      {/* « فضاء الإدارة » — le directeur d'un établissement. Rôle vérifié ici ;
+          la vraie porte est le serveur : /api/v1/school/* derrière can:school
+          et une nomination active (SchoolAccess::schoolOf). */}
+      <Route path="/idara" element={<ProtectedRoute allowedRoles={['school_admin']} />}>
+        {/* « وضع الاجتماع » : plein écran, hors de la coquille (projecteur). */}
+        <Route path="ijtimaa/:reportId" element={<SchoolMeeting />} />
+        <Route element={<SchoolLayout />}>
+          <Route index element={<SchoolHome />} />
+          <Route path="aqsam" element={<SchoolClassrooms />} />
+          <Route path="asatidha" element={<SchoolTeachers />} />
+          <Route path="talamidh" element={<SchoolStudents />} />
+          <Route path="talamidh/:studentId" element={<SchoolStudentFile />} />
+          <Route path="kafaat" element={<SchoolLearningMap />} />
+          <Route path="taqarir" element={<SchoolReports />} />
+          <Route path="taqarir/:reportId" element={<SchoolReport />} />
+          <Route path="iidadat" element={<SchoolSettings />} />
         </Route>
       </Route>
 

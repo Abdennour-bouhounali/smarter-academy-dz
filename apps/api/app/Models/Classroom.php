@@ -69,6 +69,16 @@ class Classroom extends Model
         return $this->belongsTo(User::class, 'teacher_id');
     }
 
+    /**
+     * L'établissement de la classe, s'il y en a un. `school_id` n'est pas
+     * assignable en masse : il ajoute un LECTEUR (la direction), jamais un
+     * second propriétaire (SCHOOL_ADMIN_SPACE.md §4).
+     */
+    public function school(): BelongsTo
+    {
+        return $this->belongsTo(School::class);
+    }
+
     public function memberships(): HasMany
     {
         return $this->hasMany(ClassroomMembership::class);
@@ -99,6 +109,26 @@ class Classroom extends Model
     public function scopeCountingTowardsLimit(Builder $query): Builder
     {
         return $query->where($query->qualifyColumn('status'), '!=', self::STATUS_ARCHIVED);
+    }
+
+    /**
+     * Les classes que la licence d'un établissement ne couvre PAS — celles
+     * dont les élèves occupent les sièges de leur enseignant
+     * (SCHOOL_ADMIN_SPACE.md, D1). Une classe d'établissement sans licence
+     * qui court reste sur les sièges de l'enseignant.
+     */
+    public function scopeNotCoveredBySchool(Builder $query): Builder
+    {
+        return $query->where(fn (Builder $q) => $q
+            ->whereNull($q->qualifyColumn('school_id'))
+            ->orWhereNotIn($q->qualifyColumn('school_id'), SchoolLicence::query()->running()->select('school_id')));
+    }
+
+    /** La classe est-elle couverte par la licence de son établissement ? */
+    public function isCoveredBySchool(): bool
+    {
+        return $this->school_id !== null
+            && SchoolLicence::where('school_id', $this->school_id)->running()->exists();
     }
 
     public function scopeOwnedBy(Builder $query, User $teacher): Builder

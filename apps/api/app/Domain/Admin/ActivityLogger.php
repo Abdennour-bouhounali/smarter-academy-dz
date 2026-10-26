@@ -164,6 +164,56 @@ class ActivityLogger
     /** L'administrateur a désigné, ou retiré, un ambassadeur. */
     public const TEACHER_AMBASSADOR = 'teacher.ambassador_changed';
 
+    /**
+     * Les ÉTABLISSEMENTS (SCHOOL_ADMIN_SPACE.md §5). La nomination du
+     * directeur journalise son identifiant et son nom — jamais le mot de passe.
+     */
+    public const SCHOOL_CREATED = 'school.created';
+
+    public const SCHOOL_UPDATED = 'school.updated';
+
+    public const SCHOOL_STATUS = 'school.status_changed';
+
+    public const SCHOOL_DIRECTOR_APPOINTED = 'school.director_appointed';
+
+    public const SCHOOL_DIRECTOR_REVOKED = 'school.director_revoked';
+
+    /** Phase 3 : la structure. L'acteur est le directeur, l'enseignant ou l'élève qui agit. */
+    public const SCHOOL_TERMS_UPDATED = 'school.terms_updated';
+
+    public const SCHOOL_TEACHER_JOINED = 'school_teacher.joined';
+
+    public const SCHOOL_TEACHER_LEFT = 'school_teacher.left';
+
+    public const SCHOOL_TEACHER_LINK_ROTATED = 'school.teacher_link_rotated';
+
+    public const SCHOOL_CLASSROOM_CREATED = 'school.classroom_created';
+
+    public const SCHOOL_CLASSROOM_REASSIGNED = 'school.classroom_reassigned';
+
+    public const SCHOOL_CLASSROOM_ATTACHED = 'school.classroom_attached';
+
+    public const SCHOOL_CLASSROOM_DETACHED = 'school.classroom_detached';
+
+    /** Import : ids et nombre seulement — jamais un mot de passe ni une date de naissance. */
+    public const SCHOOL_ROSTER_IMPORTED = 'school.roster_imported';
+
+    public const SCHOOL_STUDENT_TRANSFERRED = 'school.student_transferred';
+
+    public const SCHOOL_CREDENTIALS_ISSUED = 'school.credentials_issued';
+
+    public const CLASSROOM_MEMBER_SCHOOL_CONSENTED = 'classroom_member.school_consented';
+
+    /** Phase 5 : les rapports figés (type et portée seulement, jamais le contenu). */
+    public const SCHOOL_REPORT_GENERATED = 'school_report.generated';
+
+    public const SCHOOL_REPORT_DELETED = 'school_report.deleted';
+
+    /** Phase 7 : la licence d'établissement — un geste qui ouvre ou ferme un accès payant. */
+    public const SCHOOL_LICENCE_GRANTED = 'school.licence_granted';
+
+    public const SCHOOL_LICENCE_STATUS = 'school.licence_status_changed';
+
     /** Suppression définitive d'un compte élève ou enseignant (UserDeletionService). */
     public const USER_DELETED = 'user.deleted';
 

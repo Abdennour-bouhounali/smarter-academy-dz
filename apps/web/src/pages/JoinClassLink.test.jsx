@@ -43,7 +43,8 @@ describe('JoinClassLink — ouvrir un lien ne vaut pas consentement', () => {
 
   it('le texte de partage partagé avec قسمي est affiché avant les boutons', () => {
     expect(src).toMatch(/import SharingDisclosure from '..\/components\/student\/SharingDisclosure'/);
-    const disclosure = src.indexOf('<SharingDisclosure />');
+    // Une classe d'établissement nomme aussi l'établissement dans le MÊME texte.
+    const disclosure = src.indexOf('<SharingDisclosure schoolName={preview.schoolName} />');
     expect(disclosure).toBeGreaterThan(-1);
     expect(disclosure).toBeLessThan(src.indexOf("consentThen('/register')"));
   });

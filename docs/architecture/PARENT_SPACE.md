@@ -268,7 +268,11 @@ have two tabs (`features/family/ReportTabs.jsx`):
 **Server.** `ParentProgressService::forStudent($student)` serves both readers:
 `GET /parent-link/{token}/progress` (the link), `GET /parent/children/{id}/progress`
 (an existing parent account, through `activeLink`, 404 otherwise) and
-`GET /student/parents/progress`. It recomputes nothing:
+`GET /student/parents/progress`. Since 2026-10-26 it has a fourth reader, the
+school director of a student who consented to the school
+(`GET /school/students/{id}/progress`, `ProgressDetail audience="school"` —
+`SCHOOL_ADMIN_SPACE.md` §6); the WEEK report (study time) is NOT shown to the
+school. It recomputes nothing:
 
 - totals and the timeline come from `StudentDossier` (the dossier the teacher
   reads, without a class scope);

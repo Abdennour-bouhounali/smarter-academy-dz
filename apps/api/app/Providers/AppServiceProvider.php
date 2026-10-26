@@ -145,6 +145,10 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('teacher', fn (User $user) => $user->role === User::ROLE_TEACHER);
         // « فضاء الوليّ » : le compte parent (PARENT_SPACE.md).
         Gate::define('parent', fn (User $user) => $user->role === User::ROLE_PARENT);
+        // « فضاء الإدارة » : le directeur d'un établissement. Le rôle est la
+        // première couche ; la nomination active (SchoolAccess::schoolOf) la
+        // deuxième (SCHOOL_ADMIN_SPACE.md §2).
+        Gate::define('school', fn (User $user) => $user->role === User::ROLE_SCHOOL_ADMIN);
         Gate::policy(Classroom::class, ClassroomPolicy::class);
 
         /**

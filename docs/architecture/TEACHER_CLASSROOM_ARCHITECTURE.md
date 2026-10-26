@@ -41,6 +41,7 @@ admin       seeded / promoted only              /admin           can:admin
 teacher     /register?type=enseignant, Google   /enseignant      can:teacher
 student     /register, Google                   /espace          (default)
 parent      not self-registerable (2026-10-23)  /wali            can:parent
+school_admin created by the platform admin       /idara           can:school   (the school director, 2026-10-26 — SCHOOL_ADMIN_SPACE.md)
 ```
 
 - **Ambassador (« سفير », 2026-10-05)** is not a role: it is a flag
@@ -101,7 +102,7 @@ student and admin.
 | Table | Key columns | Rules |
 |---|---|---|
 | `classrooms` | `teacher_id`, `name`, `grade` (same code as `users.grade`, e.g. `4am`), `academic_year`, `status` `active\|archived\|suspended`, `join_code` (unique), **`join_link_token`** (unique, 32 base62, born with the class), `join_code_enabled` (**« الانضمام مفتوح » — closes the link AND the code**; historical name), `archived_at` | grade must be allowed by `content.allowed_grades` and exist in `grades`; **classes are not a commercial unit** — a teacher creates as many as they want unless the technical limit `classrooms.max` is configured (null = unlimited) |
-| `classroom_memberships` | `classroom_id`, `student_id`, `status` `active\|left\|removed`, `joined_via` `join_link\|join_code` (`invitation` on historical rows only), `invitation_id` (historical), `removed_by`, **`consented_at`, `consent_version`** | **unique `(classroom_id, student_id)`**: rejoining reactivates the row; only `role = student`; class must be `active`; **one class per student** (owner, 2026-10-24): no join while the student has an active membership in another *active* class (`already_in_class`); **joining requires the explicit consent** (see « Consent and what the teacher may read ») |
+| `classroom_memberships` | `classroom_id`, `student_id`, `status` `active\|left\|removed`, `joined_via` `join_link\|join_code\|school_enrolment` (`invitation` on historical rows only), `school_consent_at`/`school_consent_by` (`SCHOOL_ADMIN_SPACE.md` §4), `invitation_id` (historical), `removed_by`, **`consented_at`, `consent_version`** | **unique `(classroom_id, student_id)`**: rejoining reactivates the row; only `role = student`; class must be `active`; **one class per student** (owner, 2026-10-24): no join while the student has an active membership in another *active* class (`already_in_class`); **joining requires the explicit consent** (see « Consent and what the teacher may read ») |
 | `classroom_invitations` | **historical, read-only** (e-mail invitations, removed 2026-10-01) | kept because old memberships point to it (`invitation_id`); the migration `2026_10_01_000002` revoked the rows still pending; no model, route or service remains |
 | `users.pending_class_join_token` / `pending_class_join_at` | a join the student consented to on the link page **before having an account** | written at registration (`PendingClassJoin::remember`), consumed when the e-mail is verified (`complete`); hidden from every serialization |
 | `classroom_lessons` | `classroom_id`, `lesson_id`, `status` `visible\|hidden`, `created_by`, `updated_by` | **absence of a row = visible**; unique `(classroom_id, lesson_id)` |
@@ -279,9 +280,20 @@ response only; no `/teacher` READ returns it (`TeacherPrivacyContractTest` is
 unchanged), and `pages/teacherContract.test.js` allows `.email` in
 `CredentialsDialog.jsx` alone. Locked by `TeacherStudentCredentialsTest`. The
 public join-link preview returns the class name, grade, teacher name,
+`schoolName` (the NAME of the class's school, or null — 2026-10-26),
 `joiningOpen`, and — for a logged-in student only — `alreadyMember` and
 `currentClassroomName` (the viewer's OWN current class) — never an id, an
 address or the roster.
+
+**Classes of a school (2026-10-26).** A class may carry `classrooms.school_id`:
+the school's director becomes a SECOND reader (never a second owner — this
+section's gate and `ClassroomPolicy` are unchanged). The school reads a student
+only with `classroom_memberships.school_consent_at`, given by the link gesture
+(the disclosure names the school), by « قسمي » afterwards (`POST
+/student/classrooms/{id}/school-consent`), or by the director's enrolment
+(`joined_via = school_enrolment`, `ClassroomMembershipService::enrolBySchool` —
+same one-class rule and capacity as `join()`, which both go through `admit()`).
+The code join records no school consent. Contract: `SCHOOL_ADMIN_SPACE.md` §4.
 
 **« بطاقات الأولياء » (owner, 2026-10-23).** « التلاميذ » → « بطاقات الأولياء (QR) »
 (`features/teacher/members/ParentCardsDialog.jsx`) →
@@ -781,7 +793,9 @@ activate a capacity below usage either. `SubscriptionLifecycleTest` and
 A  the student's own access          activation code / manual student subscription → entitlements   (unchanged)
 B  covered by the teacher            active membership in a class of a teacher whose RUNNING subscription
                                      has students.covered = true → premium, reason teacher_subscription
-C  school / institution licence      Planned — not built
+C  covered by the school's licence  active membership in an active class of a school whose licence RUNS → premium,
+                                     reason school_licence, ordered BEFORE teacher_subscription; the class's students
+                                     use the SCHOOL's seats, not the teacher's (2026-10-26 — SCHOOL_ADMIN_SPACE.md §5bis)
 ```
 
 Model B is evaluated **dynamically** in `EntitlementService` through
@@ -799,7 +813,9 @@ forbids any `Domain\Billing` import in `Domain\Access`: the resolver lives in
 ## 7. Study context (the student side)
 
 `GET /student/study-context` → `{mode: independent|classroom, classrooms:[{id,
-name, grade, teacherName, joinedAt}], primary, hiddenLessonCodes}`; the
+name, grade, teacherName, joinedAt, consentRequired, schoolName,
+schoolConsentRequired}], primary, hiddenLessonCodes}` (the two school fields
+since 2026-10-26 — `SCHOOL_ADMIN_SPACE.md` §4); the
 frontend holds it in `StudyContextContext` (one fetch, `refresh()`).
 
 | Surface | What it does |
@@ -852,6 +868,8 @@ padding on desktop (`.sa-workspace-main .sa-page`):
 /enseignant/classes/:id/defi/affichage   ChallengeDisplayPage   the daily challenge on the classroom screen — outside TeacherLayout, full screen (DAILY_CHALLENGE.md §10)
 /enseignant/offre                SubscriptionPage     « عرضي »
 /enseignant/profil               TeacherProfile
+/enseignant/muassasa             TeacherSchoolPage    « مؤسستي »: what the school sees (TeacherFacts), attach classes, leave — SCHOOL_ADMIN_SPACE.md §7
+/enseignant/muassasa/rejoindre/:token  TeacherSchoolJoin   join a school after reading what it will see
 ```
 
 Creating a قسم never leaves « أقسامي ». The « قسم جديد » button opens
@@ -1331,9 +1349,7 @@ Any change to a rule in this document changes one of those tests first.
 ## 13. Not built (Planned)
 
 - Account approval states (`pending` / `rejected` teacher accounts).
-- Model C: school / institution licences as a first-class object (today a
-  school is served by a plan-bound batch).
-- Consumers for `analytics.advanced` and `reports.export`.
+- Consumers for `analytics.advanced` and `reports.export` (the school's reports export CSV without that gate — `SCHOOL_ADMIN_SPACE.md` §6).
 - Notifications of any kind for signals or interventions (deliberately not
   built: signals live while the teacher looks).
 - A student-side dismissal of a teacher suggestion (it disappears when the

@@ -224,7 +224,7 @@ export default function JoinClassLink() {
             if (isStudent && !verifiedStudent) {
               return (
                 <>
-                  <SharingDisclosure />
+                  <SharingDisclosure schoolName={preview.schoolName} />
                   <Notice icon={MailCheck} tone="sky">{t('qism.joinLink.verifyFirst')}</Notice>
                   <PrimaryButton onClick={() => consentThen('/verification-email')} icon={MailCheck} dataAttr="data-join-link-verify">{t('qism.joinLink.verifyAction')}</PrimaryButton>
                 </>
@@ -233,7 +233,7 @@ export default function JoinClassLink() {
             if (verifiedStudent) {
               return (
                 <>
-                  <SharingDisclosure />
+                  <SharingDisclosure schoolName={preview.schoolName} />
                   <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
                     <PrimaryButton onClick={() => join({ link: linkToken, consent: true })} disabled={joining} icon={Users} dataAttr="data-join-link-consent">
                       {joining ? t('qism.joinLink.joining') : t('qism.consentJoin')}
@@ -246,7 +246,7 @@ export default function JoinClassLink() {
             // Visiteur : le texte, puis les deux portes. Le bouton EST le consentement.
             return (
               <>
-                <SharingDisclosure />
+                <SharingDisclosure schoolName={preview.schoolName} />
                 <p className="text-sm text-slate-600">{t('qism.joinLink.afterAuth')}</p>
                 {/* Deux lignes pleine largeur, pas deux colonnes : chaque libellé
                     tient sur UNE ligne, même sur téléphone. */}

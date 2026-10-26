@@ -3,6 +3,7 @@
 namespace App\Domain\Access;
 
 use App\Domain\Plans\TeacherCoverage;
+use App\Domain\School\SchoolCoverage;
 use App\Models\Entitlement;
 use App\Models\User;
 use Illuminate\Support\Carbon;
@@ -128,6 +129,12 @@ class EntitlementService
             }
         }
 
+        // Le modèle C (licence d'établissement), APRÈS les droits propres et
+        // AVANT l'enseignant : c'est l'établissement qui paie ses élèves.
+        if ($this->schoolCoverageFor($user)['covered']) {
+            return AccessDecision::allow(AccessDecision::VIA_SCHOOL_LICENCE);
+        }
+
         // Le modèle B, APRÈS les droits propres : quand un élève a payé sa
         // carte ET est couvert par son enseignant, c'est sa carte qui
         // explique son accès. La couverture ne produit aucune ligne ; elle
@@ -157,6 +164,24 @@ class EntitlementService
 
     /** @var array<int, array{covered: bool, teacherId: ?int, endsAt: ?Carbon}> */
     private array $coverage = [];
+
+    /**
+     * La couverture par la licence de l'établissement (modèle C), mémorisée
+     * par requête comme la couverture de l'enseignant.
+     *
+     * @return array{covered: bool, schoolId: ?int, endsAt: ?Carbon}
+     */
+    private function schoolCoverageFor(User $user): array
+    {
+        if (! isset($this->schoolCoverage[$user->id])) {
+            $this->schoolCoverage[$user->id] = app(SchoolCoverage::class)->coverageFor($user);
+        }
+
+        return $this->schoolCoverage[$user->id];
+    }
+
+    /** @var array<int, array{covered: bool, schoolId: ?int, endsAt: ?Carbon}> */
+    private array $schoolCoverage = [];
 
     /**
      * Les droits valides d'un utilisateur, en UNE requête, mémorisés le temps
@@ -202,11 +227,12 @@ class EntitlementService
         if ($user === null) {
             $this->cache = [];
             $this->coverage = [];
+            $this->schoolCoverage = [];
 
             return;
         }
 
-        unset($this->cache[$user->id], $this->coverage[$user->id]);
+        unset($this->cache[$user->id], $this->coverage[$user->id], $this->schoolCoverage[$user->id]);
     }
 
     /**
@@ -228,6 +254,9 @@ class EntitlementService
         $coverage = $user !== null && $user->hasActiveAccount()
             ? $this->coverageFor($user)
             : ['covered' => false, 'teacherId' => null, 'endsAt' => null];
+        $schoolCoverage = $user !== null && $user->hasActiveAccount()
+            ? $this->schoolCoverageFor($user)
+            : ['covered' => false, 'schoolId' => null, 'endsAt' => null];
 
         return [
             'freeAccess' => $this->satisfies($user, AccessTier::FREE),
@@ -236,8 +265,10 @@ class EntitlementService
             'adminOverrideActive' => $valid->contains('type', Entitlement::TYPE_ADMIN_OVERRIDE),
             // Le modèle B : couvert par l'offre de son enseignant.
             'teacherCoverageActive' => $coverage['covered'],
+            // Le modèle C : couvert par la licence de son établissement.
+            'schoolCoverageActive' => $schoolCoverage['covered'],
             'premiumAccess' => $decision->allowed,
-            'expiresAt' => optional($this->accessEndsAt($valid, $coverage))->toIso8601String(),
+            'expiresAt' => optional($this->accessEndsAt($valid, $coverage, $schoolCoverage))->toIso8601String(),
         ];
     }
 
@@ -261,13 +292,16 @@ class EntitlementService
      * @param  Collection<int, Entitlement>  $valid
      * @param  array{covered: bool, teacherId: ?int, endsAt: ?Carbon}  $coverage
      */
-    private function accessEndsAt($valid, array $coverage = ['covered' => false, 'teacherId' => null, 'endsAt' => null]): ?Carbon
+    private function accessEndsAt($valid, array $coverage = ['covered' => false, 'teacherId' => null, 'endsAt' => null], array $schoolCoverage = ['covered' => false, 'schoolId' => null, 'endsAt' => null]): ?Carbon
     {
         // `toBase()` : une collection Eloquent VIDE reste Eloquent après map(),
         // et son contains() prend alors un Carbon pour une clé de modèle.
         $ends = $valid->toBase()->map(fn (Entitlement $e) => $e->expires_at);
         if ($coverage['covered']) {
             $ends->push($coverage['endsAt']);
+        }
+        if ($schoolCoverage['covered']) {
+            $ends->push($schoolCoverage['endsAt']);
         }
 
         if ($ends->isEmpty() || $ends->contains(null)) {

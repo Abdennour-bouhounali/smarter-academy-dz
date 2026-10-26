@@ -49,7 +49,7 @@ class TeacherCapacityService
     public function isSeated(User $teacher, User $student): bool
     {
         return ClassroomMembership::where('student_id', $student->id)->active()
-            ->whereIn('classroom_id', Classroom::ownedBy($teacher)->countingTowardsLimit()->select('classrooms.id'))
+            ->whereIn('classroom_id', Classroom::ownedBy($teacher)->countingTowardsLimit()->notCoveredBySchool()->select('classrooms.id'))
             ->exists();
     }
 

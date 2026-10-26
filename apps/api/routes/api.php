@@ -9,6 +9,13 @@ use App\Http\Controllers\Admin\AdminAccountController;
 use App\Http\Controllers\Admin\AdminActivationCodeController;
 use App\Http\Controllers\Admin\AdminActivityLogController;
 use App\Http\Controllers\Admin\AdminClassroomController;
+use App\Http\Controllers\Admin\AdminSchoolController;
+use App\Http\Controllers\School\SchoolHomeController;
+use App\Http\Controllers\School\SchoolProgressController;
+use App\Http\Controllers\School\SchoolReportController;
+use App\Http\Controllers\School\SchoolStructureController;
+use App\Http\Controllers\School\SchoolStudentController;
+use App\Http\Controllers\Teacher\TeacherSchoolController;
 use App\Http\Controllers\Admin\AdminContentController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminEntitlementController;
@@ -436,6 +443,7 @@ Route::prefix('v1')->group(function () {
                 ->middleware('throttle:classroom-join');
             Route::post('/student/classrooms/{id}/leave', [StudentClassroomController::class, 'leave'])->whereNumber('id');
             Route::post('/student/classrooms/{id}/consent', [StudentClassroomController::class, 'consent'])->whereNumber('id');
+            Route::post('/student/classrooms/{id}/school-consent', [StudentClassroomController::class, 'schoolConsent'])->whereNumber('id');
             // Les suggestions de l'enseignant (interventions visibles) — jamais un verrou.
             Route::get('/student/teacher-recommendations', [StudentClassroomController::class, 'recommendations']);
 
@@ -522,6 +530,14 @@ Route::prefix('v1')->group(function () {
             // Renouveler le LIEN de classe : l'ancien n'ouvre plus rien.
             Route::post('/classrooms/{id}/join-link/rotate', [TeacherClassroomController::class, 'rotateJoinLink'])->whereNumber('id');
 
+            // « مؤسستي » : rejoindre un établissement par son lien, lire ce
+            // qu'il voit de moi, partir, rattacher mes classes (SCHOOL_ADMIN_SPACE.md).
+            Route::get('/school', [TeacherSchoolController::class, 'show']);
+            Route::get('/school-links/{token}', [TeacherSchoolController::class, 'preview'])->middleware('throttle:30,1');
+            Route::post('/school/join', [TeacherSchoolController::class, 'join'])->middleware('throttle:10,1');
+            Route::post('/school/leave', [TeacherSchoolController::class, 'leave']);
+            Route::put('/classrooms/{id}/school', [TeacherSchoolController::class, 'attach'])->whereNumber('id');
+
             // « بنك التمارين » : qui, parmi MES élèves, a fait cet exercice — et
             // ce qu'il a répondu. Lecture seule (TeacherPracticeResponses).
             Route::get('/practice/{lessonCode}/exercises/{exerciseId}/students', [TeacherPracticeResponseController::class, 'index']);
@@ -606,6 +622,41 @@ Route::prefix('v1')->group(function () {
             Route::post('/classrooms/{id}/madar/play/runs/{uuid}/revive', [TeacherMadarPlayController::class, 'revive'])->whereNumber('id')->whereUuid('uuid')->middleware('throttle:60,1');
             Route::post('/classrooms/{id}/madar/play/runs/{uuid}/finish', [TeacherMadarPlayController::class, 'finish'])->whereNumber('id')->whereUuid('uuid')->middleware('throttle:60,1');
             Route::patch('/classrooms/{id}/madar/play/ship', [TeacherMadarPlayController::class, 'ship'])->whereNumber('id')->middleware('throttle:30,1');
+        });
+
+    // « فضاء الإدارة » — le directeur d'un établissement (SCHOOL_ADMIN_SPACE.md).
+    // Le rôle ici ; la nomination active (SchoolAccess::schoolOf) dans chaque
+    // contrôleur. L'établissement n'est jamais lu dans la requête.
+    // Toute nouvelle lecture s'ajoute à SchoolPrivacyContractTest::schoolReads().
+    Route::middleware(['auth:sanctum', 'account.active', 'email.verified', 'can:school'])
+        ->prefix('school')
+        ->group(function () {
+            Route::get('/overview', [SchoolHomeController::class, 'overview']);
+
+            // Phase 3 — la structure : trimestres, enseignants, classes, élèves.
+            Route::get('/terms', [SchoolStructureController::class, 'terms']);
+            Route::put('/terms', [SchoolStructureController::class, 'updateTerms']);
+            Route::get('/teachers', [SchoolStructureController::class, 'teachers']);
+            Route::post('/teachers/join-link/rotate', [SchoolStructureController::class, 'rotateTeacherLink']);
+            Route::delete('/teachers/{teacherId}', [SchoolStructureController::class, 'detachTeacher'])->whereNumber('teacherId');
+            Route::get('/classrooms', [SchoolStructureController::class, 'classrooms']);
+            Route::post('/classrooms', [SchoolStructureController::class, 'createClassroom']);
+            Route::patch('/classrooms/{id}/teacher', [SchoolStructureController::class, 'reassign'])->whereNumber('id');
+            Route::get('/students', [SchoolStudentController::class, 'index']);
+            Route::post('/roster/preview', [SchoolStudentController::class, 'preview'])->middleware('throttle:30,1');
+            Route::post('/roster', [SchoolStudentController::class, 'commit'])->middleware('throttle:10,1');
+            Route::patch('/students/{studentId}/classroom', [SchoolStudentController::class, 'transfer'])->whereNumber('studentId');
+            Route::post('/students/credentials', [SchoolStudentController::class, 'credentials'])->middleware('throttle:10,1');
+
+            // Phase 4 — le suivi : la carte des الكفاءات, le dossier d'un élève.
+            Route::get('/learning-map', [SchoolProgressController::class, 'learningMap']);
+            Route::get('/students/{studentId}/progress', [SchoolProgressController::class, 'studentFile'])->whereNumber('studentId');
+
+            // Phase 5 — les rapports figés.
+            Route::get('/reports', [SchoolReportController::class, 'index']);
+            Route::post('/reports', [SchoolReportController::class, 'store'])->middleware('throttle:30,1');
+            Route::get('/reports/{id}', [SchoolReportController::class, 'show'])->whereNumber('id');
+            Route::delete('/reports/{id}', [SchoolReportController::class, 'destroy'])->whereNumber('id');
         });
 
     // Protected routes — admin only
@@ -741,6 +792,18 @@ Route::prefix('v1')->group(function () {
 
             Route::get('/classrooms', [AdminClassroomController::class, 'index']);
             Route::get('/classrooms/{id}', [AdminClassroomController::class, 'show'])->whereNumber('id');
+
+            // « Établissements » : créer, régler, nommer le directeur (SCHOOL_ADMIN_SPACE.md §5).
+            Route::get('/schools', [AdminSchoolController::class, 'index']);
+            Route::post('/schools', [AdminSchoolController::class, 'store']);
+            Route::get('/schools/{id}', [AdminSchoolController::class, 'show'])->whereNumber('id');
+            Route::patch('/schools/{id}', [AdminSchoolController::class, 'update'])->whereNumber('id');
+            Route::patch('/schools/{id}/status', [AdminSchoolController::class, 'status'])->whereNumber('id');
+            Route::post('/schools/{id}/director', [AdminSchoolController::class, 'appointDirector'])->whereNumber('id')->middleware('throttle:10,1');
+            Route::delete('/schools/{id}/director', [AdminSchoolController::class, 'revokeDirector'])->whereNumber('id');
+            // La licence d'établissement (D1) : activation manuelle, cycle de vie.
+            Route::post('/schools/{id}/licence', [AdminSchoolController::class, 'grantLicence'])->whereNumber('id');
+            Route::patch('/schools/{id}/licence/status', [AdminSchoolController::class, 'licenceStatus'])->whereNumber('id');
 
             // ── L'ACTIVATION MANUELLE — élèves et enseignants ────────────
             // Aucun paiement en ligne : l'argent est reçu hors plateforme,
