@@ -199,3 +199,55 @@ export function sumExpanded(terms) {
   const m = terms.reduce((acc, t) => acc + BigInt(t.digit) * 10n ** BigInt(t.exp - e), 0n);
   return norm(m, e);
 }
+
+/* ── Leçon 2 (قواعد الحساب على قوى العدد 10, 2026-10-26) : les trois règles, les unités, k × 10ᵖ ─────────────────────────────────── */
+
+/** 10ᵐ × 10ⁿ = 10ᵐ⁺ⁿ */
+export const productExp = (m, n) => m + n;
+/** 10ᵐ / 10ⁿ = 10ᵐ⁻ⁿ */
+export const quotientExp = (m, n) => m - n;
+/** (10ᵐ)ⁿ = 10ᵐⁿ */
+export const powerExp = (m, n) => m * n;
+/** Une chaîne `[{ op: '×' | '÷' | '^', n }]` à partir de 10⁰ : l'exposant unique. Ex. ×3, ÷(−2), ^2 → ((0+3)−(−2))×2. */
+export function chainExp(steps, start = 0) {
+  return steps.reduce((acc, s) => (s.op === '×' ? productExp(acc, s.n) : s.op === '÷' ? quotientExp(acc, s.n) : powerExp(acc, s.n)), start);
+}
+
+/** Les unités de la مسطرة التحويل : l'exposant de leur valeur en MÈTRES (longueur). */
+export const UNIT_SCALE = Object.freeze({
+  km: 3, hm: 2, dam: 1, m: 0, dm: -1, cm: -2, mm: -3, um: -6, nm: -9,
+});
+export const UNIT_ORDER = Object.freeze(['km', 'hm', 'dam', 'm', 'dm', 'cm', 'mm', 'um', 'nm']);
+/** Le nombre de COLONNES entre deux unités dans le tableau de longueur (1), d'aire (2) ou de volume (3) : positif vers une unité PLUS PETITE. */
+export function unitColumns(from, to, mode = 1) {
+  if (!(from in UNIT_SCALE) || !(to in UNIT_SCALE)) throw new RangeError('unité inconnue');
+  if (![1, 2, 3].includes(mode)) throw new RangeError('mode 1 | 2 | 3');
+  return (UNIT_SCALE[from] - UNIT_SCALE[to]) * mode;
+}
+
+const sciOf = (k, p) => ({ k: typeof k === 'object' ? k : parseDec(String(k)), p });
+const toDec = (s) => timesPow10(s.k, s.p);
+/** Produit de k × 10ᵖ (NON normalisé) : [{k, p}] → { k (décimal exact), p } ; 7×10³ × 3×10⁹ → 21 × 10¹². */
+export function mulSci(list) {
+  const items = list.map((x) => sciOf(x.k, x.p));
+  const km = items.reduce((acc, s) => norm(acc.m * s.k.m, acc.e + s.k.e), norm(1n, 0));
+  return { k: km, p: items.reduce((acc, s) => acc + s.p, 0) };
+}
+/** Quotient (a × 10ᵖ) / (b × 10ᵠ) → { k: a/b, p − q } avec a/b décimal exact, sinon `null` (jamais un flottant). */
+export function divSci(a, b) {
+  const x = sciOf(a.k, a.p); const y = sciOf(b.k, b.p);
+  if (y.k.m === 0n) return null;
+  // a/b décimal ⇔ y.m n'a que des facteurs 2 et 5 après simplification
+  let num = x.k.m; let den = y.k.m;
+  const g = (u, v) => { let s = abs(u); let t = abs(v); while (t) [s, t] = [t, s % t]; return s; };
+  const d = g(num, den); num /= d; den /= d;
+  let twos = 0; let fives = 0; let r = abs(den);
+  while (r % 2n === 0n) { r /= 2n; twos += 1; }
+  while (r % 5n === 0n) { r /= 5n; fives += 1; }
+  if (r !== 1n) return null;
+  const t = Math.max(twos, fives);
+  const mult = (10n ** BigInt(t)) / abs(den);
+  const sign = den < 0n ? -1n : 1n;
+  return { k: norm(num * mult * sign, x.k.e - y.k.e - t), p: x.p - y.p };
+}
+export { toDec as sciValue };

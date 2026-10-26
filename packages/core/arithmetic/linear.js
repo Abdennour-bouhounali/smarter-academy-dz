@@ -186,6 +186,38 @@ export function applyBoth(L, R, op, k, rel = '=') {
   return { left: f(L), right: f(R), rel: nextRel, flipped: rel !== '=' && negative };
 }
 
+/**
+ * L'IMAGE d'une demi-droite { rel, bound } par une suite d'étapes [{ op: 'add' | 'mul', k }] (3AM, `loom-threads`, 2026-10-26) : ajouter k déplace
+ * la borne ; multiplier par k > 0 la dilate ; par k < 0 la dilate ET renverse le sens ; × 0 écrase tout sur 0 → { collapsed: true }.
+ */
+export function imageRay(ray, stages = []) {
+  let rel = ray.rel;
+  let bound = F(ray.bound);
+  for (const st of stages) {
+    const k = F(st.k);
+    if (st.op === 'add') bound = add(bound, k);
+    else if (st.op === 'mul') {
+      if (isZero(k)) return { collapsed: true };
+      bound = mul(bound, k);
+      if (k.n < 0) rel = FLIP[rel];
+    } else throw new Error(`étape inconnue : ${st.op}`);
+  }
+  return { rel, bound };
+}
+
+/**
+ * Le ENCADREMENT de p·x + q quand x est encadré : interval = { lo, loRel, hi, hiRel } (loRel, hiRel ∈ { '<', '<=' }), P = lin(p, q).
+ * Les bornes sortent TOUJOURS dans l'ordre croissant, la rigueur de chaque borne est héritée ; p < 0 échange les deux bouts ; p = 0 donne la constante q.
+ */
+export function boundAffine(interval, P) {
+  const p = P.a;
+  const q = P.b;
+  const at = (x) => add(mul(p, x), q);
+  if (isZero(p)) return { lo: q, loRel: '<=', hi: q, hiRel: '<=' };
+  if (p.n > 0) return { lo: at(interval.lo), loRel: interval.loRel, hi: at(interval.hi), hiRel: interval.hiRel };
+  return { lo: at(interval.hi), loRel: interval.hiRel, hi: at(interval.lo), hiRel: interval.loRel };
+}
+
 // ── Produits nuls ─────────────────────────────────────────────────────────
 
 /**

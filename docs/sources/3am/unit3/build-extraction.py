@@ -704,24 +704,27 @@ DEST = {
     'challenge': {'lesson': Q, 'module': 5},
     'prep': {'lesson': Q, 'module': 0, 'items': {'16-17': {'lesson': Q, 'module': 0}, PREP_REST: {'lesson': L1, 'module': 0}}},
     'act-1': {'lesson': L1, 'module': 4}, 'act-2': {'lesson': L1, 'module': 2}, 'act-3': {'lesson': L1, 'module': 1},
-    'act-4': {'lesson': L2, 'module': None}, 'act-5': {'lesson': L3, 'module': None},
+    'act-4': {'lesson': L2, 'module': 2, 'note': 'Le cahier corrigé en rouge devient les lignes à juger du module 2 (mêmes TYPES d’erreur, autres nombres) ; l’écriture des facteurs n’est pas l’entrée (le train de quwat-adad-nisbi l’a faite).'}, 'act-5': {'lesson': L3, 'module': None},
     'act-6': {'lesson': Q, 'module': 4, 'note': 'APPLICATION (guide §4ter) : le lab de la plateforme est l’entrée conçue ; l’activité du manuel est posée en أتمرّن.'},
-    'know-1': {'lesson': L1, 'module': 2}, 'know-2': {'lesson': L1, 'module': 2}, 'know-3': {'lesson': L2, 'module': None},
+    'know-1': {'lesson': L1, 'module': 2}, 'know-2': {'lesson': L1, 'module': 2}, 'know-3': {'lesson': L2, 'module': 2},
     'know-4': {'lesson': L3, 'module': None}, 'know-5': {'lesson': L3, 'module': None},
     'know-6': {'lesson': Q, 'module': 2}, 'know-7': {'lesson': Q, 'module': 2}, 'know-8': {'lesson': Q, 'module': 3},
-    'method-43a': {'lesson': L1, 'module': 3}, 'method-43b': {'lesson': L1, 'module': 3}, 'method-43c': {'lesson': L2, 'module': None},
-    'now-43': {'lesson': L2, 'module': None},
+    'method-43a': {'lesson': L1, 'module': 3}, 'method-43b': {'lesson': L1, 'module': 3}, 'method-43c': {'lesson': L2, 'module': 3},
+    'now-43': {'lesson': L2, 'module': 3},
     'method-45a': {'lesson': L3, 'module': None}, 'method-45b': {'lesson': L3, 'module': None}, 'method-45c': {'lesson': Q, 'module': 3},
     'now-45': {'lesson': Q, 'module': 3, 'items': {'1': {'lesson': L3, 'module': None}, '2': {'lesson': Q, 'module': 3}}},
     **{f'ex-{n}': {'lesson': L1, 'module': 4} for n in range(1, 13)},
     'ex-13': {'lesson': L2, 'module': None, 'note': 'Le libellé (« ألف مليار لألف كتاب », « جزء من المئة لجزء من المليون ») demande le produit 10^m × 10^n ou le rapport 10^m / 10^n : il appartient à qawaid-quwa-ashara, dont la banque l’adapte.'},
-    **{f'ex-{n}': {'lesson': L2, 'module': None} for n in (*range(14, 21), 50, 55, 56)},
+    **{f'ex-{n}': {'lesson': L2, 'module': 4} for n in (14, 17, 20, 50, 56)},
+    **{f'ex-{n}': {'lesson': L2, 'module': 'practice', 'note': 'banque d’exercices (adaptée)'} for n in (13, 15, 16, 18, 19)},
+    'ex-55': {'lesson': L2, 'module': 7},
     **{f'ex-{n}': {'lesson': L3, 'module': None} for n in (*range(21, 34), 52, 54, 57, 58, 59, 60, 61, 62, 65, 66, 67, 70)},
     **{f'ex-{n}': {'lesson': Q, 'module': 4} for n in (*range(34, 50), 51, 53)},
     **{f'ex-{n}': {'notIntegrated': 'أتعمّق sur les puissances de 2 / de 8 et le doublement : exclu de la synthèse (MASAIL §14, pas d’أتعمّق dans أدمج تعلّماتي) ; à adapter dans la banque de quwat-adad-nisbi lors d’une passe ultérieure — décision du propriétaire en attente'} for n in (63, 64, 68, 69)},
     **{f'self-{n}': {'lesson': L1, 'module': 8} for n in (1, 2, 3)},
     'self-11': {'lesson': L1, 'module': 4},
-    **{f'self-{n}': {'lesson': L2, 'module': None} for n in range(4, 11)},
+    **{f'self-{n}': {'lesson': L2, 'module': 8} for n in (4, 5, 6)},
+    **{f'self-{n}': {'lesson': L2, 'module': 'practice'} for n in (7, 8, 9, 10)},
     **{f'self-{n}': {'lesson': L3, 'module': None} for n in range(12, 22)},
     **{f'self-{n}': {'lesson': Q, 'module': 8} for n in range(22, 26)},
     'integration': {'lesson': SYN, 'module': None},
@@ -749,6 +752,10 @@ DISCREPANCIES = [
     {'elementId': 'ex-10', 'kind': 'reading', 'text': 'Erreur de transcription corrigée (500 dpi) : 1mL = 10^-2 …. (réponse dL) et 1cm³ = 10^-9 …. (réponse dam³) ; l’ancienne lecture 10^-3 (L) et 10^-6 (m³) était fausse. Les autres : 1hm = 10^5 cm ; 1kg = 10^3 g ; 1m² = 10^4 cm² ; 1dam = 10^3 cm.'},
     {'elementId': 'ex-11', 'kind': 'reading', 'text': 'Relu à 500 dpi, disposition 2 colonnes (de droite à gauche) : 1hm = …m (10^2) ; 1km = …cm (10^5) ; 1g = …mg (10^3) ; 1dag = …dg (10^2) ; 10^4 mm = …m (10^1) ; 10^2 cm = …m (10^0) ; 10^5 g = …kg (10^2) ; 10^1 kg = …mg (10^7). Aucune erreur.'},
     {'elementId': 'ex-13', 'kind': 'reading', 'text': 'Énoncé exact (500 dpi) : « اكتب على شكل قوة العدد 10 : 1) ألف مليار لألف كتاب. 2) مئة ألف مليار قصة. 3) جزء من المئة لجزء من المليون. » La préposition « ل » (1 et 3) est ambiguë : rapport (10^12/10^3 = 10^9 ; 10^-2/10^-6 = 10^4) ou produit (10^15 ; 10^-8). Destiné à qawaid-quwa-ashara (règles du produit et du quotient), dont la banque l’adapte.'},
+    {'elementId': 'ex-14', 'kind': 'reading', 'text': 'Relu à 260 dpi (qawaid-quwa-ashara, 2026-10-26) : 10^-4 × 10^7 ; 10^9/10^3 ; 10^4/10^-5 ; (10^3)^2 ; (10^-4)^3 ; (10^5)^-3 ; 10^5 × 10^4 ; 10^-6 × 10^-3 ; 10^5 (10^3)^2 ; (10^-6 × 10^3)/10^-7 ; (10^4 × 10^6)/10^5. Réponses : 10^3, 10^6, 10^9, 10^6, 10^-12, 10^-15, 10^9, 10^-9, 10^11, 10^4, 10^5.'},
+    {'elementId': 'ex-16', 'kind': 'reading', 'text': 'Relu à 130–260 dpi : 10^-17 × (10^19 − 10^18) et 10^15 × (10^-15 + 10^-13) (exposants fins) ; la leçon n’en reprend que l’IDÉE (distribuer puis une somme n’est pas une puissance), avec ses propres nombres.'},
+    {'elementId': 'ex-55', 'kind': 'reading', 'text': 'Programme relu à 130 dpi : choisir un nombre ; × 10^7 ; ÷ 10^5 ... ; résultat attendu 10^-2, 10^3 ; l’idée (une chaîne = une seule multiplication) est reprise dans la مسألة 3 avec un autre programme.'},
+    {'elementId': 'self-7', 'kind': 'misprint', 'text': 'Relu (p. 49) : « 10^2 + 10^-2 » avec options 20^-2 · 100,001 · 20^2 — aucune option juste (100,01).'},
     {'elementId': 'ex-63', 'kind': 'scope', 'text': 'ex-63, ex-64, ex-68, ex-69 (أتعمّق) : plus destinés à la synthèse (MASAIL §14) ; déclarés notIntegrated, adaptation dans la banque de quwat-adad-nisbi en attente d’une décision du propriétaire (plan/README issue 3).'},
     {'elementId': 'self-2', 'kind': 'reading', 'text': '« 10 ⁴ » avec un blanc avant l’exposant : tel quel la réponse est 10 000 (option (3)) ; le leurre −40 et l’option 0,0001 suggèrent que « 10^-4 » était voulu (réponse 0,0001, option (2)). `correct` suit l’imprimé.'},
     {'elementId': 'self-7', 'kind': 'misprint', 'text': '10^2 + 10^-2 = 100,01 n’est dans aucune option (imprimé « 100,001 ») : aucune réponse juste.'},
@@ -761,6 +768,12 @@ DISCREPANCIES = [
     {'elementId': 'ex-66', 'kind': 'reading', 'text': '« Proxima Centauri … 11,5al » imprimé ; la distance réelle est ≈ 4,24 al.'},
     {'elementId': 'unit', 'kind': 'scope', 'text': 'Pages 38–53 complètes. Éléments des leçons non générées transcrits brièvement à 110–170 dpi (verified: false) ; exposants de p. 46–47 et 50–51 à relire par leur leçon.'},
 ]
+
+# 2026-10-26 — qawaid-quwa-ashara a RELU à 130–260 dpi les pages 41, 43, 46, 47, 49, 50 : ses éléments sont `verified`.
+READ_L2 = {'act-4', 'know-3', 'method-43c', 'now-43', 'ex-13', 'ex-14', 'ex-15', 'ex-16', 'ex-17', 'ex-18', 'ex-19', 'ex-20', 'ex-50', 'ex-55', 'ex-56', 'self-4', 'self-5', 'self-6', 'self-7', 'self-8', 'self-9', 'self-10'}
+for e in E:
+    if e['id'] in READ_L2:
+        e['verified'] = True
 
 doc = {
     '_comment': [

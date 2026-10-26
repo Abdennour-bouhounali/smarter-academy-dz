@@ -768,6 +768,22 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { left: '10', right: '4x-2', x: '3', tasks: [[['add', -2]], [['add', 2]], [['mul', 3]], [['div', 2]]] }, ...P },
     advanced: { numbers: { left: '5', right: '-3x+1', x: '-4/3', tasks: [[['mul', -2]], [['mul', 2], ['add', -3]], [['add', -1], ['div', -3]]] }, ...T('method-1b') },
   },
+  // LE NŒUD SOUS LA MAIN (loom-threads, thème loom, 3AM unité 5, leçon « المتباينات والعمليات », 2026-10-26) : deux poutres graduées reliées par des fils de laine ; la main tient UN nœud
+  // de la poutre basse (le fil de 0 avec le peigne + c, le fil de 1 avec le clou × c) et tout x arrive en x + c ou en c·x. مبتدئ (plateforme, pas 1) : 1 < 3 — faire passer le rouge à droite du bleu,
+  // atteindre 6 et 3 depuis −2 < −1, faire se rejoindre les deux nœuds. متقدم (know-2b, pas 1/2, deux poutres au plus) : atteindre 5 et 0 depuis −3/2 et 1 (deux étapes), transporter la bande
+  // x < 3 au bord −6 avec la bande à droite, atteindre −1 et −3/2 depuis 2 et 3 (clou −1/2). Le test des niveaux mesure la paire par le nombre d'étapes permises, la bande et la finesse du pas.
+  'loom-threads': {
+    beginner: { numbers: { step: '1', tasks: [
+      { id: 't1', kind: 'swap', a: '1', b: '3' },
+      { id: 't2', kind: 'reach', a: '-2', b: '-1', target: ['6', '3'] },
+      { id: 't3', kind: 'meet', a: '1', b: '3' },
+    ] }, ...P },
+    advanced: { numbers: { step: '1/2', tasks: [
+      { id: 'a1', kind: 'reach', a: '-3/2', b: '1', target: ['5', '0'], maxStages: 2 },
+      { id: 'a2', kind: 'band', band: { rel: '<', bound: '3' }, goal: { rel: '>', bound: '-6' }, maxStages: 2 },
+      { id: 'a3', kind: 'reach', a: '2', b: '3', target: ['-1', '-3/2'] },
+    ] }, ...T('know-2b') },
+  },
   // LE SIGNE D'UN TERME SOUS LA MAIN (term-ferry, thème river) : l'équation a une solution CACHÉE ; la main porte chaque caisse (terme) d'une rive à
   // l'autre en choisissant son signe, puis le diviseur. مبتدئ (plateforme) : 3x + 2 = x + 8 (x = 3) puis 4x − 3 = 2x + 7 (x = 5), x se rassemble à gauche.
   // متقدم (طريقة p. 77) : 9x + 1 = 5x − 7 (x = −2), puis −2x + 5 = 3x − 10 (un coefficient NÉGATIF : on divise par −5), puis 7x − 190 = 6x + 110 (x = 300).
@@ -955,6 +971,22 @@ export const LEVELS = Object.freeze({
       { id: 'z7', target: -7, card: { dec: -7 }, predict: { q: 'in', options: [6, 7, 8], correct: 1 } },
       { id: 'z8', target: 4, card: { km: 10 } },
     ] }, ...T('act-2') },
+  },
+  // LA RÈGLE QUI CONVERTIT (unit-ladder, thème tech-bench, 3AM unité 3, leçon 2, 2026-10-26) : la main tend un RUBAN entre deux plaques d'unités sur une règle de colonnes (entre deux colonnes : ×10) et lit le nombre de colonnes ;
+  // en متقدم elle CHOISIT le mode (longueur / aire / volume : 1, 2 ou 3 colonnes par unité). مبتدئ (plateforme, mode longueur figé, facteur écrit le long du ruban, prédiction avant) : u1 km→m→mm (deux rubans enchaînés, total 6 ;
+  // prédiction 6 / 9 / 3) · u2 km→cm (de part et d'autre du mètre, 5 ; prédiction 5 / 1 / 6) · u3 mm→µm. متقدم (aucun facteur écrit avant « ثبّت ») : u4 km²→m² (6) · u5 m³→cm³ (6) · u6 mm²→m² (−6) · u7 m³→dm³ (3).
+  'unit-ladder': {
+    beginner: { numbers: { mode: 1, fixedMode: true, showFactor: true, discovery: 'gap', tasks: [
+      { id: 'u1', path: ['km', 'm', 'mm'], mode: 1, predict: { q: 'total', options: [6, 9, 3], correct: 0 } },
+      { id: 'u2', path: ['km', 'cm'], mode: 1, predict: { q: 'across', options: [5, 1, 6], correct: 0 } },
+      { id: 'u3', path: ['mm', 'um'], mode: 1 },
+    ] }, ...P },
+    advanced: { numbers: { mode: 1, fixedMode: false, showFactor: false, discovery: 'tables', tasks: [
+      { id: 'u4', path: ['km', 'm'], mode: 2 },
+      { id: 'u5', path: ['m', 'cm'], mode: 3 },
+      { id: 'u6', path: ['mm', 'm'], mode: 2 },
+      { id: 'u7', path: ['m', 'dm'], mode: 3 },
+    ] }, ...T('ex-14') },
   },
   // LA POSITION D'UNE ÉCRITURE SOUS LA MAIN (number-line-pegs, thème clothesline, 3AM unité 2, leçon 4, 2026-10-26) : la main PORTE une carte d'écriture a/b et l'ACCROCHE sur un حبل gradué ; le vent la fait
   // glisser à son vrai piquet. Une tâche est `{ id, kind?: 'hang' | 'order', cards: ['6/-8', …], range?: [lo, hi] }`. مبتدئ (plateforme, pas 1/12, loupe ×3, « تحقّق » à volonté) : w1 6/(−8), (−3)/4, 3/4,

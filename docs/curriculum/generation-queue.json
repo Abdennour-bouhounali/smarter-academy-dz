@@ -2,15 +2,6 @@
   "_comment": "Généré par scripts/learning-net-queue.mjs — ne pas éditer.",
   "queue": [
     {
-      "code": "qawaid-quwa-ashara",
-      "grade": "3am",
-      "unit": "quwa-nisbiya",
-      "titleAr": "قواعد الحساب على قوى العدد 10",
-      "kind": "lesson",
-      "trigger": "priorité propriétaire",
-      "via": []
-    },
-    {
       "code": "kitaba-ilmiya-rutba",
       "grade": "3am",
       "unit": "quwa-nisbiya",
@@ -26,15 +17,6 @@
       "titleAr": "أدمج تعلّماتي — القوى ذات أسس نسبية صحيحة",
       "kind": "synthesis",
       "trigger": "unité quwa-nisbiya complète",
-      "via": []
-    },
-    {
-      "code": "mutabayinat-amaliyat",
-      "grade": "3am",
-      "unit": "musawiyat-mutabayinat",
-      "titleAr": "المتباينات والعمليات",
-      "kind": "lesson",
-      "trigger": "priorité propriétaire",
       "via": []
     },
     {

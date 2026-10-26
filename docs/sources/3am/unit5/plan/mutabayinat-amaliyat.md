@@ -540,3 +540,48 @@ Every textbook element destined here that the modules do not cite MUST be cited 
   - [ ] export/import curriculum + content registry;
   - [ ] publish its modules and exercises in the LOCAL DB;
   - [ ] commit, fast-forward `dev`, push.
+
+## Generator notes (extraction prepared 2026-10-26)
+
+`build-extraction.py` was updated and `extraction.json` rebuilt; `npm run check:textbook` passes (this lesson's elements are « pending » until it is published).
+
+**Re-routing applied.** `ex-19`, `ex-23`, `ex-24`, `ex-26`, `ex-27` now go to this lesson. `ex-28` and `ex-62` stay with `hasr-adad-ushri`. `ex-8`…`ex-12` and `ex-18` have `module: None` and the note « cited by the bank ».
+
+**Verified (`verified: True`, exact `Fraction` assertions, grid sweeps over rationals).** `prep` 7–8, `act-2`, `act-2b`, `know-2a`, `know-2b`, `method-2`, `now-75-1`, `now-75-2`, `ex-6`…`ex-19`, `ex-23`, `ex-24`, `ex-26`, `ex-27`, `self-3`, `self-4`. Pages 71–75, 78–79 and 81 were re-read at 170 dpi, and the p. 75 « دوري الآن » at 400–600 dpi.
+
+**Final DEST for this lesson** (module numbers follow §7):
+
+| Element | Module |
+|---|---:|
+| `prep` items 7–8 | 0 |
+| `know-2a`, `know-2b` | 2 |
+| `method-2`, `now-75-2`, `ex-19` | 3 (method B, A, C) |
+| `act-2` (E1, E2), `act-2b` (E3), `ex-6` (E1), `ex-13` and `now-75-1` (E4), `ex-14`/`15`/`16` (E5, `now-75-2` is also E5), `ex-17` and `ex-7` (E6), `ex-23`/`24` (E7), `ex-26` (E8) | 4 |
+| `ex-27` | 7 (مسألة 3) |
+| `self-3`, `self-4` | 8 |
+| `ex-8`…`ex-12`, `ex-18` | None (bank) |
+
+**Corrections against the scan.**
+- **The plan was right:**
+  - `ex-7`: the printed hypothesis is `5m ≥ 0`, `m − 1 ≤ 0`, `1 + 4m > 0`, `3 − 2m < 0`, and the blank conclusion is `m ≥ …`, `m ≤ …`, `m > …`, `m > …`. Answers 0 ; 1 ; −1/4 ; 3/2 (hypothesis and conclusion were swapped in the old transcription).
+  - `ex-9`: > ; > ; > ; <.
+  - `ex-17`: ≤ ; ≤ ; ≥ ; ≥.
+  - `ex-18`: ≥ ; < ; ≤ ; >.
+  - `act-2` part 5 (it is at the TOP of p. 73): `a − 7/2 … b − 9/2` is undecidable (the sign of `(a − b) + 1` is unknown: <, = and > all occur); `a + 3/5 … b + 6/5` is `<`; `a − 4 < b − 4`; `a + 3 < b + 3`.
+- **The plan was WRONG on `now-75-2`.** The scan prints `x − 8 > 7` (not `7 > x − 8`), so the answer is `x > 15`. The other two lines agree: `−3x > 15` ⟹ `x < −5`; `9 > −x/4` ⟹ `x > −36`. The old stored answer `x < 15` was wrong. The lesson uses its own numbers anyway (E5, method A), so only the key of any exercise copied from it matters.
+- `ex-24` prints « محصور بين 5cm و 6cm » with no symbol; the plan's `5 < P < 6` is kept.
+- The old `act-2` « reading » (neither of the first two is decidable) is replaced; the second one IS decidable.
+- `now-77-1` (belongs to `hasr-adad-ushri`, fixed here): 8,336 rounds to 8,34 (yes) and 8,345 to 8,35 (no); both stored answers were wrong. Never shown to students.
+- Note on `prep` 7–8: the scan's options are (1) 2/3, (2) −2/3, (3) لا يمكن تعيينه and (1) −5/4, (2) −7/4, (3) لا يمكن تعيينه, so the extraction's keys (largest = 2/3, smallest = −7/4) stand.
+- Every item is recorded in `DISCREPANCIES` (`act-2`, `ex-7`, `ex-9`, `ex-17`, `ex-18`, `now-75-2`, `ex-24`, `now-77-1`).
+
+## Generator notes (lesson generated 2026-10-26)
+
+Executed as planned (9 modules, lab `loom-threads`, bank 5 × 10). Minimal fixes and decisions, none redesigning the plan:
+- **Distractors that were TRUE consequences.** The witness test of `content/content.test.js` requires every distractor to be false for at least one sample, so weaker true statements were replaced: final-test item 4 `x < 3` (implied by `x < −3`) became `x < −12`; E1/E4 bounds like `x + 3 > 4`, and the مسائل options `S < 74`, `25x ≤ 630`, `x ≤ 525` became false ones.
+- **Free band not built.** « جرّب أعدادك » takes `a` and `b` only; the band bound / direction of the plan's متقدم free panel is a guided task only (`MANIPULATION_CONTRACT` § 2sexaquadragies).
+- **Module 2** poses the lab alone (`levels={false}`, `reach` −3 < 2 → 6 and −4) in the `intro`, after a `brief` holding the two « تذكّر » boxes with their links (guide precedent), instead of opening on the first question.
+- **Lab resources** carry `sourceElementIds` (`act-2b`, `know-2b`) because `validate:lessons --strict` requires it for levelled labs.
+- **Knowledge map**: nodes for ≤ / ≥ / division and for comparing two expressions were added (every brick carried once).
+- **Bank** (helper): 5 `term_exam` (all five source exercises read at the scan), 33 `term_exam_modelled`, 12 `adapted`; the word « حلّ » appears only for equations.
+- **Glance**: three beams at 1024×768 needed a narrower gap, no carpet and tighter spacing (765 px).

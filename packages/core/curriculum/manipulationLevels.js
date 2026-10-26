@@ -274,6 +274,10 @@ export const VISUAL_THEMES = Object.freeze({
   //   stadium  le مضمار de la cour de l'école : un mur de graduations et deux coureurs (KidFigure, une élève en hijab et un élève), chacun
   //            à la valeur d'un membre d'une égalité ; ils se tiennent sur la même graduation tant que l'égalité est vraie (`equality-lanes`)
   stadium: { kind: 'objects', shows: 'مضمار مدرسة: متسابقان يقفان على جدار مدرّج، كلّ عند قيمة أحد طرفي مساواة' },
+  // 3AM, unité 5, leçon « المتباينات والعمليات » (2026-10-26) :
+  //   loom  l'atelier de tissage de Ghardaïa vu de face : un métier à tisser aux deux poutres de bois gravées de graduations, des fils de chaîne entre elles, deux fils de laine
+  //         (rouge et bleu) à pompons, un tapis à demi tissé derrière, une élève (KidFigure, hijab) au métier (`loom-threads`)
+  loom: { kind: 'objects', shows: 'ورشة نسيج في غرداية: نول بعارضتين مدرّجتين وخيوط صوف حمراء وزرقاء تنزل من العارضة العليا إلى السفلى' },
   // 3AM, unité 4 (2026-10-21) :
   //   schoolgarden  le jardin de l'école vu d'en haut : un terrain rectangulaire (pelouse, massif de fleurs, allée dallée) que la
   //                 main coupe en parcelles, et une jardinière (KidFigure, hijab) à son bord (`area-split`)
@@ -324,6 +328,10 @@ export const VISUAL_THEMES = Object.freeze({
   //   science-lens  la table du club de sciences de la متوسطة : une grande lentille de laiton au bord relevé, une BAGUE de zoom crantée (44 px de prise), un cadre carré lumineux et le décor à son échelle (virus … orbite de la Lune),
   //                 sous la lentille une plaque de laiton « ضلع الإطار » qui lit le côté en décimal ; une élève (KidFigure, hijab) du club à côté (`ten-zoom`)
   'science-lens': { kind: 'objects', shows: 'عدسة نادي العلوم بحلقة تكبير مسنّنة وإطار مربّع تقرأ لوحة نحاسية ضلعه بالمتر' },
+  // 3AM, unité 3, leçon 2 (2026-10-26) :
+  //   tech-bench  l'établi du club de technologie : une longue règle de laiton gravée de colonnes égales, des plaques d'unités émaillées (km … nm) suspendues au-dessus, un cadran de mode (طول / مساحة / حجم),
+  //               un ruban de mesure rouge à deux poignées de 44 px ; un élève (KidFigure) à l'établi (`unit-ladder`)
+  'tech-bench': { kind: 'objects', shows: 'مسطرة نحاسية مقسّمة إلى أعمدة تتدلّى فوقها لوحات الوحدات وشريط قياس بمقبضين' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

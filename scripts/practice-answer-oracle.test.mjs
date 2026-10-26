@@ -152,6 +152,8 @@ import { ORACLE as ORACLE_3AM_QIMAT, audit as auditQimat } from './practice-orac
 import { ORACLE as ORACLE_3AM_MUQARANAT, audit as auditMuqaranat } from './practice-oracle/muqaranat-natiqayn.mjs';
 import { ORACLE as ORACLE_3AM_WADIYA_HARFIYA, audit as auditWadiyaHarfiya } from './practice-oracle/wadiya-idmajiya-ibarat-harfiya-3.mjs';
 import { ORACLE as ORACLE_3AM_QUWA_ASHARA, audit as auditQuwaAshara } from './practice-oracle/quwa-adad-ashara.mjs';
+import { ORACLE as ORACLE_3AM_QAWAID_ASHARA, audit as auditQawaidAshara } from './practice-oracle/qawaid-quwa-ashara.mjs';
+import { ORACLE as ORACLE_3AM_MUTABAYINAT } from './practice-oracle/mutabayinat-amaliyat.mjs';
 // Toutes les années du cycle moyen (content/practice/<1am…4am>/<leçon>/level-N) : jusqu'au 2026-10-14 seul 4am
 // existait et la racine y était codée en dur — un banc 1AM–3AM aurait échappé à l'oracle sans rien dire.
 const practiceRoot = join(dirname(fileURLToPath(import.meta.url)), '..', 'content/practice');
@@ -327,6 +329,8 @@ const ORACLE = {
   ...ORACLE_3AM_AMALIYAT_NATIQA,
   ...ORACLE_3AM_WADIYA_KUSUR,
   ...ORACLE_3AM_QUWA_ASHARA,
+  ...ORACLE_3AM_QAWAID_ASHARA,
+  ...ORACLE_3AM_MUTABAYINAT,
 };
 
 /**
@@ -418,6 +422,12 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     const own = bank.filter((b) => b.key.startsWith('ex-3am-quwa-adad-ashara-'));
     expect(own.length).toBeGreaterThan(0);
     expect(auditQuwaAshara(own)).toEqual([]);
+  });
+
+  it('قواعد الحساب على قوى العدد 10 (3AM) : rationnels exacts BigInt propres à l\'oracle (aucun import de tenPowers.js), parseur de produits, quotients, puissances de puissances et k × 10^p, « n tel que valeur = 10^n » (ou b^n pour les étapes hors leçon) et « c × 10^n = valeur » uniques, coefficient et valeur décimale exacts, QCM jugés option par option (exactement une affirmation vraie, la marquée), nombres de l\'énoncé et des options retrouvés dans l\'affirmation retapée, chaque signature ≠ clé et chaque distracteur FAUX porteur d\'un MISC-QAWAID-*', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-3am-qawaid-quwa-ashara-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditQawaidAshara(own)).toEqual([]);
   });
 
   it('حساب قيمة عبارة حرفية (3AM) : évaluateur exact propre (BigInt, polynômes à plusieurs lettres, π), chaque signature = valeur de la mauvaise lecture, chaque « différent » par un témoin et chaque « égal » par l\'égalité des polynômes développés, QCM à une seule bonne option, énoncés relus, MISC-QIMA-*', () => {

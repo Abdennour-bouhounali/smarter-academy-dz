@@ -249,3 +249,19 @@ $10^{-1}$. E5 (P4) « $4\times10^{3}\times2\times10^{-5}$ » ✓ $8\times10^{-2}
       formal) at 768×1024, 1024×768, 1280×800, 1366×768.
 - [ ] `generate:lesson-index`, `npm test`, `check:lessons`, `build`; catalogue (final LPs, `pointPrerequisites` incl. the two sibling edges,
       `available`, `durationMinutes` ≤ 90, `difficulty: 'متوسط'`, `icon: '📏'`); coordinator publishes (guide §11).
+
+## 12. Generator notes (2026-10-26)
+
+Executed from the plan; the minimal fixes and choices below were recorded while generating.
+
+1. **Extraction re-read** (130–260 dpi, pages 41, 43, 46, 47, 49, 50): the elements of this lesson are `verified: True` in `build-extraction.py` (`READ_L2`); `ex-14` was read again at 260 dpi (the transcription was right), `ex-16` keeps its thin exponents (only the IDEA is reused), `self-7` is a misprint (no correct option). DEST moved: `act-4`, `know-3` → module 2; `method-43c`, `now-43` → module 3; `ex-14, 17, 20, 50, 56` → module 4; `ex-55` → module 7; `self-4, 5, 6` → module 8; `ex-13, 15, 16, 18, 19, self-7 … 10` → `module: 'practice'` (the bank).
+2. **Task u2 is km → cm, not cm → km.** The plan wrote « T2 كم سنتيمترًا في 1 كم » with the band « cm ↔ km »; the direction that answers the question is km → cm (+5, a red band). A cm → km band would be −5 (blue) and its prediction 5 would then be a magnitude. `PRESETS.beginner` and `levels.js` use `['km', 'cm']`.
+3. **The discovery is one per level**, because `ManipulationDiscovery` carries one prompt: مبتدئ « gap » (D2: `3 − (−2) = 5`) and متقدم « tables » (D3: `3 × 2 = 6`). D1 (the SUM of two chained bands) is asked by module 1, question 1, with the student's own two bands as evidence, and is shown by the dashed total band.
+4. **LabCoach**: the plan's six steps are `predict · mode · handle · readout · dock · next · free`; the « task card » step is merged into `handle` (the card is the question). The coach is silent after a refusal and during the discovery.
+5. **Length ruler: 13 columns** (km … nm, the unit plaques at exponents 3, 2, 1, 0, −1, −2, −3, −6, −9), not 16; area mode 14 columns (km² … mm²), volume 12 (m³ … mm³). Plaque values are written only in length mode (in area / volume they would give the answer).
+6. **Plan numbers checked**: 10⁶/(5×10⁻²) = 2 × 10⁷ = 20 000 000 (masala 2, part 3); 128 × 10⁹ / (4 × 10⁶) = 32 000 (masala 1, part 3); the programme 10⁶ ÷ 10⁻³ × (10⁻²)⁴ = × 10¹ (masala 3). The now-43 row « 12 × 10⁻² × 5 × 10⁷ / (3 × 10⁴) » is posed as the value 200 (options 200 / 20 / 2 000), not as an exponent.
+7. **`RECALL_QUWAT`**: the « تذكّر » box of module 2 links to the published `quwat-adad-nisbi` (« أراجع درس قوة عدد نسبي ») and states that a power is built factor by factor and a quotient shortens a fraction there; it does not rebuild either. `RECALL_TEN` in `quwat-adad-nisbi` stays true (10³ × 10⁴ = 10⁷, 10⁶/10² = 10⁴, (10²)³ = 10⁶ are the three rules of this lesson).
+8. **Bank**: `3am-s2-83` ex 1 is not the E / F computation (that is ex 2); the bank cites ex 2 (see the bank report in `MOYEN_ROLLOUT_PROGRESS.md`). L1's third adapted sheet is `ex-13` (10¹² × 10³, explicit wording) instead of `self-10`.
+9. **`durationMinutes` 62** (modules 0–4 and 8: 6 + 14 + 12 + 11 + 13 + 6; with the three مسائل 86), following the catalogue convention of `quwa-adad-ashara`.
+10. **Knowledge map**: nodes = the five notebook ideas + `القواعد الثلاث`, `لا قاعدة للجمع` and the takeaway, with TWO typical errors (multiplied exponents in a product, ignored sign in a quotient); the other two (added exponents in a power of a power, a sum of powers) are corrected in module 2 and the bank only, because `lessonGraphs.test.js` accepts only a parent with two mistakes in one lane plus one child in lane `end`.
+11. **« أستعدّ »** has no textbook item (skills `quwa` — the net link `3am.m3.r01` — and `wahdat`); the seven statements are platform additions as in the plan.

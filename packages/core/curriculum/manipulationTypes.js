@@ -714,6 +714,15 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'لا تتغيّر مساواة عندما نضيف إلى طرفيها (أو نطرح منهما) العدد نفسه، ولا عندما نضرب طرفيها (أو نقسمهما) في العدد نفسه غير المعدوم؛ أمّا إذا مسّت العملية طرفًا واحدًا فتنكسر المساواة',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 3AM, unité 5, leçon « المتباينات والعمليات » (2026-10-26) — les opérations sur les deux membres d'une inégalité.
+  'loom-threads': {
+    // LE NŒUD SOUS LA MAIN : deux poutres graduées (haute et basse) reliées par des fils de laine ; chaque nombre x de la poutre haute est relié à son
+    // image. Deux fils portent a (rouge) et b (bleu), a < b. La main tient UN nœud de la poutre basse : le PEIGNE (+ c) le pose à l'image du fil de 0,
+    // le CLOU (× c, le fil de 0 cloué en 0) à l'image du fil de 1 ; sa position EST c. Les fils rouge et bleu se croisent ⇔ le facteur est strictement
+    // négatif ; × 0 écrase tout sur 0. Déposer le nœud est un essai jugé exactement : MANUEL (§6bis). `loom-threads` n'énonce jamais la règle.
+    shows: 'إذا كان $a<b$ فإنّ $a+c<b+c$ ؛ وإذا كان $c>0$ فإنّ $ac<bc$ ؛ وإذا كان $c<0$ فإنّ $ac>bc$ : نغيّر اتجاه المتباينة فقط عند الضرب (أو القسمة) في عدد سالب تمامًا',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 3AM, unité 5 (2026-10-21) — résoudre ax + b = cx + d en traversant les termes avec leur signe, puis en divisant.
   'term-ferry': {
     // LE SIGNE D'UN TERME SOUS LA MAIN : une équation dont la solution est CACHÉE ; chaque membre est une rive, chaque terme une caisse. La
@@ -825,6 +834,15 @@ export const MANIPULATION_TYPES = Object.freeze({
     // « 0,001 م », « مليار متر », « ميكرومتر »), puis « ثبّت الإطار ». La plaque lit le côté en DÉCIMAL (1 000 000 m : le 1 et ses zéros ; 0,001 m : le 1 au rang 3 après la virgule) ; sans cran le cadre est
     // la table (1 m). Monde `prefixes` : la carte est une unité (كيلومتر … نانومتر). Chaque cran, prédiction et verdict est un essai jugé exactement : MANUEL §6bis. `ten-zoom` n'énonce jamais la règle.
     shows: 'نقرأ $10^n$ : 1 متبوع بـ $n$ صفرًا إذا كان $n$ موجبًا، و $10^0 = 1$ ، و $10^{-n} = \\frac{1}{10^n}$ هو العدد الذي رقم 1 فيه في الرتبة $n$ بعد الفاصلة ؛ وكل بادئة (كيلو، ميلي، ميكرو، نانو …) هي قوة للعدد 10',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 3, leçon 2 (2026-10-26) — les trois règles sur les puissances de 10 lues comme des COLONNES entre deux plaques d'unités.
+  'unit-ladder': {
+    // LA RÈGLE QUI CONVERTIT : au club de technologie, une règle de laiton est gravée de colonnes égales (entre deux colonnes voisines on multiplie par 10) et des plaques d'unités pendent au-dessus (les grandes à gauche).
+    // La main TEND un ruban entre deux plaques et lit le nombre de colonnes qu'il traverse : deux rubans enchaînés s'ajoutent, un ruban de part et d'autre du mètre mesure l'ÉCART entre deux rangs, et les tables d'aire et de
+    // volume re-pavent la règle (2 ou 3 colonnes par unité) — la main CHOISIT alors le mode. Une extrémité au milieu d'une plaque, ou le mauvais mode, est refusé avec le calcul. Chaque ruban, prédiction et verdict est un
+    // essai jugé exactement : MANUEL §6bis. `unit-ladder` n'énonce jamais la règle avant la phase formelle.
+    shows: 'نكتب $10^m \\times 10^n = 10^{m+n}$ و $\\frac{10^m}{10^n} = 10^{m-n}$ و $(10^m)^n = 10^{m \\times n}$ ؛ فعدد الأعمدة بين لوحتين هو الأس، وفي جدول المساحة أو الحجم تُضاعف الأعمدة بمرتين أو ثلاث',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
   'pin-rails': {

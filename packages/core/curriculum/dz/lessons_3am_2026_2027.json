@@ -655,11 +655,17 @@
         "quwa-adad-ashara"
       ],
       "pointsToLearn": [
-        "استعمال القاعدة $10^m\\times 10^n=10^{m+n}$",
-        "استعمال القاعدة $\\frac{10^m}{10^n}=10^{m-n}$",
-        "استعمال القاعدة $(10^m)^n=10^{m\\times n}$",
-        "تبسيط عبارات تتضمن قوى العدد 10 وكتابتها على شكل قوة واحدة"
+        "استعمال القاعدة $10^m\\times10^n=10^{m+n}$ من أجل $m$ و $n$ عددين صحيحين نسبيين",
+        "استعمال القاعدة $\\frac{10^m}{10^n}=10^{m-n}$ من أجل $m$ و $n$ عددين صحيحين نسبيين",
+        "استعمال القاعدة $(10^m)^n=10^{m\\times n}$ من أجل $m$ و $n$ عددين صحيحين نسبيين",
+        "تبسيط عبارة تتضمّن قوى العدد 10 وكتابتها على شكل قوة واحدة، وحساب جداء أو حاصل قسمة أعداد مكتوبة على الشكل $a\\times10^p$ (مثل $7\\times10^3\\times3\\times10^9=21\\times10^{12}$)"
       ],
+      "pointPrerequisites": {
+        "P1": ["3am_quwa-adad-ashara_P1"],
+        "P2": ["3am_qawaid-quwa-ashara_P1", "3am_quwa-adad-ashara_P2"],
+        "P3": ["3am_qawaid-quwa-ashara_P1"],
+        "P4": ["3am_qawaid-quwa-ashara_P1", "3am_qawaid-quwa-ashara_P2", "3am_qawaid-quwa-ashara_P3"]
+      },
       "programmeItems": [
         "3am.m3.r02"
       ],
@@ -680,7 +686,10 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 62,
+      "difficulty": "متوسط",
+      "icon": "📏"
     },
     {
       "code": "kitaba-ilmiya-rutba",
@@ -1197,7 +1206,7 @@
       "decisionStatus": "draft",
       "titleSource": "textbook",
       "title": "المتباينات والعمليات",
-      "description": "يكتشف التلميذ أثر الجمع والضرب في عدد موجب أو سالب على اتجاه متباينة.",
+      "description": "يكتشف التلميذ أنّ الإزاحة والتمديد بعدد موجب يحفظان ترتيب عددين وأنّ التمديد بعدد سالب يعكسه، ثم يستنتج متباينة من أخرى ويقارن عبارتين ويحصر عبارة.",
       "prerequisites": [
         "مقارنة عددين ناطقين",
         "المساويات والعمليات"
@@ -1207,10 +1216,10 @@
         "jidaa-adadayn-nisbiyayn"
       ],
       "pointsToLearn": [
-        "معرفة أنه إذا كان $a<b$ فإن $a+c<b+c$ و $a-c<b-c$",
-        "معرفة أن ضرب طرفي متباينة في عدد موجب تماما لا يغيّر اتجاهها",
-        "معرفة أن ضرب طرفي متباينة في عدد سالب تماما يغيّر اتجاهها",
-        "توظيف خواص المتباينات لمقارنة عبارات أو لحصرها"
+        "معرفة أنّه إذا كان $a<b$ فإنّ $a+c<b+c$ و $a-c<b-c$ ($c$ عدد ناطق): لا يتغيّر اتجاه متباينة عندما نضيف إلى طرفيها (أو نطرح منهما) العدد نفسه",
+        "معرفة أنّه إذا كان $a<b$ و $c>0$ فإنّ $ac<bc$ و $\\frac{a}{c}<\\frac{b}{c}$ : ضرب طرفي متباينة في (أو قسمتهما على) العدد الموجب تمامًا نفسه لا يغيّر اتجاهها",
+        "معرفة أنّه إذا كان $a<b$ و $c<0$ فإنّ $ac>bc$ و $\\frac{a}{c}>\\frac{b}{c}$ : ضرب طرفي متباينة في (أو قسمتهما على) العدد السالب تمامًا نفسه يغيّر اتجاهها",
+        "توظيف خواص المتباينات (وكذلك $\\leq$ و $\\geq$) لاستنتاج متباينة من أخرى، ولحصر عبارة من الشكل $ax+b$ علمًا بحصر $x$ ، ولمقارنة عبارتين"
       ],
       "programmeItems": [
         "3am.m5.r05"
@@ -1232,7 +1241,28 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "pointPrerequisites": {
+        "P1": [
+          "3am_musawiyat-amaliyat_P1"
+        ],
+        "P2": [
+          "3am_mutabayinat-amaliyat_P1",
+          "3am_musawiyat-amaliyat_P2"
+        ],
+        "P3": [
+          "3am_mutabayinat-amaliyat_P2",
+          "3am_musawiyat-amaliyat_P2"
+        ],
+        "P4": [
+          "3am_mutabayinat-amaliyat_P1",
+          "3am_mutabayinat-amaliyat_P2",
+          "3am_mutabayinat-amaliyat_P3"
+        ]
+      },
+      "durationMinutes": 61,
+      "difficulty": "متوسط",
+      "icon": "🧶"
     },
     {
       "code": "hasr-adad-ushri",

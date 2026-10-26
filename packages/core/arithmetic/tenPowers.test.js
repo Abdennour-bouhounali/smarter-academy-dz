@@ -123,3 +123,36 @@ describe('tenPowers — le مفكوك', () => {
     expect(T.decText(T.timesPow10(T.parseDec('25'), -6))).toBe('0,000025');
   });
 });
+
+describe('tenPowers — leçon 2 : règles, unités, k × 10ᵖ', () => {
+  it('les trois règles et la chaîne', () => {
+    expect(T.productExp(3, 3)).toBe(6);
+    expect(T.quotientExp(3, -2)).toBe(5);
+    expect(T.powerExp(-2, 4)).toBe(-8);
+    expect(T.chainExp([{ op: '×', n: 6 }, { op: '÷', n: -3 }, { op: '×', n: -8 }])).toBe(1);
+    expect(T.chainExp([{ op: '×', n: 5 }, { op: '×', n: -2 }, { op: '÷', n: 4 }])).toBe(-1);
+  });
+  it('unitColumns : longueur, aire, volume', () => {
+    expect(T.unitColumns('km', 'mm', 1)).toBe(6);
+    expect(T.unitColumns('km', 'cm', 1)).toBe(5);
+    expect(T.unitColumns('mm', 'um', 1)).toBe(3);
+    expect(T.unitColumns('km', 'm', 2)).toBe(6);
+    expect(T.unitColumns('m', 'cm', 3)).toBe(6);
+    expect(T.unitColumns('mm', 'm', 2)).toBe(-6);
+    expect(T.unitColumns('m', 'dm', 3)).toBe(3);
+    expect(() => T.unitColumns('km', 'x')).toThrow();
+  });
+  it('mulSci / divSci non normalisés', () => {
+    const p = T.mulSci([{ k: 7, p: 3 }, { k: 3, p: 9 }]);
+    expect(T.decText(p.k)).toBe('21'); expect(p.p).toBe(12);
+    const q = T.divSci({ k: 9, p: -4 }, { k: 3, p: 2 });
+    expect(T.decText(q.k)).toBe('3'); expect(q.p).toBe(-6);
+    const r = T.divSci({ k: 1, p: 0 }, { k: 8, p: 0 });
+    expect(T.decText(r.k)).toBe('0,125');
+    expect(T.divSci({ k: 1, p: 0 }, { k: 3, p: 0 })).toBeNull();
+    const m = T.mulSci([{ k: '0,4', p: -3 }, { k: 50, p: 6 }]);
+    expect(T.decText(m.k)).toBe('20'); expect(m.p).toBe(3);
+    const d = T.divSci({ k: '0,12', p: 0 }, { k: 3, p: 4 });
+    expect(T.decText(d.k)).toBe('0,04');
+  });
+});
