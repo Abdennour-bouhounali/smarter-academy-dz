@@ -5,7 +5,7 @@ import BackgroundLayer from '../common/BackgroundLayer';
 import ScrollToTop from '../common/ScrollToTop';
 import { AuthContext } from '../../context/AuthContext';
 import { useWorkspaceLayout } from '../../context/WorkspaceLayoutContext';
-import { getAllGrades } from '@smarter-academy/core';
+import { getAllGradesSummary } from '../../utils/gradeSummary';
 import { needsName } from '../../utils/personName';
 import PageTourProvider from '../../features/tours/PageTourProvider';
 
@@ -48,7 +48,7 @@ export default function StudentLayout() {
   // grade that cannot possibly be chosen would trap every student in a
   // redirect loop — so the gate only applies once there is at least one
   // grade to actually choose.
-  if (user && !user.grade && getAllGrades().length > 0) {
+  if (user && !user.grade && getAllGradesSummary().length > 0) {
     return <Navigate to="/espace/bienvenue" replace />;
   }
 

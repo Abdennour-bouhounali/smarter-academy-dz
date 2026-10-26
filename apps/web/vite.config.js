@@ -3,7 +3,8 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from 'tailwindcss'
 import autoprefixer from 'autoprefixer'
 import { fileURLToPath } from 'node:url'
-import { readFileSync } from 'node:fs'
+import { readFileSync, readdirSync } from 'node:fs'
+import { spawnSync } from 'node:child_process'
 import sharePages from './vite-plugin-share-pages.js'
 
 /**
@@ -52,12 +53,50 @@ function practiceLevelCounts() {
   }
 }
 
+/**
+ * `virtual:grade-summary` — ce que le LOT D'ENTRÉE sait du catalogue : la liste des classes (`getAllGrades()`),
+ * le nombre de leçons publiées et les classes de la page d'accueil. Calculé au build PAR le catalogue lui-même
+ * (jamais retapé, jamais en dérive), puis écrit comme un petit littéral (≈ 0,4 Ko).
+ *
+ * Pourquoi : `coursesData.js` (≈ 95 Ko gzip de JSON pour les quatre années, +0,2–0,3 Ko par leçon publiée) n'est plus
+ * importé par aucun module du lot d'entrée — la barre latérale, `StudentLayout` et la section « confiance » de
+ * l'accueil ne lui demandaient que ces trois réponses. Le catalogue complet vit dans un lot partagé que les pages
+ * qui le lisent (cours, unité, progression, pratique…) chargent en parallèle de leur propre chunk.
+ * Voir docs/architecture/BUNDLE_BOUNDARIES.md §3 « Catalogue ». Les fichiers du catalogue sont surveillés.
+ */
+const CORE_CURRICULUM = fileURLToPath(new URL('../../packages/core/curriculum/', import.meta.url))
+const CORE_PROGRESS = fileURLToPath(new URL('../../packages/core/progress/getNextLesson.js', import.meta.url))
+function gradeSummary() {
+  const id = 'virtual:grade-summary'
+  const resolved = '\0' + id
+  return {
+    name: 'sa-grade-summary',
+    resolveId: (source) => (source === id ? resolved : null),
+    load(source) {
+      if (source !== resolved) return null
+      const dz = CORE_CURRICULUM + 'dz/'
+      for (const f of readdirSync(dz)) if (f.endsWith('.json')) this.addWatchFile(dz + f)
+      this.addWatchFile(CORE_CURRICULUM + 'coursesData.js')
+      // Un processus Node à part : le catalogue est relu à chaque (re)chargement, jamais figé par le cache d'imports.
+      const script = `
+        import { getAllGrades, courseLevels } from ${JSON.stringify(CORE_CURRICULUM + 'coursesData.js')};
+        import { getFlatAvailableLessons } from ${JSON.stringify(CORE_PROGRESS)};
+        const homeGrades = courseLevels.flatMap((l) => l.grades.map((g) => ({ id: g.id, name: g.name, levelId: l.id })));
+        process.stdout.write(JSON.stringify({ grades: getAllGrades(), homeGrades, availableLessonCount: getFlatAvailableLessons(courseLevels).length }));`
+      const r = spawnSync(process.execPath, ['--input-type=module', '-e', script], { encoding: 'utf8', maxBuffer: 1 << 24 })
+      if (r.status !== 0) throw new Error('virtual:grade-summary : ' + r.stderr)
+      return `export default JSON.parse(${JSON.stringify(r.stdout)})`
+    },
+  }
+}
+
 export default defineConfig({
   // Pages de partage (aperçu WhatsApp/Facebook) des livres : BOOKS_STORE.md §6.
   plugins: [
     react(),
     watchPracticeContent(),
     practiceLevelCounts(),
+    gradeSummary(),
     sharePages({ cards: JSON.parse(readFileSync(new URL('./src/features/books/shareCards.json', import.meta.url), 'utf8')) }),
   ],
   // Le JSON importé devient `JSON.parse("…")` au lieu d'un littéral d'objet :

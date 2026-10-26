@@ -276,14 +276,16 @@ function buildDzCourseLevels() {
 // non. C'est lui qu'exporte exportCurriculum.mjs vers la base, et lui que
 // lisent les gardes. Il ne contient AUCUNE classe française (phase 6F ; le
 // catalogue français hérité a été supprimé le 2026-09-25).
-export const dzCourseLevels = buildDzCourseLevels();
+// Annotations « pure » (BUNDLE_BOUNDARIES.md §4 règle 7) : sans elles, un import du baril qui n'utilise AUCUN nom du
+// catalogue (ex. `hasRequiredRole`) garderait ces ≈ 95 Ko gzip de JSON dans le lot d'entrée.
+export const dzCourseLevels = /* @__PURE__ */ buildDzCourseLevels();
 
 // The catalogue every student-facing consumer must use. Filtered to only
 // ACTIVE_GRADE_IDS (packages/core/curriculum/activeGrades.js) so that every
 // downstream reader — navigation, course browser, resume/next-lesson logic,
 // grade pickers — is starved of anything not explicitly activated, rather
 // than each needing its own filter.
-export const courseLevels = filterActiveCourseLevels(dzCourseLevels);
+export const courseLevels = /* @__PURE__ */ filterActiveCourseLevels(dzCourseLevels);
 
 /**
  * Flattens courseLevels into the list of every selectable grade — the single
@@ -318,7 +320,7 @@ export function getAllGrades() {
  * la leçon que son `lessonCode` (l'API n'en renvoie pas le chemin) et doit
  * pouvoir ramener l'élève à son cours.
  */
-const LESSONS_BY_ID = (() => {
+const LESSONS_BY_ID = /* @__PURE__ */ (() => {
   const index = new Map();
   for (const level of courseLevels) {
     for (const grade of level.grades) {
@@ -369,7 +371,7 @@ export function getLessonPath(lessonId) {
 }
 
 /** Index des unités par code — même construction que LESSONS_BY_ID. */
-const UNITS_BY_ID = (() => {
+const UNITS_BY_ID = /* @__PURE__ */ (() => {
   const index = new Map();
   for (const level of courseLevels) {
     for (const grade of level.grades) {

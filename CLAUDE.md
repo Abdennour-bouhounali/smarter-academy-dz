@@ -101,7 +101,7 @@ shared with the student too, on the link page as well. The parent pages are phon
 - `docs/architecture/BUNDLE_BOUNDARIES.md` before adding a provider, a route,
   a heavy dependency, an `import.meta.glob` or an i18n namespace — it says
   what may enter the entry bundle and where lazy boundaries sit.
-- The entry bundle has a budget (330 KB gzip, `npm run check:entry-budget`, CI): lessons are mounted by ONE lazy
+- The entry bundle has a budget (245 KB gzip since 2026-10-26 — it was 330 before the catalogue left the entry, measured 233.1 — `npm run check:entry-budget`, CI; no entry module may import a catalogue name: use `utils/gradeSummary.js`): lessons are mounted by ONE lazy
   route boundary fed by the generated `lessons/lessonIndex.generated.json` (run `npm run generate:lesson-index` after
   adding a lesson or changing its modules — never touch `App.jsx`), lab strings live in
   `i18n/locales/ar/lesson.manipulation.json`, unit maths are imported by path, not from the core barrel

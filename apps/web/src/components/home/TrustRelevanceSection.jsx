@@ -3,11 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { ScrollText } from 'lucide-react';
 import { ArrowForward } from '../common/DirectionalIcons';
-import { courseLevels, getFlatAvailableLessons } from '@smarter-academy/core';
-
-const ALL_GRADES = courseLevels.flatMap((level) =>
-  level.grades.map((grade) => ({ ...grade, levelId: level.id }))
-);
+import { HOME_GRADES as ALL_GRADES, AVAILABLE_LESSON_COUNT } from '../../utils/gradeSummary';
 
 /**
  * One section, two jobs: TRUST (a real, computed number — never a hardcoded
@@ -17,7 +13,7 @@ const ALL_GRADES = courseLevels.flatMap((level) =>
  */
 export default function TrustRelevanceSection() {
   const { t } = useTranslation('marketing');
-  const lessonCount = getFlatAvailableLessons(courseLevels).length;
+  const lessonCount = AVAILABLE_LESSON_COUNT;
 
   return (
     <section className="section-wrapper">

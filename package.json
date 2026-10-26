@@ -22,7 +22,7 @@
     "check:routes": "node scripts/check-routes.mjs",
     "check:lesson-index": "node scripts/generate-lesson-index.mjs --check",
     "generate:lesson-index": "node scripts/generate-lesson-index.mjs",
-    "check:entry-budget": "node scripts/analyze-entry-bundle.mjs --budget 330",
+    "check:entry-budget": "node scripts/analyze-entry-bundle.mjs --budget 245",
     "check:non-blocking": "node scripts/check-non-blocking.mjs",
     "check:dormant-isolation": "node scripts/check-dormant-isolation.mjs",
     "audit:collisions": "node scripts/audit-svg-collisions.mjs",
