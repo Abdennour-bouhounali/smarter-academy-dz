@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Domain\Identity\PersonName;
 use App\Domain\School\SchoolException;
+use App\Domain\School\SchoolLicenceService;
 use App\Domain\School\SchoolService;
 use App\Http\Controllers\Controller;
 use App\Models\Classroom;
 use App\Models\School;
+use App\Models\SchoolLicence;
 use App\Models\SchoolTeacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 
 /**
@@ -18,7 +21,48 @@ use Illuminate\Validation\Rule;
  */
 class AdminSchoolController extends Controller
 {
-    public function __construct(private SchoolService $schools) {}
+    public function __construct(
+        private SchoolService $schools,
+        private SchoolLicenceService $licences,
+    ) {}
+
+    /**
+     * Activer une licence (D1) : des sièges, une fin éventuelle, une note.
+     * Le paiement se fait hors de la plateforme ; en activer une nouvelle
+     * annule la précédente.
+     */
+    public function grantLicence(Request $request, int $id)
+    {
+        $school = $this->find($id);
+        $data = $request->validate([
+            'studentSeats' => ['required', 'integer', 'min:1', 'max:100000'],
+            'endsAt' => ['nullable', 'date'],
+            'note' => ['nullable', 'string', 'max:500'],
+        ]);
+
+        try {
+            $this->licences->grant($request->user(), $school, (int) $data['studentSeats'],
+                isset($data['endsAt']) ? Carbon::parse($data['endsAt'])->endOfDay() : null, $data['note'] ?? null);
+        } catch (SchoolException $e) {
+            return self::refuse($e);
+        }
+
+        return response()->json(['success' => true, ...$this->detail($school)], 201);
+    }
+
+    public function licenceStatus(Request $request, int $id)
+    {
+        $school = $this->find($id);
+        $data = $request->validate(['status' => ['required', Rule::in(SchoolLicence::STATUSES)]]);
+
+        try {
+            $this->licences->setStatus($request->user(), $school, $data['status']);
+        } catch (SchoolException $e) {
+            return self::refuse($e);
+        }
+
+        return response()->json(['success' => true, ...$this->detail($school)]);
+    }
 
     public function index(Request $request)
     {
@@ -131,6 +175,7 @@ class AdminSchoolController extends Controller
                 'classes' => Classroom::where('school_id', $school->id)->where('status', Classroom::STATUS_ACTIVE)->count(),
                 'teachers' => SchoolTeacher::where('school_id', $school->id)->where('status', SchoolTeacher::STATUS_ACTIVE)->count(),
             ],
+            'licence' => $this->licences->current($school),
         ];
     }
 

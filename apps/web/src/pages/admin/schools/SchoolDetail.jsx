@@ -7,11 +7,80 @@ import { AuthContext } from '../../../context/AuthContext';
 import StatusBadge from '../../../components/admin/ui/StatusBadge';
 import Modal, { ConfirmDialog } from '../../../components/admin/ui/Modal';
 import { useAdminResource } from '../../../hooks/useAdminResource';
-import { appointDirector, fetchSchool, revokeDirector, setSchoolStatus } from '../../../services/admin/schoolService';
+import { appointDirector, fetchSchool, grantLicence, revokeDirector, setLicenceStatus, setSchoolStatus } from '../../../services/admin/schoolService';
 import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
 import { AdminPage, AdminSection, Loading, ErrorBox, formatDate, Num, btnPrimary, btnSecondary, btnDanger, input, label } from '../adminUi';
 
 const BLANK_DIRECTOR = { firstName: '', lastName: '', email: '' };
+
+/**
+ * « رخصة المؤسسة » (SCHOOL_ADMIN_SPACE.md, D1) : sièges, usage, fin, et le
+ * cycle de vie — activer (une nouvelle annule l'actuelle), suspendre,
+ * reprendre, annuler. Le paiement se fait hors de la plateforme.
+ */
+function LicenceSection({ schoolId, licence, onChange }) {
+  const { t } = useTranslation('admin');
+  const { token } = useContext(AuthContext);
+  const [form, setForm] = useState({ studentSeats: '', endsAt: '', note: '' });
+  const [busy, setBusy] = useState(false);
+  const [problem, setProblem] = useState(null);
+
+  const run = async (action) => {
+    setBusy(true);
+    setProblem(null);
+    try {
+      await action();
+      onChange();
+      return true;
+    } catch (caught) {
+      setProblem(t(`schools.licence.errors.${caught.reason}`, { defaultValue: caught.message || t('schools.errors.generic') }));
+      return false;
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const grant = async (event) => {
+    event.preventDefault();
+    const ok = await run(() => grantLicence(token, schoolId, {
+      studentSeats: Number(form.studentSeats), endsAt: form.endsAt || null, note: form.note || null,
+    }));
+    if (ok) setForm({ studentSeats: '', endsAt: '', note: '' });
+  };
+
+  return (
+    <AdminSection title={t('schools.licence.section')}>
+      <p className="mb-3 font-inter text-xs text-slate-500">{t('schools.licence.hint')}</p>
+      {problem && <p role="alert" className="mb-3 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 font-inter text-sm text-rose-700">{problem}</p>}
+      {licence ? (
+        <div className="space-y-3 rounded-xl border border-slate-200 bg-white p-4" data-school-licence>
+          <dl className="grid grid-cols-2 gap-3 font-inter text-sm lg:grid-cols-4">
+            <div><dt className="text-xs font-semibold text-slate-400">{t('common.status')}</dt><dd className="mt-0.5"><StatusBadge status={licence.status} label={t(`schools.licence.status.${licence.status}`)} /></dd></div>
+            <div><dt className="text-xs font-semibold text-slate-400">{t('schools.licence.used')} / {t('schools.licence.seats')}</dt><dd className="mt-0.5"><Num>{`${licence.current} / ${licence.seats}`}</Num></dd></div>
+            <div><dt className="text-xs font-semibold text-slate-400">{t('schools.licence.endsAt')}</dt><dd className="mt-0.5"><Num>{licence.endsAt ? formatDate(licence.endsAt) : t('schools.licence.noEnd')}</Num></dd></div>
+            <div><dt className="text-xs font-semibold text-slate-400">{t('schools.licence.note')}</dt><dd className="mt-0.5">{licence.note || t('common.dash')}</dd></div>
+          </dl>
+          {!licence.running && <p className="font-inter text-xs text-amber-700">{t('schools.licence.notRunning')}</p>}
+          <div className="flex flex-wrap gap-2">
+            {licence.status === 'active' && <button type="button" disabled={busy} className={btnSecondary} onClick={() => run(() => setLicenceStatus(token, schoolId, 'suspended'))}>{t('schools.licence.suspend')}</button>}
+            {licence.status === 'suspended' && <button type="button" disabled={busy} className={btnSecondary} onClick={() => run(() => setLicenceStatus(token, schoolId, 'active'))}>{t('schools.licence.resume')}</button>}
+            <button type="button" disabled={busy} className={btnDanger} onClick={() => run(() => setLicenceStatus(token, schoolId, 'cancelled'))}>{t('schools.licence.cancel')}</button>
+          </div>
+        </div>
+      ) : (
+        <p className="rounded-xl border border-dashed border-slate-300 bg-white p-4 font-inter text-sm text-slate-600">{t('schools.licence.none')}</p>
+      )}
+
+      <form onSubmit={grant} className="mt-3 grid gap-3 rounded-xl border border-slate-200 bg-white p-4 md:grid-cols-4" data-school-licence-form>
+        <div><label htmlFor="licence-seats" className={label}>{t('schools.licence.studentSeats')}</label><input id="licence-seats" type="number" min="1" required dir="ltr" className={input} value={form.studentSeats} onChange={(e) => setForm((f) => ({ ...f, studentSeats: e.target.value }))} /></div>
+        <div><label htmlFor="licence-ends" className={label}>{t('schools.licence.endsAtLabel')}</label><input id="licence-ends" type="date" dir="ltr" className={input} value={form.endsAt} onChange={(e) => setForm((f) => ({ ...f, endsAt: e.target.value }))} /></div>
+        <div><label htmlFor="licence-note" className={label}>{t('schools.licence.note')}</label><input id="licence-note" className={input} value={form.note} onChange={(e) => setForm((f) => ({ ...f, note: e.target.value }))} /></div>
+        <div className="flex items-end"><button type="submit" disabled={busy} className={btnPrimary}>{licence ? t('schools.licence.renew') : t('schools.licence.grant')}</button></div>
+        {licence && <p className="font-inter text-xs text-slate-500 md:col-span-4">{t('schools.licence.renewHint')}</p>}
+      </form>
+    </AdminSection>
+  );
+}
 
 /**
  * La fiche d'un établissement (SCHOOL_ADMIN_SPACE.md §5) : statut, et le
@@ -118,6 +187,8 @@ export default function AdminSchoolDetail() {
               </div>
             )}
           </AdminSection>
+
+          <LicenceSection schoolId={id} licence={data.licence} onChange={reload} />
         </div>
       )}
 

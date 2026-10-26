@@ -793,7 +793,9 @@ activate a capacity below usage either. `SubscriptionLifecycleTest` and
 A  the student's own access          activation code / manual student subscription → entitlements   (unchanged)
 B  covered by the teacher            active membership in a class of a teacher whose RUNNING subscription
                                      has students.covered = true → premium, reason teacher_subscription
-C  school / institution licence      the school exists since 2026-10-26 (SCHOOL_ADMIN_SPACE.md); its licence is Planned (phase 7)
+C  covered by the school's licence  active membership in an active class of a school whose licence RUNS → premium,
+                                     reason school_licence, ordered BEFORE teacher_subscription; the class's students
+                                     use the SCHOOL's seats, not the teacher's (2026-10-26 — SCHOOL_ADMIN_SPACE.md §5bis)
 ```
 
 Model B is evaluated **dynamically** in `EntitlementService` through
@@ -1347,11 +1349,7 @@ Any change to a rule in this document changes one of those tests first.
 ## 13. Not built (Planned)
 
 - Account approval states (`pending` / `rejected` teacher accounts).
-- Model C: the school is a first-class object since 2026-10-26 (`schools`,
-  its director, `classrooms.school_id` — `SCHOOL_ADMIN_SPACE.md`); its
-  LICENCE is still planned (phase 7 there). Until then a school is served by a
-  plan-bound batch.
-- Consumers for `analytics.advanced` and `reports.export`.
+- Consumers for `analytics.advanced` and `reports.export` (the school's reports export CSV without that gate — `SCHOOL_ADMIN_SPACE.md` §6).
 - Notifications of any kind for signals or interventions (deliberately not
   built: signals live while the teacher looks).
 - A student-side dismissal of a teacher suggestion (it disappears when the

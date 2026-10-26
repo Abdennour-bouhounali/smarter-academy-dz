@@ -26,6 +26,15 @@ export function appointDirector(token, id, person) {
   return call(`/admin/schools/${encodeURIComponent(id)}/director`, send('POST', token, person), 'Impossible de nommer le directeur.');
 }
 
+/** La licence d'établissement (D1) : sièges, fin éventuelle, note — une nouvelle annule la précédente. */
+export function grantLicence(token, id, body) {
+  return call(`/admin/schools/${encodeURIComponent(id)}/licence`, send('POST', token, body), 'Impossible d\'activer la licence.');
+}
+
+export function setLicenceStatus(token, id, status) {
+  return call(`/admin/schools/${encodeURIComponent(id)}/licence/status`, send('PATCH', token, { status }), 'Impossible de changer la licence.');
+}
+
 export function revokeDirector(token, id) {
   return call(`/admin/schools/${encodeURIComponent(id)}/director`, send('DELETE', token), 'Impossible de retirer le directeur.');
 }

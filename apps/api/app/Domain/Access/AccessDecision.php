@@ -40,6 +40,14 @@ final class AccessDecision
     public const VIA_TEACHER_SUBSCRIPTION = 'teacher_subscription';
 
     /**
+     * L'accès vient de la LICENCE DE L'ÉTABLISSEMENT (modèle C, 2026-10-26) :
+     * l'élève est membre actif d'une classe active d'un établissement dont la
+     * licence court. Évalué dynamiquement — voir School\SchoolCoverage. Passe
+     * AVANT l'offre de l'enseignant : c'est l'établissement qui paie.
+     */
+    public const VIA_SCHOOL_LICENCE = 'school_licence';
+
+    /**
      * Un compte ENSEIGNANT lit tout le contenu publié : il prépare ses cours
      * avant de les donner, et l'unité de vente de son offre est l'élève, pas
      * le contenu. Aucune ligne `entitlements` — c'est le rôle qui ouvre.

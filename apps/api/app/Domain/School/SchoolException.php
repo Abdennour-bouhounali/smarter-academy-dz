@@ -59,6 +59,14 @@ class SchoolException extends DomainException
 
     public const REPORT_NOT_FOUND = 'report_not_found';
 
+    /** Phase 7 — la licence. */
+    public const INVALID_LICENCE = 'invalid_licence';
+
+    public const NO_LICENCE = 'no_licence';
+
+    /** Une licence de moins de sièges que d'élèves déjà présents. */
+    public const SEATS_BELOW_USAGE = 'seats_below_usage';
+
     /** Un import refusé en bloc (lignes invalides, trop de lignes). */
     public const INVALID_ROSTER = 'invalid_roster';
 

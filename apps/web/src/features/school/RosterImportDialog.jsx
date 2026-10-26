@@ -143,7 +143,9 @@ export default function RosterImportDialog({ open, onClose, classrooms, initialC
               <p className="font-inter text-sm text-slate-600">
                 {t('import.counts', { new: counts.new, skipped: counts.exists + counts.duplicate_in_file, invalid: counts.invalid })}
                 {' · '}
-                {preview.seatsRemaining === null ? t('import.seatsUnlimited') : t('import.seats', { count: preview.seatsRemaining })}
+                {preview.seatsFrom === 'school'
+                  ? t('import.seatsSchool', { count: preview.seatsRemaining })
+                  : preview.seatsRemaining === null ? t('import.seatsUnlimited') : t('import.seats', { count: preview.seatsRemaining })}
               </p>
               {counts.invalid > 0 && (
                 <p className="flex gap-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">

@@ -1496,6 +1496,11 @@ Le vocabulaire de la colonne `type` est clos à ces trois valeurs. `book_access`
 `school_access`, `partner_access` ne sont pas implémentés — la colonne est une
 chaîne libre pour qu'ils restent additifs, mais rien ne les connaît aujourd'hui.
 
+**Une cinquième raison d'accès, sans ligne (2026-10-26) :** `school_licence` — un élève
+membre actif d'une classe active d'un établissement dont la licence court est premium
+*par son établissement* (`Domain\School\SchoolCoverage`, évalué à chaque requête, AVANT
+`teacher_subscription`) ; contrat : `SCHOOL_ADMIN_SPACE.md` §5bis.
+
 **Une quatrième raison d'accès, sans ligne (2026-09-22) :** `teacher_subscription`.
 Un élève membre actif d'une classe (قسم) dont l'enseignant a un abonnement en
 cours portant le droit `students.covered` est premium *par son enseignant*.
@@ -2049,5 +2054,7 @@ l'administration crée un établissement, le suspend ou l'archive, et en nomme l
 DIRECTEUR — un nouveau compte `school_admin` dont le mot de passe n'est montré
 qu'une fois. Le directeur n'est pas un administrateur : il ne passe jamais
 `can:admin`, et l'administrateur ne passe jamais `can:school`. Routes `can:admin`,
-gestes dans le journal (`school.*`, jamais le mot de passe). Contrat complet :
+gestes dans le journal (`school.*`, jamais le mot de passe). La fiche porte aussi
+« رخصة المؤسسة » : activer une licence de sièges (une nouvelle annule l'actuelle),
+la suspendre, la reprendre, l'annuler (§5bis). Contrat complet :
 [`SCHOOL_ADMIN_SPACE.md`](./SCHOOL_ADMIN_SPACE.md) §5.

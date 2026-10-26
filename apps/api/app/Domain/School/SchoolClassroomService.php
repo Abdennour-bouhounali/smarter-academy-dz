@@ -111,7 +111,10 @@ class SchoolClassroomService
             $this->entitlements->forget($newTeacher);
 
             $students = User::whereIn('id', ClassroomMembership::where('classroom_id', $classroom->id)->active()->pluck('student_id'))->get();
-            $newSeats = $students->reject(fn (User $s) => $this->capacity->isSeated($newTeacher, $s))->count();
+            // Une classe couverte par la licence de l'établissement ne prend
+            // aucun siège à l'enseignant (D1).
+            $newSeats = $classroom->isCoveredBySchool() ? 0
+                : $students->reject(fn (User $s) => $this->capacity->isSeated($newTeacher, $s))->count();
             $remaining = $this->capacity->remainingSeats($newTeacher);
             if ($remaining !== null && $newSeats > $remaining) {
                 throw new ClassroomException(ClassroomException::SEATS_EXHAUSTED, 'L\'enseignant n\'a pas assez de places pour cette classe.');

@@ -1,12 +1,12 @@
 # « فضاء الإدارة » — the school administration space
 
-> Status (2026-10-26): **Phases 0–6 implemented** — contract, data model, the
+> Status (2026-10-26): **Phases 0–7 implemented** — contract, data model, the
 > `school_admin` role and its gate, the privacy gate `SchoolAccess`, the
 > platform admin's « المؤسسات », the school's STRUCTURE (terms, teachers,
 > classes, students, roster import, login cards), its TRACKING (the الكفاءات
 > map per class, the student file), its REPORTS (frozen snapshots, A4 print,
-> CSV) and the MEETING VIEW. Phase 7 (the school licence) is `Planned`. The
-> code is the source of truth.
+> CSV), the MEETING VIEW and the school LICENCE (model C). The code is the
+> source of truth.
 
 A **school** (« المؤسسة », a متوسطة) is a first-class object: its classes, its
 teachers, its students, and one **director** (« المدير ») who manages them,
@@ -17,7 +17,7 @@ follows their learning, prints reports and projects them in meetings. This is
 
 | # | Decision |
 |---|---|
-| D1 | **The school buys a licence** of student seats; its students get full access through it; a teacher's own seats are not consumed by a covered school class. (`Planned` — phase 7. Until then a school class uses its TEACHER's seats.) |
+| D1 | **The school buys a licence** of student seats; its students get full access through it; a teacher's own seats are not consumed by a covered school class. Built (phase 7, §5bis). Without a running licence a school class uses its TEACHER's seats. |
 | D2 | **The director may enrol a student directly** (imported roster → class). The school's consent is recorded at enrolment (`school_consent_by = school`); the student confirms the teacher's sharing text once in « قسمي » (non-blocking). Built (phase 3). |
 | D3 | **One school role: the director.** `school_staff.school_role` exists so a second role is a value, not a migration. |
 | D4 | **Teacher activity is shown as FACTS** — never a score, never a ranking — and **the teacher sees exactly what the school sees** about them. Built (phase 3): ONE function `TeacherActivityFacts::for()` and ONE component `TeacherFacts.jsx` serve both readers. |
@@ -53,7 +53,7 @@ school_admin  created by the platform admin only     /idara     can:school
 ```text
 role         Gate 'school'                     route group can:school → 403 for admin, teacher, student, parent
 membership   SchoolAccess::schoolOf            an ACTIVE school_staff row on an ACTIVE school → 403 reason no_school
-entitlement  the school's licence              Planned (phase 7)
+entitlement  the school's licence              §5bis — it covers the STUDENTS' access; the director's routes need none
 ```
 
 - A director belongs to **one** school (`school_staff.user_id` is unique). The
@@ -73,6 +73,7 @@ entitlement  the school's licence              Planned (phase 7)
 | `classrooms.school_id` | nullable FK | a class OF a school; the owner stays `teacher_id` (§4) |
 | `classroom_memberships.school_consent_at` / `school_consent_by` (`student\|school`) | the consent that lets the SCHOOL read this student | null = the school neither reads nor counts the student |
 | `classroom_memberships.joined_via = school_enrolment` | a student enrolled by the director (D2) | |
+| `school_licences` | `school_id`, `student_seats`, `starts_at`, `ends_at` (null = no end), `status` `active\|suspended\|cancelled`, `note`, `granted_by` | **running** = active, started, not ended (end EXCLUDED); at most ONE `active` per school — granting a new one cancels the previous (§5bis) |
 | `users.birth_date` | date, set only for a student imported by the school | used ONLY to recognise a namesake at import; never shown, never logged |
 
 ## 4. Privacy — the school is a NEW reader
@@ -137,6 +138,47 @@ PATCH /admin/schools/{id}/status {status}
 POST  /admin/schools/{id}/director {firstName, lastName, email}   → {director, password}
 DELETE /admin/schools/{id}/director
 ```
+
+## 5bis. The school licence (model C, phase 7)
+
+The platform admin activates it by hand on the school's page (« رخصة المؤسسة »:
+seats, optional end date, note — the money is paid outside the platform, like
+every plan of the product), and suspends, resumes or cancels it. Granting a new
+licence cancels the active one (renewal, change of seats); fewer seats than the
+school's current students is refused (`seats_below_usage`) — a licence never
+removes a student.
+
+- **Access** — `School\SchoolCoverage`, evaluated DYNAMICALLY like
+  `TeacherCoverage` (no entitlement row): a student is covered when they are an
+  active member of an active class of a school whose licence runs. In
+  `EntitlementService::decide()` the order is **own subscription / activation
+  code / admin override → `school_licence` → `teacher_subscription`**
+  (`AccessDecision::VIA_SCHOOL_LICENCE`): the school pays, so the school is the
+  reason. `summarize()` adds `schoolCoverageActive` (`usePremiumStatus().viaSchool`),
+  and the licence's end joins the access end date. Covering a student needs no
+  school consent: a seat is an access, not a reading.
+- **Seats** — `School\SchoolCapacityService`: distinct active members of the
+  school's active classes. While a licence runs, a join into a school class (link,
+  code, director enrolment, transfer) checks the SCHOOL's seats
+  (`ClassroomMembershipService::assertCapacity`, `seats_exhausted`), and the
+  class leaves the TEACHER's seat count (`Classroom::notCoveredBySchool()` in
+  `PlanEntitlementResolver::usage` and `TeacherCapacityService::isSeated`). A
+  suspended, ended or cancelled licence puts the class back on the teacher's
+  seats — over the limit if need be, never removing anyone (« downgrade never
+  destroys data »).
+- The roster preview says which seats count (`seatsFrom: school|teacher`);
+  reassigning a covered class needs no teacher seat.
+- The director sees the licence on « لوحة المؤسسة » (`overview.licence`: seats,
+  current, remaining, end — null without a running licence).
+- Logged: `school.licence_granted` (seats, end), `school.licence_status_changed`.
+
+```text
+POST  /admin/schools/{id}/licence {studentSeats, endsAt?, note?}   → 201 detail (incl. licence)
+PATCH /admin/schools/{id}/licence/status {status}
+GET   /admin/schools/{id}   → … licence {id, status, running, seats, current, remaining, startsAt, endsAt, note}
+```
+
+Locked by `SchoolLicenceTest`.
 
 ## 6. The director's space `/idara` (Arabic, RTL)
 
@@ -311,17 +353,19 @@ PUT  /teacher/classrooms/{id}/school {attached}  (ClassroomPolicy manage)
 
 The teacher's class shape gains `schoolId`.
 
-## 8. Planned phases
+## 8. Not planned yet
 
 | # | Phase | Contents |
 |---|---|---|
-| 7 | Licence (D1) | `school_licences`, `SchoolCoverage` (allow reason `school_licence`, precedence `activation_code > school_licence > teacher_subscription`), `SchoolCapacityService` — a covered school class stops using its teacher's seats |
-| — | Not planned yet | XLSX roster files (CSV and paste only) and XLSX report export (CSV only); a BEM-readiness report; a deputy / counselor role (D3) |
+| — | — | XLSX roster files (CSV and paste only) and XLSX report export (CSV only); a BEM-readiness report; a deputy / counselor role (D3) |
 
 ## 9. Files
 
 - API: `app/Domain/School/{SchoolAccess,SchoolException,SchoolService,SchoolOverviewService,SchoolTermService,SchoolTeacherService,SchoolClassroomService,SchoolRosterService,SchoolProgressService,SchoolReportService,TeacherActivityFacts}.php`;
-  `app/Http/Controllers/School/{SchoolProgressController,SchoolReportController}.php`; `app/Models/SchoolReportSnapshot.php`;
+  `app/Http/Controllers/School/{SchoolProgressController,SchoolReportController}.php`; `app/Models/{SchoolReportSnapshot,SchoolLicence}.php`;
+  `app/Domain/School/{SchoolLicenceService,SchoolCapacityService,SchoolCoverage}.php`; `AccessDecision::VIA_SCHOOL_LICENCE`,
+  `EntitlementService` (school coverage), `PlanEntitlementResolver::usage` + `TeacherCapacityService::isSeated` (`notCoveredBySchool`);
+  migration `2026_10_26_000004_create_school_licences.php`;
   migration `2026_10_26_000003_create_school_report_snapshots.php`;
   `ClassroomMembershipService::{admit, enrolBySchool, confirmSchoolConsent}`;
   `app/Models/{School,SchoolStaff,SchoolTeacher,SchoolTerm}.php`; `config/school.php`;
@@ -336,7 +380,7 @@ The teacher's class shape gains `schoolId`.
   `nav.mySchool`, `student.json › qism.sharing.school, qism.schoolConsent.*` (entry);
   `pages/admin/schools/{SchoolList,SchoolDetail}.jsx`, `services/admin/schoolService.js`,
   `admin.json › schools`, `nav.schools`; role landing in `HomeRedirect`, `Login`, `AuthGoogle`, `CompleteName`.
-- Tests: `tests/Feature/{SchoolAdminTest,SchoolPrivacyContractTest,SchoolStructureTest,SchoolRosterTest,SchoolProgressTest,SchoolReportTest}.php`,
+- Tests: `tests/Feature/{SchoolAdminTest,SchoolPrivacyContractTest,SchoolStructureTest,SchoolRosterTest,SchoolProgressTest,SchoolReportTest,SchoolLicenceTest}.php`,
   `tests/Support/SchoolFixtures.php`; `features/school/{rosterCsv,reports/reportCsv,reports/meetingSlides}.test.js`.
 - Deployment: `php artisan migrate` (additive migrations, no hand-written SQL).
   Entry bundle after phase 6: 235.1 KB gzip (budget 245).

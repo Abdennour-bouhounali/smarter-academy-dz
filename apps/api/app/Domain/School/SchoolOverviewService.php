@@ -15,10 +15,14 @@ use App\Models\SchoolTeacher;
  */
 class SchoolOverviewService
 {
+    public function __construct(private SchoolCapacityService $capacity) {}
+
     /** @return array<string, mixed> */
     public function overview(School $school): array
     {
         return [
+            // La licence qui court (sièges, usage, fin) — null sans licence.
+            'licence' => $this->capacity->summary($school),
             'school' => [
                 'id' => $school->id,
                 'name' => $school->name,

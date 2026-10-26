@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { GraduationCap, School, Users } from 'lucide-react';
+import { BadgeCheck, GraduationCap, School, Users } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import { fetchSchoolOverview } from '../../services/schoolService';
@@ -68,6 +68,25 @@ export default function SchoolHome() {
         <Figure icon={School} label={t('home.classes')} value={counts.classes} />
         <Figure icon={GraduationCap} label={t('home.teachers')} value={counts.teachers} />
         <Figure icon={Users} label={t('home.students')} value={counts.students} hint={t('home.studentsHint')} />
+      </section>
+
+      {/* La licence (D1) : sièges utilisés sur sièges achetés, et sa fin. */}
+      <section className="rounded-2xl border border-slate-200 bg-white p-5" data-school-licence>
+        <div className="flex items-center gap-2 text-slate-500">
+          <BadgeCheck size={18} aria-hidden="true" />
+          <p className="font-inter text-sm">{t('home.licence')}</p>
+        </div>
+        {data.licence ? (
+          <>
+            <p className="mt-2 font-space text-3xl font-bold text-slate-900" dir="ltr">{data.licence.current} / {data.licence.seats}</p>
+            <p className="mt-1 font-inter text-xs text-slate-500">
+              {t('home.licenceHint')}
+              {data.licence.endsAt && ` ${t('home.licenceEnds', { date: new Date(data.licence.endsAt).toLocaleDateString('ar-DZ', { dateStyle: 'medium', numberingSystem: 'latn' }) })}`}
+            </p>
+          </>
+        ) : (
+          <p className="mt-2 font-inter text-sm text-slate-600">{t('home.noLicence')}</p>
+        )}
       </section>
     </div>
   );

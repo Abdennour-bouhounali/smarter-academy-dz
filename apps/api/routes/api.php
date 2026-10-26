@@ -801,6 +801,9 @@ Route::prefix('v1')->group(function () {
             Route::patch('/schools/{id}/status', [AdminSchoolController::class, 'status'])->whereNumber('id');
             Route::post('/schools/{id}/director', [AdminSchoolController::class, 'appointDirector'])->whereNumber('id')->middleware('throttle:10,1');
             Route::delete('/schools/{id}/director', [AdminSchoolController::class, 'revokeDirector'])->whereNumber('id');
+            // La licence d'établissement (D1) : activation manuelle, cycle de vie.
+            Route::post('/schools/{id}/licence', [AdminSchoolController::class, 'grantLicence'])->whereNumber('id');
+            Route::patch('/schools/{id}/licence/status', [AdminSchoolController::class, 'licenceStatus'])->whereNumber('id');
 
             // ── L'ACTIVATION MANUELLE — élèves et enseignants ────────────
             // Aucun paiement en ligne : l'argent est reçu hors plateforme,

@@ -47,6 +47,7 @@ class SchoolRosterService
         private ClassroomMembershipService $memberships,
         private TeacherCapacityService $capacity,
         private ActivityLogger $logger,
+        private SchoolCapacityService $schoolCapacity,
     ) {}
 
     /**
@@ -83,10 +84,15 @@ class SchoolRosterService
 
         $counts = array_count_values(array_column($out, 'status')) + array_fill_keys([self::STATUS_NEW, self::STATUS_EXISTS, self::STATUS_DUPLICATE_IN_FILE, self::STATUS_INVALID], 0);
 
+        // Les sièges qui comptent : ceux de la licence de l'établissement si
+        // elle court, sinon ceux de l'enseignant de la classe.
+        $schoolSeats = $this->schoolCapacity->remainingSeats($school);
+
         return [
             'rows' => $out,
             'counts' => $counts,
-            'seatsRemaining' => $this->capacity->remainingSeats($classroom->teacher),
+            'seatsRemaining' => $schoolSeats ?? $this->capacity->remainingSeats($classroom->teacher),
+            'seatsFrom' => $schoolSeats !== null ? 'school' : 'teacher',
         ];
     }
 

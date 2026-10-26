@@ -6,6 +6,7 @@ use App\Domain\Access\EntitlementService;
 use App\Domain\Admin\ActivityLogger;
 use App\Domain\Plans\EntitlementKeys;
 use App\Domain\Plans\PlanEntitlementResolver;
+use App\Domain\School\SchoolCapacityService;
 use App\Models\Classroom;
 use App\Models\ClassroomMembership;
 use App\Models\User;
@@ -46,6 +47,7 @@ class ClassroomMembershipService
         private EntitlementService $access,
         private StudyContextService $context,
         private ActivityLogger $log,
+        private SchoolCapacityService $schoolCapacity,
     ) {}
 
     /** @throws ClassroomException */
@@ -417,6 +419,14 @@ class ClassroomMembershipService
             if ($inClass >= $perClass) {
                 throw new ClassroomException(ClassroomException::CLASS_FULL, 'Cette classe est complète.');
             }
+        }
+
+        // Une classe couverte par la LICENCE de son établissement : ce sont les
+        // sièges de l'établissement qui comptent (SCHOOL_ADMIN_SPACE.md, D1).
+        if ($classroom->school_id !== null && ($licence = $this->schoolCapacity->runningLicence($classroom->school_id)) !== null) {
+            $this->schoolCapacity->assertCanSeat($licence, $student);
+
+            return;
         }
 
         // Un élève déjà assis chez cet enseignant (une autre de ses classes)

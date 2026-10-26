@@ -73,11 +73,16 @@ class PlanEntitlementResolver
     public function usage(User $user): array
     {
         $classroomIds = Classroom::ownedBy($user)->countingTowardsLimit()->pluck('id');
+        // Les élèves d'une classe couverte par la LICENCE de son établissement
+        // occupent les sièges de l'établissement, pas ceux de l'enseignant
+        // (SCHOOL_ADMIN_SPACE.md, D1).
+        $seatClassroomIds = $classroomIds->isEmpty() ? $classroomIds
+            : Classroom::whereIn('id', $classroomIds)->notCoveredBySchool()->pluck('id');
 
         return [
             'classrooms' => $classroomIds->count(),
             // Des SIÈGES : un élève présent dans deux classes n'en occupe qu'un.
-            'students' => $classroomIds->isEmpty() ? 0 : ClassroomMembership::whereIn('classroom_id', $classroomIds)
+            'students' => $seatClassroomIds->isEmpty() ? 0 : ClassroomMembership::whereIn('classroom_id', $seatClassroomIds)
                 ->active()->distinct('student_id')->count('student_id'),
         ];
     }

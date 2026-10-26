@@ -209,6 +209,11 @@ class ActivityLogger
 
     public const SCHOOL_REPORT_DELETED = 'school_report.deleted';
 
+    /** Phase 7 : la licence d'établissement — un geste qui ouvre ou ferme un accès payant. */
+    public const SCHOOL_LICENCE_GRANTED = 'school.licence_granted';
+
+    public const SCHOOL_LICENCE_STATUS = 'school.licence_status_changed';
+
     /** Suppression définitive d'un compte élève ou enseignant (UserDeletionService). */
     public const USER_DELETED = 'user.deleted';
 
