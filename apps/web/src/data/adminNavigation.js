@@ -1,6 +1,6 @@
 import {
   LayoutDashboard, BarChart3, BookOpen, Flag, Users, KeyRound, Package,
-  UserCog, ScrollText, Library, ShoppingBag, MessageSquare, GraduationCap, School, BadgeCheck, Inbox, CreditCard, SlidersHorizontal, Flame,
+  UserCog, ScrollText, Library, ShoppingBag, MessageSquare, GraduationCap, School, Building2, BadgeCheck, Inbox, CreditCard, SlidersHorizontal, Flame,
 } from 'lucide-react';
 
 /**
@@ -73,6 +73,8 @@ export const adminNavSections = [
       { labelKey: 'nav.teachersAll', path: '/admin/enseignants', icon: GraduationCap, end: true },
       { labelKey: 'nav.teachersPendingRequests', path: '/admin/enseignants?requests=pending', icon: GraduationCap, matchQuery: 'requests=pending' },
       { labelKey: 'nav.classrooms', path: '/admin/classes', icon: School },
+      // « فضاء الإدارة » : les établissements et leur directeur (SCHOOL_ADMIN_SPACE.md §5).
+      { labelKey: 'nav.schools', path: '/admin/etablissements', icon: Building2 },
     ],
   },
   {

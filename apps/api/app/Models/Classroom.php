@@ -69,6 +69,16 @@ class Classroom extends Model
         return $this->belongsTo(User::class, 'teacher_id');
     }
 
+    /**
+     * L'établissement de la classe, s'il y en a un. `school_id` n'est pas
+     * assignable en masse : il ajoute un LECTEUR (la direction), jamais un
+     * second propriétaire (SCHOOL_ADMIN_SPACE.md §4).
+     */
+    public function school(): BelongsTo
+    {
+        return $this->belongsTo(School::class);
+    }
+
     public function memberships(): HasMany
     {
         return $this->hasMany(ClassroomMembership::class);

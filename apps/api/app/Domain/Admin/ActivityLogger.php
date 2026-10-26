@@ -164,6 +164,20 @@ class ActivityLogger
     /** L'administrateur a désigné, ou retiré, un ambassadeur. */
     public const TEACHER_AMBASSADOR = 'teacher.ambassador_changed';
 
+    /**
+     * Les ÉTABLISSEMENTS (SCHOOL_ADMIN_SPACE.md §5). La nomination du
+     * directeur journalise son identifiant et son nom — jamais le mot de passe.
+     */
+    public const SCHOOL_CREATED = 'school.created';
+
+    public const SCHOOL_UPDATED = 'school.updated';
+
+    public const SCHOOL_STATUS = 'school.status_changed';
+
+    public const SCHOOL_DIRECTOR_APPOINTED = 'school.director_appointed';
+
+    public const SCHOOL_DIRECTOR_REVOKED = 'school.director_revoked';
+
     /** Suppression définitive d'un compte élève ou enseignant (UserDeletionService). */
     public const USER_DELETED = 'user.deleted';
 

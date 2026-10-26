@@ -41,6 +41,7 @@ admin       seeded / promoted only              /admin           can:admin
 teacher     /register?type=enseignant, Google   /enseignant      can:teacher
 student     /register, Google                   /espace          (default)
 parent      not self-registerable (2026-10-23)  /wali            can:parent
+school_admin created by the platform admin       /idara           can:school   (the school director, 2026-10-26 — SCHOOL_ADMIN_SPACE.md)
 ```
 
 - **Ambassador (« سفير », 2026-10-05)** is not a role: it is a flag
@@ -781,7 +782,7 @@ activate a capacity below usage either. `SubscriptionLifecycleTest` and
 A  the student's own access          activation code / manual student subscription → entitlements   (unchanged)
 B  covered by the teacher            active membership in a class of a teacher whose RUNNING subscription
                                      has students.covered = true → premium, reason teacher_subscription
-C  school / institution licence      Planned — not built
+C  school / institution licence      the school exists since 2026-10-26 (SCHOOL_ADMIN_SPACE.md); its licence is Planned (phase 7)
 ```
 
 Model B is evaluated **dynamically** in `EntitlementService` through
@@ -1331,8 +1332,10 @@ Any change to a rule in this document changes one of those tests first.
 ## 13. Not built (Planned)
 
 - Account approval states (`pending` / `rejected` teacher accounts).
-- Model C: school / institution licences as a first-class object (today a
-  school is served by a plan-bound batch).
+- Model C: the school is a first-class object since 2026-10-26 (`schools`,
+  its director, `classrooms.school_id` — `SCHOOL_ADMIN_SPACE.md`); its
+  LICENCE is still planned (phase 7 there). Until then a school is served by a
+  plan-bound batch.
 - Consumers for `analytics.advanced` and `reports.export`.
 - Notifications of any kind for signals or interventions (deliberately not
   built: signals live while the teacher looks).

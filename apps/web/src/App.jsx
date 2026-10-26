@@ -91,6 +91,13 @@ const DeviceGuidePage = lazy(() => import('./pages/parent/DeviceGuidePage'));
 const StudentParentView = lazy(() => import('./pages/student/ParentView'));
 // « رابط الوليّ » : la page PUBLIQUE du parent, sans compte (owner, 2026-10-23).
 const ParentLinkPage = lazy(() => import('./pages/parent/ParentLinkPage'));
+// « فضاء الإدارة » : le directeur d'un établissement (SCHOOL_ADMIN_SPACE.md).
+// Tout est paresseux ; les chaînes sont dans `idara` (à la demande).
+const SchoolLayout = lazy(() => import('./components/layout/SchoolLayout'));
+const SchoolHome = lazy(() => import('./pages/school/SchoolHome'));
+// « المؤسسات », côté administration de la plateforme.
+const AdminSchoolList = lazy(() => import('./pages/admin/schools/SchoolList'));
+const AdminSchoolDetail = lazy(() => import('./pages/admin/schools/SchoolDetail'));
 // L'élève et sa classe (« قسمي »), et le lien public d'une classe.
 const Qism = lazy(() => import('./pages/student/Qism'));
 const JoinClassLink = lazy(() => import('./pages/JoinClassLink'));
@@ -288,6 +295,8 @@ function AppRoutes() {
           <Route path="enseignants/:id" element={<AdminTeacherDetail />} />
           <Route path="classes" element={<AdminClassroomList />} />
           <Route path="classes/:id" element={<AdminClassroomDetail />} />
+          <Route path="etablissements" element={<AdminSchoolList />} />
+          <Route path="etablissements/:id" element={<AdminSchoolDetail />} />
           <Route path="offres" element={<AdminPlanList />} />
           <Route path="offres/demandes" element={<AdminSubscriptionRequests />} />
           <Route path="offres/abonnements" element={<AdminSubscriptions />} />
@@ -449,6 +458,15 @@ function AppRoutes() {
           <Route index element={<ParentHome />} />
           <Route path="abnaa/:studentId" element={<ParentChildReport />} />
           <Route path="himaya" element={<DeviceGuidePage />} />
+        </Route>
+      </Route>
+
+      {/* « فضاء الإدارة » — le directeur d'un établissement. Rôle vérifié ici ;
+          la vraie porte est le serveur : /api/v1/school/* derrière can:school
+          et une nomination active (SchoolAccess::schoolOf). */}
+      <Route path="/idara" element={<ProtectedRoute allowedRoles={['school_admin']} />}>
+        <Route element={<SchoolLayout />}>
+          <Route index element={<SchoolHome />} />
         </Route>
       </Route>
 

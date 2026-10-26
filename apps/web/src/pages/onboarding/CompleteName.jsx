@@ -17,6 +17,7 @@ import { needsName, normalizeName, personNameErrors } from '../../utils/personNa
 function nextPathFor(user, from) {
   if (user?.role === 'teacher') return from || '/enseignant';
   if (user?.role === 'parent') return from || '/wali';
+  if (user?.role === 'school_admin') return from || '/idara';
   if (!user?.grade) return '/espace/bienvenue';
   return from || '/espace';
 }

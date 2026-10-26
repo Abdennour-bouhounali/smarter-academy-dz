@@ -48,6 +48,7 @@ class ClassroomMembership extends Model
             'joined_at' => 'datetime',
             'left_at' => 'datetime',
             'consented_at' => 'datetime',
+            'school_consent_at' => 'datetime',
         ];
     }
 

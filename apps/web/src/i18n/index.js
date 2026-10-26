@@ -73,6 +73,8 @@ const ON_DEMAND_NAMESPACES = {
   tour: () => import('./locales/ar/tour.json'),
   // « فضاء الوليّ », « وليّ الأمر » du profil élève, le guide « حماية الجهاز » (PARENT_SPACE.md).
   family: () => import('./locales/ar/family.json'),
+  // « فضاء الإدارة », l'espace du directeur d'un établissement (SCHOOL_ADMIN_SPACE.md).
+  idara: () => import('./locales/ar/idara.json'),
 };
 
 const onDemandBackend = {

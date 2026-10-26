@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\AdminAccountController;
 use App\Http\Controllers\Admin\AdminActivationCodeController;
 use App\Http\Controllers\Admin\AdminActivityLogController;
 use App\Http\Controllers\Admin\AdminClassroomController;
+use App\Http\Controllers\Admin\AdminSchoolController;
+use App\Http\Controllers\School\SchoolHomeController;
 use App\Http\Controllers\Admin\AdminContentController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminEntitlementController;
@@ -608,6 +610,16 @@ Route::prefix('v1')->group(function () {
             Route::patch('/classrooms/{id}/madar/play/ship', [TeacherMadarPlayController::class, 'ship'])->whereNumber('id')->middleware('throttle:30,1');
         });
 
+    // « فضاء الإدارة » — le directeur d'un établissement (SCHOOL_ADMIN_SPACE.md).
+    // Le rôle ici ; la nomination active (SchoolAccess::schoolOf) dans chaque
+    // contrôleur. L'établissement n'est jamais lu dans la requête.
+    // Toute nouvelle lecture s'ajoute à SchoolPrivacyContractTest::schoolReads().
+    Route::middleware(['auth:sanctum', 'account.active', 'email.verified', 'can:school'])
+        ->prefix('school')
+        ->group(function () {
+            Route::get('/overview', [SchoolHomeController::class, 'overview']);
+        });
+
     // Protected routes — admin only
     Route::middleware(['auth:sanctum', 'account.active', 'can:admin'])->group(function () {
         Route::get('/contact', [ContactController::class, 'index']);
@@ -741,6 +753,15 @@ Route::prefix('v1')->group(function () {
 
             Route::get('/classrooms', [AdminClassroomController::class, 'index']);
             Route::get('/classrooms/{id}', [AdminClassroomController::class, 'show'])->whereNumber('id');
+
+            // « Établissements » : créer, régler, nommer le directeur (SCHOOL_ADMIN_SPACE.md §5).
+            Route::get('/schools', [AdminSchoolController::class, 'index']);
+            Route::post('/schools', [AdminSchoolController::class, 'store']);
+            Route::get('/schools/{id}', [AdminSchoolController::class, 'show'])->whereNumber('id');
+            Route::patch('/schools/{id}', [AdminSchoolController::class, 'update'])->whereNumber('id');
+            Route::patch('/schools/{id}/status', [AdminSchoolController::class, 'status'])->whereNumber('id');
+            Route::post('/schools/{id}/director', [AdminSchoolController::class, 'appointDirector'])->whereNumber('id')->middleware('throttle:10,1');
+            Route::delete('/schools/{id}/director', [AdminSchoolController::class, 'revokeDirector'])->whereNumber('id');
 
             // ── L'ACTIVATION MANUELLE — élèves et enseignants ────────────
             // Aucun paiement en ligne : l'argent est reçu hors plateforme,

@@ -2041,3 +2041,13 @@ en lignes, historique), fiches livres (prix, publication, contenu de la page
 publique) et messages reçus. Même chrome que les autres écrans (`AdminPage`,
 `DataTable`, `FilterBar`), routes `can:admin`, gestes dans le journal
 (`book.*`, `book_order.*`). Contrat complet : [`BOOKS_STORE.md`](./BOOKS_STORE.md).
+
+# Annexe A11 — Les établissements (2026-10-26)
+
+« المؤسسات » (`/admin/etablissements`, groupe « الأساتذة » de la barre latérale) :
+l'administration crée un établissement, le suspend ou l'archive, et en nomme le
+DIRECTEUR — un nouveau compte `school_admin` dont le mot de passe n'est montré
+qu'une fois. Le directeur n'est pas un administrateur : il ne passe jamais
+`can:admin`, et l'administrateur ne passe jamais `can:school`. Routes `can:admin`,
+gestes dans le journal (`school.*`, jamais le mot de passe). Contrat complet :
+[`SCHOOL_ADMIN_SPACE.md`](./SCHOOL_ADMIN_SPACE.md) §5.

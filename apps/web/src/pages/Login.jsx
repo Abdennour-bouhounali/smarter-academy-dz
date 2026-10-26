@@ -33,6 +33,8 @@ function postLoginPath(user) {
   if (user.role === 'parent') {
     return user.emailVerified === false ? '/verification-email' : '/wali';
   }
+  // Le directeur (SCHOOL_ADMIN_SPACE.md) : adresse vérifiée à sa nomination.
+  if (user.role === 'school_admin') return '/idara';
   return '/';
 }
 
