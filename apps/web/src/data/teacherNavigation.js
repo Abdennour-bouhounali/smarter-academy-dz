@@ -1,4 +1,4 @@
-import { House, BookOpen, PencilRuler, NotebookPen, Users, ClipboardCheck, BadgeCheck, UserRound, Gamepad2 } from 'lucide-react';
+import { House, BookOpen, PencilRuler, NotebookPen, Users, ClipboardCheck, BadgeCheck, UserRound, Gamepad2, Building2 } from 'lucide-react';
 
 /**
  * L'espace ENSEIGNANT (« فضاء الأستاذ ») — sa propre navigation, comme
@@ -23,5 +23,7 @@ export const teacherNavLinks = [
   // « فضاء الألعاب » : gérer les trois jeux de ses classes (MADAR_GAME.md §8).
   { labelKey: 'teacherGames', path: '/enseignant/jeux', icon: Gamepad2, mobile: false },
   { labelKey: 'myPlan', path: '/enseignant/offre', icon: BadgeCheck, mobile: false },
+  // « مؤسستي » : l'établissement, ce qu'il voit de l'enseignant (SCHOOL_ADMIN_SPACE.md, D4).
+  { labelKey: 'mySchool', path: '/enseignant/muassasa', icon: Building2, mobile: false },
   { labelKey: 'profile', path: '/enseignant/profil', icon: UserRound, mobile: false },
 ];

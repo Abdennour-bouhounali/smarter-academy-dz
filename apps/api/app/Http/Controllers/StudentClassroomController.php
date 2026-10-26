@@ -105,6 +105,32 @@ class StudentClassroomController extends Controller
         return response()->json(['success' => true, 'studyContext' => $this->context->resolve($request->user())]);
     }
 
+    /**
+     * POST /student/classrooms/{id}/school-consent — l'élève accepte que
+     * l'ÉTABLISSEMENT de sa classe lise son apprentissage (SCHOOL_ADMIN_SPACE.md §4).
+     */
+    public function schoolConsent(Request $request, int $id)
+    {
+        $classroom = Classroom::find($id);
+        if ($classroom === null) {
+            abort(404);
+        }
+
+        try {
+            $this->memberships->confirmSchoolConsent($request->user(), $classroom);
+        } catch (DomainException $e) {
+            return response()->json([
+                'success' => false,
+                'reason' => $e instanceof ClassroomException ? $e->reason : null,
+                'message' => $e->getMessage(),
+            ], 422);
+        }
+
+        $this->context->forget($request->user());
+
+        return response()->json(['success' => true, 'studyContext' => $this->context->resolve($request->user())]);
+    }
+
     public function leave(Request $request, int $id)
     {
         $classroom = Classroom::find($id);

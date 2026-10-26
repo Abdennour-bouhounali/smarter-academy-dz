@@ -53,6 +53,10 @@ class StudyContextService
             // Adhésion antérieure au texte de partage (ou texte changé) :
             // « قسمي » le redemande une fois.
             'consentRequired' => (bool) $c->getAttribute('membership_consent_required'),
+            // Une classe d'ÉTABLISSEMENT : son nom, et si l'élève doit encore
+            // dire « oui » à la lecture de la direction (SCHOOL_ADMIN_SPACE.md §4).
+            'schoolName' => $c->school?->isActive() ? $c->school->name : null,
+            'schoolConsentRequired' => (bool) $c->getAttribute('membership_school_consent_required'),
         ])->values()->all();
 
         return $this->cache[$user->id] = [
@@ -98,7 +102,7 @@ class StudyContextService
 
         $memberships = ClassroomMembership::where('student_id', $user->id)
             ->active()
-            ->with(['classroom.teacher:id,first_name,last_name'])
+            ->with(['classroom.teacher:id,first_name,last_name', 'classroom.school:id,name,status'])
             ->orderByDesc('joined_at')
             ->orderByDesc('id')
             ->get();
@@ -108,6 +112,8 @@ class StudyContextService
             ->map(function (ClassroomMembership $m) {
                 $m->classroom->setAttribute('membership_joined_at', $m->joined_at);
                 $m->classroom->setAttribute('membership_consent_required', ! $m->hasCurrentConsent());
+                $m->classroom->setAttribute('membership_school_consent_required',
+                    $m->classroom->school?->isActive() === true && $m->school_consent_by !== ClassroomMembership::SCHOOL_CONSENT_BY_STUDENT);
 
                 return $m->classroom;
             })

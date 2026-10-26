@@ -217,6 +217,8 @@ class TeacherPrivacyContractTest extends TestCase
         $body = $preview->getContent();
         $this->assertStringNotContainsString('membre.secret@example.dz', $body);
         $this->assertStringNotContainsString((string) $classroom->teacher->email, $body);
-        $this->assertSame(['classroomName', 'grade', 'teacherName', 'joiningOpen', 'alreadyMember', 'currentClassroomName'], array_keys($preview->json('joinLink')));
+        // `schoolName` (2026-10-26) : le NOM de l'établissement d'une classe
+        // d'établissement, que le texte de partage doit nommer — ni id ni adresse.
+        $this->assertSame(['classroomName', 'grade', 'teacherName', 'schoolName', 'joiningOpen', 'alreadyMember', 'currentClassroomName'], array_keys($preview->json('joinLink')));
     }
 }

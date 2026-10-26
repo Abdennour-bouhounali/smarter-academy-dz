@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Domain\Classroom\JoinLinkToken;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -28,6 +29,17 @@ class School extends Model
     protected $attributes = [
         'status' => self::STATUS_ACTIVE,
     ];
+
+    /**
+     * Le lien d'adhésion des ENSEIGNANTS naît avec l'établissement et ne
+     * change que par SchoolTeacherService::rotateJoinLink. Non assignable.
+     */
+    protected static function booted(): void
+    {
+        static::creating(function (School $school) {
+            $school->teacher_join_token ??= JoinLinkToken::generate();
+        });
+    }
 
     public function staff(): HasMany
     {

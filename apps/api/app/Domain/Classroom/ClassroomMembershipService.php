@@ -166,7 +166,73 @@ class ClassroomMembershipService
             throw new ClassroomException(ClassroomException::CONSENT_REQUIRED, 'Le partage avec l\'enseignant doit être accepté.');
         }
 
-        return DB::transaction(function () use ($student, $classroom, $via) {
+        return $this->admit($student, $classroom, $via, studentConsented: true);
+    }
+
+    /**
+     * La DIRECTION inscrit un élève dans une classe de son établissement
+     * (SCHOOL_ADMIN_SPACE.md, décision D2). Même porte que `join()` — une classe
+     * par élève, capacité, ligne unique — sans le geste de l'élève : le
+     * consentement de l'ÉTABLISSEMENT est enregistré (`school`), et celui du
+     * texte de partage reste à donner (« قسمي » le demandera, sans bloquer).
+     *
+     * @throws ClassroomException
+     */
+    public function enrolBySchool(User $student, Classroom $classroom): ClassroomMembership
+    {
+        if ($classroom->school_id === null) {
+            throw new ClassroomException(ClassroomException::INVALID, 'Cette classe n\'appartient à aucun établissement.');
+        }
+
+        return $this->admit($student, $classroom, ClassroomMembership::VIA_SCHOOL_ENROLMENT, studentConsented: false);
+    }
+
+    /**
+     * L'élève confirme que l'ÉTABLISSEMENT de sa classe peut lire son
+     * apprentissage (classe rattachée après son adhésion, ou inscrit par la
+     * direction).
+     *
+     * @throws ClassroomException
+     */
+    public function confirmSchoolConsent(User $student, Classroom $classroom): ClassroomMembership
+    {
+        $membership = ClassroomMembership::where('classroom_id', $classroom->id)
+            ->where('student_id', $student->id)
+            ->where('status', ClassroomMembership::STATUS_ACTIVE)
+            ->first();
+
+        if ($membership === null || $classroom->school_id === null) {
+            throw new ClassroomException(ClassroomException::NOT_MEMBER, 'Vous n\'êtes pas dans une classe d\'établissement.');
+        }
+
+        if ($membership->school_consent_by !== ClassroomMembership::SCHOOL_CONSENT_BY_STUDENT) {
+            $membership->forceFill([
+                'school_consent_at' => Carbon::now(),
+                'school_consent_by' => ClassroomMembership::SCHOOL_CONSENT_BY_STUDENT,
+            ])->save();
+
+            $this->log->log($student, ActivityLogger::CLASSROOM_MEMBER_SCHOOL_CONSENTED, 'classroom', $classroom->id, null, [
+                'student_id' => $student->id, 'school_id' => $classroom->school_id,
+            ]);
+            $this->context->forget($student);
+        }
+
+        return $membership;
+    }
+
+    /**
+     * La seule écriture d'une adhésion. `$studentConsented` : l'élève a fait
+     * le geste (`join`), ou c'est la direction qui inscrit (`enrolBySchool`).
+     *
+     * @throws ClassroomException
+     */
+    private function admit(User $student, Classroom $classroom, string $via, bool $studentConsented): ClassroomMembership
+    {
+        if (! $student->isStudent()) {
+            throw new ClassroomException(ClassroomException::NOT_A_STUDENT, 'Seul un compte élève peut rejoindre une classe.');
+        }
+
+        return DB::transaction(function () use ($student, $classroom, $via, $studentConsented) {
             // Verrou sur la classe, puis sur l'ENSEIGNANT : la capacité se
             // compte sur toutes ses classes, donc deux adhésions simultanées
             // dans deux classes différentes doivent aussi se sérialiser.
@@ -197,6 +263,26 @@ class ClassroomMembershipService
 
             $now = Carbon::now();
 
+            // Le partage avec l'enseignant : le geste de l'élève, sinon rien
+            // (inscription par la direction — « قسمي » le redemandera).
+            // Le partage avec l'ÉTABLISSEMENT, si la classe en a un : le geste
+            // fait sur la page du LIEN, qui nomme l'établissement ; ou
+            // l'inscription par la direction (`school`). Le CODE ne montre pas
+            // l'établissement avant le geste : rien n'est enregistré, et
+            // « قسمي » le demande ensuite.
+            $schoolConsentBy = match (true) {
+                $classroom->school_id === null => null,
+                ! $studentConsented => ClassroomMembership::SCHOOL_CONSENT_BY_SCHOOL,
+                $via === ClassroomMembership::VIA_JOIN_LINK => ClassroomMembership::SCHOOL_CONSENT_BY_STUDENT,
+                default => null,
+            };
+            $consent = [
+                'consented_at' => $studentConsented ? $now : null,
+                'consent_version' => $studentConsented ? (string) config('classroom.consent_version') : null,
+                'school_consent_at' => $schoolConsentBy !== null ? $now : null,
+                'school_consent_by' => $schoolConsentBy,
+            ];
+
             if ($existing !== null) {
                 // Revenir réactive la ligne : l'histoire « parti en mars,
                 // revenu en avril » reste lisible, sans doublon.
@@ -207,8 +293,7 @@ class ClassroomMembershipService
                     'joined_via' => $via,
                     'invitation_id' => null,
                     'removed_by' => null,
-                    'consented_at' => $now,
-                    'consent_version' => (string) config('classroom.consent_version'),
+                    ...$consent,
                 ])->save();
                 $membership = $existing;
             } else {
@@ -219,8 +304,7 @@ class ClassroomMembershipService
                 ]);
                 $membership->classroom_id = $classroom->id;
                 $membership->student_id = $student->id;
-                $membership->consented_at = $now;
-                $membership->consent_version = (string) config('classroom.consent_version');
+                $membership->forceFill($consent);
                 $membership->save();
             }
 

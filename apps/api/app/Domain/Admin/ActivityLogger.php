@@ -178,6 +178,32 @@ class ActivityLogger
 
     public const SCHOOL_DIRECTOR_REVOKED = 'school.director_revoked';
 
+    /** Phase 3 : la structure. L'acteur est le directeur, l'enseignant ou l'élève qui agit. */
+    public const SCHOOL_TERMS_UPDATED = 'school.terms_updated';
+
+    public const SCHOOL_TEACHER_JOINED = 'school_teacher.joined';
+
+    public const SCHOOL_TEACHER_LEFT = 'school_teacher.left';
+
+    public const SCHOOL_TEACHER_LINK_ROTATED = 'school.teacher_link_rotated';
+
+    public const SCHOOL_CLASSROOM_CREATED = 'school.classroom_created';
+
+    public const SCHOOL_CLASSROOM_REASSIGNED = 'school.classroom_reassigned';
+
+    public const SCHOOL_CLASSROOM_ATTACHED = 'school.classroom_attached';
+
+    public const SCHOOL_CLASSROOM_DETACHED = 'school.classroom_detached';
+
+    /** Import : ids et nombre seulement — jamais un mot de passe ni une date de naissance. */
+    public const SCHOOL_ROSTER_IMPORTED = 'school.roster_imported';
+
+    public const SCHOOL_STUDENT_TRANSFERRED = 'school.student_transferred';
+
+    public const SCHOOL_CREDENTIALS_ISSUED = 'school.credentials_issued';
+
+    public const CLASSROOM_MEMBER_SCHOOL_CONSENTED = 'classroom_member.school_consented';
+
     /** Suppression définitive d'un compte élève ou enseignant (UserDeletionService). */
     public const USER_DELETED = 'user.deleted';
 

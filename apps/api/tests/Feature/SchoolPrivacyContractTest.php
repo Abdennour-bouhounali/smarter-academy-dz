@@ -73,6 +73,10 @@ class SchoolPrivacyContractTest extends TestCase
     {
         return [
             'overview' => '/api/v1/school/overview',
+            'terms' => '/api/v1/school/terms',
+            'teachers' => '/api/v1/school/teachers',
+            'classrooms' => '/api/v1/school/classrooms',
+            'students' => '/api/v1/school/students',
         ];
     }
 
@@ -148,6 +152,13 @@ class SchoolPrivacyContractTest extends TestCase
                 $this->assertSame(404, $e->getStatusCode());
             }
         }
+
+        // La liste des élèves : le seul qui a consenti, sans courriel ni identifiant de connexion personnel.
+        $this->withToken($s['token'])->getJson('/api/v1/school/students')
+            ->assertOk()
+            ->assertJsonCount(1, 'students')
+            ->assertJsonPath('students.0.id', $s['readable']->id)
+            ->assertJsonPath('students.0.login', null);
 
         // Quitter la classe, ou l'archiver, retire l'élève de l'établissement.
         ClassroomMembership::where('student_id', $s['readable']->id)->update(['status' => ClassroomMembership::STATUS_LEFT]);

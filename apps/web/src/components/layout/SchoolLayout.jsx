@@ -1,13 +1,17 @@
 import { Suspense, useContext } from 'react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { LayoutDashboard, LogOut } from 'lucide-react';
+import { GraduationCap, LayoutDashboard, LogOut, School, Settings, Users } from 'lucide-react';
 import ScrollToTop from '../common/ScrollToTop';
 import { AuthContext } from '../../context/AuthContext';
 import { getDisplayName } from '../../utils/userDisplay';
 
 const LINKS = [
   { to: '/idara', end: true, icon: LayoutDashboard, key: 'nav.home' },
+  { to: '/idara/aqsam', end: false, icon: School, key: 'nav.classes' },
+  { to: '/idara/asatidha', end: false, icon: GraduationCap, key: 'nav.teachers' },
+  { to: '/idara/talamidh', end: false, icon: Users, key: 'nav.students' },
+  { to: '/idara/iidadat', end: false, icon: Settings, key: 'nav.settings' },
 ];
 
 /**

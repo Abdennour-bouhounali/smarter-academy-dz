@@ -11,6 +11,9 @@ use App\Http\Controllers\Admin\AdminActivityLogController;
 use App\Http\Controllers\Admin\AdminClassroomController;
 use App\Http\Controllers\Admin\AdminSchoolController;
 use App\Http\Controllers\School\SchoolHomeController;
+use App\Http\Controllers\School\SchoolStructureController;
+use App\Http\Controllers\School\SchoolStudentController;
+use App\Http\Controllers\Teacher\TeacherSchoolController;
 use App\Http\Controllers\Admin\AdminContentController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminEntitlementController;
@@ -438,6 +441,7 @@ Route::prefix('v1')->group(function () {
                 ->middleware('throttle:classroom-join');
             Route::post('/student/classrooms/{id}/leave', [StudentClassroomController::class, 'leave'])->whereNumber('id');
             Route::post('/student/classrooms/{id}/consent', [StudentClassroomController::class, 'consent'])->whereNumber('id');
+            Route::post('/student/classrooms/{id}/school-consent', [StudentClassroomController::class, 'schoolConsent'])->whereNumber('id');
             // Les suggestions de l'enseignant (interventions visibles) — jamais un verrou.
             Route::get('/student/teacher-recommendations', [StudentClassroomController::class, 'recommendations']);
 
@@ -523,6 +527,14 @@ Route::prefix('v1')->group(function () {
             Route::post('/classrooms/{id}/join-code/rotate', [TeacherClassroomController::class, 'rotateJoinCode'])->whereNumber('id');
             // Renouveler le LIEN de classe : l'ancien n'ouvre plus rien.
             Route::post('/classrooms/{id}/join-link/rotate', [TeacherClassroomController::class, 'rotateJoinLink'])->whereNumber('id');
+
+            // « مؤسستي » : rejoindre un établissement par son lien, lire ce
+            // qu'il voit de moi, partir, rattacher mes classes (SCHOOL_ADMIN_SPACE.md).
+            Route::get('/school', [TeacherSchoolController::class, 'show']);
+            Route::get('/school-links/{token}', [TeacherSchoolController::class, 'preview'])->middleware('throttle:30,1');
+            Route::post('/school/join', [TeacherSchoolController::class, 'join'])->middleware('throttle:10,1');
+            Route::post('/school/leave', [TeacherSchoolController::class, 'leave']);
+            Route::put('/classrooms/{id}/school', [TeacherSchoolController::class, 'attach'])->whereNumber('id');
 
             // « بنك التمارين » : qui, parmi MES élèves, a fait cet exercice — et
             // ce qu'il a répondu. Lecture seule (TeacherPracticeResponses).
@@ -618,6 +630,21 @@ Route::prefix('v1')->group(function () {
         ->prefix('school')
         ->group(function () {
             Route::get('/overview', [SchoolHomeController::class, 'overview']);
+
+            // Phase 3 — la structure : trimestres, enseignants, classes, élèves.
+            Route::get('/terms', [SchoolStructureController::class, 'terms']);
+            Route::put('/terms', [SchoolStructureController::class, 'updateTerms']);
+            Route::get('/teachers', [SchoolStructureController::class, 'teachers']);
+            Route::post('/teachers/join-link/rotate', [SchoolStructureController::class, 'rotateTeacherLink']);
+            Route::delete('/teachers/{teacherId}', [SchoolStructureController::class, 'detachTeacher'])->whereNumber('teacherId');
+            Route::get('/classrooms', [SchoolStructureController::class, 'classrooms']);
+            Route::post('/classrooms', [SchoolStructureController::class, 'createClassroom']);
+            Route::patch('/classrooms/{id}/teacher', [SchoolStructureController::class, 'reassign'])->whereNumber('id');
+            Route::get('/students', [SchoolStudentController::class, 'index']);
+            Route::post('/roster/preview', [SchoolStudentController::class, 'preview'])->middleware('throttle:30,1');
+            Route::post('/roster', [SchoolStudentController::class, 'commit'])->middleware('throttle:10,1');
+            Route::patch('/students/{studentId}/classroom', [SchoolStudentController::class, 'transfer'])->whereNumber('studentId');
+            Route::post('/students/credentials', [SchoolStudentController::class, 'credentials'])->middleware('throttle:10,1');
         });
 
     // Protected routes — admin only

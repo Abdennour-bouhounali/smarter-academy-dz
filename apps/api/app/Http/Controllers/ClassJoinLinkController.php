@@ -54,6 +54,9 @@ class ClassJoinLinkController extends Controller
                 'classroomName' => $classroom->name,
                 'grade' => $classroom->grade,
                 'teacherName' => trim(($teacher?->first_name ?? '').' '.($teacher?->last_name ?? '')),
+                // Une classe d'établissement : le texte de partage le NOMME, et
+                // le geste ouvre aussi la lecture de la direction (SCHOOL_ADMIN_SPACE.md §4).
+                'schoolName' => $classroom->school?->isActive() ? $classroom->school->name : null,
                 'joiningOpen' => $classroom->acceptsNewMembers(),
                 'alreadyMember' => $alreadyMember,
                 'currentClassroomName' => $currentClassroomName,

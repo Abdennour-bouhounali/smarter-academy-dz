@@ -28,6 +28,35 @@ class SchoolException extends DomainException
 
     public const INVALID_STATUS = 'invalid_status';
 
+    /** Phase 3 — la structure. */
+    public const INVALID_TERMS = 'invalid_terms';
+
+    /** Lien d'enseignant inconnu, mal formé, ou établissement inactif. */
+    public const INVALID_LINK = 'invalid_link';
+
+    /** Rejoindre un établissement sans avoir accepté ce qu'il verra. */
+    public const CONSENT_REQUIRED = 'consent_required';
+
+    /** Un enseignant n'appartient qu'à UN établissement à la fois. */
+    public const ALREADY_IN_SCHOOL = 'already_in_school';
+
+    public const NOT_IN_SCHOOL = 'not_in_school';
+
+    /** L'enseignant visé n'est pas (ou plus) rattaché à cet établissement. */
+    public const TEACHER_NOT_IN_SCHOOL = 'teacher_not_in_school';
+
+    /** La classe visée n'est pas une classe active de cet établissement. */
+    public const CLASS_NOT_IN_SCHOOL = 'class_not_in_school';
+
+    /** L'élève visé n'est pas lisible par cet établissement. */
+    public const STUDENT_NOT_IN_SCHOOL = 'student_not_in_school';
+
+    /** Rééditer le mot de passe d'un compte PERSONNEL (non créé par l'établissement). */
+    public const NOT_SCHOOL_LOGIN = 'not_school_login';
+
+    /** Un import refusé en bloc (lignes invalides, trop de lignes). */
+    public const INVALID_ROSTER = 'invalid_roster';
+
     public function __construct(public readonly string $reason, string $message)
     {
         parent::__construct($message);

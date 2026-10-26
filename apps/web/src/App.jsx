@@ -95,6 +95,13 @@ const ParentLinkPage = lazy(() => import('./pages/parent/ParentLinkPage'));
 // Tout est paresseux ; les chaînes sont dans `idara` (à la demande).
 const SchoolLayout = lazy(() => import('./components/layout/SchoolLayout'));
 const SchoolHome = lazy(() => import('./pages/school/SchoolHome'));
+const SchoolClassrooms = lazy(() => import('./pages/school/SchoolClassrooms'));
+const SchoolTeachers = lazy(() => import('./pages/school/SchoolTeachers'));
+const SchoolStudents = lazy(() => import('./pages/school/SchoolStudents'));
+const SchoolSettings = lazy(() => import('./pages/school/SchoolSettings'));
+// « مؤسستي » : l'établissement vu par l'enseignant, et son lien d'adhésion.
+const TeacherSchoolPage = lazy(() => import('./pages/teacher/TeacherSchoolPage'));
+const TeacherSchoolJoin = lazy(() => import('./pages/teacher/TeacherSchoolJoin'));
 // « المؤسسات », côté administration de la plateforme.
 const AdminSchoolList = lazy(() => import('./pages/admin/schools/SchoolList'));
 const AdminSchoolDetail = lazy(() => import('./pages/admin/schools/SchoolDetail'));
@@ -412,6 +419,8 @@ function AppRoutes() {
           <Route path="tashih" element={<TeacherReviews />} />
           <Route path="offre" element={<TeacherSubscription />} />
           <Route path="profil" element={<TeacherProfile />} />
+          <Route path="muassasa" element={<TeacherSchoolPage />} />
+          <Route path="muassasa/rejoindre/:token" element={<TeacherSchoolJoin />} />
           {/* L'ENSEIGNANT APPREND COMME UN ÉLÈVE — mêmes pages, même
               moteur, dans SON espace : le catalogue (Explorer), le
               مختبر et son cahier (à lui : le serveur ne sert que les
@@ -467,6 +476,10 @@ function AppRoutes() {
       <Route path="/idara" element={<ProtectedRoute allowedRoles={['school_admin']} />}>
         <Route element={<SchoolLayout />}>
           <Route index element={<SchoolHome />} />
+          <Route path="aqsam" element={<SchoolClassrooms />} />
+          <Route path="asatidha" element={<SchoolTeachers />} />
+          <Route path="talamidh" element={<SchoolStudents />} />
+          <Route path="iidadat" element={<SchoolSettings />} />
         </Route>
       </Route>
 

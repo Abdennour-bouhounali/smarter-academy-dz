@@ -6,7 +6,6 @@ import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import { fetchSchoolOverview } from '../../services/schoolService';
 
 const COMING = [
-  { key: 'structure', icon: Users },
   { key: 'tracking', icon: BarChart3 },
   { key: 'reports', icon: ClipboardList },
   { key: 'meeting', icon: Presentation },

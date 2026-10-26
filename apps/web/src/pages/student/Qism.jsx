@@ -11,6 +11,7 @@ import {
   joinClassGroup,
   leaveClassGroup,
   confirmClassConsent,
+  confirmSchoolConsent,
   fetchTeacherRecommendations,
 } from '../../services/studyContextService';
 import { ConfirmDialog } from '../../components/admin/ui/Modal';
@@ -143,7 +144,24 @@ export default function Qism() {
   };
 
   const gradeName = (code) => getAllGrades().find((g) => g.id === code)?.name ?? code;
+  // Une classe d'établissement dont la direction attend encore le « oui » de
+  // l'élève (SCHOOL_ADMIN_SPACE.md §4) : une carte, jamais un mur.
+  const handleSchoolConsent = async (classroom) => {
+    if (consenting) return;
+    setConsenting(`school-${classroom.id}`);
+    setError(null);
+    try {
+      await confirmSchoolConsent(token, classroom.id);
+      await refresh().catch(() => {});
+    } catch (err) {
+      setError(messageFor(err));
+    } finally {
+      setConsenting(null);
+    }
+  };
+
   const awaitingConsent = classroomsAwaitingConsent(studyContext);
+  const awaitingSchoolConsent = (studyContext?.classrooms ?? []).filter((c) => c.schoolConsentRequired && c.schoolName);
 
   return (
     <div className="sa-page py-8 sm:py-10">
@@ -175,6 +193,16 @@ export default function Qism() {
                 <LogOut size={15} /> {t('qism.leave')}
               </button>
             </div>
+          </section>
+        ))}
+
+        {awaitingSchoolConsent.map((c) => (
+          <section key={`school-${c.id}`} className="glass-card p-5 sm:p-6 border-teal-200 bg-teal-50/40" aria-labelledby={`qism-school-consent-${c.id}`} data-qism-school-consent={c.id}>
+            <h2 id={`qism-school-consent-${c.id}`} className="font-semibold text-slate-900">{t('qism.schoolConsent.title', { school: c.schoolName, name: c.name })}</h2>
+            <p className="text-sm text-slate-600 mt-1 mb-4">{t('qism.schoolConsent.body')}</p>
+            <button type="button" onClick={() => handleSchoolConsent(c)} disabled={consenting !== null} data-qism-school-consent-accept className="px-6 py-3 rounded-xl bg-teal-700 text-white font-semibold hover:bg-teal-800 disabled:opacity-60 disabled:cursor-not-allowed">
+              {consenting === `school-${c.id}` ? t('qism.schoolConsent.accepting') : t('qism.schoolConsent.accept')}
+            </button>
           </section>
         ))}
 

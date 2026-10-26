@@ -57,6 +57,17 @@ export function confirmClassConsent(token, classroomId) {
   }, 'classroomJoin').then((d) => d.studyContext);
 }
 
+/**
+ * Accepter que l'ÉTABLISSEMENT de la classe lise l'apprentissage
+ * (`schoolConsentRequired`, SCHOOL_ADMIN_SPACE.md §4).
+ */
+export function confirmSchoolConsent(token, classroomId) {
+  return call(`/student/classrooms/${encodeURIComponent(classroomId)}/school-consent`, {
+    method: 'POST',
+    headers: auth(token),
+  }, 'classroomJoin').then((d) => d.studyContext);
+}
+
 /** Les suggestions des enseignants de l'élève — jamais un verrou. */
 export function fetchTeacherRecommendations(token) {
   return call('/student/teacher-recommendations', { headers: auth(token) }, 'studyContext')
