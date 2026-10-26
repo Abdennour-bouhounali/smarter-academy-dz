@@ -468,3 +468,55 @@ Plan `docs/sources/3am/unit3/plan/kitaba-ilmiya-rutba.md` (« Generator notes »
 ### Phase 0, entry 19 — `hasr-adad-ushri` « حصر عدد عشري موجب » (3AM unit 5, lesson 2 of the remaining three, queue #19, generated 2026-10-26, NOT yet exported / committed)
 
 Programme item `3am.m5.x1` (extends 1AM `1am.m3.r05`). Plan `docs/sources/3am/unit5/plan/hasr-adad-ushri.md` (« Generator notes » at its end). `decimals.js` extended (`floorAt`, `ceilAt`, `roundAt`, `roundingInterval`, `quotientDigits`, `quotientBracket`, swept). New lab `scoop-scale` « ميزان العطّار » (theme `attar`, `MANIPULATION_CONTRACT` § 2septquadragies, DNA row, LabCoach row): the hand pours / pinches a MASS onto a spice scale whose seven-segment screen rounds; the student finds where the screen flips (1,25 included, 1,35 excluded; 1,50 and 2,49 for the kilo screen; 5,675 / 5,684 and the 2/7 sachet whose lamp never says « balanced » in متقدم); free panel (a reading — « 7 » and « 7,0 » differ — or a quotient). Nine modules (0 أستعدّ 7 statements · 1 نشاط with four evidence questions (the 2/7 step optional) · 2 معارف (6,358, the 8,5 · 9 · 9,5 figure) · 3 طريقة with three methods · 4 أتمرّن 7 exercises · 5–7 مسائل (a semolina bag read 24,9 kg, a family car trip 437 km / 31 L, a 100 m race at 0,01 s) · 8 إختبار أولي); catalogue `available`, `durationMinutes` 58 (82 with the مسائل), icon ⚖️. الكفاءات reworded as in the plan (P1 names the approximations, P2 adds « وحصره بهما », P3 adds the INVERSE — a number known by its rounding — and P4 « وتعيين مدوّره »). Bank 5 × 10 (3 `term_exam`, 31 `term_exam_modelled`, 9 `adapted`; oracle with its own BigInt decimals, 193 entries). Extraction: elements verified at 200 dpi (`prep` 14 and 15 and `now-77-1` corrected). Gates: lab logic + render tests, content / problems / figures tests, unit tests, e2e `apps/web/e2e/lesson-kit/3am-unit5-hasr-adad-ushri.mjs` (4 sizes × 9 modules + gestures + glance at 5 sizes).
+
+## HANDOFF — 3AM units 1–5 plan, state at the end of the 2026-10-26 session (coordinator notes)
+
+Master plan: `docs/curriculum/PLAN_3AM_UNITS_1_5.md` (20 entries). **18 of 20 are generated, gated, committed, pushed to `dev` and
+published in the LOCAL database (modules + exercises `published`, nothing draft).** Pairs 1–9 are in `git log` as
+`feat(3am): publish …` (pair 8 = `26e43ff0`, pair 9 = `6e82348b`).
+
+### What is left — pair 10 (the last two entries, both syntheses)
+
+| Lane | Entry | Code | Unit dir | Port | Notes |
+|---|---|---|---|---|---|
+| A | #20 | `wadiya-idmajiya-musawiyat-mutabayinat` | `unit5` | 5173 | unit-5 synthesis; module 7 reuses `term-ferry`; plan `docs/sources/3am/unit5/plan/wadiya-idmajiya-musawiyat-mutabayinat.md` |
+| B | #14 | `wadiya-idmajiya-quwa-nisbiya` | `unit3` | 5174 | unit-3 synthesis + « رقاقة الذهب »; plan `docs/sources/3am/unit3/plan/wadiya-idmajiya-quwa-nisbiya.md` |
+
+Start both with the plan's « generator prompt » (`PLAN_3AM_UNITS_1_5.md` § « The generator prompt »; replace `<CODE>`, `<UNIT_DIR>`,
+`<PORT>`, `<OTHER>`), launched as two background Sonnet sub-agents, plus these rules added since the plan was written:
+- nothing generated stays `draft` (the coordinator publishes locally); no pig / alcohol / gambling cards or dice / interest /
+  non-Islamic symbols in any string, icon or emoji (guide § « Cultural and religious respect »);
+- entry bundle budget is **245 KB gzip** (measured ≈ 233.3 KB); no eager module imports catalogue names;
+- `term_exam` only for exercises actually read at the scan, otherwise `term_exam_modelled` / `adapted`;
+- do not touch the stray root-level `nisba-miawiya-3am` entry of `content/practice/policy.json`;
+- agents never commit / push / import the DB; they reuse the seeded `_unit/` and move « pending » destinations in `build-extraction.py`.
+Syntheses have no new lab (nine modules; modules 1–6 « وضعيات تدريبية »; see entries 4, 12, 14 above as models).
+
+### Coordinator sequence after each pair (exactly what was run)
+
+1. `rm -rf apps/web/dist` (a stale `dist/.htaccess` breaks the `sa-share-pages` plugin), then `npm test` (web + scripts),
+   `npm run check:lessons`, `NODE_OPTIONS=--max-old-space-size=8192 npm run build`, `node scripts/learning-net-queue.mjs --check`.
+   The `buildLessonMemo` 4AM `insihab-shuaa` test is a known load flake (passes alone); `examSheet.test.js` timeout is 180 s.
+2. Grep the changed files for `🐷 🃏 🎰 🍺 🍷` (the guide's own rule text is the only legitimate hit).
+3. ONE commit per pair, `feat(3am): publish <a> (unit N) and <b> (unit M)`, trailer `Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>`;
+   `git push origin dev`.
+4. Local DB (API at 127.0.0.1:8000): `node packages/core/curriculum/exportCurriculum.mjs`; `(cd apps/api && php artisan smarter:import-curriculum)`;
+   `node packages/core/curriculum/exportContentRegistry.mjs`; `(cd apps/api && php artisan smarter:import-content-registry)`; then in
+   tinker set `publication_status='published'` on `lesson_modules` and `practice_exercises` where `retired_at` is null.
+5. Append the entry to this file; update the plan's « Generator notes ».
+
+When pair 10 is done the 3AM unit 1–5 plan is complete: update `docs/curriculum/GENERATION_QUEUE.md` (regenerated by
+`npm run generate:learning-net`) and continue with the next batch of the queue (`GENERATION_QUEUE.md`).
+
+### Open owner confirmations (defaults applied until decided)
+
+- Unit 1: Assekrem-night redesign of the synthesis (default: kept).
+- `adad-natiq`: negative "integer + fraction" ambiguity; `amaliyat-natiqa` module 7 self-made calculator (book page missing).
+- Unit 4: تحدّ text rewrite (126,4/5→657) vs synthesis تحدّ (48,5/4→210); net-link proposals `3am.m1.r06`, `2am.m4.r02`, `3am.m5.r01 → 3am.m5.r04`, `3am.m3.r06` / `2am.m4.r09 → r03` (default: measured by « أستعدّ », no edge written).
+- Unit 2 synthesis: brick-stock document dropped.
+- `quwa-adad-ashara`: P3 includes names/prefixes; self-2 reading `10⁻²`; ex-63/64/68/69 notIntegrated.
+- `qawaid-quwa-ashara`: P4 widened to `a × 10ᵖ` computations; area/volume tables as power-of-power evidence.
+- `mutabayinat-amaliyat`: net link `3am.m5.r04 → r05` missing (sign-of-difference only recalled); shared programme item counts as « no net link » for cross-lesson edges (default yes).
+- `kitaba-ilmiya-rutba`: ex-61 / ex-62 (Pythagoras, Thales) notIntegrated; order-of-magnitude convention follows the book (half up); negatives only in P1.
+- `hasr-adad-ushri`: unit-5 README Q1 (net links `2am.m1.r05` / `r06 → 3am.m5.x1`), Q3 (P3 adds the inverse), Q4 (no 2AM papers, 3 faithful term-exam sheets); loose `RANK` distractors on L1–L3 (helper offered a rework); the 1AM home lesson `hasr-qiyam-muqarraba` is unpublished so its « تذكّر » box has no link yet.
+- Other: 🎲 in `ProbabilityStatsTool.jsx` / `MATH_LAB.md` (probability object); whether the importer should create content as `published` directly; unchecked `term_exam` claims in pair-5 banks (`amaliyat-natiqa` 16, `qimat-ibara-harfiya` 14); unit-card تحدّ texts of units 1/2 still book-verbatim; `node apps/web/e2e/lesson-route-boundary.mjs` never run against the real API.
