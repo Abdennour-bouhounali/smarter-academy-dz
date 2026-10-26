@@ -27,6 +27,11 @@ export const transferStudent = (token, studentId, classroomId) =>
   call(`/school/students/${encodeURIComponent(studentId)}/classroom`, send('PATCH', token, { classroomId }), KEY);
 export const reissueCards = (token, studentIds) => call('/school/students/credentials', send('POST', token, { studentIds }), KEY);
 
+// Côté DIRECTEUR — le suivi (phase 4).
+export const fetchLearningMap = (token, grade) =>
+  call(`/school/learning-map${grade ? `?grade=${encodeURIComponent(grade)}` : ''}`, get(token), KEY);
+export const fetchStudentFile = (token, studentId) => call(`/school/students/${encodeURIComponent(studentId)}/progress`, get(token), KEY);
+
 // Côté ENSEIGNANT — « مؤسستي » (même transport, même catalogue d'erreurs).
 export const fetchMySchool = (token) => call('/teacher/school', get(token), KEY);
 export const previewSchoolLink = (token, linkToken) => call(`/teacher/school-links/${encodeURIComponent(linkToken)}`, get(token), KEY);

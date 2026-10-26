@@ -136,7 +136,7 @@ export default function ProgressDetail({ progress, audience = 'parent' }) {
           <p className="font-inter text-sm text-slate-500">{t('progress.supportNone')}</p>
         ) : (
           <>
-            <p className="mb-3 font-inter text-sm text-slate-600">{t(audience === 'parent' ? 'progress.supportIntro' : 'progress.supportIntroStudent')}</p>
+            <p className="mb-3 font-inter text-sm text-slate-600">{t({ parent: 'progress.supportIntro', school: 'progress.supportIntroSchool' }[audience] ?? 'progress.supportIntroStudent')}</p>
             <ul className="space-y-2">
               {progress.needsSupport.map((lp) => (
                 <li key={lp.code} className="flex items-start justify-between gap-3 rounded-xl bg-slate-50 p-3">

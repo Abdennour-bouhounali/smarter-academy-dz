@@ -77,6 +77,8 @@ class SchoolPrivacyContractTest extends TestCase
             'teachers' => '/api/v1/school/teachers',
             'classrooms' => '/api/v1/school/classrooms',
             'students' => '/api/v1/school/students',
+            'learningMap' => '/api/v1/school/learning-map',
+            'studentFile' => "/api/v1/school/students/{$s['readable']->id}/progress",
         ];
     }
 

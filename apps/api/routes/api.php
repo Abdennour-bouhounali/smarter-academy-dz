@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\AdminActivityLogController;
 use App\Http\Controllers\Admin\AdminClassroomController;
 use App\Http\Controllers\Admin\AdminSchoolController;
 use App\Http\Controllers\School\SchoolHomeController;
+use App\Http\Controllers\School\SchoolProgressController;
 use App\Http\Controllers\School\SchoolStructureController;
 use App\Http\Controllers\School\SchoolStudentController;
 use App\Http\Controllers\Teacher\TeacherSchoolController;
@@ -645,6 +646,10 @@ Route::prefix('v1')->group(function () {
             Route::post('/roster', [SchoolStudentController::class, 'commit'])->middleware('throttle:10,1');
             Route::patch('/students/{studentId}/classroom', [SchoolStudentController::class, 'transfer'])->whereNumber('studentId');
             Route::post('/students/credentials', [SchoolStudentController::class, 'credentials'])->middleware('throttle:10,1');
+
+            // Phase 4 — le suivi : la carte des الكفاءات, le dossier d'un élève.
+            Route::get('/learning-map', [SchoolProgressController::class, 'learningMap']);
+            Route::get('/students/{studentId}/progress', [SchoolProgressController::class, 'studentFile'])->whereNumber('studentId');
         });
 
     // Protected routes — admin only

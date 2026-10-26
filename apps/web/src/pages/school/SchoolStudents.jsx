@@ -1,4 +1,5 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { KeyRound, Printer, Upload } from 'lucide-react';
 import Modal from '../../components/admin/ui/Modal';
@@ -117,7 +118,7 @@ export default function SchoolStudents() {
                     {s.login && <input type="checkbox" className="h-4 w-4" aria-label={personName(s, '')} checked={selected.has(s.id)} onChange={() => toggle(s.id)} />}
                   </td>
                   <td className="p-3 font-semibold text-slate-900">
-                    {personName(s, t('common.unnamed'))}
+                    <Link to={`/idara/talamidh/${s.id}`} className="text-indigo-700 hover:underline">{personName(s, t('common.unnamed'))}</Link>
                     {s.enrolledBySchool && <span className="ms-2 rounded-lg bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700">{t('students.enrolled')}</span>}
                   </td>
                   <td className="p-3">{s.classroom.name}</td>

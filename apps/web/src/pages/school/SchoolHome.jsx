@@ -1,12 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { BarChart3, ClipboardList, GraduationCap, Presentation, School, Users } from 'lucide-react';
+import { ClipboardList, GraduationCap, Presentation, School, Users } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import { fetchSchoolOverview } from '../../services/schoolService';
 
 const COMING = [
-  { key: 'tracking', icon: BarChart3 },
   { key: 'reports', icon: ClipboardList },
   { key: 'meeting', icon: Presentation },
 ];

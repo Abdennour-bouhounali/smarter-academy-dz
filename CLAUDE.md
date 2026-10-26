@@ -79,9 +79,10 @@ Since 2026-10-26 a **school is a first-class object** with its **director** (« 
 created ONLY by the platform admin in « المؤسسات » `/admin/etablissements` with a one-time password). Owner decisions: the school buys a
 licence of seats, the director may enrol students directly (the student confirms), one role (the director), teacher activity shown as
 facts the teacher sees too, a student without e-mail gets a generated school login. The school reads a student only through `SchoolAccess` (active member of an active class of that school
-WITH `school_consent_at`), never an e-mail, never an average; every new `/school` read joins `SchoolPrivacyContractTest`. Phases 0–3 are
+WITH `school_consent_at`), never an e-mail, never an average; every new `/school` read joins `SchoolPrivacyContractTest`. Phases 0–4 are
 built (structure: terms, teachers by link + « مؤسستي », classes, roster import with generated « معرّف الدخول » (no mail ever sent to it),
-transfer, login cards); tracking, reports, meeting view and licence are planned. Contract: `docs/architecture/SCHOOL_ADMIN_SPACE.md`.
+transfer, login cards; tracking: the الكفاءات map class by class as COUNTS, the student file = the parent's « التقدّم بالتفصيل », no study
+time); reports, meeting view and licence are planned. Contract: `docs/architecture/SCHOOL_ADMIN_SPACE.md`.
 
 Since 2026-10-22 the platform answers parents' fear of an open laptop (« فضاء الوليّ »).
 It works in three layers and claims nothing more, because a web page cannot block other sites:

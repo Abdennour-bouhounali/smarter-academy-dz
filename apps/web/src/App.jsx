@@ -99,6 +99,8 @@ const SchoolClassrooms = lazy(() => import('./pages/school/SchoolClassrooms'));
 const SchoolTeachers = lazy(() => import('./pages/school/SchoolTeachers'));
 const SchoolStudents = lazy(() => import('./pages/school/SchoolStudents'));
 const SchoolSettings = lazy(() => import('./pages/school/SchoolSettings'));
+const SchoolLearningMap = lazy(() => import('./pages/school/SchoolLearningMap'));
+const SchoolStudentFile = lazy(() => import('./pages/school/SchoolStudentFile'));
 // « مؤسستي » : l'établissement vu par l'enseignant, et son lien d'adhésion.
 const TeacherSchoolPage = lazy(() => import('./pages/teacher/TeacherSchoolPage'));
 const TeacherSchoolJoin = lazy(() => import('./pages/teacher/TeacherSchoolJoin'));
@@ -479,6 +481,8 @@ function AppRoutes() {
           <Route path="aqsam" element={<SchoolClassrooms />} />
           <Route path="asatidha" element={<SchoolTeachers />} />
           <Route path="talamidh" element={<SchoolStudents />} />
+          <Route path="talamidh/:studentId" element={<SchoolStudentFile />} />
+          <Route path="kafaat" element={<SchoolLearningMap />} />
           <Route path="iidadat" element={<SchoolSettings />} />
         </Route>
       </Route>

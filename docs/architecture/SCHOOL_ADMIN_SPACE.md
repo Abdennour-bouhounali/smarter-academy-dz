@@ -1,10 +1,11 @@
 # « فضاء الإدارة » — the school administration space
 
-> Status (2026-10-26): **Phases 0–3 implemented** — contract, data model, the
+> Status (2026-10-26): **Phases 0–4 implemented** — contract, data model, the
 > `school_admin` role and its gate, the privacy gate `SchoolAccess`, the
-> platform admin's « المؤسسات », and the school's STRUCTURE (terms, teachers,
-> classes, students, roster import, login cards). Phases 4–7 (tracking,
-> reports, meeting view, licence) are `Planned`. The code is the source of truth.
+> platform admin's « المؤسسات », the school's STRUCTURE (terms, teachers,
+> classes, students, roster import, login cards) and its TRACKING (the
+> الكفاءات map per class, the student file). Phases 5–7 (reports, meeting view,
+> licence) are `Planned`. The code is the source of truth.
 
 A **school** (« المؤسسة », a متوسطة) is a first-class object: its classes, its
 teachers, its students, and one **director** (« المدير ») who manages them,
@@ -148,8 +149,8 @@ Lazy routes, `SchoolLayout`, namespace `idara` on demand. Shared look and helper
 /idara/asatidha    الأساتذة       join link (copy, renew), each teacher with TeacherFacts, detach       built
 /idara/talamidh    التلاميذ       consented students per class, roster import, transfer, login cards   built
 /idara/iidadat     الإعدادات      the three terms                                                       built
-/idara/talamidh/:id ملف التلميذ   reuses ProgressDetail.jsx                                             Planned (phase 4)
-/idara/kafaat      الكفاءات       school × الكفاءة distribution per class                               Planned (phase 4)
+/idara/talamidh/:id ملف التلميذ   the parent's « التقدّم بالتفصيل » (ProgressDetail audience="school")   built (phase 4)
+/idara/kafaat      الكفاءات       each الكفاءة of a grade, class by class, as counts                    built (phase 4)
 /idara/taqarir     التقارير       catalogue, snapshots, print, export                                   Planned (phase 5)
 /idara/ijtimaa/:id وضع الاجتماع   projection, « إخفاء الأسماء »                                        Planned (phase 6)
 ```
@@ -205,7 +206,31 @@ GET  /school/students[?classroom=]   → {students[{id, firstName, lastName, cla
 POST /school/roster/preview {classroomId, rows[]}     POST /school/roster {classroomId, rows[]}  (no-store)
 PATCH /school/students/{studentId}/classroom {classroomId}
 POST /school/students/credentials {studentIds[]}  (no-store)
+GET  /school/learning-map[?grade=]   → {grades[], map{grade, classes[{id, name, students}], lessons[{code, title, learningPoints[{code, title, byClass{classId: counts}, total: counts, difficultyScope}]}]}}
+GET  /school/students/{studentId}/progress   → {student{id, firstName, lastName, classroom}, progress}  (404 outside the school)
 ```
+
+**Tracking (phase 4, `SchoolProgressService`).** It recomputes nothing: it READS
+the canonical Mastery V2 state (`student_learning_point_progress`) on the
+students the school may read (`consentedMemberships`).
+
+- **The الكفاءات map** of a grade: the learning points of the lessons at least one
+  class of that grade sees (`ClassroomProgressService::effectiveLessonIds`, so a
+  lesson hidden by every teacher is absent), and for each point and each class
+  the **counts** `{mastered, reinforce, gap, unassessed}` (unassessed = readable
+  students without a state), a `total` over the classes, and `difficultyScope`
+  (`LearningTrend::difficultyScope`, the teacher's indicator) over the total.
+  Three grouped queries whatever the school's size. **No average, no
+  percentage per class** — the page draws each cell as a bar of counts with the
+  numbers under it, in the mastery colours of `ProgressDetail`.
+- **The student file** is `ParentProgressService::forStudent` — the SAME payload
+  and the SAME component (`ProgressDetail`, `audience="school"`, sentence
+  `family:progress.supportIntroSchool`) the student and the guardian read
+  (`PARENT_SPACE.md` §4bis). **Study time is NOT shown to the school**: the text
+  the student accepts names progress and الكفاءات, not hours.
+- Locked by `SchoolProgressTest` (the map equals the engine's rows; a
+  non-consented student is absent; no `average`/`mean` key) and the two reads in
+  `SchoolPrivacyContractTest`.
 
 ## 7. The teacher's side — « مؤسستي » (D4)
 
@@ -234,7 +259,6 @@ The teacher's class shape gains `schoolId`.
 
 | # | Phase | Contents |
 |---|---|---|
-| 4 | Tracking | `SchoolProgressService` over the existing tables (`student_learning_point_progress`, `student_lesson_progress`, `study_time_days`) — distributions only, constant query count per class (scale test); the student file reusing `ProgressDetail.jsx` |
 | 5 | Reports | one builder per report type, versioned payload, frozen `school_report_snapshots` per term (`school_terms`), A4 print (`[data-school-print]` portal), CSV/XLSX export behind `reports.export` |
 | 6 | Meeting view | full-screen projection like `ChallengeDisplayPage`, keyboard / clicker, « إخفاء الأسماء » on by default for grade and school reports |
 | 7 | Licence (D1) | `school_licences`, `SchoolCoverage` (allow reason `school_licence`, precedence `activation_code > school_licence > teacher_subscription`), `SchoolCapacityService` — a covered school class stops using its teacher's seats |
@@ -242,20 +266,21 @@ The teacher's class shape gains `schoolId`.
 
 ## 9. Files
 
-- API: `app/Domain/School/{SchoolAccess,SchoolException,SchoolService,SchoolOverviewService,SchoolTermService,SchoolTeacherService,SchoolClassroomService,SchoolRosterService,TeacherActivityFacts}.php`;
+- API: `app/Domain/School/{SchoolAccess,SchoolException,SchoolService,SchoolOverviewService,SchoolTermService,SchoolTeacherService,SchoolClassroomService,SchoolRosterService,SchoolProgressService,TeacherActivityFacts}.php`;
+  `app/Http/Controllers/School/SchoolProgressController.php`;
   `ClassroomMembershipService::{admit, enrolBySchool, confirmSchoolConsent}`;
   `app/Models/{School,SchoolStaff,SchoolTeacher,SchoolTerm}.php`; `config/school.php`;
   `app/Http/Controllers/Admin/AdminSchoolController.php`,
   `app/Http/Controllers/School/{SchoolController,SchoolHomeController,SchoolStructureController,SchoolStudentController}.php`,
   `app/Http/Controllers/Teacher/TeacherSchoolController.php`, `StudentClassroomController::schoolConsent`;
   migrations `2026_10_26_000001_create_school_tables.php`, `2026_10_26_000002_add_school_structure.php`.
-- Web: `components/layout/SchoolLayout.jsx`; `pages/school/{SchoolHome,SchoolClassrooms,SchoolTeachers,SchoolStudents,SchoolSettings}.jsx`;
+- Web: `components/layout/SchoolLayout.jsx`; `pages/school/{SchoolHome,SchoolClassrooms,SchoolTeachers,SchoolStudents,SchoolSettings,SchoolLearningMap,SchoolStudentFile}.jsx`;
   `pages/teacher/{TeacherSchoolPage,TeacherSchoolJoin}.jsx`; `features/school/{ui.js,rosterCsv.js,RosterImportDialog.jsx,SchoolCredentialCards.jsx,TeacherFacts.jsx}`;
   `services/schoolService.js`; `i18n/locales/ar/idara.json` (on demand) + `common.apiErrors.idara`,
   `nav.mySchool`, `student.json › qism.sharing.school, qism.schoolConsent.*` (entry);
   `pages/admin/schools/{SchoolList,SchoolDetail}.jsx`, `services/admin/schoolService.js`,
   `admin.json › schools`, `nav.schools`; role landing in `HomeRedirect`, `Login`, `AuthGoogle`, `CompleteName`.
-- Tests: `tests/Feature/{SchoolAdminTest,SchoolPrivacyContractTest,SchoolStructureTest,SchoolRosterTest}.php`,
+- Tests: `tests/Feature/{SchoolAdminTest,SchoolPrivacyContractTest,SchoolStructureTest,SchoolRosterTest,SchoolProgressTest}.php`,
   `tests/Support/SchoolFixtures.php`; `features/school/rosterCsv.test.js`.
 - Deployment: `php artisan migrate` (additive migrations, no hand-written SQL).
   Entry bundle after phase 3: 234.8 KB gzip (budget 245).
