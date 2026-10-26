@@ -313,8 +313,9 @@
    "kind": "activity",
    "page": 25,
    "section": "أنشطة 5 — العدد الناطق",
-   "verified": false,
-   "text": "1) أ) من بين حواصل القسمة التالية ما هي الأعداد العشرية؟ بالنسبة لبقية الأعداد، أعط قيمة مقربة لها: 3 ، −2 ، −8,2/5 ، 5/7 ، 11/3 ، −3/8 . ب) حذف إشارة كل ممّا يلي: −28/15 ، 14/−18 ، −24/−32 . جـ) اشرح لماذا −24/−32 = 24/32 و −28/15 = 28/−15 = −28/15 . د) a و b عددان نسبيان حيث b ≠ 0 بيّن أنّ −a/−b = a/b ثم بيّن أنّ −a/b = a/−b = −1 × a/b . 2) انقل المستقيم المدرّج ثم علّم عليه العددين الناطقين: −2/3 ، −4/6 ، ماذا تلاحظ؟ 3) من بين الأعداد الناطقة التالية، تعرّف على المتساوية منها: −9/6 ، 4/3 ، 8/6 ، 16/12 ، −10/6 ، −5/3 ، −3/2 . 4) استعمل المستقيم المدرّج لترتيب الأعداد التالية ترتيبًا تصاعديًا: −5/6 ، −3/2 ، 17/6 ، −23/12 ، −2/3 ، 11/3 ."
+   "verified": true,
+   "text": "1) أ) من بين حواصل القسمة التالية ما هي الأعداد العشرية؟ بالنسبة لبقية الأعداد، أعط قيمة مقربة لها: 3 ، −2 ، −8,2/5 ، 5/7 ، 11/3 ، −3/8 . ب) حذف إشارة كل ممّا يلي: −28/15 ، 14/−18 ، −24/−32 . جـ) اشرح لماذا −24/−32 = 24/32 و −28/15 = 28/−15 = −28/15 . د) a و b عددان نسبيان حيث b ≠ 0 بيّن أنّ −a/−b = a/b ثم بيّن أنّ −a/b = a/−b = −1 × a/b . 2) انقل المستقيم المدرّج ثم علّم عليه العددين الناطقين: −2/3 ، −4/6 ، ماذا تلاحظ؟ 3) من بين الأعداد الناطقة التالية، تعرّف على المتساوية منها: −9/6 ، 4/3 ، 8/6 ، 16/12 ، −10/6 ، −5/3 ، −3/2 . 4) استعمل المستقيم المدرّج لترتيب الأعداد التالية ترتيبًا تصاعديًا: −5/6 ، −3/2 ، 17/6 ، −23/12 ، −2/3 ، 11/3 .",
+   "reading": "Relu par la leçon 4 (2026-10-26) à 130 dpi (zooms 230 dpi pour 22–33) : conforme ; ex-27 a SIX paires (la transcription brève en avait quatre)."
   },
   {
    "id": "act-6",
@@ -394,9 +395,10 @@
    "kind": "knowledge",
    "page": 28,
    "section": "معارف 5 — العدد الناطق",
-   "verified": false,
+   "verified": true,
    "text": "العدد الناطق هو حاصل قسمة عدد نسبي على عدد نسبي غير معدوم. كل عدد ناطق يمكن كتابته على الشكل a/b أو −a/b حيث a و b عددان طبيعيان و b ≠ 0 . مثال 1: الأعداد 15/11 ، 9/5 ، −1,8 ، 2 هي أعداد ناطقة؛ 9/5 عدد عشري (9/5 = 18/10 = 1,8)؛ π عدد غير ناطق. مثال 2: 15/11 عدد ناطق لكنه ليس عددا عشريا؛ 15/11 ≈ 1,36 .",
-   "note": "La ligne « π n’est pas rationnel » n’est PAS posée (4AM natiqa-ghayr-natiqa)."
+   "note": "La ligne « π n’est pas rationnel » n’est PAS posée (4AM natiqa-ghayr-natiqa).",
+   "reading": "Relu par la leçon 4 (2026-10-26) à 130 dpi (zooms 230 dpi pour 22–33) : conforme ; ex-27 a SIX paires (la transcription brève en avait quatre)."
   },
   {
    "id": "know-6",
@@ -552,12 +554,13 @@
    "kind": "method",
    "page": 29,
    "section": "طرائق — مقارنة عددين ناطقين",
-   "verified": false,
+   "verified": true,
    "text": "قارن بين −5,7/9 و −3,9/6 : نكتبهما على المقام 18: −11,4/18 و −11,7/18 ؛ −11,7 < −11,4 فإنّ −3,9/6 < −5,7/9 .",
    "answer": {
     "−5,7/9 > −3,9/6": true
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 4 (2026-10-26) à 130 dpi (zooms 230 dpi pour 22–33) : conforme ; ex-27 a SIX paires (la transcription brève en avait quatre)."
   },
   {
    "id": "now-3",
@@ -857,96 +860,164 @@
    "kind": "exercise",
    "page": 31,
    "section": "أوظّف تعلّماتي — 22",
-   "verified": false,
-   "text": "في قائمة الأعداد التالية، تعرّف على الأعداد الطبيعية والعشرية والنسبية: 10/−15 ، 3,5/7 ، 13/7 ، 0,33 ، −2,17 ، 15/3 ، 5/4 ."
+   "verified": true,
+   "text": "في قائمة الأعداد التالية، تعرّف على الأعداد الطبيعية والعشرية والنسبية: 10/−15 ، 3,5/7 ، 13/7 ، 0,33 ، −2,17 ، 15/3 ، 5/4 .",
+   "answer": {
+    "natural": [
+     "15/3 = 5"
+    ],
+    "relative integer (not natural)": [],
+    "decimal": [
+     "3,5/7 = 0,5",
+     "0,33",
+     "−2,17",
+     "5/4 = 1,25"
+    ],
+    "rational not decimal": [
+     "10/−15 = −2/3",
+     "13/7"
+    ]
+   },
+   "reading": "Relu par la leçon 4 (2026-10-26) à 130 dpi (zooms 230 dpi pour 22–33) : conforme ; ex-27 a SIX paires (la transcription brève en avait quatre)."
   },
   {
    "id": "ex-23",
    "kind": "exercise",
    "page": 31,
    "section": "أوظّف تعلّماتي — 23",
-   "verified": false,
-   "text": "اكتب الأعداد الناطقة التالية على الشكل a/b أو −a/b حيث a و b عددان طبيعيان: −0,28 ، 1,2/4 ، −2,4/0,36 ، 2,1/2,7 ، 3,14 ، 0,3 ."
+   "verified": true,
+   "text": "اكتب الأعداد الناطقة التالية على الشكل a/b أو −a/b حيث a و b عددان طبيعيان: −0,28 ، 1,2/4 ، −2,4/0,36 ، 2,1/2,7 ، 3,14 ، 0,3 .",
+   "reading": "Relu par la leçon 4 (2026-10-26) à 130 dpi (zooms 230 dpi pour 22–33) : conforme ; ex-27 a SIX paires (la transcription brève en avait quatre)."
   },
   {
    "id": "ex-24",
    "kind": "exercise",
    "page": 31,
    "section": "أوظّف تعلّماتي — 24",
-   "verified": false,
-   "text": "حدّد إشارة كل عدد من الأعداد الناطقة التالية: −18/−42 ، −8,5/−5,8 ، −1,8/6 ، 6/7 ، 1,2/−4 ، 3,4/−1,02 ."
+   "verified": true,
+   "text": "حدّد إشارة كل عدد من الأعداد الناطقة التالية: −18/−42 ، −8,5/−5,8 ، −1,8/6 ، 6/7 ، 1,2/−4 ، 3,4/−1,02 .",
+   "reading": "Relu par la leçon 4 (2026-10-26) à 130 dpi (zooms 230 dpi pour 22–33) : conforme ; ex-27 a SIX paires (la transcription brève en avait quatre)."
   },
   {
    "id": "ex-25",
    "kind": "exercise",
    "page": 31,
    "section": "أوظّف تعلّماتي — 25",
-   "verified": false,
-   "text": "أعط قيمة تقريبية بالنقصان إلى 1/100 لكل عدد ناطق: 7/6 ، 7/2,5 ، 157/23 ، −32/11 ، 12,12/12 ، 7/0,3 ."
+   "verified": true,
+   "text": "أعط قيمة تقريبية بالنقصان إلى 1/100 لكل عدد ناطق: 7/6 ، 7/2,5 ، 157/23 ، −32/11 ، 12,12/12 ، 7/0,3 .",
+   "reading": "Relu par la leçon 4 (2026-10-26) à 130 dpi (zooms 230 dpi pour 22–33) : conforme ; ex-27 a SIX paires (la transcription brève en avait quatre)."
   },
   {
    "id": "ex-26",
    "kind": "exercise",
    "page": 31,
    "section": "أوظّف تعلّماتي — 26",
-   "verified": false,
-   "text": "اكتب كل عدد ناطق مما يلي على شكل مجموع عدد صحيح نسبي وكسر أصغر من 1: 11/6 ، −17/3 ، −2/7 ، 29/13 ، −47/3 ."
+   "verified": true,
+   "text": "اكتب كل عدد ناطق مما يلي على شكل مجموع عدد صحيح نسبي وكسر أصغر من 1: 11/6 ، −17/3 ، −2/7 ، 29/13 ، −47/3 .",
+   "answer": {
+    "11/6": "1 + 5/6",
+    "−17/3": "−6 + 1/3 (or −5 + (−2/3))",
+    "−2/7": "−1 + 5/7 (or 0 + (−2/7))",
+    "29/13": "2 + 3/13",
+    "−47/3": "−16 + 1/3 (or −15 + (−2/3))"
+   },
+   "reading": "Relu par la leçon 4 (2026-10-26) à 130 dpi (zooms 230 dpi pour 22–33) : conforme ; ex-27 a SIX paires (la transcription brève en avait quatre)."
   },
   {
    "id": "ex-27",
    "kind": "exercise",
    "page": 31,
    "section": "أوظّف تعلّماتي — 27",
-   "verified": false,
-   "text": "قارن بين كل عددين ناطقين، بتوحيد المقام: −5/8 و −19/24 ، 7/−15 و −5/12 ، 5,7/42 و 0,7/9 ، −14/35 و −17/24 … "
+   "verified": true,
+   "text": "قارن بين كل عددين ناطقين، بتوحيد المقام: −5/8 و −19/24 ، 7/−15 و −5/12 ، 5,7/42 و 0,7/9 ؛ −11/16 و −17/24 ، 13/8 و 7/9 ، −18/45 و −14/35 .",
+   "answer": {
+    "order (reading)": [
+     "−5/8 > −19/24",
+     "7/−15 < −5/12",
+     "5,7/42 > 0,7/9",
+     "−11/16 > −17/24",
+     "13/8 > 7/9",
+     "−18/45 = −14/35 (ÉGAUX : −2/5)"
+    ]
+   },
+   "reading": "Relu par la leçon 4 (2026-10-26) à 130 dpi (zooms 230 dpi pour 22–33) : conforme ; ex-27 a SIX paires (la transcription brève en avait quatre)."
   },
   {
    "id": "ex-28",
    "kind": "exercise",
    "page": 31,
    "section": "أوظّف تعلّماتي — 28",
-   "verified": false,
-   "text": "ادرس في كل حالة، تساوي العددين الناطقين: 3,7/48,1 و 35,1/12,15 ، 1,2/15,6 و −42/87 ، −5,8/2,8 و 16,75/5,8 ."
+   "verified": true,
+   "text": "ادرس في كل حالة، تساوي العددين الناطقين: 3,7/48,1 و 1,2/15,6 ، −42/87 و −5,8/2,8 ، 16,75/5,8 و 35,1/12,15 .",
+   "answer": {
+    "equal ?": [
+     true,
+     false,
+     false
+    ]
+   },
+   "reading": "Relu par la leçon 4 (2026-10-26) à 130 dpi (zooms 230 dpi pour 22–33) : conforme ; ex-27 a SIX paires (la transcription brève en avait quatre)."
   },
   {
    "id": "ex-29",
    "kind": "exercise",
    "page": 31,
    "section": "أوظّف تعلّماتي — 29",
-   "verified": false,
-   "text": "قارن بين كل عددين باستعمال الحاسبة: 14119/12114 و 7/6 ، −1/3 و −49,1/37 ، 464/1073 و 16/37 ."
+   "verified": true,
+   "text": "قارن بين كل عددين باستعمال الحاسبة: 14119/12114 و 7/6 ، −1/3 و −49,1/37 ، 464/1073 و 16/37 .",
+   "reading": "Relu par la leçon 4 (2026-10-26) à 130 dpi (zooms 230 dpi pour 22–33) : conforme ; ex-27 a SIX paires (la transcription brève en avait quatre)."
   },
   {
    "id": "ex-30",
    "kind": "exercise",
    "page": 31,
    "section": "أوظّف تعلّماتي — 30",
-   "verified": false,
-   "text": "اكتب الأعداد الناطقة بنفس المقام 20 ثم رتّبها تصاعديًا: −17/2 ، 21,1/−4 ، −12,3/0,5 ، −7 ، 13/10 ."
+   "verified": true,
+   "text": "اكتب الأعداد الناطقة بنفس المقام 20 ثم رتّبها تصاعديًا: −17/2 ، 21,1/−4 ، −12,3/0,5 ، −7 ، 13/10 .",
+   "answer": {
+    "over 20": [
+     "−170/20",
+     "21,1/−4 = −105,5/20",
+     "−12,3/0,5 = −492/20",
+     "−140/20",
+     "26/20"
+    ],
+    "ascending": [
+     "−12,3/0,5 = −24,6",
+     "−17/2",
+     "−7",
+     "21,1/−4 = −5,275",
+     "13/10"
+    ]
+   },
+   "reading": "Relu par la leçon 4 (2026-10-26) à 130 dpi (zooms 230 dpi pour 22–33) : conforme ; ex-27 a SIX paires (la transcription brève en avait quatre)."
   },
   {
    "id": "ex-31",
    "kind": "exercise",
    "page": 31,
    "section": "أوظّف تعلّماتي — 31",
-   "verified": false,
-   "text": "رتّب الأعداد التالية ترتيبا تنازليا: −14/36 ، −5/6 ، 3/4 ، −1/2 ، 7/6 ، −11/18 ، 2/9 ، 13/36 ."
+   "verified": true,
+   "text": "رتّب الأعداد التالية ترتيبا تنازليا: −14/36 ، −5/6 ، 3/4 ، −1/2 ، 7/6 ، −11/18 ، 2/9 ، 13/36 .",
+   "reading": "Relu par la leçon 4 (2026-10-26) à 130 dpi (zooms 230 dpi pour 22–33) : conforme ; ex-27 a SIX paires (la transcription brève en avait quatre)."
   },
   {
    "id": "ex-32",
    "kind": "exercise",
    "page": 32,
    "section": "أوظّف تعلّماتي — 32",
-   "verified": false,
-   "text": "علّم على المستقيم المدرّج الأعداد التالية ثم رتّبها تصاعديا: −1/2 ، 7/6 ، −1/3 ، −5/6 ، 1/2 ، −7/6 ، −4/3 ."
+   "verified": true,
+   "text": "علّم على المستقيم المدرّج الأعداد التالية ثم رتّبها تصاعديا: −1/2 ، 7/6 ، −1/3 ، −5/6 ، 1/2 ، −7/6 ، −4/3 .",
+   "reading": "Relu par la leçon 4 (2026-10-26) à 130 dpi (zooms 230 dpi pour 22–33) : conforme ; ex-27 a SIX paires (la transcription brève en avait quatre)."
   },
   {
    "id": "ex-33",
    "kind": "exercise",
    "page": 32,
    "section": "أوظّف تعلّماتي — 33",
-   "verified": false,
-   "text": "رتّب الأعداد التالية ترتيبا تصاعديا: −6/7 ، 4/3,5 ، −0,85 ، −13/14 ، 9/7 ، 1,14 ."
+   "verified": true,
+   "text": "رتّب الأعداد التالية ترتيبا تصاعديا: −6/7 ، 4/3,5 ، −0,85 ، −13/14 ، 9/7 ، 1,14 .",
+   "reading": "Relu par la leçon 4 (2026-10-26) à 130 dpi (zooms 230 dpi pour 22–33) : conforme ; ex-27 a SIX paires (la transcription brève en avait quatre)."
   },
   {
    "id": "ex-34",
@@ -1197,12 +1268,13 @@
    "kind": "qcm",
    "page": 33,
    "section": "أؤكّد تعلّماتي — 4",
-   "verified": false,
+   "verified": true,
    "text": "القيمة المقرّبة بالنقصان إلى 1/1000 للعدد الناطق 39/17 : أ) 2,295 ؛ ب) 2,294 ؛ جـ) 2,2941 .",
    "answerSource": "computed",
    "answer": {
-    "value": "2,294"
-   }
+    "39/17 par défaut à 1/1000": "2,294"
+   },
+   "reading": "Relu par la leçon 4 (2026-10-26) à 130 dpi (zooms 230 dpi pour 22–33) : conforme ; ex-27 a SIX paires (la transcription brève en avait quatre)."
   },
   {
    "id": "self-5",
@@ -1267,26 +1339,34 @@
    "kind": "qcm",
    "page": 33,
    "section": "أؤكّد تعلّماتي — 9",
-   "verified": false,
+   "verified": true,
    "text": "عند مقارنة 12,2/−7,6 و −5,4/3,17 نجد: أ) ≠ ؛ ب) = ؛ جـ) 12,2/−7,6 < … ",
    "answerSource": "computed",
    "answer": {
-    "12,2/−7,6 < −5,4/3,17": false
-   }
+    "12,2/−7,6 ≠ −5,4/3,17": true,
+    "equal": false,
+    "printed (جـ) −5,4/3,17 > 12,2/−7,6": false
+   },
+   "reading": "Relu par la leçon 4 (2026-10-26) à 130 dpi (zooms 230 dpi pour 22–33) : conforme ; ex-27 a SIX paires (la transcription brève en avait quatre).",
+   "correct": [
+    0
+   ],
+   "note": "Seule (أ) « ≠ » est juste ; (جـ) imprimée « > » est fausse : −5,4/3,17 ≈ −1,703 < −1,605 ≈ 12,2/−7,6."
   },
   {
    "id": "self-10",
    "kind": "qcm",
    "page": 33,
    "section": "أؤكّد تعلّماتي — 10",
-   "verified": false,
+   "verified": true,
    "text": "العدد الناطق −3/7 : أ) أكبر من −5/7 ؛ ب) أصغر من −1/7 ؛ جـ) أكبر من −3/8 .",
    "answerSource": "computed",
    "correct": [
     0,
     1
    ],
-   "note": "(أ) و (ب) صحيحتان ؛ (جـ) خاطئة."
+   "note": "(أ) و (ب) صحيحتان ؛ (جـ) خاطئة.",
+   "reading": "Relu par la leçon 4 (2026-10-26) à 130 dpi (zooms 230 dpi pour 22–33) : conforme ; ex-27 a SIX paires (la transcription brève en avait quatre)."
   },
   {
    "id": "self-11",
@@ -1338,8 +1418,9 @@
    "kind": "deep",
    "page": 34,
    "section": "أتعمّق — 56",
-   "verified": false,
-   "text": "اشرح لماذا 41/9 ليس عددا عشريا. ما هو أكبر عدد طبيعي أصغر من 41/9 ؟ اكتب 41/9 على شكل مجموع عدد طبيعي وكسر أصغر من 1 ."
+   "verified": true,
+   "text": "اشرح لماذا 41/9 ليس عددا عشريا. ما هو أكبر عدد طبيعي أصغر من 41/9 ؟ اكتب 41/9 على شكل مجموع عدد طبيعي وكسر أصغر من 1 .",
+   "reading": "Relu par la leçon 4 (2026-10-26) à 130 dpi (zooms 230 dpi pour 22–33) : conforme ; ex-27 a SIX paires (la transcription brève en avait quatre)."
   },
   {
    "id": "deep-57",
@@ -1464,8 +1545,9 @@
    "kind": "deep",
    "page": 34,
    "section": "أتعمّق — 69",
-   "verified": false,
-   "text": "علّم العدد −1/5 على المستقيم المدرّج التالي (مدرّج بـ −1/4 و −1/6)."
+   "verified": true,
+   "text": "علّم العدد −1/5 على المستقيم المدرّج التالي (مدرّج بـ −1/4 و −1/6).",
+   "reading": "Relu par la leçon 4 (2026-10-26) à 130 dpi (zooms 230 dpi pour 22–33) : conforme ; ex-27 a SIX paires (la transcription brève en avait quatre)."
   },
   {
    "id": "deep-70",
@@ -1650,6 +1732,16 @@
   }
  ],
  "discrepancies": [
+  {
+   "elementId": "self-9",
+   "kind": "ambiguity",
+   "text": "Relu à 130 dpi par L4 : 12,2/−7,6 ≈ −1,605 et −5,4/3,17 ≈ −1,703 sont DIFFÉRENTS ; l'option (جـ) imprimée « −5,4/3,17 > 12,2/−7,6 » est fausse ; seule (أ) « ≠ » est juste (la ligne de la transcription brève était inexacte)."
+  },
+  {
+   "elementId": "ex-27",
+   "kind": "transcription",
+   "text": "Relu à 230 dpi par L4 : SIX paires (−5/8 et −19/24 ; 7/−15 et −5/12 ; 5,7/42 et 0,7/9 ; −11/16 et −17/24 ; 13/8 et 7/9 ; −18/45 et −14/35 — ces deux-ci sont ÉGAUX) ; ex-28 : 3,7/48,1 = 1,2/15,6 = 1/13 sont ÉGAUX, les deux autres paires non."
+  },
   {
    "elementId": "ex-21",
    "kind": "scope",
@@ -1972,15 +2064,15 @@
   },
   "ex-22": {
    "lesson": "adad-natiq",
-   "module": null
+   "module": 4
   },
   "ex-23": {
    "lesson": "adad-natiq",
-   "module": null
+   "module": 4
   },
   "ex-24": {
    "lesson": "adad-natiq",
-   "module": null
+   "module": 4
   },
   "ex-25": {
    "lesson": "adad-natiq",
@@ -1988,15 +2080,15 @@
   },
   "ex-26": {
    "lesson": "adad-natiq",
-   "module": null
+   "module": 4
   },
   "ex-27": {
    "lesson": "adad-natiq",
-   "module": null
+   "module": 4
   },
   "ex-28": {
    "lesson": "adad-natiq",
-   "module": null
+   "module": 4
   },
   "ex-29": {
    "lesson": "adad-natiq",
@@ -2004,19 +2096,19 @@
   },
   "ex-30": {
    "lesson": "adad-natiq",
-   "module": null
+   "module": 4
   },
   "ex-31": {
    "lesson": "adad-natiq",
-   "module": null
+   "module": 4
   },
   "ex-32": {
    "lesson": "adad-natiq",
-   "module": null
+   "module": 4
   },
   "ex-33": {
    "lesson": "adad-natiq",
-   "module": null
+   "module": 4
   },
   "ex-34": {
    "lesson": "amaliyat-natiqa",
@@ -2128,11 +2220,11 @@
   },
   "self-9": {
    "lesson": "adad-natiq",
-   "module": null
+   "module": 4
   },
   "self-10": {
    "lesson": "adad-natiq",
-   "module": null
+   "module": 4
   },
   "self-5": {
    "lesson": "amaliyat-natiqa",
@@ -2156,7 +2248,7 @@
   },
   "deep-56": {
    "lesson": "adad-natiq",
-   "module": null
+   "module": 4
   },
   "deep-59": {
    "lesson": "maqlub-qismat-kasrayn",
@@ -2252,7 +2344,7 @@
   },
   "deep-69": {
    "lesson": "adad-natiq",
-   "module": null
+   "module": 4
   },
   "integration": {
    "lesson": "wadiya-idmajiya-kusur-natiqa",

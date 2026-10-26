@@ -149,3 +149,34 @@ describe('fractions3 — égalité et comparaison (tasawi-muqaranat-kasrayn)', (
     expect(F.widestUnit([2, 3, 4])).toBe(12n);
   });
 });
+
+describe('fractions3 — leçon 4 `adad-natiq` : le nombre rationnel', () => {
+  it('writingValue / normalize / writingsEqual : plusieurs écritures, un seul nombre', () => {
+    expect(ratText(F.writingValue('6/-8'))).toBe('-3/4');
+    expect(ratText(F.writingValue('-9/-12'))).toBe('3/4');
+    expect(ratText(F.writingValue('-1,5'))).toBe('-3/2');
+    expect(ratText(F.writingValue('-3,6/-8'))).toBe('9/20');
+    expect(F.normalize('14/-21')).toEqual({ sign: -1, n: 2n, d: 3n });
+    expect(F.writingsEqual('15/-20', '-12/16')).toBe(true);
+    expect(F.writingsEqual('-3/4', '3/4')).toBe(false);
+    expect(() => F.writingValue('5/0')).toThrow();
+  });
+  it('isDecimalRational (2^i · 5^j) et twelfths', () => {
+    expect(F.isDecimalRational('-7,4/5')).toBe(true);
+    expect(F.isDecimalRational('5/6')).toBe(false);
+    expect(F.isDecimalRational('-5/8')).toBe(true);
+    expect(F.isDecimalRational('7/-3')).toBe(false);
+    expect(F.twelfths('-7/3')).toBe(-28);
+    expect(F.twelfths('3/4')).toBe(9);
+    expect(F.twelfths('1/5')).toBe(null);
+  });
+  it('integerAndFraction et sortRationals', () => {
+    const a = F.integerAndFraction('17/5');
+    expect(a.k).toBe(3n); expect(ratText(a.frac)).toBe('2/5');
+    const b = F.integerAndFraction('-17/3');
+    expect(b.k).toBe(-6n); expect(ratText(b.frac)).toBe('1/3');
+    expect(b.alt.k).toBe(-5n); expect(ratText(b.alt.frac)).toBe('-2/3');
+    expect(F.unitOf('-11/4')).toBe(-3);
+    expect(F.sortRationals(['5/6', '-7/4', '-2/3'])).toEqual(['-7/4', '-2/3', '5/6']);
+  });
+});

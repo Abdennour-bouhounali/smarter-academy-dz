@@ -781,6 +781,14 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'لجمع كسرين أو طرحهما نكتبهما بنفس المقام، وهو مضاعف مشترك للمقامين: $\\frac{1}{4}+\\frac{1}{6}=\\frac{3}{12}+\\frac{2}{12}=\\frac{5}{12}$ ؛ وأصغر مضاعف مشترك يعطي أبسط حساب',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 3AM, unité 2, leçon 4 (2026-10-26) — le nombre rationnel : une écriture a/b, une place sur la droite.
+  'number-line-pegs': {
+    // LA POSITION D'UNE ÉCRITURE SOUS LA MAIN : un حبل tendu dans la cour, gradué aux entiers ; des cartes portent une écriture a/b (a et b relatifs). La main PORTE une carte et l'ACCROCHE où elle croit
+    // que le nombre habite ; « تحقّق » laisse le vent la faire glisser jusqu'à son vrai piquet : les écritures du MÊME nombre s'empilent, une carte du mauvais côté du zéro le traverse. En متقدم toutes les
+    // cartes sont accrochées sans graduation entre les entiers et UN verdict juge l'ordre. Chaque accrochage et chaque « تحقّق » est un essai jugé exactement : MANUEL §6bis. `number-line-pegs` n'énonce jamais la règle.
+    shows: 'العدد الناطق هو حاصل قسمة عدد نسبي على عدد نسبي غير معدوم $\\frac{a}{b}$ ، وله كتابات كثيرة ومكان واحد على المستقيم المدرّج ؛ كتابته المعيارية بمقام موجب ؛ ولمقارنة أعداد ناطقة نكتبها بنفس المقام الموجب ثم نقارنها كأعداد نسبية',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   'pin-rails': {
     // LA PUNAISE SUR SA RAINURE ET LA RÈGLE SUR DEUX NŒUDS : un tableau de prix devient des points d'un repère — la main GLISSE chaque punaise
     // le long de la rainure de sa colonne jusqu'à son prix (la punaise posée au mauvais prix retombe, le tableau fait foi) puis POSE une règle

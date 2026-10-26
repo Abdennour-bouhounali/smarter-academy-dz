@@ -216,14 +216,23 @@
       "decisionStatus": "draft",
       "titleSource": "textbook",
       "title": "أدمج تعلّماتي — الأعداد النسبية",
-      "description": "",
+      "description": "وضعية إدماجية (مقارنة درجتي حرارة بسلّمي سيلسيوس وفهرنهايت) تُعبّئ جداء الأعداد النسبية وحاصل قسمتها وسلاسل الحسابات، تسبقها ست وضعيات تدريبية.",
       "prerequisites": [],
       "prerequisiteLessonCodes": [
         "jidaa-adadayn-nisbiyayn",
         "jidaa-ida-nisbiya",
         "qismat-nisbiyayn"
       ],
-      "pointsToLearn": [],
+      "pointsToLearn": [
+        "حل وضعية إدماجية بتوظيف جداء وحاصل قسمة الأعداد النسبية وسلسلة حسابات عليها"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "3am_jidaa-adadayn-nisbiyayn_P4",
+          "3am_jidaa-ida-nisbiya_P2",
+          "3am_qismat-nisbiyayn_P4"
+        ]
+      },
       "programmeItems": [],
       "textbookRef": {
         "unit": 1,
@@ -233,7 +242,10 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 30,
+      "difficulty": "متقدم",
+      "icon": "🌡️"
     },
     {
       "code": "maqlub-qismat-kasrayn",
@@ -424,10 +436,15 @@
         "qismat-nisbiyayn"
       ],
       "pointsToLearn": [
-        "التعرّف على العدد الناطق كحاصل قسمة عدد نسبي على عدد نسبي غير معدوم $\\frac{a}{b}$",
-        "تعيين إشارة عدد ناطق وكتابته بمقام موجب",
-        "تمثيل أعداد ناطقة على مستقيم مدرج وترتيبها"
+        "التعرّف على العدد الناطق كحاصل قسمة عدد نسبي على عدد نسبي غير معدوم $\\frac{a}{b}$ ، ومعرفة أنّ الأعداد الطبيعية والأعداد الصحيحة النسبية والأعداد العشرية النسبية أعداد ناطقة",
+        "كتابة عدد ناطق على الشكل $\\frac{a}{b}$ أو $-\\frac{a}{b}$ بمقام موجب ($a$ و $b$ طبيعيان)، والتعرّف على الكتابات المتساوية لنفس العدد الناطق",
+        "تمثيل أعداد ناطقة على مستقيم مدرّج، ومقارنتها وترتيبها بكتابتها بنفس المقام الموجب وبقواعد مقارنة الأعداد النسبية"
       ],
+      "pointPrerequisites": {
+        "P1": ["1am_hasil-qisma-kasr_P1"],
+        "P2": ["3am_qismat-nisbiyayn_P3", "3am_adad-natiq_P1"],
+        "P3": ["3am_adad-natiq_P2"]
+      },
       "programmeItems": [
         "3am.m1.r07"
       ],
@@ -448,7 +465,10 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 65,
+      "difficulty": "متوسط",
+      "icon": "🧺"
     },
     {
       "code": "amaliyat-natiqa",

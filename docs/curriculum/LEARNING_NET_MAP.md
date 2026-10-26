@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **353** liens (312 requires, 31 extends, 10 consolidates) · **100** leçons publiées · **170** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **353** liens (312 requires, 31 extends, 10 consolidates) · **102** leçons publiées · **168** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -970,7 +970,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | `3am.m1.r04` | قسمة كسرين. | `maqlub-qismat-kasrayn` | `3am.m1.r03` |
 | `3am.m1.r05` | مقارنة كسرين. | `tasawi-muqaranat-kasrayn` | يمدّد `2am.m1.r08` |
 | `3am.m1.r06` | جمع وطرح كسرين. | `jam-tarh-kasrayn` | يمدّد `2am.m1.r09` |
-| `3am.m1.r07` | التعرّف على العدد الناطق. | `adad-natiq` _(prévue)_ | `3am.m1.r02`، `1am.m5.r01` |
+| `3am.m1.r07` | التعرّف على العدد الناطق. | `adad-natiq` | `3am.m1.r02`، `1am.m5.r01` |
 | `3am.m1.r08` | حساب مجموع وفرق وجداء وحاصل قسمة عددين ناطقين. | `amaliyat-natiqa` _(prévue)_ | `3am.m1.r07`، `3am.m1.r04`، `3am.m1.r06`، `3am.m1.r01` |
 
 #### المقطع 2 — المثلثات (`3am.m2`, 4 أسابيع)
@@ -1299,7 +1299,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 5 | `maqlub-qismat-kasrayn` — مقلوب عدد وقسمة كسرين | publiée | `3am.m1.r03` `3am.m1.r04` |
 | 6 | `tasawi-muqaranat-kasrayn` — تساوي كسرين ومقارنتهما | publiée | `3am.m1.r05` |
 | 7 | `jam-tarh-kasrayn` — جمع وطرح كسرين | publiée | `3am.m1.r06` |
-| 8 | `adad-natiq` — العدد الناطق | prévue | `3am.m1.r07` |
+| 8 | `adad-natiq` — العدد الناطق | publiée | `3am.m1.r07` |
 | 9 | `amaliyat-natiqa` — العمليات على الأعداد الناطقة | prévue | `3am.m1.r08` |
 | 10 | `wadiya-idmajiya-kusur-natiqa` — أدمج تعلّماتي — العمليات على الكسور والأعداد الناطقة | synthèse | — |
 | 11 | `quwa-adad-ashara` — قوى العدد 10 | prévue | `3am.m3.r01` `3am.m3.r03` |

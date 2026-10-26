@@ -126,6 +126,12 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(advanced.numbers.tasks.every((tk) => tk.kind === 'predict'), type).toBe(true);
         expect(beginner.numbers.tasks.some((tk) => tk.kind === 'predict'), type).toBe(false);
       }
+      // Unité 2 de 3AM, leçon 4 : `number-line-pegs` se mesure par le NOMBRE DE TÂCHES et par le VERDICT D'ORDRE (متقدم seul : toutes les cartes, puis un seul « تحقّق »).
+      else if (type === 'number-line-pegs') {
+        expect(advanced.numbers.tasks.length, type).toBeGreaterThanOrEqual(beginner.numbers.tasks.length);
+        expect(advanced.numbers.tasks.every((tk) => tk.kind === 'order'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.kind === 'order'), type).toBe(false);
+      }
       // Unité 6 de 3AM : `pin-rails` se mesure par le NOMBRE DE TÂCHES et par les LECTURES sur la droite (متقدم seul).
       else if (type === 'pin-rails') {
         expect(advanced.numbers.tasks.length, type).toBeGreaterThan(beginner.numbers.tasks.length);

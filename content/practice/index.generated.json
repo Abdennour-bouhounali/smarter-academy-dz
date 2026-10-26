@@ -743,6 +743,68 @@
       "ex-2am-rabi-mutanasib-l5-010"
     ]
   },
+  "adad-natiq": {
+    "1": [
+      "ex-3am-adad-natiq-l1-001",
+      "ex-3am-adad-natiq-l1-002",
+      "ex-3am-adad-natiq-l1-003",
+      "ex-3am-adad-natiq-l1-004",
+      "ex-3am-adad-natiq-l1-005",
+      "ex-3am-adad-natiq-l1-006",
+      "ex-3am-adad-natiq-l1-007",
+      "ex-3am-adad-natiq-l1-008",
+      "ex-3am-adad-natiq-l1-009",
+      "ex-3am-adad-natiq-l1-010"
+    ],
+    "2": [
+      "ex-3am-adad-natiq-l2-001",
+      "ex-3am-adad-natiq-l2-002",
+      "ex-3am-adad-natiq-l2-003",
+      "ex-3am-adad-natiq-l2-004",
+      "ex-3am-adad-natiq-l2-005",
+      "ex-3am-adad-natiq-l2-006",
+      "ex-3am-adad-natiq-l2-007",
+      "ex-3am-adad-natiq-l2-008",
+      "ex-3am-adad-natiq-l2-009",
+      "ex-3am-adad-natiq-l2-010"
+    ],
+    "3": [
+      "ex-3am-adad-natiq-l3-001",
+      "ex-3am-adad-natiq-l3-002",
+      "ex-3am-adad-natiq-l3-003",
+      "ex-3am-adad-natiq-l3-004",
+      "ex-3am-adad-natiq-l3-005",
+      "ex-3am-adad-natiq-l3-006",
+      "ex-3am-adad-natiq-l3-007",
+      "ex-3am-adad-natiq-l3-008",
+      "ex-3am-adad-natiq-l3-009",
+      "ex-3am-adad-natiq-l3-010"
+    ],
+    "4": [
+      "ex-3am-adad-natiq-l4-001",
+      "ex-3am-adad-natiq-l4-002",
+      "ex-3am-adad-natiq-l4-003",
+      "ex-3am-adad-natiq-l4-004",
+      "ex-3am-adad-natiq-l4-005",
+      "ex-3am-adad-natiq-l4-006",
+      "ex-3am-adad-natiq-l4-007",
+      "ex-3am-adad-natiq-l4-008",
+      "ex-3am-adad-natiq-l4-009",
+      "ex-3am-adad-natiq-l4-010"
+    ],
+    "5": [
+      "ex-3am-adad-natiq-l5-001",
+      "ex-3am-adad-natiq-l5-002",
+      "ex-3am-adad-natiq-l5-003",
+      "ex-3am-adad-natiq-l5-004",
+      "ex-3am-adad-natiq-l5-005",
+      "ex-3am-adad-natiq-l5-006",
+      "ex-3am-adad-natiq-l5-007",
+      "ex-3am-adad-natiq-l5-008",
+      "ex-3am-adad-natiq-l5-009",
+      "ex-3am-adad-natiq-l5-010"
+    ]
+  },
   "jam-tarh-kasrayn": {
     "1": [
       "ex-3am-jam-tarh-kasrayn-l1-001",
@@ -1609,6 +1671,68 @@
       "ex-3am-tasawi-muqaranat-kasrayn-l5-008",
       "ex-3am-tasawi-muqaranat-kasrayn-l5-009",
       "ex-3am-tasawi-muqaranat-kasrayn-l5-010"
+    ]
+  },
+  "wadiya-idmajiya-aadad-nisbiya": {
+    "1": [
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l1-001",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l1-002",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l1-003",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l1-004",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l1-005",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l1-006",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l1-007",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l1-008",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l1-009",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l1-010"
+    ],
+    "2": [
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l2-001",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l2-002",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l2-003",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l2-004",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l2-005",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l2-006",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l2-007",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l2-008",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l2-009",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l2-010"
+    ],
+    "3": [
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l3-001",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l3-002",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l3-003",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l3-004",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l3-005",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l3-006",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l3-007",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l3-008",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l3-009",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l3-010"
+    ],
+    "4": [
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l4-001",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l4-002",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l4-003",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l4-004",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l4-005",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l4-006",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l4-007",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l4-008",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l4-009",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l4-010"
+    ],
+    "5": [
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l5-001",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l5-002",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l5-003",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l5-004",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l5-005",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l5-006",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l5-007",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l5-008",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l5-009",
+      "ex-3am-wadiya-idmajiya-aadad-nisbiya-l5-010"
     ]
   },
   "aksiya-talis": {

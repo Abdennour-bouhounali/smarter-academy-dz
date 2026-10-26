@@ -889,6 +889,23 @@ export const LEVELS = Object.freeze({
       { id: 'a4', kind: 'predict', terms: [{ p: '3/8' }, { p: '5/12' }], widest: true },
     ] }, ...T('method-6') },
   },
+  // LA POSITION D'UNE ÉCRITURE SOUS LA MAIN (number-line-pegs, thème clothesline, 3AM unité 2, leçon 4, 2026-10-26) : la main PORTE une carte d'écriture a/b et l'ACCROCHE sur un حبل gradué ; le vent la fait
+  // glisser à son vrai piquet. Une tâche est `{ id, kind?: 'hang' | 'order', cards: ['6/-8', …], range?: [lo, hi] }`. مبتدئ (plateforme, pas 1/12, loupe ×3, « تحقّق » à volonté) : w1 6/(−8), (−3)/4, 3/4,
+  // (−9)/(−12) → deux piles ; w2 −7/3, 7/(−3), −14/6, 14/6 (−28 douzièmes ×3, +28) ; w3 −1,5, 2, (−20)/(−8), −3. متقدم (method-10 : ordre par un même dénominateur ; pas 1/48, ni graduation entre les
+  // entiers ni loupe, TOUTES les cartes puis UN verdict d'ordre) : a1 six cartes, a2 −9/4, −11/4, −10/4, a3 15/(−20), −6/8, −5/6. Le monde `writings` (معارف) est posé par la leçon. Le test des niveaux mesure la
+  // paire par le NOMBRE DE TÂCHES et par le VERDICT D'ORDRE (متقدم seul).
+  'number-line-pegs': {
+    beginner: { numbers: { tasks: [
+      { id: 'w1', cards: ['6/-8', '-3/4', '3/4', '-9/-12'], range: [-2, 2] },
+      { id: 'w2', cards: ['-7/3', '7/-3', '-14/6', '14/6'], range: [-3, 3] },
+      { id: 'w3', cards: ['-1,5', '2', '-20/-8', '-3'], range: [-4, 4] },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', kind: 'order', cards: ['-7/4', '5/6', '-2/3', '-13/6', '3/2', '-1/12'], range: [-3, 3] },
+      { id: 'a2', kind: 'order', cards: ['9/-4', '-11/4', '-10/4'], range: [-4, 0] },
+      { id: 'a3', kind: 'order', cards: ['15/-20', '-6/8', '-5/6'], range: [-2, 1] },
+    ] }, ...T('method-10') },
+  },
   // LE POURCENTAGE SOUS LA MAIN (hundred-grid, thème pantry) : un stock coupé en 100 paquets égaux (10 × 10 cases) ; la main PEINT t cases, le panier
   // reçoit t paquets (x × t/100). مبتدئ (plateforme) : 15 % de 240 (la réponse écrite AVANT l'ouverture), le taux qui remplit un panier de 60 sur 150, +15 %
   // de 200 puis −20 % de 250. متقدم (platform + method-2) : 70 % de 75 et 25 % de 32 (taux cherchés), 84 est 60 % de ? (le stock entier), puis la chaîne

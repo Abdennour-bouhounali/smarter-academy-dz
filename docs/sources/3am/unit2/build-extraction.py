@@ -446,6 +446,36 @@ for _id in ('act-4', 'know-4', 'method-5', 'method-6', 'now-2', 'ex-11', 'ex-18'
     _E[_id]['verified'] = True
     _E[_id]['reading'] = (_E[_id].get('reading', '') + ' Relu par la leçon 3 (2026-10-26) à 130 dpi (zooms 250 dpi pour 19–21) : conforme.').strip()
 
+# ── Leçon 4 `adad-natiq` (2026-10-26) : ses éléments relus à 130 dpi (pp. 25, 28, 29, 31, 33, 34 du livre = PDF 26, 29, 30, 32, 34, 35 ; zooms 230 dpi pour 22–33) ──────
+import math as _m
+_L4_TEXT = {
+    'ex-27': 'قارن بين كل عددين ناطقين، بتوحيد المقام: −5/8 و −19/24 ، 7/−15 و −5/12 ، 5,7/42 و 0,7/9 ؛ −11/16 و −17/24 ، 13/8 و 7/9 ، −18/45 و −14/35 .',
+    'ex-28': 'ادرس في كل حالة، تساوي العددين الناطقين: 3,7/48,1 و 1,2/15,6 ، −42/87 و −5,8/2,8 ، 16,75/5,8 و 35,1/12,15 .',
+}
+for _k, _t in _L4_TEXT.items():
+    _E[_k]['text'] = _t
+assert F(-5, 8) > F(-19, 24) and F(7, -15) < F(-5, 12) and q('5,7') / 42 > q('0,7') / 9          # ex-27 (1re ligne)
+assert F(-11, 16) > F(-17, 24) and F(13, 8) > F(7, 9) and F(-18, 45) == F(-14, 35)                 # ex-27 (2e ligne)
+assert q('3,7') / q('48,1') == q('1,2') / q('15,6') and F(-42, 87) != -q('5,8') / q('2,8')        # ex-28 : 1/13 = 1/13 ; −14/29 ≠ −29/14
+assert q('16,75') / q('5,8') != q('35,1') / q('12,15')
+_E['ex-27']['answer'] = {'order (reading)': ['−5/8 > −19/24', '7/−15 < −5/12', '5,7/42 > 0,7/9', '−11/16 > −17/24', '13/8 > 7/9', '−18/45 = −14/35 (ÉGAUX : −2/5)']}
+_E['ex-28']['answer'] = {'equal ?': [True, False, False]}
+_E['ex-22']['answer'] = {'natural': ['15/3 = 5'], 'relative integer (not natural)': [], 'decimal': ['3,5/7 = 0,5', '0,33', '−2,17', '5/4 = 1,25'], 'rational not decimal': ['10/−15 = −2/3', '13/7']}
+assert F(15, 3) == 5 and q('3,5') / 7 == F(1, 2) and F(5, 4) == q('1,25') and F(10, -15) == F(-2, 3)
+_E['ex-26']['answer'] = {'11/6': '1 + 5/6', '−17/3': '−6 + 1/3 (or −5 + (−2/3))', '−2/7': '−1 + 5/7 (or 0 + (−2/7))', '29/13': '2 + 3/13', '−47/3': '−16 + 1/3 (or −15 + (−2/3))'}
+_E['ex-30']['answer'] = {'over 20': ['−170/20', '21,1/−4 = −105,5/20', '−12,3/0,5 = −492/20', '−140/20', '26/20'], 'ascending': ['−12,3/0,5 = −24,6', '−17/2', '−7', '21,1/−4 = −5,275', '13/10']}
+assert [F(-17, 2), -q('21,1') / 4, -q('12,3') / q('0,5'), F(-7), F(13, 10)] == [F(-17, 2), F(-211, 40), F(-123, 5), F(-7), F(13, 10)]
+for _id in ('act-5', 'know-5', 'method-10', 'ex-22', 'ex-23', 'ex-24', 'ex-25', 'ex-26', 'ex-27', 'ex-28', 'ex-29', 'ex-30', 'ex-31', 'ex-32', 'ex-33', 'self-4', 'self-9', 'self-10', 'deep-56', 'deep-69'):
+    _E[_id]['verified'] = True
+    _E[_id]['reading'] = (_E[_id].get('reading', '') + ' Relu par la leçon 4 (2026-10-26) à 130 dpi (zooms 230 dpi pour 22–33) : conforme ; ex-27 a SIX paires (la transcription brève en avait quatre).').strip()
+# self-9 : 12,2/−7,6 = −1,605… ; −5,4/3,17 = −1,703… : DIFFÉRENTS ; l'option (جـ) imprimée « −5,4/3,17 > 12,2/−7,6 » est FAUSSE (−1,703 < −1,605) ; seule (أ) est juste.
+assert q('12,2') / -q('7,6') != -q('5,4') / q('3,17') and -q('5,4') / q('3,17') < q('12,2') / -q('7,6')
+_E['self-9']['answer'] = {'12,2/−7,6 ≠ −5,4/3,17': True, 'equal': False, 'printed (جـ) −5,4/3,17 > 12,2/−7,6': False}
+_E['self-9']['correct'] = [0]
+_E['self-9']['note'] = 'Seule (أ) « ≠ » est juste ; (جـ) imprimée « > » est fausse : −5,4/3,17 ≈ −1,703 < −1,605 ≈ 12,2/−7,6.'
+assert 39 * 1000 // 17 / 1000 == 2.294
+_E['self-4']['answer'] = {'39/17 par défaut à 1/1000': '2,294'}
+
 # ── destinations ──────────────────────────────────────────────────────────────────────────────────
 
 
@@ -463,13 +493,13 @@ DEST = {
     'now-1': d(L2, 4), 'now-2': d(L3, 4), 'method-7': d(L5, 3), 'method-8': d(L5, 3), 'method-9': d(L5, 3), 'method-10': d(L4, 3), 'now-3': d(L5, 4),
     'ex-1': d(L1, 4), 'ex-2': d(L1, 4), 'ex-3': d(L5), 'ex-4': d(L1, 4), 'ex-5': d(L1, 4), 'ex-6': d(L1, 4), 'ex-7': d(L1, 4),
     **{f'ex-{n}': d(L2, 4) for n in (8, 12, 13, 14, 15, 16)}, 'ex-17': d(L2), 'ex-9': d(L2), 'ex-10': d(L2), 'ex-11': d(L3, 3),
-    **{f'ex-{n}': d(L3, 4) for n in (18, 19, 20, 21)}, **{f'ex-{n}': d(L4) for n in range(22, 34)},
+    **{f'ex-{n}': d(L3, 4) for n in (18, 19, 20, 21)}, **{f'ex-{n}': d(L4, None if n in (25, 29) else 4) for n in range(22, 34)},
     **{f'ex-{n}': d(L5) for n in range(34, 55) if n != 34 or True},
-    'self-1': d(L1, 8), 'self-7': d(L1, 8), 'self-11': d(L1, 8), 'self-2': d(L3), 'self-3': d(L3), 'self-4': d(L4), 'self-9': d(L4), 'self-10': d(L4),
+    'self-1': d(L1, 8), 'self-7': d(L1, 8), 'self-11': d(L1, 8), 'self-2': d(L3), 'self-3': d(L3), 'self-4': d(L4), 'self-9': d(L4, 4), 'self-10': d(L4, 4),
     'self-5': d(L5), 'self-6': d(L5), 'self-8': d(S, 0), 'self-12': d(S, 0),
-    'deep-55': d(L2, 4), 'deep-56': d(L4), 'deep-59': d(L1, 4), 'deep-71': d(L1, 7), 'deep-61': d(S), 'deep-67': d(S), 'deep-70': d(S), 'deep-72': d(S), 'deep-75': d(S), 'deep-78': d(S),
+    'deep-55': d(L2, 4), 'deep-56': d(L4, 4), 'deep-59': d(L1, 4), 'deep-71': d(L1, 7), 'deep-61': d(S), 'deep-67': d(S), 'deep-70': d(S), 'deep-72': d(S), 'deep-75': d(S), 'deep-78': d(S),
     **{f'deep-{n}': d(L5) for n in (57, 58, 60, 63, 64, 66, 68, 73, 76, 77, 79)},
-    **{f'deep-{n}': d(L3, 4) for n in (62, 65)}, 'deep-80': d(L3), 'deep-74': d(L3, 6), 'deep-69': d(L4),
+    **{f'deep-{n}': d(L3, 4) for n in (62, 65)}, 'deep-80': d(L3), 'deep-74': d(L3, 6), 'deep-69': d(L4, 4),
     'integration': d(S), 'evaluation': d(S), 'ict': d(S),
 }
 for n in range(34, 55):
@@ -477,6 +507,8 @@ for n in range(34, 55):
 # ex-41 (pyramide), ex-46 (grille) : la leçon L5 les relit.
 
 DISCREPANCIES = [
+    {'elementId': 'self-9', 'kind': 'ambiguity', 'text': 'Relu à 130 dpi par L4 : 12,2/−7,6 ≈ −1,605 et −5,4/3,17 ≈ −1,703 sont DIFFÉRENTS ; l\'option (جـ) imprimée « −5,4/3,17 > 12,2/−7,6 » est fausse ; seule (أ) « ≠ » est juste (la ligne de la transcription brève était inexacte).'},
+    {'elementId': 'ex-27', 'kind': 'transcription', 'text': 'Relu à 230 dpi par L4 : SIX paires (−5/8 et −19/24 ; 7/−15 et −5/12 ; 5,7/42 et 0,7/9 ; −11/16 et −17/24 ; 13/8 et 7/9 ; −18/45 et −14/35 — ces deux-ci sont ÉGAUX) ; ex-28 : 3,7/48,1 = 1,2/15,6 = 1/13 sont ÉGAUX, les deux autres paires non.'},
     {'elementId': 'ex-21', 'kind': 'scope', 'text': 'La 1re différence imprimée, 3/4 − 7/9, est NÉGATIVE (−1/36) : hors frontière de `jam-tarh-kasrayn` (les résultats négatifs sont à `amaliyat-natiqa`) ; la leçon la remplace par une différence positive.'},
     {'elementId': 'method-9', 'kind': 'plan-error', 'text': "L'élément `method-9` (L5) et sa solution d'intégration sont des erreurs du manuel : jamais montrés à l'élève (README du plan)."},
     {'elementId': 'deep-80', 'kind': 'transcription', 'text': "Relu à 130 dpi par L3 : la table est 5 : 3, 15 ; 7 : 4, 28 ; 9 : 6, 18 ; 11 : 6, 66 ; 13 : 8, 52, 104 ; 15 : 10, [manque] ; 17 : [manque], 51, 68 ; les deux nombres manquants sont 30 et 12 ; la clé « 2/5 » de la transcription brève était l'exemple de l'énoncé, pas la ligne 2 (2/7 = 1/4 + 1/28)."},

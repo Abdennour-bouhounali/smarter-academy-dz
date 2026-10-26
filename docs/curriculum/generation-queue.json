@@ -2,24 +2,6 @@
   "_comment": "Généré par scripts/learning-net-queue.mjs — ne pas éditer.",
   "queue": [
     {
-      "code": "wadiya-idmajiya-aadad-nisbiya",
-      "grade": "3am",
-      "unit": "aadad-nisbiya",
-      "titleAr": "أدمج تعلّماتي — الأعداد النسبية",
-      "kind": "synthesis",
-      "trigger": "unité aadad-nisbiya complète",
-      "via": []
-    },
-    {
-      "code": "adad-natiq",
-      "grade": "3am",
-      "unit": "kusur-natiqa",
-      "titleAr": "العدد الناطق",
-      "kind": "lesson",
-      "trigger": "priorité propriétaire",
-      "via": []
-    },
-    {
       "code": "amaliyat-natiqa",
       "grade": "3am",
       "unit": "kusur-natiqa",

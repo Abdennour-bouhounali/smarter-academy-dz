@@ -14,6 +14,9 @@
  * Ajouté par la leçon 3 `jam-tarh-kasrayn` (2026-10-26) : `isCommonMultiple`, `smallestCommonMultiple`, `multiplesUntil`, `cellsOf`, `sumWith`, `widestUnit`,
  * `zoneEnds` (le labo `seed-rake`) : sommes et différences de fractions POSITIVES par un dénominateur commun.
  *
+ * Ajouté par la leçon 4 `adad-natiq` (2026-10-26) : `writingValue`, `normalize`, `writingsEqual`, `isDecimalRational`, `twelfths`, `integerAndFraction`, `sortRationals`, `unitOf`
+ * (le labo `number-line-pegs`) : le nombre rationnel, ses écritures, sa place sur la droite.
+ *
  * Importé PAR CHEMIN (`@smarter-academy/core/arithmetic/fractions3.js`), jamais par le barrel du cœur (BUNDLE_BOUNDARIES §3–§4).
  */
 import { rat, parseRat, mul, div, eq, sign, add, sub } from './powers.js';
@@ -268,6 +271,67 @@ export function sumWith(terms, N) {
 export function widestUnit(dens, maxN = 60) {
   const m = smallestCommonMultiple(dens);
   return m <= big(maxN) ? m : null;
+}
+
+/* ── Leçon 4 `adad-natiq` (2026-10-26) : le nombre rationnel, ses écritures, sa place ─────────────────────────────────────────────────────────── */
+
+/**
+ * La VALEUR (rationnel réduit) d'une écriture : « a/b » avec a et b relatifs (a peut être décimal : « -1,5/-8 »), ou un nombre seul (« -3 », « 2,5 »).
+ * Les signes peuvent être n'importe où (« 6/-8 »). Exception si b = 0.
+ */
+export function writingValue(w) {
+  if (isRaw(w)) return valueOf(w);
+  if (typeof w === 'bigint' || typeof w === 'number') return rat(w, 1);
+  const t = String(w).trim().replace(/−/g, '-').replace(/\s+/g, '');
+  const i = t.indexOf('/');
+  if (i < 0) return valueOf(toRaw(t));
+  const a = valueOf(toRaw(t.slice(0, i)));
+  const b = valueOf(toRaw(t.slice(i + 1)));
+  if (b.n === 0n) throw new Error('division par 0');
+  return div(a, b);
+}
+
+/** La forme MODÈLE d'un rationnel : dénominateur positif et fraction réduite. `{ sign: -1 | 0 | 1, n, d }` avec n ≥ 0 (la valeur est sign × n / d). Accepte une écriture, un `rat` ou un couple brut. */
+export function normalize(x) {
+  const v = rat_(x);
+  return Object.freeze({ sign: v.n < 0n ? -1 : v.n > 0n ? 1 : 0, n: abs(v.n), d: v.d });
+}
+const rat_ = (x) => (x && typeof x === 'object' && 'n' in x && 'd' in x && !('sign' in x) ? rat(x.n, x.d) : writingValue(x));
+
+/** Deux écritures désignent-elles le MÊME nombre ? (exact) */
+export function writingsEqual(a, b) { return eq(rat_(a), rat_(b)); }
+
+/** Le rationnel est-il décimal ? ⇔ son dénominateur réduit n'a que les facteurs 2 et 5. */
+export function isDecimalRational(x) {
+  let d = rat_(x).d;
+  while (d % 2n === 0n) d /= 2n;
+  while (d % 5n === 0n) d /= 5n;
+  return d === 1n;
+}
+
+/** Le nombre k de douzièmes si x = k/12 (entier relatif, number), sinon null. */
+export function twelfths(x) {
+  const v = rat_(x);
+  const k = v.n * 12n;
+  return k % v.d === 0n ? Number(k / v.d) : null;
+}
+
+/** L'entier relatif ⌊x⌋ (le plus grand entier ≤ x) et la fraction qui reste, dans [0, 1[ : −17/3 = −6 + 1/3 ; 17/5 = 3 + 2/5. `alt` : la lecture « entier vers zéro + fraction négative » (−17/3 = −5 + (−2/3)). */
+export function integerAndFraction(x) {
+  const v = rat_(x);
+  let k = v.n / v.d;
+  if (v.n < 0n && v.n % v.d !== 0n) k -= 1n;
+  const frac = rat(v.n - k * v.d, v.d);
+  const toward = v.n / v.d;
+  return Object.freeze({ k, frac, alt: Object.freeze({ k: toward, frac: rat(v.n - toward * v.d, v.d) }) });
+}
+
+/** L'entier ⌊x⌋ (number) : l'intervalle unité [k, k + 1[ où x se trouve. */
+export const unitOf = (x) => Number(integerAndFraction(x).k);
+
+/** Les écritures triées par valeur croissante (stable : deux écritures égales gardent leur ordre). Retourne un nouveau tableau. */
+export function sortRationals(list) {
+  return list.map((w, i) => ({ w, i, v: rat_(w) })).sort((p, q) => (eq(p.v, q.v) ? p.i - q.i : sign(sub(p.v, q.v)))).map((o) => o.w);
 }
 
 export { sign };

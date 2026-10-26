@@ -135,6 +135,8 @@ export const MANIPULATION_COMPONENTS = {
   'shade-match': lazy(() => import('./operations/ShadeMatch')),
   // 3AM, unité 2, leçon 3 : l'espacement sous la main — le مشط الشتلات (2026-10-26).
   'seed-rake': lazy(() => import('./operations/SeedRake')),
+  // 3AM, unité 2, leçon 4 : la position d'une écriture sous la main — le حبل الأعداد (2026-10-26).
+  'number-line-pegs': lazy(() => import('./operations/NumberLinePegs')),
   // 2AM, unité 5 « التناسبية » : le nombre qui manque sous la main — les موازين الرابع المتناسب (2026-10-21).
   'fourth-gauges': lazy(() => import('./operations/FourthGauges')),
 };

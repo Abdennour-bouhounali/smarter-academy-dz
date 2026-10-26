@@ -247,7 +247,7 @@ their cross-year links come from the net at run time.
 **Database — imported, closed, ignored by Mastery V2.**
 
 - `exportCurriculum.mjs` → `smarter:import-curriculum` imports the three grades, their units, the 196 lessons and
-  **all 523 learning points** (`{g}_{code}_P{n}`), as D2 requires.
+  **all 524 learning points (523 drafts + the unit-1 synthesis P1, 2026-10-26)** (`{g}_{code}_P{n}`), as D2 requires.
 - **The importer creates a `coming_soon` lesson with `publication_status = draft`** (`CurriculumImporter::
   publicationOnCreate`). The column defaults to `published`: without this rule the 196 empty lessons would be open
   on the server, since every server gate (`ContentAccess`, `visibleToStudents`) reads `publication_status`, not
@@ -360,7 +360,7 @@ reviews them in its « أستعدّ » (« راجع قبل أن تنطلق »), 
 | Gate | What it checks |
 |---|---|
 | `packages/core/curriculum/dz/net/learningNet.test.js` (19 tests) | items (format, uniqueness, official numbering), links (existence, direction, acyclicity, `extends`/`consolidates` fields, one base), threads (partition), lessons (every item homed, 4AM fully covered by published lessons, closed recall list, unique codes, every unit of every grade ends with its synthesis, no planned layer left in the net, lesson order), resolver behaviour (review links, earlier-year review after an error) |
-| `packages/core/curriculum/coursesData.test.js` | the five grades; `lessonCount` counts published lessons; 1AM–3AM lessons all `coming_soon` with no routable path; their 523 LP ids; prerequisites exist and precede |
+| `packages/core/curriculum/coursesData.test.js` | the five grades; `lessonCount` counts published lessons; 1AM–3AM lessons all `coming_soon` with no routable path; their 524 LP ids; prerequisites exist and precede |
 | `apps/api/tests/Feature/MoyenComingSoonImportTest.php` | coming_soon imported `draft` with its LPs; cross-year lesson prerequisite; publishing opens without touching the tier; admin authority kept; no recommendation to a draft prerequisite |
 | `npm run check:learning-net` (in `check:lessons`) | the generated maps and the generation queue are up to date; the queue also fails if a planned lesson is missing from it |
 

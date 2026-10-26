@@ -73,7 +73,7 @@
    "kind": "aside",
    "page": 6,
    "section": "نص تاريخي",
-   "verified": false,
+   "verified": true,
    "text": "Grand cadre blanc sous la liste des objectifs (rose et rouge) : un texte historique — ILLISIBLE, le scan a détruit la zone en blocs de pixels ; seuls des fragments sont devinables (« …الموجبة هي… », « …نسبية… »).",
    "figure": "à gauche de la liste des objectifs : un collage décoratif de chiffres multicolores (0–9) épinglé d’un trombone."
   },
@@ -151,7 +151,7 @@
      ],
      "figure": "repère orthogonal quadrillé, unités -2…2 ; A(−2 ; 1), B(1 ; 2)",
      "why": "$A(-2\\,;\\,1)$ : abscisse $-2$",
-     "verified": false
+     "verified": true
     },
     {
      "n": 3,
@@ -165,7 +165,7 @@
       2
      ],
      "why": "$A(-2\\,;\\,1)$",
-     "verified": false
+     "verified": true
     },
     {
      "n": 4,
@@ -179,7 +179,7 @@
       2
      ],
      "why": "$B(1\\,;\\,2)$",
-     "verified": false
+     "verified": true
     },
     {
      "n": 5,
@@ -1820,7 +1820,7 @@
    "section": "أتعمّق",
    "title": "مثلث سحري",
    "text": "مجموع الأعداد على كل ضلع من أضلاع المثلث يساوي 2. املإ الخانات الفارغة بالأعداد النسبية $(-2)$ ، $(-1)$ ، $1$ ، $2$ و $3$.",
-   "verified": false,
+   "verified": true,
    "figure": "un triangle à six cases (3 sommets + 3 milieux de côtés), seule la case du MILIEU DU CÔTÉ GAUCHE est remplie : 0 (le scan est pâle ; la position de 0 est lue à 500 dpi).",
    "answer": {
     "solutions (A=haut, B=bas gauche, C=bas droit, BC=milieu bas, AC=milieu droit ; milieu gauche = 0)": [
@@ -2182,7 +2182,7 @@
    "page": 20,
    "section": "أدمج تعلّماتي",
    "title": "وضعية: السعة الحرارية على القمر والزهرة والمريخ",
-   "verified": false,
+   "verified": true,
    "text": "باستعمال السندات 1 ، 2 ، 3 أدناه: 1) احسب السعة الحرارية بالدرجة سيلسيوس على سطح القمر، ثم على سطح كل من الزهرة والمريخ. 2) أعط متوسط درجة الحرارة بالكلفن على سطح الزهرة. 3) أعط متوسط درجة الحرارة بالسيلسيوس على سطح المريخ. السند 1: • الكلفن وحدة لقياس درجة الحرارة، تُستعمل كثيرا من طرف الفيزيائيين، بينما نستعمل في حياتنا اليومية درجة السيلسيوس. • يتم المرور من درجة سيلسيوس (°C) إلى درجة كلفن (K) بإضافة 273,15. • السعة الحرارية هي الفارق بين درجتي حرارة، في مكان ما، وفي فترة معطاة. السند 2: تأثير الغلاف الجوي. • يتكون الغلاف الجوي للقمر من طبقة غير سميكة، ويتسبب ذلك في سعة حرارية كبيرة بين وجهي القمر، إذ تبلغ هذه السعة مستويات قياسية: يمكن أن تنزل الحرارة إلى $(-170^\\circ C)$ على الوجه المظلم، بينما يبلغ متوسط درجة الحرارة على الوجه المقابل للشمس حوالي $(160^\\circ C)$. • يُعتبر كوكب الزهرة الأكثر تأثرا بالاحتباس الحراري نظرا لكثافة غلافه الجوي العالية جدا، ويبلغ متوسط درجة الحرارة على سطحه حوالي $(460^\\circ C)$. • يُحدثُ ضعف كثافة الغلاف الجوي لكوكب المريخ أثرا محدودا للاحتباس الحراري، وهو ما يفسر معدل درجة الحرارة على سطحه الذي يبلغ حوالي $(210K)$. السند 3: درجة الحرارة على سطح: الزهرة: • القصوى: $763K\\,(490^\\circ C)$ • الدنيا: $719K\\,(446^\\circ C)$. المريخ: • القصوى: $270K\\,(-3^\\circ C)$ • الدنيا: $140K\\,(-133^\\circ C)$. توجيهات: قراءة وتحليل الوضعية: • ماذا تُمثّل الأعداد الواردة في نص الوضعية والسندات؟ • كيف تربط بين الأعداد الواردة في هذا النص والأعداد الواردة في نص الوضعية؟ • حدِّد العمليات الحسابية التي ستنجزها في كل حالة. • حدِّد قواعد الحساب التي ستطبقها في كل حالة. تحليل التعليمة واختيار استراتيجية حل مناسبة: • ما المهمّات المطلوب إنجازها؟ • تحديد كل مهمة مطلوبة بدقّة. • إنجاز مخطط للعمل تحدد فيه مراحل التنفيذ. تنفيذ استراتيجية الحل المختارة: • تنفيذ المهمات وإنجاز الحسابات. • تحرير الحل والشرح بجُمل واضحة.",
    "figure": "aucune figure ; deux colonnes de texte (supports 1 et 2 à droite, support 3 à gauche) et la grille de « توجيهات ».",
    "answer": {
@@ -2203,7 +2203,7 @@
    "page": 20,
    "section": "وضعية للتقويم",
    "title": "درجتا الحرارة بالفهرنهايت والسيلسيوس",
-   "verified": false,
+   "verified": true,
    "text": "بعض البلدان، مثل الولايات المتحدة الأمريكية، تستعمل درجة فهرنهايت للتعبير عن درجات الحرارة. عندما غادر أحد رجال الأعمال مدينة باريس، كانت درجة الحرارة تشير إلى $-2^\\circ C$ ، وعندما وصل إلى شيكاغو كانت درجة الحرارة تشير إلى $14^\\circ F$. 1) باستعمال القاعدة التالية المتعلقة بتحويل درجة الحرارة من فهرنهايت إلى السيلسيوس: $T^\\circ F=1{,}8\\times T^\\circ C+32$. أ) عبّر عن درجة الحرارة في باريس بالدرجة $T^\\circ F$. ب) عبّر عن درجة الحرارة في شيكاغو بالدرجة $T^\\circ C$. 2) أيّ المدينتين أشد برودة؟",
    "answer": {
     "1a": "باريس : 1,8 x (-2) + 32 = 28,4 °F",
@@ -2366,7 +2366,8 @@
   "opener": {
    "lesson": "wadiya-idmajiya-aadad-nisbiya",
    "module": null,
-   "note": "illisible"
+   "note": "illisible",
+   "notIntegrated": "cadre historique détruit par des blocs de pixels sur le scan (illisible) : la plateforme n’en tire rien — décision de la synthèse, 2026-10-26"
   },
   "challenge": {
    "lesson": "jidaa-ida-nisbiya",
@@ -2784,12 +2785,12 @@
   "integration": {
    "lesson": "wadiya-idmajiya-aadad-nisbiya",
    "module": 1,
-   "note": "REDESIGNÉE : une situation de contraste de températures (amplitude, kelvin ↔ celsius)"
+   "note": "REDESIGNÉE : une nuit à l’Assekrem (amplitude thermique, kelvin ↔ celsius, moyenne), nombres propres : situation d’entraînement 1"
   },
   "evaluation": {
    "lesson": "wadiya-idmajiya-aadad-nisbiya",
    "module": 7,
-   "note": "REDESIGNÉE : la situation « Fahrenheit » alimente les modules 7 et 8"
+   "note": "REDESIGNÉE : la situation « Fahrenheit » (Sétif −3 °C, Montréal −13 °F) est analysée au module 7 et évaluée au module 8"
   },
   "ict": {
    "lesson": "qismat-nisbiyayn",

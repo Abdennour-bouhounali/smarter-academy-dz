@@ -150,3 +150,12 @@ PRIORITY).
   (module routes mount, module 8 evaluates).
 - Publish (coordinator): `pointsToLearn` (P1), `durationMinutes`, `difficulty: 'متقدم'`, `icon: '🌡️'`, status `available`;
   `units_3am › aadad-nisbiya.challenge.sourceElementId` already set by L2.
+
+## 12. Generator notes (2026-10-26, lead of `wadiya-idmajiya-aadad-nisbiya`)
+
+1. **Empty `programmeItems` accepted:** the validators (`validate:lessons`, learning-net tests) accept the synthesis with `programmeItems: []` and one `pointsToLearn` (P1), like the 4AM syntheses; no fallback to the unit's items. Side effect: `coursesData.test.js` LP total 523 → 524.
+2. **Cards to order (module 7 stage ②)** became a `TapQuestion` (« نطرح 32 ثم نقسم على 1,8 » among four chains): the kit has no card-ordering component. Module 7 has four steps (sort, three-stage analysis, same-scale question, inverse chain).
+3. **Opener** (illegible) is declared `notIntegrated` in `build-extraction.py`. `integration`, `evaluation`, `challenge ②`, `prep 2–4`, `deep-38` are `verified: True` (re-read at 110 dpi); `check:textbook` has no pending element left in the unit.
+4. **Situation 5** open question 4 is a four-option choice (no open-answer step in `GuidedProblem`); situation 6 uses a `batch` for the five verdicts. Every problem has an `illustration` (scene) because `masailIllustrations.test.js` demands a support; situation 3 has the GeoFigure grid + axes.
+5. **Duration:** `durationMinutes` 30 (modules 0 + 7 + 8 = 6 + 12 + 12, the rule `validate:lessons` applies); `estimatedDurationMin` 30.
+6. **Bank:** 50 sheets, 165 questions (40 `term_exam_modelled`, 10 `adapted`, 0 `term_exam`: no 3AM term-1 paper has a relative-numbers situation), 29 `counted: false`, six `MISC-WIDMAJ-*` added. The unit تحدّ text in `units_3am` is left as the book's (owner question).

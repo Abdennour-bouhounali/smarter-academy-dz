@@ -749,7 +749,7 @@ DEST = {
     '_comment': 'elementId → { lesson, module } ; `items` répartit un élément ; une leçon encore coming_soon est une destination EN ATTENTE (check-textbook-coverage.mjs). '
                 'Modules de jidaa-adadayn-nisbiyayn : 0 أستعدّ · 1 نشاط · 2 معارف · 3 طريقة · 4 أتمرّن · 5–7 مسائل · 8 إختبار أولي ; `None` = banque d’exercices.',
     'objectives': d('unit', 'page'),
-    'opener': d(SYN, None, note='illisible'),  # le cadre est détruit par des blocs de pixels : rien à citer ; la synthèse porte l’élément (comme unit3 / unit6)
+    'opener': d(SYN, None, note='illisible', notIntegrated='cadre historique détruit par des blocs de pixels sur le scan (illisible) : la plateforme n’en tire rien — décision de la synthèse, 2026-10-26'),
     'challenge': d(L2, 5, items={'1': d(L2, 5, note='2017 nombres égaux de somme −2017 : chacun vaut −1, 2017 est impair : produit −1 (parité), refait avec 2025'),
                                  '2': d(SYN, 5, note='décompositions de −36 en produit d’entiers relatifs : situation d’entraînement 5 de la synthèse')}),
     'prep': d(L1, 0, items={'7-10-11-14-15': d(L1, 0), '1-5-6-8-9': d(L2, 0), '12-13': d(L3, 0), '2-3-4': d(SYN, 0)}),
@@ -785,8 +785,8 @@ for k_ in (8, 9, 10, 11): DEST[f'self-{k_}'] = d(L3, 8)
 DEST['deep-38']['note'] = 'addition seule (cases dont la somme sur chaque côté est 2) : banque de la synthèse (plan README)'
 DEST['deep-37']['note'] = 'contraste produit/somme (4 cas) : أتمرّن de jidaa-adadayn-nisbiyayn (plan E8)'
 DEST['deep-43']['note'] = 'vrai/faux : أ et جـ seulement dans la leçon (ب est du 2AM) ; plan E6'
-DEST['integration'] = d(SYN, 1, note='REDESIGNÉE : une situation de contraste de températures (amplitude, kelvin ↔ celsius)')
-DEST['evaluation'] = d(SYN, 7, note='REDESIGNÉE : la situation « Fahrenheit » alimente les modules 7 et 8')
+DEST['integration'] = d(SYN, 1, note='REDESIGNÉE : une nuit à l’Assekrem (amplitude thermique, kelvin ↔ celsius, moyenne), nombres propres : situation d’entraînement 1')
+DEST['evaluation'] = d(SYN, 7, note='REDESIGNÉE : la situation « Fahrenheit » (Sétif −3 °C, Montréal −13 °F) est analysée au module 7 et évaluée au module 8')
 DEST['ict'] = d(L3, 7, note='REDESIGNÉE en مسألة : parenthèses du numérateur et du dénominateur d’un quotient (la calculatrice n’est pas la leçon)')
 DEST['self-1']['note'] = DEST['self-2']['note'] = DEST['self-3']['note'] = DEST['self-4']['note'] = DEST['self-5']['note'] = 'items de test (module 8) ET banque (chiffres redessinés)'
 
@@ -841,6 +841,14 @@ for e in E:
 # relus à 130–260 dpi par la banque (aucune valeur changée) ; ex-17, ex-18…20 ne sont pas de cette leçon ; ict (p. 21) relu pour la مسألة 3 (nombres redessinés).
 for e in E:
     if DEST[e['id']]['lesson'] == L3: e['verified'] = True
+# wadiya-idmajiya-aadad-nisbiya (2026-10-26) : integration et evaluation (p. 20, PDF 21), prep 2–4 (p. 7, PDF 8) et deep-38 (p. 18, PDF 19) relus à 110 dpi ; le texte et les
+# réponses calculées ci-dessus sont confirmés ; la figure de deep-38 (le « 0 » au milieu du côté gauche, deux solutions symétriques A = −1, B = 3 ou A = 3, B = −1, C = 1) est relue.
+for e in E:
+    if DEST[e['id']]['lesson'] == SYN: e['verified'] = True
+for e in E:
+    if e['id'] == 'prep':
+        for it in e.get('items', []):
+            if it.get('n') in (2, 3, 4): it['verified'] = True
     # les éléments partagés (prep, act-4 …) dont une partie seulement est à cette leçon restent comme leur premier destinataire les a laissés
 verified_l1 = [e['id'] for e in E if DEST[e['id']]['lesson'] == L1 and not e.get('verified')]
 

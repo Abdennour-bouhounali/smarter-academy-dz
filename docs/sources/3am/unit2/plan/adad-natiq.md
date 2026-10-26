@@ -417,3 +417,15 @@ checks it sorted, checks every interval, and checks every « decimal? » key by 
 - [ ] Gates: `npm test`, `validate:lessons`, `check:textbook`, `check:lessons`, `build`.
 - [ ] Bank (50, mostly modelled — state the gap in the report) + oracle + JSON entries.
 - [ ] Publish (guide §11, coordinator).
+
+## 12. Generator notes (2026-10-26)
+
+Generated from this plan. Fixes and decisions, none a redesign:
+1. **The plan's `self-9` line was wrong** (extraction): `12,2/−7,6 ≈ −1,605` and `−5,4/3,17 ≈ −1,703` are DIFFERENT, so the printed option (جـ) « −5,4/3,17 > 12,2/−7,6 » is false and only (أ) « ≠ » is right. `ex-27` has SIX pairs (one of them, −18/45 and −14/35, is an EQUAL pair) and `ex-28` three; both were re-read at 230 dpi and recorded in `discrepancies`.
+2. **Advanced snap.** « Continuous » drop is a 1/48 step (`SNAP_ORDER`): the verdict is exact (unit interval + order of DISTINCT values; two equal writings need not be hung at the same x). a3's « first two on ONE peg » is therefore seen after « تحقّق » (the wind), not demanded of the hand.
+3. **Wind timing.** The wind acts when « تحقّق » is pressed on the cards already hung (not after each card): finer than the plan's « after each card », same effect, and a card hung on its true peg « stays » (`ثابتة`). The discovery opens when w1–w3 are all done (not after w2).
+4. **Slide tag / chip.** One chip per pile (the front card: standard writing, `×n`, slide in twelfths) — the plan's one tag per card overlapped at a stack. The decimal readout « −2,333… » (non-decimal values, مبتدئ only, at most two) is a static 3-digit prefix with a pulsing ellipsis, not a scrolling strip.
+5. **Order stays positive-only for « integer + fraction ».** The unit's open question (plan §10, risk 2) is unchanged: M3 and `ex-26` use positive rationals; the bank's `l3-006` accepts both readings of a negative.
+6. **π not posed**, **no set symbols**, all numbers in M0–M8 are the platform's own; the book's `method-10` (−5,7/9 vs −3,9/6) is replaced by (−4,9)/6 vs (−3,5)/4.
+7. **Bank** (helper): 2 `term_exam` (modelled on `3am-s1-104` ex 2 ③ and `3am-s1-109` ex 2), 40 `term_exam_modelled`, 8 textbook-adapted; `ex-25`, `ex-29`, `self-4` are cited only by the bank. Two extra misconceptions: `MISC-NATIQ-DECIMAL`, `MISC-NATIQ-APPROX`.
+8. **Catalogue.** `durationMinutes` 65 (modules without مسائل; 89 with them), `pointPrerequisites` P1 ← `1am_hasil-qisma-kasr_P1`, P2 ← `3am_qismat-nisbiyayn_P3` + `3am_adad-natiq_P1`, P3 ← `3am_adad-natiq_P2`; the three draft الكفاءات reworded as §2 proposes.

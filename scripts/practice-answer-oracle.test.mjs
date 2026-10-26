@@ -143,6 +143,8 @@ import { ORACLE as ORACLE_3AM_JIDAA_IDA } from './practice-oracle/jidaa-ida-nisb
 import { ORACLE as ORACLE_3AM_TASAWI_MUQARANAT_KASRAYN, audit as auditTasawi } from './practice-oracle/tasawi-muqaranat-kasrayn.mjs';
 import { ORACLE as ORACLE_3AM_JAM_TARH_KASRAYN, audit as auditJamTarh } from './practice-oracle/jam-tarh-kasrayn.mjs';
 import { ORACLE as ORACLE_3AM_QISMAT_NISBIYAYN, audit as auditQismat } from './practice-oracle/qismat-nisbiyayn.mjs';
+import { ORACLE as ORACLE_3AM_ADAD_NATIQ, audit as auditAdadNatiq } from './practice-oracle/adad-natiq.mjs';
+import { ORACLE as ORACLE_3AM_WADIYA_NISBIYA, audit as auditWadiyaNisbiya } from './practice-oracle/wadiya-idmajiya-aadad-nisbiya.mjs';
 
 // Toutes les années du cycle moyen (content/practice/<1am…4am>/<leçon>/level-N) : jusqu'au 2026-10-14 seul 4am
 // existait et la racine y était codée en dur — un banc 1AM–3AM aurait échappé à l'oracle sans rien dire.
@@ -311,6 +313,8 @@ const ORACLE = {
   ...ORACLE_3AM_TASAWI_MUQARANAT_KASRAYN,
   ...ORACLE_3AM_JAM_TARH_KASRAYN,
   ...ORACLE_3AM_QISMAT_NISBIYAYN,
+  ...ORACLE_3AM_ADAD_NATIQ,
+  ...ORACLE_3AM_WADIYA_NISBIYA,
 };
 
 /**
@@ -372,6 +376,18 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     const own = bank.filter((b) => b.key.startsWith('ex-3am-qismat-nisbiyayn-'));
     expect(own.length).toBeGreaterThan(0);
     expect(auditQismat(own)).toEqual([]);
+  });
+
+  it('العدد الناطق (3AM) : normalisation de chaque écriture (BigInt, pgcd propre), chaînes d\'ordre et intervalles relus en LaTeX, « décimal ? » par le test 2^i·5^j, valeurs approchées par défaut recalculées, QCM à une seule bonne option, signatures et distracteurs = MISC-NATIQ-*', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-3am-adad-natiq-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditAdadNatiq(own)).toEqual([]);
+  });
+
+  it('أدمج تعلّماتي — الأعداد النسبية (3AM, synthèse) : évaluateur exact copié du banc frère (BigInt, priorités, puissance entière), □ résolu par linéarité et re-vérifié, triangle magique et décompositions de −30 par force brute, QCM à une seule bonne option, signatures et distracteurs = valeur exacte de l\'erreur MISC-* nommée', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-3am-wadiya-idmajiya-aadad-nisbiya-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditWadiyaNisbiya(own)).toEqual([]);
   });
 
   it('le cas signalé (6 | 120) : « 6 مضاعف للعدد 120 » est faux, seul « لا » est accepté', () => {

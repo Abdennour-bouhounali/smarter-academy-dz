@@ -304,6 +304,10 @@ export const VISUAL_THEMES = Object.freeze({
   //            (tomates, piments, oignons) avec leur pancarte, un râteau de jardin dont l'espacement des dents est la variable, des plants dans des cases
   //            de terre, un second حوض qui glisse dessous quand le total dépasse 1 m, une élève (KidFigure, hijab) à l'arrosoir (`seed-rake`)
   seedbed: { kind: 'lengths', shows: 'حوض غرس في حديقة المدرسة: مشط زراعي وشتلات ومسطرة متر' },
+  // 3AM, unité 2, leçon 4 (2026-10-26) :
+  //   clothesline  un حبل tendu entre deux poteaux peints dans la cour de l'école pour « يوم الرياضيات » : des étiquettes en bois aux entiers (côté négatif bleu avec « − », côté positif orange avec « + »),
+  //                des pinces qui glissent, un panier de cartes d'écritures a/b au sol, une élève (KidFigure, hijab) près du panier (`number-line-pegs`)
+  clothesline: { kind: 'objects', shows: 'حبل مشدود في ساحة المدرسة بين عمودين، عليه ملاقط وبطاقات أعداد' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));
