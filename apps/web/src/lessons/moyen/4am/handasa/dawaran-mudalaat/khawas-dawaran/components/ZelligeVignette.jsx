@@ -14,7 +14,7 @@ const petal = (deg) => {
 
 export default function ZelligeVignette() {
   return (
-    <svg viewBox="0 0 120 120" className="h-24 w-24 sm:h-28 sm:w-28" aria-hidden="true" data-deco="zellige-vignette">
+    <svg viewBox="0 0 120 120" className="h-28 w-28" aria-hidden="true" data-deco="zellige-vignette">
       <rect x="2" y="2" width="116" height="116" rx="14" fill="#F0FDFA" stroke="#0F766E" strokeWidth="2" />
       <path d="M60 8 L68 34 L94 26 L80 50 L106 60 L80 70 L94 94 L68 86 L60 112 L52 86 L26 94 L40 70 L14 60 L40 50 L26 26 L52 34 Z" fill="none" stroke="#99F6E4" strokeWidth="1.5" />
       {[0, 60, 120, 180, 240, 300].map((d, i) => <polygon key={d} points={petal(d)} fill={COLORS[i]} stroke="#0F172A" strokeWidth="1" />)}

@@ -329,7 +329,7 @@ export default function ModuleLayout({
       <main className={presenting ? 'sa-classroom-module-main' : 'sa-page py-8 flex-1 space-y-8'}>
 
         {/* Navigation Header */}
-        {!presenting && <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+        {!presenting && <div className="flex justify-between gap-4 mb-4 flex-row items-center">
           <nav
             className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500"
             aria-label={t('nav.breadcrumb')}
@@ -362,7 +362,7 @@ export default function ModuleLayout({
               « وضع القسم » à côté des XP, un écran étroit manquerait de place
               et écraserait les pastilles (un libellé sur deux lignes, une
               cible tactile rétrécie). Elles passent à la ligne, entières. */}
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 self-end sm:self-auto">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 self-auto">
             {/* 🧪 المختبر — un instrument de mathématiques, ouvert SUR la
                 leçon sans la quitter. Ici, avec les autres repères du
                 module : toujours atteignable (la rangée est `sticky`) et
@@ -398,7 +398,7 @@ export default function ModuleLayout({
                 <span dir="ltr">{modulePosition} / {totalModules}</span>
               </span>
               <div
-                className="w-16 sm:w-24 h-2 bg-slate-200 rounded-full overflow-hidden"
+                className="h-2 bg-slate-200 rounded-full overflow-hidden w-24"
                 role="progressbar"
                 aria-valuenow={progressPct}
                 aria-valuemin={0}
@@ -448,7 +448,7 @@ export default function ModuleLayout({
               {hasModuleNumber && <PublicationBadge status={moduleStatus(lessonId, moduleNumber)} />}
             </div>
           )}
-          <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto">
+          <p className="text-slate-600 max-w-xl mx-auto text-sm">
             <MathLabel>{moduleSubtitle}</MathLabel>
           </p>
         </header>}

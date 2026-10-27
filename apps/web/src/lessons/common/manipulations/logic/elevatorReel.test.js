@@ -70,7 +70,8 @@ describe('elevator-reel — le modèle', () => {
 describe('elevator-reel — les missions', () => {
   it('les presets sont jouables : chaque étage est sur le rail', () => {
     const b = L.init(L.PRESETS.beginner);
-    expect(b.tasks.map((t) => L.timeFor(t.r, t.floor, b.step))).toEqual([3, -2, 2, -3]);
+    expect(b.tasks.map((t) => t.kind)).toEqual(['floor', 'predict', 'floor', 'floor', 'floor']);
+    expect(b.tasks.filter((t) => t.kind === 'floor').map((t) => L.timeFor(t.r, t.floor, b.step))).toEqual([3, -2, 2, -3]);
     const a = L.init(L.PRESETS.advanced);
     expect(a.advanced).toBe(true);
     expect(a.tasks.map((t) => t.kind)).toEqual(['predict', 'both', 'floor', 'floor']);
@@ -87,6 +88,19 @@ describe('elevator-reel — les missions', () => {
     expect(s.last).toMatchObject({ t: 3, floor: -6, ok: true });
     expect(L.canNext(s)).toBe(true);
     s = L.nextTask(s);
+    // p1 : la prédiction AVANT de voir — le −2 (les deux signes « −− » écrits « − ») porte sa conviction ; le 2 est juste
+    expect(L.canPlay(s)).toBe(false);
+    s = L.choose(s, '-2');
+    expect(s.last).toMatchObject({ kind: 'predict', ok: false, misc: 'MISC-JIDAA-NEGNEG', floor: 2 });
+    expect(L.choose(s, '-3').last.misc).toBe('MISC-JIDAA-ADD');
+    expect(L.choose(s, '-1').last.misc).toBe('MISC-JIDAA-SUB');
+    s = L.choose(s, '2');
+    expect(L.taskDone(s)).toBe(true);
+    expect(s.below).toBe(false); // une carte n'est pas la main au temps négatif
+    expect(L.canPlay(s)).toBe(true);
+    s = L.nextTask(s);
+    s = L.release(s, 2); // m2 : de l'autre côté de la rue — la question « avant ou après ? », pas le calcul
+    expect(L.wrongSide(s.last)).toBe(true);
     s = L.release(s, -2); // m2 : (−2) × (−2) = 4
     expect(s.last).toMatchObject({ floor: 4, ok: true });
     expect(s.below).toBe(true);
@@ -159,5 +173,30 @@ describe('elevator-reel — les missions', () => {
     const w = L.distanceWitness(s);
     expect(w).toMatchObject({ a: 2, b: 3, product: 6, sum: 5, diff: 1 });
     expect(L.distanceWitness(L.init(L.PRESETS.beginner)).product).toBeGreaterThan(0);
+  });
+});
+
+describe('elevator-reel — le conseil du 2026-10-27', () => {
+  it('sideOf / wrongSide : le côté de la rue ; un arrêt du même côté, au départ ou juste n’est pas « de l’autre côté »', () => {
+    expect([L.sideOf(4), L.sideOf(-1), L.sideOf(0)]).toEqual(['above', 'below', 'at']);
+    let s = L.init(L.PRESETS.beginner); // m1 : étage −6
+    s = L.release(s, 1);
+    expect(L.wrongSide(s.last)).toBe(false); // −2, du même côté que −6
+    s = L.release(s, -1);
+    expect(L.wrongSide(s.last)).toBe(true); // 2, au-dessus de la rue
+    s = L.release(s, 0);
+    expect(L.wrongSide(s.last)).toBe(false); // l'étage 0
+    expect(L.wrongSide(null)).toBe(false);
+  });
+  it('canPlay : le film attend la prédiction ; avant toute mission predict, et en libre, il est permis', () => {
+    const s = L.init(L.PRESETS.beginner);
+    expect(L.canPlay(s)).toBe(false); // m1 : la prédiction p1 est plus loin, le film montrerait sa réponse
+    expect(L.canPlay(L.init(L.PRESETS.advanced))).toBe(false); // a1 est une prédiction
+    expect(L.canPlay(L.setFree(L.init(L.PRESETS.advanced), '-2', '1'))).toBe(true);
+  });
+  it('le guide se pose AU-DESSUS de la ligne du temps et de −/+, jamais dessus', () => {
+    const s = L.init(L.PRESETS.beginner);
+    expect(L.coachOf(s)).toMatchObject({ id: 'grab', prefer: 'above', noFlip: true });
+    expect(L.coachOf(L.release(s, 1))).toMatchObject({ id: 'try', prefer: 'above', noFlip: true });
   });
 });

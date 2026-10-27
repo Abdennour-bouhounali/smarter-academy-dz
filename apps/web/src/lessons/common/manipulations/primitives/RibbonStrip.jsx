@@ -91,7 +91,7 @@ export default function RibbonStrip({ value, scale, tone = 'a', label, segments,
           {drawn.filter((s) => s.label).map((s) => (
             // Étroit sur un téléphone → l'étiquette se cache sous `sm` plutôt
             // que de chevaucher la voisine (§17bis).
-            <span key={s.key} className={`absolute top-0 truncate text-center font-mono text-[11px] font-bold text-slate-700 ${s.value / total < 0.2 ? 'hidden sm:block' : ''}`}
+            <span key={s.key} className={`absolute top-0 truncate text-center font-mono text-[11px] font-bold text-slate-700 ${s.value / total < 0.2 ? 'block' : ''}`}
               style={{ left: `${(s.start / total) * 100}%`, width: `${(s.value / total) * 100}%` }}>
               {s.label}
             </span>

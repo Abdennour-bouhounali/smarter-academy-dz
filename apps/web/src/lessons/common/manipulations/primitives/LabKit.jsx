@@ -90,9 +90,9 @@ export function PromptCard({ chip, chipIcon, aside, context, contextProps = {}, 
 
 /** La grille des cartes de réponse (dans une carte au fond très clair, comme un plateau). */
 export function ChoiceTray({ cols = 3, className = '', children, ...rest }) {
-  const grid = cols === 1 ? 'grid-cols-1' : cols === 2 ? 'grid-cols-2' : cols === 3 ? 'grid-cols-3' : 'grid-cols-2 sm:grid-cols-4';
+  const grid = cols === 1 ? 'grid-cols-1' : cols === 2 ? 'grid-cols-2' : cols === 3 ? 'grid-cols-3' : 'grid-cols-4';
   return (
-    <div className={`grid gap-2 rounded-2xl border border-indigo-50 bg-[#FAFAFF] p-1.5 sm:gap-2.5 sm:p-2.5 ${grid} ${className}`} {...rest}>
+    <div className={`grid rounded-2xl border border-indigo-50 bg-[#FAFAFF] gap-2.5 p-2.5 ${grid} ${className}`} {...rest}>
       {children}
     </div>
   );

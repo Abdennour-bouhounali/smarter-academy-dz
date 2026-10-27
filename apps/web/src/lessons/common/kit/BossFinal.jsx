@@ -180,7 +180,7 @@ function BossReview({ epreuves, answers, onContinue, onRedo, lessonId = null }) 
         })}
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex gap-3 flex-row">
         <button
           type="button"
           onClick={onContinue}
@@ -517,7 +517,7 @@ export default function BossFinal({
               </div>
 
               {registre && (
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <div className="grid gap-2 grid-cols-4">
                   {registre.map((r) => (
                     <div key={r.id} className="rounded-xl border-2 border-slate-200 bg-white p-2.5 text-center">
                       <div className="text-lg" aria-hidden="true">{r.emoji}</div>
@@ -580,7 +580,7 @@ export default function BossFinal({
                   cet essai. Un enseignant qui prépare le test n'a pas de
                   profil à lire ici. */}
               {viewer.tracksProgress && (
-                <div className="rounded-2xl border-2 border-slate-200 bg-slate-50/60 p-4 sm:p-5">
+                <div className="rounded-2xl border-2 border-slate-200 bg-slate-50/60 p-5">
                   <LessonLearningPointsStatus lessonId={ctx.lessonId} refreshToken={evidenceBatch} />
                 </div>
               )}
@@ -588,7 +588,7 @@ export default function BossFinal({
               {badgesGagnes.length > 0 && (
                 <div className="space-y-3">
                   <h3 className="font-space font-bold text-slate-800 text-sm">{t('boss.badgesUnlocked')}</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div className="grid gap-2 grid-cols-2">
                     {badgesGagnes.map((b) => (
                       <motion.div
                         key={b.id}
@@ -631,7 +631,7 @@ export default function BossFinal({
                   {masterBadge ? completion.masterTitle : completion.title}
                 </div>
                 <p className="text-indigo-100 text-sm leading-relaxed max-w-lg mx-auto">{completion.message}</p>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2">
+                <div className="grid gap-2 pt-2 grid-cols-4">
                   {completion.verbs.map((v) => (
                     <div key={v} className="bg-white/15 rounded-xl py-2 text-sm font-bold">
                       ✓ {v}

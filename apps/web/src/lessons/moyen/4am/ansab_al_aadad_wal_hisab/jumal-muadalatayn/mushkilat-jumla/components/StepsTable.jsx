@@ -29,17 +29,16 @@ export default function StepsTable({ evidence, emptyText }) {
   const [c0, c1, c2] = ACTIVITY.tableColumns;
   return (
     <div className="space-y-1.5" data-activity-evidence data-steps-table>
-      <div className="hidden grid-cols-[10rem_1fr_1fr] gap-2 px-2 text-xs font-extrabold text-rose-900 sm:grid" aria-hidden="true">
+      <div className="grid-cols-[10rem_1fr_1fr] gap-2 px-2 text-xs font-extrabold text-rose-900 grid" aria-hidden="true">
         <span>{c0}</span><span>{c1}</span><span>{c2}</span>
       </div>
       <ol className="space-y-1.5">
         {ACTIVITY.table.map((row, i) => (
-          <li key={row.task} className="grid gap-1 rounded-xl border border-rose-200 bg-white px-3 py-2 text-sm sm:grid-cols-[10rem_1fr_1fr] sm:gap-2"
+          <li key={row.task} className="grid rounded-xl border border-rose-200 bg-white px-3 py-2 text-sm grid-cols-[10rem_1fr_1fr] gap-2"
             data-evidence={`row-${i + 1}`} data-tried={cells[i] ? 'true' : 'false'}>
             <span className="font-bold text-rose-900">{row.stage}</span>
             <span className="text-slate-700">{bidi(row.task)}</span>
             <span className={cells[i] ? 'font-bold text-slate-900' : 'text-xs text-slate-400'}>
-              <span className="sm:hidden text-xs font-bold text-rose-900">{c2} : </span>
               {cells[i] ? <MathText>{cells[i]}</MathText> : emptyText}
             </span>
           </li>

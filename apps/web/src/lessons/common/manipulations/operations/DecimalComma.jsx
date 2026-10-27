@@ -622,7 +622,7 @@ export function Formal({ lab, k }) {
   const keeper = cards.find((c) => c.shownV.k >= 2 && c.dec.parts.every((p) => p.exp <= -2) && D.integerPart(c.shownV) === 0);
   return (
     <div className="space-y-2.5 text-sm font-bold text-emerald-950" data-dc-formal="mosaic">
-      <div className="grid gap-2 md:grid-cols-2">
+      <div className="grid gap-2 grid-cols-2">
         {cards.map((c) => (
           <div key={c.i} className="space-y-1 rounded-2xl border border-emerald-200 bg-white/80 p-2.5" data-dc-formal-card={c.i}>
             <p className="flex flex-wrap items-center justify-center gap-x-2 text-base font-black text-indigo-950" dir="ltr">

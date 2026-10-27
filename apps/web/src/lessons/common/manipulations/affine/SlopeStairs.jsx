@@ -454,7 +454,7 @@ export default function SlopeStairs({
               {k('fill')} <bdi dir="ltr">{`${fill.done} / ${fill.total}`}</bdi>
             </p>
           )}
-          <p role="status" className="min-h-[1.75rem] text-xs font-bold leading-snug sm:text-[13px]" data-ss-verdict={lab.last?.kind ?? ''}>{verdict}</p>
+          <p role="status" className="min-h-[1.75rem] font-bold leading-snug text-[13px]" data-ss-verdict={lab.last?.kind ?? ''}>{verdict}</p>
         </div>
         <Deco theme={theme} lab={lab} x1={x1} x2={x2} live={live} reduce={reduce} small={narrow} />
       </div>

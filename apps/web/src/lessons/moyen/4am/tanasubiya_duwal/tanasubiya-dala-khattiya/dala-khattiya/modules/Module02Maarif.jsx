@@ -56,7 +56,7 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <p className="text-xs text-slate-500"><MathText>{`نشاط 2: ${ACTIVITY2.title}`}</MathText> <SourceTag source={ACTIVITY2.source} /></p>
-              <div className="grid gap-2 sm:grid-cols-3" data-act2-tables>
+              <div className="grid gap-2 grid-cols-3" data-act2-tables>
                 {ACTIVITY2.tables.map((tb) => (
                   <ValueTable key={tb.n} n={tb.n} rows={[{ label: '$x$', cells: tb.x }, { label: '$y$', cells: tb.y }]} />
                 ))}

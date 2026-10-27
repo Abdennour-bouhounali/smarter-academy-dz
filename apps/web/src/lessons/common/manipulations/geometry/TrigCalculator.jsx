@@ -132,10 +132,7 @@ export default function TrigCalculator({
   const vp = useLessonViewport(true);
   const screenH = vp.ready && vp.height > 0 ? vp.height : 640;
   const wide = width >= 600;
-  // Téléphone de 320 px : la scène ne laisse que ~182 px — le bloc mesuré récupère la marge du stage (−8 px de chaque
-  // côté) et le clavier passe à 4 colonnes de 44 px (mêmes touches, une rangée de plus).
-  const tiny = width < 250;
-  const avail = tiny ? width + 16 : width;
+  const avail = width;
   const calcW = wide ? 300 : Math.min(avail, 360);
   const sceneW = wide ? width - calcW - 12 : avail;
   const sceneH = wide
@@ -316,13 +313,13 @@ export default function TrigCalculator({
     : (!narrow && <div className="flex justify-center">{backBtn}</div>));
 
   const decisions = (
-      <div className={`mt-1.5 grid grid-cols-2 ${tiny ? 'gap-1' : 'gap-1.5'}`} dir="rtl">
+      <div className="mt-1.5 grid grid-cols-2 gap-1.5" dir="rtl">
         <button type="button" disabled={!canDecide} onClick={() => setLab((s) => L.decide(s, 'keep'))} data-tc-keep
-          className={`min-h-[44px] rounded-xl border-2 border-emerald-300 bg-emerald-50 px-1 ${tiny ? 'text-xs' : 'text-sm'} font-extrabold text-emerald-900 disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500`}>
+          className="min-h-[44px] rounded-xl border-2 border-emerald-300 bg-emerald-50 px-1 text-sm font-extrabold text-emerald-900 disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500">
           {k('keep')}
         </button>
         <button type="button" disabled={!canDecide} onClick={() => setLab((s) => L.decide(s, 'up'))} data-tc-up
-          className={`min-h-[44px] rounded-xl border-2 border-amber-300 bg-amber-50 px-1 ${tiny ? 'text-xs' : 'text-sm'} font-extrabold text-amber-900 disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500`}>
+          className="min-h-[44px] rounded-xl border-2 border-amber-300 bg-amber-50 px-1 text-sm font-extrabold text-amber-900 disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500">
           {k('up')}
         </button>
       </div>
@@ -333,7 +330,7 @@ export default function TrigCalculator({
     : lab.stage === 'inverse' ? tasks
       : (L.hasInverse(lab) && L.tableReady(lab) ? stageNav : null);
   const calculator = (
-    <div className={`rounded-3xl border-2 border-slate-700 bg-slate-800 ${tiny ? 'p-[3px]' : 'p-2'} shadow-lg`} style={{ width: calcW, maxWidth: '100%' }}
+    <div className="rounded-3xl border-2 border-slate-700 bg-slate-800 p-2 shadow-lg" style={{ width: calcW, maxWidth: '100%' }}
       role="group" aria-label={k('calcLabel')} onKeyDown={onCalcKey} dir="ltr" data-tc-calculator>
       {/* l'écran : unité, 2nd, expression, résultat ; le trait de coupe sur les chiffres */}
       <div className="rounded-xl bg-[#C7D9B8] px-2 pt-1 pb-1.5 font-mono text-slate-900" data-tc-screen aria-live="polite">
@@ -359,8 +356,8 @@ export default function TrigCalculator({
       </div>
       {tinySlot ? <div className="mt-1.5" dir="rtl">{tinySlot}</div> : decisions}
       {/* le clavier (5 colonnes, 4 sur un téléphone de 320 px ; « = » sur deux rangées) */}
-      <div className={`mt-1.5 grid ${tiny ? 'grid-cols-4 gap-[3px]' : 'grid-cols-5 gap-1'}`}>
-        {L.keyGrid(tiny ? L.KEY_ROWS_NARROW : L.KEY_ROWS).map(({ key, row, col, span }) => (
+      <div className="mt-1.5 grid grid-cols-5 gap-1">
+        {L.keyGrid(L.KEY_ROWS).map(({ key, row, col, span }) => (
           <button key={key} type="button" onClick={() => act(key)} data-tc-key={key}
             aria-label={KEY_ARIA[key] ? k(shift && ['sin', 'cos', 'tan'].includes(key) ? `${KEY_ARIA[key]}Inv` : KEY_ARIA[key]) : key}
             aria-pressed={key === '2nd' ? shift : undefined}
@@ -395,7 +392,7 @@ export default function TrigCalculator({
       <ManipulationStage className="bg-gradient-to-b from-sky-50/70 to-white" minHeight="min-h-[150px]">
         <div ref={boxRef} className="space-y-2" data-trig-calculator data-world={theme} data-stage={lab.stage} data-mode={lab.calc.mode}
           data-solved={ready ? 'true' : 'false'}>
-          <div ref={glanceRef} className={`space-y-1.5 ${tiny ? '-mx-2' : ''}`} data-tc-glance>
+          <div ref={glanceRef} className="space-y-1.5" data-tc-glance>
             <div className={wide ? 'flex items-start justify-center gap-3' : 'flex flex-col items-center gap-1.5'}>
               {sceneSvg}
               {calculator}
@@ -410,7 +407,7 @@ export default function TrigCalculator({
 
           <LabFold id="trig-calculator.table" title={k('tableTitle', { prec: precName(lab.digits) })}>
             <div className="overflow-x-auto" dir="ltr">
-              <table className="mx-auto border-collapse text-center text-xs sm:text-sm" data-tc-table>
+              <table className="mx-auto border-collapse text-center text-sm" data-tc-table>
                 <thead>
                   <tr>
                     <th className="border border-slate-200 bg-slate-50 px-1.5 py-1" dir="rtl">{k('colAngle')}</th>
@@ -437,7 +434,7 @@ export default function TrigCalculator({
           </LabFold>
           {L.hasInverse(lab) && lab.stage === 'inverse' && (
             <LabFold id="trig-calculator.angles" title={k('anglesTitle')}>
-              <table className="mx-auto border-collapse text-center text-xs sm:text-sm" data-tc-angles>
+              <table className="mx-auto border-collapse text-center text-sm" data-tc-angles>
                 <thead>
                   <tr>
                     <th className="border border-slate-200 bg-slate-50 px-1.5 py-1" aria-label={k('colRatio')} />
@@ -553,7 +550,6 @@ function DroneScene({ w, h, sc, k }) {
         <line x1={0} x2={w} y1={yG} y2={yG} stroke="#B45309" strokeWidth={2} />
         {/* la cible (un ballon sur la promenade) */}
         <g aria-hidden="true"><circle cx={T[0]} cy={yG - 5} r={5} fill="#FFFFFF" stroke="#0F172A" strokeWidth={1.2} /><path d={`M${T[0] - 3} ${yG - 7} l3 2 l3 -2`} stroke="#0F172A" fill="none" strokeWidth={0.8} /></g>
-        {(
           <g data-tc-triangle={idle ? 'idle' : 'live'}>
             {/* le triangle : faisceau (hypoténuse), altitude (opposé), sol (adjacent) */}
             <polygon points={`${T[0]},${T[1]} ${D[0]},${D[1]} ${H[0]},${H[1]}`} fill="#FDE68A" opacity={0.35} />
@@ -568,10 +564,9 @@ function DroneScene({ w, h, sc, k }) {
                 {D[1] < yG - 24 && <text x={H[0] - 4} y={(D[1] + yG) / 2} fontSize={10} fill="#075985" textAnchor="end" {...arP}>{k('sideOpp')}</text>}
                 {H[0] - T[0] > 50 && <text x={(T[0] + H[0]) / 2 + 10} y={yG + 14} fontSize={10} fill="#78350F" textAnchor="middle" {...arP}>{k('sideAdj')}</text>}
               </>
-            )}
+        )}
             {ghost && <line {...ghost} stroke={ghostColor} strokeWidth={agree ? 4 : 3} strokeDasharray={agree ? undefined : '5 3'} opacity={0.9} data-tc-ghost={agree ? 'agrees' : 'contradicts'} />}
           </g>
-        )}
         {/* la cible de l'étape 2 : la hauteur (sin) ou la distance au sol (cos) que la nacelle doit donner */}
         {target && target.kind === 'sin' && <line x1={0} x2={w} y1={yG - target.value * g.L} y2={yG - target.value * g.L} stroke="#F59E0B" strokeWidth={1.5} strokeDasharray="2 4" data-tc-target="sin" />}
         {target && target.kind === 'cos' && <line x1={T[0] + target.value * g.L} x2={T[0] + target.value * g.L} y1={0} y2={yG} stroke="#F59E0B" strokeWidth={1.5} strokeDasharray="2 4" data-tc-target="cos" />}

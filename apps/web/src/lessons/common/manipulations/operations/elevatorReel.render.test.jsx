@@ -37,14 +37,19 @@ describe('elevator-reel — rendu', () => {
     expect(out).toContain('−9');
     expect(out).toMatch(/data-er-cabin="[^"]*"[^>]*data-floor="0"/);
     expect(out).not.toContain('data-er-arrow=');
-    expect(out).not.toContain('data-er-speed');
+    expect(out).not.toContain('data-er-speed=""');
+    expect(out).toContain('data-er-speed-card');
+    expect(out).toContain('data-er-speed-value="-2"');
+    expect(out).toContain('data-immersive="off"');
+    expect(out).toContain('data-manipulation-immersive-enter');
   });
 
   it('advanced opens on the prediction cards of a1 (4 cards), no speed lever yet, no arrows', () => {
     const out = html(cases.advanced);
     expect(out).toContain('data-er-cards');
     for (const c of ['6', '-6', '-5', '1']) expect(out).toContain(`data-er-card="${c}"`);
-    expect(out).not.toContain('data-er-speed');
+    expect(out).not.toContain('data-er-speed=""');
+    expect(out).not.toContain('data-er-play'); // le film attend la prédiction
     expect(out).not.toContain('data-er-arrow=');
   });
 

@@ -117,7 +117,7 @@ export default function KnowledgeSnapshot({ moduleNumber, unlock = true, complet
             </section>
           )}
 
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3 grid-cols-2">
             {strata.map((s) => {
               const accent = STRATUM_ACCENT[s.accent] ?? STRATUM_ACCENT.blue;
               return (

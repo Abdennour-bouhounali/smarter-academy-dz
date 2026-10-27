@@ -401,7 +401,6 @@ export default function OrangePeel({
   const screenH = vp.ready && vp.height > 0 ? vp.height : 640;
   const winH = typeof window !== 'undefined' && window.innerHeight ? window.innerHeight : 800;
   const narrow = boxW < 420;
-  const tight = boxW < 300; // un téléphone de 320 px : ~180 px utiles — l'étiquette « نصف القطر » cède la place
   const stageH = Math.round(Math.max(170, Math.min(440, winH * 0.55, screenH - overhead - 12)));
   stageHRef.current = stageH;
   const aspect = boxW / stageH;
@@ -515,21 +514,21 @@ export default function OrangePeel({
   );
 
   /* ── les commandes ── */
-  const btn = `inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-1 rounded-xl border-2 ${tight ? 'px-1.5 text-[11px]' : narrow ? 'px-2 text-xs' : 'px-3 text-sm'} font-bold focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300 disabled:opacity-40`;
+  const btn = `inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-1 rounded-xl border-2 ${narrow ? 'px-2 text-xs' : 'px-3 text-sm'} font-bold focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300 disabled:opacity-40`;
   const card = (id, ok, picked) => `min-h-[44px] rounded-xl border-2 px-1 py-1 text-center ${narrow ? 'text-xs' : 'text-sm'} font-bold [&_.katex]:whitespace-nowrap focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300 ${picked ? (ok ? 'border-emerald-500 bg-emerald-50 text-emerald-900' : 'border-rose-400 bg-rose-50 text-rose-900') : 'border-orange-200 bg-white text-slate-800 hover:border-orange-400'}`;
   const rLocked = phase === 'book' || (phase === 'peel' && lab.p > 0 && !lab.peeled) || (phase === 'pour' && lab.q > 0 && !lab.poured);
   const rRow = (
     <div className="flex items-center gap-2 rounded-xl bg-white/90 px-2 ring-1 ring-orange-200" data-op-r-row>
-      {!tight && <span className="shrink-0 text-xs font-bold text-orange-900">{k('rLabel')}</span>}
+      <span className="shrink-0 text-xs font-bold text-orange-900">{k('rLabel')}</span>
       <Slider value={lab.rt} min={rg.min} max={rg.max} step={rg.step} big={rg.big} disabled={rLocked}
         onChange={(v) => setLab((s) => L.setR(s, v))} label={k('rAria')} valueText={k('rValue', { r: L.rText(lab.rt) })} data={{ 'data-op-r': lab.rt }} />
-      <bdi dir="ltr" className={`shrink-0 font-mono ${tight ? 'text-xs' : 'text-sm'} font-bold text-slate-900`}>{`R = ${L.rText(lab.rt)} cm`}</bdi>
+      <bdi dir="ltr" className="shrink-0 font-mono text-sm font-bold text-slate-900">{`R = ${L.rText(lab.rt)} cm`}</bdi>
     </div>
   );
   const stepper = (name, label, value, onMinus, onPlus, disabled, minusOff, plusOff) => (
     <div className="flex items-center gap-1 rounded-xl bg-white/90 px-1 ring-1 ring-orange-200" role="group" aria-label={label}>
       <button type="button" className={`${btn} border-orange-200 bg-white text-orange-900`} onClick={onMinus} disabled={disabled || minusOff} aria-label={k('minus', { what: label })} {...{ [`data-op-${name}-minus`]: true }}>−</button>
-      <span className={`${tight ? 'min-w-[3.5rem]' : 'min-w-[4.5rem]'} text-center ${narrow ? 'text-xs' : 'text-sm'} font-bold text-slate-900 [&_.katex]:whitespace-nowrap`} {...{ [`data-op-${name}`]: true }} aria-live="polite">{value}</span>
+      <span className={`min-w-[4.5rem] text-center ${narrow ? 'text-xs' : 'text-sm'} font-bold text-slate-900 [&_.katex]:whitespace-nowrap`} {...{ [`data-op-${name}`]: true }} aria-live="polite">{value}</span>
       <button type="button" className={`${btn} border-orange-200 bg-white text-orange-900`} onClick={onPlus} disabled={disabled || plusOff} aria-label={k('plus', { what: label })} {...{ [`data-op-${name}-plus`]: true }}>+</button>
     </div>
   );
@@ -541,7 +540,7 @@ export default function OrangePeel({
         <div className={`grid gap-1.5 ${narrow ? 'grid-cols-1' : 'grid-cols-2'}`}>
           {stepper('k', k('kLabel'), discCount(lab.k), () => setLab((s) => L.setK(s, s.k - 1)), () => setLab((s) => L.setK(s, s.k + 1)), !L.canPredict(lab), lab.k <= L.K_MIN, lab.k >= L.K_MAX)}
           <div className="flex items-center gap-1 rounded-xl bg-white/90 px-2 ring-1 ring-rose-200">
-            {!tight && <span className="shrink-0 text-xs font-bold text-rose-900">{k('peelLabel')}</span>}
+            <span className="shrink-0 text-xs font-bold text-rose-900">{k('peelLabel')}</span>
             <Slider value={Math.round(lab.p * 100)} min={0} max={100} step={5} big={25} onChange={(v) => setLab((s) => L.peelTo(s, v / 100))}
               label={k('peelAria')} valueText={k('peelValue', { n: Math.round(lab.p * 100) })} data={{ 'data-op-peel': Math.round(lab.p * 100) }} />
             <button type="button" className={`${btn} border-rose-300 bg-rose-500 text-white`} onClick={() => runTo('p', L.peelTo)} data-op-peel-all>{k('peelAll')}</button>
@@ -582,7 +581,7 @@ export default function OrangePeel({
         <div className={`grid gap-1.5 ${narrow ? 'grid-cols-1' : 'grid-cols-2'}`}>
           {stepper('mark', k('markLabel'), <MathText>{`$${markTex(lab.m)}$`}</MathText>, () => setLab((s) => L.setMark(s, s.m - st)), () => setLab((s) => L.setMark(s, s.m + st)), !L.canMark(lab), lab.m <= st, lab.m >= L.MARK_DEN - st)}
           <div className="flex items-center gap-1 rounded-xl bg-white/90 px-2 ring-1 ring-rose-200">
-            {!tight && <span className="shrink-0 text-xs font-bold text-rose-900">{k('pourLabel')}</span>}
+            <span className="shrink-0 text-xs font-bold text-rose-900">{k('pourLabel')}</span>
             <Slider value={Math.round(lab.q * 100)} min={0} max={100} step={5} big={25} onChange={(v) => setLab((s) => L.pourTo(s, v / 100))}
               label={k('pourAria')} valueText={k('pourValue', { n: Math.round(lab.q * 100) })} data={{ 'data-op-pour': Math.round(lab.q * 100) }} />
             <button type="button" className={`${btn} border-rose-300 bg-rose-500 text-white`} onClick={() => runTo('q', L.pourTo)} data-op-pour-all>{k('pourAll')}</button>
@@ -648,7 +647,7 @@ export default function OrangePeel({
     >
       <ManipulationStage className="bg-gradient-to-b from-orange-50 to-amber-100/70" minHeight="min-h-[180px]">
         <div ref={boxRef} className="space-y-2" data-orange-peel data-world={theme} data-phase={phase} data-level={lv} data-r={L.rText(lab.rt)} data-op-rt={lab.rt}>
-          <div ref={glanceRef} className={`space-y-1.5 ${boxW < 250 ? '-mx-2' : ''}`} data-op-glance>
+          <div ref={glanceRef} className="space-y-1.5" data-op-glance>
             <div className="relative overflow-hidden rounded-2xl" style={{ height: stageH }}>
               <Kitchen uid={uid} reduce={reduce} narrow={narrow} />
               <Stage3D
@@ -693,8 +692,7 @@ const decTex = (s) => String(s).replace('.', ',').replace(',', '{,}');
 function Kitchen({ uid, reduce, narrow }) {
   const [likes, setLikes] = useState(0);
   const s = narrow ? 0.75 : 1;
-  return (
-    <>
+  return <>
       <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" data-deco="boufarik-orange">
         <defs>
           <linearGradient id={`opWall${uid}`} x1="0" y1="0" x2="0" y2="1">
@@ -729,27 +727,26 @@ function Kitchen({ uid, reduce, narrow }) {
           {[[12, 10], [30, 6], [48, 9], [66, 7], [21, -2], [57, -3]].map(([x, y], i) => <circle key={i} cx={x} cy={y + 8} r="9" fill="#f97316" stroke="#ea580c" strokeWidth="1" />)}
           <text x="39" y="49" textAnchor="middle" fontSize="8.5" fontWeight="700" fill="#fef3c7" direction="rtl">برتقال بوفاريك</text>
         </g>
+    </svg>
+    {/* le téléphone de la story (coin haut côté début) : un toucher, des cœurs — décor seulement */}
+    <button
+      type="button" tabIndex={-1} aria-hidden="true" data-deco-tap
+      onClick={() => setLikes((n) => n + 1)}
+      className="absolute start-1 top-1 z-10 h-[72px] w-[44px] rounded-lg focus:outline-none"
+      style={{ transform: `scale(${s})`, transformOrigin: 'top right' }}
+    >
+      <svg viewBox="0 0 44 72" className="h-full w-full">
+        <line x1="22" y1="52" x2="10" y2="70" stroke="#334155" strokeWidth="2" /><line x1="22" y1="52" x2="34" y2="70" stroke="#334155" strokeWidth="2" />
+        <rect x="8" y="2" width="28" height="50" rx="5" fill="#0f172a" />
+        <rect x="11" y="7" width="22" height="40" rx="2" fill="#fed7aa" />
+        <circle cx="22" cy="27" r="7" fill="#f97316" />
+        <circle cx="15" cy="11" r="2" fill="#ef4444" className={reduce ? undefined : 'op-rec'} />
+        <text x="25" y="13" fontSize="5" fontWeight="700" fill="#7c2d12" direction="rtl" textAnchor="middle">مباشر</text>
       </svg>
-      {/* le téléphone de la story (coin haut côté début) : un toucher, des cœurs — décor seulement */}
-      <button
-        type="button" tabIndex={-1} aria-hidden="true" data-deco-tap
-        onClick={() => setLikes((n) => n + 1)}
-        className="absolute start-1 top-1 z-10 h-[72px] w-[44px] rounded-lg focus:outline-none"
-        style={{ transform: `scale(${s})`, transformOrigin: 'top right' }}
-      >
-        <svg viewBox="0 0 44 72" className="h-full w-full">
-          <line x1="22" y1="52" x2="10" y2="70" stroke="#334155" strokeWidth="2" /><line x1="22" y1="52" x2="34" y2="70" stroke="#334155" strokeWidth="2" />
-          <rect x="8" y="2" width="28" height="50" rx="5" fill="#0f172a" />
-          <rect x="11" y="7" width="22" height="40" rx="2" fill="#fed7aa" />
-          <circle cx="22" cy="27" r="7" fill="#f97316" />
-          <circle cx="15" cy="11" r="2" fill="#ef4444" className={reduce ? undefined : 'op-rec'} />
-          <text x="25" y="13" fontSize="5" fontWeight="700" fill="#7c2d12" direction="rtl" textAnchor="middle">مباشر</text>
-        </svg>
         {likes > 0 && !reduce && [0, 1, 2].map((i) => (
           <span key={`${likes}-${i}`} className="op-heart pointer-events-none absolute text-sm" style={{ left: 8 + i * 9, top: 6, animationDelay: `${i * 120}ms` }}>♥</span>
         ))}
         <style>{'.op-rec{animation:opRec 1.2s steps(2) infinite}@keyframes opRec{50%{opacity:.2}}.op-heart{color:#f43f5e;animation:opHeart 1.1s ease-out both}@keyframes opHeart{from{transform:translateY(0);opacity:1}to{transform:translateY(-40px);opacity:0}}@media (prefers-reduced-motion: reduce){.op-rec,.op-heart{animation:none}}'}</style>
       </button>
-    </>
-  );
+  </>;
 }

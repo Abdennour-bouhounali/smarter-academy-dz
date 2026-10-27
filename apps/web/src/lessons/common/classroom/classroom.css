@@ -175,31 +175,7 @@ html[data-sa-classroom="fallback"] body *:not(.sa-classroom-root--active):not(.s
   white-space: nowrap;
 }
 
-/* Sur un téléphone, les libellés des SAUTS cèdent la place : les doubles
-   chevrons suffisent à les distinguer, et le pas garde son mot. La cible
-   reste ≥ 44 px, et `aria-label` porte toujours la phrase complète. */
-@media (max-width: 640px) {
-  .sa-classroom-nav {
-    gap: 6px;
-  }
-  .sa-classroom-nav__side {
-    gap: 6px;
-  }
-  .sa-classroom-nav__module .sa-classroom-nav__label {
-    display: none;
-  }
-}
 
-@media (max-width: 640px) {
-  .sa-classroom-root--active {
-    padding-left: max(8px, env(safe-area-inset-left));
-    padding-right: max(8px, env(safe-area-inset-right));
-  }
-  .sa-classroom-toolbar {
-    gap: 8px;
-    padding: 2px 0 6px;
-  }
-}
 
 @media (prefers-reduced-motion: reduce) {
   .sa-classroom-root--active,
@@ -352,13 +328,6 @@ html[data-sa-classroom="fallback"] body *:not(.sa-classroom-root--active):not(.s
 }
 .sa-classroom-fab:hover { box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.2); }
 
-/* Sur un petit écran, la pile mangerait la page : on la resserre et on
-   masque le libellé du nôtre, qui garde son aria-label. */
-@media (max-width: 640px) {
-  .sa-classroom-fab { bottom: 1.5rem; padding-left: 0.75rem; padding-right: 0.75rem; }
-  .sa-classroom-fab span { display: none; }
-}
-
 @media print { .sa-classroom-fab { display: none; } }
 
 /* Pendant une séance, le chrome FLOTTANT de la page disparaît : « كرّاسي » et
@@ -441,20 +410,6 @@ body.sa-classroom-session [data-km-trigger] {
 .sa-classroom-root--active .sa-test-presentation__finish,
 .sa-classroom-root--active .sa-test-presentation__summary {
   margin-top: 1.25rem;
-}
-
-/* Sur un téléphone, la zone de l'énoncé reprend de la hauteur : la barre
-   d'outils et la navigation y sont plus compactes. */
-@media (max-width: 640px) {
-  .sa-classroom-root--active .sa-test-presentation__body {
-    max-height: calc(var(--sa-classroom-h, 100vh) * 0.55);
-    font-size: 1rem;
-  }
-  .sa-classroom-root--active .sa-test-presentation__body > div > :first-child,
-  .sa-classroom-root--active .sa-test-presentation__body > p {
-    font-size: 1.0625rem;
-    line-height: 1.7;
-  }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────

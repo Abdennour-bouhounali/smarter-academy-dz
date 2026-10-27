@@ -124,6 +124,7 @@ shared with the student too, on the link page as well. The parent pages are phon
   questions on what the student did, then the name (`LESSON_DEVELOPMENT_GUIDE.md` §4ter–§4quinquies; reference
   `kitabat-adad-tabii`, validated; applies to every new lesson; existing lessons: `docs/reports/LESSON_METHOD_RETROFIT.md`).
 - **Supported screens: tablet and laptop only (owner, 2026-10-15)** — widths ≥ 768 px (768×1024, 1024×768, 1280×800, 1366×768, 1920×1080). Phones are NOT supported: do not design, tune or test for phone widths (320–430 px); older mentions of them below are superseded.
+  **Enforced (owner, 2026-10-27):** lessons and exercises are behind `components/auth/RequireLargeScreen.jsx`; a phone sees « محتوى الدروس يظهر فقط في شاشة الحاسوب … » instead (guide, « Supported screens »).
   **Exception (owner, 2026-10-17): the printed-books pages `/books` and `/books/:slug`** are opened from WhatsApp on phones —
   they are designed and tested mobile-first for conversion too (`docs/architecture/BOOKS_STORE.md` §4).
   **Exception (owner, 2026-10-23): the parent pages — the link page `/w/:token`, `/wali/*` and the guide `/himaya`** — are opened

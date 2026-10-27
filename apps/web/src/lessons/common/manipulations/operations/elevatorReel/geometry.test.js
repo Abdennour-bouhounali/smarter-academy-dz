@@ -1,7 +1,18 @@
 import { describe, it, expect } from 'vitest';
-import { floorHeight, towerGeometry, towerWidth, LEVELS } from './geometry';
+import { floorHeight, floorHeightFor, towerGeometry, towerWidth, LEVELS } from './geometry';
 
 describe('elevator-reel — la géométrie de la tour', () => {
+  it('écran de jeu : les 19 niveaux tiennent dans la hauteur donnée (20 … 44 px), la tour fait 40 % de l’écran, la cabine grandit', () => {
+    for (const avail of [560, 640, 800, 900]) expect(towerGeometry({ width: 400, fh: floorHeightFor(avail) }).H).toBeLessThanOrEqual(avail);
+    expect(floorHeightFor(300)).toBe(20);
+    expect(floorHeightFor(2000)).toBe(44);
+    expect(towerWidth(1000, true, true)).toBe(400);
+    expect(towerWidth(600, true, true)).toBe(340);
+    expect(towerWidth(2000, true, true)).toBe(560);
+    expect(towerWidth(1000, true)).toBe(280); // dans la page : inchangé
+    expect(towerGeometry({ width: 560, fh: 30 }).shaftW).toBe(110);
+    expect(towerGeometry({ width: 280, fh: 30 }).shaftW).toBe(70);
+  });
   it('étage ≥ 20 px, ≤ 30 px, croît avec l’écran', () => {
     expect(floorHeight(768)).toBe(20);
     expect(floorHeight(1080)).toBe(30);

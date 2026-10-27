@@ -8,12 +8,19 @@ import { src, addition } from '../../_unit/unitMeta.js';
 
 /**
  * LE LABO DE L'ENTRÉE — le شريط المصعد (`elevator-reel`, thème `mallElevator`) : expérience de la plateforme. Les nombres sont ceux
- * du preset `levels.js` (مبتدئ : r = −2 → étage −6, −2 → 4, 3 → 6, 3 → −9 ; متقدم : prédiction (−3 ; −2), l'étage −6 deux fois,
+ * du preset `levels.js` (مبتدئ : r = −2 → étage −6, prédire (−2 ; −1), −2 → 4, 3 → 6, 3 → −9 ; متقدم : prédiction (−3 ; −2), l'étage −6 deux fois,
  * (−2 → 3), (2 → −5)).
  */
 export const LAB = {
   source: addition('platform_designed_entry'),
-  beginner: { step: '1', tasks: [{ id: 'm1', r: '-2', floor: '-6' }, { id: 'm2', r: '-2', floor: '4' }, { id: 'm3', r: '3', floor: '6' }, { id: 'm4', r: '3', floor: '-9' }] },
+  beginner: {
+    step: '1',
+    tasks: [
+      { id: 'm1', r: '-2', floor: '-6' },
+      { id: 'p1', kind: 'predict', r: '-2', t: '-1', options: ['2', '-2', '-3', '-1'], key: '2', misc: { '-2': 'MISC-JIDAA-NEGNEG', '-3': 'MISC-JIDAA-ADD', '-1': 'MISC-JIDAA-SUB' } },
+      { id: 'm2', r: '-2', floor: '4' }, { id: 'm3', r: '3', floor: '6' }, { id: 'm4', r: '3', floor: '-9' },
+    ],
+  },
   advanced: {
     step: '0,5',
     tasks: [

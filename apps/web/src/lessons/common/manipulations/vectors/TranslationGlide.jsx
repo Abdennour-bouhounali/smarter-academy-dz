@@ -136,9 +136,6 @@ export default function TranslationGlide({
   const vp = useLessonViewport(true);
   const screenH = vp.ready && vp.height > 0 ? vp.height : 640;
   const narrow = width < 400;
-  // très étroit (un téléphone de 320 px, les marges des cartes déduites) : la télécommande se resserre — une ligne de
-  // lecture (le nom du vecteur et sa longueur ; منحى et اتجاه restent DESSINÉS : la droite en pointillés, la flèche)
-  const compact = width < 260;
   const [gw, gh] = lab.grid;
   const portrait = gh > gw;
   const panelW = narrow ? 150 : 210;
@@ -308,7 +305,7 @@ export default function TranslationGlide({
         <Deco led={led} onTap={() => { setLed((n) => n + 1); setBurst((b) => b + 1); }} />
       </div>
       {act1 && (
-        <div className={`grid ${compact ? 'grid-cols-4' : 'grid-cols-2'} gap-1`} role="group" aria-label={k('tabsLabel')} data-tg-tabs>
+        <div className="grid grid-cols-2 gap-1" role="group" aria-label={k('tabsLabel')} data-tg-tabs>
           {lab.tableaux.map((x, i) => {
             const done = L.tableauDone(lab, i);
             return (
@@ -326,8 +323,8 @@ export default function TranslationGlide({
         {refVec && (refVec[0] !== 0 || refVec[1] !== 0) ? (
           <>
             <p className="font-bold text-cyan-200"><MathText>{k('refTitle', { REF: VEC(hold?.id === 'leader' ? `${tb.from}${tb.from}'` : refName) })}</MathText></p>
-            {!compact && <p><MathText>{k('refDirection', { line: PRIME(hold?.id === 'leader' ? `${tb.from}${tb.from}'` : refName) })}</MathText></p>}
-            {!compact && <p><MathText>{k('refSense', { a: PRIME(tb.from), b: PRIME(hold?.id === 'leader' || !act1 ? `${tb.from}'` : tb.toName) })}</MathText></p>}
+            <p><MathText>{k('refDirection', { line: PRIME(hold?.id === 'leader' ? `${tb.from}${tb.from}'` : refName) })}</MathText></p>
+            <p><MathText>{k('refSense', { a: PRIME(tb.from), b: PRIME(hold?.id === 'leader' || !act1 ? `${tb.from}'` : tb.toName) })}</MathText></p>
             <p><MathText>{k('refLength', { len: `$${tf(lenTex(refVec))}$` })}</MathText></p>
           </>
         ) : <p className="text-slate-300"><MathText>{k(act1 ? 'refWaitAct1' : 'refWaitShow')}</MathText></p>}
@@ -356,7 +353,7 @@ export default function TranslationGlide({
           );
         })}
       </ul>
-      <p role="status" className={`${compact ? 'min-h-[2rem] text-[10.5px]' : 'min-h-[2.5rem]'} rounded-lg bg-white px-2 py-1 ${narrow ? 'text-[11px]' : 'text-xs'} font-bold leading-snug ${last?.kind === 'equal' || last?.kind === 'leader' ? 'text-emerald-800' : last ? 'text-rose-800' : 'text-slate-600'}`}
+      <p role="status" className={`min-h-[2.5rem] rounded-lg bg-white px-2 py-1 ${narrow ? 'text-[11px]' : 'text-xs'} font-bold leading-snug ${last?.kind === 'equal' || last?.kind === 'leader' ? 'text-emerald-800' : last ? 'text-rose-800' : 'text-slate-600'}`}
         data-tg-verdict={last?.kind ?? ''}>
         <MathText>{rogueNote && (!last || last.kind === 'equal' || last.kind === 'leader') ? rogueNote : (verdict ?? k(act1 ? 'waitingAct1' : 'waitingShow'))}</MathText>
       </p>
@@ -379,7 +376,7 @@ export default function TranslationGlide({
       )}
       explanation={<MathText>{k(act1 ? 'explanationAct1' : 'explanationShow')}</MathText>}
     >
-      <ManipulationStage className="!p-1.5 sm:!p-3 bg-gradient-to-b from-slate-100 to-white" minHeight="min-h-[160px]" dragging={hold?.mode === 'drag'}>
+      <ManipulationStage className="bg-gradient-to-b from-slate-100 to-white !p-3" minHeight="min-h-[160px]" dragging={hold?.mode === 'drag'}>
         <div ref={boxRef} className="space-y-2" data-translation-glide data-scene={lab.scene} data-world={theme}
           data-solved={ready ? 'true' : 'false'} data-tableau={tb.id} data-scene-h={sceneH}>
           <div ref={glanceRef} className={`flex ${side ? 'flex-row items-start' : 'flex-col items-center'} justify-center gap-2`} data-tg-glance>

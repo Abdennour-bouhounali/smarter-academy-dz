@@ -146,7 +146,6 @@ export default function PercentTag({
   const screenH = vp.ready && vp.height > 0 ? vp.height : 576;
   const budget = Math.max(320, screenH - 8);
   const wide = width >= 620;
-  const narrow = width < 340;
   const GAP = 12;
   const colW = wide ? Math.floor((width - GAP) / 2) : width;
   // Le monde prend ce qui reste : côte à côte, la hauteur de l'écran ; empilé, l'écran moins les commandes.
@@ -254,7 +253,7 @@ export default function PercentTag({
   const last = lab.last;
   const bv = L.betVerdict(lab);
   // Sur téléphone, le verdict est la version COURTE (une à deux lignes : règle d'un seul écran).
-  const vk = (key) => (narrow ? `${key}Short` : key);
+  const vk = (key) => (key);
   const verdict = last && (() => {
     switch (last.kind) {
       case 'needT': return <span className="text-slate-700">{k(vk('vNeedT'))}</span>;
@@ -286,7 +285,7 @@ export default function PercentTag({
           <span className={ok ? 'text-emerald-800' : 'text-rose-800'} data-percent-refused={ok ? undefined : 'bet'}>
             <MathText>{k(vk(ok ? 'vBetOk' : 'vBetKo'), { bet: L.pctTex(bv.bet), betted: L.decTex(bv.betted), real: L.decTex(bv.real), unit })}</MathText>
             {/* le pari « on additionne » : la somme des t % contre le produit des multiplicateurs */}
-            {!ok && !narrow && LIN.eq(bv.sum, bv.bet) && <> <MathText>{k('sumNote', { sum: L.pctTex(bv.sum), kline: L.chainKTex(lab.chain) })}</MathText></>}
+            {!ok && LIN.eq(bv.sum, bv.bet) && <> <MathText>{k('sumNote', { sum: L.pctTex(bv.sum), kline: L.chainKTex(lab.chain) })}</MathText></>}
           </span>
         );
       }
@@ -370,7 +369,7 @@ export default function PercentTag({
     <div role="group" aria-label={k('dirGroup')} className="flex gap-1.5">
       {['up', 'down'].map((d) => (
         <button key={d} type="button" onClick={() => pickDir(d)} aria-pressed={shownDir === d} data-percent-dir={d}
-          className={`min-h-[44px] rounded-xl border-2 ${narrow ? 'px-2 text-xs' : 'px-3 text-sm'} font-extrabold focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${shownDir === d
+          className={`min-h-[44px] rounded-xl border-2 px-3 text-sm font-extrabold focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${shownDir === d
             ? (d === 'up' ? 'border-emerald-600 bg-emerald-600 text-white' : 'border-rose-600 bg-rose-600 text-white')
             : 'border-slate-300 bg-white text-slate-700'}`}>
           {k(d)}
@@ -381,53 +380,58 @@ export default function PercentTag({
   const magButtons = (
     <div dir="ltr" className="flex gap-1.5">
       <button type="button" onClick={() => nudgeMag(-1)} aria-label={k('tLess')} disabled={mag === 0} data-percent-less="t"
-        className="inline-flex h-11 min-w-[44px] items-center justify-center rounded-xl border-2 border-slate-300 bg-white px-1 text-xs font-bold disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"><Minus className="h-4 w-4" aria-hidden="true" />{!narrow && '1%'}</button>
+        className="inline-flex h-11 min-w-[44px] items-center justify-center rounded-xl border-2 border-slate-300 bg-white px-1 text-xs font-bold disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"><Minus className="h-4 w-4" aria-hidden="true" />{'1%'}</button>
       <button type="button" onClick={() => nudgeMag(1)} aria-label={k('tMore')} disabled={mag >= L.T_MAX} data-percent-more="t"
-        className="inline-flex h-11 min-w-[44px] items-center justify-center rounded-xl border-2 border-slate-300 bg-white px-1 text-xs font-bold disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"><Plus className="h-4 w-4" aria-hidden="true" />{!narrow && '1%'}</button>
+        className="inline-flex h-11 min-w-[44px] items-center justify-center rounded-xl border-2 border-slate-300 bg-white px-1 text-xs font-bold disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"><Plus className="h-4 w-4" aria-hidden="true" />{'1%'}</button>
     </div>
   );
 
   const bars = (
     <Bars
-      stretch={st} scale={scale} width={trackW} x={baseX} s={S} unit={unit} narrow={narrow} compact={!wide}
+      stretch={st}
+      scale={scale}
+      width={trackW}
+      x={baseX}
+      s={S}
+      unit={unit}
+      compact={!wide}
       additive={single && lab.additive && lab.additive.id === art.id && lab.additive.s === S ? lab.additive : null}
-      capacity={lab.capacity} k={k} changeWord={changeWord}
-      labels={single ? { before: narrow ? k('before') : `${k('before')}: ${artName(art.id)}`, after: k('after') } : { before: `${k('stepTitle', { n: Math.min(lab.chain.length + 1, L.CHAIN_MAX) })} · ${k('before')}`, after: k('after') }}
-    />
+      capacity={lab.capacity}
+      k={k}
+      changeWord={changeWord}
+      labels={single ? { before: `${k('before')}: ${artName(art.id)}`, after: k('after') } : { before: `${k('stepTitle', { n: Math.min(lab.chain.length + 1, L.CHAIN_MAX) })} · ${k('before')}`, after: k('after') }} />
   );
 
   const newChainBtn = (
     <button type="button" onClick={newChain} data-percent-new-chain disabled={lab.chain.length === 0} title={k('newChain')}
             className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-1 rounded-xl border-2 border-slate-300 bg-white px-2 text-xs font-bold text-slate-700 disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">
-            <RotateCcw className="h-4 w-4" aria-hidden="true" />{narrow ? <span className="sr-only">{k('newChain')}</span> : k('newChain')}
+            <RotateCcw className="h-4 w-4" aria-hidden="true" />{k('newChain')}
           </button>
   );
 
   const readings = single ? (
-    <div dir="ltr" className={`flex flex-wrap items-baseline gap-x-4 gap-y-0.5 font-bold text-slate-900 ${narrow ? 'text-xs' : 'text-sm'}`} data-percent-line="single">
-      <span><MathText>{`$k = ${narrow ? L.decTex(r.k) : L.multiplierTex(S)}$`}</MathText></span>
+    <div dir="ltr" className="flex flex-wrap items-baseline gap-x-4 gap-y-0.5 font-bold text-slate-900 text-sm" data-percent-line="single">
+      <span><MathText>{`$k = ${L.multiplierTex(S)}$`}</MathText></span>
       <span><MathText>{`$${L.productTex(art.x, r.k)}$`}</MathText></span>
       <span className="text-indigo-800"><MathText>{`$${L.fnTex(r.k)}$`}</MathText></span>
     </div>
   ) : (
-    <div className={`flex items-start gap-1.5 ${narrow ? '' : 'contents'}`}>
-    {narrow && newChainBtn}
-    <div className={`min-w-0 flex-1 space-y-0.5 font-bold text-slate-900 ${narrow ? 'text-xs' : 'text-sm'}`} data-percent-line="chain">
+    <div className="flex items-start gap-1.5 contents">
+
+      <div className="min-w-0 flex-1 space-y-0.5 font-bold text-slate-900 text-sm" data-percent-line="chain">
       {lab.chain.length === 0
         ? <p className="text-xs font-normal text-slate-500">{k('chainEmpty')}</p>
-        : narrow && lab.chain.length >= 2 ? null : (
-          <div dir="ltr" className="flex flex-wrap gap-x-4">
+          : (<div dir="ltr" className="flex flex-wrap gap-x-4">
             {L.chainLinesTex(lab).map((ln) => <span key={ln}><MathText>{`$${ln}$`}</MathText></span>)}
-          </div>
+        </div>)}
+        {lab.chain.length >= 2 && (
+          <p className="flex flex-wrap items-baseline gap-x-2">
+            <span className="text-xs text-slate-600">{k('kLabel')}</span>
+            <bdi dir="ltr"><MathText>{`$${L.chainKTex(lab.chain)}$`}</MathText></bdi>
+            <span className="text-xs text-slate-600">{k('netLabel')}:</span>
+            <span>{netWord(L.netPercent(L.chainK(lab.chain)))}</span>
+          </p>
         )}
-      {lab.chain.length >= 2 && (
-        <p className="flex flex-wrap items-baseline gap-x-2">
-          {!narrow && <span className="text-xs text-slate-600">{k('kLabel')}</span>}
-          <bdi dir="ltr"><MathText>{narrow ? `$k = ${L.decTex(L.chainK(lab.chain))}$` : `$${L.chainKTex(lab.chain)}$`}</MathText></bdi>
-          {!narrow && <span className="text-xs text-slate-600">{k('netLabel')}:</span>}
-          <span>{netWord(L.netPercent(L.chainK(lab.chain)))}</span>
-        </p>
-      )}
     </div>
     </div>
   );
@@ -438,12 +442,12 @@ export default function PercentTag({
       <BetTrack stretch={sb} width={betTrackW} value={BET} px={betPx} label={k('betHandle')} notSet={k('betNotSet')} />
       <div dir="ltr" className="flex items-center gap-1.5">
         <button type="button" onClick={() => sb.set((BET ?? 0) - 1)} aria-label={k('betLess')} data-percent-less="bet" disabled={BET != null && BET <= L.BET_RANGE.min}
-          className="inline-flex h-11 min-w-[44px] items-center justify-center rounded-xl border-2 border-amber-300 bg-white px-1 text-xs font-bold disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"><Minus className="h-4 w-4" aria-hidden="true" />{!narrow && '0,5%'}</button>
+          className="inline-flex h-11 min-w-[44px] items-center justify-center rounded-xl border-2 border-amber-300 bg-white px-1 text-xs font-bold disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"><Minus className="h-4 w-4" aria-hidden="true" />{'0,5%'}</button>
         <span className="min-w-[3.5rem] rounded-full bg-amber-100 px-2 text-center font-mono text-sm font-extrabold text-amber-900" data-percent-bet-value={BET ?? ''} title={k('betHandle')}>
           {BET == null ? <span className="whitespace-nowrap font-sans text-[11px]">{k('betNotSet')}</span> : <MathText>{`$${L.pctTex(L.betPercent(BET))}$`}</MathText>}
         </span>
         <button type="button" onClick={() => sb.set((BET ?? 0) + 1)} aria-label={k('betMore')} data-percent-more="bet" disabled={BET != null && BET >= L.BET_RANGE.max}
-          className="inline-flex h-11 min-w-[44px] items-center justify-center rounded-xl border-2 border-amber-300 bg-white px-1 text-xs font-bold disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"><Plus className="h-4 w-4" aria-hidden="true" />{!narrow && '0,5%'}</button>
+          className="inline-flex h-11 min-w-[44px] items-center justify-center rounded-xl border-2 border-amber-300 bg-white px-1 text-xs font-bold disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"><Plus className="h-4 w-4" aria-hidden="true" />{'0,5%'}</button>
       </div>
     </div>
   );
@@ -454,17 +458,17 @@ export default function PercentTag({
       {bars}
       <div className="flex flex-wrap items-center gap-1.5" data-percent-actions>
         {dirButtons}
-        {!single && !narrow && newChainBtn}
+        {!single && newChainBtn}
         {magButtons}
         {single ? (
           <button type="button" onClick={tryAdditive} data-percent-try
-            className={`inline-flex min-h-[44px] items-center gap-1 rounded-xl border-2 border-dashed border-amber-500 bg-amber-50 ${narrow ? 'px-1.5' : 'px-2'} text-xs font-bold text-amber-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500`}>
-            <FlaskConical className="h-4 w-4" aria-hidden="true" />{k(narrow ? (shownDir === 'up' ? 'tryShortUp' : 'tryShortDown') : (shownDir === 'up' ? 'tryUp' : 'tryDown'), { t: mag, unit })}
+            className="inline-flex min-h-[44px] items-center gap-1 rounded-xl border-2 border-dashed border-amber-500 bg-amber-50 px-2 text-xs font-bold text-amber-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500">
+            <FlaskConical className="h-4 w-4" aria-hidden="true" />{k((shownDir === 'up' ? 'tryUp' : 'tryDown'), { t: mag, unit })}
           </button>
         ) : (
           <button type="button" onClick={commitStep} data-percent-commit
             className="inline-flex min-h-[44px] items-center gap-1 rounded-xl border-2 border-indigo-600 bg-indigo-600 px-2 text-xs font-bold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">
-            <ListPlus className="h-4 w-4" aria-hidden="true" />{narrow ? <><span aria-hidden="true">{k('commitShort')}</span><span className="sr-only">{k('commit')}</span></> : k('commit')}
+            <ListPlus className="h-4 w-4" aria-hidden="true" />{k('commit')}
           </button>
         )}
       </div>
@@ -474,8 +478,8 @@ export default function PercentTag({
   );
 
   const world = single
-    ? <MallWorld lab={lab} art={art} S={S} height={worldH} narrow={narrow} wide={wide} unit={unit} k={k} artName={artName} onSelect={select} />
-    : <TankWorld lab={lab} S={S} bet={BET} height={wide ? worldH : Math.min(worldH, narrow ? 104 : 170)} width={wide ? colW : Math.min(colW, 360)} unit={unit} k={k} narrow={narrow} />;
+    ? <MallWorld lab={lab} art={art} S={S} height={worldH} wide={wide} unit={unit} k={k} artName={artName} onSelect={select} />
+    : <TankWorld lab={lab} S={S} bet={BET} height={wide ? worldH : Math.min(worldH, 170)} width={wide ? colW : Math.min(colW, 360)} unit={unit} k={k} />;
 
   const rows = single ? L.table(lab) : [];
 
@@ -504,7 +508,7 @@ export default function PercentTag({
       <ManipulationStage className="bg-gradient-to-b from-amber-50/60 to-white" data-dragging={st.dragging || sb.dragging ? 'true' : undefined}>
         <div ref={boxRef} className="space-y-3" data-percent-tag data-mode={lab.mode} data-world={W} data-s={S}
           data-k={LIN.fracText(kNow)} data-y={single ? LIN.fracText(r.y) : LIN.fracText(L.current(lab))} data-solved={ready ? 'true' : 'false'}
-          data-layout={wide ? 'side' : narrow ? 'narrow' : 'stack'} data-budget={budget} data-world-h={worldH} data-ctrl-h={ctrlH}>
+          data-layout={wide ? 'side' : 'stack'} data-budget={budget} data-world-h={worldH} data-ctrl-h={ctrlH}>
           <div className={wide ? 'grid grid-cols-2 items-start gap-3' : 'space-y-3'} data-percent-glance>
             {world}
             {controls}
@@ -586,38 +590,27 @@ const BAR_GEOM = {
   normal: { H: 84, x: [4, 16], y: [24, 18], add: [46, 12], tick: 62, text: 77, handleTop: 11 },
   compact: { H: 62, x: [2, 10], y: [15, 14], add: [32, 9], tick: 44, text: 57, handleTop: 0 },
 };
-function Bars({ stretch, scale, width, x, s, unit, narrow, compact, additive, capacity, k, changeWord, labels }) {
+function Bars({ stretch, scale, width, x, s, unit, compact, additive, capacity, k, changeWord, labels }) {
   const g = BAR_GEOM[compact ? 'compact' : 'normal'];
   const y = LIN.mul(x, L.multiplier(s));
   const xPx = scale.px(x);
   const yPx = scale.px(y);
   const over = capacity && LIN.cmp(y, capacity) > 0;
   const color = s > 0 ? '#059669' : s < 0 ? '#E11D48' : '#6366F1';
-  const ticks = L.percentTicks(x, scale, narrow || width < 260);
+  const ticks = L.percentTicks(x, scale, width < 260);
   const plus = additive ? LIN.add(x, LIN.frac(additive.s)) : null;
   return (
     <div className="space-y-0.5" data-percent-bars>
       {/* l'en-tête : « قبل x » — « بعد y » et le t % de la poignée (une seule ligne sur téléphone) */}
-      {narrow ? (
-        <div className="flex items-baseline justify-between gap-1 whitespace-nowrap text-[11px] font-bold text-slate-600">
-          <bdi dir="ltr" className="text-slate-900">{L.dec(x)}</bdi>
-          <span aria-hidden="true">←</span>
-          <bdi dir="ltr" className="text-xs" style={{ color }}>{L.dec(y)} {unit}</bdi>
-          <bdi dir="ltr" className="rounded-full px-1 font-mono text-[11px] font-extrabold text-white" style={{ background: color }} data-percent-t={s}>
+      <div className="flex flex-wrap items-baseline justify-between gap-x-2 text-[11px] font-bold text-slate-600">
+        <span>{labels.before} <bdi dir="ltr" className="text-slate-900">{L.dec(x)} {unit}</bdi></span>
+        <span className="inline-flex items-baseline gap-1">
+          {labels.after} <bdi dir="ltr" className="text-sm" style={{ color }}>{L.dec(y)} {unit}</bdi>
+          <bdi dir="ltr" className="rounded-full px-1.5 font-mono text-xs font-extrabold text-white" style={{ background: color }} data-percent-t={s}>
             {s > 0 ? `+${s}` : s < 0 ? `−${-s}` : '0'}%
           </bdi>
-        </div>
-      ) : (
-        <div className="flex flex-wrap items-baseline justify-between gap-x-2 text-[11px] font-bold text-slate-600">
-          <span>{labels.before} <bdi dir="ltr" className="text-slate-900">{L.dec(x)} {unit}</bdi></span>
-          <span className="inline-flex items-baseline gap-1">
-            {labels.after} <bdi dir="ltr" className="text-sm" style={{ color }}>{L.dec(y)} {unit}</bdi>
-            <bdi dir="ltr" className="rounded-full px-1.5 font-mono text-xs font-extrabold text-white" style={{ background: color }} data-percent-t={s}>
-              {s > 0 ? `+${s}` : s < 0 ? `−${-s}` : '0'}%
-            </bdi>
           </span>
         </div>
-      )}
       <div {...stretch.trackProps} className="relative" style={{ ...stretch.trackProps.style, height: g.H, width }}>
         <svg width={width} height={g.H} className="absolute inset-0" aria-hidden="true" focusable="false" style={{ direction: 'ltr' }}>
           {/* « قبل » : la barre de x, fixe */}
@@ -687,19 +680,17 @@ function BetTrack({ stretch, width, value, px, label, notSet }) {
 }
 
 /* ── le monde `mall` : la vitrine, l'étiquette (prix barré → nouveau prix) ── */
-function MallWorld({ lab, art, S, height, narrow, wide, unit, k, artName, onSelect }) {
+function MallWorld({ lab, art, S, height, wide, unit, k, artName, onSelect }) {
   const rr = L.reading(lab, S, art.id);
   // Côte à côte, la vitrine occupe la hauteur de la colonne ; empilée (téléphone), elle est COMPACTE.
   const tagH = wide ? Math.max(56, Math.min(110, Math.round(height * 0.38))) : 44;
-  const itemH = wide ? Math.max(40, Math.min(96, height - tagH - 80)) : narrow ? 30 : 40;
+  const itemH = wide ? Math.max(40, Math.min(96, height - tagH - 80)) : 40;
   return (
     <div className="relative space-y-1.5 rounded-2xl border-2 border-slate-200 bg-white p-2" data-percent-world="mall" style={wide ? { minHeight: height } : undefined}>
-      {narrow ? <Deco world="mall" /> : (
         <div className="relative flex items-center justify-between gap-2 pe-12">
           <h4 className="text-xs font-extrabold text-slate-700">{k('worlds.mall.name')}</h4>
           <Deco world="mall" />
         </div>
-      )}
       <Awning />
       <div className="grid grid-cols-3 gap-1.5" role="group" aria-label={k('worlds.mall.name')}>
         {lab.articles.map((a) => {
@@ -709,13 +700,13 @@ function MallWorld({ lab, art, S, height, narrow, wide, unit, k, artName, onSele
               aria-label={k('pickArticle', { article: artName(a.id), x: L.dec(a.x), unit })}
               className={`flex min-h-[44px] flex-col items-center justify-end rounded-xl border-2 px-0.5 pb-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${on ? 'border-indigo-500 bg-indigo-50' : 'border-slate-200 bg-slate-50'}`}>
               <span className="block w-full" style={{ height: itemH }}><Article id={a.id} /></span>
-              <span dir="ltr" className="whitespace-nowrap font-mono text-[10px] font-bold text-slate-700 sm:text-[11px]">{L.dec(a.x)} {unit}</span>
+              <span dir="ltr" className="whitespace-nowrap font-mono font-bold text-slate-700 text-[11px]">{L.dec(a.x)} {unit}</span>
             </button>
           );
         })}
       </div>
       {/* l'étiquette du prix : l'ancien barré, le nouveau (la conséquence de la poignée) */}
-      <PriceTag height={tagH} name={narrow ? null : artName(art.id)} x={L.dec(art.x)} y={L.dec(rr.y)} s={S} unit={unit} />
+      <PriceTag height={tagH} name={artName(art.id)} x={L.dec(art.x)} y={L.dec(rr.y)} s={S} unit={unit} />
     </div>
   );
 }
@@ -728,7 +719,7 @@ function PriceTag({ height, name, x, y, s, unit }) {
       {name && <span className="text-xs font-bold text-amber-900">{name}</span>}
       <span dir="ltr" className="flex items-baseline gap-2 font-mono">
         <span className={`text-sm font-bold ${s === 0 ? 'text-slate-700' : 'text-slate-400 line-through'}`}>{x}</span>
-        {s !== 0 && <span className="text-xl font-black sm:text-2xl" style={{ color }}>{y}</span>}
+        {s !== 0 && <span className="font-black text-2xl" style={{ color }}>{y}</span>}
         <span className="text-xs font-bold text-slate-600">{unit}</span>
       </span>
     </div>
@@ -777,7 +768,7 @@ function Article({ id }) {
 }
 
 /* ── le monde `tank` : le réservoir, l'eau, la ligne du pari ── */
-function TankWorld({ lab, S, bet, height, width, unit, k, narrow }) {
+function TankWorld({ lab, S, bet, height, width, unit, k }) {
   const cap = lab.capacity ?? LIN.mul(lab.start, LIN.frac(3, 2));
   const topV = LIN.mul(cap, LIN.frac(11, 10));
   const now = L.current(lab);
@@ -801,7 +792,7 @@ function TankWorld({ lab, S, bet, height, width, unit, k, narrow }) {
     <div className="relative space-y-1 rounded-2xl border-2 border-slate-200 bg-white p-2" data-percent-world="tank">
       <div className="relative flex items-center justify-between gap-2 pe-12">
         <h4 className="whitespace-nowrap text-xs font-extrabold text-slate-700">{k('worlds.tank.name')}</h4>
-        {!narrow && <span className="text-[11px] font-bold text-slate-500">{k('worlds.tank.capacity', { cap: L.dec(cap) })}</span>}
+        <span className="text-[11px] font-bold text-slate-500">{k('worlds.tank.capacity', { cap: L.dec(cap) })}</span>
         <Deco world="tank" />
       </div>
       <svg viewBox={`0 0 ${W0} ${H}`} width={W0} height={H} className="mx-auto block" aria-hidden="true" focusable="false"

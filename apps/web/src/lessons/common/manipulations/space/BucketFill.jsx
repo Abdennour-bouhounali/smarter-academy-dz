@@ -309,7 +309,7 @@ export default function BucketFill({
                   {...(phase === 'level' ? { 'data-bf-level-plus': true } : { 'data-bf-apex-plus': true })}
                   aria-label={k(phase === 'level' ? 'levelUp' : 'apexDown')}
                   onClick={() => (phase === 'level' ? actions.current.setLevel(lab.level + 1) : actions.current.setApex(lab.apex + 1))}>+</button>
-                <span className="hidden min-w-[4.5rem] text-center font-mono text-sm font-bold text-slate-800 sm:inline-block" aria-hidden="true">
+                <span className="min-w-[4.5rem] text-center font-mono text-sm font-bold text-slate-800 inline-block" aria-hidden="true">
                   {phase === 'level' ? `d = ${lab.level}` : `SO = ${lab.apex}`}
                 </span>
               </div>
@@ -343,7 +343,7 @@ export default function BucketFill({
                         <button key={c.id} type="button" data-bf-card={c.id} disabled={lab.cardOk && !picked} aria-pressed={picked}
                           onClick={() => setLab((s) => L.pickCard(s, c.id))}
                           aria-label={mathToPlain(`${k(`cardName.${c.id}`)} ${k(`card.${c.id}`)}`)}
-                          className={`min-h-[44px] rounded-xl border-2 px-1.5 py-1 text-center text-[11px] font-semibold leading-snug sm:text-sm [&_.katex]:whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 disabled:opacity-40 ${tone}`}>
+                          className={`min-h-[44px] rounded-xl border-2 px-1.5 py-1 text-center font-semibold leading-snug [&_.katex]:whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 disabled:opacity-40 text-sm ${tone}`}>
                           {!narrow && <span className="block text-[11px] text-slate-600" aria-hidden="true">{k(`cardName.${c.id}`)}</span>}
                           <span aria-hidden="true"><MathText>{k(`card.${c.id}`)}</MathText></span>
                         </button>
@@ -354,8 +354,8 @@ export default function BucketFill({
               )}
             </div>
 
-            <p className={`min-h-[1.5rem] text-center text-slate-800 [&_.katex]:whitespace-nowrap ${narrow ? 'text-[11px]' : 'text-xs sm:text-sm'}`} data-bf-reading aria-live="polite"><MathText>{reading}</MathText></p>
-            <p role="status" className={`min-h-[2.5rem] rounded-xl bg-white/95 px-2 py-1 font-bold leading-snug [&_.katex]:whitespace-nowrap ${narrow ? 'text-[11px]' : 'text-xs sm:text-sm'}`} data-bf-verdict={verdictKind}>{verdict}</p>
+            <p className={`min-h-[1.5rem] text-center text-slate-800 [&_.katex]:whitespace-nowrap ${narrow ? 'text-[11px]' : 'text-sm'}`} data-bf-reading aria-live="polite"><MathText>{reading}</MathText></p>
+            <p role="status" className={`min-h-[2.5rem] rounded-xl bg-white/95 px-2 py-1 font-bold leading-snug [&_.katex]:whitespace-nowrap ${narrow ? 'text-[11px]' : 'text-sm'}`} data-bf-verdict={verdictKind}>{verdict}</p>
           </div>
 
           {lab.trials.length > 0 && (

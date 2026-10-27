@@ -124,7 +124,7 @@ function Tiles({ v, coef, decimal }) {
 function KioskDeco() {
   const [fizz, setFizz] = useState(0);
   return (
-    <div className="relative h-8 w-full overflow-hidden rounded-xl sm:h-10" aria-hidden="true" data-deco>
+    <div className="relative w-full overflow-hidden rounded-xl h-10" aria-hidden="true" data-deco>
       <svg viewBox="0 0 320 56" preserveAspectRatio="none" className="absolute inset-0 h-full w-full" aria-hidden="true" focusable="false">
         {Array.from({ length: 16 }, (_, i) => <rect key={i} x={i * 20} y={0} width={20} height={12} fill={i % 2 ? '#FFFFFF' : '#DC2626'} />)}
         <path d="M0 12 Q10 18 20 12 Q30 18 40 12 Q50 18 60 12 Q70 18 80 12 Q90 18 100 12 Q110 18 120 12 Q130 18 140 12 Q150 18 160 12 Q170 18 180 12 Q190 18 200 12 Q210 18 220 12 Q230 18 240 12 Q250 18 260 12 Q270 18 280 12 Q290 18 300 12 Q310 18 320 12" fill="none" stroke="#B91C1C" strokeWidth="1.5" />
@@ -136,7 +136,7 @@ function KioskDeco() {
       </svg>
       {[0, 1].map((b) => (
         <button key={b} type="button" tabIndex={-1} aria-hidden="true" onClick={() => setFizz((n) => n + 1)} data-deco-bottle={b}
-          className="absolute bottom-1 h-6 w-4 sm:h-8 sm:w-5" style={{ right: `${18 + b * 9}%` }}>
+          className="absolute bottom-1 h-8 w-5" style={{ right: `${18 + b * 9}%` }}>
           <svg viewBox="0 0 20 36" className="h-full w-full" aria-hidden="true" focusable="false">
             <rect x={7} y={0} width={6} height={6} rx={1} fill={b ? '#F97316' : '#16A34A'} />
             <path d="M6 6 L14 6 L16 12 L16 34 Q16 36 14 36 L6 36 Q4 36 4 34 L4 12 Z" fill={b ? '#FDBA74' : '#86EFAC'} stroke={b ? '#C2410C' : '#15803D'} />
@@ -314,7 +314,7 @@ export default function EliminationCards({
       <div key={n} className="min-w-0 space-y-1 rounded-2xl border border-slate-200 bg-white/80 p-1" data-eq-card={n} data-scale={scaled}>
         <DropZone drag={drag} id={`card:${n}`} tone="emerald" minHeight="min-h-0"
           label={k('cardZone', { n, eq: e ? plainEq(e) : '0 = 0' })} className="p-1">
-          <div dir="ltr" className="flex flex-wrap items-center gap-0.5 sm:gap-1" data-eq-row>
+          <div dir="ltr" className="flex flex-wrap items-center gap-1" data-eq-row>
             <span {...intercept(`card:${n}`)} className="inline-flex">
               <DraggableObject drag={drag} id={`card:${n}`} label={k('cardHandle', { n })} disabled={lab.stage !== 'cards'}
                 className="inline-flex h-11 min-w-[44px] items-center justify-center gap-0.5 rounded-xl border-2 border-emerald-500 bg-white px-1 text-sm font-extrabold text-emerald-800">
@@ -416,7 +416,7 @@ export default function EliminationCards({
 
           {lab.stage === 'cards' && (
             <>
-              <div className="grid gap-1.5 sm:grid-cols-2" aria-label={k('ariaCards', { eq1: plainEq(lab.sys[0]), eq2: plainEq(lab.sys[1]) })}>
+              <div className="grid gap-1.5 grid-cols-2" aria-label={k('ariaCards', { eq1: plainEq(lab.sys[0]), eq2: plainEq(lab.sys[1]) })}>
                 {E.CARDS.map((n) => cardView(n))}
               </div>
               <DropZone drag={drag} id="tray" tone="indigo" label={k('trayZone')} minHeight="min-h-[48px]" className="flex flex-wrap items-center gap-2 p-1.5" data-ec-tray>
@@ -551,7 +551,7 @@ export default function EliminationCards({
 
           {lab.attempts.length > 0 && (
             <LabFold id="elimination-cards.methods" title={k('methodsTitle')}>
-              <ul className="grid gap-1 text-xs sm:grid-cols-2" data-ec-methods>
+              <ul className="grid gap-1 text-xs grid-cols-2" data-ec-methods>
                 {lab.attempts.map((a, i) => (
                   <li key={i} className="rounded-lg bg-slate-50 px-2 py-1" data-ec-method={a.method}>
                     <strong>{k(`method_${a.method}`)}</strong> — <span dir="ltr"><MathText>{`$${E.pairTex(E.parseNum(a.pair.x), E.parseNum(a.pair.y), dec)}$`}</MathText></span>

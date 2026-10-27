@@ -160,8 +160,7 @@ export default function AffineLine({
   const screenH = vp.ready && vp.height > 0 ? vp.height : 576;
   const budget = Math.max(320, screenH - 8);
   const wide = width >= 620;
-  const narrow = width < 340;
-  const strip = narrow ? 34 : STRIP_W;
+  const strip = STRIP_W;
 
   /* ── les pistes de ce laboratoire ── */
   const { win, snap, grid } = lab;
@@ -376,7 +375,7 @@ export default function AffineLine({
   const dir = L.dirOf(lineA);
   const pinX = pin ? L.valueAt(pin.i, snap.dx) : null;
   const pinY = pin ? L.valueAt(pin.j, snap.dyPin) : null;
-  const layout = wide ? 'side' : narrow ? 'narrow' : 'stack';
+  const layout = wide ? 'side' : 'stack';
   const lineLabel = mode === 'shift' ? "(d')" : mode === 'identify' ? '' : '(d)';
 
   const plane = (
@@ -531,7 +530,7 @@ export default function AffineLine({
   const T = (s) => <MathText>{s}</MathText>;
   const controls = (
     <div ref={ctrlRef} className="space-y-2" data-al-controls>
-      <RuleLine lab={lab} k={k} st={st} fTex={fTex} showRule={showRule} aNow={aNow} bNow={bNow} mode={mode} narrow={narrow} />
+      <RuleLine lab={lab} k={k} st={st} fTex={fTex} showRule={showRule} aNow={aNow} bNow={bNow} mode={mode} />
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5" data-al-pads>
       {bOn && (
         <div className="flex flex-wrap items-center gap-1.5" data-al-pad="b">
@@ -618,7 +617,7 @@ export default function AffineLine({
           )}
           {L.hasNext(lab) && L.stageDone(lab) && (
             <div className="flex flex-1 flex-wrap items-center gap-2 rounded-xl border-2 border-indigo-200 bg-indigo-50 px-2 py-1" data-al-next-card>
-              {!narrow && <span className="text-xs font-bold text-indigo-900">{T(k(`done.${mode}`, { b: N(lab.b) }))}</span>}
+              <span className="text-xs font-bold text-indigo-900">{T(k(`done.${mode}`, { b: N(lab.b) }))}</span>
               <button type="button" onClick={goNext} data-al-next
                 className="inline-flex min-h-[44px] items-center rounded-xl bg-indigo-600 px-3 text-sm font-bold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300">
                 {k(`next.${lab.modes[lab.stage + 1]}`)}
@@ -720,28 +719,28 @@ function trialReport(tr, lab) {
 }
 
 /* ── la ligne de la règle (en tête des commandes) ── */
-function RuleLine({ lab, k, st, fTex, showRule, aNow, bNow, mode, narrow }) {
+function RuleLine({ lab, k, st, fTex, showRule, aNow, bNow, mode }) {
   // \frac (pas \dfrac) : la ligne de la règle reste d'une ligne de haut (un seul écran, §8bis)
   const T = (s) => <MathText>{s.replace(/\\dfrac/g, '\\tfrac')}</MathText>;
   if (mode === 'shift') {
     return (
-      <p className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs font-bold text-slate-800 sm:text-sm" data-al-rule>
-        {!narrow && <span><span className="text-slate-500">{k('ghost')}:</span> {T(`$y = ${L.affineTex(lab.a, 0, st)}$`)}</span>}
+      <p className="flex flex-wrap gap-x-3 gap-y-0.5 font-bold text-slate-800 text-sm" data-al-rule>
+        <span><span className="text-slate-500">{k('ghost')}:</span> {T(`$y = ${L.affineTex(lab.a, 0, st)}$`)}</span>
         <span><span className="text-slate-500">{k('target')}:</span> {T(`$${fTex}$`)}</span>
       </p>
     );
   }
   if (mode === 'identify') {
     return (
-      <p className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs font-bold text-slate-800 sm:text-sm" data-al-rule>
+      <p className="flex flex-wrap gap-x-3 gap-y-0.5 font-bold text-slate-800 text-sm" data-al-rule>
         <span><span className="text-amber-700">{k('hiddenLine')}:</span> {lab.matched ? T(`$f(x) = ${L.affineTex(lab.hidden.a, lab.hidden.b, st)}$`) : T('$f(x) = \\,?$')}</span>
         <span><span className="text-blue-700">{k('mine')}:</span> {T(`$${L.lineTex(aNow, bNow, st)}$`)}</span>
       </p>
     );
   }
-  if (mode === 'draw') return <p className="text-xs font-bold text-slate-800 sm:text-sm" data-al-rule><span className="text-slate-500">{k('rule')}:</span> {T(`$${fTex}$`)}</p>;
+  if (mode === 'draw') return <p className="font-bold text-slate-800 text-sm" data-al-rule><span className="text-slate-500">{k('rule')}:</span> {T(`$${fTex}$`)}</p>;
   return (
-    <p className="text-xs font-bold text-slate-800 sm:text-sm" data-al-rule>
+    <p className="font-bold text-slate-800 text-sm" data-al-rule>
       <span className="text-slate-500">{k('lineD')}:</span> {showRule ? T(`$y = ${L.affineTex(lab.a, lab.b, st)}$`) : <bdi dir="ltr">(d)</bdi>}
     </p>
   );

@@ -268,7 +268,7 @@ export default function DivisionJumps({
   }, [lab.a0, b, world, k]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const formalFor = (a) => (
-    <p className="flex flex-wrap items-baseline justify-center gap-x-4 gap-y-0.5 font-mono text-sm font-extrabold text-indigo-950 sm:text-base" key={a}>
+    <p className="flex flex-wrap items-baseline justify-center gap-x-4 gap-y-0.5 font-mono font-extrabold text-indigo-950 text-base" key={a}>
       <Formula pieces={L.formalPieces(a, b)} data-dj-formal-line={a} />
       <bdi dir="ltr" className="whitespace-nowrap text-rose-800">{L.remainderLine(a, b)}</bdi>
     </p>
@@ -284,7 +284,7 @@ export default function DivisionJumps({
         </div>
       )}
       <div className="space-y-1.5">
-        <p className="flex items-center gap-2 rounded-xl border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs font-bold text-slate-900 sm:text-sm" data-division-role="a">
+        <p className="flex items-center gap-2 rounded-xl border border-slate-300 bg-slate-50 px-2.5 py-1.5 font-bold text-slate-900 text-sm" data-division-role="a">
           <span dir="ltr" className="font-mono text-sm font-extrabold">a</span>
           <span>{k(`formal.roles.a.${world}`, { a: lab.a0 })}</span>
         </p>

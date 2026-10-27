@@ -240,7 +240,7 @@ export default function Module01Anshita() {
                 onAnswered={() => setQ5(true)}
               />
               {q5 && (
-                <div className="grid gap-2 sm:grid-cols-2">
+                <div className="grid gap-2 grid-cols-2">
                   <GeoFigure {...FIG_ACT3_LINE1_SOL} />
                   <GeoFigure {...FIG_ACT3_LINE2_SOL} />
                 </div>
@@ -253,7 +253,7 @@ export default function Module01Anshita() {
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={`${ACTIVITY_3.ray} ${ACTIVITY_3.circle}`} source={ACTIVITY_3.source} compact />
-              <div className="grid gap-2 sm:grid-cols-2">
+              <div className="grid gap-2 grid-cols-2">
                 <GeoFigure {...FIG_ACT3_RAY} />
                 <GeoFigure {...FIG_ACT3_CIRCLE} />
               </div>
@@ -270,7 +270,7 @@ export default function Module01Anshita() {
                 onAnswered={() => setQ6(true)}
               />
               {q6 && (
-                <div className="grid gap-2 sm:grid-cols-2">
+                <div className="grid gap-2 grid-cols-2">
                   <GeoFigure {...FIG_ACT3_RAY_SOL} />
                   <GeoFigure {...FIG_ACT3_CIRCLE_SOL} />
                 </div>

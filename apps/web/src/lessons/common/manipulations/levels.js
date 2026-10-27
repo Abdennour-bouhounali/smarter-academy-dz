@@ -810,12 +810,14 @@ export const LEVELS = Object.freeze({
   },
   // ── 3AM, unité 1 « الأعداد النسبية » (2026-10-26) ──
   // LE TEMPS SIGNÉ SOUS LA MAIN (elevator-reel, thème mallElevator) : un ascenseur passe par l'étage 0 à l'instant 0 d'un film, à vitesse r (étages/minute,
-  // signée) ; à l'instant t (signé) il est à l'étage r × t. مبتدئ (plateforme, pas 1, r imposée) : m1 r = −2 → étage −6, m2 r = −2 → étage 4 (le film est
+  // signée) ; à l'instant t (signé) il est à l'étage r × t. مبتدئ (plateforme, pas 1, r imposée) : m1 r = −2 → étage −6, p1 PRÉDIRE l'étage de (−2, −1) (cartes, 2026-10-27), m2 r = −2 → étage 4 (le film est
   // REMBOBINÉ : t = −2), m3 r = 3 → 6, m4 r = 3 → −9. متقدم (know-1, pas 0,5, la main tient AUSSI r) : a1 prédire l'étage de (−3, −2) AVANT de voir (cartes), a2 l'étage −6
   // en montant PUIS en descendant, a3 r = −2 → 3 (t = −1,5), a4 r = 2 → −5 (t = −2,5). Le test des niveaux mesure la paire par la finesse du pas et la prédiction.
   'elevator-reel': {
     beginner: { numbers: { step: '1', tasks: [
-      { id: 'm1', r: '-2', floor: '-6' }, { id: 'm2', r: '-2', floor: '4' }, { id: 'm3', r: '3', floor: '6' }, { id: 'm4', r: '3', floor: '-9' },
+      { id: 'm1', r: '-2', floor: '-6' },
+      { id: 'p1', kind: 'predict', r: '-2', t: '-1', options: ['2', '-2', '-3', '-1'], key: '2', misc: { '-2': 'MISC-JIDAA-NEGNEG', '-3': 'MISC-JIDAA-ADD', '-1': 'MISC-JIDAA-SUB' } },
+      { id: 'm2', r: '-2', floor: '4' }, { id: 'm3', r: '3', floor: '6' }, { id: 'm4', r: '3', floor: '-9' },
     ] }, ...P },
     advanced: { numbers: { step: '0,5', tasks: [
       { id: 'a1', kind: 'predict', r: '-3', t: '-2', options: ['6', '-6', '-5', '1'], key: '6' },

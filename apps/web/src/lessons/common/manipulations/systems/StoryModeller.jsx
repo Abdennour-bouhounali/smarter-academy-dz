@@ -323,12 +323,11 @@ export default function StoryModeller({
         <div className="space-y-2" data-story-modeller data-theme={themeId} data-stage={lab.stage}>
           {/* ── les cinq étapes du tableau du manuel : une seule rangée (sur un téléphone, l'étape courante
               seule et « n / 5 ») — la hauteur va à la manipulation (règle « d'un seul regard ») ── */}
-          <ol className="flex flex-nowrap items-center gap-1 overflow-hidden text-[11px] font-bold sm:text-xs" aria-hidden="true">
+          <ol className="flex flex-nowrap items-center gap-1 overflow-hidden font-bold text-xs" aria-hidden="true">
             {stages.map((s2) => {
               const i2 = L.STAGES.indexOf(s2); const cur = L.STAGES.indexOf(lab.stage);
-              return <li key={s2} className={`${i2 === cur ? 'bg-indigo-600 text-white' : `hidden sm:block ${i2 < cur ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-100 text-slate-500'}`} shrink-0 rounded-full px-2 py-0.5`}>{k(`stage${s2[0].toUpperCase()}${s2.slice(1)}`)}</li>;
+              return <li key={s2} className={`${i2 === cur ? 'bg-indigo-600 text-white' : `block ${i2 < cur ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-100 text-slate-500'}`} shrink-0 rounded-full px-2 py-0.5`}>{k(`stage${s2[0].toUpperCase()}${s2.slice(1)}`)}</li>;
             })}
-            <li className="sm:hidden text-slate-500"><bdi dir="ltr">{stages.indexOf(lab.stage) + 1} / {stages.length}</bdi></li>
           </ol>
 
           {/* ── l'histoire : lue à l'étape 1 ; repliable ensuite (ses informations sont citées dans les rangs) ── */}
@@ -337,7 +336,7 @@ export default function StoryModeller({
           <div data-sm-story>
             <LabFold id="story-modeller.story" title={k('storyTitle')} actions={<Decor themeId={themeId} />} className="border-2 !border-amber-200">
               {def.story
-                ? <p className="text-xs leading-snug text-slate-800 sm:text-sm"><MathText>{bidi(def.story)}</MathText></p>
+                ? <p className="leading-snug text-slate-800 text-sm"><MathText>{bidi(def.story)}</MathText></p>
                 : <ul className="list-disc ps-5 text-sm text-slate-800">{def.facts.map((f) => <li key={f.quote}>{bidi(f.quote)}</li>)}</ul>}
             </LabFold>
           </div>
@@ -367,7 +366,7 @@ export default function StoryModeller({
                       <DropZone key={z.id} drag={drag} id={`noun:${z.id}`} tone="indigo" minHeight="min-h-[44px]" data-sm-noun={z.id}
                         label={letter ? k('nounZoneNamed', { noun: nounOf(z.id), letter }) : k('nounZone', { noun: nounOf(z.id) })}>
                         <div className="flex h-full flex-wrap items-center justify-center gap-0.5 p-1 text-center">
-                          <span className="text-[11px] font-bold leading-tight text-slate-800 sm:text-sm">{nounOf(z.id)}</span>
+                          <span className="font-bold leading-tight text-slate-800 text-sm">{nounOf(z.id)}</span>
                           {letter && (
                             <span className="inline-flex items-center gap-1">
                               <span dir="ltr" className="rounded-lg bg-indigo-100 px-1.5 font-mono text-base font-black text-indigo-800">{letter}</span>
@@ -381,7 +380,7 @@ export default function StoryModeller({
                   const c = chipMeta(z.key);
                   return (
                     <DropZone key={z.key} drag={drag} id={`known:${z.key}`} tone="slate" minHeight="min-h-[44px]" data-sm-noun={`known:${z.key}`} label={k('knownZone', c)}>
-                      <div className="flex h-full items-center justify-center p-1 text-center text-[11px] leading-tight text-slate-700 sm:text-sm">
+                      <div className="flex h-full items-center justify-center p-1 text-center leading-tight text-slate-700 text-sm">
                         <span><bdi dir="ltr" className="font-mono font-bold">{c.v}</bdi> {c.label}</span>
                       </div>
                     </DropZone>
@@ -393,7 +392,7 @@ export default function StoryModeller({
 
           {/* le rappel des inconnues nommées (étapes 2 à 5) */}
           {lab.stage !== 'name' && (
-            <p className="flex flex-wrap items-center gap-x-2 rounded-xl bg-indigo-50 px-2 py-0.5 text-[11px] text-slate-800 sm:text-sm" data-sm-named>
+            <p className="flex flex-wrap items-center gap-x-2 rounded-xl bg-indigo-50 px-2 py-0.5 text-slate-800 text-sm" data-sm-named>
               <span className="font-bold text-indigo-900">{k('namedTitle')}</span>
               {ids.map((letter, i) => (
                 <span key={letter}><bdi dir="ltr" className="font-mono text-sm font-black" style={{ color: LETTER_COLORS[i] }}>{letter}</bdi> : {nounOfLetter(letter)}</span>
@@ -403,14 +402,14 @@ export default function StoryModeller({
 
           {/* ═════════ 2) الترجمة ═════════ */}
           {lab.stage === 'model' && (
-            <div className="space-y-1.5 sm:space-y-2" data-sm-core>
+            <div className="space-y-2" data-sm-core>
               {[1, 2].map((row) => {
                 const v = lab.verdict?.rows?.[row - 1];
                 return (
                   <div key={row} className={`space-y-1 rounded-2xl border-2 p-1.5 ${v ? (v.ok ? 'border-emerald-300 bg-emerald-50/50' : 'border-amber-300 bg-amber-50/60') : 'border-slate-200 bg-white'}`}
                     data-sm-row={row} data-ok={v ? String(v.ok) : undefined} data-reason={v && !v.ok ? v.reason : undefined}>
-                    <p className="line-clamp-2 text-xs sm:text-sm" title={quote(row)}><span className="hidden font-bold text-slate-600 sm:inline">{k('factN', { n: row })} : </span><span className="font-bold text-slate-900">«{bidi(quote(row))}»</span></p>
-                    <div dir="ltr" className="flex flex-nowrap items-center justify-center gap-0.5 font-mono text-base font-extrabold text-slate-700 sm:gap-1.5 sm:text-xl">
+                    <p className="line-clamp-2 text-sm" title={quote(row)}><span className="font-bold text-slate-600 inline">{k('factN', { n: row })} : </span><span className="font-bold text-slate-900">«{bidi(quote(row))}»</span></p>
+                    <div dir="ltr" className="flex flex-nowrap items-center justify-center font-mono font-extrabold text-slate-700 gap-1.5 text-xl">
                       {L.SLOTS.map((s, si) => {
                         const key = lab.slots[row][s];
                         const c = key ? chipMeta(key) : null;
@@ -420,12 +419,12 @@ export default function StoryModeller({
                           <React.Fragment key={s}>
                             {s === 'c' && <span aria-hidden="true">=</span>}
                             <DropZone drag={drag} id={L.slotId(row, s)} tone="amber" minHeight="min-h-[46px]"
-                              className={`min-w-[2.6rem] sm:min-w-[3.5rem] ${bad ? '!border-solid !border-rose-400 ring-2 ring-rose-200' : ''}`}
+                              className={`min-w-[3.5rem] ${bad ? '!border-solid !border-rose-400 ring-2 ring-rose-200' : ''}`}
                               label={k('slotLabel', { n: row, slot: slotName, value: c ? c.v : k('slotEmpty') })}>
                               {/* une case pleine se REMPLACE en y portant un autre nombre (pas de bouton « × » :
                                   à 320 px la ligne □x + □y = □ doit tenir sur une rangée) */}
-                              <span className="flex h-full min-h-[44px] items-center justify-center px-1 sm:px-1.5">
-                                {c ? <span className="text-base sm:text-lg">{c.v}</span> : <span className="text-base text-slate-300">□</span>}
+                              <span className="flex h-full min-h-[44px] items-center justify-center px-1.5">
+                                {c ? <span className="text-lg">{c.v}</span> : <span className="text-base text-slate-300">□</span>}
                               </span>
                             </DropZone>
                             {s === 'a' && <span style={{ color: LETTER_COLORS[0] }}>{ids[0]}</span>}
@@ -436,29 +435,29 @@ export default function StoryModeller({
                       })}
                     </div>
                     {v && !v.ok && lab.verdict.rows.findIndex((r) => !r.ok) === row - 1 && (
-                      <div className="text-xs text-amber-950 sm:text-sm" data-sm-reason-row={row}>
-                        {readingText(row) && <p className="hidden text-slate-700 sm:block">{bidi(readingText(row))}</p>}
+                      <div className="text-amber-950 text-sm" data-sm-reason-row={row}>
+                        {readingText(row) && <p className="text-slate-700 block">{bidi(readingText(row))}</p>}
                         <p className="font-bold" data-sm-reason>{bidi(reasonText(row, v))}</p>
                       </div>
                     )}
                   </div>
                 );
               })}
-              <Reserve title={k('chipsTitle')} grid>
+              <Reserve title={k('chipsTitle')}>
                 {model.chips.map((c) => {
                   const m = chipMeta(c.key);
                   return (
                     <DraggableObject key={c.key} drag={drag} id={`chip:${c.key}`} label={k('chipLabel', m)}
-                      className="flex min-h-[44px] min-w-0 flex-col items-center justify-center rounded-xl border-2 border-amber-400 bg-white px-1 py-0.5 shadow-sm sm:px-1.5">
-                      <span dir="ltr" className="font-mono text-base font-extrabold leading-tight text-amber-900 sm:text-lg">{m.v}</span>
-                      <span className="line-clamp-2 max-w-full text-[10px] leading-none text-slate-600 sm:max-w-[8rem] sm:text-[11px] sm:leading-tight">{m.label}</span>
+                      className="flex min-h-[44px] min-w-0 flex-col items-center justify-center rounded-xl border-2 border-amber-400 bg-white py-0.5 shadow-sm px-1.5">
+                      <span dir="ltr" className="font-mono font-extrabold leading-tight text-amber-900 text-lg">{m.v}</span>
+                      <span className="line-clamp-2 text-slate-600 max-w-[8rem] text-[11px] leading-tight">{m.label}</span>
                     </DraggableObject>
                   );
                 })}
                 {/* « تحقّق » À CÔTÉ des nombres qu'il juge (règle « d'un seul regard ») ; le verdict s'y lit aussi :
                     accepté → « إلى الحل » prend sa place ; refusé → la raison est DANS le rang refusé */}
-                <span className="col-span-3 ms-auto flex flex-wrap items-center gap-1.5 sm:col-span-1">
-                  {lab.verdict && !lab.verdict.ok && <span className="hidden text-xs font-bold text-amber-900 sm:inline" data-sm-verdict="ko">{k('verdictKo')}</span>}
+                <span className="ms-auto flex flex-wrap items-center gap-1.5 col-span-1">
+                  {lab.verdict && !lab.verdict.ok && <span className="text-xs font-bold text-amber-900 inline" data-sm-verdict="ko">{k('verdictKo')}</span>}
                   {lab.verdict?.ok && <span className="text-xs font-bold text-emerald-900" data-sm-verdict="ok">{k('verdictOk')}</span>}
                   {lab.verdict?.ok ? (
                     <button type="button" onClick={() => setLab(L.openSolve)} data-sm-open="solve" className={`${btn} bg-emerald-600 text-white focus-visible:ring-emerald-300`}>
@@ -482,11 +481,11 @@ export default function StoryModeller({
             <div className="space-y-2" data-sm-core>
               {/* la jumla et le choix de la méthode sur UNE rangée : le geste à côté de ce qu'il résout */}
               <div className="flex flex-wrap items-center gap-2" role="group" aria-label={k('methodTitle')}>
-                <span dir="ltr" className="text-[13px] sm:text-sm"><MathText>{`$${L.systemLatex(sys, ids)}$`}</MathText></span>
-                <span className="hidden text-xs font-bold text-slate-700 sm:inline sm:text-sm">{k('methodTitle')}</span>
+                <span dir="ltr" className="text-sm"><MathText>{`$${L.systemLatex(sys, ids)}$`}</MathText></span>
+                <span className="font-bold text-slate-700 inline text-sm">{k('methodTitle')}</span>
                 {['sub', 'add'].map((m) => (
                   <button key={m} type="button" aria-pressed={lab.method === m} data-sm-method={m} onClick={() => setLab((s) => L.chooseMethod(s, m))}
-                    className={`inline-flex min-h-[44px] items-center rounded-xl border-2 px-2 text-xs font-bold focus:outline-none sm:px-3 sm:text-sm focus-visible:ring-4 ${lab.method === m ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-indigo-300 bg-white text-indigo-800'} focus-visible:ring-indigo-300`}>
+                    className={`inline-flex min-h-[44px] items-center rounded-xl border-2 font-bold focus:outline-none focus-visible:ring-4 px-3 text-sm ${lab.method === m ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-indigo-300 bg-white text-indigo-800'} focus-visible:ring-indigo-300`}>
                     {k(m === 'sub' ? 'methodSub' : 'methodAdd')}
                   </button>
                 ))}
@@ -495,7 +494,7 @@ export default function StoryModeller({
                 <ol className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-2 py-1.5 text-sm">
                   {plan.lines.slice(0, lab.revealed).map((ln, i) => (
                     <li key={`${lab.method}-${i}`} className="flex flex-wrap items-center gap-x-2 leading-tight" data-sm-line={i}>
-                      <span className="text-[11px] font-bold text-slate-600 sm:text-xs"><MathText>{k(`line_${ln.key}`, ln.vars)}</MathText></span>
+                      <span className="font-bold text-slate-600 text-xs"><MathText>{k(`line_${ln.key}`, ln.vars)}</MathText></span>
                       <span dir="ltr" className="font-mono"><MathText>{`$${ln.tex}$`}</MathText></span>
                     </li>
                   ))}
@@ -504,11 +503,11 @@ export default function StoryModeller({
               {plan && lab.revealed === plan.halfAt + 1 && lab.half !== 'more' && (
                 <div className="space-y-1 rounded-2xl border-2 border-sky-200 bg-sky-50 p-1.5">
                   {lab.half === 'refused'
-                    ? <p className="text-xs font-bold text-rose-800 sm:text-sm" data-sm-half-refused>{k('halfRefused', { letter: plan.first.letter, other: plan.second.letter })}</p>
-                    : <p className="text-xs font-bold text-sky-950 sm:text-sm">{k('halfQuestion', { letter: plan.first.letter })}</p>}
+                    ? <p className="font-bold text-rose-800 text-sm" data-sm-half-refused>{k('halfRefused', { letter: plan.first.letter, other: plan.second.letter })}</p>
+                    : <p className="font-bold text-sky-950 text-sm">{k('halfQuestion', { letter: plan.first.letter })}</p>}
                   <div className="flex flex-nowrap gap-1.5">
-                    <button type="button" data-sm-half="done" onClick={() => setLab((s) => L.claimHalf(s, 'done'))} className="inline-flex min-h-[44px] items-center rounded-xl border-2 border-slate-300 bg-white px-2 text-xs font-bold text-slate-800 focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 sm:text-sm">{k('halfDone')}</button>
-                    <button type="button" data-sm-half="more" onClick={() => setLab((s) => L.claimHalf(s, 'more'))} className="inline-flex min-h-[44px] items-center rounded-xl border-2 border-sky-400 bg-white px-2 text-xs font-bold text-sky-900 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-300 sm:text-sm">{k('halfMore', { other: plan.second.letter })}</button>
+                    <button type="button" data-sm-half="done" onClick={() => setLab((s) => L.claimHalf(s, 'done'))} className="inline-flex min-h-[44px] items-center rounded-xl border-2 border-slate-300 bg-white px-2 font-bold text-slate-800 focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 text-sm">{k('halfDone')}</button>
+                    <button type="button" data-sm-half="more" onClick={() => setLab((s) => L.claimHalf(s, 'more'))} className="inline-flex min-h-[44px] items-center rounded-xl border-2 border-sky-400 bg-white px-2 font-bold text-sky-900 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-300 text-sm">{k('halfMore', { other: plan.second.letter })}</button>
                   </div>
                 </div>
               )}
@@ -557,7 +556,7 @@ export default function StoryModeller({
                       label={k('gateLabel', { noun: nounOf(id), value: letter ? `${letter} = ${L.numberText(value)}` : k('gateEmpty') })}>
                       <div className="flex flex-col items-center gap-0.5 p-1.5">
                         <GateFigure kind={model.hasCount ? 'turnstile' : 'tag'} index={gi} turns={shownCount != null && L.toNumber(shownCount) >= 0 ? Math.min(60, Math.round(L.toNumber(shownCount))) : 0} />
-                        <span className="text-center text-xs font-bold text-slate-800 sm:text-sm">{nounOf(id)}</span>
+                        <span className="text-center font-bold text-slate-800 text-sm">{nounOf(id)}</span>
                         {letter ? (
                           <span className="inline-flex items-center gap-1">
                             <span dir="ltr" className="rounded-lg bg-white px-2 font-mono font-extrabold" style={{ color: LETTER_COLORS[ids.indexOf(letter)] }}>{letter} = {L.numberText(value)}</span>
@@ -573,14 +572,14 @@ export default function StoryModeller({
               {/* une valeur en main : le panneau s'efface pour laisser les portes à portée du doigt */}
               {lab.replay && !String(drag.held ?? '').startsWith('val:') && !drag.dragging && (
                 <MovablePanel key={panelH ? "sized" : "measuring"} id="story-modeller.replay" bounds={sceneRef} title={k("replayTitle")} className="absolute inset-x-0 top-0">
-                <div ref={panelRef} className={`space-y-1 rounded-xl border-2 p-1.5 text-xs sm:text-sm ${lab.replay.ok ? 'border-emerald-300 bg-emerald-50' : 'border-amber-300 bg-amber-50'}`} data-sm-replay data-ok={String(lab.replay.ok)} aria-live="polite">
+                <div ref={panelRef} className={`space-y-1 rounded-xl border-2 p-1.5 text-sm ${lab.replay.ok ? 'border-emerald-300 bg-emerald-50' : 'border-amber-300 bg-amber-50'}`} data-sm-replay data-ok={String(lab.replay.ok)} aria-live="polite">
                   {L.replayTex(model, lab.replay.values).map((tx, i) => {
                     const f = lab.replay.facts[i];
                     return (
                       <div key={tx} className="space-y-0.5" data-sm-fact={i + 1} data-ok={String(f.ok)}>
                         <p className="flex flex-wrap items-center gap-x-2">
                           <span aria-hidden="true">{f.ok ? '✓' : '✗'}</span>
-                          <span className="hidden text-slate-700 sm:inline">«{bidi(quote(i + 1))}»</span>
+                          <span className="text-slate-700 inline">«{bidi(quote(i + 1))}»</span>
                           <span dir="ltr" className="font-mono"><MathText>{`$${tx}$`}</MathText></span>
                         </p>
                         {!f.ok && <p className="font-bold text-rose-800">{bidi(k('factKo', { quote: quote(i + 1), c: L.numberText(f.c), lhs: L.numberText(f.lhs) }))}</p>}
@@ -652,14 +651,12 @@ function nounOrder(model, ids) {
   return out;
 }
 
-function Reserve({ title, hint, children, grid = false }) {
+function Reserve({ title, hint, children }) {
   return (
     <div className="space-y-1 rounded-2xl border-2 border-amber-200 bg-amber-50/60 p-1.5">
-      <p className="hidden text-xs font-bold text-amber-900 sm:block">{title}</p>
-      {/* `grid` : sous `sm`, trois colonnes fixes — des étiquettes longues (« DA المبلغ المدفوع ») ne font plus
-          tomber les jetons un par rang (7 jetons empilés débordaient l'écran de 320 × 640, §8bis). */}
-      <div className={grid ? 'grid grid-cols-3 items-stretch gap-1 sm:flex sm:flex-wrap sm:gap-1.5' : 'flex flex-wrap items-stretch gap-1.5'} role="group" aria-label={title}>{children}</div>
-      {hint && <p className="hidden text-[11px] leading-tight text-slate-600 sm:block">{hint}</p>}
+      <p className="text-xs font-bold text-amber-900 block">{title}</p>
+      <div className="flex flex-wrap items-stretch gap-1.5" role="group" aria-label={title}>{children}</div>
+      {hint && <p className="text-[11px] leading-tight text-slate-600 block">{hint}</p>}
     </div>
   );
 }
@@ -684,7 +681,7 @@ function BackButton({ onClick, label }) {
 
 function FormalRow({ label, children }) {
   return (
-    <li className="grid gap-1 rounded-xl border border-slate-200 bg-white px-3 py-2 sm:grid-cols-[11rem_1fr]">
+    <li className="grid gap-1 rounded-xl border border-slate-200 bg-white px-3 py-2 grid-cols-[11rem_1fr]">
       <span className="text-xs font-extrabold text-indigo-900">{label}</span>
       <div className="text-sm text-slate-800">{children}</div>
     </li>
@@ -732,7 +729,7 @@ function Crowd({ id, n, adult, color }) {
   const k = adult ? 1 : 0.8;
   return (
     <span className="flex w-full items-center justify-center gap-1" dir="ltr" aria-hidden="true" data-sm-crowd={id} data-count={count} data-cols={cols}>
-      <svg viewBox={`0 0 ${cols * CW} ${rows * CH}`} preserveAspectRatio="xMidYMax meet" className="h-16 max-w-full sm:h-24" focusable="false">
+      <svg viewBox={`0 0 ${cols * CW} ${rows * CH}`} preserveAspectRatio="xMidYMax meet" className="max-w-full h-24" focusable="false">
         {Array.from({ length: shown }, (_, i) => {
           const cx = (i % cols) * CW + CW / 2; const by = (Math.floor(i / cols) + 1) * CH - 0.5;
           return (
@@ -760,7 +757,7 @@ function Decor({ themeId }) {
   const anim = taps && !reduce ? 'sm-wave' : undefined;
   return (
     <button type="button" tabIndex={-1} aria-hidden="true" onClick={tap} data-deco
-      className="h-9 w-12 shrink-0 rounded-xl focus:outline-none sm:h-10 sm:w-14">
+      className="shrink-0 rounded-xl focus:outline-none h-10 w-14">
       <svg viewBox="0 0 120 80" width="100%" height="100%">
         <style>{'.sm-wave{animation:sm-wave .5s ease-in-out 3;transform-box:fill-box;transform-origin:left center}@keyframes sm-wave{0%,100%{transform:skewY(0)}50%{transform:skewY(-14deg) scaleX(.92)}}.sm-glow{animation:sm-glow 1.2s ease-out 1}@keyframes sm-glow{0%{opacity:.2}40%{opacity:1}100%{opacity:.35}}.sm-bob{animation:sm-bob .6s ease-in-out 3;transform-box:fill-box;transform-origin:bottom center}@keyframes sm-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px) rotate(4deg)}}@media (prefers-reduced-motion: reduce){.sm-wave,.sm-glow,.sm-bob{animation:none}}'}</style>
         {themeId === 'stadium' && (

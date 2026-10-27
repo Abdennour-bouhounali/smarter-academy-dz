@@ -109,13 +109,13 @@ export default function LessonLearningPointsStatus({ lessonId, refreshToken = 0,
       )}
 
       {status === 'loading' && !profile && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3" aria-busy="true" aria-label={t('boss.learningPointsLoading')}>
+        <div className="grid gap-3 grid-cols-2" aria-busy="true" aria-label={t('boss.learningPointsLoading')}>
           {learningPoints.map((lp) => <div key={lp.id} className="h-24 rounded-2xl bg-slate-100 animate-pulse" />)}
         </div>
       )}
 
       {profile && learningPoints.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3" aria-busy={status === 'loading'}>
+        <div className="grid gap-3 grid-cols-2" aria-busy={status === 'loading'}>
           {learningPoints.map((lp) => {
             const row = rows.get(lp.id);
             const state = resolveMasteryState(row);

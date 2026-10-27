@@ -48,7 +48,7 @@ export default function Module03Tariqa() {
             <div className="space-y-3">
               <p className="text-sm text-slate-700">{METHOD.intro}</p>
               <p className="text-sm font-bold text-slate-600">{METHOD.title}</p>
-              <table className="w-full max-w-md table-fixed border-collapse text-center text-xs sm:text-sm" data-method-answers>
+              <table className="w-full max-w-md table-fixed border-collapse text-center text-sm" data-method-answers>
                 <thead><tr className="bg-slate-100"><th className="border p-1" />{['هدى', 'إيناس'].map((h) => <th key={h} className="border p-1">إجابة {h}</th>)}</tr></thead>
                 <tbody>
                   <tr><th className="border p-1">قامة يونس</th><td className="border p-1">{ltr(`${METHOD.answers.hoda.younes} cm`)}</td><td className="border p-1">{ltr(`${METHOD.answers.ines.younes} cm`)}</td></tr>
@@ -123,7 +123,7 @@ export default function Module03Tariqa() {
           content: (
             <div className="space-y-3">
               <TextbookBox kind="exercise" title="دوري الآن" text={NOW_29.text} source={NOW_29.source} compact />
-              <table className="w-full max-w-md table-fixed border-collapse text-center text-xs sm:text-sm [overflow-wrap:anywhere]" data-now-table>
+              <table className="w-full max-w-md table-fixed border-collapse text-center [overflow-wrap:anywhere] text-sm" data-now-table>
                 <thead><tr className="bg-slate-100">{NOW_29.table.head.map((h, i) => <th key={i} className="border p-1">{h}</th>)}</tr></thead>
                 <tbody>{NOW_29.table.rows.map((r) => <tr key={r[0]}>{r.map((c, i) => (i === 0 ? <th key={i} className="border p-1">{c}</th> : <td key={i} className="border p-1">{ltr(c)}</td>))}</tr>)}</tbody>
               </table>

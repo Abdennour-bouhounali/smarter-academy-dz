@@ -47,7 +47,7 @@ export default function Module02Maarif() {
           num: 1, title: 'أ) مقطع كرة بمستو', subtitle: 'أربع حالات', done: q1,
           content: (
             <div className="space-y-3">
-              <div className="grid gap-2 sm:grid-cols-3" data-know3-sphere>
+              <div className="grid gap-2 grid-cols-3" data-know3-sphere>
                 <SpaceFigure {...FIG_KNOW3_IN} />
                 <SpaceFigure {...FIG_KNOW3_ZERO} />
                 <SpaceFigure {...FIG_KNOW3_TANGENT} />

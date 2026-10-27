@@ -138,11 +138,9 @@ export default function ShapeProver({
   const vp = useLessonViewport(true);
   const screenH = vp.ready && vp.height > 0 ? vp.height : 700;
   const narrow = width < 400;
-  // sous 250 px (téléphone de 320 px) le bloc « glance » reprend la marge de la scène (-mx-2) et devient compact
-  const tiny = width < 250;
   // sous 640 px (téléphones) : puces et cartes compactes, verdict flottant sur le terrain (MovablePanel)
   const compact = width < 640;
-  const innerW = tiny ? width + 16 : width;
+  const innerW = width;
   const sceneW = wide ? Math.min(Math.floor(width * 0.54), 560) : Math.min(innerW, 560);
   const panelW = wide ? width - sceneW - 12 : innerW;
   const budget = wide ? screenH - 40 : screenH - overhead - 20;
@@ -318,7 +316,7 @@ export default function ShapeProver({
           const on = lab.claim === c;
           return (
             <button key={c} type="button" aria-pressed={on} data-sp-claim={c} onClick={() => setLab((s) => L.setClaim(s, c))}
-              className={`min-h-11 rounded-xl border-2 ${tiny ? 'px-1 text-[10.5px]' : compact ? 'px-1.5 text-[11px]' : 'px-2.5 text-xs'} font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${on ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-indigo-200 bg-white text-indigo-900'}`}>
+              className={`min-h-11 rounded-xl border-2 ${compact ? 'px-1.5 text-[11px]' : 'px-2.5 text-xs'} font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${on ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-indigo-200 bg-white text-indigo-900'}`}>
               {lab.solved[c] ? '✓ ' : ''}<MathText>{k(`chip_${ID(c)}`)}</MathText>
             </button>
           );
@@ -329,17 +327,17 @@ export default function ShapeProver({
 
   const cardGrid = (
     <div className="space-y-1" data-sp-cards>
-      {!tiny && <p className="text-xs font-bold text-slate-600">{k('cardsTitle')}</p>}
-      <div className={`grid gap-1.5 ${panelW >= 520 ? 'grid-cols-3' : tiny && !quad ? 'grid-cols-1' : 'grid-cols-2'}`}>
+      <p className="text-xs font-bold text-slate-600">{k('cardsTitle')}</p>
+      <div className={`grid gap-1.5 ${panelW >= 520 ? 'grid-cols-3' : 'grid-cols-2'}`}>
         {cards.map((c) => {
           const on = lab.picked.includes(c.id);
-          const row = tiny && !quad;
-          const w = cardTex(c, tiny ? 'tiny' : compact);
-          const fs = tiny ? 'text-[10px] whitespace-nowrap' : compact ? `text-[11px] ${c.id === 'mid' ? '' : 'whitespace-nowrap'}` : 'text-xs';
+          const row = false;
+          const w = cardTex(c, compact);
+          const fs = compact ? `text-[11px] ${c.id === 'mid' ? '' : 'whitespace-nowrap'}` : 'text-xs';
           return (
             <button key={c.id} type="button" aria-pressed={on} data-sp-card={c.id} data-balanced={c.balanced ? 'true' : 'false'}
               onClick={() => setLab((s) => L.toggleCard(s, c.id))}
-              className={`min-h-11 rounded-xl border-2 px-1.5 py-1 ${tiny && c.id === 'circ' ? 'col-span-2' : ''} focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${row ? 'flex items-center justify-between gap-2' : 'text-center'} ${on ? 'border-amber-500 bg-amber-50 shadow' : 'border-slate-200 bg-white'}`}>
+              className={`min-h-11 rounded-xl border-2 px-1.5 py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${row ? 'flex items-center justify-between gap-2' : 'text-center'} ${on ? 'border-amber-500 bg-amber-50 shadow' : 'border-slate-200 bg-white'}`}>
               <span className={`${row ? '' : 'block'} ${fs} font-bold ${w.body ? 'text-slate-800' : ''}`} style={w.body ? undefined : { color: c.balanced ? C_OK : C_NO }}><MathText>{w.head}</MathText></span>
               {w.body && <span className={`${row ? '' : 'block'} ${fs} font-semibold`} style={{ color: c.balanced ? C_OK : C_NO }}><MathText>{w.body}</MathText></span>}
             </button>
@@ -351,7 +349,7 @@ export default function ShapeProver({
 
   const checkBtn = (
     <button type="button" onClick={ask} data-sp-check
-      className={`inline-flex h-11 items-center gap-1.5 rounded-xl border-2 border-slate-800 bg-slate-900 ${tiny ? 'px-2 text-xs' : 'px-3 text-sm'} whitespace-nowrap font-extrabold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400`}>
+      className="inline-flex h-11 items-center gap-1.5 rounded-xl border-2 border-slate-800 bg-slate-900 px-3 text-sm whitespace-nowrap font-extrabold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400">
       <Tv className="h-4 w-4" aria-hidden="true" />{k('check')}
     </button>
   );
@@ -361,7 +359,7 @@ export default function ShapeProver({
         <button type="button" className={`${btn} border-violet-400 bg-violet-50 text-violet-900`} onClick={() => setLab(L.openQuad)} data-sp-next-quad>{k('nextQuad')}</button>
       )}
       {quad && (
-        <button type="button" className={`${btn} border-slate-300 text-slate-700 ${tiny ? 'text-xs' : ''}`} onClick={() => setLab(L.backToTri)} data-sp-back-tri>{k('backTri')}</button>
+        <button type="button" className={`${btn} border-slate-300 text-slate-700`} onClick={() => setLab(L.backToTri)} data-sp-back-tri>{k('backTri')}</button>
       )}
     </>
   );
@@ -399,7 +397,7 @@ export default function ShapeProver({
         <Pitch lab={lab} fr={fr} uid={uid} width={sceneW} height={sceneH} scan={scan} cards={cards} />
         {handle}
         <Ball lab={lab} fr={fr} />
-        <Teammate verdict={last?.kind ?? null} n={nTrials} size={tiny ? 20 : narrow ? 26 : 34} />
+        <Teammate verdict={last?.kind ?? null} n={nTrials} size={narrow ? 26 : 34} />
         {heldReading}
         {compact && last && (
           <div onPointerDown={(e) => e.stopPropagation()}>
@@ -457,7 +455,7 @@ export default function ShapeProver({
       <ManipulationStage className="bg-gradient-to-b from-emerald-50/60 to-white" minHeight="min-h-[160px]">
         <div ref={boxRef} className="space-y-2" data-shape-prover data-mode={lab.mode} data-stage={lab.stage}
           data-world={theme} data-solved={ready ? 'true' : 'false'} data-scene-h={sceneH}>
-          <div ref={glanceRef} className={wide ? 'grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3' : `space-y-2 ${tiny ? '-mx-2' : ''}`} data-sp-glance>
+          <div ref={glanceRef} className={wide ? 'grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3' : `space-y-2`} data-sp-glance>
             {sceneBlock}
             {dossier}
           </div>

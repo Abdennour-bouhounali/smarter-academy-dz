@@ -179,7 +179,7 @@ export default function Module01Nashat() {
           num: 3, title: 'كرّاسا إلياس وأمين', subtitle: 'تطبيق أ — السؤال 1', done: q3,
           content: (
             <div className="space-y-3">
-              <div className="grid gap-2 sm:grid-cols-2">
+              <div className="grid gap-2 grid-cols-2">
                 <TextbookBox kind="example" title="كرّاس إلياس" lines={ACTIVITY.elias} source={ACTIVITY.source} compact />
                 <TextbookBox kind="example" title="كرّاس أمين" lines={ACTIVITY.amine} source={ACTIVITY.source} compact />
               </div>

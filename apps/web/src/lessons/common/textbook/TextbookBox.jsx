@@ -36,7 +36,7 @@ export default function TextbookBox({ kind = 'definition', title, text, lines, c
         <SourceTag source={source} />
       </div>
       {paragraphs.map((p, i) => (
-        <p key={i} className="text-sm sm:text-base leading-relaxed text-slate-800"><MathText>{p}</MathText></p>
+        <p key={i} className="leading-relaxed text-slate-800 text-base"><MathText>{p}</MathText></p>
       ))}
       {children}
     </div>

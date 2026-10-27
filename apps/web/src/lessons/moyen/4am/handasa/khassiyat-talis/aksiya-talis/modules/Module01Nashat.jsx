@@ -58,7 +58,7 @@ export default function Module01Nashat() {
     </div>
   );
   const figures = (
-    <div className="grid grid-cols-1 gap-1 sm:grid-cols-3" data-act2-figures>
+    <div className="grid gap-1 grid-cols-3" data-act2-figures>
       {[1, 2, 3].map((n) => <GeoFigure key={n} {...FIG_ACT2_STUDENTS[n]} />)}
     </div>
   );
@@ -104,8 +104,8 @@ export default function Module01Nashat() {
           num: 1, title: 'أ) توافق الأشكال مع الشروط', subtitle: 'السؤال 1) أ', done: q1,
           content: (
             <div className="space-y-3">
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-start" data-act2-situation>
-                <div className="shrink-0 sm:w-36"><GeoFigure {...FIG_ACT2} maxWidth={150} /></div>
+              <div className="flex gap-2 flex-row items-start" data-act2-situation>
+                <div className="shrink-0 w-36"><GeoFigure {...FIG_ACT2} maxWidth={150} /></div>
                 <p className="text-sm font-semibold text-slate-800"><MathText>{ACTIVITY.situation}</MathText> <SourceTag source={ACTIVITY.source} /></p>
               </div>
               <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[0]}</MathText></p>

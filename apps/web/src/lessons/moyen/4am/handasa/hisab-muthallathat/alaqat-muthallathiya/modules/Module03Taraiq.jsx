@@ -172,7 +172,7 @@ export default function Module03Taraiq() {
               />
               {q4 && (
                 <PredictRule id="insha-zawiya">
-                  <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="grid gap-3 grid-cols-2">
                     <div className="space-y-2">
                       <GeoFigure {...METHOD_CONSTRUCT.ex1.figure} />
                       <MethodSteps method={{ source: METHOD_CONSTRUCT.source, exercise: METHOD_CONSTRUCT.ex1.exercise, solution: METHOD_CONSTRUCT.ex1.solution }} />

@@ -445,7 +445,7 @@ export default function EquationBalance({
           </div>
 
           {/* ── contenus lisibles (et leurs comptes) ── */}
-          <div className="grid grid-cols-2 gap-2 text-xs sm:text-sm" data-balance-counts>
+          <div className="grid grid-cols-2 gap-2 text-sm" data-balance-counts>
             {B.SIDES.map((sd) => (
               <p key={sd} className="rounded-lg bg-white px-2 py-1 text-slate-700" data-balance-count={sd}>
                 <strong>{k(sd === 'L' ? 'sideL' : 'sideR')}:</strong> {panWords(sd)}

@@ -24,7 +24,7 @@ const M = (s) => <MathText key={s}>{s}</MathText>;
 function RankBlock({ title, headers, digits, tone }) {
   const cell = 'border border-violet-200 px-1 py-1 text-center leading-tight';
   return (
-    <table dir="ltr" className="w-full table-fixed border-collapse text-xs sm:text-sm">
+    <table dir="ltr" className="w-full table-fixed border-collapse text-sm">
       <thead>
         <tr><th colSpan={headers.length} className={`${cell} ${tone.head} font-bold`} dir="rtl">{title}</th></tr>
         <tr>{headers.map((h) => <th key={h} className={`${cell} ${tone.sub} font-semibold`} dir="rtl">{h}</th>)}</tr>
@@ -38,10 +38,10 @@ function RankBlock({ title, headers, digits, tone }) {
 
 function RanksTable() {
   return (
-    <div dir="ltr" className="flex flex-col gap-2 sm:flex-row sm:items-end sm:gap-0" data-ranks-table>
-      <div className="sm:flex-[4]"><RankBlock title="الجزء الصحيح" headers={RANKS.integerHeaders} digits={RANKS.integerDigits} tone={{ head: 'bg-violet-100', sub: 'bg-violet-50', digit: 'text-slate-900' }} /></div>
-      <div className="hidden self-end px-0.5 pb-1 text-2xl font-black text-sky-700 sm:block" aria-hidden="true">,</div>
-      <div className="sm:flex-[3]"><RankBlock title="الجزء العشري" headers={RANKS.decimalHeaders} digits={RANKS.decimalDigits} tone={{ head: 'bg-sky-100', sub: 'bg-sky-50', digit: 'text-sky-700' }} /></div>
+    <div dir="ltr" className="flex flex-row items-end gap-0" data-ranks-table>
+      <div className="flex-[4]"><RankBlock title="الجزء الصحيح" headers={RANKS.integerHeaders} digits={RANKS.integerDigits} tone={{ head: 'bg-violet-100', sub: 'bg-violet-50', digit: 'text-slate-900' }} /></div>
+      <div className="self-end px-0.5 pb-1 text-2xl font-black text-sky-700 block" aria-hidden="true">,</div>
+      <div className="flex-[3]"><RankBlock title="الجزء العشري" headers={RANKS.decimalHeaders} digits={RANKS.decimalDigits} tone={{ head: 'bg-sky-100', sub: 'bg-sky-50', digit: 'text-sky-700' }} /></div>
     </div>
   );
 }

@@ -86,7 +86,7 @@ export default function Module02Maarif() {
                 <>
                 <KnowledgeBrick id="daira-muhita" lead="رؤوس الخلية ورؤوس النجمة كانت على دائرة واحدة:" />
                 <KnowledgeBrick id="markaziya-360" variant="rappel" lead="والزاوية التي دوّرت بها كل رأس هي الزاوية المركزية:" />
-                <div className="grid gap-3 sm:grid-cols-3" data-know5-examples>
+                <div className="grid gap-3 grid-cols-3" data-know5-examples>
                   {KNOW5.examples.map((e) => (
                     <div key={e.name} className="space-y-1 rounded-xl border border-violet-200 bg-white p-2">
                       <p className="text-center text-sm font-bold text-violet-900">{e.name}</p>

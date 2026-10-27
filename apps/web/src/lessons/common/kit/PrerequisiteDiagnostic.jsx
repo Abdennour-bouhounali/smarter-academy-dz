@@ -155,7 +155,7 @@ function DiagnosticResult({ lessonId, score, maxScore, skills, skillScores, leve
       </motion.div>
 
       {skillEntries.length > 1 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid gap-3 grid-cols-2">
           {skillEntries.map(([key, s]) => {
             const skillPct = Math.round((s.score / s.max) * 100);
             const good = s.score === s.max;
@@ -197,7 +197,7 @@ function DiagnosticResult({ lessonId, score, maxScore, skills, skillScores, leve
           (réseau des الكفاءات, LEARNING_NET.md) — des liens, jamais un verrou. */}
       <ReviewLinks lessonId={lessonId} />
 
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex gap-3 flex-row">
         <button
           type="button"
           onClick={onContinue}
@@ -357,7 +357,7 @@ export default function PrerequisiteDiagnostic({
           </MissionBrief>
 
           {Object.keys(skills).length > 1 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid gap-3 grid-cols-2">
               {Object.entries(skills).map(([key, skill]) => {
                 const doneCount = questions.filter((q) => q.skill === key && answers[q.id] != null).length;
                 const totalCount = questions.filter((q) => q.skill === key).length;

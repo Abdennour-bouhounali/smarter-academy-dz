@@ -141,18 +141,44 @@ check((await page.locator('[data-lab-question]:visible').first().innerText()).in
 await page.screenshot({ path: `${OUT}/initial-1280x800.png` });
 
 /* ── 3. le labo au clavier et au pointeur (مبتدئ) ───────────────────────────────────────────── */
+// l'écran de jeu (ManipulationShell `immersive`, 2026-10-27) : le labo couvre tout l'écran, « خروج » le rend à la page
+check(await page.locator('[data-er-speed-card]:visible').count() === 1, 'la vitesse est une carte à part (−2, flèche, phrase)');
+await vis(page, '[data-manipulation-immersive-enter]').click();
+await page.waitForSelector('[data-immersive="on"]', { timeout: 3000 }).catch(() => {});
+check(await page.locator('[data-immersive="on"]').count() === 1, 'العب بملء الشاشة → le labo couvre l\'écran');
+await page.waitForTimeout(400);
+const game = await page.evaluate(() => {
+  const host = document.querySelector('[data-immersive="on"]');
+  const stage = host.querySelector('[data-er-stage]').getBoundingClientRect();
+  const record = host.querySelector('[data-er-record]').getBoundingClientRect();
+  return { vh: innerHeight, stage: Math.round(stage.bottom), record: Math.round(record.bottom), tower: Math.round(stage.height) };
+});
+console.log(`   écran de jeu 1280×800 : tour ${game.tower} px, bas de la tour ${game.stage}, bas du سجلّ ${game.record} / ${game.vh}`);
+check(game.stage <= game.vh, 'écran de jeu : la tour tient dans la hauteur de l\'écran');
+await page.screenshot({ path: `${OUT}/ecran-de-jeu-1280x800.png` });
+await vis(page, '[data-manipulation-immersive-exit]').click();
+await page.waitForSelector('[data-immersive="off"]', { timeout: 3000 }).catch(() => {});
+check(await page.locator('[data-immersive="off"]:visible').count() === 1, 'خروج → le labo revient dans la page');
 await center(page, '[data-er-knob]');
 await vis(page, '[data-er-knob]').focus();
 await page.keyboard.press('ArrowRight');
 await page.keyboard.press('ArrowRight');
 check(await verdict(page) === 'wrong', 'm1: t = 2 est refusé');
-check((await vis(page, '[data-er-verdict]').innerText()).includes('−4'), 'm1: le refus écrit le calcul (… = −4)');
+check(!(await vis(page, '[data-er-verdict]').innerText()).includes('×'), 'm1: le refus dit le temps et l\'étage, JAMAIS le calcul avant la découverte');
+check(await page.locator('[data-er-play]').count() === 0, 'm1: pas de film avant la prédiction p1');
 check(await floorNow(page) === -4, 'm1: la cabine est à l\'étage −4');
 await page.screenshot({ path: `${OUT}/m1-refus-1280x800.png` });
 await page.keyboard.press('ArrowRight');
 check(await verdict(page) === 'right' && await floorNow(page) === -6, 'm1: t = 3 → étage −6, réussi');
 check(await page.locator('[data-er-arrow]').count() === 3, 'm1: trois flèches empilées (une par minute)');
 await page.screenshot({ path: `${OUT}/m1-succes-1280x800.png` });
+await vis(page, '[data-er-next]').click();
+// p1 : PRÉDIRE où était l'ascenseur une minute AVANT son passage (cartes, sans ligne du temps)
+check(await page.locator('[data-er-cards]:visible').count() === 1 && await page.locator('[data-er-knob]').count() === 0, 'p1: les cartes, pas de ligne du temps');
+await vis(page, '[data-er-card="-2"]').click();
+check(await verdict(page) === 'wrong' && await floorNow(page) === 2, 'p1: la carte −2 est refusée, la cabine montre l\'étage 2');
+await vis(page, '[data-er-card="2"]').click();
+check(await verdict(page) === 'right', 'p1: la carte 2 est juste');
 await vis(page, '[data-er-next]').click();
 // m2 : le temps NÉGATIF — la cabine d'un ascenseur qui descend apparaît AU-DESSUS de la rue
 await center(page, '[data-er-knob]');
@@ -170,7 +196,14 @@ check(await readT(page) === 0, 'tap au milieu de la règle → t = 0');
 await page.mouse.click(rect.x + rect.width * 0.95, rect.y + rect.height / 2);
 check(await readT(page) === 3, 'tap au bout droit → t = 3');
 // le record se remplit
-check(await page.locator('[data-er-row]').count() === 2, 'le سجلّ garde les deux missions réussies');
+check(await page.locator('[data-er-row]').count() === 3, 'le سجلّ garde les trois missions réussies (m1, p1, m2)');
+// le film, maintenant que la prédiction est faite : la cabine se déplace seule, puis rend la main
+check(await page.locator('[data-er-play]:visible').count() === 1, 'm2: « شغّل التسجيل » après la prédiction');
+await vis(page, '[data-er-play]').click();
+await page.waitForTimeout(1200);
+check(await page.locator('[data-er-play][data-playing="true"]').count() === 1, 'le film joue');
+await page.waitForTimeout(5000);
+check(await page.locator('[data-er-play][data-playing="false"]').count() === 1, 'le film s\'arrête et rend la main');
 // m3 et m4
 await vis(page, '[data-er-next]').click().catch(() => {});
 for (const [goalT, key] of [[2, 'm3'], [-3, 'm4']]) {
@@ -184,10 +217,11 @@ for (const [goalT, key] of [[2, 'm3'], [-3, 'm4']]) {
 }
 // la découverte puis la phase formelle
 await page.waitForSelector('[data-manipulation-discovery]', { timeout: 5000 }).catch(() => {});
-check(await page.locator('[data-manipulation-discovery]').count() > 0, 'les quatre missions ouvrent la découverte (la distance de l\'étage)');
+check(await page.locator('[data-manipulation-discovery]').count() > 0, 'les cinq missions ouvrent la découverte (la distance de l\'étage)');
 await page.locator('[data-manipulation-discovery] button').nth(1).click().catch(() => {});
 await page.waitForTimeout(400);
 check(await page.locator('[data-er-formal]').count() > 0, 'la bonne conjecture ouvre la phase formelle');
+check(await page.locator('[data-er-calc]').count() > 0, 'après la découverte, l\'arrêt écrit enfin son calcul');
 await page.screenshot({ path: `${OUT}/formelle-1280x800.png` });
 // « جرّب أعدادك » : vitesse 0
 await center(page, '[data-er-free-r]');

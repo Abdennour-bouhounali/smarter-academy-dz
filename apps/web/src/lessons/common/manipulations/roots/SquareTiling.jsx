@@ -199,7 +199,7 @@ export default function SquareTiling({
               className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"><Plus className="h-5 w-5" aria-hidden="true" /></button>
           </div>
 
-          <div className="grid gap-3 md:grid-cols-[auto_1fr]">
+          <div className="grid gap-3 grid-cols-[auto_1fr]">
             <div className="flex justify-center rounded-2xl border-2 border-slate-200 bg-white p-2" dir="ltr">
               <svg width={box} height={box} viewBox={`0 0 ${box} ${box}`} role="img" data-tiling-square data-k={kk ?? ''} data-valid={t0 ? String(valid) : ''}
                 aria-label={t0 == null ? k('notSet') : valid ? k('ariaValid', { n, k: kk, b: t0.b }) : k('ariaRefused', { n, k: kk })}>

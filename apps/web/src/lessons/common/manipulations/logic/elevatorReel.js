@@ -14,6 +14,11 @@
  *   floor    r imposée (fixée par l'histoire), un étage demandé : régler t (unique sur le rail, `timeFor`).
  *   both     un étage demandé, r libre : le réussir EN MONTANT (r > 0) puis EN DESCENDANT (r < 0).
  *   predict  r et t donnés : choisir l'étage parmi des cartes AVANT de voir (chaque carte porte une conviction fausse).
+ *            En مبتدئ (p1, 2026-10-27, conseil) : où était l'ascenseur qui descend UNE minute avant son passage — posée après m1 et
+ *            avant m2, pour que le choc du temps négatif soit prédit avant d'être vu.
+ *
+ * Le CALCUL (r × t = étage) n'est écrit nulle part avant la découverte (MANIPULATION_CONTRACT §5) : l'arrêt dit le temps, l'étage
+ * et le côté de la rue ; `wrongSide` pose la question « avant ou après le passage ? ».
  */
 import * as P from '@smarter-academy/core/arithmetic/powers.js';
 import * as R from '@smarter-academy/core/arithmetic/relativeOps.js';
@@ -29,6 +34,7 @@ export const PRESETS = Object.freeze({
     step: '1',
     tasks: [
       { id: 'm1', r: '-2', floor: '-6' },
+      { id: 'p1', kind: 'predict', r: '-2', t: '-1', options: ['2', '-2', '-3', '-1'], key: '2', misc: { '-2': 'MISC-JIDAA-NEGNEG', '-3': 'MISC-JIDAA-ADD', '-1': 'MISC-JIDAA-SUB' } },
       { id: 'm2', r: '-2', floor: '4' },
       { id: 'm3', r: '3', floor: '6' },
       { id: 'm4', r: '3', floor: '-9' },
@@ -45,7 +51,7 @@ export const PRESETS = Object.freeze({
   },
 });
 
-/** Quelle conviction fausse porte chaque carte de la prédiction (clé = texte de la carte). */
+/** Quelle conviction fausse porte chaque carte de la prédiction (clé = texte de la carte) — celle de a1 ; une mission peut porter les siennes (`misc`). */
 export const CARD_MISC = Object.freeze({ '-6': 'MISC-JIDAA-NEGNEG', '-5': 'MISC-JIDAA-ADD', 1: 'MISC-JIDAA-SUB' });
 
 const rat = (x) => R.parseRel(String(x));
@@ -105,7 +111,7 @@ function normalize(list) {
   return list.map((t, i) => {
     const kind = t.kind ?? 'floor';
     const task = { id: t.id ?? `t${i}`, kind };
-    if (kind === 'predict') return Object.freeze({ ...task, r: num(t.r), t: num(t.t), options: [...t.options], key: String(t.key) });
+    if (kind === 'predict') return Object.freeze({ ...task, r: num(t.r), t: num(t.t), options: [...t.options], key: String(t.key), misc: t.misc ? { ...t.misc } : null });
     if (kind === 'both') return Object.freeze({ ...task, floor: num(t.floor), lockedR: false });
     return Object.freeze({ ...task, r: num(t.r), floor: num(t.floor), lockedR: true });
   });
@@ -141,6 +147,22 @@ export const isPredict = (s) => !s.free && taskOf(s).kind === 'predict';
 export const speedEditable = (s) => !s.free && taskOf(s).kind === 'both';
 /** Les cartes de prédiction sont à l'écran (avant la bonne réponse). */
 export const cardsOpen = (s) => isPredict(s) && !taskDone(s);
+
+/**
+ * « ▶ شغّل التسجيل » (le film joué de −3 à 3) : jamais avant que l'élève ait PRÉDIT. Tant qu'une mission `predict` de la liste n'est
+ * pas réussie (même plus loin : le film montrerait sa réponse), il attend ; en libre, toujours permis.
+ */
+export const canPlay = (s) => !!s.free || s.tasks.every((tk, i) => tk.kind !== 'predict' || !!s.done[i]);
+
+/** De quel côté de la rue est un étage : 'above' (> 0), 'below' (< 0), 'at' (0). */
+export const sideOf = (floor) => (floor > 0 ? 'above' : floor < 0 ? 'below' : 'at');
+
+/**
+ * Un arrêt refusé de l'AUTRE côté de la rue que l'étage demandé : la question « avant ou après le passage ? », jamais le calcul
+ * (MANIPULATION_CONTRACT §5 : la règle n'apparaît pas avant la découverte).
+ */
+export const wrongSide = (trial) => !!trial && trial.kind === 'release' && !trial.ok && !trial.free && trial.goal != null
+  && trial.floor !== 0 && Math.sign(trial.floor) !== Math.sign(trial.goal);
 
 /** La mission est-elle réussie par (r, t) ? */
 export function judge(task, r, t) {
@@ -211,9 +233,10 @@ export function choose(s, option) {
   const ok = String(option) === task.key;
   const trial = Object.freeze({
     kind: 'predict', task: s.ti, taskId: task.id, r: task.r, t: task.t, floor: floorAt(task.r, task.t), pick: String(option), ok, free: false,
-    misc: ok ? null : (CARD_MISC[String(option)] ?? null),
+    misc: ok ? null : ((task.misc ?? CARD_MISC)[String(option)] ?? null),
   });
-  const base = { ...s, r: task.r, t: task.t, picked: String(option), trials: [...s.trials, trial], last: trial, below: s.below || task.t < 0 };
+  // une carte n'est pas la main sur la ligne du temps : `below` (la main est allée au temps négatif) reste ce qu'il était
+  const base = { ...s, r: task.r, t: task.t, picked: String(option), trials: [...s.trials, trial], last: trial };
   if (!ok) return base;
   return { ...base, done: { ...s.done, [s.ti]: true }, solved: { ...s.solved, [s.ti]: { r: task.r, t: task.t, floor: trial.floor } } };
 }
@@ -282,11 +305,13 @@ export function coachOf(s) {
   const t = taskOf(s);
   if (t.kind === 'predict') return { id: 'cards', target: '[data-er-cards]', gesture: 'tap' };
   const mine = guidedTrials(s);
-  if (mine.length === 0) return { id: 'grab', target: '[data-er-knob]', gesture: 'drag' };
+  // la bulle se pose AU-DESSUS (sur l'écran de la caméra), jamais sur la ligne du temps ni sur −/+ qu'elle montre
+  const up = { prefer: 'above', noFlip: true };
+  if (mine.length === 0) return { id: 'grab', target: '[data-er-knob]', gesture: 'drag', ...up };
   if (t.kind === 'both' && !s.rChanged && mine.length >= 2) return { id: 'lever', target: '[data-er-speed]', gesture: 'tap' };
   const goal = t.kind === 'both' ? null : timeFor(t.r, t.floor, s.step);
-  if (goal != null && goal < 0 && !s.below && mine.length >= 1) return { id: 'left', target: '[data-er-left]', gesture: 'tap' };
-  return { id: 'try', target: '[data-er-stepper]', gesture: 'tap' };
+  if (goal != null && goal < 0 && !s.below && mine.length >= 1) return { id: 'left', target: '[data-er-left]', gesture: 'tap', ...up };
+  return { id: 'try', target: '[data-er-stepper]', gesture: 'tap', ...up };
 }
 
 /* ── Découverte : la distance de l'étage, avec SES lignes ───────────────────────────────────── */

@@ -145,7 +145,6 @@ export default function RotationDial({
   const vp = useLessonViewport(true);
   const screenH = vp.ready && vp.height > 0 ? vp.height : 640;
   const side = width >= 620;
-  const compact = width < 340;
   const panelW = width >= 900 ? 270 : 236;
   const sceneSide = Math.round(Math.max(200, Math.min(side ? width - panelW - 12 : width, side ? screenH - 40 : screenH - overhead - 28, 600)));
   sideRef.current = side ? 0 : sceneSide;
@@ -323,7 +322,7 @@ export default function RotationDial({
   const missionText = mission ?? <MathText>{k(wheel ? 'missionWheel' : 'missionPlane')}</MathText>;
   const hintKeys = wheel ? ['hintW1', 'hintW2', 'hintW3'] : ['hintP1', 'hintP2', 'hintP3'];
   const senseIcon = (d) => (d === 'direct' ? '↺' : d === 'indirect' ? '↻' : '');
-  const textSize = compact ? 'text-[11px]' : 'text-xs';
+  const textSize = 'text-xs';
 
   /* ── le panneau : onglets, tâche, lectures, voyants, verdict ── */
   const tabs = wheel ? lab.tasks.map((x, i) => ({ id: x.id, i, done: L.taskDone(lab, i), label: `${x.from} · ${x.alpha}° ${senseIcon(x.direction)}`, aria: k('tabTaskAria', { from: x.from, alpha: x.alpha, sense: k(`sense_${x.direction}`) }) }))
@@ -350,7 +349,7 @@ export default function RotationDial({
           <button key={x.id} type="button" onClick={() => goTab(x.i)} aria-pressed={x.i === activeTab} aria-label={x.aria}
             data-rd-tab={x.id} data-done={x.done ? 'true' : 'false'}
             className={`min-h-[44px] rounded-lg border px-0.5 text-[11px] font-bold leading-tight focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 ${x.i === activeTab ? 'border-amber-300 bg-indigo-800 text-white' : 'border-slate-600 bg-slate-800 text-slate-300'}`}>
-            {wheel ? <bdi dir="ltr">{compact ? `${x.i + 1}` : x.label}</bdi> : x.label}{x.done ? ' ✓' : ''}
+            {wheel ? <bdi dir="ltr">{x.label}</bdi> : x.label}{x.done ? ' ✓' : ''}
           </button>
         ))}
       </div>
@@ -393,7 +392,7 @@ export default function RotationDial({
           })}
         </div>
       )}
-      <p role="status" className={`${compact ? 'min-h-[2.2rem]' : 'min-h-[2.6rem]'} rounded-lg bg-white px-2 py-1 ${textSize} font-bold leading-snug ${lastHere?.ok || (last?.ok && !lastHere) ? 'text-emerald-800' : lastHere ? 'text-rose-800' : 'text-slate-600'}`}
+      <p role="status" className={`min-h-[2.6rem] rounded-lg bg-white px-2 py-1 ${textSize} font-bold leading-snug ${lastHere?.ok || (last?.ok && !lastHere) ? 'text-emerald-800' : lastHere ? 'text-rose-800' : 'text-slate-600'}`}
         data-rd-verdict={last?.kind ?? ''}>
         <MathText>{verdict ?? k(wheel ? 'waitingWheel' : 'waitingPlane')}</MathText>
       </p>
@@ -424,7 +423,7 @@ export default function RotationDial({
       discovery={<ManipulationDiscovery state={state} prompt={<MathText>{k(wheel ? 'dPromptWheel' : 'dPromptPlane')}</MathText>} options={discoveryOptions} formal={formal} />}
       explanation={<MathText>{k(wheel ? 'explanationWheel' : 'explanationPlane')}</MathText>}
     >
-      <ManipulationStage className="!p-1.5 sm:!p-3 bg-gradient-to-b from-indigo-50 to-white" minHeight="min-h-[200px]" dragging={hold?.mode === 'drag'}>
+      <ManipulationStage className="bg-gradient-to-b from-indigo-50 to-white !p-3" minHeight="min-h-[200px]" dragging={hold?.mode === 'drag'}>
         <div ref={boxRef} className="space-y-2" data-rotation-dial data-scene={lab.scene} data-world={theme}
           data-solved={ready ? 'true' : 'false'} {...(wheel ? { 'data-task': tk.id } : { 'data-mission': ms.id })} data-side={sceneSide}>
           <div ref={glanceRef} className={`flex ${side ? 'flex-row items-start' : 'flex-col items-center'} justify-center gap-2`} data-rd-glance>

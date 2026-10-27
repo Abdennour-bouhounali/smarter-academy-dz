@@ -160,6 +160,7 @@ const MathLabToolPage = lazy(() => import('./pages/student/MathLab').then((m) =>
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import { prefetchBooksForLocation } from './features/books/bookCache';
 import RequireAccount from './components/auth/RequireAccount';
+import RequireLargeScreen from './components/auth/RequireLargeScreen';
 
 /**
  * La surface de QA est-elle montée ?
@@ -370,11 +371,14 @@ function AppRoutes() {
               CourseLayout, qui rend StudentLayout dès qu'on est connecté.
               La pratique exige un compte, donc elle s'y branche
               directement. */}
+          {/* Exercices : tablette et ordinateur seulement (RequireLargeScreen). */}
+          <Route element={<RequireLargeScreen />}>
           <Route path="pratique/:lessonCode" element={<PracticeHub />} />
           <Route path="pratique/:lessonCode/session/:sessionId" element={<PracticeSession />} />
           <Route path="pratique/:lessonCode/bilan/:sessionId" element={<PracticeSummary />} />
           {/* La correction de l'enseignant, ouverte depuis la cloche — en lecture seule. */}
           <Route path="tashih/:reviewId" element={<AnswerReviewPage />} />
+          </Route>
           {/* « التحدّي اليومي » : le serveur tient la tentative ; ces
               routes ne font que l'afficher (DAILY_CHALLENGE.md). */}
           <Route path="defi" element={<DailyChallengePage />} />
@@ -446,8 +450,10 @@ function AppRoutes() {
               (PracticeHub, mode enseignant : aucun suivi). Le lecteur
               vérifie localement et montre les réponses de SES élèves ;
               le serveur garde les écritures derrière `learner`. */}
+          <Route element={<RequireLargeScreen />}>
           <Route path="pratique/:lessonCode" element={<PracticeHub />} />
           <Route path="pratique/:lessonCode/:level/:exerciseId" element={<TeacherPracticePlayer />} />
+          </Route>
           <Route path="atelier" element={<MathLabHome />} />
           <Route path="atelier/:toolSlug" element={<MathLabToolPage />} />
           <Route path="atelier/:toolSlug/:documentId" element={<MathLabToolPage />} />
@@ -559,7 +565,11 @@ function AppRoutes() {
             par les routes réelles de la leçon dès qu'elles sont chargées.
             check-routes.mjs vérifie le montage, check-dormant-isolation.mjs
             qu'aucun dossier français ne revient. */}
+        {/* Tablette et ordinateur seulement : un téléphone lit un message
+            à la place de la leçon (RequireLargeScreen, 2026-10-27). */}
+        <Route element={<RequireLargeScreen />}>
         {lessonRoutes}
+        </Route>
         </Route>
 
         {/* ── SURFACE DE QA — jamais en production ────────────────

@@ -22,7 +22,7 @@ import { FIG_METHOD_ANGLE, FIG_METHOD_ANGLE_SOL, FIG_METHOD_CONSTRUCT, FIG_METHO
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const Lines = ({ lines }) => (
-  <ol className="list-decimal space-y-1 ps-5 text-sm text-slate-800 sm:text-base">
+  <ol className="list-decimal space-y-1 ps-5 text-slate-800 text-base">
     {lines.map((l) => <li key={l}><MathText>{l}</MathText></li>)}
   </ol>
 );

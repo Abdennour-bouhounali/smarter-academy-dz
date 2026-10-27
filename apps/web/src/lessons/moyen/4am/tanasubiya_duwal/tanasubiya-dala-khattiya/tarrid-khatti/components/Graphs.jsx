@@ -67,7 +67,7 @@ export function Act4Graphs() {
     </div>
   );
   return (
-    <div className="grid gap-2 md:grid-cols-3" data-act4-graphs>
+    <div className="grid gap-2 grid-cols-3" data-act4-graphs>
       <Card n={1}>
         <Plot label="act-4-1" xMax={4} yMax={200} xStep={0.5} yStep={25} xTick={1} yTick={25}
           series={[{ name: 'p', points: pot, color: '#DC2626', marks: true }]} xTitle={g1.x} yTitle={g1.y} />

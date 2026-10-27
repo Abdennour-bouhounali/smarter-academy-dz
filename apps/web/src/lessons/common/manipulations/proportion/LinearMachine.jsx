@@ -151,7 +151,6 @@ export default function LinearMachine({
   const vp = useLessonViewport(true);
   const screenH = vp.ready && vp.height > 0 ? vp.height : 576;
   const wide = width >= 620;
-  const narrow = width < 340;
   const GAP = 12;
   const colW = wide ? Math.floor((width - GAP) / 2) : width;
 
@@ -239,7 +238,7 @@ export default function LinearMachine({
   /* ── l'écriture ── */
   const $ = (tex) => `$${tex}$`;
   const N = L.numTex;
-  const verdictLine = last && renderLast(last, { k, w, N, $, a: m.a, lab, W, narrow });
+  const verdictLine = last && renderLast(last, { k, w, N, $, a: m.a, lab, W });
 
   /* ── la découverte : distracteurs réfutés par la table de l'élève ── */
   const discoveryOptions = useMemo(() => {
@@ -289,8 +288,8 @@ export default function LinearMachine({
     : last && (last.kind === 'fed' || last.kind === 'again') ? `f(${N(last.x)}) = ${N(last.fx)}` : 'f(x) = \\;?';
 
   /* ── la table : les colonnes qui tiennent ── */
-  const labelW = narrow ? 40 : 64;
-  const colCell = narrow ? 40 : 46;
+  const labelW = 64;
+  const colCell = 46;
   const maxCols = Math.max(2, Math.floor((colW - labelW - 8) / (colCell + 4)));
   const shown = L.visibleColumns(m.trials, maxCols);
   const grid = L.deckGrid(lab.deck.length + 1, wide ? colW : Math.min(colW, 360), { minCell: 44, gap: 6 });
@@ -307,7 +306,7 @@ export default function LinearMachine({
                 data-lm-machine-tab={i} data-lm-status={status}
                 className={`inline-flex min-h-[44px] min-w-0 flex-1 items-center justify-center gap-1 rounded-xl border-2 px-1 text-sm font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${i === lab.current ? `${tn.ring} bg-white` : 'border-slate-200 bg-slate-50'}`}>
                 <span aria-hidden="true" className="inline-block h-3 w-3 rounded-full" style={{ background: tn.fill }} />
-                <span className={tn.text}>{narrow ? <><span className="sr-only">{k('machineN', { n: i + 1 })}</span><span aria-hidden="true">{i + 1}</span></> : k('machineN', { n: i + 1 })}</span>
+                <span className={tn.text}>{k('machineN', { n: i + 1 })}</span>
                 <span aria-hidden="true" className="text-xs">{status === 'linear' ? '✓' : status === 'notLinear' ? '✗' : ''}</span>
                 <span className="sr-only">{k(`status.${status}`)}</span>
               </button>
@@ -319,23 +318,23 @@ export default function LinearMachine({
       {/* LA MACHINE : trémie (cible), corps (engrenages), sortie (étiquette) — le flux va de droite à gauche */}
       <div className="flex items-stretch gap-1.5" data-lm-machine={lab.current}>
         <DropZone drag={drag} id="hopper" label={k('hopperAria', { name: many ? k('machineN', { n: lab.current + 1 }) : w('machine') })} tone="amber"
-          minHeight={narrow ? 'min-h-[48px]' : 'min-h-[84px]'} className="flex w-[30%] shrink-0 flex-col items-center justify-center p-1" data-lm-hopper>
+          minHeight="min-h-[84px]' className='flex w-[30%] shrink-0 flex-col items-center justify-center p-1" data-lm-hopper>
           <Hopper tone={tone} world={W} />
-          {!narrow && <span className="text-[11px] font-bold leading-tight text-slate-600">{k('hopper')}</span>}
+          <span className="text-[11px] font-bold leading-tight text-slate-600">{k('hopper')}</span>
         </DropZone>
-        <div className="relative flex min-w-0 flex-1 items-center justify-center rounded-2xl border-2 border-slate-300 bg-gradient-to-b from-slate-50 to-slate-100" style={{ minHeight: narrow ? 48 : 84 }}>
-          <MachineBody world={W} tone={tone} spin={spin} narrow={narrow} />
+        <div className="relative flex min-w-0 flex-1 items-center justify-center rounded-2xl border-2 border-slate-300 bg-gradient-to-b from-slate-50 to-slate-100" style={{ minHeight: 84 }}>
+          <MachineBody world={W} tone={tone} spin={spin} />
           <Deco world={W} />
         </div>
         <div className="flex w-[30%] shrink-0 flex-col items-center justify-center rounded-2xl border-2 border-slate-200 bg-white p-1" data-lm-output aria-live="polite">
-          {!narrow && <span className="text-[11px] font-bold text-slate-500">{k('output')}</span>}
-          <OutputTag world={W} last={last} spin={spin} narrow={narrow} />
+          <span className="text-[11px] font-bold text-slate-500">{k('output')}</span>
+          <OutputTag world={W} last={last} spin={spin} />
         </div>
       </div>
 
       {/* LES CARTES : un bloc quasi carré ; la carte vierge et sa règle en dernier */}
       <div className="space-y-1.5">
-        <div dir="ltr" className="mx-auto grid" style={{ gridTemplateColumns: `repeat(${grid.cols}, minmax(44px, ${grid.cell}px))`, gap: narrow ? 4 : 6, justifyContent: 'center' }} data-lm-deck data-cols={grid.cols}>
+        <div dir="ltr" className="mx-auto grid" style={{ gridTemplateColumns: `repeat(${grid.cols}, minmax(44px, ${grid.cell}px))`, gap: 6, justifyContent: 'center' }} data-lm-deck data-cols={grid.cols}>
           {lab.deck.map((x, i) => {
             const fed = fedSet.has(Lin.fracText(x));
             return (
@@ -361,13 +360,13 @@ export default function LinearMachine({
 
   const targetsRow = lab.targets.length > 0 && (
     <div className="flex flex-wrap items-center gap-1.5 text-xs font-bold text-slate-700" data-lm-targets>
-      <span>{narrow ? k('targetsShort') : w('targets')}</span>
+      <span>{w('targets')}</span>
       {lab.targets.map((tg) => {
         const hit = lab.reverse.hits.find((h) => Lin.eq(h.target, tg));
         return (
           <span key={Lin.fracText(tg)} data-lm-target={L.numText(tg)} data-hit={hit ? 'true' : 'false'}
             className={`rounded-full border-2 px-2 py-0.5 font-mono ${hit ? 'border-emerald-500 bg-emerald-50 text-emerald-900' : 'border-amber-400 bg-white text-amber-900'}`}>
-            {L.numText(tg)}{hit && (narrow ? ' ✓' : <> ← <bdi dir="ltr">{L.numText(hit.x)}</bdi></>)}
+            {L.numText(tg)}{hit && (<>← <bdi dir="ltr">{L.numText(hit.x)}</bdi></>)}
           </span>
         );
       })}
@@ -408,21 +407,21 @@ export default function LinearMachine({
       </table>
 
       {/* LA MACHINE-TÉMOIN : le cadran a (cible d'un couple porté) et sa règle */}
-      <div className={`flex items-center gap-1.5 ${narrow ? '' : 'flex-wrap'}`}>
+      <div className="flex items-center gap-1.5 flex-wrap">
         <DropZone drag={drag} id="dial" label={k('dialAria')} tone="emerald" minHeight="min-h-[44px]"
-          className={`flex items-center justify-center gap-1 px-1 py-1 ${narrow ? 'min-w-0 flex-1' : 'min-w-[96px]'}`} data-lm-dial-zone>
+          className="flex items-center justify-center gap-1 px-1 py-1 min-w-[96px]" data-lm-dial-zone>
           <DialFace a={aNow} />
           <span dir="ltr" className="font-mono text-sm font-extrabold text-slate-900" data-lm-a={aNow == null ? '' : L.numText(aNow)}>a = {aNow == null ? '?' : L.numText(aNow)}</span>
         </DropZone>
         <button type="button" onClick={claimSame} data-lm-claim="same" aria-label={k('claimSameAria', { ax: aNow == null ? 'a × x' : `${L.numText(aNow)} × x` })}
-          className={`inline-flex min-h-[44px] items-center justify-center gap-1 rounded-xl border-2 border-emerald-600 bg-white text-sm font-bold text-emerald-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${narrow ? 'w-11' : 'px-2'}`}>
+          className="inline-flex min-h-[44px] items-center justify-center gap-1 rounded-xl border-2 border-emerald-600 bg-white text-sm font-bold text-emerald-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 px-2">
           <CheckCheck className="h-4 w-4" aria-hidden="true" />
-          {!narrow && <span aria-hidden="true"><MathText>{k('claimSame', { ax: $(aNow == null ? 'ax' : L.axTex(aNow)) })}</MathText></span>}
+          <span aria-hidden="true"><MathText>{k('claimSame', { ax: $(aNow == null ? 'ax' : L.axTex(aNow)) })}</MathText></span>
         </button>
         {many && (
           <button type="button" onClick={claimNone} data-lm-claim="none" aria-label={k('claimNone')}
-            className={`inline-flex min-h-[44px] items-center justify-center gap-1 rounded-xl border-2 border-slate-500 bg-white text-sm font-bold text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 ${narrow ? 'w-11' : 'px-2'}`}>
-            <Ban className="h-4 w-4" aria-hidden="true" />{!narrow && <span aria-hidden="true">{k('claimNone')}</span>}
+            className="inline-flex min-h-[44px] items-center justify-center gap-1 rounded-xl border-2 border-slate-500 bg-white text-sm font-bold text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 px-2">
+            <Ban className="h-4 w-4" aria-hidden="true" /><span aria-hidden="true">{k('claimNone')}</span>
           </button>
         )}
       </div>
@@ -456,7 +455,7 @@ export default function LinearMachine({
     >
       <ManipulationStage className="bg-gradient-to-b from-amber-50/60 to-white" data-dragging={drag.dragging || sDial.dragging || sBlank.dragging ? 'true' : undefined}>
         <div ref={boxRef} className="space-y-3" data-linear-machine data-world={W} data-machine={lab.current} data-rules={rules}
-          data-layout={wide ? 'side' : narrow ? 'narrow' : 'stack'} data-screen-h={screenH}
+          data-layout={wide ? 'side' : 'stack'} data-screen-h={screenH}
           data-verdict={lab.machines.map((u) => u.verdict?.kind ?? 'open').join('|')}>
           <div className={wide ? 'grid grid-cols-2 items-start gap-3' : 'space-y-2'} data-lm-glance>
             {machineBlock}
@@ -485,12 +484,12 @@ export default function LinearMachine({
 }
 
 /** La phrase du dernier geste, avec ses nombres (le refus EXPLIQUÉ, jamais un rouge muet). */
-function renderLast(last, { k, w, N, $, lab, narrow }) {
+function renderLast(last, { k, w, N, $, lab }) {
   const T = (key, o, cls) => <span className={cls}><MathText>{key.startsWith('w:') ? w(key.slice(2), o) : k(key, o)}</MathText></span>;
   switch (last.kind) {
     case 'fed':
       return last.hit
-        ? T(narrow ? 'vReverseHitShort' : 'w:vReverseHit', { x: $(N(last.x)), t: $(N(last.hit)), eq: $(`${N(last.hit)} \\div ${N(lab.machines[0].rule.a)} = ${N(last.x)}`) }, 'text-emerald-800')
+        ? T('w:vReverseHit', { x: $(N(last.x)), t: $(N(last.hit)), eq: $(`${N(last.hit)} \\div ${N(lab.machines[0].rule.a)} = ${N(last.x)}`) }, 'text-emerald-800')
         : T('w:vFed', { x: $(N(last.x)), fx: $(N(last.fx)) }, 'text-slate-800');
     case 'again': return T('vAgain', { x: $(N(last.x)), fx: $(N(last.fx)) }, 'text-slate-700');
     case 'dial': return null;
@@ -564,7 +563,7 @@ function Hopper({ tone, world }) {
 }
 
 /** Le corps de la machine : deux engrenages qui tournent d'un cran à chaque carte (geste de l'élève). */
-function MachineBody({ world, tone, spin, narrow }) {
+function MachineBody({ world, tone, spin }) {
   const reduce = useReducedMotion();
   const turn = reduce ? 0 : spin * 60;
   const gear = (cx, cy, r, dir) => (
@@ -577,7 +576,7 @@ function MachineBody({ world, tone, spin, narrow }) {
     </g>
   );
   return (
-    <svg viewBox="0 0 120 60" width="100%" height={narrow ? 44 : 72} aria-hidden="true" focusable="false" data-lm-body>
+    <svg viewBox="0 0 120 60" width="100%' height={72} aria-hidden='true" focusable="false" data-lm-body>
       <rect x="6" y="8" width="108" height="46" rx="10" fill={world === 'souk' ? '#FEF3C7' : tone.soft} stroke={world === 'souk' ? '#B45309' : tone.fill} strokeWidth="2" />
       {gear(42, 31, 11, 1)}
       {gear(68, 28, 8, -1)}
@@ -589,14 +588,14 @@ function MachineBody({ world, tone, spin, narrow }) {
 }
 
 /** L'étiquette de sortie : f(x) de la dernière carte ; elle se balance (décor) quand une carte sort. */
-function OutputTag({ world, last, spin, narrow }) {
+function OutputTag({ world, last, spin }) {
   const reduce = useReducedMotion();
   const fx = last && (last.kind === 'fed' || last.kind === 'again') ? L.numText(last.fx) : null;
   return (
     <div key={reduce ? 'still' : spin} className={reduce ? '' : 'lm-swing'} style={{ transformOrigin: '50% 0%' }}>
       <style>{'.lm-swing{animation:lm-sw .7s ease-out 1}@keyframes lm-sw{0%{transform:rotate(-14deg)}50%{transform:rotate(9deg)}100%{transform:rotate(0)}}@media (prefers-reduced-motion: reduce){.lm-swing{animation:none}}'}</style>
       <span dir="ltr" data-lm-out={fx ?? ''}
-        className={`inline-flex items-center justify-center rounded-md border-2 px-2 font-mono font-extrabold ${narrow ? 'min-h-[28px] text-sm' : 'min-h-[36px] text-base'} ${world === 'souk' ? 'border-rose-500 bg-rose-50 text-rose-900' : 'border-slate-500 bg-slate-900 text-lime-300'}`}>
+        className={`inline-flex items-center justify-center rounded-md border-2 px-2 font-mono font-extrabold min-h-[36px] text-base ${world === 'souk' ? 'border-rose-500 bg-rose-50 text-rose-900' : 'border-slate-500 bg-slate-900 text-lime-300'}`}>
         {fx ?? '…'}
       </span>
     </div>

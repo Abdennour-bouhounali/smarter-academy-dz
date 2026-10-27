@@ -98,6 +98,13 @@ records → sign rule (P2) → معارف: why it must be so (distributivity, th
 
 ## 6. Lab — `elevator-reel` « شريط المصعد »
 
+> **Revised 2026-10-27 (four-voice council on the live lab, then the owner).** As implemented the lab printed `(−2) × (−1) = 2` on every
+> stop, so the sign rule was read before the module asked for it, and مبتدئ could be solved by trying the seven times. Now: no product
+> before the discovery (a stop on the wrong side of the street asks « قبل مروره بالطابق 0 أم بعده؟ »), a مبتدئ prediction `p1` (where was
+> the descending elevator one minute BEFORE its passage — cards `2 · −2 · −3 · −1`) between `m1` and `m2`, a « ▶ شغّل التسجيل » film once
+> the predictions are answered, the signed speed as its own card (owner: « the speed is very important — make it clear »), the coach
+> above the controls, and the game screen (`immersive`: the lab fills the laptop). Contract: MANIPULATION_CONTRACT §2septentricies.
+
 - **Type** `elevator-reel` (free in `manipulationRegistry.js`; declare it in `packages/core/curriculum/manipulationTypes.js`), theme
   `mallElevator` in `VISUAL_THEMES` (« مصعد مركز تجاري: طوابق فوق الشارع وطوابق مرآب تحته، وشاشة إعادة تسجيل كاميرا المراقبة »).
   Files: `manipulations/operations/ElevatorReel.jsx` (+ `operations/elevatorReel/`), `manipulations/logic/elevatorReel.js` (+ test),

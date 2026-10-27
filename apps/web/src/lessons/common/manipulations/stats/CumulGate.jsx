@@ -145,7 +145,6 @@ export default function CumulGate({
   const screenH = vp.ready && vp.height > 0 ? vp.height : 560;
   const budget = Math.max(300, screenH - 12);
   const wide = width >= 620;
-  const narrow = width < 340;
   const GAP = 12;
   const sceneW = wide ? Math.floor((width - GAP) * 0.56) : width;
   const sceneH = wide
@@ -154,7 +153,7 @@ export default function CumulGate({
 
   /* ── le seuil : la barre de la toise ── */
   const range = L.rangeOf(lab);
-  const GAUGE_W = narrow ? 46 : 58;
+  const GAUGE_W = 58;
   const EDGE = 14;
   const mu = (sceneH - 2 * EDGE - 18) / Math.max(1, range.max - range.min);
   const toValue = useCallback((_x, cy, rect) => range.min + (rect.bottom - EDGE - 18 - cy) / mu, [range.min, mu]);
@@ -230,10 +229,10 @@ export default function CumulGate({
       <div className="grid grid-cols-2 gap-1.5" role="group" aria-label={k('sideGroup')}>
         {L.SIDES.map((sd) => (
           <button key={sd} type="button" onClick={() => setSide(sd)} aria-pressed={side === sd} data-cg-side={sd}
-            className={`inline-flex min-h-[44px] items-center justify-center gap-1 whitespace-nowrap rounded-xl border-2 px-1.5 font-extrabold focus:outline-none focus-visible:ring-2 ${narrow ? 'text-xs' : 'text-sm'} ${side === sd ? 'text-white' : 'bg-white'}`}
+            className={`inline-flex min-h-[44px] items-center justify-center gap-1 whitespace-nowrap rounded-xl border-2 px-1.5 font-extrabold focus:outline-none focus-visible:ring-2 text-sm ${side === sd ? 'text-white' : 'bg-white'}`}
             style={{ borderColor: COLORS[sd], background: side === sd ? COLORS[sd] : undefined, color: side === sd ? '#fff' : COLORS[sd] }}>
             <span>{k(sd === 'up' ? 'sideUp' : 'sideDown')}</span>
-            {!narrow && <bdi dir="ltr" className="font-mono text-xs">{sd === 'up' ? '≤ t' : '≥ t'}</bdi>}
+            <bdi dir="ltr" className="font-mono text-xs">{sd === 'up' ? '≤ t' : '≥ t'}</bdi>
           </button>
         ))}
       </div>
@@ -241,7 +240,7 @@ export default function CumulGate({
       <div className="flex flex-wrap items-center gap-2">
         <div dir="ltr" className="flex items-center gap-1">
           {nudgeBtn(-1)}
-          <span className={`min-w-[4.4rem] whitespace-nowrap rounded-xl bg-slate-900 px-2 py-1.5 text-center font-mono font-extrabold text-lime-300 ${narrow ? 'text-sm' : 'text-base'}`} data-cg-t={T ?? ''}>
+          <span className="min-w-[4.4rem] whitespace-nowrap rounded-xl bg-slate-900 px-2 py-1.5 text-center font-mono font-extrabold text-lime-300 text-base" data-cg-t={T ?? ''}>
             {T == null ? 't = ?' : `t = ${T}`}<span className="text-[10px] text-lime-200"> {unit}</span>
           </span>
           {nudgeBtn(1)}
@@ -253,7 +252,7 @@ export default function CumulGate({
       </div>
       {/* l'annonce à la porte */}
       <form onSubmit={doClaim} className="flex flex-wrap items-center gap-1.5" data-cg-claim>
-        <label className={`text-sm font-bold text-slate-800 ${narrow ? 'w-full' : ''}`} htmlFor={`cg-in-${state.level}`}>
+        <label className="text-sm font-bold text-slate-800" htmlFor={`cg-in-${state.level}`}>
           <MathText>{w(side === 'up' ? 'askUp' : 'askDown', { cond: $(sideRel(side)) })}</MathText>
         </label>
         <input id={`cg-in-${state.level}`} value={raw} onChange={(e) => setRaw(e.target.value)} inputMode="numeric" dir="ltr"
@@ -264,7 +263,7 @@ export default function CumulGate({
           <DoorOpen className="h-4 w-4" aria-hidden="true" /> {k('check')}
         </button>
       </form>
-      <p role="status" className={`min-h-[2.5rem] font-bold leading-snug ${narrow ? 'text-xs' : 'text-sm'}`} data-cg-verdict={last?.kind ?? ''}>{verdict}</p>
+      <p role="status" className="min-h-[2.5rem] font-bold leading-snug text-sm" data-cg-verdict={last?.kind ?? ''}>{verdict}</p>
     </div>
   );
 
@@ -312,7 +311,7 @@ export default function CumulGate({
     >
       <ManipulationStage className={theme === 'funpark' ? 'bg-gradient-to-b from-fuchsia-50/60 to-white' : 'bg-gradient-to-b from-sky-50/60 to-white'} data-dragging={stretch.dragging ? 'true' : undefined}>
         <div ref={boxRef} className="space-y-2" data-cumul-gate data-series={series} data-t={T ?? ''} data-side={side} data-sorted={lab.sorted ? 'true' : 'false'}
-          data-layout={wide ? 'side' : narrow ? 'narrow' : 'stack'} data-claims={lab.claims.length} data-budget={budget} data-scene-h={sceneH}>
+          data-layout={wide ? 'side' : 'stack'} data-claims={lab.claims.length} data-budget={budget} data-scene-h={sceneH}>
           <div className={wide ? 'grid items-start gap-3' : 'space-y-2'} style={wide ? { gridTemplateColumns: `${sceneW}px 1fr` } : undefined} data-cg-glance>
             <Scene lab={lab} T={T} side={side} width={sceneW} height={sceneH} gaugeW={GAUGE_W} edge={EDGE} mu={mu} range={range}
               stretch={stretch} theme={theme} unit={unit} onPick={pickPerson} accepted={lab.claims.length}
@@ -417,7 +416,6 @@ function Scene({ lab, T, side, width, height, gaugeW, edge, mu, range, stretch, 
           </svg>
         </div>
       </div>
-
       {/* LE BLOC : les personnes à leur taille, allumées du côté choisi */}
       <div className="relative" style={{ width: blockW, height }}>
         <Deco theme={theme} width={blockW} height={decoH} accepted={accepted} reduce={reduce} />

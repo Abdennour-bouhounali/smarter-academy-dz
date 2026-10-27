@@ -27,9 +27,8 @@ it('ratio-ride se rend avec un tarif puis deux, sans clé brute', () => {
     expect(html).toContain('data-ride-claim="A:no"');
     expect(html).toContain('data-deco="scooter"');
     expect(html).toContain('data-deco="palms"');
-    // la légende du lieu n'est posée qu'au-delà de 340 px (le rendu serveur mesure 300 px : la mise en page étroite)
-    expect(html).toContain('data-layout="narrow"');
-    expect(html).toContain('data-ride-overlay');
+    // tablette et ordinateur seulement (2026-10-27) : plus de mise en page « téléphone » — sous la largeur « side », la pile
+    expect(html).toContain('data-layout="stack"');
     expect(html).toContain('15DA للدقيقة');
     expect(html).not.toMatch(/manipulation\.[a-zA-Z]/);
     if (plans.includes('|')) {

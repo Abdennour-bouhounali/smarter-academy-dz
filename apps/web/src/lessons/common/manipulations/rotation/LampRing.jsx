@@ -123,8 +123,7 @@ export default function LampRing({
   const vp = useLessonViewport(true);
   const screenH = vp.ready && vp.height > 0 ? vp.height : 640;
   const narrow = boxW < 380;
-  const tiny = boxW < 250;
-  const S = Math.round(Math.max(150, Math.min(boxW + (tiny ? 16 : 0), 520, screenH - overhead - 16)));
+  const S = Math.round(Math.max(150, Math.min(boxW, 520, screenH - overhead - 16)));
   svgRef.current = S;
   const cx = S / 2; const cy = S / 2;
   const Rpx = S * 0.33;
@@ -275,7 +274,7 @@ export default function LampRing({
       <ManipulationStage className="bg-gradient-to-b from-slate-900 to-indigo-950" minHeight="min-h-[180px]">
         <div ref={boxRef} className="space-y-2" data-lamp-ring data-world="flower-bed" data-phase={phase} data-lit={lit}
           data-n={n} data-r={r} data-scene-s={S}>
-          <div ref={glanceRef} className={`space-y-1.5 ${tiny ? '-mx-2' : ''}`} data-lr-glance>
+          <div ref={glanceRef} className="space-y-1.5" data-lr-glance>
             <div ref={planeRef} className="relative mx-auto" style={{ width: S, height: S }} onClick={onPlaneClick} data-lr-plane data-lr-scale={scale.toFixed(2)}>
               <svg width={S} height={S} viewBox={`0 0 ${S} ${S}`} className="absolute inset-0 rounded-2xl" style={{ direction: 'ltr' }} role="img" aria-label={sceneLabel}>
                 <Garden S={S} Rpx={Rpx} cx={cx} cy={cy} uid={uid} />
@@ -283,12 +282,10 @@ export default function LampRing({
                 <circle cx={cx} cy={cy} r={Rpx} fill="none" stroke="#FDE68A" strokeOpacity={0.55} strokeWidth={1.5} strokeDasharray="5 5" aria-hidden="true" />
                 {/* le centre O et un rayon r */}
                 <g aria-hidden="true">
-                  {(() => { const [ex, ey] = pxOf(120, Rpx * 0.98); const [lx, ly] = pxOf(132, Rpx * 0.55); return (
-                    <>
+                  {(() => { const [ex, ey] = pxOf(120, Rpx * 0.98); const [lx, ly] = pxOf(132, Rpx * 0.55); return <>
                       <line x1={cx} y1={cy} x2={ex} y2={ey} stroke="#E2E8F0" strokeOpacity={phase === 'hand' ? 0.5 : 0.25} strokeWidth={1} strokeDasharray="3 4" />
                       <text x={lx} y={ly} fontSize={fs - 1} fill="#E2E8F0" textAnchor="middle" stroke="#0F172A" strokeWidth={3} paintOrder="stroke" {...textP}>{`r = ${String(r).replace('.', ',')} m`}</text>
-                    </>
-                  ); })()}
+                  </>; })()}
                   <circle cx={cx} cy={cy} r={3.5} fill="#F8FAFC" />
                   <text x={cx - 7} y={cy - 7} fontSize={fs + 1} fontWeight="bold" fill="#F8FAFC" textAnchor="end" {...textP}>O</text>
                 </g>
@@ -411,7 +408,7 @@ export default function LampRing({
                     return (
                       <button key={c.id} type="button" data-lr-card={c.id} disabled={lab.formulaOk && !picked} aria-pressed={picked}
                         onClick={() => setLab((s) => L.pickFormula(s, c.id))}
-                        className={`min-h-[44px] rounded-xl border-2 px-2 py-1 text-start [&_.katex]:whitespace-nowrap ${narrow ? 'px-1 text-[10px]' : 'text-xs sm:text-sm'} font-semibold leading-snug focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 disabled:opacity-40 ${tone}`}>
+                        className={`min-h-[44px] rounded-xl border-2 px-2 py-1 text-start [&_.katex]:whitespace-nowrap ${narrow ? 'px-1 text-[10px]' : 'text-sm'} font-semibold leading-snug focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 disabled:opacity-40 ${tone}`}>
                         <MathText>{k(`card.${c.id}`)}</MathText>
                       </button>
                     );

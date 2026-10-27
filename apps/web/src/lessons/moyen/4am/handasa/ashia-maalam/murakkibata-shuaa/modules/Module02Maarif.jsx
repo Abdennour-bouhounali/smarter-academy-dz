@@ -88,7 +88,7 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <TextbookBox kind="definition" text={KNOW2.text} source={KNOW2.source} compact />
-              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2" data-maalim-grid>
+              <div className="grid gap-2 grid-cols-2" data-maalim-grid>
                 {KNOW2.cases.map((c) => (
                   <div key={c.id} className="rounded-xl border border-violet-200 bg-white p-2" data-maalim={c.id}>
                     <p className="text-center text-sm font-bold text-violet-900">{c.name}</p>
