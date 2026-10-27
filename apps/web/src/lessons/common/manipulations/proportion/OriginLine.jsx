@@ -168,14 +168,13 @@ export default function OriginLine({
   const screenH = vp.ready && vp.height > 0 ? vp.height : 576;
   const budget = Math.max(320, screenH - 8);
   const wide = width >= 620;
-  const narrow = width < 340;
-  const strip = narrow ? 34 : STRIP_W;
+  const strip = STRIP_W;
 
   /* ── géométrie du plan ── */
   const { win, snap, grid } = lab;
   // Téléphone en lecture : les deux sondes glissent SUR les axes, dans le plan (qui n'a pas d'autre geste
   // en read) — le plan garde toute la largeur ; ailleurs elles sont collées au plan, dehors.
-  const overlayStrips = narrow && mode === 'read';
+  const overlayStrips = false;
   const yStripOn = mode === 'read' && !overlayStrips;
   const xStripOn = (mode === 'read' && !overlayStrips) || mode === 'draw';
   const pStripOn = mode === 'pivot' || mode === 'fit';
@@ -364,7 +363,7 @@ export default function OriginLine({
   const candSeg = candA != null && !(lab.lineA && L.same(candA, lab.lineA)) ? L.lineSegment(candA, win) : null;
   const P = (x, y) => [geo.px(Lin2n(x)), geo.py(Lin2n(y))];
 
-  const layout = wide ? 'side' : narrow ? 'narrow' : 'stack';
+  const layout = wide ? 'side' : 'stack';
   const planeLabel = orth ? k('planeAria') : k('planeAriaFree');
 
   const plane = (

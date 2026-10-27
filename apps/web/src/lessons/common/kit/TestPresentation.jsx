@@ -115,7 +115,7 @@ function ToolbarSlot({ states, current, goTo, tally, revealing, lessonPosition }
         {t('test.questionOf', { current: current + 1, total: states.length })}
       </span>
       {showDots && (
-        <div className="hidden items-center gap-1 sm:flex" role="group" aria-label={t('test.navigator')} data-test-navigator>
+        <div className="items-center gap-1 flex" role="group" aria-label={t('test.navigator')} data-test-navigator>
           {states.map((s) => (
             <NavigatorDot
               key={s.id}

@@ -56,7 +56,7 @@ export default function WrittenAnswer({ prompt, lines, onDone }) {
           <span className="inline-block rounded-md bg-emerald-700 px-2 py-0.5 text-xs font-bold text-white">{t('problem.write.model')}</span>
           <ol className="space-y-1.5">
             {lines.slice(0, shown).map((line, i) => (
-              <li key={i} className="flex gap-2 text-sm leading-relaxed text-slate-800 sm:text-base" data-model-line={i}>
+              <li key={i} className="flex gap-2 leading-relaxed text-slate-800 text-base" data-model-line={i}>
                 <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-700 text-[11px] font-bold text-white" dir="ltr">{i + 1}</span>
                 <span><MathText>{line}</MathText></span>
               </li>

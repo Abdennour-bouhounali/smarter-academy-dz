@@ -148,13 +148,12 @@ export default function RatioRide({
   const screenH = vp.ready && vp.height > 0 ? vp.height : 576;
   const budget = Math.max(300, screenH - 8);
   const wide = width >= 620;
-  const narrow = width < 340;
   const GAP = 12;
   const colW = wide ? Math.floor((width - GAP) * 0.5) : width;
   // la scène prend ce qui reste : à côté des commandes (large) ou au-dessus d'elles (empilé)
   const sceneH = wide
     ? Math.round(Math.min(230, Math.max(130, colW * 0.62), budget - 20))
-    : Math.round(Math.max(92, Math.min(narrow ? 120 : 160, width * 0.42, budget - ctrlH - GAP - 16)));
+    : Math.round(Math.max(92, Math.min(160, width * 0.42, budget - ctrlH - GAP - 16)));
 
   /* ── la durée : la trottinette sur la règle ── */
   const EDGE = 26;
@@ -258,14 +257,14 @@ export default function RatioRide({
       {/* compteur + −/+ + سجّل (étroit : −/+ posés SUR la scène, à côté de la trottinette) */}
       <div className="flex flex-wrap items-center gap-2">
         <div dir="ltr" className="flex items-center gap-1">
-          {!narrow && nudgeBtn(-1)}
+          {nudgeBtn(-1)}
           <span className="min-w-[3.2rem] rounded-xl bg-slate-900 px-2 py-1 text-center font-mono text-base font-extrabold text-lime-300" aria-label={k('durationAria')} data-ride-x={X ?? ''}>{X == null ? '–' : X}<span className="text-[10px] text-lime-200"> {k('minShort')}</span></span>
-          {!narrow && nudgeBtn(1)}
+          {nudgeBtn(1)}
         </div>
-        {narrow && tableFull ? clearBtn : <button type="button" onClick={doRecord} data-ride-record
+        <button type="button" onClick={doRecord} data-ride-record
           className="inline-flex min-h-[44px] items-center gap-1 rounded-xl border-2 border-teal-700 bg-teal-700 px-3 text-sm font-bold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-400">
-          <ReceiptText className="h-4 w-4" aria-hidden="true" /> {narrow ? <><span aria-hidden="true">{k('recordShort')}</span><span className="sr-only">{k('record')}</span></> : k('record')}
-        </button>}
+          <ReceiptText className="h-4 w-4" aria-hidden="true" /> {k('record')}
+        </button>
       </div>
       <div className={lab.two ? 'grid grid-cols-2 gap-1.5' : ''}>
         {lab.plans.map((p) => (
@@ -277,8 +276,8 @@ export default function RatioRide({
       </div>
 
       {/* le tableau de l'élève */}
-      <RideTable lab={lab} k={k} planLetter={planLetter} narrow={narrow} ghostOpen={ghostOpen} />
-      {(!lab.showRatios || (!narrow && lab.columns.length > 0)) && (
+      <RideTable lab={lab} k={k} planLetter={planLetter} ghostOpen={ghostOpen} />
+      {(!lab.showRatios || (lab.columns.length > 0)) && (
         <div className="flex flex-wrap items-center gap-2">
           {!lab.showRatios && (
             <button type="button" onClick={() => setLab((s) => L.revealRatios(s))} data-ride-reveal
@@ -286,7 +285,7 @@ export default function RatioRide({
               <Eye className="h-4 w-4" aria-hidden="true" /> <MathText>{k('reveal')}</MathText>
             </button>
           )}
-          {!narrow && lab.columns.length > 0 && clearBtn}
+          {lab.columns.length > 0 && clearBtn}
         </div>
       )}
 
@@ -296,7 +295,7 @@ export default function RatioRide({
           const v = lab.verdicts[p.id];
           return (
             <div key={p.id} className="flex flex-wrap items-center gap-1.5">
-              <span className="text-xs font-extrabold" style={{ color: COLORS[p.id] }}>{narrow ? (v ? (lab.two ? `${planLetter(p.id)}:` : '') : (lab.two ? k('claimQ', { letter: planLetter(p.id) }) : k('claimQMine'))) : tableName(p.id)}</span>
+              <span className="text-xs font-extrabold" style={{ color: COLORS[p.id] }}>{tableName(p.id)}</span>
               {v ? (
                 <span className={`rounded-full px-2 py-1 text-xs font-bold ${v === 'yes' ? 'bg-emerald-100 text-emerald-900' : 'bg-orange-100 text-orange-900'}`} data-ride-judged={p.id} data-says={v}>
                   {v === 'yes' ? k('judgedYes') : k('judgedNo')}
@@ -306,7 +305,7 @@ export default function RatioRide({
                   <button key={says} type="button" onClick={() => doClaim(p.id, says)} data-ride-claim={`${p.id}:${says}`}
                     aria-label={k(says === 'yes' ? 'claimYesAria' : 'claimNoAria', { table: tableName(p.id) })}
                     className={`inline-flex min-h-[44px] items-center rounded-xl border-2 bg-white px-2.5 text-xs font-bold focus:outline-none focus-visible:ring-2 ${says === 'yes' ? 'border-emerald-600 text-emerald-800 focus-visible:ring-emerald-400' : 'border-orange-600 text-orange-800 focus-visible:ring-orange-400'}`}>
-                    {narrow ? k(says === 'yes' ? 'yesShort' : 'noShort') : k(says === 'yes' ? 'claimYes' : 'claimNo')}
+                    {k(says === 'yes' ? 'claimYes' : 'claimNo')}
                   </button>
                 ))
               )}
@@ -329,7 +328,7 @@ export default function RatioRide({
       )}
       {formulaOpen && (
         <form onSubmit={doFormula} className="flex flex-wrap items-center gap-1.5 rounded-xl border-2 border-dashed border-teal-500 bg-teal-50/60 px-2 py-1" data-ride-formula data-done={lab.formula.done ? 'true' : 'false'}>
-          <span className={narrow ? 'sr-only' : 'text-xs font-bold text-teal-900'}>{k('formulaLabel', { table: tableName(lp.id) })}</span>
+          <span className="text-xs font-bold text-teal-900">{k('formulaLabel', { table: tableName(lp.id) })}</span>
           <span dir="ltr" className="inline-flex items-center gap-1 font-mono text-sm">
             y =
             <input value={lab.formula.done ? L.numText(lp.rule.a) : formulaRaw} onChange={(e) => setFormulaRaw(e.target.value)} disabled={lab.formula.done}
@@ -337,10 +336,10 @@ export default function RatioRide({
               className="h-11 w-14 rounded-lg border-2 border-teal-400 bg-white px-1 text-center text-base font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500" />
             × x
           </span>
-          {!lab.formula.done && <button type="submit" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border-2 border-teal-700 bg-white px-2 text-xs font-bold text-teal-900">{narrow ? <><CheckCheck className="h-4 w-4" aria-hidden="true" /><span className="sr-only">{k('formulaCheck')}</span></> : k('formulaCheck')}</button>}
+          {!lab.formula.done && <button type="submit" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border-2 border-teal-700 bg-white px-2 text-xs font-bold text-teal-900">{k('formulaCheck')}</button>}
         </form>
       )}
-      <p role="status" className={`min-h-[2.5rem] font-bold leading-snug ${narrow ? 'text-xs' : 'text-sm'}`} data-ride-verdict={last?.kind ?? ''}>{verdict}</p>
+      <p role="status" className="min-h-[2.5rem] font-bold leading-snug text-sm" data-ride-verdict={last?.kind ?? ''}>{verdict}</p>
     </div>
   );
 
@@ -385,11 +384,10 @@ export default function RatioRide({
     >
       <ManipulationStage className="bg-gradient-to-b from-sky-50/70 to-white" data-dragging={stretch.dragging ? 'true' : undefined}>
         <div ref={boxRef} className="space-y-2" data-ratio-ride data-plans={plans} data-x={X ?? ''} data-columns={lab.columns.join(',')}
-          data-layout={wide ? 'side' : narrow ? 'narrow' : 'stack'} data-judged={judgedAll ? 'true' : 'false'} data-budget={budget} data-scene-h={sceneH}>
+          data-layout={wide ? 'side' : 'stack'} data-judged={judgedAll ? 'true' : 'false'} data-budget={budget} data-scene-h={sceneH}>
           <div className={wide ? 'grid grid-cols-2 items-start gap-3' : 'space-y-2'} data-ride-glance>
             <Promenade width={colW} height={sceneH} edge={EDGE} range={range} x={X} stretch={stretch} recorded={lab.recorded}
-              handleLabel={k('handle')} valueText={X == null ? k('notSet') : k('minutes', { count: X })} place={narrow ? null : w('place')}
-              overlay={narrow ? <>{nudgeBtn(-1)}{nudgeBtn(1)}</> : null} />
+              handleLabel={k('handle')} valueText={X == null ? k('notSet') : k('minutes', { count: X })} place={w('place')} />
             {controls}
           </div>
           <LabFold id="ratio-ride.plans" title={k('plansTitle')}>
@@ -406,10 +404,10 @@ export default function RatioRide({
 }
 
 /* ── le tableau de l'élève : x, y (par tarif), y ÷ x (exact) ── */
-function RideTable({ lab, k, planLetter, narrow, ghostOpen }) {
+function RideTable({ lab, k, planLetter, ghostOpen }) {
   const cols = lab.columns;
   const lp = L.linearPlan(lab);
-  const cell = narrow ? 'px-0.5 py-0 text-[11px] leading-5' : 'px-1.5 py-1 text-xs';
+  const cell = 'px-1.5 py-1 text-xs';
   const head = `${cell} bg-slate-100 font-extrabold text-slate-700 text-start whitespace-nowrap`;
   const ghost = ghostOpen ? lab.ghost : null;
   return (
@@ -438,7 +436,7 @@ function RideTable({ lab, k, planLetter, narrow, ghostOpen }) {
                       <th scope="row" className={`${head} font-bold`} style={{ color: COLORS[p.id] }}>y÷x</th>
                       {cols.map((x, i) => (
                         <td key={x} className={`${cell} border-s border-slate-200 font-bold`} style={{ color: COLORS[p.id] }} data-ride-ratio={`${p.id}:${x}`}>
-                          {tb.ratios[i] ? (narrow ? L.numText(tb.ratios[i]) : <MathText>{`$${L.numTex(tb.ratios[i])}$`}</MathText>) : '—'}
+                          {tb.ratios[i] ? (<MathText>{`$${L.numTex(tb.ratios[i])}$`}</MathText>) : '—'}
                         </td>
                       ))}
                       {ghost && <td className={`${cell} border-s-2 border-dashed border-teal-500`}>{p.id === lp?.id && lab.ghost.done ? <MathText>{`$${L.numTex(lp.rule.a)}$`}</MathText> : ''}</td>}
@@ -455,7 +453,7 @@ function RideTable({ lab, k, planLetter, narrow, ghostOpen }) {
 }
 
 /* ── le kornich : mer, palmiers, la règle des minutes et la trottinette (la poignée) ── */
-function Promenade({ width, height, edge, range, x, stretch, recorded, handleLabel, valueText, place, overlay }) {
+function Promenade({ width, height, edge, range, x, stretch, recorded, handleLabel, valueText, place }) {
   const reduce = useReducedMotion();
   const [sway, setSway] = useState(0);
   const steps = Math.max(1, range.max - range.min);
@@ -549,7 +547,6 @@ function Promenade({ width, height, edge, range, x, stretch, recorded, handleLab
           </svg>
         )}
       </div>
-      {overlay && <div dir="ltr" className="pointer-events-none absolute inset-x-1 top-1 z-10 flex justify-between [&>*]:pointer-events-auto" data-ride-overlay>{overlay}</div>}
     </div>
   );
 }

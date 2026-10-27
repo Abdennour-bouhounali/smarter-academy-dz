@@ -22,7 +22,7 @@ export default function ProblemTable({ head, rows, caption, sheet = false }) {
           du tableau était coupée au bord de l'écran (vu au déploiement, 2026-10-06). */}
       {caption && <figcaption className="text-xs font-bold text-slate-600"><MathText>{caption}</MathText></figcaption>}
       <div className="max-w-full overflow-x-auto rounded-xl border border-slate-200 bg-white" dir={sheet ? 'ltr' : undefined} data-sheet={sheet ? '' : undefined}>
-      <table className="min-w-full border-collapse text-center text-xs sm:text-sm">
+      <table className="min-w-full border-collapse text-center text-sm">
         <thead>
           <tr className={sheet ? 'bg-slate-200' : 'bg-slate-50'}>
             {head.map((h, i) => (

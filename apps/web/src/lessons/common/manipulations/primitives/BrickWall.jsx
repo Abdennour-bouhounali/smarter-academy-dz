@@ -82,7 +82,7 @@ export default function BrickWall({ value, unit, scale, tone = 'a', segments, la
             // téléphone : elle se cache sous `sm` plutôt que de chevaucher
             // la voisine (INTERACTION_PEDAGOGY §17bis — aucun état reachable
             // ne superpose deux étiquettes).
-            <span key={s.key} className={`absolute top-0 truncate text-center font-mono text-[11px] font-bold ${s.value / total < 0.14 ? 'hidden sm:block' : ''} ${s.tone === 'ghost' ? 'text-slate-400 line-through' : 'text-slate-700'}`}
+            <span key={s.key} className={`absolute top-0 truncate text-center font-mono text-[11px] font-bold ${s.value / total < 0.14 ? 'block' : ''} ${s.tone === 'ghost' ? 'text-slate-400 line-through' : 'text-slate-700'}`}
               style={{ left: `${(s.start / total) * 100}%`, width: `${(s.value / total) * 100}%` }}>
               {s.label}
             </span>

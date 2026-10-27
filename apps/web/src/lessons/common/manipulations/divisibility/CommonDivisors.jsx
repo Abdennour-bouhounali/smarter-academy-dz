@@ -295,7 +295,7 @@ export default function CommonDivisors({
                 {t('manipulation.common.backToGroups')}
               </button>
             )}
-            <div className="grid gap-2 sm:grid-cols-2">
+            <div className="grid gap-2 grid-cols-2">
               {[{ side: 'a', n: a, list: lists.da }, { side: 'b', n: b, list: lists.db }].map(({ side, n, list }) => (
                 <div key={side} className="rounded-2xl border-2 border-slate-200 bg-white p-2">
                   <div className="mb-1 text-xs font-bold text-slate-700">{t('manipulation.divisorsOf', { n })}</div>
@@ -309,7 +309,7 @@ export default function CommonDivisors({
               ))}
             </div>
 
-            <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
+            <div className="grid gap-2 grid-cols-[1fr_auto]">
               <DropZone drag={drag} id="middle" label={t('manipulation.common.middleZone')} tone="emerald" hint={lists.placed.length === 0 ? t('manipulation.common.dropCommon') : undefined} minHeight="min-h-[72px]" className="p-2">
                 <div className="mb-1 text-[11px] font-bold text-emerald-800">{t('manipulation.common.middleZone')}</div>
                 <div dir="ltr" className="flex flex-wrap gap-1.5">

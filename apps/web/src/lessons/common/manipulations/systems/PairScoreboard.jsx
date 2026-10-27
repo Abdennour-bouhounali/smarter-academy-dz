@@ -164,10 +164,6 @@ export default function PairScoreboard({
   const budget = Math.max(320, screenH - 8);
   // Large (≥ 620 px) : la scène et ses commandes CÔTE À CÔTE ; sinon les commandes juste dessous.
   const wide = width >= 620;
-  // Étroit (< 340 px : un téléphone de 320 à 390 px, une fois les marges de la page ôtées) :
-  // jauges l'une sous l'autre, titres réduits à « (1) » / « (2) » (le titre complet reste l'aria-label),
-  // « اقلب » en icône, la ثنائية lue sur les deux poignées.
-  const narrow = width < 340;
   const GAP = 12;
   const colW = wide ? Math.floor((width - GAP) / 2) : width;
 
@@ -264,7 +260,7 @@ export default function PairScoreboard({
         notSet={k('notSet')} less={k('less', { name: 'y' })} more={k('more', { name: 'y' })} tone="violet" />
 
       {/* ── les deux jauges, côte à côte ── */}
-      <div className={narrow ? 'space-y-2' : 'grid grid-cols-2 gap-2'}>
+      <div className="grid grid-cols-2 gap-2">
         {[0, 1].map((i) => {
           const g = gauges[i];
           const rd = both ? L.readingTex(lab, i, X, Y) : null;
@@ -274,17 +270,15 @@ export default function PairScoreboard({
               className={`min-w-0 rounded-xl border-2 px-2 py-1.5 ${!both ? 'border-slate-200 bg-white' : ok ? 'border-emerald-400 bg-emerald-50' : 'border-rose-300 bg-rose-50'}`}>
               <div className="flex items-start justify-between gap-1">
                 <h4 className="text-xs font-extrabold leading-tight text-slate-800">
-                  {narrow ? <>({i + 1}) <bdi dir="ltr" className="font-normal text-slate-600"><MathText>{`$${L.eqWrittenTex(lab, i)}$`}</MathText></bdi></> : w(i === 0 ? 'g1' : 'g2')}
+                  {w(i === 0 ? 'g1' : 'g2')}
                 </h4>
                 <span aria-hidden="true" className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-black text-white ${!both ? 'bg-slate-300' : ok ? 'bg-emerald-600' : 'bg-rose-500'}`}>{!both ? '?' : ok ? '✓' : '✗'}</span>
               </div>
-              {!narrow && <p className="text-xs text-slate-600" dir="ltr"><MathText>{`$${L.eqWrittenTex(lab, i)}$`}</MathText></p>}
+              <p className="text-xs text-slate-600" dir="ltr"><MathText>{`$${L.eqWrittenTex(lab, i)}$`}</MathText></p>
               {/* étroit : la lecture écrite (secondaire) passe dans le pli « القراءة بالتعويض » sous la manipulation */}
-              {!narrow && (rd ? (
-                <div className="flex min-h-[2.5rem] flex-wrap content-start gap-x-3 text-xs font-bold sm:text-sm" dir="ltr" data-gauge-reading>
+              {(rd ? (<div className="flex min-h-[2.5rem] flex-wrap content-start gap-x-3 font-bold text-sm" dir="ltr" data-gauge-reading>
                   {rd.lines.map((ln) => <span key={ln}><MathText>{`$${ln}$`}</MathText></span>)}
-                </div>
-              ) : <p className="min-h-[2.5rem] text-[11px] text-slate-500">{k('gaugeWait')}</p>)}
+              </div>) : <p className="min-h-[2.5rem] text-[11px] text-slate-500">{k('gaugeWait')}</p>)}
               {i === 1 && both && sh.kind === 'count' && <ValueBar lab={lab} X={X} Y={Y} />}
               {i === 1 && both && sh.kind === 'after' && <AfterBars lab={lab} X={X} Y={Y} />}
             </section>
@@ -294,16 +288,16 @@ export default function PairScoreboard({
 
       {/* ── la réponse : la ثنائية, la renverser, la déclarer ── */}
       <div className="flex flex-wrap items-center gap-2" data-pair-card>
-        <p dir="ltr" hidden={narrow} className="rounded-xl border-2 border-slate-300 bg-white px-2 py-1 font-mono text-lg font-extrabold text-slate-900" aria-label={k('pairLabelAria')}>
+        <p dir="ltr" hidden={false} className="rounded-xl border-2 border-slate-300 bg-white px-2 py-1 font-mono text-lg font-extrabold text-slate-900" aria-label={k('pairLabelAria')}>
           (<span className="text-blue-700" data-pair-value-x>{X ?? '?'}</span> ; <span className="text-violet-700" data-pair-value-y>{Y ?? '?'}</span>)
         </p>
         <button type="button" onClick={swap} data-pair-swap title={k('swap')}
           className="inline-flex min-h-[44px] items-center gap-1 rounded-xl border-2 border-slate-400 bg-white px-2.5 text-sm font-bold text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500">
-          <Repeat className="h-4 w-4" aria-hidden="true" /> {narrow ? <span className="sr-only">{k('swap')}</span> : k('swap')}
+          <Repeat className="h-4 w-4" aria-hidden="true" /> {k('swap')}
         </button>
         <button type="button" onClick={claim} data-pair-claim
           className="inline-flex min-h-[44px] items-center gap-1 rounded-xl border-2 border-emerald-600 bg-white px-2.5 text-sm font-bold text-emerald-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500">
-          <CheckCheck className="h-4 w-4" aria-hidden="true" /> {narrow ? <><span aria-hidden="true">{k('claimShort')}</span><span className="sr-only">{k('claim')}</span></> : k('claim')}
+          <CheckCheck className="h-4 w-4" aria-hidden="true" /> {k('claim')}
         </button>
       </div>
       <p role="status" className="min-h-[2.5rem] text-sm font-bold leading-snug" data-pair-verdict={last?.kind ?? ''}>{verdict}</p>
@@ -348,30 +342,18 @@ export default function PairScoreboard({
     >
       <ManipulationStage className="bg-gradient-to-b from-sky-50/70 to-white" data-dragging={sx.dragging || sy.dragging ? 'true' : undefined}>
         <div ref={boxRef} className="space-y-3" data-pair-scoreboard data-world={W} data-system={system}
-          data-x={X ?? ''} data-y={Y ?? ''} data-solved={sol ? 'true' : 'false'} data-layout={wide ? 'side' : narrow ? 'narrow' : 'stack'} data-budget={budget} data-scene-max={sceneMax} data-ctrl-h={ctrlH} data-legend-h={legendH}>
+          data-x={X ?? ''} data-y={Y ?? ''} data-solved={sol ? 'true' : 'false'} data-layout={wide ? 'side' : 'stack'} data-budget={budget} data-scene-max={sceneMax} data-ctrl-h={ctrlH} data-legend-h={legendH}>
           {/* LA MANIPULATION, D'UN SEUL REGARD : le monde et ses commandes (poignées, jauges, réponse)
               tiennent ensemble dans la hauteur de l'écran de leçon — côte à côte quand c'est large,
               les commandes juste sous le monde sinon ; la grille rétrécit, jamais les commandes. */}
           <div className={wide ? 'grid grid-cols-2 items-start gap-3' : 'space-y-3'} data-pair-glance>
             {hasWorld && (
-              <World lab={lab} X={X} Y={Y} w={w} k={k} grid={grid} legendRef={legendRef} narrow={narrow} />
+              <World lab={lab} X={X} Y={Y} w={w} k={k} grid={grid} legendRef={legendRef} />
             )}
             {controls}
           </div>
-
           {/* ── en dessous (secondaire, repliable — primitives/LabFold) : la lecture écrite (étroit), la note de l'histoire, la table des essais ── */}
-          {narrow && both && (
-            <LabFold id="pair-scoreboard.readings" title={k('readingsTitle')}>
-              <div className="space-y-1" data-pair-readings>
-                {[0, 1].map((i) => (
-                  <div key={i} className="flex flex-wrap items-baseline gap-x-3 text-sm font-bold" data-gauge-reading={i + 1}>
-                    <span className="text-xs text-slate-500">({i + 1})</span>
-                    <span dir="ltr" className="flex flex-wrap gap-x-3">{L.readingTex(lab, i, X, Y).lines.map((ln) => <span key={ln}><MathText>{`$${ln}$`}</MathText></span>)}</span>
-                  </div>
-                ))}
-              </div>
-            </LabFold>
-          )}
+
           {sh.kind === 'after' && (
             <LabFold id="pair-scoreboard.note" title={k('noteTitle')}>
               <p className="text-xs text-slate-600">{w('rangeNote')}</p>
@@ -442,7 +424,7 @@ function Ruler({ which, stretch, range, value, width, edge, handleLabel, notSet,
 }
 
 /* ── le monde dessiné : le cadre de l'équation (1), dans une grille taillée pour l'écran ── */
-function World({ lab, X, Y, w, k, grid, legendRef, narrow }) {
+function World({ lab, X, Y, w, k, grid, legendRef }) {
   const sh = lab.shape;
   const g = L.slots(sh.N, X, Y);
   const Figure = { football: MatchCard, coins: Coin, staff: Person }[lab.world];
@@ -462,12 +444,12 @@ function World({ lab, X, Y, w, k, grid, legendRef, narrow }) {
   return (
     <div className="space-y-1 rounded-2xl border-2 border-slate-200 bg-white p-1" data-pair-world={lab.world}>
       <div ref={legendRef} className="flex flex-wrap items-center gap-x-3 gap-y-0.5 pe-12 text-xs font-bold text-slate-700 relative">
-        <span className="inline-flex items-center gap-1"><span className="inline-block h-4 w-4"><Figure kind="x" shape={sh} /></span><bdi dir="ltr" className="text-blue-700">x</bdi>{!narrow && <> {w('x')}</>}</span>
-        <span className="inline-flex items-center gap-1"><span className="inline-block h-4 w-4"><Figure kind="y" shape={sh} /></span><bdi dir="ltr" className="text-violet-700">y</bdi>{!narrow && <> {w('y')}</>}</span>
-        <span className="text-slate-600" data-pair-frame-count={Math.min(g.total, sh.N)}>{narrow ? k('frameShort', { used: Math.min(g.total, sh.N), N: sh.N }) : w('frame', { used: Math.min(g.total, sh.N) })}</span>
-        {g.overflow.length > 0 && <span className="text-rose-700" data-pair-overflow={g.overflow.length}>{narrow ? k('overflowShort', { n: g.overflow.length }) : w('overflow', { n: g.overflow.length })}</span>}
-        {g.empty > 0 && !narrow && <span className="font-normal text-slate-500">{w('empty', { n: g.empty })}</span>}
-        {sh.kind === 'after' && !narrow && <span className="font-normal text-slate-500">{w('leavingShort')}</span>}
+        <span className="inline-flex items-center gap-1"><span className="inline-block h-4 w-4"><Figure kind="x" shape={sh} /></span><bdi dir="ltr" className="text-blue-700">x</bdi><> {w('x')}</></span>
+        <span className="inline-flex items-center gap-1"><span className="inline-block h-4 w-4"><Figure kind="y" shape={sh} /></span><bdi dir="ltr" className="text-violet-700">y</bdi><> {w('y')}</></span>
+        <span className="text-slate-600" data-pair-frame-count={Math.min(g.total, sh.N)}>{w('frame', { used: Math.min(g.total, sh.N) })}</span>
+        {g.overflow.length > 0 && <span className="text-rose-700" data-pair-overflow={g.overflow.length}>{w('overflow', { n: g.overflow.length })}</span>}
+        {g.empty > 0 && <span className="font-normal text-slate-500">{w('empty', { n: g.empty })}</span>}
+        {sh.kind === 'after' && <span className="font-normal text-slate-500">{w('leavingShort')}</span>}
         <Deco world={lab.world} />
       </div>
       <div dir="ltr" className="mx-auto grid" style={{ gridTemplateColumns: `repeat(${grid.cols}, ${grid.cell}px)`, gap: 4, width: grid.width }} data-pair-frame={sh.N} data-cell={grid.cell}>

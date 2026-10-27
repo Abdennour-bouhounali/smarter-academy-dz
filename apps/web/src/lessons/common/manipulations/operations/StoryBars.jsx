@@ -423,7 +423,7 @@ function StretchLab({ lab, setLab, story, def, k, knownName, itemWords, width, s
             const right = isDone && ci === L.rightCalc(story, i);
             const state = right ? 'right' : tried ? 'tried' : !it.stretchOk ? 'locked' : 'idle';
             return (
-              <ChoiceCard key={ci} ltr size={width < 300 ? 'sm' : narrow ? 'md' : 'lg'} state={state}
+              <ChoiceCard key={ci} ltr size={narrow ? 'md' : 'lg'} state={state}
                 onClick={() => setLab((s) => L.chooseCalc(s, ci))} disabled={!it.stretchOk || it.calcOk}
                 aria-label={k('calcAria', { calc: L.calcText(c) })} data-sb-calc={ci} data-value={L.dec(L.calcValue(c))} data-tried={tried ? 'true' : 'false'}>
                 {L.calcText(c)}

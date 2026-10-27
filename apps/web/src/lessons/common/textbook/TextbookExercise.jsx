@@ -50,7 +50,7 @@ export default function TextbookExercise({ exercise, solved = false, onAnswered,
         {ex.difficulty && <span className="text-[11px] text-slate-500">{t(`textbook.difficulty.${ex.difficulty}`)}</span>}
         <span className="ms-auto"><ClassroomEntryButton scope="exercise" title={label} tone="quiet" compact /></span>
       </div>
-      {ex.statement && <p className="text-sm sm:text-base leading-relaxed text-slate-800"><MathText>{ex.statement}</MathText></p>}
+      {ex.statement && <p className="leading-relaxed text-slate-800 text-base"><MathText>{ex.statement}</MathText></p>}
       {ex.items && (
         <ul className="ms-3 space-y-0.5 text-sm text-slate-700">
           {ex.items.map((it, i) => <li key={i}><MathText>{it}</MathText></li>)}

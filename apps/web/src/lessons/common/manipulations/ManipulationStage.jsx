@@ -15,7 +15,7 @@ export default function ManipulationStage({ children, minHeight = 'min-h-[180px]
     <div
       data-manipulation-stage
       data-dragging={dragging ? 'true' : undefined}
-      className={`relative select-none overscroll-contain rounded-2xl border border-slate-200 bg-white p-1.5 sm:p-4 ${minHeight} ${className}`}
+      className={`relative select-none overscroll-contain rounded-2xl border border-slate-200 bg-white p-4 ${minHeight} ${className}`}
       {...rest}
     >
       {children}

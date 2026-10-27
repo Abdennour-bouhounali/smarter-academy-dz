@@ -108,7 +108,7 @@ export default function InfoSorter({ items, onSolved, solved, formative = false,
       )}
 
       {/* Bacs de tri */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid gap-3 grid-cols-2">
         <div
           {...drag.zoneProps('utile')}
           role="button"

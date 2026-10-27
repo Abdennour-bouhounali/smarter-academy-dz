@@ -50,7 +50,7 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-700">{KNOWLEDGE3.figuresText}</p>
-              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2" data-know3-figures>
+              <div className="grid gap-2 grid-cols-2" data-know3-figures>
                 <GeoFigure {...FIG_KNOW3_BETWEEN} />
                 <GeoFigure {...FIG_KNOW3_BEYOND} />
               </div>

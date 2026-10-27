@@ -50,7 +50,7 @@ export default function Module03Taraiq() {
               {/* « أتوقّع القاعدة » : la طريقة du manuel et ses trois figures DISENT la méthode — l'élève l'écrit d'abord. */}
               <PredictRule id="tamthil-kura">
                 <MethodSteps method={METHOD_DRAW} />
-                <div className="grid gap-2 sm:grid-cols-3" data-draw-figures>
+                <div className="grid gap-2 grid-cols-3" data-draw-figures>
                   {[FIG_DRAW_1, FIG_DRAW_2, FIG_DRAW_3].map((f, i) => (
                     <div key={f.ariaLabel} className="rounded-xl border border-slate-200 bg-white p-1 text-center">
                       <SpaceFigure {...f} />

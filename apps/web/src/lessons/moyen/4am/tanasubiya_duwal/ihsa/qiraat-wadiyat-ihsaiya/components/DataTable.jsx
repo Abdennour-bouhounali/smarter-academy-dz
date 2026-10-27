@@ -10,7 +10,7 @@ const isNum = (s) => /^-?\d+(,\d+)?$/.test(s);
 export default function DataTable({ head, rows, caption }) {
   return (
     <div className="max-w-full overflow-x-auto rounded-xl border border-slate-200 bg-white" data-data-table>
-      <table className="min-w-full border-collapse text-center text-xs sm:text-sm">
+      <table className="min-w-full border-collapse text-center text-sm">
         {caption && <caption className="py-1 text-xs font-bold text-slate-600">{caption}</caption>}
         <thead>
           <tr className="bg-slate-50">

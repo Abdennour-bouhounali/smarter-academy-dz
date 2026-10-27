@@ -52,7 +52,7 @@ export default function Module02Maarif() {
             <div className="space-y-3">
               <PredictRule id="khassiyat-talis"><TextbookBox kind="property" title={KNOW1.title} text={KNOW1.property} source={KNOW1.source} compact /></PredictRule>
               <KnowledgeBrick id="talis-nashat" variant="rappel" compact />
-              <div className="grid gap-2 sm:grid-cols-3">
+              <div className="grid gap-2 grid-cols-3">
                 {FIG_KNOW1.map((f, i) => (
                   <div key={f.ariaLabel} className="rounded-xl border border-violet-100 bg-white p-1">
                     <GeoFigure {...f} />

@@ -125,7 +125,7 @@ export default function Module02Maarif() {
                   enveloppés, l'élève simplifie et prédit d'abord (predictPrompt de halat-khassa). */}
               <PredictRule id="halat-khassa">
                 <TextbookBox kind="remark" title={KNOWLEDGE.cases.title} lines={KNOWLEDGE.cases.items} source={KNOWLEDGE.cases.source} compact />
-                <div className="grid gap-2 sm:grid-cols-2" data-cases-lines>
+                <div className="grid gap-2 grid-cols-2" data-cases-lines>
                   <div className="rounded-xl border-2 border-sky-200 bg-sky-50/60 p-3 text-sm" data-case="infinite">
                     <p className="mb-1 font-bold text-sky-900">1) معادلة واحدة مرّتين</p>
                     <ol className="space-y-1">{CASES_LINES.infinite.map((l) => <li key={l}><MathText>{l}</MathText></li>)}</ol>

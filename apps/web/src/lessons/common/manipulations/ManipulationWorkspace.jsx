@@ -84,13 +84,13 @@ export default function ManipulationWorkspace({
 
   return (
     <section
-      className={`space-y-3 rounded-3xl border border-indigo-200 bg-white/60 p-1.5 sm:border-2 sm:p-4 ${className}`}
+      className={`space-y-3 rounded-3xl border-indigo-200 bg-white/60 border-2 p-4 ${className}`}
       data-manipulation-workspace
       data-level={active}
       aria-label={title ?? t('manipulation.level.title')}
     >
       <header className="space-y-2">
-        {title && <h3 className="text-base font-bold text-slate-900 sm:text-lg">{title}</h3>}
+        {title && <h3 className="font-bold text-slate-900 text-lg">{title}</h3>}
         {available.length > 1 && (
           <ManipulationLevelSelector levels={available} value={active} onChange={change} labelledBy={labelId} idPrefix={idPrefix} controlsPanels />
         )}

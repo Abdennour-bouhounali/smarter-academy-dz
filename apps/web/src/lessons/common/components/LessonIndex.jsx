@@ -388,15 +388,15 @@ export default function LessonIndex({ config, basePath }) {
         </div>
 
         {/* HERO CARD */}
-        <section className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <section className="bg-white rounded-3xl border border-slate-200 shadow-sm space-y-6 p-8">
+          <div className="flex flex-row items-center justify-between gap-6">
 
             <div className="space-y-3" data-tour="lesson-index.hero">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 font-mono text-xs font-semibold">
                 {config.emoji} {config.chapterTitle ?? config.chapter} • <span dir="ltr">{totalModules}</span> {t('index.modulesLabel', { count: totalModules })} • ~{t('index.durationMin', { count: config.estimatedDurationMin })}
               </div>
 
-              <h1 className="text-3xl sm:text-4xl font-space font-extrabold text-slate-900 leading-tight">
+              <h1 className="font-space font-extrabold text-slate-900 leading-tight text-4xl">
                 <MathLabel>{config.title}</MathLabel>
               </h1>
               {/* Relecteur seulement (admin, سفير) : l'état de publication. */}
@@ -429,7 +429,7 @@ export default function LessonIndex({ config, basePath }) {
             </div>
 
             {/* PROGRESS WIDGET */}
-            <div className="w-full md:w-56 bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3 text-center shrink-0" data-tour="lesson-index.progress">
+            <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3 text-center shrink-0 w-56" data-tour="lesson-index.progress">
               <div className="text-xs font-mono text-slate-500 font-bold uppercase">{t('index.yourProgress')}</div>
 
               <div className={`text-3xl font-space font-extrabold ${isPathComplete ? 'text-emerald-600' : 'text-blue-600'}`}>
@@ -463,7 +463,7 @@ export default function LessonIndex({ config, basePath }) {
             maîtrise (profil serveur), prérequis PÉDAGOGIQUES (jamais bloquants),
             manipulations et méthodes déclarées dans lesson.config.js ── */}
         {catalogueLesson && (
-          <section className="grid gap-4 md:grid-cols-2" data-lesson-structure>
+          <section className="grid gap-4 grid-cols-2" data-lesson-structure>
             <div className="rounded-2xl border border-slate-200 bg-white p-5">
               <h2 className="mb-2 text-sm font-bold text-slate-800">{ts('unit.learningPoints')}</h2>
               <ul className="space-y-1.5">
@@ -601,7 +601,7 @@ export default function LessonIndex({ config, basePath }) {
                             {t('index.locked')}
                           </span>
                         </div>
-                        <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
+                        <p className="text-slate-400 mt-0.5 text-sm">
                           {t('nav.lockedReason', {
                             module: lockedReasonData(module.number).previousModule,
                             threshold: lockedReasonData(module.number).threshold,
@@ -657,10 +657,10 @@ export default function LessonIndex({ config, basePath }) {
                             {inProgressBadge}
                           </div>
                           <h3 className="font-space font-bold text-slate-900 mt-0.5"><MathLabel>{module.title}</MathLabel></h3>
-                          <p className="text-xs sm:text-sm text-slate-500 mt-0.5"><MathLabel>{module.desc}</MathLabel></p>
+                          <p className="text-slate-500 mt-0.5 text-sm"><MathLabel>{module.desc}</MathLabel></p>
                         </div>
                       </div>
-                      <span className="px-3 py-1 rounded-full bg-teal-100 text-teal-700 font-mono text-xs font-semibold hidden sm:inline-block shrink-0">
+                      <span className="px-3 py-1 rounded-full bg-teal-100 text-teal-700 font-mono text-xs font-semibold shrink-0 inline-block">
                         {isDone ? t('index.review') : module.actionText}
                       </span>
                     </div>
@@ -702,10 +702,10 @@ export default function LessonIndex({ config, basePath }) {
                             ))}
                             {inProgressBadge}
                           </div>
-                          <p className="text-xs sm:text-sm text-slate-500 mt-0.5"><MathLabel>{module.desc}</MathLabel></p>
+                          <p className="text-slate-500 mt-0.5 text-sm"><MathLabel>{module.desc}</MathLabel></p>
                         </div>
                       </div>
-                      <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-600 font-mono text-xs font-semibold hidden sm:inline-block shrink-0">
+                      <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-600 font-mono text-xs font-semibold shrink-0 inline-block">
                         {isDone ? t('index.review') : module.actionText}
                       </span>
                     </div>
@@ -769,10 +769,10 @@ export default function LessonIndex({ config, basePath }) {
                             </span>
                             {inProgressBadge}
                           </div>
-                          <p className="text-xs sm:text-sm text-slate-500 mt-0.5"><MathLabel>{module.desc}</MathLabel></p>
+                          <p className="text-slate-500 mt-0.5 text-sm"><MathLabel>{module.desc}</MathLabel></p>
                         </div>
                       </div>
-                      <span className={`px-3 py-1 rounded-full font-mono text-xs font-bold shrink-0 hidden sm:inline-block
+                      <span className={`px-3 py-1 rounded-full font-mono text-xs font-bold shrink-0 inline-block
                         ${isDone ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'}`}>
                         {isDone ? t('index.results') : module.actionText}
                       </span>

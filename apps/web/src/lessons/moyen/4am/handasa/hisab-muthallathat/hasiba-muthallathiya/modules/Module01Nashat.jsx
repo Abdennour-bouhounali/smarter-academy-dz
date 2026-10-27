@@ -34,7 +34,7 @@ const tex = (s) => String(s).replace(',', '{,}');
 function AngleTable({ cell, caption }) {
   return (
     <div className="overflow-x-auto" dir="ltr">
-      <table className="mx-auto border-collapse text-center text-xs sm:text-sm">
+      <table className="mx-auto border-collapse text-center text-sm">
         <caption className="pb-1 text-xs font-bold text-slate-600" dir="rtl">{caption}</caption>
         <thead>
           <tr>
@@ -206,7 +206,7 @@ export default function Module01Nashat() {
               {q2 && (
                 <>
                   <div className="overflow-x-auto rounded-xl border-2 border-emerald-200 bg-emerald-50/50 px-2 py-2" data-activity-answer="angles">
-                    <table className="mx-auto border-collapse text-center text-xs sm:text-sm">
+                    <table className="mx-auto border-collapse text-center text-sm">
                       <caption className="pb-1 text-xs font-bold text-slate-600">جواب النشاط:</caption>
                       <thead><tr>{['', 'المدوّر إلى 1/100', 'المدوّر إلى 1/10', 'المدوّر إلى الوحدة'].map((h) => <th key={h} className="border border-slate-200 bg-slate-50 px-1.5 py-1">{h}</th>)}</tr></thead>
                       <tbody>

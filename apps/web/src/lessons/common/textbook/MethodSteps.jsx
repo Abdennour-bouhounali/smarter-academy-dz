@@ -25,7 +25,7 @@ export default function MethodSteps({ method, onAllRevealed }) {
         <span className="inline-block rounded-md bg-slate-700 px-2 py-0.5 text-xs font-bold text-white">{t('textbook.solution')}</span>
         <ol className="space-y-1.5">
           {method.solution.slice(0, shown).map((line, i) => (
-            <li key={i} className="text-sm sm:text-base leading-relaxed text-slate-800" data-method-line={i}>
+            <li key={i} className="leading-relaxed text-slate-800 text-base" data-method-line={i}>
               {/* une ligne peut être un nœud (unité 10 : une séquence de touches de calculatrice, code LTR) */}
               {typeof line === 'string' ? <MathText>{line}</MathText> : line}
             </li>

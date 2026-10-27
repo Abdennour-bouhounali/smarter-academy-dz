@@ -22,7 +22,7 @@ export default function EquationDisplay({ tex, tone = 'neutral', note, size = 'm
       <div dir="ltr" className={`font-mono ${text}`}>
         <MathText>{`$${tex}$`}</MathText>
       </div>
-      {note && <span className="text-xs sm:text-sm">{note}</span>}
+      {note && <span className="text-sm">{note}</span>}
     </div>
   );
 }

@@ -38,7 +38,7 @@ export default function ManipulationDiscovery({ state, prompt, options, explain,
     <motion.section
       initial={reduce ? false : { opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="space-y-3 rounded-2xl border-2 border-emerald-300 bg-emerald-50/70 p-3 sm:p-4"
+      className="space-y-3 rounded-2xl border-2 border-emerald-300 bg-emerald-50/70 p-4"
       aria-label={t('manipulation.discovery.title')}
       data-manipulation-discovery
       data-formal={state.isFormal ? 'true' : undefined}
@@ -51,7 +51,7 @@ export default function ManipulationDiscovery({ state, prompt, options, explain,
         <div className="space-y-2">
           {prompt && <p className="text-sm font-bold text-slate-800">{prompt}</p>}
           {options ? (
-            <div className="grid gap-2 sm:grid-cols-2">
+            <div className="grid gap-2 grid-cols-2">
               {options.map((o, i) => (
                 <button key={i} type="button" onClick={() => choose(i)} aria-pressed={pick === i}
                   className={`min-h-[44px] rounded-xl border-2 px-3 py-2 text-start text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${

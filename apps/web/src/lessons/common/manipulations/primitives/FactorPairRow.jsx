@@ -27,7 +27,7 @@ export default function FactorPairRow({ n, d, e, divides, revealed = true, activ
     );
   }
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] items-center gap-3">
+    <div className="grid items-center gap-3 grid-cols-[1fr_auto]">
       <EquationDisplay tex={`${n} = ${d} \\times ${e}`} tone={active ? 'active' : 'ok'} size="sm" />
       <div className="flex items-center gap-2 text-sm text-slate-700">
         <HighlightedNumber value={d} tone="common" size="sm" />

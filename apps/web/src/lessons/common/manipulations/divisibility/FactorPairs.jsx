@@ -247,7 +247,7 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
             )}
           </div>
 
-          <div className="grid gap-3 md:grid-cols-[1fr_minmax(10rem,14rem)]">
+          <div className="grid gap-3 grid-cols-[1fr_minmax(10rem,14rem)]">
             {/* ── LE CADRE CARRÉ : le rectangle de n livres, entier ── */}
             <div ref={frameRef} className="flex items-end justify-center rounded-2xl border-2 border-slate-200 bg-white p-2" style={{ minHeight: boxH + 16 }}>
               {R == null ? (
@@ -274,7 +274,7 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
             </div>
 
             {/* ── LES PAIRES : deux diviseurs par rectangle parfait ── */}
-            <div className="rounded-2xl border-2 border-slate-200 bg-white p-3 md:min-w-[10rem]">
+            <div className="rounded-2xl border-2 border-slate-200 bg-white p-3 min-w-[10rem]">
               <div className="mb-1.5 text-xs font-bold text-slate-700">{k('pairsBoard')}</div>
               <ul className="space-y-1" dir="ltr" data-pairs>
                 {lab.pairs.length === 0 && <li className="text-xs text-slate-400">—</li>}

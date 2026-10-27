@@ -265,7 +265,7 @@ export default function CoprimeExplorer({
           </div>
         ) : (
           <div className="space-y-3">
-            <div className="grid gap-2 sm:grid-cols-2">
+            <div className="grid gap-2 grid-cols-2">
               {[{ side: 'a', n: a, list: lab.da }, { side: 'b', n: b, list: lab.db }].map(({ side, n, list }) => (
                 <div key={side} className="rounded-2xl border-2 border-slate-200 bg-white p-2">
                   <div className="mb-1 flex items-center gap-1.5 text-xs font-bold text-slate-700">

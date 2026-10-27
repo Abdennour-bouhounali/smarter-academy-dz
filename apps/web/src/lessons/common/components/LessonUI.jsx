@@ -87,7 +87,7 @@ export function ChoiceGrid({
   order,          // optionnel : ordre d'AFFICHAGE (indices d'options) ; `selected`,
                   // `correctIndex` et `onSelect` restent dans l'indexation de l'auteur
 }) {
-  const grid = cols === 1 ? 'grid-cols-1' : cols === 3 ? 'grid-cols-1 sm:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2';
+  const grid = cols === 1 ? 'grid-cols-1' : cols === 3 ? 'grid-cols-3' : 'grid-cols-2';
   const shown = order && order.length === options.length ? order : options.map((_, i) => i);
 
   return (
@@ -188,7 +188,7 @@ export function StepCard({ num, title, subtitle, done, locked, children, tone = 
       id={anchorId}
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`border-2 rounded-2xl p-5 sm:p-6 space-y-4 scroll-mt-24 ${
+      className={`border-2 rounded-2xl space-y-4 scroll-mt-24 p-6 ${
         done ? 'border-emerald-300 bg-emerald-50/40' : 'border-slate-200 bg-white'
       }`}
     >
@@ -198,7 +198,7 @@ export function StepCard({ num, title, subtitle, done, locked, children, tone = 
         </span>
         <div>
           <h3 className="font-space font-bold text-slate-800 leading-snug"><MathLabel>{title}</MathLabel></h3>
-          {subtitle && <p className="text-xs sm:text-sm text-slate-500 mt-0.5 leading-relaxed"><MathLabel>{subtitle}</MathLabel></p>}
+          {subtitle && <p className="text-slate-500 mt-0.5 leading-relaxed text-sm"><MathLabel>{subtitle}</MathLabel></p>}
         </div>
       </div>
       {children}
@@ -268,13 +268,13 @@ export function MissionBrief({ tag, title, headline, children, footer, visual, e
       {/* Le lavis : une profondeur légère, qui ne touche jamais au texte. */}
       <div className={`pointer-events-none absolute inset-0 bg-gradient-to-bl ${T.wash} to-white`} aria-hidden="true" />
 
-      <div className={`relative flex flex-col gap-4 p-5 sm:p-6 ${hasVisual ? 'sm:flex-row-reverse sm:items-start sm:gap-6' : ''}`}>
+      <div className={`relative flex p-6 ${hasVisual ? 'flex-row-reverse items-start gap-6' : 'flex-col gap-4'}`}>
         {hasVisual && (
           // Le visuel de CONTEXTE. Décoratif au sens strict : il aide à se
           // projeter, il ne porte aucune information mathématique — donc
           // `aria-hidden` quand il n'a pas de texte alternatif propre.
-          <div className="sm:w-44 sm:shrink-0">
-            <div className="mx-auto h-28 w-full max-w-[12rem] overflow-hidden rounded-2xl border border-white/70 bg-white/70 shadow-sm sm:h-36 sm:max-w-none">
+          <div className="w-44 shrink-0">
+            <div className="mx-auto w-full overflow-hidden rounded-2xl border border-white/70 bg-white/70 shadow-sm h-36 max-w-none">
               {visual?.src
                 ? <img src={visual.src} alt={visual.alt ?? ''} aria-hidden={visual.alt ? undefined : 'true'} loading="lazy" className="block h-full w-full object-cover" />
                 : <div className="h-full w-full" aria-hidden="true">{visual}</div>}
@@ -291,19 +291,19 @@ export function MissionBrief({ tag, title, headline, children, footer, visual, e
           )}
 
           {headline && (
-            <p className="flex items-center gap-2 text-xl font-extrabold leading-tight text-slate-900 sm:text-2xl">
+            <p className="flex items-center gap-2 font-extrabold leading-tight text-slate-900 text-2xl">
               {emoji && <span aria-hidden="true">{emoji}</span>}
               {headline}
             </p>
           )}
 
           {title && (
-            <h2 className={`font-space text-base font-extrabold leading-snug sm:text-lg ${headline ? T.accent : 'text-slate-900'}`}>
+            <h2 className={`font-space font-extrabold leading-snug text-lg ${headline ? T.accent : 'text-slate-900'}`}>
               <MathLabel>{title}</MathLabel>
             </h2>
           )}
 
-          <div className="space-y-2 text-sm leading-relaxed text-slate-700 sm:text-base">{children}</div>
+          <div className="space-y-2 leading-relaxed text-slate-700 text-base">{children}</div>
 
           {footer && <div className="pt-1">{footer}</div>}
         </div>
@@ -350,7 +350,7 @@ export function QuantityCard({ emoji, label, value, unit, selected, onClick, dis
         <span className="text-2xl shrink-0" aria-hidden="true">{emoji}</span>
         <div className="min-w-0">
           <div className="text-[11px] font-mono text-slate-500 uppercase tracking-wide truncate">{label}</div>
-          <div className="font-mono font-extrabold text-lg sm:text-xl text-slate-800 tabular-nums">
+          <div className="font-mono font-extrabold text-slate-800 tabular-nums text-xl">
             {value} {unit && <span className="text-xs font-semibold text-slate-500">{unit}</span>}
           </div>
         </div>
@@ -461,7 +461,7 @@ export function StepProgressBar({ doneCount, total }) {
   if (!total) return null;
   const pct = Math.round((doneCount / total) * 100);
   return (
-    <div className={`sticky ${stickyTopClass} z-10 -mx-4 px-4 py-2 bg-slate-50/90 backdrop-blur-sm border-b border-slate-200 sm:rounded-xl sm:border sm:mx-0`}>
+    <div className={`sticky ${stickyTopClass} z-10 px-4 py-2 bg-slate-50/90 backdrop-blur-sm border border-slate-200 rounded-xl`}>
       <div className="flex items-center gap-2.5">
         <div className="flex-1 h-1.5 bg-slate-200 rounded-full overflow-hidden">
           <motion.div
@@ -507,7 +507,7 @@ export function EffectsToggle({ enabled, onToggle }) {
       className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border-2 border-slate-200 bg-white text-slate-500 hover:border-slate-400 transition-colors text-xs font-mono font-bold min-h-[40px] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
     >
       {enabled ? <Volume2 className="w-3.5 h-3.5" aria-hidden="true" /> : <VolumeX className="w-3.5 h-3.5" aria-hidden="true" />}
-      <span className="hidden sm:inline">{enabled ? t('effects.on') : t('effects.off')}</span>
+      <span className="inline">{enabled ? t('effects.on') : t('effects.off')}</span>
     </button>
   );
 }

@@ -84,7 +84,7 @@ export default function Module01Nashat() {
           content: (
             <div className="space-y-3">
               <p className="text-sm font-semibold text-slate-800"><MathText>{ACTIVITY.questions[2]}</MathText></p>
-              <div className="grid gap-2 sm:grid-cols-2">
+              <div className="grid gap-2 grid-cols-2">
                 <TextbookBox kind="example" title="التلميذ 1" lines={ACTIVITY.students[1]} source={ACTIVITY.source} compact />
                 <TextbookBox kind="example" title="التلميذ 2" lines={ACTIVITY.students[2]} source={ACTIVITY.source} compact />
               </div>

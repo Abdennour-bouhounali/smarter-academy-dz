@@ -253,7 +253,6 @@ export default function EggTrays({
   const vp = useLessonViewport(true);
   const screenH = vp.ready && vp.height > 0 ? vp.height : 700;
   const compact = width < 380;
-  const tiny = width < 300;
   const wide = width >= WIDE_MIN;
 
   /* ── la géométrie de la scène ── */
@@ -261,7 +260,7 @@ export default function EggTrays({
   const charW = compact ? 34 : 58;
   const pad = compact ? 12 : 18;
   const ax = useMemo(() => L.axisLayout({ max: lab.max, b, width: W, padL: pad, padR: pad + charW + (tray ? (compact ? 50 : 40) : 30) }), [lab.max, b, W, pad, charW, tray]);
-  const belt = useMemo(() => (tray ? null : L.beltLayout({ b, u: ax.u, x0: ax.x0, minW: tiny ? 5.5 : compact ? 7 : 11 })), [tray, b, ax, compact, tiny]);
+  const belt = useMemo(() => (tray ? null : L.beltLayout({ b, u: ax.u, x0: ax.x0, minW: compact ? 7 : 11 })), [tray, b, ax, compact, false]);
   const grid = L.trayGrid(b);
   const g = {};
   g.eggsH = tray ? (compact ? 14 : 18) : Math.max(14, belt.height);
@@ -278,7 +277,7 @@ export default function EggTrays({
   g.rulerBottom = g.R + (compact ? 56 : 66); // graduations, la légende de la règle, puis la pilule « إطارك »
   // la bande de commande (étroit) : hauteur FIXE par monde, pour que la scène ne saute jamais d'une phase à l'autre
   // chaque paire porte son libellé AU-DESSUS (§17.9) : trois paires tiennent sur une rangée, deux sous 300 px
-  const stripRows = (tray && compact) || tiny ? 2 : 1;
+  const stripRows = (tray && compact) ? 2 : 1;
   g.stripH = wide ? 0 : stripRows * 60 + 8;
   const sceneMax = screenH - around - 48;
   const zoomAvail = Math.round(Math.max(34, Math.min(110, sceneMax - g.rulerBottom - g.zoomFoot - 10 - g.stripH)));
@@ -347,7 +346,7 @@ export default function EggTrays({
   /* ── la formalisation ── */
   const br = L.bracketOf(lab.a0, b);
   const formalFor = (a) => (
-    <p className="flex flex-wrap items-baseline justify-center gap-x-4 gap-y-0.5 text-sm font-extrabold text-indigo-950 sm:text-base" key={a}>
+    <p className="flex flex-wrap items-baseline justify-center gap-x-4 gap-y-0.5 font-extrabold text-indigo-950 text-base" key={a}>
       <Formula pieces={L.formalPieces(a, b)} data-et-formal-line={a} />
       <bdi dir="ltr" className="whitespace-nowrap font-mono text-rose-800">{L.remainderLine(a, b)}</bdi>
     </p>
@@ -359,7 +358,7 @@ export default function EggTrays({
       </p>
       {formalFor(lab.a0)}
       <div className="space-y-1.5">
-        <p className="flex items-center gap-2 rounded-xl border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs font-bold text-slate-900 sm:text-sm" data-division-role="a">
+        <p className="flex items-center gap-2 rounded-xl border border-slate-300 bg-slate-50 px-2.5 py-1.5 font-bold text-slate-900 text-sm" data-division-role="a">
           <span dir="ltr" className="font-mono text-sm font-extrabold">a</span>
           <span>{k(`formal.roles.a.${world}`, { a: lab.a0 })}</span>
         </p>
@@ -399,8 +398,12 @@ export default function EggTrays({
 
   /* ── la lecture vivante (pilules de la consigne) : seulement ce que la main a produit ── */
   const reading = tray
-    ? [...(compact ? [] : [['pallets', pack.pallets], ['full', pack.loose]]), ...(tiny ? [] : [['open', pack.r]]), ['belt', lab.a - lab.count, 'amber']]
-    : [...(tiny ? [] : [['full', pack.q]]), ['open', pack.r]];
+    ? [
+    ...(compact ? [] : [['pallets', pack.pallets], ['full', pack.loose]]),
+    ['open', pack.r],
+    ['belt', lab.a - lab.count, 'amber']
+  ]
+    : [['full', pack.q], ['open', pack.r]];
 
   /* ── le panneau d'action (un seul à la fois) : le cadre (avant / après le remplissage) ou les œufs (pendant) ── */
   const panel = (lab.count === 0 && fillLocked) || isFull ? 'frame' : 'eggs';
@@ -457,7 +460,7 @@ export default function EggTrays({
   const verdictLine = (
     <VerdictBanner tone={verdictTone} icon={v ? (v.ok ? CheckCircle2 : XCircle) : Hand}
       size={compact ? 'xs' : 'sm'}
-      className={`${compact ? '!gap-2 !px-2.5 !py-1.5' : ''} ${wide ? 'min-h-[3.5rem]' : tiny ? 'min-h-[3.25rem]' : 'min-h-[4.25rem]'}`}
+      className={`${compact ? '!gap-2 !px-2.5 !py-1.5' : ''} ${wide ? 'min-h-[3.5rem]' : 'min-h-[4.25rem]'}`}
       data-et-verdict={v?.kind ?? ''} data-et-refused={v && !v.ok ? (v.model ?? v.kind) : undefined}>
       <p className={v ? '' : 'font-bold text-indigo-900'}>{rich(v ? verdictText : idle)}</p>
     </VerdictBanner>
@@ -514,13 +517,13 @@ export default function EggTrays({
               {/* §17.9 : pas de titre — le CONTEXTE (tous les nombres), puis UNE question qui nomme le but et l'état final */}
               <PromptCard
                 size={compact ? 'md' : 'lg'}
-                className={tiny ? '!space-y-1.5 !p-2.5' : ''}
+               
                 title={(
                   <span className="block space-y-1">
-                    <span className={`block font-bold text-slate-700 ${tiny ? 'text-[13px]' : compact ? 'text-sm' : 'text-base sm:text-lg'}`} data-et-context>
+                    <span className={`block font-bold text-slate-700 ${compact ? 'text-sm' : 'text-lg'}`} data-et-context>
                       {k(`context.${world}`, { eggs: eggs(lab.a), per: eggs(b) })}
                     </span>
-                    <span className={`block ${tiny ? 'text-[15px]' : compact ? 'text-base' : 'text-xl'}`} data-et-question>
+                    <span className={`block ${compact ? 'text-base' : 'text-xl'}`} data-et-question>
                       {rich(k(`question.${world}`, { div: div(lab.a) }))}
                     </span>
                   </span>
@@ -578,7 +581,7 @@ function FrameEnds({ k, world, q, r }) {
     <div className="space-y-2 rounded-2xl border border-indigo-100 bg-white p-2.5" data-et-ends={right ? 'right' : pick ?? ''}>
       <p className="text-sm font-black text-indigo-950">{k('ends.prompt')}</p>
       {!right && (
-        <div className="grid gap-2 sm:grid-cols-2">
+        <div className="grid gap-2 grid-cols-2">
           {options.map((o) => (
             <ChoiceCard key={o.id} size="sm" state={pick === o.id ? (o.correct ? 'right' : 'tried') : 'idle'} className="!whitespace-normal !px-2 text-start !text-sm"
               onClick={() => setPick(o.id)} data-et-ends-option={o.id}>{o.text}</ChoiceCard>
@@ -886,7 +889,6 @@ function FarmScene({ lab, k, W, g, ax, belt, zl, grid, st, sf, tray, compact, ch
             : <KidFigure cx={kidCx} top={kidTop} foot={kidFoot} hairStyle="hijab" scarf="mint" skin="light" outfit="teal" mood={mood} />}
         </g>
       </svg>
-
       {/* le TAPIS est la piste du manche : le toucher y pose le manche ; le manche est au bout de ce qui est emballé */}
       <div {...st.trackProps} className="absolute inset-x-0 top-0" style={{ ...st.trackProps.style, height: g.beltY + 16, pointerEvents: fillLocked ? 'none' : undefined }}>
         <div {...st.handleProps({ label: k('handle'), valueText: k('handleValue', { eggs: eggs(count), order: a }) })}

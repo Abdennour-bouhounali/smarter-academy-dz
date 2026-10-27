@@ -793,7 +793,7 @@ function FreeCard({ lab, setLab, k }) {
     <LabCard className="space-y-2 border-emerald-200 bg-emerald-50/50 p-3" data-rc-free data-active={free ? 'true' : 'false'} data-rc-free-kind={order ? 'order' : 'compare'}>
       <p className="flex items-center gap-1.5 text-sm font-black text-emerald-900"><FlaskConical className="h-4 w-4" aria-hidden="true" /> {k('free.title')}</p>
       <p className="text-xs font-bold leading-snug text-slate-600">{free ? k('free.on') : bad ? k('free.bad') : k(order ? 'free.hintOrder' : 'free.hint')}</p>
-      <div className={order ? 'grid grid-cols-3 gap-2 md:grid-cols-6' : 'flex flex-wrap items-center gap-3'}>
+      <div className={order ? 'grid gap-2 grid-cols-6' : 'flex flex-wrap items-center gap-3'}>
         {Array.from({ length: count }, (_, i) => field(i))}
       </div>
       {free && (
@@ -833,7 +833,7 @@ export function Formal({ lab, k }) {
   return (
     <div className="space-y-2.5 text-sm font-bold text-emerald-950" data-rc-formal={order && compares.length === 0 ? 'order' : 'compare'}>
       {compares.length > 0 && (
-        <div className="grid gap-2 md:grid-cols-2">
+        <div className="grid gap-2 grid-cols-2">
           {compares.map(({ i, t, s }) => {
             const rank = D.firstDifferingRank(t.av, t.bv);
             const kmax = Math.max(t.av.k, t.bv.k);

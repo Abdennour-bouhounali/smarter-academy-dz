@@ -352,7 +352,22 @@ Each component header carries its DNA design sheet and full DOM contract.
 `[data-lc-glance]`; `[data-plan-compare][data-stage][data-step]` / `[data-pc-glance]`; all five `[data-deco]`, and
 `[data-lab-fold]` where the trials fold.
 
-**Narrow layouts (320 px).** At 320×640 a lab scene is ~160–180 px wide (unit 5's observation): each lab has a measured narrow
+**Screen floor — lessons are generated for tablet and laptop ONLY (owner, 2026-10-27).** Phones never reach a lesson or an
+exercise (`components/auth/RequireLargeScreen.jsx` replaces them with a message), so lesson code carries NO phone code:
+- **No `sm:` / `md:` Tailwind variants in lesson code.** The viewport is always ≥ 768 px, so they always apply: write the
+  final class directly (`grid-cols-2`, not `grid-cols-1 sm:grid-cols-2`; `text-sm`, not `text-xs sm:text-sm`). `lg:` / `xl:` stay
+  legitimate (1024 / 1280 px). The three lesson files also rendered by phone-supported pages (`ClassroomToolbar`, `KnowledgeMap`,
+  `LinearKnowledgeView`) keep theirs.
+- **The lab-box floor is 354 px** (measured 2026-10-27 at 1024×768 with the « بطاقتي » column open — the narrowest
+  supported case: the `[data-manipulation-stage]` is 402 px in a lesson's activity modules and 386 px in a « معارف » module,
+  minus 16 px of stage padding on each side; a 768×1024 tablet gives a 494 px box). A lab-level width branch (`tiny`,
+  `narrow`, `compact` measured on the lab box) whose threshold is ≤ 340 px is dead code: do not write it. Branches from
+  360 px up are REAL (they fire on a tablet in portrait or beside the map column) and stay. A sub-component measuring its
+  own panel is free.
+- A new lab starts its measured-width state at a supported size (`useState(560)`), never at a phone width (`useState(320)`). Existing labs keep theirs: the layout effect measures before the first paint, and their render tests read that SSR width.
+- No `@media (max-width: …)` under 768 px in lesson CSS; no element that exists only on phones (`sm:hidden`).
+
+**Narrow layouts (320 px) — HISTORICAL, superseded by « Screen floor » below (2026-10-27).** At 320×640 a lab scene is ~160–180 px wide (unit 5's observation): each lab has a measured narrow
 layout — numbered stage tabs (`affine-meter`), the ghost rule dropped (`affine-line`), a 4-button pad (`slope-stairs`), compact
 lamps and −/+ instead of strips (`line-crossing`), the empty plane hidden while the bill is built (`plan-compare`). The tightest
 measured margins are 8–10 px (L2 advanced, L4 advanced after both lines, the synthesis on phones).
@@ -2234,8 +2249,8 @@ call (it would widen every lesson).
 [ ] Auto-completion decided (§6bis): AUTO with a shared rule and a mixed-start test, or MANUAL with a reason
 [ ] Classroom Mode (if wrapped): enter/exit keeps the state, fits the screen, no page scroll
 [ ] Student mode works
-[ ] Mobile works (320 px, ≥44 px targets, no horizontal scroll)
-[ ] One screen (§8bis): object + its controls + its reading visible together, no vertical scroll, at 1280×800 / 1366×768 / 390×844 / 320×640, both levels
+[ ] Tablet and laptop only (§8bis « Screen floor »): ≥44 px targets, no horizontal scroll, NO phone code (no `sm:`/`md:` variant, no width branch under the 354 px lab-box floor)
+[ ] One screen (§8bis): object + its controls + its reading visible together, no vertical scroll, at 768×1024 / 1024×768 / 1280×800 / 1366×768 / 1920×1080, both levels
 [ ] Large activity: secondary blocks in LabFold, floating readings in MovablePanel, many objects in a near-square block
 [ ] RTL works
 [ ] Mathematical notation is LTR where needed

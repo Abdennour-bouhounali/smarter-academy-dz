@@ -367,7 +367,7 @@ export default function GrowthRace({
     const body = (
       <div className="flex flex-col items-center gap-1 px-1 py-1">
         <div style={{ width: 'clamp(46px, 18cqi, 96px)' }} aria-hidden="true">{figure}</div>
-        <span className="text-xs font-bold text-slate-800 sm:text-sm">{names[el.id]}</span>
+        <span className="font-bold text-slate-800 text-sm">{names[el.id]}</span>
         {model.op === 'mul' && <span className="text-[11px] text-slate-600">{tw('price', { v: L.valueText(el.c) })} · {el.kind === 'fixed' ? tw('once') : tw('perSession')}</span>}
         {racing ? (
           <span className="rounded-full bg-white px-2 py-0.5 text-xs font-extrabold text-slate-800 shadow-sm" data-gr-now={el.id}>
@@ -473,9 +473,9 @@ export default function GrowthRace({
           <p className="rounded-xl bg-white/80 px-3 py-2 text-sm font-bold text-slate-800" data-gr-question>{question}</p>
 
           {/* ── le monde : les deux membres, côte à côte dans le sens de l'équation ── */}
-          <div className="relative pt-12 sm:pt-0">
+          <div className="relative pt-0">
             <Decor themeId={themeId} />
-            <div dir="ltr" className="flex flex-col gap-2 sm:flex-row" data-gr-scene>
+            <div dir="ltr" className="flex gap-2 flex-row" data-gr-scene>
               {renderSide('left')}
               <div className="flex items-center justify-center px-1 font-mono text-2xl font-black text-slate-500" aria-hidden="true">{racing ? REL_TEX[now.rel] : '?'}</div>
               {renderSide('right')}
@@ -586,7 +586,7 @@ export default function GrowthRace({
                   <span dir="rtl">{titleR}</span>
                 </div>
               </div>
-              <div className="grid gap-1 rounded-xl bg-white/90 px-3 py-2 text-sm sm:grid-cols-2" data-gr-readout>
+              <div className="grid gap-1 rounded-xl bg-white/90 px-3 py-2 text-sm grid-cols-2" data-gr-readout>
                 <p><span className="font-bold text-slate-600">{titleL}: </span><MathText>{`$${L.readoutTex(model, 'left', xx).tex}$`}</MathText></p>
                 <p><span className="font-bold text-slate-600">{titleR}: </span><MathText>{`$${L.readoutTex(model, 'right', xx).tex}$`}</MathText></p>
               </div>
@@ -702,7 +702,7 @@ function Decor({ themeId }) {
   };
   return (
     <button type="button" tabIndex={-1} aria-hidden="true" onClick={tap} data-decor
-      className="absolute top-0 end-1 z-10 h-12 w-20 rounded-xl opacity-90 focus:outline-none sm:-top-12">
+      className="absolute end-1 z-10 h-12 w-20 rounded-xl opacity-90 focus:outline-none -top-12">
       <svg viewBox="0 0 120 70" width="100%" height="100%">
         <style>{'.gr-flame{transform-origin:60px 22px;animation:gr-flick .45s ease-in-out 4}@keyframes gr-flick{0%,100%{transform:scale(1,1)}50%{transform:scale(.8,.55) skewX(10deg)}}.gr-ripple{transform-box:fill-box;transform-origin:center;animation:gr-ripple 1.1s ease-out forwards}@keyframes gr-ripple{from{transform:scale(.2);opacity:.9}to{transform:scale(2.4);opacity:0}}@media (prefers-reduced-motion: reduce){.gr-flame,.gr-ripple{animation:none}}'}</style>
         {themeId === 'pool' ? (

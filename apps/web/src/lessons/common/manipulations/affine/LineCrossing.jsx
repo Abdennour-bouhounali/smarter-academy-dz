@@ -155,15 +155,14 @@ export default function LineCrossing({
   const screenH = vp.ready && vp.height > 0 ? vp.height : 576;
   const budget = Math.max(300, screenH - 8);
   const wide = width >= 620;
-  const narrow = width < 340;
-  const strip = narrow ? 34 : STRIP_W;
+  const strip = STRIP_W;
   const casesOn = lab.stage === 'cases';
 
   /* ── géométrie ── */
   const { win, snap, grid } = lab;
   const planeCol = wide ? Math.floor((width - GAP) * 0.58) : width;
   // sur un téléphone étroit, les pistes cèdent la place au plan : b et a se règlent par −/+ (et le clavier)
-  const stripsOn = casesOn && !narrow;
+  const stripsOn = casesOn && true;
   const availW = planeCol - (stripsOn ? 2 * strip : 0);
   const availH = Math.max(140, (wide ? budget : budget - ctrlH - GAP) - 2 * TITLE_H - 8);
   const geo = useMemo(() => L.planeGeometry({ win, width: availW, height: availH, orthonormal: true }), [win, availW, availH]);
@@ -270,7 +269,7 @@ export default function LineCrossing({
   const line1 = lab.built[0] ? L.segmentOf(lab.lines[0], win) : null;
   const g2 = casesOn ? heldNow : lab.lines[1];
   const line2 = lab.built[1] ? L.segmentOf(g2, win) : null;
-  const layout = wide ? 'side' : narrow ? 'narrow' : 'stack';
+  const layout = wide ? 'side' : 'stack';
   const laser = theme === 'laser';
   const relKind = casesOn ? rel.kind : null;
 
@@ -361,16 +360,16 @@ export default function LineCrossing({
   );
 
   const bi = L.buildingIndex(lab);
-  const lampFull = !(narrow && casesOn);
+  const lampFull = true;
   const controls = (
-    <div ref={ctrlRef} className={narrow ? 'space-y-1.5' : 'space-y-2'} data-lc-controls>
+    <div ref={ctrlRef} className="space-y-2" data-lc-controls>
       <ul className="space-y-0.5" aria-label={k('systemTitle')}>
         {[0, 1].map((i) => ((lab.stage !== 'build' || lab.built[i]) ? (
-          <li key={i} className={`flex flex-wrap items-center gap-1 font-bold ${narrow ? 'text-xs' : 'text-sm'}`} data-lc-eq={i + 1} data-built={lab.built[i] ? 'true' : 'false'}>
+          <li key={i} className="flex flex-wrap items-center gap-1 font-bold text-sm" data-lc-eq={i + 1} data-built={lab.built[i] ? 'true' : 'false'}>
             <span className="inline-block h-3 w-3 rounded-full" style={{ background: i === 0 ? C1 : C2 }} aria-hidden="true" />
             <span className="text-slate-500">({i + 1})</span>
-            {!narrow && <MathText>{`$${L.eqTex(lab.eqs[i])}$`}</MathText>}
-            <span className="text-slate-700"><MathText>{narrow ? `$${L.lineTex(lab.lines[i])}$` : `$\\iff ${L.lineTex(lab.lines[i])}$`}</MathText></span>
+            <MathText>{`$${L.eqTex(lab.eqs[i])}$`}</MathText>
+            <span className="text-slate-700"><MathText>{`$\\iff ${L.lineTex(lab.lines[i])}$`}</MathText></span>
           </li>
         ) : null))}
       </ul>
@@ -382,7 +381,7 @@ export default function LineCrossing({
               const refused = lab.last?.kind === 'wrongForm' && lab.last.i === bi && lab.last.k === kk;
               return (
                 <button key={`${bi}:${kk}`} type="button" onClick={() => pickCard(bi, kk)}
-                  className={`min-h-[44px] rounded-xl border-2 px-1 py-0.5 font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${narrow ? 'text-[11px]' : 'text-sm'} ${refused ? 'border-rose-400 bg-rose-50' : 'border-slate-300 bg-white hover:border-indigo-400'}`}
+                  className={`min-h-[44px] rounded-xl border-2 px-1 py-0.5 font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 text-sm ${refused ? 'border-rose-400 bg-rose-50' : 'border-slate-300 bg-white hover:border-indigo-400'}`}
                   data-lc-card={`${bi}:${kk}`} data-ok={c.ok ? 'true' : 'false'}>
                   <span key={refused ? `s${shake}` : 'n'} className={refused ? 'lc-shake inline-block' : 'inline-block'}><MathText>{`$${L.candTex(c)}$`}</MathText></span>
                 </button>
@@ -410,15 +409,15 @@ export default function LineCrossing({
       {probing && (
         <div className={lampFull ? 'grid grid-cols-1 gap-1' : 'flex flex-wrap gap-1'} data-lc-lamps>
           {[0, 1].map((i) => (
-            <Lamp key={i} n={i + 1} on={lamps[i]} color={i === 0 ? C1 : C2} caption={lampFull && !narrow ? tw(`lamp${i + 1}`) : ''} compact={narrow}
+            <Lamp key={i} n={i + 1} on={lamps[i]} color={i === 0 ? C1 : C2} caption={lampFull ? tw(`lamp${i + 1}`) : ''} compact={false}
               tex={lampFull ? (i === 1 && casesOn ? L.substLineTex(heldNow, px, py) : L.substTex(lab.eqs[i], px, py)) : null} k={k} />
           ))}
         </div>
       )}
       {casesOn && (
         <div className="space-y-1" data-lc-casespad>
-          <p className={`flex flex-wrap items-center gap-1 font-bold text-slate-800 ${narrow ? 'text-xs' : 'text-sm'}`}>
-            {!narrow && <span className="text-slate-500">{k('heldNow')}</span>}
+          <p className="flex flex-wrap items-center gap-1 font-bold text-slate-800 text-sm">
+            <span className="text-slate-500">{k('heldNow')}</span>
             <span className="rounded-lg border-2 border-amber-300 bg-white px-1.5 py-0.5"><MathText>{`$${L.lineTex(heldNow)}$`}</MathText></span>
             <span className={`rounded-full px-2 py-0.5 text-xs text-white ${rel.kind === 'unique' ? 'bg-indigo-600' : rel.kind === 'parallel' ? 'bg-rose-600' : 'bg-emerald-600'}`} data-lc-rel={rel.kind}>{k(`rel.${rel.kind}`)}</span>
           </p>
@@ -428,7 +427,7 @@ export default function LineCrossing({
           </div>
         </div>
       )}
-      <p role="status" className={`font-bold leading-snug ${narrow ? 'min-h-[1.5rem] text-xs' : 'min-h-[2.5rem] text-sm'}`} data-lc-verdict={lab.last?.kind ?? ''}>{verdict}</p>
+      <p role="status" className="font-bold leading-snug min-h-[2.5rem] text-sm" data-lc-verdict={lab.last?.kind ?? ''}>{verdict}</p>
       {L.canOpenCases(lab) && (
         <button type="button" onClick={() => setLab((s) => L.openCases(s))} data-lc-open-cases
           className="min-h-[44px] rounded-xl border-2 border-violet-500 bg-violet-50 px-3 text-sm font-bold text-violet-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500">

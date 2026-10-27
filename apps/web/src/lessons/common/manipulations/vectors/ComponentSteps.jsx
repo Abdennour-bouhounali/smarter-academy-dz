@@ -141,12 +141,10 @@ export default function ComponentSteps({
   const vp = useLessonViewport(true);
   const screenH = vp.ready && vp.height > 0 ? vp.height : 640;
   const narrow = width < 400;
-  // un téléphone de 320 px (cartes déduites, ≈ 186 px) : onglets → « ‹ الطلب n من 5 › », cases plus serrées, pas d'étoiles
-  const compact = width < 260;
   const side = width >= 600;
   const panelW = width >= 900 ? 270 : 236;
   const maxW = side ? width - panelW - 10 : width;
-  const pad = compact ? 12 : narrow ? 18 : 24;
+  const pad = narrow ? 18 : 24;
   const cap = width >= 700 ? 58 : 46;
   const avail = Math.max(170, Math.min(side ? screenH - 40 : screenH - overhead - 28, 640));
   const natural = L.naturalHeight(lab, maxW, { pad, cap });
@@ -267,7 +265,7 @@ export default function ComponentSteps({
   ]), [tale, act1, k]);
   const formal = (
     <div className="space-y-2" data-cs-formal>
-      <div className="grid gap-1.5 sm:grid-cols-2">
+      <div className="grid gap-1.5 grid-cols-2">
         {lab.orders.map((x) => {
           const u = L.expectedOf(lab, x);
           const nm = `${x.from}${x.to}`;
@@ -296,14 +294,14 @@ export default function ComponentSteps({
     const v = column[axis];
     const hidden = (o.kind === 'walkCode' && !s.done) || (o.kind === 'walk' && !showCount);
     return (
-      <span dir="ltr" data-cs-count={axis ? 'y' : 'x'} className={`inline-flex ${compact ? 'h-9 min-w-[2.25rem] text-lg' : 'h-11 min-w-[2.75rem] text-xl'} items-center justify-center rounded-lg px-1 font-mono font-black ${hidden ? 'bg-slate-800 text-slate-400' : v < 0 ? 'bg-rose-100 text-rose-800' : v > 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-white text-slate-800'}`}>
+      <span dir="ltr" data-cs-count={axis ? 'y' : 'x'} className={`inline-flex h-11 min-w-[2.75rem] text-xl items-center justify-center rounded-lg px-1 font-mono font-black ${hidden ? 'bg-slate-800 text-slate-400' : v < 0 ? 'bg-rose-100 text-rose-800' : v > 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-white text-slate-800'}`}>
         {hidden ? '؟' : signed(v)}
       </span>
     );
   };
   const columnBlock = (
     <div className="flex items-center gap-1.5" dir="ltr" data-cs-column data-live={lab.live ? 'true' : 'false'} aria-live="polite">
-      {!compact && <span className="text-base text-orange-200"><MathText>{`$${o.kind === 'pin' ? '\\vec{u}' : VEC(vecName)}$`}</MathText></span>}
+      <span className="text-base text-orange-200"><MathText>{`$${o.kind === 'pin' ? '\\vec{u}' : VEC(vecName)}$`}</MathText></span>
       <span aria-hidden="true" className="self-stretch rounded-s-full border-y-2 border-s-2 border-orange-300" style={{ width: 9 }} />
       <div className="flex flex-col gap-1">{editing ? <>{dial(0)}{dial(1)}</> : <>{countCell(0)}{countCell(1)}</>}</div>
       <span aria-hidden="true" className="self-stretch rounded-e-full border-y-2 border-e-2 border-orange-300" style={{ width: 9 }} />
@@ -332,27 +330,13 @@ export default function ComponentSteps({
   ) : null;
 
   const panel = (
-    <div className={`flex min-w-0 flex-col gap-1.5 rounded-[1.4rem] bg-slate-900 text-slate-100 ${compact ? 'border-2 p-1' : 'border-4 p-2'} border-slate-800 ${side ? '' : 'w-full'}`}
+    <div className={`flex min-w-0 flex-col gap-1.5 rounded-[1.4rem] bg-slate-900 text-slate-100 border-4 p-2 border-slate-800 ${side ? '' : 'w-full'}`}
       style={side ? { width: panelW } : undefined} data-cs-panel>
-      {!compact && (
         <div className="flex items-center gap-1.5">
           <span className="rounded-full bg-orange-500 px-2 py-0.5 text-[11px] font-black text-white">{k('appName')}</span>
           <Stars n={stars} reduce={reduce} />
           <Horn label={k('horn')} onTap={() => setHonk((n) => n + 1)} />
         </div>
-      )}
-      {compact ? (
-        <div className="flex items-center gap-1" role="group" aria-label={k('tabsLabel')} data-cs-tabs="stepper">
-          <button type="button" className={`${btn} bg-slate-800 text-base text-slate-100`} aria-label={k('prevOrder')} disabled={lab.t === 0}
-            onClick={() => { setDrag(null); setLab((st) => L.goTo(st, st.t - 1)); }} data-cs-prev>›</button>
-          <span className={`flex min-h-[44px] flex-1 items-center justify-center gap-1 rounded-lg border px-1 text-[11px] font-bold ${s.done ? 'border-emerald-700 bg-emerald-900/40 text-emerald-200' : 'border-orange-300 bg-orange-500/25 text-white'}`}
-            data-cs-tab={o.id} data-done={s.done ? 'true' : 'false'} aria-label={k('orderN', { n: lab.t + 1, total: lab.orders.length })}>
-            <bdi dir="ltr" className="font-mono">{`${lab.t + 1}/${lab.orders.length} · ${o.from}${o.to}`}</bdi>{s.done ? '✓' : ''}
-          </span>
-          <button type="button" className={`${btn} bg-slate-800 text-base text-slate-100`} aria-label={k('nextOrder')} disabled={lab.t === lab.orders.length - 1}
-            onClick={() => { setDrag(null); setLab((st) => L.goTo(st, st.t + 1)); }} data-cs-next-tab>‹</button>
-        </div>
-      ) : (
       <div className="grid grid-cols-5 gap-1" role="group" aria-label={k('tabsLabel')} data-cs-tabs>
         {lab.orders.map((x, i) => {
           const done = L.orderDone(lab, i);
@@ -366,8 +350,7 @@ export default function ComponentSteps({
           );
         })}
       </div>
-      )}
-      <div className={`flex flex-wrap items-center justify-center ${compact ? 'gap-1' : 'gap-2'} rounded-xl bg-slate-800 p-1.5`}>
+      <div className="flex flex-wrap items-center justify-center gap-2 rounded-xl bg-slate-800 p-1.5">
         {columnBlock}
         {walking || pinning ? pad3 : editing ? sendBtn : nextBtn}
       </div>
@@ -400,14 +383,14 @@ export default function ComponentSteps({
       )}
       explanation={<MathText>{k(`explanation${cap1}`)}</MathText>}
     >
-      <ManipulationStage className="!p-1.5 sm:!p-3 bg-gradient-to-b from-orange-50 to-white" minHeight="min-h-[160px]" dragging={!!ptr.current}>
+      <ManipulationStage className="bg-gradient-to-b from-orange-50 to-white !p-3" minHeight="min-h-[160px]" dragging={!!ptr.current}>
         <div ref={boxRef} className="space-y-2" data-component-steps data-world={theme} data-order={o.id} data-kind={o.kind}
           data-solved={ready ? 'true' : 'false'} data-scene-h={sceneH}>
           <div ref={glanceRef} className={`flex ${side ? 'flex-row items-start' : 'flex-col items-center'} justify-center gap-2`} data-cs-glance>
             <div ref={sceneRef} className="relative shrink-0 overflow-hidden rounded-xl shadow-inner" style={{ width: sceneW, height: sceneH, touchAction: 'none' }}
               onPointerUp={onSceneUp} data-cs-scene data-cell={Math.round(geo.cell)}>
               <CityMap geo={geo} lab={lab} />
-              {compact && <div className="absolute bottom-1 start-1 z-10"><Horn compact onTap={() => setHonk((n) => n + 1)} /></div>}
+
               <Trips geo={geo} lab={lab} drag={drag} reduce={reduce} honk={honk} />
               {riderAt && (
                 <button type="button" data-cs-rider aria-label={k('riderAria', { x: s.pos[0], y: s.pos[1] })}

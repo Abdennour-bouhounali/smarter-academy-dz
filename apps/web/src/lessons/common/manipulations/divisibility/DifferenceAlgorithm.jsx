@@ -115,7 +115,7 @@ export default function DifferenceAlgorithm({
             const isLast = i === lab.steps.length - 1;
             const nextBig = Math.max(s.small, s.diff); const nextSmall = Math.min(s.small, s.diff);
             return (
-              <li key={i} className="grid gap-2 md:grid-cols-2">
+              <li key={i} className="grid gap-2 grid-cols-2">
                 <EquationDisplay tex={differenceStepTex(s)} tone={s.diff === 0 ? 'result' : i === shown.length - 1 ? 'active' : 'neutral'} size="sm" />
                 {/* La dernière ligne ne dit le PGCD qu'une fois que l'élève l'a posé
                     dans sa case : sinon la chaîne donne la réponse avant le geste
@@ -180,13 +180,13 @@ export default function DifferenceAlgorithm({
                   { value: pair.small, tone: 'ghost' },
                   ...(pair.big - pair.small > 0 ? [{ value: pair.big - pair.small, tone: 'a' }] : []),
                 ] : undefined} />
-              {!finished && !drag.held && <span className="hidden text-[11px] text-slate-400 sm:inline">{t('manipulation.diff.dropOnBig')}</span>}
+              {!finished && !drag.held && <span className="text-[11px] text-slate-400 inline">{t('manipulation.diff.dropOnBig')}</span>}
             </DropZone>
             {finished && <p className="text-xs font-bold text-emerald-800">{t('manipulation.diff.nothingLeft', { v: lab.gcd })}</p>}
           </div>
 
           {finished && (
-            <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
+            <div className="grid gap-2 grid-cols-[1fr_auto]">
               <div className="rounded-2xl border-2 border-slate-200 bg-white p-2">
                 <div className="mb-1 text-[11px] font-bold text-slate-700">{t('manipulation.diff.piecesTitle')}</div>
                 {/* Les fruits dans l'ordre de grandeur, pas dans celui de la

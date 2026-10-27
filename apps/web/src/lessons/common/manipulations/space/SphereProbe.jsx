@@ -310,7 +310,7 @@ export default function SphereProbe({
                 <div className={`absolute z-10 flex gap-1 rounded-xl bg-white/85 p-1 shadow ring-1 ring-slate-200 ${narrow ? 'bottom-1 left-1/2 -translate-x-1/2' : 'start-2 top-2'}`} role="group" aria-label={k('objectGroup')}>
                   {['sphere', 'ball'].map((o) => (
                     <button key={o} type="button" data-sp-object={o} aria-pressed={object === o} onClick={() => setObject(o)}
-                      className={`min-h-[44px] whitespace-nowrap rounded-lg px-2 text-xs font-extrabold focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-300 sm:text-sm ${object === o ? 'bg-slate-900 text-white' : 'text-slate-800'}`}>
+                      className={`min-h-[44px] whitespace-nowrap rounded-lg px-2 font-extrabold focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-300 text-sm ${object === o ? 'bg-slate-900 text-white' : 'text-slate-800'}`}>
                       <MathText>{k(`object.${o}`)}</MathText>
                     </button>
                   ))}

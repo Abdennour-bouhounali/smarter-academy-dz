@@ -124,10 +124,8 @@ export default function RouteCompare({
   const vp = useLessonViewport(true);
   const screenH = vp.ready && vp.height > 0 ? vp.height : 640;
   const narrow = boxW < 380;
-  // Sous 250 px (téléphone de 320 px), le bloc « glance » reprend la marge de la scène (-mx-2), comme trig-calculator.
-  const tiny = boxW < 250;
   const budget = Math.round(Math.max(180, Math.min(500, screenH - overhead - 20)));
-  const G = L.layout(lab, { width: Math.min(boxW + (tiny ? 16 : 0), 600), height: budget, pad: tiny ? 8 : 12 });
+  const G = L.layout(lab, { width: Math.min(boxW, 600), height: budget, pad: 12 });
   svgHRef.current = G.height;
   const X = G.X; const Y = G.Y;
   const xy = (P) => [X(P.x), Y(P.y)];
@@ -273,7 +271,7 @@ export default function RouteCompare({
       <ManipulationStage className={world === 'rally' ? 'bg-gradient-to-b from-amber-50/70 to-white' : 'bg-gradient-to-b from-sky-50/70 to-white'} minHeight="min-h-[180px]">
         <div ref={boxRef} className="space-y-2" data-route-compare data-world={world} data-stage={lab.bet == null ? 'bet' : done ? 'compare' : 'build'}
           data-active={lab.active + 1} data-built={lab.built.join(',')} data-scene-h={G.height}>
-          <div ref={glanceRef} className={`space-y-1.5 ${tiny ? '-mx-2' : ''}`} data-rc-glance>
+          <div ref={glanceRef} className="space-y-1.5" data-rc-glance>
             <div
               ref={planeRef}
               className={`relative mx-auto ${building ? 'cursor-crosshair' : ''}`}

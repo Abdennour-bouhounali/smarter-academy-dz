@@ -138,7 +138,7 @@ export default function EuclidAlgorithm({
       representation={(
         <div className="space-y-2" data-euclid-chain>
           {done.map((s, i) => (
-            <div key={i} className="grid gap-2 md:grid-cols-2">
+            <div key={i} className="grid gap-2 grid-cols-2">
               <EquationDisplay tex={euclidStepTex(s)} tone={s.r === 0 ? 'result' : 'ok'} size="sm" />
               <EquationDisplay tex={s.r === 0 ? `\\mathrm{PGCD}(${a}\\ ;\\ ${b}) = ${lab.pgcdPlaced ? lab.gcd : '\\,?'}` : pgcdEqualityTex(s.a, s.b, s.b, s.r)} tone="muted" size="sm"
                 note={s.r === 0 ? t('manipulation.euclid.remainderZero') : t('manipulation.euclid.invariant')} />
@@ -232,7 +232,7 @@ export default function EuclidAlgorithm({
               )}
             </>
           ) : (
-            <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
+            <div className="grid gap-2 grid-cols-[1fr_auto]">
               <div className="rounded-2xl border-2 border-slate-200 bg-white p-2">
                 <div className="mb-1 text-[11px] font-bold text-slate-700">{t('manipulation.euclid.chain')}</div>
                 <div dir="ltr" className="flex flex-wrap gap-1.5">

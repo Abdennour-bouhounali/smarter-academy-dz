@@ -193,9 +193,9 @@ describe('trig-calculator — étapes et découverte', () => {
   });
 });
 
-describe('trig-calculator — les deux claviers', () => {
-  it('large et étroit portent EXACTEMENT les mêmes 19 touches, sans case occupée deux fois', () => {
-    for (const rows of [L.KEY_ROWS, L.KEY_ROWS_NARROW]) {
+describe('trig-calculator — le clavier', () => {
+  it('porte EXACTEMENT 19 touches, sans case occupée deux fois', () => {
+    for (const rows of [L.KEY_ROWS]) {
       const g = L.keyGrid(rows);
       expect(g.map((k) => k.key).sort()).toEqual(L.KEY_ROWS.flat().sort());
       expect(g).toHaveLength(19);

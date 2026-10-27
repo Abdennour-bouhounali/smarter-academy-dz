@@ -46,6 +46,7 @@ stale, and when the entry exceeds its budget). Never import something heavy from
 ---
 
 > **Supported screens: tablet and laptop only (owner, 2026-10-15)** — widths ≥ 768 px (768×1024, 1024×768, 1280×800, 1366×768, 1920×1080). Phones are NOT supported: do not design, tune or test for phone widths (320–430 px); older mentions of them below are superseded.
+> **Enforced since 2026-10-27 (owner):** every lesson route (index and modules) and every practice route (`/espace/pratique/*`, `/espace/tashih/:id`, the teacher's `/enseignant/pratique/*`) sits behind the layout route `components/auth/RequireLargeScreen.jsx`. On a phone (`(max-width: 767px)`, or a touch screen under 500 px high = a phone held landscape) it renders « محتوى الدروس يظهر فقط في شاشة الحاسوب — رجاء افتح المنصة في الحاسوب لاستفادة قصوى » (`common.json › largeScreenOnly*`) instead of the content, and nothing of the lesson loads. **Generate for tablet and laptop ONLY** (owner, 2026-10-27): no `sm:` / `md:` Tailwind variant, no `@media (max-width: <768px)`, no phone-only element, no lab width branch under the 354 px lab-box floor. The phone code of every existing lesson was removed the same day. The rule, the measured floor and the exceptions are in `MANIPULATION_CONTRACT.md` §8bis « Screen floor ». Branches from 360 px up stay: a tablet in portrait, or the map column at 1024 px, really gives a lab that width. Test: `RequireLargeScreen.test.jsx`.
 
 ## 1. Before you start
 
@@ -942,7 +943,7 @@ piled on one another, labels colliding with other labels or points (unit 11 act-
 2 : 1 strip). Before drawing any textbook figure:
 
 1. **Analyse it**: what does each question need to SEE (which points, which arrows, which equalities)? Is the
-   textbook drawing readable at 320 px — near-square, every label free, every shape distinct?
+   textbook drawing readable in a lab box of 354 px (the floor, `MANIPULATION_CONTRACT.md` §8bis « Screen floor ») — near-square, every label free, every shape distinct?
 2. **Good → reproduce it** as GeoFigure data, faithfully.
 3. **Not good → generate a better one with the SAME concept**: same mathematical situation, same named points and the
    same questions where possible, but a layout that reads — spread the shapes over a near-square grid, separate
@@ -1040,7 +1041,7 @@ pattern, its gate and its tests are in [`MANIPULATION_DNA.md` §16](../architect
 
 - **One screen, no scroll (owner rule, 2026-10-01 — every manipulation).** The
   object, every control that acts on it and the reading it produces fit ONE
-  viewport (1280 × 800 down to 320 × 640): the stage height is budgeted from
+  viewport (1920 × 1080 down to 768 × 1024 / 1024 × 768 — tablet and laptop only): the stage height is budgeted from
   `100dvh`, countable objects shrink with the scene, handles sit beside what
   they move, secondary material goes below. A lab whose sliders are a scroll
   away from the figure they change is not done.
@@ -1058,7 +1059,7 @@ pattern, its gate and its tests are in [`MANIPULATION_DNA.md` §16](../architect
   « works » is not done: build each new or redesigned manipulation to the best finish you can produce — a rich drawn world,
   the shared kit, physical gestures with purposeful micro-animations, immediate visual feedback in the student's numbers
   (never the rule), one screen at four sizes, honest drawing — and REVIEW screenshots of the initial and mid-activity states
-  at 1280 / 1366 / 390 / 320 before finishing. The full bar:
+  at 768 / 1024 / 1280 / 1366 before finishing. The full bar:
   [`MANIPULATION_DNA.md` §17](../architecture/MANIPULATION_DNA.md); gold-standard question 6 (§14).
 - **Say it ONCE (owner, 2026-10-14).** Gen Alpha does not read repeated text: the question lives in the lab's prompt card (no
   shell `mission` on a kit lab), the gesture in one line, the story mapping in a one-line `lead` (« كل قفزة = عقد من 17 لؤلؤة. »)

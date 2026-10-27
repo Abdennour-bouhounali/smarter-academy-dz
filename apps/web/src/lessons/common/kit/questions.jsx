@@ -120,14 +120,14 @@ export function BatchChoiceQuestion({
           return (
             <div
               key={r.id}
-              className={`rounded-2xl border-2 p-3.5 flex flex-col sm:flex-row sm:items-center gap-3 ${
+              className={`rounded-2xl border-2 p-3.5 flex gap-3 flex-row items-center ${
                 rowRight ? 'border-emerald-300 bg-emerald-50/50' : rowWrong ? 'border-rose-300 bg-rose-50/50' : 'border-slate-200 bg-white'
               }`}
             >
               {/* L'étiquette garde 14rem au moins mais GRANDIT avec son contenu (jusqu'à 55 % de la ligne) : à largeur fixe,
                   trois formules « EF² = 20 ، FG² = 20 ، EG² = 40 » se cassaient après « = » et débordaient sur les choix
                   (vu par le propriétaire, unité 12, 2026-10-04). Une formule ne se coupe jamais à l'intérieur. */}
-              <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 sm:min-w-[14rem] sm:max-w-[55%] sm:shrink-0 text-sm font-semibold text-slate-700 [&_.katex]:whitespace-nowrap">
+              <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 min-w-[14rem] max-w-[55%] shrink-0 text-sm font-semibold text-slate-700 [&_.katex]:whitespace-nowrap">
                 {typeof r.label === 'string' ? <MathLabel>{r.label}</MathLabel> : r.label}
               </div>
               <div className="flex min-w-0 flex-1 gap-1.5 flex-wrap" role="group">

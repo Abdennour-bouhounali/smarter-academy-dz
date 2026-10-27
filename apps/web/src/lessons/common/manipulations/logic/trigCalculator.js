@@ -44,14 +44,6 @@ export const KEY_ROWS = Object.freeze([
   ['4', '5', '6', ',', '='],
   ['1', '2', '3', '0'],
 ]);
-/** Le clavier ÉTROIT (téléphone de 320 px : 4 colonnes de 44 px ; « = » sur deux rangées) — mêmes touches. */
-export const KEY_ROWS_NARROW = Object.freeze([
-  ['2nd', 'DRG', 'DEL', 'ON'],
-  ['sin', 'cos', 'tan', ','],
-  ['7', '8', '9', '0'],
-  ['4', '5', '6', '='],
-  ['1', '2', '3'],
-]);
 /** La place de chaque touche dans la grille : { key, row, col, span } (« = » occupe deux rangées). */
 export function keyGrid(rows) {
   const out = [];

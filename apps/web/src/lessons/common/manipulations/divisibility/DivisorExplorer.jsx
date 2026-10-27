@@ -128,7 +128,7 @@ export default function DivisorExplorer({
         showSolution: () => { setLab((s) => rail.reduce((acc, c) => L.place(acc, c), s)); state.discover(); state.formalize(); },
       }}
       representation={placed && (
-        <div className="grid items-start gap-3 md:grid-cols-2">
+        <div className="grid items-start gap-3 grid-cols-2">
           <div className="flex justify-center"><DivisionDisplay dividend={a} divisor={lab.b} quotient={lab.q} remainder={lab.r} /></div>
           <div className="space-y-2">
             <EquationBuilder parts={equationParts} drag={drag} slotLabel={(s) => (s === 'q' ? t('manipulation.quotient') : t('manipulation.remainder'))} />
@@ -150,7 +150,7 @@ export default function DivisorExplorer({
               {lab.divides && (
                 <>
                   <p className="text-sm font-bold text-emerald-900">{t('manipulation.isDivisor', { a, b: lab.b })}</p>
-                  <ul className="grid grid-cols-1 gap-1 text-xs text-emerald-900 sm:grid-cols-2">
+                  <ul className="grid gap-1 text-xs text-emerald-900 grid-cols-2">
                     <li>• {t('manipulation.phrasings.divisorOf', { a, b: lab.b })}</li>
                     <li>• {t('manipulation.phrasings.divides', { a, b: lab.b })}</li>
                     <li>• {t('manipulation.phrasings.divisibleBy', { a, b: lab.b })}</li>

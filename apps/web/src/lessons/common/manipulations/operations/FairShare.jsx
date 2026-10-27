@@ -152,7 +152,6 @@ export default function FairShare({
     return () => ro.disconnect();
   }, []);
   const compact = width < 380;
-  const tiny = width < 300;
   const wide = width >= WIDE_MIN;
   const W = Math.min(width, 760);
 
@@ -431,7 +430,7 @@ export default function FairShare({
               context={(state.isAuthoredLevel && lab.i === 0 && lead) || k(`context.${scene}`, ctxArgs)}
               contextProps={{ 'data-fs-context': scene }}
               aside={compact ? null : readingPills}
-              title={<span className={tiny ? 'text-[15px] leading-snug' : compact ? 'text-base' : ''}>{k('question')}</span>}
+              title={<span className={compact ? 'text-base' : ''}>{k('question')}</span>}
               lamp={v?.kind === 'exact' ? 'on' : 'off'}
               titleProps={{ 'data-fs-prompt': true, 'data-lit': v?.kind === 'exact' ? 'true' : 'false' }}
             />

@@ -26,7 +26,7 @@ export default function ReviewLinks({ lessonId }) {
   if (groups.length === 0) return null;
 
   return (
-    <section aria-labelledby="review-links-title" className="rounded-2xl border-2 border-slate-200 bg-white p-4 sm:p-5 space-y-3" data-testid="review-links">
+    <section aria-labelledby="review-links-title" className="rounded-2xl border-2 border-slate-200 bg-white space-y-3 p-5" data-testid="review-links">
       <div className="space-y-1">
         <h3 id="review-links-title" className="font-space font-bold text-slate-800 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-teal-600 shrink-0" aria-hidden="true" />

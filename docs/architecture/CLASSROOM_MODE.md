@@ -338,7 +338,7 @@ What protects an unfinished test is therefore **not** a missing button but the *
 already is — not on the bottom bar competing with `التالي`.
 
 **Long questions** (`.sa-test-presentation__body`): the statement area scrolls internally past
-~62 % of the offered height (55 % on phones) rather than shrinking the type below readability. The
+~62 % of the offered height rather than shrinking the type below readability. The
 validation button and both nav bars stay outside that scroll area, always reachable.
 
 ### Exercise — ⛶ عرض التمرين
@@ -433,8 +433,8 @@ which is what makes a lesson session navigable, and then the exit on its own lin
 
 Step buttons come only from the gestures that exist, so the bar still renders **no dead step** —
 a manipulation presented alone shows the exit and nothing else. Module-jump buttons come only from
-`lessonNavigation`, so they exist in a **lesson** session and never in a module-scope one. Below
-640 px the jump labels collapse to chevrons alone; the exit label never hides, because a way out is
+`lessonNavigation`, so they exist in a **lesson** session and never in a module-scope one. The jump labels always show (the phone-only rule that collapsed them to chevrons
+was removed on 2026-10-27: lessons no longer open on phones, `RequireLargeScreen`); the exit label never hides, because a way out is
 not something to guess. Every button is at least 44 × 44 px, and its icon comes from
 `DirectionalIcons` so it mirrors in RTL.
 

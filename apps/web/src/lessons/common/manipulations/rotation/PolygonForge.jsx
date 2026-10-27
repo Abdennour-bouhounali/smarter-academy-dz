@@ -579,7 +579,7 @@ function StageTabs({ lab, setLab, m }) {
       {['forge', 'radius', 'draw'].map((id, i) => (
         <button key={id} type="button" disabled={!reach[id]} onClick={() => setLab((s) => L.goStage(s, id))} aria-current={lab.stage === id ? 'step' : undefined}
           data-pf-stage-tab={id}
-          className={`min-h-[44px] rounded-xl border-2 px-1 text-[11px] font-extrabold leading-tight disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 sm:text-sm ${lab.stage === id ? 'border-emerald-600 bg-emerald-600 text-white' : 'border-emerald-200 bg-white text-emerald-900'}`}>
+          className={`min-h-[44px] rounded-xl border-2 px-1 font-extrabold leading-tight disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 text-sm ${lab.stage === id ? 'border-emerald-600 bg-emerald-600 text-white' : 'border-emerald-200 bg-white text-emerald-900'}`}>
           <span className="me-1 inline-block rounded-full bg-black/10 px-1.5 font-mono">{i + 1}</span>{m(`stage_${id}`)}
         </button>
       ))}

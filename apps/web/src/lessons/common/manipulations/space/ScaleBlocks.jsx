@@ -189,9 +189,6 @@ function Blocks({ lab, setLab, k, theme, solved, formal }) {
   const H = budget;
   drawnH.current = H;
   const narrow = width < 380;
-  // sous 250 px (un téléphone de 320 px : le bloc n'a que ~180 px) le bloc reprend le rembourrage de la scène, les commandes
-  // se rangent sur trois lignes courtes et la lecture devient une liste « départ → image (× rapport) »
-  const tiny = width < 250;
   const sceneRef = useRef(null);
   const rd = L.readings(lab);
   const opts = L.options(lab);
@@ -224,7 +221,7 @@ function Blocks({ lab, setLab, k, theme, solved, formal }) {
 
   return (
     <div ref={boxRef} className="space-y-2" data-scale-blocks data-world={theme} data-k={L.kText(lab.k)} data-solved={solved ? 'true' : 'false'}>
-      <div ref={glanceRef} className={`space-y-1.5 ${tiny ? '-mx-2' : ''}`} data-sb-glance>
+      <div ref={glanceRef} className="space-y-1.5" data-sb-glance>
         <div ref={sceneRef} className="relative overflow-hidden rounded-2xl border border-sky-200" style={{ height: H }}>
           <VoxelDecor reduce={prefersReducedMotion()} hotbar={H >= 230} />
           <Stage3D
@@ -244,13 +241,13 @@ function Blocks({ lab, setLab, k, theme, solved, formal }) {
         </div>
 
         {/* k : − [k] + — le contraste « + 1 cm » (pavé seulement) — la prédiction et « ابنِ » */}
-        <div className={`flex flex-wrap items-center justify-center ${tiny ? 'gap-1' : 'gap-1.5'}`}>
-          <div className={`flex items-center ${tiny ? 'gap-1' : 'gap-1.5'}`} dir="ltr">
+        <div className="flex flex-wrap items-center justify-center gap-1.5">
+          <div className="flex items-center gap-1.5" dir="ltr">
             <button type="button" onClick={() => set(-1)} disabled={kIndex <= 0} aria-label={k('less')} data-sb-less className={`${btn} border-orange-300 focus-visible:ring-orange-500`}><Minus className="h-4 w-4" aria-hidden="true" /></button>
             <div role="slider" tabIndex={0} aria-label={k('slider')} aria-valuemin={0} aria-valuemax={lab.list.length - 1} aria-valuenow={Math.max(0, kIndex)}
               aria-valuetext={k('sliderText', { k: L.kText(lab.k) })} onKeyDown={onSliderKey} data-sb-k={L.kText(lab.k)}
-              className={`flex h-11 ${tiny ? 'min-w-[3rem] px-1 text-sm' : narrow ? 'min-w-[4.75rem] px-2 text-sm' : 'min-w-[6.5rem] px-3 text-base'} items-center justify-center rounded-full bg-orange-100 font-mono font-extrabold text-orange-900 outline-none focus-visible:ring-4 focus-visible:ring-orange-300`}>
-              <MathText>{tiny ? `$${kTex(lab.k)}$` : `$k = ${kTex(lab.k)}$`}</MathText>
+              className={`flex h-11 ${narrow ? 'min-w-[4.75rem] px-2 text-sm' : 'min-w-[6.5rem] px-3 text-base'} items-center justify-center rounded-full bg-orange-100 font-mono font-extrabold text-orange-900 outline-none focus-visible:ring-4 focus-visible:ring-orange-300`}>
+              <MathText>{`$k = ${kTex(lab.k)}$`}</MathText>
             </div>
             <button type="button" onClick={() => set(1)} disabled={kIndex >= lab.list.length - 1} aria-label={k('more')} data-sb-more className={`${btn} border-orange-300 focus-visible:ring-orange-500`}><Plus className="h-4 w-4" aria-hidden="true" /></button>
           </div>
@@ -258,14 +255,14 @@ function Blocks({ lab, setLab, k, theme, solved, formal }) {
             <button type="button" onClick={() => setLab(L.plusOne)} aria-pressed={lab.plus ? 'true' : 'false'} aria-label={k(lab.plus ? 'plusOffSr' : 'plusOnSr')} data-sb-plus
               className={`inline-flex h-11 min-w-[44px] items-center justify-center gap-1 rounded-xl border-2 ${narrow ? 'px-2' : 'px-3'} text-sm font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 ${lab.plus ? 'border-rose-500 bg-rose-50 text-rose-800' : 'border-rose-300 bg-white text-rose-700'}`}>
               {lab.plus ? <Undo2 className="h-4 w-4" aria-hidden="true" /> : !narrow && <Plus className="h-4 w-4" aria-hidden="true" />}
-              <span aria-hidden="true"><MathText>{lab.plus ? k(tiny ? 'plusOffTiny' : narrow ? 'plusOffShort' : 'plusOff') : k(tiny ? 'plusOnTiny' : narrow ? 'plusOnShort' : 'plusOn')}</MathText></span>
+              <span aria-hidden="true"><MathText>{lab.plus ? k(narrow ? 'plusOffShort' : 'plusOff') : k(narrow ? 'plusOnShort' : 'plusOn')}</MathText></span>
             </button>
           )}
-          {tiny && opts && !lab.plus && <BuildButton lab={lab} setLab={setLab} k={k} narrow />}
+
         </div>
 
         {opts && !lab.plus && (
-          <div className={`flex flex-wrap items-center justify-center ${tiny ? 'gap-1' : 'gap-1.5'}`} role="group" aria-label={k('predictLabel')} data-sb-predict>
+          <div className="flex flex-wrap items-center justify-center gap-1.5" role="group" aria-label={k('predictLabel')} data-sb-predict>
             <span className={narrow ? 'sr-only' : 'text-sm font-bold text-slate-700'}>{k('predictLabel')}</span>
             <div className={`flex flex-wrap justify-center ${narrow ? 'gap-1' : 'gap-1.5'}`}>
               {opts.map((o) => (
@@ -275,14 +272,13 @@ function Blocks({ lab, setLab, k, theme, solved, formal }) {
                 </button>
               ))}
             </div>
-            {!tiny && <BuildButton lab={lab} setLab={setLab} k={k} narrow={narrow} />}
+            <BuildButton lab={lab} setLab={setLab} k={k} narrow={narrow} />
           </div>
         )}
 
-        <Verdict verdict={verdict} lab={lab} k={k} narrow={narrow} tiny={tiny} />
-        <Readings lab={lab} rd={rd} built={built} k={k} dimsTex={dimsTex} formal={formal} narrow={narrow} tiny={tiny} />
+        <Verdict verdict={verdict} lab={lab} k={k} narrow={narrow} />
+        <Readings lab={lab} rd={rd} built={built} k={k} dimsTex={dimsTex} formal={formal} narrow={narrow} />
       </div>
-
       {lab.n > 0 && (
         <LabFold id="scale-blocks.trials" title={k('trialsTitle')}>
           <ul className="flex flex-wrap gap-1.5 text-xs" data-sb-trials={lab.builds.length}>
@@ -321,7 +317,7 @@ function verdictOf(lab) {
   return lab.prediction ? 'ready' : 'choose';
 }
 
-function Verdict({ verdict, lab, k, narrow, tiny }) {
+function Verdict({ verdict, lab, k, narrow }) {
   const b = lab.built;
   const args = {
     k: kTex(lab.k),
@@ -337,14 +333,14 @@ function Verdict({ verdict, lab, k, narrow, tiny }) {
     : ['k', 'k2', 'plus'].includes(verdict) ? 'border-rose-300 bg-rose-50 text-rose-900' : 'border-slate-200 bg-white text-slate-700';
   return (
     <p className={`rounded-xl border-2 ${narrow ? 'px-2 py-1 text-xs leading-snug' : 'px-3 py-1.5 text-sm'} ${tone}`} aria-live="polite" data-sb-verdict={verdict}>
-      <MathText>{k(tiny || (narrow && ['start', 'choose'].includes(verdict)) ? `v_${verdict}Short` : `v_${verdict}`, args)}</MathText>
+      <MathText>{k((narrow && ['start', 'choose'].includes(verdict)) ? `v_${verdict}Short` : `v_${verdict}`, args)}</MathText>
     </p>
   );
 }
 
 /** La lecture : arêtes (vivantes), aire totale et volume (après le bâti), et le rapport image ÷ départ. */
-function Readings({ lab, rd, built, k, dimsTex, formal, narrow, tiny }) {
-  const size = narrow ? 'text-[11px] leading-tight' : 'text-xs sm:text-sm';
+function Readings({ lab, rd, built, k, dimsTex, formal, narrow }) {
+  const size = narrow ? 'text-[11px] leading-tight' : 'text-sm';
   const show = !!built && !lab.plus;
   if (lab.plus) {
     const p = L.plusReading(lab.dims);
@@ -371,23 +367,6 @@ function Readings({ lab, rd, built, k, dimsTex, formal, narrow, tiny }) {
     { id: 'volume', label: k('rowVolume'), a: qTex(rd.volume), b: qTex(rd.volume2), r: qTexFrac(rd.ratio.volume), name: 'k^3', unit: '\\mathrm{cm}^3' },
   ];
   const rows = rowsOf();
-  if (tiny) {
-    return (
-      <ul className={`space-y-0.5 rounded-xl border border-slate-200 bg-white px-2 py-1 ${size}`} data-sb-readings>
-        {rows.map((row) => {
-          const visible = row.live || show;
-          return (
-            <li key={row.id} className="flex flex-wrap items-baseline gap-x-1" data-sb-row={row.id}>
-              <span className="font-bold text-slate-700">{row.label}</span>
-              <MathText>{`$(${row.unit})$`}</MathText>
-              <span className="text-indigo-900"><MathText>{`$${row.a} \\to ${visible ? row.b : '\\square'}$`}</MathText></span>
-              <span className="font-bold text-orange-800" data-sb-ratio={row.id}><MathText>{visible ? `$(\\times ${row.r})$` : ''}</MathText></span>
-            </li>
-          );
-        })}
-      </ul>
-    );
-  }
   return (
     <div className={`overflow-hidden rounded-xl border border-slate-200 bg-white ${size}`} data-sb-readings>
       <div className="grid grid-cols-[auto_1fr_1fr_auto] items-center gap-x-2 border-b border-slate-100 bg-slate-50 px-2 py-0.5 font-bold text-slate-500">

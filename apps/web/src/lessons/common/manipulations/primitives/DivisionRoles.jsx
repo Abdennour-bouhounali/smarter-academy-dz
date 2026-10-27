@@ -24,9 +24,9 @@ const TONE = {
 
 export default function DivisionRoles({ roles, className = '' }) {
   return (
-    <ul className={`grid gap-1.5 sm:grid-cols-3 ${className}`} data-division-roles>
+    <ul className={`grid gap-1.5 grid-cols-3 ${className}`} data-division-roles>
       {roles.map(({ key, text }) => (
-        <li key={key} className={`flex items-center gap-2 rounded-xl border px-2.5 py-1.5 text-xs font-bold sm:text-sm ${TONE[key]}`} data-division-role={key}>
+        <li key={key} className={`flex items-center gap-2 rounded-xl border px-2.5 py-1.5 font-bold text-sm ${TONE[key]}`} data-division-role={key}>
           <span dir="ltr" className="font-mono text-sm font-extrabold">{key}</span>
           <span>{text}</span>
         </li>

@@ -575,7 +575,7 @@ function Claims({ lab, setLab, k, m }) {
     <LabFold id="shape-turn.claims" title={k('claimsTitle')}>
       <div className="space-y-2" data-st-claims>
         <p className="text-xs text-slate-600">{k('claimsHow')}</p>
-        <div className="grid gap-1.5 sm:grid-cols-2">
+        <div className="grid gap-1.5 grid-cols-2">
           {claims.map((c) => {
             const st = lab.claims[c.id];
             const hz = drag.hoverZone?.id === c.id;

@@ -134,7 +134,7 @@ export default function Module02HalMutarajiha() {
           content: (
             <div className="space-y-3">
               <p className="text-sm font-semibold text-slate-700"><MathText>{ACTIVITY_B.questions[1]}</MathText></p>
-              <div className="grid gap-2 sm:grid-cols-2" data-textbook-table>
+              <div className="grid gap-2 grid-cols-2" data-textbook-table>
                 {ACTIVITY_B.table.map((row) => (
                   <div key={row.inequality} className="space-y-1 rounded-xl border-2 border-slate-200 bg-white p-2">
                     <p className="text-sm font-bold"><MathText>{row.inequality}</MathText></p>

@@ -89,13 +89,13 @@ export default function ManipulationShell({
       data-manipulation-mode={state.mode}
       data-phase={state.phase}
       data-level={state.level}
-      className="relative space-y-3 rounded-3xl border border-indigo-200 bg-indigo-50/40 p-1.5 sm:border-2 sm:p-5"
+      className="relative space-y-3 rounded-3xl border-indigo-200 bg-indigo-50/40 border-2 p-5"
       aria-label={shownTitle}
     >
       <header className="space-y-2">
         <div className="flex flex-wrap items-start justify-between gap-2">
           {/* `titleHidden` (MANIPULATION_DNA §17.9) : un labo s'ouvre sur son contexte et sa question, sans titre visible — le titre reste pour les lecteurs d'écran */}
-          <h3 className={titleHidden ? 'sr-only' : 'text-base font-bold text-slate-900 sm:text-lg'}>{shownTitle}</h3>
+          <h3 className={titleHidden ? 'sr-only' : 'font-bold text-slate-900 text-lg'}>{shownTitle}</h3>
           <div className="flex items-center gap-2">
             {headerAction}
             <span className="rounded-full bg-white px-2 py-0.5 text-[11px] font-mono uppercase tracking-wider text-indigo-500">{t('manipulation.badge')}</span>
@@ -111,7 +111,7 @@ export default function ManipulationShell({
           <p className="text-[11px] font-bold text-slate-500">{t('textbook.platformAddition')}</p>
         )}
         {mission && (
-          <p className="rounded-2xl bg-white/80 px-4 py-3 text-base font-extrabold leading-relaxed text-indigo-950 sm:text-lg" data-manipulation-mission>
+          <p className="rounded-2xl bg-white/80 px-4 py-3 font-extrabold leading-relaxed text-indigo-950 text-lg" data-manipulation-mission>
             <span className="text-indigo-500">{t('manipulation.mission')}</span> {mission}
           </p>
         )}
