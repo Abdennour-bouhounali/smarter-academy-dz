@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Check, ArrowUp, ArrowDown, Circle } from 'lucide-react';
+import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Check, ArrowUp, ArrowDown, Pause, Play } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import * as R from '@smarter-academy/core/arithmetic/relativeOps.js';
 import MathText from '../../components/MathText';
@@ -12,8 +12,9 @@ import { useManipulation } from '../useManipulation';
 import { LabCard, StageFrame, PromptCard, VerdictBanner, StepperCard, ChoiceTray, ChoiceCard, RoundButton } from '../primitives/LabKit';
 import KidFigure from '../primitives/KidFigure';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useManipulationImmersive } from '../immersive';
 import TowerArt, { minus } from './elevatorReel/TowerArt';
-import { floorHeight, towerGeometry, towerWidth } from './elevatorReel/geometry';
+import { floorHeight, floorHeightFor, towerGeometry, towerWidth } from './elevatorReel/geometry';
 import { LEVELS } from '../levels';
 import * as L from '../logic/elevatorReel';
 
@@ -48,6 +49,15 @@ import * as L from '../logic/elevatorReel';
  *
  * « جرّب كل الإمكانيات » : NON (chaque temps lâché EST l'essai). « جرّب أعدادك » est TOUJOURS ouvert sous le labo.
  *
+ * CONSEIL DU 2026-10-27 (quatre voix, puis le propriétaire) :
+ *  - le CALCUL n'est écrit qu'APRÈS la découverte (`ready`) : avant, l'arrêt dit le temps, l'étage et le côté de la rue, et un arrêt de
+ *    l'autre côté pose « قبل مروره بالطابق 0 أم بعده؟ » (`L.wrongSide`) — la règle des signes n'est jamais lue avant d'être trouvée ;
+ *  - مبتدئ prédit (p1, cartes) où était l'ascenseur une minute AVANT son passage, avant de le voir ;
+ *  - « ▶ شغّل التسجيل » joue le film de −3 à 3 (la cabine MONTE quand on remonte le temps), jamais avant la prédiction (`L.canPlay`) ;
+ *  - la VITESSE est une carte à part, grande et signée (« −2 », flèche, « ينزل طابقين في كل دقيقة ») — le propriétaire : « l'information
+ *    de la vitesse est très importante » ; la cabine porte la vitesse SIGNÉE ;
+ *  - ÉCRAN DE JEU : `immersive` (ManipulationShell) — en plein écran, la tour prend toute la hauteur (`floorHeightFor`).
+ *
  * D'UN SEUL REGARD (§8bis) : `[data-er-glance]` = la consigne (contexte puis UNE question), la tour, l'écran, la ligne du temps, −/+, le verdict
  * et le سجلّ. La tour est TOUJOURS à côté des commandes (largeur 280 px au-delà de 700 px de labo, 132–160 px en dessous).
  *
@@ -67,6 +77,7 @@ const LRI = '⁦';
 const PDI = '⁩';
 const iso = (s) => `${LRI}${s}${PDI}`;
 const WIDE_MIN = 700;
+const PLAY_MS = 4800; // le film de −3 à 3 : 0,8 s par minute
 const ring = 'outline-none focus-visible:ring-4 focus-visible:ring-indigo-300';
 const FONT = 'ui-sans-serif, system-ui, sans-serif';
 
@@ -156,6 +167,7 @@ export default function ElevatorReel({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      immersive
       coach={coachOn ? coach : null}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
@@ -165,7 +177,7 @@ export default function ElevatorReel({
       <ManipulationStage className="bg-gradient-to-b from-sky-50/50 to-white">
         <div ref={boxRef} className="space-y-2" data-elevator-reel data-task={lab.ti} data-solved={ready ? 'true' : 'false'} data-layout={width >= WIDE_MIN ? 'wide' : 'narrow'}>
           <style dangerouslySetInnerHTML={{ __html: CSS }} />
-          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} advanced={advanced} lead={state.isAuthoredLevel ? lead : null} />
+          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} advanced={advanced} ready={ready} lead={state.isAuthoredLevel ? lead : null} />
         </div>
       </ManipulationStage>
     </ManipulationShell>
@@ -177,8 +189,9 @@ export default function ElevatorReel({
 /** « طابقين » / « 3 طوابق » / « طابقًا واحدًا » : le nombre de l'histoire. */
 const floorsWord = (n, k) => k(`floors.${Math.abs(n) === 1 ? 'one' : Math.abs(n) === 2 ? 'two' : 'many'}`, { n: Math.abs(n) });
 
-function Lab({ lab, setLab, k, width, screenH, advanced, lead }) {
+function Lab({ lab, setLab, k, width, screenH, advanced, ready, lead }) {
   const uid = `er${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
+  const immersed = useManipulationImmersive();
   const free = L.isFree(lab);
   const task = L.taskOf(lab);
   const wide = width >= WIDE_MIN;
@@ -189,6 +202,32 @@ function Lab({ lab, setLab, k, width, screenH, advanced, lead }) {
   const done = L.taskDone(lab);
   const cards = L.cardsOpen(lab);
   const onTarget = !free && last && last.ok;
+
+  /* ── « ▶ شغّل التسجيل » : le film joué de −3 à 3, la cabine en mouvement continu (jamais avant la prédiction) ── */
+  const [playT, setPlayT] = useState(null);
+  const raf = useRef(0);
+  const hold = useRef(0);
+  const playing = playT !== null;
+  const stopPlay = useCallback(() => { cancelAnimationFrame(raf.current); clearTimeout(hold.current); setPlayT(null); }, []);
+  const startPlay = () => {
+    stopPlay();
+    const reduced = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const t0 = performance.now();
+    const tick = (now) => {
+      const p = Math.min(1, (now - t0) / PLAY_MS);
+      setPlayT(reduced ? Math.min(3, -3 + Math.floor(p * 7)) : -3 + 6 * p);
+      if (p < 1) raf.current = requestAnimationFrame(tick);
+      else hold.current = setTimeout(() => setPlayT(null), 800);
+    };
+    raf.current = requestAnimationFrame(tick);
+  };
+  useEffect(() => stopPlay, [stopPlay]);
+  useEffect(() => { stopPlay(); }, [lab.ti, lab.free, stopPlay]);
+  const canPlay = L.canPlay(lab) && !cards;
+  // tout geste de l'élève arrête le film et rend la main au temps qu'il tient
+  const act = (fn) => { if (playing) stopPlay(); setLab(fn); };
+  const tShow = playing ? playT : t;
+  const floorShow = playing ? r * playT : floor;
 
   /* ── la consigne ── */
   const sense = r < 0 ? 'down' : 'up';
@@ -227,29 +266,51 @@ function Lab({ lab, setLab, k, width, screenH, advanced, lead }) {
       titleProps={{ 'data-er-prompt': free ? 'free' : task.kind, 'data-lit': lit ? 'true' : 'false' }} />
   );
 
-  /* ── la tour ── */
-  const fh = floorHeight(screenH);
-  const tw = towerWidth(width, wide);
+  /* ── la tour : à l'écran de jeu, elle prend toute la hauteur qui reste sous la consigne ── */
+  const rowRef = useRef(null);
+  const [avail, setAvail] = useState(0);
+  useLayoutEffect(() => {
+    const row = rowRef.current;
+    if (!immersed || !row) { setAvail(0); return undefined; }
+    const host = row.closest('[data-immersive]');
+    const measure = () => {
+      if (!host) return;
+      const top = row.getBoundingClientRect().top - host.getBoundingClientRect().top + host.scrollTop;
+      setAvail(Math.max(0, Math.floor(host.clientHeight - top - 16)));
+    };
+    measure();
+    // l'écran (plein écran, fenêtre) ET la consigne au-dessus (polices, guide) changent de taille après coup : on remesure
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(measure) : null;
+    if (ro && host) ro.observe(host);
+    if (ro && row.previousElementSibling) ro.observe(row.previousElementSibling);
+    window.addEventListener('resize', measure);
+    return () => { ro?.disconnect(); window.removeEventListener('resize', measure); };
+  }, [immersed]);
+  // un écran de jeu bas (1280×800, 1366×768) : la carte de vitesse et l'écran de la caméra restent compacts pour que la colonne tienne
+  const roomy = immersed && avail >= 640;
+  const fh = immersed && avail > 0 ? floorHeightFor(avail) : floorHeight(screenH);
+  const tw = towerWidth(width, wide, immersed);
   const g = towerGeometry({ width: tw, fh });
   const arrows = L.arrowsOf(r, t);
-  // متقدم : pas de flèches empilées avant le relâchement (la main prédit, puis vérifie)
+  // متقدم : pas de flèches empilées avant le relâchement (la main prédit, puis vérifie) ; pendant le film, aucune
   const settled = !!last && last.t === t && last.r === r && last.kind === 'release';
-  const showArrows = !cards && (!advanced || settled || free) && arrows.length > 0;
-  const pill = { word: k('floorWord'), value: minus(floor) };
+  const showArrows = !playing && !cards && (!advanced || settled || free) && arrows.length > 0;
+  const pillValue = playing ? minus(Math.round(floorShow) || 0) : minus(floor);
   const tower = (
-    <TowerArt uid={uid} g={g} floor={floor} r={r} arrows={arrows} showArrows={showArrows} glow={!!onTarget} pill={pill}
+    <TowerArt uid={uid} g={g} floor={floorShow} r={r} arrows={arrows} showArrows={showArrows} glow={!playing && !!onTarget} pill={{ word: k('floorWord'), value: pillValue }}
       ariaLabel={k('towerAria', { r: minus(r), t: minus(t), floor: minus(floor) })} />
   );
 
   /* ── les commandes ── */
-  const cw = Math.min(420, Math.max(210, width - tw - 14));
+  const colMax = immersed ? 640 : 440;
+  const cw = Math.min(colMax, Math.max(210, width - tw - 14));
   const mood = !last ? 'neutral' : onTarget ? 'proud' : (last.floor !== 0 && last.t < 0 && Math.sign(last.r) !== Math.sign(last.floor)) ? 'wonder' : 'neutral';
 
   const [lo, hi] = L.RANGE_T;
   const stepper = (
     <div data-er-stepper>
       <StepperCard layout="row" value={rt(t)} unit={null}
-        onLess={() => setLab((s) => L.step(s, -1))} onMore={() => setLab((s) => L.step(s, 1))}
+        onLess={() => act((s) => L.step(s, -1))} onMore={() => act((s) => L.step(s, 1))}
         lessDisabled={t <= lo} moreDisabled={t >= hi}
         lessLabel={k('less')} moreLabel={k('more')}
         lessProps={{ 'data-er-less': '' }} moreProps={{ 'data-er-more': '' }} readoutProps={{ 'data-er-t': t }} />
@@ -257,24 +318,27 @@ function Lab({ lab, setLab, k, width, screenH, advanced, lead }) {
   );
 
   const speedEdit = L.speedEditable(lab);
-  const speedCard = speedEdit && (
-    <LabCard className="space-y-1.5 p-2" data-er-speed>
-      <p className="text-center text-[11px] font-extrabold text-indigo-900/70">{k('speedTitle')}</p>
-      <div className="grid grid-cols-2 gap-1.5">
-        <ChoiceCard size="sm" state={r > 0 ? 'selected' : 'idle'} aria-pressed={r > 0} onClick={() => setLab((s) => (L.rOf(s) > 0 ? s : L.flipSense(s)))} data-er-up>
-          <ArrowUp className="me-1 h-4 w-4" aria-hidden="true" /> {k('up')}
-        </ChoiceCard>
-        <ChoiceCard size="sm" state={r < 0 ? 'selected' : 'idle'} aria-pressed={r < 0} onClick={() => setLab((s) => (L.rOf(s) < 0 ? s : L.flipSense(s)))} data-er-down>
-          <ArrowDown className="me-1 h-4 w-4" aria-hidden="true" /> {k('down')}
-        </ChoiceCard>
-      </div>
-      <div className="flex items-center justify-center gap-2" dir="ltr">
-        <RoundButton size={40} onClick={() => setLab((s) => L.setR(s, Math.sign(L.rOf(s)) * Math.max(1, Math.abs(L.rOf(s)) - 1)))} aria-label={k('rLess')} data-er-r-less disabled={Math.abs(r) <= 1}>−</RoundButton>
-        <bdi dir="ltr" className="min-w-[3.5rem] text-center text-lg font-black tabular-nums text-indigo-950" data-er-r={r}>{minus(r)}</bdi>
-        <RoundButton primary size={40} onClick={() => setLab((s) => L.setR(s, Math.sign(L.rOf(s) || 1) * Math.min(3, Math.abs(L.rOf(s)) + 1)))} aria-label={k('rMore')} data-er-r-more disabled={Math.abs(r) >= 3}>+</RoundButton>
-      </div>
-      <p className="text-center text-[11px] font-extrabold text-indigo-900/60">{k('speedUnit')}</p>
-    </LabCard>
+  const speedCard = (
+    <SpeedCard r={r} k={k} big={roomy}>
+      {speedEdit && (
+        <div className="space-y-1.5" data-er-speed>
+          <p className="text-center text-[11px] font-extrabold text-indigo-900/70">{k('speedTitle')}</p>
+          <div className="grid grid-cols-2 gap-1.5">
+            <ChoiceCard size="sm" state={r > 0 ? 'selected' : 'idle'} aria-pressed={r > 0} onClick={() => act((s) => (L.rOf(s) > 0 ? s : L.flipSense(s)))} data-er-up>
+              <ArrowUp className="me-1 h-4 w-4" aria-hidden="true" /> {k('up')}
+            </ChoiceCard>
+            <ChoiceCard size="sm" state={r < 0 ? 'selected' : 'idle'} aria-pressed={r < 0} onClick={() => act((s) => (L.rOf(s) < 0 ? s : L.flipSense(s)))} data-er-down>
+              <ArrowDown className="me-1 h-4 w-4" aria-hidden="true" /> {k('down')}
+            </ChoiceCard>
+          </div>
+          <div className="flex items-center justify-center gap-2" dir="ltr">
+            <RoundButton size={40} onClick={() => act((s) => L.setR(s, Math.sign(L.rOf(s)) * Math.max(1, Math.abs(L.rOf(s)) - 1)))} aria-label={k('rLess')} data-er-r-less disabled={Math.abs(r) <= 1}>−</RoundButton>
+            <bdi dir="ltr" className="min-w-[3.5rem] text-center text-lg font-black tabular-nums text-indigo-950" data-er-r={r}>{minus(r)}</bdi>
+            <RoundButton primary size={40} onClick={() => act((s) => L.setR(s, Math.sign(L.rOf(s) || 1) * Math.min(3, Math.abs(L.rOf(s)) + 1)))} aria-label={k('rMore')} data-er-r-more disabled={Math.abs(r) >= 3}>+</RoundButton>
+          </div>
+        </div>
+      )}
+    </SpeedCard>
   );
 
   const predictCards = cards && (
@@ -284,7 +348,7 @@ function Lab({ lab, setLab, k, width, screenH, advanced, lead }) {
         {task.options.map((o) => {
           const tried = lab.trials.some((x) => x.kind === 'predict' && x.task === lab.ti && x.pick === o && !x.ok);
           return (
-            <ChoiceCard key={o} size="md" ltr state={tried ? 'tried' : 'idle'} onClick={() => setLab((s) => L.choose(s, o))} data-er-card={o}>
+            <ChoiceCard key={o} size="md" ltr state={tried ? 'tried' : 'idle'} onClick={() => act((s) => L.choose(s, o))} data-er-card={o}>
               {minus(o)}
             </ChoiceCard>
           );
@@ -293,19 +357,23 @@ function Lab({ lab, setLab, k, width, screenH, advanced, lead }) {
     </LabCard>
   );
 
-  /* ── le verdict ── */
+  /* ── le verdict : le temps, l'étage, le côté de la rue — le calcul seulement après la découverte ── */
+  const sideWord = (f) => k(`side.${L.sideOf(f)}`);
   const wayWord = last && last.kind === 'release' && task.kind === 'both' && last.ok ? k(last.r > 0 ? 'wayUp' : 'wayDown') : '';
   const verdictLine = (() => {
     if (!last) return cards ? k('idle.predict') : k('idle.floor');
-    const calc = iso(L.calcText(last.r, last.t));
     const tt = iso(rt(last.t));
-    if (last.free) return k('v.free', { t: tt, calc, floor: iso(minus(last.floor)) });
-    if (last.kind === 'predict') return last.ok ? k('v.predictRight', { calc }) : k('v.predictWrong', { calc, pick: iso(minus(last.pick)) });
+    const fl = iso(minus(last.floor));
+    if (last.free) return k('v.free', { t: tt, floor: fl });
+    if (last.kind === 'predict') return k(last.ok ? 'v.predictRight' : 'v.predictWrong', { t: tt, floor: fl, side: sideWord(last.floor), pick: iso(minus(last.pick)) });
     if (last.ok) {
-      if (task.kind === 'both' && !done) return k('v.part', { t: tt, calc, way: wayWord });
-      return k('v.right', { t: tt, calc, floor: iso(minus(last.floor)) });
+      if (task.kind === 'both' && !done) return k('v.part', { t: tt, way: wayWord });
+      return k('v.right', { t: tt, floor: fl });
     }
-    return k('v.wrong', { t: tt, calc, floor: iso(minus(last.floor)), goal: iso(minus(task.floor)) });
+    const goal = iso(minus(task.floor));
+    if (last.floor === 0) return k('v.wrongZero', { goal });
+    if (L.wrongSide(last)) return k('v.wrongSide', { t: tt, floor: fl, side: sideWord(last.floor), goal, goalSide: sideWord(task.floor) });
+    return k('v.wrong', { t: tt, floor: fl, goal });
   })();
   const vkey = !last ? '' : last.free ? 'free' : last.ok ? (task.kind === 'both' && !done ? 'part' : 'right') : 'wrong';
   const tone = !last ? 'indigo' : last.ok && !last.free ? 'emerald' : 'amber';
@@ -315,8 +383,13 @@ function Lab({ lab, setLab, k, width, screenH, advanced, lead }) {
     <VerdictBanner tone={tone} icon={Icon} size="sm" className="min-h-[3.5rem]" data-er-verdict={vkey}>
       <div className="min-w-0 space-y-1.5">
         <p className={last ? '' : 'font-bold text-indigo-900'}>{verdictLine}</p>
+        {ready && last && (
+          <p className="text-base font-black text-indigo-950" data-er-calc aria-label={k('calcAria')}>
+            <bdi dir="ltr">{L.calcText(last.r, last.t)}</bdi>
+          </p>
+        )}
         {canNext && (
-          <button type="button" onClick={() => setLab(L.nextTask)} data-er-next
+          <button type="button" onClick={() => act(L.nextTask)} data-er-next
             className={`inline-flex min-h-[44px] items-center justify-center gap-1.5 whitespace-nowrap rounded-full border-2 border-emerald-600 bg-emerald-600 px-3.5 text-sm font-black text-white shadow-[0_3px_0_0_#047857] transition-all duration-150 active:translate-y-0.5 motion-reduce:transition-none ${ring}`}>
             {k('next')} <ChevronLeft className="h-4 w-4" aria-hidden="true" />
           </button>
@@ -348,18 +421,27 @@ function Lab({ lab, setLab, k, width, screenH, advanced, lead }) {
     </LabCard>
   );
 
+  const playButton = canPlay && (
+    <button type="button" onClick={playing ? stopPlay : startPlay} data-er-play data-playing={playing ? 'true' : 'false'} aria-label={k('playAria')}
+      className={`inline-flex min-h-[40px] items-center gap-1.5 rounded-full border-2 px-3 text-xs font-black transition-all duration-150 active:translate-y-0.5 motion-reduce:transition-none ${playing ? 'border-rose-300 bg-rose-50 text-rose-800' : 'border-indigo-600 bg-indigo-600 text-white shadow-[0_3px_0_0_#3730A3]'} ${ring}`}>
+      {playing ? <Pause className="h-4 w-4" aria-hidden="true" /> : <Play className="h-4 w-4" aria-hidden="true" />}
+      {playing ? k('playing') : k('play')}
+    </button>
+  );
+
   const controls = (
-    <div className="flex min-w-0 flex-1 flex-col gap-2" style={{ maxWidth: 420 }}>
-      <Monitor k={k} cw={cw} t={t} r={r} floor={floor} mood={mood} />
+    <div className="flex min-w-0 flex-1 flex-col gap-2" style={{ maxWidth: colMax }}>
+      <Monitor k={k} cw={cw} t={tShow} playing={playing} floor={floor} r={r} mood={mood} compact={cw < 300 || (immersed && !roomy)} />
+      {speedCard}
       {predictCards}
       {!cards && (
-        <LabCard className="p-1.5">
-          <Timeline uid={uid} cw={cw} t={t} step={lab.step} k={k}
-            onPreview={(v) => setLab((s) => L.preview(s, v))} onRelease={(v) => setLab((s) => L.release(s, v))} />
+        <LabCard className="space-y-1 p-1.5">
+          <Timeline uid={uid} cw={cw} t={tShow} step={lab.step} k={k}
+            onPreview={(v) => act((s) => L.preview(s, v))} onRelease={(v) => act((s) => L.release(s, v))} />
+          {playButton && <div className="flex justify-center pb-1">{playButton}</div>}
         </LabCard>
       )}
       {!cards && stepper}
-      {speedCard}
       {banner}
       {record}
     </div>
@@ -369,7 +451,7 @@ function Lab({ lab, setLab, k, width, screenH, advanced, lead }) {
     <>
       <div className="relative space-y-2.5" data-er-glance>
         {prompt}
-        <div className="flex items-start justify-center gap-3">
+        <div ref={rowRef} className={`flex items-start justify-center ${immersed ? 'gap-6' : 'gap-3'}`}>
           <StageFrame className="shrink-0 overflow-hidden p-1.5" data-er-stage style={{ width: tw + 12 }}>{tower}</StageFrame>
           {controls}
         </div>
@@ -379,14 +461,63 @@ function Lab({ lab, setLab, k, width, screenH, advanced, lead }) {
   );
 }
 
+/* ══════════════ La vitesse : une carte à part, grande et SIGNÉE ══════════════ */
+
+/**
+ * « −2 » en grand, la flèche du sens, l'unité, et la phrase « ينزل طابقين في كل دقيقة » : la vitesse est l'un des deux facteurs du
+ * produit, elle ne doit jamais être un détail (propriétaire, 2026-10-27). En متقدم (mission `both`), les commandes du levier viennent dessous.
+ */
+function SpeedCard({ r, k, big, children }) {
+  const dir = r > 0 ? 'up' : r < 0 ? 'down' : 'still';
+  const tone = dir === 'down' ? 'border-rose-200 bg-rose-50 text-rose-900' : dir === 'up' ? 'border-emerald-200 bg-emerald-50 text-emerald-900' : 'border-slate-200 bg-slate-50 text-slate-700';
+  const Arrow = dir === 'up' ? ArrowUp : dir === 'down' ? ArrowDown : null;
+  const sentence = dir === 'still' ? k('speedSentence.still') : k(`speedSentence.${dir}`, { v: floorsWord(r, k) });
+  const icon = (
+    <span aria-hidden="true" className={`flex shrink-0 items-center justify-center rounded-2xl ${big ? 'h-14 w-14' : 'h-10 w-10'} ${dir === 'down' ? 'bg-rose-600' : dir === 'up' ? 'bg-emerald-600' : 'bg-slate-400'} text-white`}>
+      {Arrow ? <Arrow className={big ? 'h-8 w-8' : 'h-6 w-6'} strokeWidth={3} /> : <span className="text-xl font-black">=</span>}
+    </span>
+  );
+  const value = <bdi dir="ltr" className={`${big ? 'text-4xl' : 'text-3xl'} font-black leading-none tabular-nums`} data-er-speed-value={r}>{minus(r)}</bdi>;
+  // dans la page : UNE rangée (le labo tient dans un écran, DNA §17) ; à l'écran de jeu : la grande carte
+  return (
+    <LabCard className={`space-y-2 border-2 ${big ? 'p-2.5' : 'px-2.5 py-1.5'} ${tone}`} data-er-speed-card data-sense={dir} aria-label={k('speedLabel')}>
+      {big ? (
+        <div className="flex items-center gap-3">
+          {icon}
+          <div className="min-w-0 flex-1">
+            <p className="text-[11px] font-black opacity-70">{k('speedLabel')}</p>
+            <p className="flex flex-wrap items-baseline gap-x-2 leading-none">
+              {value}
+              <span className="text-sm font-extrabold">{k('speedUnit')}</span>
+            </p>
+            <p className="mt-1 text-base font-extrabold" data-er-speed-sentence>{sentence}</p>
+          </div>
+        </div>
+      ) : (
+        <div className="flex items-center gap-2.5">
+          {icon}
+          {value}
+          <div className="min-w-0 flex-1 leading-tight">
+            <p className="text-[11px] font-black opacity-70">{k('speedLabel')} · {k('speedUnit')}</p>
+            <p className="text-sm font-extrabold" data-er-speed-sentence>{sentence}</p>
+          </div>
+        </div>
+      )}
+      {children}
+    </LabCard>
+  );
+}
+
 /* ══════════════ L'écran de la salle de surveillance ══════════════ */
 
-function Monitor({ k, cw, t, r, floor, mood }) {
-  const h = 84;
+/** « −2,4 » : le temps du film qui défile (une décimale, virgule, vrai moins). */
+const fmt1 = (v) => minus(String(Math.round(v * 10) / 10).replace('.', ','));
+
+function Monitor({ k, cw, t, playing, floor, r, mood, compact }) {
+  const h = compact ? 64 : 76; // colonne étroite (1024×768, barre latérale ouverte) ou écran de jeu bas : le labo tient dans l'écran
   const kid = Math.min(46, cw * 0.2);
   const sw = cw - kid * 2 - 8;
   const sx = kid + 4;
-  const dir = r > 0 ? k('senseUp') : r < 0 ? k('senseDown') : k('senseStill');
   return (
     <LabCard className="overflow-hidden p-0" data-er-monitor data-er-kid data-mood={mood}>
       <svg width="100%" viewBox={`0 0 ${cw} ${h}`} style={{ display: 'block', maxWidth: cw }} aria-hidden="true">
@@ -394,16 +525,16 @@ function Monitor({ k, cw, t, r, floor, mood }) {
         <rect x={0} y={h - 10} width={cw} height={10} fill="#C7D2FE" />
         <rect x={sx} y={6} width={sw} height={h - 18} rx={10} fill="#0F172A" stroke="#475569" strokeWidth={3} />
         <rect x={sx + 6} y={12} width={sw - 12} height={h - 30} rx={6} fill="#111C33" />
-        <circle cx={sx + 16} cy={24} r={4} fill="#EF4444" />
+        <circle cx={sx + 16} cy={24} r={4} fill="#EF4444" opacity={playing ? 1 : 0.85}>
+          {playing && <animate attributeName="opacity" values="1;0.2;1" dur="0.9s" repeatCount="indefinite" />}
+        </circle>
         <text x={sx + 24} y={28} fontSize={10} fontWeight={900} fill="#FCA5A5" fontFamily={FONT} textAnchor="start" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}>{k('rec')}</text>
-        <text x={sx + sw / 2} y={49} textAnchor="middle" fontSize={Math.min(26, sw * 0.13)} fontWeight={900} fill="#F8FAFC" fontFamily={FONT} data-er-time data-t={t}
-          style={{ direction: 'ltr', unicodeBidi: 'isolate' }}>{`t = ${rt(t)}`}</text>
-        <text x={sx + sw / 2} y={64} textAnchor="middle" fontSize={11} fontWeight={800} fill="#93C5FD" fontFamily={FONT}
-          style={{ direction: 'rtl', unicodeBidi: 'isolate' }}>{`${k('timeWord')} · ${dir} `}<tspan style={{ direction: 'ltr', unicodeBidi: 'isolate' }}>{Math.abs(r)}</tspan>{` ${k('perMin')}`}</text>
-                <KidFigure cx={kid / 2 + 2} top={18} foot={h - 10} hairStyle="hijab" scarf="lavender" outfit="violet" skin="medium" mood={mood} />
-        <KidFigure cx={cw - kid / 2 - 2} top={20} foot={h - 10} hairStyle="short" hair="brown" outfit="blue" skin="light" mood={mood} />
+        <text x={sx + sw / 2} y={h / 2 + 4} textAnchor="middle" fontSize={Math.min(28, sw * 0.14)} fontWeight={900} fill="#F8FAFC" fontFamily={FONT} data-er-time data-t={t}
+          style={{ direction: 'ltr', unicodeBidi: 'isolate' }}>{`t = ${playing ? fmt1(t) : rt(t)}`}</text>
+        <KidFigure cx={kid / 2 + 2} top={16} foot={h - 10} hairStyle="hijab" scarf="lavender" outfit="violet" skin="medium" mood={mood} />
+        <KidFigure cx={cw - kid / 2 - 2} top={18} foot={h - 10} hairStyle="short" hair="brown" outfit="blue" skin="light" mood={mood} />
       </svg>
-      <span className="sr-only" data-er-readout data-floor={floor} data-t={t} data-r={r}>{k('readoutSr', { r: minus(r), t: rt(t), floor: minus(floor) })}</span>
+      <span className="sr-only" data-er-readout data-floor={floor} data-t={t} data-r={r}>{k('readoutSr', { r: minus(r), t: playing ? fmt1(t) : rt(t), floor: minus(floor) })}</span>
     </LabCard>
   );
 }

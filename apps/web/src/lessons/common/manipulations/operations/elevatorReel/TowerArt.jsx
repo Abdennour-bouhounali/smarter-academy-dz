@@ -66,7 +66,7 @@ function Backdrop({ uid, g }) {
           {roomW > 36 && [0, 1].map((k) => (
             <rect key={k} x={bodyX + 6 + k * (roomW / 2)} y={y0 + fh * 0.2} width={roomW / 2 - 10} height={fh * 0.6} rx={3} fill="#BFDBFE" opacity={0.75} />
           ))}
-          {f === 1 && <path d={`M${bodyX + 2} ${y0 + 4} h${roomW - 2} v${fh * 0.22} h-${roomW - 2} Z`} fill="#F43F5E" opacity={0.85} />}
+          {f === 1 && <path d={`M${bodyX + 2} ${y0 + 4} h${roomW - 2} v${fh * 0.22} h-${roomW - 2} Z`} fill="#F59E0B" opacity={0.75} />}
         </g>,
       );
     } else if (f < 0) {
@@ -92,14 +92,14 @@ function Backdrop({ uid, g }) {
       {/* la colonne des numéros peints sur le mur (le signe est un vrai moins) */}
       <rect x={0} y={edge(9)} width={labelW} height={edge(-9) + fh - edge(9)} fill="#FFFFFF" opacity={0.55} />
       {Array.from({ length: 19 }, (_, i) => 9 - i).map((f) => (
-        <text key={`n${f}`} x={labelW - 4} y={g.y(f) + fh * 0.18} textAnchor="end" fontSize={Math.max(10, Math.min(13, fh * 0.55))} fontWeight={f === 0 ? 900 : 700}
+        <text key={`n${f}`} x={labelW - 4} y={g.y(f) + fh * 0.18} textAnchor="end" fontSize={Math.max(10, Math.min(17, fh * 0.55))} fontWeight={f === 0 ? 900 : 700}
           fill={f === 0 ? '#1E1B4B' : f > 0 ? '#475569' : '#78350F'} fontFamily={FONT} style={LTR} data-er-level={f}>{minus(f)}</text>
       ))}
     </g>
   );
 }
 
-/** Le puits en verre et son câble ; la cabine, avec la flèche du sens et la distance de la vitesse. */
+/** Le puits en verre et son câble ; la cabine, avec la flèche du sens et la vitesse SIGNÉE (« −2 ▼ », 2026-10-27). */
 function Cabin({ uid, g, floor, r, glow }) {
   const cy = g.y(floor);
   const w = g.shaftW - 8;
@@ -115,7 +115,7 @@ function Cabin({ uid, g, floor, r, glow }) {
       <rect x={x} y={cy - h / 2} width={w} height={h} rx={4} fill={`url(#${uid}-glass)`} stroke="#0369A1" strokeWidth={2} />
       <line x1={x + w / 2} x2={x + w / 2} y1={cy - h / 2} y2={cy + h / 2} stroke="#0369A1" strokeWidth={1} opacity={0.5} />
       {tri && <path d={tri} fill={dir === 'up' ? '#059669' : '#E11D48'} />}
-      <text x={x + w * 0.82} y={cy + h * 0.17} textAnchor="end" fontSize={Math.max(10, h * 0.55)} fontWeight={900} fill="#0C4A6E" fontFamily={FONT} style={LTR}>{Math.abs(r)}</text>
+      <text x={x + w * 0.82} y={cy + h * 0.17} textAnchor="end" fontSize={Math.max(10, h * 0.55)} fontWeight={900} fill="#0C4A6E" fontFamily={FONT} style={LTR}>{minus(r)}</text>
     </g>
   );
 }
@@ -143,7 +143,7 @@ function Arrows({ g, arrows }) {
 
 /** « الطابق −6 » : une pilule dont le mot est arabe (RTL) et le nombre un îlot LTR — posée à gauche du puits, à la hauteur de la cabine. */
 function FloorPill({ g, floor, word, value, glow }) {
-  const size = Math.max(11, Math.min(13, g.fh * 0.55));
+  const size = Math.max(11, Math.min(17, g.fh * 0.5));
   const w = pillWidth(`${word} ${value}`, size) + 2;
   const h = Math.round(size * 1.9);
   const x1 = g.shaftX - 5;

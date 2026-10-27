@@ -102,12 +102,13 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(new Set(advanced.numbers.tasks.map((tk) => tk.kind)).has('whole'), type).toBe(true);
         expect(advanced.numbers.tasks.some((tk) => tk.carry), type).toBe(true);
       }
-      // Unité 1 de 3AM : `elevator-reel` se mesure par la FINESSE du pas (1 puis 0,5), la PRÉDICTION écrite avant de voir (متقدم seul) et les missions où la main tient aussi la vitesse.
+      // Unité 1 de 3AM : `elevator-reel` se mesure par la FINESSE du pas (1 puis 0,5), la PRÉDICTION (متقدم : la PREMIÈRE mission, avant tout geste ; مبتدئ :
+      // après une première mission, 2026-10-27) et les missions où la main tient aussi la vitesse.
       else if (type === 'elevator-reel') {
         const stepOf = (n) => Number(String(n.step).replace(',', '.'));
         expect(stepOf(advanced.numbers), type).toBeLessThan(stepOf(beginner.numbers));
-        expect(advanced.numbers.tasks.some((tk) => tk.kind === 'predict'), type).toBe(true);
-        expect(beginner.numbers.tasks.some((tk) => tk.kind === 'predict'), type).toBe(false);
+        expect(advanced.numbers.tasks[0].kind, type).toBe('predict');
+        expect(beginner.numbers.tasks[0].kind ?? 'floor', type).toBe('floor');
         expect(advanced.numbers.tasks.some((tk) => tk.kind === 'both'), type).toBe(true);
       }
       // Unité 4 de 3AM, leçon 3 : `marble-run` se mesure par la PRÉDICTION écrite avant le lancement (متقدم seul) et par les DEUX lettres (r6).

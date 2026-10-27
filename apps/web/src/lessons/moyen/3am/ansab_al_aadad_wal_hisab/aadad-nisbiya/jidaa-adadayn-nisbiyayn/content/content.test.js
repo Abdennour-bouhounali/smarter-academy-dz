@@ -145,10 +145,12 @@ describe('le labo : les nombres de la leçon sont ceux du preset, jouables, et l
   it('LAB = preset de levels.js ; chaque mission a son temps sur le rail', () => {
     expect(LAB.beginner).toEqual(LEVELS['elevator-reel'].beginner.numbers);
     expect(LAB.advanced).toEqual(LEVELS['elevator-reel'].advanced.numbers);
-    expect(EL.init(LAB.beginner).tasks.map((t) => EL.timeFor(t.r, t.floor, 1))).toEqual([3, -2, 2, -3]);
+    expect(EL.init(LAB.beginner).tasks.filter((t) => t.kind === 'floor').map((t) => EL.timeFor(t.r, t.floor, 1))).toEqual([3, -2, 2, -3]);
+    // p1 (2026-10-27) : où était l'ascenseur une minute AVANT son passage — prédit avant d'être vu
+    expect(LAB.beginner.tasks[1]).toMatchObject({ id: 'p1', kind: 'predict', r: '-2', t: '-1', key: '2' });
     expect(() => EL.init(LAB.advanced)).not.toThrow();
     // les quatre lignes du سجلّ : −6, 4, 6, −9 — trois d'entre elles ont des signes qui s'opposent ou s'accordent
-    const floors = LAB.beginner.tasks.map((t) => Number(t.floor));
+    const floors = LAB.beginner.tasks.filter((t) => t.floor).map((t) => Number(t.floor));
     expect(floors).toEqual([-6, 4, 6, -9]);
   });
   it('les exemples des encadrés sont justes', () => {
