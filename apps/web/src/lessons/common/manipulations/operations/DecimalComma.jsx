@@ -198,6 +198,7 @@ export default function DecimalComma({
 
   return (
     <ManipulationShell
+      headerAction={cpSettings.control}
       type="decimal-comma"
       title={title ?? k(`title.${W0}`)}
       titleHidden

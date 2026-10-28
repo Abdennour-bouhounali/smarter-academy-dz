@@ -173,6 +173,7 @@ export default function CodeLockers({
 
   return (
     <ManipulationShell
+      headerAction={cpSettings.control}
       type="code-lockers"
       title={title ?? k('title')}
       titleHidden

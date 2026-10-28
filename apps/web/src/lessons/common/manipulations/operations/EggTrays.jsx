@@ -552,6 +552,7 @@ export default function EggTrays({
 
   return (
     <ManipulationShell
+      headerAction={cpSettings.control}
       type="egg-trays"
       title={title ?? k(`title.${world}`)}
       titleHidden

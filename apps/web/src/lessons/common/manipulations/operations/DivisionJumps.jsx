@@ -456,6 +456,7 @@ export default function DivisionJumps({
 
   return (
     <ManipulationShell
+      headerAction={cpSettings.control}
       type="division-jumps"
       title={title ?? k(`title.${world}`)}
       titleHidden

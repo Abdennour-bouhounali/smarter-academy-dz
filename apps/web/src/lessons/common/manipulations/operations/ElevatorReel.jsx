@@ -198,6 +198,7 @@ export default function ElevatorReel({
 
   return (
     <ManipulationShell
+      headerAction={cpSettings.control}
       type="elevator-reel"
       title={title ?? k('title')}
       titleHidden

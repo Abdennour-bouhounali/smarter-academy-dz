@@ -191,6 +191,7 @@ export default function SignMachine({
 
   return (
     <ManipulationShell
+      headerAction={cpSettings.control}
       type="sign-machine"
       title={title ?? k('title')}
       titleHidden

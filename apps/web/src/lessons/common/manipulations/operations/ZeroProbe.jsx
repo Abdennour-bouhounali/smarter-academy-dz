@@ -193,6 +193,7 @@ export default function ZeroProbe({
 
   return (
     <ManipulationShell
+      headerAction={cpSettings.control}
       type="zero-probe"
       title={title ?? k('title')}
       titleHidden

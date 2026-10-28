@@ -303,6 +303,7 @@ export default function DigitCards({
 
   return (
     <ManipulationShell
+      headerAction={cpSettings.control}
       type="digit-cards"
       title={title ?? k(`title.${m}`)}
       titleHidden

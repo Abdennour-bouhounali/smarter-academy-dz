@@ -186,6 +186,7 @@ export default function RobotTrack({
 
   return (
     <ManipulationShell
+      headerAction={cpSettings.control}
       type="robot-track"
       title={title ?? k('title')}
       titleHidden

@@ -192,6 +192,7 @@ export default function RulerCompare({
 
   return (
     <ManipulationShell
+      headerAction={cpSettings.control}
       type="ruler-compare"
       title={title ?? k('title')}
       titleHidden

@@ -197,6 +197,7 @@ export default function FourthGauges({
 
   return (
     <ManipulationShell
+      headerAction={cpSettings.control}
       type="fourth-gauges"
       title={title ?? k('title')}
       titleHidden
