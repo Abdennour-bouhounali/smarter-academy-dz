@@ -7,8 +7,9 @@ import { PREP_ITEMS, PREP_PLATFORM_ITEMS } from '../content/textbook';
 /**
  * Module 0 — أستعدّ : sept affirmations. Deux viennent de « أستعدّ » (p. 39, items 16 et 17, réécrits) ; cinq de la plateforme
  * mesurent les liens « راجع » du réseau (LEARNING_NET.md §4.4) : `3am.m1.r01` (جداء عددين نسبيين — jidaa-nisbi), `2am.m1.r01`
- * (سلسلة عمليات — silsila-amaliyat), `3am.m3.r02` (قواعد قوى العدد 10 — qawaid-quwa-ashara). Aucune de ces leçons n'est publiée :
- * le panneau « راجع قبل أن تنطلق » les montre « قريبًا ». JAMAIS bloquant ; `id` et `requires` littéraux.
+ * (سلسلة عمليات — id de connaissance `silsila-amaliyat`, leçon 2AM `silsila-bidun-aqwas`), `3am.m3.r02` (قواعد قوى العدد 10 —
+ * qawaid-quwa-ashara). Le panneau « راجع قبل أن تنطلق » montre les leçons non publiées « قريبًا » et, depuis le 2026-10-29, la leçon
+ * 2AM `silsila-bidun-aqwas` (publiée) avec son lien. JAMAIS bloquant ; `id` et `requires` littéraux.
  */
 export default function Module00Astaidd() {
   return (

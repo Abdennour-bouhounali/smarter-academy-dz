@@ -557,6 +557,68 @@
       "ex-1am-qisma-iqlidiya-baqi-l5-010"
     ]
   },
+  "kasr-hasil-qisma": {
+    "1": [
+      "ex-2am-kasr-hasil-qisma-l1-001",
+      "ex-2am-kasr-hasil-qisma-l1-002",
+      "ex-2am-kasr-hasil-qisma-l1-003",
+      "ex-2am-kasr-hasil-qisma-l1-004",
+      "ex-2am-kasr-hasil-qisma-l1-005",
+      "ex-2am-kasr-hasil-qisma-l1-006",
+      "ex-2am-kasr-hasil-qisma-l1-007",
+      "ex-2am-kasr-hasil-qisma-l1-008",
+      "ex-2am-kasr-hasil-qisma-l1-009",
+      "ex-2am-kasr-hasil-qisma-l1-010"
+    ],
+    "2": [
+      "ex-2am-kasr-hasil-qisma-l2-001",
+      "ex-2am-kasr-hasil-qisma-l2-002",
+      "ex-2am-kasr-hasil-qisma-l2-003",
+      "ex-2am-kasr-hasil-qisma-l2-004",
+      "ex-2am-kasr-hasil-qisma-l2-005",
+      "ex-2am-kasr-hasil-qisma-l2-006",
+      "ex-2am-kasr-hasil-qisma-l2-007",
+      "ex-2am-kasr-hasil-qisma-l2-008",
+      "ex-2am-kasr-hasil-qisma-l2-009",
+      "ex-2am-kasr-hasil-qisma-l2-010"
+    ],
+    "3": [
+      "ex-2am-kasr-hasil-qisma-l3-001",
+      "ex-2am-kasr-hasil-qisma-l3-002",
+      "ex-2am-kasr-hasil-qisma-l3-003",
+      "ex-2am-kasr-hasil-qisma-l3-004",
+      "ex-2am-kasr-hasil-qisma-l3-005",
+      "ex-2am-kasr-hasil-qisma-l3-006",
+      "ex-2am-kasr-hasil-qisma-l3-007",
+      "ex-2am-kasr-hasil-qisma-l3-008",
+      "ex-2am-kasr-hasil-qisma-l3-009",
+      "ex-2am-kasr-hasil-qisma-l3-010"
+    ],
+    "4": [
+      "ex-2am-kasr-hasil-qisma-l4-001",
+      "ex-2am-kasr-hasil-qisma-l4-002",
+      "ex-2am-kasr-hasil-qisma-l4-003",
+      "ex-2am-kasr-hasil-qisma-l4-004",
+      "ex-2am-kasr-hasil-qisma-l4-005",
+      "ex-2am-kasr-hasil-qisma-l4-006",
+      "ex-2am-kasr-hasil-qisma-l4-007",
+      "ex-2am-kasr-hasil-qisma-l4-008",
+      "ex-2am-kasr-hasil-qisma-l4-009",
+      "ex-2am-kasr-hasil-qisma-l4-010"
+    ],
+    "5": [
+      "ex-2am-kasr-hasil-qisma-l5-001",
+      "ex-2am-kasr-hasil-qisma-l5-002",
+      "ex-2am-kasr-hasil-qisma-l5-003",
+      "ex-2am-kasr-hasil-qisma-l5-004",
+      "ex-2am-kasr-hasil-qisma-l5-005",
+      "ex-2am-kasr-hasil-qisma-l5-006",
+      "ex-2am-kasr-hasil-qisma-l5-007",
+      "ex-2am-kasr-hasil-qisma-l5-008",
+      "ex-2am-kasr-hasil-qisma-l5-009",
+      "ex-2am-kasr-hasil-qisma-l5-010"
+    ]
+  },
   "muqarana-nisbiya": {
     "1": [
       "ex-2am-muqarana-nisbiya-l1-001",
@@ -741,6 +803,68 @@
       "ex-2am-rabi-mutanasib-l5-008",
       "ex-2am-rabi-mutanasib-l5-009",
       "ex-2am-rabi-mutanasib-l5-010"
+    ]
+  },
+  "silsila-bidun-aqwas": {
+    "1": [
+      "ex-2am-silsila-bidun-aqwas-l1-001",
+      "ex-2am-silsila-bidun-aqwas-l1-002",
+      "ex-2am-silsila-bidun-aqwas-l1-003",
+      "ex-2am-silsila-bidun-aqwas-l1-004",
+      "ex-2am-silsila-bidun-aqwas-l1-005",
+      "ex-2am-silsila-bidun-aqwas-l1-006",
+      "ex-2am-silsila-bidun-aqwas-l1-007",
+      "ex-2am-silsila-bidun-aqwas-l1-008",
+      "ex-2am-silsila-bidun-aqwas-l1-009",
+      "ex-2am-silsila-bidun-aqwas-l1-010"
+    ],
+    "2": [
+      "ex-2am-silsila-bidun-aqwas-l2-001",
+      "ex-2am-silsila-bidun-aqwas-l2-002",
+      "ex-2am-silsila-bidun-aqwas-l2-003",
+      "ex-2am-silsila-bidun-aqwas-l2-004",
+      "ex-2am-silsila-bidun-aqwas-l2-005",
+      "ex-2am-silsila-bidun-aqwas-l2-006",
+      "ex-2am-silsila-bidun-aqwas-l2-007",
+      "ex-2am-silsila-bidun-aqwas-l2-008",
+      "ex-2am-silsila-bidun-aqwas-l2-009",
+      "ex-2am-silsila-bidun-aqwas-l2-010"
+    ],
+    "3": [
+      "ex-2am-silsila-bidun-aqwas-l3-001",
+      "ex-2am-silsila-bidun-aqwas-l3-002",
+      "ex-2am-silsila-bidun-aqwas-l3-003",
+      "ex-2am-silsila-bidun-aqwas-l3-004",
+      "ex-2am-silsila-bidun-aqwas-l3-005",
+      "ex-2am-silsila-bidun-aqwas-l3-006",
+      "ex-2am-silsila-bidun-aqwas-l3-007",
+      "ex-2am-silsila-bidun-aqwas-l3-008",
+      "ex-2am-silsila-bidun-aqwas-l3-009",
+      "ex-2am-silsila-bidun-aqwas-l3-010"
+    ],
+    "4": [
+      "ex-2am-silsila-bidun-aqwas-l4-001",
+      "ex-2am-silsila-bidun-aqwas-l4-002",
+      "ex-2am-silsila-bidun-aqwas-l4-003",
+      "ex-2am-silsila-bidun-aqwas-l4-004",
+      "ex-2am-silsila-bidun-aqwas-l4-005",
+      "ex-2am-silsila-bidun-aqwas-l4-006",
+      "ex-2am-silsila-bidun-aqwas-l4-007",
+      "ex-2am-silsila-bidun-aqwas-l4-008",
+      "ex-2am-silsila-bidun-aqwas-l4-009",
+      "ex-2am-silsila-bidun-aqwas-l4-010"
+    ],
+    "5": [
+      "ex-2am-silsila-bidun-aqwas-l5-001",
+      "ex-2am-silsila-bidun-aqwas-l5-002",
+      "ex-2am-silsila-bidun-aqwas-l5-003",
+      "ex-2am-silsila-bidun-aqwas-l5-004",
+      "ex-2am-silsila-bidun-aqwas-l5-005",
+      "ex-2am-silsila-bidun-aqwas-l5-006",
+      "ex-2am-silsila-bidun-aqwas-l5-007",
+      "ex-2am-silsila-bidun-aqwas-l5-008",
+      "ex-2am-silsila-bidun-aqwas-l5-009",
+      "ex-2am-silsila-bidun-aqwas-l5-010"
     ]
   },
   "adad-natiq": {

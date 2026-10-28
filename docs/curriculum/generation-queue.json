@@ -332,17 +332,6 @@
       ]
     },
     {
-      "code": "silsila-bidun-aqwas",
-      "grade": "2am",
-      "unit": "amaliyat-tabiiya-ushriya",
-      "titleAr": "سلسلة عمليات دون أقواس وأولوية العمليات",
-      "kind": "lesson",
-      "trigger": "amaliyat-judhur",
-      "via": [
-        "2am.m1.r01"
-      ]
-    },
-    {
       "code": "tawzi-darb-jam-tarh",
       "grade": "2am",
       "unit": "amaliyat-tabiiya-ushriya",
@@ -385,6 +374,15 @@
       "via": [
         "2am.m1.r09"
       ]
+    },
+    {
+      "code": "wadiya-idmajiya-kusur-amaliyat",
+      "grade": "2am",
+      "unit": "kusur-amaliyat",
+      "titleAr": "أدمج تعلّماتي — الكسور والعمليات عليها",
+      "kind": "synthesis",
+      "trigger": "unité kusur-amaliyat complète",
+      "via": []
     },
     {
       "code": "tatbiq-qaida-harfiya",
@@ -1125,24 +1123,6 @@
       "via": [
         "1am.m3.r03"
       ]
-    },
-    {
-      "code": "kasr-hasil-qisma",
-      "grade": "2am",
-      "unit": "kusur-amaliyat",
-      "titleAr": "الكسر: نسبة وحاصل قسمة وقيم مقرّبة",
-      "kind": "lesson",
-      "trigger": "kasr-hasil-qisma",
-      "via": []
-    },
-    {
-      "code": "wadiya-idmajiya-kusur-amaliyat",
-      "grade": "2am",
-      "unit": "kusur-amaliyat",
-      "titleAr": "أدمج تعلّماتي — الكسور والعمليات عليها",
-      "kind": "synthesis",
-      "trigger": "unité kusur-amaliyat complète",
-      "via": []
     },
     {
       "code": "qiraat-mutayat-ihsaiya",
