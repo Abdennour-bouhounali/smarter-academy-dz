@@ -78,7 +78,7 @@ export default function Module04Tarayiq() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

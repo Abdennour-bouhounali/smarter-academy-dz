@@ -160,6 +160,13 @@ export function placePin(s, node) {
   return Object.freeze({ ...t, pin: nextPiece(t) ? currentPoint(t) : null, last: Object.freeze({ kind: 'pin', trial, routeDone: doneHere ? s.active : null }) });
 }
 
+/** « أعِد التجربة » : le parcours i se REconstruit depuis son départ (rien n'est posé dessus, le pari reste) ; les essais restent au journal. */
+export function retryRoute(s, i) {
+  const built = [...s.built]; built[i] = 0;
+  const t = { ...s, built: Object.freeze(built), active: i };
+  return Object.freeze({ ...t, pin: currentPoint(t, i), last: null });
+}
+
 /** La longueur de ce qui est déjà construit sur le parcours i : la somme exacte (LaTeX) et la valeur approchée. */
 export function builtLength(s, i) {
   const r = s.routes[i]; const k = s.built[i];

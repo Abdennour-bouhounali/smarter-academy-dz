@@ -24,6 +24,8 @@ import LabEvidence from '../components/LabEvidence';
  * questions ([data-activity-evidence]).
  * RÉTROFIT 2026-10-15 (§4quater) : aucune carte au-dessus ; le labo ouvre le module (niveau مبتدئ = la trottinette de la
  * plateforme, choisie comme ENTRÉE ; le تحدّ du livre reste le niveau متقدم et devient l'étape 2).
+ * PROTOTYPE 2026-10-28 : les étapes 1 et 2 ne reposent plus leurs questions — elles sont posées PAR-DESSUS le labo (`vector-sum › chasles|parallelogram.cp`,
+ * rubriques turn · zero · target · miss) et les étapes gardent la TRACE (événements `checkpoint-done`).
  *   1. POURQUOI le compteur lit plus que la distance droite (les propres essais de la trottinette)   (LP P2)
  *   2. le تحدّ : viser B ne suffit pas ; dans quel sens viser                              (LP P1)
  *   3. نشاط 3 : M′, M″, les trois parallélogrammes, M″ image de M par AC → brique tarkib-insihabayn  (LP P1, P2)
@@ -37,7 +39,13 @@ export default function Module01TahaddiAnshita() {
   const [trials, setTrials] = useState([]);
   const [q, setQ] = useState({});
   const mark = (n) => () => setQ((s) => ({ ...s, [n]: true }));
-  const keep = (e) => setTrials((list) => [...list, e].slice(-30));
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : leur trace (`checkpoint-done`, rubriques turn · zero · target · miss) fait avancer les étapes
+  const [cpDone, setCpDone] = useState({});
+  const keep = (e) => {
+    if (!e) return;
+    if (e.tk) { if (e.tk === 'checkpoint-done') setCpDone((d) => ({ ...d, [e.id]: true })); return; }
+    setTrials((list) => [...list, e].slice(-30));
+  };
 
   return (
     <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} objectives={['هل يصل السبّاح إلى B إذا سبح نحوها مباشرة؟', 'أين ينتهي من انتقل بانسحابين متتابعين؟', 'ماذا يفعل مشوار العودة؟']} moduleTitle="التحدّ ونشاطا 3 و 4"
@@ -56,24 +64,19 @@ export default function Module01TahaddiAnshita() {
         />
       }
       steps={[
-        { num: 1, title: 'لماذا يقرأ العدّاد أكثر؟', subtitle: 'عن مشاويرك بالدراجة', done: !!q.ride,
+        { num: 1, title: 'لماذا يقرأ العدّاد أكثر؟', subtitle: 'عن مشاويرك بالدراجة', done: !!cpDone.turn,
           content: (
             <div className="space-y-3">
               <LabEvidence id="beginner-first" trials={trials} filter={isRide} title="مشاويرك بالدراجة (المستوى المبتدئ):"
-                empty="لم تضع مشوارًا ثانيًا بعد: في المستوى المبتدئ اسحب بطاقة مشوار ثانٍ وضع ذيل سهمها حيث تقف الدراجة." />
-              <TapQuestion
-                prompt={<MathText>{'حين ينعطف المشوار الثاني، يقرأ العدّاد أكثر من المسافة المستقيمة بين A ونهاية المشوار الثاني. لماذا؟'}</MathText>}
-                options={[
-                  'لأنّ الدراجة مرّت بـ B: العدّاد يجمع طولَي المشوارين، أمّا الانتقال الفعلي فهو من A مباشرةً إلى النهاية',
-                  'لأنّ العدّاد معطّل',
-                  'لأنّ المشوار الثاني بدأ من A لا من B',
-                ].map(M)}
-                correct={0} cols={1} requires={['anasir-shuaa']}
-                explain={<MathText>{'العدّاد يقيس المسافة المقطوعة على الطريق (AB ثم BC) ، والانتقال الفعلي هو الشعاع من المبدأ الأول إلى النهاية الأخيرة: طوله لا يساوي مجموع الطولين إلا إذا لم تنعطف الدراجة.'}</MathText>}
-                onAnswered={mark('ride')} />
+                empty="لم تضع مشوارًا ثانيًا بعد: في المستوى المبتدئ اسحب بطاقة مشوار ثانٍ وضع ذيل سهمها حيث تقف الدراجة، ثم أجب عن الأسئلة التي تظهر فوق المختبر." />
+              {cpDone.turn && (
+                <p className="rounded-xl border-2 border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900" data-evidence="ride-answered">
+                  <MathText>{'أجبتَ في المختبر: العدّاد يقيس المسافة المقطوعة على الطريق ($AB$ ثم $BC$) ، أمّا الانتقال الفعلي فهو الشعاع من المبدأ الأول إلى النهاية الأخيرة.'}</MathText>
+                </p>
+              )}
             </div>
           ) },
-        { num: 2, title: 'التحدّ: نحو B مباشرة؟', subtitle: 'الماء يتحرّك أيضا', done: !!q[1],
+        { num: 2, title: 'التحدّ: نحو B مباشرة؟', subtitle: 'الماء يتحرّك أيضا', done: !!(cpDone.target && cpDone.miss),
           content: (
             <div className="space-y-3">
               <TextbookBox kind="exercise" title="تحدّ" text={CHALLENGE.text} source={CHALLENGE.source} compact>
@@ -81,27 +84,10 @@ export default function Module01TahaddiAnshita() {
               </TextbookBox>
               <LabEvidence id="advanced" trials={trials} filter={isSwim} title="محاولاتك مع السبّاح (المستوى المتقدّم):"
                 empty="لم ينطلق السبّاح بعد: في المستوى المتقدّم اسحب رأس السهم الأزرق ثم اتركه، وراقب أين يصل." />
-              <TapQuestion
-                prompt={<MathText>{'إذا سبح السبّاح نحو B مباشرة (على المستقيم (AB)) بسرعة $4\\,\\mathrm{km/h}$ :'}</MathText>}
-                options={[
-                  'يجرفه التيار فيصل إلى الضفة الأخرى أسفل B',
-                  'يصل إلى B لأن سرعته أكبر من سرعة التيار',
-                  'يصل إلى B لكن في وقت أطول',
-                ].map(M)}
-                correct={0} cols={1} requires={['anasir-shuaa']}
-                explain={<MathText>{'الماء يحمل السبّاح بسرعة التيار في نفس الوقت الذي يسبح فيه: حركته الفعلية تجمع الحركتين، فيبتعد عن (AB) نحو أسفل النهر مهما كانت سرعته أكبر.'}</MathText>}
-                onAnswered={mark('1a')} />
-              {q['1a'] && (
-                <TapQuestion
-                  prompt="ليصل إلى B ، ينبغي أن يسبح:"
-                  options={[
-                    'مائلا عن (AB) عكس التيار (نحو أعلى النهر)',
-                    'مائلا عن (AB) مع التيار (نحو أسفل النهر)',
-                    'على (AB) نحو B ، أسرع ما يمكن',
-                  ].map(M)}
-                  correct={0} cols={1} requires={['anasir-shuaa']}
-                  explain={<MathText>{'التيار يدفعه نحو أسفل النهر، فيوجّه سرعته الذاتية قليلا نحو أعلى النهر حتى تصبح حركته الفعلية على (AB). بأيّ زاوية بالضبط؟ نحسبها في المعارف.'}</MathText>}
-                  onAnswered={mark(1)} />
+              {cpDone.target && cpDone.miss && (
+                <p className="rounded-xl border-2 border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900" data-evidence="swim-answered">
+                  <MathText>{'أجبتَ في المختبر: لو سبح نحو B مباشرة لجرفه التيار، فيوجّه سرعته مائلة نحو أعلى النهر ليكون مجموع سرعتيه على (AB).'}</MathText>
+                </p>
               )}
             </div>
           ) },
@@ -180,6 +166,6 @@ export default function Module01TahaddiAnshita() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />} />
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />} />
   );
 }

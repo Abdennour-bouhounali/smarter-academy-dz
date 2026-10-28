@@ -62,7 +62,10 @@ export default function Module07AlWadiya() {
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
-  const [q5, setQ5] = useState(false);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : l'étape 5 est faite quand la suite « race » du niveau مبتدئ est terminée
+  const [cps, setCps] = useState([]);
+  const onCheckpoint = (lvl) => (e) => setCps((l) => [...l, { ...e, lvl }]);
+  const q5 = cps.some((e) => e.tk === 'checkpoint-done' && e.id === 'race' && e.lvl === 'small');
   const keep = (set) => (trial) => { if (trial) set((t) => ({ ...t, [trial.x]: trial })); };
   const { perSession1: p1, yearly: fixed, perSession2: p2 } = SITUATION.numbers;
 
@@ -80,6 +83,7 @@ export default function Module07AlWadiya() {
                 title={bidi('مسبح الحيّ: 50x أم 200 + 10x؟')}
                 lead={WARMUP.text}
                 onTrial={keep(setSmall)}
+                onCheckpoint={onCheckpoint('small')}
               />
             ),
             advanced: () => (
@@ -188,12 +192,13 @@ export default function Module07AlWadiya() {
               <p className="rounded-lg bg-amber-50 px-2 py-1 text-sm">{WARMUP.text} <SourceTag source={WARMUP.source} /></p>
               <p className="text-sm font-semibold text-slate-700">محاولاتك في مسبح الحيّ (المستوى المبتدئ):</p>
               <Evidence trials={small} level="beginner" titles={['الصيغة (أ)', 'الصيغة (ب)']} empty="لم تجرّب بعد مسبح الحيّ: افتح المستوى المبتدئ ومدّد x." />
-              <TapQuestion
-                prompt={<span>«الصيغة (ب) أفضل» تعني <MathText>{'$200 + 10x < 50x$'}</MathText> ، وحلّها <MathText>{'$x > 5$'}</MathText>. ابتداءً من أي عدد للحصص تكون الصيغة (ب) أفضل؟</span>}
-                options={['6 حصص', '5 حصص', 'أقل من 5 حصص', '50 حصة']}
-                correct={0} cols={2} requires={['mutarajiha-mufadala', 'hall-mutarajiha']}
-                explain={<span><MathText>{REMARKS.tasawiWhy}</MathText> <MathText>{REMARKS.tasawiRight}</MathText></span>}
-                onAnswered={() => setQ5(true)} />
+              <p className="text-sm text-slate-800"><MathText>{'«الصيغة (ب) أفضل» تعني $200 + 10x < 50x$ ، وحلّها $x > 5$.'}</MathText></p>
+              <p data-evidence="checkpoint" data-tried={q5 ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${q5 ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {q5
+                  ? 'أجبتَ في المسبح: عند 5 حصص تتساوى الصيغتان فلا تكون (ب) أفضل، وابتداءً من 6 حصص تصير (ب) أفضل.'
+                  : 'في المستوى المبتدئ ابنِ النموذج وافتح السباق وجرّب حول لحظة التساوي، ثم أجب عن الأسئلة التي تظهر فوق المسبح.'}
+              </p>
               {q5 && (
                 <>
                   {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : garder les solutions qui conviennent (nombre naturel) est tahaqquq-waqi (درس 4), et
@@ -208,6 +213,6 @@ export default function Module07AlWadiya() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={7} />} />
+      footer={<KnowledgeSnapshot moduleNumber={7} variant="memo" />} />
   );
 }

@@ -10,6 +10,11 @@ import { useManipulation } from '../useManipulation';
 import LabFold from '../primitives/LabFold';
 import MovablePanel from '../primitives/MovablePanel';
 import MathText from '../../components/MathText';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { Mx, useTick } from './vecCp';
 import * as L from '../logic/midpointDistance';
 
 /**
@@ -72,6 +77,17 @@ import * as L from '../logic/midpointDistance';
  * [data-md-back], [data-md-reopen], [data-md-claim=taxi|square|root], [data-md-reading], [data-md-verdict=<kind>],
  * [data-md-gps], [data-md-stairs][data-ok], [data-lab-fold=midpoint-distance.trials], [data-deco].
  */
+/** La découverte : distracteurs réfutés par les essais de l'élève (aussi la dernière question de la suite). */
+export function discoveryOptionsOf(lab, k) {
+    const ref = L.lastTrial(lab, 'meet', (x) => x.kind === 'sum') ?? null;
+    const sumAt = ref ? ref.at : L.xy(lab.meet.sum);
+    return [
+      { text: <MathText>{k('dSum')}</MathText>, why: <MathText>{k('dSumWhy', { p: isl(`(${L.legLatex(sumAt[0])}\\,;\\,${L.legLatex(sumAt[1])})`), taxi: isl(L.legLatex(lab.dist.taxi)), root: isl(L.rootLatex(lab.dist)) })}</MathText> },
+      { text: <MathText>{k('dRight')}</MathText>, correct: true },
+      { text: <MathText>{k('dDiff')}</MathText>, why: <MathText>{k('dDiffWhy', { sq: isl(L.legLatex(lab.dist.square)) })}</MathText> },
+    ];
+  }
+
 const TONE = { ok: 'text-emerald-800', 'claim-ok': 'text-emerald-800', end: 'text-slate-600' };
 const toneOf = (kind) => TONE[kind] ?? 'text-rose-800';
 const C_A = '#4F46E5'; const C_B = '#E11D48'; const C_M = '#D97706'; const C_OK = '#059669'; const C_STREET = '#EA580C'; const C_GPS = '#0284C7';
@@ -83,7 +99,7 @@ const ptText = (name, [x, y]) => `${name}(${num(x)} ; ${num(y)})`;
 
 export default function MidpointDistance({
   numbers, A: A0, B: B0, names: names0, dist: dist0, city: city0, theme = 'gps-meet', title, lead, mission, level,
-  levels: withLevels = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.midpointDistance.${key}`, o), [t]);
@@ -96,12 +112,52 @@ export default function MidpointDistance({
   const make = () => L.init(nums);
   const [lab, setLab] = useState(make);
   const sceneKey = `${JSON.stringify(nums)}|${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); }
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  const [doneIds, setDoneIds] = useState([]);   // les étapes dont la suite de questions est finie
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(make()); setDoneIds([]); }   // « إعادة » : tout repart
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
   const meetStage = lab.stage === 'meet';
 
-  const ready = L.discoveryReady(lab);
+  /* ── les questions PENDANT le labo (primitives/LabCheckpoint) : après chaque étape réussie (le rendez-vous, puis la distance), une suite
+     sur les nombres de l'élève ; celle de la distance finit par la règle et remplace la découverte automatique. L'enseignant seul peut les couper. ── */
+  const cpSettings = useLabCheckpointSettings('midpoint-distance');
+  const cpEnabled = cpOn && cpSettings.enabled;
+  const steps = ['meet', 'dist'];
+  const stepOk = { meet: lab.meet.solved, dist: lab.dist.solved };
+  const pending = cpEnabled ? steps.find((g) => stepOk[g] && !doneIds.includes(g)) ?? null : null;
+  const chain = pending ? chainOf(pending) : null;
+  const cp = useLabCheckpoint({
+    id: chain ? pending : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, pending, k)) : null,
+    reached: !!pending,
+    resetKey: scene.inits,
+    onRetry: () => { celebrated.current.delete(pending); setLab((s) => L.retryStage(s, pending)); },
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => (d.includes(id) ? d : [...d, id]));
+      if (chainOf(id).includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const solvedAll = L.discoveryReady(lab);
+  const ready = solvedAll && !cpEnabled;
+  const tick = useTick();
+  const stepDone = steps.map((g) => !!stepOk[g] && (!cpEnabled || doneIds.includes(g)));
+  const stepNow = lab.stage === 'meet' ? 0 : 1;
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.n === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(steps[i])) return;
+      celebrated.current.add(steps[i]);
+      party.celebrate({ n: stepDone.filter(Boolean).length, total: steps.length });
+    });
+  }, [stepDone.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son : un déclic par pas de l'épingle, le drapeau quand l'essai est juste, « over » quand il est refusé
+  useEffect(() => {
+    const tr = lab.last?.kind === 'commit' ? lab.last.trial : null;
+    if (tr && lab.n > 0) playSfx(tr.kind === 'ok' || tr.kind === 'claim-ok' ? 'flag' : tr.kind === 'end' ? 'tooth' : 'over');
+  }, [lab.n]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (state.isFormal) state.report(onFinished, { meet: lab.meet.trials.length, dist: lab.dist.trials.length });
@@ -146,6 +202,7 @@ export default function MidpointDistance({
     setLab((s) => L.commitHeld(s));
   }, []);
   const nudge = (dx, dy) => {
+    tick(dx + dy < 0 ? 0.75 : 1);
     setLab((s) => L.nudgeHeld(s, dx, dy));
     if (settle.current) clearTimeout(settle.current);
     settle.current = setTimeout(commit, 900);
@@ -164,7 +221,7 @@ export default function MidpointDistance({
     const [x, y] = fromEvent(e);
     setLab((s) => L.moveHeld(s, x, y));
   };
-  const onSceneMove = (e) => { if (dragging) { const [x, y] = fromEvent(e); setLab((s) => L.moveHeld(s, x, y)); } };
+  const onSceneMove = (e) => { if (dragging) { const [x, y] = fromEvent(e); tick(); setLab((s) => L.moveHeld(s, x, y)); } };
   const onSceneUp = (e) => {
     if (!dragging) return;
     e.currentTarget.releasePointerCapture?.(e.pointerId);
@@ -207,16 +264,8 @@ export default function MidpointDistance({
     return k(`c_${lastHere.kind}`, P);
   })();
 
-  /* ── la découverte : distracteurs réfutés par les essais de l'élève ── */
-  const discoveryOptions = useMemo(() => {
-    const ref = L.lastTrial(lab, 'meet', (x) => x.kind === 'sum') ?? null;
-    const sumAt = ref ? ref.at : L.xy(lab.meet.sum);
-    return [
-      { text: <MathText>{k('dSum')}</MathText>, why: <MathText>{k('dSumWhy', { p: isl(`(${L.legLatex(sumAt[0])}\\,;\\,${L.legLatex(sumAt[1])})`), taxi: isl(L.legLatex(lab.dist.taxi)), root: isl(L.rootLatex(lab.dist)) })}</MathText> },
-      { text: <MathText>{k('dRight')}</MathText>, correct: true },
-      { text: <MathText>{k('dDiff')}</MathText>, why: <MathText>{k('dDiffWhy', { sq: isl(L.legLatex(lab.dist.square)) })}</MathText> },
-    ];
-  }, [lab, k]);
+  const discoveryOptions = useMemo(() => discoveryOptionsOf(lab, k), [lab, k]);
+
   const formal = (
     <div className="space-y-1 text-sm text-emerald-900" data-md-formal>
       <p className="font-bold"><MathText>{k('formalMid')}</MathText></p>
@@ -348,6 +397,8 @@ export default function MidpointDistance({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={cpEnabled}
       hints={hintKeys.map((h) => <MathText key={h}>{k(h, hintParams)}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={<MathText>{k('dPrompt')}</MathText>} options={discoveryOptions} formal={formal} />}
@@ -355,8 +406,12 @@ export default function MidpointDistance({
     >
       <ManipulationStage className="bg-gradient-to-b from-sky-50/60 to-white" minHeight="min-h-[170px]">
         <div ref={boxRef} className="space-y-2" data-midpoint-distance data-stage={lab.stage} data-world={theme} data-city={city}
-          data-solved={ready ? 'true' : 'false'} data-scene-h={sceneH}>
+          data-solved={solvedAll ? 'true' : 'false'} data-scene-h={sceneH}>
+          <div className="relative">
+            {party.node}
+            {cp.node}
           <div ref={glanceRef} className="space-y-1.5" data-md-glance>
+            <LabStepper count={steps.length} current={stepNow} done={stepDone} stepAttr="data-md-step" />
             <div ref={sceneRef} className="relative mx-auto select-none" style={{ width: sceneW, height: sceneH, touchAction: 'none' }}
               data-md-scene onPointerDown={onSceneDown} onPointerMove={onSceneMove} onPointerUp={onSceneUp} onPointerCancel={onSceneUp}>
               <Scene lab={lab} fr={fr} uid={uid} city={city} ride={ride} width={sceneW} height={sceneH} advanced={advanced}
@@ -373,7 +428,7 @@ export default function MidpointDistance({
               )}
             </div>
             {narrow && <div className="flex justify-center">{sharePanel}</div>}
-            {meetStage && lab.meet.solved && (
+            {meetStage && lab.meet.solved && !cp.blocking && (
               <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-bold text-violet-900" data-md-done-meet>
                 {!narrow && <MathText>{k('doneMeet', { a: na, b: nb })}</MathText>}
                 <button type="button" className={`${btn} border-violet-400 bg-violet-50 text-violet-900`} onClick={() => setLab(L.openDistance)} data-md-next>{k('next')}</button>
@@ -386,6 +441,7 @@ export default function MidpointDistance({
               data-md-verdict={lastHere?.kind ?? ''}>
               {verdict ? <MathText>{verdict}</MathText> : k(meetStage ? 'waitingMeet' : (d.cornerOk ? 'waitingClaim' : 'waitingDist'), { a: da, b: db, c: dc })}
             </p>
+          </div>
           </div>
             {meetStage && lastHere?.kind === 'ok' && (
               <p className={`text-center ${narrow ? 'text-xs' : 'text-sm'} text-emerald-900`} data-md-mid-formula>
@@ -624,3 +680,115 @@ function Scooter({ onRide }) {
     </button>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de chaque étape : le rendez-vous → les deux coordonnées du milieu ; la distance → les jambes, la somme des carrés, la racine, puis la règle. */
+export const chainOf = (step) => (step === 'meet' ? ['midHow', 'midBack'] : ['legs', 'distSq', 'distRoot', 'rule']);
+
+const ft = (v) => String(v).replace('.', '{,}');   // 2.5 → 2{,}5 (virgule KaTeX), le signe est celui de KaTeX
+const iso = (s) => `$${s}$`;
+
+const sg = (v) => (v < 0 ? `(${ft(v)})` : ft(v));
+
+/** La méthode du milieu : la moyenne (juste), la somme sans « ÷ 2 » (MUNTASAF-NISF), la demi-différence (MUNTASAF-TARH) — sur l'abscisse de l'élève. */
+const midHow = (lab, step, k) => {
+  const m = lab.meet; const [na, nb, ni] = m.names;
+  const [ax, ay] = L.xy(m.A); const [bx, by] = L.xy(m.B);
+  // l'abscisse, sauf si elle ne distingue pas les trois méthodes (alors l'ordonnée)
+  const pick = (a, b) => new Set([(a + b) / 2, a + b, (b - a) / 2]).size === 3;
+  const comp = pick(ax, bx) ? 0 : 1;
+  const a = comp === 0 ? ax : ay; const b = comp === 0 ? bx : by;
+  const v = comp === 0 ? 'x' : 'y';
+  const o = { a: na, b: nb, i: ni, comp: k(comp === 0 ? 'cp.midHow.compX' : 'cp.midHow.compY'), expr: iso(`${v}_{${ni}}`) };
+  const sum = `${v}_{${na}} + ${v}_{${nb}}`;
+  return {
+    id: 'midHow', kind: 'choice',
+    prompt: Mx(k, 'midHow.prompt', o),
+    options: [
+      { text: <MathText>{iso(`\\dfrac{${sg(a)} + ${sg(b)}}{2}`)}</MathText>, correct: true },
+      { text: <MathText>{iso(`${sg(a)} + ${sg(b)}`)}</MathText>, why: Mx(k, 'mid.whySum', { ...o, n: iso(ft(a + b)), sum: iso(`${sg(a)} + ${sg(b)} = ${ft(a + b)}`) }) },
+      { text: <MathText>{iso(`\\dfrac{${sg(b)} - ${sg(a)}}{2}`)}</MathText>, why: Mx(k, 'mid.whyDiff', { ...o, n: iso(ft((b - a) / 2)), diff: iso(`\\dfrac{${sg(b)} - ${sg(a)}}{2} = ${ft((b - a) / 2)}`) }) },
+    ],
+    hints: [Mx(k, 'midHow.hint1', o), Mx(k, 'midHow.hint2', o)],
+    explain: Mx(k, 'midHow.explain', { ...o, calc: iso(`${v}_{${ni}} = \\dfrac{${sum}}{2} = \\dfrac{${sg(a)} + ${sg(b)}}{2} = ${ft((a + b) / 2)}`) }),
+  };
+};
+
+/** La réciproque : connaissant le milieu et un ami, où est l'autre (B = 2I − A) ; pièges : I + A, 2I, le symétrique de I par rapport à A. */
+const midBack = (lab, step, k) => {
+  const m = lab.meet; const [na, nb, ni] = m.names;
+  const [ax, ay] = L.xy(m.A); const [bx, by] = L.xy(m.B); const [ix, iy] = L.xy(m.I);
+  const pt = (n, x, y) => iso(`${n}(${ft(x)}\\,;\\,${ft(y)})`);
+  const o = { a: na, b: nb, i: ni, pi: pt(ni, ix, iy), pa: pt(na, ax, ay) };
+  const cands = [
+    { x: ix + ax, y: iy + ay, why: 'whyAdd' }, { x: 2 * ix, y: 2 * iy, why: 'whyDouble' }, { x: 2 * ax - ix, y: 2 * ay - iy, why: 'whyAside' }, { x: bx + 1, y: by - 1, why: 'whyOff' },
+  ];
+  const seen = new Set([`${bx};${by}`]); const ds = [];
+  for (const c of cands) { const key = `${c.x};${c.y}`; if (ds.length < 2 && !seen.has(key)) { seen.add(key); ds.push(c); } }
+  return {
+    id: 'midBack', kind: 'choice',
+    prompt: Mx(k, 'midBack.prompt', o),
+    options: [
+      { text: <MathText>{pt(nb, bx, by)}</MathText>, correct: true },
+      ...ds.map((d) => ({ text: <MathText>{pt(nb, d.x, d.y)}</MathText>, why: Mx(k, `midBack.${d.why}`, { ...o, pt: pt(nb, d.x, d.y) }) })),
+    ],
+    hints: [Mx(k, 'midBack.hint1', o), Mx(k, 'midBack.hint2', o)],
+    explain: Mx(k, 'midBack.explain', { ...o, pb: pt(nb, bx, by), calc: iso(`${ft(ix)} = \\dfrac{${sg(ax)} + x_{${nb}}}{2}`) }),
+  };
+};
+
+const legAnswer = (f) => ({ kind: 'number', expected: String(Math.abs(Number(L.legLatex(f)))), answer: <MathText>{iso(L.legLatex(f))}</MathText> });
+
+export const QUESTIONS = {
+  midHow,
+  midBack,
+  legs: (lab, step, k) => {
+    const d = lab.dist; const [da, db, dc] = d.names;
+    const o = { a: da, b: db, c: dc, ab: iso(`${da}${db}`), h: iso(L.legLatex(d.h)), v: iso(L.legLatex(d.v)) };
+    return {
+      id: 'legs', ...legAnswer(d.h),
+      prompt: Mx(k, 'legs.prompt', o),
+      hints: [Mx(k, 'legs.hint1', o), Mx(k, 'legs.hint2', o)],
+      explain: Mx(k, 'legs.explain', o),
+    };
+  },
+  distSq: (lab, step, k) => {
+    const d = lab.dist; const [da, db] = d.names;
+    const o = { a: da, b: db, h: iso(L.legLatex(d.h)), v: iso(L.legLatex(d.v)), sq: iso(L.legLatex(d.square)) };
+    return {
+      id: 'distSq', kind: 'number', expected: String(L.legLatex(d.square)), answer: <MathText>{o.sq}</MathText>,
+      prompt: Mx(k, 'distSq.prompt', o),
+      hints: [Mx(k, 'distSq.hint1', o), Mx(k, 'distSq.hint2', o)],
+      explain: Mx(k, 'distSq.explain', { ...o, calc: iso(`${L.legLatex(d.h)}^2 + ${L.legLatex(d.v)}^2 = ${L.legLatex(d.square)}`) }),
+    };
+  },
+  distRoot: (lab, step, k) => {
+    const d = lab.dist; const [da, db] = d.names;
+    const o = { a: da, b: db, ab: iso(`${da}${db}`), h: iso(L.legLatex(d.h)), v: iso(L.legLatex(d.v)), taxi: iso(L.legLatex(d.taxi)), sq: iso(L.legLatex(d.square)), formula: iso(L.distFormulaLatex(d)) };
+    return {
+      id: 'distRoot', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'distRoot.prompt', o),
+      options: [
+        { text: <MathText>{iso(L.rootLatex(d))}</MathText>, correct: true },
+        { text: <MathText>{o.taxi}</MathText>, why: Mx(k, 'distRoot.whyTaxi', o) },
+        { text: <MathText>{o.sq}</MathText>, why: Mx(k, 'distRoot.whySquare', o) },
+      ],
+      hints: [Mx(k, 'distRoot.hint1', o), Mx(k, 'distRoot.hint2', o)],
+      explain: Mx(k, 'distRoot.explain', o),
+    };
+  },
+  rule: (lab, step, k) => ({
+    id: 'rule', kind: 'choice',
+    prompt: <MathText>{k('dPrompt')}</MathText>,
+    options: discoveryOptionsOf(lab, k),
+    hints: [Mx(k, 'rule.hint1'), Mx(k, 'rule.hint2')],
+    explain: (
+      <div className="space-y-1 text-sm" data-md-formal>
+        <p className="font-bold"><MathText>{k('formalMid')}</MathText></p>
+        <p className="font-bold"><MathText>{k('formalDist')}</MathText></p>
+        <p><MathText>{k('formalNote')}</MathText></p>
+      </div>
+    ),
+  }),
+};

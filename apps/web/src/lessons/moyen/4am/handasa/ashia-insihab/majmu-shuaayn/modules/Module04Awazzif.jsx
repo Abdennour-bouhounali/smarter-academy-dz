@@ -79,7 +79,7 @@ export default function Module04Awazzif() {
         { num: 6, title: 'تمرين 13 — مثلث ومركز ثقله', done: all('13'),
           content: <div className="space-y-3">{block('13', ['alaqat-shal', 'shuaa-maadum', 'qaidat-mutawazi'])}</div> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

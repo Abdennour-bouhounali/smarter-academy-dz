@@ -48,7 +48,7 @@ export function init({ width = 2, A = [-3, 5], B = [4, -3] } = {}) {
   const i0 = iStar === one ? one + 1 : one;
   return Object.freeze({
     w, A: pA, B: pB, best, xLo, xHi: frac(hi), step, iMin: 0, iMax, iStar,
-    i: i0, stage: 'explore', pin: pB, bp: null,
+    i: i0, i0, stage: 'explore', pin: pB, bp: null,
     trials: Object.freeze([]), pinTrials: Object.freeze([]), solved: false, last: null,
   });
 }
@@ -101,6 +101,18 @@ export const canTranslate = (s) => s.stage === 'explore' && new Set(s.trials.map
 export function openTranslate(s) {
   if (!canTranslate(s)) return s;
   return Object.freeze({ ...s, stage: 'translate', pin: s.B, last: Object.freeze({ kind: 'openTranslate' }) });
+}
+
+/** Les ÉTAPES (les trois temps de la scène) atteintes : `explore` (deux places essayées) · `translate` (B′ posé) · `straight` (A, M, B′ alignés). */
+export const STEP_KINDS = Object.freeze(['explore', 'translate', 'straight']);
+export function reachedKinds(s) {
+  return STEP_KINDS.filter((kd) => (kd === 'explore' ? s.stage !== 'explore' || canTranslate(s) : kd === 'translate' ? !!s.bp : s.solved));
+}
+/** « أعِد التجربة » : remet CETTE étape au départ (les étapes d'avant restent faites, celles d'après s'effacent). */
+export function restartStep(s, kd) {
+  if (kd === 'explore') return Object.freeze({ ...s, stage: 'explore', i: s.i0, pin: s.B, bp: null, trials: Object.freeze([]), pinTrials: Object.freeze([]), solved: false, last: null });
+  if (kd === 'translate') return Object.freeze({ ...s, stage: 'translate', i: s.i0, pin: s.B, bp: null, trials: Object.freeze(s.trials.filter((t) => t.stage === 'explore')), solved: false, last: null });
+  return Object.freeze({ ...s, stage: 'straight', i: s.i0, solved: false, trials: Object.freeze(s.trials.filter((t) => t.stage !== 'straight')), last: null });
 }
 
 /** Le cadre de la scène (en carreaux) : les nœuds où l'épingle B′ peut tomber. */

@@ -61,6 +61,6 @@ export default function Module04Awazzif() {
         { num: 7, title: 'تمرين 27 — مربّع بانسحاب', done: all('27'),
           content: <div className="space-y-3">{block('27', ['tabiat-muthallath', 'tabiat-rubai', 'murakkibat-shuaa'])}</div> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />} />
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />} />
   );
 }

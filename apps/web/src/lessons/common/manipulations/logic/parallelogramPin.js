@@ -238,6 +238,24 @@ export function init(n = {}) {
 }
 export const discoveryReady = (s) => (s.mode === 'parallelogram' ? paraDiscoveryReady(s) : midDiscoveryReady(s));
 
+/** Les ÉTAPES de la scène : midpoint `equal` (le milieu) · `length` (une encoche où seules les longueurs diffèrent) ; parallelogram `D` · `E`. */
+export const STEP_KINDS = Object.freeze({ midpoint: ['equal', 'length'], parallelogram: ['D', 'E'] });
+export function reachedKinds(s) {
+  if (s.mode === 'parallelogram') return [s.dDone && 'D', s.eDone && 'E'].filter(Boolean);
+  return STEP_KINDS.midpoint.filter((kd) => s.trials.some((t) => t.kind === kd));
+}
+/** « أعِد التجربة » : remet CETTE étape au départ (ses essais s'effacent, la poignée revient, l'autre étape reste). */
+export function restartStep(s, kd) {
+  if (s.mode === 'parallelogram') {
+    const f = initParallelogram({ A: xy(s.A), B: xy(s.B), C: xy(s.C) });
+    const trials = s.trials.filter((t) => t.which !== kd);
+    return kd === 'D'
+      ? Object.freeze({ ...s, D: f.D, dDone: false, eDone: false, stage: 'D', trials: Object.freeze(trials.filter((t) => t.which !== 'E')), last: null })
+      : Object.freeze({ ...s, E: f.E, eDone: false, stage: 'E', trials: Object.freeze(trials), last: null });
+  }
+  return Object.freeze({ ...s, k: Math.min(s.N - 1, 2), second: 'IB', trials: Object.freeze(s.trials.filter((t) => t.kind !== kd)), last: null });
+}
+
 /** Le dernier essai validé d'un certain genre (pour réfuter un distracteur avec les propres essais de l'élève). */
 export const lastTrial = (s, pred) => [...s.trials].reverse().find(pred) ?? null;
 

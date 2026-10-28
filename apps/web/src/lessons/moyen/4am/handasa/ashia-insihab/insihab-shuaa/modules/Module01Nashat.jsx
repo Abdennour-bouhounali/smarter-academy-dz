@@ -20,6 +20,8 @@ import { FIG_ACT1, FIG_ACT1_ARROWS, FIG_ACT1_2D } from '../content/figures';
  *          le drone égaré (−u) — le contraste « même longueur, même منحى, اتجاه معاكس ».
  * UNDERSTAND  les questions 1 أ – 2 هـ du نشاط 1 sous les placements de l'élève (`onTrial`, `[data-activity-evidence]`),
  *           sur la figure du manuel (GeoFigure) ; la brique « الانسحاب يعرّف شعاعا » = le texte du نشاط 1.
+ * PROTOTYPE 2026-10-28 : le labo pose lui-même ses questions PAR-DESSUS (`translation-glide › CHAINS` : décalage, comparaison au 1er tableau, règle « une
+ * flèche, un shuaa » à la fin) ; l'étape 3 ne repose donc plus « pourquoi c'est la même translation » (la ligne `why`).
  * AUCUNE étape n'attend `onFinished`. LP : P1 (translation ↔ vecteur), P2 (منحى، اتجاه، طول).
  * Le lab vit dans `intro` (deux niveaux) : la DERNIÈRE étape se termine sur « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire),
  * résolue au module 5.
@@ -146,15 +148,6 @@ export default function Module01Nashat() {
                 intro={<p className="text-sm font-semibold text-slate-700">اختر لكل سطر:</p>}
                 rows={[
                   { id: 'img', label: 'صورة المثلث ABC بالانسحاب الذي يحوّل A إلى A′', options: ["A′C′D", 'GQE', 'MNT'], correct: 0, correction: 'A ↦ A′ و B ↦ C′ و C ↦ D: ثلاثة مربعات نحو اليسار.' },
-                  {
-                    id: 'why', label: 'لماذا هو نفسه الانسحاب الذي يحوّل C إلى D و K إلى H؟',
-                    options: [
-                      "للثنائيات $(A\\,;\\,A')$ و $(C\\,;\\,D)$ و $(K\\,;\\,H)$ نفس المنحى ونفس الاتجاه ونفس الطول",
-                      'لأن [CD] و [KH] أفقيتان', // le même منحى ne suffit pas
-                      'لأن $CD = KH$', // la même longueur ne suffit pas
-                    ].map(M),
-                    correct: 0, correction: ACTIVITY_LINES.same,
-                  },
                   { id: 'other', label: 'هل يوجد انسحاب آخر يعطي الصورة نفسها؟', options: ['لا: الانسحاب يتعيّن بنقطة وصورتها', 'نعم: الانسحاب الذي يحوّل C إلى R'], correct: 0, correction: ACTIVITY_LINES.other },
                 ]}
                 requires={['insihab-3am']}
@@ -207,7 +200,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

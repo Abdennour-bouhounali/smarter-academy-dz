@@ -4,6 +4,7 @@ import { useReducedMotion } from 'framer-motion';
 import * as Rot from '@smarter-academy/core/arithmetic/rotation.js';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
+import { useManipulationImmersive } from '../immersive';
 import ManipulationStage from '../ManipulationStage';
 import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
@@ -13,6 +14,10 @@ import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
 import MovablePanel from '../primitives/MovablePanel';
 import MathText from '../../components/MathText';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import * as L from '../logic/shapeTurn';
 
 /**
@@ -76,7 +81,17 @@ import * as L from '../logic/shapeTurn';
  * [data-st-theta], [data-st-stamp], [data-st-unstretch], [data-st-copy=<n>], [data-st-gauges][data-st-gauge=<key>],
  * [data-st-between], [data-st-verdict=<kind>], [data-st-claim=<id>][data-st-claim-ok], [data-st-card=<id>],
  * [data-st-center-open], [data-st-back], [data-st-pin] (bouton, flèches), [data-st-pin-place], [data-st-bisector=<M|N|P>],
- * [data-lab-fold=shape-turn.claims|shape-turn.trials], [data-deco].
+ * [data-lab-fold=shape-turn.claims|shape-turn.trials], [data-deco],
+ * [data-st-step=<i>] (LabStepper : 2 étapes en 'rosette', 3 en 'prove').
+ *
+ * QUESTIONS PENDANT LE LABO (2026-10-28, lot 3 ; `primitives/LabCheckpoint`) : `STEPS` (étape → objectif atteint → suite de questions `QUESTIONS`).
+ * rosette : r1 la rosace fermée (nombre de pétales · longueur gardée · angle entre (AB) et (A′B′)), r2 la feuille étirée (ليس دورانا) puis la RÈGLE ;
+ * prove : p1 [AC] sur [BD] (angle · image), p2 les deux affirmations prouvées (longueur) puis la RÈGLE, p3 le centre W (محور · deux محورين · angle).
+ * Une étape s'ouvre quand son objectif est atteint ET que les précédentes sont répondues ; la suite qui finit par `rule` remplace la découverte
+ * automatique (`state.discover(); state.formalize()`). « أعِد التجربة » : `logic/shapeTurn.js › retryStep`. Réglage enseignant `useLabCheckpointSettings('shape-turn')`
+ * (`headerAction`) ; questions actives ⇒ `guided`. Sons (`playSfx`) : déclic de la feuille, `bell` par copie imprimée, `flag` (rosace fermée, [BD] atteint,
+ * épingle acceptée), `over` (impression refusée, feuille étirée, carte refusée, épingle refusée). Le stepper ouvre `[data-st-glance]` (la scène en tient compte,
+ * y compris en plein écran : `useManipulationImmersive`).
  */
 const NUMBER_KEYS = ['mode', 'center', 'alpha', 'direction', 'shape', 'points', 'centerTask'];
 const TP = { style: { direction: 'ltr', unicodeBidi: 'isolate' }, fontFamily: 'ui-sans-serif, system-ui, sans-serif' };
@@ -85,7 +100,7 @@ const btn = 'inline-flex h-11 min-w-[44px] items-center justify-center rounded-x
 const prime = (n) => `${n}′`;
 
 export default function ShapeTurn(props) {
-  const { numbers: grouped, theme = 'zellige', title, lead, mission, level, levels: withLevels = true,
+  const { numbers: grouped, theme = 'zellige', title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true,
     initialMode = 'student', allowModeSwitch = false, onTrial, onFinished } = props;
   const authored = useMemo(() => {
     const out = {};
@@ -106,11 +121,20 @@ export default function ShapeTurn(props) {
   const make = () => L.init(nums);
   const [lab, setLab] = useState(make);
   const sceneKey = `${numKey}|${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); }
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  const [doneIds, setDoneIds] = useState({});
+  if (scene.key !== sceneKey) {
+    // « إعادة » (epoch), un autre niveau ou d'autres nombres : TOUT recommence — la feuille, les essais, les questions du labo
+    setScene({ key: sceneKey, inits: scene.inits + 1 });
+    setLab(make());
+    setDoneIds({});
+  }
 
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : obligatoires pour tout élève, l'enseignant seul les coupe pour SON compte (L2)
+  const cpSettings = useLabCheckpointSettings('shape-turn');
+  const cpLive = cpOn && cpSettings.enabled;
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch, cpLive]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!state.isFormal) return;
     state.report(onFinished, mode === 'prove' ? { mode, landed: lab.landed } : { mode, stamps: lab.stamps.length });
@@ -139,6 +163,11 @@ export default function ShapeTurn(props) {
     ];
   }, [lab, m, mode]);
 
+  const steps = STEPS[mode];
+  const stepDone = steps.map((st) => !!doneIds[st.id] || (!cpLive && st.reached(lab)));
+  const nextStep = cpLive ? steps.find((st) => !doneIds[st.id]) : null;
+  const cpId = nextStep && nextStep.reached(lab) ? nextStep.id : null;
+  const chain = cpId ? nextStep.chain : null;
   const formal = mode === 'prove' ? (
     <div className="space-y-2" data-st-formal>
       <EquationDisplay tone="result" tex={'AC = BD = \\sqrt{41}'} note={m('fNoteLength')} />
@@ -152,6 +181,47 @@ export default function ShapeTurn(props) {
     </div>
   );
 
+  // le stepper ouvre le bloc « d'un seul regard » (`[data-st-glance]`) : la hauteur de la scène en tient compte
+  const stepper = <LabStepper count={steps.length} current={Math.max(0, stepDone.indexOf(false) < 0 ? steps.length - 1 : stepDone.indexOf(false))} done={stepDone} stepAttr="data-st-step" />;
+  const cp = useLabCheckpoint({
+    id: cpId,
+    questions: chain ? chain.map((q) => QUESTIONS[q]({ lab, options: discoveryOptions, formal, m, mode }, k)) : null,
+    reached: !!cpId,
+    resetKey: scene.inits,
+    onRetry: () => setLab((s) => L.retryStep(s, cpId, nums)),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => ({ ...d, [id]: true }));
+      if (steps.find((st) => st.id === id)?.chain.includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  const doneKey = stepDone.join();
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(i)) return;
+      celebrated.current.add(i);
+      party.celebrate({ n: i + 1, total: steps.length });
+    });
+  }, [doneKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── le son : la rosace qui se ferme, la feuille qui tombe sur [BD] et l'épingle acceptée sonnent « flag » ── */
+  const heard = useRef({ rosette: false, landed: false, center: false, n: 0 });
+  useEffect(() => {
+    const h = heard.current;
+    const flags = { rosette: L.rosetteDone(lab), landed: !!lab.landed, center: !!lab.center };
+    if (lab.trials.length === 0) { heard.current = { ...flags, n: 0 }; return; }
+    if ((flags.rosette && !h.rosette) || (flags.landed && !h.landed) || (flags.center && !h.center)) playSfx('flag');
+    else if (lab.trials.length !== h.n) {
+      const e = lab.last;
+      if (e?.kind === 'stamp') playSfx('bell');
+      else if (e?.kind === 'refuse' || (e?.kind === 'stretch' && !e.rotation) || (e?.kind === 'claim' && !e.ok) || (e?.kind === 'pin' && !e.ok)) playSfx('over');
+    }
+    heard.current = { ...flags, n: lab.trials.length };
+  }, [lab]);   // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <ManipulationShell
       type="shape-turn"
@@ -161,15 +231,21 @@ export default function ShapeTurn(props) {
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpLive}
       hints={['hint1', 'hint2', 'hint3'].map((hk) => <MathText key={hk}>{lab.stage === 'center' ? k(`center.${hk}`) : m(hk, { alpha: lab.alpha })}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={<MathText>{m('dPrompt')}</MathText>} options={discoveryOptions} formal={formal} />}
       explanation={<MathText>{m('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-emerald-50/60 to-white" minHeight="min-h-[150px]">
-        {lab.stage === 'center'
-          ? <CenterLab lab={lab} setLab={setLab} k={k} theme={theme} />
-          : <TurnLab lab={lab} setLab={setLab} k={k} m={m} theme={theme} solved={ready} formal={state.isFormal} />}
+        <div className="relative space-y-2" data-st-root>
+          {party.node}
+          {cp.node}
+          {lab.stage === 'center'
+            ? <CenterLab lab={lab} setLab={setLab} k={k} theme={theme} top={stepper} />
+            : <TurnLab lab={lab} setLab={setLab} k={k} m={m} theme={theme} solved={ready} formal={state.isFormal} top={stepper} />}
+        </div>
       </ManipulationStage>
     </ManipulationShell>
   );
@@ -197,7 +273,9 @@ function useBudget(min, max) {
     return () => ro.disconnect();
   }, []);
   const vp = useLessonViewport(true);
-  const screenH = vp.ready && vp.height > 0 ? vp.height : 640;
+  const immersed = useManipulationImmersive();   // plein écran (L7) : l'écran moins la barre « خروج / الصوت / إعادة » du shell
+  const lessonH = vp.ready && vp.height > 0 ? vp.height : 640;
+  const screenH = immersed && typeof window !== 'undefined' ? Math.min(lessonH, window.innerHeight - 96) : lessonH;
   const budget = Math.round(Math.max(min, Math.min(max, screenH - overhead - 20)));
   return { boxRef, glanceRef, drawnH, width, budget };
 }
@@ -206,7 +284,7 @@ const poly = (pts) => pts.map((p) => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).jo
 
 /* ════════════════════════════ la feuille qui tourne (rosace / طريقة) ════════════════════════════ */
 
-function TurnLab({ lab, setLab, k, m, theme, solved, formal }) {
+function TurnLab({ lab, setLab, k, m, theme, solved, formal, top }) {
   const reduce = useReducedMotion();
   const uid = useId().replace(/:/g, '');
   const { boxRef, glanceRef, drawnH, width, budget } = useBudget(220, 600);
@@ -220,6 +298,15 @@ function TurnLab({ lab, setLab, k, m, theme, solved, formal }) {
   const theta = liveT ?? lab.theta;
   const stretch = liveK ?? lab.stretch;
   const thetaRef = useRef(theta); thetaRef.current = theta;
+  const tooth = useRef({ theta, at: 0 });
+  useEffect(() => {   // le geste : un déclic par pas de la feuille (au plus un toutes les 35 ms, plus grave en arrière)
+    const p = tooth.current;
+    const d = theta - p.theta;
+    p.theta = theta;
+    if (d === 0) return;
+    const now = performance.now();
+    if (now - p.at > 35) { playSfx('tooth', { pitch: d > 0 ? 1 : 0.75 }); p.at = now; }
+  }, [theta]);
   const O = { x: Number(lab.O.x.n) / Number(lab.O.x.d), y: Number(lab.O.y.n) / Number(lab.O.y.d) };
   const Opx = [G.X(O.x), G.Y(O.y)];
   const P = (p) => [G.X(p.x), G.Y(p.y)];
@@ -377,6 +464,7 @@ function TurnLab({ lab, setLab, k, m, theme, solved, formal }) {
   return (
     <div ref={boxRef} className="space-y-2" data-shape-turn data-mode={lab.mode} data-stage="turn" data-world={theme} data-solved={solved ? 'true' : 'false'} data-scene-h={size}>
       <div ref={glanceRef} className="space-y-1.5" data-st-glance>
+        {top}
         <div {...rot.trackProps} ref={(el) => { sceneRef.current = el; rot.trackProps.ref.current = el; }} onPointerDown={trackDown}
           className="relative mx-auto overflow-hidden rounded-xl border border-slate-200" style={{ ...rot.trackProps.style, width: size, height: size }} data-st-scene>
           <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="absolute inset-0" style={{ direction: 'ltr' }}
@@ -604,7 +692,7 @@ function Claims({ lab, setLab, k, m }) {
 
 /* ════════════════════════════ متقدم, seconde scène — le centre W (تمرين 18) ════════════════════════════ */
 
-function CenterLab({ lab, setLab, k, theme }) {
+function CenterLab({ lab, setLab, k, theme, top }) {
   const { boxRef, glanceRef, drawnH, width, budget } = useBudget(220, 560);
   const narrow = width < 420;
   const size = Math.max(200, Math.min(width, budget, 560));
@@ -655,6 +743,7 @@ function CenterLab({ lab, setLab, k, theme }) {
   return (
     <div ref={boxRef} className="space-y-2" data-shape-turn data-mode={lab.mode} data-stage="center" data-world={theme} data-solved={lab.center ? 'true' : 'false'} data-scene-h={size}>
       <div ref={glanceRef} className="space-y-1.5" data-st-glance>
+        {top}
         <div ref={sceneRef} className="relative mx-auto overflow-hidden rounded-xl border border-slate-200" style={{ width: size, height: size, touchAction: 'none' }}
           onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp} data-st-scene>
           <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="absolute inset-0" style={{ direction: 'ltr' }} role="img"
@@ -718,3 +807,136 @@ function CenterLab({ lab, setLab, k, theme }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/**
+ * Les ÉTAPES de chaque niveau, dans l'ordre : r1 · r2 (مبتدئ : la rosace fermée, puis la feuille étirée et la règle) ; p1 · p2 · p3 (متقدم :
+ * [AC] tombé sur [BD], les deux affirmations prouvées et la règle, puis le centre W). Une étape s'ouvre quand son objectif est atteint ET que
+ * les précédentes sont répondues ; la suite qui contient `rule` finit par la règle (elle remplace la découverte automatique).
+ */
+export const STEPS = Object.freeze({
+  rosette: [
+    { id: 'r1', chain: ['count', 'kept', 'between'], reached: (lab) => L.rosetteDone(lab) },
+    { id: 'r2', chain: ['stretch', 'rule'], reached: (lab) => lab.fakeTried },
+  ],
+  prove: [
+    { id: 'p1', chain: ['alpha', 'image'], reached: (lab) => !!lab.landed },
+    { id: 'p2', chain: ['length', 'rule'], reached: (lab) => L.claimsProved(lab) },
+    { id: 'p3', chain: ['axis', 'two', 'center'], reached: (lab) => !!lab.center },
+  ],
+});
+
+const $ = (s) => `$${s}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+
+/** Chaque question est construite sur LES nombres de l'élève (rien n'est écrit en dur) ; `k` : les textes de `shapeTurn`. */
+export const QUESTIONS = {
+  count: ({ lab }, k) => {
+    const n = L.rosetteSize(lab);
+    return {
+      id: 'count', kind: 'number', expected: String(n), answer: <MathText>{$(n)}</MathText>,
+      prompt: Cq(k, 'rosette.count.prompt'), hints: [Cq(k, 'rosette.count.hint1'), Cq(k, 'rosette.count.hint2', { alpha: lab.alpha })],
+      explain: Cq(k, 'rosette.count.explain', { n: $(n), calc: $(`360 \\div ${lab.alpha} = ${n}`) }),
+    };
+  },
+  kept: ({ lab }, k) => {
+    const st = L.readableStamp(lab);
+    const len = texLen(L.gauges(lab, 0, L.STRETCH.min).length.orig);
+    const o = { at: st?.at ?? lab.alpha, len };
+    return {
+      id: 'kept', kind: 'choice', cols: 1, prompt: Cq(k, 'rosette.kept.prompt', o),
+      options: [
+        { text: Cq(k, 'rosette.kept.bigger'), why: Cq(k, 'rosette.kept.whyBigger', o) },
+        { text: Cq(k, 'rosette.kept.same', o), correct: true },
+        { text: Cq(k, 'rosette.kept.smaller'), why: Cq(k, 'rosette.kept.whySmaller', o) },
+      ],
+      hints: [Cq(k, 'rosette.kept.hint1'), Cq(k, 'rosette.kept.hint2')], explain: Cq(k, 'rosette.kept.explain', o),
+    };
+  },
+  between: ({ lab }, k) => {
+    const st = L.readableStamp(lab) ?? { at: lab.alpha, between: lab.alpha };
+    const o = { at: st.at, between: st.between };
+    return {
+      id: 'between', kind: 'number', expected: String(st.between), answer: <MathText>{$(`${st.between}^{\\circ}`)}</MathText>,
+      prompt: Cq(k, 'rosette.between.prompt', o), hints: [Cq(k, 'rosette.between.hint1', o), Cq(k, 'rosette.between.hint2')],
+      explain: Cq(k, 'rosette.between.explain', o),
+    };
+  },
+  stretch: ({ lab }, k) => {
+    const e = L.lastStretch(lab);
+    const o = { orig: e ? texLen(e.orig) : '3', copy: e ? texLen(e.copy) : '4' };
+    return {
+      id: 'stretch', kind: 'choice', cols: 1, prompt: Cq(k, 'rosette.stretch.prompt', o),
+      options: [
+        { text: Cq(k, 'rosette.stretch.pinned'), why: Cq(k, 'rosette.stretch.whyPinned', o) },
+        { text: Cq(k, 'rosette.stretch.no'), correct: true },
+        { text: Cq(k, 'rosette.stretch.aligned'), why: Cq(k, 'rosette.stretch.whyAligned', o) },
+      ],
+      hints: [Cq(k, 'rosette.stretch.hint1'), Cq(k, 'rosette.stretch.hint2')], explain: Cq(k, 'rosette.stretch.explain', o),
+    };
+  },
+  rule: ({ options, formal, m, mode }, k) => ({
+    id: 'rule', kind: 'choice', prompt: <MathText>{m('dPrompt')}</MathText>, options,
+    hints: [Cq(k, `${mode}.rule.hint1`), Cq(k, `${mode}.rule.hint2`)], explain: formal,
+  }),
+  alpha: ({ lab }, k) => {
+    const a = L.landedAlpha(lab);
+    return {
+      id: 'alpha', kind: 'number', expected: String(a), answer: <MathText>{$(`${a}^{\\circ}`)}</MathText>,
+      prompt: Cq(k, 'prove.alpha.prompt'), hints: [Cq(k, 'prove.alpha.hint1'), Cq(k, 'prove.alpha.hint2')], explain: Cq(k, 'prove.alpha.explain', { alpha: a }),
+    };
+  },
+  image: ({ lab }, k) => {
+    const a = L.landedAlpha(lab);
+    return {
+      id: 'image', kind: 'choice', cols: 3, prompt: Cq(k, 'prove.image.prompt', { alpha: a }),
+      options: [
+        { text: <MathText>{$('[AD]')}</MathText>, why: Cq(k, 'prove.image.whyAD') },
+        { text: <MathText>{$('[BD]')}</MathText>, correct: true },
+        { text: <MathText>{$('[CB]')}</MathText>, why: Cq(k, 'prove.image.whyCB') },
+      ],
+      hints: [Cq(k, 'prove.image.hint1'), Cq(k, 'prove.image.hint2')], explain: Cq(k, 'prove.image.explain'),
+    };
+  },
+  length: ({ lab }, k) => {
+    const ac = texLen(L.gauges(lab, 0, L.STRETCH.min).length.orig);
+    const root = /\\sqrt\{(\d+)\}/.exec(ac);
+    const sq = root ? root[1] : String(Number(String(ac).replace('{,}', '.')) ** 2);
+    const o = { ac, sq };
+    return {
+      id: 'length', kind: 'choice', cols: 3, prompt: Cq(k, 'prove.length.prompt', o),
+      options: [
+        { text: <MathText>{$(`2 \\times ${ac}`)}</MathText>, why: Cq(k, 'prove.length.whyDouble', o) },
+        { text: <MathText>{$(sq)}</MathText>, why: Cq(k, 'prove.length.whySquare', o) },
+        { text: <MathText>{$(ac)}</MathText>, correct: true },
+      ],
+      hints: [Cq(k, 'prove.length.hint1'), Cq(k, 'prove.length.hint2')], explain: Cq(k, 'prove.length.explain', o),
+    };
+  },
+  axis: (_ctx, k) => ({
+    id: 'axis', kind: 'choice', cols: 1, prompt: Cq(k, 'prove.axis.prompt'),
+    options: [
+      { text: Cq(k, 'prove.axis.segment'), why: Cq(k, 'prove.axis.whySegment') },
+      { text: Cq(k, 'prove.axis.bisector'), correct: true },
+      { text: Cq(k, 'prove.axis.line'), why: Cq(k, 'prove.axis.whyLine') },
+    ],
+    hints: [Cq(k, 'prove.axis.hint1'), Cq(k, 'prove.axis.hint2')], explain: Cq(k, 'prove.axis.explain'),
+  }),
+  two: (_ctx, k) => ({
+    id: 'two', kind: 'choice', cols: 1, prompt: Cq(k, 'prove.two.prompt'),
+    options: [
+      { text: Cq(k, 'prove.two.wrong'), why: Cq(k, 'prove.two.whyWrong') },
+      { text: Cq(k, 'prove.two.many'), correct: true },
+      { text: Cq(k, 'prove.two.pair'), why: Cq(k, 'prove.two.whyPair') },
+    ],
+    hints: [Cq(k, 'prove.two.hint1'), Cq(k, 'prove.two.hint2')], explain: Cq(k, 'prove.two.explain'),
+  }),
+  center: ({ lab }, k) => {
+    const c = lab.center ?? { alpha: 90 };
+    return {
+      id: 'center', kind: 'number', expected: String(c.alpha), answer: <MathText>{$(`${c.alpha}^{\\circ}`)}</MathText>,
+      prompt: Cq(k, 'prove.center.prompt'), hints: [Cq(k, 'prove.center.hint1'), Cq(k, 'prove.center.hint2')], explain: Cq(k, 'prove.center.explain', { alpha: c.alpha }),
+    };
+  },
+};

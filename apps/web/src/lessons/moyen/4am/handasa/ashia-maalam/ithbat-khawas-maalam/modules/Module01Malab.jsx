@@ -36,7 +36,7 @@ export default function Module01Malab() {
   const [trials, setTrials] = useState([]);
   const [q, setQ] = useState({});
   const mark = (n) => () => setQ((s) => ({ ...s, [n]: true }));
-  const keep = (level) => (e) => { if (e) setTrials((list) => [...list, { ...e, level }].slice(-40)); };
+  const keep = (level) => (e) => { if (e && !e.tk) setTrials((list) => [...list, { ...e, level }].slice(-40)); };
 
   return (
     <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} moduleTitle="ملعب الحي — الفار لا يصدّق عينيه"
@@ -132,6 +132,6 @@ export default function Module01Malab() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />} />
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />} />
   );
 }

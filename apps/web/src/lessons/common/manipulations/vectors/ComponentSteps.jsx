@@ -9,6 +9,11 @@ import { useManipulation } from '../useManipulation';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
 import MathText from '../../components/MathText';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { Mx, distractors, useTick } from './vecCp';
 import * as L from '../logic/componentSteps';
 
 /**
@@ -79,11 +84,32 @@ const col = (v) => `\\begin{pmatrix} ${v[0]} \\\\ ${v[1]} \\end{pmatrix}`;
 const coordTex = (n, p) => `${n}(${p[0]}\\,;\\,${p[1]})`;
 const signed = (n) => (n > 0 ? `+${n}` : n < 0 ? `−${Math.abs(n)}` : '0');
 const BRAND = '#F97316';
+/** La découverte : des distracteurs réfutés par les commandes de l'élève (aussi la dernière question de la suite). */
+export function discoveryOptionsOf(tale, k) {
+  const act1 = tale === 'act1';
+  return (tale === 'draw' ? [
+    { text: <MathText>{k('dDrawOrigin')}</MathText>, why: <MathText>{k('dDrawOriginWhy')}</MathText> },
+    { text: <MathText>{k('dDrawRight')}</MathText>, correct: true },
+    { text: <MathText>{k('dDrawCoords')}</MathText>, why: <MathText>{k('dDrawCoordsWhy')}</MathText> },
+    { text: <MathText>{k('dDrawOne')}</MathText>, why: <MathText>{k('dDrawOneWhy')}</MathText> },
+  ] : act1 ? [
+    { text: <MathText>{k('dAct1Count')}</MathText>, why: <MathText>{k('dAct1CountWhy')}</MathText> },
+    { text: <MathText>{k('dAct1Right')}</MathText>, correct: true },
+    { text: <MathText>{k('dAct1Coords')}</MathText>, why: <MathText>{k('dAct1CoordsWhy')}</MathText> },
+    { text: <MathText>{k('dAct1Order')}</MathText>, why: <MathText>{k('dAct1OrderWhy')}</MathText> },
+  ] : [
+    { text: <MathText>{k('dCityAddress')}</MathText>, why: <MathText>{k('dCityAddressWhy')}</MathText> },
+    { text: <MathText>{k('dCityRight')}</MathText>, correct: true },
+    { text: <MathText>{k('dCityCount')}</MathText>, why: <MathText>{k('dCityCountWhy')}</MathText> },
+    { text: <MathText>{k('dCityStart')}</MathText>, why: <MathText>{k('dCityStartWhy')}</MathText> },
+  ]);
+}
+
 const STEPS = { left: [-1, 0], right: [1, 0], up: [0, 1], down: [0, -1] };
 
 export default function ComponentSteps({
   grid, points, orders, live = true, story, theme = 'delivery', title, lead, mission, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.componentSteps.${key}`, o), [t]);
@@ -95,11 +121,12 @@ export default function ComponentSteps({
   const make = () => L.init(nums);
   const [lab, setLab] = useState(make);
   const sceneKey = `${JSON.stringify(nums)}|${state.epoch}`;
-  const [seen, setSeen] = useState(sceneKey);
+  const [seen, setSeen] = useState({ key: sceneKey, inits: 0 });
+  const [doneIds, setDoneIds] = useState([]);   // les commandes dont la suite de questions est finie
   const [drag, setDrag] = useState(null); // { what: 'rider' | 'pin', cursor }
   const [honk, setHonk] = useState(0);
   const [stars, setStars] = useState(0);
-  if (seen !== sceneKey) { setSeen(sceneKey); setLab(make()); setDrag(null); }
+  if (seen.key !== sceneKey) { setSeen({ key: sceneKey, inits: seen.inits + 1 }); setLab(make()); setDrag(null); setDoneIds([]); }   // « إعادة » : tout repart
   const o = L.order(lab);
   const s = L.stateOf(lab);
   // trois histoires : le quartier (مبتدئ), le نشاط 1 (متقدم), et دوري الآن 1 posé seul (représenter des vecteurs donnés)
@@ -107,14 +134,47 @@ export default function ComponentSteps({
   const act1 = tale === 'act1';
 
   /* ── pédagogie : découverte, règle, essais ── */
-  const ready = L.discoveryReady(lab);
+  /* ── les questions PENDANT le labo (primitives/LabCheckpoint) : après chaque commande livrée, une suite sur ce que l'élève vient de faire ;
+     celle de la dernière commande finit par la règle et remplace la découverte automatique. L'enseignant seul peut les couper. ── */
+  const cpSettings = useLabCheckpointSettings('component-steps');
+  const cpEnabled = cpOn && cpSettings.enabled;
+  const pendingIdx = cpEnabled ? lab.orders.findIndex((_, i) => lab.states[i].done && !doneIds.includes(`o${i}`)) : -1;
+  const chain = pendingIdx >= 0 ? chainOf(lab, pendingIdx) : null;
+  const cp = useLabCheckpoint({
+    id: chain ? `o${pendingIdx}` : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, pendingIdx, k)) : null,
+    reached: pendingIdx >= 0,
+    resetKey: seen.inits,
+    onRetry: () => { celebrated.current.delete(pendingIdx); setLab((x) => L.retryOrder(x, pendingIdx)); },
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => (d.includes(id) ? d : [...d, id]));
+      if (chainOf(lab, Number(id.slice(1))).includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const solvedAll = L.discoveryReady(lab);
+  const ready = solvedAll && !cpEnabled;
+  const tick = useTick();
+  const stepDone = lab.orders.map((_, i) => lab.states[i].done && (!cpEnabled || doneIds.includes(`o${i}`)));
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(i)) return;
+      celebrated.current.add(i);
+      party.celebrate({ n: stepDone.filter(Boolean).length, total: lab.orders.length });
+    });
+  }, [stepDone.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, L.summaryOf(lab)); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
   const nTrials = lab.trials.length;
   useEffect(() => { if (nTrials > 0) state.report(onTrial, L.evidenceOf(lab)); }, [nTrials]); // eslint-disable-line react-hooks/exhaustive-deps
   const nDone = lab.states.filter((x) => x.done).length;
   const prevDone = useRef(nDone);
-  useEffect(() => { if (nDone > prevDone.current) setStars((n) => n + 1); prevDone.current = nDone; }, [nDone]);
+  useEffect(() => { if (nDone > prevDone.current) { setStars((n) => n + 1); playSfx('flag'); } prevDone.current = nDone; }, [nDone]);
+  // le son : « over » quand le code ou le pin est refusé (la livraison réussie sonne dans l'effet ci-dessus)
+  useEffect(() => { const tr = lab.trials[nTrials - 1]; if (tr && !tr.ok) playSfx('over'); }, [nTrials]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── mesure : largeur du bloc, écran de leçon, surcoût du bloc « glance » au-delà du quartier ── */
   const boxRef = useRef(null);
@@ -165,7 +225,7 @@ export default function ComponentSteps({
   const walking = (o.kind === 'walk' || o.kind === 'walkCode') && !s.done && !s.arrived;
   const pinning = o.kind === 'pin' && !s.done;
   const editing = !s.done && (o.kind === 'code' || (o.kind === 'walkCode' && s.arrived));
-  const doStep = (name) => setLab((x) => L.step(x, ...STEPS[name]));
+  const doStep = (name) => { tick(name === 'left' || name === 'down' ? 0.75 : 1); setLab((x) => L.step(x, ...STEPS[name])); };
   const ptr = useRef(null);
   const onHandleDown = (what) => (e) => {
     if (e.button > 0) return;
@@ -180,7 +240,7 @@ export default function ComponentSteps({
     if (!d.moved && Math.hypot(e.clientX - d.sx, e.clientY - d.sy) < 6) return;
     d.moved = true;
     const node = toNode(e.clientX, e.clientY);
-    if (d.what === 'rider') setLab((x) => L.walkTo(x, node));
+    if (d.what === 'rider') { tick(); setLab((x) => L.walkTo(x, node)); }
     else setDrag({ what: 'pin', cursor: node });
   };
   const onHandleUp = (e) => {
@@ -203,12 +263,12 @@ export default function ComponentSteps({
   };
   const onPinKey = (e) => {
     const m = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, 1], ArrowDown: [0, -1] }[e.key];
-    if (m) { e.preventDefault(); setLab((x) => L.movePin(x, ...m)); return; }
+    if (m) { e.preventDefault(); tick(m[0] + m[1] < 0 ? 0.75 : 1); setLab((x) => L.movePin(x, ...m)); return; }
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setLab((x) => L.dropPin(x)); }
   };
   const onDialKey = (axis) => (e) => {
     const d = { ArrowUp: 1, ArrowRight: 1, ArrowDown: -1, ArrowLeft: -1, PageUp: 5, PageDown: -5 }[e.key];
-    if (d) { e.preventDefault(); setLab((x) => L.bumpCode(x, axis, d)); return; }
+    if (d) { e.preventDefault(); tick(d < 0 ? 0.75 : 1); setLab((x) => L.bumpCode(x, axis, d)); return; }
     if (e.key === 'Enter') { e.preventDefault(); setLab((x) => L.sendCode(x)); }
   };
 
@@ -246,23 +306,7 @@ export default function ComponentSteps({
     return k('waitPin', tx);
   })();
 
-  /* ── la découverte : des distracteurs réfutés par les commandes de l'élève ── */
-  const discoveryOptions = useMemo(() => (tale === 'draw' ? [
-    { text: <MathText>{k('dDrawOrigin')}</MathText>, why: <MathText>{k('dDrawOriginWhy')}</MathText> },
-    { text: <MathText>{k('dDrawRight')}</MathText>, correct: true },
-    { text: <MathText>{k('dDrawCoords')}</MathText>, why: <MathText>{k('dDrawCoordsWhy')}</MathText> },
-    { text: <MathText>{k('dDrawOne')}</MathText>, why: <MathText>{k('dDrawOneWhy')}</MathText> },
-  ] : act1 ? [
-    { text: <MathText>{k('dAct1Count')}</MathText>, why: <MathText>{k('dAct1CountWhy')}</MathText> },
-    { text: <MathText>{k('dAct1Right')}</MathText>, correct: true },
-    { text: <MathText>{k('dAct1Coords')}</MathText>, why: <MathText>{k('dAct1CoordsWhy')}</MathText> },
-    { text: <MathText>{k('dAct1Order')}</MathText>, why: <MathText>{k('dAct1OrderWhy')}</MathText> },
-  ] : [
-    { text: <MathText>{k('dCityAddress')}</MathText>, why: <MathText>{k('dCityAddressWhy')}</MathText> },
-    { text: <MathText>{k('dCityRight')}</MathText>, correct: true },
-    { text: <MathText>{k('dCityCount')}</MathText>, why: <MathText>{k('dCityCountWhy')}</MathText> },
-    { text: <MathText>{k('dCityStart')}</MathText>, why: <MathText>{k('dCityStartWhy')}</MathText> },
-  ]), [tale, act1, k]);
+  const discoveryOptions = useMemo(() => discoveryOptionsOf(tale, k), [tale, k]);
   const formal = (
     <div className="space-y-2" data-cs-formal>
       <div className="grid gap-1.5 grid-cols-2">
@@ -281,13 +325,13 @@ export default function ComponentSteps({
   const btn = 'inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl font-bold focus:outline-none focus-visible:ring-4 focus-visible:ring-orange-300 disabled:opacity-35';
   const dial = (axis) => (
     <div className="flex items-center gap-1" data-cs-dial-row={axis ? 'y' : 'x'}>
-      <button type="button" className={`${btn} bg-slate-700 text-lg text-white`} aria-label={k(axis ? 'minusY' : 'minusX')} onClick={() => setLab((x) => L.bumpCode(x, axis, -1))} data-cs-minus={axis ? 'y' : 'x'}>−</button>
+      <button type="button" className={`${btn} bg-slate-700 text-lg text-white`} aria-label={k(axis ? 'minusY' : 'minusX')} onClick={() => { tick(0.75); setLab((x) => L.bumpCode(x, axis, -1)); }} data-cs-minus={axis ? 'y' : 'x'}>−</button>
       <span role="spinbutton" tabIndex={0} aria-label={k(axis ? 'rowY' : 'rowX')} aria-valuenow={column[axis]} aria-valuemin={-L.CODE_LIMIT} aria-valuemax={L.CODE_LIMIT}
         onKeyDown={onDialKey(axis)} data-cs-dial={axis ? 'y' : 'x'} dir="ltr"
         className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-white font-mono text-lg font-black text-slate-900 focus:outline-none focus-visible:ring-4 focus-visible:ring-orange-300">
         {signed(column[axis]).replace('+', '')}
       </span>
-      <button type="button" className={`${btn} bg-slate-700 text-lg text-white`} aria-label={k(axis ? 'plusY' : 'plusX')} onClick={() => setLab((x) => L.bumpCode(x, axis, 1))} data-cs-plus={axis ? 'y' : 'x'}>+</button>
+      <button type="button" className={`${btn} bg-slate-700 text-lg text-white`} aria-label={k(axis ? 'plusY' : 'plusX')} onClick={() => { tick(); setLab((x) => L.bumpCode(x, axis, 1)); }} data-cs-plus={axis ? 'y' : 'x'}>+</button>
     </div>
   );
   const countCell = (axis) => {
@@ -325,7 +369,7 @@ export default function ComponentSteps({
       <span aria-hidden="true">🛵</span>{k('send')}
     </button>
   );
-  const nextBtn = s.done && !L.allDone(lab) ? (
+  const nextBtn = s.done && !L.allDone(lab) && !cp.blocking ? (
     <button type="button" onClick={() => setLab((x) => L.goTo(x, L.nextOpen(x)))} data-cs-next className={`${btn} bg-orange-500 px-3 text-sm text-white`}>{k('next')}</button>
   ) : null;
 
@@ -376,6 +420,8 @@ export default function ComponentSteps({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={cpEnabled}
       hints={hintKeys.map((h) => <MathText key={h}>{k(h)}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={(
@@ -385,7 +431,11 @@ export default function ComponentSteps({
     >
       <ManipulationStage className="bg-gradient-to-b from-orange-50 to-white !p-3" minHeight="min-h-[160px]" dragging={!!ptr.current}>
         <div ref={boxRef} className="space-y-2" data-component-steps data-world={theme} data-order={o.id} data-kind={o.kind}
-          data-solved={ready ? 'true' : 'false'} data-scene-h={sceneH}>
+          data-solved={solvedAll ? 'true' : 'false'} data-scene-h={sceneH}>
+          <div className="relative space-y-2">
+            {party.node}
+            {cp.node}
+            <div className="flex justify-center"><LabStepper count={lab.orders.length} current={lab.t} done={stepDone} stepAttr="data-cs-step" /></div>
           <div ref={glanceRef} className={`flex ${side ? 'flex-row items-start' : 'flex-col items-center'} justify-center gap-2`} data-cs-glance>
             <div ref={sceneRef} className="relative shrink-0 overflow-hidden rounded-xl shadow-inner" style={{ width: sceneW, height: sceneH, touchAction: 'none' }}
               onPointerUp={onSceneUp} data-cs-scene data-cell={Math.round(geo.cell)}>
@@ -408,6 +458,7 @@ export default function ComponentSteps({
               )}
             </div>
             {panel}
+          </div>
           </div>
 
           {lab.trials.length > 0 && (
@@ -690,3 +741,126 @@ function Stars({ n, reduce }) {
     </span>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de la commande i : marche / code → les deux composantes puis le rapport avec l'adresse ; pin → où il est tombé et pourquoi ; la dernière finit par la règle. */
+export function chainOf(lab, i) {
+  const o = lab.orders[i];
+  let q;
+  if (o.kind === 'pin') q = o.from === 'O' ? ['pinEnd', 'vsAddr'] : ['pinEnd', 'pinHow'];
+  else q = o.from === 'O' ? ['compX', 'compY', 'vsAddr'] : ['compX', 'compY'];
+  if (o.kind === 'code' && o.from !== 'O' && lab.orders.some((x, j) => j !== i && x.kind === 'code' && x.from === 'O')) q.push('vsAddr');
+  if (i === lab.orders.length - 1) q.push('rule');
+  return q;
+}
+
+const ti = (n) => (n < 0 ? `-${Math.abs(n)}` : `${n}`);
+const tp = (n) => (n < 0 ? `(-${Math.abs(n)})` : `${n}`);
+const $c = (s) => `$${s}$`;
+const info = (lab, i) => {
+  const o = lab.orders[i];
+  const u = L.expectedOf(lab, o);
+  const from = L.at(lab, o.from); const to = L.at(lab, o.to);
+  return { o, u, from, to, v: VEC(`${o.from}${o.to}`) };
+};
+
+/** Une composante lue sur la rue : la juste, l'opposée (direction), l'autre axe (échange), l'adresse (si le départ n'est pas O). */
+const comp = (c) => (lab, i, k) => {
+  const { o, u, from, to, v } = info(lab, i);
+  const ax = c === 0 ? 'x' : 'y';
+  const right = u[c];
+  const calc = `${ax}_{${o.to}} - ${ax}_{${o.from}} = ${ti(to[c])} - ${tp(from[c])} = ${ti(right)}`;
+  const ds = distractors(right, [{ v: -right, why: 'whyReverse' }, { v: u[1 - c], why: 'whySwap' }, ...(o.from !== 'O' ? [{ v: to[c], why: 'whyAddr' }] : [])], 2, 'whyOff');
+  const P = { v: $c(v), from: o.from, to: o.to, calc: $c(calc) };
+  return {
+    id: c === 0 ? 'compX' : 'compY', kind: 'choice', cols: 3,
+    prompt: Mx(k, c === 0 ? 'compX.prompt' : 'compY.prompt', P),
+    options: [
+      { text: <MathText>{$c(ti(right))}</MathText>, correct: true },
+      ...ds.map((d) => ({ text: <MathText>{$c(ti(d.v))}</MathText>, why: Mx(k, `comp.${d.why}`, { ...P, n: $c(ti(d.v)), addr: $c(`${o.to}(${ti(to[0])}\\,;\\,${ti(to[1])})`) }) })),
+    ],
+    hints: [Mx(k, c === 0 ? 'compX.hint1' : 'compY.hint1', P), Mx(k, 'comp.hint2', P)],
+    explain: Mx(k, 'comp.explain', P),
+  };
+};
+
+export const QUESTIONS = {
+  compX: comp(0),
+  compY: comp(1),
+  vsAddr: (lab, i, k) => {
+    const { o, u, from, to } = info(lab, i);
+    const P = {
+      from: o.from, to: o.to, u: $c(`\\begin{pmatrix} ${ti(u[0])} \\\\ ${ti(u[1])} \\end{pmatrix}`),
+      addr: $c(`${o.to}(${ti(to[0])}\\,;\\,${ti(to[1])})`), fa: $c(`${o.from}(${ti(from[0])}\\,;\\,${ti(from[1])})`),
+    };
+    const fromO = o.from === 'O';
+    return {
+      id: 'vsAddr', kind: 'choice',
+      prompt: Mx(k, fromO ? 'vsAddr.promptO' : 'vsAddr.prompt', P),
+      options: fromO ? [
+        { text: Mx(k, 'vsAddr.sameO', P), correct: true },
+        { text: Mx(k, 'vsAddr.never'), why: Mx(k, 'vsAddr.whyNever', P) },
+        { text: Mx(k, 'vsAddr.swapped'), why: Mx(k, 'vsAddr.whySwapped') },
+      ] : [
+        { text: Mx(k, 'vsAddr.diff'), correct: true },
+        { text: Mx(k, 'vsAddr.addr'), why: Mx(k, 'vsAddr.whyAddr', P) },
+        { text: Mx(k, 'vsAddr.start'), why: Mx(k, 'vsAddr.whyStart', P) },
+      ],
+      hints: [Mx(k, 'vsAddr.hint1', P), Mx(k, 'vsAddr.hint2', P)],
+      explain: Mx(k, fromO ? 'vsAddr.explainO' : 'vsAddr.explain', P),
+    };
+  },
+  pinEnd: (lab, i, k) => {
+    const { o, u, from, to } = info(lab, i);
+    const pt = (a) => $c(`${o.to}(${ti(a[0])}\\,;\\,${ti(a[1])})`);
+    const P = { u: $c(`\\begin{pmatrix} ${ti(u[0])} \\\\ ${ti(u[1])} \\end{pmatrix}`), from: o.from, to: o.to };
+    const cands = [
+      ...(o.from !== 'O' ? [{ a: u, why: 'whyU' }] : []),
+      { a: [from[0] - u[0], from[1] - u[1]], why: 'whyBack' },
+      { a: [from[0] + u[1], from[1] + u[0]], why: 'whySwap' },
+      { a: [to[0] + 1, to[1] - 1], why: 'whyOff' },
+    ];
+    const seen = new Set([to.join(';')]); const ds = [];
+    for (const c of cands) { const key = c.a.join(';'); if (ds.length < 2 && !seen.has(key)) { seen.add(key); ds.push(c); } }
+    return {
+      id: 'pinEnd', kind: 'choice',
+      prompt: Mx(k, 'pinEnd.prompt', P),
+      options: [
+        { text: <MathText>{pt(to)}</MathText>, correct: true },
+        ...ds.map((d) => ({ text: <MathText>{pt(d.a)}</MathText>, why: Mx(k, `pinEnd.${d.why}`, { ...P, pt: pt(d.a) }) })),
+      ],
+      hints: [Mx(k, 'pinEnd.hint1', P), Mx(k, 'pinEnd.hint2', P)],
+      explain: Mx(k, 'pinEnd.explain', { ...P, pt: pt(to) }),
+    };
+  },
+  pinHow: (lab, i, k) => {
+    const { o, u, from } = info(lab, i);
+    const P = {
+      u: $c(`\\begin{pmatrix} ${ti(u[0])} \\\\ ${ti(u[1])} \\end{pmatrix}`), from: o.from, to: o.to,
+      calc: $c(`\\begin{cases} x_{${o.to}} = ${ti(from[0])} + ${tp(u[0])} = ${ti(from[0] + u[0])} \\\\ y_{${o.to}} = ${ti(from[1])} + ${tp(u[1])} = ${ti(from[1] + u[1])} \\end{cases}`),
+    };
+    return {
+      id: 'pinHow', kind: 'choice',
+      prompt: Mx(k, 'pinHow.prompt', P),
+      options: [
+        { text: Mx(k, 'pinHow.add'), correct: true },
+        { text: Mx(k, 'pinHow.direct'), why: Mx(k, 'pinHow.whyDirect', P) },
+        { text: Mx(k, 'pinHow.sub'), why: Mx(k, 'pinHow.whySub', P) },
+      ],
+      hints: [Mx(k, 'pinHow.hint1', P), Mx(k, 'pinHow.hint2', P)],
+      explain: Mx(k, 'pinHow.explain', P),
+    };
+  },
+  rule: (lab, i, k) => {
+    const tale = lab.story ?? (lab.live ? 'city' : 'act1');
+    const cap = tale === 'draw' ? 'Draw' : tale === 'act1' ? 'Act1' : 'City';
+    return {
+      id: 'rule', kind: 'choice',
+      prompt: <MathText>{k(`dPrompt${cap}`)}</MathText>,
+      options: discoveryOptionsOf(tale, k),
+      hints: [Mx(k, 'rule.hint1'), Mx(k, 'rule.hint2')],
+      explain: <p className="text-sm" data-cs-formal><MathText>{k(`f${cap}`)}</MathText></p>,
+    };
+  },
+};

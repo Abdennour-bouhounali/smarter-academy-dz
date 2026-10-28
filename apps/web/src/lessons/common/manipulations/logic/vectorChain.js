@@ -316,6 +316,17 @@ export function goTo(lab, i) {
   return lab.mode === 'reduce' ? { ...lab, m: i, last: null } : { ...lab, b: i, last: null };
 }
 
+/** « أعِد التجربة » : remet LA MÊME mission (ou construction) au départ ; les autres gardent leur état. */
+export function restartStep(lab) {
+  if (lab.mode === 'construct') {
+    const bs = currentBuild(lab);
+    const fresh = { ...bs, tray: bs.terms.map((name, i) => ({ id: `b${lab.b}c${i}`, name })), chain: [], origin: null, sum: null, found: null, undo: [] };
+    return { ...buildOf(lab, fresh), last: null };
+  }
+  const ms = missionStart(lab.missions[lab.m], lab.m);
+  return { ...lab, ms: lab.ms.map((x, i) => (i === lab.m ? ms : x)), done: lab.done.map((d, i) => (i === lab.m ? false : d)), last: null };
+}
+
 /* ── les preuves ──────────────────────────────────────────────────────────── */
 
 /** Les lignes de la preuve d'une mission, en KaTeX ('= …' à partir de la deuxième). */

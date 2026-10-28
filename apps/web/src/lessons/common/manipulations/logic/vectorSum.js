@@ -167,6 +167,20 @@ export function discoveryReady(s) {
   return s.trials.some((t) => t.kind === 'turn') && s.trials.some((t) => t.kind === 'zero');
 }
 
+/** Les ÉTAPES de la scène (une par contraste) : chasles `turn` · `zero` ; nageur `target` · `miss` — celles que les essais ont déjà atteintes. */
+export const STEP_KINDS = Object.freeze({ chasles: ['turn', 'zero'], parallelogram: ['target', 'miss'] });
+export function reachedKinds(s) {
+  if (s.mode === 'parallelogram') return STEP_KINDS.parallelogram.filter((kd) => s.trials.some((t) => (kd === 'target' ? t.side === 'target' : t.side !== 'target')));
+  return STEP_KINDS.chasles.filter((kd) => s.trials.some((t) => t.kind === kd));
+}
+/** Le dernier essai d'un genre d'étape (pour construire les questions sur SES nombres). */
+export const trialOfKind = (s, kd) => [...s.trials].reverse().find((t) => (s.mode === 'parallelogram' ? (kd === 'target' ? t.side === 'target' : t.side !== 'target') : t.kind === kd)) ?? null;
+/** « أعِد التجربة » : efface les essais de CETTE étape (les autres restent) et remet la scène au départ. */
+export function restartStep(s, kd) {
+  const keep = s.trials.filter((t) => (s.mode === 'parallelogram' ? (kd === 'target' ? t.side !== 'target' : t.side === 'target') : t.kind !== kd));
+  return Object.freeze({ ...s, trials: Object.freeze(keep), placed: null, theta: s.mode === 'parallelogram' ? 0 : s.theta, last: null });
+}
+
 /** Le dernier événement, en données plates pour `onTrial` (les modules listent les essais de l'élève). */
 export function evidenceOf(s) {
   const last = s.last;

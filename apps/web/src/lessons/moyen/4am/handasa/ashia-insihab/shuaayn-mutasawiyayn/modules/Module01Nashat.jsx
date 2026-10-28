@@ -30,12 +30,16 @@ const KIND = { equal: 'متساويان', length: 'الطول مختلف', sense
 
 export default function Module01Nashat() {
   const [trials, setTrials] = useState([]);
-  const [q1, setQ1] = useState(false);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint, rubriques equal · length) : leur trace (`checkpoint-done`) fait avancer l'étape 1
+  const [cpDone, setCpDone] = useState({});
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
 
-  const onTrial = (ev) => { if (ev?.mode === 'midpoint') setTrials((s) => [...s, ev].slice(-8)); };
+  const onTrial = (ev) => {
+    if (ev?.tk === 'checkpoint-done') { setCpDone((d) => ({ ...d, [ev.id]: true })); return; }
+    if (ev?.mode === 'midpoint') setTrials((s) => [...s, ev].slice(-8));
+  };
 
   const evidence = (
     <div className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={trials.length ? 'true' : 'false'}>
@@ -91,23 +95,15 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'لماذا لا يكفي أن تكون I بين A و B؟', subtitle: 'عن مواضعك على الوشاح', done: q1,
+          num: 1, title: 'لماذا لا يكفي أن تكون I بين A و B؟', subtitle: 'عن مواضعك على الوشاح', done: !!cpDone.length,
           content: (
             <div className="space-y-3">
               {evidence}
-              <TapQuestion
-                prompt={<MathText>{'في كل مواضعك كان للشعاعين $\\overrightarrow{AI}$ و $\\overrightarrow{IB}$ نفس المنحى ونفس الاتجاه، ومع ذلك لم يتساويا إلا في موضع واحد. لماذا؟'}</MathText>}
-                options={[
-                  'لأنّ الطولين لا يتساويان إلا حين تقسم I الوشاح إلى قسمين متقايسين',
-                  'لأنّ اتجاه أحد الشعاعين يتغيّر كلما تحرّكت I',
-                  'لأنّ المنحى يتغيّر كلما ابتعدت I عن A',
-                ].map(M)}
-                correct={0}
-                cols={1}
-                requires={['tasawi-shuaayn']}
-                explain={<MathText>{'بين A و B للشعاعين دائما نفس المنحى ونفس الاتجاه (جرّب أن تقلب السهم الثاني لترى ما يتغيّر)، والطولان لا يتساويان إلا في المنتصف: 4 أقسام و 4 أقسام.'}</MathText>}
-                onAnswered={() => setQ1(true)}
-              />
+              {cpDone.length && (
+                <p className="rounded-xl border-2 border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900" data-evidence="midpoint-answered">
+                  <MathText>{'أجبتَ في المختبر: بين A و B للشعاعين $\\overrightarrow{AI}$ و $\\overrightarrow{IB}$ دائما نفس المنحى ونفس الاتجاه، والطولان لا يتساويان إلا في المنتصف.'}</MathText>
+                </p>
+              )}
             </div>
           ),
         },
@@ -179,7 +175,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

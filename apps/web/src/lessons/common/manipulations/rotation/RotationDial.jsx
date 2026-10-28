@@ -3,12 +3,17 @@ import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
+import { useManipulationImmersive } from '../immersive';
 import ManipulationStage from '../ManipulationStage';
 import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
 import MathText from '../../components/MathText';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import * as L from '../logic/rotationDial';
 
 /**
@@ -68,7 +73,15 @@ import * as L from '../logic/rotationDial';
  * [data-rd-handle=image|compass|ray] (boutons), [data-rd-node] (roue), [data-rd-gondola=<nom>], [data-rd-arc],
  * [data-rd-circle], [data-rd-ray], [data-rd-image=<nom>], [data-rd-tab=<id>][data-done], [data-rd-reading],
  * [data-rd-lamp=length|angle|sense][data-on], [data-rd-verdict=<kind>], [data-rd-outcome], [data-lab-fold=rotation-dial.trials],
- * [data-deco].
+ * [data-deco],
+ * [data-rd-step=<i>] (LabStepper : une étape par tâche de la roue ou par mission de la feuille).
+ *
+ * QUESTIONS PENDANT LE LABO (2026-10-28, lot 3 ; `primitives/LabCheckpoint`) : `chainOf(lab, i)` donne la suite de l'étape i, `QUESTIONS` les construit sur les
+ * nombres de l'élève. Roue : 1re tâche (angle · distance), sa jumelle de sens contraire (angle · « même place ? »), une tâche de plusieurs pas (pas · angle),
+ * la dernière (jumelle) finit par la RÈGLE. Feuille : le point (compas · angle), la قطعة (longueur · parallélisme), la دائرة (rayon · centre) puis la RÈGLE.
+ * Une étape est atteinte quand elle ET les précédentes sont finies (`logic › stepsOf`) ; « أعِد التجربة » : `logic › retryStep`. Réglage enseignant
+ * `useLabCheckpointSettings('rotation-dial')` ; questions actives ⇒ `guided`. Sons : déclic de l'image tenue, `flag` (image juste), `bell` (paire de tâches
+ * ou mission finie), `over` (image refusée).
  */
 const PRIME = (s) => String(s).replace(/'/g, '′');
 const LIGHTS = [['#FBBF24', '#FDE68A'], ['#F472B6', '#FBCFE8'], ['#22D3EE', '#A5F3FC'], ['#4ADE80', '#BBF7D0']];
@@ -94,7 +107,7 @@ function arcGeom(c, R, th1, signed) {
 
 export default function RotationDial({
   scene = 'wheel', r, inner, gondolas, step, tasks, missions, theme = 'ferris-wheel', title, lead, mission, level,
-  levels: withLevels = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.rotationDial.${key}`, o), [t]);
@@ -105,18 +118,23 @@ export default function RotationDial({
   const make = () => L.init(nums);
   const [lab, setLab] = useState(make);
   const sceneKey = `${JSON.stringify(nums)}|${state.epoch}`;
-  const [seen, setSeen] = useState(sceneKey);
+  const [seen, setSeen] = useState({ key: sceneKey, inits: 0 });
+  const [doneIds, setDoneIds] = useState({});
   const [hold, setHold] = useState(null); // { id: 'image' | 'compass' | 'ray', cursor: {x,y}, mode: 'drag' | 'select' | 'key' }
   const [pencilDeg, setPencilDeg] = useState(null);
   const [shake, setShake] = useState(0);
   const [ride, setRide] = useState(null); // { n, at, signed }
   const [lights, setLights] = useState(0);
-  if (seen !== sceneKey) { setSeen(sceneKey); setLab(make()); setHold(null); setPencilDeg(null); setRide(null); }
+  // « إعادة » (epoch), un autre niveau ou d'autres nombres : TOUT recommence — la tâche 1, les essais, les questions du labo
+  if (seen.key !== sceneKey) { setSeen({ key: sceneKey, inits: seen.inits + 1 }); setLab(make()); setHold(null); setPencilDeg(null); setRide(null); setDoneIds({}); }
   const wheel = lab.scene === 'wheel';
 
   /* ── pédagogie : découverte, règle, essais ── */
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : obligatoires pour tout élève, l'enseignant seul les coupe pour SON compte (L2)
+  const cpSettings = useLabCheckpointSettings('rotation-dial');
+  const cpLive = cpOn && cpSettings.enabled;
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch, cpLive]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, L.summaryOf(lab)); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
   const nTrials = lab.trials.length;
   useEffect(() => { if (nTrials > 0) state.report(onTrial, L.evidenceOf(lab)); }, [nTrials]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -143,7 +161,9 @@ export default function RotationDial({
     return () => ro.disconnect();
   }, []);
   const vp = useLessonViewport(true);
-  const screenH = vp.ready && vp.height > 0 ? vp.height : 640;
+  const immersed = useManipulationImmersive();   // plein écran (L7) : l'écran moins la barre du shell ; le stepper (≈ 52 px) est toujours au-dessus
+  const lessonH = vp.ready && vp.height > 0 ? vp.height : 640;
+  const screenH = (immersed && typeof window !== 'undefined' ? Math.min(lessonH, window.innerHeight - 96) : lessonH) - 52;
   const side = width >= 620;
   const panelW = width >= 900 ? 270 : 236;
   const sceneSide = Math.round(Math.max(200, Math.min(side ? width - panelW - 12 : width, side ? screenH - 40 : screenH - overhead - 28, 600)));
@@ -319,6 +339,62 @@ export default function RotationDial({
     </div>
   );
 
+  /* ── les étapes et leurs questions : une tâche (roue) ou une mission (feuille) finie ouvre sa suite, dans l'ordre ── */
+  const stepList = L.stepsOf(lab).map((st, i) => ({ ...st, chain: chainOf(lab, i) }));
+  const stepDone = stepList.map((st) => !!doneIds[st.id] || (!cpLive && st.reached));
+  const nextStep = cpLive ? stepList.find((st) => !doneIds[st.id]) : null;
+  const cpId = nextStep && nextStep.reached ? nextStep.id : null;
+  const chain = cpId ? nextStep.chain : null;
+  const cp = useLabCheckpoint({
+    id: cpId,
+    questions: chain ? chain.map((q) => QUESTIONS[q]({ lab, step: nextStep, options: discoveryOptions, formal, wheel }, k)) : null,
+    reached: !!cpId,
+    resetKey: seen.inits,
+    onRetry: () => { setHold(null); setRide(null); setLab((cur) => L.retryStep(cur, cpId)); },
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => ({ ...d, [id]: true }));
+      if (stepList.find((st) => st.id === id)?.chain.includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  const doneKey = stepDone.join();
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(i)) return;
+      celebrated.current.add(i);
+      party.celebrate({ n: i + 1, total: stepList.length });
+    });
+  }, [doneKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── le son : un déclic quand l'image tenue change de place (au plus un toutes les 35 ms), « flag » à l'image juste, « bell » à la mission
+     ou à la paire de tâches finie, « over » à l'image refusée. Muet sauf « الصوت ». ── */
+  const tick = useRef({ key: '', at: 0 });
+  const gestureKey = `${hold?.id === 'image' ? `${Math.round(hold.cursor.x * 50)},${Math.round(hold.cursor.y * 50)}` : ''}|${lab.radius ?? ''}|${lab.ray ?? ''}`;
+  useEffect(() => {
+    const p = tick.current;
+    if (p.key === gestureKey) return;
+    const first = p.key === '';
+    p.key = gestureKey;
+    const now = performance.now();
+    if (!first && gestureKey !== '||' && now - p.at > 35) { playSfx('tooth'); p.at = now; }
+  }, [gestureKey]);
+  const heard = useRef(0);
+  useEffect(() => {
+    const n = lab.trials.length;
+    if (n === 0) { heard.current = 0; return; }
+    if (n === heard.current) return;
+    heard.current = n;
+    const x = lab.last;
+    if (!x) return;
+    if (!x.ok) { playSfx('over'); return; }
+    playSfx('flag');
+    const closes = wheel ? L.taskDone(lab, lab.tasks.findIndex((tt) => tt.id === x.task)) && x.task && lab.tasks.findIndex((tt) => tt.id === x.task) % 2 === 1 : L.missionDone(lab, lab.missions.findIndex((mm) => mm.id === x.mission));
+    if (closes) playSfx('bell');
+  }, [lab]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const missionText = mission ?? <MathText>{k(wheel ? 'missionWheel' : 'missionPlane')}</MathText>;
   const hintKeys = wheel ? ['hintW1', 'hintW2', 'hintW3'] : ['hintP1', 'hintP2', 'hintP3'];
   const senseIcon = (d) => (d === 'direct' ? '↺' : d === 'indirect' ? '↻' : '');
@@ -418,14 +494,19 @@ export default function RotationDial({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpLive}
       hints={hintKeys.map((h) => <MathText key={h}>{k(h)}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={<MathText>{k(wheel ? 'dPromptWheel' : 'dPromptPlane')}</MathText>} options={discoveryOptions} formal={formal} />}
       explanation={<MathText>{k(wheel ? 'explanationWheel' : 'explanationPlane')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-indigo-50 to-white !p-3" minHeight="min-h-[200px]" dragging={hold?.mode === 'drag'}>
-        <div ref={boxRef} className="space-y-2" data-rotation-dial data-scene={lab.scene} data-world={theme}
+        <div ref={boxRef} className="relative space-y-2" data-rotation-dial data-scene={lab.scene} data-world={theme}
           data-solved={ready ? 'true' : 'false'} {...(wheel ? { 'data-task': tk.id } : { 'data-mission': ms.id })} data-side={sceneSide}>
+          {party.node}
+          {cp.node}
+          <LabStepper count={stepList.length} current={Math.max(0, stepDone.indexOf(false) < 0 ? stepList.length - 1 : stepDone.indexOf(false))} done={stepDone} stepAttr="data-rd-step" />
           <div ref={glanceRef} className={`flex ${side ? 'flex-row items-start' : 'flex-col items-center'} justify-center gap-2`} data-rd-glance>
             <div ref={sceneRef} className="relative shrink-0 overflow-hidden rounded-xl" style={{ width: sceneSide, height: sceneSide, touchAction: 'none' }}
               onPointerUp={onSceneUp} data-rd-scene>
@@ -728,3 +809,148 @@ function TicketDeco({ lights, onTap }) {
     </button>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/**
+ * La suite de questions de l'étape `i` (la tâche ou la mission finie). Roue : la 1re tâche lit l'angle et la distance ; sa jumelle (même
+ * angle, sens contraire) compare les places ; une tâche de plusieurs pas compte les pas ; la dernière finit par la règle. Feuille : le point
+ * (compas · angle), la قطعة (longueur · parallélisme), la دائرة (rayon · centre · règle).
+ */
+export function chainOf(lab, i) {
+  if (lab.scene === 'wheel') {
+    const tk = lab.tasks[i];
+    const twin = L.twinOf(lab, tk);
+    const last = i === lab.tasks.length - 1;
+    const twinFirst = twin && lab.tasks.indexOf(twin) < i;
+    if (last) return twin && twinFirst ? ['twin', 'rule'] : ['angle', 'rule'];
+    if (twinFirst) return ['angle', 'twin'];
+    return tk.steps > 1 ? ['steps', 'angle'] : ['angle', 'dist'];
+  }
+  const ms = lab.missions[i];
+  const last = i === lab.missions.length - 1;
+  const base = ms.id === 'segment' ? ['length', 'parallel'] : ms.id === 'circle' ? ['radius', 'center'] : ['compass', 'angle'];
+  return last ? [...base, 'rule'] : base;
+}
+
+const $ = (x) => `$${x}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const ang = (a) => `\\widehat{ ${a}O${a}' }`;
+
+/** Chaque question est construite sur LES nombres de l'élève (rien n'est écrit en dur) ; `k` : les textes de `rotationDial`. */
+export const QUESTIONS = {
+  angle: ({ lab, step, wheel }, k) => {
+    const ms = wheel ? null : lab.missions.find((x) => x.id === step.id);
+    const tk = wheel ? lab.tasks.find((x) => x.id === step.id) : null;
+    const from = wheel ? tk.from : ms.order[0];
+    const alpha = wheel ? tk.alpha : ms.alpha;
+    const o = { from, A: $(from), AOA: $(ang(from)), alpha };
+    return {
+      id: 'angle', kind: 'number', expected: String(alpha), answer: <MathText>{$(`${alpha}^{\\circ}`)}</MathText>,
+      prompt: Cq(k, wheel ? 'wheel.angle.prompt' : 'plane.angle.prompt', o),
+      hints: [Cq(k, 'angle.hint1', o), Cq(k, 'angle.hint2', o)], explain: Cq(k, 'angle.explain', o),
+    };
+  },
+  dist: ({ lab, step }, k) => {
+    const tk = lab.tasks.find((x) => x.id === step.id);
+    const r = L.fmt(lab.r, 1);
+    const o = { from: tk.from, r: $(r), OA: $(`O${tk.from}`), OB: $(`O${tk.from}'`) };
+    return {
+      id: 'dist', kind: 'choice', cols: 1, prompt: Cq(k, 'dist.prompt', o),
+      options: [
+        { text: Cq(k, 'dist.bigger', o), why: Cq(k, 'dist.whyBigger', o) },
+        { text: Cq(k, 'dist.same', o), correct: true },
+        { text: Cq(k, 'dist.smaller', o), why: Cq(k, 'dist.whySmaller', o) },
+      ],
+      hints: [Cq(k, 'dist.hint1', o), Cq(k, 'dist.hint2', o)], explain: Cq(k, 'dist.explain', o),
+    };
+  },
+  twin: ({ lab, step }, k) => {
+    const tk = lab.tasks.find((x) => x.id === step.id);
+    const tw = L.twinOf(lab, tk);
+    const here = L.accepted(lab, tk.id)?.landsOn ?? '';
+    const there = tw ? (L.accepted(lab, tw.id)?.landsOn ?? '') : '';
+    const o = { from: tk.from, alpha: tk.alpha, here, there, sense: k(`sense_${tk.direction}`), senseTwin: k(`sense_${tk.direction === 'direct' ? 'indirect' : 'direct'}`) };
+    return {
+      id: 'twin', kind: 'choice', cols: 1, prompt: Cq(k, 'twin.prompt', o),
+      options: [
+        { text: Cq(k, 'twin.same', o), why: Cq(k, 'twin.whySame', o) },
+        { text: Cq(k, 'twin.other', o), correct: true },
+        { text: Cq(k, 'twin.angle', o), why: Cq(k, 'twin.whyAngle', o) },
+      ],
+      hints: [Cq(k, 'twin.hint1', o), Cq(k, 'twin.hint2', o)], explain: Cq(k, 'twin.explain', o),
+    };
+  },
+  steps: ({ lab, step }, k) => {
+    const tk = lab.tasks.find((x) => x.id === step.id);
+    const o = { from: tk.from, alpha: tk.alpha, unit: lab.step, n: tk.steps, calc: $(`${tk.alpha} \\div ${lab.step} = ${tk.steps}`) };
+    return {
+      id: 'steps', kind: 'number', expected: String(tk.steps), answer: <MathText>{$(tk.steps)}</MathText>,
+      prompt: Cq(k, 'steps.prompt', o), hints: [Cq(k, 'steps.hint1', o), Cq(k, 'steps.hint2', o)], explain: Cq(k, 'steps.explain', o),
+    };
+  },
+  compass: ({ lab, step }, k) => {
+    const ms = lab.missions.find((x) => x.id === step.id);
+    const a = ms.order[0];
+    const o = { A: $(a), alpha: ms.alpha, OA: $(`O${a}`), OB: $(`O${a}'`) };
+    return {
+      id: 'compass', kind: 'choice', cols: 1, prompt: Cq(k, 'compass.prompt', o),
+      options: [
+        { text: Cq(k, 'compass.alpha', o), why: Cq(k, 'compass.whyAlpha', o) },
+        { text: Cq(k, 'compass.same', o), correct: true },
+        { text: Cq(k, 'compass.measure', o), why: Cq(k, 'compass.whyMeasure', o) },
+      ],
+      hints: [Cq(k, 'compass.hint1', o), Cq(k, 'compass.hint2', o)], explain: Cq(k, 'compass.explain', o),
+    };
+  },
+  length: ({ lab, step }, k) => {
+    const i = lab.missions.findIndex((x) => x.id === step.id);
+    const out = L.outcome(lab, i);
+    const o = { a: out.a, b: out.b, before: $(L.fmt(out.before).replace(',', '{,}')), after: $(L.fmt(out.after).replace(',', '{,}')), alpha: lab.missions[i].alpha };
+    return {
+      id: 'length', kind: 'number', expected: L.fmt(out.after), answer: <MathText>{o.after}</MathText>,
+      prompt: Cq(k, 'length.prompt', o), hints: [Cq(k, 'length.hint1', o), Cq(k, 'length.hint2', o)], explain: Cq(k, 'length.explain', o),
+    };
+  },
+  parallel: ({ lab, step }, k) => {
+    const ms = lab.missions.find((x) => x.id === step.id);
+    const [a, b] = ms.order;
+    const o = { a, b, alpha: ms.alpha };
+    return {
+      id: 'parallel', kind: 'choice', cols: 1, prompt: Cq(k, 'parallel.prompt', o),
+      options: [
+        { text: Cq(k, 'parallel.yes', o), why: Cq(k, 'parallel.whyYes', o) },
+        { text: Cq(k, 'parallel.no', o), correct: true },
+        { text: Cq(k, 'parallel.longer', o), why: Cq(k, 'parallel.whyLonger', o) },
+      ],
+      hints: [Cq(k, 'parallel.hint1', o), Cq(k, 'parallel.hint2', o)], explain: Cq(k, 'parallel.explain', o),
+    };
+  },
+  radius: ({ lab, step }, k) => {
+    const i = lab.missions.findIndex((x) => x.id === step.id);
+    const out = L.outcome(lab, i);
+    const o = { before: $(L.fmt(out.before).replace(',', '{,}')), after: $(L.fmt(out.after).replace(',', '{,}')), W: out.a };
+    return {
+      id: 'radius', kind: 'number', expected: L.fmt(out.after), answer: <MathText>{o.after}</MathText>,
+      prompt: Cq(k, 'radius.prompt', o), hints: [Cq(k, 'radius.hint1', o), Cq(k, 'radius.hint2', o)], explain: Cq(k, 'radius.explain', o),
+    };
+  },
+  center: ({ lab, step }, k) => {
+    const ms = lab.missions.find((x) => x.id === step.id);
+    const w = ms.order[0];
+    const o = { W: $(w), Wp: $(`${w}'`) };
+    return {
+      id: 'center', kind: 'choice', cols: 1, prompt: Cq(k, 'center.prompt', o),
+      options: [
+        { text: Cq(k, 'center.same', o), why: Cq(k, 'center.whySame', o) },
+        { text: Cq(k, 'center.image', o), correct: true },
+        { text: Cq(k, 'center.o', o), why: Cq(k, 'center.whyO', o) },
+      ],
+      hints: [Cq(k, 'center.hint1', o), Cq(k, 'center.hint2', o)], explain: Cq(k, 'center.explain', o),
+    };
+  },
+  rule: ({ options, formal, wheel }, k) => ({
+    id: 'rule', kind: 'choice', prompt: <MathText>{k(wheel ? 'dPromptWheel' : 'dPromptPlane')}</MathText>, options,
+    hints: [Cq(k, wheel ? 'wheel.rule.hint1' : 'plane.rule.hint1'), Cq(k, wheel ? 'wheel.rule.hint2' : 'plane.rule.hint2')], explain: formal,
+  }),
+};

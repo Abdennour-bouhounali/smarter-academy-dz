@@ -41,7 +41,10 @@ const M = (t) => <MathText key={t}>{t}</MathText>;
 
 export default function Module01Nashat() {
   const [trial, setTrial] = useState({ [BEGINNER]: null, [ADVANCED]: null });
-  const [q1, setQ1] = useState(false);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand la suite de questions d'un niveau terminée l'est
+  const [cps, setCps] = useState([]);
+  const onCheckpoint = (e) => setCps((l) => [...l, e]);
+  const answered = cps.some((e) => e.tk === 'checkpoint-done');
   const [q2a, setQ2a] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3a, setQ3a] = useState(false);
@@ -94,6 +97,7 @@ export default function Module01Nashat() {
                 eq={BEGINNER}
                 lead="ميزان غرفة ملابس الفريق: ثلاثة أكياس وكرتان في كفّة، و11 كرة في الكفّة الأخرى."
                 onTrial={onTrial(BEGINNER)}
+                onCheckpoint={onCheckpoint}
               />
             ),
             advanced: () => (
@@ -104,6 +108,7 @@ export default function Module01Nashat() {
                 title={'ميزان فاطمة: \u20669x + 1 = −26\u2069'}
                 lead="الكرة تزن 1، والبالون المنفوخ يشدّ الكفّة إلى الأعلى فيزن −1: تسعة أكياس وكرة في كفّة، و26 بالونًا في الكفّة الأخرى."
                 onTrial={onTrial(ADVANCED)}
+                onCheckpoint={onCheckpoint}
               />
             ),
           }}
@@ -111,24 +116,17 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'لماذا نفعل الشيء نفسه بالكفّتين؟', subtitle: 'من خطواتك على الميزان', done: q1,
+          num: 1, title: 'لماذا نفعل الشيء نفسه بالكفّتين؟', subtitle: 'من خطواتك على الميزان', done: answered,
           content: (
             <div className="space-y-3">
               {evidence([BEGINNER, ADVANCED])}
-              <TapQuestion
-                prompt={<MathText>{'في كل خطوة أخذتَ العدد نفسه من الكفّتين معًا. لو أخذتَ كرتين من الكفّة اليسرى فقط، فماذا يحدث؟'}</MathText>}
-                options={[
-                  'يبقى الميزان متوازنًا ولا يتغيّر ما في الكيس',
-                  'يميل الميزان: لم تعد الكفّتان متساويتين، فلا نستنتج شيئًا عمّا في الكيس',
-                  'يميل الميزان لكنّ ما في الكيس يبقى كما هو في المعادلة الجديدة',
-                ]}
-                correct={1}
-                cols={1}
-                requires={['amaliyat-tarafayn']}
-                explain={<MathText>{'الميزان المتوازن يعني تساوي الطرفين. أخذ كرتين من كفّة واحدة يكسر هذا التساوي، فتصير للمعادلة الجديدة حلّ آخر. أمّا الفعل نفسه في الكفّتين فيُبقي التساوي ويُبقي الحل.'}</MathText>}
-                onAnswered={() => setQ1(true)}
-              />
-              {q1 && <KnowledgeBrick id="muadala-tarafayn" lead="ما فعلته بالميزان، مكتوبًا:" />}
+              <p data-evidence="checkpoint" data-tried={answered ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${answered ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {answered
+                  ? 'أجبتَ على الميزان: ما غيّرتَه في كفّة غيّرتَه في الأخرى بالمقدار نفسه، فبقي الميزان متوازنًا وبقي ما في الكيس كما هو.'
+                  : 'أنهِ حلّ إحدى المعادلتين على الميزان حتى تقرأ ما في الكيس وتتحقّق منه، ثم أجب عن الأسئلة التي تظهر فوقه.'}
+              </p>
+              {answered && <KnowledgeBrick id="muadala-tarafayn" lead="ما فعلته بالميزان، مكتوبًا:" />}
             </div>
           ),
         },
@@ -243,7 +241,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

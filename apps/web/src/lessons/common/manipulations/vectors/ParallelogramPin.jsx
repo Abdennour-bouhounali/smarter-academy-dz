@@ -9,6 +9,10 @@ import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
 import useStretchInteraction from '../useStretchInteraction';
 import LabFold from '../primitives/LabFold';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import MathText from '../../components/MathText';
 import * as L from '../logic/parallelogramPin';
 
@@ -77,7 +81,7 @@ const C_REF = '#4F46E5'; const C_LIVE = '#D97706'; const C_OK = '#059669';
 const arrowTex = (name) => `$\\overrightarrow{${name}}$`;
 
 export default function ParallelogramPin({
-  numbers, mode: mode0, A: A0, B: B0, C: C0, theme = 'tifo', title, lead, mission, level, levels: withLevels = true,
+  numbers, mode: mode0, A: A0, B: B0, C: C0, theme = 'tifo', title, lead, mission, level, levels: withLevels = true, checkpoints = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -117,7 +121,11 @@ export default function ParallelogramPin({
     },
   } : null;
 
-  const ready = L.discoveryReady(lab);
+  // les questions pendant le labo (obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte) : la règle vient de la dernière suite
+  const cpSettings = useLabCheckpointSettings('parallelogram-pin');
+  const cpActive = checkpoints && cpSettings.enabled;
+  const solvedNow = L.discoveryReady(lab);
+  const ready = solvedNow && !cpActive;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (state.isFormal) state.report(onFinished, { mode: lab.mode, trials: lab.trials.length });
@@ -283,6 +291,50 @@ export default function ParallelogramPin({
     return k('valueP', { name: which, dx: Math.abs(x - fx), h: k(x >= fx ? 'right' : 'left'), dy: Math.abs(y - fy), v: k(y >= fy ? 'up' : 'down'), from: which === 'D' ? 'C' : 'B' });
   };
 
+  /* ── les étapes : deux contrastes (milieu : l'égalité puis une encoche où seules les longueurs diffèrent · parallélogramme : D puis E) ── */
+  const KINDS = L.STEP_KINDS[lab.mode];
+  const [answered, setAnswered] = useState({ epoch: state.epoch, ids: {} });
+  const ans = answered.epoch === state.epoch ? answered.ids : {};
+  const reachedK = L.reachedKinds(lab);
+  const pending = KINDS.filter((kd) => reachedK.includes(kd) && !ans[kd]);
+  const stepId = pending[0] ?? null;
+  const withRule = pending.length === 1 && reachedK.length === KINDS.length;
+  const chain = cpActive && stepId ? chainOf(stepId, withRule) : null;
+  const cp = useLabCheckpoint({
+    id: chain ? stepId : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, k, { options: discoveryOptions, prompt: para ? 'dPromptPara' : 'dPromptMid', formal })) : null,
+    reached: !!stepId,
+    resetKey: state.epoch,
+    onRetry: () => setLab((x) => L.restartStep(x, stepId)),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setAnswered((a) => ({ epoch: state.epoch, ids: { ...(a.epoch === state.epoch ? a.ids : {}), [id]: true } }));
+      if (chain.includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const stepDone = KINDS.map((kd) => reachedK.includes(kd) && (!cpActive || !!ans[kd]));
+  const stepper = <LabStepper count={KINDS.length} current={stepDone.every(Boolean) ? KINDS.length - 1 : stepDone.findIndex((d) => !d)} done={stepDone} stepAttr="data-pp-step" />;
+  const party = useStepCelebration();
+  const celebrated = useRef({ epoch: state.epoch, set: new Set() });
+  if (celebrated.current.epoch !== state.epoch) celebrated.current = { epoch: state.epoch, set: new Set() };
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.set.has(i)) return;
+      celebrated.current.set.add(i);
+      party.celebrate({ n: i + 1, total: KINDS.length });
+    });
+  }, [stepDone.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son : un déclic par position validée, « over » quand elle est refusée (ou que les longueurs diffèrent), le drapeau quand une étape est faite
+  const doneN = stepDone.filter(Boolean).length;
+  const sfx = useRef({ n: nTrials, d: doneN, epoch: state.epoch });
+  useEffect(() => {
+    const p = sfx.current;
+    if (p.epoch !== state.epoch) { sfx.current = { n: nTrials, d: doneN, epoch: state.epoch }; return; }
+    if (nTrials > p.n) { const tr = lab.trials[nTrials - 1]; playSfx(tr && tr.kind !== 'equal' && tr.kind !== 'ok' ? 'over' : 'tooth'); }
+    if (doneN > p.d) playSfx('flag');
+    sfx.current = { n: nTrials, d: doneN, epoch: state.epoch };
+  }, [nTrials, doneN, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const btn = 'inline-flex h-11 min-w-11 items-center justify-center gap-1 rounded-xl border-2 border-indigo-300 bg-white px-2 text-sm font-bold text-indigo-900 disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500';
   const [wave, setWave] = useState(0);
 
@@ -350,6 +402,8 @@ export default function ParallelogramPin({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpActive}
       hints={hintKeys.map((h) => <MathText key={h}>{k(h)}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false, ...(notchAuto ? { autoComplete: notchAuto } : {}) }}
       discovery={(
@@ -358,9 +412,12 @@ export default function ParallelogramPin({
       explanation={<MathText>{k(para ? 'explanationPara' : 'explanationMid')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-emerald-50/50 to-white" minHeight="min-h-[160px]">
-        <div ref={boxRef} className="space-y-2" data-parallelogram-pin data-mode={lab.mode} data-stage={para ? lab.stage : 'I'}
-          data-world={theme} data-solved={ready ? 'true' : 'false'} data-scene-h={sceneH}>
+        <div ref={boxRef} className={`relative space-y-2 ${cp.open ? 'min-h-[620px]' : ''}`} data-parallelogram-pin data-mode={lab.mode} data-stage={para ? lab.stage : 'I'}
+          data-world={theme} data-solved={solvedNow ? 'true' : 'false'} data-scene-h={sceneH}>
+          {party.node}
+          {cp.node}
           <div ref={glanceRef} className="space-y-1.5" data-pp-glance>
+            {stepper}
             <div ref={sceneRef} className="relative mx-auto select-none" style={{ width: sceneW, height: sceneH, touchAction: para ? 'none' : undefined }}
               data-pp-scene onPointerDown={onSceneDown} onPointerMove={onSceneMove} onPointerUp={onSceneUp} onPointerCancel={onSceneUp}>
               <Scene lab={lab} fr={fr} uid={uid} wave={wave} mid={mid} shape={shape} mids={mids} held={held} judged={judged} width={sceneW} height={sceneH} />
@@ -626,3 +683,127 @@ function Drum({ onBeat }) {
     </button>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+const $ = (s) => `$${s}$`;
+const VEC = (s) => `\\overrightarrow{${s}}`;
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+
+/** La suite de questions de l'étape `kd` (midpoint : equal · length ; parallelogram : D · E) ; la règle ferme la DERNIÈRE étape à finir. */
+export function chainOf(kd, withRule) {
+  const base = { equal: ['parts', 'equalWhy'], length: ['partsIB', 'notEqual'], D: ['dWhy', 'dMids'], E: ['eWhy', 'bMid'] }[kd];
+  return withRule ? [...base, 'rule'] : base;
+}
+
+/** Chaque question est construite sur LES nombres de l'essai de l'élève (rien en dur) ; `k` : les textes de `parallelogramPin`. */
+export const QUESTIONS = {
+  parts: (lab, k) => {
+    const tr = L.lastTrial(lab, (x) => x.kind === 'equal');
+    const o = { N: $(String(lab.N)), k: $(String(tr.k)), AI: $(VEC('AI')), IB: $(VEC('IB')) };
+    return {
+      id: 'parts', kind: 'number', expected: String(tr.k), answer: <MathText>{$(String(tr.k))}</MathText>,
+      prompt: Mx(k, 'parts.prompt', o), hints: [Mx(k, 'parts.hint1', o), Mx(k, 'parts.hint2', o)],
+      explain: Mx(k, 'parts.explain', o),
+    };
+  },
+  equalWhy: (lab, k) => {
+    const o = { AI: $(VEC('AI')), IB: $(VEC('IB')) };
+    return {
+      id: 'equalWhy', kind: 'choice',
+      prompt: Mx(k, 'equalWhy.prompt', o),
+      options: [
+        { text: Mx(k, 'equalWhy.direction'), why: Mx(k, 'equalWhy.whyDirection', o) },
+        { text: Mx(k, 'equalWhy.all'), correct: true },
+        { text: Mx(k, 'equalWhy.length'), why: Mx(k, 'equalWhy.whyLength', o) },
+      ],
+      hints: [Mx(k, 'equalWhy.hint1'), Mx(k, 'equalWhy.hint2')],
+      explain: Mx(k, 'equalWhy.explain', o),
+    };
+  },
+  partsIB: (lab, k) => {
+    const tr = L.lastTrial(lab, (x) => x.kind === 'length');
+    const rest = lab.N - tr.k;
+    const o = { N: $(String(lab.N)), k: $(String(tr.k)), rest: $(String(rest)) };
+    return {
+      id: 'partsIB', kind: 'number', expected: String(rest), answer: <MathText>{$(String(rest))}</MathText>,
+      prompt: Mx(k, 'partsIB.prompt', o), hints: [Mx(k, 'partsIB.hint1', o), Mx(k, 'partsIB.hint2', o)],
+      explain: Mx(k, 'partsIB.explain', o),
+    };
+  },
+  notEqual: (lab, k) => {
+    const tr = L.lastTrial(lab, (x) => x.kind === 'length');
+    const o = { k: $(String(tr.k)), rest: $(String(lab.N - tr.k)), AI: $(VEC('AI')), IB: $(VEC('IB')) };
+    return {
+      id: 'notEqual', kind: 'choice',
+      prompt: Mx(k, 'notEqual.prompt', o),
+      options: [
+        { text: Mx(k, 'notEqual.direction'), why: Mx(k, 'notEqual.whyDirection', o) },
+        { text: Mx(k, 'notEqual.sense'), why: Mx(k, 'notEqual.whySense', o) },
+        { text: Mx(k, 'notEqual.length', o), correct: true },
+      ],
+      hints: [Mx(k, 'notEqual.hint1'), Mx(k, 'notEqual.hint2', o)],
+      explain: Mx(k, 'notEqual.explain', o),
+    };
+  },
+  dWhy: (lab, k) => {
+    const o = { CD: $(VEC('CD')), DC: $(VEC('DC')), AB: $(VEC('AB')) };
+    return {
+      id: 'dWhy', kind: 'choice',
+      prompt: Mx(k, 'dWhy.prompt', o),
+      options: [
+        { text: Mx(k, 'dWhy.order', o), why: Mx(k, 'dWhy.whyOrder', o) },
+        { text: Mx(k, 'dWhy.right', o), correct: true },
+        { text: Mx(k, 'dWhy.length', o), why: Mx(k, 'dWhy.whyLength', o) },
+      ],
+      hints: [Mx(k, 'dWhy.hint1', o), Mx(k, 'dWhy.hint2', o)],
+      explain: Mx(k, 'dWhy.explain', o),
+    };
+  },
+  dMids: (lab, k) => ({
+    id: 'dMids', kind: 'choice',
+    prompt: Mx(k, 'dMids.prompt'),
+    options: [
+      { text: Mx(k, 'dMids.apart'), why: Mx(k, 'dMids.whyApart') },
+      { text: Mx(k, 'dMids.merged'), correct: true },
+      { text: Mx(k, 'dMids.onB'), why: Mx(k, 'dMids.whyOnB') },
+    ],
+    hints: [Mx(k, 'dMids.hint1'), Mx(k, 'dMids.hint2')],
+    explain: Mx(k, 'dMids.explain'),
+  }),
+  eWhy: (lab, k) => {
+    const o = { EB: $(VEC('EB')), BE: $(VEC('BE')), AE: $(VEC('AE')), AC: $(VEC('AC')) };
+    return {
+      id: 'eWhy', kind: 'choice',
+      prompt: Mx(k, 'eWhy.prompt', o),
+      options: [
+        { text: Mx(k, 'eWhy.be', o), why: Mx(k, 'eWhy.whyBE', o) },
+        { text: Mx(k, 'eWhy.ae', o), why: Mx(k, 'eWhy.whyAE', o) },
+        { text: Mx(k, 'eWhy.eb', o), correct: true },
+      ],
+      hints: [Mx(k, 'eWhy.hint1', o), Mx(k, 'eWhy.hint2', o)],
+      explain: Mx(k, 'eWhy.explain', o),
+    };
+  },
+  bMid: (lab, k) => {
+    const o = { EB: $(VEC('EB')), BD: $(VEC('BD')), AC: $(VEC('AC')) };
+    return {
+      id: 'bMid', kind: 'choice',
+      prompt: Mx(k, 'bMid.prompt', o),
+      options: [
+        { text: Mx(k, 'bMid.ac'), why: Mx(k, 'bMid.whyAC') },
+        { text: Mx(k, 'bMid.de'), correct: true },
+        { text: Mx(k, 'bMid.be'), why: Mx(k, 'bMid.whyBE', o) },
+      ],
+      hints: [Mx(k, 'bMid.hint1', o), Mx(k, 'bMid.hint2')],
+      explain: Mx(k, 'bMid.explain', o),
+    };
+  },
+  rule: (lab, k, ctx) => ({
+    id: 'rule', kind: 'choice',
+    prompt: <MathText>{k(ctx.prompt)}</MathText>,
+    options: ctx.options,
+    hints: [Mx(k, `rule.${lab.mode === 'parallelogram' ? 'para' : 'mid'}1`), Mx(k, 'rule.hint2')],
+    explain: ctx.formal,
+  }),
+};

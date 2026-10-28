@@ -11,6 +11,10 @@ import { useManipulation } from '../useManipulation';
 import useDragInteraction from '../useDragInteraction';
 import DragGhost from '../primitives/DragGhost';
 import LabFold from '../primitives/LabFold';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import MathText from '../../components/MathText';
 import * as L from '../logic/vectorChain';
 
@@ -82,7 +86,7 @@ const sub = (name) => name.replace(/_(\d)/, (m, d) => '₀₁₂₃₄₅₆₇�
 
 export default function VectorChain({
   mode = 'reduce', stations, segments, givens, missions, builds, radius = 2, theme = 'metro',
-  title, lead, mission, level, levels: withLevels = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.vectorChain.${key}`, o), [t]);
@@ -98,7 +102,10 @@ export default function VectorChain({
   const construct = lab.mode === 'construct';
   const reduce = useReducedMotion();
 
-  const ready = L.discoveryReady(lab);
+  // les questions pendant le labo (obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte) : la règle vient de la dernière suite
+  const cpSettings = useLabCheckpointSettings('vector-chain');
+  const cpActive = cpOn && cpSettings.enabled;
+  const ready = L.discoveryReady(lab) && !cpActive;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!state.isFormal) return;
@@ -218,7 +225,39 @@ export default function VectorChain({
     ? k('goalConstruct', { name: `(\\Gamma_${lab.b + 1})`, sum: L.sumTex(bs.terms) })
     : ok.target ? k('goalProve', { lhs: L.vecTex(ok.lhs), target: L.vecTex(ok.target) }) : k('goalSingle', { expr: L.sumTex(ok.start) });
 
-  const canNext = idx < nTabs - 1 && doneOf(idx);
+  const stepId = construct ? `b${lab.b}` : `r${lab.m}`;
+  const chain = cpActive ? chainOf(lab) : null;
+  const cp = useLabCheckpoint({
+    id: chain ? stepId : null,
+    questions: chain && doneOf(idx) ? chain.map((q) => QUESTIONS[q](lab, k, { options: discoveryOptions, prompt, formal })) : null,
+    reached: doneOf(idx),
+    resetKey: state.epoch,
+    onRetry: () => setLab(L.restartStep),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id, log) => { if (chain.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  const stepDone = Array.from({ length: nTabs }, (_, i) => doneOf(i) && (i !== idx || !cp.blocking));
+  const party = useStepCelebration();
+  const celebrated = useRef({ epoch: state.epoch, set: new Set() });
+  if (celebrated.current.epoch !== state.epoch) celebrated.current = { epoch: state.epoch, set: new Set() };
+  const nowDone = stepDone[idx];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.set.has(idx)) return;
+    celebrated.current.set.add(idx);
+    party.celebrate({ n: idx + 1, total: nTabs });
+  }, [nowDone, idx]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son : un déclic pour un geste accepté, « over » pour un refus, le drapeau quand la mission est faite
+  const doneN = stepDone.filter(Boolean).length;
+  const sfx = useRef({ n: nTrials, d: doneN, epoch: state.epoch });
+  useEffect(() => {
+    const p = sfx.current;
+    if (p.epoch !== state.epoch) { sfx.current = { n: nTrials, d: doneN, epoch: state.epoch }; return; }
+    if (nTrials > p.n) { const tr = lab.trials[nTrials - 1]; playSfx(tr?.ok === false ? 'over' : 'tooth'); }
+    if (doneN > p.d) playSfx('flag');
+    sfx.current = { n: nTrials, d: doneN, epoch: state.epoch };
+  }, [nTrials, doneN, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const canNext = idx < nTabs - 1 && doneOf(idx) && !cp.blocking;
   const hoverSt = drag.hoverZone?.id?.startsWith('st:') ? drag.hoverZone.id.slice(3) : null;
   const heldName = construct
     ? (drag.held === 'sum' ? 'sum' : bs.tray.find((c) => c.id === drag.held)?.name ?? null)
@@ -321,21 +360,11 @@ export default function VectorChain({
       <Undo2 className="h-4 w-4" aria-hidden="true" /> {!narrow && k('undo')}
     </button>
   );
-  const tabs = (nTabs > 1 || narrow) && (
-    <div className="flex flex-wrap items-center justify-center gap-1.5" role="group">
-      {Array.from({ length: nTabs }, (_, i) => (
-        <button key={i} type="button" onClick={() => setLab((s) => L.goTo(s, i))} aria-pressed={i === idx} data-vc-tab={i} data-done={doneOf(i) ? 'true' : 'false'}
-          className={`min-h-[44px] min-w-[44px] rounded-full border-2 ${narrow ? 'px-2' : 'px-3'} text-xs font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${i === idx ? 'border-indigo-600 bg-indigo-600 text-white' : doneOf(i) ? 'border-emerald-400 bg-emerald-50 text-emerald-900' : 'border-slate-300 bg-white text-slate-700'}`}>
-          {construct ? <MathText>{`$(\\Gamma_${i + 1})$`}</MathText> : narrow ? <span aria-label={k('tripTab', { n: i + 1 })}>{i + 1}</span> : k('tripTab', { n: i + 1 })} {doneOf(i) ? '✓' : ''}
-        </button>
-      ))}
-      {narrow && undoBtn}
-    </div>
-  );
+  const tabs = nTabs > 1 && <LabStepper count={nTabs} current={idx} done={stepDone} stepAttr="data-vc-step" />;
 
-  const actions = (narrow ? canNext : true) && (
+  const actions = (
     <div className="flex flex-wrap items-center justify-center gap-2">
-      {!narrow && undoBtn}
+      {undoBtn}
       {canNext && (
         <button type="button" onClick={() => setLab((s) => L.goTo(s, idx + 1))} data-vc-next
           className="min-h-[44px] rounded-xl border-2 border-indigo-600 bg-indigo-600 px-3 text-sm font-bold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300">
@@ -402,14 +431,18 @@ export default function VectorChain({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpActive}
       hints={(construct ? ['hintC1', 'hintC2', 'hintC3'] : ['hintR1', 'hintR2', 'hintR3']).map((h) => <MathText key={h}>{k(h)}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={<MathText>{k(prompt)}</MathText>} options={discoveryOptions} formal={formal} />}
       explanation={<MathText>{k(construct ? 'explanationConstruct' : 'explanationReduce')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-sky-50/60 to-white" minHeight="min-h-[160px]">
-        <div ref={boxRef} className="space-y-2" data-vector-chain data-mode={lab.mode} data-world={theme}
+        <div ref={boxRef} className={`relative space-y-2 ${cp.open ? 'min-h-[620px]' : ''}`} data-vector-chain data-mode={lab.mode} data-world={theme}
           data-mission={idx} data-status={stat} data-train={construct ? '' : ms.train ?? ''} data-found={construct && bs.found ? V.coords(bs.found).join(',') : undefined}>
+          {party.node}
+          {cp.node}
           <div ref={glanceRef} className="space-y-2" data-vc-glance>
             {tabs}
             <div className={wide ? 'flex items-start gap-3' : 'space-y-2'}>
@@ -705,3 +738,104 @@ function Validator({ onBeep, label, minutes }) {
     </span>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+const $ = (s) => `$${s}$`;
+const vt = (n) => $(L.vecTex(n));
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+/** Le premier geste accepté d'un genre dans les lignes de la preuve de la mission courante. */
+const lineOf = (lab, kind) => L.current(lab).lines.find((l) => l.reason?.kind === kind) ?? null;
+
+/** La suite de questions de la mission (ou construction) courante : les gestes qu'on vient de FAIRE, puis le résultat, puis la règle (dernière à finir). */
+export function chainOf(lab) {
+  const last = L.allDone(lab) ? ['rule'] : [];
+  if (lab.mode === 'construct') return ['count', 'chain', ...last];
+  return [...(lineOf(lab, 'shal') ? ['couple'] : []), ...(lineOf(lab, 'swap') ? ['swap'] : []), 'final', ...last];
+}
+
+/** Chaque question est construite sur LES stations, les tickets et le train de la mission (rien en dur) ; `k` : les textes de `vectorChain`. */
+export const QUESTIONS = {
+  couple: (lab, k) => {
+    const r = lineOf(lab, 'shal').reason;
+    const [t1, t2] = r.terms;
+    const mid = L.ends(t1)[1];
+    const o = { t1: vt(t1), t2: vt(t2), res: vt(r.result), m: mid, s: L.ends(t2)[0] };
+    return {
+      id: 'couple', kind: 'choice',
+      prompt: Mx(k, 'couple.prompt', o),
+      options: [
+        { text: Mx(k, 'couple.same', o), correct: true },
+        { text: Mx(k, 'couple.length'), why: Mx(k, 'couple.whyLength', o) },
+        { text: Mx(k, 'couple.parallel'), why: Mx(k, 'couple.whyParallel', o) },
+      ],
+      hints: [Mx(k, 'couple.hint1', o), Mx(k, 'couple.hint2', o)],
+      explain: Mx(k, 'couple.explain', o),
+    };
+  },
+  swap: (lab, k) => {
+    const r = lineOf(lab, 'swap').reason;
+    const o = { from: vt(r.from), to: vt(r.to), st: L.ends(r.to)[0] };
+    return {
+      id: 'swap', kind: 'choice',
+      prompt: Mx(k, 'swap.prompt', o),
+      options: [
+        { text: Mx(k, 'swap.figure'), why: Mx(k, 'swap.whyFigure', o) },
+        { text: Mx(k, 'swap.given', o), correct: true },
+        { text: Mx(k, 'swap.length'), why: Mx(k, 'swap.whyLength', o) },
+      ],
+      hints: [Mx(k, 'swap.hint1'), Mx(k, 'swap.hint2', o)],
+      explain: Mx(k, 'swap.explain', o),
+    };
+  },
+  final: (lab, k) => {
+    const ms = L.current(lab);
+    const name = ms.train;
+    const [a, b] = L.ends(name);
+    const rev = L.reverse(name);
+    const other = [...L.current(lab).lines[0].names, `${a}${a}`].find((n) => n !== name && n !== rev);
+    const o = { n: lab.m + 1, a, b, train: vt(name), rev: vt(rev), x: vt(other) };
+    return {
+      id: 'final', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'final.prompt', o),
+      options: [
+        { text: <MathText>{o.rev}</MathText>, why: Mx(k, 'final.whyRev', o) },
+        { text: <MathText>{o.x}</MathText>, why: Mx(k, 'final.whyFirst', o) },
+        { text: <MathText>{o.train}</MathText>, correct: true },
+      ],
+      hints: [Mx(k, 'final.hint1'), Mx(k, 'final.hint2', o)],
+      explain: Mx(k, 'final.explain', o),
+    };
+  },
+  count: (lab, k) => {
+    const bs = L.currentBuild(lab);
+    const o = { sum: $(L.sumTex(bs.terms)), st: bs.origin, name: `$(\\Gamma_${lab.b + 1})$` };
+    return {
+      id: 'count', kind: 'number', expected: String(bs.terms.length), answer: <MathText>{$(String(bs.terms.length))}</MathText>,
+      prompt: Mx(k, 'count.prompt', o), hints: [Mx(k, 'count.hint1', o), Mx(k, 'count.hint2', o)],
+      explain: Mx(k, 'count.explain', { ...o, n: $(String(bs.terms.length)) }),
+    };
+  },
+  chain: (lab, k) => {
+    const bs = L.currentBuild(lab);
+    const o = { first: vt(bs.chain[0].name), second: bs.chain[1] ? vt(bs.chain[1].name) : vt(bs.chain[0].name), centre: bs.centre, st: bs.origin };
+    return {
+      id: 'chain', kind: 'choice',
+      prompt: Mx(k, 'chain.prompt', o),
+      options: [
+        { text: Mx(k, 'chain.centre', o), why: Mx(k, 'chain.whyCentre', o) },
+        { text: Mx(k, 'chain.tip'), correct: true },
+        { text: Mx(k, 'chain.any'), why: Mx(k, 'chain.whyAny', o) },
+      ],
+      hints: [Mx(k, 'chain.hint1', o), Mx(k, 'chain.hint2', o)],
+      explain: Mx(k, 'chain.explain', o),
+    };
+  },
+  rule: (lab, k, ctx) => ({
+    id: 'rule', kind: 'choice',
+    prompt: <MathText>{k(ctx.prompt)}</MathText>,
+    options: ctx.options,
+    hints: [Mx(k, `rule.${lab.mode === 'construct' ? 'construct' : lab.missions.some((m) => m.target) ? 'advanced' : 'beginner'}1`), Mx(k, 'rule.hint2')],
+    explain: ctx.formal,
+  }),
+};

@@ -8,6 +8,10 @@ import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import MathText from '../../components/MathText';
 import * as L from '../logic/translationGlide';
 
@@ -73,7 +77,7 @@ const tf = (s) => s.replace(/\\dfrac/g, '\\tfrac');
 const LED = [['#22D3EE', '#67E8F9'], ['#F472B6', '#FBCFE8'], ['#FACC15', '#FEF08A'], ['#34D399', '#A7F3D0']];
 
 export default function TranslationGlide({
-  scene = 'show', grid, drones, vector, theme = 'drone-show', title, lead, mission, level, levels: withLevels = true,
+  scene = 'show', grid, drones, vector, theme = 'drone-show', title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -96,7 +100,10 @@ export default function TranslationGlide({
   const u = tb.u;
 
   /* ── pédagogie : découverte, règle, essais ── */
-  const ready = L.discoveryReady(lab);
+  // les questions pendant le labo (obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte) : la règle vient de la dernière suite
+  const cpSettings = useLabCheckpointSettings('translation-glide');
+  const cpActive = cpOn && cpSettings.enabled;
+  const ready = L.discoveryReady(lab) && !cpActive;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (state.isFormal) state.report(onFinished, L.summaryOf(lab));
@@ -142,7 +149,7 @@ export default function TranslationGlide({
   // la télécommande à côté : dès 360 px pour une grille haute, pour le ciel large dès 620 px
   const side = portrait ? width >= 360 : width >= 620;
   const sea = narrow ? 18 : portrait ? 26 : 34;
-  const avail = Math.max(170, Math.min(side ? screenH - 36 : screenH - overhead - 30, 620));
+  const avail = Math.max(170, Math.min(side ? screenH - 36 - 52 : screenH - overhead - 30 - 52, 620));
   const maxW = side ? width - panelW - 12 : width;
   const cap = width >= 700 ? 58 : 46;
   const pad = narrow ? 20 : 26; // les étiquettes des points du bord restent dans la scène
@@ -292,6 +299,53 @@ export default function TranslationGlide({
     </div>
   );
 
+  /* ── les étapes : `show` = la formation, puis le drone égaré ; `act1` = un tableau (une translation) par étape ── */
+  const [answered, setAnswered] = useState({ epoch: state.epoch, ids: {} });
+  const ans = answered.epoch === state.epoch ? answered.ids : {};
+  const formationDone = !act1 && L.imagesDone(lab, 0);
+  const showId = !act1 && formationDone && !ans.show0 ? 'show0' : 'show1';
+  const stepId = act1 ? `t${lab.t}` : showId;
+  const phase = act1 ? 0 : showId === 'show0' ? 0 : 1;
+  const reachedNow = act1 ? L.tableauDone(lab) : showId === 'show0' ? formationDone : L.tableauDone(lab, 0);
+  const nSteps = act1 ? lab.tableaux.length : 2;
+  const chain = cpActive ? chainOf(lab, stepId) : null;
+  const cp = useLabCheckpoint({
+    id: chain ? stepId : null,
+    questions: chain && reachedNow ? chain.map((q) => QUESTIONS[q](lab, k, { options: discoveryOptions, prompt: act1 ? 'dPromptAct1' : 'dPromptShow', formal })) : null,
+    reached: reachedNow,
+    resetKey: state.epoch,
+    onRetry: () => setLab((s) => L.restartStep(s, phase)),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setAnswered((a) => ({ epoch: state.epoch, ids: { ...(a.epoch === state.epoch ? a.ids : {}), [id]: true } }));
+      if (chain.includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const stepDone = act1
+    ? lab.tableaux.map((_, i) => L.tableauDone(lab, i) && (i !== lab.t || !cp.blocking))
+    : [formationDone && (!cpActive || !!ans.show0), L.tableauDone(lab, 0) && (!cp.blocking || !cpActive)];
+  const curStep = act1 ? lab.t : (stepDone[0] ? 1 : 0);
+  const party = useStepCelebration();
+  const celebrated = useRef({ epoch: state.epoch, set: new Set() });
+  if (celebrated.current.epoch !== state.epoch) celebrated.current = { epoch: state.epoch, set: new Set() };
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.set.has(i)) return;
+      celebrated.current.set.add(i);
+      party.celebrate({ n: i + 1, total: nSteps });
+    });
+  }, [stepDone.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son : un déclic par image acceptée, « over » pour un refus, le drapeau quand une étape est faite
+  const doneN = stepDone.filter(Boolean).length;
+  const sfx = useRef({ n: nTrials, d: doneN, epoch: state.epoch });
+  useEffect(() => {
+    const p = sfx.current;
+    if (p.epoch !== state.epoch) { sfx.current = { n: nTrials, d: doneN, epoch: state.epoch }; return; }
+    if (nTrials > p.n) playSfx(lab.trials[nTrials - 1]?.ok === false ? 'over' : 'tooth');
+    if (doneN > p.d) playSfx('flag');
+    sfx.current = { n: nTrials, d: doneN, epoch: state.epoch };
+  }, [nTrials, doneN, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const missionText = mission ?? <MathText>{k(act1 ? 'missionAct1' : 'missionShow')}</MathText>;
   const hintKeys = act1 ? ['hintA1', 'hintA2', 'hintA3'] : ['hintS1', 'hintS2', 'hintS3'];
   const todo = L.toPlace(lab);
@@ -369,6 +423,8 @@ export default function TranslationGlide({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpActive}
       hints={hintKeys.map((h) => <MathText key={h}>{k(h)}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={(
@@ -377,8 +433,11 @@ export default function TranslationGlide({
       explanation={<MathText>{k(act1 ? 'explanationAct1' : 'explanationShow')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-slate-100 to-white !p-3" minHeight="min-h-[160px]" dragging={hold?.mode === 'drag'}>
-        <div ref={boxRef} className="space-y-2" data-translation-glide data-scene={lab.scene} data-world={theme}
+        <div ref={boxRef} className={`relative space-y-2 ${cp.open ? 'min-h-[620px]' : ''}`} data-translation-glide data-scene={lab.scene} data-world={theme}
           data-solved={ready ? 'true' : 'false'} data-tableau={tb.id} data-scene-h={sceneH}>
+          {party.node}
+          {cp.node}
+          <LabStepper count={nSteps} current={curStep} done={stepDone} stepAttr="data-tg-step" />
           <div ref={glanceRef} className={`flex ${side ? 'flex-row items-start' : 'flex-col items-center'} justify-center gap-2`} data-tg-glance>
             <div ref={sceneRef} className="relative shrink-0 overflow-hidden rounded-xl" style={{ width: sceneW, height: sceneH, touchAction: 'none' }}
               onPointerUp={onSceneUp} data-tg-scene data-cell={Math.round(geo.cell)}>
@@ -669,3 +728,121 @@ function Deco({ led, onTap }) {
     </button>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+const $ = (s) => `$${s}$`;
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const AXES = ['h', 'v'];
+
+/** La suite de questions de l'étape `stepId` : `show0` la formation · `show1` le drone égaré · `t<i>` le tableau i du نشاط. */
+export function chainOf(lab, stepId) {
+  const last = L.allDone(lab) ? ['rule'] : [];
+  if (stepId === 'show0') return ['leaderShift', 'follower', 'same'];
+  if (stepId === 'show1') return ['rogueWhy', ...last];
+  return lab.t === 0 ? ['shift', 'all3', ...last] : ['shift', 'vsFirst', ...last];
+}
+
+const axisOf = (u) => (u[0] !== 0 ? 'h' : 'v');
+const sameOptions = (k, o) => [
+  { text: Mx(k, 'same.length'), why: Mx(k, 'same.whyLength', o) },
+  { text: Mx(k, 'same.direction'), why: Mx(k, 'same.whyDirection', o) },
+  { text: Mx(k, 'same.all'), correct: true },
+];
+const KINDS = ['direction', 'sense', 'senseLength', 'length'];
+
+/** Chaque question est construite sur LES nombres de l'étape (rien en dur) ; `k` : les textes de `translationGlide`. */
+export const QUESTIONS = {
+  leaderShift: (lab, k) => {
+    const tb = L.tableau(lab, 0); const ax = axisOf(tb.u);
+    const n = Math.abs(ax === 'h' ? tb.u[0] : tb.u[1]);
+    const o = { A: tb.from, A1: PRIME(`${tb.from}'`), axis: k(`cp.axis.${ax}`), AA: $(VEC(`${tb.from}${tb.from}'`)) };
+    return {
+      id: 'leaderShift', kind: 'number', expected: String(n), answer: <MathText>{$(String(n))}</MathText>,
+      prompt: Mx(k, 'leaderShift.prompt', o), hints: [Mx(k, 'leaderShift.hint1', o), Mx(k, 'leaderShift.hint2', o)],
+      explain: Mx(k, 'leaderShift.explain', { ...o, n: $(String(n)) }),
+    };
+  },
+  follower: (lab, k) => {
+    const tb = L.tableau(lab, 0); const ax = axisOf(tb.u);
+    const n = Math.abs(ax === 'h' ? tb.u[0] : tb.u[1]);
+    const [b, bi] = tb.place[0];
+    const o = { B: b, B1: PRIME(bi), axis: k(`cp.axis.${ax}`), A: tb.from, A1: PRIME(`${tb.from}'`) };
+    return {
+      id: 'follower', kind: 'number', expected: String(n), answer: <MathText>{$(String(n))}</MathText>,
+      prompt: Mx(k, 'follower.prompt', o), hints: [Mx(k, 'follower.hint1', o), Mx(k, 'follower.hint2', o)],
+      explain: Mx(k, 'follower.explain', { ...o, n: $(String(n)) }),
+    };
+  },
+  same: (lab, k) => {
+    const tb = L.tableau(lab, 0);
+    const arrows = [tb.from, ...tb.place.map(([f]) => f)].map((f) => $(VEC(`${f}${f}'`))).join(k('cp.and'));
+    const o = { arrows };
+    return {
+      id: 'same', kind: 'choice',
+      prompt: Mx(k, 'same.prompt', o), options: sameOptions(k, o),
+      hints: [Mx(k, 'same.hint1'), Mx(k, 'same.hint2')],
+      explain: Mx(k, 'same.explain', o),
+    };
+  },
+  rogueWhy: (lab, k) => {
+    const r = lab.rogue.name; const A = lab.tableaux[0].from;
+    const o = { r: PRIME(r), RR: $(VEC(`${r}${r}'`)), AA: $(VEC(`${A}${A}'`)) };
+    return {
+      id: 'rogueWhy', kind: 'choice',
+      prompt: Mx(k, 'rogueWhy.prompt', o),
+      options: [
+        { text: Mx(k, 'rogueWhy.length', o), why: Mx(k, 'rogueWhy.whyLength', o) },
+        { text: Mx(k, 'rogueWhy.all', o), correct: true },
+        { text: Mx(k, 'rogueWhy.parallel', o), why: Mx(k, 'rogueWhy.whyParallel', o) },
+      ],
+      hints: [Mx(k, 'rogueWhy.hint1', o), Mx(k, 'rogueWhy.hint2', o)],
+      explain: Mx(k, 'rogueWhy.explain', o),
+    };
+  },
+  shift: (lab, k) => {
+    const tb = L.tableau(lab); const ax = axisOf(tb.u);
+    const n = Math.abs(ax === 'h' ? tb.u[0] : tb.u[1]);
+    const o = { A: tb.from, A1: PRIME(tb.toName), axis: k(`cp.axis.${ax}`), AA: $(VEC(`${tb.from}${tb.toName}`)) };
+    return {
+      id: 'shift', kind: 'number', expected: String(n), answer: <MathText>{$(String(n))}</MathText>,
+      prompt: Mx(k, 'shift.prompt', o), hints: [Mx(k, 'shift.hint1', o), Mx(k, 'shift.hint2', o)],
+      explain: Mx(k, 'shift.explain', { ...o, n: $(String(n)) }),
+    };
+  },
+  all3: (lab, k) => {
+    const tb = L.tableau(lab);
+    const arrows = [`${tb.from}${tb.toName}`, ...tb.place.map(([f, n]) => `${f}${n}`)].map((x) => $(VEC(x))).join(k('cp.and'));
+    const o = { arrows };
+    return {
+      id: 'all3', kind: 'choice',
+      prompt: Mx(k, 'all3.prompt', o), options: sameOptions(k, o),
+      hints: [Mx(k, 'same.hint1'), Mx(k, 'same.hint2')],
+      explain: Mx(k, 'all3.explain', o),
+    };
+  },
+  vsFirst: (lab, k) => {
+    const first = lab.tableaux[0]; const tb = L.tableau(lab);
+    const kind = L.compare(first.u, tb.u).kind;
+    const o = { cur: $(VEC(`${tb.from}${tb.toName}`)), ref: $(VEC(`${first.from}${first.toName}`)) };
+    const right = KINDS.indexOf(kind);
+    const picked = [right, ...KINDS.map((_, i) => i).filter((i) => i !== right)].slice(0, 3);
+    const order = picked.map((_, i) => picked[(i + lab.t) % 3]);   // la bonne réponse change de place d'un tableau à l'autre
+    return {
+      id: 'vsFirst', kind: 'choice',
+      prompt: Mx(k, 'vsFirst.prompt', o),
+      options: order.map((i) => (i === right
+        ? { text: Mx(k, `vsFirst.${KINDS[i]}`), correct: true }
+        : { text: Mx(k, `vsFirst.${KINDS[i]}`), why: Mx(k, 'vsFirst.why', o) })),
+      hints: [Mx(k, 'vsFirst.hint1', o), Mx(k, 'vsFirst.hint2', o)],
+      explain: Mx(k, `vsFirst.explain_${kind}`, o),
+    };
+  },
+  rule: (lab, k, ctx) => ({
+    id: 'rule', kind: 'choice',
+    prompt: <MathText>{k(ctx.prompt)}</MathText>,
+    options: ctx.options,
+    hints: [Mx(k, `rule.${lab.scene === 'act1' ? 'act1' : 'show1'}`), Mx(k, 'rule.hint2')],
+    explain: ctx.formal,
+  }),
+};

@@ -88,7 +88,7 @@ export default function Module04Awazzif() {
         { num: 6, title: 'تمرين 18 — البرهان كاملا', done: all('18'),
           content: <div className="space-y-3">{block('18', ['khatawat-burhan', 'taawid-musawi', 'tariqat-abdc'])}</div> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

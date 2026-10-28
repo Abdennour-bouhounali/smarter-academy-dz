@@ -13,6 +13,10 @@ import LabFold from '../primitives/LabFold';
 import MovablePanel from '../primitives/MovablePanel';
 import EquationDisplay from '../primitives/EquationDisplay';
 import MathText from '../../components/MathText';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { bidi } from '../../../../utils/bidi';
 import * as L from '../logic/storyModeller';
 
@@ -54,6 +58,15 @@ import * as L from '../logic/storyModeller';
  *   Props absentes : celles de l'histoire intégrée du thème (lesson.json › storyModeller.themes) —
  *   c'est aussi ce que raconte l'AUTRE niveau d'une manipulation posée seule (levels.js : stadium /
  *   museum). La synthèse : theme="party", system="150x+150y=11250|24x+30y=2100", deux faits 'money'.
+ *
+ * ── QUESTIONS PENDANT LE LABO (2026-10-28, `primitives/LabCheckpoint`, `checkpoints` défaut true) ──
+ *   Une étape `LabStepper` PAR ÉTAPE du labo (المجاهيل, الترجمة, الحل, التحقق, الإجابة ; quatre sans la première quand les inconnues sont déjà nommées, trois avec startWith="solve") ; quand son
+ *   objectif est atteint, une suite de questions sur ce que l'élève vient de faire s'ouvre PAR-DESSUS le labo et retient le bouton qui
+ *   passe à l'étape suivante (« إلى الترجمة »…) : name — pourquoi ces inconnues, combien d'équations ; model — ce que l'équation mesure
+ *   (personnes ou DA), pourquoi les deux nombres ne s'échangent pas ; solve — les deux valeurs calculées ; verify — la valeur d'une
+ *   information, quelle information contredit les valeurs échangées ; answer — pourquoi une phrase, puis la RÈGLE (l'ancienne découverte).
+ *   Tout est construit sur la jumla et les valeurs de l'élève (`CHAINS`, `QUESTIONS`, `chainOf`, `makeCtx` exportés). `onCheckpoint(ev)` reçoit
+ *   les événements `checkpoint` / `checkpoint-done` (trace des modules) ; `onTrial` ne reçoit que les essais du modèle et du rejeu.
  *
  * ── LES CINQ QUESTIONS (MANIPULATION_CONTRACT §1) ─────────────────────────────────────────────
  * A. L'élève PORTE les lettres sur les noms de l'histoire, puis les NOMBRES de l'histoire dans les
@@ -128,8 +141,8 @@ const LETTER_COLORS = ['#2563EB', '#E11D48'];
 
 export default function StoryModeller({
   system: system0, theme = 'museum', unknowns, named = false, facts, chips, story, answer, startWith = 'model',
-  title, lead, mission, level, levels: withLevels = true, initialMode = 'student', allowModeSwitch = false,
-  onModel, onSolved, onTrial, onFinished,
+  title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false,
+  onModel, onSolved, onTrial, onCheckpoint, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.storyModeller.${key}`, o), [t]);
@@ -159,10 +172,15 @@ export default function StoryModeller({
   const ids = model.ids;
 
   const sceneKey = `${system}|${state.epoch}|${own}`;
-  const [scene, setScene] = useState(sceneKey);
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
   const [lab, setLab] = useState(() => L.init(model, def));
   const [notice, setNotice] = useState(null);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init(model, def)); setNotice(null); }
+  const [doneStages, setDoneStages] = useState([]);
+  if (scene.key !== sceneKey) {
+    // « إعادة », un autre niveau ou une autre histoire : TOUT recommence — les cases, les étapes et les questions du labo
+    setScene({ key: sceneKey, inits: scene.inits + 1 });
+    setLab(L.init(model, def)); setNotice(null); setDoneStages([]);
+  }
 
   /* ── les mots ── */
   const nounOf = (id) => def.unknowns.find((u) => u.id === id)?.noun ?? id;
@@ -198,8 +216,43 @@ export default function StoryModeller({
     if (isSolved && plan) state.report(onSolved, { x: L.fracText(valueOfUnknown(ids[0])), y: L.fracText(valueOfUnknown(ids[1])), method: lab.method });
   }, [isSolved]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  /* ── les questions pendant le labo : une suite par étape, retenant le passage à la suivante ── */
+  const cpSettings = useLabCheckpointSettings('story-modeller');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpActive = cpOn && cpSettings.enabled;
+  const reached = {
+    name: L.namingDone(lab), model: !!lab.verdict?.ok, solve: isSolved, verify: !!lab.replay?.ok, answer: L.discoveryReady(lab),
+  }[lab.stage];
+  const ctx = makeCtx({ model, def, lab, plan, sys, k });
+  const chain = cpActive && reached && !doneStages.includes(lab.stage) ? chainOf(lab.stage, lab, ctx) : null;
+  const party = useStepCelebration();
+  const stagesShown = def.startWith === 'solve' ? L.STAGES.slice(2) : def.named ? L.STAGES.slice(1) : L.STAGES;   // une histoire déjà nommée n'a pas d'étape « المجاهيل »
+  const cp = useLabCheckpoint({
+    id: chain ? lab.stage : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, k, ctx)) : null,
+    reached: !!reached,
+    resetKey: scene.inits,
+    // la MÊME étape au départ : ses cases, sa méthode, ses valeurs ou sa réponse sont retirées
+    onRetry: () => { setNotice(null); setLab((s) => L.retryStage(s, model)); },
+    onEvent: (ev) => state.report(onCheckpoint, ev),
+    onDone: (id) => {
+      setDoneStages((d) => (d.includes(id) ? d : [...d, id]));
+      party.celebrate({ n: stagesShown.indexOf(id) + 1, total: stagesShown.length });
+      if (id === 'answer') { state.discover(); state.formalize(); }
+    },
+  });
+
+  /* ── le son (muet sauf « الصوت ») : un geste (dent), une étape réussie (cloche), un refus (grave), la règle atteinte (drapeau) ── */
+  const mounted = useRef(false);
+  useEffect(() => { if (mounted.current && lab.checks > 0) playSfx(lab.verdict?.ok ? 'bell' : 'over'); }, [lab.checks]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (mounted.current && lab.replay) playSfx(lab.replay.ok ? 'bell' : 'over'); }, [lab.replay]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (mounted.current && lab.half === 'refused') playSfx('over'); }, [lab.half, lab.halfRefusals]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (mounted.current && lab.revealed > 0) playSfx('tooth'); }, [lab.revealed]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (mounted.current && isSolved) playSfx('bell'); }, [isSolved]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (mounted.current && L.discoveryReady(lab)) playSfx('flag'); }, [L.discoveryReady(lab)]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { mounted.current = true; }, []);
+
   /* ── découverte, règle formelle ── */
-  const ready = L.discoveryReady(lab);
+  const ready = L.discoveryReady(lab) && !cpActive;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (state.isFormal && plan) state.report(onFinished, { x: L.fracText(valueOfUnknown(ids[0])), y: L.fracText(valueOfUnknown(ids[1])) });
@@ -215,11 +268,12 @@ export default function StoryModeller({
     },
     onDrop: (src, zone) => {
       setNotice(null);
+      playSfx('tooth');
       if (src.startsWith('unk:')) setLab((s) => L.name(s, src.slice(4), zone.slice(5)));
       else if (src.startsWith('chip:')) setLab((s) => L.fill(s, src.slice(5), zone));
       else if (src.startsWith('val:')) setLab((s) => L.gate(s, src.slice(4), zone));
     },
-    onReject: (src, zone, reason) => setNotice(reason ? { reason, src, zone } : null),
+    onReject: (src, zone, reason) => { setNotice(reason ? { reason, src, zone } : null); if (reason) playSfx('over'); },
   });
 
   const noticeText = () => {
@@ -314,21 +368,30 @@ export default function StoryModeller({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={cpActive}
       hints={hints.map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={k('discoveryPrompt')} options={options} formal={formal} />}
       explanation={<MathText>{k('explanation')}</MathText>}
     >
+      <div className="relative" data-sm-lab style={{ minHeight: cp.open ? 560 : undefined }}>
+      {party.node}
+      {cp.node}
       <ManipulationStage className="bg-gradient-to-b from-amber-50/60 to-white" data-dragging={drag.dragging ? 'true' : undefined}>
         <div className="space-y-2" data-story-modeller data-theme={themeId} data-stage={lab.stage}>
+          {cpActive && (
+            <LabStepper count={stagesShown.length} current={Math.max(0, stagesShown.indexOf(lab.stage))}
+              done={stagesShown.map((st) => doneStages.includes(st) && (st !== lab.stage || !cp.blocking))} stepAttr="data-sm-step" />
+          )}
           {/* ── les cinq étapes du tableau du manuel : une seule rangée (sur un téléphone, l'étape courante
               seule et « n / 5 ») — la hauteur va à la manipulation (règle « d'un seul regard ») ── */}
-          <ol className="flex flex-nowrap items-center gap-1 overflow-hidden font-bold text-xs" aria-hidden="true">
+          {!cpActive && <ol className="flex flex-nowrap items-center gap-1 overflow-hidden font-bold text-xs" aria-hidden="true">
             {stages.map((s2) => {
               const i2 = L.STAGES.indexOf(s2); const cur = L.STAGES.indexOf(lab.stage);
               return <li key={s2} className={`${i2 === cur ? 'bg-indigo-600 text-white' : `block ${i2 < cur ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-100 text-slate-500'}`} shrink-0 rounded-full px-2 py-0.5`}>{k(`stage${s2[0].toUpperCase()}${s2.slice(1)}`)}</li>;
             })}
-          </ol>
+          </ol>}
 
           {/* ── l'histoire : lue à l'étape 1 ; repliable ensuite (ses informations sont citées dans les rangs) ── */}
           {/* l'énoncé entier : SECONDAIRE dès que ses informations sont citées dans les rangs — l'élève le
@@ -352,7 +415,7 @@ export default function StoryModeller({
                     <span dir="ltr">{letter}</span>
                   </DraggableObject>
                 ))}
-                {L.namingDone(lab) && (
+                {L.namingDone(lab) && !cp.blocking && (
                   <button type="button" onClick={() => setLab(L.openModel)} data-sm-open="model" className={`${btn} ms-auto bg-emerald-600 text-white focus-visible:ring-emerald-300`}>
                     {k('openModel')} <ArrowLeft className="h-5 w-5" aria-hidden="true" />
                   </button>
@@ -459,11 +522,11 @@ export default function StoryModeller({
                 <span className="ms-auto flex flex-wrap items-center gap-1.5 col-span-1">
                   {lab.verdict && !lab.verdict.ok && <span className="text-xs font-bold text-amber-900 inline" data-sm-verdict="ko">{k('verdictKo')}</span>}
                   {lab.verdict?.ok && <span className="text-xs font-bold text-emerald-900" data-sm-verdict="ok">{k('verdictOk')}</span>}
-                  {lab.verdict?.ok ? (
+                  {lab.verdict?.ok ? (cp.blocking ? null : (
                     <button type="button" onClick={() => setLab(L.openSolve)} data-sm-open="solve" className={`${btn} bg-emerald-600 text-white focus-visible:ring-emerald-300`}>
                       {k('openSolve')} <ArrowLeft className="h-5 w-5" aria-hidden="true" />
                     </button>
-                  ) : (
+                  )) : (
                     <button type="button" onClick={verify} data-sm-check className={`${btn} bg-indigo-600 text-white focus-visible:ring-indigo-300`}>
                       <CheckCircle2 className="h-5 w-5" aria-hidden="true" /> {k('check')}
                     </button>
@@ -517,7 +580,7 @@ export default function StoryModeller({
                     <ChevronDown className="h-5 w-5" aria-hidden="true" /> {k('nextLine')}
                   </button>
                 )}
-                {isSolved && (
+                {isSolved && !cp.blocking && (
                   <button type="button" onClick={() => setLab((s) => L.openVerify(s, plan))} data-sm-open="verify" className={`${btn} bg-emerald-600 text-white focus-visible:ring-emerald-300`}>
                     {k('openVerify')} <ArrowLeft className="h-5 w-5" aria-hidden="true" />
                   </button>
@@ -590,7 +653,7 @@ export default function StoryModeller({
                     ? <p className="text-emerald-900">✓ {k('naturalOk')}</p>
                     : lab.replay.natural.bad.map((id) => <p key={id} className="font-bold text-rose-800">{bidi(k('naturalKo', { noun: nounOf(id), v: L.numberText(lab.replay.values[id]) }))}</p>))}
                   <div className="flex flex-wrap items-center gap-2"><p className="font-bold">{lab.replay.ok ? k('replayOk') : k('replayKo')}</p>
-                  {lab.replay.ok && (
+                  {lab.replay.ok && !cp.blocking && (
                     <button type="button" onClick={() => setLab(L.openAnswer)} data-sm-open="answer" className={`${btn} bg-emerald-600 text-white focus-visible:ring-emerald-300`}>
                       {k('openAnswer')} <ArrowLeft className="h-5 w-5" aria-hidden="true" />
                     </button>
@@ -633,9 +696,222 @@ export default function StoryModeller({
           </p>
         </div>
       </ManipulationStage>
+      </div>
     </ManipulationShell>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** Une suite par étape ; la dernière ajoute la RÈGLE (l'ancienne découverte). */
+export const CHAINS = Object.freeze({
+  name: ['nameWhy', 'nameCount'],
+  model: ['kinds', 'swap'],
+  solve: ['solveFirst', 'solveSecond'],
+  verify: ['verifyFact', 'verifySwap'],
+  answer: ['answerWhy', 'rule'],
+});
+
+/** Les mots et les nombres de l'élève, lus une fois pour toutes les questions (rien n'est écrit en dur). */
+export function makeCtx({ model, def, lab, plan, sys, k }) {
+  const ids = model.ids;
+  const nounOf = (id) => def.unknowns.find((u) => u.id === id)?.noun ?? id;
+  const unknownOfLetter = (letter) => ids.find((id) => lab.naming[id] === letter);
+  const nounOfLetter = (letter) => nounOf(unknownOfLetter(letter));
+  const chipMeta = (key) => {
+    if (key === L.ONE) return { v: '1', label: k('oneLabel') };
+    const i = Number(String(key).slice(1));
+    return { v: L.numberText(model.chips[i].value), label: def.chips[i]?.label ?? '' };
+  };
+  const quote = (row) => def.facts[row - 1]?.quote ?? '';
+  const valueOf = (id) => plan?.values[lab.naming[id]];
+  return { model, def, lab, plan, sys, ids, nounOf, nounOfLetter, chipMeta, quote, valueOf };
+}
+
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const intText = (p) => (p != null && Number.isInteger(L.toNumber(p)) ? L.numberText(p) : null);
+const ansTex = (t) => <MathText>{`$${t}$`}</MathText>;
+const rowKind = (ctx, kind) => ctx.model.facts.findIndex((f) => f.kind === kind) + 1;   // 0 : aucune
+const KIND_ROW = (ctx) => rowKind(ctx, 'count') || rowKind(ctx, 'money');
+const swapRow = (ctx) => {
+  const rows = [1, 2].filter((r) => { const e = L.studentEq(ctx.lab, ctx.model, r); return !!e && L.toNumber(e.a) !== L.toNumber(e.b); });
+  return rows.find((r) => ctx.model.facts[r - 1].kind === 'money') ?? rows[0] ?? 0;
+};
+/** Les deux gates échangées : la valeur de chaque inconnue passe à l'autre. */
+const swappedReplay = (ctx) => {
+  const [u0, u1] = ctx.ids;
+  return L.replayStory(ctx.model, { [u0]: ctx.lab.naming[u1], [u1]: ctx.lab.naming[u0] }, ctx.plan.values);
+};
+
+/** Les questions de l'étape, sans celles que les nombres de l'élève rendent sans objet. */
+export function chainOf(stage, lab, ctx) {
+  return CHAINS[stage].filter((q) => {
+    if (q === 'kinds') return KIND_ROW(ctx) > 0;
+    if (q === 'swap') return swapRow(ctx) > 0;
+    if (q === 'solveFirst') return ctx.plan && intText(ctx.plan.first.value) != null;
+    if (q === 'solveSecond') return ctx.plan && intText(ctx.plan.second.value) != null;
+    if (q === 'verifyFact') return ctx.plan && intText(ctx.model.target[ctx.model.facts.length - 1].c) != null;
+    if (q === 'verifySwap') { if (!ctx.plan) return false; const r = swappedReplay(ctx); return r.facts.some((f) => !f.ok); }
+    return true;
+  });
+}
+
+/** Chaque question est construite sur LES nombres de l'élève ; `k` : les textes de `storyModeller`. */
+export const QUESTIONS = {
+  nameWhy: (lab, k, ctx) => {
+    const [c0, c1] = ctx.model.chips.filter((c) => c.key !== L.ONE).map((c) => ctx.chipMeta(c.key));
+    const nums = { n0: ctx.nounOf(ctx.ids[0]), n1: ctx.nounOf(ctx.ids[1]), k0: `${c0.v} ${c0.label}`.trim(), k1: `${c1?.v ?? c0.v} ${c1?.label ?? ''}`.trim() };
+    return {
+      id: 'nameWhy', kind: 'choice',
+      prompt: Mx(k, 'nameWhy.prompt', nums),
+      options: [
+        { text: Mx(k, 'nameWhy.wrongBig', nums), why: Mx(k, 'nameWhy.whyBig', nums) },
+        { text: Mx(k, 'nameWhy.right', nums), correct: true },
+        { text: Mx(k, 'nameWhy.wrongFirst', nums), why: Mx(k, 'nameWhy.whyFirst', nums) },
+      ],
+      hints: [Mx(k, 'nameWhy.hint1', nums), Mx(k, 'nameWhy.hint2', nums)], explain: Mx(k, 'nameWhy.explain', nums),
+    };
+  },
+  nameCount: (lab, k, ctx) => {
+    const nums = { l0: ctx.ids[0], l1: ctx.ids[1], n: ctx.model.facts.length };
+    return {
+      id: 'nameCount', kind: 'number', expected: String(ctx.model.facts.length), answer: ansTex(ctx.model.facts.length),
+      prompt: Mx(k, 'nameCount.prompt', nums), hints: [Mx(k, 'nameCount.hint1', nums), Mx(k, 'nameCount.hint2', nums)], explain: Mx(k, 'nameCount.explain', nums),
+    };
+  },
+  kinds: (lab, k, ctx) => {
+    const row = KIND_ROW(ctx); const kind = ctx.model.facts[row - 1].kind;
+    const e = L.studentEq(lab, ctx.model, row); const c = ctx.chipMeta(lab.slots[row].c);
+    const nums = { n: row, eq: `$ ${L.eqLatex(e, ctx.ids)} $`, c: c.v, cl: c.label };
+    const opts = {
+      count: { text: Mx(k, 'kinds.count'), why: Mx(k, 'kinds.whyCount', nums) },
+      money: { text: Mx(k, 'kinds.money'), why: Mx(k, 'kinds.whyMoney', nums) },
+      both: { text: Mx(k, 'kinds.both'), why: Mx(k, 'kinds.whyBoth', nums) },
+    };
+    const right = kind === 'count' ? 'count' : 'money';
+    return {
+      id: 'kinds', kind: 'choice',
+      prompt: Mx(k, 'kinds.prompt', nums),
+      options: ['count', 'money', 'both'].map((o) => (o === right ? { text: opts[o].text, correct: true } : opts[o])),
+      hints: [Mx(k, 'kinds.hint1', nums), Mx(k, `kinds.hint2${kind === 'count' ? 'Count' : 'Money'}`, nums)], explain: Mx(k, `kinds.explain${kind === 'count' ? 'Count' : 'Money'}`, nums),
+    };
+  },
+  swap: (lab, k, ctx) => {
+    const row = swapRow(ctx); const e = L.studentEq(lab, ctx.model, row);
+    const sw = { ...e, a: e.b, b: e.a };
+    const nums = {
+      n: row, l0: ctx.ids[0], l1: ctx.ids[1], a: L.numberText(e.a), b: L.numberText(e.b),
+      eq: `$ ${L.eqLatex(e, ctx.ids)} $`, sw: `$ ${L.eqLatex(sw, ctx.ids)} $`, n0: ctx.nounOfLetter(ctx.ids[0]), n1: ctx.nounOfLetter(ctx.ids[1]),
+    };
+    return {
+      id: 'swap', kind: 'choice', cols: 2,
+      prompt: Mx(k, 'swap.prompt', nums),
+      options: [
+        { text: Mx(k, 'swap.yes'), why: Mx(k, 'swap.whyYes', nums) },
+        { text: Mx(k, 'swap.no', nums), correct: true },
+      ],
+      hints: [Mx(k, 'swap.hint1', nums), Mx(k, 'swap.hint2', nums)], explain: Mx(k, 'swap.explain', nums),
+    };
+  },
+  solveFirst: (lab, k, ctx) => {
+    const { plan } = ctx; const f = plan.first;
+    const line = plan.lines[Math.max(0, plan.halfAt - 1)];
+    const nums = { letter: f.letter, line: `$ ${line.tex} $`, v: intText(f.value) };
+    return {
+      id: 'solveFirst', kind: 'number', expected: intText(f.value), answer: ansTex(intText(f.value)),
+      prompt: Mx(k, 'solveFirst.prompt', nums), hints: [Mx(k, 'solveFirst.hint1', nums), Mx(k, 'solveFirst.hint2', nums)], explain: Mx(k, 'solveFirst.explain', nums),
+    };
+  },
+  solveSecond: (lab, k, ctx) => {
+    const { plan } = ctx; const f = plan.first; const sd = plan.second;
+    const nums = { first: f.letter, fv: intText(f.value), letter: sd.letter, v: intText(sd.value) };
+    return {
+      id: 'solveSecond', kind: 'number', expected: intText(sd.value), answer: ansTex(intText(sd.value)),
+      prompt: Mx(k, 'solveSecond.prompt', nums), hints: [Mx(k, 'solveSecond.hint1', nums), Mx(k, 'solveSecond.hint2', nums)], explain: Mx(k, 'solveSecond.explain', nums),
+    };
+  },
+  verifyFact: (lab, k, ctx) => {
+    const n = ctx.model.facts.length;
+    const f = lab.replay.facts[n - 1];
+    const tx = L.replayTex(ctx.model, lab.replay.values)[n - 1];
+    const nums = { n, quote: bidi(ctx.quote(n).replace(/(\d) (?=\d{3}\b)/g, '$1')), v: intText(f.lhs), expr: `$ ${tx.slice(0, tx.lastIndexOf('=')).trim()} $` };
+    return {
+      id: 'verifyFact', kind: 'number', expected: intText(f.lhs), answer: ansTex(intText(f.lhs)),
+      prompt: Mx(k, 'verifyFact.prompt', nums), hints: [Mx(k, 'verifyFact.hint1', nums), Mx(k, 'verifyFact.hint2', nums)], explain: Mx(k, 'verifyFact.explain', nums),
+    };
+  },
+  verifySwap: (lab, k, ctx) => {
+    const r = swappedReplay(ctx); const [u0, u1] = ctx.ids;
+    const fails = r.facts.map((f) => !f.ok);
+    const kindOf = fails[0] && fails[1] ? 'both' : fails[0] ? 'only1' : 'only2';
+    const nums = { v0: L.numberText(r.values[u0]), v1: L.numberText(r.values[u1]), n0: ctx.nounOf(u0), n1: ctx.nounOf(u1) };
+    // pourquoi une option est fausse : la première information dont l'état la contredit, lue sur les valeurs échangées
+    const claims = { only1: [true, false], only2: [false, true], both: [true, true] };
+    const whyOf = (opt) => {
+      const bad = claims[opt].findIndex((c, i) => c !== fails[i]);
+      const f = r.facts[bad]; const d = { ...nums, i: bad + 1, lhs: L.numberText(f.lhs), c: L.numberText(f.c) };
+      return Mx(k, fails[bad] ? 'verifySwap.whyFails' : 'verifySwap.whyHolds', d);
+    };
+    const opts = ['only1', 'only2', 'both'].map((o) => (o === kindOf ? { text: Mx(k, `verifySwap.${o}`), correct: true } : { text: Mx(k, `verifySwap.${o}`), why: whyOf(o) }));
+    return {
+      id: 'verifySwap', kind: 'choice',
+      prompt: Mx(k, 'verifySwap.prompt', nums), options: opts,
+      hints: [Mx(k, 'verifySwap.hint1', nums), Mx(k, 'verifySwap.hint2', nums)],
+      explain: Mx(k, 'verifySwap.explain', { ...nums, i: fails[0] ? 1 : 2, lhs: L.numberText(r.facts[fails[0] ? 0 : 1].lhs), c: L.numberText(r.facts[fails[0] ? 0 : 1].c) }),
+    };
+  },
+  answerWhy: (lab, k, ctx) => {
+    const [u0, u1] = ctx.ids;
+    const nums = { v0: L.numberText(ctx.valueOf(u0)), v1: L.numberText(ctx.valueOf(u1)), n0: ctx.nounOf(u0), n1: ctx.nounOf(u1), first: ctx.plan.first.letter };
+    return {
+      id: 'answerWhy', kind: 'choice',
+      prompt: Mx(k, 'answerWhy.prompt', nums),
+      options: [
+        { text: Mx(k, 'answerWhy.wrongPair'), why: Mx(k, 'answerWhy.whyPair', nums) },
+        { text: Mx(k, 'answerWhy.right'), correct: true },
+        { text: Mx(k, 'answerWhy.wrongOne', nums), why: Mx(k, 'answerWhy.whyOne', nums) },
+      ],
+      hints: [Mx(k, 'answerWhy.hint1', nums), Mx(k, 'answerWhy.hint2', nums)], explain: Mx(k, 'answerWhy.explain', nums),
+    };
+  },
+  rule: (lab, k, ctx) => {
+    const { plan, sys, ids } = ctx;
+    const letter0 = plan?.first?.letter ?? ids[0];
+    const finalValues = lab.replay?.values;
+    const correct = ctx.def.answer?.correct ?? 0;
+    return {
+      id: 'rule', kind: 'choice',
+      prompt: <MathText>{k('discoveryPrompt')}</MathText>,
+      options: [
+        { text: <MathText>{k('discHalf', { l0: letter0 })}</MathText>, why: <MathText>{k('discHalfWhy', { l0: letter0, n0: ctx.nounOf(ids[0]), n1: ctx.nounOf(ids[1]) })}</MathText> },
+        { text: <MathText>{k('discSystem')}</MathText>, why: <MathText>{k('discSystemWhy')}</MathText> },
+        { text: <MathText>{k('discStory')}</MathText>, correct: true },
+      ],
+      hints: [Mx(k, 'rule.hint1'), Mx(k, 'rule.hint2')],
+      explain: sys && plan ? (
+        <div className="space-y-2" data-sm-formal>
+          <p className="text-sm font-extrabold text-slate-800">{k('formalTitle')}</p>
+          <ol className="space-y-2">
+            <FormalRow label={k('formalStage1')}>
+              <ul className="space-y-0.5">{ids.map((letter) => <li key={letter}><span dir="ltr" className="font-mono font-bold">{letter}</span> : {ctx.nounOfLetter(letter)}</li>)}</ul>
+            </FormalRow>
+            <FormalRow label={k('formalStage2')}><div dir="ltr"><MathText>{`$${L.systemLatex(sys, ids)}$`}</MathText></div></FormalRow>
+            <FormalRow label={k('formalStage3')}>
+              <p>{k('formalMethod', { method: k(`methodWord_${lab.method}`) })}</p>
+              <div dir="ltr"><MathText>{`$${plan.lines.at(-1).tex}$`}</MathText></div>
+            </FormalRow>
+            <FormalRow label={k('formalStage4')}>
+              {finalValues && L.replayTex(ctx.model, finalValues).map((tx, i) => (
+                <p key={tx} className="flex flex-wrap items-center gap-2"><span className="text-xs text-slate-600">«{ctx.quote(i + 1)}»</span><span dir="ltr"><MathText>{`$${tx}$`}</MathText></span></p>
+              ))}
+            </FormalRow>
+            <FormalRow label={k('formalStage5')}><p className="font-bold text-emerald-900">{bidi(ctx.def.answer?.options?.[correct] ?? '')}</p></FormalRow>
+          </ol>
+        </div>
+      ) : null,
+    };
+  },
+};
 
 /* ───────────────────────── petites pièces ───────────────────────── */
 

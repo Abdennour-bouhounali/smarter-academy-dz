@@ -32,10 +32,13 @@ const BEG = 'x<3';
 
 export default function Module02HalMutarajiha() {
   const [log, setLog] = useState({ [BEG]: { traces: [], bracket: null, chain: [] }, [ADV]: { traces: [], bracket: null, chain: [] } });
-  const [q1, setQ1] = useState(false);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand la suite de questions du niveau terminée l'est
+  const [cps, setCps] = useState([]);
+  const onCheckpoint = (src) => (e) => setCps((l) => [...l, { ...e, src }]);
+  const answeredAdv = cps.some((e) => e.tk === 'checkpoint-done' && e.src === ADV);
+  const answeredBeg = cps.some((e) => e.tk === 'checkpoint-done' && e.src === BEG);
   const [q2a, setQ2a] = useState(false);
   const [q2b, setQ2b] = useState(false);
-  const [q3, setQ3] = useState(false);
 
   const onTrial = (src) => (e) => setLog((l) => {
     const cur = l[src];
@@ -93,6 +96,7 @@ export default function Module02HalMutarajiha() {
                 ineq={BEG}
                 lead="السطر الأول من جدول الكتاب: جرّب قيمًا، منها 3 نفسه، ثم ضع الرمز ووجّهه."
                 onTrial={onTrial(BEG)}
+                onCheckpoint={onCheckpoint(BEG)}
               />
             ),
             advanced: () => (
@@ -102,6 +106,7 @@ export default function Module02HalMutarajiha() {
                 ineq={ADV}
                 lead="متراجحة الكتاب: ابحث بتجاربك عن الحدّ، ثبّت التمثيل، ثم حوّل المتراجحة خطوة خطوة."
                 onTrial={onTrial(ADV)}
+                onCheckpoint={onCheckpoint(ADV)}
               />
             ),
           }}
@@ -109,23 +114,16 @@ export default function Module02HalMutarajiha() {
       )}
       steps={[
         {
-          num: 1, title: 'لماذا رفضت نقاطك الحمراء الاتجاه بعد القسمة على −3؟', subtitle: 'السؤال 1 — حوّل المتراجحة في المستوى المتقدّم، ثم أجب', done: q1,
+          num: 1, title: 'لماذا رفضت نقاطك الحمراء الاتجاه بعد القسمة على −3؟', subtitle: 'حوّل المتراجحة في المستوى المتقدّم، ثم أجب', done: answeredAdv,
           content: (
             <div className="space-y-3">
               {evidence([ADV])}
-              <TapQuestion
-                prompt={<MathText>{'في المستوى المتقدّم، نقطتك الحمراء عند $x = 0$ (لأنّ $-3 \\times 0 + 5 = 5 \\leq 20$). بعد أن بلغتَ $-3x \\leq 15$ قسمتَ الطرفين على $-3$ فرفض المختبر $x \\leq -5$. لماذا؟'}</MathText>}
-                options={[
-                  <MathText key="a">{'لأنّ 0 حلّ للمتراجحة الأصلية ولا يحقّق $0 \\leq -5$ ، فلا يمكن أن يبقى الاتجاه كما هو'}</MathText>,
-                  <MathText key="b">{'لأنّ 15 لا يقبل القسمة على $-3$'}</MathText>,
-                  <MathText key="c">{'لأنّ القسمة تُنقص عدد الحلول إلى حلّ واحد'}</MathText>,
-                ]}
-                correct={0}
-                cols={1}
-                requires={['amaliyat-mutabayinat']}
-                explain={<MathText>{'نقاطك الحمراء (منها 0) يجب أن تبقى حلولًا بعد كل خطوة. القسمة على $-3$ تقلب الترتيب فنكتب $x \\geq -5$ : 0 يحقّقها، وطرح 5 من الطرفين لم يغيّر الاتجاه.'}</MathText>}
-                onAnswered={() => setQ1(true)}
-              />
+              <p data-evidence="checkpoint" data-tried={answeredAdv ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${answeredAdv ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {answeredAdv
+                  ? 'أجبتَ في المختبر: نقاطك الحمراء تبقى حلولًا بعد كل خطوة، ولذلك انعكس الاتجاه عند القسمة على عدد سالب وبقي كما هو في الباقي.'
+                  : 'حوّل المتراجحة في المستوى المتقدّم حتى يبقى x وحده، ثم أجب عن الأسئلة التي تظهر فوق المختبر.'}
+              </p>
             </div>
           ),
         },
@@ -178,28 +176,21 @@ export default function Module02HalMutarajiha() {
           ),
         },
         {
-          num: 3, title: 'الرمز عند 3 وعند 2', subtitle: 'جرّب المستوى المبتدئ، ثم أجب', done: q3,
+          num: 3, title: 'الرمز عند 3 وعند 2', subtitle: 'جرّب المستوى المبتدئ، ثم أجب', done: answeredBeg,
           content: (
             <div className="space-y-3">
               {evidence([BEG])}
-              <TapQuestion
-                prompt={<MathText>{'في الجدول، الرمز عند 3 ($x < 3$) غير موجّه نحو الجزء الملوّن، وعند 2 ($x \\geq 2$) موجّه نحوه. لماذا؟'}</MathText>}
-                options={[
-                  <MathText key="a">{'لأنّ الجزء الملوّن في الأولى على اليسار وفي الثانية على اليمين'}</MathText>,
-                  <MathText key="b">{'لأنّ 3 ليس حلًّا للمتراجحة $x < 3$ ، و 2 حلّ للمتراجحة $x \\geq 2$'}</MathText>,
-                  <MathText key="c">{'لأنّ المتراجحة $x < 3$ ليس لها حلول'}</MathText>,
-                ]}
-                correct={1}
-                cols={1}
-                requires={['tamthil-jadwal']}
-                explain={<MathText>{'$3 < 3$ خاطئة: 3 ليس حلًّا فالرمز غير موجّه نحو الجزء الملوّن؛ $2 \\geq 2$ صحيحة: 2 حلّ فالرمز موجّه نحوه. الجهة وحدها لا تكفي: $x \\leq 3$ ملوّنة على اليسار أيضًا، و 3 حلّ لها.'}</MathText>}
-                onAnswered={() => setQ3(true)}
-              />
+              <p data-evidence="checkpoint" data-tried={answeredBeg ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${answeredBeg ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {answeredBeg
+                  ? 'أجبتَ في المختبر: الرمز يُوجَّه نحو الجزء الملوّن حين يكون الحدّ حلًّا، وبعيدًا عنه حين لا يكون.'
+                  : 'ثبّت الرمز في المستوى المبتدئ، ثم أجب عن الأسئلة التي تظهر فوق المختبر.'}
+              </p>
             </div>
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={2} />}
+      footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />
   );
 }

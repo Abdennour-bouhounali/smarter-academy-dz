@@ -5,7 +5,7 @@ import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { LAB, MISTAKES } from '../content/textbook';
+import { LAB } from '../content/textbook';
 import LabEvidence from '../components/LabEvidence';
 
 /**
@@ -22,6 +22,9 @@ import LabEvidence from '../components/LabEvidence';
  *   1. ce qui reste, ce qui change (le tableau de bord)     → brique thabat-dawaran (P1)
  *   2. la feuille étirée n'est pas un دوران                (P1)
  *   3. 90° : la droite et son image sont perpendiculaires   (P1, préparé pour معارف)
+ * PROTOTYPE DU LABO (2026-10-28, lot 3) : `shape-turn` pose ses questions PAR-DESSUS le labo (`ShapeTurn › STEPS` : r1 la rosace fermée, r2 la feuille étirée
+ * puis la règle) ; les étapes 1 et 2 en gardent la TRACE (`answered('r1')`, `answered('r2')` = événement `checkpoint-done`), l'étape 1 pose ensuite les
+ * lignes de la اللوحة que le labo ne demande pas (angle, aire, alignement, منحى) et la brique ; l'étape 3 (90° ⇒ ⊥) reste une question d'étape.
  * RÉTROFIT 2026-10-15 (§4quater) : plus de `brief` au-dessus du labo (la carte « وردة زليج في دقائق » + l'énoncé de ACTIVITY), plus de
  * `title`/`lead` sur le workspace : le labo ouvre la page, son contexte tient dans sa `lead` (une phrase) et sa mission.
  * Les deux niveaux vivent dans l'`intro` : le rappel de la « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) clôt la DERNIÈRE étape.
@@ -29,12 +32,22 @@ import LabEvidence from '../components/LabEvidence';
  * l'explain de l'étape 3 rapporte la lecture (90° ⇒ متعامدان) sans énoncer la règle zawiya-sura (prédite au module 2).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
+const PETALS = Math.round(360 / LAB.beginner.numbers.alpha);
+
+const Evidence = ({ id, ok, done, todo }) => (
+  <p data-evidence={id} data-tried={ok ? 'true' : 'false'}
+    className={`rounded-xl border-2 px-3 py-2 text-sm ${ok ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+    {ok ? done : todo}
+  </p>
+);
 
 export default function Module01Waraqa() {
   const [trials, setTrials] = useState([]);
   const [q, setQ] = useState({});
   const mark = (n) => () => setQ((s) => ({ ...s, [n]: true }));
-  const keep = (e) => { if (e) setTrials((list) => [...list, e].slice(-40)); };
+  const keep = (e) => { if (e) setTrials((list) => [...list, e].slice(-60)); };
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint, `ShapeTurn › STEPS`) : une étape est faite quand la suite de questions de sa étape l'est
+  const answered = (id) => trials.some((e) => e.tk === 'checkpoint-done' && e.id === id);
 
   return (
     <ContentModule
@@ -65,12 +78,14 @@ export default function Module01Waraqa() {
           num: 1, title: 'ما الذي بقي على حاله؟', subtitle: 'اللوحة: الطول، الزاوية، المساحة، الاستقامية', done: !!q[1],
           content: (
             <div className="space-y-3">
-              <LabEvidence id="turns" trials={trials} filter={(e) => e.mode === 'rosette' && (e.kind === 'stamp' || e.kind === 'turn')}
-                title="ما فعلته بالورقة:" empty="في المستوى «مبتدئ»: أدر الورقة واطبع نسخة أو اثنتين، وراقب اللوحة." />
-              <BatchChoiceQuestion
+              <Evidence id="r1" ok={answered('r1')}
+                done={<span>أجبتَ في المختبر: الوردة الكاملة <bdi dir="ltr">{PETALS}</bdi> بتلات، وطول <MathText>{"$A'B'$"}</MathText> بقي في كل نسخة هو طول <MathText>{'$AB$'}</MathText> .</span>}
+                todo="أغلق الوردة بطبع النسخ الخمس في المستوى «مبتدئ»، ثم أجب عن الأسئلة التي تظهر فوق المختبر." />
+              {answered('r1') && <LabEvidence id="turns" trials={trials} filter={(e) => e.mode === 'rosette' && (e.kind === 'stamp' || e.kind === 'turn')}
+                title="ما فعلته بالورقة:" empty="في المستوى «مبتدئ»: أدر الورقة واطبع نسخة أو اثنتين، وراقب اللوحة." />}
+              {answered('r1') && <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">في كل نسخة طبعتها، قارن بالبتلة ABC:</p>}
                 rows={[
-                  { id: 'tul', label: <MathText>{"طول النسخة $A'B'$"}</MathText>, options: ['يساوي AB في كل نسخة', 'يكبر كلما دارت الورقة أكثر'], correct: 0, correction: 'اللوحة تقرأ $A\'B\' = 3 = AB$ في كل موضع.' },
                   { id: 'zawiya', label: <MathText>{"قيس الزاوية $\\widehat{A'B'C'}$"}</MathText>, options: ['يساوي قيس $\\widehat{ABC}$', 'يزيد بزاوية الدوران'].map(M), correct: 0, correction: 'الزاوية في B بقيت $45^\\circ$ في كل نسخة.' },
                   { id: 'masaha', label: 'مساحة النسخة', options: ['تساوي مساحة البتلة', 'تتغيّر مع موضع النسخة'], correct: 0, correction: 'المساحة 3 في كل نسخة.' },
                   { id: 'istiqama', label: 'النقط A′ و I′ و B′', options: ['على استقامية واحدة', 'لم تعد على استقامية'], correct: 0, correction: 'I منتصف [AB] يبقى على [A′B′] في كل نسخة.' },
@@ -80,30 +95,22 @@ export default function Module01Waraqa() {
                 requires={['surat-qita-dawaran']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: قارنت كل سطر من اللوحة بالبتلة الأصلية.' : 'راجع التصحيح تحت كل سطر، ثم أدر الورقة من جديد وانظر إلى اللوحة.'}</Feedback>}
                 onAnswered={mark(1)}
-              />
+              />}
               {q[1] && <KnowledgeBrick id="thabat-dawaran" lead="ما رأيته على اللوحة:" />}
             </div>
           ),
         },
         {
-          num: 2, title: 'الورقة الممطّطة', subtitle: 'هل هي دوران؟', done: !!q[2],
+          num: 2, title: 'الورقة الممطّطة', subtitle: 'هل هي دوران؟', done: answered('r2'),
           content: (
             <div className="space-y-3">
-              <LabEvidence id="stretch" trials={trials} filter={(e) => e.kind === 'stretch' || (e.kind === 'refuse' && e.reason === 'stretch')}
-                title="ما حدث حين مطّطت الورقة:" empty="اسحب المقبض ↔ على حافة الورقة، ثم حاول أن تطبع." />
-              <TapQuestion
-                prompt={<MathText>{"لما مطّطت الورقة بقيت مثبّتة في O، لكن تغيّر طول $A'B'$ . هل النسخة الممطّطة صورة البتلة بدوران؟"}</MathText>}
-                options={[
-                  'لا: الدوران يحافظ على الأطوال، والطول تغيّر',
-                  `نعم: ${MISTAKES.tamtit.wrong}`, // MISC-DAWARAN-KHAWAS
-                  'نعم: لأن A′ و I′ و B′ بقيت على استقامية', // la استقامية ne suffit pas
-                ].map(M)}
-                correct={0}
-                cols={1}
-                requires={['thabat-dawaran']}
-                explain={<MathText>{`${MISTAKES.tamtit.why} والاستقامية وحدها لا تكفي: التمطيط يحافظ عليها أيضا.`}</MathText>}
-                onAnswered={mark(2)}
-              />
+              <Evidence id="r2" ok={answered('r2')}
+                done={<span>أجبتَ في المختبر: الورقة الممطّطة غيّرت الطول، فنسختها ليست صورة بدوران، والاستقامية وحدها لا تكفي.</span>}
+                todo="مطّط الورقة بالمقبض ↔ في المستوى «مبتدئ»، ثم أجب عن الأسئلة التي تظهر فوق المختبر." />
+              {answered('r2') && (
+                <LabEvidence id="stretch" trials={trials} filter={(e) => e.kind === 'stretch' || (e.kind === 'refuse' && e.reason === 'stretch')}
+                  title="ما حدث حين مطّطت الورقة:" empty="" />
+              )}
             </div>
           ),
         },
@@ -126,7 +133,7 @@ export default function Module01Waraqa() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

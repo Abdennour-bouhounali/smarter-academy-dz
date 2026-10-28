@@ -250,6 +250,38 @@ export function summaryOf(lab) {
   };
 }
 
+// ── Les questions pendant le labo (primitives/LabCheckpoint) ──────────────────
+
+/**
+ * Les ÉTAPES du niveau, dans l'ordre : une par tâche (roue) ou par mission (feuille). Une étape est ATTEINTE quand elle est finie ET que
+ * toutes les précédentes le sont (la dernière, qui finit par la règle, ne s'ouvre donc qu'au contraste complet).
+ */
+export function stepsOf(lab) {
+  const items = lab.scene === 'wheel' ? lab.tasks : lab.missions;
+  const finished = items.map((_, i) => (lab.scene === 'wheel' ? taskDone(lab, i) : missionDone(lab, i)));
+  return items.map((x, i) => ({ id: x.id, reached: finished.slice(0, i + 1).every(Boolean) }));
+}
+/** L'essai accepté de la tâche (roue) ou du point `from` de la mission (feuille), ou null. */
+export const accepted = (lab, id, from) => lab.trials.find((x) => x.ok && (x.task ?? x.mission) === id && (from == null || x.from === from)) ?? null;
+/** La tâche jumelle : même nacelle, même angle, sens contraire (le contraste du niveau مبتدئ), ou null. */
+export const twinOf = (lab, tk) => lab.tasks.find((x) => x.id !== tk.id && x.from === tk.from && x.alpha === tk.alpha && x.direction !== tk.direction) ?? null;
+/**
+ * « أعِد التجربة » : remet LA MÊME étape au départ — la tâche (roue) ou la mission (feuille) `id` perd son image acceptée et ses essais, l'onglet
+ * revient dessus ; les autres étapes ne bougent pas.
+ */
+export function retryStep(lab, id) {
+  if (lab.scene === 'wheel') {
+    const t = lab.tasks.findIndex((x) => x.id === id);
+    if (t < 0) return lab;
+    const { [id]: _gone, ...done } = lab.done;
+    return { ...lab, done, t, trials: lab.trials.filter((x) => x.task !== id), last: null };
+  }
+  const m = lab.missions.findIndex((x) => x.id === id);
+  if (m < 0) return lab;
+  const { [id]: _gone, ...images } = lab.images;
+  return { ...lab, images, m, radius: null, ray: null, trials: lab.trials.filter((x) => x.mission !== id), last: null };
+}
+
 /** La mise en page d'une scène CARRÉE de côté `side` px : unités ↔ pixels (y vers le haut). */
 export function layout(lab, side, pad = 18) {
   const half = BOX[lab.scene];

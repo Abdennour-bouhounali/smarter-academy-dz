@@ -6,7 +6,7 @@ import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, PairQuestion } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { ACTIVITY, ACTIVITY_LINES, ACT_A_OPTIONS, CHALLENGE } from '../content/textbook';
+import { ACTIVITY, ACTIVITY_LINES, CHALLENGE } from '../content/textbook';
 import ChallengeVignette from '../components/ChallengeVignette';
 
 /**
@@ -22,6 +22,11 @@ import ChallengeVignette from '../components/ChallengeVignette';
  * APRÈS la réponse ; س د ne redemande plus la ثنائية (le labo l'a fait) : elle demande ce que (13 ; 19) DIT du service
  * (avant ou après la retraite) ; puis le تحدّ : le MÊME tableau, monde de la cagnotte (posé seul, un niveau), avec sa vignette.
  * AUCUNE étape n'attend `onFinished`. LP : P2, P3 (et P1 nommé par la brique).
+ *
+ * LABO À QUESTIONS (2026-10-28, `primitives/LabCheckpoint`) : le labo pose lui-même, par-dessus la manipulation, les questions sur ce que l'élève vient de
+ * faire (étape « الحل » : la valeur commune de la jauge (2), pourquoi la ثنائية est acceptée, l'ordre ; étape « الشرط الواحد » : quelle jauge, pourquoi ce
+ * n'est pas un حل, puis la règle). Le س أ du manuel ((24 ; 8)) n'est donc plus reposé : l'étape 1 en garde la TRACE (`answered('half')`, événement
+ * `checkpoint-done`), les autres étapes (traduction, simplification, sens de la ثنائية, تحدّ) sont inchangées.
  * Les labs vivent dans l'`intro` (deux niveaux) : le rappel de « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire)
  * clôt donc la DERNIÈRE étape.
  */
@@ -32,13 +37,17 @@ const Opt = (s) => <MathText key={s}>{s}</MathText>;
 
 export default function Module01Nashat() {
   const [trials, setTrials] = useState({ [BEGINNER]: [], [ADVANCED]: [] });
-  const [q1, setQ1] = useState(false);
+  const [cps, setCps] = useState([]);
   const [q2, setQ2] = useState(false);
   const [q3a, setQ3a] = useState(false);
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
   const [q5, setQ5] = useState(false);
   const onTrial = (sys) => (tr) => setTrials((t) => ({ ...t, [sys]: [...t[sys].filter((p) => p.pair !== tr.pair), tr] }));
+  const onCheckpoint = (ev) => setCps((l) => [...l, ev]);
+  // les questions posées PAR-DESSUS le labo : une étape est faite quand la suite de questions de son étape l'est (n'importe quel niveau)
+  const answered = (id) => cps.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const q1 = answered('half');
   const mine = trials[ADVANCED];
   const first = trials[BEGINNER];
 
@@ -87,6 +96,7 @@ export default function Module01Nashat() {
                 system={BEGINNER}
                 theme="football"
                 onTrial={onTrial(BEGINNER)}
+                onCheckpoint={onCheckpoint}
               />
             ),
             advanced: () => (
@@ -97,6 +107,7 @@ export default function Module01Nashat() {
                 theme="staff"
                 lead="أُحيل 5 رجال و 3 نساء إلى التقاعد ولم يُعوَّضوا، فأصبح عدد النساء ضعف عدد الرجال."
                 onTrial={onTrial(ADVANCED)}
+                onCheckpoint={onCheckpoint}
               />
             ),
           }}
@@ -104,20 +115,16 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: '24 رجلا و 8 نساء؟', subtitle: 'السؤال أ', done: q1,
+          num: 1, title: 'ثنائية تضيء لوحة واحدة', subtitle: 'السؤال أ', done: q1,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="exercise" text={ACTIVITY.questions[0]} source={ACTIVITY.source} compact />
               {evidence}
-              <TapQuestion
-                prompt={<MathText>{'جرّب الثنائية $(24 ; 8)$ على لوحة العمّال إن لم تفعل، ثم اختر:'}</MathText>}
-                options={ACT_A_OPTIONS.map(Opt)}
-                correct={1}
-                cols={1}
-                requires={['taawid-majhulayn']}
-                explain={<MathText>{ACTIVITY_LINES.a}</MathText>}
-                onAnswered={() => setQ1(true)}
-              />
+              <p className="rounded-xl border-2 px-3 py-2 text-sm border-slate-200 bg-white text-slate-600" data-activity-evidence="half" data-tried={q1 ? 'true' : 'false'}>
+                {q1
+                  ? <MathText>{`أجبتَ في المختبر عن ثنائيتك التي أضاءت لوحة واحدة: ثنائية مثل $(24 ; 8)$ تحقّق المعادلة (1) ولا تحقّق (2)، فليست حلًّا — ${ACTIVITY_LINES.a}`}</MathText>
+                  : 'جرّب في المختبر ثنائية تضيء لوحة واحدة فقط، ثم أجب عن الأسئلة التي تظهر فوقه.'}
+              </p>
             </div>
           ),
         },
@@ -219,7 +226,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

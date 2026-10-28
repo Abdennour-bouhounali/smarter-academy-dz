@@ -122,7 +122,7 @@ export function init(n = {}) {
     idx: 0,
     solved: Object.freeze(missions.map(() => false)),
     entry: Object.freeze(missions.map(() => Object.freeze([0, 0]))),
-    placed: Object.freeze(placed),
+    placed: Object.freeze(placed), starts: Object.freeze({ ...placed }),
     trials: Object.freeze([]), last: null,
   });
 }
@@ -288,6 +288,18 @@ export function quadOf(s, P = s.placed[mission(s).point], i = s.idx) {
 // ── le parcours ──────────────────────────────────────────────────────────────
 
 /** L'élève passe à la mission suivante (seulement après avoir résolu la courante). */
+/** « أعِد التجربة » : la MÊME mission repart du début (code à 0, point de départ), le drapeau « résolue » est effacé ; les essais restent au journal. */
+export function restartMission(s) {
+  const m = mission(s);
+  return Object.freeze({
+    ...s,
+    solved: Object.freeze(s.solved.map((v, k) => (k === s.idx ? false : v))),
+    entry: Object.freeze(s.entry.map((e, k) => (k === s.idx ? Object.freeze([0, 0]) : e))),
+    placed: m.kind === 'place' ? Object.freeze({ ...s.placed, [m.point]: s.starts[m.point] }) : s.placed,
+    last: null,
+  });
+}
+
 export const nextMission = (s) => (s.solved[s.idx] && s.idx < s.missions.length - 1 ? Object.freeze({ ...s, idx: s.idx + 1, last: null }) : s);
 /** Revenir voir une mission résolue. */
 export const goMission = (s, i) => (i >= 0 && i < s.missions.length && (i <= s.idx || s.solved[i - 1]) ? Object.freeze({ ...s, idx: i, last: null }) : s);

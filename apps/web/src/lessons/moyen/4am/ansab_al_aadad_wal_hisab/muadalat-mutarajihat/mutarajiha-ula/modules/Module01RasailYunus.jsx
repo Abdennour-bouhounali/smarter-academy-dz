@@ -40,7 +40,10 @@ const FITS_WISH = ['يوافق', 'لا يوافق'];
 
 export default function Module01RasailYunus() {
   const [tried, setTried] = useState([]);
-  const [q1, setQ1] = useState(false);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : l'étape est faite quand leur suite est terminée
+  const [cps, setCps] = useState([]);
+  const onCheckpoint = (e) => setCps((l) => [...l, e]);
+  const answered = cps.some((e) => e.tk === 'checkpoint-done');
   const [q2a, setQ2a] = useState(false);
   const [q2b, setQ2b] = useState(false);
   const [q2c, setQ2c] = useState(false);
@@ -83,27 +86,21 @@ export default function Module01RasailYunus() {
           marks={ACTIVITY.numbers.asked}
           lead="كل رسالة تزيد الكلفة 2,5DA فوق الاقتطاع الجزافي: جرّب أعدادًا من الرسائل، منها 16 و 20 و 21."
           onTrial={onTrial}
+          onCheckpoint={onCheckpoint}
         />
       )}
       steps={[
         {
-          num: 1, title: 'لماذا 20 رسالة تكفي و 21 لا؟', subtitle: 'السؤال 1 — جرّب في المختبر، ثم أجب', done: q1,
+          num: 1, title: 'لماذا 20 رسالة تكفي و 21 لا؟', subtitle: 'جرّب في المختبر، ثم أجب', done: answered,
           content: (
             <div className="space-y-3">
               {evidence}
-              <TapQuestion
-                prompt={<MathText>{'جرّبتَ عددًا من الرسائل في المختبر: بعضها يترك الكلفة تحت الرصيد 150DA وبعضها يتجاوزه. ما الذي يجعل 20 رسالة تكفي ويونس لا يستطيع إرسال 21؟'}</MathText>}
-                options={[
-                  <MathText key="a">{'كلفة 20 رسالة هي $2{,}5 \times 20 + 100 = 150$ فلا تتجاوز الرصيد، وكلفة 21 رسالة $152{,}5$ أكبر منه'}</MathText>,
-                  <MathText key="b">{'لأنّ 21 عدد فرديّ و 20 عدد زوجيّ'}</MathText>,
-                  <MathText key="c">{'لأنّ الكلفة تنقص كلّما زاد عدد الرسائل'}</MathText>,
-                ]}
-                correct={0}
-                cols={1}
-                requires={['muqarana-adad']}
-                explain={<MathText>{'كل رسالة تزيد الكلفة بـ $2{,}5$ : عند 20 رسالة تبلغ الكلفة الرصيد تمامًا (150)، وتتجاوزه عند 21 رسالة، ولذلك تظهر 20 نقطة حمراء و 21 رمادية.'}</MathText>}
-                onAnswered={() => setQ1(true)}
-              />
+              <p data-evidence="checkpoint" data-tried={answered ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${answered ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {answered
+                  ? 'أجبتَ في المختبر: عند 20 رسالة تبلغ الكلفة الرصيد تمامًا فهي كافية، وعند 21 تتجاوزه — ولذلك تنتهي النقاط الحمراء عند 20.'
+                  : 'جرّب أعدادًا من الرسائل في المختبر حتى تظهر نقاط حمراء ورمادية، ثم أجب عن الأسئلة التي تظهر فوقه.'}
+              </p>
             </div>
           ),
         },
@@ -202,7 +199,7 @@ export default function Module01RasailYunus() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }
