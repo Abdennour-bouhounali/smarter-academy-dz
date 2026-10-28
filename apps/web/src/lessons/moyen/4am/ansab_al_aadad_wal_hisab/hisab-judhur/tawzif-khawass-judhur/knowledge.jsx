@@ -5,6 +5,9 @@ import { KNOWLEDGE, METHOD_SIMPLIFY, METHOD_RATIONALIZE, TILING } from './conten
 // La carte progressive de la leçon (structure, relations, aides) — KNOWLEDGE_MAP.md, Part A.
 export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
 
+/** `R(x)` : ce qui CHANGE dans la règle d'une fiche `memo`, en rouge. */
+const R = (x) => `\\textcolor{#e11d48}{${x}}`;
+
 /**
  * Les connaissances du درس 5 — SOURCE UNIQUE, construite à partir des deux
  * encadrés « طريقة » de la page 25 (content/textbook.js). Une
@@ -19,6 +22,18 @@ export const LESSON_KNOWLEDGE = {
     1: [
       {
         id: 'kitaba-a-jidhr-b', type: 'methodes', title: 'أبسط كتابة لجذر: b أصغر ما يمكن',
+        memo: {
+          rule: `\\sqrt{n}=\\sqrt{${R('a^2')}\\times b}=${R('a')}\\sqrt{b}`,
+          hook: 'أكبر مربّع يقسم العدد',
+          example: `\\sqrt{72}=\\sqrt{${R('36')}\\times 2}=${R('6')}\\sqrt{2}`,
+          trap: 'التوقف عند مربّع صغير فيبقى مربّع تحت الجذر',
+          exam: 'ابحث عن أكبر مربّع كامل يقسم العدد قبل الكتابة',
+          chip: `\\sqrt{a^2b}=${R('a')}\\sqrt{b}`,
+          quiz: [
+            { q: 'أبسط كتابة للعدد $\\sqrt{48}$ :', options: ['$4\\sqrt{3}$', '$2\\sqrt{12}$', '$16\\sqrt{3}$'], correct: 0 },
+            { q: 'أبسط كتابة للعدد $\\sqrt{200}$ :', options: ['$10\\sqrt{2}$', '$5\\sqrt{8}$', '$100\\sqrt{2}$'], correct: 0 },
+          ],
+        },
         predictPrompt: 'على المربّع 288: مع 6 بلاطات على الضلع بقيت البلاطة 8 قابلة للتبليط من جديد، ومع 12 بلاطة صارت البلاطة 2 لا تُبلَّط. لو أعطيناك عددًا آخر $n$، كيف تختار التبليط لتكتب $\\sqrt{n}$ على الشكل $a\\sqrt{b}$ حيث $b$ أصغر ما يمكن؟ اكتب الطريقة بكلماتك.',
         summary: 'لكتابة $\\sqrt{n}$ على الشكل $a\\sqrt{b}$ حيث $b$ أصغر ما يمكن، نبحث عن أكبر مربع $a^2$ يقسم $n$، فيكون $n = a^2 \\times b$.',
         body: (
@@ -32,6 +47,18 @@ export const LESSON_KNOWLEDGE = {
     2: [
       {
         id: 'tabsit-tawzii', type: 'methodes', title: 'جمع جذور متشابهة بالخاصية التوزيعية',
+        memo: {
+          rule: `x\\sqrt{b}+y\\sqrt{b}=(x+y)${R('\\sqrt{b}')}`,
+          hook: 'نجمع المعاملات والجذر ثابت',
+          example: `3\\sqrt{2}+5\\sqrt{2}=${R('8')}\\sqrt{2}`,
+          trap: 'جمع ما تحت الجذر بدل جمع المعاملات',
+          exam: 'بسّط كل جذر أولًا ثم اجمع المعاملات',
+          chip: `x\\sqrt{b}+y\\sqrt{b}=${R('(x+y)')}\\sqrt{b}`,
+          quiz: [
+            { q: '$4\\sqrt{3}+2\\sqrt{3}=$', options: ['$6\\sqrt{3}$', '$6\\sqrt{6}$', '$8\\sqrt{3}$'], correct: 0 },
+            { q: '$\\sqrt{12}+\\sqrt{27}=$', options: ['$5\\sqrt{3}$', '$\\sqrt{39}$', '$5\\sqrt{6}$'], correct: 0 },
+          ],
+        },
         predictPrompt: 'في حلّ تمرين 1 صارت $A = 2\\sqrt{2} - 9\\sqrt{2} + 10\\sqrt{2} - 7\\sqrt{2}$ ثم $A = -4\\sqrt{2}$. كيف تبسّط مجموعًا من الشكل $x\\sqrt{b} + y\\sqrt{b} + z\\sqrt{b}$؟ اكتب القاعدة بمساواة.',
         summary: '$x\\sqrt{b} + y\\sqrt{b} + z\\sqrt{b} = (x + y + z)\\sqrt{b}$',
         body: (
@@ -45,6 +72,18 @@ export const LESSON_KNOWLEDGE = {
     3: [
       {
         id: 'naqt-maqam', type: 'methodes', title: 'نسبة مقامها عدد ناطق',
+        memo: {
+          rule: `\\dfrac{a}{\\sqrt{b}}=\\dfrac{a${R('\\times\\sqrt{b}')}}{\\sqrt{b}${R('\\times\\sqrt{b}')}}=\\dfrac{a\\sqrt{b}}{b}`,
+          hook: 'اضرب البسط والمقام معًا',
+          example: `\\dfrac{6}{\\sqrt{3}}=\\dfrac{6${R('\\sqrt{3}')}}{3}=2\\sqrt{3}`,
+          trap: 'الضرب في البسط وحده فتتغيّر قيمة النسبة',
+          exam: 'اضرب البسط والمقام في العدد نفسه ثم اختزل',
+          chip: `\\tfrac{a}{\\sqrt{b}}=\\tfrac{a${R('\\sqrt{b}')}}{b}`,
+          quiz: [
+            { q: '$\\dfrac{5}{\\sqrt{5}}=$', options: ['$\\sqrt{5}$', '$5\\sqrt{5}$', '$\\dfrac{1}{\\sqrt{5}}$'], correct: 0 },
+            { q: '$\\dfrac{10}{\\sqrt{2}}=$', options: ['$5\\sqrt{2}$', '$10\\sqrt{2}$', '$\\dfrac{\\sqrt{2}}{10}$'], correct: 0 },
+          ],
+        },
         predictPrompt: 'رأيت أنّ $\\sqrt{11} \\times \\sqrt{11} = 11$، ثم كيف صار $\\dfrac{2}{\\sqrt{11}}$ نسبة مقامها 11. لو أعطيناك نسبة أخرى $\\dfrac{a}{\\sqrt{b}}$، ماذا تفعل بالبسط والمقام لتجعل مقامها عددًا ناطقًا؟ ولماذا لا تتغيّر قيمتها؟',
         summary: 'لتحويل $\\dfrac{a}{\\sqrt{b}}$ إلى نسبة مقامها عدد ناطق، نضرب البسط والمقام في $\\sqrt{b}$.',
         body: (

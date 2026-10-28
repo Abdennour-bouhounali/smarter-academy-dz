@@ -7,6 +7,10 @@ import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
 import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import MathText from '../../components/MathText';
 import * as L from '../logic/squareFold';
 
@@ -44,9 +48,15 @@ import * as L from '../logic/squareFold';
 /** Un nombre écrit pour KaTeX : signe « - », virgule décimale protégée. */
 const tex = (s) => s.replace('−', '-').replace(',', '{,}');
 
+/*
+ * QUESTIONS PENDANT LE LABO (2026-10-28, `primitives/LabCheckpoint`) : `checkpoints` (défaut true). Une étape PAR CARTE (équation) : quand ses solutions sont épinglées
+ * (ou « لا حل » déclaré), une suite de questions sur ce que l'élève vient de faire — a > 0 : le carré de sa solution, la relation entre ses deux solutions ;
+ * a = 0 : le nombre de solutions, pourquoi une seule ; a < 0 : le nombre de solutions, pourquoi aucune. La carte qui achève le contraste des trois signes
+ * ajoute la RÈGLE (l'ancienne découverte). « أعِد التجربة » dépingle la carte.
+ */
 export default function SquareFold({
-  a: a0 = 9, scale: scale0 = 2, targets: targets0, table, title, lead, mission, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onFinished,
+  a: a0 = 9, scale: scale0 = 2, targets: targets0, table, title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true,
+  initialMode = 'student', allowModeSwitch = false, onFinished, onTrial: onFinishedTrial,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.squareFold.${key}`, o), [t]);
@@ -60,16 +70,43 @@ export default function SquareFold({
   const make = () => L.init({ targets, scale });
   const [lab, setLab] = useState(make);
   const sceneKey = `${tKey}:${scale}:${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
   const [live, setLive] = useState(null);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setLive(null); }
+  const [doneCards, setDoneCards] = useState([]);
+  if (scene.key !== sceneKey) {
+    // « إعادة », un autre niveau ou d'autres équations : TOUT recommence — les épingles, les étapes et les questions du labo
+    setScene({ key: sceneKey, inits: scene.inits + 1 });
+    setLab(make()); setLive(null); setDoneCards([]);
+  }
   // Miroir synchrone de `lab` : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
   const labRef = useRef(lab);
   labRef.current = lab;
   const range = L.range(lab);
   const target = L.current(lab);
 
-  const ready = L.discoveryReady(lab);
+  const cpSettings = useLabCheckpointSettings('square-fold');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpActive = cpOn && cpSettings.enabled;
+  const cardId = `c${lab.card}`;
+  const solvedNow = L.cardSolved(lab, lab.card);
+  const chain = cpActive && solvedNow && !doneCards.includes(lab.card) ? chainOf(lab) : null;
+  const party = useStepCelebration();
+  const cp = useLabCheckpoint({
+    id: chain ? cardId : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, k)) : null,
+    reached: solvedNow,
+    resetKey: scene.inits,
+    // la MÊME équation au départ : ses épingles et son « لا حل » sont retirés
+    onRetry: () => setLab((s) => ({ ...s, pins: { ...s.pins, [s.card]: [] }, declaredNone: { ...s.declaredNone, [s.card]: false }, last: null })),
+    onEvent: (ev) => state.report(onFinishedTrial, ev),
+    onDone: () => {
+      const i = lab.card;
+      setDoneCards((d) => (d.includes(i) ? d : [...d, i]));
+      party.celebrate({ n: Math.min(doneCards.length + 1, lab.targets.length), total: lab.targets.length });
+      if (chain?.includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+
+  const ready = L.discoveryReady(lab) && !cpActive;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -98,7 +135,15 @@ export default function SquareFold({
   const xPx = (v) => mid + (v / lab.scale) * ux;
   const yPx = (y) => mid + y * uy;
   const toValue = useCallback((clientX, _y, rect) => ((clientX - rect.left - mid) / ux) * lab.scale, [mid, ux, lab.scale]);
-  const stretch = useStretchInteraction({ value: live ?? lab.x ?? L.defaultX(lab), range, toValue, onChange: setLive, onCommit: (v) => { setLive(v); setLab((s) => L.move(s, v)); }, direction: 'ltr', pageStep: lab.scale });
+  const sfx = useRef(0);
+  // le son : la pose d'une solution (cloche), un refus (grave), la découverte atteinte (drapeau) — muet sauf « الصوت »
+  const lastKind = lab.last?.kind;
+  useEffect(() => {
+    if (lastKind === 'pinned' || lastKind === 'declaredNone') playSfx('bell');
+    else if (lastKind === 'notSolution' || lastKind === 'negativeTarget' || lastKind === 'hasSolution') playSfx('over');
+  }, [lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (L.discoveryReady(lab)) playSfx('flag'); }, [L.discoveryReady(lab)]); // eslint-disable-line react-hooks/exhaustive-deps
+  const stretch = useStretchInteraction({ value: live ?? lab.x ?? L.defaultX(lab), range, toValue, onChange: (v) => { setLive(v); const now = performance.now(); if (now - sfx.current > 35) { playSfx('tooth'); sfx.current = now; } }, onCommit: (v) => { setLive(v); setLab((s) => L.move(s, v)); }, direction: 'ltr', pageStep: lab.scale });
 
   // Un x PAR DÉFAUT (L.defaultX : solution d'aucune carte) : jamais vide à l'ouverture. Ce n'est pas une visite : `lab.visited` ne le contient pas.
   const isDefault = lab.x == null && live == null;
@@ -136,6 +181,8 @@ export default function SquareFold({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={cpActive}
       hints={([k('hint1'), k('hint2'), k('hint3')]).map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{
         autoStep: () => false,
@@ -186,8 +233,15 @@ export default function SquareFold({
       )}
       explanation={<MathText>{k('explanation')}</MathText>}
     >
+      <div className="relative" data-sf-glance>
+        {party.node}
+        {cp.node}
       <ManipulationStage className="bg-gradient-to-b from-violet-50/60 to-white" data-dragging={stretch.dragging ? 'true' : undefined}>
         <div ref={boxRef} className="space-y-3" data-square-fold>
+          {cpActive && (
+            <LabStepper count={lab.targets.length} current={Math.min(doneCards.length, lab.targets.length - 1)}
+              done={lab.targets.map((_, i) => doneCards.includes(i) && (i !== lab.card || !cp.blocking))} stepAttr="data-sf-step" />
+          )}
           {/* ── Les cartes : une équation chacune ── */}
           <div className="flex flex-wrap gap-2" role="group" aria-label={k('cards')} data-fold-cards>
             {lab.targets.map((tg, i) => (
@@ -298,6 +352,96 @@ export default function SquareFold({
           )}
         </div>
       </ManipulationStage>
+      </div>
     </ManipulationShell>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de questions selon le SIGNE de a ; la carte qui achève le contraste des trois signes y ajoute la règle. */
+export const CHAINS = Object.freeze({
+  pos: ['posSq', 'posMirror'],
+  zero: ['zeroCount', 'zeroOpp'],
+  neg: ['negCount', 'negWhy'],
+});
+export const kindOf = (lab) => { const r = L.current(lab).r; return r.num > 0 ? 'pos' : r.num === 0 ? 'zero' : 'neg'; };
+export const chainOf = (lab) => [...CHAINS[kindOf(lab)], ...(L.discoveryReady(lab) ? ['rule'] : [])];
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const num = (a) => tex(L.targetText(a));
+
+/** Chaque question est construite sur LES équations de l'élève (rien n'est écrit en dur) ; `k` : les textes de `squareFold`. */
+export const QUESTIONS = {
+  posSq: (lab, k) => {
+    const tg = L.current(lab); const nums = { s: L.solutionTex(tg, 1), a: num(tg.a) };
+    return {
+      id: 'posSq', kind: 'number', expected: String(tg.a), answer: <MathText>{`$${num(tg.a)}$`}</MathText>,
+      prompt: Mx(k, 'posSq.prompt', nums), hints: [Mx(k, 'posSq.hint1', nums), Mx(k, 'posSq.hint2', nums)], explain: Mx(k, 'posSq.explain', nums),
+    };
+  },
+  posMirror: (lab, k) => {
+    const tg = L.current(lab); const nums = { s: L.solutionTex(tg, 1), ns: L.solutionTex(tg, -1), a: num(tg.a) };
+    return {
+      id: 'posMirror', kind: 'choice',
+      prompt: Mx(k, 'posMirror.prompt', nums),
+      options: [
+        { text: Mx(k, 'posMirror.wrongSum', nums), why: Mx(k, 'posMirror.whySum', nums) },
+        { text: Mx(k, 'posMirror.wrongSame', nums), why: Mx(k, 'posMirror.whySame', nums) },
+        { text: Mx(k, 'posMirror.right', nums), correct: true },
+      ],
+      hints: [Mx(k, 'posMirror.hint1', nums), Mx(k, 'posMirror.hint2', nums)], explain: Mx(k, 'posMirror.explain', nums),
+    };
+  },
+  zeroCount: (lab, k) => ({
+    id: 'zeroCount', kind: 'number', expected: '1', answer: <MathText>{'$1$'}</MathText>,
+    prompt: Mx(k, 'zeroCount.prompt'), hints: [Mx(k, 'zeroCount.hint1'), Mx(k, 'zeroCount.hint2')], explain: Mx(k, 'zeroCount.explain'),
+  }),
+  zeroOpp: (lab, k) => ({
+    id: 'zeroOpp', kind: 'choice', cols: 3,
+    prompt: Mx(k, 'zeroOpp.prompt'),
+    options: [
+      { text: Mx(k, 'zeroOpp.wrongNoSquare'), why: Mx(k, 'zeroOpp.whyNoSquare') },
+      { text: Mx(k, 'zeroOpp.right'), correct: true },
+      { text: Mx(k, 'zeroOpp.wrongPositive'), why: Mx(k, 'zeroOpp.whyPositive') },
+    ],
+    hints: [Mx(k, 'zeroOpp.hint1'), Mx(k, 'zeroOpp.hint2')], explain: Mx(k, 'zeroOpp.explain'),
+  }),
+  negCount: (lab, k) => {
+    const nums = { a: num(L.current(lab).a) };
+    return {
+      id: 'negCount', kind: 'number', expected: '0', answer: <MathText>{'$0$'}</MathText>,
+      prompt: Mx(k, 'negCount.prompt', nums), hints: [Mx(k, 'negCount.hint1', nums), Mx(k, 'negCount.hint2')], explain: Mx(k, 'negCount.explain', nums),
+    };
+  },
+  negWhy: (lab, k) => {
+    const tg = L.current(lab); const abs = { a: Math.abs(tg.a), r: { num: Math.abs(tg.r.num), den: tg.r.den } };
+    const nums = { a: num(tg.a), pa: num(Math.abs(tg.a)), ns: L.solutionTex(abs, -1) };
+    return {
+      id: 'negWhy', kind: 'choice',
+      prompt: Mx(k, 'negWhy.prompt', nums),
+      options: [
+        { text: Mx(k, 'negWhy.wrongRoot', nums), why: Mx(k, 'negWhy.whyRoot', nums) },
+        { text: Mx(k, 'negWhy.right', nums), correct: true },
+        { text: Mx(k, 'negWhy.wrongRuler', nums), why: Mx(k, 'negWhy.whyRuler', nums) },
+      ],
+      hints: [Mx(k, 'negWhy.hint1', nums), Mx(k, 'negWhy.hint2', nums)], explain: Mx(k, 'negWhy.explain', nums),
+    };
+  },
+  rule: (lab, k) => ({
+    id: 'rule', kind: 'choice',
+    prompt: <MathText>{k('dPrompt')}</MathText>,
+    options: [
+      { text: <MathText>{k('dOpt2')}</MathText>, why: <MathText>{k('dWhy2')}</MathText> },
+      { text: <MathText>{k('dOpt3')}</MathText>, why: <MathText>{k('dWhy3')}</MathText> },
+      { text: <MathText>{k('dOpt1')}</MathText>, correct: true },
+    ],
+    hints: [Mx(k, 'rule.hint1'), Mx(k, 'rule.hint2')],
+    explain: (
+      <div className="space-y-1" data-fold-formal>
+        <EquationDisplay tex="a > 0" tone="result" note={<MathText>{k('fPositive')}</MathText>} />
+        <EquationDisplay tex="a = 0" tone="result" note={<MathText>{k('fZero')}</MathText>} />
+        <EquationDisplay tex="a < 0" tone="result" note={<MathText>{k('fNegative')}</MathText>} />
+      </div>
+    ),
+  }),
+};

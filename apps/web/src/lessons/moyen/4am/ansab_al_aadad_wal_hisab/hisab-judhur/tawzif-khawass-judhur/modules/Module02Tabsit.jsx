@@ -99,7 +99,7 @@ export default function Module02Tabsit() {
           content: <TextbookExercise exercise={EX['now-25-1']} requires={['kitaba-a-jidhr-b', 'tabsit-tawzii']} onAnswered={() => setQ3(true)} />,
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={2} />}
+      footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />
   );
 }

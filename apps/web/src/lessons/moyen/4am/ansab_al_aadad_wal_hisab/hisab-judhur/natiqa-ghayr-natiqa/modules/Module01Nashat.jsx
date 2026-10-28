@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
@@ -75,9 +75,13 @@ export default function Module01Nashat() {
   // Les essais VALIDÉS sur la règle (onTrial), aux deux niveaux.
   const [trials, setTrials] = useState({});
   const [q1, setQ1] = useState(false);
-  const [q2, setQ2] = useState(false);
+  const [q2] = useState(false);
   const [q3, setQ3] = useState(false);
-  const record = useCallback(({ area, side, scale, cmp }) => {
+  const [cpDone, setCpDone] = useState({});
+  const ruleDone = !!cpDone.rule || q2;
+  const record = useCallback(({ tk, id, area, side, scale, cmp }) => {
+    if (tk === 'checkpoint-done') setCpDone((d) => ({ ...d, [id]: true }));
+    if (tk || !area) return;   // les événements des questions du labo (LabCheckpoint) ne sont pas des essais
     const key = keyOf(area);
     setTrials((all) => {
       const prev = all[key] ?? { exact: null, grads: [] };
@@ -150,7 +154,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 2, title: ACTIVITY.questions[1], subtitle: 'ما الذي يميّز ما وقع على تدريجة عمّا لم يقع؟', done: q2,
+          num: 2, title: ACTIVITY.questions[1], subtitle: 'ما الذي يميّز ما وقع على تدريجة عمّا لم يقع؟', done: ruleDone,
           content: (
             <div className="space-y-3">
               <Evidence trials={trials} entries={ENTRIES} />
@@ -168,23 +172,12 @@ export default function Module01Nashat() {
                   >
                     <p className="text-xs text-slate-500">{ACTIVITY.correctionNote}</p>
                   </TextbookBox>
-                  <PredictRule id="murabba-natiq">
-                    <TapQuestion
-                      prompt={<span>ما هو معيار التصنيف؟</span>}
-                      options={[
-                        'الأعداد تحت الجذر في الصنف الأول أعداد طبيعية، وفي الصنف الثاني ليست أعدادًا طبيعية',
-                        'في الصنف الأول العدد تحت الجذر مربع لعدد ناطق، فجذره عدد ناطق؛ وفي الصنف الثاني ليس مربعًا لعدد ناطق، فجذره ليس عددًا ناطقًا',
-                        'الأعداد تحت الجذر في الصنف الأول أصغر من الأعداد تحت الجذر في الصنف الثاني',
-                        'الأعداد تحت الجذر في الصنف الثاني أعداد أولية',
-                      ]}
-                      correct={1}
-                      cols={1}
-                      requires={['jidhr-taarif', 'adad-natiq']}
-                      explain={<span>جذور الصنف الأول وقعت على تدريجة: <MathText>{'$\\sqrt{100} = 10$ ، $\\sqrt{9} = 3$ ، $\\sqrt{\\dfrac{16}{9}} = \\dfrac{4}{3}$ ، $\\sqrt{0{,}25} = \\dfrac{1}{2}$'}</MathText>. أما جذور الصنف الثاني فلم تقع على أيّ تدريجة. (الصنف الأول فيه <MathText>{'$\\dfrac{16}{9}$'}</MathText> وليس عددًا طبيعيًا، وفيه 100 وهو أكبر من 7، و 6 في الصنف الثاني ليس عددًا أوليًا.)</span>}
-                      onAnswered={() => setQ2(true)}
-                    />
-                  </PredictRule>
-                  {q2 && <KnowledgeBrick id="murabba-natiq" lead="ما رأيته على المسطرة يقوله الكتاب في «معارف»:" />}
+                  <p className={`rounded-xl border-2 px-3 py-2 text-sm ${ruleDone ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`} data-activity-evidence data-tried={ruleDone ? 'true' : 'false'}>
+                    {ruleDone
+                      ? 'أجبتَ في المختبر: يقع الجذر على تدريجة حين تكون المساحة مربّع عدد ناطق، ولا يقع على أي تدريجة حين لا تكون كذلك.'
+                      : 'جرّب بطاقة تقع على تدريجة وبطاقة لا تقع على أي تدريجة في المختبر، وأجب عن الأسئلة التي تظهر فوقه.'}
+                  </p>
+                  {ruleDone && <KnowledgeBrick id="murabba-natiq" lead="ما رأيته على المسطرة يقوله الكتاب في «معارف»:" />}
                 </>
               )}
             </div>
@@ -210,7 +203,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

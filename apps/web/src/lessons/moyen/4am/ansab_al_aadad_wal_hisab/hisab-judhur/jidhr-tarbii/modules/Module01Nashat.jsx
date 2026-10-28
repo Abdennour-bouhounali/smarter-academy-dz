@@ -56,7 +56,8 @@ export default function Module01Nashat() {
   const [q7, setQ7] = useState(false);
   const { ab, ac, calculator, q3: roots3, q4: roots4 } = ACTIVITY.numbers;
 
-  const onTrial = ({ area, side: v, scale, cmp }) => {
+  const onTrial = ({ tk, area, side: v, scale, cmp }) => {
+    if (tk || !area) return;   // les événements des questions du labo (LabCheckpoint) ne sont pas des essais
     if (`${area.num}/${area.den}` !== AREA_5) return;
     setTrials((t) => {
       const c = t[scale] ?? { below: null, above: null, exact: null };
@@ -321,7 +322,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

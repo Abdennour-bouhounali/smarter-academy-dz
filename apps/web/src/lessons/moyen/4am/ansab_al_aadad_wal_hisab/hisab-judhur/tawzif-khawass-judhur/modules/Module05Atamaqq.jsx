@@ -114,7 +114,7 @@ export default function Module05Atamaqq() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={5} />}
+      footer={<KnowledgeSnapshot moduleNumber={5} variant="memo" />}
     />
   );
 }

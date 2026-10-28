@@ -8,6 +8,10 @@ import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
 import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import MathText from '../../components/MathText';
 import * as L from '../logic/squareRootSide';
 
@@ -47,9 +51,14 @@ const { squareOfDecimal, reduce } = squareRoots;
  *
  * Aucun flottant ne juge une égalité : logic/squareRootSide → core/squareRoots.
  */
+/*
+ * QUESTIONS PENDANT LE LABO (2026-10-28, `primitives/LabCheckpoint`) : `checkpoints` (défaut true). Deux étapes. refine : 1 « frame » (un encadrement serré, ou le côté
+ * exact) — c² lu, puis l'encadrement (ou le nom du côté exact) ; 2 « rule » (la découverte atteinte) — le constat de l'encadrement qui ne rencontre jamais a, puis la
+ * règle. graduation : 1 « frame » (une carte tombée juste) — le produit c × c, puis « ناطق » ; 2 « rule » (une carte qui résiste aussi) — le constat, puis la règle.
+ */
 export default function SquareRootSide({
   mode = 'refine', num: num0 = 36, den: den0 = 1, scale: maxScale0, areas: areas0,
-  calculator, figure, title, lead, mission, level, levels: withLevels = true, initialMode = 'student', allowModeSwitch = false, onFinished, onTrial,
+  calculator, figure, title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false, onFinished, onTrial,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.squareRoot.${key}`, o), [t]);
@@ -71,8 +80,14 @@ export default function SquareRootSide({
   const makeLab = () => L.init({ mode, areas, maxScale });
   const [lab, setLab] = useState(makeLab);
   const sceneKey = `${areasKey}:${maxScale}:${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(makeLab()); }
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  const [done, setDone] = useState([false, false]);
+  const snap = useRef(null);
+  if (scene.key !== sceneKey) {
+    // « إعادة », un autre niveau ou d'autres aires : TOUT recommence — les essais, les étapes et les questions du labo
+    setScene({ key: sceneKey, inits: scene.inits + 1 });
+    setLab(makeLab()); setDone([false, false]); snap.current = null;
+  }
 
   const [live, setLive] = useState(null); // la valeur sous le doigt
   const area = L.currentArea(lab);
@@ -93,6 +108,7 @@ export default function SquareRootSide({
     const sk = setKey(labRef.current);
     testedRef.current.sets[sk] = new Set([...(testedRef.current.sets[sk] ?? []), v]);
     labRef.current = next;
+    playSfx(next.last.cmp === 0 ? 'bell' : 'over');
     setLab(next);
     state.report(onTrial, { area: L.currentArea(next), side: v, scale: next.scale, cmp: next.last.cmp });
   }, [state, onTrial]);
@@ -103,7 +119,31 @@ export default function SquareRootSide({
   };
   useEffect(() => { setLive(null); }, [lab.scale, lab.card, state.epoch]);
 
-  const ready = L.discoveryReady(lab);
+  const cpSettings = useLabCheckpointSettings('square-root-side');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpActive = cpOn && cpSettings.enabled;
+  const stepIdx = done[0] ? 1 : 0;
+  const stepId = stepIdx === 0 ? 'frame' : 'rule';
+  const reachedNow = stepIdx === 0 ? frameReached(lab) : L.discoveryReady(lab);
+  const chain = cpActive && !done[1] && reachedNow ? chainOf(stepIdx, lab) : null;
+  const party = useStepCelebration();
+  const cp = useLabCheckpoint({
+    id: chain ? stepId : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, k, { calculator, figure })) : null,
+    reached: reachedNow,
+    resetKey: scene.inits,
+    onRetry: () => { setLive(null); labRef.current = stepIdx === 0 ? makeLab() : (snap.current ?? makeLab()); setLab(labRef.current); },
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      if (id === 'frame') { snap.current = labRef.current; setDone([true, false]); party.celebrate({ n: 1, total: 2 }); return; }
+      setDone([true, true]); party.celebrate({ n: 2, total: 2 });
+      state.discover(); state.formalize();
+    },
+  });
+
+  const ready = L.discoveryReady(lab) && !cpActive;
+  const sfx = useRef(0);
+  const wasReady = useRef(false);
+  useEffect(() => { if (L.discoveryReady(lab) && !wasReady.current) playSfx('flag'); wasReady.current = L.discoveryReady(lab); }, [lab]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, { outcome: L.refineOutcome(lab) }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -128,7 +168,11 @@ export default function SquareRootSide({
   const mu = (width - 2 * EDGE) / Math.max(1, span);
   const xOf = (v) => EDGE + (v - range.min) * mu;
   const toValue = useCallback((clientX, _y, rect) => range.min + (clientX - rect.left - EDGE) / mu, [range.min, mu]);
-  const stretch = useStretchInteraction({ value: live ?? lab.side ?? range.min, range, toValue, onChange: setLive, onCommit: commit, direction: 'ltr' });
+  const stretch = useStretchInteraction({
+    value: live ?? lab.side ?? range.min, range, toValue,
+    onChange: (v) => { setLive(v); const now = performance.now(); if (now - sfx.current > 35) { playSfx('tooth'); sfx.current = now; } },
+    onCommit: commit, direction: 'ltr',
+  });
 
   // Une valeur PAR DÉFAUT (le début de la règle : un carré trop petit, jamais la réponse) : jamais vide à l'ouverture.
   // Ce n'est pas un essai : `L.test` n'est appelé ici que pour LIRE la comparaison, son résultat est jeté.
@@ -148,7 +192,7 @@ export default function SquareRootSide({
   const cmpWord = cmp === 0 ? k('equal', { area: L.areaText(area) }) : cmp < 0 ? k('smaller', { area: L.areaText(area) }) : k('larger', { area: L.areaText(area) });
 
   const brackets = L.brackets(lab);
-  const outcome = L.refineOutcome(lab);
+  const disc = discoveryParts(lab, k, { calculator, figure });
 
   return (
     <ManipulationShell
@@ -160,6 +204,8 @@ export default function SquareRootSide({
       numberFields={refineMode ? [{ key: 'num', label: 'a' }] : []}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={refineMode}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={cpActive}
       hints={(refineMode ? [k('hint1'), k('hint2', { area: L.areaText(area) }), k('hint3')] : [k('gHint1'), k('gHint2'), k('gHint3')]).map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{
         autoStep: () => false,
@@ -185,67 +231,19 @@ export default function SquareRootSide({
       discovery={(
         <ManipulationDiscovery
           state={state}
-          prompt={refineMode ? k(outcome === 'exact' ? 'dExactPrompt' : 'dNeverPrompt', { area: L.areaText(area) }) : k('gPrompt')}
-          options={refineMode
-            ? (outcome === 'exact'
-              ? [
-                { text: k('dExactOpt2', { area: L.areaText(area), half: L.areaText(reduce({ num: area.num, den: area.den * 2 })) }), why: <MathText>{k('dExactWhy2')}</MathText> },
-                { text: <MathText>{k('dExactOpt1', { area: L.areaText(area), side: foundText(lab) })}</MathText>, correct: true },
-                { text: <MathText>{k('dExactOpt3', { side: foundText(lab) })}</MathText>, why: <MathText>{k('dExactWhy3', { side: foundText(lab), area: L.areaText(area) })}</MathText> },
-              ]
-              : [
-                { text: <MathText>{k('dNeverOpt2', { area: L.areaText(area) })}</MathText>, why: <MathText>{k('dNeverWhy2')}</MathText> },
-                { text: <MathText>{k('dNeverOpt3', { area: L.areaText(area) })}</MathText>, why: <MathText>{k('dNeverWhy3')}</MathText> },
-                { text: <MathText>{k('dNeverOpt1', { area: L.areaText(area) })}</MathText>, correct: true },
-              ])
-            : [
-              { text: <MathText>{k('gOpt2')}</MathText>, why: <MathText>{k('gWhy2')}</MathText> },
-              { text: <MathText>{k('gOpt1')}</MathText>, correct: true },
-              { text: <MathText>{k('gOpt3')}</MathText>, why: <MathText>{k('gWhy3')}</MathText> },
-            ]}
-          formal={refineMode ? (
-            outcome === 'exact' ? (
-              <div className="space-y-2">
-                <EquationDisplay tex={`\\sqrt{${aTex}} = ${foundTex(lab)} \\qquad (${foundTex(lab)})^2 = ${aTex}`} tone="result" note={<MathText>{k('fExact', { area: L.areaText(area), side: foundText(lab) })}</MathText>} />
-                <p className="text-sm text-slate-700">{k('fPositive', { side: foundText(lab), area: L.areaText(area) })}</p>
-              </div>
-            ) : (
-              <div className="space-y-2">
-                <ul className="space-y-1" dir="ltr" data-root-brackets>
-                  {brackets.filter(L.tight).map((b) => (
-                    <li key={b.scale}><MathText>{`$${L.sideTex(b.below, b.scale)} < \\sqrt{${aTex}} < ${L.sideTex(b.above, b.scale)}$`}</MathText></li>
-                  ))}
-                </ul>
-                <EquationDisplay tex={`(\\sqrt{${aTex}})^2 = ${aTex}`} tone="result" note={<MathText>{k('fNever', { area: L.areaText(area) })}</MathText>} />
-                {calculator && (
-                  <EquationDisplay tex={`${calculator.replace(',', '{,}')}^2 = ${squareOfDecimal(calculator).replace(',', '{,}')} \\neq ${aTex}`} tone="muted" note={<MathText>{k('fCalculator', { reading: calculator })}</MathText>} />
-                )}
-                {figure === 'bc-square' && <BcSquare k={k} />}
-              </div>
-            )
-          ) : (
-            <div className="space-y-2">
-              <ul className="space-y-1" data-root-classes>
-                {lab.cards.map((c, i) => {
-                  const st = L.cardStatus(lab, i);
-                  const f = L.foundSide(lab, i);
-                  return (
-                    <li key={`${c.num}/${c.den}`} className="flex flex-wrap items-center gap-2 text-sm" data-root-class={st}>
-                      <span dir="ltr"><MathText>{`$\\sqrt{${L.areaTex(c)}}${f ? ` = ${L.sideTex(f.v, f.scale)}` : ''}$`}</MathText></span>
-                      <span className="text-slate-700">{st === 'exact' ? k('classRational') : st === 'resisting' ? k('classResisting') : k('classOpen')}</span>
-                    </li>
-                  );
-                })}
-              </ul>
-              <p className="rounded-xl border-2 border-emerald-200 bg-white px-3 py-2 text-sm text-emerald-900"><MathText>{k('gFormal')}</MathText></p>
-            </div>
-          )}
+          prompt={disc.prompt}
+          options={disc.options}
+          formal={disc.formal}
         />
       )}
       explanation={<MathText>{refineMode ? k('explanation') : k('gExplanation')}</MathText>}
     >
+      <div className="relative" data-rs-glance>
+        {party.node}
+        {cp.node}
       <ManipulationStage className="bg-gradient-to-b from-sky-50/60 to-white" data-dragging={stretch.dragging ? 'true' : undefined}>
         <div ref={boxRef} className="space-y-3" data-root-side data-mode={mode}>
+          {cpActive && <LabStepper count={2} current={stepIdx} done={done.map((d, i) => d && (i !== stepIdx || !cp.blocking))} stepAttr="data-rs-step" />}
           {/* ── Les cartes (graduation) ou l'aire visée (refine) ── */}
           {refineMode ? (
             <div className="flex flex-wrap items-center gap-2 text-sm font-bold text-slate-700">
@@ -349,9 +347,214 @@ export default function SquareRootSide({
           </div>
         </div>
       </ManipulationStage>
+      </div>
     </ManipulationShell>
   );
 }
+
+/** La découverte (prompt, options, formalisation) : posée sous le labo quand les questions sont coupées, sinon c'est la dernière question du labo. */
+export function discoveryParts(lab, k, { calculator, figure } = {}) {
+  const refineMode = lab.mode === 'refine';
+  const area = L.currentArea(lab);
+  const aTex = L.areaTex(area);
+  const outcome = L.refineOutcome(lab);
+  const brackets = L.brackets(lab);
+  const prompt = refineMode ? k(outcome === 'exact' ? 'dExactPrompt' : 'dNeverPrompt', { area: L.areaText(area) }) : k('gPrompt');
+  const options = refineMode
+    ? (outcome === 'exact'
+      ? [
+        { text: k('dExactOpt2', { area: L.areaText(area), half: L.areaText(reduce({ num: area.num, den: area.den * 2 })) }), why: <MathText>{k('dExactWhy2')}</MathText> },
+        { text: <MathText>{k('dExactOpt1', { area: L.areaText(area), side: foundText(lab) })}</MathText>, correct: true },
+        { text: <MathText>{k('dExactOpt3', { side: foundText(lab) })}</MathText>, why: <MathText>{k('dExactWhy3', { side: foundText(lab), area: L.areaText(area) })}</MathText> },
+      ]
+      : [
+        { text: <MathText>{k('dNeverOpt2', { area: L.areaText(area) })}</MathText>, why: <MathText>{k('dNeverWhy2')}</MathText> },
+        { text: <MathText>{k('dNeverOpt3', { area: L.areaText(area) })}</MathText>, why: <MathText>{k('dNeverWhy3', { area: L.areaText(area) })}</MathText> },
+        { text: <MathText>{k('dNeverOpt1', { area: L.areaText(area) })}</MathText>, correct: true },
+      ])
+    : [
+      { text: <MathText>{k('gOpt2')}</MathText>, why: <MathText>{k('gWhy2')}</MathText> },
+      { text: <MathText>{k('gOpt1')}</MathText>, correct: true },
+      { text: <MathText>{k('gOpt3')}</MathText>, why: <MathText>{k('gWhy3')}</MathText> },
+    ];
+  const formal = refineMode ? (
+    outcome === 'exact' ? (
+      <div className="space-y-2">
+        <EquationDisplay tex={`\\sqrt{${aTex}} = ${foundTex(lab)} \\qquad (${foundTex(lab)})^2 = ${aTex}`} tone="result" note={<MathText>{k('fExact', { area: L.areaText(area), side: foundText(lab) })}</MathText>} />
+        <p className="text-sm text-slate-700">{k('fPositive', { side: foundText(lab), area: L.areaText(area) })}</p>
+      </div>
+    ) : (
+      <div className="space-y-2">
+        <ul className="space-y-1" dir="ltr" data-root-brackets>
+          {brackets.filter(L.tight).map((b) => (
+            <li key={b.scale}><MathText>{`$${L.sideTex(b.below, b.scale)} < \\sqrt{${aTex}} < ${L.sideTex(b.above, b.scale)}$`}</MathText></li>
+          ))}
+        </ul>
+        <EquationDisplay tex={`(\\sqrt{${aTex}})^2 = ${aTex}`} tone="result" note={<MathText>{k('fNever', { area: L.areaText(area) })}</MathText>} />
+        {calculator && (
+          <EquationDisplay tex={`${calculator.replace(',', '{,}')}^2 = ${squareOfDecimal(calculator).replace(',', '{,}')} \\neq ${aTex}`} tone="muted" note={<MathText>{k('fCalculator', { reading: calculator })}</MathText>} />
+        )}
+        {figure === 'bc-square' && <BcSquare k={k} />}
+      </div>
+    )
+  ) : (
+    <div className="space-y-2">
+      <ul className="space-y-1" data-root-classes>
+        {lab.cards.map((c, i) => {
+          const st = L.cardStatus(lab, i);
+          const f = L.foundSide(lab, i);
+          return (
+            <li key={`${c.num}/${c.den}`} className="flex flex-wrap items-center gap-2 text-sm" data-root-class={st}>
+              <span dir="ltr"><MathText>{`$\\sqrt{${L.areaTex(c)}}${f ? ` = ${L.sideTex(f.v, f.scale)}` : ''}$`}</MathText></span>
+              <span className="text-slate-700">{st === 'exact' ? k('classRational') : st === 'resisting' ? k('classResisting') : k('classOpen')}</span>
+            </li>
+          );
+        })}
+      </ul>
+      <p className="rounded-xl border-2 border-emerald-200 bg-white px-3 py-2 text-sm text-emerald-900"><MathText>{k('gFormal')}</MathText></p>
+    </div>
+  );
+  return { prompt, options, formal };
+}
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+const exactCard = (lab) => lab.cards.findIndex((_, i) => L.cardStatus(lab, i) === 'exact');
+const resistingCard = (lab) => lab.cards.findIndex((_, i) => L.cardStatus(lab, i) === 'resisting');
+const firstTight = (lab) => L.brackets(lab, 0).find((b) => b.exact == null && L.tight(b));
+
+/** L'étape 1 est atteinte : refine — un encadrement serré ou le côté exact ; graduation — une carte tombée juste. */
+export const frameReached = (lab) => (lab.mode === 'refine'
+  ? L.brackets(lab, 0).some((b) => b.exact != null || L.tight(b))
+  : exactCard(lab) >= 0);
+
+/** Les suites : [étape 1, étape 2] selon le mode et l'issue ; chaque question est construite sur les nombres de l'élève. */
+export const CHAINS = Object.freeze({
+  exact: [['exSq', 'exName'], ['rule']],
+  never: [['bSq', 'bRead'], ['zoom', 'rule']],
+  grad: [['gSq', 'gRational'], ['gResist', 'rule']],
+});
+export const chainOf = (stepIdx, lab) => CHAINS[lab.mode === 'graduation' ? 'grad' : (L.foundSide(lab, 0) ? 'exact' : 'never')][stepIdx];
+
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const plain = (tex) => String(tex).replace('{,}', ',');
+const ratText = (a) => `${a.num}/${a.den}`;
+
+export const QUESTIONS = {
+  exSq: (lab, k) => {
+    const f = L.foundSide(lab, 0); const area = L.currentArea(lab);
+    const nums = { c: L.sideText(f.v, f.scale), area: L.areaText(area), csq: L.squareTex(f.v, f.scale) };
+    return {
+      id: 'exSq', kind: 'number', expected: ratText(area), answer: <MathText>{`$${L.areaTex(area)}$`}</MathText>,
+      prompt: Mx(k, 'exSq.prompt', nums), hints: [Mx(k, 'exSq.hint1', nums), Mx(k, 'exSq.hint2', nums)], explain: Mx(k, 'exSq.explain', nums),
+    };
+  },
+  exName: (lab, k) => {
+    const f = L.foundSide(lab, 0); const area = L.currentArea(lab);
+    const nums = { c: L.sideText(f.v, f.scale), area: L.areaText(area), half: L.areaText(reduce({ num: area.num, den: area.den * 2 })), twice: L.areaText(reduce({ num: area.num * 2, den: area.den })) };
+    return {
+      id: 'exName', kind: 'choice',
+      prompt: Mx(k, 'exName.prompt', nums),
+      options: [
+        { text: Mx(k, 'exName.wrongHalf', nums), why: Mx(k, 'exName.whyHalf', nums) },
+        { text: Mx(k, 'exName.right', nums), correct: true },
+        { text: Mx(k, 'exName.wrongDouble', nums), why: Mx(k, 'exName.whyDouble', nums) },
+      ],
+      hints: [Mx(k, 'exName.hint1', nums), Mx(k, 'exName.hint2', nums)], explain: Mx(k, 'exName.explain', nums),
+    };
+  },
+  bSq: (lab, k) => {
+    const b = firstTight(lab); const area = L.currentArea(lab);
+    const sq = L.squareTex(b.below, b.scale);
+    const nums = { below: L.sideText(b.below, b.scale), grad: b.scale === 1 ? '1' : L.sideText(1, b.scale), area: L.areaText(area), sq: plain(sq) };
+    return {
+      id: 'bSq', kind: 'number', expected: sq.replace('{,}', '.'), answer: <MathText>{`$${sq}$`}</MathText>,
+      prompt: Mx(k, 'bSq.prompt', nums), hints: [Mx(k, 'bSq.hint1', nums), Mx(k, 'bSq.hint2', nums)], explain: Mx(k, 'bSq.explain', nums),
+    };
+  },
+  bRead: (lab, k) => {
+    const b = firstTight(lab); const area = L.currentArea(lab);
+    const nums = {
+      below: L.sideText(b.below, b.scale), above: L.sideText(b.above, b.scale), area: L.areaText(area),
+      sq: plain(L.squareTex(b.below, b.scale)), asq: plain(L.squareTex(b.above, b.scale)),
+    };
+    return {
+      id: 'bRead', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'bRead.prompt', nums),
+      options: [
+        { text: Mx(k, 'bRead.wrongAbove', nums), why: Mx(k, 'bRead.whyAbove', nums) },
+        { text: Mx(k, 'bRead.right', nums), correct: true },
+        { text: Mx(k, 'bRead.wrongBelow', nums), why: Mx(k, 'bRead.whyBelow', nums) },
+      ],
+      hints: [Mx(k, 'bRead.hint1', nums), Mx(k, 'bRead.hint2', nums)], explain: Mx(k, 'bRead.explain', nums),
+    };
+  },
+  zoom: (lab, k) => {
+    const bs = L.brackets(lab, 0).filter((b) => b.exact == null && L.tight(b)); const b = bs.at(-1); const area = L.currentArea(lab);
+    const nums = { grad: L.sideText(1, b.scale), below: L.sideText(b.below, b.scale), sq: plain(L.squareTex(b.below, b.scale)), area: L.areaText(area) };
+    return {
+      id: 'zoom', kind: 'choice',
+      prompt: Mx(k, 'zoom.prompt', nums),
+      options: [
+        { text: Mx(k, 'zoom.wrongHit', nums), why: Mx(k, 'zoom.whyHit', nums) },
+        { text: Mx(k, 'zoom.right', nums), correct: true },
+        { text: Mx(k, 'zoom.wrongMore', nums), why: Mx(k, 'zoom.whyMore', nums) },
+      ],
+      hints: [Mx(k, 'zoom.hint1', nums), Mx(k, 'zoom.hint2', nums)], explain: Mx(k, 'zoom.explain', nums),
+    };
+  },
+  gSq: (lab, k) => {
+    const i = exactCard(lab); const f = L.foundSide(lab, i); const c = lab.cards[i];
+    const nums = { area: L.areaText(c), c: L.sideText(f.v, f.scale), grad: f.scale };
+    return {
+      id: 'gSq', kind: 'number', expected: ratText(c), answer: <MathText>{`$${L.areaTex(c)}$`}</MathText>,
+      prompt: Mx(k, 'gSq.prompt', nums), hints: [Mx(k, 'gSq.hint1', nums), Mx(k, 'gSq.hint2', nums)], explain: Mx(k, 'gSq.explain', nums),
+    };
+  },
+  gRational: (lab, k) => {
+    const i = exactCard(lab); const f = L.foundSide(lab, i);
+    const nums = { c: L.sideText(f.v, f.scale) };
+    return {
+      id: 'gRational', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'gRational.prompt', nums),
+      options: [
+        { text: Mx(k, 'gRational.wrongIrr', nums), why: Mx(k, 'gRational.whyIrr', nums) },
+        { text: Mx(k, 'gRational.wrongCalc', nums), why: Mx(k, 'gRational.whyCalc', nums) },
+        { text: Mx(k, 'gRational.right', nums), correct: true },
+      ],
+      hints: [Mx(k, 'gRational.hint1', nums), Mx(k, 'gRational.hint2', nums)], explain: Mx(k, 'gRational.explain', nums),
+    };
+  },
+  gResist: (lab, k) => {
+    const i = resistingCard(lab); const c = lab.cards[i];
+    const memo = L.brackets(lab, i).filter(L.tight);
+    const nums = { area: L.areaText(c), cnt: memo.length };
+    return {
+      id: 'gResist', kind: 'choice',
+      prompt: Mx(k, 'gResist.prompt', nums),
+      options: [
+        { text: Mx(k, 'gResist.wrongFiner', nums), why: Mx(k, 'gResist.whyFiner', nums) },
+        { text: Mx(k, 'gResist.right', nums), correct: true },
+        { text: Mx(k, 'gResist.wrongNone', nums), why: Mx(k, 'gResist.whyNone', nums) },
+      ],
+      hints: [Mx(k, 'gResist.hint1', nums), Mx(k, 'gResist.hint2', nums)], explain: Mx(k, 'gResist.explain', nums),
+    };
+  },
+  rule: (lab, k, extra) => {
+    const d = discoveryParts(lab, k, extra);
+    const f = L.foundSide(lab, 0); const area = L.currentArea(lab);
+    const grad = lab.mode === 'graduation';
+    const nums = { c: f ? L.sideText(f.v, f.scale) : '', area: L.areaText(area) };
+    const key = grad ? 'grad' : f ? 'exact' : 'never';
+    return {
+      id: 'rule', kind: 'choice',
+      prompt: <MathText>{d.prompt}</MathText>,
+      options: d.options.map((o) => ({ ...o, text: typeof o.text === 'string' ? <MathText>{o.text}</MathText> : o.text })),
+      hints: [Mx(k, `rule.hint1${key}`, nums), Mx(k, `rule.hint2${key}`, nums)],
+      explain: d.formal,
+    };
+  },
+};
 
 function foundTex(lab) { const f = L.foundSide(lab, 0); return f ? L.sideTex(f.v, f.scale) : ''; }
 function foundText(lab) { const f = L.foundSide(lab, 0); return f ? L.sideText(f.v, f.scale) : ''; }
