@@ -377,7 +377,7 @@ author and a bank author per lesson from the brief. Paste:
 Phase 3 of the cycle moyen rollout — generate the next N=3 lessons of the learning-net queue.
 Read first: CLAUDE.md, docs/README.md, docs/architecture/LEARNING_NET.md (§3bis platform/DB, §4 generation contract,
 §4bis order), docs/reports/MOYEN_ROLLOUT_PHASE2_REPORT_2026-10-14.md (owner decisions D1–D12; D12: publish = push
-to dev), docs/lessons/LESSON_DEVELOPMENT_GUIDE.md end to end (§3 « How a lesson is mounted » and « Adding a GRADE »,
+to dev), docs/lessons/LESSON_DEVELOPMENT_GUIDE.md end to end (incl. §6ter, the lab prototype) and docs/reports/LAB_PROTOTYPE_ROLLOUT.md §2–§6 (§3 « How a lesson is mounted » and « Adding a GRADE »,
 §11 « Publish a lesson », §14), docs/architecture/BUNDLE_BOUNDARIES.md §4 (rules 3, 4, 9, 10),
 docs/architecture/MANIPULATION_DNA.md, docs/architecture/EXERCISE_CONTRACT.md (« Term-exam provenance »,
 « Earlier-year review link »), docs/sources/moyen/exams/EXAM_PATTERN.md §6.
@@ -397,7 +397,7 @@ Run `node scripts/learning-net-queue.mjs` so the queue is fresh, then take its f
    it, then questions on what the student did, then the name). Then: « أستعدّ » measures every review-link item; nothing
    noRebuildForLesson lists is rebuilt; pointPrerequisites only along net links; the lab follows MANIPULATION_DNA with
    two levels and meets its §17 Gen Alpha quality bar (push the UI/UX to the limit; the shared kit and KidFigure — girls in
-   hijab; no title — context then ONE direct question naming the goal and end state, §17.9; screenshots of initial and mid-activity states at four sizes, reviewed and iterated; the LabCoach onboarding on the lab — MANIPULATION_CONTRACT §8quater, default on; the module redesign checklist of guide §4quinquies); knowledge map, « أتوقّع القاعدة », « مسائل », values woven into story contexts. Lab strings go to
+   hijab; no title — context then ONE direct question naming the goal and end state, §17.9; screenshots of initial and mid-activity states at four sizes, reviewed and iterated; the LabCoach onboarding on the lab — MANIPULATION_CONTRACT §8quater, default on; the LAB PROTOTYPE layer, MANDATORY since 2026-10-28 — guide §6ter and docs/reports/LAB_PROTOTYPE_ROLLOUT.md §2–§2bis: questions over the lab after each step with the teacher switch, LabStepper, celebration, playSfx sound, restart-all, guided shell, render tests, the `memo` card data on every knowledge item and `variant="memo"` footers, module steps keeping only the trace — the lesson is done only when `node apps/web/scripts/lab-rollout-status.mjs --lesson <id>` prints ✅; the module redesign checklist of guide §4quinquies); knowledge map, « أتوقّع القاعدة », « مسائل », values woven into story contexts. Lab strings go to
    apps/web/src/i18n/locales/ar/lesson.manipulation.json (keys lesson:manipulation.<type>.*), never lesson.json;
    unit maths in packages/core/arithmetic/ are imported BY PATH, never added to the core barrel. Do NOT touch App.jsx:
    run `npm run generate:lesson-index` once the lesson's lesson.config.js and routes.jsx exist. The draft الكفاءات may

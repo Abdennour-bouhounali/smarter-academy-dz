@@ -696,7 +696,7 @@ a module supplies only content and its own `done` booleans.
 
 **Prototype (2026-10-28, `maqlub-qismat-kasrayn`):** the footer is `<KnowledgeSnapshot moduleNumber={n} variant="memo" />` and each item of
 `knowledge.jsx` carries a `memo: { rule, hook, example, trap, exam, chip, quiz }` (`quiz`: 2 questions × 3 choices for the timed « اختبر ذاكرتك ») — the memo card (KNOWLEDGE_MAP.md « The memo card »). New
-lessons follow it once the owner validates the prototype.
+lessons MUST follow it — it is validated and rolled out to every lesson (§6ter).
 
 `ContentModule` wires `useProgress`, the step progress bar, the streak and
 effects toolkit, sequential step locking (`isStepLocked` — sequential on the
@@ -1219,6 +1219,34 @@ pattern, its gate and its tests are in [`MANIPULATION_DNA.md` §16](../architect
 
 ---
 
+### 6ter. The lab prototype — MANDATORY for every new lab and lesson (owner, 2026-10-28; rollout to the 112 existing lessons finished the same day)
+
+The prototype validated on `maqlub-qismat-kasrayn` (reference lab `proportion/GearCrank.jsx`) is no longer "in progress": it is the **standard**.
+A generated lesson is NOT done until `node apps/web/scripts/lab-rollout-status.mjs --lesson <id>` prints ✅. The full definition of "done"
+(L1–L9 for a lab, C1–C6 for a lesson), the procedure, the content-quality rules and the browser walk-through are in
+[`../reports/LAB_PROTOTYPE_ROLLOUT.md`](../reports/LAB_PROTOTYPE_ROLLOUT.md) §2–§6 — read them BEFORE writing a lab; contracts:
+`MANIPULATION_CONTRACT.md` §8quinquies, `KNOWLEDGE_MAP.md` « The memo card ». What a new lab and lesson must contain from the first commit:
+
+| Piece | Rule (short; details in the rollout doc) |
+|---|---|
+| Questions over the lab (L1) | `useLabCheckpoint`: after EACH task/step, 2–4 questions on what the student just DID, built from the task's own numbers, 2 hints each, the last chain ends on the RULE (the old `ManipulationDiscovery` moves into the card). Data: `CHAINS` + `QUESTIONS` in the lab file; strings in `lesson.manipulation.json › <lab>.cp.*`. Mandatory for students |
+| Teacher switch (L2) | `useLabCheckpointSettings('<type>')`, `chain` only if `s.enabled`, `headerAction={s.control}` |
+| Stepper (L3) + celebration (L4) | `LabStepper` (never hand-made dots), `useStepCelebration()` once per step, re-armed after « إعادة » |
+| « إعادة » (L5) | restarts EVERYTHING from task 1 (state, trials, questions via `resetKey`) |
+| Sound (L6) | `playSfx` only (gesture · `bell` · `flag` · `over`), off by default, the shell's « الصوت » switch |
+| Full screen (L7) + guided (L9) | `immersive` stays on; the scene stays usable full screen; `guided={!!chain || ruleByCheckpoint}` so only the stepper guides |
+| Tests (L8) | a render test over every task of every level (text, 2 hints, one right answer, no raw key / `{{`) and the guided-mode assertion — model `gearCrank.render.test.jsx` |
+| Memo card (C2–C3) | every content-module footer is `<KnowledgeSnapshot moduleNumber={n} variant="memo" />`; every `knowledge.jsx` item carries `memo: { rule, hook, example, trap, exam, chip, quiz }` written in ONE pass (`memoContent.test.js` checks it) |
+| Module steps (C4) | the steps under a lab keep only the TRACE of what the lab asked (`answered(id)` ← `checkpoint-done`), then the bricks — they never ask again (model `Module01Nashat.jsx`) |
+| Lab onboarding | `LabCoach` as before (§6 / MANIPULATION_CONTRACT §8quater) — it is a separate layer, both stay |
+
+Do not modify the shared pieces (`LabCheckpoint`, `labCheckpoint.js`, `LabSteps`, `MemoCard`, `MemoQuiz`, `playSfx`) to fit one lab: fix a proven bug there,
+test it, and note it in the rollout doc §10. Do not invent a second question gate, stepper, celebration, sound set or end-of-module card.
+A new lab TYPE is built to the prototype first, then to the DNA design sheet (§6, `MANIPULATION_DNA.md` §7): the prototype is the shell
+around the world, not a substitute for a causal design.
+
+---
+
 ## 7. Exercises
 
 Read [`EXERCISE_CONTRACT.md`](../architecture/EXERCISE_CONTRACT.md). Two
@@ -1630,7 +1658,8 @@ exercise), the situation's analysis (synthesis). Unit 5: ex-31 (« x + y = 216 �
    name, and what proves they understood. Map it onto the stages. The entry
    point and the order of ideas are YOUR design, not the book's page order
    (§4ter); every module is one track — act, answer about it, name it (§4quater).
-4. Decide the manipulation, **at two levels**. Work in this order, and never
+4. Decide the manipulation, **at two levels**, and plan its prototype layer from the start (questions over the lab after each
+   step, stepper, sound, memo card — §6ter). Work in this order, and never
    start from a widget:
 
    ```
@@ -1655,7 +1684,7 @@ exercise), the situation's analysis (synthesis). Unit 5: ex-31 (« x + y = 216 �
 6. Write the modules, in order, on `ContentModule`.
 7. Add exercises and the evaluation module with its assessment metadata.
 8. Wire `index.jsx`, `routes.jsx`, `moduleContext.js`.
-9. Run the gates (§11) and fix what they say.
+9. Run the gates (§11) and fix what they say — including `lab-rollout-status.mjs --lesson <id>` ✅ (§6ter).
 10. Verify in the browser: Arabic everywhere, RTL at 768 px (tablet) and 1280 px, the manipulation by
     real gesture, progression through the whole lesson, Classroom Mode.
 11. **Update the documentation** if you introduced a reusable pattern — root
@@ -1953,6 +1982,9 @@ Each of these has actually happened in this repository, or is a standing rule.
 - Do not add decorative animation; every animation must explain a mathematical
   relationship.
 - Do not show a وضع القسم toggle inside a module.
+- Do not ship a lab without the prototype layer (questions over the lab, `LabStepper`, celebration, `playSfx`, restart-all, `guided`),
+  nor a module footer without `variant="memo"`, nor a knowledge item without `memo` (§6ter). Do not re-ask in the module the questions
+  the lab already asked: keep the trace. Do not hand-make dots, a second question gate or a second memo card.
 
 ---
 
@@ -2035,13 +2067,14 @@ for every element the lesson cites. Mastery criteria are the server's
 | Files | exactly the layout of §3; `index.jsx`, `routes.jsx`, `moduleContext.js` are the one-line factories |
 | `lesson.config.js` | static literals only; `id` = catalogue code; `kind`; `unit`; stages in journey order with the required set per kind (§3); `teachesLearningPointIds` on every learning module covering every LP; `estimatedDurationMin` = Σ `estimatedMin` ≤ 90; `color` a `COLOR_MAP` key; `resources[]` for every workspace manipulation (both levels, same `objective`, `autonomy` on advanced, `experience` with reason and theme) |
 | Pedagogical design | §4ter: the textbook fixes the الكفاءات, the platform designs the entry point, the examples and the order; the design (chosen entry, rejected candidates) is written in the `lesson.config.js` header; a textbook activity not chosen as entry is posed as an application |
+| Lab prototype | **mandatory (owner, 2026-10-28)**: questions over the lab after each step (`useLabCheckpoint`, teacher switch), `LabStepper`, celebration, `playSfx` sound, « إعادة » restarting everything, full screen, `guided` shell — §6ter, `reports/LAB_PROTOTYPE_ROLLOUT.md` §2 (L1–L9); `lab-rollout-status.mjs --lesson <id>` must print ✅ |
 | Lab onboarding | every manipulation has `LabCoach` (default on): a ring + one-sentence bubble on the control needed now, shown once, hidable — MANIPULATION_CONTRACT §8quater; the lab's pure `coachOf` is tested by following it to the end of every task |
-| Module track | §4quater: one track per module — the action at the top (lab with no brief above it, or the first question), then questions on what the student did, then the name (box, brick) |
+| Module track | §4quater: one track per module — the action at the top (lab with no brief above it, or the first question), then questions on what the student did, then the name (box, brick); the steps under a lab keep only the TRACE of the lab's own questions (§6ter, C4) |
 | Module shape | `ContentModule` for content, `PrerequisiteDiagnostic` for « أستعدّ » (module 0, `priorKnowledge` only, questions as literal objects with `requires` — §4 « The « أستعدّ » pattern »), `BossFinal` for « إختبار أولي » — never a hand-rolled module shell, test UI, fullscreen, toolbar or progress write |
 | Steps | `done` on ANSWERED, never on correct (`check:non-blocking`); a step may wait on `onFinished` only per §6; never pass `locked` |
 | Questions | kit components only (`TapQuestion`, `BatchChoiceQuestion`, `NumericQuestion`, `TextbookExercise` for the textbook's exercises); explicit `correct`; every distractor FALSE; `requires` on every question; the parsers of §5, never a custom one |
 | Manipulation | a type from the closed registry (`MANIPULATION_TYPE_IDS`, 54 types on 2026-10-04), two levels in one `ManipulationWorkspace`, the lesson's world as a `theme` (§6); a new type only by the recipe of MANIPULATION_CONTRACT §7ter |
-| Knowledge | `knowledge.jsx` with a plain-text `summary` per item; a brick at the point of teaching; `knowledgeMap: true`; every content module's footer `<KnowledgeSnapshot moduleNumber={N} />`; the final test's `synthese={<KnowledgeSnapshot complete variant="complete" />}`; **and** the progressive map from the start (owner decision, 2026-09-29): a `knowledgeGraph.js` exporting `KNOWLEDGE_GRAPH`, re-exported by `knowledge.jsx`, and `knowledgeMapMode: 'progressive'` — every item carried by a `notebook` node, labelled relationships, guidance only where the lesson's own exercises / questions / « أستعدّ » support it, authored per `KNOWLEDGE_MAP.md` A.10 (rules 1–16) and passing A.14. Enforced: `validate-lessons.mjs` refuses a lesson with a map but no mode / graph / re-export, and `lessonGraphs.test.js` runs the A.14 invariants on every lesson without any per-lesson code |
+| Knowledge | `knowledge.jsx` with a plain-text `summary` per item; a brick at the point of teaching; `knowledgeMap: true`; every content module's footer `<KnowledgeSnapshot moduleNumber={N} variant="memo" />` and every item's `memo` card data `{ rule, hook, example, trap, exam, chip, quiz }` (§6ter; `KNOWLEDGE_MAP.md` « The memo card »); the final test's `synthese={<KnowledgeSnapshot complete variant="complete" />}`; **and** the progressive map from the start (owner decision, 2026-09-29): a `knowledgeGraph.js` exporting `KNOWLEDGE_GRAPH`, re-exported by `knowledge.jsx`, and `knowledgeMapMode: 'progressive'` — every item carried by a `notebook` node, labelled relationships, guidance only where the lesson's own exercises / questions / « أستعدّ » support it, authored per `KNOWLEDGE_MAP.md` A.10 (rules 1–16) and passing A.14. Enforced: `validate-lessons.mjs` refuses a lesson with a map but no mode / graph / re-export, and `lessonGraphs.test.js` runs the A.14 invariants on every lesson without any per-lesson code |
 | Final test | only in the `evaluation` module; every question assessed with ONE primary LP of this lesson; every LP covered; 4–6 questions; timer ≈ 1 min per question + 1; `badges`, `completion`, `skills` as in the reference lessons |
 | Textbook | every pedagogical block carries a `source` (`src()` / `addition()`); `check:textbook` maps each extracted element to exactly one destination |
 | Figures | every textbook figure ANALYSED, then reproduced if readable or REDESIGNED with the same concept (answers recomputed, one-line caption), and `figureQuality(fig)` empty in `content/figures.test.js` (§5 « Textbook figures ») |
@@ -2066,6 +2099,7 @@ evidence, a raster image under `lessons/`, a `tier` anywhere in the lesson.
 |---|---|
 | Build | `npm run build` |
 | Unit + scripts tests | `npm test` (core, web, scripts — includes the practice oracle and the memo builder over every lesson) |
+| Lab prototype | `node apps/web/scripts/lab-rollout-status.mjs --lesson <id>` ✅; `npx vitest run <lab dir> <lesson dir> src/lessons/common/knowledge/memoContent.test.js src/lessons/common/i18nHookScope.test.js`; browser walk-through of `LAB_PROTOTYPE_ROLLOUT.md` §6 at 1366×768 (a task to the card, a wrong answer, the celebration, « إعادة », full screen, sound off, the memo card and « اختبر ذاكرتك ») |
 | Editorial gates | `npm run check:lessons` (validate:lessons --strict, validate:exercises --strict, audit:knowledge:gate, check:katex, check:lesson-index, check:routes, check:non-blocking, check:dormant-isolation, check:textbook, check:activation-drift, check:learning-net, check:entry-budget) |
 | DB handshake | `node packages/core/curriculum/exportCurriculum.mjs && php artisan smarter:import-curriculum`; `node packages/core/curriculum/exportContentRegistry.mjs && php artisan smarter:import-content-registry` |
 | Runtime | `node apps/web/e2e/lesson-route-boundary.mjs` (the lazy lesson mount: deep link, classroom shell kept, lab strings, unknown module → `*`, unit page, مذكرة; 2026-10-14), the browser suites of §11 against the dev server (all green on 2026-09-29: 27/27, 183/183, 73/73, 47/47, 9/9) + the new lesson loaded at 320 / 414 / 820 / 1440 px with no console error, no failed request, no horizontal overflow |

@@ -145,7 +145,7 @@ shared with the student too, on the link page as well. The parent pages are phon
   GENERATE YOUR OWN content — own boxes, own contexts, own numbers, own wording. Never copy the book's text to the student and never write a
   student-visible line that sends them to the book (« الكتاب ص 55 », « اقرأ ما يقوله الكتاب », « تمارين من الكتاب »); `SourceTag` is muted for
   students (`LESSON_DEVELOPMENT_GUIDE.md` §4ter-bis).
-- **The lab prototype goes to EVERY lesson** (owner, 2026-10-28): questions OVER the lab after each step (mandatory for students; a teacher
+- **The lab prototype goes to EVERY lesson — rollout DONE (112/112) and now BINDING on every NEW lab and lesson** (owner, 2026-10-28; a generated lesson is not done until `lab-rollout-status.mjs --lesson <id>` prints ✅; `LESSON_DEVELOPMENT_GUIDE.md` §6ter): questions OVER the lab after each step (mandatory for students; a teacher
   may switch them off for his own account), a clear stepper and a success celebration, game sounds (off by default, a « الصوت » switch in
   every lab), « إعادة » that restarts everything, full screen in every lab, and the end-of-module card as a memo sheet with its timed
   challenge « اختبر ذاكرتك ». Ground truth, batches of 20 lessons and per-session prompt: `docs/reports/LAB_PROTOTYPE_ROLLOUT.md`;

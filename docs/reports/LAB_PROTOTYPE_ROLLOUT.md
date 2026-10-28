@@ -5,6 +5,11 @@
 > Échelle : **112 leçons, 98 labos, 381 cartes de fin de module, 638 connaissances** (à la date du plan ; la vérité courante est
 > `node apps/web/scripts/lab-rollout-status.mjs`). **20 leçons par session**, 6 lots (§7).
 
+> **Statut (2026-10-28) : déploiement TERMINÉ — et ce document devient le CONTRAT des nouvelles leçons.** Toute leçon ou tout labo
+> généré ensuite (1AM–4AM, nouvelle unité, nouveau type de labo) respecte §2 (L1–L9) et §2bis (C1–C6) dès le premier commit et n'est
+> « fait » que lorsque `node apps/web/scripts/lab-rollout-status.mjs --lesson <id>` affiche ✅ (le script compte toute nouvelle leçon).
+> Résumé côté génération : `docs/lessons/LESSON_DEVELOPMENT_GUIDE.md` §6ter. Les lots §7 restent l'historique.
+
 ---
 
 ## 0. À lire, et seulement ça (économie de jetons)

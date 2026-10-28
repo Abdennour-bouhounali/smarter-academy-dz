@@ -378,6 +378,9 @@ as a substitute for causality: every motion must show a mathematical change.
    `MANIPULATION_CONTRACT.md` §8bis).
 6. Would an 11–13-year-old (Gen Alpha) WANT to touch it — is it as good as the best app on their phone? If it only
    « works », it is **not done**: push it to the limit (§17, owner rule, 2026-10-14).
+7. Does it carry the lab prototype layer — questions over the lab after each step, a `LabStepper`, the celebration, `playSfx` sound,
+   a « إعادة » that restarts everything, full screen, `guided` shell (owner, 2026-10-28)? If not, it is **not done**
+   (`reports/LAB_PROTOTYPE_ROLLOUT.md` §2, L1–L9). The prototype is the shell around the world; it never replaces the causal design.
 
 ## 15. Status
 
