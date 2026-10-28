@@ -266,3 +266,55 @@ describe('decimal-comma — découverte et règle, avec SES planches', () => {
     expect(out).not.toMatch(RAW);
   });
 });
+
+describe('decimal-comma — questions pendant le labo (LabCheckpoint)', () => {
+  const k = (key, o) => i18n.t(`lesson:manipulation.decimalComma.${key}`, o);
+  for (const [name, props] of Object.entries(cases)) {
+    it(`${name} : chaque question de chaque tâche a un texte, une seule bonne réponse, deux indices, ni clé brute ni {{`, async () => {
+      const { chainOf, QUESTIONS } = await import('./DecimalComma');
+      const L = await import('../logic/decimalComma');
+      const lab = L.init(props);
+      lab.tasks.forEach((_, i) => {
+        const chain = chainOf(lab, i);
+        expect(chain.length, `${i}`).toBeGreaterThanOrEqual(2);
+        if (i === lab.tasks.length - 1) expect(chain.at(-1)).toBe('rule');
+        for (const qid of chain) {
+          if (qid === 'rule') continue;   // la découverte : couverte par « découverte et règle »
+          const q = QUESTIONS[qid](lab, i, k);
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${i}.${qid}`).not.toMatch(RAW);
+          expect(out, `${i}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${i}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${i}.${qid}`).toHaveLength(1);
+          else expect(q.expected, `${i}.${qid}`).toBeTruthy();
+        }
+      });
+    });
+  }
+  it('les nombres viennent des tâches : 235 centièmes, 30, le 0 de 0,05, 3 chiffres pour 3125/1000, 2,50 = 2,5, 0,035', async () => {
+    const { chainOf, QUESTIONS } = await import('./DecimalComma');
+    const L = await import('../logic/decimalComma');
+    const b = L.init(cases['mosaic beginner']);
+    expect(chainOf(b, 0)).toEqual(['count', 'tenth']);
+    expect(QUESTIONS.tenth(b, 0, k).expected).toBe('30');
+    expect(chainOf(b, 2)).toEqual(['count', 'zero', 'rule']);
+    const a = L.init(cases['mosaic advanced']);
+    expect(chainOf(a, 0)).toEqual(['places', 'count']);
+    expect(QUESTIONS.places(a, 0, k).expected).toBe('3');
+    expect(chainOf(a, 2)).toEqual(['trailing', 'count', 'rule']);
+    const m = L.init(cases['machine beginner']);
+    expect(QUESTIONS.result(m, 3, k).expected).toBe('0,035');
+    expect(chainOf(m, 3)).toEqual(['result', 'moved', 'zeros', 'rule']);
+  });
+});
+
+describe('decimal-comma — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('questions actives : ni la progression ni le bouton d’indice ; checkpoints={false} : les deux reviennent', () => {
+    const g = html(cases['mosaic beginner']);
+    expect(g).not.toContain('data-manipulation-progress');
+    expect(g).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    const off = html({ ...cases['mosaic beginner'], checkpoints: false });
+    expect(off).toContain('data-manipulation-progress');
+    expect(off).toContain(i18n.t('lesson:manipulation.hint.show'));
+  });
+});

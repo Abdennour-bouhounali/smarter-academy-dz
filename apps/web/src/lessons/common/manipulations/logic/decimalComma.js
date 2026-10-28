@@ -232,6 +232,15 @@ export function restartTask(s) {
   return put(s, { boards: Object.freeze(boards), last: null });
 }
 
+/** « أعِد التجربة » (questions du labo) : LA MÊME tâche repart de sa virgule d'origine, NON faite (la carte se rouvrira à la réussite). */
+export function retryTask(s) {
+  const boards = s.boards.slice();
+  boards[s.ti] = board0(s.tasks[s.ti]);
+  const done = { ...s.done }; delete done[s.ti];
+  const solved = { ...s.solved }; delete solved[s.ti];
+  return put(s, { boards: Object.freeze(boards), done: Object.freeze(done), solved: Object.freeze(solved), last: null, free: null });
+}
+
 /* ── Ses propres chiffres : la planche LIBRE ────────────────────────────────────────────── */
 
 const freeBoard0 = (core, startPoint, op) => ({ core, startPoint, op, zl: 0, zr: 0, pos: core.length - startPoint });

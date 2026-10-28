@@ -13,6 +13,10 @@ import { LabCard, PromptCard, VerdictBanner } from '../primitives/LabKit';
 import KidFigure from '../primitives/KidFigure';
 import RulerTape from '../primitives/RulerTape';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { LEVELS } from '../levels';
 import * as L from '../logic/rulerCompare';
 
@@ -55,6 +59,14 @@ import * as L from '../logic/rulerCompare';
  *
  * ONBOARDING : `coach` (défaut true) → `LabCoach` ; `logic/rulerCompare.js › coachOf` (ruler · verdict · place · check · next) ne dit jamais OÙ.
  *
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 1, 2026-10-28) : `checkpoints` (défaut true). Après CHAQUE
+ * tâche réussie, une suite de questions sur ce que l'élève vient de FAIRE, construite sur SES sauts (`chainOf`, `QUESTIONS`) : comparer — la
+ * lecture à SA graduation, la graduation la plus grossière qui sépare (ou, pour =, pourquoi le 0 final ne compte pas) ; ranger — la
+ * graduation qui range tout, pourquoi tel saut avant tel autre ; la DERNIÈRE suite finit par la règle (l'ancienne découverte, qui formalise).
+ * Obligatoires pour tout élève ; l'enseignant seul les coupe pour SON compte. Questions actives → `guided` (ni « جرّب › اكتشف › صِغ » ni
+ * « تلميح »). ÉTAPES : `LabStepper` (`[data-rc-step=<i>]`) + fête par tâche ; « إعادة » repart de la tâche 1 ; « أعِد التجربة » remet LA MÊME
+ * tâche (`L.retryTask`). SON : `tooth` à chaque cran de règle (plus grave vers le mètre) et à chaque saut posé, `flag` à la tâche réussie,
+ * `over` pour un verdict faux ou refusé (règle trop grossière).
  * Props (contrat fixé avec la leçon) : `world` ('jump'), `tasks` ([{ kind: 'compare', a, b } | { kind: 'order', values, dir }]), `level`, `levels`, `coach`,
  * `title`, `lead`, `onTrial({ task, kind, event, g, a, b, verdict, ok, decided, free, … })`, `onFinished({ tasks })` — par `state.report`.
  *
@@ -90,7 +102,7 @@ export function numbersFor({ world, tasks, level }) {
 const said = (k, r) => k(`count.${UNIT[r.g]}`, { count: r.count });
 
 export default function RulerCompare({
-  world, tasks, title, lead, level, levels: withLevels = true, coach: coachOn = true,
+  world, tasks, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -100,14 +112,39 @@ export default function RulerCompare({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
   if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    const restart = scene.key === numsKey && scene.rc !== state.resetCount;
-    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-    setLab(restart ? L.restartTask(lab) : L.init(nums));
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la tâche 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
+    setLab(L.init(nums));
   }
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : la suite de la tâche courante ; la dernière finit par la règle (elle remplace la découverte automatique)
+  const cpSettings = useLabCheckpointSettings('ruler-compare');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpActive = cpOn && cpSettings.enabled;
+  const chain = cpActive && !lab.free ? chainOf(lab, lab.ti) : null;
+  const cp = useLabCheckpoint({
+    id: chain ? `t${lab.ti}` : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, lab.ti, k)) : null,
+    reached: L.taskDone(lab) && !lab.free,
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.retryTask),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => { if (chainOf(lab, Number(id.slice(1))).includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  useEffect(() => { if (ready && !cpActive) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son du geste (muet sans « الصوت ») : un cran de règle, un saut posé, la tâche réussie, le refus
+  const lastSeen = useRef(lab.last);
+  useEffect(() => {
+    const v = lab.last;
+    if (v === lastSeen.current) return;
+    lastSeen.current = v;
+    if (!v) return;
+    if (v.event === 'ruler') playSfx('tooth', { pitch: v.g > v.from ? 1 : 0.75 });
+    else if (v.event === 'place') playSfx('tooth');
+    else if (v.ok === true && !v.free) playSfx('flag');
+    else if (v.ok === false || v.refused) playSfx('over');
+  }, [lab.last]);
   // `onFinished` : UNE fois, quand toutes les tâches guidées sont faites (la découverte et la règle suivent, dans le même cadre)
   const finishedOnce = useRef(false);
   useEffect(() => {
@@ -124,7 +161,7 @@ export default function RulerCompare({
   }, [nTrials, lab.trials]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── onboarding ── */
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'ruler-compare', step: coachStep,
     text: coachStep ? k(`coach.${coachStep.id}`) : '',
@@ -165,13 +202,14 @@ export default function RulerCompare({
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={discovery}
+      guided={cpActive}
       explanation={k('explanation')}
     >
       <ManipulationStage className="bg-gradient-to-b from-amber-50/60 to-white">
         <div ref={boxRef} className="space-y-2" data-ruler-compare data-world="jump" data-kind={kind} data-task={lab.ti}
           data-solved={ready ? 'true' : 'false'} data-layout={width >= 640 ? 'wide' : width >= 560 ? 'medium' : 'narrow'}>
           <style dangerouslySetInnerHTML={{ __html: MOTION_CSS }} />
-          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} glanceRef={glanceRef} lead={state.isAuthoredLevel ? lead : null} />
+          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} glanceRef={glanceRef} lead={state.isAuthoredLevel ? lead : null} cp={cp} />
           {lab.trials.length > 0 && (
             <LabFold id="ruler-compare.trials" title={k('trialsTitle')}>
               <ul className="space-y-0.5 text-xs" data-rc-trials={lab.trials.length}>
@@ -247,7 +285,7 @@ function bannerOf(lab, k) {
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-function Lab({ lab, setLab, k, width, screenH, glanceRef, lead }) {
+function Lab({ lab, setLab, k, width, screenH, glanceRef, lead, cp }) {
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
   const a = L.activeOf(lab);
   const task = lab.tasks[lab.ti];
@@ -273,21 +311,20 @@ function Lab({ lab, setLab, k, width, screenH, glanceRef, lead }) {
     return k('context.compare', { x: jumpers[0].name, a: iso(task.a), y: jumpers[1].name, b: iso(task.b) });
   })();
   const question = free ? k(order ? `question.freeOrder_${a.task.dir}` : 'question.free') : order ? k(`question.order_${task.dir}`) : k('question.compare');
+  // une étape est FAITE quand la tâche est réussie ET que ses questions (LabCheckpoint) sont répondues : la pastille passe au vert et on fête
+  const stepDone = lab.tasks.map((_, i) => !!lab.done[i] && (i !== lab.ti || !cp.blocking));
   const steps = lab.tasks.length > 1 && !free && (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      <span className="text-xs font-black text-indigo-900/60" aria-hidden="true">{k('stepsLabel')}</span>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={i} role="listitem" data-rc-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-indigo-600 bg-indigo-600 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-indigo-100 bg-white text-indigo-400'}`}>
-            {d && !cur ? <Check className="h-3.5 w-3.5" strokeWidth={3} aria-hidden="true" /> : <bdi dir="ltr">{i + 1}</bdi>}
-          </span>
-        );
-      })}
-    </div>
+    <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-rc-step" />
   );
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // L.init (« إعادة », autre niveau) : on refête
+  const nowDone = !free && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.ti)) return;
+    celebrated.current.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
   const prompt = (
     <PromptCard size={narrow ? 'md' : 'lg'} className={compact && !narrow ? '!space-y-1.5 !p-3.5' : undefined} aside={steps || null} context={context} contextProps={{ 'data-rc-context': free ? 'free' : task.kind }}
       title={question} titleClassName={compact || narrow ? 'text-lg' : 'text-xl'} lamp={!free && done ? 'on' : 'off'}
@@ -295,7 +332,7 @@ function Lab({ lab, setLab, k, width, screenH, glanceRef, lead }) {
   );
 
   /* ── le bandeau de retour + « المهمة التالية » ── */
-  const canNext = L.canNext(lab);
+  const canNext = L.canNext(lab) && !cp.blocking;
   const mood = banner.tone === 'emerald' ? 'proud' : banner.tone === 'rose' ? 'wonder' : 'happy';
   const bannerEl = (
     <VerdictBanner tone={banner.tone} icon={banner.icon} size="sm" className="min-h-[3.4rem]" data-rc-banner={lab.last ? lab.last.event : ''}>
@@ -335,6 +372,8 @@ function Lab({ lab, setLab, k, width, screenH, glanceRef, lead }) {
   return (
     <>
       <div ref={glanceRef} className="relative mx-auto space-y-2.5" style={{ maxWidth: MAX_W }} data-rc-glance>
+        {party.node}
+        {cp.node}
         {prompt}
         {order ? (
           <>
@@ -893,3 +932,101 @@ function OrderChain({ order, k }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+const RULERS = ['m', 'dm', 'cm', 'mm'];
+
+/** La suite de la tâche i (comparer : lecture + graduation, ou le 0 final ; ranger : graduation + une paire) ; la DERNIÈRE finit par la règle. */
+export function chainOf(lab, i) {
+  const t = lab.tasks[i];
+  const out = t.kind === 'order' ? ['rowG', 'pair'] : ['read', t.cmp === 0 ? 'equal' : 'grad'];
+  return i === lab.tasks.length - 1 ? [...out, 'rule'] : out;
+}
+
+const C = (k, key, o) => k(`cp.${key}`, o);
+const pick = (list, right, whys) => list.map((text, i) => (i === right ? { text, correct: true } : { text, why: whys[i] }));
+const rulerName = (k, g) => k(`ruler.${RULERS[g]}`);
+/** Trois graduations distinctes : la juste puis deux voisines (une plus grossière si elle existe, sinon deux plus fines). */
+const gradOptions = (g) => [g, g > 0 ? g - 1 : Math.min(3, g + 2), Math.min(3, g + 1) === g ? g - 2 : g + 1].filter((x, j, a) => x >= 0 && x <= 3 && a.indexOf(x) === j);
+/** Pourquoi une graduation fausse : trop grossière (deux sauts lus pareil), ou plus fine que nécessaire. */
+function gradWhy(k, vals, texts, gx, g) {
+  if (gx > g) return C(k, 'grad.whyFiner', { ruler: rulerName(k, gx), right: rulerName(k, g) });
+  for (let a = 0; a < vals.length; a += 1) for (let b = a + 1; b < vals.length; b += 1) {
+    if (!D.decidedAt(vals[a], vals[b], gx)) return C(k, 'grad.whyCoarse', { ruler: rulerName(k, gx), x: iso(texts[a]), y: iso(texts[b]), n: iso(D.readAt(vals[a], gx).count) });
+  }
+  return C(k, 'grad.whyFiner', { ruler: rulerName(k, gx), right: rulerName(k, g) });
+}
+
+/** Chaque question est construite sur LES sauts de la tâche (rien en dur). */
+export const QUESTIONS = {
+  read: (lab, i, k) => {
+    const t = lab.tasks[i];
+    const g = lab.solved[i]?.g ?? t.minG;
+    const n = D.readAt(t.av, g).count;
+    const m = D.readAt(t.bv, g).count;
+    const x = L.jumperOf('compare', i, 0).name;
+    const o = { ruler: rulerName(k, g), x, a: iso(t.a), n: iso(n), m: iso(m), b: iso(t.b) };
+    return {
+      id: 'read', kind: 'number', expected: String(n), answer: <bdi dir="ltr">{n}</bdi>,
+      prompt: C(k, 'read.prompt', o), hints: [C(k, 'read.hint1', o), C(k, 'read.hint2', o)], explain: C(k, 'read.explain', o),
+    };
+  },
+  grad: (lab, i, k) => {
+    const t = lab.tasks[i];
+    const g = t.minG;
+    const opts = gradOptions(g);
+    const o = { a: iso(t.a), b: iso(t.b), right: rulerName(k, g), na: iso(D.readAt(t.av, g).count), nb: iso(D.readAt(t.bv, g).count) };
+    return {
+      id: 'grad', kind: 'choice', cols: 3, prompt: C(k, 'grad.prompt', o),
+      options: pick(opts.map((x) => rulerName(k, x)), 0, opts.map((x) => (x === g ? null : gradWhy(k, t.vals, t.values, x, g)))),
+      hints: [C(k, 'grad.hint1', o), C(k, 'grad.hint2', o)], explain: C(k, 'grad.explain', o),
+    };
+  },
+  equal: (lab, i, k) => {
+    const t = lab.tasks[i];
+    const [long, short] = t.av.k >= t.bv.k ? [t.a, t.b] : [t.b, t.a];
+    const o = { a: iso(t.a), b: iso(t.b), long: iso(long), short: iso(short) };
+    return {
+      id: 'equal', kind: 'choice', prompt: C(k, 'equal.prompt', o),
+      options: pick([C(k, 'equal.right'), C(k, 'equal.digits'), C(k, 'equal.whole')], 0, [null, C(k, 'equal.whyDigits', o), C(k, 'equal.whyWhole', o)]),
+      hints: [C(k, 'equal.hint1', o), C(k, 'equal.hint2', o)], explain: C(k, 'equal.explain', o),
+    };
+  },
+  rowG: (lab, i, k) => {
+    const t = lab.tasks[i];
+    const g = t.rowG;
+    const opts = gradOptions(g);
+    const o = { right: rulerName(k, g), jumps: k('jump', { count: t.n }) };
+    return {
+      id: 'rowG', kind: 'choice', cols: 3, prompt: C(k, 'rowG.prompt', o),
+      options: pick(opts.map((x) => rulerName(k, x)), 0, opts.map((x) => (x === g ? null : gradWhy(k, t.vals, t.values, x, g)))),
+      hints: [C(k, 'rowG.hint1'), C(k, 'rowG.hint2', o)], explain: C(k, 'rowG.explain', o),
+    };
+  },
+  pair: (lab, i, k) => {
+    const t = lab.tasks[i];
+    // le couple qui piège : le plus PETIT a plus de chiffres après la virgule (sinon le premier couple de valeurs différentes)
+    let best = null;
+    for (let a = 0; a < t.n; a += 1) for (let b = 0; b < t.n; b += 1) {
+      if (a === b || D.cmp(t.vals[a], t.vals[b]) >= 0) continue;
+      const trap = t.vals[a].k > t.vals[b].k;
+      if (!best || (trap && !best.trap)) best = { s: a, l: b, trap };
+    }
+    const g = D.minGraduation(t.vals[best.s], t.vals[best.l]);
+    const [first, second] = t.dir === 'asc' ? [best.s, best.l] : [best.l, best.s];
+    const o = {
+      first: iso(t.values[first]), second: iso(t.values[second]), small: iso(t.values[best.s]), big: iso(t.values[best.l]),
+      ruler: rulerName(k, g), cs: iso(D.readAt(t.vals[best.s], g).count), cb: iso(D.readAt(t.vals[best.l], g).count),
+    };
+    return {
+      id: 'pair', kind: 'choice', prompt: C(k, `pair.prompt_${t.dir}`, o),
+      options: pick([C(k, 'pair.right', o), C(k, 'pair.longer', o), C(k, 'pair.digits', o)], 0, [null, C(k, 'pair.whyLonger', o), C(k, 'pair.whyDigits', o)]),
+      hints: [C(k, 'pair.hint1', o), C(k, 'pair.hint2', o)], explain: C(k, 'pair.explain', o),
+    };
+  },
+  rule: (lab, i, k) => ({
+    id: 'rule', kind: 'choice', prompt: k('discovery.prompt'), options: discoveryOptions(lab, k),
+    hints: [C(k, 'rule.hint1'), C(k, 'rule.hint2')], explain: <Formal lab={lab} k={k} />,
+  }),
+};

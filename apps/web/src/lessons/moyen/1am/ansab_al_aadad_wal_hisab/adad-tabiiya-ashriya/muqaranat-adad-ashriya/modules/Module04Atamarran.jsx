@@ -37,7 +37,7 @@ export default function Module04Atamarran() {
         step(6, 'deep-3', 'بطاقات الأرقام', ['tartib-silsila']),
         step(7, 'ict', 'علامات القسم', ['tartib-silsila']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

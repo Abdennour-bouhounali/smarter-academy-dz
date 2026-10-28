@@ -22,6 +22,9 @@ import { ACTIVITY, FLOWERS, GUIDE } from '../content/textbook';
  * Les ÉTAPES sont les questions du manuel (أ, ب, ج, هـ), répondues DEPUIS LES ESSAIS de l'élève (listés au-dessus,
  * `[data-activity-evidence]`) ; la règle (brique gardée par « أتوقّع القاعدة ») vient après ج. La question د (يونس et la
  * division posée) est le module 2. LP : P1.
+ * Déploiement du prototype (2026-10-28) : le quotient, le reste, le حصر et la règle sont posés PAR-DESSUS le labo (`DivisionJumps ›
+ * chainOf`, 47 ÷ 6 puis 279 ÷ 14) ; les étapes 2–4 en gardent la TRACE (`checkpoint-done` de 279) et ne restent posées ici que pour qui
+ * n'a pas fait le niveau متقدم.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const BOUQUETS = { 10: '10 باقات', 20: '20 باقة' };
@@ -38,6 +41,13 @@ export default function Module01Nashat() {
   const { a, b } = ACTIVITY.numbers;
   const ofTextbook = trials.filter((e) => e.a === a && e.b === b);
   const tried = (q) => ofTextbook.find((e) => e.q === q);
+  // les questions posées PAR-DESSUS le labo : la suite de 279 (متقدم) couvre ب، ج، هـ ; celle de 47 (مبتدئ) pose aussi la règle
+  const answered = (id) => trials.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const inLab = answered(`a${a}`);
+  const ruleInLab = inLab || answered(`a${FLOWERS.numbers.a}`);
+  const Trace = ({ id, children }) => (
+    <p data-evidence={id} data-tried="true" className="rounded-xl border-2 border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900">{children}</p>
+  );
 
   return (
     <ContentModule
@@ -97,8 +107,8 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 2, title: 'بين أيّ عددين متتاليين نحصر الحاصل؟', subtitle: 'السؤال ب) من الكتاب', done: q2,
-          content: (
+          num: 2, title: 'بين أيّ عددين متتاليين نحصر الحاصل؟', subtitle: 'السؤال ب) من الكتاب', done: q2 || inLab,
+          content: inLab ? <Trace id="bracket">أجبتَ في المختبر: <bdi dir="ltr">14 × 19 ≤ 279 &lt; 14 × 20</bdi> — آخر قفزة قبل 279 والقفزة التي توقع الأرنب في الماء.</Trace> : (
             <TapQuestion
               prompt={<MathText>{'أتمم الحصر: $14 \\times \\ldots < 279 < 14 \\times \\ldots$'}</MathText>}
               options={[M('$14 \\times 19 < 279 < 14 \\times 20$'), M('$14 \\times 18 < 279 < 14 \\times 19$'), M('$14 \\times 20 < 279 < 14 \\times 21$')]}
@@ -111,8 +121,8 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 3, title: 'لماذا نتوقّف عند 19 باقة؟', subtitle: 'السؤال ج) من الكتاب', done: q3a && q3b,
-          content: (
+          num: 3, title: 'لماذا نتوقّف عند 19 باقة؟', subtitle: 'السؤال ج) من الكتاب', done: (q3a && q3b) || inLab,
+          content: inLab ? <Trace id="stop">أجبتَ في المختبر: بعد 19 قفزة يبقى 13، و 13 أصغر من 14 فلا تكفي لقفزة أخرى.</Trace> : (
             <div className="space-y-3">
               <NumericQuestion prompt={<span>ربطنا 19 باقة كاملة من 279 زهرة. كم زهرة تبقى؟</span>} expected={13} parse={parseDec}
                 requires={['tarh-tabii']} explain={<MathText>{'$279 - 266 = 13$ ، و 13 لا تكفي لباقة أخرى من 14.'}</MathText>}
@@ -127,9 +137,10 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 4, title: 'كيف نكتب ما وجدناه؟', subtitle: 'أتمم المساواة هـ)، ثم اكتب قاعدتك', done: q4,
+          num: 4, title: 'كيف نكتب ما وجدناه؟', subtitle: 'أتمم المساواة هـ)، ثم اكتب قاعدتك', done: q4 || inLab,
           content: (
             <div className="space-y-3">
+              {inLab ? <Trace id="equality">أجبتَ في المختبر: <bdi dir="ltr">279 = 14 × 19 + 13</bdi> مع <bdi dir="ltr">13 &lt; 14</bdi>.</Trace> : (
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'أتمم المساواة $279 = 14 \\times \\ldots + \\ldots$'}</MathText></p>}
                 rows={[
@@ -144,12 +155,13 @@ export default function Module01Nashat() {
                 )}
                 onAnswered={() => setQ4(true)}
               />
-              {q4 && <KnowledgeBrick id="qisma-iqlidiya" lead="ما الذي جعلك تتوقّف عند 19 باقة، ولم يجعلك تنتظر أن لا يبقى شيء؟" />}
+              )}
+              {(q4 || ruleInLab) && <KnowledgeBrick id="qisma-iqlidiya" lead="ما الذي جعلك تتوقّف عند 19 باقة، ولم يجعلك تنتظر أن لا يبقى شيء؟" />}
             </div>
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

@@ -219,3 +219,49 @@ describe('ruler-compare — découverte et règle, avec SES nombres', () => {
     expect(highlightParts('12', 0, 0).map((p) => p.t).join('')).toBe('12');
   });
 });
+
+describe('ruler-compare — questions pendant le labo (LabCheckpoint)', () => {
+  const k = (key, o) => i18n.t(`lesson:manipulation.rulerCompare.${key}`, o);
+  for (const [name, props] of Object.entries(cases)) {
+    it(`${name} : chaque question de chaque tâche a un texte, une seule bonne réponse, deux indices, ni clé brute ni {{`, async () => {
+      const { chainOf, QUESTIONS } = await import('./RulerCompare');
+      const lab = L.init(props);
+      lab.tasks.forEach((_, i) => {
+        const chain = chainOf(lab, i);
+        expect(chain.length).toBeGreaterThanOrEqual(2);
+        for (const qid of chain) {
+          if (qid === 'rule') continue;   // la découverte : couverte ailleurs
+          const q = QUESTIONS[qid](lab, i, k);
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${i}.${qid}`).not.toMatch(RAW);
+          expect(out, `${i}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${i}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') {
+            expect(q.options.filter((o) => o.correct), `${i}.${qid}`).toHaveLength(1);
+            expect(new Set(q.options.map((o) => renderToString(<>{o.text}</>))).size, `${i}.${qid} distinctes`).toBe(q.options.length);
+          } else expect(q.expected, `${i}.${qid}`).toBeTruthy();
+        }
+      });
+    });
+  }
+  it('les nombres viennent des sauts : 46 décimètres pour 4,6 ; le décimètre sépare 4,6 et 4,35 ; = pour 12,70', async () => {
+    const { chainOf, QUESTIONS } = await import('./RulerCompare');
+    const lab = L.init(cases[Object.keys(cases)[0]]);
+    expect(chainOf(lab, 0)).toEqual(['read', 'grad']);
+    expect(QUESTIONS.read(lab, 0, k).expected).toBe('46');
+    expect(chainOf(lab, 2)).toEqual(['read', 'equal']);
+    expect(chainOf(lab, lab.tasks.length - 1).at(-1)).toBe('rule');
+  });
+});
+
+describe('ruler-compare — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('questions actives : ni la progression ni le bouton d’indice ; checkpoints={false} : les deux reviennent', () => {
+    const props = cases[Object.keys(cases)[0]];
+    const g = html(props);
+    expect(g).not.toContain('data-manipulation-progress');
+    expect(g).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    const off = html({ ...props, checkpoints: false });
+    expect(off).toContain('data-manipulation-progress');
+    expect(off).toContain(i18n.t('lesson:manipulation.hint.show'));
+  });
+});

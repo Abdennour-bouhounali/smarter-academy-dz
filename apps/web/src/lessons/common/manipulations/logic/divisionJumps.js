@@ -127,6 +127,11 @@ export const backToFirst = (s) => (s.a === s.a0 ? s : put(s, { a: s.a0, last: nu
 /** Le contraste a-t-il été vu jusqu'au bout (then fermé exactement) ? */
 export const thenDone = (s) => s.then != null && seen(s, s.then, 'exact');
 
+/** « أعِد التجربة » (questions du labo) : l'étape repart — le nombre affiché revient au ruban vide et ses essais sont oubliés. */
+export function retryStep(s) {
+  return put(s, { q: DEFAULT_Q, trials: Object.freeze(s.trials.filter((tr) => tr.a !== s.a)), last: null });
+}
+
 /* ── Écritures ────────────────────────────────────────────────────────────────────── */
 
 /** Ce que la leçon reçoit pour un essai (`onTrial`). `r` est null pour un dépassement. */

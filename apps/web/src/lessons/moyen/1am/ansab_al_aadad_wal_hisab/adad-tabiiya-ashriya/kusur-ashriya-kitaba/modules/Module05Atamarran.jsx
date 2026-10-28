@@ -53,7 +53,7 @@ export default function Module05Atamarran() {
         step(8, 'ex-26', 'احسب ذهنيًا', ['azaha-fasila']),
         step(9, 'ex-27', 'آلة معطّلة ووحدات القياس', ['azaha-fasila']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={5} />}
+      footer={<KnowledgeSnapshot moduleNumber={5} variant="memo" />}
     />
   );
 }

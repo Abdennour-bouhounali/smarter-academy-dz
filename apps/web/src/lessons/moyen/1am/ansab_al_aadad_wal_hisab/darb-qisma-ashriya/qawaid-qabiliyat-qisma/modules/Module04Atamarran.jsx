@@ -35,7 +35,7 @@ export default function Module04Atamarran() {
         { num: 5, title: 'تمرين 32 — جواهر إيناس', done: !!done['ex-32'],
           content: <TextbookExercise exercise={EX['ex-32']} requires={['qabiliya-baqi']} onAnswered={mark('ex-32')} /> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }
