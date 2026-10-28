@@ -136,10 +136,14 @@ Tests PHP (si l'API change) : pas de SQLite local — base MySQL jetable `sa_lab
 
 ---
 
-## 7. Les lots (ordre : année puis dossier = unité ; 20 leçons par session)
+## 7. Les lots (20 leçons par session)
 
-Une leçon de synthèse (« وضعية إدماجية ») n'a pas de labo : seulement C2–C3. Le prototype (lot 2) est fait ; il lui reste L1 pour le monde
-`reverse` (module 2) et le niveau متقدم de `gear-crank` (à traiter au lot 2).
+**Ordre (propriétaire, 2026-10-28) :** le **lot 1** est FIGÉ (commencé : 1AM, 2AM et le début de 3AM). Ensuite **4AM d'abord**, puis 3AM
+(puis 2AM et 1AM, déjà tous dans le lot 1) : lots 2 à 5 = 4AM (le lot 5 finit par les premières leçons de 3AM), lot 6 = la fin de 3AM.
+Dans chaque année, l'ordre est celui des dossiers (= des unités). Le script d'état calcule ces lots (`--batch N`).
+
+Une leçon de synthèse (« وضعية إدماجية ») n'a pas de labo : seulement C2–C3. Le prototype (`maqlub-qismat-kasrayn`, lot 5) est fait ; il lui
+reste L1 pour le monde `reverse` (module 2) et le niveau متقدم de `gear-crank` (à traiter avec le lot 5).
 
 ### Lot 1 — 20 leçons · 117 connaissances · 81 cartes · 20 labos
 
@@ -166,122 +170,122 @@ Une leçon de synthèse (« وضعية إدماجية ») n'a pas de labo : seul
 | 19 | `qimat-ibara-harfiya` | 3am | `marble-run` | 4 | 7 | ⬜ |
 | 20 | `tabsit-hadhf-aqwas` | 3am | `like-terms` | 4 | 8 | ⬜ |
 
-### Lot 2 — 20 leçons · 125 connaissances · 73 cartes · 19 labos
+### Lot 2 — 20 leçons · 79 connaissances · 62 cartes · 15 labos
 
 | # | Leçon | Année | Labo(s) | Cartes | Connaissances | État |
 |---|---|---|---|---|---|---|
-| 1 | `wadiya-idmajiya-ibarat-harfiya-3` | 3am | — (synthèse) | 1 | 3 | ⬜ |
-| 2 | `adad-natiq` | 3am | `number-line-pegs` | 4 | 5 | ⬜ |
-| 3 | `amaliyat-natiqa` | 3am | `merge-board` | 4 | 6 | ⬜ |
-| 4 | `jam-tarh-kasrayn` | 3am | `seed-rake` | 4 | 5 | ⬜ |
-| 5 | `maqlub-qismat-kasrayn` | 3am | `gear-crank` | 4 | 6 | ✅ prototype |
-| 6 | `tasawi-muqaranat-kasrayn` | 3am | `shade-match` | 4 | 6 | ⬜ |
-| 7 | `wadiya-idmajiya-kusur-natiqa` | 3am | — (synthèse) | 1 | 3 | ⬜ |
-| 8 | `hasr-adad-ushri` | 3am | `scoop-scale` | 4 | 7 | ⬜ |
-| 9 | `muadalat-darajat-ula` | 3am | `term-ferry` | 4 | 7 | ⬜ |
-| 10 | `musawiyat-amaliyat` | 3am | `equality-lanes` | 4 | 6 | ⬜ |
-| 11 | `mutabayinat-amaliyat` | 3am | `loom-threads` | 4 | 8 | ⬜ |
-| 12 | `kitaba-ilmiya-rutba` | 3am | `size-ladder` | 4 | 7 | ⬜ |
-| 13 | `qawaid-quwa-ashara` | 3am | `unit-ladder` | 4 | 7 | ⬜ |
-| 14 | `quwa-adad-ashara` | 3am | `ten-zoom` | 4 | 8 | ⬜ |
-| 15 | `quwat-adad-nisbi` | 3am | `power-train` | 4 | 10 | ⬜ |
-| 16 | `khassiyat-fitaghuras` | 3am | `pythagoras-tanks` | 4 | 7 | ⬜ |
-| 17 | `nisba-miawiya-3am` | 3am | `hundred-grid` | 4 | 7 | ⬜ |
-| 18 | `tanasub-tamthil-bayani` | 3am | `pin-rails` | 4 | 8 | ⬜ |
-| 19 | `awwaliyan-fima-baynahuma` | 4am | `coprime-explorer` | 3 | 4 | ⬜ |
-| 20 | `bahth-pgcd` | 4am | `pgcd-differences`, `euclidean-algorithm` | 4 | 5 | ⬜ |
+| 1 | `awwaliyan-fima-baynahuma` | 4am | `coprime-explorer` | 3 | 4 | ⬜ |
+| 2 | `bahth-pgcd` | 4am | `pgcd-differences`, `euclidean-algorithm` | 4 | 5 | ⬜ |
+| 3 | `ikhtizal-kasr` | 4am | `fraction-reduction` | 4 | 4 | ⬜ |
+| 4 | `khawass-qawasim` | 4am | `divisor-properties` | 4 | 5 | ⬜ |
+| 5 | `qasim-adad-tabii` | 4am | `team-builder`, `divisor-explorer-books` | 3 | 4 | ⬜ |
+| 6 | `qasim-mushtarak-akbar` | 4am | `common-divisors` | 3 | 4 | ⬜ |
+| 7 | `qawasim-adad-tabii` | 4am | `factor-pairs` | 3 | 4 | ⬜ |
+| 8 | `tayin-pgcd` | 4am | `common-divisors` | 3 | 3 | ⬜ |
+| 9 | `wadiya-idmajiya-aadad` | 4am | — (synthèse) | 1 | 2 | ⬜ |
+| 10 | `mutatabiqat-shahira` | 4am | `pitch-expansion` | 4 | 6 | ⬜ |
+| 11 | `nashr-tabsit` | 4am | `pitch-expansion` | 3 | 4 | ⬜ |
+| 12 | `tahlil-ibara` | 4am | `turf-factoring` | 4 | 5 | ⬜ |
+| 13 | `wadiya-idmajiya-harfi` | 4am | `pitch-expansion` | 1 | 4 | ⬜ |
+| 14 | `amaliyat-judhur` | 4am | `square-tiling` | 4 | 4 | ⬜ |
+| 15 | `jidhr-tarbii` | 4am | `square-root-side` | 3 | 4 | ⬜ |
+| 16 | `muadalat-x-murabba` | 4am | `square-fold` | 3 | 3 | ⬜ |
+| 17 | `natiqa-ghayr-natiqa` | 4am | `square-root-side` | 3 | 3 | ⬜ |
+| 18 | `tawzif-khawass-judhur` | 4am | `square-tiling` | 5 | 3 | ⬜ |
+| 19 | `wadiya-idmajiya-judhur` | 4am | — (synthèse) | 1 | 3 | ⬜ |
+| 20 | `hall-jabri` | 4am | `elimination-cards` | 3 | 5 | ⬜ |
 
-### Lot 3 — 20 leçons · 79 connaissances · 61 cartes · 14 labos
-
-| # | Leçon | Année | Labo(s) | Cartes | Connaissances | État |
-|---|---|---|---|---|---|---|
-| 1 | `ikhtizal-kasr` | 4am | `fraction-reduction` | 4 | 4 | ⬜ |
-| 2 | `khawass-qawasim` | 4am | `divisor-properties` | 4 | 5 | ⬜ |
-| 3 | `qasim-adad-tabii` | 4am | `team-builder`, `divisor-explorer-books` | 3 | 4 | ⬜ |
-| 4 | `qasim-mushtarak-akbar` | 4am | `common-divisors` | 3 | 4 | ⬜ |
-| 5 | `qawasim-adad-tabii` | 4am | `factor-pairs` | 3 | 4 | ⬜ |
-| 6 | `tayin-pgcd` | 4am | `common-divisors` | 3 | 3 | ⬜ |
-| 7 | `wadiya-idmajiya-aadad` | 4am | — (synthèse) | 1 | 2 | ⬜ |
-| 8 | `mutatabiqat-shahira` | 4am | `pitch-expansion` | 4 | 6 | ⬜ |
-| 9 | `nashr-tabsit` | 4am | `pitch-expansion` | 3 | 4 | ⬜ |
-| 10 | `tahlil-ibara` | 4am | `turf-factoring` | 4 | 5 | ⬜ |
-| 11 | `wadiya-idmajiya-harfi` | 4am | `pitch-expansion` | 1 | 4 | ⬜ |
-| 12 | `amaliyat-judhur` | 4am | `square-tiling` | 4 | 4 | ⬜ |
-| 13 | `jidhr-tarbii` | 4am | `square-root-side` | 3 | 4 | ⬜ |
-| 14 | `muadalat-x-murabba` | 4am | `square-fold` | 3 | 3 | ⬜ |
-| 15 | `natiqa-ghayr-natiqa` | 4am | `square-root-side` | 3 | 3 | ⬜ |
-| 16 | `tawzif-khawass-judhur` | 4am | `square-tiling` | 5 | 3 | ⬜ |
-| 17 | `wadiya-idmajiya-judhur` | 4am | — (synthèse) | 1 | 3 | ⬜ |
-| 18 | `hall-jabri` | 4am | `elimination-cards` | 3 | 5 | ⬜ |
-| 19 | `mafhum-jumla` | 4am | `pair-scoreboard` | 3 | 6 | ⬜ |
-| 20 | `mushkilat-jumla` | 4am | `story-modeller` | 3 | 3 | ⬜ |
-
-### Lot 4 — 20 leçons · 114 connaissances · 65 cartes · 19 labos
+### Lot 3 — 20 leçons · 110 connaissances · 66 cartes · 18 labos
 
 | # | Leçon | Année | Labo(s) | Cartes | Connaissances | État |
 |---|---|---|---|---|---|---|
-| 1 | `wadiya-idmajiya-jumal` | 4am | `story-modeller` | 1 | 5 | ⬜ |
-| 2 | `jidaa-maadum` | 4am | `vanishing-pitch` | 4 | 4 | ⬜ |
-| 3 | `muadala-ula` | 4am | `equation-balance` | 4 | 3 | ⬜ |
-| 4 | `mutarajiha-ula` | 4am | `solution-ray` | 5 | 7 | ⬜ |
-| 5 | `tarrid-mushkila` | 4am | `growth-race` | 3 | 4 | ⬜ |
-| 6 | `wadiya-idmajiya-muadalat` | 4am | `growth-race` | 1 | 5 | ⬜ |
-| 7 | `barahin-ashia` | 4am | `vector-chain` | 4 | 10 | ⬜ |
-| 8 | `insihab-shuaa` | 4am | `translation-glide` | 4 | 6 | ⬜ |
-| 9 | `majmu-shuaayn` | 4am | `vector-sum` | 4 | 6 | ⬜ |
-| 10 | `shuaayn-mutasawiyayn` | 4am | `parallelogram-pin` | 4 | 5 | ⬜ |
-| 11 | `wadiya-idmajiya-ashia` | 4am | `bridge-path` | 1 | 4 | ⬜ |
-| 12 | `hisab-murakkibatay` | 4am | `component-calc` | 4 | 5 | ⬜ |
-| 13 | `ithbat-khawas-maalam` | 4am | `shape-prover` | 4 | 10 | ⬜ |
-| 14 | `muntasaf-masafa` | 4am | `midpoint-distance` | 4 | 3 | ⬜ |
-| 15 | `murakkibata-shuaa` | 4am | `component-steps` | 4 | 5 | ⬜ |
-| 16 | `wadiya-idmajiya-maalam` | 4am | `route-compare` | 1 | 5 | ⬜ |
-| 17 | `khawas-dawaran` | 4am | `shape-turn` | 4 | 6 | ⬜ |
-| 18 | `mafhum-dawaran` | 4am | `rotation-dial` | 4 | 8 | ⬜ |
-| 19 | `mudalaat-muntazama` | 4am | `polygon-forge` | 4 | 9 | ⬜ |
-| 20 | `wadiya-idmajiya-dawaran` | 4am | `lamp-ring` | 1 | 4 | ⬜ |
+| 1 | `mafhum-jumla` | 4am | `pair-scoreboard` | 3 | 6 | ⬜ |
+| 2 | `mushkilat-jumla` | 4am | `story-modeller` | 3 | 3 | ⬜ |
+| 3 | `wadiya-idmajiya-jumal` | 4am | `story-modeller` | 1 | 5 | ⬜ |
+| 4 | `jidaa-maadum` | 4am | `vanishing-pitch` | 4 | 4 | ⬜ |
+| 5 | `muadala-ula` | 4am | `equation-balance` | 4 | 3 | ⬜ |
+| 6 | `mutarajiha-ula` | 4am | `solution-ray` | 5 | 7 | ⬜ |
+| 7 | `tarrid-mushkila` | 4am | `growth-race` | 3 | 4 | ⬜ |
+| 8 | `wadiya-idmajiya-muadalat` | 4am | `growth-race` | 1 | 5 | ⬜ |
+| 9 | `barahin-ashia` | 4am | `vector-chain` | 4 | 10 | ⬜ |
+| 10 | `insihab-shuaa` | 4am | `translation-glide` | 4 | 6 | ⬜ |
+| 11 | `majmu-shuaayn` | 4am | `vector-sum` | 4 | 6 | ⬜ |
+| 12 | `shuaayn-mutasawiyayn` | 4am | `parallelogram-pin` | 4 | 5 | ⬜ |
+| 13 | `wadiya-idmajiya-ashia` | 4am | `bridge-path` | 1 | 4 | ⬜ |
+| 14 | `hisab-murakkibatay` | 4am | `component-calc` | 4 | 5 | ⬜ |
+| 15 | `ithbat-khawas-maalam` | 4am | `shape-prover` | 4 | 10 | ⬜ |
+| 16 | `muntasaf-masafa` | 4am | `midpoint-distance` | 4 | 3 | ⬜ |
+| 17 | `murakkibata-shuaa` | 4am | `component-steps` | 4 | 5 | ⬜ |
+| 18 | `wadiya-idmajiya-maalam` | 4am | `route-compare` | 1 | 5 | ⬜ |
+| 19 | `khawas-dawaran` | 4am | `shape-turn` | 4 | 6 | ⬜ |
+| 20 | `mafhum-dawaran` | 4am | `rotation-dial` | 4 | 8 | ⬜ |
 
-### Lot 5 — 20 leçons · 126 connaissances · 66 cartes · 19 labos
-
-| # | Leçon | Année | Labo(s) | Cartes | Connaissances | État |
-|---|---|---|---|---|---|---|
-| 1 | `zawiya-muhitiya` | 4am | `inscribed-angle` | 4 | 7 | ⬜ |
-| 2 | `kura-julla` | 4am | `sphere-probe` | 4 | 9 | ⬜ |
-| 3 | `maqati-mustawiya` | 4am | `section-slicer` | 4 | 7 | ⬜ |
-| 4 | `misaha-hajm-kura` | 4am | `orange-peel` | 4 | 7 | ⬜ |
-| 5 | `takbir-tasghir` | 4am | `scale-blocks` | 4 | 7 | ⬜ |
-| 6 | `wadiya-idmajiya-fada` | 4am | `bucket-fill` | 1 | 3 | ⬜ |
-| 7 | `alaqat-muthallathiya` | 4am | `angle-compass` | 4 | 8 | ⬜ |
-| 8 | `hasiba-muthallathiya` | 4am | `trig-calculator` | 3 | 4 | ⬜ |
-| 9 | `nisab-muthallathiya` | 4am | `ramp-ratios` | 4 | 7 | ⬜ |
-| 10 | `tarrid-muthallathiya` | 4am | `clinometer` | 3 | 9 | ⬜ |
-| 11 | `wadiya-idmajiya-muthallathat` | 4am | `clinometer` | 1 | 5 | ⬜ |
-| 12 | `aksiya-talis` | 4am | `parallel-level` | 4 | 6 | ⬜ |
-| 13 | `inshaat-talis` | 4am | `segment-divider` | 3 | 7 | ⬜ |
-| 14 | `talis-hisab-atwal` | 4am | `shadow-world` | 4 | 5 | ⬜ |
-| 15 | `wadiya-idmajiya-talis` | 4am | `shadow-world`, `cone-cylinder` | 1 | 5 | ⬜ |
-| 16 | `mafhum-taalufiya` | 4am | `affine-meter` | 4 | 7 | ⬜ |
-| 17 | `tafsir-bayani-jumla` | 4am | `line-crossing` | 3 | 6 | ⬜ |
-| 18 | `tamthil-bayani-taalufi` | 4am | `affine-line` | 4 | 7 | ⬜ |
-| 19 | `tanasub-taghayyurat` | 4am | `slope-stairs` | 3 | 5 | ⬜ |
-| 20 | `tarrid-taalufi` | 4am | `plan-compare` | 4 | 5 | ⬜ |
-
-### Lot 6 — 12 leçons · 77 connaissances · 35 cartes · 9 labos
+### Lot 4 — 20 leçons · 129 connaissances · 64 cartes · 19 labos
 
 | # | Leçon | Année | Labo(s) | Cartes | Connaissances | État |
 |---|---|---|---|---|---|---|
-| 1 | `wadiya-idmajiya-taalufiya` | 4am | `plan-compare` | 1 | 7 | ⬜ |
-| 2 | `mada-wasit-mutawassit` | 4am | `stat-balance` | 4 | 8 | ⬜ |
-| 3 | `majdulat-ihsaiya` | 4am | `sheet-lab` | 4 | 9 | ⬜ |
-| 4 | `qiraat-wadiyat-ihsaiya` | 4am | `group-tanks` | 4 | 7 | ⬜ |
-| 5 | `takrar-mujamma` | 4am | `cumul-gate` | 4 | 6 | ⬜ |
-| 6 | `wadiya-idmajiya-ihsa` | 4am | `stat-balance` | 1 | 5 | ⬜ |
-| 7 | `dala-khattiya` | 4am | `linear-machine` | 3 | 5 | ⬜ |
-| 8 | `tamthil-bayani-khatti` | 4am | `origin-line` | 3 | 5 | ⬜ |
-| 9 | `tanasub-muamil` | 4am | `ratio-ride` | 3 | 6 | ⬜ |
-| 10 | `tarrid-khatti` | 4am | `origin-line` | 3 | 5 | ⬜ |
-| 11 | `tatbiqat-tanasub` | 4am | `percent-tag` | 4 | 9 | ⬜ |
-| 12 | `wadiya-idmajiya-khattiya` | 4am | `origin-line` | 1 | 5 | ⬜ |
+| 1 | `mudalaat-muntazama` | 4am | `polygon-forge` | 4 | 9 | ⬜ |
+| 2 | `wadiya-idmajiya-dawaran` | 4am | `lamp-ring` | 1 | 4 | ⬜ |
+| 3 | `zawiya-muhitiya` | 4am | `inscribed-angle` | 4 | 7 | ⬜ |
+| 4 | `kura-julla` | 4am | `sphere-probe` | 4 | 9 | ⬜ |
+| 5 | `maqati-mustawiya` | 4am | `section-slicer` | 4 | 7 | ⬜ |
+| 6 | `misaha-hajm-kura` | 4am | `orange-peel` | 4 | 7 | ⬜ |
+| 7 | `takbir-tasghir` | 4am | `scale-blocks` | 4 | 7 | ⬜ |
+| 8 | `wadiya-idmajiya-fada` | 4am | `bucket-fill` | 1 | 3 | ⬜ |
+| 9 | `alaqat-muthallathiya` | 4am | `angle-compass` | 4 | 8 | ⬜ |
+| 10 | `hasiba-muthallathiya` | 4am | `trig-calculator` | 3 | 4 | ⬜ |
+| 11 | `nisab-muthallathiya` | 4am | `ramp-ratios` | 4 | 7 | ⬜ |
+| 12 | `tarrid-muthallathiya` | 4am | `clinometer` | 3 | 9 | ⬜ |
+| 13 | `wadiya-idmajiya-muthallathat` | 4am | `clinometer` | 1 | 5 | ⬜ |
+| 14 | `aksiya-talis` | 4am | `parallel-level` | 4 | 6 | ⬜ |
+| 15 | `inshaat-talis` | 4am | `segment-divider` | 3 | 7 | ⬜ |
+| 16 | `talis-hisab-atwal` | 4am | `shadow-world` | 4 | 5 | ⬜ |
+| 17 | `wadiya-idmajiya-talis` | 4am | `shadow-world`, `cone-cylinder` | 1 | 5 | ⬜ |
+| 18 | `mafhum-taalufiya` | 4am | `affine-meter` | 4 | 7 | ⬜ |
+| 19 | `tafsir-bayani-jumla` | 4am | `line-crossing` | 3 | 6 | ⬜ |
+| 20 | `tamthil-bayani-taalufi` | 4am | `affine-line` | 4 | 7 | ⬜ |
+
+### Lot 5 — 20 leçons · 118 connaissances · 63 cartes · 15 labos
+
+| # | Leçon | Année | Labo(s) | Cartes | Connaissances | État |
+|---|---|---|---|---|---|---|
+| 1 | `tanasub-taghayyurat` | 4am | `slope-stairs` | 3 | 5 | ⬜ |
+| 2 | `tarrid-taalufi` | 4am | `plan-compare` | 4 | 5 | ⬜ |
+| 3 | `wadiya-idmajiya-taalufiya` | 4am | `plan-compare` | 1 | 7 | ⬜ |
+| 4 | `mada-wasit-mutawassit` | 4am | `stat-balance` | 4 | 8 | ⬜ |
+| 5 | `majdulat-ihsaiya` | 4am | `sheet-lab` | 4 | 9 | ⬜ |
+| 6 | `qiraat-wadiyat-ihsaiya` | 4am | `group-tanks` | 4 | 7 | ⬜ |
+| 7 | `takrar-mujamma` | 4am | `cumul-gate` | 4 | 6 | ⬜ |
+| 8 | `wadiya-idmajiya-ihsa` | 4am | `stat-balance` | 1 | 5 | ⬜ |
+| 9 | `dala-khattiya` | 4am | `linear-machine` | 3 | 5 | ⬜ |
+| 10 | `tamthil-bayani-khatti` | 4am | `origin-line` | 3 | 5 | ⬜ |
+| 11 | `tanasub-muamil` | 4am | `ratio-ride` | 3 | 6 | ⬜ |
+| 12 | `tarrid-khatti` | 4am | `origin-line` | 3 | 5 | ⬜ |
+| 13 | `tatbiqat-tanasub` | 4am | `percent-tag` | 4 | 9 | ⬜ |
+| 14 | `wadiya-idmajiya-khattiya` | 4am | `origin-line` | 1 | 5 | ⬜ |
+| 15 | `wadiya-idmajiya-ibarat-harfiya-3` | 3am | — (synthèse) | 1 | 3 | ⬜ |
+| 16 | `adad-natiq` | 3am | `number-line-pegs` | 4 | 5 | ⬜ |
+| 17 | `amaliyat-natiqa` | 3am | `merge-board` | 4 | 6 | ⬜ |
+| 18 | `jam-tarh-kasrayn` | 3am | `seed-rake` | 4 | 5 | ⬜ |
+| 19 | `maqlub-qismat-kasrayn` | 3am | `gear-crank` | 4 | 6 | ✅ prototype |
+| 20 | `tasawi-muqaranat-kasrayn` | 3am | `shade-match` | 4 | 6 | ⬜ |
+
+### Lot 6 — 12 leçons · 85 connaissances · 45 cartes · 11 labos
+
+| # | Leçon | Année | Labo(s) | Cartes | Connaissances | État |
+|---|---|---|---|---|---|---|
+| 1 | `wadiya-idmajiya-kusur-natiqa` | 3am | — (synthèse) | 1 | 3 | ⬜ |
+| 2 | `hasr-adad-ushri` | 3am | `scoop-scale` | 4 | 7 | ⬜ |
+| 3 | `muadalat-darajat-ula` | 3am | `term-ferry` | 4 | 7 | ⬜ |
+| 4 | `musawiyat-amaliyat` | 3am | `equality-lanes` | 4 | 6 | ⬜ |
+| 5 | `mutabayinat-amaliyat` | 3am | `loom-threads` | 4 | 8 | ⬜ |
+| 6 | `kitaba-ilmiya-rutba` | 3am | `size-ladder` | 4 | 7 | ⬜ |
+| 7 | `qawaid-quwa-ashara` | 3am | `unit-ladder` | 4 | 7 | ⬜ |
+| 8 | `quwa-adad-ashara` | 3am | `ten-zoom` | 4 | 8 | ⬜ |
+| 9 | `quwat-adad-nisbi` | 3am | `power-train` | 4 | 10 | ⬜ |
+| 10 | `khassiyat-fitaghuras` | 3am | `pythagoras-tanks` | 4 | 7 | ⬜ |
+| 11 | `nisba-miawiya-3am` | 3am | `hundred-grid` | 4 | 7 | ⬜ |
+| 12 | `tanasub-tamthil-bayani` | 3am | `pin-rails` | 4 | 8 | ⬜ |
 
 ---
 

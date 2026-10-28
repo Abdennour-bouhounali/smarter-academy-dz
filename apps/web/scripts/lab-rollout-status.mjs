@@ -8,8 +8,9 @@
  *   node apps/web/scripts/lab-rollout-status.mjs --lesson <id>
  *   node apps/web/scripts/lab-rollout-status.mjs --json
  *
- * Les LOTS : les 112 leçons construites (lessonIndex.generated.json), triées par année (1AM → 4AM) puis par dossier (donc par unité),
- * par paquets de 20. L'ordre est stable tant qu'aucune leçon n'est ajoutée ; une leçon ajoutée va au DERNIER lot.
+ * Les LOTS : les 112 leçons construites (lessonIndex.generated.json), par paquets de 20. Lot 1 (figé) = les 20 premières dans l'ordre
+ * 1AM → 4AM puis dossier ; lots 2 à 6 = le reste dans l'ordre 4AM → 3AM → 2AM → 1AM (propriétaire, 2026-10-28), puis dossier (unité).
+ * L'ordre est stable tant qu'aucune leçon n'est ajoutée ; une leçon ajoutée va au DERNIER lot.
  *
  * Ce qui est détecté (marqueurs de code, pas de jugement : l'audit et le navigateur restent obligatoires) :
  *   labo   : cp = useLabCheckpoint · step = LabStepper · party = useStepCelebration · sfx = playSfx · teacher = useLabCheckpointSettings
@@ -80,6 +81,12 @@ const rows = idx.map((l) => {
     withMemo: (ksrc.match(/^\s+memo: \{/gm) || []).length, withQuiz: (ksrc.match(/^\s+quiz: \[/gm) || []).length,
   };
 }).sort((a, b) => order.indexOf(a.grade) - order.indexOf(b.grade) || a.dir.localeCompare(b.dir));
+// LOT 1 est FIGÉ (commencé le 2026-10-28 : 1AM, 2AM et le début de 3AM, dans l'ordre ci-dessus). Ensuite le propriétaire veut 4AM d'abord,
+// puis 3AM, 2AM, 1AM (2026-10-28) : le reste est retrié dans cet ordre (par dossier = unité dans chaque année) et coupé par 20 → lots 2 à 6.
+const FIRST = new Set(rows.slice(0, BATCH).map((r) => r.id));
+const THEN = ['4am', '3am', '2am', '1am'];
+const rest = rows.filter((r) => !FIRST.has(r.id)).sort((a, b) => THEN.indexOf(a.grade) - THEN.indexOf(b.grade) || a.dir.localeCompare(b.dir));
+rows.splice(0, rows.length, ...rows.filter((r) => FIRST.has(r.id)), ...rest);
 rows.forEach((r, i) => { r.batch = Math.floor(i / BATCH) + 1; });
 
 const labDone = (t) => { const s = labState[t]; return s.cp && s.step && s.party && s.sfx && s.teacher; };
