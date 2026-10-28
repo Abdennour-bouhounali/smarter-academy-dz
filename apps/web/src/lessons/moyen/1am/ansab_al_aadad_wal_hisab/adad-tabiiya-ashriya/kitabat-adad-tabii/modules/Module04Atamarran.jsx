@@ -39,7 +39,7 @@ export default function Module04Atamarran() {
         { num: 6, title: 'أقوّم تعلّماتي 1 — ثلاثة آلاف وخمسة', done: !!done['self-1'],
           content: <TextbookExercise exercise={EX['self-1']} requires={['raqm-adad']} onAnswered={mark('self-1')} /> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

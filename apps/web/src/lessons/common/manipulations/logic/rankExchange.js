@@ -146,6 +146,9 @@ export function restartTask(s) {
   return put(s, freshTask(s, s.ti));
 }
 
+/** « أعِد التجربة » (questions du labo) : LA MÊME tâche repart de son état initial, même si c'était la dernière. */
+export const retryTask = (s) => put(s, freshTask(s, s.ti));
+
 /** Passer à la tâche suivante (seulement quand celle-ci est finie). */
 export function nextTask(s) {
   if (!taskDone(s) || s.ti >= s.tasks.length - 1) return s;
