@@ -233,3 +233,13 @@ Check: 12 × 24,95 + 40 = 339,4 ; 12 × 25,05 + 40 = 340,6 ; 8 × 25 + 140 = 340
   - [ ] `generate:learning-net`;
   - [ ] export/import, local DB publish;
   - [ ] commit, push `dev`.
+
+## 8. Generator notes (2026-10-28)
+
+Generated INTO the catalogue entry; bank by a template generator, lesson by hand. Changes to the plan:
+- **Module 7 has NO `term-ferry` lab** (risk 3, fallback): a synthesis has no lab; `MethodSteps` + `TapQuestion`s analyse the pursuit (40 / 36 km/h, 2 km) and four variants (finish line 15 km → no; gap 1,3 km → 19,5 min → 20 min; 13 km < 15; `d ≤ 1,5`). The « حكاية » (opener, reworded) appears after the last answer. Module 8 stays the plan's trucks (two different situations: owner question 4, default kept).
+- **`durationMinutes` is 28** (modules 0 + 7 + 8 = 6 + 16 + 6; the six situations are a problem track); `pointPrerequisites` as planned, P2 also depends on the synthesis's own P1.
+- **Situation 6** adds the plan's « n = 23 » equality check as part 4; **situation 1** part 3 gives T = 16 000, 4 000, 4 800 as three numeric answers; **situation 5** asks the I bounds as numeric answers after the sign-reversal `choice`.
+- **Module 0**: seven statements as planned, `requires` = the four lesson slugs. **Module 8**: the plan's options verbatim (E1–E3 P2, E4–E5 P1).
+- **Bank:** 0 faithful `term_exam` (no paper re-read), 47 `term_exam_modelled`, 3 `adapted` (`integration`, `evaluation`, `challenge`); no new misconception id.
+- `opener`, `challenge`, `integration`, `evaluation` → modules 7 / 1 / 7 / 8 in `build-extraction.py`, `verified: True` after re-reading pdf pp. 70 and 84 at 130 dpi (conform). The unit تحدّ text is rewritten in `units_3am_2026_2027.json` (no `sourceElementId`).

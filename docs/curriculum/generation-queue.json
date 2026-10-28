@@ -2,15 +2,6 @@
   "_comment": "Généré par scripts/learning-net-queue.mjs — ne pas éditer.",
   "queue": [
     {
-      "code": "wadiya-idmajiya-musawiyat-mutabayinat",
-      "grade": "3am",
-      "unit": "musawiyat-mutabayinat",
-      "titleAr": "أدمج تعلّماتي — المساويات – المتباينات – المعادلات",
-      "kind": "synthesis",
-      "trigger": "unité musawiyat-mutabayinat complète",
-      "via": []
-    },
-    {
       "code": "haraka-muntazama-sura",
       "grade": "3am",
       "unit": "tanasubiya-sura",

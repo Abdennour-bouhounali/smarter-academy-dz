@@ -1438,7 +1438,7 @@
       "decisionStatus": "draft",
       "titleSource": "textbook",
       "title": "أدمج تعلّماتي — المساويات – المتباينات – المعادلات",
-      "description": "",
+      "description": "وضعية إدماجية تجمع خواص المساويات والمتباينات والحصر ومعادلة من الدرجة الأولى (ملاحقة في سباق دراجات، شاحنتا التمر والبرتقال)، تسبقها ست وضعيات تدريبية.",
       "prerequisites": [],
       "prerequisiteLessonCodes": [
         "musawiyat-amaliyat",
@@ -1446,17 +1446,44 @@
         "hasr-adad-ushri",
         "muadalat-darajat-ula"
       ],
-      "pointsToLearn": [],
+      "pointsToLearn": [
+        "تجنيد خواص المساويات والمتباينات والعمليات وحصر عدد عشري موجب لمعالجة وضعيات مركّبة من الحياة اليومية",
+        "ترييض وضعية بمعادلة من الدرجة الأولى بمجهول واحد وحلّها والتحقق من الحل، ثم الحكم على النتيجة أو تقريبها بمتباينة أو بحصر أو بتدوير"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "3am_musawiyat-amaliyat_P3",
+          "3am_mutabayinat-amaliyat_P4",
+          "3am_hasr-adad-ushri_P3"
+        ],
+        "P2": [
+          "3am_muadalat-darajat-ula_P3",
+          "3am_muadalat-darajat-ula_P4",
+          "3am_wadiya-idmajiya-musawiyat-mutabayinat_P1"
+        ]
+      },
       "programmeItems": [],
       "textbookRef": {
         "unit": 5,
         "pages": {
           "integration": [
             84
+          ],
+          "evaluation": [
+            84
+          ],
+          "challenge": [
+            70
+          ],
+          "opener": [
+            70
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 28,
+      "difficulty": "متوسط",
+      "icon": "🚴"
     },
     {
       "code": "tanasub-tamthil-bayani",
