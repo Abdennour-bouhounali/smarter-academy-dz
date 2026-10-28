@@ -24,6 +24,8 @@ export default function Module02Maarif() {
   const solved = (task) => trials.findLast((e) => e.kind === 'release' && !e.free && e.task === task && e.ok);
   const s0 = solved(0);
   const s1 = solved(1);
+  // « ما مساواة الجداءين » est posée PAR-DESSUS le labo (`FourthGauges › QUESTIONS.cross`, tâche f1) : l'étape 3 en garde la TRACE
+  const crossInLab = trials.some((e) => e.tk === 'checkpoint-done' && e.id === 'f1');
 
   const Evidence = ({ id, ok, done, todo }) => (
     <p data-evidence={id} data-tried={ok ? 'true' : 'false'}
@@ -81,24 +83,20 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 3, title: 'ما مساواة الجداءين المتصالبين؟', subtitle: 'الجدول (4 ، c ؛ 300 ، 900)', done: !!q.c,
+          num: 3, title: 'ما مساواة الجداءين المتصالبين؟', subtitle: 'الجدول (4 ، c ؛ 300 ، 900)', done: crossInLab,
           content: (
             <div className="space-y-3">
-              <TapQuestion
-                prompt={<span>في الجدول <Ltr>4</Ltr> ؛ <Ltr>c</Ltr> في الأعلى و <Ltr>300</Ltr> ؛ <Ltr>900</Ltr> في الأسفل، أيّ مساواة صحيحة؟</span>}
-                options={[M('$4 \\times 900 = 300 \\times c$'), M('$4 \\times 300 = 900 \\times c$'), M('$4 + 900 = 300 + c$')]}
-                correct={0} cols={1} requires={['jidaan']}
-                explain={<MathText>{'جداء القطر الأوّل $4 \\times 900$ وجداء القطر الثاني $300 \\times c$ ، ومنه $c = 3600 \\div 300 = 12$ .'}</MathText>}
-                onAnswered={answered('c')}
-              />
-              {q.c && <TextbookBox kind="property" compact text={KNOWLEDGE.cross.text} source={KNOWLEDGE.cross.source} />}
-              {q.c && <TextbookBox kind="remark" compact text={KNOWLEDGE.remark.text} source={KNOWLEDGE.remark.source} />}
-              {q.c && <KnowledgeBrick id="hisab-jidaan" lead="من مساواة الجداءين: كيف نحصل على العدد المجهول؟" />}
+              <Evidence id="cross" ok={crossInLab && !!s1}
+                done={<MathText>{'أجبتَ في المختبر: $4 \\times 900 = 300 \\times 12 = 3600$ ، فالكتلة الناقصة $12$ kg .'}</MathText>}
+                todo="أنجز المهمة الثانية في المختبر أعلاه (عدد الكيلوغرامات)، وأجب عن الأسئلة التي تظهر فوقه." />
+              {crossInLab && <TextbookBox kind="property" compact text={KNOWLEDGE.cross.text} source={KNOWLEDGE.cross.source} />}
+              {crossInLab && <TextbookBox kind="remark" compact text={KNOWLEDGE.remark.text} source={KNOWLEDGE.remark.source} />}
+              {crossInLab && <KnowledgeBrick id="hisab-jidaan" lead="من مساواة الجداءين: كيف نحصل على العدد المجهول؟" />}
             </div>
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={2} />}
+      footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />
   );
 }

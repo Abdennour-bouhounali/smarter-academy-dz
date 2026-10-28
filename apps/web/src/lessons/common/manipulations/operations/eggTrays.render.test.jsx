@@ -3,7 +3,8 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import i18n from '../../../../i18n';
-import EggTrays from './EggTrays';
+import EggTrays, { chainOf, QUESTIONS } from './EggTrays';
+import * as L from '../logic/eggTrays';
 import ManipulationWorkspace from '../ManipulationWorkspace';
 import { LEVELS } from '../levels';
 
@@ -172,5 +173,52 @@ describe('egg-trays — rendu', () => {
     expect(out).toContain('data-et-ruler="10"');
     expect(out).not.toContain('data-manipulation-levels-selector');
     expect(out).not.toContain('{{');
+  });
+});
+
+describe('egg-trays — questions pendant le labo (LabCheckpoint)', () => {
+  const k = (key, o) => i18n.t(`lesson:${NS}.${key}`, o);
+  const ctx = (world) => ({ world, discoveryOptions: [{ text: 'a', correct: true }, { text: 'b', why: 'c' }], formal: <p>f</p> });
+  for (const level of ['beginner', 'advanced']) {
+    it(`${level} : chaque question a un texte, une seule bonne réponse, deux indices, et ni clé brute ni {{`, () => {
+      const n = LEVELS['egg-trays'][level].numbers;
+      const lab = L.init(n);
+      const ids = L.stepIds(lab);
+      for (const id of ids) {
+        const chain = chainOf(lab, id);
+        expect(chain.length, id).toBeGreaterThanOrEqual(2);
+        for (const qid of chain) {
+          const q = QUESTIONS[qid](lab, id, k, ctx(n.world));
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${id}.${qid}`).not.toMatch(RAW);
+          expect(out, `${id}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${id}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${id}.${qid}`).toHaveLength(1);
+          else expect(q.expected, `${id}.${qid}`).toBeTruthy();
+        }
+      }
+      expect(chainOf(lab, ids.at(-1)).at(-1)).toBe('rule');
+    });
+  }
+  it('les nombres viennent de la commande : 50 = 12 × 4 + 2, 60 sur 5, le camarade 45 ≥ 30', () => {
+    const lab = L.init(LEVELS['egg-trays'].beginner.numbers);
+    expect(QUESTIONS.rest(lab, 'order', k, ctx('carton')).expected).toBe('2');
+    expect(QUESTIONS.rest(lab, 'then', k, ctx('carton')).expected).toBe('0');
+    expect(QUESTIONS.where(lab, 'then', k).options[0].correct).toBe(true);
+    const adv = L.init(LEVELS['egg-trays'].advanced.numbers);
+    expect(QUESTIONS.claimWhy(adv, 'claim', k, ctx('tray')).options[0].correct).toBe(true);
+    expect(QUESTIONS.claimRest(adv, 'claim', k).expected).toBe('15');
+    expect(L.stepIds(adv)).toEqual(['order', 'then', 'claim']);
+  });
+});
+
+describe('egg-trays — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('questions actives : ni la progression ni le bouton d’indice ; checkpoints={false} : les deux reviennent', () => {
+    const g = html({ ...LEVELS['egg-trays'].beginner.numbers, level: 'beginner' });
+    expect(g).not.toContain('data-manipulation-progress');
+    expect(g).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    const off = html({ ...LEVELS['egg-trays'].beginner.numbers, level: 'beginner', checkpoints: false });
+    expect(off).toContain('data-manipulation-progress');
+    expect(off).toContain(i18n.t('lesson:manipulation.hint.show'));
   });
 });

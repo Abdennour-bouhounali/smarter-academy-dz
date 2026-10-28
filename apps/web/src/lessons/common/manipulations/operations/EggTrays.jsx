@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Minus, Plus, Egg as EggIcon, Lock, Hand, CheckCircle2, XCircle, Target, PackagePlus, ThumbsUp, ThumbsDown } from 'lucide-react';
+import MathText from '../../components/MathText';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import { divmod } from '@smarter-academy/core/arithmetic/divisibility.js';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
@@ -16,6 +17,10 @@ import { LabCard, StageFrame, PromptCard, RoundButton, VerdictBanner, ChoiceCard
 import { SvgPill, pillWidth } from '../primitives/SvgPill';
 import { Egg, TrayBody, CartonLid, FullTraySlat, Pallet } from '../primitives/EggFigure';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { LEVELS } from '../levels';
 import * as L from '../logic/eggTrays';
 
@@ -78,6 +83,13 @@ import * as L from '../logic/eggTrays';
  * cadre (avant le premier œuf), le manche du tapis, le bouton « يقع على عدد طبيعي » (commande pleine), la carte « بيض إضافي » puis la
  * carte du camarade — la COMMANDE, jamais le nombre de plateaux, le reste ni l'avis juste.
  *
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 1, 2026-10-28) : `checkpoints` (défaut true). Les ÉTAPES sont
+ * la commande du jour, le contraste, le camarade (`L.stepIds`) ; après chacune, une suite sur ce que l'élève vient de FAIRE, avec SES nombres
+ * (`CHAINS`) : order le reste de la boîte ouverte · l'écriture a = b × q + r · le حصر ; then le reste · où tombe le quotient ; claim ce qui
+ * cloche · le vrai reste ; la dernière finit par LA RÈGLE (l'ancienne découverte, qui formalise). « بيض إضافي » et le camarade attendent les
+ * questions. Obligatoires pour tout élève ; l'enseignant seul les coupe (`useLabCheckpointSettings`) ; `guided` cache جرّب › اكتشف › صِغ et تلميح.
+ * ÉTAPES `LabStepper` (`[data-et-stepper-step=<i>]`) + la fête ; « إعادة » repart de la commande du jour ; « أعِد التجربة » : `L.retryStep`.
+ * SON (`playSfx`) : `tooth` par œuf (plus grave en arrière), `bell` quand une boîte se ferme, `flag` un cadre / un avis juste, `over` faux.
  * CONTRAT DOM : [data-egg-trays][data-world][data-a][data-b][data-count][data-solved][data-layout], [data-et-glance],
  * [data-et-order], [data-et-handle] (slider, aria-valuenow = œufs), [data-et-step=egg|tray|pallet][data-dir=less|more],
  * [data-et-frame-step=1|10][data-dir], [data-et-tray=<i>][data-full], [data-et-pallet=<i>], [data-et-open][data-eggs],
@@ -183,7 +195,7 @@ function Pair({ label, onLess, onMore, lessDisabled, moreDisabled, lessLabel, mo
 
 export default function EggTrays({
   a: a0, b: b0, then: then0, claim: claim0, world: world0, max: max0, title, lead, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished, coach: coachOn = true,
+  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished, coach: coachOn = true, checkpoints: cpOn = true,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
@@ -203,18 +215,15 @@ export default function EggTrays({
   const sceneKey = `${na}|${b}|${world}|${state.numbers.then}|${claimN?.q}|${claimN?.r}|${state.numbers.max}|${state.epoch}`;
   const mk = () => L.init({ a: na, b, world, then: state.numbers.then, claim: claimN, max: state.numbers.max });
   const [lab, setLab] = useState(mk);
-  const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(mk()); }
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  // « إعادة » (nouvelle époque), un autre niveau ou d'autres nombres : TOUT recommence — la commande du jour, les essais et les questions du labo
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(mk()); }
   const tray = world === 'tray';
 
-  const coachStep = coachOn ? L.coachOf(lab) : null;
-  const coach = useLabCoach({
-    lab: 'egg-trays', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '',
-    labels: { hide: k('coach.hide'), show: k('coach.show'), ok: k('coach.ok'), stop: k('coach.stop') },
-  });
-
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  const cpSettings = useLabCheckpointSettings('egg-trays');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpOnNow = cpOn && cpSettings.enabled;
+  useEffect(() => { if (ready && !cpOnNow) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, { a: lab.a0, b }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
   const reported = useRef(0);
   useEffect(() => {
@@ -396,6 +405,54 @@ export default function EggTrays({
     </div>
   );
 
+  /* ── les questions pendant le labo : la suite de la dernière étape accomplie ; la dernière étape finit par la règle ── */
+  const ids = L.stepIds(lab);
+  const cpIdx = L.lastDoneStep(lab);
+  const cpId = cpIdx >= 0 ? ids[cpIdx] : null;
+  const chain = cpOnNow && cpId ? chainOf(lab, cpId) : null;
+  const cp = useLabCheckpoint({
+    id: chain ? cpId : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, cpId, k, { world, discoveryOptions, formal })) : null,
+    reached: cpIdx >= 0,
+    resetKey: scene.inits,
+    onRetry: () => setLab((st0) => L.retryStep(st0, cpId)),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => { if (id === ids.at(-1)) { state.discover(); state.formalize(); } },
+  });
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
+  const coach = useLabCoach({
+    lab: 'egg-trays', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '',
+    labels: { hide: k('coach.hide'), show: k('coach.show'), ok: k('coach.ok'), stop: k('coach.stop') },
+  });
+  // une étape est FAITE quand son but est atteint ET que ses questions sont répondues : la pastille passe au vert et on fête
+  const stepsDone = ids.map((id, i) => L.stepDone(lab, id) && (i !== cpIdx || !cp.blocking));
+  const curStep = cp.blocking && cpIdx >= 0 ? cpIdx : L.currentStep(lab);   // l'étape interrogée reste « en cours » tant que ses questions attendent
+  const stepper = ids.length > 1 && <LabStepper count={ids.length} current={curStep} done={stepsDone} stepAttr="data-et-stepper-step" />;
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // L.init (« إعادة », autre niveau) : on refête
+  const doneKey = stepsDone.map(Number).join('');
+  useEffect(() => {
+    stepsDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(i)) return;
+      celebrated.current.add(i);
+      party.celebrate({ n: i + 1, total: ids.length });
+    });
+  }, [doneKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son du geste (muet sans « الصوت ») : un œuf, une boîte qui se ferme, un jugement juste / faux
+  const sfx = useRef({ count: lab.count, at: 0, n: lab.trials.length });
+  useEffect(() => {
+    const p = sfx.current;
+    if (lab.count !== p.count) {
+      const now = Date.now();
+      if (Math.floor(lab.count / b) > Math.floor(p.count / b)) playSfx('bell');
+      else if (now - p.at > 35) { playSfx('tooth', { pitch: lab.count > p.count ? 1 : 0.75 }); p.at = now; }
+      p.count = lab.count;
+    }
+    if (lab.trials.length > p.n) { const tr = lab.trials.at(-1); playSfx(tr.ok ? 'flag' : 'over'); }
+    p.n = lab.trials.length;
+  }, [lab.count, lab.trials.length]); // eslint-disable-line react-hooks/exhaustive-deps
+
   /* ── la lecture vivante (pilules de la consigne) : seulement ce que la main a produit ── */
   const reading = tray
     ? [
@@ -465,7 +522,7 @@ export default function EggTrays({
       <p className={v ? '' : 'font-bold text-indigo-900'}>{rich(v ? verdictText : idle)}</p>
     </VerdictBanner>
   );
-  const nextInline = !wide && L.canAddEggs(lab) && (
+  const nextInline = !wide && L.canAddEggs(lab) && !cp.blocking && (
     <div className="flex h-full w-full items-center gap-2 px-1" data-et-next>
       <p className="min-w-0 flex-1 text-[11px] font-black leading-tight text-amber-950">{k('next.short', { eggs: eggs(lab.then) })}</p>
       <button type="button" onClick={() => setLab(L.addEggs)} data-et-next-button
@@ -474,7 +531,7 @@ export default function EggTrays({
       </button>
     </div>
   );
-  const nextCard = wide && L.canAddEggs(lab) && (
+  const nextCard = wide && L.canAddEggs(lab) && !cp.blocking && (
     <LabCard className={`space-y-2 border-amber-200 bg-amber-50/70 ${compact ? 'p-2.5' : 'p-3'}`} data-et-next>
       <p className={`${compact ? 'text-xs' : 'text-sm'} font-bold leading-snug text-amber-950`}>
         <span className="font-black">{k('next.title')}</span> {k('next.text', { more: eggs(lab.then - lab.a0), eggs: eggs(lab.then) })}
@@ -485,7 +542,7 @@ export default function EggTrays({
       </button>
     </LabCard>
   );
-  const claimCard = L.claimOpen(lab) && (
+  const claimCard = L.claimOpen(lab) && !cp.blocking && (
     <ClaimCard lab={lab} k={k} compact={compact} inline={!wide} onAnswer={(agree) => setLab((s) => L.answerClaim(s, agree))} eggs={eggs} />
   );
   // étroit : la carte du camarade se pose DANS la scène, sur la règle et le zoom (la scène garde sa hauteur)
@@ -503,6 +560,7 @@ export default function EggTrays({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       coach={coachOn ? coach : null}
+      guided={cpOnNow}
       hints={[0, 1, 2].map((i) => k(`hints.${world}.${i}`, { a: lab.a0, b }))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={k('discovery.prompt')} options={discoveryOptions} formal={formal} />}
@@ -512,7 +570,9 @@ export default function EggTrays({
         <div ref={boxRef} className="space-y-2" data-egg-trays data-world={world} data-a={lab.a} data-b={b} data-count={lab.count}
           data-solved={ready ? 'true' : 'false'} data-layout={wide ? 'wide' : 'narrow'} data-scene-h={Math.round(g.H)}>
           <style dangerouslySetInnerHTML={{ __html: MOTION_CSS }} />
-          <div className="space-y-3" data-et-glance>
+          <div className="relative space-y-3" data-et-glance>
+            {party.node}
+            {cp.node}
             <div ref={promptRef}>
               {/* §17.9 : pas de titre — le CONTEXTE (tous les nombres), puis UNE question qui nomme le but et l'état final */}
               <PromptCard
@@ -531,6 +591,7 @@ export default function EggTrays({
                 lamp={v ? (v.ok ? 'on' : 'off') : 'off'}
                 titleProps={{ 'data-et-order': lab.a, 'data-lit': v?.ok ? 'true' : 'false' }}
               >
+                {stepper}
                 <div className="flex flex-wrap items-center gap-1.5" data-et-reading>
                   {reading.map(([key, n, tone]) => (
                     <StatPill key={key} small={compact} label={k(`reading.${key}.${world}`)} value={n} tone={tone} data-et-read={key} />
@@ -913,3 +974,98 @@ function FarmScene({ lab, k, W, g, ax, belt, zl, grid, st, sf, tray, compact, ch
     </StageFrame>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de chaque étape : ce que l'élève vient de FAIRE, avec SES nombres ; la dernière étape finit par la règle. */
+export const CHAINS = Object.freeze({
+  order: ['rest', 'write', 'bounds'],
+  then: ['rest', 'where'],
+  claim: ['claimWhy', 'claimRest'],
+});
+export function chainOf(lab, id) {
+  const ids = L.stepIds(lab);
+  const base = CHAINS[id] ?? [];
+  return id === ids.at(-1) ? [...base, 'rule'] : base;
+}
+
+const $ = (x) => <MathText>{`$${x}$`}</MathText>;
+const C = (k, key, o) => k(`cp.${key}`, o);
+const opt = (texts, right, whys) => texts.map((text, i) => (i === right ? { text, correct: true } : { text, why: whys[i] }));
+const iso2 = (x) => `⁦${x}⁩`;
+const aOf = (lab, id) => (id === 'then' ? lab.then : lab.a0);
+const nounsOf = (k, world) => ({ eggs: (n) => k('eggs', { count: n }), units: (n) => k(world === 'tray' ? 'trays' : 'cartons', { count: n }), open: k(`openWord.${world}`), unit: k(`unitOne.${world}`) });
+
+/** Chaque question est construite sur LES nombres de l'étape (a, b, q, r) ; `ctx` : le monde, la découverte et la règle du labo. */
+export const QUESTIONS = {
+  rest: (lab, id, k, { world }) => {
+    const a = aOf(lab, id); const { b } = lab; const { q, r } = divmod(a, b);
+    const n = nounsOf(k, world);
+    const o = { a: iso2(a), b: iso2(b), q: iso2(q), open: n.open, full: n.units(q), calc: iso2(`${a} − ${b} × ${q} = ${r}`) };
+    return {
+      id: 'rest', kind: 'number', expected: String(r), answer: <bdi dir="ltr">{r}</bdi>,
+      prompt: C(k, `rest.prompt.${id === 'then' ? 'then' : 'order'}`, o), hints: [C(k, 'rest.hint1', o), C(k, 'rest.hint2', o)],
+      explain: C(k, r === 0 ? 'rest.explainZero' : 'rest.explain', o),
+    };
+  },
+  write: (lab, id, k) => {
+    const a = aOf(lab, id); const { b } = lab; const { q, r } = divmod(a, b);
+    const o = { b: iso2(b), r2: iso2(r + b), q1: iso2(q + 1), prod: iso2(b * (q + 1)), a: iso2(a) };
+    return {
+      id: 'write', kind: 'choice', prompt: C(k, 'write.prompt', o),
+      options: opt([$(`${a}=${b}\\times ${q}+${r}`), $(`${a}=${b}\\times ${q - 1}+${r + b}`), $(`${a}=${b}\\times ${q + 1}`)], 0,
+        [null, C(k, 'write.whyBigRest', o), C(k, 'write.whyNeeded', o)]),
+      hints: [C(k, 'write.hint1', o), C(k, 'write.hint2', o)],
+      explain: C(k, 'write.explain', { ...o, eq: iso2(`${a} = ${b} × ${q} + ${r}`), rr: iso2(`${r} < ${b}`) }),
+    };
+  },
+  bounds: (lab, id, k) => {
+    const a = aOf(lab, id); const { b } = lab; const { q, r } = divmod(a, b);
+    const f = `\\tfrac{${a}}{${b}}`;
+    const o = { q: iso2(q), q1: iso2(q + 1), r: iso2(r), b: iso2(b), div: iso2(`${a} ÷ ${b}`) };
+    return {
+      id: 'bounds', kind: 'choice', cols: 3, prompt: C(k, 'bounds.prompt', o),
+      options: opt([$(`${q}<${f}<${q + 1}`), $(`${q - 1}<${f}<${q}`), $(`${r}<${f}<${b}`)], 0,
+        [null, C(k, 'bounds.whyBelow', o), C(k, 'bounds.whyRest', o)]),
+      hints: [C(k, 'bounds.hint1', o), C(k, 'bounds.hint2', o)],
+      explain: C(k, 'bounds.explain', o),
+    };
+  },
+  where: (lab, id, k) => {
+    const a = lab.then; const { b } = lab; const { q, r } = divmod(a, b);
+    const o = { q: iso2(q), q1: iso2(q + 1), qm: iso2(Math.max(0, q - 1)), div: iso2(`${a} ÷ ${b}`), calc: iso2(`${a} = ${b} × ${q}${r ? ` + ${r}` : ''}`) };
+    return {
+      id: 'where', kind: 'choice', prompt: C(k, 'where.prompt', o),
+      options: opt([C(k, 'where.on', o), C(k, 'where.between', o), C(k, 'where.below', o)], r === 0 ? 0 : 1,
+        [C(k, 'where.whyOn', o), C(k, 'where.whyBetween', o), C(k, 'where.whyBelow', o)]),
+      hints: [C(k, 'where.hint1', o), C(k, 'where.hint2', o)],
+      explain: C(k, r === 0 ? 'where.explainOn' : 'where.explainBetween', o),
+    };
+  },
+  claimWhy: (lab, id, k, { world }) => {
+    const { a0: a, b, claim } = lab;
+    const trueEq = claim.q * b + claim.r === a;
+    const right = !trueEq ? 2 : claim.r >= b ? 0 : 1;
+    const n = nounsOf(k, world);
+    const o = { eq: iso2(`${a} = ${b} × ${claim.q} + ${claim.r}`), r: iso2(claim.r), b: iso2(b), unit: n.unit, calc: iso2(`${b} × ${claim.q} + ${claim.r} = ${b * claim.q + claim.r}`) };
+    return {
+      id: 'claimWhy', kind: 'choice', prompt: C(k, 'claimWhy.prompt', o),
+      options: opt([C(k, 'claimWhy.big', o), C(k, 'claimWhy.fine', o), C(k, 'claimWhy.calc', o)], right,
+        [C(k, 'claimWhy.whyBig', o), C(k, 'claimWhy.whyFine', o), C(k, 'claimWhy.whyCalc', o)]),
+      hints: [C(k, 'claimWhy.hint1', o), C(k, 'claimWhy.hint2', o)],
+      explain: C(k, right === 0 ? 'claimWhy.explainBig' : right === 1 ? 'claimWhy.explainFine' : 'claimWhy.explainCalc', o),
+    };
+  },
+  claimRest: (lab, id, k) => {
+    const { a0: a, b } = lab; const { q, r } = divmod(a, b);
+    const o = { a: iso2(a), b: iso2(b), eq: iso2(`${a} = ${b} × ${q} + ${r}`), rr: iso2(`${r} < ${b}`) };
+    return {
+      id: 'claimRest', kind: 'number', expected: String(r), answer: <bdi dir="ltr">{r}</bdi>,
+      prompt: C(k, 'claimRest.prompt', o), hints: [C(k, 'claimRest.hint1', o), C(k, 'claimRest.hint2', o)], explain: C(k, 'claimRest.explain', o),
+    };
+  },
+  rule: (lab, id, k, { discoveryOptions, formal }) => ({
+    id: 'rule', kind: 'choice', prompt: k('discovery.prompt'), options: discoveryOptions,
+    hints: [C(k, 'rule.hint1'), C(k, 'rule.hint2')], explain: formal,
+  }),
+};

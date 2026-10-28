@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Check, Ban, ArrowUpToLine, ArrowDownToLine, Lock } from 'lucide-react';
+import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Ban, ArrowUpToLine, ArrowDownToLine, Lock } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import * as R from '@smarter-academy/core/arithmetic/relative.js';
 import MathText from '../../components/MathText';
@@ -12,6 +12,10 @@ import { useManipulation } from '../useManipulation';
 import { LabCard, StageFrame, PromptCard, VerdictBanner, StepperCard } from '../primitives/LabKit';
 import { SvgPill } from '../primitives/SvgPill';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { SeaDefs, Backdrop, Scale, Boat, Diver, SensorA, SensorB, Bound, Band } from './zeroProbe/SeaArt';
 import { layout, minus, PILL, RING } from './zeroProbe/geometry';
 import { LEVELS } from '../levels';
@@ -54,6 +58,12 @@ import * as L from '../logic/zeroProbe';
  *
  * ONBOARDING : `coach` (défaut true) → `LabCoach` ; `logic/zeroProbe.js › coachOf` (grab · side · decide · try · next).
  *
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 1, 2026-10-28) : `checkpoints` (défaut true). Après CHAQUE
+ * tâche, une suite sur ce que l'élève vient de FAIRE, avec SES nombres (`chainOf`) : beat — la comparaison écrite · ce qu'il a fait du câble ;
+ * beat impossible — pourquoi aucune longueur · l'ordre B < 0 < A ; both — la comparaison · un négatif contre un positif ; between — l'encadrement
+ * écrit · pourquoi la valeur voisine ne convient pas ; la dernière tâche finit par LA RÈGLE (l'ancienne découverte, qui formalise). Obligatoires
+ * pour tout élève ; l'enseignant seul les coupe pour SON compte. ÉTAPES : `LabStepper` (`[data-zp-step=<i>]`) + la fête. « إعادة » : tâche 1 ;
+ * « أعِد التجربة » : la MÊME tâche (`L.retryTask`). SON : `tooth` par pas de câble (plus grave en raccourcissant), `flag` tâche faite, `over` refus.
  * Props (contrat fixé avec la leçon) : `world` ('sea'), `tasks`, `level`, `levels`, `coach`, `title`, `lead`, `onTrial(event)`,
  * `onFinished({})` — par `state.report`.
  *
@@ -91,7 +101,7 @@ export function numbersFor({ world, tasks, level }) {
 }
 
 export default function ZeroProbe({
-  world, tasks, title, lead, level, levels: withLevels = true, coach: coachOn = true,
+  world, tasks, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -101,15 +111,44 @@ export default function ZeroProbe({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
   if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    const restart = scene.key === numsKey && scene.rc !== state.resetCount;
-    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-    setLab(restart ? L.restartTask(lab) : L.init(nums));
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la tâche 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
+    setLab(L.init(nums));
   }
   const advanced = resolveLevelId(state.level) === 'advanced';
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : la suite de la tâche courante ; la dernière finit par la règle (elle remplace la découverte automatique)
+  const cpSettings = useLabCheckpointSettings('zero-probe');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpOnNow = cpOn && cpSettings.enabled;
+  const chain = cpOnNow && !L.isFree(lab) ? chainOf(lab, lab.ti) : null;
+  const cp = useLabCheckpoint({
+    id: chain ? L.taskOf(lab).id : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, lab.ti, k, advanced)) : null,
+    reached: !L.isFree(lab) && L.taskDone(lab),
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.retryTask),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => { if (id === lab.tasks.at(-1).id) { state.discover(); state.formalize(); } },
+  });
+  useEffect(() => { if (ready && !cpOnNow) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son du geste (muet sans « الصوت ») : un pas de câble, la tâche faite, un refus
+  const sfx = useRef({ dh: lab.dh, at: 0, last: lab.last });
+  useEffect(() => {
+    const p = sfx.current;
+    if (lab.dh !== p.dh) {
+      const now = Date.now();
+      if (now - p.at > 35) { playSfx('tooth', { pitch: lab.dh > p.dh ? 1 : 0.75 }); p.at = now; }
+      p.dh = lab.dh;
+    }
+    if (lab.last !== p.last) {
+      const v = lab.last;
+      p.last = v;
+      if (v && !v.free && v.kind === 'none' && !v.ok) playSfx('over');
+      else if (v && !v.free && v.ok && L.taskDone(lab) && lab.solved[lab.ti] === v) playSfx('flag');
+    }
+  }, [lab.dh, lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
   const finishedOnce = useRef(false);
   useEffect(() => {
     if (!ready) { finishedOnce.current = false; return; }
@@ -124,7 +163,7 @@ export default function ZeroProbe({
   }, [nTrials, lab.trials]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── onboarding ── */
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'zero-probe', step: coachStep,
     text: coachStep ? k(`coach.${coachStep.id}`) : '',
@@ -161,6 +200,7 @@ export default function ZeroProbe({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       coach={coachOn ? coach : null}
+      guided={cpOnNow}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={discovery}
@@ -170,7 +210,7 @@ export default function ZeroProbe({
         <div ref={boxRef} className="space-y-2" data-zero-probe data-world={lab.world} data-task={lab.ti}
           data-solved={ready ? 'true' : 'false'} data-layout={width >= WIDE_MIN ? 'wide' : 'narrow'}>
           <style dangerouslySetInnerHTML={{ __html: CSS }} />
-          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} />
+          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} cp={cp} />
         </div>
       </ManipulationStage>
     </ManipulationShell>
@@ -179,7 +219,7 @@ export default function ZeroProbe({
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-function Lab({ lab, setLab, k, width, screenH, lead }) {
+function Lab({ lab, setLab, k, width, screenH, lead, cp }) {
   const uid = `zp${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
   const free = L.isFree(lab);
   const task = L.taskOf(lab);
@@ -202,21 +242,20 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
   const question = free ? k('question.free')
     : task.kind === 'between' ? k('question.between')
       : k(`question.${task.want}${task.both ? 'Both' : ''}`);
+  // une étape est FAITE quand la tâche est réussie ET que ses questions (LabCheckpoint) sont répondues : la pastille passe au vert et on fête
+  const stepDone = lab.tasks.map((_, i) => !!lab.done[i] && (i !== lab.ti || !cp.blocking));
   const steps = lab.tasks.length > 1 && !free && (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      <span className="text-xs font-black text-indigo-900/60" aria-hidden="true">{k('stepsLabel')}</span>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={tk.id} role="listitem" data-zp-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-indigo-600 bg-indigo-600 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-indigo-100 bg-white text-indigo-400'}`}>
-            {d && !cur ? <Check className="h-3.5 w-3.5" strokeWidth={3} aria-hidden="true" /> : <bdi dir="ltr">{i + 1}</bdi>}
-          </span>
-        );
-      })}
-    </div>
+    <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-zp-step" />
   );
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // L.init (« إعادة », autre niveau) : on refête
+  const nowDone = !free && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.ti)) return;
+    celebrated.current.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
   const lit = !free && done;
   const prompt = (
     <PromptCard size={wide ? 'lg' : 'md'} aside={veryNarrow ? null : (steps || null)} context={free ? ctx : (lead || ctx)} contextProps={{ 'data-zp-context': free ? 'free' : task.kind }}
@@ -295,7 +334,7 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
   const good = !!last && last.ok && !last.free;
   const tone = !last ? 'indigo' : good ? 'emerald' : 'amber';
   const Icon = !last ? Hand : good ? CheckCircle2 : Sparkles;
-  const canNext = L.canNext(lab);
+  const canNext = L.canNext(lab) && !cp.blocking;
   const nextButton = canNext && (
     <button type="button" onClick={() => setLab(L.nextTask)} data-zp-next
       className={`inline-flex min-h-[44px] w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-2xl border-2 border-emerald-600 bg-emerald-600 px-3.5 text-sm font-black text-white shadow-[0_3px_0_0_#047857] transition-all duration-150 active:translate-y-0.5 motion-reduce:transition-none ${ring}`}>
@@ -323,6 +362,8 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
   return (
     <>
       <div className="relative space-y-2.5" data-zp-glance>
+        {party.node}
+        {cp.node}
         {prompt}
         {wide ? (
           <div className="flex items-start gap-3">
@@ -529,3 +570,126 @@ export function Formal({ lab, advanced, k }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+const neg = (x) => R.parse(x) < 0n;
+/** La suite d'une tâche, selon SA forme (les tâches viennent de la leçon) ; la dernière tâche finit par la règle. */
+export function chainOf(lab, i) {
+  const t = lab.tasks[i];
+  const base = t.kind === 'between' ? ['order', 'outside']
+    : t.impossible ? ['whyNone', 'zeroOrder']
+      : t.both ? ['compare', 'anyNeg']
+        : ['compare', 'cable'];
+  return i === lab.tasks.length - 1 ? [...base, 'rule'] : base;
+}
+
+const $ = (s) => `$${s}$`;
+const tx = (t) => R.tex(R.parse(t));
+const C = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const opt = (texts, right, whys) => texts.map((text, i) => (i === right ? { text, correct: true } : { text, why: whys[i] }));
+/** La valeur de B que l'élève a laissée quand la tâche a été réussie (sinon un exemple exact qui convient). */
+const bOf = (lab, i) => {
+  const v = lab.solved[i];
+  if (v && v.kind === 'release') return v.value;
+  const smp = R.sample(lab.tasks[i], BigInt(lab.step));
+  return smp ? R.text(smp.value) : '0';
+};
+
+/** Chaque question est construite sur LES nombres de la tâche et sur la position de B que l'élève a trouvée. */
+export const QUESTIONS = {
+  compare: (lab, i, k) => {
+    const t = lab.tasks[i];
+    const b = bOf(lab, i);
+    const c = R.cmp(R.parse(b), R.parse(t.a));
+    const right = c < 0 ? 0 : c > 0 ? 1 : 2;
+    const o = { a: show(t.a), b: show(b) };
+    return {
+      id: 'compare', kind: 'choice', cols: 3, prompt: C(k, 'compare.prompt', o),
+      options: opt([`<`, `>`, `=`].map((r) => <MathText key={r}>{$(`${tx(b)} ${r} ${tx(t.a)}`)}</MathText>), right,
+        [C(k, 'compare.whyLess', o), C(k, 'compare.whyMore', o), C(k, 'compare.whySame', o)]),
+      hints: [C(k, 'compare.hint1', o), C(k, `compare.hint2.${neg(t.a) || neg(b) ? 'below' : 'above'}`, o)],
+      explain: C(k, 'compare.explain', { calc: $(`${tx(b)} ${right === 0 ? '<' : right === 1 ? '>' : '='} ${tx(t.a)}`) }),
+    };
+  },
+  cable: (lab, i, k) => {
+    const t = lab.tasks[i];
+    const b = bOf(lab, i);
+    const db = R.distance(b); const da = R.distance(t.a);
+    const right = R.cmp(db, da) > 0 ? 0 : R.cmp(db, da) < 0 ? 1 : 2;
+    const o = { a: show(t.a), b: show(b), da: show(R.text(da)), db: show(R.text(db)), want: k(`cp.want.${t.want}`) };
+    const sideKey = neg(b) || (neg(t.a) && R.parse(b) === 0n) ? 'below' : 'above';
+    return {
+      id: 'cable', kind: 'choice', prompt: C(k, 'cable.prompt', o),
+      options: opt([C(k, 'cable.longer', o), C(k, 'cable.shorter', o), C(k, 'cable.same', o)], right,
+        [C(k, 'cable.whyLonger', o), C(k, 'cable.whyShorter', o), C(k, 'cable.whySame', o)]),
+      hints: [C(k, 'cable.hint1', o), C(k, `cable.hint2.${sideKey}`, o)],
+      explain: C(k, `cable.explain.${sideKey}`, o),
+    };
+  },
+  whyNone: (lab, i, k) => {
+    const t = lab.tasks[i];
+    const o = { a: show(t.a), side: k(`sideWord.${t.side ?? 'below'}`), want: k(`cp.want.${t.want}`) };
+    return {
+      id: 'whyNone', kind: 'choice', prompt: C(k, 'whyNone.prompt', o),
+      options: opt([C(k, 'whyNone.right', o), C(k, 'whyNone.short', o), C(k, 'whyNone.near', o)], 0,
+        [null, C(k, 'whyNone.whyShort', o), C(k, 'whyNone.whyNear', o)]),
+      hints: [C(k, 'whyNone.hint1', o), C(k, 'whyNone.hint2', o)],
+      explain: C(k, 'whyNone.explain', o),
+    };
+  },
+  zeroOrder: (lab, i, k) => {
+    const t = lab.tasks[i];
+    const aPos = !neg(t.a);
+    const forms = aPos ? ['B < 0 < A', '0 < B < A', 'B < A < 0'] : ['A < 0 < B', '0 < A < B', 'A < B < 0'];
+    const o = { a: show(t.a) };
+    return {
+      id: 'zeroOrder', kind: 'choice', cols: 3, prompt: C(k, `zeroOrder.prompt.${aPos ? 'pos' : 'neg'}`, o),
+      options: opt(forms.map((f) => <MathText key={f}>{$(f)}</MathText>), 0, [null, C(k, 'zeroOrder.whyZero', o), C(k, 'zeroOrder.whyBelow', o)]),
+      hints: [C(k, 'zeroOrder.hint1'), C(k, 'zeroOrder.hint2')],
+      explain: C(k, 'zeroOrder.explain', o),
+    };
+  },
+  anyNeg: (lab, i, k) => {
+    const t = lab.tasks[i];
+    const o = { a: show(t.a) };
+    return {
+      id: 'anyNeg', kind: 'choice', prompt: C(k, 'anyNeg.prompt', o),
+      options: opt([C(k, 'anyNeg.right'), C(k, 'anyNeg.long'), C(k, 'anyNeg.short')], 0, [null, C(k, 'anyNeg.whyLong', o), C(k, 'anyNeg.whyShort', o)]),
+      hints: [C(k, 'anyNeg.hint1'), C(k, 'anyNeg.hint2', o)],
+      explain: C(k, 'anyNeg.explain', o),
+    };
+  },
+  order: (lab, i, k) => {
+    const t = lab.tasks[i];
+    const b = bOf(lab, i);
+    const [lo, hi, bb] = [tx(t.lo), tx(t.hi), tx(b)];
+    const o = { lo: show(t.lo), hi: show(t.hi), b: show(b) };
+    return {
+      id: 'order', kind: 'choice', cols: 3, prompt: C(k, 'order.prompt', o),
+      options: opt([`${lo} < ${bb} < ${hi}`, `${bb} < ${lo} < ${hi}`, `${hi} < ${bb} < ${lo}`].map((f) => <MathText key={f}>{$(f)}</MathText>), 0,
+        [null, C(k, 'order.whyOutside', o), C(k, 'order.whyReversed', o)]),
+      hints: [C(k, 'order.hint1', o), C(k, 'order.hint2', o)],
+      explain: C(k, 'order.explain', { calc: $(`${lo} < ${bb} < ${hi}`) }),
+    };
+  },
+  outside: (lab, i, k) => {
+    const t = lab.tasks[i];
+    const x = R.text(R.parse(t.lo) - BigInt(lab.step));
+    const far = neg(x);
+    const o = { lo: show(t.lo), hi: show(t.hi), x: show(x), dx: show(R.text(R.distance(x))), dlo: show(R.text(R.distance(t.lo))) };
+    return {
+      id: 'outside', kind: 'choice', prompt: C(k, 'outside.prompt', o),
+      options: opt([C(k, 'outside.smaller', o), C(k, 'outside.bigger', o), C(k, 'outside.digits', o)], 0,
+        [null, C(k, `outside.whyBigger.${far ? 'neg' : 'pos'}`, o), C(k, 'outside.whyDigits', o)]),
+      hints: [C(k, 'outside.hint1', o), C(k, `outside.hint2.${far ? 'neg' : 'pos'}`, o)],
+      explain: C(k, `outside.explain.${far ? 'neg' : 'pos'}`, o),
+    };
+  },
+  rule: (lab, i, k, advanced) => ({
+    id: 'rule', kind: 'choice', prompt: <MathText>{k(`discovery.${discoveryKey(advanced)}.prompt`)}</MathText>,
+    options: discoveryOptions(lab, advanced, k).map((o) => ({ ...o, text: <MathText>{o.text}</MathText>, why: o.why && <MathText>{o.why}</MathText> })),
+    hints: [C(k, `rule.${discoveryKey(advanced)}.hint1`), C(k, `rule.${discoveryKey(advanced)}.hint2`)],
+    explain: <Formal lab={lab} advanced={advanced} k={k} />,
+  }),
+};

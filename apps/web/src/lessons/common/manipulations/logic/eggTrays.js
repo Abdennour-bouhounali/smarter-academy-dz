@@ -217,6 +217,30 @@ export function answerClaim(s, agree) {
   return put(pushTrial(s, { kind: 'claim', ...v }), { claimAnswer: !!agree });
 }
 
+/* ── Les étapes du labo (LabStepper, questions pendant le labo) ─────────────────────── */
+
+/** Les étapes : la commande du jour, le contraste (s'il existe), le camarade (s'il existe). */
+export const stepIds = (s) => ['order', ...(s.then != null ? ['then'] : []), ...(s.claim != null ? ['claim'] : [])];
+/** Une étape est-elle accomplie ? */
+export function stepDone(s, id) {
+  if (id === 'order') return orderDone(s, s.a0);
+  if (id === 'then') return thenDone(s);
+  return s.claimAnswer != null;
+}
+/** La dernière étape accomplie (celle dont les questions se posent), ou -1. Les étapes s'accomplissent dans l'ordre. */
+export const lastDoneStep = (s) => stepIds(s).reduce((acc, id, i) => (stepDone(s, id) ? i : acc), -1);
+/** L'étape en cours : la première non accomplie (la dernière si tout est fait). */
+export const currentStep = (s) => { const ids = stepIds(s); const i = ids.findIndex((id) => !stepDone(s, id)); return i < 0 ? ids.length - 1 : i; };
+/** « أعِد التجربة » : LA MÊME étape repart — la commande du jour (tout), le contraste (les œufs du jour restent), ou l'avis sur le camarade. */
+export function retryStep(s, id) {
+  if (id === 'order') return reset(s);
+  if (id === 'then') {
+    return put(s, { a: s.then, count: Math.min(s.count, s.a0), committed: Math.min(s.count, s.a0), frame: Object.freeze({ n: s.frame.n, placed: false }),
+      trials: Object.freeze(s.trials.filter((tr) => tr.a !== s.then || tr.kind === 'claim')), last: null });
+  }
+  return put(s, { claimAnswer: null, trials: Object.freeze(s.trials.filter((tr) => tr.kind !== 'claim')), last: null });
+}
+
 /** La découverte : la commande du jour encadrée juste, le contraste atterri SUR la graduation, le camarade jugé. */
 export function discoveryReady(s) {
   if (!orderDone(s, s.a0)) return false;

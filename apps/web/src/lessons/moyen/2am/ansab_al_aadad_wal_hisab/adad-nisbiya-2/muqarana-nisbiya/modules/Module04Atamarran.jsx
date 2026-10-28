@@ -38,7 +38,7 @@ export default function Module04Atamarran() {
         step(7, 'ex-20', 'عدد بين عددين', ['hasr']),
         step(8, 'opener', 'درجات الأرض القصوى', ['mukhtalifayn']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }
