@@ -19,7 +19,9 @@ export default function Module01Nashat() {
   const [trials, setTrials] = useState([]);
   const [q, setQ] = useState({});
   const answered = (k) => () => setQ((s) => ({ ...s, [k]: true }));
-  const record = (e) => setTrials((list) => [...list, e]);
+  // les questions posées PENDANT le labo (checkpoint-done) : la TRACE de l'étape ; si l'enseignant les coupe, les questions d'ici reprennent
+  const [cp, setCp] = useState({});
+  const record = (e) => { if (e.tk) { if (e.tk === 'checkpoint-done') setCp((c) => ({ ...c, [e.id]: true })); return; } setTrials((list) => [...list, e]); };
   const mine = trials.filter((e) => e.kind === 'tie' && !e.free && !e.band && e.stages === 1);
   const comb = mine.findLast((e) => e.tool === 'comb' && e.cNum !== 0);
   const pos = mine.findLast((e) => e.tool === 'nail' && e.cNum > 0 && e.cNum !== 1);
@@ -97,13 +99,13 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 3, title: 'وبالتمديد بعدد سالب؟', subtitle: 'الاتجاه', done: !!q.c && !!q.c2,
+          num: 3, title: 'وبالتمديد بعدد سالب؟', subtitle: 'الاتجاه', done: (!!q.c && !!q.c2) || !!cp.b0,
           content: (
             <div className="space-y-3" data-activity-evidence>
               <Evidence id="neg" ok={!!neg}
                 done={<span>بالمسمار عند <Ltr>{neg?.c}</Ltr> وصل الأحمر إلى <Ltr>{neg?.a2}</Ltr> والأزرق إلى <Ltr>{neg?.b2}</Ltr> .</span>}
                 todo="اختر المسمار واسحب العقدة إلى عدد سالب، ثم عُد إلى هذا السؤال." />
-              {neg ? (
+              {neg && !cp.b0 ? (
                 <TapQuestion
                   prompt={<span>أكمل بما رأيتَ على العارضة السفلى: <Ltr>{neg.a2}</Ltr> <span aria-hidden="true">□</span> <Ltr>{neg.b2}</Ltr></span>}
                   options={symbols} correct={1} cols={3} requires={['darb-mujab']}
@@ -111,7 +113,7 @@ export default function Module01Nashat() {
                   onAnswered={answered('c')}
                 />
               ) : null}
-              {q.c && (
+              {q.c && !cp.b0 && (
                 <TapQuestion
                   prompt="في أيّ محاولاتك فقط تبادل الخيطان مكانيهما؟"
                   options={['حين مدّدنا بعدد سالب تمامًا', 'حين استعملنا عددًا سالبًا بالمشط أو بالمسمار', 'حين مدّدنا بعدد أكبر من 1']}
@@ -120,29 +122,29 @@ export default function Module01Nashat() {
                   onAnswered={answered('c2')}
                 />
               )}
-              {q.c2 && <KnowledgeBrick id="darb-salib" lead="التمديد بعدد سالب على عددين مرتّبين: ماذا نكتب؟" />}
+              {(q.c2 || cp.b0) && <KnowledgeBrick id="darb-salib" lead="التمديد بعدد سالب على عددين مرتّبين: ماذا نكتب؟" />}
             </div>
           ),
         },
         {
-          num: 4, title: 'وبالعدد 0 ؟', subtitle: 'صفر', done: !!q.d,
+          num: 4, title: 'وبالعدد 0 ؟', subtitle: 'صفر', done: !!q.d || !!cp.b2,
           content: (
             <div className="space-y-3" data-activity-evidence>
               <Evidence id="zero" ok={!!zero}
                 done={<span>بالمسمار عند <Ltr>0</Ltr> التقت العقدتان عند <Ltr>0</Ltr> .</span>}
                 todo="اختر المسمار واسحب العقدة إلى 0، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
+              {!cp.b2 && <TapQuestion
                 prompt="عند المسمار في 0 التقت العقدتان. ماذا صارت المتباينة بين العددين؟"
                 options={[M('$0=0$ : لم تعد متباينة تامّة'), M('$0<0$'), M('بقيت المتباينة الأولى')]}
                 correct={0} cols={1} requires={['jam-mutabayina']}
                 explain={<MathText>{'كل عدد مضروب في $0$ يصير $0$ ، فيتساوى العددان. لذلك نشترط $c\\neq 0$ في الخاصيتين.'}</MathText>}
                 onAnswered={answered('d')}
-              />
+              />}
             </div>
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

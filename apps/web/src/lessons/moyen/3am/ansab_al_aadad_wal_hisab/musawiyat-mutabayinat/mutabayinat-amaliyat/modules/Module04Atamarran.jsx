@@ -37,7 +37,7 @@ export default function Module04Atamarran() {
         step(7, 'ex-23', 'أحصر محيطًا', ['hasr-ab']),
         step(8, 'ex-26', 'حصر معكوس', ['hasr-ab']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

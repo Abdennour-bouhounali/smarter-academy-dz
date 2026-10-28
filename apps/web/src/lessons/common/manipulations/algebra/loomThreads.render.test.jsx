@@ -76,3 +76,51 @@ describe('loom-threads — rendu', () => {
     expect(text(wrong)).toContain('مدّدتَ بـ 2');
   });
 });
+
+describe('loom-threads — questions pendant le labo (LabCheckpoint)', () => {
+  it('chaque question des suites des deux niveaux : texte, deux indices, une seule bonne réponse, ni clé brute ni {{', async () => {
+    const { CHAINS, QUESTIONS } = await import('./LoomThreads');
+    const Lin = await import('@smarter-academy/core/arithmetic/linear.js');
+    const tieWith = (s, tool, c) => L.tie({ ...L.setTool(s, tool), v: Lin.frac(...c) });
+    const plans = {
+      beginner: [(s) => tieWith(tieWith(s, 'nail', [2]), 'nail', [-1]), (s) => tieWith(s, 'nail', [-3]), (s) => tieWith(s, 'nail', [0])],
+      advanced: [
+        (s) => { let t = tieWith(s, 'comb', [-4]); t = { ...L.setTool(t, 'comb'), v: Lin.frac(-1) }; t = L.addStage(t); return tieWith(t, 'nail', [-2]); },
+        (s) => tieWith(s, 'nail', [-2]),
+        (s) => tieWith(s, 'nail', [-1, 2]),
+      ],
+    };
+    for (const level of ['beginner', 'advanced']) {
+      let s = L.init(LV[level].numbers);
+      plans[level].forEach((play, i) => {
+        s = play(s);
+        expect(L.taskDone(s), `${level} ${i}`).toBe(true);
+        for (const qid of CHAINS[level][i]) {
+          const q = QUESTIONS[qid](s, L.taskOf(s), k);
+          expect(q, `${level}.${i}.${qid}`).toBeTruthy();
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${level}.${i}.${qid}`).not.toMatch(RAW);
+          expect(out, `${level}.${i}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${level}.${i}.${qid}`).toHaveLength(2);
+          expect(q.options.filter((o) => o.correct), `${level}.${i}.${qid}`).toHaveLength(1);
+          expect(q.options, `${level}.${i}.${qid}`).toHaveLength(3);
+        }
+        if (i < s.tasks.length - 1) s = L.nextTask(s);
+      });
+    }
+  });
+});
+
+describe('loom-threads — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('مبتدئ et متقدم : ni la progression ni le bouton d’indice, un LabStepper ; une seule tâche : les deux restent', () => {
+    for (const level of ['beginner', 'advanced']) {
+      const out = html({ ...LV[level].numbers, level });
+      expect(out).not.toContain('data-manipulation-progress');
+      expect(out).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+      expect(out).toContain('data-lab-stepper');
+    }
+    const r = html({ step: '1', tasks: [{ id: 'z1', kind: 'swap', a: '1', b: '3' }], levels: false });
+    expect(r).toContain('data-manipulation-progress');
+    expect(r).toContain(i18n.t('lesson:manipulation.hint.show'));
+  });
+});

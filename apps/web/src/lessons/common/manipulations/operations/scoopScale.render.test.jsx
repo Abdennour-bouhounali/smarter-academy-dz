@@ -72,3 +72,49 @@ describe('scoop-scale — rendu', () => {
     expect(text(wrong)).toContain('1,34');
   });
 });
+
+describe('scoop-scale — questions pendant le labo (LabCheckpoint)', () => {
+  const check = (q, tag) => {
+    const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+    expect(out, tag).not.toMatch(RAW);
+    expect(out, tag).not.toContain('{{');
+    expect(q.hints, tag).toHaveLength(2);
+    if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), tag).toHaveLength(1);
+    else expect(q.expected, tag).toBeTruthy();
+  };
+  it('chaque question des suites t1 … t3 et a1 … a3 : texte, deux indices, une seule bonne réponse, ni clé brute ni {{', async () => {
+    const { CHAINS, QUESTIONS } = await import('./ScoopScale');
+    const play = (numbers, masses) => {
+      let s = L.init(numbers);
+      const seen = [];
+      for (const [i, group] of masses.entries()) {
+        for (const m of group) s = L.deliver({ ...s, m });
+        expect(L.taskDone(s), `tâche ${i}`).toBe(true);
+        for (const qid of CHAINS[s.tasks[i].id]) { const q = QUESTIONS[qid](s, s.tasks[i], k); check(q, `${s.tasks[i].id}.${qid}`); seen.push([s.tasks[i].id, qid, q]); }
+        if (i < masses.length - 1) s = L.nextTask(s);
+      }
+      return seen;
+    };
+    const b = play(LV.beginner.numbers, [[125], [134], [150, 249]]);
+    expect(b.find(([t, q]) => t === 't1' && q === 'ghost')[2].expected).toBe('1,2');
+    expect(b.find(([t, q]) => t === 't2' && q === 'ghost')[2].expected).toBe('1,4');
+    expect(b.find(([t, q]) => t === 't3' && q === 'halfRank')[2].expected).toBe('0,5');
+    const a = play(LV.advanced.numbers, [[5675], [5684], [285, 286]]);
+    expect(a.find(([t, q]) => t === 'a2' && q === 'ghost')[2].expected).toBe('5,69');
+    expect(a.find(([t, q]) => t === 'a1' && q === 'ghost')[2].expected).toBe('5,67');
+  });
+});
+
+describe('scoop-scale — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('مبتدئ et متقدم : ni la progression ni le bouton d’indice ; une tâche hors `CHAINS` : les deux restent ; les étapes sont un LabStepper', () => {
+    for (const level of ['beginner', 'advanced']) {
+      const out = html({ ...LV[level].numbers, level });
+      expect(out).not.toContain('data-manipulation-progress');
+      expect(out).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+      expect(out).toContain('data-lab-stepper');
+    }
+    const r = html({ tasks: [{ id: 'zz', kind: 'least', rank: 1, res: 2, reading: '1,3', start: '1,00' }], levels: false });
+    expect(r).toContain('data-manipulation-progress');
+    expect(r).toContain(i18n.t('lesson:manipulation.hint.show'));
+  });
+});

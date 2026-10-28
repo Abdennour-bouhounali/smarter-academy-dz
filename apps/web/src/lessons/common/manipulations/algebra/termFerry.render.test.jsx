@@ -51,3 +51,47 @@ describe('term-ferry — rendu', () => {
     expect(adv.filter((o) => o.correct)).toHaveLength(1);
   });
 });
+
+describe('term-ferry — questions pendant le labo (LabCheckpoint)', () => {
+  it('chaque question des suites des deux niveaux : texte, deux indices, une seule bonne réponse, ni clé brute ni {{', async () => {
+    const { CHAINS, QUESTIONS } = await import('./TermFerry');
+    const plays = {
+      beginner: [['R:x', 'L:n', 2], ['R:x', 'L:n', 2]],
+      advanced: [['R:x', 'L:n', 4], ['R:x', 'L:n', -5], ['R:x', 'L:n', null]],
+    };
+    for (const level of ['beginner', 'advanced']) {
+      let s = L.init(LV[level].numbers);
+      plays[level].forEach(([a, b, c], i) => {
+        s = L.move(s, a, true); s = L.move(s, b, true);
+        if (c != null) { s = L.divide(L.setC(s, c)); }
+        expect(L.taskDone(s), `${level} ${i}`).toBe(true);
+        for (const qid of CHAINS[level][i]) {
+          const q = QUESTIONS[qid](s, L.taskOf(s), k, level === 'advanced');
+          if (qid === 'divideBy' || qid === 'negDivide') expect(q, `${level}.${i}.${qid}`).toBeTruthy();
+          if (!q) continue;
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${level}.${i}.${qid}`).not.toMatch(RAW);
+          expect(out, `${level}.${i}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${level}.${i}.${qid}`).toHaveLength(2);
+          expect(q.options.filter((o) => o.correct), `${level}.${i}.${qid}`).toHaveLength(1);
+          expect(q.options.length, `${level}.${i}.${qid}`).toBeGreaterThanOrEqual(2);
+        }
+        if (i < plays[level].length - 1) s = L.nextTask({ ...s, checked: true });
+      });
+    }
+  });
+});
+
+describe('term-ferry — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('مبتدئ et متقدم : ni la progression ni le bouton d’indice, un LabStepper ; une seule tâche libre : les deux restent', () => {
+    for (const level of ['beginner', 'advanced']) {
+      const out = html({ ...LV[level].numbers, level });
+      expect(out).not.toContain('data-manipulation-progress');
+      expect(out).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+      expect(out).toContain('data-lab-stepper');
+    }
+    const r = html({ tasks: [{ left: '3x+2', right: 'x+8' }], levels: false });
+    expect(r).toContain('data-manipulation-progress');
+    expect(r).toContain(i18n.t('lesson:manipulation.hint.show'));
+  });
+});

@@ -37,7 +37,7 @@ export default function Module04Atamarran() {
         step(7, 'ex-44', 'مستطيل', ['tarhiq-mushkila']),
         step(8, 'ex-49', 'دفاتر وأقلام', ['tarhiq-mushkila']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

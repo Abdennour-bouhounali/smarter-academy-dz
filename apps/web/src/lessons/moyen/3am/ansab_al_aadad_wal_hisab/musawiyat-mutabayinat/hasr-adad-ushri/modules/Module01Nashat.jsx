@@ -28,7 +28,9 @@ export default function Module01Nashat() {
   const [trials, setTrials] = useState([]);
   const [q, setQ] = useState({});
   const answered = (k) => () => setQ((s) => ({ ...s, [k]: true }));
-  const record = (e) => setTrials((list) => [...list, e]);
+  // les questions posées PENDANT le labo (checkpoint-done) : la TRACE de l'étape ; si l'enseignant les coupe, les questions d'ici reprennent
+  const [cp, setCp] = useState({});
+  const record = (e) => { if (e.tk) { if (e.tk === 'checkpoint-done') setCp((c) => ({ ...c, [e.id]: true })); return; } setTrials((list) => [...list, e]); };
   const mine = trials.filter((e) => e.kind === 'deliver' && !e.free && e.taskKind !== 'trap' && e.ok);
   const least = mine.findLast((e) => e.phase === 'least' && e.rank >= 1);
   const most = least ? mine.findLast((e) => e.phase === 'most' && e.rank === least.rank && e.reading === least.reading) : null;
@@ -65,13 +67,13 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'لماذا تقرأ الشاشة هذا العدد؟', subtitle: 'أصغر كمّية', done: !!q.a,
+          num: 1, title: 'لماذا تقرأ الشاشة هذا العدد؟', subtitle: 'أصغر كمّية', done: !!q.a || !!cp.t1,
           content: (
             <div className="space-y-3" data-activity-evidence>
               <Evidence id="least" ok={!!least}
                 done={<span>أقلّ كمّية قرأت عليها الشاشة <Ltr>{least?.reading}</Ltr> هي <Ltr>{least?.mass} kg</Ltr> ، وبحفنة أقلّ (<Ltr>{least?.neighbour.mass} kg</Ltr>) قرأت <Ltr>{least?.neighbour.reading}</Ltr> .</span>}
                 todo="في المهمة الأولى املأ الكيس بأقلّ كمّية ممكنة تقرأ عليها الشاشة العدد المطلوب ثم سلّمه، وعُد إلى هذا السؤال." />
-              {least && (
+              {least && !cp.t1 && (
                 <TapQuestion
                   prompt={<span>لماذا تقرأ الشاشة <Ltr>{least.reading}</Ltr> عند <Ltr>{least.mass} kg</Ltr> وليس <Ltr>{least.neighbour.reading}</Ltr> ؟</span>}
                   options={[
@@ -84,18 +86,18 @@ export default function Module01Nashat() {
                   onAnswered={answered('a')}
                 />
               )}
-              {q.a && <KnowledgeBrick id="tadwir" lead="كيف تختار الشاشة العدد الذي تكتبه؟" />}
+              {(q.a || cp.t1) && <KnowledgeBrick id="tadwir" lead="كيف تختار الشاشة العدد الذي تكتبه؟" />}
             </div>
           ),
         },
         {
-          num: 2, title: 'وما كلّ الكمّيات التي تقرأ عليها الشاشة هذا العدد؟', subtitle: 'أكبر كمّية', done: !!q.b && !!q.b2,
+          num: 2, title: 'وما كلّ الكمّيات التي تقرأ عليها الشاشة هذا العدد؟', subtitle: 'أكبر كمّية', done: (!!q.b && !!q.b2) || !!cp.t2,
           content: (
             <div className="space-y-3" data-activity-evidence>
               <Evidence id="most" ok={!!most}
                 done={<span>أكبر كمّية قرأت عليها الشاشة <Ltr>{most?.reading}</Ltr> هي <Ltr>{most?.mass} kg</Ltr> ، وبحفنة أكثر (<Ltr>{most?.neighbour.mass} kg</Ltr>) قرأت <Ltr>{most?.neighbour.reading}</Ltr> .</span>}
                 todo="في المهمة الثانية املأ الكيس بأكبر كمّية ممكنة تقرأ عليها الشاشة العدد نفسه ثم سلّمه، وعُد إلى هذا السؤال." />
-              {most && (
+              {most && !cp.t2 && (
                 <TapQuestion
                   prompt={<span>عند <Ltr>{most.neighbour.mass} kg</Ltr> ماذا قرأت الشاشة؟</span>}
                   options={[<Ltr key="a">{most.reading}</Ltr>, <Ltr key="b">{most.neighbour.reading}</Ltr>, <Ltr key="c">{most.neighbour.mass}</Ltr>]}
@@ -104,7 +106,7 @@ export default function Module01Nashat() {
                   onAnswered={answered('b')}
                 />
               )}
-              {q.b && most && (
+              {q.b && most && !cp.t2 && (
                 <TapQuestion
                   prompt={<span>إذن كلّ كمّية <MathText>{'$m$'}</MathText> تقرأ عليها الشاشة <Ltr>{most.reading}</Ltr> تحقّق:</span>}
                   options={[
@@ -118,18 +120,18 @@ export default function Module01Nashat() {
                   onAnswered={answered('b2')}
                 />
               )}
-              {q.b2 && <KnowledgeBrick id="hasr-min-mudawwar" lead="كيف نحصر عددًا علمنا مدوّره؟" />}
+              {(q.b2 || cp.t2) && <KnowledgeBrick id="hasr-min-mudawwar" lead="كيف نحصر عددًا علمنا مدوّره؟" />}
             </div>
           ),
         },
         {
-          num: 3, title: 'وعلى الميزان الذي يدوِّر إلى الكيلوغرام؟', subtitle: 'الرتبة', done: !!q.c,
+          num: 3, title: 'وعلى الميزان الذي يدوِّر إلى الكيلوغرام؟', subtitle: 'الرتبة', done: !!q.c || !!cp.t3,
           content: (
             <div className="space-y-3" data-activity-evidence>
               <Evidence id="coarse" ok={!!most0}
                 done={<span>على ميزان الأكياس الكبيرة: أقلّ كمّية قرأت <Ltr>{least0?.reading}</Ltr> هي <Ltr>{least0?.mass} kg</Ltr> وأكبرها <Ltr>{most0?.mass} kg</Ltr> .</span>}
                 todo="في المهمة الثالثة (ميزان الأكياس الكبيرة) جد أقلّ كمّية وأكبر كمّية تقرأ عليهما الشاشة العدد نفسه، ثم عُد إلى هذا السؤال." />
-              {most0 && (
+              {most0 && !cp.t3 && (
                 <TapQuestion
                   prompt={<span>على ميزان الأكياس الكبيرة قرأت الشاشة <Ltr>{most0.reading}</Ltr> : من أيّ كمّية إلى أيّ كمّية؟</span>}
                   options={[
@@ -146,13 +148,13 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 4, title: 'وهل يبلغ ميزانٌ كيس الفلفل النموذجي؟', subtitle: 'المتقدّم', done: !!q.d || !hasTrap,
+          num: 4, title: 'وهل يبلغ ميزانٌ كيس الفلفل النموذجي؟', subtitle: 'المتقدّم', done: !!q.d || !hasTrap || !!cp.a3,
           content: (
             <div className="space-y-3" data-activity-evidence>
               <Evidence id="trap" ok={hasTrap}
                 done={<span>أثقل كيس أخفّ من النموذج <Ltr>{trapLo?.mass} kg</Ltr> ، وأخفّ كيس أثقل منه <Ltr>{trapHi?.mass} kg</Ltr> .</span>}
                 todo="اختياري: افتح المستوى المتقدّم وأنهِ مهمّة كيس الفلفل، ثم عُد إلى هذا السؤال." />
-              {hasTrap && (
+              {hasTrap && !cp.a3 && (
                 <TapQuestion
                   prompt={<span>هل يمكن أن يتوازن الكيس والنموذج على هذا الميزان؟</span>}
                   options={[
@@ -165,12 +167,12 @@ export default function Module01Nashat() {
                   onAnswered={answered('d')}
                 />
               )}
-              {q.d && <KnowledgeBrick id="qimatan-muqarraban" lead="ما اسما العلامتين اللتين يقع بينهما العدد؟" />}
+              {(q.d || cp.a3) && <KnowledgeBrick id="qimatan-muqarraban" lead="ما اسما العلامتين اللتين يقع بينهما العدد؟" />}
             </div>
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

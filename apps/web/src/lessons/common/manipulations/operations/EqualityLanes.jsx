@@ -14,6 +14,10 @@ import { LabCard, StageFrame, PromptCard, VerdictBanner, ChoiceTray, ChoiceCard 
 import { SvgPill } from '../primitives/SvgPill';
 import KidFigure from '../primitives/KidFigure';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { LEVELS } from '../levels';
 import * as L from '../logic/equalityLanes';
 
@@ -83,7 +87,7 @@ export function numbersFor({ left, right, x, tasks, level }) {
 const opText = (op, c) => `${SIGN[op]} ${c < 0 ? `(${minus(c)})` : c}`;
 
 export default function EqualityLanes({
-  left, right, x, tasks, title, lead, level, levels: withLevels = true, coach: coachOn = true,
+  left, right, x, tasks, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -93,19 +97,34 @@ export default function EqualityLanes({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
   if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    const restart = scene.key === numsKey && scene.rc !== state.resetCount;
-    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-    setLab(restart ? L.restartTask(lab) : L.init(nums));
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la tâche 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
+    setLab(L.init(nums));
   }
-  const ready = L.discoveryReady(lab);
+  // les questions pendant le labo : la suite de la tâche courante (construite seulement quand la tâche est faite) ; la dernière finit par la règle
+  const cpSettings = useLabCheckpointSettings('equality-lanes');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const set = CHAINS[state.level === 'advanced' ? 'advanced' : 'beginner'];
+  const chain = cpOn && cpSettings.enabled && !L.isFree(lab) && set.length === lab.tasks.length ? set[lab.ti] : null;
+  const ruleByCheckpoint = cpOn && cpSettings.enabled && set.length === lab.tasks.length;
+  const cp = useLabCheckpoint({
+    id: chain ? `${state.level === 'advanced' ? 'a' : 'b'}${lab.ti}` : null,
+    questions: chain && L.taskDone(lab) ? chain.map((q) => QUESTIONS[q](lab, L.taskOf(lab), k)).filter(Boolean) : null,
+    reached: L.taskDone(lab),
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.restartTask),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => { if (set[Number(String(id).slice(1))]?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  const ready = L.discoveryReady(lab) && !ruleByCheckpoint;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   const finishedOnce = useRef(false);
+  const finished = ruleByCheckpoint ? lab.tasks.every((_, i) => !!lab.done[i]) : ready;
   useEffect(() => {
-    if (!ready) { finishedOnce.current = false; return; }
+    if (!finished) { finishedOnce.current = false; return; }
     if (!finishedOnce.current) { finishedOnce.current = true; state.report(onFinished, {}); }
-  }, [ready]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [finished]); // eslint-disable-line react-hooks/exhaustive-deps
   const reported = useRef(0);
   const nTrials = lab.trials.length;
   useEffect(() => {
@@ -114,7 +133,7 @@ export default function EqualityLanes({
     reported.current = nTrials;
   }, [nTrials, lab.trials]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'equality-lanes', step: coachStep,
     text: coachStep ? k(`coach.${coachStep.id}`) : '',
@@ -150,6 +169,8 @@ export default function EqualityLanes({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       coach={coachOn ? coach : null}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={!!chain || ruleByCheckpoint}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={discovery}
@@ -157,9 +178,9 @@ export default function EqualityLanes({
     >
       <ManipulationStage className="bg-gradient-to-b from-sky-50/50 to-white">
         <div ref={boxRef} className="space-y-2" data-equality-lanes data-task={lab.ti}
-          data-solved={ready ? 'true' : 'false'} data-layout={width >= WIDE_MIN ? 'wide' : 'narrow'}>
+          data-solved={finished ? 'true' : 'false'} data-layout={width >= WIDE_MIN ? 'wide' : 'narrow'}>
           <style dangerouslySetInnerHTML={{ __html: CSS }} />
-          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} />
+          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} cp={cp} />
         </div>
       </ManipulationStage>
     </ManipulationShell>
@@ -168,7 +189,7 @@ export default function EqualityLanes({
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-function Lab({ lab, setLab, k, width, screenH, lead }) {
+function Lab({ lab, setLab, k, width, screenH, lead, cp }) {
   const uid = `el${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
   const wide = width >= WIDE_MIN;
   const free = L.isFree(lab);
@@ -181,21 +202,37 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
   const eqNow = `$${Q.eqTex(lab.cur)}$`;
   const ctx = free ? k('context.free', { n: iso(minus(lab.free.n)) }) : (lead || k('context.lanes', { eq: `$${Q.eqTex(lab.start)}$` }));
   const question = free ? k('question.free') : k('question.task', { target: `$${Q.eqTex(task.target)}$` });
+  // une étape est FAITE quand la cible est atteinte ET que ses questions (LabCheckpoint) sont répondues : alors la pastille passe au vert et on fête
+  const stepDone = lab.tasks.map((_, i) => !!lab.done[i] && (i !== lab.ti || !cp.blocking));
   const steps = lab.tasks.length > 1 && !free && (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={tk.id} role="listitem" data-el-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-indigo-600 bg-indigo-600 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-indigo-100 bg-white text-indigo-400'}`}>
-            <bdi dir="ltr">{i + 1}</bdi>
-          </span>
-        );
-      })}
-    </div>
+    <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-el-step" />
   );
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // L.init (« إعادة », autre niveau) : on refête
+  const nowDone = !free && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.ti)) return;
+    celebrated.current.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
+  /* ── le son (muet sauf « الصوت ») : un déclic quand la poignée de c change de graduation (au plus un toutes les 35 ms), un déclic grave
+     pour « نفّذ », `flag` quand la cible est atteinte, `over` quand l'opération sépare les coureurs ou est refusée. ── */
+  const sfx = useRef({ c: lab.c, at: 0 });
+  useEffect(() => {
+    const p = sfx.current;
+    if (p.c === lab.c) return;
+    const now = performance.now();
+    if (now - p.at > 35) { playSfx('tooth', { pitch: lab.c > p.c ? 1 : 0.75 }); p.at = now; }
+    p.c = lab.c;
+  }, [lab.c]);
+  const lastRef = lab.last;
+  useEffect(() => {
+    if (!lastRef) return;
+    if (lastRef.kind === 'refused' || lastRef.broke || lastRef.lost) playSfx('over');
+    else if (lastRef.reached) { playSfx('bell'); playSfx('flag'); }
+    else playSfx('tooth', { pitch: 0.75 });
+  }, [lastRef]);
   const prompt = (
     <PromptCard size={wide ? 'lg' : 'md'} context={<MathText>{ctx}</MathText>} contextProps={{ 'data-el-context': free ? 'free' : 'lanes' }}
       title={<MathText>{question}</MathText>} titleClassName={wide ? 'text-xl' : 'text-lg'} lamp={free ? null : lit ? 'on' : 'off'}
@@ -226,7 +263,7 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
   const vkey = !last ? '' : last.kind === 'refused' ? 'refused' : last.broke ? 'broke' : last.reached ? 'right' : 'ok';
   const tone = !last ? 'indigo' : last.reached && !last.free ? 'emerald' : last.broke || last.kind === 'refused' ? 'amber' : 'indigo';
   const Icon = !last ? Hand : last.reached && !last.free ? CheckCircle2 : Sparkles;
-  const canNext = L.canNext(lab);
+  const canNext = L.canNext(lab) && !cp.blocking;
   const mood = !last ? 'happy' : last.reached ? 'proud' : last.broke ? 'wonder' : 'happy';
   const banner = (
     <VerdictBanner tone={tone} icon={wide ? Icon : null} size="sm" className="min-h-[3.5rem]" data-el-verdict={vkey}>
@@ -258,6 +295,8 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
   return (
     <>
       <div className="relative space-y-2.5" data-el-glance>
+        {party.node}
+        {cp.node}
         {prompt}
         {wide ? (
           <div className="flex items-start gap-3">
@@ -506,3 +545,87 @@ export function Formal({ lab, k }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de questions de chaque tâche (par niveau, dans l'ordre des tâches) : elle interroge ce que l'élève vient de FAIRE ; la dernière finit par la règle. */
+export const CHAINS = Object.freeze({
+  beginner: Object.freeze([['value', 'together'], ['value', 'undoOp'], ['undoOp', 'together'], ['value', 'rule']]),
+  advanced: Object.freeze([['value', 'together'], ['value', 'undoOp'], ['undoOp', 'rule']]),
+});
+
+const $ = (s) => `$${s}$`;
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+/** Son dernier essai qui a atteint la cible dans cette tâche (la dernière opération de la tâche). */
+const hitOf = (lab) => lab.trials.findLast((t) => t.kind === 'apply' && !t.free && t.task === lab.ti && t.reached);
+const texOp = (txt) => String(txt).replace(/−/g, '-').replace(/×/g, '\\times ').replace(/÷/g, '\\div ');
+const INVERSE = { add: ['add', (c) => -c], sub: ['sub', (c) => -c], mul: ['div', (c) => c], div: ['mul', (c) => c] };
+
+export const QUESTIONS = {
+  value: (lab, task, k) => {
+    const t = hitOf(lab);
+    if (!t) return null;
+    const v = Lin.parseNumber(t.after.left);
+    const before = Lin.parseNumber(t.before.left);
+    const bads = [before, Lin.neg(v), Lin.add(v, 1)].filter((n, i, arr) => !Lin.eq(n, v) && arr.findIndex((m) => Lin.eq(m, n)) === i).slice(0, 2);
+    const o = { op: iso(opText(t.op, t.c)), before: iso(minus(t.before.left)), v: iso(minus(t.after.left)) };
+    const ordered = [bads[0], v, bads[1]];
+    if (lab.ti % 2) ordered.reverse();
+    return {
+      id: 'value', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'value.prompt', o),
+      options: ordered.map((n) => (Lin.eq(n, v)
+        ? { text: <MathText>{$(minus(Lin.fracText(n)))}</MathText>, correct: true }
+        : { text: <MathText>{$(minus(Lin.fracText(n)))}</MathText>, why: Mx(k, Lin.eq(n, before) ? 'value.whyBefore' : 'value.whySign', { ...o, w: iso(minus(Lin.fracText(n))) }) })),
+      hints: [Mx(k, 'value.hint1', o), Mx(k, 'value.hint2', o)],
+      explain: Mx(k, 'value.explain', o),
+    };
+  },
+  together: (lab, task, k) => {
+    const t = hitOf(lab);
+    if (!t) return null;
+    const o = { op: iso(opText(t.op, t.c)), l: iso(minus(t.after.left)), eq: $(t.eq) };
+    return {
+      id: 'together', kind: 'choice',
+      prompt: Mx(k, 'together.prompt', o),
+      options: [
+        { text: Mx(k, 'together.one', o), why: Mx(k, 'together.whyOne', o) },
+        { text: Mx(k, 'together.both', o), correct: true },
+        { text: Mx(k, 'together.x', o), why: Mx(k, 'together.whyX', o) },
+      ],
+      hints: [Mx(k, 'together.hint1', o), Mx(k, 'together.hint2', o)],
+      explain: Mx(k, 'together.explain', o),
+    };
+  },
+  undoOp: (lab, task, k) => {
+    const t = hitOf(lab);
+    if (!t) return null;
+    const [iop, ic] = INVERSE[t.op];
+    const back = opText(iop, ic(t.c));
+    const again = opText(t.op, t.c);
+    const other = t.op === 'mul' || t.op === 'div' ? opText(t.op === 'mul' ? 'mul' : 'div', -t.c) : opText(t.op, 2 * t.c);
+    const o = { op: iso(opText(t.op, t.c)), back: iso(back), again: iso(again), other: iso(other), before: iso(minus(t.before.left)) };
+    const wrongs = [{ text: <MathText>{$(texOp(again))}</MathText>, why: Mx(k, 'undoOp.whyAgain', o) }, { text: <MathText>{$(texOp(other))}</MathText>, why: Mx(k, 'undoOp.whyOther', o) }];
+    const right = { text: <MathText>{$(texOp(back))}</MathText>, correct: true };
+    const out = [...wrongs];
+    out.splice(lab.ti % 3, 0, right);
+    return {
+      id: 'undoOp', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'undoOp.prompt', o), options: out,
+      hints: [Mx(k, 'undoOp.hint1', o), Mx(k, 'undoOp.hint2', o)],
+      explain: Mx(k, 'undoOp.explain', o),
+    };
+  },
+  rule: (lab, task, k) => {
+    const w = L.witnesses(lab);
+    const one = w.one ?? { op: 'add', c: 4, who: 'left', after: { left: '7', right: '3' } };
+    const o = { who: k(`whoOnly.${one.who}`), op: iso(opText(one.op, one.c)), l: iso(minus(one.after.left)), r: iso(minus(one.after.right)) };
+    return {
+      id: 'rule', kind: 'choice',
+      prompt: <MathText>{k('discovery.prompt')}</MathText>,
+      options: discoveryOptions(lab, k),
+      hints: [Mx(k, 'rule.hint1', o), Mx(k, 'rule.hint2', o)],
+      explain: <Formal lab={lab} k={k} />,
+    };
+  },
+};

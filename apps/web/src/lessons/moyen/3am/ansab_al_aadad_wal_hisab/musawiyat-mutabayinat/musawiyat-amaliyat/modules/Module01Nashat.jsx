@@ -24,7 +24,9 @@ export default function Module01Nashat() {
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
-  const record = (e) => setTrials((list) => [...list, e]);
+  // les questions posées PENDANT le labo (checkpoint-done) : la TRACE de l'étape ; si l'enseignant les coupe, les questions d'ici reprennent
+  const [cp, setCp] = useState({});
+  const record = (e) => { if (e.tk) { if (e.tk === 'checkpoint-done') setCp((c) => ({ ...c, [e.id]: true })); return; } setTrials((list) => [...list, e]); };
   const mine = trials.filter((e) => e.kind === 'apply' && !e.free);
   const both = mine.findLast((e) => e.who === 'both' && (e.op === 'add' || e.op === 'sub') && e.c !== 0);
   const one = mine.findLast((e) => e.who !== 'both' && e.broke);
@@ -57,13 +59,13 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'لماذا بقي المتسابقان معًا؟', subtitle: 'الجمع والطرح على الطرفين', done: q1,
+          num: 1, title: 'لماذا بقي المتسابقان معًا؟', subtitle: 'الجمع والطرح على الطرفين', done: q1 || !!cp.b0 || !!cp.a0,
           content: (
             <div className="space-y-3" data-activity-evidence>
               <Evidence id="both" ok={!!both}
                 done={<span>طبّقتَ <Ltr>{opText(both ?? {})}</Ltr> على الطرفين فبقيا معًا عند <Ltr>{both?.after?.left}</Ltr> .</span>}
                 todo="نفّذ في المضمار عملية جمع أو طرح على كلا الطرفين، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
+              {!(cp.b0 || cp.a0) && <TapQuestion
                 prompt="كان المتسابقان عند الخانة نفسها، وتلقّى كلٌّ منهما العملية نفسها بالعدد نفسه. لماذا بقيا معًا؟"
                 options={[
                   'لأنّ كليهما كان عند العدد نفسه، والعملية نفسها على عددين متساويين تعطي عددين متساويين',
@@ -73,8 +75,8 @@ export default function Module01Nashat() {
                 correct={0} cols={1} requires={['ikhtibar-musawat']}
                 explain={<MathText>{GUIDE.together}</MathText>}
                 onAnswered={() => setQ1(true)}
-              />
-              {q1 && <KnowledgeBrick id="musawat-jam" lead="عملية نفسها على متسابقين متساويين: ماذا نكتب؟" />}
+              />}
+              {(q1 || cp.b0 || cp.a0) && <KnowledgeBrick id="musawat-jam" lead="عملية نفسها على متسابقين متساويين: ماذا نكتب؟" />}
             </div>
           ),
         },
@@ -143,7 +145,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }
