@@ -81,6 +81,7 @@ import * as L from '../logic/rankExchange';
  * pack ce qui reste · la valeur d'un chiffre · pourquoi lier ; unpack le compteur · رقم ≠ عدد · le 0 · LA RÈGLE (l'ancienne découverte `rank`) ;
  * next / previous / borrow la valeur · les liens ou les ouvertures ; dictation le 0 · les classes · LA RÈGLE (`zero`). La suite qui finit par
  * la règle formalise (`onDone`). Obligatoires pour tout élève ; l'enseignant seul les coupe pour SON compte (`useLabCheckpointSettings`).
+ * SEULEMENT LES ÉTAPES (L9) : questions actives → `guided` (ni « جرّب › اكتشف › صِغ القاعدة » ni « تلميح ») ; coupées → les deux reviennent.
  * ÉTAPES : `LabStepper` (`[data-rx-step=<i>]`) et la fête `useStepCelebration` par tâche. « إعادة » repart de la tâche 1 ; « أعِد التجربة »
  * (la carte) remet LA MÊME tâche (`L.retryTask`). SON (`playSfx`) : `tooth` pour un geste (porter, ouvrir, ±, plus grave en arrière), `bell`
  * pour dix liés en un (ou un nombre dicté juste), `flag` quand la tâche est faite, `over` pour un refus.
@@ -252,6 +253,8 @@ export default function RankExchange({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      guided={!!chain || ruleByCheckpoint}
+      headerAction={cpOn ? cpSettings.control : null}
       hints={[0, 1, 2].map((i) => k(`hints.${hintKey(task, W0)}.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={discovery || undefined}

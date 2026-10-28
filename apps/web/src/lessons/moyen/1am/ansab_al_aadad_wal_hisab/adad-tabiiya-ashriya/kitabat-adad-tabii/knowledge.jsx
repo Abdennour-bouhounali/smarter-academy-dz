@@ -18,7 +18,7 @@ export const LESSON_KNOWLEDGE = {
       {
         id: 'tabadul', type: 'concepts', title: 'عشرة بواحدة',
         memo: {
-          rule: `10\\times 1=10,\\quad 10\\times 10=100,\\quad 10\\times 100=${R('1000')}`,
+          rule: `10\\times 10=${R('100')}`,
           hook: 'عشرة هنا = واحدة على اليسار',
           example: `37=${R('3')}\\times 10+7`,
           trap: 'عمود فيه 10 أو أكثر لا يُكتب في خانة واحدة: اربط أوّلًا',
@@ -41,7 +41,7 @@ export const LESSON_KNOWLEDGE = {
       {
         id: 'qima-mawdi', type: 'concepts', title: 'قيمة الرقم حسب موقعه', predict: false,
         memo: {
-          rule: `d\\times ${R('1')},\\quad d\\times ${R('10')},\\quad d\\times ${R('100')}`,
+          rule: `d\\times ${R('10')}=10d`,
           hook: 'نفس الرقم، قيمة أخرى',
           example: `2577:\\ 7\\times ${R('10')}=70,\\ \\ 7\\times 1=7`,
           trap: 'الرقم 7 في مرتبة العشرات لا يعدّ 7 بل 70',
@@ -137,7 +137,7 @@ export const LESSON_KNOWLEDGE = {
       {
         id: 'raqm-adad', type: 'methodes', title: 'رقم المرتبة وعدد وحداتها',
         memo: {
-          rule: `\\overline{${R('abc')}de}=${R('\\overline{abc}')}\\times 100+\\overline{de}`,
+          rule: `\\overline{${R('ab')}c}=${R('ab')}\\times 10+c`,
           hook: 'العدد: احذف ما على اليمين',
           example: `2017=${R('201')}\\times 10+7`,
           trap: 'رقم المئات ليس عدد المئات: في 1345 الرقم 3 والعدد 13',
@@ -162,7 +162,7 @@ export const LESSON_KNOWLEDGE = {
       {
         id: 'malyun-milyar', type: 'concepts', title: 'المليون والمليار', predict: false,
         memo: {
-          rule: `${R('1\\,000\\,000')}=1000\\times 1000`,
+          rule: `${R('10^6')}=10^3\\times 10^3`,
           hook: 'ألف ألف: مليون',
           example: `1\\,000\\,000\\,000=1000\\times ${R('1\\,000\\,000')}`,
           trap: 'المليار ألف مليون، لا مئة مليون',

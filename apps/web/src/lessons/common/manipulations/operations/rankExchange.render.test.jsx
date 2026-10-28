@@ -290,3 +290,16 @@ describe('rank-exchange — questions pendant le labo (LabCheckpoint)', () => {
     expect(chainsOf(adv).dictation.at(-1)).toBe('rule');
   });
 });
+
+describe('rank-exchange — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('questions actives : ni la progression ni le bouton d’indice ; checkpoints={false} : les deux reviennent', () => {
+    for (const numbers of [LEVELS['rank-exchange'].beginner.numbers, { world: 'money', tasks: ['unpack'], n: 1345, rank: 2, levels: false }]) {
+      const g = html(numbers);
+      expect(g).not.toContain('data-manipulation-progress');
+      expect(g).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+      const off = html({ ...numbers, checkpoints: false });
+      expect(off).toContain('data-manipulation-progress');
+      expect(off).toContain(i18n.t('lesson:manipulation.hint.show'));
+    }
+  });
+});
