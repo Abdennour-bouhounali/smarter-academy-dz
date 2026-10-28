@@ -3,7 +3,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import i18n from '../../../../i18n';
-import TileYard, { Formal, discoveryOptions, numbersFor } from './TileYard';
+import TileYard, { Formal, discoveryOptions, numbersFor, chainsOf, QUESTIONS, taskReached } from './TileYard';
 import { LEVELS } from '../levels';
 import * as L from '../logic/tileYard';
 
@@ -144,5 +144,49 @@ describe('tile-yard — discovery and rule come from the student’s own yards',
     expect(out).not.toContain('data-ty-sentence="samePerimeterOnly"');
     expect(out).toContain('data-ty-formal-pair');
     expect(out).not.toMatch(/\{\{/);
+  });
+});
+
+describe('tile-yard — questions pendant le labo (LabCheckpoint)', () => {
+  const k = (key, o) => i18n.t(`lesson:manipulation.tileYard.${key}`, o);
+  const RAW_ = /manipulation\.[a-zA-Z]/;
+  const cases = [['fence', { world: 'yard', mode: 'fence' }], ['rope', { world: 'yard', mode: 'rope' }], ['floor', { world: 'floor', mode: 'floor' }]];
+  for (const [name, nums] of cases) {
+    it(`${name} : chaque question a un texte, une seule bonne réponse, deux indices, et ni clé brute ni {{`, () => {
+      const lab = L.init(nums);
+      const chains = chainsOf(lab);
+      expect(Object.keys(chains)).toEqual(lab.tasks);
+      for (const [task, chain] of Object.entries(chains)) {
+        expect(chain.length, task).toBeGreaterThanOrEqual(2);
+        for (const qid of chain) {
+          const q = QUESTIONS[qid](lab, task, k);
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${task}.${qid}`).not.toMatch(RAW_);
+          expect(out, `${task}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${task}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${task}.${qid}`).toHaveLength(1);
+          else expect(q.expected, `${task}.${qid}`).toBeTruthy();
+        }
+      }
+    });
+  }
+  it('les nombres viennent des scènes ; la dernière tâche d’une cour attend la découverte', () => {
+    const fl = L.init({ world: 'floor', mode: 'floor' });
+    expect(QUESTIONS.areaNum(fl, 'terrace-halves', k).expected).toBe('16');
+    const lab = L.init({ world: 'yard', mode: 'fence' });
+    expect(QUESTIONS.fenceNum(lab, 'shortest', k).expected).toBe('14');
+    expect(taskReached({ ...lab, done: [true, true], ti: 1 }, 1)).toBe(false);
+    expect(chainsOf(lab).twenty.at(-1)).toBe('rule');
+  });
+});
+
+describe('tile-yard — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('questions actives : ni la progression ni le bouton d’indice ; checkpoints={false} : les deux reviennent', () => {
+    const g = renderToString(<TileYard world="yard" mode="fence" />);
+    expect(g).not.toContain('data-manipulation-progress');
+    expect(g).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    const off = renderToString(<TileYard world="yard" mode="fence" checkpoints={false} />);
+    expect(off).toContain('data-manipulation-progress');
+    expect(off).toContain(i18n.t('lesson:manipulation.hint.show'));
   });
 });

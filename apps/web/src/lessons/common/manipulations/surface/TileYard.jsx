@@ -10,6 +10,10 @@ import { useManipulation } from '../useManipulation';
 import { LabCard, PromptCard, VerdictBanner } from '../primitives/LabKit';
 import LabFold from '../primitives/LabFold';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { LEVELS } from '../levels';
 import * as L from '../logic/tileYard';
 import YardBoard, { geometry as yardGeometry } from './YardBoard';
@@ -50,6 +54,14 @@ import { MiniYard, RopeCoil, TONES } from './tileArt';
  *
  * ONBOARDING : `logic/tileYard.js › coachOf` (pick · walk · keep · again · next | add · more | pick · sweep · half · double · halfTwo · confirm).
  *
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 1, 2026-10-28) : `checkpoints` (défaut true). Après
+ * CHAQUE tâche (cour gardée qui remplit le but ; scène lue), une suite par-dessus le labo (`CHAINS`) : fence — la clôture lue · pourquoi
+ * elle raccourcit ; 20 bâtons — les carreaux lus · même aire ? · LA RÈGLE ; rope — les carreaux lus · même corde ? · LA RÈGLE ; floor — les
+ * demis · la lecture ; la seconde unité · le rapport. La règle (l'ancienne découverte) formalise dans `onDone` ; la dernière tâche d'une cour
+ * n'ouvre sa suite que quand la découverte est prête (3 cours gardés). « أعِد التجربة » remet LA MÊME tâche (`L.retryTask`) ; « إعادة »
+ * la tâche 1. Mode guidé (`guided`) dès qu'une suite est active ; l'enseignant seul coupe les questions pour SON compte. ÉTAPES `LabStepper`
+ * (`[data-ty-step=<i>]`) et la fête par tâche. SON : `tooth` pour un carreau posé, déplacé, retiré (plus grave), `bell` une cour gardée ou
+ * une marche autour de la clôture, `flag` une tâche remplie ou une lecture confirmée, `over` un refus.
  * Props (contrat fixé avec la leçon) : `world` ('yard' | 'floor'), `mode` ('fence' | 'rope', yard), `tasks` (floor : les scènes), `level`, `levels`, `coach`,
  * `title`, `lead`, `onTrial(événement)` (par `state.report`), `onFinished({ world, mode })`.
  *
@@ -89,7 +101,7 @@ const useReduced = () => {
 };
 
 export default function TileYard({
-  world, mode, tasks, title, lead, level, levels: withLevelsProp = true, coach: coachOn = true,
+  world, mode, tasks, title, lead, level, levels: withLevelsProp = true, coach: coachOn = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -100,14 +112,57 @@ export default function TileYard({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, inits: 0 });
   if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    setScene({ key: numsKey, epoch: state.epoch });
+    // « إعادة » (epoch), un autre niveau : TOUT recommence — la tâche 1, le carnet, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, inits: scene.inits + 1 });
     setLab(L.init(nums));
   }
   const floor = lab.world === 'floor';
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : la suite de la tâche courante (`chainsOf`)
+  const cpSettings = useLabCheckpointSettings('tile-yard');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const chains = cpOn && cpSettings.enabled ? chainsOf(lab) : null;
+  const curTask = L.taskOf(lab);
+  const chain = chains?.[curTask] ?? null;
+  const ruleByCheckpoint = !!chains && !floor;
+  const cpReached = taskReached(lab, lab.ti);
+  const cp = useLabCheckpoint({
+    id: chain ? curTask : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, curTask, k)) : null,
+    reached: cpReached,
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.retryTask),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => { if (chains?.[id]?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  useEffect(() => { if (ready && !ruleByCheckpoint) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son de chaque geste jugé (muet sans « الصوت »)
+  const lastSeen = useRef(lab.last);
+  useEffect(() => {
+    const v = lab.last;
+    if (v === lastSeen.current) return;
+    lastSeen.current = v;
+    if (!v) return;
+    const e = v.event;
+    if (e === 'refused' || e === 'duplicate') playSfx('over');
+    else if (e === 'task' || e === 'read') playSfx('flag');
+    else if (e === 'keep' || e === 'walk') playSfx('bell');
+    else playSfx('tooth', { pitch: e === 'remove' || e === 'unlay' ? 0.75 : 1 });
+  }, [lab.last]);
+  // les étapes : une tâche est FAITE quand son but est atteint ET que ses questions sont répondues ; on la fête une fois
+  const stepDone = lab.tasks.map((_, i) => taskReached(lab, i) && (i !== lab.ti || !cp.blocking));
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.events.length === 0 && celebrated.current.size) celebrated.current = new Set();
+  const nowDone = stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.ti)) return;
+    celebrated.current.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
+  const steps = lab.tasks.length > 1 ? <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-ty-step" /> : null;
+  const cpBox = { cp, party, steps };
   useEffect(() => {
     if (floor && ready) { state.formalize(); state.report(onFinished, { world: 'floor', mode: 'floor' }); }
   }, [floor, ready]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -119,7 +174,7 @@ export default function TileYard({
     reported.current = nEv;
   }, [nEv, lab.events]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'tile-yard', step: coachStep,
     text: coachStep ? k(`coach.${coachStep.id}`) : '',
@@ -149,13 +204,14 @@ export default function TileYard({
   return (
     <ManipulationShell type="tile-yard" title={title ?? k('title')} titleHidden state={state} allowModeSwitch={allowModeSwitch} allowFreeLab={false}
       coach={coachOn ? coach : null} hints={[0, 1, 2].map((i) => k(`hints.${floor ? 'floor' : lab.mode}.${i}`))}
+      guided={!!chain || ruleByCheckpoint} headerAction={cpSettings.control}
       controller={{ autoStep: () => false, canAutoStep: () => false }} discovery={discovery} explanation={k('explanation')}>
       <ManipulationStage className="bg-gradient-to-b from-amber-50/60 to-white">
         <div ref={boxRef} className="space-y-2" data-tile-yard data-world={lab.world} data-mode={lab.mode} data-task={L.taskOf(lab)} data-solved={ready ? 'true' : 'false'}>
           <style dangerouslySetInnerHTML={{ __html: MOTION_CSS }} />
           {floor
-            ? <FloorLab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} />
-            : <YardLab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} />}
+            ? <FloorLab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} cpBox={cpBox} />
+            : <YardLab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} cpBox={cpBox} />}
         </div>
       </ManipulationStage>
     </ManipulationShell>
@@ -163,25 +219,6 @@ export default function TileYard({
 }
 
 /* ══════════════ Pièces communes ══════════════ */
-
-function StepsDots({ lab, k }) {
-  if (lab.tasks.length < 2) return null;
-  return (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      <span className="text-xs font-black text-indigo-900/60" aria-hidden="true">{k('stepsLabel')}</span>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={tk} role="listitem" data-ty-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-indigo-600 bg-indigo-600 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-indigo-100 bg-white text-indigo-400'}`}>
-            {d && !cur ? <Check className="h-3.5 w-3.5" strokeWidth={3} aria-hidden="true" /> : <bdi dir="ltr">{i + 1}</bdi>}
-          </span>
-        );
-      })}
-    </div>
-  );
-}
 
 const Big = ({ children, dataAttr, label, small = false }) => (
   <bdi dir="ltr" key={String(children)} className={`ty-num inline-block ${small ? 'text-3xl' : 'text-4xl'} font-black leading-none tabular-nums text-indigo-800`} {...dataAttr} aria-label={label}>{children}</bdi>
@@ -219,7 +256,7 @@ function walkNarrow(width) { return width < 600; }
 
 /* ══════════════ Monde yard ══════════════ */
 
-function YardLab({ lab, setLab, k, width, screenH, lead }) {
+function YardLab({ lab, setLab, k, width, screenH, lead, cpBox }) {
   const rope = lab.mode === 'rope';
   const reduce = useReduced();
   const side = !walkNarrow(width);
@@ -261,13 +298,13 @@ function YardLab({ lab, setLab, k, width, screenH, lead }) {
   const context = lead || k(rope ? 'context.rope' : 'context.fence');
   const question = k(`question.${task}`);
   const prompt = (
-    <PromptCard size={side ? 'lg' : 'md'} className={screenH < 800 ? '!space-y-1.5 !p-3.5' : undefined} aside={<StepsDots lab={lab} k={k} />} context={context} contextProps={{ 'data-ty-context': task }}
+    <PromptCard size={side ? 'lg' : 'md'} className={screenH < 800 ? '!space-y-1.5 !p-3.5' : undefined} aside={cpBox.steps} context={context} contextProps={{ 'data-ty-context': task }}
       title={question} titleClassName={!side ? 'text-base' : screenH < 800 ? 'text-lg' : 'text-xl'} lamp={done ? 'on' : 'off'} titleProps={{ 'data-ty-prompt': task, 'data-lit': done ? 'true' : 'false' }} />
   );
   const walking = !!walk;
   const canKeep = L.canKeep(lab);
   const left = L.ropeLeft(lab);
-  const nextEl = L.canNext(lab) && (
+  const nextEl = L.canNext(lab) && !cpBox.cp.blocking && (
     <button type="button" onClick={() => setLab(L.nextTask)} data-ty-next
       className={`inline-flex min-h-[44px] items-center justify-center gap-1.5 whitespace-nowrap rounded-full border-2 border-emerald-600 bg-emerald-600 px-3.5 text-sm font-black text-white shadow-[0_3px_0_0_#047857] active:translate-y-0.5 ${ring}`}>
       {k('next')} <ChevronLeft className="h-4 w-4" aria-hidden="true" />
@@ -302,6 +339,8 @@ function YardLab({ lab, setLab, k, width, screenH, lead }) {
   );
   const glance = (
     <div className="relative mx-auto space-y-2.5" style={{ maxWidth: MAX_W }} data-ty-glance>
+      {cpBox.party.node}
+      {cpBox.cp.node}
       {prompt}
       <div className={side ? 'flex items-start gap-3' : 'space-y-2'}>
         <div className="flex min-w-0 flex-1 justify-center rounded-3xl border-2 border-amber-300/70 bg-[#F3E9CF] p-1.5 shadow-[0_12px_30px_-18px_rgba(146,64,14,0.55)]" data-ty-stage>
@@ -376,7 +415,7 @@ function Notebook({ lab, k }) {
 
 /* ══════════════ Monde floor ══════════════ */
 
-function FloorLab({ lab, setLab, k, width, screenH, lead }) {
+function FloorLab({ lab, setLab, k, width, screenH, lead, cpBox }) {
   const reduce = useReduced();
   const scene = L.taskOf(lab);
   const sc = L.SCENES[scene];
@@ -415,14 +454,14 @@ function FloorLab({ lab, setLab, k, width, screenH, lead }) {
     if (cov) return { tone: 'indigo', icon: Hand, text: k('b.covered') };
     return { tone: 'indigo', icon: Hand, text: k(`idle.${phaseKey}`) };
   })();
-  const nextEl = L.canNext(lab) && (
+  const nextEl = L.canNext(lab) && !cpBox.cp.blocking && (
     <button type="button" onClick={() => setLab(L.nextScene)} data-ty-next
       className={`inline-flex min-h-[44px] items-center justify-center gap-1.5 whitespace-nowrap rounded-full border-2 border-emerald-600 bg-emerald-600 px-3.5 text-sm font-black text-white shadow-[0_3px_0_0_#047857] active:translate-y-0.5 ${ring}`}>
       {k('nextScene')} <ChevronLeft className="h-4 w-4" aria-hidden="true" />
     </button>
   );
   const prompt = (
-    <PromptCard size={side ? 'lg' : 'md'} className={screenH < 800 ? '!space-y-1.5 !p-3.5' : undefined} aside={<StepsDots lab={lab} k={k} />} context={context} contextProps={{ 'data-ty-context': scene }}
+    <PromptCard size={side ? 'lg' : 'md'} className={screenH < 800 ? '!space-y-1.5 !p-3.5' : undefined} aside={cpBox.steps} context={context} contextProps={{ 'data-ty-context': scene }}
       title={question} titleClassName={!side ? 'text-base' : screenH < 800 ? 'text-lg' : 'text-xl'} lamp={done ? 'on' : 'off'} titleProps={{ 'data-ty-prompt': scene, 'data-lit': done ? 'true' : 'false' }} />
   );
   const panel = (
@@ -461,6 +500,8 @@ function FloorLab({ lab, setLab, k, width, screenH, lead }) {
   );
   return (
     <div className="relative mx-auto space-y-2.5" style={{ maxWidth: MAX_W }} data-ty-glance>
+      {cpBox.party.node}
+      {cpBox.cp.node}
       {prompt}
       <div className={side ? 'flex items-start gap-3' : 'space-y-2'}>
         <div className="flex min-w-0 flex-1 justify-center rounded-3xl border-2 border-amber-300/70 bg-[#F3E9CF] p-1.5 shadow-[0_12px_30px_-18px_rgba(146,64,14,0.55)]" data-ty-stage>
@@ -535,3 +576,131 @@ export function Formal({ lab, k }) {
   );
 }
 
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de chaque tâche ; `rule` (la découverte) clôt la dernière tâche d'une cour. Le sol n'a pas de règle à découvrir ici. */
+export const CHAINS = Object.freeze({
+  shortest: ['fenceNum', 'whyShorter'],
+  twenty: ['tilesNum', 'sameArea', 'rule'],
+  biggest: ['tilesNum', 'ropeSame'],
+  smallest: ['tilesNum', 'rule'],
+  'terrace-halves': ['halfPair', 'areaNum'],
+  'terrace-double': ['twoUnits', 'ratio'],
+});
+
+export function chainsOf(lab) {
+  const out = {};
+  for (const t of lab.tasks) if (CHAINS[t]) out[t] = [...CHAINS[t]];
+  return out;
+}
+
+/** La tâche i est-elle atteinte ? Son but rempli ; pour la DERNIÈRE tâche d'une cour, aussi la découverte prête (3 cours gardés). */
+export function taskReached(lab, i) {
+  if (!lab.done[i]) return false;
+  if (L.isFloor(lab) || i < lab.tasks.length - 1) return true;
+  return L.discoveryReady(lab);
+}
+
+const C = (k, key, o) => k(`cp.${key}`, o);
+const pick = (list, right, whys) => list.map((text, i) => (i === right ? { text, correct: true } : { text, why: whys[i] }));
+/** La cour gardée qui a rempli la tâche (sinon le but lui-même). */
+const keptFor = (lab, task) => {
+  const goal = L.TASK_GOAL[task] ?? {};
+  return [...lab.kept].reverse().find((x) => (goal.fence == null || goal.fence === x.fence) && (goal.tiles == null || goal.tiles === x.tiles))
+    ?? { tiles: goal.tiles ?? L.TILES, fence: goal.fence ?? L.ROPE };
+};
+/** Les lectures d'une scène du sol (celles de l'élève, sinon celles de la scène). */
+const floorRead = (lab, scene) => {
+  const sc = L.SCENES[scene];
+  const halves = sc.whole.length * 2 + sc.halves.length;
+  const one = lab.reads?.[scene]?.one ?? (halves % 2 ? `${(halves - 1) / 2},5` : String(halves / 2));
+  const two = lab.reads?.[scene]?.two ?? (halves % 4 ? `${Math.floor(halves / 4)},5` : String(halves / 4));
+  return { one, two, whole: sc.whole.length, halfCount: sc.halves.length };
+};
+const num = (v) => String(v).replace(',', '.');
+
+export const QUESTIONS = {
+  fenceNum: (lab, task, k) => {
+    const x = keptFor(lab, task);
+    const o = { fence: iso(x.fence), tiles: iso(x.tiles) };
+    return {
+      id: 'fenceNum', kind: 'number', expected: String(x.fence), answer: <bdi dir="ltr">{x.fence}</bdi>,
+      prompt: C(k, 'fenceNum.prompt', o), hints: [C(k, 'fenceNum.hint1'), C(k, 'fenceNum.hint2')], explain: C(k, 'fenceNum.explain', o),
+    };
+  },
+  whyShorter: (lab, task, k) => {
+    const x = keptFor(lab, task);
+    const o = { fence: iso(x.fence), tiles: iso(x.tiles) };
+    return {
+      id: 'whyShorter', kind: 'choice', prompt: C(k, 'whyShorter.prompt', o),
+      options: pick([C(k, 'whyShorter.right'), C(k, 'whyShorter.fewer'), C(k, 'whyShorter.smaller')], 0, [null, C(k, 'whyShorter.whyFewer', o), C(k, 'whyShorter.whySmaller')]),
+      hints: [C(k, 'whyShorter.hint1'), C(k, 'whyShorter.hint2')], explain: C(k, 'whyShorter.explain', o),
+    };
+  },
+  tilesNum: (lab, task, k) => {
+    const x = keptFor(lab, task);
+    const o = { fence: iso(x.fence), tiles: iso(x.tiles) };
+    return {
+      id: 'tilesNum', kind: 'number', expected: String(x.tiles), answer: <bdi dir="ltr">{x.tiles}</bdi>,
+      prompt: C(k, `tilesNum.prompt.${lab.mode === 'rope' ? 'rope' : 'fence'}`, o), hints: [C(k, 'tilesNum.hint1'), C(k, 'tilesNum.hint2', o)], explain: C(k, 'tilesNum.explain', o),
+    };
+  },
+  sameArea: (lab, task, k) => {
+    const w = L.witnesses(lab);
+    const o = { lo: iso(w.lo.fence), hi: iso(Math.max(w.hi.fence, 20)), tiles: iso(w.tiles) };
+    return {
+      id: 'sameArea', kind: 'choice', prompt: C(k, 'sameArea.prompt', o),
+      options: pick([C(k, 'sameArea.same'), C(k, 'sameArea.bigger', o), C(k, 'sameArea.smaller', o)], 0, [null, C(k, 'sameArea.whyBigger', o), C(k, 'sameArea.whySmaller', o)]),
+      hints: [C(k, 'sameArea.hint1'), C(k, 'sameArea.hint2', o)], explain: C(k, 'sameArea.explain', o),
+    };
+  },
+  ropeSame: (lab, task, k) => {
+    const x = keptFor(lab, task);
+    const o = { rope: iso(lab.rope ?? L.ROPE), tiles: iso(x.tiles) };
+    return {
+      id: 'ropeSame', kind: 'choice', prompt: C(k, 'ropeSame.prompt', o),
+      options: pick([C(k, 'ropeSame.square'), C(k, 'ropeSame.long'), C(k, 'ropeSame.any')], 0, [null, C(k, 'ropeSame.whyLong', o), C(k, 'ropeSame.whyAny', o)]),
+      hints: [C(k, 'ropeSame.hint1'), C(k, 'ropeSame.hint2')], explain: C(k, 'ropeSame.explain', o),
+    };
+  },
+  halfPair: (lab, task, k) => {
+    const r = floorRead(lab, task);
+    const o = { halves: iso(r.halfCount), pairs: iso(r.halfCount / 2) };
+    return {
+      id: 'halfPair', kind: 'choice', prompt: C(k, 'halfPair.prompt', o),
+      options: pick([C(k, 'halfPair.one'), C(k, 'halfPair.two'), C(k, 'halfPair.half')], 0, [null, C(k, 'halfPair.whyTwo'), C(k, 'halfPair.whyHalf')]),
+      hints: [C(k, 'halfPair.hint1'), C(k, 'halfPair.hint2')], explain: C(k, 'halfPair.explain', o),
+    };
+  },
+  areaNum: (lab, task, k) => {
+    const r = floorRead(lab, task);
+    const o = { whole: iso(r.whole), halves: iso(r.halfCount), value: iso(r.one) };
+    return {
+      id: 'areaNum', kind: 'number', expected: num(r.one), answer: <bdi dir="ltr">{r.one}</bdi>,
+      prompt: C(k, 'areaNum.prompt'), hints: [C(k, 'areaNum.hint1', o), C(k, 'areaNum.hint2', o)], explain: C(k, 'areaNum.explain', o),
+    };
+  },
+  twoUnits: (lab, task, k) => {
+    const r = floorRead(lab, task);
+    const o = { one: iso(r.one), two: iso(r.two) };
+    return {
+      id: 'twoUnits', kind: 'choice', prompt: C(k, 'twoUnits.prompt', o),
+      options: pick([C(k, 'twoUnits.unit'), C(k, 'twoUnits.floor'), C(k, 'twoUnits.mistake')], 0, [null, C(k, 'twoUnits.whyFloor'), C(k, 'twoUnits.whyMistake', o)]),
+      hints: [C(k, 'twoUnits.hint1'), C(k, 'twoUnits.hint2')], explain: C(k, 'twoUnits.explain', o),
+    };
+  },
+  ratio: (lab, task, k) => {
+    const r = floorRead(lab, task);
+    const o = { one: iso(r.one), two: iso(r.two) };
+    return {
+      id: 'ratio', kind: 'number', expected: '2', answer: <bdi dir="ltr">2</bdi>,
+      prompt: C(k, 'ratio.prompt', o), hints: [C(k, 'ratio.hint1'), C(k, 'ratio.hint2', o)], explain: C(k, 'ratio.explain', o),
+    };
+  },
+  rule: (lab, task, k) => ({
+    id: 'rule', kind: 'choice', prompt: k(lab.mode === 'rope' ? 'discovery.promptRope' : 'discovery.promptFence'), options: discoveryOptions(lab, k),
+    hints: [C(k, `rule.${lab.mode}.hint1`), C(k, `rule.${lab.mode}.hint2`)],
+    explain: <div className="space-y-1"><p>{k('formal.area')}</p><p>{k('formal.perimeter')}</p></div>,
+  }),
+};

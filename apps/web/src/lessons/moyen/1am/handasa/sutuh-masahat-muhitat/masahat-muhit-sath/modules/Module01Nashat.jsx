@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
-import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { LAB } from '../content/textbook';
@@ -14,17 +13,30 @@ import { LAB } from '../content/textbook';
  * Les ÉTAPES interrogent ce que l'élève a FAIT, avec SES nombres : pourquoi les dalles restent douze quand la clôture change (P1), pourquoi la
  * clôture raccourcit quand les dalles se touchent par plus de côtés (P1), ce que dit un même rouleau pour deux cours (P3). Les noms (briques)
  * viennent APRÈS la réponse. Le نشاط 1 du manuel est posé en application au module 4.
+ * Déploiement du prototype (2026-10-28) : ces trois questions sont posées PAR-DESSUS le labo après chaque tâche (`TileYard › CHAINS` :
+ * shortest · twenty (+ la règle) · smallest (+ la règle)) ; les étapes en gardent la TRACE (`checkpoint-done`) puis posent les noms.
  */
-const M = (s) => <MathText key={s}>{s}</MathText>;
 const Ltr = ({ children }) => <bdi dir="ltr">{children}</bdi>;
+
+/** La trace d'une suite de questions répondue dans le labo. */
+function Trace({ ok, text }) {
+  return (
+    <p data-evidence="checkpoint" data-tried={ok ? 'true' : 'false'}
+      className={`rounded-xl border-2 px-3 py-2 text-sm ${ok ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+      {ok ? text : 'أنجز المهمة في المختبر، وأجب عن الأسئلة التي تظهر فوقه.'}
+    </p>
+  );
+}
 
 export default function Module01Nashat() {
   const [trials, setTrials] = useState([]);
-  const [q1, setQ1] = useState(false);
-  const [q2, setQ2] = useState(false);
-  const [q3, setQ3] = useState(false);
   // Aucune saisie libre dans ce labo : chaque geste validé est un essai.
   const record = (e) => setTrials((list) => [...list, e]);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand la suite de sa tâche l'est
+  const answered = (id) => trials.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const q1 = answered('twenty');
+  const q2 = answered('shortest');
+  const q3 = answered('smallest');
   const changed = trials.find((e) => e.kind === 'move' && e.mode === 'fence' && e.fence !== e.prevFence);
   const keptFence = trials.filter((e) => e.kind === 'keep' && e.mode === 'fence');
   const keptRope = trials.filter((e) => e.kind === 'keep' && e.mode === 'rope');
@@ -64,17 +76,7 @@ export default function Module01Nashat() {
               <Evidence id="moved" ok={!!changed}
                 done={<span>نقلتَ بلاطة فتغيّر السياج من <Ltr>{changed?.prevFence}</Ltr> إلى <Ltr>{changed?.fence}</Ltr> عصا وبقيت البلاطات <Ltr>{changed?.tiles}</Ltr>.</span>}
                 todo="انقل في المستوى المبتدئ بلاطة واحدة على الأقل فيتغيّر طول السياج، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<span>نقلتَ بلاطة دون أن تضيف أخرى أو تزيل أخرى. لماذا بقي عدد البلاطات ثابتًا مع أنّ طول السياج تغيّر؟</span>}
-                options={[
-                  M('لأنّ البلاطات نفسها ما زالت تغطّي الأرض، وإنما تغيّر الحدّ الذي يحيط بها'),
-                  M('لأنّ طول السياج يُحسب من عدد البلاطات ولا شأن له بأماكنها'),
-                  M('لأنّ البلاطة بعد نقلها صارت أصغر'),
-                ]}
-                correct={0} cols={1} requires={['qiyas-atwal-ibtidai']}
-                explain={<MathText>{'لم نُضف ولم نُزل أيّ بلاطة: الأرض التي تغطّيها البلاطات لم تتغيّر. أمّا السياج فيمرّ على أضلاع البلاطات الواقعة على الحدّ، وهذه تتغيّر بتغيّر المكان.'}</MathText>}
-                onAnswered={() => setQ1(true)}
-              />
+              <Trace ok={q1} text="أجبتَ في المختبر: البلاطات بقيت اثنتي عشرة فبقيت الأرض المغطّاة نفسها، وإنّما تغيّر الحدّ الذي يمرّ عليه السياج." />
               {q1 && <KnowledgeBrick id="masaha-adad" lead="اثنتا عشرة بلاطة مهما غيّرتَ ترتيبها: ماذا يقيس هذا العدد؟" />}
             </div>
           ),
@@ -86,17 +88,7 @@ export default function Module01Nashat() {
               <Evidence id="kept" ok={fences.length >= 2}
                 done={<span>في دفترك حوشان بالبلاطات نفسها وسياجان مختلفان: <Ltr>{fences[0]}</Ltr> و <Ltr>{fences.at(-1)}</Ltr> عصا.</span>}
                 todo="احتفظ في المستوى المبتدئ بحوشين مختلفي السياج على الأقل في الدفتر، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<span>كلّما التصقت البلاطات بعضها ببعض قصر السياج. لماذا؟</span>}
-                options={[
-                  M('لأنّ كل ضلعين ملتصقين يختفيان من الحدّ فلا يحتاجان إلى سياج'),
-                  M('لأنّ البلاطات الملتصقة تصير أصغر حجمًا'),
-                  M('لأنّ السياج لا يمرّ إلا بين البلاطات المتباعدة'),
-                ]}
-                correct={0} cols={1} requires={['masaha-adad']}
-                explain={<MathText>{'ضلع بلاطة ملتصق بضلع بلاطة أخرى لا يقع على الحدّ: يسقط من السياج. كلّما كثرت الأضلاع الملتصقة قلّت الأضلاع التي يمرّ عليها السياج.'}</MathText>}
-                onAnswered={() => setQ2(true)}
-              />
+              <Trace ok={q2} text="أجبتَ في المختبر: الضلعان الملتصقان يختفيان من الحدّ، فيقصر السياج كلّما تلاصقت البلاطات." />
               {q2 && <KnowledgeBrick id="mahit-hadd" lead="السياج يمرّ على أضلاع البلاطات الواقعة على الحدّ: ماذا يقيس طوله؟" />}
               {q2 && <KnowledgeBrick id="wahdat-tul-masaha" compact />}
             </div>
@@ -109,23 +101,13 @@ export default function Module01Nashat() {
               <Evidence id="rope" ok={areas.length >= 2}
                 done={<span>بالحبل نفسه (<Ltr>{LAB.rope}</Ltr> عصا) صنعتَ حوشًا فيه <Ltr>{areas[0]}</Ltr> بلاطات وآخر فيه <Ltr>{areas.at(-1)}</Ltr> بلاطات.</span>}
                 todo="جرّب المستوى المتقدّم: احتفظ بحوشين على الأقل يستعملان الحبل كله بعددين مختلفين من البلاطات، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<span>بحبل واحد طوله <Ltr>{LAB.rope}</Ltr> عصا بنيتَ أحواشًا تستعمله كله. ماذا تستنتج عن عدد البلاطات داخل السياج؟</span>}
-                options={[
-                  M('السياج نفسه لا يحدّد عدد البلاطات: نحصل على مساحات مختلفة'),
-                  M('السياج نفسه يعطي دائمًا الحوش نفسه بعدد البلاطات نفسه'),
-                  M('الحوش الأكثر بلاطات هو الأطول سياجًا'),
-                ]}
-                correct={0} cols={1} requires={['mahit-hadd']}
-                explain={<MathText>{'بالحبل نفسه وضعتَ خمس بلاطات في خطّ واحد، وتسعًا في مربّع من ثلاثة صفوف: السياج 12 عصا في الحالتين لكنّ عدد البلاطات مختلف. فالمحيط وحده لا يعيّن المساحة.'}</MathText>}
-                onAnswered={() => setQ3(true)}
-              />
+              <Trace ok={q3} text="أجبتَ في المختبر: الحبل نفسه أحاط بأعداد مختلفة من البلاطات — المحيط وحده لا يعيّن المساحة." />
               {q3 && <KnowledgeBrick id="naql-baqat-masaha" lead="في المستويين: ماذا بقي كما هو حين نقلتَ البلاطات، وماذا تغيّر؟" />}
             </div>
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

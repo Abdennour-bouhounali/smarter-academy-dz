@@ -24,6 +24,8 @@ import { ACTIVITY, ACT, CHECKUP, GUIDE } from '../content/textbook';
  * Les ÉTAPES sont les deux textes-pièges du manuel, répondus DEPUIS LES ESSAIS de l'élève (listés au-dessus de la
  * question, `[data-activity-evidence]`), puis la règle (brique gardée par « أتوقّع القاعدة ») et un tri des autres
  * situations. Rien n'est dit avant la manipulation : les options ne portent pas la vérification (DNA §9). LP : P1.
+ * Déploiement du prototype (2026-10-28) : « pourquoi طرحنا رغم تزيد / زادت ? » est posée PAR-DESSUS le labo (`StoryBars › chainsOf` :
+ * la taille, qui est le tout, le piège, la règle) ; l'étape 1 en garde la TRACE (`checkpoint-done` de `item-2` ou `item-all`).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const VERDICT = { true: '✓', false: '✗' };
@@ -33,10 +35,12 @@ const tex = (calc) => `$${String(calc ?? '').replace(/−/g, '-').replace(/,/g, 
 export default function Module01Nashat() {
   // Les essais VALIDÉS des deux niveaux (onTrial, via state.report) : la mémoire des preuves de l'élève.
   const [trials, setTrials] = useState([]);
-  const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
   const record = (e) => setTrials((list) => [...list, e]);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : la toise (le piège نزيم, `item-2`) ou les six textes (`item-all`)
+  const answered = (id) => trials.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const q1 = answered('item-2') || answered('item-all');
   const cardsOn = (n) => trials.filter((e) => e.story === 'act1' && e.kind === 'card' && String(e.item) === `t${n}`);
   const calcsOf = (story) => trials.filter((e) => e.story === story && e.kind === 'calc');
 
@@ -81,7 +85,7 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'النصّ ③: لماذا طرحنا رغم كلمة «زادت»؟', subtitle: 'ضع بطاقة على النصّ ③ في المستوى المتقدّم، ثم أجب', done: q1,
+          num: 1, title: 'النصّ ③: لماذا طرحنا رغم كلمة «زادت»؟', subtitle: 'أجب عن أسئلة المختبر', done: q1,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACT[3].text} source={ACTIVITY.source} compact />
@@ -94,15 +98,12 @@ export default function Module01Nashat() {
                     : 'مقياس القامة: لم تختر أيّ حساب بعد في المستوى المبتدئ.'}
                 </li>
               </ul>
-              <TapQuestion
-                prompt={<span>في النصّ ③ كلمة «زادت»، ومع ذلك طرحتَ <bdi dir="ltr">1,5</bdi> من <bdi dir="ltr">17,5</bdi>. لماذا؟</span>}
-                options={['لأنّ علامة إيناس هي الكلّ، وعلامة يونس جزء منه', 'لأنّ كلمة «زادت» تعني دائمًا أن نطرح', 'لأنّ 1,5 أصغر من 17,5 فقط']}
-                correct={0}
-                cols={1}
-                requires={['jam-tarh-tabii']}
-                explain={<span><MathText>{GUIDE.keyword.why}</MathText> <MathText>{GUIDE.keyword.right}</MathText></span>}
-                onAnswered={() => setQ1(true)}
-              />
+              <p data-evidence="checkpoint" data-tried={q1 ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${q1 ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {q1
+                  ? <span>أجبتَ في المختبر: الكلمة وحدها لا تقرّر العملية؛ علامة إيناس (مثل قامة سارة أمام نزيم) هي الكلّ، والمجهول جزء منه، فطرحنا. <MathText>{GUIDE.keyword.right}</MathText></span>
+                  : 'أنجز مقياس القامة (حتى نزيم) أو النصوص الستة، وأجب عن الأسئلة التي تظهر فوق المختبر.'}
+              </p>
             </div>
           ),
         },
@@ -151,7 +152,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

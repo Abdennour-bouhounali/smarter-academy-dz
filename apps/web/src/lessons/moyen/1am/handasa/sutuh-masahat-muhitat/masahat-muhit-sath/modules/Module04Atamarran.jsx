@@ -51,7 +51,7 @@ export default function Module04Atamarran() {
         step(6, 'ex-4', 'ثلاثة أزواج', ['thalath-hallat']),
         step(7, 'self-2', 'مستطيل ومربّع بالمساحة نفسها', ['thalath-hallat']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

@@ -16,13 +16,16 @@ import { METHOD, NOW_29, TAPES } from '../content/textbook';
  *   2. le dialogue, puis la méthode (brique `tamthil-aqwas`, gardée par « أتوقّع القاعدة » : l'élève écrit ses étapes) ;
  *   3. le tableau du manuel : deux problèmes, deux schémas (□ en haut ⇒ −, △ en bas ⇒ +) ;
  *   4. دوري الآن : les distances d'est en ouest, chacune sur sa bande.
+ * Déploiement du prototype (2026-10-28) : « qui est le tout ? » est posée PAR-DESSUS le labo pour يونس et محمد (`StoryBars › chainsOf`) ;
+ * l'étape 2 en garde la TRACE (`checkpoint-done` de `item-0`), puis le dialogue et la méthode.
  * LP : P3.
  */
 const ltr = (s) => <bdi dir="ltr">{s}</bdi>;
 
 export default function Module03Tariqa() {
   const [q1, setQ1] = useState(false);
-  const [q2, setQ2] = useState(false);
+  const [trials, setTrials] = useState([]);
+  const q2 = trials.some((e) => e.tk === 'checkpoint-done' && e.id === 'item-0');
   const [q3a, setQ3a] = useState(false);
   const [q3b, setQ3b] = useState(false);
   const [q4a, setQ4a] = useState(false);
@@ -39,7 +42,7 @@ export default function Module03Tariqa() {
       moduleSubtitle="نرسم القطع قبل أن نحسب"
       estimatedTime="12 دقيقة"
       intro={(
-        <Manipulation type="story-bars" story="method29" levels={false} />
+        <Manipulation type="story-bars" story="method29" levels={false} onTrial={(e) => setTrials((list) => [...list, e])} />
       )}
       steps={[
         {
@@ -68,18 +71,15 @@ export default function Module03Tariqa() {
           ),
         },
         {
-          num: 2, title: 'أين نضع المجهول في المخطط؟', subtitle: 'قبل أن تقرأ طريقة إيناس', done: q2,
+          num: 2, title: 'أين نضع المجهول في المخطط؟', subtitle: 'أجب عن أسئلة المختبر', done: q2,
           content: (
             <div className="space-y-3">
-              <TapQuestion
-                prompt={<span>في المخطط، أين نضع الرمز □ لقامة يونس؟</span>}
-                options={['تحت الخطّ: قامة يونس هي الكلّ', 'فوق الخطّ: قامة يونس جزء']}
-                correct={0}
-                cols={1}
-                requires={['ikhtiyar-amaliya']}
-                explain={<MathText>{'«تزيد قامة يونس عن قامة أكرم بـ $3\\,\\mathrm{cm}$»: يونس هو الأطول، فقامته تغطّي قامة أكرم والـ $3\\,\\mathrm{cm}$ معًا: $\\square = 124 + 3$.'}</MathText>}
-                onAnswered={() => setQ2(true)}
-              />
+              <p data-evidence="item-0" data-tried={q2 ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${q2 ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {q2
+                  ? <span>أجبتَ في المختبر: يونس هو الأطول، فقامته هي الكلّ ونضع □ تحت الخطّ — <MathText>{'$\\square = 124 + 3 = 127$'}</MathText> .</span>
+                  : 'اسحب قامة يونس في المختبر واختر الحساب، ثم أجب عن الأسئلة التي تظهر فوقه.'}
+              </p>
               {q2 && (
                 <>
                   <ul className="space-y-1 rounded-xl border-2 border-emerald-200 bg-emerald-50/60 px-3 py-2 text-sm" data-method-dialogue>
@@ -148,7 +148,7 @@ export default function Module03Tariqa() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }

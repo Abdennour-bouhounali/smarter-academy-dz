@@ -65,7 +65,7 @@ export default function Module05Tahaddi() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={5} />}
+      footer={<KnowledgeSnapshot moduleNumber={5} variant="memo" />}
     />
   );
 }

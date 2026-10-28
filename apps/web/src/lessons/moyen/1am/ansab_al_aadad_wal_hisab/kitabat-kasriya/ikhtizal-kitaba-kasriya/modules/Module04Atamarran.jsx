@@ -45,7 +45,7 @@ export default function Module04Atamarran() {
         { num: 7, title: 'تمرين 27 — سامي أم فاطمة؟', done: !!done['ex-27'],
           content: <TextbookExercise exercise={EX['ex-27']} requires={['tariqat-ikhtizal']} onAnswered={mark('ex-27')} /> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

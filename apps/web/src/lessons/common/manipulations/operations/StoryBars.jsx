@@ -17,6 +17,10 @@ import { SvgPill, SvgDimension } from '../primitives/SvgPill';
 import { LabCard, StageFrame, PromptCard, ChoiceTray, ChoiceCard, StepperCard, NamePill, VerdictBanner, RoundButton } from '../primitives/LabKit';
 import ArcTape from '../../components/ArcTape';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import * as L from '../logic/storyBars';
 
 /**
@@ -80,6 +84,13 @@ import * as L from '../logic/storyBars';
  * ONBOARDING (prop `coach`, défaut true — `LabCoach`, §8quater) : `logic/storyBars.js › coachOf` montre la poignée de la toise, les
  * cartes de calcul, « suivant » ou la première carte du manuel ; jamais la taille, la carte juste ni l'opération.
  *
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 1, 2026-10-28) : `checkpoints` (défaut true).
+ * Toise (stretch) : après CHAQUE item (taille tirée ET carte de calcul juste), une suite par-dessus le labo (`chainsOf`) : la taille ·
+ * qui est le TOUT · (piège) ce qui décide de l'opération ; la suite du dernier item de la découverte finit par LA RÈGLE (l'ancienne
+ * découverte, qui formalise dans `onDone`). Cartes (act1) : une seule suite quand les six textes sont résolus. « أعِد التجربة » remet
+ * l'item (`L.retryItem`) ; « إعادة » remet l'item 1. Mode guidé (`guided`) dès qu'une suite est active ; l'enseignant seul coupe les
+ * questions pour SON compte. ÉTAPES `LabStepper` (`[data-sb-step=<i>]`) et la fête par item. SON : `tooth` quand la tête monte ou
+ * descend (plus grave en bas), `bell` une phrase vraie ou une carte juste, `flag` l'item fini, `over` un refus.
  * Props (contrat fixé avec la leçon) : `story` ('checkup' | 'act1' | 'method29'), `level`, `levels`
  * (false : l'exemple travaillé de M3), `title`, `lead`, `onTrial({ story, item, kind, value, ok, calc? })`
  * à chaque essai VALIDÉ, `onFinished({ story })` à la règle (ou, sans découverte, quand tout est fait) —
@@ -99,7 +110,7 @@ const btn = 'inline-flex min-h-[44px] min-w-[44px] items-center justify-center r
 
 export default function StoryBars({
   story: story0 = 'checkup', title, lead, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished, coach: coachOn = true,
+  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished, coach: coachOn = true, checkpoints: cpOn = true,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
@@ -108,12 +119,61 @@ export default function StoryBars({
   const def = L.storyOf(story);
   const sceneKey = `${story}|${state.epoch}`;
   const [lab, setLab] = useState(() => L.init(story));
-  const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init(story)); }
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  // « إعادة » (epoch), un autre niveau : TOUT recommence — l'item 1, les essais et les questions du labo
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(L.init(story)); }
 
   const ready = L.discoveryReady(lab);
   const done = L.allDone(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : la suite de l'item courant (stretch) ou de la scène (cartes)
+  const cpSettings = useLabCheckpointSettings('story-bars');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const chains = cpOn && cpSettings.enabled ? chainsOf(story) : null;
+  const taskId = def.mode === 'stretch' ? lab.cur : 'all';
+  const chain = chains?.[taskId] ?? null;
+  const ruleByCheckpoint = !!chains && def.discovery;
+  const cp = useLabCheckpoint({
+    id: chain ? `item-${taskId}` : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](story, taskId, k)) : null,
+    reached: def.mode === 'stretch' ? L.itemDone(lab, lab.cur) : done,
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.retryItem),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => { if (chains?.[id.slice(5)]?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  useEffect(() => { if (ready && !ruleByCheckpoint) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son : la tête qui monte ou descend (au plus une note toutes les 35 ms), puis le verdict de chaque essai
+  const curH = def.mode === 'stretch' ? lab.items[lab.cur].h : null;
+  const prevH = useRef({ h: curH, at: 0 });
+  useEffect(() => {
+    const p = prevH.current;
+    if (curH == null || curH === p.h) { p.h = curH; return; }
+    const now = Date.now();
+    if (now - p.at > 35) { playSfx('tooth', { pitch: curH > p.h ? 1 : 0.75 }); p.at = now; }
+    p.h = curH;
+  }, [curH]);
+  const lastSeen = useRef(lab.last);
+  useEffect(() => {
+    const v = lab.last;
+    if (v === lastSeen.current) return;
+    lastSeen.current = v;
+    if (!v) return;
+    if (v.kind === 'stretch') playSfx(v.verdict.ok ? 'bell' : 'over');
+    else if (v.kind === 'calc') playSfx(v.verdict.ok ? 'flag' : 'over');
+    else if (v.kind === 'card') playSfx(!v.ok ? 'over' : L.allDone(lab) ? 'flag' : 'bell');
+  }, [lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les étapes : un item est FAIT quand sa bande est fermée ET que ses questions sont répondues ; on le fête une fois
+  const nItems = def.mode === 'stretch' ? lab.items.length : 1;
+  const curIdx = def.mode === 'stretch' ? lab.cur : 0;
+  const stepDone = Array.from({ length: nItems }, (_, i) => (def.mode === 'stretch' ? L.itemDone(lab, i) : done) && (i !== curIdx || !cp.blocking));
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();
+  const nowDone = stepDone[curIdx];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(curIdx)) return;
+    celebrated.current.add(curIdx);
+    party.celebrate({ n: def.mode === 'stretch' ? stepDone.filter(Boolean).length : 1, total: nItems });
+  }, [nowDone, curIdx]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, { story }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
   // une histoire sans découverte (la méthode p. 29) finit quand tous ses items sont faits
   useEffect(() => { if (!def.discovery && done) state.report(onFinished, { story }); }, [done, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -234,7 +294,7 @@ export default function StoryBars({
     </div>
   ) : null;
 
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'story-bars', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '',
     labels: { hide: k('coach.hide'), show: k('coach.show'), ok: k('coach.ok'), stop: k('coach.stop') },
@@ -255,6 +315,8 @@ export default function StoryBars({
       allowFreeLab={false}
       coach={coachOn ? coach : null}
       hints={[0, 1, 2].map((i) => k(`hints.${hintKeys}.${i}`))}
+      guided={!!chain || ruleByCheckpoint}
+      headerAction={cpSettings.control}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={def.discovery ? (
         <ManipulationDiscovery state={state} prompt={k('discovery.prompt')} options={discoveryOptions} formal={formal} />
@@ -266,9 +328,10 @@ export default function StoryBars({
           data-solved={(def.discovery ? ready : done) ? 'true' : 'false'} data-layout={narrow ? 'narrow' : 'wide'} data-scene-h={def.mode === 'stretch' ? sceneH : undefined}>
           {def.mode === 'stretch' ? (
             <StretchLab lab={lab} setLab={setLab} story={story} def={def} k={k} knownName={knownName} itemWords={itemWords} lead={authoredLead}
+              cp={cp} party={party} stepDone={stepDone}
               width={width} sceneH={sceneH} narrow={narrow} glanceRef={glanceRef} verdictLine={verdictLine} />
           ) : (
-            <CardsLab lab={lab} setLab={setLab} story={story} def={def} k={k} textWords={textWords} lead={authoredLead}
+            <CardsLab lab={lab} setLab={setLab} story={story} def={def} k={k} textWords={textWords} lead={authoredLead} cp={cp} party={party}
               narrow={narrow} compact={width < 520} glanceRef={glanceRef} verdictLine={verdictLine} />
           )}
 
@@ -310,7 +373,7 @@ export function stretchTape(story, i, value, k, knownName, name) {
   };
 }
 
-function StretchLab({ lab, setLab, story, def, k, knownName, itemWords, width, sceneH, narrow, glanceRef, verdictLine, lead }) {
+function StretchLab({ lab, setLab, story, def, k, knownName, itemWords, width, sceneH, narrow, glanceRef, verdictLine, lead, cp, party, stepDone }) {
   const i = lab.cur;
   const it = lab.items[i];
   const item = def.items[i];
@@ -361,12 +424,12 @@ function StretchLab({ lab, setLab, story, def, k, knownName, itemWords, width, s
       <p className="text-sm font-black text-indigo-900">{k('tapeTitle')}</p>
       <ArcTape {...tape.fig} maxWidth={wide ? SIDE_W - 30 : 300} />
       <p className="whitespace-nowrap text-center text-lg font-black tabular-nums text-indigo-950"><bdi dir="ltr" data-sb-formal-line>{L.formalLine(story, i)}</bdi></p>
-      {firstOpen < def.items.length ? (
+      {firstOpen < def.items.length ? (!cp.blocking && (
         <button type="button" onClick={() => setLab(L.next)} data-sb-next
           className="flex min-h-[48px] w-full items-center justify-center gap-2 whitespace-nowrap rounded-2xl bg-gradient-to-b from-indigo-500 to-indigo-600 px-3 text-sm font-black text-white shadow-[0_8px_18px_-8px_rgba(79,70,229,0.9)] outline-none focus-visible:ring-4 focus-visible:ring-indigo-300">
           {k('next')} <ArrowLeft className="h-5 w-5" aria-hidden="true" />
         </button>
-      ) : (
+      )) : (
         <p className="rounded-2xl bg-emerald-50 px-3 py-2 text-sm font-black text-emerald-800" data-sb-all-done>{k('allDone')}</p>
       )}
     </LabCard>
@@ -388,28 +451,18 @@ function StretchLab({ lab, setLab, story, def, k, knownName, itemWords, width, s
 
   return (
     <>
-    <div ref={glanceRef} className="space-y-3" data-sb-glance>
+    <div ref={glanceRef} className="relative space-y-3" data-sb-glance>
+      {party.node}
+      {cp.node}
       {/* la consigne : les jalons, la phrase et sa lampe, les trois cartes de calcul */}
       <PromptCard
         size={narrow ? 'md' : 'lg'}
         context={<>{lead || k(`context.${story}`, { known: def.known?.h })}{' '}
           <span className="font-black text-indigo-900" data-sb-sentence data-ok={it.stretchOk ? 'true' : 'false'}>{"«\u00A0"}{w.sentence}{"\u00A0»"}</span></>}
         contextProps={{ 'data-sb-context': story }}
-        aside={(
-        <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label={k('items')}>
-          <span className="text-xs font-black text-indigo-900/60" aria-hidden="true" data-sb-items-label>{k('itemsLabel')}</span>
-          {def.items.map((d, j) => {
-            const jDone = L.itemDone(lab, j);
-            return (
-              <button key={d.id} type="button" onClick={() => setLab((s) => L.goTo(s, j))} disabled={j > firstOpen}
-                aria-current={j === i ? 'step' : undefined} data-sb-item-chip={j} data-done={jDone ? 'true' : 'false'}
-                className={`inline-flex items-center gap-1 rounded-full border-2 font-black outline-none ${narrow ? 'min-h-[36px] px-2 text-xs' : 'min-h-[40px] px-3.5 text-sm'} transition-colors focus-visible:ring-4 focus-visible:ring-indigo-300 disabled:opacity-40 ${j === i ? 'border-indigo-600 bg-indigo-600 text-white' : jDone ? 'border-emerald-300 bg-emerald-50 text-emerald-800' : 'border-indigo-100 bg-white text-indigo-900'}`}>
-                {jDone && <Check className="h-4 w-4" strokeWidth={3} aria-hidden="true" />}{itemWords(j).name}
-              </button>
-            );
-          })}
-        </div>
-        )}
+        aside={def.items.length > 1 ? (
+          <LabStepper count={def.items.length} current={i} done={stepDone} stepAttr="data-sb-step" />
+        ) : null}
         title={k('question.stretch', { name: w.name })}
         titleClassName={narrow ? 'text-base' : 'text-xl'}
         lamp={isDone ? 'on' : 'off'}
@@ -560,7 +613,7 @@ export function cardTape(story, tIdx, c, k, words) {
   };
 }
 
-function CardsLab({ lab, setLab, story, def, k, textWords, narrow, compact, glanceRef, verdictLine, lead }) {
+function CardsLab({ lab, setLab, story, def, k, textWords, narrow, compact, glanceRef, verdictLine, lead, cp, party }) {
   const cards = L.cardsOf(story);
   // ÉTROIT (< 520 px, téléphone) : un texte à la fois — le sélecteur ①–⑥ (tablist) ; chaque onglet est AUSSI la zone
   // d'accueil de son texte, et le panneau du texte choisi en est une seconde (même zone) pour le glisser.
@@ -596,7 +649,9 @@ function CardsLab({ lab, setLab, story, def, k, textWords, narrow, compact, glan
   const matchedCount = lab.slots.filter((sl) => sl.matched != null).length;
 
   return (
-    <div ref={glanceRef} className="space-y-3" data-sb-glance>
+    <div ref={glanceRef} className="relative space-y-3" data-sb-glance>
+      {party.node}
+      {cp.node}
       {/* la consigne et les six cartes de calcul (au-dessus des textes) */}
       <PromptCard
         size={narrow ? 'md' : 'lg'}
@@ -724,3 +779,107 @@ function CardsLab({ lab, setLab, story, def, k, textWords, narrow, compact, glan
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de chaque item (stretch) — ou de la scène (`all`, cartes) ; `rule` clôt le dernier item de la découverte. */
+export const CHAINS = Object.freeze({ item: ['height', 'whole'], trap: ['height', 'whole', 'word'], all: ['plusCount', 'trapText'] });
+
+export function chainsOf(story) {
+  const def = L.storyOf(story);
+  if (def.mode !== 'stretch') return { all: [...CHAINS.all, ...(def.discovery ? ['rule'] : [])] };
+  const last = def.discovery ? Math.max(...def.discoveryItems) : -1;
+  const out = {};
+  def.items.forEach((it, i) => { out[i] = [...(it.trap ? CHAINS.trap : CHAINS.item), ...(i === last ? ['rule'] : [])]; });
+  return out;
+}
+
+const LRI = '⁦';
+const PDI = '⁩';
+const iso = (s) => `${LRI}${s}${PDI}`;
+const C = (k, key, o) => k(`cp.${key}`, o);
+const pick = (list, right, whys) => list.map((text, i) => (i === right ? { text, correct: true } : { text, why: whys[i] }));
+
+function ruleQuestion(story, k) {
+  const def = L.storyOf(story);
+  const word = L.rightCalcOf(story, def.refute.word);
+  const big = L.rightCalcOf(story, def.refute.big);
+  return {
+    id: 'rule', kind: 'choice', prompt: k('discovery.prompt'),
+    options: [
+      { text: k(`stories.${story}.optWord`), why: k(`stories.${story}.whyWord`, word) },
+      { text: k('discovery.optRight'), correct: true },
+      { text: k('discovery.optBig'), why: k(`stories.${story}.whyBig`, big) },
+    ],
+    hints: [C(k, 'rule.hint1'), C(k, 'rule.hint2')],
+    explain: (
+      <div className="space-y-1">
+        <p className="font-extrabold">{k('formal.lineWhole')} · {k('formal.linePart')}</p>
+        <p>{k('formal.rule')}</p>
+      </div>
+    ),
+  };
+}
+
+/** Les mots d'un item stretch, ses nombres (rien en dur). */
+function itemO(story, i, k) {
+  const def = L.storyOf(story);
+  const it = def.items[i];
+  const r = L.rightCalcOf(story, i);
+  return {
+    name: k(`stories.${story}.items.${it.id}.name`), known: k(`stories.${story}.known`), k: iso(def.known.h), d: iso(it.d),
+    h: iso(L.dec(L.answerOf(story, i))), calc: iso(`${r.calc} = ${r.value}`), line: iso(L.formalLine(story, i)),
+    sentence: k(`stories.${story}.items.${it.id}.sentence`, { d: it.d }), word: C(k, it.sign > 0 ? 'word.less' : 'word.more'),
+  };
+}
+
+export const QUESTIONS = {
+  height: (story, i, k) => {
+    const o = itemO(story, i, k);
+    const v = L.dec(L.answerOf(story, i));
+    return {
+      id: 'height', kind: 'number', expected: v.replace(',', '.'), answer: <bdi dir="ltr">{v} cm</bdi>,
+      prompt: C(k, 'height.prompt', o), hints: [C(k, 'height.hint1', o), C(k, 'height.hint2', o)], explain: C(k, 'height.explain', o),
+    };
+  },
+  whole: (story, i, k) => {
+    const o = itemO(story, i, k);
+    const right = L.unknownIsWhole(story, i) ? 0 : 1;
+    return {
+      id: 'whole', kind: 'choice', prompt: C(k, 'whole.prompt', o),
+      options: pick([o.name, o.known, C(k, 'whole.diff', o)], right,
+        [right === 1 ? C(k, 'whole.whyUnknown', o) : null, right === 0 ? C(k, 'whole.whyKnown', o) : null, C(k, 'whole.whyDiff', o)]),
+      hints: [C(k, 'whole.hint1', o), C(k, 'whole.hint2', o)],
+      explain: C(k, right === 0 ? 'whole.explainUnknown' : 'whole.explainKnown', o),
+    };
+  },
+  word: (story, i, k) => {
+    const o = itemO(story, i, k);
+    return {
+      id: 'word', kind: 'choice', prompt: C(k, 'word.prompt', o),
+      options: pick([C(k, 'word.right'), C(k, 'word.theWord', o), C(k, 'word.big')], 0, [null, C(k, 'word.whyWord', o), C(k, 'word.whyBig', o)]),
+      hints: [C(k, 'word.hint1', o), C(k, 'word.hint2', o)], explain: C(k, 'word.explain', o),
+    };
+  },
+  plusCount: (story, i, k) => {
+    const def = L.storyOf(story);
+    const plus = def.items.filter((_, j) => L.unknownIsWhole(story, j));
+    const o = { n: iso(plus.length), list: iso(plus.map((it) => it.n).join(' · ')), total: iso(def.items.length) };
+    return {
+      id: 'plusCount', kind: 'number', expected: String(plus.length), answer: <bdi dir="ltr">{plus.length}</bdi>,
+      prompt: C(k, 'plusCount.prompt', o), hints: [C(k, 'plusCount.hint1'), C(k, 'plusCount.hint2')], explain: C(k, 'plusCount.explain', o),
+    };
+  },
+  trapText: (story, i, k) => {
+    const def = L.storyOf(story);
+    const j = def.refute.word;
+    const r = L.rightCalcOf(story, j);
+    const o = { n: iso(def.items[j].n), calc: iso(`${r.calc} = ${r.value}`) };
+    return {
+      id: 'trapText', kind: 'choice', prompt: C(k, 'trapText.prompt', o),
+      options: pick([C(k, 'trapText.part'), C(k, 'trapText.whole'), C(k, 'trapText.word')], 0, [null, C(k, 'trapText.whyWhole', o), C(k, 'trapText.whyWord', o)]),
+      hints: [C(k, 'trapText.hint1', o), C(k, 'trapText.hint2')], explain: C(k, 'trapText.explain', o),
+    };
+  },
+  rule: (story, i, k) => ruleQuestion(story, k),
+};

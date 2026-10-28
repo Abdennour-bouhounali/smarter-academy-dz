@@ -54,7 +54,7 @@ export default function Module04Atamarran() {
         step(7, 'self-1', 'أقوّم 1 — أنابيب الاختبار', ['kasr-hasil-qisma']),
         step(8, 'self-9', 'أقوّم 9 — أكتب العدد الناقص', ['natija-darb', 'tariqat-adad-naqis']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }
