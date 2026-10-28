@@ -890,6 +890,16 @@ export function isManipulationType(type) {
   return Object.prototype.hasOwnProperty.call(MANIPULATION_TYPES, type);
 }
 
+  },
+  // 2AM, unité 1 « العمليات على الأعداد الطبيعية والأعداد العشرية », leçon 1 (2026-10-28) — l'ordre des opérations d'une série sans parenthèses.
+  'tram-route': {
+    // L'ORDRE DES OPÉRATIONS SOUS LA MAIN : un voyage en tramway (les arrêts arrivent dans l'ordre où la chaîne est écrite) ou un kiosque à tickets. La main POSE des tickets numérotés ① ② ③ sur les
+    // opérateurs de la chaîne du voyage : c'est le PLAN de calcul. « انطلق » le rejoue : le plan calcule dans SON ordre, le tram roule dans l'ordre du temps et son compteur est la vérité. Un plan
+    // qui donne autre chose est refusé et le monde dessine l'étape qui n'a pas de sens (« نزل 13 ؟ لم ينزل إلا 9 », « 18 فوجًا من 4 ؟ », « 4 تذاكر بـ 6,25 DA ؟ ») ; un plan différent qui donne la même
+    // valeur (une chaîne de + seulement) est accepté : « هنا كلّ ترتيب يعطي العدد نفسه ». En متقدم l'élève ÉCRIT d'abord la chaîne de l'histoire (plaques et puces, jugée par sa valeur) puis écrit
+    // sa prédiction. Chaque « انطلق » est un essai jugé exactement : MANUEL (§6bis). « جرّب أعدادك » : toujours ouvert (jusqu'à quatre arrêts). `tram-route` n'énonce jamais la règle.
+    shows: 'في سلسلة عمليات دون أقواس: نحسب الجمع والطرح فقط (أو الضرب والقسمة فقط) من اليسار نحو اليمين، ونحسب الضرب والقسمة قبل الجمع والطرح؛ وهذا اتّفاق تتبّعه الآلة الحاسبة العلمية أيضًا',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
 /** Les natures de ressource qu'une leçon peut déclarer dans `resources[]`. */
 export const RESOURCE_KINDS = Object.freeze(['manipulation', 'method', 'situation', 'example']);
 

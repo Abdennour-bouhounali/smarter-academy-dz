@@ -49,7 +49,8 @@
       ],
       "challenge": {
         "titleAr": "تحدّ",
-        "textAr": "احسب: 30 - 8 + 2 = ? (شجرتا حساب يونس وإيناس تعطيان 20 و 24)."
+        "textAr": "احسب: 40 - 12 + 6 . وجدت سلمى 34 ووجد أنس 22. من منهما على صواب؟ ولماذا؟",
+        "sourceElementId": "challenge"
       },
       "synthesisLessonCode": "wadiya-idmajiya-amaliyat-tabiiya-ushriya"
     },

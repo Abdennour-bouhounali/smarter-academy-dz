@@ -938,6 +938,23 @@ export const LEVELS = Object.freeze({
   },
   // L'ESPACEMENT SOUS LA MAIN (seed-rake, thème seedbed, 2026-10-26) : la main étire un râteau (espacement 1/N m) sur un حوض de 1 m peint de zones ; une tâche est
   // `{ id, kind?, terms: [{ p, sub? }], need?, needRefusal?, widest? }`. مبتدئ (plateforme, décomptes visibles) : g1 1/4 + 1/6 (deux espacements et un refus → 5/12), g2 2/3 + 1/5,
+  // L'ORDRE DES OPÉRATIONS SOUS LA MAIN (tram-route, thème tramline, 2026-10-28) : la main pose des tickets ① ② ③ sur les opérateurs d'une chaîne SANS parenthèses ; « انطلق » rejoue le plan et le
+  // compteur du tram (la vérité) le juge. Une tâche est `{ id, chain, kind?, unit?, stops?, build?, predict? }`. مبتدئ (plateforme, chaîne donnée) : t1 26 − 9 + 4, t2 40 − 12 − 6 + 9, t3 (kiosque)
+  // 150 ÷ 6 × 4, t4 15 + 3 × 4. متقدم (plateforme) : l'élève ÉCRIT la chaîne de l'histoire puis prédit avant de partir : a1 32 − 4 × 5 + 6, a2 1,5 + 4 × 0,8 (km), a3 60 ÷ 4 + 3 × 6. Le monde
+  // `mixed` de معارف est posé par la leçon. Le test des niveaux mesure la paire par le NOMBRE DE TÂCHES et par `build`.
+  'tram-route': {
+    beginner: { numbers: { tasks: [
+      { id: 't1', chain: '26 − 9 + 4', stops: ['market', 'university'] },
+      { id: 't2', chain: '40 − 12 − 6 + 9', stops: ['market', 'university', 'stadium'] },
+      { id: 't3', chain: '150 ÷ 6 × 4', kind: 'kiosk' },
+      { id: 't4', chain: '15 + 3 × 4', stops: ['stadium'] },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', chain: '32 − 4 × 5 + 6', stops: ['market', 'university'], build: true, predict: true },
+      { id: 'a2', chain: '1,5 + 4 × 0,8', unit: 'km', stops: ['garden'], build: true, predict: true },
+      { id: 'a3', chain: '60 ÷ 4 + 3 × 6', stops: ['stadium'], build: true, predict: true },
+    ] }, ...T('know-1') },
+  },
   // g3 3/4 puis 1/6 récolté. متقدم (method-6 : le manuel cherche un multiple commun, râteau BLOQUÉ, on écrit N et le total) : a1 5/6 + 3/8, a2 7/10 − 4/15, a3 1/2 + 1/3 + 1/4,
   // a4 3/8 + 5/12 « أوسع مسافة ». Le monde `fewest` (معارف) est posé par la leçon. Le test des niveaux mesure la paire par le NOMBRE DE TÂCHES et par la PRÉDICTION.
   'seed-rake': {

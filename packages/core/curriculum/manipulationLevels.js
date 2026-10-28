@@ -314,6 +314,11 @@ export const VISUAL_THEMES = Object.freeze({
   //   paintshop  la machine à teinter d'un magasin de peinture de quartier : un bec de laiton au-dessus du seau B et une manette, le seau de référence A
   //              scellé avec son étiquette et sa pastille, deux grandes pastilles de couleur côte à côte et un mesureur à aiguille « أفتح · أغمق »,
   //              un élève (KidFigure) au rouleau devant l'esquisse de la fresque (`shade-match`)
+  // 2AM, unité 1, leçon 1 (2026-10-28) :
+  //   tramline  le tramway d'une ville algérienne : la voie et le fil de contact tirés de gauche à droite, trois ou quatre arrêts avec leur panneau et leur abri, la rame articulée à deux voitures,
+  //             le compteur de passagers (afficheur lumineux) au-dessus de la cabine, des élèves (KidFigure, hijab pour les filles) qui montent ou descendent, des fanions de groupes, le kiosque à tickets
+  //             (`tram-route`)
+  tramline: { kind: 'objects', shows: 'ترامواي مدينة جزائرية: محطات وعربة وعدّاد الركّاب وكشك التذاكر' },
   paintshop: { kind: 'objects', shows: 'آلة مزج الألوان في محلّ الطلاء: دلوان وعلب أبيض ورافعة للأزرق' },
   // 3AM, unité 2, leçon 3 (2026-10-26) :
   //   seedbed  un حوض غرس d'un jardin d'école de 1 m : une règle en bois le long du bord (0 … 1 m), des zones de cultures peintes à partir de la gauche
