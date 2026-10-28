@@ -45,7 +45,8 @@ class PruneRetiredCurriculum extends Command
         {--from-json= : Read a pre-generated curriculum export instead of running the Node export script}
         {--dry-run : Report what would be deleted without deleting}
         {--with-history : DEV ONLY — also delete catalogue-absent lessons that still carry evidence/progress}
-        {--force : Required with --with-history to actually delete}';
+        {--delete-lesson=* : ANY ENV — delete only these named catalogue-absent lessons, history included (owner decision; needs --force)}
+        {--force : Required with --with-history or --delete-lesson to actually delete}';
 
     protected $description = 'Delete retired learning points and orphaned lessons that carry no evidence and no student progress';
 
@@ -72,6 +73,10 @@ class PruneRetiredCurriculum extends Command
                     $sourceLessonCodes[$l['code']] = true;
                 }
             }
+        }
+
+        if ($this->option('delete-lesson')) {
+            return $this->deleteNamedLessons((array) $this->option('delete-lesson'), $sourceLessonCodes);
         }
 
         // Retired learning points with no evidence — safe to drop.
@@ -185,6 +190,60 @@ class PruneRetiredCurriculum extends Command
                 Lesson::whereIn('id', $historyLessons->pluck('id'))->delete();
             });
         }
+
+        return self::SUCCESS;
+    }
+
+    /**
+     * `--delete-lesson=<code>` — l'owner décide qu'une leçon retirée du
+     * catalogue doit DISPARAÎTRE, historique compris (2026-10-28, le prototype
+     * `pgcd` : archivée à chaque déploiement, l'owner la veut supprimée).
+     * Contrairement à `--with-history`, permis en production, mais ciblé :
+     * seules les leçons NOMMÉES, et seulement si le catalogue ne les déclare
+     * plus — une leçon vivante ne peut pas être supprimée par ce chemin. Les
+     * clés étrangères emportent le reste (CASCADE, ou NULL pour les notes du
+     * cahier, les rapports et les interventions de classe).
+     *
+     * @param  array<int, string>  $codes
+     * @param  array<string, true>  $sourceLessonCodes
+     */
+    private function deleteNamedLessons(array $codes, array $sourceLessonCodes): int
+    {
+        $declared = array_values(array_filter($codes, fn ($code) => isset($sourceLessonCodes[$code])));
+        if ($declared !== []) {
+            $this->error('Le catalogue déclare encore : '.implode(', ', $declared).'. Rien n\'a été supprimé.');
+
+            return self::FAILURE;
+        }
+
+        $lessons = Lesson::whereIn('code', $codes)->get();
+        foreach (array_diff($codes, $lessons->pluck('code')->all()) as $missing) {
+            $this->line("lesson `{$missing}` — absent from the database, nothing to delete");
+        }
+
+        foreach ($lessons as $lesson) {
+            $this->warn("lesson `{$lesson->code}` — {$lesson->title} :");
+            foreach ($this->dependents($lesson) as $label => $count) {
+                if ($count > 0) {
+                    $this->line("    {$label}: {$count}");
+                }
+            }
+        }
+
+        if ($this->option('dry-run')) {
+            $this->info(sprintf('%d lesson(s) would be deleted.', $lessons->count()));
+
+            return self::SUCCESS;
+        }
+
+        if (! $this->option('force')) {
+            $this->error('--delete-lesson détruit de l\'historique : ajoutez --force pour confirmer. Rien n\'a été supprimé.');
+
+            return self::FAILURE;
+        }
+
+        Lesson::whereIn('id', $lessons->pluck('id'))->delete();
+        $this->info(sprintf('%d lesson(s) deleted.', $lessons->count()));
 
         return self::SUCCESS;
     }

@@ -135,6 +135,45 @@ class PruneRetiredCurriculumTest extends TestCase
         $this->assertSame(Lesson::PUB_ARCHIVED, Lesson::where('code', 'fractions')->value('publication_status'));
     }
 
+    /** L'owner supprime une leçon retirée, historique compris — en production aussi. */
+    public function test_delete_lesson_removes_a_named_retired_lesson_with_its_history(): void
+    {
+        $this->app['env'] = 'production';
+        $this->makeLesson('fractions-1', ['6e_fractions-1_P1']);
+        $old = $this->makeLesson('fractions', ['6e_fractions_P1']);
+        $other = $this->makeLesson('decimaux');
+        PracticeSession::create([
+            'session_id' => (string) Str::uuid(), 'user_id' => User::factory()->create()->id,
+            'lesson_id' => $old->id, 'level' => 1, 'started_at' => now(),
+        ]);
+
+        $args = ['--from-json' => $this->exportPath, '--delete-lesson' => ['fractions']];
+
+        // Sans --force : rien ne bouge.
+        $this->artisan('smarter:prune-retired-learning-points', $args)->assertFailed();
+        $this->assertDatabaseHas('lessons', ['code' => 'fractions']);
+
+        $this->artisan('smarter:prune-retired-learning-points', $args + ['--force' => true])->assertSuccessful();
+
+        $this->assertDatabaseMissing('lessons', ['code' => 'fractions']);
+        $this->assertDatabaseMissing('learning_points', ['code' => '6e_fractions_P1']);
+        $this->assertDatabaseMissing('practice_sessions', ['lesson_id' => $old->id]);
+        // Only the named lesson: another retired lesson is left to the normal prune.
+        $this->assertDatabaseHas('lessons', ['id' => $other->id]);
+        $this->assertDatabaseHas('lessons', ['code' => 'fractions-1']);
+    }
+
+    public function test_delete_lesson_refuses_a_lesson_the_catalogue_still_declares(): void
+    {
+        $this->makeLesson('fractions-1', ['6e_fractions-1_P1']);
+
+        $this->artisan('smarter:prune-retired-learning-points', [
+            '--from-json' => $this->exportPath, '--delete-lesson' => ['fractions-1'], '--force' => true,
+        ])->assertFailed();
+
+        $this->assertDatabaseHas('lessons', ['code' => 'fractions-1']);
+    }
+
     public function test_dry_run_deletes_nothing(): void
     {
         $this->makeLesson('fractions-1', ['6e_fractions-1_P1']);
