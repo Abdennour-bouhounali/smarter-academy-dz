@@ -38,7 +38,7 @@ export default function Module04Atamarran() {
         group(7, 'التساوي والمقارنة', ['ex-28', 'self-10'], ['tartib-natiqa']),
         group(8, 'على المستقيم', ['deep-69'], ['tariqa-muqarana']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

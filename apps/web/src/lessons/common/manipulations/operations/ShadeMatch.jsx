@@ -10,6 +10,10 @@ import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
 import { LabCard, StageFrame, PromptCard, VerdictBanner } from '../primitives/LabKit';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { LEVELS } from '../levels';
 import * as L from '../logic/shadeMatch';
 import PaintScene, { CSS as SCENE_CSS } from './shadeMatch/PaintScene';
@@ -49,7 +53,13 @@ import { shadeColor, METER, needleDeg, meterPoint } from './shadeMatch/shadeArt'
  * « جرّب كل الإمكانيات » : NON (chaque lâcher EST l'essai). « جرّب أعدادك » est TOUJOURS ouvert sous le labo.
  * D'UN SEUL REGARD (§8bis) : `[data-sm-glance]` enveloppe la consigne, la scène, le mesureur, les commandes et le verdict.
  * ONBOARDING : `coach` (défaut true) → `LabCoach` ; `logic/shadeMatch.js › coachOf` (lever · meter · drain · impossible · commit · free).
- * Props : `tasks` ([{ id, a, b, d, veil, kind }]), `world` ('mix' | 'equal'), `level`, `levels`, `coach`, `title`, `lead`, `onTrial(event)`, `onFinished({ world })`.
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 5, 2026-10-28) : `checkpoints` (défaut true). Après CHAQUE tâche, une suite de questions se pose PAR-DESSUS le labo
+ * et retient « المهمة التالية » (`CHAINS`) : s1 le facteur commun · quel seau égale aussi ; s2 les deux produits en croix · ce qu'on remarque ; s3 entre quels entiers · pourquoi aucun · la RÈGLE (l'ancienne
+ * découverte, qui formalise) ; a1 produit en croix · le bleu déduit ; a2 entre quels entiers · pourquoi aucun ; a3 réduire la référence · le produit en croix ; a4 les deux produits ; monde `equal` : la
+ * référence réduite. OBLIGATOIRES pour tout élève ; l'ENSEIGNANT seul les coupe pour SON compte (`useLabCheckpointSettings`, interrupteur dans l'en-tête) ; coupées, la découverte d'avant reprend.
+ * ÉTAPES `LabStepper` (`[data-sm-step=<i>]`) + fête ; « إعادة » repart de la tâche 1 ; « أعِد التجربة » remet LA MÊME tâche. SON (`playSfx`) : `tooth` à chaque mesure versée, `bell` à un lâcher
+ * qui tombe pile ou un seau chargé, `flag` à l'objectif, `over` pour un engagement faux.
+ * Props : `tasks` ([{ id, a, b, d, veil, kind }]), `world` ('mix' | 'equal'), `level`, `levels`, `coach`, `checkpoints`, `title`, `lead`, `onTrial(event)`, `onFinished({ world })`.
  * CONTRAT DOM : [data-shade-match][data-task][data-solved][data-layout][data-world], [data-sm-glance], [data-sm-stage], [data-sm-svg], [data-sm-lever][data-pressed],
  * [data-sm-drain], [data-sm-blue][data-value], [data-sm-white][data-value], [data-sm-swatch=ref|second][data-color], [data-sm-meter][data-needle][data-veiled], [data-sm-lamp][data-on],
  * [data-sm-tick][data-c][data-verdict], [data-sm-commit], [data-sm-impossible], [data-sm-below], [data-sm-above], [data-sm-pick=first|second], [data-sm-candidate][data-loaded],
@@ -71,7 +81,7 @@ export function numbersFor({ tasks, world, level }) {
 }
 
 export default function ShadeMatch({
-  tasks, world, title, lead, level, levels: withLevels = true, coach: coachOn = true,
+  tasks, world, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -81,13 +91,27 @@ export default function ShadeMatch({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
   if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    const restart = scene.key === numsKey && scene.rc !== state.resetCount;
-    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-    setLab(restart ? L.restartTask(lab) : L.init(nums));
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la tâche 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
+    setLab(L.init(nums));
   }
-  const ready = L.discoveryReady(lab);
+  // les questions pendant le labo : la suite de la tâche courante ; celle qui finit par la règle remplace la découverte automatique
+  const cpSettings = useLabCheckpointSettings('shade-match');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const curTask = L.taskOf(lab);
+  const chain = cpOn && cpSettings.enabled && !L.isFree(lab) ? CHAINS[curTask.id] ?? null : null;
+  const ruleByCheckpoint = cpOn && cpSettings.enabled && lab.tasks.some((tk) => CHAINS[tk.id]?.includes('rule'));
+  const cp = useLabCheckpoint({
+    id: chain ? curTask.id : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, curTask, k)) : null,
+    reached: L.taskDone(lab),
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.restartTask),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => { if (CHAINS[id]?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  const ready = L.discoveryReady(lab) && !ruleByCheckpoint;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   const finishedOnce = useRef(false);
   const everyDone = L.allDone(lab);
@@ -103,7 +127,7 @@ export default function ShadeMatch({
     reported.current = nTrials;
   }, [nTrials, lab.trials]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'shade-match', step: coachStep,
     text: coachStep ? k(`coach.${coachStep.id}`) : '',
@@ -139,6 +163,8 @@ export default function ShadeMatch({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       coach={coachOn ? coach : null}
+      headerAction={cpSettings.control}
+      guided={!!chain || ruleByCheckpoint}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={discovery}
@@ -148,7 +174,7 @@ export default function ShadeMatch({
         <div ref={boxRef} className="space-y-2" data-shade-match data-task={lab.ti} data-world={lab.world}
           data-solved={everyDone ? 'true' : 'false'} data-layout={width >= WIDE_MIN ? 'wide' : 'narrow'}>
           <style dangerouslySetInnerHTML={{ __html: SCENE_CSS }} />
-          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} />
+          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} cp={cp} />
         </div>
       </ManipulationStage>
     </ManipulationShell>
@@ -171,7 +197,7 @@ function cans(k, n) {
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-function Lab({ lab, setLab, k, width, screenH, lead }) {
+function Lab({ lab, setLab, k, width, screenH, lead, cp }) {
   const uid = `sm${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
   const wide = width >= WIDE_MIN;
   const free = L.isFree(lab);
@@ -225,20 +251,37 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
       : kind === 'pick' ? k('context.pick', { blue: shots(k, task.a), white: whiteTxt(task.b) })
         : k('context.mix', { blue: shots(k, task.a), white: whiteTxt(task.b), white2: whiteTxt(task.d) });
   const question = free ? k('question.free') : kind === 'compare' ? k('question.compare') : kind === 'pick' ? k('question.pick') : task.veil ? k('question.veil') : k('question.mix');
+  // une étape est FAITE quand la tâche est finie ET que ses questions (LabCheckpoint) sont répondues : la pastille passe au vert et on fête
+  const stepDone = lab.tasks.map((_, i) => !!lab.done[i] && (i !== lab.ti || !cp.blocking));
   const steps = lab.tasks.length > 1 && !free && (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={tk.id} role="listitem" data-sm-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-indigo-600 bg-indigo-500 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-indigo-100 bg-white text-indigo-500'}`}>
-            <bdi dir="ltr">{i + 1}</bdi>
-          </span>
-        );
-      })}
-    </div>
+    <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-sm-step" />
   );
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // L.init (« إعادة », autre niveau) : on refête
+  const nowDone = !free && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.ti)) return;
+    celebrated.current.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son (muet sans « الصوت ») : un déclic par mesure versée (plus grave en arrière), une cloche à un lâcher qui tombe pile ou à un seau chargé, le drapeau à l'objectif, « over » à un engagement faux
+  const heard = useRef({ c: lab.c, at: 0, n: lab.trials.length, ti: lab.ti });
+  useEffect(() => {
+    const h = heard.current;
+    if (h.ti !== lab.ti || lab.trials.length < h.n) { heard.current = { c: lab.c, at: 0, n: lab.trials.length, ti: lab.ti }; return; }
+    if (lab.c !== h.c) {
+      const now = Date.now();
+      if (now - h.at > 35) { playSfx('tooth', { pitch: lab.c > h.c ? 1 : 0.75 }); h.at = now; }
+      h.c = lab.c;
+    }
+    const fresh = lab.trials.slice(h.n);
+    h.n = lab.trials.length;
+    if (!fresh.length) return;
+    if (fresh.some((e) => e.kind === 'solved')) playSfx('flag');
+    else if (fresh.some((e) => (e.kind === 'commit' || e.kind === 'impossible') && e.ok === false)) playSfx('over');
+    else if (fresh.some((e) => (e.kind === 'release' && e.ok) || e.kind === 'load')) playSfx('bell');
+  }, [lab.c, lab.trials, lab.ti]);
   const prompt = (
     <PromptCard size="md" context={<MathText>{ctx}</MathText>} contextProps={{ 'data-sm-context': free ? 'free' : kind }}
       title={<MathText>{question}</MathText>} titleClassName="text-lg" lamp={free ? null : done ? 'on' : 'off'}
@@ -360,7 +403,7 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
 
   /* ── le verdict ── */
   const vv = verdictOf(lab, k);
-  const canNext = L.canNext(lab);
+  const canNext = L.canNext(lab) && !cp.blocking;
   const Icon = vv.tone === 'emerald' ? CheckCircle2 : vv.tone === 'indigo' ? Hand : Sparkles;
   const banner = (
     <VerdictBanner tone={vv.tone} icon={wide ? Icon : null} size="sm" className="min-h-[2.75rem] !py-1.5" data-sm-verdict={vv.code}>
@@ -379,6 +422,8 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
   return (
     <>
       <div className="relative space-y-2" data-sm-glance>
+        {party.node}
+        {cp.node}
         {prompt}
         {wide ? (
           <div className="flex items-stretch gap-2">
@@ -590,3 +635,156 @@ export function Formal({ lab, k }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de questions de chaque tâche : elle interroge ce que l'élève vient de FAIRE ; s3 finit par la règle (l'ancienne découverte). */
+export const CHAINS = Object.freeze({
+  s1: ['factor', 'whichEqual'],
+  s2: ['product', 'equalProducts'],
+  s3: ['between', 'whyNone', 'rule'],
+  a1: ['product', 'blueFromProd'],
+  a2: ['between', 'whyNone'],
+  a3: ['reduceRef', 'product'],
+  a4: ['crossA', 'crossB'],
+  e1: ['reduceRef'],
+});
+
+const $ = (s) => `$${s}$`;
+const Q = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const at = (list, i) => { const [first, ...rest] = list; const out = [...rest]; out.splice(Math.min(i, out.length), 0, first); return out; };
+const gcdN = (a, b) => (b ? gcdN(b, a % b) : a);
+const ref = (t) => $(tex(t.a, t.b));
+
+/** Chaque question est construite sur LES nombres de la tâche (rien n'est écrit en dur) ; `k` : les textes de `shadeMatch`. */
+export const QUESTIONS = {
+  factor: (lab, t, k) => {
+    const f = t.goal / t.a;
+    const o = { ref: ref(t), a: iso(t.a), b: iso(t.b), c: iso(t.goal), d: iso(t.d), f: iso(t.d / t.b) };
+    return {
+      id: 'factor', kind: 'number', expected: String(t.d / t.b), answer: <MathText>{$(String(t.d / t.b))}</MathText>,
+      prompt: Q(k, 'factor.prompt', o),
+      hints: [Q(k, 'factor.hint1', o), Q(k, 'factor.hint2', o)],
+      explain: Q(k, 'factor.explain', { ...o, f: iso(f) }),
+    };
+  },
+  whichEqual: (lab, t, k) => {
+    const f = 3;
+    const ok = $(tex(t.a * f, t.b * f));
+    const add1 = $(tex(t.a + t.b, t.b + t.b));
+    const add2 = $(tex(t.a + 1, t.b + 1));
+    const o = { ref: ref(t), a: iso(t.a), b: iso(t.b), f: iso(f), ok };
+    return {
+      id: 'whichEqual', kind: 'choice', cols: 3,
+      prompt: Q(k, 'whichEqual.prompt', o),
+      options: at([
+        { text: <MathText>{ok}</MathText>, correct: true },
+        { text: <MathText>{add1}</MathText>, why: Q(k, 'whichEqual.whyAdd', { ...o, x: add1, n: iso(t.b) }) },
+        { text: <MathText>{add2}</MathText>, why: Q(k, 'whichEqual.whyAdd', { ...o, x: add2, n: iso(1) }) },
+      ], 1),
+      hints: [Q(k, 'whichEqual.hint1'), Q(k, 'whichEqual.hint2')],
+      explain: Q(k, 'whichEqual.explain', o),
+    };
+  },
+  product: (lab, t, k) => {
+    const p = t.a * t.d;
+    const o = { ref: ref(t), a: iso(t.a), d: iso(t.d), p: iso(p) };
+    return {
+      id: 'product', kind: 'number', expected: String(p), answer: <MathText>{$(String(p))}</MathText>,
+      prompt: Q(k, 'product.prompt', o),
+      hints: [Q(k, 'product.hint1', o), Q(k, 'product.hint2', o)],
+      explain: Q(k, 'product.explain', o),
+    };
+  },
+  equalProducts: (lab, t, k) => {
+    const p = t.a * t.d;
+    const p1 = $(`${t.a}\\times${t.d}`); const p2 = $(`${t.b}\\times${t.goal}`);
+    const o = { b: iso(t.b), c: iso(t.goal), p1, p2, p: iso(p) };
+    return {
+      id: 'equalProducts', kind: 'choice',
+      prompt: Q(k, 'equalProducts.prompt', o),
+      options: at([
+        { text: Q(k, 'equalProducts.equal'), correct: true },
+        { text: Q(k, 'equalProducts.first'), why: Q(k, 'equalProducts.why', o) },
+        { text: Q(k, 'equalProducts.second'), why: Q(k, 'equalProducts.why', o) },
+      ], 0),
+      hints: [Q(k, 'equalProducts.hint1', o), Q(k, 'equalProducts.hint2', o)],
+      explain: Q(k, 'equalProducts.explain', o),
+    };
+  },
+  between: (lab, t, k) => {
+    const lo = t.below; const hi = t.above;
+    const o = { ref: ref(t), d: iso(t.d), below: iso(lo), above: iso(hi) };
+    const opt = (x, y) => <MathText>{k('cp.between.opt', { lo: $(String(x)), hi: $(String(y)) })}</MathText>;
+    const wrong = (x, y) => ({ text: opt(x, y), why: Q(k, 'between.why', { ...o, lo: iso(x), hi: iso(y) }) });
+    return {
+      id: 'between', kind: 'choice', cols: 3,
+      prompt: Q(k, 'between.prompt', o),
+      options: at([{ text: opt(lo, hi), correct: true }, wrong(lo - 1, lo), wrong(hi, hi + 1)], 1),
+      hints: [Q(k, 'between.hint1', o), Q(k, 'between.hint2', o)],
+      explain: Q(k, 'between.explain', { ...o, calc: $(`\\frac{${t.a * t.d}}{${t.b}}`) }),
+    };
+  },
+  whyNone: (lab, t, k) => {
+    const ad = t.a * t.d;
+    const o = { a: iso(t.a), b: iso(t.b), d: iso(t.d), ad: iso(ad), q: $(`${ad}\\div${t.b}`) };
+    return {
+      id: 'whyNone', kind: 'choice',
+      prompt: Q(k, 'whyNone.prompt'),
+      options: at([
+        { text: Q(k, 'whyNone.right', o), correct: true },
+        { text: Q(k, 'whyNone.broken'), why: Q(k, 'whyNone.whyBroken') },
+        { text: Q(k, 'whyNone.big', o), why: Q(k, 'whyNone.whyBig') },
+      ], 2),
+      hints: [Q(k, 'whyNone.hint1', o), Q(k, 'whyNone.hint2', o)],
+      explain: Q(k, 'whyNone.explain', o),
+    };
+  },
+  rule: (lab, t, k) => ({
+    id: 'rule', kind: 'choice',
+    prompt: <MathText>{k('discovery.prompt')}</MathText>,
+    options: discoveryOptions(lab, k),
+    hints: [Q(k, 'rule.hint1'), Q(k, 'rule.hint2')],
+    explain: <Formal lab={lab} k={k} />,
+  }),
+  blueFromProd: (lab, t, k) => {
+    const p = t.a * t.d;
+    const o = { ref: ref(t), b: iso(t.b), p: iso(p), c: iso(p / t.b) };
+    return {
+      id: 'blueFromProd', kind: 'number', expected: String(p / t.b), answer: <MathText>{$(String(p / t.b))}</MathText>,
+      prompt: Q(k, 'blueFromProd.prompt', o),
+      hints: [Q(k, 'blueFromProd.hint1', o), Q(k, 'blueFromProd.hint2', o)],
+      explain: Q(k, 'blueFromProd.explain', o),
+    };
+  },
+  reduceRef: (lab, t, k) => {
+    const g = gcdN(t.a, t.b);
+    const o = { ref: ref(t), a: iso(t.a), b: iso(t.b), g: iso(g), red: $(tex(t.a / g, t.b / g)) };
+    return {
+      id: 'reduceRef', kind: 'number', expected: String(t.a / g), answer: <MathText>{$(String(t.a / g))}</MathText>,
+      prompt: Q(k, 'reduceRef.prompt', o),
+      hints: [Q(k, 'reduceRef.hint1', o), Q(k, 'reduceRef.hint2', o)],
+      explain: Q(k, 'reduceRef.explain', o),
+    };
+  },
+  crossA: (lab, t, k) => {
+    const p = t.a * t.d;
+    const o = { ref: ref(t), other: $(tex(t.c, t.d)), a: iso(t.a), d: iso(t.d), p: iso(p) };
+    return {
+      id: 'crossA', kind: 'number', expected: String(p), answer: <MathText>{$(String(p))}</MathText>,
+      prompt: Q(k, 'crossA.prompt', o),
+      hints: [Q(k, 'crossA.hint1', o), Q(k, 'crossA.hint2', o)],
+      explain: Q(k, 'crossA.explain', o),
+    };
+  },
+  crossB: (lab, t, k) => {
+    const p1 = t.a * t.d; const p2 = t.b * t.c;
+    const o = { ref: ref(t), other: $(tex(t.c, t.d)), b: iso(t.b), c: iso(t.c), p1: iso(p1), p2: iso(p2) };
+    return {
+      id: 'crossB', kind: 'number', expected: String(p2), answer: <MathText>{$(String(p2))}</MathText>,
+      prompt: Q(k, 'crossB.prompt', o),
+      hints: [Q(k, 'crossB.hint1', o), Q(k, 'crossB.hint2', o)],
+      explain: Q(k, p1 > p2 ? 'crossB.explainRef' : 'crossB.explainOther', o),
+    };
+  },
+};

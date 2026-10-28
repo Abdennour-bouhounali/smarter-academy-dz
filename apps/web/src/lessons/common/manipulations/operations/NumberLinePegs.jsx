@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CheckCircle2, Sparkles, Wind, FlaskConical, Undo2, RotateCcw, ChevronLeft, Plus, Hand } from 'lucide-react';
+import { ratText, sub, sign } from '@smarter-academy/core/arithmetic/powers.js';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import MathText from '../../components/MathText';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
@@ -11,6 +12,10 @@ import { useManipulation } from '../useManipulation';
 import { LabCard, StageFrame, PromptCard, VerdictBanner } from '../primitives/LabKit';
 import KidFigure from '../primitives/KidFigure';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { LEVELS } from '../levels';
 import * as L from '../logic/numberLinePegs';
 import RopeScene, { CSS as SCENE_CSS } from './numberLinePegs/RopeScene';
@@ -50,7 +55,12 @@ import { W, SVG_H, ROPE_Y, CARD_W, CARD_H, CHIP_H, ROW_PITCH, STACK_DX, STACK_DY
  * « جرّب كل الإمكانيات » : NON. « جرّب أعدادك » est TOUJOURS ouvert sous le labo (une carte a/b, |a| ≤ 48 avec un chiffre décimal, 1 ≤ |b| ≤ 12 ; b = 0 refusé).
  * D'UN SEUL REGARD (§8bis) : `[data-npp-glance]` enveloppe la consigne, la scène, le panier, les commandes et le verdict.
  * ONBOARDING : `coach` (défaut true) → `LabCoach` ; `logic/numberLinePegs.js › coachOf` (card · loupe · hang · check · stack · retry · free).
- * Props : `tasks` ([{ id, kind, cards, range }]), `world` ('rope' | 'writings'), `level`, `levels`, `coach`, `title`, `lead`, `onTrial(event)`, `onFinished({ world })`.
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 5, 2026-10-28) : `checkpoints` (défaut true). Après CHAQUE tâche, une suite de questions se pose PAR-DESSUS le labo et
+ * retient « المهمة التالية » (`CHAINS`) : w1 côté du zéro · quelle carte a rejoint la sienne ; w2 combien sur le piquet · le miroir ; w3 deux signes négatifs · pourquoi aucune pile · la RÈGLE (l'ancienne
+ * découverte, qui formalise) ; a1–a2 unité · la plus à gauche ; a3 dénominateur commun · la plus petite ; monde `writings` : combien de piquets · pourquoi si peu. OBLIGATOIRES pour tout élève ; l'ENSEIGNANT
+ * seul les coupe pour SON compte (`useLabCheckpointSettings`, interrupteur dans l'en-tête) ; coupées, la découverte d'avant reprend. ÉTAPES `LabStepper` (`[data-npp-step=<i>]`) + fête ; « إعادة » repart de
+ * la tâche 1 ; « أعِد التجربة » remet LA MÊME tâche. SON (`playSfx`) : `tooth` à chaque accrochage, `bell` quand une pile se forme, `flag` à l'objectif, `over` quand l'ordre est refusé.
+ * Props : `tasks` ([{ id, kind, cards, range }]), `world` ('rope' | 'writings'), `level`, `levels`, `coach`, `checkpoints`, `title`, `lead`, `onTrial(event)`, `onFinished({ world })`.
  * CONTRAT DOM : [data-number-line-pegs][data-task][data-solved][data-world], [data-npp-glance], [data-npp-stage][data-scale], [data-npp-svg][data-snap], [data-npp-rope][data-held][data-k],
  * [data-npp-int], [data-npp-tw], [data-npp-basket], [data-npp-card][data-id][data-state], [data-npp-hung][data-id][data-landed][data-x][data-value], [data-npp-peg], [data-npp-chip],
  * [data-npp-stack][data-count], [data-npp-loupe], [data-npp-readout], [data-npp-check], [data-npp-retry], [data-npp-next], [data-npp-verdict], [data-npp-step],
@@ -75,7 +85,7 @@ export function numbersFor({ tasks, world, level }) {
 }
 
 export default function NumberLinePegs({
-  tasks, world, title, lead, level, levels: withLevels = true, coach: coachOn = true,
+  tasks, world, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -85,13 +95,27 @@ export default function NumberLinePegs({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
   if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    const restart = scene.key === numsKey && scene.rc !== state.resetCount;
-    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-    setLab(restart ? L.restartTask(lab) : L.init(nums));
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la tâche 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
+    setLab(L.init(nums));
   }
-  const ready = L.discoveryReady(lab);
+  // les questions pendant le labo : la suite de la tâche courante ; celle qui finit par la règle remplace la découverte automatique
+  const cpSettings = useLabCheckpointSettings('number-line-pegs');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const curTask = L.taskOf(lab);
+  const chain = cpOn && cpSettings.enabled && !L.isFree(lab) ? CHAINS[curTask.id] ?? null : null;
+  const ruleByCheckpoint = cpOn && cpSettings.enabled && lab.tasks.some((tk) => CHAINS[tk.id]?.includes('rule'));
+  const cp = useLabCheckpoint({
+    id: chain ? curTask.id : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, curTask, k)) : null,
+    reached: L.taskDone(lab),
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.restartTask),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => { if (CHAINS[id]?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  const ready = L.discoveryReady(lab) && !ruleByCheckpoint;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   const finishedOnce = useRef(false);
   const everyDone = L.allDone(lab);
@@ -107,7 +131,7 @@ export default function NumberLinePegs({
     reported.current = nTrials;
   }, [nTrials, lab.trials]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'number-line-pegs', step: coachStep,
     text: coachStep ? k(`coach.${coachStep.id}`) : '',
@@ -142,6 +166,8 @@ export default function NumberLinePegs({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       coach={coachOn ? coach : null}
+      headerAction={cpSettings.control}
+      guided={!!chain || ruleByCheckpoint}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={discovery}
@@ -150,7 +176,7 @@ export default function NumberLinePegs({
       <ManipulationStage className="bg-gradient-to-b from-sky-50/70 to-white">
         <div ref={boxRef} className="space-y-2" data-number-line-pegs data-task={lab.ti} data-world={lab.world} data-solved={everyDone ? 'true' : 'false'}>
           <style dangerouslySetInnerHTML={{ __html: SCENE_CSS }} />
-          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} />
+          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} cp={cp} />
         </div>
       </ManipulationStage>
     </ManipulationShell>
@@ -159,7 +185,7 @@ export default function NumberLinePegs({
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-function Lab({ lab, setLab, k, width, screenH, lead }) {
+function Lab({ lab, setLab, k, width, screenH, lead, cp }) {
   const uid = `np${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
   const free = L.isFree(lab);
   const t = L.taskOf(lab);
@@ -243,13 +269,38 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
     }
   };
 
+  /* ── les étapes, la fête et le son (2026-10-28) */
+  const stepDone = lab.tasks.map((_, i) => !!lab.done[i] && (i !== lab.ti || !cp.blocking));
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // L.init (« إعادة », autre niveau) : on refête
+  const nowDone = !free && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.ti)) return;
+    celebrated.current.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son (muet sans « الصوت ») : un déclic par accrochage, une cloche quand une pile se forme, le drapeau à l'objectif, « over » si l'ordre est refusé
+  const heard = useRef({ hung: Object.keys(lab.hung).length, trials: lab.trials.length, key: `${lab.ti}` });
+  useEffect(() => {
+    const h = heard.current;
+    const n = Object.keys(lab.hung).length;
+    if (h.key !== `${lab.ti}` || lab.trials.length < h.trials) { heard.current = { hung: n, trials: lab.trials.length, key: `${lab.ti}` }; return; }
+    if (n > h.hung) playSfx('tooth');
+    const fresh = lab.trials.slice(h.trials);
+    if (fresh.some((e) => e.kind === 'solved')) playSfx('flag');
+    else if (fresh.some((e) => e.kind === 'order' && e.ok === false)) playSfx('over');
+    else if (fresh.some((e) => e.kind === 'settle' && e.stacks?.length)) playSfx('bell');
+    heard.current = { hung: n, trials: lab.trials.length, key: `${lab.ti}` };
+  }, [lab.hung, lab.trials, lab.ti]);
+
   /* ── la consigne : le contexte, puis UNE question */
   const kind = free ? 'free' : isOrder ? 'order' : lab.world === 'writings' ? 'writings' : 'hang';
   const prompt = (
     <PromptCard size="md" context={<MathText>{free ? `${k('context.freePrefix')} ${k('context.hang')}` : k(`context.${kind === 'writings' ? 'writings' : isOrder ? 'order' : 'hang'}`)}</MathText>} contextProps={{ 'data-npp-context': kind }}
       title={<MathText>{k(`question.${kind}`)}</MathText>} titleClassName="text-base" lamp={free ? null : done ? 'on' : 'off'}
       titleProps={{ 'data-npp-prompt': kind, 'data-lit': done ? 'true' : 'false' }}
-      aside={lab.tasks.length > 1 && !free ? <Steps lab={lab} k={k} /> : undefined}
+      aside={lab.tasks.length > 1 && !free ? <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-npp-step" /> : undefined}
       instruction={lead || (!free && !isOrder && lab.world === 'rope' && lab.ti === 0 ? k('lead') : undefined)} />
   );
 
@@ -398,7 +449,7 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
   const green = `${btn} border-emerald-700 bg-emerald-600 text-white [--np-sh:#047857]`;
   const amber = `${btn} border-amber-400 bg-amber-50 text-amber-950 [--np-sh:#FCD34D]`;
   const vv = verdictOf(lab, k);
-  const canNext = L.canNext(lab);
+  const canNext = L.canNext(lab) && !cp.blocking;
   const Icon = vv.tone === 'emerald' ? CheckCircle2 : vv.tone === 'indigo' ? Hand : Sparkles;
   const controls = (
     <div className="flex flex-wrap items-center justify-center gap-2" data-npp-controls>
@@ -433,6 +484,8 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
   return (
     <>
       <div className="relative space-y-2" data-npp-glance>
+        {party.node}
+        {cp.node}
         {prompt}
         {stage}
         {basket}
@@ -442,23 +495,6 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
       </div>
       <FreeCard lab={lab} setLab={setLab} k={k} />
     </>
-  );
-}
-
-function Steps({ lab, k }) {
-  return (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={tk.id} role="listitem" data-npp-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-indigo-700 bg-indigo-600 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-sky-200 bg-white text-indigo-700'}`}>
-            <bdi dir="ltr">{i + 1}</bdi>
-          </span>
-        );
-      })}
-    </div>
   );
 }
 
@@ -578,3 +614,195 @@ export function Formal({ lab, k }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de questions de chaque tâche : elle interroge ce que l'élève vient de FAIRE ; w3 finit par la règle (l'ancienne découverte). */
+export const CHAINS = Object.freeze({
+  w1: ['side', 'mate'],
+  w2: ['stackCount', 'mirror'],
+  w3: ['twoNeg', 'noStack', 'rule'],
+  a1: ['unit', 'smallest'],
+  a2: ['unit', 'smallest'],
+  a3: ['commonDen', 'smallest'],
+  k1: ['pegCount', 'whyFew'],
+});
+
+const $ = (s) => `$${s}$`;
+const Q = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+/** `list[0]` (la bonne réponse) passe à la place `i` : `LabCheckpoint` ne mélange pas, donc on varie la place d'une question à l'autre. */
+const at = (list, i) => { const [first, ...rest] = list; const out = [...rest]; out.splice(Math.min(i, out.length), 0, first); return out; };
+const groupsOf = (task) => {
+  const g = [];
+  task.cards.forEach((c) => { const x = g.find((y) => y[0].valueText === c.valueText); if (x) x.push(c); else g.push([c]); });
+  return g;
+};
+const gcdB = (a, b) => (b ? gcdB(b, a % b) : a < 0n ? -a : a);
+const lcmOf = (list) => list.reduce((m, d) => (m * d) / gcdB(m, d), 1n);
+const minCard = (task) => task.cards.reduce((m, c) => (sign(sub(c.value, m.value)) < 0 ? c : m));
+const distinct = (cards) => cards.filter((c, i) => cards.findIndex((x) => x.valueText === c.valueText) === i);
+const opt = (c, correct, why) => ({ text: <MathText>{stdTex(c)}</MathText>, ...(correct ? { correct: true } : { why }) });
+
+/** Chaque question est construite sur LES cartes de la tâche (rien n'est écrit en dur) ; `k` : les textes de `numberLinePegs`. */
+export const QUESTIONS = {
+  side: (lab, task, k) => {
+    const c = task.cards.find((x) => x.den != null && String(x.num).startsWith('-') !== String(x.den).startsWith('-')) ?? task.cards.find((x) => sign(x.value) < 0) ?? task.cards[0];
+    const o = { w: cardTex(c) };
+    return {
+      id: 'side', kind: 'choice', cols: 3,
+      prompt: Q(k, 'side.prompt', o),
+      options: at([
+        { text: Q(k, 'side.left'), correct: true },
+        { text: Q(k, 'side.right'), why: Q(k, 'side.whyRight', o) },
+        { text: Q(k, 'side.zero'), why: Q(k, 'side.whyZero', o) },
+      ], 0),
+      hints: [Q(k, 'side.hint1', o), Q(k, 'side.hint2', o)],
+      explain: Q(k, 'side.explain', { ...o, v: stdTex(c) }),
+    };
+  },
+  mate: (lab, task, k) => {
+    const group = groupsOf(task).filter((g) => g.length > 1).pop() ?? [task.cards[0], task.cards[1]];
+    const [c, m] = group;
+    const others = task.cards.filter((x) => x.valueText !== c.valueText).slice(0, 2);
+    const o = { w: cardTex(c), mine: stdTex(c) };
+    return {
+      id: 'mate', kind: 'choice', cols: others.length + 1,
+      prompt: Q(k, 'mate.prompt', o),
+      options: at([
+        { text: <MathText>{cardTex(m)}</MathText>, correct: true },
+        ...others.map((x) => ({ text: <MathText>{cardTex(x)}</MathText>, why: Q(k, 'mate.why', { x: cardTex(x), pos: stdTex(x), mine: stdTex(c) }) })),
+      ], 1),
+      hints: [Q(k, 'mate.hint1', o), Q(k, 'mate.hint2', o)],
+      explain: Q(k, 'mate.explain', { ...o, m: cardTex(m) }),
+    };
+  },
+  stackCount: (lab, task, k) => {
+    const group = groupsOf(task).reduce((b, g) => (g.length > b.length ? g : b));
+    const o = { w: cardTex(group[0]), v: stdTex(group[0]) };
+    return {
+      id: 'stackCount', kind: 'number', expected: String(group.length), answer: <MathText>{$(String(group.length))}</MathText>,
+      prompt: Q(k, 'stackCount.prompt', o),
+      hints: [Q(k, 'stackCount.hint1', o), Q(k, 'stackCount.hint2', o)],
+      explain: Q(k, 'stackCount.explain', { ...o, n: group.length, list: group.map((x) => cardTex(x)).join(' ، ') }),
+    };
+  },
+  mirror: (lab, task, k) => {
+    const p = task.cards.find((x) => sign(x.value) > 0);
+    const n = task.cards.find((x) => sign(x.value) < 0);
+    const cnt = groupsOf(task).find((g) => g[0].valueText === n.valueText).length;
+    const o = { p: cardTex(p), n: cardTex(n), pp: stdTex(p), np: stdTex(n) };
+    return {
+      id: 'mirror', kind: 'choice',
+      prompt: Q(k, 'mirror.prompt', o),
+      options: at([
+        { text: Q(k, 'mirror.opposite', o), correct: true },
+        { text: Q(k, 'mirror.same', o), why: Q(k, 'mirror.whySame', { ...o, cnt }) },
+        { text: Q(k, 'mirror.left', o), why: Q(k, 'mirror.whyLeft', o) },
+      ], 2),
+      hints: [Q(k, 'mirror.hint1', o), Q(k, 'mirror.hint2', o)],
+      explain: Q(k, 'mirror.explain', o),
+    };
+  },
+  twoNeg: (lab, task, k) => {
+    const c = task.cards.find((x) => String(x.num).startsWith('-') && x.den != null && String(x.den).startsWith('-')) ?? task.cards[0];
+    const o = { w: cardTex(c), v: stdTex(c) };
+    return {
+      id: 'twoNeg', kind: 'choice', cols: 3,
+      prompt: Q(k, 'twoNeg.prompt', o),
+      options: at([
+        { text: Q(k, 'twoNeg.right'), correct: true },
+        { text: Q(k, 'twoNeg.left'), why: Q(k, 'twoNeg.whyLeft', o) },
+        { text: Q(k, 'twoNeg.zero'), why: Q(k, 'twoNeg.whyZero', o) },
+      ], 1),
+      hints: [Q(k, 'twoNeg.hint1', o), Q(k, 'twoNeg.hint2', o)],
+      explain: Q(k, 'twoNeg.explain', o),
+    };
+  },
+  noStack: (lab, task, k) => {
+    const o = { a: cardTex(task.cards[0]), b: cardTex(task.cards[1]) };
+    return {
+      id: 'noStack', kind: 'choice',
+      prompt: Q(k, 'noStack.prompt'),
+      options: at([
+        { text: Q(k, 'noStack.right'), correct: true },
+        { text: Q(k, 'noStack.wind'), why: Q(k, 'noStack.whyWind') },
+        { text: Q(k, 'noStack.writings'), why: Q(k, 'noStack.whyWritings') },
+      ], 0),
+      hints: [Q(k, 'noStack.hint1', o), Q(k, 'noStack.hint2', o)],
+      explain: Q(k, 'noStack.explain'),
+    };
+  },
+  rule: (lab, task, k) => ({
+    id: 'rule', kind: 'choice',
+    prompt: <MathText>{k('discovery.prompt')}</MathText>,
+    options: discoveryOptions(k),
+    hints: [Q(k, 'rule.hint1'), Q(k, 'rule.hint2')],
+    explain: <Formal lab={lab} k={k} />,
+  }),
+  unit: (lab, task, k) => {
+    const c = task.cards[task.cards.length - 1];
+    const u = Number(c.unit);
+    const o = { w: cardTex(c), v: stdTex(c) };
+    const between = (j) => <MathText>{k('cp.unit.between', { lo: $(String(j)), hi: $(String(j + 1)) })}</MathText>;
+    const wrong = (j) => ({ text: between(j), why: Q(k, 'unit.why', { ...o, lo: $(String(j)), hi: $(String(j + 1)) }) });
+    return {
+      id: 'unit', kind: 'choice', cols: 3,
+      prompt: Q(k, 'unit.prompt', o),
+      options: at([{ text: between(u), correct: true }, wrong(u + 1), wrong(u - 1)], 1),
+      hints: [Q(k, 'unit.hint1', o), Q(k, 'unit.hint2', o)],
+      explain: Q(k, 'unit.explain', { ...o, lo: $(String(u)), hi: $(String(u + 1)) }),
+    };
+  },
+  smallest: (lab, task, k) => {
+    const min = minCard(task);
+    const others = distinct(task.cards.filter((x) => x.valueText !== min.valueText)).slice(0, 2);
+    const o = { w: cardTex(min), v: stdTex(min) };
+    return {
+      id: 'smallest', kind: 'choice', cols: others.length + 1,
+      prompt: Q(k, 'smallest.prompt'),
+      options: at([
+        opt(min, true),
+        ...others.map((x) => opt(x, false, Q(k, 'smallest.why', { x: stdTex(x), min: stdTex(min) }))),
+      ], task.id === 'a2' ? 2 : 0),
+      hints: [Q(k, 'smallest.hint1'), Q(k, 'smallest.hint2', o)],
+      explain: Q(k, 'smallest.explain', o),
+    };
+  },
+  commonDen: (lab, task, k) => {
+    const ds = [...new Set(task.cards.map((c) => String(c.norm.d)))];
+    const D = lcmOf(task.cards.map((c) => c.norm.d));
+    const list = task.cards.map((c) => `${c.norm.sign < 0 ? '-' : ''}\\frac{${c.norm.n * (D / c.norm.d)}}{${D}}`).join(' ،\\ ');
+    const o = { ds: ds.map((d) => $(d)).join(' ، ') };
+    return {
+      id: 'commonDen', kind: 'number', expected: String(D), answer: <MathText>{$(String(D))}</MathText>,
+      prompt: Q(k, 'commonDen.prompt'),
+      hints: [Q(k, 'commonDen.hint1', o), Q(k, 'commonDen.hint2', o)],
+      explain: Q(k, 'commonDen.explain', { ...o, D: $(String(D)), list: $(list) }),
+    };
+  },
+  pegCount: (lab, task, k) => {
+    const gs = groupsOf(task);
+    const o = { a: stdTex(gs[0][0]), b: stdTex(gs[1][0]), n: task.cards.length };
+    return {
+      id: 'pegCount', kind: 'number', expected: String(gs.length), answer: <MathText>{$(String(gs.length))}</MathText>,
+      prompt: Q(k, 'pegCount.prompt', o),
+      hints: [Q(k, 'pegCount.hint1'), Q(k, 'pegCount.hint2', o)],
+      explain: Q(k, 'pegCount.explain', { ...o, g: gs.length }),
+    };
+  },
+  whyFew: (lab, task, k) => {
+    const gs = groupsOf(task);
+    const o = { a: stdTex(gs[0][0]), b: stdTex(gs[1][0]), n: task.cards.length };
+    return {
+      id: 'whyFew', kind: 'choice',
+      prompt: Q(k, 'whyFew.prompt', o),
+      options: at([
+        { text: Q(k, 'whyFew.right'), correct: true },
+        { text: Q(k, 'whyFew.one'), why: Q(k, 'whyFew.whyOne', o) },
+        { text: Q(k, 'whyFew.fell'), why: Q(k, 'whyFew.whyFell', o) },
+      ], 1),
+      hints: [Q(k, 'whyFew.hint1'), Q(k, 'whyFew.hint2', o)],
+      explain: Q(k, 'whyFew.explain', o),
+    };
+  },
+};

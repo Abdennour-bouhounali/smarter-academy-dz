@@ -43,7 +43,7 @@ export default function Module04Atamarran() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }
