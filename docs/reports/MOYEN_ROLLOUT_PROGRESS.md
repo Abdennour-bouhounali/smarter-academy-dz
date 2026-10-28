@@ -539,3 +539,25 @@ When pair 10 is done the 3AM unit 1–5 plan is complete: update `docs/curriculu
 - `kitaba-ilmiya-rutba`: ex-61 / ex-62 (Pythagoras, Thales) notIntegrated; order-of-magnitude convention follows the book (half up); negatives only in P1.
 - `hasr-adad-ushri`: unit-5 README Q1 (net links `2am.m1.r05` / `r06 → 3am.m5.x1`), Q3 (P3 adds the inverse), Q4 (no 2AM papers, 3 faithful term-exam sheets); loose `RANK` distractors on L1–L3 (helper offered a rework); the 1AM home lesson `hasr-qiyam-muqarraba` is unpublished so its « تذكّر » box has no link yet.
 - Other: 🎲 in `ProbabilityStatsTool.jsx` / `MATH_LAB.md` (probability object); whether the importer should create content as `published` directly; unchecked `term_exam` claims in pair-5 banks (`amaliyat-natiqa` 16, `qimat-ibara-harfiya` 14); unit-card تحدّ texts of units 1/2 still book-verbatim; `node apps/web/e2e/lesson-route-boundary.mjs` never run against the real API.
+
+## 2AM مقطع `2am.m1` (units 1–2) — 10 entries, plan and run index `docs/curriculum/PLAN_2AM_M1.md` (from 2026-10-28)
+
+Owner request: the 10 `coming_soon` entries of 2AM « ميدان الأنشطة العددية », مقطع 2am.m1, along the net, connected to 3AM / 4AM by
+BACK links only (successor `pointPrerequisites` ← `2am_<code>_P<m>` along net links + linked « تذكّر — السنة الثانية »). Plans per entry
+in `docs/sources/2am/unit{1,2}/plan/` (owner questions in each README). One commit per lesson; the successor connection is its own commit.
+
+### Pair 1 — `silsila-bidun-aqwas` (unit 1, seeds the unit) and `kasr-hasil-qisma` (unit 2), published on `dev` 2026-10-29
+
+- `silsila-bidun-aqwas` « سلسلة عمليات دون أقواس »: lab `tram-route` (theme `tramline`), `packages/core/arithmetic/chainOps.js`, unit 1 `_unit/` +
+  whole-unit extraction (`docs/sources/2am/unit1/`), unit تحدّ rewritten (40 − 12 + 6). Bank 7 `term_exam` / 33 modelled / 10 adapted.
+- `kasr-hasil-qisma` « الكسر وحاصل القسمة »: lab `mooring-lines` (theme `harbor`), `packages/core/arithmetic/fractions2.js`. Bank 10 `term_exam` /
+  32 modelled / 8 adapted. « تذكّر » links to `hasil-qisma-kasr`, `ikhtizal-kitaba-kasriya`, `qisma-iqlidiya-hasr`; P4 ← `2am_qisma-iqlidiya-hasr_P2`.
+- Successor connection (commit `feat(lessons): connect quwat-adad-nisbi to silsila-bidun-aqwas`): `quwat-adad-nisbi` P4 ←
+  `2am_silsila-bidun-aqwas_P2` (link `2am.m1.r01 → 3am.m3.r08`), linked « تذكّر — السنة الثانية » in its طريقة step 2. `kasr-hasil-qisma` has
+  no 3AM successor in the net (owner question `2am.m1.r05/r06 → 3am.m5.x1` still open).
+- Gates (coordinator, whole tree): `npm test` exit 0 (core, web 714 files / 14 576 tests, scripts 18 211), `check:lessons` (entry 236.6 KB gzip),
+  build, net tests, queue check, `lab-rollout-status` ✅ for both. Local DB: 9 modules + 50 exercises each `published`.
+- Known: `apps/web/e2e/lesson-route-boundary.mjs` fails its student-phone check (390×844 on a 4AM lesson) since the 2026-10-27 large-screen
+  enforcement — the check is stale, not these lessons.
+- Owner points added: bank L4 sheets 1–3 of `silsila-bidun-aqwas` use the arc tape (`ArcTape`) — drop if arcs count as grouping; textbook
+  misprints listed in `docs/sources/2am/unit1/build-extraction.py › DISCREPANCIES`.

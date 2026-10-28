@@ -1,6 +1,6 @@
 # Generation plan — 2AM « ميدان الأنشطة العددية », مقطع 2am.m1 (units 1–2, 2026-10-28)
 
-**Status:** 10 plans written and cross-reviewed (Opus planners, 2026-10-28); pair 1 in generation. **Authority:** this index gives the order,
+**Status:** 10 plans written and cross-reviewed (Opus planners, 2026-10-28); pair 1 (`silsila-bidun-aqwas`, `kasr-hasil-qisma`) published on `dev` 2026-10-29; pair 2 in generation. **Authority:** this index gives the order,
 the lanes, the generator prompt and the « successor connection » step. Each entry's design is its plan file. The contracts stay
 authoritative for HOW (`LESSON_DEVELOPMENT_GUIDE.md` §14, `LEARNING_NET.md` §4, `MANIPULATION_DNA.md`, `EXERCISE_CONTRACT.md`).
 Method: the same as `PLAN_3AM_UNITS_1_5.md`.
@@ -125,6 +125,13 @@ the local API runs on 127.0.0.1:8000 (do not start or stop it). Do NOT commit, p
 run the DB export/import: the coordinator does it. Do NOT edit the published 3AM successor lessons (the coordinator applies the
 « Successor connection »). Edit shared JSON files with small targeted edits after a fresh read. At most two helper sub-agents at
 a time (memory ~13 GB); close your browser and dev server when done.
+
+Learned in pair 1 (2026-10-29): reuse what is already committed — unit 1 `_unit/` and `packages/core/arithmetic/chainOps.js`, unit 2
+`packages/core/arithmetic/fractions2.js` (extend them, never fork them). Run the FULL `npm test` at most once, at the end, alone (the
+machine overloads with two leads; a single timeout under load that passes alone is a load flake — say so). The student-phone check of
+lesson-route-boundary.mjs (390×844 on a 4AM lesson) is stale since the 2026-10-27 large-screen enforcement: report it, do not chase
+it. Name scratchpad logs and screenshots with your <CODE> (the scratchpad is shared). Knowledge item titles carry no `$`; memo
+`rule` / examples / chips are pure KaTeX (no Arabic `\text{}`); a « true » distractor (a correct inequality offered as wrong) is a bug.
 
 Final report: URL path; modules; the lab and the screenshots you reviewed; bank counts (term_exam / modelled / adapted /
 platform_addition); every الكفاءات change; gates with results; the full list of files created or changed; docs updated; fixes to
