@@ -50,7 +50,7 @@ export default function Module04Atamarran() {
         step(9, 'deep-33', 'نصف مستقيم يمرّ بـ O', ['y-ax']),
         step(10, 'deep-41', 'ميزان كوكب بعيد', ['y-ax']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

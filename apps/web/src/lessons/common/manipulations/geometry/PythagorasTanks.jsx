@@ -12,7 +12,14 @@ import { SvgPill, pillWidth } from '../primitives/SvgPill';
 import KidFigure from '../primitives/KidFigure';
 import LabFold from '../primitives/LabFold';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import MathText from '../../components/MathText';
+import { $, Mx, spreadAll } from './thalesCp';
 import { LEVELS } from '../levels';
+import * as PY2 from '@smarter-academy/core/arithmetic/pythagoras.js';
 import * as L from '../logic/pythagorasTanks';
 
 /**
@@ -53,6 +60,11 @@ import * as L from '../logic/pythagorasTanks';
  * `useLessonViewport`. Tablette et ordinateur seulement (≥ 768 px).
  *
  * ONBOARDING : `logic/pythagorasTanks.js › coachOf` (turn · pour · again · next · turn2 · pour2 | stretch · root · pourRoot).
+ * QUESTIONS PENDANT LE LABO (rollout lot 6, 2026-10-28) : `checkpoints` (défaut true). Après chaque tâche (fill · compare | thirteen · surd), une suite de questions se
+ * pose PAR-DESSUS le labo (`CHAINS`) et retient « المهمّة التالية » : fill l'eau · l'angle du plein · ce qui bouge ; compare le fil · le vide · LA RÈGLE (l'ancienne découverte) ;
+ * thirteen l'eau · comment prévoir 13 ; surd l'eau · pourquoi le ruban ne suffit pas · LA RÈGLE. Les événements `{ tk: 'checkpoint' | 'checkpoint-done', id, … }` partent
+ * vers `onTrial`. OBLIGATOIRES pour l'élève ; l'ENSEIGNANT seul peut les couper pour SON compte (interrupteur de l'en-tête) : la découverte d'avant reprend alors.
+ * ÉTAPES `LabStepper` (`data-pt-step`), fête à chaque tâche finie, sons (`tooth` au geste, `flag` plein juste, `over` débordement ou vide, `bell` la touche √).
  *
  * Props : `mode` ('angle' | 'length'), `b`, `c` (côtés de la première machine), `level`, `levels`, `coach`, `title`, `lead`,
  * `onTrial(événement)`, `onFinished({ mode })` — tous par `state.report`.
@@ -97,7 +109,7 @@ const useReduced = () => {
 };
 
 export default function PythagorasTanks({
-  mode, b, c, title, lead, level, levels: withLevels = true, coach: coachOn = true,
+  mode, b, c, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -107,12 +119,36 @@ export default function PythagorasTanks({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch });
-  if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    setScene({ key: numsKey, epoch: state.epoch });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
+  if (scene.key !== numsKey || scene.epoch !== state.epoch || scene.rc !== state.resetCount) {
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la tâche 1, les versements et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
     setLab(L.init(nums));
   }
-  const ready = L.discoveryReady(lab);
+  // le versement est TERMINÉ quand l'animation a fini : les questions et la fête attendent (la carte ne couvre pas l'eau qui coule)
+  const reduceMotion = useReduced();
+  const pourKey = lab.pour ? lab.trials.length : 0;
+  const [seen, setSeen] = useState(0);
+  useEffect(() => {
+    if (!pourKey) { setSeen(0); return undefined; }
+    const id = setTimeout(() => setSeen(pourKey), reduceMotion ? 0 : POUR_MS + 150);
+    return () => clearTimeout(id);
+  }, [pourKey, reduceMotion]);
+  const pourSettled = pourKey > 0 && seen === pourKey;
+  const cur = L.taskOf(lab);
+  const cpSettings = useLabCheckpointSettings('pythagoras-tanks');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const chain = cpOn && cpSettings.enabled && !L.isFree(lab) ? CHAINS[cur] ?? null : null;
+  const ruleByCheckpoint = cpOn && cpSettings.enabled && lab.tasks.some((tk) => CHAINS[tk.id]?.includes('rule'));
+  const cp = useLabCheckpoint({
+    id: chain ? cur : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, k)) : null,
+    reached: L.taskDone(lab) && pourSettled,
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.restartTask),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => { if (CHAINS[id]?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  const ready = L.discoveryReady(lab) && !ruleByCheckpoint;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   const reported = useRef(0);
   const nEv = lab.events.length;
@@ -122,7 +158,7 @@ export default function PythagorasTanks({
     reported.current = nEv;
   }, [nEv, lab.events]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'pythagoras-tanks', step: coachStep,
     text: coachStep ? k(`coach.${coachStep.id}`) : '',
@@ -152,12 +188,13 @@ export default function PythagorasTanks({
 
   return (
     <ManipulationShell type="pythagoras-tanks" title={title ?? k('title')} titleHidden state={state} allowModeSwitch={allowModeSwitch} allowFreeLab={false}
-      coach={coachOn ? coach : null} hints={[0, 1, 2].map((i) => k(`hints.${lab.mode}.${i}`))}
+      coach={coachOn ? coach : null} headerAction={cpOn ? cpSettings.control : null} guided={!!chain || ruleByCheckpoint}
+      hints={[0, 1, 2].map((i) => k(`hints.${lab.mode}.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }} discovery={discovery} explanation={k('explanation')}>
       <ManipulationStage className="bg-gradient-to-b from-sky-50/70 to-white">
         <div ref={boxRef} className="space-y-2" data-pythagoras-tanks data-mode={lab.mode} data-task={L.taskOf(lab)} data-free={L.isFree(lab) ? 'true' : 'false'} data-solved={ready ? 'true' : 'false'}>
           <style dangerouslySetInnerHTML={{ __html: MOTION_CSS }} />
-          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} />
+          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} cp={cp} pourSettled={pourSettled} />
           <div className={width >= 760 ? 'grid grid-cols-2 items-start gap-2' : 'space-y-2'}>
             <FreeCard lab={lab} setLab={setLab} k={k} />
             <Trials lab={lab} k={k} />
@@ -170,26 +207,12 @@ export default function PythagorasTanks({
 
 /* ══════════════ Le labo d'un seul regard ══════════════ */
 
-function StepsDots({ lab, k }) {
+function StepsDots({ lab, k, stepDone }) {
   if (lab.free) return <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-black text-emerald-800" data-pt-free-badge>{k('free.badge')}</span>;
-  return (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      <span className="text-xs font-black text-sky-900/60" aria-hidden="true">{k('stepsLabel')}</span>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={tk.id} role="listitem" data-pt-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-sky-600 bg-sky-600 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-sky-100 bg-white text-sky-400'}`}>
-            {d && !cur ? <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" /> : <bdi dir="ltr">{i + 1}</bdi>}
-          </span>
-        );
-      })}
-    </div>
-  );
+  return <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-pt-step" />;
 }
 
-function Lab({ lab, setLab, k, width, screenH, lead }) {
+function Lab({ lab, setLab, k, width, screenH, lead, cp, pourSettled }) {
   const reduce = useReduced();
   const side = width >= 640;
   const sideW = side ? (width < 820 ? 196 : 232) : 0;
@@ -229,8 +252,39 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
   const lessDisabled = lab.mode === 'angle' ? lab.angle <= L.ANGLE_MIN : (!lab.exact && lab.tenths <= L.tapeRange(lab).lo);
   const moreDisabled = lab.mode === 'angle' ? lab.angle >= L.ANGLE_MAX : (!lab.exact && lab.tenths >= L.tapeRange(lab).hi);
 
+  // ── une étape est FAITE quand le bassin est plein ET que ses questions sont répondues : la pastille passe au vert et on fête ──
+  const stepDone = lab.tasks.map((_, i) => !!lab.done[i] && (i !== lab.ti || (pourSettled && !cp.blocking)));
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة », autre niveau : on refête
+  const nowDone = !lab.free && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.ti)) return;
+    celebrated.current.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── le son (muet sauf « الصوت ») : un déclic au geste (≥ 35 ms entre deux), le drapeau au plein juste, « over » au débordement ou au vide ──
+  const sfx = useRef({ v: null, at: 0, key: '' });
+  const held = lab.mode === 'angle' ? lab.angle : lab.exact ? 'root' : lab.tenths;
+  const sfxKey = `${lab.free ? 'free' : lab.ti}`;
+  useEffect(() => {
+    const p = sfx.current;
+    if (p.key !== sfxKey) { sfx.current = { v: held, at: 0, key: sfxKey }; return; }
+    if (p.v === held) return;
+    const now = performance.now();
+    const up = typeof held === 'number' && typeof p.v === 'number' ? held > p.v : true;
+    if (held === 'root') playSfx('bell');
+    else if (now - p.at > 35) { playSfx('tooth', { pitch: up ? 1 : 0.75 }); p.at = now; }
+    p.v = held;
+  }, [held, sfxKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (!settled) return;
+    if (lab.pour.verdict === 'exact') playSfx('flag'); else playSfx('over');
+  }, [settled, pourKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const banner = verdictBanner(lab, k, t, settled);
-  const nextEl = L.canNext(lab) && settled && (
+  const nextEl = L.canNext(lab) && settled && !cp.blocking && (
     <button type="button" onClick={() => setLab(L.nextTask)} data-pt-next
       className={`inline-flex min-h-[44px] w-full items-center justify-center gap-1.5 rounded-full border-2 border-emerald-600 bg-emerald-600 px-3 text-sm font-black text-white shadow-[0_3px_0_0_#047857] active:translate-y-0.5 ${ring}`}>
       {k('next')} <ChevronLeft className="h-4 w-4" aria-hidden="true" />
@@ -286,7 +340,9 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
 
   return (
     <div className="relative mx-auto space-y-2" style={{ maxWidth: MAX_W }} data-pt-glance>
-      <PromptCard size={side && screenH >= 820 ? 'lg' : 'md'} className={screenH < 820 || !side ? '!space-y-1 !p-3' : '!space-y-2 !p-4'} aside={<StepsDots lab={lab} k={k} />}
+      {party.node}
+      {cp.node}
+      <PromptCard size={side && screenH >= 820 ? 'lg' : 'md'} className={screenH < 820 || !side ? '!space-y-1 !p-3' : '!space-y-2 !p-4'} aside={<StepsDots lab={lab} k={k} stepDone={stepDone} />}
         context={context} contextProps={{ 'data-pt-context': contextKey }}
         title={question} titleClassName={!side ? 'text-base' : screenH < 820 ? 'text-lg' : 'text-xl'} lamp={done ? 'on' : 'off'} titleProps={{ 'data-pt-prompt': task, 'data-lit': done ? 'true' : 'false' }} />
       <div className={side ? 'flex items-start gap-3' : 'space-y-2'}>
@@ -659,3 +715,149 @@ export function Formal({ lab, k }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de questions de chaque tâche : elle interroge ce que l'élève vient de FAIRE, et mène à la règle (`rule` : l'ancienne découverte). */
+export const CHAINS = Object.freeze({
+  fill: ['water', 'kind', 'move'],
+  compare: ['over', 'gap', 'rule'],
+  thirteen: ['water', 'side'],
+  surd: ['water', 'tape', 'rule'],
+});
+
+const tx = (v) => String(v).replace(',', '{,}');
+const numOf = (v) => Number(String(v).replace(',', '.'));
+/** Les versements de LA tâche (le fil de l'élève), sinon ceux de tout le labo. */
+const pourOf = (lab, verdict, task) => lab.trials.find((t) => !t.free && t.kind === 'pour' && t.verdict === verdict && t.task === task)
+  ?? lab.trials.find((t) => !t.free && t.kind === 'pour' && t.verdict === verdict);
+
+/** Les nombres de la tâche affichée : AB = c, AC = b, l'eau b² + c². */
+function numbersOf(lab) {
+  const t = lab.tasks[lab.ti];
+  const sq = (x) => PY2.decText(PY2.square(x));
+  const side = PY2.sideFrom({ legs: [t.b, t.c] });
+  return { b: t.b, c: t.c, bb: sq(t.b), cc: sq(t.c), sum: PY2.decText(side.square), bc: side.text };
+}
+
+const RAWQ = {
+  water: (lab, k) => {
+    const n = numbersOf(lab);
+    const o = { bb: $(tx(n.bb)), cc: $(tx(n.cc)), b: $(tx(n.b)), c: $(tx(n.c)), sum: $(`${tx(n.sum)}\\,\\mathrm{cm}^2`) };
+    return {
+      id: 'water', kind: 'number', expected: n.sum, answer: <MathText>{o.sum}</MathText>,
+      prompt: Mx(k, 'water.prompt'),
+      hints: [Mx(k, 'water.hint1'), Mx(k, 'water.hint2', o)],
+      explain: Mx(k, 'water.explain', { ...o, calc: $(`${tx(n.cc)}+${tx(n.bb)}=${tx(n.sum)}`) }),
+    };
+  },
+  kind: (lab, k) => {
+    const done = pourOf(lab, 'exact', 'fill');
+    const o = { angle: $(`${done?.angle ?? 90}^\\circ`) };
+    return {
+      id: 'kind', kind: 'choice',
+      prompt: Mx(k, 'kind.prompt'),
+      options: [
+        { text: Mx(k, 'kind.acute'), why: Mx(k, 'kind.whyAcute', o) },
+        { text: Mx(k, 'kind.right'), correct: true },
+        { text: Mx(k, 'kind.obtuse'), why: Mx(k, 'kind.whyObtuse', o) },
+      ],
+      hints: [Mx(k, 'kind.hint1'), Mx(k, 'kind.hint2', o)],
+      explain: Mx(k, 'kind.explain', o),
+    };
+  },
+  move: (lab, k) => {
+    const n = numbersOf(lab);
+    const o = { sum: $(`${tx(n.sum)}\\,\\mathrm{cm}^2`), bb: $(tx(n.bb)), cc: $(tx(n.cc)) };
+    return {
+      id: 'move', kind: 'choice',
+      prompt: Mx(k, 'move.prompt'),
+      options: [
+        { text: Mx(k, 'move.big'), why: Mx(k, 'move.whyBig', o) },
+        { text: Mx(k, 'move.water', o), correct: true },
+        { text: Mx(k, 'move.none'), why: Mx(k, 'move.whyNone') },
+      ],
+      hints: [Mx(k, 'move.hint1'), Mx(k, 'move.hint2', o)],
+      explain: Mx(k, 'move.explain', o),
+    };
+  },
+  over: (lab, k) => {
+    const t = pourOf(lab, 'over', 'compare');
+    const o = { angle: $(`${t?.angle ?? 60}^\\circ`), diff: $(`${tx(t?.diff ?? '')}\\,\\mathrm{cm}^2`) };
+    return {
+      id: 'over', kind: 'choice',
+      prompt: Mx(k, 'over.prompt', o),
+      options: [
+        { text: Mx(k, 'over.bigger'), why: Mx(k, 'over.whyBigger', o) },
+        { text: Mx(k, 'over.smaller'), correct: true },
+        { text: Mx(k, 'over.equal'), why: Mx(k, 'over.whyEqual', o) },
+      ],
+      hints: [Mx(k, 'over.hint1'), Mx(k, 'over.hint2', o)],
+      explain: Mx(k, 'over.explain', o),
+    };
+  },
+  gap: (lab, k) => {
+    const t = pourOf(lab, 'gap', 'compare');
+    const o = { angle: $(`${t?.angle ?? 120}^\\circ`), diff: $(`${tx(t?.diff ?? '')}\\,\\mathrm{cm}^2`) };
+    return {
+      id: 'gap', kind: 'choice',
+      prompt: Mx(k, 'gap.prompt', o),
+      options: [
+        { text: Mx(k, 'gap.bigger'), correct: true },
+        { text: Mx(k, 'gap.smaller'), why: Mx(k, 'gap.whySmaller', o) },
+        { text: Mx(k, 'gap.equal'), why: Mx(k, 'gap.whyEqual', o) },
+      ],
+      hints: [Mx(k, 'gap.hint1'), Mx(k, 'gap.hint2', o)],
+      explain: Mx(k, 'gap.explain', o),
+    };
+  },
+  side: (lab, k) => {
+    const n = numbersOf(lab);
+    const s = numOf(n.b) + numOf(n.c);
+    const d = Math.abs(numOf(n.c) - numOf(n.b));
+    const o = { b: $(tx(n.b)), c: $(tx(n.c)), sum: $(tx(n.sum)), bc: $(tx(n.bc)), plus: $(tx(L.show(s))), minus: $(tx(L.show(d))), bcSq: $(`${tx(n.bc)}^2=${tx(n.sum)}`) };
+    return {
+      id: 'side', kind: 'choice',
+      prompt: Mx(k, 'side.prompt'),
+      options: [
+        { text: Mx(k, 'side.add', o), why: Mx(k, 'side.whyAdd', o) },
+        { text: Mx(k, 'side.square', o), correct: true },
+        { text: Mx(k, 'side.sub', o), why: Mx(k, 'side.whySub', o) },
+      ],
+      hints: [Mx(k, 'side.hint1'), Mx(k, 'side.hint2', o)],
+      explain: Mx(k, 'side.explain', o),
+    };
+  },
+  tape: (lab, k) => {
+    const n = numbersOf(lab);
+    const v = Math.sqrt(numOf(n.sum));
+    const lo = Math.floor(v * 10 + 1e-9) / 10;
+    const hi = Math.round((lo + 0.1) * 10) / 10;
+    const o = {
+      sum: $(tx(n.sum)), sumU: $(`${tx(n.sum)}\\,\\mathrm{cm}^2`), loSq: $(tx(L.show(lo * lo))), hiSq: $(tx(L.show(hi * hi))),
+      lo: $(tx(L.show(lo))), hi: $(tx(L.show(hi))),
+      loC: $(`${tx(L.show(lo))}^2=${tx(L.show(lo * lo))}`), hiC: $(`${tx(L.show(hi))}^2=${tx(L.show(hi * hi))}`),
+    };
+    return {
+      id: 'tape', kind: 'choice',
+      prompt: Mx(k, 'tape.prompt', o),
+      options: [
+        { text: Mx(k, 'tape.broken'), why: Mx(k, 'tape.whyBroken') },
+        { text: Mx(k, 'tape.between', o), correct: true },
+        { text: Mx(k, 'tape.water', o), why: Mx(k, 'tape.whyWater', o) },
+      ],
+      hints: [Mx(k, 'tape.hint1', o), Mx(k, 'tape.hint2', o)],
+      explain: Mx(k, 'tape.explain', o),
+    };
+  },
+  rule: (lab, k) => ({
+    id: 'rule', kind: 'choice',
+    prompt: k(lab.mode === 'length' ? 'discovery.promptLength' : 'discovery.promptAngle'),
+    options: discoveryOptions(lab, k),
+    hints: [Mx(k, `rule.hint1${lab.mode === 'length' ? 'Length' : 'Angle'}`), Mx(k, `rule.hint2${lab.mode === 'length' ? 'Length' : 'Angle'}`)],
+    explain: <Formal lab={lab} k={k} />,
+  }),
+};
+
+/** Chaque question est construite sur LES nombres de la tâche (rien n'est écrit en dur) ; la bonne réponse change de place d'une question à l'autre. */
+export const QUESTIONS = spreadAll(RAWQ, (lab) => Math.round(numOf(lab.tasks[lab.ti].b) * 3 + numOf(lab.tasks[lab.ti].c)));

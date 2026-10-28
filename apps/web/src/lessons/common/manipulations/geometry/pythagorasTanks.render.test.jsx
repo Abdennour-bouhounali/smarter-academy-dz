@@ -120,3 +120,74 @@ describe('pythagoras-tanks — rendu', () => {
     }
   });
 });
+
+describe('pythagoras-tanks — questions pendant le labo (LabCheckpoint, lot 6)', () => {
+  it('chaque tâche de chaque niveau : chaque question a un texte, deux indices, une seule bonne réponse, ni clé brute ni {{', async () => {
+    const { CHAINS, QUESTIONS } = await import('./PythagorasTanks');
+    for (const [tag, numbers] of [['angle', LV.beginner.numbers], ['length', LV.advanced.numbers]]) {
+      let s = L.init(numbers);
+      if (tag === 'angle') {
+        s = L.pour(L.setAngle(s, 90));
+        s = L.nextTask(s);
+        s = L.pour(L.setAngle(s, 60));
+        s = L.pour(L.setAngle(s, 120));
+        s = L.pour(L.setAngle(s, 90));
+      } else {
+        s = L.pour(L.setTenths(s, 130));
+        s = L.nextTask(s);
+        s = L.pour(L.setTenths(s, 36));
+        s = L.pour(L.setTenths(s, 37));
+        s = L.pour(L.useRoot(s));
+      }
+      s.tasks.forEach((tk, i) => {
+        const at = { ...s, ti: i };
+        expect(CHAINS[tk.id], `${tag}.${tk.id}`).toBeTruthy();
+        for (const qid of CHAINS[tk.id]) {
+          const q = QUESTIONS[qid](at, say);
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${tag}.${tk.id}.${qid}`).not.toMatch(RAW);
+          expect(out, `${tag}.${tk.id}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${tag}.${tk.id}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${tag}.${tk.id}.${qid}`).toHaveLength(1);
+          else expect(q.expected).toBeTruthy();
+        }
+      });
+    }
+  });
+
+  it('les réponses attendues viennent des nombres de la tâche : 25, 169, 13', async () => {
+    const { QUESTIONS } = await import('./PythagorasTanks');
+    const a = L.init(LV.beginner.numbers);
+    expect(QUESTIONS.water(a, say).expected).toBe('25');
+    const b = L.init(LV.advanced.numbers);
+    expect(QUESTIONS.water(b, say).expected).toBe('169');
+    expect(QUESTIONS.water({ ...b, ti: 1 }, say).expected).toBe('13');
+  });
+
+  it('« أعِد التجربة » efface les versements de la tâche seule et remet la machine au départ', () => {
+    let s = L.init(LV.beginner.numbers);
+    s = L.pour(L.setAngle(s, 90));       // plein : fill faite
+    expect(s.done).toEqual([true, false]);
+    s = L.nextTask(s);
+    s = L.pour(L.setAngle(s, 60));
+    s = L.pour(L.setAngle(s, 120));
+    expect(L.taskDone(s)).toBe(true);
+    const r = L.restartTask(s);
+    expect(L.taskDone(r)).toBe(false);
+    expect(r.done[0]).toBe(true);
+    expect(r.trials.every((t) => t.task !== 'compare')).toBe(true);
+    expect(r.trials.some((t) => t.task === 'fill')).toBe(true);
+    expect(r.pour).toBe(null);
+    expect(r.angle).toBe(60);
+  });
+
+  it('mode guidé : ni la progression ni le bouton d’indice quand les questions sont actives ; deux pastilles LabStepper', () => {
+    for (const props of [{ ...LV.beginner.numbers, level: 'beginner' }, { ...LV.advanced.numbers, level: 'advanced' }]) {
+      const out = html(props);
+      expect(out).not.toContain('data-manipulation-progress');
+      expect(out).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+      expect(out).toContain('data-lab-stepper');
+      expect([...out.matchAll(/data-pt-step="/g)]).toHaveLength(2);
+    }
+  });
+});

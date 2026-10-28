@@ -66,3 +66,68 @@ describe('pin-rails — rendu', () => {
     expect(wrong).toContain('10');
   });
 });
+
+describe('pin-rails — questions pendant le labo (LabCheckpoint, lot 6)', () => {
+  it('chaque tâche des deux niveaux : chaque question a un texte, deux indices, une seule bonne réponse, ni clé brute ni {{', async () => {
+    const { chainOf, QUESTIONS } = await import('./PinRails');
+    for (const level of ['beginner', 'advanced']) {
+      const base = L.init(LV[level].numbers);
+      base.tasks.forEach((tk, i) => {
+        let s = { ...base, ti: i, pins: tk.points.map((p) => p.y) };
+        // un tableau déjà parcouru : une règle qui a tout touché, une qui a manqué, une alignée sans O
+        s = { ...s, trials: [
+          { kind: 'rod', task: i, ends: [0, 1], full: true, throughO: true, pinsHit: true, count: 5, total: 5, free: false, cuts: '0', slope: '5' },
+          { kind: 'rod', task: i, ends: [1, 2], full: false, throughO: false, pinsHit: true, count: 4, total: 5, free: false, cuts: '10', slope: '2,5' },
+          { kind: 'rod', task: i, ends: [2, 3], full: false, throughO: false, pinsHit: false, count: 3, total: 5, free: false, cuts: '8', slope: '3' },
+        ] };
+        const chain = chainOf(s);
+        expect(chain.length, `${level}.${tk.id}`).toBeGreaterThanOrEqual(2);
+        expect(chain.includes('rule'), `${level}.${tk.id} rule`).toBe(i === base.tasks.length - 1);
+        for (const qid of chain) {
+          const q = QUESTIONS[qid](s, k);
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${level}.${tk.id}.${qid}`).not.toMatch(RAW);
+          expect(out, `${level}.${tk.id}.${qid}`).not.toContain('{{');
+          expect(out, `${level}.${tk.id}.${qid}`).not.toContain('NaN');
+          expect(out, `${level}.${tk.id}.${qid}`).not.toContain('undefined');
+          expect(q.hints, `${level}.${tk.id}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${level}.${tk.id}.${qid}`).toHaveLength(1);
+          else expect(q.expected).toBeTruthy();
+        }
+      });
+    }
+  });
+
+  it('les réponses attendues viennent des nombres de la tâche : 5 · 1,5 · 10 · 4,5 · 1,5 × 7 · 15 ÷ 1,5', async () => {
+    const { QUESTIONS } = await import('./PinRails');
+    const b = L.init(LV.beginner.numbers);
+    expect(QUESTIONS.unit(b, k).expected).toBe('5');
+    expect(QUESTIONS.cuts({ ...b, ti: 1 }, k).expected).toBe('10');
+    const a = L.init(LV.advanced.numbers);
+    expect(QUESTIONS.unit(a, k).expected).toBe('1,5');
+    expect(QUESTIONS.three({ ...a, ti: 2 }, k).expected).toBe('4,5');
+    expect(QUESTIONS.numx({ ...a, ti: 3 }, k).expected).toBe('10,5');
+    expect(QUESTIONS.numy({ ...a, ti: 4 }, k).expected).toBe('10');
+  });
+
+  it('« أعِد التجربة » : la tâche n’est plus jugée, la planche est propre', () => {
+    let s = L.init(LV.advanced.numbers);
+    s = { ...s, ti: 2 };
+    s = L.placeRead(s, 1.5);
+    expect(L.taskDone(s)).toBe(true);
+    const r = L.retryTask(s);
+    expect(L.taskDone(r)).toBe(false);
+    expect(r.readPos).toBe(null);
+    expect(r.trials).toHaveLength(1);
+  });
+
+  it('mode guidé : ni la progression ni le bouton d’indice ; LabStepper à 3 puis 5 pastilles', () => {
+    for (const [level, n] of [['beginner', 3], ['advanced', 5]]) {
+      const out = html({ ...LV[level].numbers, level });
+      expect(out).not.toContain('data-manipulation-progress');
+      expect(out).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+      expect(out).toContain('data-lab-stepper');
+      expect([...out.matchAll(/data-pr-step="/g)]).toHaveLength(n);
+    }
+  });
+});

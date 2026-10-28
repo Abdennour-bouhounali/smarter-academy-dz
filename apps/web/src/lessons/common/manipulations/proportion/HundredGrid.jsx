@@ -14,6 +14,11 @@ import { LabCard, StageFrame, PromptCard, VerdictBanner } from '../primitives/La
 import { SvgPill } from '../primitives/SvgPill';
 import KidFigure from '../primitives/KidFigure';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { $, Mx, spreadAll } from '../geometry/thalesCp';
 import { LEVELS } from '../levels';
 import * as L from '../logic/hundredGrid';
 
@@ -50,6 +55,12 @@ import * as L from '../logic/hundredGrid';
  * « جرّب كل الإمكانيات » : NON (chaque « تحقّق » EST l'essai). « جرّب أعدادك » est TOUJOURS ouvert sous le labo.
  * D'UN SEUL REGARD (§8bis) : `[data-hg-glance]` enveloppe la consigne, la grille, le panier, les commandes et le verdict.
  * ONBOARDING : `coach` (défaut true) → `LabCoach` ; `logic/hundredGrid.js › coachOf` (paint · guess · go · next).
+ * QUESTIONS PENDANT LE LABO (rollout lot 6, 2026-10-28) : `checkpoints` (défaut true). Après chaque tâche réussie, une suite de questions se pose PAR-DESSUS le labo
+ * (`chainOf`) et retient « المهمّة التالية » : of la valeur d'une case · comment se calcule le panier · le double des cases ; rate la case · la relation part/tout · le
+ * taux en fraction de 100 ; whole la case · comment retrouver le stock ; change le nombre de cases après · le multiplicateur 1 ± t/100 (ou pourquoi +t % puis −t % ne
+ * ramène pas au départ) ; la DERNIÈRE tâche finit par LA RÈGLE (l'ancienne découverte). Les événements `{ tk: 'checkpoint' | 'checkpoint-done', id, … }` partent vers
+ * `onTrial`. OBLIGATOIRES pour l'élève ; l'ENSEIGNANT seul peut les couper pour SON compte (interrupteur de l'en-tête) : la découverte d'avant reprend alors.
+ * ÉTAPES `LabStepper` (`data-hg-step`), fête à chaque tâche finie, sons (`tooth` à chaque case, `bell` à chaque dizaine complète, `flag` réussi, `over` refusé).
  * Props : `tasks` ([{ kind, x, t, part, dir, carry }]), `level`, `levels`, `coach`, `title`, `lead`, `onTrial(event)`, `onFinished()` — par `state.report`.
  * CONTRAT DOM : [data-hundred-grid][data-task][data-solved][data-layout], [data-hg-glance], [data-hg-stage], [data-hg-grid][data-t], [data-hg-cell], [data-hg-basket]
  * [data-value][data-revealed], [data-hg-packet], [data-hg-readout], [data-hg-less10], [data-hg-less1], [data-hg-more1], [data-hg-more10], [data-hg-clear],
@@ -93,7 +104,7 @@ const worldOf = (lab) => {
 };
 
 export default function HundredGrid({
-  tasks, title, lead, level, levels: withLevels = true, coach: coachOn = true,
+  tasks, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -103,13 +114,27 @@ export default function HundredGrid({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-  if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    const restart = scene.key === numsKey && scene.rc !== state.resetCount;
-    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-    setLab(restart ? L.restartTask(lab) : L.init(nums));
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
+  if (scene.key !== numsKey || scene.epoch !== state.epoch || scene.rc !== state.resetCount) {
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la tâche 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
+    setLab(L.init(nums));
   }
-  const ready = L.discoveryReady(lab);
+  // les questions pendant le labo : la suite de la tâche courante ; celle qui finit par la règle remplace la découverte automatique
+  const cur = L.taskOf(lab);
+  const cpSettings = useLabCheckpointSettings('hundred-grid');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const chain = cpOn && cpSettings.enabled && !L.isFree(lab) ? chainOf(lab) : null;
+  const ruleByCheckpoint = cpOn && cpSettings.enabled && lab.tasks.some((_, i) => chainOf({ ...lab, ti: i }).includes('rule'));
+  const cp = useLabCheckpoint({
+    id: chain ? cur.id : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, k)) : null,
+    reached: L.taskDone(lab),
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.retryTask),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => { if (chain?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  const ready = L.discoveryReady(lab) && !ruleByCheckpoint;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   const finishedOnce = useRef(false);
   useEffect(() => {
@@ -124,7 +149,7 @@ export default function HundredGrid({
     reported.current = nTrials;
   }, [nTrials, lab.trials]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'hundred-grid', step: coachStep,
     text: coachStep ? k(`coach.${coachStep.id}`) : '',
@@ -160,6 +185,8 @@ export default function HundredGrid({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       coach={coachOn ? coach : null}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={!!chain || ruleByCheckpoint}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={discovery}
@@ -169,7 +196,7 @@ export default function HundredGrid({
         <div ref={boxRef} className="space-y-2" data-hundred-grid data-task={lab.ti}
           data-solved={ready ? 'true' : 'false'} data-layout={width >= WIDE_MIN ? 'wide' : 'narrow'}>
           <style dangerouslySetInnerHTML={{ __html: CSS }} />
-          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} />
+          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} cp={cp} />
         </div>
       </ManipulationStage>
     </ManipulationShell>
@@ -178,7 +205,7 @@ export default function HundredGrid({
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-function Lab({ lab, setLab, k, width, screenH, lead }) {
+function Lab({ lab, setLab, k, width, screenH, lead, cp }) {
   const uid = `hg${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
   const wide = width >= WIDE_MIN;
   const free = L.isFree(lab);
@@ -196,20 +223,38 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
     : { x: task.kind === 'whole' ? '' : fm(task.x), t: iso(task.t), part: task.part ? fm(task.part) : '' };
   const ctx = free ? k('context.free', args) : (lead || k(`context.${world.key}`, args));
   const question = free ? k('question.free') : k(`question.${world.key}`, args);
+  // une étape est FAITE quand la tâche est réussie ET que ses questions sont répondues : la pastille passe au vert et on fête
+  const stepDone = lab.tasks.map((_, i) => !!lab.done[i] && (i !== lab.ti || !cp.blocking));
   const steps = lab.tasks.length > 1 && !free && (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={tk.id} role="listitem" data-hg-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-amber-600 bg-amber-500 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-amber-100 bg-white text-amber-500'}`}>
-            <bdi dir="ltr">{i + 1}</bdi>
-          </span>
-        );
-      })}
-    </div>
+    <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-hg-step" />
   );
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة », autre niveau : on refête
+  const nowDone = !free && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.ti)) return;
+    celebrated.current.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── le son (muet sauf « الصوت ») : un déclic par case peinte (≥ 35 ms), une cloche à chaque dizaine complète, le drapeau d'une réussite, « over » d'un refus ──
+  const sfx = useRef({ t: lab.t, at: 0, key: '' });
+  const sfxKey = `${free ? 'free' : lab.ti}`;
+  useEffect(() => {
+    const p = sfx.current;
+    if (p.key !== sfxKey) { sfx.current = { t: lab.t, at: 0, key: sfxKey }; return; }
+    const d = lab.t - p.t;
+    if (d === 0) return;
+    const now = performance.now();
+    if (now - p.at > 35) { playSfx('tooth', { pitch: d > 0 ? 1 : 0.75 }); p.at = now; }
+    if (d > 0 && Math.floor(lab.t / 10) > Math.floor(p.t / 10)) playSfx('bell');
+    p.t = lab.t;
+  }, [lab.t, sfxKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (!lab.last || lab.last.kind !== 'go') return;
+    playSfx(lab.last.ok ? 'flag' : 'over');
+  }, [lab.trials.length]); // eslint-disable-line react-hooks/exhaustive-deps
   const prompt = (
     <PromptCard size={wide ? 'lg' : 'md'} context={<MathText>{ctx}</MathText>} contextProps={{ 'data-hg-context': world.key }}
       title={<MathText>{question}</MathText>} titleClassName={wide ? 'text-xl' : 'text-lg'} lamp={free ? null : lit ? 'on' : 'off'}
@@ -218,7 +263,7 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
 
   /* ── le verdict ── */
   const vv = verdictOf(lab, k);
-  const canNext = L.canNext(lab);
+  const canNext = L.canNext(lab) && !cp.blocking;
   const mood = !last ? 'happy' : last.ok ? 'proud' : 'wonder';
   const tone = !last ? 'indigo' : last.ok ? 'emerald' : 'amber';
   const Icon = !last ? Hand : last.ok ? CheckCircle2 : Sparkles;
@@ -262,6 +307,8 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
   return (
     <>
       <div className="relative space-y-2.5" data-hg-glance>
+        {party.node}
+        {cp.node}
         {prompt}
         {wide ? (
           <div className="flex items-start gap-3">
@@ -551,3 +598,198 @@ export function Formal({ lab, k }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/**
+ * La suite de questions de la tâche affichée : elle interroge ce que l'élève vient de FAIRE ; la DERNIÈRE tâche du niveau finit par la règle (`rule`,
+ * l'ancienne découverte). `change` avec `carry` (+t % puis −t %) pose « pourquoi on ne revient pas au départ ».
+ */
+export function chainOf(lab) {
+  const task = L.taskOf(lab);
+  const base = {
+    of: ['cell', 'basket', 'double'],
+    rate: ['cell', 'ratio', 'fraction'],
+    whole: ['cell', 'how'],
+    change: task.carry ? ['cells', 'back'] : ['cells', 'factor'],
+  }[task.kind];
+  return lab.ti === lab.tasks.length - 1 ? [...base, 'rule'] : base;
+}
+
+const tx = (v) => String(v).replace('.', ',').replace(',', '{,}');
+const T = (v) => $(tx(P.text(v)));
+const vol = (x, y) => Lin.mul(x, y);
+
+const RAWQ = {
+  cell: (lab, k) => {
+    const task = L.taskOf(lab);
+    const whole = task.kind === 'whole';
+    const v = P.packet(task.x);
+    const o = { x: T(task.x), t: $(String(task.t)), tp: $(`${task.t}\\%`), part: T(task.part ?? P.partOf(task.x, task.t)), v: T(v) };
+    return {
+      id: 'cell', kind: 'number', expected: P.text(v), answer: <MathText>{o.v}</MathText>,
+      prompt: Mx(k, whole ? 'cell.promptWhole' : 'cell.prompt', o),
+      hints: [Mx(k, whole ? 'cell.hint1Whole' : 'cell.hint1'), Mx(k, whole ? 'cell.hint2Whole' : 'cell.hint2', o)],
+      explain: Mx(k, 'cell.explain', { ...o, calc: $(whole ? `${tx(P.text(task.part))}\\div${task.t}=${tx(P.text(v))}` : `${tx(P.text(task.x))}\\div100=${tx(P.text(v))}`) }),
+    };
+  },
+  basket: (lab, k) => {
+    const task = L.taskOf(lab);
+    const v = P.packet(task.x);
+    const part = P.partOf(task.x, task.t);
+    const o = {
+      t: $(String(task.t)), tp: $(`${task.t}\\%`), x: T(task.x), v: T(v), part: T(part),
+      sum: $(tx(P.text(Lin.add(v, task.t)))), diff: $(tx(P.text(Lin.sub(task.x, task.t)))),
+      calc: $(`${task.t}\\times${tx(P.text(v))}=${tx(P.text(part))}`),
+    };
+    return {
+      id: 'basket', kind: 'choice',
+      prompt: Mx(k, 'basket.prompt', o),
+      options: [
+        { text: Mx(k, 'basket.plus'), why: Mx(k, 'basket.whyPlus', o) },
+        { text: Mx(k, 'basket.times'), correct: true },
+        { text: Mx(k, 'basket.minus'), why: Mx(k, 'basket.whyMinus', o) },
+      ],
+      hints: [Mx(k, 'basket.hint1', o), Mx(k, 'basket.hint2', o)],
+      explain: Mx(k, 'basket.explain', o),
+    };
+  },
+  double: (lab, k) => {
+    const task = L.taskOf(lab);
+    const v = P.packet(task.x);
+    const t2 = task.t * 2;
+    const ans = P.partOf(task.x, t2);
+    const o = { t: $(String(task.t)), tp: $(`${task.t}\\%`), t2: $(String(t2)), v: T(v), part: T(P.partOf(task.x, task.t)), ans: T(ans), calc: $(`${t2}\\times${tx(P.text(v))}=${tx(P.text(ans))}`) };
+    return {
+      id: 'double', kind: 'number', expected: P.text(ans), answer: <MathText>{o.ans}</MathText>,
+      prompt: Mx(k, 'double.prompt', o),
+      hints: [Mx(k, 'double.hint1'), Mx(k, 'double.hint2', o)],
+      explain: Mx(k, 'double.explain', o),
+    };
+  },
+  ratio: (lab, k) => {
+    const task = L.taskOf(lab);
+    const o = {
+      x: T(task.x), part: T(task.part), t: $(String(task.t)), tp: $(`${task.t}\\%`),
+      eq: $(`\\dfrac{${tx(P.text(task.part))}}{${tx(P.text(task.x))}}=\\dfrac{${task.t}}{100}`),
+      prod: $(`${tx(P.text(task.part))}\\times${tx(P.text(task.x))}=${tx(P.text(vol(task.part, task.x)))}`),
+      diff: $(`${tx(P.text(task.x))}-${tx(P.text(task.part))}=${tx(P.text(Lin.sub(task.x, task.part)))}`),
+    };
+    return {
+      id: 'ratio', kind: 'choice',
+      prompt: Mx(k, 'ratio.prompt', o),
+      options: [
+        { text: Mx(k, 'ratio.prod'), why: Mx(k, 'ratio.whyProd', o) },
+        { text: Mx(k, 'ratio.diff'), why: Mx(k, 'ratio.whyDiff', o) },
+        { text: Mx(k, 'ratio.right', o), correct: true },
+      ],
+      hints: [Mx(k, 'ratio.hint1'), Mx(k, 'ratio.hint2', o)],
+      explain: Mx(k, 'ratio.explain', o),
+    };
+  },
+  fraction: (lab, k) => {
+    const task = L.taskOf(lab);
+    const o = { x: T(task.x), part: T(task.part), t: $(String(task.t)), tp: $(`${task.t}\\%`), frac: $(`\\dfrac{${tx(P.text(task.part))}}{${tx(P.text(task.x))}}`), tt: $(`\\dfrac{${task.t}}{100}`) };
+    return {
+      id: 'fraction', kind: 'number', expected: `${task.t}/100`, answer: <MathText>{o.tt}</MathText>,
+      prompt: Mx(k, 'fraction.prompt', o),
+      hints: [Mx(k, 'fraction.hint1', o), Mx(k, 'fraction.hint2', o)],
+      explain: Mx(k, 'fraction.explain', o),
+    };
+  },
+  how: (lab, k) => {
+    const task = L.taskOf(lab);
+    const v = P.packet(task.x);
+    const o = {
+      t: $(String(task.t)), tp: $(`${task.t}\\%`), part: T(task.part), x: T(task.x), v: T(v),
+      tt: $(`\\dfrac{${task.t}}{100}`),
+      calc: $(`${tx(P.text(task.part))}\\times${tx(P.text(Lin.div(task.t, 100)))}=${tx(P.text(Lin.mul(task.part, Lin.div(task.t, 100))))}`),
+      sum: $(`${tx(P.text(task.part))}+${task.t}=${tx(P.text(Lin.add(task.part, task.t)))}`),
+      back: $(`${tx(P.text(v))}\\times100=${tx(P.text(task.x))}`),
+    };
+    return {
+      id: 'how', kind: 'choice',
+      prompt: Mx(k, 'how.prompt', o),
+      options: [
+        { text: Mx(k, 'how.times', o), why: Mx(k, 'how.whyTimes', o) },
+        { text: Mx(k, 'how.plus', o), why: Mx(k, 'how.whyPlus', o) },
+        { text: Mx(k, 'how.divide', o), correct: true },
+      ],
+      hints: [Mx(k, 'how.hint1', o), Mx(k, 'how.hint2', o)],
+      explain: Mx(k, 'how.explain', o),
+    };
+  },
+  cells: (lab, k) => {
+    const task = L.taskOf(lab);
+    const up = task.dir === 'up';
+    const n = up ? 100 + task.t : 100 - task.t;
+    const o = { x: T(task.x), t: $(String(task.t)), tp: $(`${task.t}\\%`), n: $(String(n)), v: T(P.packet(task.x)), after: T(task.after), calc: $(up ? `100+${task.t}=${n}` : `100-${task.t}=${n}`) };
+    const key = up ? 'cells.up' : 'cells.down';
+    return {
+      id: 'cells', kind: 'number', expected: String(n), answer: <MathText>{o.n}</MathText>,
+      prompt: Mx(k, `${key}.prompt`, o),
+      hints: [Mx(k, `${key}.hint1`, o), Mx(k, `${key}.hint2`, o)],
+      explain: Mx(k, `${key}.explain`, o),
+    };
+  },
+  factor: (lab, k) => {
+    const task = L.taskOf(lab);
+    const up = task.dir === 'up';
+    const n = up ? 100 + task.t : 100 - task.t;
+    const f = P.factor(task.dir, task.t);
+    const g = Lin.div(task.t, 100);
+    const h = P.factor(up ? 'down' : 'up', task.t);
+    const o = {
+      t: $(String(task.t)), tp: $(`${task.t}\\%`), n: $(String(n)), x: T(task.x), after: T(task.after), f: $(tx(P.text(f))), g: $(tx(P.text(g))), h: $(tx(P.text(h))),
+      part: T(P.partOf(task.x, task.t)), calc: $(`${tx(P.text(task.x))}\\times${tx(P.text(f))}=${tx(P.text(task.after))}`),
+      nn: $(`\\dfrac{${n}}{100}=${tx(P.text(f))}`),
+    };
+    const key = up ? 'factor.up' : 'factor.down';
+    return {
+      id: 'factor', kind: 'choice',
+      prompt: Mx(k, `${key}.prompt`, o),
+      options: [
+        { text: Mx(k, 'factor.mul', { f: o.g }), why: Mx(k, `${key}.whyPart`, o) },
+        { text: Mx(k, 'factor.mul', { f: o.f }), correct: true },
+        { text: Mx(k, 'factor.mul', { f: o.h }), why: Mx(k, `${key}.whyOpposite`, o) },
+      ],
+      hints: [Mx(k, `${key}.hint1`, o), Mx(k, `${key}.hint2`, o)],
+      explain: Mx(k, `${key}.explain`, o),
+    };
+  },
+  back: (lab, k) => {
+    const task = L.taskOf(lab);
+    const prev = lab.tasks[lab.ti - 1];
+    const inc = P.partOf(prev.x, prev.t);
+    const dec = P.partOf(task.x, task.t);
+    const o = {
+      t1: $(String(prev.t)), t1p: $(`${prev.t}\\%`), t: $(String(task.t)), tp: $(`${task.t}\\%`), x0: T(prev.x), x: T(task.x), v0: T(P.packet(prev.x)), v: T(P.packet(task.x)),
+      inc: T(inc), dec: T(dec), after: T(task.after),
+    };
+    return {
+      id: 'back', kind: 'choice',
+      prompt: Mx(k, 'back.prompt', o),
+      options: [
+        { text: Mx(k, 'back.smaller', o), why: Mx(k, 'back.whySmaller', o) },
+        { text: Mx(k, 'back.cell', o), correct: true },
+        { text: Mx(k, 'back.error'), why: Mx(k, 'back.whyError', o) },
+      ],
+      hints: [Mx(k, 'back.hint1'), Mx(k, 'back.hint2', o)],
+      explain: Mx(k, 'back.explain', o),
+    };
+  },
+  rule: (lab, k) => {
+    const w = L.witnesses(lab);
+    const of = w.of ?? { t: 15, x: '240', basket: '36' };
+    return {
+      id: 'rule', kind: 'choice',
+      prompt: <MathText>{k('discovery.prompt')}</MathText>,
+      options: discoveryOptions(lab, k),
+      hints: [Mx(k, 'rule.hint1', { t: $(String(of.t ?? of.painted)), v: T(of.packet ?? '1') }), Mx(k, 'rule.hint2')],
+      explain: <Formal lab={lab} k={k} />,
+    };
+  },
+};
+
+/** Chaque question est construite sur LES nombres de la tâche (rien n'est écrit en dur) ; la bonne réponse change de place d'une question à l'autre. */
+export const QUESTIONS = spreadAll(RAWQ, (lab) => lab.ti * 5 + (L.taskOf(lab).t ?? 0));

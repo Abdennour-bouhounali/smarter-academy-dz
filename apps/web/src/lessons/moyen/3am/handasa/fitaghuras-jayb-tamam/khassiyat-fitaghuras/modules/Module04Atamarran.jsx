@@ -52,7 +52,7 @@ export default function Module04Atamarran() {
         step(7, 'ex-7', 'الآلة الحاسبة والتدوير', ['lamsa-jidhr']),
         step(8, 'ex-17', 'مثلث يبدو قائما', ['ithbat-ghayr-qaim']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }
