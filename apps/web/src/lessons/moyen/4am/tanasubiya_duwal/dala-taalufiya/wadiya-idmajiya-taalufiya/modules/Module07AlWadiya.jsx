@@ -4,6 +4,7 @@ import { ContentModule, TapQuestion, BatchChoiceQuestion, NumericQuestion, Knowl
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
+import { useLabCheckpointSettings } from '../../../../../../common/manipulations/primitives/labCheckpointSettings';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { bidi } from '../../../../../../../utils/bidi';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
@@ -81,6 +82,12 @@ export default function Module07AlWadiya() {
   const [q, setQ] = useState({});
   const mark = (k) => () => setQ((s) => ({ ...s, [k]: true }));
   const keep = (trial) => setTrials((list) => [...list, trial]);
+  const [cps, setCps] = useState([]);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : « quelle formule est la moins chère » (avant / après) y est posée ; coupées par l'enseignant, les questions d'origine reviennent
+  const cpOn = useLabCheckpointSettings('plan-compare').enabled;
+  const answered = (id) => cps.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const onCheckpoint = (e) => setCps((l) => [...l, e]);
+  const kayakDone = cpOn ? answered('paint') : !!q['7a'] && !!q['7b'];
 
   return (
     <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="الوضعية وتحليلها" moduleSubtitle="رحلة إلى شاطئ تيبازة: كم تلميذا؟ أيّ حافلة؟ أيّ صيغة لكراء القوارب؟" estimatedTime="18 دقيقة"
@@ -123,6 +130,7 @@ export default function Module07AlWadiya() {
                 {...LAB.beginner}
                 lead="في المستوى المبتدئ صيغتان لكراء دراجة: ننمذج صيغة الرسم الثابت أولا ثم نقارن."
                 title={bidi('كراء دراجة: رسم ثابت 200 DA و 50 DA للساعة، أو 100 DA للساعة')}
+                onCheckpoint={onCheckpoint}
               />
             ),
             advanced: () => (
@@ -133,6 +141,7 @@ export default function Module07AlWadiya() {
                 lead="المستوى المتقدّم هو صيغ الوضعية الثلاث لكراء قارب كاياك."
                 title={bidi('كراء قارب كاياك: الصيغ الثلاث أ و ب و جـ')}
                 onTrial={keep}
+                onCheckpoint={onCheckpoint}
               />
             ),
           }}
@@ -267,34 +276,45 @@ export default function Module07AlWadiya() {
               <BackTo lesson="tarrid-taalufi" />
             </div>
           ) },
-        { num: 7, title: 'تنفيذ: صيغة كراء الكاياك', subtitle: 'الجزء 3 — على المخبر: ثلاث صيغ', done: !!q['7a'] && !!q['7b'],
+        { num: 7, title: 'تنفيذ: صيغة كراء الكاياك', subtitle: 'الجزء 3 — على المخبر: ثلاث صيغ', done: kayakDone,
           content: (
             <div className="space-y-3">
               <Evidence trials={trials} empty="لم تجرّب بعد على المخبر: افتح المستوى المتقدّم وحرّك عدد الساعات، ثم ابحث عن نقطتي التقاطع." />
-              <TapQuestion
-                prompt="القسم يبقى 5 ساعات على الشاطئ. الصيغة الأرخص لقارب واحد هي:"
-                options={[
-                  'الصيغة ب: $50 \\times 5 + 300 = 550\\,\\mathrm{DA}$',
-                  'الصيغة أ: لا رسم ثابت فيها، فهي الأرخص',
-                  'الصيغة جـ: 600 DA',
-                  'الصيغة ب: $(50 + 300) \\times 5 = 1750\\,\\mathrm{DA}$',
-                ].map(M)}
-                correct={0} cols={1} requires={['mufadala', 'ikhtiyar-sigha']}
-                explain={<MathText>{`${REMARKS.kayak5} الرسم الثابت 300 DA يُدفع مرّة واحدة، لا عن كل ساعة.`}</MathText>}
-                onAnswered={mark('7a')} />
-              <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700">بحسب مدّة الكراء، ما الصيغة الأرخص؟</p>}
-                rows={[
-                  { id: 'h1', label: 'أقل من 3 ساعات', options: ['الصيغة أ', 'الصيغة ب', 'الصيغة جـ'], correct: 0, correction: <MathText>{'مثلا لساعتين: أ $300$ ، ب $400$ ، جـ $600$.'}</MathText> },
-                  { id: 'h2', label: 'بين 3 و 6 ساعات', options: ['الصيغة أ', 'الصيغة ب', 'الصيغة جـ'], correct: 1, correction: <MathText>{'مثلا لـ 4 ساعات: أ $600$ ، ب $500$ ، جـ $600$.'}</MathText> },
-                  { id: 'h3', label: 'أكثر من 6 ساعات', options: ['الصيغة أ', 'الصيغة ب', 'الصيغة جـ'], correct: 2, correction: <MathText>{'مثلا لـ 7 ساعات: أ $1050$ ، ب $650$ ، جـ $600$.'}</MathText> },
-                ]}
-                requires={['ikhtiyar-sigha']}
-                feedback={() => <MathText>{REMARKS.kayakRanges}</MathText>}
-                onAnswered={mark('7b')} />
+              {cpOn ? (
+                <p data-checkpoint-trace="paint" data-tried={kayakDone ? 'true' : 'false'}
+                  className={`rounded-xl border-2 px-3 py-2 text-sm ${kayakDone ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                  {kayakDone
+                    ? <MathText>{'أجبتَ في المخبر: الصيغة الأرخص تتغيّر عند نقطتي التقاطع، فهي تتعلّق بعدد الساعات.'}</MathText>
+                    : 'ضع العلامة على نقطتي التقاطع ولوّن محور الساعات، وأجب عن الأسئلة التي تظهر فوق المخبر.'}
+                </p>
+              ) : (
+                <>
+                <TapQuestion
+                  prompt="القسم يبقى 5 ساعات على الشاطئ. الصيغة الأرخص لقارب واحد هي:"
+                  options={[
+                    'الصيغة ب: $50 \\times 5 + 300 = 550\\,\\mathrm{DA}$',
+                    'الصيغة أ: لا رسم ثابت فيها، فهي الأرخص',
+                    'الصيغة جـ: 600 DA',
+                    'الصيغة ب: $(50 + 300) \\times 5 = 1750\\,\\mathrm{DA}$',
+                  ].map(M)}
+                  correct={0} cols={1} requires={['mufadala', 'ikhtiyar-sigha']}
+                  explain={<MathText>{`${REMARKS.kayak5} الرسم الثابت 300 DA يُدفع مرّة واحدة، لا عن كل ساعة.`}</MathText>}
+                  onAnswered={mark('7a')} />
+                <BatchChoiceQuestion
+                  intro={<p className="text-sm font-semibold text-slate-700">بحسب مدّة الكراء، ما الصيغة الأرخص؟</p>}
+                  rows={[
+                    { id: 'h1', label: 'أقل من 3 ساعات', options: ['الصيغة أ', 'الصيغة ب', 'الصيغة جـ'], correct: 0, correction: <MathText>{'مثلا لساعتين: أ $300$ ، ب $400$ ، جـ $600$.'}</MathText> },
+                    { id: 'h2', label: 'بين 3 و 6 ساعات', options: ['الصيغة أ', 'الصيغة ب', 'الصيغة جـ'], correct: 1, correction: <MathText>{'مثلا لـ 4 ساعات: أ $600$ ، ب $500$ ، جـ $600$.'}</MathText> },
+                    { id: 'h3', label: 'أكثر من 6 ساعات', options: ['الصيغة أ', 'الصيغة ب', 'الصيغة جـ'], correct: 2, correction: <MathText>{'مثلا لـ 7 ساعات: أ $1050$ ، ب $650$ ، جـ $600$.'}</MathText> },
+                  ]}
+                  requires={['ikhtiyar-sigha']}
+                  feedback={() => <MathText>{REMARKS.kayakRanges}</MathText>}
+                  onAnswered={mark('7b')} />
+                </>
+              )}
               {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : « la moins chère = la droite la plus basse » est sigha-afdal (درس 5), et le retour de la
                   question ci-dessus (REMARKS.kayakRanges) vient de donner les trois plages. */}
-              {q['7a'] && q['7b'] && <KnowledgeBrick id="thalath-sigh" variant="rappel" />}
+              {kayakDone && <KnowledgeBrick id="thalath-sigh" variant="rappel" />}
               <BackTo lesson="tarrid-taalufi" />
             </div>
           ) },
@@ -332,6 +352,6 @@ export default function Module07AlWadiya() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={7} />} />
+      footer={<KnowledgeSnapshot moduleNumber={7} variant="memo" />} />
   );
 }

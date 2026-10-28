@@ -9,6 +9,10 @@ import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
 import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import LabFold from '../primitives/LabFold';
 import MathText from '../../components/MathText';
 import { planeGeometry, ticks, niceStep } from '../logic/originLine';
@@ -55,6 +59,11 @@ import * as L from '../logic/slopeStairs';
  *   TRANSFER       le تحدّ (10 ; 50), (30 ; 86) → 1,8x + 32 (module 2) ; la méthode « جملة معادلتين » ;
  *                  أوظّف et la banque d'exercices (a négatif, fractionnaire, couples en tableau / graphe)
  *
+ * QUESTIONS PENDANT LE LABO (2026-10-28, lot 5) : à la fin de chaque étape (`L.stepsOf` : rule = première marche · contraste ;
+ * points = a · b) une suite de questions se pose PAR-DESSUS le labo (`CHAINS`) et retient la suite ; la dernière étape finit par LA RÈGLE.
+ * Étapes `LabStepper` (`[data-ss-step=<i>]`) + fête ; « إعادة » repart de zéro ; obligatoires pour tout élève, coupées par l'enseignant
+ * pour SON compte (`useLabCheckpointSettings`) ; `checkpoints` = false les coupe aussi ; `onCheckpoint(ev)` : la trace pour les étapes du module.
+ *
  * Manuel (§6bis) : chaque marche est un essai, chaque marque une décision — pas d'auto-complétion.
  *
  * DÉCOR (exigence du propriétaire) — sans information, sans état du lab : `stadium` (نشاط 4) — les
@@ -95,7 +104,7 @@ const SUB = ['x₁', 'x₂'];
 export default function SlopeStairs({
   rule, marks, points, shown, xMin, xMax, yMin, yMax, theme: theme0 = 'stadium',
   title, lead, mission, level, levels: withLevels = true, initialMode = 'student', allowModeSwitch = false,
-  onTrial, onFinished,
+  checkpoints: cpOn = true, onTrial, onFinished, onCheckpoint,
 }) {
   const { t, i18n } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.slopeStairs.${key}`, o), [t]);
@@ -113,12 +122,57 @@ export default function SlopeStairs({
   const tw = useCallback((key, o) => t(`manipulation.slopeStairs.themes.${theme}.${key}`, o), [t, theme]);
   const make = () => L.init({ ...nums, ...(authored ? { shown, xMin, xMax, yMin, yMax } : {}) });
   const [lab, setLab] = useState(make);
-  const sceneKey = `${nums.rule ?? ''}:${nums.marks ?? ''}:${nums.points ?? ''}:${state.epoch}:${authored}`;
-  const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); }
+  const sceneKey = `${nums.rule ?? ''}:${nums.marks ?? ''}:${nums.points ?? ''}:${state.epoch}:${state.resetCount}:${authored}`;
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  const [cleared, setCleared] = useState([]);   // les étapes dont la suite de questions est finie
+  // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la marche, les essais et les questions du labo
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(make()); setCleared([]); }
 
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  const cpSettings = useLabCheckpointSettings('slope-stairs');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpLive = cpOn && cpSettings.enabled;
+  const steps = L.stepsOf(lab);
+  const ruleStep = steps[steps.length - 1];
+  const active = cpLive ? steps.find((st) => !cleared.includes(st)) ?? null : null;
+  const reachedActive = !!active && L.stepReached(lab, active);
+  const cp = useLabCheckpoint({
+    id: active,
+    questions: reachedActive ? chainOf(lab, active).map((q) => QUESTIONS[q](lab, k)) : null,
+    reached: reachedActive,
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.restartStep(lab, active, make())),
+    onEvent: (ev) => state.report(onCheckpoint, ev),   // {tk:'checkpoint'|'checkpoint-done', id: étape, …} — la TRACE que les étapes du module relisent
+    onDone: (id) => {
+      setCleared((c) => (c.includes(id) ? c : [...c, id]));
+      if (id === ruleStep) { state.discover(); state.formalize(); }
+    },
+  });
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // une étape est FAITE quand son objectif est atteint ET sa suite de questions répondue : la pastille passe au vert et on fête
+  const stepDone = steps.map((st) => L.stepReached(lab, st) && (!cpLive || cleared.includes(st)));
+  const nDone = stepDone.findIndex((d) => !d) < 0 ? stepDone.length : stepDone.findIndex((d) => !d);
+  const party = useStepCelebration();
+  const celebrated = useRef({ n: 0, inits: scene.inits });
+  if (celebrated.current.inits !== scene.inits) celebrated.current = { n: 0, inits: scene.inits };   // « إعادة » : on refête
+  useEffect(() => {
+    if (nDone <= celebrated.current.n) return;
+    celebrated.current.n = nDone;
+    party.celebrate({ n: nDone, total: stepDone.length });
+  }, [nDone]); // eslint-disable-line react-hooks/exhaustive-deps
+  const blockedRef = useRef(false);
+  blockedRef.current = cp.blocking;
+  // le son du GESTE (muet sans « الصوت ») : « tooth » une marche, « bell » une marche du manuel remplie, « flag » a ou b trouvé, « over » un refus
+  useEffect(() => {
+    const last = lab.last;
+    if (!last) return;
+    if (last.kind !== 'stair') playSfx('over');
+    else if (last.first || last.readB) playSfx('flag');
+    else if (last.newGhost) playSfx('bell');
+    else playSfx('tooth');
+  }, [lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
+  const heard = useRef(0);
+  const tick = () => { const now = Date.now(); if (now - heard.current > 35) { playSfx('tooth'); heard.current = now; } };
   useEffect(() => {
     if (state.isFormal) state.report(onFinished, { mode: lab.mode, a: lab.found ? L.numText(lab.f.a) : null, b: lab.found ? L.numText(lab.f.b) : null });
   }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -196,7 +250,7 @@ export default function SlopeStairs({
     return Math.max(lab.range.min, Math.min(lab.range.max, Math.round(v / snapN)));
   };
   const onDown = (e) => {
-    if (e.button > 0) return;
+    if (e.button > 0 || blockedRef.current) return;
     e.preventDefault();
     const i = idxAt(e);
     const tagged = e.target.closest?.('[data-ss-handle]')?.getAttribute('data-ss-handle');
@@ -210,6 +264,7 @@ export default function SlopeStairs({
     if (dragRef.current == null) return;
     const which = dragRef.current;
     const i = idxAt(e);
+    if (i !== lab.m[which]) tick();
     setLab((s) => L.move(s, which, i));
   };
   const onUp = (e) => {
@@ -226,13 +281,13 @@ export default function SlopeStairs({
   const noPointer = useCallback(() => 0, []);
   const s1 = useStretchInteraction({
     value: lab.m[0], range, direction: 'ltr', toValue: noPointer,
-    onChange: (v) => setLab((s) => L.move(s, 0, v)),
-    onCommit: (v) => setLab((s) => L.commit(L.move(s, 0, v))),
+    onChange: (v) => { if (blockedRef.current) return; tick(); setLab((s) => L.move(s, 0, v)); },
+    onCommit: (v) => { if (blockedRef.current) return; setLab((s) => L.commit(L.move(s, 0, v))); },
   });
   const s2 = useStretchInteraction({
     value: lab.m[1], range, direction: 'ltr', toValue: noPointer,
-    onChange: (v) => setLab((s) => L.move(s, 1, v)),
-    onCommit: (v) => setLab((s) => L.commit(L.move(s, 1, v))),
+    onChange: (v) => { if (blockedRef.current) return; tick(); setLab((s) => L.move(s, 1, v)); },
+    onCommit: (v) => { if (blockedRef.current) return; setLab((s) => L.commit(L.move(s, 1, v))); },
   });
   const sliders = [s1, s2];
 
@@ -429,6 +484,7 @@ export default function SlopeStairs({
 
   const controls = (
     <div ref={ctrlRef} className="space-y-2" data-ss-controls>
+      {steps.length > 1 && <LabStepper count={steps.length} current={Math.min(nDone, steps.length - 1)} done={stepDone} stepAttr="data-ss-step" />}
       <RuleLine lab={lab} k={k} f={f} />
       <div dir="ltr" className={`flex flex-wrap items-center ${narrow ? 'justify-center gap-0' : 'gap-x-2 gap-y-1'}`} data-ss-pads>
         {[0, 1].map((w) => (
@@ -479,6 +535,8 @@ export default function SlopeStairs({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpLive}
       hints={hintKeys.map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{
         autoStep: () => false,
@@ -500,8 +558,10 @@ export default function SlopeStairs({
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-emerald-50/60 to-white">
-        <div ref={boxRef} className="space-y-3" data-slope-stairs data-mode={lab.mode} data-theme={theme}
+        <div ref={boxRef} className="relative space-y-3" data-slope-stairs data-mode={lab.mode} data-theme={theme}
           data-m1={L.numText(x1)} data-m2={L.numText(x2)} data-found={lab.found ? 'true' : 'false'} data-layout={layout} data-budget={budget} data-ctrl-h={ctrlH}>
+          {party.node}
+          {cp.node}
           <div className={wide ? 'grid items-start gap-3' : 'space-y-2'} style={wide ? { gridTemplateColumns: `${planeCol}px 1fr` } : undefined} data-ss-glance>
             {plane}
             {controls}
@@ -762,3 +822,103 @@ const SS_CSS = '.ss-shake{animation:ss-s .35s ease-in-out 1}@keyframes ss-s{0%,1
   + '.ss-walk{animation:ss-w .9s ease-out 1}@keyframes ss-w{0%{transform:translateX(-14px);opacity:.2}100%{transform:translateX(0);opacity:1}}'
   + '.ss-pop{animation:ss-p .5s ease-out 1}@keyframes ss-p{0%{transform:scale(.6)}100%{transform:scale(1)}}'
   + '@media (prefers-reduced-motion: reduce){.ss-shake,.ss-walk,.ss-pop{animation:none}}';
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de questions de chaque étape ; la dernière étape (contraste, ou b) finit par LA RÈGLE. */
+export function chainOf(lab, step) {
+  const base = CHAINS[step];
+  return step === L.stepsOf(lab)[1] ? [...base, 'rule'] : base;
+}
+export const CHAINS = Object.freeze({ stair: ['rise', 'quot'], contrast: ['sameQ'], find: ['a'], b: ['b'] });
+
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const T = (x) => <MathText>{`$${x}$`}</MathText>;
+const D = (x) => x;   // le TeX brut : les gabarits cp.* posent eux-mêmes les $…$
+const shuffled = (list, seed) => { const r = Math.abs(seed) % list.length; return [...list.slice(r), ...list.slice(0, r)]; };
+const seedOf = (lab) => lab.trials.length + Math.abs(lab.m[0]) + Math.abs(lab.m[1]);
+/** La bonne option puis deux erreurs RÉELLES `{ v, why }` ; un doublon est remplacé par un décalage de 1 (avec le `why` générique). */
+function numOptions(good, wrongs, generic) {
+  const out = [{ text: T(L.numTex(good)), correct: true }];
+  const seen = [good];
+  for (const w of wrongs) {
+    if (w.v == null || seen.some((u) => L.same(u, w.v))) continue;
+    seen.push(w.v); out.push({ text: T(L.numTex(w.v)), why: w.why });
+  }
+  for (let bump = 1; out.length < 3; bump += 1) {
+    const c = L.plus(good, bump);
+    if (!seen.some((u) => L.same(u, c))) { seen.push(c); out.push({ text: T(L.numTex(c)), why: generic }); }
+  }
+  return out.slice(0, 3);
+}
+const lastStair = (lab) => L.stairs(lab)[L.stairs(lab).length - 1];
+
+export const QUESTIONS = {
+  /* rule · étape 1 : la dernière marche de l'élève, ce que la main vient de faire */
+  rise: (lab, k) => {
+    const tr = lastStair(lab);
+    const o = { x1: D(L.numTex(tr.x1)), x2: D(L.numTex(tr.x2)), y1: D(L.numTex(tr.y1)), y2: D(L.numTex(tr.y2)), df: D(L.numTex(tr.df)), dx: D(L.numTex(tr.dx)) };
+    const opts = numOptions(tr.df, [{ v: tr.dx, why: Cq(k, 'rise.whyWidth', o) }, { v: tr.y1, why: Cq(k, 'rise.whyImage', o) }], Cq(k, 'rise.whyOther', o));
+    return {
+      id: 'rise', kind: 'choice', cols: 3, prompt: Cq(k, 'rise.prompt', o), options: shuffled(opts, seedOf(lab)),
+      hints: [Cq(k, 'rise.hint1', o), Cq(k, 'rise.hint2', o)], explain: Cq(k, 'rise.explain', o),
+    };
+  },
+  quot: (lab, k) => {
+    const tr = lastStair(lab);
+    const inv = L.toNum(tr.df) !== 0 ? L.divide(tr.dx, tr.df) : null;
+    const o = { df: D(L.numTex(tr.df)), dx: D(L.numTex(tr.dx)), q: D(L.numTex(tr.q)), x1: D(L.numTex(tr.x1)), x2: D(L.numTex(tr.x2)) };
+    const opts = numOptions(tr.q, [{ v: tr.df, why: Cq(k, 'quot.whyNoDivide', o) }, { v: inv, why: Cq(k, 'quot.whyInverse', o) }], Cq(k, 'quot.whyOther', o));
+    return {
+      id: 'quot', kind: 'choice', cols: 3, prompt: Cq(k, 'quot.prompt', o), options: shuffled(opts, seedOf(lab) + 1),
+      hints: [Cq(k, 'quot.hint1', o), Cq(k, 'quot.hint2', o)], explain: Cq(k, 'quot.explain', o),
+    };
+  },
+  /* rule · étape 2 : deux marches de largeurs différentes de l'élève */
+  sameQ: (lab, k) => {
+    const [small, big] = L.contrastPair(lab);
+    const o = { s: D(L.shortTex(small)), b: D(L.shortTex(big)), ds: D(L.numTex(L.absOf(small.dx))), db: D(L.numTex(L.absOf(big.dx))), q: D(L.numTex(big.q)) };
+    const opts = [
+      { text: Cq(k, 'sameQ.same'), correct: true },
+      { text: Cq(k, 'sameQ.grows'), why: Cq(k, 'sameQ.whyGrows', o) },
+      { text: Cq(k, 'sameQ.shrinks'), why: Cq(k, 'sameQ.whyShrinks', o) },
+    ];
+    return {
+      id: 'sameQ', kind: 'choice', cols: 1, prompt: Cq(k, 'sameQ.prompt', o), options: shuffled(opts, seedOf(lab) + 2),
+      hints: [Cq(k, 'sameQ.hint1', o), Cq(k, 'sameQ.hint2', o)], explain: Cq(k, 'sameQ.explain', o),
+    };
+  },
+  /* points · étape 1 : la marche entre les deux couples donnés */
+  a: (lab, k) => {
+    const st = L.stairs(lab)[0];
+    const g0 = lab.given[0];
+    const ratio = L.toNum(g0.x) !== 0 ? L.divide(g0.y, g0.x) : null;
+    const o = { df: D(L.numTex(st.df)), dx: D(L.numTex(st.dx)), a: D(L.numTex(lab.f.a)), x: D(L.numTex(g0.x)), y: D(L.numTex(g0.y)) };
+    const opts = numOptions(lab.f.a, [{ v: st.df, why: Cq(k, 'a.whyNoDivide', o) }, { v: ratio, why: Cq(k, 'a.whyRatio', o) }], Cq(k, 'a.whyOther', o));
+    return {
+      id: 'a', kind: 'choice', cols: 3, prompt: Cq(k, 'a.prompt', o), options: shuffled(opts, seedOf(lab)),
+      hints: [Cq(k, 'a.hint1', o), Cq(k, 'a.hint2', o)], explain: Cq(k, 'a.explain', o),
+    };
+  },
+  /* points · étape 2 : b lu en x = 0 */
+  b: (lab, k) => {
+    const r = lab.bRead;
+    const o = { a: D(L.numTex(r.a)), via: D(L.numTex(r.via)), yv: D(L.numTex(r.yVia)), b: D(L.numTex(r.b)), prod: D(L.numTex(L.times(r.a, r.via))) };
+    const opts = numOptions(r.b, [{ v: r.yVia, why: Cq(k, 'b.whyImage', o) }, { v: L.times(r.a, r.via), why: Cq(k, 'b.whyProduct', o) }], Cq(k, 'b.whyOther', o));
+    return {
+      id: 'b', kind: 'choice', cols: 3, prompt: Cq(k, 'b.prompt', o), options: shuffled(opts, seedOf(lab) + 1),
+      hints: [Cq(k, 'b.hint1', o), Cq(k, 'b.hint2', o)], explain: Cq(k, 'b.explain', o),
+    };
+  },
+  rule: (lab, k) => {
+    const opts = discoveryFor(lab, k);
+    const ci = opts.findIndex((o) => o.correct);
+    return {
+      id: 'rule', kind: 'choice', cols: 1,
+      prompt: <MathText>{k(`dPrompt.${lab.mode}`)}</MathText>,
+      options: ci === opts.length - 1 ? [opts[ci], ...opts.slice(0, ci)] : opts,
+      hints: [Cq(k, `rule.hint1.${lab.mode}`), Cq(k, `rule.hint2.${lab.mode}`)],
+      explain: Cq(k, `rule.explain.${lab.mode}`),
+    };
+  },
+};

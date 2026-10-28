@@ -5,6 +5,7 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
+import { useLabCheckpointSettings } from '../../../../../../common/manipulations/primitives/labCheckpointSettings';
 import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, LAB } from '../content/textbook';
@@ -29,6 +30,16 @@ const Opt = (s) => <MathText key={s}>{s}</MathText>;
 const near = (v) => (n) => Number.isFinite(n) && Math.abs(n - v) < 1e-9;
 const tex = (s) => String(s).replace(',', '{,}');
 
+/** La TRACE d'une suite de questions posée par-dessus le labo (LabCheckpoint) : l'étape est faite quand la suite l'est. */
+function Trace({ id, done, children, idle }) {
+  return (
+    <p data-checkpoint-trace={id} data-tried={done ? 'true' : 'false'}
+      className={`rounded-xl border-2 px-3 py-2 text-sm ${done ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+      {done ? children : idle}
+    </p>
+  );
+}
+
 export default function Module01Mudarrajat() {
   const [trials, setTrials] = useState({ beginner: [], advanced: [] });
   const [q1a, setQ1a] = useState(false);
@@ -39,8 +50,14 @@ export default function Module01Mudarrajat() {
   const [q3a, setQ3a] = useState(false);
   const [q3b, setQ3b] = useState(false);
   const [q4, setQ4] = useState(false);
+  const [cps, setCps] = useState([]);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : « ماذا تلاحظ؟ » y est posée ; coupées par l'enseignant, la question d'origine revient
+  const cpOn = useLabCheckpointSettings('slope-stairs').enabled;
+  const answered = (id) => cps.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const onCheckpoint = (e) => setCps((l) => [...l, e]);
+  const noticed = cpOn ? answered('contrast') : q3b;
   const onTrial = (lv) => (tr) => {
-    if (tr.kind !== 'stair') return;
+    if (tr.tk || tr.kind !== 'stair') return;   // un événement `checkpoint…` n'est pas un essai
     setTrials((t) => ({ ...t, [lv]: [...t[lv].filter((c) => !(c.x1 === tr.x1 && c.x2 === tr.x2)), tr].slice(-8) }));
   };
   const mine = trials.advanced.length ? trials.advanced : trials.beginner;
@@ -85,35 +102,41 @@ export default function Module01Mudarrajat() {
           levels={{
             beginner: () => (
               <Manipulation type="slope-stairs" level="beginner" {...LAB.m1.beginner}
-                lead="نادي المدينة يعرض على أشباله اشتراكًا: 100DA مرّة واحدة يضاف إليها 50DA عن كل مقابلة." onTrial={onTrial('beginner')} />
+                lead="نادي المدينة يعرض على أشباله اشتراكًا: 100DA مرّة واحدة يضاف إليها 50DA عن كل مقابلة." onTrial={onTrial('beginner')} onCheckpoint={onCheckpoint} />
             ),
             advanced: () => (
               <Manipulation type="slope-stairs" level="advanced" {...LAB.m1.advanced}
-                lead="نشاط الكتاب: اشتراك سنوي لمناصر 2000DA يضاف إليه 200DA عند كل دخول لمقابلة." onTrial={onTrial('advanced')} />
+                lead="نشاط الكتاب: اشتراك سنوي لمناصر 2000DA يضاف إليه 200DA عند كل دخول لمقابلة." onTrial={onTrial('advanced')} onCheckpoint={onCheckpoint} />
             ),
           }}
         />
       }
       steps={[
         {
-          num: 1, title: 'ماذا تلاحظ في درجاتك؟', subtitle: 'حاصل قسمة الارتفاع على الامتداد', done: q3b,
+          num: 1, title: 'ماذا تلاحظ في درجاتك؟', subtitle: 'حاصل قسمة الارتفاع على الامتداد', done: noticed,
           content: (
             <div className="space-y-3">
               {evidence}
-              <TapQuestion
-                prompt="في كل درجة بنيتها، قسمتَ ما زاد في المبلغ على ما زاد في عدد المقابلات. ماذا تلاحظ في الحواصل من درجة إلى أخرى؟"
-                options={[
-                  'الحاصل يكبر كلما اتّسعت الدرجة (كلما ابتعد العددان)',
-                  'الحاصل هو نفسه في كل درجة مهما كان العددان، ويساوي ثمن المقابلة الواحدة',
-                  'الحاصل يساوي فرق الصورتين',
-                ].map(Opt)}
-                correct={1}
-                cols={1}
-                requires={['hisab-farq-nisbi']}
-                explain={<MathText>{'في كل درجة بنيتها الحاصل هو العدد نفسه: ما يدفعه المناصر عن مقابلة واحدة، أي المعامل $a$ في $f(x) = ax + b$ . الاشتراك الثابت لا يدخل في الفرق بين صورتين.'}</MathText>}
-                onAnswered={() => setQ3b(true)}
-              />
-              {q3b && <KnowledgeBrick id="tanasub-taghayyurat" lead="ما تقوله كل درجاتك، باسمه:" />}
+              {cpOn ? (
+                <Trace id="contrast" done={noticed} idle="ابنِ درجات بعروض مختلفة في المخبر، وأجب عن الأسئلة التي تظهر فوقه.">
+                  <MathText>{'أجبتَ في المخبر: حاصل قسمة تغيّر المبلغ على تغيّر عدد المقابلات هو نفسه في كل درجة، ويساوي المعامل $a$ .'}</MathText>
+                </Trace>
+              ) : (
+                <TapQuestion
+                  prompt="في كل درجة بنيتها، قسمتَ ما زاد في المبلغ على ما زاد في عدد المقابلات. ماذا تلاحظ في الحواصل من درجة إلى أخرى؟"
+                  options={[
+                    'الحاصل يكبر كلما اتّسعت الدرجة (كلما ابتعد العددان)',
+                    'الحاصل هو نفسه في كل درجة مهما كان العددان، ويساوي ثمن المقابلة الواحدة',
+                    'الحاصل يساوي فرق الصورتين',
+                  ].map(Opt)}
+                  correct={1}
+                  cols={1}
+                  requires={['hisab-farq-nisbi']}
+                  explain={<MathText>{'في كل درجة بنيتها الحاصل هو العدد نفسه: ما يدفعه المناصر عن مقابلة واحدة، أي المعامل $a$ في $f(x) = ax + b$ . الاشتراك الثابت لا يدخل في الفرق بين صورتين.'}</MathText>}
+                  onAnswered={() => setQ3b(true)}
+                />
+              )}
+              {noticed && <KnowledgeBrick id="tanasub-taghayyurat" lead="ما تقوله كل درجاتك، باسمه:" />}
             </div>
           ),
         },
@@ -247,7 +270,7 @@ export default function Module01Mudarrajat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

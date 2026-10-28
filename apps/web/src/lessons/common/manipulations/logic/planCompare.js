@@ -534,3 +534,44 @@ export function lineSegment(f, win) {
 }
 
 export { toNumber, frac, eq, cmp };
+
+/* ── les ÉTAPES du labo (questions pendant le labo, lot 5) ───────────────── */
+
+/**
+ * build (la facture acceptée) · slide (x glissé, les cibles atteintes) · mark (les marques de coûts égaux) · paint (l'axe peint).
+ * model seul : build, slide ; compare seul : mark, paint ; model|compare : les quatre.
+ */
+export function stepsOf(s) {
+  const m = s.modes.includes('model'); const c = s.modes.includes('compare');
+  return [...(m ? ['build', 'slide'] : []), ...(c ? ['mark', 'paint'] : [])];
+}
+
+/** L'objectif de l'étape est-il atteint ? */
+export function stepReached(s, step) {
+  if (step === 'build') return !!s.accepted;
+  if (step === 'slide') return modelDone(s);
+  if (step === 'mark') return s.stage === 'compare' && marksDone(s);
+  if (step === 'paint') return s.stage === 'compare' && discoveryReady(s);
+  return false;
+}
+
+/** « أعِد التجربة » : la MÊME étape repart (`fresh` : l'état de départ du niveau). */
+export function restartStep(s, step, fresh) {
+  if (step === 'build') return fresh;
+  if (step === 'slide') return { ...s, trials: [], last: null };
+  if (step === 'mark') return { ...s, marks: [], noCross: null, painted: {}, brush: null, last: null };
+  return { ...s, painted: {}, brush: null, last: null };
+}
+
+/**
+ * Un x ENTIER de part et d'autre du premier changement `br`, où la formule la moins chère est unique et
+ * est bien celle de l'intervalle (`br.before` à gauche, `br.after` à droite) ; null s'il n'y en a pas.
+ */
+export function sideX(s, br, side) {
+  const X = toNumber(br.x);
+  const want = side === 'before' ? br.before : br.after;
+  const xs = [];
+  if (side === 'before') for (let x = Math.ceil(X) - 1; x >= 0; x -= 1) xs.push(x);
+  else for (let x = Math.floor(X) + 1; x <= toNumber(s.win.xMax); x += 1) xs.push(x);
+  return xs.find((x) => { const c = AF.cheapestAt(s.plans.map((p) => p.f), x); return c.length === 1 && c[0] === want; }) ?? null;
+}
