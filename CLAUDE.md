@@ -80,7 +80,7 @@ created ONLY by the platform admin in « المؤسسات » `/admin/etablisseme
 licence of seats, the director may enrol students directly (the student confirms), one role (the director), teacher activity shown as
 facts the teacher sees too, a student without e-mail gets a generated school login. The school reads a student only through `SchoolAccess` (active member of an active class of that school
 WITH `school_consent_at`), never an e-mail, never an average; every new `/school` read joins `SchoolPrivacyContractTest`. Phases 0–7 are
-built (structure: terms, teachers by link + « مؤسستي », classes, roster import with generated « معرّف الدخول » (no mail ever sent to it),
+built (structure: terms, teachers by link + « مؤسستي » — since 2026-10-28 joining by the link attaches all the teacher's active classes, with the students who accepted the class sharing text that announces it, classes, roster import with generated « معرّف الدخول » (no mail ever sent to it),
 transfer, login cards; tracking: the الكفاءات map class by class as COUNTS, the student file = the parent's « التقدّم بالتفصيل », no study
 time; reports FROZEN as snapshots, A4 print, CSV built in the browser; the meeting view `/idara/ijtimaa/:id` with « إخفاء الأسماء »);
 and the school LICENCE (model C: access reason `school_licence` before `teacher_subscription`; a covered class uses the school's seats). Contract: `docs/architecture/SCHOOL_ADMIN_SPACE.md`.

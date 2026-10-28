@@ -237,7 +237,9 @@ validation ».
   it). (Until 2026-09-25 a logged-in student joined on opening an invitation
   link.)
 - `consented_at` + `consent_version` (`config('classroom.consent_version')`)
-  are stored on the membership. Changing the disclosure text means bumping the
+  are stored on the membership (current version `2026-10-28`: the text now also
+  announces that a later attachment of the class to a school brings the student
+  in automatically — `SCHOOL_ADMIN_SPACE.md` §4). Changing the disclosure text means bumping the
   version: `studyContext.classrooms[].consentRequired` becomes true and «قسمي»
   asks once (`POST /student/classrooms/{id}/consent`, or leave). Memberships
   older than the text have `consented_at = null` and are asked the same way.

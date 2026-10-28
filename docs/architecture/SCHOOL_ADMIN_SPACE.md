@@ -96,10 +96,16 @@ one write of a membership):
 | Way in | School consent |
 |---|---|
 | the class **link** of a school class (`/rejoindre/classe/{token}`) | `student` — the link page shows the same sharing text PLUS « هذا القسم تابع لمؤسسة … » (`SharingDisclosure schoolName`, preview field `schoolName`); the same gesture accepts both. A visitor's pending join, completed after e-mail verification, goes through the link too |
-| the class **code** (« قسمي ») | **none** — the code form cannot show the school before the gesture; « قسمي » asks afterwards |
+| the class **code** (« قسمي ») | `student` when accepted on the text of 2026-10-28 or later (it announces the school, below); on an older text **none** — « قسمي » asks afterwards |
 | **enrolment by the director** (`enrolBySchool`, D2) | `school`; the teacher's sharing text stays unconsented (`consented_at` null) and « قسمي » asks it, without blocking |
-| a class **attached** later by its teacher | none for the existing members: each one is asked in « قسمي » |
+| a class **attached** later by its teacher — by hand (« ربط بالمؤسسة ») or because the teacher **joined the school by its link** (§6) | `student` for every active member whose consent was given on the text of 2026-10-28 or later (`ClassroomMembership::coversFutureSchool`); the others are asked again in « قسمي » (their text is outdated) and re-accepting brings them in (`confirmConsent`) |
 
+- **Automatic school consent (owner, 2026-10-28).** Since `classroom.consent_version` `2026-10-28` the
+  sharing text (`SharingDisclosure`, `qism.sharing.schoolFuture`) says, for a class with no school: « if this
+  class is attached to a school later, you join it automatically and its director sees your progress ». A
+  student who accepted that text (or a later one — `config('classroom.school_auto_consent_since')`, versions
+  compared as ISO dates) gets `school_consent_by = student` the moment the class is attached. Older consents
+  were NOT given on that text: bumping the version makes « قسمي » ask them once.
 - « قسمي » shows one card per class with `studyContext.classrooms[].schoolConsentRequired`
   (a school class whose membership was not consented BY THE STUDENT); « أوافق »
   calls `POST /student/classrooms/{id}/school-consent` (`school_consent_by = student`,
@@ -208,7 +214,14 @@ school checks that teacher's free seats for the class's not-yet-seated students
 
 **Teachers** (`SchoolTeacherService`). The director sends the link
 `/enseignant/muassasa/rejoindre/{teacher_join_token}` (the server returns the
-token only); renewing it kills the old one (`invalid_link`). **Detaching** a
+token only); renewing it kills the old one (`invalid_link`). **Joining by the link
+brings the teacher's classes** (owner, 2026-10-28): in the same transaction every
+ACTIVE class of the teacher without a school is attached
+(`SchoolClassroomService::attachAllOf`), with its students who consented on the
+current text (§4); archived classes stay out. No seat check — like the manual
+attach, a running licence may be exceeded and nobody is refused or removed (§5bis).
+Logged `school.teacher_joined` with `classIds`, and `school.classroom_attached`
+per class with `studentsJoined`. **Detaching** a
 teacher ends the row and gives the classes back (§4).
 
 **Students** (`SchoolRosterService`):
@@ -335,7 +348,9 @@ and accessible name) and the name and « تسجيل الخروج » text from 15
 `/enseignant/muassasa` (sidebar « مؤسستي ») and the join page
 `/enseignant/muassasa/rejoindre/:token`, strings in `idara › teacher.*`.
 
-- **Opening the link joins nothing**: the page lists what the school will see
+- **Opening the link joins nothing**: the page first says that joining attaches
+  all the teacher's classes with their consenting students (`teacher.join.allClasses`,
+  2026-10-28), then lists what the school will see
   (`teacher.join.items.*`: classes, consented students, interventions opened and
   closed over 30 days, last sign-in) and « أوافق وأنضمّ » is the gesture
   (`consent_required` without it).
