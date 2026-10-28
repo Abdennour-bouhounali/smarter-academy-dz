@@ -182,26 +182,26 @@ reste L1 pour le monde `reverse` (module 2) et le niveau متقدم de `gear-cra
 
 | # | Leçon | Année | Labo(s) | Cartes | Connaissances | État |
 |---|---|---|---|---|---|---|
-| 1 | `awwaliyan-fima-baynahuma` | 4am | `coprime-explorer` | 3 | 4 | ⬜ |
-| 2 | `bahth-pgcd` | 4am | `pgcd-differences`, `euclidean-algorithm` | 4 | 5 | ⬜ |
-| 3 | `ikhtizal-kasr` | 4am | `fraction-reduction` | 4 | 4 | ⬜ |
-| 4 | `khawass-qawasim` | 4am | `divisor-properties` | 4 | 5 | ⬜ |
-| 5 | `qasim-adad-tabii` | 4am | `team-builder`, `divisor-explorer-books` | 3 | 4 | ⬜ |
-| 6 | `qasim-mushtarak-akbar` | 4am | `common-divisors` | 3 | 4 | ⬜ |
-| 7 | `qawasim-adad-tabii` | 4am | `factor-pairs` | 3 | 4 | ⬜ |
-| 8 | `tayin-pgcd` | 4am | `common-divisors` | 3 | 3 | ⬜ |
-| 9 | `wadiya-idmajiya-aadad` | 4am | — (synthèse) | 1 | 2 | ⬜ |
-| 10 | `mutatabiqat-shahira` | 4am | `pitch-expansion` | 4 | 6 | ⬜ |
-| 11 | `nashr-tabsit` | 4am | `pitch-expansion` | 3 | 4 | ⬜ |
-| 12 | `tahlil-ibara` | 4am | `turf-factoring` | 4 | 5 | ⬜ |
-| 13 | `wadiya-idmajiya-harfi` | 4am | `pitch-expansion` | 1 | 4 | ⬜ |
-| 14 | `amaliyat-judhur` | 4am | `square-tiling` | 4 | 4 | ⬜ |
-| 15 | `jidhr-tarbii` | 4am | `square-root-side` | 3 | 4 | ⬜ |
-| 16 | `muadalat-x-murabba` | 4am | `square-fold` | 3 | 3 | ⬜ |
-| 17 | `natiqa-ghayr-natiqa` | 4am | `square-root-side` | 3 | 3 | ⬜ |
-| 18 | `tawzif-khawass-judhur` | 4am | `square-tiling` | 5 | 3 | ⬜ |
-| 19 | `wadiya-idmajiya-judhur` | 4am | — (synthèse) | 1 | 3 | ⬜ |
-| 20 | `hall-jabri` | 4am | `elimination-cards` | 3 | 5 | ⬜ |
+| 1 | `awwaliyan-fima-baynahuma` | 4am | `coprime-explorer` | 3 | 4 | ✅ |
+| 2 | `bahth-pgcd` | 4am | `pgcd-differences`, `euclidean-algorithm` | 4 | 5 | ✅ |
+| 3 | `ikhtizal-kasr` | 4am | `fraction-reduction` | 4 | 4 | ✅ |
+| 4 | `khawass-qawasim` | 4am | `divisor-properties` | 4 | 5 | ✅ |
+| 5 | `qasim-adad-tabii` | 4am | `team-builder`, `divisor-explorer-books` | 3 | 4 | ✅ |
+| 6 | `qasim-mushtarak-akbar` | 4am | `common-divisors` | 3 | 4 | ✅ |
+| 7 | `qawasim-adad-tabii` | 4am | `factor-pairs` | 3 | 4 | ✅ |
+| 8 | `tayin-pgcd` | 4am | `common-divisors` | 3 | 3 | ✅ |
+| 9 | `wadiya-idmajiya-aadad` | 4am | — (synthèse) | 1 | 2 | ✅ |
+| 10 | `mutatabiqat-shahira` | 4am | `pitch-expansion` | 4 | 6 | ✅ |
+| 11 | `nashr-tabsit` | 4am | `pitch-expansion` | 3 | 4 | ✅ |
+| 12 | `tahlil-ibara` | 4am | `turf-factoring` | 4 | 5 | ✅ |
+| 13 | `wadiya-idmajiya-harfi` | 4am | `pitch-expansion` | 1 | 4 | ✅ |
+| 14 | `amaliyat-judhur` | 4am | `square-tiling` | 4 | 4 | ✅ |
+| 15 | `jidhr-tarbii` | 4am | `square-root-side` | 3 | 4 | ✅ |
+| 16 | `muadalat-x-murabba` | 4am | `square-fold` | 3 | 3 | ✅ |
+| 17 | `natiqa-ghayr-natiqa` | 4am | `square-root-side` | 3 | 3 | ✅ |
+| 18 | `tawzif-khawass-judhur` | 4am | `square-tiling` | 5 | 3 | ✅ |
+| 19 | `wadiya-idmajiya-judhur` | 4am | — (synthèse) | 1 | 3 | ✅ |
+| 20 | `hall-jabri` | 4am | `elimination-cards` | 3 | 5 | ✅ |
 
 ### Lot 3 — 20 leçons · 110 connaissances · 66 cartes · 18 labos
 
@@ -321,15 +321,17 @@ Labos enregistrés mais utilisés par aucune leçon : `divisor-explorer`, `thale
 |---|---|---|---|---|---|
 | 0 | 2026-10-28 | — | 1/112 (prototype) | 1/98 | plan, script d'état, test `memoContent` ; commit `b480b2b8` |
 | 1 | 2026-10-28 | 1 | 21/112 (prototype + 20 du lot 1) | 21/98 (les 20 labos du lot 1) | lot 1 fait, 1 session : leçon 1 en direct, leçons 2–20 par 5 sous-agents en parallèle (A 2–5, B 6–9, C 10–12 + 16, D 13–15, E 17–20). L9 `guided` reçu en cours de route et appliqué aux 20. Commits `e9d6bca9` … `1fc0cbb6` + le correctif « switch ». Suite complète 697 fichiers / 13 523 tests ; `check-non-blocking`, audit des dépendances, `check:katex`, `check:entry-budget` 236,6 Ko : verts. Hors périmètre signalé : références au manuel dans les briefs de `ikhtizal-kitaba-kasriya` (Module00/02/03/04/05). |
+| 2 | 2026-10-28 | 2 | 41/112 (prototype + lots 1 et 2) | 36/98 (+15 labos du lot 2) | lot 2 fait en 1 session par 4 sous-agents en parallèle (A : awwaliyan, bahth-pgcd, ikhtizal-kasr, khawass-qawasim ; B : qasim-adad-tabii, qasim-mushtarak-akbar, tayin-pgcd, qawasim-adad-tabii, wadiya-idmajiya-aadad ; C : hisab-harfi ×4 + hall-jabri ; D : hisab-judhur ×6), chacun sur un Vite privé (ports 5301–5304) et le JSON i18n fusionné sous `flock` (`merge_i18n.py` : aucun conflit). Suite complète 701 fichiers : 3 échecs de charge (timeouts registry / buildLessonMemo / resumePath, verts isolés) + 1 vrai (`lessonGraphs` qasim-adad-tabii : la citation « التعريف كله في الباقي » avait disparu du module, rétablie). `check-non-blocking`, audit des dépendances, `check:katex`, `check:entry-budget` 236,6 Ko : verts. Non vérifié au navigateur : l'interrupteur enseignant (cliqué nulle part), « أعِد التجربة » de pitch/turf/elimination, plein écran et son de turf-factoring / elimination-cards, variante symétrie de DivisorExplorerBooks, niveau débutant de tayin-pgcd, carte du module 3 de muadalat-x-murabba. |
+
 
 ### Prompt de la session suivante (à copier tel quel)
 
 ```
-Déploiement du prototype de labo — LOT 2.
-Lis docs/reports/LAB_PROTOTYPE_ROLLOUT.md (§0 à §6, le lot 2 du §7 et le §10) et rien d'autre en dehors de ce qu'il cite.
-Lance `node apps/web/scripts/lab-rollout-status.mjs --batch 2`, puis traite les leçons du lot dans l'ordre, chacune selon la
+Déploiement du prototype de labo — LOT 3.
+Lis docs/reports/LAB_PROTOTYPE_ROLLOUT.md (§0 à §6, le lot 3 du §7 et le §10) et rien d'autre en dehors de ce qu'il cite.
+Lance `node apps/web/scripts/lab-rollout-status.mjs --batch 3`, puis traite les leçons du lot dans l'ordre, chacune selon la
 procédure du §3 (audit → ce qui marche déjà → mise à jour → tests → navigateur → corrections, jusqu'à 100 %, L1–L9 + colonne « switch »).
-Le lot 1 a été fait avec UNE leçon en direct puis 5 sous-agents en parallèle ; le §10 dit comment éviter ce qui a mal tourné.
+Les lots 1 et 2 ont été faits par sous-agents en parallèle (un groupe par unité, les labos partagés dans le même groupe, Vite privé par agent, `merge_i18n.py` sous `flock`) ; le §10 dit comment éviter ce qui a mal tourné.
 Commit par groupe de ~4 leçons ; en fin de session : contrôles du §3 (les scripts se lancent depuis la RACINE du dépôt),
 push sur dev, mise à jour du §9 et du prompt de la session suivante.
 ```
@@ -367,3 +369,7 @@ push sur dev, mise à jour du §9 et du prompt de la session suivante.
 - **Questions construites trop tôt** : un constructeur qui lit un résultat pas encore rempli fait planter le premier rendu → ne construire qu'une fois l'étape atteinte.
 - **Tests de garde anti-règle** : certains labos interdisent des mots (« الكتاب », « معدوم »…) avant la règle ; les chaînes `cp.*` comptent, et « الكتابة » est attrapé par « الكتاب ».
 - **Le sélecteur `data-done`** est aussi posé par `LabStepper` : un test qui compte `data-done` doit le tolérer.
+- **Lot 2** : un lab SANS tâches successives (scène libre) prend 2 étapes `LabStepper` (essai puis contraste/règle) ou une chaîne unique à l'objectif atteint. Les labos acceptent maintenant `checkpoints` et un rappel de trace (`onCheckpoint(ev)` pour pitch/turf/elimination, `onTrial` ailleurs) : les événements `checkpoint-done` ne doivent pas polluer les listes d'essais que les leçons construisent.
+- **Graphes de connaissances** : un nœud d'aide (`knowledgeGraph.js`) cite des phrases de la leçon (`lessonGraphs.test.js`, « grounds every aid »). Supprimer une question de module qui portait cette citation fait échouer le test : garder la phrase dans le texte de trace.
+- **Suite complète sous charge** : `registry`, `buildLessonMemo`, `resumePath` expirent parfois (≈ 190 s de suite) — les relancer isolés avant de conclure.
+- Le merge i18n n'ajoute que des clés : les clés orphelines (`euclid.cp.invariant.quotient`, `whyQuotient`) restent à purger.
