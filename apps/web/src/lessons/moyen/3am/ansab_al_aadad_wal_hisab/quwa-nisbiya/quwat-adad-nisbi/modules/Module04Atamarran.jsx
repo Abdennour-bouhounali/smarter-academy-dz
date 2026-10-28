@@ -38,7 +38,7 @@ export default function Module04Atamarran() {
         step(7, 'ex-47', 'الحديقة المربّعة', ['quwat-quwa']),
         step(8, 'ex-51', 'مجموع قوى متساوية', ['jidaa-quwatayn']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

@@ -11,6 +11,10 @@ import { useManipulation } from '../useManipulation';
 import { LabCard, StageFrame, PromptCard, VerdictBanner } from '../primitives/LabKit';
 import KidFigure from '../primitives/KidFigure';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { LEVELS } from '../levels';
 import * as L from '../logic/unitLadder';
 import { CSS, COL, PAD, H, Y_RULER, Y_BAND, Y_TOTAL, xOf, widthOf, Ruler, Plaque, Band, tenSup, factorLabel } from './unitLadder/art';
@@ -43,6 +47,11 @@ import { CSS, COL, PAD, H, Y_RULER, Y_BAND, Y_TOTAL, xOf, widthOf, Ruler, Plaque
  *   FORMALIZATION  10³ × 10³ = 10⁶ ; 10³ / 10⁻² = 10⁵ ; (10³)² = 10⁶
  *   TRANSFER       « جرّب أعدادك » (toujours ouvert), les exercices et la banque
  *
+ * QUESTIONS PENDANT LE LABO (2026-10-28, lot 6) : après chaque tâche une suite de 2 questions se pose PAR-DESSUS le labo (`CHAINS`, `QUESTIONS` en bas du fichier) sur ce que l'élève vient de
+ * FAIRE avec SES rubans : le total de deux rubans, le compte de colonnes, le quotient, les colonnes par unité des tables ; la dernière tâche de chaque niveau finit par LA RÈGLE
+ * (la découverte d'avant passe dans la carte). Étapes `LabStepper` (`[data-ul-step=<i>]`) + fête ; « إعادة » repart de la tâche 1 ; obligatoires pour tout élève, coupées par
+ * l'enseignant pour SON compte (`useLabCheckpointSettings`) ; `checkpoints` = false les coupe aussi ; `onCheckpoint(ev)` : la trace que les étapes du module relisent (`checkpoint-done`).
+ *
  * D'UN SEUL REGARD (§8bis) : `[data-ul-glance]` enveloppe la consigne, la carte, la règle, la lecture, les boutons et le verdict.
  * ONBOARDING : `coach` (défaut true) → `LabCoach` ; `logic/unitLadder.js › coachOf` (predict · mode · handle · readout · dock · next · free).
  * Props : `tasks`, `level`, `levels`, `coach`, `title`, `lead`, `onTrial(event)`, `onFinished()`.
@@ -60,8 +69,8 @@ export function numbersFor({ tasks, level }) {
 }
 
 export default function UnitLadder({
-  tasks, title, lead, level, levels: withLevels = true, coach: coachOn = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  tasks, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
+  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished, onCheckpoint,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
@@ -70,14 +79,57 @@ export default function UnitLadder({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
   if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    const restart = scene.key === numsKey && scene.rc !== state.resetCount;
-    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-    setLab(restart ? L.restartTask(lab) : L.init(nums));
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la tâche 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
+    setLab(L.init(nums));
   }
   const kind = L.discoveryKind(lab);
-  useEffect(() => { if (kind) state.discover(); }, [kind, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : la suite de la tâche courante ; celle qui finit par la règle remplace la découverte automatique
+  const cpSettings = useLabCheckpointSettings('unit-ladder');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cur = L.taskOf(lab);
+  const chain = cpOn && cpSettings.enabled && !L.isFree(lab) ? CHAINS[cur.id] ?? null : null;
+  const ruleByCheckpoint = cpOn && cpSettings.enabled && lab.tasks.some((tk) => CHAINS[tk.id]?.includes('rule'));
+  const taskReached = L.taskDone(lab);
+  const cp = useLabCheckpoint({
+    id: chain ? cur.id : null,
+    questions: chain && taskReached ? chain.map((q) => QUESTIONS[q](lab, cur, k)) : null,
+    reached: taskReached,
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.retryTask),
+    onEvent: (ev) => state.report(onCheckpoint, ev),
+    onDone: (id) => { if (CHAINS[id]?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  useEffect(() => { if (kind && !ruleByCheckpoint) state.discover(); }, [kind, state.epoch, ruleByCheckpoint]); // eslint-disable-line react-hooks/exhaustive-deps
+  // une étape est FAITE quand son ruban est posé ET que ses questions sont répondues : alors la pastille passe au vert et on fête
+  const stepDone = lab.tasks.map((_, i) => !!lab.done[i] && (i !== lab.ti || !cp.blocking));
+  const stepper = lab.tasks.length > 1 && !L.isFree(lab) && (
+    <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-ul-step" />
+  );
+  const party = useStepCelebration();
+  const celebrated = useRef({ inits: 0, set: new Set() });
+  if (celebrated.current.inits !== scene.inits) celebrated.current = { inits: scene.inits, set: new Set() };   // « إعادة » : on refête
+  const nowDone = !L.isFree(lab) && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.set.has(lab.ti)) return;
+    celebrated.current.set.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
+  /* ── le son (muet sauf « الصوت ») : un cran à chaque colonne franchie par la poignée, la cloche quand un ruban est accepté, le drapeau quand la tâche est faite, « over » pour un refus ── */
+  const heardAt = useRef({ moves: 0, at: 0 });
+  useEffect(() => {
+    const h = heardAt.current;
+    if (lab.moves > h.moves) { const now = performance.now(); if (now - h.at > 35) { playSfx('tooth'); h.at = now; } }
+    h.moves = lab.moves;
+  }, [lab.moves]);
+  useEffect(() => {
+    const l = lab.last;
+    if (!l) return;
+    if (l.kind === 'refused') playSfx('over');
+    else if (l.kind === 'hop') playSfx('bell');
+    else if (l.kind === 'solved') playSfx('flag');
+  }, [lab.flash]); // eslint-disable-line react-hooks/exhaustive-deps
   const finishedOnce = useRef(false);
   const everyDone = L.allDone(lab);
   useEffect(() => {
@@ -112,6 +164,8 @@ export default function UnitLadder({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       coach={coachOn ? coach : null}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={!!chain || ruleByCheckpoint}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={discovery}
@@ -120,7 +174,8 @@ export default function UnitLadder({
       <ManipulationStage className="bg-gradient-to-b from-amber-50/70 to-white">
         <div className="space-y-2" data-unit-ladder data-mode={lab.mode} data-task={lab.ti} data-solved={everyDone ? 'true' : 'false'}>
           <style dangerouslySetInnerHTML={{ __html: CSS }} />
-          <Lab lab={lab} setLab={setLab} k={k} lead={state.isAuthoredLevel ? lead : null} />
+          <Lab lab={lab} setLab={setLab} k={k} lead={state.isAuthoredLevel ? lead : null}
+            overlay={<>{party.node}{cp.node}</>} stepper={stepper} blocked={cp.blocking} />
         </div>
       </ManipulationStage>
     </ManipulationShell>
@@ -142,7 +197,7 @@ const perUnit = (k, mode) => (mode === 1 ? colsText(1, k) : colsText(mode, k));
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-function Lab({ lab, setLab, k, lead }) {
+function Lab({ lab, setLab, k, lead, overlay, stepper, blocked }) {
   const free = L.isFree(lab);
   const task = L.taskOf(lab);
   const done = L.taskDone(lab);
@@ -153,11 +208,11 @@ function Lab({ lab, setLab, k, lead }) {
       contextProps={{ 'data-ul-context': ctxKey }}
       title={<MathText>{k(lab.fixedMode && !free ? 'question.ladder' : 'question.tables')}</MathText>} titleClassName="text-base" lamp={free ? null : done ? 'on' : 'off'}
       titleProps={{ 'data-ul-prompt': lab.fixedMode ? 'ladder' : 'tables', 'data-lit': done ? 'true' : 'false' }}
-      aside={lab.tasks.length > 1 && !free ? <Steps lab={lab} k={k} /> : undefined}
+      aside={stepper || undefined}
       instruction={lead || undefined} />
   );
   const vv = verdictOf(lab, k);
-  const canNext = L.canNext(lab);
+  const canNext = L.canNext(lab) && !blocked;
   const Icon = vv.tone === 'emerald' ? CheckCircle2 : vv.tone === 'amber' ? ShieldAlert : vv.tone === 'indigo' ? Hand : Sparkles;
   const btn = `inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-full border-2 px-3.5 text-sm font-black transition-all duration-150 active:translate-y-0.5 motion-reduce:transition-none ${ring}`;
   const pending = L.predictionPending(lab);
@@ -193,6 +248,7 @@ function Lab({ lab, setLab, k, lead }) {
   return (
     <>
       <div className="relative space-y-2" data-ul-glance>
+        {overlay}
         {prompt}
         <MissionRow lab={lab} setLab={setLab} k={k} task={task} />
         <Bench lab={lab} setLab={setLab} k={k} />
@@ -201,23 +257,6 @@ function Lab({ lab, setLab, k, lead }) {
       </div>
       <FreeCard lab={lab} setLab={setLab} k={k} />
     </>
-  );
-}
-
-function Steps({ lab, k }) {
-  return (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={tk.id} role="listitem" data-ul-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-amber-700 bg-amber-500 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-amber-200 bg-white text-amber-700'}`}>
-            <bdi dir="ltr">{i + 1}</bdi>
-          </span>
-        );
-      })}
-    </div>
   );
 }
 
@@ -503,3 +542,174 @@ export function Formal({ k, kind = 'gap' }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de chaque tâche : ce que la main vient de faire avec SES rubans ; la dernière tâche de chaque niveau finit par LA RÈGLE. */
+export const CHAINS = Object.freeze({
+  u1: ['hopsTotal', 'sumExp'],
+  u2: ['across', 'quot'],
+  u3: ['across', 'rule'],
+  u4: ['perUnit', 'power'],
+  u5: ['perUnit', 'power'],
+  u6: ['sign', 'power'],
+  u7: ['power', 'rule'],
+});
+
+const $ = (s) => `$${s}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const num = (n) => $(String(n).replace('-', '−'));
+const pw = (n) => `10^{${n}}`;
+const unitText = (k, u) => k(`units.${u}`);
+/** La bonne option à la place `want` ; une seule bonne. */
+const place = (opts, want) => {
+  const ci = opts.findIndex((o) => o.correct);
+  const rest = opts.filter((_, i) => i !== ci);
+  rest.splice(Math.min(want, rest.length), 0, opts[ci]);
+  return rest;
+};
+/** Garde les `count` premières valeurs distinctes. */
+const distinct = (list, count = 3) => { const seen = new Set(); const out = []; for (const x of list) { if (!seen.has(x.v)) { seen.add(x.v); out.push(x); } } return out.slice(0, count); };
+
+/** Chaque question est construite sur LA tâche (rien n'est écrit en dur) ; `k` : les textes de `unitLadder`. */
+export const QUESTIONS = {
+  /* u1 : deux rubans enchaînés, le total du pointillé */
+  hopsTotal: (lab, task, k) => {
+    const [b0, b1] = lab.bands;
+    const from = unitName(k, task.path[0], task.mode); const to = unitName(k, task.path.at(-1), task.mode);
+    const total = Math.abs(task.total);
+    return {
+      id: 'hopsTotal', kind: 'number', expected: String(total), answer: <MathText>{num(total)}</MathText>,
+      prompt: Cq(k, 'hopsTotal.prompt', { a: colsText(b0.k, k), b: colsText(b1.k, k), from, to }),
+      hints: [Cq(k, 'hopsTotal.hint1', { from, to }), Cq(k, 'hopsTotal.hint2')],
+      explain: Cq(k, 'hopsTotal.explain', { a: colsText(b0.k, k), b: colsText(b1.k, k), total }),
+    };
+  },
+  /* u1 : 10ᵃ × 10ᵇ = 10ᵃ⁺ᵇ */
+  sumExp: (lab, task, k) => {
+    const [b0, b1] = lab.bands;
+    const a = b0.k; const b = b1.k; const sum = a + b;
+    const prod = `${pw(a)}\\times${pw(b)}`;
+    const opts = distinct([
+      { v: sum, text: <MathText>{$(pw(sum))}</MathText>, correct: true },
+      { v: a * b, text: <MathText>{$(pw(a * b))}</MathText>, why: Cq(k, 'sumExp.whyProd', { sum, product: a * b }) },
+      { v: Math.max(a, b), text: <MathText>{$(pw(Math.max(a, b)))}</MathText>, why: Cq(k, 'sumExp.whyMax', { a, sum }) },
+      { v: sum + 1, text: <MathText>{$(pw(sum + 1))}</MathText>, why: Cq(k, 'sumExp.whyMax', { a, sum }) },
+    ]);
+    return {
+      id: 'sumExp', kind: 'choice', cols: 3,
+      prompt: Cq(k, 'sumExp.prompt', { prod: $(prod) }),
+      options: place(opts, 2),
+      hints: [Cq(k, 'sumExp.hint1'), Cq(k, 'sumExp.hint2')],
+      explain: Cq(k, 'sumExp.explain', { calc: $(`${prod}=${pw(`${a}+${b}`)}=${pw(sum)}`) }),
+    };
+  },
+  /* u2 · u3 : combien de colonnes entre deux plaques (longueurs) */
+  across: (lab, task, k) => {
+    const [f, t] = [task.path[0], task.path.at(-1)];
+    const sf = T.UNIT_SCALE[f]; const st = T.UNIT_SCALE[t];
+    const kk = Math.abs(task.total);
+    const from = unitText(k, f); const to = unitText(k, t);
+    const diff = Math.abs(Math.abs(sf) - Math.abs(st));
+    const cand = [
+      { v: kk, text: <MathText>{num(kk)}</MathText>, correct: true },
+      { v: diff, text: <MathText>{num(diff)}</MathText>, why: Cq(k, 'across.whyDiff', { x: num(diff), k: kk }) },
+      { v: Math.abs(sf) * Math.abs(st), text: <MathText>{num(Math.abs(sf) * Math.abs(st))}</MathText>, why: Cq(k, 'across.whyOther', { x: num(Math.abs(sf) * Math.abs(st)), k: kk }) },
+      { v: kk + 1, text: <MathText>{num(kk + 1)}</MathText>, why: Cq(k, 'across.whyOther', { x: num(kk + 1), k: kk }) },
+      { v: kk - 1, text: <MathText>{num(kk - 1)}</MathText>, why: Cq(k, 'across.whyOther', { x: num(kk - 1), k: kk }) },
+    ];
+    return {
+      id: 'across', kind: 'choice', cols: 3,
+      prompt: Cq(k, 'across.prompt', { from, to }),
+      options: place(distinct(cand), 2),
+      hints: [Cq(k, 'across.hint1', { to }), Cq(k, 'across.hint2')],
+      explain: Cq(k, 'across.explain', { k: kk, from, to, factor: $(pw(task.total)) }),
+    };
+  },
+  /* u2 · u3 : le quotient 10ᵃ ÷ 10ᵇ = 10ᵃ⁻ᵇ */
+  quot: (lab, task, k) => {
+    const [f, t] = [task.path[0], task.path.at(-1)];
+    const sf = T.UNIT_SCALE[f]; const st = T.UNIT_SCALE[t];
+    const kk = sf - st;
+    const from = unitText(k, f); const to = unitText(k, t);
+    const frac = `\\frac{${pw(sf)}}{${pw(st)}}`;
+    const mk = (e, why) => ({ v: e, text: <MathText>{$(pw(e))}</MathText>, ...(why ? { why } : { correct: true }) });
+    const cand = [
+      mk(kk),
+      mk(sf + st, Cq(k, 'quot.whySum', { sf: num(sf), st: num(st), k: kk })),
+      mk(st - sf, Cq(k, 'quot.whyBack', { from, to, good: $(pw(kk)) })),
+      mk(kk + 1, Cq(k, 'quot.whySum', { sf: num(sf), st: num(st), k: kk })),
+    ];
+    return {
+      id: 'quot', kind: 'choice', cols: 3,
+      prompt: Cq(k, 'quot.prompt', { from, to, vf: $(pw(sf)), vt: $(pw(st)), frac: $(frac) }),
+      options: place(distinct(cand), 0),
+      hints: [Cq(k, 'quot.hint1', { from, to }), Cq(k, 'quot.hint2')],
+      explain: Cq(k, 'quot.explain', { calc: $(`${frac}=${pw(`${sf}-(${st})`)}=${pw(kk)}`), k: kk }),
+    };
+  },
+  /* u4 · u5 : les colonnes par unité du tableau choisi */
+  perUnit: (lab, task, k) => {
+    const m = task.mode;
+    const [u1, u2] = L.UNITS[m].slice(0, 2).map((u) => unitName(k, u, m));
+    const table = k(`cp.perUnit.${m === 2 ? 'area' : 'volume'}`);
+    const o = { u1, u2, m, table };
+    const opts = [1, 2, 3].map((n) => ({ text: <MathText>{colsText(n, k)}</MathText>, ...(n === m ? { correct: true } : { why: Cq(k, 'perUnit.whyOther', { ...o, x: colsText(n, k) }) }) }));
+    return {
+      id: 'perUnit', kind: 'choice', cols: 3,
+      prompt: Cq(k, 'perUnit.prompt', { table }),
+      options: place(opts, (lab.ti + 1) % 3),
+      hints: [Cq(k, 'perUnit.hint1', { u1, u2 }), Cq(k, 'perUnit.hint2')],
+      explain: Cq(k, 'perUnit.explain', { table, m }),
+    };
+  },
+  /* u4 … u7 : (10ᵖ)ᵐ = 10ᵖᵐ — les colonnes du tableau = celles du tableau des longueurs × colonnes par unité */
+  power: (lab, task, k) => {
+    const m = task.mode;
+    const [f, t] = [task.path[0], task.path.at(-1)];
+    const total = Math.abs(task.total);
+    const p = total / m;
+    const o = { l1: unitText(k, f), l2: unitText(k, t), p, m, from: unitName(k, f, m), to: unitName(k, t, m), t: total };
+    const cand = [
+      { v: total, text: <MathText>{num(total)}</MathText>, correct: true },
+      { v: p + m, text: <MathText>{num(p + m)}</MathText>, why: Cq(k, 'power.whyAdd', o) },
+      { v: p ** m, text: <MathText>{num(p ** m)}</MathText>, why: Cq(k, 'power.whyPow', { ...o, x: p ** m }) },
+      { v: total + 1, text: <MathText>{num(total + 1)}</MathText>, why: Cq(k, 'power.whyPow', { ...o, x: total + 1 }) },
+    ];
+    return {
+      id: 'power', kind: 'choice', cols: 3,
+      prompt: Cq(k, 'power.prompt', o),
+      options: place(distinct(cand), (lab.ti + 2) % 3),
+      hints: [Cq(k, 'power.hint1', o), Cq(k, 'power.hint2', o)],
+      explain: Cq(k, 'power.explain', { calc: $(`(${pw(p)})^{${m}}=${pw(`${p}\\times${m}`)}=${pw(total)}`) }),
+    };
+  },
+  /* u6 : le ruban bleu, k < 0 */
+  sign: (lab, task, k) => {
+    const m = task.mode;
+    const from = unitName(k, task.path[0], m); const to = unitName(k, task.path.at(-1), m);
+    const opts = [
+      { text: Cq(k, 'sign.right'), correct: true },
+      { text: Cq(k, 'sign.err'), why: Cq(k, 'sign.whyErr') },
+      { text: Cq(k, 'sign.table'), why: Cq(k, 'sign.whyTable') },
+    ];
+    return {
+      id: 'sign', kind: 'choice', cols: 1,
+      prompt: Cq(k, 'sign.prompt', { from, to }),
+      options: place(opts, 1),
+      hints: [Cq(k, 'sign.hint1', { from, to }), Cq(k, 'sign.hint2')],
+      explain: Cq(k, 'sign.explain', { from, to, factor: $(pw(task.total)) }),
+    };
+  },
+  /* la règle : l'ancienne découverte, posée en dernier */
+  rule: (lab, task, k) => {
+    const kind = lab.discovery === 'tables' ? 'tables' : 'gap';
+    return {
+      id: 'rule', kind: 'choice', cols: 1,
+      prompt: <MathText>{k(`discovery.${kind}.prompt`)}</MathText>,
+      options: place(discoveryOptions(k, kind), 2),
+      hints: [Cq(k, `rule.${kind}.hint1`), Cq(k, `rule.${kind}.hint2`)],
+      explain: <Formal k={k} kind={kind} />,
+    };
+  },
+};

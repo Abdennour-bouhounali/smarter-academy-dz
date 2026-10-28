@@ -38,7 +38,7 @@ export default function Module04Atamarran() {
         step(7, 'act-3-rank', 'رتبة الرقم 1', ['ashara-salib']),
         step(8, 'self-11', 'كتابات من الشكل k × 10ⁿ', ['ashara-kn']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

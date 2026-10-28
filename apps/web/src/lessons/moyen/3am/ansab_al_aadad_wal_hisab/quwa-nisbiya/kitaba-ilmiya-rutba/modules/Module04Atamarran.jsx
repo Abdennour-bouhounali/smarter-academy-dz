@@ -35,7 +35,7 @@ export default function Module04Atamarran() {
         step(5, 'ex-30', 'أحسب ثم أكتب', ['hisab-ilmiya']),
         step(6, 'ex-57', 'كمية حقيقية', ['rutbat-qadr']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

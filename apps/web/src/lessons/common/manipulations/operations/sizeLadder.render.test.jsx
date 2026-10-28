@@ -2,7 +2,8 @@ import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import i18n from '../../../../i18n';
-import SizeLadder, { discoveryOptions, Formal } from './SizeLadder';
+import SizeLadder, { discoveryOptions, Formal, CHAINS, QUESTIONS } from './SizeLadder';
+import * as SL from '../logic/sizeLadder';
 import { LEVELS } from '../levels';
 
 const RAW = /manipulation\.[a-zA-Z]/;
@@ -78,5 +79,53 @@ describe('size-ladder — chaînes de texte', () => {
   it('la prose ne dit pas la règle avant la découverte (consigne, coach, indices)', () => {
     const early = ['context.first', 'context.again', 'context.typed', 'context.compare', 'question.hang', 'question.typed', 'question.compare', 'coach.card', 'coach.rung', 'coach.cell', 'coach.magnet', 'coach.type', 'coach.pick', 'hints.0', 'hints.1', 'hints.2'].map((x) => k(x)).join(' ');
     expect(early).not.toMatch(/أقل من 10|نقرّب|ن حذف|الأسّ يساوي|عدد الأرقام/);
+  });
+});
+
+describe('size-ladder — questions pendant le labo (LabCheckpoint)', () => {
+  it('chaque question de chaque tâche des deux niveaux : texte, 2 indices, une seule bonne réponse, ni clé brute ni {{ ni $ brut', () => {
+    for (const lv of ['beginner', 'advanced']) {
+      const base = SL.init(LV[lv].numbers);
+      base.tasks.forEach((tk, i) => {
+        expect(CHAINS[tk.id], tk.id).toBeTruthy();
+        const lab = { ...base, ti: i };
+        for (const qid of CHAINS[tk.id]) {
+          const q = QUESTIONS[qid](lab, tk, k);
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${tk.id}.${qid}`).not.toMatch(RAW);
+          expect(out, `${tk.id}.${qid}`).not.toContain('{{');
+          expect(out, `${tk.id}.${qid}`).not.toMatch(/(^|[^\\])\$[^<]*\$/);
+          expect(q.hints, `${tk.id}.${qid}`).toHaveLength(2);
+          expect(q.options.filter((o) => o.correct), `${tk.id}.${qid}`).toHaveLength(1);
+          expect(q.options.filter((o) => !o.correct).every((o) => o.why), `${tk.id}.${qid} why`).toBe(true);
+          expect(new Set(q.options.map((o) => renderToString(<span>{o.text}</span>))).size, `${tk.id}.${qid} distinct`).toBe(q.options.length);
+        }
+      });
+    }
+  });
+  it('la dernière tâche de chaque niveau finit par la règle ; la place de la bonne réponse varie', () => {
+    expect(CHAINS.c4.at(-1)).toBe('rule');
+    expect(CHAINS.c8.at(-1)).toBe('rule');
+    const base = SL.init(LV.beginner.numbers);
+    const slots = new Set(base.tasks.slice(0, 3).map((tk, i) => QUESTIONS.sci({ ...base, ti: i }, tk, k).options.findIndex((o) => o.correct)));
+    expect(slots.size).toBeGreaterThan(1);
+    // la carte 265 : barreau 2, la bonne option est 10^2 ≤ A < 10^3
+    const q = QUESTIONS.rung(base, base.tasks[0], k);
+    expect(renderToString(<span>{q.options.find((o) => o.correct).text}</span>)).toContain('10');
+  });
+  it('« أعِد التجربة » : la même carte repart et son drapeau « fait » tombe', () => {
+    let lab = SL.init(LV.beginner.numbers);
+    lab = { ...lab, done: [true, false, false, false] };
+    const r = SL.retryTask(lab);
+    expect(r.done[0]).toBe(false);
+    expect(r.ti).toBe(0);
+  });
+  it('mode guidé : ni la progression ni le bouton d’indice, les étapes et le son sont là', () => {
+    const out = html({ ...LV.beginner.numbers, level: 'beginner' });
+    expect(out).not.toContain('data-manipulation-progress');
+    expect(out).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    expect(out).toContain('data-sl-step="3"');
+    expect(out).toContain('data-manipulation-sound');
+    expect(html({ ...LV.beginner.numbers, level: 'beginner', checkpoints: false })).toContain('data-manipulation-progress');
   });
 });

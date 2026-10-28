@@ -3,6 +3,7 @@ import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../co
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { TextbookBox } from '../../../../../../common/textbook';
+import { useLabCheckpointSettings } from '../../../../../../common/manipulations/primitives/labCheckpointSettings';
 import { Manipulation } from '../../../../../../common/manipulations';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { LAB, KNOWLEDGE, RECALL_TEN, GUIDE } from '../content/textbook';
@@ -22,6 +23,17 @@ export default function Module02Maarif() {
   const [q, setQ] = useState({});
   const answered = (k) => () => setQ((s) => ({ ...s, [k]: true }));
   const record = (e) => setTrials((list) => [...list, e]);
+  const [cps, setCps] = useState([]);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) remplacent celles des étapes ci-dessous ; coupées par l'enseignant, les questions d'origine reviennent
+  const cpOn = useLabCheckpointSettings('power-train').enabled;
+  const doneCp = (id, level) => cps.some((e) => e.tk === 'checkpoint-done' && e.id === id && (!level || e.level === level));
+  const onCheckpoint = (level) => (e) => setCps((l) => [...l, { ...e, level }]);
+  const Trace = ({ id, ok, done, todo }) => (
+    <p data-checkpoint-trace={id} data-tried={ok ? 'true' : 'false'}
+      className={`rounded-xl border-2 px-3 py-2 text-sm ${ok ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+      {ok ? done : todo}
+    </p>
+  );
   const solved = (task) => trials.find((e) => e.kind === 'release' && e.world === 'couple' && e.task === task && e.ok);
   const s0 = solved(0);
   const s2 = solved(2);
@@ -42,7 +54,7 @@ export default function Module02Maarif() {
       moduleTitle="معارف — قواعد الحساب على القوى"
       moduleSubtitle="قطاران موصولان"
       estimatedTime="13 دقيقة"
-      intro={<Manipulation type="power-train" world={LAB.couple.world} base={LAB.couple.base} tasks={LAB.couple.tasks} levels={false} onTrial={record} />}
+      intro={<Manipulation type="power-train" world={LAB.couple.world} base={LAB.couple.base} tasks={LAB.couple.tasks} levels={false} onTrial={record} onCheckpoint={onCheckpoint('couple')} />}
       steps={[
         {
           num: 1, title: 'كيف نكتب ما يحمله القطار؟', subtitle: 'الأساس والأس', done: !!q.a,
@@ -63,43 +75,55 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 2, title: 'لماذا صار أس القطار الموصول 7؟', subtitle: 'جداء قوتين', done: !!q.b,
+          num: 2, title: 'لماذا صار أس القطار الموصول 7؟', subtitle: 'جداء قوتين', done: (cpOn ? doneCp('c0') : !!q.b),
           content: (
             <div className="space-y-3" data-activity-evidence>
               <Evidence id="couple" ok={!!s0}
                 done={<span>ربطتَ القطار أ (<Ltr>3</Ltr> عربات) بالقطار ب (<Ltr>{s0?.n}</Ltr> عربات) فصار أس القطار الموصول <Ltr>{s0?.exponent}</Ltr> .</span>}
                 todo="أنجز المهمة الأولى في المختبر أعلاه (القطار الموصول أسّه 7)، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<span>عربات القطار أ ثم عربات القطار ب تتتابع في القطار الموصول. ماذا يساوي <MathText>{'$2^3 \\times 2^4$'}</MathText> ؟</span>}
-                options={[M('$2^{7}$ : ثلاثة عوامل ثم أربعة عوامل'), M('$2^{12}$ : نضرب الأسين'), M('$4^{7}$ : نضرب الأساسين')]}
-                correct={0} cols={1} requires={['quwa-taarif']}
-                explain={<MathText>{`${GUIDE.product.why} ${GUIDE.product.right}`}</MathText>}
-                onAnswered={answered('b')}
-              />
-              {q.b && <KnowledgeBrick id="jidaa-quwatayn" lead="قطار أسّه m وقطار أسّه n : ما أس القطار الموصول؟" />}
-              {q.b && <TextbookBox kind="remark" compact title={RECALL_TEN.title} text={RECALL_TEN.text} source={RECALL_TEN.source} />}
+              {cpOn ? (
+                <Trace id="c0" ok={doneCp('c0')}
+                  done={<MathText>{'أجبتَ في المختبر: قطار أسّه 3 ربطتَه بقطار أسّه 4 فصار أسّ الموصول 7 ، لأنّ العربات تتتابع فتُجمع الأسّان.'}</MathText>}
+                  todo="أنجز المهمة الأولى في المختبر أعلاه (القطار الموصول أسّه 7)، وأجب عن الأسئلة التي تظهر فوق المختبر." />
+              ) : (
+                <TapQuestion
+                  prompt={<span>عربات القطار أ ثم عربات القطار ب تتتابع في القطار الموصول. ماذا يساوي <MathText>{'$2^3 \\times 2^4$'}</MathText> ؟</span>}
+                  options={[M('$2^{7}$ : ثلاثة عوامل ثم أربعة عوامل'), M('$2^{12}$ : نضرب الأسين'), M('$4^{7}$ : نضرب الأساسين')]}
+                  correct={0} cols={1} requires={['quwa-taarif']}
+                  explain={<MathText>{`${GUIDE.product.why} ${GUIDE.product.right}`}</MathText>}
+                  onAnswered={answered('b')}
+                />
+              )}
+              {(cpOn ? doneCp('c0') : !!q.b) && <KnowledgeBrick id="jidaa-quwatayn" lead="قطار أسّه m وقطار أسّه n : ما أس القطار الموصول؟" />}
+              {(cpOn ? doneCp('c0') : !!q.b) && <TextbookBox kind="remark" compact title={RECALL_TEN.title} text={RECALL_TEN.text} source={RECALL_TEN.source} />}
             </div>
           ),
         },
         {
-          num: 3, title: 'لماذا بقي الأس 2 بعد القسمة؟', subtitle: 'حاصل قسمة قوتين', done: !!q.c,
+          num: 3, title: 'لماذا بقي الأس 2 بعد القسمة؟', subtitle: 'حاصل قسمة قوتين', done: (cpOn ? doneCp('c2') : !!q.c),
           content: (
             <div className="space-y-3" data-activity-evidence>
               <Evidence id="divide" ok={!!s2}
                 done={<span>قسمتَ القطار أ (<Ltr>5</Ltr> عربات) على القطار ب (<Ltr>{s2?.n}</Ltr> عربات) فصار أس الناتج <Ltr>{s2?.exponent}</Ltr> .</span>}
                 todo="أنجز المهمة الثالثة في المختبر أعلاه (قسمة القطار أ على القطار ب)، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<span>عند القسمة انقلبت عربات القطار ب الثلاث إلى عربات قسمة. لماذا بقي <MathText>{'$\\frac{2^5}{2^3} = 2^2$'}</MathText> ؟</span>}
-                options={[
-                  M('لأنّ كل عربة قسمة ألغت عربة ضرب: بقيت $5 - 3 = 2$ عربتان'),
-                  M('لأنّ $5 \\div 3$ يقارب 2'),
-                  M('لأنّ القسمة تحذف دائمًا ثلاث عربات'),
-                ]}
-                correct={0} cols={1} requires={['jidaa-quwatayn']}
-                explain={<MathText>{'$\\frac{2^5}{2^3} = \\frac{2 \\times 2 \\times 2 \\times 2 \\times 2}{2 \\times 2 \\times 2} = 2^{5-3} = 2^2$ .'}</MathText>}
-                onAnswered={answered('c')}
-              />
-              {q.c && <KnowledgeBrick id="hasil-quwatayn" lead="قطار أسّه m مقسوم على قطار أسّه n : ما أس الناتج؟" />}
+              {cpOn ? (
+                <Trace id="c2" ok={doneCp('c2')}
+                  done={<MathText>{'أجبتَ في المختبر: قسمة قطار أسّه 5 على قطار أسّه 3 تعطي أسّ $5 - 3 = 2$ ، لأنّ كل عربة قسمة تلغي عربة ضرب.'}</MathText>}
+                  todo="أنجز المهمة الثالثة في المختبر أعلاه (قسمة القطار أ على القطار ب)، وأجب عن الأسئلة التي تظهر فوق المختبر." />
+              ) : (
+                <TapQuestion
+                  prompt={<span>عند القسمة انقلبت عربات القطار ب الثلاث إلى عربات قسمة. لماذا بقي <MathText>{'$\\frac{2^5}{2^3} = 2^2$'}</MathText> ؟</span>}
+                  options={[
+                    M('لأنّ كل عربة قسمة ألغت عربة ضرب: بقيت $5 - 3 = 2$ عربتان'),
+                    M('لأنّ $5 \\div 3$ يقارب 2'),
+                    M('لأنّ القسمة تحذف دائمًا ثلاث عربات'),
+                  ]}
+                  correct={0} cols={1} requires={['jidaa-quwatayn']}
+                  explain={<MathText>{'$\\frac{2^5}{2^3} = \\frac{2 \\times 2 \\times 2 \\times 2 \\times 2}{2 \\times 2 \\times 2} = 2^{5-3} = 2^2$ .'}</MathText>}
+                  onAnswered={answered('c')}
+                />
+              )}
+              {(cpOn ? doneCp('c2') : !!q.c) && <KnowledgeBrick id="hasil-quwatayn" lead="قطار أسّه m مقسوم على قطار أسّه n : ما أس الناتج؟" />}
             </div>
           ),
         },
@@ -135,7 +159,7 @@ export default function Module02Maarif() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={2} />}
+      footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />
   );
 }

@@ -36,7 +36,7 @@ export default function Module04Atamarran() {
         step(5, 'now-43', 'عدد × قوة للعدد 10', ['adad-fi-quwa']),
         step(6, 'ex-56', 'برنامج حساب', ['tabsit-ashara']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

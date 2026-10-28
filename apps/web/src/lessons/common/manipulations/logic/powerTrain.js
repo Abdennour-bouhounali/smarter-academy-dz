@@ -205,3 +205,12 @@ export function coupleWitness(s) {
   const n = s.solved[i]?.n ?? t.goal;
   return { m: t.m, n, sum: t.m + n, product: t.m * n, op: t.op };
 }
+
+/** « أعِد التجربة » (questions pendant le labo) : la MÊME tâche repart ET son drapeau « fait » tombe (avec son essai gardé) — sinon l'étape resterait verte et la carte de questions ne se rouvrirait pas. */
+export function retryTask(s) {
+  const r = restartTask(s);
+  if (s.free) return r;
+  const done = { ...s.done }; delete done[s.ti];
+  const solved = { ...s.solved }; delete solved[s.ti];
+  return { ...r, done, solved };
+}

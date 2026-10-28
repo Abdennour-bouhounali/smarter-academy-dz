@@ -3,7 +3,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import i18n from '../../../../i18n';
-import PowerTrain, { discoveryOptions, discoveryKey } from './PowerTrain';
+import PowerTrain, { discoveryOptions, discoveryKey, CHAINS, QUESTIONS, chainOf } from './PowerTrain';
 import { LEVELS } from '../levels';
 import * as L from '../logic/powerTrain';
 
@@ -93,5 +93,69 @@ describe('power-train — rendu', () => {
     const all = JSON.stringify(i18n.t('lesson:manipulation.powerTrain', { returnObjects: true }));
     expect(all.length).toBeGreaterThan(500);
     expect(all).not.toMatch(/الكتاب|ص \d/);
+  });
+});
+
+describe('power-train — questions pendant le labo (LabCheckpoint)', () => {
+  const worlds = [
+    ['build.beginner', { ...LV.beginner.numbers }, false],
+    ['build.advanced', { ...LV.advanced.numbers }, true],
+    ['couple.beginner', { world: 'couple', ...L.PRESETS.couple.beginner }, false],
+    ['couple.advanced', { world: 'couple', ...L.PRESETS.couple.advanced }, true],
+  ];
+  /** Un labo dont toutes les tâches sont réussies (chaque tâche lâchée sur son exposant). */
+  const solvedLab = (numbers) => {
+    let s = L.init(numbers);
+    s.tasks.forEach((tk, i) => { s = L.release({ ...s, ti: i }, tk.goal); });
+    return s;
+  };
+  it('chaque question de chaque tâche : texte, 2 indices, une seule bonne réponse, ni clé brute ni {{', () => {
+    for (const [tag, numbers, advanced] of worlds) {
+      const lab = solvedLab(numbers);
+      lab.tasks.forEach((tk, i) => {
+        const chain = chainOf(lab, tk, advanced);
+        expect(chain, `${tag}.${tk.id}`).toBeTruthy();
+        const here = { ...lab, ti: i };
+        for (const qid of chain) {
+          const q = QUESTIONS[qid](here, tk, k, advanced);
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${tag}.${tk.id}.${qid}`).not.toMatch(RAW);
+          expect(out, `${tag}.${tk.id}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${tag}.${tk.id}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') {
+            expect(q.options.filter((o) => o.correct), `${tag}.${tk.id}.${qid}`).toHaveLength(1);
+            expect(q.options.filter((o) => !o.correct).every((o) => o.why), `${tag}.${tk.id}.${qid} why`).toBe(true);
+            expect(new Set(q.options.map((o) => renderToString(<span>{o.text}</span>))).size, `${tag}.${tk.id}.${qid} distinct`).toBe(q.options.length);
+          } else expect(Number(q.expected)).toBeGreaterThan(0);
+        }
+      });
+      expect(Object.keys(CHAINS[tag]).length, tag).toBe(lab.tasks.length);
+      expect(chainOf(lab, lab.tasks.at(-1), advanced).at(-1), `${tag} finit par la règle`).toBe('rule');
+    }
+  });
+  it('les nombres : (−2)^4 = 16 donne 4 wagons ; 1/9 en base −3 donne 2 wagons « ÷ » ; 3 + 4 = 7', () => {
+    const b = solvedLab(LV.beginner.numbers);
+    expect(QUESTIONS.wagons(b, b.tasks[0], k).expected).toBe('4');
+    const a = solvedLab(LV.advanced.numbers);
+    expect(QUESTIONS.divide(a, a.tasks[2], k).expected).toBe('2');
+    const c = solvedLab({ world: 'couple', ...L.PRESETS.couple.beginner });
+    expect(QUESTIONS.coupleN(c, c.tasks[0], k).expected).toBe('4');
+    const sum = QUESTIONS.sum(c, c.tasks[0], k);
+    expect(renderToString(<span>{sum.options.find((o) => o.correct).text}</span>)).toContain('7');
+  });
+  it('« أعِد التجربة » : la même tâche repart et son drapeau « fait » tombe', () => {
+    const s = solvedLab(LV.beginner.numbers);
+    expect(s.done[2]).toBe(true);
+    const r = L.retryTask({ ...s, ti: 2 });
+    expect(r.done[2]).toBeUndefined();
+    expect(r.n).toBe(0);
+  });
+  it('mode guidé : ni la progression ni le bouton d’indice, les étapes et le son sont là', () => {
+    const out = html({ ...LV.beginner.numbers, level: 'beginner' });
+    expect(out).not.toContain('data-manipulation-progress');
+    expect(out).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    expect(out).toContain('data-pt-step="2"');
+    expect(out).toContain('data-manipulation-sound');
+    expect(html({ ...LV.beginner.numbers, level: 'beginner', checkpoints: false })).toContain('data-manipulation-progress');
   });
 });
