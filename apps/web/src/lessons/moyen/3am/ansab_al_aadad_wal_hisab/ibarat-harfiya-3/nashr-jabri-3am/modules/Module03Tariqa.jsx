@@ -14,19 +14,18 @@ import { METHOD_EXPAND } from '../content/textbook';
  * semblables. Puis l'élève répond sur ce qu'il a fait, lit la méthode ligne à ligne, puis la brique (gardée par « أتوقّع القاعدة »), puis un
  * transfert. Les tâches du labo sont celles de `logic/areaSplit.js › ARROW_TASKS` (5(x + 2), −3(x − 4), (2x + 1)(x − 3), 3(2 − x) − 4(x − 1)) ;
  * la méthode revue est 3(2 − 5x) − 4(x − 1) + x(7 − 2x), et le transfert (2x + 3)(5 − x).
+ * Déploiement du prototype (2026-10-28) : les questions sur ce que l'élève a FAIT sont posées PAR-DESSUS le labo après chaque tâche
+ * (`AreaSplit › chainOf`, la règle clôt la dernière) ; les étapes en gardent la TRACE (`checkpoint-done`) puis posent les noms.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
-const Ltr = ({ children }) => <bdi dir="ltr">{children}</bdi>;
 
 export default function Module03Tariqa() {
   const [trials, setTrials] = useState([]);
   const [read, setRead] = useState(false);
-  const [q1, setQ1] = useState(false);
-  const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
   const record = (e) => setTrials((list) => [...list, e]);
-  const negProduct = trials.find((e) => e.kind === 'product' && e.ok && e.task === 'a2' && e.sign > 0);
-  const arrowsA3 = trials.filter((e) => e.kind === 'arrow' && e.ok && e.task === 'a3').length;
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand la suite de questions de sa tâche l'est
+  const answered = (id) => trials.some((e) => e.tk === 'checkpoint-done' && e.id === id);
 
   const Evidence = ({ id, ok, done, todo }) => (
     <p data-evidence={id} data-tried={ok ? 'true' : 'false'}
@@ -47,45 +46,23 @@ export default function Module03Tariqa() {
       intro={<Manipulation type="area-split" levels={false} world="arrows" onTrial={record} />}
       steps={[
         {
-          num: 1, title: 'لماذا خرج الجداء موجبًا؟', subtitle: 'إشارة كل جداء', done: q1,
+          num: 1, title: 'لماذا خرج الجداء موجبًا؟', subtitle: 'إشارة كل جداء', done: answered('a2'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="neg" ok={!!negProduct}
-                done={<span>رسمتَ سهمًا من العامل <Ltr>−3</Ltr> إلى الحدّ <Ltr>−4</Ltr> فقبلت اللوحة الجداء <Ltr>+12</Ltr>.</span>}
-                todo="في العبارة الثانية (−3(x − 4)) ارسم سهمًا من العامل −3 إلى الحدّ −4 وقرّر إشارة الجداء، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<MathText>{String.raw`رسمتَ سهمًا من العامل $-3$ إلى الحدّ $-4$ وقبلت اللوحة الجداء $+12$. لماذا؟`}</MathText>}
-                options={[
-                  M('لأنّ جداء عددين سالبين موجب'),
-                  M('لأنّ $3\\times4$ موجب دائمًا'),
-                  M('لأنّ $-3$ أكبر من $-4$'),
-                ]}
-                correct={0} cols={1}
-                explain={<MathText>{'$(-3)\\times x=-3x$ و $(-3)\\times(-4)=+12$ ، فنكتب كل جداء مع إشارته: $-3(x-4)=-3x+12$.'}</MathText>}
-                onAnswered={() => setQ1(true)}
-              />
-              {q1 && <KnowledgeBrick id="ishara-jidaa" lead="كل سهم له جداء: كيف عرفتَ إشارته؟" />}
+              <Evidence id="neg" ok={answered('a2')}
+                done={<MathText>{'أجبتَ في المختبر: السهم من $-3$ إلى $-4$ أعطى $+12$ ، لأنّ جداء عددين سالبين موجب: $-3(x-4)=-3x+12$ .'}</MathText>}
+                todo="في العبارة الثانية ارسم الأسهم وقرّر إشارة كل جداء، وأجب عن الأسئلة التي تظهر فوق المختبر." />
+              {answered('a2') && <KnowledgeBrick id="ishara-jidaa" lead="كل سهم له جداء: كيف عرفتَ إشارته؟" />}
             </div>
           ),
         },
         {
-          num: 2, title: 'كم سهمًا رسمتَ ولماذا؟', subtitle: 'كل حدّ مع كل حدّ', done: q2,
+          num: 2, title: 'كم سهمًا رسمتَ ولماذا؟', subtitle: 'كل حدّ مع كل حدّ', done: answered('a3'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="arrows" ok={arrowsA3 >= 4}
-                done={<span>رسمتَ <Ltr>{arrowsA3}</Ltr> أسهم في العبارة <Ltr>(2x + 1)(x − 3)</Ltr>.</span>}
-                todo="في العبارة الثالثة ارسم الأسهم الأربعة من كل حدّ في القوس الأول إلى كل حدّ في الثاني، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<MathText>{String.raw`في $(2x+1)(x-3)$ رسمتَ أسهمًا من كل حدّ في القوس الأول إلى كل حدّ في الثاني. كم جداءً حصلتَ عليه؟`}</MathText>}
-                options={[
-                  M('أربعة: حدّان في حدّين'),
-                  M('اثنان: لأنّ في كل قوس حدّين'),
-                  M('ثلاثة'),
-                ]}
-                correct={0} cols={1} requires={['ishara-jidaa']}
-                explain={<MathText>{'$2\\times2=4$ : $2x\\times x$ و $2x\\times(-3)$ و $1\\times x$ و $1\\times(-3)$ ؛ ثم نجمع المتشابهة: $2x^2-6x+x-3=2x^2-5x-3$.'}</MathText>}
-                onAnswered={() => setQ2(true)}
-              />
+              <Evidence id="arrows" ok={answered('a3')}
+                done={<MathText>{'أجبتَ في المختبر: أربعة أسهم في $(2x+1)(x-3)$ ، حدّان في حدّين، ثم $2x^2-5x-3$ .'}</MathText>}
+                todo="في العبارة الثالثة ارسم الأسهم الأربعة، وأجب عن الأسئلة التي تظهر فوق المختبر." />
             </div>
           ),
         },
@@ -106,7 +83,7 @@ export default function Module03Tariqa() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }

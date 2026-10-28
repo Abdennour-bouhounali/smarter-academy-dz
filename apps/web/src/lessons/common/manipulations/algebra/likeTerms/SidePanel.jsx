@@ -65,9 +65,9 @@ function Values({ lab, k, compact = false, flat = false }) {
   );
 }
 
-function Banner({ lab, setLab, k, coachVisible, compact = false }) {
+function Banner({ lab, setLab, k, coachVisible, compact = false, blocking = false }) {
   const b = bannerOf(lab, k, coachVisible);
-  const next = L.canNext(lab) && (
+  const next = L.canNext(lab) && !blocking && (
     <button type="button" onClick={() => setLab(L.nextTask)} data-lt-next
       className={`inline-flex min-h-[44px] items-center justify-center gap-1.5 whitespace-nowrap rounded-full border-2 border-emerald-600 bg-emerald-600 px-3.5 text-sm font-black text-white shadow-[0_3px_0_0_#047857] active:translate-y-0.5 ${ring}`}>
       {k(lab.custom ? 'back' : 'next')} <ChevronLeft className="h-4 w-4" aria-hidden="true" />
@@ -129,11 +129,11 @@ function FreePanel({ lab, setLab, k, compact = false }) {
   );
 }
 
-export default function SidePanel({ lab, setLab, k, side, width, coachVisible }) {
+export default function SidePanel({ lab, setLab, k, side, width, coachVisible, blocking = false }) {
   if (side) {
     return (
       <div className="min-w-0 shrink-0 space-y-2" style={{ width }} data-lt-panel>
-        <Banner lab={lab} setLab={setLab} k={k} coachVisible={coachVisible} />
+        <Banner lab={lab} setLab={setLab} k={k} coachVisible={coachVisible} blocking={blocking} />
         <Values lab={lab} k={k} />
         <XControl lab={lab} setLab={setLab} k={k} />
         <FreePanel lab={lab} setLab={setLab} k={k} />
@@ -146,7 +146,7 @@ export default function SidePanel({ lab, setLab, k, side, width, coachVisible })
         <XControl lab={lab} setLab={setLab} k={k} compact />
         <Values lab={lab} k={k} compact flat />
       </div>
-      <Banner lab={lab} setLab={setLab} k={k} coachVisible={coachVisible} compact />
+      <Banner lab={lab} setLab={setLab} k={k} coachVisible={coachVisible} compact blocking={blocking} />
       <FreePanel lab={lab} setLab={setLab} k={k} compact />
     </div>
   );

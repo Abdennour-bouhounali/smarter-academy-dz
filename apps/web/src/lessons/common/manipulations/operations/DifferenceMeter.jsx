@@ -12,6 +12,10 @@ import { useManipulation } from '../useManipulation';
 import { LabCard, StageFrame, PromptCard, VerdictBanner } from '../primitives/LabKit';
 import KidFigure from '../primitives/KidFigure';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { LEVELS } from '../levels';
 import * as L from '../logic/differenceMeter';
 import { CSS, VB_W, VB_H, RAIL_Y, Bench, Meter, Rail, Bead, Tag, ProbeArt, Lead, Curtain, Lens, LENS, AMBER, BLUE, needleDeg, fmt } from './differenceMeter/art';
@@ -47,6 +51,14 @@ import { CSS, VB_W, VB_H, RAIL_Y, Bench, Meter, Rail, Bead, Tag, ProbeArt, Lead,
  *
  * D'UN SEUL REGARD (§8bis) : `[data-dm-glance]` enveloppe la consigne, la paillasse, les cartes et le verdict.
  * ONBOARDING : `coach` (défaut true) → `LabCoach` ; `logic/differenceMeter.js › coachOf` (plug · plug2 · write · swap · verdict · x · coef · cards · next · free).
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 1, 2026-10-28) : `checkpoints` (défaut true). Après CHAQUE
+ * tâche, une suite de questions sur ce que l'élève vient de FAIRE se pose par-dessus le labo et retient « التالي » (`chainOf`) : rail la lecture
+ * de l'aiguille · l'ordre ; mustSwap la lecture · l'échange (le signe change, pas l'ordre) ; write le dénominateur commun · l'ordre ; rideau
+ * l'ordre ; race qui est plus grand à x = 0 · où elles se croisent (ou jamais). La dernière tâche de chaque niveau rail finit par LA RÈGLE
+ * (l'ancienne découverte `side` / `need`, qui formalise dans `onDone`). Obligatoires pour tout élève ; l'enseignant seul les coupe pour SON
+ * compte (`useLabCheckpointSettings`). ÉTAPES `LabStepper` (`[data-dm-step=<i>]`) + fête ; « إعادة » repart de la tâche 1 ; « أعِد التجربة »
+ * remet LA MÊME tâche (`L.restartTask`). SON (`playSfx`) : `tooth` pour brancher / échanger / bouger x, `bell` pour une différence écrite
+ * juste ou des coefficients justes, `flag` pour la tâche faite, `over` pour un refus.
  * Props : `tasks`, `world` ('rail' | 'race'), `level`, `levels`, `coach`, `title`, `lead`, `onTrial(event)`, `onFinished({ world })`.
  * CONTRAT DOM : [data-difference-meter][data-world][data-task][data-solved], [data-dm-glance], [data-dm-scene], [data-dm-rail], [data-dm-bead=a|b][data-value], [data-dm-probe=red|black][data-on],
  * [data-dm-swap], [data-dm-needle][data-reading][data-side], [data-dm-window], [data-dm-shutter], [data-dm-write], [data-dm-card=gt|lt|eq|nojudge], [data-dm-cards], [data-dm-curtain], [data-dm-lens],
@@ -66,7 +78,7 @@ export function numbersFor({ tasks, world, level }) {
 }
 
 export default function DifferenceMeter({
-  tasks, world, title, lead, level, levels: withLevels = true, coach: coachOn = true,
+  tasks, world, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -76,14 +88,46 @@ export default function DifferenceMeter({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
   if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    const restart = scene.key === numsKey && scene.rc !== state.resetCount;
-    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-    setLab(restart ? L.restartTask(lab) : L.init(nums));
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la tâche 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
+    setLab(L.init(nums));
   }
   const kind = L.discoveryKind(lab);
-  useEffect(() => { if (kind) state.discover(); }, [kind, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : la suite de la tâche courante ; celle qui finit par la règle remplace la découverte automatique
+  const cpSettings = useLabCheckpointSettings('difference-meter');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpOnNow = cpOn && cpSettings.enabled && !L.isFree(lab);
+  const chain = cpOnNow ? chainOf(lab, lab.ti) : null;
+  const ruleByCheckpoint = cpOn && cpSettings.enabled && lab.tasks.some((_, i) => chainOf(lab, i).includes('rule'));
+  const curTask = L.taskOf(lab);
+  const cp = useLabCheckpoint({
+    id: chain ? curTask.id : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, curTask, k)) : null,
+    reached: L.taskDone(lab),
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.restartTask),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: () => { if (chain?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  useEffect(() => { if (kind && !ruleByCheckpoint) state.discover(); }, [kind, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son du geste (muet sans « الصوت ») : brancher, échanger, bouger x ; une écriture juste ; la tâche faite ; un refus
+  const heard = useRef({ n: lab.trials.length, at: 0 });
+  useEffect(() => {
+    const h = heard.current;
+    if (lab.trials.length < h.n) h.n = 0;
+    const fresh = lab.trials.slice(h.n);
+    h.n = lab.trials.length;
+    if (!fresh.length) return;
+    const kinds = fresh.map((e) => e.kind);
+    if (kinds.includes('solved')) playSfx('flag');
+    else if (fresh.some((e) => e.ok === false)) playSfx('over');
+    else if (fresh.some((e) => (e.kind === 'write' || e.kind === 'coef') && e.ok)) playSfx('bell');
+    else if (kinds.some((x) => x === 'plug' || x === 'swap' || x === 'x')) {
+      const now = Date.now();
+      if (now - h.at > 35) { playSfx('tooth', { pitch: kinds.includes('swap') ? 0.75 : 1 }); h.at = now; }
+    }
+  }, [lab.trials]);
   const finishedOnce = useRef(false);
   const everyDone = L.allDone(lab);
   useEffect(() => {
@@ -98,7 +142,7 @@ export default function DifferenceMeter({
     reported.current = nTrials;
   }, [nTrials, lab.trials]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'difference-meter', step: coachStep,
     text: coachStep ? k(`coach.${coachStep.id}`) : '',
@@ -118,6 +162,8 @@ export default function DifferenceMeter({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       coach={coachOn ? coach : null}
+      headerAction={cpSettings.control}
+      guided={!!chain || ruleByCheckpoint}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={discovery}
@@ -126,7 +172,7 @@ export default function DifferenceMeter({
       <ManipulationStage className="bg-gradient-to-b from-sky-50/70 to-white">
         <div className="space-y-2" data-difference-meter data-world={L.isRace(lab) ? 'race' : 'rail'} data-task={lab.ti} data-solved={everyDone ? 'true' : 'false'}>
           <style dangerouslySetInnerHTML={{ __html: CSS }} />
-          <Lab lab={lab} setLab={setLab} k={k} lead={state.isAuthoredLevel ? lead : null} />
+          <Lab lab={lab} setLab={setLab} k={k} lead={state.isAuthoredLevel ? lead : null} cp={cp} />
         </div>
       </ManipulationStage>
     </ManipulationShell>
@@ -156,7 +202,7 @@ const vmaxOf = (task) => {
   return m;
 };
 
-function Lab({ lab, setLab, k, lead }) {
+function Lab({ lab, setLab, k, lead, cp }) {
   const free = L.isFree(lab);
   const task = L.taskOf(lab);
   const race = task.kind === 'race';
@@ -167,6 +213,18 @@ function Lab({ lab, setLab, k, lead }) {
   const last = lab.last;
   const letters = race ? ['A', 'B'] : ['a', 'b'];
   const names = { a: letters[0], b: letters[1] };
+
+  // une étape est FAITE quand la tâche est finie ET que ses questions (LabCheckpoint) sont répondues : la pastille passe au vert et on fête
+  const stepDone = lab.tasks.map((_, i) => !!lab.done[i] && (i !== lab.ti || !cp.blocking));
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // L.init (« إعادة », autre niveau) : on refête
+  const nowDone = !free && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.ti)) return;
+    celebrated.current.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── la consigne : contexte puis UNE question */
   const ctxKey = free ? (race ? 'race' : 'rail') : race ? 'race' : task.curtain ? 'curtain' : task.write ? 'write' : 'rail';
@@ -180,7 +238,7 @@ function Lab({ lab, setLab, k, lead }) {
       contextProps={{ 'data-dm-context': ctxKey }}
       title={<MathText>{k(`question.${qKey}`)}</MathText>} titleClassName="text-base" lamp={free ? null : done ? 'on' : 'off'}
       titleProps={{ 'data-dm-prompt': qKey, 'data-lit': done ? 'true' : 'false' }}
-      aside={lab.tasks.length > 1 && !free ? <Steps lab={lab} k={k} /> : undefined}
+      aside={lab.tasks.length > 1 && !free ? <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-dm-step" /> : undefined}
       instruction={lead || undefined} />
   );
 
@@ -197,7 +255,7 @@ function Lab({ lab, setLab, k, lead }) {
 
   const cards = <Cards lab={lab} setLab={setLab} k={k} names={names} />;
   const vv = verdictOf(lab, k, names);
-  const canNext = L.canNext(lab);
+  const canNext = L.canNext(lab) && !cp.blocking;
   const Icon = vv.tone === 'emerald' ? CheckCircle2 : vv.tone === 'amber' ? ShieldAlert : vv.tone === 'indigo' ? Hand : Sparkles;
   const btn = `inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-full border-2 px-3.5 text-sm font-black transition-all duration-150 active:translate-y-0.5 motion-reduce:transition-none ${ring}`;
   const banner = (
@@ -223,6 +281,8 @@ function Lab({ lab, setLab, k, lead }) {
   return (
     <>
       <div className="relative space-y-2" data-dm-glance>
+        {party.node}
+        {cp.node}
         {prompt}
         {stage}
         {race ? <RaceControls lab={lab} setLab={setLab} k={k} /> : (
@@ -250,23 +310,6 @@ const fmtDec = (r) => {
   const s = String(scaled).padStart(digits + 1, '0');
   return `${r.n < 0n ? '-' : ''}${s.slice(0, s.length - digits)}{,}${s.slice(s.length - digits)}`;
 };
-
-function Steps({ lab, k }) {
-  return (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={tk.id} role="listitem" data-dm-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-sky-700 bg-sky-600 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-sky-200 bg-white text-sky-700'}`}>
-            <bdi dir="ltr">{i + 1}</bdi>
-          </span>
-        );
-      })}
-    </div>
-  );
-}
 
 /* ══════════════ La scène : paillasse, galvanomètre, rail, perles, sondes ══════════════ */
 
@@ -692,3 +735,122 @@ export function Formal({ k }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de la tâche `i` : selon son épreuve ; la dernière tâche d'un niveau rail finit par la règle (`side`, ou `need` s'il y a un rideau). */
+export function chainOf(lab, i) {
+  const t = lab.tasks[i];
+  if (!t) return [];
+  if (t.kind === 'race') return ['atZero', raceRoot(t) ? 'cross' : 'never'];
+  const base = t.curtain ? ['order'] : t.write ? ['denom', 'order'] : t.mustSwap ? ['reading', 'swap'] : ['reading', 'order'];
+  return i === lab.tasks.length - 1 ? [...base, 'rule'] : base;
+}
+
+/** Le x où A = B (A − B = p·x + q s'annule), s'il est un entier de [0 ; xmax] — sinon null. */
+function raceRoot(t) {
+  const f = t.form;
+  if (!f || f.p === 0) return null;
+  const x = -f.q / f.p;
+  return Number.isInteger(x) && x >= 0 && x <= t.xmax ? x : null;
+}
+
+const Q = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const gcd = (a, b) => (b ? gcd(b, a % b) : Math.abs(a));
+const cmpTex = (t, card) => M(`${ratTex(t.a)}${ORDER_TEX[card]}${ratTex(t.b)}`);
+const cardOf = (r) => (r.n > 0n ? 'gt' : r.n < 0n ? 'lt' : 'eq');
+
+/** Chaque question est construite sur LES nombres de la tâche et sur CE que l'élève a branché (rien en dur). */
+export const QUESTIONS = {
+  reading: (lab, t, k) => {
+    const r = L.readingOf(lab) ?? O.difference(t.a, t.b);
+    const redV = lab.red === 'b' ? t.b : t.a; const blackV = lab.red === 'b' ? t.a : t.b;
+    const o = { red: M(ratTex(redV)), black: M(ratTex(blackV)), calc: M(`${ratTex(redV)}-${ratTex(blackV)}=${ratTex(r)}`) };
+    return {
+      id: 'reading', kind: 'number', expected: ratText(r), answer: <MathText>{M(ratTex(r))}</MathText>,
+      prompt: Q(k, 'reading.prompt', o), hints: [Q(k, 'reading.hint1', o), Q(k, 'reading.hint2', o)], explain: Q(k, 'reading.explain', o),
+    };
+  },
+  order: (lab, t, k) => {
+    const d = O.difference(t.a, t.b);
+    const right = cardOf(d);
+    const shown = t.curtain ? t.curtain.left === 'a' ? t.curtain.value : O.negateRat(t.curtain.value) : d;
+    const o = { a: M(t.curtain ? 'a' : ratTex(t.a)), b: M(t.curtain ? 'b' : ratTex(t.b)), d: M(`a-b=${ratTex(shown)}`) };
+    const opt = (card) => (t.curtain ? M(`a${ORDER_TEX[card]}b`) : cmpTex(t, card));
+    const whyOf = { gt: Q(k, 'order.whyGt', o), lt: Q(k, 'order.whyLt', o), eq: Q(k, 'order.whyEq', o) };
+    return {
+      id: 'order', kind: 'choice', cols: 3, prompt: Q(k, t.curtain ? 'order.promptCurtain' : 'order.prompt', o),
+      options: ['gt', 'lt', 'eq'].map((c) => (c === right ? { text: <MathText>{opt(c)}</MathText>, correct: true } : { text: <MathText>{opt(c)}</MathText>, why: whyOf[c] })),
+      hints: [Q(k, 'order.hint1', o), Q(k, 'order.hint2', o)],
+      explain: Q(k, `order.explain.${right}`, { ...o, cmp: opt(right) }),
+    };
+  },
+  swap: (lab, t, k) => {
+    const d = O.difference(t.a, t.b);
+    const o = { ab: M(`a-b=${ratTex(d)}`), ba: M(`b-a=${ratTex(O.negateRat(d))}`), cmp: cmpTex(t, cardOf(d)) };
+    return {
+      id: 'swap', kind: 'choice', prompt: Q(k, 'swap.prompt', o),
+      options: [
+        { text: Q(k, 'swap.right', o), correct: true },
+        { text: Q(k, 'swap.flipped'), why: Q(k, 'swap.whyFlipped', o) },
+        { text: Q(k, 'swap.same'), why: Q(k, 'swap.whySame', o) },
+      ],
+      hints: [Q(k, 'swap.hint1'), Q(k, 'swap.hint2', o)], explain: Q(k, 'swap.explain', o),
+    };
+  },
+  denom: (lab, t, k) => {
+    const da = Number(t.a.d); const db = Number(t.b.d);
+    const lcm = (da * db) / gcd(da, db);
+    const opts = [lcm, da + db, Math.max(da, db)];
+    const o = { a: M(ratTex(t.a)), b: M(ratTex(t.b)), da: M(String(da)), db: M(String(db)), lcm: M(String(lcm)), sum: M(String(da + db)), max: M(String(Math.max(da, db))) };
+    return {
+      id: 'denom', kind: 'choice', cols: 3, prompt: Q(k, 'denom.prompt', o),
+      options: opts.map((v, i) => (i === 0 ? { text: <MathText>{M(String(v))}</MathText>, correct: true }
+        : { text: <MathText>{M(String(v))}</MathText>, why: Q(k, i === 1 ? 'denom.whySum' : 'denom.whyMax', o) })),
+      hints: [Q(k, 'denom.hint1', o), Q(k, 'denom.hint2', o)],
+      explain: Q(k, 'denom.explain', { ...o, calc: M(`${ratTex(t.a)}-${ratTex(t.b)}=${ratTex(O.difference(t.a, t.b))}`) }),
+    };
+  },
+  atZero: (lab, t, k) => {
+    const q = t.form ? t.form.q : 0;
+    const right = q > 0 ? 0 : q < 0 ? 1 : 2;
+    const o = { A: M(`A=${t.textA.replace(/²/g, '^2')}`), B: M(`B=${t.textB.replace(/²/g, '^2')}`), d: M(`A-B=${q}`) };
+    const texts = [Q(k, 'atZero.a'), Q(k, 'atZero.b'), Q(k, 'atZero.eq')];
+    const whys = [Q(k, 'atZero.whyA', o), Q(k, 'atZero.whyB', o), Q(k, 'atZero.whyEq', o)];
+    return {
+      id: 'atZero', kind: 'choice', cols: 3, prompt: Q(k, 'atZero.prompt', o),
+      options: texts.map((text, i) => (i === right ? { text, correct: true } : { text, why: whys[i] })),
+      hints: [Q(k, 'atZero.hint1'), Q(k, 'atZero.hint2', o)], explain: Q(k, 'atZero.explain', o),
+    };
+  },
+  cross: (lab, t, k) => {
+    const x = raceRoot(t);
+    const f = t.form;
+    const lin = `${f.p === 1 ? '' : f.p === -1 ? '-' : f.p}x${f.q < 0 ? f.q : `+${f.q}`}`;
+    const o = { lin: M(`A-B=${lin}`), x: M(`x=${x}`) };
+    return {
+      id: 'cross', kind: 'number', expected: String(x), answer: <MathText>{M(String(x))}</MathText>,
+      prompt: Q(k, 'cross.prompt', o), hints: [Q(k, 'cross.hint1'), Q(k, 'cross.hint2', o)], explain: Q(k, 'cross.explain', o),
+    };
+  },
+  never: (lab, t, k) => {
+    const q = t.form ? t.form.q : 0;
+    const o = { d: M(`A-B=${q}`) };
+    return {
+      id: 'never', kind: 'choice', prompt: Q(k, 'never.prompt'),
+      options: [
+        { text: Q(k, 'never.right', o), correct: true },
+        { text: Q(k, 'never.later'), why: Q(k, 'never.whyLater', o) },
+        { text: Q(k, 'never.zero'), why: Q(k, 'never.whyZero', o) },
+      ],
+      hints: [Q(k, 'never.hint1'), Q(k, 'never.hint2', o)], explain: Q(k, 'never.explain', o),
+    };
+  },
+  rule: (lab, t, k) => {
+    const kind = lab.tasks.some((x) => x.curtain) ? 'need' : 'side';
+    return {
+      id: 'rule', kind: 'choice', prompt: <MathText>{k(`discovery.${kind}.prompt`)}</MathText>, options: discoveryOptions(k, kind),
+      hints: [Q(k, `rule.${kind}.hint1`), Q(k, `rule.${kind}.hint2`)], explain: <Formal k={k} />,
+    };
+  },
+};

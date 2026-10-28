@@ -38,7 +38,7 @@ export default function Module04Atamarran() {
         step(6, 'ex-14', 'زوايا مثلث ومحيطه', ['aqwas-tarh']),
         step(7, 'deep-43', 'صحيح أم خاطئ؟', ['tariqat-hadhf']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

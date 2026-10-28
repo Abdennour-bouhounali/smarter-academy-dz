@@ -13,19 +13,18 @@ import { METHOD_BRACKETS } from '../content/textbook';
  * changé », la valeur de l'expression refuse la mauvaise sortie. Puis l'élève répond sur ce qu'il a fait, lit la méthode ligne à ligne,
  * puis la brique (gardée par « أتوقّع القاعدة »), puis un transfert. Les tâches du labo sont celles de `logic/likeTerms.js › BRACKET_TASKS`
  * (7 + (2x − 3), 9 − (4x − 5), 3x + (x − 2) − (5 − 2x)) ; la méthode revue est l'expression 4x² − 5 + (7x − 2x²) − (3 − 4x).
+ * Déploiement du prototype (2026-10-28) : les questions sur ce que l'élève a FAIT sont posées PAR-DESSUS le labo après chaque tâche
+ * (`LikeTerms › chainOf`, la règle clôt la dernière) ; les étapes en gardent la TRACE (`checkpoint-done`) puis posent les noms.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
-const Ltr = ({ children }) => <bdi dir="ltr">{children}</bdi>;
 
 export default function Module03Tariqa() {
   const [trials, setTrials] = useState([]);
   const [read, setRead] = useState(false);
-  const [q1, setQ1] = useState(false);
-  const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
   const record = (e) => setTrials((list) => [...list, e]);
-  const plusExit = trials.find((e) => e.kind === 'exit' && e.crateSign > 0);
-  const minusRefusal = trials.find((e) => e.kind === 'refused' && e.reason === 'sign' && e.crateSign < 0);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand la suite de questions de sa tâche l'est
+  const answered = (id) => trials.some((e) => e.tk === 'checkpoint-done' && e.id === id);
 
   const Evidence = ({ id, ok, done, todo }) => (
     <p data-evidence={id} data-tried={ok ? 'true' : 'false'}
@@ -46,46 +45,24 @@ export default function Module03Tariqa() {
       intro={<Manipulation type="like-terms" levels={false} world="brackets" onTrial={record} />}
       steps={[
         {
-          num: 1, title: 'لماذا خرجت الحزم كما هي؟', subtitle: 'الصندوق المسبوق بـ +', done: q1,
+          num: 1, title: 'لماذا خرجت الحزم كما هي؟', subtitle: 'الصندوق المسبوق بـ +', done: answered('plus'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="plus" ok={!!plusExit}
-                done={<span>أخرجتَ حزمة من صندوق مسبوق بـ <Ltr>+</Ltr> كما هي وقبلتها الطاولة.</span>}
-                todo="أخرج حزمة من الصندوق المسبوق بالإشارة + إلى المخرج « كما هي »، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<MathText>{String.raw`قبلت الطاولة خروج الحزم كما هي من الصندوق المسبوق بالإشارة $+$ . لماذا لا تتغيّر قيمة العبارة؟`}</MathText>}
-                options={[
-                  M('لأنّ $+$ قبل القوسين تضيف كل ما بينهما كما هو'),
-                  M('لأنّ الحزم داخل الصندوق لا قيمة لها'),
-                  M('لأنّ الإشارة $+$ تقلب إشارة كل حزمة'),
-                ]}
-                correct={0} cols={1}
-                explain={<MathText>{'جمع مقدار بين قوسين هو جمع كل حدوده كما هي: $7+(2x-3)=7+2x-3$.'}</MathText>}
-                onAnswered={() => setQ1(true)}
-              />
-              {q1 && <KnowledgeBrick id="aqwas-jam" lead="الصندوق المسبوق بـ +: ماذا فعلتَ بإشارة كل حزمة؟" />}
+              <Evidence id="plus" ok={answered('plus')}
+                done={<MathText>{'أجبتَ في المختبر: من الصندوق $+(2x-3)$ خرجت الحزم كما هي: $7+(2x-3)=2x+4$ .'}</MathText>}
+                todo="أخرج الحزم من الصندوق المسبوق بالإشارة + ، وأجب عن الأسئلة التي تظهر فوق المختبر." />
+              {answered('plus') && <KnowledgeBrick id="aqwas-jam" lead="الصندوق المسبوق بـ +: ماذا فعلتَ بإشارة كل حزمة؟" />}
             </div>
           ),
         },
         {
-          num: 2, title: 'لماذا رفضت الطاولة الخروج كما هي؟', subtitle: 'الصندوق المسبوق بـ −', done: q2,
+          num: 2, title: 'لماذا رفضت الطاولة الخروج كما هي؟', subtitle: 'الصندوق المسبوق بـ −', done: answered('minus'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="minus" ok={!!minusRefusal}
-                done={<span>حاولتَ إخراج حزمة كما هي من صندوق مسبوق بـ <Ltr>−</Ltr> فرفضت الطاولة: قيمة العبارة <Ltr>{minusRefusal?.before}</Ltr> وكانت ستصير <Ltr>{minusRefusal?.after}</Ltr> عند <Ltr>x = {minusRefusal?.x}</Ltr>.</span>}
-                todo="جرّب إخراج حزمة « كما هي » من الصندوق المسبوق بالإشارة − فتُرفض، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<MathText>{String.raw`رفضت الطاولة خروج الحزمة كما هي من صندوق مسبوق بـ $-$ وقبلتها بعكس إشارتها. لماذا؟`}</MathText>}
-                options={[
-                  M('لأنّ $-$ قبل القوسين تطرح كل ما بينهما، فكل حدّ يخرج بعكس إشارته ليبقى المقدار نفسه'),
-                  M('لأنّ حزمة واحدة فقط تتغيّر إشارتها'),
-                  M('لأنّ الطاولة ترفض كل حزمة موجبة'),
-                ]}
-                correct={0} cols={1} requires={['aqwas-jam']}
-                explain={<MathText>{'طرح $(4x-5)$ هو طرح $4x$ وإضافة $5$ : $9-(4x-5)=9-4x+5$. لو أخرجنا $4x$ كما هي لتغيّرت قيمة العبارة.'}</MathText>}
-                onAnswered={() => setQ2(true)}
-              />
-              {q2 && <KnowledgeBrick id="aqwas-tarh" lead="الصندوق المسبوق بـ −: ماذا فعلتَ بإشارة كل حزمة؟" />}
+              <Evidence id="minus" ok={answered('minus')}
+                done={<MathText>{'أجبتَ في المختبر: من الصندوق $-(4x-5)$ خرجت كل حزمة معكوسة: $9-(4x-5)=-4x+14$ .'}</MathText>}
+                todo="أخرج الحزم من الصندوق المسبوق بالإشارة − ، وأجب عن الأسئلة التي تظهر فوق المختبر." />
+              {answered('minus') && <KnowledgeBrick id="aqwas-tarh" lead="الصندوق المسبوق بـ −: ماذا فعلتَ بإشارة كل حزمة؟" />}
             </div>
           ),
         },
@@ -106,7 +83,7 @@ export default function Module03Tariqa() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }

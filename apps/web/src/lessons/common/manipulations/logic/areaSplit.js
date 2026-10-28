@@ -377,6 +377,8 @@ const nextUnsolved = (s) => {
   for (let k = 1; k <= s.tasks.length; k += 1) { const i = (s.ti + k) % s.tasks.length; if (!s.done[i]) return i; }
   return -1;
 };
+/** « أعِد التجربة » (questions du labo) : LA MÊME tâche repart de son état initial, non résolue (même si c'était la dernière). */
+export const retryTask = (s) => (s.custom ? s : { ...load(s, s.ti), done: s.done.map((d, i) => (i === s.ti ? false : d)) });
 /** « التالي » : la tâche suivante non résolue (ou le retour à la tâche après le panneau libre). */
 export const canNext = (s) => (s.custom ? s.done.some((d) => !d) : s.solvedNow && nextUnsolved(s) >= 0);
 export function nextTask(s) {

@@ -39,7 +39,7 @@ export default function Module04Atamarran() {
         step(7, 'ex-32', 'عبارتان في x', ['farq-ibaratayn']),
         step(8, 'deep-38', 'محيطان ومساحتان', ['farq-ibaratayn'], <GeoFigure {...FIGURE_E8} />),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

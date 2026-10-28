@@ -2,7 +2,8 @@ import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useSta
 import { useTranslation } from 'react-i18next';
 import { Hand } from 'lucide-react';
 import * as S from '@smarter-academy/core/arithmetic/substitution.js';
-import { sign } from '@smarter-academy/core/arithmetic/powers.js';
+import { sign, rat, ratText } from '@smarter-academy/core/arithmetic/powers.js';
+import { termsTex } from '@smarter-academy/core/arithmetic/polynomials.js';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
@@ -11,6 +12,10 @@ import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
 import { PromptCard, VerdictBanner } from '../primitives/LabKit';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import KidFigure from '../primitives/KidFigure';
 import MathText from '../../components/MathText';
 import { LEVELS } from '../levels';
@@ -60,6 +65,13 @@ import { PredictPanel, FreePanel, TwinsFree, TwinWall, chipOf } from './marbleRu
  * [data-mr-reservoir=x|y], [data-mr-station=<id>][data-op][data-lit], [data-mr-basket], [data-mr-line], [data-mr-slot=<i>][data-brackets],
  * [data-mr-times=<i>], [data-mr-run], [data-mr-reader], [data-mr-refused=<reason>], [data-mr-banner], [data-mr-predict], [data-mr-claims],
  * [data-mr-claim=counter|equal], [data-mr-expand], [data-mr-next], [data-mr-free], [data-mr-formal].
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 1, 2026-10-28) : `checkpoints` (défaut true). Après CHAQUE
+ * tâche (une fois la course révélée), une suite de questions sur ce que l'élève vient de FAIRE se pose par-dessus le labo et retient « التالي »
+ * (`chainOf`) : run la valeur obtenue · puis selon SA tâche la croix du produit, les parenthèses du négatif, le carré d'un négatif ou deux
+ * lettres ; la dernière tâche finit par LA RÈGLE (l'ancienne découverte, qui formalise) ; twins la valeur à SA bille · une valeur suffit /
+ * deux égalités ne prouvent rien · (égalité) la forme développée · pourquoi aucun contre-exemple. Obligatoires pour tout élève ; l'enseignant
+ * seul les coupe pour SON compte. ÉTAPES `LabStepper` (`[data-mr-step=<i>]`) + fête ; « إعادة » repart de la tâche 1 ; « أعِد التجربة »
+ * remet LA MÊME tâche (`L.retryTask`). SON : `tooth` (poser une bille, écrire), `bell` (développer), `flag` (tâche faite), `over` (refus).
  */
 const NS = 'manipulation.marbleRun';
 const MAX_W = 1080;
@@ -141,7 +153,7 @@ export function bannerOf(lab, k, coachShowing) {
 }
 
 export default function MarbleRun({
-  world, tasks, title, lead, level, levels: withLevelsProp = true, coach: coachOn = true,
+  world, tasks, title, lead, level, levels: withLevelsProp = true, coach: coachOn = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -153,14 +165,14 @@ export default function MarbleRun({
   const numsKey = JSON.stringify(nums);
   const fresh = () => L.init({ world: nums.world, tasks: nums.tasks, predict: !!nums.predict });
   const [lab, setLab] = useState(fresh);
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch });
-  if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    setScene({ key: numsKey, epoch: state.epoch });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
+  if (scene.key !== numsKey || scene.epoch !== state.epoch || scene.rc !== state.resetCount) {
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la tâche 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
     setLab(fresh());
   }
   const twins = lab.world === 'twins';
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   const reported = useRef(0);
   const nEv = lab.events.length;
   useEffect(() => {
@@ -184,8 +196,53 @@ export default function MarbleRun({
     return () => clearInterval(id);
   }, [lab.nRuns]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // les questions pendant le labo : la suite de la tâche courante, une fois la course révélée ; la règle remplace la découverte automatique
+  const cpSettings = useLabCheckpointSettings('marble-run');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpLive = cpOn && cpSettings.enabled;
+  const chain = cpLive && !lab.custom ? chainOf(lab, lab.ti) : null;
+  const ruleByCheckpoint = cpLive && !twins;
+  const cpTask = lab.tasks[lab.ti];
+  const cp = useLabCheckpoint({
+    id: chain ? cpTask.id : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, cpTask, k)) : null,
+    reached: !lab.custom && !!lab.done[lab.ti] && !running,
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.retryTask),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: () => { if (chain?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  useEffect(() => { if (ready && !ruleByCheckpoint) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son du geste (muet sans « الصوت ») : poser une bille, écrire ; développer ; la tâche faite ; un refus
+  const heard = useRef({ n: lab.events.length, at: 0 });
+  useEffect(() => {
+    const h = heard.current;
+    if (lab.events.length < h.n) h.n = 0;
+    const evs = lab.events.slice(h.n);
+    h.n = lab.events.length;
+    if (!evs.length) return;
+    const kinds = evs.map((e) => e.kind);
+    if (kinds.includes('solved')) playSfx('flag');
+    else if (evs.some((e) => (e.kind === 'run' || e.kind === 'claim') && (!e.ok || (e.kind === 'run' && !e.free)))) playSfx('over');
+    else if (kinds.includes('expand')) playSfx('bell');
+    else if (kinds.some((x) => x === 'drop' || x === 'write')) {
+      const now = Date.now();
+      if (now - h.at > 35) { playSfx('tooth'); h.at = now; }
+    }
+  }, [lab.events]);
+  // une étape est FAITE quand la tâche est résolue ET que ses questions (LabCheckpoint) sont répondues : la pastille passe au vert et on fête
+  const stepDone = lab.done.map((d, i) => !!d && (i !== lab.ti || lab.custom || (!cp.blocking && !running)));
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.events.length === 0 && celebrated.current.size) celebrated.current = new Set();   // L.init (« إعادة », autre niveau) : on refête
+  const nowDone = !lab.custom && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.ti)) return;
+    celebrated.current.add(lab.ti);
+    party.celebrate({ n: lab.done.filter(Boolean).length, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
+
   /* ── le guide ── */
-  const ownStep = coachOn ? L.coachOf(lab) : null;
+  const ownStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coachStep = ownStep ? { ...ownStep, prefer: 'below' } : null;
   const coach = useLabCoach({
     lab: 'marble-run', step: coachStep,
@@ -246,17 +303,7 @@ export default function MarbleRun({
   );
 
   const dots = lab.tasks.length > 1 && (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')} data-mr-steps>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i]; const cur = i === lab.ti && !lab.custom;
-        return (
-          <span key={tk.id} role="listitem" data-mr-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-6 min-w-[24px] items-center justify-center rounded-full border-2 px-1 text-xs font-black tabular-nums ${cur ? 'border-emerald-600 bg-emerald-600 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-emerald-100 bg-white text-emerald-400'}`}>
-            {d && !cur ? '✓' : <bdi dir="ltr">{i + 1}</bdi>}
-          </span>
-        );
-      })}
-    </div>
+    <LabStepper count={lab.tasks.length} current={lab.custom ? -1 : lab.ti} done={stepDone} stepAttr="data-mr-step" />
   );
 
   const verdict = (
@@ -269,7 +316,7 @@ export default function MarbleRun({
     </div>
   );
 
-  const nextBtn = L.canNext(lab) && (
+  const nextBtn = L.canNext(lab) && !cp.blocking && (
     <button type="button" data-mr-next onClick={() => act(L.nextTask)}
       className="inline-flex min-h-[44px] items-center justify-center rounded-xl border-2 border-emerald-600 bg-emerald-600 px-4 text-sm font-black text-white outline-none focus-visible:ring-4 focus-visible:ring-emerald-300">
       {lab.custom ? k('back') : k('next')}
@@ -380,12 +427,14 @@ export default function MarbleRun({
   );
   return (
     <ManipulationShell type="marble-run" title={title ?? k('title')} titleHidden state={state} allowModeSwitch={allowModeSwitch} allowFreeLab={false}
-      coach={coachOn ? coach : null} hints={[0, 1, 2].map((i) => k(`hints.${hintsKey}.${i}`))}
+      coach={coachOn ? coach : null} headerAction={cpSettings.control} guided={!!chain || ruleByCheckpoint} hints={[0, 1, 2].map((i) => k(`hints.${hintsKey}.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }} discovery={discovery} explanation={<MathText>{k('explanation')}</MathText>}>
       <ManipulationStage className="bg-gradient-to-b from-amber-50/60 to-white">
         <div ref={boxRef} data-marble-run data-world={lab.world} data-task={task} data-solved={lab.solvedNow ? 'true' : 'false'} data-running={running ? 'true' : 'false'}>
           <style dangerouslySetInnerHTML={{ __html: CSS }} />
           <div className="relative mx-auto space-y-2" style={{ maxWidth: MAX_W }} data-mr-glance data-mr-budget={`${screenH}|${width}`}>
+            {party.node}
+            {cp.node}
             {prompt}
             {body}
           </div>
@@ -428,3 +477,151 @@ export function Formal({ lab, k }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+const envOf = (tk) => Object.fromEntries(Object.entries(tk.target ?? {}).map(([l, v]) => [l, L.marble(v)]));
+const isNeg = (m) => m.v.n < 0n;
+const rTex = (v) => (v.d === 1n ? String(v.n) : `${v.n < 0n ? '-' : ''}\\frac{${v.n < 0n ? -v.n : v.n}}{${v.d}}`);
+const mTex = (m) => rTex(m.v);
+
+/** La question sur ce que la main a écrit dans SA tâche, puis la règle à la dernière ; twins : la valeur à SA bille, puis le sens du verdict. */
+export function chainOf(lab, i) {
+  const tk = lab.tasks[i];
+  if (!tk) return [];
+  if (lab.world === 'twins') {
+    const a = L.treeOf(tk.a); const b = L.treeOf(tk.b);
+    if (S.samePolynomial(a, b)) return ['expanded', 'noCounter'];
+    const equalAt = [-3, -2, -1, 0, 1, 2, 3].filter((x) => S.pairAt(a, b, rat(x)).equal).length;
+    return ['atMarble', equalAt >= 2 ? 'notProof' : 'oneEnough'];
+  }
+  const tree = L.treeOf(tk.expr);
+  const env = envOf(tk);
+  const sl = S.slots(tree);
+  const names = Object.keys(env);
+  let second;
+  if (names.length > 1) second = 'letters';
+  else if (sl.filter(Boolean).length > 1) second = 'same';
+  else if (sl.some((x) => x?.underPow) && Object.values(env).some(isNeg)) second = 'square';
+  else if (Object.values(env).some(isNeg)) second = 'brackets';
+  else second = 'times';
+  const base = ['value', second];
+  return i === lab.tasks.length - 1 ? [...base, 'rule'] : base;
+}
+
+const $ = (s) => `$${s}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const exprTex = (text) => S.treeTex(L.treeOf(text));
+const opt = (tex) => <MathText>{$(tex)}</MathText>;
+
+export const QUESTIONS = {
+  value: (lab, tk, k) => {
+    const env = envOf(tk);
+    const v = S.evaluate(L.treeOf(tk.expr), env);
+    const at = Object.entries(env).map(([l, m]) => `${l}=${mTex(m)}`).join(',\\ ');
+    const o = { expr: $(exprTex(tk.expr)), at: $(at), v: $(rTex(v)) };
+    return {
+      id: 'value', kind: 'number', expected: ratText(v), answer: opt(rTex(v)),
+      prompt: Cq(k, 'value.prompt', o), hints: [Cq(k, 'value.hint1'), Cq(k, 'value.hint2', o)], explain: Cq(k, 'value.explain', o),
+    };
+  },
+  times: (lab, tk, k) => {
+    const env = envOf(tk); const [l, m] = Object.entries(env)[0];
+    const tree = L.treeOf(tk.expr);
+    const coef = tree.t === 'add' || tree.t === 'sub' ? tree.a : tree;
+    const c = coef.t === 'mul' && coef.a.t === 'num' ? String(coef.a.v.n) : '4';
+    const o = { c: $(c), l: $(l), m: $(mTex(m)), fused: $(`${c}${mTex(m)}`), prod: $(`${c}\\times${mTex(m)}=${Number(c) * Number(m.v.n)}`) };
+    return {
+      id: 'times', kind: 'choice', prompt: Cq(k, 'times.prompt', o),
+      options: [{ text: Cq(k, 'times.right', o), correct: true }, { text: Cq(k, 'times.add'), why: Cq(k, 'times.whyAdd', o) }, { text: Cq(k, 'times.decor'), why: Cq(k, 'times.whyDecor', o) }],
+      hints: [Cq(k, 'times.hint1', o), Cq(k, 'times.hint2', o)], explain: Cq(k, 'times.explain', o),
+    };
+  },
+  brackets: (lab, tk, k) => {
+    const env = envOf(tk); const m = Object.values(env).find(isNeg);
+    const o = { m: $(mTex(m)), br: $(`(${mTex(m)})`), bare: $(`\\times${mTex(m)}`) };
+    return {
+      id: 'brackets', kind: 'choice', prompt: Cq(k, 'brackets.prompt', o),
+      options: [{ text: Cq(k, 'brackets.right'), correct: true }, { text: Cq(k, 'brackets.decor'), why: Cq(k, 'brackets.whyDecor', o) }, { text: Cq(k, 'brackets.big'), why: Cq(k, 'brackets.whyBig') }],
+      hints: [Cq(k, 'brackets.hint1', o), Cq(k, 'brackets.hint2')], explain: Cq(k, 'brackets.explain', o),
+    };
+  },
+  square: (lab, tk, k) => {
+    const env = envOf(tk); const m = Object.values(env).find(isNeg);
+    const a = -Number(m.v.n);
+    const o = { m: $(mTex(m)), sq: $(`(${mTex(m)})^2`), right: $(`(${mTex(m)})^2=${a * a}`), bare: $(`-${a}^2=-${a * a}`) };
+    return {
+      id: 'square', kind: 'choice', cols: 3, prompt: Cq(k, 'square.prompt', o),
+      options: [{ text: opt(String(a * a)), correct: true }, { text: opt(String(-a * a)), why: Cq(k, 'square.whyNeg', o) }, { text: opt(String(-2 * a)), why: Cq(k, 'square.whyDouble', o) }],
+      hints: [Cq(k, 'square.hint1', o), Cq(k, 'square.hint2', o)], explain: Cq(k, 'square.explain', o),
+    };
+  },
+  same: (lab, tk, k) => {
+    const env = envOf(tk); const [l, m] = Object.entries(env)[0];
+    const n = S.slots(L.treeOf(tk.expr)).filter(Boolean).length;
+    const o = { l: $(l), m: $(mTex(m)), n: $(String(n)), opp: $(rTex({ n: -m.v.n, d: m.v.d })) };
+    return {
+      id: 'same', kind: 'choice', prompt: Cq(k, 'same.prompt', o),
+      options: [{ text: Cq(k, 'same.right', o), correct: true }, { text: Cq(k, 'same.mixed', o), why: Cq(k, 'same.whyMixed', o) }, { text: Cq(k, 'same.once'), why: Cq(k, 'same.whyOnce', o) }],
+      hints: [Cq(k, 'same.hint1', o), Cq(k, 'same.hint2')], explain: Cq(k, 'same.explain', o),
+    };
+  },
+  letters: (lab, tk, k) => {
+    const env = envOf(tk); const [[l1, m1], [l2, m2]] = Object.entries(env);
+    const o = { l1: $(l1), l2: $(l2), m1: $(mTex(m1)), m2: $(mTex(m2)) };
+    return {
+      id: 'letters', kind: 'choice', prompt: Cq(k, 'letters.prompt', o),
+      options: [{ text: Cq(k, 'letters.right', o), correct: true }, { text: Cq(k, 'letters.same'), why: Cq(k, 'letters.whySame', o) }, { text: Cq(k, 'letters.one'), why: Cq(k, 'letters.whyOne', o) }],
+      hints: [Cq(k, 'letters.hint1'), Cq(k, 'letters.hint2', o)], explain: Cq(k, 'letters.explain', o),
+    };
+  },
+  atMarble: (lab, tk, k) => {
+    const a = L.treeOf(tk.a); const b = L.treeOf(tk.b);
+    const x = lab.m && !S.pairAt(a, b, lab.m.v).equal ? lab.m.v : S.witness(a, b, [-3, -2, -1, 0, 1, 2, 3].map((n) => rat(n)));
+    const pr = S.pairAt(a, b, x);
+    const o = { x: $(`x=${rTex(x)}`), A: $(exprTex(tk.a)), B: $(exprTex(tk.b)), l: $(rTex(pr.left)), r: $(rTex(pr.right)) };
+    return {
+      id: 'atMarble', kind: 'number', expected: ratText(pr.left), answer: opt(rTex(pr.left)),
+      prompt: Cq(k, 'atMarble.prompt', o), hints: [Cq(k, 'atMarble.hint1'), Cq(k, 'atMarble.hint2', o)], explain: Cq(k, 'atMarble.explain', o),
+    };
+  },
+  oneEnough: (lab, tk, k) => ({
+    id: 'oneEnough', kind: 'choice', prompt: Cq(k, 'oneEnough.prompt'),
+    options: [{ text: Cq(k, 'oneEnough.right'), correct: true }, { text: Cq(k, 'oneEnough.many'), why: Cq(k, 'oneEnough.whyMany') }, { text: Cq(k, 'oneEnough.expand'), why: Cq(k, 'oneEnough.whyExpand') }],
+    hints: [Cq(k, 'oneEnough.hint1'), Cq(k, 'oneEnough.hint2')], explain: Cq(k, 'oneEnough.explain'),
+  }),
+  notProof: (lab, tk, k) => {
+    const a = L.treeOf(tk.a); const b = L.treeOf(tk.b);
+    const eqs = [-3, -2, -1, 0, 1, 2, 3].filter((x) => S.pairAt(a, b, rat(x)).equal);
+    const o = { eqs: $(`x=${eqs.join(',\\ x=')}`) };
+    return {
+      id: 'notProof', kind: 'choice', prompt: Cq(k, 'notProof.prompt', o),
+      options: [{ text: Cq(k, 'notProof.right'), correct: true }, { text: Cq(k, 'notProof.twice'), why: Cq(k, 'notProof.whyTwice') }, { text: Cq(k, 'notProof.marble'), why: Cq(k, 'notProof.whyMarble') }],
+      hints: [Cq(k, 'notProof.hint1', o), Cq(k, 'notProof.hint2')], explain: Cq(k, 'notProof.explain', o),
+    };
+  },
+  expanded: (lab, tk, k) => {
+    const t = S.toTerms(L.treeOf(tk.a));
+    const flip = (p) => { const u = t.map((q) => (q.p === p ? { ...q, c: -q.c } : q)); return termsTex(u); };
+    const ps = t.map((q) => q.p);
+    const p1 = ps.includes(1) ? 1 : ps[0]; const p0 = ps.includes(0) ? 0 : ps.at(-1);
+    const o = { A: $(exprTex(tk.a)), B: $(exprTex(tk.b)), r: $(termsTex(t)) };
+    return {
+      id: 'expanded', kind: 'choice', cols: 3, prompt: Cq(k, 'expanded.prompt', o),
+      options: [{ text: opt(flip(p1)), why: Cq(k, 'expanded.whySign') }, { text: opt(termsTex(t)), correct: true }, { text: opt(flip(p0)), why: Cq(k, 'expanded.whySign') }],
+      hints: [Cq(k, 'expanded.hint1'), Cq(k, 'expanded.hint2')], explain: Cq(k, 'expanded.explain', o),
+    };
+  },
+  noCounter: (lab, tk, k) => {
+    const o = { r: $(termsTex(S.toTerms(L.treeOf(tk.a)))) };
+    return {
+      id: 'noCounter', kind: 'choice', prompt: Cq(k, 'noCounter.prompt'),
+      options: [{ text: Cq(k, 'noCounter.right', o), correct: true }, { text: Cq(k, 'noCounter.few'), why: Cq(k, 'noCounter.whyFew') }, { text: Cq(k, 'noCounter.shape'), why: Cq(k, 'noCounter.whyShape') }],
+      hints: [Cq(k, 'noCounter.hint1'), Cq(k, 'noCounter.hint2')], explain: Cq(k, 'noCounter.explain', o),
+    };
+  },
+  rule: (lab, tk, k) => ({
+    id: 'rule', kind: 'choice', prompt: <MathText>{k('discovery.prompt')}</MathText>, options: discoveryOptions(lab, k),
+    hints: [Cq(k, 'rule.hint1'), Cq(k, 'rule.hint2')], explain: <Formal lab={lab} k={k} />,
+  }),
+};

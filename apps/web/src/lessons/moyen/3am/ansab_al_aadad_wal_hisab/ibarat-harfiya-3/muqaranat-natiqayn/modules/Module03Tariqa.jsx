@@ -12,19 +12,21 @@ import { parseNum } from '../content/exercises';
  * Module 3 — طريقة « أحسب الفرق وأقرأ إشارته » (P2, P3). UNE SEULE PISTE (guide §4quater) : le MÊME labo que le module 1, posé SEUL en haut (`levels={false}`, monde `race`) — deux perles qui suivent
  * A(x) et B(x), la main tient x, l'aiguille lit A − B ; la main simplifie A − B puis remplit une carte d'ordre par région de x (paires `e1`, `e2`, `e3` de `logic/differenceMeter.js › PRESETS.race`).
  * Puis l'élève répond sur ce qu'il a fait, lit la méthode sur des nombres ligne à ligne (la brique est gardée par « أتوقّع القاعدة »), puis un transfert.
+ * Déploiement du prototype (2026-10-28) : les questions sur ce que l'élève a FAIT sont posées PAR-DESSUS le labo après chaque tâche
+ * (`DifferenceMeter › chainOf`, la règle clôt la dernière) ; les étapes en gardent la TRACE (`checkpoint-done`) puis posent les noms.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
 export default function Module03Tariqa() {
   const [trials, setTrials] = useState([]);
   const [read, setRead] = useState(false);
-  const [q1, setQ1] = useState(false);
-  const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
   const [q3b, setQ3b] = useState(false);
   const [q4, setQ4] = useState(false);
   const record = (e) => setTrials((list) => [...list, e]);
   const solved = (id) => trials.find((e) => e.kind === 'solved' && e.taskId === id);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand la suite de questions de sa tâche l'est
+  const answered = (id) => trials.some((e) => e.tk === 'checkpoint-done' && e.id === id);
 
   const Evidence = ({ id, ok, done, todo }) => (
     <p data-evidence={id} data-tried={ok ? 'true' : 'false'}
@@ -45,44 +47,22 @@ export default function Module03Tariqa() {
       intro={<Manipulation type="difference-meter" levels={false} world="race" onTrial={record} />}
       steps={[
         {
-          num: 1, title: 'لماذا كانت B أكبر عند x = 0 ؟', subtitle: 'العبارة الأولى', done: q1,
+          num: 1, title: 'لماذا كانت B أكبر عند x = 0 ؟', subtitle: 'العبارة الأولى', done: answered('e1'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="e1" ok={!!solved('e1')}
-                done="أنهيتَ العبارتين الأولى: بسّطتَ A − B وملأتَ بطاقة لكل منطقة من قيم x."
-                todo="أنهِ المهمة الأولى (3x + 5 و 2x + 9) ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<MathText>{String.raw`في المهمة الأولى كانت $B$ أكبر عند $x=0$ مع أنّ معامل $x$ في $A$ أكبر. لماذا؟`}</MathText>}
-                options={[
-                  M('لأنّ $A-B=x-4$ سالب عندما $x<4$'),
-                  M('لأنّ $B$ أكبر من $A$ دائمًا'),
-                  M('لأنّ $9$ أكبر من $5$ في كل الحالات'),
-                ]}
-                correct={0} cols={1}
-                explain={<MathText>{'$A-B=3x+5-(2x+9)=x-4$ : سالب قبل $x=4$ ، معدوم عندها (الحبّتان تتقابلان)، وموجب بعدها.'}</MathText>}
-                onAnswered={() => setQ1(true)}
-              />
+              <Evidence id="e1" ok={answered('e1')}
+                done={<MathText>{'أجبتَ في المختبر: بسّطتَ $A-B=x-4$ ، فعند $x=0$ الفرق $-4$ سالب و $B$ أكبر، والحبّتان تتقابلان عند $x=4$ .'}</MathText>}
+                todo="أنهِ المهمة الأولى (3x + 5 و 2x + 9) وأجب عن الأسئلة التي تظهر فوق المختبر." />
             </div>
           ),
         },
         {
-          num: 2, title: 'لماذا لا تلتقي الحبّتان؟', subtitle: 'العبارة الثانية', done: q2,
+          num: 2, title: 'لماذا لا تلتقي الحبّتان؟', subtitle: 'العبارة الثانية', done: answered('e2'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="e2" ok={!!solved('e2')}
-                done="في العبارتين الثانيتين بقيت الحبّتان على المسافة نفسها مهما حرّكتَ x."
-                todo="أنهِ المهمة الثانية (2(x + 3) و 2x + 1) ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<MathText>{String.raw`في المهمة الثانية لم تلتقِ الحبّتان أبدًا. لماذا؟`}</MathText>}
-                options={[
-                  M('لأنّ $A-B=5$ موجب لكل قيم $x$'),
-                  M('لأنّ معاملي $x$ متساويان فالعبارتان متساويتان'),
-                  M('لأنّ $x$ لم يبلغ $10$'),
-                ]}
-                correct={0} cols={1}
-                explain={<MathText>{'$2(x+3)-(2x+1)=2x+6-2x-1=5$ : الفرق ثابت وموجب، فـ $A>B$ دائمًا بفارق $5$.'}</MathText>}
-                onAnswered={() => setQ2(true)}
-              />
+              <Evidence id="e2" ok={answered('e2')}
+                done={<MathText>{'أجبتَ في المختبر: $A-B=5$ ثابت وموجب، فالإبرة لا تقف عند الصفر أبدًا و $A>B$ لكل $x$ .'}</MathText>}
+                todo="أنهِ المهمة الثانية (2(x + 3) و 2x + 1) وأجب عن الأسئلة التي تظهر فوق المختبر." />
             </div>
           ),
         },
@@ -134,7 +114,7 @@ export default function Module03Tariqa() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }

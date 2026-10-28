@@ -3,7 +3,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import i18n from '../../../../i18n';
-import MarbleRun, { numbersFor, bannerOf, questionOf, contextOf, discoveryOptions, Formal } from './MarbleRun';
+import MarbleRun, { numbersFor, bannerOf, questionOf, contextOf, discoveryOptions, Formal, chainOf, QUESTIONS } from './MarbleRun';
 import { LEVELS } from '../levels';
 import * as L from '../logic/marbleRun';
 
@@ -163,5 +163,51 @@ describe('marble-run — rendu', () => {
     const out = renderToString(<Formal lab={solved} k={k} />);
     expect(out).toContain('data-mr-formal');
     expect(text(out)).toContain('4 × 3 + 7 = 19');
+  });
+});
+
+describe('marble-run — questions pendant le labo (LabCheckpoint)', () => {
+  const kk = (key, o) => i18n.t(`lesson:manipulation.marbleRun.${key}`, o);
+  const RAWK = /manipulation\.[a-zA-Z]/;
+  const cases = [['beginner', { world: 'run' }], ['advanced', { world: 'run', predict: true }], ['twins', { world: 'twins' }]];
+  for (const [name, init] of cases) {
+    it(`${name} : chaque question a un texte, une seule bonne réponse, deux indices, et ni clé brute ni {{`, () => {
+      const lab = L.init(init);
+      lab.tasks.forEach((tk, i) => {
+        const chain = chainOf(lab, i);
+        expect(chain.length, tk.id).toBeGreaterThanOrEqual(2);
+        for (const qid of chain) {
+          const q = QUESTIONS[qid](lab, tk, kk);
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${tk.id}.${qid}`).not.toMatch(RAWK);
+          expect(out, `${tk.id}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${tk.id}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${tk.id}.${qid}`).toHaveLength(1);
+          else expect(q.expected, `${tk.id}.${qid}`).toBeTruthy();
+        }
+      });
+    });
+  }
+  it('les nombres viennent de la tâche ; la règle clôt la dernière tâche du parcours', () => {
+    const b = L.init({ world: 'run' });
+    expect(b.tasks.map((_, i) => chainOf(b, i))).toEqual([['value', 'times'], ['value', 'brackets'], ['value', 'same', 'rule']]);
+    expect(QUESTIONS.value(b, b.tasks[0], kk).expected).toBe('19');
+    expect(QUESTIONS.value(b, b.tasks[2], kk).expected).toBe('10');
+    const a = L.init({ world: 'run', predict: true });
+    expect(a.tasks.map((_, i) => chainOf(a, i)[1])).toEqual(['square', 'brackets', 'letters']);
+    expect(QUESTIONS.value(a, a.tasks[1], kk).expected).toBe('-4');
+    const t = L.init({ world: 'twins' });
+    expect(t.tasks.map((_, i) => chainOf(t, i))).toEqual([['atMarble', 'oneEnough'], ['atMarble', 'notProof'], ['expanded', 'noCounter']]);
+  });
+});
+
+describe('marble-run — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('avec questions : ni la progression ni le bouton d’indice ; checkpoints={false} : les deux reviennent', () => {
+    const g = renderToString(<MarbleRun {...LEVELS['marble-run'].beginner.numbers} level="beginner" />);
+    expect(g).not.toContain('data-manipulation-progress');
+    expect(g).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    const off = renderToString(<MarbleRun {...LEVELS['marble-run'].beginner.numbers} level="beginner" checkpoints={false} />);
+    expect(off).toContain('data-manipulation-progress');
+    expect(off).toContain(i18n.t('lesson:manipulation.hint.show'));
   });
 });

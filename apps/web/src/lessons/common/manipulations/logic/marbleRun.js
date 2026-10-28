@@ -231,6 +231,8 @@ export function nextTask(s) {
   const i = s.custom ? s.done.findIndex((d) => !d) : nextUnsolved(s);
   return load(s, i);
 }
+/** « أعِد التجربة » (questions du labo) : LA MÊME tâche repart de son état initial, non résolue (même si c'était la dernière). */
+export const retryTask = (s) => (s.custom ? s : { ...load(s, s.ti), done: s.done.map((d, i) => (i === s.ti ? false : d)) });
 export function backToTasks(s) { return s.custom ? load(s, s.done.findIndex((d) => !d) >= 0 ? s.done.findIndex((d) => !d) : s.ti) : s; }
 
 /* ── « جرّب أعدادك » ── */

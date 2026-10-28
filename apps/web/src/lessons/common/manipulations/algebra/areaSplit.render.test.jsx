@@ -4,7 +4,7 @@ import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import i18n from '../../../../i18n';
 import * as E from '@smarter-academy/core/arithmetic/expansion.js';
-import AreaSplit, { Formal, discoveryOptions, numbersFor, bannerOf } from './AreaSplit';
+import AreaSplit, { Formal, discoveryOptions, numbersFor, bannerOf, chainOf, QUESTIONS, expandOptions } from './AreaSplit';
 import { LEVELS } from '../levels';
 import * as L from '../logic/areaSplit';
 
@@ -230,5 +230,50 @@ describe('area-split — the x pill', () => {
     expect(out).toContain('aria-valuemin="4"');
     expect(out).toContain('aria-valuemax="9"');
     expect(html(cases['arrows (defaults)'])).toContain('aria-valuemin="2"');
+  });
+});
+
+describe('area-split — questions pendant le labo (LabCheckpoint)', () => {
+  const kk = (key, o) => i18n.t(`lesson:manipulation.areaSplit.${key}`, o);
+  const cases = [['beginner', { world: 'plot', scaffold: true, level: 'beginner' }], ['advanced', { world: 'plot', scaffold: false, level: 'advanced' }], ['arrows', { world: 'arrows' }]];
+  for (const [name, init] of cases) {
+    it(`${name} : chaque question a un texte, une seule bonne réponse, deux indices, et ni clé brute ni {{`, () => {
+      const lab = L.init(init);
+      lab.tasks.forEach((tk, i) => {
+        const chain = chainOf(lab, i);
+        expect(chain.length, tk.id).toBeGreaterThanOrEqual(2);
+        for (const qid of chain) {
+          const q = QUESTIONS[qid](lab, tk, kk);
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${tk.id}.${qid}`).not.toMatch(RAW);
+          expect(out, `${tk.id}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${tk.id}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${tk.id}.${qid}`).toHaveLength(1);
+          else expect(q.expected, `${tk.id}.${qid}`).toBeTruthy();
+        }
+        const e = expandOptions(tk);
+        expect(new Set([e.right, e.onlyFirst, e.other]).size, tk.id).toBe(3);
+      });
+    });
+  }
+  it('les nombres viennent de la tâche ; la règle clôt la dernière tâche', () => {
+    const b = L.init({ world: 'plot', scaffold: true, level: 'beginner' });
+    expect(chainOf(b, 1).at(-1)).toBe('rule');
+    expect(QUESTIONS.value(b, b.tasks[0], kk).expected).toBe(String(3 * (b.x + 4)));
+    expect(expandOptions(b.tasks[1]).right).toBe('2x - 6');
+    const a = L.init({ world: 'arrows' });
+    expect(QUESTIONS.arrows(a, a.tasks[2], kk).expected).toBe('4');
+    expect(expandOptions(a.tasks[3]).right).toBe('-7x + 10');
+  });
+});
+
+describe('area-split — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('avec questions : ni la progression ni le bouton d’indice ; checkpoints={false} : les deux reviennent', () => {
+    const g = html({ ...LEVELS['area-split'].beginner.numbers, level: 'beginner' });
+    expect(g).not.toContain('data-manipulation-progress');
+    expect(g).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    const off = html({ ...LEVELS['area-split'].beginner.numbers, level: 'beginner', checkpoints: false });
+    expect(off).toContain('data-manipulation-progress');
+    expect(off).toContain(i18n.t('lesson:manipulation.hint.show'));
   });
 });
