@@ -30,6 +30,32 @@ export const LAB = {
   },
 };
 
+/**
+ * LE LABO DU MODULE 2 (معارف) — « آلة الجداءات » (`sign-machine`, thème `mathClubMachine`, 2026-10-27) : le tableau du نشاط 3 (un facteur
+ * fixe, le second qui baisse de 1) devient une machine dont la main fait descendre le second facteur ; chaque produit s'allume en colonne.
+ * Les nombres sont ceux du preset `levels.js` (مبتدئ : a = −3, allumer 4 … 0, prédire (−3) × (−1), trouver le produit 12 ; متقدم : a = −4,
+ * prédire (−4) × (−2), le produit 8 avec a > 0 puis a < 0, a = 2 → −6). Le tableau (−4) × n de l'étape 5 reste un TRANSFERT hors machine.
+ */
+export const LAB_SIGNS = {
+  source: src('act-3', 9, 'أنشطة'),
+  beginner: {
+    a: -3,
+    tasks: [
+      { id: 'm1', kind: 'fill', from: 4, to: 0 },
+      { id: 'p1', kind: 'predict', b: -1, options: [3, -3, -4, -2], key: 3, misc: { '-3': 'MISC-JIDAA-NEGNEG', '-4': 'MISC-JIDAA-ADD', '-2': 'MISC-JIDAA-SUB' } },
+      { id: 'm2', kind: 'reach', product: 12 },
+    ],
+  },
+  advanced: {
+    a: -4,
+    tasks: [
+      { id: 'a1', kind: 'predict', b: -2, options: [8, -8, -6, -2], key: 8, misc: { '-8': 'MISC-JIDAA-NEGNEG', '-6': 'MISC-JIDAA-ADD', '-2': 'MISC-JIDAA-SUB' } },
+      { id: 'a2', kind: 'both', product: 8 },
+      { id: 'a3', kind: 'reach', a: 2, product: -6 },
+    ],
+  },
+};
+
 /** Les connaissances, RÉÉCRITES : la somme répétée, la règle des signes, la justification, le calcul. */
 export const KNOWLEDGE = {
   repeated: {

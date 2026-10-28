@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { EXERCISES, EX, FINAL, LP } from './exercises';
-import { LAB, PREP_ITEMS, PREP_PLATFORM_ITEMS, KNOWLEDGE, METHOD } from './textbook';
+import { LAB, LAB_SIGNS, PREP_ITEMS, PREP_PLATFORM_ITEMS, KNOWLEDGE, METHOD } from './textbook';
 import { LESSON_CONFIG } from '../lesson.config';
 import { LEVELS } from '../../../../../../common/manipulations/levels';
 import * as EL from '../../../../../../common/manipulations/logic/elevatorReel';
@@ -145,6 +145,8 @@ describe('le labo : les nombres de la leçon sont ceux du preset, jouables, et l
   it('LAB = preset de levels.js ; chaque mission a son temps sur le rail', () => {
     expect(LAB.beginner).toEqual(LEVELS['elevator-reel'].beginner.numbers);
     expect(LAB.advanced).toEqual(LEVELS['elevator-reel'].advanced.numbers);
+    expect({ a: LAB_SIGNS.beginner.a, tasks: LAB_SIGNS.beginner.tasks }).toEqual(LEVELS['sign-machine'].beginner.numbers);
+    expect({ a: LAB_SIGNS.advanced.a, tasks: LAB_SIGNS.advanced.tasks }).toEqual(LEVELS['sign-machine'].advanced.numbers);
     expect(EL.init(LAB.beginner).tasks.filter((t) => t.kind === 'floor').map((t) => EL.timeFor(t.r, t.floor, 1))).toEqual([3, -2, 2, -3]);
     // p1 (2026-10-27) : où était l'ascenseur une minute AVANT son passage — prédit avant d'être vu
     expect(LAB.beginner.tasks[1]).toMatchObject({ id: 'p1', kind: 'predict', r: '-2', t: '-1', key: '2' });
@@ -162,11 +164,11 @@ describe('le labo : les nombres de la leçon sont ceux du preset, jouables, et l
     expect(-1.5 * -8).toBe(METHOD.steps.numbers.B);
     expect(Math.round(-0.3 * -0.2 * 100)).toBe(6);
   });
-  it('la durée : 62 minutes sans les مسائل, 86 avec (≤ 90)', () => {
+  it('la durée : 66 minutes sans les مسائل, 90 avec (≤ 90)', () => {
     const sum = (ms) => ms.reduce((a, m) => a + m.estimatedMin, 0);
     const all = LESSON_CONFIG.modules;
-    expect(sum(all.filter((m) => m.track !== 'problem'))).toBe(62);
-    expect(sum(all)).toBe(86);
-    expect(LESSON_CONFIG.estimatedDurationMin).toBe(86);
+    expect(sum(all.filter((m) => m.track !== 'problem'))).toBe(66);
+    expect(sum(all)).toBe(90);
+    expect(LESSON_CONFIG.estimatedDurationMin).toBe(90);
   });
 });

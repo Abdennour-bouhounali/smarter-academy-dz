@@ -1,4 +1,4 @@
-// QA — 3AM, unité 1 « الأعداد النسبية » : leçon `jidaa-adadayn-nisbiyayn` « جداء عددين نسبيين » (labo `elevator-reel`) —
+// QA — 3AM, unité 1 « الأعداد النسبية » : leçon `jidaa-adadayn-nisbiyayn` « جداء عددين نسبيين » (labos `elevator-reel` et `sign-machine`) —
 // cycle moyen, phase 3, priorité propriétaire, 2026-10-26.
 //
 //   KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/3am-unit1-jidaa-adadayn-nisbiyayn.mjs
@@ -11,7 +11,9 @@
 //   3. le labo au CLAVIER et au POINTEUR : l'étage −6 (3 minutes), l'arrêt refusé avec son calcul, la surprise du temps négatif
 //      (étage 4), « جرّب أعدادك » (vitesse 0), la prédiction de متقدم (carte fausse puis juste) et la mission « بطريقتين » ;
 //   4. le bloc `[data-er-glance]` aux cinq tailles, aux deux niveaux (mesure rapportée ; seul le débordement horizontal est un échec) ;
-//   5. captures (état initial, refus, réussite, prédiction, phase formelle) dans /tmp/qa-jidaa.
+//   5. captures (état initial, refus, réussite, prédiction, phase formelle) dans /tmp/qa-jidaa ;
+//   6. module 2 (`sign-machine`, 2026-10-27) : le côté négatif verrouillé avant la prédiction, la carte fausse SANS la réponse, le pointeur
+//      sur le rail, le clavier, le produit 12 en −4 puis la découverte ; متقدم : retourner le signe du premier facteur renverse le tableau.
 import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
 
@@ -51,7 +53,7 @@ async function contextFor(browser, token, viewport, coachOff = true) {
     });
   }
   await ctx.addInitScript(([tk, off]) => {
-    try { localStorage.setItem('token', tk); if (off) localStorage.setItem('sa.labCoach.elevator-reel.off', '1'); } catch { /* noop */ }
+    try { localStorage.setItem('token', tk); if (off) { localStorage.setItem('sa.labCoach.elevator-reel.off', '1'); localStorage.setItem('sa.labCoach.sign-machine.off', '1'); } } catch { /* noop */ }
   }, [token, coachOff]);
   return ctx;
 }
@@ -284,6 +286,63 @@ await lab.close();
   await pickLevel(p, 'advanced');
   await p.waitForTimeout(500);
   check(await p.locator('[data-lab-coach][data-step=cards]').count() >= 1, 'متقدم : le LabCoach montre les cartes de prédiction');
+  await ctx.close();
+}
+
+/* ── 3quater. Module 2 : « آلة الجداءات » (`sign-machine`) ───────────────────────────────────── */
+{
+  const ctx = await contextFor(browser, token, { width: 1280, height: 800 });
+  const p = await ctx.newPage();
+  watch(p);
+  await goto(p, `${BASE}${CH}/${LESSON}/maarif`);
+  await p.waitForSelector('[data-sm-glance]:visible');
+  const smVerdict = async () => (await vis(p, '[data-sm-verdict]').getAttribute('data-sm-verdict')) ?? '';
+  const readB = async () => Number(await vis(p, '[data-sm-knob]').getAttribute('data-b'));
+  const order2 = await p.evaluate(() => {
+    const lab = [...document.querySelectorAll('[data-sm-glance]')].find((e) => e.offsetParent !== null);
+    const q = document.querySelector('[data-activity-evidence]');
+    return { labFirst: !!(lab && q && (lab.compareDocumentPosition(q) & Node.DOCUMENT_POSITION_FOLLOWING)) };
+  });
+  check(order2.labFirst, 'module 2 : le labo est avant la première question (§4quater)');
+  check(await p.locator('[data-manipulation-level-panel=beginner] [data-sm-col][data-locked="true"]').count() === 4, 'مبتدئ : les quatre colonnes négatives sont verrouillées avant la prédiction');
+  // m1 au clavier : 4 → 0, puis la flèche gauche est bloquée au 0
+  await center(p, '[data-sm-knob]');
+  await vis(p, '[data-sm-knob]').focus();
+  for (let i = 0; i < 5; i += 1) await p.keyboard.press('ArrowLeft');
+  check(await readB() === 0, 'm1 : le curseur s\'arrête à 0 (côté négatif fermé)');
+  check(await p.locator('[data-manipulation-level-panel=beginner] [data-sm-gap][data-diff="3"]').count() === 4, 'm1 : quatre pastilles « +3 » entre les colonnes allumées');
+  check(await smVerdict() === 'right', 'm1 : les colonnes 4 … 0 allumées');
+  await vis(p, '[data-sm-next]').click();
+  // p1 : la carte fausse ne montre pas la réponse
+  await vis(p, '[data-sm-card="-3"]').click();
+  check(await smVerdict() === 'wrong', 'p1 : la carte −3 est refusée');
+  check(await p.locator('[data-manipulation-level-panel=beginner] [data-sm-col="-1"][data-lit="true"]').count() === 0, 'p1 : la colonne −1 reste éteinte après une carte fausse');
+  check(await p.locator('[data-manipulation-level-panel=beginner] [data-sm-calc]').count() === 0, 'p1 : aucun calcul affiché après une carte fausse');
+  await p.screenshot({ path: `${OUT}/sm-p1-refus-1280x800.png` });
+  await vis(p, '[data-sm-card="3"]').click();
+  check(await p.locator('[data-manipulation-level-panel=beginner] [data-sm-col="-1"][data-product="3"]').count() === 1, 'p1 : la carte 3 allume (−3) × (−1) = 3');
+  await vis(p, '[data-sm-next]').click();
+  // m2 au pointeur sur le rail : −2 refusé, puis −4
+  await center(p, '[data-sm-rail]');
+  const rail = await vis(p, '[data-sm-rail]').boundingBox();
+  await p.mouse.click(rail.x + rail.width * 0.28, rail.y + rail.height / 2);
+  check(await smVerdict() === 'wrong', 'm2 : une colonne qui n\'est pas 12 est refusée avec son calcul');
+  await p.mouse.click(rail.x + rail.width * 0.02, rail.y + rail.height / 2);
+  check(await readB() === -4 && await smVerdict() === 'right', 'm2 : le produit 12 en b = −4');
+  await p.screenshot({ path: `${OUT}/sm-m2-succes-1280x800.png` });
+  await p.waitForSelector('[data-manipulation-discovery]', { timeout: 5000 }).catch(() => {});
+  await p.locator('[data-manipulation-discovery] button').nth(1).click().catch(() => {});
+  await p.waitForTimeout(400);
+  check(await p.locator('[data-sm-formal]').count() > 0, 'module 2 : la bonne conjecture ouvre la phase formelle');
+  check(await p.locator('[data-evidence="sign-machine"][data-tried="true"]').count() === 1, 'module 2 : l\'étape 1 rappelle les colonnes de l\'élève');
+  // متقدم : prédire, puis retourner le signe de a
+  await pickLevel(p, 'advanced');
+  await vis(p, '[data-sm-card="8"]').click();
+  await vis(p, '[data-sm-next]').click();
+  const before = await p.locator('[data-manipulation-level-panel=advanced] [data-sm-col="-2"]').getAttribute('data-product');
+  await vis(p, '[data-sm-pos]').click();
+  const after = await p.locator('[data-manipulation-level-panel=advanced] [data-sm-col="-2"]').getAttribute('data-product');
+  check(Number(before) === 8 && Number(after) === -8, 'a2 : retourner le signe du premier facteur renverse la colonne −2 (8 → −8)');
   await ctx.close();
 }
 
