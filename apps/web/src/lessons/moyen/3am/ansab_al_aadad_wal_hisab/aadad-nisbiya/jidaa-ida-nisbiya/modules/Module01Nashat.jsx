@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { TextbookBox } from '../../../../../../common/textbook';
@@ -13,14 +13,18 @@ import { LAB, KNOWLEDGE } from '../content/textbook';
  * Les ÉTAPES interrogent ce que l'élève a FAIT, avec SON سجلّ : ce que fait la carte (−1) (P1), le nombre de cartes négatives de ses arrêts (P2),
  * « أتوقّع القاعدة » (la brique), un programme sans labo. Le nom (brique + encadré) vient APRÈS la réponse. Le manuel n'a aucune activité pour
  * plusieurs facteurs : l'entrée est celle de la plateforme.
+ * Déploiement du prototype (2026-10-28) : ces questions (la carte −1, le nombre de cartes négatives, ce que partagent les programmes du côté
+ * négatif) sont posées PAR-DESSUS le labo après chaque mission (`RobotTrack › CHAINS`) ; les étapes 1 à 3 en gardent la TRACE (`checkpoint-done`)
+ * puis posent les noms (briques, encadrés). L'étape 4 (sans labo) reste une question d'étape.
  */
-const M = (s) => <MathText key={s}>{s}</MathText>;
 const Ltr = ({ children }) => <bdi dir="ltr">{String(children).replace(/-/g, '−')}</bdi>;
 
 export default function Module01Nashat() {
   const [trials, setTrials] = useState([]);
   const [q, setQ] = useState({});
   const answered = (k) => () => setQ((s) => ({ ...s, [k]: true }));
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand la suite de questions de sa mission l'est
+  const asked = (...ids) => trials.some((e) => e.tk === 'checkpoint-done' && ids.includes(e.id));
   const record = (e) => setTrials((list) => [...list, e]);
   const solvedOf = (id) => trials.findLast((e) => e.kind === 'run' && !e.free && e.taskId === id && e.ok);
   const m1 = solvedOf('m1');
@@ -35,11 +39,7 @@ export default function Module01Nashat() {
       {ok ? done : todo}
     </p>
   );
-  const pairs = (a, b) => {
-    const right = `${a} و ${b}`;
-    const wrongs = [`${b} و ${a}`, `${a + 1} و ${b}`, `${a} و ${b + 1}`, `${a + 2} و ${b + 2}`].filter((w) => w !== right);
-    return [right, ...[...new Set(wrongs)].slice(0, 3)];
-  };
+
 
   return (
     <ContentModule
@@ -60,64 +60,38 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'ماذا تفعل بطاقة (−1)؟', subtitle: 'من 5 إلى −5', done: !!q.a,
+          num: 1, title: 'ماذا تفعل بطاقة (−1)؟', subtitle: 'من 5 إلى −5', done: asked('m1'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="m1" ok={!!m1}
-                done={<span>في سجلّك: بعد البطاقة <Ltr>−1</Ltr> انتقل الروبوت من <Ltr>5</Ltr> إلى <Ltr>{m1?.stop}</Ltr> .</span>}
-                todo="أنجز المهمتين الأولى والثانية في المختبر أعلاه، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<MathText>{'بطاقة $-1$ نقلت الروبوت من $5$ إلى $-5$ ، ثم أعادته إلى $5$ . ماذا يكون $-5$ بالنسبة إلى $5$ ؟'}</MathText>}
-                options={['معاكسه (نظيره)', 'مقلوبه', 'ضعفه', 'العدد الذي يسبقه']}
-                correct={0} cols={2} requires={['jidaa-adadayn']}
-                explain={<MathText>{'الروبوت قفز من $5$ إلى الموضع المتناظر معه بالنسبة إلى الصفر، وهو $-5$ : معاكس $5$ ومجموعهما $0$ . والضرب في $-1$ يعيده من $-5$ إلى $5$ . (المقلوب جداؤه معه $1$ ، لا $-25$ .)'}</MathText>}
-                onAnswered={answered('a')}
-              />
-              {q.a && <KnowledgeBrick id="maakus" lead="بطاقة (−1) تقلب الروبوت إلى الجهة الأخرى: ما هذا العدد بالنسبة إلى العدد الأصلي؟" />}
-              {q.a && <TextbookBox kind="property" compact lines={KNOWLEDGE.opposite.lines} source={KNOWLEDGE.opposite.source} />}
-              {q.a && <TextbookBox kind="example" compact text={KNOWLEDGE.opposite.examples} source={KNOWLEDGE.opposite.source} />}
+              <Evidence id="m1" ok={asked('m1') && !!m1}
+                done={<span>أجبتَ في المختبر: بعد البطاقة <Ltr>−1</Ltr> قفز الروبوت من <Ltr>5</Ltr> إلى <Ltr>{m1?.stop}</Ltr> ، معاكس <Ltr>5</Ltr> .</span>}
+                todo="أنجز المهمة الأولى في المختبر أعلاه، وأجب عن الأسئلة التي تظهر فوقه." />
+              {asked('m1') && <KnowledgeBrick id="maakus" lead="بطاقة (−1) تقلب الروبوت إلى الجهة الأخرى: ما هذا العدد بالنسبة إلى العدد الأصلي؟" />}
+              {asked('m1') && <TextbookBox kind="property" compact lines={KNOWLEDGE.opposite.lines} source={KNOWLEDGE.opposite.source} />}
+              {asked('m1') && <TextbookBox kind="example" compact text={KNOWLEDGE.opposite.examples} source={KNOWLEDGE.opposite.source} />}
             </div>
           ),
         },
         {
-          num: 2, title: 'كم بطاقة سالبة في سجلّك؟', subtitle: 'بلوغ −24 وبلوغ 24', done: !!q.b,
+          num: 2, title: 'كم بطاقة سالبة في سجلّك؟', subtitle: 'بلوغ −24 وبلوغ 24', done: asked('m3') && asked('m4'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="rows" ok={rows.length === 2}
-                done={<span>سجلّك: برنامج انتهى عند <Ltr>{m3?.stop}</Ltr> وفيه <Ltr>{m3?.negatives}</Ltr> من البطاقات السالبة، وبرنامج انتهى عند <Ltr>{m4?.stop}</Ltr> وفيه <Ltr>{m4?.negatives}</Ltr> .</span>}
-                todo="أنجز المهمتين الثالثة والرابعة في المختبر أعلاه، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt="في برنامجَيْ سجلّك الأخيرين، كم بطاقة سالبة في الأوّل (الذي انتهى عند −24) وفي الثاني (الذي انتهى عند 24)؟"
-                options={pairs(m3?.negatives ?? 1, m4?.negatives ?? 2)}
-                correct={0} cols={1} requires={['maakus']}
-                explain={<MathText>{`برنامج ${'$-24$'} فيه ${m3?.negatives ?? 1} من البطاقات السالبة، وبرنامج ${'$24$'} فيه ${m4?.negatives ?? 2} : اقرأ العددين من سجلّك.`}</MathText>}
-                onAnswered={answered('b')}
-              />
+              <Evidence id="rows" ok={asked('m3') && asked('m4') && rows.length === 2}
+                done={<span>أجبتَ في المختبر: برنامج انتهى عند <Ltr>{m3?.stop}</Ltr> وفيه <Ltr>{m3?.negatives}</Ltr> من البطاقات السالبة، وبرنامج انتهى عند <Ltr>{m4?.stop}</Ltr> وفيه <Ltr>{m4?.negatives}</Ltr> .</span>}
+                todo="أنجز المهمتين الثالثة والرابعة في المختبر أعلاه، وأجب عن الأسئلة التي تظهر فوقه." />
             </div>
           ),
         },
         {
-          num: 3, title: 'متى يتوقّف الروبوت في الجهة السالبة؟', subtitle: 'ما تشترك فيه برامجك', done: !!q.c,
+          num: 3, title: 'متى يتوقّف الروبوت في الجهة السالبة؟', subtitle: 'ما تشترك فيه برامجك', done: asked('m4'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="rule" ok={rows.length === 2}
-                done={<span>سطرا سجلّك: <Ltr>{m3?.negatives}</Ltr> بطاقة سالبة وتوقّف الروبوت في الجهة السالبة، و <Ltr>{m4?.negatives}</Ltr> بطاقة سالبة وتوقّف في الجهة الموجبة.</span>}
-                todo="أنجز المهام الأربع الأولى في المختبر أعلاه، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt="ماذا تشترك فيه كل البرامج التي أوقفت الروبوت في الجهة السالبة؟"
-                options={[
-                  'عدد البطاقات السالبة فيها فردي',
-                  'فيها بطاقة سالبة واحدة على الأقل',
-                  'البطاقات السالبة فيها أكثر من الموجبة',
-                  'آخر بطاقة فيها سالبة',
-                ]}
-                correct={0} cols={1} requires={['maakus']}
-                explain={<MathText>{'برنامجا الجهة السالبة في سجلّك فيهما بطاقة أو ثلاث بطاقات سالبة، أي عدد فردي؛ أمّا برنامج الجهة الموجبة ففيه بطاقتان سالبتان وبطاقة موجبة واحدة: بطاقة سالبة على الأقل لا تكفي، ولا الأغلبية تحسم، ولا موضع البطاقة.'}</MathText>}
-                onAnswered={answered('c')}
-              />
-              {q.c && <KnowledgeBrick id="adad-salib" lead="عدد البطاقات السالبة وجهة توقّف الروبوت: ما القاعدة؟ وهل يهمّ الترتيب؟" />}
-              {q.c && <TextbookBox kind="property" compact lines={KNOWLEDGE.parity.lines} source={KNOWLEDGE.parity.source} />}
-              {q.c && <TextbookBox kind="example" compact text={KNOWLEDGE.parity.examples} source={KNOWLEDGE.parity.source} />}
+              <Evidence id="rule" ok={asked('m4') && rows.length === 2}
+                done={<span>أجبتَ في المختبر: <Ltr>{m3?.negatives}</Ltr> بطاقة سالبة وتوقّف الروبوت في الجهة السالبة، و <Ltr>{m4?.negatives}</Ltr> بطاقة سالبة وتوقّف في الجهة الموجبة — ما يحسم الجهة هو أن يكون عدد البطاقات السالبة فرديًا.</span>}
+                todo="أنجز المهام الأربع في المختبر أعلاه، وأجب عن الأسئلة التي تظهر فوقه بعد المهمة الأخيرة." />
+              {asked('m4') && <KnowledgeBrick id="adad-salib" lead="عدد البطاقات السالبة وجهة توقّف الروبوت: ما القاعدة؟ وهل يهمّ الترتيب؟" />}
+              {asked('m4') && <TextbookBox kind="property" compact lines={KNOWLEDGE.parity.lines} source={KNOWLEDGE.parity.source} />}
+              {asked('m4') && <TextbookBox kind="example" compact text={KNOWLEDGE.parity.examples} source={KNOWLEDGE.parity.source} />}
             </div>
           ),
         },
@@ -135,7 +109,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

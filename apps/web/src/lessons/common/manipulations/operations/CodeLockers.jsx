@@ -8,6 +8,10 @@ import ManipulationStage from '../ManipulationStage';
 import { useManipulation } from '../useManipulation';
 import { LabCard, PromptCard, VerdictBanner } from '../primitives/LabKit';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import HallArt from './codeLockers/HallArt';
 import { LEVELS } from '../levels';
 import * as L from '../logic/codeLockers';
@@ -46,6 +50,14 @@ import * as L from '../logic/codeLockers';
  *
  * ONBOARDING : `coachOf` (digit · sign · commit · handle · switch · next) montre le contrôle, jamais le nombre.
  *
+ * QUESTIONS PENDANT LE LABO (déploiement lot 1, 2026-10-28, `primitives/LabCheckpoint`) : `checkpoints` (défaut true). Après CHAQUE casier
+ * ouvert, une suite de questions sur ce que l'élève vient de FAIRE se pose par-dessus le labo et retient « التالي » (`chainsOf`) : la distance du
+ * code, la phrase de division de SON casier, ce que ferait le code opposé, ce que partagent les casiers au code positif (au dernier — la règle
+ * reste écrite par le MODULE), 0 ÷ b ; monde `fraction` : pourquoi aucun code décimal, une autre écriture qui ouvre, le signe d'un quotient de
+ * deux négatifs. Une réponse signée est un CHOIX (le champ numérique ne lit pas « − »). Obligatoires pour tout élève ; l'enseignant seul les
+ * coupe pour SON compte. Questions actives → `guided`. ÉTAPES : `LabStepper` (`[data-cl-step=<i>]`) et la fête par casier. « إعادة » repart du
+ * casier 1 ; « أعِد التجربة » remet LE MÊME casier (`L.restartTask`). SON : `tooth` par cran de molette (plus grave vers le bas), `bell` pour une
+ * écriture qui ouvre sans finir le casier, `flag` pour le casier ouvert, `over` pour un code refusé.
  * Props : `tasks`, `world` ('lockers' | 'fraction'), `level`, `levels`, `coach`, `title`, `lead`, `onTrial(event)`, `onFinished({ world })`.
  *
  * CONTRAT DOM : [data-code-lockers][data-task][data-world][data-solved][data-layout], [data-cl-glance], [data-cl-hall], [data-cl-small=<i>][data-state], [data-cl-locker][data-open][data-cl-shake],
@@ -79,7 +91,7 @@ export function numbersFor({ tasks, world, level }) {
 }
 
 export default function CodeLockers({
-  tasks, world, title, lead, level, levels: withLevels = true, coach: coachOn = true,
+  tasks, world, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -89,13 +101,40 @@ export default function CodeLockers({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
   if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    const restart = scene.key === numsKey && scene.rc !== state.resetCount;
-    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-    setLab(restart ? L.restartTask(lab) : L.init(nums));
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — le casier 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
+    setLab(L.init(nums));
   }
   const ready = L.discoveryReady(lab);
+  // les questions pendant le labo : la suite du casier courant (la règle des signes reste écrite par le MODULE)
+  const cpSettings = useLabCheckpointSettings('code-lockers');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpChains = cpOn && cpSettings.enabled ? chainsOf(lab) : null;
+  const cur = L.isFree(lab) ? null : lab.tasks[lab.ti];
+  const chain = cpChains && cur ? cpChains[cur.id] ?? null : null;
+  const cp = useLabCheckpoint({
+    id: chain?.length ? cur.id : null,
+    questions: chain?.length ? chain.map((q) => QUESTIONS[q](lab, cur, k)) : null,
+    reached: !L.isFree(lab) && L.taskDone(lab),
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.restartTask),
+    onEvent: (ev) => state.report(onTrial, ev),
+  });
+  // le son (muet sans « الصوت ») : un cran de molette, puis le jugement de la poignée
+  const sfx = useRef({ wheels: lab.wheels, at: 0, last: lab.last });
+  useEffect(() => {
+    const p = sfx.current;
+    const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+    if (lab.wheels !== p.wheels && now - p.at > 35) {
+      const up = Object.keys(lab.wheels).some((key) => lab.wheels[key] > (p.wheels[key] ?? 0));
+      playSfx('tooth', { pitch: up ? 1 : 0.75 }); p.at = now;
+    }
+    p.wheels = lab.wheels;
+    const v = lab.last;
+    if (v && v !== p.last && v.kind === 'pull' && !v.free) playSfx(!v.ok ? 'over' : v.doneNow === false ? 'bell' : 'flag');
+    p.last = v;
+  }, [lab.wheels, lab.last]);
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   const finishedOnce = useRef(false);
   useEffect(() => {
@@ -111,7 +150,7 @@ export default function CodeLockers({
   }, [nTrials, lab.trials]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── onboarding ── */
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'code-lockers', step: coachStep,
     text: coachStep ? k(`coach.${coachStep.id}`) : '',
@@ -140,6 +179,7 @@ export default function CodeLockers({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      guided={!!cpChains}
       coach={coachOn ? coach : null}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
@@ -148,7 +188,7 @@ export default function CodeLockers({
       <ManipulationStage className="bg-gradient-to-b from-amber-50/60 to-white">
         <div ref={boxRef} className="space-y-2" data-code-lockers data-task={lab.ti} data-world={lab.world} data-layout={lab.layout} data-solved={ready ? 'true' : 'false'}>
           <style dangerouslySetInnerHTML={{ __html: CSS }} />
-          <Lab lab={lab} setLab={setLab} k={k} width={width} lead={state.isAuthoredLevel ? lead : null} />
+          <Lab lab={lab} setLab={setLab} k={k} width={width} lead={state.isAuthoredLevel ? lead : null} cp={cp} />
         </div>
       </ManipulationStage>
     </ManipulationShell>
@@ -254,7 +294,7 @@ function Handle({ onPull, disabled, k }) {
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-function Lab({ lab, setLab, k, width, lead }) {
+function Lab({ lab, setLab, k, width, lead, cp }) {
   const uid = `cl${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
   const free = L.isFree(lab);
   const task = L.taskOf(lab);
@@ -284,21 +324,20 @@ function Lab({ lab, setLab, k, width, lead }) {
     if (commitTask) return k('question.commit');
     return k('question.open');
   })();
+  // une étape est FAITE quand le casier est ouvert ET que ses questions (LabCheckpoint) sont répondues : la pastille passe au vert et on fête
+  const stepDone = lab.tasks.map((_, i) => !!lab.done[i] && (i !== lab.ti || !cp.blocking));
   const steps = lab.tasks.length > 1 && !free && (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      <span className="text-xs font-black text-amber-900/70" aria-hidden="true">{k('stepsLabel')}</span>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={tk.id} role="listitem" data-cl-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-amber-700 bg-amber-700 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-amber-100 bg-white text-amber-500'}`}>
-            {d && !cur ? <Check className="h-3.5 w-3.5" strokeWidth={3} aria-hidden="true" /> : <bdi dir="ltr">{i + 1}</bdi>}
-          </span>
-        );
-      })}
-    </div>
+    <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-cl-step" />
   );
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // L.init (« إعادة », autre niveau) : on refête
+  const nowDone = !free && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.ti)) return;
+    celebrated.current.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
   const lit = !free && done;
   const prompt = (
     <PromptCard size={wide ? 'lg' : 'md'} aside={steps || null} context={lead && !free ? lead : context} contextProps={{ 'data-cl-context': free ? 'free' : (fractionW ? 'fraction' : commitTask ? 'commit' : 'goal') }}
@@ -439,7 +478,7 @@ function Lab({ lab, setLab, k, width, lead }) {
   const vkey = !last || last.kind !== 'pull' ? '' : last.ok ? (free ? 'free' : 'right') : 'wrong';
   const tone = !last ? 'indigo' : last.ok && !free ? 'emerald' : 'amber';
   const Icon = !last ? Hand : last.ok && !free ? CheckCircle2 : Sparkles;
-  const canNext = L.canNext(lab);
+  const canNext = L.canNext(lab) && !cp.blocking;
   const banner = (
     <VerdictBanner tone={tone} icon={Icon} size="sm" className="min-h-[3.5rem]" data-cl-verdict={vkey}>
       <div className="min-w-0 space-y-1.5">
@@ -478,6 +517,8 @@ function Lab({ lab, setLab, k, width, lead }) {
   return (
     <>
       <div className="relative space-y-2.5" data-cl-glance>
+        {party.node}
+        {cp.node}
         {prompt}
         {hall}
         <div className={wide ? 'grid grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] items-start gap-2.5' : 'space-y-2.5'}>
@@ -534,3 +575,120 @@ function FreeCard({ lab, setLab, k }) {
     </LabCard>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de chaque casier (par id) ; un casier inconnu suit son genre. Pas de `rule` : la règle des signes est écrite par le MODULE. */
+export const CHAINS = Object.freeze({
+  m1: ['distance', 'sentence'], m2: ['sentence', 'flip'], m3: ['sentence', 'flip'], m4: ['sentence', 'signsRow'],
+  a1: ['flip', 'sentence'], a2: ['sentence'], a3: ['sentence', 'flip'], a4: ['zero'],
+  f1: ['noDecimal', 'writings'], f2: ['writings', 'fracSign'],
+});
+const neg = (x) => /^[-−]/.test(String(x).trim());
+const isZero = (x) => /^[-−]?0(?:[.,]0*)?$/.test(String(x).trim());
+
+/** Les suites de CE labo : une question sans objet est retirée (le code 0 n'a pas d'opposé, « les casiers positifs » sans casier positif). */
+export function chainsOf(lab) {
+  const out = {};
+  for (const tk of lab.tasks) {
+    const base = CHAINS[tk.id] ?? (tk.layout === 'frac' || tk.writings ? ['writings'] : isZero(tk.a) ? ['zero'] : ['sentence', 'flip']);
+    out[tk.id] = base.filter((q) => (q === 'flip' ? !isZero(tk.a) : true));
+  }
+  return out;
+}
+
+const C = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const pick = (list, right, whys) => list.map((text, i) => (i === right ? { text, correct: true } : { text, why: whys[i] }));
+const ltr = (s) => <bdi dir="ltr">{L.minus(s)}</bdi>;
+const par = (x) => (neg(x) ? `(${L.minus(L.text(x))})` : L.text(x));
+const unsign = (x) => L.text(x).replace(/^−/, '');
+const oppo = (x) => (neg(L.text(x)) ? unsign(x) : `−${L.text(x)}`);
+
+/** Chaque question est construite sur LE casier de l'élève (rien en dur). */
+export const QUESTIONS = {
+  distance: (lab, task, k) => {
+    const q = L.answerOf(task);
+    const d = unsign(q);
+    const o = { a: iso(unsign(task.a)), b: iso(unsign(task.b)), d: iso(d), rule: iso(L.ruleText(task)) };
+    return {
+      id: 'distance', kind: 'number', expected: d, answer: ltr(d),
+      prompt: C(k, 'distance.prompt', o), hints: [C(k, 'distance.hint1', o), C(k, 'distance.hint2', o)], explain: C(k, 'distance.explain', o),
+    };
+  },
+  sentence: (lab, task, k) => {
+    const q = L.text(L.answerOf(task));
+    const o = { rule: iso(L.ruleText(task)), code: iso(L.minus(q)), a: iso(L.minus(L.text(task.a))), b: iso(L.minus(L.text(task.b))) };
+    const swapped = `${par(task.b)} ÷ ${par(task.a)} = ${L.minus(q)}`;
+    const flipped = `${par(task.a)} ÷ ${par(task.b)} = ${L.minus(oppo(q))}`;
+    return {
+      id: 'sentence', kind: 'choice', cols: 1, prompt: C(k, 'sentence.prompt', o),
+      options: pick([ltr(L.sentenceOf(task, L.answerOf(task))), ltr(swapped), ltr(flipped)], 0, [null, C(k, 'sentence.whySwap', o), C(k, 'sentence.whyFlip', o)]),
+      hints: [C(k, 'sentence.hint1', o), C(k, 'sentence.hint2', o)], explain: C(k, 'sentence.explain', { ...o, s: iso(L.sentenceOf(task, L.answerOf(task))) }),
+    };
+  },
+  flip: (lab, task, k) => {
+    const q = L.text(L.answerOf(task));
+    const o = { code: iso(L.minus(q)), opp: iso(L.minus(oppo(q))), a: iso(L.minus(L.text(task.a))), anti: iso(L.minus(oppo(task.a))), rule: iso(L.ruleText(task)) };
+    return {
+      id: 'flip', kind: 'choice', prompt: C(k, 'flip.prompt', o),
+      options: pick([C(k, 'flip.right', o), C(k, 'flip.opens'), C(k, 'flip.zero')], 0, [null, C(k, 'flip.whyOpens', o), C(k, 'flip.whyZero', o)]),
+      hints: [C(k, 'flip.hint1', o), C(k, 'flip.hint2', o)], explain: C(k, 'flip.explain', o),
+    };
+  },
+  signsRow: (lab, task, k) => {
+    const rows = lab.tasks.filter((t, i) => (lab.done[i] || t === task) && !t.writings && !isZero(t.a));
+    const pos = rows.filter((t) => !neg(L.text(L.answerOf(t))));
+    const ruleOf = (t) => iso(L.ruleText(t));
+    const aNeg = pos.find((t) => neg(t.a));
+    const bNeg = pos.find((t) => neg(t.b));
+    return {
+      id: 'signsRow', kind: 'choice', prompt: C(k, 'signsRow.prompt'),
+      options: pick([C(k, 'signsRow.same'), C(k, 'signsRow.aPos'), C(k, 'signsRow.bPos')], 0,
+        [null, aNeg ? C(k, 'signsRow.whyRow', { rule: ruleOf(aNeg) }) : C(k, 'signsRow.whyGeneric'), bNeg ? C(k, 'signsRow.whyRow', { rule: ruleOf(bNeg) }) : C(k, 'signsRow.whyGeneric')]),
+      hints: [C(k, 'signsRow.hint1'), C(k, 'signsRow.hint2')], explain: C(k, 'signsRow.explain', { rules: pos.map(ruleOf).join(' ، ') || '—' }),
+    };
+  },
+  zero: (lab, task, k) => {
+    const o = { b: iso(L.minus(L.text(task.b))), rule: iso(L.ruleText(task)) };
+    return {
+      id: 'zero', kind: 'choice', cols: 3, prompt: C(k, 'zero.prompt', o),
+      options: pick([ltr('0'), ltr(L.text(task.b)), C(k, 'zero.none')], 0, [C(k, 'zero.whyB', o), C(k, 'zero.whyB', o), C(k, 'zero.whyNone', o)]),
+      hints: [C(k, 'zero.hint1', o), C(k, 'zero.hint2')], explain: C(k, 'zero.explain', o),
+    };
+  },
+  noDecimal: (lab, task, k) => {
+    const q = L.text(L.answerOf(task));
+    const o = { rule: iso(L.ruleText(task)), q: iso(L.minus(q)) };
+    return {
+      id: 'noDecimal', kind: 'choice', prompt: C(k, 'noDecimal.prompt', o),
+      options: pick([C(k, 'noDecimal.right', o), C(k, 'noDecimal.miss'), C(k, 'noDecimal.sign')], 0, [null, C(k, 'noDecimal.whyMiss', o), C(k, 'noDecimal.whySign', o)]),
+      hints: [C(k, 'noDecimal.hint1'), C(k, 'noDecimal.hint2', o)], explain: C(k, 'noDecimal.explain', o),
+    };
+  },
+  writings: (lab, task, k) => {
+    const q = L.answerOf(task);
+    const [n, d] = unsign(q).split('/');
+    const den = d ?? '1';
+    const negQ = neg(L.text(q));
+    const frac = (nn, dd) => `\\frac{${nn}}{${dd}}`;
+    const right = negQ ? frac(n, `-${den}`) : frac(`-${n}`, `-${den}`);
+    const wrongSign = negQ ? frac(`-${n}`, `-${den}`) : frac(`-${n}`, den);
+    const wrongInv = negQ ? `-${frac(den, n)}` : frac(den, n);
+    const o = { rule: iso(L.ruleText(task)), q: `$${negQ ? `-${frac(n, den)}` : frac(n, den)}$` };
+    return {
+      id: 'writings', kind: 'choice', cols: 3, prompt: C(k, 'writings.prompt', o),
+      options: pick([<MathText>{`$${right}$`}</MathText>, <MathText>{`$${wrongSign}$`}</MathText>, <MathText>{`$${wrongInv}$`}</MathText>], 0,
+        [null, C(k, 'writings.whySign', o), C(k, 'writings.whyInv', o)]),
+      hints: [C(k, 'writings.hint1'), C(k, 'writings.hint2', o)], explain: C(k, 'writings.explain', { ...o, w: `$${right}$` }),
+    };
+  },
+  fracSign: (lab, task, k) => {
+    const o = { f: `$\\frac{${L.text(task.a).replace('−', '-')}}{${L.text(task.b).replace('−', '-')}}$` };
+    const pos = neg(task.a) === neg(task.b);
+    return {
+      id: 'fracSign', kind: 'choice', cols: 3, prompt: C(k, 'fracSign.prompt', o),
+      options: pick([C(k, 'fracSign.pos'), C(k, 'fracSign.neg'), C(k, 'fracSign.depends')], pos ? 0 : 1, [C(k, 'fracSign.why', o), C(k, 'fracSign.why', o), C(k, 'fracSign.whyDepends')]),
+      hints: [C(k, 'fracSign.hint1'), C(k, 'fracSign.hint2')], explain: C(k, pos ? 'fracSign.explainPos' : 'fracSign.explainNeg', o),
+    };
+  },
+};

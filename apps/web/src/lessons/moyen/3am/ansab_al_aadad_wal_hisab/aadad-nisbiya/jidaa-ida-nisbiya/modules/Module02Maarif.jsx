@@ -14,6 +14,8 @@ import { LAB, KNOWLEDGE, RECALL_LESSON1, GUIDE } from '../content/textbook';
  * cherche un nombre qui arrête le robot du côté négatif et n'en trouve aucun. Une seule piste (§4quater) : l'action, ce qu'elle a montré (`a = 3` et
  * `a = −3` donnent 9), puis le nom (le carré, `(−a)² = a²`), puis les trois rôles du signe « − » (classement par touches) et `−a` quand `a < 0`.
  * La leçon précédente de l'unité (publiée) est RAPPELÉE en tête (« تذكّر », avec son lien), jamais reconstruite. LP : P1, P3.
+ * Déploiement du prototype (2026-10-28) : « où s'arrête le robot ? » et « un carré négatif ? » sont posées PAR-DESSUS le labo (`RobotTrack ›
+ * CHAINS.q1`) ; les étapes 1 et 2 en gardent la TRACE (`checkpoint-done`) puis posent les noms.
  */
 const ROLES = [
   { tex: '15 - 6', answer: 0, why: 'الإشارة بين عددين هنا علامة الطرح: $15 - 6 = 9$ .' },
@@ -30,6 +32,8 @@ export default function Module02Maarif() {
   const record = (e) => setTrials((list) => [...list, e]);
   const tried = (a) => trials.some((t) => t.kind === 'square' && t.a === a);
   const both = tried(3) && tried(-3);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : « où s'arrête-t-il ? » et « un carré négatif ? » sont posées après la mission 1
+  const asked = (...ids) => trials.some((e) => e.tk === 'checkpoint-done' && ids.includes(e.id));
   const recallPath = getLessonPath(RECALL_LESSON1.lesson);
 
   return (
@@ -55,35 +59,22 @@ export default function Module02Maarif() {
       intro={<Manipulation type="robot-track" world={LAB.square.world} tasks={LAB.square.tasks} levels={false} onTrial={record} />}
       steps={[
         {
-          num: 1, title: 'بطاقة تُوضع مرّتين', subtitle: 'a = 3 و a = −3', done: !!q.a,
+          num: 1, title: 'بطاقة تُوضع مرّتين', subtitle: 'a = 3 و a = −3', done: asked('q1'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <p data-evidence="sq" data-tried={both ? 'true' : 'false'}
-                className={`rounded-xl border-2 px-3 py-2 text-sm ${both ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
-                {both ? 'في سجلّك جرّبتَ العدد 3 والعدد −3.' : 'جرّب في المختبر أعلاه العدد 3 ثم العدد −3، ثم عُد إلى هذا السؤال.'}
+              <p data-evidence="sq" data-tried={asked('q1') ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${asked('q1') ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {asked('q1') ? <MathText>{'أجبتَ في المختبر: $1 \\times (-3) \\times (-3) = 9$ — البطاقة السالبة مرّتين أعادت الروبوت إلى الجهة الموجبة، ولا عدد نسبي مربّعه سالب.'}</MathText> : (both ? 'جرّبتَ العدد 3 والعدد −3: أكمل المهمة الأولى في المختبر أعلاه، وأجب عن الأسئلة التي تظهر فوقه.' : 'جرّب في المختبر أعلاه العدد 3 ثم العدد −3، ثم أكمل المهمة وأجب عن الأسئلة التي تظهر فوقه.')}
               </p>
-              <NumericQuestion
-                prompt={<MathText>{'جرّبتَ $a = 3$ و $a = -3$ . أين توقّف الروبوت في المرّتين؟ (اكتب العدد)'}</MathText>}
-                expected={9} requires={['adad-salib']}
-                explain={<MathText>{'$1 \\times 3 \\times 3 = 9$ و $1 \\times (-3) \\times (-3) = 9$ : بطاقتان سالبتان (عدد زوجي) فالروبوت في الجهة الموجبة.'}</MathText>}
-                onAnswered={answered('a')}
-              />
-              {q.a && <KnowledgeBrick id="murabba" lead="البطاقة نفسها مرّتين: هل وجدتَ عددًا يوقف الروبوت في الجهة السالبة؟" />}
+              {asked('q1') && <KnowledgeBrick id="murabba" lead="البطاقة نفسها مرّتين: هل وجدتَ عددًا يوقف الروبوت في الجهة السالبة؟" />}
             </div>
           ),
         },
         {
-          num: 2, title: 'هل يوجد عدد نسبي مربّعه سالب؟', subtitle: 'كل ما جرّبته', done: !!q.b,
+          num: 2, title: 'هل يوجد عدد نسبي مربّعه سالب؟', subtitle: 'كل ما جرّبته', done: asked('q1'),
           content: (
             <div className="space-y-3">
-              <TapQuestion
-                prompt="هل يوجد عدد نسبي مربّعه سالب؟"
-                options={['لا، مربّع كل عدد نسبي موجب أو معدوم', 'نعم، مربّع كل عدد سالب سالب', 'نعم، مربّع $-1$ سالب', 'يتوقّف ذلك على العدد المختار']}
-                correct={0} cols={1} requires={['murabba']}
-                explain={<MathText>{GUIDE.squareNeg.why}</MathText>}
-                onAnswered={answered('b')}
-              />
-              {q.b && <TextbookBox kind="property" compact text={KNOWLEDGE.square.text} source={KNOWLEDGE.square.source} />}
+              {asked('q1') && <TextbookBox kind="property" compact text={KNOWLEDGE.square.text} source={KNOWLEDGE.square.source} />}
             </div>
           ),
         },
@@ -119,7 +110,7 @@ export default function Module02Maarif() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={2} />}
+      footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />
   );
 }

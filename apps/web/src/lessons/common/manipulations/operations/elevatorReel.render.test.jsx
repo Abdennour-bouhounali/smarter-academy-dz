@@ -3,7 +3,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import i18n from '../../../../i18n';
-import ElevatorReel, { discoveryOptions } from './ElevatorReel';
+import ElevatorReel, { discoveryOptions, chainsOf, QUESTIONS } from './ElevatorReel';
 import { LEVELS } from '../levels';
 import * as L from '../logic/elevatorReel';
 
@@ -82,5 +82,60 @@ describe('elevator-reel — rendu', () => {
     const all = JSON.stringify(i18n.t('lesson:manipulation.elevatorReel', { returnObjects: true }));
     expect(all.length).toBeGreaterThan(500);
     expect(all).not.toMatch(/الكتاب|ص \d/);
+  });
+});
+
+/** Résout toutes les missions d'un niveau par la logique (la main de l'élève). */
+function solveAll(numbers) {
+  let s = L.init(numbers);
+  for (let i = 0; i < s.tasks.length; i += 1) {
+    const tk = L.taskOf(s);
+    if (tk.kind === 'predict') s = L.choose(s, tk.key);
+    else if (tk.kind === 'both') { s = L.release(s, L.timeFor(2, tk.floor, s.step)); s = L.flipSense(s); s = L.release(s, L.timeFor(-2, tk.floor, s.step)); }
+    else s = L.release(s, L.timeFor(tk.r, tk.floor, s.step));
+    if (i < s.tasks.length - 1) s = L.nextTask(s);
+  }
+  return s;
+}
+
+describe('elevator-reel — questions pendant le labo (LabCheckpoint)', () => {
+  for (const name of ['beginner', 'advanced']) {
+    it(`${name} : chaque question a un texte, une seule bonne réponse, deux indices, et ni clé brute ni {{`, () => {
+      const s = solveAll(LV[name].numbers);
+      expect(L.discoveryReady(s)).toBe(true);
+      const chains = chainsOf(s);
+      for (const tk of s.tasks) {
+        expect(chains[tk.id].length, tk.id).toBeGreaterThanOrEqual(1);
+        for (const qid of chains[tk.id]) {
+          const q = QUESTIONS[qid](s, tk, k);
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${tk.id}.${qid}`).not.toMatch(RAW);
+          expect(out, `${tk.id}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${tk.id}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${tk.id}.${qid}`).toHaveLength(1);
+          else expect(Number(q.expected), `${tk.id}.${qid}`).toBeGreaterThanOrEqual(0);
+        }
+      }
+      expect(chains[s.tasks.at(-1).id].at(-1)).toBe('rule');
+    });
+  }
+  it('les nombres viennent de la mission résolue', () => {
+    const s = solveAll(LV.beginner.numbers);
+    const chains = chainsOf(s);
+    expect(chains.m1).toEqual(['time', 'arrows']);
+    expect(chains.m2).toEqual(['time', 'before', 'value']);
+    expect(QUESTIONS.value(s, s.tasks[2], k).expected).toBe('4');
+    expect(QUESTIONS.distance(s, s.tasks[1], k).expected).toBe('2');
+  });
+});
+
+describe('elevator-reel — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('questions actives : ni la progression ni le bouton d’indice ; checkpoints={false} : les deux reviennent', () => {
+    const g = html(cases.beginner);
+    expect(g).not.toContain('data-manipulation-progress');
+    expect(g).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    const off = html({ ...cases.beginner, checkpoints: false });
+    expect(off).toContain('data-manipulation-progress');
+    expect(off).toContain(i18n.t('lesson:manipulation.hint.show'));
   });
 });

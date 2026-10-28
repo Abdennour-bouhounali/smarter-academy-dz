@@ -253,6 +253,14 @@ export function restartTask(s) {
   return { ...s, t: 0, r: task.kind === 'both' ? 2 : task.r, last: null, picked: null };
 }
 
+/** « أعِد التجربة » (questions du labo) : LA MÊME mission repart, non résolue (ses lignes du سجلّ retirées). */
+export function retryTask(s) {
+  const { [s.ti]: _d, ...done } = s.done;
+  const { [s.ti]: _s, ...solved } = s.solved;
+  const { [s.ti]: _c, ...classes } = s.classes;
+  return { ...restartTask(s), done, solved, classes };
+}
+
 /* ── « جرّب أعدادك » ─────────────────────────────────────────────────────────────────────────── */
 
 /** r : entier de −3 à 3 (0 permis : la cabine ne bouge jamais). t : multiple de 0,5 de −3 à 3. null si illisible. */

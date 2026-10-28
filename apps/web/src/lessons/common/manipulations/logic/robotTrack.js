@@ -390,6 +390,13 @@ export function restartTask(s) {
   return { ...s, board: boardOf(task), last: null, pred: { side: null, dist: null, ran: false }, n: 2, predicted: false, flipped: false, moved: false, a: s.world === 'square' ? 2 : null };
 }
 
+/** « أعِد التجربة » (questions du labo) : LA MÊME mission repart, non résolue (ses lignes du سجلّ retirées). */
+export function retryTask(s) {
+  const { [s.ti]: _d, ...done } = s.done;
+  const { [s.ti]: _s, ...solved } = s.solved;
+  return { ...restartTask(s), done, solved, record: s.record.filter((r) => r.task !== s.ti), tried: { neg: false, pos: false, vals: [] }, claimed: false };
+}
+
 /* ── « جرّب أعدادك » ─────────────────────────────────────────────────────────────────────────── */
 
 /** Un facteur de −10 à 10 avec au plus une décimale ; null si illisible. */
