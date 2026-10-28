@@ -35,7 +35,7 @@ export default function Module01Lafita() {
   const [q3, setQ3] = useState(false);
   const [q4a, setQ4a] = useState(false);
   const [q4, setQ4] = useState(false);
-  const onTrial = (tr) => setTrials((t) => [...t, tr].slice(-10));
+  const onTrial = (tr) => { if (!tr?.tk) setTrials((t) => [...t, tr].slice(-10)); };   // les événements `checkpoint` des questions du labo ne sont pas des constructions
 
   return (
     <ContentModule
@@ -167,7 +167,7 @@ export default function Module01Lafita() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

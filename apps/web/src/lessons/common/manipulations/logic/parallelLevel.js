@@ -147,6 +147,30 @@ export function discoveryReady(lab) {
   return f.includes('1') && f.includes('2') && (f.includes('3') || f.includes('3m'));
 }
 
+/* ── les deux ÉTAPES du labo (questions pendant le labo, lot 4) ─────────────────────────────────────── */
+
+/** Étape 1 atteinte : ladder — une planche de niveau ; crossing — les figures 1 ET 2 (de part et d'autre du rapport imposé). */
+export function stageOneReached(lab) {
+  if (lab.mode === 'ladder') return levelRatios(lab).length >= 1;
+  const f = figuresMade(lab);
+  return f.includes('1') && f.includes('2');
+}
+/** Étape 2 atteinte : le contraste complet de la découverte. */
+export const stageTwoReached = discoveryReady;
+
+/** La tâche 'one' | 'two' repart de zéro : toutes les planches effacées (one) ou seulement celles de l'étape 2 (two). */
+export function retryStage(lab, stage) {
+  const fresh = init({ AB: lab.b, AC: lab.c, ratio: lab.target ? LIN.fracText(lab.target) : undefined, mode: lab.mode });
+  if (stage === 'one') return fresh;
+  const keep = [];
+  const seen = new Set();
+  for (const t of lab.trials) {
+    const key = lab.mode === 'ladder' ? (t.kind === 'level' ? 'level' : null) : (t.figure === '1' || t.figure === '2' ? t.figure : null);
+    if (key && !seen.has(key) && (lab.mode === 'crossing' || seen.size === 0)) { seen.add(key); keep.push(t); }
+  }
+  return Object.freeze({ ...fresh, trials: keep });
+}
+
 /** Ce que la leçon reçoit à chaque essai (`onTrial`) : des nombres, jamais un composant. */
 export function evidenceOf(lab) {
   const t = lab.trials.at(-1);

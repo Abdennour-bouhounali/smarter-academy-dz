@@ -12,6 +12,11 @@ import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
 import MathText from '../../components/MathText';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { $, Mx, distinct, spreadAll } from './thalesCp';
 import * as L from '../logic/segmentDivider';
 
 /**
@@ -89,7 +94,7 @@ const BTN = 'inline-flex h-11 min-w-[44px] items-center justify-center gap-1 rou
 
 export default function SegmentDivider({
   mode: mode0 = 'equal', parts: parts0 = 3, p: p0 = 3, q: q0 = 2, marks: marks0 = 5, length = 10, theme = 'tifo',
-  title, lead, mission, level, levels: withLevels = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  title, lead, mission, level, levels: withLevels = true, initialMode = 'student', allowModeSwitch = false, checkpoints: cpOn = true, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.segmentDivider.${key}`, o), [t]);
@@ -100,12 +105,56 @@ export default function SegmentDivider({
   const make = () => L.init({ mode: nums.mode, parts: nums.parts, p: nums.p, q: nums.q, marks: nums.marks, length });
   const [lab, setLab] = useState(make);
   const sceneKey = `${JSON.stringify(nums)}|${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); }
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  const [doneIds, setDoneIds] = useState([]);   // les étapes dont la suite de questions est finie
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(make()); setDoneIds([]); }   // « إعادة » : tout repart
   const reduce = useReducedMotion();
 
+  /* ── les questions PENDANT le labo (primitives/LabCheckpoint) : une suite après chaque étape faite (equal : les marques posées, la 1re construction
+     juste, le contraste ; ratio : un 1er point juste, les deux points) ; la dernière finit par la règle et remplace la découverte automatique. ── */
+  const cpSettings = useLabCheckpointSettings('segment-divider');
+  const cpEnabled = cpOn && cpSettings.enabled;
+  const steps = L.stepsOf(lab.mode);
+  const stepOk = Object.fromEntries(steps.map((g) => [g, L.stepReached(lab, g)]));
+  const pending = cpEnabled ? steps.find((g) => stepOk[g] && !doneIds.includes(g)) ?? null : null;
+  const chain = pending ? chainOf(pending, lab.mode) : null;
+  const cp = useLabCheckpoint({
+    id: chain ? pending : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, pending, k)) : null,
+    reached: !!pending,
+    resetKey: scene.inits,
+    onRetry: () => { celebrated.current.delete(pending); setLab((s) => L.retryStage(s, pending)); },
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => (d.includes(id) ? d : [...d, id]));
+      if (chainOf(id, lab.mode).includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const solvedAll = L.discoveryReady(lab);
+  const ready = solvedAll && !cpEnabled;
+  const stepDone = steps.map((g) => !!stepOk[g] && (!cpEnabled || doneIds.includes(g)));
+  const stepNow = stepDone.includes(false) ? stepDone.indexOf(false) : steps.length - 1;
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (L.markCount(lab) === 0 && lab.trials.length === 0 && lab.joins.length === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(steps[i])) return;
+      celebrated.current.add(steps[i]);
+      party.celebrate({ n: stepDone.filter(Boolean).length, total: steps.length });
+    });
+  }, [stepDone.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son : un déclic par report / trait, le drapeau quand la construction est juste, « over » quand elle ou le geste est refusé
+  useEffect(() => {
+    const l = lab.last;
+    if (!l) return;
+    if (l.kind === 'carried' || l.kind === 'drawn' || l.kind === 'joined' || l.kind === 'fresh') playSfx('tooth');
+    else if (l.kind === 'complete') playSfx(l.trial.ok ? 'flag' : 'over');
+    else if (l.kind === 'join') playSfx(l.join.ok ? 'flag' : 'over');
+    else if (['full', 'afterJoin', 'angleLocked', 'noMarks', 'joinLocked', 'joinFirst', 'offMark', 'joinedLine', 'already', 'rulerHalf'].includes(l.kind)) playSfx('over');
+  }, [lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
+
   /* ── la découverte, les rapports à la leçon ── */
-  const ready = L.discoveryReady(lab);
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, { mode: lab.mode, trials: lab.trials.length, joins: lab.joins.length }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
   const nEvents = ratio ? lab.joins.length : lab.trials.length;
@@ -249,38 +298,8 @@ export default function SegmentDivider({
     : k('readEqual', { marks: L.rayMarks(lab).length, joined: lab.joined == null ? '—' : lab.joined + 1, drawn: lab.parallels.length });
 
   /* ── découverte ── */
-  const discoveryOptions = useMemo(() => {
-    if (ratio) {
-      const miss = lab.joins.find((j) => !j.ok && !j.parallel);
-      return [
-        { text: <MathText>{k('dOptOne')}</MathText>, why: <MathText>{k('dWhyOne')}</MathText> },
-        { text: <MathText>{k('dOptTwo')}</MathText>, correct: true },
-        { text: <MathText>{k('dOptMany')}</MathText>, why: <MathText>{miss ? k('dWhyManyWitness', { r: fracTex(miss.ratio), target }) : k('dWhyMany', { target })}</MathText> },
-      ];
-    }
-    const ok = lab.trials.find((tr) => tr.ok) ?? lab.trials[0];
-    const r = ok ? L.cmText(ok.openings[0]) : '';
-    const share = L.lengthTex(lab, LIN.frac(1, lab.parts));
-    return [
-      { text: <MathText>{k('dOptOpening')}</MathText>, why: <MathText>{k('dWhyOpening', { r, share, n: lab.parts })}</MathText> },
-      { text: <MathText>{k('dOptRight', { n: lab.parts })}</MathText>, correct: true },
-      { text: <MathText>{k('dOptFewer')}</MathText>, why: <MathText>{k('dWhyFewer', { n: lab.parts })}</MathText> },
-    ];
-  }, [lab, k]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const formal = ratio ? (
-    <div className="space-y-2" data-sd-formal>
-      <EquationDisplay tone="result" tex={`\\dfrac{MA}{MB} = \\dfrac{AF}{BE} = ${target}`} />
-      <EquationDisplay tone="result" tex={`\\dfrac{AM}{AB} = \\dfrac{${lab.p}}{${lab.p} + ${lab.q}} = ${fracTex(LIN.frac(lab.p, lab.p + lab.q))}`} note={k('fInside')} />
-      {lab.p !== lab.q && <EquationDisplay tone="result" tex={`\\dfrac{AN}{AB} = \\dfrac{${lab.p}}{|${lab.p} - ${lab.q}|} = ${fracTex(LIN.frac(lab.p, Math.abs(lab.p - lab.q)))}`} note={k('fOutside')} />}
-      <p className="text-sm text-emerald-900"><MathText>{k('fRuleRatio')}</MathText></p>
-    </div>
-  ) : (
-    <div className="space-y-2" data-sd-formal>
-      <EquationDisplay tone="result" tex={`\\dfrac{AM_1}{AB} = \\dfrac{AP_1}{AP_{${lab.parts}}} = \\dfrac{1}{${lab.parts}}`} />
-      <p className="text-sm text-emerald-900"><MathText>{k('fRuleEqual', { n: lab.parts })}</MathText></p>
-    </div>
-  );
+  const discoveryOptions = useMemo(() => discoveryOptionsOf(lab, k), [lab, k]);
+  const formal = formalOf(lab, k);
 
   const missionText = mission ?? (ratio
     ? <MathText>{k('missionRatio', { target })}</MathText>
@@ -305,6 +324,8 @@ export default function SegmentDivider({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={cpEnabled}
       hints={(ratio ? ['hint1Ratio', 'hint2Ratio', 'hint3Ratio'] : ['hint1Equal', 'hint2Equal', 'hint3Equal']).map((h) => <MathText key={h}>{k(h, { n: lab.parts, target })}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={(
@@ -318,9 +339,13 @@ export default function SegmentDivider({
       explanation={<MathText>{k(ratio ? 'explanationRatio' : 'explanationEqual')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-emerald-50/60 to-white">
-        <div ref={boxRef} className="space-y-2" data-segment-divider data-mode={lab.mode} data-step={step} data-solved={ready ? 'true' : 'false'}
+        <div ref={boxRef} className="space-y-2" data-segment-divider data-mode={lab.mode} data-step={step} data-solved={solvedAll ? 'true' : 'false'}
           data-world={theme} data-scale={scale.toFixed(2)}>
+          <div className="relative space-y-2">
+          {party.node}
+          {cp.node}
           <div ref={glanceRef} className="space-y-2" data-sd-glance>
+            <LabStepper count={steps.length} current={stepNow} done={stepDone} stepAttr="data-sd-step" />
             {/* LA SCÈNE : le dessin, et par-dessus les poignées (HTML, ≥ 44 px) */}
             <div ref={sceneRef} className="relative mx-auto" style={{ width: W, height: H }} data-sd-scene>
               {sceneSvg}
@@ -441,6 +466,7 @@ export default function SegmentDivider({
             {/* LA LECTURE, puis le verdict */}
             <p className="text-center text-xs font-bold text-slate-600" data-sd-reading>{reading}</p>
             <p role="status" className={`min-h-[2.5rem] ${narrow ? 'text-xs' : 'text-sm'} font-bold leading-snug`} data-sd-verdict={verdictKind}>{verdict}</p>
+          </div>
           </div>
 
           {(lab.trials.length > 0 || lab.joins.length > 0) && (
@@ -705,3 +731,208 @@ function Confetti({ w }) {
     </svg>
   );
 }
+
+/* ── la découverte et la règle : les mêmes pour la fin du labo et pour la dernière question ── */
+export function discoveryOptionsOf(lab, k) {
+  const ratio = lab.mode === 'ratio';
+  const target = ratio ? `\\dfrac{${lab.p}}{${lab.q}}` : '';
+  const fracTex = (f) => LIN.fracLatex(f);
+    if (ratio) {
+      const miss = lab.joins.find((j) => !j.ok && !j.parallel);
+      return [
+        { text: <MathText>{k('dOptOne')}</MathText>, why: <MathText>{k('dWhyOne')}</MathText> },
+        { text: <MathText>{k('dOptTwo')}</MathText>, correct: true },
+        { text: <MathText>{k('dOptMany')}</MathText>, why: <MathText>{miss ? k('dWhyManyWitness', { r: fracTex(miss.ratio), target }) : k('dWhyMany', { target })}</MathText> },
+      ];
+    }
+    const ok = lab.trials.find((tr) => tr.ok) ?? lab.trials[0];
+    const r = ok ? L.cmText(ok.openings[0]) : '';
+    const share = L.lengthTex(lab, LIN.frac(1, lab.parts));
+    return [
+      { text: <MathText>{k('dOptOpening')}</MathText>, why: <MathText>{k('dWhyOpening', { r, share, n: lab.parts })}</MathText> },
+      { text: <MathText>{k('dOptRight', { n: lab.parts })}</MathText>, correct: true },
+      { text: <MathText>{k('dOptFewer')}</MathText>, why: <MathText>{k('dWhyFewer', { n: lab.parts })}</MathText> },
+    ];
+}
+
+export function formalOf(lab, k) {
+  const ratio = lab.mode === 'ratio';
+  const target = ratio ? `\\dfrac{${lab.p}}{${lab.q}}` : '';
+  const fracTex = (f) => LIN.fracLatex(f);
+  return ratio ? (
+    <div className="space-y-2" data-sd-formal>
+      <EquationDisplay tone="result" tex={`\\dfrac{MA}{MB} = \\dfrac{AF}{BE} = ${target}`} />
+      <EquationDisplay tone="result" tex={`\\dfrac{AM}{AB} = \\dfrac{${lab.p}}{${lab.p} + ${lab.q}} = ${fracTex(LIN.frac(lab.p, lab.p + lab.q))}`} note={k('fInside')} />
+      {lab.p !== lab.q && <EquationDisplay tone="result" tex={`\\dfrac{AN}{AB} = \\dfrac{${lab.p}}{|${lab.p} - ${lab.q}|} = ${fracTex(LIN.frac(lab.p, Math.abs(lab.p - lab.q)))}`} note={k('fOutside')} />}
+      <p className="text-sm text-emerald-900"><MathText>{k('fRuleRatio')}</MathText></p>
+    </div>
+  ) : (
+    <div className="space-y-2" data-sd-formal>
+      <EquationDisplay tone="result" tex={`\\dfrac{AM_1}{AB} = \\dfrac{AP_1}{AP_{${lab.parts}}} = \\dfrac{1}{${lab.parts}}`} />
+      <p className="text-sm text-emerald-900"><MathText>{k('fRuleEqual', { n: lab.parts })}</MathText></p>
+    </div>
+  );
+}
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de chaque étape. equal : les marques → quelle marque relier, pourquoi la même ouverture ; la 1re construction juste → la longueur d'une part,
+ *  pourquoi elles sont égales ; le contraste → la cause de l'écart (ou l'invariance), puis la règle. ratio : un 1er point → la nature de M, où il tombe ;
+ *  les deux points → AM/AB, puis la règle. */
+export const chainOf = (step, mode) => {
+  if (mode === 'ratio') return step === 'one' ? ['ratioRead', 'whereM'] : ['tIn', 'rule'];
+  if (step === 'marks') return ['joinWhich', 'whyEven'];
+  return step === 'built' ? ['partLen', 'whyEqual'] : ['contrast', 'rule'];
+};
+
+const cm = (mm) => L.cmText(mm).replace(',', '{,}');
+const fracEq = (a, b) => LIN.eq(a, b);
+const fracOpt = (right, cands, k, key, o) => [
+  { text: <MathText>{$(LIN.fracLatex(right))}</MathText>, correct: true },
+  ...distinct(right, cands, 2, fracEq).map((c) => ({ text: <MathText>{$(LIN.fracLatex(c.v))}</MathText>, why: Mx(k, `${key}.${c.why}`, { ...o, shown: $(LIN.fracLatex(c.v)) }) })),
+];
+
+const RAW_QUESTIONS = {
+  /* equal — étape « marques » : quelle marque relier à B, et pourquoi l'ouverture reste la même */
+  joinWhich: (lab, step, k) => {
+    const n = lab.parts;
+    const o = { n, n1: n + 1, nm: n - 1, r: cm(lab.opening) };
+    return {
+      id: 'joinWhich', kind: 'choice',
+      prompt: Mx(k, 'joinWhich.prompt', o),
+      options: [
+        { text: Mx(k, 'joinWhich.opt', { x: n }), correct: true },
+        { text: Mx(k, 'joinWhich.opt', { x: n + 1 }), why: Mx(k, 'joinWhich.whyMore', o) },
+        { text: Mx(k, 'joinWhich.opt', { x: Math.max(1, n - 1) }), why: Mx(k, 'joinWhich.whyLess', o) },
+      ],
+      hints: [Mx(k, 'joinWhich.hint1', o), Mx(k, 'joinWhich.hint2', o)],
+      explain: Mx(k, 'joinWhich.explain', o),
+    };
+  },
+  whyEven: (lab, step, k) => {
+    const o = { n: lab.parts, r: cm(lab.opening) };
+    return {
+      id: 'whyEven', kind: 'choice',
+      prompt: Mx(k, 'whyEven.prompt', o),
+      options: [
+        { text: Mx(k, 'whyEven.right', o), correct: true },
+        { text: Mx(k, 'whyEven.square', o), why: Mx(k, 'whyEven.whySquare', o) },
+        { text: Mx(k, 'whyEven.reachB', o), why: Mx(k, 'whyEven.whyReachB', o) },
+      ],
+      hints: [Mx(k, 'whyEven.hint1', o), Mx(k, 'whyEven.hint2', o)],
+      explain: Mx(k, 'whyEven.explain', o),
+    };
+  },
+  /* equal — étape « construction juste » : la longueur d'une part, puis la raison de l'égalité */
+  partLen: (lab, step, k) => {
+    const n = lab.parts; const tr = lab.trials.find((x) => x.ok);
+    const r = cm(tr.openings[0]);
+    const tx = (f) => L.lengthTex(lab, f);
+    const o = { n, len: lab.length, r, part: $(tx(LIN.frac(1, n))) };
+    const cands = [
+      { key: 'whyOpening', tex: r }, { key: 'whyFewer', tex: tx(LIN.frac(1, Math.max(1, n - 1))) }, { key: 'whyMore', tex: tx(LIN.frac(1, n + 1)) },
+    ];
+    const right = tx(LIN.frac(1, n));
+    const ds = cands.filter((c, i) => c.tex !== right && cands.findIndex((d) => d.tex === c.tex) === i).slice(0, 2);
+    return {
+      id: 'partLen', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'partLen.prompt', o),
+      options: [
+        { text: <MathText>{`$${right}$ ${k('cp.unit')}`}</MathText>, correct: true },
+        ...ds.map((d) => ({ text: <MathText>{`$${d.tex}$ ${k('cp.unit')}`}</MathText>, why: Mx(k, `partLen.${d.key}`, { ...o, shown: $(d.tex) }) })),
+      ],
+      hints: [Mx(k, 'partLen.hint1', o), Mx(k, 'partLen.hint2', o)],
+      explain: Mx(k, 'partLen.explain', o),
+    };
+  },
+  whyEqual: (lab, step, k) => {
+    const tr = lab.trials.find((x) => x.ok);
+    const o = { n: lab.parts, deg: tr.angle, r: cm(tr.openings[0]) };
+    return {
+      id: 'whyEqual', kind: 'choice',
+      prompt: Mx(k, 'whyEqual.prompt', o),
+      options: [
+        { text: Mx(k, 'whyEqual.right', o), correct: true },
+        { text: Mx(k, 'whyEqual.lengths', o), why: Mx(k, 'whyEqual.whyLengths', o) },
+        { text: Mx(k, 'whyEqual.angle', o), why: Mx(k, 'whyEqual.whyAngle', o) },
+      ],
+      hints: [Mx(k, 'whyEqual.hint1', o), Mx(k, 'whyEqual.hint2', o)],
+      explain: Mx(k, 'whyEqual.explain', o),
+    };
+  },
+  /* equal — étape « contraste » : l'écart d'un essai raté, ou ce qui ne bouge pas entre deux essais justes */
+  contrast: (lab, step, k) => {
+    const bad = lab.trials.find((x) => !x.ok);
+    const good = lab.trials.find((x) => x.ok);
+    const n = lab.parts;
+    const o = { n, got: bad?.n, r: cm(good.openings[0]) };
+    const kind = !bad ? 'same' : bad.kind;   // 'count' | 'unequal' | 'same'
+    return {
+      id: 'contrast', kind: 'choice',
+      prompt: Mx(k, `contrast.${kind}.prompt`, o),
+      options: [
+        { text: Mx(k, `contrast.${kind}.right`, o), correct: true },
+        { text: Mx(k, `contrast.${kind}.a`, o), why: Mx(k, `contrast.${kind}.whyA`, o) },
+        { text: Mx(k, `contrast.${kind}.b`, o), why: Mx(k, `contrast.${kind}.whyB`, o) },
+      ],
+      hints: [Mx(k, `contrast.${kind}.hint1`, o), Mx(k, `contrast.${kind}.hint2`, o)],
+      explain: Mx(k, `contrast.${kind}.explain`, o),
+    };
+  },
+  /* ratio — étape « un 1er point juste » : MA/MB lu sur les rangs, puis la place du point */
+  ratioRead: (lab, step, k) => {
+    const j = lab.joins.find((x) => x.ok);
+    const ra = j.rankA; const rb = j.rankB;
+    const o = { ra, rb, p: lab.p, q: lab.q, target: $(`\\dfrac{${lab.p}}{${lab.q}}`) };
+    return {
+      id: 'ratioRead', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'ratioRead.prompt', o),
+      options: fracOpt(j.ratio, [
+        { v: LIN.frac(rb, ra), why: 'whyInverse' }, { v: LIN.frac(ra, ra + rb), why: 'whyWhole' }, { v: LIN.frac(ra - rb === 0 ? 1 : Math.abs(ra - rb), 1), why: 'whyDiff' },
+      ], k, 'ratioRead', o),
+      hints: [Mx(k, 'ratioRead.hint1', o), Mx(k, 'ratioRead.hint2', o)],
+      explain: Mx(k, 'ratioRead.explain', o),
+    };
+  },
+  whereM: (lab, step, k) => {
+    const j = lab.joins.find((x) => x.ok);
+    const o = { ra: j.rankA, rb: j.rankB };
+    const kind = j.inside ? 'inside' : 'outside';
+    const other = j.inside ? 'outside' : 'inside';
+    return {
+      id: 'whereM', kind: 'choice',
+      prompt: Mx(k, 'whereM.prompt', o),
+      options: [
+        { text: Mx(k, `whereM.${kind}`, o), correct: true },
+        { text: Mx(k, `whereM.${other}`, o), why: Mx(k, `whereM.why_${other}`, o) },
+        { text: Mx(k, 'whereM.unknown', o), why: Mx(k, 'whereM.whyUnknown', o) },
+      ],
+      hints: [Mx(k, 'whereM.hint1', o), Mx(k, 'whereM.hint2', o)],
+      explain: Mx(k, `whereM.explain_${kind}`, o),
+    };
+  },
+  /* ratio — étape « les deux points » : AM/AB du point intérieur */
+  tIn: (lab, step, k) => {
+    const j = lab.joins.find((x) => x.kind === 'inside');
+    const { p, q } = lab;
+    const o = { p, q, target: $(`\\dfrac{${p}}{${q}}`), sum: p + q };
+    return {
+      id: 'tIn', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'tIn.prompt', o),
+      options: fracOpt(j.t, [
+        { v: LIN.frac(p, q), why: 'whyRatio' }, { v: LIN.frac(q, p + q), why: 'whyOther' }, ...(p !== q ? [{ v: LIN.frac(p, Math.abs(p - q)), why: 'whyOutside' }] : []),
+      ], k, 'tIn', o),
+      hints: [Mx(k, 'tIn.hint1', o), Mx(k, 'tIn.hint2', o)],
+      explain: Mx(k, 'tIn.explain', { ...o, calc: $(`\\dfrac{AM}{AB} = \\dfrac{${p}}{${p} + ${q}} = ${LIN.fracLatex(j.t)}`) }),
+    };
+  },
+  rule: (lab, step, k) => ({
+    id: 'rule', kind: 'choice',
+    prompt: <MathText>{k(lab.mode === 'ratio' ? 'dPromptRatio' : 'dPromptEqual', { target: lab.mode === 'ratio' ? `\\dfrac{${lab.p}}{${lab.q}}` : '' })}</MathText>,
+    options: discoveryOptionsOf(lab, k),
+    hints: [Mx(k, 'rule.hint1'), Mx(k, 'rule.hint2')],
+    explain: formalOf(lab, k),
+  }),
+};
+
+export const QUESTIONS = spreadAll(RAW_QUESTIONS, (lab) => (lab.parts ?? 0) + (lab.p ?? 0) * 7 + (lab.q ?? 0));

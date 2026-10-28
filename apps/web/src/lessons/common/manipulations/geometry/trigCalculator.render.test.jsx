@@ -1,8 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import '../../../../i18n';
-import TrigCalculator from './TrigCalculator';
+import i18n from '../../../../i18n';
+import TrigCalculator, { QUESTIONS, chainFor } from './TrigCalculator';
+import * as TL from '../logic/trigCalculator';
 import ManipulationWorkspace from '../ManipulationWorkspace';
 import { LEVELS } from '../levels';
 
@@ -49,5 +50,76 @@ describe('trig-calculator — rendu', () => {
     );
     expect((html.match(/data-trig-calculator/g) ?? []).length).toBe(2);
     expect(html).not.toMatch(RAW);
+  });
+});
+
+describe('trig-calculator — questions pendant le labo (LabCheckpoint)', () => {
+  const RAWK = /manipulation\.[a-zA-Z]/;
+  const press = (lab, keys) => keys.reduce((s, kk) => TL.key(s, kk), lab);
+  const round = (lab, cut, choice) => TL.decide(TL.setCut(lab, cut), choice);
+  /** Une cellule ARRONDIE : le trait au centième, puis la bonne décision. */
+  const cell = (lab, kind, angle) => {
+    let s = press(lab, [kind, ...String(angle).split(''), '=']);
+    const { up } = TL.roundingOf(Number(s.pending.screen.replace(',', '.')), 2);
+    s = TL.decide(TL.setCut(s, 2), up ? 'up' : 'keep');
+    return s;
+  };
+  const filled = (init) => {
+    let s = TL.initLab(init);
+    s = press(s, ['DRG']);
+    for (const kind of ['cos', 'sin', 'tan']) s = cell(s, kind, init.angles[0]);
+    return s;
+  };
+  const check = (id, lab, qid, k) => {
+    const q = QUESTIONS[qid](lab, k);
+    const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+    expect(out, `${id}.${qid}`).not.toMatch(RAWK);
+    expect(out, `${id}.${qid}`).not.toContain('{{');
+    expect(q.hints, `${id}.${qid}`).toHaveLength(2);
+    if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${id}.${qid}`).toHaveLength(1);
+    else expect(q.expected).toBeTruthy();
+    return q;
+  };
+  const k = (key, o) => i18n.t(`lesson:manipulation.trigCalculator.${key}`, o);
+
+  it('tableau : chaque question a un texte, deux indices, une seule bonne réponse ; la lecture vient de la cellule de l’élève', () => {
+    const lab = filled({ angles: [30, 45, 60], digits: 2 });
+    expect(TL.tableReady(lab)).toBe(true);
+    expect(chainFor(lab, 'tbl')).toEqual(['read', 'mode', 'round', 'rule']);
+    for (const qid of chainFor(lab, 'tbl')) check('tbl', lab, qid, k);
+    const q = QUESTIONS.read(lab, k);
+    expect(Object.values(lab.cells).map((c) => c.rounded)).toContain(q.expected);
+  });
+
+  it('angles (متقدم) : tableau sans règle, puis readAngle · key · tenth · rule', () => {
+    let lab = TL.initLab({ angles: [30, 45, 60], inverse: { sin: 0.52, cos: 0.25, tan: 1.33 }, digits: 2 });
+    lab = press(lab, ['DRG']);
+    for (const kind of ['cos', 'sin', 'tan']) lab = cell(lab, kind, 30);
+    expect(chainFor(lab, 'tbl')).toEqual(['read', 'mode', 'round']);
+    lab = TL.openInverse(lab);
+    for (const [kind, x] of [['sin', '0,52'], ['cos', '0,25'], ['tan', '1,33']]) {
+      let s = press(lab, ['2nd', kind, ...x.split(''), '=']);
+      for (const c of [2, 1, 0]) {
+        const { up } = TL.roundingOf(Number(s.pending.screen.replace(',', '.')), c);
+        s = TL.decide(TL.setCut(s, c), up ? 'up' : 'keep');
+        if (c) s = { ...s, pending: lab.pending ?? s.pending };
+        if (c) s = press({ ...s, calc: TL.initCalc('DEG') }, ['2nd', kind, ...x.split(''), '=']);
+      }
+      lab = s;
+    }
+    expect(TL.inverseReady(lab)).toBe(true);
+    expect(chainFor(lab, 'inv')).toEqual(['readAngle', 'key', 'tenth', 'rule']);
+    for (const qid of chainFor(lab, 'inv')) check('inv', lab, qid, k);
+    expect(QUESTIONS.readAngle(lab, k).expected).toMatch(/^\d+$/);
+  });
+});
+
+describe('trig-calculator — mode guidé', () => {
+  it('questions actives : ni la progression ni le bouton d’indice, mais les étapes', () => {
+    const out = renderToString(<TrigCalculator {...LEVELS['trig-calculator'].beginner.numbers} level="beginner" />);
+    expect(out).not.toContain('data-manipulation-progress');
+    expect(out).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    expect(out).toContain('data-lab-stepper');
+    expect(out).toContain('data-tc-step="0"');
   });
 });

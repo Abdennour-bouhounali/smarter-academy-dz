@@ -12,6 +12,11 @@ import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
 import MathText from '../../components/MathText';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { $, Mx, distinct, useTick, spreadAll } from './thalesCp';
 import * as L from '../logic/parallelLevel';
 
 /**
@@ -80,7 +85,7 @@ const TONE = { level: 'text-emerald-800', figure: 'text-emerald-800', tilted: 't
 
 export default function ParallelLevel({
   AB = 6, AC = 9, ratio, mode = 'ladder', theme = 'mural', title, lead, mission, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  initialMode = 'student', allowModeSwitch = false, checkpoints: cpOn = true, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.parallelLevel.${key}`, o), [t]);
@@ -90,12 +95,54 @@ export default function ParallelLevel({
   const make = () => L.init({ AB: nums.AB, AC: nums.AC, ratio: nums.ratio, mode: nums.mode });
   const [lab, setLab] = useState(make);
   const sceneKey = `${nums.AB}|${nums.AC}|${nums.ratio ?? ''}|${nums.mode}|${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  const [doneIds, setDoneIds] = useState([]);   // les étapes dont la suite de questions est finie
   const [tag, setTag] = useState(0);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); }
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(make()); setDoneIds([]); }   // « إعادة » : tout repart
   const crossing = lab.mode === 'crossing';
 
-  const ready = L.discoveryReady(lab);
+  const solvedAll = L.discoveryReady(lab);
+
+  /* ── les questions PENDANT le labo (primitives/LabCheckpoint) : après chaque étape (une planche de niveau / les figures 1 et 2, puis le contraste),
+     une suite sur les nombres de l'élève ; la seconde finit par la règle et remplace la découverte automatique. L'enseignant seul peut les couper. ── */
+  const cpSettings = useLabCheckpointSettings('parallel-level');
+  const cpEnabled = cpOn && cpSettings.enabled;
+  const steps = ['one', 'two'];
+  const stepOk = { one: L.stageOneReached(lab), two: L.stageTwoReached(lab) };
+  const pending = cpEnabled ? steps.find((g) => stepOk[g] && !doneIds.includes(g)) ?? null : null;
+  const chain = pending ? chainOf(pending, lab.mode) : null;
+  const cp = useLabCheckpoint({
+    id: chain ? pending : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, pending, k)) : null,
+    reached: !!pending,
+    resetKey: scene.inits,
+    onRetry: () => { celebrated.current.delete(pending); setLab((s) => L.retryStage(s, pending)); },
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => (d.includes(id) ? d : [...d, id]));
+      if (chainOf(id, lab.mode).includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const ready = solvedAll && !cpEnabled;
+  const stepDone = steps.map((g) => !!stepOk[g] && (!cpEnabled || doneIds.includes(g)));
+  const stepNow = stepDone[0] ? 1 : 0;
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(steps[i])) return;
+      celebrated.current.add(steps[i]);
+      party.celebrate({ n: stepDone.filter(Boolean).length, total: steps.length });
+    });
+  }, [stepDone.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son : un déclic par encoche franchie, le drapeau quand la planche est bonne, « over » quand elle est refusée
+  const tick = useTick();
+  const nTrials0 = lab.trials.length;
+  useEffect(() => {
+    const tr = lab.last?.kind === 'commit' ? lab.last.trial : null;
+    if (tr && nTrials0 > 0) playSfx(tr.kind === 'level' || tr.kind === 'figure' ? 'flag' : 'over');
+  }, [nTrials0]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (state.isFormal) state.report(onFinished, { mode: lab.mode, levels: L.levelRatios(lab), figures: L.figuresMade(lab) });
@@ -143,12 +190,12 @@ export default function ParallelLevel({
   };
   const stB = useStretchInteraction({
     value: lab.sB, range: lab.rangeB, toValue: toValueFor('B'), direction: geo.upward('B') > 0 ? 'ltr' : 'rtl',
-    onChange: (v) => { setLive((s) => ({ ...s, B: v })); setLab((s) => L.move(s, 'B', v)); },
+    onChange: (v) => { setLive((s) => ({ ...s, B: v })); tick(); setLab((s) => L.move(s, 'B', v)); },
     onCommit: (v) => { setLive((s) => ({ ...s, B: null })); setLab((s) => L.commit(s, 'B', v)); },
   });
   const stC = useStretchInteraction({
     value: lab.sC, range: lab.rangeC, toValue: toValueFor('C'), direction: geo.upward('C') > 0 ? 'ltr' : 'rtl',
-    onChange: (v) => { setLive((s) => ({ ...s, C: v })); setLab((s) => L.move(s, 'C', v)); },
+    onChange: (v) => { setLive((s) => ({ ...s, C: v })); tick(); setLab((s) => L.move(s, 'C', v)); },
     onCommit: (v) => { setLive((s) => ({ ...s, C: null })); setLab((s) => L.commit(s, 'C', v)); },
   });
   const ST = { B: stB, C: stC };
@@ -170,48 +217,9 @@ export default function ParallelLevel({
   })();
 
   /* ── la découverte : des distracteurs réfutés par les positions de l'élève ── */
-  const discoveryOptions = useMemo(() => {
-    if (!crossing) {
-      const lv = lab.trials.filter((x) => x.kind === 'level');
-      const a = lv[0] ?? { bp: 2, cp: 3 };
-      const off = lv.find((x) => !LIN.eq(x.ratioB, LIN.frac(1, 2))) ?? a;
-      return [
-        { text: <MathText>{k('dLadderEqual')}</MathText>, why: <MathText>{k('dLadderEqualWhy', { bp: a.bp, cp: a.cp })}</MathText> },
-        { text: <MathText>{k('dLadderRatio')}</MathText>, correct: true },
-        { text: <MathText>{k('dLadderMiddle')}</MathText>, why: <MathText>{k('dLadderMiddleWhy', { bp: off.bp, b: lab.b })}</MathText> },
-        { text: <MathText>{k('dLadderFeet')}</MathText>, why: <MathText>{k('dLadderFeetWhy', { db: lab.b - a.bp, dc: lab.c - a.cp })}</MathText> },
-      ];
-    }
-    const f3 = L.figureTrial(lab, '3') ?? L.figureTrial(lab, '3m');
-    return [
-      { text: <MathText>{k('dCrossRatioOnly')}</MathText>, why: <MathText>{k('dCrossRatioOnlyWhy', { bp: f3?.bp ?? 0, cp: f3?.cp ?? 0 })}</MathText> },
-      { text: <MathText>{k('dCrossBetween')}</MathText>, why: <MathText>{k('dCrossBetweenWhy')}</MathText> },
-      { text: <MathText>{k('dCrossRight')}</MathText>, correct: true },
-    ];
-  }, [lab, crossing, k]);
+  const discoveryOptions = useMemo(() => discoveryOptionsOf(lab, k), [lab, k]);
 
-  const formal = crossing ? (
-    <div className="space-y-2" data-pl-formal>
-      <p className="text-sm font-bold text-emerald-900"><MathText>{k('fCross')}</MathText></p>
-      <ul className="space-y-1 text-sm">
-        {['2', '1', '3', '3m'].map((f) => {
-          const tr = L.figureTrial(lab, f);
-          return tr ? <li key={f} className={tr.parallel ? 'text-emerald-800' : 'text-rose-800'}><MathText>{k(tr.parallel ? 'fFigureOk' : 'fFigureKo', { n: f === '3m' ? '3' : f, bp: tr.bp, cp: tr.cp })}</MathText></li> : null;
-        })}
-      </ul>
-      <p className="text-sm text-emerald-900"><MathText>{k('fContra')}</MathText></p>
-    </div>
-  ) : (
-    <div className="space-y-2" data-pl-formal>
-      <EquationDisplay tone="result" tex={"\\dfrac{AB'}{AB} = \\dfrac{AC'}{AC} \\;\\Rightarrow\\; (B'C') \\parallel (BC)"} />
-      <ul className="space-y-1 text-sm text-emerald-900">
-        {lab.trials.filter((x) => x.kind === 'level').filter((x, i, arr) => arr.findIndex((y) => y.bp === x.bp) === i).map((x) => (
-          <li key={x.bp}><MathText>{`$${L.ratioTex(x.bp, lab.b)}$ ${k('and')} $${L.ratioTex(x.cp, lab.c)}$`}</MathText></li>
-        ))}
-      </ul>
-      <p className="text-sm text-emerald-900"><MathText>{k('fLadder')}</MathText></p>
-    </div>
-  );
+  const formal = formalOf(lab, k);
 
   const missionText = mission ?? <MathText>{k(crossing ? 'missionCrossing' : 'missionLadder', { target: lab.target ? LIN.fracLatex(lab.target) : '' })}</MathText>;
   const [rB, rC] = L.ratiosLine(lab);
@@ -261,6 +269,8 @@ export default function ParallelLevel({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={cpEnabled}
       hints={(crossing ? ['hintC1', 'hintC2', 'hintC3'] : ['hintL1', 'hintL2', 'hintL3']).map((h) => <MathText key={h}>{k(h, { target: lab.target ? LIN.fracLatex(lab.target) : '' })}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={(
@@ -270,8 +280,12 @@ export default function ParallelLevel({
     >
       <ManipulationStage className="bg-gradient-to-b from-amber-50/60 to-white" minHeight="min-h-[160px]">
         <div ref={boxRef} className="space-y-2" data-parallel-level data-mode={lab.mode} data-world={theme}
-          data-solved={ready ? 'true' : 'false'} data-bp={r.bp} data-cp={r.cp} data-scene-h={sceneH}>
+          data-solved={solvedAll ? 'true' : 'false'} data-bp={r.bp} data-cp={r.cp} data-scene-h={sceneH}>
+          <div className="relative space-y-2">
+          {party.node}
+          {cp.node}
           <div ref={glanceRef} className="space-y-2" data-pl-glance>
+            <LabStepper count={steps.length} current={stepNow} done={stepDone} stepAttr="data-pl-step" />
             <div ref={sceneRef} className="relative mx-auto" style={{ width: sceneW, height: sceneH }} data-pl-scene>
               <Scene geo={geo} lab={lab} crossing={crossing} tag={tag} />
               {track('B')}
@@ -307,6 +321,7 @@ export default function ParallelLevel({
               data-pl-verdict={last?.kind ?? ''}>
               {verdict ?? k('waiting')}
             </p>
+          </div>
           </div>
 
           {lab.trials.length > 0 && (
@@ -427,3 +442,182 @@ function Deco({ onSpray }) {
     </button>
   );
 }
+
+/* ── la découverte et la règle : les mêmes pour la fin du labo et pour la dernière question ── */
+export function discoveryOptionsOf(lab, k) {
+  const crossing = lab.mode === 'crossing';
+    if (!crossing) {
+      const lv = lab.trials.filter((x) => x.kind === 'level');
+      const a = lv[0] ?? { bp: 2, cp: 3 };
+      const off = lv.find((x) => !LIN.eq(x.ratioB, LIN.frac(1, 2))) ?? a;
+      return [
+        { text: <MathText>{k('dLadderEqual')}</MathText>, why: <MathText>{k('dLadderEqualWhy', { bp: a.bp, cp: a.cp })}</MathText> },
+        { text: <MathText>{k('dLadderRatio')}</MathText>, correct: true },
+        { text: <MathText>{k('dLadderMiddle')}</MathText>, why: <MathText>{k('dLadderMiddleWhy', { bp: off.bp, b: lab.b })}</MathText> },
+        { text: <MathText>{k('dLadderFeet')}</MathText>, why: <MathText>{k('dLadderFeetWhy', { db: lab.b - a.bp, dc: lab.c - a.cp })}</MathText> },
+      ];
+    }
+    const f3 = L.figureTrial(lab, '3') ?? L.figureTrial(lab, '3m');
+    return [
+      { text: <MathText>{k('dCrossRatioOnly')}</MathText>, why: <MathText>{k('dCrossRatioOnlyWhy', { bp: f3?.bp ?? 0, cp: f3?.cp ?? 0 })}</MathText> },
+      { text: <MathText>{k('dCrossBetween')}</MathText>, why: <MathText>{k('dCrossBetweenWhy')}</MathText> },
+      { text: <MathText>{k('dCrossRight')}</MathText>, correct: true },
+    ];
+}
+
+export function formalOf(lab, k) {
+  const crossing = lab.mode === 'crossing';
+  return crossing ? (
+    <div className="space-y-2" data-pl-formal>
+      <p className="text-sm font-bold text-emerald-900"><MathText>{k('fCross')}</MathText></p>
+      <ul className="space-y-1 text-sm">
+        {['2', '1', '3', '3m'].map((f) => {
+          const tr = L.figureTrial(lab, f);
+          return tr ? <li key={f} className={tr.parallel ? 'text-emerald-800' : 'text-rose-800'}><MathText>{k(tr.parallel ? 'fFigureOk' : 'fFigureKo', { n: f === '3m' ? '3' : f, bp: tr.bp, cp: tr.cp })}</MathText></li> : null;
+        })}
+      </ul>
+      <p className="text-sm text-emerald-900"><MathText>{k('fContra')}</MathText></p>
+    </div>
+  ) : (
+    <div className="space-y-2" data-pl-formal>
+      <EquationDisplay tone="result" tex={"\\dfrac{AB'}{AB} = \\dfrac{AC'}{AC} \\;\\Rightarrow\\; (B'C') \\parallel (BC)"} />
+      <ul className="space-y-1 text-sm text-emerald-900">
+        {lab.trials.filter((x) => x.kind === 'level').filter((x, i, arr) => arr.findIndex((y) => y.bp === x.bp) === i).map((x) => (
+          <li key={x.bp}><MathText>{`$${L.ratioTex(x.bp, lab.b)}$ ${k('and')} $${L.ratioTex(x.cp, lab.c)}$`}</MathText></li>
+        ))}
+      </ul>
+      <p className="text-sm text-emerald-900"><MathText>{k('fLadder')}</MathText></p>
+    </div>
+  );
+}
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de chaque étape. ladder : le rapport d'une planche de niveau, le même pour C′ ; puis la planche penchée et la règle.
+ *  crossing : où poser B′ et C′ pour 1/3, ce que partagent les figures 1 et 2 ; puis la figure 3 et la règle. */
+export const chainOf = (step, mode) => {
+  if (mode === 'crossing') return step === 'one' ? ['crB', 'crC', 'crSide'] : ['crOrder', 'rule'];
+  return step === 'one' ? ['lvB', 'lvC'] : ['tilt', 'rule'];
+};
+
+const fx = (n, d) => `\\dfrac{${n}}{${d}}`;
+const fr = (n, d) => LIN.fracLatex(LIN.frac(n, d));
+const sameFrac = (a, b) => LIN.eq(a, b);
+
+/** Une fraction → ses options (la bonne + deux distracteurs distincts, chacun avec son `why`). */
+const fracOptions = (right, cands, k, key, o) => [
+  { text: <MathText>{$(LIN.fracLatex(right))}</MathText>, correct: true },
+  ...distinct(right, cands.map((c) => ({ v: LIN.frac(c.n, c.d), why: c.why })), 2, sameFrac)
+    .map((c) => ({ text: <MathText>{$(LIN.fracLatex(c.v))}</MathText>, why: Mx(k, `${key}.${c.why}`, { ...o, shown: $(LIN.fracLatex(c.v)) }) })),
+];
+
+const levelTrial = (lab) => lab.trials.find((x) => x.kind === 'level');
+const firstOf = (lab, f) => L.figureTrial(lab, f);
+
+const RAW_QUESTIONS = {
+  /* مبتدئ — étape 1 : le rapport de B′ sur la planche de niveau, puis celui de C′ */
+  lvB: (lab, step, k) => {
+    const t = levelTrial(lab);
+    const o = { bp: t.bp, b: lab.b, cp: t.cp, c: lab.c, r: $(LIN.fracLatex(t.ratioB)), raw: $(fx(t.bp, lab.b)) };
+    return {
+      id: 'lvB', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'lvB.prompt', o),
+      options: fracOptions(t.ratioB, [
+        { n: t.bp, d: lab.b - t.bp, why: 'whyRest' }, { n: lab.b - t.bp, d: lab.b, why: 'whyComplement' }, { n: lab.b, d: t.bp, why: 'whyInverse' }, { n: t.bp + 1, d: lab.b, why: 'whyNear' },
+      ], k, 'lvB', o),
+      hints: [Mx(k, 'lvB.hint1', o), Mx(k, 'lvB.hint2', o)],
+      explain: Mx(k, 'lvB.explain', o),
+    };
+  },
+  lvC: (lab, step, k) => {
+    const t = levelTrial(lab);
+    const o = { bp: t.bp, b: lab.b, cp: t.cp, c: lab.c, r: $(LIN.fracLatex(t.ratioB)), rawC: $(fx(t.cp, lab.c)) };
+    return {
+      id: 'lvC', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'lvC.prompt', o),
+      options: fracOptions(t.ratioC, [
+        { n: t.cp, d: lab.b, why: 'whyOther' }, { n: lab.c - t.cp, d: lab.c, why: 'whyComplement' }, { n: t.cp, d: lab.c - t.cp, why: 'whyRest' }, { n: t.cp + 1, d: lab.c, why: 'whyNear' },
+      ], k, 'lvC', o),
+      hints: [Mx(k, 'lvC.hint1', o), Mx(k, 'lvC.hint2', o)],
+      explain: Mx(k, 'lvC.explain', o),
+    };
+  },
+  /* مبتدئ — étape 2 : la planche penchée (la bulle a fui) */
+  tilt: (lab, step, k) => {
+    const t = lab.trials.find((x) => x.kind === 'tilted');
+    const lv = levelTrial(lab);
+    const o = { bp: t.bp, cp: t.cp, b: lab.b, c: lab.c, rb: $(LIN.fracLatex(t.ratioB)), rc: $(LIN.fracLatex(t.ratioC)), lbp: lv.bp, lcp: lv.cp };
+    return {
+      id: 'tilt', kind: 'choice',
+      prompt: Mx(k, 'tilt.prompt', o),
+      options: [
+        { text: Mx(k, 'tilt.right', o), correct: true },
+        { text: Mx(k, 'tilt.equal', o), why: Mx(k, 'tilt.whyEqual', o) },
+        { text: Mx(k, 'tilt.lengths', o), why: Mx(k, 'tilt.whyLengths', o) },
+      ],
+      hints: [Mx(k, 'tilt.hint1', o), Mx(k, 'tilt.hint2', o)],
+      explain: Mx(k, 'tilt.explain', o),
+    };
+  },
+  /* متقدم — étape 1 : où poser B′ et C′ pour que le rapport vaille 1/3 (calcul AVANT de voir la bulle) */
+  crB: (lab, step, k) => {
+    const v = LIN.mul(lab.target, lab.b);
+    const o = { b: lab.b, t: $(LIN.fracLatex(lab.target)), v: LIN.fracText(v) };
+    return {
+      id: 'crB', kind: 'number', expected: String(LIN.fracText(v)), answer: <MathText>{$(LIN.fracLatex(v))}</MathText>,
+      prompt: Mx(k, 'crB.prompt', o),
+      hints: [Mx(k, 'crB.hint1', o), Mx(k, 'crB.hint2', o)],
+      explain: Mx(k, 'crB.explain', { ...o, calc: $(`AB' = ${LIN.fracLatex(lab.target)} \\times ${lab.b} = ${LIN.fracLatex(v)}`) }),
+    };
+  },
+  crC: (lab, step, k) => {
+    const v = LIN.mul(lab.target, lab.c);
+    const o = { c: lab.c, t: $(LIN.fracLatex(lab.target)), v: LIN.fracText(v) };
+    return {
+      id: 'crC', kind: 'number', expected: String(LIN.fracText(v)), answer: <MathText>{$(LIN.fracLatex(v))}</MathText>,
+      prompt: Mx(k, 'crC.prompt', o),
+      hints: [Mx(k, 'crC.hint1', o), Mx(k, 'crC.hint2', o)],
+      explain: Mx(k, 'crC.explain', { ...o, calc: $(`AC' = ${LIN.fracLatex(lab.target)} \\times ${lab.c} = ${LIN.fracLatex(v)}`) }),
+    };
+  },
+  crSide: (lab, step, k) => {
+    const f1 = firstOf(lab, '1'); const f2 = firstOf(lab, '2');
+    const o = { p1: $(`AB' = ${Math.abs(f1.bp)}`), q1: $(`AC' = ${Math.abs(f1.cp)}`), p2: $(`AB' = ${Math.abs(f2.bp)}`), q2: $(`AC' = ${Math.abs(f2.cp)}`) };
+    return {
+      id: 'crSide', kind: 'choice',
+      prompt: Mx(k, 'crSide.prompt', o),
+      options: [
+        { text: Mx(k, 'crSide.right', o), correct: true },
+        { text: Mx(k, 'crSide.between', o), why: Mx(k, 'crSide.whyBetween', o) },
+        { text: Mx(k, 'crSide.equalDist', o), why: Mx(k, 'crSide.whyEqualDist', o) },
+      ],
+      hints: [Mx(k, 'crSide.hint1', o), Mx(k, 'crSide.hint2', o)],
+      explain: Mx(k, 'crSide.explain', o),
+    };
+  },
+  /* متقدم — étape 2 : la figure 3 respecte le rapport mais la bulle la refuse */
+  crOrder: (lab, step, k) => {
+    const f3 = firstOf(lab, '3') ?? firstOf(lab, '3m');
+    const o = { ab: $(`AB' = ${Math.abs(f3.bp)}`), ac: $(`AC' = ${Math.abs(f3.cp)}`), t: $(LIN.fracLatex(lab.target)) };
+    return {
+      id: 'crOrder', kind: 'choice',
+      prompt: Mx(k, 'crOrder.prompt', o),
+      options: [
+        { text: Mx(k, 'crOrder.right', o), correct: true },
+        { text: Mx(k, 'crOrder.ratios', o), why: Mx(k, 'crOrder.whyRatios', o) },
+        { text: Mx(k, 'crOrder.short', o), why: Mx(k, 'crOrder.whyShort', o) },
+      ],
+      hints: [Mx(k, 'crOrder.hint1', o), Mx(k, 'crOrder.hint2', o)],
+      explain: Mx(k, 'crOrder.explain', o),
+    };
+  },
+  rule: (lab, step, k) => ({
+    id: 'rule', kind: 'choice',
+    prompt: <MathText>{k(lab.mode === 'crossing' ? 'dPromptCross' : 'dPromptLadder')}</MathText>,
+    options: discoveryOptionsOf(lab, k),
+    hints: [Mx(k, 'rule.hint1'), Mx(k, 'rule.hint2')],
+    explain: formalOf(lab, k),
+  }),
+};
+
+export const QUESTIONS = spreadAll(RAW_QUESTIONS, (lab) => lab.b + lab.c);

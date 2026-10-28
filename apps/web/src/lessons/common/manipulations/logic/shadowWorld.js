@@ -484,9 +484,9 @@ export function discoveryReady(s) {
  * un checkpoint en attente pour l'étape courante ; s'il y en a un, l'objectif reste CELUI-LÀ (prefixé `quiz:`) et
  * la vue affiche la question plutôt que la suite de l'étape, jusqu'à la bonne réponse.
  */
-export function currentGoal(s, { discovered = false, formal = false } = {}) {
+export function currentGoal(s, { discovered = false, formal = false, skipQuizzes = false } = {}) {
   const g = goals(s);
-  const cp = currentCheckpoint(s);
+  const cp = skipQuizzes ? null : currentCheckpoint(s);
   if (cp) return `quiz_${cp}`;
   for (const id of ['observe', 'measure', 'predict', 'rule', 'rule2']) if (!g[id]) return id;
   if (!discovered || !formal) return 'conclude';
@@ -498,6 +498,51 @@ export function fittingRules(s) {
   const seen = new Map();
   for (const r of s.rules) if (r.op === '×' && r.allFit && !seen.has(r.hour)) seen.set(r.hour, r);
   return [...seen.values()].sort((a, b) => a.hour - b.hour);
+}
+
+/* ── les ARRÊTS du labo (questions pendant le labo, lot 4) ─────────────────────────────────────────
+ *
+ * Les six objectifs sont les six étapes ; chacun s'ouvre sur une SUITE de questions (primitives/LabCheckpoint) posée quand l'élève a fait ce
+ * qu'il demande. Les cinq questions TAPÉES de مقران (QUIZZES) en font partie : quand elles sont répondues dans la suite, `winQuizzes` les
+ * marque gagnées pour que `goals` les voie. Sans suite (enseignant), مقران les pose comme avant. */
+export const STOPS = GOALS;
+
+/** L'arrêt est atteint quand l'élève a FAIT ce que l'objectif demande (les questions viennent ensuite). */
+export function stopReached(s, id) {
+  switch (id) {
+    case 'observe': return s.hoursSeen.length >= 3;
+    case 'measure': return judgeRatioSeed(s) != null;
+    case 'predict': return s.predictions.length >= 1;
+    case 'rule': return fittingRules(s).length >= 1;
+    case 'rule2': return fittingRules(s).length >= 2;
+    case 'minaret': return s.answers.some((a) => a.kind === 'right');
+    default: return false;
+  }
+}
+
+/** Les questions de مقران qu'une suite complète (gagnées d'un coup à la fin de la suite). */
+export const QUIZZES_OF_STOP = Object.freeze({ observe: ['trend', 'fastest'], measure: ['ratioSeed'], predict: ['predictReflect'], rule: ['ruleReflect'] });
+
+export function winQuizzes(s, ids) {
+  const quizzes = { ...s.quizzes };
+  for (const id of ids) quizzes[id] = true;
+  return fz({ ...s, quizzes: fz(quizzes) });
+}
+
+/** « أعِد التجربة » : l'arrêt est refait — les traces de CET objectif s'effacent, celles des précédents restent. */
+export function retryStop(s, id) {
+  switch (id) {
+    case 'observe': return fz({ ...s, hoursSeen: fz([s.hour]), lastSunMove: null, last: null });
+    case 'measure': return fz({ ...s, notebook: fz([]), last: null });
+    case 'predict': return fz({ ...s, predictions: fz([]), installed: fz({ lamp: false, flag: false }), flagP: null, last: null });
+    case 'rule': return fz({ ...s, rule: null, rules: fz([]), last: null });
+    case 'rule2': {
+      const first = fittingRules(s)[0];
+      return fz({ ...s, rule: first ?? null, rules: fz(first ? [first] : []), last: null });
+    }
+    case 'minaret': return fz({ ...s, answers: fz([]), last: null });
+    default: return s;
+  }
 }
 
 /* ── le compagnon مقران : il RÉAGIT au dernier geste, sinon il QUESTIONNE ── */

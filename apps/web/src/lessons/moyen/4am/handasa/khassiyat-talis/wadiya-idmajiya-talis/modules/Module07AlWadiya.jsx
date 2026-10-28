@@ -82,8 +82,8 @@ export default function Module07AlWadiya() {
   const [coneTrials, setConeTrials] = useState([]);
   const [q, setQ] = useState({});
   const mark = (n) => () => setQ((s) => ({ ...s, [n]: true }));
-  const keepStick = (e) => setStickTrials((list) => [...list, e]);
-  const keepCone = (e) => setConeTrials((list) => [...list, e]);
+  const keepStick = (e) => { if (!e?.tk) setStickTrials((list) => [...list, e]); };   // pas les événements `checkpoint` des questions du labo
+  const keepCone = (e) => { if (!e?.tk) setConeTrials((list) => [...list, e]); };
 
   return (
     <ContentModule objectives={["كيف نعرف ارتفاع مئذنة دون أن نصعدها؟", "أيّ شكل مستوٍ يختصر أسطوانة داخل مخروط؟", "كيف نجد r ثم الحجم ونتحقّق من ملاءمة النتيجة؟"]}
@@ -289,6 +289,6 @@ export default function Module07AlWadiya() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={7} />} />
+      footer={<KnowledgeSnapshot moduleNumber={7} variant="memo" />} />
   );
 }

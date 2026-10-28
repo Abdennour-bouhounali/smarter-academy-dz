@@ -12,6 +12,11 @@ import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
 import MathText from '../../components/MathText';
 import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { $, Mx, distinct, useTick, spreadAll } from './thalesCp';
 import * as L from '../logic/coneCylinder';
 
 /**
@@ -66,7 +71,7 @@ import * as L from '../logic/coneCylinder';
  */
 export default function ConeCylinder({
   H: H0 = 18, R: R0 = 6, theme = 'cornet', title, lead, mission, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  initialMode = 'student', allowModeSwitch = false, checkpoints: cpOn = true, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.coneCylinder.${key}`, o), [t]);
@@ -75,13 +80,56 @@ export default function ConeCylinder({
   const make = () => L.init({ H, R });
   const [lab, setLab] = useState(make);
   const sceneKey = `${H}|${R}|${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  const [doneIds, setDoneIds] = useState([]);   // les étapes dont la suite de questions est finie
   const [liveH, setLiveH] = useState(null);
   const [liveR, setLiveR] = useState(null);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setLiveH(null); setLiveR(null); }
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(make()); setLiveH(null); setLiveR(null); setDoneIds([]); }   // « إعادة » : tout repart
 
-  const ready = L.discoveryReady(lab);
+  /* ── les questions PENDANT le labo (primitives/LabCheckpoint) : après le 1er cylindre inscrit, puis après le contraste (deux inscrits + un refus ou un jeu) ;
+     la seconde suite finit par la règle et remplace la découverte automatique. L'enseignant seul peut les couper. ── */
+  const cpSettings = useLabCheckpointSettings('cone-cylinder');
+  const cpEnabled = cpOn && cpSettings.enabled;
+  const steps = L.STEPS;
+  const stepOk = Object.fromEntries(steps.map((g) => [g, L.stepReached(lab, g)]));
+  const pending = cpEnabled ? steps.find((g) => stepOk[g] && !doneIds.includes(g)) ?? null : null;
+  const chain = pending ? chainOf(pending, lab) : null;
+  const cp = useLabCheckpoint({
+    id: chain ? pending : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, pending, k)) : null,
+    reached: !!pending,
+    resetKey: scene.inits,
+    onRetry: () => { celebrated.current.delete(pending); setLiveH(null); setLiveR(null); setLab((s) => L.retryStage(s, pending)); },
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => (d.includes(id) ? d : [...d, id]));
+      if (chainOf(id, lab).includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const solvedAll = L.discoveryReady(lab);
+  const ready = solvedAll && !cpEnabled;
   const goal = L.goalFound(lab);
+  const stepDone = steps.map((g) => !!stepOk[g] && (!cpEnabled || doneIds.includes(g)));
+  const stepNow = stepDone.includes(false) ? stepDone.indexOf(false) : steps.length - 1;
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && lab.refusals === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(steps[i])) return;
+      celebrated.current.add(steps[i]);
+      party.celebrate({ n: stepDone.filter(Boolean).length, total: steps.length });
+    });
+  }, [stepDone.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son : un déclic par cran, le drapeau quand le cylindre touche la génératrice, la cloche pour le carré (h = r), « over » quand il perce
+  const tick = useTick();
+  useEffect(() => {
+    const l = lab.last;
+    if (!l) return;
+    if (l.kind === 'pierceH' || l.kind === 'pierceR') playSfx('over');
+    else if (l.state.square) playSfx('bell');
+    else playSfx(l.state.inscribed ? 'flag' : 'tooth');
+  }, [lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, { H: L.dec(lab.H), R: L.dec(lab.R) }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
   const nEvents = lab.trials.length + lab.refusals;
@@ -124,13 +172,13 @@ export default function ConeCylinder({
   const hSt = useStretchInteraction({
     value: hI, range: { min: 1, max: lab.n - 1 }, direction: 'ltr', pageStep: 3,
     toValue: (cx, _cy, rect) => (((cx - rect.left) * (svgW / rect.width)) - G.x0) / G.k / (Number(lab.hStep.n) / Number(lab.hStep.d)),
-    onChange: (v) => setLiveH(v),
+    onChange: (v) => { tick(); setLiveH(v); },
     onCommit: (v) => { setLiveH(null); setLab((s) => L.setH(s, v)); },
   });
   const rSt = useStretchInteraction({
     value: rI, range: { min: 1, max: lab.n - 1 }, direction: 'ltr', pageStep: 3,
     toValue: (_cx, cy, rect) => (G.yAxis - (cy - rect.top)) / G.k / (Number(lab.rStep.n) / Number(lab.rStep.d)),
-    onChange: (v) => setLiveR(v),
+    onChange: (v) => { tick(); setLiveR(v); },
     onCommit: (v) => { setLiveR(null); setLab((s) => L.setR(s, v)); },
   });
 
@@ -157,28 +205,8 @@ export default function ConeCylinder({
   const volumeTex = `V = ${narrow ? '' : `\\pi \\times ${L.tex(view.r)}^2 \\times ${L.tex(view.h)} = `}${L.tex(view.vop)}\\pi \\approx ${L.volumeApprox(view.vop).replace(',', '{,}')}\\,\\mathrm{cm}^3`;
 
   /* ── la découverte : des relations réfutées par les cylindres de l'élève ── */
-  const discoveryOptions = useMemo(() => {
-    const ins = L.inscribedTrials(lab);
-    const a = ins[0]; const b = a ? ins.find((x) => !LIN.eq(x.h, a.h)) : null;
-    const pair = (x) => `(${L.tex(x.h)} ; ${L.tex(x.r)})`;
-    const base = a && b ? { p: pair(a), q: pair(b) } : null;
-    const sum = (x) => L.tex(LIN.add(x.h, x.r));
-    const prod = (x) => L.tex(LIN.mul(x.h, x.r));
-    return [
-      { text: <MathText>{k('dOptSum')}</MathText>, why: <MathText>{base ? k('dWhySum', { ...base, s1: sum(a), s2: sum(b) }) : k('dWhyNone')}</MathText> },
-      { text: <MathText>{k('dOptRight', { H: L.tex(lab.H), R: L.tex(lab.R) })}</MathText>, correct: true },
-      { text: <MathText>{k('dOptProd')}</MathText>, why: <MathText>{base ? k('dWhyProd', { ...base, p1: prod(a), p2: prod(b) }) : k('dWhyNone')}</MathText> },
-      { text: <MathText>{k('dOptR')}</MathText>, why: <MathText>{k('dWhyR', { R: L.tex(lab.R) })}</MathText> },
-    ];
-  }, [lab, k]);
-
-  const formal = (
-    <div className="space-y-2" data-cc-formal>
-      <EquationDisplay tone="result" tex={`\\dfrac{r}{${L.tex(lab.R)}} = \\dfrac{${L.tex(lab.H)} - h}{${L.tex(lab.H)}}`} />
-      <EquationDisplay tone="result" tex={'V = \\pi \\times r^2 \\times h'} />
-      <p className="text-sm text-emerald-900"><MathText>{k(goal ? 'fRuleFound' : 'fRule', { H: L.tex(lab.H), R: L.tex(lab.R) })}</MathText></p>
-    </div>
-  );
+  const discoveryOptions = useMemo(() => discoveryOptionsOf(lab, k), [lab, k]);
+  const formal = formalOf(lab, k);
 
   /* ── le dessin (coupe axiale + perspective légère) ── */
   const X = G.X; const Y = G.Y; const yA = G.yAxis;
@@ -200,6 +228,8 @@ export default function ConeCylinder({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={cpEnabled}
       hints={['hint1', 'hint2', 'hint3'].map((hk) => <MathText key={hk}>{k(hk, { H: L.tex(lab.H) })}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={k('dPrompt')} options={discoveryOptions} formal={formal} />}
@@ -208,8 +238,12 @@ export default function ConeCylinder({
       <ManipulationStage className="bg-gradient-to-b from-rose-50/60 to-white" minHeight="min-h-[150px]">
         <div ref={boxRef} className="space-y-2" data-cone-cylinder data-world={theme} data-n={lab.n}
           data-state={view.square ? 'square' : view.inscribed ? 'inscribed' : view.pierce ? 'pierce' : 'gap'}
-          data-solved={ready ? 'true' : 'false'} data-goal={goal ? 'true' : 'false'} data-scene-h={svgH}>
+          data-solved={solvedAll ? 'true' : 'false'} data-goal={goal ? 'true' : 'false'} data-scene-h={svgH}>
+          <div className="relative space-y-2">
+          {party.node}
+          {cp.node}
           <div ref={glanceRef} className="space-y-1.5" data-cc-glance>
+            <LabStepper count={steps.length} current={stepNow} done={stepDone} stepAttr="data-cc-step" />
             <div className="relative mx-auto" style={{ width: svgW, height: svgH }}>
               <svg width={svgW} height={svgH} viewBox={`0 0 ${svgW} ${svgH}`} className="absolute inset-0" style={{ direction: 'ltr' }}
                 role="img" aria-label={k('sceneLabel', { H: L.dec(lab.H), R: L.dec(lab.R), h: L.dec(view.h), r: L.dec(view.r) })}>
@@ -283,6 +317,7 @@ export default function ConeCylinder({
               <p className="text-slate-700" dir="ltr" data-cc-volume={L.dec(view.vop)}><bdi><MathText>{`$${volumeTex}$`}</MathText></bdi></p>
             </div>
           </div>
+          </div>
 
           {lab.trials.length > 0 && (
             <LabFold id="cone-cylinder.trials" title={k('trialsTitle')}>
@@ -316,3 +351,102 @@ function Deco({ cx, cy, rx, ry }) {
     </g>
   );
 }
+
+/* ── la découverte et la règle : les mêmes pour la fin du labo et pour la dernière question ── */
+export function discoveryOptionsOf(lab, k) {
+    const ins = L.inscribedTrials(lab);
+    const a = ins[0]; const b = a ? ins.find((x) => !LIN.eq(x.h, a.h)) : null;
+    const pair = (x) => `(${L.tex(x.h)} ; ${L.tex(x.r)})`;
+    const base = a && b ? { p: pair(a), q: pair(b) } : null;
+    const sum = (x) => L.tex(LIN.add(x.h, x.r));
+    const prod = (x) => L.tex(LIN.mul(x.h, x.r));
+    return [
+      { text: <MathText>{k('dOptSum')}</MathText>, why: <MathText>{base ? k('dWhySum', { ...base, s1: sum(a), s2: sum(b) }) : k('dWhyNone')}</MathText> },
+      { text: <MathText>{k('dOptRight', { H: L.tex(lab.H), R: L.tex(lab.R) })}</MathText>, correct: true },
+      { text: <MathText>{k('dOptProd')}</MathText>, why: <MathText>{base ? k('dWhyProd', { ...base, p1: prod(a), p2: prod(b) }) : k('dWhyNone')}</MathText> },
+      { text: <MathText>{k('dOptR')}</MathText>, why: <MathText>{k('dWhyR', { R: L.tex(lab.R) })}</MathText> },
+    ];
+}
+
+export function formalOf(lab, k) {
+  const goal = L.goalFound(lab);
+  return (
+    <div className="space-y-2" data-cc-formal>
+      <EquationDisplay tone="result" tex={`\\dfrac{r}{${L.tex(lab.R)}} = \\dfrac{${L.tex(lab.H)} - h}{${L.tex(lab.H)}}`} />
+      <EquationDisplay tone="result" tex={'V = \\pi \\times r^2 \\times h'} />
+      <p className="text-sm text-emerald-900"><MathText>{k(goal ? 'fRuleFound' : 'fRule', { H: L.tex(lab.H), R: L.tex(lab.R) })}</MathText></p>
+    </div>
+  );
+}
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de chaque étape : le 1er cylindre inscrit → le rapport r ÷ R, le rapport (H − h) ÷ H ; le contraste → pourquoi un jeu / un refus, puis la règle. */
+export const chainOf = (step) => (step === 'first' ? ['rOverR', 'hOverH'] : ['contrast', 'rule']);
+
+const fl = (p) => LIN.fracLatex(p);
+const sameF = (a, b) => LIN.eq(a, b);
+const fracOpts = (right, cands, k, key, o) => [
+  { text: <MathText>{$(fl(right))}</MathText>, correct: true },
+  ...distinct(right, cands, 2, sameF).map((c) => ({ text: <MathText>{$(fl(c.v))}</MathText>, why: Mx(k, `${key}.${c.why}`, { ...o, shown: $(fl(c.v)) }) })),
+];
+
+const RAW_QUESTIONS = {
+  /* étape « premier cylindre inscrit » : r ÷ R, puis (H − h) ÷ H */
+  rOverR: (lab, step, k) => {
+    const t = L.inscribedTrials(lab)[0];
+    const right = LIN.div(t.r, lab.R);
+    const o = { h: L.tex(t.h), r: L.tex(t.r), H: L.tex(lab.H), R: L.tex(lab.R), v: $(fl(right)) };
+    return {
+      id: 'rOverR', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'rOverR.prompt', o),
+      options: fracOpts(right, [
+        { v: LIN.div(lab.R, t.r), why: 'whyInverse' }, { v: LIN.div(t.r, lab.H), why: 'whyOverH' }, { v: LIN.div(t.h, lab.H), why: 'whyH' },
+      ], k, 'rOverR', o),
+      hints: [Mx(k, 'rOverR.hint1', o), Mx(k, 'rOverR.hint2', o)],
+      explain: Mx(k, 'rOverR.explain', o),
+    };
+  },
+  hOverH: (lab, step, k) => {
+    const t = L.inscribedTrials(lab)[0];
+    const right = LIN.div(LIN.sub(lab.H, t.h), lab.H);
+    const o = { h: L.tex(t.h), r: L.tex(t.r), H: L.tex(lab.H), R: L.tex(lab.R), v: $(fl(right)), hd: L.tex(LIN.sub(lab.H, t.h)) };
+    return {
+      id: 'hOverH', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'hOverH.prompt', o),
+      options: fracOpts(right, [
+        { v: LIN.div(t.h, lab.H), why: 'whyH' }, { v: LIN.div(LIN.sub(lab.H, t.h), lab.R), why: 'whyOverR' }, { v: LIN.div(lab.H, LIN.sub(lab.H, t.h)), why: 'whyInverse' },
+      ], k, 'hOverH', o),
+      hints: [Mx(k, 'hOverH.hint1', o), Mx(k, 'hOverH.hint2', o)],
+      explain: Mx(k, 'hOverH.explain', o),
+    };
+  },
+  /* étape « contraste » : le jeu d'un cylindre qui ne touche pas, ou le refus d'un cylindre qui perce */
+  contrast: (lab, step, k) => {
+    const gapTrial = lab.trials.find((x) => !x.inscribed);
+    const kind = gapTrial ? 'gap' : 'pierce';
+    const h = gapTrial ? gapTrial.h : L.hOf(lab);
+    const rMax = lab.cone.radiusFor(h);
+    const o = { h: L.tex(h), r: gapTrial ? L.tex(gapTrial.r) : '', rMax: L.tex(rMax), gap: gapTrial ? L.tex(LIN.sub(rMax, gapTrial.r)) : '', H: L.tex(lab.H) };
+    return {
+      id: 'contrast', kind: 'choice',
+      prompt: Mx(k, `contrast.${kind}.prompt`, o),
+      options: [
+        { text: Mx(k, `contrast.${kind}.right`, o), correct: true },
+        { text: Mx(k, `contrast.${kind}.a`, o), why: Mx(k, `contrast.${kind}.whyA`, o) },
+        { text: Mx(k, `contrast.${kind}.b`, o), why: Mx(k, `contrast.${kind}.whyB`, o) },
+      ],
+      hints: [Mx(k, `contrast.${kind}.hint1`, o), Mx(k, `contrast.${kind}.hint2`, o)],
+      explain: Mx(k, `contrast.${kind}.explain`, o),
+    };
+  },
+  rule: (lab, step, k) => ({
+    id: 'rule', kind: 'choice',
+    prompt: <MathText>{k('dPrompt')}</MathText>,
+    options: discoveryOptionsOf(lab, k),
+    hints: [Mx(k, 'rule.hint1'), Mx(k, 'rule.hint2')],
+    explain: formalOf(lab, k),
+  }),
+};
+
+export const QUESTIONS = spreadAll(RAW_QUESTIONS, (lab) => Number(lab.H.n) + Number(lab.R.n));
