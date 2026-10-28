@@ -77,7 +77,7 @@ export default function Module07AlWadiya() {
   const [trials, setTrials] = useState([]);
   const [q, setQ] = useState({});
   const mark = (n) => () => setQ((s) => ({ ...s, [n]: true }));
-  const keep = (e) => setTrials((list) => [...list, e]);
+  const keep = (e) => { if (!e || e.tk) return; setTrials((list) => [...list, e]); };
 
   return (
     <ContentModule objectives={['كيف نضع ستة أعمدة متباعدة بنفس المسافة على محيط حوض دائري؟', 'بأيّ دوران ينتقل كل عمود إلى الذي يليه؟', 'كيف نحسب المسافة بين عمودين متتاليين؟']} ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="الوضعية وتحليلها" moduleSubtitle="ستة أعمدة إنارة حول حوض الأزهار: أين نضعها وكم تبعد عن بعضها؟" estimatedTime="22 دقيقة"
@@ -248,6 +248,6 @@ export default function Module07AlWadiya() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={7} />} />
+      footer={<KnowledgeSnapshot moduleNumber={7} variant="memo" />} />
   );
 }

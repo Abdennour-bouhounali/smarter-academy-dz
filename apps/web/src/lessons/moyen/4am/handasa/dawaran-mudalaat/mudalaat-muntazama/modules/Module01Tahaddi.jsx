@@ -40,7 +40,7 @@ export default function Module01Tahaddi() {
   const [q4, setQ4] = useState(false);
 
   const onTrial = (ev) => {
-    if (!ev) return;
+    if (!ev || ev.tk) return;
     setTrials((s) => [...s.filter((x) => !(x.kind === ev.kind && x.alpha === ev.alpha && x.mode === ev.mode && x.verdict === ev.verdict && x.radius === ev.radius)), ev].slice(-10));
   };
 
@@ -195,7 +195,7 @@ export default function Module01Tahaddi() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

@@ -7,6 +7,10 @@ import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
 import ManipulationDiscovery from '../ManipulationDiscovery';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { useManipulation } from '../useManipulation';
 import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
@@ -83,7 +87,7 @@ const tx = (s) => String(s).replace(',', '{,}');
 
 export default function PolygonForge(props) {
   const { numbers: grouped, theme: theme0, title, lead, mission, level, levels: withLevels = true,
-    initialMode = 'student', allowModeSwitch = false, onTrial, onFinished } = props;
+    initialMode = 'student', allowModeSwitch = false, checkpoints: cpOn = true, onTrial, onFinished } = props;
   const authored = useMemo(() => {
     const out = {};
     for (const key of NUMBER_KEYS) {
@@ -101,13 +105,19 @@ export default function PolygonForge(props) {
   const [lab, setLab] = useState(make);
   const sceneKey = `${numKey}|${state.epoch}`;
   const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); }
+  const [inits, setInits] = useState(0);
+  const [doneIds, setDoneIds] = useState({});
+  // « إعادة », un autre niveau ou d'autres nombres : TOUT recommence — la forge, les essais, les questions du labo
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setInits((n) => n + 1); setDoneIds({}); }
   const mode = lab.mode;
   const theme = theme0 ?? (mode === 'star' ? 'flag-star' : 'honeycomb');
   const m = useCallback((key, o) => k(`${mode}.${key}`, o), [k, mode]);
 
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : obligatoires pour tout élève, l'enseignant seul les coupe pour SON compte (L2)
+  const cpSettings = useLabCheckpointSettings('polygon-forge');
+  const cpLive = cpOn && cpSettings.enabled;
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch, cpLive]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!state.isFormal) return;
     const closed = lab.trials.find((tr) => tr.outcome === 'closed');
@@ -151,6 +161,53 @@ export default function PolygonForge(props) {
     </div>
   );
 
+  /* ── les étapes et leurs questions : une étape atteinte (ET les précédentes) ouvre sa suite, dans l'ordre ── */
+  const stepList = L.stepsOf(lab).map((st) => ({ ...st, chain: chainOf(mode, st.id) }));
+  const stepDone = stepList.map((st) => !!doneIds[st.id] || (!cpLive && st.reached));
+  const nextStep = cpLive ? stepList.find((st) => !doneIds[st.id]) : null;
+  const cpId = nextStep && nextStep.reached ? nextStep.id : null;
+  const chain = cpId ? nextStep.chain : null;
+  const cp = useLabCheckpoint({
+    id: cpId,
+    questions: chain ? chain.map((q) => QUESTIONS[q]({ lab, options: discoveryOptions, formal }, k)) : null,
+    reached: !!cpId,
+    resetKey: inits,
+    onRetry: () => setLab((cur) => L.retryStep(cur, cpId)),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => ({ ...d, [id]: true }));
+      if (stepList.find((st) => st.id === id)?.chain.includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && lab.radiusTrials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  const doneKey = stepDone.join();
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(i)) return;
+      celebrated.current.add(i);
+      party.celebrate({ n: i + 1, total: stepList.length });
+    });
+  }, [doneKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── le son : un déclic par geste (au plus un toutes les 35 ms), « flag » à la figure juste, « bell » à la fermeture / l'étoile finie,
+     « over » à un tour refusé ou dépassé. Muet sauf « الصوت ». ── */
+  const tick = useRef(0);
+  const heard = useRef(null);
+  useEffect(() => {
+    const e = lab.last;
+    if (!e || heard.current === e) return;
+    heard.current = e;
+    const kind = e.kind;
+    if (kind === 'closed') { playSfx('flag'); playSfx('bell'); return; }
+    if (['other', 'flat', 'open', 'star', 'spiral', 'refuse'].includes(kind)) { playSfx('over'); return; }
+    if (kind === 'radius') { playSfx(e.verdict === 'ok' ? 'flag' : 'over'); return; }
+    if (kind === 'stroke') { playSfx('tooth'); if (e.count === lab.target) { playSfx('flag'); playSfx('bell'); } return; }
+    const now = performance.now();
+    if (['turn', 'alpha'].includes(kind) && now - tick.current > 35) { playSfx('tooth'); tick.current = now; }
+  }, [lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <ManipulationShell
       type="polygon-forge"
@@ -160,6 +217,8 @@ export default function PolygonForge(props) {
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpLive}
       hints={['hint1', 'hint2', 'hint3'].map((hk) => <MathText key={hk}>{m(hk)}</MathText>)}
       controller={{
         autoStep: () => false,
@@ -191,7 +250,12 @@ export default function PolygonForge(props) {
       explanation={<MathText>{m('explanation')}</MathText>}
     >
       <ManipulationStage className={mode === 'star' ? 'bg-gradient-to-b from-emerald-50/70 to-white' : 'bg-gradient-to-b from-amber-50/70 to-white'} minHeight="min-h-[150px]">
-        <Forge lab={lab} setLab={setLab} k={k} m={m} theme={theme} solved={ready} />
+        <div className="relative space-y-2">
+          {party.node}
+          {cp.node}
+          <LabStepper count={stepList.length} current={Math.max(0, stepDone.indexOf(false) < 0 ? stepList.length - 1 : stepDone.indexOf(false))} done={stepDone} stepAttr="data-pf-step" />
+          <Forge lab={lab} setLab={setLab} k={k} m={m} theme={theme} solved={ready} blocking={cp.blocking} />
+        </div>
       </ManipulationStage>
     </ManipulationShell>
   );
@@ -228,7 +292,7 @@ function useBudget(min, max) {
 const at = (c, r, deg) => [c + r * Math.cos((deg * Math.PI) / 180), c - r * Math.sin((deg * Math.PI) / 180)];
 const pts = (list) => list.map((p) => p.join(',')).join(' ');
 
-function Forge({ lab, setLab, k, m, theme, solved }) {
+function Forge({ lab, setLab, k, m, theme, solved, blocking = false }) {
   const reduce = useReducedMotion();
   const uid = useId().replace(/:/g, '');
   const { boxRef, glanceRef, drawnH, width, budget } = useBudget(220, 540);
@@ -267,7 +331,7 @@ function Forge({ lab, setLab, k, m, theme, solved }) {
   return (
     <div ref={boxRef} className="space-y-2" data-polygon-forge data-mode={lab.mode} data-world={theme} data-stage={stage} data-solved={solved ? 'true' : 'false'} data-scene-s={S}>
       <div ref={glanceRef} className="space-y-1.5" data-pf-glance>
-        {lab.mode === 'star' && <StageTabs lab={lab} setLab={setLab} m={m} />}
+        {lab.mode === 'star' && <StageTabs lab={lab} setLab={setLab} m={m} blocking={blocking} />}
         <div ref={sceneRef} className="relative mx-auto overflow-hidden rounded-xl border border-slate-200 bg-white" style={{ width: S, height: S }}>
           {stage === 'forge' && <ForgeStage lab={lab} k={k} S={S} c={c} uid={uid} theme={theme} reduce={reduce} narrow={narrow} sceneRef={sceneRef} st={alphaSt} alpha={alpha} fromDeg={fromDeg} ended={ended} />}
           {stage === 'radius' && <RadiusStage lab={lab} k={k} S={S} c={c} scale={scale} st={radiusSt} h={radius} live={liveR != null} />}
@@ -275,7 +339,7 @@ function Forge({ lab, setLab, k, m, theme, solved }) {
         </div>
         {stage === 'forge' && <ForgeControls lab={lab} setLab={setLab} k={k} narrow={narrow} st={alphaSt} alpha={alpha} />}
         {stage === 'radius' && <RadiusControls lab={lab} setLab={setLab} k={k} narrow={narrow} st={radiusSt} h={radius} />}
-        <Verdict lab={lab} setLab={setLab} k={k} m={m} narrow={narrow} />
+        <Verdict lab={lab} setLab={setLab} k={k} m={m} narrow={narrow} blocking={blocking} />
       </div>
 
       {(lab.trials.length > 0 || lab.radiusTrials.length > 0) && (
@@ -572,8 +636,8 @@ function DrawStage({ lab, setLab, k, S, c, reduce }) {
 
 /* ════════════════════════════ les étapes (متقدم), le verdict, les lectures ════════════════════════════ */
 
-function StageTabs({ lab, setLab, m }) {
-  const reach = { forge: true, radius: L.canOpenRadius(lab), draw: L.canOpenDraw(lab) };
+function StageTabs({ lab, setLab, m, blocking = false }) {
+  const reach = { forge: true, radius: !blocking && L.canOpenRadius(lab), draw: !blocking && L.canOpenDraw(lab) };
   return (
     <div role="group" aria-label={m('stages')} className="mx-auto grid max-w-md grid-cols-3 gap-1">
       {['forge', 'radius', 'draw'].map((id, i) => (
@@ -587,7 +651,7 @@ function StageTabs({ lab, setLab, m }) {
   );
 }
 
-function Verdict({ lab, setLab, k, m, narrow }) {
+function Verdict({ lab, setLab, k, m, narrow, blocking = false }) {
   const e = lab.last;
   const name = (n) => k(`names.${n}`);
   let kind = 'start';
@@ -651,7 +715,7 @@ function Verdict({ lab, setLab, k, m, narrow }) {
         <MathText>{text}</MathText>
       </p>
       {readings}
-      {next && (
+      {next && !blocking && (
         <div className="flex flex-wrap items-center justify-center gap-2 rounded-xl border-2 border-emerald-300 bg-emerald-50 px-2 py-1" data-pf-next-card={next.go}>
           <span className={`${narrow ? 'text-[11px]' : 'text-xs'} font-semibold text-emerald-900`}><MathText>{next.card}</MathText></span>
           <button type="button" onClick={() => setLab((s) => L.goStage(s, next.go))} data-pf-next={next.go}
@@ -760,3 +824,91 @@ function TifoDeco({ S, reduce, done, quiet = false }) {
     </g>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/**
+ * La suite de questions de l'étape `id`. مبتدئ : la forge (images · somme), le contraste (quotient · règle). متقدم : la forge (images · somme),
+ * le rayon (demi-angle · rapport), les branches (sauts · règle).
+ */
+export function chainOf(mode, id) {
+  if (id === 'forge') return ['count', 'sum'];
+  if (id === 'contrast') return ['open', 'rule'];
+  if (id === 'radius') return ['half', 'trig'];
+  return ['skip', 'rule'];
+}
+
+const $ = (x) => `$${x}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+
+/** Chaque question est construite sur LES nombres de l'élève (rien n'est écrit en dur) ; `k` : les textes de `polygonForge`. */
+export const QUESTIONS = {
+  count: ({ lab }, k) => {
+    const tr = L.closedTrial(lab);
+    const beta = L.otherAlpha(tr.alpha);
+    const o = { n: tr.k, a: tr.alpha, b: beta, calc: $(`360 \\div ${beta}`) };
+    return {
+      id: 'count', kind: 'number', expected: String(360 / beta), answer: <MathText>{$(360 / beta)}</MathText>,
+      prompt: Cq(k, 'count.prompt', o), hints: [Cq(k, 'count.hint1', o), Cq(k, 'count.hint2', o)], explain: Cq(k, 'count.explain', o),
+    };
+  },
+  sum: ({ lab }, k) => {
+    const tr = L.closedTrial(lab);
+    const o = { n: tr.k, a: tr.alpha, half: tr.alpha * tr.k / 2, twice: tr.alpha * tr.k * 2, total: tr.alpha * tr.k };
+    return {
+      id: 'sum', kind: 'choice', cols: 1, prompt: Cq(k, 'sum.prompt', o),
+      options: [
+        { text: Cq(k, 'sum.half', o), why: Cq(k, 'sum.whyHalf', o) },
+        { text: Cq(k, 'sum.full', o), correct: true },
+        { text: Cq(k, 'sum.twice', o), why: Cq(k, 'sum.whyTwice', o) },
+      ],
+      hints: [Cq(k, 'sum.hint1', o), Cq(k, 'sum.hint2', o)], explain: Cq(k, 'sum.explain', o),
+    };
+  },
+  open: ({ lab }, k) => {
+    const tr = L.lastOpenTrial(lab);
+    const q = Number((360 / tr.alpha).toFixed(2));
+    const o = { a: tr.alpha, q: String(q).replace('.', ','), name: tr.n ? k(`names.${tr.n}`) : '' };
+    return {
+      id: 'open', kind: 'number', expected: String(q), answer: <MathText>{$(String(q).replace('.', '{,}'))}</MathText>,
+      prompt: Cq(k, 'open.prompt', o), hints: [Cq(k, 'open.hint1', o), Cq(k, 'open.hint2', o)], explain: Cq(k, Number.isInteger(q) ? 'open.explainWhole' : 'open.explain', o),
+    };
+  },
+  half: ({ lab }, k) => {
+    const sn = L.starNumbers(lab);
+    const o = { n: lab.target, a: lab.found, half: lab.found / 2, d: String(lab.tip).replace('.', ','), h: String(lab.tip / 2).replace('.', ',') };
+    return {
+      id: 'half', kind: 'number', expected: String(360 / lab.target / 2), answer: <MathText>{$(`${360 / lab.target / 2}^{\\circ}`)}</MathText>,
+      prompt: Cq(k, 'half.prompt', { ...o, R: String(sn.RText).replace('.', ',') }), hints: [Cq(k, 'half.hint1', o), Cq(k, 'half.hint2', o)], explain: Cq(k, 'half.explain', o),
+    };
+  },
+  trig: ({ lab }, k) => {
+    const sn = L.starNumbers(lab);
+    const o = { half: 360 / lab.target / 2, h: String(lab.tip / 2).replace('.', ','), R: String(sn.RText).replace('.', ',') };
+    return {
+      id: 'trig', kind: 'choice', cols: 1, prompt: Cq(k, 'trig.prompt', o),
+      options: [
+        { text: Cq(k, 'trig.sin', o), correct: true },
+        { text: Cq(k, 'trig.cos', o), why: Cq(k, 'trig.whyCos', o) },
+        { text: Cq(k, 'trig.tan', o), why: Cq(k, 'trig.whyTan', o) },
+      ],
+      hints: [Cq(k, 'trig.hint1', o), Cq(k, 'trig.hint2', o)], explain: Cq(k, 'trig.explain', o),
+    };
+  },
+  skip: ({ lab }, k) => {
+    const o = { n: lab.target, a: lab.found, two: lab.found * 2 };
+    return {
+      id: 'skip', kind: 'choice', cols: 1, prompt: Cq(k, 'skip.prompt', o),
+      options: [
+        { text: Cq(k, 'skip.one', o), why: Cq(k, 'skip.whyOne', o) },
+        { text: Cq(k, 'skip.two', o), correct: true },
+        { text: Cq(k, 'skip.three', o), why: Cq(k, 'skip.whyThree', o) },
+      ],
+      hints: [Cq(k, 'skip.hint1', o), Cq(k, 'skip.hint2', o)], explain: Cq(k, 'skip.explain', o),
+    };
+  },
+  rule: ({ lab, options, formal }, k) => ({
+    id: 'rule', kind: 'choice', prompt: <MathText>{k(`${lab.mode}.dPrompt`)}</MathText>, options,
+    hints: [Cq(k, `rule.${lab.mode}.hint1`), Cq(k, `rule.${lab.mode}.hint2`)], explain: formal,
+  }),
+};

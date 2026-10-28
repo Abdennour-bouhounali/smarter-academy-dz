@@ -202,3 +202,25 @@ export function gapEqTex(n, r, unit = '\\,\\mathrm{m}') {
   const g = gapTex(n, r, unit);
   return g.startsWith('\\approx') ? g : `= ${g}`;
 }
+
+/* ── les étapes du labo et leurs questions (LabCheckpoint, lot 4) ─────────── */
+
+/**
+ * Les ÉTAPES : `hand` (un premier « أشعل » a jugé les poteaux posés à la main), `rotate` (le tour s'allume PAR LE دوران), `measure` (la carte juste a
+ * donné la distance). Une suite de questions s'ouvre quand l'objectif de l'étape ET des précédentes est atteint.
+ */
+export function stepsOf(s) {
+  const flags = [['hand', s.handTries > 0], ['rotate', s.rotLit], ['measure', s.formulaOk]];
+  return flags.map(([id], i) => ({ id, reached: flags.slice(0, i + 1).every(([, ok]) => ok) }));
+}
+
+/** « أعِد التجربة » : remet LA MÊME étape au départ (les essais déjà jugés restent dans la liste). */
+export function retryStep(s, id) {
+  if (id === 'hand') {
+    const posts = handStart(s.n);
+    return Object.freeze({ ...s, phase: 'hand', posts: Object.freeze(posts), handTries: 0, handLit: false, rot: Object.freeze({ p1: posts[0], p2: snap(posts[0] + 40), placed: 2, result: null }), rotLit: false, formula: null, formulaOk: false, last: null });
+  }
+  if (id === 'rotate') return Object.freeze({ ...s, phase: 'rotate', rot: Object.freeze({ ...s.rot, placed: 2, result: null }), rotLit: false, formula: null, formulaOk: false, last: null });
+  if (id === 'measure') return Object.freeze({ ...s, phase: 'measure', formula: null, formulaOk: false, last: null });
+  return s;
+}

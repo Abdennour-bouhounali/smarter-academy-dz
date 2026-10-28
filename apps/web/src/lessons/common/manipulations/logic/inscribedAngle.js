@@ -272,3 +272,34 @@ export function mezianNumbers(s) {
 }
 /** L'angle \widehat{AOD} (au centre) d'une position D sur le cercle — ce qui manque au diamètre (« 150° لا 180° »). */
 export const aodOf = (s, pos = s.pos) => clean(R.angleAt(s.Apt, O, pointOf(s, pos)));
+
+/* ── les étapes du labo et leurs questions (LabCheckpoint, lot 4) ─────────── */
+
+/**
+ * Les ÉTAPES : striker = `major` (le pari ET deux positions du grand arc), `contrast` (+ un sommet hors du cercle ou sur l'autre arc = `discoveryReady`) ;
+ * act4 = les étapes du niveau (`mezian`, `houaria`, `interior`), chacune finie quand `stageDone`. Une suite de questions s'ouvre quand l'objectif de
+ * l'étape ET des précédentes est atteint.
+ */
+export function stepsOf(s) {
+  const flags = s.mode === 'act4' ? s.stages.map((st) => [st, stageDone(s, st)]) : [['major', goalMet(s)], ['contrast', discoveryReady(s)]];
+  return flags.map(([id], i) => ({ id, reached: flags.slice(0, i + 1).every(([, ok]) => ok) }));
+}
+
+/** « أعِد التجربة » : remet LA MÊME étape au départ (les étapes précédentes ne bougent pas). */
+export function retryStep(s, id) {
+  if (s.mode === 'striker') {
+    if (id === 'major') return Object.freeze({ ...s, bet: null, trials: Object.freeze([]), pos: legal(s, s.pos.t, 1), last: null });
+    if (id === 'contrast') return Object.freeze({ ...s, trials: Object.freeze(s.trials.filter((t) => t.position === 'on' && t.kind === 'major')), pos: legal(s, s.pos.t, 1), last: null });
+    return s;
+  }
+  if (!s.stages.includes(id)) return s;
+  const base = { ...s, stage: id, trials: Object.freeze(s.trials.filter((t) => t.stage !== id)), last: null };
+  if (id === 'mezian') base.relation = null;
+  const next = Object.freeze(base);
+  return Object.freeze({ ...next, pos: legal(next, s.pos.t, id === 'interior' ? 0.6 : 1) });
+}
+
+/** Le dernier essai « hors règle » (sommet hors du cercle ou sur l'autre arc), pour la question de contraste. */
+export const lastContrast = (s) => [...s.trials].reverse().find((t) => t.position !== 'on' || t.kind === 'minor') ?? null;
+/** Le dernier essai gardé d'une étape (ou, en striker, du grand arc). */
+export const lastOf = (s, kind) => [...s.trials].reverse().find((t) => t.kind === kind) ?? null;

@@ -8,6 +8,10 @@ import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
 import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
 import PlayerFigure from '../primitives/PlayerFigure';
@@ -85,7 +89,7 @@ const SETTLE_MS = 700;
 
 export default function InscribedAngle(props) {
   const { numbers: grouped, theme = 'football', title, lead, mission, level, levels: withLevels = true,
-    initialMode = 'student', allowModeSwitch = false, onTrial, onFinished } = props;
+    initialMode = 'student', allowModeSwitch = false, checkpoints: cpOn = true, onTrial, onFinished } = props;
   const authored = useMemo(() => {
     const out = {};
     for (const key of NUMBER_KEYS) {
@@ -103,12 +107,18 @@ export default function InscribedAngle(props) {
   const [lab, setLab] = useState(make);
   const sceneKey = `${numKey}|${state.epoch}`;
   const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); }
+  const [inits, setInits] = useState(0);
+  const [doneIds, setDoneIds] = useState({});
+  // « إعادة », un autre niveau ou d'autres nombres : TOUT recommence — la scène, les essais, les questions du labo
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setInits((n) => n + 1); setDoneIds({}); }
   const mode = lab.mode;
   const m = useCallback((key, o) => k(`${mode}.${key}`, { name: lab.name, ...o }), [k, mode, lab.name]);
 
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : obligatoires pour tout élève, l'enseignant seul les coupe pour SON compte (L2)
+  const cpSettings = useLabCheckpointSettings('inscribed-angle');
+  const cpLive = cpOn && cpSettings.enabled;
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch, cpLive]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!state.isFormal) return;
     state.report(onFinished, { mode, central: lab.central, angle: lab.inscribed });
@@ -155,6 +165,61 @@ export default function InscribedAngle(props) {
     </div>
   );
 
+  /* ── les étapes et leurs questions : une étape atteinte (ET les précédentes) ouvre sa suite, dans l'ordre ── */
+  const stepList = L.stepsOf(lab).map((st) => ({ ...st, chain: chainOf(mode, st.id) }));
+  const stepDone = stepList.map((st) => !!doneIds[st.id] || (!cpLive && st.reached));
+  const nextStep = cpLive ? stepList.find((st) => !doneIds[st.id]) : null;
+  const cpId = nextStep && nextStep.reached ? nextStep.id : null;
+  const chain = cpId ? nextStep.chain : null;
+  const cp = useLabCheckpoint({
+    id: cpId,
+    questions: chain ? chain.map((q) => QUESTIONS[q]({ lab, options: discoveryOptions, formal }, k)) : null,
+    reached: !!cpId,
+    resetKey: inits,
+    onRetry: () => setLab((cur) => L.retryStep(cur, cpId)),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => ({ ...d, [id]: true }));
+      if (stepList.find((st) => st.id === id)?.chain.includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && !lab.bet && !lab.relation && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  const doneKey = stepDone.join();
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(i)) return;
+      celebrated.current.add(i);
+      party.celebrate({ n: i + 1, total: stepList.length });
+    });
+  }, [doneKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── le son : un déclic par geste (au plus un toutes les 35 ms), « flag » à la mesure juste, « bell » à l'étape atteinte, « over » à une position refusée
+     ou à un mauvais choix. Muet sauf « الصوت ». ── */
+  const tick = useRef(0);
+  const heard = useRef(null);
+  const reachedCount = useRef(0);
+  const gestureKey = `${lab.pos.t}|${lab.pos.rho}`;
+  const lastGesture = useRef(gestureKey);
+  useEffect(() => {
+    if (lastGesture.current === gestureKey) return;
+    lastGesture.current = gestureKey;
+    const now = performance.now();
+    if (now - tick.current > 35) { playSfx('tooth'); tick.current = now; }
+  }, [gestureKey]);
+  useEffect(() => {
+    const e = lab.last;
+    if (!e || heard.current === e) return;
+    heard.current = e;
+    const n = stepList.filter((st) => st.reached).length;
+    if (e.kind === 'bet') playSfx(e.bet.refused ? 'over' : 'tooth');
+    else if (e.kind === 'relation') playSfx(e.ok ? 'flag' : 'over');
+    else if (e.kind === 'trial') playSfx(e.trial.refused || e.trial.kind === 'minor' ? 'over' : 'flag');
+    if (n > reachedCount.current) playSfx('bell');
+    reachedCount.current = n;
+  }, [lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <ManipulationShell
       type="inscribed-angle"
@@ -164,13 +229,20 @@ export default function InscribedAngle(props) {
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpLive}
       hints={['hint1', 'hint2', 'hint3'].map((hk) => <MathText key={hk}>{m(hk)}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={m('dPrompt')} options={discoveryOptions} formal={formal} />}
       explanation={<MathText>{m('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-emerald-50/70 to-white" minHeight="min-h-[150px]">
-        <ShootingLab lab={lab} setLab={setLab} m={m} k={k} theme={theme} solved={ready} />
+        <div className="relative space-y-2">
+          {party.node}
+          {cp.node}
+          <LabStepper count={stepList.length} current={Math.max(0, stepDone.indexOf(false) < 0 ? stepList.length - 1 : stepDone.indexOf(false))} done={stepDone} stepAttr="data-ia-step" />
+          <ShootingLab lab={lab} setLab={setLab} m={m} k={k} theme={theme} solved={ready} blocking={cp.blocking} />
+        </div>
       </ManipulationStage>
     </ManipulationShell>
   );
@@ -212,7 +284,7 @@ const bearingOf = (p) => (((Math.atan2(p.y, p.x) * 180) / Math.PI) % 360 + 360) 
 
 /* ════════════════════════════ la scène : la surface de réparation, le cercle, le sommet ════════════════════════════ */
 
-function ShootingLab({ lab, setLab, m, k, theme, solved }) {
+function ShootingLab({ lab, setLab, m, k, theme, solved, blocking = false }) {
   const reduce = useReducedMotion();
   const uid = useId().replace(/:/g, '');
   const { boxRef, glanceRef, drawnH, width, budget } = useBudget(220, 560);
@@ -464,7 +536,7 @@ function ShootingLab({ lab, setLab, m, k, theme, solved }) {
           {' · '}{m('oOutsideSeen')} <b>{hou.some((tr) => tr.oInside === false) ? '✓' : '—'}</b>
         </p>
       )}
-      {done && stageIndex < lab.stages.length - 1 && (
+      {done && !blocking && stageIndex < lab.stages.length - 1 && (
         <div className="flex flex-wrap items-center gap-1.5 rounded-xl bg-emerald-50 p-1.5">
           <p className="flex-1 font-bold text-emerald-900"><MathText>{m(`done_${lab.stage}`)}</MathText></p>
           <button type="button" onClick={() => setLab((s) => L.advance(s))} data-ia-next className={`${solid} border-emerald-700 bg-emerald-600 hover:bg-emerald-700 focus-visible:ring-emerald-400`}>{m(`next_${lab.stage}`)}</button>
@@ -663,3 +735,104 @@ function Pitch({ S, goalY, Apx, Bpx, uid, reduce }) {
     </g>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/**
+ * La suite de l'étape `id`. striker : le grand arc (lecture · prédiction), le contraste (hors règle · règle). act4 : مزيان (le complément · le rapport),
+ * هوارية (la valeur · le centre), l'intérieur (la demi-somme · règle).
+ */
+export function chainOf(mode, id) {
+  if (mode === 'striker') return id === 'major' ? ['read', 'predict'] : ['off', 'rule'];
+  if (id === 'mezian') return ['bad', 'ratio'];
+  if (id === 'houaria') return ['same', 'centre'];
+  return ['inner', 'rule'];
+}
+
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const angleOf = (lab) => `\\widehat{A${lab.name}B}`;
+
+/** Chaque question est construite sur LES nombres de l'élève (l'angle au centre, ses essais) ; `k` : les textes de `inscribedAngle`. */
+export const QUESTIONS = {
+  read: ({ lab }, k) => {
+    const o = { T: `$${angleOf(lab)}$`, c: deg(lab.central), n: L.distinctMajor(lab).length };
+    return {
+      id: 'read', kind: 'number', expected: L.degText(lab.inscribed), answer: <MathText>{`$${deg(lab.inscribed)}^{\\circ}$`}</MathText>,
+      prompt: Cq(k, 'read.prompt', o), hints: [Cq(k, 'read.hint1', o), Cq(k, 'read.hint2', o)], explain: Cq(k, 'read.explain', { ...o, a: deg(lab.inscribed) }),
+    };
+  },
+  predict: ({ lab }, k) => {
+    const c2 = lab.central === 80 ? 100 : 80;
+    const o = { c: deg(lab.central), a: deg(lab.inscribed), c2, a2: c2 / 2, T: `$${angleOf(lab)}$` };
+    return {
+      id: 'predict', kind: 'number', expected: String(c2 / 2), answer: <MathText>{`$${c2 / 2}^{\\circ}$`}</MathText>,
+      prompt: Cq(k, 'predict.prompt', o), hints: [Cq(k, 'predict.hint1', o), Cq(k, 'predict.hint2', o)], explain: Cq(k, 'predict.explain', o),
+    };
+  },
+  off: ({ lab }, k) => {
+    const tr = L.lastContrast(lab);
+    const where = tr.position === 'on' ? 'minor' : tr.position;
+    const o = { T: `$${angleOf(lab)}$`, where: k(`cp.where.${where}`), angle: deg(tr.angle), a: deg(lab.inscribed) };
+    return {
+      id: 'off', kind: 'choice', cols: 1, prompt: Cq(k, 'off.prompt', o),
+      options: [
+        { text: Cq(k, 'off.same', o), why: Cq(k, 'off.whySame', o) },
+        { text: Cq(k, 'off.changes', o), correct: true },
+        { text: Cq(k, 'off.closer', o), why: Cq(k, 'off.whyCloser', o) },
+      ],
+      hints: [Cq(k, 'off.hint1', o), Cq(k, 'off.hint2', o)], explain: Cq(k, 'off.explain', o),
+    };
+  },
+  bad: ({ lab }, k) => {
+    const z = L.mezianNumbers(lab);
+    const o = { adb: deg(z.ADB), aob: deg(z.AOB), bad: deg(z.BAD) };
+    return {
+      id: 'bad', kind: 'number', expected: L.degText(z.BAD), answer: <MathText>{`$${deg(z.BAD)}^{\\circ}$`}</MathText>,
+      prompt: Cq(k, 'bad.prompt', o), hints: [Cq(k, 'bad.hint1', o), Cq(k, 'bad.hint2', o)], explain: Cq(k, 'bad.explain', o),
+    };
+  },
+  ratio: ({ lab }, k) => {
+    const z = L.mezianNumbers(lab);
+    const o = { adb: deg(z.ADB), aob: deg(z.AOB) };
+    return {
+      id: 'ratio', kind: 'number', expected: String(L.clean(z.AOB / z.ADB)), answer: <MathText>{`$${L.clean(z.AOB / z.ADB)}$`}</MathText>,
+      prompt: Cq(k, 'ratio.prompt', o), hints: [Cq(k, 'ratio.hint1', o), Cq(k, 'ratio.hint2', o)], explain: Cq(k, 'ratio.explain', o),
+    };
+  },
+  same: ({ lab }, k) => {
+    const o = { n: L.distinctMajor(lab, 'houaria').length, a: deg(lab.inscribed), aob: deg(lab.central) };
+    return {
+      id: 'same', kind: 'number', expected: L.degText(lab.inscribed), answer: <MathText>{`$${deg(lab.inscribed)}^{\\circ}$`}</MathText>,
+      prompt: Cq(k, 'same.prompt', o), hints: [Cq(k, 'same.hint1', o), Cq(k, 'same.hint2', o)], explain: Cq(k, 'same.explain', o),
+    };
+  },
+  centre: ({ lab }, k) => {
+    const o = { a: deg(lab.inscribed) };
+    return {
+      id: 'centre', kind: 'choice', cols: 1, prompt: Cq(k, 'centre.prompt', o),
+      options: [
+        { text: Cq(k, 'centre.bigger', o), why: Cq(k, 'centre.whyBigger', o) },
+        { text: Cq(k, 'centre.none', o), correct: true },
+        { text: Cq(k, 'centre.smaller', o), why: Cq(k, 'centre.whySmaller', o) },
+      ],
+      hints: [Cq(k, 'centre.hint1', o), Cq(k, 'centre.hint2', o)], explain: Cq(k, 'centre.explain', o),
+    };
+  },
+  inner: ({ lab }, k) => {
+    const tr = L.lastOf(lab, 'interior');
+    const o = { angle: deg(tr.angle), far: deg(tr.far), near: deg(tr.near), half: deg(lab.inscribed), sum: deg(tr.far + tr.near) };
+    return {
+      id: 'inner', kind: 'choice', cols: 1, prompt: Cq(k, 'inner.prompt', o),
+      options: [
+        { text: Cq(k, 'inner.halfSum', o), correct: true },
+        { text: Cq(k, 'inner.halfCentral', o), why: Cq(k, 'inner.whyHalfCentral', o) },
+        { text: Cq(k, 'inner.sum', o), why: Cq(k, 'inner.whySum', o) },
+      ],
+      hints: [Cq(k, 'inner.hint1', o), Cq(k, 'inner.hint2', o)], explain: Cq(k, 'inner.explain', o),
+    };
+  },
+  rule: ({ lab, options, formal }, k) => ({
+    id: 'rule', kind: 'choice', prompt: <MathText>{k(`${lab.mode}.dPrompt`)}</MathText>, options,
+    hints: [Cq(k, `rule.${lab.mode}.hint1`), Cq(k, `rule.${lab.mode}.hint2`)], explain: formal,
+  }),
+};
