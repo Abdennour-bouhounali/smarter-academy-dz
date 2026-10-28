@@ -258,6 +258,10 @@ export const VISUAL_THEMES = Object.freeze({
   //   mallElevator  un مصعد شحن de centre commercial en coupe : des étages au-dessus de la rue et un parking en dessous, et l'écran de
   //                 rediffusion de la caméra de surveillance avec sa ligne du temps (`elevator-reel`)
   mallElevator: { kind: 'objects', shows: 'مصعد مركز تجاري: طوابق فوق الشارع وطوابق مرآب تحته، وشاشة إعادة تسجيل كاميرا المراقبة' },
+  // 3AM, unité 1, module 2 (2026-10-27) :
+  //   mathClubMachine  la machine à multiplier du نادي الرياضيات : un cadran qui porte le premier facteur, un tableau lumineux de neuf
+  //                    colonnes (b = −4 … 4) autour d'une ligne 0, un curseur de b dessous, une élève (KidFigure, hijab) aux commandes (`sign-machine`)
+  mathClubMachine: { kind: 'objects', shows: 'آلة الضرب في نادي الرياضيات: قرص يحمل العامل الأول ولوحة مضيئة من تسعة أعمدة حول خط الصفر ومؤشّر للعامل الثاني' },
   // 3AM, unité 4, leçon 3 (2026-10-26) :
   //   marblerun  le mur à chevilles du نادي العلوم pour la journée portes ouvertes : des rails de bois et des tubes de verre, un réservoir par lettre, des
   //              stations (copieuse, presse, basculeur, jonction), une ligne écrite et un lecteur à laiton, une élève (KidFigure, hijab) devant le mur (`marble-run`)

@@ -3,36 +3,75 @@ import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { TextbookBox } from '../../../../../../common/textbook';
+import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { KNOWLEDGE, RECALL_ADD, GUIDE } from '../content/textbook';
+import { KNOWLEDGE, RECALL_ADD, GUIDE, LAB_SIGNS } from '../content/textbook';
 import { getLessonPath } from '@smarter-academy/core';
 import { Link } from 'react-router-dom';
 
 /**
- * Module 2 — معارف : sans labo, le module s'ouvre sur sa PREMIÈRE question (§4quater). L'élève a VU que (−) × (−) est positif ; ici il
- * voit POURQUOI il le faut : si (−3) × (−4) était négatif, (−3) × 4 + (−3) × (−4) ne vaudrait pas (−3) × 0 = 0. Le raisonnement est le
- * نشاط 3 du manuel, redessiné (autres nombres) : la distributivité sert UNE fois, comme ARGUMENT (jamais enseignée ici comme technique), puis
- * le tableau (−4) × n dont le deuxième facteur baisse de 1, puis les décimaux. Les additions de 2AM sont RAPPELÉES (« تذكّر »), jamais
- * reconstruites. Les encadrés viennent APRÈS la réponse. LP : P2, P3.
+ * Module 2 — معارف : UNE SEULE PISTE (§4quater). Le labo `sign-machine` (« آلة الجداءات », 2026-10-27, demande du propriétaire : « une
+ * manipulation sur la façon dont le signe du résultat change ») est en haut, sans carte au-dessus : la machine porte −3, la main fait
+ * descendre le second facteur de 4 à −4 et chaque produit s'allume en colonne au-dessus ou au-dessous de la ligne 0 ; le côté négatif est
+ * verrouillé jusqu'à la PRÉDICTION de (−3) × (−1). En متقدم la main retourne aussi le signe du premier facteur (le tableau se renverse).
+ * L'étape 1 interroge ce que l'élève a VU (le pas reste +3 après 0, avec SES colonnes). Puis le POURQUOI : si (−3) × (−4) était négatif,
+ * (−3) × 4 + (−3) × (−4) ne vaudrait pas (−3) × 0 = 0. Le raisonnement est le نشاط 3 du manuel, redessiné (autres nombres) : la
+ * distributivité sert UNE fois, comme ARGUMENT (jamais enseignée ici comme technique), puis le tableau (−4) × n hors machine (transfert),
+ * puis les décimaux. Les additions de 2AM sont RAPPELÉES (« تذكّر »), jamais reconstruites. Les encadrés viennent APRÈS la réponse. LP : P2, P3.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
+const Ltr = ({ children }) => <bdi dir="ltr">{String(children).replace(/-/g, '−')}</bdi>;
+const par = (v) => (v < 0 ? `(${v})` : `${v}`);
 
 export default function Module02Maarif() {
   const [q, setQ] = useState({});
+  const [trials, setTrials] = useState([]);
   const answered = (k) => () => setQ((s) => ({ ...s, [k]: true }));
+  const record = (e) => setTrials((list) => [...list, e]);
   const recallPath = getLessonPath(RECALL_ADD.lesson);
+  // ce que l'élève a vu à la machine : la prédiction réussie (le premier produit allumé de l'autre côté de 0)
+  const seen = trials.findLast((e) => e.kind === 'predict' && e.ok && !e.free);
+  const a = seen?.a ?? LAB_SIGNS.beginner.a;
+  const stepUp = -a;
   return (
     <ContentModule
-      objectives={['كيف أحسب $(-3) \\times 4$ ؟', 'لماذا يجب أن يكون جداء سالبين موجبًا؟', 'ماذا يحدث في جدول جداءات ينقص عاملها الثاني؟']}
+      objectives={['ماذا يحدث للجداء بعد الصفر عندما ينقص العامل الثاني؟', 'كيف أحسب $(-3) \\times 4$ ؟', 'لماذا يجب أن يكون جداء سالبين موجبًا؟', 'ماذا يحدث في جدول جداءات ينقص عاملها الثاني؟']}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
       moduleNumber={2}
       moduleTitle="معارف — لماذا جداء سالبين موجب؟"
       moduleSubtitle="الخاصية التوزيعية دليلًا، ثم جدول"
-      estimatedTime="12 دقيقة"
+      estimatedTime="16 دقيقة"
+      intro={
+        <ManipulationWorkspace
+          levels={{
+            beginner: () => <Manipulation type="sign-machine" level="beginner" a={LAB_SIGNS.beginner.a} tasks={LAB_SIGNS.beginner.tasks} onTrial={record} />,
+            advanced: () => <Manipulation type="sign-machine" level="advanced" a={LAB_SIGNS.advanced.a} tasks={LAB_SIGNS.advanced.tasks} onTrial={record} />,
+          }}
+        />
+      }
       steps={[
         {
-          num: 1, title: 'ما قيمة $(-3) \\times 4$ ؟', subtitle: 'جمع متكرر', done: !!q.a,
+          num: 1, title: 'ماذا فعل الجداء بعد الصفر؟', subtitle: 'أعمدة آلتك', done: !!q.z,
+          content: (
+            <div className="space-y-3" data-activity-evidence>
+              <p data-evidence="sign-machine" data-tried={seen ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${seen ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {seen
+                  ? <span>في آلتك: <Ltr>{`${par(a)} × 1 = ${a}`}</Ltr> ثم <Ltr>{`${par(a)} × 0 = 0`}</Ltr> ثم <Ltr>{`${par(a)} × (-1) = ${-a}`}</Ltr> .</span>
+                  : 'أنجز التوقّع في الآلة أعلاه (العمود الأول بعد الصفر)، ثم عُد إلى هذا السؤال.'}
+              </p>
+              <NumericQuestion
+                prompt="كلّما نقص العامل الثاني بـ 1 في آلتك، بكم زاد الجداء؟ (قبل الصفر وبعده)"
+                expected={stepUp} requires={['ishara-jidaa']}
+                explain={<MathText>{`من عمود إلى العمود الذي يليه يزيد الجداء بـ $${stepUp}$ ، ولا يتوقّف ذلك عند الصفر: $0 + ${stepUp} = ${stepUp}$ ، فـ $${par(a)} \\times (-1) = ${stepUp}$ موجب.`}</MathText>}
+                onAnswered={answered('z')}
+              />
+            </div>
+          ),
+        },
+        {
+          num: 2, title: 'ما قيمة $(-3) \\times 4$ ؟', subtitle: 'جمع متكرر', done: !!q.a,
           content: (
             <div className="space-y-3">
               <NumericQuestion
@@ -45,7 +84,7 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 2, title: 'ماذا يساوي الجداء $(-3) \\times 0$ ؟', subtitle: 'توزيع الضرب مرّة واحدة', done: !!q.b,
+          num: 3, title: 'ماذا يساوي الجداء $(-3) \\times 0$ ؟', subtitle: 'توزيع الضرب مرّة واحدة', done: !!q.b,
           content: (
             <div className="space-y-3">
               <NumericQuestion
@@ -58,7 +97,7 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 3, title: 'ما قيمة $(-3) \\times (-4)$ ؟', subtitle: 'العدد الذي يُتمّ $-12$ إلى 0', done: !!q.c,
+          num: 4, title: 'ما قيمة $(-3) \\times (-4)$ ؟', subtitle: 'العدد الذي يُتمّ $-12$ إلى 0', done: !!q.c,
           content: (
             <div className="space-y-3">
               <NumericQuestion
@@ -73,7 +112,7 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 4, title: 'ماذا بعد الصفر في الجدول؟', subtitle: 'جدول ينقص عاملُه الثاني', done: !!q.d,
+          num: 5, title: 'ماذا بعد الصفر في الجدول؟', subtitle: 'جدول ينقص عاملُه الثاني', done: !!q.d,
           content: (
             <div className="space-y-3">
               <div className="rounded-2xl border-2 border-indigo-100 bg-white p-3 text-center" dir="ltr">
@@ -92,7 +131,7 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 5, title: 'وإذا كان العددان عشريين؟', subtitle: 'الطريقة نفسها', done: !!q.e,
+          num: 6, title: 'وإذا كان العددان عشريين؟', subtitle: 'الطريقة نفسها', done: !!q.e,
           content: (
             <div className="space-y-3">
               <NumericQuestion

@@ -122,6 +122,7 @@ export const MANIPULATION_COMPONENTS = {
   'term-ferry': lazy(() => import('./algebra/TermFerry')),
   // 3AM, unité 1 « الأعداد النسبية » : le temps signé sous la main — le شريط المصعد (2026-10-26).
   'elevator-reel': lazy(() => import('./operations/ElevatorReel')),
+  'sign-machine': lazy(() => import('./operations/SignMachine')),
   // 3AM, unité 4 « الحساب الحرفي », leçon 3 : la valeur sous la main — le مسار الكريات (2026-10-26).
   'marble-run': lazy(() => import('./algebra/MarbleRun')),
   // 2AM, unité 3 « الأعداد النسبية » : la distance à zéro sous la main — le مسبار (2026-10-21).

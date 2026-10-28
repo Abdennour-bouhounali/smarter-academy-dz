@@ -824,6 +824,22 @@ export const LEVELS = Object.freeze({
       { id: 'a2', kind: 'both', floor: '-6' }, { id: 'a3', r: '-2', floor: '3' }, { id: 'a4', r: '2', floor: '-5' },
     ] }, ...T('know-1') },
   },
+  // LE SECOND FACTEUR SOUS LA MAIN (sign-machine, thème mathClubMachine, 3AM unité 1, leçon 1, module 2 معارف, 2026-10-27) : la machine porte a, la main fait
+  // descendre b et allume la colonne a × b. مبتدئ (plateforme, a = −3) : m1 allumer de 4 à 0, p1 PRÉDIRE (−3) × (−1) (cartes, le côté négatif est verrouillé avant),
+  // m2 trouver la colonne du produit 12 (b = −4). متقدم (act-3, a = −4) : a1 prédire (−4) × (−2) AVANT tout geste, a2 le produit 8 avec a > 0 PUIS a < 0 (la main
+  // retourne le signe de a, le tableau se renverse), a3 a = 2, le produit −6. Le test des niveaux mesure la paire par la prédiction EN PREMIER et le signe de a à la main.
+  'sign-machine': {
+    beginner: { numbers: { a: -3, tasks: [
+      { id: 'm1', kind: 'fill', from: 4, to: 0 },
+      { id: 'p1', kind: 'predict', b: -1, options: [3, -3, -4, -2], key: 3, misc: { '-3': 'MISC-JIDAA-NEGNEG', '-4': 'MISC-JIDAA-ADD', '-2': 'MISC-JIDAA-SUB' } },
+      { id: 'm2', kind: 'reach', product: 12 },
+    ] }, ...P },
+    advanced: { numbers: { a: -4, tasks: [
+      { id: 'a1', kind: 'predict', b: -2, options: [8, -8, -6, -2], key: 8, misc: { '-8': 'MISC-JIDAA-NEGNEG', '-6': 'MISC-JIDAA-ADD', '-2': 'MISC-JIDAA-SUB' } },
+      { id: 'a2', kind: 'both', product: 8 },
+      { id: 'a3', kind: 'reach', a: 2, product: -6 },
+    ] }, ...T('act-3') },
+  },
   // ── 3AM, unité 4 « الحساب الحرفي », leçon 3 (2026-10-26) ──
   // LA VALEUR SOUS LA MAIN (marble-run, thème marblerun) : un mur de billes calcule une expression ; la main lâche une bille dans le réservoir de la lettre, ÉCRIT la ligne de la
   // substitution (× et parenthèses) puis lance. مبتدئ (plateforme, les puces des stations pendant la course) : r1 4x + 7 en 3 (le × manquant fond 4 et 3 en 43), r2 4x + 7 en −2 (parenthèses),

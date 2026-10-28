@@ -682,6 +682,15 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'جداء عددين نسبيين لهما الإشارة نفسها موجب، ولهما إشارتان مختلفتان سالب، ومسافته إلى الصفر هي جداء المسافتين إلى الصفر ؛ و $a \\times 0 = 0$',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 3AM, unité 1 « الأعداد النسبية », module 2 معارف (2026-10-27) — pourquoi le produit de deux négatifs est positif.
+  'sign-machine': {
+    // LE SECOND FACTEUR SOUS LA MAIN : la machine du نادي الرياضيات porte un premier facteur a ; la main fait descendre b de 4 à −4
+    // (curseur sous neuf colonnes, −/+) et chaque b visité ALLUME sa colonne a × b au-dessus ou au-dessous de la ligne 0 — le tableau se
+    // construit, l'écart entre deux colonnes voisines reste −a de l'autre côté de 0. Le côté négatif est verrouillé avant la PRÉDICTION ;
+    // en متقدم la main retourne aussi le signe de a et le tableau entier se renverse. Chaque b lâché est un essai : MANUEL (§6bis).
+    shows: 'كلّما نقص العامل الثاني بـ 1 تغيّر الجداء بالمقدار نفسه، حتى بعد الصفر: لذلك يكون جداء عددين سالبين موجبًا، ويتغيّر إشارة الجداء كلّما تغيّرت إشارة أحد عامليه',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 3AM, unité 4 « الحساب الحرفي » (2026-10-26) — calculer la valeur d'une expression, le contre-exemple.
   'marble-run': {
     // LA VALEUR SOUS LA MAIN : le club de sciences a bâti un mur de billes qui CALCULE une expression — ses stations sont les opérations

@@ -1189,6 +1189,49 @@ first differing rank highlighted, completed with zeros and as two natural readin
 
 **LabCoach** `coachOf` (`grab`, `left` and `try` carry `prefer: 'above', noFlip: true` since 2026-10-27: the bubble sits on the monitor, never over the timeline or −/+ it points at): `cards` (a1, p1) · `grab` (the knob) · `left` (a mission asks a negative time and the hand never went below 0: the left half of the timeline, `[data-er-left]`, never the number) · `lever` (the `both` mission after two trials) · `try` (−/+) · `next`; followed to the end of both levels in `logic/elevatorReel.test.js`. **Events** (`onTrial`): `{ kind: 'release', task, taskId, r, t, floor, ok, free, goal, speed }` and `{ kind: 'predict', task, taskId, r, t, floor, pick, ok, misc }`. **DOM**: `[data-elevator-reel][data-task][data-solved][data-layout]`, `[data-er-glance]`, `[data-er-stage]`, `[data-er-svg]`, `[data-er-cabin][data-floor][data-sense]`, `[data-er-pill]`, `[data-er-level=<f>]`, `[data-er-arrows=<n>]`, `[data-er-arrow=<i>][data-dashed][data-half]`, `[data-er-monitor]`, `[data-er-time]`, `[data-er-speed-card][data-sense]`, `[data-er-speed-value=<r>]`, `[data-er-speed-sentence]`, `[data-er-play][data-playing]`, `[data-er-calc]`, `[data-er-knob][data-t]`, `[data-er-ruler]`, `[data-er-left]`, `[data-er-stepper]`, `[data-er-less]`, `[data-er-more]`, `[data-er-t]`, `[data-er-speed]`, `[data-er-up]`, `[data-er-down]`, `[data-er-r-less]`, `[data-er-r-more]`, `[data-er-cards]`, `[data-er-card=<v>]`, `[data-er-record]`, `[data-er-row]`, `[data-er-verdict=right|part|wrong|free|'']`, `[data-er-prompt][data-lit]`, `[data-er-context]`, `[data-er-next]`, `[data-er-step=<i>][data-done]`, `[data-er-free][data-active]`, `[data-er-free-r]`, `[data-er-free-t]`, `[data-er-free-back]`, `[data-er-formal]`, `[data-er-kid][data-mood]`. **Layout.** The tower (160 px wide below 700 px of lab width, 280 above) ALWAYS sits beside the controls column (≤ 440 px: monitor, speed card (+ the lever in `both`), cards or timeline + film, −/+, verdict, record); the floor height is budgeted from the lesson screen (`floorHeight`: `(screenH − 430) / 19`, 20 … 30 px). **Game screen** (`immersive`, § « Game screen »): the tower takes 40 % of the width (340 … 560 px, the shaft and its cabin grow to 110 px) and its floors share the height left under the question (`floorHeightFor(avail)`: `(avail − 48) / 19`, 20 … 44 px); the controls column grows to 640 px. Measured glance in the page (`e2e/lesson-kit/3am-unit1-jidaa-adadayn-nisbiyayn.mjs`, height / viewport, مبتدئ · متقدم a1, 2026-10-27 with the speed card): 768×1024 727 · 711, 1024×768 (sidebar open, lab column 414 px, monitor 64 px) 767 · 714, 1280×800 692 · 649, 1366×768 744 · 726, 1920×1080 788 · 788. Tests: `packages/core/arithmetic/relativeOps.test.js`, `logic/elevatorReel.test.js`, `operations/elevatorReel/geometry.test.js`, `operations/elevatorReel.render.test.jsx` (opens on its CONTEXT then ONE question, says each thing once, no raw key, no sentence pointing to the book).
 
+## 2septentricies-bis. The second factor under the hand — `sign-machine` « آلة الجداءات » (3AM unit 1, lesson `jidaa-adadayn-nisbiyayn`, module 2 معارف, 2026-10-27)
+
+Owner request (2026-10-27): « a manipulation in module 02 « لماذا جداء سالبين موجب؟ » on how the sign of the result changes ». `operations/SignMachine.jsx`
+(+ `operations/signMachine/geometry.js`: `boardGeometry` — nine columns b = −4 … 4 at a constant pitch, bars TO SCALE from the 0 line, the pill
+margins, the gap between bars where the stair risers live (`gapW`) and the rail; `bAt` maps a pointer x back to a column; tested over widths and scales) on `logic/signMachine.js` (integers only:
+|a| ≤ 4, |b| ≤ 4; `productOf` never returns −0). Theme `mathClubMachine`; strings `lesson.manipulation.json › signMachine`.
+
+**The hand holds the SECOND FACTOR b.** The maths-club machine carries a first factor a on its dial (a big signed card with a needle dial and the
+character, `FactorCard`). The hand slides b along a rail under a lit board (knob ≥ 44 px, tap on the rail, −/+ `StepperCard`, keys ← → Home End on the
+`role="slider"` knob); every b visited LIGHTS its column a × b above (emerald) or below (rose) the 0 line, and lit columns STAY: the table of products
+builds itself under the hand. Between two lit neighbours a STAIR STEP is drawn (2026-10-27, owner: the floating « +4 » chips under the board did
+not say what they measured): a dashed tread from the tip of bar b, then an amber riser arrow up (or down) to the tip of bar b − 1, with the signed
+gap (« +4 ») written beside the riser — « from 0 to 4, from 4 to 8 » is read on the drawing, and the steps stay identical across 0. The rule is
+never written: the student SEES that the step does not change sign at 0.
+
+**Resistance.** The four negative columns are LOCKED (« ؟ », a dark veil, the rail greyed and the knob clamped at 0 — `negLocked`, `minB`) until the
+prediction mission is won: (−3) × (−1) is predicted on cards BEFORE it can be seen. A wrong card is refused WITHOUT the answer (« ليس −3. انظر إلى الفرق بين
+كل عمودين متجاورين… », no calc line, the column stays dark); each wrong card carries its misconception (`MISC-JIDAA-NEGNEG` / `-ADD` / `-SUB`). A wrong
+column in a `reach` mission shows its own product (« (−3) × (−2) = 6 » then « ليس هذا العمود: الجداء المطلوب 12. »). Once a mission is won, moving the knob is EXPLORATION (`trial.look`, verdict `look`, indigo « أنجزت هذه المهمة… »), never a refusal — fixed 2026-10-27 after the owner saw « ليس هذا العمود … undefined » right after the correct card.
+
+**Missions** (`tasks`, `a`): `fill` (light every column from `from` down to `to`), `predict` (`b`, `options`, `key`, `misc`), `reach` (`product`; `a` of the
+task or of the lab — b is unique), `both` (`product` with a > 0 THEN a < 0: the hand also holds a — « موجب / سالب » cards `[data-sm-pos]` / `[data-sm-neg]`
+and −/+ of its distance; flipping a REVERSES the whole lit table around the 0 line). مبتدئ (platform, a = −3): m1 fill 4 → 0, p1 predict (−3) × (−1),
+m2 reach 12 (b = −4). متقدم (act-3, a = −4): a1 predict (−4) × (−2) before any gesture, a2 both 8, a3 reach −6 with a = 2. Every mission opens with the
+knob back at b = 4 (the answer is never already under the hand); the same a keeps the lit columns, a new a relights from 4.
+
+**Discovery and formal phase.** « في أعمدتك: ماذا فعل الجداء بعد الصفر، كلّما نقص العامل الثاني بـ 1؟ » — « بقي يزيد بـ 3 في كل مرة، فصار موجبًا » (correct)
+against « عاد ينقص بـ 3 » and « بقي سالبًا », each refuted with the student's columns (`witness`: a0, the step −a0, the columns ±4 and −1). The formal
+phase writes $a \times 4 + a \times (-4) = a \times 0 = 0$ (the two columns are mirror images) and « flipping the sign of a factor moves the product
+to the other side of 0 ». « جرّب كل الإمكانيات »: NOT eligible (each released b IS a trial). « جرّب أعدادك »: ALWAYS OPEN (a from −4 to 4, 0 allowed —
+every column on the line; all nine columns lit; a free trial never ticks a mission).
+
+**LabCoach** `coachOf`: `cards` · `grab` (the knob, `prefer: 'above', noFlip`) · `sign` (`both` only: after two trials without touching a, or when the
+remaining way needs the other sign) · `try` (−/+) · `next`. Its unit test follows it to the end of both levels.
+
+**In the lesson.** Module 2 opens on this lab (two-level workspace, nothing above it); its step 1 asks what the student SAW, with the student's own
+columns (`[data-evidence="sign-machine"]`: « في آلتك: (−3) × 1 = −3 ثم (−3) × 0 = 0 ثم (−3) × (−1) = 3 », answer = −a); the distributivity argument
+and the (−4) × n table follow as transfer. One objective for both levels (`validate:lessons`). Not `elevator-reel` (one product at a time, the hand
+holds a TIME) nor `robot-track` (several factors, the hand holds signs and ORDER): here the hand builds the WHOLE TABLE of a × b and reads its regularity.
+
+DOM contract: header of `SignMachine.jsx`. Tests: `logic/signMachine.test.js`, `operations/signMachine/geometry.test.js`,
+`operations/signMachine.render.test.jsx`, e2e `e2e/lesson-kit/3am-unit1-jidaa-adadayn-nisbiyayn.mjs` § 3quater.
+
 ## 2novetricies. The signs and the order of the cards under the hand — `robot-track` (3AM unit 1, lesson `jidaa-ida-nisbiya`, 2026-10-26)
 
 `operations/RobotTrack.jsx` (+ `operations/robotTrack/MatArt.jsx`: the SVG world — the floor mat seen at a slant, graduated like a number line, negative half amber / positive half teal, the glass zero gate, the flag, the robot, the numbered jump arcs, two `KidFigure`s; `operations/robotTrack/geometry.js`: `matGeometry`, `ticksOf`, `arcHeight`, tested) on `logic/robotTrack.js` (exact, through the grown `packages/core/arithmetic/relativeOps.js` — `product`, `negativesIn`, `signByParity`, `opposite`, `square`, `factorize` — and `powers.js`, imported BY PATH); theme `roboticsClub`; strings `lesson.manipulation.json › robotTrack`. **The hand holds the SIGN of each card and the ORDER / PRESENCE of the cards of a robot's programme.** The robot starts at 1 on the mat; each card multiplies its position by the number written on it: a positive card moves it away from the zero gate on the same side, a NEGATIVE card makes it JUMP over the gate (a half-turn: `× (−1)` is the symmetric point). The final stop is the product; its SIDE depends only on how many cards are negative, never on their order. The lab never says « فردي » or « زوجي » — the module asks what the student's own record has in common.

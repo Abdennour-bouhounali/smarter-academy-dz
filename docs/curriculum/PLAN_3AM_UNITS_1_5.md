@@ -41,7 +41,7 @@ platform additions. The `<UNIT_DIR>` of the prompt is the folder in the first co
 
 | # | Plan | Lab (new type) — what the hand controls | Faithful |
 |---:|---|---|---:|
-| 1 | [unit1/plan/jidaa-adadayn-nisbiyayn.md](../sources/3am/unit1/plan/jidaa-adadayn-nisbiyayn.md) | `elevator-reel` « شريط المصعد » — the signed time t on a camera replay (floor = r × t); rewinding a descending lift raises it | 3–4 |
+| 1 | [unit1/plan/jidaa-adadayn-nisbiyayn.md](../sources/3am/unit1/plan/jidaa-adadayn-nisbiyayn.md) | `elevator-reel` « شريط المصعد » — the signed time t on a camera replay (floor = r × t); rewinding a descending lift raises it; module 2: `sign-machine` « آلة الجداءات » (2026-10-27) — the hand lowers the second factor, the lit table keeps its step across 0 | 3–4 |
 | 2 | [unit1/plan/jidaa-ida-nisbiya.md](../sources/3am/unit1/plan/jidaa-ida-nisbiya.md) | `robot-track` « مسار الروبوت » — the sign of each factor card; each negative card jumps the robot over zero | 7–8 |
 | 3 | [unit1/plan/qismat-nisbiyayn.md](../sources/3am/unit1/plan/qismat-nisbiyayn.md) | `code-lockers` « خزائن الأمانات » — the missing factor q on code wheels to open « b × ? = a » | 9 |
 | 4 | [unit1/plan/wadiya-idmajiya-aadad-nisbiya.md](../sources/3am/unit1/plan/wadiya-idmajiya-aadad-nisbiya.md) | synthesis, 6 training situations | 0–2 |

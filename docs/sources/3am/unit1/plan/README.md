@@ -20,7 +20,7 @@ the quotient.
 
 | # | Code | Title | Item | Lab (new type) | What the hand holds | Plan |
 |---:|---|---|---|---|---|---|
-| 1 | `jidaa-adadayn-nisbiyayn` | جداء عددين نسبيين | r01 | `elevator-reel` « شريط المصعد » | the signed TIME t of a security-camera replay (and, متقدم, the signed speed r) | [`jidaa-adadayn-nisbiyayn.md`](jidaa-adadayn-nisbiyayn.md) |
+| 1 | `jidaa-adadayn-nisbiyayn` | جداء عددين نسبيين | r01 | `elevator-reel` « شريط المصعد » (+ module 2: `sign-machine` « آلة الجداءات », 2026-10-27) | the signed TIME t of a security-camera replay (and, متقدم, the signed speed r) | [`jidaa-adadayn-nisbiyayn.md`](jidaa-adadayn-nisbiyayn.md) |
 | 2 | `jidaa-ida-nisbiya` | جداء عدة أعداد نسبية | r01 | `robot-track` « مسار الروبوت » | the SIGNS and the ORDER of the factor cards of a robot's programme | [`jidaa-ida-nisbiya.md`](jidaa-ida-nisbiya.md) |
 | 3 | `qismat-nisbiyayn` | حاصل قسمة عددين نسبيين | r02 | `code-lockers` « خزائن الأمانات » | the missing factor q (sign wheel + digit / fraction wheels of a locker code) | [`qismat-nisbiyayn.md`](qismat-nisbiyayn.md) |
 | 4 | `wadiya-idmajiya-aadad-nisbiya` | أدمج تعلّماتي — الأعداد النسبية | — | none (synthesis) | — | [`wadiya-idmajiya-aadad-nisbiya.md`](wadiya-idmajiya-aadad-nisbiya.md) |

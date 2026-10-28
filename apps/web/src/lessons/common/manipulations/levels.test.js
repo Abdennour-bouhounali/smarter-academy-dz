@@ -111,6 +111,13 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(beginner.numbers.tasks[0].kind ?? 'floor', type).toBe('floor');
         expect(advanced.numbers.tasks.some((tk) => tk.kind === 'both'), type).toBe(true);
       }
+      // Unité 1 de 3AM, module 2 : `sign-machine` se mesure par la PRÉDICTION posée en premier (متقدم : avant tout geste) et par le signe de a à la main (`both`).
+      else if (type === 'sign-machine') {
+        expect(advanced.numbers.tasks[0].kind, type).toBe('predict');
+        expect(beginner.numbers.tasks[0].kind, type).toBe('fill');
+        expect(advanced.numbers.tasks.some((tk) => tk.kind === 'both'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.kind === 'both'), type).toBe(false);
+      }
       // Unité 4 de 3AM, leçon 3 : `marble-run` se mesure par la PRÉDICTION écrite avant le lancement (متقدم seul) et par les DEUX lettres (r6).
       else if (type === 'marble-run') {
         expect(advanced.numbers.predict, type).toBe(true);

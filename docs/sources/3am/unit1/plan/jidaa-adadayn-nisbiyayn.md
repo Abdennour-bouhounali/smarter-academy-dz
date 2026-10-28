@@ -190,8 +190,12 @@ top (both levels, no brief, no workspace title/lead). Then, each after an eviden
   rewritten; examples (−5)×(−4) = 20, 6×(−3) = −18).
 - q4 (no lab) « مصعد ينزل 3 طوابق في الدقيقة. أين كان قبل 3 دقائق من مروره بالطابق الأرضي؟ » numeric → 9.
 
-**02 معارف — لماذا يكون جداء سالبين موجبًا؟** — `objectives`: « أبرّر بخاصية التوزيع أنّ جداء عددين سالبين موجب. » No lab; the track opens
-on its first question:
+**02 معارف — لماذا يكون جداء سالبين موجبًا؟** — `objectives`: « أبرّر بخاصية التوزيع أنّ جداء عددين سالبين موجب. » **Since 2026-10-27 (owner
+request) the track opens on a lab**: `sign-machine` « آلة الجداءات » (MANIPULATION_CONTRACT § 2septentricies-bis) — the act-3 table made
+manipulable: the machine carries −3, the hand lowers the second factor from 4 to −4 and each product lights as a column above or below 0
+(« +3 » between neighbours); the negative side is locked until (−3) × (−1) is predicted; متقدم (a = −4) also flips the first factor's sign. A new
+q0 asks what the student SAW (« كلّما نقص العامل الثاني بـ 1 في آلتك، بكم زاد الجداء؟ » → 3, with the student's columns), then the questions below
+follow unchanged (renumbered 2–6; the (−4) × n table is now a transfer off the machine). Module time 12 → 16 min, lesson 86 → 90 min.
 - q1 « احسب $(-3)\times4$ » → −12.
 - q2 « أكمل: $(-3)\times4+(-3)\times(-4)=(-3)\times(4+(-4))=(-3)\times0=\;?$ » → 0.
 - q3 « إذن $-12+(-3)\times(-4)=0$. ما العدد الذي إذا أُضيف إلى $-12$ أعطى 0؟ » → 12, so $(-3)\times(-4)=12$. → brick P3.
