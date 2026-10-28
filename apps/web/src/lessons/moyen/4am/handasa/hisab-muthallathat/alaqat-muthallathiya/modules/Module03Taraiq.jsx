@@ -50,7 +50,7 @@ export default function Module03Taraiq() {
       estimatedTime="13 دقيقة"
       intro={
         <Manipulation type="angle-compass" levels={false} targets={LAB.m3.targets} theme={LAB.m3.theme}
-          onTrial={(t) => setNowTrials((x) => [...x, t].slice(-8))} />
+          onTrial={(t) => { if (!t.tk) setNowTrials((x) => [...x, t].slice(-8)); }} />
       }
       steps={[
         {
@@ -189,7 +189,7 @@ export default function Module03Taraiq() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }

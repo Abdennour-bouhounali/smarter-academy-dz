@@ -12,6 +12,10 @@ import useDragInteraction from '../useDragInteraction';
 import DragGhost from '../primitives/DragGhost';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import MathText from '../../components/MathText';
 import * as L from '../logic/rampRatios';
 
@@ -87,9 +91,212 @@ const TONE = {
   slate: { chip: 'border-slate-300 bg-white/90 text-slate-700', stroke: '#334155' },
 };
 
+export function discoveryOptions(lab, k) {
+  const scale = lab.mode === 'scale';
+  if (scale) {
+    const w = L.witnesses(lab);
+    if (!w.small || !w.other) return [{ text: <MathText>{k('dRightAdv')}</MathText>, correct: true }];
+    return [
+      { text: <MathText>{k('dLonger')}</MathText>, why: <MathText>{k('dWhyLonger', { a: `$BC = ${comma(L.fmt(w.small.len, 1))}\\,\\mathrm{m}$`, b: `$BC = ${comma(L.fmt(w.big.len, 1))}\\,\\mathrm{m}$`, v: `$${comma(L.fmt(w.small.sin))}$` })}</MathText> },
+      { text: <MathText>{k('dRightAdv')}</MathText>, correct: true },
+      { text: <MathText>{k('dAll')}</MathText>, why: <MathText>{k('dWhyAll', { b: w.other.b, v: `$${comma(L.fmt(w.small.sin))}$`, v2: `$${comma(L.fmt(w.other.sin))}$` })}</MathText> },
+    ];
+  }
+  const w = L.witnesses(lab);
+  if (!w.high) return [{ text: <MathText>{k('dRight')}</MathText>, correct: true }];
+  const ta = w.high.at;
+  return [
+    { text: <MathText>{k('dReach')}</MathText>, why: <MathText>{k('dWhyReach', { b: w.high.b, ac: `$AC \\approx ${m(w.high.AC)}$`, bc: `$BC \\approx ${m(w.high.BC)}$` })}</MathText> },
+    { text: <MathText>{k('dSame')}</MathText>, why: <MathText>{k('dWhySame', { v1: `$\\sin${ANG[ta]} \\approx ${comma(L.fmt(w.low.values.sin))}$`, v2: `$\\sin${ANG[ta]} \\approx ${comma(L.fmt(w.high.values.sin))}$`, b1: w.low.b, b2: w.high.b })}</MathText> },
+    { text: <MathText>{k('dRight')}</MathText>, correct: true },
+  ];
+}
+
+export function Formal({ scale, k }) {
+  return (
+  <div className="space-y-2" data-rr-formal>
+    {scale ? (
+      <>
+        <EquationDisplay tone="result" tex={'\\sin\\widehat{B} = \\dfrac{AC}{BC} \\qquad \\tan\\widehat{B} = \\dfrac{AC}{AB}'} />
+        <EquationDisplay tone="ok" note={k('fMineAdv')} tex={`\\sin 40^{\\circ} \\approx ${comma(L.fmt(Math.sin((40 * Math.PI) / 180)))} \\qquad \\tan 40^{\\circ} \\approx ${comma(L.fmt(Math.tan((40 * Math.PI) / 180)))}`} />
+        <p className="text-sm text-emerald-900"><MathText>{k('fRuleAdv')}</MathText></p>
+      </>
+    ) : (
+      <>
+        <EquationDisplay tone="result" tex={'\\cos\\widehat{B} = \\dfrac{AB}{BC} \\quad \\sin\\widehat{B} = \\dfrac{AC}{BC} \\quad \\tan\\widehat{B} = \\dfrac{AC}{AB}'} />
+        <EquationDisplay tone="ok" tex={'0 < \\sin\\widehat{B} < 1 \\qquad 0 < \\cos\\widehat{B} < 1'} />
+        <p className="text-sm text-emerald-900"><MathText>{k('fRule')}</MathText></p>
+      </>
+    )}
+  </div>
+  );
+}
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** Les suites de questions de chaque étape (مبتدئ : names · compose · rule ; متقدم : sizes · turn) — sur CE que l'élève vient de faire. */
+export const CHAINS = Object.freeze({
+  names: ['hyp', 'opp', 'swap'],
+  compose: ['den', 'read', 'which'],
+  rule: ['reach', 'rule'],
+  sizes: ['sameSin', 'readSin'],
+  turn: ['changed', 'rule'],
+});
+const REACHED = {
+  names: (lab) => L.namesDone(lab),
+  compose: (lab) => L.composeDone(lab),
+  rule: (lab) => L.discoveryReady(lab),
+  sizes: (lab) => L.progress(lab).sizes >= 3,
+  turn: (lab) => L.discoveryReady(lab),
+};
+/** « أعِد التجربة » : la MÊME étape repart (et son drapeau « fait » s'efface) ; la règle n'a rien à refaire. */
+const RETRY = { names: L.retryNames, compose: L.retryCompose, sizes: L.retrySizes, turn: L.retryTurn };
+
+const $ = (s) => `$${s}$`;
+const dot = (v) => String(v).replace(',', '.');
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const sd = (x) => <bdi dir="ltr" className="font-mono">[{x}]</bdi>;
+const sideOptions = (right, whyOf) => L.SIDES.map((side) => ({ text: sd(side), correct: side === right, ...(side === right ? {} : { why: whyOf(side) }) }));
+
+export const QUESTIONS = {
+  hyp: (lab, k) => {
+    const hyp = L.sideOfRole(lab.at, 'hypotenuse');
+    return {
+      id: 'hyp', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'hyp.prompt'),
+      options: sideOptions(hyp, (side) => Mx(k, 'hyp.why', { side })),
+      hints: [Mx(k, 'hyp.hint1'), Mx(k, 'hyp.hint2')],
+      explain: Mx(k, 'hyp.explain', { hyp }),
+    };
+  },
+  opp: (lab, k) => {
+    const a = $(ANG[lab.at]);
+    const opp = L.sideOfRole(lab.at, 'opposite');
+    const hyp = L.sideOfRole(lab.at, 'hypotenuse');
+    return {
+      id: 'opp', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'opp.prompt', { a }),
+      options: sideOptions(opp, (side) => Mx(k, side === hyp ? 'opp.whyHyp' : 'opp.whyAdj', { side, a, v: lab.at })),
+      hints: [Mx(k, 'opp.hint1', { a, v: lab.at }), Mx(k, 'opp.hint2', { a, v: lab.at })],
+      explain: Mx(k, 'opp.explain', { opp, a }),
+    };
+  },
+  swap: (lab, k) => {
+    const other = lab.at === 'B' ? 'C' : 'B';
+    const now = L.sideOfRole(lab.at, 'opposite');
+    const hyp = L.sideOfRole(lab.at, 'hypotenuse');
+    const right = L.sideOfRole(other, 'opposite');
+    return {
+      id: 'swap', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'swap.prompt', { a: $(ANG[lab.at]), b: $(ANG[other]) }),
+      options: sideOptions(right, (side) => Mx(k, side === hyp ? 'swap.whyHyp' : 'swap.whySame', { side, a: $(ANG[lab.at]), w: other })),
+      hints: [Mx(k, 'swap.hint1', { b: $(ANG[other]), w: other }), Mx(k, 'swap.hint2', { b: $(ANG[other]) })],
+      explain: Mx(k, 'swap.explain', { right, now, b: $(ANG[other]) }),
+    };
+  },
+  den: (lab, k) => {
+    const hyp = L.sideOfRole(lab.at, 'hypotenuse');
+    const roleOf = L.roleOfSide(lab.at);
+    return {
+      id: 'den', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'den.prompt'),
+      options: sideOptions(hyp, (side) => Mx(k, `den.why_${roleOf[side]}`, { side })),
+      hints: [Mx(k, 'den.hint1'), Mx(k, 'den.hint2')],
+      explain: Mx(k, 'den.explain', { hyp }),
+    };
+  },
+  read: (lab, k) => {
+    const v = L.fmt(L.value(lab, 'sin'));
+    const a = $(ANG[lab.at]);
+    return {
+      id: 'read', kind: 'number', expected: dot(v), answer: <MathText>{$(comma(v))}</MathText>,
+      prompt: Mx(k, 'read.prompt', { a, b: lab.b }),
+      hints: [Mx(k, 'read.hint1'), Mx(k, 'read.hint2', { near: $(comma(L.fmt(L.value(lab, 'sin'), 1))) })],
+      explain: Mx(k, 'read.explain', { eq: $(`\\sin${ANG[lab.at]} \\approx ${comma(v)}`) }),
+    };
+  },
+  which: (lab, k) => {
+    const s = L.fmt(L.value(lab, 'sin')); const c = L.fmt(L.value(lab, 'cos'));
+    const right = Number(dot(s)) > Number(dot(c)) ? 0 : Number(dot(c)) > Number(dot(s)) ? 1 : 2;
+    const vals = { s: $(comma(s)), c: $(comma(c)) };
+    return {
+      id: 'which', kind: 'choice',
+      prompt: Mx(k, 'which.prompt', { a: $(ANG[lab.at]), b: lab.b }),
+      options: ['sin', 'cos', 'same'].map((o, i) => ({
+        text: Mx(k, `which.${o}`), correct: i === right,
+        ...(i === right ? {} : { why: Mx(k, `which.why_${o}`, vals) }),
+      })),
+      hints: [Mx(k, 'which.hint1'), Mx(k, 'which.hint2', vals)],
+      explain: Mx(k, 'which.explain', vals),
+    };
+  },
+  reach: (lab, k) => {
+    const w = L.witnesses(lab).high;
+    const nums = { b: w.b, ac: $(`AC \\approx ${m(w.AC)}`), bc: $(`BC \\approx ${m(w.BC)}`) };
+    return {
+      id: 'reach', kind: 'choice',
+      prompt: Mx(k, 'reach.prompt', nums),
+      options: [
+        { text: Mx(k, 'reach.longer'), why: Mx(k, 'reach.whyLonger', nums) },
+        { text: Mx(k, 'reach.equal'), why: Mx(k, 'reach.whyEqual', nums) },
+        { text: Mx(k, 'reach.shorter'), correct: true },
+      ],
+      hints: [Mx(k, 'reach.hint1'), Mx(k, 'reach.hint2', nums)],
+      explain: Mx(k, 'reach.explain', nums),
+    };
+  },
+  sameSin: (lab, k) => {
+    const w = L.witnesses(lab);
+    const nums = { small: $(`BC = ${comma(L.fmt(w.small.len, 1))}\\,\\mathrm{m}`), big: $(`BC = ${comma(L.fmt(w.big.len, 1))}\\,\\mathrm{m}`), v: $(comma(L.fmt(w.small.sin))), b: lab.angle0 };
+    return {
+      id: 'sameSin', kind: 'choice',
+      prompt: Mx(k, 'sameSin.prompt', nums),
+      options: [
+        { text: Mx(k, 'sameSin.grows'), why: Mx(k, 'sameSin.whyGrows', nums) },
+        { text: Mx(k, 'sameSin.same'), correct: true },
+        { text: Mx(k, 'sameSin.shrinks'), why: Mx(k, 'sameSin.whyShrinks', nums) },
+      ],
+      hints: [Mx(k, 'sameSin.hint1'), Mx(k, 'sameSin.hint2', nums)],
+      explain: Mx(k, 'sameSin.explain', nums),
+    };
+  },
+  readSin: (lab, k) => {
+    const w = L.witnesses(lab);
+    const v = L.fmt(w.small.sin);
+    return {
+      id: 'readSin', kind: 'number', expected: dot(v), answer: <MathText>{$(comma(v))}</MathText>,
+      prompt: Mx(k, 'readSin.prompt', { b: lab.angle0, len: $(`BC = ${comma(L.fmt(w.big.len, 1))}\\,\\mathrm{m}`) }),
+      hints: [Mx(k, 'readSin.hint1'), Mx(k, 'readSin.hint2', { near: $(comma(L.fmt(w.small.sin, 1))) })],
+      explain: Mx(k, 'readSin.explain', { eq: $(`\\sin ${lab.angle0}^{\\circ} \\approx ${comma(v)}`) }),
+    };
+  },
+  changed: (lab, k) => {
+    const w = L.witnesses(lab);
+    const nums = { b0: lab.angle0, b: w.other.b, v0: $(comma(L.fmt(w.small.sin))), v: $(comma(L.fmt(w.other.sin))) };
+    return {
+      id: 'changed', kind: 'choice',
+      prompt: Mx(k, 'changed.prompt', nums),
+      options: [
+        { text: Mx(k, 'changed.length'), why: Mx(k, 'changed.whyLength', nums) },
+        { text: Mx(k, 'changed.angle'), correct: true },
+        { text: Mx(k, 'changed.none'), why: Mx(k, 'changed.whyNone', nums) },
+      ],
+      hints: [Mx(k, 'changed.hint1'), Mx(k, 'changed.hint2', nums)],
+      explain: Mx(k, 'changed.explain', nums),
+    };
+  },
+  rule: (lab, k) => ({
+    id: 'rule', kind: 'choice',
+    prompt: <MathText>{k(lab.mode === 'scale' ? 'dPromptAdv' : 'dPrompt')}</MathText>,
+    options: discoveryOptions(lab, k),
+    hints: [Mx(k, 'rule.hint1'), Mx(k, 'rule.hint2')],
+    explain: <Formal scale={lab.mode === 'scale'} k={k} />,
+  }),
+};
+
 export default function RampRatios({
   angle = 30, hyp = 4, hyps = null, mode = 'name', theme = 'skatepark', title, lead, mission, level,
-  levels: withLevels = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.rampRatios.${key}`, o), [t]);
@@ -100,11 +307,34 @@ export default function RampRatios({
   const [lab, setLab] = useState(make);
   const sceneKey = `${nb.mode}|${nb.angle}|${nb.hyp ?? ''}|${(nb.hyps ?? []).join(',')}|${state.epoch}`;
   const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); }
+  const [doneIds, setDoneIds] = useState([]);
+  const [inits, setInits] = useState(0);
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setDoneIds([]); setInits((n) => n + 1); }   // « إعادة » : TOUT recommence, questions comprises
   const scale = lab.mode === 'scale';
 
+  /* ── les questions pendant le labo (primitives/LabCheckpoint) : une suite par étape, la dernière finit par la règle ── */
+  const cpSettings = useLabCheckpointSettings('ramp-ratios');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const gate = cpOn && cpSettings.enabled;
+  const order = scale ? ['sizes', 'turn'] : ['names', 'compose', 'rule'];
+  const party = useStepCelebration();
+  const curId = gate ? order.find((id) => !doneIds.includes(id)) ?? null : null;
+  const curReached = !!curId && REACHED[curId](lab);
+  const cp = useLabCheckpoint({
+    id: curReached ? curId : null,
+    questions: curReached ? CHAINS[curId].map((q) => QUESTIONS[q](lab, k)) : null,
+    reached: curReached,
+    resetKey: inits,
+    onRetry: () => { const f = RETRY[curId]; if (f) setLab(f); },
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => (d.includes(id) ? d : [...d, id]));
+      party.celebrate({ n: order.indexOf(id) + 1, total: order.length });
+      if (id === order[order.length - 1]) { state.discover(); state.formalize(); }
+    },
+  });
+
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (ready && !gate) state.discover(); }, [ready, gate, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, { mode: lab.mode }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
   // Miroir synchrone de `lab` : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
   const labRef = useRef(lab);
@@ -194,7 +424,34 @@ export default function RampRatios({
 
   /* ── l'étape (مبتدئ) ── */
   const pr = L.progress(lab);
-  const stage = scale ? 'scale' : !lab.at ? 'pick' : !L.namesDone(lab) ? 'name' : !L.composeDone(lab) ? 'compose' : 'explore';
+  const waits = (id) => gate && !doneIds.includes(id);   // l'étape suivante n'apparaît qu'une fois les questions de celle-ci répondues
+  const stage = scale ? 'scale' : !lab.at ? 'pick' : (!L.namesDone(lab) || waits('names')) ? 'name' : (!L.composeDone(lab) || waits('compose')) ? 'compose' : 'explore';
+
+  /* ── le son : un déclic quand la main bouge la rampe, un drapeau quand une étape est juste, un « over » quand c'est refusé ── */
+  const sfx = useRef({ b: lab.b, i: lab.i, at: 0, key: inits });
+  useEffect(() => {
+    const p = sfx.current;
+    if (p.key !== inits) { sfx.current = { b: lab.b, i: lab.i, at: 0, key: inits }; return; }
+    const up = lab.b !== p.b ? lab.b > p.b : (lab.i ?? 0) > (p.i ?? 0);
+    if (lab.b === p.b && lab.i === p.i) return;
+    const now = performance.now();
+    if (now - p.at > 35) { playSfx('tooth', { pitch: up ? 1 : 0.75 }); p.at = now; }
+    p.b = lab.b; p.i = lab.i;
+  }, [lab.b, lab.i, inits]);
+  const sfxLast = useRef(null);
+  useEffect(() => {
+    const kd = lab.last?.kind;
+    if (!kd || sfxLast.current === lab.last) return;
+    sfxLast.current = lab.last;
+    if (kd === 'claimOk' || kd === 'first') playSfx('flag');
+    else if (kd === 'claimWrong' || kd === 'top' || kd === 'bottom' || kd === 'dup') playSfx('over');
+  }, [lab.last]);
+  const namesOk = !scale && L.namesDone(lab);
+  const composeOk = !scale && L.composeDone(lab);
+  useEffect(() => { if (namesOk) playSfx('flag'); }, [namesOk]);
+  useEffect(() => { if (composeOk) playSfx('flag'); }, [composeOk]);
+  useEffect(() => { if (notice) playSfx('over'); }, [notice]);
+
   const at = lab.at;
   const roleWord = (r) => k(`role_${r}`);
   const kindWord = (kd) => k(`kind_${kd}`);
@@ -252,42 +509,8 @@ export default function RampRatios({
     : [stage === 'explore' && (pr.trials < 3 || pr.span < 20) && k('needHeights', { n: pr.trials })].filter(Boolean);
 
   /* ── la découverte ── */
-  const discoveryOptions = useMemo(() => {
-    if (scale) {
-      const w = L.witnesses(lab);
-      if (!w.small || !w.other) return [{ text: <MathText>{k('dRightAdv')}</MathText>, correct: true }];
-      return [
-        { text: <MathText>{k('dLonger')}</MathText>, why: <MathText>{k('dWhyLonger', { a: `$BC = ${comma(L.fmt(w.small.len, 1))}\\,\\mathrm{m}$`, b: `$BC = ${comma(L.fmt(w.big.len, 1))}\\,\\mathrm{m}$`, v: `$${comma(L.fmt(w.small.sin))}$` })}</MathText> },
-        { text: <MathText>{k('dRightAdv')}</MathText>, correct: true },
-        { text: <MathText>{k('dAll')}</MathText>, why: <MathText>{k('dWhyAll', { b: w.other.b, v: `$${comma(L.fmt(w.small.sin))}$`, v2: `$${comma(L.fmt(w.other.sin))}$` })}</MathText> },
-      ];
-    }
-    const w = L.witnesses(lab);
-    if (!w.high) return [{ text: <MathText>{k('dRight')}</MathText>, correct: true }];
-    const ta = w.high.at;
-    return [
-      { text: <MathText>{k('dReach')}</MathText>, why: <MathText>{k('dWhyReach', { b: w.high.b, ac: `$AC \\approx ${m(w.high.AC)}$`, bc: `$BC \\approx ${m(w.high.BC)}$` })}</MathText> },
-      { text: <MathText>{k('dSame')}</MathText>, why: <MathText>{k('dWhySame', { v1: `$\\sin${ANG[ta]} \\approx ${comma(L.fmt(w.low.values.sin))}$`, v2: `$\\sin${ANG[ta]} \\approx ${comma(L.fmt(w.high.values.sin))}$`, b1: w.low.b, b2: w.high.b })}</MathText> },
-      { text: <MathText>{k('dRight')}</MathText>, correct: true },
-    ];
-  }, [lab, k, scale]);
-  const formal = (
-    <div className="space-y-2" data-rr-formal>
-      {scale ? (
-        <>
-          <EquationDisplay tone="result" tex={'\\sin\\widehat{B} = \\dfrac{AC}{BC} \\qquad \\tan\\widehat{B} = \\dfrac{AC}{AB}'} />
-          <EquationDisplay tone="ok" note={k('fMineAdv')} tex={`\\sin 40^{\\circ} \\approx ${comma(L.fmt(Math.sin((40 * Math.PI) / 180)))} \\qquad \\tan 40^{\\circ} \\approx ${comma(L.fmt(Math.tan((40 * Math.PI) / 180)))}`} />
-          <p className="text-sm text-emerald-900"><MathText>{k('fRuleAdv')}</MathText></p>
-        </>
-      ) : (
-        <>
-          <EquationDisplay tone="result" tex={'\\cos\\widehat{B} = \\dfrac{AB}{BC} \\quad \\sin\\widehat{B} = \\dfrac{AC}{BC} \\quad \\tan\\widehat{B} = \\dfrac{AC}{AB}'} />
-          <EquationDisplay tone="ok" tex={'0 < \\sin\\widehat{B} < 1 \\qquad 0 < \\cos\\widehat{B} < 1'} />
-          <p className="text-sm text-emerald-900"><MathText>{k('fRule')}</MathText></p>
-        </>
-      )}
-    </div>
-  );
+  const options = useMemo(() => discoveryOptions(lab, k), [lab, k]);
+  const formal = <Formal scale={scale} k={k} />;
 
   const missionText = mission ?? (scale ? k('missionAdvanced') : k(`mission_${stage}`, { a: at ? `$${ANG[at]}$` : '' }));
   const hints = (scale ? ['hintAdv1', 'hintAdv2', 'hintAdv3'] : ['hint1', 'hint2', 'hint3']).map((h) => <MathText key={h}>{k(h)}</MathText>);
@@ -389,6 +612,8 @@ export default function RampRatios({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={hints}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={gate}
       controller={{
         autoStep: () => false,
         canAutoStep: () => false,
@@ -416,12 +641,19 @@ export default function RampRatios({
           },
         }),
       }}
-      discovery={<ManipulationDiscovery state={state} prompt={k(scale ? 'dPromptAdv' : 'dPrompt')} options={discoveryOptions} formal={formal} />}
+      discovery={<ManipulationDiscovery state={state} prompt={k(scale ? 'dPromptAdv' : 'dPrompt')} options={options} formal={formal} />}
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-fuchsia-50/50 via-white to-white" data-dragging={drag.dragging ? 'true' : undefined}>
         <div ref={boxRef} className="space-y-2" data-ramp-ratios data-mode={lab.mode} data-at={at ?? ''} data-b={lab.b} data-i={lab.i ?? ''}
           data-stage={stage} data-solved={ready ? 'true' : 'false'} data-world={theme} data-layout={narrow ? 'narrow' : 'wide'}>
+          <div className="relative space-y-2">
+          {party.node}
+          {cp.node}
+          {gate && (
+            <LabStepper count={order.length} current={Math.max(0, order.findIndex((id) => !doneIds.includes(id)))}
+              done={order.map((id) => doneIds.includes(id))} stepAttr="data-rr-step" />
+          )}
           <div ref={glanceRef} className={twoColNow ? 'grid grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)] items-center gap-3' : 'space-y-2'} data-rr-glance data-cols={twoColNow ? '2' : '1'}>
             {/* LA SCÈNE */}
             <div className="relative mx-auto" style={{ width: lay.W, height: lay.H, maxWidth: '100%' }} data-rr-scene>
@@ -574,6 +806,7 @@ export default function RampRatios({
               </p>
             )}
             </div>
+          </div>
           </div>
           {narrow && !ready && needs.length > 0 && !lab.pending && (
             <p className="text-[11px] text-slate-600" data-rr-need>

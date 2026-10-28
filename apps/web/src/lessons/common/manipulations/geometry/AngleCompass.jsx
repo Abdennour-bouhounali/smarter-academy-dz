@@ -14,6 +14,10 @@ import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
 import MovablePanel from '../primitives/MovablePanel';
 import MathText from '../../components/MathText';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import * as L from '../logic/angleCompass';
 
 /**
@@ -71,6 +75,11 @@ import * as L from '../logic/angleCompass';
  * commandes (compas, règle, sommets, recommencer) sont juste sous la scène, la cible au-dessus, la lecture dans un
  * `MovablePanel` posé sur le ciel ; la liste des essais est un `LabFold` sous le bloc mesuré `[data-ac-glance]`.
  *
+ * QUESTIONS PENDANT LE LABO (2026-10-28, lot 4, `primitives/LabCheckpoint`) : `checkpoints` (défaut true). Une étape par cible (« t0 », « t1 »…) puis l'étape
+ * « rule » (le contraste : un essai refusé ou deux échelles, puis la règle — l'ancienne découverte, qui formalise). Après chaque cible atteinte, une suite de
+ * questions sur le triangle construit (`CHAINS`/`QUESTIONS` : le côté du mur de la nacelle… le côté au dénominateur, le côté coupé par l'arc, l'AUTRE rapport) retient
+ * « التالي » ; la suite « rule » : l'angle lu à la rapporteur, cos² + sin², la règle. OBLIGATOIRES pour tout élève ; l'enseignant seul peut les couper (interrupteur de
+ * l'en-tête). Événements `{ tk: 'checkpoint' | 'checkpoint-done', id, … }` vers `onTrial` (les leçons gardent `!ev.tk`). `[data-ac-step]`, `[data-ac-compare]`.
  * Props : `targets` (ou `numbers.targets`) : [{ ratio: 'sin' | 'cos' | 'tan', value: '3/5' }], `theme` ('kite'),
  * `discovery` ('relation' | 'construct', par défaut 'relation' pour une cible, 'construct' sinon), `title`, `lead`,
  * `mission`, `level`, `levels` (false : un seul niveau), `onTrial(evidence)` à chaque désignation,
@@ -93,7 +102,7 @@ const lenText = (x) => TR.surdText(x);
 
 export default function AngleCompass({
   targets: targets0, numbers: numbers0, theme = 'kite', discovery: discoveryKind, title, lead, mission, level,
-  levels: withLevels = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.angleCompass.${key}`, o), [t]);
@@ -104,13 +113,17 @@ export default function AngleCompass({
   const [lab, setLab] = useState(make);
   const sceneKey = `${JSON.stringify(nums)}|${state.epoch}`;
   const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); }
+  const [doneIds, setDoneIds] = useState({});
+  const [inits, setInits] = useState(0);
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setDoneIds({}); setInits((n) => n + 1); }
   const reduce = useReducedMotion();
+  const cpSettings = useLabCheckpointSettings('angle-compass');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpActive = cpOn && cpSettings.enabled;
   const mode = discoveryKind ?? (lab.targets.length > 1 ? 'construct' : 'relation');
 
   /* ── la découverte, les rapports à la leçon ── */
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (ready && !cpActive) state.discover(); }, [ready, cpActive, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, { trials: lab.trials.length, targets: lab.targets.length }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
   const nTrials = lab.trials.length;
   useEffect(() => { if (nTrials > 0) state.report(onTrial, L.evidenceOf(lab.trials[nTrials - 1])); }, [nTrials]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -297,6 +310,57 @@ export default function AngleCompass({
     );
   })();
 
+  /* ── les questions pendant le labo : une suite par cible, puis la règle ── */
+  const lastIdx = lab.targets.length - 1;
+  const stageId = !doneIds[`t${lab.idx}`] ? `t${lab.idx}` : (lab.idx === lastIdx ? 'rule' : null);
+  const isRule = stageId === 'rule';
+  const reachedNow = isRule ? ready : !!lab.solved[lab.idx];
+  const okTr = L.okTrialOf(lab, lab.idx);
+  const lastTr = lab.trials.length ? lab.trials[lab.trials.length - 1] : null;
+  const chainKeys = isRule ? CHAINS[mode === 'construct' ? 'ruleConstruct' : 'ruleRelation'] : CHAINS.t;
+  const qctx = { k, lab, mode, tr: okTr, lastTr, discoveryOptions, formal };
+  const cpQuestions = cpActive && stageId && reachedNow && (isRule ? lastTr : okTr)
+    ? chainKeys.map((q) => QUESTIONS[q](qctx)).filter(Boolean) : null;
+  const cp = useLabCheckpoint({
+    id: cpActive ? stageId : null,
+    questions: cpQuestions,
+    reached: reachedNow,
+    resetKey: inits,
+    onRetry: () => setLab(isRule ? L.fresh : L.retryTarget),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => ({ ...d, [id]: true }));
+      if (id === 'rule') { state.discover(); state.formalize(); }
+    },
+  });
+  const stageIds = [...lab.targets.map((_, i) => `t${i}`), 'rule'];
+  const stepDone = stageIds.map((id) => !!doneIds[id]);
+  const stepCur = doneIds[`t${lastIdx}`] ? lastIdx + 1 : lab.idx;
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  useEffect(() => { celebrated.current = new Set(); }, [inits]);
+  useEffect(() => {
+    stageIds.forEach((id, i) => {
+      if (doneIds[id] && !celebrated.current.has(id)) { celebrated.current.add(id); party.celebrate({ n: i + 1, total: stageIds.length }); }
+    });
+  }, [doneIds]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── le son (muet sauf « الصوت ») : un déclic par geste (au plus un toutes les 35 ms), la cloche quand le triangle se ferme, le drapeau d'un essai juste, « over » d'un refus ── */
+  const sfx = useRef({ at: 0, last: lab.last });
+  useEffect(() => {
+    const now = performance.now();
+    if (now - sfx.current.at > 35) { sfx.current.at = now; playSfx('tooth'); }
+  }, [lab.legs.h, lab.legs.v, lab.opening, Math.round(lab.swing), lab.square]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    const last = lab.last;
+    if (sfx.current.last === last) return;
+    sfx.current.last = last;
+    if (!last) return;
+    if (last.kind === 'cut' || last.kind === 'joined') playSfx('bell');
+    else if (last.kind === 'short' || last.kind === 'touch') playSfx('over');
+    else if (last.kind === 'trial') playSfx(last.trial.ok ? 'flag' : 'over');
+  }, [lab.last]);
+
   const missionText = mission ?? <MathText>{k(lab.targets.length > 1 ? 'missionMany' : 'mission', { target: `$${targetTex}$` })}</MathText>;
   const hintKeys = target.ratio === 'tan' ? ['hint1', 'hint2Tan', 'hint3Tan'] : ['hint1', 'hint2Hyp', 'hint3Hyp'];
   const success = shownTrial?.ok;
@@ -316,6 +380,8 @@ export default function AngleCompass({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={cpActive}
       hints={hintKeys.map((h) => <MathText key={h}>{k(h, { target: `$${targetTex}$` })}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={(
@@ -329,9 +395,13 @@ export default function AngleCompass({
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-sky-50/70 to-amber-50/40">
-        <div ref={boxRef} className="space-y-2" data-angle-compass data-step={step} data-target-idx={lab.idx}
+        <div ref={boxRef} className="relative space-y-2" data-angle-compass data-step={step} data-target-idx={lab.idx}
           data-solved={ready ? 'true' : 'false'} data-world={theme} data-scale={scale.toFixed(2)}>
+          {party.node}
+          {cp.node}
           <div ref={glanceRef} className="space-y-1.5" data-ac-glance>
+            {/* LES ÉTAPES : une par cible, puis la règle */}
+            {cpActive && <LabStepper count={stageIds.length} current={stepCur} done={stepDone} stepAttr="data-ac-step" />}
             {/* LA CIBLE */}
             <p className={`flex flex-wrap items-center justify-center gap-x-2 ${narrow ? 'text-xs' : 'text-sm'} font-extrabold text-indigo-950`} data-ac-target={`${target.ratio}:${target.value}`}>
               {lab.targets.length > 1 && <span className="rounded-full bg-indigo-100 px-2 py-0.5 text-xs text-indigo-800">{k('targetCount', { n: lab.idx + 1, total: lab.targets.length })}</span>}
@@ -449,7 +519,7 @@ export default function AngleCompass({
                     <RotateCcw className="h-4 w-4" aria-hidden="true" />{k('fresh')}
                   </button>
                 )}
-                {L.canNext(lab) && (
+                {L.canNext(lab) && !cp.blocking && (
                   <button type="button" onClick={() => setLab((s) => L.next(s))} data-ac-next className={`${BTN} border-indigo-700 bg-indigo-700 text-white focus-visible:ring-indigo-300`}>
                     {k('next')}<ArrowLeft className="h-4 w-4" aria-hidden="true" />
                   </button>
@@ -461,6 +531,9 @@ export default function AngleCompass({
 
             {/* LA LECTURE, puis le verdict */}
             <p className="text-center text-xs font-bold text-slate-600" data-ac-reading><MathText>{reading}</MathText></p>
+            {cpActive && lab.solved[lab.idx] && lab.idx === lastIdx && !ready && !doneIds.rule && (
+              <p className="text-center text-xs font-extrabold text-indigo-900" data-ac-compare>{k('compareNote')}</p>
+            )}
             <p role="status" className={`min-h-[2.5rem] ${narrow ? 'text-xs' : 'text-sm'} font-bold leading-snug`} data-ac-verdict={verdictKind}>{verdict}</p>
           </div>
 
@@ -705,3 +778,103 @@ function Gull({ reduce }) {
     </button>
   );
 }
+
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** Les suites : `t` après CHAQUE cible atteinte (le triangle construit) ; `rule*` à la fin, quand le contraste est vu (la règle remplace la découverte). */
+export const CHAINS = Object.freeze({
+  t: ['den', 'third', 'ratio'],
+  ruleRelation: ['degree', 'squares', 'rule'],
+  ruleConstruct: ['degree', 'rule'],
+});
+
+const $ = (x) => `$${x}$`;
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const LEN = { h: 'OB', v: 'OA', c: 'AB' };
+/** Un surd rationnel → son texte exact pour une réponse (4, 3/2) ; sinon null (la question est alors sautée). */
+const exactText = (x) => (x.r === 1 ? LIN.fracText(x.q) : null);
+const lensTex = (Ls) => $(`OB=${TR.surdLatex(Ls.h)},\\ OA=${TR.surdLatex(Ls.v)},\\ AB=${TR.surdLatex(Ls.c)}`);
+const ratioTex = (kind, x) => `${KIND_TEX[kind]}\\,x=${L.tex(x)}`;
+
+/** Chaque question est construite sur LE triangle de l'élève (rien en dur) ; `k` : les textes de `angleCompass`. */
+export const QUESTIONS = {
+  den: ({ k, tr }) => {
+    const side = TR.RATIO_SIDES[tr.ratio].den;
+    const len = L.sidesAt(tr.lengths, tr.vertex)[side];
+    const e = exactText(len);
+    if (e == null) return null;
+    return {
+      id: 'den', kind: 'number', expected: e, answer: <MathText>{$(TR.surdLatex(len))}</MathText>,
+      prompt: Mx(k, 'den.prompt', { ratio: $(ratioTex(tr.ratio, tr.ratios[tr.ratio])) }),
+      hints: [Mx(k, side === 'hypotenuse' ? 'den.hint1Hyp' : 'den.hint1Adj'), Mx(k, 'den.hint2', { lens: lensTex(tr.lengths) })],
+      explain: Mx(k, 'den.explain', { side: k(`cp.side.${side}`), den: $(TR.surdLatex(len)), ratio: $(ratioTex(tr.ratio, tr.ratios[tr.ratio])) }),
+    };
+  },
+  third: ({ k, tr }) => {
+    const leg = L.cutLeg(tr);
+    if (!leg) return null;
+    const base = leg === 'h' ? 'v' : 'h';
+    const len = tr.lengths[leg];
+    const e = exactText(len);
+    if (e == null) return null;
+    const a = TR.surdNumber(tr.lengths[base]); const c = TR.surdNumber(tr.lengths.c);
+    const calc = `${LEN[leg]}^2=${c}^2-${a}^2`;
+    return {
+      id: 'third', kind: 'number', expected: e, answer: <MathText>{$(TR.surdLatex(len))}</MathText>,
+      prompt: Mx(k, 'third.prompt', { leg: $(LEN[leg]), a: $(`${LEN[base]}=${a}`), c: $(`AB=${c}`) }),
+      hints: [Mx(k, 'third.hint1'), Mx(k, 'third.hint2', { calc: $(calc) })],
+      explain: Mx(k, 'third.explain', { calc: $(`${calc}=${c * c - a * a}`), leg: $(`${LEN[leg]}=${TR.surdLatex(len)}`) }),
+    };
+  },
+  ratio: ({ k, tr }) => {
+    const o = tr.ratio === 'cos' ? 'sin' : tr.ratio === 'sin' ? 'cos' : 'sin';
+    const sd = L.sidesAt(tr.lengths, tr.vertex);
+    const { num, den } = TR.RATIO_SIDES[o];
+    const val = tr.ratios[o];
+    const right = L.tex(val);
+    const wrongs = ['cos', 'sin', 'tan'].filter((x) => x !== o && L.tex(tr.ratios[x]) !== right);
+    const opt = (kind) => ({ text: <MathText>{$(L.tex(tr.ratios[kind]))}</MathText>, why: Mx(k, 'ratio.whyOther', { wrong: $(KIND_TEX[kind]), o: $(KIND_TEX[o]), def: k(`cp.def.${o}`) }) });
+    const options = [opt(wrongs[0]), { text: <MathText>{$(right)}</MathText>, correct: true }, ...wrongs.slice(1).map(opt)];
+    return {
+      id: 'ratio', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'ratio.prompt', { where: k(`where.${tr.vertex}`), o: $(KIND_TEX[o]) }),
+      options,
+      hints: [Mx(k, 'ratio.hint1', { o: $(KIND_TEX[o]), def: k(`cp.def.${o}`) }), Mx(k, 'ratio.hint2', { num: $(TR.surdLatex(sd[num])), den: $(TR.surdLatex(sd[den])) })],
+      explain: Mx(k, 'ratio.explain', { calc: $(`${KIND_TEX[o]}\\,x=\\dfrac{${TR.surdLatex(sd[num])}}{${TR.surdLatex(sd[den])}}=${right}`) }),
+    };
+  },
+  degree: ({ k, lastTr }) => {
+    const p = L.evidenceOf(lastTr).protractor;
+    const lo = Math.floor(p / 10) * 10;
+    return {
+      id: 'degree', kind: 'number', expected: String(p), answer: <MathText>{$(`${p}^{\\circ}`)}</MathText>,
+      prompt: Mx(k, 'degree.prompt'),
+      hints: [Mx(k, 'degree.hint1'), Mx(k, 'degree.hint2', { lo: $(`${lo}^{\\circ}`), hi: $(`${lo + 10}^{\\circ}`) })],
+      explain: Mx(k, 'degree.explain', { p: $(`${p}^{\\circ}`) }),
+    };
+  },
+  squares: ({ k, lastTr }) => {
+    const r = lastTr.ratios;
+    const sq = L.squaresOf(r);
+    const calc = `\\left(${L.tex(r.cos)}\\right)^2+\\left(${L.tex(r.sin)}\\right)^2`;
+    return {
+      id: 'squares', kind: 'number', expected: '1', answer: <MathText>{$('1')}</MathText>,
+      prompt: Mx(k, 'squares.prompt', { c: $(`\\cos x=${L.tex(r.cos)}`), s: $(`\\sin x=${L.tex(r.sin)}`) }),
+      hints: [Mx(k, 'squares.hint1'), Mx(k, 'squares.hint2', { calc: $(calc) })],
+      explain: Mx(k, 'squares.explain', { calc: $(`${calc}=${LIN.fracLatex(sq.c2)}+${LIN.fracLatex(sq.s2)}=1`) }),
+    };
+  },
+  rule: ({ k, mode, lastTr, discoveryOptions, formal }) => {
+    const construct = mode === 'construct';
+    const sq = lastTr ? L.squaresOf(lastTr.ratios) : null;
+    return {
+      id: 'rule', kind: 'choice',
+      prompt: <MathText>{k(construct ? 'dPromptConstruct' : 'dPromptRelation')}</MathText>,
+      options: discoveryOptions,
+      hints: [Mx(k, construct ? 'rule.hintC1' : 'rule.hintR1'),
+        construct || !sq ? Mx(k, 'rule.hintC2') : Mx(k, 'rule.hintR2', { calc: $(`${LIN.fracLatex(sq.c2)}+${LIN.fracLatex(sq.s2)}`) })],
+      explain: formal,
+    };
+  },
+};

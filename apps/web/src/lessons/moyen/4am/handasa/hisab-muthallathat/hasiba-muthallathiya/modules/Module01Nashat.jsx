@@ -60,6 +60,12 @@ function AngleTable({ cell, caption }) {
 
 export default function Module01Nashat() {
   const [ev, setEv] = useState(null);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) laissent une trace `checkpoint-done` ; elles ne sont pas des essais de calcul (garde !ev.tk)
+  const [cpDone, setCpDone] = useState({});
+  const onTrial = (e) => {
+    if (e?.tk) { if (e.tk === 'checkpoint-done') setCpDone((c) => ({ ...c, [e.id]: true })); return; }
+    setEv(e);
+  };
   const [q1a, setQ1a] = useState(false);
   const [q1, setQ1] = useState(false);
   const [q2a, setQ2a] = useState(false);
@@ -119,6 +125,7 @@ export default function Module01Nashat() {
                 level="beginner"
                 {...DRONE.numbers}
                 theme="drone"
+                onTrial={onTrial}
               />
             ),
             advanced: () => (
@@ -127,7 +134,7 @@ export default function Module01Nashat() {
                 level="advanced"
                 {...ACTIVITY.numbers}
                 theme="drone"
-                onTrial={setEv}
+                onTrial={onTrial}
               />
             ),
           }}
@@ -182,7 +189,12 @@ export default function Module01Nashat() {
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACTIVITY.part2} source={ACTIVITY.source} compact />
               {anglesEvidence}
-              <TapQuestion
+              {cpDone.inv && (
+                <p className="rounded-xl border-2 border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900" data-evidence="keys" data-tried="true">
+                  أجبتَ في المختبر عن اللمسات: لإيجاد الزاوية من نسبتها نضغط <MathText>{key('2nd')}</MathText> ثم الدالة العكسية، لا الدالة وحدها.
+                </p>
+              )}
+              {!cpDone.inv && <TapQuestion
                 prompt={<MathText>{'لإيجاد x حيث $\\sin x = 0{,}52$ ، نضغط:'}</MathText>}
                 options={[key('ON 2nd sin⁻¹ 0,52 ='), key('ON sin 0,52 ='), key('ON 2nd cos⁻¹ 0,52 =')].map(M)}
                 correct={0}
@@ -190,8 +202,8 @@ export default function Module01Nashat() {
                 requires={['hasiba-nisba']}
                 explain={<MathText>{`${key('sin')} وحدها تحسب جيب زاوية قيسها $0{,}52^{\\circ}$ ( $\\approx 0{,}009$ )، و ${key('cos⁻¹')} تعطي الزاوية التي جيب تمامها $0{,}52$ . اللمسة ${key('2nd')} ثم ${key('sin⁻¹')} تعطي $x \\approx 31{,}33^{\\circ}$ .`}</MathText>}
                 onAnswered={() => setQ2a(true)}
-              />
-              {q2a && (
+              />}
+              {(q2a || cpDone.inv) && (
                 <NumericQuestion
                   prompt={<MathText>{'x حيث $\\cos x = 0{,}25$ ، المدوّر إلى $\\dfrac{1}{10}$ (بالدرجة):'}</MathText>}
                   expected={near(75.5)}
@@ -226,7 +238,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

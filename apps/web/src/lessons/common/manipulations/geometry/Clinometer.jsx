@@ -12,6 +12,10 @@ import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
 import MovablePanel from '../primitives/MovablePanel';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import MathText from '../../components/MathText';
 import * as L from '../logic/clinometer';
 
@@ -92,7 +96,7 @@ const num = (p) => Number(p.n) / Number(p.d);
 const NUMBER_KEYS = ['mode', 'height', 'angle', 'minDistance', 'maxDistance', 'eye', 'pole', 'poleAt', 'total'];
 
 export default function Clinometer(props) {
-  const { numbers: grouped, theme: theme0, title, lead, mission, level, levels: withLevels = true,
+  const { numbers: grouped, theme: theme0, title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true,
     initialMode = 'student', allowModeSwitch = false, onTrial, onFinished } = props;
   const authored = useMemo(() => {
     const out = {};
@@ -117,10 +121,17 @@ export default function Clinometer(props) {
   const [scene, setScene] = useState(sceneKey);
   const [liveI, setLiveI] = useState(null);
   const [liveA, setLiveA] = useState(null);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setLiveI(null); setLiveA(null); }
+  const [inits, setInits] = useState(0);
+  const [doneIds, setDoneIds] = useState({});
+  if (scene !== sceneKey) {
+    // « إعادة », un autre niveau ou d'autres nombres : TOUT recommence — les essais, les étapes faites et les questions du labo
+    setScene(sceneKey); setLab(make()); setLiveI(null); setLiveA(null); setInits(inits + 1); setDoneIds({});
+  }
+  const cpSettings = useLabCheckpointSettings('clinometer');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const ruleByCp = cpOn && cpSettings.enabled;
 
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (ready && !ruleByCp) state.discover(); }, [ready, ruleByCp, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!state.isFormal) return;
     const res = L.result(lab);
@@ -318,6 +329,46 @@ export default function Clinometer(props) {
       )}
     </div>
   );
+
+  /* ── les questions pendant le labo (primitives/LabCheckpoint) : deux étapes par mode, la dernière finit par la règle ── */
+  const stages = CHAINS[mode];
+  const stageIds = Object.keys(stages);
+  const curId = ruleByCp ? stageIds.find((sid) => !doneIds[sid]) ?? null : null;
+  const curReached = !!curId && !!REACHED[curId](lab);
+  const cp = useLabCheckpoint({
+    id: curId,
+    questions: curReached ? stages[curId].map((qid) => QUESTIONS[qid](lab, k, { options: discoveryOptions, prompt: <MathText>{m('dPrompt')}</MathText>, formal })) : null,
+    reached: curReached,
+    resetKey: inits,
+    onRetry: () => setLab((s) => (['h2', 'l2', 'a2'].includes(curId) ? retryStage(s, curId) : make())),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (sid) => { setDoneIds((d) => ({ ...d, [sid]: true })); if (stages[sid].includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (Object.keys(doneIds).length === 0 && celebrated.current.size) celebrated.current = new Set();
+  useEffect(() => {
+    stageIds.forEach((sid, i) => {
+      if (!doneIds[sid] || celebrated.current.has(sid)) return;
+      celebrated.current.add(sid);
+      party.celebrate({ n: i + 1, total: stageIds.length });
+    });
+  }, [doneIds]); // eslint-disable-line react-hooks/exhaustive-deps
+  const stepper = ruleByCp && (
+    <LabStepper count={stageIds.length} current={curId ? stageIds.indexOf(curId) : stageIds.length - 1} done={stageIds.map((sid) => !!doneIds[sid])} stepAttr="data-cl-step" />
+  );
+  /* ── le son (muet sauf « الصوت ») : un déclic par pas, le drapeau à la visée / l'encadrement / l'alignement juste, « over » au refus ── */
+  const sfx = useRef(0);
+  useEffect(() => {
+    const w = lab.last;
+    if (!w) return;
+    const now = performance.now();
+    if (w.kind === 'move' || w.kind === 'tilt') { if (now - sfx.current > 35) { playSfx('tooth'); sfx.current = now; } return; }
+    if (w.kind === 'miss' || w.kind === 'refuseRatio' || w.kind === 'refuseOp') playSfx('over');
+    else if (w.kind === 'measure' || w.kind === 'aimed' || w.kind === 'ladderResult') playSfx('flag');
+    else if (w.kind === 'ladder') playSfx(w.what === 'exact' || (w.what === 'above' && L.bracket(lab)) ? 'flag' : 'tooth');
+    else if (w.kind === 'align') playSfx(w.what === 'aligned' ? 'flag' : 'tooth');
+  }, [lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const btn = 'inline-flex h-11 min-w-[44px] items-center justify-center rounded-xl border-2 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2';
   const valueTex = mode === 'height' ? `d = ${L.tex(value)}\\,\\mathrm{m}` : mode === 'ladder' ? `L = ${L.tex(value)}\\,\\mathrm{m}` : `d = ${L.tex(value)}\\,\\mathrm{m}`;
@@ -648,6 +699,8 @@ export default function Clinometer(props) {
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={ruleByCp}
       hints={['hint1', 'hint2', 'hint3'].map((hk) => <MathText key={hk}>{m(hk)}</MathText>)}
       controller={{
         autoStep: () => false,
@@ -688,7 +741,10 @@ export default function Clinometer(props) {
       <ManipulationStage className="bg-gradient-to-b from-slate-50 to-white" minHeight="min-h-[150px]">
         <div ref={boxRef} className="space-y-2" data-clinometer data-mode={mode} data-world={theme} data-stage={stage}
           data-aimed={mode === 'height' ? (aimedNow ? 'true' : 'false') : undefined} data-solved={ready ? 'true' : 'false'} data-scene-h={svgH}>
-          <div ref={glanceRef} className="space-y-1.5" data-cl-glance>
+          <div ref={glanceRef} className="relative space-y-1.5" data-cl-glance>
+            {party.node}
+            {cp.node}
+            {stepper}
             <div ref={sceneRef} className="relative mx-auto overflow-hidden rounded-xl" style={{ width: svgW, height: svgH }}>
               {sceneSvg}
               {overlays}
@@ -905,3 +961,181 @@ function Maqam({ x, yG, top }) {
     </g>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** Deux étapes par mode ; la dernière suite finit par la RÈGLE (l'ancienne découverte, qui formalise). */
+export const CHAINS = Object.freeze({
+  height: Object.freeze({ h1: ['side', 'ratioHeight', 'heightValue'], h2: ['farther', 'angleChange', 'rule'] }),
+  ladder: Object.freeze({ l1: ['short', 'bracket', 'sideLadder'], l2: ['ratioLadder', 'opLadder', 'lengthValue', 'rule'] }),
+  align: Object.freeze({ a1: ['parallel', 'total'], a2: ['ratioAlign', 'angleX', 'heightMonument', 'rule'] }),
+});
+/** Quand l'étape est ATTEINTE (la carte s'ouvre). */
+export const REACHED = Object.freeze({
+  h1: (lab) => L.measures(lab).length >= 1,
+  h2: (lab) => L.discoveryReady(lab),
+  l1: (lab) => L.bracket(lab) != null,
+  l2: (lab) => L.planDone(lab),
+  a1: (lab) => lab.trials.some((x) => x.kind === 'aligned'),
+  a2: (lab) => L.planDone(lab),
+});
+
+/** « أعِد التجربة » : h2 retire la dernière mesure ; l2 et a2 rouvrent le choix du rapport ; les autres recommencent. */
+export function retryStage(s, id) {
+  if (id === 'h2') {
+    const at = s.trials.map((x) => x.kind).lastIndexOf('measure');
+    return Object.freeze({ ...s, trials: Object.freeze(s.trials.slice(0, Math.max(0, at))), last: null });
+  }
+  return Object.freeze({ ...s, ratio: null, op: null, refusals: Object.freeze([]), last: null });
+}
+
+const $ = (x) => `$${x}$`;
+const LRI = '\u2066';
+const PDI = '\u2069';
+const iso = (x) => `${LRI}${x}${PDI}`;
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const fnum = (p) => Number(p.n) / Number(p.d);
+const add2 = (a, b) => fnum(a) + fnum(b);
+
+/** Une question à trois choix dont la bonne est `right` ; `whys` : les raisons des deux autres (indexées par option). */
+function choice(k, id, prompt, texts, right, whys, nums, hints, explain, cols = 1) {
+  return {
+    id, kind: 'choice', cols, prompt,
+    options: texts.map((text, i) => (i === right ? { text, correct: true } : { text, why: whys[i] })),
+    hints, explain,
+  };
+}
+
+export const QUESTIONS = {
+  /* ── height ── */
+  side: (lab, k) => {
+    const t0 = L.measures(lab).at(-1);
+    const o = { d: iso(L.dec(t0.d)), a: $(`${t0.a}^{\\circ}`) };
+    return choice(k, 'side', Mx(k, 'side.prompt', o),
+      ['adjacent', 'opposite', 'hyp'].map((x) => Mx(k, `side.${x}`)), 0, [null, Mx(k, 'side.whyOpposite', o), Mx(k, 'side.whyHyp', o)], o,
+      [Mx(k, 'side.hint1'), Mx(k, 'side.hint2')], Mx(k, 'side.explain'), 3);
+  },
+  ratioHeight: (lab, k) => {
+    const t0 = L.measures(lab).at(-1);
+    const o = { d: iso(L.dec(t0.d)), a: t0.a };
+    return choice(k, 'ratioHeight', Mx(k, 'ratioHeight.prompt', o),
+      [$('\\tan'), $('\\sin'), $('\\cos')].map((x) => <MathText>{x}</MathText>), 0, [null, Mx(k, 'ratioHeight.whySin', o), Mx(k, 'ratioHeight.whyCos', o)], o,
+      [Mx(k, 'ratioHeight.hint1'), Mx(k, 'ratioHeight.hint2')], Mx(k, 'ratioHeight.explain', { a: t0.a }), 3);
+  },
+  heightValue: (lab, k) => {
+    const t0 = L.measures(lab).at(-1);
+    const ans = String(Math.round(t0.h));
+    const o = { d: iso(L.dec(t0.d)), a: `${t0.a}°`, tan: iso(L.r2(TR.tanDeg(t0.a))), h: iso(L.r1(t0.h)), ans: iso(ans) };
+    return {
+      id: 'heightValue', kind: 'number', expected: ans, answer: <MathText>{$(ans)}</MathText>,
+      prompt: Mx(k, 'heightValue.prompt', o), hints: [Mx(k, 'heightValue.hint1', o), Mx(k, 'heightValue.hint2', o)], explain: Mx(k, 'heightValue.explain', o),
+    };
+  },
+  farther: (lab, k) => {
+    const ms = L.measures(lab);
+    const lo = ms.reduce((a, b) => (fnum(b.d) < fnum(a.d) ? b : a));
+    const hi = ms.reduce((a, b) => (fnum(b.d) > fnum(a.d) ? b : a));
+    const ans = L.dec(fnum(hi.d) - fnum(lo.d));
+    const o = { d1: iso(L.dec(lo.d)), d2: iso(L.dec(hi.d)), ans: iso(ans) };
+    return {
+      id: 'farther', kind: 'number', expected: ans, answer: <MathText>{$(ans)}</MathText>,
+      prompt: Mx(k, 'farther.prompt', o), hints: [Mx(k, 'farther.hint1'), Mx(k, 'farther.hint2', o)], explain: Mx(k, 'farther.explain', o),
+    };
+  },
+  angleChange: (lab, k) => {
+    const ms = L.measures(lab);
+    const lo = ms.reduce((a, b) => (fnum(b.d) < fnum(a.d) ? b : a));
+    const hi = ms.reduce((a, b) => (fnum(b.d) > fnum(a.d) ? b : a));
+    const o = { d1: iso(L.dec(lo.d)), d2: iso(L.dec(hi.d)), a1: iso(`${lo.a}°`), a2: iso(`${hi.a}°`) };
+    return choice(k, 'angleChange', Mx(k, 'angleChange.prompt', o),
+      ['smaller', 'bigger', 'same'].map((x) => Mx(k, `angleChange.${x}`)), 0, [null, Mx(k, 'angleChange.whyBigger', o), Mx(k, 'angleChange.whySame', o)], o,
+      [Mx(k, 'angleChange.hint1', o), Mx(k, 'angleChange.hint2')], Mx(k, 'angleChange.explain', o), 3);
+  },
+  /* ── ladder ── */
+  short: (lab, k) => {
+    const iHm = Math.round(fnum(lab.hm) / fnum(lab.step));
+    const o = { hm: iso(L.dec(lab.hm)), top: iso(L.r2(L.topAt(lab, iHm))), theta: iso(`${lab.theta}°`) };
+    return choice(k, 'short', Mx(k, 'short.prompt', o),
+      ['equal', 'right', 'fixed'].map((x) => Mx(k, `short.${x}`)), 1, [Mx(k, 'short.whyEqual', o), null, Mx(k, 'short.whyFixed', o)], o,
+      [Mx(k, 'short.hint1'), Mx(k, 'short.hint2', o)], Mx(k, 'short.explain', o));
+  },
+  bracket: (lab, k) => {
+    const b = L.bracket(lab);
+    const o = { lo: iso(L.dec(L.valueAt(lab, b.lo))), hi: iso(L.dec(L.valueAt(lab, b.hi))), topLo: iso(L.r2(L.topAt(lab, b.lo))), topHi: iso(L.r2(L.topAt(lab, b.hi))) };
+    return choice(k, 'bracket', Mx(k, 'bracket.prompt', o),
+      ['between', 'below', 'above'].map((x) => Mx(k, `bracket.${x}`, o)), 0, [null, Mx(k, 'bracket.whyBelow', o), Mx(k, 'bracket.whyAbove', o)], o,
+      [Mx(k, 'bracket.hint1'), Mx(k, 'bracket.hint2')], Mx(k, 'bracket.explain', o));
+  },
+  sideLadder: (lab, k) => {
+    const o = { hm: iso(L.dec(lab.hm)), theta: iso(`${lab.theta}°`) };
+    return choice(k, 'sideLadder', Mx(k, 'sideLadder.prompt', o),
+      ['opposite', 'adjacent', 'hyp'].map((x) => Mx(k, `sideLadder.${x}`)), 0, [null, Mx(k, 'sideLadder.whyAdjacent'), Mx(k, 'sideLadder.whyHyp')], o,
+      [Mx(k, 'sideLadder.hint1', o), Mx(k, 'sideLadder.hint2')], Mx(k, 'sideLadder.explain', o), 3);
+  },
+  ratioLadder: (lab, k) => {
+    const o = { hm: iso(L.dec(lab.hm)), theta: lab.theta };
+    return choice(k, 'ratioLadder', Mx(k, 'ratioLadder.prompt', o),
+      [$('\\sin'), $('\\cos'), $('\\tan')].map((x) => <MathText>{x}</MathText>), 0, [null, Mx(k, 'ratioLadder.whyCos'), Mx(k, 'ratioLadder.whyTan')], o,
+      [Mx(k, 'ratioLadder.hint1'), Mx(k, 'ratioLadder.hint2')], Mx(k, 'ratioLadder.explain', { ...o, hm: L.tex(lab.hm) }), 3);
+  },
+  opLadder: (lab, k) => {
+    const o = { hm: L.tex(lab.hm), theta: lab.theta, L: L.texOf(L.r1(lab.Lstar)), wrong: L.texOf(L.r2(L.wrongOpValue(lab))) };
+    const tm = (x) => <MathText>{$(x)}</MathText>;
+    return choice(k, 'opLadder', Mx(k, 'opLadder.prompt', o),
+      [tm(`L = ${o.hm} \\div \\sin ${lab.theta}^{\\circ}`), tm(`L = ${o.hm} \\times \\sin ${lab.theta}^{\\circ}`), tm(`L = ${o.hm} + \\sin ${lab.theta}^{\\circ}`)], 0,
+      [null, Mx(k, 'opLadder.whyMul', o), Mx(k, 'opLadder.whyPlus', o)], o,
+      [Mx(k, 'opLadder.hint1'), Mx(k, 'opLadder.hint2', o)], Mx(k, 'opLadder.explain', o));
+  },
+  lengthValue: (lab, k) => {
+    const ans = L.r1(lab.Lstar);
+    const o = { hm: iso(L.dec(lab.hm)), theta: iso(`${lab.theta}°`), sin: iso(L.r2(TR.sinDeg(lab.theta))), L2: iso(L.r2(lab.Lstar)), ans: iso(ans) };
+    return {
+      id: 'lengthValue', kind: 'number', expected: ans, answer: <MathText>{$(L.texOf(ans))}</MathText>,
+      prompt: Mx(k, 'lengthValue.prompt', o), hints: [Mx(k, 'lengthValue.hint1', o), Mx(k, 'lengthValue.hint2', o)], explain: Mx(k, 'lengthValue.explain', o),
+    };
+  },
+  /* ── align ── */
+  parallel: (lab, k) => {
+    const o = { P: iso(L.dec(lab.P)) };
+    return choice(k, 'parallel', Mx(k, 'parallel.prompt', o),
+      ['right', 'same', 'ground'].map((x) => Mx(k, `parallel.${x}`)), 0, [null, Mx(k, 'parallel.whySame', o), Mx(k, 'parallel.whyGround')], o,
+      [Mx(k, 'parallel.hint1'), Mx(k, 'parallel.hint2')], Mx(k, 'parallel.explain'));
+  },
+  total: (lab, k) => {
+    const d = L.valueAt(lab, lab.iStar);
+    const ans = L.dec(add2(lab.a, d));
+    const o = { d: iso(L.dec(d)), a: iso(L.dec(lab.a)), ans: iso(ans) };
+    return {
+      id: 'total', kind: 'number', expected: ans, answer: <MathText>{$(L.texOf(ans))}</MathText>,
+      prompt: Mx(k, 'total.prompt', o), hints: [Mx(k, 'total.hint1'), Mx(k, 'total.hint2')], explain: Mx(k, 'total.explain', o),
+    };
+  },
+  ratioAlign: (lab, k) => {
+    const o = { P: iso(L.dec(lab.P)), d: iso(L.dec(L.valueAt(lab, lab.iStar))) };
+    return choice(k, 'ratioAlign', Mx(k, 'ratioAlign.prompt', o),
+      [$('\\tan'), $('\\sin'), $('\\cos')].map((x) => <MathText>{x}</MathText>), 0, [null, Mx(k, 'ratioAlign.whySin'), Mx(k, 'ratioAlign.whyCos')], o,
+      [Mx(k, 'ratioAlign.hint1'), Mx(k, 'ratioAlign.hint2')], Mx(k, 'ratioAlign.explain', { P: L.tex(lab.P), d: L.tex(L.valueAt(lab, lab.iStar)) }), 3);
+  },
+  angleX: (lab, k) => {
+    const ans = String(L.result(lab).x);
+    const o = { P: iso(L.dec(lab.P)), d: iso(L.dec(L.valueAt(lab, lab.iStar))), ans: iso(ans) };
+    return {
+      id: 'angleX', kind: 'number', expected: ans, answer: <MathText>{$(ans)}</MathText>,
+      prompt: Mx(k, 'angleX.prompt', { P: L.tex(lab.P), d: L.tex(L.valueAt(lab, lab.iStar)) }), hints: [Mx(k, 'angleX.hint1', o), Mx(k, 'angleX.hint2')], explain: Mx(k, 'angleX.explain', o),
+    };
+  },
+  heightMonument: (lab, k) => {
+    const d = L.valueAt(lab, lab.iStar);
+    const ans = String(L.result(lab).H1);
+    const o = { P: iso(L.dec(lab.P)), d: iso(L.dec(d)), T: iso(L.dec(add2(lab.a, d))), H2: iso(L.texOf(String(L.result(lab).H100)).replace('.', ',')), ans: iso(ans) };
+    return {
+      id: 'heightMonument', kind: 'number', expected: ans, answer: <MathText>{$(ans)}</MathText>,
+      prompt: Mx(k, 'heightMonument.prompt', o), hints: [Mx(k, 'heightMonument.hint1', o), Mx(k, 'heightMonument.hint2', o)], explain: Mx(k, 'heightMonument.explain', o),
+    };
+  },
+  /* ── la règle (toutes les suites finales) : l'ancienne découverte ── */
+  rule: (lab, k, ctx) => ({
+    id: 'rule', kind: 'choice', prompt: ctx.prompt, options: ctx.options,
+    hints: [Mx(k, 'rule.hint1'), Mx(k, 'rule.hint2')], explain: ctx.formal,
+  }),
+};
