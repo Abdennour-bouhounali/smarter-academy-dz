@@ -145,6 +145,11 @@ shared with the student too, on the link page as well. The parent pages are phon
   GENERATE YOUR OWN content — own boxes, own contexts, own numbers, own wording. Never copy the book's text to the student and never write a
   student-visible line that sends them to the book (« الكتاب ص 55 », « اقرأ ما يقوله الكتاب », « تمارين من الكتاب »); `SourceTag` is muted for
   students (`LESSON_DEVELOPMENT_GUIDE.md` §4ter-bis).
+- **The lab prototype goes to EVERY lesson** (owner, 2026-10-28): questions OVER the lab after each step (mandatory for students; a teacher
+  may switch them off for his own account), a clear stepper and a success celebration, game sounds (off by default, a « الصوت » switch in
+  every lab), « إعادة » that restarts everything, full screen in every lab, and the end-of-module card as a memo sheet with its timed
+  challenge « اختبر ذاكرتك ». Ground truth, batches of 20 lessons and per-session prompt: `docs/reports/LAB_PROTOTYPE_ROLLOUT.md`;
+  status: `node apps/web/scripts/lab-rollout-status.mjs`.
 - **Every manipulation has the onboarding** (owner, 2026-10-14): `LabCoach` — at each moment a ring + one-sentence bubble on the button or
   gesture needed now, shown once, hidable, re-summonable; same design in every lab, every lesson, every grade
   (`MANIPULATION_CONTRACT.md` §8quater, `MANIPULATION_DNA.md` §17.11; rollout and its prompt: `docs/reports/LAB_COACH_ROLLOUT.md`).

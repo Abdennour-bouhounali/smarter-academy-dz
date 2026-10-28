@@ -2303,7 +2303,7 @@ the `reverse` world have no chain yet.
 **Relation to « progression non bloquante ».** The gate is INSIDE the lab and always releases (3rd try reveals); the kit
 questions of the module keep their non-blocking policy (`check:non-blocking` passes). DOM contract: see the header of
 `LabCheckpoint.jsx`. Verified in the browser at 1366×768 (Playwright walk-through of m1 → m3, wrong answers, retry, reveal).
-**Rollout to other labs: Planned** — waits for the owner's validation of the prototype.
+**Rollout to every lab: in progress** — validated by the owner on 2026-10-28; plan, batches and status: [`../reports/LAB_PROTOTYPE_ROLLOUT.md`](../reports/LAB_PROTOTYPE_ROLLOUT.md).
 **Card layout (2026-10-28, owner: « use more space »):** up to `max-w-4xl` over the lab, a gradient band (« سؤال i من n » + one segment
 per question), the question large and centred, choice options as big cards — three across for formulas (`cols: 3`), full-width rows
 for sentences — each with its number (keys 1 2 3 answer), a large number field, larger feedback, the actions in a bottom bar.

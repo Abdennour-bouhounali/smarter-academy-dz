@@ -825,8 +825,8 @@ any other SVG, so a badly placed label fails the suite (see [Validation](#valida
 
 Owner: « the end-of-module card must be clear — the rule is SEEN and memorised at first sight —, professional and made for Gen Z;
 it is the core the student must understand, memorise and use in the exam ». Prototype on `maqlub-qismat-kasrayn` modules 1–4
-(`<KnowledgeSnapshot moduleNumber={n} variant="memo" />`), rendered by `knowledge/MemoCard.jsx`; the other lessons keep `compact`
-until the owner validates it.
+(`<KnowledgeSnapshot moduleNumber={n} variant="memo" />`), rendered by `knowledge/MemoCard.jsx`. Validated 2026-10-28; rolled out to every
+lesson along [`../reports/LAB_PROTOTYPE_ROLLOUT.md`](../reports/LAB_PROTOTYPE_ROLLOUT.md) (`memoContent.test.js` checks every lesson's `memo`).
 
 - **Header** (dark band): « 🔑 للتذكّر », the promise « افهم · احفظ · استعمل في الامتحان », the count of new rules (Arabic plurals
   `map.memo.newCount_*`), « ⏱ اختبر ذاكرتك » (when the card's items carry `memo.quiz`) and « افتح بطاقتي ».
