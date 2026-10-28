@@ -741,6 +741,15 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'المدوَّر r إلى الرتبة $10^{-k}$ يعني أنّ $r-\\frac{1}{2}\\times10^{-k}\\le x<r+\\frac{1}{2}\\times10^{-k}$ ؛ وحاصل قسمة غير عشري لا تبلغه قيمة مقرّبة بل يُحصَر بينها',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 2AM, unité 2 « الكسور والعمليات عليها », leçon 6 « الكسر: نسبة وحاصل قسمة وقيم مقرّبة » (2026-10-28) — le quotient candidat et son encadrement à 0,1 / 0,01.
+  'mooring-lines': {
+    // LE QUOTIENT SOUS LA MAIN : au quai du port, une corde de a mètres posée sur un ruban gradué ; la main glisse un MOUSQUETON (le quotient candidat q, à un rang : 1, 0,1 ou 0,01)
+    // et « ضع القطع » pose les morceaux bout à bout : il reste du câble (يكفي), la dernière pièce tombe sur le bout (تماما) ou elle déborde au-dessus de l'eau (لا يكفي). Le cadran n'ouvre le rang
+    // suivant qu'une fois l'encadrement du rang courant TROUVÉ (la plus grande valeur qui tient, la plus petite qui déborde) et la règle ZOOME dans ce segment. مبتدئ : couper a m en b cordes
+    // égales (q = la longueur d'une corde) ; متقدم : des cordes de b m, b décimal (q = le nombre de cordes), où la main change aussi l'UNITÉ du ruban (m → dm : les deux longueurs ×10). Chaque pose est un essai jugé exactement : MANUEL (§6bis).
+    shows: 'حاصل القسمة $\\frac{a}{b}$ عدد واحد (قيمته المضبوطة) ؛ نحصره بين قيمتين مقرّبتين بالنقصان وبالزيادة إلى $0{,}1$ أو $0{,}01$ ، ولا يبلغه عدد عشري إذا لم تنتهِ القسمة ؛ وضرب الحدّين في $10$ أو $100$ لا يغيّر حاصل القسمة',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 3AM, unité 5 (2026-10-21) — résoudre ax + b = cx + d en traversant les termes avec leur signe, puis en divisant.
   'term-ferry': {
     // LE SIGNE D'UN TERME SOUS LA MAIN : une équation dont la solution est CACHÉE ; chaque membre est une rive, chaque terme une caisse. La
@@ -882,15 +891,6 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'تمثّل وضعية تناسبية بنقط على استقامة واحدة مع مبدأ المعلم ؛ وإذا لم تمرّ المسطرة بالمبدأ أو لم تكن النقط على استقامة فليست الوضعية تناسبية ؛ ويُقرأ معامل التناسبية $a$ من $y = ax$',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
-});
-
-export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));
-
-export function isManipulationType(type) {
-  return Object.prototype.hasOwnProperty.call(MANIPULATION_TYPES, type);
-}
-
-  },
   // 2AM, unité 1 « العمليات على الأعداد الطبيعية والأعداد العشرية », leçon 1 (2026-10-28) — l'ordre des opérations d'une série sans parenthèses.
   'tram-route': {
     // L'ORDRE DES OPÉRATIONS SOUS LA MAIN : un voyage en tramway (les arrêts arrivent dans l'ordre où la chaîne est écrite) ou un kiosque à tickets. La main POSE des tickets numérotés ① ② ③ sur les
@@ -900,6 +900,15 @@ export function isManipulationType(type) {
     // sa prédiction. Chaque « انطلق » est un essai jugé exactement : MANUEL (§6bis). « جرّب أعدادك » : toujours ouvert (jusqu'à quatre arrêts). `tram-route` n'énonce jamais la règle.
     shows: 'في سلسلة عمليات دون أقواس: نحسب الجمع والطرح فقط (أو الضرب والقسمة فقط) من اليسار نحو اليمين، ونحسب الضرب والقسمة قبل الجمع والطرح؛ وهذا اتّفاق تتبّعه الآلة الحاسبة العلمية أيضًا',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+});
+
+export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));
+
+export function isManipulationType(type) {
+  return Object.prototype.hasOwnProperty.call(MANIPULATION_TYPES, type);
+}
+
 /** Les natures de ressource qu'une leçon peut déclarer dans `resources[]`. */
 export const RESOURCE_KINDS = Object.freeze(['manipulation', 'method', 'situation', 'example']);
 

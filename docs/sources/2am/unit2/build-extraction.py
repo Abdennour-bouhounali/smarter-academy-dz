@@ -11,6 +11,11 @@ CALCULÉES ici (Fraction et entiers exacts), jamais tapées.
 L'unité est générée LEÇON PAR LEÇON : les destinations vers une leçon encore coming_soon sont EN ATTENTE
 (scripts/check-textbook-coverage.mjs).
 
+FRONTIÈRES (copie de plan/README.md « Boundaries ») : qisma-iqlidiya-hasr = division euclidienne, a/b entre deux naturels consécutifs, noms
+« قيمة مقرّبة إلى الوحدة » ; kasr-hasil-qisma = « نسبة a إلى b », « كتابة كسرية », ×10ⁿ pour diviser par un décimal, valeurs par défaut / par
+excès à 0,1 · 0,01 · 0,001 (jamais l'arrondi au plus proche, 3AM) ; jam-tarh-kusur = a/c ± b/c et dénominateur multiple ; jida-kasrayn = produit
+et fraction D'UNE quantité ; muqarana-kasrayn = même dénominateur / même numérateur / multiple / 1 intermédiaire ; la synthèse n'introduit rien.
+
 Usage : python3 docs/sources/2am/unit2/build-extraction.py
 """
 import json
@@ -182,7 +187,7 @@ E.append({'id': 'know-1d', 'kind': 'knowledge', 'number': 1, 'page': 26, 'sectio
           'text': 'الكتابة الكسرية لحاصل قسمة a على b هي a/b ، (b ≠ 0) وتسمى نسبة a إلى b . أي أنّ: a ÷ b = a/b . ملاحظات: 1) a/b هو العدد الوحيد الذي إذا ضربناه في b نجد a . 2) الكسر a/b لا يكون دائما عشريا. 3) عندما يكون a و b عددين غير صحيحين فإنّ a/b لا يسمّى كسرا، بل نسميها كتابة كسرية لهذا العدد. أمثلة: • من بين 35 تلميذا من قسم السنة الثانية متوسط 9 تلاميذ ينتمون إلى النادي الأخضر. نسبة التلاميذ الذين ينتمون إلى النادي هي: 9/35 . • الكسر 11/5 هو العدد الذي يحقق المساواة: 11/5 × 5 = 11 . • العدد 11/7 غير عشري لأن القسمة العشرية غير منتهية 11/7 ≃ 1,571428',
           'answer': {'11/7': fr((dec(11) / 7).quantize(D('0.000001'), rounding='ROUND_DOWN'))}, 'answerSource': 'computed'})
 assert dec('15.96') / dec('2.8') == dec('5.7') and dec(1596) / 280 == dec('5.7')
-E.append({'id': 'know-1e', 'kind': 'knowledge', 'number': 1, 'page': 26, 'section': 'معارف', 'title': 'قيمة مقربة لحاصل قسمة عدد عشري', 'verified': False,
+E.append({'id': 'know-1e', 'kind': 'knowledge', 'number': 1, 'page': 26, 'section': 'معارف', 'title': 'قيمة مقربة لحاصل قسمة عدد عشري', 'verified': True,
           'text': '• لقسمة عدد على عدد عشري غير طبيعي، نحوّل العملية إلى القسمة على عدد طبيعي، وذلك بضرب كلا من القاسم والمقسوم في 10 أو 100 أو 1000... • عندما يكون حاصل عملية القسمة ليس عددا عشريا يمكننا البحث عن قيمة مقربة له. أمثلة: • لحساب 15,96 ÷ 2,8 ، نحوّل العملية إلى قسمة على عدد طبيعي. لدينا 15,96/2,8 = (15,96 × 10)/(2,8 × 10) = 159,6/28 ، إذن، لقسمة 15,96 على 2,8 ، نُجري عملية القسمة للعدد 1596 على 280 فنجد: 15,96/2,8 = 159,6/28 = 5,7 . • لدينا 4/2,75 = (4 × 100)/(2,75 × 100) = 400/275 … (bas de page coupé par le scan)',
           'answer': {'15,96/2,8': fr(dec('15.96') / dec('2.8')), '4/2,75': frac(F(400, 275)), '4/2,75≈': fr((dec(400) / 275).quantize(D('0.01'), rounding='ROUND_DOWN'))}, 'answerSource': 'computed'})
 
@@ -415,26 +420,28 @@ DEST = {
         '8': {'lesson': L3, 'module': 0},
         '10': {'lesson': L5, 'module': 0}}},
     'act-1': {'lesson': L1, 'module': 1},
-    'act-2': {'lesson': L2, 'module': 1}, 'act-3': {'lesson': L2, 'module': 1},
+    'act-2': {'lesson': L2, 'module': 4}, 'act-3': {'lesson': L2, 'module': 4},
     'act-4': {'lesson': L3, 'module': 1}, 'act-5': {'lesson': L4, 'module': 1}, 'act-6': {'lesson': L5, 'module': 1},
     'know-1a': {'lesson': L1, 'module': 2}, 'know-1b': {'lesson': L1, 'module': 2},
-    'know-1c': {'lesson': L2, 'module': None}, 'know-1d': {'lesson': L2, 'module': None}, 'know-1e': {'lesson': L2, 'module': None},
-    'method-1': {'lesson': L2, 'module': None}, 'method-2': {'lesson': L2, 'module': None}, 'now-27': {'lesson': L2, 'module': None},
+    'know-1c': {'lesson': L2, 'module': 2}, 'know-1d': {'lesson': L2, 'module': 2}, 'know-1e': {'lesson': L2, 'module': 2},
+    'method-1': {'lesson': L2, 'module': 4}, 'method-2': {'lesson': L2, 'module': 3}, 'now-27': {'lesson': L2, 'module': 4},
     'know-2a': {'lesson': L3, 'module': None}, 'know-2b': {'lesson': L3, 'module': None}, 'know-2c': {'lesson': L4, 'module': None},
     'know-3a': {'lesson': L5, 'module': None}, 'know-3b': {'lesson': L5, 'module': None}, 'know-3c': {'lesson': L5, 'module': None},
     'method-3': {'lesson': L3, 'module': None}, 'method-4': {'lesson': L4, 'module': None}, 'method-5': {'lesson': L5, 'module': None},
-    'now-29': {'lesson': L2, 'module': None, 'items': {'1': {'lesson': L2, 'module': None}, '2': {'lesson': L5, 'module': None}}},
-    **{f'ex-{n}': {'lesson': L2, 'module': None} for n in (1, 2, 3, 4, 5, 6)},
+    'now-29': {'lesson': L2, 'module': 4, 'items': {'1': {'lesson': L2, 'module': 4}, '2': {'lesson': L5, 'module': None}}},
+    **{f'ex-{n}': {'lesson': L2, 'module': 4 if n in (1, 2) else None} for n in (1, 2, 3, 4, 5, 6)},
     **{f'ex-{n}': {'lesson': L3, 'module': None} for n in (7, 8, 9, 10, 11, 12, 13, 14, 29, 31)},
     **{f'ex-{n}': {'lesson': L4, 'module': None} for n in (15, 16, 17, 18, 19, 26, 27, 28, 30, 34)},
     **{f'ex-{n}': {'lesson': L5, 'module': None} for n in (20, 21, 22, 23, 24, 25, 32)},
     'ex-33': {'lesson': L1, 'module': 4},
-    **{f'self-{n}': {'lesson': L2, 'module': None} for n in (1, 2, 3, 4, 9, 12)},
+    **{f'self-{n}': {'lesson': L2, 'module': None} for n in (1, 2, 3, 4, 9)},
+    'self-12': {'lesson': L4, 'module': None},
     **{f'self-{n}': {'lesson': L3, 'module': None} for n in (5, 6)},
     **{f'self-{n}': {'lesson': L4, 'module': None} for n in (7, 8)},
     **{f'self-{n}': {'lesson': L5, 'module': None} for n in (10, 11)},
-    **{f'deep-{n}': {'lesson': L5, 'module': None} for n in (34, 46, 47)},
-    **{f'deep-{n}': {'lesson': L2, 'module': None} for n in (35, 38)},
+    **{f'deep-{n}': {'lesson': L5, 'module': None} for n in (34,)},
+    'deep-46': {'lesson': L2, 'module': None}, 'deep-47': {'lesson': L3, 'module': None},
+    **{f'deep-{n}': {'lesson': L2, 'module': 4} for n in (35, 38)},
     **{f'deep-{n}': {'lesson': L3, 'module': None} for n in (36, 37, 40)},
     **{f'deep-{n}': {'lesson': L4, 'module': None} for n in (39, 41, 42, 43, 44, 45)},
     'integration': {'lesson': SYN, 'module': None},
@@ -453,6 +460,9 @@ DISCREPANCIES = [
     {'elementId': 'deep-42', 'kind': 'reading', 'text': '400 × 4/9 n’est pas entier : le nombre de places est peut-être 450 (450 × 4/9 = 200) ; à relire par jida-kasrayn.'},
     {'elementId': 'ex-32', 'kind': 'reading', 'text': 'Le texte commence avec « أحمد » et sa sœur « سلمى », puis fait parler « سامي » — imprimé tel quel.'},
     {'elementId': 'ex-33', 'kind': 'scope', 'text': 'Seul exercice de l’unité sur la division euclidienne : 129/11 = 11 + 8/11 (129 = 11 × 11 + 8)… La leçon qisma-iqlidiya-hasr le prend (أتمرّن) ; toute la pratique de la division euclidienne et de l’encadrement du quotient est sinon un ajout déclaré (practice_generation) et la banque vient du corpus des examens du 1er trimestre.'},
+    {'elementId': 'unit', 'kind': 'scope', 'text': 'Hors périmètre 2AM (il faut un dénominateur commun quand AUCUN dénominateur n’est multiple de l’autre — 3AM r06) : opener (1/3 + 1/2), ex-11 (9/2 + 4/5, 1/4 + 4/5), ex-12 (11/6 + 10/9 seul), ex-14 (13/6 + 3/4), ex-28 q2 (1/3 + 2/5), ex-29 (2/5 + 1/4), self-6 (10/3 − 5/7), deep-40 (1/20 + 1/30) ; chacun est ADAPTÉ (nombres propres dans le cas 2AM) ; l’opener n’est qu’une histoire.'},
+    {'elementId': 'ex-30', 'kind': 'reading', 'text': 'Le texte parle de « فوائد شركتهم » (= bénéfices) : ne jamais montrer « فوائد » (lu comme intérêt) ; toute adaptation dit « أرباح ».'},
+    {'elementId': 'deep-45', 'kind': 'scope', 'text': 'Les enfants (1/6) et les femmes (3/7) se calculent séparément ; ne jamais demander leur SOMME en fraction (dénominateurs 6 et 7 : hors périmètre 2AM).'},
     {'elementId': 'unit', 'kind': 'scope', 'text': 'Pages 22–37 complètes mais scan médiocre : marge droite de la p. 25 coupée, bas des pp. 26 et 28 coupés, ex-5/ex-13 tronqués (p. 30), deep-36 et ict-3 coupés, numéro de deep-44 masqué. Les éléments des leçons non encore générées sont transcrits brièvement (verified: false) : leur leçon les relira.'},
 ]
 

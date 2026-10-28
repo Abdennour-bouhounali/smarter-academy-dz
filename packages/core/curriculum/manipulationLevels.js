@@ -286,6 +286,10 @@ export const VISUAL_THEMES = Object.freeze({
   //   attar  le دكّان العطّار d'un souk : des étagères de bocaux d'épices, un sac de cumin avec sa louche de laiton, une balance numérique dont le grand écran à sept segments ARRONDIT la masse,
   //          un plateau où un cône d'épice grandit avec la masse, une bande de précision en dessous, une élève (KidFigure, hijab) au comptoir (`scoop-scale`)
   attar: { kind: 'objects', shows: 'دكّان عطّار: ميزان رقمي يدوِّر الكتلة على شاشته وكيس كمّون ومغرفة نحاسية وشريط دقّة' },
+  // 2AM, unité 2, leçon 6 (2026-10-28) :
+  //   harbor  le مرسى الصيّادين : un quai de pierre vu d'en haut, la mer et deux barques peintes (ni drapeau ni texte), une corde posée sur un ruban gradué avec un mousqueton de laiton,
+  //           un cadran de précision sur un poteau de bois, deux enfants (KidFigure : un garçon et sa sœur en hijab) qui tiennent le ruban (`mooring-lines`)
+  harbor: { kind: 'lengths', shows: 'مرسى الصيّادين: حبل ممدود على الرصيف فوق شريط قياس مدرّج ومشبك نحاسي وقرص دقّة وقوارب على الماء' },
   // 3AM, unité 4 (2026-10-21) :
   //   schoolgarden  le jardin de l'école vu d'en haut : un terrain rectangulaire (pelouse, massif de fleurs, allée dallée) que la
   //                 main coupe en parcelles, et une jardinière (KidFigure, hijab) à son bord (`area-split`)
@@ -310,15 +314,15 @@ export const VISUAL_THEMES = Object.freeze({
   //              avancent dent par dent, une roue à valve colorée, une manivelle qu'on tourne, un drapeau craie à la distance voulue (à l'échelle) et une
   //              élève (KidFigure, hijab) qui l'attend (`gear-crank`)
   bikestand: { kind: 'objects', shows: 'درّاجة جبلية: دوّاسة وصحن أمامي وترس خلفي وسلسلة وعجلة' },
-  // 3AM, unité 2, leçon 2 (2026-10-26) :
-  //   paintshop  la machine à teinter d'un magasin de peinture de quartier : un bec de laiton au-dessus du seau B et une manette, le seau de référence A
-  //              scellé avec son étiquette et sa pastille, deux grandes pastilles de couleur côte à côte et un mesureur à aiguille « أفتح · أغمق »,
-  //              un élève (KidFigure) au rouleau devant l'esquisse de la fresque (`shade-match`)
   // 2AM, unité 1, leçon 1 (2026-10-28) :
   //   tramline  le tramway d'une ville algérienne : la voie et le fil de contact tirés de gauche à droite, trois ou quatre arrêts avec leur panneau et leur abri, la rame articulée à deux voitures,
   //             le compteur de passagers (afficheur lumineux) au-dessus de la cabine, des élèves (KidFigure, hijab pour les filles) qui montent ou descendent, des fanions de groupes, le kiosque à tickets
   //             (`tram-route`)
   tramline: { kind: 'objects', shows: 'ترامواي مدينة جزائرية: محطات وعربة وعدّاد الركّاب وكشك التذاكر' },
+  // 3AM, unité 2, leçon 2 (2026-10-26) :
+  //   paintshop  la machine à teinter d'un magasin de peinture de quartier : un bec de laiton au-dessus du seau B et une manette, le seau de référence A
+  //              scellé avec son étiquette et sa pastille, deux grandes pastilles de couleur côte à côte et un mesureur à aiguille « أفتح · أغمق »,
+  //              un élève (KidFigure) au rouleau devant l'esquisse de la fresque (`shade-match`)
   paintshop: { kind: 'objects', shows: 'آلة مزج الألوان في محلّ الطلاء: دلوان وعلب أبيض ورافعة للأزرق' },
   // 3AM, unité 2, leçon 3 (2026-10-26) :
   //   seedbed  un حوض غرس d'un jardin d'école de 1 m : une règle en bois le long du bord (0 … 1 m), des zones de cultures peintes à partir de la gauche

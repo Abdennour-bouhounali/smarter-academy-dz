@@ -118,6 +118,8 @@ export const MANIPULATION_COMPONENTS = {
   'loom-threads': lazy(() => import('./algebra/LoomThreads')),
   // 3AM, unité 5, leçon « حصر عدد عشري موجب » : la masse sous la main — ميزان العطّار dont l'écran arrondit (2026-10-26).
   'scoop-scale': lazy(() => import('./operations/ScoopScale')),
+  // 2AM, unité 2, leçon 6 « الكسر: نسبة وحاصل قسمة وقيم مقرّبة » : le quotient sous la main — حبال المرسى (2026-10-28).
+  'mooring-lines': lazy(() => import('./operations/MooringLines')),
   // 3AM, unité 5 : le signe d'un terme sous la main — la عبّارة des caisses d'une équation (2026-10-21).
   'term-ferry': lazy(() => import('./algebra/TermFerry')),
   // 3AM, unité 1 « الأعداد النسبية » : le temps signé sous la main — le شريط المصعد (2026-10-26).
@@ -137,10 +139,10 @@ export const MANIPULATION_COMPONENTS = {
   'robot-track': lazy(() => import('./operations/RobotTrack')),
   // 3AM, unité 2 « العمليات على الكسور والأعداد الناطقة » : la division par un rapport sous la main — la manivelle de la درّاجة (2026-10-25).
   'gear-crank': lazy(() => import('./proportion/GearCrank')),
-  // 3AM, unité 2 : le numérateur sous la main — la machine à teinter (آلة مزج الألوان, 2026-10-26).
-  'shade-match': lazy(() => import('./operations/ShadeMatch')),
   // 2AM, unité 1, leçon 1 : l'ordre des opérations sous la main — le خطّ الترامواي (2026-10-28).
   'tram-route': lazy(() => import('./operations/TramRoute')),
+  // 3AM, unité 2 : le numérateur sous la main — la machine à teinter (آلة مزج الألوان, 2026-10-26).
+  'shade-match': lazy(() => import('./operations/ShadeMatch')),
   // 3AM, unité 2, leçon 3 : l'espacement sous la main — le مشط الشتلات (2026-10-26).
   'seed-rake': lazy(() => import('./operations/SeedRake')),
   // 3AM, unité 2, leçon 4 : la position d'une écriture sous la main — le حبل الأعداد (2026-10-26).

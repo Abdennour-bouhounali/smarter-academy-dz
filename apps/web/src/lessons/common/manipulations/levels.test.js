@@ -80,6 +80,12 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(advanced.numbers.tasks.some((tk) => tk.kind === 'trap'), type).toBe(true);
         expect(beginner.numbers.tasks.some((tk) => tk.kind === 'trap'), type).toBe(false);
       }
+      // Unité 2 de 2AM, leçon 6 : `mooring-lines` se mesure par le DIVISEUR DÉCIMAL (متقدم : des cordes de 0,7 m, le ruban change d'unité) contre un diviseur naturel (مبتدئ : couper en b cordes).
+      else if (type === 'mooring-lines') {
+        expect(advanced.numbers.tasks.every((tk) => tk.kind === 'count' && tk.b.includes(',') || tk.kind === 'count'), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => tk.kind === 'share' && !tk.b.includes(',')), type).toBe(true);
+        expect(advanced.numbers.tasks.some((tk) => tk.b.includes(',')), type).toBe(true);
+      }
       // Unité 5 de 3AM : `term-ferry` se mesure par le NOMBRE DE TÂCHES (2 équations, puis 3 dont un coefficient négatif et un grand nombre).
       else if (type === 'term-ferry') expect(advanced.numbers.tasks.length, type).toBeGreaterThan(beginner.numbers.tasks.length);
       // Unité 3 de 2AM : `zero-probe` se mesure par la FINESSE du pas (1 puis 0,1) et le nombre de décimales des nombres à juger.
@@ -118,17 +124,17 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(advanced.numbers.tasks.some((tk) => tk.kind === 'both'), type).toBe(true);
         expect(beginner.numbers.tasks.some((tk) => tk.kind === 'both'), type).toBe(false);
       }
+      // Unité 1 de 2AM, leçon 1 : `tram-route` se mesure par l'ÉCRITURE de la chaîne (متقدم seul : plaques et puces à poser avant de tamponner) et par la PRÉDICTION écrite avant « انطلق ».
+      else if (type === 'tram-route') {
+        expect(advanced.numbers.tasks.every((tk) => tk.build && tk.predict), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.build || tk.predict), type).toBe(false);
+      }
       // Unité 4 de 3AM, leçon 3 : `marble-run` se mesure par la PRÉDICTION écrite avant le lancement (متقدم seul) et par les DEUX lettres (r6).
       else if (type === 'marble-run') {
         expect(advanced.numbers.predict, type).toBe(true);
         expect(beginner.numbers.predict, type).toBe(false);
         expect(advanced.numbers.tasks.some((tk) => Object.keys(tk.target).length === 2), type).toBe(true);
         expect(beginner.numbers.tasks.every((tk) => Object.keys(tk.target).length === 1), type).toBe(true);
-      // Unité 1 de 2AM, leçon 1 : `tram-route` se mesure par l'ÉCRITURE de la chaîne (متقدم seul : plaques et puces à poser avant de tamponner) et par la PRÉDICTION écrite avant « انطلق ».
-      else if (type === 'tram-route') {
-        expect(advanced.numbers.tasks.every((tk) => tk.build && tk.predict), type).toBe(true);
-        expect(beginner.numbers.tasks.some((tk) => tk.build || tk.predict), type).toBe(false);
-      }
       }
       // Unité 1 de 3AM, leçon 2 : `robot-track` se mesure par la PRÉDICTION écrite avant « شغّل » (متقدم seul) et par l'ORDRE à choisir.
       else if (type === 'robot-track') {

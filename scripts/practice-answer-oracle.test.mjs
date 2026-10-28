@@ -120,10 +120,11 @@ import { ORACLE as ORACLE_1AM_MANA_JAM_TARH } from './practice-oracle/mana-jam-t
 import { ORACLE as ORACLE_1AM_QISMA_IQLIDIYA_BAQI } from './practice-oracle/qisma-iqlidiya-baqi.mjs';
 // Le premier banc 2AM (2026-10-14) : القسمة الإقليدية وحصر حاصل القسمة.
 import { ORACLE as ORACLE_2AM_QISMA_IQLIDIYA_HASR } from './practice-oracle/qisma-iqlidiya-hasr.mjs';
+import { ORACLE as ORACLE_2AM_KASR_HASIL_QISMA } from './practice-oracle/kasr-hasil-qisma.mjs';
 import { ORACLE as ORACLE_2AM_MUQARANA_NISBIYA } from './practice-oracle/muqarana-nisbiya.mjs';
 import { ORACLE as ORACLE_2AM_RABI_MUTANASIB } from './practice-oracle/rabi-mutanasib.mjs';
-import { ORACLE as ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA } from './practice-oracle/ikhtizal-kitaba-kasriya.mjs';
 import { ORACLE as ORACLE_2AM_SILSILA, audit as auditSilsila } from './practice-oracle/silsila-bidun-aqwas.mjs';
+import { ORACLE as ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA } from './practice-oracle/ikhtizal-kitaba-kasriya.mjs';
 import { ORACLE as ORACLE_1AM_QAWAID_QABILIYAT_QISMA } from './practice-oracle/qawaid-qabiliyat-qisma.mjs';
 import { ORACLE as ORACLE_1AM_KITABAT_ADAD_TABII } from './practice-oracle/kitabat-adad-tabii.mjs';
 import { ORACLE as ORACLE_1AM_HASIL_QISMA_KASR } from './practice-oracle/hasil-qisma-kasr.mjs';
@@ -303,11 +304,12 @@ const ORACLE = {
   ...ORACLE_1AM_MANA_JAM_TARH,
   ...ORACLE_1AM_QISMA_IQLIDIYA_BAQI,
   ...ORACLE_2AM_QISMA_IQLIDIYA_HASR,
+  ...ORACLE_2AM_KASR_HASIL_QISMA,
   ...ORACLE_2AM_MUQARANA_NISBIYA,
   ...ORACLE_2AM_RABI_MUTANASIB,
+  ...ORACLE_2AM_SILSILA,
   ...ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA,
   ...ORACLE_1AM_QAWAID_QABILIYAT_QISMA,
-  ...ORACLE_2AM_SILSILA,
   ...ORACLE_1AM_KITABAT_ADAD_TABII,
   ...ORACLE_1AM_HASIL_QISMA_KASR,
   ...ORACLE_1AM_KUSUR_ASHRIYA_KITABA,
@@ -482,14 +484,14 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     expect(auditHasr(own)).toEqual([]);
   });
 
-  it('le cas signalé (6 | 120) : « 6 مضاعف للعدد 120 » est faux, seul « لا » est accepté', () => {
-    const q = bank.find((b) => b.key === REPORTED.key).q;
   it('سلسلة عمليات دون أقواس (2AM) : évaluateur exact propre (BigInt, priorités, décimaux ; aucun import de chainOps.js), chaque « احسب » relu en LaTeX et recalculé, aucun intermédiaire négatif, chaque distracteur = la valeur de sa lecture fautive (ADDFIRST, MULFIRST, NOPRIORITY, RIGHTLEFT, PARTIAL), situations rejouées par un arbre de calcul, QCM à une seule option vraie, aucun crochet ni barre de fraction, 50 feuilles dont 7 sujets lus', () => {
     const own = bank.filter((b) => b.key.startsWith('ex-2am-silsila-bidun-aqwas-'));
     expect(own.length).toBeGreaterThan(0);
     expect(auditSilsila(own)).toEqual([]);
   });
 
+  it('le cas signalé (6 | 120) : « 6 مضاعف للعدد 120 » est faux, seul « لا » est accepté', () => {
+    const q = bank.find((b) => b.key === REPORTED.key).q;
     expect(REPORTED.isDivisor).toBe(true);
     expect(REPORTED.isMultiple).toBe(false);
     for (const id of ['A', 'B']) {

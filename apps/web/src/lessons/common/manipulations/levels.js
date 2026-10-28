@@ -800,6 +800,22 @@ export const LEVELS = Object.freeze({
       { id: 'a3', kind: 'trap', rank: 3, res: 3, ref: { a: 2, b: 7 }, start: '0,250' },
     ] }, ...T('act-3') },
   },
+  // LE QUOTIENT SOUS LA MAIN (mooring-lines, thème harbor, 2AM unité 2, leçon « الكسر: نسبة وحاصل قسمة وقيم مقرّبة », 2026-10-28) : une corde posée sur un ruban, des morceaux posés bout à bout ;
+  // la main tient le quotient candidat à un rang (1, 0,1, 0,01) et le cadran ne s'ouvre qu'après l'encadrement du rang courant. مبتدئ (plateforme, `share` : q = la longueur d'une corde) : r1 8 m en 3
+  // (2|3, 2,6|2,7, 2,66|2,67 : jamais exact), r2 9 m en 4 (2,25 EXACT), r3 9,5 m en 3 (3,16|3,17). متقدم (`count` : q = le nombre de cordes de b mètres, b décimal ; la main choisit l'UNITÉ du ruban,
+  // m → dm : les deux longueurs ×10) : a1 4,6 m en cordes de 0,7 m (46 ÷ 7), a2 13,5 m et 1,8 m (7,5 exact), a3 5 m et 0,6 m. Le test des niveaux mesure la paire par le DIVISEUR décimal et le changement d'unité.
+  'mooring-lines': {
+    beginner: { numbers: { tasks: [
+      { id: 'r1', kind: 'share', a: '8', b: '3', maxRank: 2 },
+      { id: 'r2', kind: 'share', a: '9', b: '4', maxRank: 2 },
+      { id: 'r3', kind: 'share', a: '9,5', b: '3', maxRank: 2 },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', kind: 'count', a: '4,6', b: '0,7', maxRank: 2 },
+      { id: 'a2', kind: 'count', a: '13,5', b: '1,8', maxRank: 2 },
+      { id: 'a3', kind: 'count', a: '5', b: '0,6', maxRank: 2 },
+    ] }, ...T('method-1') },
+  },
   // LE SIGNE D'UN TERME SOUS LA MAIN (term-ferry, thème river) : l'équation a une solution CACHÉE ; la main porte chaque caisse (terme) d'une rive à
   // l'autre en choisissant son signe, puis le diviseur. مبتدئ (plateforme) : 3x + 2 = x + 8 (x = 3) puis 4x − 3 = 2x + 7 (x = 5), x se rassemble à gauche.
   // متقدم (طريقة p. 77) : 9x + 1 = 5x − 7 (x = −2), puis −2x + 5 = 3x − 10 (un coefficient NÉGATIF : on divise par −5), puis 7x − 190 = 6x + 110 (x = 300).
@@ -922,22 +938,6 @@ export const LEVELS = Object.freeze({
       { id: 'a4b', F: 30, R: 42, target: '1', predict: true },
     ] }, ...T('know-2') },
   },
-  // LE NUMÉRATEUR SOUS LA MAIN (shade-match, thème paintshop, 2026-10-26) : la main verse c mesures de bleu dans un seau de d blancs pour égaler (ou comparer) la teinte
-  // d'une référence a/b ; une tâche est `{ id, a, b, d, veil? }` (ou `{ kind: 'compare', a, b, c, d }`). مبتدئ (plateforme, mesureur visible) : s1 3/4 sur 8 → 6, s2 2/3 sur 9 → 6,
-  // s3 3/4 sur 10 → AUCUN entier (7 plus clair, 8 plus foncé). متقدم (method : le manuel compare des fractions « par la méthode qui convient », mesureur VOILÉ jusqu'à l'engagement) :
-  // a1 5/6 sur 18 → 15, a2 4/7 sur 12 → aucun (6 et 7), a3 9/12 sur 8 → 6, a4 compare 7/9 et 10/13. Le monde `equal` (معارف) est posé par la leçon. Le test des niveaux mesure la
-  // paire par le NOMBRE DE TÂCHES et par le VOILE.
-  'shade-match': {
-    beginner: { numbers: { tasks: [
-      { id: 's1', a: 3, b: 4, d: 8 }, { id: 's2', a: 2, b: 3, d: 9 }, { id: 's3', a: 3, b: 4, d: 10 },
-    ] }, ...P },
-    advanced: { numbers: { tasks: [
-      { id: 'a1', a: 5, b: 6, d: 18, veil: true }, { id: 'a2', a: 4, b: 7, d: 12, veil: true },
-      { id: 'a3', a: 9, b: 12, d: 8, veil: true }, { id: 'a4', kind: 'compare', a: 7, b: 9, c: 10, d: 13, veil: true },
-    ] }, ...T('method-4') },
-  },
-  // L'ESPACEMENT SOUS LA MAIN (seed-rake, thème seedbed, 2026-10-26) : la main étire un râteau (espacement 1/N m) sur un حوض de 1 m peint de zones ; une tâche est
-  // `{ id, kind?, terms: [{ p, sub? }], need?, needRefusal?, widest? }`. مبتدئ (plateforme, décomptes visibles) : g1 1/4 + 1/6 (deux espacements et un refus → 5/12), g2 2/3 + 1/5,
   // L'ORDRE DES OPÉRATIONS SOUS LA MAIN (tram-route, thème tramline, 2026-10-28) : la main pose des tickets ① ② ③ sur les opérateurs d'une chaîne SANS parenthèses ; « انطلق » rejoue le plan et le
   // compteur du tram (la vérité) le juge. Une tâche est `{ id, chain, kind?, unit?, stops?, build?, predict? }`. مبتدئ (plateforme, chaîne donnée) : t1 26 − 9 + 4, t2 40 − 12 − 6 + 9, t3 (kiosque)
   // 150 ÷ 6 × 4, t4 15 + 3 × 4. متقدم (plateforme) : l'élève ÉCRIT la chaîne de l'histoire puis prédit avant de partir : a1 32 − 4 × 5 + 6, a2 1,5 + 4 × 0,8 (km), a3 60 ÷ 4 + 3 × 6. Le monde
@@ -955,6 +955,22 @@ export const LEVELS = Object.freeze({
       { id: 'a3', chain: '60 ÷ 4 + 3 × 6', stops: ['stadium'], build: true, predict: true },
     ] }, ...T('know-1') },
   },
+  // LE NUMÉRATEUR SOUS LA MAIN (shade-match, thème paintshop, 2026-10-26) : la main verse c mesures de bleu dans un seau de d blancs pour égaler (ou comparer) la teinte
+  // d'une référence a/b ; une tâche est `{ id, a, b, d, veil? }` (ou `{ kind: 'compare', a, b, c, d }`). مبتدئ (plateforme, mesureur visible) : s1 3/4 sur 8 → 6, s2 2/3 sur 9 → 6,
+  // s3 3/4 sur 10 → AUCUN entier (7 plus clair, 8 plus foncé). متقدم (method : le manuel compare des fractions « par la méthode qui convient », mesureur VOILÉ jusqu'à l'engagement) :
+  // a1 5/6 sur 18 → 15, a2 4/7 sur 12 → aucun (6 et 7), a3 9/12 sur 8 → 6, a4 compare 7/9 et 10/13. Le monde `equal` (معارف) est posé par la leçon. Le test des niveaux mesure la
+  // paire par le NOMBRE DE TÂCHES et par le VOILE.
+  'shade-match': {
+    beginner: { numbers: { tasks: [
+      { id: 's1', a: 3, b: 4, d: 8 }, { id: 's2', a: 2, b: 3, d: 9 }, { id: 's3', a: 3, b: 4, d: 10 },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', a: 5, b: 6, d: 18, veil: true }, { id: 'a2', a: 4, b: 7, d: 12, veil: true },
+      { id: 'a3', a: 9, b: 12, d: 8, veil: true }, { id: 'a4', kind: 'compare', a: 7, b: 9, c: 10, d: 13, veil: true },
+    ] }, ...T('method-4') },
+  },
+  // L'ESPACEMENT SOUS LA MAIN (seed-rake, thème seedbed, 2026-10-26) : la main étire un râteau (espacement 1/N m) sur un حوض de 1 m peint de zones ; une tâche est
+  // `{ id, kind?, terms: [{ p, sub? }], need?, needRefusal?, widest? }`. مبتدئ (plateforme, décomptes visibles) : g1 1/4 + 1/6 (deux espacements et un refus → 5/12), g2 2/3 + 1/5,
   // g3 3/4 puis 1/6 récolté. متقدم (method-6 : le manuel cherche un multiple commun, râteau BLOQUÉ, on écrit N et le total) : a1 5/6 + 3/8, a2 7/10 − 4/15, a3 1/2 + 1/3 + 1/4,
   // a4 3/8 + 5/12 « أوسع مسافة ». Le monde `fewest` (معارف) est posé par la leçon. Le test des niveaux mesure la paire par le NOMBRE DE TÂCHES et par la PRÉDICTION.
   'seed-rake': {
