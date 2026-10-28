@@ -11,6 +11,10 @@ import { useManipulation } from '../useManipulation';
 import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import MathText from '../../components/MathText';
 import * as L from '../logic/percentTag';
 
@@ -78,7 +82,16 @@ import * as L from '../logic/percentTag';
  * construites) est SOUS la manipulation, repliable (`primitives/LabFold`), jamais entre le monde et
  * ses commandes. `MovablePanel` n'est pas utilisé : rien ne flotte, rien ne recouvre.
  *
- * Props : `price` (« 1200 », « 30 »), `steps` (« +5 », « -30|+15 »), `theme` ('mall' | 'tank'),
+ * QUESTIONS PENDANT LE LABO (2026-10-28, lot 5, `primitives/LabCheckpoint`) : une étape par but, dans l'ordre, chacune finie quand son but est atteint ET ses
+ * questions répondues (`LabStepper`). single : « set » (le t % de la leçon sur l'article de la leçon : lire le nouveau prix · le multiplicateur) · « table »
+ * (un 2e article au même t % : son prix · y ÷ x constant) · « add » (la barre additive : pourquoi elle ne coïncide pas · la règle, qui formalise).
+ * chain : « chain » (la chaîne de la leçon construite ET le pari confronté : le multiplicateur du 1er pas · le volume final · pourquoi on ne
+ * peut pas additionner) · « contrast » (−t puis +t construit, pari juste : le volume · est-il revenu · la règle, qui formalise).
+ * OBLIGATOIRES pour tout élève ; l'enseignant seul les coupe (`useLabCheckpointSettings`) : coupées, la découverte d'avant reprend.
+ * Événements `{ tk: 'checkpoint' | 'checkpoint-done', id, … }` → `onCheckpoint` (jamais `onTrial`). « أعِد التجربة » = `logic/percentTag › retryTask`.
+ * Son : `tooth` à chaque pourcent de la poignée, `bell` à chaque pas ajouté, `flag` pour un essai au t % de la leçon / un pari juste, `over` pour un refus.
+ * DOM : [data-pt-step=0..2].
+ * Props : `checkpoints` (défaut true), `onCheckpoint(ev)`, `price` (« 1200 », « 30 »), `steps` (« +5 », « -30|+15 »), `theme` ('mall' | 'tank'),
  * `title`, `lead`, `mission`, `level`, `levels` (false : posé seul sans sélecteur), `onTrial(ev)`
  * à chaque essai validé (ev = `evidence` : le tableau, les essais additifs, les chaînes et les
  * paris de l'élève), `onFinished` à la règle formelle — tous par `state.report`.
@@ -94,7 +107,7 @@ import * as L from '../logic/percentTag';
  */
 export default function PercentTag({
   price: price0 = '1200', steps: steps0 = '+5', theme, title, lead, mission, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false, onTrial, onCheckpoint, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.percentTag.${key}`, o), [t]);
@@ -109,10 +122,15 @@ export default function PercentTag({
   const [liveS, setLiveS] = useState(null);
   const [liveBet, setLiveBet] = useState(null);
   const [dir, setDir] = useState('up');
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setLiveS(null); setLiveBet(null); setDir('up'); }
+  const [inits, setInits] = useState(0);
+  const [cpDone, setCpDone] = useState({});
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setLiveS(null); setLiveBet(null); setDir('up'); setInits((n) => n + 1); setCpDone({}); }
 
   const single = lab.mode === 'single';
-  const ready = L.discoveryReady(lab);
+  // les questions pendant le labo : obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpSettings = useLabCheckpointSettings('percent-tag');
+  const cpEnabled = cpOn && cpSettings.enabled;
+  const ready = L.discoveryReady(lab) && !cpEnabled;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, { price, steps }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -358,6 +376,72 @@ export default function PercentTag({
     );
   })();
 
+  /* ── les étapes et leurs questions : chaque étape est FAITE quand son but est atteint ET ses questions répondues ── */
+  const TASKS = single ? ['set', 'table', 'add'] : ['chain', 'contrast'];
+  const reachedOf = single
+    ? { set: L.targetSet(lab), table: L.table(lab).length >= 2, add: lab.additiveTrials.length > 0 }
+    : { chain: L.targetChainDone(lab) && L.betTriedOnTarget(lab), contrast: !!L.contrastChain(lab) && L.betMatched(lab) };
+  const doneOf = (id) => !!reachedOf[id] && (cpEnabled ? !!cpDone[id] : true);
+  const stepDone = TASKS.map(doneOf);
+  const firstOpen = stepDone.findIndex((d) => !d);
+  const ti = firstOpen < 0 ? TASKS.length - 1 : firstOpen;
+  const stage = TASKS[ti];
+  const lastTask = TASKS[TASKS.length - 1];
+  const chainOf = cpEnabled ? CHAINS[stage] : null;
+  const wordOfStep = (sv) => (W === 'tank' ? stepWord(sv) : changeWord(sv));
+  const cp = useLabCheckpoint({
+    id: chainOf ? stage : null,
+    questions: chainOf && reachedOf[stage]
+      ? chainOf.map((q) => QUESTIONS[q](lab, {
+        k, W, unit, change: wordOfStep, changes: changesText, artName,
+        discoveryOptions,
+        discoveryPrompt: <MathText>{single ? k('dPromptSingle', { change: changeWord(lab.target[0]) }) : k('dPromptChain', { changes: changesText })}</MathText>,
+        formal,
+      }))
+      : null,
+    reached: !!reachedOf[stage],
+    resetKey: inits,
+    onRetry: () => { setLab((x) => L.retryTask(x, stage)); setLiveS(null); setLiveBet(null); },
+    onEvent: (ev) => state.report(onCheckpoint, ev),
+    onDone: (id) => { setCpDone((d) => ({ ...d, [id]: true })); if (id === lastTask) { state.discover(); state.formalize(); } },
+  });
+
+  /* ── le son (2026-10-28) : un déclic par pourcent de la poignée (plus grave en arrière), une cloche à chaque pas ajouté, le drapeau pour un essai
+     au t % de la leçon ou un pari juste, « over » pour un refus. Muet sauf « الصوت » (l'interrupteur de l'en-tête du labo). ── */
+  const sfx = useRef({ s: undefined, at: 0, key: -1, last: null });
+  useEffect(() => {
+    const p = sfx.current;
+    if (p.key !== inits) { sfx.current = { s: S, at: 0, key: inits, last: lab.last }; return; }
+    if (p.s !== S) {
+      const now = performance.now();
+      if (now - p.at > 35) { playSfx('tooth', { pitch: S > p.s ? 1 : 0.75 }); p.at = now; }
+    }
+    p.s = S;
+  }, [S, inits]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    const p = sfx.current;
+    if (p.key !== inits || lab.last === p.last) return;
+    p.last = lab.last;
+    const kind = lab.last?.kind;
+    if (kind === 'step') playSfx('bell');
+    else if (kind === 'trial' && lab.last.s === lab.target[0]) playSfx('flag');
+    else if (kind === 'betOk') playSfx('flag');
+    else if (kind === 'additive' || kind === 'overflow' || kind === 'betKo') playSfx('over');
+  }, [lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── la fête : une fois par étape FAITE (réarmée après « إعادة ») ── */
+  const party = useStepCelebration();
+  const celebrated = useRef({ key: inits, set: new Set() });
+  if (celebrated.current.key !== inits) celebrated.current = { key: inits, set: new Set() };
+  const doneKey = stepDone.join();
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.set.has(i)) return;
+      celebrated.current.set.add(i);
+      party.celebrate({ n: i + 1, total: TASKS.length });
+    });
+  }, [doneKey, inits]); // eslint-disable-line react-hooks/exhaustive-deps
+
   /* ── la représentation vivante (sous la scène) ── */
   const kNow = single ? r.k : L.chainK(lab.chain);
   const representation = single
@@ -492,6 +576,8 @@ export default function PercentTag({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={!!chainOf || cpEnabled}
       hints={(single ? ['hint1Single', 'hint2Single', 'hint3Single'] : ['hint1Chain', 'hint2Chain', 'hint3Chain']).map((h) => <MathText key={h}>{k(h)}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false, ...(autoComplete ? { autoComplete } : {}) }}
       representation={representation}
@@ -509,9 +595,14 @@ export default function PercentTag({
         <div ref={boxRef} className="space-y-3" data-percent-tag data-mode={lab.mode} data-world={W} data-s={S}
           data-k={LIN.fracText(kNow)} data-y={single ? LIN.fracText(r.y) : LIN.fracText(L.current(lab))} data-solved={ready ? 'true' : 'false'}
           data-layout={wide ? 'side' : 'stack'} data-budget={budget} data-world-h={worldH} data-ctrl-h={ctrlH}>
-          <div className={wide ? 'grid grid-cols-2 items-start gap-3' : 'space-y-3'} data-percent-glance>
-            {world}
-            {controls}
+          <div className="relative space-y-3">
+            {party.node}
+            {cp.node}
+            <LabStepper count={TASKS.length} current={ti} done={stepDone} stepAttr="data-pt-step" />
+            <div className={wide ? 'grid grid-cols-2 items-start gap-3' : 'space-y-3'} data-percent-glance>
+              {world}
+              {controls}
+            </div>
           </div>
 
           {/* ── en dessous (secondaire, repliable) : le tableau de l'élève, les chaînes construites ── */}
@@ -871,3 +962,192 @@ function Deco({ world }) {
     </button>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de questions de chaque étape. Les dernières (`rule`) sont l'ancienne découverte : elles formalisent. */
+export const CHAINS = Object.freeze({
+  set: ['read', 'mult'],
+  table: ['second', 'same'],
+  add: ['addWhy', 'rule'],
+  chain: ['mult', 'volume', 'sum'],
+  contrast: ['back', 'return', 'rule'],
+});
+
+const $q = (s) => `$${s}$`;
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+/** La part d'un pourcentage : « t % de x ». */
+const partOf = (x, s) => LIN.mul(x, LIN.div(LIN.frac(Math.abs(s)), LIN.frac(100)));
+
+/** Chaque question est construite sur LES nombres de l'étape de l'élève (rien n'est écrit en dur) ; `env` : les mots du labo. */
+export const QUESTIONS = {
+  /* ── single : la vitrine ── */
+  read: (lab, env) => {
+    const { k, unit, change, artName } = env;
+    const a = lab.articles[0]; const s0 = lab.target[0];
+    const r = L.reading(lab, s0, a.id);
+    return {
+      id: 'read', kind: 'number', expected: L.dec(r.y), answer: <MathText>{$q(L.decTex(r.y))}</MathText>,
+      prompt: Mx(k, 'read.prompt', { change: change(s0), article: artName(a.id), x: L.dec(a.x), unit }),
+      hints: [Mx(k, 'read.hint1'), Mx(k, 'read.hint2', { part: L.dec(partOf(a.x, s0)), x: L.dec(a.x), unit })],
+      explain: Mx(k, 'read.explain', { prod: $q(L.productTex(r.x, r.k)), unit }),
+    };
+  },
+  mult: (lab, env) => {
+    const { k, unit, W, change } = env;
+    if (W === 'tank') {
+      const s1 = lab.target[0];
+      const m = L.multiplier(s1);
+      const v1 = LIN.mul(lab.start, m);
+      return {
+        id: 'mult', kind: 'number', expected: L.dec(m), answer: <MathText>{$q(L.decTex(m))}</MathText>,
+        prompt: Mx(k, 'mult.promptTank', { start: L.dec(lab.start), unit, change: change(s1) }),
+        hints: [Mx(k, 'mult.hint1Tank'), Mx(k, 'mult.hint2Tank', { calc: $q(L.multiplierTex(s1)) })],
+        explain: Mx(k, 'mult.explainTank', { calc: $q(`${L.decTex(lab.start)} \\times ${L.decTex(m)} = ${L.decTex(v1)}`), vol: L.dec(v1), unit }),
+      };
+    }
+    const a = lab.articles[0]; const s0 = lab.target[0];
+    const r = L.reading(lab, s0, a.id);
+    return {
+      id: 'mult', kind: 'number', expected: L.dec(r.k), answer: <MathText>{$q(L.decTex(r.k))}</MathText>,
+      prompt: Mx(k, 'mult.prompt', { x: L.dec(a.x), y: L.dec(r.y), unit }),
+      hints: [Mx(k, 'mult.hint1'), Mx(k, 'mult.hint2', { calc: $q(`\\dfrac{${L.decTex(r.y)}}{${L.decTex(r.x)}}`) })],
+      explain: Mx(k, 'mult.explain', { prod: $q(L.productTex(r.x, r.k)), k: $q(L.decTex(r.k)) }),
+    };
+  },
+  second: (lab, env) => {
+    const { k, unit, change, artName } = env;
+    const s0 = lab.target[0];
+    const row = L.table(lab).at(-1);
+    return {
+      id: 'second', kind: 'number', expected: L.dec(row.y), answer: <MathText>{$q(L.decTex(row.y))}</MathText>,
+      prompt: Mx(k, 'second.prompt', { change: change(s0), article: artName(row.id), x: L.dec(row.x), unit }),
+      hints: [Mx(k, 'second.hint1'), Mx(k, 'second.hint2', { x: L.dec(row.x), k: L.dec(row.ratio) })],
+      explain: Mx(k, 'second.explain', { prod: $q(L.productTex(row.x, row.ratio)), unit }),
+    };
+  },
+  same: (lab, env) => {
+    const { k } = env;
+    const rows = L.table(lab);
+    const [r1, r2] = [rows[0], rows.at(-1)];
+    const q = (row) => $q(`\\dfrac{${L.decTex(row.y)}}{${L.decTex(row.x)}} = ${L.decTex(row.ratio)}`);
+    const o = { q1: q(r1), q2: q(r2), k: $q(L.decTex(r1.ratio)), t: Math.abs(lab.target[0]) };
+    return {
+      id: 'same', kind: 'choice',
+      prompt: Mx(k, 'same.prompt', o),
+      options: [
+        { text: Mx(k, 'same.bigger'), why: Mx(k, 'same.whyBigger', o) },
+        { text: Mx(k, 'same.right', o), correct: true },
+        { text: Mx(k, 'same.pct', o), why: Mx(k, 'same.whyPct', o) },
+      ],
+      hints: [Mx(k, 'same.hint1'), Mx(k, 'same.hint2')],
+      explain: Mx(k, 'same.explain', o),
+    };
+  },
+  addWhy: (lab, env) => {
+    const { k, unit } = env;
+    const a = lab.additiveTrials.at(-1);
+    const r = L.reading(lab, a.s, a.id);
+    const t = Math.abs(a.s);
+    const o = {
+      t, x: L.dec(r.x), unit, part: L.dec(partOf(r.x, a.s)),
+      plus: $q(`${L.decTex(r.x)} ${a.s > 0 ? '+' : '-'} ${t} = ${L.decTex(r.plus)}`), prod: $q(L.productTex(r.x, r.k)),
+      plusVal: $q(L.decTex(r.plus)), yVal: $q(L.decTex(r.y)),
+    };
+    return {
+      id: 'addWhy', kind: 'choice',
+      prompt: Mx(k, 'addWhy.prompt', o),
+      options: [
+        { text: Mx(k, 'addWhy.small'), why: Mx(k, 'addWhy.whySmall', o) },
+        { text: Mx(k, 'addWhy.right', o), correct: true },
+        { text: Mx(k, 'addWhy.wrongBar'), why: Mx(k, 'addWhy.whyBar', o) },
+      ],
+      hints: [Mx(k, 'addWhy.hint1', o), Mx(k, 'addWhy.hint2', o)],
+      explain: Mx(k, 'addWhy.explain', o),
+    };
+  },
+  /* ── chain : le réservoir ── */
+  volume: (lab, env) => {
+    const { k, unit, changes } = env;
+    const vol = L.current(lab, lab.target);
+    const lines = L.chainLinesTex(lab, lab.target);
+    return {
+      id: 'volume', kind: 'number', expected: L.dec(vol), answer: <MathText>{$q(L.decTex(vol))}</MathText>,
+      prompt: Mx(k, 'volume.prompt', { changes, unit }),
+      hints: [Mx(k, 'volume.hint1'), Mx(k, 'volume.hint2', { line: $q(lines[0]) })],
+      explain: Mx(k, 'volume.explain', { lines: $q(lines.join(' \\quad ')), vol: L.dec(vol), unit }),
+    };
+  },
+  sum: (lab, env) => {
+    const { k, unit } = env;
+    const [s1, s2] = lab.target;
+    const sum = LIN.frac(lab.target.reduce((t, v) => t + v, 0));
+    const sumK = LIN.add(LIN.frac(1), LIN.div(sum, LIN.frac(100)));
+    const v1 = LIN.mul(lab.start, L.multiplier(s1));
+    const real = L.current(lab, lab.target);
+    const o = {
+      sum: $q(L.pctTex(sum)), betted: L.dec(LIN.mul(lab.start, sumK)), real: L.dec(real), unit, start: L.dec(lab.start),
+      v1: L.dec(v1), t2: Math.abs(s2), partNew: L.dec(partOf(v1, s2)), partOld: L.dec(partOf(lab.start, s2)),
+      kline: $q(L.chainKTex(lab.target)),
+    };
+    return {
+      id: 'sum', kind: 'choice',
+      prompt: Mx(k, 'sum.prompt', o),
+      options: [
+        { text: Mx(k, 'sum.first'), why: Mx(k, 'sum.whyFirst', o) },
+        { text: Mx(k, 'sum.cancel'), why: Mx(k, 'sum.whyCancel', o) },
+        { text: Mx(k, 'sum.right'), correct: true },
+      ],
+      hints: [Mx(k, 'sum.hint1', o), Mx(k, 'sum.hint2', o)],
+      explain: Mx(k, 'sum.explain', o),
+    };
+  },
+  back: (lab, env) => {
+    const { k, unit, change } = env;
+    const c = L.contrastChain(lab);
+    const vol = L.current(lab, c.steps);
+    const lines = L.chainLinesTex(lab, c.steps);
+    return {
+      id: 'back', kind: 'number', expected: L.dec(vol), answer: <MathText>{$q(L.decTex(vol))}</MathText>,
+      prompt: Mx(k, 'back.prompt', { changes: c.steps.map(change).join(` ${k('then')} `), unit }),
+      hints: [Mx(k, 'back.hint1', { start: L.dec(lab.start) }), Mx(k, 'back.hint2', { line: $q(lines[0]) })],
+      explain: Mx(k, 'back.explain', { lines: $q(lines.join(' \\quad ')), vol: L.dec(vol), unit }),
+    };
+  },
+  return: (lab, env) => {
+    const { k, unit } = env;
+    const c = L.contrastChain(lab);
+    const lines = L.chainLinesTex(lab, c.steps);
+    const o = {
+      start: L.dec(lab.start), unit, vol: L.dec(L.current(lab, c.steps)), t: Math.abs(c.steps[0]),
+      line: $q(lines.join(' \\quad ')), kline: $q(L.chainKTex(c.steps)),
+    };
+    return {
+      id: 'return', kind: 'choice',
+      prompt: Mx(k, 'return.prompt', o),
+      options: [
+        { text: Mx(k, 'return.cancel'), why: Mx(k, 'return.whyCancel', o) },
+        { text: Mx(k, 'return.bigger'), why: Mx(k, 'return.whyBigger', o) },
+        { text: Mx(k, 'return.right'), correct: true },
+      ],
+      hints: [Mx(k, 'return.hint1', o), Mx(k, 'return.hint2')],
+      explain: Mx(k, 'return.explain', o),
+    };
+  },
+  /* ── la règle (l'ancienne découverte) ── */
+  rule: (lab, env) => {
+    const { k, discoveryOptions, discoveryPrompt, formal } = env;
+    const single = lab.mode === 'single';
+    const s0 = lab.target[0];
+    const r = L.reading(lab, s0, lab.articles[0].id);
+    return {
+      id: 'rule', kind: 'choice',
+      prompt: discoveryPrompt,
+      options: discoveryOptions,
+      hints: single
+        ? [Mx(k, 'rule.hint1Single'), Mx(k, 'rule.hint2Single', { k: $q(L.decTex(r.k)) })]
+        : [Mx(k, 'rule.hint1Chain'), Mx(k, 'rule.hint2Chain')],
+      explain: formal,
+    };
+  },
+};

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef,
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, Sparkles, ChevronLeft, ChevronRight, FlaskConical, Undo2, RotateCcw, Send } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
-import { ratText, sub, add } from '@smarter-academy/core/arithmetic/powers.js';
+import { ratText, sub, add, mul, rat } from '@smarter-academy/core/arithmetic/powers.js';
 import MathText from '../../components/MathText';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
@@ -101,8 +101,8 @@ export default function GearCrank({
   // les questions pendant le labo : la suite de la tâche courante ; celle qui finit par la règle remplace la découverte automatique
   const cur = L.taskOf(lab);
   const cpSettings = useLabCheckpointSettings('gear-crank');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
-  const chain = cpOn && cpSettings.enabled && !L.isFree(lab) && lab.world === 'ride' ? CHAINS[cur.id] : null;
-  const ruleByCheckpoint = cpOn && cpSettings.enabled && lab.world === 'ride' && lab.tasks.some((tk) => CHAINS[tk.id]?.includes('rule'));
+  const chain = cpOn && cpSettings.enabled && !L.isFree(lab) ? CHAINS[cur.id] ?? null : null;
+  const ruleByCheckpoint = cpOn && cpSettings.enabled && lab.tasks.some((tk) => CHAINS[tk.id]?.includes('rule'));
   const cp = useLabCheckpoint({
     id: chain ? cur.id : null,
     questions: chain ? chain.map((q) => QUESTIONS[q](lab, cur, k)) : null,
@@ -164,7 +164,7 @@ export default function GearCrank({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       coach={coachOn ? coach : null}
-      headerAction={cpOn && lab.world === 'ride' ? cpSettings.control : null}
+      headerAction={cpOn ? cpSettings.control : null}
       guided={!!chain || ruleByCheckpoint}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
@@ -581,7 +581,7 @@ function discoveryPrompt(lab, k) {
 export function discoveryOptions(lab, k) {
   const w = L.witnesses(lab);
   const big = w.bigger ?? lab.tasks[1] ?? lab.tasks[0];
-  const first = w.first && w.first.id !== big.id ? w.first : lab.tasks[0];
+  const first = w.first && w.first.id !== big.id ? w.first : lab.tasks.find((t) => t.id !== big.id) ?? lab.tasks[0];
   const f = L.formalOf(big);
   const gap = sub(big.goalPedal, big.target);
   const plusOfFirst = add(first.target, gap);
@@ -619,6 +619,15 @@ export const CHAINS = Object.freeze({
   m1: ['read', 'compare', 'perTurn'],
   m2: ['read', 'why', 'perTurn', 'operation'],
   m3: ['read', 'product', 'rule'],
+  // le monde `reverse` (module 2, 2026-10-28 lot 5) : la chaîne est déplacée, le plateau devient le pignon — 3/5 puis 5/3 de tour de pédale
+  r1: ['read', 'compare', 'perTurn'],
+  r2: ['read', 'swap', 'product'],
+  // متقدم : la prédiction a déjà été écrite ; on interroge le rapport, la comparaison et l'opération, puis la chaîne déplacée et la règle
+  a1: ['perTurn', 'operation'],
+  a2: ['compare', 'operation'],
+  a3: ['perTurn', 'product'],
+  a4a: ['compare', 'perTurn'],
+  a4b: ['swap', 'product', 'rule'],
 });
 
 const $ = (s) => `$${s}$`;
@@ -642,8 +651,11 @@ export const QUESTIONS = {
       id: 'compare', kind: 'choice',
       prompt: Mx(k, 'compare.prompt', { pedal: turnsWith(k, task.goalPedal), wheel: turnsWith(k, task.target) }),
       options: ['less', 'more', 'same'].map((o, i) => ({ text: Mx(k, `compare.${o}`), correct: i === right })),
-      hints: [Mx(k, 'compare.hint1', { p, w: $(tex(task.targetText)) }), Mx(k, 'compare.hint2', { p, up: $(String(task.goalPedal.n / task.goalPedal.d + 1n)) })],
-      explain: Mx(k, 'compare.explainLess'),
+      hints: [
+        Mx(k, 'compare.hint1', { p, w: $(tex(task.targetText)) }),
+        right === 0 ? Mx(k, 'compare.hint2', { p, up: $(String(task.goalPedal.n / task.goalPedal.d + 1n)) }) : Mx(k, 'compare.hint2More', { p, w: $(tex(task.targetText)) }),
+      ],
+      explain: Mx(k, right === 0 ? 'compare.explainLess' : 'compare.explainMore'),
     };
   },
   perTurn: (lab, task, k) => {
@@ -690,6 +702,23 @@ export const QUESTIONS = {
       ],
       hints: [Mx(k, 'operation.hint1', { ratio: $(r), target }), Mx(k, 'operation.hint2')],
       explain: Mx(k, 'operation.explain', { calc: $(`${t}\\div${r}=${tex(f.answer)}`) }),
+    };
+  },
+  swap: (lab, task, k) => {
+    const prev = L.swappedFrom(lab) ?? lab.tasks[Math.max(0, lab.ti - 1)];
+    const before = turnsWith(k, prev.goalPedal);
+    const after = turnsWith(k, task.goalPedal);
+    const o = { F: iso(task.F), R: iso(task.R), before, after, wheel: turnsWith(k, task.target), half: turnsWith(k, mul(prev.goalPedal, rat(1n, 2n))), teeth: iso(task.goalTeeth) };
+    return {
+      id: 'swap', kind: 'choice',
+      prompt: Mx(k, 'swap.prompt', o),
+      options: [
+        { text: Mx(k, 'swap.right', o), correct: true },
+        { text: Mx(k, 'swap.same', o), why: Mx(k, 'swap.whySame', o) },
+        { text: Mx(k, 'swap.half', o), why: Mx(k, 'swap.whyHalf') },
+      ],
+      hints: [Mx(k, 'swap.hint1'), Mx(k, 'swap.hint2', o)],
+      explain: Mx(k, 'swap.explain', o),
     };
   },
   product: (lab, task, k) => {

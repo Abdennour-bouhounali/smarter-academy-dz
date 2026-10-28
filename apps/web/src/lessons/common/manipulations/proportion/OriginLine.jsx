@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 import { ArrowLeft, ArrowRight, ArrowUp, ArrowDown, MapPin, Minus, Plus } from 'lucide-react';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
@@ -10,6 +11,10 @@ import { useManipulation } from '../useManipulation';
 import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import MathText from '../../components/MathText';
 import * as L from '../logic/originLine';
 
@@ -100,8 +105,8 @@ const COLORS = { rising: '#059669', falling: '#E11D48', flat: '#64748B' };
 
 export default function OriginLine({
   a: a0, mode: mode0 = 'draw', points, reads, cap, xMin, xMax, yMin, yMax, theme: theme0 = 'cablecar', showRule,
-  title, lead, mission, level, levels: withLevels = true, initialMode = 'student', allowModeSwitch = false,
-  onTrial, onFinished,
+  title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false,
+  onTrial, onFinished, onCheckpoint,
 }) {
   const { t, i18n } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.originLine.${key}`, o), [t]);
@@ -128,14 +133,15 @@ export default function OriginLine({
   const [liveJ, setLiveJ] = useState(null);
   const [drag, setDrag] = useState(null); // 'pin' | 'line' | null
   const [shake, setShake] = useState({ o: 0, pin: 0 });
+  const [inits, setInits] = useState(0);        // « إعادة », un autre niveau : les questions du labo repartent aussi
+  const [cleared, setCleared] = useState([]);   // les étapes dont la suite de questions est répondue
   if (scene !== sceneKey) {
     const fresh = make();
     setScene(sceneKey); setLab(fresh); setPin(fresh.mode === 'draw' ? L.startPin(fresh) : null);
-    setLiveXi(null); setLiveYi(null); setLiveJ(null); setDrag(null);
+    setLiveXi(null); setLiveYi(null); setLiveJ(null); setDrag(null); setInits((n) => n + 1); setCleared([]);
   }
 
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, { mode, a: lab.lineA ? L.numText(lab.lineA) : null }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const nTrials = lab.trials.length;
@@ -347,6 +353,51 @@ export default function OriginLine({
   /* ── la découverte : distracteurs réfutés par les essais de l'élève ── */
   const discoveryOptions = useMemo(() => discoveryFor(lab, k), [lab, k]);
   const formal = <Formal lab={lab} k={k} fTex={fTex} />;
+
+  /* ── les questions PENDANT le labo (primitives/LabCheckpoint) : deux étapes par scène, la seconde finit par LA RÈGLE ── */
+  const cpSettings = useLabCheckpointSettings('origin-line');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpLive = cpOn && cpSettings.enabled;
+  const stageNow = cleared.includes(`${mode}1`) ? 1 : 0;
+  const stageId = `${mode}${stageNow + 1}`;
+  const stageOk = L.stageReached(lab, stageNow);
+  const cp = useLabCheckpoint({
+    id: cpLive ? stageId : null,
+    questions: cpLive && stageOk ? chainOf(lab, stageNow).map((q) => QUESTIONS[q](lab, k, { fTex, formal, rulePrompt: <MathText>{k(`dPrompt.${mode}`)}</MathText> })) : null,
+    reached: stageOk,
+    resetKey: inits,
+    onRetry: () => {
+      const fresh = make();
+      setLab(fresh); setPin(fresh.mode === 'draw' ? L.startPin(fresh) : null); setLiveXi(null); setLiveYi(null); setLiveJ(null); setDrag(null);
+    },
+    onEvent: (ev) => state.report(onCheckpoint, ev),   // {tk:'checkpoint'|'checkpoint-done', id: 'draw1'…, …} — la TRACE que les étapes du module relisent
+    onDone: (id) => {
+      setCleared((c) => (c.includes(id) ? c : [...c, id]));
+      if (id === `${mode}2`) { state.discover(); state.formalize(); }
+    },
+  });
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, cpLive, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // une étape est FAITE quand son objectif est atteint ET sa suite répondue : la pastille passe au vert et on fête
+  const stepDone = [0, 1].map((i) => L.stageReached(lab, i) && (!cpLive || cleared.includes(`${mode}${i + 1}`)));
+  const nDone = stepDone.findIndex((d) => !d) < 0 ? stepDone.length : stepDone.findIndex((d) => !d);
+  const party = useStepCelebration();
+  const celebrated = useRef({ n: 0, inits });
+  if (celebrated.current.inits !== inits) celebrated.current = { n: 0, inits };   // « إعادة » : on refête
+  useEffect(() => {
+    if (nDone <= celebrated.current.n) return;
+    celebrated.current.n = nDone;
+    party.celebrate({ n: nDone, total: stepDone.length });
+  }, [nDone]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // le son du GESTE (muet sans « الصوت ») : « bell » un point posé, « tooth » une lecture ou une droite, « flag » l'objectif, « over » un refus
+  useEffect(() => {
+    const kind = lab.last?.kind;
+    if (!kind) return;
+    if (kind === 'accepted') playSfx('bell');
+    else if (kind === 'refused' || kind === 'origin') playSfx('over');
+    else if (kind === 'fitAll' || (kind === 'read-y' && lab.last.capHit)) playSfx('flag');
+    else playSfx('tooth');
+  }, [lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── représentation vivante ── */
   const representation = <Representation lab={lab} k={k} pivotA={pivotA} />;
@@ -581,6 +632,8 @@ export default function OriginLine({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={cpLive}
       hints={hintKeys.map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false, ...(autoComplete ? { autoComplete } : {}) }}
       representation={representation}
@@ -590,8 +643,11 @@ export default function OriginLine({
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-sky-50/70 to-white">
-        <div ref={boxRef} className="space-y-3" data-origin-line data-mode={mode} data-theme={theme} data-a={a ?? ''}
+        <div ref={boxRef} className="relative space-y-3" data-origin-line data-mode={mode} data-theme={theme} data-a={a ?? ''}
           data-line-a={shownA != null ? L.numText(shownA) : ''} data-layout={layout} data-budget={budget} data-ctrl-h={ctrlH}>
+          {party.node}
+          {cp.node}
+          <LabStepper count={2} current={stageNow} done={stepDone} stepAttr="data-ol-step" />
           <div className={wide ? 'grid items-start gap-3' : 'space-y-3'} style={wide ? { gridTemplateColumns: `${planeCol}px 1fr` } : undefined} data-ol-glance>
             {plane}
             {controls}
@@ -822,7 +878,7 @@ function discoveryFor(lab, k) {
   ];
 }
 
-function Formal({ lab, k, fTex }) {
+export function Formal({ lab, k, fTex }) {
   const M = (s) => <MathText>{s}</MathText>;
   if (lab.mode === 'draw') {
     const pts = [{ x: L.parseValue('0'), y: L.parseValue('0'), label: 'O' }, ...lab.placed];
@@ -949,3 +1005,162 @@ const OL_CSS = '.ol-shake{animation:ol-s .35s ease-in-out 1}@keyframes ol-s{0%,1
   + '.ol-bounce{animation:ol-b .5s ease-out 2}@keyframes ol-b{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}'
   + '.ol-drop{animation:ol-d .6s ease-in 1}@keyframes ol-d{0%{transform:translateY(-8px);opacity:.3}100%{transform:translateY(0);opacity:1}}'
   + '@media (prefers-reduced-motion: reduce){.ol-shake,.ol-bounce,.ol-drop{animation:none}}';
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/**
+ * La suite de questions de chaque étape d'une scène. Étape 0 : le premier objectif atteint (un point posé · une lecture · une droite) ; étape 1 :
+ * la découverte prête, la suite finit par LA RÈGLE (l'ancienne découverte, qui formalise).
+ */
+export function chainOf(lab, stage) {
+  const m = lab.mode;
+  if (stage === 0) return { draw: ['dratio', 'dpredict'], read: ['rvocab', 'rcompute'], pivot: ['pdir', 'pordinate'], fit: ['fhits', 'fratio'] }[m];
+  return { draw: ['dalign', 'rule'], read: ['rways', 'rule'], pivot: ['psign', 'rule'], fit: [L.fitPossible(lab) ? 'fcommon' : 'fnone', 'rule'] }[m];
+}
+
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const D = (x) => `$${x}$`;
+const spread = (list, seed) => { const r = seed % list.length; return [...list.slice(r), ...list.slice(0, r)]; };
+const seedOf = (lab) => lab.trials.length + lab.placed.length + lab.readsDone.length + lab.lines.length;
+const T = (x) => <MathText>{D(L.numTex(x))}</MathText>;
+
+/** Une valeur à calculer : saisie libre si elle est ≥ 0 (une réponse saisie ne peut être négative), sinon trois choix aux erreurs réelles (signe, décalage). */
+function valueQ(lab, k, { id, v, prompt, hints, explain }) {
+  if (Lin.cmp(v, 0) >= 0) return { id, kind: 'number', expected: Lin.fracText(v), answer: T(v), prompt, hints, explain };
+  const opts = [
+    { text: T(v), correct: true },
+    { text: T(Lin.neg(v)), why: Cq(k, 'sign') },
+    { text: T(Lin.add(v, 1)), why: Cq(k, 'off') },
+  ];
+  return { id, kind: 'choice', cols: 3, prompt, options: spread(opts, seedOf(lab)), hints, explain };
+}
+
+const lastOf = (list, axis) => [...list].reverse().find((r) => r.axis === axis);
+
+export const QUESTIONS = {
+  /* ── draw ── */
+  dratio: (lab, k) => {
+    const A = lab.placed[0];
+    const r = L.slopeThrough(A.x, A.y);
+    const o = { A: A.label, x: D(L.numTex(A.x)), y: D(L.numTex(A.y)), P: D(L.pointTex(A.x, A.y)), a: D(L.numTex(r)), calc: D(`${L.numTex(A.y)} \\div ${Lin.cmp(A.x, 0) < 0 ? `(${L.numTex(A.x)})` : L.numTex(A.x)} = ${L.numTex(r)}`) };
+    return valueQ(lab, k, { id: 'dratio', v: r, prompt: Cq(k, 'dratio.prompt', o), hints: [Cq(k, 'dratio.hint1', o), Cq(k, 'dratio.hint2', o)], explain: Cq(k, 'dratio.explain', o) });
+  },
+  dpredict: (lab, k) => {
+    const A = lab.placed[0];
+    const xq = Lin.mul(A.x, 2);
+    const v = L.imageOf(lab.a, xq);
+    const o = { x: D(L.numTex(xq)), a: D(L.numTex(lab.a)), ax: D(`${L.numTex(lab.a)} \\times ${Lin.cmp(xq, 0) < 0 ? `(${L.numTex(xq)})` : L.numTex(xq)}`), calc: D(L.productTex(lab.a, xq)) };
+    return valueQ(lab, k, { id: 'dpredict', v, prompt: Cq(k, 'dpredict.prompt', o), hints: [Cq(k, 'dpredict.hint1', o), Cq(k, 'dpredict.hint2', o)], explain: Cq(k, 'dpredict.explain', o) });
+  },
+  dalign: (lab, k) => {
+    const [A] = lab.placed;
+    const B = lab.placed.find((p) => !L.same(p.x, A.x)) ?? lab.placed[1];
+    const o = { A: A.label, B: B.label, xa: D(L.numTex(A.x)), xb: D(L.numTex(B.x)), ya: D(L.numTex(A.y)), yb: D(L.numTex(B.y)), a: D(L.numTex(lab.a)) };
+    const opts = [
+      { text: Cq(k, 'dalign.ratio', o), correct: true },
+      { text: Cq(k, 'dalign.x', o), why: Cq(k, 'dalign.whyX', o) },
+      { text: Cq(k, 'dalign.y', o), why: Cq(k, 'dalign.whyY', o) },
+    ];
+    return { id: 'dalign', kind: 'choice', cols: 3, prompt: Cq(k, 'dalign.prompt', o), options: spread(opts, seedOf(lab)), hints: [Cq(k, 'dalign.hint1', o), Cq(k, 'dalign.hint2', o)], explain: Cq(k, 'dalign.explain', o) };
+  },
+  /* ── read ── */
+  rvocab: (lab, k) => {
+    const r = lab.readsDone[lab.readsDone.length - 1];
+    const o = { v: D(L.numTex(r.v)), other: D(r.axis === 'x' ? L.numTex(r.other) : L.approxTex(r.other)), a: D(L.numTex(lab.lineA)) };
+    const isX = r.axis === 'x';
+    const opts = [
+      { text: Cq(k, 'rvocab.image', o), ...(isX ? { correct: true } : { why: Cq(k, 'rvocab.whyImage', o) }) },
+      { text: Cq(k, 'rvocab.ant', o), ...(!isX ? { correct: true } : { why: Cq(k, 'rvocab.whyAnt', o) }) },
+      { text: Cq(k, 'rvocab.coef', o), why: Cq(k, 'rvocab.whyCoef', o) },
+    ];
+    return { id: 'rvocab', kind: 'choice', cols: 3, prompt: Cq(k, isX ? 'rvocab.promptX' : 'rvocab.promptY', o), options: spread(opts, seedOf(lab)), hints: [Cq(k, 'rvocab.hint1', o), Cq(k, 'rvocab.hint2', o)], explain: Cq(k, isX ? 'rvocab.explainX' : 'rvocab.explainY', o) };
+  },
+  rcompute: (lab, k) => {
+    const r = lab.readsDone[lab.readsDone.length - 1];
+    const a = lab.lineA;
+    if (r.axis === 'x') {
+      const o = { a: D(L.numTex(a)), x: D(L.numTex(r.v)), ax: D(`${L.numTex(a)} \\times ${L.numTex(r.v)}`), calc: D(L.productTex(a, r.v)) };
+      return valueQ(lab, k, { id: 'rcompute', v: r.other, prompt: Cq(k, 'rcompute.promptX', o), hints: [Cq(k, 'rcompute.hint1X', o), Cq(k, 'rcompute.hint2X', o)], explain: Cq(k, 'rcompute.explainX', o) });
+    }
+    const o = { a: D(L.numTex(a)), y: D(L.numTex(r.v)) };
+    const opts = [
+      { text: Cq(k, 'rcompute.div', o), correct: true },
+      { text: Cq(k, 'rcompute.times', o), why: Cq(k, 'rcompute.whyTimes', o) },
+      { text: Cq(k, 'rcompute.minus', o), why: Cq(k, 'rcompute.whyMinus', o) },
+    ];
+    return { id: 'rcompute', kind: 'choice', cols: 3, prompt: Cq(k, 'rcompute.promptY', o), options: spread(opts, seedOf(lab)), hints: [Cq(k, 'rcompute.hint1Y', o), Cq(k, 'rcompute.hint2Y', o)], explain: Cq(k, 'rcompute.explainY', o) };
+  },
+  rways: (lab, k) => {
+    const a = lab.lineA;
+    const rx = lastOf(lab.readsDone, 'x'); const ry = lastOf(lab.readsDone, 'y');
+    const o = {
+      a: D(L.numTex(a)),
+      x: D(L.numTex(rx?.v ?? 1)), y: D(L.numTex(rx?.other ?? a)),
+      y2: D(L.numTex(ry?.v ?? 1)), eq: D(`${L.numTex(a)} \\times ${L.numTex(rx?.v ?? 1)} = ${L.numTex(rx?.other ?? a)}`),
+    };
+    const opts = [
+      { text: Cq(k, 'rways.right', o), correct: true },
+      { text: Cq(k, 'rways.swap', o), why: Cq(k, 'rways.whySwap', o) },
+      { text: Cq(k, 'rways.both', o), why: Cq(k, 'rways.whyBoth', o) },
+    ];
+    return { id: 'rways', kind: 'choice', cols: 3, prompt: Cq(k, 'rways.prompt'), options: spread(opts, seedOf(lab)), hints: [Cq(k, 'rways.hint1', o), Cq(k, 'rways.hint2', o)], explain: Cq(k, 'rways.explain', o) };
+  },
+  /* ── pivot ── */
+  pdir: (lab, k) => {
+    const l = lab.lines[lab.lines.length - 1];
+    const o = { a: D(L.numTex(l.a)), eq: D(L.lineTex(l.a)) };
+    const opts = ['rising', 'falling', 'flat'].map((d) => ({ text: Cq(k, `pdir.${d}`), ...(l.dir === d ? { correct: true } : { why: Cq(k, 'pdir.why', o) }) }));
+    return { id: 'pdir', kind: 'choice', cols: 3, prompt: Cq(k, 'pdir.prompt', o), options: opts, hints: [Cq(k, 'pdir.hint1', o), Cq(k, 'pdir.hint2', o)], explain: Cq(k, `pdir.explain.${l.dir}`, o) };
+  },
+  pordinate: (lab, k) => {
+    const l = lab.lines[lab.lines.length - 1];
+    const two = Lin.frac(2);
+    const v = L.imageOf(l.a, two);
+    const o = { eq: D(L.lineTex(l.a)), a: D(L.numTex(l.a)), ax: D(`${L.numTex(l.a)} \\times 2`), calc: D(L.productTex(l.a, two)) };
+    return valueQ(lab, k, { id: 'pordinate', v, prompt: Cq(k, 'pordinate.prompt', o), hints: [Cq(k, 'pordinate.hint1', o), Cq(k, 'pordinate.hint2', o)], explain: Cq(k, 'pordinate.explain', o) });
+  },
+  psign: (lab, k) => {
+    const up = lab.lines.find((l) => l.dir === 'rising');
+    const down = lab.lines.find((l) => l.dir === 'falling');
+    const o = { up: D(L.lineTex(up.a)), down: D(L.lineTex(down.a)) };
+    const opts = [
+      { text: Cq(k, 'psign.sign'), correct: true },
+      { text: Cq(k, 'psign.abs'), why: Cq(k, 'psign.whyAbs', o) },
+      { text: Cq(k, 'psign.origin'), why: Cq(k, 'psign.whyOrigin', o) },
+    ];
+    return { id: 'psign', kind: 'choice', cols: 3, prompt: Cq(k, 'psign.prompt', o), options: spread(opts, seedOf(lab)), hints: [Cq(k, 'psign.hint1', o), Cq(k, 'psign.hint2', o)], explain: Cq(k, 'psign.explain', o) };
+  },
+  /* ── fit ── */
+  fhits: (lab, k) => {
+    const l = lab.lines[lab.lines.length - 1];
+    const n = l.hits.filter(Boolean).length;
+    const o = { eq: D(L.lineTex(l.a)), m: lab.points.length, n };
+    return { id: 'fhits', kind: 'number', expected: String(n), answer: <MathText>{D(String(n))}</MathText>, prompt: Cq(k, 'fhits.prompt', o), hints: [Cq(k, 'fhits.hint1', o), Cq(k, 'fhits.hint2', o)], explain: Cq(k, 'fhits.explain', o) };
+  },
+  fratio: (lab, k) => {
+    const p = lab.points.find((q) => !Lin.isZero(q.x)) ?? lab.points[0];
+    const r = L.slopeThrough(p.x, p.y);
+    const o = { x: D(L.numTex(p.x)), y: D(L.numTex(p.y)), P: D(L.pointTex(p.x, p.y)), a: D(L.numTex(r)), calc: D(`${L.numTex(p.y)} \\div ${L.numTex(p.x)} = ${L.numTex(r)}`) };
+    return valueQ(lab, k, { id: 'fratio', v: r, prompt: Cq(k, 'fratio.prompt', o), hints: [Cq(k, 'fratio.hint1', o), Cq(k, 'fratio.hint2', o)], explain: Cq(k, 'fratio.explain', o) });
+  },
+  fcommon: (lab, k) => {
+    const o = { a: D(L.numTex(lab.fitA)), eq: D(L.lineTex(lab.fitA)) };
+    return valueQ(lab, k, { id: 'fcommon', v: lab.fitA, prompt: Cq(k, 'fcommon.prompt', o), hints: [Cq(k, 'fcommon.hint1', o), Cq(k, 'fcommon.hint2', o)], explain: Cq(k, 'fcommon.explain', o) });
+  },
+  fnone: (lab, k) => {
+    const opts = [
+      { text: Cq(k, 'fnone.ratios'), correct: true },
+      { text: Cq(k, 'fnone.few'), why: Cq(k, 'fnone.whyFew') },
+      { text: Cq(k, 'fnone.window'), why: Cq(k, 'fnone.whyWindow') },
+    ];
+    return { id: 'fnone', kind: 'choice', cols: 3, prompt: Cq(k, 'fnone.prompt'), options: spread(opts, seedOf(lab)), hints: [Cq(k, 'fnone.hint1'), Cq(k, 'fnone.hint2')], explain: Cq(k, 'fnone.explain') };
+  },
+  /* ── la règle (l'ancienne découverte) ── */
+  rule: (lab, k, ctx) => ({
+    id: 'rule', kind: 'choice',
+    prompt: ctx.rulePrompt,
+    options: spread(discoveryFor(lab, k), seedOf(lab) + 1),
+    hints: [Cq(k, `rule.hint1.${lab.mode}`), Cq(k, `rule.hint2.${lab.mode}`)],
+    explain: ctx.formal,
+  }),
+};

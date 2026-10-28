@@ -345,6 +345,19 @@ export function discoveryReady(s) {
   return s.points.every((_, i) => s.lines.some((l) => l.hits[i]));
 }
 
+/* ── les questions pendant le labo (2026-10-28, lot 5) : deux étapes par scène ───────────── */
+
+/**
+ * L'étape i est-elle atteinte ? 0 : le premier objectif (un point posé · une lecture · une droite validée) ; 1 : la découverte est prête
+ * (deux points · les deux lectures · une droite qui monte ET une qui descend · une droite par toutes les données).
+ */
+export function stageReached(s, i) {
+  if (i === 1) return discoveryReady(s);
+  if (s.mode === 'draw') return s.placed.length >= 1;
+  if (s.mode === 'read') return s.readsDone.length >= 1;
+  return s.lines.length >= 1;
+}
+
 /* ── écritures (affichage) ──────────────────────────────────────────────── */
 
 /** « 0,5 », « -1,6 », « 9/4 » (texte simple, ARIA, data-*). */

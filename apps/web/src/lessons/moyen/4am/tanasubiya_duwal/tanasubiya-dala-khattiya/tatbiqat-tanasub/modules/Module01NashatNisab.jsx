@@ -5,6 +5,7 @@ import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox } from '../../../../../../common/textbook';
 import { parseDec } from '@smarter-academy/core';
+import { useLabCheckpointSettings } from '../../../../../../common/manipulations/primitives/labCheckpointSettings';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACT5_ANSWERS, LAB } from '../content/textbook';
 
@@ -36,6 +37,12 @@ const M = (s) => <MathText key={s}>{s}</MathText>;
 export default function Module01NashatNisab() {
   const [mine, setMine] = useState(null);
   const [tank, setTank] = useState(null);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint, lot 5) : le multiplicateur de la barre « بعد » y est demandé (étape `set`) ;
+  // l'étape 1 en garde la TRACE, et reprend sa propre question quand l'enseignant coupe les questions du labo
+  const cpOn = useLabCheckpointSettings('percent-tag').enabled;
+  const [cpIds, setCpIds] = useState([]);
+  const onCheckpoint = (ev) => { if (ev.tk === 'checkpoint-done') setCpIds((l) => (l.includes(ev.id) ? l : [...l, ev.id])); };
+  const answered = (id) => cpIds.includes(id);
   const [q1a, setQ1a] = useState(false);
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
@@ -103,6 +110,7 @@ export default function Module01NashatNisab() {
                 title="نشاط 5: زيادة 5% على 1200DA"
                 lead="اختر «زيادة» ومدّد الشريط حتى +5%، ثم جرّب «أضف 5» وطبّق النسبة على قطعة أخرى."
                 onTrial={setMine}
+                onCheckpoint={onCheckpoint}
               />
             ),
             advanced: () => (
@@ -113,6 +121,7 @@ export default function Module01NashatNisab() {
                 title="الخزان: نفرغ 30% ثم نضيف 15%"
                 lead="راهن أولًا على التغيّر الكلي للحجم، ثم ابنِ التغيّرين: هل يصدق رهانك؟"
                 onTrial={setTank}
+                onCheckpoint={onCheckpoint}
               />
             ),
           }}
@@ -120,24 +129,33 @@ export default function Module01NashatNisab() {
       }
       steps={[
         {
-          num: 1, title: 'بماذا ضُرب السعر؟', subtitle: 'عن بطاقتك — المستوى المبتدئ', done: q3,
+          num: 1, title: 'بماذا ضُرب السعر؟', subtitle: 'عن بطاقتك — المستوى المبتدئ', done: cpOn ? answered('set') : q3,
           content: (
             <div className="space-y-3">
               {evidencePrice}
-              <NumericQuestion
-                prompt="في بطاقتك، شريط «بعد» لزيادة 5% هو شريط «قبل» مضروبًا في العدد:"
-                expected={1.05}
-                display="1,05"
-                parse={parseDec}
-                explainFor={(n) => (n === 5
-                  ? <MathText>{'«أضف 5» هو ما رفضته الواجهة: $1200 + 5 = 1205$ ليس 5% من 1200. الزيادة 5% هي $1200 \\times \\dfrac{5}{100} = 60$ ، والسعر $1260 = 1200 \\times 1{,}05$ .'}</MathText>
-                  : n === 0.05
-                    ? <MathText>{'$0{,}05$ هو مقدار الزيادة وحده ( $1200 \\times 0{,}05 = 60$ ). الشريط «بعد» يضمّ السعر الأول والزيادة: $1 + 0{,}05 = 1{,}05$ .'}</MathText>
-                    : <MathText>{ACT5_ANSWERS.price}</MathText>)}
-                explain={<MathText>{ACT5_ANSWERS.price}</MathText>}
-                onAnswered={() => setQ3(true)}
-              />
-              {q3 && <KnowledgeBrick id="ziyada-darb" lead="ما فعله الشريط الملوّن: لم يُضف 5، بل ضرب في 1,05:" />}
+              {cpOn ? (
+                <p data-evidence="checkpoint" data-tried={answered('set') ? 'true' : 'false'}
+                  className={`rounded-xl border-2 px-3 py-2 text-sm ${answered('set') ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                  {answered('set')
+                    ? 'أجبتَ في الواجهة عن العدد الذي ضُرب فيه السعر القديم: شريط «بعد» هو شريط «قبل» مضروبًا في 1,05.'
+                    : 'مدّد الشريط حتى +5% في الواجهة أعلاه وأجب عن أسئلتها: بماذا ضُرب السعر القديم؟'}
+                </p>
+              ) : (
+                <NumericQuestion
+                  prompt="في بطاقتك، شريط «بعد» لزيادة 5% هو شريط «قبل» مضروبًا في العدد:"
+                  expected={1.05}
+                  display="1,05"
+                  parse={parseDec}
+                  explainFor={(n) => (n === 5
+                    ? <MathText>{'«أضف 5» هو ما رفضته الواجهة: $1200 + 5 = 1205$ ليس 5% من 1200. الزيادة 5% هي $1200 \\times \\dfrac{5}{100} = 60$ ، والسعر $1260 = 1200 \\times 1{,}05$ .'}</MathText>
+                    : n === 0.05
+                      ? <MathText>{'$0{,}05$ هو مقدار الزيادة وحده ( $1200 \\times 0{,}05 = 60$ ). الشريط «بعد» يضمّ السعر الأول والزيادة: $1 + 0{,}05 = 1{,}05$ .'}</MathText>
+                      : <MathText>{ACT5_ANSWERS.price}</MathText>)}
+                  explain={<MathText>{ACT5_ANSWERS.price}</MathText>}
+                  onAnswered={() => setQ3(true)}
+                />
+              )}
+              {(cpOn ? answered('set') : q3) && <KnowledgeBrick id="ziyada-darb" lead="ما فعله الشريط الملوّن: لم يُضف 5، بل ضرب في 1,05:" />}
             </div>
           ),
         },
@@ -237,7 +255,7 @@ export default function Module01NashatNisab() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

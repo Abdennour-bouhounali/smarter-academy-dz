@@ -259,6 +259,36 @@ export const betRefuted = (lab) => lab.betTrials.find((t) => !t.ok && sameSteps(
 /** Le contraste : une chaîne de deux changements opposés (−t puis +t, ou l'inverse). */
 export const contrastChain = (lab) => lab.chains.find((c) => c.steps.length === 2 && c.steps[0] === -c.steps[1]) ?? null;
 
+/**
+ * « أعِد التجربة » d'une étape (questions pendant le labo) : efface SEULEMENT ce que cette étape avait construit.
+ *   set       l'essai du t % de la leçon sur l'article de la leçon ;
+ *   table     les essais au t % de la leçon sur les AUTRES articles ;
+ *   add       les essais de la barre additive ;
+ *   chain     la chaîne courante, la chaîne de la leçon et ses paris confrontés ;
+ *   contrast  les chaînes de deux changements opposés (et leurs paris).
+ */
+export function retryTask(lab, id) {
+  const s0 = lab.target[0];
+  const base = { ...lab, s: 0, additive: null, last: null };
+  if (id === 'set') return { ...base, trials: lab.trials.filter((t) => !(t.id === lab.articles[0].id && t.s === s0)) };
+  if (id === 'table') return { ...base, trials: lab.trials.filter((t) => !(t.id !== lab.articles[0].id && t.s === s0)), selected: lab.articles[0].id };
+  if (id === 'add') return { ...base, additiveTrials: [] };
+  if (id === 'chain') {
+    return {
+      ...base, chain: [], chains: lab.chains.filter((c) => !sameSteps(c.steps, lab.target)),
+      betTrials: lab.betTrials.filter((b) => !sameSteps(b.steps, lab.target)),
+    };
+  }
+  if (id === 'contrast') {
+    const opposite = (c) => c.steps.length === 2 && c.steps[0] === -c.steps[1];
+    return { ...base, chain: [], chains: lab.chains.filter((c) => !opposite(c)), betTrials: lab.betTrials.filter((b) => !(b.steps.length === 2 && b.steps[0] === -b.steps[1])) };
+  }
+  return base;
+}
+
+/** Le pari a-t-il été confronté à la chaîne de la leçon (juste ou faux) ? */
+export const betTriedOnTarget = (lab) => lab.betTrials.some((b) => sameSteps(b.steps, lab.target));
+
 /* ── La découverte ───────────────────────────────────────────────────────────────── */
 
 /**

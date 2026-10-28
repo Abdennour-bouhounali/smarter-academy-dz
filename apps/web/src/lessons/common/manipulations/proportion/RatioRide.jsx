@@ -11,6 +11,10 @@ import { useManipulation } from '../useManipulation';
 import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import MathText from '../../components/MathText';
 import * as L from '../logic/ratioRide';
 
@@ -68,7 +72,15 @@ import * as L from '../logic/ratioRide';
  * compact, jamais une bande). Le secondaire (les formules des tarifs) est dans un `LabFold` sous la
  * manipulation. Mesuré par apps/web/e2e/lesson-kit/4am-tanasub-muamil.mjs aux quatre viewports.
  *
- * Props : `plans` (« 15x » | « 15x|10x+50 », écrits comme le manuel), `theme` ('scooter'), `title`,
+ * QUESTIONS PENDANT LE LABO (2026-10-28, lot 5, `primitives/LabCheckpoint`) : scène libre sans tâches successives → DEUX étapes `LabStepper`.
+ *   étape 1 « juger » (atteinte quand chaque tableau a reçu son bon jugement) : مبتدئ lire y ÷ x · le constater · doubler la durée ;
+ *   متقدم lire y ÷ x · le prix à 0 minute · pourquoi (ب) n'est pas proportionnelle ;
+ *   étape 2 « la règle » (atteinte quand la colonne fantôme / y = □ × x est faite) : prévoir un prix hors règle · la règle (l'ancienne découverte, qui
+ *   formalise). La colonne fantôme / la formule ne s'ouvrent qu'après la 1re suite. OBLIGATOIRES pour tout élève ; l'enseignant seul les coupe
+ *   (`useLabCheckpointSettings`) : coupées, la découverte d'avant reprend. Événements `{ tk: 'checkpoint' | 'checkpoint-done', id, … }` → `onCheckpoint`
+ *   (jamais `onTrial`). Son (`playSfx`) : `tooth` à chaque minute de la règle, `bell` à chaque colonne, `flag` jugement/ligne juste, `over` refus.
+ *   DOM : [data-ride-step=0|1] (LabStepper).
+ * Props : `checkpoints` (défaut true), `onCheckpoint(ev)`, `plans` (« 15x » | « 15x|10x+50 », écrits comme le manuel), `theme` ('scooter'), `title`,
  * `lead`, `mission`, `level`, `levels` (false : posé seul sans sélecteur), `onTrial(t)` à chaque colonne
  * enregistrée ({ x, columns, rows: [{ id, y, ratio }] }), `onJudged({ id, says, ok })` à chaque jugement,
  * `onFinished` à la règle formelle — tous par `state.report`.
@@ -85,7 +97,7 @@ const COLORS = { A: '#0F766E', B: '#C2410C' };
 
 export default function RatioRide({
   plans: plans0 = '15x', theme = 'scooter', title, lead, mission, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onJudged, onFinished,
+  checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false, onTrial, onJudged, onCheckpoint, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.ratioRide.${key}`, o), [t]);
@@ -100,9 +112,20 @@ export default function RatioRide({
   const [liveX, setLiveX] = useState(null);
   const [ghostRaw, setGhostRaw] = useState('');
   const [formulaRaw, setFormulaRaw] = useState('');
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setLiveX(null); setGhostRaw(''); setFormulaRaw(''); }
+  const [inits, setInits] = useState(0);
+  const [cpDone, setCpDone] = useState({});
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setLiveX(null); setGhostRaw(''); setFormulaRaw(''); setInits((n) => n + 1); setCpDone({}); }
 
-  const ready = L.discoveryReady(lab);
+  // les questions pendant le labo : obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpSettings = useLabCheckpointSettings('ratio-ride');
+  const cpEnabled = cpOn && cpSettings.enabled;
+  const judgeReached = L.allJudged(lab);
+  const judgeOk = cpEnabled ? !!cpDone.judge : judgeReached;      // étape 1 faite : bien jugé ET ses questions répondues
+  const ruleReached = L.discoveryReady(lab);
+  const ruleOk = cpEnabled ? !!cpDone.rule : ruleReached;         // étape 2 faite
+  const stage = judgeOk ? 'rule' : 'judge';
+
+  const ready = ruleReached && !cpEnabled;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, plans); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -124,6 +147,44 @@ export default function RatioRide({
     if (!last || !['yesOk', 'yesRefused', 'noOk', 'noRefused'].includes(last.kind)) return;
     state.report(onJudged, { id: last.id, says: last.kind.startsWith('yes') ? 'yes' : 'no', ok: last.kind.endsWith('Ok') });
   }, [lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── le son (2026-10-28) : un déclic par minute de la règle (plus grave en arrière), une cloche à chaque colonne enregistrée, le drapeau pour un
+     jugement ou une ligne juste, « over » pour un refus. Muet sauf « الصوت » (l'interrupteur de l'en-tête du labo). ── */
+  const sfx = useRef({ x: undefined, at: 0, key: -1, rec: 0, last: null });
+  useEffect(() => {
+    const p = sfx.current;
+    const x = liveX ?? L.defaultX(lab);
+    if (p.key !== inits) { sfx.current = { x, at: 0, key: inits, rec: lab.recorded, last: lab.last }; return; }
+    if (p.x !== x && x != null && p.x != null) {
+      const now = performance.now();
+      if (now - p.at > 35) { playSfx('tooth', { pitch: x > p.x ? 1 : 0.75 }); p.at = now; }
+    }
+    p.x = x;
+  }, [liveX, inits]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    const p = sfx.current;
+    if (p.key !== inits) return;
+    if (lab.recorded > p.rec) playSfx('bell');
+    p.rec = lab.recorded;
+    const kind = lab.last?.kind;
+    if (lab.last !== p.last && kind) {
+      if (['yesOk', 'noOk', 'ghostOk', 'formulaOk'].includes(kind)) playSfx('flag');
+      else if (['yesRefused', 'noRefused', 'ghostWrong', 'formulaWrong'].includes(kind)) playSfx('over');
+    }
+    p.last = lab.last;
+  }, [lab.recorded, lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── la fête : une fois par étape FAITE (réarmée après « إعادة ») ── */
+  const party = useStepCelebration();
+  const celebrated = useRef({ key: inits, set: new Set() });
+  if (celebrated.current.key !== inits) celebrated.current = { key: inits, set: new Set() };
+  useEffect(() => {
+    [judgeOk, ruleOk].forEach((d, i) => {
+      if (!d || celebrated.current.set.has(i)) return;
+      celebrated.current.set.add(i);
+      party.celebrate({ n: i + 1, total: 2 });
+    });
+  }, [judgeOk, ruleOk, inits]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── mesure : la largeur de la scène et la HAUTEUR de l'écran de leçon ── */
   const boxRef = useRef(null);
@@ -234,8 +295,41 @@ export default function RatioRide({
   );
 
   const judgedAll = L.allJudged(lab);
-  const ghostOpen = !lab.two && lp && lab.verdicts[lp.id] === 'yes';
-  const formulaOpen = lab.two && lp && lab.verdicts[lp.id] === 'yes';
+  const ghostOpen = !lab.two && lp && lab.verdicts[lp.id] === 'yes' && judgeOk;
+  const formulaOpen = lab.two && lp && lab.verdicts[lp.id] === 'yes' && judgeOk;
+
+  /* ── les questions pendant le labo : la suite de l'étape courante (construite seulement quand l'étape est atteinte) ── */
+  const sol = state.isFormal || state.isDiscovered;
+  const other = lab.plans.find((p) => !p.linear);
+  const otherW = other ? L.witness(lab, other.id) : null;
+  const formalNode = lp ? (
+    <div className="space-y-2" data-ride-formal>
+      <EquationDisplay tone="neutral" tex={L.equalRatiosTex(lab, lp.id)} note={<MathText>{k('fRatios')}</MathText>} />
+      <EquationDisplay tone="result" tex={L.planTex(lp)} note={<MathText>{k('fCoef', { a: $(L.numTex(lp.rule.a)) })}</MathText>} />
+      {!lab.two && lab.ghost.done && (
+        <EquationDisplay tone="neutral" tex={`${lab.ghost.x} \\times ${L.numTex(lp.rule.a)} = ${L.numTex(L.price(lab, lp.id, lab.ghost.x))}`} note={<MathText>{k('fGhost')}</MathText>} />
+      )}
+      {otherW && (
+        <EquationDisplay tone="ko" tex={otherW.kind === 'zero' ? `x = 0 \\;\\Rightarrow\\; y = ${L.numTex(otherW.y)} \\neq 0` : `${L.quotientTex(otherW.c1.x, otherW.c1.y, otherW.c1.r)} \\neq ${L.quotientTex(otherW.c2.x, otherW.c2.y, otherW.c2.r)}`}
+          note={<MathText>{k('fNotProp', { b: L.numText(other.rule.b) })}</MathText>} />
+      )}
+      <p className="text-sm text-emerald-900"><MathText>{k('fRule')}</MathText></p>
+    </div>
+  ) : null;
+  const chain = cpEnabled ? (stage === 'judge' ? (lab.two ? CHAINS.judgeTwo : CHAINS.judgeOne) : CHAINS.rule) : null;
+  const reachedNow = stage === 'judge' ? judgeReached : ruleReached;
+  const cp = useLabCheckpoint({
+    id: chain ? stage : null,
+    questions: chain && reachedNow && lp ? chain.map((q) => QUESTIONS[q](lab, k, { discoveryOptions, formalNode })) : null,
+    reached: reachedNow,
+    resetKey: inits,
+    // « أعِد التجربة » : l'étape 1 repart d'un tableau vide ; l'étape 2 efface seulement la colonne fantôme / la formule
+    onRetry: () => {
+      if (stage === 'judge') { setLab(make()); setLiveX(null); setGhostRaw(''); setFormulaRaw(''); } else { setLab(L.retryRule); setGhostRaw(''); setFormulaRaw(''); }
+    },
+    onEvent: (ev) => state.report(onCheckpoint, ev),
+    onDone: (id) => { setCpDone((d) => ({ ...d, [id]: true })); if (id === 'rule') { state.discover(); state.formalize(); } },
+  });
 
   const nudgeBtn = (d) => (
     <button type="button" onClick={() => stretch.nudge(d)} aria-label={k(d < 0 ? 'less' : 'more')} disabled={X != null && (d < 0 ? X <= range.min : X >= range.max)}
@@ -343,10 +437,6 @@ export default function RatioRide({
     </div>
   );
 
-  const sol = state.isFormal || state.isDiscovered;
-  const other = lab.plans.find((p) => !p.linear);
-  const otherW = other ? L.witness(lab, other.id) : null;
-
   return (
     <ManipulationShell
       type="ratio-ride"
@@ -356,6 +446,8 @@ export default function RatioRide({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={!!chain || cpEnabled}
       hints={[k('hint1'), k(lab.two ? 'hint2Two' : 'hint2'), k('hint3')].map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       representation={representation}
@@ -364,20 +456,7 @@ export default function RatioRide({
           state={state}
           prompt={k('dPrompt')}
           options={discoveryOptions}
-          formal={sol && lp && (
-            <div className="space-y-2" data-ride-formal>
-              <EquationDisplay tone="neutral" tex={L.equalRatiosTex(lab, lp.id)} note={<MathText>{k('fRatios')}</MathText>} />
-              <EquationDisplay tone="result" tex={L.planTex(lp)} note={<MathText>{k('fCoef', { a: $(L.numTex(lp.rule.a)) })}</MathText>} />
-              {!lab.two && lab.ghost.done && (
-                <EquationDisplay tone="neutral" tex={`${lab.ghost.x} \\times ${L.numTex(lp.rule.a)} = ${L.numTex(L.price(lab, lp.id, lab.ghost.x))}`} note={<MathText>{k('fGhost')}</MathText>} />
-              )}
-              {otherW && (
-                <EquationDisplay tone="ko" tex={otherW.kind === 'zero' ? `x = 0 \\;\\Rightarrow\\; y = ${L.numTex(otherW.y)} \\neq 0` : `${L.quotientTex(otherW.c1.x, otherW.c1.y, otherW.c1.r)} \\neq ${L.quotientTex(otherW.c2.x, otherW.c2.y, otherW.c2.r)}`}
-                  note={<MathText>{k('fNotProp', { b: L.numText(other.rule.b) })}</MathText>} />
-              )}
-              <p className="text-sm text-emerald-900"><MathText>{k('fRule')}</MathText></p>
-            </div>
-          )}
+          formal={sol && formalNode}
         />
       )}
       explanation={<MathText>{k('explanation')}</MathText>}
@@ -385,10 +464,15 @@ export default function RatioRide({
       <ManipulationStage className="bg-gradient-to-b from-sky-50/70 to-white" data-dragging={stretch.dragging ? 'true' : undefined}>
         <div ref={boxRef} className="space-y-2" data-ratio-ride data-plans={plans} data-x={X ?? ''} data-columns={lab.columns.join(',')}
           data-layout={wide ? 'side' : 'stack'} data-judged={judgedAll ? 'true' : 'false'} data-budget={budget} data-scene-h={sceneH}>
+          <div className="relative space-y-2">
+          {party.node}
+          {cp.node}
+          <LabStepper count={2} current={stage === 'judge' ? 0 : 1} done={[judgeOk, ruleOk]} stepAttr="data-ride-step" />
           <div className={wide ? 'grid grid-cols-2 items-start gap-3' : 'space-y-2'} data-ride-glance>
             <Promenade width={colW} height={sceneH} edge={EDGE} range={range} x={X} stretch={stretch} recorded={lab.recorded}
               handleLabel={k('handle')} valueText={X == null ? k('notSet') : k('minutes', { count: X })} place={w('place')} />
             {controls}
+          </div>
           </div>
           <LabFold id="ratio-ride.plans" title={k('plansTitle')}>
             <ul className="space-y-0.5 text-xs text-slate-700" data-ride-plans>
@@ -550,3 +634,120 @@ function Promenade({ width, height, edge, range, x, stretch, recorded, handleLab
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** Les deux suites : étape 1 (juger ses tableaux) et étape 2 (la règle, qui formalise). */
+export const CHAINS = Object.freeze({
+  judgeOne: ['ratio', 'same', 'double'],
+  judgeTwo: ['ratio', 'zero', 'why'],
+  rule: ['predict', 'rule'],
+});
+
+const $q = (s) => `$${s}$`;
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+/** La première colonne non nulle du tableau d'un tarif : la durée, le prix, le quotient exact. */
+function firstCol(lab, id) {
+  const t = L.table(lab, id);
+  const i = t.xs.findIndex((x) => x !== 0);
+  return { x: t.xs[i], y: t.ys[i], r: t.ratios[i] };
+}
+/** Deux colonnes non nulles de l'élève (la première et la dernière). */
+function twoCols(lab, id) {
+  const t = L.table(lab, id);
+  const idx = t.xs.map((x, i) => i).filter((i) => t.xs[i] !== 0);
+  const [a, b] = [idx[0], idx[idx.length - 1]];
+  return [{ x: t.xs[a], y: t.ys[a], r: t.ratios[a] }, { x: t.xs[b], y: t.ys[b], r: t.ratios[b] }];
+}
+const qTex = (c) => $q(L.quotientTex(c.x, c.y, c.r));
+
+/** Chaque question est construite sur LES colonnes de l'élève (rien n'est écrit en dur) ; `k` : les textes de `ratioRide`. */
+export const QUESTIONS = {
+  ratio: (lab, k) => {
+    const lp = L.linearPlan(lab);
+    const c = firstCol(lab, lp.id);
+    return {
+      id: 'ratio', kind: 'number', expected: L.numText(lp.rule.a), answer: <MathText>{$q(L.numTex(lp.rule.a))}</MathText>,
+      prompt: Mx(k, 'ratio.prompt', { scope: k(lab.two ? 'cp.scopeTwo' : 'cp.scopeOne') }),
+      hints: [Mx(k, 'ratio.hint1', { x: c.x, y: L.numText(c.y) }), Mx(k, 'ratio.hint2', { calc: $q(`\\dfrac{${L.numTex(c.y)}}{${c.x}}`) })],
+      explain: Mx(k, 'ratio.explain', { calc: $q(L.quotientTex(c.x, c.y, c.r)) }),
+    };
+  },
+  same: (lab, k) => {
+    const lp = L.linearPlan(lab);
+    const [c1, c2] = twoCols(lab, lp.id);
+    const o = { x1: c1.x, x2: c2.x, q1: qTex(c1), q2: qTex(c2) };
+    return {
+      id: 'same', kind: 'choice',
+      prompt: Mx(k, 'same.prompt'),
+      options: [
+        { text: Mx(k, 'same.grow'), why: Mx(k, 'same.whyGrow', o) },
+        { text: Mx(k, 'same.right'), correct: true },
+        { text: Mx(k, 'same.shrink'), why: Mx(k, 'same.whyShrink', o) },
+      ],
+      hints: [Mx(k, 'same.hint1', o), Mx(k, 'same.hint2')],
+      explain: Mx(k, 'same.explain', { ...o, a: $q(L.numTex(lp.rule.a)) }),
+    };
+  },
+  double: (lab, k) => {
+    const lp = L.linearPlan(lab);
+    const c = firstCol(lab, lp.id);
+    const y2 = L.price(lab, lp.id, c.x * 2);
+    return {
+      id: 'double', kind: 'number', expected: L.numText(y2), answer: <MathText>{$q(L.numTex(y2))}</MathText>,
+      prompt: Mx(k, 'double.prompt', { mins: k('minutes', { count: c.x }), y: L.numText(c.y), mins2: k('minutes', { count: c.x * 2 }) }),
+      hints: [Mx(k, 'double.hint1'), Mx(k, 'double.hint2', { calc: $q(`${c.x * 2} \\times ${L.numTex(lp.rule.a)}`) })],
+      explain: Mx(k, 'double.explain', { calc: $q(`${c.x * 2} \\times ${L.numTex(lp.rule.a)} = ${L.numTex(y2)}`), y: L.numText(c.y) }),
+    };
+  },
+  zero: (lab, k) => {
+    const other = lab.plans.find((p) => !p.linear);
+    const b = other.rule.b;
+    return {
+      id: 'zero', kind: 'number', expected: L.numText(b), answer: <MathText>{$q(L.numTex(b))}</MathText>,
+      prompt: Mx(k, 'zero.prompt'),
+      hints: [Mx(k, 'zero.hint1'), Mx(k, 'zero.hint2', { b: L.numText(b) })],
+      explain: Mx(k, 'zero.explain', { b: L.numText(b) }),
+    };
+  },
+  why: (lab, k) => {
+    const other = lab.plans.find((p) => !p.linear);
+    const w = L.witness(lab, other.id);
+    const wit = w.kind === 'zero'
+      ? k('cp.why.witZero', { y: L.numText(w.y) })
+      : `${qTex(w.c1)} ${k('cp.why.and')} ${qTex(w.c2)}`;
+    return {
+      id: 'why', kind: 'choice',
+      prompt: Mx(k, 'why.prompt'),
+      options: [
+        { text: Mx(k, 'why.dear'), why: Mx(k, 'why.whyDear') },
+        { text: Mx(k, 'why.right', { wit }), correct: true },
+        { text: Mx(k, 'why.flat'), why: Mx(k, 'why.whyFlat') },
+      ],
+      hints: [Mx(k, 'why.hint1'), Mx(k, 'why.hint2', { b: L.numText(other.rule.b) })],
+      explain: Mx(k, 'why.explain', { b: L.numText(other.rule.b) }),
+    };
+  },
+  predict: (lab, k) => {
+    const lp = L.linearPlan(lab);
+    const x = lab.range.max * 2;
+    const y = L.price(lab, lp.id, x);
+    return {
+      id: 'predict', kind: 'number', expected: L.numText(y), answer: <MathText>{$q(L.numTex(y))}</MathText>,
+      prompt: Mx(k, 'predict.prompt', { a: L.numText(lp.rule.a), mins: k('minutes', { count: x }) }),
+      hints: [Mx(k, 'predict.hint1'), Mx(k, 'predict.hint2', { calc: $q(`${x} \\times ${L.numTex(lp.rule.a)}`) })],
+      explain: Mx(k, 'predict.explain', { calc: $q(`${x} \\times ${L.numTex(lp.rule.a)} = ${L.numTex(y)}`), a: $q(L.numTex(lp.rule.a)) }),
+    };
+  },
+  rule: (lab, k, { discoveryOptions, formalNode }) => {
+    const lp = L.linearPlan(lab);
+    const c = firstCol(lab, lp.id);
+    return {
+      id: 'rule', kind: 'choice',
+      prompt: <MathText>{k('dPrompt')}</MathText>,
+      options: discoveryOptions,
+      hints: [Mx(k, 'rule.hint1'), Mx(k, 'rule.hint2', { x: c.x, y: L.numText(c.y), a: $q(L.numTex(lp.rule.a)) })],
+      explain: formalNode,
+    };
+  },
+};
