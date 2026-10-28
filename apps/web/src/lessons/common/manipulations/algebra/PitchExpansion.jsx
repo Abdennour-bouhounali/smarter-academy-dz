@@ -9,6 +9,11 @@ import useStretchInteraction from '../useStretchInteraction';
 import useDragInteraction from '../useDragInteraction';
 import DraggableObject from '../primitives/DraggableObject';
 import DropZone from '../primitives/DropZone';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { evaluate, reduce as reducePoly, mulTerms, samePolynomial, termsTex } from '@smarter-academy/core/arithmetic/polynomials.js';
 import EquationDisplay from '../primitives/EquationDisplay';
 import MathText from '../../components/MathText';
 import { bidi } from '../../../../utils/bidi';
@@ -49,6 +54,15 @@ import * as L from '../logic/pitchExpansion';
  *   FORMALIZATION  معارف 1 et 2 (p. 34)
  *   TRANSFER       تمارين 1–19 (p. 37–38), الحساب المتمعن فيه (21², 105 × 95)
  *
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 2, 2026-10-28) : le labo n'a qu'UNE scène libre (pas de tâches
+ * successives) ; quand la découverte est atteinte (zones toutes portées, somme réduite, égalité vérifiée pour deux x), une suite unique se pose
+ * PAR-DESSUS le labo et retient la règle : combien de zones · l'aire du terrain pour SON x · la forme développée (les mauvaises options sont
+ * les erreurs réelles : oublier des zones, ignorer le signe −, tout multiplier par un seul terme…, chacune réfutée par SES nombres) · LA RÈGLE
+ * (l'ancienne découverte, qui formalise). Obligatoires pour tout élève ; l'enseignant seul les coupe pour SON compte (`checkpoints` = false
+ * les coupe aussi). `onCheckpoint(ev)` : `{ tk: 'checkpoint' | 'checkpoint-done', id: expr, … }` pour la trace des étapes du module. ÉTAPES `LabStepper` (`[data-pe-step=<i>]` : porter · vérifier une fois · un autre x + questions) + fête ; « إعادة » repart de
+ * zéro ; « أعِد التجربة » remet le terrain au départ. SON : `tooth` (zone portée, x bougé), `bell` (deux termes réunis), `flag` (égalité
+ * vérifiée), `over` (refus, somme trop petite).
+ *
  * DÉCOR (demande du propriétaire, 2026-10-01) : la pelouse, les buts et un
  * ballon qu'on peut taper. Le décor ne porte AUCUNE information : il est
  * `aria-hidden`, hors du parcours clavier, et `prefers-reduced-motion`
@@ -56,8 +70,8 @@ import * as L from '../logic/pitchExpansion';
  * but quand l'égalité est vérifiée — la joie du geste, jamais un verdict.
  */
 export default function PitchExpansion({
-  expr: expr0 = '3x-1|3+x', simplify = true, letter = 'x', span = 5, title, lead, mission, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onFinished, onTrial,
+  expr: expr0 = '3x-1|3+x', simplify = true, letter = 'x', span = 5, title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true,
+  initialMode = 'student', allowModeSwitch = false, onFinished, onTrial, onCheckpoint,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.pitchExpansion.${key}`, o), [t]);
@@ -65,18 +79,48 @@ export default function PitchExpansion({
   const { expr } = state.numbers;
 
   const [lab, setLab] = useState(() => L.init({ expr: expr0, simplify }));
-  const sceneKey = `${expr}:${simplify}:${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
+  const sceneKey = `${expr}:${simplify}:${state.epoch}:${state.resetCount}`;
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
   const range = useMemo(() => L.xRange(L.parseExpr(expr), span), [expr, span]);
   const [x, setX] = useState(Math.min(range.min + 2, range.max));
   const [live, setLive] = useState(null);
   const [notice, setNotice] = useState(null);
   const [kick, setKick] = useState(0);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init({ expr, simplify })); setX(Math.min(range.min + 2, range.max)); setNotice(null); }
+  // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — le terrain, les essais et les questions du labo
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(L.init({ expr, simplify })); setX(Math.min(range.min + 2, range.max)); setLive(null); setNotice(null); }
 
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : une suite unique quand la découverte est atteinte ; celle qui finit par la règle remplace la découverte automatique
+  const cpSettings = useLabCheckpointSettings('pitch-expansion');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpLive = cpOn && cpSettings.enabled;
+  const chain = cpLive ? CHAIN : null;
+  const cp = useLabCheckpoint({
+    id: chain ? expr : null,
+    questions: chain && ready ? chain.map((q) => QUESTIONS[q](lab, k, letter)) : null,
+    reached: ready,
+    resetKey: scene.inits,
+    onRetry: () => { setLab(L.init({ expr, simplify })); setX(Math.min(range.min + 2, range.max)); setLive(null); setNotice(null); },
+    onEvent: (ev) => state.report(onCheckpoint, ev),   // {tk:'checkpoint'|'checkpoint-done', id: expr, …} — la TRACE que les étapes du module relisent
+    onDone: () => { state.discover(); state.formalize(); },
+  });
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, expr); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // une étape est FAITE quand son objectif est atteint ET (la dernière) ses questions répondues : la pastille passe au vert et on fête
+  const nVerified = L.verifiedXs(lab).length;
+  const stepDone = [L.sumReady(lab), L.sumReady(lab) && nVerified >= 1, ready && !cp.blocking];
+  const nDone = stepDone.findIndex((d) => !d) < 0 ? stepDone.length : stepDone.findIndex((d) => !d);
+  const party = useStepCelebration();
+  const celebrated = useRef({ n: 0, inits: scene.inits });
+  if (celebrated.current.inits !== scene.inits) celebrated.current = { n: 0, inits: scene.inits };   // « إعادة » : on refête
+  useEffect(() => {
+    if (nDone <= celebrated.current.n) return;
+    celebrated.current.n = nDone;
+    party.celebrate({ n: nDone, total: stepDone.length });
+  }, [nDone]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son du geste (muet sans « الصوت ») : zone portée, x bougé (au plus un toutes les 35 ms) ; deux termes réunis ; l'égalité vérifiée ; un refus
+  const heard = useRef({ at: 0, x: null });
+  const tick = () => { const now = Date.now(); if (now - heard.current.at > 35) { playSfx('tooth'); heard.current.at = now; } };
 
   /* ── mesure ── */
   const boxRef = useRef(null);
@@ -104,6 +148,7 @@ export default function PitchExpansion({
     direction: 'ltr',
   });
   const xx = live ?? x;
+  useEffect(() => { if (heard.current.x !== null && heard.current.x !== xx) tick(); heard.current.x = xx; }, [xx]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── le terrain ── */
   const geo = L.zones(lab, xx);
@@ -116,7 +161,7 @@ export default function PitchExpansion({
   const glow = lastTrial && !lastTrial.ok && !live ? new Set(lastTrial.missing) : new Set();
 
   /* ── les gestes : porter une zone, réunir deux termes ── */
-  const onReject = (_s, _z, reason) => setNotice(reason ? { tone: 'ko', key: reason } : null);
+  const onReject = (_s, _z, reason) => { setNotice(reason ? { tone: 'ko', key: reason } : null); if (reason) playSfx('over'); };
   const drag = useDragInteraction({
     accepts: (src, zone) => {
       if (src.startsWith('z:') && zone === 'sum') { const v = L.canCollect(lab, src.slice(2)); return v === true ? true : v; }
@@ -124,8 +169,8 @@ export default function PitchExpansion({
       return '';
     },
     onDrop: (src, zone) => {
-      if (src.startsWith('z:')) { setLab((s) => L.collect(s, src.slice(2))); setKick((n) => n + 1); }
-      else if (src.startsWith('c:')) setLab((s) => L.merge(s, src.slice(2), zone.slice(5)));
+      if (src.startsWith('z:')) { setLab((s) => L.collect(s, src.slice(2))); setKick((n) => n + 1); tick(); }
+      else if (src.startsWith('c:')) { setLab((s) => L.merge(s, src.slice(2), zone.slice(5))); playSfx('bell'); }
       setNotice(null);
     },
     onReject,
@@ -168,6 +213,7 @@ export default function PitchExpansion({
     setX(v); setLive(null);
     const trial = next.trials.find((tr) => tr.x === v);
     state.report(onTrial, trial);
+    playSfx(trial.ok ? 'flag' : 'over');
     setNotice({ tone: trial.ok ? 'ok' : 'ko', key: trial.ok ? 'verified' : 'incomplete', trial });
   };
   const untriedX = L.untriedXs(lab, range);
@@ -177,6 +223,7 @@ export default function PitchExpansion({
     setLab(next);
     const trial = next.trials.find((tr) => tr.x === x);
     state.report(onTrial, trial);
+    playSfx(trial.ok ? 'flag' : 'over');
     setNotice({ tone: trial.ok ? 'ok' : 'ko', key: trial.ok ? 'verified' : 'incomplete', trial });
   };
 
@@ -205,6 +252,8 @@ export default function PitchExpansion({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={!!chain}
       hints={[k('hint1'), k(simplify ? 'hint2' : 'hint2NoMerge'), k('hint3')].map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{
         autoStep: () => false,
@@ -226,23 +275,17 @@ export default function PitchExpansion({
         <ManipulationDiscovery
           state={state}
           prompt={k(`${kindKey}Prompt`)}
-          options={[
-            { text: <MathText>{k(`${kindKey}Opt2`)}</MathText>, why: <MathText>{k(`${kindKey}Why2`)}</MathText> },
-            { text: <MathText>{k(`${kindKey}Opt1`)}</MathText>, correct: true },
-            { text: <MathText>{k('onlyOneX')}</MathText>, why: <MathText>{k('onlyOneXWhy', { xs: L.verifiedXs(lab).join(' ، ') })}</MathText> },
-          ]}
-          formal={(
-            <div className="space-y-2" data-pitch-formal>
-              <EquationDisplay tone="result" tex={k(`${kindKey}Rule`)} note={<MathText>{k(`${kindKey}Formal`)}</MathText>} />
-              <EquationDisplay tone="neutral" tex={`${productTex} = ${L.resultTex(lab, letter)}`} note={<MathText>{k('yourCase')}</MathText>} />
-            </div>
-          )}
+          options={discoveryOptions(lab, k)}
+          formal={<Formal lab={lab} k={k} letter={letter} />}
         />
       )}
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-emerald-50/70 to-white" data-dragging={stretch.dragging || drag.dragging ? 'true' : undefined}>
-        <div ref={boxRef} className="space-y-3" data-pitch-expansion data-kind={lab.kind}>
+        <div ref={boxRef} className="relative space-y-3" data-pitch-expansion data-kind={lab.kind}>
+          {party.node}
+          {cp.node}
+          <LabStepper count={stepDone.length} current={Math.min(nDone, stepDone.length - 1)} done={stepDone} stepAttr="data-pe-step" />
           {/* ── la règle de x ── */}
           <p className="text-sm font-bold text-slate-700"><MathText>{k('ruler', { letter })}</MathText></p>
           <div dir="ltr" {...stretch.trackProps} className="relative" style={{ ...stretch.trackProps.style, height: 60 }} data-pitch-ruler>
@@ -430,3 +473,122 @@ export default function PitchExpansion({
     </ManipulationShell>
   );
 }
+
+/* ══════════════ La découverte et la règle ══════════════ */
+
+const KIND_KEY = { distributive: 'dist', double: 'double', 'square-sum': 'sqSum', 'square-diff': 'sqDiff', 'sum-diff': 'sumDiff' };
+
+/** Les trois options de la règle : la bonne, l'erreur de la nature du produit, et « une seule valeur de x » (réfutée par SES valeurs). */
+export function discoveryOptions(lab, k) {
+  const kindKey = KIND_KEY[lab.kind];
+  return [
+    { text: <MathText>{k(`${kindKey}Opt2`)}</MathText>, why: <MathText>{k(`${kindKey}Why2`)}</MathText> },
+    { text: <MathText>{k(`${kindKey}Opt1`)}</MathText>, correct: true },
+    { text: <MathText>{k('onlyOneX')}</MathText>, why: <MathText>{k('onlyOneXWhy', { xs: L.verifiedXs(lab).join(' ، ') })}</MathText> },
+  ];
+}
+
+export function Formal({ lab, k, letter = 'x' }) {
+  const kindKey = KIND_KEY[lab.kind];
+  return (
+    <div className="space-y-2" data-pitch-formal>
+      <EquationDisplay tone="result" tex={k(`${kindKey}Rule`)} note={<MathText>{k(`${kindKey}Formal`)}</MathText>} />
+      <EquationDisplay tone="neutral" tex={`${L.productTex(lab, letter)} = ${L.resultTex(lab, letter)}`} note={<MathText>{k('yourCase')}</MathText>} />
+    </div>
+  );
+}
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite unique : les zones, l'aire pour SON x, la forme développée, puis LA RÈGLE. */
+export const CHAIN = Object.freeze(['zones', 'area', 'result', 'rule']);
+
+const $ = (s) => `$${s}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const poly = (terms, letter) => termsTex(terms, { letter });
+const absTerm = (t) => ({ c: Math.abs(t.c), p: t.p });
+
+/** La valeur de x de l'élève (la plus petite vérifiée juste) et ce qu'il a trouvé : l'aire du terrain. */
+const trialOf = (lab) => { const x = L.verifiedXs(lab)[0]; return { x, area: L.product(lab, x) }; };
+
+/**
+ * Les formes FAUSSES d'un développement, chacune une erreur réelle : `cross` (seuls les produits « en face » : le (a + b)² = a² + b²), `sign` (le −
+ * ignoré), `single` (une zone oubliée), `sqplus` (le carré du second terme ajouté au lieu d'être retranché), `first` / `last` / `sum` (un seul terme
+ * multiplié, ou on additionne au lieu de multiplier). Toutes écartées si elles égalent la bonne forme (identiquement ou pour le x de l'élève).
+ */
+export function wrongForms(lab, letter = 'x') {
+  const { cells, factors: [f1, f2] } = lab;
+  const right = reducePoly(cells.map((c) => c.term));
+  const lastI = f1.length - 1; const lastJ = f2.length - 1;
+  const { x, area } = trialOf(lab);
+  const pick = (id, terms) => ({ id, terms: reducePoly(terms) });
+  let cands;
+  if (lab.kind === 'distributive') {
+    const [m, other] = f1.length === 1 ? [f1[0], f2] : [f2[0], f1];
+    cands = [
+      pick('first', [mulTerms(m, other[0]), ...other.slice(1)]),
+      pick('last', [...other.slice(0, -1), mulTerms(m, other.at(-1))]),
+      pick('sum', [m, ...other]),
+    ];
+  } else {
+    const diag = cells.filter((c) => c.i === c.j).map((c) => c.term);
+    cands = [
+      ...(lab.kind === 'sum-diff' ? [pick('sqplus', diag.map(absTerm))] : [pick('cross', diag)]),
+      pick('sign', cells.map((c) => absTerm(c.term))),
+      pick('single', cells.filter((c) => !(c.i === 0 && c.j === lastJ)).map((c) => c.term)),
+      pick('single', cells.filter((c) => !(c.i === lastI && c.j === lastJ)).map((c) => c.term)),
+    ];
+  }
+  const out = [];
+  for (const c of cands) {
+    if (!c.terms.length || samePolynomial(c.terms, right) || evaluate(c.terms, x) === area) continue;
+    if (out.some((o) => samePolynomial(o.terms, c.terms))) continue;
+    out.push({ ...c, tex: poly(c.terms, letter), got: evaluate(c.terms, x) });
+  }
+  return out;
+}
+
+export const QUESTIONS = {
+  zones: (lab, k, letter = 'x') => {
+    const [f1, f2] = lab.factors;
+    const n = lab.cells.length;
+    const o = { prod: $(L.productTex(lab, letter)), a: f1.length, b: f2.length, calc: $(`${f1.length}\\times${f2.length}=${n}`) };
+    return {
+      id: 'zones', kind: 'number', expected: String(n), answer: <MathText>{$(String(n))}</MathText>,
+      prompt: Cq(k, 'zones.prompt', o), hints: [Cq(k, 'zones.hint1'), Cq(k, 'zones.hint2', o)], explain: Cq(k, 'zones.explain', o),
+    };
+  },
+  area: (lab, k, letter = 'x') => {
+    const [f1, f2] = lab.factors;
+    const { x, area } = trialOf(lab);
+    const a = evaluate(f1, x); const b = evaluate(f2, x);
+    const o = { eq: $(`${letter}=${x}`), prod: $(L.productTex(lab, letter)), a: $(String(a)), b: $(String(b)), calc: $(`${a}\\times${b}=${area}`), letter: $(letter) };
+    return {
+      id: 'area', kind: 'number', expected: String(area), answer: <MathText>{$(String(area))}</MathText>,
+      prompt: Cq(k, 'area.prompt', o), hints: [Cq(k, 'area.hint1', o), Cq(k, 'area.hint2', o)], explain: Cq(k, 'area.explain', o),
+    };
+  },
+  result: (lab, k, letter = 'x') => {
+    const { x, area } = trialOf(lab);
+    const right = reducePoly(lab.cells.map((c) => c.term));
+    const rightTex = poly(right, letter);
+    const base = { eq: $(`${letter}=${x}`), prod: $(L.productTex(lab, letter)), area: $(String(area)), letter: $(letter) };
+    const wrong = wrongForms(lab, letter).slice(0, 2);
+    return {
+      id: 'result', kind: 'choice', cols: 3, prompt: Cq(k, 'result.prompt', base),
+      options: [
+        { text: <MathText>{$(wrong[0].tex)}</MathText>, why: Cq(k, `result.why.${wrong[0].id}`, { ...base, got: $(String(wrong[0].got)) }) },
+        { text: <MathText>{$(rightTex)}</MathText>, correct: true },
+        { text: <MathText>{$(wrong[1].tex)}</MathText>, why: Cq(k, `result.why.${wrong[1].id}`, { ...base, got: $(String(wrong[1].got)) }) },
+      ],
+      hints: [Cq(k, 'result.hint1', base), Cq(k, 'result.hint2')],
+      explain: Cq(k, 'result.explain', { ...base, eq2: $(`${L.productTex(lab, letter)}=${rightTex}`) }),
+    };
+  },
+  rule: (lab, k, letter = 'x') => ({
+    id: 'rule', kind: 'choice', prompt: <MathText>{k(`${KIND_KEY[lab.kind]}Prompt`)}</MathText>,
+    options: discoveryOptions(lab, k),
+    hints: [Cq(k, 'rule.hint1', { xs: L.verifiedXs(lab).join(' ، ') }), Cq(k, 'rule.hint2', { sum: $(L.trayTex(lab, letter)) })],
+    explain: <Formal lab={lab} k={k} letter={letter} />,
+  }),
+};

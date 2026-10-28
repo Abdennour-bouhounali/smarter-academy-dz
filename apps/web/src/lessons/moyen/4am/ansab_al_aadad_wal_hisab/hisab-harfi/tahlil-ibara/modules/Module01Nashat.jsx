@@ -56,8 +56,6 @@ const q1b = ACTIVITY.numbers.q1b.map((it) => ({
 export default function Module01Nashat() {
   const [rows, setRows] = useState({ [BEGINNER]: [], [ADVANCED]: [] });
   const [square, setSquare] = useState([]);
-  const [q1, setQ1] = useState(false);
-  const [q2, setQ2] = useState(false);
   const [q3a, setQ3a] = useState(false);
   const [q3b, setQ3b] = useState({});
   const [q4a, setQ4a] = useState(false);
@@ -68,6 +66,16 @@ export default function Module01Nashat() {
   const onRows = (expr) => ({ r, valid }) => setRows((t) => ({ ...t, [expr]: [...t[expr].filter((u) => u.r !== r), { r, valid }].sort((u, v) => u.r - v.r) }));
   const onSquare = ({ right, bottom, need, ok }) => setSquare((t) => [...t.filter((u) => !(u.right === right && u.bottom === bottom)), { right, bottom, need, ok }]);
   const q3done = q3a && q1b.every((_, i) => q3b[i]);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand la suite de questions de son terrain l'est
+  const [cps, setCps] = useState([]);
+  const answered = (id) => cps.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const onCheckpoint = (e) => setCps((l) => [...l, e]);
+  const Evidence = ({ ok, done: line, todo }) => (
+    <p data-evidence="checkpoint" data-tried={ok ? 'true' : 'false'}
+      className={`rounded-xl border-2 px-3 py-2 text-sm ${ok ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+      {ok ? line : todo}
+    </p>
+  );
 
   return (
     <ContentModule
@@ -90,6 +98,7 @@ export default function Module01Nashat() {
                 expr={BEGINNER}
                 lead="وصلت إلى ملعب الحيّ قطع عشب: 9 شرائط و 3 مربّعات صغيرة. اسحب r، عدد الصفوف: متى تتوزّع القطع كلها على صفوف متماثلة دون أن تُقطَّع قطعة؟"
                 onTrial={onRows(BEGINNER)}
+                onCheckpoint={onCheckpoint}
               />
             ),
             advanced: () => (
@@ -100,6 +109,7 @@ export default function Module01Nashat() {
                 expr={ADVANCED}
                 lead="وصلت قطع عشب أخرى: ستة مربّعات كبيرة وأربعة شرائط. ما أكبر عدد من الصفوف المتماثلة؟ واقرأ ارتفاع الملعب كاملًا."
                 onTrial={onRows(ADVANCED)}
+                onCheckpoint={onCheckpoint}
               />
             ),
           }}
@@ -107,7 +117,7 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'لماذا يرفض الملعب بعض الأعداد؟', subtitle: 'جرّب أعدادًا للصفوف في المستوى المبتدئ، ثم أجب', done: q1,
+          num: 1, title: 'لماذا يرفض الملعب بعض الأعداد؟', subtitle: 'جرّب أعدادًا للصفوف في المستوى المبتدئ، ثم أجب', done: answered(`rows:${BEGINNER}`),
           content: (
             <div className="space-y-3">
               {/* LES ESSAIS DE L'ÉLÈVE, et rien d'autre. */}
@@ -129,38 +139,18 @@ export default function Module01Nashat() {
                   </li>
                 ))}
               </ul>
-              <TapQuestion
-                prompt={<MathText>{'في الملعب $9x + 3$ يقسم العدد $9$ عدد الشرائط، ومع ذلك يرفض الملعب $r = 9$. لماذا؟'}</MathText>}
-                options={[
-                  <MathText key="a">{'لأنّ $9$ لا يقسم عدد المربّعات الصغيرة $3$ ، فلا تتوزّع هذه على تسعة صفوف متماثلة'}</MathText>,
-                  <MathText key="b">{'لأنّ عدد الصفوف لا يمكن أن يتجاوز عدد أنواع القطع'}</MathText>,
-                  <MathText key="c">{'لأنّ $9$ عدد كبير جدًّا على ملعب واحد'}</MathText>,
-                ]}
-                correct={0}
-                cols={1}
-                requires={['pgcd']}
-                explain={<MathText>{'كل صفّ يأخذ العدد نفسه من الشرائط ومن المربّعات الصغيرة، فـ $r$ يقسم $9$ و $3$ معًا. القاسمان المشتركان هما 1 و 3، وأكبرهما PGCD$(9 ; 3) = 3$ : ثلاثة صفوف، في كل صفّ 3 شرائط ومربّع صغير واحد.'}</MathText>}
-                onAnswered={() => setQ1(true)}
-              />
+              <Evidence ok={answered(`rows:${BEGINNER}`)}
+                done={<MathText>{'أجبتَ في المختبر: في الملعب $9x + 3$ يرفض الملعب الأعداد التي لا تقسم الشرائط $9$ والمربّعات الصغيرة $3$ معًا — تبقى قطع خارجه — ويقبل $r = 3$ فقط، وهو القاسم المشترك الأكبر.'}</MathText>}
+                todo="أتمّ ملعب المستوى المبتدئ (جرّب أعداد الصفوف حتى تجد أكبر عدد ينجح وعددًا يفشل)، ثم أجب عن الأسئلة التي تظهر فوق المختبر." />
             </div>
           ),
         },
         {
-          num: 2, title: 'ماذا يمثّل طول الملعب؟', subtitle: 'افرش الملعب الثاني في المستوى المتقدّم، ثم أجب', done: q2,
+          num: 2, title: 'ماذا يمثّل طول الملعب؟', subtitle: 'افرش الملعب الثاني في المستوى المتقدّم، ثم أجب', done: answered(`rows:${ADVANCED}`),
           content: (
-            <TapQuestion
-              prompt={<MathText>{'في الملعب $6x^2 + 4x$ بصفّين متماثلين ارتفاع كل منهما $x$ : ماذا يوجد في كل صفّ، وماذا يمثّل إذن طول الملعب؟'}</MathText>}
-              options={[
-                <MathText key="a">{'$6x + 4$ : كل القطع في صفّ واحد'}</MathText>,
-                <MathText key="b">{'$3x + 2$ : في كل صفّ ثلاثة مربّعات كبيرة عرض كل منها $x$ وشريطان عرض كل منهما 1'}</MathText>,
-                <MathText key="c">{'$3x^2 + 2x$ : طول الصفّ هو مساحته'}</MathText>,
-              ]}
-              correct={1}
-              cols={1}
-              requires={['pgcd', 'nashr-tawzii']}
-              explain={<MathText>{'PGCD$(6 ; 4) = 2$ : صفّان، ارتفاع كل منهما $x$ ، فارتفاع الملعب $2x$ وطوله $3x + 2$ ، أي $6x^2 + 4x = 2x(3x + 2)$. أمّا $2(3x^2 + 2x)$ فصحيحة لكنّ العامل المشترك فيها غير كامل.'}</MathText>}
-              onAnswered={() => setQ2(true)}
-            />
+            <Evidence ok={answered(`rows:${ADVANCED}`)}
+              done={<MathText>{'أجبتَ في المختبر: الملعب $6x^2 + 4x$ ينجح بصفّين ارتفاع كل منهما $x$ ، فارتفاع الملعب $2x$ وطوله $3x + 2$ ، أي $6x^2 + 4x = 2x(3x + 2)$ .'}</MathText>}
+              todo="افرش الملعب الثاني في المستوى المتقدّم (جرّب أعداد الصفوف حتى تجد أكبرها)، ثم أجب عن الأسئلة التي تظهر فوق المختبر." />
           ),
         },
         {
@@ -300,7 +290,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

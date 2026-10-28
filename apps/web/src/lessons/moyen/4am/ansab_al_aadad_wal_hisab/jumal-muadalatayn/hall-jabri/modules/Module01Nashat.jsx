@@ -33,12 +33,15 @@ export default function Module01Nashat() {
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
-  const [q4, setQ4] = useState(false);
   const [q5a, setQ5a] = useState(false);
   const [q5, setQ5] = useState(false);
   const [q6a, setQ6a] = useState(false);
   const [q6, setQ6] = useState(false);
   const onTrial = (sys) => (summary) => setTrial((t) => ({ ...t, [sys]: summary }));
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand la suite de questions d'une méthode terminée l'est
+  const [cps, setCps] = useState([]);
+  const onCheckpoint = (sys) => (e) => setCps((l) => [...l, { ...e, sys }]);
+  const answeredPair = cps.some((e) => e.tk === 'checkpoint-done');
   const mine = trial[ADVANCED];
   const first = trial[BEGINNER];
 
@@ -64,6 +67,7 @@ export default function Module01Nashat() {
                 system={BEGINNER}
                 lead="على كشك عمّي الطاهر بطاقتان: مجموع ثمنين 10 وفرقهما 2."
                 onTrial={onTrial(BEGINNER)}
+                onCheckpoint={onCheckpoint(BEGINNER)}
               />
             ),
             advanced: () => (
@@ -73,6 +77,7 @@ export default function Module01Nashat() {
                 system={ADVANCED}
                 lead="جملة نشاط الكتاب على البطاقتين: كل بطاقة وحدها تقبل أثمانًا كثيرة، والبطاقتان معًا تحدّدان الثمنين."
                 onTrial={onTrial(ADVANCED)}
+                onCheckpoint={onCheckpoint(ADVANCED)}
               />
             ),
           }}
@@ -133,21 +138,16 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 2, title: 'لماذا لا نتوقّف عند x؟', subtitle: 'السؤال جـ 1 — ونستنتج حل الجملة', done: q4,
+          num: 2, title: 'لماذا لا نتوقّف عند x؟', subtitle: 'السؤال جـ 1 — ونستنتج حل الجملة', done: answeredPair,
           content: (
             <div className="space-y-3">
-              <TapQuestion
-                prompt={<MathText>{'وجد التلميذان $x = 2{,}6$ ، وعوّضا في المعادلة (1) فوجدا $y = 1{,}8$ . لو عوّضنا $x = 2{,}6$ في المعادلة (2) $3x - 2y = 4{,}2$ بدل (1) لوجدنا:'}</MathText>}
-                options={[
-                  M('$y = 1{,}8$ كذلك: الثنائية نفسها تحقق المعادلتين'),
-                  M('قيمة أخرى لـ $y$ ، فنختار إحدى القيمتين'),
-                  M('لا نستطيع إيجاد $y$ ، فالعدد $x$ وحده يكفي')]}
-                correct={0}
-                cols={1}
-                explain={<MathText>{'$3 \\times 2{,}6 = 7{,}8$ ، و $7{,}8 - 2y = 4{,}2$ تعطي $2y = 3{,}6$ أي $y = 1{,}8$ . الثنائية $(2{,}6 ; 1{,}8)$ تحقق المعادلتين في آن واحد، وهذا ما يجعلها حل الجملة.'}</MathText>}
-                onAnswered={() => setQ4(true)}
-              />
-              {q4 && <KnowledgeBrick id="hall-thunaiya" lead="لا نتوقّف عند x:" />}
+              <p data-evidence="checkpoint" data-tried={answeredPair ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${answeredPair ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {answeredPair
+                  ? <span>أجبتَ في المختبر: بعد إيجاد مجهول واحد عوّضتَه في إحدى البطاقتين لتجد الآخر{(mine ?? first)?.pairTex ? <>، فكان الحل ثنائية <MathText>{`$${(mine ?? first).pairTex}$`}</MathText></> : null} تحقق البطاقتين معًا، لا قيمة واحدة.</span>
+                  : 'أنهِ إحدى الطريقتين في المختبر (ثنائية الحل)، ثم أجب عن الأسئلة التي تظهر فوقه.'}
+              </p>
+              {answeredPair && <KnowledgeBrick id="hall-thunaiya" lead="لا نتوقّف عند x:" />}
             </div>
           ),
         },
@@ -259,7 +259,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

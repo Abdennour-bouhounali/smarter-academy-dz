@@ -68,9 +68,12 @@ export default function Module01Nashat() {
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
-  const [q4, setQ4] = useState(false);
   const [q5, setQ5] = useState(false);
 
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : le terrain متقدّم est « fait » quand sa suite de questions l'est
+  const [cps, setCps] = useState([]);
+  const answered = (id) => cps.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const onCheckpoint = (e) => setCps((l) => [...l, e]);
   const keep = (set) => (trial) => { if (trial) set((t) => ({ ...t, [trial.x]: trial })); };
   const bigVerified = Object.values(big).filter((t) => t.ok).length;
 
@@ -96,6 +99,7 @@ export default function Module01Nashat() {
                 title={bidi('ملعب المتوسطة: عرضه 3 وطوله x + 5')}
                 lead={<MathText>{'قرّرت إدارة المتوسطة إطالة ملعب كرة القدم: عرضه $3$ وطوله $x + 5$. جرّب $x = 9$ بين قيمك.'}</MathText>}
                 onTrial={keep(setSmall)}
+                onCheckpoint={onCheckpoint}
               />
             ),
             advanced: () => (
@@ -106,6 +110,7 @@ export default function Module01Nashat() {
                 title={bidi('نشاط 1 — ملعب بعداه 3x − 1 و 3 + x')}
                 lead={<MathText>{'أربع مناطق، منها اثنتان مقتطعتان (مخطّطتان).'}</MathText>}
                 onTrial={keep(setBig)}
+                onCheckpoint={onCheckpoint}
               />
             ),
           }}
@@ -186,24 +191,19 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 4, title: 'جداء قوسين: ملعب النشاط', subtitle: 'السؤال 3: العبارة الثالثة — من تحقّقاتك في المستوى المتقدّم', done: q4,
+          num: 4, title: 'جداء قوسين: ملعب النشاط', subtitle: 'السؤال 3: العبارة الثالثة — من تحقّقاتك في المستوى المتقدّم', done: answered(ACTIVITY.pitch.advanced),
           content: (
             <div className="space-y-3">
               <p className="text-sm font-semibold text-slate-700"><MathText>{'تحقّقاتك على الملعب $(3x - 1)(3 + x)$:'}</MathText></p>
               <Evidence trials={big} level="advanced" empty="لم تتحقّق بعد من ملعب المستوى المتقدّم: احسب كل مناطقه ثم اضغط «تحقّق»." />
               {bigVerified < 2 && <p className="text-xs text-slate-500"><MathText>{'تحقّق من أجل قيمتين لـ $x$ على الأقل: هل بقيت المساواة صحيحة في كل مرّة؟'}</MathText></p>}
-              <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'انشر $(3x - 1)(3 + x)$ وبسّطها، واذكر الخاصية:'}</MathText></p>}
-                rows={[
-                  { id: 'c1', label: 'الجداءات الأربعة (قبل التبسيط)', options: ['$9x - x$', '$9x + 3x^2 - 3 - x$', '$3x^2 - 3$'].map(M), correct: 1, correction: M('$3x \\times 3 + 3x \\times x - 1 \\times 3 - 1 \\times x$') },
-                  { id: 'c2', label: 'بعد التبسيط', options: ['$3x^2 + 10x - 3$', '$11x^2 - 3$', '$3x^2 + 8x - 3$'].map(M), correct: 2, correction: M('$9x - x = 8x$') },
-                  { id: 'cp', label: 'الخاصية المعتمدة', options: PROPS.map(M), correct: 2, correction: M('$(a + b)(c + d) = ac + ad + bc + bd$') },
-                ]}
-                requires={['jidaa-x-fi-x']}
-                feedback={fb(PLATFORM_NOTES.unlikeRight, PLATFORM_NOTES.unlike)}
-                onAnswered={() => setQ4(true)}
-              />
-              {q4 && <KnowledgeBrick id="nashr-qawsayn" lead="ما فعلته في الملعب: كل حد من الضلع الأول في كل حد من الضلع الثاني." />}
+              <p data-evidence="checkpoint" data-tried={answered(ACTIVITY.pitch.advanced) ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${answered(ACTIVITY.pitch.advanced) ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {answered(ACTIVITY.pitch.advanced)
+                  ? <MathText>{'أجبتَ في المختبر: مناطق الملعب الأربع $9x + 3x^2 - 3 - x$ ، وبعد جمع الحدّين المتشابهين $3x^2 + 8x - 3$ ، وهذه خاصية $(a + b)(c + d) = ac + ad + bc + bd$.'}</MathText>
+                  : 'احمل مناطق الملعب المتقدّم كلّها، وتحقّق من قيمتين، ثم أجب عن الأسئلة التي تظهر فوق المختبر.'}
+              </p>
+              {answered(ACTIVITY.pitch.advanced) && <KnowledgeBrick id="nashr-qawsayn" lead="ما فعلته في الملعب: كل حد من الضلع الأول في كل حد من الضلع الثاني." />}
             </div>
           ),
         },
@@ -222,7 +222,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

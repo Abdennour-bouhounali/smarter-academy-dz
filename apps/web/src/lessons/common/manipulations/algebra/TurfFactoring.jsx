@@ -9,6 +9,11 @@ import useStretchInteraction from '../useStretchInteraction';
 import useDragInteraction from '../useDragInteraction';
 import DraggableObject from '../primitives/DraggableObject';
 import DropZone from '../primitives/DropZone';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { reduce as reducePoly, mulTerms, termsTex, termTex } from '@smarter-academy/core/arithmetic/polynomials.js';
 import EquationDisplay from '../primitives/EquationDisplay';
 import MathText from '../../components/MathText';
 import { bidi } from '../../../../utils/bidi';
@@ -46,14 +51,27 @@ import * as L from '../logic/turfFactoring';
  *   FORMALIZATION  معارف 3 (p. 34) ; طرائق (p. 35–36)
  *   TRANSFER       تمارين 20–33 ; QCM 4–6, 9–12
  *
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 2, 2026-10-28) : le labo n'a pas de tâches successives (une seule
+ * scène libre par instance) ; quand la découverte est atteinte, une suite unique se pose PAR-DESSUS le labo et retient la règle (`chainOf`) :
+ * rows — le plus grand r juste · ce qui est resté dehors pour SON r refusé · la bonne écriture du facteur commun (mauvaises options = les erreurs
+ * réelles : le terme qui « disparaît », le diviseur oublié, le facteur incomplet) · LA RÈGLE ; square fermable — le coin de SA tentative refusée ·
+ * les bandes par côté · les côtés du carré · LA RÈGLE ; square non fermable (x² + 25) — les carreaux restés dehors · pourquoi · LA RÈGLE.
+ * La suite qui finit par la règle remplace la découverte automatique (`onDone` : discover + formalize). Obligatoires pour tout élève ;
+ * l'enseignant seul les coupe pour SON compte (`checkpoints` = false les coupe aussi). `onCheckpoint(ev)` : `{ tk: 'checkpoint' | 'checkpoint-done',
+ * id: cpId(mode, nums), … }`. ÉTAPES `LabStepper` (`[data-tf-step=<i>]`) + fête ; « إعادة » repart de zéro ; « أعِد التجربة » remet le terrain au départ.
+ * SON : `tooth` (r bougé, bande posée), `bell` (un r juste), `flag` (le plus grand r juste, le terrain fermé), `over` (reste dehors, refus).
+ *
  * DÉCOR : bandes de tonte sur les plaques, lignes blanches du terrain fermé,
  * `aria-hidden`, immobile sous prefers-reduced-motion.
  */
+/** L'identifiant de la suite de questions d'un terrain : ce que `onCheckpoint` rapporte (`id`) et que les étapes du module relisent. */
+export const cpId = (mode, nums) => (mode === 'rows' ? `rows:${nums.expr}` : `square:${nums.b}:${nums.c}`);
+
 const XU = 3.6; // la longueur « x » dessinée : non entière, pour qu'une bande ne passe jamais pour 4 carreaux
 
 export default function TurfFactoring({
-  mode = 'rows', expr: expr0 = '6x^2+4x', b: b0 = 6, c: c0 = 9, showNeed = true, title, lead, mission, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onFinished, onTrial,
+  mode = 'rows', expr: expr0 = '6x^2+4x', b: b0 = 6, c: c0 = 9, showNeed = true, title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true,
+  initialMode = 'student', allowModeSwitch = false, onFinished, onTrial, onCheckpoint,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.turfFactoring.${key}`, o), [t]);
@@ -63,14 +81,46 @@ export default function TurfFactoring({
   const make = () => (mode === 'rows' ? L.initRows({ expr: nums.expr }) : L.initSquare({ b: nums.b, c: nums.c }));
 
   const [lab, setLab] = useState(make);
-  const sceneKey = `${mode}:${JSON.stringify(nums)}:${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
+  const sceneKey = `${mode}:${JSON.stringify(nums)}:${state.epoch}:${state.resetCount}`;
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
   const [live, setLive] = useState(null);
   const [notice, setNotice] = useState(null);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setLive(null); setNotice(null); }
+  // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — le terrain, les essais et les questions du labo
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(make()); setLive(null); setNotice(null); }
 
   const ready = mode === 'rows' ? L.rowsDiscoveryReady(lab) : L.squareDiscoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  const noSquare = mode === 'square' && !L.closable(lab);
+  // les questions pendant le labo : une suite unique quand la découverte est atteinte ; celle qui finit par la règle remplace la découverte automatique
+  const cpSettings = useLabCheckpointSettings('turf-factoring');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpLive = cpOn && cpSettings.enabled;
+  const chain = cpLive ? chainOf(mode, noSquare) : null;
+  const cp = useLabCheckpoint({
+    id: chain ? cpId(mode, nums) : null,
+    questions: chain && ready ? chain.map((q) => QUESTIONS[q](lab, k)) : null,
+    reached: ready,
+    resetKey: scene.inits,
+    onRetry: () => { setLab(make()); setLive(null); setNotice(null); },
+    onEvent: (ev) => state.report(onCheckpoint, ev),
+    onDone: () => { state.discover(); state.formalize(); },
+  });
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // une étape est FAITE quand son objectif est atteint ET (la dernière) ses questions répondues : la pastille passe au vert et on fête
+  const stepDone = mode === 'rows'
+    ? [lab.tried.some((t) => t.valid), lab.tried.some((t) => t.valid) && lab.tried.some((t) => !t.valid), ready && !cp.blocking]
+    : [lab.trials.length > 0, noSquare ? lab.trials.length > 0 : lab.trials.some((t) => t.ok), ready && !cp.blocking];
+  const nDone = stepDone.findIndex((d) => !d) < 0 ? stepDone.length : stepDone.findIndex((d) => !d);
+  const party = useStepCelebration();
+  const celebrated = useRef({ n: 0, inits: scene.inits });
+  if (celebrated.current.inits !== scene.inits) celebrated.current = { n: 0, inits: scene.inits };   // « إعادة » : on refête
+  useEffect(() => {
+    if (nDone <= celebrated.current.n) return;
+    celebrated.current.n = nDone;
+    party.celebrate({ n: nDone, total: stepDone.length });
+  }, [nDone]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son du geste (muet sans « الصوت ») : r bougé / bande posée (au plus un toutes les 35 ms) ; un r juste, le plus grand, un refus
+  const heard = useRef({ at: 0, r: null });
+  const tick = () => { const now = Date.now(); if (now - heard.current.at > 35) { playSfx('tooth'); heard.current.at = now; } };
+  const rowSound = (prev, r) => { const l = L.rowsLayout(prev, r); playSfx(!l.valid ? 'over' : r === L.rowsGcd(prev) ? 'flag' : 'bell'); };
   useEffect(() => { if (state.isFormal) state.report(onFinished, nums); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const boxRef = useRef(null);
@@ -102,6 +152,7 @@ export default function TurfFactoring({
     const prev = labRef.current;
     if (L.canRow(prev, v) !== true) return;
     labRef.current = L.setRows(prev, v);
+    rowSound(prev, v);
     setLab((s) => L.setRows(s, v));
     setLive(null);
     state.report(onTrial, L.rowsLayout(prev, v));
@@ -113,6 +164,7 @@ export default function TurfFactoring({
       setLive(null);
       if (mode !== 'rows' || L.canRow(lab, v) !== true) return;
       setLab((s) => L.setRows(s, v));
+      rowSound(lab, v);
       state.report(onTrial, L.rowsLayout(lab, v));
     },
     direction: 'ltr',
@@ -125,8 +177,8 @@ export default function TurfFactoring({
       const v = L.canPlace(lab, src.slice(6), zone);
       return v === true ? true : v;
     },
-    onDrop: (src, zone) => { setLab((s) => L.place(s, src.slice(6), zone)); setNotice(null); },
-    onReject: (_s, _z, reason) => setNotice(reason ? { tone: 'ko', key: reason } : null),
+    onDrop: (src, zone) => { setLab((s) => L.place(s, src.slice(6), zone)); setNotice(null); tick(); },
+    onReject: (_s, _z, reason) => { setNotice(reason ? { tone: 'ko', key: reason } : null); if (reason) playSfx('over'); },
   });
   /**
    * Toucher (ou Entrée sur) une bande d'une zone PENDANT qu'on tient une bande venue
@@ -149,7 +201,8 @@ export default function TurfFactoring({
 
   const closeField = () => {
     const verdict = L.canClose(lab);
-    if (verdict === 'stripsLeft') { setNotice({ tone: 'ko', key: 'stripsLeft' }); return; }
+    if (verdict === 'stripsLeft') { setNotice({ tone: 'ko', key: 'stripsLeft' }); playSfx('over'); return; }
+    playSfx(verdict === true ? 'flag' : 'over');
     const next = L.close(lab);
     setLab(next);
     state.report(onTrial, next.trials.at(-1));
@@ -169,6 +222,7 @@ export default function TurfFactoring({
   );
 
   const rr = live ?? lab.r ?? defaultR;
+  useEffect(() => { if (heard.current.r !== null && heard.current.r !== rr) tick(); heard.current.r = rr; }, [rr]); // eslint-disable-line react-hooks/exhaustive-deps
   const layout = mode === 'rows' && rr != null ? L.rowsLayout(lab, rr) : null;
 
   const renderRows = () => {
@@ -278,8 +332,6 @@ export default function TurfFactoring({
       ? <EquationDisplay tone="ok" tex={L.squareEquationTex(lab)} note={<MathText>{k(lab.closed.p === lab.closed.q ? 'closedSquare' : 'closedRect')}</MathText>} />
       : notice?.need != null ? <EquationDisplay tone="ko" tex={`${notice.need} \\neq ${notice.have}`} note={<MathText>{k(notice.key, { need: notice.need, have: notice.have })}</MathText>} /> : null);
 
-  const noSquare = mode === 'square' && !L.closable(lab);
-
   return (
     <ManipulationShell
       type="turf-factoring"
@@ -289,6 +341,8 @@ export default function TurfFactoring({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={!!chain}
       hints={(mode === 'rows' ? [k('rHint1'), k('rHint2'), k('rHint3')] : [k('sHint1'), k('sHint2'), k('sHint3')]).map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{
         autoStep: () => false,
@@ -308,36 +362,17 @@ export default function TurfFactoring({
         <ManipulationDiscovery
           state={state}
           prompt={k(mode === 'rows' ? 'rPrompt' : noSquare ? 'nPrompt' : 'sPrompt')}
-          options={mode === 'rows'
-            ? [
-              { text: <MathText>{k('rOpt2')}</MathText>, why: <MathText>{k('rWhy2')}</MathText> },
-              { text: <MathText>{k('rOpt1')}</MathText>, correct: true },
-              { text: <MathText>{k('rOpt3')}</MathText>, why: <MathText>{k('rWhy3', { g: L.rowsGcd(lab) })}</MathText> },
-            ]
-            : noSquare
-              ? [
-                { text: <MathText>{k('nOpt1')}</MathText>, correct: true },
-                { text: <MathText>{k('nOpt2')}</MathText>, why: <MathText>{k('nWhy2')}</MathText> },
-                { text: <MathText>{k('nOpt3')}</MathText>, why: <MathText>{k('nWhy3')}</MathText> },
-              ]
-              : [
-                { text: <MathText>{k('sOpt2')}</MathText>, why: <MathText>{k('sWhy2')}</MathText> },
-                { text: <MathText>{k('sOpt1')}</MathText>, correct: true },
-                { text: <MathText>{k('sOpt3')}</MathText>, why: <MathText>{k('sWhy3')}</MathText> },
-              ]}
-          formal={(
-            <div className="space-y-2" data-turf-formal>
-              <EquationDisplay tone="result" tex={k(mode === 'rows' ? 'rRule' : noSquare ? 'nRule' : 'sRule')} note={<MathText>{k(mode === 'rows' ? 'rFormal' : noSquare ? 'nFormal' : 'sFormal')}</MathText>} />
-              {mode === 'rows' && <EquationDisplay tone="neutral" tex={L.rowsEquationTex(lab, L.rowsGcd(lab))} note={<MathText>{k('yourCase')}</MathText>} />}
-              {mode === 'square' && lab.closed && <EquationDisplay tone="neutral" tex={L.squareEquationTex(lab)} note={<MathText>{k('yourCase')}</MathText>} />}
-            </div>
-          )}
+          options={discoveryOptions(lab, k, mode, noSquare)}
+          formal={<Formal lab={lab} k={k} mode={mode} noSquare={noSquare} />}
         />
       )}
       explanation={<MathText>{k(mode === 'rows' ? 'explanationRows' : 'explanationSquare')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-emerald-50/70 to-white" data-dragging={stretch.dragging || drag.dragging ? 'true' : undefined}>
-        <div ref={boxRef} className="space-y-3" data-turf-factoring data-mode={mode}>
+        <div ref={boxRef} className="relative space-y-3" data-turf-factoring data-mode={mode}>
+          {party.node}
+          {cp.node}
+          <LabStepper count={stepDone.length} current={Math.min(nDone, stepDone.length - 1)} done={stepDone} stepAttr="data-tf-step" />
           <p className="text-sm text-slate-700"><MathText>{k(mode === 'rows' ? 'legendRows' : 'legendSquare', { expr: exprTex })}</MathText></p>
           {mode === 'rows' && (
             <>
@@ -391,3 +426,178 @@ export default function TurfFactoring({
     </ManipulationShell>
   );
 }
+
+/* ══════════════ La découverte et la règle ══════════════ */
+
+/** Les trois options de la règle (la bonne, l'erreur du mode, et la réfutation par SES nombres). */
+export function discoveryOptions(lab, k, mode, noSquare = false) {
+  if (mode === 'rows') {
+    return [
+      { text: <MathText>{k('rOpt2')}</MathText>, why: <MathText>{k('rWhy2')}</MathText> },
+      { text: <MathText>{k('rOpt1')}</MathText>, correct: true },
+      { text: <MathText>{k('rOpt3')}</MathText>, why: <MathText>{k('rWhy3', { g: L.rowsGcd(lab) })}</MathText> },
+    ];
+  }
+  if (noSquare) {
+    return [
+      { text: <MathText>{k('nOpt1')}</MathText>, correct: true },
+      { text: <MathText>{k('nOpt2')}</MathText>, why: <MathText>{k('nWhy2')}</MathText> },
+      { text: <MathText>{k('nOpt3')}</MathText>, why: <MathText>{k('nWhy3')}</MathText> },
+    ];
+  }
+  return [
+    { text: <MathText>{k('sOpt2')}</MathText>, why: <MathText>{k('sWhy2')}</MathText> },
+    { text: <MathText>{k('sOpt1')}</MathText>, correct: true },
+    { text: <MathText>{k('sOpt3')}</MathText>, why: <MathText>{k('sWhy3')}</MathText> },
+  ];
+}
+
+export function Formal({ lab, k, mode, noSquare = false }) {
+  return (
+    <div className="space-y-2" data-turf-formal>
+      <EquationDisplay tone="result" tex={k(mode === 'rows' ? 'rRule' : noSquare ? 'nRule' : 'sRule')} note={<MathText>{k(mode === 'rows' ? 'rFormal' : noSquare ? 'nFormal' : 'sFormal')}</MathText>} />
+      {mode === 'rows' && <EquationDisplay tone="neutral" tex={L.rowsEquationTex(lab, L.rowsGcd(lab))} note={<MathText>{k('yourCase')}</MathText>} />}
+      {mode === 'square' && lab.closed && <EquationDisplay tone="neutral" tex={L.squareEquationTex(lab)} note={<MathText>{k('yourCase')}</MathText>} />}
+    </div>
+  );
+}
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite unique de chaque scène : elle interroge ce que l'élève vient de FAIRE et finit par LA RÈGLE. */
+export function chainOf(mode, noSquare = false) {
+  if (mode === 'rows') return ['best', 'left', 'common', 'rule'];
+  return noSquare ? ['outside', 'why', 'rule'] : ['corner', 'half', 'sides', 'rule'];
+}
+
+const $ = (x) => `$${x}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const innerTex = (terms, m) => termsTex(terms.map((t) => ({ c: t.c, p: t.p - m })));
+const eqTex = (lab, common, inner) => `${L.rowsExprTex(lab)} = ${common === '1' ? '' : common}(${inner})`;
+const expandTex = (common, terms) => termsTex(reducePoly(terms.map((t) => mulTerms(common, t))));
+
+/**
+ * Les écritures FAUSSES du facteur commun, chacune une erreur réelle : `lost` (le terme égal au facteur « disparaît » : 3 ÷ 3 = 0), `forgot` (un seul
+ * terme divisé), `sign` (le signe du dernier terme perdu), `partial` (juste mais incomplète : la lettre n'est pas sortie). Les écartées égalent la bonne.
+ */
+export function wrongFactors(lab) {
+  const g = L.rowsGcd(lab); const m = lab.m;
+  const quot = lab.terms.map((t) => ({ c: t.c / g, p: t.p }));          // les quotients par g, la lettre encore dedans
+  const common = { c: g, p: m };
+  const commonTex = termTex(common, { lead: true });
+  const right = eqTex(lab, commonTex, innerTex(quot, m));
+  const out = [];
+  const add = (id, terms, comm = common, withExpand = true) => {
+    const tex = eqTex(lab, termTex(comm, { lead: true }), innerTex(terms, comm.p));
+    if (tex === right || out.some((o) => o.tex === tex)) return;
+    out.push({ id, tex, expanded: withExpand ? expandTex(comm, terms.map((t) => ({ c: t.c, p: t.p - comm.p }))) : null });
+  };
+  const one = quot.findIndex((q) => Math.abs(q.c) === 1 && q.p === m);
+  if (one >= 0 && quot.length > 1) add('lost', quot.filter((_, i) => i !== one));
+  if (quot.length > 1) add('forgot', [quot[0], ...lab.terms.slice(1)]);
+  if (lab.terms.some((t) => t.c < 0)) add('sign', quot.map((q, i) => (i === quot.length - 1 ? { ...q, c: -q.c } : q)));
+  if (m >= 1) add('partial', lab.terms.map((t) => ({ c: t.c / g, p: t.p })), { c: g, p: 0 }, false);
+  return out;
+}
+
+export const QUESTIONS = {
+  best: (lab, k) => {
+    const g = L.rowsGcd(lab);
+    const first = lab.tried.find((t) => !t.valid);
+    const o = { g: $(String(g)), r: first ? $(String(first.r)) : '' };
+    return {
+      id: 'best', kind: 'number', expected: String(g), answer: <MathText>{$(String(g))}</MathText>,
+      prompt: Cq(k, 'best.prompt'), hints: [Cq(k, 'best.hint1'), Cq(k, 'best.hint2', o)], explain: Cq(k, 'best.explain', { ...o, expr: $(L.rowsExprTex(lab)) }),
+    };
+  },
+  left: (lab, k) => {
+    const bad = lab.tried.find((t) => !t.valid);
+    const lay = L.rowsLayout(lab, bad.r);
+    const n = lay.leftover.reduce((sum, t) => sum + Math.abs(t.c), 0);
+    const o = { r: $(String(bad.r)), n: $(String(n)), calc: $(lay.leftover.map((t) => Math.abs(t.c)).join('+') + `=${n}`) };
+    return {
+      id: 'left', kind: 'number', expected: String(n), answer: <MathText>{$(String(n))}</MathText>,
+      prompt: Cq(k, 'left.prompt', o), hints: [Cq(k, 'left.hint1'), Cq(k, 'left.hint2', o)], explain: Cq(k, 'left.explain', o),
+    };
+  },
+  common: (lab, k) => {
+    const g = L.rowsGcd(lab);
+    const right = L.rowsEquationTex(lab, g);
+    const wrong = wrongFactors(lab).slice(0, 2);
+    const why = (w) => Cq(k, `common.why.${w.id}`, { expr: $(L.rowsExprTex(lab)), expanded: w.expanded ? $(w.expanded) : '' });
+    return {
+      id: 'common', kind: 'choice', cols: 3, prompt: Cq(k, 'common.prompt', { expr: $(L.rowsExprTex(lab)) }),
+      options: [
+        { text: <MathText>{$(wrong[0].tex)}</MathText>, why: why(wrong[0]) },
+        { text: <MathText>{$(right)}</MathText>, correct: true },
+        { text: <MathText>{$(wrong[1].tex)}</MathText>, why: why(wrong[1]) },
+      ],
+      hints: [Cq(k, 'common.hint1'), Cq(k, 'common.hint2')],
+      explain: Cq(k, 'common.explain', { eq: $(right) }),
+    };
+  },
+  corner: (lab, k) => {
+    const bad = lab.trials.find((t) => !t.ok);
+    const o = { right: $(String(bad.right)), bottom: $(String(bad.bottom)), n: $(String(bad.need)), calc: $(`${bad.right}\\times${bad.bottom}=${bad.need}`) };
+    return {
+      id: 'corner', kind: 'number', expected: String(bad.need), answer: <MathText>{$(String(bad.need))}</MathText>,
+      prompt: Cq(k, 'corner.prompt', o), hints: [Cq(k, 'corner.hint1'), Cq(k, 'corner.hint2', o)], explain: Cq(k, 'corner.explain', { ...o, have: $(String(lab.c)) }),
+    };
+  },
+  half: (lab, k) => {
+    const ok = lab.trials.find((t) => t.ok && t.right === t.bottom);
+    const o = { b: $(String(lab.b)), p: $(String(ok.right)), calc: $(`${ok.right}+${ok.bottom}=${lab.b}`) };
+    return {
+      id: 'half', kind: 'number', expected: String(ok.right), answer: <MathText>{$(String(ok.right))}</MathText>,
+      prompt: Cq(k, 'half.prompt', o), hints: [Cq(k, 'half.hint1'), Cq(k, 'half.hint2', o)], explain: Cq(k, 'half.explain', o),
+    };
+  },
+  sides: (lab, k) => {
+    const ok = lab.trials.find((t) => t.ok && t.right === t.bottom);
+    const p = ok.right;
+    const expr = L.squareExprTex(lab);
+    const sq = (n) => `(x+${n})^2`;
+    const exp = (n) => `x^2+${2 * n}x+${n * n}`;
+    const o = { expr: $(expr), right: $(sq(p)) };
+    return {
+      id: 'sides', kind: 'choice', cols: 3, prompt: Cq(k, 'sides.prompt', { expr: $(expr) }),
+      options: [
+        { text: <MathText>{$(sq(lab.b))}</MathText>, why: Cq(k, 'sides.whyStrips', { wrong: $(sq(lab.b)), exp: $(exp(lab.b)), b: $(String(lab.b)) }) },
+        { text: <MathText>{$(sq(p))}</MathText>, correct: true },
+        { text: <MathText>{$(sq(lab.c))}</MathText>, why: Cq(k, 'sides.whyCorner', { wrong: $(sq(lab.c)), exp: $(exp(lab.c)), c: $(String(lab.c)) }) },
+      ],
+      hints: [Cq(k, 'sides.hint1', { p: $(String(p)) }), Cq(k, 'sides.hint2', { p: $(String(p)) })],
+      explain: Cq(k, 'sides.explain', { ...o, eq: $(`${expr}=${sq(p)}`) }),
+    };
+  },
+  outside: (lab, k) => {
+    const tr = lab.trials[0];
+    const n = lab.c - (tr?.need ?? 0);
+    const o = { c: $(String(lab.c)), n: $(String(n)) };
+    return {
+      id: 'outside', kind: 'number', expected: String(n), answer: <MathText>{$(String(n))}</MathText>,
+      prompt: Cq(k, 'outside.prompt', o), hints: [Cq(k, 'outside.hint1'), Cq(k, 'outside.hint2', o)], explain: Cq(k, 'outside.explain', o),
+    };
+  },
+  why: (lab, k) => {
+    const o = { c: $(String(lab.c)), root: $(String(Math.round(Math.sqrt(lab.c)))), sq: $(`${Math.round(Math.sqrt(lab.c))}^2=${lab.c}`) };
+    return {
+      id: 'why', kind: 'choice', prompt: Cq(k, 'why.prompt', o),
+      options: [
+        { text: Cq(k, 'why.notSquare', o), why: Cq(k, 'why.whyNotSquare', o) },
+        { text: Cq(k, 'why.right', o), correct: true },
+        { text: Cq(k, 'why.tooBig', o), why: Cq(k, 'why.whyTooBig', o) },
+      ],
+      hints: [Cq(k, 'why.hint1'), Cq(k, 'why.hint2', o)], explain: Cq(k, 'why.explain', o),
+    };
+  },
+  rule: (lab, k) => {
+    const noSquare = lab.mode === 'square' && !L.closable(lab);
+    return {
+      id: 'rule', kind: 'choice', prompt: <MathText>{k(lab.mode === 'rows' ? 'rPrompt' : noSquare ? 'nPrompt' : 'sPrompt')}</MathText>,
+      options: discoveryOptions(lab, k, lab.mode, noSquare),
+      hints: [Cq(k, `rule.${lab.mode === 'rows' ? 'rows' : noSquare ? 'none' : 'square'}.hint1`), Cq(k, `rule.${lab.mode === 'rows' ? 'rows' : noSquare ? 'none' : 'square'}.hint2`)],
+      explain: <Formal lab={lab} k={k} mode={lab.mode} noSquare={noSquare} />,
+    };
+  },
+};

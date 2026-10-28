@@ -47,7 +47,7 @@ export default function Module03Awazzif() {
         { num: 9, title: 'تمرين 8 — عمل رياض وإيمان', done: !!done.e8,
           content: <TextbookExercise exercise={EX['ex-8']} requires={['tawziiya-nashr', 'nashr-qawsayn']} onAnswered={mark('e8')} /> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }

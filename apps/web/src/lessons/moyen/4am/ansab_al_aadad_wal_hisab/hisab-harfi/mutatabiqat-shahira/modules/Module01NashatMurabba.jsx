@@ -47,6 +47,16 @@ export default function Module01NashatMurabba() {
   const [d, setD] = useState({});
   const done = (k) => () => setD((s) => ({ ...s, [k]: true }));
   const { side, extra, workersClaim } = HOOK.square;
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand la suite de questions de son terrain l'est
+  const [cps, setCps] = useState([]);
+  const answered = (id) => cps.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const mine = sumTrials.find((t) => t.ok);
+  const Evidence = ({ ok, done: line, todo }) => (
+    <p data-evidence="checkpoint" data-tried={ok ? 'true' : 'false'}
+      className={`rounded-xl border-2 px-3 py-2 text-sm ${ok ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+      {ok ? line : todo}
+    </p>
+  );
 
   return (
     <ContentModule
@@ -69,6 +79,7 @@ export default function Module01NashatMurabba() {
                   title="ملعب مربّع ضلعه x + 3"
                   lead="ملعب جواري مربّع تمدّد البلدية ضلعه كلما كبر x."
                   onTrial={(t) => setSumTrials((list) => upsertTrial(list, t))}
+                  onCheckpoint={(e) => setCps((l) => [...l, e])}
                 />
                 <SourceTag source={LABS.source} />
               </div>
@@ -82,6 +93,7 @@ export default function Module01NashatMurabba() {
                   title="ملعب مربّع ضلعه x − 2: شريطان مقتطعان"
                   lead="تُقتطع من الملعب أشرطة: المناطق المخطّطة مقتطعة."
                   onTrial={(t) => setDiffTrials((list) => upsertTrial(list, t))}
+                  onCheckpoint={(e) => setCps((l) => [...l, e])}
                 />
                 <SourceTag source={LABS.source} />
               </div>
@@ -91,7 +103,7 @@ export default function Module01NashatMurabba() {
       }
       steps={[
         {
-          num: 1, title: 'لماذا لا يكفي مربّعان؟', subtitle: 'من ملعبك في المستوى المبتدئ', done: !!d.w1,
+          num: 1, title: 'لماذا لا يكفي مربّعان؟', subtitle: 'من ملعبك في المستوى المبتدئ', done: answered(LABS.squareSum),
           content: (
             <div className="space-y-3">
               <p className="text-sm font-semibold text-slate-700">ملعبك <MathText>{'$(x + 3)^2$'}</MathText> — ما تحقّقت منه:</p>
@@ -100,19 +112,9 @@ export default function Module01NashatMurabba() {
                 line={(x) => `$x = ${x}$ : $(x + 3)^2 = ${(x + 3) ** 2}$ و $${x * x} + ${3 * x} + ${3 * x} + 9 = ${(x + 3) ** 2}$`}
                 empty="لم تتحقّق بعد: اسحب مناطق الملعب في المستوى المبتدئ، ثم اضغط «تحقّق»."
               />
-              <TapQuestion
-                prompt={<span>عند <MathText>{'$x = 4$'}</MathText> مساحة ملعبك <MathText>{'$49\\,m^2$'}</MathText>، ومجموع المربّعين الكبير والصغير <MathText>{'$16 + 9 = 25$'}</MathText> فقط. أين ذهبت المساحة الباقية <MathText>{'$24\\,m^2$'}</MathText>؟</span>}
-                options={[
-                  'في شريطين مستطيلين مساحة كل منهما $3x = 12$',
-                  'في مربّع ثالث مساحته $24$',
-                  'لم تضِع مساحة: الملعب مساحته $25$',
-                ].map(m)}
-                correct={0}
-                cols={1}
-                requires={['nashr-qawsayn']}
-                explain={<MathText>{'الملعب أربع مناطق: $x^2 = 16$ و $9$ وشريطان $3x = 12$ و $3x = 12$؛ والمجموع $16 + 9 + 12 + 12 = 49$. المربّعان وحدهما ينسيان الشريطين.'}</MathText>}
-                onAnswered={done('w1')}
-              />
+              <Evidence ok={answered(LABS.squareSum) && !!mine}
+                done={<span>أجبتَ في المختبر: عند <MathText>{`$x = ${mine?.x}$`}</MathText> مساحة ملعبك <MathText>{`$${mine?.product}$`}</MathText> ، أمّا المربّعان وحدهما فمجموعهما <MathText>{`$${(mine?.x ?? 0) ** 2} + 9 = ${(mine?.x ?? 0) ** 2 + 9}$`}</MathText> فقط: يغيب الشريطان <MathText>{'$3x$'}</MathText> و <MathText>{'$3x$'}</MathText> .</span>}
+                todo="أتمّ ملعب المستوى المبتدئ (احمل المناطق، اجمع، وتحقّق من قيمتين)، ثم أجب عن الأسئلة التي تظهر فوق المختبر." />
             </div>
           ),
         },
@@ -138,30 +140,13 @@ export default function Module01NashatMurabba() {
           ),
         },
         {
-          num: 3, title: 'مربع مجموع — ب) مساحة المربع بطريقتين', subtitle: 'أجب من ملعبك في المستوى المبتدئ', done: !!d.b1,
+          num: 3, title: 'مربع مجموع — ب) مساحة المربع بطريقتين', subtitle: 'أجب من ملعبك في المستوى المبتدئ', done: answered(LABS.squareSum),
           content: (
             <div className="space-y-3">
               <TextbookBox kind="exercise" title="الشكل" text={ACTIVITY.text} source={ACTIVITY.source} compact />
-              <p className="text-sm font-semibold text-slate-700">ملعبك <MathText>{'$(x + 3)^2$'}</MathText> — ما تحقّقت منه في المستوى المبتدئ:</p>
-              <TrialEvidence
-                trials={sumTrials}
-                line={(x) => `$x = ${x}$ : $(x + 3)^2 = ${(x + 3) ** 2}$ و $${x * x} + ${3 * x} + ${3 * x} + 9 = ${(x + 3) ** 2}$`}
-                empty="لم تتحقّق بعد: اسحب مناطق الملعب في المستوى المبتدئ، ثم اضغط «تحقّق»."
-              />
-              <TapQuestion
-                prompt={<MathText>{ACTIVITY.questions[1]}</MathText>}
-                options={[
-                  '$(a + b)^2 = a^2 + b^2$',
-                  '$(a + b)^2 = a^2 + ab + ab + b^2$',
-                  '$(a + b)^2 = 2a + 2b$',
-                  '$(a + b)^2 = a^2 + ab + b^2$',
-                ].map(m)}
-                correct={1}
-                cols={1}
-                requires={['nashr-qawsayn']}
-                explain={<span>المربع MNPQ مكوّن من أربع مناطق: مربّعان مساحتاهما <MathText>{'$a^2$'}</MathText> و <MathText>{'$b^2$'}</MathText> ومستطيلان مساحة كل منهما <MathText>{'$ab$'}</MathText> — كما في ملعبك: <MathText>{'$x^2$'}</MathText> و <MathText>{'$9$'}</MathText> وشريطان <MathText>{'$3x$'}</MathText>.</span>}
-                onAnswered={done('b1')}
-              />
+              <Evidence ok={answered(LABS.squareSum)}
+                done={<span>استخلصتَ في المختبر من ملعبك <MathText>{'$(x + 3)^2$'}</MathText> : المربع أربع مناطق، مربّعان مساحتاهما <MathText>{'$a^2$'}</MathText> و <MathText>{'$b^2$'}</MathText> ومستطيلان مساحة كل منهما <MathText>{'$ab$'}</MathText> ، فيكون <MathText>{'$(a + b)^2 = a^2 + ab + ab + b^2$'}</MathText> .</span>}
+                todo="أجب عن أسئلة المختبر في المستوى المبتدئ حتى القاعدة." />
             </div>
           ),
         },
@@ -383,7 +368,7 @@ export default function Module01NashatMurabba() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

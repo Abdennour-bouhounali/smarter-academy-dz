@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, Minus, Plus, RotateCcw, ChevronDown } from 'lucide-react';
 import ManipulationShell from '../ManipulationShell';
@@ -11,8 +11,13 @@ import DraggableObject from '../primitives/DraggableObject';
 import DropZone from '../primitives/DropZone';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import MathText from '../../components/MathText';
 import { bidi } from '../../../../utils/bidi';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 import * as E from '../logic/eliminationCards';
 
 /**
@@ -57,6 +62,16 @@ import * as E from '../logic/eliminationCards';
  *   DISCOVERY      « تخلّصت من أحد المجهولين فحصلت على معادلة بمجهول واحد، ثم عوّضت » — choisie
  *   FORMALIZATION  طرائق p. 59 : طريقة التعويض / طريقة الجمع (l'encadré du manuel)
  *   TRANSFER       دوري الآن p. 59, تمارين 5 → 13, 22, 23 (choisir la méthode selon les coefficients)
+ *
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 2, 2026-10-28) : les deux MÉTHODES sont les deux « tâches » du labo.
+ * Quand une méthode est TERMINÉE (la ثنائية obtenue), une suite de questions sur ce que l'élève vient de faire se pose PAR-DESSUS le labo
+ * (`chainOf`) : substitution — la valeur trouvée · l'autre inconnue · la ثنائية ; addition — la somme des valeurs · la valeur trouvée · l'autre inconnue ·
+ * la ثنائية. La suite de la SECONDE méthode (les deux ثنائيات sont égales) finit par LA RÈGLE (l'ancienne découverte, qui formalise). Les mauvaises
+ * options sont les erreurs réelles (ordre x ↔ y permuté, une seule valeur, signe perdu). Obligatoires pour tout élève ; l'enseignant seul les coupe
+ * pour SON compte (`checkpoints` = false les coupe aussi). `onCheckpoint(ev)` : `{ tk: 'checkpoint' | 'checkpoint-done', id: 'sub' | 'add', … }`.
+ * ÉTAPES `LabStepper` (`[data-ec-step=<i>]` : première méthode · seconde méthode + règle) + fête ; « إعادة » repart de zéro ; « أعِد التجربة » refait
+ * la MÊME méthode (les cartes neuves, l'autre méthode gardée en mémoire). SON : `tooth` (isoler, multiplier, ligne suivante), `bell` (expression
+ * portée, cartes posées), `flag` (la ثنائية), `over` (refus).
  *
  * AUTO-COMPLÉTION : NON (§6bis). Chaque geste est une décision (quelle inconnue, quelle carte,
  * quel multiplicateur) : « compléter » voudrait dire « résoudre à la place de l'élève ». Seules les
@@ -153,28 +168,59 @@ function KioskDeco() {
 }
 
 export default function EliminationCards({
-  system: sys0 = 'x+y=10|x-y=2', title, lead, mission, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onFinished, onTrial,
+  system: sys0 = 'x+y=10|x-y=2', title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true,
+  initialMode = 'student', allowModeSwitch = false, onFinished, onTrial, onCheckpoint,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.eliminationCards.${key}`, o), [t]);
   const state = useManipulation({ type: 'elimination-cards', initialNumbers: { system: sys0 }, initialMode, initialLevel: level, withLevels, hintCount: 3 });
   const { system } = state.numbers;
 
-  const sceneKey = `${system}:${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
+  const sceneKey = `${system}:${state.epoch}:${state.resetCount}`;
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
   const [lab, setLab] = useState(() => E.init(sys0));
   const [notice, setNotice] = useState(null);
   const [live, setLive] = useState({ 1: null, 2: null });
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(E.init(system)); setNotice(null); setLive({ 1: null, 2: null }); }
+  // « إعادة » (resetCount), un autre niveau ou une autre jumla : TOUT recommence — les cartes, la mémoire des méthodes et les questions du labo
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(E.init(system)); setNotice(null); setLive({ 1: null, 2: null }); }
 
   const ready = E.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : une suite quand une MÉTHODE est terminée ; la suite de la seconde finit par la règle (remplace la découverte automatique)
+  const cpSettings = useLabCheckpointSettings('elimination-cards');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpLive = cpOn && cpSettings.enabled;
+  const done = lab.stage === 'done' && !!lab.result;
+  const chain = cpLive && lab.method ? chainOf(lab) : null;
+  const cp = useLabCheckpoint({
+    id: chain ? lab.method : null,
+    questions: chain && done ? chain.map((q) => QUESTIONS[q](lab, k)) : null,
+    reached: done,
+    resetKey: scene.inits,
+    // « أعِد التجربة » : la MÊME méthode repart de cartes neuves ; l'autre méthode, déjà faite, reste en mémoire
+    onRetry: () => { setNotice(null); setLive({ 1: null, 2: null }); setLab((l) => E.init(l.src, { methodsDone: { ...l.methodsDone, [l.method]: null }, attempts: l.attempts.filter((a) => a.method !== l.method), refusals: l.refusals })); },
+    onEvent: (ev) => state.report(onCheckpoint, ev),
+    onDone: () => { if (E.discoveryReady(lab)) { state.discover(); state.formalize(); } },
+  });
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // une étape est FAITE quand sa méthode est terminée ET ses questions répondues : la pastille passe au vert et on fête
+  const nMethods = Number(!!lab.methodsDone.sub) + Number(!!lab.methodsDone.add);
+  const stepDone = [nMethods >= 1 && !(nMethods === 1 && cp.blocking), nMethods >= 2 && ready && !cp.blocking];
+  const nDone = stepDone.findIndex((d) => !d) < 0 ? stepDone.length : stepDone.findIndex((d) => !d);
+  const party = useStepCelebration();
+  const celebrated = useRef({ n: 0, inits: scene.inits });
+  if (celebrated.current.inits !== scene.inits) celebrated.current = { n: 0, inits: scene.inits };   // « إعادة » : on refête
+  useEffect(() => {
+    if (nDone <= celebrated.current.n) return;
+    celebrated.current.n = nDone;
+    party.celebrate({ n: nDone, total: stepDone.length });
+  }, [nDone]); // eslint-disable-line react-hooks/exhaustive-deps
+  const heard = useRef(0);
+  const tick = () => { const now = Date.now(); if (now - heard.current > 35) { playSfx('tooth'); heard.current = now; } };
   useEffect(() => { if (state.isFormal) state.report(onFinished, system); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const dec = lab.decimal;
   const commit = (next) => {
     const finished = next.stage === 'done' && lab.stage !== 'done';
+    if (finished) playSfx('flag');
     setLab(next);
     if (finished) state.report(onTrial, E.summary(next));
   };
@@ -205,15 +251,18 @@ export default function EliminationCards({
       const n = Number(zone.split(':')[1]);
       if (s === 'iso') {
         const next = E.isolateFrom(lab, Number(sn), sv);
+        tick();
         setNotice({ tone: 'ok', key: 'notice_isolated', o: { expr: E.exprLine(next) } });
         commit(next);
       } else if (s === 'expr') {
         const next = E.substituteInto(lab, n);
+        playSfx('bell');
         setNotice({ tone: 'ok', key: 'notice_substituted', o: { v: lab.expr.v, n } });
         commit(next);
       } else if (s === 'card') {
         const pairs = E.cancelledPairs(lab);
         const next = E.stack(lab, Number(sn), n);
+        playSfx('bell');
         setNotice({ tone: 'ok', key: 'notice_stacked', o: { v: pairs?.v } });
         commit(next);
       } else if (s === 'val') {
@@ -236,6 +285,7 @@ export default function EliminationCards({
       if (reason === 'wrongUnknown') o = { v: lab.expr?.v, w: zv };
       if (reason === 'noUnknownHere') o = { v: src.startsWith('expr') ? lab.expr?.v : zv };
       setLab((l) => E.refuse(l, reason));
+      playSfx('over');
       setNotice({ tone: 'ko', key, reason, o });
     },
   });
@@ -267,10 +317,11 @@ export default function EliminationCards({
     setLive((s) => ({ ...s, [n]: null }));
     const r = E.canScale(lab, n, v);
     if (r === true) {
-      if (v !== lab.scale[n]) setNotice({ tone: 'info', key: 'notice_scaled', o: { n, k: v } });
+      if (v !== lab.scale[n]) { setNotice({ tone: 'info', key: 'notice_scaled', o: { n, k: v } }); tick(); }
       setLab(E.setScale(lab, n, v));
     } else if (r) {
       setLab((l) => E.refuse(l, r));
+      playSfx('over');
       setNotice({ tone: 'ko', key: `refuse_${r}`, reason: r, o: {} });
     }
   };
@@ -377,33 +428,26 @@ export default function EliminationCards({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpLive}
       hints={[k('hint1'), k('hint2'), k('hint3')].map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={(
         <ManipulationDiscovery
           state={state}
           prompt={k('discoveryPrompt')}
-          options={[
-            { text: <MathText>{k('opt2')}</MathText>, why: <MathText>{k('why2')}</MathText> },
-            { text: <MathText>{k('opt1')}</MathText>, correct: true },
-            { text: <MathText>{k('opt3')}</MathText>, why: <MathText>{k('why3')}</MathText> },
-          ]}
-          formal={(
-            <div className="space-y-2" data-ec-formal>
-              <p className="rounded-xl border-2 border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900"><MathText>{k('formalNote')}</MathText></p>
-              {lab.methodsDone.sub && (
-                <EquationDisplay tone="result" tex={`(x ; y) = ${E.pairTex(E.parseNum(lab.methodsDone.sub.x), E.parseNum(lab.methodsDone.sub.y), dec)}`}
-                  note={<MathText>{k('yourCase')}</MathText>} />
-              )}
-            </div>
-          )}
+          options={discoveryOptions(k)}
+          formal={<Formal lab={lab} k={k} />}
         />
       )}
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-orange-50/60 to-white" data-dragging={drag.dragging || s1.dragging || s2.dragging ? 'true' : undefined}>
-        <div className="space-y-3" style={{ containerType: 'inline-size' }}
+        <div className="relative space-y-3" style={{ containerType: 'inline-size' }}
           data-elimination-cards data-system={system} data-method={lab.method} data-stage={lab.stage}>
+          {party.node}
+          {cp.node}
+          <LabStepper count={stepDone.length} current={Math.min(nDone, stepDone.length - 1)} done={stepDone} stepAttr="data-ec-step" />
           <KioskDeco />
 
           {/* la ligne de l'étape en cours, AU-DESSUS des cartes (l'historique complet est plus bas) */}
@@ -482,7 +526,7 @@ export default function EliminationCards({
                 </div>
               )}
               {lab.stage === 'one' && (
-                <button type="button" onClick={() => commit(E.solveStep(lab))} data-ec-next
+                <button type="button" onClick={() => { tick(); commit(E.solveStep(lab)); }} data-ec-next
                   className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-blue-600 px-4 font-bold text-white focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300">
                   <ChevronDown className="h-5 w-5" aria-hidden="true" /> <span>{k('nextLine')}</span>
                 </button>
@@ -566,3 +610,98 @@ export default function EliminationCards({
     </ManipulationShell>
   );
 }
+
+/* ══════════════ La découverte et la règle ══════════════ */
+
+export function discoveryOptions(k) {
+  return [
+    { text: <MathText>{k('opt2')}</MathText>, why: <MathText>{k('why2')}</MathText> },
+    { text: <MathText>{k('opt1')}</MathText>, correct: true },
+    { text: <MathText>{k('opt3')}</MathText>, why: <MathText>{k('why3')}</MathText> },
+  ];
+}
+
+export function Formal({ lab, k }) {
+  return (
+    <div className="space-y-2" data-ec-formal>
+      <p className="rounded-xl border-2 border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900"><MathText>{k('formalNote')}</MathText></p>
+      {lab.methodsDone.sub && (
+        <EquationDisplay tone="result" tex={`(x ; y) = ${E.pairTex(E.parseNum(lab.methodsDone.sub.x), E.parseNum(lab.methodsDone.sub.y), lab.decimal)}`}
+          note={<MathText>{k('yourCase')}</MathText>} />
+      )}
+    </div>
+  );
+}
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite d'une méthode terminée ; celle de la SECONDE (les deux ثنائيات égales) finit par LA RÈGLE. */
+export function chainOf(lab) {
+  const base = lab.method === 'add' ? ['sumValue', 'found', 'other', 'pair'] : ['found', 'other', 'pair'];
+  return E.discoveryReady(lab) ? [...base, 'rule'] : base;
+}
+
+const $ = (x) => `$${x}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const isNeg = (f) => E.numText(f).startsWith('-');
+
+/**
+ * Une valeur à donner : `number` si elle se tape (positive, décimale ou fraction), sinon `choice` — la valeur, son opposé (le signe perdu) et
+ * l'autre inconnue (x et y confondus) : un nombre négatif ne se tape pas (`readNumber`).
+ */
+function valueQuestion(id, value, other, dec, text, hints, explain) {
+  const shown = E.numTex(value, dec);
+  if (!isNeg(value)) return { id, kind: 'number', expected: E.numText(value, dec), answer: <MathText>{$(shown)}</MathText>, prompt: text, hints, explain };
+  const opposite = Lin.neg(value);
+  const opts = [{ text: <MathText>{$(shown)}</MathText>, correct: true }, { text: <MathText>{$(E.numTex(opposite, dec))}</MathText> }];
+  if (E.numText(other) !== E.numText(value) && E.numText(other) !== E.numText(opposite)) opts.push({ text: <MathText>{$(E.numTex(other, dec))}</MathText> });
+  return { id, kind: 'choice', cols: 3, prompt: text, options: opts, hints, explain };
+}
+
+export const QUESTIONS = {
+  sumValue: (lab, k) => {
+    const dec = lab.decimal;
+    const e1 = E.card(lab, 1); const e2 = E.card(lab, 2);
+    const { sum } = E.stackSum(lab);
+    const o = { c1: $(E.numTex(e1.c, dec)), c2: $(E.numTex(e2.c, dec)), calc: $(`${E.numTex(e1.c, dec)}+${isNeg(e2.c) ? `(${E.numTex(e2.c, dec)})` : E.numTex(e2.c, dec)}=${E.numTex(sum.c, dec)}`) };
+    return valueQuestion('sumValue', sum.c, e1.c, dec, Cq(k, 'sumValue.prompt', o), [Cq(k, 'sumValue.hint1'), Cq(k, 'sumValue.hint2', o)], Cq(k, 'sumValue.explain', o));
+  },
+  found: (lab, k) => {
+    const dec = lab.decimal;
+    const { v, value } = lab.found;
+    const o = { u: $(v), c: $(E.numTex(lab.one.c, dec)), a: $(E.numTex(lab.one.a, dec)), calc: $(`${v}=${E.numTex(value, dec)}`) };
+    return valueQuestion('found', value, lab.one.a, dec, Cq(k, 'found.prompt', o), [Cq(k, 'found.hint1', o), Cq(k, 'found.hint2', o)], Cq(k, 'found.explain', o));
+  },
+  other: (lab, k) => {
+    const dec = lab.decimal;
+    const { v, value } = lab.found;
+    const w = E.other(v);
+    const wValue = v === 'x' ? lab.result.y : lab.result.x;
+    const back = lab.lines.find((l) => l.key === 'back');
+    const o = { v: $(v), w: $(w), value: $(E.numTex(value, dec)), n: lab.result.via, line: $(back.tex), calc: $(`${w}=${E.numTex(wValue, dec)}`) };
+    return valueQuestion('other', wValue, value, dec, Cq(k, 'other.prompt', o), [Cq(k, 'other.hint1', o), Cq(k, 'other.hint2', o)], Cq(k, 'other.explain', o));
+  },
+  pair: (lab, k) => {
+    const dec = lab.decimal;
+    const { x, y } = lab.result;
+    const right = E.pairTex(x, y, dec);
+    const swapped = E.numText(x) !== E.numText(y) ? E.pairTex(y, x, dec) : E.pairTex(x, Lin.neg(y), dec);
+    const single = `x=${E.numTex(x, dec)}`;
+    const o = { right: $(right), x: $(`x=${E.numTex(x, dec)}`), y: $(`y=${E.numTex(y, dec)}`), swapped: $(swapped), single: $(single) };
+    return {
+      id: 'pair', kind: 'choice', cols: 3, prompt: Cq(k, 'pair.prompt'),
+      options: [
+        { text: <MathText>{$(swapped)}</MathText>, why: Cq(k, E.numText(x) !== E.numText(y) ? 'pair.whySwap' : 'pair.whySign', o) },
+        { text: <MathText>{$(right)}</MathText>, correct: true },
+        { text: <MathText>{$(single)}</MathText>, why: Cq(k, 'pair.whyOne', o) },
+      ],
+      hints: [Cq(k, 'pair.hint1'), Cq(k, 'pair.hint2', o)], explain: Cq(k, 'pair.explain', o),
+    };
+  },
+  rule: (lab, k) => ({
+    id: 'rule', kind: 'choice', prompt: <MathText>{k('discoveryPrompt')}</MathText>,
+    options: discoveryOptions(k),
+    hints: [Cq(k, 'rule.hint1', { sub: $(E.pairTex(E.parseNum(lab.methodsDone.sub.x), E.parseNum(lab.methodsDone.sub.y), lab.decimal)) }), Cq(k, 'rule.hint2')],
+    explain: <Formal lab={lab} k={k} />,
+  }),
+};
