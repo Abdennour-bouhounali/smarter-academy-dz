@@ -138,7 +138,10 @@ async function playProblem(page, id, wrongAt) {
       return { p, i };
     });
     if (!cur) {
-      const next = page.locator('button:visible').filter({ hasText: /المحور التالي|الجزء التالي|حسنًا/ }).first();
+      const total = pb.parts.reduce((n, pt) => n + pt.steps.length, 0);
+      const done = await page.locator('[data-problem-substep][data-substep-done="true"]').count();
+      if (done >= total) break;   // tout est joué : on ne passe SURTOUT pas au module suivant
+      const next = page.locator('button:visible').filter({ hasText: /الجزء التالي|حسنًا|المتابعة/ }).first();
       if (await next.count()) { await next.click(); await page.waitForTimeout(400); continue; }
       break;
     }
@@ -163,7 +166,7 @@ async function playProblem(page, id, wrongAt) {
       if (await area.count()) await area.fill('أكتب الحلّ بنفسي أوّلًا');
       for (let k = 0; k < 8; k += 1) {
         const b = row.locator('[data-written-answer] button:visible').last();
-        if (await b.count() && await b.isEnabled()) { await b.click(); await page.waitForTimeout(250); } else break;
+        if (await b.count() && await b.isEnabled()) { await page.waitForTimeout(300); await b.click({ force: true, timeout: 8000 }); await page.waitForTimeout(300); } else break;
       }
     }
     await page.waitForTimeout(150);
@@ -207,30 +210,48 @@ for (const [w, h] of [[1366, 768], [768, 1024]]) {
   await pageHealth(page, `${w}×${h} module 7 après le tri`);
   await page.screenshot({ path: `${OUT}/m7-sorted-${w}x${h}.png`, fullPage: true });
   // l'analyse en cinq temps
-  for (let k = 0; k < 6; k += 1) { const b = page.getByRole('button', { name: /السطر التالي|التالي/ }).first(); if (await b.count() && await b.isVisible()) { await b.click(); await page.waitForTimeout(150); } }
+  for (let k = 0; k < 6; k += 1) { const b = page.locator('button:visible').filter({ hasText: /السطر التالي/ }).first(); if (await b.count()) { await b.click({ timeout: 8000 }); await page.waitForTimeout(200); } }
   const t7b = await page.locator('body').innerText();
   check(/الخلاصة/.test(t7b), `${w}×${h} module 7 : l'analyse en cinq temps est révélée`);
   await page.screenshot({ path: `${OUT}/m7-analysis-${w}x${h}.png`, fullPage: true });
+  // les quatre décisions : une réponse fausse d'abord (la 1re), puis les bonnes
+  const decisions = [/يلحق به بعد/, /بعد التدوير/, /وهو أقلّ من/, /يجب ألّا تتجاوز/];
+  const wrongFirst = page.locator('button:visible').filter({ hasText: /لأنّ رضا أسرع/ }).first();
+  if (await wrongFirst.count()) { await wrongFirst.click(); await page.waitForTimeout(400); check(/لأنّ|الجواب|يقطع/.test(await page.locator('body').innerText()), `${w}×${h} module 7 : une réponse fausse reçoit sa correction`); }
+  for (const rx of decisions) {
+    const b = page.locator('button:visible').filter({ hasText: rx }).first();
+    if (await b.count()) { await b.scrollIntoViewIfNeeded(); await b.click({ timeout: 8000 }).catch(() => {}); await page.waitForTimeout(350); }
+  }
+  const t7c = await page.locator('body').innerText();
+  check(/حكاية/.test(t7c), `${w}×${h} module 7 : la « حكاية » apparaît après la dernière réponse`);
+  // la fiche mémoire et le défi chronométré
+  check(/اختبر ذاكرتك|بطاقة|للتذكّر/.test(t7c), `${w}×${h} module 7 : la fiche mémoire est présentée`);
+  const challenge = page.locator('button:visible').filter({ hasText: /اختبر ذاكرتك/ }).first();
+  if (await challenge.count()) { await challenge.click({ timeout: 8000 }).catch(() => {}); await page.waitForTimeout(800); check(/\d+:\d\d|ثانية|المؤقّت|سؤال/.test(await page.locator('body').innerText()), `${w}×${h} module 7 : « اختبر ذاكرتك » démarre`); }
+  await page.screenshot({ path: `${OUT}/m7-memo-${w}x${h}.png`, fullPage: true });
+  await pageHealth(page, `${w}×${h} module 7 fin`);
 
   // module 8 : une épreuve fausse d'abord, puis toutes justes, envoi et résultat
   await goto(page, `${BASE}${CH}/${LESSON}/ahill`);
   const annotation = (s) => s.replace(/\\\\/g, '\\').replace(/\$/g, '').replace(/\\le/g, '≤').replace(/\\ge/g, '≥').replace(/\{,\}/g, ',').replace(/\\,/g, '').replace(/\s+/g, '').replace(/-/g, '−');
-  // les 20 boutons d'options précèdent « أرسِل إجاباتي » : quatre par épreuve, dans l'ordre E1…E5
-  const clickOption = async (k, txt) => {
-    const ann = annotation(txt);
-    const all = page.locator('button:visible'); const n = await all.count(); let submit = -1;
-    for (let q = 0; q < n; q += 1) if (/أرسِل إجاباتي/.test(await all.nth(q).innerText())) { submit = q; break; }
-    for (let q = submit - 20 + 4 * k; q < submit - 20 + 4 * k + 4; q += 1) {
-      const tx = (await all.nth(q).innerText()).replace(/\s+/g, '');
-      if (tx.endsWith(ann)) { await all.nth(q).click(); return true; }
+  // les 20 boutons d'options précèdent « أرسِل إجاباتي » : quatre par épreuve, dans l'ordre E1…E5. Les positions sont lues UNE fois, avant tout clic.
+  const all = page.locator('button:visible'); const nBtn = await all.count(); let submitAt = -1;
+  for (let q = 0; q < nBtn; q += 1) if (/أرسِل إجاباتي/.test(await all.nth(q).innerText())) { submitAt = q; break; }
+  const positions = [];
+  for (const [k, e] of FINAL.entries()) {
+    const ann = annotation(e.id === 'E2' ? e.options[1] : e.options[0]); let at = -1;
+    for (let q = submitAt - 20 + 4 * k; q < submitAt - 20 + 4 * k + 4; q += 1) {
+      if ((await all.nth(q).innerText()).replace(/\s+/g, '').endsWith(ann)) { at = q; break; }
     }
-    return false;
-  };
+    positions.push(at);
+  }
   const t8 = await page.locator('body').innerText();
   check(/12/.test(t8) && /140/.test(t8), `${w}×${h} module 8 : la وضعية des deux camions est affichée`);
   for (const [k, e] of FINAL.entries()) {
-    const pick = e.id === 'E2' ? e.options[1] : e.options[0]; // une réponse fausse (x = 45) d'abord
-    check(await clickOption(k, pick), `${w}×${h} module 8 ${e.id} : option trouvée`);
+    check(positions[k] >= 0, `${w}×${h} module 8 ${e.id} : option trouvée`);
+    // les options portent aria-pressed : on les relit à CHAQUE clic (la sélection re-rend les boutons) ; rang = 4 k + position dans l'épreuve
+    const opt = page.locator('button[aria-pressed]').nth(positions[k] - (submitAt - 20));
+    await opt.scrollIntoViewIfNeeded(); await page.waitForTimeout(250); await opt.click({ timeout: 8000 }); await page.waitForTimeout(300);
   }
   await page.screenshot({ path: `${OUT}/m8-answered-${w}x${h}.png`, fullPage: true });
   await page.getByRole('button', { name: /أرسِل إجاباتي/ }).click();

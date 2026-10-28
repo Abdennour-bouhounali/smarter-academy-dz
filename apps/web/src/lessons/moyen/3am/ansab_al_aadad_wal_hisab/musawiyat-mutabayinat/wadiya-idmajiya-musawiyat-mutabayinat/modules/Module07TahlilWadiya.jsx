@@ -40,7 +40,7 @@ export default function Module07TahlilWadiya() {
               prompt={<span>خطّ الوصول على بعد <MathText>{'$15\\ \\mathrm{km}$'}</MathText> من نقطة انطلاق رضا. هل يلحق رضا بياسين قبل الخطّ؟</span>}
               options={['لا: يلحق به بعد $20\\ \\mathrm{km}$ ، وهذا أكبر من $15\\ \\mathrm{km}$', 'نعم: لأنّ رضا أسرع من ياسين', 'نعم: لأنّ $\\frac{1}{2} < 15$', 'لا نستطيع الحكم'].map(M)}
               correct={0} cols={1} requires={['mutabayinat-amaliyat-3am', 'muadalat-darajat-ula-3am']}
-              explain={<span>{REMARKS.finish}</span>}
+              explain={<MathText>{REMARKS.finish}</MathText>}
               onAnswered={() => setQ1(true)} />
           ) },
         { num: 4, title: 'لو كان الفارق مختلفًا: التدوير', done: q2,
@@ -49,7 +49,7 @@ export default function Module07TahlilWadiya() {
               prompt={<span>لو كان ياسين يسبق رضا بـ <MathText>{'$1{,}3\\ \\mathrm{km}$'}</MathText> فقط. ما مدّة اللحاق مدوّرة إلى الدقيقة؟</span>}
               options={['$4t = 1{,}3$ ، فـ $t = 0{,}325\\ \\mathrm{h} = 19{,}5\\ \\mathrm{min}$ ، أي $20\\ \\mathrm{min}$ بعد التدوير', '$4t = 1{,}3$ ، فـ $t = 0{,}325\\ \\mathrm{h} = 19{,}5\\ \\mathrm{min}$ ، أي $19\\ \\mathrm{min}$ بحذف ما بعد الفاصلة', '$t = 0{,}325\\ \\mathrm{min}$ ، أي أقلّ من دقيقة', '$76t = 1{,}3$ ، فـ $t \\approx 0{,}017\\ \\mathrm{h}$'].map(M)}
               correct={0} cols={1} requires={['hasr-adad-ushri-3am', 'muadalat-darajat-ula-3am']}
-              explain={<span>{REMARKS.gapRound}</span>}
+              explain={<MathText>{REMARKS.gapRound}</MathText>}
               onAnswered={() => setQ2(true)} />
           ) },
         { num: 5, title: 'والمسافة؟', done: q3,
@@ -58,7 +58,7 @@ export default function Module07TahlilWadiya() {
               prompt={<MathText>{'في هذه الحالة (فارق $1{,}3\\ \\mathrm{km}$ ومدّة $0{,}325$ ساعة)، هل يلحق رضا بياسين قبل خطّ الوصول على $15\\ \\mathrm{km}$ ؟'}</MathText>}
               options={['نعم: يقطع $40 \\times 0{,}325 = 13\\ \\mathrm{km}$ وهو أقلّ من $15\\ \\mathrm{km}$', 'لا: لأنّ $0{,}325 < 15$', 'لا: لأنّ $13 > 1{,}3$', 'لا نستطيع الحكم'].map(M)}
               correct={0} cols={1} requires={['mutabayinat-amaliyat-3am']}
-              explain={<span>{REMARKS.gapDistance}</span>}
+              explain={<MathText>{REMARKS.gapDistance}</MathText>}
               onAnswered={() => setQ3(true)} />
           ) },
         { num: 6, title: 'أكبر فارق يسمح باللحاق قبل الخطّ', done: q4,
@@ -68,7 +68,7 @@ export default function Module07TahlilWadiya() {
                 prompt={<span>ما أكبر فارق <MathText>{'$d$'}</MathText> (بالكيلومتر) يسمح لرضا باللحاق بياسين قبل خطّ الوصول على <MathText>{'$15\\ \\mathrm{km}$'}</MathText> ؟</span>}
                 options={['$d \\le 1{,}5$ ، لأنّ المسافة المقطوعة $40 \\times \\frac{d}{4} = 10d$ يجب ألّا تتجاوز $15$', '$d \\ge 1{,}5$', '$d \\le 15$ ، لأنّ المسافة تساوي الفارق', '$d \\le 0{,}6$'].map(M)}
                 correct={0} cols={1} requires={['mutabayinat-amaliyat-3am']}
-                explain={<span>{REMARKS.gapBound}</span>}
+                explain={<MathText>{REMARKS.gapBound}</MathText>}
                 onAnswered={() => setQ4(true)} />
               {q4 && <TextbookBox kind="remark" title="حكاية" text={OPENER_STORY.text} compact />}
             </div>
