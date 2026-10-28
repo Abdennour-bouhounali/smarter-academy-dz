@@ -5,6 +5,7 @@ import { CompleteView } from './KnowledgeMap';
 import { buildStructure, progressionByModule } from './knowledgeStructure';
 import { useLessonKnowledge } from './KnowledgeProvider';
 import MathLabel from '../components/MathLabel';
+import MemoCard from './MemoCard';
 
 /**
  * KnowledgeSnapshot — l'« À retenir » d'un module = la carte des
@@ -45,7 +46,8 @@ import MathLabel from '../components/MathLabel';
  * @param {number}  [moduleNumber]  module dont on affiche l'« À retenir »
  * @param {boolean} [unlock=true]   débloquer l'apport de ce module au montage
  * @param {boolean} [complete]      débloquer toute la leçon (synthèse finale)
- * @param {'compact'|'complete'} [variant]
+ * @param {'compact'|'complete'|'memo'} [variant]  'memo' (prototype 2026-10-28) : la FICHE DE MÉMOIRE (`MemoCard`) — la règle en grand,
+ *                                               un slogan, مثال · فخّ · في الامتحان, « اختبر ذاكرتك »
  * @param {React.ReactNode} [children] phrase de transition vers la suite
  */
 export default function KnowledgeSnapshot({ moduleNumber, unlock = true, complete = false, variant = 'compact', children }) {
@@ -62,6 +64,8 @@ export default function KnowledgeSnapshot({ moduleNumber, unlock = true, complet
     if (complete) unlockAll();
     else if (unlock && moduleNumber != null) unlockModule(moduleNumber);
   }, [complete, unlock, moduleNumber, unlockModule, unlockAll]);
+
+  if (variant === 'memo') return <MemoCard items={items} moduleNumber={moduleNumber} openMap={openMap}>{children}</MemoCard>;
 
   const fromThisModule = items.filter((i) => i.module === moduleNumber);
   const isComplete = variant === 'complete';

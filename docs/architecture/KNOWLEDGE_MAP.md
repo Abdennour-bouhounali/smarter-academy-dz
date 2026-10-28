@@ -821,6 +821,42 @@ They do **not** use `CoordPlane` or the lesson's `VectorScene`/`labelLayout` lab
 figures are small, static and hand-placed. Their labels are audited by the e2e layout audit like
 any other SVG, so a badly placed label fails the suite (see [Validation](#validation)).
 
+### The memo card — « 🔑 للتذكّر » as a FICHE DE MÉMOIRE (`variant="memo"`, PROTOTYPE 2026-10-28)
+
+Owner: « the end-of-module card must be clear — the rule is SEEN and memorised at first sight —, professional and made for Gen Z;
+it is the core the student must understand, memorise and use in the exam ». Prototype on `maqlub-qismat-kasrayn` modules 1–4
+(`<KnowledgeSnapshot moduleNumber={n} variant="memo" />`), rendered by `knowledge/MemoCard.jsx`; the other lessons keep `compact`
+until the owner validates it.
+
+- **Header** (dark band): « 🔑 للتذكّر », the promise « افهم · احفظ · استعمل في الامتحان », the count of new rules (Arabic plurals
+  `map.memo.newCount_*`), « ⏱ اختبر ذاكرتك » (when the card's items carry `memo.quiz`) and « افتح بطاقتي ».
+- **One TILE per item of the module**, in the order of the eye: the RULE large (`memo.rule`, KaTeX, `\dfrac`; what CHANGES is coloured
+  `\textcolor{#e11d48}{…}` — the lesson's helper `R(x)`), the SLOGAN (`memo.hook`, 2–5 words), then three short lines with an icon each:
+  مثال (`memo.example`, a formula), فخّ (`memo.trap`), في الامتحان (`memo.exam`). Formula first when the card is narrow (< `xl`), side by
+  side above; a formula never wraps.
+- **Earlier items** are CHIPS (title + `memo.chip`, a mini-formula). A module that brings nothing (exercises) shows every item as a tile.
+- **« اختبر ذاكرتك » — the timed challenge (optional, 2026-10-28)** (`MemoQuiz.jsx`, pure logic `memoQuiz.js`): the centre of the
+  screen over a shaded background (portal on `body`, page scroll locked with `classroom/useScrollLock`). Up to `QUIZ_SIZE` = 5 questions,
+  3 choices, `SECONDS` = 12 s each (a bar that empties, red in the last quarter). Questions come from the card's items
+  (`memo.quiz = [{ q, options: [3], correct }]`, 2 per rule): the module's rules FIRST (one each, then the second), then earlier ones;
+  the PLACE of the right answer is balanced over the run (`answerSlots`: each place at most ⌈n/3⌉ times, never twice in a row —
+  owner: « a quiz where the answer is mostly the 1st or 2nd is not a quiz »). Large layout (≈ 1040 px, up to 84 % of the screen height,
+  three big option cards, one progress segment per question in the top band). Sound: the device's « الصوت » preference, with its own
+  speaker button in the band (start, right, wrong, the last 3 seconds tick, a fanfare at the end). Right → « صحيح! » and the next one comes alone; wrong or time up → the right answer stays green with « راجع القاعدة 02 »
+  until « التالي ». End: stars (3 all right, 2 ≥ 60 %), score, time, best score (localStorage per page × module, try/catch), the rules to
+  review, « أعد التحدّي ». Keys 1 2 3 · Enter · Escape. NOT learning evidence: nothing is sent. Numbers inside Arabic sentences (score,
+  best, rule list) are isolated LRI…PDI — measured with `Range.getBoundingClientRect`, not eyeballed.
+  **Authoring `memo.quiz`:** each distractor is a REAL mistake of the rule (not flipped, both flipped, the opposite instead of the
+  inverse…), never a random number; each option compiles in KaTeX (`memoQuiz.test.js`).
+- An item without `memo` shows its `summary` in the tile: any lesson can switch, the card improves when the author writes `memo`.
+- **Authoring `memo`:** the rule in symbols (letters a, b, c, d, x), never a sentence; the example with the lesson's OWN numbers; a trap that
+  names the real mistake; no fraction inside a sentence (`trap`, `exam`, `hook` stay one line — put formulas in `rule` / `example`).
+  Every `rule`, `example`, `chip` must compile in KaTeX strict (`memoCard.render.test.jsx`).
+- DOM contract: the `KnowledgeSnapshot` one (each item once, « جديد » only on the module's items) + `[data-memo-card]`,
+  `[data-memo-tile]`, `[data-memo-rule]`, `[data-memo-chip]`, `[data-memo-quiz-open]`; the challenge `[data-memo-quiz][data-phase=intro|play|end]`,
+  `[data-memo-quiz-option][data-state]`, `[data-memo-quiz-timer]`, `[data-memo-quiz-next]`, `[data-memo-quiz-score]`. Verified in the browser at 1366 and 1024
+  (a full run: right answers, a time-out, wrong answers, the end screen, Escape).
+
 ### Mathematical notation
 
 Use the platform's single renderer, `apps/web/src/lessons/common/components/MathText.jsx`

@@ -722,7 +722,7 @@ built to the highest finish the agent can produce — never the first version th
    re-summonable by the always-visible switch under the question. It shows the CONTROL, never the rule. Identical design details in
    every lab (same component, same strings structure, same gates): a lab without it is not done, like a lab without its screenshots.
 12. **The game screen — the lab fills the laptop (owner, 2026-10-27: « the lab must cover and use exactly all the screen of the
-    laptop, so the student feels in a game »).** A lab opts in with the shell's `immersive` (MANIPULATION_CONTRACT § « Game screen »):
+    laptop, so the student feels in a game »).** Every lab has it since 2026-10-28 (the shell's `immersive`, on by default; MANIPULATION_CONTRACT § « Game screen »):
     a « العب بملء الشاشة » button puts it in the browser's real fullscreen, the header shrinks to one bar and the SCENE is laid out to
     the screen's height (`elevator-reel` sizes its 19 floors from the height left under the question). Never a second fullscreen, never in
     Classroom Mode. Every quantity of the rule is a FIRST-CLASS readout: the owner, on the same lab, « the speed of the elevator is very

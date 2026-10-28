@@ -1877,8 +1877,11 @@ has to be recorded, it is recorded as `beginner | advanced` and nothing else.
 
 ### Game screen (`immersive`, 2026-10-27)
 
-Owner: « the lab must cover and use exactly all the screen of the laptop, so the student feels in a game ». A type opts in with
-`<ManipulationShell immersive …>` (first: `elevator-reel`). The shell then shows « العب بملء الشاشة » in its header
+Owner: « the lab must cover and use exactly all the screen of the laptop, so the student feels in a game ». **Since 2026-10-28 it is ON
+BY DEFAULT for every lab** (owner: « all the manipulations must have the fullscreen button and its exit »): `immersive` defaults to
+`true` in `ManipulationShell`, and all 101 registered labs use the shell; a type opts OUT with `immersive={false}`. A lab that does not
+read `useManipulationImmersive()` keeps its normal layout inside the full-screen layer (it scrolls) — verified on `team-builder` and
+`gear-crank` at 1366×768. The shell shows « العب بملء الشاشة » in its header
 (`[data-manipulation-immersive-enter]`); the click puts the shell's `<section>` in the browser's REAL fullscreen through
 `classroom/useFullscreen` and locks the page scroll through `classroom/useScrollLock` (which also hides « كرّاسي » / « بطاقتي ») —
 never a second fullscreen or scroll lock (LESSON_DEVELOPMENT_GUIDE « Do not write another fullscreen »). While it is on
@@ -2259,6 +2262,88 @@ last child — so a `target` may be ANY control of the frame (header, stage, bot
   nothing (several labs share a page). Tested in `primitives/labCoach.test.js`; **verified in the browser at 1280×800 only** — the owner skipped the
   mobile screens for this batch (`QA_MOBILE=1` runs 390 / 320), so the phone placement is unit-tested, not eyeballed.
 - Known limit: in `common-divisors` lists the bubble above the middle zone covers part of the 60-list chips (no room below); « فهمت » clears it.
+
+### 8quinquies. LabCheckpoint — questions DURING the lab, over the lab (PROTOTYPE 2026-10-28 on `gear-crank`; owner: « if it works, every lab »)
+
+**Why.** A lab's step questions used to live in the module steps BELOW the whole workspace: after task 2 the student did not
+see them. The owner's rule: the student must get the idea behind EACH step, so questions follow each step one after another
+until the rule, they sit OVER the lab, they stop the student from going to the next step until answered, the student may
+redo the same step to find the answer, and the answer is never given on the first attempt.
+
+**Files.** `primitives/labCheckpoint.js` (pure: `readNumber`, `isCorrect`, `submit`, `advance`, `feedbackOf`, `MAX_TRIES = 3`;
+tested in `labCheckpoint.test.js`) and `primitives/LabCheckpoint.jsx` (`useLabCheckpoint` + the card + the waiting band).
+
+**Behaviour.**
+- When the lab's step is reached (`reached`, e.g. `taskDone`), a card covers the lab (backdrop over the `relative` glance
+  block, card centred and scrolled into view) with « سؤال i من n », the question (`choice` or `number` — a number answer is
+  checked as an EXACT rational, `8/6 = 4/3`, Arabic digits accepted).
+- **Blocking:** `cp.blocking` stays true until the chain is finished; the lab hides its « next task » button meanwhile.
+- **Guided, never told first:** wrong try 1 → the chosen option's `why` (else hint 1); try 2 → hint 2 (sharper); try 3 →
+  the answer AND its explanation (the student is never stuck forever). A wrong option stays struck and disabled.
+  A right answer shows `explain`, then « السؤال التالي » / « تابع ».
+- **Redo the step:** « انظر إلى المختبر » folds the card (the lab stays frozen, the counters readable); « أعِد التجربة » folds
+  it AND calls `onRetry` (the lab puts the SAME task back at the start). A band « سؤال ينتظرك … » + « عُد إلى السؤال »
+  replaces the card; the card comes back by itself when the step is reached again. Escape folds it.
+- `LabCoach` is silenced while the card is open (`coachStep = … && !cp.open`).
+- Events through the lab's `onTrial`: `{ tk: 'checkpoint', id, q, ok, tries, revealed }` per answer, then
+  `{ tk: 'checkpoint-done', id, log }` — a module marks its step done on `checkpoint-done`.
+
+**Wiring (in a lab):**
+```js
+const cp = useLabCheckpoint({ id: task.id, questions, reached: L.taskDone(lab), resetKey, onRetry: () => setLab(L.restartTask),
+  onEvent: (ev) => state.report(onTrial, ev), onDone: (id) => { /* e.g. state.discover(); state.formalize() */ } });
+// canNext && !cp.blocking ; {cp.node} first child of the `relative` block that wraps prompt → scene → controls → verdict
+```
+Questions are BUILT FROM THE TASK's numbers (never hard-coded), ask about what the student just DID, end the last chain with
+the rule (the lab's old `ManipulationDiscovery` question moves into the card and `onDone` formalizes). Reference:
+`proportion/GearCrank.jsx › CHAINS / QUESTIONS` (m1 read · compare · per pedal turn; m2 read · why more · 3/4 · which
+operation; m3 read · 3/4 × 4/3 · the rule). Prop `checkpoints={false}` turns them off. The advanced level (prediction) and
+the `reverse` world have no chain yet.
+
+**Relation to « progression non bloquante ».** The gate is INSIDE the lab and always releases (3rd try reveals); the kit
+questions of the module keep their non-blocking policy (`check:non-blocking` passes). DOM contract: see the header of
+`LabCheckpoint.jsx`. Verified in the browser at 1366×768 (Playwright walk-through of m1 → m3, wrong answers, retry, reveal).
+**Rollout to other labs: Planned** — waits for the owner's validation of the prototype.
+**Card layout (2026-10-28, owner: « use more space »):** up to `max-w-4xl` over the lab, a gradient band (« سؤال i من n » + one segment
+per question), the question large and centred, choice options as big cards — three across for formulas (`cols: 3`), full-width rows
+for sentences — each with its number (keys 1 2 3 answer), a large number field, larger feedback, the actions in a bottom bar.
+
+**Steps and success (2026-10-28, `primitives/LabSteps.jsx`, shared).** Owner: « the steps 1 2 3 must be clearer, and every completed step
+shows a gaming success message ». `<LabStepper count current done stepAttr />` replaces a lab's small step dots: linked pills — done (green,
+check), current (blue, ring), to come (outline) — and « المهمة 2 من 3 » (`[data-lab-stepper]`, `[data-lab-step-current]`; the lab keeps its own
+step attribute, e.g. `data-gc-step`). `useStepCelebration()` → `celebrate({ n, total })` + `node` (in the lab's `relative` block): a card in
+the centre — emoji, « المهمة n مكتملة! », a rotating cheer (`manipulation.steps.cheers`), stars, confetti — gone after 2.2 s, never catching
+a click, no animation under `prefers-reduced-motion`; the last step says « أنهيت كل المهام! 🏆 » (`[data-lab-celebration][data-step][data-final]`).
+A step counts as DONE when the lab's goal is reached AND its in-lab questions are answered; each step is celebrated once (again after « إعادة »).
+
+**Sound effects (2026-10-28).** `lessons/common/utils/playEffect.js › playSfx(name)` — synthesized WebAudio (no file), silent unless the
+device's « الصوت » preference is on (`smarter_effects_enabled`, read at play time; off by default, never a surprise): `pop` (question card
+opens), `correct`, `wrong`, `step` (step fanfare), `win` (all done / perfect challenge), `start` and `tick` (the memo challenge), and the
+LAB's own sounds (owner: « the sounds during the manipulation are very important for the gaming sense »): `tooth` (a click per tooth of
+the gesture, `{ pitch }` lower backwards, at most one every 35 ms), `bell` (a full turn), `flag` (the goal reached on release), `over`
+(the goal passed). Reference: `gear-crank` (crank clicks, a bell per full WHEEL turn, chime/thud on release). Used by `LabCheckpoint`,
+`LabSteps`, `MemoQuiz` and the labs; never a second audio system.
+**Every lab can stop it:** `ManipulationShell` shows the « الصوت » switch (`EffectsToggle`, `[data-manipulation-sound]`) in its header and in
+the full-screen bar. `useEffectsPreference` is the ONE preference: `setEffectsEnabled` writes it and broadcasts `sa:effects`, so the page's
+switch, every lab's and the challenge's always agree (verified: switching off in the lab → 0 notes while cranking, all switches « off »).
+
+**Mandatory for every student; the teacher may switch them off for HIS account only (2026-10-28).** Owner: « the questions are
+always obligatory for the students, whoever their teacher or class; the teacher, in his account, can activate or deactivate them; the
+option to disable them is never allowed for students ». The lab key is `<module>:<type>` read from the lesson URL
+(`/courses/<level>/<grade>/<chapter>/<lesson>/<module>`, e.g. `nashat:gear-crank`) by
+`primitives/labCheckpointSettings.jsx › useLabCheckpointSettings(type)` → `{ enabled, control }`:
+- a student, a visitor, any page outside a lesson: `enabled` is ALWAYS true and nothing is requested;
+- a teacher: `control` (in the shell's `headerAction`) is one switch « أسئلة المناولة » مفعّلة / معطّلة (`[data-lab-checkpoint-teacher]`,
+  `role="switch"`), and `enabled` is HIS choice for that lab — off, his own lab behaves as before the prototype (discovery below the lab).
+- Server: table `teacher_lab_settings` (`user_id`, `lesson_id`, `checkpoints_off` json of keys; unique per teacher × lesson; no row = all on),
+  `GET` / `PATCH /teacher/labs/{lessonCode}` `{ lab, checkpoints }` under the teacher route group (a student gets 403). It never reaches a
+  class or a student. Tested: `tests/Feature/TeacherLabSettingsTest.php`; verified in the browser with the real API (teacher off → his lab
+  without card, choice kept after reload; a student still gets the card).
+
+**« إعادة » (2026-10-28).** The shared `useManipulation › restart` still called `setHintLevel` (removed by the hints refactor): « إعادة »,
+a level change and new numbers THREW in every lab and did nothing. Fixed (`setHintsOpen(false)`). In `gear-crank`, « إعادة » now
+restarts the WHOLE lab — task 1, trials and in-lab questions — as `useManipulation` documents; « أعِد التجربة » in the question card
+remains the way to redo only the current task.
 
 ### 8ter. The visual kit — one language for every lab (2026-10-14, owner request « the best possible for Gen Alpha 11–13 »)
 

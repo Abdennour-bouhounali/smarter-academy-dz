@@ -70,6 +70,7 @@ use App\Http\Controllers\Teacher\TeacherClassroomInsightController;
 use App\Http\Controllers\Teacher\TeacherClassroomInterventionController;
 use App\Http\Controllers\Teacher\TeacherClassroomLearningPointController;
 use App\Http\Controllers\Teacher\TeacherClassroomLessonController;
+use App\Http\Controllers\Teacher\TeacherLabSettingsController;
 use App\Http\Controllers\Teacher\TeacherClassroomNotebookController;
 use App\Http\Controllers\Teacher\TeacherClassroomStudentController;
 use App\Http\Controllers\Teacher\TeacherStudentSettingsController;
@@ -579,6 +580,9 @@ Route::prefix('v1')->group(function () {
             Route::post('/classrooms/{id}/lessons/bulk', [TeacherClassroomLessonController::class, 'bulk'])->whereNumber('id');
             Route::patch('/classrooms/{id}/lessons/{lessonId}', [TeacherClassroomLessonController::class, 'update'])
                 ->whereNumber('id')->whereNumber('lessonId');
+            // Les questions PENDANT les labos, pour le compte de l'enseignant SEULEMENT (LabCheckpoint, 2026-10-28) : obligatoires pour tout élève.
+            Route::get('/labs/{lessonCode}', [TeacherLabSettingsController::class, 'show']);
+            Route::patch('/labs/{lessonCode}', [TeacherLabSettingsController::class, 'update']);
 
             // Classe × learning point (Mastery V2, phase 7) — agrégation de
             // l'état canonique, en lecture seule, cadrée sur les leçons

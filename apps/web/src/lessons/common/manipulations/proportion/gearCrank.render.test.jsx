@@ -108,3 +108,25 @@ describe('gear-crank — rendu', () => {
     expect(formal).toContain('frac');
   });
 });
+
+describe('gear-crank — questions pendant le labo (LabCheckpoint)', () => {
+  it('m1 · m2 · m3 : chaque question a un texte, une seule bonne réponse, deux indices, et ni clé brute ni {{', async () => {
+    const { CHAINS, QUESTIONS } = await import('./GearCrank');
+    let s = L.init(LV.beginner.numbers);
+    for (let i = 0; i < 3; i += 1) { s = L.release(L.turnTo(s, L.taskOf(s).goalTeeth)); if (i < 2) s = L.nextTask(s); }
+    for (const tk of s.tasks) {
+      for (const qid of CHAINS[tk.id]) {
+        const q = QUESTIONS[qid](s, tk, k);
+        const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+        expect(out, `${tk.id}.${qid}`).not.toMatch(RAW);
+        expect(out, `${tk.id}.${qid}`).not.toContain('{{');
+        expect(q.hints, `${tk.id}.${qid}`).toHaveLength(2);
+        if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${tk.id}.${qid}`).toHaveLength(1);
+        else expect(q.expected).toBeTruthy();
+      }
+    }
+    expect(QUESTIONS.read(s, s.tasks[1], k).expected).toBe('8');
+    expect(QUESTIONS.read(s, s.tasks[2], k).expected).toBe('4/3');
+    expect(QUESTIONS.compare(s, s.tasks[0], k).options[0].correct).toBe(true);   // 3/2 < 3 : la pédale tourne MOINS
+  });
+});

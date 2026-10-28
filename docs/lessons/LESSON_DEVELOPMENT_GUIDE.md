@@ -694,6 +694,10 @@ a module supplies only content and its own `done` booleans.
 />
 ```
 
+**Prototype (2026-10-28, `maqlub-qismat-kasrayn`):** the footer is `<KnowledgeSnapshot moduleNumber={n} variant="memo" />` and each item of
+`knowledge.jsx` carries a `memo: { rule, hook, example, trap, exam, chip, quiz }` (`quiz`: 2 questions × 3 choices for the timed « اختبر ذاكرتك ») — the memo card (KNOWLEDGE_MAP.md « The memo card »). New
+lessons follow it once the owner validates the prototype.
+
 `ContentModule` wires `useProgress`, the step progress bar, the streak and
 effects toolkit, sequential step locking (`isStepLocked` — sequential on the
 first pass, all open on a revisit *and* for a free-navigation reader), the
@@ -836,6 +840,12 @@ own question, then steps that answer the card — leave the student asking « wh
    (« في لوحتك 2577 يظهر الرقم 7 مرّتين… »), and can be answered from that experience. A short evidence line recalls the
    trial (`onTrial` → `[data-activity-evidence]`) and, if the student skipped it, says where to go — it never blocks.
    A step never re-poses a textbook question the lab did not prepare.
+   **Prototype (2026-10-28, `maqlub-qismat-kasrayn` module 1, lab `gear-crank`):** the questions about each lab step are
+   asked INSIDE the lab, over it, right after the step (`LabCheckpoint`, MANIPULATION_CONTRACT §8quinquies): blocking the
+   next task, guided by two hints before the answer, the step redoable. The module steps below then hold the TRACE of the
+   answers (done on the lab's `checkpoint-done` event) and the names (bricks), not the same questions again. They are
+   MANDATORY for every student; only a teacher can switch a lab's questions off, for his own account (`useLabCheckpointSettings`,
+   « أسئلة المناولة » in the lab header) — the lab then opens its discovery below itself.
 3. **Name it.** Then the brick (with « أتوقّع القاعدة » first, §14.3ter) and the textbook's box that NAMES what was found —
    after the answer, never before the question (`معارف`: question → box → brick).
 
@@ -1893,7 +1903,7 @@ Each of these has actually happened in this repository, or is a standing rule.
 
 **Architecture**
 - Do not write another fullscreen, scroll lock, Escape handler or toolbar. A lab that must fill the laptop screen (« game screen »,
-  owner 2026-10-27) passes `immersive` to `ManipulationShell`, which reuses `useFullscreen` + `useScrollLock`
+  owner 2026-10-27; ON BY DEFAULT for every lab since 2026-10-28) uses `ManipulationShell`'s `immersive`, which reuses `useFullscreen` + `useScrollLock`
   (MANIPULATION_CONTRACT § « Game screen »); its scene reads `useManipulationImmersive()` to use the screen's height.
 - Do not build a second state-management or progress system; `useProgress` and
   the queues are it.

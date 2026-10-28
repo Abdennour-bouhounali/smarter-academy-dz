@@ -104,7 +104,7 @@ export function useManipulation({
     stopPlaying();
     steps.reset();
     setPhase('act');
-    setHintLevel(0);
+    setHintsOpen(false);
     setShowExplanation(false);
     setAnswerHidden(answerHiddenByDefault);
     setEpoch((e) => e + 1);

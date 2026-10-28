@@ -14,6 +14,8 @@ import ManipulationExplanation from './ManipulationExplanation';
 import ManipulationFreeLab from './ManipulationFreeLab';
 import ManipulationLevelSelector from './ManipulationLevelSelector';
 import { MANIPULATION_LEVEL_IDS } from './levels';
+import { EffectsToggle } from '../components/LessonUI';
+import { useEffectsPreference } from '../hooks/useEffectsPreference';
 
 /**
  * L'ENVELOPPE commune de toute manipulation (§7 du brief). De haut en bas :
@@ -58,7 +60,8 @@ import { MANIPULATION_LEVEL_IDS } from './levels';
  * `target` peut être un contrôle de l'en-tête, de la scène ou du bas. L'interrupteur se pose sous la consigne.
  *
  * ÉCRAN DE JEU (`immersive`, 2026-10-27, propriétaire : « le labo couvre exactement tout l'écran du laptop, l'élève se sent dans un
- * jeu ») : le type qui l'active reçoit un bouton « العب بملء الشاشة » dans l'en-tête. Le labo passe alors en VRAI plein écran du
+ * jeu ») : DEPUIS LE 2026-10-28 ACTIVÉ PAR DÉFAUT pour TOUS les labos (propriétaire : « toutes les manipulations ont le bouton plein
+ * écran et sa sortie » ; `immersive={false}` pour s'en passer) — un bouton « العب بملء الشاشة » dans l'en-tête. Le labo passe alors en VRAI plein écran du
  * navigateur (`useFullscreen` du mode classe — jamais un second plein écran), le défilement de la page est verrouillé
  * (`useScrollLock`), l'en-tête se réduit à UNE barre (sortie · guide · جرّب › اكتشف › صِغ · إعادة / تلميح) et le type lit
  * `useManipulationImmersive()` pour poser sa scène à la hauteur de l'écran. Échap (le navigateur) ou « خروج » rendent la page.
@@ -72,10 +75,13 @@ import { MANIPULATION_LEVEL_IDS } from './levels';
 export default function ManipulationShell({
   type, title, mission, lead, state, controller, hints = [], numberFields = [], validate, controlsOverride,
   onCheck, checkDisabled, allowModeSwitch = false, representation, explanation, discovery, children, footer, allowFreeLab = true, freeLabAlwaysOpen = false, freeLabLead,
-  headerAction, titleHidden = false, coach = null, immersive = false,
+  headerAction, titleHidden = false, coach = null, immersive = true,
 }) {
   const { t } = useTranslation('lesson');
   const rootRef = useRef(null);
+  // le SON de tout labo (2026-10-28) : la préférence « الصوت » de l'appareil, partagée avec la page et le défi ; coupable ici à tout moment
+  const effects = useEffectsPreference();
+  const soundToggle = <span data-manipulation-sound><EffectsToggle enabled={effects.enabled} onToggle={effects.toggle} /></span>;
   const classroom = useClassroomMode();
   const canImmerse = immersive && !classroom.isClassroomMode;
   const fullscreen = useFullscreen(rootRef);
@@ -137,6 +143,7 @@ export default function ManipulationShell({
             <Minimize2 className="h-4 w-4" aria-hidden="true" /> {t('manipulation.immersive.exit')}
           </button>
           {coach && coach.toggle}
+          {soundToggle}
           <div className="min-w-0 flex-1">{progress}</div>
           {studentControls}
         </div>
@@ -148,6 +155,7 @@ export default function ManipulationShell({
           <h3 className={titleHidden ? 'sr-only' : 'font-bold text-slate-900 text-lg'}>{shownTitle}</h3>
           <div className="flex items-center gap-2">
             {headerAction}
+            {soundToggle}
             {canImmerse && !immersed && (
               <button type="button" onClick={enter} data-manipulation-immersive-enter
                 className={`${pill} border-2 border-indigo-600 bg-indigo-600 text-white shadow-[0_3px_0_0_#3730A3] hover:bg-indigo-700`}>

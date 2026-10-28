@@ -106,6 +106,7 @@ student and admin.
 | `classroom_invitations` | **historical, read-only** (e-mail invitations, removed 2026-10-01) | kept because old memberships point to it (`invitation_id`); the migration `2026_10_01_000002` revoked the rows still pending; no model, route or service remains |
 | `users.pending_class_join_token` / `pending_class_join_at` | a join the student consented to on the link page **before having an account** | written at registration (`PendingClassJoin::remember`), consumed when the e-mail is verified (`complete`); hidden from every serialization |
 | `classroom_lessons` | `classroom_id`, `lesson_id`, `status` `visible\|hidden`, `created_by`, `updated_by` | **absence of a row = visible**; unique `(classroom_id, lesson_id)` |
+| `teacher_lab_settings` | `user_id`, `lesson_id`, `checkpoints_off` (json) | 2026-10-28: the labs whose in-lab questions a teacher switched off for HIS OWN account; never read for a student (the questions are mandatory for every student, MANIPULATION_CONTRACT §8quinquies); unique `(user_id, lesson_id)` |
 
 ### Services (`app/Domain/Classroom/`)
 
@@ -1252,6 +1253,7 @@ GET  /teacher/classrooms/{id}/students             DELETE /teacher/classrooms/{i
 GET  /teacher/classrooms/{id}/students/{studentId}/progress
 GET  /teacher/classrooms/{id}/lessons              POST /teacher/classrooms/{id}/lessons/bulk
 PATCH /teacher/classrooms/{id}/lessons/{lessonId}
+GET  /teacher/labs/{lessonCode}     PATCH /teacher/labs/{lessonCode} { lab: "<module>:<type>", checkpoints: bool }   (in-lab questions for the teacher's own account, 2026-10-28)
 GET  /teacher/classrooms/{id}/learning-points[?lesson={code}]      (the map: whole scope, or one lesson; progress.class)
 GET  /teacher/classrooms/{id}/learning-points/{code}               (one LP: students, trajectory, items, prerequisites; progress.student)
 GET  /teacher/classrooms/{id}/students/{studentId}/learning-points/{code}/explanation   (explanation, history, notebook, interventions)

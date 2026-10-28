@@ -1,0 +1,74 @@
+import { describe, it, expect } from 'vitest';
+import * as C from './labCheckpoint';
+
+const num = { id: 'read', kind: 'number', expected: '4/3', hints: ['h1', 'h2'] };
+const choice = { id: 'op', kind: 'choice', options: [{ text: 'a', why: 'pourquoi a' }, { text: 'b' }, { text: 'c', correct: true }], hints: ['h1', 'h2'] };
+
+describe('labCheckpoint — questions pendant le labo', () => {
+  it('lit les nombres écrits : latins, arabes, fraction, virgule ; refuse l’illisible', () => {
+    expect(C.readNumber('8')).toEqual({ n: 8n, d: 1n });
+    expect(C.readNumber('٨')).toEqual({ n: 8n, d: 1n });
+    expect(C.readNumber(' 4 / 3 ')).toEqual({ n: 4n, d: 3n });
+    expect(C.readNumber('٤÷٣')).toEqual({ n: 4n, d: 3n });
+    expect(C.readNumber('1,5')).toEqual({ n: 3n, d: 2n });
+    expect(C.readNumber('abc')).toBeNull();
+    expect(C.readNumber('')).toBeNull();
+    expect(C.readNumber('4/0')).toBeNull();
+  });
+
+  it('juge exactement : 8/6 = 4/3 ; l’option `correct`', () => {
+    expect(C.isCorrect(num, '8/6')).toBe(true);
+    expect(C.isCorrect(num, '3/4')).toBe(false);
+    expect(C.isCorrect(choice, 2)).toBe(true);
+    expect(C.isCorrect(choice, 0)).toBe(false);
+  });
+
+  it('jamais la réponse au premier essai : indice 1 (ou le `why` de l’option), indice 2, puis la réponse au 3e', () => {
+    let p = C.fresh();
+    p = C.submit(p, choice, 0);
+    expect(p.status).toBe('wrong');
+    expect(C.feedbackOf(p, choice)).toEqual({ kind: 'hint', node: 'pourquoi a' });
+    p = C.submit(p, choice, 0);   // la même option fausse : sans effet
+    expect(p.tries).toBe(1);
+    p = C.submit(p, choice, 1);
+    expect(C.feedbackOf(p, choice)).toEqual({ kind: 'hint', node: 'h2' });
+
+    let n = C.fresh();
+    n = C.submit(n, num, '3/4');
+    expect(C.feedbackOf(n, num)).toEqual({ kind: 'hint', node: 'h1' });
+    n = C.submit(n, num, 'xx');   // illisible : ne coûte pas un essai
+    expect(n.tries).toBe(1);
+    n = C.submit(n, num, '1');
+    expect(n.status).toBe('wrong');
+    n = C.submit(n, num, '2');
+    expect(n.status).toBe('revealed');
+    expect(C.feedbackOf(n, num)).toEqual({ kind: 'reveal' });
+    expect(n.log).toEqual([{ id: 'read', tries: 3, ok: false }]);
+  });
+
+  it('bloque jusqu’à la fin de la suite : « التالي » n’avance qu’après une réponse juste ou montrée', () => {
+    let p = C.fresh();
+    expect(C.advance(p, 2)).toBe(p);
+    p = C.submit(p, num, '4/3');
+    expect(p.status).toBe('right');
+    expect(C.submit(p, num, '1')).toBe(p);
+    p = C.advance(p, 2);
+    expect(p).toMatchObject({ qi: 1, tries: 0, wrong: [], status: 'ask', done: false });
+    p = C.submit(p, choice, 2);
+    p = C.advance(p, 2);
+    expect(p.done).toBe(true);
+    expect(p.log).toEqual([{ id: 'read', tries: 1, ok: true }, { id: 'op', tries: 1, ok: true }]);
+  });
+});
+
+describe('labCheckpointSettings — la clé du labo pour le réglage de l’enseignant', async () => {
+  const { labKeyFromPath } = await import('./labCheckpointSettings');
+  it('« <module>:<type> » et la leçon, lus dans l’URL d’un module ; null ailleurs', () => {
+    expect(labKeyFromPath('/courses/moyen/3am/ansab_al_aadad_wal_hisab/maqlub-qismat-kasrayn/nashat', 'gear-crank'))
+      .toEqual({ lesson: 'maqlub-qismat-kasrayn', lab: 'nashat:gear-crank' });
+    expect(labKeyFromPath('/courses/moyen/3am/ansab_al_aadad_wal_hisab/maqlub-qismat-kasrayn/nashat/', 'gear-crank')?.lab).toBe('nashat:gear-crank');
+    expect(labKeyFromPath('/methode', 'gear-crank')).toBeNull();
+    expect(labKeyFromPath('/courses/moyen/3am/x/y/z/extra', 'gear-crank')).toBeNull();
+    expect(labKeyFromPath('/courses/moyen/3am/x/y/z', '')).toBeNull();
+  });
+});
