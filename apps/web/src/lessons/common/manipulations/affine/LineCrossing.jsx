@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useSta
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, ArrowUp, ArrowDown, MapPin, Minus, Plus, Lightbulb } from 'lucide-react';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
@@ -10,6 +11,10 @@ import { useManipulation } from '../useManipulation';
 import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import MathText from '../../components/MathText';
 import * as L from '../logic/lineCrossing';
 
@@ -51,6 +56,11 @@ import * as L from '../logic/lineCrossing';
  *   FORMALIZATION  la جملة ⇔ deux droites, la ثنائية = intersection, vérifiée par substitution ; les trois cas
  *   TRANSFER       معارف (startWith="cases" sur x + y = 3 et 2x − y = 0) ; أوظّف (lecture approchée puis calcul)
  *
+ * QUESTIONS PENDANT LE LABO (2026-10-28, lot 4) : à la fin de chaque étape (`L.stepsOf` : tracer · promener P · les trois cas) une suite de
+ * questions se pose PAR-DESSUS le labo (`CHAINS`) et retient la suite (P ne se pose plus, « فتح الحالات » attend) ; la dernière étape finit par LA
+ * RÈGLE. Étapes `LabStepper` (`[data-lc-step=<i>]`) + fête ; « إعادة » repart de zéro ; obligatoires pour tout élève, coupées par l'enseignant pour
+ * SON compte (`useLabCheckpointSettings`) ; `checkpoints` = false les coupe aussi ; `onCheckpoint(ev)` : la trace pour les étapes du module.
+ *
  * Manuel (§6bis) : chaque carte, chaque point, chaque droite est un choix ou une réponse — pas
  * d'auto-complétion.
  *
@@ -89,8 +99,8 @@ const C2 = '#D97706';
 
 export default function LineCrossing({
   system: system0, cases: cases0, startWith = 'build', xMin, xMax, yMin, yMax, theme: theme0 = 'laser',
-  title, lead, mission, level, levels: withLevels = true, initialMode = 'student', allowModeSwitch = false,
-  onTrial, onFinished,
+  title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false,
+  onTrial, onFinished, onCheckpoint,
 }) {
   const { t, i18n } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.lineCrossing.${key}`, o), [t]);
@@ -107,25 +117,67 @@ export default function LineCrossing({
   const tw = (key, o) => t(`manipulation.lineCrossing.themes.${theme}.${key}`, o);
   const make = () => L.init({ system, cases, ...(authored ? { startWith, xMin, xMax, yMin, yMax } : {}) });
   const [lab, setLab] = useState(make);
-  const sceneKey = `${system}:${cases ?? ''}:${state.epoch}:${authored}`;
-  const [scene, setScene] = useState(sceneKey);
+  const sceneKey = `${system}:${cases ?? ''}:${state.epoch}:${state.resetCount}:${authored}`;
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  const [cleared, setCleared] = useState([]);   // les étapes dont la suite de questions est finie
   const [pin, setPin] = useState(() => startPin(lab));
   const [drag, setDrag] = useState(false);
   const [shake, setShake] = useState(0);
   const [liveP, setLiveP] = useState(null);
   const [liveM, setLiveM] = useState(null);
-  if (scene !== sceneKey) {
+  // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — les droites, les essais et les questions du labo
+  if (scene.key !== sceneKey) {
     const fresh = make();
-    setScene(sceneKey); setLab(fresh); setPin(startPin(fresh)); setDrag(false); setLiveP(null); setLiveM(null);
+    setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(fresh); setPin(startPin(fresh)); setDrag(false); setLiveP(null); setLiveM(null); setCleared([]);
   }
 
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  const cpSettings = useLabCheckpointSettings('line-crossing');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpLive = cpOn && cpSettings.enabled;
+  const steps = L.stepsOf(lab);
+  const ruleStep = steps[steps.length - 1];
+  const active = cpLive ? steps.find((st) => !cleared.includes(st)) ?? null : null;
+  const reachedActive = !!active && L.stepReached(lab, active);
+  const cp = useLabCheckpoint({
+    id: active,
+    questions: reachedActive ? chainOf(lab, active).map((q) => QUESTIONS[q](lab, k)) : null,
+    reached: reachedActive,
+    resetKey: scene.inits,
+    onRetry: () => { const fresh = L.restartStep(lab, active); setLab(fresh); setPin(startPin(fresh)); setLiveP(null); setLiveM(null); },
+    onEvent: (ev) => state.report(onCheckpoint, ev),   // {tk:'checkpoint'|'checkpoint-done', id: étape, …} — la TRACE que les étapes du module relisent
+    onDone: (id) => {
+      setCleared((c) => (c.includes(id) ? c : [...c, id]));
+      if (id === ruleStep) { state.discover(); state.formalize(); }
+    },
+  });
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // une étape est FAITE quand son objectif est atteint ET sa suite de questions répondue : la pastille passe au vert et on fête
+  const stepDone = steps.map((st) => L.stepReached(lab, st) && (!cpLive || cleared.includes(st)));
+  const nDone = stepDone.findIndex((d) => !d) < 0 ? stepDone.length : stepDone.findIndex((d) => !d);
+  const party = useStepCelebration();
+  const celebrated = useRef({ n: 0, inits: scene.inits });
+  if (celebrated.current.inits !== scene.inits) celebrated.current = { n: 0, inits: scene.inits };   // « إعادة » : on refête
+  useEffect(() => {
+    if (nDone <= celebrated.current.n) return;
+    celebrated.current.n = nDone;
+    party.celebrate({ n: nDone, total: stepDone.length });
+  }, [nDone]); // eslint-disable-line react-hooks/exhaustive-deps
   const solution = L.intersectOf(lab.lines[0], lab.lines[1]);
   useEffect(() => {
     if (state.isFormal) state.report(onFinished, { stage: lab.stage, pair: solution.kind === 'unique' ? L.pairText(solution.x, solution.y) : null });
   }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // le son du GESTE (muet sans « الصوت ») : « tooth » un pas, « bell » une écriture juste ou un cas complet, « flag » les deux lampes, « over » un refus
+  useEffect(() => {
+    const kind = lab.last?.kind;
+    if (!kind) return;
+    if (kind === 'both') playSfx('flag');
+    else if (kind === 'wrongForm' || kind === 'none') playSfx('over');
+    else if (kind === 'built') playSfx('bell');
+    else if (kind === 'config') playSfx(lab.last.rel === 'unique' ? 'tooth' : 'bell');
+    else if (kind === 'one') playSfx('tooth');
+  }, [lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
   const nTrials = lab.trials.length;
   useEffect(() => {
     if (nTrials === 0) return;
@@ -218,11 +270,11 @@ export default function LineCrossing({
     return { i: clampI(L.indexOf(v.x, snap.dx)), j: clampJ(L.indexOf(v.y, snap.dy)) };
   };
   const commitPin = (p) => {
-    if (!p) return;
+    if (!p || cp.blocking) return;
     setLab((s) => L.place(s, L.valueAt(p.i, s.snap.dx), L.valueAt(p.j, s.snap.dy)));
   };
   const onPlaneDown = (e) => {
-    if (e.button > 0 || !planeRef.current || !probing) return;
+    if (e.button > 0 || !planeRef.current || !probing || cp.blocking) return;
     e.preventDefault();
     e.currentTarget.setPointerCapture?.(e.pointerId);
     setDrag(true); setPin(nodeAt(e));
@@ -233,7 +285,9 @@ export default function LineCrossing({
     e.currentTarget.releasePointerCapture?.(e.pointerId);
     setDrag(false); commitPin(pinRef.current);
   };
-  const movePin = (di, dj) => setPin((p) => ({ i: clampI(p.i + di), j: clampJ(p.j + dj) }));
+  const heard = useRef(0);
+  const tick = () => { const now = Date.now(); if (now - heard.current > 35) { playSfx('tooth'); heard.current = now; } };
+  const movePin = (di, dj) => { tick(); setPin((p) => ({ i: clampI(p.i + di), j: clampJ(p.j + dj) })); };
   const onPinKey = (e) => {
     const big = e.shiftKey ? 5 : 1;
     const m = { ArrowLeft: [-big, 0], ArrowRight: [big, 0], ArrowUp: [0, big], ArrowDown: [0, -big] }[e.key];
@@ -363,6 +417,7 @@ export default function LineCrossing({
   const lampFull = true;
   const controls = (
     <div ref={ctrlRef} className="space-y-2" data-lc-controls>
+      {steps.length > 1 && <LabStepper count={steps.length} current={Math.min(nDone, steps.length - 1)} done={stepDone} stepAttr="data-lc-step" />}
       <ul className="space-y-0.5" aria-label={k('systemTitle')}>
         {[0, 1].map((i) => ((lab.stage !== 'build' || lab.built[i]) ? (
           <li key={i} className="flex flex-wrap items-center gap-1 font-bold text-sm" data-lc-eq={i + 1} data-built={lab.built[i] ? 'true' : 'false'}>
@@ -428,7 +483,7 @@ export default function LineCrossing({
         </div>
       )}
       <p role="status" className="font-bold leading-snug min-h-[2.5rem] text-sm" data-lc-verdict={lab.last?.kind ?? ''}>{verdict}</p>
-      {L.canOpenCases(lab) && (
+      {L.canOpenCases(lab) && !cp.blocking && (!cpLive || cleared.includes('probe')) && (
         <button type="button" onClick={() => setLab((s) => L.openCases(s))} data-lc-open-cases
           className="min-h-[44px] rounded-xl border-2 border-violet-500 bg-violet-50 px-3 text-sm font-bold text-violet-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500">
           {k('openCases')}
@@ -452,6 +507,8 @@ export default function LineCrossing({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpLive}
       hints={hintKeys.map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{
         autoStep: () => false,
@@ -473,8 +530,10 @@ export default function LineCrossing({
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-indigo-50/60 to-white">
-        <div ref={boxRef} className="space-y-3" data-line-crossing data-stage={lab.stage} data-theme={theme} data-system={system}
+        <div ref={boxRef} className="relative space-y-3" data-line-crossing data-stage={lab.stage} data-theme={theme} data-system={system}
           data-layout={layout} data-budget={budget} data-ctrl-h={ctrlH}>
+          {party.node}
+          {cp.node}
           <div className={wide ? 'grid items-start gap-3' : 'space-y-3'} style={wide ? { gridTemplateColumns: `${planeCol}px 1fr` } : undefined} data-lc-glance>
             {plane}
             {controls}
@@ -707,3 +766,164 @@ const LC_CSS = '.lc-shake{animation:lc-s .35s ease-in-out 1}@keyframes lc-s{0%,1
   + '.lc-drop{animation:lc-d .6s ease-in 1}@keyframes lc-d{0%{transform:translateY(-14px);opacity:.2}100%{transform:translateY(0);opacity:1}}'
   + '.lc-pulse{animation:lc-p .8s ease-out 1;transform-origin:center;transform-box:fill-box}@keyframes lc-p{0%{opacity:1;transform:scale(.6)}100%{opacity:0;transform:scale(1.8)}}'
   + '@media (prefers-reduced-motion: reduce){.lc-shake,.lc-drop,.lc-pulse{animation:none}}';
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de questions de chaque étape ; la dernière étape (P seul, ou les trois cas) finit par LA RÈGLE. */
+export function chainOf(lab, step) {
+  const steps = L.stepsOf(lab);
+  const base = {
+    build: ['atZero', 'slope'],
+    probe: [lab.seen.one ? 'oneLamp' : null, 'pair', checkOf(lab) ? 'check' : null].filter(Boolean),
+    cases: ['para', 'same', 'sameSlope'],
+  }[step];
+  return step === steps[steps.length - 1] ? [...base, 'rule'] : base;
+}
+/** Le produit à calculer en substituant la ثنائية solution : l'équation au plus grand |a| dont le produit a·x est ≥ 0 (une réponse saisie ne peut être négative). */
+function checkOf(lab) {
+  const tr = [...lab.trials].reverse().find((t) => t.kind === 'point' && t.ok1 && t.ok2);
+  if (!tr) return null;
+  const c = [0, 1].map((i) => ({ i, prod: Lin.mul(lab.eqs[i].a, tr.x) })).filter((x) => !Lin.isZero(x.prod) && Lin.cmp(x.prod, 0) > 0);
+  if (!c.length) return null;
+  c.sort((p, q) => Lin.cmp(q.prod, p.prod));
+  return { tr, ...c[0] };
+}
+export const CHAINS = Object.freeze({ build: ['atZero', 'slope'], probe: ['oneLamp', 'pair', 'check'], cases: ['para', 'same', 'sameSlope'] });
+
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const T = (x) => <MathText>{`$${x}$`}</MathText>;
+const D = (x) => `$${x}$`;
+const neg = (p) => Lin.neg(L.fracOf(p));
+/** Trois valeurs distinctes : la bonne, son opposée, un autre nombre de la droite (jamais deux fois la même). */
+function threeValues(good, opposite, other) {
+  const out = [good];
+  for (const v of [opposite, other]) if (!out.some((u) => L.same(u, v))) out.push(v);
+  for (let bump = 1; out.length < 3; bump += 1) { const c = Lin.add(L.fracOf(good), bump); if (!out.some((u) => L.same(u, c))) out.push(c); }
+  return out;
+}
+const shuffled = (list, seed) => { const r = seed % list.length; return [...list.slice(r), ...list.slice(0, r)]; };
+const seedOf = (lab) => Math.abs(Number(L.fracOf(lab.lines[0].b).n) + Number(L.fracOf(lab.lines[1].a).n)) + lab.cands[0].length;
+
+export const QUESTIONS = {
+  atZero: (lab, k) => {
+    const g = lab.lines[0];
+    const [p, q, r] = threeValues(g.b, neg(g.b), g.a);
+    const line = D(L.lineTex(g));
+    const o = { i: 1, line };
+    const opts = [
+      { text: T(L.numTex(p)), correct: true },
+      { text: T(L.numTex(q)), why: Cq(k, 'atZero.whyOpposite', { ...o, p: D(L.numTex(g.b)) }) },
+      { text: T(L.numTex(r)), why: Cq(k, 'atZero.whySlope', { ...o, a: D(L.numTex(g.a)) }) },
+    ];
+    return {
+      id: 'atZero', kind: 'choice', cols: 3, prompt: Cq(k, 'atZero.prompt', o), options: shuffled(opts, seedOf(lab)),
+      hints: [Cq(k, 'atZero.hint1', o), Cq(k, 'atZero.hint2')],
+      explain: Cq(k, 'atZero.explain', { ...o, p: D(L.numTex(g.b)) }),
+    };
+  },
+  slope: (lab, k) => {
+    const g = lab.lines[1];
+    const [p, q, r] = threeValues(g.a, neg(g.a), g.b);
+    const line = D(L.lineTex(g));
+    const o = { i: 2, line };
+    const opts = [
+      { text: T(L.numTex(p)), correct: true },
+      { text: T(L.numTex(q)), why: Cq(k, 'slope.whyOpposite', { ...o, a: D(L.numTex(g.a)) }) },
+      { text: T(L.numTex(r)), why: Cq(k, 'slope.whyConstant', { ...o, p: D(L.numTex(g.b)) }) },
+    ];
+    return {
+      id: 'slope', kind: 'choice', cols: 3, prompt: Cq(k, 'slope.prompt', o), options: shuffled(opts, seedOf(lab) + 1),
+      hints: [Cq(k, 'slope.hint1', o), Cq(k, 'slope.hint2')],
+      explain: Cq(k, 'slope.explain', { ...o, a: D(L.numTex(g.a)) }),
+    };
+  },
+  oneLamp: (lab, k) => {
+    const tr = [...lab.trials].reverse().find((t) => t.kind === 'point' && t.ok1 !== t.ok2);
+    const lit = tr.ok1 ? 1 : 2; const dark = lit === 1 ? 2 : 1;
+    const o = { pair: D(L.pairTex(tr.x, tr.y)), lit, dark };
+    const opts = [
+      { text: Cq(k, 'oneLamp.right', o), correct: true },
+      { text: Cq(k, 'oneLamp.solution'), why: Cq(k, 'oneLamp.whySolution', { ...o, calc: D(L.substTex(lab.eqs[dark - 1], tr.x, tr.y)) }) },
+      { text: Cq(k, 'oneLamp.none'), why: Cq(k, 'oneLamp.whyNone', { ...o, calc: D(L.substTex(lab.eqs[lit - 1], tr.x, tr.y)) }) },
+    ];
+    return {
+      id: 'oneLamp', kind: 'choice', cols: 1, prompt: Cq(k, 'oneLamp.prompt', o), options: shuffled(opts, seedOf(lab) + 2),
+      hints: [Cq(k, 'oneLamp.hint1', o), Cq(k, 'oneLamp.hint2', o)],
+      explain: Cq(k, 'oneLamp.explain', o),
+    };
+  },
+  pair: (lab, k) => {
+    const tr = [...lab.trials].reverse().find((t) => t.kind === 'point' && t.ok1 && t.ok2);
+    const o = { pair: D(L.pairTex(tr.x, tr.y)) };
+    const opts = [
+      { text: Cq(k, 'pair.right'), correct: true },
+      { text: Cq(k, 'pair.one'), why: Cq(k, 'pair.whyOne', { ...o, c1: D(L.substTex(lab.eqs[0], tr.x, tr.y)), c2: D(L.substTex(lab.eqs[1], tr.x, tr.y)) }) },
+      { text: Cq(k, 'pair.none'), why: Cq(k, 'pair.whyNone', o) },
+    ];
+    return {
+      id: 'pair', kind: 'choice', cols: 1, prompt: Cq(k, 'pair.prompt', o), options: shuffled(opts, seedOf(lab) + 3),
+      hints: [Cq(k, 'pair.hint1', o), Cq(k, 'pair.hint2')],
+      explain: Cq(k, 'pair.explain', o),
+    };
+  },
+  check: (lab, k) => {
+    const { tr, i, prod } = checkOf(lab);
+    const e = lab.eqs[i];
+    const o = { pair: D(L.pairTex(tr.x, tr.y)), n: i + 1, eq: D(L.eqTex(e)), prod: D(`${L.numTex(e.a)} \\times ${L.numTex(tr.x)}`), calc: D(L.substTex(e, tr.x, tr.y)) };
+    return {
+      id: 'check', kind: 'number', expected: Lin.fracText(prod), answer: T(L.numTex(prod)),
+      prompt: Cq(k, 'check.prompt', o), hints: [Cq(k, 'check.hint1', o), Cq(k, 'check.hint2')],
+      explain: Cq(k, 'check.explain', o),
+    };
+  },
+  para: (lab, k) => {
+    const tr = [...lab.trials].reverse().find((t) => t.kind === 'config' && t.rel === 'parallel');
+    const o = { l1: D(L.lineTex(lab.lines[0])), lp: D(L.lineTex({ a: tr.m, b: tr.p })) };
+    const opts = [
+      { text: Cq(k, 'para.none'), correct: true },
+      { text: Cq(k, 'para.one'), why: Cq(k, 'para.whyOne', o) },
+      { text: Cq(k, 'para.many'), why: Cq(k, 'para.whyMany', o) },
+    ];
+    return {
+      id: 'para', kind: 'choice', cols: 1, prompt: Cq(k, 'para.prompt', o), options: shuffled(opts, seedOf(lab)),
+      hints: [Cq(k, 'para.hint1', o), Cq(k, 'para.hint2')], explain: Cq(k, 'para.explain', o),
+    };
+  },
+  same: (lab, k) => {
+    const tr = [...lab.trials].reverse().find((t) => t.kind === 'config' && t.rel === 'same');
+    const o = { l1: D(L.lineTex(lab.lines[0])), lp: D(L.lineTex({ a: tr.m, b: tr.p })) };
+    const opts = [
+      { text: Cq(k, 'same.many'), correct: true },
+      { text: Cq(k, 'same.none'), why: Cq(k, 'same.whyNone', o) },
+      { text: Cq(k, 'same.one'), why: Cq(k, 'same.whyOne', o) },
+    ];
+    return {
+      id: 'same', kind: 'choice', cols: 1, prompt: Cq(k, 'same.prompt', o), options: shuffled(opts, seedOf(lab) + 1),
+      hints: [Cq(k, 'same.hint1', o), Cq(k, 'same.hint2')], explain: Cq(k, 'same.explain', o),
+    };
+  },
+  sameSlope: (lab, k) => {
+    const tr = [...lab.trials].reverse().find((t) => t.kind === 'config' && t.rel === 'parallel');
+    const o = { l1: D(L.lineTex(lab.lines[0])), lp: D(L.lineTex({ a: tr.m, b: tr.p })), a: D(L.numTex(lab.lines[0].a)) };
+    const opts = [
+      { text: Cq(k, 'sameSlope.right'), correct: true },
+      { text: Cq(k, 'sameSlope.constant'), why: Cq(k, 'sameSlope.whyConstant', o) },
+      { text: Cq(k, 'sameSlope.nothing'), why: Cq(k, 'sameSlope.whyNothing', o) },
+    ];
+    return {
+      id: 'sameSlope', kind: 'choice', cols: 1, prompt: Cq(k, 'sameSlope.prompt', o), options: shuffled(opts, seedOf(lab) + 2),
+      hints: [Cq(k, 'sameSlope.hint1', o), Cq(k, 'sameSlope.hint2')], explain: Cq(k, 'sameSlope.explain', o),
+    };
+  },
+  rule: (lab, k) => {
+    const opts = discoveryFor(lab, k);
+    const ci = opts.findIndex((o) => o.correct);
+    return {
+      id: 'rule', kind: 'choice', cols: 1,
+      prompt: <MathText>{k(lab.cases ? 'dPrompt.cases' : 'dPrompt.probe')}</MathText>,
+      options: ci === opts.length - 1 ? [opts[ci], ...opts.slice(0, ci)] : opts,
+      hints: [Cq(k, lab.cases ? 'rule.hint1Cases' : 'rule.hint1Probe'), Cq(k, lab.cases ? 'rule.hint2Cases' : 'rule.hint2Probe')],
+      explain: Cq(k, lab.cases ? 'rule.explainCases' : 'rule.explainProbe'),
+    };
+  },
+};

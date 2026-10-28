@@ -2,7 +2,9 @@ import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
-import LineCrossing from './LineCrossing';
+import i18n from '../../../../i18n';
+import LineCrossing, { chainOf, QUESTIONS } from './LineCrossing';
+import * as L from '../logic/lineCrossing';
 
 /**
  * line-crossing se rend pour chaque monde et chaque point d'entrée, avec les props que la leçon 4
@@ -57,5 +59,50 @@ describe('line-crossing — rendu', () => {
 
   it('un contenu invalide est une erreur', () => {
     expect(() => renderToString(<LineCrossing system="x=3|x+y=2" />)).toThrow();
+  });
+});
+
+describe('line-crossing — questions pendant le labo (LabCheckpoint)', () => {
+  const k = (key, o) => i18n.t(`lesson:manipulation.lineCrossing.${key}`, o);
+  const check = (lab, step) => {
+    for (const qid of chainOf(lab, step)) {
+      const q = QUESTIONS[qid](lab, k);
+      const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+      expect(out, `${step}.${qid}`).not.toMatch(RAW);
+      expect(out, `${step}.${qid}`).not.toContain('{{');
+      expect(q.hints, `${step}.${qid}`).toHaveLength(2);
+      if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${step}.${qid}`).toHaveLength(1);
+      else expect(q.expected).toBeTruthy();
+    }
+  };
+  const build = (lab) => { for (let i = 0; i < 2; i += 1) lab = L.choose(lab, i, lab.cands[i].findIndex((c) => c.ok)); return lab; };
+  it('نشاط 5 : tracer · promener P · les trois cas, avec les nombres de l’élève', () => {
+    let lab = L.init({ system: 'x+y=43|100x+200y=5000', cases: 'true' });
+    expect(L.stepsOf(lab)).toEqual(['build', 'probe', 'cases']);
+    lab = build(lab);
+    expect(L.stepReached(lab, 'build')).toBe(true);
+    check(lab, 'build');
+    lab = L.place(L.place(lab, 0, 43), 36, 7);
+    expect(chainOf(lab, 'probe')).toEqual(['oneLamp', 'pair', 'check']);
+    check(lab, 'probe');
+    expect(QUESTIONS.check(lab, k).expected).toBe('3600');
+    lab = L.openCases(lab);
+    lab = L.hold(L.hold(lab, -1, 10), -1, 43);
+    expect(L.stepReached(lab, 'cases')).toBe(true);
+    expect(chainOf(lab, 'cases')).toEqual(['para', 'same', 'sameSlope', 'rule']);
+    check(lab, 'cases');
+  });
+  it('مبتدئ : la dernière étape (probe) finit par la règle ; startWith="cases" : une seule étape', () => {
+    let lab = build(L.init({ system: '2x-y=1|x+y=5' }));
+    lab = L.place(L.place(lab, 0, 5), 2, 3);
+    expect(chainOf(lab, 'probe').at(-1)).toBe('rule');
+    check(lab, 'probe');
+    const c = L.init({ system: 'x+y=3|2x-y=0', startWith: 'cases' });
+    expect(L.stepsOf(c)).toEqual(['cases']);
+  });
+  it('mode guidé : ni la progression ni le bouton d’indice', () => {
+    const out = renderToString(<LineCrossing {...BEG} />);
+    expect(out).not.toContain('data-manipulation-progress');
+    expect(out).not.toContain(i18n.t('lesson:manipulation.hint.show'));
   });
 });

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
-import { Minus, Plus, ArrowLeft, Check } from 'lucide-react';
+import { Minus, Plus, ArrowLeft } from 'lucide-react';
 import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
@@ -12,6 +12,10 @@ import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
 import MathText from '../../components/MathText';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import * as L from '../logic/affineMeter';
 
 /**
@@ -69,6 +73,12 @@ import * as L from '../logic/affineMeter';
  * tuiles forment un bloc presque carré (L.tileGrid) dont la taille suit la place. Le tableau des essais
  * est dans un `LabFold` sous le bloc.
  *
+ * QUESTIONS PENDANT LE LABO (2026-10-28, lot 4) : quand une étape est accomplie, une suite de questions se pose PAR-DESSUS le labo
+ * (`CHAINS` : image → la partie fixe lue à x = 0 (ou au double), le pas par unité ; antécédent → la première opération, ce qui reste ;
+ * classify → b = 0, a = 0). La dernière étape de découverte (image seule, ou antécédent) finit par LA RÈGLE ax + b et remplace la découverte
+ * automatique. Les étapes sont des `LabStepper` (`[data-am-step=<i>]`, fête à chaque étape faite) ; « التالي » n'apparaît qu'une fois la suite
+ * finie ; « إعادة » repart de zéro. Obligatoires pour tout élève, coupées par l'enseignant pour SON compte (`useLabCheckpointSettings`) ;
+ * `checkpoints` = false les coupe aussi. `onCheckpoint(ev)` : la trace pour les étapes du module.
  * Props : `rule` (« 40x+100 », « 185x+35000 »), `mode` (« image » | « image|antecedent|classify »),
  * `target` (le total m, string), `marks` (« 5|8|10|12|15 »), `xMax`, `theme` ('ride' | 'payroll'),
  * `title`, `lead`, `mission`, `level`, `levels` (false : seul sans sélecteur), `onTrial(t)`
@@ -88,8 +98,8 @@ const guessTheme = (rule) => (L.init({ rule }).f.b.n >= 1000 ? 'payroll' : 'ride
 
 export default function AffineMeter({
   rule: rule0 = '40x+100', mode: mode0 = 'image', target: target0, marks: marks0, xMax, theme: theme0,
-  title, lead, mission, level, levels: withLevels = true, initialMode = 'student', allowModeSwitch = false,
-  onTrial, onFinished,
+  title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false,
+  onTrial, onFinished, onCheckpoint,
 }) {
   const { t } = useTranslation('lesson');
   const initialNumbers = target0 != null ? { rule: rule0, mode: mode0, target: String(target0) } : { rule: rule0, mode: mode0 };
@@ -100,20 +110,57 @@ export default function AffineMeter({
   const marks = own ? marks0 : (rule === PAYROLL_RULE ? '5|8|10|12|15' : undefined);
   const k = useCallback((key, o) => t(`manipulation.affineMeter.${key}`, o), [t]);
   const w = useCallback((key, o) => t(`manipulation.affineMeter.worlds.${theme}.${key}`, o), [t, theme]);
+  const FN0 = w('fn');
 
   const make = () => L.init({ rule, mode, target, marks, xMax: own ? xMax : undefined });
   const [lab, setLab] = useState(make);
-  const sceneKey = `${rule}:${mode}:${target}:${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
+  const sceneKey = `${rule}:${mode}:${target}:${state.epoch}:${state.resetCount}`;
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
   const [liveX, setLiveX] = useState(null);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setLiveX(null); }
+  const [cleared, setCleared] = useState([]);   // les étapes dont la suite de questions est finie
+  // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la règle, les essais et les questions du labo
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(make()); setLiveX(null); setCleared([]); }
 
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  const stageOf = lab.stage;
+  const cpSettings = useLabCheckpointSettings('affine-meter');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpLive = cpOn && cpSettings.enabled;
+  const ruleStage = lab.modes.filter((m) => m !== 'classify').at(-1);
+  const reachedStage = L.stageDone(lab, stageOf);
+  const cp = useLabCheckpoint({
+    id: cpLive ? stageOf : null,
+    questions: cpLive && reachedStage ? chainOf(lab, stageOf).map((q) => QUESTIONS[q](lab, k, w, FN0)) : null,
+    reached: reachedStage,
+    resetKey: scene.inits,
+    onRetry: () => { setLab(L.restartStage); setLiveX(null); },
+    onEvent: (ev) => state.report(onCheckpoint, ev),   // {tk:'checkpoint'|'checkpoint-done', id: étape, …} — la TRACE que les étapes du module relisent
+    onDone: (id) => {
+      setCleared((c) => (c.includes(id) ? c : [...c, id]));
+      if (id === ruleStage) { state.discover(); state.formalize(); }
+    },
+  });
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // une étape est FAITE quand son objectif est atteint ET sa suite de questions répondue : la pastille passe au vert et on fête
+  const stepDone = lab.modes.map((m) => L.stageDone(lab, m) && (!cpLive || cleared.includes(m)));
+  const nDone = stepDone.findIndex((d) => !d) < 0 ? stepDone.length : stepDone.findIndex((d) => !d);
+  const party = useStepCelebration();
+  const celebrated = useRef({ n: 0, inits: scene.inits });
+  if (celebrated.current.inits !== scene.inits) celebrated.current = { n: 0, inits: scene.inits };   // « إعادة » : on refête
+  useEffect(() => {
+    if (nDone <= celebrated.current.n) return;
+    celebrated.current.n = nDone;
+    party.celebrate({ n: nDone, total: stepDone.length });
+  }, [nDone]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, { rule }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     const last = lab.last;
     if (!last) return;
+    // le son du GESTE (muet sans « الصوت ») : un pas par valeur validée, le drapeau à l'objectif, la cloche pour un cas complet, « over » au-delà
+    if (last.kind === 'hit') playSfx('flag');
+    else if (last.kind === 'above') playSfx('over');
+    else if (last.kind === 'knobs') playSfx(last.which === 'affine' ? 'tooth' : 'bell');
+    else if (last.kind === 'image' || last.kind === 'below') playSfx('tooth');
     if (last.kind === 'image' || last.kind === 'hit' || last.kind === 'below' || last.kind === 'above') {
       state.report(onTrial, { kind: last.kind, x: last.x, fx: L.numText(last.fx) });
     } else if (last.kind === 'knobs') {
@@ -178,7 +225,6 @@ export default function AffineMeter({
   const fx = X == null ? null : L.meterAt(lab, X);
   const FN = w('fn');
   const $ = (tex) => `$${tex}$`;
-  const stageOf = lab.stage;
   const multi = lab.modes.length > 1;
 
   /* ── l'écran du compteur : f(x) = a × x + b = total ── */
@@ -202,34 +248,7 @@ export default function AffineMeter({
   })();
 
   /* ── la découverte : distracteurs réfutés par les essais de l'élève ── */
-  const discoveryOptions = useMemo(() => {
-    const a = L.numText(lab.f.a); const b = L.numText(lab.f.b);
-    const fTex = $(`${FN}(x) = ${L.numTex(lab.f.a)}x + ${L.numTex(lab.f.b)}`);
-    const opts = [{ text: <MathText>{k(lab.target ? 'dRightInverse' : 'dRight', { f: fTex, a, b, m: lab.target ? L.numText(lab.target) : '' })}</MathText>, correct: true }];
-    const wt = L.proportionWitness(lab);
-    if (wt) {
-      opts.unshift({
-        text: <MathText>{w('dProp')}</MathText>,
-        why: <MathText>{wt.kind === 'zero'
-          ? k('dWhyPropZero', { line: $(`${FN}(0) = ${L.numTex(wt.fx)} \\neq 0`) })
-          : k('dWhyPropDouble', { line: $(`${FN}(${2 * wt.x}) = ${L.numTex(wt.f2x)} \\neq 2 \\times ${L.numTex(wt.fx)}`) })}</MathText>,
-      });
-    }
-    const xs = lab.trials.filter((x) => x > 0);
-    const x1 = xs[0] ?? 1;
-    const sum = L.perUnitSum(lab);
-    opts.push({
-      text: <MathText>{k('dSum', { s: $(`${FN}(x) = ${L.numTex(sum)}x`) })}</MathText>,
-      why: <MathText>{k('dWhySum', { line: $(`${L.numTex(sum)} \\times ${x1} = ${L.numTex(Lin.mul(sum, x1))} \\neq ${L.numTex(L.meterAt({ ...lab, stage: 'image' }, x1))}`) })}</MathText>,
-    });
-    if (lab.target) {
-      opts.push({
-        text: <MathText>{k('dOrder', { m: L.numText(lab.target), a, b })}</MathText>,
-        why: <MathText>{k('dWhyOrder', { b, line: $(`${L.numTex(lab.target)} \\div ${L.numTex(lab.f.a)} \\approx ${Lin.toNumber(L.divideOnly(lab)).toFixed(1).replace('.', '{,}')}`) })}</MathText>,
-      });
-    }
-    return opts;
-  }, [lab, k, w, FN]); // eslint-disable-line react-hooks/exhaustive-deps
+  const discoveryOptions = useMemo(() => discoveryOptionsOf(lab, k, w, FN), [lab, k, w, FN]);
 
   /* ── commandes ── */
   const nudgeBtn = (d) => (
@@ -243,19 +262,16 @@ export default function AffineMeter({
 
   const nxt = L.nextStage(lab);
   const stageDone = L.stageDone(lab, stageOf);
+  const prevStage = lab.modes[lab.modes.indexOf(stageOf) - 1];
   const stageTabs = multi && (
-    <div className="flex flex-wrap gap-1" role="group" aria-label={k('stagesAria')} data-am-stages>
-      {lab.modes.map((m, i) => {
-        const open = L.canOpen(lab, m);
-        const done = L.stageDone(lab, m);
-        return (
-          <button key={m} type="button" disabled={!open} aria-pressed={stageOf === m} onClick={() => setLab((s) => L.setStage(s, m))} data-am-stage-tab={m}
-            aria-label={narrow ? k(`stage_${m}`) : undefined} title={k(`stage_${m}`)}
-            className={`inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-1 rounded-xl border-2 px-2 text-xs font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 disabled:opacity-40 ${stageOf === m ? 'border-amber-600 bg-amber-600 text-white' : 'border-slate-300 bg-white text-slate-700'}`}>
-            <span aria-hidden={narrow ? 'true' : undefined}>{i + 1}{narrow ? '' : '.'}</span>{!narrow && <> {k(`stage_${m}`)}</>} {done && <Check className="h-3.5 w-3.5" aria-hidden="true" />}
-          </button>
-        );
-      })}
+    <div className="flex flex-wrap items-center gap-2" data-am-stages>
+      <LabStepper count={lab.modes.length} current={lab.modes.indexOf(stageOf)} done={stepDone} stepAttr="data-am-step" />
+      {prevStage && (
+        <button type="button" onClick={() => setLab((st) => L.setStage(st, prevStage))} data-am-stage-tab={prevStage}
+          className="inline-flex min-h-[44px] items-center gap-1 rounded-xl border-2 border-slate-300 bg-white px-2 text-xs font-bold text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500">
+          {k('stageBack')}
+        </button>
+      )}
     </div>
   );
 
@@ -290,7 +306,7 @@ export default function AffineMeter({
     </div>
   );
 
-  const nextCard = stageDone && nxt && (
+  const nextCard = stageDone && nxt && !cp.blocking && (
     <div className="flex flex-wrap items-center gap-2 rounded-xl border-2 border-emerald-300 bg-emerald-50 px-2 py-1" data-am-next={nxt}>
       <span className={narrow ? 'sr-only' : 'text-xs font-bold text-emerald-900'}><MathText>{k(`next_${stageOf}`)}</MathText></span>
       <button type="button" onClick={() => setLab((s) => L.setStage(s, nxt))}
@@ -336,6 +352,8 @@ export default function AffineMeter({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpLive}
       hints={[w('hint1'), k(lab.marks.length ? 'hint2Marks' : 'hint2'), k(lab.target ? 'hint3Target' : 'hint3')].map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{
         autoStep: () => false,
@@ -372,8 +390,10 @@ export default function AffineMeter({
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-amber-50/60 to-white" data-dragging={stretch.dragging ? 'true' : undefined}>
-        <div ref={boxRef} className="space-y-2" data-affine-meter data-rule={rule} data-stage={stageOf} data-x={X ?? ''} data-fx={fx == null ? '' : L.numText(fx)}
+        <div ref={boxRef} className="relative space-y-2" data-affine-meter data-rule={rule} data-stage={stageOf} data-x={X ?? ''} data-fx={fx == null ? '' : L.numText(fx)}
           data-layout={wide ? 'side' : narrow ? 'narrow' : 'stack'} data-world={theme} data-budget={budget}>
+          {party.node}
+          {cp.node}
           <div className={wide ? 'grid items-start gap-3' : 'space-y-2'} style={wide ? { gridTemplateColumns: `${colW}px 1fr` } : undefined} data-am-glance>
             <div className="space-y-2">
               <Street theme={theme} width={colW} height={sceneH} edge={EDGE} range={range} x={X} marks={lab.marks} stretch={stretch}
@@ -680,3 +700,148 @@ function Street({ theme, width, height, edge, range, x, marks, stretch, handleLa
     </div>
   );
 }
+
+/* ══════════════ la découverte (hors labo et dans la suite de questions) ══════════════ */
+
+function discoveryOptionsOf(lab, k, w, FN) {
+  const $ = (tex) => `$${tex}$`;
+    const a = L.numText(lab.f.a); const b = L.numText(lab.f.b);
+    const fTex = $(`${FN}(x) = ${L.numTex(lab.f.a)}x + ${L.numTex(lab.f.b)}`);
+    const opts = [{ text: <MathText>{k(lab.target ? 'dRightInverse' : 'dRight', { f: fTex, a, b, m: lab.target ? L.numText(lab.target) : '' })}</MathText>, correct: true }];
+    const wt = L.proportionWitness(lab);
+    if (wt) {
+      opts.unshift({
+        text: <MathText>{w('dProp')}</MathText>,
+        why: <MathText>{wt.kind === 'zero'
+          ? k('dWhyPropZero', { line: $(`${FN}(0) = ${L.numTex(wt.fx)} \\neq 0`) })
+          : k('dWhyPropDouble', { line: $(`${FN}(${2 * wt.x}) = ${L.numTex(wt.f2x)} \\neq 2 \\times ${L.numTex(wt.fx)}`) })}</MathText>,
+      });
+    }
+    const xs = lab.trials.filter((x) => x > 0);
+    const x1 = xs[0] ?? 1;
+    const sum = L.perUnitSum(lab);
+    opts.push({
+      text: <MathText>{k('dSum', { s: $(`${FN}(x) = ${L.numTex(sum)}x`) })}</MathText>,
+      why: <MathText>{k('dWhySum', { line: $(`${L.numTex(sum)} \\times ${x1} = ${L.numTex(Lin.mul(sum, x1))} \\neq ${L.numTex(L.meterAt({ ...lab, stage: 'image' }, x1))}`) })}</MathText>,
+    });
+    if (lab.target) {
+      opts.push({
+        text: <MathText>{k('dOrder', { m: L.numText(lab.target), a, b })}</MathText>,
+        why: <MathText>{k('dWhyOrder', { b, line: $(`${L.numTex(lab.target)} \\div ${L.numTex(lab.f.a)} \\approx ${Lin.toNumber(L.divideOnly(lab)).toFixed(1).replace('.', '{,}')}`) })}</MathText>,
+      });
+    }
+    return opts;
+}
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de questions de chaque étape ; l'étape qui ferme la découverte (image seule, ou antécédent) finit par LA RÈGLE. */
+export function chainOf(lab, stage) {
+  const base = { image: ['fixed', 'step'], antecedent: ['first', 'rest'], classify: ['linear', 'constant'] }[stage];
+  const ruleStage = lab.modes.filter((m) => m !== 'classify').at(-1);
+  return stage === ruleStage ? [...base, 'rule'] : base;
+}
+export const CHAINS = Object.freeze({ image: ['fixed', 'step'], antecedent: ['first', 'rest'], classify: ['linear', 'constant'] });
+
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const T = (x) => <MathText>{`$${x}$`}</MathText>;
+const D = (x) => `$${x}$`;
+
+/** Chaque question est construite sur LES essais de l'élève (rien n'est écrit en dur) ; `k`, `w` : les textes de `affineMeter`. */
+export const QUESTIONS = {
+  fixed: (lab, k, w, FN) => {
+    const wt = L.proportionWitness(lab);
+    const b = lab.f.b;
+    if (wt.kind === 'zero') {
+      return {
+        id: 'fixed', kind: 'number', expected: Lin.fracText(b), answer: T(L.numTex(b)),
+        prompt: Cq(k, 'fixed.promptZero'), hints: [Cq(k, 'fixed.hint1'), Cq(k, 'fixed.hint2')],
+        explain: Cq(k, 'fixed.explainZero', { line: D(`${FN}(0) = ${L.numTex(b)}`) }),
+      };
+    }
+    const dbl = Lin.mul(wt.fx, 2);
+    const o = { x: wt.x, x2: 2 * wt.x, fx: D(L.numTex(wt.fx)), f2x: D(L.numTex(wt.f2x)), dbl: D(L.numTex(dbl)) };
+    return {
+      id: 'fixed', kind: 'number', expected: Lin.fracText(b), answer: T(L.numTex(b)),
+      prompt: Cq(k, 'fixed.promptDouble', o), hints: [Cq(k, 'fixed.hint1Double', o), Cq(k, 'fixed.hint2')],
+      explain: Cq(k, 'fixed.explainDouble', { ...o, b: D(L.numTex(b)) }),
+    };
+  },
+  step: (lab, k, w, FN) => {
+    const [x1, x2] = lab.trials;
+    const f1 = L.meterAt({ ...lab, stage: 'image' }, x1);
+    const f2 = L.meterAt({ ...lab, stage: 'image' }, x2);
+    const diff = Lin.sub(f2, f1);
+    const o = { x1, x2, f1: D(L.numTex(f1)), f2: D(L.numTex(f2)), diff: D(L.numTex(diff)), d: x2 - x1, unit: w('cpUnit') };
+    return {
+      id: 'step', kind: 'number', expected: Lin.fracText(lab.f.a), answer: T(L.numTex(lab.f.a)),
+      prompt: Cq(k, 'step.prompt', o), hints: [Cq(k, 'step.hint1', o), Cq(k, 'step.hint2', o)],
+      explain: Cq(k, 'step.explain', { ...o, a: D(L.numTex(lab.f.a)), calc: D(`${L.numTex(diff)} \\div ${x2 - x1} = ${L.numTex(lab.f.a)}`) }),
+    };
+  },
+  first: (lab, k) => {
+    const m = L.numText(lab.target); const a = L.numText(lab.f.a); const b = L.numText(lab.f.b);
+    const x = lab.targetX;
+    const quo = Lin.toNumber(L.divideOnly(lab)).toFixed(1).replace('.', '{,}');
+    const o = { m, a, b, x };
+    const opts = [
+      { text: Cq(k, 'first.sub', o), correct: true },
+      { text: Cq(k, 'first.div', o), why: Cq(k, 'first.whyDiv', { ...o, line: D(`${L.numTex(lab.target)} \\div ${L.numTex(lab.f.a)} \\approx ${quo}`) }) },
+      { text: Cq(k, 'first.add', o), why: Cq(k, 'first.whyAdd', { ...o, line: D(`${L.numTex(lab.target)} + ${L.numTex(lab.f.b)} = ${L.numTex(Lin.add(lab.target, lab.f.b))}`) }) },
+    ];
+    const rot = lab.targetX % 3;
+    return {
+      id: 'first', kind: 'choice', cols: 1,
+      prompt: Cq(k, 'first.prompt', o), options: [...opts.slice(rot), ...opts.slice(0, rot)],
+      hints: [Cq(k, 'first.hint1', o), Cq(k, 'first.hint2', o)],
+      explain: Cq(k, 'first.explain', { ...o, line: D(L.inverseLines(lab)[0]) }),
+    };
+  },
+  rest: (lab, k) => {
+    const r = Lin.sub(lab.target, lab.f.b);
+    const o = { m: L.numText(lab.target), b: L.numText(lab.f.b), a: L.numText(lab.f.a), x: lab.targetX };
+    return {
+      id: 'rest', kind: 'number', expected: Lin.fracText(r), answer: T(L.numTex(r)),
+      prompt: Cq(k, 'rest.prompt', o), hints: [Cq(k, 'rest.hint1', o), Cq(k, 'rest.hint2', o)],
+      explain: Cq(k, 'rest.explain', { ...o, r: D(L.numTex(r)), calc: D(L.inverseLines(lab)[1]) }),
+    };
+  },
+  linear: (lab, k) => {
+    const opts = [
+      { text: Cq(k, 'linear.linear'), correct: true },
+      { text: Cq(k, 'linear.constant'), why: Cq(k, 'linear.whyConstant') },
+      { text: Cq(k, 'linear.neither'), why: Cq(k, 'linear.whyNeither') },
+    ];
+    const rot = Number(lab.f.a.n) % 3;
+    return {
+      id: 'linear', kind: 'choice', cols: 1,
+      prompt: Cq(k, 'linear.prompt'), options: [...opts.slice(rot), ...opts.slice(0, rot)],
+      hints: [Cq(k, 'linear.hint1'), Cq(k, 'linear.hint2')], explain: Cq(k, 'linear.explain'),
+    };
+  },
+  constant: (lab, k) => {
+    const opts = [
+      { text: Cq(k, 'constant.constant'), correct: true },
+      { text: Cq(k, 'constant.grows'), why: Cq(k, 'constant.whyGrows') },
+      { text: Cq(k, 'constant.shrinks'), why: Cq(k, 'constant.whyShrinks') },
+    ];
+    const rot = (Number(lab.f.a.n) + 1) % 3;
+    return {
+      id: 'constant', kind: 'choice', cols: 1,
+      prompt: Cq(k, 'constant.prompt'), options: [...opts.slice(rot), ...opts.slice(0, rot)],
+      hints: [Cq(k, 'constant.hint1'), Cq(k, 'constant.hint2')], explain: Cq(k, 'constant.explain'),
+    };
+  },
+  rule: (lab, k, w, FN) => {
+    const fTex = D(`${FN}(x) = ${L.numTex(lab.f.a)}x + ${L.numTex(lab.f.b)}`);
+    const opts = discoveryOptionsOf(lab, k, w, FN);
+    const ci = opts.findIndex((o) => o.correct);
+    const rot = ci > 0 ? 0 : Number(lab.f.b.n) % opts.length;
+    return {
+      id: 'rule', kind: 'choice', cols: 1,
+      prompt: <MathText>{w('dPrompt')}</MathText>, options: [...opts.slice(rot), ...opts.slice(0, rot)],
+      hints: [Cq(k, 'rule.hint1'), Cq(k, 'rule.hint2', { a: L.numText(lab.f.a), b: L.numText(lab.f.b) })],
+      explain: Cq(k, 'rule.explain', { f: fTex, a: L.numText(lab.f.a), b: L.numText(lab.f.b) }),
+    };
+  },
+};

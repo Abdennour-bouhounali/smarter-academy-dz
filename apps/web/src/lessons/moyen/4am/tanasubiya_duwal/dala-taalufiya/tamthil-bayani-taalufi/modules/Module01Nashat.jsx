@@ -50,10 +50,14 @@ export default function Module01Nashat() {
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
-  const [q5a, setQ5a] = useState(false);
-  const [q5b, setQ5b] = useState(false);
+  const [cps, setCps] = useState([]);
+
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand la suite de questions de son laboratoire l'est
+  const answered = (id) => cps.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const onCheckpoint = (e) => setCps((l) => [...l, e]);
 
   const onTrial = (tr) => {
+    if (tr.tk) return;   // un événement `checkpoint…` n'est pas un essai
     if (tr.kind === 'probe' || tr.kind === 'shift') setProbes((p) => [...p, tr]);
     if (tr.kind === 'try') setTries((p) => [...p, tr]);
   };
@@ -84,6 +88,7 @@ export default function Module01Nashat() {
                 b="2"
                 mode="shift"
                 theme="ramp"
+                onCheckpoint={onCheckpoint}
                 lead={<MathText>{'في حديقة التزلّج منحدر مستقيم يبدأ من الأرض (المستقيم المتقطع)، ومنحدر مثله مبنيّ فوق قاعدة ارتفاعها 2، تمثيل $f(x) = \\dfrac{1}{2}x + 2$ .'}</MathText>}
               />
             ),
@@ -98,6 +103,7 @@ export default function Module01Nashat() {
                 theme="ramp"
                 lead={<MathText>{"$(d)$ تمثيل الدالة الخطية $g(x) = \\dfrac{3}{2}x$ ، و $(d')$ تمثيل الدالة التآلفية $f(x) = \\dfrac{3}{2}x + 1$ ."}</MathText>}
                 onTrial={onTrial}
+                onCheckpoint={onCheckpoint}
               />
             ),
           }}
@@ -189,30 +195,18 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 5, title: 'المنحدر الثاني', subtitle: 'المختبر الثاني — المستوى المتقدّم', done: q5a && q5b,
+          num: 5, title: 'المنحدر الثاني', subtitle: 'المختبر الثاني — المستوى المتقدّم', done: answered('identify'),
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{RAMP2.text}</MathText> <SourceTag source={RAMP2.source} /></p>
               <Evidence items={tries} kind="tries" title="مستقيماتك على المنحدر الثاني:" empty="أكمل المختبر الأول ثم اضغط «إلى المنحدر الثاني ←»." />
-              <NumericQuestion
-                prompt={<MathText>{'المستقيم $(D)$ يقطع محور التراتيب في النقطة التي ترتيبها:'}</MathText>}
-                expected={3}
-                parse={parseDec}
-                display="3"
-                requires={['tartib-mabda']}
-                explain={<MathText>{'$(D)$ يقطع محور التراتيب في $(0 ; 3)$ : الترتيب عند المبدأ لدالته هو $3$ .'}</MathText>}
-                onAnswered={() => setQ5a(true)}
-              />
-              <TapQuestion
-                prompt={<MathText>{'من النقطة $(0 ; 3)$ نتقدّم على $(D)$ وحدة واحدة إلى اليمين، فـ:'}</MathText>}
-                options={['ينزل المستقيم $\\dfrac{1}{2}$', 'يصعد المستقيم $\\dfrac{1}{2}$', 'ينزل المستقيم $2$', 'يصعد المستقيم $3$'].map(Opt)}
-                correct={0}
-                cols={2}
-                requires={['tartib-mabda']}
-                explain={<MathText>{'$(D)$ يشمل $(0 ; 3)$ و $(2 ; 2)$ : لوحدتين نزل $1$ ، أي $\\dfrac{1}{2}$ لكل وحدة. ومنه دالته $x \\longmapsto -\\dfrac{1}{2}x + 3$ ؛ أمّا $3$ فهو الترتيب عند المبدأ لا الدرجة.'}</MathText>}
-                onAnswered={() => setQ5b(true)}
-              />
-              {q5b && (
+              <p data-checkpoint-trace="identify" data-tried={answered('identify') ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${answered('identify') ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {answered('identify')
+                  ? <MathText>{'أجبتَ في المختبر: المستقيم $(D)$ يقطع محور التراتيب عند الترتيب عند المبدأ، ومعامل توجيهه ما يتغيّره الارتفاع لكل وحدة نحو اليمين.'}</MathText>
+                  : 'طابق مستقيمك المنحدر الثاني في المختبر، وأجب عن الأسئلة التي تظهر فوقه.'}
+              </p>
+              {answered('identify') && (
                 <p className="rounded-xl bg-violet-50 px-3 py-2 text-sm text-violet-900" data-next-module>
                   <MathText>{'أين يقطع المستقيم الذي رفعته محور التراتيب؟ وماذا قرأت على المنحدر الثاني: أين يقطع هذا المحور وكم ينزل لكل وحدة؟ المحور التالي يعطي ما رأيته أسماءه.'}</MathText>
                 </p>
@@ -221,7 +215,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

@@ -162,6 +162,15 @@ export function setStage(s, stage) {
   if (!canOpen(s, stage) || s.stage === stage) return s;
   return with_(s, { stage, last: { kind: 'stage', stage } });
 }
+/** « أعِد التجربة » (LabCheckpoint) : l'étape COURANTE repart de zéro (les essais, la cible, les boutons), les autres restent. */
+export function restartStage(s) {
+  if (s.stage === 'image') return with_(s, { trials: Object.freeze([]), recorded: 0, last: null });
+  if (s.stage === 'antecedent') return with_(s, { antTrials: Object.freeze([]), hit: false, last: null });
+  return with_(s, {
+    knobs: Object.freeze({ a: Math.round(Lin.toNumber(s.f.a) / s.aGrid.step), b: Math.round(Lin.toNumber(s.f.b) / s.bGrid.step) }),
+    visited: Object.freeze({ linear: false, constant: false }), classified: 0, last: null,
+  });
+}
 export const nextStage = (s) => s.modes[s.modes.indexOf(s.stage) + 1] ?? null;
 
 /* ── l'étape « antecedent » : le programme inverse ── */

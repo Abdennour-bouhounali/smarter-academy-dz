@@ -2,7 +2,9 @@ import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
-import AffineLine from './AffineLine';
+import i18n from '../../../../i18n';
+import AffineLine, { chainOf, QUESTIONS } from './AffineLine';
+import * as L from '../logic/affineLine';
 import { LEVELS } from '../levels';
 
 /**
@@ -80,5 +82,52 @@ describe('affine-line — défaut à l\'ouverture (2026-10-09)', () => {
     expect(read).toContain('data-al-probe="y"');
     expect(read).toContain('data-al-target="0"');
     expect(read).not.toContain('data-done="true"');
+  });
+});
+
+describe('affine-line — questions pendant le labo (LabCheckpoint)', () => {
+  const k = (key, o) => i18n.t(`lesson:manipulation.affineLine.${key}`, o);
+  const check = (lab, mode, last) => {
+    for (const qid of chainOf(lab, mode, last)) {
+      const q = QUESTIONS[qid](lab, k);
+      const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+      expect(out, `${mode}.${qid}`).not.toMatch(RAW);
+      expect(out, `${mode}.${qid}`).not.toContain('{{');
+      expect(q.hints, `${mode}.${qid}`).toHaveLength(2);
+      if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${mode}.${qid}`).toHaveLength(1);
+      else expect(q.expected, `${mode}.${qid}`).toBeTruthy();
+    }
+  };
+  it('shift : lift · predict · cut ; identify : readB · readA · règle (dernier)', () => {
+    let lab = L.init({ a: '3/2', b: '1', mode: 'shift|identify', find: '-1/2:3' });
+    lab = L.setB(lab, 1);
+    lab = L.probe(L.probe(lab, 1), 2);
+    expect(L.stageDone(lab)).toBe(true);
+    expect(chainOf(lab, 'shift', false)).toEqual(['lift', 'predict', 'cut']);
+    check(lab, 'shift', false);
+    expect(QUESTIONS.lift(lab, k).expected).toBe('1');
+    lab = L.next(lab);
+    lab = L.setB(L.setA(lab, '-1/2'), 3);
+    expect(L.stageDone(lab)).toBe(true);
+    expect(chainOf(lab, 'identify', true)).toEqual(['readB', 'readA', 'rule']);
+    check(lab, 'identify', true);
+  });
+  it('draw : origin (si refusé) · enough · third ; read : vocab · antec · compute', () => {
+    let d = L.init({ a: '2', b: '-3', mode: 'draw' });
+    d = L.place(L.place(L.place(d, 0, 0), 1, -1), 2, 1);
+    expect(L.stageDone(d)).toBe(true);
+    expect(chainOf(d, 'draw', true)).toEqual(['origin', 'enough', 'third', 'rule']);
+    check(d, 'draw', true);
+    let r = L.init({ a: '3/2', b: '1', mode: 'read', reads: 'x:4|y:7' });
+    r = L.readY(L.probe(r, 4), 7);
+    expect(L.stageDone(r)).toBe(true);
+    expect(chainOf(r, 'read', true)).toEqual(['vocab', 'antec', 'compute', 'rule']);
+    check(r, 'read', true);
+    expect(QUESTIONS.compute(r, k).expected).toBe('7');
+  });
+  it('mode guidé : ni la progression ni le bouton d’indice', () => {
+    const out = html({ a: '1/2', b: '2', mode: 'shift' });
+    expect(out).not.toContain('data-manipulation-progress');
+    expect(out).not.toContain(i18n.t('lesson:manipulation.hint.show'));
   });
 });

@@ -65,7 +65,7 @@ export default function Module03Awazzif() {
         { num: 4, title: 'تمرين 4 — تطبيقا سيارة أجرة', done: all('d'),
           content: <div className="space-y-3">{list('d', ['muadala-mustaqim', 'hall-taqatu', 'tarjama-jumla'])}</div> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }
