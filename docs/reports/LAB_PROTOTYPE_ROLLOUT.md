@@ -281,18 +281,18 @@ Une leçon de synthèse (« وضعية إدماجية ») n'a pas de labo : seul
 
 | # | Leçon | Année | Labo(s) | Cartes | Connaissances | État |
 |---|---|---|---|---|---|---|
-| 1 | `wadiya-idmajiya-kusur-natiqa` | 3am | — (synthèse) | 1 | 3 | ⬜ |
-| 2 | `hasr-adad-ushri` | 3am | `scoop-scale` | 4 | 7 | ⬜ |
-| 3 | `muadalat-darajat-ula` | 3am | `term-ferry` | 4 | 7 | ⬜ |
-| 4 | `musawiyat-amaliyat` | 3am | `equality-lanes` | 4 | 6 | ⬜ |
-| 5 | `mutabayinat-amaliyat` | 3am | `loom-threads` | 4 | 8 | ⬜ |
-| 6 | `kitaba-ilmiya-rutba` | 3am | `size-ladder` | 4 | 7 | ⬜ |
-| 7 | `qawaid-quwa-ashara` | 3am | `unit-ladder` | 4 | 7 | ⬜ |
-| 8 | `quwa-adad-ashara` | 3am | `ten-zoom` | 4 | 8 | ⬜ |
-| 9 | `quwat-adad-nisbi` | 3am | `power-train` | 4 | 10 | ⬜ |
-| 10 | `khassiyat-fitaghuras` | 3am | `pythagoras-tanks` | 4 | 7 | ⬜ |
-| 11 | `nisba-miawiya-3am` | 3am | `hundred-grid` | 4 | 7 | ⬜ |
-| 12 | `tanasub-tamthil-bayani` | 3am | `pin-rails` | 4 | 8 | ⬜ |
+| 1 | `wadiya-idmajiya-kusur-natiqa` | 3am | — (synthèse) | 1 | 3 | ✅ |
+| 2 | `hasr-adad-ushri` | 3am | `scoop-scale` | 4 | 7 | ✅ |
+| 3 | `muadalat-darajat-ula` | 3am | `term-ferry` | 4 | 7 | ✅ |
+| 4 | `musawiyat-amaliyat` | 3am | `equality-lanes` | 4 | 6 | ✅ |
+| 5 | `mutabayinat-amaliyat` | 3am | `loom-threads` | 4 | 8 | ✅ |
+| 6 | `kitaba-ilmiya-rutba` | 3am | `size-ladder` | 4 | 7 | ✅ |
+| 7 | `qawaid-quwa-ashara` | 3am | `unit-ladder` | 4 | 7 | ✅ |
+| 8 | `quwa-adad-ashara` | 3am | `ten-zoom` | 4 | 8 | ✅ |
+| 9 | `quwat-adad-nisbi` | 3am | `power-train` | 4 | 10 | ✅ |
+| 10 | `khassiyat-fitaghuras` | 3am | `pythagoras-tanks` | 4 | 7 | ✅ |
+| 11 | `nisba-miawiya-3am` | 3am | `hundred-grid` | 4 | 7 | ✅ |
+| 12 | `tanasub-tamthil-bayani` | 3am | `pin-rails` | 4 | 8 | ✅ |
 
 ---
 
