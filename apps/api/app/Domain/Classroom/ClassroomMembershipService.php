@@ -268,14 +268,16 @@ class ClassroomMembershipService
             // Le partage avec l'enseignant : le geste de l'élève, sinon rien
             // (inscription par la direction — « قسمي » le redemandera).
             // Le partage avec l'ÉTABLISSEMENT, si la classe en a un : le geste
-            // fait sur la page du LIEN, qui nomme l'établissement ; ou
-            // l'inscription par la direction (`school`). Le CODE ne montre pas
-            // l'établissement avant le geste : rien n'est enregistré, et
-            // « قسمي » le demande ensuite.
+            // de l'élève — la page du LIEN nomme l'établissement, et depuis le
+            // 2026-10-28 le texte partagé (lien ET code) annonce le rattachement
+            // automatique (`school_auto_consent_since`) ; ou l'inscription par
+            // la direction (`school`). Un consentement sur un texte plus ancien
+            // par le CODE n'enregistre rien : « قسمي » le demande ensuite.
             $schoolConsentBy = match (true) {
                 $classroom->school_id === null => null,
                 ! $studentConsented => ClassroomMembership::SCHOOL_CONSENT_BY_SCHOOL,
                 $via === ClassroomMembership::VIA_JOIN_LINK => ClassroomMembership::SCHOOL_CONSENT_BY_STUDENT,
+                strcmp((string) config('classroom.consent_version'), (string) config('classroom.school_auto_consent_since')) >= 0 => ClassroomMembership::SCHOOL_CONSENT_BY_STUDENT,
                 default => null,
             };
             $consent = [
@@ -349,7 +351,16 @@ class ClassroomMembershipService
             $membership->forceFill([
                 'consented_at' => Carbon::now(),
                 'consent_version' => (string) config('classroom.consent_version'),
-            ])->save();
+            ]);
+            // Le texte accepté annonce l'établissement (2026-10-28) : une classe
+            // déjà rattachée le reçoit avec.
+            if ($classroom->school_id !== null && $membership->school_consent_at === null && $membership->coversFutureSchool()) {
+                $membership->forceFill([
+                    'school_consent_at' => Carbon::now(),
+                    'school_consent_by' => ClassroomMembership::SCHOOL_CONSENT_BY_STUDENT,
+                ]);
+            }
+            $membership->save();
 
             $this->log->log($student, ActivityLogger::CLASSROOM_MEMBER_CONSENTED, 'classroom', $classroom->id, null, [
                 'student_id' => $student->id, 'version' => $membership->consent_version,

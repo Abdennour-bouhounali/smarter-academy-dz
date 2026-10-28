@@ -138,9 +138,10 @@ class SchoolClassroomService
 
     /**
      * L'enseignant rattache (ou détache) une de SES classes à son établissement.
-     * Rattacher n'ouvre RIEN sur les élèves déjà membres : chacun le
-     * confirmera dans « قسمي ». Détacher efface leur consentement envers
-     * l'établissement.
+     * Rattacher fait entrer dans l'établissement les élèves qui ont accepté le
+     * texte de partage qui l'annonce (`coversFutureSchool`, 2026-10-28) ; les
+     * autres le confirmeront dans « قسمي ». Détacher efface leur consentement
+     * envers l'établissement.
      *
      * @throws SchoolException
      */
@@ -168,13 +169,61 @@ class SchoolClassroomService
             throw new SchoolException(SchoolException::NOT_IN_SCHOOL, 'Vous n\'êtes rattaché à aucun établissement.');
         }
         if ($classroom->school_id !== $school->id) {
-            $classroom->school_id = $school->id;
-            $classroom->save();
-            $this->logger->log($teacher, ActivityLogger::SCHOOL_CLASSROOM_ATTACHED, 'classroom', $classroom->id, null, ['schoolId' => $school->id]);
+            DB::transaction(fn () => $this->attach($teacher, $classroom, $school));
             $this->forgetMembers($classroom);
         }
 
         return $classroom;
+    }
+
+    /**
+     * Toutes les classes ACTIVES de l'enseignant qui n'ont pas d'établissement
+     * entrent dans celui-ci — c'est ce que fait le lien d'établissement
+     * (owner, 2026-10-28). Pas de contrôle de sièges : comme le rattachement
+     * à la main, on peut dépasser la licence, on ne retire personne.
+     * Appelé DANS la transaction de `SchoolTeacherService::join`.
+     *
+     * @return array<int, int> les classes rattachées
+     */
+    public function attachAllOf(User $teacher, School $school): array
+    {
+        $classrooms = Classroom::where('teacher_id', $teacher->id)
+            ->where('status', Classroom::STATUS_ACTIVE)
+            ->whereNull('school_id')
+            ->get();
+        foreach ($classrooms as $classroom) {
+            $this->attach($teacher, $classroom, $school);
+        }
+        DB::afterCommit(function () use ($classrooms) {
+            foreach ($classrooms as $classroom) {
+                $this->forgetMembers($classroom);
+            }
+        });
+
+        return $classrooms->pluck('id')->all();
+    }
+
+    private function attach(User $teacher, Classroom $classroom, School $school): void
+    {
+        $classroom->school_id = $school->id;
+        $classroom->save();
+
+        $now = now();
+        $consenting = ClassroomMembership::where('classroom_id', $classroom->id)
+            ->active()
+            ->whereNull('school_consent_at')
+            ->get()
+            ->filter(fn (ClassroomMembership $m) => $m->coversFutureSchool());
+        foreach ($consenting as $m) {
+            $m->forceFill([
+                'school_consent_at' => $now,
+                'school_consent_by' => ClassroomMembership::SCHOOL_CONSENT_BY_STUDENT,
+            ])->save();
+        }
+
+        $this->logger->log($teacher, ActivityLogger::SCHOOL_CLASSROOM_ATTACHED, 'classroom', $classroom->id, null, [
+            'schoolId' => $school->id, 'studentsJoined' => $consenting->count(),
+        ]);
     }
 
     /**

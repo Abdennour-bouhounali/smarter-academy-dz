@@ -140,28 +140,31 @@ class SchoolStructureTest extends TestCase
         $this->assertSame($a->id, $classroom->fresh()->teacher_id);
     }
 
-    public function test_attaching_a_class_opens_nothing_until_each_student_says_yes(): void
+    public function test_attaching_a_class_brings_the_students_who_accepted_the_current_text_and_asks_the_others(): void
     {
         ['school' => $school, 'token' => $directorToken] = $this->schoolWithDirector();
         $teacher = $this->teacherInSchool($school);
         $classroom = Classroom::factory()->ownedBy($teacher)->create();
-        $student = $this->student();
-        $this->enrol($classroom, [$student]);
+        $current = $this->student();
+        $older = $this->student();
+        $this->enrol($classroom, [$current, $older]);
+        ClassroomMembership::where('student_id', $older->id)->update(['consent_version' => '2026-09-25']);
 
         $this->withToken($this->tokenOf($teacher))->putJson("/api/v1/teacher/classrooms/{$classroom->id}/school", ['attached' => true])
             ->assertOk()->assertJsonPath('schoolId', $school->id);
         $this->withToken($directorToken)->getJson('/api/v1/school/classrooms')
-            ->assertOk()->assertJsonPath('classrooms.0.membersCount', 1)->assertJsonPath('classrooms.0.readableCount', 0);
+            ->assertOk()->assertJsonPath('classrooms.0.membersCount', 2)->assertJsonPath('classrooms.0.readableCount', 1);
+        $this->assertSame($current->id, SchoolAccess::activeStudent($school, $current->id)->id);
 
-        $studentToken = $this->tokenOf($student);
-        $this->withToken($studentToken)->getJson('/api/v1/student/study-context')
+        // L'ancien texte n'annonçait pas l'établissement : « قسمي » redemande le
+        // texte, et l'accepter fait entrer l'élève.
+        $olderToken = $this->tokenOf($older);
+        $this->withToken($olderToken)->getJson('/api/v1/student/study-context')
             ->assertOk()
             ->assertJsonPath('studyContext.classrooms.0.schoolName', 'متوسطة النور')
             ->assertJsonPath('studyContext.classrooms.0.schoolConsentRequired', true);
-        $this->withToken($studentToken)->postJson("/api/v1/student/classrooms/{$classroom->id}/school-consent")
-            ->assertOk()->assertJsonPath('studyContext.classrooms.0.schoolConsentRequired', false);
-
-        $this->assertSame($student->id, SchoolAccess::activeStudent($school, $student->id)->id);
+        $this->withToken($olderToken)->postJson("/api/v1/student/classrooms/{$classroom->id}/consent")->assertOk();
+        $this->assertSame('student', ClassroomMembership::where('student_id', $older->id)->value('school_consent_by'));
 
         // Un enseignant hors établissement ne rattache rien.
         $loner = $this->teacher();
@@ -170,7 +173,40 @@ class SchoolStructureTest extends TestCase
             ->assertStatus(422)->assertJsonPath('reason', 'not_in_school');
     }
 
-    public function test_joining_a_school_class_by_the_link_consents_to_the_school_but_the_code_does_not(): void
+    public function test_joining_by_the_link_attaches_every_active_class_and_its_consenting_students(): void
+    {
+        ['school' => $school, 'token' => $directorToken] = $this->schoolWithDirector();
+        $teacher = $this->teacher();
+        $a = Classroom::factory()->ownedBy($teacher)->create();
+        $b = Classroom::factory()->ownedBy($teacher)->create();
+        $archived = Classroom::factory()->ownedBy($teacher)->archived()->create();
+        [$current, $older, $none] = [$this->student(), $this->student(), $this->student()];
+        $this->enrol($a, [$current, $older]);
+        $this->enrol($b, [$none]);
+        ClassroomMembership::where('student_id', $older->id)->update(['consent_version' => '2026-09-25']);
+        ClassroomMembership::where('student_id', $none->id)->update(['consented_at' => null, 'consent_version' => null]);
+
+        $teacherToken = $this->tokenOf($teacher);
+        $this->withToken($teacherToken)->postJson('/api/v1/teacher/school/join', ['token' => $school->teacher_join_token, 'consent' => true])
+            ->assertOk();
+
+        $this->assertSame($school->id, $a->fresh()->school_id);
+        $this->assertSame($school->id, $b->fresh()->school_id);
+        $this->assertNull($archived->fresh()->school_id);
+        $this->assertSame('student', ClassroomMembership::where('student_id', $current->id)->value('school_consent_by'));
+        $this->assertNull(ClassroomMembership::where('student_id', $older->id)->value('school_consent_at'));
+        $this->assertNull(ClassroomMembership::where('student_id', $none->id)->value('school_consent_at'));
+        $this->assertSame(1, SchoolAccess::consentedMemberships($school)->count());
+        $this->withToken($directorToken)->getJson('/api/v1/school/classrooms')
+            ->assertOk()->assertJsonCount(2, 'classrooms');
+
+        // Partir rend tout : classes et consentements.
+        $this->withToken($teacherToken)->postJson('/api/v1/teacher/school/leave')->assertOk();
+        $this->assertNull($a->fresh()->school_id);
+        $this->assertSame(0, SchoolAccess::consentedMemberships($school)->count());
+    }
+
+    public function test_joining_a_school_class_consents_to_the_school_unless_the_code_was_accepted_on_an_older_text(): void
     {
         ['school' => $school] = $this->schoolWithDirector();
         $classroom = $this->schoolClassroom($school, $this->teacherInSchool($school));
@@ -186,6 +222,14 @@ class SchoolStructureTest extends TestCase
         $byCode = $this->student();
         $this->withToken($this->tokenOf($byCode))->postJson('/api/v1/student/classrooms/join', ['code' => $classroom->join_code, 'consent' => true])
             ->assertSuccessful();
-        $this->assertNull(ClassroomMembership::where('student_id', $byCode->id)->value('school_consent_at'));
+        // Le texte partagé (lien ET code) annonce l'établissement depuis le 2026-10-28.
+        $this->assertSame('student', ClassroomMembership::where('student_id', $byCode->id)->value('school_consent_by'));
+
+        // Un texte plus ancien par le code n'enregistre rien.
+        config(['classroom.consent_version' => '2026-09-25']);
+        $byOldCode = $this->student();
+        $this->withToken($this->tokenOf($byOldCode))->postJson('/api/v1/student/classrooms/join', ['code' => $classroom->join_code, 'consent' => true])
+            ->assertSuccessful();
+        $this->assertNull(ClassroomMembership::where('student_id', $byOldCode->id)->value('school_consent_at'));
     }
 }

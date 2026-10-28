@@ -80,6 +80,18 @@ class ClassroomMembership extends Model
             && $this->consent_version === (string) config('classroom.consent_version');
     }
 
+    /**
+     * L'élève a-t-il accepté un texte de partage qui annonce le rattachement
+     * AUTOMATIQUE à un établissement (`classroom.school_auto_consent_since`) ?
+     * Les versions sont des dates ISO : la comparaison de chaînes suffit.
+     */
+    public function coversFutureSchool(): bool
+    {
+        return $this->consented_at !== null
+            && $this->consent_version !== null
+            && strcmp($this->consent_version, (string) config('classroom.school_auto_consent_since')) >= 0;
+    }
+
     public function isActive(): bool
     {
         return $this->status === self::STATUS_ACTIVE;

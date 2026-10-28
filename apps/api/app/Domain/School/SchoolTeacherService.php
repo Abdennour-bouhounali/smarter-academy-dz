@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\DB;
  * Un enseignant rejoint par le lien de l'établissement, APRÈS avoir lu ce que
  * la direction verra de lui (TeacherActivityFacts) — le geste est le bouton,
  * comme pour un élève qui rejoint une classe. Un enseignant n'appartient qu'à
- * un établissement à la fois.
+ * un établissement à la fois. Rejoindre rattache toutes ses classes actives,
+ * et leurs élèves qui l'ont accepté entrent avec elles (2026-10-28).
  *
  * Partir (ou être détaché par le directeur) rend ses classes à lui seul :
  * `school_id` est effacé, et le consentement des élèves envers CET
@@ -73,7 +74,14 @@ class SchoolTeacherService
             $row->teacher_id = $teacher->id;
             $row->forceFill(['status' => SchoolTeacher::STATUS_ACTIVE, 'joined_at' => Carbon::now(), 'left_at' => null])->save();
 
-            $this->logger->log($teacher, ActivityLogger::SCHOOL_TEACHER_JOINED, 'school', $school->id, null, ['teacherId' => $teacher->id]);
+            // Le lien fait entrer l'enseignant AVEC ses classes et leurs élèves
+            // (owner, 2026-10-28). Résolu ici : SchoolClassroomService dépend
+            // déjà de ce service, l'injecter ferait un cycle.
+            $classIds = app(SchoolClassroomService::class)->attachAllOf($teacher, $school);
+
+            $this->logger->log($teacher, ActivityLogger::SCHOOL_TEACHER_JOINED, 'school', $school->id, null, [
+                'teacherId' => $teacher->id, 'classIds' => $classIds,
+            ]);
 
             return $school;
         });

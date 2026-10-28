@@ -7,6 +7,7 @@ use App\Domain\Access\AccessTier;
 use App\Domain\Access\EntitlementService;
 use App\Domain\Classroom\TeacherCapacityService;
 use App\Domain\Plans\PlanEntitlementResolver;
+use App\Domain\School\SchoolCapacityService;
 use App\Models\Classroom;
 use App\Models\SchoolLicence;
 use App\Models\User;
@@ -141,5 +142,22 @@ class SchoolLicenceTest extends TestCase
         // Le directeur n'accorde pas de licence.
         ['token' => $directorToken] = $this->schoolWithDirector('متوسطة أخرى');
         $this->withToken($directorToken)->postJson("/api/v1/admin/schools/{$school->id}/licence", ['studentSeats' => 50])->assertForbidden();
+    }
+
+    public function test_a_teacher_joining_by_the_link_brings_every_student_even_past_the_seats(): void
+    {
+        ['school' => $school] = $this->schoolWithDirector();
+        $licence = new SchoolLicence(['student_seats' => 1, 'starts_at' => now()->subDay()]);
+        $licence->school_id = $school->id;
+        $licence->save();
+        $teacher = $this->teacher();
+        $classroom = Classroom::factory()->ownedBy($teacher)->create();
+        $this->enrol($classroom, [$this->student(), $this->student(), $this->student()]);
+
+        // Comme le rattachement à la main : on dépasse, on ne refuse ni ne retire personne.
+        $this->withToken($this->tokenOf($teacher))->postJson('/api/v1/teacher/school/join', ['token' => $school->teacher_join_token, 'consent' => true])
+            ->assertOk();
+        $this->assertSame($school->id, $classroom->fresh()->school_id);
+        $this->assertSame(3, $this->app->make(SchoolCapacityService::class)->currentStudentCount($school));
     }
 }

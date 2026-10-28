@@ -13,6 +13,8 @@ const SEEN_ITEMS = ['classes', 'students', 'interventions', 'lastSignIn'];
  * Rejoindre un établissement par son lien (SCHOOL_ADMIN_SPACE.md §7, D4).
  * Ouvrir le lien ne rejoint RIEN : la page dit ce que la direction verra, et
  * le bouton « أوافق وأنضمّ » est le geste — comme le lien d'une classe.
+ * Le geste rattache aussi toutes les classes actives de l'enseignant, avec
+ * leurs élèves qui l'ont accepté (2026-10-28) : la page le dit d'abord.
  */
 export default function TeacherSchoolJoin() {
   const { t } = useTranslation('idara');
@@ -56,6 +58,7 @@ export default function TeacherSchoolJoin() {
 
           {!preview.alreadyMember && !preview.currentSchoolName && (
             <div className="rounded-xl border border-indigo-100 bg-indigo-50/60 p-4 font-inter text-sm text-slate-700" data-school-disclosure>
+              <p className="mb-3 font-semibold text-indigo-900" data-school-join-all-classes>{t('teacher.join.allClasses')}</p>
               <p className="mb-2 flex items-center gap-2 font-semibold text-indigo-900"><Eye size={16} aria-hidden="true" />{t('teacher.join.intro')}</p>
               <ul className="mb-2 list-disc space-y-1 ps-5">
                 {SEEN_ITEMS.map((item) => <li key={item}>{t(`teacher.join.items.${item}`)}</li>)}
