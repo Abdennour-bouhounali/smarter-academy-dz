@@ -147,3 +147,13 @@ The textbook تحدّ is already `quwat-adad-nisbi`'s مسألة الدرس. Rec
       console error, no raw `$`).
 - [ ] `generate:lesson-index`, `npm test`, `check:lessons`, `build`; catalogue (`pointsToLearn` P1, `pointPrerequisites`, `available`,
       `durationMinutes`, `difficulty: 'متوسط'`, `icon: '🧩'`); units challenge if approved; coordinator publishes (guide §11).
+
+## 12. Generator notes (2026-10-28)
+
+Generated INTO the catalogue entry; bank by a template generator, lesson by hand. Changes to the plan:
+- **`durationMinutes` is 30**: `validate:lessons` computes a synthesis as modules 0 + 7 + 8 (6 + 12 + 12 min), problem tracks excluded.
+- **Situations** keep the plan's six ideas but the answers in scientific writing are two numeric steps (`a`, `n`); W1 gets the planned `2¹⁰ ≈ 10³` order-of-magnitude reasoning and gives the total grains « حوالي 1,8 × 10¹⁹ » as data (the sum 2⁶⁴ − 1 is not 3AM); W3 has SIX lines (the plan's list) so the notebook note is 3 / 6; W5 / W6 as planned.
+- **Module 7** data: the plan's table row becomes one sorter item « جدول البادئات » (no raw `^`) and the 350 DA price + « الورشة تذهّب إطارات الصور » are the two useless data; the three decisions are as planned (operation, unit, where the order of magnitude comes from); E3's inverted-quotient distractor is `2,88 × 10⁻³` (the real inverse), not the plan's `2,88 × 10³`.
+- **Bank:** 0 faithful `term_exam` (no paper re-read), 47 `term_exam_modelled`, 3 `adapted` (`integration`, `evaluation`, `ict`); the unit تحدّ card is unchanged (owner question 1).
+- `integration`, `evaluation`, `ict` → modules 8 / 4 / 1 in `build-extraction.py`, `verified: True` after re-reading pdf pp. 52–53 at 110 dpi; the book's misprinted prefix table and « حل مختصر » appear nowhere.
+

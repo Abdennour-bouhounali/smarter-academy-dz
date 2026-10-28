@@ -731,9 +731,10 @@ DEST = {
     **{f'self-{n}': {'lesson': L3, 'module': 8} for n in (12, 14, 19, 20, 21)},
     **{f'self-{n}': {'lesson': L3, 'module': 'practice'} for n in (13, 15, 16, 17, 18)},
     **{f'self-{n}': {'lesson': Q, 'module': 8} for n in range(22, 26)},
-    'integration': {'lesson': SYN, 'module': None},
-    'evaluation': {'lesson': SYN, 'module': None},
-    'ict': {'lesson': SYN, 'module': None},
+    # `wadiya-idmajiya-quwa-nisbiya` (synthèse, 2026-10-28) : l'intégration (feuille d'or) → module 8 (test final ; citée aussi par « هل تعلم » du module 0 et le module 7), la وضعية للتقويم → situation 4, l'ICT → situation 1.
+    'integration': {'lesson': SYN, 'module': 8, 'note': 'redessinée : la feuille d\'or de Nour (288 pm, 0,1 µm) ; et la banque (feuille adaptée « طول جزيء », module practice)'},
+    'evaluation': {'lesson': SYN, 'module': 4, 'note': 'situation 4 « الكريات الحمراء » (autres nombres) ; et la banque (feuille adaptée)'},
+    'ict': {'lesson': SYN, 'module': 1, 'note': 'situation 1 « رقعة القمح » (2ⁿ, rang de grandeur, masse) ; et la banque (feuille adaptée « تضاعف خانات لوحة »)'},
 }
 assert set(DEST['prep']['items']) and sorted(int(x) for k in DEST['prep']['items'] for x in k.split('-')) == list(range(1, 26))
 
@@ -778,9 +779,12 @@ READ_L3 = {'opener', 'act-5', 'know-4', 'know-5', 'method-45a', 'method-45b', 'n
 
 # 2026-10-26 — qawaid-quwa-ashara a RELU à 130–260 dpi les pages 41, 43, 46, 47, 49, 50 : ses éléments sont `verified`.
 READ_L2 = {'act-4', 'know-3', 'method-43c', 'now-43', 'ex-13', 'ex-14', 'ex-15', 'ex-16', 'ex-17', 'ex-18', 'ex-19', 'ex-20', 'ex-50', 'ex-55', 'ex-56', 'self-4', 'self-5', 'self-6', 'self-7', 'self-8', 'self-9', 'self-10'}
+# 2026-10-28 — wadiya-idmajiya-quwa-nisbiya a RELU à 110 dpi les pages 52 et 53 : conforme à la transcription ; les deux erreurs d'impression (tableau des préfixes, « solution brève ») restent notées.
+READ_SYN = {'integration', 'evaluation', 'ict'}
 for e in E:
-    if e['id'] in READ_L2 or e['id'] in READ_L3:
+    if e['id'] in READ_L2 or e['id'] in READ_L3 or e['id'] in READ_SYN:
         e['verified'] = True
+        if e['id'] in READ_SYN: e['reading'] = (e.get('reading', '') + ' Relu par la synthèse (2026-10-28) à 110 dpi (pdf pp. 52–53) : conforme ; réécrit avec d\'autres nombres.').strip()
 
 doc = {
     '_comment': [

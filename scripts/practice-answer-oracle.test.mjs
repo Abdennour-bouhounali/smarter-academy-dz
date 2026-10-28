@@ -154,6 +154,7 @@ import { ORACLE as ORACLE_3AM_WADIYA_HARFIYA, audit as auditWadiyaHarfiya } from
 import { ORACLE as ORACLE_3AM_QUWA_ASHARA, audit as auditQuwaAshara } from './practice-oracle/quwa-adad-ashara.mjs';
 import { ORACLE as ORACLE_3AM_QAWAID_ASHARA, audit as auditQawaidAshara } from './practice-oracle/qawaid-quwa-ashara.mjs';
 import { ORACLE as ORACLE_3AM_KITABA_ILMIYA, audit as auditKitabaIlmiya } from './practice-oracle/kitaba-ilmiya-rutba.mjs';
+import { ORACLE as ORACLE_3AM_WADIYA_QUWA, audit as auditWadiyaQuwa } from './practice-oracle/wadiya-idmajiya-quwa-nisbiya.mjs';
 import { ORACLE as ORACLE_3AM_MUTABAYINAT } from './practice-oracle/mutabayinat-amaliyat.mjs';
 import { ORACLE as ORACLE_3AM_HASR, audit as auditHasr } from './practice-oracle/hasr-adad-ushri.mjs';
 // Toutes les années du cycle moyen (content/practice/<1am…4am>/<leçon>/level-N) : jusqu'au 2026-10-14 seul 4am
@@ -333,6 +334,7 @@ const ORACLE = {
   ...ORACLE_3AM_QUWA_ASHARA,
   ...ORACLE_3AM_QAWAID_ASHARA,
   ...ORACLE_3AM_KITABA_ILMIYA,
+  ...ORACLE_3AM_WADIYA_QUWA,
   ...ORACLE_3AM_MUTABAYINAT,
   ...ORACLE_3AM_HASR,
 };
@@ -438,6 +440,12 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     const own = bank.filter((b) => b.key.startsWith('ex-3am-kitaba-ilmiya-rutba-'));
     expect(own.length).toBeGreaterThan(0);
     expect(auditKitabaIlmiya(own)).toEqual([]);
+  });
+
+  it('أدمج تعلّماتي — القوى ذات أسس نسبية صحيحة (3AM, synthèse) : rationnels exacts BigInt propres à l\'oracle (aucun import de tenPowers.js ni de powers.js), expressions retapées et leurs littéraux relus dans la feuille, « n tel que base^n = valeur » et « 1 ≤ a < 10 » uniques, rang de grandeur demi supérieur, QCM à une seule bonne option (encadrement lu sur les puissances de l\'option), signatures MISC-WQ-* recalculées', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-3am-wadiya-idmajiya-quwa-nisbiya-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditWadiyaQuwa(own)).toEqual([]);
   });
 
   it('حساب قيمة عبارة حرفية (3AM) : évaluateur exact propre (BigInt, polynômes à plusieurs lettres, π), chaque signature = valeur de la mauvaise lecture, chaque « différent » par un témoin et chaque « égal » par l\'égalité des polynômes développés, QCM à une seule bonne option, énoncés relus, MISC-QIMA-*', () => {

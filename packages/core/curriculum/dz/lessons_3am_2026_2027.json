@@ -832,7 +832,7 @@
       "decisionStatus": "draft",
       "titleSource": "textbook",
       "title": "أدمج تعلّماتي — القوى ذات أسس نسبية صحيحة",
-      "description": "",
+      "description": "وضعية إدماجية (رقاقة الذهب: قطر الذرّة وسُمك الرقيقة وعدد الطبقات ورتبة القدر) تُعبّئ قوى العدد 10 وقواعدها والكتابة العلمية ورتبة القدر وقوة عدد نسبي، تسبقها ست وضعيات تدريبية.",
       "prerequisites": [],
       "prerequisiteLessonCodes": [
         "quwa-adad-ashara",
@@ -840,17 +840,37 @@
         "kitaba-ilmiya-rutba",
         "quwat-adad-nisbi"
       ],
-      "pointsToLearn": [],
+      "pointsToLearn": [
+        "توظيف قوى العدد 10 وقواعدها، والكتابة العلمية والحصر ورتبة القدر، وقوة عدد نسبي وأولوية العمليات، لحلّ وضعيات مركّبة من الحياة والعلوم"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "3am_quwa-adad-ashara_P3",
+          "3am_qawaid-quwa-ashara_P4",
+          "3am_kitaba-ilmiya-rutba_P3",
+          "3am_quwat-adad-nisbi_P3",
+          "3am_quwat-adad-nisbi_P4"
+        ]
+      },
       "programmeItems": [],
       "textbookRef": {
         "unit": 3,
         "pages": {
           "integration": [
             52
+          ],
+          "evaluation": [
+            52
+          ],
+          "ict": [
+            53
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 30,
+      "difficulty": "متوسط",
+      "icon": "🧩"
     },
     {
       "code": "tabsit-hadhf-aqwas",

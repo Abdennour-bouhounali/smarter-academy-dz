@@ -2,15 +2,6 @@
   "_comment": "Généré par scripts/learning-net-queue.mjs — ne pas éditer.",
   "queue": [
     {
-      "code": "wadiya-idmajiya-quwa-nisbiya",
-      "grade": "3am",
-      "unit": "quwa-nisbiya",
-      "titleAr": "أدمج تعلّماتي — القوى ذات أسس نسبية صحيحة",
-      "kind": "synthesis",
-      "trigger": "unité quwa-nisbiya complète",
-      "via": []
-    },
-    {
       "code": "wadiya-idmajiya-musawiyat-mutabayinat",
       "grade": "3am",
       "unit": "musawiyat-mutabayinat",
