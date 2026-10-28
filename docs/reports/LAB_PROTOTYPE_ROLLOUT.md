@@ -150,8 +150,7 @@ Tests PHP (si l'API change) : pas de SQLite local — base MySQL jetable `sa_lab
 (puis 2AM et 1AM, déjà tous dans le lot 1) : lots 2 à 5 = 4AM (le lot 5 finit par les premières leçons de 3AM), lot 6 = la fin de 3AM.
 Dans chaque année, l'ordre est celui des dossiers (= des unités). Le script d'état calcule ces lots (`--batch N`).
 
-Une leçon de synthèse (« وضعية إدماجية ») n'a pas de labo : seulement C2–C3. Le prototype (`maqlub-qismat-kasrayn`, lot 5) est fait ; il lui
-reste L1 pour le monde `reverse` (module 2) et le niveau متقدم de `gear-crank` (à traiter avec le lot 5).
+Une leçon de synthèse (« وضعية إدماجية ») n'a pas de labo : seulement C2–C3. Le prototype (`maqlub-qismat-kasrayn`, lot 5) est fait, y compris le monde `reverse` et le niveau متقدم de `gear-crank` (lot 5).
 
 ### Lot 1 — 20 leçons · 117 connaissances · 81 cartes · 20 labos
 
@@ -257,26 +256,26 @@ reste L1 pour le monde `reverse` (module 2) et le niveau متقدم de `gear-cra
 
 | # | Leçon | Année | Labo(s) | Cartes | Connaissances | État |
 |---|---|---|---|---|---|---|
-| 1 | `tanasub-taghayyurat` | 4am | `slope-stairs` | 3 | 5 | ⬜ |
-| 2 | `tarrid-taalufi` | 4am | `plan-compare` | 4 | 5 | ⬜ |
-| 3 | `wadiya-idmajiya-taalufiya` | 4am | `plan-compare` | 1 | 7 | ⬜ |
-| 4 | `mada-wasit-mutawassit` | 4am | `stat-balance` | 4 | 8 | ⬜ |
-| 5 | `majdulat-ihsaiya` | 4am | `sheet-lab` | 4 | 9 | ⬜ |
-| 6 | `qiraat-wadiyat-ihsaiya` | 4am | `group-tanks` | 4 | 7 | ⬜ |
-| 7 | `takrar-mujamma` | 4am | `cumul-gate` | 4 | 6 | ⬜ |
-| 8 | `wadiya-idmajiya-ihsa` | 4am | `stat-balance` | 1 | 5 | ⬜ |
-| 9 | `dala-khattiya` | 4am | `linear-machine` | 3 | 5 | ⬜ |
-| 10 | `tamthil-bayani-khatti` | 4am | `origin-line` | 3 | 5 | ⬜ |
-| 11 | `tanasub-muamil` | 4am | `ratio-ride` | 3 | 6 | ⬜ |
-| 12 | `tarrid-khatti` | 4am | `origin-line` | 3 | 5 | ⬜ |
-| 13 | `tatbiqat-tanasub` | 4am | `percent-tag` | 4 | 9 | ⬜ |
-| 14 | `wadiya-idmajiya-khattiya` | 4am | `origin-line` | 1 | 5 | ⬜ |
-| 15 | `wadiya-idmajiya-ibarat-harfiya-3` | 3am | — (synthèse) | 1 | 3 | ⬜ |
-| 16 | `adad-natiq` | 3am | `number-line-pegs` | 4 | 5 | ⬜ |
-| 17 | `amaliyat-natiqa` | 3am | `merge-board` | 4 | 6 | ⬜ |
-| 18 | `jam-tarh-kasrayn` | 3am | `seed-rake` | 4 | 5 | ⬜ |
+| 1 | `tanasub-taghayyurat` | 4am | `slope-stairs` | 3 | 5 | ✅ |
+| 2 | `tarrid-taalufi` | 4am | `plan-compare` | 4 | 5 | ✅ |
+| 3 | `wadiya-idmajiya-taalufiya` | 4am | `plan-compare` | 1 | 7 | ✅ |
+| 4 | `mada-wasit-mutawassit` | 4am | `stat-balance` | 4 | 8 | ✅ |
+| 5 | `majdulat-ihsaiya` | 4am | `sheet-lab` | 4 | 9 | ✅ |
+| 6 | `qiraat-wadiyat-ihsaiya` | 4am | `group-tanks` | 4 | 7 | ✅ |
+| 7 | `takrar-mujamma` | 4am | `cumul-gate` | 4 | 6 | ✅ |
+| 8 | `wadiya-idmajiya-ihsa` | 4am | `stat-balance` | 1 | 5 | ✅ |
+| 9 | `dala-khattiya` | 4am | `linear-machine` | 3 | 5 | ✅ |
+| 10 | `tamthil-bayani-khatti` | 4am | `origin-line` | 3 | 5 | ✅ |
+| 11 | `tanasub-muamil` | 4am | `ratio-ride` | 3 | 6 | ✅ |
+| 12 | `tarrid-khatti` | 4am | `origin-line` | 3 | 5 | ✅ |
+| 13 | `tatbiqat-tanasub` | 4am | `percent-tag` | 4 | 9 | ✅ |
+| 14 | `wadiya-idmajiya-khattiya` | 4am | `origin-line` | 1 | 5 | ✅ |
+| 15 | `wadiya-idmajiya-ibarat-harfiya-3` | 3am | — (synthèse) | 1 | 3 | ✅ |
+| 16 | `adad-natiq` | 3am | `number-line-pegs` | 4 | 5 | ✅ |
+| 17 | `amaliyat-natiqa` | 3am | `merge-board` | 4 | 6 | ✅ |
+| 18 | `jam-tarh-kasrayn` | 3am | `seed-rake` | 4 | 5 | ✅ |
 | 19 | `maqlub-qismat-kasrayn` | 3am | `gear-crank` | 4 | 6 | ✅ prototype |
-| 20 | `tasawi-muqaranat-kasrayn` | 3am | `shade-match` | 4 | 6 | ⬜ |
+| 20 | `tasawi-muqaranat-kasrayn` | 3am | `shade-match` | 4 | 6 | ✅ |
 
 ### Lot 6 — 12 leçons · 85 connaissances · 45 cartes · 11 labos
 
@@ -324,16 +323,17 @@ Labos enregistrés mais utilisés par aucune leçon : `divisor-explorer`, `thale
 | 2 | 2026-10-28 | 2 | 41/112 (prototype + lots 1 et 2) | 36/98 (+15 labos du lot 2) | lot 2 fait en 1 session par 4 sous-agents en parallèle (A : awwaliyan, bahth-pgcd, ikhtizal-kasr, khawass-qawasim ; B : qasim-adad-tabii, qasim-mushtarak-akbar, tayin-pgcd, qawasim-adad-tabii, wadiya-idmajiya-aadad ; C : hisab-harfi ×4 + hall-jabri ; D : hisab-judhur ×6), chacun sur un Vite privé (ports 5301–5304) et le JSON i18n fusionné sous `flock` (`merge_i18n.py` : aucun conflit). Suite complète 701 fichiers : 3 échecs de charge (timeouts registry / buildLessonMemo / resumePath, verts isolés) + 1 vrai (`lessonGraphs` qasim-adad-tabii : la citation « التعريف كله في الباقي » avait disparu du module, rétablie). `check-non-blocking`, audit des dépendances, `check:katex`, `check:entry-budget` 236,6 Ko : verts. Non vérifié au navigateur : l'interrupteur enseignant (cliqué nulle part), « أعِد التجربة » de pitch/turf/elimination, plein écran et son de turf-factoring / elimination-cards, variante symétrie de DivisorExplorerBooks, niveau débutant de tayin-pgcd, carte du module 3 de muadalat-x-murabba. |
 | 3 | 2026-10-28 | 3 | 61/112 (prototype + lots 1–3) | 54/98 (+18 labos du lot 3 : pair-scoreboard, story-modeller, vanishing-pitch, equation-balance, solution-ray, growth-race, vector-chain, translation-glide, vector-sum, parallelogram-pin, bridge-path, component-calc, shape-prover, midpoint-distance, component-steps, route-compare, shape-turn, rotation-dial) | lot 3 fait en 1 session par 5 sous-agents (A jumal-muadalatayn ×3, B muadalat-mutarajihat ×5, C ashia-insihab ×5, D ashia-maalam ×5, E dawaran ×2), Vite privé 5311–5315, `merge_i18n.py` sous `flock`. Suite complète 701 fichiers / 13 853 tests verts ; `check-non-blocking`, audit des dépendances, `check:entry-budget` 236,6 Ko : verts. Non vérifié au navigateur : interrupteur enseignant « off » (D), cas `negative` de growth-race, niveau avancé de vector-chain, nage de vector-sum/swimmer, pleine largeur des cartes memo hors `maarif`, défi step 5 de pair-scoreboard. Étape C4 (étapes sous le labo réduites à la trace) partielle dans ashia-maalam. |
 | 4 | 2026-10-28 | 4 | 81/112 (prototype + lots 1–4) | 73/98 (+19 labos du lot 4 : polygon-forge, lamp-ring, inscribed-angle, sphere-probe, section-slicer, orange-peel, scale-blocks, bucket-fill, angle-compass, trig-calculator, ramp-ratios, clinometer, parallel-level, segment-divider, shadow-world, cone-cylinder, affine-meter, line-crossing, affine-line) | lot 4 fait en 1 session par 5 sous-agents (A dawaran ×3, B handasa-fada ×5, C hisab-muthallathat ×5, D khassiyat-talis ×4, E dala-taalufiya ×3), Vite privé 5321–5325, `merge_i18n.py` sous `flock`. Suite complète 701 fichiers / 14 042 tests verts ; `check-non-blocking`, audit des dépendances, `check:entry-budget` 236,6 Ko : verts. Nouveaux assistants : `geometry/thalesCp.jsx`, `space/spaceCp.js` (`spread` : place la bonne option à une position stable car `LabCheckpoint` ne mélange pas). Nouvelles props de labo `checkpoints` / `onCheckpoint` (affine, rotation). Non vérifié au navigateur : défi « اختبر ذاكرتك » joué jusqu'au bout (tous groupes), « أعِد التجربة » cliqué dans la carte (A, C, B), interrupteur enseignant « off » sur cone-cylinder et sur 4 labos de B, mode segment-divider ratio / parallel-level crossing (logique seulement), affine-line read/identify, orange-peel et bucket-fill avancés, 768 px. Étape C4 partielle partout (étapes sous le labo pas toutes réduites à la trace). Défaut connu : si l'enseignant coupe les questions, les étapes de module devenues « trace seule » (tarrid-muthallathiya 1–3, wadiya-idmajiya-muthallathat 5–6) ne peuvent plus être validées. Défaut existant non corrigé : `AffineMeter`, x conservé entre les étapes image → antécédent. |
+| 5 | 2026-10-28 | 5 | 101/112 (prototype + lots 1–5) | 87/98 (+14 labos du lot 5 : slope-stairs, plan-compare, stat-balance, sheet-lab, group-tanks, cumul-gate, linear-machine, origin-line, ratio-ride, percent-tag, number-line-pegs, merge-board, seed-rake, shade-match ; + `reverse` et niveau متقدم de gear-crank) | lot 5 fait en 1 session par 5 sous-agents (A dala-taalufiya ×3, B ihsa ×5, C dala-khattiya ×4, D tanasub-muamil + tatbiqat-tanasub + restes du prototype, E 3AM ×5), Vite privé 5331–5335, `merge_i18n.py` sous `flock`. Suite complète 701 fichiers / 14 193 tests verts ; `check-non-blocking`, audit des dépendances, `check:katex`, `check:entry-budget` 236,6 Ko : verts. Non vérifié au navigateur : interrupteur enseignant « off » (sauf A), son coupé (sauf A, C), défi « اختبر ذاكرتك » joué jusqu'au bout, « أعِد التجربة » dans la carte, 768 px (sauf sheet-lab), niveaux avancés de shade-match, mondes `writings`/`signs`/`fewest`/`equal` (E), mode 3 plans de plan-compare, wadiya-idmajiya-taalufiya débutant. Défauts connus : plein écran de slope-stairs plus haut que 768 px ; sheet-lab à 768 px : 3e option de la carte coupée ; étape C4 partielle (ihsa : étapes de module non réduites à la trace ; tarrid-taalufi M1 étapes 3–4) ; le stepper reste visible quand l'enseignant coupe les questions (slope-stairs) ; synthèse ihsa sans `LabStepper` ; `signs` de merge-board ne cite que le préréglage par défaut ; `at()`/`valueQ`/`spread` copiés localement dans plusieurs labos (à factoriser). `data-sb-stage-tab` supprimé (stat-balance utilise `LabStepper`). |
 
 
 ### Prompt de la session suivante (à copier tel quel)
 
 ```
-Déploiement du prototype de labo — LOT 5.
-Lis docs/reports/LAB_PROTOTYPE_ROLLOUT.md (§0 à §6, le lot 5 du §7 et le §10) et rien d'autre en dehors de ce qu'il cite.
-Lance `node apps/web/scripts/lab-rollout-status.mjs --batch 5`, puis traite les leçons du lot dans l'ordre, chacune selon la
+Déploiement du prototype de labo — LOT 6.
+Lis docs/reports/LAB_PROTOTYPE_ROLLOUT.md (§0 à §6, le lot 6 du §7 et le §10) et rien d'autre en dehors de ce qu'il cite.
+Lance `node apps/web/scripts/lab-rollout-status.mjs --batch 6`, puis traite les leçons du lot dans l'ordre, chacune selon la
 procédure du §3 (audit → ce qui marche déjà → mise à jour → tests → navigateur → corrections, jusqu'à 100 %, L1–L9 + colonne « switch »).
-Les lots 1 à 4 ont été faits par sous-agents en parallèle (un groupe par unité, les labos partagés dans le même groupe, Vite privé par agent, `merge_i18n.py` sous `flock`) ; le §10 dit comment éviter ce qui a mal tourné.
+Les lots 1 à 5 ont été faits par sous-agents en parallèle (un groupe par unité, les labos partagés dans le même groupe, Vite privé par agent, `merge_i18n.py` sous `flock`) ; le §10 dit comment éviter ce qui a mal tourné.
 Commit par groupe de ~4 leçons ; en fin de session : contrôles du §3 (les scripts se lancent depuis la RACINE du dépôt),
 push sur dev, mise à jour du §9 et du prompt de la session suivante.
 ```
@@ -378,3 +378,4 @@ push sur dev, mise à jour du §9 et du prompt de la session suivante.
 - **Lot 3** : les événements `checkpoint-done` du labo (`ev.tk`) entrent dans les listes d'essais des modules et plantent `LabEvidence` (`undefined[0]`) → garde `!ev.tk` dans le rappel du module (fait pour hisab-murakkibatay, murakkibata-shuaa, ithbat-khawas-maalam, wadiya-idmajiya-maalam, Metro/TahaddiAnshita).
 - **Lot 3** : un `$…$` interpolé ne doit pas être mis dans un gabarit qui l'entoure déjà de `$…$` (affiche des `$` bruts). Un Vite `watch:null` sert des modules périmés après édition : le relancer. Tuer un Vite par le PID de SON port, jamais par `ps | grep vite`. Le scratchpad est partagé : préfixer ses scripts (`gA_…`).
 - **Lot 4** : les clés de `lesson.manipulation.json` sont de premier niveau (`angleCompass.cp`), pas sous `manipulation.` : fusionner avec `<labo>.cp`. `LabCheckpoint` ne mélange pas les options : varier la place de la bonne (`spread`). Les étapes de module « trace seule » doivent garder un repli quand l'enseignant coupe les questions. Prop `checkpoints={false}` + `onCheckpoint(ev)` sur les labos ; crochets DOM `data-am-step`, `data-lc-step`, `data-al-lab-step`. Le mock de l'interrupteur enseignant doit renvoyer `checkpointsOff` dans la réponse du PATCH `/teacher/labs/`.
+- **Lot 5** : les labos à `stat-balance` n'ont plus d'onglets d'étape (`LabStepper`). Un `memo` de leçon de synthèse ne peut pas contenir de valeurs-solutions (`content.test.js`) : symboles seulement. Pas de « ، » dans un `$…$` (KaTeX, `memoContent`). Vite `watch:null` sert des modules périmés : le relancer entre éditions. Dette : factoriser `at()`/`spread`/`valueQ`/`Cq` en un seul assistant partagé.
