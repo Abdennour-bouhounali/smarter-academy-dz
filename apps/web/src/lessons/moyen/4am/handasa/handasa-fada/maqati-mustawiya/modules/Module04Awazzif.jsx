@@ -51,7 +51,7 @@ export default function Module04Awazzif() {
         { num: 4, title: 'طبقة هرم في الطابعة', done: all('w4'),
           content: <div className="space-y-3"><Block g="w4" requires={['maqta-haram']} done={done} mark={mark} /></div> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

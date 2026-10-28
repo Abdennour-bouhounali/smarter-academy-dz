@@ -37,7 +37,7 @@ export default function Module01Arkhimidis() {
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
 
-  const onTrial = (ev) => { if (ev && (ev.stage === 'peel' || ev.stage === 'pour')) setTrials((s) => [...s, ev].slice(-12)); };
+  const onTrial = (ev) => { if (ev && !ev.tk && (ev.stage === 'peel' || ev.stage === 'pour')) setTrials((s) => [...s, ev].slice(-12)); };
   const peels = trials.filter((t) => t.stage === 'peel');
   const pours = trials.filter((t) => t.stage === 'pour');
 
@@ -169,7 +169,7 @@ export default function Module01Arkhimidis() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

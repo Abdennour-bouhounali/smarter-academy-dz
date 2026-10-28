@@ -11,6 +11,11 @@ import { useManipulation } from '../useManipulation';
 import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { spread } from './spaceCp';
 import MathText from '../../components/MathText';
 import SpaceFigure from '../../components/SpaceFigure';
 import Stage3D, { prefersReducedMotion } from './stage3d/Stage3D';
@@ -87,7 +92,7 @@ const RAIL_DIR = { 'cuboid-face': 'ltr', 'cuboid-edge': 'rtl', 'cylinder-axis': 
 const SOLID_STAGES = { cuboid: ['cuboid-face', 'cuboid-edge'], cylinder: ['cylinder-base', 'cylinder-axis'] };
 
 export default function SectionSlicer(props) {
-  const { numbers: grouped, theme: theme0, title, lead, mission, level, levels: withLevels = true,
+  const { numbers: grouped, theme: theme0, title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true,
     initialMode = 'student', allowModeSwitch = false, onTrial, onFinished } = props;
   const authored = useMemo(() => {
     const out = {};
@@ -105,15 +110,19 @@ export default function SectionSlicer(props) {
   const make = () => L.init(nums);
   const [lab, setLab] = useState(make);
   const sceneKey = `${numKey}|${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); }
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  const [doneIds, setDoneIds] = useState({});
+  // « إعادة » (epoch), un autre niveau ou d'autres nombres : TOUT recommence — les couches, les étapes et les questions du labo
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(make()); setDoneIds({}); }
   const theme = theme0 ?? '3d-printer';
   const sph = lab.cfg.stages.sphere;
   const letter = sph?.letter ?? 'h';
   const foot = sph?.foot ?? 'A';
 
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  const cpSettings = useLabCheckpointSettings('section-slicer');   // obligatoires pour tout élève ; l'enseignant seul les coupe, pour SON compte
+  const cpLive = cpOn && cpSettings.enabled;
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch, cpLive]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!state.isFormal) return;
     const w = L.witness(lab);
@@ -147,6 +156,66 @@ export default function SectionSlicer(props) {
     </div>
   ) : null;
 
+  /* ── les étapes et leurs questions : l'étage réussi (la sphère : le contraste) ouvre sa suite, dans l'ordre ── */
+  const stepList = L.stepsOf(lab).map((st) => ({ ...st, chain: chainOf(st.id) }));
+  const stepDone = stepList.map((st) => !!doneIds[st.id] || (!cpLive && st.reached));
+  const nextStep = cpLive ? stepList.find((st) => !doneIds[st.id]) : null;
+  const cpId = nextStep && nextStep.reached ? nextStep.id : null;
+  const chain = cpId ? nextStep.chain : null;
+  const cp = useLabCheckpoint({
+    id: cpId,
+    questions: chain ? chain.map((q) => QUESTIONS[q]({ lab, step: nextStep, options: discoveryOptions, formal, letter, foot }, k)) : null,
+    reached: !!cpId,
+    resetKey: scene.inits,
+    onRetry: () => setLab((cur) => L.retryStep(cur, cpId)),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => ({ ...d, [id]: true }));
+      if (stepList.find((st) => st.id === id)?.chain.includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  const doneKey = stepDone.join();
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(i)) return;
+      celebrated.current.add(i);
+      party.celebrate({ n: i + 1, total: stepList.length });
+    });
+  }, [doneKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── le son : un déclic quand le plan change de cran (au plus un toutes les 35 ms), « flag » à la couche prédite juste, « over » à la couche
+     refusée, « bell » quand une étape est finie. Muet sauf « الصوت ». ── */
+  const tick = useRef({ key: null, at: 0 });
+  const gestureKey = `${lab.stage}|${lab.pos[lab.stage]}`;
+  useEffect(() => {
+    const p = tick.current;
+    if (p.key === null || p.key.split('|')[0] !== gestureKey.split('|')[0]) { p.key = gestureKey; return; }
+    if (p.key === gestureKey) return;
+    p.key = gestureKey;
+    const now = performance.now();
+    if (now - p.at > 35) { playSfx('tooth'); p.at = now; }
+  }, [gestureKey]);
+  const heard = useRef(0);
+  useEffect(() => {
+    const n = lab.trials.length;
+    if (n < heard.current) heard.current = 0;
+    if (n === 0 || n === heard.current) return;
+    heard.current = n;
+    playSfx(lab.trials[n - 1].ok ? 'flag' : 'over');
+  }, [lab.trials.length]); // eslint-disable-line react-hooks/exhaustive-deps
+  const bells = useRef(0);
+  useEffect(() => {
+    const n = stepDone.filter(Boolean).length;
+    if (n > bells.current) playSfx('bell');
+    bells.current = n;
+  }, [doneKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  const stepper = (
+    <LabStepper count={stepList.length} current={Math.max(0, stepDone.indexOf(false) < 0 ? stepList.length - 1 : stepDone.indexOf(false))} done={stepDone} stepAttr="data-sl-step" />
+  );
+
   const stageMission = k(`missions.${lab.stage}`, { l: letter, foot });
   return (
     <ManipulationShell
@@ -157,13 +226,15 @@ export default function SectionSlicer(props) {
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpLive}
       hints={['1', '2', '3'].map((n) => <MathText key={n}>{k(`hints.${lab.stage === 'sphere' ? 'sphere' : 'solid'}${n}`, { l: letter, foot })}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={sph ? <ManipulationDiscovery state={state} prompt={<MathText>{k('dPrompt', { l: letter })}</MathText>} options={discoveryOptions} formal={formal} /> : null}
       explanation={<MathText>{k('explanation', { l: letter })}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-slate-50 to-white" minHeight="min-h-[150px]">
-        <Slicer key={numKey} lab={lab} setLab={setLab} k={k} theme={theme} solved={ready} formal={state.isFormal} letter={letter} foot={foot} />
+        <Slicer key={numKey} lab={lab} setLab={setLab} k={k} theme={theme} solved={ready} formal={state.isFormal} letter={letter} foot={foot} overlay={<>{party.node}{cp.node}{stepper}</>} />
       </ManipulationStage>
     </ManipulationShell>
   );
@@ -209,7 +280,7 @@ function valueTex(lab, stage, letter, i = lab.pos[stage]) {
   }[stage];
 }
 
-function Slicer({ lab, setLab, k, theme, solved, formal, letter, foot }) {
+function Slicer({ lab, setLab, k, theme, solved, formal, letter, foot, overlay }) {
   const { boxRef, glanceRef, drawnH, width, budget } = useBudget(210, 440);
   const narrow = width < 400;
   const S = budget;
@@ -232,7 +303,8 @@ function Slicer({ lab, setLab, k, theme, solved, formal, letter, foot }) {
   const next = multi && L.isFound(lab, stage) && !lab.pending ? L.nextStage(lab) : null;
 
   return (
-    <div ref={boxRef} className="space-y-2" data-section-slicer data-stage={stage} data-world={theme} data-solved={solved ? 'true' : 'false'}>
+    <div ref={boxRef} className="relative space-y-2" data-section-slicer data-stage={stage} data-world={theme} data-solved={solved ? 'true' : 'false'}>
+      {overlay}
       <div ref={glanceRef} className="space-y-1.5" data-sl-glance>
         {multi && <Tabs lab={lab} setLab={setLab} k={k} narrow={narrow} />}
         <div className="relative overflow-hidden rounded-2xl border border-slate-300 bg-slate-50" style={{ height: S }}>
@@ -865,3 +937,95 @@ function PrinterDeco({ filament, printing, n: count, reduce, onSpool }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de chaque étage : la sphère finit par la RÈGLE ; les solides posent un calcul sur SA couche puis ce qui reste constant ou varie. */
+export function chainOf(id) {
+  return ({
+    sphere: ['sphR2', 'sphEdge', 'rule'],
+    'cuboid-face': ['cfArea', 'cfSame'],
+    'cuboid-edge': ['ceSame', 'ceMN'],
+    'cylinder-base': ['cbR', 'cbSame'],
+    'cylinder-axis': ['caHalf2', 'caLess'],
+    pyramid: ['pySide', 'pyShape'],
+  })[id];
+}
+
+const $ = (x) => `$${x}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const sqf = (p) => linear.mul(L.toFrac(plain(p)), L.toFrac(plain(p)));
+const plain = (p) => (p && typeof p === 'object' && 'q' in p && p.r === 1 ? p.q : p);   // une longueur rationnelle écrite en racine { q, r: 1 }
+const tx = (p) => L.lengthTex(plain(p));
+const ft = (p) => linear.fracText(L.toFrac(plain(p)));
+const choice = (k, id, o, texts, right, hints, explain) => ({
+  id, kind: 'choice', cols: 1, prompt: Cq(k, `${id}.prompt`, o),
+  options: spread(texts.map(([key, why], i) => ({ text: Cq(k, `${id}.${key}`, o), correct: i === right, why: i === right ? undefined : Cq(k, `${id}.${why}`, o) })), id.length),
+  hints: hints.map((h) => Cq(k, `${id}.${h}`, o)), explain: Cq(k, `${id}.${explain}`, o),
+});
+const num = (k, id, o, expected, answer, explain = 'explain') => ({
+  id, kind: 'number', expected, answer: <MathText>{$(answer)}</MathText>,
+  prompt: Cq(k, `${id}.prompt`, o), hints: [Cq(k, `${id}.hint1`, o), Cq(k, `${id}.hint2`, o)], explain: Cq(k, `${id}.${explain}`, o),
+});
+
+/** Chaque question est construite sur LES nombres de la couche de l'élève (rien n'est écrit en dur) ; `k` : les textes de `sectionSlicer`. */
+export const QUESTIONS = {
+  sphR2: ({ lab, step, letter }, k) => {
+    const st = lab.cfg.stages.sphere; const h = step.trial.value;
+    const r2 = linear.sub(sqf(st.R), sqf(h));
+    const o = { l: letter, h: tx(h), R: tx(st.R), R2: tx(sqf(st.R)), h2: tx(sqf(h)), r2: tx(r2) };
+    return num(k, 'sphR2', o, ft(r2), tx(r2));
+  },
+  sphEdge: ({ lab, letter }, k) => {
+    const st = lab.cfg.stages.sphere;
+    const t = lab.trials.find((x) => x.stage === 'sphere' && (x.kind === 'point' || x.kind === 'none'));
+    const kind = t?.kind === 'none' ? 'none' : 'point';
+    const o = { l: letter, h: t ? tx(t.value) : tx(st.R), R: tx(st.R) };
+    return choice(k, `sphEdge.${kind}`.replace('.', '_'), o, [['a'], ['b', 'whyB'], ['c', 'whyC']], 0, ['hint1', 'hint2'], 'explain');
+  },
+  rule: ({ options, formal, letter }, k) => ({
+    id: 'rule', kind: 'choice', prompt: <MathText>{k('dPrompt', { l: letter })}</MathText>, options,
+    hints: [Cq(k, 'rule.hint1', { l: letter }), Cq(k, 'rule.hint2', { l: letter })], explain: formal,
+  }),
+  cfArea: ({ step }, k) => {
+    const [a, b] = step.trial.section.sides;
+    const o = { a: $(tx(a)), b: $(tx(b)), area: tx(step.trial.section.area) };
+    return num(k, 'cfArea', o, ft(step.trial.section.area), tx(step.trial.section.area));
+  },
+  cfSame: ({ step }, k) => {
+    const [a, b] = step.trial.section.sides;
+    return choice(k, 'cfSame', { a: $(tx(a)), b: $(tx(b)) }, [['same'], ['grow', 'whyGrow'], ['shrink', 'whyShrink']], 0, ['hint1', 'hint2'], 'explain');
+  },
+  ceSame: ({ step }, k) => {
+    const s = step.trial.section;
+    const mn2 = linear.add(sqf(s.cm), sqf(s.cn));
+    return choice(k, 'ceSame', { cg: $(tx(s.sides[1])), cm: $(tx(s.cm)), mn2: $(tx(mn2)) }, [['cg'], ['mn', 'whyMn'], ['both', 'whyBoth']], 0, ['hint1', 'hint2'], 'explain');
+  },
+  ceMN: ({ step }, k) => {
+    const s = step.trial.section;
+    const mn2 = linear.add(sqf(s.cm), sqf(s.cn));
+    const o = { cm: $(tx(s.cm)), cn: $(tx(s.cn)), cm2: tx(sqf(s.cm)), cn2: tx(sqf(s.cn)), mn2: tx(mn2) };
+    return num(k, 'ceMN', o, ft(mn2), tx(mn2));
+  },
+  cbR: ({ lab }, k) => {
+    const st = lab.cfg.stages['cylinder-base'];
+    return num(k, 'cbR', { r: $(tx(st.r)) }, ft(st.r), tx(st.r));
+  },
+  cbSame: ({ lab }, k) => choice(k, 'cbSame', { r: $(tx(lab.cfg.stages['cylinder-base'].r)) }, [['same'], ['grow', 'whyGrow'], ['shrink', 'whyShrink']], 0, ['hint1', 'hint2'], 'explain'),
+  caHalf2: ({ lab, step }, k) => {
+    const st = lab.cfg.stages['cylinder-axis']; const d = step.trial.section.d;
+    const res = linear.sub(sqf(st.r), sqf(d));
+    const o = { d: $(tx(d)), r: $(tx(st.r)), r2: tx(sqf(st.r)), d2: tx(sqf(d)), res: tx(res) };
+    return num(k, 'caHalf2', o, ft(res), tx(res));
+  },
+  caLess: ({ lab, step }, k) => {
+    const st = lab.cfg.stages['cylinder-axis'];
+    return choice(k, 'caLess', { d: $(tx(step.trial.section.d)), r: $(tx(st.r)) }, [['less'], ['more', 'whyMore'], ['same', 'whySame']], 0, ['hint1', 'hint2'], 'explain');
+  },
+  pySide: ({ lab, step }, k) => {
+    const st = lab.cfg.stages.pyramid; const s = step.trial.section;
+    const o = { k: $(tx(s.k)), b: $(tx(st.side)), side: tx(s.side) };
+    return num(k, 'pySide', o, ft(s.side), tx(s.side));
+  },
+  pyShape: ({ step }, k) => choice(k, 'pyShape', { k: $(tx(step.trial.section.k)) }, [['square'], ['rect', 'whyRect'], ['tri', 'whyTri']], 0, ['hint1', 'hint2'], 'explain'),
+};

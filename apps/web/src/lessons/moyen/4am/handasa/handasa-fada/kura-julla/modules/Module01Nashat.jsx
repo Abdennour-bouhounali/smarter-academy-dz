@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
+import { ContentModule, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
@@ -34,9 +34,15 @@ export default function Module01Nashat() {
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
-  const [q4, setQ4] = useState(false);
+  const [cps, setCps] = useState([]);
 
-  const onTrial = (ev) => { if (ev && ev.ok && ev.where) setTrials((s) => [...s, ev].slice(-9)); };
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : leurs événements `checkpoint-done` ne sont pas des essais (garde `!ev.tk`)
+  const answered = (id) => cps.some((e) => e.id === id);
+  const onTrial = (ev) => {
+    if (!ev) return;
+    if (ev.tk) { if (ev.tk === 'checkpoint-done') setCps((s) => [...s, ev]); return; }
+    if (ev.ok && ev.where) setTrials((s) => [...s, ev].slice(-9));
+  };
 
   const evidence = (
     <div className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={trials.length ? 'true' : 'false'}>
@@ -95,24 +101,16 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'لماذا قبلت الجلة نقطة رفضتها الكرة؟', subtitle: 'من المسبار', done: q4,
+          num: 1, title: 'لماذا قبلت الجلة نقطة رفضتها الكرة؟', subtitle: 'من المسبار', done: answered('outside'),
           content: (
             <div className="space-y-3">
               {evidence}
-              <TapQuestion
-                prompt={<MathText>{'قبلت الجلة في المسبار نقطة لم تقبلها الكرة. لماذا لا تضمّ الكرة هذه النقطة؟'}</MathText>}
-                options={[
-                  'لأن الكرة سطح أجوف: لا تضمّ إلا النقط التي بعدها عن المركز يساوي نصف القطر',
-                  // l'inégalité renversée : dehors
-                  'لأن هذه النقطة أبعد عن المركز من نصف القطر',
-                  // « dans la boule » pris pour « sur la كرة » (MISC-KURA-JULLA)
-                  'لأن الكرة تضمّ كل ما بداخلها، والنقطة خارجها',
-                ].map(M)}
-                correct={0}
-                cols={1}
-                explain={<MathText>{'نقط الكرة تحقّق $OM = R$ فقط (سطح أجوف)، ونقط الجلة تحقّق $OM \\le R$ . النقطة الداخلية تحقّق $OM < R$ : من الجلة، وليست من الكرة. ' + ACTIVITY_LINES.lab}</MathText>}
-                onAnswered={() => setQ4(true)}
-              />
+              <p data-evidence="why" data-tried={answered('outside') ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${answered('outside') ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {answered('outside')
+                  ? <MathText>{'أجبتَ في المختبر عن أسئلة المواضع الثلاثة. نقط الكرة تحقّق $OM = R$ فقط (سطح أجوف)، ونقط الجلة تحقّق $OM \\le R$ . النقطة الداخلية تحقّق $OM < R$ : من الجلة، وليست من الكرة. ' + ACTIVITY_LINES.lab}</MathText>
+                  : 'احكم على النقط الثلاث (على الكرة، داخل الجلة، خارجها) في المختبر، وأجب عن الأسئلة التي تظهر فوقه بعد كل موضع.'}
+              </p>
             </div>
           ),
         },
@@ -188,7 +186,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

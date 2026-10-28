@@ -2,6 +2,8 @@ import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
+import i18n from '../../../../i18n';
+import * as L from '../logic/orangePeel';
 import OrangePeel from './OrangePeel';
 import ManipulationWorkspace from '../ManipulationWorkspace';
 import { LEVELS } from '../levels';
@@ -60,5 +62,54 @@ describe('orange-peel — rendu', () => {
     expect(ids.length).toBe(6);
     expect(new Set(ids).size).toBe(6);
     expect(html).not.toMatch(RAW);
+  });
+});
+
+const k = (key, o) => i18n.t(`lesson:manipulation.orangePeel.${key}`, o);
+const checkQ = (qid, q) => {
+  const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+  expect(out, qid).not.toMatch(RAW);
+  expect(out, qid).not.toContain('{{');
+  expect(q.hints, qid).toHaveLength(2);
+  if (q.kind === 'choice') { expect(q.options.filter((o) => o.correct), qid).toHaveLength(1); q.options.filter((o) => !o.correct).forEach((o) => expect(o.why, qid).toBeTruthy()); } else expect(q.expected).toBeTruthy();
+};
+
+describe('orange-peel — questions pendant le labo (LabCheckpoint)', () => {
+  it('la peau, le jus, le contraste puis la règle, l’exemple arrondi : des questions sur SON rayon', async () => {
+    const { chainOf, QUESTIONS } = await import('./OrangePeel');
+    let s = L.init({ ...LEVELS['orange-peel'].beginner.numbers, level: 'beginner' });   // R = 3
+    expect(L.stepsOf(s).map((x) => x.id)).toEqual(['peel', 'pour', 'rule']);
+    s = L.peelTo(L.setK(s, 2), 1);          // un refus : le contraste
+    s = L.resetPeel(s);
+    s = L.peelTo(L.setK(s, 4), 1);
+    s = L.pickAreaCard(s, 'skin');
+    expect(L.stepsOf(s).map((x) => x.reached)).toEqual([true, false, false]);
+    for (const qid of chainOf('peel')) checkQ(qid, QUESTIONS[qid]({ lab: s }, k));
+    expect(QUESTIONS.pDisc({ lab: s }, k).expected).toBe('9');
+    expect(QUESTIONS.pSkin({ lab: s }, k).expected).toBe('36');
+    s = L.openPour(s);
+    s = L.pourTo(L.setMark(s, 4), 1);       // 4 douzièmes : trop bas, refusé
+    s = L.resetPour(s);
+    s = L.pourTo(L.setMark(s, 8), 1);
+    s = L.pickVolumeCard(s, 'ball');
+    expect(L.stepsOf(s).map((x) => x.reached)).toEqual([true, true, true]);
+    expect(QUESTIONS.jCyl({ lab: s }, k).expected).toBe('54');
+    for (const id of ['pour', 'rule']) for (const qid of chainOf(id).filter((q) => q !== 'rule')) checkQ(qid, QUESTIONS[qid]({ lab: s }, k));
+    checkQ('rule', QUESTIONS.rule({ options: [{ text: 'a', correct: true }], formal: null }, k));
+    const r = L.retryStep(s, 'pour');
+    expect(L.stepsOf(r)[1].reached).toBe(false);
+    expect(L.stepsOf(L.retryStep(s, 'rule'))[2].reached).toBe(false);
+    for (const qid of chainOf('book')) checkQ(qid, QUESTIONS[qid]({ lab: s }, k));
+  });
+});
+
+describe('orange-peel — mode guidé', () => {
+  it('questions actives : ni la progression ni le bouton d’indice, un stepper ; coupées : ils reviennent', () => {
+    const a = renderToString(<OrangePeel {...LEVELS['orange-peel'].beginner.numbers} level="beginner" />);
+    expect(a).not.toContain('data-manipulation-progress');
+    expect(a).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    expect(a).toContain('data-op-step="0"');
+    const b = renderToString(<OrangePeel {...LEVELS['orange-peel'].beginner.numbers} level="beginner" checkpoints={false} />);
+    expect(b).toContain('data-manipulation-progress');
   });
 });

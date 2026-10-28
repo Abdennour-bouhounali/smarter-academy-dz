@@ -203,6 +203,34 @@ export function claimSection(s) {
   const reason = ok ? task : ({ 'great-circle': 'isGreat', circle: 'isSmall', point: 'tangent', none: 'none' })[sec.kind];
   return push(s, { type: 'section', ok, task, h: s.h, kind: sec.kind, radiusTex: sec.radiusTex, reason }, ok ? { taskIndex: s.taskIndex + 1 } : {});
 }
+/* ── les étapes du labo et leurs questions (lot 4, `primitives/LabCheckpoint`) ───────────────────────────── */
+
+/** Les étapes : مبتدئ = les trois positions (كرة, داخل, خارج) dans l'ordre où l'élève les juge ; متقدم = ses tâches. `trial` : l'essai juste de l'étape. */
+export function stepsOf(s) {
+  if (s.mode === 'classify') {
+    return KINDS.map((id) => {
+      const trial = [...s.trials].reverse().find((t) => t.ok && t.type === 'classify' && t.truth === id) ?? null;
+      return Object.freeze({ id, reached: !!trial, trial });
+    });
+  }
+  return s.tasks.map((id, i) => {
+    const trial = [...s.trials].reverse().find((t) => t.ok && (PLACE_TASKS.includes(id) ? (t.type === 'place' && t.task === id) : id === 'diameter' ? t.type === 'diameter' : t.type === 'section' && t.task === id)) ?? null;
+    return Object.freeze({ id, reached: i < s.taskIndex && !!trial, trial });
+  });
+}
+/** « أعِد التجربة » : remet l'étape `id` au départ (son essai juste est retiré, la tâche redevient la courante). */
+export function retryStep(s, id) {
+  const st = stepsOf(s).find((x) => x.id === id);
+  if (!st || !st.trial) return s;
+  const trials = Object.freeze(s.trials.filter((t) => t !== st.trial).map((t, i) => Object.freeze({ ...t, n: i + 1 })));
+  if (s.mode === 'classify') return Object.freeze({ ...s, trials, last: null });
+  const i = s.tasks.indexOf(id);
+  return Object.freeze({
+    ...s, trials, last: null, taskIndex: i,
+    placed: Object.freeze(s.placed.filter((p) => p.kind !== id)),
+    anchor: id === 'surface' ? null : s.anchor,
+  });
+}
 export const allDone = (s) => s.mode === 'tasks' && s.taskIndex >= (s.tasks?.length ?? 0);
 
 /** Ce que la leçon reçoit à chaque geste jugé (`onTrial`) — jamais une réponse non trouvée. */

@@ -2,6 +2,8 @@ import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
+import i18n from '../../../../i18n';
+import * as L from '../logic/sphereProbe';
 import SphereProbe from './SphereProbe';
 import ManipulationWorkspace from '../ManipulationWorkspace';
 import { LEVELS } from '../levels';
@@ -66,5 +68,68 @@ describe('sphere-probe — rendu', () => {
     expect(ids.length).toBeGreaterThan(3);
     expect(new Set(ids).size).toBe(ids.length);
     expect(html).not.toMatch(RAW);
+  });
+});
+
+const k = (key, o) => i18n.t(`lesson:manipulation.sphereProbe.${key}`, o);
+const checkQ = (qid, q) => {
+  const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+  expect(out, qid).not.toMatch(RAW);
+  expect(out, qid).not.toContain('{{');
+  expect(q.hints, qid).toHaveLength(2);
+  if (q.kind === 'choice') { expect(q.options.filter((o) => o.correct), qid).toHaveLength(1); q.options.filter((o) => !o.correct).forEach((o) => expect(o.why, qid).toBeTruthy()); } else expect(q.expected).toBeTruthy();
+};
+
+describe('sphere-probe — questions pendant le labo (LabCheckpoint)', () => {
+  it('مبتدئ : chaque position jugée juste ouvre sa suite, construite sur SES nombres ; la dernière finit par la règle', async () => {
+    const { chainOf, QUESTIONS } = await import('./SphereProbe');
+    let s = L.init(LEVELS['sphere-probe'].beginner.numbers);
+    expect(L.stepsOf(s).map((x) => x.reached)).toEqual([false, false, false]);
+    s = L.classify(L.moveM(s, [1, 2, 2]), 'surface');
+    s = L.classify(L.moveM(s, [1, 1, 1]), 'inside');
+    s = L.classify(L.moveM(s, [2, 2, 2]), 'outside');
+    const steps = L.stepsOf(s);
+    expect(steps.map((x) => x.reached)).toEqual([true, true, true]);
+    expect(chainOf('outside')).toEqual(['om2', 'cmp', 'ball', 'rule']);
+    for (const st of steps) {
+      for (const qid of chainOf(st.id).filter((q) => q !== 'rule')) checkQ(`${st.id}.${qid}`, QUESTIONS[qid]({ lab: s, step: st }, k));
+    }
+    checkQ('rule', QUESTIONS.rule({ options: [{ text: 'a', correct: true }], formal: null }, k));
+    expect(QUESTIONS.om2({ lab: s, step: steps[1] }, k).expected).toBe('3');
+    expect(QUESTIONS.cmp({ lab: s, step: steps[2] }, k).options[2].correct).toBe(true);   // OM² = 12 > 9
+    const r = L.retryStep(s, 'inside');
+    expect(L.stepsOf(r).map((x) => x.reached)).toEqual([true, false, true]);
+  });
+
+  it('متقدم : le قطر, la دائرة كبرى, la دائرة صغرى ; « أعِد التجربة » remet la tâche', async () => {
+    const { chainOf, QUESTIONS } = await import('./SphereProbe');
+    let s = L.init(LEVELS['sphere-probe'].advanced.numbers);
+    s = L.place(L.moveM(s, [0, 0, 4]));
+    s = L.place(L.moveM(s, [1, 1, 1]));
+    s = L.place(L.moveM(s, [4, 4, 4]));
+    expect(L.stepsOf(s).map((x) => x.reached)).toEqual([true, true, true, false, false, false]);
+    s = L.openCircles(s);
+    s = L.claimDiameter(L.movePrime(s, [0, 0, -4]));
+    s = L.claimSection(L.setPlane(s, 0));
+    s = L.claimSection(L.setPlane(s, 2));
+    const steps = L.stepsOf(s);
+    expect(steps.every((x) => x.reached)).toBe(true);
+    for (const st of steps.slice(3)) for (const qid of chainOf(st.id)) checkQ(`${st.id}.${qid}`, QUESTIONS[qid]({ lab: s, step: st }, k));
+    expect(QUESTIONS.diamLen({ lab: s, step: steps[3] }, k).expected).toBe('8');
+    expect(QUESTIONS.scRadius2({ lab: s, step: steps[5] }, k).expected).toBe('12');
+    const r = L.retryStep(s, 'diameter');
+    expect(r.taskIndex).toBe(3);
+    expect(L.stepsOf(r).slice(3).map((x) => x.reached)).toEqual([false, false, false]);
+  });
+});
+
+describe('sphere-probe — mode guidé', () => {
+  it('questions actives : ni la progression ni le bouton d’indice, un stepper ; coupées : ils reviennent', () => {
+    const a = renderToString(<SphereProbe {...LEVELS['sphere-probe'].beginner.numbers} level="beginner" />);
+    expect(a).not.toContain('data-manipulation-progress');
+    expect(a).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    expect(a).toContain('data-sp-step="0"');
+    const b = renderToString(<SphereProbe {...LEVELS['sphere-probe'].beginner.numbers} level="beginner" checkpoints={false} />);
+    expect(b).toContain('data-manipulation-progress');
   });
 });

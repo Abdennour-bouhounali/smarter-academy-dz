@@ -52,7 +52,7 @@ export default function Module04Awazzif() {
         { num: 5, title: 'ميدالية مطبوعة', done: !!done['aw-5'],
           content: <TextbookExercise exercise={ex('aw-5')} requires={['tariqat-maqadir']} onAnswered={mark('aw-5')} /> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

@@ -7,6 +7,11 @@ import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
 import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { spread } from './spaceCp';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
 import MathText from '../../components/MathText';
@@ -328,7 +333,7 @@ function Slider({ value, min, max, step, big, onChange, onRelease, label, valueT
 }
 
 export default function OrangePeel({
-  R: R0, example: ex0, rounding: rd0, numbers: nums, theme = 'boufarik-orange', title, lead, mission, level, levels: withLevels = true,
+  R: R0, example: ex0, rounding: rd0, numbers: nums, theme = 'boufarik-orange', title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -343,14 +348,18 @@ export default function OrangePeel({
   const make = () => L.init({ R: state.numbers.R, level: lv, example: state.numbers.example ?? '1,4', rounding: state.numbers.rounding ?? [2, 3] });
   const [lab, setLab] = useState(make);
   const sceneKey = `${state.numbers.R}|${lv}|${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); }
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  const [doneIds, setDoneIds] = useState({});
+  // « إعادة » (epoch), un autre niveau ou d'autres nombres : TOUT recommence — l'orange, les étapes et les questions du labo
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(make()); setDoneIds({}); }
   const reduce = useReducedMotion();
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
   const rg = L.rangeFor(lv);
 
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  const cpSettings = useLabCheckpointSettings('orange-peel');   // obligatoires pour tout élève ; l'enseignant seul les coupe, pour SON compte
+  const cpLive = cpOn && cpSettings.enabled;
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch, cpLive]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!state.isFormal) return;
     state.report(onFinished, { R: L.rText(lab.rt), area: L.piTex(L.skin(lab.rt).k), volume: L.piTex(L.juice(lab.rt).k) });
@@ -513,6 +522,63 @@ export default function OrangePeel({
     </div>
   );
 
+  /* ── les étapes et leurs questions : la peau, le jus, le contraste (puis la règle), l'exemple arrondi ── */
+  const stepList = L.stepsOf(lab).map((st) => ({ ...st, chain: chainOf(st.id) }));
+  const stepDone = stepList.map((st) => !!doneIds[st.id] || (!cpLive && st.reached));
+  const nextStep = cpLive ? stepList.find((st) => !doneIds[st.id]) : null;
+  const cpId = nextStep && nextStep.reached ? nextStep.id : null;
+  const chain = cpId ? nextStep.chain : null;
+  const cp = useLabCheckpoint({
+    id: cpId,
+    questions: chain ? chain.map((q) => QUESTIONS[q]({ lab, options: discoveryOptions, formal }, k)) : null,
+    reached: !!cpId,
+    resetKey: scene.inits,
+    onRetry: () => setLab((cur) => L.retryStep(cur, cpId)),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => ({ ...d, [id]: true }));
+      if (stepList.find((st) => st.id === id)?.chain.includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  const doneKey = stepDone.join();
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(i)) return;
+      celebrated.current.add(i);
+      party.celebrate({ n: i + 1, total: stepList.length });
+    });
+  }, [doneKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── le son : un déclic quand R, la prédiction, la peau, la marque ou le jus changent (au plus un toutes les 35 ms), « flag » au geste jugé
+     juste, « over » au geste refusé, « bell » quand une étape est finie. Muet sauf « الصوت ». ── */
+  const tick = useRef({ key: null, at: 0 });
+  const gestureKey = `${lab.rt}|${lab.k}|${Math.round(lab.p * 24)}|${Math.round(lab.q * 24)}|${lab.m}`;
+  useEffect(() => {
+    const p = tick.current;
+    if (p.key === null) { p.key = gestureKey; return; }
+    if (p.key === gestureKey) return;
+    p.key = gestureKey;
+    const now = performance.now();
+    if (now - p.at > 35) { playSfx('tooth'); p.at = now; }
+  }, [gestureKey]);
+  const heard = useRef(0);
+  useEffect(() => {
+    const n = lab.trials.length;
+    if (n < heard.current) heard.current = 0;
+    if (n === 0 || n === heard.current) return;
+    heard.current = n;
+    playSfx(lab.trials[n - 1].ok ? 'flag' : 'over');
+  }, [lab.trials.length]); // eslint-disable-line react-hooks/exhaustive-deps
+  const bells = useRef(0);
+  useEffect(() => {
+    const n = stepDone.filter(Boolean).length;
+    if (n > bells.current) playSfx('bell');
+    bells.current = n;
+  }, [doneKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
   /* ── les commandes ── */
   const btn = `inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-1 rounded-xl border-2 ${narrow ? 'px-2 text-xs' : 'px-3 text-sm'} font-bold focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300 disabled:opacity-40`;
   const card = (id, ok, picked) => `min-h-[44px] rounded-xl border-2 px-1 py-1 text-center ${narrow ? 'text-xs' : 'text-sm'} font-bold [&_.katex]:whitespace-nowrap focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300 ${picked ? (ok ? 'border-emerald-500 bg-emerald-50 text-emerald-900' : 'border-rose-400 bg-rose-50 text-rose-900') : 'border-orange-200 bg-white text-slate-800 hover:border-orange-400'}`;
@@ -640,13 +706,18 @@ export default function OrangePeel({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpLive}
       hints={['hint1', 'hint2', 'hint3'].map((hk) => <MathText key={hk}>{k(hk)}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={k('dPrompt')} options={discoveryOptions} formal={formal} />}
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-orange-50 to-amber-100/70" minHeight="min-h-[180px]">
-        <div ref={boxRef} className="space-y-2" data-orange-peel data-world={theme} data-phase={phase} data-level={lv} data-r={L.rText(lab.rt)} data-op-rt={lab.rt}>
+        <div ref={boxRef} className="relative space-y-2" data-orange-peel data-world={theme} data-phase={phase} data-level={lv} data-r={L.rText(lab.rt)} data-op-rt={lab.rt}>
+          {party.node}
+          {cp.node}
+          <LabStepper count={stepList.length} current={Math.max(0, stepDone.indexOf(false) < 0 ? stepList.length - 1 : stepDone.indexOf(false))} done={stepDone} stepAttr="data-op-step" />
           <div ref={glanceRef} className="space-y-1.5" data-op-glance>
             <div className="relative overflow-hidden rounded-2xl" style={{ height: stageH }}>
               <Kitchen uid={uid} reduce={reduce} narrow={narrow} />
@@ -750,3 +821,60 @@ function Kitchen({ uid, reduce, narrow }) {
       </button>
   </>;
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de chaque étape : la peau (disque · aire), le jus (verre · rapport), le contraste (nombre de disques · unités · règle), l'exemple arrondi. */
+export function chainOf(id) {
+  return ({ peel: ['pDisc', 'pSkin'], pour: ['jCyl', 'jRatio'], rule: ['same', 'unit', 'rule'], book: ['bookMm2', 'bookMm3'] })[id];
+}
+
+const $ = (x) => `$${x}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const nums = (lab) => {
+  const r = L.R(lab.rt);
+  return { R: $(L.rTex(lab.rt)), disc: L.disc(lab.rt).k, skin: L.skin(lab.rt).k, cyl: L.glass(lab.rt).volume.k, ball: L.juice(lab.rt).k, r };
+};
+const num = (k, id, o, expected, answer) => ({
+  id, kind: 'number', expected, answer: <MathText>{$(answer)}</MathText>,
+  prompt: Cq(k, `${id}.prompt`, o), hints: [Cq(k, `${id}.hint1`, o), Cq(k, `${id}.hint2`, o)], explain: Cq(k, `${id}.explain`, o),
+});
+const choice = (k, id, o, texts, hints = ['hint1', 'hint2'], seed = id.length) => ({
+  id, kind: 'choice', cols: 1, prompt: Cq(k, `${id}.prompt`, o),
+  options: spread(texts.map(([key, why], i) => ({ text: Cq(k, `${id}.${key}`, o), correct: i === 0, why: i === 0 ? undefined : Cq(k, `${id}.${why}`, o) })), seed),
+  hints: hints.map((h) => Cq(k, `${id}.${h}`, o)), explain: Cq(k, `${id}.explain`, o),
+});
+
+/** Chaque question est construite sur LE rayon de l'élève (rien n'est écrit en dur) ; `k` : les textes de `orangePeel`. */
+export const QUESTIONS = {
+  pDisc: ({ lab }, k) => {
+    const n = nums(lab);
+    return num(k, 'pDisc', { R: n.R }, L.answerText(n.disc), L.fracTex(n.disc));
+  },
+  pSkin: ({ lab }, k) => {
+    const n = nums(lab);
+    return num(k, 'pSkin', { R: n.R, d: $(`${L.fracTex(n.disc)}\\pi`), a: L.fracTex(n.skin) }, L.answerText(n.skin), L.fracTex(n.skin));
+  },
+  jCyl: ({ lab }, k) => {
+    const n = nums(lab);
+    return num(k, 'jCyl', { R: n.R, d: $(`${L.fracTex(n.disc)}\\pi`), h: $(L.rTex(lab.rt * 2)), v: L.fracTex(n.cyl) }, L.answerText(n.cyl), L.fracTex(n.cyl));
+  },
+  jRatio: ({ lab }, k) => {
+    const n = nums(lab);
+    return choice(k, 'jRatio', { R: n.R, cyl: $(`${L.fracTex(n.cyl)}\\pi`), ball: $(L.piTex(n.ball)) }, [['two', ''], ['half', 'whyHalf'], ['quarter', 'whyQuarter']]);
+  },
+  same: ({ lab }, k) => {
+    const n = nums(lab);
+    return choice(k, 'same', { R: n.R }, [['four', ''], ['grows', 'whyGrows'], ['shrinks', 'whyShrinks']]);
+  },
+  unit: ({ lab }, k) => {
+    const n = nums(lab);
+    return choice(k, 'unit', { R: n.R, a: $(L.piTex(n.skin)), v: $(L.piTex(n.ball)) }, [['no', ''], ['yes', 'whyYes'], ['coincide', 'whyCoincide']]);
+  },
+  rule: ({ options, formal }, k) => ({
+    id: 'rule', kind: 'choice', prompt: <MathText>{k('dPrompt')}</MathText>, options,
+    hints: [Cq(k, 'rule.hint1'), Cq(k, 'rule.hint2')], explain: formal,
+  }),
+  bookMm2: (ctx, k) => num(k, 'bookMm2', {}, '100', '100'),
+  bookMm3: (ctx, k) => num(k, 'bookMm3', {}, '1000', '1000'),
+};

@@ -40,7 +40,7 @@ export default function Module01Nashat() {
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
 
-  const onTrial = (ev) => { if (ev) setTrials((s) => [...s, ev].slice(-8)); };
+  const onTrial = (ev) => { if (ev && !ev.tk) setTrials((s) => [...s, ev].slice(-8)); };
 
   // les bâtis du cube (مبتدئ : dims égales) et ceux du pavé du نشاط 6 (متقدم)
   const isCube = (t) => Array.isArray(t.dims) && t.dims.every((d) => d === t.dims[0]);
@@ -213,7 +213,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

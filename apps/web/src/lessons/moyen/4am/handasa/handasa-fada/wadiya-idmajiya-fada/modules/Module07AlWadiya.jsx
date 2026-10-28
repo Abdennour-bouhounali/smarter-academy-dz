@@ -79,7 +79,14 @@ export default function Module07AlWadiya() {
   const [trials, setTrials] = useState([]);
   const [q, setQ] = useState({});
   const mark = (n) => () => setQ((s) => ({ ...s, [n]: true }));
-  const keep = (e) => setTrials((list) => [...list, e]);
+  const [cps, setCps] = useState([]);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : leurs événements ne sont pas des essais ; `checkpoint-done` garde la trace d'une étape faite
+  const keep = (e) => {
+    if (!e) return;
+    if (e.tk) { if (e.tk === 'checkpoint-done') setCps((list) => [...list, e]); return; }
+    setTrials((list) => [...list, e]);
+  };
+  const answered = (id) => cps.some((e) => e.id === id);
 
   return (
     <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="الوضعية وتحليلها" moduleSubtitle="دلو على شكل مخروط مبتور فيه ماء: كم لترا من الماء فيه؟" estimatedTime="22 دقيقة"
@@ -137,29 +144,28 @@ export default function Module07AlWadiya() {
               <BackLink lesson="maqati-mustawiya" what="مقطع مخروط بمستو مواز لقاعدته" />
             </div>
           ) },
-        { num: 3, title: 'نكمل المخروط: أين رأسه؟', subtitle: 'نمدّد الجدارين حتى يلتقيا', done: !!q[3],
+        { num: 3, title: 'نكمل المخروط: أين رأسه؟', subtitle: 'نمدّد الجدارين حتى يلتقيا', done: answered('apex'),
           content: (
             <div className="space-y-3">
               <Evidence id="dalw" trials={trials} title="محاولاتك في المختبر:"
-                empty="لم تجرّب بعد: في المختبر ضع الماء في مستوى الشكل واضغط «ثبّت»، ثم افتح «أكمل المخروط» وأنزل الرأس S." />
-              <NumericQuestion
-                prompt={<MathText>{'جدارا الدلو الممدّدان يلتقيان على المحور في الرأس S. المسافة $SO$ بين الرأس ومركز القاع (بالسنتيمتر):'}</MathText>}
-                expected={105} display="105" requires={['talis']}
-                explain={<MathText>{REMARKS.takmil}</MathText>}
-                onAnswered={mark(3)} />
-              {q[3] && <GeoFigure {...AXIAL} />}
+                empty="لم تجرّب بعد: في المختبر ضع الماء في مستوى الشكل واضغط «ثبّت»، ثم افتح «أكمل المخروط» وأنزل الرأس S، وأجب عن الأسئلة التي تظهر فوق المختبر." />
+              {answered('apex') && (
+                <>
+                  <p className="rounded-xl border-2 border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900" data-evidence="apex"><MathText>{REMARKS.takmil}</MathText></p>
+                  <GeoFigure {...AXIAL} />
+                </>
+              )}
               <BackLink lesson="talis-hisab-atwal" what="خاصية طالس" />
             </div>
           ) },
-        { num: 4, title: 'نصف قطر سطح الماء', subtitle: 'ماذا نعرف عن الجدار وعن سطح الماء؟', done: !!q[4],
+        { num: 4, title: 'نصف قطر سطح الماء', subtitle: 'ماذا نعرف عن الجدار وعن سطح الماء؟', done: answered('level'),
           content: (
             <div className="space-y-3">
-              <NumericQuestion
-                prompt={<MathText>{'نصف قطر سطح الماء $WM$ (بالسنتيمتر):'}</MathText>}
-                expected={19} display="19" requires={['talis']}
-                explain={<MathText>{REMARKS.talisRho}</MathText>}
-                onAnswered={mark(4)} />
-              {q[4] && (
+              <p data-evidence="rho" data-tried={answered('level') ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${answered('level') ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {answered('level') ? <MathText>{REMARKS.talisRho}</MathText> : 'ثبّت مستوى الماء في المختبر وأجب عن أسئلته: نصف قطر سطح الماء يظهر هناك.'}
+              </p>
+              {answered('level') && (
                 <>
                   <p className="text-xs text-slate-600" data-misconception-note="avg"><MathText>{`خطأ شائع: ${REMARKS.avgWrong} ${REMARKS.avgWhy}`}</MathText></p>
                   {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la phase « أكمل المخروط » du lab (bucket-fill, hint2) fait compléter le cône, Thalès est l’unité 9, et les explications des étapes 3–4 (REMARKS.takmil, talisRho) viennent de le dire. */}
@@ -168,15 +174,13 @@ export default function Module07AlWadiya() {
               )}
             </div>
           ) },
-        { num: 5, title: 'علاقة المخروطين', subtitle: 'ما العلاقة بين المخروط الصغير والمخروط الكبير؟', done: !!q[5],
+        { num: 5, title: 'علاقة المخروطين', subtitle: 'ما العلاقة بين المخروط الصغير والمخروط الكبير؟', done: answered('apex'),
           content: (
             <div className="space-y-3">
-              <TapQuestion
-                prompt={<MathText>{'المخروط الصغير (من S إلى القاع) والمخروط الكبير (من S إلى سطح الماء) لهما نفس الرأس ونفس المحور. إذا كان الصغير تصغيرا للكبير فنسبة التصغير $k$ هي:'}</MathText>}
-                options={['$\\dfrac{19}{15}$', '$\\dfrac{15}{19}$', '$\\dfrac{28}{35}$', '$\\dfrac{15}{20}$'].map(M)}
-                correct={1} cols={4} requires={['takbir-k3', 'mukhrut-mukammal']}
-                explain={<MathText>{`${REMARKS.k} $\\dfrac{19}{15} > 1$ تكبير لا تصغير، و $\\dfrac{28}{35}$ نسبة عمق الماء إلى ارتفاع الدلو، و $\\dfrac{15}{20}$ نسبة المخروط الصغير إلى المخروط الذي قاعدته الحافة لا سطح الماء.`}</MathText>}
-                onAnswered={mark(5)} />
+              <p data-evidence="k" data-tried={answered('apex') ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${answered('apex') ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {answered('apex') ? <MathText>{REMARKS.k}</MathText> : 'أجب في المختبر عن أسئلة الرأس S: نسبة تصغير المخروط الصغير تظهر هناك.'}
+              </p>
               <BackLink lesson="takbir-tasghir" what="التكبير والتصغير" />
             </div>
           ) },
@@ -238,6 +242,6 @@ export default function Module07AlWadiya() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={7} />} />
+      footer={<KnowledgeSnapshot moduleNumber={7} variant="memo" />} />
   );
 }
