@@ -13,6 +13,10 @@ import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
 import MathText from '../../components/MathText';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import * as L from '../logic/groupTanks';
 
 /**
@@ -67,6 +71,11 @@ import * as L from '../logic/groupTanks';
  * `LabFold` SOUS le bloc mesuré `[data-gt-glance]`. Deux classes = deux colonnes côte à côte, même à
  * 320 px (≈ 130 px chacune).
  *
+ * QUESTIONS PENDANT LE LABO (2026-10-28, lot 5 ; `primitives/LabCheckpoint`) : `checkpoints` (défaut true). DEUX étapes (`LabStepper`) :
+ *   1. la 1re vanne ouverte → `CHAINS.s1` (l'eau totale Σ n·m · l'effectif N · comment le niveau se calcule) — bâties sur les effectifs du ESSAI ;
+ *   2. `discoveryReady` (un effectif changé / chaque classe versée) → `CHAINS.s2` : une seule classe `move` puis `rule` ; deux classes `cmp` puis `rule`.
+ *      La dernière question est la règle : elle remplace la découverte, qui formalise. Les événements `{ tk: 'checkpoint' | 'checkpoint-done', … }` partent
+ *      vers `onCheckpoint` (jamais `onTrial`). OBLIGATOIRES pour tout élève ; l'ENSEIGNANT les coupe pour SON compte (interrupteur en en-tête).
  * Props : `groups` (« n:m|… », virgule décimale), `classes` (« 2|2 » : groupes par classe ; absent = une
  * classe), `theme`, `title`, `lead`, `mission`, `level`, `levels`, `onTrial(evidence)` à chaque vanne
  * ouverte ou effectif changé, `onFinished({ groups, classes })` à la règle — tous par `state.report`.
@@ -79,7 +88,7 @@ import * as L from '../logic/groupTanks';
  */
 export default function GroupTanks({
   groups: groups0 = '4:12|6:7', classes: classes0, theme, title, lead, mission, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished, checkpoints: cpOn = true, onCheckpoint,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.groupTanks.${key}`, o), [t]);
@@ -91,7 +100,9 @@ export default function GroupTanks({
   const sceneKey = `${groups}|${classes ?? ''}|${state.epoch}`;
   const [scene, setScene] = useState(sceneKey);
   const [sel, setSel] = useState(0);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setSel(0); }
+  const [inits, setInits] = useState(0);
+  const [done1, setDone1] = useState(false);
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setSel(0); setInits((n) => n + 1); setDone1(false); }
 
   const many = lab.classes.length > 1;
   const world = theme ?? (many ? 'school' : 'quiz');
@@ -100,8 +111,32 @@ export default function GroupTanks({
   const gName = (gi) => W.groups?.[gi] ?? k('groupFallback', { n: gi + 1 });
   const cName = (ci) => (many ? W.classes?.[ci] : W.classes?.[0]) ?? k('classFallback', { n: ci + 1 });
 
-  const ready = L.discoveryReady(lab);
+  // les questions pendant le labo : obligatoires pour tout élève, l'enseignant seul les coupe pour SON compte
+  const cpSettings = useLabCheckpointSettings('group-tanks');
+  const cpActive = cpOn && cpSettings.enabled;
+  const stage = lab.trials.length === 0 || !done1 ? 's1' : 's2';
+  const cpReached = stage === 's1' ? lab.trials.length > 0 : L.discoveryReady(lab);
+  const solved = L.discoveryReady(lab);
+  const cp = useLabCheckpoint({
+    id: cpActive ? stage : null,
+    questions: cpActive && cpReached ? (many ? CHAINS.many : CHAINS.one)[stage].map((q) => QUESTIONS[q](lab, k, { gName, cName, many })) : null,
+    reached: cpReached,
+    resetKey: inits,
+    // « أعِد التجربة » : l'étape recommence (s1 : tout est remis ; s2 : les effectifs reviennent au départ, ou les classes sont remises)
+    onRetry: () => { setSel(0); setLab((x) => (stage === 's1' || many ? make() : { ...x, groups: x.groups.map((g) => ({ ...g, n: g.n0 })), sizeTrials: [], last: null })); },
+    onEvent: (ev) => state.report(onCheckpoint, ev),
+    onDone: (id) => { if (id === 's1') setDone1(true); else { state.discover(); state.formalize(); } },
+  });
+  const ready = solved && !cpActive;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // les sons : un cran de pari / d'effectif = un pas ; l'eau qui arrive = juste (flag) ou refusée (over)
+  useEffect(() => {
+    const l = lab.last;
+    if (!l) return;
+    if (l.kind === 'bet' || l.kind === 'size') playSfx('tooth', { pitch: l.kind === 'bet' ? 1 : 0.85 });
+    else if (l.kind === 'opened') playSfx(lab.trials.at(-1)?.ok ? 'flag' : 'over');
+  }, [lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, { groups, classes }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
   const nEvents = lab.trials.length + lab.sizeTrials.length;
   useEffect(() => { if (nEvents > 0) state.report(onTrial, L.evidenceOf(lab)); }, [nEvents]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -210,43 +245,9 @@ export default function GroupTanks({
   })();
 
   /* ── la découverte : des distracteurs réfutés par l'eau de l'élève ── */
-  const discoveryOptions = useMemo(() => {
-    if (!many) {
-      const gs = lab.groups;
-      const big = gs.reduce((a, g) => (g.n0 > a.n0 ? g : a), gs[0]);
-      const lv0 = L.levelOf(gs.map((g) => ({ n: g.n0, m: g.m })));
-      const lvTex = L.decTex(lv0).length < 8 && LIN.fracDecimal(lv0, 3) != null ? L.decTex(lv0) : `${ST.approx(lv0, 2).replace(',', '{,}')}`;
-      const mm = L.decTex(L.meanOfMeansOf(gs));
-      return [
-        { text: <MathText>{k('dOptMm', { mm })}</MathText>, why: <MathText>{k('dWhyMm', { level: lvTex, mm })}</MathText> },
-        { text: k('dOptRightOne'), correct: true },
-        { text: k('dOptBig'), why: <MathText>{k('dWhyBig', { level: lvTex, big: L.decTex(big.m) })}</MathText> },
-      ];
-    }
-    const lvTex = L.levelTex(lab, 0);
-    if (L.sameLevels(lab)) {
-      return [
-        { text: k('dOptA'), why: <MathText>{k('dWhyA', { level: lvTex })}</MathText> },
-        { text: <MathText>{k('dOptRightMany', { level: lvTex })}</MathText>, correct: true },
-        { text: k('dOptB'), why: <MathText>{k('dWhyB', { sum: L.decTex(L.water(lab, 0)), N: L.count(lab, 0) })}</MathText> },
-        { text: k('dOptMmMany'), why: <MathText>{k('dWhyMmMany', { mmA: L.decTex(L.meanOfMeans(lab, 0)), mmB: L.decTex(L.meanOfMeans(lab, 1)), level: lvTex })}</MathText> },
-      ];
-    }
-    const best = lab.classes.reduce((a, c) => (LIN.cmp(L.level(lab, c.id), L.level(lab, a)) > 0 ? c.id : a), 0);
-    return [
-      { text: <MathText>{k('dOptRightManyDiff', { best: cName(best), level: L.levelTex(lab, best) })}</MathText>, correct: true },
-      { text: k('dOptMmMany'), why: k('dWhyRightDiff') },
-    ];
-  }, [lab, k]); // eslint-disable-line react-hooks/exhaustive-deps
+  const discoveryOptions = useMemo(() => discoveryOptionsOf(lab, k, many, cName), [lab, k]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const formal = (
-    <div className="space-y-2" data-gt-formal>
-      {lab.classes.map((c) => (
-        <EquationDisplay key={c.id} tone="result" tex={`m = ${L.formulaTex(lab, c.id)}`} note={many ? cName(c.id) : undefined} />
-      ))}
-      <p className="text-sm text-emerald-900"><MathText>{k(many ? 'fRuleMany' : 'fRuleOne')}</MathText></p>
-    </div>
-  );
+  const formal = <Formal lab={lab} k={k} many={many} cName={cName} />;
 
   const missionText = mission ?? k(many ? 'missionMany' : 'missionOne', {
     groups: lab.groups.map((g) => k('groupLine', { name: gName(g.id), n: g.n0, m: L.dec(g.m) })).join('، '),
@@ -271,6 +272,20 @@ export default function GroupTanks({
     </div>
   );
 
+  // deux étapes lisibles : chacune est FAITE quand ses questions sont répondues ; on fête chacune une fois (réarmées après « إعادة »)
+  const stepDone = [cpActive ? done1 : lab.trials.length > 0, cpActive ? done1 && cp.done : solved];
+  const stepper = <LabStepper count={2} current={stepDone[0] ? 1 : 0} done={stepDone} stepAttr="data-gt-step" />;
+  const party = useStepCelebration();
+  const celebrated = useRef({ inits, set: new Set() });
+  if (celebrated.current.inits !== inits) celebrated.current = { inits, set: new Set() };
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.set.has(i)) return;
+      celebrated.current.set.add(i);
+      party.celebrate({ n: i + 1, total: 2 });
+    });
+  }, [stepDone[0], stepDone[1]]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const bothOpen = many && lab.classes.every((c) => c.opened);
   const same = bothOpen && L.sameLevels(lab);
 
@@ -283,6 +298,8 @@ export default function GroupTanks({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={cpActive}
       hints={(many ? ['hint1Many', 'hint2Many', 'hint3Many'] : ['hint1One', 'hint2One', 'hint3One']).map((h) => <MathText key={h}>{k(h)}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false, autoComplete }}
       discovery={(
@@ -298,8 +315,12 @@ export default function GroupTanks({
       <ManipulationStage className="bg-gradient-to-b from-sky-50/70 to-white">
         <div ref={boxRef} className="space-y-2" data-group-tanks data-classes={lab.classes.length} data-world={world}
           data-step={lab.classes.every((c) => c.opened) ? 'opened' : lab.classes.some((c) => c.bet != null) ? 'bet' : 'start'}
-          data-solved={ready ? 'true' : 'false'} data-tank-h={tankH} data-layout={narrow ? 'narrow' : 'wide'}>
+          data-solved={solved ? 'true' : 'false'} data-tank-h={tankH} data-layout={narrow ? 'narrow' : 'wide'}>
+          <div className="relative">
+          {party.node}
+          {cp.node}
           <div ref={glanceRef} className="space-y-2" data-gt-glance>
+            {stepper}
             <div className="relative flex items-start justify-center gap-2.5">
               {lab.classes.map((c) => (
                 <ClassColumn key={`${c.id}-${state.epoch}`} lab={lab} ci={c.id} width={colW} tankH={tankH} narrow={tight}
@@ -316,6 +337,7 @@ export default function GroupTanks({
               {sizeRow}
               <p role="status" className={`min-h-[2.5rem] ${narrow ? 'text-xs' : 'text-sm'} font-bold leading-snug`} data-gt-verdict={last?.kind === 'opened' ? lab.trials.at(-1)?.kind : (last?.kind ?? '')}>{verdict}</p>
             </div>
+          </div>
           </div>
 
           {lab.trials.length > 0 && (
@@ -498,3 +520,153 @@ function Deco({ world }) {
     </button>
   );
 }
+
+/** Les options de la règle (distracteurs réfutés par l'eau de l'élève) — partagées par la découverte et la dernière question de s2. */
+export function discoveryOptionsOf(lab, k, many, cName) {
+    if (!many) {
+      const gs = lab.groups;
+      const big = gs.reduce((a, g) => (g.n0 > a.n0 ? g : a), gs[0]);
+      const lv0 = L.levelOf(gs.map((g) => ({ n: g.n0, m: g.m })));
+      const lvTex = L.decTex(lv0).length < 8 && LIN.fracDecimal(lv0, 3) != null ? L.decTex(lv0) : `${ST.approx(lv0, 2).replace(',', '{,}')}`;
+      const mm = L.decTex(L.meanOfMeansOf(gs));
+      return [
+        { text: <MathText>{k('dOptMm', { mm })}</MathText>, why: <MathText>{k('dWhyMm', { level: lvTex, mm })}</MathText> },
+        { text: k('dOptRightOne'), correct: true },
+        { text: k('dOptBig'), why: <MathText>{k('dWhyBig', { level: lvTex, big: L.decTex(big.m) })}</MathText> },
+      ];
+    }
+    const lvTex = L.levelTex(lab, 0);
+    if (L.sameLevels(lab)) {
+      return [
+        { text: k('dOptA'), why: <MathText>{k('dWhyA', { level: lvTex })}</MathText> },
+        { text: <MathText>{k('dOptRightMany', { level: lvTex })}</MathText>, correct: true },
+        { text: k('dOptB'), why: <MathText>{k('dWhyB', { sum: L.decTex(L.water(lab, 0)), N: L.count(lab, 0) })}</MathText> },
+        { text: k('dOptMmMany'), why: <MathText>{k('dWhyMmMany', { mmA: L.decTex(L.meanOfMeans(lab, 0)), mmB: L.decTex(L.meanOfMeans(lab, 1)), level: lvTex })}</MathText> },
+      ];
+    }
+    const best = lab.classes.reduce((a, c) => (LIN.cmp(L.level(lab, c.id), L.level(lab, a)) > 0 ? c.id : a), 0);
+    return [
+      { text: <MathText>{k('dOptRightManyDiff', { best: cName(best), level: L.levelTex(lab, best) })}</MathText>, correct: true },
+      { text: k('dOptMmMany'), why: k('dWhyRightDiff') },
+    ];
+}
+
+function Formal({ lab, k, many, cName }) {
+  return (
+    <div className="space-y-2" data-gt-formal>
+      {lab.classes.map((c) => (
+        <EquationDisplay key={c.id} tone="result" tex={`m = ${L.formulaTex(lab, c.id)}`} note={many ? cName(c.id) : undefined} />
+      ))}
+      <p className="text-sm text-emerald-900"><MathText>{k(many ? 'fRuleMany' : 'fRuleOne')}</MathText></p>
+    </div>
+  );
+}
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** s1 : après la 1re vanne ; s2 : un effectif changé (une classe) ou chaque classe versée (deux) — la dernière question est la règle. */
+export const CHAINS = Object.freeze({
+  one: { s1: ['water', 'count', 'how'], s2: ['move', 'rule'] },
+  many: { s1: ['water', 'count', 'how'], s2: ['cmp', 'rule'] },
+});
+
+const dl = (x) => `$${x}$`;
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+
+/** Les faits de l'essai : les effectifs AU MOMENT de l'ouverture (ne bougent plus ensuite). */
+function factsOf(lab, tr) {
+  const gs = lab.classes[tr.ci].members.map((gi, i) => ({ n: tr.ns[i], m: lab.groups[gi].m }));
+  const W = L.waterOf(gs);
+  const N = L.countOf(gs);
+  const terms = gs.map((g) => `${g.n} \\times ${L.decTex(g.m)}`).join(' + ');
+  return { gs, W, N, terms, level: L.levelOf(gs), mm: L.meanOfMeansOf(gs) };
+}
+
+/** Chaque question est construite sur LES effectifs et LES niveaux de l'élève (rien en dur) ; `k` : les textes de `groupTanks`. */
+export const QUESTIONS = {
+  water: (lab, k, ctx) => {
+    const f = factsOf(lab, lab.trials[0]);
+    const o = { terms: dl(f.terms), cls: ctx.cName(lab.trials[0].ci) };
+    return {
+      id: 'water', kind: 'number', expected: LIN.fracText(f.W), answer: <MathText>{dl(L.decTex(f.W))}</MathText>,
+      prompt: Mx(k, 'water.prompt', o), hints: [Mx(k, 'water.hint1', o), Mx(k, 'water.hint2', o)],
+      explain: Mx(k, 'water.explain', { ...o, calc: dl(`${f.terms} = ${L.decTex(f.W)}`) }),
+    };
+  },
+  count: (lab, k, ctx) => {
+    const f = factsOf(lab, lab.trials[0]);
+    const o = { ns: dl(f.gs.map((g) => g.n).join(' + ')), cls: ctx.cName(lab.trials[0].ci) };
+    return {
+      id: 'count', kind: 'number', expected: String(f.N), answer: <MathText>{dl(String(f.N))}</MathText>,
+      prompt: Mx(k, 'count.prompt', o), hints: [Mx(k, 'count.hint1', o), Mx(k, 'count.hint2', o)],
+      explain: Mx(k, 'count.explain', { ...o, calc: dl(`${f.gs.map((g) => g.n).join(' + ')} = ${f.N}`) }),
+    };
+  },
+  how: (lab, k, ctx) => {
+    const tr = lab.trials[0];
+    const f = factsOf(lab, tr);
+    const lvl = ST.approx(f.level, 2).replace(',', '{,}');
+    const mmTex = L.decTex(f.mm);
+    const o = { level: dl(lvl), W: dl(L.decTex(f.W)), N: f.N, g: f.gs.length };
+    const perTank = ST.approx(LIN.div(f.W, f.gs.length), 2).replace(',', '{,}');
+    const mmDiffers = !LIN.eq(f.mm, f.level);
+    const sumM = L.decTex(f.gs.reduce((acc, g) => LIN.add(acc, g.m), LIN.frac(0)));
+    return {
+      id: 'how', kind: 'choice',
+      prompt: Mx(k, 'how.prompt', o),
+      options: [
+        mmDiffers
+          ? { text: Mx(k, 'how.mm', { mm: dl(mmTex) }), why: Mx(k, 'how.whyMm', { ...o, mm: dl(mmTex) }) }
+          : { text: Mx(k, 'how.sumM', o), why: Mx(k, 'how.whySumM', { ...o, v: dl(sumM) }) },
+        { text: Mx(k, 'how.right', o), correct: true },
+        { text: Mx(k, 'how.perTank', o), why: Mx(k, 'how.whyPerTank', { ...o, v: dl(perTank) }) },
+      ],
+      hints: [Mx(k, 'how.hint1', o), Mx(k, 'how.hint2', o)],
+      explain: Mx(k, 'how.explain', { ...o, calc: dl(`\\dfrac{${f.terms}}{${f.gs.map((g) => g.n).join(' + ')}} = ${lvl}`) }),
+    };
+  },
+  move: (lab, k, ctx) => {
+    const tr = lab.sizeTrials.at(-1);
+    const mem = lab.classes[tr.ci].members;
+    const [a, b] = mem.map((gi, i) => ({ gi, n: tr.ns[i] }));
+    const name = ctx.gName(tr.gi);
+    const o = { name, n: tr.n, a: ctx.gName(a.gi), b: ctx.gName(b.gi), na: a.n, nb: b.n, level: dl(ST.approx(tr.level, 2).replace(',', '{,}')) };
+    const wide = a.n === b.n ? 'mid' : a.n > b.n ? 'a' : 'b';
+    const mkOpt = (id) => {
+      if (id === 'mid') return { text: Mx(k, 'move.mid', o), ...(wide === 'mid' ? { correct: true } : { why: Mx(k, 'move.whyMid', o) }) };
+      const nm = id === 'a' ? o.a : o.b;
+      return { text: Mx(k, 'move.toward', { name: nm }), ...(wide === id ? { correct: true } : { why: Mx(k, 'move.whyToward', { ...o, wide: wide === 'a' ? o.a : o.b, nw: wide === 'a' ? a.n : b.n }) }) };
+    };
+    const opts = wide === 'mid' ? ['mid', 'a', 'b'] : ['a', 'mid', 'b'];
+    return {
+      id: 'move', kind: 'choice',
+      prompt: Mx(k, 'move.prompt', o),
+      options: opts.map(mkOpt),
+      hints: [Mx(k, 'move.hint1', o), Mx(k, 'move.hint2', o)],
+      explain: Mx(k, wide === 'mid' ? 'move.explainMid' : 'move.explain', { ...o, wide: wide === 'a' ? o.a : o.b }),
+    };
+  },
+  cmp: (lab, k, ctx) => {
+    const lv = lab.classes.map((c) => L.level(lab, c.id));
+    const tie = L.sameLevels(lab);
+    const best = lab.classes.reduce((x, c) => (LIN.cmp(L.level(lab, c.id), L.level(lab, x)) > 0 ? c.id : x), 0);
+    const A = ctx.cName(0); const B = ctx.cName(1);
+    const o = { A, B, a: dl(L.levelTex(lab, 0)), b: dl(L.levelTex(lab, 1)) };
+    const right = tie ? 0 : best === 0 ? 1 : 2;
+    const opt = (id, why) => (id === right ? { text: Mx(k, `cmp.${id === 0 ? 'same' : id === 1 ? 'a' : 'b'}`, o), correct: true } : { text: Mx(k, `cmp.${id === 0 ? 'same' : id === 1 ? 'a' : 'b'}`, o), why });
+    return {
+      id: 'cmp', kind: 'choice',
+      prompt: Mx(k, 'cmp.prompt', o),
+      options: [opt(1, Mx(k, 'cmp.whyA', o)), opt(0, Mx(k, 'cmp.whySame', o)), opt(2, Mx(k, 'cmp.whyB', o))],
+      hints: [Mx(k, 'cmp.hint1', o), Mx(k, 'cmp.hint2', o)],
+      explain: Mx(k, tie ? 'cmp.explainSame' : 'cmp.explainDiff', { ...o, best: ctx.cName(best) }),
+    };
+  },
+  rule: (lab, k, ctx) => ({
+    id: 'rule', kind: 'choice',
+    prompt: <MathText>{k(ctx.many ? 'dPromptMany' : 'dPromptOne')}</MathText>,
+    options: discoveryOptionsOf(lab, k, ctx.many, ctx.cName),
+    hints: [Mx(k, ctx.many ? 'rule.hint1Many' : 'rule.hint1One'), Mx(k, 'rule.hint2')],
+    explain: <Formal lab={lab} k={k} many={ctx.many} cName={ctx.cName} />,
+  }),
+};

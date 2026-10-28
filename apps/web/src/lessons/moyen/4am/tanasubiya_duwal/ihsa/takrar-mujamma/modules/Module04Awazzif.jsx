@@ -85,7 +85,7 @@ export default function Module04Awazzif() {
         { num: 7, title: 'تمرين 21 — من الصاعد إلى التواتر', done: all('21'),
           content: <div className="space-y-3">{block('21', ['tawatur-mujamma', 'khasiyat-mujamma'])}</div> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

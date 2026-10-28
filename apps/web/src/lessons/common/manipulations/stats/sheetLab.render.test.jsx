@@ -71,7 +71,7 @@ it('chaque clé que le composant lit existe (aucune clé brute à l’écran)', 
   ];
   for (const key of dyn) expect(ns[key], key).toBeTypeOf('string');
   // un دستور cité dans une phrase arabe est isolé LTR (LRI … PDI), jamais en KaTeX
-  for (const [key, text] of Object.entries(ns)) {
+  for (const [key, text] of Object.entries(ns).filter(([, v]) => typeof v === 'string')) {
     if (/=(MAX|MEDIANE|MOYENNE|MODE)\(/.test(text)) expect(text, key).toMatch(/⁦=[A-Z]/);
     expect(text, key).not.toMatch(/\$[^$]*(MOYENNE|MEDIANE|MAX\()/);
   }

@@ -10,7 +10,12 @@ import { useManipulation } from '../useManipulation';
 import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 import MathText from '../../components/MathText';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import * as L from '../logic/statBalance';
 
 /**
@@ -73,6 +78,13 @@ import * as L from '../logic/statBalance';
  * pas) ; large (≥ 620 px) : poutre et commandes côte à côte ; sinon les commandes juste dessous. Les essais sont
  * dans un `LabFold` sous la manipulation.
  *
+ * QUESTIONS PENDANT LE LABO (2026-10-28, lot 5 ; `primitives/LabCheckpoint`) : `checkpoints` (défaut true). UNE suite de questions par ÉTAPE du labo (range · mean ·
+ * median · contrast · hidden), posée PAR-DESSUS quand l'étape est faite et qui retient « التالي » (`chainFor`) : range · l'étendue d'une valeur plus grande, puis
+ * la règle ; mean · la somme, ÷ N, la règle ; median · la rang(s) puis la valeur ; contrast · de combien la moyenne monte, de combien la médiane monte, puis la
+ * règle ; hidden · la somme visée, puis la règle. La dernière étape finit TOUJOURS par la règle (`rule`), qui remplace la découverte et formalise. Un `LabStepper`
+ * remplace les onglets d'étape. Les événements `{ tk: 'checkpoint' | 'checkpoint-done', … }` partent vers `onCheckpoint` (jamais `onTrial`). OBLIGATOIRES pour tout
+ * élève ; l'ENSEIGNANT les coupe pour SON compte (interrupteur en en-tête).
+ *
  * PROPS (contrat de l'unité, brief §6 — la synthèse ne passe QUE celles-ci) :
  *   series        « 40|35|34 » ou « 1:11|2:3|?:2|… » (virgule décimale ; « ? » = valeur cachée, hidden seulement)
  *   mode          « range|mean|median » (toute sous-chaîne ordonnée ; la médiane ajoute l'étape contraste) | « hidden »
@@ -102,7 +114,7 @@ const UNIT_TEX = { '°C': '\\,^{\\circ}\\mathrm{C}', DA: '\\,\\mathrm{DA}', kg: 
 export default function StatBalance({
   series: series0, mode: mode0 = 'mean|median', hidden, targetMean, targetMedian, unit, axis, theme: theme0 = 'esport',
   title, lead, mission, level, levels: withLevels = true, initialMode = 'student', allowModeSwitch = false,
-  onTrial, onFinished,
+  onTrial, onFinished, checkpoints: cpOn = true, onCheckpoint,
 }) {
   const { t, i18n } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.statBalance.${key}`, o), [t]);
@@ -124,15 +136,42 @@ export default function StatBalance({
   const [live, setLive] = useState({});
   const [drag, setDrag] = useState(null);
   const [shake, setShake] = useState(0);
+  const [inits, setInits] = useState(0);
+  const [doneIds, setDoneIds] = useState(() => new Set());
   if (scene !== sceneKey) {
-    setScene(sceneKey); setLab(make()); setLive({}); setDrag(null);
+    setScene(sceneKey); setLab(make()); setLive({}); setDrag(null); setInits((n) => n + 1); setDoneIds(new Set());
   }
   const stage = L.stageOf(lab);
-  const ready = L.discoveryReady(lab);
+  // les questions pendant le labo : obligatoires pour tout élève, l'enseignant seul les coupe pour SON compte
+  const cpSettings = useLabCheckpointSettings('stat-balance');
+  const cpActive = cpOn && cpSettings.enabled;
+  const lastStage = lab.stage === lab.stages.length - 1;
+  const cp = useLabCheckpoint({
+    id: cpActive ? stage : null,
+    questions: cpActive && lab.done[stage] ? chainFor(stage, lastStage).map((q) => QUESTIONS[q](lab, k)) : null,
+    reached: !!lab.done[stage],
+    resetKey: inits,
+    // « أعِد التجربة » : l'étape recommence (l'appui, le rideau, les mâchoires, le jeton tiré ou les jetons cachés reviennent au départ)
+    onRetry: () => { setLive({}); setLab((x) => retryStage(x, stage, make)); },
+    onEvent: (ev) => state.report(onCheckpoint, ev),
+    onDone: (id) => {
+      setDoneIds((d) => new Set(d).add(id));
+      if (id === lab.stages[lab.stages.length - 1]) { state.discover(); state.formalize(); }
+    },
+  });
+  const ready = L.discoveryReady(lab) && !cpActive;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (state.isFormal) state.report(onFinished, { stages: lab.stages, range: L.text(L.range(baseOf(lab))), mean: L.text(L.mean(lab)), median: L.text(L.median(lab)) });
   }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les sons : un cran = un pas ; l'étape juste (niveau, verrou, kallab fermé, cible trouvée) = flag ; refusé / inégal = over
+  useEffect(() => {
+    const l = lab.last;
+    if (!l) return;
+    if (['balanced', 'locked', 'caught', 'found'].includes(l.kind)) playSfx('flag');
+    else if (['unequal', 'refused'].includes(l.kind)) playSfx('over');
+    else playSfx('tooth');
+  }, [lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
   const nTrials = lab.trials.length;
   useEffect(() => {
     if (nTrials === 0) return;
@@ -585,28 +624,27 @@ export default function StatBalance({
     return null;
   })();
 
+  // les étapes lisibles (remplacent les onglets) : chacune est FAITE quand ses questions sont répondues ; on fête chacune une fois (réarmées après « إعادة »)
+  const stepDone = lab.stages.map((st) => (cpActive ? doneIds.has(st) : !!lab.done[st]));
+  const stepper = lab.stages.length > 1 && <LabStepper count={lab.stages.length} current={stepDone.includes(false) ? stepDone.indexOf(false) : lab.stages.length - 1} done={stepDone} stepAttr="data-sb-step" />;
+  const party = useStepCelebration();
+  const celebrated = useRef({ inits, set: new Set() });
+  if (celebrated.current.inits !== inits) celebrated.current = { inits, set: new Set() };
+  const doneKey = stepDone.join('');
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.set.has(i)) return;
+      celebrated.current.set.add(i);
+      party.celebrate({ n: i + 1, total: lab.stages.length });
+    });
+  }, [doneKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const controls = (
     <div ref={ctrlRef} className="space-y-2" data-sb-controls>
-      {lab.stages.length > 1 && (
-        <ol className="flex flex-wrap gap-1" aria-label={k('stagesAria')}>
-          {lab.stages.map((s, i) => {
-            const open = i === lab.stage;
-            const reachable = lab.stages.slice(0, i).every((p) => lab.done[p]);
-            return (
-              <li key={s}>
-                <button type="button" disabled={!reachable} onClick={() => { setLive({}); setLab((x) => L.goStage(x, i)); }}
-                  aria-current={open ? 'step' : undefined} data-sb-stage-tab={s} data-done={lab.done[s] ? 'true' : 'false'}
-                  className={`inline-flex min-h-[44px] items-center gap-1 rounded-xl border-2 px-2 text-xs font-bold disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${open ? 'border-blue-600 bg-blue-50 text-blue-900' : 'border-slate-300 bg-white text-slate-700'}`}>
-                  {lab.done[s] ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <span>{i + 1}.</span>} {k(`stage.${s}`)}
-                </button>
-              </li>
-            );
-          })}
-        </ol>
-      )}
+      {stepper}
       {reading}
       <p role="status" aria-live="polite" className={`${stage === 'hidden' ? 'min-h-[1.25rem]' : 'min-h-[2.5rem]'} text-sm font-bold leading-snug`} data-sb-verdict={lab.last?.kind ?? ''}>{verdict}</p>
-      {L.canAdvance(lab) && (
+      {L.canAdvance(lab) && !cp.blocking && (
         <button type="button" onClick={() => { setLive({}); setLab((x) => L.goStage(x, x.stage + 1)); }} data-sb-next
           className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border-2 border-blue-600 bg-blue-600 px-3 text-sm font-bold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300">
           {k('next', { name: k(`stage.${lab.stages[lab.stage + 1]}`) })} <ArrowLeft className="h-4 w-4" aria-hidden="true" />
@@ -624,6 +662,8 @@ export default function StatBalance({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={cpActive}
       hints={hintKeys.map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false, ...(autoComplete ? { autoComplete } : {}) }}
       representation={representation}
@@ -633,6 +673,9 @@ export default function StatBalance({
       <ManipulationStage className="bg-gradient-to-b from-amber-50/60 to-white">
         <div ref={boxRef} className="space-y-3" data-stat-balance data-mode={mode} data-theme={theme} data-stage={stage} data-n={lab.N}
           data-layout={layout} data-budget={budget} data-ctrl-h={ctrlH} data-active={activeHandle ?? ''}>
+          <div className="relative">
+          {party.node}
+          {cp.node}
           <div className={wide ? 'grid items-start gap-3' : 'space-y-3'} style={wide ? { gridTemplateColumns: `${sceneW}px 1fr` } : undefined} data-sb-glance>
             <div>
               <div className="mb-1 flex items-center justify-between gap-2">
@@ -642,6 +685,7 @@ export default function StatBalance({
               {sceneEl}
             </div>
             {controls}
+          </div>
           </div>
           {lab.trials.length > 0 && (
             <LabFold id="stat-balance.trials" title={k('trialsTitle')}>
@@ -706,9 +750,9 @@ function verdictOf({ lab, k, T, val, valA }) {
 }
 
 /* ── la découverte ── */
-function discoveryFor(lab, k, val) {
+function discoveryFor(lab, k, val, forced) {
   const M = (s) => <MathText>{s}</MathText>;
-  const kind = L.discoveryKind(lab);
+  const kind = forced ?? L.discoveryKind(lab);
   const base = baseOf(lab);
   if (kind === 'contrast') {
     const tr = L.contrastTrials(lab).filter((x) => !L.same(x.v, lab.origMax));
@@ -896,3 +940,138 @@ const SB_CSS = '.sb-shake{animation:sb-s .35s ease-in-out 1}@keyframes sb-s{0%,1
   + '.sb-glow{animation:sb-g .9s ease-in-out 1}@keyframes sb-g{0%,100%{opacity:1}50%{opacity:.55}}'
   + '.sb-mercury{animation:sb-m 2.4s ease-in-out infinite}@keyframes sb-m{0%,100%{opacity:1}50%{opacity:.8}}'
   + '@media (prefers-reduced-motion: reduce){.sb-shake,.sb-buzz,.sb-glow,.sb-mercury{animation:none}}';
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+const BASE_CHAINS = Object.freeze({
+  range: ['rangeAdd', 'rangeRule'],
+  mean: ['sumX', 'meanDiv', 'meanRule'],
+  median: ['medRank', 'medValue'],
+  contrast: ['meanUp', 'medianUp', 'rule'],
+  hidden: ['hidSum', 'rule'],
+});
+
+/** La suite de questions d'une étape ; la DERNIÈRE étape finit par la règle générale (`rule`, qui remplace la découverte). */
+export const chainFor = (stage, last) => {
+  const base = BASE_CHAINS[stage];
+  return last ? [...base.filter((q) => !/Rule$/.test(q) && q !== 'rule'), 'rule'] : base;
+};
+
+/** « أعِد التجربة » : l'étape `stage` recommence (l'état de l'étape revient à celui de `make()`). */
+function retryStage(lab, stage, make) {
+  const f = make();
+  return {
+    ...lab, last: null,
+    done: { ...lab.done, [stage]: false },
+    trials: lab.trials.filter((t) => t.stage !== stage),
+    ...(stage === 'mean' ? { fulcrumJ: f.fulcrumJ } : {}),
+    ...(stage === 'median' ? { curtain: f.curtain } : {}),
+    ...(stage === 'range' ? { jaws: f.jaws } : {}),
+    ...(stage === 'contrast' ? { tokens: f.tokens, moved: 0 } : {}),
+    ...(stage === 'hidden' ? { tokens: f.tokens } : {}),
+  };
+}
+
+const dl = (x) => `$${x}$`;
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const ft = (p) => Lin.fracText(p);
+
+/** Chaque question est construite sur LA série de l'élève (rien en dur) ; `k` : les textes de `statBalance`. */
+export const QUESTIONS = {
+  rangeAdd: (lab, k) => {
+    const hi = L.maxV(lab); const lo = L.minV(lab); const r = L.range(lab);
+    const d = 4;
+    const o = { hi: dl(L.tex(hi)), lo: dl(L.tex(lo)), d, newHi: dl(L.tex(Lin.add(hi, Lin.frac(d)))), r: dl(L.tex(r)) };
+    return {
+      id: 'rangeAdd', kind: 'number', expected: ft(Lin.add(r, Lin.frac(d))), answer: <MathText>{dl(L.tex(Lin.add(r, Lin.frac(d))))}</MathText>,
+      prompt: Mx(k, 'rangeAdd.prompt', o), hints: [Mx(k, 'rangeAdd.hint1', o), Mx(k, 'rangeAdd.hint2', o)],
+      explain: Mx(k, 'rangeAdd.explain', { ...o, calc: dl(`${L.tex(Lin.add(hi, Lin.frac(d)))} - ${L.tex(lo)} = ${L.tex(Lin.add(r, Lin.frac(d)))}`) }),
+    };
+  },
+  rangeRule: (lab, k) => ruleQuestion(lab, k, 'range'),
+  sumX: (lab, k) => {
+    const sum = L.sum(lab);
+    const o = { N: lab.N, vals: dl(lab.N <= 12 ? L.valueList(lab).join(' + ') : '\\ldots') };
+    return {
+      id: 'sumX', kind: 'number', expected: ft(sum), answer: <MathText>{dl(L.tex(sum))}</MathText>,
+      prompt: Mx(k, 'sumX.prompt', o), hints: [Mx(k, 'sumX.hint1', o), Mx(k, 'sumX.hint2', o)],
+      explain: Mx(k, 'sumX.explain', { ...o, calc: dl(`${lab.N <= 12 ? L.valueList(lab).join(' + ') : '\\ldots'} = ${L.tex(sum)}`) }),
+    };
+  },
+  meanDiv: (lab, k) => {
+    const sum = L.sum(lab); const m = L.mean(lab);
+    const o = { sum: dl(L.tex(sum)), N: lab.N };
+    return {
+      id: 'meanDiv', kind: 'number', expected: ft(m), answer: <MathText>{dl(L.texApprox(m))}</MathText>,
+      prompt: Mx(k, 'meanDiv.prompt', o), hints: [Mx(k, 'meanDiv.hint1', o), Mx(k, 'meanDiv.hint2', o)],
+      explain: Mx(k, 'meanDiv.explain', { ...o, calc: dl(`\\dfrac{${L.tex(sum)}}{${lab.N}} = ${L.texApprox(m)}`) }),
+    };
+  },
+  meanRule: (lab, k) => ruleQuestion(lab, k, 'mean'),
+  medRank: (lab, k) => {
+    const ranks = L.medianRanks(lab);
+    const odd = ranks.length === 1;
+    const o = { N: lab.N };
+    return {
+      id: 'medRank', kind: 'number', expected: String(ranks[0]), answer: <MathText>{dl(String(ranks[0]))}</MathText>,
+      prompt: Mx(k, odd ? 'medRank.promptOdd' : 'medRank.promptEven', o), hints: [Mx(k, odd ? 'medRank.hint1Odd' : 'medRank.hint1Even', o), Mx(k, odd ? 'medRank.hint2Odd' : 'medRank.hint2Even', o)],
+      explain: Mx(k, odd ? 'medRank.explainOdd' : 'medRank.explainEven', { ...o, r: ranks[0], r2: ranks[1] ?? ranks[0] }),
+    };
+  },
+  medValue: (lab, k) => {
+    const ranks = L.medianRanks(lab);
+    const sorted = L.ranked(lab).map((tk) => tk.v);
+    const med = L.median(lab);
+    const odd = ranks.length === 1;
+    const o = { r: ranks[0], r2: ranks[1] ?? ranks[0], a: dl(L.tex(sorted[ranks[0] - 1])), b: dl(L.tex(sorted[(ranks[1] ?? ranks[0]) - 1])) };
+    return {
+      id: 'medValue', kind: 'number', expected: ft(med), answer: <MathText>{dl(L.tex(med))}</MathText>,
+      prompt: Mx(k, odd ? 'medValue.promptOdd' : 'medValue.promptEven', o), hints: [Mx(k, odd ? 'medValue.hint1Odd' : 'medValue.hint1Even', o), Mx(k, odd ? 'medValue.hint2Odd' : 'medValue.hint2Even', o)],
+      explain: Mx(k, odd ? 'medValue.explainOdd' : 'medValue.explainEven', { ...o, calc: dl(L.tex(med)) }),
+    };
+  },
+  meanUp: (lab, k) => {
+    const tr = L.contrastTrials(lab).filter((x) => !L.same(x.v, lab.origMax)).at(-1);
+    const base = baseOf(lab);
+    const d = Lin.sub(tr.v, lab.origMax);
+    const up = Lin.sub(tr.mean, L.mean(base));
+    const o = { a: dl(L.tex(lab.origMax)), b: dl(L.tex(tr.v)), d: dl(L.tex(d)), N: lab.N };
+    return {
+      id: 'meanUp', kind: 'number', expected: ft(up), answer: <MathText>{dl(L.texApprox(up))}</MathText>,
+      prompt: Mx(k, 'meanUp.prompt', o), hints: [Mx(k, 'meanUp.hint1', o), Mx(k, 'meanUp.hint2', o)],
+      explain: Mx(k, 'meanUp.explain', { ...o, calc: dl(`\\dfrac{${L.tex(d)}}{${lab.N}} = ${L.texApprox(up)}`) }),
+    };
+  },
+  medianUp: (lab, k) => {
+    const tr = L.contrastTrials(lab).filter((x) => !L.same(x.v, lab.origMax)).at(-1);
+    const base = baseOf(lab);
+    const o = { a: dl(L.tex(lab.origMax)), b: dl(L.tex(tr.v)), med: dl(L.tex(L.median(base))) };
+    return {
+      id: 'medianUp', kind: 'number', expected: '0', answer: <MathText>{dl('0')}</MathText>,
+      prompt: Mx(k, 'medianUp.prompt', o), hints: [Mx(k, 'medianUp.hint1', o), Mx(k, 'medianUp.hint2', o)],
+      explain: Mx(k, 'medianUp.explain', o),
+    };
+  },
+  hidSum: (lab, k) => {
+    const sum = Lin.mul(lab.targetMean, Lin.frac(lab.N));   // la somme visée (= la somme des valeurs une fois les cibles trouvées)
+    const o = { m: dl(L.tex(lab.targetMean)), N: lab.N };
+    return {
+      id: 'hidSum', kind: 'number', expected: ft(sum), answer: <MathText>{dl(L.tex(sum))}</MathText>,
+      prompt: Mx(k, 'hidSum.prompt', o), hints: [Mx(k, 'hidSum.hint1', o), Mx(k, 'hidSum.hint2', o)],
+      explain: Mx(k, 'hidSum.explain', { ...o, calc: dl(`${L.tex(lab.targetMean)} \\times ${lab.N} = ${L.tex(sum)}`) }),
+    };
+  },
+  rule: (lab, k) => ruleQuestion(lab, k, null),
+};
+
+/** La règle d'une étape (ou la règle générale de la DERNIÈRE étape) : les distracteurs sont réfutés par les nombres de l'élève. */
+function ruleQuestion(lab, k, forced) {
+  const kind = forced ?? L.discoveryKind(lab);
+  return {
+    id: forced ? `${forced}Rule` : 'rule', kind: 'choice',
+    prompt: <MathText>{k(`dPrompt.${kind}`)}</MathText>,
+    options: discoveryFor(lab, k, () => '', kind),
+    hints: [Mx(k, `rule.hint1.${kind}`, {}), Mx(k, `rule.hint2.${kind}`, {})],
+    explain: <Formal lab={lab} k={k} val={() => ''} valA={() => ''} />,
+  };
+}

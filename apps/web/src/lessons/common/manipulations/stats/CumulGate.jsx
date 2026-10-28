@@ -11,6 +11,10 @@ import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
 import MathText from '../../components/MathText';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import * as L from '../logic/cumulGate';
 
 /**
@@ -69,6 +73,11 @@ import * as L from '../logic/cumulGate';
  * `LabFold` (secondaire), à côté des commandes en large, sous le bloc sinon. Mesuré par
  * apps/web/e2e/lesson-kit/4am-ihsa.mjs aux quatre viewports, deux niveaux.
  *
+ * QUESTIONS PENDANT LE LABO (2026-10-28, lot 5 ; `primitives/LabCheckpoint`) : `checkpoints` (défaut true). Scène libre, DEUX étapes (`LabStepper`) :
+ *   1. le premier compte accepté → `CHAINS.s1` (combien restent dehors · ceux de taille exactement t sont-ils dans le compte) ;
+ *   2. une même valeur comptée des DEUX côtés (`discoveryReady`) → `CHAINS.s2` (la somme des deux comptes · de combien elle dépasse N · la règle, qui
+ *      remplace la découverte et formalise). Les événements `{ tk: 'checkpoint' | 'checkpoint-done', … }` partent vers `onCheckpoint` (jamais `onTrial` :
+ *      ils ne doivent pas entrer dans la liste des annonces). OBLIGATOIRES pour tout élève ; l'ENSEIGNANT les coupe pour SON compte (interrupteur en en-tête).
  * Props : `series` (« 120:2|130:3 » ou les valeurs brutes « 160|165|154|… » dans l'ordre du manuel), `mode`
  * (« up|down » | « up|down|table »), `given` (les cases imprimées : « up:154|down:165 »), `theme`
  * ('funpark' | 'school'), `title`, `lead`, `mission`, `level`, `levels` (false : posé seul sans sélecteur),
@@ -88,7 +97,7 @@ const HAIR = ['#1E293B', '#78350F', '#0F172A', '#451A03'];
 export default function CumulGate({
   series: series0 = '120:2|130:3|140:2|150:1', mode: mode0 = 'up|down', given = '', theme = 'funpark', unit = 'cm',
   title, lead, mission, level, levels: withLevels = true, initialMode = 'student', allowModeSwitch = false,
-  onTrial, onFinished,
+  onTrial, onFinished, checkpoints: cpOn = true, onCheckpoint,
 }) {
   const { t: tr } = useTranslation('lesson');
   const k = useCallback((key, o) => tr(`manipulation.cumulGate.${key}`, o), [tr]);
@@ -106,10 +115,29 @@ export default function CumulGate({
   const [side, setSide] = useState('up');
   const [raw, setRaw] = useState('');
   const [rel, setRel] = useState(false);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setT(null); setSide('up'); setRaw(''); setRel(false); }
+  const [inits, setInits] = useState(0);
+  const [done1, setDone1] = useState(false);
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setT(null); setSide('up'); setRaw(''); setRel(false); setInits((n) => n + 1); setDone1(false); }
 
   const T = liveT ?? L.rangeOf(lab).min;
-  const ready = L.discoveryReady(lab);
+  // les questions pendant le labo : obligatoires pour tout élève, l'enseignant seul les coupe pour SON compte
+  const cpSettings = useLabCheckpointSettings('cumul-gate');
+  const cpActive = cpOn && cpSettings.enabled;
+  const stage = lab.claims.length === 0 || !done1 ? 's1' : 's2';
+  const cpReached = stage === 's1' ? lab.claims.length > 0 : L.discoveryReady(lab);
+  const dTnow = L.discoveryT(lab);
+  const cp = useLabCheckpoint({
+    id: cpActive ? stage : null,
+    questions: cpActive && cpReached ? CHAINS[stage].map((q) => QUESTIONS[q](lab, k)) : null,
+    reached: cpReached,
+    resetKey: inits,
+    // « أعِد التجربة » : l'étape recommence — les comptes de l'étape sont retirés (la carte revient quand elle est de nouveau atteinte)
+    onRetry: () => setLab((s) => (stage === 's1' ? { ...make(), sorted: s.sorted, people: s.people } : { ...s, last: null, claims: s.claims.filter((c) => c.t !== dTnow), cells: { up: { ...s.cells.up, [dTnow]: s.given.up[dTnow] ? s.cells.up[dTnow] : undefined }, down: { ...s.cells.down, [dTnow]: s.given.down[dTnow] ? s.cells.down[dTnow] : undefined } } })),
+    onEvent: (ev) => state.report(onCheckpoint, ev),
+    onDone: (id) => { if (id === 's1') setDone1(true); else { state.discover(); state.formalize(); } },
+  });
+  const ruleByCheckpoint = cpActive;
+  const ready = L.discoveryReady(lab) && !ruleByCheckpoint;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   const dT = L.discoveryT(lab);
   useEffect(() => { if (state.isFormal && dT != null) state.report(onFinished, L.invariantAt(lab, dT)); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -119,6 +147,7 @@ export default function CumulGate({
   useEffect(() => {
     const last = lab.last;
     if (!last || !['ok', 'strict', 'under', 'over', 'otherSide'].includes(last.kind)) return;
+    playSfx(last.kind === 'ok' ? 'flag' : 'over');
     state.report(onTrial, { t: last.t, side: last.side, n: last.n, ok: last.kind === 'ok', kind: last.kind, want: L.count(lab, last.t, last.side) });
   }, [trials]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -158,6 +187,17 @@ export default function CumulGate({
   const mu = (sceneH - 2 * EDGE - 18) / Math.max(1, range.max - range.min);
   const toValue = useCallback((_x, cy, rect) => range.min + (rect.bottom - EDGE - 18 - cy) / mu, [range.min, mu]);
   const stretch = useStretchInteraction({ value: T, range, toValue, onChange: setT, onCommit: setT, direction: 'ltr' });
+
+  // le geste : un cran de la barre = un pas (au plus un son toutes les 35 ms), plus grave en descendant
+  const tick = useRef({ t: null, at: 0 });
+  useEffect(() => {
+    const p = tick.current;
+    if (p.t != null && T != null && T !== p.t) {
+      const now = Date.now();
+      if (now - p.at > 35) { playSfx('tooth', { pitch: T > p.t ? 1 : 0.75 }); p.at = now; }
+    }
+    p.t = T;
+  }, [T]);
 
   const doSort = () => setLab((s) => L.sortQueue(s));
   const doClaim = (e) => {
@@ -281,6 +321,20 @@ export default function CumulGate({
 
   const sol = state.isFormal || state.isDiscovered;
 
+  // deux étapes lisibles : la 1re est FAITE quand ses questions sont répondues, la 2e aussi ; on fête chacune une fois (réarmées après « إعادة »)
+  const stepDone = [cpActive ? done1 : lab.claims.length > 0, cpActive ? done1 && cp.done : L.discoveryReady(lab)];
+  const stepper = <LabStepper count={2} current={stepDone[0] ? 1 : 0} done={stepDone} stepAttr="data-cg-step" />;
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (inits !== celebrated.current.inits) { celebrated.current = new Set(); celebrated.current.inits = inits; }
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(i)) return;
+      celebrated.current.add(i);
+      party.celebrate({ n: i + 1, total: 2 });
+    });
+  }, [stepDone[0], stepDone[1]]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <ManipulationShell
       type="cumul-gate"
@@ -290,6 +344,8 @@ export default function CumulGate({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={cpActive}
       hints={[w('hint1'), k('hint2'), k('hint3')].map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       representation={representation}
@@ -312,6 +368,10 @@ export default function CumulGate({
       <ManipulationStage className={theme === 'funpark' ? 'bg-gradient-to-b from-fuchsia-50/60 to-white' : 'bg-gradient-to-b from-sky-50/60 to-white'} data-dragging={stretch.dragging ? 'true' : undefined}>
         <div ref={boxRef} className="space-y-2" data-cumul-gate data-series={series} data-t={T ?? ''} data-side={side} data-sorted={lab.sorted ? 'true' : 'false'}
           data-layout={wide ? 'side' : 'stack'} data-claims={lab.claims.length} data-budget={budget} data-scene-h={sceneH}>
+          <div className="relative space-y-2">
+          {party.node}
+          {cp.node}
+          {stepper}
           <div className={wide ? 'grid items-start gap-3' : 'space-y-2'} style={wide ? { gridTemplateColumns: `${sceneW}px 1fr` } : undefined} data-cg-glance>
             <Scene lab={lab} T={T} side={side} width={sceneW} height={sceneH} gaugeW={GAUGE_W} edge={EDGE} mu={mu} range={range}
               stretch={stretch} theme={theme} unit={unit} onPick={pickPerson} accepted={lab.claims.length}
@@ -320,6 +380,7 @@ export default function CumulGate({
               {controls}
               {wide && tableFold}
             </div>
+          </div>
           </div>
           {!wide && tableFold}
         </div>
@@ -489,3 +550,92 @@ function Deco({ theme, width, height, accepted, reduce }) {
     </svg>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** s1 : après le premier compte accepté ; s2 : une même valeur comptée des deux côtés — la dernière question est la règle. */
+export const CHAINS = Object.freeze({ s1: ['other', 'incl'], s2: ['sum', 'extra', 'rule'] });
+
+const dl = (x) => `$${x}$`;
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const relOf = (side, t) => `${side === 'up' ? '\\leq' : '\\geq'} ${t}`;
+const sumOf = (groups) => `${groups.map((g) => g.f).join(' + ')} = ${groups.reduce((a, g) => a + g.f, 0)}`;
+
+/** Chaque question est construite sur LES comptes de l'élève (rien en dur) ; `k` : les textes de `cumulGate`. */
+export const QUESTIONS = {
+  other: (lab, k) => {
+    const c = lab.claims[0];
+    const rest = lab.N - c.n;
+    const o = { cond: dl(relOf(c.side, c.t)), n: c.n, N: lab.N, rest };
+    return {
+      id: 'other', kind: 'number', expected: String(rest), answer: <MathText>{dl(String(rest))}</MathText>,
+      prompt: Mx(k, 'other.prompt', o), hints: [Mx(k, 'other.hint1', o), Mx(k, 'other.hint2', o)],
+      explain: Mx(k, 'other.explain', { ...o, calc: dl(`${lab.N} - ${c.n} = ${rest}`) }),
+    };
+  },
+  incl: (lab, k) => {
+    const c = lab.claims[0];
+    const f = L.freqOf(lab, c.t);
+    const groups = L.litGroups(lab, c.t, c.side);
+    const o = { cond: dl(relOf(c.side, c.t)), t: c.t, f, n: c.n, sum: dl(sumOf(groups)) };
+    if (f === 0) {
+      return {
+        id: 'incl', kind: 'number', expected: '0', answer: <MathText>{dl('0')}</MathText>,
+        prompt: Mx(k, 'inclZero.prompt', o), hints: [Mx(k, 'inclZero.hint1', o), Mx(k, 'inclZero.hint2', o)],
+        explain: Mx(k, 'inclZero.explain', o),
+      };
+    }
+    return {
+      id: 'incl', kind: 'choice',
+      prompt: Mx(k, 'incl.prompt', o),
+      options: [
+        { text: Mx(k, 'incl.no', o), why: Mx(k, 'incl.whyNo', o) },
+        { text: Mx(k, 'incl.yes', o), correct: true },
+        { text: Mx(k, 'incl.some', o), why: Mx(k, 'incl.whySome', o) },
+      ],
+      hints: [Mx(k, 'incl.hint1', o), Mx(k, 'incl.hint2', o)],
+      explain: Mx(k, 'incl.explain', o),
+    };
+  },
+  sum: (lab, k) => {
+    const inv = L.invariantAt(lab, L.discoveryT(lab));
+    const o = { t: inv.t, up: inv.up, down: inv.down, N: inv.N, f: inv.f, total: inv.up + inv.down };
+    return {
+      id: 'sum', kind: 'number', expected: String(o.total), answer: <MathText>{dl(String(o.total))}</MathText>,
+      prompt: Mx(k, 'sum.prompt', o), hints: [Mx(k, 'sum.hint1', o), Mx(k, 'sum.hint2', { ...o, calc: dl(`${inv.up} + ${inv.down}`) })],
+      explain: Mx(k, 'sum.explain', { ...o, calc: dl(`${inv.up} + ${inv.down} = ${o.total}`) }),
+    };
+  },
+  extra: (lab, k) => {
+    const inv = L.invariantAt(lab, L.discoveryT(lab));
+    const total = inv.up + inv.down;
+    const o = { t: inv.t, N: inv.N, f: inv.f, total };
+    return {
+      id: 'extra', kind: 'number', expected: String(inv.f), answer: <MathText>{dl(String(inv.f))}</MathText>,
+      prompt: Mx(k, 'extra.prompt', o), hints: [Mx(k, 'extra.hint1', o), Mx(k, 'extra.hint2', o)],
+      explain: Mx(k, 'extra.explain', { ...o, calc: dl(`${total} - ${inv.N} = ${inv.f}`) }),
+    };
+  },
+  rule: (lab, k) => {
+    const t = L.discoveryT(lab);
+    const inv = L.invariantAt(lab, t);
+    const opts = [
+      { text: <MathText>{k('dN')}</MathText>, why: <MathText>{k('dWhyN', { line: dl(`${inv.up} + ${inv.down} = ${inv.up + inv.down} \\neq ${inv.N}`), t: inv.t, f: inv.f })}</MathText> },
+      { text: <MathText>{k('dRight')}</MathText>, correct: true },
+    ];
+    const pair = L.unequalPair(lab);
+    if (pair) opts.push({ text: <MathText>{k('dEqual')}</MathText>, why: <MathText>{k('dWhyEqual', { line: dl(`${pair.up} \\neq ${pair.down}`), t: pair.t })}</MathText> });
+    return {
+      id: 'rule', kind: 'choice',
+      prompt: <MathText>{k('dPrompt', { t })}</MathText>,
+      options: opts,
+      hints: [Mx(k, 'rule.hint1', { t, f: inv.f }), Mx(k, 'rule.hint2', { line: dl(`${inv.up} + ${inv.down} = ${inv.N} + ${inv.f}`) })],
+      explain: (
+        <div className="space-y-1">
+          <EquationDisplay tone="result" tex={`${inv.up} + ${inv.down} = ${inv.N} + ${inv.f}`} note={<MathText>{k('fInvariant', { t })}</MathText>} />
+          <p className="text-sm text-emerald-900"><MathText>{k('fRule')}</MathText></p>
+        </div>
+      ),
+    };
+  },
+};

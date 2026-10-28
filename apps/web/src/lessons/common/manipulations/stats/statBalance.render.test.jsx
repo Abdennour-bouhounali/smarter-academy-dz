@@ -2,7 +2,8 @@ import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
-import StatBalance from './StatBalance';
+import i18n from '../../../../i18n';
+import StatBalance, { chainFor, QUESTIONS } from './StatBalance';
 import ManipulationWorkspace from '../ManipulationWorkspace';
 import * as L from '../logic/statBalance';
 
@@ -59,7 +60,7 @@ describe('stat-balance — ce que chaque étape pose', () => {
     expect(html).toContain('data-sb-handle="hi"');
     expect(html).toContain('data-side="out"');
     expect(html).toContain('خارج الكلّاب');
-    expect(html).toContain('data-sb-stage-tab="mean"');
+    expect(html).toContain('data-sb-step="1"');   // le LabStepper remplace les onglets d'étape (range, mean)
     expect(html).not.toContain('data-sb-curtain');
     // l'appui part du milieu de l'étendue (41), la poutre penche
     expect(html).toContain('data-p="41"');
@@ -84,7 +85,7 @@ describe('stat-balance — ce que chaque étape pose', () => {
     expect(html).toContain('data-locked="false"');
     expect(html).toContain('data-tilt="level"');
     expect(html).toContain('data-sb-counts');
-    expect(html).toContain('data-sb-stage-tab="contrast"');
+    expect(html).toContain('data-sb-step="1"');   // median + contrast
   });
 
   it('les unités : °C dans un îlot KaTeX, un mot arabe en texte', () => {
@@ -172,5 +173,67 @@ describe('stat-balance — dans un workspace, les deux niveaux de la leçon', ()
     expect(html).toContain('data-theme="esport"');
     expect(html).toContain('data-theme="heatwave"');
     expect(html).not.toMatch(RAW);
+  });
+});
+
+describe('stat-balance — questions pendant le labo (LabCheckpoint)', () => {
+  const k = (key, o) => i18n.t(`lesson:manipulation.statBalance.${key}`, o);
+  const check = (lab, ids, label) => {
+    for (const qid of ids) {
+      const q = QUESTIONS[qid](lab, k);
+      const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+      expect(out, `${label}.${qid}`).not.toMatch(RAW);
+      expect(out, `${label}.${qid}`).not.toContain('{{');
+      expect(q.hints, `${label}.${qid}`).toHaveLength(2);
+      if (q.kind === 'choice') {
+        expect(q.options.filter((o) => o.correct), `${label}.${qid}`).toHaveLength(1);
+        expect(q.options.filter((o) => !o.correct).every((o) => o.why), `${label}.${qid} why`).toBe(true);
+      } else expect(q.expected, `${label}.${qid}`).toBeTruthy();
+    }
+  };
+  /** Une série jouée jusqu'au bout de chaque étape (assez pour construire toutes les questions). */
+  const played = (series, mode) => {
+    let lab = L.init({ series, mode });
+    const done = { ...lab.done };
+    for (const st of lab.stages) done[st] = true;
+    lab = { ...lab, done };
+    if (lab.stages.includes('contrast')) {
+      lab = L.goStage(lab, lab.stages.indexOf('contrast'));
+      lab = L.placeMoved(lab, 3); lab = L.placeMoved(lab, 6);
+    }
+    return lab;
+  };
+
+  it('mode range|mean (série du Oued) : chaque étape a ses questions bien formées ; la dernière finit par la règle', () => {
+    const lab = played(EL_OUED, 'range|mean');
+    check(lab, chainFor('range', false), 'range');
+    check(lab, chainFor('mean', true), 'mean-last');
+    expect(chainFor('mean', true).at(-1)).toBe('rule');
+    expect(QUESTIONS.rangeAdd(lab, k).expected).toBe('18');         // 14 + 4
+    expect(QUESTIONS.sumX(lab, k).expected).toBe('393');
+  });
+
+  it('mode median (+ contraste) : rangs, valeur, de combien la moyenne monte, le médiane reste', () => {
+    const lab = played(ESPORT, 'median');
+    check(lab, chainFor('median', false), 'median');
+    check(lab, chainFor('contrast', true), 'contrast');
+    expect(QUESTIONS.medRank(lab, k).expected).toBe('3');
+    expect(QUESTIONS.medValue(lab, k).expected).toBe('3');
+    expect(QUESTIONS.medianUp(lab, k).expected).toBe('0');
+  });
+
+  it('hidden (la synthèse) : la somme visée puis la règle', () => {
+    const lab = L.init(MEDALS);
+    check(lab, chainFor('hidden', true), 'hidden');
+    expect(QUESTIONS.hidSum(lab, k).expected).toBe(String(7 * 30));
+  });
+
+  it('mode guidé : ni la progression ni « تلميح » ; LabStepper ; questions coupées : la progression revient', () => {
+    const out = renderToString(<StatBalance {...CONTRACT['range|mean']} theme="heatwave" />);
+    expect(out).not.toContain('data-manipulation-progress');
+    expect(out).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    expect((out.match(/data-sb-step=/g) ?? []).length).toBe(2);
+    const off = renderToString(<StatBalance {...CONTRACT['range|mean']} theme="heatwave" checkpoints={false} />);
+    expect(off).toContain('data-manipulation-progress');
   });
 });

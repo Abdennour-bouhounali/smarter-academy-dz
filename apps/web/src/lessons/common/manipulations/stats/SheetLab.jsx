@@ -10,6 +10,10 @@ import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
 import LabFold from '../primitives/LabFold';
 import MathText from '../../components/MathText';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import * as L from '../logic/sheetLab';
 
 /**
@@ -76,6 +80,11 @@ import * as L from '../logic/sheetLab';
  * rangées de cellules ≥ 44 px (`L.perRow`) : 7 cellules en une rangée sur ordinateur, en rangées de 3 ou 4
  * sur un téléphone, chaque cellule portant son adresse. L'historique est dans un `LabFold` sous le bloc.
  *
+ * QUESTIONS PENDANT LE LABO (2026-10-28, lot 5 ; `primitives/LabCheckpoint`) : `checkpoints` (défaut true). Une étape par geste réussi (`LabStepper`) : la saisie
+ * de la série (`entry`, متقدم) → `ENTRY_CHAIN` ; chaque ligne d'indicateur vérifiée (`row0…`) → `ROW_CHAIN` (une plage incomplète · qui suit les cellules) ; la
+ * première cellule changée qui a fait bouger un دستور (`edit`) → `EDIT_CHAIN` (combien de دساتير ont bougé · la règle, qui remplace la découverte et formalise).
+ * L'étape suivante ne s'ouvre qu'une fois la précédente répondue. L'étape graphique n'a pas de questions. Les événements `{ tk: 'checkpoint' | 'checkpoint-done', … }`
+ * partent vers `onCheckpoint` (jamais `onTrial`). OBLIGATOIRES pour tout élève ; l'ENSEIGNANT les coupe pour SON compte (interrupteur en en-tête).
  * Props : `cells`, `ask`, `entry` ('type' | 'given'), `chart` ('bars|pie|histogram'), `pie`
  * ('البلاستيك:60|…'), `classes` ('7-8:6|…'), `seriesLabel`, `fileName`, `theme` ('sheet'), `title`, `lead`,
  * `mission`, `level`, `levels`, `onTrial(t)` ({ kind: 'commit', row, indicator, formula, what, value, hand,
@@ -99,7 +108,7 @@ const DEFAULT_CLASSES = '7-8:6|8-9:1|9-10:4';
 export default function SheetLab({
   cells: cells0 = '5|8|6|9|7', ask: ask0 = 'MAX-MIN|MOYENNE', chart: chart0, entry, pie, classes, seriesLabel, fileName,
   theme = 'sheet', title, lead, mission, level, levels: withLevels = true, initialMode = 'student', allowModeSwitch = false,
-  onTrial, onFinished,
+  onTrial, onFinished, checkpoints: cpOn = true, onCheckpoint,
 }) {
   const { t } = useTranslation('lesson');
   const reduce = useReducedMotion();
@@ -117,9 +126,30 @@ export default function SheetLab({
   const [lab, setLab] = useState(make);
   const sceneKey = `${cells}:${ask}:${chart}:${state.epoch}`;
   const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); }
+  const [inits, setInits] = useState(0);
+  const [doneIds, setDoneIds] = useState(() => new Set());
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setInits((n) => n + 1); setDoneIds(new Set()); }
 
-  const ready = L.discoveryReady(lab);
+  // les questions pendant le labo : obligatoires pour tout élève, l'enseignant seul les coupe pour SON compte
+  const cpSettings = useLabCheckpointSettings('sheet-lab');
+  const cpActive = cpOn && cpSettings.enabled;
+  const steps = [
+    ...(lab.typing ? [{ id: 'entry', reached: L.entered(lab) }] : []),
+    ...lab.rows.map((row, r) => ({ id: `row${r}`, reached: row.status === 'ok' })),
+    { id: 'edit', reached: L.discoveryReady(lab) },
+  ];
+  const cur = cpActive && lab.stage === 'formulas' ? steps.find((st) => !doneIds.has(st.id) && st.reached) : null;
+  const cp = useLabCheckpoint({
+    id: cur ? cur.id : null,
+    questions: cur ? chainOf(cur.id).map((q) => QUESTIONS[q](lab, k, { r: Number(cur.id.slice(3)) })) : null,
+    reached: !!cur,
+    resetKey: inits,
+    // « أعِد التجربة » : l'étape recommence (la saisie, la ligne ou les modifications de cellules sont remises)
+    onRetry: () => setLab((x) => retryStep(x, cur.id, make)),
+    onEvent: (ev) => state.report(onCheckpoint, ev),
+    onDone: (id) => { setDoneIds((d) => new Set(d).add(id)); if (id === 'edit') { state.discover(); state.formalize(); } },
+  });
+  const ready = L.discoveryReady(lab) && !cpActive;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, { ask }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
@@ -127,6 +157,17 @@ export default function SheetLab({
     if (!last || last.kind === 'refuse' || last.kind === 'saved') return;
     const { kind, ...rest } = last;
     state.report(onTrial, { kind, ...rest });
+  }, [lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // les sons : un cran = un pas ; le دستور confirmé ou la série saisie = juste (flag) ; refusé / faux = over
+  useEffect(() => {
+    const l = lab.last;
+    if (!l) return;
+    if (l.kind === 'typed') playSfx(l.done ? 'flag' : l.ok ? 'tooth' : 'over');
+    else if (l.kind === 'commit') playSfx(l.status === 'ok' ? 'flag' : 'over');
+    else if (l.kind === 'edit') playSfx('tooth');
+    else if (l.kind === 'refuse') playSfx('over');
+    else if (l.kind === 'saved') playSfx('bell');
   }, [lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── mesure ── */
@@ -403,8 +444,24 @@ export default function SheetLab({
     </div>
   );
 
+  // les étapes lisibles : chacune est FAITE quand ses questions sont répondues ; on fête chacune une fois (réarmées après « إعادة »)
+  const stepDone = steps.map((st) => (cpActive ? doneIds.has(st.id) : st.reached));
+  const stepper = <LabStepper count={steps.length} current={stepDone.includes(false) ? stepDone.indexOf(false) : steps.length - 1} done={stepDone} stepAttr="data-sh-step" />;
+  const party = useStepCelebration();
+  const celebrated = useRef({ inits, set: new Set() });
+  if (celebrated.current.inits !== inits) celebrated.current = { inits, set: new Set() };
+  const doneKey = stepDone.join('');
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.set.has(i)) return;
+      celebrated.current.set.add(i);
+      party.celebrate({ n: i + 1, total: steps.length });
+    });
+  }, [doneKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const sheetGlance = (
     <div className="space-y-2" data-sh-glance>
+      {stepper}
       <ScreenFrame file={lab.saved ? (fileName ?? k('defaultFile')) : null} sheetName={k('sheetName')}>
         <div className={compact ? 'space-y-1 p-1.5' : 'space-y-2 p-1.5'}>
           {barRow}
@@ -426,6 +483,8 @@ export default function SheetLab({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={cpActive}
       hints={[k(inEntry ? 'hint1Entry' : 'hint1'), k('hint2'), k(hasMedian ? 'hint3' : 'hint3Beginner')].map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={!chartsOpen && (
@@ -455,7 +514,10 @@ export default function SheetLab({
           data-verified={L.verifiedCount(lab)} data-layout={wide ? 'wide' : narrow ? 'narrow' : 'stack'} data-per-row={per} data-world={theme}>
           {chartsOpen
             ? <ChartStage lab={lab} setLab={setLab} k={k} narrow={narrow} width={width} screenH={screenH} />
-            : <>{sheetGlance}{nextCard}</>}
+            : <>
+              <div className="relative">{party.node}{cp.node}{sheetGlance}</div>
+              {nextCard}
+            </>}
           {!chartsOpen && (
             <LabFold id="sheet-lab.trials" title={k('trialsTitle')}>
               <Trials lab={lab} k={k} indicator={indicator} />
@@ -720,3 +782,125 @@ function DrawnChart({ data, ok, height, width, k }) {
     </svg>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+export const ENTRY_CHAIN = Object.freeze(['cells', 'range']);
+export const ROW_CHAIN = Object.freeze(['miss', 'follow']);
+export const EDIT_CHAIN = Object.freeze(['howMany', 'rule']);
+/** La suite de questions d'une étape (`entry` · `row<r>` · `edit`). */
+export const chainOf = (id) => (id === 'entry' ? ENTRY_CHAIN : id === 'edit' ? EDIT_CHAIN : ROW_CHAIN);
+
+/** « أعِد التجربة » : l'étape `id` recommence. */
+function retryStep(s, id, make) {
+  if (id === 'entry') return make();
+  if (id === 'edit') {
+    const base = { ...s, values: s.target.slice(), edits: [], contrast: false, recalc: false, last: null };
+    return { ...base, snapshot: s.rows.map((_, r) => L.rowValue(base, r)), bar: '', barTarget: { kind: 'none' } };
+  }
+  const r = Number(id.slice(3));
+  return {
+    ...s, last: null, active: r, barTarget: { kind: 'row', r }, bar: '',
+    rows: s.rows.map((row, i) => (i === r ? { ...row, formula: null, status: null, hand: null, handText: '' } : row)),
+  };
+}
+
+const code = (t) => <code dir="ltr" className="font-mono">{t}</code>;
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+
+/** Chaque question est construite sur LES cellules et LES دساتير de l'élève (rien en dur) ; `k` : les textes de `sheetLab`. */
+export const QUESTIONS = {
+  cells: (lab, k) => {
+    const o = { n: lab.n, range: ISO(`A1:${L.addr(lab.n - 1)}`) };
+    return {
+      id: 'cells', kind: 'number', expected: String(lab.n), answer: <MathText>{`$${lab.n}$`}</MathText>,
+      prompt: Mx(k, 'cells.prompt', o), hints: [Mx(k, 'cells.hint1', o), Mx(k, 'cells.hint2', o)],
+      explain: Mx(k, 'cells.explain', o),
+    };
+  },
+  range: (lab, k) => {
+    const last = L.addr(lab.n - 1);
+    const o = { first: 'A1', last, dash: ISO(`A1-${last}`), slash: ISO(`A1/${last}`), good: ISO(`A1:${last}`) };
+    return {
+      id: 'range', kind: 'choice',
+      prompt: Mx(k, 'range.prompt', o),
+      options: [
+        { text: code(`A1-${last}`), why: Mx(k, 'range.whyDash', o) },
+        { text: code(`A1:${last}`), correct: true },
+        { text: code(`A1/${last}`), why: Mx(k, 'range.whySlash', o) },
+      ],
+      hints: [Mx(k, 'range.hint1', o), Mx(k, 'range.hint2', o)],
+      explain: Mx(k, 'range.explain', o),
+    };
+  },
+  miss: (lab, k, { r }) => {
+    const row = lab.rows[r];
+    const full = L.truth(row.kind, lab.values);
+    const same = (x, y) => (x?.error || y?.error ? x?.error === y?.error : L.cellText(x) === L.cellText(y));
+    // la cellule oubliée : la dernière, sinon la première — celle qui fait changer le résultat quand l'une des deux le fait
+    const lastI = lab.n - 1;
+    const cands = [
+      { i: lastI, vals: lab.values.slice(0, -1), range: `A1:${L.addr(lab.n - 2)}` },
+      { i: 0, vals: lab.values.slice(1), range: `B1:${L.addr(lastI)}` },
+    ];
+    const pick = cands.find((c) => !same(full, L.truth(row.kind, c.vals))) ?? cands[0];
+    const cut = L.truth(row.kind, pick.vals);
+    const changes = !same(full, cut);
+    const o = { name: k(`kind_${row.kind}`), last: L.addr(pick.i), v: ISO(L.cellText(lab.values[pick.i])), a: ISO(L.cellText(full)), b: ISO(L.cellText(cut)), range: ISO(pick.range) };
+    return {
+      id: 'miss', kind: 'choice',
+      prompt: Mx(k, 'miss.prompt', o),
+      options: [
+        { text: Mx(k, 'miss.changes', o), ...(changes ? { correct: true } : { why: Mx(k, 'miss.whyChanges', o) }) },
+        { text: Mx(k, 'miss.same', o), ...(changes ? { why: Mx(k, 'miss.whySame', o) } : { correct: true }) },
+        { text: Mx(k, 'miss.error', o), why: Mx(k, 'miss.whyError', o) },
+      ],
+      hints: [Mx(k, 'miss.hint1', o), Mx(k, 'miss.hint2', o)],
+      explain: Mx(k, changes ? 'miss.explainChanges' : 'miss.explainSame', o),
+    };
+  },
+  follow: (lab, k, { r }) => {
+    const o = { b: ISO(`B${r + 2}`), c: ISO(`C${r + 2}`), name: k(`kind_${lab.rows[r].kind}`) };
+    return {
+      id: 'follow', kind: 'choice',
+      prompt: Mx(k, 'follow.prompt', o),
+      options: [
+        { text: Mx(k, 'follow.c', o), why: Mx(k, 'follow.whyC', o) },
+        { text: Mx(k, 'follow.b', o), correct: true },
+        { text: Mx(k, 'follow.both', o), why: Mx(k, 'follow.whyBoth', o) },
+      ],
+      hints: [Mx(k, 'follow.hint1', o), Mx(k, 'follow.hint2', o)],
+      explain: Mx(k, 'follow.explain', o),
+    };
+  },
+  howMany: (lab, k) => {
+    const same = (x, y) => (x?.error || y?.error ? x?.error === y?.error : L.cellText(x) === L.cellText(y));
+    const movers = lab.rows.filter((_, r) => !same(L.rowValue(lab, r), lab.snapshot[r])).length;
+    const ed = lab.edits[lab.edits.length - 1];
+    const o = { cell: ISO(ed?.cell ?? ''), v: ISO(ed?.value ?? ''), n: lab.rows.length, movers };
+    return {
+      id: 'howMany', kind: 'number', expected: String(movers), answer: <MathText>{`$${movers}$`}</MathText>,
+      prompt: Mx(k, 'howMany.prompt', o), hints: [Mx(k, 'howMany.hint1', o), Mx(k, 'howMany.hint2', o)],
+      explain: Mx(k, 'howMany.explain', o),
+    };
+  },
+  rule: (lab, k) => {
+    const hasMedian = lab.rows.some((r) => r.kind === 'median');
+    const meanRow = lab.rows.findIndex((r) => r.kind === 'mean');
+    const medRow = lab.rows.findIndex((r) => r.kind === 'median');
+    const lastEdit = lab.edits[lab.edits.length - 1];
+    const now = (r) => L.cellText(L.rowValue(lab, r));
+    const was = (r) => (lab.snapshot ? L.cellText(lab.snapshot[r]) : '');
+    const opts = [{ text: k(hasMedian ? 'dRight' : 'dRightBeginner'), correct: true }];
+    opts.push({ text: k('dHand'), why: k('dWhyHand', { c: ISO(`C${(meanRow >= 0 ? meanRow : 0) + 2}`), h: ISO(L.cellText(lab.rows[meanRow >= 0 ? meanRow : 0].hand)) }) });
+    if (hasMedian && medRow >= 0) opts.push({ text: k('dMedianMoves'), why: k('dWhyMedian', { b: ISO(`B${medRow + 2}`), v: ISO(now(medRow)) }) });
+    if (meanRow >= 0) opts.push({ text: k('dRetype'), why: k('dWhyRetype', { b: ISO(`B${meanRow + 2}`), was: ISO(was(meanRow)), v: ISO(now(meanRow)) }) });
+    return {
+      id: 'rule', kind: 'choice',
+      prompt: <MathText>{k('dPrompt', { cell: ISO(lastEdit?.cell ?? '') })}</MathText>,
+      options: opts.map((o) => ({ ...o, text: <MathText>{o.text}</MathText>, ...(o.why ? { why: <MathText>{o.why}</MathText> } : {}) })),
+      hints: [Mx(k, 'rule.hint1', {}), Mx(k, 'rule.hint2', {})],
+      explain: <MathText>{k(hasMedian ? 'fRule' : 'fRuleBeginner')}</MathText>,
+    };
+  },
+};

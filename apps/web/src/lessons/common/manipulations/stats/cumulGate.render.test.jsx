@@ -1,8 +1,10 @@
-import { it, expect } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
-import CumulGate from './CumulGate';
+import i18n from '../../../../i18n';
+import CumulGate, { CHAINS, QUESTIONS } from './CumulGate';
+import * as L from '../logic/cumulGate';
 import ManipulationWorkspace from '../ManipulationWorkspace';
 import manipulationAr from '../../../../i18n/locales/ar/lesson.manipulation.json';
 import source from './CumulGate.jsx?raw';
@@ -68,4 +70,46 @@ it('valeurs par défaut : le seuil s’ouvre sous la plus petite taille (117), p
   const html = renderToString(<CumulGate series="120:2|130:3|140:2|150:1" mode="up|down" theme="funpark" />);
   expect(html).toContain('data-t="117"');
   expect(html).not.toContain('data-lit="true"');
+});
+
+describe('cumul-gate — questions pendant le labo (LabCheckpoint)', () => {
+  const RAW = /manipulation\.[a-zA-Z]/;
+  const k = (key, o) => i18n.t(`lesson:manipulation.cumulGate.${key}`, o);
+  const build = (series, claims) => {
+    let s = L.init({ series, mode: 'up|down' });
+    for (const [t, side, n] of claims) s = L.claim(s, t, side, n);
+    return s;
+  };
+  const check = (s, chain, label) => {
+    for (const qid of chain) {
+      const q = QUESTIONS[qid](s, k);
+      const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+      expect(out, `${label}.${qid}`).not.toMatch(RAW);
+      expect(out, `${label}.${qid}`).not.toContain('{{');
+      expect(q.hints, `${label}.${qid}`).toHaveLength(2);
+      if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${label}.${qid}`).toHaveLength(1);
+      else expect(q.expected).toBeTruthy();
+    }
+  };
+
+  it('s1 (un compte sur une valeur, puis hors série) et s2 (deux côtés) : textes, 2 indices, une bonne réponse', () => {
+    const SER = '120:2|130:3|140:2|150:1';
+    check(build(SER, [[130, 'up', '5']]), CHAINS.s1, 's1-valeur');
+    check(build(SER, [[125, 'up', '2']]), CHAINS.s1, 's1-horsserie');
+    const both = build(SER, [[130, 'up', '5'], [130, 'down', '6']]);
+    check(both, CHAINS.s2, 's2');
+    expect(QUESTIONS.other(build(SER, [[130, 'up', '5']]), k).expected).toBe('3');   // 8 − 5
+    expect(QUESTIONS.sum(both, k).expected).toBe('11');
+    expect(QUESTIONS.extra(both, k).expected).toBe('3');                                // 11 − 8 = f(130)
+    expect(QUESTIONS.incl(build(SER, [[125, 'up', '2']]), k).kind).toBe('number');
+  });
+
+  it('mode guidé : ni la progression جرّب › اكتشف ni « تلميح » ; deux étapes et l’interrupteur enseignant sont montés', () => {
+    const out = renderToString(<CumulGate series="120:2|130:3|140:2|150:1" mode="up|down" theme="funpark" />);
+    expect(out).not.toContain('data-manipulation-progress');
+    expect(out).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    expect((out.match(/data-cg-step=/g) ?? []).length).toBe(2);
+    const off = renderToString(<CumulGate series="120:2|130:3|140:2|150:1" mode="up|down" theme="funpark" checkpoints={false} />);
+    expect(off).toContain('data-manipulation-progress');
+  });
 });
