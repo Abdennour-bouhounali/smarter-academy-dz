@@ -849,6 +849,9 @@ lesson along [`../reports/LAB_PROTOTYPE_ROLLOUT.md`](../reports/LAB_PROTOTYPE_RO
   **Authoring `memo.quiz`:** each distractor is a REAL mistake of the rule (not flipped, both flipped, the opposite instead of the
   inverse…), never a random number; each option compiles in KaTeX (`memoQuiz.test.js`).
 - An item without `memo` shows its `summary` in the tile: any lesson can switch, the card improves when the author writes `memo`.
+- **Width of `memo.rule` (measured 2026-10-28):** about 12–14 symbols at 1366 px, no « … »; the box shrinks when `memo.example` is long and a longer formula
+  is clipped or overlaps its example. A long identity may go on three lines with `aligned`. Measure it in the browser (teacher view, `[data-memo-tile]`), don't estimate.
+  Keep `hook`/`trap`/`exam` to words: `<`, `>`, signed numbers and Latin letters reorder inside Arabic text.
 - **Authoring `memo`:** the rule in symbols (letters a, b, c, d, x), never a sentence; the example with the lesson's OWN numbers; a trap that
   names the real mistake; no fraction inside a sentence (`trap`, `exam`, `hook` stay one line — put formulas in `rule` / `example`).
   Every `rule`, `example`, `chip` must compile in KaTeX strict (`memoCard.render.test.jsx`).

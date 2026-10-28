@@ -2308,6 +2308,11 @@ questions of the module keep their non-blocking policy (`check:non-blocking` pas
 per question), the question large and centred, choice options as big cards — three across for formulas (`cols: 3`), full-width rows
 for sentences — each with its number (keys 1 2 3 answer), a large number field, larger feedback, the actions in a bottom bar.
 
+**Typed answers are never negative (2026-10-28).** `labCheckpoint.readNumber` reads a non-negative exact rational; a question whose answer is signed (`−3`)
+must be a `choice` question. Allowing a typed negative is a change to this primitive, not to a lab.
+**The teacher switch must be mounted (2026-10-28).** `useLabCheckpointSettings(type)` returns `control`; the lab passes it to the shell as
+`headerAction={s.control}` — calling the hook alone gives the teacher no way to switch the questions off (`lab-rollout-status.mjs` checks the `switch` column).
+
 **Only the steps (2026-10-28, owner).** A lab whose in-lab questions are active passes `guided` to `ManipulationShell`: no
 « جرّب › اكتشف › صِغ القاعدة » progress and no « تلميح » button (in the page and in the full-screen bar) — the questions guide the student,
 the lab shows only its own steps (`LabStepper`). Questions off (teacher, or a world without a chain) → `guided` false, both come back.

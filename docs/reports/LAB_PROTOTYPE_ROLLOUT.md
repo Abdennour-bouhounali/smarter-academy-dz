@@ -45,7 +45,8 @@
   `QUESTIONS` (id → constructeur) dans le fichier du labo ; textes dans `lesson.manipulation.json › <labo>.cp.*`. Chaque question : 2
   indices, une seule bonne option (`choice`) ou `expected` (`number`), `explain`. `canNext && !cp.blocking`. `onRetry` remet LA MÊME tâche.
   Un labo SANS tâches successives (une seule scène libre) : une suite unique quand l'objectif est atteint.
-- **L2 — Réglage enseignant** : `const s = useLabCheckpointSettings('<type>')` ; `chain` seulement si `s.enabled` ; `headerAction={s.control}`.
+- **L2 — Réglage enseignant** : `const s = useLabCheckpointSettings('<type>')` ; `chain` seulement si `s.enabled` ; `headerAction={s.control}` sur le
+  `ManipulationShell` — appeler le hook SANS monter `control` ne sert à rien (c'était le cas de dix labos du lot 1 : le script exige maintenant la colonne « switch »).
 - **L3 — Étapes lisibles** : `<LabStepper count current done stepAttr="data-<préfixe>-step" />` remplace les pastilles du labo ; une étape
   est FAITE quand l'objectif est atteint ET ses questions répondues.
 - **L4 — Fête** : `useStepCelebration()` ; `celebrate({ n, total })` une fois par étape (réarmée après « إعادة ») ; `{party.node}` dans le bloc `relative`.
@@ -156,26 +157,26 @@ reste L1 pour le monde `reverse` (module 2) et le niveau متقدم de `gear-cra
 
 | # | Leçon | Année | Labo(s) | Cartes | Connaissances | État |
 |---|---|---|---|---|---|---|
-| 1 | `kitabat-adad-tabii` | 1am | `rank-exchange` | 5 | 7 | ⬜ |
-| 2 | `kusur-ashriya-kitaba` | 1am | `decimal-comma` | 5 | 9 | ⬜ |
-| 3 | `muqaranat-adad-ashriya` | 1am | `ruler-compare` | 4 | 5 | ⬜ |
-| 4 | `qawaid-qabiliyat-qisma` | 1am | `digit-cards` | 5 | 5 | ⬜ |
-| 5 | `qisma-iqlidiya-baqi` | 1am | `division-jumps` | 4 | 4 | ⬜ |
-| 6 | `mana-jam-tarh` | 1am | `story-bars` | 4 | 4 | ⬜ |
-| 7 | `hasil-qisma-kasr` | 1am | `fair-share` | 4 | 4 | ⬜ |
-| 8 | `ikhtizal-kitaba-kasriya` | 1am | `fraction-knife` | 5 | 4 | ⬜ |
-| 9 | `masahat-muhit-sath` | 1am | `tile-yard` | 4 | 7 | ⬜ |
-| 10 | `muqarana-nisbiya` | 2am | `zero-probe` | 4 | 6 | ⬜ |
-| 11 | `qisma-iqlidiya-hasr` | 2am | `egg-trays` | 4 | 5 | ⬜ |
-| 12 | `rabi-mutanasib` | 2am | `fourth-gauges` | 4 | 6 | ⬜ |
-| 13 | `jidaa-adadayn-nisbiyayn` | 3am | `elevator-reel`, `sign-machine` | 4 | 6 | ⬜ |
-| 14 | `jidaa-ida-nisbiya` | 3am | `robot-track` | 4 | 6 | ⬜ |
-| 15 | `qismat-nisbiyayn` | 3am | `code-lockers` | 4 | 7 | ⬜ |
-| 16 | `wadiya-idmajiya-aadad-nisbiya` | 3am | — (synthèse) | 1 | 3 | ⬜ |
-| 17 | `muqaranat-natiqayn` | 3am | `difference-meter` | 4 | 6 | ⬜ |
-| 18 | `nashr-jabri-3am` | 3am | `area-split` | 4 | 8 | ⬜ |
-| 19 | `qimat-ibara-harfiya` | 3am | `marble-run` | 4 | 7 | ⬜ |
-| 20 | `tabsit-hadhf-aqwas` | 3am | `like-terms` | 4 | 8 | ⬜ |
+| 1 | `kitabat-adad-tabii` | 1am | `rank-exchange` | 5 | 7 | ✅ |
+| 2 | `kusur-ashriya-kitaba` | 1am | `decimal-comma` | 5 | 9 | ✅ |
+| 3 | `muqaranat-adad-ashriya` | 1am | `ruler-compare` | 4 | 5 | ✅ |
+| 4 | `qawaid-qabiliyat-qisma` | 1am | `digit-cards` | 5 | 5 | ✅ |
+| 5 | `qisma-iqlidiya-baqi` | 1am | `division-jumps` | 4 | 4 | ✅ |
+| 6 | `mana-jam-tarh` | 1am | `story-bars` | 4 | 4 | ✅ |
+| 7 | `hasil-qisma-kasr` | 1am | `fair-share` | 4 | 4 | ✅ |
+| 8 | `ikhtizal-kitaba-kasriya` | 1am | `fraction-knife` | 5 | 4 | ✅ |
+| 9 | `masahat-muhit-sath` | 1am | `tile-yard` | 4 | 7 | ✅ |
+| 10 | `muqarana-nisbiya` | 2am | `zero-probe` | 4 | 6 | ✅ |
+| 11 | `qisma-iqlidiya-hasr` | 2am | `egg-trays` | 4 | 5 | ✅ |
+| 12 | `rabi-mutanasib` | 2am | `fourth-gauges` | 4 | 6 | ✅ |
+| 13 | `jidaa-adadayn-nisbiyayn` | 3am | `elevator-reel`, `sign-machine` | 4 | 6 | ✅ |
+| 14 | `jidaa-ida-nisbiya` | 3am | `robot-track` | 4 | 6 | ✅ |
+| 15 | `qismat-nisbiyayn` | 3am | `code-lockers` | 4 | 7 | ✅ |
+| 16 | `wadiya-idmajiya-aadad-nisbiya` | 3am | — (synthèse) | 1 | 3 | ✅ |
+| 17 | `muqaranat-natiqayn` | 3am | `difference-meter` | 4 | 6 | ✅ |
+| 18 | `nashr-jabri-3am` | 3am | `area-split` | 4 | 8 | ✅ |
+| 19 | `qimat-ibara-harfiya` | 3am | `marble-run` | 4 | 7 | ✅ |
+| 20 | `tabsit-hadhf-aqwas` | 3am | `like-terms` | 4 | 8 | ✅ |
 
 ### Lot 2 — 20 leçons · 79 connaissances · 62 cartes · 15 labos
 
@@ -319,15 +320,18 @@ Labos enregistrés mais utilisés par aucune leçon : `divisor-explorer`, `thale
 | Session | Date | Lot | Leçons faites | Labos faits | Notes |
 |---|---|---|---|---|---|
 | 0 | 2026-10-28 | — | 1/112 (prototype) | 1/98 | plan, script d'état, test `memoContent` ; commit `b480b2b8` |
+| 1 | 2026-10-28 | 1 | 21/112 (prototype + 20 du lot 1) | 21/98 (les 20 labos du lot 1) | lot 1 fait, 1 session : leçon 1 en direct, leçons 2–20 par 5 sous-agents en parallèle (A 2–5, B 6–9, C 10–12 + 16, D 13–15, E 17–20). L9 `guided` reçu en cours de route et appliqué aux 20. Commits `e9d6bca9` … `1fc0cbb6` + le correctif « switch ». Suite complète 697 fichiers / 13 523 tests ; `check-non-blocking`, audit des dépendances, `check:katex`, `check:entry-budget` 236,6 Ko : verts. Hors périmètre signalé : références au manuel dans les briefs de `ikhtizal-kitaba-kasriya` (Module00/02/03/04/05). |
 
 ### Prompt de la session suivante (à copier tel quel)
 
 ```
-Déploiement du prototype de labo — LOT 1.
-Lis docs/reports/LAB_PROTOTYPE_ROLLOUT.md (§0 à §6 et le lot 1 du §7) et rien d'autre en dehors de ce qu'il cite.
-Lance `node apps/web/scripts/lab-rollout-status.mjs --batch 1`, puis traite les leçons du lot dans l'ordre, chacune selon la
-procédure du §3 (audit → ce qui marche déjà → mise à jour → tests → navigateur → corrections, jusqu'à 100 %).
-Commit tous les ~5 leçons ; en fin de session : contrôles du §3, push sur dev, mise à jour du §9 et du prompt de la session suivante.
+Déploiement du prototype de labo — LOT 2.
+Lis docs/reports/LAB_PROTOTYPE_ROLLOUT.md (§0 à §6, le lot 2 du §7 et le §10) et rien d'autre en dehors de ce qu'il cite.
+Lance `node apps/web/scripts/lab-rollout-status.mjs --batch 2`, puis traite les leçons du lot dans l'ordre, chacune selon la
+procédure du §3 (audit → ce qui marche déjà → mise à jour → tests → navigateur → corrections, jusqu'à 100 %, L1–L9 + colonne « switch »).
+Le lot 1 a été fait avec UNE leçon en direct puis 5 sous-agents en parallèle ; le §10 dit comment éviter ce qui a mal tourné.
+Commit par groupe de ~4 leçons ; en fin de session : contrôles du §3 (les scripts se lancent depuis la RACINE du dépôt),
+push sur dev, mise à jour du §9 et du prompt de la session suivante.
 ```
 
 ---
@@ -343,3 +347,23 @@ Commit tous les ~5 leçons ; en fin de session : contrôles du §3, push sur dev
   les coupe, pour son compte).
 - La place de la bonne réponse du défi est équilibrée par `answerSlots` : ne pas réintroduire un mélange au hasard.
 - `GateGuard` (crochet local) demande des « faits » avant la 1re écriture d'un fichier : les donner en une phrase et réessayer.
+- **Parallèle (sous-agents)** : le serveur de dev partagé recharge la page à chaque écriture d'un autre agent (JSON i18n, fichiers) → sondes qui
+  échouent au hasard (« navigated », « detached », notes négatives). Sonder sur un Vite PRIVÉ sans HMR ni watch (`server: { hmr: false, watch: null }`,
+  autre port) ou sur `vite build` + `vite preview` (`NODE_OPTIONS=--max-old-space-size=8192`, ~2 min). Ne jamais déduire un bogue d'une seule sonde ratée.
+- **`lesson.manipulation.json`** : une seule écriture à la fois, sous verrou (`flock`) — un script de fusion `<chemin pointé> <fragment.json>` ; jamais un `json.dump`
+  global fait par deux agents. Idem pour tout fichier partagé.
+- **Le script d'état ne remplace pas la vérification** : il ne voyait pas que dix labos appelaient `useLabCheckpointSettings` sans monter `control`
+  (colonne « switch » ajoutée). Quand une exigence n'a pas de colonne, ajouter la colonne AVANT de déclarer ✅.
+- **Un élève ne peut pas ouvrir un module verrouillé** (module 4…) en semant le `localStorage` : sonder ces modules en ENSEIGNANT (les questions y restent actives).
+- **Deux niveaux montés** (`ManipulationWorkspace`) : la copie masquée est souvent la 1re du DOM → sélecteurs `:visible` et niveau actif.
+- **`\\;` dans un script** : arrive en `\;` et s'affiche « ;; » ; utiliser `\\quad` ou `\\,`. Le script d'insertion des `memo` refuse tout antislash simple.
+- **Largeur du `rule` d'une fiche** : ≈ 12–14 symboles, sans « … » ; la boîte rétrécit si l'`example` est long. Mesurer le débordement dans le navigateur
+  (teacher view, `[data-memo-tile]`), ne pas l'estimer. Une identité longue peut passer sur 3 lignes (`aligned`).
+- **Bidi dans `hook`/`trap`/`exam`** : `<`, `>`, « −5 », une lettre latine (« في b ») ou une équation s'y réordonnent → mots seulement ; formules dans `rule`/`example`.
+- **`readNumber` refuse les réponses NÉGATIVES** (`labCheckpoint.js`) : toute réponse signée est une question `choice`. (Ouvrir les négatifs = modifier la primitive : décision à part.)
+- **`retryTask`** doit effacer le drapeau « fait » de la tâche, sinon la carte se rouvre aussitôt après « أعِد التجربة » ; une tâche dont l'objectif est gardé dans un carnet
+  (tile-yard) doit aussi retirer l'entrée gardée, sinon le refaire est refusé comme doublon.
+- **« إعادة »** : plusieurs labos (digit-cards, division-jumps, area-split, marble-run, like-terms…) ignoraient `resetCount` dans la clé de scène → rien ne repartait.
+- **Questions construites trop tôt** : un constructeur qui lit un résultat pas encore rempli fait planter le premier rendu → ne construire qu'une fois l'étape atteinte.
+- **Tests de garde anti-règle** : certains labos interdisent des mots (« الكتاب », « معدوم »…) avant la règle ; les chaînes `cp.*` comptent, et « الكتابة » est attrapé par « الكتاب ».
+- **Le sélecteur `data-done`** est aussi posé par `LabStepper` : un test qui compte `data-done` doit le tolérer.
