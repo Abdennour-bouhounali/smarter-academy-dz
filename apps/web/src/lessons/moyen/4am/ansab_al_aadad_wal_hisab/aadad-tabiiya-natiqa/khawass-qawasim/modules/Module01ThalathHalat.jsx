@@ -29,7 +29,11 @@ import { ACTIVITY } from '../content/textbook';
 export default function Module01ThalathHalat() {
   const [c1, setC1] = useState(false);
   const [c2, setC2] = useState(false);
-  const [q1, setQ1] = useState(false);
+  const [trials, setTrials] = useState([]);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : l'étape 1 en garde la TRACE (`checkpoint-done`), puis pose le nom (brique)
+  const answered = (id) => trials.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const record = (e) => setTrials((list) => [...list, e]);
+  const q1 = answered('sum') && answered('diff');
   const [conj, setConj] = useState(false);
   const [{ a, b, n }, c2v, c3v] = ACTIVITY.cases;
   return (
@@ -40,10 +44,10 @@ export default function Module01ThalathHalat() {
         <ManipulationWorkspace
           levels={{
             beginner: () => (
-              <Manipulation type="divisor-properties" n={n} a={a} b={b} onFinished={() => setC1(true)} />
+              <Manipulation type="divisor-properties" n={n} a={a} b={b} onTrial={record} onFinished={() => setC1(true)} />
             ),
             advanced: () => (
-              <Manipulation type="divisor-properties" n={9} a={900} b={90} onFinished={() => setC1(true)} />
+              <Manipulation type="divisor-properties" n={9} a={900} b={90} onTrial={record} onFinished={() => setC1(true)} />
             ),
           }}
         />
@@ -53,14 +57,10 @@ export default function Module01ThalathHalat() {
           content: (
             <div className="space-y-3">
               <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={c1 ? 'true' : 'false'}>
-                {c1
-                  ? <span className="font-bold text-slate-800">بنيتَ الجدران الثلاثة في المناولة.</span>
-                  : <span className="text-slate-500">لم تُنهِ بناء الجدران الثلاثة في المناولة بعد: ألصق جدار b، انزعه، ثم قِس به جدار a.</span>}
+                {q1
+                  ? <span className="font-bold text-slate-800">أجبتَ في المختبر: عندما ألصقتَ الجدارين أو نزعتَ أحدهما من الآخر لم يظهر نصف طوبة، لأنّ كل جدار مبنيّ بعدد صحيح من الطوب.</span>
+                  : <span className="text-slate-500">لم تُنهِ الجدارين الأولين في المناولة بعد: ألصق جدار b، ثم انزعه، وأجب عن الأسئلة التي تظهر فوق المختبر.</span>}
               </p>
-              <TapQuestion prompt={<span>عندما ألصقتَ الجدارين أو نزعتَ أحدهما من الآخر، لم يظهر نصف طوبة أبدًا. لماذا؟</span>}
-                options={['كل جدار مبنيّ بعدد صحيح من الطوب، فجمعهما أو نزع أحدهما يترك أيضًا عددًا صحيحًا من الطوب', 'لأن الجدارين متساويان في الطول', 'لأن مجموع الطولين أكبر من كل منهما', 'لأن طول الطوبة أصغر من طول الجدارين']} correct={0} cols={1}
-                explain={<span>طول كل جدار هو <MathText>{'$n \\times q$'}</MathText> بعدد صحيح q من الطوب؛ والمجموع والفرق عدد صحيح من الطوب أيضًا.</span>}
-                onAnswered={() => setQ1(true)} />
               {q1 && <KnowledgeBrick id="qasim-mushtarak-rappel" variant="rappel" compact />}
             </div>
           ) },
@@ -83,7 +83,7 @@ export default function Module01ThalathHalat() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

@@ -21,8 +21,11 @@ const [remSiyagh, remWahid, remNafsuh] = KNOWLEDGE.remarks;
 
 export default function Module02Maarif() {
   const [tried, setTried] = useState({});
-  const [q1, setQ1] = useState(false);
-  const [q2, setQ2] = useState(false);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : la trace des réponses de l'élève
+  const [trials, setTrials] = useState([]);
+  const answered = (id) => trials.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const q1 = answered('first');
+  const q2 = answered('contrast');
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
 
@@ -48,6 +51,7 @@ export default function Module02Maarif() {
           title="مثال الكتاب: 143 كتابًا"
           lead="143 كتابًا في رفوف متساوية. ضع الرفّ على 11 كتابًا ثم على 13: ماذا يحدث للأرض في المرّتين؟"
           onVerdict={({ b, quotient, remainder }) => setTried((t) => ({ ...t, [b]: { quotient, remainder } }))}
+          onTrial={(e) => setTrials((l) => [...l, e])}
         />
       }
       steps={[
@@ -64,13 +68,7 @@ export default function Module02Maarif() {
                   </li>
                 ))}
               </ul>
-              <TapQuestion
-                prompt={<span>عند وضع الرفّ على 11 لم يبقَ كتاب على الأرض. ما الذي يجعل 11 قاسمًا للعدد 143؟</span>}
-                options={['حاصل القسمة 13 عدد فردي', 'باقي القسمة الإقليدية لـ 143 على 11 معدوم', '143 أكبر من 11', '11 عدد أولي']}
-                correct={1} cols={1} requires={['qasim-baqi']}
-                explain={<span>التعريف كله في الباقي: <MathText>{'$143 = 11 \\times 13 + 0$'}</MathText>.</span>}
-                onAnswered={() => setQ1(true)}
-              />
+              {!q1 && <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm text-slate-500" data-evidence="first-todo">ضع الرفّ على 11 ثم أجب عن الأسئلة التي تظهر فوق المختبر. التعريف كله في الباقي: باقي القسمة الإقليدية يحسم الأمر.</p>}
               {q1 && (
                 <>
                   <TextbookBox kind="definition" text={defBaqi.text} source={KNOWLEDGE.source} />
@@ -84,13 +82,7 @@ export default function Module02Maarif() {
           num: 2, title: 'وماذا عن 13؟', subtitle: 'التعريف الثاني: بالجداء', done: q2,
           content: (
             <div className="space-y-3">
-              <TapQuestion
-                prompt={<span>على الرفّ نفسه فرغت الأرض مع 11 كتابًا في كل رفّ ومع 13 أيضًا: <MathText>{'$143 = 11 \\times 13 = 13 \\times 11$'}</MathText>. ماذا نستنتج بالنسبة إلى العدد 13؟</span>}
-                options={['13 قاسم للعدد 143 أيضًا', '13 ليس قاسمًا لأنه أكبر من 11', '13 مضاعف للعدد 143', 'لا نستنتج شيئًا عن 13']}
-                correct={0} cols={1} requires={['qasim-baqi']}
-                explain={<span>باقي قسمة 143 على 13 معدوم أيضًا: <MathText>{'$143 = 13 \\times 11 + 0$'}</MathText>.</span>}
-                onAnswered={() => setQ2(true)}
-              />
+              {!q2 && <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm text-slate-500" data-evidence="second-todo">ضع الرفّ على 13 أيضًا، وأجب عن أسئلة المختبر حتى النهاية.</p>}
               {q2 && (
                 <>
                   <KnowledgeBrick id="qasim-jidaa" lead="نفس الفكرة بكتابة أخرى: باقٍ معدوم يعني أن a هو جداء b في عدد طبيعي." />
@@ -143,7 +135,7 @@ export default function Module02Maarif() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={2} />}
+      footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />
   );
 }

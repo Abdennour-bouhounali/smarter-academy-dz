@@ -49,7 +49,7 @@ export default function Module01AlFuruq() {
             <div className="space-y-3">
               <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>
                 <li data-evidence="chain" data-tried={d1 ? 'true' : 'false'} className={d1 ? 'font-bold text-slate-800' : 'text-slate-500'}>
-                  {d1 ? 'أنهيتَ القصّ حتى صار الفرق معدومًا.' : 'لم تنهِ القصّ بعد: عُد إلى المناولة أعلاه واسحب الشريط الأصغر على الأكبر مرّة بعد مرّة.'}
+                  {d1 ? 'أنهيتَ القصّ حتى صار الفرق معدومًا.' : 'لم تنهِ القصّ بعد: عُد إلى المناولة أعلاه واسحب الشريط الأصغر على الأكبر مرّة بعد مرّة، وأجب عن الأسئلة التي تظهر فوق المختبر.'}
                 </li>
               </ul>
               <TapQuestion prompt={<span>قصصتَ الشريط الأصغر من الأكبر مرّة بعد مرّة، وبقي القاسم المشترك الأكبر للشريطين كما هو. لماذا مثلًا <MathText>{'$\\mathrm{PGCD}(252\\ ;\\ 140) = \\mathrm{PGCD}(140\\ ;\\ 112)$'}</MathText>؟</span>}
@@ -71,7 +71,7 @@ export default function Module01AlFuruq() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

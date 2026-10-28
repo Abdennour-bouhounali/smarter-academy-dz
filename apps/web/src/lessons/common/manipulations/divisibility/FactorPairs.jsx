@@ -11,6 +11,11 @@ import EquationDisplay from '../primitives/EquationDisplay';
 import DivisorSet from '../primitives/DivisorSet';
 import { BOOK_PALETTE } from '../primitives/BookFigure';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import MathText from '../../components/MathText';
 import * as L from '../logic/factorPairs';
 
 const { divisionTestBound } = divisibility;
@@ -43,7 +48,7 @@ const { divisionTestBound } = divisibility;
  * au-delà de √n étaient grisées d'avance — la règle d'arrêt était affichée
  * avant d'être découverte. Rien ici ne marque √n : c'est le carré qui le dit.
  */
-export default function FactorPairs({ n: n0, title, lead, mission, initialMode = 'student', allowModeSwitch = false, onFinished, coach: coachOn = true }) {
+export default function FactorPairs({ n: n0, title, lead, mission, initialMode = 'student', allowModeSwitch = false, onFinished, coach: coachOn = true, checkpoints: cpOn = true, onTrial }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.factorPairs.${key}`, o), [t]);
   const state = useManipulation({ type: 'factor-pairs', initialNumbers: { n: n0 }, initialMode, hintCount: 3 });
@@ -56,7 +61,9 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
   const [d, setD] = useState(() => L.defaultWidth(n0));
   const sceneKey = `${n}:${state.epoch}`;
   const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init({ n })); setD(L.defaultWidth(n)); }
+  const [doneIds, setDoneIds] = useState({});
+  const [retryN, setRetryN] = useState(0);
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init({ n })); setD(L.defaultWidth(n)); setDoneIds({}); }
 
   // Miroir synchrone de `lab` : « جرّب كل الإمكانيات » enchaîne des pas plus
   // vite qu'un rendu, il lui faut toujours le dernier état.
@@ -64,7 +71,52 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
   labRef.current = lab;
   const commit = useCallback((v) => { setD(v); setLab((s) => L.test(s, v)); }, []);
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le PREMIER essai de la scène (le tableau `tested` est trié par d, il ne garde pas l'ordre) : la 1re suite de questions s'y rapporte
+  const firstRef = useRef(null);
+  if (lab.tested.length === 0) firstRef.current = null;
+  else if (firstRef.current == null) firstRef.current = lab.tested.find((x) => x.d === lab.cols) ?? lab.tested[0];
+  // les questions pendant le labo : obligatoires pour tout élève, l'enseignant seul les coupe pour SON compte
+  const cpSettings = useLabCheckpointSettings('factor-pairs');
+  const cpLive = cpOn && cpSettings.enabled;
+  const cpId = cpLive ? (ready ? 'rule' : lab.tested.length > 0 ? 'first' : null) : null;
+  const chain = cpId ? CHAINS[cpId] : null;
+  const kq = (key, o) => t(`manipulation.factorPairs.${key}`, o);
+  const cp = useLabCheckpoint({
+    id: cpId,
+    questions: chain ? chain.map((q) => QUESTIONS[q]({ n, lab, first: firstRef.current }, kq)) : null,
+    reached: !!cpId,
+    resetKey: `${sceneKey}:${state.resetCount}:${retryN}`,
+    onRetry: () => { setLab(L.init({ n })); setD(L.defaultWidth(n)); setDoneIds({}); setRetryN((x) => x + 1); },
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((x) => ({ ...x, [id]: true }));
+      if (id === 'rule') { state.discover(); state.formalize(); }
+    },
+  });
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch, cpLive]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les étapes : un premier essai interrogé, puis la règle d'arrêt (le rectangle couché) et la règle
+  const stepDone = [!!doneIds.first || !!doneIds.rule || (!cpLive && lab.tested.length > 0), !!doneIds.rule || (!cpLive && ready)];
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.tested.length === 0 && celebrated.current.size) celebrated.current = new Set();
+  useEffect(() => {
+    stepDone.forEach((x, i) => {
+      if (!x || celebrated.current.has(i)) return;
+      celebrated.current.add(i);
+      party.celebrate({ n: i + 1, total: 2 });
+    });
+  }, [stepDone[0], stepDone[1]]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son du geste (muet sans « الصوت ») : un essai · un rectangle tamam · un rectangle couché · l'étape atteinte
+  const heard = useRef({ n: 0, ready: false });
+  useEffect(() => {
+    const h = heard.current;
+    if (lab.tested.length > h.n && lab.tested.length > 0) {
+      const last = lab.tested.find((x) => x.d === lab.cols);
+      if (last?.repeat) playSfx('over'); else if (last?.divides) playSfx('bell'); else playSfx('tooth');
+    }
+    h.n = lab.tested.length;
+  }, [lab.tested.length]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (ready && !heard.current.ready) playSfx('flag'); heard.current.ready = ready; }, [ready]);
   useEffect(() => { if (state.isFormal) state.report(onFinished, n); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // La place : la réglette prend toute la largeur ; le cadre est carré.
@@ -134,6 +186,8 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
       lead={n === n0 ? lead : null}
       state={state}
       coach={coachOn ? coach : null}
+      headerAction={cpSettings.control}
+      guided={!!chain || cpLive}
       freeLabAlwaysOpen
       freeLabLead={k('freeLead')}
       numberFields={[{ key: 'n', label: 'a' }]}
@@ -198,7 +252,10 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
       explanation={k('explanation')}
     >
       <ManipulationStage className="bg-gradient-to-b from-amber-50/50 to-white" data-dragging={stretch.dragging ? 'true' : undefined}>
-        <div ref={boxRef} className="space-y-3" data-factor-rectangle>
+        <div ref={boxRef} className="relative space-y-3" data-factor-rectangle>
+          {party.node}
+          {cp.node}
+          <LabStepper count={2} current={ready ? 1 : 0} done={stepDone} stepAttr="data-fp-step" />
           {/* ── LA RÉGLETTE : le nombre de livres par rangée, tenu au doigt ── */}
           <div {...stretch.trackProps} className="relative" style={{ ...stretch.trackProps.style, height: 66 }} data-width-ruler>
             <svg width={width} height={66} className="absolute inset-0" aria-hidden="true" focusable="false">
@@ -294,3 +351,66 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
     </ManipulationShell>
   );
 }
+
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+export const CHAINS = { first: ['rows', 'rest', 'verdict'], rule: ['pairsCount', 'turned', 'rule'] };
+
+const $ = (x) => `$${x}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+
+export const QUESTIONS = {
+  rows: ({ n, first }, k) => {
+    const d = first.d; const rows = Math.floor(n / d); const r = n % d;
+    const o = { n: $(n), d: $(d), rows: $(rows), eq: $(r ? `${n} = ${d} \\times ${rows} + ${r}` : `${n} = ${d} \\times ${rows}`) };
+    return { id: 'rows', kind: 'number', expected: String(rows), answer: <MathText>{$(rows)}</MathText>, prompt: Cq(k, 'rows.prompt', o), hints: [Cq(k, 'rows.hint1'), Cq(k, 'rows.hint2', o)], explain: Cq(k, 'rows.explain', o) };
+  },
+  rest: ({ n, first }, k) => {
+    const d = first.d; const r = n % d;
+    const o = { n: $(n), d: $(d), r: $(r), eq: $(`${n} = ${d} \\times ${Math.floor(n / d)} + ${r}`) };
+    return { id: 'rest', kind: 'number', expected: String(r), answer: <MathText>{$(r)}</MathText>, prompt: Cq(k, 'rest.prompt', o), hints: [Cq(k, 'rest.hint1'), Cq(k, 'rest.hint2')], explain: Cq(k, 'rest.explain', o) };
+  },
+  verdict: ({ n, first }, k) => {
+    const d = first.d; const r = n % d; const yes = r === 0;
+    const o = { n: $(n), d: $(d), r: $(r), e: $(Math.floor(n / d)) };
+    return {
+      id: 'verdict', kind: 'choice', cols: 1, prompt: Cq(k, 'verdict.prompt', o),
+      options: [
+        { text: Cq(k, 'verdict.yes'), correct: yes, why: yes ? undefined : Cq(k, 'verdict.whyYes', o) },
+        { text: Cq(k, 'verdict.no'), correct: !yes, why: yes ? Cq(k, 'verdict.whyNo', o) : undefined },
+        { text: Cq(k, 'verdict.wait'), why: Cq(k, 'verdict.whyWait', o) },
+      ],
+      hints: [Cq(k, 'verdict.hint1'), Cq(k, 'verdict.hint2')], explain: Cq(k, yes ? 'verdict.explainYes' : 'verdict.explainNo', o),
+    };
+  },
+  pairsCount: ({ lab }, k) => {
+    const c = lab.pairs.length;
+    const o = { c: $(c), list: $(lab.pairs.map((p) => `${p.small}\\times${p.big}`).join('\\ ;\\ ')) };
+    return { id: 'pairsCount', kind: 'number', expected: String(c), answer: <MathText>{$(c)}</MathText>, prompt: Cq(k, 'pairsCount.prompt'), hints: [Cq(k, 'pairsCount.hint1'), Cq(k, 'pairsCount.hint2')], explain: Cq(k, 'pairsCount.explain', o) };
+  },
+  turned: ({ n, lab }, k) => {
+    const t = lab.tested.find((x) => x.beyondBound && x.repeat);
+    const d = t.d; const e = n / d;
+    const o = { d: $(d), e: $(e), n: $(n), pair: $(`${e}\\times${d}`) };
+    return {
+      id: 'turned', kind: 'choice', cols: 1, prompt: Cq(k, 'turned.prompt', o),
+      options: [
+        { text: Cq(k, 'turned.new', o), why: Cq(k, 'turned.whyNew', o) },
+        { text: Cq(k, 'turned.same', o), correct: true },
+        { text: Cq(k, 'turned.none', o), why: Cq(k, 'turned.whyNone', o) },
+      ],
+      hints: [Cq(k, 'turned.hint1', o), Cq(k, 'turned.hint2', o)], explain: Cq(k, 'turned.explain', o),
+    };
+  },
+  rule: ({ n }, k) => ({
+    id: 'rule', kind: 'choice', prompt: <MathText>{k('discoverPrompt')}</MathText>,
+    options: [
+      { text: <MathText>{k('opt2', { n })}</MathText>, why: <MathText>{k('why2')}</MathText> },
+      { text: <MathText>{k('opt1', { n })}</MathText>, correct: true },
+      { text: <MathText>{k('opt3', { n })}</MathText>, why: <MathText>{k('why3')}</MathText> },
+    ],
+    hints: [Cq(k, 'rule.hint1'), Cq(k, 'rule.hint2')],
+    explain: <MathText>{k('testUpTo', { n, bound: divisionTestBound(n) })}</MathText>,
+  }),
+};

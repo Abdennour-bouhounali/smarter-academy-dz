@@ -14,6 +14,12 @@ import DivisionRoles from '../primitives/DivisionRoles';
 import PlayerFigure, { FootballIcon } from '../primitives/PlayerFigure';
 import PitchBackdrop from '../primitives/PitchBackdrop';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import MathText from '../../components/MathText';
+import { wrongEqualities, eqTex, splitKey } from './divisionChecks';
 import * as L from '../logic/teamBuilder';
 import { formationPositions, playerScale } from './teamFormation';
 
@@ -65,6 +71,13 @@ import { formationPositions, playerScale } from './teamFormation';
  * nommer l'équipe : c'est le refus d'égalité qui répond), puis la pastille d'un autre nombre d'équipes — ou, au niveau avancé sans
  * pastilles, le bouton du laboratoire libre.
  *
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, lot 2, 2026-10-28). Pas de tâches successives : DEUX étapes (`LabStepper`,
+ * `[data-tb-step]`) — (1) un premier partage, interrogé sur SES nombres (`first` : combien par équipe, combien dehors, quelle égalité) ;
+ * (2) le contraste vu (une répartition juste ET une qui laisse quelqu'un) : `contrast` (laquelle a laissé quelqu'un · combien en ajouter ·
+ * LA RÈGLE, qui remplace la découverte automatique). Obligatoires pour tout élève ; l'enseignant seul les coupe (interrupteur dans l'en-tête).
+ * « إعادة » repart de zéro ; « أعِد التجربة » efface les essais. SON : `tooth` (un joueur posé), `bell` (équipes pleines, rien dehors),
+ * `over` (refus d'égalité), `flag` (le contraste est vu).
+ *
  * PARTITION. Ici b est le NOMBRE de groupes que l'élève fixe, q la taille qui
  * en résulte ; aux rayons (divisor-explorer-books) c'est l'inverse. Les rôles
  * sont nommés sous l'égalité (`DivisionRoles`) pour que le passage d'un
@@ -81,6 +94,8 @@ export default function TeamBuilder({
   allowModeSwitch = false,
   onVerdict, onFinished,
   coach: coachOn = true,
+  checkpoints: cpOn = true,
+  onTrial,
 }) {
   const { t } = useTranslation('lesson');
   const state = useManipulation({
@@ -106,6 +121,8 @@ export default function TeamBuilder({
   // bout. `autoUsed` dit si le bouton a servi dans la configuration en cours.
   const [handShared, setHandShared] = useState(false);
   const autoUsed = useRef(false);
+  const [doneIds, setDoneIds] = useState({});
+  const [retryN, setRetryN] = useState(0);
 
   // Nouveaux nombres (palier, mode classe, « إعادة ») : la scène repart.
   //
@@ -131,6 +148,7 @@ export default function TeamBuilder({
     setMemoryKey(state.resetCount);
     setTried({});
     setHandShared(false);
+    setDoneIds({});
   }
 
   // `lab` peut décrire l'instant d'avant tant que l'ajustement ci-dessus
@@ -160,7 +178,26 @@ export default function TeamBuilder({
   // qui produit le contraste. Sans réaffirmer la découverte après la remise
   // à zéro, elle serait annulée à l'instant même où elle est méritée.
   const contrastSeen = L.discoveryReady(tried);
-  useEffect(() => { if (contrastSeen) state.discover(); }, [contrastSeen, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : obligatoires pour tout élève, l'enseignant seul les coupe pour SON compte
+  const cpSettings = useLabCheckpointSettings('team-builder');
+  const cpLive = cpOn && cpSettings.enabled;
+  const triedKeys = Object.keys(tried);
+  const cpId = cpLive && !stale ? (contrastSeen ? 'contrast' : triedKeys.length ? 'first' : null) : null;
+  const chain = cpId ? CHAINS[cpId] : null;
+  const kq = (key, o) => t(`manipulation.teamBuilder.${key}`, o);
+  const cp = useLabCheckpoint({
+    id: cpId,
+    questions: chain ? chain.map((q) => QUESTIONS[q]({ tried, keys: triedKeys }, kq)) : null,
+    reached: !!cpId,
+    resetKey: `${state.resetCount}:${retryN}`,
+    onRetry: () => { setTried({}); setHandShared(false); setLab(L.init({ total, groups })); autoUsed.current = false; setRetryN((n) => n + 1); setDoneIds({}); },
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => ({ ...d, [id]: true }));
+      if (id === 'contrast') { state.discover(); state.formalize(); }
+    },
+  });
+  useEffect(() => { if (contrastSeen && !cpLive) state.discover(); }, [contrastSeen, state.epoch, cpLive]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => { if (state.isFormal) state.report(onFinished, v); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -207,6 +244,37 @@ export default function TeamBuilder({
       setReject({ reason, ...L.rejectDetails(lab, playerId, team) });
     },
   });
+
+  // le son du geste (muet sans « الصوت ») : un joueur posé · les équipes pleines · un refus · le contraste vu
+  const heard = useRef({ placed: 0, at: 0, exact: false, reject: null, contrast: false });
+  useEffect(() => {
+    const h = heard.current;
+    if (placedCount > h.placed) {
+      const now = Date.now();
+      if (now - h.at > 35) { playSfx('tooth'); h.at = now; }
+    }
+    h.placed = placedCount;
+  }, [placedCount]);
+  useEffect(() => {
+    const h = heard.current;
+    const ex = settled && v.exact;
+    if (ex && !h.exact) playSfx('bell');
+    h.exact = ex;
+  }, [settled, v.exact]);
+  useEffect(() => { if (reject?.reason && heard.current.reject !== reject) playSfx('over'); heard.current.reject = reject; }, [reject]);
+  // les deux étapes : un premier partage interrogé, puis le contraste vu et la règle
+  const stepDone = [!!doneIds.first || !!doneIds.contrast || (!cpLive && triedKeys.length > 0), !!doneIds.contrast || (!cpLive && contrastSeen)];
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (triedKeys.length === 0 && celebrated.current.size) celebrated.current = new Set();
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(i)) return;
+      celebrated.current.add(i);
+      party.celebrate({ n: i + 1, total: 2 });
+    });
+  }, [stepDone[0], stepDone[1]]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (contrastSeen && !heard.current.contrast) playSfx('flag'); heard.current.contrast = contrastSeen; }, [contrastSeen]);
 
   const heldPlayer = drag.held ? Number(drag.held.replace('player:', '')) : null;
   // Le banc change de SENS quand plus rien ne bouge : d'abord ceux qui
@@ -264,6 +332,8 @@ export default function TeamBuilder({
       lead={lead}
       state={state}
       coach={coachOn ? coach : null}
+      headerAction={cpSettings.control}
+      guided={!!chain || cpLive}
       numberFields={[
         { key: 'total', label: t('manipulation.teamBuilder.squadLabel') },
         { key: 'groups', label: t('manipulation.teamBuilder.teamsLabel') },
@@ -339,7 +409,10 @@ export default function TeamBuilder({
       explanation={t('manipulation.teamBuilder.explanation')}
     >
       <ManipulationStage dragging={drag.dragging} className="bg-gradient-to-b from-emerald-50 to-white">
-        <div className="space-y-3">
+        <div className="relative space-y-3">
+          {party.node}
+          {cp.node}
+          <LabStepper count={2} current={contrastSeen ? 1 : 0} done={stepDone} stepAttr="data-tb-step" />
           {/* ── Les réglages de la situation : combien d'équipes, combien de joueurs ── */}
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             {teamOptions.length > 0 && (
@@ -499,3 +572,68 @@ export default function TeamBuilder({
     </ManipulationShell>
   );
 }
+
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+export const CHAINS = { first: ['perTeam', 'left', 'eq'], contrast: ['pair', 'fix', 'rule'] };
+
+const $ = (x) => `$${x}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const split = splitKey;
+const words = (k, { n, g }) => ({ players: k('players', { count: n }), teams: k('teamsIn', { count: g }) });
+
+export const QUESTIONS = {
+  perTeam: ({ keys }, k) => {
+    const c = split(keys[0]);
+    const o = { ...words(k, c), q: $(c.q), eq: $(eqTex(c)) };
+    return { id: 'perTeam', kind: 'number', expected: String(c.q), answer: <MathText>{$(c.q)}</MathText>, prompt: Cq(k, 'perTeam.prompt', o), hints: [Cq(k, 'perTeam.hint1'), Cq(k, 'perTeam.hint2')], explain: Cq(k, 'perTeam.explain', o) };
+  },
+  left: ({ keys }, k) => {
+    const c = split(keys[0]);
+    const o = { ...words(k, c), r: $(c.r), eq: $(eqTex(c)) };
+    return { id: 'left', kind: 'number', expected: String(c.r), answer: <MathText>{$(c.r)}</MathText>, prompt: Cq(k, 'left.prompt', o), hints: [Cq(k, 'left.hint1'), Cq(k, 'left.hint2')], explain: Cq(k, 'left.explain', o) };
+  },
+  eq: ({ keys }, k) => {
+    const c = split(keys[0]);
+    const [w1, w2] = wrongEqualities(c);
+    const o = { ...words(k, c), n: $(c.n), eq: $(eqTex(c)) };
+    const opt = (w) => ({ text: <MathText>{$(`${c.n} = ${w.tex}`)}</MathText>, why: Cq(k, 'eq.whyWrong', { ...o, calc: $(`${w.tex} = ${w.v}`) }) });
+    return {
+      id: 'eq', kind: 'choice', cols: 3, prompt: Cq(k, 'eq.prompt', o),
+      options: [opt(w1), { text: <MathText>{$(eqTex(c))}</MathText>, correct: true }, opt(w2)],
+      hints: [Cq(k, 'eq.hint1'), Cq(k, 'eq.hint2', o)], explain: Cq(k, 'eq.explain', o),
+    };
+  },
+  pair: ({ tried, keys }, k) => {
+    const left = split(keys.find((x) => tried[x] === false));
+    const fine = split(keys.find((x) => tried[x] === true));
+    const ol = { ...words(k, left), left: k('players', { count: left.r }), eq: $(eqTex(left)) };
+    const of = { ...words(k, fine), eq: $(eqTex(fine)) };
+    return {
+      id: 'pair', kind: 'choice', cols: 1, prompt: Cq(k, 'pair.prompt'),
+      options: [
+        { text: Cq(k, 'pair.opt', of), why: Cq(k, 'pair.whyFine', of) },
+        { text: Cq(k, 'pair.opt', ol), correct: true },
+        { text: Cq(k, 'pair.none'), why: Cq(k, 'pair.whyNone', ol) },
+      ],
+      hints: [Cq(k, 'pair.hint1'), Cq(k, 'pair.hint2')], explain: Cq(k, 'pair.explain', ol),
+    };
+  },
+  fix: ({ tried, keys }, k) => {
+    const c = split(keys.find((x) => tried[x] === false));
+    const add = c.g - c.r;
+    const o = { ...words(k, c), left: k('players', { count: c.r }), full: k('players', { count: c.g }), add: $(add), newN: $(c.n + add), eq: $(`${c.n + add} = ${c.g} \\times ${c.q + 1} + 0`) };
+    return { id: 'fix', kind: 'number', expected: String(add), answer: <MathText>{$(add)}</MathText>, prompt: Cq(k, 'fix.prompt', o), hints: [Cq(k, 'fix.hint1'), Cq(k, 'fix.hint2', o)], explain: Cq(k, 'fix.explain', o) };
+  },
+  rule: (_ctx, k) => ({
+    id: 'rule', kind: 'choice', prompt: <MathText>{k('discoverPrompt')}</MathText>,
+    options: [
+      { text: <MathText>{k('opt2')}</MathText>, why: <MathText>{k('why2')}</MathText> },
+      { text: <MathText>{k('opt1')}</MathText>, correct: true },
+      { text: <MathText>{k('opt3')}</MathText>, why: <MathText>{k('why3')}</MathText> },
+    ],
+    hints: [Cq(k, 'rule.hint1'), Cq(k, 'rule.hint2')],
+    explain: <MathText>{`${$('a = b \\times q + r')} — ${k('conclusion')}`}</MathText>,
+  }),
+};

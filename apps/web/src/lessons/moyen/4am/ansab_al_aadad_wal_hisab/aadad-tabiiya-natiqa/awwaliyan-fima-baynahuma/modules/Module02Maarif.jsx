@@ -25,7 +25,7 @@ export default function Module02Maarif() {
             <div className="space-y-3">
               <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>
                 <li data-evidence="lists" data-tried={f ? 'true' : 'false'} className={f ? 'font-bold text-slate-800' : 'text-slate-500'}>
-                  {f ? 'لم يبقَ في الوسط إلا العدد 1 لقواسم 15 و 22.' : 'لم تنهِ المقارنة بعد: أنزل قواسم 15 إلى الوسط ثم اضغط «تحقّق».'}
+                  {f ? 'لم يبقَ في الوسط إلا العدد 1 لقواسم 15 و 22.' : 'لم تنهِ المقارنة بعد: أنزل قواسم 15 إلى الوسط ثم اضغط «تحقّق» وأجب عن الأسئلة التي تظهر فوق المختبر.'}
                 </li>
               </ul>
               <TapQuestion prompt={<span>15 و 22 أوليان فيما بينهما (لم يبقَ بينهما إلا القاسم 1). هل يعني هذا أن 15 عدد أولي؟</span>}
@@ -50,6 +50,6 @@ export default function Module02Maarif() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={2} />} />
+      footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />} />
   );
 }

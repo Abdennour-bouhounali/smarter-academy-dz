@@ -26,9 +26,12 @@ export default function Module01AlMaktaba() {
   // Les essais VALIDÉS au rayon (onVerdict), avec ce qu'ils ont montré.
   const [tried, setTried] = useState({});
   const [teamsSeen, setTeamsSeen] = useState({});
-  const [q1, setQ1] = useState(false);
-  const [q2, setQ2] = useState(false);
+  // les questions posées PAR-DESSUS les labos (LabCheckpoint) : une étape est faite quand la suite de questions du labo l'est
+  const [teamEv, setTeamEv] = useState([]);
+  const [shelfEv, setShelfEv] = useState([]);
   const [q3, setQ3] = useState(false);
+  const q1 = teamEv.some((e) => e.tk === 'checkpoint-done' && e.id === 'contrast');
+  const q2 = shelfEv.some((e) => e.tk === 'checkpoint-done' && e.id === 'contrast');
   const { total, candidates } = ACTIVITY.numbers;
   // Le contraste du niveau débutant : une répartition juste ET une avec reste.
   const contrastSeen = Object.values(teamsSeen).includes(true) && Object.values(teamsSeen).includes(false);
@@ -54,6 +57,7 @@ export default function Module01AlMaktaba() {
                   groups={3}
                   lead="جمع مدرّب الحيّ 15 لاعبًا ويريدهم في 3 فرق متساوية. وزّعهم، ثم جرّب 16 لاعبًا: أين يلعب اللاعب الأخير؟"
                   onVerdict={({ total: n, groups: k, exact }) => setTeamsSeen((s) => ({ ...s, [`${n}:${k}`]: exact }))}
+                  onTrial={(e) => setTeamEv((l) => [...l, e])}
                 />
                 <SourceTag source={TEAM_EXPERIENCE.source} />
               </div>
@@ -71,6 +75,7 @@ export default function Module01AlMaktaba() {
                   marks={candidates}
                   lead="صاحب المكتبة تردّد بين 26 و 28 كتابًا في كل رفّ. اسحب مسند الكتب وجرّب بنفسك: متى لا يبقى أي كتاب على الأرض؟"
                   onVerdict={({ b, divides, quotient, remainder }) => setTried((t) => ({ ...t, [b]: { divides, quotient, remainder } }))}
+                  onTrial={(e) => setShelfEv((l) => [...l, e])}
                 />
               </div>
             ),
@@ -95,15 +100,7 @@ export default function Module01AlMaktaba() {
                   );
                 })}
               </ul>
-              <TapQuestion
-                prompt={<span>عند توزيع <MathText>{'$16$'}</MathText> لاعبًا على 3 فرق متماثلة بقي لاعب واحد خارج الفرق. لماذا؟</span>}
-                options={['لأنّ 16 ليس جداء العدد 3 في عدد طبيعي: يبقى 1 بعد أن تمتلئ الفرق', 'لأنّ الفرق الثلاثة لا تتّسع لأكثر من 15 لاعبًا', 'لأنّ 16 أكبر من 3', 'لأنّ اللاعب الأخير تأخّر عن الموعد']}
-                correct={0}
-                cols={1}
-                requires={['qisma-iqlidiya']}
-                explain={<span><MathText>{'$15 = 3 \\times 5 + 0$'}</MathText>: لا أحد يبقى. <MathText>{'$16 = 3 \\times 5 + 1$'}</MathText>: بعد أن يكمل كل فريق 5 لاعبين يبقى لاعب واحد.</span>}
-                onAnswered={() => setQ1(true)}
-              />
+              {!q1 && <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm text-slate-500" data-evidence="teams-todo">جرّب 15 لاعبًا ثم 16 في المختبر، وأجب عن الأسئلة التي تظهر فوقه.</p>}
               {/* DEUX LECTURES, UNE DIVISION — dit APRÈS la réponse, sans rien donner de 420. */}
               {q1 && (
                 <div className="space-y-1.5 rounded-xl border-2 border-indigo-200 bg-indigo-50 px-3 py-2 text-sm text-indigo-950" data-division-bridge>
@@ -138,15 +135,7 @@ export default function Module01AlMaktaba() {
                   </li>
                 ))}
               </ul>
-              <TapQuestion
-                prompt={<span>في لوحتك: مع 28 كتابًا في كل رفّ لا يبقى كتاب على الأرض، ومع 26 تبقى كتب. لماذا؟</span>}
-                options={['لأنّ باقي قسمة 420 على 28 معدوم، وباقي قسمتها على 26 ليس معدومًا', 'لأنّ 28 أكبر من 26', 'لأنّ عدد الرفوف مع 28 أكبر منه مع 26', 'لأنّ 26 عدد زوجي و 28 عدد فردي']}
-                correct={0}
-                cols={1}
-                requires={['qisma-iqlidiya']}
-                explain={<span><MathText>{'$420 = 26 \\times 16 + 4$'}</MathText> يبقى 4 كتب؛ أما <MathText>{'$420 = 28 \\times 15 + 0$'}</MathText> فلا يبقى شيء.</span>}
-                onAnswered={() => setQ2(true)}
-              />
+              {!q2 && <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm text-slate-500" data-evidence="shelf-todo">جرّب ثلاثة أطوال للرفّ في المستوى المتقدّم (طول يفرغ الأرض وطول يترك كتبًا)، وأجب عن الأسئلة التي تظهر فوق المختبر.</p>}
               {q2 && <KnowledgeBrick id="qasim-baqi" lead="طبّق التعريف على ما رأيته على الرفوف: ماذا كان الباقي مع 28؟" />}
             </div>
           ),
@@ -169,7 +158,7 @@ export default function Module01AlMaktaba() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

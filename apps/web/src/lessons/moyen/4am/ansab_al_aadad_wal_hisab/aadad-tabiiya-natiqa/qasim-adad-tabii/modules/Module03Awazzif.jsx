@@ -32,7 +32,7 @@ export default function Module03Awazzif() {
         { num: 3, title: 'تمرين 5 — صحيح أو خطأ', done: d3,
           content: <TextbookExercise exercise={EX['ex-5']} requires={['siyagh-mutakafia']} onAnswered={() => setD3(true)} /> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }

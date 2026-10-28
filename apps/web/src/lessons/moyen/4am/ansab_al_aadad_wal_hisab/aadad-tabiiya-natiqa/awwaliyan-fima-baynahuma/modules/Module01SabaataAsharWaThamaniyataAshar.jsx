@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
-import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
@@ -20,8 +19,11 @@ import { ACTIVITY } from '../content/textbook';
  */
 export default function Module01SabaataAsharWaThamaniyataAshar() {
   const [c1, setC1] = useState(false);
-  const [q1, setQ1] = useState(false);
+  const [trials, setTrials] = useState([]);
   const [q2, setQ2] = useState(false);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : l'étape 1 est faite quand la suite des trousses l'est
+  const answered = (id) => trials.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const q1 = answered('groups');
   return (
     <ContentModule objectives={["هل تنجح حقائب متماثلة بـ 17 قلمًا و 18 كراسًا؟ كم حقيبة ممكنة؟", "كيف أتأكّد أن عددين لا يتقاسمان إلا الواحد؟", "هل مريم على صواب في 27 و 36؟"]} ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} moduleTitle="نشاط 7 — العددان الأوّليّان فيما بينهما" moduleSubtitle="جرّب الحقائب ثم فسّر ما وجدت" estimatedTime="12 دقيقة"
       intro={(
@@ -30,7 +32,7 @@ export default function Module01SabaataAsharWaThamaniyataAshar() {
             beginner: () => (
               <Manipulation type="coprime-explorer" a={17} b={18} startWith="groups" theme="school"
                 title="17 قلمًا و 18 كراسًا: كم حقيبة متماثلة؟"
-                onFinished={() => setC1(true)} />
+                onTrial={(e) => setTrials((list) => [...list, e])} onFinished={() => setC1(true)} />
             ),
             advanced: () => (
               <Manipulation type="coprime-explorer" a={22} b={35} />
@@ -43,13 +45,10 @@ export default function Module01SabaataAsharWaThamaniyataAshar() {
           content: (
             <div className="space-y-3">
               <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>
-                <li data-evidence="bags" data-tried={c1 ? 'true' : 'false'} className={c1 ? 'font-bold text-slate-800' : 'text-slate-500'}>
-                  {c1 ? 'جرّبتَ كل عدد من الحقائب مع 17 قلمًا و 18 كراسًا.' : 'لم تنهِ تجربة الحقائب بعد: عُد إلى المناولة أعلاه وأضف الحقائب واحدة بعد أخرى.'}
+                <li data-evidence="bags" data-tried={q1 ? 'true' : 'false'} className={q1 ? 'font-bold text-slate-800' : 'text-slate-500'}>
+                  {q1 ? 'أجبتَ في المختبر: جرّبتَ كل عدد من الحقائب مع 17 قلمًا و 18 كراسًا ولم تنجح إلا حقيبة واحدة، لأنّه لا قاسم مشترك لهما غير 1.' : 'لم تنهِ تجربة الحقائب بعد: أضف الحقائب واحدة بعد أخرى في المناولة أعلاه، ثم أجب عن الأسئلة التي تظهر فوقها.'}
                 </li>
               </ul>
-              <TapQuestion prompt={<span>جرّبتَ 2 ثم 3 ثم 4 حقائب … ولم ينجح إلا عدد واحد من الحقائب. لماذا القاسم المشترك الأكبر للعددين 17 و 18 هو 1؟</span>}
-                options={['قواسم 17: 1 ، 17؛ قواسم 18: 1 ، 2 ، 3 ، 6 ، 9 ، 18؛ القاسم المشترك الوحيد هو 1', 'لأن 17 عدد أولي', 'لأن 18 عدد زوجي و 17 عدد فردي', 'لأن 17 لا يقسم 18']} correct={0} cols={1}
-                explain={<span>نقول إن 17 و 18 أوليان فيما بينهما ونكتب <MathText>{'$\\mathrm{PGCD}(18\\ ;\\ 17) = 1$'}</MathText>.</span>} onAnswered={() => setQ1(true)} />
               {q1 && (
                 <>
                   <KnowledgeBrick id="awwaliyan-taarif" lead="قارن بما وجدته بالحقائب: كم عددًا من الحقائب نجح مع 17 قلمًا و 18 كراسًا؟" />
@@ -71,6 +70,6 @@ export default function Module01SabaataAsharWaThamaniyataAshar() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />} />
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />} />
   );
 }

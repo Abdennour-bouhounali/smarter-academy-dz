@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as divisibility from '@smarter-academy/core/arithmetic/divisibility.js';
 import ManipulationShell from '../ManipulationShell';
@@ -14,7 +14,15 @@ import GroupingScene from '../primitives/GroupingScene';
 import { themeWords } from '../themeWords';
 import MathTransformation from '../primitives/MathTransformation';
 import EquationDisplay from '../primitives/EquationDisplay';
+import MathText from '../../components/MathText';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { ordered } from './cpOrder';
 import * as L from '../logic/fraction';
+
+const NS = 'manipulation.reduce';
 
 const { reductionStepTex, euclidStepTex } = divisibility;
 
@@ -36,19 +44,75 @@ const { reductionStepTex, euclidStepTex } = divisibility;
  *    plus grand est refusé en montrant ce qu'il donnerait (2026-09-30).
  * D. Émerge : la chaîne 84/48 → 21/12 → 7/4, puis, à côté, la même chose en
  *    UNE division par le PGCD.
+ * QUESTIONS PENDANT LE LABO (2026-10-28, `primitives/LabCheckpoint`) : deux ÉTAPES (`LabStepper`, `[data-fr-step]`) — « الخطوات » (le chemin أ est déclaré fini :
+ * combien de divisions, la valeur ne change pas, pourquoi s'arrêter) puis « PGCD » (le chemin ب est fait : la même fraction en une division, puis la RÈGLE, qui
+ * remplace la découverte automatique et formalise dans `onDone`). Obligatoires pour tout élève ; l'enseignant seul les coupe (`useLabCheckpointSettings`).
+ * SON : `tooth` par division, `bell` quand le chemin أ est fini, `flag` quand le chemin ب l'est, `over` pour un geste refusé. Textes dans `reduce.cp.*`.
  * E. À découvrir : « أي الطريقين أوفر؟ » — l'utilité du PGCD, comptée en
  *    étapes, pas affirmée.
  */
 export default function FractionReduction({
-  n: n0, d: d0, title, lead, mission, path, theme = 'kitchen', initialMode = 'student', allowModeSwitch = false, onFinished,
+  n: n0, d: d0, title, lead, mission, path, theme = 'kitchen', initialMode = 'student', allowModeSwitch = false, onFinished, onTrial, checkpoints: cpOn = true,
 }) {
   const { t } = useTranslation('lesson');
   const state = useManipulation({ type: 'fraction-reduction', initialNumbers: { n: n0, d: d0 }, initialMode, hintCount: 3 });
   const { n, d } = state.numbers;
+  const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
   const [lab, setLab] = useState(() => L.init({ n: n0, d: d0 }));
   const [reject, setReject] = useState(null);
 
-  useEffect(() => { setLab(L.init({ n, d })); setReject(null); }, [n, d, state.epoch]);
+  // « إعادة », d'autres nombres ou un autre niveau : TOUT recommence — les chemins, les questions du labo, la fête
+  const sceneKey = `${n}|${d}|${state.epoch}|${state.resetCount}`;
+  const [scene, setScene] = useState(sceneKey);
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init({ n, d })); setReject(null); }
+  const [answered, setAnswered] = useState({ key: sceneKey, ids: [] });
+  const answeredIds = answered.key === sceneKey ? answered.ids : [];
+
+  // les questions pendant le labo : obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpSettings = useLabCheckpointSettings('fraction-reduction');
+  const ruleByCheckpoint = cpOn && cpSettings.enabled;
+  const reachedOf = { steps: L.pathAFinished(lab), pgcd: lab.pathB !== null };
+  const pending = ruleByCheckpoint ? STEPS.find((id) => !answeredIds.includes(id)) : null;
+  const cpChain = pending && reachedOf[pending] ? CHAINS[pending] : null;
+  const cp = useLabCheckpoint({
+    id: cpChain ? pending : null,
+    questions: cpChain ? cpChain.map((q) => QUESTIONS[q]({ n, d, lab }, k)) : null,
+    reached: true,
+    resetKey: sceneKey,
+    onRetry: () => setLab((s) => (pending === 'steps' ? L.init({ n, d }) : { ...s, pathB: null })),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setAnswered((x) => ({ key: sceneKey, ids: [...(x.key === sceneKey ? x.ids : []), id] }));
+      if (id === 'pgcd') { state.discover(); state.formalize(); }
+    },
+  });
+  const stepDone = STEPS.map((id) => reachedOf[id] && (!ruleByCheckpoint || answeredIds.includes(id)));
+  const party = useStepCelebration();
+  const celebrated = useRef({ key: sceneKey, set: new Set() });
+  if (celebrated.current.key !== sceneKey) celebrated.current = { key: sceneKey, set: new Set() };
+  useEffect(() => {
+    stepDone.forEach((done, i) => {
+      if (!done || celebrated.current.set.has(i)) return;
+      celebrated.current.set.add(i);
+      party.celebrate({ n: i + 1, total: STEPS.length });
+    });
+  }, [stepDone.join()]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // le son : une dent par division, la cloche quand le chemin أ est fini, le drapeau quand le chemin ب l'est
+  const heard = useRef({ divs: 0, claimed: false, b: false, at: 0 });
+  useEffect(() => {
+    const h = heard.current;
+    if (lab.pathA.length !== h.divs) {
+      const now = Date.now();
+      if (now - h.at > 35) { playSfx('tooth', { pitch: lab.pathA.length > h.divs ? 1 : 0.75 }); h.at = now; }
+      h.divs = lab.pathA.length;
+    }
+    if (lab.claimed && !h.claimed) playSfx('bell');
+    h.claimed = lab.claimed;
+    const placed = lab.pathB !== null;
+    if (placed && !h.b) playSfx('flag');
+    h.b = placed;
+  }, [lab.pathA.length, lab.claimed, lab.pathB]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const drag = useDragInteraction({
     onDrop: (sourceId, zoneId) => {
@@ -63,14 +127,14 @@ export default function FractionReduction({
       if (zoneId === 'pgcd') return L.canReduceB(lab, k);
       return 'invalid';
     },
-    onReject: (sourceId, _z, reason) => setReject({ reason, k: Number(sourceId.replace(/^[kp]:/, '')) }),
+    onReject: (sourceId, _z, reason) => { playSfx('over'); setReject({ reason, k: Number(sourceId.replace(/^[kp]:/, '')) }); },
   });
 
-  const ready = L.discoveryReady(lab);
+  const ready = L.discoveryReady(lab) && !ruleByCheckpoint;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   const claim = () => {
     const ok = L.canClaimIrreducible(lab);
-    if (ok !== true) { setReject({ reason: ok }); return; }
+    if (ok !== true) { playSfx('over'); setReject({ reason: ok }); return; }
     setReject(null);
     setLab(L.claimIrreducible);
   };
@@ -102,6 +166,8 @@ export default function FractionReduction({
       numberFields={[{ key: 'n', label: t('manipulation.reduce.numerator') }, { key: 'd', label: t('manipulation.reduce.denominator') }]}
       validate={(x) => (x.d === 0 ? t('manipulation.reduce.denominatorZero') : '')}
       allowModeSwitch={allowModeSwitch}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={!!cpChain || ruleByCheckpoint}
       hints={[t('manipulation.reduce.hint1'), t('manipulation.reduce.hint2'), t('manipulation.reduce.hint3')]}
       controller={{
         autoStep: () => {
@@ -171,8 +237,12 @@ export default function FractionReduction({
       )}
       explanation={t('manipulation.reduce.explanation')}
     >
+      <div className="relative min-h-[520px]" data-fr-glance>
+      {party.node}
+      {cp.node}
       <ManipulationStage dragging={drag.dragging}>
         <div className="space-y-3">
+          <LabStepper count={STEPS.length} current={Math.max(0, stepDone.indexOf(false))} done={stepDone} stepAttr="data-fr-step" />
           <div className="space-y-1.5">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <span className="text-sm font-bold text-slate-800">{t('manipulation.reduce.chooseParts')}</span>
@@ -230,7 +300,98 @@ export default function FractionReduction({
           {reject && <p role="status" className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">{t(`manipulation.reduce.reject.${reject.reason}`, { k: reject.k, n2: reject.k ? n / reject.k : '', d2: reject.k ? d / reject.k : '' })}</p>}
         </div>
       </ManipulationStage>
+      </div>
       <DragGhost ghost={drag.ghost}>{heldValue !== null && <NumberTile value={heldValue} tone="divisor" />}</DragGhost>
     </ManipulationShell>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** Les deux étapes : le chemin أ déclaré fini, puis le chemin ب fait. */
+const STEPS = Object.freeze(['steps', 'pgcd']);
+/** La suite de questions de chaque étape : elle interroge ce que l'élève vient de FAIRE ; la dernière finit par la RÈGLE. */
+export const CHAINS = Object.freeze({
+  steps: ['count', 'same', 'why'],
+  pgcd: ['oneStep', 'rule'],
+});
+
+const $ = (x) => `$${x}$`;
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+
+/** Chaque question est construite sur LES nombres de l'élève (rien n'est écrit en dur) ; `k` : les textes de `reduce`. */
+const BUILD = {
+  count: ({ n, d, lab }, k) => {
+    const c = lab.pathA.length;
+    return {
+      id: 'count', kind: 'number', expected: String(c), answer: <MathText>{$(c)}</MathText>,
+      prompt: Mx(k, 'count.prompt', { n, d }),
+      hints: [Mx(k, 'count.hint1'), Mx(k, 'count.hint2', { path: lab.pathA.map((x) => $(`\\div ${x}`)).join(' ، ') })],
+      explain: Mx(k, 'count.explain', { c, fn: lab.final.n, fd: lab.final.d }),
+    };
+  },
+  same: ({ n, d, lab }, k) => {
+    const o = { n, d, fn: lab.final.n, fd: lab.final.d };
+    return {
+      id: 'same', kind: 'choice',
+      prompt: Mx(k, 'same.prompt', o),
+      options: [
+        { text: Mx(k, 'same.smaller'), why: Mx(k, 'same.whySmaller', o) },
+        { text: Mx(k, 'same.equal'), correct: true },
+        { text: Mx(k, 'same.changed'), why: Mx(k, 'same.whyChanged', o) },
+      ],
+      hints: [Mx(k, 'same.hint1', o), Mx(k, 'same.hint2', o)],
+      explain: Mx(k, 'same.explain', o),
+    };
+  },
+  why: ({ n, d, lab }, k) => {
+    const o = { n, d, fn: lab.final.n, fd: lab.final.d };
+    return {
+      id: 'why', kind: 'choice',
+      prompt: Mx(k, 'why.prompt', o),
+      options: [
+        { text: Mx(k, 'why.size', o), why: Mx(k, 'why.whySize', o) },
+        { text: Mx(k, 'why.coprime', o), correct: true },
+        { text: Mx(k, 'why.two'), why: Mx(k, 'why.whyTwo', o) },
+      ],
+      hints: [Mx(k, 'why.hint1', o), Mx(k, 'why.hint2', o)],
+      explain: Mx(k, 'why.explain', o),
+    };
+  },
+  oneStep: ({ n, d, lab }, k) => {
+    const g = lab.gcd;
+    const o = { n, d, g, fn: lab.final.n, fd: lab.final.d, wn: n / g, wd: d / g };
+    return {
+      id: 'oneStep', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'oneStep.prompt', o),
+      options: [
+        { text: <MathText>{$(`\\frac{${n / g}}{${d}}`)}</MathText>, why: Mx(k, 'oneStep.whyNumerator', o) },
+        { text: <MathText>{$(`\\frac{${lab.final.n}}{${lab.final.d}}`)}</MathText>, correct: true },
+        { text: <MathText>{$(`\\frac{${n}}{${d / g}}`)}</MathText>, why: Mx(k, 'oneStep.whyDenominator', o) },
+      ],
+      hints: [Mx(k, 'oneStep.hint1', o), Mx(k, 'oneStep.hint2', o)],
+      explain: Mx(k, 'oneStep.explain', o),
+    };
+  },
+  rule: ({ n, d, lab }, k) => {
+    const cmp = L.pathComparison(lab);
+    const stepsA = k('steps', { count: cmp.stepsA });
+    return {
+      id: 'rule', kind: 'choice',
+      prompt: <MathText>{k('discoverPrompt')}</MathText>,
+      options: cmp.equal ? [
+        { text: <MathText>{k('opt1')}</MathText>, why: <MathText>{k('why1Equal')}</MathText> },
+        { text: <MathText>{k('opt3')}</MathText>, correct: true },
+        { text: <MathText>{k('opt2')}</MathText>, why: <MathText>{k('why3', { stepsA })}</MathText> },
+      ] : [
+        { text: <MathText>{k('opt2')}</MathText>, why: <MathText>{k('why2', { stepsA })}</MathText> },
+        { text: <MathText>{k('opt1')}</MathText>, correct: true },
+        { text: <MathText>{k('opt3')}</MathText>, why: <MathText>{k('why3', { stepsA })}</MathText> },
+      ],
+      hints: [Mx(k, 'rule.hint1', { stepsA }), Mx(k, 'rule.hint2', { g: lab.gcd })],
+      explain: Mx(k, 'rule.explain', { n, d, g: lab.gcd, fn: lab.final.n, fd: lab.final.d }),
+    };
+  },
+};
+
+export const QUESTIONS = ordered(BUILD);
