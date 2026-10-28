@@ -165,6 +165,7 @@ export default function GearCrank({
       allowFreeLab={false}
       coach={coachOn ? coach : null}
       headerAction={cpOn && lab.world === 'ride' ? cpSettings.control : null}
+      guided={!!chain || ruleByCheckpoint}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={discovery}

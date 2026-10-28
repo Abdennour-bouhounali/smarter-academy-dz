@@ -130,3 +130,14 @@ describe('gear-crank — questions pendant le labo (LabCheckpoint)', () => {
     expect(QUESTIONS.compare(s, s.tasks[0], k).options[0].correct).toBe(true);   // 3/2 < 3 : la pédale tourne MOINS
   });
 });
+
+describe('gear-crank — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('مبتدئ (questions) : ni la progression ni le bouton d’indice ; `reverse` (sans questions) : les deux restent', () => {
+    const b = html({ ...LV.beginner.numbers, level: 'beginner' });
+    expect(b).not.toContain('data-manipulation-progress');
+    expect(b).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    const r = html({ ...L.PRESETS.reverse, levels: false });
+    expect(r).toContain('data-manipulation-progress');
+    expect(r).toContain(i18n.t('lesson:manipulation.hint.show'));
+  });
+});

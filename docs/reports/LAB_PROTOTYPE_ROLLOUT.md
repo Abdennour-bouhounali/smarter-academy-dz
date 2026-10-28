@@ -28,6 +28,7 @@
 |---|---|---|
 | « إعادة » lançait une exception dans TOUS les labos (`setHintLevel`) | `useManipulation.js` | corrigé pour tous ; reste à vérifier que CHAQUE labo repart bien (§2 L5) |
 | Plein écran « العب بملء الشاشة » / « خروج » | `ManipulationShell` (`immersive` vrai par défaut) | présent dans les 101 labos ; à vérifier : la scène reste utilisable |
+| Mode guidé : `ManipulationShell guided` masque « جرّب › اكتشف › صِغ القاعدة » et « تلميح » | `ManipulationShell` (prop `guided`, 2026-10-28) | fait ; chaque labo à questions passe `guided` (§2 L9) |
 | Bouton « الصوت » dans chaque labo, préférence unique synchronisée | `ManipulationShell` + `useEffectsPreference` (`sa:effects`) | présent partout |
 | API enseignant (couper les questions pour SON compte) | `teacher_lab_settings`, `/teacher/labs/{lessonCode}` | fait ; chaque labo n'a qu'à appeler `useLabCheckpointSettings(type)` |
 | Composants partagés | `primitives/LabCheckpoint.jsx`, `labCheckpoint.js`, `labCheckpointSettings.jsx`, `LabSteps.jsx`, `knowledge/MemoCard.jsx`, `MemoQuiz.jsx`, `memoQuiz.js`, `utils/playEffect.js › playSfx` | faits, testés — **ne pas les modifier pendant le déploiement** sauf bogue prouvé (alors : corriger, tester, noter au §10) |
@@ -53,8 +54,14 @@
   `bell` pour une unité complète si le labo en a (un tour, une dizaine, un paquet…), `flag` quand l'objectif est atteint, `over` quand il est
   dépassé / refusé. Muet sans « الصوت ».
 - **L7 — Plein écran** : la scène reste lisible et manipulable en plein écran (une capture).
+- **L9 — Seulement les étapes** (propriétaire, 2026-10-28) : le labo montre SES étapes 1 2 3 (`LabStepper`) et rien d'autre pour se repérer —
+  ni la progression « جرّب › اكتشف › صِغ القاعدة », ni le bouton « تلميح » (les questions guident déjà) : passer `guided` au shell dès que les
+  questions sont actives (`<ManipulationShell … guided={!!chain || ruleByCheckpoint}>` dans `GearCrank.jsx`). Questions coupées (enseignant,
+  ou monde sans suite) → `guided` faux : la progression et les indices reviennent. Les labos finis AVANT cette règle (début du lot 1)
+  la reçoivent à la vérification : le script les remontre ⬜ tant que `guided` manque.
 - **L8 — Tests** : le test de rendu du labo vérifie, pour chaque tâche de chaque niveau, que chaque question a un texte, 2 indices, une
-  seule bonne réponse, ni clé brute ni `{{` (modèle : `gearCrank.render.test.jsx`, dernier `describe`).
+  seule bonne réponse, ni clé brute ni `{{` (modèle : `gearCrank.render.test.jsx`, avant-dernier `describe`) ; et que le mode guidé ne
+  rend ni `data-manipulation-progress` ni « إظهار التلميح » (modèle : le dernier `describe`).
 
 ## 2bis. Définition de « FAIT » — une LEÇON
 
@@ -73,7 +80,7 @@
 ## 3. La procédure, leçon par leçon (dans CET ordre, jusqu'à 100 %)
 
 1. **Audit** (≤ 5 appels) : `node apps/web/scripts/lab-rollout-status.mjs --lesson <id>` ; puis, pour chaque labo ⬜ : `grep -n` dans son
-   fichier (`tasks|PRESETS|discover|coachOf|resetCount|restart|data-.*-step|nextTask|canNext`) et dans `logic/<labo>.js`
+   fichier (`tasks|PRESETS|discover|coachOf|resetCount|restart|data-.*-step|nextTask|canNext|hints=|guided`) et dans `logic/<labo>.js`
    (`export (function|const)`), `grep -n "KnowledgeSnapshot\|Manipulation" modules/*.jsx`, `grep -n "id: '" knowledge.jsx`.
 2. **Détecter ce qui existe et MARCHE** : un marqueur ✓ du script ne suffit pas — ouvrir le labo dans le navigateur (§6) et cocher : tâches,
    « إعادة », plein écran, son, découverte. Ce qui marche n'est PAS réécrit. Ce qui marche « parfois » (ex. « إعادة » qui ne repart que la

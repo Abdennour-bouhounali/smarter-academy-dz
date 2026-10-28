@@ -22,7 +22,7 @@ import { useEffectsPreference } from '../hooks/useEffectsPreference';
  *
  *   ┌ en-tête : titre, badge « مناولة », sélecteur مبتدئ / متقدم (seule)
  *   ├ MISSION  — une consigne arabe courte et grande (« مهمتك : … »)
- *   ├ progression (جرّب › اكتشف › صِغ · الخطوة n من N)
+ *   ├ progression (جرّب › اكتشف › صِغ · الخطوة n من N) — ABSENTE quand `guided`
  *   ├ contrôles élève (إعادة · تلميح · تحقّق · الشرح)
  *   ├ indices demandés
  *   ├ AIRE DE MANIPULATION (`children`, le centre visuel)
@@ -75,7 +75,7 @@ import { useEffectsPreference } from '../hooks/useEffectsPreference';
 export default function ManipulationShell({
   type, title, mission, lead, state, controller, hints = [], numberFields = [], validate, controlsOverride,
   onCheck, checkDisabled, allowModeSwitch = false, representation, explanation, discovery, children, footer, allowFreeLab = true, freeLabAlwaysOpen = false, freeLabLead,
-  headerAction, titleHidden = false, coach = null, immersive = true,
+  headerAction, titleHidden = false, coach = null, immersive = true, guided = false,
 }) {
   const { t } = useTranslation('lesson');
   const rootRef = useRef(null);
@@ -116,8 +116,11 @@ export default function ManipulationShell({
   const shownRepresentation = representation || (state.answerHidden ? null : held.current.node);
   const stale = !representation && !!shownRepresentation;
 
-  const progress = <ManipulationProgress state={state} />;
-  const studentControls = <ManipulationControls state={state} controls={controls} hints={hints} onCheck={onCheck} checkDisabled={checkDisabled} autoComplete={controller?.autoComplete} />;
+  // `guided` (2026-10-28, propriétaire) : un labo qui pose ses QUESTIONS PENDANT LE LABO (LabCheckpoint) montre seulement SES étapes
+  // (LabStepper) — ni « جرّب › اكتشف › صِغ القاعدة », ni « تلميح » : les questions guident déjà.
+  const progress = guided ? null : <ManipulationProgress state={state} />;
+  const shownHints = guided ? [] : hints;
+  const studentControls = <ManipulationControls state={state} controls={controls} hints={shownHints} onCheck={onCheck} checkDisabled={checkDisabled} autoComplete={controller?.autoComplete} />;
   const pill = 'inline-flex min-h-[44px] items-center gap-2 rounded-full px-4 text-sm font-black outline-none focus-visible:ring-4 focus-visible:ring-indigo-300 transition-all duration-150 active:translate-y-0.5 motion-reduce:transition-none';
 
   return (
@@ -148,7 +151,7 @@ export default function ManipulationShell({
           {studentControls}
         </div>
       )}
-      {immersed && <ManipulationHint hints={hints} open={state.hintsOpen} />}
+      {immersed && <ManipulationHint hints={shownHints} open={state.hintsOpen} />}
       <header className={immersed ? 'sr-only' : 'space-y-2'}>
         <div className="flex flex-wrap items-start justify-between gap-2">
           {/* `titleHidden` (MANIPULATION_DNA §17.9) : un labo s'ouvre sur son contexte et sa question, sans titre visible — le titre reste pour les lecteurs d'écran */}
@@ -193,7 +196,7 @@ export default function ManipulationShell({
         state={state} controller={controller} controls={controls} numberFields={numberFields} constraints={constraints} validate={validate} allowModeSwitch={allowModeSwitch}
       />
       {!immersed && studentControls}
-      {!immersed && <ManipulationHint hints={hints} open={state.hintsOpen} />}
+      {!immersed && <ManipulationHint hints={shownHints} open={state.hintsOpen} />}
 
       {hasRepresentation && (
         shownRepresentation ? (

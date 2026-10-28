@@ -2308,6 +2308,10 @@ questions of the module keep their non-blocking policy (`check:non-blocking` pas
 per question), the question large and centred, choice options as big cards — three across for formulas (`cols: 3`), full-width rows
 for sentences — each with its number (keys 1 2 3 answer), a large number field, larger feedback, the actions in a bottom bar.
 
+**Only the steps (2026-10-28, owner).** A lab whose in-lab questions are active passes `guided` to `ManipulationShell`: no
+« جرّب › اكتشف › صِغ القاعدة » progress and no « تلميح » button (in the page and in the full-screen bar) — the questions guide the student,
+the lab shows only its own steps (`LabStepper`). Questions off (teacher, or a world without a chain) → `guided` false, both come back.
+
 **Steps and success (2026-10-28, `primitives/LabSteps.jsx`, shared).** Owner: « the steps 1 2 3 must be clearer, and every completed step
 shows a gaming success message ». `<LabStepper count current done stepAttr />` replaces a lab's small step dots: linked pills — done (green,
 check), current (blue, ring), to come (outline) — and « المهمة 2 من 3 » (`[data-lab-stepper]`, `[data-lab-step-current]`; the lab keeps its own

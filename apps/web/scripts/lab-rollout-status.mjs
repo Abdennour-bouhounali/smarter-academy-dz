@@ -14,6 +14,7 @@
  *
  * Ce qui est détecté (marqueurs de code, pas de jugement : l'audit et le navigateur restent obligatoires) :
  *   labo   : cp = useLabCheckpoint · step = LabStepper · party = useStepCelebration · sfx = playSfx · teacher = useLabCheckpointSettings
+ *            · guided = `guided=` passé au shell (ni « جرّب › اكتشف › صِغ » ni « تلميح », L9)
  *   leçon  : cards = pieds de module <KnowledgeSnapshot moduleNumber> · memo = ceux en variant="memo" · items = connaissances de
  *            knowledge.jsx · withMemo = items avec `memo:` · withQuiz = items avec `quiz:` dans leur memo
  */
@@ -57,7 +58,7 @@ for (const t of types) {
   labState[t.type] = {
     file: f ? path.relative(path.join(WEB, '..', '..'), f) : null,
     cp: src.includes('useLabCheckpoint('), step: src.includes('<LabStepper'), party: src.includes('useStepCelebration('),
-    sfx: src.includes('playSfx('), teacher: src.includes('useLabCheckpointSettings('),
+    sfx: src.includes('playSfx('), teacher: src.includes('useLabCheckpointSettings('), guided: /\bguided=/.test(src),
   };
 }
 
@@ -89,7 +90,7 @@ const rest = rows.filter((r) => !FIRST.has(r.id)).sort((a, b) => THEN.indexOf(a.
 rows.splice(0, rows.length, ...rows.filter((r) => FIRST.has(r.id)), ...rest);
 rows.forEach((r, i) => { r.batch = Math.floor(i / BATCH) + 1; });
 
-const labDone = (t) => { const s = labState[t]; return s.cp && s.step && s.party && s.sfx && s.teacher; };
+const labDone = (t) => { const s = labState[t]; return s.cp && s.step && s.party && s.sfx && s.teacher && s.guided; };
 const lessonDone = (r) => r.labs.every(labDone) && r.cards === r.memoCards && r.items > 0 && r.withMemo === r.items && r.withQuiz === r.items;
 const mark = (b) => (b ? '✓' : '·');
 
@@ -102,7 +103,7 @@ if (args.includes('--json')) {
     console.log(`   cartes de fin de module : ${r.memoCards}/${r.cards} en memo · connaissances : ${r.items} · memo ${r.withMemo}/${r.items} · quiz ${r.withQuiz}/${r.items}`);
     for (const t of r.labs) {
       const s = labState[t];
-      console.log(`   labo ${t.padEnd(26)} cp ${mark(s.cp)} step ${mark(s.step)} party ${mark(s.party)} sfx ${mark(s.sfx)} teacher ${mark(s.teacher)}  ${s.file}`);
+      console.log(`   labo ${t.padEnd(26)} cp ${mark(s.cp)} step ${mark(s.step)} party ${mark(s.party)} sfx ${mark(s.sfx)} teacher ${mark(s.teacher)} guided ${mark(s.guided)}  ${s.file}`);
     }
     if (r.labs.length === 0) console.log('   (aucun labo : seulement les cartes de fin de module)');
   }
