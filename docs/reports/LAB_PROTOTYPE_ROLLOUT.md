@@ -232,26 +232,26 @@ reste L1 pour le monde `reverse` (module 2) et le niveau متقدم de `gear-cra
 
 | # | Leçon | Année | Labo(s) | Cartes | Connaissances | État |
 |---|---|---|---|---|---|---|
-| 1 | `mudalaat-muntazama` | 4am | `polygon-forge` | 4 | 9 | ⬜ |
-| 2 | `wadiya-idmajiya-dawaran` | 4am | `lamp-ring` | 1 | 4 | ⬜ |
-| 3 | `zawiya-muhitiya` | 4am | `inscribed-angle` | 4 | 7 | ⬜ |
-| 4 | `kura-julla` | 4am | `sphere-probe` | 4 | 9 | ⬜ |
-| 5 | `maqati-mustawiya` | 4am | `section-slicer` | 4 | 7 | ⬜ |
-| 6 | `misaha-hajm-kura` | 4am | `orange-peel` | 4 | 7 | ⬜ |
-| 7 | `takbir-tasghir` | 4am | `scale-blocks` | 4 | 7 | ⬜ |
-| 8 | `wadiya-idmajiya-fada` | 4am | `bucket-fill` | 1 | 3 | ⬜ |
-| 9 | `alaqat-muthallathiya` | 4am | `angle-compass` | 4 | 8 | ⬜ |
-| 10 | `hasiba-muthallathiya` | 4am | `trig-calculator` | 3 | 4 | ⬜ |
-| 11 | `nisab-muthallathiya` | 4am | `ramp-ratios` | 4 | 7 | ⬜ |
-| 12 | `tarrid-muthallathiya` | 4am | `clinometer` | 3 | 9 | ⬜ |
-| 13 | `wadiya-idmajiya-muthallathat` | 4am | `clinometer` | 1 | 5 | ⬜ |
-| 14 | `aksiya-talis` | 4am | `parallel-level` | 4 | 6 | ⬜ |
-| 15 | `inshaat-talis` | 4am | `segment-divider` | 3 | 7 | ⬜ |
-| 16 | `talis-hisab-atwal` | 4am | `shadow-world` | 4 | 5 | ⬜ |
-| 17 | `wadiya-idmajiya-talis` | 4am | `shadow-world`, `cone-cylinder` | 1 | 5 | ⬜ |
-| 18 | `mafhum-taalufiya` | 4am | `affine-meter` | 4 | 7 | ⬜ |
-| 19 | `tafsir-bayani-jumla` | 4am | `line-crossing` | 3 | 6 | ⬜ |
-| 20 | `tamthil-bayani-taalufi` | 4am | `affine-line` | 4 | 7 | ⬜ |
+| 1 | `mudalaat-muntazama` | 4am | `polygon-forge` | 4 | 9 | ✅ |
+| 2 | `wadiya-idmajiya-dawaran` | 4am | `lamp-ring` | 1 | 4 | ✅ |
+| 3 | `zawiya-muhitiya` | 4am | `inscribed-angle` | 4 | 7 | ✅ |
+| 4 | `kura-julla` | 4am | `sphere-probe` | 4 | 9 | ✅ |
+| 5 | `maqati-mustawiya` | 4am | `section-slicer` | 4 | 7 | ✅ |
+| 6 | `misaha-hajm-kura` | 4am | `orange-peel` | 4 | 7 | ✅ |
+| 7 | `takbir-tasghir` | 4am | `scale-blocks` | 4 | 7 | ✅ |
+| 8 | `wadiya-idmajiya-fada` | 4am | `bucket-fill` | 1 | 3 | ✅ |
+| 9 | `alaqat-muthallathiya` | 4am | `angle-compass` | 4 | 8 | ✅ |
+| 10 | `hasiba-muthallathiya` | 4am | `trig-calculator` | 3 | 4 | ✅ |
+| 11 | `nisab-muthallathiya` | 4am | `ramp-ratios` | 4 | 7 | ✅ |
+| 12 | `tarrid-muthallathiya` | 4am | `clinometer` | 3 | 9 | ✅ |
+| 13 | `wadiya-idmajiya-muthallathat` | 4am | `clinometer` | 1 | 5 | ✅ |
+| 14 | `aksiya-talis` | 4am | `parallel-level` | 4 | 6 | ✅ |
+| 15 | `inshaat-talis` | 4am | `segment-divider` | 3 | 7 | ✅ |
+| 16 | `talis-hisab-atwal` | 4am | `shadow-world` | 4 | 5 | ✅ |
+| 17 | `wadiya-idmajiya-talis` | 4am | `shadow-world`, `cone-cylinder` | 1 | 5 | ✅ |
+| 18 | `mafhum-taalufiya` | 4am | `affine-meter` | 4 | 7 | ✅ |
+| 19 | `tafsir-bayani-jumla` | 4am | `line-crossing` | 3 | 6 | ✅ |
+| 20 | `tamthil-bayani-taalufi` | 4am | `affine-line` | 4 | 7 | ✅ |
 
 ### Lot 5 — 20 leçons · 118 connaissances · 63 cartes · 15 labos
 
@@ -323,16 +323,17 @@ Labos enregistrés mais utilisés par aucune leçon : `divisor-explorer`, `thale
 | 1 | 2026-10-28 | 1 | 21/112 (prototype + 20 du lot 1) | 21/98 (les 20 labos du lot 1) | lot 1 fait, 1 session : leçon 1 en direct, leçons 2–20 par 5 sous-agents en parallèle (A 2–5, B 6–9, C 10–12 + 16, D 13–15, E 17–20). L9 `guided` reçu en cours de route et appliqué aux 20. Commits `e9d6bca9` … `1fc0cbb6` + le correctif « switch ». Suite complète 697 fichiers / 13 523 tests ; `check-non-blocking`, audit des dépendances, `check:katex`, `check:entry-budget` 236,6 Ko : verts. Hors périmètre signalé : références au manuel dans les briefs de `ikhtizal-kitaba-kasriya` (Module00/02/03/04/05). |
 | 2 | 2026-10-28 | 2 | 41/112 (prototype + lots 1 et 2) | 36/98 (+15 labos du lot 2) | lot 2 fait en 1 session par 4 sous-agents en parallèle (A : awwaliyan, bahth-pgcd, ikhtizal-kasr, khawass-qawasim ; B : qasim-adad-tabii, qasim-mushtarak-akbar, tayin-pgcd, qawasim-adad-tabii, wadiya-idmajiya-aadad ; C : hisab-harfi ×4 + hall-jabri ; D : hisab-judhur ×6), chacun sur un Vite privé (ports 5301–5304) et le JSON i18n fusionné sous `flock` (`merge_i18n.py` : aucun conflit). Suite complète 701 fichiers : 3 échecs de charge (timeouts registry / buildLessonMemo / resumePath, verts isolés) + 1 vrai (`lessonGraphs` qasim-adad-tabii : la citation « التعريف كله في الباقي » avait disparu du module, rétablie). `check-non-blocking`, audit des dépendances, `check:katex`, `check:entry-budget` 236,6 Ko : verts. Non vérifié au navigateur : l'interrupteur enseignant (cliqué nulle part), « أعِد التجربة » de pitch/turf/elimination, plein écran et son de turf-factoring / elimination-cards, variante symétrie de DivisorExplorerBooks, niveau débutant de tayin-pgcd, carte du module 3 de muadalat-x-murabba. |
 | 3 | 2026-10-28 | 3 | 61/112 (prototype + lots 1–3) | 54/98 (+18 labos du lot 3 : pair-scoreboard, story-modeller, vanishing-pitch, equation-balance, solution-ray, growth-race, vector-chain, translation-glide, vector-sum, parallelogram-pin, bridge-path, component-calc, shape-prover, midpoint-distance, component-steps, route-compare, shape-turn, rotation-dial) | lot 3 fait en 1 session par 5 sous-agents (A jumal-muadalatayn ×3, B muadalat-mutarajihat ×5, C ashia-insihab ×5, D ashia-maalam ×5, E dawaran ×2), Vite privé 5311–5315, `merge_i18n.py` sous `flock`. Suite complète 701 fichiers / 13 853 tests verts ; `check-non-blocking`, audit des dépendances, `check:entry-budget` 236,6 Ko : verts. Non vérifié au navigateur : interrupteur enseignant « off » (D), cas `negative` de growth-race, niveau avancé de vector-chain, nage de vector-sum/swimmer, pleine largeur des cartes memo hors `maarif`, défi step 5 de pair-scoreboard. Étape C4 (étapes sous le labo réduites à la trace) partielle dans ashia-maalam. |
+| 4 | 2026-10-28 | 4 | 81/112 (prototype + lots 1–4) | 73/98 (+19 labos du lot 4 : polygon-forge, lamp-ring, inscribed-angle, sphere-probe, section-slicer, orange-peel, scale-blocks, bucket-fill, angle-compass, trig-calculator, ramp-ratios, clinometer, parallel-level, segment-divider, shadow-world, cone-cylinder, affine-meter, line-crossing, affine-line) | lot 4 fait en 1 session par 5 sous-agents (A dawaran ×3, B handasa-fada ×5, C hisab-muthallathat ×5, D khassiyat-talis ×4, E dala-taalufiya ×3), Vite privé 5321–5325, `merge_i18n.py` sous `flock`. Suite complète 701 fichiers / 14 042 tests verts ; `check-non-blocking`, audit des dépendances, `check:entry-budget` 236,6 Ko : verts. Nouveaux assistants : `geometry/thalesCp.jsx`, `space/spaceCp.js` (`spread` : place la bonne option à une position stable car `LabCheckpoint` ne mélange pas). Nouvelles props de labo `checkpoints` / `onCheckpoint` (affine, rotation). Non vérifié au navigateur : défi « اختبر ذاكرتك » joué jusqu'au bout (tous groupes), « أعِد التجربة » cliqué dans la carte (A, C, B), interrupteur enseignant « off » sur cone-cylinder et sur 4 labos de B, mode segment-divider ratio / parallel-level crossing (logique seulement), affine-line read/identify, orange-peel et bucket-fill avancés, 768 px. Étape C4 partielle partout (étapes sous le labo pas toutes réduites à la trace). Défaut connu : si l'enseignant coupe les questions, les étapes de module devenues « trace seule » (tarrid-muthallathiya 1–3, wadiya-idmajiya-muthallathat 5–6) ne peuvent plus être validées. Défaut existant non corrigé : `AffineMeter`, x conservé entre les étapes image → antécédent. |
 
 
 ### Prompt de la session suivante (à copier tel quel)
 
 ```
-Déploiement du prototype de labo — LOT 4.
-Lis docs/reports/LAB_PROTOTYPE_ROLLOUT.md (§0 à §6, le lot 4 du §7 et le §10) et rien d'autre en dehors de ce qu'il cite.
-Lance `node apps/web/scripts/lab-rollout-status.mjs --batch 4`, puis traite les leçons du lot dans l'ordre, chacune selon la
+Déploiement du prototype de labo — LOT 5.
+Lis docs/reports/LAB_PROTOTYPE_ROLLOUT.md (§0 à §6, le lot 5 du §7 et le §10) et rien d'autre en dehors de ce qu'il cite.
+Lance `node apps/web/scripts/lab-rollout-status.mjs --batch 5`, puis traite les leçons du lot dans l'ordre, chacune selon la
 procédure du §3 (audit → ce qui marche déjà → mise à jour → tests → navigateur → corrections, jusqu'à 100 %, L1–L9 + colonne « switch »).
-Les lots 1 à 3 ont été faits par sous-agents en parallèle (un groupe par unité, les labos partagés dans le même groupe, Vite privé par agent, `merge_i18n.py` sous `flock`) ; le §10 dit comment éviter ce qui a mal tourné.
+Les lots 1 à 4 ont été faits par sous-agents en parallèle (un groupe par unité, les labos partagés dans le même groupe, Vite privé par agent, `merge_i18n.py` sous `flock`) ; le §10 dit comment éviter ce qui a mal tourné.
 Commit par groupe de ~4 leçons ; en fin de session : contrôles du §3 (les scripts se lancent depuis la RACINE du dépôt),
 push sur dev, mise à jour du §9 et du prompt de la session suivante.
 ```
@@ -376,3 +377,4 @@ push sur dev, mise à jour du §9 et du prompt de la session suivante.
 - Le merge i18n n'ajoute que des clés : les clés orphelines (`euclid.cp.invariant.quotient`, `whyQuotient`) restent à purger.
 - **Lot 3** : les événements `checkpoint-done` du labo (`ev.tk`) entrent dans les listes d'essais des modules et plantent `LabEvidence` (`undefined[0]`) → garde `!ev.tk` dans le rappel du module (fait pour hisab-murakkibatay, murakkibata-shuaa, ithbat-khawas-maalam, wadiya-idmajiya-maalam, Metro/TahaddiAnshita).
 - **Lot 3** : un `$…$` interpolé ne doit pas être mis dans un gabarit qui l'entoure déjà de `$…$` (affiche des `$` bruts). Un Vite `watch:null` sert des modules périmés après édition : le relancer. Tuer un Vite par le PID de SON port, jamais par `ps | grep vite`. Le scratchpad est partagé : préfixer ses scripts (`gA_…`).
+- **Lot 4** : les clés de `lesson.manipulation.json` sont de premier niveau (`angleCompass.cp`), pas sous `manipulation.` : fusionner avec `<labo>.cp`. `LabCheckpoint` ne mélange pas les options : varier la place de la bonne (`spread`). Les étapes de module « trace seule » doivent garder un repli quand l'enseignant coupe les questions. Prop `checkpoints={false}` + `onCheckpoint(ev)` sur les labos ; crochets DOM `data-am-step`, `data-lc-step`, `data-al-lab-step`. Le mock de l'interrupteur enseignant doit renvoyer `checkpointsOff` dans la réponse du PATCH `/teacher/labs/`.
