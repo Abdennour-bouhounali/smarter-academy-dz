@@ -151,6 +151,7 @@ export const MANIPULATION_COMPONENTS = {
   'chain-cutter': lazy(() => import('./operations/ChainCutter')),
   // 3AM, unité 2 : le numérateur sous la main — la machine à teinter (آلة مزج الألوان, 2026-10-26).
   'shade-match': lazy(() => import('./operations/ShadeMatch')),
+  'kit-packer': lazy(() => import('./operations/KitPacker')),
   // 3AM, unité 2, leçon 3 : l'espacement sous la main — le مشط الشتلات (2026-10-26).
   'seed-rake': lazy(() => import('./operations/SeedRake')),
   // 3AM, unité 2, leçon 4 : la position d'une écriture sous la main — le حبل الأعداد (2026-10-26).

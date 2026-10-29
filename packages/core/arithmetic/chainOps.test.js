@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import * as C from './chainOps.js';
 import * as P from './powers.js';
-import { evaluate as relEvaluate, relText } from './relativeOps.js';
+import { evaluate as relEvaluate, relText, parseRel, factorize as relFactorize } from './relativeOps.js';
 
 const txt = (t) => relText(C.evaluateChain(t));
 
@@ -212,5 +212,40 @@ describe('chainOps L3 — la dernière opération nomme la chaîne (wasf-silsila
   it('sameStructure : les parenthèses inutiles ne changent pas la structure', () => {
     expect(C.sameStructure('50 − 6 × 7', '50 − (6 × 7)')).toBe(true);
     expect(C.sameStructure('(15 + 9) ÷ 4', '15 + 9 ÷ 4')).toBe(false);
+  });
+});
+
+describe('chainOps — L4 distributivité', () => {
+  it('expand : les deux écritures et la même valeur (contre-épreuve relativeOps.factorize)', () => {
+    const e = C.expand(6, 8, 3, '−');
+    expect(e.factored).toBe('6 × (8 − 3)'); expect(e.split).toBe('6 × 8 − 6 × 3'); expect(e.value).toBe('30'); expect(e.equal).toBe(true);
+    expect(C.expand('25', '4,3', '5,7').value).toBe('250');
+    expect(C.expand('2,5', '18', '8', '−').products).toBe('45 − 20');
+    for (const [k, a, b, op] of [[7, 13, 17, '+'], [4.5, 12, 2, '−'], [12, 5, 8, '+']]) {
+      const f = relFactorize(parseRel(String(k).replace('.', ',')), parseRel(String(a)), parseRel(String(b)), op === '−' ? '-' : '+');
+      expect(P.eq(f.split, f.factored)).toBe(true);
+      expect(C.expand(String(k).replace('.', ','), a, b, op).value).toBe(relText(f.factored));
+    }
+    expect(() => C.expand(3, 2, 5, '−')).toThrow();
+  });
+  it('commonFactor : visible dans n\'importe quel ordre', () => {
+    expect(C.commonFactor('12 × 5', '12 × 3')).toEqual({ factor: '12', rest: ['5', '3'] });
+    expect(C.commonFactor('5 × 12', '12 × 3')).toEqual({ factor: '12', rest: ['5', '3'] });
+    expect(C.commonFactor('14,6 × 12', '4,6 × 12')).toEqual({ factor: '12', rest: ['14,6', '4,6'] });
+    expect(C.commonFactor('6 × 8', '7 × 3')).toBeNull();
+  });
+  it('mentalSplits', () => {
+    expect(C.mentalSplits(48)).toEqual([{ parts: [40, 8], op: '+' }, { parts: [50, 2], op: '−' }]);
+    expect(C.mentalSplits(99)).toEqual([{ parts: [90, 9], op: '+' }, { parts: [100, 1], op: '−' }]);
+    expect(C.mentalSplits(101)[0]).toEqual({ parts: [100, 1], op: '+' });
+    expect(C.mentalSplits(50)).toEqual([]);
+  });
+  it('expandLetter : 4 × (x − 3) = 4x − 12, valeurs par deux voies', () => {
+    const e = C.expandLetter({ k: 4, b: 3, op: '−' });
+    expect(e.text).toBe('4x − 12');
+    expect(e.at('5')).toEqual({ factored: '8', expanded: '8', equal: true });
+    expect(e.at('3').factored).toBe('0'); expect(e.at('4,5').factored).toBe('6');
+    expect(() => e.at('2')).toThrow();
+    expect(C.expandLetter({ k: 4, b: 3, op: '+' }).text).toBe('4x + 12');
   });
 });

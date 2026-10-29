@@ -572,12 +572,15 @@ assert not extra, f'destinations sans élément : {extra}'
 # L2 (silsila-bi-aqwas, 2026-10-29) : les éléments RELUS sur les pages rendues (PDF 5, 8, 11, 18 ; transcription comparée mot à mot, aucune correction nécessaire). Les autres éléments de L2
 # (prep 8 et 10, act-4, now-11 ①②, ex-13…ex-17, ex-22, ex-29, ex-30, self-2…4, deep-*) restent `verified: False` : leurs pages n'ont pas été rendues (bord droit de la p. 8, bas des p. 14–16 coupés au scan).
 L2_VERIFIED = {'act-3', 'method-1', 'method-2', 'ex-8', 'ex-10', 'ex-11', 'ict'}
+# L4 (tawzi-darb-jam-tarh, 2026-10-29) : معارف 4 (PDF 9), طرائق 3 et 4 et « دوري الآن » ① ② (PDF 10) relus sur les pages rendues à 75 dpi (transcription comparée mot à mot ; seule la faute d'impression
+# de طريقة 4 — E = 3 × 7 = 35 au lieu de 21 pour x = 12 — est déjà notée `[sic : 21]`). Les exercices 21–36, أؤكّد 7–10 et أتعمّق 42 (bas des p. 15–18 coupé au scan) restent `verified: False`.
+L4_VERIFIED = {'know-4', 'method-3', 'method-4', 'now-13'}
 for _e in E:
-    if _e['id'] in L2_VERIFIED:
+    if _e['id'] in L2_VERIFIED | L4_VERIFIED:
         _e['verified'] = True
 L1_REQUIRED = {'challenge', 'objectives', 'opener', 'prep', 'act-1', 'act-2', 'know-1', 'self-1', 'self-6', 'deep-39'} | {f'ex-{n}' for n in range(1, 8)}
 assert all(next(e for e in E if e['id'] == i)['verified'] for i in L1_REQUIRED), 'élément de L1 non vérifié'
-assert all(not e['verified'] for e in E if e['id'] not in L1_REQUIRED | L2_VERIFIED), 'élément hors L1/L2 marqué vérifié'
+assert all(not e['verified'] for e in E if e['id'] not in L1_REQUIRED | L2_VERIFIED | L4_VERIFIED), 'élément hors L1/L2/L4 marqué vérifié'
 
 out = Path(__file__).with_name('extraction.json')
 out.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')

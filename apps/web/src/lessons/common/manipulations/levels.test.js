@@ -156,6 +156,13 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
       }
       // Unité 4 de 3AM, leçon 3 : `marble-run` se mesure par la PRÉDICTION écrite avant le lancement (متقدم seul) et par les DEUX lettres (r6).
       else if (type === 'marble-run') {
+      // Unité 1 de 2AM, leçon 4 : `kit-packer` se mesure par la PRÉDICTION du total écrite avant « وزّع » (متقدم seul) et par la FORME de la tâche (بطاقات verrouillées / nombre rond ± petit nombre / décimaux).
+      else if (type === 'kit-packer') {
+        expect(advanced.numbers.tasks.every((tk) => tk.predict), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.predict), type).toBe(false);
+        expect(beginner.numbers.tasks.some((tk) => tk.kind === 'bags') && beginner.numbers.tasks.some((tk) => tk.op === '−'), type).toBe(true);
+        expect(advanced.numbers.tasks.some((tk) => tk.kind === 'split') && advanced.numbers.tasks.some((tk) => tk.unit === 'm'), type).toBe(true);
+      }
         expect(advanced.numbers.predict, type).toBe(true);
         expect(beginner.numbers.predict, type).toBe(false);
         expect(advanced.numbers.tasks.some((tk) => Object.keys(tk.target).length === 2), type).toBe(true);

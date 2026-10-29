@@ -221,7 +221,7 @@
       "decisionStatus": "draft",
       "titleSource": "textbook",
       "title": "توزيع الضرب على الجمع والطرح",
-      "description": "انطلاقا من مساحات مستطيلات يكتشف التلميذ أنّ $k \\times (a+b) = k \\times a + k \\times b$ ويوظّفها في النشر والتحليل والحساب الذهني.",
+      "description": "في ورشة نادي التضامن يملأ التلميذ حقائب مدرسية متماثلة بطريقتين، فيكتشف أنّ $k \\times (a+b) = k \\times a + k \\times b$ وكذلك في الفرق، ويوظّفها في النشر والتحليل والحساب الذهني وعبارة فيها حرف.",
       "prerequisites": [
         "مساحة المستطيل",
         "سلسلة عمليات تتضمّن أقواسا"
@@ -230,10 +230,10 @@
         "silsila-bi-aqwas"
       ],
       "pointsToLearn": [
-        "التعبير عن مساحة مستطيل مركّب بطريقتين للوصول إلى المساواة $k \\times (a + b) = k \\times a + k \\times b$",
-        "تطبيق خاصية توزيع الضرب على الطرح: $k \\times (a - b) = k \\times a - k \\times b$",
-        "نشر جداء (من جداء إلى مجموع) وتحليل مجموع (من مجموع إلى جداء) باستعمال الخاصية التوزيعية",
-        "توظيف الخاصية التوزيعية في الحساب الذهني، مثل $17 \\times 6{,}1 + 17 \\times 3{,}9$"
+        "التعبير عن عدد أشياء أو ثمن أو مساحة بطريقتين للوصول إلى المساواة $k \\times (a + b) = k \\times a + k \\times b$",
+        "تطبيق خاصية توزيع الضرب على الطرح: $k \\times (a - b) = k \\times a - k \\times b$ (حيث $a \\ge b$)",
+        "نشر جداء (من جداء إلى مجموع أو فرق) وتحليل مجموع أو فرق (من مجموع إلى جداء) بالخاصية التوزيعية، ومنها عبارة فيها حرف مثل $4 \\times (x - 3) = 4x - 12$",
+        "توظيف الخاصية التوزيعية في الحساب الذهني، مثل $25 \\times 4{,}3 + 25 \\times 5{,}7$ و $99 \\times 7$"
       ],
       "programmeItems": [
         "2am.m1.r03"
@@ -255,7 +255,25 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "pointPrerequisites": {
+        "P1": [
+          "2am_silsila-bi-aqwas_P1"
+        ],
+        "P2": [
+          "2am_tawzi-darb-jam-tarh_P1"
+        ],
+        "P3": [
+          "2am_tawzi-darb-jam-tarh_P1",
+          "2am_tawzi-darb-jam-tarh_P2"
+        ],
+        "P4": [
+          "2am_tawzi-darb-jam-tarh_P3"
+        ]
+      },
+      "durationMinutes": 66,
+      "difficulty": "متوسط",
+      "icon": "🎒"
     },
     {
       "code": "wadiya-idmajiya-amaliyat-tabiiya-ushriya",

@@ -129,6 +129,7 @@ import { ORACLE as ORACLE_2AM_SILSILA, audit as auditSilsila } from './practice-
 import { ORACLE as ORACLE_2AM_SILSILA_AQWAS, audit as auditSilsilaAqwas } from './practice-oracle/silsila-bi-aqwas.mjs';
 import { ORACLE as ORACLE_2AM_WASF_SILSILA, audit as auditWasfSilsila } from './practice-oracle/wasf-silsila-hisab.mjs';
 import { ORACLE as ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA } from './practice-oracle/ikhtizal-kitaba-kasriya.mjs';
+import { ORACLE as ORACLE_2AM_TAWZI, audit as auditTawzi } from './practice-oracle/tawzi-darb-jam-tarh.mjs';
 import { ORACLE as ORACLE_1AM_QAWAID_QABILIYAT_QISMA } from './practice-oracle/qawaid-qabiliyat-qisma.mjs';
 import { ORACLE as ORACLE_1AM_KITABAT_ADAD_TABII } from './practice-oracle/kitabat-adad-tabii.mjs';
 import { ORACLE as ORACLE_1AM_HASIL_QISMA_KASR } from './practice-oracle/hasil-qisma-kasr.mjs';
@@ -318,6 +319,7 @@ const ORACLE = {
   ...ORACLE_2AM_WASF_SILSILA,
   ...ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA,
   ...ORACLE_1AM_QAWAID_QABILIYAT_QISMA,
+  ...ORACLE_2AM_TAWZI,
   ...ORACLE_1AM_KITABAT_ADAD_TABII,
   ...ORACLE_1AM_HASIL_QISMA_KASR,
   ...ORACLE_1AM_KUSUR_ASHRIYA_KITABA,
@@ -529,6 +531,11 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     for (const id of ['A', 'B']) {
       expect(isSuccessOutcome(evaluateAnswer(C(id), q).outcome)).toBe(id === 'B');
     }
+  it('توزيع الضرب على الجمع والطرح (2AM) : rationnels exacts BigInt et formes affines a·x + b propres à l\'oracle (aucun import de packages/core), parseur ASCII (4x = 4 × x, « ? » résolu par évaluation en 0 et 1), chaque clé recalculée et recoupée en flottant, chaque QCM jugé option par option avec des options CONSTRUITES ici (exp, lexp, fac1, yn, prop, name : une seule option juste), chaque distracteur = la lecture que nomme sa misconception reconstruite (FIRSTONLY, SIGNCHANGE, ADDK, FACTORMULT, FACTORWRONG, NOTATION), chaque $…$ relu (lisible, aucun intermédiaire négatif, chaînes du corrigé égales), 50 feuilles dont les sujets réellement lus, une partie de sujet jamais citée deux fois', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-tawzi-darb-jam-tarh-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditTawzi(own)).toEqual([]);
+  });
   });
 
   for (const { key, q } of bank) {

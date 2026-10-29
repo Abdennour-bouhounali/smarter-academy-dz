@@ -338,6 +338,10 @@ export const VISUAL_THEMES = Object.freeze({
   // 3AM, unité 2, leçon 2 (2026-10-26) :
   //   paintshop  la machine à teinter d'un magasin de peinture de quartier : un bec de laiton au-dessus du seau B et une manette, le seau de référence A
   //              scellé avec son étiquette et sa pastille, deux grandes pastilles de couleur côte à côte et un mesureur à aiguille « أفتح · أغمق »,
+  // 2AM, unité 1, leçon 4 (2026-10-29) :
+  //   solidarity  l'atelier du نادي التضامن : des étagères de cahiers (piles bleues) et de boîtes de stylos (rouges), un compteur « خرج من المخزن », deux distributeurs à cadran au-dessus d'un tapis qui passe devant
+  //               les cartables ouverts, Fatima (KidFigure, hijab) qui remplit cartable par cartable et Ali (sweat à capuche) qui règle les distributeurs (`kit-packer`)
+  solidarity: { kind: 'objects', shows: 'ورشة نادي التضامن: حقائب مدرسية، رفوف كراريس وأقلام، موزّعان وحزام ناقل' },
   //              un élève (KidFigure) au rouleau devant l'esquisse de la fresque (`shade-match`)
   paintshop: { kind: 'objects', shows: 'آلة مزج الألوان في محلّ الطلاء: دلوان وعلب أبيض ورافعة للأزرق' },
   // 3AM, unité 2, leçon 3 (2026-10-26) :

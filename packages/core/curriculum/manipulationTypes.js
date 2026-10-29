@@ -946,6 +946,14 @@ export function isManipulationType(type) {
 }
 
 /** Les natures de ressource qu'une leçon peut déclarer dans `resources[]`. */
+  },
+  // 2AM, unité 1, leçon 4 (2026-10-29) — la distributivité du produit sur la somme et la différence.
+  'kit-packer': {
+    // DEUX FAÇONS DE REMPLIR LES MÊMES CARTABLES : dans l'atelier du نادي التضامن, Fatima remplit k cartables identiques cartable par cartable (k × (a + b)) ; la MAIN d'Ali règle ce que chaque distributeur sort (cahiers, stylos) et le
+    // tapis distribue UN PAR CARTABLE. Un cartable manquant, trop plein ou inégal se voit ; les deux compteurs ne s'allument ensemble que si tous les cartables sont prêts (n = k × a et m = k × b). Dans une différence une benne reçoit
+    // les cahiers abîmés ; lue à l'envers (distributeurs verrouillés), la main règle le nombre de cartables et le facteur commun sort ; en متقدم le total est prédit, 48 s'écrit 50 − 2, les rubans sont en mètres. `kit-packer` n'énonce jamais la règle.
+    shows: 'ضرب عدد في مجموع أو فرق هو ضرب هذا العدد في كلّ حدّ ثم الجمع أو الطرح: k × (a + b) = k × a + k × b و k × (a − b) = k × a − k × b، ومنه نحلّل بإخراج العامل المشترك ونحسب ذهنيًا',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
 export const RESOURCE_KINDS = Object.freeze(['manipulation', 'method', 'situation', 'example']);
 
 /** Les natures de leçon. `synthesis` = « أدمج تعلّماتي », la synthèse d'unité. */

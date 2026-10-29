@@ -342,4 +342,13 @@ distractor's named error, every letter value; every number ≥ 0).
 
 ## Generator notes
 
-(empty)
+Generated 2026-10-29 (lesson published = status `available`, 9 modules, 66 min without the مسائل). Deviations from the plan, all minimal:
+
+1. **Refusal reasons.** The plan lists `short` / `extra` / `unequal` as three exclusive reasons, but the dealt counts are always adjacent integers (⌊n / k⌋ or ⌈n / k⌉), so « some bags too few AND some too many » never happens. `logic/kitPacker.js › judge` therefore uses: `unequal` whenever k does not divide the load (the banner counts « حقائب بلا … » when a bag is empty), `short` / `extra` when the shares are equal but too small / too big, `pack` (k3: the bags are ready but not by « a pack minus the damaged »), `split` (a1: p ± q ≠ n). Extra items are drawn in the bag counts (more than the model), not piled at the end of the belt.
+2. **Layout.** At 1024×768 the lab column is ~414 px: the two lanes are NOT side by side. A single strip (Fatima, her counter, Ali's counter, Ali) replaces the two lanes; the dispensers sit under it and the bags (≤ 16, two rows above 8) under them. Bags are ≥ 34 px (the plan's 56 px does not fit 6–8 bags in 414 px); their contents are drawn (blue notebooks, red pens) and counted.
+3. **k3 judge.** The plan's end state is n = 70, m = 14; a pair that fills the bags otherwise (n = 56, m = 0) is refused with `pack`, so the hand must reproduce « a pack minus the damaged ».
+4. **a1 is a `split` task** (round number ± small number on two dials, + / − chips), not a free dial of 48; the prediction (432) is typed first.
+5. **a2 ribbons** are shared in equal parts n / k (metres), no round-robin; the dials are in whole metres (18 and 12).
+6. **أستعدّ.** Plan items kept; order mixed so the `silsila-bi-aqwas` review items come first. **M2** opens on the lab with one task and four question steps (instead of the plan's two).
+7. **Bank.** Built by a helper from the plan: 50 sheets (9 `term_exam` read in the corpus: `2am-s1-74`, `-81`, `-78`, `-84` (two parts), `-91`, `-79`, `-83`, `-67`; 32 `term_exam_modelled`; 9 `adapted`). `2am-s1-67`, `-74`, `-83` were opened and read by the helper (the plan listed them « not read »). The corpus numbers had negatives or two letters, so the sheets keep the exercise's structure with own non-negative numbers and ONE letter.
+8. **Successor connection** is NOT written here (coordinator): `tabsit-hadhf-aqwas` P1 ← `2am_tawzi-darb-jam-tarh_P3` (net link `2am.m1.r03 → 3am.m5.r01`, writable now), the recall box in `tabsit-hadhf-aqwas` معارف, and the three edges waiting for net links (`nashr-jabri-3am`, `jidaa-adadayn-nisbiyayn`, `jidaa-ida-nisbiya`).

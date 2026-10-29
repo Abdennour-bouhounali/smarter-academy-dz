@@ -7,7 +7,7 @@
  *   L1 (silsila-bidun-aqwas, ICI)  tokenize · parseChain · evaluateChain · traceChain · operatorsOf · valueInOrder · conventionalOrder · chainText · isNonNegativeChain
  *   L2 (silsila-bi-aqwas)           parenthèses, crochets, barre de fraction, calculatrice
  *   L3 (wasf-silsila-hisab)         analyse positionnée · lastOperation · operands · chainName · describe · cutAt · staplesOf · build · sameStructure
- *   L4                              distributivité — ajoutée par sa leçon.
+ *   L4 (tawzi-darb-jam-tarh)        distributivité : expand · factorOut · commonFactor · mentalSplits · expandLetter
  *
  * LA CONVENTION (un accord, pas un théorème) : sans parenthèses, × et ÷ avant + et −, et à priorité égale de GAUCHE à DROITE.
  * Aucune parenthèse, aucun crochet, aucune barre de fraction, aucun littéral négatif (les relatifs sont l'unité 3 de 2AM) : `tokenize` les refuse.
@@ -564,4 +564,71 @@ export function build(op, leftText, rightText, { clipLeft = false, clipRight = f
   let name = null;
   try { name = chainName(text); } catch { name = null; }
   return { text, name, needs, clipped: { left: clipLeft, right: clipRight }, structure: (() => { try { return structureOf(text); } catch { return null; } })() };
+}
+
+/* ══════════════ L4 — la distributivité (tawzi-darb-jam-tarh, 2026-10-29) ══════════════
+ * k × (a ± b) = k × a ± k × b sur les entiers et les décimaux (a ≥ b : aucun négatif avant l'unité 3), lue dans les deux sens (نشر / تحليل). Les nombres sont écrits comme
+ * dans les leçons (virgule décimale) ; les valeurs viennent de `powers.js` (exact). `relativeOps.factorize` est la contre-épreuve du test. */
+const rt = (x) => parseRel(String(x));
+const isSub = (op) => op === '−' || op === '-';
+
+/** « 6 × (8 − 3) » et « 6 × 8 − 6 × 3 » : les deux écritures, leur valeur commune et celle de chaque produit. */
+export function expand(k, a, b, op = '+') {
+  const sub = isSub(op);
+  const [K, A, B] = [rt(k), rt(a), rt(b)];
+  if (sub && P.sign(P.sub(A, B)) < 0) throw new Error('a < b : différence négative');
+  const o = sub ? '−' : '+';
+  const kA = P.mul(K, A); const kB = P.mul(K, B);
+  const inner = sub ? P.sub(A, B) : P.add(A, B);
+  const whole = P.mul(K, inner);
+  const split = sub ? P.sub(kA, kB) : P.add(kA, kB);
+  return {
+    op: o, factored: `${k} × (${a} ${o} ${b})`, split: `${k} × ${a} ${o} ${k} × ${b}`,
+    inner: numText(inner), kA: numText(kA), kB: numText(kB), products: `${numText(kA)} ${o} ${numText(kB)}`,
+    value: numText(whole), valueText: numText(whole), equal: P.eq(whole, split),
+  };
+}
+/** تحليل : de « k × a ± k × b » à « k × (a ± b) » — même résultat que `expand`, orienté dans l'autre sens. */
+export function factorOut(k, a, b, op = '+') { return expand(k, a, b, op); }
+
+/** Le facteur COMMUN visible de deux produits « k × a » et « a × k » (dans n'importe quel ordre) → `{ factor, rest: [x, y] }` ou `null`. */
+export function commonFactor(t1, t2) {
+  const parts = (t) => String(t).split('×').map((x) => x.trim());
+  const p1 = parts(t1); const p2 = parts(t2);
+  if (p1.length !== 2 || p2.length !== 2) return null;
+  for (let i = 0; i < 2; i += 1) for (let j = 0; j < 2; j += 1) {
+    if (P.eq(rt(p1[i]), rt(p2[j]))) return { factor: p1[i], rest: [p1[1 - i], p2[1 - j]] };
+  }
+  return null;
+}
+
+/** Les écritures de n « près d'un nombre rond » : 99 → [90 + 9, 100 − 1] ; 48 → [40 + 8, 50 − 2] ; 101 → [100 + 1, 110 − 9]. `n` entier ≥ 3. */
+export function mentalSplits(n) {
+  const N = Number(n);
+  if (!Number.isInteger(N) || N < 3) return [];
+  const out = [];
+  const scales = N > 100 ? [10, 100] : [10];
+  for (const sc of scales) {
+    const lo = Math.floor(N / sc) * sc; const up = lo + sc;
+    if (N % sc === 0) continue;
+    if (lo > 0) out.push({ parts: [lo, N - lo], op: '+' });
+    out.push({ parts: [up, up - N], op: '−' });
+  }
+  return out;
+}
+
+/** k × (x ± b) avec UNE lettre : « 4 × (x − 3) » → « 4x − 12 » (la notation 4 × x = 4x) et sa valeur pour une valeur de x. */
+export function expandLetter({ k, b, op = '+' }) {
+  const sub = isSub(op);
+  const o = sub ? '−' : '+';
+  const kb = numText(P.mul(rt(k), rt(b)));
+  const at = (x) => {
+    const X = rt(x);
+    if (sub && P.sign(P.sub(X, rt(b))) < 0) throw new Error('x < b : différence négative');
+    const inner = sub ? P.sub(X, rt(b)) : P.add(X, rt(b));
+    const viaFactored = P.mul(rt(k), inner);
+    const viaExpanded = sub ? P.sub(P.mul(rt(k), X), rt(kb)) : P.add(P.mul(rt(k), X), rt(kb));
+    return { factored: numText(viaFactored), expanded: numText(viaExpanded), equal: P.eq(viaFactored, viaExpanded) };
+  };
+  return { factored: `${k} × (x ${o} ${b})`, text: `${k}x ${o} ${kb}`, kb, at };
 }
