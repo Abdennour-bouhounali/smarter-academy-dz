@@ -626,3 +626,29 @@ in `docs/sources/2am/unit{1,2}/plan/` (owner questions in each README). One comm
   module left among the eight 2AM lessons.
 - Owner points added: the three net links above (`2am.m1.r03 → 3am.m5.r02`, `→ 3am.m1.r01`); `2am-s1-75` ex 5 was read on the text layer
   only (the shakiest `term_exam` of `muqarana-kasrayn`); the net direction `r08 ↔ r09` question stays open (current direction kept).
+
+### Pair 5 — the syntheses `wadiya-idmajiya-amaliyat-tabiiya-ushriya` (unit 1) and `wadiya-idmajiya-kusur-amaliyat` (unit 2), published on `dev` 2026-10-29
+
+- Both copy the 3AM synthesis architecture (00 أستعدّ · 01–06 « الوضعية التدريبية » · 07 analysis of the final situation, the only
+  `ContentModule`, with `objectives` · 08 final test), no lab, one الكفاءة each with `pointPrerequisites` P1 ← the unit's lessons
+  (unit 1: `silsila-bidun-aqwas_P3`, `silsila-bi-aqwas_P3`, `wasf-silsila-hisab_P3`, `tawzi-darb-jam-tarh_P4`; unit 2:
+  `qisma-iqlidiya-hasr_P2`, `kasr-hasil-qisma_P4`, `jam-tarh-kusur_P3`, `jida-kasrayn_P3`, `muqarana-kasrayn_P3`). Banks: unit 1
+  4 `term_exam` / 40 modelled / 6 adapted; unit 2 8 `term_exam` / 42 modelled. `coursesData.test.js` LP total 530 → 532.
+- No successor connection (a synthesis has no item and no net link).
+- Gates (coordinator, whole tree): `npm test` exit 0 (core 1113, web 743 files / 15 108 tests, scripts 19 722), `check:lessons` (entry
+  236.8 KB gzip, queue 146), build, net tests; lesson-kit e2e green for both. Local DB: 9 modules + 50 exercises each `published`.
+- Owner points added: unit-1 synthesis L5 sheets `l5-004`, `l5-006`, `l5-007` divide by a decimal (22 ÷ 0,4 …) — inside the unit's
+  boundary?; L3-008 uses « diameter × 3,14 » for a half circle; unit-2 synthesis redesigned the printed challenge cards (the book's set
+  has no sum-to-1 choice) and replaced the book's sanitation statistics by a water-network situation — confirm.
+
+### 2AM مقطع `2am.m1` — closing summary (2026-10-29)
+
+All ten `coming_soon` entries of 2AM units 1–2 are generated, `available`, pushed to `dev` and published in the local DB (9 modules + 50
+exercises each, no draft): `silsila-bidun-aqwas`, `silsila-bi-aqwas`, `wasf-silsila-hisab`, `tawzi-darb-jam-tarh`,
+`wadiya-idmajiya-amaliyat-tabiiya-ushriya` (unit 1) and `kasr-hasil-qisma`, `jam-tarh-kusur`, `jida-kasrayn`, `muqarana-kasrayn`,
+`wadiya-idmajiya-kusur-amaliyat` (unit 2) — with `qisma-iqlidiya-hasr`, published earlier, the whole مقطع. Eight new labs: `tram-route`,
+`coop-calculator`, `chain-cutter`, `kit-packer`, `mooring-lines`, `trail-odometer`, `window-blinds`, `level-laser`; shared maths in
+`packages/core/arithmetic/chainOps.js` and `fractions2.js`. Connection to 3AM (and through it to 4AM), back links only, along net links:
+`quwat-adad-nisbi`, `jam-tarh-kasrayn`, `maqlub-qismat-kasrayn`, `tasawi-muqaranat-kasrayn`, `tabsit-hadhf-aqwas` (LP edges + linked
+« تذكّر »), and inside 2AM `jam-tarh-kusur` ← `muqarana-kasrayn`. Open owner questions are listed in each pair's entry and in
+`docs/sources/2am/unit{1,2}/plan/README.md`. Next in the queue: `docs/curriculum/GENERATION_QUEUE.md`.
