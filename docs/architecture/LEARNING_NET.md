@@ -334,7 +334,8 @@ the queue's first entries that are still `coming_soon`, in order.
 3. **Phases C, D, E** — the same from the remaining 3AM lessons (with their own 1AM–2AM chains), then 2AM, then 1AM.
 4. **Phase F — isolated lessons** (no item, or items linked to nothing) come last.
 5. A **synthesis** enters the queue right after the last lesson of its unit, in any phase. In Phase A, for example,
-   `wadiya-idmajiya-tanasubiya-sura` follows #9–#11.
+   `wadiya-idmajiya-tanasubiya-sura` follows #9–#11. A unit whose lessons are ALL published before its synthesis
+   (2AM units 1–2, 2026-10-29) puts its synthesis at the end of its grade's phase (`learning-net-queue.mjs`).
 6. The queue also lists the **renvois en avant**: same-year prerequisites the textbook teaches later. The lesson that
    suffers one recalls it itself (a « تذكّر » box), without building it.
 
