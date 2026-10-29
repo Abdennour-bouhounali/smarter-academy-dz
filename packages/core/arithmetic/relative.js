@@ -168,3 +168,26 @@ export function smallestStep(values, steps, half = 6) {
   }
   return null;
 }
+
+/* ── `balloon-ballast` (2AM, درس « جمع وطرح عددين نسبيين », 2026-10-29) : somme et différence de deux relatifs (E2) ── */
+
+/** La somme exacte de deux relatifs (centièmes). */
+export const add = (a, b) => parse(a) + parse(b);
+/** La différence : a − b = a + opposé(b). */
+export const sub = (a, b) => add(a, opposite(b));
+/**
+ * Le cas de la règle de la somme a + b : 'zero' (un terme nul), 'opposites' (a = −b ≠ 0), 'same' (même signe) ou 'different'.
+ */
+export function ruleCase(a, b) {
+  const p = parse(a); const q = parse(b);
+  if (p === 0n || q === 0n) return 'zero';
+  if (p === -q) return 'opposites';
+  return (p < 0n) === (q < 0n) ? 'same' : 'different';
+}
+/** La charge minimale d'une altitude entière a (en mètres) : |a| nacelles de flamme ou |a| sacs. a est un entier (centièmes multiples de 100). */
+export function ballastOf(a) {
+  const p = parse(a);
+  if (p % 100n !== 0n) throw new Error('altitude non entière');
+  const n = Number(abs(p) / 100n);
+  return p >= 0n ? { tokens: n, bags: 0 } : { tokens: 0, bags: n };
+}

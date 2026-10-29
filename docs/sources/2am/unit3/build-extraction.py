@@ -21,8 +21,8 @@ FRONTIÈRES DES LEÇONS (à respecter par chaque lead qui génère la suite) :
         self-5, self-6 ; deep-38, deep-40 à moitié). Elle n'emploie PAS le repère du plan ni les sommes.
   talim-nuqta-mustawi (2am.m4.r04) — SERA GÉNÉRÉE PLUS TARD DANS CETTE CAMPAGNE : le repère orthogonal, abscisse / ordonnée d'un
         point du plan (act-1 c ; know-1c ; method-2 ; ex-21…24 ; self-1…3 ; deep-55…56). Elle devra relire act-1 c p. 40 et p. 43.
-  jam-tarh-nisbiya (2am.m4.r05) — addition et soustraction de deux relatifs (act-3, act-4 ; know-2a, 2b ; method-3, method-4 ;
-        ex-25…34 ; self-4, 7, 8, 10).
+  jam-tarh-nisbiya (2am.m4.r05) — GÉNÉRÉE le 2026-10-29 (lab `balloon-ballast`) : somme et différence de DEUX relatifs (act-3, act-4 → module 4 ; know-2a, 2b → 2 ; method-3, method-4, now-45 → 3 ;
+        ex-25…28, ex-30…34 → 4 ; self-7, self-8 → 8 ; deep-45, deep-48, deep-57 → banque). ex-29, deep-49, deep-50, deep-58 (trois termes ou plus) → majmu-jabri.
   masafa-nuqtatayn (2am.m4.r07) — SERA GÉNÉRÉE PLUS TARD DANS CETTE CAMPAGNE : la distance entre deux points d'une droite graduée
         (act-5 ; know-2c ; ex-35 ; self-9 ; ict) ; elle lit la distance comme « le plus grand moins le plus petit », ce
         qui réutilise la comparaison de muqarana-nisbiya.
@@ -192,13 +192,13 @@ E.append({
 
 # ── p. 44 : معارف 2 (جمع، طرح) ───────────────────────────────────────────────────────────────────
 E.append({
-    'id': 'know-2a', 'kind': 'knowledge', 'number': 2, 'page': 44, 'section': 'معارف', 'title': 'جمع عددين نسبيين', 'verified': False,
+    'id': 'know-2a', 'kind': 'knowledge', 'number': 2, 'page': 44, 'section': 'معارف', 'title': 'جمع عددين نسبيين', 'verified': True,
     'properties': ['خاصية 1 : لجمع عددين نسبيين من نفس الإشارة: نجمع مسافتيهما إلى الصفر، ونضع أمام النتيجة الإشارة المشتركة للعددين.',
                    'خاصية 2 : لجمع عددين نسبيين من إشارتين مختلفتين: نطرح المسافة الأصغر إلى الصفر من المسافة الأكبر إلى الصفر، ونضع أمام النتيجة إشارة العدد النسبيّ الذي له أكبر مسافة إلى الصفر.'],
     'examples': ['(−3,2) + (−5) = (−8,2)', '(+3,2) + (+5) = (+8,2)', '(−9) + (+5) = (−4)', '(+9) + (−5) = (+4)'],
     'answer': {'ex': [-3.2 - 5, 3.2 + 5, -9 + 5, 9 - 5]}, 'answerSource': 'computed',
 })
-E.append({'id': 'know-2b', 'kind': 'knowledge', 'number': 2, 'page': 44, 'section': 'معارف', 'title': 'طرح عددين نسبيين', 'verified': False,
+E.append({'id': 'know-2b', 'kind': 'knowledge', 'number': 2, 'page': 44, 'section': 'معارف', 'title': 'طرح عددين نسبيين', 'verified': True,
           'properties': ['خاصية : لطرح عدد نسبيّ، نضيف معاكسه.'], 'examples': ['(+11) − (−5) = (+11) + (+5) = (+16)'], 'answer': {'ex': 16}, 'answerSource': 'computed'})
 E.append({'id': 'know-2c', 'kind': 'knowledge', 'number': 2, 'page': 44, 'section': 'معارف', 'title': 'المسافة بين نقطتين', 'verified': False,
           'properties': ['خاصية : لحساب المسافة بين نقطتين على مستقيم مدرّج، نحسب الفرق بين أكبر فاصلة وأصغر فاصلة.'],
@@ -211,16 +211,16 @@ E.append({'id': 'know-2e', 'kind': 'knowledge', 'number': 2, 'page': 44, 'sectio
           'text': 'اصطلاح : يمكن حذف الإشارة + وأقواس الأعداد الموجبة. يمكن حذف إشارة العدد الموجب عندما يكون في أوّل المجموع. مثال: نكتب (+6) = 6 ؛ (+5) − (+4) = 5 − 4.'})
 
 # ── p. 45 : طرائق 3–5 ─────────────────────────────────────────────────────────────────────────────
-E.append({'id': 'method-3', 'kind': 'method', 'number': 3, 'page': 45, 'section': 'طرائق', 'title': 'حساب مجموع عددين نسبيين', 'verified': False,
+E.append({'id': 'method-3', 'kind': 'method', 'number': 3, 'page': 45, 'section': 'طرائق', 'title': 'حساب مجموع عددين نسبيين', 'verified': True,
           'exercise': 'أجرِ عمليتي الجمع: A = (−4) + (−7) ؛ B = (−4) + (+7).',
           'solution': {'A': -11, 'B': 3}, 'answer': {'A': -4 - 7, 'B': -4 + 7}, 'answerSource': 'computed'})
-E.append({'id': 'method-4', 'kind': 'method', 'number': 4, 'page': 45, 'section': 'طرائق', 'title': 'حساب فرق عددين نسبيين', 'verified': False,
+E.append({'id': 'method-4', 'kind': 'method', 'number': 4, 'page': 45, 'section': 'طرائق', 'title': 'حساب فرق عددين نسبيين', 'verified': True,
           'exercise': 'احسب: A = (+8,4) − (−5,2) ؛ B = (+3) − (+7) ؛ C = (−3) − (+7).',
           'answer': {'A': float(D('8.4') + D('5.2')), 'B': 3 - 7, 'C': -3 - 7}, 'answerSource': 'computed'})
 E.append({'id': 'method-5', 'kind': 'method', 'number': 5, 'page': 45, 'section': 'طرائق', 'title': 'حساب مجموع جبري', 'verified': False,
           'exercise': 'احسب المجموع S = (+5,2) + (−6) − (+9) + (+6,3) − (−5,2) − (−11).',
           'answer': {'S': float(D('5.2') - 6 - 9 + D('6.3') + D('5.2') + 11)}, 'answerSource': 'computed'})
-E.append({'id': 'now-45', 'kind': 'now', 'page': 45, 'section': 'دوري الآن', 'verified': False,
+E.append({'id': 'now-45', 'kind': 'now', 'page': 45, 'section': 'دوري الآن', 'verified': True,
           'text': '① احسب: A = (−11) + (−9) ؛ A = (+8) + (−13) ؛ A = (−3,3) − (−5) ؛ B = (+6,1) − (−2).'})
 
 # ── pp. 46–48 : أوظّف تعلّماتي (1–37) ─────────────────────────────────────────────────────────────
@@ -376,7 +376,7 @@ DEST = {
         '8-9-10-11-12-13': {'lesson': L3, 'module': 0}}},
     'act-1': {'lesson': L1, 'module': 4, 'items': {'a-b': {'lesson': L1, 'module': 4}, 'c': {'lesson': L3, 'module': 1}}},   # a-b : l'entrée est le labo de la plateforme ; la frise du livre devient une application (2026-10-29)
     'act-2': {'lesson': L2, 'module': 4},
-    'act-3': {'lesson': L4, 'module': 1}, 'act-4': {'lesson': L4, 'module': 1},
+    'act-3': {'lesson': L4, 'module': 4}, 'act-4': {'lesson': L4, 'module': 4},   # l'entrée est le labo `balloon-ballast` de la plateforme ; les activités du livre deviennent des applications (2026-10-29)
     'act-5': {'lesson': L5, 'module': 1}, 'act-6': {'lesson': L6, 'module': 1},
     'know-1a': {'lesson': L1, 'module': 2}, 'know-1b': {'lesson': L2, 'module': 2}, 'know-1c': {'lesson': L3, 'module': 2},
     'method-1': {'lesson': L2, 'module': 3}, 'method-2': {'lesson': L3, 'module': 3},
@@ -388,7 +388,7 @@ DEST = {
     **{f'ex-{n}': {'lesson': L1, 'module': 4} for n in range(1, 12)},
     **{f'ex-{n}': {'lesson': L2, 'module': 4} for n in range(12, 21)},
     **{f'ex-{n}': {'lesson': L3, 'module': 4} for n in (21, 22, 23, 24)},
-    **{f'ex-{n}': {'lesson': L4, 'module': 4} for n in (25, 26, 27, 28, 29, 30, 31, 32, 33, 34)},
+    **{f'ex-{n}': {'lesson': L4, 'module': 4} for n in (25, 26, 27, 28, 30, 31, 32, 33, 34)}, 'ex-29': {'lesson': L6, 'module': 4},   # ex-29 : sommes de 4 à 6 termes = majmu-jabri
     'ex-35': {'lesson': L5, 'module': 4},
     **{f'ex-{n}': {'lesson': L6, 'module': 4} for n in (36, 37)},
     'self-1': {'lesson': L3, 'module': 8}, 'self-2': {'lesson': L3, 'module': 8}, 'self-3': {'lesson': L3, 'module': 8},
@@ -398,7 +398,8 @@ DEST = {
     'deep-38': {'lesson': L4, 'module': 4},
     **{f'deep-{n}': {'lesson': L6, 'module': 4} for n in (39, 43, 44, 46, 47, 59)},
     'deep-40': {'lesson': L5, 'module': 4}, 'deep-41': {'lesson': L5, 'module': 4}, 'deep-42': {'lesson': L5, 'module': 4},
-    **{f'deep-{n}': {'lesson': L4, 'module': 4} for n in (45, 48, 49, 50, 57, 58)},
+    **{f'deep-{n}': {'lesson': L4, 'module': None} for n in (45, 48, 57)},   # banque d'exercices (adaptés) de jam-tarh-nisbiya
+    **{f'deep-{n}': {'lesson': L6, 'module': 4} for n in (49, 50, 58)},   # carrés magiques / chemins : sommes de 3 à 4 termes = majmu-jabri
     **{f'deep-{n}': {'lesson': L3, 'module': 4} for n in (51, 52, 53, 54, 55, 56)},
     'integration': {'lesson': SYN, 'module': None}, 'evaluation': {'lesson': SYN, 'module': None},
     'ict-1': {'lesson': L5, 'module': None},

@@ -168,3 +168,26 @@ describe('corniche-ruler : opposé, abscisse, planche', () => {
     }
   });
 });
+
+describe('balloon-ballast : somme, différence, charge', () => {
+  it('add / sub / ruleCase / ballastOf', () => {
+    expect(R.add('-3,2', '-5')).toBe(-820n);
+    expect(R.sub('5', '-7')).toBe(1200n);
+    expect(R.sub('-2', '5')).toBe(-700n);
+    expect(R.ruleCase('-3', '-5')).toBe('same');
+    expect(R.ruleCase('-9', '5')).toBe('different');
+    expect(R.ruleCase('-6', '6')).toBe('opposites');
+    expect(R.ruleCase('0', '6')).toBe('zero');
+    expect(R.ballastOf('-4')).toEqual({ tokens: 0, bags: 4 });
+    expect(R.ballastOf(6)).toEqual({ tokens: 6, bags: 0 });
+    expect(() => R.ballastOf('1,5')).toThrow();
+  });
+  it('balayage : |a|,|b| ≤ 12 par 0,25 contre un calcul en entiers', () => {
+    for (let a = -1200; a <= 1200; a += 25) for (let b = -1200; b <= 1200; b += 25) {
+      const A = String(a / 100); const B = String(b / 100);
+      expect(R.add(A, B)).toBe(BigInt(a + b));
+      expect(R.sub(A, B)).toBe(BigInt(a - b));
+      expect(R.sub(A, B)).toBe(R.add(A, R.opposite(B)));
+    }
+  });
+});

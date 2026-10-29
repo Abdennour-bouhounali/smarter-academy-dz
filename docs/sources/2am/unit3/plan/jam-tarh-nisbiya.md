@@ -326,3 +326,14 @@ named error and false).
   السنة الثانية » box toward r05 (only toward its own unit's lesson): nothing else to edit; history line in its header.
 - **Inside the unit:** `majmu-jabri` and `masafa-nuqtatayn` write their own edges toward this lesson (their plans §2).
 - No 4AM net link starts at r05.
+
+## Generator notes (lead, 2026-10-29)
+
+1. **Lab constants.** The scene is 220 px high (1 m = 4,2 px) instead of the plan's 300 px, so that `[data-bb-glance]` is ≈ 710 px at 1024×768; up to 24 objects per kind (the plan said nothing; a sum of two cards of 12 needs 24). The shelf holds a pair bundle only at متقدم and in « جرّب أعدادك ».
+2. **Gestures.** The plan's « flick » is a drag of more than 28 px from the bin (tie) or out of the basket (throw); taps and the « اربط / ارمِ » buttons do the same; an opposite gesture CANCELS its twin in the log (so a mistaken tie can be undone without leaving a red trace).
+3. **Entry/chain.** Cards: `t1`–`t4` (sums) and `a1`–`a4` (differences) exactly as planned; module 2 poses two cards `m1` `(−8)+(+3)` → −5 and `m2` `(+4)−(−6)` → +10 (`predict`, 6 neutral pairs then 6 bags thrown). Chains: t1 `pairs · left · whySign`, t2 `noPair · howEight`, t3 `farther · signOf`, t4 `oppZero · ruleSum`, a1 `rose · sameTie`, a2 `whyNeutral · equalsSum`, a3 `equalsSum`, a4 `ruleDiff`.
+4. **Misconception definitions made precise.** `FLIPBOTH` = −(a − b) (the result of the difference, sign changed); `SUBNOFLIP` = a + b computed instead of a − b; `SUBDIST` for same-sign sums = ||a|−|b|| with the first sign; `SIGNFIRST` = sign of the number added with the difference of distances.
+5. **Bank** (helper): 7 `term_exam` instead of the planned 3 (all seven papers were read), 6 `adapted`; MCQs have three options with two named errors; `2am-s2-71` ex 1 is cited by this bank for q 1 only (the line-placing part q 2 is `talim-mustaqim-mudarraj-2`'s). `2am-s2-52` ex 3 is mostly a frame exercise; only its q 4 (add (+3) to an abscissa, subtract (−3) from an ordinate) was modelled, re-sketched as two numbers on a game screen.
+6. **Extraction.** `act-3`, `act-4` → module 4; `ex-29`, `deep-49`, `deep-50`, `deep-58` → `majmu-jabri`; `deep-45`, `deep-48`, `deep-57` → bank (`module: None`); `know-2a`, `know-2b`, `method-3`, `method-4`, `now-45` re-read (pp. 44–45) and set `verified: True`; the others were NOT re-read at 200 dpi (the lesson uses none of the book's numbers). `now-45` is cited by `METHOD.sum`, `deep-45` by the exercise `ex-30`.
+7. **Catalogue.** `durationMinutes` 64 (modules without the three مسائل), difficulty « متوسط », icon 🎈, `pointPrerequisites` P1 ← talim P1, P2 ← talim P1, P3 ← P1, P2 and talim P1 (the plan's P3 ← talim P1 edge kept).
+8. **Not done by the lead** (coordinator): successor connection (§12), DB export/import and publication, the guide's « patterns to reuse » note (the guide file was dirty in the tree and left untouched), `MOYEN_ROLLOUT_PROGRESS.md`.
