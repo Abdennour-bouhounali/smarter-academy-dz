@@ -123,6 +123,18 @@ Learned in the m1 run (2026-10-29):
 - The Islam-respect rule covers the BANK sheets: after renaming a context, grep `content/practice/2am/<code>/` for the old word.
 - An older lab-kit e2e script can stall on a lab question overlay; write yours against the current prototype.
 
+Learned in pair 1 (2026-10-29):
+- Bidi: in an Arabic sentence every « value + Latin unit » (`10 m`, `20 m`, `3 kg`) is ONE LTR run — in plain strings wrap it in an LTR
+  isolate (U+2066 … U+2069), in KaTeX write `$10\,\mathrm{m}$` (never `$10$ m`), in JSX put the unit INSIDE the `<bdi dir="ltr">`. Parenthesis
+  chips need `dir="ltr"`. Re-grep `[0-9}$] m\b` in every new lab, module and bank sheet.
+- `npm run check:lessons` must exit 0 BEFORE you report: it includes `node scripts/audit-predict-prompts.mjs --strict` — every memo rule whose
+  brick is not a « rappel » needs a `predictPrompt` (a question asked BEFORE the rule is shown); run the script alone while you build.
+- VIEW every screenshot you save, all four sizes, every module; a pill or label whose text touches its border is a defect.
+- A memo-card rule clipped on the left means it is too long: shorten it, then re-capture the card.
+- Two leads share `lessonIndex.generated.json`, `content/practice/*.json`, the registries and the i18n file: edit them with small targeted
+  edits after a fresh read; never regenerate over the other lead's lines.
+- `lessonProblem.table` must be the مسألة 1 table and every مسألة needs a drawn support; checkpoint options never keep the correct one first.
+
 Final report: URL path; modules; the lab and the screenshots you reviewed; bank counts (term_exam / modelled / adapted /
 platform_addition); every الكفاءات change; gates with results; the full list of files created or changed; docs updated; fixes to
 the plan; open points for the owner.

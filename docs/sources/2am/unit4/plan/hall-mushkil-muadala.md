@@ -329,3 +329,14 @@ named error and not a solution).
     الثانية متوسط</Link>}` → the link goes live by itself once the lesson is `available`. Only the header history line is added (« 2026-…:
     the 2AM base is published — P1, P4 edges »). Its « أستعدّ » item requiring `hall-qisma` is unchanged.
 - **4AM**: reached through `muadalat-darajat-ula` (no direct link).
+
+## Generator notes (2026-10-29)
+
+- **Lab flow (decided at generation):** مبتدئ = test (two fills) → slate (operation or number) → exact control fill → equation cards (BOTH right equations, on every task) → solved; متقدم = slate first (a3 in two stages: the tank total, then what to add) → set the tank → exact fill. A fill orders N bottles: if the tank holds more than N, N full bottles and the juice left stays; if less, the last bottle is partial — this reproduces the plan's checked numbers (1,4 L → 12 bottles + 1,2 L left; 1,6 L → 11 + a 12th at 0,4 L). Refused values drawn by their fill at the nearest 0,05 tick (`12 ÷ 18` → 0,65 L); for `t2`/`t3` a subtraction is negative and is refused as unreadable.
+- **`equation2.js` E2:** `checkForm({ form, a, b }, x)` takes the equation as an object (the plan wrote `checkForm(form, x)`); `solveForm(…, { allowNegative })`; `undoChain` returns `{ steps, x, mid, last }`; `formOf` reads « 2,5x = 10 », « 12 × x = 18 », « x ÷ 0,4 = 15 », « 56/x = 7 ».
+- **Plan numbers:** the plan's M4 item 1 « 450 × x = 1350 » etc. kept; exercise `ex-5` (is this a solution?) is a platform addition (`interaction_generation`), not an element of the book.
+- **Bank (helper-built):** 50 sheets, 8 `term_exam` / 36 modelled / 6 adapted; `2am-s2-72` ex 2 `x + 7 = 2` replaced by `x + 8 = 20` (README Q10); `act-4` and `deep-53` are adapted here (the plan listed `act-4` as modelled); `counted: false` steps carry `2am_hall-mushkil-muadala_P1` (the validator refuses another lesson's LP).
+- **Extraction:** `act-4`, `know-5`, `method-4`, `method-5`, `ex-34 … ex-40` marked `verified` (pages 57, 58, 60, 64 of the book re-read at 90 dpi); `ex-34` and `ex-35` are cited through the lab resources' `sourceElementIds` (the mental « missing number » idea of the lab).
+- **Catalogue:** `durationMinutes` 66 (the convention excludes the three مسائل; the plan said ≈ 85); `prerequisiteLessonCodes` `['bahth-adad-naqisa', 'ibara-harfiya-intaj']`; `pointPrerequisites` P1 ← `2am_ibara-harfiya-intaj_P1`, P2 ← P1, P3 ← P2.
+- **« أستعدّ »:** items 1–2 measure `1am.m5.r10`; item 5 is the textbook `prep` 7 (a length in x).
+- **Open points:** the successor connection (3AM `muadalat-darajat-ula` P1 ← `2am_hall-mushkil-muadala_P2`, P4 ← P1) is left to the coordinator; the plan's L5 « expression step `counted: false` » cites P1 of THIS lesson.

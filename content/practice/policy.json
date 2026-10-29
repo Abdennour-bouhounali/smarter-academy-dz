@@ -5,6 +5,10 @@
   ],
   "defaultMinPerLevel": 3,
   "lessons": {
+    "hall-mushkil-muadala": {
+      "minPerLevel": 10,
+      "source": "السنة الثانية متوسط، الوحدة 4 «مفهوم المعادلة» — الدرس «حلّ مشكل باستعمال معادلة» (الكتاب ص 57 و60 و61 و64 و65 و67: docs/sources/2am/unit4/extraction.json؛ خطّة الدرس: docs/sources/2am/unit4/plan/hall-mushkil-muadala.md) مكمَّلة بتمارين تولّدها المنصّة على منوال اختبارات الفصل الثاني والثالث، وثمانية منها على منوال تمرين واحد قرأناه فعلًا في الورقة (2am-s2-72 و -50 و -73 و -75 و 1am-s2-79 و 2am-s3-25، بأعدادها وسياقاتها الجديدة ولكلّ جزء من ورقة ورقة واحدة) (docs/sources/moyen/exams/exams-index.json، EXAM_PATTERN.md §6) — 10 تمارين × 5 مستويات (2026-10-29)"
+    },
     "ibara-harfiya-intaj": {
       "minPerLevel": 10,
       "source": "السنة الثانية متوسط، الوحدة 4 «مفهوم المعادلة» — الدرس «إنتاج عبارة حرفية واستعمالها» (الكتاب ص 56، 58، 59، 62، 63، 65، 66: docs/sources/2am/unit4/extraction.json؛ خطّة الدرس: docs/sources/2am/unit4/plan/ibara-harfiya-intaj.md) مكمَّلة بتمارين تولّدها المنصّة على منوال اختبارات الفصل الثاني والثالث، وستّة منها على منوال تمرين واحد قرأناه فعلًا في الورقة (2am-s2-50 و -73 و -72 و -69 و 2am-s3-39 و -37، بأعدادها وسياقاتها الجديدة ولكلّ جزء من ورقة ورقة واحدة) (docs/sources/moyen/exams/exams-index.json، EXAM_PATTERN.md §6) — 10 تمارين × 5 مستويات (2026-10-29)"
@@ -304,6 +308,10 @@
     "muqarana-nisbiya": {
       "minPerLevel": 10,
       "source": "السنة الثانية متوسط، الوحدة 3 «الأعداد النسبية» — الدرس «مقارنة وترتيب أعداد نسبية» (الكتاب ص 40 إلى 43: docs/sources/2am/unit3/extraction.json) مكمَّلة بتمارين تولّدها المنصّة على منوال اختبارات الفصل الأول والثاني والثالث (2am-s2-69، -63، -62، -72، -73، -75، 2am-s1-73، -66، -69) (docs/sources/moyen/exams/exams-index.json، EXAM_PATTERN.md §6) — 10 تمارين × 5 مستويات (المرحلة 3 من تعميم الطور المتوسط، 2026-10-21)"
+    },
+    "jam-tarh-nisbiya": {
+      "minPerLevel": 10,
+      "source": "السنة الثانية متوسط، الوحدة 3 «الأعداد النسبية» — الدرس «جمع وطرح عددين نسبيين» (الكتاب ص 41 و44 و45 و48 و49 و50 و51: docs/sources/2am/unit3/extraction.json؛ خطّة الدرس: docs/sources/2am/unit3/plan/jam-tarh-nisbiya.md) مكمَّلة بتمارين تولّدها المنصّة على منوال اختبارات الفصل الأول والثاني (2am-s2-62، -70، -50، -69، -71، -52، 2am-s1-73) (docs/sources/moyen/exams/exams-index.json، EXAM_PATTERN.md §6) — 10 تمارين × 5 مستويات (المرحلة 3 من تعميم الطور المتوسط، 2026-10-29)"
     },
     "nashr-jabri-3am": {
       "minPerLevel": 10,

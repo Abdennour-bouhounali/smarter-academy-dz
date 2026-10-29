@@ -126,12 +126,14 @@ import { ORACLE as ORACLE_2AM_JIDA_KASRAYN, audit as auditJidaKasrayn } from './
 import { ORACLE as ORACLE_2AM_MUQARANA_KASRAYN, audit as auditMuqaranaKasrayn } from './practice-oracle/muqarana-kasrayn.mjs';
 import { ORACLE as ORACLE_2AM_MUQARANA_NISBIYA } from './practice-oracle/muqarana-nisbiya.mjs';
 import { ORACLE as ORACLE_2AM_TALIM_MUDARRAJ, audit as auditTalimMudarraj } from './practice-oracle/talim-mustaqim-mudarraj-2.mjs';
+import { ORACLE as ORACLE_2AM_JAM_TARH_NISBIYA, audit as auditJamTarhNisbiya } from './practice-oracle/jam-tarh-nisbiya.mjs';
 import { ORACLE as ORACLE_2AM_RABI_MUTANASIB } from './practice-oracle/rabi-mutanasib.mjs';
 import { ORACLE as ORACLE_2AM_SILSILA, audit as auditSilsila } from './practice-oracle/silsila-bidun-aqwas.mjs';
 import { ORACLE as ORACLE_2AM_SILSILA_AQWAS, audit as auditSilsilaAqwas } from './practice-oracle/silsila-bi-aqwas.mjs';
 import { ORACLE as ORACLE_2AM_WASF_SILSILA, audit as auditWasfSilsila } from './practice-oracle/wasf-silsila-hisab.mjs';
 import { ORACLE as ORACLE_2AM_TAWZI, audit as auditTawzi } from './practice-oracle/tawzi-darb-jam-tarh.mjs';
 import { ORACLE as ORACLE_2AM_IBARA_INTAJ, audit as auditIbaraIntaj } from './practice-oracle/ibara-harfiya-intaj.mjs';
+import { ORACLE as ORACLE_2AM_HALL_MUSHKIL, audit as auditHallMushkil } from './practice-oracle/hall-mushkil-muadala.mjs';
 import { ORACLE as ORACLE_2AM_WADIYA_KUSUR_AMALIYAT, audit as auditWadiyaKusurAmaliyat } from './practice-oracle/wadiya-idmajiya-kusur-amaliyat.mjs';
 import { ORACLE as ORACLE_2AM_WADIYA_AMALIYAT, audit as auditWadiyaAmaliyat } from './practice-oracle/wadiya-idmajiya-amaliyat-tabiiya-ushriya.mjs';
 import { ORACLE as ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA } from './practice-oracle/ikhtizal-kitaba-kasriya.mjs';
@@ -320,12 +322,14 @@ const ORACLE = {
   ...ORACLE_2AM_MUQARANA_KASRAYN,
   ...ORACLE_2AM_MUQARANA_NISBIYA,
   ...ORACLE_2AM_TALIM_MUDARRAJ,
+  ...ORACLE_2AM_JAM_TARH_NISBIYA,
   ...ORACLE_2AM_RABI_MUTANASIB,
   ...ORACLE_2AM_SILSILA,
   ...ORACLE_2AM_SILSILA_AQWAS,
   ...ORACLE_2AM_WASF_SILSILA,
   ...ORACLE_2AM_TAWZI,
   ...ORACLE_2AM_IBARA_INTAJ,
+  ...ORACLE_2AM_HALL_MUSHKIL,
   ...ORACLE_2AM_WADIYA_KUSUR_AMALIYAT,
   ...ORACLE_2AM_WADIYA_AMALIYAT,
   ...ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA,
@@ -564,6 +568,16 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     const own = bank.filter((b) => b.key.startsWith('ex-2am-talim-mustaqim-mudarraj-2-'));
     expect(own.length).toBeGreaterThan(0);
     expect(auditTalimMudarraj(own)).toEqual([]);
+  });
+  it('جمع وطرح عددين نسبيين (2AM) : centièmes BigInt propres à l\'oracle (aucun import de packages/core), chaque somme / différence de DEUX relatifs recalculée par la règle de la leçon (même signe : distances additionnées, signe commun ; signes différents : distances soustraites, signe du plus éloigné ; opposés : 0 ; a − b = a + (−b)) puis recoupée avec l\'addition directe, chaque « par combien a changé » = finale − initiale, chaque terme manquant résolu puis vérifié par substitution, pyramides recalculées étage par étage, couples (somme, différence) à un seul couple juste, QCM jugés option par option (une seule vraie), chaque signature / distracteur MISC-JAMNISB-* (SIGNLOST, SUBDIST, ADDDIST, SIGNFIRST, SUBNOFLIP, FLIPBOTH, ADDINSTEAD, REVERSED) recalculé depuis son erreur nommée et FAUX, الكفاءة de chaque question recalculée, étapes des leçons antérieures counted: false, texte relu (chiffres en îlots $…$, aucune fraction, aucun terme interdit), provenance : 7 term_exam lus et 50 feuilles', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-jam-tarh-nisbiya-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditJamTarhNisbiya(own)).toEqual([]);
+  });
+  it('حلّ مشكل باستعمال معادلة (2AM) : rationnels exacts BigInt propres à l\'oracle (aucun import de packages/core), chaque équation retapée de l\'énoncé résolue par annulation de la chaîne d\'opérations (dernière opération d\'abord, aucune étape négative) puis vérifiée par substitution, chaque QCM de valeur / d\'équation d\'histoire / d\'étape jugé option par option (une seule vraie), chaque distracteur et chaque signature = la recette de sa lecture nommée et FAUX (MULTDIV, FLIP, SUBFORM, ADDFORM, DIVDIVIDEND, RANK, UNDOFIRST, SWAP, ROLE), « نعم / لا » par comparaison exacte, LaTeX de chaque énoncé / option / corrigé relu (chiffres et unités dans des îlots $…$, aucun renvoi au manuel), provenance : 8 term_exam lus (2am-s2-72 / -50 ×2 / -73 / -75, 1am-s2-79, 2am-s3-25 ×2, une partie par feuille), 36 modelled, 6 adaptés vérifiés dans l\'extraction', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-hall-mushkil-muadala-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditHallMushkil(own)).toEqual([]);
   });
 
   it('le cas signalé (6 | 120) : « 6 مضاعف للعدد 120 » est faux, seul « لا » est accepté', () => {

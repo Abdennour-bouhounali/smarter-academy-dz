@@ -67,3 +67,45 @@ describe('equation2 E1 — simplified, showTimes', () => {
     expect(Q.showTimes('2x²+12')).toBe('2 × x × x + 12');
   });
 });
+
+describe('equation2 E2 — solveForm / checkForm / undoChain / formOf', () => {
+  const T = (r) => ratText(r);
+  it('solves the three forms by the inverse operation, exactly', () => {
+    expect(T(Q.solveForm({ form: 'times', a: '12', b: '18' }).x)).toBe('3/2');
+    expect(Q.solveForm({ form: 'times', a: '12', b: '18' }).line).toBe('x = 18 ÷ 12 = 1,5');
+    expect(Q.solveForm({ form: 'under', a: '489', b: '163' }).x).toEqual(rat(3));
+    expect(Q.solveForm({ form: 'under', a: '30', b: '40' }).line).toBe('x = 30 ÷ 40 = 0,75');
+    expect(T(Q.solveForm({ form: 'over', a: '24', b: '0,25' }).x)).toBe('6');
+    expect(Q.solveForm({ form: 'over', a: '24', b: '0,25' }).inverse).toBe('×');
+    expect(T(Q.solveForm({ form: 'plus', a: '7', b: '12,5' }).x)).toBe('11/2');
+    expect(T(Q.solveForm({ form: 'under', a: '63', b: '4,5' }).x)).toBe('14');
+  });
+  it('refuses a = 0, b = 0 for a ÷ x, and a negative x unless asked', () => {
+    expect(() => Q.solveForm({ form: 'times', a: '0', b: '3' })).toThrow();
+    expect(() => Q.solveForm({ form: 'under', a: '5', b: '0' })).toThrow();
+    expect(() => Q.solveForm({ form: 'plus', a: '7', b: '2' })).toThrow();
+    expect(T(Q.solveForm({ form: 'plus', a: '7', b: '2' }, { allowNegative: true }).x)).toBe('-5');
+  });
+  it('checks a value by doing the ONE operation', () => {
+    expect(Q.checkForm({ form: 'under', a: '12', b: '4' }, 3)).toMatchObject({ holds: true, line: '12 ÷ 3 = 4' });
+    expect(Q.checkForm({ form: 'under', a: '4,8', b: '1,6' }, 3).holds).toBe(true);
+    expect(Q.checkForm({ form: 'times', a: '2,5', b: '10' }, 5).holds).toBe(false);
+    expect(Q.checkForm({ form: 'under', a: '5', b: '1' }, 0).holds).toBe(false);
+  });
+  it('undoes the LAST operation first', () => {
+    const t = Q.undoChain({ k: 2, c: 240, d: 300, order: 'times-first' });
+    expect(t.last).toBe('+ 240'); expect(T(t.mid)).toBe('60'); expect(T(t.x)).toBe('30');
+    const p = Q.undoChain({ k: '0,25', c: 4, d: 40, order: 'plus-first' });
+    expect(p.last).toBe('÷ 0,25'); expect(T(p.mid)).toBe('10'); expect(T(p.x)).toBe('6');
+    expect(() => Q.undoChain({ k: 2, c: 400, d: 300, order: 'times-first' })).toThrow();
+  });
+  it('reads what the student types', () => {
+    expect(Q.formOf('2,5x = 10')).toEqual({ form: 'times', a: '2.5', b: '10' });
+    expect(Q.formOf('12 × x = 18')).toEqual({ form: 'times', a: '12', b: '18' });
+    expect(Q.formOf('x ÷ 0,4 = 15')).toEqual({ form: 'over', a: '0.4', b: '15' });
+    expect(Q.formOf('56/x=7')).toEqual({ form: 'under', a: '56', b: '7' });
+    expect(Q.formOf('18 ÷ x = 12')).toEqual({ form: 'under', a: '18', b: '12' });
+    expect(Q.formOf('x ÷ 12 = 18')).toEqual({ form: 'over', a: '12', b: '18' });
+    expect(Q.formOf('blah')).toBe(null);
+  });
+});

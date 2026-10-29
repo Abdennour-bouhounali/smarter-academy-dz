@@ -299,17 +299,6 @@
       ]
     },
     {
-      "code": "jam-tarh-nisbiya",
-      "grade": "2am",
-      "unit": "adad-nisbiya-2",
-      "titleAr": "جمع وطرح عددين نسبيين",
-      "kind": "lesson",
-      "trigger": "jidhr-tarbii",
-      "via": [
-        "2am.m4.r05"
-      ]
-    },
-    {
       "code": "tatbiq-qaida-harfiya",
       "grade": "1am",
       "unit": "ibarat-harfiya",
@@ -350,17 +339,6 @@
       "kind": "synthesis",
       "trigger": "unité adad-nisbiya-2 complète",
       "via": []
-    },
-    {
-      "code": "hall-mushkil-muadala",
-      "grade": "2am",
-      "unit": "mafhum-muadala",
-      "titleAr": "حلّ مشكل باستعمال معادلة",
-      "kind": "lesson",
-      "trigger": "muadala-ula",
-      "via": [
-        "2am.m4.r08"
-      ]
     },
     {
       "code": "ikhtibar-musawat-mutabayina",

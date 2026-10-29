@@ -769,6 +769,14 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'لمقارنة كسرين: إن كان لهما نفس المقام فأكبرهما ما له أكبر بسط، وإن كان لهما نفس البسط فأكبرهما ما له أصغر مقام، وإن كان مقام أحدهما مضاعفًا لمقام الآخر كتبنا الكسرين بنفس المقام ثم قارنّا البسطين، ونقارن كسرًا بالعدد $1$ بمقارنة بسطه بمقامه',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 2AM, unité 3 « الأعداد النسبية », leçon 5 « جمع وطرح عددين نسبيين » (2026-10-29) — la charge d'un montgolfière : sommes et différences de deux relatifs.
+  'balloon-ballast': {
+    // LA CHARGE SOUS LA MAIN : l'altitude d'un montgolfière est (flammes − sacs). La main attache une flamme (+1) ou un sac (−1), jette l'un ou l'autre, et à متقدم attache une paire neutre. Une carte a ± b dit le geste
+    // (« + (−4) » attacher 4 sacs ; « − (−3) » jeter 3 sacs) ; le juge compare le JOURNAL des gestes à la carte ET l'altitude écrite à a ± b. Jeter un sac absent est impossible : on attache d'abord des paires neutres.
+    // مبتدئ : sommes (même signe, signes différents, opposés) ; متقدم : différences, l'altitude est écrite AVANT d'exécuter. « جرّب أعدادك » : une carte libre, jamais comptée. MANUEL (§6bis).
+    shows: 'جمع عددين نسبيين لهما الإشارة نفسها: نجمع مسافتيهما ونحتفظ بالإشارة ؛ ومن إشارتين مختلفتين: نطرح المسافة الصغرى من الكبرى ونأخذ إشارة الأبعد عن الصفر ؛ ومجموع متعاكسين معدوم ؛ وطرح عدد هو جمع معاكسه',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 2AM, unité 3 « الأعداد النسبية », leçon 1 « التعليم على مستقيم مدرّج » (2026-10-29) — l'abscisse dépend de l'origine et de la valeur d'une graduation.
   'corniche-ruler': {
     // L'ORIGINE ET LA GRADUATION SOUS LA MAIN : une planche de 13 graduations est fixée sous les repères du front de mer ; le drapeau « 0 » se plante sous un repère (مبتدئ) et un levier à crans règle la valeur
@@ -970,6 +978,15 @@ export const MANIPULATION_TYPES = Object.freeze({
     // dessinés (tiges qui clignotent, première tige en pointillé). Le cadre ne tient que 8 cellules : la valeur de 40 cellules se CALCULE. مبتدئ : un rang, le compteur visible ; متقدم : le compteur est caché jusqu'à ce que le nombre soit tapé,
     // une bande de deux rangs décalés (8n + 3), deux écritures du même décompte (observation), puis deux lettres (un rang de n cellules et une bande de m colonnes). « جرّب أعدادك » : toujours ouvert.
     shows: 'نكتب عدد الأعواد لصفّ من $n$ خلية بعبارة حرفية: الخلية الأولى تحتاج $6$ أعواد وكلّ خلية بعدها تضيف $5$ لأنّها تشترك في عود مع جارتها، أي $5\\times n+1$ أو $5n+1$ ؛ ثم نعوّض الحرف بقيمة فنجد مثلًا $5\\times 40+1=201$',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 4 « مفهوم معادلة », leçon 2 « حلّ مشكل باستعمال معادلة » (2026-10-29) — l'inconnue d'une équation à une opération, puis à deux opérations.
+  'juice-line': {
+    // L'INCONNUE SOUS LA MAIN : une coopérative remplit des bouteilles depuis un réservoir. مبتدئ : la main tient la capacité x du moule (0,05 … 2 L) et n'a que DEUX essais ; chaque remplissage dit combien de bouteilles sont pleines, la bouteille
+    // partielle (tracée à son niveau) et le jus resté — l'équation lue dans le monde. Elle écrit ensuite l'opération (ou le nombre) qui donne x : les opérations fausses (×, renversée, soustraite, ajoutée) sont refusées et DESSINÉES ; puis elle choisit TOUTES
+    // les bonnes équations (deux écritures). متقدم : la main tient le contenu du réservoir (le dividende manquant), l'ardoise s'ouvre d'abord, et la dernière tâche (4 + x) ÷ 0,25 = 40 demande deux étapes (défaire la DERNIÈRE opération d'abord).
+    // « جرّب أعدادك » : toujours ouvert. Chaque remplissage, opération et carte est un essai jugé exactement (centilitres entiers) : MANUEL (§6bis).
+    shows: 'المعادلة تترجم وضعية، وحلّها هو القيمة التي تجعل المساواة صحيحة: نجد العامل الناقص أو القاسم الناقص بالقسمة، والمقسوم الناقص بالضرب، وفي معادلة من خطوتين نلغي آخر عملية أوّلًا، ثمّ نتحقّق بالتعويض',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
 });

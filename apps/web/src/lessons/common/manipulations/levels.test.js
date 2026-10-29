@@ -93,6 +93,12 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(advanced.numbers.tasks.some((tk) => tk.strip) && advanced.numbers.tasks.some((tk) => tk.kind === 'two'), type).toBe(true);
         expect(beginner.numbers.tasks.some((tk) => tk.strip || tk.kind === 'two'), type).toBe(false);
       }
+      // Unité 4 de 2AM, leçon 2 : `juice-line` se mesure par la MAIN (مبتدئ : le moule, deux essais ; متقدم : le réservoir, le dividende manquant) et par le REPORT `carry` (متقدم seul).
+      else if (type === 'juice-line') {
+        expect(beginner.numbers.tasks.every((tk) => tk.kind === 'mould' && tk.tests === 2), type).toBe(true);
+        expect(advanced.numbers.tasks.every((tk) => tk.kind === 'tank'), type).toBe(true);
+        expect(advanced.numbers.tasks.some((tk) => tk.carry > 0) && !beginner.numbers.tasks.some((tk) => tk.carry), type).toBe(true);
+      }
       // Unité 2 de 2AM, leçon 8 : `window-blinds` se mesure par la PRÉDICTION écrite avant de tirer (متقدم seul) et par les FACTEURS > 1 (متقدم seul).
       else if (type === 'window-blinds') {
         const val = (f) => { const [n, d] = f.split('/').map(Number); return n / d; };
@@ -117,6 +123,11 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
       }
       // Unité 5 de 3AM : `term-ferry` se mesure par le NOMBRE DE TÂCHES (2 équations, puis 3 dont un coefficient négatif et un grand nombre).
       else if (type === 'term-ferry') expect(advanced.numbers.tasks.length, type).toBeGreaterThan(beginner.numbers.tasks.length);
+      // Unité 3 de 2AM, leçon 5 : `balloon-ballast` se mesure par l'OPÉRATION (مبتدئ : sommes seules ; متقدم : différences seules, écrites AVANT d'exécuter).
+      else if (type === 'balloon-ballast') {
+        expect(beginner.numbers.tasks.every((tk) => tk.op === '+' && !tk.predict), type).toBe(true);
+        expect(advanced.numbers.tasks.every((tk) => tk.op === '-' && tk.predict), type).toBe(true);
+      }
       // Unité 3 de 2AM, leçon 1 : `corniche-ruler` se mesure par le GESTE (مبتدئ : l'origine — lire, déplacer, placer ; متقدم : la graduation, tâches `fit` seules) et par les décimaux.
       else if (type === 'corniche-ruler') {
         expect(advanced.numbers.tasks.every((tk) => tk.kind === 'fit'), type).toBe(true);

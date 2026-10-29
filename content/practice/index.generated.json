@@ -557,6 +557,68 @@
       "ex-1am-qisma-iqlidiya-baqi-l5-010"
     ]
   },
+  "hall-mushkil-muadala": {
+    "1": [
+      "ex-2am-hall-mushkil-muadala-l1-001",
+      "ex-2am-hall-mushkil-muadala-l1-002",
+      "ex-2am-hall-mushkil-muadala-l1-003",
+      "ex-2am-hall-mushkil-muadala-l1-004",
+      "ex-2am-hall-mushkil-muadala-l1-005",
+      "ex-2am-hall-mushkil-muadala-l1-006",
+      "ex-2am-hall-mushkil-muadala-l1-007",
+      "ex-2am-hall-mushkil-muadala-l1-008",
+      "ex-2am-hall-mushkil-muadala-l1-009",
+      "ex-2am-hall-mushkil-muadala-l1-010"
+    ],
+    "2": [
+      "ex-2am-hall-mushkil-muadala-l2-001",
+      "ex-2am-hall-mushkil-muadala-l2-002",
+      "ex-2am-hall-mushkil-muadala-l2-003",
+      "ex-2am-hall-mushkil-muadala-l2-004",
+      "ex-2am-hall-mushkil-muadala-l2-005",
+      "ex-2am-hall-mushkil-muadala-l2-006",
+      "ex-2am-hall-mushkil-muadala-l2-007",
+      "ex-2am-hall-mushkil-muadala-l2-008",
+      "ex-2am-hall-mushkil-muadala-l2-009",
+      "ex-2am-hall-mushkil-muadala-l2-010"
+    ],
+    "3": [
+      "ex-2am-hall-mushkil-muadala-l3-001",
+      "ex-2am-hall-mushkil-muadala-l3-002",
+      "ex-2am-hall-mushkil-muadala-l3-003",
+      "ex-2am-hall-mushkil-muadala-l3-004",
+      "ex-2am-hall-mushkil-muadala-l3-005",
+      "ex-2am-hall-mushkil-muadala-l3-006",
+      "ex-2am-hall-mushkil-muadala-l3-007",
+      "ex-2am-hall-mushkil-muadala-l3-008",
+      "ex-2am-hall-mushkil-muadala-l3-009",
+      "ex-2am-hall-mushkil-muadala-l3-010"
+    ],
+    "4": [
+      "ex-2am-hall-mushkil-muadala-l4-001",
+      "ex-2am-hall-mushkil-muadala-l4-002",
+      "ex-2am-hall-mushkil-muadala-l4-003",
+      "ex-2am-hall-mushkil-muadala-l4-004",
+      "ex-2am-hall-mushkil-muadala-l4-005",
+      "ex-2am-hall-mushkil-muadala-l4-006",
+      "ex-2am-hall-mushkil-muadala-l4-007",
+      "ex-2am-hall-mushkil-muadala-l4-008",
+      "ex-2am-hall-mushkil-muadala-l4-009",
+      "ex-2am-hall-mushkil-muadala-l4-010"
+    ],
+    "5": [
+      "ex-2am-hall-mushkil-muadala-l5-001",
+      "ex-2am-hall-mushkil-muadala-l5-002",
+      "ex-2am-hall-mushkil-muadala-l5-003",
+      "ex-2am-hall-mushkil-muadala-l5-004",
+      "ex-2am-hall-mushkil-muadala-l5-005",
+      "ex-2am-hall-mushkil-muadala-l5-006",
+      "ex-2am-hall-mushkil-muadala-l5-007",
+      "ex-2am-hall-mushkil-muadala-l5-008",
+      "ex-2am-hall-mushkil-muadala-l5-009",
+      "ex-2am-hall-mushkil-muadala-l5-010"
+    ]
+  },
   "ibara-harfiya-intaj": {
     "1": [
       "ex-2am-ibara-harfiya-intaj-l1-001",
@@ -679,6 +741,68 @@
       "ex-2am-jam-tarh-kusur-l5-008",
       "ex-2am-jam-tarh-kusur-l5-009",
       "ex-2am-jam-tarh-kusur-l5-010"
+    ]
+  },
+  "jam-tarh-nisbiya": {
+    "1": [
+      "ex-2am-jam-tarh-nisbiya-l1-001",
+      "ex-2am-jam-tarh-nisbiya-l1-002",
+      "ex-2am-jam-tarh-nisbiya-l1-003",
+      "ex-2am-jam-tarh-nisbiya-l1-004",
+      "ex-2am-jam-tarh-nisbiya-l1-005",
+      "ex-2am-jam-tarh-nisbiya-l1-006",
+      "ex-2am-jam-tarh-nisbiya-l1-007",
+      "ex-2am-jam-tarh-nisbiya-l1-008",
+      "ex-2am-jam-tarh-nisbiya-l1-009",
+      "ex-2am-jam-tarh-nisbiya-l1-010"
+    ],
+    "2": [
+      "ex-2am-jam-tarh-nisbiya-l2-001",
+      "ex-2am-jam-tarh-nisbiya-l2-002",
+      "ex-2am-jam-tarh-nisbiya-l2-003",
+      "ex-2am-jam-tarh-nisbiya-l2-004",
+      "ex-2am-jam-tarh-nisbiya-l2-005",
+      "ex-2am-jam-tarh-nisbiya-l2-006",
+      "ex-2am-jam-tarh-nisbiya-l2-007",
+      "ex-2am-jam-tarh-nisbiya-l2-008",
+      "ex-2am-jam-tarh-nisbiya-l2-009",
+      "ex-2am-jam-tarh-nisbiya-l2-010"
+    ],
+    "3": [
+      "ex-2am-jam-tarh-nisbiya-l3-001",
+      "ex-2am-jam-tarh-nisbiya-l3-002",
+      "ex-2am-jam-tarh-nisbiya-l3-003",
+      "ex-2am-jam-tarh-nisbiya-l3-004",
+      "ex-2am-jam-tarh-nisbiya-l3-005",
+      "ex-2am-jam-tarh-nisbiya-l3-006",
+      "ex-2am-jam-tarh-nisbiya-l3-007",
+      "ex-2am-jam-tarh-nisbiya-l3-008",
+      "ex-2am-jam-tarh-nisbiya-l3-009",
+      "ex-2am-jam-tarh-nisbiya-l3-010"
+    ],
+    "4": [
+      "ex-2am-jam-tarh-nisbiya-l4-001",
+      "ex-2am-jam-tarh-nisbiya-l4-002",
+      "ex-2am-jam-tarh-nisbiya-l4-003",
+      "ex-2am-jam-tarh-nisbiya-l4-004",
+      "ex-2am-jam-tarh-nisbiya-l4-005",
+      "ex-2am-jam-tarh-nisbiya-l4-006",
+      "ex-2am-jam-tarh-nisbiya-l4-007",
+      "ex-2am-jam-tarh-nisbiya-l4-008",
+      "ex-2am-jam-tarh-nisbiya-l4-009",
+      "ex-2am-jam-tarh-nisbiya-l4-010"
+    ],
+    "5": [
+      "ex-2am-jam-tarh-nisbiya-l5-001",
+      "ex-2am-jam-tarh-nisbiya-l5-002",
+      "ex-2am-jam-tarh-nisbiya-l5-003",
+      "ex-2am-jam-tarh-nisbiya-l5-004",
+      "ex-2am-jam-tarh-nisbiya-l5-005",
+      "ex-2am-jam-tarh-nisbiya-l5-006",
+      "ex-2am-jam-tarh-nisbiya-l5-007",
+      "ex-2am-jam-tarh-nisbiya-l5-008",
+      "ex-2am-jam-tarh-nisbiya-l5-009",
+      "ex-2am-jam-tarh-nisbiya-l5-010"
     ]
   },
   "jida-kasrayn": {

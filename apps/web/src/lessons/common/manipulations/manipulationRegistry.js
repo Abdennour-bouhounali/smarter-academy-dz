@@ -122,12 +122,16 @@ export const MANIPULATION_COMPONENTS = {
   'trail-odometer': lazy(() => import('./operations/TrailOdometer')),
   // 2AM, unité 2, leçon 9 « مقارنة كسرين » : la hauteur d'un laser lue dans deux graduations — ليزر المستوى (2026-10-29).
   'level-laser': lazy(() => import('./operations/LevelLaser')),
+  // 2AM, unité 3, leçon 5 « جمع وطرح عددين نسبيين » : la charge d'un montgolfière sous la main — أكياس المنطاد (2026-10-29).
+  'balloon-ballast': lazy(() => import('./operations/BalloonBallast')),
   // 2AM, unité 3, leçon 1 « التعليم على مستقيم مدرّج » : l'origine et la graduation sous la main — مسطرة الكورنيش (2026-10-29).
   'corniche-ruler': lazy(() => import('./operations/CornicheRuler')),
   // 2AM, unité 2, leçon 8 « جداء كسرين » : les deux facteurs sous la main — ستائر النافذة (2026-10-29).
   'window-blinds': lazy(() => import('./operations/WindowBlinds')),
   // 2AM, unité 4, leçon 1 « إنتاج عبارة حرفية واستعمالها » : le nombre de cellules sous la main — خلايا الشمع (2026-10-29).
   'wax-cells': lazy(() => import('./operations/WaxCells')),
+  // 2AM, unité 4, leçon 2 « حلّ مشكل باستعمال معادلة » : l'inconnue (capacité du moule, contenu du réservoir) sous la main — خطّ العصير (2026-10-29).
+  'juice-line': lazy(() => import('./operations/JuiceLine')),
   // 2AM, unité 2, leçon 6 « الكسر: نسبة وحاصل قسمة وقيم مقرّبة » : le quotient sous la main — حبال المرسى (2026-10-28).
   'mooring-lines': lazy(() => import('./operations/MooringLines')),
   // 3AM, unité 5 : le signe d'un terme sous la main — la عبّارة des caisses d'une équation (2026-10-21).

@@ -883,6 +883,21 @@ export const LEVELS = Object.freeze({
       { id: 'a3', kind: 'two', predict: true, targets: [], pair: [6, 4] },
     ] }, ...T('method-2') },
   },
+  // L'INCONNUE SOUS LA MAIN (juice-line, thème juicery, 2AM unité 4, leçon « حلّ مشكل باستعمال معادلة », 2026-10-29) : une tâche est `{ id, kind: 'mould' | 'tank', total?, bottles, size?, carry?, tests? }`.
+  // مبتدئ (plateforme) : la capacité du moule est l'inconnue, DEUX essais : t1 18 L → 12 bouteilles (1,5), t2 30 L → 40 (0,75), t3 9 L → 36 (0,25). متقدم (plateforme) : le contenu du réservoir est l'inconnue (dividende manquant), l'ardoise d'abord :
+  // a1 24 bouteilles de 0,25 L (6 L), a2 15 de 1,5 L (22,5 L), a3 4 L déjà dedans et 40 bouteilles de 0,25 L (4 + x = 10, x = 6). Le test des niveaux mesure la paire par la MAIN (le moule contre le réservoir) et par les ESSAIS (مبتدئ seul) et le REPORT `carry` (متقدم seul).
+  'juice-line': {
+    beginner: { numbers: { tasks: [
+      { id: 't1', kind: 'mould', total: 18, bottles: 12, tests: 2 },
+      { id: 't2', kind: 'mould', total: 30, bottles: 40, tests: 2 },
+      { id: 't3', kind: 'mould', total: 9, bottles: 36, tests: 2 },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', kind: 'tank', bottles: 24, size: 0.25 },
+      { id: 'a2', kind: 'tank', bottles: 15, size: 1.5 },
+      { id: 'a3', kind: 'tank', bottles: 40, size: 0.25, carry: 4 },
+    ] }, ...T('method-5') },
+  },
   // LE SIGNE D'UN TERME SOUS LA MAIN (term-ferry, thème river) : l'équation a une solution CACHÉE ; la main porte chaque caisse (terme) d'une rive à
   // l'autre en choisissant son signe, puis le diviseur. مبتدئ (plateforme) : 3x + 2 = x + 8 (x = 3) puis 4x − 3 = 2x + 7 (x = 5), x se rassemble à gauche.
   // متقدم (طريقة p. 77) : 9x + 1 = 5x − 7 (x = −2), puis −2x + 5 = 3x − 10 (un coefficient NÉGATIF : on divise par −5), puis 7x − 190 = 6x + 110 (x = 300).
@@ -969,6 +984,23 @@ export const LEVELS = Object.freeze({
       { kind: 'beat', a: '1,2', side: null, want: 'lower', both: true },
       { kind: 'between', lo: '-0,4', hi: '-0,2', side: null },
     ] }, ...T('method-1') },
+  },
+  // LA CHARGE D'UN MONTGOLFIÈRE SOUS LA MAIN (balloon-ballast, thème balloonvalley, 2AM unité 3, leçon 5) : des flammes (+1) et des sacs (−1) attachés ou jetés ; l'altitude est une SORTIE.
+  // مبتدئ (plateforme) : des SOMMES (carte a + b : attacher des flammes ou des sacs, puis écrire l'altitude) — t1 (+6)+(−4), t2 (−3)+(−5), t3 (−9)+(+5), t4 (−6)+(+6).
+  // متقدم (method) : des DIFFÉRENCES, l'altitude est ÉCRITE AVANT d'exécuter, et la charge à jeter manque (paires neutres) — a1 (−7)−(−3), a2 (+5)−(−7), a3 (−2)−(+5), a4 (+6)−(+7).
+  'balloon-ballast': {
+    beginner: { numbers: { tasks: [
+      { id: 't1', a: '6', op: '+', b: '-4' },
+      { id: 't2', a: '-3', op: '+', b: '-5' },
+      { id: 't3', a: '-9', op: '+', b: '5' },
+      { id: 't4', a: '-6', op: '+', b: '6' },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', a: '-7', op: '-', b: '-3', predict: true },
+      { id: 'a2', a: '5', op: '-', b: '-7', predict: true },
+      { id: 'a3', a: '-2', op: '-', b: '5', predict: true },
+      { id: 'a4', a: '6', op: '-', b: '7', predict: true },
+    ] }, ...T('method-3') },
   },
   // L'ORIGINE ET LA GRADUATION SOUS LA MAIN (corniche-ruler, thème corniche, 2AM unité 3, leçon 1) : une planche graduée sous des repères du front de mer ;
   // l'abscisse d'un repère est une SORTIE. مبتدئ (plateforme, graduation 10 m) : la main tient l'ORIGINE (le drapeau « 0 ») — b1 écrire +30 et −20 sous la fontaine, b2 amener le « 0 »

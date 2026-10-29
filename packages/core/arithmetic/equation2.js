@@ -5,12 +5,12 @@
  *
  * Elle grandit leçon par leçon :
  *   E1 `ibara-harfiya-intaj`        valueTable · firstMismatch · sameCount · simplified · showTimes · polyOf
- *   E2 `hall-mushkil-muadala`       (à venir : solveForm, checkForm, undoChain, formOf)
+ *   E2 `hall-mushkil-muadala`       solveForm · checkForm · undoChain · formOf
  *   E3 `ikhtibar-musawat-mutabayina` (à venir : parseRelation, testAt, whichHold, identityVerdict)
  *
  * Les valeurs de cette leçon sont toutes ≥ 0 (ordre de génération, plan README, question 10) ; le code lui-même est exact pour les relatifs.
  */
-import { rat, parseRat, add, mul, neg, eq, sign, ratText } from './powers.js';
+import { rat, parseRat, add, sub, mul, div, neg, eq, sign, ratText } from './powers.js';
 import {
   parseExpression, evaluate, writeLine, tokensText, slots, decimalText, samePolynomial, witness, LETTERS_2AM,
 } from './substitution.js';
@@ -139,6 +139,86 @@ export function showTimes(text) {
     }
   };
   return go(tree);
+}
+
+/* ── E2 : les équations à une opération et à deux opérations (hall-mushkil-muadala) ───────────── */
+
+/** Un rationnel écrit à l'algérienne : « 1,5 », « 2/3 » (jamais de point). */
+const num = (r) => { if (r.d === 1n) return String(r.n); const t = decimalText(r); return t != null ? t.replace('.', ',') : ratText(r); };
+
+/**
+ * Résout une équation à UNE opération par l'opération inverse. `form` : 'times' (a × x = b → x = b ÷ a), 'over' (x ÷ a = b → x = a × b),
+ * 'under' (a ÷ x = b → x = a ÷ b), 'plus' (a + x = b → x = b − a), 'minus' (a − x = b → x = a − b). Refuse a = 0 (sauf 'plus' / 'minus'),
+ * b = 0 pour 'under', et un x < 0 (sauf `allowNegative`). → { x, inverse, line } où `line` est la ligne du calcul « x = 18 ÷ 12 = 1,5 ».
+ */
+export function solveForm({ form, a, b }, { allowNegative = false } = {}) {
+  const A = asRat(a); const B = asRat(b);
+  const zeroA = A.n === 0n;
+  let x; let inverse; let expr;
+  switch (form) {
+    case 'times': if (zeroA) throw new Error('a = 0'); x = div(B, A); inverse = '÷'; expr = `${num(B)} ÷ ${num(A)}`; break;
+    case 'over': if (zeroA) throw new Error('a = 0'); x = mul(A, B); inverse = '×'; expr = `${num(A)} × ${num(B)}`; break;
+    case 'under': if (zeroA || B.n === 0n) throw new Error('a ou b = 0'); x = div(A, B); inverse = '÷'; expr = `${num(A)} ÷ ${num(B)}`; break;
+    case 'plus': x = sub(B, A); inverse = '−'; expr = `${num(B)} − ${num(A)}`; break;
+    case 'minus': x = sub(A, B); inverse = '−'; expr = `${num(A)} − ${num(B)}`; break;
+    default: throw new Error(`forme inconnue : ${form}`);
+  }
+  if (!allowNegative && sign(x) < 0) throw new Error('x < 0');
+  return { x, inverse, line: `x = ${expr} = ${num(x)}` };
+}
+
+/** Vérifie la valeur `x` dans l'équation { form, a, b } en faisant l'UNE opération : → { value, holds, line } (« 12 ÷ 3 = 4 »). */
+export function checkForm({ form, a, b }, x) {
+  const A = asRat(a); const B = asRat(b); const X = asRat(x);
+  let value; let line;
+  switch (form) {
+    case 'times': value = mul(A, X); line = `${num(A)} × ${num(X)} = ${num(value)}`; break;
+    case 'over': if (A.n === 0n) throw new Error('a = 0'); value = div(X, A); line = `${num(X)} ÷ ${num(A)} = ${num(value)}`; break;
+    case 'under': if (X.n === 0n) return { value: null, holds: false, line: '÷ 0' }; value = div(A, X); line = `${num(A)} ÷ ${num(X)} = ${num(value)}`; break;
+    case 'plus': value = add(A, X); line = `${num(A)} + ${num(X)} = ${num(value)}`; break;
+    case 'minus': value = sub(A, X); line = `${num(A)} − ${num(X)} = ${num(value)}`; break;
+    default: throw new Error(`forme inconnue : ${form}`);
+  }
+  return { value, holds: eq(value, B), line };
+}
+
+/**
+ * Les deux étapes d'une équation à deux opérations, en défaisant la DERNIÈRE opération d'abord.
+ * order 'times-first' : k·x + c = d (dernière opération : + c) → d − c = k·x puis ÷ k ; order 'plus-first' : (x + c) ÷ k = d (dernière : ÷ k) → ×k puis − c.
+ * → { steps: [{ undo, to, line }, { … }], x, last } ; `last` = l'opération défaite en premier. Refuse un intermédiaire ou x < 0.
+ */
+export function undoChain({ k, c, d, order }) {
+  const K = asRat(k); const C = asRat(c); const Dv = asRat(d);
+  if (K.n === 0n) throw new Error('k = 0');
+  let mid; let x; let steps; let last;
+  if (order === 'times-first') {
+    mid = sub(Dv, C); x = div(mid, K); last = `+ ${num(C)}`;
+    steps = [{ undo: `− ${num(C)}`, to: mid, line: `${num(K)}x = ${num(Dv)} − ${num(C)} = ${num(mid)}` }, { undo: `÷ ${num(K)}`, to: x, line: `x = ${num(mid)} ÷ ${num(K)} = ${num(x)}` }];
+  } else if (order === 'plus-first') {
+    mid = mul(Dv, K); x = sub(mid, C); last = `÷ ${num(K)}`;
+    steps = [{ undo: `× ${num(K)}`, to: mid, line: `x + ${num(C)} = ${num(Dv)} × ${num(K)} = ${num(mid)}` }, { undo: `− ${num(C)}`, to: x, line: `x = ${num(mid)} − ${num(C)} = ${num(x)}` }];
+  } else throw new Error(`ordre inconnu : ${order}`);
+  if (sign(mid) < 0 || sign(x) < 0) throw new Error('valeur négative');
+  return { steps, x, mid, last };
+}
+
+const norm = (t) => String(t).replace(/[٠-٩]/g, (d) => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\s+/g, '').replace(/[,،]/g, '.').replace(/[×·*]/g, '*').replace(/÷/g, '/').replace(/[−–]/g, '-').toLowerCase();
+const NUM = '(\\d+(?:\\.\\d+)?)';
+/**
+ * Lit une équation à une opération écrite par l'élève : « 2,5x = 10 », « 2.5*x=10 », « x/0,4 = 15 », « x ÷ 0,4 = 15 », « 56/x = 7 », « 7 + x = 12 », « 9 - x = 4 »
+ * → { form, a, b } (nombres en texte), ou null. Les formes 'times' acceptent aussi « x*a = b ».
+ */
+export function formOf(text) {
+  const t = norm(text);
+  const m = (re) => re.exec(t);
+  let r;
+  if ((r = m(new RegExp(`^${NUM}\\*?x=${NUM}$`)))) return { form: 'times', a: r[1], b: r[2] };
+  if ((r = m(new RegExp(`^x\\*${NUM}=${NUM}$`)))) return { form: 'times', a: r[1], b: r[2] };
+  if ((r = m(new RegExp(`^x/${NUM}=${NUM}$`)))) return { form: 'over', a: r[1], b: r[2] };
+  if ((r = m(new RegExp(`^${NUM}/x=${NUM}$`)))) return { form: 'under', a: r[1], b: r[2] };
+  if ((r = m(new RegExp(`^${NUM}\\+x=${NUM}$`))) || (r = m(new RegExp(`^x\\+${NUM}=${NUM}$`)))) return { form: 'plus', a: r[1], b: r[2] };
+  if ((r = m(new RegExp(`^${NUM}-x=${NUM}$`)))) return { form: 'minus', a: r[1], b: r[2] };
+  return null;
 }
 
 export { eq as sameValue };

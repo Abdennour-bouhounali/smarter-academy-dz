@@ -301,6 +301,11 @@ export const VISUAL_THEMES = Object.freeze({
   //   corniche  le كورنيش de la ville au soleil devant la mer : une balustrade bleue, des palmiers, une fontaine, deux bancs, un lampadaire, un kiosque de glaces, un arrêt de bus, un kiosque de pêcheurs,
   //             et sous la balustrade une planche en bois graduée (13 graduations) où chaque repère laisse tomber un fil à plomb ; un drapeau rouge « 0 » et un levier de laiton à crans ; une guide (KidFigure, hijab) à côté du drapeau (`corniche-ruler`)
   corniche: { kind: 'lengths', shows: 'كورنيش المدينة: معالم ولوحة مدرّجة تحت الدرابزين' },
+  // 2AM, unité 3, leçon 5 (2026-10-29) :
+  //   balloonvalley  un montgolfière au bord d'un plateau de grès du Tassili (arches, cyprès sahariens) : le bord est la ligne « 0 », le canyon en dessous est négatif, une échelle d'altitude (−12 … +12 m) à droite ; l'enveloppe rayée et la nacelle d'osier
+  //                  portent des flammes orange (+1 m) et des sacs de sable bruns (−1 m) noués aux cordes — une flamme et un sac côte à côte se verrouillent en paire neutre ; deux bacs et un lot « paire neutre » sous la scène ;
+  //                  Sara (KidFigure, fille en hijab) ou Rayan (sweat) dans la nacelle (`balloon-ballast`)
+  balloonvalley: { kind: 'objects', shows: 'منطاد فوق وادي التاسيلي: نفخات لهب وأكياس رمل' },
   // 2AM, unité 2, leçon 8 (2026-10-29) :
   //   classwindow  l'intérieur d'une salle de classe : une grande fenêtre à cadre d'aluminium blanc (ou un mur de 2 × 2 fenêtres, « واجهة المكتبة الزجاجية ») sur la cour et un palmier, un rideau latéral sur un
   //                rail à crans, un store à enrouleur sur un cordon à crans, deux ombres translucides qui s'additionnent là où elles se recouvrent, un écran de projection dans le coin sombre, une élève
@@ -310,6 +315,10 @@ export const VISUAL_THEMES = Object.freeze({
   //   apiary  منحل الجدّ : des ruches en bois au bord d'un verger, des fleurs, quelques abeilles dessinées petites (jamais sur les enfants), un CADRE en bois qui porte le rang de cellules (8 au plus), un plateau de tiges de cire
   //           avec son compte, un tableau n / tiges et une ardoise de compteur ; Yacine (KidFigure, garçon) construit, Rania (KidFigure, fille en hijab) tient l'ardoise (`wax-cells`)
   apiary: { kind: 'patterns', shows: 'منحل الجدّ: صفّ من خلايا الشمع السداسية' },
+  // 2AM, unité 4, leçon 2 (2026-10-29) :
+  //   juicery  la معصرة البرتقال التعاونية : des caisses d'oranges, un réservoir en inox à fenêtre graduée (litres, graduation tous les 5 L), un tapis roulant, une buse, des bouteilles (≤ 12 visibles, « × n » au-delà), le moule de la bouteille
+  //            (poignée en haut) et deux essais ; Lina (KidFigure, fille en hijab) au pupitre à مبتدئ, Anis (KidFigure, garçon) au réservoir à متقدم ; les ouvriers ne sont jamais dessinés (`juice-line`)
+  juicery: { kind: 'quantities', shows: 'معصرة البرتقال التعاونية: خزّان وخطّ تعبئة' },
   // 3AM, unité 4 (2026-10-21) :
   //   schoolgarden  le jardin de l'école vu d'en haut : un terrain rectangulaire (pelouse, massif de fleurs, allée dallée) que la
   //                 main coupe en parcelles, et une jardinière (KidFigure, hijab) à son bord (`area-split`)

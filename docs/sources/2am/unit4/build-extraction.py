@@ -475,6 +475,13 @@ doc = {
     'destinations': DEST,
 }
 
+# hall-mushkil-muadala (2026-10-29) : pages 57, 58, 60 et 64 du livre (PDF 54, 57, 58, 61) relues à 90 dpi par la leçon ; les éléments qu'elle destine à son contenu sont vérifiés
+# (la marge droite de ex-34 … ex-40 et le bas de know-5 restent coupés : l'idée est prise, jamais le mot à mot).
+HALL_READ = {'act-4', 'know-5', 'method-4', 'method-5', 'ex-34', 'ex-35', 'ex-36', 'ex-37', 'ex-38', 'ex-39', 'ex-40'}
+for _e in E:
+    if _e['id'] in HALL_READ:
+        _e['verified'] = True
+
 ids = [e['id'] for e in E]
 assert len(ids) == len(set(ids)), 'id en double'
 missing = [i for i in ids if i not in DEST]
