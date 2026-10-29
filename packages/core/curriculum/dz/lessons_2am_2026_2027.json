@@ -761,6 +761,9 @@
         "ترتيب أعداد نسبية تصاعديا أو تنازليا باستعمال الرمزين $<$ و $>$ ، وإيجاد عدد محصور بين عددين معلومين"
       ],
       "pointPrerequisites": {
+        "P1": [
+          "2am_talim-mustaqim-mudarraj-2_P1"
+        ],
         "P2": [
           "2am_muqarana-nisbiya_P1"
         ],

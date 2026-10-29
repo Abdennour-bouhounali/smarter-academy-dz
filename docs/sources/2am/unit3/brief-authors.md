@@ -6,7 +6,7 @@ banque. Frontières des leçons de l'unité : en-tête de `build-extraction.py` 
 ## 1. La leçon
 
 « مقارنة وترتيب أعداد نسبية » — items `2am.m4.r02` (comparer deux relatifs) et `2am.m4.r03` (ranger). Lien « راجع » du réseau :
-`2am.m4.r01` (lire / placer une abscisse), leçon `talim-mustaqim-mudarraj-2` NON publiée : « أستعدّ » la mesure, la leçon ne la
+`2am.m4.r01` (lire / placer une abscisse), leçon `talim-mustaqim-mudarraj-2` (publiée le 2026-10-29, après cette leçon : arête P1 ← `2am_talim-mustaqim-mudarraj-2_P1`) : « أستعدّ » la mesure, la leçon ne la
 reconstruit pas. Sert en avant la leçon 4AM `mutarajiha-ula` (inéquations).
 
 **الكفاءات finales** (ordre = ids positionnels `2am_muqarana-nisbiya_P1…P3`) :
