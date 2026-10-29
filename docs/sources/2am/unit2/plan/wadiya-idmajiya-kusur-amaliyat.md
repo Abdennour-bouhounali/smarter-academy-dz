@@ -180,3 +180,14 @@ four lessons' oracle helpers (no new parser) and recomputes every key from the s
 ## 9. Successor connection
 
 None: a synthesis has no programme item and no net link. The 3AM unit-2 synthesis keeps its own five 3AM prerequisites.
+
+## 10. Generator notes (2026-10-29)
+
+Generated INTO the catalogue entry; bank by a helper, lesson by the lead. Changes to the plan:
+- **`objectives`** live only on the `ContentModule` (module 7) in this codebase (the 3AM model has none elsewhere): modules 0–6 and 8 carry the plan's goal in their `desc`.
+- **Final test E5 distractors**: `0,4 < … < 0,5` (QARIBA-RANK) is a TRUE statement for 0,486, so it was dropped; replaced by `0,49 < … < 0,50` (rounded), `2,05 < 3600/1750 < 2,06` (flipped quotient) and `0,72 < 1750/2400 < 0,73` (the potato field's area). E2 distractors: `3/4`, « the olive, because 8 is the largest denominator », `1 − 3/8 = 5/8`; E4: perimeter 400, `2/3 × 9600 = 6400`, `1/4 × 9600 = 2400` (the whole orchard as apple).
+- **Module 7** has six steps (sorter, three-stage analysis, from what, order, « which area do we divide by », the `17/12 > 1` counter-check); the `situation` text carries every datum module 8 needs.
+- **Situation 1** part 5 brackets 2500/3000 at 0,01 by `3000 × 0,83 = 2490 < 2500 < 2520`; situation 3 has five parts (the three-card and the `16/12 − 1` questions added); the printed challenge has no solution (discrepancy kept), the redesigned set has exactly one choice of four and one of three.
+- **Bank (helper):** 8 `term_exam` (`2am-s1-73` ex 5, `-68` ex 4, `-91` ex 5, `-88` ex 5, `3am-s1-112` ex 8, `-83` ex 5, `-87` ex 5, `-92` ex 1), 42 modelled, 0 adapted — one over the planned 3–7 because all eight were read; the oracle imports `E` / `TEX` from `amaliyat-natiqa.mjs` (the four lesson oracles export nothing to import); extra misconception `MISC-SYN-KASR2-FRACONLY`.
+- `extraction`: `integration` → 1, `evaluation` → 2, `challenge` → 3 (+ unit page), `opener` → 0, all `verified` after re-reading PDF pp. 19 and 33 at 110 dpi; no pending element left in the unit.
+- Catalogue `textbookRef.pages` also lists `evaluation: [36]`.

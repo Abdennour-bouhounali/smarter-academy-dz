@@ -640,7 +640,7 @@
       "decisionStatus": "draft",
       "titleSource": "textbook",
       "title": "أدمج تعلّماتي — الكسور والعمليات عليها",
-      "description": "",
+      "description": "وضعية إدماجية (أرض التعاونية: كسور من الأرض وكسور من البستان ثم المساحات ومردود القمح) تُعبّئ القسمة الإقليدية والحصر والجمع والطرح والجداء والمقارنة، تسبقها ست وضعيات تدريبية.",
       "prerequisites": [],
       "prerequisiteLessonCodes": [
         "qisma-iqlidiya-hasr",
@@ -649,18 +649,37 @@
         "jida-kasrayn",
         "muqarana-kasrayn"
       ],
-      "pointsToLearn": [],
+      "pointsToLearn": [
+        "حلّ وضعية إدماجية بتوظيف الكسور والعمليات عليها: القسمة الإقليدية والحصر والقيم المقرّبة، الجمع والطرح، الجداء، والمقارنة"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "2am_qisma-iqlidiya-hasr_P2",
+          "2am_kasr-hasil-qisma_P4",
+          "2am_jam-tarh-kusur_P3",
+          "2am_jida-kasrayn_P3",
+          "2am_muqarana-kasrayn_P3"
+        ]
+      },
       "programmeItems": [],
       "textbookRef": {
         "unit": 2,
         "pages": {
           "integration": [
-            36,
             36
+          ],
+          "evaluation": [
+            36
+          ],
+          "challenge": [
+            22
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 30,
+      "difficulty": "متقدم",
+      "icon": "🧩"
     },
     {
       "code": "talim-mustaqim-mudarraj-2",

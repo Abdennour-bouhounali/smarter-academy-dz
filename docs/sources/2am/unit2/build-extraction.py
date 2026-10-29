@@ -459,6 +459,18 @@ DEST = {
     'ict-1': {'lesson': L3, 'module': 4}, 'ict-2': {'lesson': L2, 'module': None}, 'ict-3': {'lesson': L2, 'module': None},
 }
 
+# `wadiya-idmajiya-kusur-amaliyat` (synthèse, 2026-10-29) : plus AUCUNE destination en attente dans l'unité. `opener` (module 0, déjà ci-dessus),
+# `integration` -> module 1, `evaluation` -> module 2, `challenge` -> module 3 (la carte de l'unité garde le texte du livre : README du plan, question 3).
+DEST['integration'] = {'lesson': SYN, 'module': 1}
+DEST['evaluation'] = {'lesson': SYN, 'module': 2}
+DEST['challenge'] = {'lesson': SYN, 'module': 3, 'duplicatedIn': [{'lesson': 'unit', 'module': 'page'}],
+                     'note': "cartes de Sara (1/2, 1/3, 1/4, 1/6, 1/12 : UN choix de quatre fait 1) ; la carte de l'unité garde le texte du livre (README du plan, question 3)"}
+_SYN_READ = ' Relu par la synthèse (2026-10-29) à 110 dpi (pdf p. 19 et 33) : conforme ; réécrit avec d\'autres nombres et un autre contexte.'
+for _id in ('opener', 'challenge', 'integration', 'evaluation'):
+    _el = next(e for e in E if e['id'] == _id)
+    _el['verified'] = True
+    _el['reading'] = (_el.get('reading', '') + _SYN_READ).strip()
+
 DISCREPANCIES = [
     {'elementId': 'challenge', 'kind': 'reading', 'text': 'Avec les cinq cartes imprimées (1/24, 1/6, 1/2, 1/12, 1/8), AUCUN choix de quatre ne fait 1 : les sommes sont 5/12, 3/4, 19/24, 5/6, 7/8. Soit la réponse attendue est « لا » (le défi est un piège), soit une carte manque au scan (un vide est visible à côté de 1/2 ; avec 1/4 : 1/2 + 1/4 + 1/6 + 1/12 = 1). À trancher avec la synthèse (décision du propriétaire).'},
     {'elementId': 'act-1', 'kind': 'reading', 'text': 'Le 1) imprime « 30 × .... ≤ 2145 ≤ 30 × ... » (≤ des deux côtés) : vrai (2145 ≤ 2160) mais pas l’encadrement de la division euclidienne ; la leçon écrit 30 × 71 ≤ 2145 < 30 × 72, comme 0 ≤ r < b du معارف p. 26.'},

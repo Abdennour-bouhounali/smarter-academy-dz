@@ -130,6 +130,7 @@ import { ORACLE as ORACLE_2AM_SILSILA, audit as auditSilsila } from './practice-
 import { ORACLE as ORACLE_2AM_SILSILA_AQWAS, audit as auditSilsilaAqwas } from './practice-oracle/silsila-bi-aqwas.mjs';
 import { ORACLE as ORACLE_2AM_WASF_SILSILA, audit as auditWasfSilsila } from './practice-oracle/wasf-silsila-hisab.mjs';
 import { ORACLE as ORACLE_2AM_TAWZI, audit as auditTawzi } from './practice-oracle/tawzi-darb-jam-tarh.mjs';
+import { ORACLE as ORACLE_2AM_WADIYA_KUSUR_AMALIYAT, audit as auditWadiyaKusurAmaliyat } from './practice-oracle/wadiya-idmajiya-kusur-amaliyat.mjs';
 import { ORACLE as ORACLE_2AM_WADIYA_AMALIYAT, audit as auditWadiyaAmaliyat } from './practice-oracle/wadiya-idmajiya-amaliyat-tabiiya-ushriya.mjs';
 import { ORACLE as ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA } from './practice-oracle/ikhtizal-kitaba-kasriya.mjs';
 import { ORACLE as ORACLE_1AM_QAWAID_QABILIYAT_QISMA } from './practice-oracle/qawaid-qabiliyat-qisma.mjs';
@@ -321,6 +322,7 @@ const ORACLE = {
   ...ORACLE_2AM_SILSILA_AQWAS,
   ...ORACLE_2AM_WASF_SILSILA,
   ...ORACLE_2AM_TAWZI,
+  ...ORACLE_2AM_WADIYA_KUSUR_AMALIYAT,
   ...ORACLE_2AM_WADIYA_AMALIYAT,
   ...ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA,
   ...ORACLE_1AM_QAWAID_QABILIYAT_QISMA,
@@ -537,6 +539,11 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     const own = bank.filter((b) => b.key.startsWith('ex-2am-tawzi-darb-jam-tarh-'));
     expect(own.length).toBeGreaterThan(0);
     expect(auditTawzi(own)).toEqual([]);
+  });
+  it('أدمج تعلّماتي — الكسور والعمليات عليها (2AM, synthèse) : évaluateur de chaînes importé du banc frère amaliyat-natiqa (BigInt, décimaux, « a/b » littéral), chaque clé recalculée depuis les nombres de l\'énoncé retapés (sommes, restes, produits, « a/b de x », « de ce qui reste », le tout depuis une fraction unitaire par multiplication, divisions euclidiennes, valeurs approchées par défaut / par excès par division longue — jamais arrondies —, aires et périmètres), chaque opérande dans la feuille ou clé d\'une question précédente, QCM jugés option par option (une seule vraie), chaque signature / option = la valeur EXACTE de l\'erreur MISC nommée (JAMKASR, JIDAKASR, MUQKASR, HASR, QARIBA, SYN-KASR2), corrigés relus en LaTeX, aucune somme de dénominateurs non emboîtés, aucune division par une fraction, aucun pourcentage', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-wadiya-idmajiya-kusur-amaliyat-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditWadiyaKusurAmaliyat(own)).toEqual([]);
   });
   it('أدمج تعلّماتي — العمليات على الأعداد الطبيعية والأعداد العشرية (2AM, synthèse) : évaluateur exact importé de silsila-bi-aqwas (BigInt, ( ) [ ] et barres de fraction), chaque clé recalculée, lectures fautives nommées (NOPRIORITY, ADDFIRST, MULFIRST, IGNORED, BARSPLIT, ROUNDUP, MAX), nom d\'une chaîne, QCM jugé option par option, 4 term_exam lus et 6 feuilles adaptées', () => {
     const own = bank.filter((b) => b.key.startsWith('ex-2am-wadiya-idmajiya-amaliyat-tabiiya-ushriya-'));

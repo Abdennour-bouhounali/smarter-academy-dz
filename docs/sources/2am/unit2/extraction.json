@@ -78,7 +78,8 @@
    "answer": {
     "egyptian": "5/6"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la synthèse (2026-10-29) à 110 dpi (pdf p. 19 et 33) : conforme ; réécrit avec d'autres nombres et un autre contexte."
   },
   {
    "id": "challenge",
@@ -105,7 +106,8 @@
     "possible": false,
     "note": "Aucun choix de quatre des cinq cartes imprimées ne fait 1 (au plus 7/8) — voir discrepancies."
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la synthèse (2026-10-29) à 110 dpi (pdf p. 19 et 33) : conforme ; réécrit avec d'autres nombres et un autre contexte."
   },
   {
    "id": "prep",
@@ -1672,27 +1674,29 @@
    "page": 36,
    "section": "أدمج تعلّماتي",
    "title": "التنمية المستدامة",
-   "verified": false,
+   "verified": true,
    "text": "وضعية: إذا فرضنا أنّ تعداد سكان العالم هو 7,5 مليار نسمة. أ) ما هو عدد الأشخاص الذين حصلوا على مرافق صرف صحي بين عامي 1990 و 2012؟ ب) احسب عدد الأشخاص الذين لا يملكون مرحاضا إلى غاية 2012. (يُطلب كتابة كل نسبة على شكل كسر مبسط قدر الإمكان). جـ) إذا علمت أن عدد الوفيات المرتبطة بالمياه والصرف الصحي في السنة يقدر بحوالي 488 ألف شخص، ما هو عدد الأطفال المتوفين نتيجة لأمراض مرتبطة بالمياه؟ — النص: … حتى عام 2012، لم يكن لدى 3/25 من الأشخاص حول العالم مرحاض. ورغم أن أكثر من 19/75 من الأشخاص حصلوا على مرافق صرف صحي بين عامي 1990 و 2012 …، فإنه ما زال 600 مليون شخص على مستوى العالم لا يحصلون على مياه صالحة للشرب. … يمثل الأطفال 23/61 من مجمل الوفيات.",
    "answer": {
     "sanitation": 1900000000,
     "noToilet": 900000000,
     "children": 184000
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la synthèse (2026-10-29) à 110 dpi (pdf p. 19 et 33) : conforme ; réécrit avec d'autres nombres et un autre contexte."
   },
   {
    "id": "evaluation",
    "kind": "integration",
    "page": 36,
    "section": "وضعية للتقويم",
-   "verified": false,
+   "verified": true,
    "text": "استهلك رشيد 4/12 من الرصيد الشهري لهاتفه المحمول في الأسبوع الأول، ثم استهلك 4/5 الباقي فيما بقي من الشهر. أ) ما هي الحصة غير المستهلكة من الرصيد الشهري؟ ب) إذا علمت أن ما بقي له من الرصيد في نهاية الشهر هو 10min ، ما هو عدد الدقائق التي كانت في رصيده في بداية الشهر؟",
    "answer": {
     "left": "2/15",
     "start": 75
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la synthèse (2026-10-29) à 110 dpi (pdf p. 19 et 33) : conforme ; réécrit avec d'autres nombres et un autre contexte."
   },
   {
    "id": "ict-1",
@@ -1812,8 +1816,15 @@
    "module": 0
   },
   "challenge": {
-   "lesson": "unit",
-   "module": "page"
+   "lesson": "wadiya-idmajiya-kusur-amaliyat",
+   "module": 3,
+   "duplicatedIn": [
+    {
+     "lesson": "unit",
+     "module": "page"
+    }
+   ],
+   "note": "cartes de Sara (1/2, 1/3, 1/4, 1/6, 1/12 : UN choix de quatre fait 1) ; la carte de l'unité garde le texte du livre (README du plan, question 3)"
   },
   "prep": {
    "lesson": "qisma-iqlidiya-hasr",
@@ -2185,11 +2196,11 @@
   },
   "integration": {
    "lesson": "wadiya-idmajiya-kusur-amaliyat",
-   "module": null
+   "module": 1
   },
   "evaluation": {
    "lesson": "wadiya-idmajiya-kusur-amaliyat",
-   "module": null
+   "module": 2
   },
   "ict-1": {
    "lesson": "jam-tarh-kusur",
