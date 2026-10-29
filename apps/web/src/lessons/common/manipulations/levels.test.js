@@ -80,6 +80,12 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(advanced.numbers.tasks.some((tk) => tk.kind === 'trap'), type).toBe(true);
         expect(beginner.numbers.tasks.some((tk) => tk.kind === 'trap'), type).toBe(false);
       }
+      // Unité 2 de 2AM, leçon 9 : `level-laser` se mesure par la PRÉDICTION voilée (متقدم seul) et par le nombre de RÉSERVOIRS (trois à ordonner, متقدم seul).
+      else if (type === 'level-laser') {
+        expect(advanced.numbers.tasks.every((tk) => tk.predict), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.predict), type).toBe(false);
+        expect(Math.max(...advanced.numbers.tasks.map((tk) => tk.tanks.length)), type).toBeGreaterThan(Math.max(...beginner.numbers.tasks.map((tk) => tk.tanks.length)));
+      }
       // Unité 2 de 2AM, leçon 8 : `window-blinds` se mesure par la PRÉDICTION écrite avant de tirer (متقدم seul) et par les FACTEURS > 1 (متقدم seul).
       else if (type === 'window-blinds') {
         const val = (f) => { const [n, d] = f.split('/').map(Number); return n / d; };
@@ -150,12 +156,6 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(beginner.numbers.tasks.every((tk) => tk.kind === 'cut'), type).toBe(true);
         expect(advanced.numbers.tasks.some((tk) => tk.kind === 'glue') && advanced.numbers.tasks.some((tk) => tk.hidden), type).toBe(true);
       }
-      else if (type === 'coop-calculator') {
-        expect(advanced.numbers.tasks.every((tk) => tk.kind === 'type' && !tk.pre), type).toBe(true);
-        expect(beginner.numbers.tasks.every((tk) => tk.kind === 'insert' && tk.pre), type).toBe(true);
-      }
-      // Unité 4 de 3AM, leçon 3 : `marble-run` se mesure par la PRÉDICTION écrite avant le lancement (متقدم seul) et par les DEUX lettres (r6).
-      else if (type === 'marble-run') {
       // Unité 1 de 2AM, leçon 4 : `kit-packer` se mesure par la PRÉDICTION du total écrite avant « وزّع » (متقدم seul) et par la FORME de la tâche (بطاقات verrouillées / nombre rond ± petit nombre / décimaux).
       else if (type === 'kit-packer') {
         expect(advanced.numbers.tasks.every((tk) => tk.predict), type).toBe(true);
@@ -163,6 +163,12 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(beginner.numbers.tasks.some((tk) => tk.kind === 'bags') && beginner.numbers.tasks.some((tk) => tk.op === '−'), type).toBe(true);
         expect(advanced.numbers.tasks.some((tk) => tk.kind === 'split') && advanced.numbers.tasks.some((tk) => tk.unit === 'm'), type).toBe(true);
       }
+      else if (type === 'coop-calculator') {
+        expect(advanced.numbers.tasks.every((tk) => tk.kind === 'type' && !tk.pre), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => tk.kind === 'insert' && tk.pre), type).toBe(true);
+      }
+      // Unité 4 de 3AM, leçon 3 : `marble-run` se mesure par la PRÉDICTION écrite avant le lancement (متقدم seul) et par les DEUX lettres (r6).
+      else if (type === 'marble-run') {
         expect(advanced.numbers.predict, type).toBe(true);
         expect(beginner.numbers.predict, type).toBe(false);
         expect(advanced.numbers.tasks.some((tk) => Object.keys(tk.target).length === 2), type).toBe(true);

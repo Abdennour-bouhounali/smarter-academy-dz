@@ -123,13 +123,14 @@ import { ORACLE as ORACLE_2AM_QISMA_IQLIDIYA_HASR } from './practice-oracle/qism
 import { ORACLE as ORACLE_2AM_KASR_HASIL_QISMA } from './practice-oracle/kasr-hasil-qisma.mjs';
 import { ORACLE as ORACLE_2AM_JAM_TARH_KUSUR, audit as auditJamKusur } from './practice-oracle/jam-tarh-kusur.mjs';
 import { ORACLE as ORACLE_2AM_JIDA_KASRAYN, audit as auditJidaKasrayn } from './practice-oracle/jida-kasrayn.mjs';
+import { ORACLE as ORACLE_2AM_MUQARANA_KASRAYN, audit as auditMuqaranaKasrayn } from './practice-oracle/muqarana-kasrayn.mjs';
 import { ORACLE as ORACLE_2AM_MUQARANA_NISBIYA } from './practice-oracle/muqarana-nisbiya.mjs';
 import { ORACLE as ORACLE_2AM_RABI_MUTANASIB } from './practice-oracle/rabi-mutanasib.mjs';
 import { ORACLE as ORACLE_2AM_SILSILA, audit as auditSilsila } from './practice-oracle/silsila-bidun-aqwas.mjs';
 import { ORACLE as ORACLE_2AM_SILSILA_AQWAS, audit as auditSilsilaAqwas } from './practice-oracle/silsila-bi-aqwas.mjs';
 import { ORACLE as ORACLE_2AM_WASF_SILSILA, audit as auditWasfSilsila } from './practice-oracle/wasf-silsila-hisab.mjs';
-import { ORACLE as ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA } from './practice-oracle/ikhtizal-kitaba-kasriya.mjs';
 import { ORACLE as ORACLE_2AM_TAWZI, audit as auditTawzi } from './practice-oracle/tawzi-darb-jam-tarh.mjs';
+import { ORACLE as ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA } from './practice-oracle/ikhtizal-kitaba-kasriya.mjs';
 import { ORACLE as ORACLE_1AM_QAWAID_QABILIYAT_QISMA } from './practice-oracle/qawaid-qabiliyat-qisma.mjs';
 import { ORACLE as ORACLE_1AM_KITABAT_ADAD_TABII } from './practice-oracle/kitabat-adad-tabii.mjs';
 import { ORACLE as ORACLE_1AM_HASIL_QISMA_KASR } from './practice-oracle/hasil-qisma-kasr.mjs';
@@ -312,14 +313,15 @@ const ORACLE = {
   ...ORACLE_2AM_KASR_HASIL_QISMA,
   ...ORACLE_2AM_JAM_TARH_KUSUR,
   ...ORACLE_2AM_JIDA_KASRAYN,
+  ...ORACLE_2AM_MUQARANA_KASRAYN,
   ...ORACLE_2AM_MUQARANA_NISBIYA,
   ...ORACLE_2AM_RABI_MUTANASIB,
   ...ORACLE_2AM_SILSILA,
   ...ORACLE_2AM_SILSILA_AQWAS,
   ...ORACLE_2AM_WASF_SILSILA,
+  ...ORACLE_2AM_TAWZI,
   ...ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA,
   ...ORACLE_1AM_QAWAID_QABILIYAT_QISMA,
-  ...ORACLE_2AM_TAWZI,
   ...ORACLE_1AM_KITABAT_ADAD_TABII,
   ...ORACLE_1AM_HASIL_QISMA_KASR,
   ...ORACLE_1AM_KUSUR_ASHRIYA_KITABA,
@@ -512,6 +514,12 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     expect(auditJidaKasrayn(own)).toEqual([]);
   });
 
+  it('مقارنة كسرين (2AM) : rationnels exacts BigInt propres à l\'oracle (aucun import de packages/core), chaque clé recalculée par produit en croix caché depuis les opérandes retapés (relations, plus grand / plus petit, ordres, « entre », « avant 1 / 2 », réécriture a/b = □/d, x entier, restes et montants), chaque paire du banc est un CAS 2AM (même dénominateur, même numérateur, un dénominateur multiple de l\'autre, ou de part et d\'autre de 1 — jamais un multiple commun quelconque), chaque option de QCM relue en LaTeX (une seule vraie), chaque signature MISC-MUQKASR-* (NUMONLY, BIGDEN, NOSCALE, GAP, ONEWRONG, REVERSED) recalculée depuis les opérandes et fausse', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-muqarana-kasrayn-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditMuqaranaKasrayn(own)).toEqual([]);
+  });
+
   it('سلسلة عمليات تتضمّن أقواسا (2AM) : évaluateur exact propre (BigInt, ( ) [ ] et barres de fraction ; aucun import de chainOps.js), chaque clé recalculée, LaTeX de chaque énoncé / option / ligne de corrigé relu (\\dfrac, convention [ ( ) ], aucun intermédiaire négatif, aucune multiplication implicite aux niveaux 1–3), chaque QCM jugé option par option (une seule vraie), chaque distracteur = la lecture que nomme sa misconception (IGNORED, DROPOUTER, BARSPLIT, DROPBR, MISPLACED, ALLUSELESS, ALLNEEDED), chaque crochet « inutile » vérifié par retrait sur 40 jeux de valeurs, 50 feuilles dont 11 sujets lus', () => {
     const own = bank.filter((b) => b.key.startsWith('ex-2am-silsila-bi-aqwas-'));
     expect(own.length).toBeGreaterThan(0);
@@ -523,6 +531,11 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     expect(own.length).toBeGreaterThan(0);
     expect(auditWasfSilsila(own)).toEqual([]);
   });
+  it('توزيع الضرب على الجمع والطرح (2AM) : rationnels exacts BigInt et formes affines a·x + b propres à l\'oracle (aucun import de packages/core), parseur ASCII (4x = 4 × x, « ? » résolu par évaluation en 0 et 1), chaque clé recalculée et recoupée en flottant, chaque QCM jugé option par option avec des options CONSTRUITES ici (exp, lexp, fac1, yn, prop, name : une seule option juste), chaque distracteur = la lecture que nomme sa misconception reconstruite (FIRSTONLY, SIGNCHANGE, ADDK, FACTORMULT, FACTORWRONG, NOTATION), chaque $…$ relu (lisible, aucun intermédiaire négatif, chaînes du corrigé égales), 50 feuilles dont les sujets réellement lus, une partie de sujet jamais citée deux fois', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-tawzi-darb-jam-tarh-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditTawzi(own)).toEqual([]);
+  });
 
   it('le cas signalé (6 | 120) : « 6 مضاعف للعدد 120 » est faux, seul « لا » est accepté', () => {
     const q = bank.find((b) => b.key === REPORTED.key).q;
@@ -531,11 +544,6 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     for (const id of ['A', 'B']) {
       expect(isSuccessOutcome(evaluateAnswer(C(id), q).outcome)).toBe(id === 'B');
     }
-  it('توزيع الضرب على الجمع والطرح (2AM) : rationnels exacts BigInt et formes affines a·x + b propres à l\'oracle (aucun import de packages/core), parseur ASCII (4x = 4 × x, « ? » résolu par évaluation en 0 et 1), chaque clé recalculée et recoupée en flottant, chaque QCM jugé option par option avec des options CONSTRUITES ici (exp, lexp, fac1, yn, prop, name : une seule option juste), chaque distracteur = la lecture que nomme sa misconception reconstruite (FIRSTONLY, SIGNCHANGE, ADDK, FACTORMULT, FACTORWRONG, NOTATION), chaque $…$ relu (lisible, aucun intermédiaire négatif, chaînes du corrigé égales), 50 feuilles dont les sujets réellement lus, une partie de sujet jamais citée deux fois', () => {
-    const own = bank.filter((b) => b.key.startsWith('ex-2am-tawzi-darb-jam-tarh-'));
-    expect(own.length).toBeGreaterThan(0);
-    expect(auditTawzi(own)).toEqual([]);
-  });
   });
 
   for (const { key, q } of bank) {

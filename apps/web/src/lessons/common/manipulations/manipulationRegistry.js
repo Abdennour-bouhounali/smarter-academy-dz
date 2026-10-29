@@ -120,6 +120,8 @@ export const MANIPULATION_COMPONENTS = {
   'scoop-scale': lazy(() => import('./operations/ScoopScale')),
   // 2AM, unité 2, leçon 7 « جمع وطرح كسرين » : la distance sous la main — عدّاد المسلك (2026-10-29).
   'trail-odometer': lazy(() => import('./operations/TrailOdometer')),
+  // 2AM, unité 2, leçon 9 « مقارنة كسرين » : la hauteur d'un laser lue dans deux graduations — ليزر المستوى (2026-10-29).
+  'level-laser': lazy(() => import('./operations/LevelLaser')),
   // 2AM, unité 2, leçon 8 « جداء كسرين » : les deux facteurs sous la main — ستائر النافذة (2026-10-29).
   'window-blinds': lazy(() => import('./operations/WindowBlinds')),
   // 2AM, unité 2, leçon 6 « الكسر: نسبة وحاصل قسمة وقيم مقرّبة » : le quotient sous la main — حبال المرسى (2026-10-28).
@@ -149,9 +151,9 @@ export const MANIPULATION_COMPONENTS = {
   'coop-calculator': lazy(() => import('./operations/CoopCalculator')),
   // 2AM, unité 1, leçon 3 : la dernière opération nomme la chaîne — le مقصّ السلسلة (2026-10-29).
   'chain-cutter': lazy(() => import('./operations/ChainCutter')),
+  'kit-packer': lazy(() => import('./operations/KitPacker')),
   // 3AM, unité 2 : le numérateur sous la main — la machine à teinter (آلة مزج الألوان, 2026-10-26).
   'shade-match': lazy(() => import('./operations/ShadeMatch')),
-  'kit-packer': lazy(() => import('./operations/KitPacker')),
   // 3AM, unité 2, leçon 3 : l'espacement sous la main — le مشط الشتلات (2026-10-26).
   'seed-rake': lazy(() => import('./operations/SeedRake')),
   // 3AM, unité 2, leçon 4 : la position d'une écriture sous la main — le حبل الأعداد (2026-10-26).

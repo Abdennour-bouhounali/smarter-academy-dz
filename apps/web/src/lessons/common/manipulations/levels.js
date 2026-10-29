@@ -833,6 +833,23 @@ export const LEVELS = Object.freeze({
       { id: 'a4', n: 6, k: 0, loop: true, legs: ['1/1', '5/6'], predict: true },
     ] }, ...T('method-3') },
   },
+  // LA HAUTEUR D'UN LASER SOUS LA MAIN (level-laser, thème oilpress, 2AM unité 2, leçon « مقارنة كسرين », 2026-10-29) : une tâche est `{ id, tanks: ['a/b', 'c/d'(, 'e/f')], kind?: 'order', predict? }` (a peut être décimal : '2,5/4').
+  // مبتدئ (plateforme, tubes visibles) : l1 5/8 | 7/8 · l2 3/4 | 7/12 · l3 3/5 | 3/8 · l4 9/8 | 5/6. متقدم (plateforme, tubes VOILÉS : on écrit avant de voir) : a1 5/6 | 11/18 · a2 2/3 | 5/9 | 7/9 (à ordonner) · a3 2,5/4 | 5,5/8 · a4 7/5 | 11/10.
+  // Le test des niveaux mesure la paire par la PRÉDICTION voilée (متقدم seul) et par le nombre de réservoirs.
+  'level-laser': {
+    beginner: { numbers: { tasks: [
+      { id: 'l1', tanks: ['5/8', '7/8'] },
+      { id: 'l2', tanks: ['3/4', '7/12'] },
+      { id: 'l3', tanks: ['3/5', '3/8'] },
+      { id: 'l4', tanks: ['9/8', '5/6'] },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', tanks: ['5/6', '11/18'], predict: true },
+      { id: 'a2', tanks: ['2/3', '5/9', '7/9'], predict: true, kind: 'order' },
+      { id: 'a3', tanks: ['2,5/4', '5,5/8'], predict: true },
+      { id: 'a4', tanks: ['7/5', '11/10'], predict: true },
+    ] }, ...T('method-5') },
+  },
   // LES DEUX FACTEURS SOUS LA MAIN (window-blinds, thème classwindow, 2AM unité 2, leçon « جداء كسرين », 2026-10-29) : le rideau latéral (a/b de la largeur) et le store (c/d de la hauteur) se tirent sur une fenêtre ;
   // une tâche est `{ id, curtain: 'a/b', blind: 'c/d', W, H, predict? }` (W × H fenêtres, une fenêtre = 1). مبتدئ (plateforme, une fenêtre) : w1 2/3 × 3/4, w2 1/2 × 3/5, w3 4/5 × 2/3.
   // متقدم (plateforme, le produit est ÉCRIT avant de tirer, mur de fenêtres) : a1 3/2 × 2/3, a2 5/4 × 3/5, a3 7/4 × 4/3 (2 × 2), a4 2 × 3/5. Le test des niveaux mesure la paire par la PRÉDICTION écrite (متقدم seul) et par les
@@ -1048,6 +1065,22 @@ export const LEVELS = Object.freeze({
       { id: 'a4', kind: 'glue', cards: ['3', '5', '10', '4'], target: '(3 + 5) × (10 − 4)' },
     ] }, ...T('know-3') },
   },
+  // DEUX FAÇONS DE REMPLIR LES MÊMES CARTABLES (kit-packer, thème solidarity, 2026-10-29) : la main règle ce que chaque distributeur sort ; le tapis distribue UN PAR CARTABLE. Une tâche est `{ id, kind: 'fill' | 'bags' | 'split',
+  // k, a, b, op, unit?, predict?, start? }`. مبتدئ (plateforme) : k1 6 × (3 + 2), k2 8 × (4 + 5), k3 7 × (10 − 2) (benne des abîmés), k4 distributeurs verrouillés à 60 et 36, la main règle le nombre de cartables (12).
+  // متقدم (self-8, toujours AVEC prédiction du total) : a1 9 × 48 = 9 × 50 − 9 × 2, a2 rubans en mètres 15 × (1,2 + 0,8), a3 la commande « 6 × 4 + 3 » d'un camarade à corriger.
+  'kit-packer': {
+    beginner: { numbers: { tasks: [
+      { id: 'k1', kind: 'fill', k: 6, a: 3, b: 2, op: '+' },
+      { id: 'k2', kind: 'fill', k: 8, a: 4, b: 5, op: '+' },
+      { id: 'k3', kind: 'fill', k: 7, a: 10, b: 2, op: '−' },
+      { id: 'k4', kind: 'bags', n: 60, m: 36, a: 5, b: 3, k0: 5 },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', kind: 'split', k: 9, n: 48, predict: true },
+      { id: 'a2', kind: 'fill', k: 15, a: '1,2', b: '0,8', op: '+', unit: 'm', predict: true },
+      { id: 'a3', kind: 'fill', k: 6, a: 4, b: 3, op: '+', predict: true, start: { n: 24, m: 3 } },
+    ] }, ...T('self-8') },
+  },
   // g3 3/4 puis 1/6 récolté. متقدم (method-6 : le manuel cherche un multiple commun, râteau BLOQUÉ, on écrit N et le total) : a1 5/6 + 3/8, a2 7/10 − 4/15, a3 1/2 + 1/3 + 1/4,
   // a4 3/8 + 5/12 « أوسع مسافة ». Le monde `fewest` (معارف) est posé par la leçon. Le test des niveaux mesure la paire par le NOMBRE DE TÂCHES et par la PRÉDICTION.
   'seed-rake': {
@@ -1065,22 +1098,6 @@ export const LEVELS = Object.freeze({
   },
   // LE SIGNE PRÉDIT SOUS LA MAIN (merge-board, thème arcade, 3AM unité 2, leçon 5, 2026-10-26) : une chaîne de calcul est une rangée de tuiles ; la main PRÉDIT le signe de chaque fusion, RETOURNE le diviseur d'une division
   // et choisit l'ORDRE des fusions (aimants = priorité, bulles = parenthèses). Une tâche est `{ id, chain, hidden?, signOnly? }`. مبتدئ (plateforme, barres et aimants visibles) : c1 −5/4 + 11/6, c2 7/13 × (−8/5), c3 −9/8 ÷ (−3/4),
-  // DEUX FAÇONS DE REMPLIR LES MÊMES CARTABLES (kit-packer, thème solidarity, 2026-10-29) : la main règle ce que chaque distributeur sort ; le tapis distribue UN PAR CARTABLE. Une tâche est `{ id, kind: 'fill' | 'bags' | 'split',
-  // k, a, b, op, unit?, predict?, start? }`. مبتدئ (plateforme) : k1 6 × (3 + 2), k2 8 × (4 + 5), k3 7 × (10 − 2) (benne des abîmés), k4 distributeurs verrouillés à 60 et 36, la main règle le nombre de cartables (12).
-  // متقدم (self-8, toujours AVEC prédiction du total) : a1 9 × 48 = 9 × 50 − 9 × 2, a2 rubans en mètres 15 × (1,2 + 0,8), a3 la commande « 6 × 4 + 3 » d'un camarade à corriger.
-  'kit-packer': {
-    beginner: { numbers: { tasks: [
-      { id: 'k1', kind: 'fill', k: 6, a: 3, b: 2, op: '+' },
-      { id: 'k2', kind: 'fill', k: 8, a: 4, b: 5, op: '+' },
-      { id: 'k3', kind: 'fill', k: 7, a: 10, b: 2, op: '−' },
-      { id: 'k4', kind: 'bags', n: 60, m: 36, a: 5, b: 3, k0: 5 },
-    ] }, ...P },
-    advanced: { numbers: { tasks: [
-      { id: 'a1', kind: 'split', k: 9, n: 48, predict: true },
-      { id: 'a2', kind: 'fill', k: 15, a: '1,2', b: '0,8', op: '+', unit: 'm', predict: true },
-      { id: 'a3', kind: 'fill', k: 6, a: 4, b: 3, op: '+', predict: true, start: { n: 24, m: 3 } },
-    ] }, ...T('self-8') },
-  },
   // c4 7/3 − 8/15 ÷ 11/20 (l'aimant force la division d'abord). متقدم (method-9 : une chaîne à priorité ; barres CACHÉES jusqu'à la fusion, trois fautes les ramènent) : a1 (2/3 − 5/2) × (−6/11), a2 −3/4 + 5/6 × (−9/10),
   // a3 la fraction composée, a4 4/5 − 3/5 ÷ (−9/10) + (−2). Le monde `signs` (معارف) est posé par la leçon. Le test des niveaux mesure la paire par le NOMBRE DE TÂCHES et par les BARRES CACHÉES (متقدم seul).
   'merge-board': {

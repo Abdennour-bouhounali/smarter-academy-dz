@@ -759,6 +759,16 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'لا نجمع إلا أجزاء من الحجم نفسه: كسران مقام أحدهما مضاعف لمقام الآخر نكتبهما بالمقام نفسه (نضرب حدّي أحدهما في العدد نفسه) ثم نجمع البسطين أو نطرحهما ونحافظ على المقام ؛ والباقي من الكلّ هو الفرق بين $1$ وما مُشي',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 2AM, unité 2 « الكسور والعمليات عليها », leçon 9 « مقارنة كسرين » (2026-10-29) — une hauteur lue dans deux graduations.
+  'level-laser': {
+    // LA HAUTEUR D'UN LASER SOUS LA MAIN : deux (trois) réservoirs identiques portent chacun un tube de verre gradué en SON nombre de crans ; l'huile monte à a/b de réservoir. La main glisse un niveau laser rouge
+    // qui traverse tous les tubes et se colle à la UNION des graduations : une même hauteur se LIT dans les deux (3/4 coupe l'autre tube au cran 9 sur 12, ou « entre les crans 4 et 5 »). L'élève dit quel réservoir
+    // a le plus d'huile et ÉCRIT le premier niveau dans les crans de l'autre quand un nombre de crans est multiple de l'autre ; les modèles faux (comparer les seuls numérateurs, croire que plus de crans = plus d'huile,
+    // réécrire le seul dénominateur, « un cran de moins que le plein, donc égaux ») sont réfutés PAR LE MONDE : le laser saute au niveau revendiqué et l'autre huile est du mauvais côté du trait rouge. مبتدئ :
+    // 5/8 | 7/8, 3/4 | 7/12, 3/5 | 3/8, 9/8 | 5/6 (le trait « 1 ») ; متقدم : tubes voilés (on écrit avant de voir), trois réservoirs à ordonner, numérateurs décimaux, deux réservoirs trop pleins. « جرّب أعدادك » : toujours ouvert.
+    shows: 'لمقارنة كسرين: إن كان لهما نفس المقام فأكبرهما ما له أكبر بسط، وإن كان لهما نفس البسط فأكبرهما ما له أصغر مقام، وإن كان مقام أحدهما مضاعفًا لمقام الآخر كتبنا الكسرين بنفس المقام ثم قارنّا البسطين، ونقارن كسرًا بالعدد $1$ بمقارنة بسطه بمقامه',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 2AM, unité 2 « الكسور والعمليات عليها », leçon 8 « جداء كسرين » (2026-10-29) — les deux facteurs d'un produit de fractions, tenus par deux tirages perpendiculaires sur une fenêtre.
   'window-blinds': {
     // LES DEUX FACTEURS SOUS LA MAIN : la main tire DEUX couvertures perpendiculaires sur une fenêtre — le rideau latéral (largeur a/b, il se colle aux crans de son rail) et le store à enrouleur (hauteur c/d,
@@ -937,6 +947,14 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'آخر عملية تُنجز في سلسلة هي التي تسمّيها (مجموع، فرق، جداء، حاصل قسمة)، وبها تنقسم السلسلة إلى حدّين أو عاملين أو مقسوم وقاسم تُحسب كلّ منها وحدها، فنصف السلسلة بجملة ونكتب سلسلة من جملة بالأقواس اللازمة',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 2AM, unité 1, leçon 4 (2026-10-29) — la distributivité du produit sur la somme et la différence.
+  'kit-packer': {
+    // DEUX FAÇONS DE REMPLIR LES MÊMES CARTABLES : dans l'atelier du نادي التضامن, Fatima remplit k cartables identiques cartable par cartable (k × (a + b)) ; la MAIN d'Ali règle ce que chaque distributeur sort (cahiers, stylos) et le
+    // tapis distribue UN PAR CARTABLE. Un cartable manquant, trop plein ou inégal se voit ; les deux compteurs ne s'allument ensemble que si tous les cartables sont prêts (n = k × a et m = k × b). Dans une différence une benne reçoit
+    // les cahiers abîmés ; lue à l'envers (distributeurs verrouillés), la main règle le nombre de cartables et le facteur commun sort ; en متقدم le total est prédit, 48 s'écrit 50 − 2, les rubans sont en mètres. `kit-packer` n'énonce jamais la règle.
+    shows: 'ضرب عدد في مجموع أو فرق هو ضرب هذا العدد في كلّ حدّ ثم الجمع أو الطرح: k × (a + b) = k × a + k × b و k × (a − b) = k × a − k × b، ومنه نحلّل بإخراج العامل المشترك ونحسب ذهنيًا',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
 });
 
 export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));
@@ -946,14 +964,6 @@ export function isManipulationType(type) {
 }
 
 /** Les natures de ressource qu'une leçon peut déclarer dans `resources[]`. */
-  },
-  // 2AM, unité 1, leçon 4 (2026-10-29) — la distributivité du produit sur la somme et la différence.
-  'kit-packer': {
-    // DEUX FAÇONS DE REMPLIR LES MÊMES CARTABLES : dans l'atelier du نادي التضامن, Fatima remplit k cartables identiques cartable par cartable (k × (a + b)) ; la MAIN d'Ali règle ce que chaque distributeur sort (cahiers, stylos) et le
-    // tapis distribue UN PAR CARTABLE. Un cartable manquant, trop plein ou inégal se voit ; les deux compteurs ne s'allument ensemble que si tous les cartables sont prêts (n = k × a et m = k × b). Dans une différence une benne reçoit
-    // les cahiers abîmés ; lue à l'envers (distributeurs verrouillés), la main règle le nombre de cartables et le facteur commun sort ; en متقدم le total est prédit, 48 s'écrit 50 − 2, les rubans sont en mètres. `kit-packer` n'énonce jamais la règle.
-    shows: 'ضرب عدد في مجموع أو فرق هو ضرب هذا العدد في كلّ حدّ ثم الجمع أو الطرح: k × (a + b) = k × a + k × b و k × (a − b) = k × a − k × b، ومنه نحلّل بإخراج العامل المشترك ونحسب ذهنيًا',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
 export const RESOURCE_KINDS = Object.freeze(['manipulation', 'method', 'situation', 'example']);
 
 /** Les natures de leçon. `synthesis` = « أدمج تعلّماتي », la synthèse d'unité. */

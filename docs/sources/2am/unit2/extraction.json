@@ -385,7 +385,7 @@
    "page": 25,
    "section": "أنشطة",
    "title": "مقارنة كسرين",
-   "verified": false,
+   "verified": true,
    "text": "1) قمنا بتقسيم رغيف إلى أربعة حصص متساوية. ما هو السهم الذي تمثله حصة واحدة؟ ما هو السهم الذي تمثله حصتان؟ أي السهمين أكبر؟ 2) قامت سعاد بتقسيم رغيف إلى 6 حصص بينما قسّمت ليلى رغيفا مماثلا إلى 8 حصص. ارسم شكلين أحدهما يمثل رغيف سعاد والآخر يمثل رغيف ليلى. أي الحصتين أكبر: حصة من رغيف سعاد أم حصة من رغيف ليلى؟ برّر إجابتك بتلوين الشكلين؟ 3) ما هو الكسر الذي يمثّل حصة من رغيف سعاد؟ ما هو الكسر الذي يمثّل حصة من رغيف ليلى؟ قارن هذين الكسرين باستعمال السؤال السابق.",
    "answer": {
     "one": "1/4",
@@ -593,7 +593,7 @@
    "page": 28,
    "section": "معارف",
    "title": "مقارنة كسرين لهما نفس البسط",
-   "verified": false,
+   "verified": true,
    "text": "خاصية: إذا كان لكسرين نفس البسط، فإنّ أكبرهما هو الذي له أصغر مقام. مثال: قارن بين 11/5 و 11/7 . لدينا 5 < 7 إذن، 11/5 > 11/7 .",
    "answer": "11/5 > 11/7",
    "answerSource": "computed"
@@ -605,7 +605,7 @@
    "page": 28,
    "section": "معارف",
    "title": "مقارنة كسرين لهما نفس المقام",
-   "verified": false,
+   "verified": true,
    "text": "خاصية: إذا كان لكسرين نفس المقام فإنّ أكبرهما هو الذي له أكبر بسط. مثال: قارن بين 4/13 و 6/13 . لدينا 4 < 6 إذن، 4/13 < 6/13 .",
    "answer": "4/13 < 6/13",
    "answerSource": "computed"
@@ -617,7 +617,7 @@
    "page": 28,
    "section": "معارف",
    "title": "مقارنة كسرين ليس لهما نفس المقام",
-   "verified": false,
+   "verified": true,
    "text": "خاصية: إذا كان مقام أحد الكسرين مضاعفا لمقام الكسر الآخر نكتب الكسرين بنفس المقام، ثم نقارن البسطين الجديدين حسب الخاصية … مثال: قارن بين 3/4 و 17/20 . نكتب الكسر 3/4 بمقام يساوي 20، أي: 3/4 = (3 × 5)/(4 × 5) = 15/20 … (bas de page coupé par le scan)",
    "answer": "3/4 = 15/20 < 17/20",
    "answerSource": "computed"
@@ -1859,7 +1859,7 @@
   },
   "act-6": {
    "lesson": "muqarana-kasrayn",
-   "module": 1
+   "module": 4
   },
   "know-1a": {
    "lesson": "qisma-iqlidiya-hasr",
@@ -1907,15 +1907,15 @@
   },
   "know-3a": {
    "lesson": "muqarana-kasrayn",
-   "module": null
+   "module": 2
   },
   "know-3b": {
    "lesson": "muqarana-kasrayn",
-   "module": null
+   "module": 2
   },
   "know-3c": {
    "lesson": "muqarana-kasrayn",
-   "module": null
+   "module": 2
   },
   "method-3": {
    "lesson": "jam-tarh-kusur",
@@ -1927,7 +1927,7 @@
   },
   "method-5": {
    "lesson": "muqarana-kasrayn",
-   "module": null
+   "module": 3
   },
   "now-29": {
    "lesson": "kasr-hasil-qisma",
@@ -1939,7 +1939,7 @@
     },
     "2": {
      "lesson": "muqarana-kasrayn",
-     "module": null
+     "module": 4
     }
    }
   },
@@ -2049,23 +2049,23 @@
   },
   "ex-20": {
    "lesson": "muqarana-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-21": {
    "lesson": "muqarana-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-22": {
    "lesson": "muqarana-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-23": {
    "lesson": "muqarana-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-24": {
    "lesson": "muqarana-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-25": {
    "lesson": "muqarana-kasrayn",

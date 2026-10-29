@@ -137,3 +137,64 @@ export function fractionOf(p, x) {
 export function ofRemainder(spent, part) {
   return fractionOf(part, complement(spent));
 }
+
+/* ── E4 — مقارنة كسرين ─────────────────────────────────────────────────────────────────────────── */
+
+/**
+ * E4 — درس « مقارنة كسرين » (`muqarana-kasrayn`, labo `level-laser`) :
+ *   compareCase(p, q)     le CAS de 2AM de deux écritures « a/b » (a peut être décimal : « 2,5/4 ») : 'sameDen' | 'sameNum' | 'multiple' | 'viaOne' | null (null = cas de 3AM, aucun verdict) ;
+ *   compareSimple(p, q)   { sign: -1 | 0 | 1, method, rewritten? } — refuse le cas de 3AM ; `rewritten` = { D, p, q } les deux écritures sur le plus grand dénominateur (cas 'multiple' ou 'viaOne' sans dénominateur commun) ;
+ *   orderSimple(list, dir) trie une liste dont CHAQUE paire est un cas de 2AM (sinon exception) : 'asc' (défaut) ou 'desc' ;
+ *   vsOne(p)              le signe de p − 1 : -1 | 0 | 1.
+ */
+function term(text) {
+  const m = /^\s*(\d+(?:[.,]\d+)?)\s*\/\s*(\d+)\s*$/.exec(String(text));
+  if (!m) throw new RangeError(`fractions2: écriture « a/b » illisible « ${text} »`);
+  const a = dec(m[1]); const d = big(m[2]);
+  if (d === 0n) throw new RangeError('fractions2: dénominateur nul');
+  // valeur exacte vn / vd : (a.n / 10^a.k) / d
+  const vn = big(a.n); const vd = P10(a.k) * d;
+  return { den: d, num: a, vn, vd };
+}
+const cmpTerm = (x, y) => { const l = x.vn * y.vd; const r = y.vn * x.vd; return l === r ? 0 : l < r ? -1 : 1; };
+
+export function vsOne(p) { const t = term(p); return t.vn === t.vd ? 0 : t.vn < t.vd ? -1 : 1; }
+
+export function compareCase(p, q) {
+  const x = term(p); const y = term(q);
+  if (x.den === y.den) return 'sameDen';
+  const sameNum = big(x.num.n) * P10(y.num.k) === big(y.num.n) * P10(x.num.k);
+  if (sameNum) return 'sameNum';
+  if (isMultipleCase(x.den, y.den)) return 'multiple';
+  const a = vsOne(p); const b = vsOne(q);
+  if ((a < 0 && b > 0) || (a > 0 && b < 0)) return 'viaOne';
+  return null;
+}
+
+export function compareSimple(p, q) {
+  const method = compareCase(p, q);
+  if (!method) throw new RangeError('fractions2.compareSimple: hors du programme de 2AM (aucun cas simple)');
+  const x = term(p); const y = term(q);
+  const sign = cmpTerm(x, y);
+  if (method === 'multiple') {
+    const D = x.den > y.den ? x.den : y.den;
+    return { sign, method, rewritten: { D, p: rewriteDen(x, D), q: rewriteDen(y, D) } };
+  }
+  return { sign, method };
+}
+
+/** Le numérateur (décimal éventuel) d'une écriture sur le dénominateur D : { n, k } de `decimals.js` après ×(D/d). */
+function rewriteDen(t, D) {
+  const f = D / t.den;
+  return { n: t.num.n * Number(f), k: t.num.k, d: Number(D) };
+}
+
+export function orderSimple(list, dir = 'asc') {
+  const items = list.map((p) => ({ p, t: term(p) }));
+  for (let i = 0; i < items.length; i += 1) for (let j = i + 1; j < items.length; j += 1) {
+    if (!compareCase(items[i].p, items[j].p) && cmpTerm(items[i].t, items[j].t) !== 0) throw new RangeError(`fractions2.orderSimple: la paire ${items[i].p} / ${items[j].p} sort du programme de 2AM`);
+  }
+  const sorted = [...items].sort((x, y) => cmpTerm(x.t, y.t));
+  if (dir === 'desc') sorted.reverse();
+  return sorted.map((x) => x.p);
+}

@@ -324,3 +324,13 @@ bank is a 2AM case — same den / same num / one multiple / straddling 1).
   `getLessonPath('muqarana-kasrayn')`. With the proposed net (`r09 → r08`), write instead THIS lesson's P3 ← `2am_jam-tarh-kusur_P2` (§2) and
   leave `jam-tarh-kusur` unchanged.
 - **3AM `adad-natiq`** (published) recalls `muqarana-nisbiya-2am` for signed order; no edge from r08 (no net link).
+
+## Generator notes (2026-10-29)
+
+Executed as planned; no mathematics changed. Fixes and decisions:
+1. **Test (M8) — E3 replaced to cover P1.** `validate:lessons` requires every learning point to have an assessment question; the plan's five test items covered P2, P3, P4 only. E3 is now « $\frac{7{,}1}{6}\ \square\ \frac{7}{6}$ » (P1, same denominator with a decimal numerator); the « $\frac{11}{10}\ \square\ 1$ » item of the plan left the test (P4 remains covered by E5 « $\frac97\ \square\ \frac89$ »). Its first appearance stays in M1 l4 and the bank.
+2. **Rail on the left, not between the tanks.** The red laser level slides on a vertical rail at the left edge and its beam crosses every tube; with three tanks (a2) a middle rail would hide a tank. The plan's « between the tanks » is kept only as the beam's meaning.
+3. **« أستعدّ » item 6** is the plan's rewrite (a line from 1 to 2 in sixths) — the original `prep` 10 scan (2 to 3 in eighths) stays marked `verified: False` in the extraction (`reading` note), not used.
+4. **`durationMinutes` 69** (modules without the مسائل; the plan's ≈ 80 would trip the catalogue-alignment check); `estimatedDurationMin` 69.
+5. **Net/edges.** The current net (`r08 → r09` requires, renvoi en avant) was kept as the plan's default: this lesson recalls `jam-tarh-kusur` (live link) but writes NO `2am_jam-tarh-kusur_P2` edge; `pointPrerequisites` P2 ← `1am_hasil-qisma-kasr_P1`; P3 ← P1 + `1am_ikhtizal-kitaba-kasriya_P1`; P4 ← P1 (the plan's intra edge P3 ← P1 and P4 ← P1). The successor edges (§12) are the coordinator's.
+6. **Extraction:** `act-6`, `know-3a`, `know-3b`, `know-3c` re-read at 110 dpi (PDF pp. 22 and 25) and set `verified: True`; destinations moved (act-6 → m4, know-3a/b/c → m2, method-5 → m3, now-29 item 2 → m4, ex-20…24 → m4).

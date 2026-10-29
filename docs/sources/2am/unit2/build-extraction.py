@@ -412,6 +412,11 @@ for _e in E:
     if _e['id'] in ('ex-26', 'ex-27', 'ex-28', 'ex-30', 'ex-34'):
         _e['verified'] = True
 
+# muqarana-kasrayn (2026-10-29) : pp. 22 et 25 du PDF (livre 25 et 28) relues à 110 dpi — act-6, know-3a, know-3b, know-3c confirmés (know-3c : bas de page coupé, comme noté)
+for _e in E:
+    if _e['id'] in ('act-6', 'know-3a', 'know-3b', 'know-3c'):
+        _e['verified'] = True
+
 L1, L2, L3, L4, L5 = 'qisma-iqlidiya-hasr', 'kasr-hasil-qisma', 'jam-tarh-kusur', 'jida-kasrayn', 'muqarana-kasrayn'
 SYN = 'wadiya-idmajiya-kusur-amaliyat'
 DEST = {
@@ -426,18 +431,18 @@ DEST = {
         '10': {'lesson': L5, 'module': 0}}},
     'act-1': {'lesson': L1, 'module': 1},
     'act-2': {'lesson': L2, 'module': 4}, 'act-3': {'lesson': L2, 'module': 4},
-    'act-4': {'lesson': L3, 'module': 4}, 'act-5': {'lesson': L4, 'module': 4}, 'act-6': {'lesson': L5, 'module': 1},
+    'act-4': {'lesson': L3, 'module': 4}, 'act-5': {'lesson': L4, 'module': 4}, 'act-6': {'lesson': L5, 'module': 4},
     'know-1a': {'lesson': L1, 'module': 2}, 'know-1b': {'lesson': L1, 'module': 2},
     'know-1c': {'lesson': L2, 'module': 2}, 'know-1d': {'lesson': L2, 'module': 2}, 'know-1e': {'lesson': L2, 'module': 2},
     'method-1': {'lesson': L2, 'module': 4}, 'method-2': {'lesson': L2, 'module': 3}, 'now-27': {'lesson': L2, 'module': 4},
     'know-2a': {'lesson': L3, 'module': 2}, 'know-2b': {'lesson': L3, 'module': 2}, 'know-2c': {'lesson': L4, 'module': 2},
-    'know-3a': {'lesson': L5, 'module': None}, 'know-3b': {'lesson': L5, 'module': None}, 'know-3c': {'lesson': L5, 'module': None},
-    'method-3': {'lesson': L3, 'module': 3}, 'method-4': {'lesson': L4, 'module': 3}, 'method-5': {'lesson': L5, 'module': None},
-    'now-29': {'lesson': L2, 'module': 4, 'items': {'1': {'lesson': L2, 'module': 4}, '2': {'lesson': L5, 'module': None}}},
+    'know-3a': {'lesson': L5, 'module': 2}, 'know-3b': {'lesson': L5, 'module': 2}, 'know-3c': {'lesson': L5, 'module': 2},
+    'method-3': {'lesson': L3, 'module': 3}, 'method-4': {'lesson': L4, 'module': 3}, 'method-5': {'lesson': L5, 'module': 3},
+    'now-29': {'lesson': L2, 'module': 4, 'items': {'1': {'lesson': L2, 'module': 4}, '2': {'lesson': L5, 'module': 4}}},
     **{f'ex-{n}': {'lesson': L2, 'module': 4 if n in (1, 2) else None} for n in (1, 2, 3, 4, 5, 6)},
     **{f'ex-{n}': {'lesson': L3, 'module': 4} for n in (7, 8, 9, 10, 11, 12, 13, 14, 29, 31)},
     **{f'ex-{n}': {'lesson': L4, 'module': {28: 5, 34: 6, 30: None}.get(n, 4)} for n in (15, 16, 17, 18, 19, 26, 27, 28, 30, 34)},
-    **{f'ex-{n}': {'lesson': L5, 'module': None} for n in (20, 21, 22, 23, 24, 25, 32)},
+    **{f'ex-{n}': {'lesson': L5, 'module': 4 if n in (20, 21, 22, 23, 24) else None} for n in (20, 21, 22, 23, 24, 25, 32)},
     'ex-33': {'lesson': L1, 'module': 4},
     **{f'self-{n}': {'lesson': L2, 'module': None} for n in (1, 2, 3, 4, 9)},
     'self-12': {'lesson': L4, 'module': 4},

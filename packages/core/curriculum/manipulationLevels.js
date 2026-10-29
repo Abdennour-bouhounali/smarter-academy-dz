@@ -294,6 +294,9 @@ export const VISUAL_THEMES = Object.freeze({
   //   mountaintrail  un sentier de forêt de cèdres vu de côté : collines, cèdres, le ruban du sentier en S doux (ou un circuit fermé), des poteaux blancs tous les 1/n et des poteaux
   //                  rouges tous les k blancs, le portail en bois « مدخل الحظيرة », la source « العين », une randonneuse (KidFigure : fille en hijab) ou un randonneur (`trail-odometer`)
   mountaintrail: { kind: 'lengths', shows: 'مسلك جبلي في غابة الأرز: أعمدة بيضاء وحمراء وبوّابة وعين ماء' },
+  // 2AM, unité 2, leçon 9 (2026-10-29) :
+  //   oilpress  معصرة الزيتون التعاونية : deux ou trois réservoirs d'inox sur pieds devant un mur de pierre, un tube de verre gradué sur chacun, l'huile dorée, le trait « 1 » du plein, un niveau laser rouge sur un rail vertical ; Anis (KidFigure, sweat) ou Salma (hijab, tunique, tablier) (`level-laser`)
+  oilpress: { kind: 'levels', shows: 'معصرة الزيتون التعاونية: خزّانات بأنابيب زجاجية مدرّجة وليزر مستوى' },
   // 2AM, unité 2, leçon 8 (2026-10-29) :
   //   classwindow  l'intérieur d'une salle de classe : une grande fenêtre à cadre d'aluminium blanc (ou un mur de 2 × 2 fenêtres, « واجهة المكتبة الزجاجية ») sur la cour et un palmier, un rideau latéral sur un
   //                rail à crans, un store à enrouleur sur un cordon à crans, deux ombres translucides qui s'additionnent là où elles se recouvrent, un écran de projection dans le coin sombre, une élève
@@ -335,13 +338,13 @@ export const VISUAL_THEMES = Object.freeze({
   // 2AM, unité 1, leçon 3 (2026-10-29) :
   //   corkboard  la السبّورة الفلّينية du class : un ruban de papier imprimé porte la chaîne, des agrafes en métal posées par le calcul, des ciseaux, deux poches étiquetées et une planche d'autocollants ; Yasmine (KidFigure, hijab) tient le téléphone (`chain-cutter`)
   corkboard: { kind: 'objects', shows: 'سبّورة فلّين في القسم: شريط ورقي مطبوع، دبابيس ومقصّ وجيوب بطاقات' },
-  // 3AM, unité 2, leçon 2 (2026-10-26) :
-  //   paintshop  la machine à teinter d'un magasin de peinture de quartier : un bec de laiton au-dessus du seau B et une manette, le seau de référence A
-  //              scellé avec son étiquette et sa pastille, deux grandes pastilles de couleur côte à côte et un mesureur à aiguille « أفتح · أغمق »,
   // 2AM, unité 1, leçon 4 (2026-10-29) :
   //   solidarity  l'atelier du نادي التضامن : des étagères de cahiers (piles bleues) et de boîtes de stylos (rouges), un compteur « خرج من المخزن », deux distributeurs à cadran au-dessus d'un tapis qui passe devant
   //               les cartables ouverts, Fatima (KidFigure, hijab) qui remplit cartable par cartable et Ali (sweat à capuche) qui règle les distributeurs (`kit-packer`)
   solidarity: { kind: 'objects', shows: 'ورشة نادي التضامن: حقائب مدرسية، رفوف كراريس وأقلام، موزّعان وحزام ناقل' },
+  // 3AM, unité 2, leçon 2 (2026-10-26) :
+  //   paintshop  la machine à teinter d'un magasin de peinture de quartier : un bec de laiton au-dessus du seau B et une manette, le seau de référence A
+  //              scellé avec son étiquette et sa pastille, deux grandes pastilles de couleur côte à côte et un mesureur à aiguille « أفتح · أغمق »,
   //              un élève (KidFigure) au rouleau devant l'esquisse de la fresque (`shade-match`)
   paintshop: { kind: 'objects', shows: 'آلة مزج الألوان في محلّ الطلاء: دلوان وعلب أبيض ورافعة للأزرق' },
   // 3AM, unité 2, leçon 3 (2026-10-26) :

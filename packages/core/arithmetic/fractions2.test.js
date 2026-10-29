@@ -94,3 +94,28 @@ describe('fractions2 — E3 (jida-kasrayn)', () => {
     expect(F.ofRemainder('1/3', '1/2')).toMatchObject({ n: 2n, d: 6n });
   });
 });
+
+describe('fractions2 — E4 (muqarana-kasrayn)', () => {
+  it('compareCase : les quatre cas de 2AM et le cas de 3AM', () => {
+    expect(F.compareCase('5/8', '7/8')).toBe('sameDen');
+    expect(F.compareCase('3/5', '3/8')).toBe('sameNum');
+    expect(F.compareCase('3/4', '7/12')).toBe('multiple');
+    expect(F.compareCase('9/7', '8/9')).toBe('viaOne');
+    expect(F.compareCase('2/3', '3/5')).toBeNull();
+    expect(F.compareCase('3,2/4', '11,3/20')).toBe('multiple');
+  });
+  it('compareSimple : signe exact, écriture sur le plus grand dénominateur', () => {
+    expect(F.compareSimple('3/4', '7/12')).toMatchObject({ sign: 1, method: 'multiple', rewritten: { D: 12n, p: { n: 9, d: 12 } } });
+    expect(F.compareSimple('5/8', '7/8').sign).toBe(-1);
+    expect(F.compareSimple('2,5/4', '5/8').sign).toBe(0);
+    expect(F.compareSimple('2,5/4', '5,5/8').sign).toBe(-1);
+    expect(F.compareSimple('7/11', '4/3')).toMatchObject({ sign: -1, method: 'viaOne' });
+    expect(() => F.compareSimple('2/3', '3/5')).toThrow();
+  });
+  it('orderSimple et vsOne', () => {
+    expect(F.orderSimple(['2/3', '5/9', '7/9'])).toEqual(['5/9', '2/3', '7/9']);
+    expect(F.orderSimple(['9/13', '15/11', '4/13', '11/13', '12/11'], 'desc')).toEqual(['15/11', '12/11', '11/13', '9/13', '4/13']);
+    expect(() => F.orderSimple(['3/4', '1/3'])).toThrow();
+    expect([F.vsOne('7/9'), F.vsOne('5/5'), F.vsOne('9/8')]).toEqual([-1, 0, 1]);
+  });
+});
