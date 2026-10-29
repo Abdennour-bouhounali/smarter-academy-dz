@@ -292,6 +292,9 @@
       },
       "status": "available",
       "pointPrerequisites": {
+        "P1": [
+          "2am_jida-kasrayn_P1"
+        ],
         "P2": [
           "3am_maqlub-qismat-kasrayn_P1"
         ],

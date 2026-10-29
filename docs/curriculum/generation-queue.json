@@ -332,15 +332,13 @@
       ]
     },
     {
-      "code": "jida-kasrayn",
+      "code": "wadiya-idmajiya-amaliyat-tabiiya-ushriya",
       "grade": "2am",
-      "unit": "kusur-amaliyat",
-      "titleAr": "جداء كسرين",
-      "kind": "lesson",
-      "trigger": "amaliyat-judhur",
-      "via": [
-        "2am.m1.r07"
-      ]
+      "unit": "amaliyat-tabiiya-ushriya",
+      "titleAr": "أدمج تعلّماتي — العمليات على الأعداد الطبيعية والأعداد العشرية",
+      "kind": "synthesis",
+      "trigger": "unité amaliyat-tabiiya-ushriya complète",
+      "via": []
     },
     {
       "code": "muqarana-kasrayn",
@@ -1071,24 +1069,6 @@
       "titleAr": "أدمج تعلّماتي — الهرم و مخروط الدوران",
       "kind": "synthesis",
       "trigger": "unité haram-makhrut complète",
-      "via": []
-    },
-    {
-      "code": "wasf-silsila-hisab",
-      "grade": "2am",
-      "unit": "amaliyat-tabiiya-ushriya",
-      "titleAr": "وصف سلسلة حسابات",
-      "kind": "lesson",
-      "trigger": "wasf-silsila-hisab",
-      "via": []
-    },
-    {
-      "code": "wadiya-idmajiya-amaliyat-tabiiya-ushriya",
-      "grade": "2am",
-      "unit": "amaliyat-tabiiya-ushriya",
-      "titleAr": "أدمج تعلّماتي — العمليات على الأعداد الطبيعية والأعداد العشرية",
-      "kind": "synthesis",
-      "trigger": "unité amaliyat-tabiiya-ushriya complète",
       "via": []
     },
     {
