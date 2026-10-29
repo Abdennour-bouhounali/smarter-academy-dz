@@ -321,17 +321,6 @@
       ]
     },
     {
-      "code": "silsila-bi-aqwas",
-      "grade": "2am",
-      "unit": "amaliyat-tabiiya-ushriya",
-      "titleAr": "سلسلة عمليات تتضمّن أقواسا",
-      "kind": "lesson",
-      "trigger": "amaliyat-judhur",
-      "via": [
-        "2am.m1.r02"
-      ]
-    },
-    {
       "code": "tawzi-darb-jam-tarh",
       "grade": "2am",
       "unit": "amaliyat-tabiiya-ushriya",
@@ -362,17 +351,6 @@
       "trigger": "amaliyat-judhur",
       "via": [
         "2am.m1.r08"
-      ]
-    },
-    {
-      "code": "jam-tarh-kusur",
-      "grade": "2am",
-      "unit": "kusur-amaliyat",
-      "titleAr": "جمع وطرح كسرين",
-      "kind": "lesson",
-      "trigger": "amaliyat-judhur",
-      "via": [
-        "2am.m1.r09"
       ]
     },
     {

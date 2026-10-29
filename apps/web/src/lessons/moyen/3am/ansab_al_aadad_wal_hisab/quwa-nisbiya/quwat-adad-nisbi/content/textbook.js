@@ -67,6 +67,14 @@ export const RECALL_2AM = {
   lesson: 'silsila-bidun-aqwas',
 };
 
+/** « تذكّر — السنة الثانية » (leçon 2AM `silsila-bi-aqwas`, PUBLIÉE : avec un lien) : la barre de fraction groupe le numérateur et le dénominateur, rappelée avant la fraction de l'étape 4. */
+export const RECALL_2AM_AQWAS = {
+  source: addition('prior_year_reminder'),
+  title: 'تذكّر — السنة الثانية',
+  text: 'خطّ الكسر يجمع البسط ويجمع المقام كأنّ كلًّا منهما بين قوسين، فنحسب كلًّا منهما أوّلًا ثم نقسم: $\\frac{20+4}{9-3} = (20+4) \\div (9-3) = 24 \\div 6 = 4$ .',
+  lesson: 'silsila-bi-aqwas',
+};
+
 /** طرائق p. 45 (« قواعد الحساب على قوى عدد نسبي ») et معارف 8 p. 44 (la priorité) — réécrits, autres nombres. */
 export const METHOD = {
   simplify: {

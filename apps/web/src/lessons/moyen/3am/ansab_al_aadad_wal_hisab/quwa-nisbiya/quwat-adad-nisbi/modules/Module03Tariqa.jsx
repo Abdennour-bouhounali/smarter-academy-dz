@@ -6,7 +6,7 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { MethodSteps, TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { METHOD, RECALL_2AM } from '../content/textbook';
+import { METHOD, RECALL_2AM, RECALL_2AM_AQWAS } from '../content/textbook';
 
 /**
  * Module 3 — طريقة (sans labo : le module s'ouvre sur sa PREMIÈRE question, §4quater) : simplifier une expression à deux bases
@@ -14,6 +14,8 @@ import { METHOD, RECALL_2AM } from '../content/textbook';
  * −3² / (−3)², et une fraction de دوري الآن ② (réécrite). La méthode et la brique viennent APRÈS la réponse. LP : P3, P4.
  * Étape 2 : après la réponse, un « تذكّر — السنة الثانية » (leçon 2AM `silsila-bidun-aqwas`, publiée 2026-10-29 : avec son lien)
  * rappelle l'ordre des opérations avant la brique `awlawiya-quwa` — rappelé, jamais reconstruit.
+ * Étape 4 : après la réponse, un second « تذكّر — السنة الثانية » (leçon 2AM `silsila-bi-aqwas`, publiée 2026-10-29 : avec son lien)
+ * rappelle que la barre de fraction groupe le numérateur et le dénominateur.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -22,6 +24,7 @@ export default function Module03Tariqa() {
   const [read, setRead] = useState(false);
   const answered = (k) => () => setQ((s) => ({ ...s, [k]: true }));
   const year2 = getLessonPath(RECALL_2AM.lesson);
+  const year2Aqwas = getLessonPath(RECALL_2AM_AQWAS.lesson);
   return (
     <ContentModule
       objectives={['كيف أبسّط عبارة فيها قوى لأساسين؟', 'بأيّ ترتيب أحسب سلسلة فيها قوى؟']}
@@ -93,6 +96,11 @@ export default function Module03Tariqa() {
                 explain={<MathText>{'البسط: $4^2 - 2 \\times 5 = 16 - 10 = 6$ ثم $6^2 = 36$ . المقام: $11 - 3^2 = 11 - 9 = 2$ . إذن $\\frac{36}{2} = 18$ . ($36$ تنسى المقام، و $3$ تنسى القوة.)'}</MathText>}
                 onAnswered={answered('d')}
               />
+              {q.d && (
+                <TextbookBox kind="remark" title={RECALL_2AM_AQWAS.title} text={RECALL_2AM_AQWAS.text} source={RECALL_2AM_AQWAS.source} compact>
+                  {year2Aqwas && <Link to={year2Aqwas} className="inline-flex min-h-[44px] items-center text-sm font-bold text-teal-700 underline underline-offset-4" data-recall-link>درس « سلسلة عمليات تتضمّن أقواسا » (السنة الثانية)</Link>}
+                </TextbookBox>
+              )}
             </div>
           ),
         },

@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **116** leçons publiées · **154** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **118** leçons publiées · **152** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -875,14 +875,14 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | item | المورد المعرفي (نص البرنامج) | leçon d’accueil | repart de |
 |---|---|---|---|
 | `2am.m1.r01` | إجراء سلسلة عمليات. | `silsila-bidun-aqwas` | `1am.m1.r05` |
-| `2am.m1.r02` | استعمال الأقواس. | `silsila-bi-aqwas` _(prévue)_ | `2am.m1.r01` |
+| `2am.m1.r02` | استعمال الأقواس. | `silsila-bi-aqwas` | `2am.m1.r01` |
 | `2am.m1.r03` | معرفة خاصة توزيع الضرب بالنسبة إلى الجمع والطرح واستعمالها. | `tawzi-darb-jam-tarh` _(prévue)_ | `2am.m1.r02` |
 | `2am.m1.r04` | تعيين حاصل وباقي القسمة الإقليدية لعدد على عدد غير معدوم. | `qisma-iqlidiya-hasr` | يمدّد `1am.m3.r01` |
 | `2am.m1.r05` | تعيين قيمة مقرّبة بالزيادة (أو بالنقصان) لحاصل قسمة عشري. | `kasr-hasil-qisma` | يمدّد `1am.m3.r04` |
 | `2am.m1.r06` | حصر حاصل القسمة. | `qisma-iqlidiya-hasr` | `2am.m1.r05` |
 | `2am.m1.r07` | ضرب كسرين. | `jida-kasrayn` _(prévue)_ | يمدّد `1am.m5.r03` |
 | `2am.m1.r08` | مقارنة كسرين لهما نفس المقام أو مقام أحدهما مضاعف لمقام الآخر. | `muqarana-kasrayn` _(prévue)_ | `1am.m5.r01`، `1am.m5.r02` |
-| `2am.m1.r09` | جمع أو طرح كسرين لهما نفس المقام أو مقام أحدهما مضاعف لمقام الآخر. | `jam-tarh-kusur` _(prévue)_ | `2am.m1.r08`، يمدّد `1am.m5.r03` |
+| `2am.m1.r09` | جمع أو طرح كسرين لهما نفس المقام أو مقام أحدهما مضاعف لمقام الآخر. | `jam-tarh-kusur` | `2am.m1.r08`، يمدّد `1am.m5.r03` |
 
 #### المقطع 2 — إنشاء أشكال هندسية بسيطة – التناظر المركزي (`2am.m2`, 4 أسابيع)
 
@@ -1224,13 +1224,13 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | # | leçon | statut | items |
 |---:|---|---|---|
 | 1 | `silsila-bidun-aqwas` — سلسلة عمليات دون أقواس وأولوية العمليات | publiée | `2am.m1.r01` |
-| 2 | `silsila-bi-aqwas` — سلسلة عمليات تتضمّن أقواسا | prévue | `2am.m1.r01` `2am.m1.r02` |
+| 2 | `silsila-bi-aqwas` — سلسلة عمليات تتضمّن أقواسا | publiée | `2am.m1.r01` `2am.m1.r02` |
 | 3 | `wasf-silsila-hisab` — وصف سلسلة حسابات | prévue | `2am.m1.r01` `2am.m1.r02` |
 | 4 | `tawzi-darb-jam-tarh` — توزيع الضرب على الجمع والطرح | prévue | `2am.m1.r03` |
 | 5 | `wadiya-idmajiya-amaliyat-tabiiya-ushriya` — أدمج تعلّماتي — العمليات على الأعداد الطبيعية والأعداد العشرية | synthèse | — |
 | 6 | `qisma-iqlidiya-hasr` — القسمة الإقليدية وحصر حاصل القسمة | publiée | `2am.m1.r04` `2am.m1.r06` |
 | 7 | `kasr-hasil-qisma` — الكسر: نسبة وحاصل قسمة وقيم مقرّبة | publiée | `2am.m1.r05` `2am.m1.r06` |
-| 8 | `jam-tarh-kusur` — جمع وطرح كسرين | prévue | `2am.m1.r09` |
+| 8 | `jam-tarh-kusur` — جمع وطرح كسرين | publiée | `2am.m1.r09` |
 | 9 | `jida-kasrayn` — جداء كسرين | prévue | `2am.m1.r07` |
 | 10 | `muqarana-kasrayn` — مقارنة كسرين | prévue | `2am.m1.r08` |
 | 11 | `wadiya-idmajiya-kusur-amaliyat` — أدمج تعلّماتي — الكسور والعمليات عليها | synthèse | — |

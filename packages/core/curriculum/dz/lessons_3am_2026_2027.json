@@ -383,8 +383,13 @@
         "اختيار أصغر مضاعف مشترك للمقامين (أوّل مضاعف للمقام الأكبر يقبل القسمة على المقام الآخر) لتبسيط الحساب"
       ],
       "pointPrerequisites": {
+        "P1": [
+          "2am_jam-tarh-kusur_P2"
+        ],
         "P2": [
-          "3am_jam-tarh-kasrayn_P1"
+          "3am_jam-tarh-kasrayn_P1",
+          "2am_jam-tarh-kusur_P1",
+          "2am_jam-tarh-kusur_P3"
         ],
         "P3": [
           "3am_jam-tarh-kasrayn_P1"
@@ -792,7 +797,9 @@
         ],
         "P4": [
           "3am_quwat-adad-nisbi_P1",
-          "2am_silsila-bidun-aqwas_P2"
+          "2am_silsila-bidun-aqwas_P2",
+          "2am_silsila-bi-aqwas_P1",
+          "2am_silsila-bi-aqwas_P3"
         ]
       },
       "programmeItems": [
