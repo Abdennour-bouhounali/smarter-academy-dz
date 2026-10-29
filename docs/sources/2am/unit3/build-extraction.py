@@ -12,7 +12,8 @@ L'unité est générée LEÇON PAR LEÇON (file de génération, Phase A) ; les 
 sont EN ATTENTE (scripts/check-textbook-coverage.mjs).
 
 FRONTIÈRES DES LEÇONS (à respecter par chaque lead qui génère la suite) :
-  talim-mustaqim-mudarraj-2 (2am.m4.r01)  CE QUI EST DEVANT : le nombre relatif (signe + distance à zéro), deux nombres
+  talim-mustaqim-mudarraj-2 (2am.m4.r01) — GÉNÉRÉE le 2026-10-29 (lab `corniche-ruler`) ; destinations : act-1 a-b, ex-1…11 → module 4, know-1a → 2, prep 1-4 → 0, self-4 → 8.
+        CE QUI EST DEVANT : le nombre relatif (signe + distance à zéro), deux nombres
         opposés, la LECTURE d'une abscisse et le placement d'un point sur une droite graduée, le choix de l'origine et de
         l'unité (act-1 a, b ; know-1a ; ex-1…11). NON générée : « أستعدّ » de muqarana-nisbiya la RAPPELLE, ne la reconstruit pas.
   muqarana-nisbiya (2am.m4.r02, r03) — CETTE LEÇON : comparer deux relatifs (règles négatif/négatif, positif/positif, signes
@@ -373,7 +374,7 @@ DEST = {
         '5-6-7': {'lesson': L2, 'module': 0},
         '1-2-3-4': {'lesson': L1, 'module': 0},
         '8-9-10-11-12-13': {'lesson': L3, 'module': 0}}},
-    'act-1': {'lesson': L1, 'module': 1, 'items': {'a-b': {'lesson': L1, 'module': 1}, 'c': {'lesson': L3, 'module': 1}}},
+    'act-1': {'lesson': L1, 'module': 4, 'items': {'a-b': {'lesson': L1, 'module': 4}, 'c': {'lesson': L3, 'module': 1}}},   # a-b : l'entrée est le labo de la plateforme ; la frise du livre devient une application (2026-10-29)
     'act-2': {'lesson': L2, 'module': 4},
     'act-3': {'lesson': L4, 'module': 1}, 'act-4': {'lesson': L4, 'module': 1},
     'act-5': {'lesson': L5, 'module': 1}, 'act-6': {'lesson': L6, 'module': 1},
@@ -391,7 +392,7 @@ DEST = {
     'ex-35': {'lesson': L5, 'module': 4},
     **{f'ex-{n}': {'lesson': L6, 'module': 4} for n in (36, 37)},
     'self-1': {'lesson': L3, 'module': 8}, 'self-2': {'lesson': L3, 'module': 8}, 'self-3': {'lesson': L3, 'module': 8},
-    'self-4': {'lesson': L4, 'module': 8}, 'self-5': {'lesson': L2, 'module': 8}, 'self-6': {'lesson': L2, 'module': 8},
+    'self-4': {'lesson': L1, 'module': 8}, 'self-5': {'lesson': L2, 'module': 8}, 'self-6': {'lesson': L2, 'module': 8},
     'self-7': {'lesson': L4, 'module': 8}, 'self-8': {'lesson': L4, 'module': 8}, 'self-9': {'lesson': L5, 'module': 8},
     'self-10': {'lesson': L6, 'module': 8}, 'self-11': {'lesson': L6, 'module': 8},
     'deep-38': {'lesson': L4, 'module': 4},
@@ -404,6 +405,8 @@ DEST = {
 }
 
 DISCREPANCIES = [
+    {'elementId': 'ex-2', 'kind': 'scope', 'text': 'Le texte envoie l’élève à un moteur de recherche (température du corps, congélation, ébullition, zéro absolu). Hors périmètre (indépendance du livre) : la plateforme DONNE les valeurs (37 ; 0 ; 100 ; −273,15 °C) dans talim-mustaqim-mudarraj-2.'},
+    {'elementId': 'ex-10', 'kind': 'scope', 'text': 'Le point b parle de points dont les abscisses ne sont pas des nombres relatifs (fractions) : gardé seulement comme « 1/7 n’est pas un relatif de cette année » (« أستعدّ » item 2) ; jamais une fraction placée.'},
     {'elementId': 'know-1b', 'kind': 'misprint', 'text': 'Le premier exemple imprime « −2,5 < −4 » à côté de « la point F avant la point E » : c’est −4 < −2,5 (F est à gauche de E). Les deux autres exemples (2,5 < 5 ; −2,5 < 2,5) sont corrects. La leçon écrit −4 < −2,5.'},
     {'elementId': 'ex-20', 'kind': 'misprint', 'text': 'La troisième ligne est imprimée « −4,3 < … < −4,5 » (bornes dans le mauvais ordre : −4,3 > −4,5). La leçon lit −4,5 < … < −4,3.'},
     {'elementId': 'ex-29', 'kind': 'reading', 'text': 'La ligne C contient « (118) » : lire (+18) sur le scan flou.'},

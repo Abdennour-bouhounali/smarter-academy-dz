@@ -1855,6 +1855,16 @@
  ],
  "discrepancies": [
   {
+   "elementId": "ex-2",
+   "kind": "scope",
+   "text": "Le texte envoie l’élève à un moteur de recherche (température du corps, congélation, ébullition, zéro absolu). Hors périmètre (indépendance du livre) : la plateforme DONNE les valeurs (37 ; 0 ; 100 ; −273,15 °C) dans talim-mustaqim-mudarraj-2."
+  },
+  {
+   "elementId": "ex-10",
+   "kind": "scope",
+   "text": "Le point b parle de points dont les abscisses ne sont pas des nombres relatifs (fractions) : gardé seulement comme « 1/7 n’est pas un relatif de cette année » (« أستعدّ » item 2) ; jamais une fraction placée."
+  },
+  {
    "elementId": "know-1b",
    "kind": "misprint",
    "text": "Le premier exemple imprime « −2,5 < −4 » à côté de « la point F avant la point E » : c’est −4 < −2,5 (F est à gauche de E). Les deux autres exemples (2,5 < 5 ; −2,5 < 2,5) sont corrects. La leçon écrit −4 < −2,5."
@@ -1919,11 +1929,11 @@
   },
   "act-1": {
    "lesson": "talim-mustaqim-mudarraj-2",
-   "module": 1,
+   "module": 4,
    "items": {
     "a-b": {
      "lesson": "talim-mustaqim-mudarraj-2",
-     "module": 1
+     "module": 4
     },
     "c": {
      "lesson": "talim-nuqta-mustawi",
@@ -2182,7 +2192,7 @@
    "module": 8
   },
   "self-4": {
-   "lesson": "jam-tarh-nisbiya",
+   "lesson": "talim-mustaqim-mudarraj-2",
    "module": 8
   },
   "self-5": {
