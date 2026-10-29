@@ -133,3 +133,38 @@ export function parseFree(raw, limit = 990n) {
     return abs(h) <= limit ? text(h) : null;
   } catch { return null; }
 }
+
+/* ── `corniche-ruler` (2AM, درس « التعليم على مستقيم مدرّج », 2026-10-29) : origine et valeur d'une graduation ── */
+
+/** Le nombre opposé (centièmes). */
+export const opposite = (a) => -parse(a);
+
+/** L'abscisse (centièmes) d'un point de position `pos` : la distance signée à l'origine, dans l'unité du monde. Positions et pas en centièmes. */
+export const abscissaOf = (pos, origin) => parse(pos) - parse(origin);
+/** Le point de position monde pour l'abscisse `x` quand l'origine est `origin`. */
+export const positionOf = (x, origin) => parse(x) + parse(origin);
+
+/** Le point d'abscisse x tombe-t-il sur une graduation (multiple entier du pas) ? */
+export const onGraduation = (x, step) => parse(x) % parse(step) === 0n;
+
+/**
+ * `boardFit(values, step, half = 6)` : la planche a `half` graduations de chaque côté du zéro. `off` : valeurs hors de ±half graduations ;
+ * `between` : valeurs qui ne sont pas sur une graduation ; `fits` : aucune hors de la planche.
+ */
+export function boardFit(values, step, half = 6) {
+  const s = parse(step);
+  const vs = values.map(parse);
+  const off = vs.filter((v) => abs(v) > BigInt(half) * s);
+  const between = vs.filter((v) => v % s !== 0n);
+  return { fits: off.length === 0, off, between };
+}
+
+/** La plus petite valeur de `steps` qui garde toutes les valeurs sur la planche ET sur des graduations ; sinon null. */
+export function smallestStep(values, steps, half = 6) {
+  const sorted = steps.map(parse).sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+  for (const s of sorted) {
+    const r = boardFit(values, s, half);
+    if (r.fits && r.between.length === 0) return s;
+  }
+  return null;
+}

@@ -299,17 +299,6 @@
       ]
     },
     {
-      "code": "talim-mustaqim-mudarraj-2",
-      "grade": "2am",
-      "unit": "adad-nisbiya-2",
-      "titleAr": "التعليم على مستقيم مدرّج",
-      "kind": "lesson",
-      "trigger": "jidhr-tarbii",
-      "via": [
-        "2am.m4.r01"
-      ]
-    },
-    {
       "code": "jam-tarh-nisbiya",
       "grade": "2am",
       "unit": "adad-nisbiya-2",
@@ -383,6 +372,15 @@
       "via": [
         "2am.m4.r09"
       ]
+    },
+    {
+      "code": "wadiya-idmajiya-mafhum-muadala",
+      "grade": "2am",
+      "unit": "mafhum-muadala",
+      "titleAr": "أدمج تعلّماتي — مفهوم معادلة",
+      "kind": "synthesis",
+      "trigger": "unité mafhum-muadala complète",
+      "via": []
     },
     {
       "code": "talim-fi-mustawi",
@@ -1400,24 +1398,6 @@
       "titleAr": "أدمج تعلّماتي — التناظر المحوري",
       "kind": "synthesis",
       "trigger": "unité tanazur-mihwari complète",
-      "via": []
-    },
-    {
-      "code": "ibara-harfiya-intaj",
-      "grade": "2am",
-      "unit": "mafhum-muadala",
-      "titleAr": "إنتاج عبارة حرفية واستعمالها",
-      "kind": "lesson",
-      "trigger": "isolée",
-      "via": []
-    },
-    {
-      "code": "wadiya-idmajiya-mafhum-muadala",
-      "grade": "2am",
-      "unit": "mafhum-muadala",
-      "titleAr": "أدمج تعلّماتي — مفهوم معادلة",
-      "kind": "synthesis",
-      "trigger": "unité mafhum-muadala complète",
       "via": []
     },
     {

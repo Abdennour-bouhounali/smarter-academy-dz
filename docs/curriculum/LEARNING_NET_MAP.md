@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **124** leçons publiées · **146** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **126** leçons publiées · **144** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -911,7 +911,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 
 | item | المورد المعرفي (نص البرنامج) | leçon d’accueil | repart de |
 |---|---|---|---|
-| `2am.m4.r01` | قراءة فاصلة نقطة معلومة أو وضع نقطة ذات فاصلة معلومة على مستقيم مدرّج. | `talim-mustaqim-mudarraj-2` _(prévue)_ | يرسّخ `1am.m5.r06` |
+| `2am.m4.r01` | قراءة فاصلة نقطة معلومة أو وضع نقطة ذات فاصلة معلومة على مستقيم مدرّج. | `talim-mustaqim-mudarraj-2` | يرسّخ `1am.m5.r06` |
 | `2am.m4.r02` | مقارنة عددين نسبيين. | `muqarana-nisbiya` | `2am.m4.r01` |
 | `2am.m4.r03` | ترتيب أعداد نسبية تصاعديا أو تنازليا. | `muqarana-nisbiya` | `2am.m4.r02` |
 | `2am.m4.r04` | قراءة إحداثيي نقطة معلومة أو وضع نقطة ذات إحداثيين معلومين في مستوٍ منسوب إلى معلم متعامد ومتجانس. | `talim-nuqta-mustawi` _(prévue)_ | يرسّخ `1am.m5.r07` |
@@ -1234,14 +1234,14 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 9 | `jida-kasrayn` — جداء كسرين | publiée | `2am.m1.r07` |
 | 10 | `muqarana-kasrayn` — مقارنة كسرين | publiée | `2am.m1.r08` |
 | 11 | `wadiya-idmajiya-kusur-amaliyat` — أدمج تعلّماتي — الكسور والعمليات عليها | synthèse | — |
-| 12 | `talim-mustaqim-mudarraj-2` — التعليم على مستقيم مدرّج | prévue | `2am.m4.r01` |
+| 12 | `talim-mustaqim-mudarraj-2` — التعليم على مستقيم مدرّج | publiée | `2am.m4.r01` |
 | 13 | `muqarana-nisbiya` — مقارنة وترتيب أعداد نسبية | publiée | `2am.m4.r02` `2am.m4.r03` |
 | 14 | `talim-nuqta-mustawi` — تعليم نقطة في المستوي | prévue | `2am.m4.r04` |
 | 15 | `jam-tarh-nisbiya` — جمع وطرح عددين نسبيين | prévue | `2am.m4.r05` |
 | 16 | `masafa-nuqtatayn` — المسافة بين نقطتين على مستقيم مدرّج | prévue | `2am.m4.r07` |
 | 17 | `majmu-jabri` — حساب مجموع جبري | prévue | `2am.m4.r06` |
 | 18 | `wadiya-idmajiya-adad-nisbiya-2` — أدمج تعلّماتي — الأعداد النسبية | synthèse | — |
-| 19 | `ibara-harfiya-intaj` — إنتاج عبارة حرفية واستعمالها | prévue | — |
+| 19 | `ibara-harfiya-intaj` — إنتاج عبارة حرفية واستعمالها | publiée | — |
 | 20 | `ikhtibar-musawat-mutabayina` — اختبار صحة مساواة أو متباينة | prévue | `2am.m4.r09` |
 | 21 | `hall-mushkil-muadala` — حلّ مشكل باستعمال معادلة | prévue | `2am.m4.r08` |
 | 22 | `wadiya-idmajiya-mafhum-muadala` — أدمج تعلّماتي — مفهوم معادلة | synthèse | — |

@@ -86,6 +86,13 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(beginner.numbers.tasks.some((tk) => tk.predict), type).toBe(false);
         expect(Math.max(...advanced.numbers.tasks.map((tk) => tk.tanks.length)), type).toBeGreaterThan(Math.max(...beginner.numbers.tasks.map((tk) => tk.tanks.length)));
       }
+      // Unité 4 de 2AM, leçon 1 : `wax-cells` se mesure par la PRÉDICTION (compteur caché, متقدم seul) et par la BANDE de deux rangs et les DEUX LETTRES (متقدم seul).
+      else if (type === 'wax-cells') {
+        expect(advanced.numbers.tasks.every((tk) => tk.predict), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.predict), type).toBe(false);
+        expect(advanced.numbers.tasks.some((tk) => tk.strip) && advanced.numbers.tasks.some((tk) => tk.kind === 'two'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.strip || tk.kind === 'two'), type).toBe(false);
+      }
       // Unité 2 de 2AM, leçon 8 : `window-blinds` se mesure par la PRÉDICTION écrite avant de tirer (متقدم seul) et par les FACTEURS > 1 (متقدم seul).
       else if (type === 'window-blinds') {
         const val = (f) => { const [n, d] = f.split('/').map(Number); return n / d; };
@@ -110,6 +117,13 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
       }
       // Unité 5 de 3AM : `term-ferry` se mesure par le NOMBRE DE TÂCHES (2 équations, puis 3 dont un coefficient négatif et un grand nombre).
       else if (type === 'term-ferry') expect(advanced.numbers.tasks.length, type).toBeGreaterThan(beginner.numbers.tasks.length);
+      // Unité 3 de 2AM, leçon 1 : `corniche-ruler` se mesure par le GESTE (مبتدئ : l'origine — lire, déplacer, placer ; متقدم : la graduation, tâches `fit` seules) et par les décimaux.
+      else if (type === 'corniche-ruler') {
+        expect(advanced.numbers.tasks.every((tk) => tk.kind === 'fit'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.kind === 'fit'), type).toBe(false);
+        expect(beginner.numbers.tasks.some((tk) => tk.kind === 'move') && beginner.numbers.tasks.some((tk) => tk.kind === 'opp'), type).toBe(true);
+        expect(advanced.numbers.tasks.some((tk) => tk.marks.some((m) => m.x.includes(','))), type).toBe(true);
+      }
       // Unité 3 de 2AM : `zero-probe` se mesure par la FINESSE du pas (1 puis 0,1) et le nombre de décimales des nombres à juger.
       else if (type === 'zero-probe') {
         const decimals = (n) => Math.max(...n.tasks.flatMap((t) => [t.a, t.lo, t.hi].filter(Boolean)).map((v) => (String(v).split(',')[1] ?? '').length));

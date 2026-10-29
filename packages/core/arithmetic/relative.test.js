@@ -138,3 +138,33 @@ describe('relative — juger les tâches du labo', () => {
     expect(() => R.judge({ kind: 'beat', a: '1', want: 'equal' }, 'below', 1)).toThrow();
   });
 });
+
+describe('corniche-ruler : opposé, abscisse, planche', () => {
+  it('opposite / abscissaOf / positionOf', () => {
+    expect(R.opposite('-2,5')).toBe(250n);
+    expect(R.opposite(0)).toBe(0n);
+    expect(R.abscissaOf('30', '0')).toBe(3000n);
+    expect(R.abscissaOf('30', '-20')).toBe(5000n);
+    expect(R.positionOf('-30', '-10')).toBe(-4000n);
+  });
+  it('boardFit / smallestStep : les trois tâches متقدم', () => {
+    const S = ['0,1', '0,5', '1', '2', '5', '10', '20', '25', '50', '100'];
+    expect(R.smallestStep(['-50', '75', '150'], S)).toBe(2500n);
+    expect(R.smallestStep(['0,3', '-0,5', '-0,1', '0,6'], S)).toBe(10n);
+    expect(R.smallestStep(['-300', '400', '600'], S)).toBe(10000n);
+    expect(R.boardFit(['-50', '75', '150'], '20').off).toEqual([15000n]);
+    expect(R.boardFit(['0,5'], '0,3').between).toEqual([50n]);
+    expect(R.smallestStep(['1000'], ['1'])).toBeNull();
+  });
+  it('balayage : le plus petit pas convient et le précédent ne convient pas', () => {
+    const S = ['1', '2', '5', '10', '25', '100'];
+    for (let a = -600; a <= 600; a += 5) {
+      const vs = [String(a), '35'];
+      const got = R.smallestStep(vs, S);
+      if (got === null) continue;
+      const ok = (s) => { const r = R.boardFit(vs, s); return r.fits && r.between.length === 0; };
+      expect(ok(got)).toBe(true);
+      for (const s of S.map(R.parse)) if (s < got) expect(ok(s)).toBe(false);
+    }
+  });
+});

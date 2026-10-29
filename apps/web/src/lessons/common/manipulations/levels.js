@@ -867,6 +867,22 @@ export const LEVELS = Object.freeze({
       { id: 'a4', curtain: '2/1', blind: '3/5', W: 2, H: 1, predict: true },
     ] }, ...T('method-4') },
   },
+  // LE NOMBRE DE CELLULES SOUS LA MAIN (wax-cells, thème apiary, 2AM unité 4, leçon « إنتاج عبارة حرفية واستعمالها », 2026-10-29) : un rang de cellules hexagonales en tiges de cire (deux cellules voisines partagent une tige) ; une tâche est
+  // `{ id, kind: 'build' | 'rule' | 'far' | 'compare' | 'two', targets, strip?, predict?, far?, pair? }`. مبتدئ (plateforme) : w1 construire 1, 2, 3 (6, 11, 16), w2 la règle 5n + 1, w3 la valeur de 40 cellules (201).
+  // متقدم (plateforme, le compteur est CACHÉ jusqu'à ce que le nombre soit tapé) : a1 la bande de deux rangs (8n + 3), a2 deux écritures du même décompte, a3 deux lettres (5n + 1 + 8m + 3 ; n = 6, m = 4 : 66).
+  // Le test des niveaux mesure la paire par la PRÉDICTION (متقدم seul) et par la bande et les DEUX LETTRES (متقدم seul).
+  'wax-cells': {
+    beginner: { numbers: { tasks: [
+      { id: 'w1', kind: 'build', targets: [1, 2, 3] },
+      { id: 'w2', kind: 'rule', targets: [1, 2, 3, 4] },
+      { id: 'w3', kind: 'far', targets: [1, 2, 3, 4], far: 40 },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', kind: 'rule', strip: true, predict: true, targets: [1, 2, 3] },
+      { id: 'a2', kind: 'compare', predict: true, targets: [1, 2, 3, 4] },
+      { id: 'a3', kind: 'two', predict: true, targets: [], pair: [6, 4] },
+    ] }, ...T('method-2') },
+  },
   // LE SIGNE D'UN TERME SOUS LA MAIN (term-ferry, thème river) : l'équation a une solution CACHÉE ; la main porte chaque caisse (terme) d'une rive à
   // l'autre en choisissant son signe, puis le diviseur. مبتدئ (plateforme) : 3x + 2 = x + 8 (x = 3) puis 4x − 3 = 2x + 7 (x = 5), x se rassemble à gauche.
   // متقدم (طريقة p. 77) : 9x + 1 = 5x − 7 (x = −2), puis −2x + 5 = 3x − 10 (un coefficient NÉGATIF : on divise par −5), puis 7x − 190 = 6x + 110 (x = 300).
@@ -952,6 +968,24 @@ export const LEVELS = Object.freeze({
       { kind: 'between', lo: '-4,5', hi: '-4,3', side: null },
       { kind: 'beat', a: '1,2', side: null, want: 'lower', both: true },
       { kind: 'between', lo: '-0,4', hi: '-0,2', side: null },
+    ] }, ...T('method-1') },
+  },
+  // L'ORIGINE ET LA GRADUATION SOUS LA MAIN (corniche-ruler, thème corniche, 2AM unité 3, leçon 1) : une planche graduée sous des repères du front de mer ;
+  // l'abscisse d'un repère est une SORTIE. مبتدئ (plateforme, graduation 10 m) : la main tient l'ORIGINE (le drapeau « 0 ») — b1 écrire +30 et −20 sous la fontaine, b2 amener le « 0 »
+  // sous le banc et récrire (+50), b3 poser le « 0 » pour que le lampadaire et le palmier soient opposés (−10), b4 un arrêt entre deux graduations (−35). متقدم (method : choisir
+  // la graduation) : la main tient la VALEUR D'UNE GRADUATION (levier à crans) sous une origine fixe, les nombres voilés jusqu'à la fixer — a1 −50 ; 75 ; 150 (25), a2 0,3 ; −0,5 ; −0,1 ; 0,6 (0,1),
+  // a3 −300 ; 400 ; 600 (100). Le test des niveaux mesure la paire par le geste (origine contre graduation) et par la finesse des nombres.
+  'corniche-ruler': {
+    beginner: { numbers: { tasks: [
+      { id: 'b1', kind: 'read', pin: '0', ask: ['kiosk', 'bench'] },
+      { id: 'b2', kind: 'move', pin: '0', target: '-20', ask: ['kiosk'] },
+      { id: 'b3', kind: 'opp', pin: '0', pair: ['lamp', 'palm'] },
+      { id: 'b4', kind: 'read', pin: '0', ask: ['bus'] },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', kind: 'fit', marks: [{ id: 'A', x: '-50' }, { id: 'B', x: '75' }, { id: 'C', x: '150' }] },
+      { id: 'a2', kind: 'fit', marks: [{ id: 'A', x: '0,3' }, { id: 'B', x: '-0,5' }, { id: 'C', x: '-0,1' }, { id: 'D', x: '0,6' }] },
+      { id: 'a3', kind: 'fit', marks: [{ id: 'A', x: '-300' }, { id: 'B', x: '400' }, { id: 'C', x: '600' }] },
     ] }, ...T('method-1') },
   },
   // ── 3AM, unité 6 « التناسبية » (2026-10-21) ──

@@ -769,6 +769,14 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'لمقارنة كسرين: إن كان لهما نفس المقام فأكبرهما ما له أكبر بسط، وإن كان لهما نفس البسط فأكبرهما ما له أصغر مقام، وإن كان مقام أحدهما مضاعفًا لمقام الآخر كتبنا الكسرين بنفس المقام ثم قارنّا البسطين، ونقارن كسرًا بالعدد $1$ بمقارنة بسطه بمقامه',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 2AM, unité 3 « الأعداد النسبية », leçon 1 « التعليم على مستقيم مدرّج » (2026-10-29) — l'abscisse dépend de l'origine et de la valeur d'une graduation.
+  'corniche-ruler': {
+    // L'ORIGINE ET LA GRADUATION SOUS LA MAIN : une planche de 13 graduations est fixée sous les repères du front de mer ; le drapeau « 0 » se plante sous un repère (مبتدئ) et un levier à crans règle la valeur
+    // d'une graduation (متقدم). L'abscisse d'un repère est une SORTIE : elle change quand l'origine bouge alors que le repère n'a pas bougé, deux repères à la même distance de part et d'autre sont opposés,
+    // et une graduation trop petite jette un point hors de la planche, trop grande le laisse entre deux graduations. Chaque dépôt, lecture et touche est un essai jugé exactement : MANUEL (§6bis).
+    shows: 'فاصلة نقطة هي موضعها مرئيًا من المبدأ: نعدّ التدريجات من المبدأ، يمينًا موجبة ويسارًا سالبة، ونضرب عددها في قيمة التدريجة الواحدة ؛ تتغيّر الفاصلة إذا تغيّر المبدأ، والعددان المتعاكسان لهما المسافة نفسها إلى الصفر وإشارتان مختلفتان، ونختار تدريجة تُبقي كل النقاط داخل المستقيم وعلى تدريجات',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 2AM, unité 2 « الكسور والعمليات عليها », leçon 8 « جداء كسرين » (2026-10-29) — les deux facteurs d'un produit de fractions, tenus par deux tirages perpendiculaires sur une fenêtre.
   'window-blinds': {
     // LES DEUX FACTEURS SOUS LA MAIN : la main tire DEUX couvertures perpendiculaires sur une fenêtre — le rideau latéral (largeur a/b, il se colle aux crans de son rail) et le store à enrouleur (hauteur c/d,
@@ -953,6 +961,15 @@ export const MANIPULATION_TYPES = Object.freeze({
     // tapis distribue UN PAR CARTABLE. Un cartable manquant, trop plein ou inégal se voit ; les deux compteurs ne s'allument ensemble que si tous les cartables sont prêts (n = k × a et m = k × b). Dans une différence une benne reçoit
     // les cahiers abîmés ; lue à l'envers (distributeurs verrouillés), la main règle le nombre de cartables et le facteur commun sort ; en متقدم le total est prédit, 48 s'écrit 50 − 2, les rubans sont en mètres. `kit-packer` n'énonce jamais la règle.
     shows: 'ضرب عدد في مجموع أو فرق هو ضرب هذا العدد في كلّ حدّ ثم الجمع أو الطرح: k × (a + b) = k × a + k × b و k × (a − b) = k × a − k × b، ومنه نحلّل بإخراج العامل المشترك ونحسب ذهنيًا',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 4 « مفهوم معادلة », leçon 1 « إنتاج عبارة حرفية واستعمالها » (2026-10-29) — le nombre de cellules d'un rang, puis la règle écrite avec une lettre.
+  'wax-cells': {
+    // LE NOMBRE n SOUS LA MAIN : un rang de cellules hexagonales en tiges de cire, deux cellules voisines PARTAGENT une tige. La main glisse des cellules du plateau au bout du rang (elle les reprend aussi), lit le compteur de tiges (le DESSIN,
+    // un décompte d'arêtes), remplit un tableau n / tiges, puis ÉCRIT la règle avec la lettre n : elle est jugée sur CHAQUE rang construit ; les modèles faux (6n : tiges partagées comptées deux fois ; 5n : la première oubliée ; 5n + 6) sont refusés et
+    // dessinés (tiges qui clignotent, première tige en pointillé). Le cadre ne tient que 8 cellules : la valeur de 40 cellules se CALCULE. مبتدئ : un rang, le compteur visible ; متقدم : le compteur est caché jusqu'à ce que le nombre soit tapé,
+    // une bande de deux rangs décalés (8n + 3), deux écritures du même décompte (observation), puis deux lettres (un rang de n cellules et une bande de m colonnes). « جرّب أعدادك » : toujours ouvert.
+    shows: 'نكتب عدد الأعواد لصفّ من $n$ خلية بعبارة حرفية: الخلية الأولى تحتاج $6$ أعواد وكلّ خلية بعدها تضيف $5$ لأنّها تشترك في عود مع جارتها، أي $5\\times n+1$ أو $5n+1$ ؛ ثم نعوّض الحرف بقيمة فنجد مثلًا $5\\times 40+1=201$',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
 });

@@ -5,6 +5,10 @@
   ],
   "defaultMinPerLevel": 3,
   "lessons": {
+    "ibara-harfiya-intaj": {
+      "minPerLevel": 10,
+      "source": "السنة الثانية متوسط، الوحدة 4 «مفهوم المعادلة» — الدرس «إنتاج عبارة حرفية واستعمالها» (الكتاب ص 56، 58، 59، 62، 63، 65، 66: docs/sources/2am/unit4/extraction.json؛ خطّة الدرس: docs/sources/2am/unit4/plan/ibara-harfiya-intaj.md) مكمَّلة بتمارين تولّدها المنصّة على منوال اختبارات الفصل الثاني والثالث، وستّة منها على منوال تمرين واحد قرأناه فعلًا في الورقة (2am-s2-50 و -73 و -72 و -69 و 2am-s3-39 و -37، بأعدادها وسياقاتها الجديدة ولكلّ جزء من ورقة ورقة واحدة) (docs/sources/moyen/exams/exams-index.json، EXAM_PATTERN.md §6) — 10 تمارين × 5 مستويات (2026-10-29)"
+    },
     "jidhr-tarbii": {
       "minPerLevel": 10,
       "source": "الوحدة 2 «الحساب على الجذور»: تمارين الكتاب (ص 19–30، docs/sources/4am/unit2/extraction.json) مكمَّلة بتمارين تولّدها المنصّة لكل نقطة تعلّم — 10 تمارين × 5 مستويات (قرار المالك، 2026-09-30)"
@@ -292,6 +296,10 @@
     "hasr-adad-ushri": {
       "minPerLevel": 10,
       "source": "السنة الثالثة متوسط، الوحدة 5 «المساويات – المتباينات – المعادلات» — الدرس «حصر عدد عشري موجب» (الكتاب ص 76 إلى 79 وتمارين ص 79 و 83: docs/sources/3am/unit5/extraction.json، خطة الدرس: docs/sources/3am/unit5/plan/hasr-adad-ushri.md) مكمَّلة بتمارين تولّدها المنصّة على منوال اختبارات الفصل الأول والثالث (3am-s1-113 تمرين 1، 3am-s1-2 النموذج 5 تمرين 1، 3am-s3-51 تمرين 2: docs/sources/moyen/exams/exams-index.json، EXAM_PATTERN.md §6) — 10 تمارين × 5 مستويات (المرحلة 3 من تعميم الطور المتوسط، 2026-10-26)"
+    },
+    "talim-mustaqim-mudarraj-2": {
+      "minPerLevel": 10,
+      "source": "السنة الثانية متوسط، الوحدة 3 «الأعداد النسبية» — الدرس «التعليم على مستقيم مدرّج» (الكتاب ص 40 و42 و46 و49: docs/sources/2am/unit3/extraction.json؛ خطّة الدرس: docs/sources/2am/unit3/plan/talim-mustaqim-mudarraj-2.md) مكمَّلة بتمارين تولّدها المنصّة على منوال اختبارات الفصل الأول والثاني (2am-s2-62، -63، -71، 2am-s1-69، -73) (docs/sources/moyen/exams/exams-index.json، EXAM_PATTERN.md §6) — 10 تمارين × 5 مستويات (المرحلة 3 من تعميم المتوسط)."
     },
     "muqarana-nisbiya": {
       "minPerLevel": 10,

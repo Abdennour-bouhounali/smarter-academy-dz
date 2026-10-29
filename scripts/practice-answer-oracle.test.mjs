@@ -125,11 +125,13 @@ import { ORACLE as ORACLE_2AM_JAM_TARH_KUSUR, audit as auditJamKusur } from './p
 import { ORACLE as ORACLE_2AM_JIDA_KASRAYN, audit as auditJidaKasrayn } from './practice-oracle/jida-kasrayn.mjs';
 import { ORACLE as ORACLE_2AM_MUQARANA_KASRAYN, audit as auditMuqaranaKasrayn } from './practice-oracle/muqarana-kasrayn.mjs';
 import { ORACLE as ORACLE_2AM_MUQARANA_NISBIYA } from './practice-oracle/muqarana-nisbiya.mjs';
+import { ORACLE as ORACLE_2AM_TALIM_MUDARRAJ, audit as auditTalimMudarraj } from './practice-oracle/talim-mustaqim-mudarraj-2.mjs';
 import { ORACLE as ORACLE_2AM_RABI_MUTANASIB } from './practice-oracle/rabi-mutanasib.mjs';
 import { ORACLE as ORACLE_2AM_SILSILA, audit as auditSilsila } from './practice-oracle/silsila-bidun-aqwas.mjs';
 import { ORACLE as ORACLE_2AM_SILSILA_AQWAS, audit as auditSilsilaAqwas } from './practice-oracle/silsila-bi-aqwas.mjs';
 import { ORACLE as ORACLE_2AM_WASF_SILSILA, audit as auditWasfSilsila } from './practice-oracle/wasf-silsila-hisab.mjs';
 import { ORACLE as ORACLE_2AM_TAWZI, audit as auditTawzi } from './practice-oracle/tawzi-darb-jam-tarh.mjs';
+import { ORACLE as ORACLE_2AM_IBARA_INTAJ, audit as auditIbaraIntaj } from './practice-oracle/ibara-harfiya-intaj.mjs';
 import { ORACLE as ORACLE_2AM_WADIYA_KUSUR_AMALIYAT, audit as auditWadiyaKusurAmaliyat } from './practice-oracle/wadiya-idmajiya-kusur-amaliyat.mjs';
 import { ORACLE as ORACLE_2AM_WADIYA_AMALIYAT, audit as auditWadiyaAmaliyat } from './practice-oracle/wadiya-idmajiya-amaliyat-tabiiya-ushriya.mjs';
 import { ORACLE as ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA } from './practice-oracle/ikhtizal-kitaba-kasriya.mjs';
@@ -317,11 +319,13 @@ const ORACLE = {
   ...ORACLE_2AM_JIDA_KASRAYN,
   ...ORACLE_2AM_MUQARANA_KASRAYN,
   ...ORACLE_2AM_MUQARANA_NISBIYA,
+  ...ORACLE_2AM_TALIM_MUDARRAJ,
   ...ORACLE_2AM_RABI_MUTANASIB,
   ...ORACLE_2AM_SILSILA,
   ...ORACLE_2AM_SILSILA_AQWAS,
   ...ORACLE_2AM_WASF_SILSILA,
   ...ORACLE_2AM_TAWZI,
+  ...ORACLE_2AM_IBARA_INTAJ,
   ...ORACLE_2AM_WADIYA_KUSUR_AMALIYAT,
   ...ORACLE_2AM_WADIYA_AMALIYAT,
   ...ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA,
@@ -549,6 +553,17 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     const own = bank.filter((b) => b.key.startsWith('ex-2am-wadiya-idmajiya-amaliyat-tabiiya-ushriya-'));
     expect(own.length).toBeGreaterThan(0);
     expect(auditWadiyaAmaliyat(own)).toEqual([]);
+  });
+
+  it('إنتاج عبارة حرفية واستعمالها (2AM) : rationnels exacts BigInt et polynômes à plusieurs lettres propres à l\'oracle (aucun import de packages/core), chaque valeur recalculée depuis l\'expression retapée de l\'énoncé (aucun intermédiaire négatif), chaque QCM de production / de simplification jugé option par option par égalité de polynômes (une seule option vraie), chaque distracteur = la recette de sa lecture nommée et FAUX (PERCELL, NOFIRST, POWER, ADDFOR, PRODSQUARE, SQUARE2, ADDPOWERS, MULTCOEF, ZEROSKIP, BRACKET ; signatures de valeur JUXTA / ADDFOR / SQUARE2 / PRODSQUARE recalculées), « نعم / لا » par comparaison exacte, LaTeX de chaque énoncé / option / indice / corrigé relu (chaînes d\'égalités vraies, lettres n x y a b c), provenance : 6 term_exam lus dont 2 du 3e trimestre, 36 modelled, 6 adaptés vérifiés dans l\'extraction', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-ibara-harfiya-intaj-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditIbaraIntaj(own)).toEqual([]);
+  });
+  it('التعليم على مستقيم مدرّج (2AM) : décimaux exacts BigInt propres à l\'oracle (aucun import de packages/core), chaque abscisse recalculée par « nombre de graduations × valeur d\'une graduation » signé par le côté, chaque changement d\'origine par soustraction, chaque opposé par changement de signe, chaque « graduation convenable » vérifiée (toutes les abscisses sur une graduation ET à au plus 6 graduations de l\'origine, une seule option juste), chaque signature MISC-TALIM2-* (UNITIGNORED, SIGNSIDE, ADDSTEP, OPPSAME, RECIP, DIGITSWAP, TOOSMALL, TOOBIG, NEGDIST, ORIGINFIXED, ADDORIGIN) recalculée et fausse, chaque QCM jugé option par option', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-talim-mustaqim-mudarraj-2-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditTalimMudarraj(own)).toEqual([]);
   });
 
   it('le cas signalé (6 | 120) : « 6 مضاعف للعدد 120 » est faux, seul « لا » est accepté', () => {
