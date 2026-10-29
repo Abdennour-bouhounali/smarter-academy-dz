@@ -30,6 +30,15 @@ describe('learningPoints derivation', () => {
     }
   });
 
+  it('keeps every learning point title within the learning_points.title column (VARCHAR 255)', () => {
+    // The importer writes the title as is: a longer one crashes smarter:import-curriculum (hall-mushkil-muadala P3, 2026-10-29).
+    for (const { lesson } of allLessons) {
+      lesson.learningPoints.forEach((lp) => {
+        expect(lp.title.length, lp.id).toBeLessThanOrEqual(255);
+      });
+    }
+  });
+
   it('has lessons to check', () => {
     expect(allLessons.length).toBeGreaterThan(0);
   });

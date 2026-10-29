@@ -21,7 +21,7 @@ is NOT (it is generated in pair 4) and this lesson never relies on it (README «
 |---|---|---|---|
 | P1 | ترجمة وضعية بمعادلة بعد تسمية المجهول بحرف | ترجمة وضعية بمعادلة بعد تسمية المجهول بحرف، مثل «$60$ قارورة متماثلة سعتها الكلّية $45$ لترًا»: $60\times x=45$ | Example added (meaning kept). |
 | P2 | التعرّف على حلّ معادلة كقيمة تجعل المساواة صحيحة | التعرّف على حلّ معادلة: القيمة التي تجعل المساواة صحيحة، والتحقّق منها بإنجاز العملية، مثل $3$ حلّ للمعادلة $\frac{12}{x}=4$ لأنّ $12\div3=4$ | « verify by doing the ONE operation » (README renvois: never a two-member test). |
-| P3 | حلّ معادلات من الشكل $a \times x = b$ و $\frac{x}{a} = b$ و $\frac{a}{x} = b$ حيث $a$ و $b$ عددان عشريان معلومان، مثل $\frac{489}{x} = 163$ | حلّ معادلات من الشكل $a\times x=b$ و $\frac xa=b$ و $\frac ax=b$ ($a$ و $b$ عددان عشريان معلومان) بالعملية العكسية: العامل الناقص والقاسم الناقص بالقسمة، والمقسوم الناقص بالضرب، مثل $\frac{489}{x}=163$ ومنه $x=\frac{489}{163}=3$ ، ثمّ معادلة من خطوتين مثل $2x+240=300$ بإلغاء آخر عملية أوّلًا | The inverse operation named per form; the two-step case (README Q2, default yes). |
+| P3 | حلّ معادلات من الشكل $a \times x = b$ و $\frac{x}{a} = b$ و $\frac{a}{x} = b$ حيث $a$ و $b$ عددان عشريان معلومان، مثل $\frac{489}{x} = 163$ | حلّ معادلات من الشكل $a\times x=b$ و $\frac xa=b$ و $\frac ax=b$ بالعملية العكسية، مثل $\frac{489}{x}=163$ ومنه $x=3$ ، ثمّ معادلة من خطوتين مثل $2x+240=300$ بإلغاء آخر عملية أوّلًا | The inverse operation named per form; the two-step case (README Q2, default yes). |
 
 **Review items for « أستعدّ »:**
 
