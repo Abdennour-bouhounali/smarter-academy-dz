@@ -1560,6 +1560,9 @@
       },
       "status": "available",
       "pointPrerequisites": {
+        "P1": [
+          "2am_talim-nuqta-mustawi_P3"
+        ],
         "P2": [
           "3am_tanasub-tamthil-bayani_P1"
         ],
@@ -1567,7 +1570,8 @@
           "3am_tanasub-tamthil-bayani_P2"
         ],
         "P4": [
-          "3am_tanasub-tamthil-bayani_P2"
+          "3am_tanasub-tamthil-bayani_P2",
+          "2am_talim-nuqta-mustawi_P2"
         ]
       },
       "durationMinutes": 62,

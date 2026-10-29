@@ -11,8 +11,12 @@ with 10 `coming_soon` entries:
 - unit 3 `adad-nisbiya-2`: 5 lessons + the synthesis (`muqarana-nisbiya` was published earlier);
 - unit 4 `mafhum-muadala`: 3 lessons + the synthesis.
 
-**Connection = back links only** (owner, 2026-10-28). Unlike m1, three items of this مقطع (r04, r07, and r03 already published) link
-DIRECTLY into 4AM, so this run writes the first direct 2AM → 4AM back links.
+**Connection = back links only** (owner, 2026-10-28). Unlike m1, three items of this مقطع (r03 already published, r04, r07) link
+DIRECTLY into 4AM. **Finding (2026-10-29, pair 3): the 4AM LP edges are NOT written** — `curriculum/dz/decomposition.test.js ›
+« ne déclare que des prérequis pédagogiques qui existent »` requires every 4AM الكفاءة prerequisite to be a 4AM الكفاءة (the 4AM
+decomposition is closed on itself), so `4am_murakkibata-shuaa_P2/P3` ← `2am_talim-nuqta-mustawi_P2/P3` and `4am_muntasaf-masafa_P1` ←
+`2am_talim-nuqta-mustawi_P2` fail the gate. Writing them means an owner decision to open that guard to earlier-year LP ids (the edges are
+ready as a patch); until then the 4AM lessons reach 2AM at item and lesson level (« راجع » panel, `prerequisiteLessonCodes`).
 
 ## Order and lanes
 
