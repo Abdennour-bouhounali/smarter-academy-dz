@@ -561,3 +561,23 @@ in `docs/sources/2am/unit{1,2}/plan/` (owner questions in each README). One comm
   enforcement — the check is stale, not these lessons.
 - Owner points added: bank L4 sheets 1–3 of `silsila-bidun-aqwas` use the arc tape (`ArcTape`) — drop if arcs count as grouping; textbook
   misprints listed in `docs/sources/2am/unit1/build-extraction.py › DISCREPANCIES`.
+
+### Pair 2 — `silsila-bi-aqwas` (unit 1) and `jam-tarh-kusur` (unit 2), published on `dev` 2026-10-29
+
+- `silsila-bi-aqwas` « سلسلة عمليات تتضمّن أقواسا »: lab `coop-calculator` (brackets typed on a calculator at the school cooperative's
+  counter), extends `chainOps.js`. Bank 13 `term_exam` / 28 modelled / 9 adapted (modelled = `platform_addition` + `reason: term_exam_modelled`,
+  the contract's form). Eighth misconception `MISC-AQWAS-MISPLACED`.
+- `jam-tarh-kusur` « جمع وطرح كسرين »: lab `trail-odometer` (theme `mountaintrail`: a scout walks a trail of white posts; the hand holds the
+  distance), extends `fractions2.js`. Bank 8 `term_exam` / 35 modelled / 7 adapted. Its متقدم predict phase was reflowed to fit 1024×768
+  (886 → 706 px; « Screen budget » in `MANIPULATION_CONTRACT.md` §2novenquinquagies bis).
+- Successor connection (commit `feat(lessons): connect quwat-adad-nisbi and jam-tarh-kasrayn to pair 2`): `quwat-adad-nisbi` P4 ← also
+  `2am_silsila-bi-aqwas_P1`, `_P3`, and a second linked « تذكّر — السنة الثانية » (the fraction bar) in طريقة step 4; `jam-tarh-kasrayn`
+  P1 ← `2am_jam-tarh-kusur_P2`, P2 ← `_P1`, `_P3`, and its معارف « تذكّر — السنة الثانية » now links. Both links checked in the browser.
+  Still to write the day `muqarana-kasrayn` is published: `2am_jam-tarh-kusur_P2` ← `2am_muqarana-kasrayn_P3`.
+- Gates (coordinator, whole tree): `npm test` exit 0 (core 1094, web 722 files / 14 717 tests, scripts 18 548), `check:lessons` (entry
+  236.7 KB gzip), build, net tests, queue check, `lab-rollout-status` ✅ for both. Local DB: 9 modules + 50 exercises each `published`.
+- Known: `apps/web/e2e/lesson-kit/3am-unit2-jam-tarh-kasrayn.mjs` stalls in its lab drive (a lab question overlay intercepts the click) —
+  the script predates the lab-prototype rollout (lot 5, 2026-10-28); its module checks up to the lab pass.
+- Owner points added: `coop-calculator` prints the calculator's honest −5,8 for a numerator-only line (negatives not taught; refuse the line
+  instead?); `2am-s1-77` ex 1 is cited as `term_exam` on three `silsila-bi-aqwas` sheets (L2-002, L5-002 may reuse the same part);
+  many unit-1 extraction elements are still `verified: False` (re-read at 100 dpi only).

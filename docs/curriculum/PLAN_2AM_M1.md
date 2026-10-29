@@ -1,6 +1,6 @@
 # Generation plan — 2AM « ميدان الأنشطة العددية », مقطع 2am.m1 (units 1–2, 2026-10-28)
 
-**Status:** 10 plans written and cross-reviewed (Opus planners, 2026-10-28); pair 1 (`silsila-bidun-aqwas`, `kasr-hasil-qisma`) published on `dev` 2026-10-29; pair 2 in generation. **Authority:** this index gives the order,
+**Status:** 10 plans written and cross-reviewed (Opus planners, 2026-10-28); pair 1 (`silsila-bidun-aqwas`, `kasr-hasil-qisma`) published on `dev` 2026-10-29; pair 2 (`silsila-bi-aqwas`, `jam-tarh-kusur`) published on `dev` 2026-10-29; pair 3 in generation. **Authority:** this index gives the order,
 the lanes, the generator prompt and the « successor connection » step. Each entry's design is its plan file. The contracts stay
 authoritative for HOW (`LESSON_DEVELOPMENT_GUIDE.md` §14, `LEARNING_NET.md` §4, `MANIPULATION_DNA.md`, `EXERCISE_CONTRACT.md`).
 Method: the same as `PLAN_3AM_UNITS_1_5.md`.
@@ -132,6 +132,12 @@ machine overloads with two leads; a single timeout under load that passes alone 
 lesson-route-boundary.mjs (390×844 on a 4AM lesson) is stale since the 2026-10-27 large-screen enforcement: report it, do not chase
 it. Name scratchpad logs and screenshots with your <CODE> (the scratchpad is shared). Knowledge item titles carry no `$`; memo
 `rule` / examples / chips are pure KaTeX (no Arabic `\text{}`); a « true » distractor (a correct inequality offered as wrong) is a bug.
+
+Learned in pair 2 (2026-10-29): a modelled sheet is stored `type: platform_addition` + `reason: term_exam_modelled` + `modelledOn`
+(EXERCISE_CONTRACT « Term-exam provenance ») — report it as modelled; never cite one paper's same part as `term_exam` on two sheets.
+VIEW every screenshot you save (all four sizes of the glance, every module), not a sample. The lab must fit one screen at 1024×768 in
+BOTH levels, the متقدم typing phase included (measure its height). Money in Arabic strings is wrapped in an LTR isolate (« 48,75 DA »);
+in KaTeX use `\mathrm{DA}`.
 
 Final report: URL path; modules; the lab and the screenshots you reviewed; bank counts (term_exam / modelled / adapted /
 platform_addition); every الكفاءات change; gates with results; the full list of files created or changed; docs updated; fixes to
