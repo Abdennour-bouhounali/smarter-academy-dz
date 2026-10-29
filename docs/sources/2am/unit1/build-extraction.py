@@ -524,7 +524,7 @@ DEST = {
     **{f'deep-{n}': d(S, None) for n in (44, 45, 46, 51, 52)},
     'deep-47': d(L3, 5), 'deep-48': d(L3, None), 'deep-49': d(L3, 7),
     'integration': d(S, 1, note='réécrite : un AUTRE programme (le Fahrenheit est déjà dans la synthèse 3AM de l\'unité 1) — programme de la distance de l\'orage'),
-    'evaluation': d(S, 7, modules=[7, 8], note='réécrite : ateliers de nichoirs ; la situation est ANALYSÉE au module 7 (non résolue) et résolue dans l\'إختبار أولي (module 8)'),
+    'evaluation': d(S, 7, modules=[7, 8], note='réécrite : ateliers de nichoirs ; la situation est ANALYSÉE au module 7 (non résolue) et résolue dans la وضعية الاختبار النهائي (module 8)'),
     'ict': d(L2, 7, items={'act': d(L2, 7), '1': d(L2, 4), '2': d(L2, None), '3': d(L2, None)}, note='le geste « ( ) pour le numérateur et le dénominateur » → مسألة 3 réécrite ; « دوري الآن » ① ③ → m4 ou banque ; ② → banque'),
 }
 
@@ -575,12 +575,15 @@ L2_VERIFIED = {'act-3', 'method-1', 'method-2', 'ex-8', 'ex-10', 'ex-11', 'ict'}
 # L4 (tawzi-darb-jam-tarh, 2026-10-29) : معارف 4 (PDF 9), طرائق 3 et 4 et « دوري الآن » ① ② (PDF 10) relus sur les pages rendues à 75 dpi (transcription comparée mot à mot ; seule la faute d'impression
 # de طريقة 4 — E = 3 × 7 = 35 au lieu de 21 pour x = 12 — est déjà notée `[sic : 21]`). Les exercices 21–36, أؤكّد 7–10 et أتعمّق 42 (bas des p. 15–18 coupé au scan) restent `verified: False`.
 L4_VERIFIED = {'know-4', 'method-3', 'method-4', 'now-13'}
+# S (wadiya-idmajiya-amaliyat-tabiiya-ushriya, 2026-10-29) : la synthèse — `integration` et `evaluation` (p. 20, question coupée notée), `opener`, et les six `deep-*` de la banque
+# (deep-46 : figure illisible, redessinée par la plateforme) sont relus ; leurs destinations ne sont plus en attente.
+S_VERIFIED = {'integration', 'evaluation', 'opener', 'deep-37', 'deep-44', 'deep-45', 'deep-46', 'deep-51', 'deep-52'}
 for _e in E:
-    if _e['id'] in L2_VERIFIED | L4_VERIFIED:
+    if _e['id'] in L2_VERIFIED | L4_VERIFIED | S_VERIFIED:
         _e['verified'] = True
 L1_REQUIRED = {'challenge', 'objectives', 'opener', 'prep', 'act-1', 'act-2', 'know-1', 'self-1', 'self-6', 'deep-39'} | {f'ex-{n}' for n in range(1, 8)}
 assert all(next(e for e in E if e['id'] == i)['verified'] for i in L1_REQUIRED), 'élément de L1 non vérifié'
-assert all(not e['verified'] for e in E if e['id'] not in L1_REQUIRED | L2_VERIFIED | L4_VERIFIED), 'élément hors L1/L2/L4 marqué vérifié'
+assert all(not e['verified'] for e in E if e['id'] not in L1_REQUIRED | L2_VERIFIED | L4_VERIFIED | S_VERIFIED), 'élément hors L1/L2/L4 marqué vérifié'
 
 out = Path(__file__).with_name('extraction.json')
 out.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')

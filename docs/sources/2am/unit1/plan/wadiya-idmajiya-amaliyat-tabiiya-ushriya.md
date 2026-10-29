@@ -207,4 +207,10 @@ None: a synthesis has no programme item and no forward net link. The unit's succ
 
 ## Generator notes
 
-(empty)
+2026-10-29 (generator). Fixes and choices, all minimal:
+- **Module 8 stages are choice epreuves, not numeric inputs**: `BossFinal` (the architecture of every published synthesis) only takes `TapQuestion` epreuves. Keys unchanged: 7 · 6 · 7 / 6 / 9 · 2 · 24 / `6 × 450 − (6 × 85 + 120)` = 2 070 / 2 équerres. The plan's stage-3 distractor « 3 ألواح و 8 براغٍ » (computed for 7 houses) is kept and says « لا زاوية » (28 > 26 corners).
+- **Module 6 bonus**: the plan's `selfCheck` « any correct chain » becomes two `choice` steps with exactly one true option each (`(3+3)÷(3+3)` = 1 ; `3×3+3÷3` = 10) — the module has no chain evaluator.
+- **Module 7**: four decisions (what each material asks, which quotient to keep, why not to add the stocks, how to write the profit) instead of three; the plan's counter-check « 191 ÷ 26 » is NOT shown (it would reveal a result); the refutation is in words.
+- **Module 6 part 1 uses a `batch`** (five true/false rows) and a `table`; part 3 asks the mark (3).
+- **Bank**: 4 `term_exam` / 40 modelled / 6 adapted. `deep-53` and `deep-40` are not cited by the bank (their destination is `silsila-bi-aqwas`); `deep-40` is cited by module 6 (`duplicatedIn`). `deep-46` redesigned in text (a staircase polygon). Some L5 sheets divide by a decimal (22 ÷ 0,4): within decimals, flagged to the owner.
+- **Programme**: still `programmeItems: []`; one الكفاءة P1; `coursesData.test.js` LP total +1.

@@ -286,7 +286,7 @@
       "decisionStatus": "draft",
       "titleSource": "textbook",
       "title": "أدمج تعلّماتي — العمليات على الأعداد الطبيعية والأعداد العشرية",
-      "description": "",
+      "description": "وضعية إدماجية (بيوت العصافير: عدد البيوت الممكنة، ما يبقى في المخزن، الربح بسلسلة واحدة وقرار الشراء) تُعبّئ سلاسل العمليات والأقواس ووصف السلسلة وتوزيع الضرب، تسبقها ست وضعيات تدريبية.",
       "prerequisites": [],
       "prerequisiteLessonCodes": [
         "silsila-bidun-aqwas",
@@ -294,7 +294,9 @@
         "wasf-silsila-hisab",
         "tawzi-darb-jam-tarh"
       ],
-      "pointsToLearn": [],
+      "pointsToLearn": [
+        "حلّ وضعية إدماجية بترجمتها إلى سلاسل عمليات (دون أقواس أو بأقواس أو بخطّ كسر) ووصفها وحسابها، وتوظيف توزيع الضرب على الجمع والطرح لتبسيط الحساب"
+      ],
       "programmeItems": [],
       "textbookRef": {
         "unit": 1,
@@ -305,7 +307,18 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "pointPrerequisites": {
+        "P1": [
+          "2am_silsila-bidun-aqwas_P3",
+          "2am_silsila-bi-aqwas_P3",
+          "2am_wasf-silsila-hisab_P3",
+          "2am_tawzi-darb-jam-tarh_P4"
+        ]
+      },
+      "status": "available",
+      "durationMinutes": 30,
+      "difficulty": "متقدم",
+      "icon": "🧮"
     },
     {
       "code": "qisma-iqlidiya-hasr",

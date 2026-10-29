@@ -130,6 +130,7 @@ import { ORACLE as ORACLE_2AM_SILSILA, audit as auditSilsila } from './practice-
 import { ORACLE as ORACLE_2AM_SILSILA_AQWAS, audit as auditSilsilaAqwas } from './practice-oracle/silsila-bi-aqwas.mjs';
 import { ORACLE as ORACLE_2AM_WASF_SILSILA, audit as auditWasfSilsila } from './practice-oracle/wasf-silsila-hisab.mjs';
 import { ORACLE as ORACLE_2AM_TAWZI, audit as auditTawzi } from './practice-oracle/tawzi-darb-jam-tarh.mjs';
+import { ORACLE as ORACLE_2AM_WADIYA_AMALIYAT, audit as auditWadiyaAmaliyat } from './practice-oracle/wadiya-idmajiya-amaliyat-tabiiya-ushriya.mjs';
 import { ORACLE as ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA } from './practice-oracle/ikhtizal-kitaba-kasriya.mjs';
 import { ORACLE as ORACLE_1AM_QAWAID_QABILIYAT_QISMA } from './practice-oracle/qawaid-qabiliyat-qisma.mjs';
 import { ORACLE as ORACLE_1AM_KITABAT_ADAD_TABII } from './practice-oracle/kitabat-adad-tabii.mjs';
@@ -320,6 +321,7 @@ const ORACLE = {
   ...ORACLE_2AM_SILSILA_AQWAS,
   ...ORACLE_2AM_WASF_SILSILA,
   ...ORACLE_2AM_TAWZI,
+  ...ORACLE_2AM_WADIYA_AMALIYAT,
   ...ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA,
   ...ORACLE_1AM_QAWAID_QABILIYAT_QISMA,
   ...ORACLE_1AM_KITABAT_ADAD_TABII,
@@ -535,6 +537,11 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     const own = bank.filter((b) => b.key.startsWith('ex-2am-tawzi-darb-jam-tarh-'));
     expect(own.length).toBeGreaterThan(0);
     expect(auditTawzi(own)).toEqual([]);
+  });
+  it('أدمج تعلّماتي — العمليات على الأعداد الطبيعية والأعداد العشرية (2AM, synthèse) : évaluateur exact importé de silsila-bi-aqwas (BigInt, ( ) [ ] et barres de fraction), chaque clé recalculée, lectures fautives nommées (NOPRIORITY, ADDFIRST, MULFIRST, IGNORED, BARSPLIT, ROUNDUP, MAX), nom d\'une chaîne, QCM jugé option par option, 4 term_exam lus et 6 feuilles adaptées', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-wadiya-idmajiya-amaliyat-tabiiya-ushriya-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditWadiyaAmaliyat(own)).toEqual([]);
   });
 
   it('le cas signalé (6 | 120) : « 6 مضاعف للعدد 120 » est faux, seul « لا » est accepté', () => {
