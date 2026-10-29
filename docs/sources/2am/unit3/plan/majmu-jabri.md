@@ -325,3 +325,14 @@ each distractor checked equal to its named error and false).
     read its final الكفاءات first; add a history line and, if it holds a « تذكّر » toward r06 without a link, its `getLessonPath` link;
   - if it is published AFTER: its own lead writes those edges (tell the unit-4 coordinator).
 - No published 3AM / 4AM successor along a net link from r06 → nothing else.
+
+## Generator notes (2026-10-29)
+
+- **Group = a two-stage lab, not a separate mat.** The plan's « mini-team on a mat » is built as stage 0 of the same rope (only the bracket's children are in the queue, the whistle turns the result into ONE child — with its « − » card — of stage 1). `bracketDrop` is a TYPED model (predict phase: `+17` = the bracket's operator ignored), not a physical gesture, because the bracket's children cannot reach the main teams.
+- **t2 `noTurn` ghost.** With NO child turned the ribbon stops at −16 (not −22: the plan turned one child); the ghost is at the true −12 and the un-turned children blink. The typed model `noTurn` is the sum of the printed numbers (−16 for t2).
+- **The ribbon scale** is −20 … +20 (halves drawn at متقدم); the free chain accepts |term| ≤ 20 (flat, 2–6 terms).
+- **Opposites « leave together »** is asked, not animated: t3's question `leave` names the two cancelling pairs (no child can be removed from a team).
+- **Bank (helper-built, oracle `scripts/practice-oracle/majmu-jabri.mjs`):** 50 sheets; `MISC-JAMNISB-ADDDIST` and `MISC-JAMNISB-FLIPBOTH` are reused instead of new `MISC-JABRI-*` twins; `2am-s2-72` ex 1 G is two bracketed two-term sums; `2am-s2-57` is cited only as `term_exam_modelled` (its index entry lists no exercises).
+- **Extraction:** `act-6` re-read and `verified: True`; `act-6` → module 4, `deep-47`, `deep-49`, `deep-50`, `deep-59` → bank; `self-10` / `self-11` (read at 110 dpi, stems half-cut) are rewritten as the final-test questions E2 / E4 with the platform's own numbers. The other L6 elements keep `verified: False` (not re-read at 200 dpi).
+- **Module 4** has 9 exercises (act-6, ex-29, ex-36, ex-37, deep-39, 43, 44, 46, 58), module 3 three steps, `durationMinutes` 64 (the modules without the مسائل).
+- **Successor connection:** nothing written in unit 4 (`ikhtibar-musawat-mutabayina` writes `P1 ← 2am_majmu-jabri_P2` itself).
