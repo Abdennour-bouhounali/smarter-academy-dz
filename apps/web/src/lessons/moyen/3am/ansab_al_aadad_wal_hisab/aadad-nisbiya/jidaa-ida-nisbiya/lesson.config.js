@@ -20,6 +20,8 @@
  *   → أتمرّن → trois مسائل (le تحدّ ①, un carré magique, un calcul mental) → test.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
+ * 2026-10-29 : `jam-tarh-nisbiya` (2AM, 2am.m4.r05) est publiée — arête LP P4 ← 2am_jam-tarh-nisbiya_P2 et _P3 (lien du réseau
+ * 2am.m4.r05 → 3am.m1.r01).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/3am/ansab_al_aadad_wal_hisab/jidaa-ida-nisbiya';
 

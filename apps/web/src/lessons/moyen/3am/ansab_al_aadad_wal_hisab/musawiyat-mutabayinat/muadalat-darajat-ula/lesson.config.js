@@ -25,6 +25,8 @@
  *   situation (P3, P4) → أتمرّن (le نشاط 4 et les exercices réécrits) → trois مسائل → إختبار أولي.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
+ * 2026-10-29 : `hall-mushkil-muadala` (2AM, 2am.m4.r08) est publiée — arêtes LP P1 ← 2am_hall-mushkil-muadala_P2 et P4 ← 2am_hall-mushkil-muadala_P1
+ * (lien du réseau 2am.m4.r08 → 3am.m5.r06, `extends`) ; le « تذكّر — السنة الثانية » (RECALL) devient un lien tout seul.
  */
 export const LESSON_BASE_PATH = '/courses/moyen/3am/ansab_al_aadad_wal_hisab/muadalat-darajat-ula';
 
