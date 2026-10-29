@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **130** leçons publiées · **140** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **132** leçons publiées · **138** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -917,9 +917,9 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | `2am.m4.r04` | قراءة إحداثيي نقطة معلومة أو وضع نقطة ذات إحداثيين معلومين في مستوٍ منسوب إلى معلم متعامد ومتجانس. | `talim-nuqta-mustawi` | يرسّخ `1am.m5.r07` |
 | `2am.m4.r05` | جمع وطرح عددين نسبيين. | `jam-tarh-nisbiya` | `2am.m4.r01` |
 | `2am.m4.r06` | حساب مجموع جبري. | `majmu-jabri` | `2am.m4.r05`، `2am.m1.r02` |
-| `2am.m4.r07` | حساب المسافة بين نقطتين ذات فاصلتين معلومتين على مستقيم مدرّج. | `masafa-nuqtatayn` _(prévue)_ | `2am.m4.r05` |
+| `2am.m4.r07` | حساب المسافة بين نقطتين ذات فاصلتين معلومتين على مستقيم مدرّج. | `masafa-nuqtatayn` | `2am.m4.r05` |
 | `2am.m4.r08` | حل المعادلات من الشكل: a ÷ … = b حيث a، b عددان عشريان معلومان في وضعيات بسيطة. | `hall-mushkil-muadala` | يمدّد `1am.m5.r10` |
-| `2am.m4.r09` | اختبار صحة مساواة أو متباينة تتضمّن عددا مجهولا (أو عددين مجهولين) عندما نستبدله بقيمة معلومة. | `ikhtibar-musawat-mutabayina` _(prévue)_ | `1am.m5.r08`، `2am.m4.r06` |
+| `2am.m4.r09` | اختبار صحة مساواة أو متباينة تتضمّن عددا مجهولا (أو عددين مجهولين) عندما نستبدله بقيمة معلومة. | `ikhtibar-musawat-mutabayina` | `1am.m5.r08`، `2am.m4.r06` |
 
 #### المقطع 5 — متوازي الأضلاع (`2am.m5`, 4 أسابيع)
 
@@ -1238,11 +1238,11 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 13 | `muqarana-nisbiya` — مقارنة وترتيب أعداد نسبية | publiée | `2am.m4.r02` `2am.m4.r03` |
 | 14 | `talim-nuqta-mustawi` — تعليم نقطة في المستوي | publiée | `2am.m4.r04` |
 | 15 | `jam-tarh-nisbiya` — جمع وطرح عددين نسبيين | publiée | `2am.m4.r05` |
-| 16 | `masafa-nuqtatayn` — المسافة بين نقطتين على مستقيم مدرّج | prévue | `2am.m4.r07` |
+| 16 | `masafa-nuqtatayn` — المسافة بين نقطتين على مستقيم مدرّج | publiée | `2am.m4.r07` |
 | 17 | `majmu-jabri` — حساب مجموع جبري | publiée | `2am.m4.r06` |
 | 18 | `wadiya-idmajiya-adad-nisbiya-2` — أدمج تعلّماتي — الأعداد النسبية | synthèse | — |
 | 19 | `ibara-harfiya-intaj` — إنتاج عبارة حرفية واستعمالها | publiée | — |
-| 20 | `ikhtibar-musawat-mutabayina` — اختبار صحة مساواة أو متباينة | prévue | `2am.m4.r09` |
+| 20 | `ikhtibar-musawat-mutabayina` — اختبار صحة مساواة أو متباينة | publiée | `2am.m4.r09` |
 | 21 | `hall-mushkil-muadala` — حلّ مشكل باستعمال معادلة | publiée | `2am.m4.r08` |
 | 22 | `wadiya-idmajiya-mafhum-muadala` — أدمج تعلّماتي — مفهوم معادلة | synthèse | — |
 | 23 | `wadiya-tanasubiya-jadwal` — التعرّف على وضعية تناسبية من جدول | prévue | `2am.m6.r01` `2am.m6.r02` |

@@ -310,6 +310,10 @@ export const VISUAL_THEMES = Object.freeze({
   //                  portent des flammes orange (+1 m) et des sacs de sable bruns (−1 m) noués aux cordes — une flamme et un sac côte à côte se verrouillent en paire neutre ; deux bacs et un lot « paire neutre » sous la scène ;
   //                  Sara (KidFigure, fille en hijab) ou Rayan (sweat) dans la nacelle (`balloon-ballast`)
   balloonvalley: { kind: 'objects', shows: 'منطاد فوق وادي التاسيلي: نفخات لهب وأكياس رمل' },
+  // 2AM, unité 3, leçon 5 « المسافة بين نقطتين » (2026-10-29) :
+  //   meteoboard  la cour du club d'astronomie (نادي الأرصاد) : un grand thermomètre blanc gradué de −10 à +12 °C, un trait bleu au zéro, une station météo et une girouette ; des graines colorées pincées sur l'échelle (étiquettes de villes) et
+  //               un compas en laiton le long de l'échelle (mâchoire fixe, mâchoire libre, vis à cadran) ; Nour (KidFigure, hijab) à مبتدئ, Ilyes (sweat) à متقدم (`gap-caliper`)
+  meteoboard: { kind: 'lengths', shows: 'لوحة نادي الأرصاد: مقياس حرارة كبير وخرزات ومسماك نحاسي' },
   // 2AM, unité 3, leçon 6 (2026-10-29) :
   //   tugfield  la cour du collège un jour de sport : une corde sur toute la largeur, un ruban rouge noué à son milieu au-dessus d'un « 0 » sur une bande graduée (−20 … +20), un drapeau vert à droite (+) et un
   //             orange à gauche (−), deux équipes d'enfants à dossards (KidFigure : filles en hijab, garçons en sweat) qui tirent, un petit tapis pour un petit équipage entre crochets (`tug-rope`)
@@ -327,6 +331,11 @@ export const VISUAL_THEMES = Object.freeze({
   //   juicery  la معصرة البرتقال التعاونية : des caisses d'oranges, un réservoir en inox à fenêtre graduée (litres, graduation tous les 5 L), un tapis roulant, une buse, des bouteilles (≤ 12 visibles, « × n » au-delà), le moule de la bouteille
   //            (poignée en haut) et deux essais ; Lina (KidFigure, fille en hijab) au pupitre à مبتدئ, Anis (KidFigure, garçon) au réservoir à متقدم ; les ouvriers ne sont jamais dessinés (`juice-line`)
   juicery: { kind: 'quantities', shows: 'معصرة البرتقال التعاونية: خزّان وخطّ تعبئة' },
+  // 2AM, unité 4, leçon 3 (2026-10-29) :
+  //   weighbridge  جسر الوادي وميزانه : un dépôt de matériaux au bord d'un oued à sec — des sacs de ciment (gris, 50 kg) et de sable (beige, 40 kg) sur des palettes —, un camion à benne ouverte (sa masse à vide peinte sur la portière), la dalle d'un
+  //                pèse-camion (son écran écrit la substitution et la comparaison), une barrière et la pancarte ronde du pont ; deux voies (camions A et B) pour les égalités ; Anis (KidFigure, garçon) à مبتدئ, Salma (KidFigure, fille en hijab) à متقدم,
+  //                les chauffeurs ne sont jamais dessinés (`bridge-load`)
+  weighbridge: { kind: 'quantities', shows: 'جسر الوادي وميزانه: شاحنة مواد البناء' },
   // 3AM, unité 4 (2026-10-21) :
   //   schoolgarden  le jardin de l'école vu d'en haut : un terrain rectangulaire (pelouse, massif de fleurs, allée dallée) que la
   //                 main coupe en parcelles, et une jardinière (KidFigure, hijab) à son bord (`area-split`)

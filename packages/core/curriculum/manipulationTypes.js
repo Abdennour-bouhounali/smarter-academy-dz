@@ -803,6 +803,15 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'نحدّد موضع نقطة في المستوي بعددين في معلم متعامد ومتجانس: الفاصلة أولًا على المحور الأفقي ثمّ الترتيب على المحور العمودي، مثل $A(-3\\,;2)$ ؛ تتغيّر الإحداثيات بتغيّر المبدأ، والنقطة على المحورين إحدى إحداثيتيها معدومة، ونظيرة نقطة بالنسبة إلى محور تحتفظ بالإحداثية التي على هذا المحور',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 2AM, unité 3 « الأعداد النسبية », leçon 5 « المسافة بين نقطتين على مستقيم مدرّج » (2026-10-29) — l'ouverture d'un compas serré sur une lecture.
+  'gap-caliper': {
+    // L'OUVERTURE D'UN COMPAS SOUS LA MAIN : un compas en laiton est serré sur une graine d'un grand thermomètre ; la main tourne la vis pour OUVRIR le compas jusqu'à ce que l'autre mâchoire touche la seconde graine.
+    // L'ouverture (toujours ≥ 0) est la distance ; une ouverture qui traverse le zéro additionne les deux morceaux. Le juge compare l'atterrissage de la mâchoire à la graine visée. مبتدئ : la graine du bas porte le compas,
+    // quatre lectures entières puis la règle ; متقدم : l'ouverture est ÉCRITE avant de tourner la vis (décimaux), le compas serré sur la graine du haut, et une ouverture fixe balancée vers le haut ou vers le bas
+    // (deux points à la même distance). « جرّب أعدادك » : toujours ouvert. MANUEL (§6bis).
+    shows: 'المسافة بين نقطتين على مستقيم مدرّج هي الفاصلة الكبرى ناقص الفاصلة الصغرى، فهي عدد موجب دائمًا و $AB=BA$ ؛ وللنقطتين اللتين تبعدان بمسافة $d$ عن نقطة فاصلتها $a$ الفاصلتان $a-d$ و $a+d$',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 2AM, unité 2 « الكسور والعمليات عليها », leçon 8 « جداء كسرين » (2026-10-29) — les deux facteurs d'un produit de fractions, tenus par deux tirages perpendiculaires sur une fenêtre.
   'window-blinds': {
     // LES DEUX FACTEURS SOUS LA MAIN : la main tire DEUX couvertures perpendiculaires sur une fenêtre — le rideau latéral (largeur a/b, il se colle aux crans de son rail) et le store à enrouleur (hauteur c/d,
@@ -1005,6 +1014,15 @@ export const MANIPULATION_TYPES = Object.freeze({
     // les bonnes équations (deux écritures). متقدم : la main tient le contenu du réservoir (le dividende manquant), l'ardoise s'ouvre d'abord, et la dernière tâche (4 + x) ÷ 0,25 = 40 demande deux étapes (défaire la DERNIÈRE opération d'abord).
     // « جرّب أعدادك » : toujours ouvert. Chaque remplissage, opération et carte est un essai jugé exactement (centilitres entiers) : MANUEL (§6bis).
     shows: 'المعادلة تترجم وضعية، وحلّها هو القيمة التي تجعل المساواة صحيحة: نجد العامل الناقص أو القاسم الناقص بالقسمة، والمقسوم الناقص بالضرب، وفي معادلة من خطوتين نلغي آخر عملية أوّلًا، ثمّ نتحقّق بالتعويض',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 4 « مفهوم معادلة », leçon 3 « اختبار مساواة أو متباينة » (2026-10-29) — اختبار قيمة في مساواة أو متباينة بالتعويض.
+  'bridge-load': {
+    // LA CHARGE SOUS LA MAIN : un camion de matériaux de construction doit passer un pont dont la pancarte donne une règle (« أقلّ من 5000 kg », « ≤ 7000 kg »). La main tient des COMPTES de sacs (x de ciment, y de sable), glissés du dépôt
+    // vers la benne ; le pèse-camion écrit la substitution (4000 + 50 × 15 = 4750) puis la comparaison (4750 < 5000 ؟) et l'élève doit répondre AVANT que la barrière ne bouge. La charge limite (20 sacs : 5000 pile) sépare « < » de « ≤ » ;
+    // deux inconnues (l'ordre des comptes compte) ; deux camions à UNE charge (une égalité vraie pour une seule valeur). متقدم : l'écran est masqué jusqu'à ce que les deux masses soient tapées, et une affirmation « toujours » tombe devant UNE charge.
+    // « جرّب أعدادك » : toujours ouvert. Chaque pesée, verdict, carte et contre-exemple est un essai jugé exactement par `equation2.js` E3 : MANUEL (§6bis).
+    shows: 'نختبر قيمة في مساواة أو متباينة بأن نعوّضها في كلّ طرف ونحسب الطرفين ثمّ نقارن الناتجين: $4000+50\\times15=4750$ و $4750<5000$ ؛ ولا يكفي أن يكون العدد قريبًا من الحدّ ($5000<5000$ خاطئة بينما $5000\\le5000$ صحيحة) ؛ وقيمة واحدة لا تثبت أنّ عبارتين متساويتان دائمًا، لكن قيمة واحدة كافية لإبطال ذلك',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
 });

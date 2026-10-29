@@ -129,12 +129,16 @@ export const MANIPULATION_COMPONENTS = {
   'corniche-ruler': lazy(() => import('./operations/CornicheRuler')),
   // 2AM, unité 3, leçon 4 « تعليم نقطة في المستوي » : le piquet d'origine sous la main — شبكة الحفرية (2026-10-29).
   'dig-grid': lazy(() => import('./operations/DigGrid')),
+  // 2AM, unité 3, leçon 5 « المسافة بين نقطتين على مستقيم مدرّج » : l'ouverture d'un compas sous la main — مسماك الفرق (2026-10-29).
+  'gap-caliper': lazy(() => import('./operations/GapCaliper')),
   // 2AM, unité 2, leçon 8 « جداء كسرين » : les deux facteurs sous la main — ستائر النافذة (2026-10-29).
   'window-blinds': lazy(() => import('./operations/WindowBlinds')),
   // 2AM, unité 4, leçon 1 « إنتاج عبارة حرفية واستعمالها » : le nombre de cellules sous la main — خلايا الشمع (2026-10-29).
   'wax-cells': lazy(() => import('./operations/WaxCells')),
   // 2AM, unité 4, leçon 2 « حلّ مشكل باستعمال معادلة » : l'inconnue (capacité du moule, contenu du réservoir) sous la main — خطّ العصير (2026-10-29).
   'juice-line': lazy(() => import('./operations/JuiceLine')),
+  // 2AM, unité 4, leçon 3 « اختبار مساواة أو متباينة » : la charge d'un camion (des comptes de sacs) pesée contre la règle d'une pancarte — حمولة الجسر (2026-10-29).
+  'bridge-load': lazy(() => import('./operations/BridgeLoad')),
   // 2AM, unité 2, leçon 6 « الكسر: نسبة وحاصل قسمة وقيم مقرّبة » : le quotient sous la main — حبال المرسى (2026-10-28).
   'mooring-lines': lazy(() => import('./operations/MooringLines')),
   // 3AM, unité 5 : le signe d'un terme sous la main — la عبّارة des caisses d'une équation (2026-10-21).

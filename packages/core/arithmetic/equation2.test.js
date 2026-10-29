@@ -109,3 +109,48 @@ describe('equation2 E2 — solveForm / checkForm / undoChain / formOf', () => {
     expect(Q.formOf('blah')).toBe(null);
   });
 });
+
+describe('equation2 E3 — parseRelation / testAt / whichHold / identityVerdict', () => {
+  const T = (r) => ratText(r);
+  it('reads the six signs', () => {
+    for (const [s, rel] of [['3x=6', '='], ['3x<6', '<'], ['3x>6', '>'], ['3x<=6', '≤'], ['3x≥6', '≥'], ['3x >= 6', '≥']]) expect(Q.parseRelation(s).rel).toBe(rel);
+    expect(() => Q.parseRelation('3x+1')).toThrow();
+    expect(() => Q.parseRelation('3x<6<7')).toThrow();
+  });
+  it('writes the substitution line and compares the two members (the weighbridge screen)', () => {
+    const r = Q.testAt('4000+50x<5000', { x: 15 });
+    expect(r.holds).toBe(true); expect(T(r.leftValue)).toBe('4750');
+    expect(r.lines.leftEq).toBe('4000 + 50 × 15 = 4750'); expect(r.lines.cmp).toBe('4750 < 5000');
+    expect(Q.testAt('4000+50x<5000', { x: 22 }).holds).toBe(false);
+    expect(Q.testAt('4000+50x<5000', { x: 20 }).holds).toBe(false);          // the boundary: 5000 < 5000
+    expect(Q.testAt('4000+50x<=5000', { x: 20 }).holds).toBe(true);
+    expect(Q.testAt('7x+8=12x-4', { x: 6 })).toMatchObject({ holds: false });
+    expect(T(Q.testAt('7x+8=12x-4', { x: 6 }).rightValue)).toBe('68');
+  });
+  it('two unknowns: the order of the pair matters', () => {
+    expect(Q.testAt('3x+2y=24', { x: 4, y: 6 }).holds).toBe(true);
+    expect(Q.testAt('3x+2y=24', { x: 6, y: 4 }).holds).toBe(false);
+    expect(Q.testAt('4500+50x+40y<7000', { x: 30, y: 25 }).holds).toBe(false);
+    expect(Q.testAt('4500+50x+40y<=7000', { x: 30, y: 25 }).holds).toBe(true);
+  });
+  it('decimals and signed values', () => {
+    expect(Q.testAt('4x+3=13', { x: '2,5' }).holds).toBe(true);
+    expect(Q.testAt('1-3x=2-4x', { x: 1 }).holds).toBe(true);
+    expect(Q.testAt('1-3x=2-4x', { x: '0,5' }).holds).toBe(false);
+    expect(Q.testAt('x²+4=5x', { x: -3 }).holds).toBe(false);
+  });
+  it('which of the given values hold', () => {
+    expect(Q.whichHold('8x-5<40-x', 'x', [3, 4, 5, 6]).map(T)).toEqual(['3', '4']);
+    expect(Q.whichHold('4x+3=13', 'x', ['1,5', 2, '2,5', 3]).map(T)).toEqual(['5/2']);
+    expect(Q.whichHold('4x-3<=2x+7', 'x', [3, 4, 5, 6]).map(T)).toEqual(['3', '4', '5']);
+    expect(Q.whichHold('3000+70x=3600+50x', 'x', [20, 30, 40]).map(T)).toEqual(['30']);
+  });
+  it('identities hold for every value; otherwise a counterexample', () => {
+    expect(Q.identityVerdict('2(x+3)', '2x+6')).toBe('always');
+    expect(Q.identityVerdict('3x+x', '4x')).toBe('always');
+    expect(T(Q.identityVerdict('x²+4', '5x', [1, 4, 0]).counterexample)).toBe('0');
+    expect(Q.identityVerdict('x+x', 'x*x', [0, 2, 3]).counterexample).toEqual(rat(3));
+    expect(Q.identityVerdict('2+3x', '5x', [0, 1]).counterexample).toEqual(rat(0));
+    expect(Q.identityVerdict('3x+x', '3x²', [1]).counterexample).toEqual(rat(1));
+  });
+});

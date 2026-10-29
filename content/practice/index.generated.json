@@ -681,6 +681,68 @@
       "ex-2am-ibara-harfiya-intaj-l5-010"
     ]
   },
+  "ikhtibar-musawat-mutabayina": {
+    "1": [
+      "ex-2am-ikhtibar-musawat-mutabayina-l1-001",
+      "ex-2am-ikhtibar-musawat-mutabayina-l1-002",
+      "ex-2am-ikhtibar-musawat-mutabayina-l1-003",
+      "ex-2am-ikhtibar-musawat-mutabayina-l1-004",
+      "ex-2am-ikhtibar-musawat-mutabayina-l1-005",
+      "ex-2am-ikhtibar-musawat-mutabayina-l1-006",
+      "ex-2am-ikhtibar-musawat-mutabayina-l1-007",
+      "ex-2am-ikhtibar-musawat-mutabayina-l1-008",
+      "ex-2am-ikhtibar-musawat-mutabayina-l1-009",
+      "ex-2am-ikhtibar-musawat-mutabayina-l1-010"
+    ],
+    "2": [
+      "ex-2am-ikhtibar-musawat-mutabayina-l2-001",
+      "ex-2am-ikhtibar-musawat-mutabayina-l2-002",
+      "ex-2am-ikhtibar-musawat-mutabayina-l2-003",
+      "ex-2am-ikhtibar-musawat-mutabayina-l2-004",
+      "ex-2am-ikhtibar-musawat-mutabayina-l2-005",
+      "ex-2am-ikhtibar-musawat-mutabayina-l2-006",
+      "ex-2am-ikhtibar-musawat-mutabayina-l2-007",
+      "ex-2am-ikhtibar-musawat-mutabayina-l2-008",
+      "ex-2am-ikhtibar-musawat-mutabayina-l2-009",
+      "ex-2am-ikhtibar-musawat-mutabayina-l2-010"
+    ],
+    "3": [
+      "ex-2am-ikhtibar-musawat-mutabayina-l3-001",
+      "ex-2am-ikhtibar-musawat-mutabayina-l3-002",
+      "ex-2am-ikhtibar-musawat-mutabayina-l3-003",
+      "ex-2am-ikhtibar-musawat-mutabayina-l3-004",
+      "ex-2am-ikhtibar-musawat-mutabayina-l3-005",
+      "ex-2am-ikhtibar-musawat-mutabayina-l3-006",
+      "ex-2am-ikhtibar-musawat-mutabayina-l3-007",
+      "ex-2am-ikhtibar-musawat-mutabayina-l3-008",
+      "ex-2am-ikhtibar-musawat-mutabayina-l3-009",
+      "ex-2am-ikhtibar-musawat-mutabayina-l3-010"
+    ],
+    "4": [
+      "ex-2am-ikhtibar-musawat-mutabayina-l4-001",
+      "ex-2am-ikhtibar-musawat-mutabayina-l4-002",
+      "ex-2am-ikhtibar-musawat-mutabayina-l4-003",
+      "ex-2am-ikhtibar-musawat-mutabayina-l4-004",
+      "ex-2am-ikhtibar-musawat-mutabayina-l4-005",
+      "ex-2am-ikhtibar-musawat-mutabayina-l4-006",
+      "ex-2am-ikhtibar-musawat-mutabayina-l4-007",
+      "ex-2am-ikhtibar-musawat-mutabayina-l4-008",
+      "ex-2am-ikhtibar-musawat-mutabayina-l4-009",
+      "ex-2am-ikhtibar-musawat-mutabayina-l4-010"
+    ],
+    "5": [
+      "ex-2am-ikhtibar-musawat-mutabayina-l5-001",
+      "ex-2am-ikhtibar-musawat-mutabayina-l5-002",
+      "ex-2am-ikhtibar-musawat-mutabayina-l5-003",
+      "ex-2am-ikhtibar-musawat-mutabayina-l5-004",
+      "ex-2am-ikhtibar-musawat-mutabayina-l5-005",
+      "ex-2am-ikhtibar-musawat-mutabayina-l5-006",
+      "ex-2am-ikhtibar-musawat-mutabayina-l5-007",
+      "ex-2am-ikhtibar-musawat-mutabayina-l5-008",
+      "ex-2am-ikhtibar-musawat-mutabayina-l5-009",
+      "ex-2am-ikhtibar-musawat-mutabayina-l5-010"
+    ]
+  },
   "jam-tarh-kusur": {
     "1": [
       "ex-2am-jam-tarh-kusur-l1-001",
@@ -989,6 +1051,68 @@
       "ex-2am-majmu-jabri-l5-008",
       "ex-2am-majmu-jabri-l5-009",
       "ex-2am-majmu-jabri-l5-010"
+    ]
+  },
+  "masafa-nuqtatayn": {
+    "1": [
+      "ex-2am-masafa-nuqtatayn-l1-001",
+      "ex-2am-masafa-nuqtatayn-l1-002",
+      "ex-2am-masafa-nuqtatayn-l1-003",
+      "ex-2am-masafa-nuqtatayn-l1-004",
+      "ex-2am-masafa-nuqtatayn-l1-005",
+      "ex-2am-masafa-nuqtatayn-l1-006",
+      "ex-2am-masafa-nuqtatayn-l1-007",
+      "ex-2am-masafa-nuqtatayn-l1-008",
+      "ex-2am-masafa-nuqtatayn-l1-009",
+      "ex-2am-masafa-nuqtatayn-l1-010"
+    ],
+    "2": [
+      "ex-2am-masafa-nuqtatayn-l2-001",
+      "ex-2am-masafa-nuqtatayn-l2-002",
+      "ex-2am-masafa-nuqtatayn-l2-003",
+      "ex-2am-masafa-nuqtatayn-l2-004",
+      "ex-2am-masafa-nuqtatayn-l2-005",
+      "ex-2am-masafa-nuqtatayn-l2-006",
+      "ex-2am-masafa-nuqtatayn-l2-007",
+      "ex-2am-masafa-nuqtatayn-l2-008",
+      "ex-2am-masafa-nuqtatayn-l2-009",
+      "ex-2am-masafa-nuqtatayn-l2-010"
+    ],
+    "3": [
+      "ex-2am-masafa-nuqtatayn-l3-001",
+      "ex-2am-masafa-nuqtatayn-l3-002",
+      "ex-2am-masafa-nuqtatayn-l3-003",
+      "ex-2am-masafa-nuqtatayn-l3-004",
+      "ex-2am-masafa-nuqtatayn-l3-005",
+      "ex-2am-masafa-nuqtatayn-l3-006",
+      "ex-2am-masafa-nuqtatayn-l3-007",
+      "ex-2am-masafa-nuqtatayn-l3-008",
+      "ex-2am-masafa-nuqtatayn-l3-009",
+      "ex-2am-masafa-nuqtatayn-l3-010"
+    ],
+    "4": [
+      "ex-2am-masafa-nuqtatayn-l4-001",
+      "ex-2am-masafa-nuqtatayn-l4-002",
+      "ex-2am-masafa-nuqtatayn-l4-003",
+      "ex-2am-masafa-nuqtatayn-l4-004",
+      "ex-2am-masafa-nuqtatayn-l4-005",
+      "ex-2am-masafa-nuqtatayn-l4-006",
+      "ex-2am-masafa-nuqtatayn-l4-007",
+      "ex-2am-masafa-nuqtatayn-l4-008",
+      "ex-2am-masafa-nuqtatayn-l4-009",
+      "ex-2am-masafa-nuqtatayn-l4-010"
+    ],
+    "5": [
+      "ex-2am-masafa-nuqtatayn-l5-001",
+      "ex-2am-masafa-nuqtatayn-l5-002",
+      "ex-2am-masafa-nuqtatayn-l5-003",
+      "ex-2am-masafa-nuqtatayn-l5-004",
+      "ex-2am-masafa-nuqtatayn-l5-005",
+      "ex-2am-masafa-nuqtatayn-l5-006",
+      "ex-2am-masafa-nuqtatayn-l5-007",
+      "ex-2am-masafa-nuqtatayn-l5-008",
+      "ex-2am-masafa-nuqtatayn-l5-009",
+      "ex-2am-masafa-nuqtatayn-l5-010"
     ]
   },
   "muqarana-kasrayn": {

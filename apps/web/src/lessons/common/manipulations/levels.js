@@ -898,6 +898,23 @@ export const LEVELS = Object.freeze({
       { id: 'a3', kind: 'tank', bottles: 40, size: 0.25, carry: 4 },
     ] }, ...T('method-5') },
   },
+  // LA CHARGE SOUS LA MAIN (bridge-load, thème weighbridge, 2AM unité 4, leçon « اختبار مساواة أو متباينة », 2026-10-29) : une tâche est `{ id, rule, loads?, cards?, kind?: 'claim', predict?, at? }` (`rule` ASCII à UN signe ; un second membre à lettre = DEUX voies).
+  // مبتدئ (plateforme) : b1 4000 + 50x < 5000 (charges 15 et 22, puis les cartes 18 19 20 21 : 18 et 19 seules passent, 20 donne 5000 pile), b2 4500 + 50x + 40y < 7000 (deux inconnues : (20, 30) ✓ 6700, (30, 25) ✗ 7000, (25, 35) ✗ 7150),
+  // b3 deux camions 3000 + 70x et 3600 + 50x à UNE charge (20 ≠, 30 égaux à 5100, 40 ≠). متقدم (method-3) : l'écran est MASQUÉ jusqu'à ce que l'élève ait tapé les deux masses, a1 « A est toujours plus léger que B » (3000 + 70x < 3600 + 50x, x = 31 réfute),
+  // a2 « égales parce qu'égales pour x = 10 » (2000 + 100x et 2400 + 60x, x = 0 réfute), a3 la pancarte « ≤ 7000 » (4500 + 50x + 40y ≤ 7000, cartes (10,40) (30,25) (40,15) (25,30) : 7000 passe). Le test des niveaux mesure la paire par la PRÉDICTION
+  // (متقدم seul), les AFFIRMATIONS à réfuter (متقدم seul) et le signe ≤ (متقدم seul).
+  'bridge-load': {
+    beginner: { numbers: { tasks: [
+      { id: 'b1', rule: '4000+50x<5000', loads: [15, 22], cards: [18, 19, 20, 21] },
+      { id: 'b2', rule: '4500+50x+40y<7000', loads: [[20, 30], [30, 25], [25, 35]] },
+      { id: 'b3', rule: '3000+70x=3600+50x', loads: [20, 30, 40] },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', kind: 'claim', rule: '3000+70x<3600+50x', predict: true },
+      { id: 'a2', kind: 'claim', rule: '2000+100x=2400+60x', predict: true, at: 10 },
+      { id: 'a3', rule: '4500+50x+40y<=7000', cards: [[10, 40], [30, 25], [40, 15], [25, 30]] },
+    ] }, ...T('method-3') },
+  },
   // LE SIGNE D'UN TERME SOUS LA MAIN (term-ferry, thème river) : l'équation a une solution CACHÉE ; la main porte chaque caisse (terme) d'une rive à
   // l'autre en choisissant son signe, puis le diviseur. مبتدئ (plateforme) : 3x + 2 = x + 8 (x = 3) puis 4x − 3 = 2x + 7 (x = 5), x se rassemble à gauche.
   // متقدم (طريقة p. 77) : 9x + 1 = 5x − 7 (x = −2), puis −2x + 5 = 3x − 10 (un coefficient NÉGATIF : on divise par −5), puis 7x − 190 = 6x + 110 (x = 300).
@@ -1051,6 +1068,22 @@ export const LEVELS = Object.freeze({
       { id: 'p2', kind: 'tap', stake: '3;3', targets: [{ name: 'ring', at: '2.5;-1.5' }, { name: 'arrow', at: '-1.5;0' }] },
       { id: 'p3', kind: 'mirror', stake: '3;3', find: 'coin' },
     ] }, ...T('method-2') },
+  },
+  // L'OUVERTURE D'UN COMPAS SOUS LA MAIN (gap-caliper, thème meteoboard, 2AM unité 3, leçon 5) : un compas en laiton serré sur une graine d'un thermomètre géant ; la main tourne la vis, l'ouverture (toujours ≥ 0) est la distance.
+  // مبتدئ (plateforme) : le compas est serré sur la graine du BAS — g1 −4 et +9 (le compas traverse le zéro : 13), g2 −7 et −2 (5), g3 +3 et +11 (8), g4 −6 et 0 (6, la règle). متقدم (plateforme) : l'ouverture est ÉCRITE
+  // avant de tourner la vis — a1 −2,5 et +6 (8,5), a2 une ouverture FIXE de 4 autour de +1,5 balancée vers le haut puis vers le bas (deux points), a3 le compas serré sur la graine du HAUT (+3 et −6,5 : 9,5, AB = BA).
+  'gap-caliper': {
+    beginner: { numbers: { tasks: [
+      { id: 'g1', anchor: '-4', target: '9' },
+      { id: 'g2', anchor: '-7', target: '-2' },
+      { id: 'g3', anchor: '3', target: '11' },
+      { id: 'g4', anchor: '-6', target: '0' },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', anchor: '-2.5', target: '6', predict: true },
+      { id: 'a2', kind: 'swing', anchor: '1.5', d: '4' },
+      { id: 'a3', anchor: '3', target: '-6.5', predict: true },
+    ] }, ...T('deep-41') },
   },
   // ── 3AM, unité 6 « التناسبية » (2026-10-21) ──
   // LES SIGNES ET L'ORDRE DES CARTES SOUS LA MAIN (robot-track, thème roboticsClub, 3AM unité 1, leçon 2) : un robot part de 1 ; chaque carte multiplie sa position.

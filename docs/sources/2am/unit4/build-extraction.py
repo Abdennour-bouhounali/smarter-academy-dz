@@ -482,6 +482,12 @@ for _e in E:
     if _e['id'] in HALL_READ:
         _e['verified'] = True
 
+# ikhtibar-musawat-mutabayina (2026-10-30) : pages 57, 58, 61, 64 et 66 du livre (PDF 54, 57, 58, 61, 66 relues à 100 dpi) — les éléments qu'elle destine à son contenu sont vérifiés (act-3 q4 : la liste « … ، 5 ، 6 ، 7 » reste coupée à gauche).
+IKHTIBAR_READ = {'act-3', 'know-3', 'know-4', 'method-3', 'now-61', 'ex-27', 'ex-28', 'ex-29', 'ex-30', 'ex-31', 'ex-32', 'ex-33', 'ict'}
+for _e in E:
+    if _e['id'] in IKHTIBAR_READ:
+        _e['verified'] = True
+
 ids = [e['id'] for e in E]
 assert len(ids) == len(set(ids)), 'id en double'
 missing = [i for i in ids if i not in DEST]

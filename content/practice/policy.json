@@ -5,6 +5,10 @@
   ],
   "defaultMinPerLevel": 3,
   "lessons": {
+    "ikhtibar-musawat-mutabayina": {
+      "minPerLevel": 10,
+      "source": "السنة الثانية متوسط، الوحدة 4 «مفهوم المعادلة» — الدرس «اختبار صحة مساواة أو متباينة» (الكتاب ص 57 و60 و61 و64 و65 و66 و67: docs/sources/2am/unit4/extraction.json؛ خطّة الدرس: docs/sources/2am/unit4/plan/ikhtibar-musawat-mutabayina.md) مكمَّلة بتمارين تولّدها المنصّة على منوال اختبارات الفصل الثاني والثالث، واثنا عشر منها على منوال تمرين واحد قرأناه فعلًا في الورقة (2am-s2-73 و -50 و -52 و -59 و -75 (جزءان) و -72 و 2am-s3-31 و -39 و -41 و -44 و 1am-s2-79، بأعدادها وسياقاتها الجديدة ولكلّ جزء من ورقة ورقة واحدة) (docs/sources/moyen/exams/exams-index.json، EXAM_PATTERN.md §6) — 10 تمارين × 5 مستويات (2026-10-29)"
+    },
     "hall-mushkil-muadala": {
       "minPerLevel": 10,
       "source": "السنة الثانية متوسط، الوحدة 4 «مفهوم المعادلة» — الدرس «حلّ مشكل باستعمال معادلة» (الكتاب ص 57 و60 و61 و64 و65 و67: docs/sources/2am/unit4/extraction.json؛ خطّة الدرس: docs/sources/2am/unit4/plan/hall-mushkil-muadala.md) مكمَّلة بتمارين تولّدها المنصّة على منوال اختبارات الفصل الثاني والثالث، وثمانية منها على منوال تمرين واحد قرأناه فعلًا في الورقة (2am-s2-72 و -50 و -73 و -75 و 1am-s2-79 و 2am-s3-25، بأعدادها وسياقاتها الجديدة ولكلّ جزء من ورقة ورقة واحدة) (docs/sources/moyen/exams/exams-index.json، EXAM_PATTERN.md §6) — 10 تمارين × 5 مستويات (2026-10-29)"
@@ -320,6 +324,10 @@
     "majmu-jabri": {
       "minPerLevel": 10,
       "source": "السنة الثانية متوسط، الوحدة 3 «الأعداد النسبية» — الدرس «حساب مجموع جبري» (الكتاب ص 41 و44 و45 و48 و49 و50 و51: docs/sources/2am/unit3/extraction.json؛ خطّة الدرس: docs/sources/2am/unit3/plan/majmu-jabri.md) مكمَّلة بتمارين تولّدها المنصّة على منوال اختبارات الفصل الأول والثاني والثالث (2am-s2-63، -62، -50، -72، -73، -53، -71، -59، -52، -75، 1am-s2-79، 2am-s1-66، 2am-s3-40، -44) (docs/sources/moyen/exams/exams-index.json، EXAM_PATTERN.md §6) — 10 تمارين × 5 مستويات (المرحلة 3 من تعميم الطور المتوسط، 2026-10-29)"
+    },
+    "masafa-nuqtatayn": {
+      "minPerLevel": 10,
+      "source": "السنة الثانية متوسط، الوحدة 3 «الأعداد النسبية» — الدرس «المسافة بين نقطتين على مستقيم مدرّج» (الكتاب ص 41 و44 و48 و49 و50 و53: docs/sources/2am/unit3/extraction.json؛ خطّة الدرس: docs/sources/2am/unit3/plan/masafa-nuqtatayn.md) مكمَّلة بتمارين تولّدها المنصّة على منوال اختبارات الفصل الأول والثاني (2am-s2-63، -62، -70، -73، -69، 2am-s1-66، -69) (docs/sources/moyen/exams/exams-index.json، EXAM_PATTERN.md §6) — 10 تمارين × 5 مستويات (المرحلة 3 من تعميم الطور المتوسط، 2026-10-29)"
     },
     "nashr-jabri-3am": {
       "minPerLevel": 10,

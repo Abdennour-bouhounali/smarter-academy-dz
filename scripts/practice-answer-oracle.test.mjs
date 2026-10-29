@@ -129,6 +129,7 @@ import { ORACLE as ORACLE_2AM_TALIM_MUDARRAJ, audit as auditTalimMudarraj } from
 import { ORACLE as ORACLE_2AM_TALIM_NUQTA, audit as auditTalimNuqta } from './practice-oracle/talim-nuqta-mustawi.mjs';
 import { ORACLE as ORACLE_2AM_JAM_TARH_NISBIYA, audit as auditJamTarhNisbiya } from './practice-oracle/jam-tarh-nisbiya.mjs';
 import { ORACLE as ORACLE_2AM_MAJMU_JABRI, audit as auditMajmuJabri } from './practice-oracle/majmu-jabri.mjs';
+import { ORACLE as ORACLE_2AM_MASAFA_NUQTATAYN, audit as auditMasafaNuqtatayn } from './practice-oracle/masafa-nuqtatayn.mjs';
 import { ORACLE as ORACLE_2AM_RABI_MUTANASIB } from './practice-oracle/rabi-mutanasib.mjs';
 import { ORACLE as ORACLE_2AM_SILSILA, audit as auditSilsila } from './practice-oracle/silsila-bidun-aqwas.mjs';
 import { ORACLE as ORACLE_2AM_SILSILA_AQWAS, audit as auditSilsilaAqwas } from './practice-oracle/silsila-bi-aqwas.mjs';
@@ -136,6 +137,7 @@ import { ORACLE as ORACLE_2AM_WASF_SILSILA, audit as auditWasfSilsila } from './
 import { ORACLE as ORACLE_2AM_TAWZI, audit as auditTawzi } from './practice-oracle/tawzi-darb-jam-tarh.mjs';
 import { ORACLE as ORACLE_2AM_IBARA_INTAJ, audit as auditIbaraIntaj } from './practice-oracle/ibara-harfiya-intaj.mjs';
 import { ORACLE as ORACLE_2AM_HALL_MUSHKIL, audit as auditHallMushkil } from './practice-oracle/hall-mushkil-muadala.mjs';
+import { ORACLE as ORACLE_2AM_IKHTIBAR, audit as auditIkhtibar } from './practice-oracle/ikhtibar-musawat-mutabayina.mjs';
 import { ORACLE as ORACLE_2AM_WADIYA_KUSUR_AMALIYAT, audit as auditWadiyaKusurAmaliyat } from './practice-oracle/wadiya-idmajiya-kusur-amaliyat.mjs';
 import { ORACLE as ORACLE_2AM_WADIYA_AMALIYAT, audit as auditWadiyaAmaliyat } from './practice-oracle/wadiya-idmajiya-amaliyat-tabiiya-ushriya.mjs';
 import { ORACLE as ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA } from './practice-oracle/ikhtizal-kitaba-kasriya.mjs';
@@ -327,6 +329,7 @@ const ORACLE = {
   ...ORACLE_2AM_TALIM_NUQTA,
   ...ORACLE_2AM_JAM_TARH_NISBIYA,
   ...ORACLE_2AM_MAJMU_JABRI,
+  ...ORACLE_2AM_MASAFA_NUQTATAYN,
   ...ORACLE_2AM_RABI_MUTANASIB,
   ...ORACLE_2AM_SILSILA,
   ...ORACLE_2AM_SILSILA_AQWAS,
@@ -334,6 +337,7 @@ const ORACLE = {
   ...ORACLE_2AM_TAWZI,
   ...ORACLE_2AM_IBARA_INTAJ,
   ...ORACLE_2AM_HALL_MUSHKIL,
+  ...ORACLE_2AM_IKHTIBAR,
   ...ORACLE_2AM_WADIYA_KUSUR_AMALIYAT,
   ...ORACLE_2AM_WADIYA_AMALIYAT,
   ...ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA,
@@ -588,10 +592,20 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     expect(own.length).toBeGreaterThan(0);
     expect(auditMajmuJabri(own)).toEqual([]);
   });
+  it('المسافة بين نقطتين على مستقيم مدرّج (2AM) : centièmes BigInt propres à l\'oracle (aucun import de packages/core), chaque distance = plus grande abscisse − plus petite (jamais négative, AB = BA), chaque paire de points à la distance d de M (M ± d), chaque milieu = plus petite abscisse + moitié de la distance (refusé s\'il exige 3 décimales, aucune formule (a+b)/2 dans le texte), chaque trajet (somme des tronçons), nombre de graduations (quotient exact), déduction de AB (somme ou différence selon la position de C), déplacement commun (distance inchangée), comparaisons de distances (extremum unique), étapes des leçons antérieures counted: false (ordre, différence de relatifs, opposé, coût), QCM jugés option par option (une seule vraie, jamais toujours la première), chaque signature / distracteur MISC-MASAFA2-* (SUBDIST, ADDSAME, NEGDIST, ONEANSWER, SIGNSWAP, HALFDIST, SUMNOHALF, ORDERSWAP) recalculé depuis son erreur nommée et FAUX, الكفاءة de chaque question, nombres imprimés = nombres retapés, texte relu (aucun renvoi au manuel, aucun terme interdit, unités et nombres signés dans $…$), provenance : 7 term_exam lus, 37 modelled, 6 adaptés', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-masafa-nuqtatayn-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditMasafaNuqtatayn(own)).toEqual([]);
+  });
   it('حلّ مشكل باستعمال معادلة (2AM) : rationnels exacts BigInt propres à l\'oracle (aucun import de packages/core), chaque équation retapée de l\'énoncé résolue par annulation de la chaîne d\'opérations (dernière opération d\'abord, aucune étape négative) puis vérifiée par substitution, chaque QCM de valeur / d\'équation d\'histoire / d\'étape jugé option par option (une seule vraie), chaque distracteur et chaque signature = la recette de sa lecture nommée et FAUX (MULTDIV, FLIP, SUBFORM, ADDFORM, DIVDIVIDEND, RANK, UNDOFIRST, SWAP, ROLE), « نعم / لا » par comparaison exacte, LaTeX de chaque énoncé / option / corrigé relu (chiffres et unités dans des îlots $…$, aucun renvoi au manuel), provenance : 8 term_exam lus (2am-s2-72 / -50 ×2 / -73 / -75, 1am-s2-79, 2am-s3-25 ×2, une partie par feuille), 36 modelled, 6 adaptés vérifiés dans l\'extraction', () => {
     const own = bank.filter((b) => b.key.startsWith('ex-2am-hall-mushkil-muadala-'));
     expect(own.length).toBeGreaterThan(0);
     expect(auditHallMushkil(own)).toEqual([]);
+  });
+  it('اختبار صحة مساواة أو متباينة (2AM) : rationnels exacts BigInt propres à l\'oracle (aucun import de packages/core), chaque relation retapée de l\'énoncé évaluée membre à membre avec les valeurs données (signées, deux inconnues) et comparée par son opérateur, chaque « احسب قيمة » recalculé, chaque QCM de valeur / d\'ensemble de valeurs / de cas de situation jugé option par option (une seule vraie), égalité de deux expressions décidée par identité polynomiale sur 12 points avec contre-exemple unique ré-évalué, distributivité (une seule option identique), chaque distracteur et chaque signature = la recette de sa lecture nommée et FAUX (ONESIDE, SWAP, BOUNDARY, STRICT, ONEVALUE, MANYEX, JUXTA, SIGNSUB), LaTeX relu (chiffres et unités dans des îlots $…$, aucun renvoi au manuel, ni « معادلة » ni « حلّ »), provenance : 12 term_exam lus (une partie par feuille), 32 modelled, 6 adaptés vérifiés dans l\'extraction', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-ikhtibar-musawat-mutabayina-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditIkhtibar(own)).toEqual([]);
   });
 
   it('le cas signalé (6 | 120) : « 6 مضاعف للعدد 120 » est faux, seul « لا » est accepté', () => {

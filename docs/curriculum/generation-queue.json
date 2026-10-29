@@ -111,26 +111,6 @@
       ]
     },
     {
-      "code": "masafa-nuqtatayn",
-      "grade": "2am",
-      "unit": "adad-nisbiya-2",
-      "titleAr": "المسافة بين نقطتين على مستقيم مدرّج",
-      "kind": "lesson",
-      "trigger": "hisab-murakkibatay",
-      "via": [
-        "2am.m4.r07"
-      ]
-    },
-    {
-      "code": "wadiya-idmajiya-adad-nisbiya-2",
-      "grade": "2am",
-      "unit": "adad-nisbiya-2",
-      "titleAr": "أدمج تعلّماتي — الأعداد النسبية",
-      "kind": "synthesis",
-      "trigger": "unité adad-nisbiya-2 complète",
-      "via": []
-    },
-    {
       "code": "qays-zawiya-minqala",
       "grade": "1am",
       "unit": "zawaya-qiyas",
@@ -317,26 +297,6 @@
       "via": [
         "1am.m5.r10"
       ]
-    },
-    {
-      "code": "ikhtibar-musawat-mutabayina",
-      "grade": "2am",
-      "unit": "mafhum-muadala",
-      "titleAr": "اختبار صحة مساواة أو متباينة",
-      "kind": "lesson",
-      "trigger": "muadala-ula",
-      "via": [
-        "2am.m4.r09"
-      ]
-    },
-    {
-      "code": "wadiya-idmajiya-mafhum-muadala",
-      "grade": "2am",
-      "unit": "mafhum-muadala",
-      "titleAr": "أدمج تعلّماتي — مفهوم معادلة",
-      "kind": "synthesis",
-      "trigger": "unité mafhum-muadala complète",
-      "via": []
     },
     {
       "code": "talim-fi-mustawi",
@@ -1147,6 +1107,24 @@
       "titleAr": "أدمج تعلّماتي — الموشور القائم وأسطوانة الدوران",
       "kind": "synthesis",
       "trigger": "unité mawshur-ustuwana complète",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-adad-nisbiya-2",
+      "grade": "2am",
+      "unit": "adad-nisbiya-2",
+      "titleAr": "أدمج تعلّماتي — الأعداد النسبية",
+      "kind": "synthesis",
+      "trigger": "unité adad-nisbiya-2 complète",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-mafhum-muadala",
+      "grade": "2am",
+      "unit": "mafhum-muadala",
+      "titleAr": "أدمج تعلّماتي — مفهوم معادلة",
+      "kind": "synthesis",
+      "trigger": "unité mafhum-muadala complète",
       "via": []
     },
     {

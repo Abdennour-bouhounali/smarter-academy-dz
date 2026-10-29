@@ -6,7 +6,7 @@
  * Elle grandit leçon par leçon :
  *   E1 `ibara-harfiya-intaj`        valueTable · firstMismatch · sameCount · simplified · showTimes · polyOf
  *   E2 `hall-mushkil-muadala`       solveForm · checkForm · undoChain · formOf
- *   E3 `ikhtibar-musawat-mutabayina` (à venir : parseRelation, testAt, whichHold, identityVerdict)
+ *   E3 `ikhtibar-musawat-mutabayina` parseRelation · testAt · whichHold · identityVerdict · relText
  *
  * Les valeurs de cette leçon sont toutes ≥ 0 (ordre de génération, plan README, question 10) ; le code lui-même est exact pour les relatifs.
  */
@@ -219,6 +219,84 @@ export function formOf(text) {
   if ((r = m(new RegExp(`^${NUM}\\+x=${NUM}$`))) || (r = m(new RegExp(`^x\\+${NUM}=${NUM}$`)))) return { form: 'plus', a: r[1], b: r[2] };
   if ((r = m(new RegExp(`^${NUM}-x=${NUM}$`)))) return { form: 'minus', a: r[1], b: r[2] };
   return null;
+}
+
+/* ═════════════ E3 — tester une égalité / une inégalité par substitution (`ikhtibar-musawat-mutabayina`, 2026-10-29) ═════════════ */
+
+const REL_TOKENS = [['<=', '≤'], ['>=', '≥'], ['≤', '≤'], ['≥', '≥'], ['=', '='], ['<', '<'], ['>', '>']];
+const REL_SIGN = { '=': '=', '<': '<', '>': '>', '≤': '≤', '≥': '≥' };
+/** Le signe d'une relation, écrit comme dans le cahier (« ≤ » reste « ≤ »). */
+export const relText = (rel) => REL_SIGN[rel];
+
+/**
+ * Lit « 4000 + 50x < 5000 » (ou =, >, ≤, ≥, aussi « <= » et « >= ») → { left, rel, right, leftText, rightText } : les deux membres sont des arbres de `parseExpression`
+ * (lettres de `LETTERS_2AM`). Exactement UN signe ; sinon lève une erreur.
+ */
+export function parseRelation(text) {
+  const raw = String(text);
+  let hit = null;
+  for (let i = 0; i < raw.length && !hit; i += 1) {
+    for (const [tok, rel] of REL_TOKENS) {
+      if (raw.startsWith(tok, i)) { hit = { at: i, len: tok.length, rel }; break; }
+    }
+  }
+  if (!hit) throw new Error('aucun signe de comparaison');
+  const leftText = raw.slice(0, hit.at).trim(); const rightText = raw.slice(hit.at + hit.len).trim();
+  if (!leftText || !rightText || /[<>=≤≥]/.test(rightText)) throw new Error('relation illisible');
+  return { left: parse(leftText), rel: hit.rel, right: parse(rightText), leftText, rightText };
+}
+
+const holdsRel = (rel, a, b) => {
+  const c = sub(a, b); const sg = sign(c);
+  if (rel === '=') return sg === 0;
+  if (rel === '<') return sg < 0;
+  if (rel === '>') return sg > 0;
+  if (rel === '≤') return sg <= 0;
+  return sg >= 0;
+};
+
+/** « 4000 + 50 × 15 » (chaque × caché écrit) pour un membre ; un membre sans lettre s'écrit seul. */
+const memberLine = (tree, env) => {
+  const sl = slots(tree);
+  return tokensText(writeLine(tree, env, sl.map(() => ({ times: true, brackets: false }))));
+};
+
+/**
+ * L'ESSAI d'une relation en un point : `env` = { x: 15, y: '2,5' } (entiers, textes « 1,5 » ou rationnels). Rend
+ * `{ leftValue, rightValue, holds, lines: { left, right, leftEq, rightEq, cmp } }` — `leftEq` « 4000 + 50 × 15 = 4750 », `cmp` « 4750 < 5000 » : la ligne du tableau « النتيجة ».
+ */
+export function testAt(relation, env = {}) {
+  const rel = typeof relation === 'string' ? parseRelation(relation) : relation;
+  const e = Object.fromEntries(Object.entries(env).map(([k, v]) => {
+    const r = asRat(v);
+    return [k, { v: r, fmt: r.d === 1n ? 'int' : decimalText(r) ? 'dec' : 'frac' }];
+  }));
+  const plain = Object.fromEntries(Object.entries(e).map(([k, o]) => [k, o.v]));
+  const leftValue = evaluate(rel.left, plain); const rightValue = evaluate(rel.right, plain);
+  const lv = ratText(leftValue); const rv = ratText(rightValue);
+  const left = memberLine(rel.left, e); const right = memberLine(rel.right, e);
+  return {
+    leftValue, rightValue, holds: holdsRel(rel.rel, leftValue, rightValue),
+    lines: { left, right, leftEq: `${left} = ${lv}`, rightEq: `${right} = ${rv}`, cmp: `${lv} ${relText(rel.rel)} ${rv}` },
+  };
+}
+
+/** Parmi `values` (valeurs de `letter`), celles qui rendent la relation vraie, dans l'ordre donné (rationnels). `env` : les AUTRES lettres. */
+export function whichHold(relation, letter, values, env = {}) {
+  const rel = typeof relation === 'string' ? parseRelation(relation) : relation;
+  return values.map(asRat).filter((v) => testAt(rel, { ...env, [letter]: v }).holds);
+}
+
+/**
+ * Deux expressions sont-elles égales POUR TOUTE valeur de `letter` ? `'always'` (même polynôme) ; `{ counterexample }` (la première valeur de
+ * `candidates` où elles diffèrent) ; `{ counterexample: null }` si elles diffèrent mais qu'aucun candidat ne le montre.
+ */
+export function identityVerdict(textA, textB, candidates = [0, 1, 2, 3, 4, 5, 10], letter = 'x') {
+  const a = parse(textA); const b = parse(textB);
+  const same = samePolynomial(a, b, letter);
+  if (same === true) return 'always';
+  const hit = witness(a, b, candidates.map(asRat), letter);
+  return { counterexample: hit };
 }
 
 export { eq as sameValue };

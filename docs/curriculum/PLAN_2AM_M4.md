@@ -147,6 +147,14 @@ Learned in pair 2 (2026-10-29):
 - A lab typing slate drops the 0–9 chips to fit one screen only with `inputMode="decimal"`; the lab glance is asserted ≤ 700 px at 1024×768
   in BOTH levels by the lesson's e2e (`[data-…-glance]`).
 - A lead who reports « I did not view / re-run X » has not finished: view every capture, re-run the e2e and `check:lessons` after the LAST edit.
+Learned in pair 3 (2026-10-29):
+- Whenever you touch `knowledge.jsx` / `knowledgeGraph.js` (memo cards, items, nodes), run `cd apps/web && npx vitest run src/lessons/common/knowledge`:
+  it holds `lessonGraphs.test.js` (every item on exactly ONE notebook node; chain order = module order; no false numeric equality in a
+  « wrong » text; no overlap or arrow through a node at 328/400/720/1100 px). Your lesson-folder tests do not run it.
+- Memo cards: a `rule` ≤ ~20–28 characters of KaTeX and an `example` ≤ ~40; a longer formula is clipped on the left or overprints the
+  example. Your e2e asserts that no `.katex` inside a `[data-memo-card]` leaves its card or overlaps another formula.
+- The local API (`php artisan serve` on 127.0.0.1:8000, in `apps/api`) must be up for the lesson-kit e2e; if it is down, ask the coordinator.
+- 4AM lessons cannot take a 2AM/3AM LP as `pointPrerequisites` (`decomposition.test.js`): only the item / lesson level links reach 4AM.
 - Two leads in the SAME unit (pair 3 is unit 3 twice) edit `docs/sources/2am/unit3/build-extraction.py` / `extraction.json` and
   `relative.js`: small targeted edits after a fresh read, never a regeneration of the whole file.
 
