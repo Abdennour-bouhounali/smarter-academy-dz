@@ -294,6 +294,11 @@ export const VISUAL_THEMES = Object.freeze({
   //   mountaintrail  un sentier de forêt de cèdres vu de côté : collines, cèdres, le ruban du sentier en S doux (ou un circuit fermé), des poteaux blancs tous les 1/n et des poteaux
   //                  rouges tous les k blancs, le portail en bois « مدخل الحظيرة », la source « العين », une randonneuse (KidFigure : fille en hijab) ou un randonneur (`trail-odometer`)
   mountaintrail: { kind: 'lengths', shows: 'مسلك جبلي في غابة الأرز: أعمدة بيضاء وحمراء وبوّابة وعين ماء' },
+  // 2AM, unité 2, leçon 8 (2026-10-29) :
+  //   classwindow  l'intérieur d'une salle de classe : une grande fenêtre à cadre d'aluminium blanc (ou un mur de 2 × 2 fenêtres, « واجهة المكتبة الزجاجية ») sur la cour et un palmier, un rideau latéral sur un
+  //                rail à crans, un store à enrouleur sur un cordon à crans, deux ombres translucides qui s'additionnent là où elles se recouvrent, un écran de projection dans le coin sombre, une élève
+  //                (KidFigure : fille en hijab) ou un élève (`window-blinds`)
+  classwindow: { kind: 'areas', shows: 'نافذة القسم: ستارة جانبية وستارة دوّارة وظلّ مزدوج' },
   // 3AM, unité 4 (2026-10-21) :
   //   schoolgarden  le jardin de l'école vu d'en haut : un terrain rectangulaire (pelouse, massif de fleurs, allée dallée) que la
   //                 main coupe en parcelles, et une jardinière (KidFigure, hijab) à son bord (`area-split`)
@@ -327,14 +332,14 @@ export const VISUAL_THEMES = Object.freeze({
   //   coopshop  le comptoir de la coopérative de l'école : étagères de cahiers et de boîtes de crayons, comptoir en bois, une grande calculatrice scientifique avec son ruban imprimé, les marchandises de
   //             l'histoire et leur partage, Hiba (KidFigure, hijab) derrière le comptoir (`coop-calculator`)
   coopshop: { kind: 'objects', shows: 'تعاونية المدرسة: منضدة وآلة حاسبة علمية كبيرة بشريط مطبوع وسلعة الوضعية' },
+  // 2AM, unité 1, leçon 3 (2026-10-29) :
+  //   corkboard  la السبّورة الفلّينية du class : un ruban de papier imprimé porte la chaîne, des agrafes en métal posées par le calcul, des ciseaux, deux poches étiquetées et une planche d'autocollants ; Yasmine (KidFigure, hijab) tient le téléphone (`chain-cutter`)
+  corkboard: { kind: 'objects', shows: 'سبّورة فلّين في القسم: شريط ورقي مطبوع، دبابيس ومقصّ وجيوب بطاقات' },
   // 3AM, unité 2, leçon 2 (2026-10-26) :
   //   paintshop  la machine à teinter d'un magasin de peinture de quartier : un bec de laiton au-dessus du seau B et une manette, le seau de référence A
   //              scellé avec son étiquette et sa pastille, deux grandes pastilles de couleur côte à côte et un mesureur à aiguille « أفتح · أغمق »,
   //              un élève (KidFigure) au rouleau devant l'esquisse de la fresque (`shade-match`)
   paintshop: { kind: 'objects', shows: 'آلة مزج الألوان في محلّ الطلاء: دلوان وعلب أبيض ورافعة للأزرق' },
-  // 2AM, unité 1, leçon 3 (2026-10-29) :
-  //   corkboard  la السبّورة الفلّينية du class : un ruban de papier imprimé porte la chaîne, des agrafes en métal posées par le calcul, des ciseaux, deux poches étiquetées et une planche d'autocollants ; Yasmine (KidFigure, hijab) tient le téléphone (`chain-cutter`)
-  corkboard: { kind: 'objects', shows: 'سبّورة فلّين في القسم: شريط ورقي مطبوع، دبابيس ومقصّ وجيوب بطاقات' },
   // 3AM, unité 2, leçon 3 (2026-10-26) :
   //   seedbed  un حوض غرس d'un jardin d'école de 1 m : une règle en bois le long du bord (0 … 1 m), des zones de cultures peintes à partir de la gauche
   //            (tomates, piments, oignons) avec leur pancarte, un râteau de jardin dont l'espacement des dents est la variable, des plants dans des cases

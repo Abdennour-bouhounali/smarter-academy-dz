@@ -150,7 +150,7 @@ E.append({'id': 'act-4', 'kind': 'activity', 'number': 4, 'page': 24, 'section':
           'answer': {'squares': 24, 'sum': frac(F(6, 24) + F(5, 24)), 'train': frac(F(7, 18) + F(5, 9)), 'bus': frac(1 - F(17, 18))}, 'answerSource': 'computed',
           'note': 'Page 25 : la marge droite est coupée par le scan (début des lignes).'})
 assert F(13, 7) * F(5, 3) == F(65, 21) and F(13, 7) * 1 == F(13, 7)
-E.append({'id': 'act-5', 'kind': 'activity', 'number': 5, 'page': 25, 'section': 'أنشطة', 'title': 'جداء كسرين', 'verified': False,
+E.append({'id': 'act-5', 'kind': 'activity', 'number': 5, 'page': 25, 'section': 'أنشطة', 'title': 'جداء كسرين', 'verified': True,
           'text': 'يمثّل الشكل المقابل كعكة مستطيلة الشكل تم تقسيمها إلى حصص متطابقة شكل كل واحدة منها مستطيل (أنظر المستطيل البرتقالي). الكعكة 13cm × 5cm مقسّمة إلى 7 × 3 حصص. 1) لاحظ الشكل ثم أجب. أ) بالنسبة للمستطيل البرتقالي، ماذا يمثل الكسر 13/7 ؟ عيّن الكسر الذي يمثل عرض المستطيل البرتقالي. ب) اكتب العملية التي تسمح لك بحساب مساحة المستطيل البرتقالي. 2) احسب مساحة المستطيل البرتقالي بطريقتين مختلفتين. ماذا تستنتج؟ 3) أعط القاعدة التي تسمح بحساب جداء كسرين.',
           'answer': {'length': '13/7', 'width': '5/3', 'area': frac(F(13, 7) * F(5, 3)), 'check': frac(F(13 * 5, 21))}, 'answerSource': 'computed'})
 E.append({'id': 'act-6', 'kind': 'activity', 'number': 6, 'page': 25, 'section': 'أنشطة', 'title': 'مقارنة كسرين', 'verified': False,
@@ -215,7 +215,7 @@ E.append({'id': 'know-2b', 'kind': 'knowledge', 'number': 2, 'page': 28, 'sectio
           'text': 'خاصية: لجمع (أو طرح) عددين مكتوبين على شكل كسرين مقام أحدهما مضاعف لمقام الآخر نقوم بما يلي: نكتب الكسرين بنفس المقام (توحيد المقامات). ثمّ نجمع (أو نطرح) البسطين اللذين حصلنا عليهما محتفظين بالمقام المشترك الجديد. أمثلة: 5/12 + 1/4 = 5/12 + (11 × 3)/(4 × 3) = 5/12 + 33/12 = (5 + 33)/12 = 38/12 = 19/6 ؛ 3/4 − 5/12 = (3 × 3)/(4 × 3) − 5/12 = 9/12 − 5/12 = (9 − 5)/12 = 4/12 = 1/3 .',
           'answer': {'1': frac(F(5, 12) + F(11, 4)), '2': frac(F(3, 4) - F(5, 12))}, 'answerSource': 'computed'})
 assert F(5, 7) * F(11, 3) == F(55, 21) and 3 * F(2, 5) == F(6, 5) and F(5, 7) * q('2,6') == F(13, 7)
-E.append({'id': 'know-2c', 'kind': 'knowledge', 'number': 2, 'page': 28, 'section': 'معارف', 'title': 'ضرب كسرين', 'verified': False,
+E.append({'id': 'know-2c', 'kind': 'knowledge', 'number': 2, 'page': 28, 'section': 'معارف', 'title': 'ضرب كسرين', 'verified': True,
           'text': 'قاعدة: لضرب عددين مكتوبين على شكل كسر، نضرب البسطين فيما بينهما و نضرب المقامين فيما بينهما. أمثلة: 5/7 × 11/3 = (5 × 11)/(7 × 3) = 55/21 ؛ 3 × 2/5 = (3 × 2)/5 = 6/5 ؛ 5/7 × 2,6 = 5/7 × 2,6/1 = (5 × 2,6)/(7 × 1) = 13/7 .',
           'answer': {'1': '55/21', '2': '6/5', '3': '13/7'}, 'answerSource': 'computed'})
 assert F(11, 5) > F(11, 7) and F(4, 13) < F(6, 13) and F(3, 4) == F(15, 20) and F(15, 20) < F(17, 20)
@@ -407,6 +407,11 @@ E.append({'id': 'ict-3', 'kind': 'ict', 'page': 37, 'section': 'أوظّف تك�
           'answer': {'between': [k for k, v in PI_CAND.items() if F(3141592653589793, 10 ** 15) < v < F(22, 7)]}, 'answerSource': 'computed',
           'reading': 'le dernier nombre est coupé à droite (« 157/25 » ou « 157/50 ») ; 3,142 est décimal et compris entre π et 22/7'})
 
+# jida-kasrayn (2026-10-29) : pp. 22 et 29 du PDF (livre 25 et 32) relues à 110 dpi — act-5, know-2c, method-4 et ex-26…34 de la page 32 sont confirmés
+for _e in E:
+    if _e['id'] in ('ex-26', 'ex-27', 'ex-28', 'ex-30', 'ex-34'):
+        _e['verified'] = True
+
 L1, L2, L3, L4, L5 = 'qisma-iqlidiya-hasr', 'kasr-hasil-qisma', 'jam-tarh-kusur', 'jida-kasrayn', 'muqarana-kasrayn'
 SYN = 'wadiya-idmajiya-kusur-amaliyat'
 DEST = {
@@ -421,21 +426,21 @@ DEST = {
         '10': {'lesson': L5, 'module': 0}}},
     'act-1': {'lesson': L1, 'module': 1},
     'act-2': {'lesson': L2, 'module': 4}, 'act-3': {'lesson': L2, 'module': 4},
-    'act-4': {'lesson': L3, 'module': 4}, 'act-5': {'lesson': L4, 'module': 1}, 'act-6': {'lesson': L5, 'module': 1},
+    'act-4': {'lesson': L3, 'module': 4}, 'act-5': {'lesson': L4, 'module': 4}, 'act-6': {'lesson': L5, 'module': 1},
     'know-1a': {'lesson': L1, 'module': 2}, 'know-1b': {'lesson': L1, 'module': 2},
     'know-1c': {'lesson': L2, 'module': 2}, 'know-1d': {'lesson': L2, 'module': 2}, 'know-1e': {'lesson': L2, 'module': 2},
     'method-1': {'lesson': L2, 'module': 4}, 'method-2': {'lesson': L2, 'module': 3}, 'now-27': {'lesson': L2, 'module': 4},
-    'know-2a': {'lesson': L3, 'module': 2}, 'know-2b': {'lesson': L3, 'module': 2}, 'know-2c': {'lesson': L4, 'module': None},
+    'know-2a': {'lesson': L3, 'module': 2}, 'know-2b': {'lesson': L3, 'module': 2}, 'know-2c': {'lesson': L4, 'module': 2},
     'know-3a': {'lesson': L5, 'module': None}, 'know-3b': {'lesson': L5, 'module': None}, 'know-3c': {'lesson': L5, 'module': None},
-    'method-3': {'lesson': L3, 'module': 3}, 'method-4': {'lesson': L4, 'module': None}, 'method-5': {'lesson': L5, 'module': None},
+    'method-3': {'lesson': L3, 'module': 3}, 'method-4': {'lesson': L4, 'module': 3}, 'method-5': {'lesson': L5, 'module': None},
     'now-29': {'lesson': L2, 'module': 4, 'items': {'1': {'lesson': L2, 'module': 4}, '2': {'lesson': L5, 'module': None}}},
     **{f'ex-{n}': {'lesson': L2, 'module': 4 if n in (1, 2) else None} for n in (1, 2, 3, 4, 5, 6)},
     **{f'ex-{n}': {'lesson': L3, 'module': 4} for n in (7, 8, 9, 10, 11, 12, 13, 14, 29, 31)},
-    **{f'ex-{n}': {'lesson': L4, 'module': None} for n in (15, 16, 17, 18, 19, 26, 27, 28, 30, 34)},
+    **{f'ex-{n}': {'lesson': L4, 'module': {28: 5, 34: 6, 30: None}.get(n, 4)} for n in (15, 16, 17, 18, 19, 26, 27, 28, 30, 34)},
     **{f'ex-{n}': {'lesson': L5, 'module': None} for n in (20, 21, 22, 23, 24, 25, 32)},
     'ex-33': {'lesson': L1, 'module': 4},
     **{f'self-{n}': {'lesson': L2, 'module': None} for n in (1, 2, 3, 4, 9)},
-    'self-12': {'lesson': L4, 'module': None},
+    'self-12': {'lesson': L4, 'module': 4},
     **{f'self-{n}': {'lesson': L3, 'module': 4} for n in (5, 6)},
     **{f'self-{n}': {'lesson': L4, 'module': None} for n in (7, 8)},
     **{f'self-{n}': {'lesson': L5, 'module': None} for n in (10, 11)},
@@ -443,7 +448,7 @@ DEST = {
     'deep-46': {'lesson': L2, 'module': None}, 'deep-47': {'lesson': L3, 'module': 4},
     **{f'deep-{n}': {'lesson': L2, 'module': 4} for n in (35, 38)},
     **{f'deep-{n}': {'lesson': L3, 'module': 4} for n in (36, 37, 40)},
-    **{f'deep-{n}': {'lesson': L4, 'module': None} for n in (39, 41, 42, 43, 44, 45)},
+    **{f'deep-{n}': {'lesson': L4, 'module': 4 if n == 42 else None} for n in (39, 41, 42, 43, 44, 45)},
     'integration': {'lesson': SYN, 'module': None},
     'evaluation': {'lesson': SYN, 'module': None},
     'ict-1': {'lesson': L3, 'module': 4}, 'ict-2': {'lesson': L2, 'module': None}, 'ict-3': {'lesson': L2, 'module': None},

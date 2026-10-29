@@ -109,3 +109,31 @@ export function complement(p, n = 1) {
   if (num < 0n) throw new RangeError('fractions2.complement: p dépasse n');
   return raw(num, x.d);
 }
+
+/* ── E3 — جداء كسرين ────────────────────────────────────────────────────────────────────────── */
+
+/**
+ * E3 — درس « جداء كسرين » (`jida-kasrayn`, labo `window-blinds`) :
+ *   productGrid(p, q)   p = a/b (largeur) × q = c/d (hauteur) : la grille b × d, a·c cases ombrées sur b·d → { cols, rows, shaded, total, raw, reduced } ;
+ *   timesNumber(n, p)   n (naturel ou décimal écrit « 2,8 ») × a/b → brut, non réduit (2,8 × 5/7 = 140/70) ;
+ *   fractionOf(p, x)    « p de x » = p × x, x un nombre (naturel, décimal) ou un brut → brut ;
+ *   ofRemainder(spent, part) « part de ce qui reste après spent » = part × (1 − spent), brut.
+ */
+export function productGrid(p, q) {
+  const a = toRaw(p); const c = toRaw(q);
+  if (a.n < 0n || c.n < 0n) throw new RangeError('fractions2.productGrid: fractions positives');
+  const num = a.n * c.n; const den = a.d * c.d;
+  const g = gcd(num, den) || 1n;
+  return { cols: a.d, rows: c.d, shaded: num, total: den, raw: raw(num, den), reduced: { n: num / g, d: den / g } };
+}
+export function timesNumber(n, p) {
+  const x = toRaw(typeof n === 'string' ? n.replace(',', '.') : n); const f = toRaw(p);
+  return raw(x.n * f.n, x.d * f.d);
+}
+export function fractionOf(p, x) {
+  const f = toRaw(p); const y = toRaw(typeof x === 'string' ? x.replace(',', '.') : x);
+  return raw(f.n * y.n, f.d * y.d);
+}
+export function ofRemainder(spent, part) {
+  return fractionOf(part, complement(spent));
+}

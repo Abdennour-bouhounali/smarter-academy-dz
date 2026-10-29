@@ -368,7 +368,7 @@
    "page": 25,
    "section": "أنشطة",
    "title": "جداء كسرين",
-   "verified": false,
+   "verified": true,
    "text": "يمثّل الشكل المقابل كعكة مستطيلة الشكل تم تقسيمها إلى حصص متطابقة شكل كل واحدة منها مستطيل (أنظر المستطيل البرتقالي). الكعكة 13cm × 5cm مقسّمة إلى 7 × 3 حصص. 1) لاحظ الشكل ثم أجب. أ) بالنسبة للمستطيل البرتقالي، ماذا يمثل الكسر 13/7 ؟ عيّن الكسر الذي يمثل عرض المستطيل البرتقالي. ب) اكتب العملية التي تسمح لك بحساب مساحة المستطيل البرتقالي. 2) احسب مساحة المستطيل البرتقالي بطريقتين مختلفتين. ماذا تستنتج؟ 3) أعط القاعدة التي تسمح بحساب جداء كسرين.",
    "answer": {
     "length": "13/7",
@@ -577,7 +577,7 @@
    "page": 28,
    "section": "معارف",
    "title": "ضرب كسرين",
-   "verified": false,
+   "verified": true,
    "text": "قاعدة: لضرب عددين مكتوبين على شكل كسر، نضرب البسطين فيما بينهما و نضرب المقامين فيما بينهما. أمثلة: 5/7 × 11/3 = (5 × 11)/(7 × 3) = 55/21 ؛ 3 × 2/5 = (3 × 2)/5 = 6/5 ؛ 5/7 × 2,6 = 5/7 × 2,6/1 = (5 × 2,6)/(7 × 1) = 13/7 .",
    "answer": {
     "1": "55/21",
@@ -1123,7 +1123,7 @@
    "page": 32,
    "section": "أوظّف تعلّماتي",
    "group": "تطبيقات",
-   "verified": false,
+   "verified": true,
    "text": "باستعمال وحدة طول مختارة، احسب حجم هذه العلبة إذا علمت أنّ: طولها 14/3 وعرضها 12/7 وارتفاعها 5/2 .",
    "answer": "20",
    "answerSource": "computed"
@@ -1135,7 +1135,7 @@
    "page": 32,
    "section": "أوظّف تعلّماتي",
    "group": "الكسور و الهندسة",
-   "verified": false,
+   "verified": true,
    "text": "احسب محيط و مساحة مستطيل إذا علمت أن طوله 121m و عرضه يساوي 7/11 من طوله.",
    "answer": {
     "width": "77",
@@ -1151,7 +1151,7 @@
    "page": 32,
    "section": "أوظّف تعلّماتي",
    "group": "تطبيقات",
-   "verified": false,
+   "verified": true,
    "text": "بعدما باع مزارع ثلث غلته من البرتقال، اشترت منه إحدى التعاونيات ثلاثة أخماس الباقي. 1) ما هو الكسر الذي يُمثّل ما أخذته التعاونية؟ 2) ما هو الكسر الذي يُمثّل الحصة المباعة؟ 3) ما هو الكسر الذي يُمثّل الباقي؟",
    "answer": {
     "coop": "2/5",
@@ -1179,7 +1179,7 @@
    "page": 32,
    "section": "أوظّف تعلّماتي",
    "group": "تطبيقات",
-   "verified": false,
+   "verified": true,
    "text": "في شركة ذات أسهم، اقتسم 3 شركاء فوائد شركتهم. فكانت حصة الأول 2/3 ، وحصة الثاني 1/6 في حين يُمثّل الباقي حصة الثالث. في سنة 2016، قُدّرت أرباح الشركة بـ: 675000DA . • احسب حصة كل واحد من الشركاء.",
    "answer": {
     "third": "1/6",
@@ -1258,7 +1258,7 @@
    "page": 32,
    "section": "أوظّف تعلّماتي",
    "group": "تطبيقات",
-   "verified": false,
+   "verified": true,
    "text": "في رحلة بين العاصمة وعنابة كان السائق يراقب مؤشر البنزين، حيث لاحظ في المرحلة الأولى من الرحلة أنه استهلك ربع سعة خزان البنزين. وبعد الاستراحة استهلك نصف البنزين الباقي في خزان السيارة. 1) ما هو الكسر الذي يمثل استهلاك السيارة من البنزين؟ 2) ما هو الكسر الذي يمثل ما بقي من البنزين؟ هل هذا يوافق ما يشير إليه مؤشر البنزين في الصورة؟",
    "answer": {
     "used": "5/8",
@@ -1855,7 +1855,7 @@
   },
   "act-5": {
    "lesson": "jida-kasrayn",
-   "module": 1
+   "module": 4
   },
   "act-6": {
    "lesson": "muqarana-kasrayn",
@@ -1903,7 +1903,7 @@
   },
   "know-2c": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 2
   },
   "know-3a": {
    "lesson": "muqarana-kasrayn",
@@ -1923,7 +1923,7 @@
   },
   "method-4": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 3
   },
   "method-5": {
    "lesson": "muqarana-kasrayn",
@@ -2009,35 +2009,35 @@
   },
   "ex-15": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-16": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-17": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-18": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-19": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-26": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-27": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-28": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 5
   },
   "ex-30": {
    "lesson": "jida-kasrayn",
@@ -2045,7 +2045,7 @@
   },
   "ex-34": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 6
   },
   "ex-20": {
    "lesson": "muqarana-kasrayn",
@@ -2101,7 +2101,7 @@
   },
   "self-12": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 4
   },
   "self-5": {
    "lesson": "jam-tarh-kusur",
@@ -2169,7 +2169,7 @@
   },
   "deep-42": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 4
   },
   "deep-43": {
    "lesson": "jida-kasrayn",

@@ -71,3 +71,26 @@ describe('fractions2 — E2 (jam-tarh-kusur)', () => {
     expect(() => F.complement('7/6')).toThrow();
   });
 });
+
+describe('fractions2 — E3 (jida-kasrayn)', () => {
+  it('productGrid : 2/3 × 3/4 = 6/12 = 1/2 sur une grille 3 × 4', () => {
+    const g = F.productGrid('2/3', '3/4');
+    expect(g).toMatchObject({ cols: 3n, rows: 4n, shaded: 6n, total: 12n, reduced: { n: 1n, d: 2n } });
+    expect(F.productGrid('3/2', '2/3').reduced).toEqual({ n: 1n, d: 1n });
+    expect(F.productGrid('7/4', '4/3').reduced).toEqual({ n: 7n, d: 3n });
+  });
+  it('timesNumber : 4 × 3/11 = 12/11 ; 5/7 × 2,8 = 14/7 ; 2 × 3/5 = 6/5', () => {
+    expect(F.timesNumber(4, '3/11')).toMatchObject({ n: 12n, d: 11n });
+    const y = F.timesNumber('2,8', '5/7');
+    expect(y.n * 7n).toBe(14n * y.d);
+    expect(F.timesNumber(2, '3/5')).toMatchObject({ n: 6n, d: 5n });
+  });
+  it('fractionOf : 3/8 de 48 = 18 ; 3/4 de 2/5 = 6/20', () => {
+    const a = F.fractionOf('3/8', 48); expect(a.n).toBe(18n * a.d);
+    expect(F.fractionOf('3/4', '2/5')).toMatchObject({ n: 6n, d: 20n });
+  });
+  it('ofRemainder : 1/4 dépensé puis 2/3 du reste = 6/12 ; 1/3 puis 1/2 du reste = 2/6', () => {
+    expect(F.ofRemainder('1/4', '2/3')).toMatchObject({ n: 6n, d: 12n });
+    expect(F.ofRemainder('1/3', '1/2')).toMatchObject({ n: 2n, d: 6n });
+  });
+});

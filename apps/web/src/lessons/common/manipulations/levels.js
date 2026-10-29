@@ -833,6 +833,23 @@ export const LEVELS = Object.freeze({
       { id: 'a4', n: 6, k: 0, loop: true, legs: ['1/1', '5/6'], predict: true },
     ] }, ...T('method-3') },
   },
+  // LES DEUX FACTEURS SOUS LA MAIN (window-blinds, thème classwindow, 2AM unité 2, leçon « جداء كسرين », 2026-10-29) : le rideau latéral (a/b de la largeur) et le store (c/d de la hauteur) se tirent sur une fenêtre ;
+  // une tâche est `{ id, curtain: 'a/b', blind: 'c/d', W, H, predict? }` (W × H fenêtres, une fenêtre = 1). مبتدئ (plateforme, une fenêtre) : w1 2/3 × 3/4, w2 1/2 × 3/5, w3 4/5 × 2/3.
+  // متقدم (plateforme, le produit est ÉCRIT avant de tirer, mur de fenêtres) : a1 3/2 × 2/3, a2 5/4 × 3/5, a3 7/4 × 4/3 (2 × 2), a4 2 × 3/5. Le test des niveaux mesure la paire par la PRÉDICTION écrite (متقدم seul) et par les
+  // FACTEURS > 1 (متقدم seul).
+  'window-blinds': {
+    beginner: { numbers: { tasks: [
+      { id: 'w1', curtain: '2/3', blind: '3/4', W: 1, H: 1 },
+      { id: 'w2', curtain: '1/2', blind: '3/5', W: 1, H: 1 },
+      { id: 'w3', curtain: '4/5', blind: '2/3', W: 1, H: 1 },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', curtain: '3/2', blind: '2/3', W: 2, H: 1, predict: true },
+      { id: 'a2', curtain: '5/4', blind: '3/5', W: 2, H: 1, predict: true },
+      { id: 'a3', curtain: '7/4', blind: '4/3', W: 2, H: 2, predict: true },
+      { id: 'a4', curtain: '2/1', blind: '3/5', W: 2, H: 1, predict: true },
+    ] }, ...T('method-4') },
+  },
   // LE SIGNE D'UN TERME SOUS LA MAIN (term-ferry, thème river) : l'équation a une solution CACHÉE ; la main porte chaque caisse (terme) d'une rive à
   // l'autre en choisissant son signe, puis le diviseur. مبتدئ (plateforme) : 3x + 2 = x + 8 (x = 3) puis 4x − 3 = 2x + 7 (x = 5), x se rassemble à gauche.
   // متقدم (طريقة p. 77) : 9x + 1 = 5x − 7 (x = −2), puis −2x + 5 = 3x − 10 (un coefficient NÉGATIF : on divise par −5), puis 7x − 190 = 6x + 110 (x = 300).
@@ -1012,23 +1029,6 @@ export const LEVELS = Object.freeze({
         facts: { dictionaries: 18, stories: 129, perShelf: 7, total: 147 }, world: { items: [{ glyph: 'book', n: 2, label: '' }], share: { groups: 21, each: 7, glyph: 'book', unit: '' } } },
     ] }, ...T('know-2') },
   },
-  // g3 3/4 puis 1/6 récolté. متقدم (method-6 : le manuel cherche un multiple commun, râteau BLOQUÉ, on écrit N et le total) : a1 5/6 + 3/8, a2 7/10 − 4/15, a3 1/2 + 1/3 + 1/4,
-  // a4 3/8 + 5/12 « أوسع مسافة ». Le monde `fewest` (معارف) est posé par la leçon. Le test des niveaux mesure la paire par le NOMBRE DE TÂCHES et par la PRÉDICTION.
-  'seed-rake': {
-    beginner: { numbers: { tasks: [
-      { id: 'g1', terms: [{ p: '1/4' }, { p: '1/6' }], need: 2, needRefusal: true },
-      { id: 'g2', terms: [{ p: '2/3' }, { p: '1/5' }] },
-      { id: 'g3', terms: [{ p: '3/4' }, { p: '1/6', sub: true }] },
-    ] }, ...P },
-    advanced: { numbers: { tasks: [
-      { id: 'a1', kind: 'predict', terms: [{ p: '5/6' }, { p: '3/8' }] },
-      { id: 'a2', kind: 'predict', terms: [{ p: '7/10' }, { p: '4/15', sub: true }] },
-      { id: 'a3', kind: 'predict', terms: [{ p: '1/2' }, { p: '1/3' }, { p: '1/4' }] },
-      { id: 'a4', kind: 'predict', terms: [{ p: '3/8' }, { p: '5/12' }], widest: true },
-    ] }, ...T('method-6') },
-  },
-  // LE SIGNE PRÉDIT SOUS LA MAIN (merge-board, thème arcade, 3AM unité 2, leçon 5, 2026-10-26) : une chaîne de calcul est une rangée de tuiles ; la main PRÉDIT le signe de chaque fusion, RETOURNE le diviseur d'une division
-  // et choisit l'ORDRE des fusions (aimants = priorité, bulles = parenthèses). Une tâche est `{ id, chain, hidden?, signOnly? }`. مبتدئ (plateforme, barres et aimants visibles) : c1 −5/4 + 11/6, c2 7/13 × (−8/5), c3 −9/8 ÷ (−3/4),
   // LA DERNIÈRE OPÉRATION SOUS LES CISEAUX (chain-cutter, thème corkboard, 2026-10-29) : la main coupe un ruban imprimé à l'opérateur de son choix ; les agrafes du calcul arbitrent. Une tâche est `{ id, kind: 'cut' | 'glue', text | cards+target,
   // depth?, hidden? }`. مبتدئ (plateforme, six rubans à COUPER, agrafes montrées après « ثبّت ») : c1 7 + 4 × 5, c2 (7 + 4) × 5, c3 40 − 12 ÷ 4, c4 (18 + 6) ÷ 3, c5 6 × (9 − 2) + 5 (trois niveaux), c6 20 + 5 − 3 (même valeur par hasard).
   // متقدم (plateforme) : a1 63 − 28 ÷ 7 (agrafes cachées jusqu'à la coupe) puis COLLER a2 50 − 6 × 7, a3 (15 + 9) ÷ 4 (agrafe nécessaire), a4 (3 + 5) × (10 − 4) (deux agrafes). Le monde de معارف est posé par la leçon.
@@ -1048,6 +1048,23 @@ export const LEVELS = Object.freeze({
       { id: 'a4', kind: 'glue', cards: ['3', '5', '10', '4'], target: '(3 + 5) × (10 − 4)' },
     ] }, ...T('know-3') },
   },
+  // g3 3/4 puis 1/6 récolté. متقدم (method-6 : le manuel cherche un multiple commun, râteau BLOQUÉ, on écrit N et le total) : a1 5/6 + 3/8, a2 7/10 − 4/15, a3 1/2 + 1/3 + 1/4,
+  // a4 3/8 + 5/12 « أوسع مسافة ». Le monde `fewest` (معارف) est posé par la leçon. Le test des niveaux mesure la paire par le NOMBRE DE TÂCHES et par la PRÉDICTION.
+  'seed-rake': {
+    beginner: { numbers: { tasks: [
+      { id: 'g1', terms: [{ p: '1/4' }, { p: '1/6' }], need: 2, needRefusal: true },
+      { id: 'g2', terms: [{ p: '2/3' }, { p: '1/5' }] },
+      { id: 'g3', terms: [{ p: '3/4' }, { p: '1/6', sub: true }] },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', kind: 'predict', terms: [{ p: '5/6' }, { p: '3/8' }] },
+      { id: 'a2', kind: 'predict', terms: [{ p: '7/10' }, { p: '4/15', sub: true }] },
+      { id: 'a3', kind: 'predict', terms: [{ p: '1/2' }, { p: '1/3' }, { p: '1/4' }] },
+      { id: 'a4', kind: 'predict', terms: [{ p: '3/8' }, { p: '5/12' }], widest: true },
+    ] }, ...T('method-6') },
+  },
+  // LE SIGNE PRÉDIT SOUS LA MAIN (merge-board, thème arcade, 3AM unité 2, leçon 5, 2026-10-26) : une chaîne de calcul est une rangée de tuiles ; la main PRÉDIT le signe de chaque fusion, RETOURNE le diviseur d'une division
+  // et choisit l'ORDRE des fusions (aimants = priorité, bulles = parenthèses). Une tâche est `{ id, chain, hidden?, signOnly? }`. مبتدئ (plateforme, barres et aimants visibles) : c1 −5/4 + 11/6, c2 7/13 × (−8/5), c3 −9/8 ÷ (−3/4),
   // c4 7/3 − 8/15 ÷ 11/20 (l'aimant force la division d'abord). متقدم (method-9 : une chaîne à priorité ; barres CACHÉES jusqu'à la fusion, trois fautes les ramènent) : a1 (2/3 − 5/2) × (−6/11), a2 −3/4 + 5/6 × (−9/10),
   // a3 la fraction composée, a4 4/5 − 3/5 ÷ (−9/10) + (−2). Le monde `signs` (معارف) est posé par la leçon. Le test des niveaux mesure la paire par le NOMBRE DE TÂCHES et par les BARRES CACHÉES (متقدم seul).
   'merge-board': {

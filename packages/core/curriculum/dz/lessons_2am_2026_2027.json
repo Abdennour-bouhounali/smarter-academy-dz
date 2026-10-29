@@ -483,18 +483,19 @@
       "decisionStatus": "draft",
       "titleSource": "textbook",
       "title": "جداء كسرين",
-      "description": "انطلاقا من مساحة مستطيل جزئي من مستطيل مقسّم يكتشف التلميذ أنّ $\\frac{a}{b} \\times \\frac{c}{d} = \\frac{a \\times c}{b \\times d}$ ويأخذ كسرا من عدد.",
+      "description": "نسحب ستارتين على نافذة القسم فنكتشف أنّ جزءًا من جزء يُحسب بضرب البسطين والمقامين، ونضرب عددًا في كسر، ونترجم «كسر من كمية» و«كسر من الباقي» إلى جداء.",
       "prerequisites": [
         "الكسر كحاصل قسمة",
-        "مساحة المستطيل"
+        "مساحة المستطيل",
+        "ضرب الكسور العشرية"
       ],
       "prerequisiteLessonCodes": [
         "kusur-ashriya-kitaba"
       ],
       "pointsToLearn": [
-        "حساب جداء كسرين بضرب البسطين فيما بينهما والمقامين فيما بينهما: $\\frac{a}{b} \\times \\frac{c}{d} = \\frac{a \\times c}{b \\times d}$",
-        "حساب جداء عدد (طبيعي أو عشري) في كسر",
-        "أخذ كسر من عدد، مثل $\\frac{2}{7}$ من 35، بالضرب"
+        "حساب جداء كسرين بضرب البسطين فيما بينهما والمقامين فيما بينهما: $\\frac{a}{b}\\times\\frac{c}{d}=\\frac{a\\times c}{b\\times d}$ ، وتفسيره بمساحة مستطيل بُعداه $\\frac{a}{b}$ و $\\frac{c}{d}$ ، ثمّ اختزال الناتج",
+        "حساب جداء عدد (طبيعي أو عشري) في كسر: $n\\times\\frac{a}{b}=\\frac{n\\times a}{b}$ ، مثل $4\\times\\frac{3}{11}=\\frac{12}{11}$ و $\\frac{5}{7}\\times 2{,}8=\\frac{14}{7}=2$",
+        "ترجمة «كسر من كمية» و«كسر من كسر» بجداء، مثل $\\frac{3}{8}$ من $48$ هو $48\\times\\frac{3}{8}=18$ و $\\frac{3}{4}$ من $\\frac{2}{5}$ هو $\\frac{3}{10}$ ، وتوظيفها في وضعيات «كسر من الباقي»"
       ],
       "programmeItems": [
         "2am.m1.r07"
@@ -516,7 +517,20 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "pointPrerequisites": {
+        "P2": [
+          "2am_jida-kasrayn_P1",
+          "1am_kusur-ashriya-kitaba_P2"
+        ],
+        "P3": [
+          "2am_jida-kasrayn_P1",
+          "2am_jida-kasrayn_P2"
+        ]
+      },
+      "durationMinutes": 66,
+      "difficulty": "متوسط",
+      "icon": "🪟"
     },
     {
       "code": "muqarana-kasrayn",

@@ -80,6 +80,15 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(advanced.numbers.tasks.some((tk) => tk.kind === 'trap'), type).toBe(true);
         expect(beginner.numbers.tasks.some((tk) => tk.kind === 'trap'), type).toBe(false);
       }
+      // Unité 2 de 2AM, leçon 8 : `window-blinds` se mesure par la PRÉDICTION écrite avant de tirer (متقدم seul) et par les FACTEURS > 1 (متقدم seul).
+      else if (type === 'window-blinds') {
+        const val = (f) => { const [n, d] = f.split('/').map(Number); return n / d; };
+        const big = (tk) => val(tk.curtain) > 1 || val(tk.blind) > 1;
+        expect(advanced.numbers.tasks.every((tk) => tk.predict), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.predict), type).toBe(false);
+        expect(advanced.numbers.tasks.every(big), type).toBe(true);
+        expect(beginner.numbers.tasks.some(big), type).toBe(false);
+      }
       // Unité 2 de 2AM, leçon 7 : `trail-odometer` se mesure par la PRÉDICTION écrite avant de marcher (متقدم seul) et par le CIRCUIT (a4).
       else if (type === 'trail-odometer') {
         expect(advanced.numbers.tasks.every((tk) => tk.predict), type).toBe(true);
@@ -137,6 +146,10 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(beginner.numbers.tasks.some((tk) => tk.build || tk.predict), type).toBe(false);
       }
       // Unité 1 de 2AM, leçon 2 : `coop-calculator` se mesure par la FRAPPE de toute la ligne (متقدم seul : `type`) contre l'insertion de parenthèses dans une ligne donnée (`insert`).
+      else if (type === 'chain-cutter') {
+        expect(beginner.numbers.tasks.every((tk) => tk.kind === 'cut'), type).toBe(true);
+        expect(advanced.numbers.tasks.some((tk) => tk.kind === 'glue') && advanced.numbers.tasks.some((tk) => tk.hidden), type).toBe(true);
+      }
       else if (type === 'coop-calculator') {
         expect(advanced.numbers.tasks.every((tk) => tk.kind === 'type' && !tk.pre), type).toBe(true);
         expect(beginner.numbers.tasks.every((tk) => tk.kind === 'insert' && tk.pre), type).toBe(true);
@@ -146,10 +159,6 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(advanced.numbers.predict, type).toBe(true);
         expect(beginner.numbers.predict, type).toBe(false);
         expect(advanced.numbers.tasks.some((tk) => Object.keys(tk.target).length === 2), type).toBe(true);
-      else if (type === 'chain-cutter') {
-        expect(beginner.numbers.tasks.every((tk) => tk.kind === 'cut'), type).toBe(true);
-        expect(advanced.numbers.tasks.some((tk) => tk.kind === 'glue') && advanced.numbers.tasks.some((tk) => tk.hidden), type).toBe(true);
-      }
         expect(beginner.numbers.tasks.every((tk) => Object.keys(tk.target).length === 1), type).toBe(true);
       }
       // Unité 1 de 3AM, leçon 2 : `robot-track` se mesure par la PRÉDICTION écrite avant « شغّل » (متقدم seul) et par l'ORDRE à choisir.

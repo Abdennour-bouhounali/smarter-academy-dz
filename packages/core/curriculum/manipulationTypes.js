@@ -759,6 +759,16 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'لا نجمع إلا أجزاء من الحجم نفسه: كسران مقام أحدهما مضاعف لمقام الآخر نكتبهما بالمقام نفسه (نضرب حدّي أحدهما في العدد نفسه) ثم نجمع البسطين أو نطرحهما ونحافظ على المقام ؛ والباقي من الكلّ هو الفرق بين $1$ وما مُشي',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 2AM, unité 2 « الكسور والعمليات عليها », leçon 8 « جداء كسرين » (2026-10-29) — les deux facteurs d'un produit de fractions, tenus par deux tirages perpendiculaires sur une fenêtre.
+  'window-blinds': {
+    // LES DEUX FACTEURS SOUS LA MAIN : la main tire DEUX couvertures perpendiculaires sur une fenêtre — le rideau latéral (largeur a/b, il se colle aux crans de son rail) et le store à enrouleur (hauteur c/d,
+    // il se colle aux crans de son cordon). Le verre couvert par les DEUX est le coin doublement ombré ; les deux ombres découpent le verre en b × d petits carrés par fenêtre et le coin en compte a × c. L'élève
+    // ÉCRIT la fraction de fenêtre doublement ombrée : toute écriture égale est acceptée, les fausses (a/b + c/d, ac/(b+d), ad/(bc), un seul facteur, ac sans dénominateur) sont refusées et un CADRE en pointillé de
+    // l'aire écrite est posé à côté du coin sombre réel. مبتدئ : une fenêtre, 2/3 × 3/4, 1/2 × 3/5, 4/5 × 2/3 ; متقدم : un mur de fenêtres (une fenêtre = 1), le produit est ÉCRIT avant de tirer, des facteurs > 1
+    // (3/2 × 2/3, 7/4 × 4/3) et un entier (2 × 3/5). « جرّب أعدادك » : toujours ouvert.
+    shows: 'جداء كسرين $\\frac{a}{b}\\times\\frac{c}{d}$ هو مساحة مستطيل بُعداه $\\frac{a}{b}$ و $\\frac{c}{d}$ : يقسّم الظلّان الزجاج إلى $b\\times d$ مربّعًا صغيرًا في النافذة الواحدة، والداكن منها $a\\times c$ ؛ فنضرب البسطين معًا والمقامين معًا، ثم نختزل ؛ و «كسر من كسر» جداء',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 3AM, unité 5 (2026-10-21) — résoudre ax + b = cx + d en traversant les termes avec leur signe, puis en divisant.
   'term-ferry': {
     // LE SIGNE D'UN TERME SOUS LA MAIN : une équation dont la solution est CACHÉE ; chaque membre est une rive, chaque terme une caisse. La
@@ -918,6 +928,15 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'الأقواس تجعل الآلة (والقارئ) تحسب جزءًا من السلسلة أوّلًا؛ في الأقواس المتداخلة نبدأ بالداخلية ونكتب الخارجية [ ]، وخطّ الكسر يجمع البسط ويجمع المقام فنكتبهما بين قوسين على الآلة، وقوسان لا يغيّران ترتيب الحساب غير ضروريين',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 2AM, unité 1, leçon 3 (2026-10-29) — la dernière opération nomme une série d'opérations.
+  'chain-cutter': {
+    // LA DERNIÈRE OPÉRATION SOUS LES CISEAUX : sur la السبّورة الفلّينية du class, la main choisit OÙ couper en deux un ruban de papier imprimé (« 7 + 4 × 5 ») pour que chaque morceau se calcule seul ; seule la dernière
+    // opération recolle sans mordre une agrafe que le calcul a posée, et la valeur recollée ailleurs (55 ≠ 27, ou la même par hasard : l'agrafe refuse quand même) le montre. L'élève colle le NOM sur la coupe, les morceaux tombent
+    // dans deux poches qui s'étiquettent d'après l'opération, il recoupe jusqu'aux nombres et la phrase grandit ; en متقدم les agrafes sont cachées jusqu'à la coupe, puis il COLLE des blocs deux à deux avec les agrafes-parenthèses
+    // qu'une phrase exige. `chain-cutter` n'énonce jamais la règle.
+    shows: 'آخر عملية تُنجز في سلسلة هي التي تسمّيها (مجموع، فرق، جداء، حاصل قسمة)، وبها تنقسم السلسلة إلى حدّين أو عاملين أو مقسوم وقاسم تُحسب كلّ منها وحدها، فنصف السلسلة بجملة ونكتب سلسلة من جملة بالأقواس اللازمة',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
 });
 
 export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));
@@ -927,15 +946,6 @@ export function isManipulationType(type) {
 }
 
 /** Les natures de ressource qu'une leçon peut déclarer dans `resources[]`. */
-  },
-  // 2AM, unité 1, leçon 3 (2026-10-29) — la dernière opération nomme une série d'opérations.
-  'chain-cutter': {
-    // LA DERNIÈRE OPÉRATION SOUS LES CISEAUX : sur la السبّورة الفلّينية du class, la main choisit OÙ couper en deux un ruban de papier imprimé (« 7 + 4 × 5 ») pour que chaque morceau se calcule seul ; seule la dernière
-    // opération recolle sans mordre une agrafe que le calcul a posée, et la valeur recollée ailleurs (55 ≠ 27, ou la même par hasard : l'agrafe refuse quand même) le montre. L'élève colle le NOM sur la coupe, les morceaux tombent
-    // dans deux poches qui s'étiquettent d'après l'opération, il recoupe jusqu'aux nombres et la phrase grandit ; en متقدم les agrafes sont cachées jusqu'à la coupe, puis il COLLE des blocs deux à deux avec les agrafes-parenthèses
-    // qu'une phrase exige. `chain-cutter` n'énonce jamais la règle.
-    shows: 'آخر عملية تُنجز في سلسلة هي التي تسمّيها (مجموع، فرق، جداء، حاصل قسمة)، وبها تنقسم السلسلة إلى حدّين أو عاملين أو مقسوم وقاسم تُحسب كلّ منها وحدها، فنصف السلسلة بجملة ونكتب سلسلة من جملة بالأقواس اللازمة',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
 export const RESOURCE_KINDS = Object.freeze(['manipulation', 'method', 'situation', 'example']);
 
 /** Les natures de leçon. `synthesis` = « أدمج تعلّماتي », la synthèse d'unité. */

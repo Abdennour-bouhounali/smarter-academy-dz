@@ -311,3 +311,17 @@ each distractor checked against its named error and false).
 - **3AM `wadiya-idmajiya-kusur-natiqa`** (published synthesis): `requires: ['jida-kasrayn-2am']` in its problems stays; no LP edge (a
   synthesis has no item, no net link).
 - **3AM `amaliyat-natiqa`**: products of rationals; no net link from r07 → nothing to write.
+
+## 13. Generator notes (2026-10-29)
+
+Fixes and deviations recorded while generating (nothing else was redesigned):
+
+1. **`2am-s1-68` situation numbers.** The plan read the amount as « 10111 دج » from the text layer; the scan shows a phone at 7500 DA and a total of 15000 DA with shares 2/25, 3/5 and the rest (the text layer's « 0011 / 10111 » is garbled). No sheet uses the garbled numbers.
+2. **Provenance.** 9 of 50 bank sheets are `term_exam` (only exercises actually read: `2am-s1-68` ex 2 C, `-75` ex 3 N and K, `-91`, `-87`, `-67`, `2am-s3-25` ex 2 …); 31 `term_exam_modelled`; 10 `adapted` (the plan listed 7: `self-8`, `deep-44`, `deep-45` were added because §11 sends them to the bank); 0 other `platform_addition`. `deep-42` is not used (400 × 4/9 is not whole; the scan was not re-read for 450). `ex-30` is adapted with « أرباح ».
+3. **Lab events.** The plan's `{ kind: 'pull', task, which, value }` is emitted once per pull at each « ماذا أُظلم؟ » (two events: `curtain`, `blind`, each with `ok`), not on every drag step.
+4. **a4 (`2 × 3/5`)** uses a rail with `b = 1` stop per window (the stops are the window edges; the curtain's value is `2/1`), so the lab accepts `b ≥ 1` while `d ≥ 2`.
+5. **The answer pill** is a card under the pulls (as in `trail-odometer`), not inside the scene's top band; once both pulls are checked the pull row is hidden so the typing phase fits one screen at 1024 × 768.
+6. **M1 chain `w1`** ends with « ما أبسط كتابة لـ 6/12؟ » (`half`) instead of a second « اكتب الكسر » (the lab itself already asks the student to type the fraction); `w2`'s two questions are choices (`den10`, `num3`); `a1`–`a4` carry one question each (`darkPanes`, `red15`, `whyBig`, `natural`), the plan's « لماذا يمكن أن يكون الناتج أكبر من نافذة؟ » is on a3 (the first task where the product exceeds 1 by a margin) and a1's product is exactly one window.
+7. **Prep item 3** (`b × a/b = a`) links 1AM `hasil-qisma-kasr` (published) in M2's « تذكّر »; « كسر من عدد » (planned 1AM `akhdh-kasr-min-adad`) has no link.
+8. **`2am_jida-kasrayn_P1/P2/P3` wording** and `pointPrerequisites` (P2 ← P1, `1am_kusur-ashriya-kitaba_P2`; P3 ← P1, P2) are as the plan §2; `durationMinutes` 66 (modules without the مسائل; with them 87 ≤ 90).
+9. **`deep-42`** (400 × 4/9 is not whole) is cited by M4's seventh exercise `ex-7` with 450 seats (`450 × 4/9 = 200`, the plan's own « 450 » reading, not re-checked on the scan), so M4 has SEVEN exercises, not six; `ex-28` and `ex-34` are cited by the مسألة 1 and مسألة 2 `cites`.
