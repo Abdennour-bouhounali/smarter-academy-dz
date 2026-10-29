@@ -29,6 +29,8 @@
  *   élèves de 4AM échouent le plus) ; P4 rend « لمقارنة عبارات أو لحصرها » opérationnel (استنتاج، حصر، مقارنة) et nomme ≤ et ≥.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
+ * 2026-10-29 : `ikhtibar-musawat-mutabayina` (2AM, 2am.m4.r09) est publiée — arête LP P1 ← 2am_ikhtibar-musawat-mutabayina_P3 (lien du réseau
+ * 2am.m4.r09 → 3am.m5.r05) ; « تذكّر — السنة الثانية » ajouté (RECALL.year2), premier encadré du module معارف, lié à la leçon.
  */
 export const LESSON_BASE_PATH = '/courses/moyen/3am/ansab_al_aadad_wal_hisab/mutabayinat-amaliyat';
 

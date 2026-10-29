@@ -42,6 +42,12 @@ export const KNOWLEDGE = {
 
 /** « تذكّر » : deux outils déjà acquis, JAMAIS reconstruits ici (frontière de l'unité) ; chacun renvoie à sa leçon. */
 export const RECALL = {
+  year2: {
+    lesson: 'ikhtibar-musawat-mutabayina',
+    title: 'تذكّر — السنة الثانية',
+    text: 'اختبرنا في السنة الثانية صحّة متباينة بقيمة: $2x+5<15$ خاطئة من أجل $x=6$ لأنّ $17>15$ .',
+    source: addition('prior_year_reminder'),
+  },
   equality: {
     lesson: 'musawiyat-amaliyat',
     title: 'تذكّر — المساويات والعمليات',

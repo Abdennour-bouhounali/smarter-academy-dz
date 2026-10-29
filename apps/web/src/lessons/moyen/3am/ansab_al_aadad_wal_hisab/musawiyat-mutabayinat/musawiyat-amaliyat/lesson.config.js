@@ -25,6 +25,8 @@
  *   `muadalat-darajat-ula` et `mutabayinat-amaliyat`.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
+ * 2026-10-29 : `ikhtibar-musawat-mutabayina` (2AM, 2am.m4.r09) est publiée — arêtes LP P1 ← 2am_ikhtibar-musawat-mutabayina_P1 et P3 ← _P1 (lien du
+ * réseau 2am.m4.r09 → 3am.m5.r05) ; « تذكّر — السنة الثانية » ajouté (RECALL.year2) en tête du module معارف, lié à la leçon.
  */
 export const LESSON_BASE_PATH = '/courses/moyen/3am/ansab_al_aadad_wal_hisab/musawiyat-amaliyat';
 
