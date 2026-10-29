@@ -19,7 +19,7 @@
  *       l'exemple du manuel (5/12 + 1/4, coquille imprimée) est remplacé par 7/15 + 2/5 ;
  *   P3  « حساب الجزء الباقي من كلّ بطرح كسر من 1 » → + « (ou d'une somme de deux fractions) » et « un entier écrit en fraction pour l'additionner à une fraction ou l'en retrancher » (prep 8, ex-14, deep-47).
  * Le réseau : 2am.m1.r09 PROLONGE 1am.m5.r03 (`kusur-ashriya-kitaba`, publiée) ; il REQUIERT 2am.m1.r08 (comparaison), leçon SUIVANTE de l'unité : une seule phrase « تذكّر » sans lien (renvoi en
- * avant), jamais de comparaison construite ici (le coordinateur ajoutera l'arête P2 ← muqarana-kasrayn P3 le jour de sa publication).
+ * avant), jamais de comparaison construite ici. 2026-10-29 : `muqarana-kasrayn` publiée — P2 ← `2am_muqarana-kasrayn_P3` et le « تذكّر » de معارف porte son lien.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */

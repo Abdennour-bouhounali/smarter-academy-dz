@@ -54,7 +54,9 @@ export default function Module02Maarif() {
                   <TextbookBox kind="remark" title={RECALLS.equal.title} text={RECALLS.equal.text} source={RECALLS.equal.source} compact>
                     {link(RECALLS.equal.lesson, 'درس « اختزال كتابة كسرية » — السنة الأولى متوسط')}
                   </TextbookBox>
-                  <TextbookBox kind="remark" title={RECALLS.compare.title} text={RECALLS.compare.text} source={RECALLS.compare.source} compact />
+                  <TextbookBox kind="remark" title={RECALLS.compare.title} text={RECALLS.compare.text} source={RECALLS.compare.source} compact>
+                    {link(RECALLS.compare.lesson, 'درس « مقارنة كسرين »')}
+                  </TextbookBox>
                   <TextbookBox kind="property" text={`${KNOWLEDGE.same.text} ${KNOWLEDGE.same.example}`} source={KNOWLEDGE.same.source} compact />
                   <TapQuestion
                     prompt={<MathText>{'ما قيمة $\\frac{3{,}2}{3}-\\frac{1{,}6}{3}$ ؟'}</MathText>}

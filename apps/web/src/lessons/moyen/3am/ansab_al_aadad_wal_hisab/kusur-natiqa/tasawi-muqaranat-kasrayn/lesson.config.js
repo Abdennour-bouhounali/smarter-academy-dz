@@ -6,6 +6,8 @@
  * Le réseau : `3am.m1.r05` EXTENDS `2am.m1.r08` (comparer deux fractions de même dénominateur ou dont un dénominateur est multiple de l'autre ; leçon 2AM `muqarana-kasrayn` NON
  * publiée) : « أستعدّ » mesure cette base avec des affirmations de la plateforme, معارف ouvre sur un « تذكّر — السنة الثانية » sans lien, et la leçon ne construit que la valeur ajoutée
  * « comparer deux fractions QUELCONQUES en unifiant les dénominateurs » ; `pointPrerequisites` : arêtes internes seulement (P3 ← P1, P3 ← P2).
+ * 2026-10-29 : `muqarana-kasrayn` (2AM) publiée — P2 ← `2am_muqarana-kasrayn_P3`, P3 ← aussi `_P2`, `_P4` (le long de `2am.m1.r08 → r05`),
+ * et le « تذكّر — السنة الثانية » de معارف porte désormais son lien (`getLessonPath`).
  *
  * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter) — le manuel fixe les الكفاءات, pas le parcours.
  *   Entrée retenue : « آلة مزج الألوان » (labo `shade-match`, thème `paintshop`). La MAIN verse des mesures de bleu dans un seau de blanc jusqu'à ce que la couleur du seau

@@ -8,7 +8,8 @@
  * précédées de + ou −, somme / produit) ; la distributivité k(a + b) et (a + b)(c + d) est la leçon suivante.
  * Le réseau : ses liens « راجع » — 2am.m1.r03 (distributivité) et 3am.m1.r08 (opérations sur les nombres rationnels) — mènent à des
  * leçons NON publiées (`tawzi-darb-jam-tarh`, `amaliyat-natiqa`) : « أستعدّ » les mesure (« راجع قبل أن تنطلق »), la leçon ne les reconstruit
- * pas, et `pointPrerequisites` ne porte que des arêtes internes (LEARNING_NET §4.8). Les labos `PitchExpansion` / `TurfFactoring` de 4AM
+ * pas, et `pointPrerequisites` ne porte que des arêtes internes (LEARNING_NET §4.8) — 2026-10-29 : `tawzi-darb-jam-tarh` (2AM) publiée,
+ * P1 ← `2am_tawzi-darb-jam-tarh_P3` (le long de `2am.m1.r03 → 3am.m5.r01` ; 3x + 5x = (3 + 5)x est une factorisation). Les labos `PitchExpansion` / `TurfFactoring` de 4AM
  * « الحساب الحرفي » ne sont ni réutilisés ni redessinés (ils lisent une expression comme une AIRE ; ici la main porte un TERME).
  *
  * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter) — le manuel fixe les الكفاءات, pas le parcours, et la leçon ne renvoie jamais au livre.

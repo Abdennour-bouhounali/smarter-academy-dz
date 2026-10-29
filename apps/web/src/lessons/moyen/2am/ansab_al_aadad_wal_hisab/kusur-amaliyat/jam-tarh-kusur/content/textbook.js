@@ -23,10 +23,10 @@ export const RECALLS = {
     source: addition('prior_year_reminder'), lesson: 'ikhtizal-kitaba-kasriya', title: 'تذكّر — كتابات كسرية متساوية',
     text: 'لا يتغيّر الكسر إذا ضربنا بسطه ومقامه في العدد نفسه غير المعدوم: $\\frac{a}{b}=\\frac{a\\times k}{b\\times k}$ ، فمثلًا $\\frac{3}{4}=\\frac{9}{12}$ ؛ وتختزل الكسر بقسمة الحدّين على قاسم مشترك.',
   },
-  /** La comparaison de deux fractions est une leçon SUIVANTE de l'unité : une phrase, jamais de lien (renvoi en avant, plan §2). */
+  /** La comparaison de deux fractions (renvoi en avant, plan §2) : leçon `muqarana-kasrayn` PUBLIÉE 2026-10-29, rappelée avec son lien, jamais reconstruite. */
   compare: {
-    source: addition('prior_year_reminder'), title: 'تذكّر — مقارنة كسرين لهما نفس المقام',
-    text: 'بين كسرين لهما نفس المقام، الأكبر هو صاحب البسط الأكبر: $\\frac{5}{9}<\\frac{7}{9}$ . سندرس المقارنة كاملة في درس مقارنة كسرين.',
+    source: addition('prior_year_reminder'), lesson: 'muqarana-kasrayn', title: 'تذكّر — مقارنة كسرين لهما نفس المقام',
+    text: 'بين كسرين لهما نفس المقام، الأكبر هو صاحب البسط الأكبر: $\\frac{5}{9}<\\frac{7}{9}$ . والمقارنة كاملة في درس مقارنة كسرين.',
   },
 };
 
