@@ -336,4 +336,16 @@ updates by itself.
 
 ## Generator notes
 
-(empty)
+**Generated 2026-10-29** (lead generator + one helper agent for the bank). Deviations from the plan, all minimal:
+
+1. **No miscomputed answer found.** Every value of §6, §7 and §9 re-computes (checked by `logic/coopCalculator.test.js`, `content.test.js` and the bank oracle): 40/89, 15/48,75, 19/55, 60/96/84/92, 8/31,53333333/−5,8, 14,5/35,16666667, 21/36,428571…, 85/97, 13,875, 9,25, 9, 247,5/60; M0 and the 5 tests (19, 27, 23, 20,1, 3,6, 30).
+2. **Task order.** The plan quotes k2's story as « the opening » but lists the levels `k1`… first: the lab opens on `k1` (8 boxes of pencils, no checkpoint chain), `k2` is the second task and carries the first checkpoint; the module-1 traces are k2 → `aqwas-awwalan`, k3 → `aqwas-ghayr-daruriya`, k4 → `aqwas-mutadakhila`, a1 → `khatt-kasr`.
+3. **Event vocabulary.** The plan wrote `kind`; the lab uses `tk` like every other lab (`print`, `refused`, `solved`, `custom`). `reason` gained `'math'` (÷ 0, the machine's « Math ERROR »), `'numbers'` (متقدم: the typed line must use the story's numbers, typing the result is refused) and `'nopair'` (k3: the bracket-free line is the right VALUE but the task asks for brackets; the machine prints 19 and the banner asks for brackets so the student lives « a bracket around 2 × 5 changes nothing » vs « around 9 + 2 gives 55 »). New task flag `needPair`.
+4. **a1 numerator-only line** `(40 + 8) ÷ 15 − 9` prints the calculator's honest `−5,8` (plan risk 1, default kept): the banner says only « لا يمكن أن يكون النصيب أقلّ من 0 », nothing about negative numbers is computed or taught; the memo trap and a knowledge-map card quote it as the calculator's output. Owner may prefer the lab to refuse such a line before printing.
+5. **Eighth misconception** `MISC-AQWAS-MISPLACED` (brackets around the wrong part) added by the bank; the plan listed seven.
+6. **Bank counts**: 13 `term_exam` (the plan said 12–14) / 28 `term_exam_modelled` / 9 `adapted` / 0 `platform_addition`; per level 3/5/2 · 2/5/3 · 4/4/2 · 2/7/1 · 2/7/1. The plan's `decimal` answer type does not exist: exact decimals are `rational` answers with a point-decimal key.
+7. **Module 3 numbers** keep the plan's A and B; the keys of B are `54 ÷ ( 4 × 3 − 3 ) + 2 =` and the bracket-free reading is `54 ÷ 4 × 3 − 3 + 2 = 39,5`.
+8. **أستعدّ** has six statements (the plan's table): items 3–4 are the rewritten `prep` 8 and 10; `requires` ids: `silsila-bidun-aqwas-2am`, `mana-jam-tarh-1am`, `darb-ashari-1am`.
+9. **Catalogue**: `prerequisiteLessonCodes` += `silsila-bidun-aqwas`; `textbookRef.pages.ict = [21, 21]`; the draft wordings of P1–P4 replaced by the plan's final ones; `durationMinutes` 66, `estimatedDurationMin` 90 (the 90-minute cap counts the مسائل: module 1 is 15 min, not 18).
+10. **Textbook extraction**: elements re-rendered at 100 dpi (PDF pp. 5, 8, 11, 18) and compared word for word — `act-3` (partly cut at the bottom), `method-1`, `method-2`, `ex-8`, `ex-10`, `ex-11`, `ict` — are `verified: True` (`L2_VERIFIED` in `build-extraction.py`); the plan asked for every element of the lesson at 130 / 200 dpi, which was NOT done for `prep` 8/10, `act-4`, `now-11`, `ex-13…17`, `ex-22`, `ex-29`, `ex-30`, `self-2…4`, `deep-*` (they stay `verified: False`, cited through `cites`). Nothing contradicted the transcriptions seen.
+11. **Successor connection (§12) NOT applied** (coordinator): `quwat-adad-nisbi` P4 ← `2am_silsila-bi-aqwas_P1` + `_P3` and its « تذكّر — السنة الثانية » remark in `Module03Tariqa.jsx`.

@@ -101,3 +101,49 @@ describe('chainOps — offTreeStep', () => {
     expect(C.offTreeStep('150 ÷ 6 × 4', [1, 0])).toMatchObject({ o: '×' });
   });
 });
+
+describe('chainOps L2 — parenthèses, barre de fraction, calculatrice (silsila-bi-aqwas)', () => {
+  it('calculatorRead : priorités, parenthèses, Syntax ERROR, Math ERROR, négatif affiché', () => {
+    expect(C.calculatorRead('45 + 15 ÷ 4')).toMatchObject({ status: 'ok', display: '48,75' });
+    expect(C.calculatorRead('(45 + 15) ÷ 4')).toMatchObject({ status: 'ok', display: '15' });
+    expect(C.calculatorRead('(45 + 15 ÷ 4').status).toBe('syntax');
+    expect(C.calculatorRead('45 + ÷ 4').status).toBe('syntax');
+    expect(C.calculatorRead('4 ÷ (3 − 3)').status).toBe('math');
+    expect(C.calculatorRead('(40 + 8) ÷ 15 − 9').display).toBe('−5,8');
+    expect(C.calculatorRead('40 + 8 ÷ 15 − 9').display).toBe('31,53333333');
+    expect(C.calculatorRead('2 × [50 − (12 + 8)]').display).toBe('60');
+  });
+  it('evaluateB est d\'accord avec evaluateChain sans parenthèses et avec la valeur à la main avec', () => {
+    for (const t of ['26 − 9 + 4', '15 + 3 × 4', '150 ÷ 6 × 4', '3,5 + 2 × 1,5 − 6 ÷ 3']) expect(C.numText(C.evaluateB(t)), t).toBe(C.numText(C.evaluateChain(t)));
+    expect(C.numText(C.evaluateB('3 × [20 − (4 + 6)]'))).toBe('30');
+    expect(C.numText(C.evaluateB('(7 + 5) × (20 − 4)'))).toBe('192');
+  });
+  it('uselessBrackets : 9 + (2 × 5) a une paire inutile, (9 + 2) × 5 aucune, ((3)) + 4 deux', () => {
+    expect(C.uselessBrackets('9 + (2 × 5)')).toHaveLength(1);
+    expect(C.uselessBrackets('(9 + 2) × 5')).toHaveLength(0);
+    expect(C.uselessBrackets('((3)) + 4')).toHaveLength(2);
+    expect(C.uselessBrackets('(8 × 12) − 7')).toHaveLength(1);
+    expect(C.uselessBrackets('50 − (12 + 8)')).toHaveLength(0);
+    expect(C.uselessBrackets('50 − (12 − 8)')).toHaveLength(0);
+  });
+  it('bracketForm : la paire extérieure s\'écrit [ ]', () => {
+    expect(C.bracketForm('2 × (50 − (12 + 8))')).toBe('2 × [ 50 − ( 12 + 8 ) ]');
+    expect(C.bracketForm('(1 + 2) × 3')).toBe('( 1 + 2 ) × 3');
+  });
+  it('barToLine / lineToBar : les deux sens', () => {
+    expect(C.barToLine('36 + 12', '20 − 8')).toBe('(36 + 12) ÷ (20 − 8)');
+    expect(C.barToLine('28', '11 − 4')).toBe('28 ÷ (11 − 4)');
+    expect(C.lineToBar('(36 + 12) ÷ (20 − 8)')).toEqual({ num: '36 + 12', den: '20 − 8' });
+    expect(C.lineToBar('8 ÷ (5 + 3)')).toEqual({ num: '8', den: '5 + 3' });
+    expect(C.lineToBar('1 + 2')).toBeNull();
+    expect(C.numText(C.evaluateB(C.barToLine('36 + 12', '20 − 8')))).toBe('4');
+  });
+  it('leftToRight et calculatorKeys', () => {
+    expect(C.calcDisplay(C.leftToRight('45 + 15 ÷ 4'))).toBe('15');
+    expect(C.calcDisplay(C.leftToRight('(1 + 2) × 3'))).toBe('9');
+    expect(C.calculatorKeys('54 ÷ (4 × 3 − 3) + 2').join(' ')).toBe('5 4 ÷ ( 4 × 3 − 3 ) + 2 =');
+  });
+  it('L1 refuse toujours les parenthèses', () => {
+    expect(() => C.tokenize('(1 + 2) × 3')).toThrow();
+  });
+});

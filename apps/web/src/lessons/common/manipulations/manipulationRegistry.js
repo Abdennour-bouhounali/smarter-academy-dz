@@ -143,6 +143,8 @@ export const MANIPULATION_COMPONENTS = {
   'tram-route': lazy(() => import('./operations/TramRoute')),
   // 3AM, unité 2 : le numérateur sous la main — la machine à teinter (آلة مزج الألوان, 2026-10-26).
   'shade-match': lazy(() => import('./operations/ShadeMatch')),
+  // 2AM, unité 1, leçon 2 : les parenthèses sous la main — la حاسبة التعاونية (2026-10-29).
+  'coop-calculator': lazy(() => import('./operations/CoopCalculator')),
   // 3AM, unité 2, leçon 3 : l'espacement sous la main — le مشط الشتلات (2026-10-26).
   'seed-rake': lazy(() => import('./operations/SeedRake')),
   // 3AM, unité 2, leçon 4 : la position d'une écriture sous la main — le حبل الأعداد (2026-10-26).

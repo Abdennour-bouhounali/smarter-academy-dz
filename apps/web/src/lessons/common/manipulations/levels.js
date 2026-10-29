@@ -988,6 +988,30 @@ export const LEVELS = Object.freeze({
   },
   // LE SIGNE PRÉDIT SOUS LA MAIN (merge-board, thème arcade, 3AM unité 2, leçon 5, 2026-10-26) : une chaîne de calcul est une rangée de tuiles ; la main PRÉDIT le signe de chaque fusion, RETOURNE le diviseur d'une division
   // et choisit l'ORDRE des fusions (aimants = priorité, bulles = parenthèses). Une tâche est `{ id, chain, hidden?, signOnly? }`. مبتدئ (plateforme, barres et aimants visibles) : c1 −5/4 + 11/6, c2 7/13 × (−8/5), c3 −9/8 ÷ (−3/4),
+  // LES PARENTHÈSES SOUS LA MAIN (coop-calculator, thème coopshop, 2026-10-29) : la main pose les parenthèses d'une ligne tapée sur une calculatrice scientifique qui obéit aux priorités ; l'histoire est
+  // l'arbitre. Une tâche est `{ id, kind: 'insert' | 'type', pre?, truthLine, needPair?, traps?, card?, facts, world }`. مبتدئ (plateforme, ligne donnée sans parenthèses) : k1 8 × 12 − 7, k2 45 + 15 ÷ 4,
+  // k3 9 + 2 × 5 (paire inutile acceptée), k4 2 × 50 − 12 + 8 (parenthèses imbriquées). متقدم (plateforme, on TAPE la ligne) : a1 (40+8)/(15−9), a2 la moyenne de trois notes, a3 18 + 129 sur 7. Le monde
+  // `coopshop` de معارف est posé par la leçon (exercice m1 seul). Le test des niveaux mesure la paire par le TYPE de tâche (`insert` / `type`).
+  'coop-calculator': {
+    beginner: { numbers: { tasks: [
+      { id: 'k1', kind: 'insert', pre: '8 × 12 − 7', truthLine: '8 × (12 − 7)', traps: [{ line: '(8 × 12) − 7', key: 'bulk' }],
+        facts: { boxes: 8, each: 12, out: 7 }, world: { items: [{ glyph: 'pencilBox', n: 8, label: '12' }], share: { groups: 8, each: 5, glyph: 'pencil', unit: '' } } },
+      { id: 'k2', kind: 'insert', pre: '45 + 15 ÷ 4', truthLine: '(45 + 15) ÷ 4', traps: [{ line: '45 + (15 ÷ 4)', key: 'coverOnly' }],
+        facts: { book: 45, cover: 15, friends: 4, total: 60 }, world: { items: [{ glyph: 'book', n: 1, label: '45 DA' }, { glyph: 'cover', n: 1, label: '15 DA' }], share: { groups: 4, each: 15, glyph: 'coin', unit: 'DA' } } },
+      { id: 'k3', kind: 'insert', pre: '9 + 2 × 5', truthLine: '9 + (2 × 5)', needPair: true, traps: [{ line: '(9 + 2) × 5', key: 'wrongPair' }],
+        facts: { loose: 9, boxes: 2, each: 5 }, world: { items: [{ glyph: 'notebook', n: 9, label: '' }, { glyph: 'notebookBox', n: 2, label: '5' }], share: { groups: 1, each: 19, glyph: 'notebook', unit: '' } } },
+      { id: 'k4', kind: 'insert', pre: '2 × 50 − 12 + 8', truthLine: '2 × (50 − (12 + 8))', traps: [{ line: '2 × (50 − 12) + 8', key: 'early' }, { line: '2 × (50 − 12 + 8)', key: 'inside' }],
+        facts: { buses: 2, seats: 50, teachers: 12, parents: 8, taken: 20, left: 30 }, world: { items: [{ glyph: 'bus', n: 2, label: '50' }], share: { groups: 2, each: 30, glyph: 'seat', unit: '' } } },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', kind: 'type', truthLine: '(40 + 8) ÷ (15 − 9)', card: { bar: { num: '40 + 8', den: '15 − 9' } }, traps: [{ line: '(40 + 8) ÷ 15 − 9', key: 'numOnly' }],
+        facts: { bread: 40, milk: 8, group: 15, absent: 9, present: 6, total: 48 }, world: { items: [{ glyph: 'bread', n: 1, label: '40 DA' }, { glyph: 'milk', n: 1, label: '8 DA' }], share: { groups: 6, each: 8, glyph: 'coin', unit: 'DA' } } },
+      { id: 'a2', kind: 'type', truthLine: '(14 + 17 + 12,5) ÷ 3', card: { text: true }, traps: [{ line: '14 + 17 + 12,5 ÷ 3', key: 'lastOnly' }],
+        facts: { m1: 14, m2: 17, m3: 12.5, count: 3 }, world: { items: [{ glyph: 'mark', n: 3, label: '' }], share: { groups: 1, each: 14.5, glyph: 'mark', unit: '' } } },
+      { id: 'a3', kind: 'type', truthLine: '(18 + 129) ÷ 7', card: { text: true }, traps: [{ line: '18 + 129 ÷ 7', key: 'booksOnly' }],
+        facts: { dictionaries: 18, stories: 129, perShelf: 7, total: 147 }, world: { items: [{ glyph: 'book', n: 2, label: '' }], share: { groups: 21, each: 7, glyph: 'book', unit: '' } } },
+    ] }, ...T('know-2') },
+  },
   // c4 7/3 − 8/15 ÷ 11/20 (l'aimant force la division d'abord). متقدم (method-9 : une chaîne à priorité ; barres CACHÉES jusqu'à la fusion, trois fautes les ramènent) : a1 (2/3 − 5/2) × (−6/11), a2 −3/4 + 5/6 × (−9/10),
   // a3 la fraction composée, a4 4/5 − 3/5 ÷ (−9/10) + (−2). Le monde `signs` (معارف) est posé par la leçon. Le test des niveaux mesure la paire par le NOMBRE DE TÂCHES et par les BARRES CACHÉES (متقدم seul).
   'merge-board': {

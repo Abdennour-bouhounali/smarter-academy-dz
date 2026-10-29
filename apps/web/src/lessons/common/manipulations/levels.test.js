@@ -136,6 +136,11 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(advanced.numbers.tasks.some((tk) => Object.keys(tk.target).length === 2), type).toBe(true);
         expect(beginner.numbers.tasks.every((tk) => Object.keys(tk.target).length === 1), type).toBe(true);
       }
+      // Unité 1 de 2AM, leçon 2 : `coop-calculator` se mesure par la FRAPPE de toute la ligne (متقدم seul : `type`) contre l'insertion de parenthèses dans une ligne donnée (`insert`).
+      else if (type === 'coop-calculator') {
+        expect(advanced.numbers.tasks.every((tk) => tk.kind === 'type' && !tk.pre), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => tk.kind === 'insert' && tk.pre), type).toBe(true);
+      }
       // Unité 1 de 3AM, leçon 2 : `robot-track` se mesure par la PRÉDICTION écrite avant « شغّل » (متقدم seul) et par l'ORDRE à choisir.
       else if (type === 'robot-track') {
         expect(advanced.numbers.tasks.some((tk) => tk.kind === 'predict'), type).toBe(true);

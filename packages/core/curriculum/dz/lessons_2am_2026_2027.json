@@ -95,13 +95,14 @@
         "أولوية العمليات في سلسلة دون أقواس"
       ],
       "prerequisiteLessonCodes": [
-        "mana-jam-tarh"
+        "mana-jam-tarh",
+        "silsila-bidun-aqwas"
       ],
       "pointsToLearn": [
-        "إنجاز سلسلة عمليات تتضمّن أقواسا بإجراء العمليات داخل الأقواس أوّلا، مثل $E = 8 \\times (12 - 7)$",
-        "إنجاز سلسلة بمستويات مختلفة من الأقواس بدءا من الأقواس الداخلية، مع استبدال الأقواس الخارجية بعاقفتين [ ]",
-        "اعتبار البسط والمقام في كتابة كسرية كعبارتين بين قوسين: $\\frac{40+8}{15-9} = (40+8) \\div (15-9)$",
-        "استعمال الأقواس لكتابة حساب على الآلة الحاسبة دون خطأ"
+        "إنجاز سلسلة عمليات تتضمّن أقواسا بإجراء العمليات داخل الأقواس أوّلًا، وتمييز الأقواس الضرورية من غير الضرورية، مثل $E = 6 \\times (15 - 9)$",
+        "إنجاز سلسلة بمستويات مختلفة من الأقواس بدءًا من الأقواس الداخلية، وكتابة الأقواس الخارجية على شكل معقوفين [ ]",
+        "اعتبار البسط والمقام في كتابة كسرية عبارتين بين قوسين، والانتقال بين الكتابتين: $\\frac{36+12}{20-8} = (36+12) \\div (20-8)$",
+        "كتابة حساب على الآلة الحاسبة بالأقواس اللازمة دون خطأ، وتفسير نتيجة خاطئة لحساب حُجز دونها"
       ],
       "programmeItems": [
         "2am.m1.r01",
@@ -121,10 +122,32 @@
           "method": [
             11,
             11
+          ],
+          "ict": [
+            21,
+            21
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "pointPrerequisites": {
+        "P1": [
+          "2am_silsila-bidun-aqwas_P2"
+        ],
+        "P2": [
+          "2am_silsila-bi-aqwas_P1"
+        ],
+        "P3": [
+          "2am_silsila-bi-aqwas_P1"
+        ],
+        "P4": [
+          "2am_silsila-bi-aqwas_P1",
+          "2am_silsila-bi-aqwas_P3"
+        ]
+      },
+      "durationMinutes": 66,
+      "difficulty": "متوسط",
+      "icon": "🧮"
     },
     {
       "code": "wasf-silsila-hisab",
@@ -303,9 +326,9 @@
         }
       },
       "status": "available",
-    "durationMinutes": 62,
-    "difficulty": "متوسط",
-    "icon": "🥚"
+      "durationMinutes": 62,
+      "difficulty": "متوسط",
+      "icon": "🥚"
     },
     {
       "code": "kasr-hasil-qisma",
@@ -1100,15 +1123,15 @@
         "اختيار الطريقة الأنسب لحساب الرابع المتناسب حسب الأعداد المعطاة"
       ],
       "pointPrerequisites": {
-      "P2": [
-        "2am_rabi-mutanasib_P1"
-      ],
-      "P3": [
-        "2am_rabi-mutanasib_P1",
-        "2am_rabi-mutanasib_P2"
-      ]
-    },
-    "programmeItems": [
+        "P2": [
+          "2am_rabi-mutanasib_P1"
+        ],
+        "P3": [
+          "2am_rabi-mutanasib_P1",
+          "2am_rabi-mutanasib_P2"
+        ]
+      },
+      "programmeItems": [
         "2am.m6.r02",
         "2am.m6.r03"
       ],
@@ -1130,9 +1153,9 @@
         }
       },
       "status": "available",
-    "durationMinutes": 60,
-    "difficulty": "متوسط",
-    "icon": "⚖️"
+      "durationMinutes": 60,
+      "difficulty": "متوسط",
+      "icon": "⚖️"
     },
     {
       "code": "nisba-miawiya",

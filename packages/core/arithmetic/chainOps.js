@@ -194,3 +194,210 @@ export function offTreeStep(text, order) {
     return !same(c.leftSpan, s.leftSpan) || !same(c.rightSpan, s.rightSpan);
   }) ?? null;
 }
+
+/* ══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+ * L2 (silsila-bi-aqwas, 2026-10-29) — LES PARENTHÈSES, LES CROCHETS, LA BARRE DE FRACTION ET LA CALCULATRICE.
+ *   tokenizeB · parseB · evaluateB · bracketPairs · bracketDepths · uselessBrackets · bracketForm · barToLine · lineToBar · calculatorRead · calcDisplay ·
+ *   leftToRight · calculatorKeys
+ * Les fonctions de L1 ci-dessus refusent toujours les parenthèses (`tokenize`) : celles-ci sont un autre étage, qui réutilise `numText` et le même évaluateur exact.
+ * La LECTURE de la calculatrice (`calculatorRead`) est celle d'une calculatrice scientifique : priorités, parenthèses, « Syntax ERROR » si elles ne s'équilibrent pas,
+ * « Math ERROR » pour une division par 0 ; un résultat négatif est AFFICHÉ tel quel (jamais enseigné : 2AM n'a pas encore les relatifs).
+ * ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════ */
+
+const OPEN = new Set(['(', '[']);
+const CLOSE = new Set([')', ']']);
+
+/** « (45 + 15) ÷ 4 » → jetons `{ t:'num'|'op'|'open'|'close' }` ; `[ ]` valent `( )` ; erreurs : symbole inconnu, deux nombres de suite. Les contrôles de syntaxe sont dans `parseB`. */
+export function tokenizeB(text) {
+  const s = latin(text).replace(/\s+/g, '');
+  const tokens = [];
+  let i = 0;
+  while (i < s.length) {
+    const ch = s[i];
+    const m = /^\d+(?:[,.]\d+)?/.exec(s.slice(i));
+    if (m) {
+      tokens.push({ t: 'num', v: parseRel(m[0]), text: m[0].replace('.', ',') });
+      i += m[0].length;
+    } else if (OPEN.has(ch)) { tokens.push({ t: 'open', ch }); i += 1; }
+    else if (CLOSE.has(ch)) { tokens.push({ t: 'close', ch }); i += 1; }
+    else {
+      const o = ALIAS[ch] ?? ch;
+      if (!OPS[o]) throw new Error(`symbole inconnu : ${ch}`);
+      tokens.push({ t: 'op', o });
+      i += 1;
+    }
+  }
+  return tokens;
+}
+
+/** Les paires de parenthèses d'une liste de jetons : `[{ open, close, depth }]` (indices de jetons ; depth 1 = la plus extérieure). Lève `syntax` si elles ne s'équilibrent pas. */
+export function bracketPairs(tokens) {
+  const stack = [];
+  const pairs = [];
+  tokens.forEach((tk, i) => {
+    if (tk.t === 'open') stack.push(i);
+    else if (tk.t === 'close') {
+      if (!stack.length) throw new Error('syntax');
+      const open = stack.pop();
+      pairs.push({ open, close: i, depth: stack.length + 1 });
+    }
+  });
+  if (stack.length) throw new Error('syntax');
+  return pairs.sort((a, b) => a.open - b.open);
+}
+
+/** La profondeur de parenthèses sous chaque jeton (0 = hors parenthèses ; un jeton `open` compte déjà dans sa propre paire). Tolère un mot non équilibré. */
+export function bracketDepths(tokens) {
+  let d = 0;
+  return tokens.map((tk) => {
+    if (tk.t === 'open') { d += 1; return d; }
+    if (tk.t === 'close') { const x = d; d = Math.max(0, d - 1); return x; }
+    return d;
+  });
+}
+
+/** L'arbre avec priorités ET parenthèses : `{ t:'num' }` | `{ t:'op', o, l, r }` | `{ t:'group', e }`. `throw new Error('syntax')` si le mot n'est pas une expression. */
+export function parseB(input) {
+  const tokens = typeof input === 'string' ? tokenizeB(input) : input;
+  let pos = 0;
+  const factor = () => {
+    const tk = tokens[pos];
+    if (!tk) throw new Error('syntax');
+    if (tk.t === 'num') { pos += 1; return { t: 'num', v: tk.v, text: tk.text }; }
+    if (tk.t === 'open') {
+      pos += 1;
+      const e = expr();
+      if (!tokens[pos] || tokens[pos].t !== 'close') throw new Error('syntax');
+      pos += 1;
+      return { t: 'group', e };
+    }
+    throw new Error('syntax');
+  };
+  const term = () => {
+    let left = factor();
+    while (tokens[pos]?.t === 'op' && PRIORITY[tokens[pos].o] === 2) { const o = tokens[pos].o; pos += 1; left = { t: 'op', o, l: left, r: factor() }; }
+    return left;
+  };
+  const expr = () => {
+    let left = term();
+    while (tokens[pos]?.t === 'op' && PRIORITY[tokens[pos].o] === 1) { const o = tokens[pos].o; pos += 1; left = { t: 'op', o, l: left, r: term() }; }
+    return left;
+  };
+  if (!tokens.length) throw new Error('syntax');
+  const tree = expr();
+  if (pos !== tokens.length) throw new Error('syntax');
+  return tree;
+}
+
+/** La valeur exacte (rationnel de `powers.js`) d'un mot avec parenthèses. */
+export function evaluateB(treeOrText) {
+  const tree = typeof treeOrText === 'string' ? parseB(treeOrText) : treeOrText;
+  if (tree.t === 'num') return tree.v;
+  if (tree.t === 'group') return evaluateB(tree.e);
+  return apply(tree.o, evaluateB(tree.l), evaluateB(tree.r));
+}
+
+/** La forme d'un arbre SANS ses parenthèses (une chaîne canonique) : deux mots ont la même forme si les parenthèses n'y changent rien à l'ordre du calcul. */
+const shapeOf = (tree) => {
+  if (tree.t === 'num') return tree.text;
+  if (tree.t === 'group') return shapeOf(tree.e);
+  return `(${shapeOf(tree.l)}${tree.o}${shapeOf(tree.r)})`;
+};
+
+/**
+ * Les paires INUTILES d'un mot : celles dont la suppression laisse le MÊME arbre de calcul (les parenthèses répètent ce que la priorité fait déjà, ex. 9 + (2 × 5),
+ * ou entourent un nombre seul, ou toute l'expression). `[{ open, close, depth }]` ; `[]` si le mot n'est pas une expression.
+ */
+export function uselessBrackets(input) {
+  const tokens = typeof input === 'string' ? tokenizeB(input) : input;
+  let base;
+  let pairs;
+  try { base = shapeOf(parseB(tokens)); pairs = bracketPairs(tokens); } catch { return []; }
+  return pairs.filter((p) => {
+    const rest = tokens.filter((_, i) => i !== p.open && i !== p.close);
+    try { return shapeOf(parseB(rest)) === base; } catch { return false; }
+  });
+}
+
+const tokenText = (tk) => (tk.t === 'num' ? tk.text : tk.t === 'op' ? tk.o : tk.ch);
+
+/** Le mot écrit avec ses parenthèses EXTÉRIEURES en crochets : une paire qui en contient une autre s'écrit [ ] (« 2 × [50 − (12 + 8)] »). */
+export function bracketForm(input) {
+  const tokens = typeof input === 'string' ? tokenizeB(input) : input;
+  let pairs;
+  try { pairs = bracketPairs(tokens); } catch { return tokens.map(tokenText).join(' '); }
+  const outer = new Set();
+  pairs.forEach((p) => { if (pairs.some((q) => q.open > p.open && q.close < p.close)) { outer.add(p.open); outer.add(p.close); } });
+  return tokens.map((tk, i) => (outer.has(i) ? (tk.t === 'open' ? '[' : ']') : tokenText(tk))).join(' ');
+}
+
+/** La barre de fraction écrite sans barre : `(num) ÷ (den)`. Les parenthèses sont ajoutées autour de chaque côté qui n'est pas un nombre seul. */
+export function barToLine(num, den) {
+  const wrap = (x) => (/^\s*\d+(?:[,.]\d+)?\s*$/.test(x) ? String(x).trim() : `(${String(x).trim()})`);
+  return `${wrap(num)} ÷ ${wrap(den)}`;
+}
+
+/** Le chemin inverse : `(A) ÷ (B)` (ou `n ÷ (B)`, `(A) ÷ n`) → `{ num, den }`, sinon `null` (l'opération du sommet n'est pas une division de deux blocs). */
+export function lineToBar(input) {
+  const tokens = typeof input === 'string' ? tokenizeB(input) : input;
+  let tree;
+  try { tree = parseB(tokens); } catch { return null; }
+  if (tree.t !== 'op' || tree.o !== '÷') return null;
+  const inner = (t) => (t.t === 'group' ? t.e : t);
+  const show = (t) => bracketFormTree(inner(t));
+  return { num: show(tree.l), den: show(tree.r) };
+}
+function bracketFormTree(tree) {
+  if (tree.t === 'num') return tree.text;
+  if (tree.t === 'group') return `(${bracketFormTree(tree.e)})`;
+  return `${bracketFormTree(tree.l)} ${tree.o} ${bracketFormTree(tree.r)}`;
+}
+
+/** L'affichage d'une calculatrice : jusqu'à 8 décimales (arrondi), zéros inutiles retirés, virgule décimale, signe « − » pour un négatif. */
+export function calcDisplay(v) {
+  const neg = P.sign(v) < 0;
+  const a = neg ? P.neg(v) : v;
+  const n = BigInt(a.n); const d = BigInt(a.d);
+  const scale = 10n ** 8n;
+  const q = (n * scale * 2n + d) / (d * 2n);   // arrondi
+  const int = q / scale; const frac = String(q % scale).padStart(8, '0').replace(/0+$/, '');
+  return `${neg && (int > 0n || frac) ? '−' : ''}${int}${frac ? `,${frac}` : ''}`;
+}
+
+/**
+ * Ce que lit une calculatrice scientifique : `{ status:'ok', value, display }` | `{ status:'syntax' }` (« Syntax ERROR » : parenthèses non équilibrées, opérateur sans nombre,
+ * mot vide) | `{ status:'math' }` (« Math ERROR » : division par 0).
+ */
+export function calculatorRead(input) {
+  let tree;
+  try { tree = parseB(input); } catch { return { status: 'syntax' }; }
+  try { const value = evaluateB(tree); return { status: 'ok', value, display: calcDisplay(value) }; } catch { return { status: 'math' }; }
+}
+
+/** Le mot lu de gauche à droite SANS priorité (une calculatrice simple), les parenthèses respectées : « 45 + 15 ÷ 4 » → 15. `null` si le mot n'est pas une expression. */
+export function leftToRight(input) {
+  const tokens = typeof input === 'string' ? tokenizeB(input) : input;
+  let pos = 0;
+  const seq = () => {
+    let acc = factor();
+    while (tokens[pos]?.t === 'op') { const o = tokens[pos].o; pos += 1; acc = apply(o, acc, factor()); }
+    return acc;
+  };
+  const factor = () => {
+    const tk = tokens[pos];
+    if (!tk) throw new Error('syntax');
+    pos += 1;
+    if (tk.t === 'num') return tk.v;
+    if (tk.t === 'open') { const v = seq(); if (tokens[pos]?.t !== 'close') throw new Error('syntax'); pos += 1; return v; }
+    throw new Error('syntax');
+  };
+  try { if (!tokens.length) return null; const v = seq(); return pos === tokens.length ? v : null; } catch { return null; }
+}
+
+/** Les TOUCHES à presser pour un mot : un chiffre par touche, « , » pour la virgule, puis opérateurs et parenthèses, et « = » à la fin. */
+export function calculatorKeys(input) {
+  const tokens = typeof input === 'string' ? tokenizeB(input) : input;
+  const keys = [];
+  tokens.forEach((tk) => { if (tk.t === 'num') keys.push(...tk.text.split('')); else keys.push(tokenText(tk) === '[' ? '(' : tokenText(tk) === ']' ? ')' : tokenText(tk)); });
+  return [...keys, '='];
+}

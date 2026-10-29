@@ -125,6 +125,7 @@ import { ORACLE as ORACLE_2AM_MUQARANA_NISBIYA } from './practice-oracle/muqaran
 import { ORACLE as ORACLE_2AM_RABI_MUTANASIB } from './practice-oracle/rabi-mutanasib.mjs';
 import { ORACLE as ORACLE_2AM_SILSILA, audit as auditSilsila } from './practice-oracle/silsila-bidun-aqwas.mjs';
 import { ORACLE as ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA } from './practice-oracle/ikhtizal-kitaba-kasriya.mjs';
+import { ORACLE as ORACLE_2AM_SILSILA_AQWAS, audit as auditSilsilaAqwas } from './practice-oracle/silsila-bi-aqwas.mjs';
 import { ORACLE as ORACLE_1AM_QAWAID_QABILIYAT_QISMA } from './practice-oracle/qawaid-qabiliyat-qisma.mjs';
 import { ORACLE as ORACLE_1AM_KITABAT_ADAD_TABII } from './practice-oracle/kitabat-adad-tabii.mjs';
 import { ORACLE as ORACLE_1AM_HASIL_QISMA_KASR } from './practice-oracle/hasil-qisma-kasr.mjs';
@@ -310,6 +311,7 @@ const ORACLE = {
   ...ORACLE_2AM_SILSILA,
   ...ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA,
   ...ORACLE_1AM_QAWAID_QABILIYAT_QISMA,
+  ...ORACLE_2AM_SILSILA_AQWAS,
   ...ORACLE_1AM_KITABAT_ADAD_TABII,
   ...ORACLE_1AM_HASIL_QISMA_KASR,
   ...ORACLE_1AM_KUSUR_ASHRIYA_KITABA,
@@ -492,6 +494,12 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
 
   it('le cas signalé (6 | 120) : « 6 مضاعف للعدد 120 » est faux, seul « لا » est accepté', () => {
     const q = bank.find((b) => b.key === REPORTED.key).q;
+  it('سلسلة عمليات تتضمّن أقواسا (2AM) : évaluateur exact propre (BigInt, ( ) [ ] et barres de fraction ; aucun import de chainOps.js), chaque clé recalculée, LaTeX de chaque énoncé / option / ligne de corrigé relu (\\dfrac, convention [ ( ) ], aucun intermédiaire négatif, aucune multiplication implicite aux niveaux 1–3), chaque QCM jugé option par option (une seule vraie), chaque distracteur = la lecture que nomme sa misconception (IGNORED, DROPOUTER, BARSPLIT, DROPBR, MISPLACED, ALLUSELESS, ALLNEEDED), chaque crochet « inutile » vérifié par retrait sur 40 jeux de valeurs, 50 feuilles dont 11 sujets lus', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-silsila-bi-aqwas-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditSilsilaAqwas(own)).toEqual([]);
+  });
+
     expect(REPORTED.isDivisor).toBe(true);
     expect(REPORTED.isMultiple).toBe(false);
     for (const id of ['A', 'B']) {

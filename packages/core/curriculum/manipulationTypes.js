@@ -909,6 +909,14 @@ export function isManipulationType(type) {
   return Object.prototype.hasOwnProperty.call(MANIPULATION_TYPES, type);
 }
 
+  },
+  // 2AM, unité 1, leçon 2 (2026-10-29) — les parenthèses d'une série d'opérations.
+  'coop-calculator': {
+    // LES PARENTHÈSES SOUS LA MAIN : au comptoir de la coopérative de l'école, la main POSE les parenthèses de la ligne tapée sur une calculatrice scientifique (مبتدئ : toucher un intervalle puis « ( » ou
+    // « ) » ; متقدم : taper toute la ligne depuis une histoire ou une barre de fraction). « = » imprime la ligne et la valeur de la machine, qui obéit aux priorités : une valeur que l'histoire refuse est barrée et
+    // l'histoire dit pourquoi (« 48,75 DA لكلّ صديق؟ ثمن الكتاب كلّه 60 DA »), une ligne mal équilibrée donne « Syntax ERROR », une paire inutile est acceptée avec une remarque. `coop-calculator` n'énonce jamais la règle.
+    shows: 'الأقواس تجعل الآلة (والقارئ) تحسب جزءًا من السلسلة أوّلًا؛ في الأقواس المتداخلة نبدأ بالداخلية ونكتب الخارجية [ ]، وخطّ الكسر يجمع البسط ويجمع المقام فنكتبهما بين قوسين على الآلة، وقوسان لا يغيّران ترتيب الحساب غير ضروريين',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
 /** Les natures de ressource qu'une leçon peut déclarer dans `resources[]`. */
 export const RESOURCE_KINDS = Object.freeze(['manipulation', 'method', 'situation', 'example']);
 

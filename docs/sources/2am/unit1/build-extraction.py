@@ -569,9 +569,15 @@ missing = [i for i in ids if i not in DEST]
 assert not missing, f'éléments sans destination : {missing}'
 extra = [k for k in DEST if k != '_comment' and k not in ids]
 assert not extra, f'destinations sans élément : {extra}'
+# L2 (silsila-bi-aqwas, 2026-10-29) : les éléments RELUS sur les pages rendues (PDF 5, 8, 11, 18 ; transcription comparée mot à mot, aucune correction nécessaire). Les autres éléments de L2
+# (prep 8 et 10, act-4, now-11 ①②, ex-13…ex-17, ex-22, ex-29, ex-30, self-2…4, deep-*) restent `verified: False` : leurs pages n'ont pas été rendues (bord droit de la p. 8, bas des p. 14–16 coupés au scan).
+L2_VERIFIED = {'act-3', 'method-1', 'method-2', 'ex-8', 'ex-10', 'ex-11', 'ict'}
+for _e in E:
+    if _e['id'] in L2_VERIFIED:
+        _e['verified'] = True
 L1_REQUIRED = {'challenge', 'objectives', 'opener', 'prep', 'act-1', 'act-2', 'know-1', 'self-1', 'self-6', 'deep-39'} | {f'ex-{n}' for n in range(1, 8)}
 assert all(next(e for e in E if e['id'] == i)['verified'] for i in L1_REQUIRED), 'élément de L1 non vérifié'
-assert all(not e['verified'] for e in E if e['id'] not in L1_REQUIRED), 'élément hors L1 marqué vérifié'
+assert all(not e['verified'] for e in E if e['id'] not in L1_REQUIRED | L2_VERIFIED), 'élément hors L1/L2 marqué vérifié'
 
 out = Path(__file__).with_name('extraction.json')
 out.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')

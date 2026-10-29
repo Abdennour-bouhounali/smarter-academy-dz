@@ -323,6 +323,10 @@ export const VISUAL_THEMES = Object.freeze({
   //   paintshop  la machine à teinter d'un magasin de peinture de quartier : un bec de laiton au-dessus du seau B et une manette, le seau de référence A
   //              scellé avec son étiquette et sa pastille, deux grandes pastilles de couleur côte à côte et un mesureur à aiguille « أفتح · أغمق »,
   //              un élève (KidFigure) au rouleau devant l'esquisse de la fresque (`shade-match`)
+  // 2AM, unité 1, leçon 2 (2026-10-29) :
+  //   coopshop  le comptoir de la coopérative de l'école : étagères de cahiers et de boîtes de crayons, comptoir en bois, une grande calculatrice scientifique avec son ruban imprimé, les marchandises de
+  //             l'histoire et leur partage, Hiba (KidFigure, hijab) derrière le comptoir (`coop-calculator`)
+  coopshop: { kind: 'objects', shows: 'تعاونية المدرسة: منضدة وآلة حاسبة علمية كبيرة بشريط مطبوع وسلعة الوضعية' },
   paintshop: { kind: 'objects', shows: 'آلة مزج الألوان في محلّ الطلاء: دلوان وعلب أبيض ورافعة للأزرق' },
   // 3AM, unité 2, leçon 3 (2026-10-26) :
   //   seedbed  un حوض غرس d'un jardin d'école de 1 m : une règle en bois le long du bord (0 … 1 m), des zones de cultures peintes à partir de la gauche
