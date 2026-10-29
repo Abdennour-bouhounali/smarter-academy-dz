@@ -581,3 +581,24 @@ in `docs/sources/2am/unit{1,2}/plan/` (owner questions in each README). One comm
 - Owner points added: `coop-calculator` prints the calculator's honest −5,8 for a numerator-only line (negatives not taught; refuse the line
   instead?); `2am-s1-77` ex 1 is cited as `term_exam` on three `silsila-bi-aqwas` sheets (L2-002, L5-002 may reuse the same part);
   many unit-1 extraction elements are still `verified: False` (re-read at 100 dpi only).
+
+### Pair 3 — `wasf-silsila-hisab` (unit 1) and `jida-kasrayn` (unit 2), published on `dev` 2026-10-29
+
+- `wasf-silsila-hisab` « وصف سلسلة حسابات »: lab `chain-cutter` « مقصّ السلسلة » (theme `corkboard`: the hand chooses where a printed chain
+  is cut; only a cut at the last operation works, any other bites a staple and shows the recollected value), extends `chainOps.js` (L3 row:
+  `analyse`, `lastOperation`, `describe`, `cutAt`, `build`…). Bank 2 `term_exam` / 40 modelled / 8 adapted (few faithful sheets: the 2AM
+  papers describe chains rarely). Coordinator fix: two level-5 bank sheets still said « الساحر » / « خدعة » (the lead had renamed the
+  مسألة only) — now « لغز سالم » / « لغز العدد ».
+- `jida-kasrayn` « جداء كسرين »: lab `window-blinds` « ستائر النافذة » (theme `classwindow`: two perpendicular pulls — a side curtain on rail
+  stops for a/b, a roller blind on cord notches for c/d — the doubly shaded corner is the product), extends `fractions2.js` (E3:
+  `productGrid`, `timesNumber`, `fractionOf`, `ofRemainder`). Bank 9 `term_exam` / 31 modelled / 10 adapted. M4 has seven exercises.
+- Successor connection (commit `feat(lessons): connect maqlub-qismat-kasrayn to jida-kasrayn`): `maqlub-qismat-kasrayn` P1 ←
+  `2am_jida-kasrayn_P1` (net `2am.m1.r07 → 3am.m1.r03`); its معارف « تذكّر — السنة الثانية » already computed `getLessonPath('jida-kasrayn')`
+  and now renders the link. `wasf-silsila-hisab` has NO successor edge: its plan's `tabsit-hadhf-aqwas` P4 ← `2am_wasf-silsila-hisab_P1`
+  waits for the owner to add the net link `2am.m1.r02 → 3am.m5.r01` (and with it the « تذكّر » in that lesson's « مجموع أم جداء » item).
+- Gates (coordinator, whole tree): `npm test` exit 0 (core 1106, web 730 files / 14 857 tests, scripts 18 928), `check:lessons` (entry
+  236.7 KB gzip), build, net tests, queue check, `lab-rollout-status` ✅ for both; lesson-kit e2e green (227 and 196 checks). Local DB:
+  9 modules + 50 exercises each `published`; the new 3AM edge is in `learning_point_prerequisites`.
+- Owner points added: the net link `2am.m1.r02 → 3am.m5.r01` (above); `ex-9` of `wasf-silsila-hisab` (a calculation tree) is a `selfCheck`
+  because no tree figure kind exists; `jida-kasrayn` M4 `ex-7` uses 450 seats from the plan's reading of `deep-42`, not re-checked on the scan;
+  unit-1 extraction stays `verified: False`.

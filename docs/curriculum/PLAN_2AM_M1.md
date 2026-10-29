@@ -1,6 +1,6 @@
 # Generation plan — 2AM « ميدان الأنشطة العددية », مقطع 2am.m1 (units 1–2, 2026-10-28)
 
-**Status:** 10 plans written and cross-reviewed (Opus planners, 2026-10-28); pair 1 (`silsila-bidun-aqwas`, `kasr-hasil-qisma`) published on `dev` 2026-10-29; pair 2 (`silsila-bi-aqwas`, `jam-tarh-kusur`) published on `dev` 2026-10-29; pair 3 in generation. **Authority:** this index gives the order,
+**Status:** 10 plans written and cross-reviewed (Opus planners, 2026-10-28); pair 1 (`silsila-bidun-aqwas`, `kasr-hasil-qisma`) published on `dev` 2026-10-29; pair 2 (`silsila-bi-aqwas`, `jam-tarh-kusur`) published on `dev` 2026-10-29; pair 3 (`wasf-silsila-hisab`, `jida-kasrayn`) published on `dev` 2026-10-29; pair 4 in generation. **Authority:** this index gives the order,
 the lanes, the generator prompt and the « successor connection » step. Each entry's design is its plan file. The contracts stay
 authoritative for HOW (`LESSON_DEVELOPMENT_GUIDE.md` §14, `LEARNING_NET.md` §4, `MANIPULATION_DNA.md`, `EXERCISE_CONTRACT.md`).
 Method: the same as `PLAN_3AM_UNITS_1_5.md`.
@@ -138,6 +138,10 @@ Learned in pair 2 (2026-10-29): a modelled sheet is stored `type: platform_addit
 VIEW every screenshot you save (all four sizes of the glance, every module), not a sample. The lab must fit one screen at 1024×768 in
 BOTH levels, the متقدم typing phase included (measure its height). Money in Arabic strings is wrapped in an LTR isolate (« 48,75 DA »);
 in KaTeX use `\mathrm{DA}`.
+
+Learned in pair 3 (2026-10-29): the Islam-respect rule covers the BANK sheets too — renaming a context in a module (« الساحر » → a riddle)
+means grepping `content/practice/2am/<code>/` for the same word. A lab column at 1024×768 is only ~414 px wide beside the sidebar: design
+the pockets / cards as one compact line each and measure the worst phase (banner + « next » shown).
 
 Final report: URL path; modules; the lab and the screenshots you reviewed; bank counts (term_exam / modelled / adapted /
 platform_addition); every الكفاءات change; gates with results; the full list of files created or changed; docs updated; fixes to
