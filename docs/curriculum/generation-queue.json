@@ -1196,24 +1196,6 @@
       "via": []
     },
     {
-      "code": "wadiya-idmajiya-amaliyat-tabiiya-ushriya",
-      "grade": "2am",
-      "unit": "amaliyat-tabiiya-ushriya",
-      "titleAr": "أدمج تعلّماتي — العمليات على الأعداد الطبيعية والأعداد العشرية",
-      "kind": "synthesis",
-      "trigger": "unité amaliyat-tabiiya-ushriya complète",
-      "via": []
-    },
-    {
-      "code": "wadiya-idmajiya-kusur-amaliyat",
-      "grade": "2am",
-      "unit": "kusur-amaliyat",
-      "titleAr": "أدمج تعلّماتي — الكسور والعمليات عليها",
-      "kind": "synthesis",
-      "trigger": "unité kusur-amaliyat complète",
-      "via": []
-    },
-    {
       "code": "injaz-jam-tarh-mudad",
       "grade": "1am",
       "unit": "jam-tarh-ashriya",
