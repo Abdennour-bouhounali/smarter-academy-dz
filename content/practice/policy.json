@@ -229,6 +229,10 @@
       "minPerLevel": 10,
       "source": "السنة الثانية متوسط، الوحدة 2 «الكسور والعمليات عليها» — الدرس «الكسر: نسبة وحاصل قسمة وقيم مقرّبة» (الكتاب ص 24، 26، 27، 30، 33، 34، 35، 37: docs/sources/2am/unit2/extraction.json؛ خطّة الدرس: docs/sources/2am/unit2/plan/kasr-hasil-qisma.md) مكمَّلة بتمارين تولّدها المنصّة على منوال اختبارات الفصل الأول (docs/sources/moyen/exams/exams-index.json، EXAM_PATTERN.md §6) — 10 تمارين × 5 مستويات (2026-10-28)"
     },
+    "jam-tarh-kusur": {
+      "minPerLevel": 10,
+      "source": "السنة الثانية متوسط، الوحدة 2 «الكسور والعمليات عليها» — الدرس «جمع وطرح كسرين» (الكتاب ص 24، 25، 28، 29، 30، 31، 33، 34، 37: docs/sources/2am/unit2/extraction.json؛ خطّة الدرس: docs/sources/2am/unit2/plan/jam-tarh-kusur.md) مكمَّلة بتمارين تولّدها المنصّة على منوال اختبارات الفصل الأول (docs/sources/moyen/exams/exams-index.json، EXAM_PATTERN.md §6) — 10 تمارين × 5 مستويات (2026-10-29)"
+    },
     "qawaid-qabiliyat-qisma": {
       "minPerLevel": 10,
       "source": "السنة الأولى متوسط، الوحدة 3 «الضرب والقسمة» — الدرس «قواعد قابلية القسمة» (الكتاب ص 36، 37–38، 41، 42، وتمارين ص 46–48: docs/sources/1am/unit3/extraction.json) مكمَّلة بتمارين تولّدها المنصّة على منوال اختبارات الفصل الثاني (والفصل الثالث لسند مصنَّف خطأً: 1am-s2-62) (docs/sources/moyen/exams/exams-index.json، EXAM_PATTERN.md §6) — 10 تمارين × 5 مستويات (المرحلة 3 من تعميم الطور المتوسط، 2026-10-14)"

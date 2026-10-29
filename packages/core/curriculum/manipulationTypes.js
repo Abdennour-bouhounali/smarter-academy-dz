@@ -750,6 +750,15 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'حاصل القسمة $\\frac{a}{b}$ عدد واحد (قيمته المضبوطة) ؛ نحصره بين قيمتين مقرّبتين بالنقصان وبالزيادة إلى $0{,}1$ أو $0{,}01$ ، ولا يبلغه عدد عشري إذا لم تنتهِ القسمة ؛ وضرب الحدّين في $10$ أو $100$ لا يغيّر حاصل القسمة',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 2AM, unité 2 « الكسور والعمليات عليها », leçon 7 « جمع وطرح كسرين » (2026-10-29) — la distance marchée, en poteaux blancs, sur un sentier à deux sortes de poteaux.
+  'trail-odometer': {
+    // LA DISTANCE SOUS LA MAIN : un sentier de longueur 1 (ou un circuit), des poteaux BLANCS tous les 1/n et, selon la tâche, des poteaux ROUGES tous les k blancs (l'unité grossière 1/m, n = k·m). La main FAIT
+    // MARCHER une scoute (glisser, −/+ un blanc, « مرحلة حمراء » −/+ k blancs) ; « وصلنا » juge l'étape : elle doit se tenir EXACTEMENT sur le poteau visé. L'élève ÉCRIT ensuite où est le groupe : toute écriture
+    // égale est acceptée, les fausses (a+c)/(b+d), le rouge compté comme un blanc, (n+a)/b sont refusées et un drapeau en pointillé est planté à leur position. مبتدئ : même dénominateur, deux sortes de poteaux,
+    // un retour ; متقدم : la fraction d'arrivée et le reste sont ÉCRITS avant de marcher, puis un circuit (1 + 5/6). « جرّب أعدادك » : toujours ouvert, deux fractions dont un dénominateur est multiple de l'autre.
+    shows: 'لا نجمع إلا أجزاء من الحجم نفسه: كسران مقام أحدهما مضاعف لمقام الآخر نكتبهما بالمقام نفسه (نضرب حدّي أحدهما في العدد نفسه) ثم نجمع البسطين أو نطرحهما ونحافظ على المقام ؛ والباقي من الكلّ هو الفرق بين $1$ وما مُشي',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 3AM, unité 5 (2026-10-21) — résoudre ax + b = cx + d en traversant les termes avec leur signe, puis en divisant.
   'term-ferry': {
     // LE SIGNE D'UN TERME SOUS LA MAIN : une équation dont la solution est CACHÉE ; chaque membre est une rive, chaque terme une caisse. La
@@ -901,6 +910,14 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'في سلسلة عمليات دون أقواس: نحسب الجمع والطرح فقط (أو الضرب والقسمة فقط) من اليسار نحو اليمين، ونحسب الضرب والقسمة قبل الجمع والطرح؛ وهذا اتّفاق تتبّعه الآلة الحاسبة العلمية أيضًا',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 2AM, unité 1, leçon 2 (2026-10-29) — les parenthèses d'une série d'opérations.
+  'coop-calculator': {
+    // LES PARENTHÈSES SOUS LA MAIN : au comptoir de la coopérative de l'école, la main POSE les parenthèses de la ligne tapée sur une calculatrice scientifique (مبتدئ : toucher un intervalle puis « ( » ou
+    // « ) » ; متقدم : taper toute la ligne depuis une histoire ou une barre de fraction). « = » imprime la ligne et la valeur de la machine, qui obéit aux priorités : une valeur que l'histoire refuse est barrée et
+    // l'histoire dit pourquoi (« 48,75 DA لكلّ صديق؟ ثمن الكتاب كلّه 60 DA »), une ligne mal équilibrée donne « Syntax ERROR », une paire inutile est acceptée avec une remarque. `coop-calculator` n'énonce jamais la règle.
+    shows: 'الأقواس تجعل الآلة (والقارئ) تحسب جزءًا من السلسلة أوّلًا؛ في الأقواس المتداخلة نبدأ بالداخلية ونكتب الخارجية [ ]، وخطّ الكسر يجمع البسط ويجمع المقام فنكتبهما بين قوسين على الآلة، وقوسان لا يغيّران ترتيب الحساب غير ضروريين',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
 });
 
 export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));
@@ -909,14 +926,6 @@ export function isManipulationType(type) {
   return Object.prototype.hasOwnProperty.call(MANIPULATION_TYPES, type);
 }
 
-  },
-  // 2AM, unité 1, leçon 2 (2026-10-29) — les parenthèses d'une série d'opérations.
-  'coop-calculator': {
-    // LES PARENTHÈSES SOUS LA MAIN : au comptoir de la coopérative de l'école, la main POSE les parenthèses de la ligne tapée sur une calculatrice scientifique (مبتدئ : toucher un intervalle puis « ( » ou
-    // « ) » ; متقدم : taper toute la ligne depuis une histoire ou une barre de fraction). « = » imprime la ligne et la valeur de la machine, qui obéit aux priorités : une valeur que l'histoire refuse est barrée et
-    // l'histoire dit pourquoi (« 48,75 DA لكلّ صديق؟ ثمن الكتاب كلّه 60 DA »), une ligne mal équilibrée donne « Syntax ERROR », une paire inutile est acceptée avec une remarque. `coop-calculator` n'énonce jamais la règle.
-    shows: 'الأقواس تجعل الآلة (والقارئ) تحسب جزءًا من السلسلة أوّلًا؛ في الأقواس المتداخلة نبدأ بالداخلية ونكتب الخارجية [ ]، وخطّ الكسر يجمع البسط ويجمع المقام فنكتبهما بين قوسين على الآلة، وقوسان لا يغيّران ترتيب الحساب غير ضروريين',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
 /** Les natures de ressource qu'une leçon peut déclarer dans `resources[]`. */
 export const RESOURCE_KINDS = Object.freeze(['manipulation', 'method', 'situation', 'example']);
 

@@ -208,10 +208,10 @@ E.append({'id': 'now-27', 'kind': 'practice', 'page': 27, 'section': 'دوري �
 assert F(13, 7) + F(11, 7) == F(24, 7) and q('3,2/3') - q('1,6/3') == q('1,6/3')
 assert F(5, 12) + F(11 * 3, 4 * 3) == F(38, 12) == F(19, 6)       # l'exemple imprime 1/4 puis « 11 × 3 / 4 × 3 » : il s'agit de 11/4
 assert F(3, 4) - F(5, 12) == F(4, 12) == F(1, 3)
-E.append({'id': 'know-2a', 'kind': 'knowledge', 'number': 2, 'page': 28, 'section': 'معارف', 'title': 'جمع (أو طرح) كسرين لهما نفس المقام', 'verified': False,
+E.append({'id': 'know-2a', 'kind': 'knowledge', 'number': 2, 'page': 28, 'section': 'معارف', 'title': 'جمع (أو طرح) كسرين لهما نفس المقام', 'verified': True,
           'text': 'خاصية: لجمع (أو طرح) عددين مكتوبين على شكل كسرين لهما نفس المقام نقوم بما يلي: نجمع (أو نطرح) البسطين و نحتفظ بالمقام المشترك. أمثلة: 13/7 + 11/7 = (13 + 11)/7 = 24/7 ؛ 3,2/3 − 1,6/3 = (3,2 − 1,6)/3 = 1,6/3 .',
           'answer': {'1': frac(F(24, 7)), '2': '1,6/3'}, 'answerSource': 'computed'})
-E.append({'id': 'know-2b', 'kind': 'knowledge', 'number': 2, 'page': 28, 'section': 'معارف', 'title': 'جمع (أو طرح) كسرين مقام أحدهما مضاعف لمقام الآخر', 'verified': False,
+E.append({'id': 'know-2b', 'kind': 'knowledge', 'number': 2, 'page': 28, 'section': 'معارف', 'title': 'جمع (أو طرح) كسرين مقام أحدهما مضاعف لمقام الآخر', 'verified': True,
           'text': 'خاصية: لجمع (أو طرح) عددين مكتوبين على شكل كسرين مقام أحدهما مضاعف لمقام الآخر نقوم بما يلي: نكتب الكسرين بنفس المقام (توحيد المقامات). ثمّ نجمع (أو نطرح) البسطين اللذين حصلنا عليهما محتفظين بالمقام المشترك الجديد. أمثلة: 5/12 + 1/4 = 5/12 + (11 × 3)/(4 × 3) = 5/12 + 33/12 = (5 + 33)/12 = 38/12 = 19/6 ؛ 3/4 − 5/12 = (3 × 3)/(4 × 3) − 5/12 = 9/12 − 5/12 = (9 − 5)/12 = 4/12 = 1/3 .',
           'answer': {'1': frac(F(5, 12) + F(11, 4)), '2': frac(F(3, 4) - F(5, 12))}, 'answerSource': 'computed'})
 assert F(5, 7) * F(11, 3) == F(55, 21) and 3 * F(2, 5) == F(6, 5) and F(5, 7) * q('2,6') == F(13, 7)
@@ -412,7 +412,7 @@ SYN = 'wadiya-idmajiya-kusur-amaliyat'
 DEST = {
     '_comment': 'elementId → { lesson, module } ; `items` répartit un élément ; une leçon encore coming_soon est une destination EN ATTENTE (check-textbook-coverage.mjs). Les modules de qisma-iqlidiya-hasr : 0 أستعدّ · 1 نشاط 1 · 2 معارف · 3 طريقة · 4 أتمرّن · 5–7 مسائل · 8 إختبار أولي.',
     'objectives': {'lesson': 'unit', 'module': 'page'},
-    'opener': {'lesson': L3, 'module': None},
+    'opener': {'lesson': SYN, 'module': 0},
     'challenge': {'lesson': 'unit', 'module': 'page'},
     'prep': {'lesson': L1, 'module': 0, 'items': {
         '5-9': {'lesson': L1, 'module': 0},
@@ -421,32 +421,32 @@ DEST = {
         '10': {'lesson': L5, 'module': 0}}},
     'act-1': {'lesson': L1, 'module': 1},
     'act-2': {'lesson': L2, 'module': 4}, 'act-3': {'lesson': L2, 'module': 4},
-    'act-4': {'lesson': L3, 'module': 1}, 'act-5': {'lesson': L4, 'module': 1}, 'act-6': {'lesson': L5, 'module': 1},
+    'act-4': {'lesson': L3, 'module': 4}, 'act-5': {'lesson': L4, 'module': 1}, 'act-6': {'lesson': L5, 'module': 1},
     'know-1a': {'lesson': L1, 'module': 2}, 'know-1b': {'lesson': L1, 'module': 2},
     'know-1c': {'lesson': L2, 'module': 2}, 'know-1d': {'lesson': L2, 'module': 2}, 'know-1e': {'lesson': L2, 'module': 2},
     'method-1': {'lesson': L2, 'module': 4}, 'method-2': {'lesson': L2, 'module': 3}, 'now-27': {'lesson': L2, 'module': 4},
-    'know-2a': {'lesson': L3, 'module': None}, 'know-2b': {'lesson': L3, 'module': None}, 'know-2c': {'lesson': L4, 'module': None},
+    'know-2a': {'lesson': L3, 'module': 2}, 'know-2b': {'lesson': L3, 'module': 2}, 'know-2c': {'lesson': L4, 'module': None},
     'know-3a': {'lesson': L5, 'module': None}, 'know-3b': {'lesson': L5, 'module': None}, 'know-3c': {'lesson': L5, 'module': None},
-    'method-3': {'lesson': L3, 'module': None}, 'method-4': {'lesson': L4, 'module': None}, 'method-5': {'lesson': L5, 'module': None},
+    'method-3': {'lesson': L3, 'module': 3}, 'method-4': {'lesson': L4, 'module': None}, 'method-5': {'lesson': L5, 'module': None},
     'now-29': {'lesson': L2, 'module': 4, 'items': {'1': {'lesson': L2, 'module': 4}, '2': {'lesson': L5, 'module': None}}},
     **{f'ex-{n}': {'lesson': L2, 'module': 4 if n in (1, 2) else None} for n in (1, 2, 3, 4, 5, 6)},
-    **{f'ex-{n}': {'lesson': L3, 'module': None} for n in (7, 8, 9, 10, 11, 12, 13, 14, 29, 31)},
+    **{f'ex-{n}': {'lesson': L3, 'module': 4} for n in (7, 8, 9, 10, 11, 12, 13, 14, 29, 31)},
     **{f'ex-{n}': {'lesson': L4, 'module': None} for n in (15, 16, 17, 18, 19, 26, 27, 28, 30, 34)},
     **{f'ex-{n}': {'lesson': L5, 'module': None} for n in (20, 21, 22, 23, 24, 25, 32)},
     'ex-33': {'lesson': L1, 'module': 4},
     **{f'self-{n}': {'lesson': L2, 'module': None} for n in (1, 2, 3, 4, 9)},
     'self-12': {'lesson': L4, 'module': None},
-    **{f'self-{n}': {'lesson': L3, 'module': None} for n in (5, 6)},
+    **{f'self-{n}': {'lesson': L3, 'module': 4} for n in (5, 6)},
     **{f'self-{n}': {'lesson': L4, 'module': None} for n in (7, 8)},
     **{f'self-{n}': {'lesson': L5, 'module': None} for n in (10, 11)},
     **{f'deep-{n}': {'lesson': L5, 'module': None} for n in (34,)},
-    'deep-46': {'lesson': L2, 'module': None}, 'deep-47': {'lesson': L3, 'module': None},
+    'deep-46': {'lesson': L2, 'module': None}, 'deep-47': {'lesson': L3, 'module': 4},
     **{f'deep-{n}': {'lesson': L2, 'module': 4} for n in (35, 38)},
-    **{f'deep-{n}': {'lesson': L3, 'module': None} for n in (36, 37, 40)},
+    **{f'deep-{n}': {'lesson': L3, 'module': 4} for n in (36, 37, 40)},
     **{f'deep-{n}': {'lesson': L4, 'module': None} for n in (39, 41, 42, 43, 44, 45)},
     'integration': {'lesson': SYN, 'module': None},
     'evaluation': {'lesson': SYN, 'module': None},
-    'ict-1': {'lesson': L3, 'module': None}, 'ict-2': {'lesson': L2, 'module': None}, 'ict-3': {'lesson': L2, 'module': None},
+    'ict-1': {'lesson': L3, 'module': 4}, 'ict-2': {'lesson': L2, 'module': None}, 'ict-3': {'lesson': L2, 'module': None},
 }
 
 DISCREPANCIES = [

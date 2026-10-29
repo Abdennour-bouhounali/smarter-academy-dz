@@ -121,11 +121,12 @@ import { ORACLE as ORACLE_1AM_QISMA_IQLIDIYA_BAQI } from './practice-oracle/qism
 // Le premier banc 2AM (2026-10-14) : القسمة الإقليدية وحصر حاصل القسمة.
 import { ORACLE as ORACLE_2AM_QISMA_IQLIDIYA_HASR } from './practice-oracle/qisma-iqlidiya-hasr.mjs';
 import { ORACLE as ORACLE_2AM_KASR_HASIL_QISMA } from './practice-oracle/kasr-hasil-qisma.mjs';
+import { ORACLE as ORACLE_2AM_JAM_TARH_KUSUR, audit as auditJamKusur } from './practice-oracle/jam-tarh-kusur.mjs';
 import { ORACLE as ORACLE_2AM_MUQARANA_NISBIYA } from './practice-oracle/muqarana-nisbiya.mjs';
 import { ORACLE as ORACLE_2AM_RABI_MUTANASIB } from './practice-oracle/rabi-mutanasib.mjs';
 import { ORACLE as ORACLE_2AM_SILSILA, audit as auditSilsila } from './practice-oracle/silsila-bidun-aqwas.mjs';
-import { ORACLE as ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA } from './practice-oracle/ikhtizal-kitaba-kasriya.mjs';
 import { ORACLE as ORACLE_2AM_SILSILA_AQWAS, audit as auditSilsilaAqwas } from './practice-oracle/silsila-bi-aqwas.mjs';
+import { ORACLE as ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA } from './practice-oracle/ikhtizal-kitaba-kasriya.mjs';
 import { ORACLE as ORACLE_1AM_QAWAID_QABILIYAT_QISMA } from './practice-oracle/qawaid-qabiliyat-qisma.mjs';
 import { ORACLE as ORACLE_1AM_KITABAT_ADAD_TABII } from './practice-oracle/kitabat-adad-tabii.mjs';
 import { ORACLE as ORACLE_1AM_HASIL_QISMA_KASR } from './practice-oracle/hasil-qisma-kasr.mjs';
@@ -306,12 +307,13 @@ const ORACLE = {
   ...ORACLE_1AM_QISMA_IQLIDIYA_BAQI,
   ...ORACLE_2AM_QISMA_IQLIDIYA_HASR,
   ...ORACLE_2AM_KASR_HASIL_QISMA,
+  ...ORACLE_2AM_JAM_TARH_KUSUR,
   ...ORACLE_2AM_MUQARANA_NISBIYA,
   ...ORACLE_2AM_RABI_MUTANASIB,
   ...ORACLE_2AM_SILSILA,
+  ...ORACLE_2AM_SILSILA_AQWAS,
   ...ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA,
   ...ORACLE_1AM_QAWAID_QABILIYAT_QISMA,
-  ...ORACLE_2AM_SILSILA_AQWAS,
   ...ORACLE_1AM_KITABAT_ADAD_TABII,
   ...ORACLE_1AM_HASIL_QISMA_KASR,
   ...ORACLE_1AM_KUSUR_ASHRIYA_KITABA,
@@ -492,14 +494,20 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     expect(auditSilsila(own)).toEqual([]);
   });
 
-  it('le cas signalé (6 | 120) : « 6 مضاعف للعدد 120 » est faux, seul « لا » est accepté', () => {
-    const q = bank.find((b) => b.key === REPORTED.key).q;
+  it('جمع وطرح كسرين (2AM) : rationnels exacts BigInt propres à l\'oracle (aucun import de packages/core), chaque clé recalculée depuis les nombres de l\'énoncé, LaTeX de chaque énoncé / option / ligne de corrigé relu : aucune opération sur deux dénominateurs dont l\'un ne divise pas l\'autre (cas de 3AM), chaque « احسب » réévalué, clés réduites, QCM à une seule option juste, signatures MISC-JAMKASR-* (ACROSS, NOSCALE, DENSUM, NATURAL) recalculées', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-jam-tarh-kusur-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditJamKusur(own)).toEqual([]);
+  });
+
   it('سلسلة عمليات تتضمّن أقواسا (2AM) : évaluateur exact propre (BigInt, ( ) [ ] et barres de fraction ; aucun import de chainOps.js), chaque clé recalculée, LaTeX de chaque énoncé / option / ligne de corrigé relu (\\dfrac, convention [ ( ) ], aucun intermédiaire négatif, aucune multiplication implicite aux niveaux 1–3), chaque QCM jugé option par option (une seule vraie), chaque distracteur = la lecture que nomme sa misconception (IGNORED, DROPOUTER, BARSPLIT, DROPBR, MISPLACED, ALLUSELESS, ALLNEEDED), chaque crochet « inutile » vérifié par retrait sur 40 jeux de valeurs, 50 feuilles dont 11 sujets lus', () => {
     const own = bank.filter((b) => b.key.startsWith('ex-2am-silsila-bi-aqwas-'));
     expect(own.length).toBeGreaterThan(0);
     expect(auditSilsilaAqwas(own)).toEqual([]);
   });
 
+  it('le cas signalé (6 | 120) : « 6 مضاعف للعدد 120 » est faux, seul « لا » est accepté', () => {
+    const q = bank.find((b) => b.key === REPORTED.key).q;
     expect(REPORTED.isDivisor).toBe(true);
     expect(REPORTED.isMultiple).toBe(false);
     for (const id of ['A', 'B']) {

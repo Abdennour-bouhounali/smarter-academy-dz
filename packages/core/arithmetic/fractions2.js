@@ -9,9 +9,16 @@
  *   decimalQuotientBracket(a, b, k) les deux valeurs approchées à 10^-k de a ÷ b (a, b décimaux, b ≠ 0) : { lo, hi, exact } ;
  *   fitsAtRank(a, b, q)             q est-il assez long ? b × q comparé à a, exactement : { product, verdict: 'fits' | 'exact' | 'over', gap } ;
  *   isDecimalQuotient(a, b)         le quotient est-il décimal (dénominateur réduit de la forme 2^i·5^j) ?
+ * E2 — درس « جمع وطرح كسرين » (`jam-tarh-kusur`, labo `trail-odometer`) :
+ *   isMultipleCase(b, d)            les deux dénominateurs sont-ils un cas de 2AM (l'un multiple de l'autre) ? { big, small, k } ou null ;
+ *   rewriteTo(p, D)                 p = a/b écrit avec le dénominateur D (= toDenominator) ; refuse un D qui n'est pas un multiple de b ;
+ *   sumMultipleCase(terms)          somme signée de termes `{ p, sign? }` dont UN dénominateur est multiple de tous les autres (garde 2AM : sinon exception) :
+ *                                   { D, numerators[], total (brut), reduced: { n, d } } ; un résultat négatif est refusé ;
+ *   complement(p, n = 1)            n − p, brut (sur le dénominateur de p), positif exigé.
  * Les nombres sont écrits « 15,96 » (virgule algérienne ou point) ; les valeurs rendues sont des `{ n, k }` de `decimals.js`.
  */
 import * as D from './decimals.js';
+import { raw, toRaw, toDenominator } from './fractions3.js';
 
 const big = (x) => BigInt(x);
 const P10 = (k) => 10n ** big(k);
@@ -68,4 +75,37 @@ export function isDecimalQuotient(a, b) {
   let d = big(b10) / gcd(big(a10), big(b10));
   for (const p of [2n, 5n]) while (d % p === 0n) d /= p;
   return d === 1n;
+}
+
+/* ── E2 — جمع وطرح كسرين ─────────────────────────────────────────────────────────────────────── */
+
+/** Le cas de 2AM : l'un des dénominateurs est un multiple de l'autre. */
+export function isMultipleCase(b, d) {
+  const x = big(b); const y = big(d);
+  if (x <= 0n || y <= 0n) return null;
+  const [bigD, small] = x >= y ? [x, y] : [y, x];
+  return bigD % small === 0n ? { big: bigD, small, k: bigD / small } : null;
+}
+
+/** p = a/b écrit avec le dénominateur D (multiple de b, sinon exception). */
+export function rewriteTo(p, Dn) { return toDenominator(p, Dn); }
+
+/** Somme signée : terms = [{ p, sign: 1 | -1 }] ; le plus grand dénominateur doit être multiple de tous les autres (garde 2AM). */
+export function sumMultipleCase(terms) {
+  const items = terms.map((t) => ({ p: toRaw(t.p), s: t.sign === -1 ? -1n : 1n }));
+  const Dn = items.reduce((m, t) => (t.p.d > m ? t.p.d : m), 1n);
+  if (items.some((t) => Dn % t.p.d !== 0n)) throw new RangeError('fractions2.sumMultipleCase: hors du programme de 2AM (aucun dénominateur multiple de tous les autres)');
+  const numerators = items.map((t) => t.s * t.p.n * (Dn / t.p.d));
+  const total = numerators.reduce((a, b) => a + b, 0n);
+  if (total < 0n) throw new RangeError('fractions2.sumMultipleCase: résultat négatif');
+  const g = gcd(total, Dn) || 1n;
+  return { D: Dn, numerators, total: raw(total, Dn), reduced: { n: total / g, d: Dn / g } };
+}
+
+/** n − p, brut (le dénominateur de p) ; positif exigé. */
+export function complement(p, n = 1) {
+  const x = toRaw(p);
+  const num = big(n) * x.d - x.n;
+  if (num < 0n) throw new RangeError('fractions2.complement: p dépasse n');
+  return raw(num, x.d);
 }

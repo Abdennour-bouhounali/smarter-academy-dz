@@ -45,3 +45,29 @@ describe('fractions2 — E1 (kasr-hasil-qisma)', () => {
     expect(['9|4', '8|3', '4,6|0,7', '13,5|1,8', '5|6', '7|8', '3,6|0,08'].map((s) => F.isDecimalQuotient(...s.split('|')))).toEqual([true, false, false, true, false, true, true]);
   });
 });
+
+describe('fractions2 — E2 (jam-tarh-kusur)', () => {
+  it('isMultipleCase : 12/4 oui, 3/2 non (3AM)', () => {
+    expect(F.isMultipleCase(12, 4)).toMatchObject({ big: 12n, small: 4n, k: 3n });
+    expect(F.isMultipleCase(7, 7)).toMatchObject({ k: 1n });
+    expect(F.isMultipleCase(3, 2)).toBe(null);
+    expect(F.isMultipleCase(6, 4)).toBe(null);
+  });
+  it('rewriteTo refuse un non-multiple', () => {
+    expect(F.rewriteTo('1/4', 12)).toMatchObject({ k: 3n, n: 3n, d: 12n });
+    expect(() => F.rewriteTo('1/4', 10)).toThrow();
+  });
+  it('sumMultipleCase : 5/12 + 1/4 = 8/12 = 2/3 ; 4/9 + 5/18 + 1/6 = 8/9 ; 3AM refusé ; négatif refusé', () => {
+    const s = F.sumMultipleCase([{ p: '5/12' }, { p: '1/4' }]);
+    expect(s.total).toMatchObject({ n: 8n, d: 12n }); expect(s.reduced).toEqual({ n: 2n, d: 3n });
+    expect(F.sumMultipleCase([{ p: '4/9' }, { p: '5/18' }, { p: '1/6' }]).reduced).toEqual({ n: 8n, d: 9n });
+    expect(F.sumMultipleCase([{ p: '3/4' }, { p: '5/12', sign: -1 }]).reduced).toEqual({ n: 1n, d: 3n });
+    expect(() => F.sumMultipleCase([{ p: '1/3' }, { p: '1/2' }])).toThrow();
+    expect(() => F.sumMultipleCase([{ p: '1/4' }, { p: '3/4', sign: -1 }])).toThrow();
+  });
+  it('complement : 1 − 5/9 = 4/9 ; 2 − 1/6 = 11/6', () => {
+    expect(F.complement('5/9')).toMatchObject({ n: 4n, d: 9n });
+    expect(F.complement('1/6', 2)).toMatchObject({ n: 11n, d: 6n });
+    expect(() => F.complement('7/6')).toThrow();
+  });
+});

@@ -816,6 +816,23 @@ export const LEVELS = Object.freeze({
       { id: 'a3', kind: 'count', a: '5', b: '0,6', maxRank: 2 },
     ] }, ...T('method-1') },
   },
+  // LA DISTANCE SOUS LA MAIN (trail-odometer, thème mountaintrail, 2AM unité 2, leçon « جمع وطرح كسرين », 2026-10-29) : une scoute marche sur un sentier à poteaux blancs (1/n) et rouges (tous les k blancs) ;
+  // une tâche est `{ id, n, k, start?, legs: ['5/12', '1/4', '-5/12'], loop?, predict? }`. مبتدئ (plateforme, compteurs visibles) : g1 5/12 puis 4/12 (même dénominateur), g2 5/12 puis 1/4 (deux sortes de poteaux),
+  // g3 départ 3/4 et retour de 5/12. متقدم (plateforme, la fraction d'arrivée et le reste sont ÉCRITS avant de marcher) : a1 5/16 puis 3/8, a2 13/20 moins 2/5, a3 1/6 puis 7/12, a4 un circuit : 1 + 5/6.
+  // Le test des niveaux mesure la paire par la PRÉDICTION écrite avant de marcher (متقدم seul) et par le CIRCUIT.
+  'trail-odometer': {
+    beginner: { numbers: { tasks: [
+      { id: 'g1', n: 12, k: 0, legs: ['5/12', '4/12'] },
+      { id: 'g2', n: 12, k: 3, legs: ['5/12', '1/4'] },
+      { id: 'g3', n: 12, k: 3, start: '3/4', legs: ['-5/12'] },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', n: 16, k: 2, legs: ['5/16', '3/8'], predict: true },
+      { id: 'a2', n: 20, k: 4, start: '13/20', legs: ['-2/5'], predict: true },
+      { id: 'a3', n: 12, k: 2, legs: ['1/6', '7/12'], predict: true },
+      { id: 'a4', n: 6, k: 0, loop: true, legs: ['1/1', '5/6'], predict: true },
+    ] }, ...T('method-3') },
+  },
   // LE SIGNE D'UN TERME SOUS LA MAIN (term-ferry, thème river) : l'équation a une solution CACHÉE ; la main porte chaque caisse (terme) d'une rive à
   // l'autre en choisissant son signe, puis le diviseur. مبتدئ (plateforme) : 3x + 2 = x + 8 (x = 3) puis 4x − 3 = 2x + 7 (x = 5), x se rassemble à gauche.
   // متقدم (طريقة p. 77) : 9x + 1 = 5x − 7 (x = −2), puis −2x + 5 = 3x − 10 (un coefficient NÉGATIF : on divise par −5), puis 7x − 190 = 6x + 110 (x = 300).
@@ -971,23 +988,6 @@ export const LEVELS = Object.freeze({
   },
   // L'ESPACEMENT SOUS LA MAIN (seed-rake, thème seedbed, 2026-10-26) : la main étire un râteau (espacement 1/N m) sur un حوض de 1 m peint de zones ; une tâche est
   // `{ id, kind?, terms: [{ p, sub? }], need?, needRefusal?, widest? }`. مبتدئ (plateforme, décomptes visibles) : g1 1/4 + 1/6 (deux espacements et un refus → 5/12), g2 2/3 + 1/5,
-  // g3 3/4 puis 1/6 récolté. متقدم (method-6 : le manuel cherche un multiple commun, râteau BLOQUÉ, on écrit N et le total) : a1 5/6 + 3/8, a2 7/10 − 4/15, a3 1/2 + 1/3 + 1/4,
-  // a4 3/8 + 5/12 « أوسع مسافة ». Le monde `fewest` (معارف) est posé par la leçon. Le test des niveaux mesure la paire par le NOMBRE DE TÂCHES et par la PRÉDICTION.
-  'seed-rake': {
-    beginner: { numbers: { tasks: [
-      { id: 'g1', terms: [{ p: '1/4' }, { p: '1/6' }], need: 2, needRefusal: true },
-      { id: 'g2', terms: [{ p: '2/3' }, { p: '1/5' }] },
-      { id: 'g3', terms: [{ p: '3/4' }, { p: '1/6', sub: true }] },
-    ] }, ...P },
-    advanced: { numbers: { tasks: [
-      { id: 'a1', kind: 'predict', terms: [{ p: '5/6' }, { p: '3/8' }] },
-      { id: 'a2', kind: 'predict', terms: [{ p: '7/10' }, { p: '4/15', sub: true }] },
-      { id: 'a3', kind: 'predict', terms: [{ p: '1/2' }, { p: '1/3' }, { p: '1/4' }] },
-      { id: 'a4', kind: 'predict', terms: [{ p: '3/8' }, { p: '5/12' }], widest: true },
-    ] }, ...T('method-6') },
-  },
-  // LE SIGNE PRÉDIT SOUS LA MAIN (merge-board, thème arcade, 3AM unité 2, leçon 5, 2026-10-26) : une chaîne de calcul est une rangée de tuiles ; la main PRÉDIT le signe de chaque fusion, RETOURNE le diviseur d'une division
-  // et choisit l'ORDRE des fusions (aimants = priorité, bulles = parenthèses). Une tâche est `{ id, chain, hidden?, signOnly? }`. مبتدئ (plateforme, barres et aimants visibles) : c1 −5/4 + 11/6, c2 7/13 × (−8/5), c3 −9/8 ÷ (−3/4),
   // LES PARENTHÈSES SOUS LA MAIN (coop-calculator, thème coopshop, 2026-10-29) : la main pose les parenthèses d'une ligne tapée sur une calculatrice scientifique qui obéit aux priorités ; l'histoire est
   // l'arbitre. Une tâche est `{ id, kind: 'insert' | 'type', pre?, truthLine, needPair?, traps?, card?, facts, world }`. مبتدئ (plateforme, ligne donnée sans parenthèses) : k1 8 × 12 − 7, k2 45 + 15 ÷ 4,
   // k3 9 + 2 × 5 (paire inutile acceptée), k4 2 × 50 − 12 + 8 (parenthèses imbriquées). متقدم (plateforme, on TAPE la ligne) : a1 (40+8)/(15−9), a2 la moyenne de trois notes, a3 18 + 129 sur 7. Le monde
@@ -1012,6 +1012,23 @@ export const LEVELS = Object.freeze({
         facts: { dictionaries: 18, stories: 129, perShelf: 7, total: 147 }, world: { items: [{ glyph: 'book', n: 2, label: '' }], share: { groups: 21, each: 7, glyph: 'book', unit: '' } } },
     ] }, ...T('know-2') },
   },
+  // g3 3/4 puis 1/6 récolté. متقدم (method-6 : le manuel cherche un multiple commun, râteau BLOQUÉ, on écrit N et le total) : a1 5/6 + 3/8, a2 7/10 − 4/15, a3 1/2 + 1/3 + 1/4,
+  // a4 3/8 + 5/12 « أوسع مسافة ». Le monde `fewest` (معارف) est posé par la leçon. Le test des niveaux mesure la paire par le NOMBRE DE TÂCHES et par la PRÉDICTION.
+  'seed-rake': {
+    beginner: { numbers: { tasks: [
+      { id: 'g1', terms: [{ p: '1/4' }, { p: '1/6' }], need: 2, needRefusal: true },
+      { id: 'g2', terms: [{ p: '2/3' }, { p: '1/5' }] },
+      { id: 'g3', terms: [{ p: '3/4' }, { p: '1/6', sub: true }] },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', kind: 'predict', terms: [{ p: '5/6' }, { p: '3/8' }] },
+      { id: 'a2', kind: 'predict', terms: [{ p: '7/10' }, { p: '4/15', sub: true }] },
+      { id: 'a3', kind: 'predict', terms: [{ p: '1/2' }, { p: '1/3' }, { p: '1/4' }] },
+      { id: 'a4', kind: 'predict', terms: [{ p: '3/8' }, { p: '5/12' }], widest: true },
+    ] }, ...T('method-6') },
+  },
+  // LE SIGNE PRÉDIT SOUS LA MAIN (merge-board, thème arcade, 3AM unité 2, leçon 5, 2026-10-26) : une chaîne de calcul est une rangée de tuiles ; la main PRÉDIT le signe de chaque fusion, RETOURNE le diviseur d'une division
+  // et choisit l'ORDRE des fusions (aimants = priorité, bulles = parenthèses). Une tâche est `{ id, chain, hidden?, signOnly? }`. مبتدئ (plateforme, barres et aimants visibles) : c1 −5/4 + 11/6, c2 7/13 × (−8/5), c3 −9/8 ÷ (−3/4),
   // c4 7/3 − 8/15 ÷ 11/20 (l'aimant force la division d'abord). متقدم (method-9 : une chaîne à priorité ; barres CACHÉES jusqu'à la fusion, trois fautes les ramènent) : a1 (2/3 − 5/2) × (−6/11), a2 −3/4 + 5/6 × (−9/10),
   // a3 la fraction composée, a4 4/5 − 3/5 ÷ (−9/10) + (−2). Le monde `signs` (معارف) est posé par la leçon. Le test des niveaux mesure la paire par le NOMBRE DE TÂCHES et par les BARRES CACHÉES (متقدم seul).
   'merge-board': {

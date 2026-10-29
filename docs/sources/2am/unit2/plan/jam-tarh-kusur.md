@@ -348,3 +348,19 @@ denominator divides the other — the bank never contains a 3AM pair).
   (its plan §2). If the link stays `r08 → r09`, add **`2am_jam-tarh-kusur_P2` ← `2am_muqarana-kasrayn_P3`** in THIS lesson's catalogue
   entry the day `muqarana` is published, and turn M2's renvoi sentence into a « تذكّر » with `getLessonPath('muqarana-kasrayn')`.
 - **2AM `adad-nisbiya`** sums (unit 4 of 2AM): no net link to r09 found today; nothing to do.
+
+## 13. Generator notes (lead, 2026-10-29)
+
+Executed as planned. Differences and decisions:
+
+- **No miscomputed number** in the plan (every M2–M8 value, the lab tasks and the bank keys were recomputed with exact fractions; the bank helper reached the same result). The lab name `trail-odometer` and the theme `mountaintrail` were free.
+- **Test 3 distractors:** `ONEASNUM` was dropped; the options are `5/9` (PART), `4/8` (the plan's alternative « (9 − 5)/(9 − 1) »), `4/10`. `ONEASNUM` and `REST` are not used by any bank signature (5 `MISC-JAMKASR-*` ids exist: ACROSS, NOSCALE, DENSUM, PART, NATURAL).
+- **`judgeWriting` models:** `right`, `across` ((Σ num)/(Σ den)), `noScale` (the red leg counted as a white post), `natural` (loop: (n + a)/b), `part` (the part written for the remainder), `other`. The plan's `coarse` is folded into `other` (a mixed writing is just unequal); the dashed flag is drawn for every refused writing.
+- **Predict level:** the plan asks to type arrival AND remainder before walking; implemented for the non-loop tasks (`a1`–`a3`), the loop `a4` asks the arrival only (the remainder of a loop is not a fraction of one lap).
+- **M0:** six items as planned; items 2–3 carry `1am.m5.r03`, items 5–6 the `2am.m1.r08` renvoi (statements only, no link); items 1 and 4 are `prep` 8 and the equal-writings check.
+- **M2:** the lab alone is the task `k1` (3/8 + 1/4 on an 8-post trail, chain `ksum · ruleMulti`), the « تذكّر » boxes link `kusur-ashriya-kitaba` and `ikhtizal-kitaba-kasriya` (published), and the comparison sentence has NO link (`muqarana-kasrayn` is unpublished). No LP edge toward `muqarana-kasrayn` is written: the coordinator adds `2am_jam-tarh-kusur_P2 ← 2am_muqarana-kasrayn_P3` the day it is out.
+- **M5 question 3** asks the two numerators over 20 (14 and 6), never a product. M7 (the tank) keeps the plan numbers; the « night refill » is a sum of parts of the same capacity.
+- **`pointPrerequisites`** as planned: P2 ← P1, P3 ← P1, P1 ← `1am_kusur-ashriya-kitaba_P1`, P2 ← `1am_kusur-ashriya-kitaba_P3` (catalogue order: P1 ← 1AM P1; P2 ← own P1 and 1AM P3; P3 ← own P1).
+- **Extraction:** `know-2a`, `know-2b`, `method-3` re-read on PDF p. 25–26 (book pp. 28–29) at 100 dpi (`verified: True`; the printed 5/12 + 1/4 and 34/21 misprints confirmed, never shown); `act-4`, `ex-7`…`ex-14`, `ex-29`, `ex-31`, `self-5`, `self-6`, `deep-36`, `deep-37`, `deep-40`, `deep-47`, `ict-1` → this lesson, module 4 (the bank and the exercises cite them); `opener` → the synthesis, module 0. The other elements of the unit keep `verified: False`.
+- **Open point:** the extraction's `self-5` answer `["أ","ب","د"]` for `8/5 + 6/15` looks wrong for option أ (the option reads 18/15 + 6/15, and 18/15 ≠ 8/5 = 24/15; to re-read on the scan): the bank's `self-5` sheet uses its own numbers and does not depend on it.
+- **Duration:** the modules total 66 min without the three مسائل (87 with them, under the 90-minute cap); catalogue `durationMinutes` is 66, not the plan's ≈ 85.
