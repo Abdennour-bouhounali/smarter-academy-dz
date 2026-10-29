@@ -777,12 +777,30 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'جمع عددين نسبيين لهما الإشارة نفسها: نجمع مسافتيهما ونحتفظ بالإشارة ؛ ومن إشارتين مختلفتين: نطرح المسافة الصغرى من الكبرى ونأخذ إشارة الأبعد عن الصفر ؛ ومجموع متعاكسين معدوم ؛ وطرح عدد هو جمع معاكسه',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 2AM, unité 3 « الأعداد النسبية », leçon 6 « حساب مجموع جبري » (2026-10-29) — l'équipe de chaque terme d'une somme algébrique.
+  'tug-rope': {
+    // L'ÉQUIPE DE CHAQUE TERME SOUS LA MAIN : une somme algébrique est une file d'enfants à dossards (un nombre relatif chacun). La main RETOURNE l'enfant précédé de « − » (son dossard devient l'opposé) puis
+    // l'ENVOIE dans l'équipe de gauche (drapeau « − ») ou de droite (drapeau « + ») d'une corde ; au coup de sifflet le ruban au milieu avance de (force de droite − force de gauche) : la somme est une SORTIE.
+    // Le juge compare, enfant par enfant, le retournement et l'équipe à la contribution vraie ; un crochet est un petit équipage réglé d'abord. مبتدئ : trois chaînes d'entiers ; متقدم : la position est écrite
+    // AVANT de siffler, des décimaux, un crochet, la forme simplifiée. « جرّب أعدادك » : toujours ouvert. MANUEL (§6bis).
+    shows: 'المجموع الجبري سلسلة جمع وطرح: نحوّل كلّ طرح إلى جمع المعاكس، ثم نجمع الحدود الموجبة معًا والحدود السالبة معًا، ونجمع الناتجين ؛ ويمكن تغيير ترتيب الحدود وحذف المتعاكسين، ونحسب ما بين الأقواس أوّلًا ؛ وتُبسَّط الكتابة بحذف إشارة الجمع وأقواس الأعداد',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 2AM, unité 3 « الأعداد النسبية », leçon 1 « التعليم على مستقيم مدرّج » (2026-10-29) — l'abscisse dépend de l'origine et de la valeur d'une graduation.
   'corniche-ruler': {
     // L'ORIGINE ET LA GRADUATION SOUS LA MAIN : une planche de 13 graduations est fixée sous les repères du front de mer ; le drapeau « 0 » se plante sous un repère (مبتدئ) et un levier à crans règle la valeur
     // d'une graduation (متقدم). L'abscisse d'un repère est une SORTIE : elle change quand l'origine bouge alors que le repère n'a pas bougé, deux repères à la même distance de part et d'autre sont opposés,
     // et une graduation trop petite jette un point hors de la planche, trop grande le laisse entre deux graduations. Chaque dépôt, lecture et touche est un essai jugé exactement : MANUEL (§6bis).
     shows: 'فاصلة نقطة هي موضعها مرئيًا من المبدأ: نعدّ التدريجات من المبدأ، يمينًا موجبة ويسارًا سالبة، ونضرب عددها في قيمة التدريجة الواحدة ؛ تتغيّر الفاصلة إذا تغيّر المبدأ، والعددان المتعاكسان لهما المسافة نفسها إلى الصفر وإشارتان مختلفتان، ونختار تدريجة تُبقي كل النقاط داخل المستقيم وعلى تدريجات',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 3 « الأعداد النسبية », leçon 4 « تعليم نقطة في المستوي » (2026-10-29) — les coordonnées d'un point dépendent du piquet d'origine et de l'ordre des deux nombres.
+  'dig-grid': {
+    // LE PIQUET D'ORIGINE SOUS LA MAIN : une fouille quadrillée de ficelles d'un mètre ; le piquet porte deux cordes (l'axe des abscisses, bleu, et l'axe des ordonnées, vert) qui suivent la ficelle. Les coordonnées d'une trouvaille sont une
+    // SORTIE : sa position moins celle du piquet, l'abscisse d'abord. مبتدئ : la main tient le PIQUET (un glissement 2D) pour rendre vrais les relevés du carnet — une trouvaille, deux trouvailles à la fois (un seul piquet), puis un carnet impossible
+    // (deux nombres échangés) où « لا يوجد موضع » est la bonne réponse. متقدم : le piquet est fixe, étiquettes voilées : l'élève PRÉDIT les coordonnées (une trouvaille sur l'axe vertical), pose une bague à (2,5 ; −1,5) entre deux ficelles, et marque la place
+    // miroir d'une pièce par rapport à la corde bleue. Chaque dépôt, relevé et touche est un essai jugé exactement : MANUEL (§6bis).
+    shows: 'نحدّد موضع نقطة في المستوي بعددين في معلم متعامد ومتجانس: الفاصلة أولًا على المحور الأفقي ثمّ الترتيب على المحور العمودي، مثل $A(-3\\,;2)$ ؛ تتغيّر الإحداثيات بتغيّر المبدأ، والنقطة على المحورين إحدى إحداثيتيها معدومة، ونظيرة نقطة بالنسبة إلى محور تحتفظ بالإحداثية التي على هذا المحور',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
   // 2AM, unité 2 « الكسور والعمليات عليها », leçon 8 « جداء كسرين » (2026-10-29) — les deux facteurs d'un produit de fractions, tenus par deux tirages perpendiculaires sur une fenêtre.

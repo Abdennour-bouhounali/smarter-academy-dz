@@ -111,17 +111,6 @@
       ]
     },
     {
-      "code": "talim-nuqta-mustawi",
-      "grade": "2am",
-      "unit": "adad-nisbiya-2",
-      "titleAr": "تعليم نقطة في المستوي",
-      "kind": "lesson",
-      "trigger": "murakkibata-shuaa",
-      "via": [
-        "2am.m4.r04"
-      ]
-    },
-    {
       "code": "masafa-nuqtatayn",
       "grade": "2am",
       "unit": "adad-nisbiya-2",
@@ -131,6 +120,15 @@
       "via": [
         "2am.m4.r07"
       ]
+    },
+    {
+      "code": "wadiya-idmajiya-adad-nisbiya-2",
+      "grade": "2am",
+      "unit": "adad-nisbiya-2",
+      "titleAr": "أدمج تعلّماتي — الأعداد النسبية",
+      "kind": "synthesis",
+      "trigger": "unité adad-nisbiya-2 complète",
+      "via": []
     },
     {
       "code": "qays-zawiya-minqala",
@@ -319,26 +317,6 @@
       "via": [
         "1am.m5.r10"
       ]
-    },
-    {
-      "code": "majmu-jabri",
-      "grade": "2am",
-      "unit": "adad-nisbiya-2",
-      "titleAr": "حساب مجموع جبري",
-      "kind": "lesson",
-      "trigger": "muadala-ula",
-      "via": [
-        "2am.m4.r06"
-      ]
-    },
-    {
-      "code": "wadiya-idmajiya-adad-nisbiya-2",
-      "grade": "2am",
-      "unit": "adad-nisbiya-2",
-      "titleAr": "أدمج تعلّماتي — الأعداد النسبية",
-      "kind": "synthesis",
-      "trigger": "unité adad-nisbiya-2 complète",
-      "via": []
     },
     {
       "code": "ikhtibar-musawat-mutabayina",

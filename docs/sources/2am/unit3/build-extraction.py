@@ -26,7 +26,7 @@ FRONTIÈRES DES LEÇONS (à respecter par chaque lead qui génère la suite) :
   masafa-nuqtatayn (2am.m4.r07) — SERA GÉNÉRÉE PLUS TARD DANS CETTE CAMPAGNE : la distance entre deux points d'une droite graduée
         (act-5 ; know-2c ; ex-35 ; self-9 ; ict) ; elle lit la distance comme « le plus grand moins le plus petit », ce
         qui réutilise la comparaison de muqarana-nisbiya.
-  majmu-jabri (2am.m4.r06) — somme algébrique et simplification d'écriture (act-6 ; know-2d, 2e ; method-5 ; ex-36…37 ; self-11).
+  majmu-jabri (2am.m4.r06) — GÉNÉRÉE le 2026-10-29 (lab `tug-rope`) : somme algébrique de 3 termes ou plus, simplification d'écriture (act-6, ex-29, ex-36…37, deep-39, 43, 44, 46, 58 → module 4 ; know-2d, 2e → 2 ; method-5 → 3 ; self-10, self-11 → 8 (non cités) ; deep-47, 49, 50, 59 → banque).
   wadiya-idmajiya-adad-nisbiya-2 — la synthèse : intégration (p. 52), évaluation, tahaddi (les Grands Lacs).
 
 Usage : python3 docs/sources/2am/unit3/build-extraction.py
@@ -141,7 +141,7 @@ E.append({
     'reading': 'la fin de la ligne (« D(−6) … ») est coupée ; D est supposée D(−6) puis C(−1) selon le texte visible : à relire par masafa-nuqtatayn',
 })
 E.append({
-    'id': 'act-6', 'kind': 'activity', 'number': 6, 'page': 41, 'section': 'أنشطة', 'title': 'حساب مجموع جبري', 'verified': False,
+    'id': 'act-6', 'kind': 'activity', 'number': 6, 'page': 41, 'section': 'أنشطة', 'title': 'حساب مجموع جبري', 'verified': True,
     'text': 'أ) أكمل الحساب. A = (−9) − (+2) + (−5) − (…) = (−9) + (…) + (…) + (…) = (…) . ب) احسب: A = (−12) − (+7) − (−10) − (+3) ؛ B = (+6) + (−1) − (−4) + (+3) .',
     'answer': {'A': -12 - 7 + 10 - 3, 'B': 6 - 1 + 4 + 3}, 'answerSource': 'computed',
 })
@@ -374,10 +374,10 @@ DEST = {
         '5-6-7': {'lesson': L2, 'module': 0},
         '1-2-3-4': {'lesson': L1, 'module': 0},
         '8-9-10-11-12-13': {'lesson': L3, 'module': 0}}},
-    'act-1': {'lesson': L1, 'module': 4, 'items': {'a-b': {'lesson': L1, 'module': 4}, 'c': {'lesson': L3, 'module': 1}}},   # a-b : l'entrée est le labo de la plateforme ; la frise du livre devient une application (2026-10-29)
+    'act-1': {'lesson': L1, 'module': 4, 'items': {'a-b': {'lesson': L1, 'module': 4}, 'c': {'lesson': L3, 'module': 4}}},   # a-b : l'entrée est le labo de la plateforme ; la frise du livre devient une application (2026-10-29)
     'act-2': {'lesson': L2, 'module': 4},
     'act-3': {'lesson': L4, 'module': 4}, 'act-4': {'lesson': L4, 'module': 4},   # l'entrée est le labo `balloon-ballast` de la plateforme ; les activités du livre deviennent des applications (2026-10-29)
-    'act-5': {'lesson': L5, 'module': 1}, 'act-6': {'lesson': L6, 'module': 1},
+    'act-5': {'lesson': L5, 'module': 1}, 'act-6': {'lesson': L6, 'module': 4},   # act-6 : l'entrée est le labo `tug-rope` de la plateforme ; l'activité du livre devient une application (majmu-jabri, 2026-10-29)
     'know-1a': {'lesson': L1, 'module': 2}, 'know-1b': {'lesson': L2, 'module': 2}, 'know-1c': {'lesson': L3, 'module': 2},
     'method-1': {'lesson': L2, 'module': 3}, 'method-2': {'lesson': L3, 'module': 3},
     'now-43': {'lesson': L2, 'module': 3, 'items': {'1': {'lesson': L2, 'module': 3}, '2': {'lesson': L3, 'module': 3}}},
@@ -396,16 +396,20 @@ DEST = {
     'self-7': {'lesson': L4, 'module': 8}, 'self-8': {'lesson': L4, 'module': 8}, 'self-9': {'lesson': L5, 'module': 8},
     'self-10': {'lesson': L6, 'module': 8}, 'self-11': {'lesson': L6, 'module': 8},
     'deep-38': {'lesson': L4, 'module': 4},
-    **{f'deep-{n}': {'lesson': L6, 'module': 4} for n in (39, 43, 44, 46, 47, 59)},
+    **{f'deep-{n}': {'lesson': L6, 'module': 4} for n in (39, 43, 44, 46)},
+    **{f'deep-{n}': {'lesson': L6, 'module': None} for n in (47, 59)},   # banque d'exercices (adaptés) de majmu-jabri ; deep-47 : nombres seulement, aucune règle (3AM)
     'deep-40': {'lesson': L5, 'module': 4}, 'deep-41': {'lesson': L5, 'module': 4}, 'deep-42': {'lesson': L5, 'module': 4},
     **{f'deep-{n}': {'lesson': L4, 'module': None} for n in (45, 48, 57)},   # banque d'exercices (adaptés) de jam-tarh-nisbiya
-    **{f'deep-{n}': {'lesson': L6, 'module': 4} for n in (49, 50, 58)},   # carrés magiques / chemins : sommes de 3 à 4 termes = majmu-jabri
-    **{f'deep-{n}': {'lesson': L3, 'module': 4} for n in (51, 52, 53, 54, 55, 56)},
+    **{f'deep-{n}': {'lesson': L6, 'module': 4} for n in (58,)}, **{f'deep-{n}': {'lesson': L6, 'module': None} for n in (49, 50)},   # carrés magiques / chemins : sommes de 3 à 4 termes = majmu-jabri
+    **{f'deep-{n}': {'lesson': L3, 'module': 4} for n in (52, 55)}, **{f'deep-{n}': {'lesson': L3, 'module': None} for n in (51, 53, 54, 56)},   # deep-51/53/54/56 : banque d'exercices (adaptés) de talim-nuqta-mustawi ; l'entrée est le labo `dig-grid` (2026-10-29)
     'integration': {'lesson': SYN, 'module': None}, 'evaluation': {'lesson': SYN, 'module': None},
     'ict-1': {'lesson': L5, 'module': None},
 }
 
 DISCREPANCIES = [
+    {'elementId': 'self-11', 'kind': 'reading', 'text': 'Relu à 110 dpi (majmu-jabri, 2026-10-29) : A = (−3) − (+4) − (7,1) + (−2,5) − (+4,7) a pour valeur −21,3, une des trois options (−18,8 ; −21,3 ; −11,9) ; le début de l’énoncé reste coupé à gauche : la leçon pose son épreuve réécrite (autres nombres, calcul d’une écriture simplifiée) sans reprendre l’énoncé coupé.'},
+    {'elementId': 'self-10', 'kind': 'reading', 'text': 'Relu (majmu-jabri) : « 5,5 − 3 est la forme simplifiée de l’expression » ; les options entre parenthèses sont à demi lisibles : la leçon pose son épreuve de simplification réécrite (autres nombres), sans reprendre les options à demi lisibles.'},
+    {'elementId': 'deep-47', 'kind': 'scope', 'text': 'Le « ماذا تستنتج ؟ » de a − (b − c) mène à la règle des parenthèses précédées de « − » (3AM) : majmu-jabri s’en sert avec des nombres seulement (banque), sans énoncer de règle.'},
     {'elementId': 'ex-2', 'kind': 'scope', 'text': 'Le texte envoie l’élève à un moteur de recherche (température du corps, congélation, ébullition, zéro absolu). Hors périmètre (indépendance du livre) : la plateforme DONNE les valeurs (37 ; 0 ; 100 ; −273,15 °C) dans talim-mustaqim-mudarraj-2.'},
     {'elementId': 'ex-10', 'kind': 'scope', 'text': 'Le point b parle de points dont les abscisses ne sont pas des nombres relatifs (fractions) : gardé seulement comme « 1/7 n’est pas un relatif de cette année » (« أستعدّ » item 2) ; jamais une fraction placée.'},
     {'elementId': 'know-1b', 'kind': 'misprint', 'text': 'Le premier exemple imprime « −2,5 < −4 » à côté de « la point F avant la point E » : c’est −4 < −2,5 (F est à gauche de E). Les deux autres exemples (2,5 < 5 ; −2,5 < 2,5) sont corrects. La leçon écrit −4 < −2,5.'},

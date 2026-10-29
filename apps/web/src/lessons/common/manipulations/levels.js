@@ -1002,6 +1002,21 @@ export const LEVELS = Object.freeze({
       { id: 'a4', a: '6', op: '-', b: '7', predict: true },
     ] }, ...T('method-3') },
   },
+  // L'ÉQUIPE DE CHAQUE TERME SOUS LA MAIN (tug-rope, thème tugfield, 2AM unité 3, leçon 6) : une somme algébrique est une file d'enfants à dossards ; la main retourne ceux que précède « − » et envoie chacun
+  // à gauche ou à droite d'une corde ; le ruban au milieu avance de (total droite − total gauche) : la somme est une SORTIE. مبتدئ (plateforme) : t1 (+7)+(−3)+(+5)+(−6) ; t2 (−8)−(+3)+(−6)−(−5) (deux retournements) ;
+  // t3 (+5)+(−7)+(−5)+(+7)+(−3) (des opposés sortent ensemble). متقدم (method-5) : la position est ÉCRITE avant de siffler — a1 une longue chaîne décimale, a2 un crochet réglé d'abord, a3 la forme simplifiée −15+4+8+3.
+  'tug-rope': {
+    beginner: { numbers: { tasks: [
+      { id: 't1', chain: '(+7)+(-3)+(+5)+(-6)' },
+      { id: 't2', chain: '(-8)-(+3)+(-6)-(-5)' },
+      { id: 't3', chain: '(+5)+(-7)+(-5)+(+7)+(-3)' },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', chain: '(+4,5)+(-7)-(+8)+(+3,5)-(-4,5)-(-10)', predict: true },
+      { id: 'a2', chain: '(+12)-[(-6)-(-2)+(+9)]', predict: true },
+      { id: 'a3', chain: '-15+4+8+3', predict: true },
+    ] }, ...T('method-5') },
+  },
   // L'ORIGINE ET LA GRADUATION SOUS LA MAIN (corniche-ruler, thème corniche, 2AM unité 3, leçon 1) : une planche graduée sous des repères du front de mer ;
   // l'abscisse d'un repère est une SORTIE. مبتدئ (plateforme, graduation 10 m) : la main tient l'ORIGINE (le drapeau « 0 ») — b1 écrire +30 et −20 sous la fontaine, b2 amener le « 0 »
   // sous le banc et récrire (+50), b3 poser le « 0 » pour que le lampadaire et le palmier soient opposés (−10), b4 un arrêt entre deux graduations (−35). متقدم (method : choisir
@@ -1019,6 +1034,23 @@ export const LEVELS = Object.freeze({
       { id: 'a2', kind: 'fit', marks: [{ id: 'A', x: '0,3' }, { id: 'B', x: '-0,5' }, { id: 'C', x: '-0,1' }, { id: 'D', x: '0,6' }] },
       { id: 'a3', kind: 'fit', marks: [{ id: 'A', x: '-300' }, { id: 'B', x: '400' }, { id: 'C', x: '600' }] },
     ] }, ...T('method-1') },
+  },
+  // LE PIQUET D'ORIGINE SOUS LA MAIN (dig-grid, thème digsite, 2AM unité 3, leçon 4) : une fouille quadrillée ; les coordonnées d'une trouvaille sont une SORTIE du piquet et de l'ordre des deux nombres.
+  // مبتدئ (plateforme) : la main tient le PIQUET (glissement 2D) — d1 la jarre à (2 ; 1), d2 la lampe à (−3 ; 2), d3 deux relevés à la fois (un seul piquet), d4 un carnet impossible (nombres échangés : « لا يوجد موضع »).
+  // متقدم (method : placer un point) : le piquet est fixe, étiquettes voilées — p1 PRÉDIRE les coordonnées de la pièce, de la tesselle et de la perle (sur l'axe vertical), p2 poser une bague à (2,5 ; −1,5) et une pointe à (−1,5 ; 0)
+  // entre ou sur les ficelles, p3 la place miroir de la pièce par rapport à la corde bleue. Le test des niveaux mesure la paire par le GESTE (le piquet, tâches `stake` seules, contre le point écrit ou touché).
+  'dig-grid': {
+    beginner: { numbers: { tasks: [
+      { id: 'd1', kind: 'stake', start: [1, 1], notes: [{ find: 'jar', want: '2;1' }] },
+      { id: 'd2', kind: 'stake', start: [6, 1], notes: [{ find: 'lamp', want: '-3;2' }] },
+      { id: 'd3', kind: 'stake', start: [1, 1], notes: [{ find: 'jar', want: '2;1' }, { find: 'plate', want: '-1;-2' }] },
+      { id: 'd4', kind: 'stake', start: [1, 1], none: true, notes: [{ find: 'jar', want: '2;1' }, { find: 'plate', want: '1;2' }] },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'p1', kind: 'typed', stake: '3;3', finds: ['coin', 'tile', 'bead'] },
+      { id: 'p2', kind: 'tap', stake: '3;3', targets: [{ name: 'ring', at: '2.5;-1.5' }, { name: 'arrow', at: '-1.5;0' }] },
+      { id: 'p3', kind: 'mirror', stake: '3;3', find: 'coin' },
+    ] }, ...T('method-2') },
   },
   // ── 3AM, unité 6 « التناسبية » (2026-10-21) ──
   // LES SIGNES ET L'ORDRE DES CARTES SOUS LA MAIN (robot-track, thème roboticsClub, 3AM unité 1, leçon 2) : un robot part de 1 ; chaque carte multiplie sa position.

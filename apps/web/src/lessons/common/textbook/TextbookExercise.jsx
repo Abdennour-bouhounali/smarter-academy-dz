@@ -4,6 +4,7 @@ import { parseDec } from '@smarter-academy/core';
 import { TapQuestion, NumericQuestion, BatchChoiceQuestion } from '../kit';
 import { Feedback } from '../components/LessonUI';
 import MathText from '../components/MathText';
+import StatementFigure from '../components/StatementFigure';
 import SourceTag from './SourceTag';
 import IntegerSetQuestion from './IntegerSetQuestion';
 import FractionQuestion from './FractionQuestion';
@@ -51,6 +52,7 @@ export default function TextbookExercise({ exercise, solved = false, onAnswered,
         <span className="ms-auto"><ClassroomEntryButton scope="exercise" title={label} tone="quiet" compact /></span>
       </div>
       {ex.statement && <p className="leading-relaxed text-slate-800 text-base"><MathText>{ex.statement}</MathText></p>}
+      {ex.figure && <StatementFigure {...ex.figure} />}
       {ex.items && (
         <ul className="ms-3 space-y-0.5 text-sm text-slate-700">
           {ex.items.map((it, i) => <li key={i}><MathText>{it}</MathText></li>)}

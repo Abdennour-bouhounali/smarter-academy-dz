@@ -477,7 +477,7 @@
    "page": 41,
    "section": "أنشطة",
    "title": "حساب مجموع جبري",
-   "verified": false,
+   "verified": true,
    "text": "أ) أكمل الحساب. A = (−9) − (+2) + (−5) − (…) = (−9) + (…) + (…) + (…) = (…) . ب) احسب: A = (−12) − (+7) − (−10) − (+3) ؛ B = (+6) + (−1) − (−4) + (+3) .",
    "answer": {
     "A": -12,
@@ -1855,6 +1855,21 @@
  ],
  "discrepancies": [
   {
+   "elementId": "self-11",
+   "kind": "reading",
+   "text": "Relu à 110 dpi (majmu-jabri, 2026-10-29) : A = (−3) − (+4) − (7,1) + (−2,5) − (+4,7) a pour valeur −21,3, une des trois options (−18,8 ; −21,3 ; −11,9) ; le début de l’énoncé reste coupé à gauche : la leçon pose son épreuve réécrite (autres nombres, calcul d’une écriture simplifiée) sans reprendre l’énoncé coupé."
+  },
+  {
+   "elementId": "self-10",
+   "kind": "reading",
+   "text": "Relu (majmu-jabri) : « 5,5 − 3 est la forme simplifiée de l’expression » ; les options entre parenthèses sont à demi lisibles : la leçon pose son épreuve de simplification réécrite (autres nombres), sans reprendre les options à demi lisibles."
+  },
+  {
+   "elementId": "deep-47",
+   "kind": "scope",
+   "text": "Le « ماذا تستنتج ؟ » de a − (b − c) mène à la règle des parenthèses précédées de « − » (3AM) : majmu-jabri s’en sert avec des nombres seulement (banque), sans énoncer de règle."
+  },
+  {
    "elementId": "ex-2",
    "kind": "scope",
    "text": "Le texte envoie l’élève à un moteur de recherche (température du corps, congélation, ébullition, zéro absolu). Hors périmètre (indépendance du livre) : la plateforme DONNE les valeurs (37 ; 0 ; 100 ; −273,15 °C) dans talim-mustaqim-mudarraj-2."
@@ -1937,7 +1952,7 @@
     },
     "c": {
      "lesson": "talim-nuqta-mustawi",
-     "module": 1
+     "module": 4
     }
    }
   },
@@ -1959,7 +1974,7 @@
   },
   "act-6": {
    "lesson": "majmu-jabri",
-   "module": 1
+   "module": 4
   },
   "know-1a": {
    "lesson": "talim-mustaqim-mudarraj-2",
@@ -2245,11 +2260,11 @@
   },
   "deep-47": {
    "lesson": "majmu-jabri",
-   "module": 4
+   "module": null
   },
   "deep-59": {
    "lesson": "majmu-jabri",
-   "module": 4
+   "module": null
   },
   "deep-40": {
    "lesson": "masafa-nuqtatayn",
@@ -2275,21 +2290,21 @@
    "lesson": "jam-tarh-nisbiya",
    "module": null
   },
-  "deep-49": {
-   "lesson": "majmu-jabri",
-   "module": 4
-  },
-  "deep-50": {
-   "lesson": "majmu-jabri",
-   "module": 4
-  },
   "deep-58": {
    "lesson": "majmu-jabri",
    "module": 4
   },
+  "deep-49": {
+   "lesson": "majmu-jabri",
+   "module": null
+  },
+  "deep-50": {
+   "lesson": "majmu-jabri",
+   "module": null
+  },
   "deep-51": {
    "lesson": "talim-nuqta-mustawi",
-   "module": 4
+   "module": null
   },
   "deep-52": {
    "lesson": "talim-nuqta-mustawi",
@@ -2297,11 +2312,11 @@
   },
   "deep-53": {
    "lesson": "talim-nuqta-mustawi",
-   "module": 4
+   "module": null
   },
   "deep-54": {
    "lesson": "talim-nuqta-mustawi",
-   "module": 4
+   "module": null
   },
   "deep-55": {
    "lesson": "talim-nuqta-mustawi",
@@ -2309,7 +2324,7 @@
   },
   "deep-56": {
    "lesson": "talim-nuqta-mustawi",
-   "module": 4
+   "module": null
   },
   "integration": {
    "lesson": "wadiya-idmajiya-adad-nisbiya-2",

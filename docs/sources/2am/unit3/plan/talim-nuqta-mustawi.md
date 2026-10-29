@@ -330,3 +330,16 @@ rectangle with sides parallel to the axes; each distractor checked equal to its 
   coordinates), `4am_murakkibata-shuaa_P3` ← `2am_talim-nuqta-mustawi_P3` (draw from a given point); `4am_muntasaf-masafa_P1` ←
   `2am_talim-nuqta-mustawi_P2` (the midpoint's coordinates from the ends' coordinates). Neither 4AM lesson has a « تذكّر — السنة الثانية »
   box; nothing else to edit.
+
+## Generator notes (lead, 2026-10-29)
+
+Fixes and decisions taken while executing the plan (each is also in the final report):
+- **§6 table, « Stake (world) » column** is the ANSWER, not the starting position: the stake starts elsewhere (d1 and d3 at (1,1), d2 at (6,1), d4 at (1,1)), otherwise d1 would be solved before any gesture. The levels (`levels.js`) hold the starting cells.
+- **d4 question « ما الخطأ المحتمل في الدفتر؟»**: with the jar at (2 ; 1) and the plate at (1 ; 2) the notebook cannot be repaired by swapping one pair (the real plate is (−1 ; −2)), so the checkpoint says only that the two records cannot both be true (distractors: « the stake is too far », « swap both pairs » — proven false: after the swap the records are still impossible). The planned second question « هل (1 ; 2) و (2 ; 1) الموضع نفسه؟ » is carried by the `tartib-ihdathiyayn` brick and the rule question instead.
+- **Closing card « لماذا يكون المتر نفسه على الحبلين؟ » (two drawn frames)** was NOT built as a lab card: the orthonormal frame is named in module 2 (brick `maalam-mutajanis`, with « تذكّر — السنة الأولى » and the definition); the bank item « UNITIGNORED » and the مسألة 3 unit choice test it. Lab misconception `UNITIGNORED` stays a bank/test one.
+- **p3** is a typed answer (the mirror place of the coin across the BLUE cord), judged `right | same | symMix | bothSigns | other`; **p2** is the half-metre tap (ring (2,5 ; −1,5), arrowhead (−1,5 ; 0)).
+- **Lab pit** is 9 × 7 squares; the square size is capped by the screen height (~28 %) so the lab glance stays ≤ 700 px at 1024×768 at both levels.
+- **Module 4 exercises**: the textbook elements `deep-51`, `deep-54`, `deep-56` are cited by `deep-52` / `deep-55` (`cites`) and routed to the BANK in `build-extraction.py`; `act-1` item c moved to module 4 as planned. `TextbookExercise` gained an optional `figure` (a `StatementFigure`) so reading exercises show their GeoFigure.
+- **Durations**: the modules sum to 64 minutes without the مسائل (the checker compares it with the catalogue), so `durationMinutes` is 64 (not ≈ 80); `estimatedDurationMin` of the config is 88 with the three مسائل.
+- **« أستعدّ »** keeps the plan's six items (prep 8, 9/11, 10, 12 rewritten + two platform items); the knowledge ids are `ihdathiyat-1am`, `tanazur-mihwari-1am`, `faasila-2am`.
+- **Bank** (50 sheets, 156 judged questions): 10 `term_exam` (read: `1am-s2-79` ex 4, `2am-s1-73` ex 3, `2am-s2-70` ex 2, `2am-s2-69` ex 3, `2am-s2-63` ex 3, `2am-s2-72` ex 3, `2am-s2-75` ex 2, `2am-s2-59` ex 4, `2am-s2-52` ex 3, `2am-s2-53` ex 2), 33 modelled, 7 adapted; 12 `counted: false` steps (central symmetry, a rectangle's centre, the nature of a quadrilateral, the four cost steps of level 5).

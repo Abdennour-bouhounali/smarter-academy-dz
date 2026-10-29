@@ -191,3 +191,76 @@ describe('balloon-ballast : somme, différence, charge', () => {
     }
   });
 });
+
+describe('relative — le plan (E4, dig-grid)', () => {
+  const P = R.point;
+  it('pointText, quadrantOf, parsePoint', () => {
+    expect(R.pointText(P('-1,5', '2,5'))).toBe('(-1,5 ; 2,5)');
+    expect([P(1, 2), P(-1, 2), P(-1, -2), P(1, -2)].map(R.quadrantOf)).toEqual([1, 2, 3, 4]);
+    expect([P(0, 0), P(3, 0), P(0, -2)].map(R.quadrantOf)).toEqual(['origin', 'axisX', 'axisY']);
+    expect(R.parsePoint('( −2,5 ; 3 )')).toEqual(P('-2,5', 3));
+    expect(R.parsePoint('3')).toBeNull();
+    expect(R.parsePoint('a ; 3')).toBeNull();
+  });
+  it('symX et symY sont des involutions, symX garde l’abscisse', () => {
+    for (let x = -6; x <= 6; x += 1) for (let y = -6; y <= 6; y += 1) {
+      const p = P(x, y);
+      expect(R.symX(R.symX(p))).toEqual(p);
+      expect(R.symY(R.symY(p))).toEqual(p);
+      expect(R.symX(p).x).toBe(p.x);
+      expect(R.symY(p).y).toBe(p.y);
+    }
+  });
+  it('originFor et coordsOf sont inverses ; consistent exhaustif sur une grille 13 × 13', () => {
+    const jar = P(5, 4); const plate = P(2, 1);
+    for (let ox = -6; ox <= 6; ox += 1) for (let oy = -6; oy <= 6; oy += 1) {
+      const o = P(ox, oy);
+      expect(R.originFor(jar, R.coordsOf(jar, o))).toEqual(o);
+      expect(R.consistent([{ world: jar, wanted: R.coordsOf(jar, o) }, { world: plate, wanted: R.coordsOf(plate, o) }])).toEqual(o);
+    }
+    expect(R.consistent([{ world: jar, wanted: P(2, 1) }, { world: plate, wanted: P(1, 2) }])).toBeNull();
+    expect(R.originFor(jar, P(2, 1))).toEqual(P(3, 3));
+  });
+});
+
+describe('E3 — tug-rope : somme algébrique (majmu-jabri)', () => {
+  const sumOf = (s) => R.algebraicSum(R.terms(s));
+  it('lit les formes du plan', () => {
+    expect(sumOf('(-9) - (+2) + (-5) - (-4)')).toBe(-1200n);
+    expect(sumOf('-9 - 2 - 5 + 4')).toBe(-1200n);
+    expect(sumOf('(+12) - [(-6) - (-2) + (+9)]')).toBe(700n);
+    expect(sumOf('-15 + 4 + 8 + 3')).toBe(0n);
+    expect(sumOf('(+4,5)+(-7)-(+8)+(+3,5)-(-4,5)-(-10)')).toBe(750n);
+    expect(sumOf('(+15)-[(-6)+(+4)]')).toBe(1700n);
+    expect(sumOf('-9+4-6+11')).toBe(0n);
+    expect(sumOf('(-8)-(+3)+(-6)-(-5)')).toBe(-1200n);
+    expect(sumOf('5-6-8')).toBe(-900n);
+    expect(sumOf('(-5)+(3-(2))')).toBe(-400n);
+    expect(() => R.terms('(1')).toThrow();
+    expect(() => R.terms('3 +')).toThrow();
+  });
+  it('asSum, groupBySign, simplifiedText', () => {
+    const t = R.terms('(-9) - (+2) + (-5) - (-4)');
+    const a = R.asSum(t);
+    expect(a).toEqual([-900n, -200n, -500n, 400n]);
+    expect(R.simplifiedText(a)).toBe('-9 - 2 - 5 + 4');
+    const g = R.groupBySign(a);
+    expect(g).toMatchObject({ posSum: 400n, negSum: -1600n, total: -1200n });
+    expect(R.bracketText(t)).toBe('(-9) - (+2) + (-5) - (-4)');
+  });
+  it('500 chaînes aléatoires : évaluation de gauche à droite = groupement par signe = écriture simplifiée relue', () => {
+    let seed = 7;
+    const rnd = (n) => { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed % n; };
+    for (let k = 0; k < 500; k += 1) {
+      const n = 2 + rnd(5);
+      const items = Array.from({ length: n }, () => ({ op: rnd(2) ? '+' : '-', v: BigInt((rnd(41) - 20) * 100 + (rnd(2) ? 50 : 0)) }));
+      items[0].op = '+';
+      const txt = items.map((it, i) => `${i ? it.op : ''}(${it.v < 0n ? '-' : '+'}${R.text(it.v < 0n ? -it.v : it.v)})`).join('');
+      const want = items.reduce((acc, it) => (it.op === '+' ? acc + it.v : acc - it.v), 0n);
+      expect(sumOf(txt)).toBe(want);
+      const a = R.asSum(R.terms(txt));
+      expect(R.groupBySign(a).total).toBe(want);
+      expect(sumOf(R.simplifiedText(a))).toBe(want);
+    }
+  });
+});

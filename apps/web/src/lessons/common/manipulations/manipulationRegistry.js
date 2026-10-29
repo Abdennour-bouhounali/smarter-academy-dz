@@ -124,8 +124,11 @@ export const MANIPULATION_COMPONENTS = {
   'level-laser': lazy(() => import('./operations/LevelLaser')),
   // 2AM, unité 3, leçon 5 « جمع وطرح عددين نسبيين » : la charge d'un montgolfière sous la main — أكياس المنطاد (2026-10-29).
   'balloon-ballast': lazy(() => import('./operations/BalloonBallast')),
+  'tug-rope': lazy(() => import('./operations/TugRope')),
   // 2AM, unité 3, leçon 1 « التعليم على مستقيم مدرّج » : l'origine et la graduation sous la main — مسطرة الكورنيش (2026-10-29).
   'corniche-ruler': lazy(() => import('./operations/CornicheRuler')),
+  // 2AM, unité 3, leçon 4 « تعليم نقطة في المستوي » : le piquet d'origine sous la main — شبكة الحفرية (2026-10-29).
+  'dig-grid': lazy(() => import('./operations/DigGrid')),
   // 2AM, unité 2, leçon 8 « جداء كسرين » : les deux facteurs sous la main — ستائر النافذة (2026-10-29).
   'window-blinds': lazy(() => import('./operations/WindowBlinds')),
   // 2AM, unité 4, leçon 1 « إنتاج عبارة حرفية واستعمالها » : le nombre de cellules sous la main — خلايا الشمع (2026-10-29).

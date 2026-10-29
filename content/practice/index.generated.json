@@ -929,6 +929,68 @@
       "ex-2am-kasr-hasil-qisma-l5-010"
     ]
   },
+  "majmu-jabri": {
+    "1": [
+      "ex-2am-majmu-jabri-l1-001",
+      "ex-2am-majmu-jabri-l1-002",
+      "ex-2am-majmu-jabri-l1-003",
+      "ex-2am-majmu-jabri-l1-004",
+      "ex-2am-majmu-jabri-l1-005",
+      "ex-2am-majmu-jabri-l1-006",
+      "ex-2am-majmu-jabri-l1-007",
+      "ex-2am-majmu-jabri-l1-008",
+      "ex-2am-majmu-jabri-l1-009",
+      "ex-2am-majmu-jabri-l1-010"
+    ],
+    "2": [
+      "ex-2am-majmu-jabri-l2-001",
+      "ex-2am-majmu-jabri-l2-002",
+      "ex-2am-majmu-jabri-l2-003",
+      "ex-2am-majmu-jabri-l2-004",
+      "ex-2am-majmu-jabri-l2-005",
+      "ex-2am-majmu-jabri-l2-006",
+      "ex-2am-majmu-jabri-l2-007",
+      "ex-2am-majmu-jabri-l2-008",
+      "ex-2am-majmu-jabri-l2-009",
+      "ex-2am-majmu-jabri-l2-010"
+    ],
+    "3": [
+      "ex-2am-majmu-jabri-l3-001",
+      "ex-2am-majmu-jabri-l3-002",
+      "ex-2am-majmu-jabri-l3-003",
+      "ex-2am-majmu-jabri-l3-004",
+      "ex-2am-majmu-jabri-l3-005",
+      "ex-2am-majmu-jabri-l3-006",
+      "ex-2am-majmu-jabri-l3-007",
+      "ex-2am-majmu-jabri-l3-008",
+      "ex-2am-majmu-jabri-l3-009",
+      "ex-2am-majmu-jabri-l3-010"
+    ],
+    "4": [
+      "ex-2am-majmu-jabri-l4-001",
+      "ex-2am-majmu-jabri-l4-002",
+      "ex-2am-majmu-jabri-l4-003",
+      "ex-2am-majmu-jabri-l4-004",
+      "ex-2am-majmu-jabri-l4-005",
+      "ex-2am-majmu-jabri-l4-006",
+      "ex-2am-majmu-jabri-l4-007",
+      "ex-2am-majmu-jabri-l4-008",
+      "ex-2am-majmu-jabri-l4-009",
+      "ex-2am-majmu-jabri-l4-010"
+    ],
+    "5": [
+      "ex-2am-majmu-jabri-l5-001",
+      "ex-2am-majmu-jabri-l5-002",
+      "ex-2am-majmu-jabri-l5-003",
+      "ex-2am-majmu-jabri-l5-004",
+      "ex-2am-majmu-jabri-l5-005",
+      "ex-2am-majmu-jabri-l5-006",
+      "ex-2am-majmu-jabri-l5-007",
+      "ex-2am-majmu-jabri-l5-008",
+      "ex-2am-majmu-jabri-l5-009",
+      "ex-2am-majmu-jabri-l5-010"
+    ]
+  },
   "muqarana-kasrayn": {
     "1": [
       "ex-2am-muqarana-kasrayn-l1-001",
@@ -1361,6 +1423,68 @@
       "ex-2am-talim-mustaqim-mudarraj-2-l5-008",
       "ex-2am-talim-mustaqim-mudarraj-2-l5-009",
       "ex-2am-talim-mustaqim-mudarraj-2-l5-010"
+    ]
+  },
+  "talim-nuqta-mustawi": {
+    "1": [
+      "ex-2am-talim-nuqta-mustawi-l1-001",
+      "ex-2am-talim-nuqta-mustawi-l1-002",
+      "ex-2am-talim-nuqta-mustawi-l1-003",
+      "ex-2am-talim-nuqta-mustawi-l1-004",
+      "ex-2am-talim-nuqta-mustawi-l1-005",
+      "ex-2am-talim-nuqta-mustawi-l1-006",
+      "ex-2am-talim-nuqta-mustawi-l1-007",
+      "ex-2am-talim-nuqta-mustawi-l1-008",
+      "ex-2am-talim-nuqta-mustawi-l1-009",
+      "ex-2am-talim-nuqta-mustawi-l1-010"
+    ],
+    "2": [
+      "ex-2am-talim-nuqta-mustawi-l2-001",
+      "ex-2am-talim-nuqta-mustawi-l2-002",
+      "ex-2am-talim-nuqta-mustawi-l2-003",
+      "ex-2am-talim-nuqta-mustawi-l2-004",
+      "ex-2am-talim-nuqta-mustawi-l2-005",
+      "ex-2am-talim-nuqta-mustawi-l2-006",
+      "ex-2am-talim-nuqta-mustawi-l2-007",
+      "ex-2am-talim-nuqta-mustawi-l2-008",
+      "ex-2am-talim-nuqta-mustawi-l2-009",
+      "ex-2am-talim-nuqta-mustawi-l2-010"
+    ],
+    "3": [
+      "ex-2am-talim-nuqta-mustawi-l3-001",
+      "ex-2am-talim-nuqta-mustawi-l3-002",
+      "ex-2am-talim-nuqta-mustawi-l3-003",
+      "ex-2am-talim-nuqta-mustawi-l3-004",
+      "ex-2am-talim-nuqta-mustawi-l3-005",
+      "ex-2am-talim-nuqta-mustawi-l3-006",
+      "ex-2am-talim-nuqta-mustawi-l3-007",
+      "ex-2am-talim-nuqta-mustawi-l3-008",
+      "ex-2am-talim-nuqta-mustawi-l3-009",
+      "ex-2am-talim-nuqta-mustawi-l3-010"
+    ],
+    "4": [
+      "ex-2am-talim-nuqta-mustawi-l4-001",
+      "ex-2am-talim-nuqta-mustawi-l4-002",
+      "ex-2am-talim-nuqta-mustawi-l4-003",
+      "ex-2am-talim-nuqta-mustawi-l4-004",
+      "ex-2am-talim-nuqta-mustawi-l4-005",
+      "ex-2am-talim-nuqta-mustawi-l4-006",
+      "ex-2am-talim-nuqta-mustawi-l4-007",
+      "ex-2am-talim-nuqta-mustawi-l4-008",
+      "ex-2am-talim-nuqta-mustawi-l4-009",
+      "ex-2am-talim-nuqta-mustawi-l4-010"
+    ],
+    "5": [
+      "ex-2am-talim-nuqta-mustawi-l5-001",
+      "ex-2am-talim-nuqta-mustawi-l5-002",
+      "ex-2am-talim-nuqta-mustawi-l5-003",
+      "ex-2am-talim-nuqta-mustawi-l5-004",
+      "ex-2am-talim-nuqta-mustawi-l5-005",
+      "ex-2am-talim-nuqta-mustawi-l5-006",
+      "ex-2am-talim-nuqta-mustawi-l5-007",
+      "ex-2am-talim-nuqta-mustawi-l5-008",
+      "ex-2am-talim-nuqta-mustawi-l5-009",
+      "ex-2am-talim-nuqta-mustawi-l5-010"
     ]
   },
   "tawzi-darb-jam-tarh": {

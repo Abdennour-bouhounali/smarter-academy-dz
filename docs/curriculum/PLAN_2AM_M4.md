@@ -135,6 +135,17 @@ Learned in pair 1 (2026-10-29):
   edits after a fresh read; never regenerate over the other lead's lines.
 - `lessonProblem.table` must be the مسألة 1 table and every مسألة needs a drawn support; checkpoint options never keep the correct one first.
 
+Learned in pair 2 (2026-10-29):
+- Every الكفاءة (`pointsToLearn`, the lesson config `skills`) is at most 255 characters: `learning_points.title` is a VARCHAR(255) and a longer
+  one crashes `smarter:import-curriculum` (`hall-mushkil-muadala` P3 was 292). `learningPoints.test.js` guards it; aim at ≤ 200.
+- Signed numbers and « value + unit » in Arabic sentences are LTR runs (rule above). When a screenshot looks mirrored, measure it before
+  reporting: character x-positions (Range rects) or a 4× crop — a number is « −10 » when the minus is to the LEFT of the digits.
+- A lab typing slate drops the 0–9 chips to fit one screen only with `inputMode="decimal"`; the lab glance is asserted ≤ 700 px at 1024×768
+  in BOTH levels by the lesson's e2e (`[data-…-glance]`).
+- A lead who reports « I did not view / re-run X » has not finished: view every capture, re-run the e2e and `check:lessons` after the LAST edit.
+- Two leads in the SAME unit (pair 3 is unit 3 twice) edit `docs/sources/2am/unit3/build-extraction.py` / `extraction.json` and
+  `relative.js`: small targeted edits after a fresh read, never a regeneration of the whole file.
+
 Final report: URL path; modules; the lab and the screenshots you reviewed; bank counts (term_exam / modelled / adapted /
 platform_addition); every الكفاءات change; gates with results; the full list of files created or changed; docs updated; fixes to
 the plan; open points for the owner.

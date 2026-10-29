@@ -301,11 +301,19 @@ export const VISUAL_THEMES = Object.freeze({
   //   corniche  le كورنيش de la ville au soleil devant la mer : une balustrade bleue, des palmiers, une fontaine, deux bancs, un lampadaire, un kiosque de glaces, un arrêt de bus, un kiosque de pêcheurs,
   //             et sous la balustrade une planche en bois graduée (13 graduations) où chaque repère laisse tomber un fil à plomb ; un drapeau rouge « 0 » et un levier de laiton à crans ; une guide (KidFigure, hijab) à côté du drapeau (`corniche-ruler`)
   corniche: { kind: 'lengths', shows: 'كورنيش المدينة: معالم ولوحة مدرّجة تحت الدرابزين' },
+  // 2AM, unité 3, leçon 4 (2026-10-29) :
+  //   digsite  une fouille archéologique près de Djemila vue d'en haut : terre ocre, ficelles blanches tous les mètres (9 × 7), murs de pierre d'une maison ruinée, une brosse, un seau, un tamis ; des trouvailles sur des croisements (une jarre, une lampe à huile, un tesson d'assiette, une pièce lisse, une tesselle de mosaïque géométrique, une perle) ; un piquet rouge
+  //            avec deux cordes (bleue vers l'est, verte vers le nord) graduées par des étiquettes ; Selma (KidFigure, hijab) à مبتدئ, Anis (sweat) à متقدم (`dig-grid`)
+  digsite: { kind: 'areas', shows: 'حفرية أثرية: شبكة خيوط ووتد المبدأ ولُقى' },
   // 2AM, unité 3, leçon 5 (2026-10-29) :
   //   balloonvalley  un montgolfière au bord d'un plateau de grès du Tassili (arches, cyprès sahariens) : le bord est la ligne « 0 », le canyon en dessous est négatif, une échelle d'altitude (−12 … +12 m) à droite ; l'enveloppe rayée et la nacelle d'osier
   //                  portent des flammes orange (+1 m) et des sacs de sable bruns (−1 m) noués aux cordes — une flamme et un sac côte à côte se verrouillent en paire neutre ; deux bacs et un lot « paire neutre » sous la scène ;
   //                  Sara (KidFigure, fille en hijab) ou Rayan (sweat) dans la nacelle (`balloon-ballast`)
   balloonvalley: { kind: 'objects', shows: 'منطاد فوق وادي التاسيلي: نفخات لهب وأكياس رمل' },
+  // 2AM, unité 3, leçon 6 (2026-10-29) :
+  //   tugfield  la cour du collège un jour de sport : une corde sur toute la largeur, un ruban rouge noué à son milieu au-dessus d'un « 0 » sur une bande graduée (−20 … +20), un drapeau vert à droite (+) et un
+  //             orange à gauche (−), deux équipes d'enfants à dossards (KidFigure : filles en hijab, garçons en sweat) qui tirent, un petit tapis pour un petit équipage entre crochets (`tug-rope`)
+  tugfield: { kind: 'sorting', shows: 'ساحة يوم الرياضة: حبل وفريقان وشريط في الوسط' },
   // 2AM, unité 2, leçon 8 (2026-10-29) :
   //   classwindow  l'intérieur d'une salle de classe : une grande fenêtre à cadre d'aluminium blanc (ou un mur de 2 × 2 fenêtres, « واجهة المكتبة الزجاجية ») sur la cour et un palmier, un rideau latéral sur un
   //                rail à crans, un store à enrouleur sur un cordon à crans, deux ombres translucides qui s'additionnent là où elles se recouvrent, un écran de projection dans le coin sombre, une élève
