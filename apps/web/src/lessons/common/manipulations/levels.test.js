@@ -146,6 +146,10 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(advanced.numbers.predict, type).toBe(true);
         expect(beginner.numbers.predict, type).toBe(false);
         expect(advanced.numbers.tasks.some((tk) => Object.keys(tk.target).length === 2), type).toBe(true);
+      else if (type === 'chain-cutter') {
+        expect(beginner.numbers.tasks.every((tk) => tk.kind === 'cut'), type).toBe(true);
+        expect(advanced.numbers.tasks.some((tk) => tk.kind === 'glue') && advanced.numbers.tasks.some((tk) => tk.hidden), type).toBe(true);
+      }
         expect(beginner.numbers.tasks.every((tk) => Object.keys(tk.target).length === 1), type).toBe(true);
       }
       // Unité 1 de 3AM, leçon 2 : `robot-track` se mesure par la PRÉDICTION écrite avant « شغّل » (متقدم seul) et par l'ORDRE à choisir.

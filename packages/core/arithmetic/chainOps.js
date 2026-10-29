@@ -5,7 +5,9 @@
  *
  * Grandit leçon par leçon (docs/sources/2am/unit1/plan/README.md « Shared maths module ») :
  *   L1 (silsila-bidun-aqwas, ICI)  tokenize · parseChain · evaluateChain · traceChain · operatorsOf · valueInOrder · conventionalOrder · chainText · isNonNegativeChain
- *   L2–L4                           parenthèses et barre de fraction, nom d'une chaîne, distributivité — ajoutés par leurs leçons.
+ *   L2 (silsila-bi-aqwas)           parenthèses, crochets, barre de fraction, calculatrice
+ *   L3 (wasf-silsila-hisab)         analyse positionnée · lastOperation · operands · chainName · describe · cutAt · staplesOf · build · sameStructure
+ *   L4                              distributivité — ajoutée par sa leçon.
  *
  * LA CONVENTION (un accord, pas un théorème) : sans parenthèses, × et ÷ avant + et −, et à priorité égale de GAUCHE à DROITE.
  * Aucune parenthèse, aucun crochet, aucune barre de fraction, aucun littéral négatif (les relatifs sont l'unité 3 de 2AM) : `tokenize` les refuse.
@@ -400,4 +402,166 @@ export function calculatorKeys(input) {
   const keys = [];
   tokens.forEach((tk) => { if (tk.t === 'num') keys.push(...tk.text.split('')); else keys.push(tokenText(tk) === '[' ? '(' : tokenText(tk) === ']' ? ')' : tokenText(tk)); });
   return [...keys, '='];
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+ * L3 (wasf-silsila-hisab, 2026-10-29) — LA DERNIÈRE OPÉRATION NOMME LA CHAÎNE : arbre positionné, nom, termes / facteurs, phrase qui la décrit, coupe, collage.
+ *   analyse · lastOperation · operands · chainName · pieceText · describe · cutAt · staplesOf · build · sameStructure
+ * `analyse` relit le mot avec parenthèses et garde la POSITION (indice de jeton, indice d'opérateur) de chaque nœud ; les groupes disparaissent de l'arbre (`wrapped: true` sur
+ * le nœud qu'ils entouraient). Même grammaire que `parseB` (qu'on ne modifie pas : `mooringLines` en dépend). Tout est EXACT et réutilise `evaluateB`.
+ * LA PHRASE (`describe`) : masculin « العدد / العددين », « و » entre les deux blocs, « على » pour un quotient (« حاصل قسمة 45 على 9 »), le premier bloc d'abord pour − et ÷ ; une virgule
+ * sépare les deux blocs quand le premier contient lui-même une chaîne imbriquée (« مجموع جداء العدد 6 وفرق العددين 9 و 2 ، والعدد 5 »).
+ * ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════ */
+
+const NAMES = Object.freeze({ '+': 'مجموع', '−': 'فرق', '×': 'جداء', '÷': 'حاصل قسمة' });
+
+/** Le mot → `{ tokens, root }`. Nœuds : `{ t:'num', text, v, lo, hi }` | `{ t:'op', o, opIndex, tok, l, r, lo, hi, wrapped }` (lo / hi : jetons couverts, sans les parenthèses qui entourent le nœud). */
+export function analyse(input) {
+  const tokens = typeof input === 'string' ? tokenizeB(input) : input;
+  let pos = 0;
+  let opCount = 0;
+  const opIndexAt = tokens.map((tk) => (tk.t === 'op' ? opCount++ : -1));
+  const factor = () => {
+    const tk = tokens[pos];
+    if (!tk) throw new Error('syntax');
+    if (tk.t === 'num') { const lo = pos; pos += 1; return { t: 'num', text: tk.text, v: tk.v, lo, hi: lo, wrapped: false }; }
+    if (tk.t === 'open') {
+      pos += 1;
+      const e = expr();
+      if (!tokens[pos] || tokens[pos].t !== 'close') throw new Error('syntax');
+      pos += 1;
+      return { ...e, wrapped: true, wraps: (e.wraps ?? 0) + 1 };
+    }
+    throw new Error('syntax');
+  };
+  const join = (o, l, r, tok) => ({ t: 'op', o, opIndex: opIndexAt[tok], tok, l, r, lo: l.lo - (l.wraps ?? 0), hi: r.hi + (r.wraps ?? 0), wrapped: false });
+  const term = () => {
+    let left = factor();
+    while (tokens[pos]?.t === 'op' && PRIORITY[tokens[pos].o] === 2) { const tok = pos; const o = tokens[pos].o; pos += 1; left = join(o, left, factor(), tok); }
+    return left;
+  };
+  const expr = () => {
+    let left = term();
+    while (tokens[pos]?.t === 'op' && PRIORITY[tokens[pos].o] === 1) { const tok = pos; const o = tokens[pos].o; pos += 1; left = join(o, left, term(), tok); }
+    return left;
+  };
+  if (!tokens.length) throw new Error('syntax');
+  const root = expr();
+  if (pos !== tokens.length) throw new Error('syntax');
+  return { tokens, root };
+}
+
+const nodeOf = (x) => (typeof x === 'string' || Array.isArray(x) ? analyse(x).root : x);
+
+/** La dernière opération ('+', '−', '×', '÷') — la racine de l'arbre ; `null` pour un nombre seul. */
+export function lastOperation(x) { const n = nodeOf(x); return n.t === 'op' ? n.o : null; }
+/** Les deux blocs de la dernière opération : `[gauche, droite]` (nœuds). */
+export function operands(x) { const n = nodeOf(x); return n.t === 'op' ? [n.l, n.r] : []; }
+/** Le nom de la chaîne : « مجموع » | « فرق » | « جداء » | « حاصل قسمة » ; `null` pour un nombre seul. */
+export function chainName(x) { const n = nodeOf(x); return n.t === 'op' ? NAMES[n.o] : null; }
+export const CHAIN_NAMES = NAMES;
+
+/** Le texte d'un bloc (jetons lo … hi) ; les parenthèses non appariées sont retirées (une coupe peut en laisser), puis une paire qui entoure tout le bloc. */
+export function pieceText(tokens, lo, hi) {
+  let part = tokens.slice(lo, hi + 1);
+  const stack = []; const drop = new Set();
+  part.forEach((tk, i) => { if (tk.t === 'open') stack.push(i); else if (tk.t === 'close') { if (stack.length) stack.pop(); else drop.add(i); } });
+  stack.forEach((i) => drop.add(i));
+  part = part.filter((_, i) => !drop.has(i));
+  for (;;) {
+    if (part[0]?.t !== 'open' || part.at(-1)?.t !== 'close') break;
+    let d = 0; let whole = true;
+    for (let i = 0; i < part.length - 1; i += 1) { if (part[i].t === 'open') d += 1; else if (part[i].t === 'close') d -= 1; if (d === 0) { whole = false; break; } }
+    if (!whole) break;
+    part = part.slice(1, -1);
+  }
+  return part.map(tokenText).join(' ').replace(/\[/g, '(').replace(/\]/g, ')');
+}
+
+const subText = (tokens, n) => pieceText(tokens, n.lo, n.hi);
+const hasOpChild = (n) => n.t === 'op' && (n.l.t === 'op' || n.r.t === 'op');
+
+/** La phrase d'un bloc non réduit à un nombre (« مجموع العدد 7 وجداء العددين 4 و 5 »). */
+export function describe(input) {
+  const n = nodeOf(input);
+  if (n.t === 'num') return `العدد ${n.text}`;
+  const side = (x) => (x.t === 'num' ? x.text : describe(x));
+  const name = NAMES[n.o];
+  if (n.o === '÷') return `${name} ${side(n.l)} على ${side(n.r)}`;
+  if (n.l.t === 'num' && n.r.t === 'num') return `${name} العددين ${n.l.text} و ${n.r.text}`;
+  if (n.l.t === 'num') return `${name} العدد ${n.l.text} و${describe(n.r)}`;
+  if (n.r.t === 'num') return `${name} ${describe(n.l)}${hasOpChild(n.l) ? ' ،' : ''} و${'العدد'} ${n.r.text}`;
+  return `${name} ${describe(n.l)}${hasOpChild(n.l) ? ' ،' : ''} و${describe(n.r)}`;
+}
+
+/** La forme canonique d'un mot SANS ses parenthèses (deux mots ont la même structure si leurs arbres de calcul sont les mêmes). */
+export function structureOf(input) {
+  const walk = (n) => (n.t === 'num' ? n.text : `(${walk(n.l)}${n.o}${walk(n.r)})`);
+  return walk(nodeOf(input));
+}
+export const sameStructure = (a, b) => { try { return structureOf(a) === structureOf(b); } catch { return false; } };
+
+/**
+ * COUPER le mot à l'opérateur numéro `opIndex` (le k-ième opérateur dans l'ordre d'écriture). → `{ ok, o, left, right, leftValue, rightValue, rebuilt, rebuiltValue, same, reason }`.
+ * `ok` : c'est la DERNIÈRE opération ; sinon `reason: 'staple'` (les ciseaux mordent une agrafe) et `rebuilt` est la valeur qu'on trouverait en calculant les deux morceaux
+ * chacun de son côté puis en les réunissant par cet opérateur (`null` si elle est négative ou si elle divise par 0) ; `same` : cette valeur est PAR HASARD la bonne.
+ */
+export function cutAt(input, opIndex) {
+  const { tokens, root } = analyse(input);
+  const tok = tokens.findIndex((tk, i) => tk.t === 'op' && tokens.slice(0, i).filter((x) => x.t === 'op').length === opIndex);
+  if (tok < 0) throw new Error('opérateur inconnu');
+  const o = tokens[tok].o;
+  const left = pieceText(tokens, 0, tok - 1);
+  const right = pieceText(tokens, tok + 1, tokens.length - 1);
+  const leftValue = evaluateB(parseB(left));
+  const rightValue = evaluateB(parseB(right));
+  const ok = root.t === 'op' && root.tok === tok;
+  let rebuiltValue = null;
+  try { const v = apply(o, leftValue, rightValue); rebuiltValue = P.sign(v) < 0 ? null : v; } catch { rebuiltValue = null; }
+  const whole = evaluateB(parseB(tokens));
+  return {
+    ok, o, left, right, leftValue, rightValue,
+    rebuilt: rebuiltValue == null ? null : numText(rebuiltValue), rebuiltValue,
+    same: !ok && rebuiltValue != null && P.eq(rebuiltValue, whole),
+    reason: ok ? null : 'staple',
+  };
+}
+
+/**
+ * Les AGRAFES d'un mot calculé selon les règles : une par opération, dans l'ordre où la convention les fait (× ÷ puis + −, à égalité de gauche à droite) ; chacune
+ * couvre ses deux blocs `[lo, hi]` (jetons), porte sa valeur et son niveau (1 = la plus basse) et le numéro de l'agrafe qui l'englobe (`parent`, -1 pour la dernière).
+ */
+export function staplesOf(input) {
+  const { tokens, root } = analyse(input);
+  const out = [];
+  const walk = (n, parent) => {
+    if (n.t === 'num') return 0;
+    const idx = out.length;
+    out.push({ opIndex: n.opIndex, o: n.o, lo: n.lo, hi: n.hi, tok: n.tok, parent, level: 1, value: evaluateB(pieceText(tokens, n.lo, n.hi)), text: numText(evaluateB(pieceText(tokens, n.lo, n.hi))) });
+    const h = Math.max(walk(n.l, idx), walk(n.r, idx)) + 1;
+    out[idx].level = h;
+    return h;
+  };
+  walk(root, -1);
+  return out;
+}
+
+/**
+ * COLLER deux blocs par une opération : `build('×', '3 + 5', '10 − 4', { clipLeft, clipRight })`. Sans `clip*` l'élève écrit les blocs tels quels ; `needs` dit quelles parenthèses la
+ * structure exige (un bloc qui n'est pas un nombre et dont la dernière opération est moins prioritaire — ou de même priorité à droite, pour garder la forme `bloc op bloc`).
+ * → `{ text, name, needs: { left, right }, clipped: { left, right }, structure }`.
+ */
+export function build(op, leftText, rightText, { clipLeft = false, clipRight = false } = {}) {
+  const need = (text, side) => {
+    const n = analyse(text).root;
+    if (n.t === 'num') return false;
+    const pn = PRIORITY[n.o]; const po = PRIORITY[op];
+    return side === 'left' ? pn < po : pn <= po;
+  };
+  const needs = { left: need(leftText, 'left'), right: need(rightText, 'right') };
+  const wrap = (t, on) => (on ? `(${t})` : t);
+  const text = `${wrap(leftText, clipLeft)} ${op} ${wrap(rightText, clipRight)}`.replace(/\s+/g, ' ').trim();
+  let name = null;
+  try { name = chainName(text); } catch { name = null; }
+  return { text, name, needs, clipped: { left: clipLeft, right: clipRight }, structure: (() => { try { return structureOf(text); } catch { return null; } })() };
 }

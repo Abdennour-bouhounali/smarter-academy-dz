@@ -332,6 +332,9 @@ export const VISUAL_THEMES = Object.freeze({
   //              scellé avec son étiquette et sa pastille, deux grandes pastilles de couleur côte à côte et un mesureur à aiguille « أفتح · أغمق »,
   //              un élève (KidFigure) au rouleau devant l'esquisse de la fresque (`shade-match`)
   paintshop: { kind: 'objects', shows: 'آلة مزج الألوان في محلّ الطلاء: دلوان وعلب أبيض ورافعة للأزرق' },
+  // 2AM, unité 1, leçon 3 (2026-10-29) :
+  //   corkboard  la السبّورة الفلّينية du class : un ruban de papier imprimé porte la chaîne, des agrafes en métal posées par le calcul, des ciseaux, deux poches étiquetées et une planche d'autocollants ; Yasmine (KidFigure, hijab) tient le téléphone (`chain-cutter`)
+  corkboard: { kind: 'objects', shows: 'سبّورة فلّين في القسم: شريط ورقي مطبوع، دبابيس ومقصّ وجيوب بطاقات' },
   // 3AM, unité 2, leçon 3 (2026-10-26) :
   //   seedbed  un حوض غرس d'un jardin d'école de 1 m : une règle en bois le long du bord (0 … 1 m), des zones de cultures peintes à partir de la gauche
   //            (tomates, piments, oignons) avec leur pancarte, un râteau de jardin dont l'espacement des dents est la variable, des plants dans des cases

@@ -127,6 +127,7 @@ import { ORACLE as ORACLE_2AM_RABI_MUTANASIB } from './practice-oracle/rabi-muta
 import { ORACLE as ORACLE_2AM_SILSILA, audit as auditSilsila } from './practice-oracle/silsila-bidun-aqwas.mjs';
 import { ORACLE as ORACLE_2AM_SILSILA_AQWAS, audit as auditSilsilaAqwas } from './practice-oracle/silsila-bi-aqwas.mjs';
 import { ORACLE as ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA } from './practice-oracle/ikhtizal-kitaba-kasriya.mjs';
+import { ORACLE as ORACLE_2AM_WASF_SILSILA, audit as auditWasfSilsila } from './practice-oracle/wasf-silsila-hisab.mjs';
 import { ORACLE as ORACLE_1AM_QAWAID_QABILIYAT_QISMA } from './practice-oracle/qawaid-qabiliyat-qisma.mjs';
 import { ORACLE as ORACLE_1AM_KITABAT_ADAD_TABII } from './practice-oracle/kitabat-adad-tabii.mjs';
 import { ORACLE as ORACLE_1AM_HASIL_QISMA_KASR } from './practice-oracle/hasil-qisma-kasr.mjs';
@@ -314,6 +315,7 @@ const ORACLE = {
   ...ORACLE_2AM_SILSILA_AQWAS,
   ...ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA,
   ...ORACLE_1AM_QAWAID_QABILIYAT_QISMA,
+  ...ORACLE_2AM_WASF_SILSILA,
   ...ORACLE_1AM_KITABAT_ADAD_TABII,
   ...ORACLE_1AM_HASIL_QISMA_KASR,
   ...ORACLE_1AM_KUSUR_ASHRIYA_KITABA,
@@ -514,6 +516,12 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
       expect(isSuccessOutcome(evaluateAnswer(C(id), q).outcome)).toBe(id === 'B');
     }
   });
+  it('وصف سلسلة حسابات (2AM) : parseur propre (BigInt, ( ) , position de chaque nœud ; la RACINE nomme la chaîne), chaque nom, chaque bloc (الحدّ الأول… / المقسوم / القاسم), chaque phrase écrite ici puis comparée à chainOps.describe et à une table écrite à la main (HAND), chaque clé recalculée, chaque QCM jugé option par option (une seule option juste), chaque distracteur = la lecture que nomme sa misconception reconstruite ici (FIRSTOP, FIRSTWRITTEN, PIECES, ORDERDIFF, NOBRACKET), aucun intermédiaire négatif, 50 feuilles dont 2 sujets lus sur l\'image du PDF', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-wasf-silsila-hisab-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditWasfSilsila(own)).toEqual([]);
+  });
+
 
   for (const { key, q } of bank) {
     if (q.answerType === 'selfCheck') continue; // « بيّن أن » : pas de clé, l'élève se note sur le corrigé type

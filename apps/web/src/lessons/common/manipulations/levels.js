@@ -1029,6 +1029,25 @@ export const LEVELS = Object.freeze({
   },
   // LE SIGNE PRÉDIT SOUS LA MAIN (merge-board, thème arcade, 3AM unité 2, leçon 5, 2026-10-26) : une chaîne de calcul est une rangée de tuiles ; la main PRÉDIT le signe de chaque fusion, RETOURNE le diviseur d'une division
   // et choisit l'ORDRE des fusions (aimants = priorité, bulles = parenthèses). Une tâche est `{ id, chain, hidden?, signOnly? }`. مبتدئ (plateforme, barres et aimants visibles) : c1 −5/4 + 11/6, c2 7/13 × (−8/5), c3 −9/8 ÷ (−3/4),
+  // LA DERNIÈRE OPÉRATION SOUS LES CISEAUX (chain-cutter, thème corkboard, 2026-10-29) : la main coupe un ruban imprimé à l'opérateur de son choix ; les agrafes du calcul arbitrent. Une tâche est `{ id, kind: 'cut' | 'glue', text | cards+target,
+  // depth?, hidden? }`. مبتدئ (plateforme, six rubans à COUPER, agrafes montrées après « ثبّت ») : c1 7 + 4 × 5, c2 (7 + 4) × 5, c3 40 − 12 ÷ 4, c4 (18 + 6) ÷ 3, c5 6 × (9 − 2) + 5 (trois niveaux), c6 20 + 5 − 3 (même valeur par hasard).
+  // متقدم (plateforme) : a1 63 − 28 ÷ 7 (agrafes cachées jusqu'à la coupe) puis COLLER a2 50 − 6 × 7, a3 (15 + 9) ÷ 4 (agrafe nécessaire), a4 (3 + 5) × (10 − 4) (deux agrafes). Le monde de معارف est posé par la leçon.
+  'chain-cutter': {
+    beginner: { numbers: { tasks: [
+      { id: 'c1', kind: 'cut', text: '7 + 4 × 5', depth: 'root' },
+      { id: 'c2', kind: 'cut', text: '(7 + 4) × 5', depth: 'root' },
+      { id: 'c3', kind: 'cut', text: '40 − 12 ÷ 4', depth: 'root' },
+      { id: 'c4', kind: 'cut', text: '(18 + 6) ÷ 3', depth: 'root' },
+      { id: 'c5', kind: 'cut', text: '6 × (9 − 2) + 5', depth: 'full' },
+      { id: 'c6', kind: 'cut', text: '20 + 5 − 3', depth: 'root' },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', kind: 'cut', text: '63 − 28 ÷ 7', depth: 'full', hidden: true },
+      { id: 'a2', kind: 'glue', cards: ['50', '6', '7'], target: '50 − 6 × 7' },
+      { id: 'a3', kind: 'glue', cards: ['15', '9', '4'], target: '(15 + 9) ÷ 4' },
+      { id: 'a4', kind: 'glue', cards: ['3', '5', '10', '4'], target: '(3 + 5) × (10 − 4)' },
+    ] }, ...T('know-3') },
+  },
   // c4 7/3 − 8/15 ÷ 11/20 (l'aimant force la division d'abord). متقدم (method-9 : une chaîne à priorité ; barres CACHÉES jusqu'à la fusion, trois fautes les ramènent) : a1 (2/3 − 5/2) × (−6/11), a2 −3/4 + 5/6 × (−9/10),
   // a3 la fraction composée, a4 4/5 − 3/5 ÷ (−9/10) + (−2). Le monde `signs` (معارف) est posé par la leçon. Le test des niveaux mesure la paire par le NOMBRE DE TÂCHES et par les BARRES CACHÉES (متقدم seul).
   'merge-board': {

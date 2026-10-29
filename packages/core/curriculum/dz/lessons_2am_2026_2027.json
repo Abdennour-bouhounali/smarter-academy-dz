@@ -165,12 +165,14 @@
         "سلسلة عمليات بأقواس وبدونها"
       ],
       "prerequisiteLessonCodes": [
-        "mana-jam-tarh"
+        "mana-jam-tarh",
+        "silsila-bidun-aqwas",
+        "silsila-bi-aqwas"
       ],
       "pointsToLearn": [
-        "تعيين آخر عملية تُنجز في سلسلة عمليات وتسمية السلسلة بها (مجموع، فرق، جداء أو حاصل قسمة)",
-        "وصف سلسلة عمليات بجملة، مثل «$3 \\times (5+7)$ جداء العدد 3 ومجموع العددين 5 و 7»",
-        "كتابة سلسلة عمليات انطلاقا من وصفها اللفظي"
+        "تعيين آخر عملية تُنجز في سلسلة عمليات وتسمية السلسلة بها (مجموع، فرق، جداء أو حاصل قسمة) وتعيين حدّيها أو عامليها",
+        "وصف سلسلة عمليات بجملة، مثل «$4 \\times (9 + 6)$ جداء العدد 4 ومجموع العددين 9 و 6»",
+        "كتابة سلسلة عمليات بالأقواس اللازمة انطلاقًا من وصفها اللفظي أو من برنامج حساب، ثم حسابها"
       ],
       "programmeItems": [
         "2am.m1.r01",
@@ -190,7 +192,23 @@
           "method": null
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "pointPrerequisites": {
+        "P1": [
+          "2am_silsila-bi-aqwas_P1"
+        ],
+        "P2": [
+          "2am_wasf-silsila-hisab_P1",
+          "1am_mana-jam-tarh_P2"
+        ],
+        "P3": [
+          "2am_wasf-silsila-hisab_P2",
+          "2am_silsila-bi-aqwas_P1"
+        ]
+      },
+      "durationMinutes": 66,
+      "difficulty": "متوسط",
+      "icon": "✂️"
     },
     {
       "code": "tawzi-darb-jam-tarh",

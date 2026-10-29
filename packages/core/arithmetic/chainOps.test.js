@@ -147,3 +147,70 @@ describe('chainOps L2 — parenthèses, barre de fraction, calculatrice (silsila
     expect(() => C.tokenize('(1 + 2) × 3')).toThrow();
   });
 });
+
+describe('chainOps L3 — la dernière opération nomme la chaîne (wasf-silsila-hisab)', () => {
+  it('lastOperation / chainName / operands : la racine, jamais la première opération écrite', () => {
+    const cases = [
+      ['7 + 4 × 5', '+', 'مجموع'], ['(7 + 4) × 5', '×', 'جداء'], ['40 − 12 ÷ 4', '−', 'فرق'], ['(18 + 6) ÷ 3', '÷', 'حاصل قسمة'],
+      ['6 × (9 − 2) + 5', '+', 'مجموع'], ['20 + 5 − 3', '−', 'فرق'], ['24 ÷ 4 × 3', '×', 'جداء'], ['((8 + 2)) × 3', '×', 'جداء'],
+    ];
+    for (const [t, o, n] of cases) { expect(C.lastOperation(t), t).toBe(o); expect(C.chainName(t), t).toBe(n); }
+    expect(C.lastOperation('5')).toBeNull();
+    expect(C.operands('7 + 4 × 5').map((x) => x.t)).toEqual(['num', 'op']);
+    expect(C.operands('(7 + 4) × 5').map((x) => x.t)).toEqual(['op', 'num']);
+  });
+  it('describe : le tableau de phrases écrit à la main (masculin, « و », « على », la virgule des chaînes imbriquées)', () => {
+    const table = [
+      ['7 + 4 × 5', 'مجموع العدد 7 وجداء العددين 4 و 5'],
+      ['(7 + 4) × 5', 'جداء مجموع العددين 7 و 4 والعدد 5'],
+      ['40 − 12 ÷ 4', 'فرق العدد 40 وحاصل قسمة 12 على 4'],
+      ['(18 + 6) ÷ 3', 'حاصل قسمة مجموع العددين 18 و 6 على 3'],
+      ['6 × (9 − 2) + 5', 'مجموع جداء العدد 6 وفرق العددين 9 و 2 ، والعدد 5'],
+      ['(20 − 8) ÷ (1 + 2)', 'حاصل قسمة فرق العددين 20 و 8 على مجموع العددين 1 و 2'],
+      ['4 × (9 + 6)', 'جداء العدد 4 ومجموع العددين 9 و 6'],
+      ['12 + 45 ÷ 9', 'مجموع العدد 12 وحاصل قسمة 45 على 9'],
+      ['(4 + 6) × 2 ÷ 4', 'حاصل قسمة جداء مجموع العددين 4 و 6 والعدد 2 على 4'],
+      ['(3 + 5) × (10 − 4)', 'جداء مجموع العددين 3 و 5 وفرق العددين 10 و 4'],
+      ['4 × (1,5 + 2,5)', 'جداء العدد 4 ومجموع العددين 1,5 و 2,5'],
+    ];
+    for (const [t, s] of table) expect(C.describe(t), t).toBe(s);
+  });
+  it('cutAt : la racine réussit ; ailleurs une agrafe est mordue et la valeur « recollée » est celle du plan', () => {
+    const rebuilt = (t, i) => C.cutAt(t, i);
+    expect(rebuilt('7 + 4 × 5', 0)).toMatchObject({ ok: true, left: '7', right: '4 × 5', reason: null });
+    expect(rebuilt('7 + 4 × 5', 1)).toMatchObject({ ok: false, left: '7 + 4', right: '5', rebuilt: '55', reason: 'staple', same: false });
+    expect(rebuilt('(7 + 4) × 5', 0)).toMatchObject({ ok: false, rebuilt: '27' });
+    expect(rebuilt('(7 + 4) × 5', 1)).toMatchObject({ ok: true, left: '7 + 4', right: '5' });
+    expect(rebuilt('40 − 12 ÷ 4', 1).rebuilt).toBe('7');
+    expect(rebuilt('(18 + 6) ÷ 3', 0).rebuilt).toBe('20');
+    expect(rebuilt('6 × (9 − 2) + 5', 0).rebuilt).toBe('72');
+    expect(rebuilt('6 × (9 − 2) + 5', 2)).toMatchObject({ ok: true, left: '6 × ( 9 − 2 )', right: '5' });
+  });
+  it('cutAt : la même valeur par hasard est refusée par l\'agrafe (20 + 5 − 3 coupé à +)', () => {
+    expect(C.cutAt('20 + 5 − 3', 0)).toMatchObject({ ok: false, rebuilt: '22', same: true });
+    expect(C.cutAt('20 + 5 − 3', 1)).toMatchObject({ ok: true, left: '20 + 5', right: '3' });
+  });
+  it('cutAt : un recollage négatif ou divisé par 0 n\'est jamais calculé', () => {
+    expect(C.cutAt('3 + 8 − 4', 0).rebuilt).toBe('7');   // 3 + (8 − 4)
+    expect(C.cutAt('9 − 6 ÷ 2', 0).ok).toBe(true);
+    expect(C.cutAt('2 × 5 − 12', 0).rebuilt).toBeNull();   // 2 × (5 − 12) < 0
+  });
+  it('staplesOf : une agrafe par opération, ses blocs, sa valeur, son niveau', () => {
+    const s = C.staplesOf('6 × (9 − 2) + 5');
+    expect(s.map((x) => [x.o, x.text, x.level, x.parent])).toEqual([['+', '47', 3, -1], ['×', '42', 2, 0], ['−', '7', 1, 1]]);
+    expect(C.staplesOf('7 + 4 × 5').map((x) => x.text)).toEqual(['27', '20']);
+  });
+  it('build : les parenthèses que la structure exige, et ce que donne le collage sans elles', () => {
+    expect(C.build('÷', '15 + 9', '4', { clipLeft: true })).toMatchObject({ text: '(15 + 9) ÷ 4', name: 'حاصل قسمة', needs: { left: true, right: false } });
+    const bare = C.build('÷', '15 + 9', '4');
+    expect(bare).toMatchObject({ text: '15 + 9 ÷ 4', name: 'مجموع' });
+    expect(C.numText(C.evaluateB(bare.text))).toBe('17,25');
+    expect(C.build('−', '50', '6 × 7').needs).toEqual({ left: false, right: false });
+    expect(C.build('×', '3 + 5', '10 − 4', { clipLeft: true, clipRight: true })).toMatchObject({ text: '(3 + 5) × (10 − 4)', name: 'جداء', needs: { left: true, right: true } });
+    expect(C.build('−', '40', '26 − 11').needs.right).toBe(true);
+  });
+  it('sameStructure : les parenthèses inutiles ne changent pas la structure', () => {
+    expect(C.sameStructure('50 − 6 × 7', '50 − (6 × 7)')).toBe(true);
+    expect(C.sameStructure('(15 + 9) ÷ 4', '15 + 9 ÷ 4')).toBe(false);
+  });
+});

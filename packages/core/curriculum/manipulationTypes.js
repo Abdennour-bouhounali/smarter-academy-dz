@@ -927,6 +927,15 @@ export function isManipulationType(type) {
 }
 
 /** Les natures de ressource qu'une leçon peut déclarer dans `resources[]`. */
+  },
+  // 2AM, unité 1, leçon 3 (2026-10-29) — la dernière opération nomme une série d'opérations.
+  'chain-cutter': {
+    // LA DERNIÈRE OPÉRATION SOUS LES CISEAUX : sur la السبّورة الفلّينية du class, la main choisit OÙ couper en deux un ruban de papier imprimé (« 7 + 4 × 5 ») pour que chaque morceau se calcule seul ; seule la dernière
+    // opération recolle sans mordre une agrafe que le calcul a posée, et la valeur recollée ailleurs (55 ≠ 27, ou la même par hasard : l'agrafe refuse quand même) le montre. L'élève colle le NOM sur la coupe, les morceaux tombent
+    // dans deux poches qui s'étiquettent d'après l'opération, il recoupe jusqu'aux nombres et la phrase grandit ; en متقدم les agrafes sont cachées jusqu'à la coupe, puis il COLLE des blocs deux à deux avec les agrafes-parenthèses
+    // qu'une phrase exige. `chain-cutter` n'énonce jamais la règle.
+    shows: 'آخر عملية تُنجز في سلسلة هي التي تسمّيها (مجموع، فرق، جداء، حاصل قسمة)، وبها تنقسم السلسلة إلى حدّين أو عاملين أو مقسوم وقاسم تُحسب كلّ منها وحدها، فنصف السلسلة بجملة ونكتب سلسلة من جملة بالأقواس اللازمة',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
 export const RESOURCE_KINDS = Object.freeze(['manipulation', 'method', 'situation', 'example']);
 
 /** Les natures de leçon. `synthesis` = « أدمج تعلّماتي », la synthèse d'unité. */

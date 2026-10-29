@@ -329,4 +329,12 @@ LP edge).
 
 ## Generator notes
 
-(empty)
+Generated 2026-10-29 (lead + two helpers). Deviations, all minimal:
+1. **Masala 3 « الساحر » → « لغز سالم »** (school-fair riddle corner): no sorcery wording. Numbers unchanged (4 → 5, 10 → 8, then 2 × 5 − 6 = 4, 2 × 8 − 6 = 10).
+2. **M8 distractors**: E3 has no ORDERDIFF distractor (swapping `45 − (10 + 5)` is negative); E5 options are 35 / 51 / 75 / 7 (35, NOBRACKET 51, PIECES 75, FIRSTOP 7) instead of 35 / 51 / 40 / 20 (the plan's 40 and 20 matched no named error).
+3. **`priorKnowledge`** adds `qisma-ashriya-1am` (the « المقسوم » item); « أستعدّ » items map to `mana-jam-tarh-1am`, `darb-ashari-1am`, `qisma-ashriya-1am`, `silsila-bidun-aqwas-2am`, `silsila-bi-aqwas-2am`.
+4. **Lab**: `c5`'s staples sit on three levels; pockets are one compact line each (1024×768 column ≈ 414 px); sticker is tapped (the scissors are the only dragged object); `a1` is a cut task with hidden staples (plan: « cut and name both levels »); « ثبّت » is required only in مبتدئ. The sentence of `a2`–`a4` is given in the story (the target is the described chain).
+5. **ORDERDIFF** in written-chain choices only for ÷ (a swapped difference is negative); **PIECES** only for 3-number chains whose root is not ÷.
+6. **Bank**: faithful `term_exam` = 2 (`2am-s1-87` ex 2 ① re-read: the denominator reads 40 × 3 − 20 = 100 in the paper, numbers changed here to stay ≥ 0; `2am-s1-83` ex 1 item ج). The tree of `ex-9` is a `selfCheck` (no tree figure kind).
+7. `describe` adds a « ، » between the blocks when the first block holds a nested chain (« مجموع جداء العدد 6 وفرق العددين 9 و 2 ، والعدد 5 »).
+8. Textbook elements of this lesson were NOT re-read on the rendered pages by this generation (`verified: False` stays in `extraction.json`); the lesson uses own numbers throughout.
