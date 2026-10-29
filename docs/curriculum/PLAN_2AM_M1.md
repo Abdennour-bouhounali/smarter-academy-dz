@@ -1,6 +1,6 @@
 # Generation plan — 2AM « ميدان الأنشطة العددية », مقطع 2am.m1 (units 1–2, 2026-10-28)
 
-**Status:** 10 plans written and cross-reviewed (Opus planners, 2026-10-28); pair 1 (`silsila-bidun-aqwas`, `kasr-hasil-qisma`) published on `dev` 2026-10-29; pair 2 (`silsila-bi-aqwas`, `jam-tarh-kusur`) published on `dev` 2026-10-29; pair 3 (`wasf-silsila-hisab`, `jida-kasrayn`) published on `dev` 2026-10-29; pair 4 in generation. **Authority:** this index gives the order,
+**Status:** 10 plans written and cross-reviewed (Opus planners, 2026-10-28); pair 1 (`silsila-bidun-aqwas`, `kasr-hasil-qisma`) published on `dev` 2026-10-29; pair 2 (`silsila-bi-aqwas`, `jam-tarh-kusur`) published on `dev` 2026-10-29; pair 3 (`wasf-silsila-hisab`, `jida-kasrayn`) and pair 4 (`tawzi-darb-jam-tarh`, `muqarana-kasrayn`) published on `dev` 2026-10-29; pair 5 (the two syntheses) in generation. **Authority:** this index gives the order,
 the lanes, the generator prompt and the « successor connection » step. Each entry's design is its plan file. The contracts stay
 authoritative for HOW (`LESSON_DEVELOPMENT_GUIDE.md` §14, `LEARNING_NET.md` §4, `MANIPULATION_DNA.md`, `EXERCISE_CONTRACT.md`).
 Method: the same as `PLAN_3AM_UNITS_1_5.md`.

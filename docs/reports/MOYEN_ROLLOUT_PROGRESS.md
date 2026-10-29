@@ -602,3 +602,27 @@ in `docs/sources/2am/unit{1,2}/plan/` (owner questions in each README). One comm
 - Owner points added: the net link `2am.m1.r02 → 3am.m5.r01` (above); `ex-9` of `wasf-silsila-hisab` (a calculation tree) is a `selfCheck`
   because no tree figure kind exists; `jida-kasrayn` M4 `ex-7` uses 450 seats from the plan's reading of `deep-42`, not re-checked on the scan;
   unit-1 extraction stays `verified: False`.
+
+### Pair 4 — `tawzi-darb-jam-tarh` (unit 1) and `muqarana-kasrayn` (unit 2), published on `dev` 2026-10-29
+
+- `tawzi-darb-jam-tarh` « توزيع الضرب على الجمع والطرح »: lab `kit-packer` « ورشة الحقائب التضامنية » (theme `solidarity`: the hand sets
+  what each dispenser releases, a belt deals one item per bag, and the BAG is the referee — two equal counters are not enough), extends
+  `chainOps.js` (L4: `expand`, `factorOut`, `commonFactor`, `mentalSplits`, `expandLetter`). Bank 9 `term_exam` / 32 modelled / 9 adapted.
+- `muqarana-kasrayn` « مقارنة كسرين »: lab `level-laser` « ليزر المستوى » (theme `oilpress`: the hand holds the height of a laser level
+  across tanks whose tubes are graduated differently; wrong models are refuted by the laser jumping to the claimed level), extends
+  `fractions2.js` (E4: `compareCase`, `compareSimple`, `orderSimple`, `vsOne`). Bank 12 `term_exam` / 28 modelled / 10 adapted.
+- Successor connection (commit `feat(lessons): connect tasawi-muqaranat-kasrayn, tabsit-hadhf-aqwas and jam-tarh-kusur to pair 4`):
+  `tasawi-muqaranat-kasrayn` P2 ← `2am_muqarana-kasrayn_P3`, P3 ← also `_P2`, `_P4` (its معارف « تذكّر » now links by itself);
+  `tabsit-hadhf-aqwas` P1 ← `2am_tawzi-darb-jam-tarh_P3` (net `2am.m1.r03 → 3am.m5.r01`); `jam-tarh-kusur` P2 ← `2am_muqarana-kasrayn_P3`
+  and its forward renvoi on comparison is now a linked « تذكّر ». NOT written (no net link): `nashr-jabri-3am`, `jidaa-adadayn-nisbiyayn`,
+  `jidaa-ida-nisbiya` ← `tawzi-darb-jam-tarh`; the plan's recall box in `tabsit-hadhf-aqwas` معارف has no like-terms brick to sit before
+  (its أستعدّ « راجع » card links by itself).
+- Coordinator fix: `scripts/learning-net-queue.mjs` dropped the synthesis of a unit whose lessons were all published lesson by lesson
+  (`--check` failed on both 2AM syntheses); each grade phase now closes with the syntheses of its complete units (commit `fix(net): …`,
+  `LEARNING_NET.md` §4bis rule 5).
+- Gates (coordinator, whole tree): `npm test` exit 0 (core 1113, web 739 files / 15 003 tests, scripts 19 312), `check:lessons` (entry
+  236.8 KB gzip), build, net tests, `lab-rollout-status` ✅ for both; lesson-kit e2e green. The coordinator re-captured the `level-laser`
+  lab at 1024×768, 1366×768 and 768×1024 (the lead's captures were gone). Local DB: 9 modules + 50 exercises each `published`, no draft
+  module left among the eight 2AM lessons.
+- Owner points added: the three net links above (`2am.m1.r03 → 3am.m5.r02`, `→ 3am.m1.r01`); `2am-s1-75` ex 5 was read on the text layer
+  only (the shakiest `term_exam` of `muqarana-kasrayn`); the net direction `r08 ↔ r09` question stays open (current direction kept).
