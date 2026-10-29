@@ -317,3 +317,22 @@ export const bracketText = (nodes) => nodes.map((n, i) => {
   const v = `(${n.value < 0n ? '-' : '+'}${text(n.value < 0n ? -n.value : n.value)})`;
   return i === 0 ? v : `${n.op} ${v}`;
 }).join(' ');
+
+/* ── `gap-caliper` (2AM, درس « المسافة بين نقطتين على مستقيم مدرّج », 2026-10-29) : la distance entre deux abscisses (E5) ── */
+
+/** La distance entre deux points d'abscisses a et b : l'abscisse la plus grande moins la plus petite — toujours ≥ 0 et symétrique (AB = BA). */
+export const gap = (a, b) => { const p = parse(a); const q = parse(b); return p >= q ? sub(p, q) : sub(q, p); };
+/** Les DEUX abscisses à la distance d ≥ 0 d'un point a : [a − d, a + d] (une seule si d = 0). */
+export function pointsAt(a, d) {
+  const dist = parse(d);
+  if (dist < 0n) throw new Error('une distance est positive');
+  const lo = sub(a, dist);
+  const hi = add(a, dist);
+  return lo === hi ? [lo] : [lo, hi];
+}
+/** L'abscisse du milieu de [AB] = la plus petite + la moitié de la distance ; null si elle exige un troisième chiffre décimal (centièmes impairs). */
+export function midpointAbscissa(a, b) {
+  const lo = parse(a) <= parse(b) ? parse(a) : parse(b);
+  const g = gap(a, b);
+  return g % 2n === 0n ? add(lo, g / 2n) : null;
+}

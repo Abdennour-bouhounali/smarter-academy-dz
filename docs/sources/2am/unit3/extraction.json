@@ -460,15 +460,14 @@
    "page": 41,
    "section": "أنشطة",
    "title": "المسافة بين نقطتين",
-   "verified": false,
-   "text": "ضع على المستقيم المدرّج النقاط A(5) ، B(−1) ، C(−6) و D(…) . ما هي المسافات AB و AC و BC و CD ؟ احسب المسافات AB و AC و BC و CD باستعمال فواصل النقاط. قارن النتائج مع القياس المباشر. استنتج قاعدة لحساب المسافة بين نقطتين عُلمت فاصلتاهما.",
+   "verified": true,
+   "text": "ضع على المستقيم المدرّج النقاط A(…) ، B(5) ، C(−1) و D(−6) . ما هي المسافات AB و AC و BC و CD ؟ احسب المسافات AB و AC و BC و CD باستعمال فواصل النقاط. قارن النتائج مع القياس المباشر. استنتج قاعدة لحساب المسافة بين نقطتين عُلمت فاصلتاهما.",
    "answer": {
-    "AB": 6,
-    "AC": 11,
-    "BC": 5
+    "BC": 6,
+    "CD": 5
    },
    "answerSource": "computed",
-   "reading": "la fin de la ligne (« D(−6) … ») est coupée ; D est supposée D(−6) puis C(−1) selon le texte visible : à relire par masafa-nuqtatayn"
+   "reading": "relu à 110 dpi (2026-10-29) : la ligne est coupée à droite — on lit B(5), C(−1), D(−6) et l’abscisse de A est perdue ; les réponses BC et CD sont calculées sur ces points (la leçon utilise ses propres points)"
   },
   {
    "id": "act-6",
@@ -647,7 +646,7 @@
    "page": 44,
    "section": "معارف",
    "title": "المسافة بين نقطتين",
-   "verified": false,
+   "verified": true,
    "properties": [
     "خاصية : لحساب المسافة بين نقطتين على مستقيم مدرّج، نحسب الفرق بين أكبر فاصلة وأصغر فاصلة."
    ],
@@ -1312,7 +1311,7 @@
    "page": 48,
    "section": "أوظّف تعلّماتي",
    "group": "طرح أعداد نسبية",
-   "verified": false,
+   "verified": true,
    "text": "عيّن المسافتين AB و CD في كلّ من الحالات: أ) A(−2,3) ، B(+0,6) ، C(−0,1) ، D(+1) ب) A(−5) ، B(−12) ، C(+3,5) ، D(−10) ج) A(−150) ، B(+75) ، C(+125) ، D(−12,5).",
    "answer": {
     "a": [
@@ -1329,7 +1328,7 @@
     ]
    },
    "answerSource": "computed",
-   "reading": "lignes b et c coupées à gauche : D(−12,5) lu ; à relire par masafa-nuqtatayn"
+   "reading": "relu à 110 dpi (2026-10-29) : le bord gauche est rogné mais les trois lignes se lisent : (a) A(−2,3) B(+0,6) C(−0,1) D(+1) ; (b) A(−5) B(−12) C(+3,5) D(−10) ; (c) A(−150) B(+75) C(+125) D(−12,5)"
   },
   {
    "id": "ex-36",
@@ -1509,9 +1508,9 @@
     44,
     45
    ],
-   "verified": false,
+   "verified": true,
    "text": "المسافة AB تساوي: أ) 8 ب) 7 ج) −8 (مستقيم مدرّج، A عند −3 و B عند 5 تقريبا).",
-   "reading": "figure à 90 dpi",
+   "reading": "figure relue à 110 dpi (2026-10-29)",
    "answer": [
     8
    ],
@@ -1585,7 +1584,7 @@
    "number": 40,
    "page": 50,
    "section": "أتعمّق",
-   "verified": false,
+   "verified": true,
    "text": "في كلّ من الحالات، عيّن فاصلة منتصف [AB]. أ) A(−28) و B(+12) ب) A(−69) و B(−33) ج) A(−5,8) و B(+2,3).",
    "answer": {
     "a": -8,
@@ -1600,7 +1599,7 @@
    "number": 41,
    "page": 50,
    "section": "أتعمّق",
-   "verified": false,
+   "verified": true,
    "text": "أ) على مستقيم مدرّج مبدؤه O ووحدته السنتيمتر، ضع النقطة M(−1). ب) N نقطة من المستقيم المدرّج حيث MN = 3,5 cm. ما هي فاصلة النقطة N ؟",
    "answer": {
     "N": [
@@ -1616,7 +1615,7 @@
    "number": 42,
    "page": 50,
    "section": "أتعمّق",
-   "verified": false,
+   "verified": true,
    "text": "وضعنا على مستقيم مدرّج النقاط A و B و C بحيث: AB = 0,9 ، AC = 4,2 ، A(−1,3) و BC = 3,3 . ما هي الإحداثيات الممكنة للنقطتين B و C ؟",
    "answer": {
     "B": [
@@ -1845,7 +1844,7 @@
    "page": 53,
    "section": "أوظّف تكنولوجيات الإعلام والاتصال",
    "title": "استعمال جيوجبرا في تعليم نقط وحساب أطوال",
-   "verified": false,
+   "verified": true,
    "text": "افتح ورقة عمل جديدة واختر الشبكة، ثم علّم النقطتين A(−3 ; 0) و B(4 ; 0) على مستقيم مدرّج ، وأظهر المسافة AB (AB = 7). جد مواضع أخرى للنقطتين على نفس المحور بحيث تكون المسافة بين كلّ نقطتين 7 (وحدات الطول). اشرح كيف يمكن حساب المسافة انطلاقا من فاصلتي النقطتين. احسب AB في الحالتين: A(−41,5) و B(…) ؛ …",
    "answer": {
     "AB": 7
@@ -1854,6 +1853,16 @@
   }
  ],
  "discrepancies": [
+  {
+   "elementId": "act-5",
+   "kind": "reading",
+   "text": "Relu à 110 dpi (masafa-nuqtatayn, 2026-10-29) : la ligne des points est coupée à droite ; on lit B(5), C(−1), D(−6) et l’abscisse de A est perdue (le plan supposait A(5), B(−1), C(−6)). La leçon pose ses propres points : A(+4), B(−2), C(−7) en أتمرّن."
+  },
+  {
+   "elementId": "ict-1",
+   "kind": "scope",
+   "text": "GeoGebra : redessiné sans logiciel (le labo `gap-caliper` fait « d'autres positions avec AB = 7 » et un exercice de choix en أتمرّن)."
+  },
   {
    "elementId": "self-11",
    "kind": "reading",
@@ -1970,7 +1979,7 @@
   },
   "act-5": {
    "lesson": "masafa-nuqtatayn",
-   "module": 1
+   "module": 4
   },
   "act-6": {
    "lesson": "majmu-jabri",
@@ -2302,13 +2311,17 @@
    "lesson": "majmu-jabri",
    "module": null
   },
-  "deep-51": {
-   "lesson": "talim-nuqta-mustawi",
-   "module": null
-  },
   "deep-52": {
    "lesson": "talim-nuqta-mustawi",
    "module": 4
+  },
+  "deep-55": {
+   "lesson": "talim-nuqta-mustawi",
+   "module": 4
+  },
+  "deep-51": {
+   "lesson": "talim-nuqta-mustawi",
+   "module": null
   },
   "deep-53": {
    "lesson": "talim-nuqta-mustawi",
@@ -2317,10 +2330,6 @@
   "deep-54": {
    "lesson": "talim-nuqta-mustawi",
    "module": null
-  },
-  "deep-55": {
-   "lesson": "talim-nuqta-mustawi",
-   "module": 4
   },
   "deep-56": {
    "lesson": "talim-nuqta-mustawi",
@@ -2336,7 +2345,7 @@
   },
   "ict-1": {
    "lesson": "masafa-nuqtatayn",
-   "module": null
+   "module": 4
   }
  }
 }

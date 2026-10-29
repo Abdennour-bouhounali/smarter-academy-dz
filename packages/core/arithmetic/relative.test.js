@@ -264,3 +264,34 @@ describe('E3 — tug-rope : somme algébrique (majmu-jabri)', () => {
     }
   });
 });
+
+describe('relative — la distance entre deux points (E5, gap-caliper)', () => {
+  it('gap : positive, symétrique, = grande − petite, sur toutes les paires |a|, |b| ≤ 10 par 0,25', () => {
+    for (let a = -1000n; a <= 1000n; a += 25n) {
+      for (let b = -1000n; b <= 1000n; b += 25n) {
+        const g = R.gap(a, b);
+        expect(g >= 0n).toBe(true);
+        expect(g).toBe(R.gap(b, a));
+        expect(g).toBe((a > b ? a : b) - (a > b ? b : a));
+      }
+    }
+  });
+  it('exemples : −4 et +9 → 13 ; −7 et −2 → 5 ; 0 et −6 → 6 ; −2,5 et 6 → 8,5', () => {
+    expect(R.text(R.gap('-4', '9'))).toBe('13');
+    expect(R.text(R.gap('-7', '-2'))).toBe('5');
+    expect(R.text(R.gap('0', '-6'))).toBe('6');
+    expect(R.text(R.gap('-2,5', '6'))).toBe('8,5');
+  });
+  it('pointsAt : deux points à égale distance, symétriques autour de a', () => {
+    expect(R.pointsAt('1,5', '4').map(R.text)).toEqual(['-2,5', '5,5']);
+    expect(R.pointsAt('3', '0')).toEqual([300n]);
+    for (const p of R.pointsAt('-1', '3')) expect(R.gap(p, '-1')).toBe(300n);
+    expect(() => R.pointsAt('1', '-1')).toThrow();
+  });
+  it('midpointAbscissa : plus petite + moitié de la distance ; null si un troisième chiffre', () => {
+    expect(R.text(R.midpointAbscissa('-24', '10'))).toBe('-7');
+    expect(R.text(R.midpointAbscissa('-4,6', '1,8'))).toBe('-1,4');
+    expect(R.text(R.midpointAbscissa('1,8', '-4,6'))).toBe('-1,4');
+    expect(R.midpointAbscissa('0', '0,01')).toBeNull();
+  });
+});

@@ -23,7 +23,7 @@ FRONTIÈRES DES LEÇONS (à respecter par chaque lead qui génère la suite) :
         point du plan (act-1 c ; know-1c ; method-2 ; ex-21…24 ; self-1…3 ; deep-55…56). Elle devra relire act-1 c p. 40 et p. 43.
   jam-tarh-nisbiya (2am.m4.r05) — GÉNÉRÉE le 2026-10-29 (lab `balloon-ballast`) : somme et différence de DEUX relatifs (act-3, act-4 → module 4 ; know-2a, 2b → 2 ; method-3, method-4, now-45 → 3 ;
         ex-25…28, ex-30…34 → 4 ; self-7, self-8 → 8 ; deep-45, deep-48, deep-57 → banque). ex-29, deep-49, deep-50, deep-58 (trois termes ou plus) → majmu-jabri.
-  masafa-nuqtatayn (2am.m4.r07) — SERA GÉNÉRÉE PLUS TARD DANS CETTE CAMPAGNE : la distance entre deux points d'une droite graduée
+  masafa-nuqtatayn (2am.m4.r07) — GÉNÉRÉE le 2026-10-29 (lab `gap-caliper`) : act-5, ict-1, ex-35, deep-40…42 → module 4 ; know-2c → 2 ; self-9 → 8 ; la distance entre deux points d'une droite graduée
         (act-5 ; know-2c ; ex-35 ; self-9 ; ict) ; elle lit la distance comme « le plus grand moins le plus petit », ce
         qui réutilise la comparaison de muqarana-nisbiya.
   majmu-jabri (2am.m4.r06) — GÉNÉRÉE le 2026-10-29 (lab `tug-rope`) : somme algébrique de 3 termes ou plus, simplification d'écriture (act-6, ex-29, ex-36…37, deep-39, 43, 44, 46, 58 → module 4 ; know-2d, 2e → 2 ; method-5 → 3 ; self-10, self-11 → 8 (non cités) ; deep-47, 49, 50, 59 → banque).
@@ -135,10 +135,10 @@ E.append({
 })
 PTS = {'A': 5, 'B': -1, 'C': -6}
 E.append({
-    'id': 'act-5', 'kind': 'activity', 'number': 5, 'page': 41, 'section': 'أنشطة', 'title': 'المسافة بين نقطتين', 'verified': False,
-    'text': 'ضع على المستقيم المدرّج النقاط A(5) ، B(−1) ، C(−6) و D(…) . ما هي المسافات AB و AC و BC و CD ؟ احسب المسافات AB و AC و BC و CD باستعمال فواصل النقاط. قارن النتائج مع القياس المباشر. استنتج قاعدة لحساب المسافة بين نقطتين عُلمت فاصلتاهما.',
-    'answer': {'AB': 6, 'AC': 11, 'BC': 5}, 'answerSource': 'computed',
-    'reading': 'la fin de la ligne (« D(−6) … ») est coupée ; D est supposée D(−6) puis C(−1) selon le texte visible : à relire par masafa-nuqtatayn',
+    'id': 'act-5', 'kind': 'activity', 'number': 5, 'page': 41, 'section': 'أنشطة', 'title': 'المسافة بين نقطتين', 'verified': True,
+    'text': 'ضع على المستقيم المدرّج النقاط A(…) ، B(5) ، C(−1) و D(−6) . ما هي المسافات AB و AC و BC و CD ؟ احسب المسافات AB و AC و BC و CD باستعمال فواصل النقاط. قارن النتائج مع القياس المباشر. استنتج قاعدة لحساب المسافة بين نقطتين عُلمت فاصلتاهما.',
+    'answer': {'BC': 6, 'CD': 5}, 'answerSource': 'computed',
+    'reading': 'relu à 110 dpi (2026-10-29) : la ligne est coupée à droite — on lit B(5), C(−1), D(−6) et l’abscisse de A est perdue ; les réponses BC et CD sont calculées sur ces points (la leçon utilise ses propres points)',
 })
 E.append({
     'id': 'act-6', 'kind': 'activity', 'number': 6, 'page': 41, 'section': 'أنشطة', 'title': 'حساب مجموع جبري', 'verified': True,
@@ -200,7 +200,7 @@ E.append({
 })
 E.append({'id': 'know-2b', 'kind': 'knowledge', 'number': 2, 'page': 44, 'section': 'معارف', 'title': 'طرح عددين نسبيين', 'verified': True,
           'properties': ['خاصية : لطرح عدد نسبيّ، نضيف معاكسه.'], 'examples': ['(+11) − (−5) = (+11) + (+5) = (+16)'], 'answer': {'ex': 16}, 'answerSource': 'computed'})
-E.append({'id': 'know-2c', 'kind': 'knowledge', 'number': 2, 'page': 44, 'section': 'معارف', 'title': 'المسافة بين نقطتين', 'verified': False,
+E.append({'id': 'know-2c', 'kind': 'knowledge', 'number': 2, 'page': 44, 'section': 'معارف', 'title': 'المسافة بين نقطتين', 'verified': True,
           'properties': ['خاصية : لحساب المسافة بين نقطتين على مستقيم مدرّج، نحسب الفرق بين أكبر فاصلة وأصغر فاصلة.'],
           'examples': ['A(+6) و B(−2,5): الفرق (+6) − (−2,5) لأنّ (+6) > (−2,5) ، إذن AB = (+6) + (+2,5) = (+8,5)'],
           'remark': 'ملاحظة : المسافة هي عدد موجب دائما.', 'answer': {'AB': 8.5}, 'answerSource': 'computed'})
@@ -289,7 +289,7 @@ exercise(33, 48, G6, 'اربط كلّ حساب من العمود الأيمن ب
 exercise(34, 48, G6, 'احسب. (+2,4) − (+3,33) ؛ A = (+12,5) − (+3,7) ؛ (+6,8) − (−6,8) ؛ B = (−6,1) − (+9,5) ؛ (−5,75) − (+2,25) ؛ C = (+8,7) − (−5,6).',
          answer=[float(D('2.4') - D('3.33')), float(D('12.5') - D('3.7')), float(D('13.6')), float(D('-6.1') - D('9.5')), -8.0, float(D('8.7') + D('5.6'))], answerSource='computed')
 exercise(35, 48, G6, 'عيّن المسافتين AB و CD في كلّ من الحالات: أ) A(−2,3) ، B(+0,6) ، C(−0,1) ، D(+1) ب) A(−5) ، B(−12) ، C(+3,5) ، D(−10) ج) A(−150) ، B(+75) ، C(+125) ، D(−12,5).',
-         answer={'a': [float(D('0.6') + D('2.3')), float(D('1.1'))], 'b': [7, float(D('13.5'))], 'c': [225, float(D('137.5'))]}, answerSource='computed', reading='lignes b et c coupées à gauche : D(−12,5) lu ; à relire par masafa-nuqtatayn')
+         answer={'a': [float(D('0.6') + D('2.3')), float(D('1.1'))], 'b': [7, float(D('13.5'))], 'c': [225, float(D('137.5'))]}, answerSource='computed', reading='relu à 110 dpi (2026-10-29) : le bord gauche est rogné mais les trois lignes se lisent : (a) A(−2,3) B(+0,6) C(−0,1) D(+1) ; (b) A(−5) B(−12) C(+3,5) D(−10) ; (c) A(−150) B(+75) C(+125) D(−12,5)', verified=True)
 exercise(36, 48, G7, 'احسب المجاميع الجبرية. A = (+6) + (−5) − (+9) − (−3) + (−8) ؛ B = (−12) − (−9) − (−7) + (+5) − (+11) ؛ C = (−5) + (−13) − (−4) − (+5) + (+14).',
          answer={'A': 6 - 5 - 9 + 3 - 8, 'B': -12 + 9 + 7 + 5 - 11, 'C': -5 - 13 + 4 - 5 + 14}, answerSource='computed')
 exercise(37, 48, G7, 'لحساب (+9) − (+5) + (−5) + (−12) اقترح تلميذ ما يأتي: A = (+9) + (−12) = (−3) ، منه (+5) + (−5) = 0 …', answer={'A': 9 - 5 - 5 - 12}, answerSource='computed', reading='bas de page coupé')
@@ -312,7 +312,7 @@ self_item(6, [42, 43], 'العدد x محصور بين −5 و −1 إذا كا�
           answer={'inside': [lab for lab, v in SELF6 if rel('-5') < rel(v) < rel('-1')]}, answerSource='computed')
 self_item(7, [44, 45], 'الحساب الذي نتيجته −2 هو: أ) (+4) − (−2) ب) (+2) + (−4) ج) (−1) + (−1) …', answer={'b': 2 - 4, 'c': -2}, answerSource='computed')
 self_item(8, [44, 45], 'الفرق (−12) − (−20) يساوي: أ) 8 ب) −8 ج) 32 .', answer=[-12 + 20], answerSource='computed')
-self_item(9, [44, 45], 'المسافة AB تساوي: أ) 8 ب) 7 ج) −8 (مستقيم مدرّج، A عند −3 و B عند 5 تقريبا).', reading='figure à 90 dpi', answer=[8], answerSource='computed')
+self_item(9, [44, 45], 'المسافة AB تساوي: أ) 8 ب) 7 ج) −8 (مستقيم مدرّج، A عند −3 و B عند 5 تقريبا).', reading='figure relue à 110 dpi (2026-10-29)', verified=True, answer=[8], answerSource='computed')
 self_item(10, [44, 45], 'الشكل المبسّط للعبارة 5,5 − 3 هو: أ) (+3) − (−5,5) ب) (+3) + (−5,5) ج) (−3) + (−5,5) د) (−3) + (+5,5) …', answer=[float(D('5.5') - 3)], answerSource='computed')
 self_item(11, [44], 'العبارة A = (−3) − (+4) − (−7,1) + (−2,5) − (+4,7) تساوي: أ) −18,8 ب) −21,3 ج) −11,9 .',
           answer=[float(D('-3') - 4 + D('7.1') - D('2.5') - D('4.7'))], answerSource='computed', reading='la ligne écrite A = (−3) − (+4) − (−7,1) + … est coupée à gauche')
@@ -327,10 +327,10 @@ deep(38, 50, 'اختلف أمين وسيلين حول النص الآتي: (مج
      answer={'counterexample': '(+3) + (+2) = +5 > 3', 'always': False}, answerSource='computed')
 deep(39, 50, 'اختصر الكتابة ثم احسب. A = (−6) + (+13) + (−2) + (−8) ؛ B = (+7) + (−3) − (+7) − (−10).', answer={'A': -6 + 13 - 2 - 8, 'B': 7 - 3 - 7 + 10}, answerSource='computed')
 deep(40, 50, 'في كلّ من الحالات، عيّن فاصلة منتصف [AB]. أ) A(−28) و B(+12) ب) A(−69) و B(−33) ج) A(−5,8) و B(+2,3).',
-     answer={'a': -8, 'b': -51, 'c': float(D('-5.8') + D('2.3')) / 2}, answerSource='computed')
-deep(41, 50, 'أ) على مستقيم مدرّج مبدؤه O ووحدته السنتيمتر، ضع النقطة M(−1). ب) N نقطة من المستقيم المدرّج حيث MN = 3,5 cm. ما هي فاصلة النقطة N ؟', answer={'N': [2.5, -4.5]}, answerSource='computed')
+     answer={'a': -8, 'b': -51, 'c': float(D('-5.8') + D('2.3')) / 2}, answerSource='computed', verified=True)
+deep(41, 50, 'أ) على مستقيم مدرّج مبدؤه O ووحدته السنتيمتر، ضع النقطة M(−1). ب) N نقطة من المستقيم المدرّج حيث MN = 3,5 cm. ما هي فاصلة النقطة N ؟', answer={'N': [2.5, -4.5]}, answerSource='computed', verified=True)
 deep(42, 50, 'وضعنا على مستقيم مدرّج النقاط A و B و C بحيث: AB = 0,9 ، AC = 4,2 ، A(−1,3) و BC = 3,3 . ما هي الإحداثيات الممكنة للنقطتين B و C ؟',
-     answer={'B': [float(D('-1.3') + D('0.9')), float(D('-1.3') - D('0.9'))], 'C': [float(D('-1.3') + D('4.2')), float(D('-1.3') - D('4.2'))]}, answerSource='computed')
+     answer={'B': [float(D('-1.3') + D('0.9')), float(D('-1.3') - D('0.9'))], 'C': [float(D('-1.3') + D('4.2')), float(D('-1.3') - D('4.2'))]}, answerSource='computed', verified=True)
 deep(43, 50, 'اكتب الإشارات المناسبة حتى تصبح المساويات صحيحة. أ) (+3) … (−7) … (+5) … (−1) = (+2) ب) (+6) … (−5) … (−2) … (−3) = (+12) ج) (−15) … (−3) … (−9) … (−7) = (−16).')
 deep(44, 50, 'احسب العبارتين: أ) 100 − 99 + 98 − 97 + … + 2 − 1 ؛ ب) 1000 − 999 + 998 − 997 + 996 − … + 4 − 3 + 2 − 1.', answer={'a': 50, 'b': 500}, answerSource='computed')
 deep(45, 50, 'أكمل كلّ هرم علما أنّ العدد المكتوب في كلّ خانة فيها يساوي مجموع العددين المكتوبين في الخانتين اللتين ترتكز عليهما (هرمان، −26 و −25 في القمّة).')
@@ -358,7 +358,7 @@ E.append({'id': 'integration', 'kind': 'integration', 'page': 52, 'section': 'أ
           'reading': 'tableau lu à 90 dpi : plusieurs montants coupés ; à relire par la synthèse'})
 E.append({'id': 'evaluation', 'kind': 'integration', 'page': 52, 'section': 'وضعية للتقويم', 'verified': False,
           'text': 'باستعمال محرّك بحث في الإنترنيت، استعلم حول الفرق في التوقيت بين مناطق العالم، ثمّ أجب: 1) كيف تبرّر الدول التي لها نفس الفرق في التوقيت مع الجزائر؟ 2) تشير الساعة إلى 12h في الجزائر العاصمة، ما هو التوقيت في كلّ من: طوكيو – واشنطن – بيروت – القاهرة – لندن – جنوب إفريقيا.'})
-E.append({'id': 'ict-1', 'kind': 'ict', 'page': 53, 'section': 'أوظّف تكنولوجيات الإعلام والاتصال', 'title': 'استعمال جيوجبرا في تعليم نقط وحساب أطوال', 'verified': False,
+E.append({'id': 'ict-1', 'kind': 'ict', 'page': 53, 'section': 'أوظّف تكنولوجيات الإعلام والاتصال', 'title': 'استعمال جيوجبرا في تعليم نقط وحساب أطوال', 'verified': True,
           'text': 'افتح ورقة عمل جديدة واختر الشبكة، ثم علّم النقطتين A(−3 ; 0) و B(4 ; 0) على مستقيم مدرّج ، وأظهر المسافة AB (AB = 7). جد مواضع أخرى للنقطتين على نفس المحور بحيث تكون المسافة بين كلّ نقطتين 7 (وحدات الطول). اشرح كيف يمكن حساب المسافة انطلاقا من فاصلتي النقطتين. احسب AB في الحالتين: A(−41,5) و B(…) ؛ …',
           'answer': {'AB': 7}, 'answerSource': 'computed'})
 
@@ -377,7 +377,7 @@ DEST = {
     'act-1': {'lesson': L1, 'module': 4, 'items': {'a-b': {'lesson': L1, 'module': 4}, 'c': {'lesson': L3, 'module': 4}}},   # a-b : l'entrée est le labo de la plateforme ; la frise du livre devient une application (2026-10-29)
     'act-2': {'lesson': L2, 'module': 4},
     'act-3': {'lesson': L4, 'module': 4}, 'act-4': {'lesson': L4, 'module': 4},   # l'entrée est le labo `balloon-ballast` de la plateforme ; les activités du livre deviennent des applications (2026-10-29)
-    'act-5': {'lesson': L5, 'module': 1}, 'act-6': {'lesson': L6, 'module': 4},   # act-6 : l'entrée est le labo `tug-rope` de la plateforme ; l'activité du livre devient une application (majmu-jabri, 2026-10-29)
+    'act-5': {'lesson': L5, 'module': 4}, 'act-6': {'lesson': L6, 'module': 4},   # act-6 : l'entrée est le labo `tug-rope` de la plateforme ; l'activité du livre devient une application (majmu-jabri, 2026-10-29)
     'know-1a': {'lesson': L1, 'module': 2}, 'know-1b': {'lesson': L2, 'module': 2}, 'know-1c': {'lesson': L3, 'module': 2},
     'method-1': {'lesson': L2, 'module': 3}, 'method-2': {'lesson': L3, 'module': 3},
     'now-43': {'lesson': L2, 'module': 3, 'items': {'1': {'lesson': L2, 'module': 3}, '2': {'lesson': L3, 'module': 3}}},
@@ -403,10 +403,12 @@ DEST = {
     **{f'deep-{n}': {'lesson': L6, 'module': 4} for n in (58,)}, **{f'deep-{n}': {'lesson': L6, 'module': None} for n in (49, 50)},   # carrés magiques / chemins : sommes de 3 à 4 termes = majmu-jabri
     **{f'deep-{n}': {'lesson': L3, 'module': 4} for n in (52, 55)}, **{f'deep-{n}': {'lesson': L3, 'module': None} for n in (51, 53, 54, 56)},   # deep-51/53/54/56 : banque d'exercices (adaptés) de talim-nuqta-mustawi ; l'entrée est le labo `dig-grid` (2026-10-29)
     'integration': {'lesson': SYN, 'module': None}, 'evaluation': {'lesson': SYN, 'module': None},
-    'ict-1': {'lesson': L5, 'module': None},
+    'ict-1': {'lesson': L5, 'module': 4},   # adapté sans logiciel : « d'autres positions avec AB = 7 » est un exercice de choix (masafa-nuqtatayn, 2026-10-29)
 }
 
 DISCREPANCIES = [
+    {'elementId': 'act-5', 'kind': 'reading', 'text': 'Relu à 110 dpi (masafa-nuqtatayn, 2026-10-29) : la ligne des points est coupée à droite ; on lit B(5), C(−1), D(−6) et l’abscisse de A est perdue (le plan supposait A(5), B(−1), C(−6)). La leçon pose ses propres points : A(+4), B(−2), C(−7) en أتمرّن.'},
+    {'elementId': 'ict-1', 'kind': 'scope', 'text': 'GeoGebra : redessiné sans logiciel (le labo `gap-caliper` fait « d\'autres positions avec AB = 7 » et un exercice de choix en أتمرّن).'},
     {'elementId': 'self-11', 'kind': 'reading', 'text': 'Relu à 110 dpi (majmu-jabri, 2026-10-29) : A = (−3) − (+4) − (7,1) + (−2,5) − (+4,7) a pour valeur −21,3, une des trois options (−18,8 ; −21,3 ; −11,9) ; le début de l’énoncé reste coupé à gauche : la leçon pose son épreuve réécrite (autres nombres, calcul d’une écriture simplifiée) sans reprendre l’énoncé coupé.'},
     {'elementId': 'self-10', 'kind': 'reading', 'text': 'Relu (majmu-jabri) : « 5,5 − 3 est la forme simplifiée de l’expression » ; les options entre parenthèses sont à demi lisibles : la leçon pose son épreuve de simplification réécrite (autres nombres), sans reprendre les options à demi lisibles.'},
     {'elementId': 'deep-47', 'kind': 'scope', 'text': 'Le « ماذا تستنتج ؟ » de a − (b − c) mène à la règle des parenthèses précédées de « − » (3AM) : majmu-jabri s’en sert avec des nombres seulement (banque), sans énoncer de règle.'},
