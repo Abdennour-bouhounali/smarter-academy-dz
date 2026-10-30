@@ -812,6 +812,16 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'لتدريج نصف مستقيم نختار وحدة طول مناسبة وننقلها انطلاقًا من مبدئه $O$ ثمّ نقسّم كلّ وحدة إلى عشرة أجزاء متساوية، فيكون التباعد بين تدريجتين صغيرتين متتاليتين $\\frac{1}{10}=0{,}1$ وحدة ؛ وفاصلة النقطة $A(2{,}4)$ عددٌ يعيّن موضعها: تبعد عن المبدإ بوحدتين وأربع تدريجات صغيرة ؛ وإذا وقعت نقطة بين تدريجتين متتاليتين قرأنا فاصلتها بحصر لها بينهما',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 1AM, unité 5 « الأعداد النسبية », leçon 1 « الأعداد النسبية وسياقات استعمالها » (2026-10-30) — le niveau d'une jauge verticale, lu comme un nombre relatif.
+  'frost-gauge': {
+    // LE NIVEAU SOUS LA MAIN : une semaine de janvier à Djelfa. Chaque matin la main FAIT MONTER ou DESCENDRE le liquide d'un thermomètre jusqu'à la lecture donnée en MOTS (« 3 درجات تحت الصفر ») ; l'échelle ne
+    // montre que le zéro, et un signe n'apparaît devant la lecture qu'une fois le liquide passé SOUS le 0. Deux autres décors portent le même geste : une jauge d'altitude (le point le plus bas du pays, au-dessous du niveau de
+    // la mer, à côté d'une colline) et les étages d'un immeuble (la cabine d'ascenseur est le niveau). Le niveau est tenu, le NOMBRE RELATIF est sa sortie : le signe (de quel côté du zéro) et la DISTANCE au zéro sont deux
+    // lectures différentes du même niveau. Mode « معاكس » : la main tient un niveau et son ombre suit de l'autre côté du zéro à la même distance. متقدم : deux lectures à la même distance du zéro (6 et −6), les étages,
+    // puis qui est le plus loin de la mer. « جرّب أعدادك » : toujours ouvert. Chaque lecture enregistrée est un essai jugé exactement par `signedGauge.js` : MANUEL (§6bis).
+    shows: 'العدد النسبي موجب أو سالب: السالب مسبوق بإشارة − ويقع تحت الصفر، والموجب فوق الصفر ؛ وللعدد إشارة ومسافة إلى الصفر مختلفتان ؛ والعددان المتعاكسان لهما المسافة نفسها إلى الصفر وإشارتان متعاكستان، مثل $3$ و $-3$ ؛ والصفر معاكس نفسه',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 2AM, unité 3 « الأعداد النسبية », leçon 5 « المسافة بين نقطتين على مستقيم مدرّج » (2026-10-29) — l'ouverture d'un compas serré sur une lecture.
   'gap-caliper': {
     // L'OUVERTURE D'UN COMPAS SOUS LA MAIN : un compas en laiton est serré sur une graine d'un grand thermomètre ; la main tourne la vis pour OUVRIR le compas jusqu'à ce que l'autre mâchoire touche la seconde graine.

@@ -112,6 +112,14 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(advanced.numbers.tasks.some((tk) => tk.from !== '0') && advanced.numbers.tasks.some((tk) => tk.step === '0,1'), type).toBe(true);
         expect(beginner.numbers.tasks.every((tk) => tk.from === '0' && tk.step === '1'), type).toBe(true);
       }
+      // Unité 5 de 1AM, leçon 1 : `frost-gauge` se mesure par le NIVEAU tenu et enregistré lecture par lecture (`set`, `mirror` pour l'ombre/l'opposé au niveau مبتدئ) puis la paire à même distance du zéro, les étages et la distance à la mer (`pair`/`set` au niveau متقدم).
+      else if (type === 'frost-gauge') {
+        const kinds = (lv) => lv.numbers.tasks.map((tk) => tk.kind);
+        expect(kinds(beginner).includes('mirror') && !kinds(beginner).includes('pair'), type).toBe(true);
+        expect(kinds(advanced).includes('pair') && advanced.numbers.tasks.some((tk) => tk.scene === 'floors'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.scene === 'altitude') && beginner.numbers.tasks.some((tk) => tk.reads.some((r) => r === 0 || r.self === 0)), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => /^b\d$/.test(tk.id)) && advanced.numbers.tasks.every((tk) => /^a\d$/.test(tk.id)), type).toBe(true);
+      }
       // Unité 2 de 2AM, leçon 8 : `window-blinds` se mesure par la PRÉDICTION écrite avant de tirer (متقدم seul) et par les FACTEURS > 1 (متقدم seul).
       else if (type === 'window-blinds') {
         const val = (f) => { const [n, d] = f.split('/').map(Number); return n / d; };

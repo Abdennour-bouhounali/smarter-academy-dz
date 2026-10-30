@@ -255,17 +255,6 @@
       ]
     },
     {
-      "code": "adad-nisbiya-siyaqat",
-      "grade": "1am",
-      "unit": "adad-nisbiya",
-      "titleAr": "الأعداد النسبية وسياقات استعمالها",
-      "kind": "lesson",
-      "trigger": "jidhr-tarbii",
-      "via": [
-        "1am.m5.r05"
-      ]
-    },
-    {
       "code": "tatbiq-qaida-harfiya",
       "grade": "1am",
       "unit": "ibarat-harfiya",

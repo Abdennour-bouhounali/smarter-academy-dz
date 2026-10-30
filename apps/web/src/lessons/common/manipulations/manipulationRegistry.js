@@ -131,6 +131,8 @@ export const MANIPULATION_COMPONENTS = {
   'dig-grid': lazy(() => import('./operations/DigGrid')),
   // 1AM, unité 1, leçon 3 « الأعداد العشرية ونصف المستقيم المدرّج » : l'unité de longueur étirée puis le drapeau sur le ruban — شريط القفز (2026-10-30).
   'jump-tape': lazy(() => import('./operations/JumpTape')),
+  // 1AM, unité 5, leçon 1 « الأعداد النسبية وسياقات استعمالها » : le niveau d'une jauge verticale tenu par la main, lu comme un nombre relatif — ميزان الصقيع (2026-10-30).
+  'frost-gauge': lazy(() => import('./operations/FrostGauge')),
   // 2AM, unité 3, leçon 5 « المسافة بين نقطتين على مستقيم مدرّج » : l'ouverture d'un compas sous la main — مسماك الفرق (2026-10-29).
   'gap-caliper': lazy(() => import('./operations/GapCaliper')),
   // 2AM, unité 2, leçon 8 « جداء كسرين » : les deux facteurs sous la main — ستائر النافذة (2026-10-29).

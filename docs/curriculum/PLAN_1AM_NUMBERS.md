@@ -143,6 +143,8 @@ Conventions:
 
 ### 2. `adad-nisbiya-siyaqat` — الأعداد النسبية وسياقات استعمالها (U5, r05) · pair 1 B · SEEDS UNIT 5
 
+- **Status: ✅ generated and published locally (2026-10-30)** — see « Generator notes » entry 2 and `docs/reports/MOYEN_ROLLOUT_PROGRESS.md`.
+
 - **Seed:**
   - `adad-nisbiya/_unit/`, copying the shape of `darb-qisma-ashriya/_unit/` (lessonRoutes, moduleContext, prepDiagnostic + test,
     unitMeta);
@@ -573,3 +575,11 @@ card; open points for the owner.
   (c) **Extraction error corrected**: `act-4`'s B and C are **1,7 and 0,5** (read at 400 dpi: 17 and 5 small ticks of 35,5 px from O), not 1,9 and 0,6; `act-4`, `know-5`, `ex-15`, `ex-16`, `self-7` are now `verified: True` (discrepancy recorded in `build-extraction.py`).
   (d) The card's worlds overlap with `ruler-compare` (both a sports-day long-jump pit): `jump-tape` has its own theme `sportsday` and a different gesture (the hand STRETCHES the unit, then plants a flag; متقدم: a reading cursor). Level 2 grew from the card's single task to three (a1 flag between two ticks, a2 a tape without its origin, a3 a tape in hundredths) to cover P2's « حتى حين لا يظهر المبدأ » and the book's four graduations.
   (e) **No statement figure draws a graduated half-line** (`StatementFigure` knows plane, space, chart, tape): the bank uses worded positions (« n وحدة و t تدريجة صغيرة », « بين العلامتين … »); module 4 draws the arrows with `NumberLine` (static). A `halfline` figure kind is an open point for the owner.
+- **2 · `adad-nisbiya-siyaqat` (2026-10-30).**
+  (a) **The unit has NO تحدّ** (page 63 carries the objectives, the lift and the Chinese counting-rod box; checked at 200 dpi): `units_1am › adad-nisbiya.challenge` stays `null`, the card's « cite the تحدّ » was generic.
+  (b) The card's « mountain peak next to the Chott » became a **hill of 30 m** (the 10-m gauge cannot hold the Chott at −40 m and a real peak; `Tahat` would need another scale): the lesson never states a real altitude it cannot check; the Chott is « نحو 40 م تحت سطح البحر ».
+  (c) The catalogue entry keeps `programmeItems: ['1am.m5.r05']` (as the card); `pointPrerequisites` none; **P1 gains « طوابق العمارة »** (the lab's floors world, the book's lift).
+  (d) A module 3 « طريقة » is a platform addition (the book's method is the next lesson's), as in entry 1; the lesson therefore has the same nine modules.
+  (e) The book's `self-2` (« which of these is not a relative number: 1/7 ») and `self-3` (−2 then 4 degrees lower) go to the synthesis: the first depends on the 1AM definition of a relative number (integer or decimal), the second is an addition of relatives (2AM). `know-2`'s « distance to zero — opposites » paragraph belongs to THIS lesson; its half-line and abscissa paragraphs to `talim-mustaqim-mudarraj`.
+  (f) Successor `talim-mustaqim-mudarraj` is **not generated yet**: its `pointPrerequisites` P ← `1am_adad-nisbiya-siyaqat_P*` are still to write when it is published (nothing to connect now).
+

@@ -711,6 +711,22 @@ export const LEVELS = Object.freeze({
       { id: 'a3', kind: 'read', flags: ['4,04', '4,12', '4,235'], from: '4', step: '0,1' },
     ] }, ...T('ex-16') },
   },
+  // LE NIVEAU SOUS LA MAIN (frost-gauge, thème winterdjelfa, 1AM unité 5, leçon « الأعداد النسبية وسياقات استعمالها », 2026-10-30) : une tâche est `{ id, scene: 'frost' | 'altitude' | 'floors', kind: 'set' | 'mirror' | 'pair', step, min, max, reads }` ;
+  // la main tient le NIVEAU d'une jauge verticale (une graduation = `step`), chaque lecture est demandée en MOTS. `set` : reads = valeurs relatives ; `mirror` : `{ self }` pose le niveau, `{ mirror }` demande que l'OMBRE (l'opposé) lise cette valeur ; `pair` : `{ dist }` deux niveaux différents à cette distance.
+  // مبتدئ (plateforme) : b1 une semaine d'hiver à Djelfa 5 · −2 · −3 · 0 · 2 (le plus froid n'est pas le plus loin du zéro), b2 l'altitude (le niveau de la mer = 0) −40 · 30 · 0 (pas 10 m), b3 l'ombre dans le miroir −4 · ombre de 3 · 0.
+  // متقدم (plateforme) : a1 deux lectures à 6 du zéro (pas 2), a2 les étages −2 · 5 · 0, a3 qui est le plus loin de la mer −30 · 20 ; le niveau cite l'exercice 6 du manuel (affirmations vraies ou fausses sur les nombres relatifs).
+  'frost-gauge': {
+    beginner: { numbers: { tasks: [
+      { id: 'b1', scene: 'frost', kind: 'set', step: 1, min: -6, max: 6, reads: [5, -2, -3, 0, 2] },
+      { id: 'b2', scene: 'altitude', kind: 'set', step: 10, min: -50, max: 50, reads: [-40, 30, 0] },
+      { id: 'b3', scene: 'frost', kind: 'mirror', step: 1, min: -6, max: 6, reads: [{ self: -4 }, { mirror: 3 }, { self: 0 }] },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', scene: 'frost', kind: 'pair', step: 2, min: -10, max: 10, reads: [{ dist: 6 }, { dist: 6 }] },
+      { id: 'a2', scene: 'floors', kind: 'set', step: 1, min: -3, max: 6, reads: [-2, 5, 0] },
+      { id: 'a3', scene: 'altitude', kind: 'set', step: 10, min: -50, max: 50, reads: [-30, 20] },
+    ] }, ...T('ex-6') },
+  },
   // ── 1AM, unité 11 — surface, périmètre, aire (2026-10-15) ──
   // LE CARREAU SOUS LA MAIN (tile-yard) : la main tient un carreau de zellige (thème courtyard). مبتدئ : la cour de la maison du grand-père,
   // 12 carreaux seulement DÉPLACÉS (mode fence) : l'aire ne bouge pas, la clôture change — d'abord la plus courte, puis 20 bâtons ;
