@@ -137,6 +137,8 @@ export const MANIPULATION_COMPONENTS = {
   'rewind-belt': lazy(() => import('./operations/RewindBelt')),
   // 1AM, unité 5, leçon 2 « التعليم على مستقيم مدرّج » : la foulée portée des deux côtés de l'origine — خطوة الطابع (2026-10-30).
   'stride-stamp': lazy(() => import('./operations/StrideStamp')),
+  // 1AM, unité 5, leçon 3 « التعليم في المستوي » : un drone conduit sur UN axe à la fois au-dessus du plan d'une cour d'école — مسيّرة الساحة (2026-10-30).
+  'courtyard-drone': lazy(() => import('./operations/CourtyardDrone')),
   // 2AM, unité 3, leçon 5 « المسافة بين نقطتين على مستقيم مدرّج » : l'ouverture d'un compas sous la main — مسماك الفرق (2026-10-29).
   'gap-caliper': lazy(() => import('./operations/GapCaliper')),
   // 2AM, unité 2, leçon 8 « جداء كسرين » : les deux facteurs sous la main — ستائر النافذة (2026-10-29).

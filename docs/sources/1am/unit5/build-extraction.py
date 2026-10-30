@@ -4,8 +4,9 @@
 
 Transcription VISUELLE (pages rendues à 110 dpi). Les passages de la leçon `adad-nisbiya-siyaqat` (ouverture p. 63, نشاط 1 p. 65,
 معارف p. 67, exercices 1–9 p. 71, أقوّم 1, 3, 4 p. 73, أتعمّق 1 p. 74) sont relus de près (`verified: True`) ; les éléments des leçons
-qui ne sont pas encore générées (`talim-fi-mustawi`, la synthèse) sont transcrits plus brièvement et marqués
-`verified: False` : leur leçon les relira. Les éléments de `talim-mustaqim-mudarraj` (نشاط 1 ①, نشاط 2, معارف 2, طريقة, « دوري الآن », ex-10 … ex-15, self-5, self-6, deep-2, deep-3) ont été relus
+qui ne sont pas encore générées (la synthèse) sont transcrits plus brièvement et marqués
+`verified: False` : leur leçon les relira. Les éléments de `talim-fi-mustawi` (نشاط 3 p. 66, معارف 3 p. 69, طريقة 2 et « دوري الآن » p. 70, ex-16 … ex-21 p. 72, أقوّم 7–10 p. 73, أتعمّق 5–8 p. 74,
+استعمل تكنولوجيات p. 76) ont été relus par cette leçon (2026-10-30, 110 dpi, ex-20/21 à 200 dpi) : `verified: True`. Les éléments de `talim-mustaqim-mudarraj` (نشاط 1 ①, نشاط 2, معارف 2, طريقة, « دوري الآن », ex-10 … ex-15, self-5, self-6, deep-2, deep-3) ont été relus
 par cette leçon (2026-10-30) : `verified: True`. Les réponses sont CALCULÉES ici (entiers et décimaux EXACTS : `Fraction`, `Decimal`), jamais
 tapées ; une lecture de figure incertaine est dite dans `reading` et dans `discrepancies`.
 
@@ -136,7 +137,7 @@ E.append({
     'answer': {'order': sorted([-6, -5, 0, 4, 6, 7])}, 'answerSource': 'computed',
 })
 E.append({
-    'id': 'act-3', 'kind': 'activity', 'number': 3, 'page': 66, 'section': 'اكتشف', 'title': 'التعليم في المستوي', 'verified': False,
+    'id': 'act-3', 'kind': 'activity', 'number': 3, 'page': 66, 'section': 'اكتشف', 'title': 'التعليم في المستوي', 'verified': True,
     'text': 'رسمنا معلمًا للمستوي مبدؤه النقطة S التي تمثل مدينة عين صالح. طلب أستاذ من تلاميذه البحث عن إحداثيي مدينة غرداية بالنسبة إلى هذا المعلم، فكانت إجابات ثلاثة تلاميذ : '
             'مصطفى : « إحداثيا غرداية 1+ » ؛ أمين : « إحداثيا غرداية هما أولًا 1+ ثمّ 3+ » ؛ سيلين : « إحداثيا غرداية هما أولًا 3+ ثمّ 1+ ». '
             '① هل معلومات مصطفى كافية لتعليم مدينة غرداية ؟ لماذا ؟ ② ماذا تقول بالنسبة إلى إجابتي أمين وسيلين ؟ ③ في معلم للمستوي، كم عددًا يلزمنا لتعليم نقطة ؟ كيف نسمّي العدد الأول ؟ الثاني ؟ ④ بقراءة بيانية تقريبية، عيّن إحداثيي كلّ من سطيف ووهران وتمنراست.',
@@ -181,20 +182,20 @@ E.append({
 
 # ── p. 69–70 : المستوي ───────────────────────────────────────────────────────────────────────────
 E.append({
-    'id': 'know-3', 'kind': 'knowledge', 'number': 3, 'page': 69, 'section': 'أحوصل تعلّماتي', 'title': 'التعليم في المستوي', 'verified': False,
+    'id': 'know-3', 'kind': 'knowledge', 'number': 3, 'page': 69, 'section': 'أحوصل تعلّماتي', 'title': 'التعليم في المستوي', 'verified': True,
     'text': 'يتشكّل المعلم المتعامد للمستوي من مستقيمين مدرّجين متعامدين ولهما نفس المبدأ. المحور الأفقي يسمّى محور الفواصل والمحور الشاقولي يسمّى محور التراتيب. '
             'خاصية : في معلم للمستوي، يمكن تعليم كلّ نقطة بعددين هما إحداثيا النقطة. الإحداثي الأول، الذي نقرأه على محور الفواصل، يسمّى فاصلة النقطة. والإحداثي الثاني، الذي نقرأه على محور التراتيب، يسمّى ترتيب النقطة. مثال : M(−3 ; 5). '
             'لقراءة إحداثيي نقطة نرسم الموازيين للمحورين المارين بالنقطة : نقرأ أولًا الفاصلة ثم الترتيب.',
     'answerSource': 'read',
 })
 E.append({
-    'id': 'method-2', 'kind': 'method', 'number': 2, 'page': 70, 'section': 'أكتسب طرائق', 'title': 'تعليم نقاط في المستوي', 'verified': False,
+    'id': 'method-2', 'kind': 'method', 'number': 2, 'page': 70, 'section': 'أكتسب طرائق', 'title': 'تعليم نقاط في المستوي', 'verified': True,
     'text': 'مثال : في المستوي المزوّد بمعلم متعامد علّم النقاط A(−3 ; 2) ، B(4 ; 0) و C(0 ; −4). طريقة 1 على ورقة مرصوفة : نستعين بخطوط المرصوفة لتحديد موضع كلّ نقطة بتعيين خط فاصلتها أولًا ثم خط ترتيبها. '
             'طريقة 2 على ورقة غير مرصوفة : نرسم الموازي لمحور التراتيب الذي يمرّ بالتدريج −3 لمحور الفواصل، ثم الموازي لمحور الفواصل الذي يمرّ بالتدريج 2 لمحور التراتيب، ونعيّن A عند تقاطع المستقيمين.',
     'answerSource': 'read',
 })
 E.append({
-    'id': 'now-70', 'kind': 'now', 'page': 70, 'section': 'دوري الآن', 'verified': False,
+    'id': 'now-70', 'kind': 'now', 'page': 70, 'section': 'دوري الآن', 'verified': True,
     'text': '① في معلم متعامد، علّم النقاط الآتية : A(−3 ; 2) ، B(0 ; 4) ، C(−4 ; 0) ، O(0 ; 0). ② في المعلم المقابل رسمنا الحرف « ك ». عيّن إحداثيات النقاط التي تسمح برسم الحرف بدءًا بالنقطة M(4 ; 3).',
     'answerSource': 'read',
 })
@@ -257,7 +258,7 @@ for n, t in [(16, 'أ) ارسم معلمًا متعامدًا معتبرًا ض�
              (19, 'أ) ارسم مستقيمًا واختر التدريج المناسب بالتمعن في فواصل النقاط الآتية ثم علّم النقاط. ب) ...'),
              (20, 'عيّن بقراءة بيانية إحداثيات النقط A ، B ، C ، D ، E ، F ، G و H. ب) اذكر النقاط التي لها نفس الفاصلة. جـ) اذكر النقاط التي لها نفس الترتيب. د) ماذا تلاحظ بالنسبة إلى النقطتين A و F ؟'),
              (21, 'أ) إليك المعلم الآتي. انقل الجمل الآتية ثم أكملها باستعمال المفردات : إحداثيات، فاصلة، ترتيب.')]:
-    E.append({'id': f'ex-{n}', 'kind': 'exercise', 'number': n, 'page': 72, 'section': 'أتمرّن — التعليم في المستوي', 'verified': False, 'text': t, 'answerSource': 'read'})
+    E.append({'id': f'ex-{n}', 'kind': 'exercise', 'number': n, 'page': 72, 'section': 'أتمرّن — التعليم في المستوي', 'verified': True, 'text': t, 'answerSource': 'read'})
 
 # ── p. 73 : أقوّم تعلّماتي ───────────────────────────────────────────────────────────────────────
 SELF1 = [-4, 4, -0.5, 12, 0, 5, -8]
@@ -283,13 +284,13 @@ E.append({'id': 'self-5', 'kind': 'self', 'number': 5, 'page': 73, 'section': '�
           'text': 'بقراءة بيانية، عيّن فواصل النقاط M ، J ، K ، N (المبدأ 0 والعلامة 25 معطاتان).', 'answerSource': 'read'})
 E.append({'id': 'self-6', 'kind': 'self', 'number': 6, 'page': 73, 'section': 'أقوّم تعلّماتي', 'verified': True,
           'text': 'علّم على مستقيم مدرّج النقاط : A(+2) ، B(−5) ، C(+4,5) ، E(0).', 'answerSource': 'read'})
-E.append({'id': 'self-7', 'kind': 'self', 'number': 7, 'page': 73, 'section': 'أقوّم تعلّماتي', 'verified': False,
+E.append({'id': 'self-7', 'kind': 'self', 'number': 7, 'page': 73, 'section': 'أقوّم تعلّماتي', 'verified': True,
           'text': 'إحداثيا النقطة G : (1 ; 3) ، (3 ; −1) ، (−1 ; 3) (قائمة اختيار على معلم).', 'answerSource': 'read'})
-E.append({'id': 'self-8', 'kind': 'self', 'number': 8, 'page': 73, 'section': 'أقوّم تعلّماتي', 'verified': False,
+E.append({'id': 'self-8', 'kind': 'self', 'number': 8, 'page': 73, 'section': 'أقوّم تعلّماتي', 'verified': True,
           'text': 'إذا كانت نقطة على محور الفواصل، فإنّ : ترتيبها معدوم ؛ هي المبدأ ؛ فاصلتها معدومة.', 'answerSource': 'read'})
-E.append({'id': 'self-9', 'kind': 'self', 'number': 9, 'page': 73, 'section': 'أقوّم تعلّماتي', 'verified': False,
+E.append({'id': 'self-9', 'kind': 'self', 'number': 9, 'page': 73, 'section': 'أقوّم تعلّماتي', 'verified': True,
           'text': 'إذا كانت نقطة على محور التراتيب، فإنّ : ترتيبها معدوم ؛ هي المبدأ ؛ فاصلتها معدومة.', 'answerSource': 'read'})
-E.append({'id': 'self-10', 'kind': 'self', 'number': 10, 'page': 73, 'section': 'أقوّم تعلّماتي', 'verified': False,
+E.append({'id': 'self-10', 'kind': 'self', 'number': 10, 'page': 73, 'section': 'أقوّم تعلّماتي', 'verified': True,
           'text': 'في معلم متعامد للمستوي، علّم النقاط : A(1,5 ; −3) ، B(−3 ; 0) ، C(−1 ; 0,5) ، D(2,5 ; −1,5) ، E(−5 ; −2).', 'answerSource': 'read'})
 
 # ── p. 74 : أتعمّق ───────────────────────────────────────────────────────────────────────────────
@@ -311,13 +312,13 @@ E.append({'id': 'deep-4', 'kind': 'deepen', 'number': 4, 'page': 74, 'section': 
           'text': 'ينتقل حلزون على مستقيم مدرّج وفق اتجاه السهم ليقطع وحدتين كلّ ساعة. كان في الفاصلة +5 عند الساعة 12h. ① عبّر عن مواقع الحلزون بأعداد نسبية مناسبة عند الساعة 5h ، 7h ، 9h ، 12h. ② عند أيّة فاصلة كانت بداية الرحلة إذا علمت أنّ الانطلاق كان على الساعة 0h ؟',
           'answer': {'5h': 5 - 2 * 7, '7h': 5 - 2 * 5, '9h': 5 - 2 * 3, '12h': 5, 'start': 5 - 2 * 12}, 'answerSource': 'computed',
           'reading': 'le sens de la flèche (vers la droite, 5 h … 12 h) suppose que l\'abscisse augmente de 2 par heure : 5 h → −9 ; 7 h → −5 ; 9 h → −1 ; 12 h → 5 ; départ (0 h) → −19. Sens non vérifié sur le scan.'})
-E.append({'id': 'deep-5', 'kind': 'deepen', 'number': 5, 'page': 74, 'section': 'أتعمّق', 'title': 'المعلم المفقود', 'verified': False,
+E.append({'id': 'deep-5', 'kind': 'deepen', 'number': 5, 'page': 74, 'section': 'أتعمّق', 'title': 'المعلم المفقود', 'verified': True,
           'text': 'انقل على ورقة كراس الشكل الموالي ثم ارسم معلمًا متعامدًا للمستوي بحيث تكون إحداثيا النقطتين A و B كما يأتي : A(−1 ; −2) ، B(−3 ; +2). ما هما عندئذ إحداثيا كلّ من C و D ؟', 'answerSource': 'read'})
-E.append({'id': 'deep-6', 'kind': 'deepen', 'number': 6, 'page': 74, 'section': 'أتعمّق', 'title': 'لعبة السهام', 'verified': False,
+E.append({'id': 'deep-6', 'kind': 'deepen', 'number': 6, 'page': 74, 'section': 'أتعمّق', 'title': 'لعبة السهام', 'verified': True,
           'text': 'تتمثل اللعبة في رمي سهم تجاه هدف عددًا من المرّات واحسب مجموع النقاط المسجلة تبعًا للمنطقة كما هو مبيّن على هامش الهدف. لتحديد موضع وصول السهم، علّمنا مستوي الهدف كما في الشكل. تبارى ثلاثة أصدقاء ... من الفائز ؟', 'answerSource': 'read'})
-E.append({'id': 'deep-7', 'kind': 'deepen', 'number': 7, 'page': 74, 'section': 'أتعمّق', 'title': 'الأعداد النسبية والهندسة', 'verified': False,
+E.append({'id': 'deep-7', 'kind': 'deepen', 'number': 7, 'page': 74, 'section': 'أتعمّق', 'title': 'الأعداد النسبية والهندسة', 'verified': True,
           'text': '① علّم النقاط A(−1 ; 4) ، B(1 ; 4) ، C(3 ; 4) و D(1 ; −1) في معلم للمستوي. ② ارسم قطعتي المستقيم [AC] و [BD]. ماذا تلاحظ بالنسبة إلى النقاط A ، B ، C ، D ؟', 'answerSource': 'read'})
-E.append({'id': 'deep-8', 'kind': 'deepen', 'number': 8, 'page': 74, 'section': 'أتعمّق', 'verified': False,
+E.append({'id': 'deep-8', 'kind': 'deepen', 'number': 8, 'page': 74, 'section': 'أتعمّق', 'verified': True,
           'text': 'في معلم متعامد للمستوي، لدينا A(−2 ; −1). ① علّم النقطة A\' نظيرة A بالنسبة إلى محور الفواصل. ما هي إحداثيات A\' ؟ ② علّم النقطة B\' نظيرة A بالنسبة إلى محور التراتيب. ما هي إحداثيات B\' ؟ ماذا تستنتج ؟',
           'answer': {"A'": [-2, 1], "B'": [2, -1]}, 'answerSource': 'computed'})
 
@@ -336,13 +337,13 @@ E.append({'id': 'evaluation', 'kind': 'integration', 'page': 75, 'section': 'و�
           'answer': {'startTemp': -15, 'endTemp': 6, 'difference': 21}, 'answerSource': 'computed'})
 
 # ── p. 76 : استعمل تكنولوجيات الإعلام والاتصال ────────────────────────────────────────────────────
-E.append({'id': 'ict', 'kind': 'ict', 'page': 76, 'section': 'استعمل تكنولوجيات الإعلام والاتصال', 'title': 'تعليم نقطة في المستوي باستعمال جيوجبرا', 'verified': False,
+E.append({'id': 'ict', 'kind': 'ict', 'page': 76, 'section': 'استعمل تكنولوجيات الإعلام والاتصال', 'title': 'تعليم نقطة في المستوي باستعمال جيوجبرا', 'verified': True,
           'text': 'تهيئة : افتح ورقة عمل جديدة، انقر يمينًا واختر الشبكة. تعليم نقطة في مستوٍ مزوّد بمعلم : نريد حجز النقطة M(−2 ; 3). انقر على أداة نقطة جديدة، حدّد موضع النقطة M بقراءة بيانية وانقر عنده. لتغيير التسمية انقر بالأيمن واختر إعادة تسمية.',
           'answerSource': 'read'})
-E.append({'id': 'ict-ex', 'kind': 'ict', 'page': 76, 'section': 'تمرين', 'verified': False,
+E.append({'id': 'ict-ex', 'kind': 'ict', 'page': 76, 'section': 'تمرين', 'verified': True,
           'text': 'احجز النقاط : A(6 ; 2) ، B(3 ; 2) ، C(3 ; −2) ، D(6 ; −2) ، E(−1 ; −2) ، F(−1 ; 5) ، G(−3 ; −2) ، H(−3 ; −2) ، I(−5 ; 1) ، J(−5 ; −2) ، K(−7 ; 1) ، L(−7 ; 5). '
           '① ما هو الشرط الذي يجب أن تحققه إحداثيات النقط حتى تكون في نفس ربع مستوٍ معيّن ؟ ② صل بين النقاط وفق الترتيب ABCDEF ثم FEJHIKL. ③ ما هي الكلمة التي تتحصل عليها ؟', 'answerSource': 'read',
-          'note': 'transcription à relire par talim-fi-mustawi (les points G et H sont imprimés avec la même valeur)'})
+          'note': 'relu par talim-fi-mustawi à 110 dpi : G et H sont imprimés tous deux (−3 ; −2) (coquille du manuel, non reprise)'})
 
 # ── Destinations ────────────────────────────────────────────────────────────────────────────────────
 L1, L2, L3, SYN = 'adad-nisbiya-siyaqat', 'talim-mustaqim-mudarraj', 'talim-fi-mustawi', 'wadiya-idmajiya-adad-nisbiya'
@@ -357,7 +358,7 @@ DEST = {
     'act-1-need': {'lesson': L1, 'module': 2, 'note': '« 6 + … = 4 » : le besoin d\'un nombre au-dessous de 0 — première question de معارف'},
     'act-1-line': {'lesson': L2, 'module': 4, 'note': 'le symétrique d\'un point par rapport à O (E tel que O soit le milieu de [DE]) devient l\'exercice « نقطتان متناظرتان » de أتمرّن ; le tracé sur papier n\'est pas repris'},
     'act-2': {'lesson': L2, 'module': 1, 'note': 'repérer des points sur une droite graduée de −8 à 8 : devient la tâche `place` du labo stride-stamp (la température est l\'entrée de la leçon précédente)'},
-    'act-3': {'lesson': L3, 'module': 1},
+    'act-3': {'lesson': L3, 'module': 1, 'note': 'ENTRÉE de la plateforme : la carte de l\'Algérie n\'est pas reproduite ; le labo courtyard-drone pose la cour d\'une école, la MÊME question (un nombre ne suffit pas, deux nombres dans un certain ordre) avec un drone'},
     'know-1': {'lesson': L1, 'module': 2},
     'know-2': {'lesson': L2, 'module': 2, 'items': {
         'half-line-def': {'lesson': L2, 'module': 2},
@@ -365,27 +366,34 @@ DEST = {
         'distance-opposites': {'lesson': L1, 'module': 2, 'note': 'P2 (distance à zéro) et P3 (opposés) : programme 1am.m5.r05 ; la leçon les NOMME après le labo'}}},
     'method-1': {'lesson': L2, 'module': 3},
     'now-68': {'lesson': L2, 'module': 4, 'note': 'lire A, B, C sur une droite à origine et repère 10 donnés, puis graduer avec 5 cm : repris par ex-12 (lecture) et ex-14 (graduer avec une unité en cm)'},
-    'know-3': {'lesson': L3, 'module': 2},
-    'method-2': {'lesson': L3, 'module': 3},
-    'now-70': {'lesson': L3, 'module': 3},
+    'know-3': {'lesson': L3, 'module': 2, 'note': 'معلم متعامد, محور الفواصل / التراتيب, إحداثيا نقطة, فاصلة puis ترتيب : les mots NOMMENT ce que la main a fait'},
+    'method-2': {'lesson': L3, 'module': 3, 'note': 'ورقة مرصوفة / غير مرصوفة : la plateforme écrit sa propre méthode (les deux parallèles aux axes) avec d\'autres nombres'},
+    'now-70': {'lesson': L3, 'module': 4, 'note': 'placer des points dont deux sont sur un axe, puis lire les sommets d\'une lettre dessinée : repris par ex-16, ex-17 et ex-20 avec d\'autres points'},
     **{f'ex-{n}': {'lesson': L1, 'module': 4} for n in range(1, 10)},
     **{f'ex-{n}': {'lesson': L2, 'module': 4} for n in range(10, 16)},
     **{f'ex-{n}': {'lesson': L3, 'module': 4} for n in range(16, 22)},
+    # ex-16 (placer K, S, J), ex-17 (points des axes), ex-18 (repère caché), ex-19 (choisir l\'échelle), ex-20 (lire sur la figure, même abscisse / même ordonnée), ex-21 (compléter avec les mots) : tous réécrits avec d\'autres points
     'self-1': {'lesson': L1, 'module': 8},
     'self-2': {'lesson': SYN, 'module': None, 'note': '1/7 « n\'est pas un nombre relatif » dépend de la définition 1AM (entier ou décimal signé) : la synthèse le relira'},
     'self-3': {'lesson': SYN, 'module': None, 'note': 'une baisse de 4 degrés à partir de −2 : addition de relatifs par la jauge, hors L1'},
     'self-4': {'lesson': L1, 'module': 4},
     'self-5': {'lesson': L2, 'module': 8, 'note': 'lire une abscisse à partir de deux graduations (0 et 25) : l\'épreuve E2 du إختبار أولي avec d\'autres nombres'},
     'self-6': {'lesson': L2, 'module': 8, 'note': 'placer A(+2), B(−5), C(+4,5), E(0) : en أتمرّن (lecture de positions) et l\'épreuve E4 du إختبار أولي'},
-    **{f'self-{n}': {'lesson': L3, 'module': 8} for n in range(7, 11)},
+    'self-7': {'lesson': L3, 'module': 8, 'note': 'lire (x ; y) de G sur une figure : l\'épreuve E2 du إختبار أولي avec un autre point'},
+    'self-8': {'lesson': L3, 'module': 8, 'note': 'sur l\'axe des abscisses l\'ordonnée est nulle : l\'épreuve E4'},
+    'self-9': {'lesson': L3, 'module': 8, 'note': 'sur l\'axe des ordonnées l\'abscisse est nulle : l\'épreuve E5'},
+    'self-10': {'lesson': L3, 'module': 4, 'note': 'placer cinq points dont deux sur un axe (décimaux compris) : repris en أتمرّن (positions et axes) et dans la banque'},
     'deep-1': {'lesson': L1, 'module': 6, 'note': 'مسألة 2 : le graphique est REDESSINÉ par la plateforme (écarts à la moyenne, valeurs simples)'},
     'deep-2': {'lesson': L2, 'module': 6, 'note': 'مسألة 2 : REDESSINÉE (une frise de l\'histoire d\'une école sur 24 cm, choisir l\'échelle) ; les dates du manuel ne sont pas reprises'},
     'deep-3': {'lesson': L2, 'module': 4, 'note': 'trois entiers négatifs consécutifs dont −30 : la lecture de la droite (voisins) en أتمرّن'}, 'deep-4': {'lesson': L2, 'module': 4, 'note': 'le sens du déplacement du limaçon n\'est pas vérifié sur le scan : l\'exercice de la plateforme DIT le sens (vers la droite) et ses propres heures et abscisses'},
-    **{f'deep-{n}': {'lesson': L3, 'module': None} for n in (5, 6, 7, 8)},
+    'deep-5': {'lesson': L3, 'module': 4, 'note': 'le repère caché : retrouver l\'origine à partir des coordonnées d\'un point (ex-18 aussi) ; réécrit'},
+    'deep-6': {'lesson': L3, 'module': 6, 'note': 'مسألة 2 : REDESSINÉE (le jet de sacs dans une cible à couronnes carrées, trois élèves, les points marqués selon la couronne) ; la cible du manuel n\'est pas reproduite'},
+    'deep-7': {'lesson': L3, 'module': 4, 'note': 'points d\'une même ordonnée, d\'une même abscisse, deux segments perpendiculaires : repris avec d\'autres points'},
+    'deep-8': {'lesson': L3, 'module': 7, 'note': 'مسألة 3 : les symétriques de A par rapport aux axes (A\'(−2 ; 1), B\'(2 ; −1)) avec d\'autres points ; le sens des signes'},
     'integration': {'lesson': SYN, 'module': None},
     'evaluation': {'lesson': SYN, 'module': None},
-    'ict': {'lesson': L3, 'module': 5},
-    'ict-ex': {'lesson': L3, 'module': 5},
+    'ict': {'lesson': L3, 'module': 1, 'note': 'M(−2 ; 3) est le point-piège du labo (la même place avec les nombres dans l\'autre ordre) ; GeoGebra n\'est pas utilisé (jardin clos de la plateforme)'},
+    'ict-ex': {'lesson': L3, 'module': 7, 'note': 'la condition pour que deux points soient dans le même quart de plan (mêmes signes), dans مسألة 3 ; le dessin de la lettre n\'est pas repris'},
 }
 
 DISCREPANCIES = [
@@ -398,8 +406,8 @@ DISCREPANCIES = [
     {'elementId': 'self-2', 'kind': 'scope', 'text': '1/7 : l\'énoncé suppose la définition 1AM des relatifs (entiers ou décimaux signés) ; 1/7 est un rationnel mais pas un relatif au sens du manuel de 1AM. Hors L1.'},
     {'elementId': 'deep-4', 'kind': 'reading', 'text': 'Le sens du déplacement du limaçon n\'est pas vérifié sur le scan : lu vers la droite, 2 unités par heure.'},
     {'elementId': 'act-1-line', 'kind': 'reading', 'text': 'Relu à 110 dpi par talim-mustaqim-mudarraj (2026-10-30) : A(4), B(5), D(7) ; F tel que A soit le milieu de [BF] → F(3) ; E tel que O soit le milieu de [DE] → E(−7). Les éléments act-2 (le tableau des températures −6, 0, 7, 4, −5, 6), method-1 (A(−3), B(2,7)), now-68, ex-10 … ex-15, self-5, self-6, deep-2 et deep-3 sont relus et vérifiés ; self-5 : les graduations de la figure (0 et 25 donnés) sont lues approximativement, l\'épreuve de la leçon utilise ses propres nombres.'},
-    {'elementId': 'ict-ex', 'kind': 'misprint', 'text': 'Les points G et H sont imprimés tous deux (−3 ; −2) : la leçon talim-fi-mustawi relira la figure.'},
-    {'elementId': 'unit', 'kind': 'scope', 'text': 'Pages 63–76 complètes. Les éléments de la leçon talim-fi-mustawi et de la synthèse sont transcrits plus brièvement (verified: false) : leur leçon les relira.'},
+    {'elementId': 'ict-ex', 'kind': 'misprint', 'text': 'Relu à 110 dpi par talim-fi-mustawi (2026-10-30) : G et H sont imprimés tous deux (−3 ; −2) ; la leçon n\'utilise pas cette liste. Les éléments act-3, know-3, method-2, now-70, ex-16 … ex-21, self-7 … self-10, deep-5 … deep-8 et ict sont relus et vérifiés ; ex-20 (200 dpi) : A(−5 ; 0), B(−3 ; 1), C(−2 ; 2), D(−1 ; 4), E(−1 ; −1), F(0 ; −3), G(3 ; 1), H(3 ; −1) ; self-7 : G(3 ; −1) ; les figures du manuel ne sont pas reproduites.'},
+    {'elementId': 'unit', 'kind': 'scope', 'text': 'Pages 63–76 complètes. Les éléments de la synthèse sont transcrits plus brièvement (verified: false) : sa leçon les relira.'},
 ]
 
 doc = {

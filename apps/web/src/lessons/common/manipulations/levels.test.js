@@ -137,6 +137,16 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(beginner.numbers.tasks.find((tk) => tk.kind === 'place').reads.map((r) => r.x), type).toEqual([-30, 27, -15]);
         expect(beginner.numbers.tasks.every((tk) => /^b\d$/.test(tk.id)) && advanced.numbers.tasks.every((tk) => /^a\d$/.test(tk.id)), type).toBe(true);
       }
+      // Unité 5 de 1AM, leçon 3 : `courtyard-drone` se mesure par l'ORDRE des deux nombres (le lieu échangé est un autre lieu), les points d'un axe (une coordonnée nulle) et la lecture d'un couple : مبتدئ = `fly` sur papier quadrillé puis `read`, entiers ; متقدم = demi-cases et papier SANS carreaux.
+      else if (type === 'courtyard-drone') {
+        const kinds = (lv) => lv.numbers.tasks.map((tk) => tk.kind);
+        expect(kinds(beginner).includes('fly') && kinds(beginner).includes('read'), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => tk.paper === 'squared' && tk.reads.every((r) => r.x % 10 === 0 && r.y % 10 === 0)), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.reads.some((r) => r.y === 0)) && beginner.numbers.tasks.some((tk) => tk.reads.some((r) => r.x === 0)), type).toBe(true); // deux points d'un axe
+        expect(beginner.numbers.tasks[0].reads[0], type).toMatchObject({ x: 30, y: -20 }); // la fontaine (3 ; −2) : l'échangé est (−2 ; 3)
+        expect(advanced.numbers.tasks.some((tk) => tk.paper === 'plain') && advanced.numbers.tasks.some((tk) => tk.reads.some((r) => r.x % 10 !== 0 || r.y % 10 !== 0)), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => /^b\d$/.test(tk.id)) && advanced.numbers.tasks.every((tk) => /^a\d$/.test(tk.id)), type).toBe(true);
+      }
       // Unité 2 de 2AM, leçon 8 : `window-blinds` se mesure par la PRÉDICTION écrite avant de tirer (متقدم seul) et par les FACTEURS > 1 (متقدم seul).
       else if (type === 'window-blinds') {
         const val = (f) => { const [n, d] = f.split('/').map(Number); return n / d; };

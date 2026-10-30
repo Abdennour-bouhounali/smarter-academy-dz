@@ -840,6 +840,14 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'لتدريج مستقيم نختار مبدأً واتجاهًا ووحدة طول وننقل الوحدة نفسها من جهتي المبدإ: أعداد موجبة في جهة الاتجاه وسالبة في الجهة الأخرى ؛ وفاصلة النقطة $A(-3)$ هي بعدها عن المبدإ مع إشارة جهتها ؛ والنقطتان المتناظرتان بالنسبة إلى المبدإ فاصلتاهما متعاكستان، مثل $3$ و $-3$ ؛ وإذا وقعت نقطة بين علامتين متتاليتين حصرنا فاصلتها بينهما، مثل $-2<-1{,}5<-1$',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 1AM, unité 5 « الأعداد النسبية », leçon 3 « التعليم في المستوي » (2026-10-30) — un drone conduit sur UN axe à la fois, lu comme un couple de coordonnées.
+  'courtyard-drone': {
+    // LE DRONE SUR UN AXE À LA FOIS : le plan d'une cour d'école vu d'en haut (l'origine est le mât du drapeau, deux lignes peintes sont les axes gradués). La main conduit un drone D'ABORD le long de la ligne horizontale, fixe l'abscisse,
+    // puis le long de la verticale (jamais en diagonale : le drone refuse) et prend la photo. Le lieu est dit par ses DEUX nombres (« la fontaine est à (3 ; −2) ») ou dessiné et lu à la volée ; échanger l'ordre des deux nombres mène à un
+    // AUTRE lieu (−2 ; 3). Les points des axes (une coordonnée nulle), puis en متقدم les demi-cases et un papier SANS carreaux (le drone projette ses deux parallèles aux axes). Chaque photo est un essai jugé exactement par `planeFrame.js`. « جرّب أعدادك » : toujours ouvert.
+    shows: 'المعلم المتعامد للمستوي يتشكّل من مستقيمين مدرّجين متعامدين لهما المبدأ نفسه: المحور الأفقي هو محور الفواصل والمحور الشاقولي هو محور التراتيب ؛ نعلّم كلّ نقطة بعددين هما إحداثياها $M(x\ ;\ y)$ ونقرأ الفاصلة أوّلًا ثمّ الترتيب، فالنقطة $(3\ ;\ -2)$ غير النقطة $(-2\ ;\ 3)$ ؛ ونقطة محور الفواصل ترتيبها معدوم ونقطة محور التراتيب فاصلتها معدومة',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 2AM, unité 3 « الأعداد النسبية », leçon 5 « المسافة بين نقطتين على مستقيم مدرّج » (2026-10-29) — l'ouverture d'un compas serré sur une lecture.
   'gap-caliper': {
     // L'OUVERTURE D'UN COMPAS SOUS LA MAIN : un compas en laiton est serré sur une graine d'un grand thermomètre ; la main tourne la vis pour OUVRIR le compas jusqu'à ce que l'autre mâchoire touche la seconde graine.

@@ -391,7 +391,7 @@
    "page": 66,
    "section": "اكتشف",
    "title": "التعليم في المستوي",
-   "verified": false,
+   "verified": true,
    "text": "رسمنا معلمًا للمستوي مبدؤه النقطة S التي تمثل مدينة عين صالح. طلب أستاذ من تلاميذه البحث عن إحداثيي مدينة غرداية بالنسبة إلى هذا المعلم، فكانت إجابات ثلاثة تلاميذ : مصطفى : « إحداثيا غرداية 1+ » ؛ أمين : « إحداثيا غرداية هما أولًا 1+ ثمّ 3+ » ؛ سيلين : « إحداثيا غرداية هما أولًا 3+ ثمّ 1+ ». ① هل معلومات مصطفى كافية لتعليم مدينة غرداية ؟ لماذا ؟ ② ماذا تقول بالنسبة إلى إجابتي أمين وسيلين ؟ ③ في معلم للمستوي، كم عددًا يلزمنا لتعليم نقطة ؟ كيف نسمّي العدد الأول ؟ الثاني ؟ ④ بقراءة بيانية تقريبية، عيّن إحداثيي كلّ من سطيف ووهران وتمنراست.",
    "figure": "خريطة الجزائر وعليها شبكة ومعلم مبدؤه S (عين صالح)",
    "answerSource": "read"
@@ -472,7 +472,7 @@
    "page": 69,
    "section": "أحوصل تعلّماتي",
    "title": "التعليم في المستوي",
-   "verified": false,
+   "verified": true,
    "text": "يتشكّل المعلم المتعامد للمستوي من مستقيمين مدرّجين متعامدين ولهما نفس المبدأ. المحور الأفقي يسمّى محور الفواصل والمحور الشاقولي يسمّى محور التراتيب. خاصية : في معلم للمستوي، يمكن تعليم كلّ نقطة بعددين هما إحداثيا النقطة. الإحداثي الأول، الذي نقرأه على محور الفواصل، يسمّى فاصلة النقطة. والإحداثي الثاني، الذي نقرأه على محور التراتيب، يسمّى ترتيب النقطة. مثال : M(−3 ; 5). لقراءة إحداثيي نقطة نرسم الموازيين للمحورين المارين بالنقطة : نقرأ أولًا الفاصلة ثم الترتيب.",
    "answerSource": "read"
   },
@@ -483,7 +483,7 @@
    "page": 70,
    "section": "أكتسب طرائق",
    "title": "تعليم نقاط في المستوي",
-   "verified": false,
+   "verified": true,
    "text": "مثال : في المستوي المزوّد بمعلم متعامد علّم النقاط A(−3 ; 2) ، B(4 ; 0) و C(0 ; −4). طريقة 1 على ورقة مرصوفة : نستعين بخطوط المرصوفة لتحديد موضع كلّ نقطة بتعيين خط فاصلتها أولًا ثم خط ترتيبها. طريقة 2 على ورقة غير مرصوفة : نرسم الموازي لمحور التراتيب الذي يمرّ بالتدريج −3 لمحور الفواصل، ثم الموازي لمحور الفواصل الذي يمرّ بالتدريج 2 لمحور التراتيب، ونعيّن A عند تقاطع المستقيمين.",
    "answerSource": "read"
   },
@@ -492,7 +492,7 @@
    "kind": "now",
    "page": 70,
    "section": "دوري الآن",
-   "verified": false,
+   "verified": true,
    "text": "① في معلم متعامد، علّم النقاط الآتية : A(−3 ; 2) ، B(0 ; 4) ، C(−4 ; 0) ، O(0 ; 0). ② في المعلم المقابل رسمنا الحرف « ك ». عيّن إحداثيات النقاط التي تسمح برسم الحرف بدءًا بالنقطة M(4 ; 3).",
    "answerSource": "read"
   },
@@ -751,7 +751,7 @@
    "number": 16,
    "page": 72,
    "section": "أتمرّن — التعليم في المستوي",
-   "verified": false,
+   "verified": true,
    "text": "أ) ارسم معلمًا متعامدًا معتبرًا ضلع مربع ورقة كراس كوحدة قياس الطول على المحورين. ب) علّم النقاط : K(−3 ; 5) ، S(−2 ; 3) ، J(4 ; 3).",
    "answerSource": "read"
   },
@@ -761,7 +761,7 @@
    "number": 17,
    "page": 72,
    "section": "أتمرّن — التعليم في المستوي",
-   "verified": false,
+   "verified": true,
    "text": "في معلم متعامد، نعتبر النقاط : A(0 ; −2) ، B(2 ; −5) ، C(−1 ; −1) ، D(3 ; 0) ، E(4 ; 0) ، F(0 ; 0) ، G(−3,5 ; 2) ، H(−2 ; 0). أ) عيّن النقاط التي تنتمي إلى محور الفواصل. ب) عيّن النقاط التي تنتمي إلى محور التراتيب.",
    "answerSource": "read"
   },
@@ -771,7 +771,7 @@
    "number": 18,
    "page": 72,
    "section": "أتمرّن — التعليم في المستوي",
-   "verified": false,
+   "verified": true,
    "text": "هذه شبكة أخفى فيها مبدأ ومحوري المعلم المتعامد. (نقاط A ، B ، C ، D) إذا علمت أنّ (−2 ; −3) هما إحداثيا النقطة B بالضبط، علّم المبدأ ثم ارسم المحورين.",
    "answerSource": "read"
   },
@@ -781,7 +781,7 @@
    "number": 19,
    "page": 72,
    "section": "أتمرّن — التعليم في المستوي",
-   "verified": false,
+   "verified": true,
    "text": "أ) ارسم مستقيمًا واختر التدريج المناسب بالتمعن في فواصل النقاط الآتية ثم علّم النقاط. ب) ...",
    "answerSource": "read"
   },
@@ -791,7 +791,7 @@
    "number": 20,
    "page": 72,
    "section": "أتمرّن — التعليم في المستوي",
-   "verified": false,
+   "verified": true,
    "text": "عيّن بقراءة بيانية إحداثيات النقط A ، B ، C ، D ، E ، F ، G و H. ب) اذكر النقاط التي لها نفس الفاصلة. جـ) اذكر النقاط التي لها نفس الترتيب. د) ماذا تلاحظ بالنسبة إلى النقطتين A و F ؟",
    "answerSource": "read"
   },
@@ -801,7 +801,7 @@
    "number": 21,
    "page": 72,
    "section": "أتمرّن — التعليم في المستوي",
-   "verified": false,
+   "verified": true,
    "text": "أ) إليك المعلم الآتي. انقل الجمل الآتية ثم أكملها باستعمال المفردات : إحداثيات، فاصلة، ترتيب.",
    "answerSource": "read"
   },
@@ -902,7 +902,7 @@
    "number": 7,
    "page": 73,
    "section": "أقوّم تعلّماتي",
-   "verified": false,
+   "verified": true,
    "text": "إحداثيا النقطة G : (1 ; 3) ، (3 ; −1) ، (−1 ; 3) (قائمة اختيار على معلم).",
    "answerSource": "read"
   },
@@ -912,7 +912,7 @@
    "number": 8,
    "page": 73,
    "section": "أقوّم تعلّماتي",
-   "verified": false,
+   "verified": true,
    "text": "إذا كانت نقطة على محور الفواصل، فإنّ : ترتيبها معدوم ؛ هي المبدأ ؛ فاصلتها معدومة.",
    "answerSource": "read"
   },
@@ -922,7 +922,7 @@
    "number": 9,
    "page": 73,
    "section": "أقوّم تعلّماتي",
-   "verified": false,
+   "verified": true,
    "text": "إذا كانت نقطة على محور التراتيب، فإنّ : ترتيبها معدوم ؛ هي المبدأ ؛ فاصلتها معدومة.",
    "answerSource": "read"
   },
@@ -932,7 +932,7 @@
    "number": 10,
    "page": 73,
    "section": "أقوّم تعلّماتي",
-   "verified": false,
+   "verified": true,
    "text": "في معلم متعامد للمستوي، علّم النقاط : A(1,5 ; −3) ، B(−3 ; 0) ، C(−1 ; 0,5) ، D(2,5 ; −1,5) ، E(−5 ; −2).",
    "answerSource": "read"
   },
@@ -1008,7 +1008,7 @@
    "page": 74,
    "section": "أتعمّق",
    "title": "المعلم المفقود",
-   "verified": false,
+   "verified": true,
    "text": "انقل على ورقة كراس الشكل الموالي ثم ارسم معلمًا متعامدًا للمستوي بحيث تكون إحداثيا النقطتين A و B كما يأتي : A(−1 ; −2) ، B(−3 ; +2). ما هما عندئذ إحداثيا كلّ من C و D ؟",
    "answerSource": "read"
   },
@@ -1019,7 +1019,7 @@
    "page": 74,
    "section": "أتعمّق",
    "title": "لعبة السهام",
-   "verified": false,
+   "verified": true,
    "text": "تتمثل اللعبة في رمي سهم تجاه هدف عددًا من المرّات واحسب مجموع النقاط المسجلة تبعًا للمنطقة كما هو مبيّن على هامش الهدف. لتحديد موضع وصول السهم، علّمنا مستوي الهدف كما في الشكل. تبارى ثلاثة أصدقاء ... من الفائز ؟",
    "answerSource": "read"
   },
@@ -1030,7 +1030,7 @@
    "page": 74,
    "section": "أتعمّق",
    "title": "الأعداد النسبية والهندسة",
-   "verified": false,
+   "verified": true,
    "text": "① علّم النقاط A(−1 ; 4) ، B(1 ; 4) ، C(3 ; 4) و D(1 ; −1) في معلم للمستوي. ② ارسم قطعتي المستقيم [AC] و [BD]. ماذا تلاحظ بالنسبة إلى النقاط A ، B ، C ، D ؟",
    "answerSource": "read"
   },
@@ -1040,7 +1040,7 @@
    "number": 8,
    "page": 74,
    "section": "أتعمّق",
-   "verified": false,
+   "verified": true,
    "text": "في معلم متعامد للمستوي، لدينا A(−2 ; −1). ① علّم النقطة A' نظيرة A بالنسبة إلى محور الفواصل. ما هي إحداثيات A' ؟ ② علّم النقطة B' نظيرة A بالنسبة إلى محور التراتيب. ما هي إحداثيات B' ؟ ماذا تستنتج ؟",
    "answer": {
     "A'": [
@@ -1095,7 +1095,7 @@
    "page": 76,
    "section": "استعمل تكنولوجيات الإعلام والاتصال",
    "title": "تعليم نقطة في المستوي باستعمال جيوجبرا",
-   "verified": false,
+   "verified": true,
    "text": "تهيئة : افتح ورقة عمل جديدة، انقر يمينًا واختر الشبكة. تعليم نقطة في مستوٍ مزوّد بمعلم : نريد حجز النقطة M(−2 ; 3). انقر على أداة نقطة جديدة، حدّد موضع النقطة M بقراءة بيانية وانقر عنده. لتغيير التسمية انقر بالأيمن واختر إعادة تسمية.",
    "answerSource": "read"
   },
@@ -1104,10 +1104,10 @@
    "kind": "ict",
    "page": 76,
    "section": "تمرين",
-   "verified": false,
+   "verified": true,
    "text": "احجز النقاط : A(6 ; 2) ، B(3 ; 2) ، C(3 ; −2) ، D(6 ; −2) ، E(−1 ; −2) ، F(−1 ; 5) ، G(−3 ; −2) ، H(−3 ; −2) ، I(−5 ; 1) ، J(−5 ; −2) ، K(−7 ; 1) ، L(−7 ; 5). ① ما هو الشرط الذي يجب أن تحققه إحداثيات النقط حتى تكون في نفس ربع مستوٍ معيّن ؟ ② صل بين النقاط وفق الترتيب ABCDEF ثم FEJHIKL. ③ ما هي الكلمة التي تتحصل عليها ؟",
    "answerSource": "read",
-   "note": "transcription à relire par talim-fi-mustawi (les points G et H sont imprimés avec la même valeur)"
+   "note": "relu par talim-fi-mustawi à 110 dpi : G et H sont imprimés tous deux (−3 ; −2) (coquille du manuel, non reprise)"
   }
  ],
  "discrepancies": [
@@ -1159,12 +1159,12 @@
   {
    "elementId": "ict-ex",
    "kind": "misprint",
-   "text": "Les points G et H sont imprimés tous deux (−3 ; −2) : la leçon talim-fi-mustawi relira la figure."
+   "text": "Relu à 110 dpi par talim-fi-mustawi (2026-10-30) : G et H sont imprimés tous deux (−3 ; −2) ; la leçon n'utilise pas cette liste. Les éléments act-3, know-3, method-2, now-70, ex-16 … ex-21, self-7 … self-10, deep-5 … deep-8 et ict sont relus et vérifiés ; ex-20 (200 dpi) : A(−5 ; 0), B(−3 ; 1), C(−2 ; 2), D(−1 ; 4), E(−1 ; −1), F(0 ; −3), G(3 ; 1), H(3 ; −1) ; self-7 : G(3 ; −1) ; les figures du manuel ne sont pas reproduites."
   },
   {
    "elementId": "unit",
    "kind": "scope",
-   "text": "Pages 63–76 complètes. Les éléments de la leçon talim-fi-mustawi et de la synthèse sont transcrits plus brièvement (verified: false) : leur leçon les relira."
+   "text": "Pages 63–76 complètes. Les éléments de la synthèse sont transcrits plus brièvement (verified: false) : sa leçon les relira."
   }
  ],
  "destinations": {
@@ -1215,7 +1215,8 @@
   },
   "act-3": {
    "lesson": "talim-fi-mustawi",
-   "module": 1
+   "module": 1,
+   "note": "ENTRÉE de la plateforme : la carte de l'Algérie n'est pas reproduite ; le labo courtyard-drone pose la cour d'une école, la MÊME question (un nombre ne suffit pas, deux nombres dans un certain ordre) avec un drone"
   },
   "know-1": {
    "lesson": "adad-nisbiya-siyaqat",
@@ -1251,15 +1252,18 @@
   },
   "know-3": {
    "lesson": "talim-fi-mustawi",
-   "module": 2
+   "module": 2,
+   "note": "معلم متعامد, محور الفواصل / التراتيب, إحداثيا نقطة, فاصلة puis ترتيب : les mots NOMMENT ce que la main a fait"
   },
   "method-2": {
    "lesson": "talim-fi-mustawi",
-   "module": 3
+   "module": 3,
+   "note": "ورقة مرصوفة / غير مرصوفة : la plateforme écrit sa propre méthode (les deux parallèles aux axes) avec d'autres nombres"
   },
   "now-70": {
    "lesson": "talim-fi-mustawi",
-   "module": 3
+   "module": 4,
+   "note": "placer des points dont deux sont sur un axe, puis lire les sommets d'une lettre dessinée : repris par ex-16, ex-17 et ex-20 avec d'autres points"
   },
   "ex-1": {
    "lesson": "adad-nisbiya-siyaqat",
@@ -1375,19 +1379,23 @@
   },
   "self-7": {
    "lesson": "talim-fi-mustawi",
-   "module": 8
+   "module": 8,
+   "note": "lire (x ; y) de G sur une figure : l'épreuve E2 du إختبار أولي avec un autre point"
   },
   "self-8": {
    "lesson": "talim-fi-mustawi",
-   "module": 8
+   "module": 8,
+   "note": "sur l'axe des abscisses l'ordonnée est nulle : l'épreuve E4"
   },
   "self-9": {
    "lesson": "talim-fi-mustawi",
-   "module": 8
+   "module": 8,
+   "note": "sur l'axe des ordonnées l'abscisse est nulle : l'épreuve E5"
   },
   "self-10": {
    "lesson": "talim-fi-mustawi",
-   "module": 8
+   "module": 4,
+   "note": "placer cinq points dont deux sur un axe (décimaux compris) : repris en أتمرّن (positions et axes) et dans la banque"
   },
   "deep-1": {
    "lesson": "adad-nisbiya-siyaqat",
@@ -1411,19 +1419,23 @@
   },
   "deep-5": {
    "lesson": "talim-fi-mustawi",
-   "module": null
+   "module": 4,
+   "note": "le repère caché : retrouver l'origine à partir des coordonnées d'un point (ex-18 aussi) ; réécrit"
   },
   "deep-6": {
    "lesson": "talim-fi-mustawi",
-   "module": null
+   "module": 6,
+   "note": "مسألة 2 : REDESSINÉE (le jet de sacs dans une cible à couronnes carrées, trois élèves, les points marqués selon la couronne) ; la cible du manuel n'est pas reproduite"
   },
   "deep-7": {
    "lesson": "talim-fi-mustawi",
-   "module": null
+   "module": 4,
+   "note": "points d'une même ordonnée, d'une même abscisse, deux segments perpendiculaires : repris avec d'autres points"
   },
   "deep-8": {
    "lesson": "talim-fi-mustawi",
-   "module": null
+   "module": 7,
+   "note": "مسألة 3 : les symétriques de A par rapport aux axes (A'(−2 ; 1), B'(2 ; −1)) avec d'autres points ; le sens des signes"
   },
   "integration": {
    "lesson": "wadiya-idmajiya-adad-nisbiya",
@@ -1435,11 +1447,13 @@
   },
   "ict": {
    "lesson": "talim-fi-mustawi",
-   "module": 5
+   "module": 1,
+   "note": "M(−2 ; 3) est le point-piège du labo (la même place avec les nombres dans l'autre ordre) ; GeoGebra n'est pas utilisé (jardin clos de la plateforme)"
   },
   "ict-ex": {
    "lesson": "talim-fi-mustawi",
-   "module": 5
+   "module": 7,
+   "note": "la condition pour que deux points soient dans le même quart de plan (mêmes signes), dans مسألة 3 ; le dessin de la lettre n'est pas repris"
   }
  }
 }

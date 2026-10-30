@@ -255,26 +255,6 @@
       ]
     },
     {
-      "code": "talim-fi-mustawi",
-      "grade": "1am",
-      "unit": "adad-nisbiya",
-      "titleAr": "التعليم في المستوي",
-      "kind": "lesson",
-      "trigger": "tanasub-muamil",
-      "via": [
-        "1am.m5.r07"
-      ]
-    },
-    {
-      "code": "wadiya-idmajiya-adad-nisbiya",
-      "grade": "1am",
-      "unit": "adad-nisbiya",
-      "titleAr": "أدمج تعلّماتي — الأعداد النسبية",
-      "kind": "synthesis",
-      "trigger": "unité adad-nisbiya complète",
-      "via": []
-    },
-    {
       "code": "wadiyat-tanasubiya",
       "grade": "1am",
       "unit": "tanasubiya-nisab-maqayis",
@@ -1270,6 +1250,15 @@
       "titleAr": "أدمج تعلّماتي — التناظر المحوري",
       "kind": "synthesis",
       "trigger": "unité tanazur-mihwari complète",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-adad-nisbiya",
+      "grade": "1am",
+      "unit": "adad-nisbiya",
+      "titleAr": "أدمج تعلّماتي — الأعداد النسبية",
+      "kind": "synthesis",
+      "trigger": "unité adad-nisbiya complète",
       "via": []
     },
     {

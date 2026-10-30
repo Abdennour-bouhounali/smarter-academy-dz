@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **138** leçons publiées · **132** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **139** leçons publiées · **131** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -835,7 +835,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | `1am.m5.r04` | قراءة فاصلة نقطة (أو إعطاء حصر لها) أو تعيين نقطة ذات فاصلة معلومة على نصف مستقيم مدرّج. | `adad-ashri-mustaqim-mudarraj` | `1am.m1.r04` |
 | `1am.m5.r05` | إدراج الأعداد السالبة في وضعيات متنوّعة. | `adad-nisbiya-siyaqat` | — |
 | `1am.m5.r06` | توظيف الأعداد النسبية في: تدريج مستقيم؛ قراءة فاصلة نقطة معلومة أو تعيين نقطة ذات فاصلة معلومة على مستقيم مدرّج. | `talim-mustaqim-mudarraj` | `1am.m5.r04`، `1am.m5.r05` |
-| `1am.m5.r07` | قراءة إحداثيي نقطة معلومة، أو تعليم نقطة ذات إحداثيين معلومين في مستوٍ مزوّد بمعلم. | `talim-fi-mustawi` _(prévue)_ | `1am.m5.r06` |
+| `1am.m5.r07` | قراءة إحداثيي نقطة معلومة، أو تعليم نقطة ذات إحداثيين معلومين في مستوٍ مزوّد بمعلم. | `talim-fi-mustawi` | `1am.m5.r06` |
 | `1am.m5.r08` | تطبيق قاعدة حرفية في وضعية بسيطة. | `tatbiq-qaida-harfiya` _(prévue)_ | `1am.m2.r08` |
 | `1am.m5.r09` | إنتاج عبارة حرفية بسيطة. | `intaj-ibara-harfiya` _(prévue)_ | `1am.m5.r08` |
 | `1am.m5.r10` | إتمام مساواة من الشكل: a + … = b ؛ a - … = b ؛ a × … = b حيث a و b عددان مفروضان. | `bahth-adad-naqisa` | `1am.m1.r05` |
@@ -1171,7 +1171,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 20 | `wadiya-idmajiya-kitabat-kasriya` — أدمج تعلّماتي — الكتابات الكسرية | synthèse | — |
 | 21 | `adad-nisbiya-siyaqat` — الأعداد النسبية وسياقات استعمالها | publiée | `1am.m5.r05` |
 | 22 | `talim-mustaqim-mudarraj` — التعليم على مستقيم مدرّج | publiée | `1am.m5.r06` `1am.m5.r05` |
-| 23 | `talim-fi-mustawi` — التعليم في المستوي | prévue | `1am.m5.r07` |
+| 23 | `talim-fi-mustawi` — التعليم في المستوي | publiée | `1am.m5.r07` |
 | 24 | `wadiya-idmajiya-adad-nisbiya` — أدمج تعلّماتي — الأعداد النسبية | synthèse | — |
 | 25 | `bahth-adad-naqisa` — البحث عن أعداد ناقصة | publiée | `1am.m5.r10` |
 | 26 | `tatbiq-qaida-harfiya` — تطبيق قاعدة حرفية | prévue | `1am.m5.r08` |

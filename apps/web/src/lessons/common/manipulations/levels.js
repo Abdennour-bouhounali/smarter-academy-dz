@@ -744,6 +744,23 @@ export const LEVELS = Object.freeze({
       { id: 'a3', kind: 'bound', reads: [{ x: -15 }, { x: 27 }, { x: -4 }] },
     ] }, ...T('ex-13') },
   },
+  // LE DRONE SUR UN AXE À LA FOIS (courtyard-drone, thème schoolcourt, 1AM unité 5, leçon « التعليم في المستوي », 2026-10-30) : une tâche est `{ id, kind: 'fly' | 'read', paper: 'squared' | 'plain', reads: [{ x, y, what }] }` (x, y en dixièmes) ;
+  // la main conduit un drone au-dessus du plan d'une cour (l'origine est le mât du drapeau, deux lignes peintes sont les axes) D'ABORD sur l'axe horizontal, puis sur la verticale ; le drone REFUSE la diagonale. `fly` : le lieu est dit par ses deux nombres ;
+  // `read` : l'objet est dessiné et le couple lu à la volée. `plain` : un papier sans carreaux (seulement les axes gradués). Un niveau متقدم avance par demi-cases (le pas est 5 dixièmes quand l'id commence par « a »).
+  // مبتدئ (plateforme) : b1 `fly` la fontaine (3 ; −2) puis la porte de la bibliothèque (−4 ; 1) — mettre −2 d'abord mène à (−2 ; 3), un autre lieu ; b2 `fly` deux points d'un axe, (4 ; 0) puis (0 ; −3) ; b3 `read` le portail (−3 ; 2) puis le kiosque (2 ; −4).
+  // متقدم (plateforme + le manuel : « placer A(1,5 ; −3), D(2,5 ; −1,5), C(−1 ; 0,5) » et « lire sur papier sans carreaux ») : a1 `read` en demi-cases (1,5 ; −3) puis (−2,5 ; 1,5), a2 `read` sans carreaux (−4 ; 3) puis (3,5 ; −2), a3 `fly` sans carreaux (2,5 ; −1,5) puis (−1 ; 0,5).
+  'courtyard-drone': {
+    beginner: { numbers: { tasks: [
+      { id: 'b1', kind: 'fly', paper: 'squared', reads: [{ x: 30, y: -20, what: 'fountain' }, { x: -40, y: 10, what: 'door' }] },
+      { id: 'b2', kind: 'fly', paper: 'squared', reads: [{ x: 40, y: 0, what: 'bench' }, { x: 0, y: -30, what: 'tap' }] },
+      { id: 'b3', kind: 'read', paper: 'squared', reads: [{ x: -30, y: 20, what: 'gate' }, { x: 20, y: -40, what: 'kiosk' }] },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', kind: 'read', paper: 'squared', reads: [{ x: 15, y: -30, what: 'chair' }, { x: -25, y: 15, what: 'board' }] },
+      { id: 'a2', kind: 'read', paper: 'plain', reads: [{ x: -40, y: 30, what: 'tree' }, { x: 35, y: -20, what: 'well' }] },
+      { id: 'a3', kind: 'fly', paper: 'plain', reads: [{ x: 25, y: -15, what: 'fountain' }, { x: -10, y: 5, what: 'bench' }] },
+    ] }, ...T('self-10') },
+  },
   // LA CARTE INVERSE SOUS LA MAIN (rewind-belt, thème packingline, 1AM unité 6, leçon « البحث عن أعداد ناقصة », 2026-10-30) : une tâche est `{ id, kind: 'add' | 'sub' | 'rsub' | 'mul' | 'div', a, out, rack }` ;
   // la machine a pour carte « kind a » et a rendu `out` ; la main choisit dans `rack` la carte qui remonte le tapis, tire la caisse jusqu'au bac d'entrée, puis la repousse (contre-épreuve). Nombres : textes décimaux à la virgule.
   // مبتدئ (plateforme) : b1 « + 9 » donne 54 (□ = 45), b2 « − 14 » donne 54 (□ = 68), b3 « × 6 » donne 54 (□ = 9), b4 la carte piège « 80 − » donne 54 (□ = 26 : l'inverse du moins n'est pas le plus).

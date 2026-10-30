@@ -214,6 +214,8 @@ Conventions:
 
 ### 5. `talim-fi-mustawi` — التعليم في المستوي (U5, r07) · pair 3 A
 
+- **Status: ✅ generated and published locally (2026-10-30)** — see « Generator notes » entry 5 and `docs/reports/MOYEN_ROLLOUT_PROGRESS.md` (1AM entry 5).
+
 - **Entry (lab `courtyard-drone`):** the school courtyard plan with a frame. The origin is the flag pole; the axes are two painted
   lines.
   - The drone must photograph the fountain at (3 ; −2). The hand drives it along the abscissa axis FIRST, then along the ordinate
@@ -602,12 +604,20 @@ card; open points for the owner.
   (g) **Bank provenance**: 5 `term_exam` sheets, all of the third term, each read in the PDF (text layer of `1am-s3-39` ex 2, `-37` ex 2, `-43` ex 4; images of `1am-s3-44` ex 1 and `-47` ex 1 rendered with `pdftoppm -r 100`); the S2 « أكمل a × … = b » items of the card could not be read item by item (their text layers are shifted-glyph or image-only), so that register is `term_exam_modelled` (sheet 1-08). 34 modelled, 11 adapted from the textbook, 0 other `platform_addition`.
   (h) Successor `hall-mushkil-muadala` (2AM): « تذكّر — السنة الأولى » links to this lesson and its LP edges are written: P2 ← `1am_bahth-adad-naqisa_P3` (the check by substitution), P3 ← `1am_bahth-adad-naqisa_P2` and `_P3` (history line in its `lesson.config.js` header).
 
-## Run status (2026-10-30, stopped by the owner after entry 4)
+- **5 · `talim-fi-mustawi` (2026-10-30).**
+  (a) The catalogue entry keeps `programmeItems: ['1am.m5.r07']` and `prerequisiteLessonCodes: ['talim-mustaqim-mudarraj']` (order 21 < 22). Net link verified before writing the edges: `1am.m5.r06 → 1am.m5.r07` (`requires`) and `1am.m5.r07 → 2am.m4.r04` (`consolidates`). **LP edges written:** P2 ← `1am_talim-mustaqim-mudarraj_P2` (reading an abscissa → reading both coordinates) and P3 ← `_P3` (marking a point by its abscissa → by its two coordinates), as the card says, **plus P1 ← `1am_talim-mustaqim-mudarraj_P1`** (the frame is made of TWO graduated lines with a common origin: choosing origin, direction and unit is exactly what the frame reuses). The card listed only P2 and P3.
+  (b) **الكفاءات unchanged** (the draft's three, in order). **The book's map of Algeria is not reproduced** (`act-3`): the lab keeps its QUESTION (one number is not enough, two numbers in a certain order are) with a drone and a school courtyard; the three pupils' answers (« 1 », « 1 then 3 », « 3 then 1 ») become the swapped pair `(3 ; −2)` / `(−2 ; 3)`.
+  (c) **The lab (`courtyard-drone`)** keeps the card's gesture (x FIRST, then y, one axis at a time, a diagonal refused, the swapped order lands on `(−2 ; 3)`) and adds two things: **a `read` kind** (the card's « read the coordinates of the gate »: the object is drawn and the pill reads `(x ; y)`) beside the `fly` kind (the place is said by its numbers), and **a map WITHOUT squares** (`paper: 'plain'`, the book's « ورقة غير مرصوفة »: the drone projects its two parallels to the axes). The lab never says « محور الفواصل / التراتيب » (module 2 names them).
+  (d) **Four read papers → four `term_exam` sheets:** `1am-s3-43` ex 2 (mark `D(−4 ; 0)`, `C(3 ; 0)`, `B(−3 ; −3)`, `A(−3 ; 3)`; the protractor steps are not asked), `1am-s3-37` ex 4 (`A(−3,5 ; 2)`, `B(1 ; 3)`, their symmetrics about the abscissa axis), `1am-s3-45` ex 4 (`M(3 ; −1)`, `N(0 ; 2)`, the symmetric of `M` about the abscissa axis, the image of the triangle about the ordinate axis) and `1am-s3-39` ex 3 (`D(−2 ; 1)`, `C(1 ; −1)`, `B(4 ; 1)`, `A(1 ; 3)` and the crossing point of the diagonals `(1 ; 1)`; the nature of the quadrilateral is not asked: a rhombus needs lengths 1AM cannot compute). The S1–S2 papers hold no frame item. The corpus counts only four exercises for `1am.m5.r07`; the other sheets are `term_exam_modelled` (34) or `adapted` from the lesson's own textbook elements (12).
+  (e) **Misprints and readings:** `ict-ex` prints `G(−3 ; −2)` and `H(−3 ; −2)` (read at 110 dpi, recorded in `discrepancies`, the list is not used); `ex-20` read at 200 dpi: `A(−5 ; 0)`, `B(−3 ; 1)`, `C(−2 ; 2)`, `D(−1 ; 4)`, `E(−1 ; −1)`, `F(0 ; −3)`, `G(3 ; 1)`, `H(3 ; −1)` (the lesson uses its own points). `deep-6` (the dart board) becomes a bean-bag throw at a target of nested squares (no weapon, no game of chance); the zones are scored by the larger of the two coordinates without sign.
+  (f) **Glance height:** a plane of 11 × 9 tiles cannot be as flat as the 760 × 300 road of `stride-stamp`: `[data-cd-glance]` is ≈ 731 / 757 px at 1024×768 (مبتدئ / متقدم), not ≤ 700 (the e2e threshold is 760); recorded in the contract. A `halfline`/`numberline` statement-figure kind is still an open point.
+  (g) Successor `talim-nuqta-mustawi` (2AM): « تذكّر — السنة الأولى » links to this lesson by itself; its LP edges written: P1 ← `1am_talim-fi-mustawi_P1`, P2 ← `1am_talim-fi-mustawi_P2` (the pair read in order), P3 ← `1am_talim-fi-mustawi_P3` (marking a point), kept beside its internal edges (history line in its `lesson.config.js` header).
 
-Published and pushed on `dev`: entries 1–4 (`adad-ashri-mustaqim-mudarraj`, `adad-nisbiya-siyaqat`, `talim-mustaqim-mudarraj`,
-`bahth-adad-naqisa`) with their successor connections (`talim-mustaqim-mudarraj-2`, `hall-mushkil-muadala`).
-**Resume at card 5 `talim-fi-mustawi`** (needs entry 3's P ids), then card 6 `tatbiq-qaida-harfiya`. Tips from the runs: build with
+## Run status (2026-10-30, resumed after entry 4)
+
+Published and pushed on `dev`: entries 1–4 (`adad-ashri-mustaqim-mudarraj`, `adad-nisbiya-siyaqat`, `talim-mustaqim-mudarraj`, `bahth-adad-naqisa`) with their successor connections (`talim-mustaqim-mudarraj-2`, `hall-mushkil-muadala`), then **entry 5 `talim-fi-mustawi`** with its successor connection (`talim-nuqta-mustawi`).
+**Resume at card 6 `tatbiq-qaida-harfiya`.** Tips from the runs: build with
 `NODE_OPTIONS=--max-old-space-size=8192 npx vite build` then `node scripts/analyze-entry-bundle.mjs --dist apps/web/dist --budget 245`
 (the `check:entry-budget` script OOMs on its own 4 GB build); `buildLessonMemo.test.js` can time out under load and passes alone.
 Open owner points: a `halfline`/`numberline` statement-figure kind is still missing; confirm the 2AM LP edges chosen for
-`hall-mushkil-muadala` (Generator note 4).
+`hall-mushkil-muadala` (Generator note 4) and `talim-nuqta-mustawi` (Generator note 5).

@@ -331,6 +331,11 @@ export const VISUAL_THEMES = Object.freeze({
   //   villageroad  une route de village droite vue de côté : la station de bus (poteau et panneau) est l'origine O, l'école avec son drapeau à l'EST (à droite), la place de la mosquée (dôme et minaret) à l'OUEST (à gauche) ; la route est finie,
   //                sans autre inscription que le zéro ; Salma (KidFigure, fille en hijab) regarde le bâton-foulée ; ce que la main porte : le bâton de bois d'une foulée, des maisons, un cadre d'une foulée, le drapeau de la station (`stride-stamp`)
   villageroad: { kind: 'lengths', shows: 'طريق قرية: محطّة حافلة هي المبدأ، المدرسة شرقًا وساحة المسجد غربًا، وعصا الخطوة' },
+  // 1AM, unité 5, leçon 3 « التعليم في المستوي » (2026-10-30) :
+  //   schoolcourt  le plan d'une cour d'école vu d'EN HAUT : un sol dallé entouré d'un mur, le mât du drapeau au point O (l'origine), deux lignes peintes en jaune (les axes, gradués) et, sur le papier quadrillé, les dalles ;
+  //                des objets de la cour vus d'en haut (fontaine, porte de bibliothèque, banc, robinet, portail, kiosque, arbre, tableau d'affichage, chaise, puits) ; ce que la main conduit : un drone à quatre hélices
+  //                qui ne va que sur UN axe à la fois (`courtyard-drone`) ; Salma (KidFigure, fille en hijab) et Anis (sweat) regardent l'écran de la télécommande
+  schoolcourt: { kind: 'lengths', shows: 'ساحة مدرسة من الأعلى: سارية العلم هي المبدأ، وخطّان مطليّان هما المحوران، ومسيّرة تحلّق فوق الساحة' },
   // 2AM, unité 3, leçon 6 (2026-10-29) :
   //   tugfield  la cour du collège un jour de sport : une corde sur toute la largeur, un ruban rouge noué à son milieu au-dessus d'un « 0 » sur une bande graduée (−20 … +20), un drapeau vert à droite (+) et un
   //             orange à gauche (−), deux équipes d'enfants à dossards (KidFigure : filles en hijab, garçons en sweat) qui tirent, un petit tapis pour un petit équipage entre crochets (`tug-rope`)
