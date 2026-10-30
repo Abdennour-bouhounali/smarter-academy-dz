@@ -12,7 +12,7 @@ import { RECALLS, KNOWLEDGE } from '../content/textbook';
 
 /**
  * Module 2 — معارف (idée de know-5) : le module OUVRE sur le labo SEUL (une tâche, `levels={false}` : la tâche du réservoir de 18 L et des 12 bouteilles), puis les noms. Les deux questions sur le labo (le remplissage et la valeur de x) sont
- * posées PAR-DESSUS lui (`JuiceLine › CHAINS.k1`) ; les étapes ci-dessous en gardent la TRACE, puis : le « تذكّر — السنة الأولى » (1AM `bahth-adad-naqisa`, leçon PRÉVUE : SANS lien), le « تذكّر — العبارة الحرفية » (`ibara-harfiya-intaj`,
+ * posées PAR-DESSUS lui (`JuiceLine › CHAINS.k1`) ; les étapes ci-dessous en gardent la TRACE, puis : le « تذكّر — السنة الأولى » (1AM `bahth-adad-naqisa`, leçon PUBLIÉE depuis le 2026-10-30 : AVEC lien), le « تذكّر — العبارة الحرفية » (`ibara-harfiya-intaj`,
  * leçon PUBLIÉE : avec lien), la définition de « معادلة » et de « حلّ », puis les trois formes et leurs opérations inverses. LP : P1, P2, P3.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -47,7 +47,9 @@ export default function Module02Maarif() {
               </p>
               {answered('x') && (
                 <>
-                  <TextbookBox kind="remark" title={RECALLS.year1.title} text={RECALLS.year1.text} source={RECALLS.year1.source} compact />
+                  <TextbookBox kind="remark" title={RECALLS.year1.title} text={RECALLS.year1.text} source={RECALLS.year1.source} compact>
+                    {link(RECALLS.year1.lesson, 'درس « البحث عن أعداد ناقصة » — السنة الأولى متوسط')}
+                  </TextbookBox>
                   <TextbookBox kind="remark" title={RECALLS.expression.title} text={RECALLS.expression.text} source={RECALLS.expression.source} compact>
                     {link(RECALLS.expression.lesson, 'درس « إنتاج عبارة حرفية واستعمالها » — السنة الثانية متوسط')}
                   </TextbookBox>

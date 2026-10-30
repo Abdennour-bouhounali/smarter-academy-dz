@@ -16,8 +16,10 @@
  *   P1  « ترجمة وضعية بمعادلة بعد تسمية المجهول بحرف » → + l'exemple « 60 قارورة متماثلة سعتها الكلّية 45 لترًا : 60 × x = 45 » ;
  *   P2  « التعرّف على حلّ معادلة كقيمة تجعل المساواة صحيحة » → + « et la vérifier en faisant l'UNE opération » (jamais le test d'une égalité à deux membres : c'est `ikhtibar-musawat-mutabayina`) ;
  *   P3  « حلّ معادلات من الشكل a × x = b و x/a = b و a/x = b ... » → + l'opération inverse nommée par forme et, par décision, la معادلة à deux opérations (2x + 240 = 300) en défaisant la dernière opération d'abord (question 2 du plan de l'unité).
- * Le réseau : item `2am.m4.r08` (extends `1am.m5.r10`, valeur ajoutée « إتمام مساواة بالقسمة a ÷ … = b بأعداد عشرية ») → « تذكّر — السنة الأولى » SANS lien (`bahth-adad-naqisa` est PRÉVUE) ; « أستعدّ » mesure `1am.m5.r10` (items 1, 2).
- * Entre leçons de la MÊME année, sans lien du réseau : P1 ← 2am_ibara-harfiya-intaj_P1 (écrire une expression de l'inconnue avant l'équation). Pas d'arête 1AM (LEARNING_NET §4.8).
+ * Le réseau : item `2am.m4.r08` (extends `1am.m5.r10`, valeur ajoutée « إتمام مساواة بالقسمة a ÷ … = b بأعداد عشرية ») → « تذكّر — السنة الأولى » avec lien depuis le 2026-10-30 (`bahth-adad-naqisa` est publiée) ; « أستعدّ » mesure `1am.m5.r10` (items 1, 2).
+ * 2026-10-30 : `bahth-adad-naqisa` (1AM, 1am.m5.r10) est publiée — arêtes LP P2 ← 1am_bahth-adad-naqisa_P3 (la vérification par substitution) et P3 ← 1am_bahth-adad-naqisa_P2 et _P3 (l'opération inverse ;
+ *   l'équation à deux opérations défait d'abord la dernière) le long du lien du réseau 1am.m5.r10 → 2am.m4.r08 (`extends`) ; le « تذكّر — السنة الأولى » devient un lien vers la leçon.
+ * Entre leçons de la MÊME année, sans lien du réseau : P1 ← 2am_ibara-harfiya-intaj_P1 (écrire une expression de l'inconnue avant l'équation). Arêtes 1AM : voir la ligne du 2026-10-30 ci-dessus.
  * Successeur (à connecter par le coordinateur) : 3AM `muadalat-darajat-ula` (net `2am.m4.r08 → 3am.m5.r06`).
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
@@ -66,7 +68,7 @@ export const LESSON_CONFIG = {
   },
   knowledgeMap: true,
   knowledgeMapMode: 'progressive',
-  // Ce que « أستعدّ » diagnostique : le lien « راجع » du réseau `1am.m5.r10` (العدد الناقص, items 1 et 2 ; leçon 1AM PRÉVUE), la division par un décimal (`kasr-hasil-qisma`, item 3), × et ÷ (item 4), une longueur en x (item 5) et la valeur d'une expression (item 6).
+  // Ce que « أستعدّ » diagnostique : le lien « راجع » du réseau `1am.m5.r10` (العدد الناقص, items 1 et 2 ; leçon 1AM publiée), la division par un décimal (`kasr-hasil-qisma`, item 3), × et ÷ (item 4), une longueur en x (item 5) et la valeur d'une expression (item 6).
   priorKnowledge: ['bahth-adad-naqisa-1am', 'qisma-ala-ushri-2am', 'darb-qisma-ilaqa', 'ibara-harfiya-2am'],
   resources: [
     // Module 1 — WORKSPACE À DEUX NIVEAUX, un seul type `juice-line` (la main tient l'INCONNUE x : la capacité du moule, puis le contenu du réservoir) :

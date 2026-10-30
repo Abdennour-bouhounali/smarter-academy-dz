@@ -12,10 +12,10 @@ export const LAB = {
   tasks: { t1: { total: '18', bottles: 12, x: '1,5' }, t2: { total: '30', bottles: 40, x: '0,75' }, t3: { total: '9', bottles: 36, x: '0,25' }, a1: { bottles: 24, size: '0,25', total: '6' }, a2: { bottles: 15, size: '1,5', total: '22,5' }, a3: { bottles: 40, size: '0,25', carry: '4', total: '10', press: '6' } },
 };
 
-/** « تذكّر — السنة الأولى » (la leçon 1AM `bahth-adad-naqisa` est PRÉVUE : jamais de lien) et le lien vers `ibara-harfiya-intaj` (leçon PUBLIÉE de l'unité : avec lien). */
+/** « تذكّر — السنة الأولى » (la leçon 1AM `bahth-adad-naqisa` est PUBLIÉE depuis le 2026-10-30 : AVEC lien, `lesson`) et le lien vers `ibara-harfiya-intaj` (leçon PUBLIÉE de l'unité : avec lien). */
 export const RECALLS = {
   year1: {
-    source: addition('prior_year_reminder'), title: 'تذكّر — السنة الأولى متوسط',
+    source: addition('prior_year_reminder'), lesson: 'bahth-adad-naqisa', title: 'تذكّر — السنة الأولى متوسط',
     text: 'في السنة الأولى أتممنا مساويات ناقصة: $7+\\ldots=12{,}5$ فالعدد الناقص $5{,}5$ ، و $6\\times\\ldots=15$ فالعدد الناقص $2{,}5$ . نجد العدد الناقص بالعملية العكسية.',
   },
   expression: {
@@ -58,7 +58,7 @@ export const METHOD = {
   numbers: { salma: 'x+150', anis: '2x+60', divisor: { a: '63', b: '4,5', x: 14 }, dividend: { a: '2,5', b: 6, x: 15 }, factor: { a: '1,2', b: 9, x: '7,5' }, two: { k: 2, c: 240, d: 300, x: 30 } },
 };
 
-/** « أستعدّ » — six affirmations : « العدد الناقص » (1AM `bahth-adad-naqisa`, PRÉVUE : texte seul, items 1 et 2 — le lien « راجع » du réseau `1am.m5.r10`), le quotient d'un décimal, × et ÷, une longueur en x (prep 6–9). */
+/** « أستعدّ » — six affirmations : « العدد الناقص » (1AM `bahth-adad-naqisa`, PUBLIÉE : items 1 et 2 — le lien « راجع » du réseau `1am.m5.r10`), le quotient d'un décimal, × et ÷, une longueur en x (prep 6–9). */
 export const PREP_ITEMS = [
   { skill: 'longueur', text: 'قطعة $[AB]$ طولها $12$ ، والنقطة $M$ منها حيث $AM=x$ . إذن $MB=12-x$ .', answer: true, why: 'الجزء الباقي هو $12$ ناقص الجزء $x$ : $MB=12-x$ .', n: 7 },
 ].map((it) => ({ ...it, source: src('prep', 55, 'أستعدّ', it.n) }));

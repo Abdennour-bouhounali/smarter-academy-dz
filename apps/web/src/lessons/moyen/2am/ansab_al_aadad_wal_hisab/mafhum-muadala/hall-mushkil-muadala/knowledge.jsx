@@ -6,7 +6,7 @@ import { KNOWLEDGE, METHOD, GUIDE } from './content/textbook';
 export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
 
 /**
- * Les connaissances du درس « حلّ مشكل باستعمال معادلة » (2AM) — SOURCE UNIQUE, construite à partir du contenu (content/textbook.js). L'équation « a + … = b » et « a × … = b » (1AM `bahth-adad-naqisa`, leçon PRÉVUE : une phrase, pas de lien),
+ * Les connaissances du درس « حلّ مشكل باستعمال معادلة » (2AM) — SOURCE UNIQUE, construite à partir du contenu (content/textbook.js). L'équation « a + … = b » et « a × … = b » (1AM `bahth-adad-naqisa`, leçon PUBLIÉE : une phrase, le lien est dans le « تذكّر » du module 2),
  * la division par un décimal (`kasr-hasil-qisma`) et l'expression littérale (`ibara-harfiya-intaj`) ne sont PAS des items ici : ce sont des prérequis, rappelés par « أستعدّ » et par les « تذكّر ».
  */
 const R = (x) => `\\textcolor{#e11d48}{${x}}`;

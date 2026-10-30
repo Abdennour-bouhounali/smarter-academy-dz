@@ -5,7 +5,7 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { PREP_ITEMS, PREP_PLATFORM_ITEMS } from '../content/textbook';
 
 /**
- * Module 0 — أستعدّ : six affirmations. Les items 1 et 2 mesurent le lien « راجع » du réseau `1am.m5.r10` (إتمام مساواة ناقصة, leçon 1AM `bahth-adad-naqisa` PRÉVUE : texte seul, jamais reconstruite ici) ; l'item 3 la division
+ * Module 0 — أستعدّ : six affirmations. Les items 1 et 2 mesurent le lien « راجع » du réseau `1am.m5.r10` (إتمام مساواة ناقصة, leçon 1AM `bahth-adad-naqisa` PUBLIÉE : le lien « راجع » vient du réseau, jamais reconstruite ici) ; l'item 3 la division
  * par un décimal (`kasr-hasil-qisma`), l'item 4 le lien entre × et ÷, l'item 5 une longueur en x (« أستعدّ » 6 à 9 du manuel, `ibara-harfiya-intaj`) et l'item 6 la valeur d'une expression. JAMAIS bloquant ; `id` et `requires` littéraux.
  */
 export default function Module00Astaidd() {
