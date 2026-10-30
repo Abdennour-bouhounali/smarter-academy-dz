@@ -5,6 +5,8 @@
  * Le réseau : `2am.m4.r04` CONSOLIDE `1am.m5.r07` (leçon 1AM NON publiée) : « أستعدّ » mesure la base, M2 s'ouvre sur « تذكّر — السنة الأولى » SANS lien
  * (`addition('prior_year_reminder')`), et la leçon va à l'ancrage : le repère orthonormé dit explicitement, les décimaux, les points sur les axes, les régions,
  * le symétrique par rapport à UN axe, et la tâche inverse (choisir le piquet / l'unité). `noRebuildForLesson` vide ; `pointPrerequisites` : arêtes internes seulement.
+ * 2026-10-30 : `talim-fi-mustawi` (1AM, 1am.m5.r07) est publiée — arêtes LP P1 ← 1am_talim-fi-mustawi_P1, P2 ← 1am_talim-fi-mustawi_P2, P3 ← 1am_talim-fi-mustawi_P3 (lien du réseau
+ * 1am.m5.r07 → 2am.m4.r04, `consolidates`), ajoutées aux arêtes internes ; le « تذكّر — السنة الأولى » devient un lien tout seul.
  *
  * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter) — le manuel fixe les الكفاءات, pas le parcours.
  *   Entrée retenue : la « شبكة الحفرية » (labo `dig-grid`, monde `digsite`). Une fouille est quadrillée de ficelles ; la main tient le PIQUET d'origine (un glissement 2D, deux

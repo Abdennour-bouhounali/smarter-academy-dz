@@ -15,7 +15,7 @@ export const LAB = {
   maarif: { tasks: [{ id: 'm1', kind: 'typed', stake: '4;2', finds: ['jar', 'lamp', 'plate'] }] },
 };
 
-/** « تذكّر — السنة الأولى » (SANS lien : la leçon 1AM n'est pas générée). */
+/** « تذكّر — السنة الأولى » (درس 1AM `talim-fi-mustawi`، منشور منذ 2026-10-30 : الرابط يظهر وحده). */
 export const REMINDER = {
   source: addition('prior_year_reminder'),
   text: 'في السنة الماضية تعلّمت أنّ لنقطة في المستوي إحداثيين: الفاصلة أولًا ثم الترتيب، مثل $A(3\\,;5)$ ، وأنّ $(3\\,;5)$ و $(5\\,;3)$ ليستا النقطة نفسها.',
