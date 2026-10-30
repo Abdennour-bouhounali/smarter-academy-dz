@@ -163,6 +163,14 @@
         "قراءة فاصلة نقطة من نصف مستقيم مدرّج (بشكل مضبوط أو بإعطاء حصر لها)",
         "تعليم نقطة ذات فاصلة عشرية معلومة على نصف مستقيم مدرّج"
       ],
+      "pointPrerequisites": {
+        "P2": [
+          "1am_muqaranat-adad-ashriya_P1"
+        ],
+        "P3": [
+          "1am_muqaranat-adad-ashriya_P1"
+        ]
+      },
       "programmeItems": [
         "1am.m5.r04"
       ],
@@ -180,7 +188,10 @@
           "method": null
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 58,
+      "difficulty": "متوسط",
+      "icon": "🧩"
     },
     {
       "code": "muqaranat-adad-ashriya",

@@ -244,17 +244,6 @@
       ]
     },
     {
-      "code": "adad-ashri-mustaqim-mudarraj",
-      "grade": "1am",
-      "unit": "adad-tabiiya-ashriya",
-      "titleAr": "الأعداد العشرية ونصف المستقيم المدرّج",
-      "kind": "lesson",
-      "trigger": "jidhr-tarbii",
-      "via": [
-        "1am.m5.r04"
-      ]
-    },
-    {
       "code": "talim-mustaqim-mudarraj",
       "grade": "1am",
       "unit": "adad-nisbiya",

@@ -695,6 +695,22 @@ export const LEVELS = Object.freeze({
       { kind: 'order', values: ['2,5', '2,05', '0,75', '2,500', '3'], dir: 'desc' },
     ] }, ...T('act-5') },
   },
+  // L'UNITÉ ET LE DRAPEAU SOUS LA MAIN (jump-tape, thème sportsday, 1AM unité 1, leçon « الأعداد العشرية ونصف المستقيم المدرّج », 2026-10-30) : une tâche est `{ id, kind: 'plant' | 'read', from, step, … }` ; `from` = valeur du bord gauche de la fenêtre, `step` = valeur d'une grande marque
+  // (dix petites graduations chacune), `jumps` (plant : textes `'2,4'` ou `'2+6/10'`) ou `flags` (read : valeurs exactes déjà plantées), `unit: 'free'` (la main étire d'abord la marque « 1 ») ou un nombre de px par grande marque.
+  // مبتدئ (plateforme) : b1 2,4 · 3,1 · 1,8 (la fenêtre ne montre que O ; le plus long saut fixe la plage de l'unité), b2 0,7 · 2,9 · 3 (un entier = 3,0 ; une autre plage), b3 0,8 · 2 + 6/10 · 3,3 (l'unité est donnée, l'écriture somme se lit 2,6).
+  // متقدم (plateforme) : drapeaux DÉJÀ plantés, le curseur de lecture : a1 0,6 · 1,9 · 2,35 (le dernier entre 2,3 et 2,4), a2 une fenêtre sans son origine 9 … 12 (9,4 · 10,8 · 11,25), a3 un ruban gradué en centièmes 4 … 4,3 (4,04 · 4,12 · 4,235) ; le niveau cite l'exercice 16 du manuel (lire les flèches de quatre demi-droites graduées, de 0–4 à 9,1–9,2).
+  'jump-tape': {
+    beginner: { numbers: { tasks: [
+      { id: 'b1', kind: 'plant', jumps: ['2,4', '3,1', '1,8'], from: '0', step: '1', unit: 'free' },
+      { id: 'b2', kind: 'plant', jumps: ['0,7', '2,9', '3'], from: '0', step: '1', unit: 'free' },
+      { id: 'b3', kind: 'plant', jumps: ['0,8', '2+6/10', '3,3'], from: '0', step: '1', unit: 140 },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', kind: 'read', flags: ['0,6', '1,9', '2,35'], from: '0', step: '1' },
+      { id: 'a2', kind: 'read', flags: ['9,4', '10,8', '11,25'], from: '9', step: '1' },
+      { id: 'a3', kind: 'read', flags: ['4,04', '4,12', '4,235'], from: '4', step: '0,1' },
+    ] }, ...T('ex-16') },
+  },
   // ── 1AM, unité 11 — surface, périmètre, aire (2026-10-15) ──
   // LE CARREAU SOUS LA MAIN (tile-yard) : la main tient un carreau de zellige (thème courtyard). مبتدئ : la cour de la maison du grand-père,
   // 12 carreaux seulement DÉPLACÉS (mode fence) : l'aire ne bouge pas, la clôture change — d'abord la plus courte, puis 20 bâtons ;

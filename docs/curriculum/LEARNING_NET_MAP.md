@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **134** leçons publiées · **136** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **135** leçons publiées · **135** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -832,7 +832,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | `1am.m5.r01` | التعرّف في حالات بسيطة على الكتابات الكسرية لعدد. | `hasil-qisma-kasr` | `1am.m1.r02` |
 | `1am.m5.r02` | اختزال كتابة كسرية (كسر). | `ikhtizal-kitaba-kasriya` | `1am.m5.r01`، `1am.m3.r02` |
 | `1am.m5.r03` | جمع وطرح وضرب كسور عشرية. | `kusur-ashriya-kitaba` | `1am.m5.r01`، `1am.m1.r05` |
-| `1am.m5.r04` | قراءة فاصلة نقطة (أو إعطاء حصر لها) أو تعيين نقطة ذات فاصلة معلومة على نصف مستقيم مدرّج. | `adad-ashri-mustaqim-mudarraj` _(prévue)_ | `1am.m1.r04` |
+| `1am.m5.r04` | قراءة فاصلة نقطة (أو إعطاء حصر لها) أو تعيين نقطة ذات فاصلة معلومة على نصف مستقيم مدرّج. | `adad-ashri-mustaqim-mudarraj` | `1am.m1.r04` |
 | `1am.m5.r05` | إدراج الأعداد السالبة في وضعيات متنوّعة. | `adad-nisbiya-siyaqat` _(prévue)_ | — |
 | `1am.m5.r06` | توظيف الأعداد النسبية في: تدريج مستقيم؛ قراءة فاصلة نقطة معلومة أو تعيين نقطة ذات فاصلة معلومة على مستقيم مدرّج. | `talim-mustaqim-mudarraj` _(prévue)_ | `1am.m5.r04`، `1am.m5.r05` |
 | `1am.m5.r07` | قراءة إحداثيي نقطة معلومة، أو تعليم نقطة ذات إحداثيين معلومين في مستوٍ مزوّد بمعلم. | `talim-fi-mustawi` _(prévue)_ | `1am.m5.r06` |
@@ -1151,7 +1151,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 |---:|---|---|---|
 | 1 | `kitabat-adad-tabii` — كتابة الأعداد الطبيعية ودلالة الأرقام | publiée | `1am.m1.r02` |
 | 2 | `kusur-ashriya-kitaba` — الكسور العشرية والكتابة العشرية | publiée | `1am.m1.r02` `1am.m5.x1` `1am.m1.r03` `1am.m5.r03` |
-| 3 | `adad-ashri-mustaqim-mudarraj` — الأعداد العشرية ونصف المستقيم المدرّج | prévue | `1am.m5.r04` |
+| 3 | `adad-ashri-mustaqim-mudarraj` — الأعداد العشرية ونصف المستقيم المدرّج | publiée | `1am.m5.r04` |
 | 4 | `muqaranat-adad-ashriya` — مقارنة الأعداد العشرية وترتيبها | publiée | `1am.m1.r04` |
 | 5 | `hasr-qiyam-muqarraba` — حصر عدد عشري وقيمه المقرّبة | prévue | `1am.m3.r05` `1am.m3.r04` |
 | 6 | `wadiya-idmajiya-adad-tabiiya-ashriya` — أدمج تعلّماتي — الأعداد الطبيعية والأعداد العشرية | synthèse | — |

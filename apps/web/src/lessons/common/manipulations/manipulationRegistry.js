@@ -129,6 +129,8 @@ export const MANIPULATION_COMPONENTS = {
   'corniche-ruler': lazy(() => import('./operations/CornicheRuler')),
   // 2AM, unité 3, leçon 4 « تعليم نقطة في المستوي » : le piquet d'origine sous la main — شبكة الحفرية (2026-10-29).
   'dig-grid': lazy(() => import('./operations/DigGrid')),
+  // 1AM, unité 1, leçon 3 « الأعداد العشرية ونصف المستقيم المدرّج » : l'unité de longueur étirée puis le drapeau sur le ruban — شريط القفز (2026-10-30).
+  'jump-tape': lazy(() => import('./operations/JumpTape')),
   // 2AM, unité 3, leçon 5 « المسافة بين نقطتين على مستقيم مدرّج » : l'ouverture d'un compas sous la main — مسماك الفرق (2026-10-29).
   'gap-caliper': lazy(() => import('./operations/GapCaliper')),
   // 2AM, unité 2, leçon 8 « جداء كسرين » : les deux facteurs sous la main — ستائر النافذة (2026-10-29).

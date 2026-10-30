@@ -2,6 +2,7 @@
   "$generated": "scripts/generate-lesson-index.mjs — do not edit; npm run check:lessons checks it",
   "modulesFormat": "[number, slug]",
   "lessons": [
+    {"id":"adad-ashri-mustaqim-mudarraj","level":"moyen","grade":"1am","chapter":"ansab_al_aadad_wal_hisab","modules":[[0,"astaidd"],[1,"nashat"],[2,"maarif"],[3,"tariqa"],[4,"atamarran"],[5,"masala-1"],[6,"masala-2"],[7,"masala-3"],[8,"itqan"]]},
     {"id":"kitabat-adad-tabii","level":"moyen","grade":"1am","chapter":"ansab_al_aadad_wal_hisab","modules":[[0,"astaidd"],[1,"nashat"],[2,"maarif"],[3,"tariqa"],[4,"atamarran"],[5,"aadad-kabira"],[6,"masala-1"],[7,"masala-2"],[8,"masala-3"],[9,"itqan"]]},
     {"id":"kusur-ashriya-kitaba","level":"moyen","grade":"1am","chapter":"ansab_al_aadad_wal_hisab","modules":[[0,"astaidd"],[1,"nashat"],[2,"maarif"],[3,"tariqa"],[4,"tariqa-ashara"],[5,"atamarran"],[6,"masala-1"],[7,"masala-2"],[8,"masala-3"],[9,"itqan"]]},
     {"id":"muqaranat-adad-ashriya","level":"moyen","grade":"1am","chapter":"ansab_al_aadad_wal_hisab","modules":[[0,"astaidd"],[1,"nashat"],[2,"maarif"],[3,"tariqa"],[4,"atamarran"],[5,"masala-1"],[6,"masala-2"],[7,"masala-3"],[8,"itqan"]]},

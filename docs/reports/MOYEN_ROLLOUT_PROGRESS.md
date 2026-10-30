@@ -513,7 +513,8 @@ Syntheses have no new lab (nine modules; modules 1–6 « وضعيات تدري�
 
 ### Coordinator sequence after each pair (exactly what was run)
 
-1. `rm -rf apps/web/dist` (a stale `dist/.htaccess` breaks the `sa-share-pages` plugin), then `npm test` (web + scripts),
+1. `npm test` (web + scripts) — the former `rm -rf apps/web/dist` step is no longer needed: since 2026-10-29 the
+   `sa-share-pages` plugin never reads `dist/` (template from `public/.htaccess`), so a stale `dist/` or two parallel builds pass —,
    `npm run check:lessons`, `NODE_OPTIONS=--max-old-space-size=8192 npm run build`, `node scripts/learning-net-queue.mjs --check`.
    The `buildLessonMemo` 4AM `insihab-shuaa` test is a known load flake (passes alone); `examSheet.test.js` timeout is 180 s.
 2. Grep the changed files for `🐷 🃏 🎰 🍺 🍷` (the guide's own rule text is the only legitimate hit).
@@ -735,3 +736,15 @@ Next in the queue: `docs/curriculum/GENERATION_QUEUE.md`.
 5. Several bank sheets cite two parts of one exam paper in different lessons (`2am-s2-52` ex 3, `2am-s2-71` ex 1, `2am-s1-73` ex 3): the validator accepts it;
    drop them if you want one bank per exercise.
 6. `juice-line` advanced slate has no on-screen digit chips (tablet students use the numeric keyboard).
+
+## 1AM ميدان الأنشطة العددية (units 1–6) — 20 entries, plan and run index `docs/curriculum/PLAN_1AM_NUMBERS.md` (from 2026-10-30)
+
+Planned on 2026-10-30 (14 lessons + 6 syntheses, 11 pairs, one design card per entry, 14 new labs). Entry 1 below; the others not started.
+
+### 1AM entry 1 — `adad-ashri-mustaqim-mudarraj` « الأعداد العشرية ونصف المستقيم المدرّج » (1AM unit 1 `adad-tabiiya-ashriya`, pair 1 A, 2026-10-30) — generated, published locally
+
+- **Shape:** nine modules (0 أستعدّ · 1 نشاط · 2 معارف · 3 طريقة (platform addition: the book has none) · 4 أتمرّن · 5–7 مسائل · 8 إختبار أولي), `durationMinutes` 58, three الكفاءات kept as drafted (P1 draw the graduation, P2 read the abscissa exactly or by bounds, P3 plant a known abscissa), programme item **`1am.m5.r04`** (the card's « r04 » is the net prerequisite `1am.m1.r04`), `pointPrerequisites` P2, P3 ← `1am_muqaranat-adad-ashriya_P1`.
+- **Lab `jump-tape` « شريط القفز »** (theme `sportsday`, contract `MANIPULATION_CONTRACT.md` § 2novenquinquagies duodecies): the hand STRETCHES the unit (the « 1 » mark), then plants a flag per jump; متقدم: a reading cursor, exact or by bounds, on a tape without its origin and on a tape in hundredths. Core maths `packages/core/arithmetic/halfLine.js`.
+- **Bank:** 5 × 10 sheets (5 `term_exam` / 31 modelled / 14 adapted / 0 other `platform_addition`), 16 `MISC-ABSC-*`.
+- **Corrections:** extraction `act-4`: B = 1,7 and C = 0,5 (not 1,9 / 0,6); `prerequisiteLessonCodes` stays `[]` (a forward reference cannot be a prerequisite lesson). See « Generator notes » in `docs/curriculum/PLAN_1AM_NUMBERS.md`.
+- **Patterns to reuse:** a lab whose FIRST step makes the student choose the SCALE (unit stretch with a plage refused by drawing) and whose second step plants marks on it; a hidden-origin window as a task of a reading lab; module-4 arrows drawn with `NumberLine` static + `markers` (values never written); `NumberLine` needs `format={(v) => formatDec(v, …)}` for decimals (the default drops them).

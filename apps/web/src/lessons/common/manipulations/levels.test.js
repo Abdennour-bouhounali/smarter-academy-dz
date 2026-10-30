@@ -105,6 +105,13 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(advanced.numbers.tasks.some((tk) => tk.predict) && advanced.numbers.tasks.some((tk) => tk.kind === 'claim'), type).toBe(true);
         expect(advanced.numbers.tasks.some((tk) => /<=|≤/.test(tk.rule)) && !beginner.numbers.tasks.some((tk) => /<=|≤/.test(tk.rule)), type).toBe(true);
       }
+      // Unité 1 de 1AM, leçon 3 : `jump-tape` se mesure par l'UNITÉ étirée par la main puis le drapeau planté (مبتدئ seul : `plant`) et par la LECTURE d'un drapeau déjà planté, exacte ou par encadrement (متقدم seul : `read`, fenêtre sans origine, centièmes).
+      else if (type === 'jump-tape') {
+        expect(beginner.numbers.tasks.every((tk) => tk.kind === 'plant') && advanced.numbers.tasks.every((tk) => tk.kind === 'read'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.unit === 'free'), type).toBe(true);
+        expect(advanced.numbers.tasks.some((tk) => tk.from !== '0') && advanced.numbers.tasks.some((tk) => tk.step === '0,1'), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => tk.from === '0' && tk.step === '1'), type).toBe(true);
+      }
       // Unité 2 de 2AM, leçon 8 : `window-blinds` se mesure par la PRÉDICTION écrite avant de tirer (متقدم seul) et par les FACTEURS > 1 (متقدم seul).
       else if (type === 'window-blinds') {
         const val = (f) => { const [n, d] = f.split('/').map(Number); return n / d; };

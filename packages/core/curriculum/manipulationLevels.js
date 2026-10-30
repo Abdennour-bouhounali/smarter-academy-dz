@@ -314,6 +314,10 @@ export const VISUAL_THEMES = Object.freeze({
   //   meteoboard  la cour du club d'astronomie (نادي الأرصاد) : un grand thermomètre blanc gradué de −10 à +12 °C, un trait bleu au zéro, une station météo et une girouette ; des graines colorées pincées sur l'échelle (étiquettes de villes) et
   //               un compas en laiton le long de l'échelle (mâchoire fixe, mâchoire libre, vis à cadran) ; Nour (KidFigure, hijab) à مبتدئ, Ilyes (sweat) à متقدم (`gap-caliper`)
   meteoboard: { kind: 'lengths', shows: 'لوحة نادي الأرصاد: مقياس حرارة كبير وخرزات ومسماك نحاسي' },
+  // 1AM, unité 1, leçon 3 « الأعداد العشرية ونصف المستقيم المدرّج » (2026-10-30) :
+  //   sportsday  la journée sportive du collège : une fosse de saut en longueur (sable ratissé, planche d'appel blanche à gauche, bord de la fosse à droite), un ruban de mesure déroulé le long de la fosse (la planche = le métré O), des drapeaux colorés et
+  //              l'empreinte d'une athlète dans le sable ; Salma et Yasmine (KidFigure, filles en hijab) et Anis (sweat) aux bacs de drapeaux, les juges ne sont jamais dessinés (`jump-tape`)
+  sportsday: { kind: 'lengths', shows: 'يوم رياضي: حفرة قفز وشريط قياس وأعلام' },
   // 2AM, unité 3, leçon 6 (2026-10-29) :
   //   tugfield  la cour du collège un jour de sport : une corde sur toute la largeur, un ruban rouge noué à son milieu au-dessus d'un « 0 » sur une bande graduée (−20 … +20), un drapeau vert à droite (+) et un
   //             orange à gauche (−), deux équipes d'enfants à dossards (KidFigure : filles en hijab, garçons en sweat) qui tirent, un petit tapis pour un petit équipage entre crochets (`tug-rope`)

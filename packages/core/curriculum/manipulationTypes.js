@@ -803,6 +803,15 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'نحدّد موضع نقطة في المستوي بعددين في معلم متعامد ومتجانس: الفاصلة أولًا على المحور الأفقي ثمّ الترتيب على المحور العمودي، مثل $A(-3\\,;2)$ ؛ تتغيّر الإحداثيات بتغيّر المبدأ، والنقطة على المحورين إحدى إحداثيتيها معدومة، ونظيرة نقطة بالنسبة إلى محور تحتفظ بالإحداثية التي على هذا المحور',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 1AM, unité 1 « الأعداد الطبيعية والأعداد العشرية », leçon 3 « الأعداد العشرية ونصف المستقيم المدرّج » (2026-10-30) — l'unité de longueur étirée, puis le drapeau planté sur le ruban gradué.
+  'jump-tape': {
+    // L'UNITÉ ET LE DRAPEAU SOUS LA MAIN : un jour de sport, un ruban de mesure part de la planche d'appel (le MÉTRÉ O) et ne montre RIEN d'autre. مبتدئ : la main étire la marque « 1 » (l'unité de longueur) jusqu'à ce que le plus long saut tienne dans la fosse
+    // et que les petites graduations restent distinctes — le ruban dessine alors DIX graduations par unité, chacune à 1/10 = 0,1 ; puis la main plante un drapeau par saut (le métré lit la fenêtre à la volée) ; un drapeau mal planté est refusé par le DESSIN
+    // (l'empreinte du saut à sa vraie place, un trait pointillé entre les deux). متقدم : les drapeaux sont déjà plantés, la main promène un curseur de lecture : sur une graduation on lit la valeur exacte, entre deux graduations on lit un ENCADREMENT ;
+    // ruban sans son origine (fenêtre 9 … 12) et ruban gradué en centièmes. « جرّب أعدادك » : toujours ouvert. MANUEL (§6bis).
+    shows: 'لتدريج نصف مستقيم نختار وحدة طول مناسبة وننقلها انطلاقًا من مبدئه $O$ ثمّ نقسّم كلّ وحدة إلى عشرة أجزاء متساوية، فيكون التباعد بين تدريجتين صغيرتين متتاليتين $\\frac{1}{10}=0{,}1$ وحدة ؛ وفاصلة النقطة $A(2{,}4)$ عددٌ يعيّن موضعها: تبعد عن المبدإ بوحدتين وأربع تدريجات صغيرة ؛ وإذا وقعت نقطة بين تدريجتين متتاليتين قرأنا فاصلتها بحصر لها بينهما',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 2AM, unité 3 « الأعداد النسبية », leçon 5 « المسافة بين نقطتين على مستقيم مدرّج » (2026-10-29) — l'ouverture d'un compas serré sur une lecture.
   'gap-caliper': {
     // L'OUVERTURE D'UN COMPAS SOUS LA MAIN : un compas en laiton est serré sur une graine d'un grand thermomètre ; la main tourne la vis pour OUVRIR le compas jusqu'à ce que l'autre mâchoire touche la seconde graine.
