@@ -20,10 +20,10 @@ export const LAB = {
   },
 };
 
-/** « تذكّر » : la 1AM `tatbiq-qaida-harfiya` est PRÉVUE (texte seul, jamais de lien) ; `majmu-jabri` et `tawzi-darb-jam-tarh` sont PUBLIÉES (avec lien). */
+/** « تذكّر » : la 1AM `tatbiq-qaida-harfiya` est PUBLIÉE depuis le 2026-10-30 (AVEC lien, `lesson`) ; `majmu-jabri` et `tawzi-darb-jam-tarh` sont PUBLIÉES (avec lien). */
 export const RECALLS = {
   year1: {
-    source: addition('prior_year_reminder'), title: 'تذكّر — السنة الأولى متوسط',
+    source: addition('prior_year_reminder'), lesson: 'tatbiq-qaida-harfiya', title: 'تذكّر — السنة الأولى متوسط',
     text: 'في السنة الأولى طبّقنا قاعدة حرفية: محيط مربّع ضلعه $c$ هو $P=4\\times c$ ، ومن أجل $c=2{,}5$ نجد $P=10$ . نعوّض الحرف بقيمته ثمّ نحسب.',
   },
   jabri: {
@@ -74,7 +74,7 @@ export const METHOD = {
   numbers: { s1: { x: 4, l: 17, r: 17 }, s1b: { x: 2, l: 13, r: 7 }, s2: { pair: [4, 6], v: 24 }, s2b: { pair: [6, 4], v: 26 }, s3: [[3, 9, 13], [4, 13, 15], [5, 17, 17], [6, 21, 19]], s4: { x: 1, l: 4, r: 3 } },
 };
 
-/** « أستعدّ » — six affirmations : la valeur d'une expression (1AM `tatbiq-qaida-harfiya`, PRÉVUE : texte seul — items 1 et 2), la somme algébrique (`majmu-jabri` : items 3 et 4), la comparaison de décimaux et de relatifs. */
+/** « أستعدّ » — six affirmations : la valeur d'une expression (1AM `tatbiq-qaida-harfiya`, PUBLIÉE — items 1 et 2), la somme algébrique (`majmu-jabri` : items 3 et 4), la comparaison de décimaux et de relatifs. */
 export const PREP_ITEMS = [];
 
 export const PREP_PLATFORM_ITEMS = [

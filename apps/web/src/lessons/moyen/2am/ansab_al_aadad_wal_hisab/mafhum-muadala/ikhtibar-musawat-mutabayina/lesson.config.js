@@ -17,9 +17,11 @@
  *   P1  « اختبار صحّة مساواة تتضمّن عددا مجهولا (أو عددين) بتعويضه بقيمة معلومة » → + « حساب كلّ من الطرفين ومقارنتهما » et « تعيين القيم التي تجعلها صحيحة من بين قيم معطاة » (ex-31 du manuel, le corpus) ;
  *   P2  « اختبار تساوي عبارتين حرفيتين : يكفي مثال مضادّ واحد » → + « تتساويان إذا أعطتا القيمة نفسه مهما كان الحرف (par une règle connue) » et « l'égalité pour quelques valeurs ne suffit pas » ;
  *   P3  « تعيين القيم التي تجعل متباينة صحيحة من بين قيم معطاة » → + le test lui-même, deux inconnues et les signes ≤ ≥ (question 12 de l'unité, corpus `2am-s3-39`).
- * Le réseau : item `2am.m4.r09` (requires `1am.m5.r08` et `2am.m4.r06`) → « تذكّر — السنة الأولى » SANS lien (`tatbiq-qaida-harfiya` est PRÉVUE) et « تذكّر — المجموع الجبري » AVEC lien vers `majmu-jabri` (PUBLIÉE) ; « أستعدّ » mesure les deux
+ * Le réseau : item `2am.m4.r09` (requires `1am.m5.r08` et `2am.m4.r06`) → « تذكّر — السنة الأولى » AVEC lien depuis le 2026-10-30 (`tatbiq-qaida-harfiya` est publiée) et « تذكّر — المجموع الجبري » AVEC lien vers `majmu-jabri` (PUBLIÉE) ; « أستعدّ » mesure les deux
  *   (items 1, 2 et 3, 4). Arêtes : P1 ← 2am_majmu-jabri_P2 (le long du lien `2am.m4.r06 → r09`, écrite ici par la leçon d'arrivée) ; P1 ← 2am_ibara-harfiya-intaj_P2 (même unité, même année, sans lien du réseau : la valeur d'une expression) ; P2, P3 ← P1.
- *   Pas d'arête 1AM (LEARNING_NET §4.8). Jamais de renvoi vers `hall-mushkil-muadala` (plus tard dans le catalogue).
+ * 2026-10-30 : `tatbiq-qaida-harfiya` (1AM, 1am.m5.r08) est publiée — arêtes LP P1 ← 1am_tatbiq-qaida-harfiya_P2 (tester une égalité = substituer dans chaque membre) et P2 ← 1am_tatbiq-qaida-harfiya_P3
+ *   (un contre-exemple suffit) le long du lien du réseau 1am.m5.r08 → 2am.m4.r09 (`requires`) ; le « تذكّر — السنة الأولى » devient un lien vers la leçon.
+ *   Jamais de renvoi vers `hall-mushkil-muadala` (plus tard dans le catalogue).
  * Successeurs (à connecter par le coordinateur) : 3AM `musawiyat-amaliyat` et `mutabayinat-amaliyat` (net `2am.m4.r09 → 3am.m5.r05`).
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
@@ -66,7 +68,7 @@ export const LESSON_CONFIG = {
   },
   knowledgeMap: true,
   knowledgeMapMode: 'progressive',
-  // Ce que « أستعدّ » diagnostique : le lien « راجع » du réseau `1am.m5.r08` (قاعدة حرفية, items 1 et 2 ; leçon 1AM PRÉVUE) et `2am.m4.r06` (المجموع الجبري, items 3 et 4 ; leçon `majmu-jabri`), la comparaison de décimaux (item 5) et de relatifs (item 6).
+  // Ce que « أستعدّ » diagnostique : le lien « راجع » du réseau `1am.m5.r08` (قاعدة حرفية, items 1 et 2 ; leçon 1AM publiée) et `2am.m4.r06` (المجموع الجبري, items 3 et 4 ; leçon `majmu-jabri`), la comparaison de décimaux (item 5) et de relatifs (item 6).
   priorKnowledge: ['qimat-ibara-2am', 'majmu-jabri-2am', 'muqarana-ushriya', 'muqarana-nisbiya-2am', 'tawzi-2am'],
   resources: [
     // Module 1 — WORKSPACE À DEUX NIVEAUX, un seul type `bridge-load` (la main tient x et y : les NOMBRES de sacs posés sur le camion) :

@@ -5,7 +5,7 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { PREP_PLATFORM_ITEMS } from '../content/textbook';
 
 /**
- * Module 0 — أستعدّ : six affirmations de la PLATEFORME qui mesurent les liens « راجع » du réseau (LEARNING_NET.md §4.4) : `1am.m5.r08` (تطبيق قاعدة حرفية — leçon 1AM `tatbiq-qaida-harfiya` PRÉVUE : texte seul, jamais reconstruite ici ; items 1 et 2)
+ * Module 0 — أستعدّ : six affirmations de la PLATEFORME qui mesurent les liens « راجع » du réseau (LEARNING_NET.md §4.4) : `1am.m5.r08` (تطبيق قاعدة حرفية — leçon 1AM `tatbiq-qaida-harfiya` PUBLIÉE : texte seul, jamais reconstruite ici ; items 1 et 2)
  * et `2am.m4.r06` (حساب مجموع جبري — leçon publiée `majmu-jabri` : items 3 et 4) ; l'item 5 compare deux décimaux et l'item 6 deux relatifs. JAMAIS bloquant ; `id` et `requires` littéraux.
  */
 export default function Module00Astaidd() {

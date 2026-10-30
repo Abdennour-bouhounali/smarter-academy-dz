@@ -12,7 +12,7 @@ import { RECALLS, KNOWLEDGE } from '../content/textbook';
 
 /**
  * Module 2 — معارف (idées de know-3 et know-4) : le module OUVRE sur le labo SEUL (une tâche, `levels={false}` : la règle de b1 et une première pesée à 12 sacs, 4000 + 50 × 12 = 4600 < 5000), puis les noms. La question sur le labo (ce qu'a écrit l'écran)
- * est posée PAR-DESSUS lui (`BridgeLoad › CHAINS.k1`) ; les étapes ci-dessous en gardent la TRACE, puis : le « تذكّر — السنة الأولى » (1AM `tatbiq-qaida-harfiya`, leçon PRÉVUE : SANS lien), le « تذكّر — المجموع الجبري » (`majmu-jabri`, leçon PUBLIÉE :
+ * est posée PAR-DESSUS lui (`BridgeLoad › CHAINS.k1`) ; les étapes ci-dessous en gardent la TRACE, puis : le « تذكّر — السنة الأولى » (1AM `tatbiq-qaida-harfiya`, leçon PUBLIÉE depuis le 2026-10-30 : AVEC lien), le « تذكّر — المجموع الجبري » (`majmu-jabri`, leçon PUBLIÉE :
  * avec lien), la définition du test d'une égalité, le « تذكّر — خاصية التوزيع » (`tawzi-darb-jam-tarh`, avec lien), deux expressions égales, le contre-exemple, le test d'une inégalité et les quatre signes. Jamais « معادلة » ni « حلّ ». LP : P1, P2, P3.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -48,7 +48,9 @@ export default function Module02Maarif() {
               </p>
               {answered('line') && (
                 <>
-                  <TextbookBox kind="remark" title={RECALLS.year1.title} text={RECALLS.year1.text} source={RECALLS.year1.source} compact />
+                  <TextbookBox kind="remark" title={RECALLS.year1.title} text={RECALLS.year1.text} source={RECALLS.year1.source} compact>
+                    {link(RECALLS.year1.lesson, 'درس « تطبيق قاعدة حرفية » — السنة الأولى متوسط')}
+                  </TextbookBox>
                   <TextbookBox kind="remark" title={RECALLS.jabri.title} text={RECALLS.jabri.text} source={RECALLS.jabri.source} compact>
                     {link(RECALLS.jabri.lesson, 'درس « حساب مجموع جبري » — السنة الثانية متوسط')}
                   </TextbookBox>

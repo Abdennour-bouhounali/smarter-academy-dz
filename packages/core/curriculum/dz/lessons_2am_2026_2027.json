@@ -1211,10 +1211,12 @@
       "pointPrerequisites": {
         "P1": [
           "2am_majmu-jabri_P2",
-          "2am_ibara-harfiya-intaj_P2"
+          "2am_ibara-harfiya-intaj_P2",
+          "1am_tatbiq-qaida-harfiya_P2"
         ],
         "P2": [
-          "2am_ikhtibar-musawat-mutabayina_P1"
+          "2am_ikhtibar-musawat-mutabayina_P1",
+          "1am_tatbiq-qaida-harfiya_P3"
         ],
         "P3": [
           "2am_ikhtibar-musawat-mutabayina_P1"
