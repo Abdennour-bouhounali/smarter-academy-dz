@@ -6,6 +6,8 @@
  * Le réseau : `2am.m4.r01` CONSOLIDE `1am.m5.r06` (« نفس الكفاءة على مستقيم مدرّج »), leçon 1AM NON publiée : « أستعدّ » mesure la base, M2 s'ouvre sur
  * « تذكّر — السنة الأولى » SANS lien (`addition('prior_year_reminder')`), et la leçon va droit à l'ancrage (graduations autres que 1, CHOIX de l'origine et de la
  * graduation, l'opposé). `noRebuildForLesson` vide ; `pointPrerequisites` : arêtes internes seulement (P2 ← P1, P3 ← P1, P3 ← P2).
+ * 2026-10-30 : `talim-mustaqim-mudarraj` (1AM, 1am.m5.r06) est publiée — arête LP P1 ← 1am_talim-mustaqim-mudarraj_P3 (lien du réseau 1am.m5.r06 → 2am.m4.r01,
+ * `consolidates`) ; le « تذكّر — السنة الأولى » devient un lien tout seul.
  *
  * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter) — le manuel fixe les الكفاءات, pas le parcours.
  *   Entrée retenue : la « مسطرة الكورنيش » (labo `corniche-ruler`, monde `corniche`). Une planche graduée est fixée sous des repères du front de mer ; la main tient

@@ -725,6 +725,9 @@
       },
       "status": "available",
       "pointPrerequisites": {
+        "P1": [
+          "1am_talim-mustaqim-mudarraj_P3"
+        ],
         "P2": [
           "2am_talim-mustaqim-mudarraj-2_P1"
         ],

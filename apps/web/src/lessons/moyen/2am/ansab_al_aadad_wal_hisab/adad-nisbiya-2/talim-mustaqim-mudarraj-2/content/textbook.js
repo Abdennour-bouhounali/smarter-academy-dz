@@ -17,7 +17,7 @@ export const LAB = {
   maarif: { tasks: [{ id: 'm1', kind: 'read', pin: '-20', ask: ['lamp', 'palm', 'bus'] }] },
 };
 
-/** « تذكّر — السنة الأولى » (SANS lien : la leçon 1AM n'est pas générée). */
+/** « تذكّر — السنة الأولى » (درس 1AM `talim-mustaqim-mudarraj`، منشور منذ 2026-10-30 : الرابط يظهر وحده). */
 export const REMINDER = {
   source: addition('prior_year_reminder'),
   text: 'في السنة الماضية تعلّمت أنّ للمستقيم المدرّج مبدأً هو الصفر، وأنّ الأعداد الموجبة على يمينه والسالبة على يساره، وأنّ فاصلة النقطة $A$ التي تبعد عن المبدأ بثلاث تدريجات إلى اليسار هي $-3$ .',
