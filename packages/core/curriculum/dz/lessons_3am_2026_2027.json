@@ -1073,14 +1073,16 @@
       "status": "available",
       "pointPrerequisites": {
         "P1": [
-          "3am_amaliyat-natiqa_P4"
+          "3am_amaliyat-natiqa_P4",
+          "1am_tatbiq-qaida-harfiya_P2"
         ],
         "P2": [
           "3am_qimat-ibara-harfiya_P1"
         ],
         "P3": [
           "3am_qimat-ibara-harfiya_P1",
-          "3am_qimat-ibara-harfiya_P2"
+          "3am_qimat-ibara-harfiya_P2",
+          "1am_tatbiq-qaida-harfiya_P3"
         ]
       },
       "durationMinutes": 64,
