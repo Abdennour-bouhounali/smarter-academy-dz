@@ -744,6 +744,23 @@ export const LEVELS = Object.freeze({
       { id: 'a3', kind: 'bound', reads: [{ x: -15 }, { x: 27 }, { x: -4 }] },
     ] }, ...T('ex-13') },
   },
+  // LA CARTE INVERSE SOUS LA MAIN (rewind-belt, thème packingline, 1AM unité 6, leçon « البحث عن أعداد ناقصة », 2026-10-30) : une tâche est `{ id, kind: 'add' | 'sub' | 'rsub' | 'mul' | 'div', a, out, rack }` ;
+  // la machine a pour carte « kind a » et a rendu `out` ; la main choisit dans `rack` la carte qui remonte le tapis, tire la caisse jusqu'au bac d'entrée, puis la repousse (contre-épreuve). Nombres : textes décimaux à la virgule.
+  // مبتدئ (plateforme) : b1 « + 9 » donne 54 (□ = 45), b2 « − 14 » donne 54 (□ = 68), b3 « × 6 » donne 54 (□ = 9), b4 la carte piège « 80 − » donne 54 (□ = 26 : l'inverse du moins n'est pas le plus).
+  // متقدم (plateforme) : a1 décimaux « + 17,5 » donne 46,2 (□ = 28,7), a2 « 12,5 − » donne 4,8 (□ = 7,7), a3 « × 7 » donne 20 : la division 20 ÷ 7 ne s'arrête pas, □ est la fraction 20/7, vérifiée exactement.
+  'rewind-belt': {
+    beginner: { numbers: { tasks: [
+      { id: 'b1', kind: 'add', a: '9', out: '54', rack: ['add', 'sub', 'mul', 'div'] },
+      { id: 'b2', kind: 'sub', a: '14', out: '54', rack: ['add', 'sub', 'mul', 'div'] },
+      { id: 'b3', kind: 'mul', a: '6', out: '54', rack: ['add', 'sub', 'mul', 'div'] },
+      { id: 'b4', kind: 'rsub', a: '80', out: '54', rack: ['add', 'sub', 'rsub'] },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', kind: 'add', a: '17,5', out: '46,2', rack: ['add', 'sub', 'mul', 'div'] },
+      { id: 'a2', kind: 'rsub', a: '12,5', out: '4,8', rack: ['add', 'sub', 'rsub'] },
+      { id: 'a3', kind: 'mul', a: '7', out: '20', rack: ['add', 'sub', 'mul', 'div'] },
+    ] }, ...T('now-82') },
+  },
   // ── 1AM, unité 11 — surface, périmètre, aire (2026-10-15) ──
   // LE CARREAU SOUS LA MAIN (tile-yard) : la main tient un carreau de zellige (thème courtyard). مبتدئ : la cour de la maison du grand-père,
   // 12 carreaux seulement DÉPLACÉS (mode fence) : l'aire ne bouge pas, la clôture change — d'abord la plus courte, puis 20 bâtons ;

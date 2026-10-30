@@ -822,6 +822,15 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'العدد النسبي موجب أو سالب: السالب مسبوق بإشارة − ويقع تحت الصفر، والموجب فوق الصفر ؛ وللعدد إشارة ومسافة إلى الصفر مختلفتان ؛ والعددان المتعاكسان لهما المسافة نفسها إلى الصفر وإشارتان متعاكستان، مثل $3$ و $-3$ ؛ والصفر معاكس نفسه',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 1AM, unité 6 « الحساب الحرفي », leçon 1 « البحث عن أعداد ناقصة » (2026-10-30) — le tapis d'une machine tourné à rebours avec la carte inverse.
+  'rewind-belt': {
+    // LA CARTE INVERSE SOUS LA MAIN : un atelier de conditionnement. Une machine à carte (« + 9 », « − 14 », « × 6 » ou la carte piège « 80 − ») a reçu un nombre d'objets et a rendu 54. La main choisit dans une rangée la carte qui
+    // FAIT TOURNER LE TAPIS À REBOURS, tire la caisse de la sortie à travers la machine jusqu'au bac d'entrée (le nombre manquant □ apparaît), puis la REPOUSSE en avant à travers la machine d'origine : ce qui sort est comparé à 54
+    // (la contre-épreuve par substitution). Une mauvaise carte n'est pas corrigée : la contre-épreuve dit ce qui sort (« 72 au lieu de 54 »). La carte piège « a − □ » est son propre inverse (□ = a − b) : on ne prend pas l'inverse du moins.
+    // متقدم : décimaux, la carte « a − » avec des décimaux, et une division qui ne s'arrête pas (20 ÷ 7, une fraction) vérifiée exactement. « جرّب أعدادك » : toujours ouvert. Chaque contre-épreuve est jugée exactement par `missingNumber.js` : MANUEL (§6bis).
+    shows: 'للبحث عن العدد الناقص □ في مساواة نعيد الآلة إلى الوراء بالعملية العكسية ثمّ نتحقّق بالتعويض: في مجموع □ + a = b نطرح فنجد □ = b − a ؛ في فرق □ − a = b نجمع ؛ وفي a − □ = b نطرح الناتج من a ؛ وفي جداء a × □ = b نقسم فنجد □ = b ÷ a (وقد يكون الناتج كسرًا)',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 1AM, unité 5 « الأعداد النسبية », leçon 2 « التعليم على مستقيم مدرّج » (2026-10-30) — la foulée portée des deux côtés de l'origine, lue comme une abscisse.
   'stride-stamp': {
     // LA FOULÉE PORTÉE DES DEUX CÔTÉS : une route de village, la station de bus est l'origine O (l'école à l'est, la place de la mosquée à l'ouest). La main PORTE un bâton d'une foulée à partir de O vers l'est puis vers l'ouest : les ticks 1, 2, 3 puis

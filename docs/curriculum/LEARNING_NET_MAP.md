@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **137** leçons publiées · **133** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **138** leçons publiées · **132** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -838,7 +838,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | `1am.m5.r07` | قراءة إحداثيي نقطة معلومة، أو تعليم نقطة ذات إحداثيين معلومين في مستوٍ مزوّد بمعلم. | `talim-fi-mustawi` _(prévue)_ | `1am.m5.r06` |
 | `1am.m5.r08` | تطبيق قاعدة حرفية في وضعية بسيطة. | `tatbiq-qaida-harfiya` _(prévue)_ | `1am.m2.r08` |
 | `1am.m5.r09` | إنتاج عبارة حرفية بسيطة. | `intaj-ibara-harfiya` _(prévue)_ | `1am.m5.r08` |
-| `1am.m5.r10` | إتمام مساواة من الشكل: a + … = b ؛ a - … = b ؛ a × … = b حيث a و b عددان مفروضان. | `bahth-adad-naqisa` _(prévue)_ | `1am.m1.r05` |
+| `1am.m5.r10` | إتمام مساواة من الشكل: a + … = b ؛ a - … = b ؛ a × … = b حيث a و b عددان مفروضان. | `bahth-adad-naqisa` | `1am.m1.r05` |
 | `1am.m5.x1` | الانتقال من الكتابة العشرية لعدد عشري إلى كتابة كسرية له. _(منهاج 2016)_ | `kusur-ashriya-kitaba` | `1am.m5.r01` |
 
 #### المقطع 6 — التناسبية وتنظيم معطيات (`1am.m6`, 3 أسابيع)
@@ -1173,7 +1173,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 22 | `talim-mustaqim-mudarraj` — التعليم على مستقيم مدرّج | publiée | `1am.m5.r06` `1am.m5.r05` |
 | 23 | `talim-fi-mustawi` — التعليم في المستوي | prévue | `1am.m5.r07` |
 | 24 | `wadiya-idmajiya-adad-nisbiya` — أدمج تعلّماتي — الأعداد النسبية | synthèse | — |
-| 25 | `bahth-adad-naqisa` — البحث عن أعداد ناقصة | prévue | `1am.m5.r10` |
+| 25 | `bahth-adad-naqisa` — البحث عن أعداد ناقصة | publiée | `1am.m5.r10` |
 | 26 | `tatbiq-qaida-harfiya` — تطبيق قاعدة حرفية | prévue | `1am.m5.r08` |
 | 27 | `intaj-ibara-harfiya` — إنتاج عبارات حرفية | prévue | `1am.m5.r09` |
 | 28 | `wadiya-idmajiya-ibarat-harfiya` — أدمج تعلّماتي — الحساب الحرفي | synthèse | — |

@@ -255,17 +255,6 @@
       ]
     },
     {
-      "code": "bahth-adad-naqisa",
-      "grade": "1am",
-      "unit": "ibarat-harfiya",
-      "titleAr": "البحث عن أعداد ناقصة",
-      "kind": "lesson",
-      "trigger": "muadala-ula",
-      "via": [
-        "1am.m5.r10"
-      ]
-    },
-    {
       "code": "talim-fi-mustawi",
       "grade": "1am",
       "unit": "adad-nisbiya",
