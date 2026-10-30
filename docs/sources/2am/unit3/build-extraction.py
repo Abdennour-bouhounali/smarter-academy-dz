@@ -354,7 +354,7 @@ deep(59, 51, 'لاحظ المثال: 1 + 23 − 4 + 56 + 7 + 8 + 9 = 100. بإد
 # ── p. 52 : أدمج تعلّماتي ; p. 53 : تكنولوجيات ──────────────────────────────────────────────────────
 E.append({'id': 'integration', 'kind': 'integration', 'page': 52, 'section': 'أدمج تعلّماتي', 'title': 'الوضعية المالية للعائلة', 'verified': False,
           'text': 'الورقة المقابلة لمتابعة الوضعية المالية لعائلة في شهر سبتمبر (جدول: التاريخ، العملية، المصاريف DA، المداخيل DA). 1) أعد حجز الورقة على صفحة لمجدول إكسال. 2) باختيار الدوائر المناسبة، احسب مصاريف ومداخيل العائلة. 3) ماذا تستنتج بالنسبة للوضعية المالية للعائلة؟',
-          'answer': {'expenses': 6500 + 4000 + 6500 + 1500 + 2000 + 6500 + 12000 + 80 + 6500 + 3500, 'income': 8000 + 55000 + 1600}, 'answerSource': 'computed',
+          'answer': {'expenses': 6500 + 4000 + 6500 + 1500 + 2000 + 6500 + 12000 + 980 + 6500 + 3500, 'income': 55000 + 1600, 'openingBalance': 8000}, 'answerSource': 'computed',
           'reading': 'tableau lu à 90 dpi : plusieurs montants coupés ; à relire par la synthèse'})
 E.append({'id': 'evaluation', 'kind': 'integration', 'page': 52, 'section': 'وضعية للتقويم', 'verified': False,
           'text': 'باستعمال محرّك بحث في الإنترنيت، استعلم حول الفرق في التوقيت بين مناطق العالم، ثمّ أجب: 1) كيف تبرّر الدول التي لها نفس الفرق في التوقيت مع الجزائر؟ 2) تشير الساعة إلى 12h في الجزائر العاصمة، ما هو التوقيت في كلّ من: طوكيو – واشنطن – بيروت – القاهرة – لندن – جنوب إفريقيا.'})
@@ -369,7 +369,8 @@ DEST = {
     '_comment': 'elementId → { lesson, module } ; `items` répartit un élément ; une leçon encore coming_soon est une destination EN ATTENTE (check-textbook-coverage.mjs). Les modules de muqarana-nisbiya : 0 أستعدّ · 1 نشاط · 2 معارف · 3 طريقة · 4 أتمرّن · 5–7 مسائل · 8 إختبار أولي.',
     'objectives': {'lesson': 'unit', 'module': 'page'},
     'opener': {'lesson': L2, 'module': 4},
-    'challenge': {'lesson': 'unit', 'module': 'page'},
+    'challenge': {'lesson': SYN, 'module': 3, 'duplicatedIn': [{'lesson': 'unit', 'module': 'page'}],   # redessiné (shatt Melghir / Tahat) en situation 3 ; la carte de l'unité reçoit la version de la plateforme (2026-10-30)
+                  'note': "altitudes algériennes (Tahat, chott Melghir, avion, puits) ; profondeur = altitude de la surface − altitude du fond"},
     'prep': {'lesson': L2, 'module': 0, 'items': {
         '5-6-7': {'lesson': L2, 'module': 0},
         '1-2-3-4': {'lesson': L1, 'module': 0},
@@ -402,7 +403,7 @@ DEST = {
     **{f'deep-{n}': {'lesson': L4, 'module': None} for n in (45, 48, 57)},   # banque d'exercices (adaptés) de jam-tarh-nisbiya
     **{f'deep-{n}': {'lesson': L6, 'module': 4} for n in (58,)}, **{f'deep-{n}': {'lesson': L6, 'module': None} for n in (49, 50)},   # carrés magiques / chemins : sommes de 3 à 4 termes = majmu-jabri
     **{f'deep-{n}': {'lesson': L3, 'module': 4} for n in (52, 55)}, **{f'deep-{n}': {'lesson': L3, 'module': None} for n in (51, 53, 54, 56)},   # deep-51/53/54/56 : banque d'exercices (adaptés) de talim-nuqta-mustawi ; l'entrée est le labo `dig-grid` (2026-10-29)
-    'integration': {'lesson': SYN, 'module': None}, 'evaluation': {'lesson': SYN, 'module': None},
+    'integration': {'lesson': SYN, 'module': 1}, 'evaluation': {'lesson': SYN, 'module': 2},   # redessinées en situations d'entraînement 1 et 2 (synthèse, 2026-10-30)
     'ict-1': {'lesson': L5, 'module': 4},   # adapté sans logiciel : « d'autres positions avec AB = 7 » est un exercice de choix (masafa-nuqtatayn, 2026-10-29)
 }
 
@@ -417,7 +418,9 @@ DISCREPANCIES = [
     {'elementId': 'know-1b', 'kind': 'misprint', 'text': 'Le premier exemple imprime « −2,5 < −4 » à côté de « la point F avant la point E » : c’est −4 < −2,5 (F est à gauche de E). Les deux autres exemples (2,5 < 5 ; −2,5 < 2,5) sont corrects. La leçon écrit −4 < −2,5.'},
     {'elementId': 'ex-20', 'kind': 'misprint', 'text': 'La troisième ligne est imprimée « −4,3 < … < −4,5 » (bornes dans le mauvais ordre : −4,3 > −4,5). La leçon lit −4,5 < … < −4,3.'},
     {'elementId': 'ex-29', 'kind': 'reading', 'text': 'La ligne C contient « (118) » : lire (+18) sur le scan flou.'},
-    {'elementId': 'challenge', 'kind': 'reading', 'text': 'Les altitudes des fonds de Huron (−63 ? ) et d’Érié (+109) sont lues sur un scan flou ; profondeur = surface − fond. Valeurs calculées pour : Supérieur 406 m, Huron 239 m, Michigan 281 m, Érié 64 m, Ontario 244 m.'},
+    {'elementId': 'integration', 'kind': 'reading', 'text': 'Relu à 170 dpi (synthèse, 2026-10-30, pdf p. 49) : la feuille de septembre part d’un solde de 8000 DA au 31/8 ; dépenses 6500, 4000, 6500, 1500 + 2000, 6500, 12000, 980 (eau), 6500, 3500 ; recettes 55000 (salaire) et 1600 (médicaments) ; le « 80 » lu à 90 dpi est 980 ; le solde final est daté « 30/9/2016 » (coquille pour 2017). La consigne parle d’Excel (« دوائر » = cellules) : hors périmètre, la plateforme redessine la situation SANS logiciel (budget d’un mois semaine par semaine, montants propres, sans prêt ni intérêt).'},
+    {'elementId': 'evaluation', 'kind': 'scope', 'text': 'Relu à 170 dpi (synthèse) : « باستعمال محرّك بحث في الإنترنيت » envoie l’élève hors de la plateforme ; les décalages horaires changent avec l’heure d’été (Le Caire, Washington) alors qu’Alger reste à GMT+1 : la plateforme DONNE les décalages d’HIVER par rapport à Londres (Alger +1, Le Caire +2, Beyrouth +2, Johannesburg +2, Tokyo +9, Washington −5) et pose l’heure à 12 h à Alger.'},
+    {'elementId': 'challenge', 'kind': 'reading', 'text': 'Relu à 170 dpi (synthèse, pdf p. 35) : le fond de Huron est −53 m (et non −63) ; la partie gauche du schéma (+183 m, −223 m…) est coupée par la reliure. Les valeurs ne sont pas reprises : la plateforme pose sa propre version algérienne (chott Melghir ≈ −40 m, Tahat ≈ +2908 m, avion à +3500 m, puits de 160 m) avec « حوالي ».'},
     {'elementId': 'opener', 'kind': 'scope', 'text': 'Texte coupé à droite sur la page 38 ; seules les deux températures extrêmes (−67,8 et 56,7) sont lisibles.'},
     {'elementId': 'unit', 'kind': 'scope', 'text': 'Pages 38–53 complètes mais scan médiocre : bord droit des pp. 41, 43, 44, 45, 46, 47 coupé, plusieurs lignes d’exercices tronquées, numéros de 6 exercices à peine lisibles. Les éléments hors de muqarana-nisbiya sont brefs (verified: false) : leur leçon les relira.'},
 ]
@@ -452,6 +455,11 @@ assert not extra, f'destinations sans élément : {extra}'
 LESSON = L2
 bad = [e['id'] for e in E if DEST[e['id']].get('lesson') == LESSON and not e.get('verified') and e['id'] not in ('opener', 'ex-16', 'ex-20', 'deep-38', 'self-5', 'self-6')]
 assert not bad, f'éléments de {LESSON} non vérifiés : {bad}'
+
+for _id in ('integration', 'evaluation', 'challenge'):
+    _el = next(e for e in E if e['id'] == _id)
+    _el['verified'] = True
+    _el['reading'] = (_el.get('reading', '') + ' Relu par la synthèse (2026-10-30) à 170 dpi (pdf p. 35 et 49).').strip()
 
 out = Path(__file__).with_name('extraction.json')
 out.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')

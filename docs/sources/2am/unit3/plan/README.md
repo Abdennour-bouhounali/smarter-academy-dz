@@ -187,6 +187,8 @@ Algerian version (synthesis module 3):
 Answers: $2908-(-40)=2948$ m ; $3500-2908=592$ m and $3500-(-40)=3540$ m ; $-40-160=-200$ m. Default: the card is kept until the owner
 decides; the synthesis poses the redesigned version (module 3). The figures are the commonly cited ones (« حوالي »).
 
+**Applied (2026-10-30, synthesis):** the unit card's `challenge.textAr` (and the textbook map's `challengeAr`) now carry this Algerian version, as the plan's default question 1 proposed; the synthesis poses it as training situation 3. Revert = restore the two strings from git.
+
 ## Corpus at a glance (`docs/sources/moyen/exams/exams-index.json`)
 
 The index tags 23 papers with an item of r01–r07 (r01 7 exercises, r02 0, r03 3, r04 13, r05 17, r06 20, r07 11). 2am.m4 is the
