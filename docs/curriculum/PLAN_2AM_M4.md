@@ -155,6 +155,15 @@ Learned in pair 3 (2026-10-29):
   example. Your e2e asserts that no `.katex` inside a `[data-memo-card]` leaves its card or overlaps another formula.
 - The local API (`php artisan serve` on 127.0.0.1:8000, in `apps/api`) must be up for the lesson-kit e2e; if it is down, ask the coordinator.
 - 4AM lessons cannot take a 2AM/3AM LP as `pointPrerequisites` (`decomposition.test.js`): only the item / lesson level links reach 4AM.
+Learned in pair 4 (2026-10-30):
+- In a JSX ATTRIBUTE string (`prompt="…"`, `title="…"`) a backslash is literal: write `\frac`, never `\\frac` (a doubled one shows
+  « frac23 » to the student; `check:katex` does not see it). Inside a JS string `'…'` / template literal the doubled form is right.
+- A duplicated formula in a knowledge item title next to its `chip` (`title: '… AB = BA'` + `chip: AB=BA`) prints twice: titles carry words only.
+- Old lesson-kit e2e scripts of 3AM lessons may time out in their lab drive (`[data-lt-next]`): they predate the lab prototype; judge them by
+  their module-mount checks (no ✗) and say so.
+- A synthesis (pair 5) has NO lab: 00 أستعدّ · 01–06 « الوضعية التدريبية » · 07 analysis of the final situation (the only `ContentModule`, with
+  `objectives`) · 08 final test; copy the published 3AM / 2AM syntheses (`wadiya-idmajiya-kusur-amaliyat` is the nearest), one الكفاءة with
+  `pointPrerequisites` P1 ← the unit's lessons.
 - Two leads in the SAME unit (pair 3 is unit 3 twice) edit `docs/sources/2am/unit3/build-extraction.py` / `extraction.json` and
   `relative.js`: small targeted edits after a fresh read, never a regeneration of the whole file.
 

@@ -1618,7 +1618,7 @@
    "kind": "deep",
    "page": 67,
    "section": "أتعمّق",
-   "verified": false,
+   "verified": true,
    "text": "زوايا مثلث قيسها x ، 2x ، 3x بالدرجات : عيّن x.",
    "number": 58,
    "answer": {
@@ -1672,7 +1672,7 @@
    "kind": "integration",
    "page": 68,
    "section": "أدمج تعلّماتي",
-   "verified": false,
+   "verified": true,
    "text": "نادي A : 1300 DA للاشتراك + 150 DA مقابل كلّ حصّة. نادي B : 800 DA + 170 DA مقابل كلّ حصّة. 1) عبّر عن المبلغ في كلّ نادٍ بدلالة عدد الحصص n. 2) أنجز جدولا. 3) متى يتساوى المبلغان ؟ ومتى يكون B أرخص ؟",
    "title": "النادي",
    "answer": {
@@ -1690,7 +1690,7 @@
    "kind": "integration",
    "page": 68,
    "section": "وضعية للتقويم",
-   "verified": false,
+   "verified": true,
    "text": "مسافة الكبح D = V × V / 203,2 على طريق جافّ و V × V / 101,6 على طريق مبلل (V بـ km/h و D بالمتر). سيارة تسير بسرعة 130 km/h ، وحيوان على بعد 150 m. هل تتوقّف السيارة قبل الحيوان ؟",
    "title": "مسافة الكبح",
    "answer": {
@@ -2079,7 +2079,13 @@
   },
   "self-2": {
    "lesson": "ibara-harfiya-intaj",
-   "module": null
+   "module": null,
+   "duplicatedIn": [
+    {
+     "lesson": "wadiya-idmajiya-mafhum-muadala",
+     "module": null
+    }
+   ]
   },
   "self-3": {
    "lesson": "ibara-harfiya-intaj",

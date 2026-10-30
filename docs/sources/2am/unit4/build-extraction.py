@@ -432,6 +432,8 @@ DEST = {
     **{f'self-{n}': {'lesson': I, 'module': None} for n in (1, 2, 3, 4, 5, 6, 7, 10)},
     **{f'self-{n}': {'lesson': T, 'module': None} for n in (8, 9)},
     'self-11': {'lesson': H, 'module': None},
+    # wadiya-idmajiya-mafhum-muadala (2026-10-30) : le banc de la synthèse reprend `self-2` (niveau 2, copie adaptée) — seconde utilisation déclarée.
+    'self-2': {'lesson': I, 'module': None, 'duplicatedIn': [{'lesson': S, 'module': None}]},
     'deep-44': {'lesson': I, 'module': None, 'notIntegrated': 'figure à relire à 200 dpi (arêtes d\'une boîte de 42 cm et x) ; l\'idée « longueur en x » est celle des exercices 2 et 4 du module 4'},
     'deep-45': {'lesson': I, 'module': None, 'notIntegrated': 'figure dense (deux carrés ABCD et AEFG, aires en x et y) : demande une soustraction de longueurs, hors du périmètre de la leçon ; l\'aire d\'un rectangle en x est reprise par la مسألة 2'},
     'deep-46': {'lesson': I, 'module': 6},
@@ -486,6 +488,12 @@ for _e in E:
 IKHTIBAR_READ = {'act-3', 'know-3', 'know-4', 'method-3', 'now-61', 'ex-27', 'ex-28', 'ex-29', 'ex-30', 'ex-31', 'ex-32', 'ex-33', 'ict'}
 for _e in E:
     if _e['id'] in IKHTIBAR_READ:
+        _e['verified'] = True
+
+# wadiya-idmajiya-mafhum-muadala (2026-10-30) : pages 67, 68 et 69 du livre (PDF 64, 65, 66 relues à 90 dpi) — integration, evaluation, ict et deep-58 vérifiés (la synthèse n'en cite aucun mot).
+SYNTH_READ = {'integration', 'evaluation', 'ict', 'deep-58'}
+for _e in E:
+    if _e['id'] in SYNTH_READ:
         _e['verified'] = True
 
 ids = [e['id'] for e in E]

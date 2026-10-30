@@ -138,7 +138,9 @@ import { ORACLE as ORACLE_2AM_TAWZI, audit as auditTawzi } from './practice-orac
 import { ORACLE as ORACLE_2AM_IBARA_INTAJ, audit as auditIbaraIntaj } from './practice-oracle/ibara-harfiya-intaj.mjs';
 import { ORACLE as ORACLE_2AM_HALL_MUSHKIL, audit as auditHallMushkil } from './practice-oracle/hall-mushkil-muadala.mjs';
 import { ORACLE as ORACLE_2AM_IKHTIBAR, audit as auditIkhtibar } from './practice-oracle/ikhtibar-musawat-mutabayina.mjs';
+import { ORACLE as ORACLE_2AM_WADIYA_MUADALA, audit as auditWadiyaMuadala } from './practice-oracle/wadiya-idmajiya-mafhum-muadala.mjs';
 import { ORACLE as ORACLE_2AM_WADIYA_KUSUR_AMALIYAT, audit as auditWadiyaKusurAmaliyat } from './practice-oracle/wadiya-idmajiya-kusur-amaliyat.mjs';
+import { ORACLE as ORACLE_2AM_WADIYA_ADAD_NISBIYA, audit as auditWadiyaAdadNisbiya } from './practice-oracle/wadiya-idmajiya-adad-nisbiya-2.mjs';
 import { ORACLE as ORACLE_2AM_WADIYA_AMALIYAT, audit as auditWadiyaAmaliyat } from './practice-oracle/wadiya-idmajiya-amaliyat-tabiiya-ushriya.mjs';
 import { ORACLE as ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA } from './practice-oracle/ikhtizal-kitaba-kasriya.mjs';
 import { ORACLE as ORACLE_1AM_QAWAID_QABILIYAT_QISMA } from './practice-oracle/qawaid-qabiliyat-qisma.mjs';
@@ -338,7 +340,9 @@ const ORACLE = {
   ...ORACLE_2AM_IBARA_INTAJ,
   ...ORACLE_2AM_HALL_MUSHKIL,
   ...ORACLE_2AM_IKHTIBAR,
+  ...ORACLE_2AM_WADIYA_MUADALA,
   ...ORACLE_2AM_WADIYA_KUSUR_AMALIYAT,
+  ...ORACLE_2AM_WADIYA_ADAD_NISBIYA,
   ...ORACLE_2AM_WADIYA_AMALIYAT,
   ...ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA,
   ...ORACLE_1AM_QAWAID_QABILIYAT_QISMA,
@@ -606,6 +610,17 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     const own = bank.filter((b) => b.key.startsWith('ex-2am-ikhtibar-musawat-mutabayina-'));
     expect(own.length).toBeGreaterThan(0);
     expect(auditIkhtibar(own)).toEqual([]);
+  });
+  it('أدمج تعلّماتي — مفهوم معادلة (2AM, synthèse) : rationnels exacts BigInt et parseur ASCII propres à l\'oracle (aucun import de packages/core), chaque valeur / chaque équation (a·x = b, x ÷ a = b, a ÷ x = b, k·x ± c = d) recalculée depuis l\'énoncé retapé (annulation de la dernière opération, vérification par substitution), chaque relation TESTÉE à des valeurs données (jamais résolue : x des deux côtés reste hors périmètre), chaque QCM d\'expression jugé par identité de polynômes (une seule option vraie), chaque signature / distracteur = la recette de son erreur nommée et FAUX (SYN-MUAD2-FIXED, -ADDCOEF, -ROLE, -SIGN, IBARA2, MAJHUL, IKHTIBAR), la formule la moins chère recalculée (la lecture « prix de l\'unité seul » renverse le choix), LaTeX relu (îlots $…$, aucun renvoi au manuel, aucun négatif), provenance : 3 term_exam lus (2am-s2-52, 2am-s2-53, 2am-s2-56 ex 5), 45 modelled, 2 adaptés vérifiés dans l\'extraction', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-wadiya-idmajiya-mafhum-muadala-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditWadiyaMuadala(own)).toEqual([]);
+  });
+
+  it('أدمج تعلّماتي — الأعداد النسبية (2AM, synthèse) : centièmes BigInt et évaluateur par réduction des groupes propres à l\'oracle (aucun import de packages/core), chaque somme algébrique recalculée de deux façons (réduction des ( ) et [ ] puis chaîne plate, et somme des positifs + somme des négatifs), distances (la plus grande moins la plus petite), milieux (refusés à 3 décimales), changements (nouveau − ancien), lectures d\'abscisses (graduations × valeur), opposés, quatrième sommet d\'un rectangle, symétriques par rapport à un axe, points sur les axes, QCM jugés option par option (une seule vraie, jamais toujours la première : comparaisons, rangements, « نعم / لا », axes), chaque signature et chaque distracteur MISC-* (JAMNISB, JABRI, MASAFA2, MUQARANA-NISBIYA, TALIM2, NUQTA2) recalculé depuis son erreur nommée et FAUX, aire et prix (étapes antérieures counted: false), الكفاءة P1 de chaque étape, nombres imprimés = nombres retapés, texte relu (aucun renvoi au manuel, aucun terme interdit, lettres, unités et nombres signés dans $…$), provenance : 2 term_exam lus (2am-s2-62 et 2am-s2-71, exercice 5) et 48 modelled', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-wadiya-idmajiya-adad-nisbiya-2-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditWadiyaAdadNisbiya(own)).toEqual([]);
   });
 
   it('le cas signalé (6 | 120) : « 6 مضاعف للعدد 120 » est faux, seul « لا » est accepté', () => {

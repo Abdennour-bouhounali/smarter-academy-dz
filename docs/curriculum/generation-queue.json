@@ -1110,24 +1110,6 @@
       "via": []
     },
     {
-      "code": "wadiya-idmajiya-adad-nisbiya-2",
-      "grade": "2am",
-      "unit": "adad-nisbiya-2",
-      "titleAr": "أدمج تعلّماتي — الأعداد النسبية",
-      "kind": "synthesis",
-      "trigger": "unité adad-nisbiya-2 complète",
-      "via": []
-    },
-    {
-      "code": "wadiya-idmajiya-mafhum-muadala",
-      "grade": "2am",
-      "unit": "mafhum-muadala",
-      "titleAr": "أدمج تعلّماتي — مفهوم معادلة",
-      "kind": "synthesis",
-      "trigger": "unité mafhum-muadala complète",
-      "via": []
-    },
-    {
       "code": "injaz-jam-tarh-mudad",
       "grade": "1am",
       "unit": "jam-tarh-ashriya",

@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **132** leçons publiées · **138** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **134** leçons publiées · **136** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
