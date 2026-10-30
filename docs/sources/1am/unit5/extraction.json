@@ -355,7 +355,7 @@
    "page": 65,
    "section": "اكتشف",
    "title": "في الرياضيات ① — نصف مستقيم بفواصل سالبة",
-   "verified": false,
+   "verified": true,
    "text": "① أ) ارسم نصف مستقيم مدرّجًا مبدؤه النقطة O باختيار السنتيمتر كوحدة. علّم النقاط A(4) ، B(5) و D(7). ب) أنشئ النقطة F بحيث تكون A منتصف القطعة [BF] ؛ ما فاصلة F ؟ ج) نريد تعليم النقطة E بحيث تكون O منتصف القطعة [DE] ؛ ماذا تلاحظ ؟ كيف تتمّ التدريج حتى يكون ذلك ممكنًا ؟ ما هي عندئذ فاصلة E ؟",
    "answer": {
     "F": 3,
@@ -370,7 +370,7 @@
    "page": 66,
    "section": "اكتشف",
    "title": "التعليم على مستقيم مدرّج",
-   "verified": false,
+   "verified": true,
    "text": "نعتبر درجات الحرارة المسجلة في مختلف مناطق الجزائر. ① أكمل الجدول (المدن : قسنطينة، ... بشار ؛ درجات : −6، 0، 7، 4، −5، 6...). ② انقل المستقيم المدرّج أدناه (من −8 إلى 8) وعلّم النقطة الممثلة للمدينة أمام خط التدريج الموافق لدرجة الحرارة المسجلة فيها. ③ رتّب درجات الحرارة من الأكثر برودة إلى الأكثر دفئًا. كيف يمكن استنتاج ذلك من البيان ؟ ④ في ذلك اليوم سجّل أمين عنده في البيت 1,5°C. أين ينبغي أن يعلّم ذلك على المستقيم المدرّج ؟",
    "answer": {
     "order": [
@@ -452,7 +452,7 @@
    "page": 68,
    "section": "أكتسب طرائق",
    "title": "تدريج مستقيم وتعليم نقطة",
-   "verified": false,
+   "verified": true,
    "text": "مثال : درّج مستقيمًا، علّم عليه النقطتين A و B ذاتي الفاصلتين −3 و 2,7 على الترتيب. (1) نرسم مستقيمًا، نختار المبدأ O ووحدة لقياس الطول OI. (2) فاصلة A سالبة : A على يسار O ، نواصل التدريج بنقل الطول OI. (3) نعيّن موضع A عند العدد −3 بالضبط. (4) فاصلة B موجبة على يمين O ، لا تظهر بعد التدريج. (5) نعيّن موضع B بين العددين 2 و 3 بالتقريب. طريقة : لتعليم نقاط بمستقيم، نختار اتجاهه ونقطة المبدأ ووحدة قياس الطول. ندرّج المستقيم من جهتي المبدأ بنقل الوحدة عدة مرّات حسب الحاجة. تُعلّم كلّ نقطة بفاصلتها : العدد هو المسافة بين النقطة والمبدأ، والإشارة (+) على يمين المبدأ و (−) على يساره.",
    "answerSource": "read"
   },
@@ -461,7 +461,7 @@
    "kind": "now",
    "page": 68,
    "section": "دوري الآن",
-   "verified": false,
+   "verified": true,
    "text": "① على المستقيم المدرّج أدناه، اقرأ فواصل النقاط A ، B و C (المبدأ 0 والعلامة 10 معطاتان). ② أ) ارسم مستقيمًا مدرّجًا باختيار المبدأ O ووحدة قياس الطول 5cm واتجاه. ب) ضع عليه النقاط M ، N و K التي فواصلها 10 ، −15 و −7,5 على الترتيب.",
    "answerSource": "read"
   },
@@ -690,7 +690,7 @@
    "number": 10,
    "page": 71,
    "section": "أتمرّن — الأعداد النسبية",
-   "verified": false,
+   "verified": true,
    "text": "نعتبر المستقيم المدرّج الآتي (علّمت عليه −3,1 ؛ −1 ؛ 0 ؛ 2,5 والنقطتان S و T). أكمل الجمل بالعبارات المناسبة : أ) كلّ الأعداد المكتوبة على المستقيم المدرّج … ب) العددان −1 و −3,1 … جـ) −4 هي … النقطة S و +4 هي … النقطة T. د) العددان اللذان لهما نفس … وإشارتان … هما عددان … .",
    "answerSource": "read",
    "note": "lecture d'abscisses sur une droite graduée : la leçon talim-mustaqim-mudarraj (L2) la relira"
@@ -701,7 +701,7 @@
    "number": 11,
    "page": 71,
    "section": "أتمرّن — التعليم على مستقيم مدرّج",
-   "verified": false,
+   "verified": true,
    "text": "انقل المستقيمات المدرّجة الآتية ثم أكمل التدريج بكتابة الأعداد النسبية المناسبة تحت التدريجات (أمثلة : المبدأ 0 والعلامة 5 ؛ −6 و 2).",
    "answerSource": "read"
   },
@@ -711,7 +711,7 @@
    "number": 12,
    "page": 72,
    "section": "أتمرّن — التعليم على مستقيم مدرّج",
-   "verified": false,
+   "verified": true,
    "text": "اقرأ فاصلة كلّ من النقاط A ، B ، C و D على المستقيم المدرّج (المبدأ 0 والعلامة 100 معطاتان).",
    "answerSource": "read"
   },
@@ -721,7 +721,7 @@
    "number": 13,
    "page": 72,
    "section": "أتمرّن — التعليم على مستقيم مدرّج",
-   "verified": false,
+   "verified": true,
    "text": "عيّن النقطة التي تمثّل المبدأ في كلّ من المستقيمين المدرّجين الآتيين : (1) علّم عليه −3 و 3 ؛ (2) علّم عليه −6 و −3.",
    "answerSource": "read"
   },
@@ -731,7 +731,7 @@
    "number": 14,
    "page": 72,
    "section": "أتمرّن — التعليم على مستقيم مدرّج",
-   "verified": false,
+   "verified": true,
    "text": "أ) ارسم مستقيمًا مدرّجًا طول الوحدة فيه 3cm. ب) علّم عليه النقاط : M(−2,2) ؛ K(1,7) ؛ S(−0,7).",
    "answerSource": "read"
   },
@@ -741,7 +741,7 @@
    "number": 15,
    "page": 72,
    "section": "أتمرّن — التعليم على مستقيم مدرّج",
-   "verified": false,
+   "verified": true,
    "text": "أ) ارسم مستقيمًا مدرّجًا طول الوحدة فيه 2cm. ب) علّم عليه النقاط : A(+2,3) ؛ B(+1,4) ؛ C(+3,1) و D(−0,5).",
    "answerSource": "read"
   },
@@ -882,7 +882,7 @@
    "number": 5,
    "page": 73,
    "section": "أقوّم تعلّماتي",
-   "verified": false,
+   "verified": true,
    "text": "بقراءة بيانية، عيّن فواصل النقاط M ، J ، K ، N (المبدأ 0 والعلامة 25 معطاتان).",
    "answerSource": "read"
   },
@@ -892,7 +892,7 @@
    "number": 6,
    "page": 73,
    "section": "أقوّم تعلّماتي",
-   "verified": false,
+   "verified": true,
    "text": "علّم على مستقيم مدرّج النقاط : A(+2) ، B(−5) ، C(+4,5) ، E(0).",
    "answerSource": "read"
   },
@@ -960,7 +960,7 @@
    "page": 74,
    "section": "أتعمّق",
    "title": "الفسيفساء الزمنية",
-   "verified": false,
+   "verified": true,
    "text": "طُلب منك رسم مستقيم مدرّج لغرض تعليم نقاط فواصلها −3000 ، −2500 ، +2500 و 5000. فاخترت استعمال ورقة كراسك وعلّمت المبدأ O ونقطة A كما هو مبيّن. ① تعلم أنّ فاصلة المبدأ هي 0. ماذا تختار بالنسبة إلى النقطة A ؟ ② علّم النقاط المطلوبة.",
    "answerSource": "read"
   },
@@ -1152,6 +1152,11 @@
    "text": "Le sens du déplacement du limaçon n'est pas vérifié sur le scan : lu vers la droite, 2 unités par heure."
   },
   {
+   "elementId": "act-1-line",
+   "kind": "reading",
+   "text": "Relu à 110 dpi par talim-mustaqim-mudarraj (2026-10-30) : A(4), B(5), D(7) ; F tel que A soit le milieu de [BF] → F(3) ; E tel que O soit le milieu de [DE] → E(−7). Les éléments act-2 (le tableau des températures −6, 0, 7, 4, −5, 6), method-1 (A(−3), B(2,7)), now-68, ex-10 … ex-15, self-5, self-6, deep-2 et deep-3 sont relus et vérifiés ; self-5 : les graduations de la figure (0 et 25 donnés) sont lues approximativement, l'épreuve de la leçon utilise ses propres nombres."
+  },
+  {
    "elementId": "ict-ex",
    "kind": "misprint",
    "text": "Les points G et H sont imprimés tous deux (−3 ; −2) : la leçon talim-fi-mustawi relira la figure."
@@ -1159,7 +1164,7 @@
   {
    "elementId": "unit",
    "kind": "scope",
-   "text": "Pages 63–76 complètes. Les éléments des leçons talim-mustaqim-mudarraj, talim-fi-mustawi et de la synthèse sont transcrits plus brièvement (verified: false) : leur leçon les relira."
+   "text": "Pages 63–76 complètes. Les éléments de la leçon talim-fi-mustawi et de la synthèse sont transcrits plus brièvement (verified: false) : leur leçon les relira."
   }
  ],
  "destinations": {
@@ -1200,11 +1205,13 @@
   },
   "act-1-line": {
    "lesson": "talim-mustaqim-mudarraj",
-   "module": 4
+   "module": 4,
+   "note": "le symétrique d'un point par rapport à O (E tel que O soit le milieu de [DE]) devient l'exercice « نقطتان متناظرتان » de أتمرّن ; le tracé sur papier n'est pas repris"
   },
   "act-2": {
    "lesson": "talim-mustaqim-mudarraj",
-   "module": 1
+   "module": 1,
+   "note": "repérer des points sur une droite graduée de −8 à 8 : devient la tâche `place` du labo stride-stamp (la température est l'entrée de la leçon précédente)"
   },
   "act-3": {
    "lesson": "talim-fi-mustawi",
@@ -1239,7 +1246,8 @@
   },
   "now-68": {
    "lesson": "talim-mustaqim-mudarraj",
-   "module": 3
+   "module": 4,
+   "note": "lire A, B, C sur une droite à origine et repère 10 donnés, puis graduer avec 5 cm : repris par ex-12 (lecture) et ex-14 (graduer avec une unité en cm)"
   },
   "know-3": {
    "lesson": "talim-fi-mustawi",
@@ -1357,11 +1365,13 @@
   },
   "self-5": {
    "lesson": "talim-mustaqim-mudarraj",
-   "module": 8
+   "module": 8,
+   "note": "lire une abscisse à partir de deux graduations (0 et 25) : l'épreuve E2 du إختبار أولي avec d'autres nombres"
   },
   "self-6": {
    "lesson": "talim-mustaqim-mudarraj",
-   "module": 8
+   "module": 8,
+   "note": "placer A(+2), B(−5), C(+4,5), E(0) : en أتمرّن (lecture de positions) et l'épreuve E4 du إختبار أولي"
   },
   "self-7": {
    "lesson": "talim-fi-mustawi",
@@ -1386,15 +1396,18 @@
   },
   "deep-2": {
    "lesson": "talim-mustaqim-mudarraj",
-   "module": 6
+   "module": 6,
+   "note": "مسألة 2 : REDESSINÉE (une frise de l'histoire d'une école sur 24 cm, choisir l'échelle) ; les dates du manuel ne sont pas reprises"
   },
   "deep-3": {
    "lesson": "talim-mustaqim-mudarraj",
-   "module": null
+   "module": 4,
+   "note": "trois entiers négatifs consécutifs dont −30 : la lecture de la droite (voisins) en أتمرّن"
   },
   "deep-4": {
    "lesson": "talim-mustaqim-mudarraj",
-   "module": null
+   "module": 4,
+   "note": "le sens du déplacement du limaçon n'est pas vérifié sur le scan : l'exercice de la plateforme DIT le sens (vers la droite) et ses propres heures et abscisses"
   },
   "deep-5": {
    "lesson": "talim-fi-mustawi",

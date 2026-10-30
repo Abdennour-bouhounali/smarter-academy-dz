@@ -822,6 +822,15 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'العدد النسبي موجب أو سالب: السالب مسبوق بإشارة − ويقع تحت الصفر، والموجب فوق الصفر ؛ وللعدد إشارة ومسافة إلى الصفر مختلفتان ؛ والعددان المتعاكسان لهما المسافة نفسها إلى الصفر وإشارتان متعاكستان، مثل $3$ و $-3$ ؛ والصفر معاكس نفسه',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 1AM, unité 5 « الأعداد النسبية », leçon 2 « التعليم على مستقيم مدرّج » (2026-10-30) — la foulée portée des deux côtés de l'origine, lue comme une abscisse.
+  'stride-stamp': {
+    // LA FOULÉE PORTÉE DES DEUX CÔTÉS : une route de village, la station de bus est l'origine O (l'école à l'est, la place de la mosquée à l'ouest). La main PORTE un bâton d'une foulée à partir de O vers l'est puis vers l'ouest : les ticks 1, 2, 3 puis
+    // −1, −2, −3 n'apparaissent que tamponnés ; la route est finie, une foulée trop longue ne rejoint pas la lecture ; changer de foulée efface les ticks. Puis le jumeau d'un bâtiment de l'autre côté de O (abscisses opposées), puis des bâtiments
+    // placés à leur abscisse (A(−3), B(2,7), C(−1,5)) : l'abscisse est la SORTIE de la main, son signe dit la jambe de la route. متقدم : le drapeau de l'origine sur une droite dont seules deux graduations sont écrites, et l'encadrement d'un
+    // bâtiment entre deux ticks consécutifs. « جرّب أعدادك » : toujours ouvert. Chaque enregistrement est un essai jugé exactement par `graduatedLine.js` : MANUEL (§6bis).
+    shows: 'لتدريج مستقيم نختار مبدأً واتجاهًا ووحدة طول وننقل الوحدة نفسها من جهتي المبدإ: أعداد موجبة في جهة الاتجاه وسالبة في الجهة الأخرى ؛ وفاصلة النقطة $A(-3)$ هي بعدها عن المبدإ مع إشارة جهتها ؛ والنقطتان المتناظرتان بالنسبة إلى المبدإ فاصلتاهما متعاكستان، مثل $3$ و $-3$ ؛ وإذا وقعت نقطة بين علامتين متتاليتين حصرنا فاصلتها بينهما، مثل $-2<-1{,}5<-1$',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 2AM, unité 3 « الأعداد النسبية », leçon 5 « المسافة بين نقطتين على مستقيم مدرّج » (2026-10-29) — l'ouverture d'un compas serré sur une lecture.
   'gap-caliper': {
     // L'OUVERTURE D'UN COMPAS SOUS LA MAIN : un compas en laiton est serré sur une graine d'un grand thermomètre ; la main tourne la vis pour OUVRIR le compas jusqu'à ce que l'autre mâchoire touche la seconde graine.

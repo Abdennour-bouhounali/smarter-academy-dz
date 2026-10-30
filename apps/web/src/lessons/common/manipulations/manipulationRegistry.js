@@ -133,6 +133,8 @@ export const MANIPULATION_COMPONENTS = {
   'jump-tape': lazy(() => import('./operations/JumpTape')),
   // 1AM, unité 5, leçon 1 « الأعداد النسبية وسياقات استعمالها » : le niveau d'une jauge verticale tenu par la main, lu comme un nombre relatif — ميزان الصقيع (2026-10-30).
   'frost-gauge': lazy(() => import('./operations/FrostGauge')),
+  // 1AM, unité 5, leçon 2 « التعليم على مستقيم مدرّج » : la foulée portée des deux côtés de l'origine — خطوة الطابع (2026-10-30).
+  'stride-stamp': lazy(() => import('./operations/StrideStamp')),
   // 2AM, unité 3, leçon 5 « المسافة بين نقطتين على مستقيم مدرّج » : l'ouverture d'un compas sous la main — مسماك الفرق (2026-10-29).
   'gap-caliper': lazy(() => import('./operations/GapCaliper')),
   // 2AM, unité 2, leçon 8 « جداء كسرين » : les deux facteurs sous la main — ستائر النافذة (2026-10-29).

@@ -120,6 +120,15 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(beginner.numbers.tasks.some((tk) => tk.scene === 'altitude') && beginner.numbers.tasks.some((tk) => tk.reads.some((r) => r === 0 || r.self === 0)), type).toBe(true);
         expect(beginner.numbers.tasks.every((tk) => /^b\d$/.test(tk.id)) && advanced.numbers.tasks.every((tk) => /^a\d$/.test(tk.id)), type).toBe(true);
       }
+      // Unité 5 de 1AM, leçon 2 : `stride-stamp` se mesure par la FOULÉE portée des deux côtés et enregistrée lecture par lecture (`stamp`, `twin`, `place` au niveau مبتدئ) puis le drapeau de l'origine sur une droite à origine cachée et l'encadrement entre deux ticks (`origin`, `bound` au niveau متقدم).
+      else if (type === 'stride-stamp') {
+        const kinds = (lv) => lv.numbers.tasks.map((tk) => tk.kind);
+        expect(['stamp', 'twin', 'place'].every((x) => kinds(beginner).includes(x)) && !kinds(beginner).includes('origin'), type).toBe(true);
+        expect(['origin', 'bound'].every((x) => kinds(advanced).includes(x)), type).toBe(true);
+        expect(beginner.numbers.tasks.find((tk) => tk.kind === 'stamp').stride, type).toBe(2); // la foulée longue : la route s'arrête avant −3
+        expect(beginner.numbers.tasks.find((tk) => tk.kind === 'place').reads.map((r) => r.x), type).toEqual([-30, 27, -15]);
+        expect(beginner.numbers.tasks.every((tk) => /^b\d$/.test(tk.id)) && advanced.numbers.tasks.every((tk) => /^a\d$/.test(tk.id)), type).toBe(true);
+      }
       // Unité 2 de 2AM, leçon 8 : `window-blinds` se mesure par la PRÉDICTION écrite avant de tirer (متقدم seul) et par les FACTEURS > 1 (متقدم seul).
       else if (type === 'window-blinds') {
         const val = (f) => { const [n, d] = f.split('/').map(Number); return n / d; };

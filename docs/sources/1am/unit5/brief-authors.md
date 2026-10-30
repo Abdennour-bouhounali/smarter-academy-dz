@@ -34,3 +34,7 @@ read from words.
 50 sheets; provenance read from the PDFs: `1am-s3-37` exercise 1 (classify +15, −4,8, −13, 7,9 into positives, negatives, integers) and `1am-s2-72` exercise 1 (true / false incl. « the opposite of a negative is negative »);
 the rest `term_exam_modelled` (`1am-s2`, `1am-s3`) or `adapted` from `ex-1`, `ex-2`, `ex-3`, `ex-6`, `ex-7`, `ex-8`, `self-1`, `self-4`, `deep-1`. Every key is re-computed by the oracle; 16 `MISC-REL-*`.
 Never ask « is 0 positive? » as a true/false (0 is both).
+
+## Lesson 2 — `talim-mustaqim-mudarraj` « التعليم على مستقيم مدرّج » (2026-10-30)
+
+Programme items `1am.m5.r06` + `r05`; modules 0–8 as in lesson 1; lab `stride-stamp` « خطوة الطابع » (`MANIPULATION_CONTRACT.md` § 2novenquinquagies quaterdecies; `packages/core/arithmetic/graduatedLine.js`); bank 5 × 10 in `content/practice/1am/talim-mustaqim-mudarraj/` (oracle `scripts/practice-oracle/talim-mustaqim-mudarraj.mjs`, `MISC-TALIM1-*`). Elements taken from the extraction (all re-read, `verified: True`): `act-1-line` (the symmetric-point exercise), `act-2` (the lab's `place` task), `know-2` (half-line definition and abscissa paragraphs), `method-1`, `now-68`, `ex-10`…`ex-15`, `self-5` and `self-6` (the final test), `deep-2` (مسألة 2, redrawn), `deep-3`, `deep-4` (the statement says the direction). Boundary with lesson 1: no sign/distance/opposite teaching here (lesson 1), no sum or comparison of relatives (2AM), no frame of the plane (lesson 3). LP edges: P1 ← `1am_adad-nisbiya-siyaqat_P2`, P2 ← `1am_adad-ashri-mustaqim-mudarraj_P2`, P3 ← `…_P3`.

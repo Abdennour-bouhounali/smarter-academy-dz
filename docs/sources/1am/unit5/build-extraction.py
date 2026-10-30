@@ -4,8 +4,9 @@
 
 Transcription VISUELLE (pages rendues à 110 dpi). Les passages de la leçon `adad-nisbiya-siyaqat` (ouverture p. 63, نشاط 1 p. 65,
 معارف p. 67, exercices 1–9 p. 71, أقوّم 1, 3, 4 p. 73, أتعمّق 1 p. 74) sont relus de près (`verified: True`) ; les éléments des leçons
-qui ne sont pas encore générées (`talim-mustaqim-mudarraj`, `talim-fi-mustawi`, la synthèse) sont transcrits plus brièvement et marqués
-`verified: False` : leur leçon les relira. Les réponses sont CALCULÉES ici (entiers et décimaux EXACTS : `Fraction`, `Decimal`), jamais
+qui ne sont pas encore générées (`talim-fi-mustawi`, la synthèse) sont transcrits plus brièvement et marqués
+`verified: False` : leur leçon les relira. Les éléments de `talim-mustaqim-mudarraj` (نشاط 1 ①, نشاط 2, معارف 2, طريقة, « دوري الآن », ex-10 … ex-15, self-5, self-6, deep-2, deep-3) ont été relus
+par cette leçon (2026-10-30) : `verified: True`. Les réponses sont CALCULÉES ici (entiers et décimaux EXACTS : `Fraction`, `Decimal`), jamais
 tapées ; une lecture de figure incertaine est dite dans `reading` et dans `discrepancies`.
 
 L'unité est générée LEÇON PAR LEÇON (cycle moyen, phase 3) : la première leçon générée est adad-nisbiya-siyaqat (ordre 20) ; les
@@ -120,7 +121,7 @@ E.append({
 })
 assert 5 - 7 == -2 and 4 - 6 == -2
 E.append({
-    'id': 'act-1-line', 'kind': 'activity', 'number': 1, 'page': 65, 'section': 'اكتشف', 'title': 'في الرياضيات ① — نصف مستقيم بفواصل سالبة', 'verified': False,
+    'id': 'act-1-line', 'kind': 'activity', 'number': 1, 'page': 65, 'section': 'اكتشف', 'title': 'في الرياضيات ① — نصف مستقيم بفواصل سالبة', 'verified': True,
     'text': '① أ) ارسم نصف مستقيم مدرّجًا مبدؤه النقطة O باختيار السنتيمتر كوحدة. علّم النقاط A(4) ، B(5) و D(7). ب) أنشئ النقطة F بحيث تكون A منتصف القطعة [BF] ؛ ما فاصلة F ؟ '
             'ج) نريد تعليم النقطة E بحيث تكون O منتصف القطعة [DE] ؛ ماذا تلاحظ ؟ كيف تتمّ التدريج حتى يكون ذلك ممكنًا ؟ ما هي عندئذ فاصلة E ؟',
     'answer': {'F': 4 * 2 - 5, 'E': -7}, 'answerSource': 'computed',
@@ -129,7 +130,7 @@ assert 4 * 2 - 5 == 3 and 0 * 2 - 7 == -7
 
 # ── p. 66 : اكتشف ② ③ ────────────────────────────────────────────────────────────────────────────
 E.append({
-    'id': 'act-2', 'kind': 'activity', 'number': 2, 'page': 66, 'section': 'اكتشف', 'title': 'التعليم على مستقيم مدرّج', 'verified': False,
+    'id': 'act-2', 'kind': 'activity', 'number': 2, 'page': 66, 'section': 'اكتشف', 'title': 'التعليم على مستقيم مدرّج', 'verified': True,
     'text': 'نعتبر درجات الحرارة المسجلة في مختلف مناطق الجزائر. ① أكمل الجدول (المدن : قسنطينة، ... بشار ؛ درجات : −6، 0، 7، 4، −5، 6...). ② انقل المستقيم المدرّج أدناه (من −8 إلى 8) وعلّم النقطة الممثلة للمدينة أمام خط التدريج الموافق لدرجة الحرارة المسجلة فيها. '
             '③ رتّب درجات الحرارة من الأكثر برودة إلى الأكثر دفئًا. كيف يمكن استنتاج ذلك من البيان ؟ ④ في ذلك اليوم سجّل أمين عنده في البيت 1,5°C. أين ينبغي أن يعلّم ذلك على المستقيم المدرّج ؟',
     'answer': {'order': sorted([-6, -5, 0, 4, 6, 7])}, 'answerSource': 'computed',
@@ -166,14 +167,14 @@ E.append({
 
 # ── p. 68 : أكتسب طرائق ──────────────────────────────────────────────────────────────────────────
 E.append({
-    'id': 'method-1', 'kind': 'method', 'number': 1, 'page': 68, 'section': 'أكتسب طرائق', 'title': 'تدريج مستقيم وتعليم نقطة', 'verified': False,
+    'id': 'method-1', 'kind': 'method', 'number': 1, 'page': 68, 'section': 'أكتسب طرائق', 'title': 'تدريج مستقيم وتعليم نقطة', 'verified': True,
     'text': 'مثال : درّج مستقيمًا، علّم عليه النقطتين A و B ذاتي الفاصلتين −3 و 2,7 على الترتيب. (1) نرسم مستقيمًا، نختار المبدأ O ووحدة لقياس الطول OI. (2) فاصلة A سالبة : A على يسار O ، نواصل التدريج بنقل الطول OI. '
             '(3) نعيّن موضع A عند العدد −3 بالضبط. (4) فاصلة B موجبة على يمين O ، لا تظهر بعد التدريج. (5) نعيّن موضع B بين العددين 2 و 3 بالتقريب. '
             'طريقة : لتعليم نقاط بمستقيم، نختار اتجاهه ونقطة المبدأ ووحدة قياس الطول. ندرّج المستقيم من جهتي المبدأ بنقل الوحدة عدة مرّات حسب الحاجة. تُعلّم كلّ نقطة بفاصلتها : العدد هو المسافة بين النقطة والمبدأ، والإشارة (+) على يمين المبدأ و (−) على يساره.',
     'answerSource': 'read',
 })
 E.append({
-    'id': 'now-68', 'kind': 'now', 'page': 68, 'section': 'دوري الآن', 'verified': False,
+    'id': 'now-68', 'kind': 'now', 'page': 68, 'section': 'دوري الآن', 'verified': True,
     'text': '① على المستقيم المدرّج أدناه، اقرأ فواصل النقاط A ، B و C (المبدأ 0 والعلامة 10 معطاتان). ② أ) ارسم مستقيمًا مدرّجًا باختيار المبدأ O ووحدة قياس الطول 5cm واتجاه. ب) ضع عليه النقاط M ، N و K التي فواصلها 10 ، −15 و −7,5 على الترتيب.',
     'answerSource': 'read',
 })
@@ -237,18 +238,18 @@ EX9 = ['2,1', '1,6', '8,2']
 E.append({'id': 'ex-9', 'kind': 'exercise', 'number': 9, 'page': 71, 'section': 'أتمرّن — الأعداد النسبية', 'verified': True,
           'text': 'عيّن الأعداد النسبية التي مسافتها إلى الصفر : 2,1 ؛ 1,6 ؛ 8,2.',
           'answer': {n: [fr(dec(n)), fr(-dec(n))] for n in EX9}, 'answerSource': 'computed'})
-E.append({'id': 'ex-10', 'kind': 'exercise', 'number': 10, 'page': 71, 'section': 'أتمرّن — الأعداد النسبية', 'verified': False,
+E.append({'id': 'ex-10', 'kind': 'exercise', 'number': 10, 'page': 71, 'section': 'أتمرّن — الأعداد النسبية', 'verified': True,
           'text': 'نعتبر المستقيم المدرّج الآتي (علّمت عليه −3,1 ؛ −1 ؛ 0 ؛ 2,5 والنقطتان S و T). أكمل الجمل بالعبارات المناسبة : أ) كلّ الأعداد المكتوبة على المستقيم المدرّج … ب) العددان −1 و −3,1 … جـ) −4 هي … النقطة S و +4 هي … النقطة T. د) العددان اللذان لهما نفس … وإشارتان … هما عددان … .',
           'answerSource': 'read', 'note': 'lecture d\'abscisses sur une droite graduée : la leçon talim-mustaqim-mudarraj (L2) la relira'})
-E.append({'id': 'ex-11', 'kind': 'exercise', 'number': 11, 'page': 71, 'section': 'أتمرّن — التعليم على مستقيم مدرّج', 'verified': False,
+E.append({'id': 'ex-11', 'kind': 'exercise', 'number': 11, 'page': 71, 'section': 'أتمرّن — التعليم على مستقيم مدرّج', 'verified': True,
           'text': 'انقل المستقيمات المدرّجة الآتية ثم أكمل التدريج بكتابة الأعداد النسبية المناسبة تحت التدريجات (أمثلة : المبدأ 0 والعلامة 5 ؛ −6 و 2).', 'answerSource': 'read'})
-E.append({'id': 'ex-12', 'kind': 'exercise', 'number': 12, 'page': 72, 'section': 'أتمرّن — التعليم على مستقيم مدرّج', 'verified': False,
+E.append({'id': 'ex-12', 'kind': 'exercise', 'number': 12, 'page': 72, 'section': 'أتمرّن — التعليم على مستقيم مدرّج', 'verified': True,
           'text': 'اقرأ فاصلة كلّ من النقاط A ، B ، C و D على المستقيم المدرّج (المبدأ 0 والعلامة 100 معطاتان).', 'answerSource': 'read'})
-E.append({'id': 'ex-13', 'kind': 'exercise', 'number': 13, 'page': 72, 'section': 'أتمرّن — التعليم على مستقيم مدرّج', 'verified': False,
+E.append({'id': 'ex-13', 'kind': 'exercise', 'number': 13, 'page': 72, 'section': 'أتمرّن — التعليم على مستقيم مدرّج', 'verified': True,
           'text': 'عيّن النقطة التي تمثّل المبدأ في كلّ من المستقيمين المدرّجين الآتيين : (1) علّم عليه −3 و 3 ؛ (2) علّم عليه −6 و −3.', 'answerSource': 'read'})
-E.append({'id': 'ex-14', 'kind': 'exercise', 'number': 14, 'page': 72, 'section': 'أتمرّن — التعليم على مستقيم مدرّج', 'verified': False,
+E.append({'id': 'ex-14', 'kind': 'exercise', 'number': 14, 'page': 72, 'section': 'أتمرّن — التعليم على مستقيم مدرّج', 'verified': True,
           'text': 'أ) ارسم مستقيمًا مدرّجًا طول الوحدة فيه 3cm. ب) علّم عليه النقاط : M(−2,2) ؛ K(1,7) ؛ S(−0,7).', 'answerSource': 'read'})
-E.append({'id': 'ex-15', 'kind': 'exercise', 'number': 15, 'page': 72, 'section': 'أتمرّن — التعليم على مستقيم مدرّج', 'verified': False,
+E.append({'id': 'ex-15', 'kind': 'exercise', 'number': 15, 'page': 72, 'section': 'أتمرّن — التعليم على مستقيم مدرّج', 'verified': True,
           'text': 'أ) ارسم مستقيمًا مدرّجًا طول الوحدة فيه 2cm. ب) علّم عليه النقاط : A(+2,3) ؛ B(+1,4) ؛ C(+3,1) و D(−0,5).', 'answerSource': 'read'})
 for n, t in [(16, 'أ) ارسم معلمًا متعامدًا معتبرًا ضلع مربع ورقة كراس كوحدة قياس الطول على المحورين. ب) علّم النقاط : K(−3 ; 5) ، S(−2 ; 3) ، J(4 ; 3).'),
              (17, 'في معلم متعامد، نعتبر النقاط : A(0 ; −2) ، B(2 ; −5) ، C(−1 ; −1) ، D(3 ; 0) ، E(4 ; 0) ، F(0 ; 0) ، G(−3,5 ; 2) ، H(−2 ; 0). أ) عيّن النقاط التي تنتمي إلى محور الفواصل. ب) عيّن النقاط التي تنتمي إلى محور التراتيب.'),
@@ -278,9 +279,9 @@ E.append({'id': 'self-3', 'kind': 'self', 'number': 3, 'page': 73, 'section': '�
 E.append({'id': 'self-4', 'kind': 'self', 'number': 4, 'page': 73, 'section': 'أقوّم تعلّماتي', 'verified': True,
           'text': 'عاش طالس في الفترة : نحو 625 ق.م — نحو 546 ق.م. ما هو عمره عند وفاته ؟',
           'answer': {'age': 625 - 546}, 'answerSource': 'computed'})
-E.append({'id': 'self-5', 'kind': 'self', 'number': 5, 'page': 73, 'section': 'أقوّم تعلّماتي', 'verified': False,
+E.append({'id': 'self-5', 'kind': 'self', 'number': 5, 'page': 73, 'section': 'أقوّم تعلّماتي', 'verified': True,
           'text': 'بقراءة بيانية، عيّن فواصل النقاط M ، J ، K ، N (المبدأ 0 والعلامة 25 معطاتان).', 'answerSource': 'read'})
-E.append({'id': 'self-6', 'kind': 'self', 'number': 6, 'page': 73, 'section': 'أقوّم تعلّماتي', 'verified': False,
+E.append({'id': 'self-6', 'kind': 'self', 'number': 6, 'page': 73, 'section': 'أقوّم تعلّماتي', 'verified': True,
           'text': 'علّم على مستقيم مدرّج النقاط : A(+2) ، B(−5) ، C(+4,5) ، E(0).', 'answerSource': 'read'})
 E.append({'id': 'self-7', 'kind': 'self', 'number': 7, 'page': 73, 'section': 'أقوّم تعلّماتي', 'verified': False,
           'text': 'إحداثيا النقطة G : (1 ; 3) ، (3 ; −1) ، (−1 ; 3) (قائمة اختيار على معلم).', 'answerSource': 'read'})
@@ -300,7 +301,7 @@ E.append({'id': 'deep-1', 'kind': 'deepen', 'number': 1, 'page': 74, 'section': 
           'reading': 'les valeurs du graphique sont lues approximativement (barres de −1,8 à +0,85) ; la plateforme redessine son propre graphique à valeurs simples',
           'answerSource': 'computed'})
 assert dec('13.9') + dec('0.69') == dec('14.59')
-E.append({'id': 'deep-2', 'kind': 'deepen', 'number': 2, 'page': 74, 'section': 'أتعمّق', 'title': 'الفسيفساء الزمنية', 'verified': False,
+E.append({'id': 'deep-2', 'kind': 'deepen', 'number': 2, 'page': 74, 'section': 'أتعمّق', 'title': 'الفسيفساء الزمنية', 'verified': True,
           'text': 'طُلب منك رسم مستقيم مدرّج لغرض تعليم نقاط فواصلها −3000 ، −2500 ، +2500 و 5000. فاخترت استعمال ورقة كراسك وعلّمت المبدأ O ونقطة A كما هو مبيّن. ① تعلم أنّ فاصلة المبدأ هي 0. ماذا تختار بالنسبة إلى النقطة A ؟ ② علّم النقاط المطلوبة.',
           'answerSource': 'read'})
 E.append({'id': 'deep-3', 'kind': 'deepen', 'number': 3, 'page': 74, 'section': 'أتعمّق', 'verified': True,
@@ -354,8 +355,8 @@ DEST = {
     'act-1-temp': {'lesson': L1, 'module': 1, 'note': 'ENTRÉE de la plateforme (guide §4ter) : le labo frost-gauge pose les températures d\'une semaine d\'hiver à Djelfa ; la carte du manuel n\'est pas reproduite'},
     'act-1-time': {'lesson': L1, 'module': 4, 'note': 'APPLICATION : dates avant et après (ق.م / م) en أتمرّن'},
     'act-1-need': {'lesson': L1, 'module': 2, 'note': '« 6 + … = 4 » : le besoin d\'un nombre au-dessous de 0 — première question de معارف'},
-    'act-1-line': {'lesson': L2, 'module': 4},
-    'act-2': {'lesson': L2, 'module': 1},
+    'act-1-line': {'lesson': L2, 'module': 4, 'note': 'le symétrique d\'un point par rapport à O (E tel que O soit le milieu de [DE]) devient l\'exercice « نقطتان متناظرتان » de أتمرّن ; le tracé sur papier n\'est pas repris'},
+    'act-2': {'lesson': L2, 'module': 1, 'note': 'repérer des points sur une droite graduée de −8 à 8 : devient la tâche `place` du labo stride-stamp (la température est l\'entrée de la leçon précédente)'},
     'act-3': {'lesson': L3, 'module': 1},
     'know-1': {'lesson': L1, 'module': 2},
     'know-2': {'lesson': L2, 'module': 2, 'items': {
@@ -363,7 +364,7 @@ DEST = {
         'abscissa': {'lesson': L2, 'module': 2},
         'distance-opposites': {'lesson': L1, 'module': 2, 'note': 'P2 (distance à zéro) et P3 (opposés) : programme 1am.m5.r05 ; la leçon les NOMME après le labo'}}},
     'method-1': {'lesson': L2, 'module': 3},
-    'now-68': {'lesson': L2, 'module': 3},
+    'now-68': {'lesson': L2, 'module': 4, 'note': 'lire A, B, C sur une droite à origine et repère 10 donnés, puis graduer avec 5 cm : repris par ex-12 (lecture) et ex-14 (graduer avec une unité en cm)'},
     'know-3': {'lesson': L3, 'module': 2},
     'method-2': {'lesson': L3, 'module': 3},
     'now-70': {'lesson': L3, 'module': 3},
@@ -374,11 +375,12 @@ DEST = {
     'self-2': {'lesson': SYN, 'module': None, 'note': '1/7 « n\'est pas un nombre relatif » dépend de la définition 1AM (entier ou décimal signé) : la synthèse le relira'},
     'self-3': {'lesson': SYN, 'module': None, 'note': 'une baisse de 4 degrés à partir de −2 : addition de relatifs par la jauge, hors L1'},
     'self-4': {'lesson': L1, 'module': 4},
-    'self-5': {'lesson': L2, 'module': 8}, 'self-6': {'lesson': L2, 'module': 8},
+    'self-5': {'lesson': L2, 'module': 8, 'note': 'lire une abscisse à partir de deux graduations (0 et 25) : l\'épreuve E2 du إختبار أولي avec d\'autres nombres'},
+    'self-6': {'lesson': L2, 'module': 8, 'note': 'placer A(+2), B(−5), C(+4,5), E(0) : en أتمرّن (lecture de positions) et l\'épreuve E4 du إختبار أولي'},
     **{f'self-{n}': {'lesson': L3, 'module': 8} for n in range(7, 11)},
     'deep-1': {'lesson': L1, 'module': 6, 'note': 'مسألة 2 : le graphique est REDESSINÉ par la plateforme (écarts à la moyenne, valeurs simples)'},
-    'deep-2': {'lesson': L2, 'module': 6},
-    'deep-3': {'lesson': L2, 'module': None}, 'deep-4': {'lesson': L2, 'module': None},
+    'deep-2': {'lesson': L2, 'module': 6, 'note': 'مسألة 2 : REDESSINÉE (une frise de l\'histoire d\'une école sur 24 cm, choisir l\'échelle) ; les dates du manuel ne sont pas reprises'},
+    'deep-3': {'lesson': L2, 'module': 4, 'note': 'trois entiers négatifs consécutifs dont −30 : la lecture de la droite (voisins) en أتمرّن'}, 'deep-4': {'lesson': L2, 'module': 4, 'note': 'le sens du déplacement du limaçon n\'est pas vérifié sur le scan : l\'exercice de la plateforme DIT le sens (vers la droite) et ses propres heures et abscisses'},
     **{f'deep-{n}': {'lesson': L3, 'module': None} for n in (5, 6, 7, 8)},
     'integration': {'lesson': SYN, 'module': None},
     'evaluation': {'lesson': SYN, 'module': None},
@@ -395,8 +397,9 @@ DISCREPANCIES = [
     {'elementId': 'self-1', 'kind': 'reading', 'text': 'La liste est lue {−8, 5, 12, 0, −0,5, 4, −4} (ordre RTL brouillé) ; les trois affirmations sont vraies (0 compte parmi les positifs).'},
     {'elementId': 'self-2', 'kind': 'scope', 'text': '1/7 : l\'énoncé suppose la définition 1AM des relatifs (entiers ou décimaux signés) ; 1/7 est un rationnel mais pas un relatif au sens du manuel de 1AM. Hors L1.'},
     {'elementId': 'deep-4', 'kind': 'reading', 'text': 'Le sens du déplacement du limaçon n\'est pas vérifié sur le scan : lu vers la droite, 2 unités par heure.'},
+    {'elementId': 'act-1-line', 'kind': 'reading', 'text': 'Relu à 110 dpi par talim-mustaqim-mudarraj (2026-10-30) : A(4), B(5), D(7) ; F tel que A soit le milieu de [BF] → F(3) ; E tel que O soit le milieu de [DE] → E(−7). Les éléments act-2 (le tableau des températures −6, 0, 7, 4, −5, 6), method-1 (A(−3), B(2,7)), now-68, ex-10 … ex-15, self-5, self-6, deep-2 et deep-3 sont relus et vérifiés ; self-5 : les graduations de la figure (0 et 25 donnés) sont lues approximativement, l\'épreuve de la leçon utilise ses propres nombres.'},
     {'elementId': 'ict-ex', 'kind': 'misprint', 'text': 'Les points G et H sont imprimés tous deux (−3 ; −2) : la leçon talim-fi-mustawi relira la figure.'},
-    {'elementId': 'unit', 'kind': 'scope', 'text': 'Pages 63–76 complètes. Les éléments des leçons talim-mustaqim-mudarraj, talim-fi-mustawi et de la synthèse sont transcrits plus brièvement (verified: false) : leur leçon les relira.'},
+    {'elementId': 'unit', 'kind': 'scope', 'text': 'Pages 63–76 complètes. Les éléments de la leçon talim-fi-mustawi et de la synthèse sont transcrits plus brièvement (verified: false) : leur leçon les relira.'},
 ]
 
 doc = {

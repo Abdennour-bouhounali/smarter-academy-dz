@@ -727,6 +727,23 @@ export const LEVELS = Object.freeze({
       { id: 'a3', scene: 'altitude', kind: 'set', step: 10, min: -50, max: 50, reads: [-30, 20] },
     ] }, ...T('ex-6') },
   },
+  // LA FOULÉE PORTÉE DES DEUX CÔTÉS (stride-stamp, thème villageroad, 1AM unité 5, leçon « التعليم على مستقيم مدرّج », 2026-10-30) : une tâche est `{ id, kind: 'stamp' | 'twin' | 'place' | 'origin' | 'bound', … }` ;
+  // la main porte, sur une route de village (la station de bus est l'origine O), un bâton-foulée, le jumeau d'un bâtiment, un bâtiment, le drapeau de l'origine ou un cadre d'une foulée. `stamp` : `stride` (0 courte, 1 moyenne, 2 longue) et `reads: [{ at }]` en unités ;
+  // `twin` : `reads: [{ of }]` en dixièmes ; `place` / `bound` : `reads: [{ x }]` en dixièmes ; `origin` : `n` graduations, pas `u`, deux graduations écrites `marks: [{ i, v }]`.
+  // مبتدئ (plateforme) : b1 la foulée LONGUE portée à l'est (3) puis à l'ouest (−3) — la route s'arrête avant −3 avec la foulée longue ; b2 le jumeau de −3 puis de 2 ; b3 A(−3), B(2,7), C(−1,5).
+  // متقدم (plateforme + le manuel : « trouver l'origine à partir de deux graduations ») : a1 −3 et 3 (origine au milieu), a2 −8 et −2 de deux en deux (origine à droite des deux), a3 encadrer −1,5 · 2,7 · −0,4 entre deux ticks.
+  'stride-stamp': {
+    beginner: { numbers: { tasks: [
+      { id: 'b1', kind: 'stamp', stride: 2, reads: [{ at: 3 }, { at: -3 }] },
+      { id: 'b2', kind: 'twin', reads: [{ of: -30 }, { of: 20 }] },
+      { id: 'b3', kind: 'place', reads: [{ x: -30 }, { x: 27 }, { x: -15 }] },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', kind: 'origin', n: 10, u: 1, marks: [{ i: 2, v: -3 }, { i: 8, v: 3 }] },
+      { id: 'a2', kind: 'origin', n: 10, u: 2, marks: [{ i: 2, v: -8 }, { i: 5, v: -2 }] },
+      { id: 'a3', kind: 'bound', reads: [{ x: -15 }, { x: 27 }, { x: -4 }] },
+    ] }, ...T('ex-13') },
+  },
   // ── 1AM, unité 11 — surface, périmètre, aire (2026-10-15) ──
   // LE CARREAU SOUS LA MAIN (tile-yard) : la main tient un carreau de zellige (thème courtyard). مبتدئ : la cour de la maison du grand-père,
   // 12 carreaux seulement DÉPLACÉS (mode fence) : l'aire ne bouge pas, la clôture change — d'abord la plus courte, puis 20 bâtons ;

@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **136** leçons publiées · **134** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **137** leçons publiées · **133** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -834,7 +834,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | `1am.m5.r03` | جمع وطرح وضرب كسور عشرية. | `kusur-ashriya-kitaba` | `1am.m5.r01`، `1am.m1.r05` |
 | `1am.m5.r04` | قراءة فاصلة نقطة (أو إعطاء حصر لها) أو تعيين نقطة ذات فاصلة معلومة على نصف مستقيم مدرّج. | `adad-ashri-mustaqim-mudarraj` | `1am.m1.r04` |
 | `1am.m5.r05` | إدراج الأعداد السالبة في وضعيات متنوّعة. | `adad-nisbiya-siyaqat` | — |
-| `1am.m5.r06` | توظيف الأعداد النسبية في: تدريج مستقيم؛ قراءة فاصلة نقطة معلومة أو تعيين نقطة ذات فاصلة معلومة على مستقيم مدرّج. | `talim-mustaqim-mudarraj` _(prévue)_ | `1am.m5.r04`، `1am.m5.r05` |
+| `1am.m5.r06` | توظيف الأعداد النسبية في: تدريج مستقيم؛ قراءة فاصلة نقطة معلومة أو تعيين نقطة ذات فاصلة معلومة على مستقيم مدرّج. | `talim-mustaqim-mudarraj` | `1am.m5.r04`، `1am.m5.r05` |
 | `1am.m5.r07` | قراءة إحداثيي نقطة معلومة، أو تعليم نقطة ذات إحداثيين معلومين في مستوٍ مزوّد بمعلم. | `talim-fi-mustawi` _(prévue)_ | `1am.m5.r06` |
 | `1am.m5.r08` | تطبيق قاعدة حرفية في وضعية بسيطة. | `tatbiq-qaida-harfiya` _(prévue)_ | `1am.m2.r08` |
 | `1am.m5.r09` | إنتاج عبارة حرفية بسيطة. | `intaj-ibara-harfiya` _(prévue)_ | `1am.m5.r08` |
@@ -1170,7 +1170,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 19 | `ikhtizal-kitaba-kasriya` — الكتابات الكسرية لحاصل قسمة واختزال كسر | publiée | `1am.m5.r01` `1am.m5.r02` `1am.m5.x1` |
 | 20 | `wadiya-idmajiya-kitabat-kasriya` — أدمج تعلّماتي — الكتابات الكسرية | synthèse | — |
 | 21 | `adad-nisbiya-siyaqat` — الأعداد النسبية وسياقات استعمالها | publiée | `1am.m5.r05` |
-| 22 | `talim-mustaqim-mudarraj` — التعليم على مستقيم مدرّج | prévue | `1am.m5.r06` `1am.m5.r05` |
+| 22 | `talim-mustaqim-mudarraj` — التعليم على مستقيم مدرّج | publiée | `1am.m5.r06` `1am.m5.r05` |
 | 23 | `talim-fi-mustawi` — التعليم في المستوي | prévue | `1am.m5.r07` |
 | 24 | `wadiya-idmajiya-adad-nisbiya` — أدمج تعلّماتي — الأعداد النسبية | synthèse | — |
 | 25 | `bahth-adad-naqisa` — البحث عن أعداد ناقصة | prévue | `1am.m5.r10` |

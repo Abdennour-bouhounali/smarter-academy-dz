@@ -150,6 +150,7 @@ import { ORACLE as ORACLE_1AM_KUSUR_ASHRIYA_KITABA } from './practice-oracle/kus
 import { ORACLE as ORACLE_1AM_MUQARANAT_ADAD_ASHRIYA } from './practice-oracle/muqaranat-adad-ashriya.mjs';
 import { ORACLE as ORACLE_1AM_ADAD_ASHRI_MUSTAQIM, audit as auditAdadAshriMustaqim } from './practice-oracle/adad-ashri-mustaqim-mudarraj.mjs';
 import { ORACLE as ORACLE_1AM_ADAD_NISBIYA_SIYAQAT, audit as auditAdadNisbiyaSiyaqat } from './practice-oracle/adad-nisbiya-siyaqat.mjs';
+import { ORACLE as ORACLE_1AM_TALIM_MUSTAQIM, audit as auditTalimMustaqim } from './practice-oracle/talim-mustaqim-mudarraj.mjs';
 import { ORACLE as ORACLE_1AM_MASAHAT_MUHIT_SATH } from './practice-oracle/masahat-muhit-sath.mjs';
 import { ORACLE as ORACLE_3AM_TABSIT_HADHF_AQWAS } from './practice-oracle/tabsit-hadhf-aqwas.mjs';
 import { ORACLE as ORACLE_3AM_KHASSIYAT_FITAGHURAS } from './practice-oracle/khassiyat-fitaghuras.mjs';
@@ -354,6 +355,7 @@ const ORACLE = {
   ...ORACLE_1AM_MUQARANAT_ADAD_ASHRIYA,
   ...ORACLE_1AM_ADAD_ASHRI_MUSTAQIM,
   ...ORACLE_1AM_ADAD_NISBIYA_SIYAQAT,
+  ...ORACLE_1AM_TALIM_MUSTAQIM,
   ...ORACLE_1AM_MASAHAT_MUHIT_SATH,
   ...ORACLE_3AM_TABSIT_HADHF_AQWAS,
   ...ORACLE_3AM_KHASSIYAT_FITAGHURAS,
@@ -589,6 +591,11 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     const own = bank.filter((b) => b.key.startsWith('ex-1am-adad-nisbiya-siyaqat-'));
     expect(own.length).toBeGreaterThan(0);
     expect(auditAdadNisbiyaSiyaqat(own)).toEqual([]);
+  });
+  it('التعليم على مستقيم مدرّج (1AM) : décimaux exacts BigInt propres à l\'oracle (aucun import de packages/core ni du labo), chaque abscisse recalculée par « unités + petites graduations » signée par le côté ou lue sur la figure (position vérifiée dans le fichier), chaque encadrement par la borne gauche ⌊x⌋, chaque symétrique par changement de signe, chaque origine cachée par les deux graduations écrites, chaque position en cm par x × unité, chaque unité maximale par le min des deux côtés, chaque QCM et vrai-faux jugé, une seule option juste, chaque signature MISC-TALIM1-* différente de la clé', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-1am-talim-mustaqim-mudarraj-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditTalimMustaqim(own)).toEqual([]);
   });
   it('التعليم على مستقيم مدرّج (2AM) : décimaux exacts BigInt propres à l\'oracle (aucun import de packages/core), chaque abscisse recalculée par « nombre de graduations × valeur d\'une graduation » signé par le côté, chaque changement d\'origine par soustraction, chaque opposé par changement de signe, chaque « graduation convenable » vérifiée (toutes les abscisses sur une graduation ET à au plus 6 graduations de l\'origine, une seule option juste), chaque signature MISC-TALIM2-* (UNITIGNORED, SIGNSIDE, ADDSTEP, OPPSAME, RECIP, DIGITSWAP, TOOSMALL, TOOBIG, NEGDIST, ORIGINFIXED, ADDORIGIN) recalculée et fausse, chaque QCM jugé option par option', () => {
     const own = bank.filter((b) => b.key.startsWith('ex-2am-talim-mustaqim-mudarraj-2-'));

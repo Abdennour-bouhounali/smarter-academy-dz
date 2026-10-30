@@ -1075,13 +1075,25 @@
         "الأعداد العشرية ونصف المستقيم المدرّج"
       ],
       "prerequisiteLessonCodes": [
-        "adad-ashri-mustaqim-mudarraj"
+        "adad-ashri-mustaqim-mudarraj",
+        "adad-nisbiya-siyaqat"
       ],
       "pointsToLearn": [
         "تدريج مستقيم باختيار مبدإ واتجاه ووحدة ونقلها من جهتي المبدإ",
-        "قراءة فاصلة نقطة معلومة على مستقيم مدرّج (بشكل مضبوط أو بحصر)",
+        "قراءة فاصلة نقطة معلومة على مستقيم مدرّج (بشكل مضبوط أو بحصر)، ولو لم يُعلَّم المبدإ",
         "تعليم نقطة ذات فاصلة نسبية معلومة مثل $A(-3)$ و $B(2{,}7)$ على مستقيم مدرّج"
       ],
+      "pointPrerequisites": {
+        "P1": [
+          "1am_adad-nisbiya-siyaqat_P2"
+        ],
+        "P2": [
+          "1am_adad-ashri-mustaqim-mudarraj_P2"
+        ],
+        "P3": [
+          "1am_adad-ashri-mustaqim-mudarraj_P3"
+        ]
+      },
       "programmeItems": [
         "1am.m5.r06",
         "1am.m5.r05"
@@ -1103,7 +1115,10 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 60,
+      "difficulty": "متوسط",
+      "icon": "🛣️"
     },
     {
       "code": "talim-fi-mustawi",

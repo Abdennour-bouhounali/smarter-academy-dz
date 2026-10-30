@@ -323,6 +323,10 @@ export const VISUAL_THEMES = Object.freeze({
   //                 Salma (KidFigure, fille en hijab) lit le liquide ; deux autres décors portent le même niveau — une jauge d'altitude (mer sous le zéro, colline au-dessus) et les étages d'un immeuble
   //                 (la cabine d'ascenseur est le niveau) ; l'ombre d'un niveau dans un miroir posé sur le 0 (`frost-gauge`)
   winterdjelfa: { kind: 'lengths', shows: 'شتاء الجلفة: مقياس حرارة وخط الصفر وجهاز ارتفاع وعمارة بمصعد' },
+  // 1AM, unité 5, leçon 2 « التعليم على مستقيم مدرّج » (2026-10-30) :
+  //   villageroad  une route de village droite vue de côté : la station de bus (poteau et panneau) est l'origine O, l'école avec son drapeau à l'EST (à droite), la place de la mosquée (dôme et minaret) à l'OUEST (à gauche) ; la route est finie,
+  //                sans autre inscription que le zéro ; Salma (KidFigure, fille en hijab) regarde le bâton-foulée ; ce que la main porte : le bâton de bois d'une foulée, des maisons, un cadre d'une foulée, le drapeau de la station (`stride-stamp`)
+  villageroad: { kind: 'lengths', shows: 'طريق قرية: محطّة حافلة هي المبدأ، المدرسة شرقًا وساحة المسجد غربًا، وعصا الخطوة' },
   // 2AM, unité 3, leçon 6 (2026-10-29) :
   //   tugfield  la cour du collège un jour de sport : une corde sur toute la largeur, un ruban rouge noué à son milieu au-dessus d'un « 0 » sur une bande graduée (−20 … +20), un drapeau vert à droite (+) et un
   //             orange à gauche (−), deux équipes d'enfants à dossards (KidFigure : filles en hijab, garçons en sweat) qui tirent, un petit tapis pour un petit équipage entre crochets (`tug-rope`)

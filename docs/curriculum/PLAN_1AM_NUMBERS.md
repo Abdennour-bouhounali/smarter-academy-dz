@@ -169,6 +169,8 @@ Conventions:
 
 ### 3. `talim-mustaqim-mudarraj` — التعليم على مستقيم مدرّج (U5, r05 r06) · pair 2 A
 
+- **Status: ✅ generated and published locally (2026-10-30)** — see « Generator notes » entry 3 and `docs/reports/MOYEN_ROLLOUT_PROGRESS.md`.
+
 - **Entry (lab `stride-stamp`):** a straight village road. The bus stop is O; the school lies east and the mosque square lies west.
   - The hand chooses the direction (an arrow) and the unit stride.
   - It then STAMPS the stride from O in both directions; the ticks −1, −2 … appear only when stamped west.
@@ -582,4 +584,10 @@ card; open points for the owner.
   (d) A module 3 « طريقة » is a platform addition (the book's method is the next lesson's), as in entry 1; the lesson therefore has the same nine modules.
   (e) The book's `self-2` (« which of these is not a relative number: 1/7 ») and `self-3` (−2 then 4 degrees lower) go to the synthesis: the first depends on the 1AM definition of a relative number (integer or decimal), the second is an addition of relatives (2AM). `know-2`'s « distance to zero — opposites » paragraph belongs to THIS lesson; its half-line and abscissa paragraphs to `talim-mustaqim-mudarraj`.
   (f) Successor `talim-mustaqim-mudarraj` is **not generated yet**: its `pointPrerequisites` P ← `1am_adad-nisbiya-siyaqat_P*` are still to write when it is published (nothing to connect now).
-
+- **3 · `talim-mustaqim-mudarraj` (2026-10-30).**
+  (a) The catalogue entry keeps `programmeItems: ['1am.m5.r06', '1am.m5.r05']` and its `prerequisiteLessonCodes` **gains `adad-nisbiya-siyaqat`** (the home lesson of `r05`, `order` 20 < 21; the card listed only `adad-ashri-mustaqim-mudarraj`). Net links verified before writing the edges: `1am.m5.r04 → r06`, `1am.m5.r05 → r06` (`requires`) and `1am.m5.r06 → 2am.m4.r01` (`consolidates`).
+  (b) **LP edges written** (target ids and meanings read in the published lessons): P1 ← `1am_adad-nisbiya-siyaqat_P2` (« التعرّف على العدد النسبي … تمييز الإشارة من المسافة »), **P2 ← `1am_adad-ashri-mustaqim-mudarraj_P2`** (reading an abscissa, exactly or by bounds) and **P3 ← `1am_adad-ashri-mustaqim-mudarraj_P3`** (marking a point): the card's « P2, P3 ← `_P2`, `_P3` » is read one-to-one.
+  (c) **P2 gains « ولو لم يُعلَّم المبدإ »** (the hidden-origin tasks of متقدم), the only الكفاءة change; P1 and P3 are the draft's words.
+  (d) The lab keeps the card's gesture (STAMP a unit stick from O in both directions, place `A(−3)`, `B(2,7)`, `C(−1,5)`, read with a hidden origin, bound between two ticks) and adds two kinds: **`twin`** (the symmetric house, the « symmetric points have opposite abscissae » of the card's « named afterwards ») and **`origin`** (the card's « hidden origin »: the flag of O between two written graduations, relabelled live). The card's « the hand chooses the direction (an arrow) » is NOT built: the direction is the east (the positive side, the school) in every task and only the STRIDE is chosen on a rail of three notches (the arrow would add a second variable without a second idea; open point). The long stride is the starting one in b1 on purpose: the finite road (250 west) stops it at −2.
+  (e) `deep-4` (the snail) is reused with a statement that SAYS the direction (the scan does not show it); `act-1-line` becomes the symmetric-point exercise, `act-2` the `place` task, `deep-2` a timeline problem (choose the scale of a 24 cm sheet), `self-5`/`self-6` the final test; `ex-10`…`ex-15`, `now-68`, `deep-3` are in أتمرّن. All re-read at 110 dpi and marked `verified: True` in `docs/sources/1am/unit5/build-extraction.py`; `know-2`'s half-line and abscissa paragraphs are this lesson's, as recorded in entry 2 (e).
+  (f) Statement figures: the bank and the module's figures use `GeoFigure` number lines (one label per written tick, names above the axis); a dedicated `halfline`/`numberline` statement-figure kind (entry 1 (e)) stays an open point for the owner.
