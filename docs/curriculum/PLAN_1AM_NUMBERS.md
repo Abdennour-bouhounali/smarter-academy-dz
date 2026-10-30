@@ -601,3 +601,13 @@ card; open points for the owner.
   (f) **Level 2 of the lab** (decimals + the division that does not stop) was split in three tasks: a1 a decimal sum `+ 17,5 → 46,2`, a2 the trap card with decimals `12,5 − → 4,8`, a3 `× 7 → 20` (the fraction `20/7`, checked exactly). The book's two-card « برنامج حساب » (`ex-18`, `deep-6`) is NOT a lab task (one card per task keeps the gesture distinct) but the MASALA 3 and the bank's `back` questions rewind it card by card in the REVERSE order (`MISC-NAQISA-ORDER`).
   (g) **Bank provenance**: 5 `term_exam` sheets, all of the third term, each read in the PDF (text layer of `1am-s3-39` ex 2, `-37` ex 2, `-43` ex 4; images of `1am-s3-44` ex 1 and `-47` ex 1 rendered with `pdftoppm -r 100`); the S2 « أكمل a × … = b » items of the card could not be read item by item (their text layers are shifted-glyph or image-only), so that register is `term_exam_modelled` (sheet 1-08). 34 modelled, 11 adapted from the textbook, 0 other `platform_addition`.
   (h) Successor `hall-mushkil-muadala` (2AM): « تذكّر — السنة الأولى » links to this lesson and its LP edges are written: P2 ← `1am_bahth-adad-naqisa_P3` (the check by substitution), P3 ← `1am_bahth-adad-naqisa_P2` and `_P3` (history line in its `lesson.config.js` header).
+
+## Run status (2026-10-30, stopped by the owner after entry 4)
+
+Published and pushed on `dev`: entries 1–4 (`adad-ashri-mustaqim-mudarraj`, `adad-nisbiya-siyaqat`, `talim-mustaqim-mudarraj`,
+`bahth-adad-naqisa`) with their successor connections (`talim-mustaqim-mudarraj-2`, `hall-mushkil-muadala`).
+**Resume at card 5 `talim-fi-mustawi`** (needs entry 3's P ids), then card 6 `tatbiq-qaida-harfiya`. Tips from the runs: build with
+`NODE_OPTIONS=--max-old-space-size=8192 npx vite build` then `node scripts/analyze-entry-bundle.mjs --dist apps/web/dist --budget 245`
+(the `check:entry-budget` script OOMs on its own 4 GB build); `buildLessonMemo.test.js` can time out under load and passes alone.
+Open owner points: a `halfline`/`numberline` statement-figure kind is still missing; confirm the 2AM LP edges chosen for
+`hall-mushkil-muadala` (Generator note 4).
