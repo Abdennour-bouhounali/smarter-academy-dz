@@ -4,7 +4,8 @@
 
 Transcription VISUELLE (pages rendues à 110 dpi, zones à 200–220 dpi). Les passages de la leçon `bahth-adad-naqisa` (نشاط 1 p. 79, طريقة et « دوري الآن » p. 82,
 « البحث عن أعداد ناقصة » ex. 15–18 p. 84, أتعمّق 6 et 7 p. 86, أقوّم 5 p. 85, أتعمّق 1 p. 86) sont relus de près (`verified: True`) ; les éléments des leçons qui ne sont pas
-encore générées (`tatbiq-qaida-harfiya`, `intaj-ibara-harfiya`, la synthèse) sont transcrits plus brièvement et marqués `verified: False` : leur leçon les relira.
+encore générées (`intaj-ibara-harfiya`, la synthèse) sont transcrits plus brièvement et marqués `verified: False` : leur leçon les relira. Les éléments de `tatbiq-qaida-harfiya` (act-2, act-4, know-1, know-2,
+ex-4 à ex-6, deep-5, ict, ict-ex ; pp. 79, 80, 81, 83, 86, 88) ont été RELUS à 110 dpi lors de la génération de cette leçon (2026-10-30) et sont `verified: True`.
 Les réponses sont CALCULÉES ici (`Fraction`, `Decimal` exacts), jamais tapées ; une lecture de figure incertaine est dite dans `reading` et dans `discrepancies`.
 
 L'unité est générée LEÇON PAR LEÇON (cycle moyen, phase 3) : la première leçon générée est bahth-adad-naqisa (ordre 24, 2026-10-30, paire 2 B) ; les destinations vers une
@@ -14,7 +15,10 @@ FRONTIÈRE entre les leçons de l'unité (règle « pas de doublon », LEARNING_
   L1 `bahth-adad-naqisa` (1am.m5.r10) : le nombre MANQUANT d'une égalité de la forme a + … = b, a − … = b (et … − a = b), a × … = b, trouvé par l'OPÉRATION INVERSE
      et VÉRIFIÉ par substitution ; les nombres sont naturels, décimaux, ou le quotient d'une division qui ne s'arrête pas (une fraction). Aucune LETTRE : le manquant est □.
      Le « programme de calcul » à deux étapes (× 3 puis + 5 donne 26) y est REMONTÉ étape par étape (ex-18), sans écrire d'expression littérale.
-  L2 `tatbiq-qaida-harfiya` (1am.m5.r08) : appliquer une règle littérale (P = 2(a + b), I = (a + b + c − 200)/10, F + 2 = S) en substituant des nombres, y compris le contre-exemple (act-4).
+  L2 `tatbiq-qaida-harfiya` (1am.m5.r08) : appliquer une règle littérale (P = 2(a + b), I = (a + b + c − 200)/10, F + 2 = S) en substituant des nombres, y compris le contre-exemple (act-4) ; elle NOMME aussi
+     la lettre et l'écriture sans × (know-1 : la définition de la « عبارة حرفية » et les اصطلاحات : a × b = ab, 2 × x = 2x, 3(x + 2), le nombre avant la lettre, jamais de × omis entre deux nombres : 2 × 3 ≠ 23), car la
+     substitution en dépend (P1 du catalogue). Le périmètre et l'aire d'un rectangle n'y sont qu'un « تذكّر » (1am.m2.r08, enseigné plus tard par la géométrie). Les REMARQUES restantes de know-1 (x × 1 = x, ba = ab,
+     x × 0 = 0, a × a = a²) et « أكتب بدلالة x » restent à L3.
   L3 `intaj-ibara-harfiya` (1am.m5.r09) : produire une expression littérale (3x + 5, 2x + 3, périmètres en x), les conventions d'écriture (× omis, 5² …), traduire un programme de calcul.
   Synthèse `wadiya-idmajiya-ibarat-harfiya` : le تحدّ de l'unité (la jardinière d'al-Kāshī), l'intégration (la voiture « حسن سيارة للسنة »), la situation d'évaluation, les
      éléments qui mêlent lettre et nombre manquant (self-6 : les angles x, 3x, 5x ; self-8), et les restes.
@@ -109,7 +113,7 @@ E.append({
 })
 assert 54 // 9 == 6 and 9 * 6 == 54 and 54 - 45 == 9 and 45 + 9 == 54
 E.append({
-    'id': 'act-2', 'kind': 'activity', 'number': 2, 'page': 79, 'section': 'أطبّق قاعدة حرفية', 'title': 'اختبار روفيي', 'verified': False,
+    'id': 'act-2', 'kind': 'activity', 'number': 2, 'page': 79, 'section': 'أطبّق قاعدة حرفية', 'title': 'اختبار روفيي', 'verified': True,
     'text': 'اختبار روفيي لتكيّف القلب مع المجهود البدني : I = (a + b + c − 200) / 10 حيث a نبض القلب في الراحة قبل النشاط، b نبض القلب مباشرة بعد النشاط، c نبض القلب في الراحة بعد النشاط ؛ '
             'مقياس : I < 5 تكيّف جيّد ؛ 5 < I < 10 مقبول ؛ 10 < I < 15 متوسط ؛ I > 15 ناقص. ثلاثة أصدقاء : سمير (95 ؛ 140 ؛ 120) ، أمين (80 ؛ 130 ؛ 85) ، سيلين (65 ؛ 110 ؛ 70). انقل الجدول وأكمل I والترجمة.',
     'answer': {'samir': (95 + 140 + 120 - 200) / 10, 'amine': (80 + 130 + 85 - 200) / 10, 'selin': (65 + 110 + 70 - 200) / 10}, 'answerSource': 'computed',
@@ -136,7 +140,7 @@ E.append({
 })
 assert [2 * n + 3 for n in (1, 2, 3, 4)] == [5, 7, 9, 11]
 E.append({
-    'id': 'act-4', 'kind': 'activity', 'number': 4, 'page': 80, 'section': 'أبرّر بالمثال المضاد', 'verified': False,
+    'id': 'act-4', 'kind': 'activity', 'number': 4, 'page': 80, 'section': 'أبرّر بالمثال المضاد', 'verified': True,
     'text': 'تمعّن أمين في مكعّب، فلاحظ أنّ له 6 أوجه و 8 رؤوس، فوضع القاعدة F + 2 = S حيث F عدد الأوجه و S عدد الرؤوس. هل القاعدة صحيحة في حالة متوازي مستطيلات ؟ في حالة الشكل المقابل (هرم قاعدته رباعية) ؟ ماذا تستنتج ؟',
     'answer': {'cube': 6 + 2 == 8, 'cuboid': 6 + 2 == 8, 'pyramid': 5 + 2 == 5, 'note': 'الهرم الرباعي : 5 أوجه و 5 رؤوس ؛ 5 + 2 ≠ 5 : مثال مضاد'}, 'answerSource': 'computed',
 })
@@ -144,13 +148,17 @@ assert 6 + 2 == 8 and 5 + 2 != 5
 
 # ── p. 81 : أحوصل تعلّماتي ────────────────────────────────────────────────────────────────────────
 E.append({
-    'id': 'know-1', 'kind': 'knowledge', 'number': 1, 'page': 81, 'section': 'أحوصل تعلّماتي', 'title': 'العبارة الحرفية', 'verified': False,
+    'id': 'know-1', 'kind': 'knowledge', 'number': 1, 'page': 81, 'section': 'أحوصل تعلّماتي', 'title': 'العبارة الحرفية', 'verified': True,
     'text': 'العبارة الحرفية هي عبارة يكون فيها عدد أو عدّة أعداد معيّنة بحروف. مثال : مساحة مستطيل بعداه a و b : a × b ؛ برنامج الحساب (نختار عددًا، نحسب ضعفه، نضيف 3) : نسمّي x العدد المختار : 2 × x ثم 2 × x + 3. '
             'اصطلاحات : يمكن الاستغناء عن الإشارة × بين حرفين، بين عدد وحرف أو أمام قوس : a × b = ab ؛ x × 2 = 2x ؛ 3 × (x + 2) = 3(x + 2). ملاحظات : لا نحذف × في جداء عددين ؛ يكتب العدد قبل الحرف ؛ x × 1 = x ؛ ba = ab ؛ x × 0 = 0 ؛ a × a = a² .',
+    'items': {
+        'definition-convention': 'la « عبارة حرفية » (a × b, 2 × x puis 2 × x + 3) et les اصطلاحات : × omis entre deux lettres, entre un nombre et une lettre, devant une parenthèse ; le nombre avant la lettre ; × jamais omis entre deux nombres (L2, module 2)',
+        'remarks': 'x × 1 = x ; ba = ab ; x × 0 = 0 ; a × a = a² (L3, module 2)',
+    },
     'answerSource': 'read',
 })
 E.append({
-    'id': 'know-2', 'kind': 'knowledge', 'number': 2, 'page': 81, 'section': 'أستعمل عبارة حرفية', 'verified': False,
+    'id': 'know-2', 'kind': 'knowledge', 'number': 2, 'page': 81, 'section': 'أستعمل عبارة حرفية', 'verified': True,
     'items': {
         'write-in-x': 'أكتب بدلالة x : نعني بكتابة نتيجة بدلالة x ترجمتها بعبارة حرفية تتضمن x. (مثال : AB = 2x + 3 في الشكل : قطعتان طول كل منهما x ثم 3.)',
         'apply-rule': 'أطبّق قاعدة حرفية : القاعدة الحرفية هي مساواة تسمح بحساب مقدار بمعرفة مقادير أخرى. تطبيق قاعدة هو تعويض المقادير المعلومة بأعداد ثم إجراء الحسابات. (مثال : P = 2(a + b) ؛ a = 6 و b = 2 : P = 2(6 + 2) = 16.)',
@@ -190,14 +198,14 @@ E.append({'id': 'ex-3', 'kind': 'exercise', 'number': 3, 'page': 83, 'section': 
           'text': 'اكتب العبارات الآتية بإعادة كتابة الإشارة × أين يمكن ذلك : A = 2x − 27 ؛ B = (3x − 1) × 5 ؛ C = 3x − 2y + 1.', 'answerSource': 'read'})
 A4 = lambda x: x + 15 - x / 2
 assert A4(F(2)) == 16 and A4(F(1, 2)) == F(61, 4)
-E.append({'id': 'ex-4', 'kind': 'exercise', 'number': 4, 'page': 83, 'section': 'تطبيق قاعدة حرفية', 'verified': False,
+E.append({'id': 'ex-4', 'kind': 'exercise', 'number': 4, 'page': 83, 'section': 'تطبيق قاعدة حرفية', 'verified': True,
           'text': 'نضع العبارة A = x + 15 − x/2 : احسب قيمة A من أجل x = 2 ، ثم من أجل x = 0,5.', 'answer': {'x=2': fr(A4(F(2))), 'x=0,5': fr(A4(F(1, 2)))}, 'answerSource': 'computed'})
 assert (3 * 2) - (4 * 1) + 5 == 7
-E.append({'id': 'ex-5', 'kind': 'exercise', 'number': 5, 'page': 83, 'section': 'تطبيق قاعدة حرفية', 'verified': False,
+E.append({'id': 'ex-5', 'kind': 'exercise', 'number': 5, 'page': 83, 'section': 'تطبيق قاعدة حرفية', 'verified': True,
           'text': 'نضع x = 2 و y = 1. احسب قيمة العبارة A = (3 × x) − (4 × y) + 5.', 'answer': {'A': 7}, 'answerSource': 'computed'})
-E.append({'id': 'ex-6', 'kind': 'exercise', 'number': 6, 'page': 83, 'section': 'تطبيق قاعدة حرفية', 'verified': False,
+E.append({'id': 'ex-6', 'kind': 'exercise', 'number': 6, 'page': 83, 'section': 'تطبيق قاعدة حرفية', 'verified': True,
           'text': 'التركيز الكتلي لمحلول مائي T = m / v (m كتلة السكر بالغرام ، v حجم المحلول باللتر). أكمل جدولا : كتلة السكر 2 ؛ 4 ؛ … ؛ 10 ؛ … والحجم 100 ؛ … ؛ 300 ؛ 400 ؛ 500 والتركيز … ؛ 20 ؛ 30 ؛ … ؛ 50.', 'answerSource': 'read',
-          'reading': 'les unités du tableau (mL / L) sont lues approximativement'})
+          'reading': 'les volumes du tableau sont imprimés en mL (100 ; 300 ; 400 ; 500) alors que la règle T = m / v demande des litres : la lecture du tableau est incohérente (2 g dans 100 mL = 20 g/L) ; la leçon ne reprend pas ce tableau, elle écrit sa propre règle V = d ÷ t'})
 E.append({'id': 'ex-7', 'kind': 'exercise', 'number': 7, 'page': 83, 'section': 'كتابة ... بدلالة ...', 'verified': False,
           'text': 'n عدد طبيعي. عبّر بدلالة n عن كلّ من : نصف n ؛ العدد الذي يلي n ؛ العدد الذي يسبق n ؛ ضعف n ؛ ثلث n.', 'answer': {'expr': ['n/2', 'n + 1', 'n − 1', '2n', 'n/3']}, 'answerSource': 'read'})
 E.append({'id': 'ex-8', 'kind': 'exercise', 'number': 8, 'page': 83, 'section': 'كتابة ... بدلالة ...', 'verified': False,
@@ -286,7 +294,7 @@ E.append({'id': 'deep-4', 'kind': 'deepen', 'number': 4, 'page': 86, 'section': 
           'text': 'برنامج الحساب : أختار عددا ؛ أضيف 3 ؛ أضرب النتيجة في 2 ؛ أطرح 6 ؛ أطرح ضعف العدد البداية. 1) اختبر هذا البرنامج باستعمال عدّة أعداد. 2) ماذا تلاحظ ؟ برّر صدق ملاحظتك.',
           'answer': {'always': 0, 'why': '(n + 3) × 2 − 6 − 2n = 0'}, 'answerSource': 'computed'})
 assert all((n + 3) * 2 - 6 - 2 * n == 0 for n in range(0, 20))
-E.append({'id': 'deep-5', 'kind': 'deepen', 'number': 5, 'page': 86, 'section': 'التدريب على التعميم والاستدلال', 'verified': False,
+E.append({'id': 'deep-5', 'kind': 'deepen', 'number': 5, 'page': 86, 'section': 'التدريب على التعميم والاستدلال', 'verified': True,
           'text': 'حسبت سيلين العبارتين 2 × n × n و n × n × 2 من أجل n = 0 و n = 2 ثم قالت : « العبارتان n × n × 2 و 2 × n × n متساويتان ». هل توافقها ؟ برّر.', 'answer': {'n=0': [0, 0], 'n=2': [8, 8], 'yes': True}, 'answerSource': 'computed'})
 assert 2 * 2 * 2 == 8
 STAIR = (63 - 2 * 17)  # (2 × h) + g = 63, h = 17
@@ -324,10 +332,10 @@ E.append({'id': 'evaluation', 'kind': 'integration', 'page': 87, 'section': 'و�
 assert (5 + 3) * (12 + 3) - 5 * 12 == 60 and 60 * 1600 + 60 * 700 == 138000
 
 # ── p. 88 : استعمل تكنولوجيات الإعلام والاتصال ────────────────────────────────────────────────────
-E.append({'id': 'ict', 'kind': 'ict', 'page': 88, 'section': 'استعمل تكنولوجيات الإعلام والاتصال', 'title': 'تعيين قيمة عددية لعبارة حرفية باستعمال مجدول', 'verified': False,
+E.append({'id': 'ict', 'kind': 'ict', 'page': 88, 'section': 'استعمل تكنولوجيات الإعلام والاتصال', 'title': 'تعيين قيمة عددية لعبارة حرفية باستعمال مجدول', 'verified': True,
           'text': 'مثال : احسب القيم العددية للعبارة 7x − 15 من أجل القيم الصحيحة لـ x والمحصورة بين 3 و 15. فتح ورقة حساب جديدة ؛ في الخلية B2 نكتب « =7*A2-15 » ؛ نضيف 1 في كلّ خانة انطلاقا من 3 من العمود A ؛ ننقل الحساب إلى الخلايا الواقعة أسفل B2 بسحب اليد (ظهور العلامة +). ما هي العبارة الظاهرة عند fx ؟',
           'answer': {'first': 7 * 3 - 15, 'last': 7 * 15 - 15}, 'answerSource': 'computed'})
-E.append({'id': 'ict-ex', 'kind': 'ict', 'page': 88, 'section': 'تمرين', 'verified': False,
+E.append({'id': 'ict-ex', 'kind': 'ict', 'page': 88, 'section': 'تمرين', 'verified': True,
           'text': 'احسب القيم العددية للعبارة 2(x − 1) + 3 ، من أجل القيم الصحيحة لـ x والمحصورة بين 2 و 20.', 'answer': {'first': 2 * (2 - 1) + 3, 'last': 2 * (20 - 1) + 3}, 'answerSource': 'computed'})
 assert 2 * (2 - 1) + 3 == 5 and 2 * (20 - 1) + 3 == 41
 
@@ -340,12 +348,13 @@ DEST = {
     'opener-khwarizmi': {'lesson': L1, 'module': 2, 'note': 'une carte « من تاريخ الرياضيات » en fin de معارف : al-Khwarizmi et « الجبر والمقابلة » (la restauration d\'une égalité), sans renvoi au livre'},
     'prep': {'lesson': SYN, 'module': 0, 'note': 'p. 78 récapitule les unités précédentes ; chaque leçon de l\'unité mesure ses items du réseau par des platform_addition ; le prep 1 (machine « + 85 » donne 104) est l\'idée de L1, repris par son labo'},
     'act-1': {'lesson': L1, 'module': 4, 'note': 'les trois situations (9 × … = 54 ; 54 − … = 9 ; … + 9 = 54) deviennent l\'exercice « اربط الوضعية بمساواتها » de أتمرّن avec d\'autres contextes et nombres ; l\'ENTRÉE est le labo rewind-belt (l\'atelier d\'emballage)'},
-    'act-2': {'lesson': L2, 'module': 1},
+    'act-2': {'lesson': L2, 'module': 4, 'note': "le test de Ruffier (I = (a + b + c − 200)/10, trois valeurs) devient l'exercice « les points d'un classement » P = 3 × w + d de أتمرّن (une règle à deux lettres, trois équipes) ; l'ENTRÉE est le labo letter-dial"},
     'act-3': {'lesson': L3, 'module': 1},
     'act-calc': {'lesson': L3, 'module': 1},
     'act-prog': {'lesson': L3, 'module': 1},
-    'act-4': {'lesson': L2, 'module': 4},
-    'know-1': {'lesson': L3, 'module': 2},
+    'act-4': {'lesson': L2, 'module': 1, 'note': "la règle F + 2 = S réfutée par un contre-exemple : le labo letter-dial (tâche a3 : « a + b = a × b » vraie pour (2 ; 2), réfutée par (3 ; 4)) et l'exercice « ضعف أيّ عدد أكبر منه » (n = 0)"},
+    'know-1': {'lesson': L3, 'module': 2, 'note': "partagé : la définition et les اصطلاحات (× omis, nombre avant la lettre, jamais entre deux nombres) sont nommés par L2 (module 2, P1 du catalogue) ; les remarques x × 1, ba = ab, x × 0, a × a sont à L3",
+              'items': {'definition-convention': {'lesson': L2, 'module': 2}, 'remarks': {'lesson': L3, 'module': 2}}},
     'know-2': {'lesson': L3, 'module': 2, 'items': {
         'write-in-x': {'lesson': L3, 'module': 2},
         'apply-rule': {'lesson': L2, 'module': 2}}},
@@ -368,10 +377,13 @@ DEST = {
     'deep-6': {'lesson': L1, 'module': 7, 'note': 'مسألة 3 : l\'escalier « (2 × h) + g = 63 », avec ses propres hauteurs et largeurs ; trouver g (somme) puis h (produit après une différence)'},
     'deep-7': {'lesson': L1, 'module': 4, 'note': 'la pyramide de dalles (146) est cherchée dans la banque et dans l\'une des étapes de أتمرّن : chaque dalle du dessus est une somme, un nombre manquant se trouve par une différence'},
     'integration': {'lesson': SYN, 'module': None}, 'evaluation': {'lesson': SYN, 'module': None},
-    'ict': {'lesson': L2, 'module': 5}, 'ict-ex': {'lesson': L2, 'module': 5},
+    'ict': {'lesson': L2, 'module': 4, 'note': "la page du tableur devient l'exercice « صيغة في مجدول » (=6*A2-4 : le signe × est écrit dans un tableur) ; les valeurs de 6x − 4 pour x = 2, 5 et 10"},
+    'ict-ex': {'lesson': L2, 'module': 4, 'note': "cité par le même exercice (une règle à parenthèse dans un tableur)"},
 }
 
 DISCREPANCIES = [
+    {'elementId': 'ex-6', 'kind': 'reading', 'text': "Le tableau de la concentration est imprimé avec un volume en mL (100 ; 300 ; 400 ; 500) alors que la règle T = m / v est donnée pour des litres ; la leçon L2 ne le reprend pas (sa propre règle de vitesse V = d ÷ t, d en km et t en h)."},
+    {'elementId': 'know-1', 'kind': 'scope', 'text': "Deux leçons se partagent ce bloc : L2 (tatbiq-qaida-harfiya) nomme la lettre et les اصطلاحات de l'écriture (nécessaires à la substitution : 2x = 2 × x, 2 × 3 ≠ 23) ; L3 garde les remarques (× 1, ba = ab, × 0, a²) et la production d'expressions."},
     {'elementId': 'unit', 'kind': 'scope', 'text': 'Le تحدّ de l\'unité EST imprimé (p. 77, « مثال من مفتاح الحساب للكاشي ») et le catalogue le cite déjà ; il va à la synthèse.'},
     {'elementId': 'now-82', 'kind': 'misprint', 'text': 'Le (2) est imprimé « □ − 123,8 ÷ 13 » : lu « □ × 13 = 123,8 » (□ = 123,8 ÷ 13 = 619/65 ≈ 9,52…, un quotient qui ne s\'arrête pas). L1 reprend le cas avec ses propres nombres.'},
     {'elementId': 'ex-17', 'kind': 'misprint', 'text': 'La longueur du rectangle d\'aire 84,5 cm² est imprimée « n » (une lettre) : sans valeur on ne peut pas calculer la largeur ; L1 donne sa propre longueur (6,5 cm → largeur 13 cm).'},

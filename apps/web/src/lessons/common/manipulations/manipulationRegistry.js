@@ -135,6 +135,8 @@ export const MANIPULATION_COMPONENTS = {
   'frost-gauge': lazy(() => import('./operations/FrostGauge')),
   // 1AM, unité 6, leçon 1 « البحث عن أعداد ناقصة » : la carte INVERSE d'une machine d'atelier et le nombre manquant, remonté puis vérifié — الحزام المعاكس (2026-10-30).
   'rewind-belt': lazy(() => import('./operations/RewindBelt')),
+  // 1AM, unité 6, leçon 2 « تطبيق قاعدة حرفية » : la valeur d'un cadran tombe dans chaque fente d'une lettre — قرص الحروف (2026-10-30).
+  'letter-dial': lazy(() => import('./operations/LetterDial')),
   // 1AM, unité 5, leçon 2 « التعليم على مستقيم مدرّج » : la foulée portée des deux côtés de l'origine — خطوة الطابع (2026-10-30).
   'stride-stamp': lazy(() => import('./operations/StrideStamp')),
   // 1AM, unité 5, leçon 3 « التعليم في المستوي » : un drone conduit sur UN axe à la fois au-dessus du plan d'une cour d'école — مسيّرة الساحة (2026-10-30).

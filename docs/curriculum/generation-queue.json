@@ -244,17 +244,6 @@
       ]
     },
     {
-      "code": "tatbiq-qaida-harfiya",
-      "grade": "1am",
-      "unit": "ibarat-harfiya",
-      "titleAr": "تطبيق قاعدة حرفية",
-      "kind": "lesson",
-      "trigger": "muadala-ula",
-      "via": [
-        "1am.m5.r08"
-      ]
-    },
-    {
       "code": "wadiyat-tanasubiya",
       "grade": "1am",
       "unit": "tanasubiya-nisab-maqayis",

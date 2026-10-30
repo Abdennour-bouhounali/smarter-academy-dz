@@ -1,6 +1,6 @@
 # Generation plan — 1AM « ميدان الأنشطة العددية » (units 1–6), the 20 remaining entries (2026-10-30)
 
-**Status:** planned 2026-10-30; generation in progress (entries 1–4 done). **Who reads this:** the generating session (Sonnet), one entry at a time.
+**Status:** planned 2026-10-30; generation in progress (entries 1–6 done). **Who reads this:** the generating session (Sonnet), one entry at a time.
 **Authority:** this file sets the order, the lanes, each entry's design card, the generator prompt and the « successor connection »
 step. The contracts stay authoritative for HOW a lesson is built:
 - `LESSON_DEVELOPMENT_GUIDE.md` §14;
@@ -233,6 +233,8 @@ Conventions:
 - **Successor connection:** `talim-nuqta-mustawi` (2AM, net `r07 → 2am.m4.r04`, consolidates): live link and LP edge.
 
 ### 6. `tatbiq-qaida-harfiya` — تطبيق قاعدة حرفية (U6, r08) · pair 3 B
+
+- **Status: ✅ generated and published (2026-10-30)** — see « Generator notes » entry 6 and `docs/reports/MOYEN_ROLLOUT_PROGRESS.md` (1AM entry 6).
 
 - **Forward reference:** the rectangle's perimeter and area (`1am.m2.r08`) come in a « تذكّر » box. Do not rebuild them.
 - **Entry (lab `letter-dial`):** a stationery shop's price rule « الثمن = 5 × n + 20 » printed on a card.
@@ -613,11 +615,20 @@ card; open points for the owner.
   (f) **Glance height:** a plane of 11 × 9 tiles cannot be as flat as the 760 × 300 road of `stride-stamp`: `[data-cd-glance]` is ≈ 731 / 757 px at 1024×768 (مبتدئ / متقدم), not ≤ 700 (the e2e threshold is 760); recorded in the contract. A `halfline`/`numberline` statement-figure kind is still an open point.
   (g) Successor `talim-nuqta-mustawi` (2AM): « تذكّر — السنة الأولى » links to this lesson by itself; its LP edges written: P1 ← `1am_talim-fi-mustawi_P1`, P2 ← `1am_talim-fi-mustawi_P2` (the pair read in order), P3 ← `1am_talim-fi-mustawi_P3` (marking a point), kept beside its internal edges (history line in its `lesson.config.js` header).
 
-## Run status (2026-10-30, resumed after entry 4)
+- **6 · `tatbiq-qaida-harfiya` (2026-10-30).**
+  (a) The catalogue entry keeps `programmeItems: ['1am.m5.r08']` and `prerequisiteLessonCodes: []`. The ONLY net link into `1am.m5.r08` is `1am.m2.r08 → r08` (the rectangle's perimeter and area, taught later by the unpublished `mustatil-murabba-masaha`); `1am.m1.r05` is NOT a net prerequisite of r08 (the card's « measures r05 » is kept because the substituted values are decimal). « أستعدّ » measures r05 (items 1–2), the order of operations (3–4, the catalogue's `prerequisites`) and `1am.m2.r08` as a primary-school acquis (5–6). **No LP edge** (the only net source is unpublished); the perimeter and area appear only in a « تذكّر » box and as a GIVEN rule `P = 2 × (a + b)` (fence), never taught, no link.
+  (b) **الكفاءات** (order kept): P1 gains « دون الخلط مع $2\times 3 = 6$ لا $23$ » (the convention is never applied between two numbers); P2 says « كلّ حرف … في كلّ موضع … بالأولويات » and uses the lab's values (a = 15, b = 8); P3 gains « وإدراك أنّ الأمثلة التي تصحّ فيها لا تثبت صحّتها ».
+  (c) **The card's three levels became two** (the workspace has مبتدئ / متقدم): level 2 = the fence rule (a1 15 and 8 → 46, a2 the swapped values), level 3 = a3 the pretended rule `a + b = a × b` (it holds at (2 ; 2), ONE counterexample refutes it). مبتدئ is b1 (12 sheets → 80), b2 (a customer paid 95: n = 15, a `find` task) and b3 (`5 × n + 20 − n`: n written TWICE, 10 → 60). A value counts at the RELEASE of the dial. From (2 ; 2) any single move already gives a counterexample, so the « holds » verdict is reached only by returning to (2 ; 2) or (0 ; 0).
+  (d) **Extraction boundary re-routed** (`docs/sources/1am/unit6/build-extraction.py`, all this lesson's elements re-read at 110 dpi and `verified: True`): `know-1` is SPLIT by `items` — the definition and the omitted-× conventions (P1 of the catalogue) go to this lesson's module 2, the remarks (`x × 1`, `ba = ab`, `x × 0`, `a × a`) stay with `intaj-ibara-harfiya`; `act-2` (the Ruffier test) becomes ex-1 « football points » (not the entry); `act-4` is the lab's a3 (module 1); `ict` / `ict-ex` → ex-6 (a spreadsheet formula `=6*A2-4`); `deep-5` → مسألة 3. `ex-6` prints volumes in mL for a rule that needs litres: recorded in `discrepancies`, the lesson writes its own rule `V = d ÷ t`.
+  (e) **Module 3 is a platform addition** (the book has no طريقة here), as in entries 2–4: the same lab alone (m1 `4 × n + 15` with n = 9, m2 `2a = a + 2`), then the four actions write / place the values / compute by priorities / answer.
+  (f) **Bank** (written by a delegated helper from a brief, 50 sheets × 3–4 questions = 177): 3 `term_exam` (`1am-s3-47` ex 3 and `1am-s3-37` ex 5 ×2, read in the PDFs), 37 `term_exam_modelled`, 10 `adapted` (one per textbook element), 0 other; 10 `MISC-TATBIQ-*`. `1am-s2-79` ex 5 is NOT cited (its header says 2AM; the index marks it misfiled). The « write the expression » parts of those papers belong to `intaj-ibara-harfiya`.
+  (g) **Glance height** at 1024×768 (sidebar open, column ≈ 414 px): `[data-ld-glance]` is 715 px (مبتدئ) and 739 px (متقدم), not ≤ 700 (e2e threshold 760); recorded in the contract.
+  (h) Successors: `ikhtibar-musawat-mutabayina` (2AM): « تذكّر — السنة الأولى » is a live link and LP edges P1 ← `1am_tatbiq-qaida-harfiya_P2`, P2 ← `_P3`; `qimat-ibara-harfiya` (3AM): the link was already wired through `getLessonPath`, LP edges P1 ← `_P2`, P3 ← `_P3` (history line in each `lesson.config.js` header).
 
-Published and pushed on `dev`: entries 1–4 (`adad-ashri-mustaqim-mudarraj`, `adad-nisbiya-siyaqat`, `talim-mustaqim-mudarraj`, `bahth-adad-naqisa`) with their successor connections (`talim-mustaqim-mudarraj-2`, `hall-mushkil-muadala`), then **entry 5 `talim-fi-mustawi`** with its successor connection (`talim-nuqta-mustawi`).
-**Resume at card 6 `tatbiq-qaida-harfiya`.** Tips from the runs: build with
+## Run status (2026-10-30, after entry 6)
+
+Published and pushed on `dev`: entries 1–4 (`adad-ashri-mustaqim-mudarraj`, `adad-nisbiya-siyaqat`, `talim-mustaqim-mudarraj`, `bahth-adad-naqisa`), entry 5 `talim-fi-mustawi`, and **entry 6 `tatbiq-qaida-harfiya`** with their successor connections (`talim-mustaqim-mudarraj-2`, `hall-mushkil-muadala`, `talim-nuqta-mustawi`, `ikhtibar-musawat-mutabayina`, `qimat-ibara-harfiya`).
+**Resume at card 7 `wadiya-idmajiya-adad-nisbiya` (synthesis U5, needs all of unit 5 — published) and card 8 `intaj-ibara-harfiya` (U6, `1am.m5.r09`, needs r08 — published).** Tips from the runs: build with
 `NODE_OPTIONS=--max-old-space-size=8192 npx vite build` then `node scripts/analyze-entry-bundle.mjs --dist apps/web/dist --budget 245`
 (the `check:entry-budget` script OOMs on its own 4 GB build); `buildLessonMemo.test.js` can time out under load and passes alone.
-Open owner points: a `halfline`/`numberline` statement-figure kind is still missing; confirm the 2AM LP edges chosen for
-`hall-mushkil-muadala` (Generator note 4) and `talim-nuqta-mustawi` (Generator note 5).
+Open owner points: a `halfline`/`numberline` statement-figure kind is still missing; confirm the 2AM LP edges chosen for `hall-mushkil-muadala` (note 4), `talim-nuqta-mustawi` (note 5) and `ikhtibar-musawat-mutabayina` (note 6).

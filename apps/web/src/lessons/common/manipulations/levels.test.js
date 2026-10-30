@@ -120,6 +120,15 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(beginner.numbers.tasks.some((tk) => tk.scene === 'altitude') && beginner.numbers.tasks.some((tk) => tk.reads.some((r) => r === 0 || r.self === 0)), type).toBe(true);
         expect(beginner.numbers.tasks.every((tk) => /^b\d$/.test(tk.id)) && advanced.numbers.tasks.every((tk) => /^a\d$/.test(tk.id)), type).toBe(true);
       }
+      // Unité 6 de 1AM, leçon 2 : `letter-dial` se mesure par la VALEUR du cadran qui tombe dans chaque fente : مبتدئ = une lettre (une valeur donnée, une valeur à trouver, une lettre écrite deux fois), متقدم = deux lettres puis une prétendue règle réfutée par un contre-exemple.
+      else if (type === 'letter-dial') {
+        const kinds = (lv) => lv.numbers.tasks.map((tk) => tk.kind);
+        expect(kinds(beginner), type).toEqual(['set', 'find', 'set']);
+        expect(beginner.numbers.tasks.every((tk) => Object.keys(tk.dials).length === 1), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => (tk.formula.match(/n/g) ?? []).length === 2), type).toBe(true);
+        expect(kinds(advanced).includes('claim') && advanced.numbers.tasks.some((tk) => Object.keys(tk.dials).length === 2), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => /^b\d$/.test(tk.id)) && advanced.numbers.tasks.every((tk) => /^a\d$/.test(tk.id)), type).toBe(true);
+      }
       // Unité 6 de 1AM, leçon 1 : `rewind-belt` se mesure par la CARTE choisie à rebours puis la contre-épreuve : مبتدئ = entiers (somme, différence, produit, carte piège « a − »), متقدم = décimaux et un quotient qui ne s'arrête pas.
       else if (type === 'rewind-belt') {
         const kinds = (lv) => lv.numbers.tasks.map((tk) => tk.kind);

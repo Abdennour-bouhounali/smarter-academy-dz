@@ -778,6 +778,22 @@ export const LEVELS = Object.freeze({
       { id: 'a3', kind: 'mul', a: '7', out: '20', rack: ['add', 'sub', 'mul', 'div'] },
     ] }, ...T('now-82') },
   },
+  // LA VALEUR DU CADRAN SOUS LA MAIN (letter-dial, thème copyshop, 1AM unité 6, leçon « تطبيق قاعدة حرفية », 2026-10-30) : une tâche est `{ id, kind: 'set' | 'find' | 'claim', name, formula | left+right, dials: { <lettre>: { max, start? } }, target | out }` ;
+  // la règle est imprimée avec ses lettres, la main tourne un cadran par lettre et la LÂCHE ; la valeur tombe dans chaque fente de sa lettre et la carte calcule. Règles : textes « 5*n+20 », « 2*(a+b) », « a+b » (× écrit *, × implicite lu comme un produit).
+  // مبتدئ (plateforme) : b1 « الثمن = 5 × n + 20 » avec n = 12 donne 80 ; b2 le client qui a payé 95 (n = 15, une seule valeur) ; b3 « 5 × n + 20 − n » avec n = 10 donne 60 (n écrit DEUX fois).
+  // متقدم (plateforme) : a1 la clôture « P = 2 × (a + b) » avec a = 15 et b = 8 donne 46 (deux cadrans) ; a2 a = 8 et b = 15 donne encore 46 ; a3 la prétendue règle « a + b = a × b » qui tient pour (2 ; 2) (4 = 4) et se réfute par un seul contre-exemple.
+  'letter-dial': {
+    beginner: { numbers: { tasks: [
+      { id: 'b1', kind: 'set', name: 'price', formula: '5*n+20', dials: { n: { max: 30 } }, target: { n: 12 } },
+      { id: 'b2', kind: 'find', name: 'price', formula: '5*n+20', dials: { n: { max: 30 } }, out: '95' },
+      { id: 'b3', kind: 'set', name: 'promo', formula: '5*n+20-n', dials: { n: { max: 30 } }, target: { n: 10 } },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', kind: 'set', name: 'fence', formula: '2*(a+b)', dials: { a: { max: 30 }, b: { max: 30 } }, target: { a: 15, b: 8 } },
+      { id: 'a2', kind: 'set', name: 'fence', formula: '2*(a+b)', dials: { a: { max: 30 }, b: { max: 30 } }, target: { a: 8, b: 15 } },
+      { id: 'a3', kind: 'claim', name: 'claim', left: 'a+b', right: 'a*b', dials: { a: { max: 12, start: 2 }, b: { max: 12, start: 2 } } },
+    ] }, ...T('act-4') },
+  },
   // ── 1AM, unité 11 — surface, périmètre, aire (2026-10-15) ──
   // LE CARREAU SOUS LA MAIN (tile-yard) : la main tient un carreau de zellige (thème courtyard). مبتدئ : la cour de la maison du grand-père,
   // 12 carreaux seulement DÉPLACÉS (mode fence) : l'aire ne bouge pas, la clôture change — d'abord la plus courte, puis 20 bâtons ;

@@ -327,6 +327,10 @@ export const VISUAL_THEMES = Object.freeze({
   //   packingline  un atelier de conditionnement de fournitures scolaires : un tapis roulant (LTR : plateau de sortie, machine à carte, bac d'entrée), des caisses numérotées, une rangée de cartes d'opérations
   //                (+ − × ÷ et « a − ») ; Salma (KidFigure, fille en hijab) pousse les caisses et Anis (sweat) range les cartes (`rewind-belt`)
   packingline: { kind: 'lengths', shows: 'ورشة تعبئة: حزام ناقل وآلة ببطاقة عملية وصناديق مرقّمة' },
+  // 1AM, unité 6, leçon 2 « تطبيق قاعدة حرفية » (2026-10-30) :
+  //   copyshop  le comptoir d'une papeterie-photocopie : une pile de feuilles, une photocopieuse, la caisse dont l'écran affiche le nombre calculé par la carte de règle, un comparateur à deux écrans ; Salma (KidFigure, fille en hijab)
+  //             tient la caisse ; ce que la main tourne : un cadran gradué par lettre (`letter-dial`)
+  copyshop: { kind: 'lengths', shows: 'مكتبة وتصوير: لائحة أسعار وصندوق دفع وأقراص لتعيين قيمة كلّ حرف' },
   // 1AM, unité 5, leçon 2 « التعليم على مستقيم مدرّج » (2026-10-30) :
   //   villageroad  une route de village droite vue de côté : la station de bus (poteau et panneau) est l'origine O, l'école avec son drapeau à l'EST (à droite), la place de la mosquée (dôme et minaret) à l'OUEST (à gauche) ; la route est finie,
   //                sans autre inscription que le zéro ; Salma (KidFigure, fille en hijab) regarde le bâton-foulée ; ce que la main porte : le bâton de bois d'une foulée, des maisons, un cadre d'une foulée, le drapeau de la station (`stride-stamp`)

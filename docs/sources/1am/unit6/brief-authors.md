@@ -37,3 +37,5 @@ and the belt direction.
 50 sheets, 172 questions; provenance read from the PDFs: `1am-s3-47` ex 1 (14 + x = 90 ; x − 3,8 = 9 ; 5x = 200 ; 83 − x = 78), `1am-s3-39` ex 2 (185 − x = 117 ; x + 11,7 = 18,5 ; 4x = 36), `1am-s3-43` ex 4 (a folder = 4 notebooks, write and solve an
 equation), `1am-s3-44` ex 1 (79,8 + x = 100 ; x − 14 = 25 ; 14x = 7) and `1am-s3-37` ex 2 (Δ − 2,5 = 7,5 ; 60 + □ = 85), each with new numbers and contexts; the rest `term_exam_modelled` (`1am-s2`, `1am-s3`) or `adapted` from `act-1`,
 `ex-15`, `ex-16`, `now-82`, `ex-17`, `ex-18`, `method-1`, `deep-1`, `deep-6`, `deep-7`, `self-5`. Every key is re-computed by the oracle; 11 `MISC-NAQISA-*`. A rational key is written canonically (`4.7`, `20/7`).
+
+- **2026-10-30 — `tatbiq-qaida-harfiya` generated:** its elements (act-2, act-4, know-1 definition and conventions, know-2 apply-rule, ex-4 to ex-6, deep-5, ict, ict-ex) were re-read at 110 dpi (`verified: True`); `know-1` is split by `items` (conventions here, remarks `x × 1`, `ba = ab`, `x × 0`, `a × a` with `intaj-ibara-harfiya`); `ex-6` prints mL for a litre rule (recorded in `discrepancies`).

@@ -793,3 +793,15 @@ Planned on 2026-10-30 (14 lessons + 6 syntheses, 11 pairs, one design card per e
 - **Patterns to reuse:** see the guide's « 1AM unit 5, lesson 3 » bullet (a lab locked to ONE AXIS at a time, a place said by its numbers is not drawn before the photo, plane figures as `GeoFigure` frames, a bank of pairs in `answerType: "point"`).
 - **URL:** `/courses/moyen/1am/ansab_al_aadad_wal_hisab/talim-fi-mustawi`.
 - **Successor connection:** `talim-nuqta-mustawi` (2AM, net `1am.m5.r07 → 2am.m4.r04`, consolidates): its « تذكّر — السنة الأولى » links to this lesson by itself and its LP edges are written (see the connection commit and the plan's Generator notes 5).
+
+### 1AM entry 6 — `tatbiq-qaida-harfiya` « تطبيق قاعدة حرفية » (1AM unit 6 `ibarat-harfiya`, pair 3 B, 2026-10-30) — generated, published locally
+
+- **Shape:** nine modules (0 أستعدّ · 1 نشاط · 2 معارف (the definition and the omitted-× conventions of the book's p. 81 with the platform's words, the « تذكّر » for the rectangle's perimeter and area) · 3 طريقة (platform addition: the book has none) · 4 أتمرّن (seven exercises) · 5–7 مسائل · 8 إختبار أولي), `durationMinutes` 60, programme item `1am.m5.r08`.
+- **الكفاءات (draft → final, order kept):** P1 gains « دون الخلط مع 2 × 3 = 6 لا 23 »; P2 « كلّ حرف … في كلّ موضع … بالأولويات » with a = 15, b = 8; P3 gains « وإدراك أنّ الأمثلة التي تصحّ فيها لا تثبت صحّتها ». No LP edge in 1AM (the only net prerequisite, `1am.m2.r08`, is unpublished).
+- **Lab `letter-dial` « قرص الحروف »** (theme `copyshop`, contract `MANIPULATION_CONTRACT.md` § 2novenquinquagies septdecies; `packages/core/arithmetic/letterRule.js`): the hand holds the VALUE of each letter on a rotary dial; it drops into EVERY slot of the letter and the card computes (`5 × 12 + 20 → 60 + 20 → 80`); a value counts at the release; level 2: `2 × (a + b)` with two dials, then `a + b = a × b` that holds at (2 ; 2) and falls to ONE counterexample.
+- **Bank:** 5 × 10 sheets, 177 questions (3 `term_exam` — `1am-s3-47` ex 3, `1am-s3-37` ex 5 ×2, read in the PDFs / 37 modelled / 10 adapted / 0 other), 10 `MISC-TATBIQ-*`; oracle `scripts/practice-oracle/tatbiq-qaida-harfiya.mjs` (own BigInt rationals and expression evaluator).
+- **Corrections to the card:** see « Generator notes » entry 6 in `docs/curriculum/PLAN_1AM_NUMBERS.md`.
+- **Patterns to reuse:** see the guide's « 1AM unit 6, lesson 2 » bullet.
+- **URL:** `/courses/moyen/1am/ansab_al_aadad_wal_hisab/tatbiq-qaida-harfiya`.
+- **Successor connections:** `ikhtibar-musawat-mutabayina` (2AM, net `1am.m5.r08 → 2am.m4.r09`, requires): « تذكّر — السنة الأولى » is a live link, LP edges P1 ← `1am_tatbiq-qaida-harfiya_P2`, P2 ← `_P3`; `qimat-ibara-harfiya` (3AM, net `r08 → 3am.m5.r03`, extends): LP edges P1 ← `_P2`, P3 ← `_P3` (its link was already wired).
+

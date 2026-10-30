@@ -831,6 +831,14 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'للبحث عن العدد الناقص □ في مساواة نعيد الآلة إلى الوراء بالعملية العكسية ثمّ نتحقّق بالتعويض: في مجموع □ + a = b نطرح فنجد □ = b − a ؛ في فرق □ − a = b نجمع ؛ وفي a − □ = b نطرح الناتج من a ؛ وفي جداء a × □ = b نقسم فنجد □ = b ÷ a (وقد يكون الناتج كسرًا)',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 1AM, unité 6 « الحساب الحرفي », leçon 2 « تطبيق قاعدة حرفية » (2026-10-30) — la valeur d'un cadran qui remplace une lettre dans toutes ses fentes.
+  'letter-dial': {
+    // LA VALEUR DU CADRAN SOUS LA MAIN : une papeterie-photocopie. La règle du prix « الثمن = 5 × n + 20 » est imprimée avec sa lettre ; la main TOURNE le cadran de n (12 feuilles, puis le client qui a payé 95, puis une règle où n est écrit DEUX fois) :
+    // la valeur tombe dans CHAQUE fente de la lettre et la carte calcule (parenthèses, produits, sommes ; 5 × 12 jamais lu 512). متقدم : la règle d'une clôture P = 2 × (a + b) avec DEUX cadrans (15 et 8, puis 8 et 15 : même périmètre), puis
+    // une prétendue règle « a + b = a × b » : (2 ; 2) donne 4 = 4 et ne prouve rien, UN contre-exemple (3 ; 4 : 7 ≠ 12) suffit à la réfuter. « جرّب قاعدتك أنت » : toujours ouvert (une règle tapée, 2x lu 2 × x). Calcul exact : `letterRule.js` : MANUEL (§6bis).
+    shows: 'لتطبيق قاعدة حرفية نعوّض كلّ حرف بقيمته في كلّ موضع يظهر فيه ثمّ نحسب (الأقواس أوّلًا ثمّ الضرب ثمّ الجمع والطرح): $5\\times 12+20=60+20=80$ ؛ والضرب المخفيّ بين عدد وحرف يبقى ضربًا: $5n$ من أجل $n=12$ تعني $5\\times 12$ لا $512$ ؛ ويكفي مثال مضادّ واحد، مثل $3+4\\neq 3\\times 4$ ، لإسقاط قاعدة تدّعي أنّها صحيحة دائمًا',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 1AM, unité 5 « الأعداد النسبية », leçon 2 « التعليم على مستقيم مدرّج » (2026-10-30) — la foulée portée des deux côtés de l'origine, lue comme une abscisse.
   'stride-stamp': {
     // LA FOULÉE PORTÉE DES DEUX CÔTÉS : une route de village, la station de bus est l'origine O (l'école à l'est, la place de la mosquée à l'ouest). La main PORTE un bâton d'une foulée à partir de O vers l'est puis vers l'ouest : les ticks 1, 2, 3 puis
