@@ -11,12 +11,17 @@
 // Un défi publié sans oracle fait échouer le test.
 import { describe, it, expect } from 'vitest';
 import { readChallenges } from './build-thinking-lab-index.mjs';
-import { checkAnswer, mistakeExpression, expressionOptions } from '../packages/core/thinkingLab/checkAnswer.js';
+import { checkAnswer, mistakeExpression, expressionOptions, exactValue } from '../packages/core/thinkingLab/checkAnswer.js';
 import { evaluateExpression, samplePoints, closeEnough } from '../packages/core/thinkingLab/expression.js';
 import { allTuples, fillChallenge } from '../packages/core/thinkingLab/params.js';
 import { ORACLE as SEED } from './thinking-lab-oracle/seed.mjs';
+import { ORACLE as PRIMARY } from './thinking-lab-oracle/primary.mjs';
+import { ORACLE as MIDDLE } from './thinking-lab-oracle/middle.mjs';
+import { ORACLE as SECONDARY } from './thinking-lab-oracle/secondary.mjs';
+import { ORACLE as UNIVERSITY } from './thinking-lab-oracle/university.mjs';
 
-const ORACLE = { ...SEED };
+// Un lot par tranche (écrits en parallèle, jamais deux auteurs sur le même fichier).
+const ORACLE = { ...SEED, ...PRIMARY, ...MIDDLE, ...SECONDARY, ...UNIVERSITY };
 const challenges = readChallenges().map((e) => e.data).filter((c) => c?.status === 'published');
 
 function expectMatchesOracle(spec, compute, values, tolerance, label) {
@@ -66,7 +71,10 @@ describe('oracle du « مختبر التفكير »', () => {
         for (const values of allTuples(c.params)) {
           const f = fillChallenge(c, values);
           f.mistakes.forEach((m) => {
-            expect(checkAnswer(f.answer, mistakeExpression(m), { mistakes: f.mistakes }).correct, `erreur « ${m.value} » acceptée`).toBe(false);
+            const typed = ['integer', 'rational'].includes(f.answer.check) && !m.outside ? exactValue(String(m.value))?.toString() : mistakeExpression(m);
+            const r = checkAnswer(f.answer, typed, { mistakes: f.mistakes });
+            expect(r.outcome, `erreur « ${m.value} » illisible`).not.toBe('syntax_error');
+            expect(r.correct, `erreur « ${m.value} » acceptée`).toBe(false);
           });
         }
       });

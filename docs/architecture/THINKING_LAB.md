@@ -2,14 +2,20 @@
 
 > **Status.**
 >
-> - **Implemented since 2026-10-30 (phase 0, « Foundations »):**
+> - **Phase 0 (« Foundations »), 2026-10-30, implemented:**
 >   - the content model;
 >   - the answer check, including the `expression` evaluator in JS and PHP with one shared fixture;
 >   - per-student numbers;
->   - the content pipeline: schema → validator → oracle → generated index, chained into `check:lessons`.
->
->   There is no route, table, screen or API yet.
-> - **Planned, not yet implemented:** everything marked *Planned* below. That is phases 1–7 of the build plan
+>   - the content pipeline: schema → validator → oracle → generated index, in `check:lessons`.
+> - **Phase 1 (« Ladder core »), 2026-11-01, implemented:**
+>   - the two tables;
+>   - the server (repository, presenter, honest attempts, keys, the gate, postpone, twin credit, ceiling and parts);
+>   - the student API;
+>   - screens 1–3 with the replay player and sounds;
+>   - the access key;
+>   - the deploy step;
+>   - the seed bank, 46 challenges, all published.
+> - **Planned, not yet implemented:** everything marked *Planned* below, which is phases 2–7 of
 >   [`reports/THINKING_LAB_PLAN_2026-10-30.md`](../reports/THINKING_LAB_PLAN_2026-10-30.md). The plan stays the authority for
 >   what is not built yet, and its §2 owner decisions D1–D10 are binding. This contract is the authority for what exists.
 > - Content: [`curriculum/THINKING_LAB_CHALLENGE_BANK.md`](../curriculum/THINKING_LAB_CHALLENGE_BANK.md).
@@ -22,7 +28,7 @@ replay of a mathematician's thinking. The method is SMART (Scan, Math translate,
 
 | Path | Content | Status |
 |---|---|---|
-| 1 · « سُلَّم التحدّيات » | numbered puzzles outside the curriculum, primary → university, band hidden | content model and checking **implemented**; ladder *Planned* (phase 1) |
+| 1 · « سُلَّم التحدّيات » | numbered puzzles outside the curriculum, primary → university, band hidden | **implemented** (phase 1) for independent students; the teacher request flow is *Planned* (phase 2) |
 | 2 · « مسار المنهاج » | problems tied to each grade's lessons, the « مسرح العقل » | *Planned* (phase 6) |
 
 ## 2. Where the code lives
@@ -30,33 +36,50 @@ replay of a mathematician's thinking. The method is SMART (Scan, Math translate,
 ```
 content/thinking-lab/
   _schema/challenge.schema.json        the challenge schema (§3)
-  _fixtures/expressions.json           shared JS ↔ PHP fixture of the expression evaluator (§4)
-  _fixtures/params.json                shared fixture of per-student numbers (§3.3)
-  challenges/<NNNN>-<id>.json          one file per challenge
-  index.generated.json                 GENERATED, checked in, server-only (§5.3)
+  _fixtures/expressions.json           JS ↔ PHP fixture of the expression evaluator (§4.2)
+  _fixtures/answers.json               JS ↔ PHP fixture of the answer checker (§4.1)
+  _fixtures/params.json                JS ↔ PHP fixture of per-student numbers (§3.3)
+  challenges/<NNNN>-<id>.json          one file per challenge (46 published)
+  index.generated.json                 GENERATED, checked in, SERVER-ONLY (§5.3)
 packages/core/thinkingLab/             pure logic, imported BY PATH, never through the core barrel
-  expression.js                        safe parser + evaluator + equivalence (no eval)
-  checkAnswer.js                       integer | number | rational | expression | choice + declared mistakes
-  params.js                            per-student numbers (FNV-1a) and {name} filling
-apps/api/app/Domain/ThinkingLab/
-  ExpressionEvaluator.php              PHP port of expression.js (same grammar, codes, canonical print, sampler)
-  ExpressionSyntaxError.php
+  expression.js  checkAnswer.js  params.js
+apps/api/
+  config/thinking_lab.php              content path, edition, every gate threshold (§6)
+  app/Domain/ThinkingLab/
+    ExpressionEvaluator.php  AnswerChecker.php  Params.php      mirrors of the core JS (shared fixtures)
+    ChallengeRepository.php            reads the generated index
+    ChallengePresenter.php             the ONLY door to the client (§6.5)
+    GateService.php                    the state machine, honest attempts, keys, replay, extras (§6)
+    LadderService.php                  reach, open places (§6.1)
+    ThinkingLabException.php           closed refusal reasons
+  app/Http/Controllers/ThinkingLabController.php
+  app/Models/ThinkingLabProgress.php  ThinkingLabAttempt.php
+  database/migrations/2026_11_01_000001_create_thinking_lab_tables.php
+apps/web/src/
+  services/thinkingLabService.js
+  pages/student/thinking/{ThinkingLadderPage,ThinkingChallengePage,ThinkingNumberPage}.jsx   lazy routes
+  features/thinkingLab/
+    thinkingModel.js                   pure helpers: state in words, phases, LTR math islands, Algiers time
+    ThinkingParts.jsx                  MathRun, ChallengeFigure, AnswerInput, PhaseChip, SoundToggle, prettyMath
+    ladder/LadderHome.jsx              screen 1
+    workspace/Workspace.jsx            screen 2
+    replay/ReplayPlayer.jsx  replay/AfterSolve.jsx   screen 3
+    figures/                           one SVG component per figure + index.js (lazy glob) + palette.js (§7.2)
+  i18n/locales/ar/thinking.json        on-demand namespace
 scripts/
-  build-thinking-lab-index.mjs         writes / --check the index
-  validate-thinking-lab.mjs            the content gate (§5.1), chained into check:lessons
-  thinking-lab-oracle/<batch>.mjs      independent recomputation of every answer (§5.2)
-  thinking-lab-oracle.test.mjs         fails for a published challenge without an oracle
-  lib/jsonSchemaSubset.mjs             the JSON-Schema subset the validator uses (no dependency)
+  build-thinking-lab-index.mjs  validate-thinking-lab.mjs  thinking-lab-oracle.test.mjs
+  thinking-lab-oracle/{seed,primary,middle,secondary,university}.mjs
+  lib/jsonSchemaSubset.mjs
 ```
 
-*Planned (phase 1+):* `AnswerChecker.php` (the server mirror of `checkAnswer.js`), the PHP mirror of `params.js`,
-`ChallengeRepository`, `ChallengePresenter`, the gate, the tables, the routes and `features/thinkingLab/` (plan §3).
+**Bundle rule** ([`BUNDLE_BOUNDARIES.md`](./BUNDLE_BOUNDARIES.md) §3–§4):
 
-**Bundle rule** ([`BUNDLE_BOUNDARIES.md`](./BUNDLE_BOUNDARIES.md) §4):
-
-- `packages/core/thinkingLab/*` is imported by path, and no entry module imports it.
-- `content/thinking-lab/index.generated.json` holds the answers, so no web module may import it. Only the
-  server reads it.
+- `packages/core/thinkingLab/*` is imported by path.
+- The three pages are `lazy()`, the namespace `thinking` is on demand, and every figure is its own lazy chunk.
+- The entry carries only the nav labels and `common.apiErrors.thinkingLab`. Measured on 2026-11-01: 237.8 KB gzip
+  (budget 245); the `--chain features/thinkingLab` probe finds no path into the entry.
+- `content/thinking-lab/` holds the answers. **No web module may import it**; `features/thinkingLab/serverOnly.test.js`
+  scans the sources to enforce this.
 
 ## 3. Content model
 
@@ -69,51 +92,52 @@ which may be left out. The schema is `content/thinking-lab/_schema/challenge.sch
 |---|---|
 | `id` | stable slug. It never changes; links and progress use it. |
 | `number` | position in the current edition. The file name is `String(number).padStart(4,'0')-<id>.json`. |
-| `title` | Arabic title for authors and teachers. The student sees the number only. |
+| `title` | Arabic title for authors and teachers. The student sees the number only (the presenter never sends it). |
 | `status` | `draft` or `published`. In `--strict` mode nothing stays `draft` (owner rule). |
 | `family` | `logic`, `numbers`, `patterns`, `algebra`, `geometry`, `counting`, `probability`, `functions`, `analysis`, `invariants` or `critical`. |
 | `band` | **hidden**; it must match the number (§3.2). |
 | `summit` | `true` exactly for multiples of 25. |
 | `licence`, `source` | `PD`, `FOLK` or `TYPE`, plus what inspired it (challenge bank §1). Never a copied statement. |
-| `examTag` | `bem`, `bac` or `null`. |
+| `examTag` | `bem`, `bac` or `null`; shown as « فكرة تتكرّر في امتحان … ». |
 | `rating` | the author's initial estimate (Elo scale, 400–3000). |
-| `statement` | Arabic text. `{name}` placeholders are filled from `params`. |
-| `figure` | `{kind: "svg", component, props}` or `null`. The figure is drawn in code, never as a raster image. |
-| `whiteboard` | `{seed, observe[]}` or `null`: the observation targets (`segment`, `triangle` or `angle` through named points). |
+| `statement` | Arabic text with maths in plain Unicode (no LaTeX). `{name}` placeholders are filled from `params`. Line breaks are kept on screen. |
+| `figure` | `{kind: "svg", component, props}` or `null` (§7.2). |
+| `whiteboard` | optional `{seed, observe[]}`: the observation targets. Unused until phase 3. |
 | `params` | `{vars: {name: [values…]}}` or `null` (§3.3). |
 | `answer` | §4. |
-| `parts` | summits: `[{prompt, answer}]` (at least 2), or `null`. |
+| `parts` | summits: 1 or more follow-ups `[{prompt, answer}]`, shown once the main answer is solved or the gate is open. The statement asks only the main question, and only `answer` drives the gate. |
 | `mistakes` | frequent wrong answers and their « ليس بعد » reply (§4.3). |
 | `keys` | 1–3 entries; a published challenge has exactly **3** (S → 👁 → R). Each key is a question and never gives the answer. |
-| `example` | the primary band's worked example `{statement, steps[], answer}`. It is required for that band and `null` for the others. |
+| `example` | the primary band's worked example `{statement, steps[], answer}`, shown BEFORE trying. It is required for that band and `null` for the others. |
 | `replay` | steps `{phase, think, layers?, math?, ask?}`. The phases are `S M A R T O B` (O = 👁 observation, B = ↩ dead end). |
 | `keyMoves` | 1–3 sentences: the short replay for a student who solved alone. |
-| `move` | `{id, title}`: the thinking move collected as a card. |
+| `move` | `{id, title}`: the thinking move. Two challenges may share a move id; the card levels up in phase 4. |
 | `twin` | the id of the twin challenge, or `null`. |
 | `ceiling` | « ارفع السقف » `{statement, answer}`, or `null`. |
 
 ### 3.2 Hidden bands
 
-| Numbers | Band | Mode |
+| Numbers | Band | Mode (enforced by the gate, §6) |
 |---|---|---|
-| 1–120 | `primary` | example first (`example` required), no one-day lock |
-| 121–260 | `middle` | try first |
-| 261–420 | `secondary` | try first |
-| 421+ | `university` | try first |
-
-The bands are enforced by `validate-thinking-lab.mjs › bandOf`. The modes are applied by the gate (*Planned*, plan §5–§6).
+| 1–120 | `primary` | example first (`example` required); the replay opens after 3 attempts **with no day of waiting** (`gate.primary_think_hours` = 0) |
+| 121–260 | `middle` | try first: 3 attempts + 24 h |
+| 261–420 | `secondary` | try first: 3 attempts + 24 h |
+| 421+ | `university` | try first: 3 attempts + 24 h |
 
 ### 3.3 Per-student numbers (`params`)
 
 - **Tuple choice:** a student's tuple is `fnv1a32("${userId}:${challengeId}:${edition}") mod tupleCount`.
-- **Hash:** FNV-1a, 32 bits, over UTF-8 bytes. In PHP it is computed as `($h * 16777619) & 0xFFFFFFFF`.
-- **Tuple order:** variables are sorted by name, and the last one varies fastest.
-- **Shared fixture:** `content/thinking-lab/_fixtures/params.json` freezes the choice. The PHP mirror must pass the same
-  fixture (*Planned*, phase 1).
-- **Filling:** `fillChallenge` replaces `{name}` in every string.
-  - `answer.value`, `mistakes[].value` and `scaleWith` are filled **between parentheses**, so `{a}^2` with a = −3 reads `(-3)^2`.
-  - `params` itself is left untouched.
-  - A `{name}` that is not a declared variable is left as written. The validator rejects it in the statement, the keys and the replay.
+  - The hash is FNV-1a, 32 bits, over UTF-8 bytes.
+  - Variables are sorted by name, and the last one varies fastest.
+- **Mirrors:** `params.js` and `Params.php` both pass `_fixtures/params.json`.
+- **Storage:** the tuple index is stored in `thinking_lab_progress.params_index` when progress is created, so a change of
+  edition never changes a student's numbers in the middle of a challenge.
+- **Filling:** `{name}` is replaced in every string.
+  - `answer.value`, `mistakes[].value` and `scaleWith` are filled **between parentheses** (`{a}^2` with a = −3 reads `(-3)^2`).
+  - An `integer` or `rational` answer may therefore be a constant expression after filling (`{n}*({n}-1)/2`). It is read
+    **exactly**: + − × ÷ and integer powers, through `exactValue` in JS and `AnswerChecker::exactValue` in PHP. √ and π are
+    not allowed there; use `number`.
+  - The screen shows the computed value (« 21 », never the filled template).
 
 ## 4. Checking an answer
 
@@ -121,20 +145,18 @@ The bands are enforced by `validate-thinking-lab.mjs › bandOf`. The modes are 
 
 | `answer.check` | How it is checked |
 |---|---|
-| `integer`, `rational` | delegated to the practice evaluator (`answerEvaluator.js`, PHP `AnswerEvaluator`) as `answerType: "rational"`. It is exact and never compared to an epsilon. `tolerance` is a rational. |
+| `integer`, `rational` | the expected value is read exactly (§3.3), then the check is delegated to the practice evaluator (`answerEvaluator.js` / `AnswerEvaluator.php`) as `answerType: "rational"`. `tolerance` is a rational. The student types a number, fraction, decimal or %. |
 | `choice` | delegated as `answerType: "choice"`. `value` is the id of the correct choice, and `choices` is `[{id, text}]`. |
-| `number` | the answer is read as a rational, falling back to an expression with no variable, then compared with `relTol` (default 1e-6) and `absTol` (default 1e-9). Constants are allowed (`π/4`). |
-| `expression` | equivalence by evaluation, with `expression.js` / `ExpressionEvaluator.php` (§4.2). |
+| `number` | the answer is read as a rational, falling back to an expression with no variable (`π/4`, `e-2`), and compared with `relTol` (default 1e-6) and `absTol` (default 1e-9). With **`percent: true`**, « −4 % » or « −4 ٪ » is read as −4. |
+| `expression` | equivalence by evaluation (§4.2). |
 
 The outcomes are the practice outcomes: `correct`, `equivalent_correct`, `incorrect` and `syntax_error`.
 
-- An unreadable or empty answer is a `syntax_error`, never an `incorrect`. It will not count as an attempt
-  (honest-attempt rule, *Planned*).
-- `checkAnswer` returns `{outcome, correct, normalized, mistakeIndex}`.
-- An unreadable **expected** answer throws, because it is a content error.
-
-The client never grades. `checkAnswer.js` serves the validator, the oracle and display; the server grades
-(*Planned*: `AnswerChecker.php`, delegating `expression` to `ExpressionEvaluator.php`).
+- An unreadable or empty answer is a `syntax_error`, never an `incorrect`, and it is never counted (§6.2).
+- Both `checkAnswer.js` and `AnswerChecker.php` return `{outcome, correct, normalized, mistakeIndex}`. They pass the same
+  59 cases in `_fixtures/answers.json`.
+- An unreadable expected answer throws, because it is a content error.
+- **The server grades** (`AnswerChecker.php`). The client never receives what it would need to grade.
 
 ### 4.2 The `expression` evaluator
 
@@ -153,76 +175,60 @@ primary := number | pi | e | variable | '(' expr ')' | '|' expr '|'
 
 - An implicit product has the precedence of a written product and reads left to right. `1/2x` is `(1/2)·x`.
 - A function written without parentheses takes the next unary operand. `√3x` is `√3·x`, and `sin x^2` is `sin(x²)`.
-- `e` is always the constant. The schema forbids it as a variable.
-- Variables are single letters declared in `answer.vars`. Any other letter is `unknown_symbol`.
-- An Arabic letter is `unknown_symbol`.
+- `e` is always the constant. Variables are single letters declared in `answer.vars`; any other letter, including an
+  Arabic letter, is `unknown_symbol`.
 - `|…|` cannot nest; use `abs()` for nested absolute values.
 
 **Input normalisation**, identical on both sides:
 
-- Arabic-Indic and Persian digits are converted to Latin digits, and `٫` becomes `.`.
-- All whitespace is removed.
+- Arabic-Indic and Persian digits become Latin, and `٫` becomes `.`.
+- Whitespace is removed.
+- **`-:` becomes `/`** (MathLive writes `÷` as `-:` in ascii-math). This happens before the dashes are normalised.
 - `− – —` become `-`, `× · ⋅` become `*`, `÷ ∕` become `/`, and `**` becomes `^`.
 - `π` becomes `pi`, and `√` becomes `sqrt`.
-- `\cdot`, `\times`, `\div`, `\sqrt`, `\pi`, `\left` and `\right` are rewritten or removed.
+- `\cdot \times \div \sqrt \pi \left \right` are rewritten or removed.
 - `{ } [ ]` are read as parentheses.
 - Superscripts `⁰…⁹` become `^n`.
-- A decimal comma is accepted between two digits (`1,5`).
+- A comma between two digits is a decimal point.
 
-The input is MathLive's `ascii-math` output (`ExamMathField`), typed Unicode, or LaTeX shapes.
+MathLive's ascii-math (`(3+pi-3sqrt(3))/(3)x^2`, `3 * 4`, `12 -: 4`) is read as written. The fixture holds cases taken from
+its real output.
 
-**Error codes** (shared, compared by the fixture): `empty`, `too_long` (more than 300 code points), `unknown_symbol`,
-`bad_number`, `unexpected_token`, `unbalanced` and `too_deep` (depth above 60).
+**Errors and values:**
 
-**Values.** An undefined value is NaN (JS) or NAN (PHP). These cases are undefined:
+- Error codes are `empty`, `too_long` (more than 300 code points), `unknown_symbol`, `bad_number`, `unexpected_token`,
+  `unbalanced` and `too_deep` (depth above 60).
+- An undefined value is NaN. That covers ÷0, √ of a negative, ln ≤ 0, a negative base with a non-integer exponent,
+  `0^negative`, and any non-finite result.
+- **Canonical writing** (`normalized`) is fully parenthesised (`((x^2)*((1+(pi/3))-sqrt(3)))`). It is stored as
+  `answer_norm` and used by the repeat rule.
 
-- division by 0;
-- `sqrt` of a negative number, and `ln` of a number ≤ 0;
-- a negative base raised to a non-integer power, and `0^negative`;
-- any non-finite result.
+**Equivalence:**
 
-**Canonical writing** (`normalized`): the expression fully parenthesised, for example `((x^2)*((1+(pi/3))-sqrt(3)))`. Literals are
-canonical (`007.50` → `7.5`). A student's writing that prints like the expected one is `correct`; any other equivalent
-writing is `equivalent_correct`. *Planned:* `answer_norm`, used by the honest-attempt rule, is this string.
+- Points are drawn by Park–Miller (×48271 mod 2³¹−1, seed `20261030`) in `domain[v] = {min, max, exclude[]}`, default
+  [−4, 4], skipping points within 1e-3 of an excluded value, at most 8 × `samples` draws.
+- At each point:
+  - both values undefined: the point is skipped;
+  - exactly one undefined: refused (`domain`);
+  - values farther apart than `relTol` 1e-6 or `absTol` 1e-9: refused (`differs`).
+- `samples` (default 6) agreeing points are needed; fewer than half defined is refused (`undefined`). A geometric challenge declares a positive domain.
+- **Shared fixture** `_fixtures/expressions.json`: 226 cases (120 parse, 106 equivalence). Verdicts are authored, values
+  come from independent formulas, and when PHP diverges, PHP is fixed.
 
-**Equivalence.** Both expressions are evaluated at sample points:
-
-1. Points are drawn by a Park–Miller generator (×48271 mod 2³¹−1, exact integers in both languages).
-   - The default seed is `20261030`.
-   - Each declared variable is drawn in `domain[v]`, `{min, max, exclude[]}`. The default domain is [−4, 4].
-   - A point closer than 1e-3 to an excluded value is skipped.
-   - At most 8 × `samples` points are drawn.
-2. At each point:
-   - if both values are undefined, the point is skipped;
-   - if exactly one is undefined, the answer is refused (`domain`);
-   - if the values differ beyond `relTol` (default 1e-6) or `absTol` (default 1e-9), it is refused (`differs`).
-3. It is accepted (`equal`) after `samples` agreeing points (default 6). With fewer than ⌈samples/2⌉ defined points it
-   is refused (`undefined`). An expression with no variable is evaluated once.
-
-A geometric challenge declares a positive `domain` (`x ∈ [0.5, 10]`), so `√(x²)` and `x` agree there. With the
-default domain they do not.
-
-**Shared fixture.** `content/thinking-lab/_fixtures/expressions.json` holds 222 cases: 116 parse/evaluate cases and
-106 equivalence cases, at least 40 of each verdict.
-
-- The verdicts (`ok`, `equivalent`) are **authored**. The values come from independent `Math` formulas.
-- The `normalized` and `reason` fields were recorded from the JS.
-- Vitest (`packages/core/thinkingLab/expression.test.js`) and PHPUnit (`tests/Unit/ThinkingLab/ExpressionEvaluatorFixtureTest.php`)
-  both run the file.
-- When PHP diverges, PHP is fixed. Changing the fixture is a contract decision taken on both sides, as with
-  `packages/core/practice/fixtures/answers.json`.
-
-The existing client-side `compareMathExpressions` (compute-engine) and the nerdamer facade are **not** used for grading.
+The client-side `compareMathExpressions` (compute-engine) and the nerdamer facade are **not** used for grading.
 
 ### 4.3 Declared mistakes
 
-`mistakes[]` lists wrong answers that get a targeted « ليس بعد » reply. `checkAnswer` returns the index of the first match:
-mistakes matched by value first, then mistakes matched by range.
+`mistakes[]`: the first match gives `mistakeIndex`. Matches by value come first, then matches by range.
 
-- **`{value, scaleWith?, reply}`** matches an answer equivalent to `value`. For an `expression` the comparison is with
-  `(value)*(scaleWith)`, so `1-pi/4` with `scaleWith: "x^2"` stands for `(1−π/4)x²`.
-- **`{value, outside: [lo, hi], at?, reply}`** matches any answer whose value at the point `at` is ≤ lo or ≥ hi. Here `value` is one
-  example of such an answer, and the validator checks that it is refused and recognised as this mistake.
+- **`{value, scaleWith?, reply}`** matches an answer equal to `value`. For an `expression` the comparison is with
+  `(value)*(scaleWith)`.
+- **`{value, outside: [lo, hi], at?, reply}`** matches any answer whose value at `at` is ≤ lo or ≥ hi. Here `value` is an
+  example the validator refuses.
+
+The reply is shown under « ليس بعد ». An undeclared wrong answer gets an order-of-magnitude sentence when the value is more
+than ×10 away (`reply.kind = magnitude`, with no direction given). Otherwise it gets a generic sanity sentence
+(`generic`). Both sentences live in `thinking.json`.
 
 ## 5. The content pipeline
 
@@ -232,97 +238,296 @@ mistakes matched by value first, then mistakes matched by range.
 
 - **Schema:** the file follows the schema, with `jsonSchemaSubset.mjs`. A schema keyword the subset does not handle is an error.
 - **Identity:**
-  - the file name is `NNNN-<id>.json`;
-  - ids and numbers are unique;
-  - the band follows the number;
-  - `summit` is set exactly for multiples of 25;
+  - the file name is `NNNN-<id>.json`, and ids and numbers are unique;
+  - the band follows the number, and `summit` is set exactly for multiples of 25;
   - `example` is present for the primary band only;
   - a published challenge has 3 keys;
-  - a challenge is not its own twin.
+  - a challenge is not its own twin;
+  - `figure.component` exists as `apps/web/src/features/thinkingLab/figures/<Name>.jsx`.
 - **Replay:** a replay of 6 steps or more has an `ask`, and `ask.correct` is one of the option indexes.
 - **For every params tuple:**
-  - no `{name}` is left unfilled;
-  - the answer accepts itself (a `choice` value is one of the choices);
+  - no `{name}` is left unfilled in the statement, keys or replay;
+  - the answer accepts itself, as the number a student would type (the exact value for `integer` and `rational`);
   - every mistake is readable, refused, and recognised as itself;
   - `parts` and `ceiling` answers are readable;
-  - **nothing before the gate leaks the answer**. "Before the gate" means the keys, the mistake replies and the example.
-    "Leaks" means a math fragment of the text is equivalent to the answer, or equal to it in value. The statement
-    is not checked, because it carries the data.
-- **Forbidden words** in every string:
-  - Arabic whole words, with only the article allowed as a prefix (so « برهان » and « كبيرة » pass);
-  - Arabic phrases (« قرض بفائدة »…);
-  - English words and emoji (rule « Cultural and religious respect » of the lesson guide).
+  - **nothing before the gate leaks the answer**. That covers the keys, the mistake replies and the example, whether
+    the answer appears as text or as an equivalent value.
+- **Forbidden words** (rule « Cultural and religious respect »):
+  - Arabic whole words, with only the article allowed as a prefix (« برهان », « كبيرة » pass);
+  - Arabic phrases, English words and emoji;
   - « عيد الميلاد » alone is allowed, because it also means a birthday.
 - **Warning only:** a `twin` that does not exist yet.
 
-**`--strict` also checks** (this is the mode `check:lessons` runs):
-
-- no challenge is `draft`;
-- the index is fresh;
-- at least one challenge in five has a dead-end step (`B`).
+**`--strict`** (the mode `check:lessons` runs) also requires: no `draft`, a fresh index, and at least one challenge in five
+with a dead end (`B`).
 
 ### 5.2 The oracle
 
-- `scripts/thinking-lab-oracle/<batch>.mjs` exports `ORACLE[id] = { answer, ceiling?, parts?, tolerance? }`, where
-  each entry is `(params, point) => value`. It is recomputed by an independent path. #318's area, for example,
-  comes from Simpson integration over horizontal slices of the intersection of disks, never from the replay's
-  « polygon + segments » formula.
-- `scripts/thinking-lab-oracle.test.mjs` checks every published challenge, for every tuple:
-  - an `expression` must equal the oracle at 12 points of its domain;
-  - any other check must accept the oracle's value through `checkAnswer`;
-  - every mistake must be refused;
-  - a published challenge without an oracle fails.
-- The same file holds the **phase-0 acceptance test** on the content file of #318: it accepts 3 equivalent writings and
-  refuses its 3 declared mistakes, each with its own index.
+- `scripts/thinking-lab-oracle/<batch>.mjs` (one batch per band) exports `ORACLE[id] = { answer, ceiling?, parts?, tolerance? }`,
+  each `(params, point) => value`. Every value is recomputed by an INDEPENDENT path, for example:
+  - simulation: the snail day by day, Josephus on an array;
+  - enumeration: coin combinations, permutations, draws;
+  - search: BFS over the river crossing;
+  - numerical integration: the #318 area, the lens;
+  - BigInt arithmetic: 100!, 2¹⁰⁰ mod 7.
+- `scripts/thinking-lab-oracle.test.mjs` checks, for every published challenge and every tuple:
+  - expression answers against 12 points of the domain;
+  - other checks by submitting the oracle's value to `checkAnswer`;
+  - that every mistake is readable and refused;
+  - that no published challenge lacks an oracle;
+  - the phase-0 acceptance on #318.
 
-### 5.3 The index
+### 5.3 The index and its deployment
 
-- **What it is:** `scripts/build-thinking-lab-index.mjs` (`npm run build:thinking-lab-index`) writes
-  `content/thinking-lab/index.generated.json` as `{ $comment, count, challenges[] }`. It holds the published
-  challenges, complete and without `$schema`, sorted by number.
-- **Freshness:** `--check` (and `validate --strict`) fails on a stale index.
-- **Who reads it:** it is the only content file the server reads (*Planned*: `ChallengeRepository`, phase 1). Deploying it
-  needs the same rsync step as `content/practice/` in `.github/workflows/deploy.yml` (*Planned*, phase 1).
+- **The index:** `npm run build:thinking-lab-index` writes `content/thinking-lab/index.generated.json` as
+  `{ $comment, count, challenges[] }`: the published challenges, complete, sorted by number. `--check` and `--strict` fail
+  on a stale index.
+- **Who reads it:** it is the only content file the server reads, through `ChallengeRepository` and
+  `config('thinking_lab.content_path')` (default `base_path('../../content/thinking-lab')`).
+- **Deployment:** `.github/workflows/deploy.yml › Deploy the thinking-lab content` ships **only that file**, outside the web
+  root, beside `content/practice/`.
 
 ### 5.4 How to add a challenge
 
-1. Write `content/thinking-lab/challenges/<NNNN>-<id>.json` from the challenge bank entry, in our own words with our own
-   numbers (« INDEPENDENCE FROM THE BOOK » applies to puzzle books and competitions too).
-2. Add its oracle to a batch in `scripts/thinking-lab-oracle/` and import the batch in `thinking-lab-oracle.test.mjs`.
-3. Run `npm run build:thinking-lab-index`, `npm run validate:thinking-lab -- --strict` and `npx vitest run --dir scripts thinking-lab`.
-4. Set `status: "published"`. Nothing generated stays `draft`.
-5. Update the challenge bank's status line.
+1. Write `content/thinking-lab/challenges/<NNNN>-<id>.json` from the bank entry, in our own words with our own numbers.
+2. If it has a figure, add `apps/web/src/features/thinkingLab/figures/<Name>.jsx` (§7.2).
+3. Add its oracle to the batch of its band in `scripts/thinking-lab-oracle/`.
+4. Run `npm run build:thinking-lab-index`, `npm run validate:thinking-lab -- --strict`,
+   `npx vitest run --dir scripts thinking-lab` and `cd apps/web && npx vitest run src/features/thinkingLab`.
+5. Look at the figure: render it and view the PNG.
+6. Set `status: "published"`; nothing generated stays `draft`.
+7. Update the challenge bank's status line.
 
-## 6. Planned (phases 1–7, plan §5–§15)
+## 6. The ladder and the gate (implemented, phase 1)
 
-- **The ladder and the gate:**
-  - 3 open challenges at a time;
-  - honest attempts (≥ 120 s apart, a changed answer, a draft sentence);
-  - keys opened after attempts 1, 2 and 3;
-  - an independent student unlocks after 3 counted attempts and 24 h (Africa/Algiers);
-  - a class student unlocks by teacher request, with a 48 h fallback.
-- **Replays:** the replay player (`S M A R T O B` steps, `ask` pauses), adapted to whether the student solved alone.
-- **The server is authoritative.** No answer, locked key or replay reaches the client before the gate opens; a test
-  will scan API responses for leaks.
-- **Writing:** the whiteboard seed and observation detection, frozen board snapshots with a teacher red layer, and photos
-  through a shared `ImageEncoder`.
-- **Motivation:** points and stakes, streak, move cards, summits, and a pseudonymous weekly league for independent students.
-- **Path 2:** the « مسرح العقل » and the autonomy tiers.
-- **Calibration:** ratings (Elo) and edition renumbering.
+**Tables:**
 
-## 7. Open decisions (plan §17)
+- `thinking_lab_progress` holds one row per (student, challenge): `state` (`trying`, `solved` or `learned`),
+  `attempts_counted`, `keys_opened`, `first_attempt_at`, `last_counted_at`, `solved_at`, `learned_at`, `outcome`
+  (`alone`, `keys`, `learned` or `twin`), `params_index`, `edition`, `postponed_at` and `extras` (solved parts and ceiling).
+- `thinking_lab_attempts` holds every submission, counted or not, with `answer_raw`, `answer_norm`, `correct`,
+  `counted`, `reason`, `mistake_index`, `draft` and `created_at`.
+- Both have `user_id` foreign keys with cascade delete, so account deletion removes them. `challenge_id` is the content
+  slug, never a foreign key.
 
-The plan's §17 decisions are not needed by phase 0. When phase 1 meets one, the proposed value goes into config
-(`config/thinking_lab.php`) and is listed in that phase's report.
+**Config:** every threshold below is in `config/thinking_lab.php`, never in the code.
 
-## 8. Tests
+### 6.1 The ladder (`LadderService`)
+
+- The first number is always reachable. Number *n* becomes reachable once the student has **one counted attempt** on
+  the number before it, or has solved or learned it. The student is never stuck behind a challenge.
+- The **twin** of a challenge the student has passed is reachable at once.
+- At most **`max_open` = 3** challenges are open (in progress and not postponed). A new or resumed attempt beyond
+  that is refused with `too_many_open` (409, carrying `maxOpen`).
+- **« أرجئه »** (`postpone`) frees a place and keeps the state. Attempting the challenge again resumes it, if a place
+  is free.
+- A student's status per number is `solved`, `learned`, `trying`, `postponed`, `open` or `locked`.
+
+### 6.2 An attempt (`GateService::attempt`)
+
+The check runs inside a transaction locked on the `users` row.
+
+- A **correct** answer is always counted and solves the challenge. The outcome is `alone`, or `keys` if any key was opened.
+- A **wrong** answer is counted only if it is honest (plan §6.1). The refusal reasons are checked in this order:
+
+  | Reason | When |
+  |---|---|
+  | `syntax` | the answer is unreadable |
+  | `repeat` | it equals a previously counted answer: the same canonical writing, or for an expression, an equivalent one |
+  | `too_soon` | less than `honest.min_seconds_between` = 120 s since the last counted attempt |
+  | `no_draft` | from the 2nd attempt, the draft « ماذا غيّرت هذه المرّة؟ » is shorter than `honest.min_draft_chars` = 12 |
+
+- An answer that is not counted is still stored, with its reason.
+
+### 6.3 Keys
+
+Key *k* is unlocked after counted attempt *k*. Keys open **in order** (`k ≤ keys_opened + 1`). A key is refused with
+`key_locked` before it is unlocked, and with `closed` once the gate is passed. Each key is stored with its phase. The key
+stake belongs to phase 4.
+
+### 6.4 The gate and the replay
+
+- **When it opens:** `unlockAt = first_attempt_at + think_hours` once `attempts_counted ≥ attempts_to_unlock`.
+  - The defaults are 3 attempts and 24 h; the primary band waits 0 h.
+  - Time is the server's clock and stored in UTC; the screen shows it in Africa/Algiers.
+- **Before it opens:** `GET …/replay` answers `gate_closed` (403).
+- **Opening it:** the first read after it opens turns `trying` into `learned` (outcome `learned`).
+- **Twin credit:** solving the twin **alone** afterwards turns the original's outcome into `twin` (plan §6).
+- **Afterwards:**
+  - attempts and keys answer `closed` (409);
+  - the summit `parts` and « ارفع السقف » become checkable through `POST …/extra`, with no attempt limit and nothing
+    revealed.
+- **Who follows this rule (phase 1):** every student, independent or in a class. The teacher request is phase 2, and the
+  plan's 48 h fallback already returns a request to this rule.
+
+### 6.5 What reaches the client (`ChallengePresenter`)
+
+**Before the gate the client receives:**
+
+- the number, `summit`, `examTag`, the filled statement and figure, and the example;
+- the **answer format** only: `check`, `vars`, `percent`, and the choices without the correct id;
+- each key's phase and state, with the text of **opened** keys only;
+- the state, and the student's own attempts with their replies.
+
+**It never receives** the answer, its domain or tolerances, the mistake values, a closed key's text, the replay,
+`keyMoves`, `move`, the ceiling and parts answers, `band`, `family`, `rating`, `title` or `source`.
+
+**After the gate**, `GET …/replay` adds: the replay, `keyMoves`, `move`, every key, the parts and ceiling (prompts and
+formats), the twin with its status, and the answer value for display.
+
+`ThinkingLabLeakTest` plays every pre-gate endpoint and searches the raw JSON for each secret (933 assertions).
+
+### 6.6 API (student: `learner` middleware, then `FeatureRegistry::THINKING_LAB_LADDER`)
+
+```
+GET  /thinking-lab                                 home: trail, open challenges with state, next, totals
+GET  /thinking-lab/n/{number}                      number → stable id (shared links cite the number)
+GET  /thinking-lab/challenges/{id}                 the presented challenge (403 locked)
+POST /thinking-lab/challenges/{id}/attempts        {answer, draft} → {attempt: {counted, correct, outcome, reason, reply}, challenge}
+POST /thinking-lab/challenges/{id}/keys/{k}        → {challenge}
+POST /thinking-lab/challenges/{id}/postpone        → {home}
+GET  /thinking-lab/challenges/{id}/replay          → {replay}  (403 gate_closed)
+POST /thinking-lab/challenges/{id}/extra           {kind: ceiling|part, index?, answer} → {correct, outcome}
+```
+
+The refusal reasons are `not_found` (404), `locked`, `gate_closed` and `key_locked` (403), `too_many_open` and `closed`
+(409), and `not_started` (422).
+
+**Access:**
+
+- **Feature key:** `thinking_lab.ladder` (group `thinking_lab`, no quota). It is open to both tiers until the admin closes
+  it in « الوصول والحدود » (§17 n° 4, proposed). `ACCESS_AND_LIMITS.md` §3 lists it.
+- **Not open to teachers:** the routes are student-only (`learner`); a teacher gets a 403.
+
+## 7. Screens (implemented, phase 1)
+
+### 7.1 Routes, layout and rules
+
+- **Routes:** `/espace/tafkir` (screen 1), `/espace/tafkir/:challengeId` (screens 2 and 3) and `/espace/tafkir/n/:number`
+  (redirect). They sit inside `StudentLayout`, behind `RequireLargeScreen` (≥ 768 px), as `lazy()` pages.
+- **Navigation:** `data/studentNavigation.js` (lucide `Brain`, `nav.thinkingLab` / `nav.thinkingLabShort`).
+- **Screen 1, the ladder (`LadderHome`):**
+  - the next number, in a large card, with its start button. When 3 challenges are open it says why it cannot start.
+  - the open challenges (at most 3), each with its **state in words** (`stateLines`: « محاولة 2 من 3 · الحلّ يُفتح غدًا 09:40 »);
+  - while a challenge waits for its day, light activities: a maths game, or another challenge;
+  - the trail of numbered stones in RTL, coloured by status, summits larger, locked stones with a padlock.
+- **Screen 2, the workspace (`Workspace`):**
+  - the example card (primary band), the statement and the figure;
+  - the draft, which is highlighted until it is long enough;
+  - the answer, in `AnswerInput`: MathLive with the **thinking keyboard** `thinkingKeyboard(vars)` (π, √, x², xⁿ, a/b, |x|,
+    and the challenge's variables), or choice cards;
+  - **one primary action « تحقّق »**, plus « أرجئه »;
+  - the verdict in a live region: « ليس بعد » in **amber, never red**, followed by the mistake reply or the generic or
+    magnitude sentence, and the reason when the attempt was not counted;
+  - the keys (locked, available or open), each with its phase chip;
+  - the student's attempts;
+  - « شاهد كيف فكّر الرياضي » once `canReplay`.
+- **Screen 3, after the gate (`AfterSolve`):**
+  - the statement and the answer;
+  - **solved alone:** the key moves first, with « شاهد العرض الكامل » for the full replay. **Otherwise:** the replay;
+  - then « ماذا تأخذ معك؟ » (the move card), the summit parts, the twin and « ارفع السقف ».
+- **Mathematics:**
+  - `MathRun` renders Arabic text with its math islands (`mathRuns`) in `<bdi dir="ltr">` **inline-block**, so a formula
+    that wraps stays LTR. `( |` start an island only when maths follows.
+  - Plain Unicode is the content format: `½`, `…`, `°`, `²`.
+  - `prettyMath` prints an ascii answer for the eye (`x²×(1+π/3−√3)`).
+- **Sound and motion:** sound is off by default, through the platform's single « الصوت » switch (`EffectsToggle` +
+  `useEffectsPreference`), and reduced motion is respected (`MotionConfig reducedMotion="user"`).
+
+### 7.2 Figures (`features/thinkingLab/figures/`)
+
+**One file per figure**, found by a lazy `import.meta.glob`, so no list needs maintaining. Each figure exports:
+
+- `LAYERS`: every layer it can draw;
+- `BASE_LAYERS`: the layers of the statement;
+- a default `({ layers, props, ariaLabel }) => <svg>` drawn in code from `props` (the student's numbers), using
+  `palette.js` colours (never red), LTR letters and numbers (`ltrText`), and **computed** geometry. No raster image.
+
+**A replay step's `layers` are ADDED to `BASE_LAYERS`.** The square and its arcs stay on screen when the triangle is lit.
+A step without `layers` keeps the last ones shown.
+
+`figures.test.jsx` checks the contract and renders every figure with its base layers and with all its layers: an `<svg>`,
+no raster, no NaN. It also checks that every replay layer of every challenge exists in its figure.
+
+There are 15 figures on 2026-11-01:
+
+- FourArcs, Lens, IncircleRight and GridPaths;
+- HandshakeCircle, SnailWell, FencePosts, RiverCrossing and BalanceNine;
+- TiltedSquare, SlidingLadder, OddGnomons and TreeShadow;
+- ChocolateBar and JosephusCircle.
+
+The river (#33) and the balance (#47) are static in phase 1. Playing them is not in V1.
+
+### 7.3 The replay player (`ReplayPlayer`)
+
+- **Cursor:** it runs on the Math Lab step player (`useStepReveal` / `stepPlayerModel`): manual or auto, back, restart.
+  The cursor is interface state and is never serialised.
+- **Layout:** the current step leads, and earlier steps sit in a collapsed « الخطوات السابقة ». Below `lg`, the step column
+  comes first.
+- **The `math` lines** accumulate in a dark notebook « دفتر الحساب ».
+- **An `ask` step (« اشرح لنفسك »)** pauses auto-play and blocks « التالي » until the student chooses. The choice is shown
+  as right or « ليس بعد », followed by `why`.
+
+### 7.4 Sounds
+
+These names are added to `playSfx`:
+
+| Sound | When |
+|---|---|
+| `lock` | a key opens |
+| `spark` | an O step |
+| `slide` | a B step |
+| `notyet` | two soft falling notes, never a buzzer |
+| `stepTick` | each replay step |
+
+A solved challenge plays `playMedal('gold')`. All of them are silent unless « الصوت » is on (`MANIPULATION_CONTRACT.md`
+« Sound effects »).
+
+## 8. Open decisions in effect (plan §17)
+
+Phase 1 met these decisions and applies the **proposed** values, all in config:
+
+| § | Value in effect | Where |
+|---|---|---|
+| 1 | not reached yet: the 48 h fallback is phase 2 | — |
+| 4 | the ladder is free and open to all students | `FeatureRegistry` default (no row) |
+| 5 | the edition is a school term; edition 1 is current | `thinking_lab.edition` |
+| 6 | a summit counts as an attempt like any number; its `parts` are follow-ups | `GateService` |
+| — | the honest-attempt thresholds: 120 s, 12 characters | `thinking_lab.honest.*` |
+| — | at most 3 open challenges | `thinking_lab.max_open` |
+| — | the primary band has no day lock | `thinking_lab.gate.primary_think_hours` = 0 |
+
+## 9. Planned (phases 2–7, plan §8–§15)
+
+- **Phase 2 · Class flow:**
+  - the request to the teacher and the grouped queue with its badge;
+  - accept, key or in-class, and the 48 h job;
+  - notifications, `ClassroomAccess`, the Classroom Mode replay and the teacher settings.
+- **Phase 3 · Writing:**
+  - the whiteboard seed and observation detection (« لاحظت! »);
+  - frozen board snapshots with a red layer;
+  - photos through a shared `ImageEncoder`, with a quota.
+- **Phase 4 · Motivation:**
+  - points and the key stake;
+  - the streak of thinking days, move cards and summits;
+  - the pseudonymous weekly league;
+  - the cooperative class challenge;
+  - the morning reminder.
+- **Phase 5:** content to 150 challenges.
+- **Phase 6:** path 2.
+- **Phase 7:** ratings and the edition renumbering.
+
+## 10. Tests
 
 | Suite | File | What it proves |
 |---|---|---|
-| Vitest (core) | `packages/core/thinkingLab/expression.test.js` | every case of the shared fixture, no `eval`, the sampler, normalisation |
-| Vitest (core) | `packages/core/thinkingLab/checkAnswer.test.js` | the five checks, mistakes, #318 acceptance (inline copy) |
-| Vitest (core) | `packages/core/thinkingLab/params.test.js` | the params fixture, tuple order, filling |
-| PHPUnit | `tests/Unit/ThinkingLab/ExpressionEvaluatorFixtureTest.php` | the same fixture, the sampler, no `eval` |
-| Vitest (scripts) | `scripts/validate-thinking-lab.test.mjs` | each validator rule catches a broken copy of #318 |
-| Vitest (scripts) | `scripts/thinking-lab-oracle.test.mjs` | the oracle for every published challenge; #318 acceptance on the content file |
+| Vitest (core) | `packages/core/thinkingLab/{expression,checkAnswer,params}.test.js` | the three shared fixtures, no `eval`, the #318 acceptance |
+| PHPUnit (unit) | `tests/Unit/ThinkingLab/{ExpressionEvaluatorFixtureTest,AnswerCheckerFixtureTest}.php` | the same fixtures, PHP side |
+| PHPUnit (feature) | `tests/Feature/ThinkingLabFlowTest.php` | the plan's phase-1 acceptance (1 → 2 → 3 attempts → +24 h, time travelled), honest-attempt refusals, keys, reach, open places, postpone, the primary band, twin credit, extras, access |
+| PHPUnit (feature) | `tests/Feature/ThinkingLabLeakTest.php` | no answer, closed key or replay in any pre-gate response |
+| Vitest (scripts) | `scripts/validate-thinking-lab.test.mjs`, `scripts/thinking-lab-oracle.test.mjs` | each validator rule; the oracle for all 46 challenges |
+| Vitest (web) | `features/thinkingLab/{thinkingModel,serverOnly}.test.js`, `figures/figures.test.jsx` | state in words, math islands, Algiers time; the server-only content; every figure and every replay layer |
 | Gate | `npm run validate:thinking-lab -- --strict` (in `check:lessons`) | §5.1 |
+
+The feature tests use a fixed content (`tests/Support/ThinkingLabFixtures.php`): the real #318 plus synthetic challenges
+with marker strings, so the tests do not move when the bank grows.

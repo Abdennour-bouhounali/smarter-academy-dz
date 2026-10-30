@@ -3,10 +3,20 @@
 > **Status.** This file is the authored seed content for the challenge ladder « سُلَّم التحدّيات » (path 1 of the
 > thinking space).
 >
-> - **Written to the schema (published):** #318 only, on 2026-10-30, as `content/thinking-lab/challenges/0318-four-arcs-area.json`.
->   Its oracle integrates the region numerically. The schema and pipeline are described in
->   [`architecture/THINKING_LAB.md`](../architecture/THINKING_LAB.md).
-> - **Still in this file only:** the other 39 entries. They become data in phase 1.
+>
+> - **Written to the schema (published):** ALL 46 seed entries. #318 was written on 2026-10-30, and the other 45 on
+>   2026-11-01 (phase 1), in `content/thinking-lab/challenges/`.
+>   - Each has its oracle in `scripts/thinking-lab-oracle/{seed,primary,middle,secondary,university}.mjs`.
+>   - 15 figures were drawn in code.
+>   - The schema and pipeline are described in [`architecture/THINKING_LAB.md`](../architecture/THINKING_LAB.md).
+> - **Where the JSON differs from the entries below, the JSON is right.**
+>   - **Per-student numbers** were added where every tuple stays clean.
+>   - **Summits** ask one question and put the rest in `parts`.
+>   - **Multiples of 25** are summits, including #125 and #425, which this file does not mark.
+>   - **Keys that computed the answer** were rewritten as questions.
+>   - **#47:** splitting the balls in halves takes 3 weighings, not 4.
+>   - **Interactive figures** (river, balance) are static in V1.
+> - **Section 4 (backlog):** not written yet; phase 5.
 > The implementation plan, which says how each entry becomes data, is
 > [`reports/THINKING_LAB_PLAN_2026-10-30.md`](../reports/THINKING_LAB_PLAN_2026-10-30.md).
 > Every answer below was checked numerically on 2026-10-30.

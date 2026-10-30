@@ -67,9 +67,9 @@
     },
     "answer": { "$ref": "#/$defs/answer" },
     "parts": {
-      "description": "Summits: the challenge in parts.",
+      "description": "Summits: follow-up questions, shown once the main answer is solved or the gate is open (the main `answer` alone drives the gate).",
       "type": ["array", "null"],
-      "minItems": 2,
+      "minItems": 1,
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -190,6 +190,7 @@
           }
         },
         "tolerance": { "description": "rational: exact tolerance written as a rational.", "type": "string" },
+        "percent": { "description": "number: the answer is a percentage — « −4 % » is read −4, not −0.04.", "type": "boolean" },
         "choices": {
           "type": "array",
           "minItems": 2,

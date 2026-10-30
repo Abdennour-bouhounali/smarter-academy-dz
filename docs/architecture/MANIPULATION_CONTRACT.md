@@ -2537,7 +2537,7 @@ device's « الصوت » preference is on (`smarter_effects_enabled`, read at p
 opens), `correct`, `wrong`, `step` (step fanfare), `win` (all done / perfect challenge), `start` and `tick` (the memo challenge), and the
 LAB's own sounds (owner: « the sounds during the manipulation are very important for the gaming sense »): `tooth` (a click per tooth of
 the gesture, `{ pitch }` lower backwards, at most one every 35 ms), `bell` (a full turn), `flag` (the goal reached on release), `over`
-(the goal passed). Reference: `gear-crank` (crank clicks, a bell per full WHEEL turn, chime/thud on release). Used by `LabCheckpoint`,
+(the goal passed). « مختبر التفكير » (2026-11-01, `THINKING_LAB.md` §7.4) adds `lock` (a key opens), `spark` (an 👁 observation), `slide` (a ↩ dead end), `notyet` (two soft falling notes — « ليس بعد » is never a buzzer) and `stepTick` (a replay step). Reference: `gear-crank` (crank clicks, a bell per full WHEEL turn, chime/thud on release). Used by `LabCheckpoint`,
 `LabSteps`, `MemoQuiz` and the labs; never a second audio system.
 **Every lab can stop it:** `ManipulationShell` shows the « الصوت » switch (`EffectsToggle`, `[data-manipulation-sound]`) in its header and in
 the full-screen bar. `useEffectsPreference` is the ONE preference: `setEffectsEnabled` writes it and broadcasts `sa:effects`, so the page's

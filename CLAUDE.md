@@ -71,6 +71,16 @@ and its modules/exercises published in the LOCAL database so the owner can brows
 2026-10-26): every lesson, module and exercise you generate must end `published` — never leave a `draft` module or exercise behind
 (guide §11 « Publish a lesson », step 4).
 
+Since 2026-11-01 (phase 1 of 7) the student space has **« مختبر التفكير »**, the thinking space at `/espace/tafkir`. It is a ladder of
+NUMBERED challenges outside the curriculum: the band, primary → university, is hidden, and every challenge is `content/thinking-lab/challenges/*.json`.
+- **The student tries first.** The server alone grades (`AnswerChecker.php`: the `expression` check is a safe parser written in
+  JS and PHP over one shared fixture), counts only honest attempts, opens one key per attempt, and opens the replay of a
+  mathematician's thinking after 3 attempts + 24 h (primary band: no wait).
+- **Nothing of the answer reaches the client before that gate** (`ChallengePresenter`, `ThinkingLabLeakTest`).
+- **Content follows the pipeline** schema → `validate:thinking-lab --strict` (in `check:lessons`) → oracle → server-only
+  generated index. Figures are SVG components in `features/thinkingLab/figures/`.
+- Build plan, phases 2–7: `docs/reports/THINKING_LAB_PLAN_2026-10-30.md`. Contract: `docs/architecture/THINKING_LAB.md`.
+
 Since 2026-10-17 the platform has a **printed-books store** (`/books`, `/books/:slug`, admin « الكتب » at `/admin/livres/*`): orders WITHOUT online
 payment, delivery fee set later by the admin, payments recorded as lines; the first book is « بروتوكول SMART » (`BookSeeder`, slug
 `smart-protocol`). Contract: `docs/architecture/BOOKS_STORE.md`.

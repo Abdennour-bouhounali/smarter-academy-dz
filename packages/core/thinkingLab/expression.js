@@ -71,6 +71,8 @@ export function normalizeInput(raw) {
     .replace(/\\div/g, '/')
     .replace(/\\(sqrt|pi|sin|cos|tan|ln|exp)/g, '$1')
     .replace(/٫/g, '.')
+    // MathLive écrit « ÷ » en ascii-math « -: » : à lire AVANT les tirets.
+    .replace(/-:/g, '/')
     .replace(/[−‒–—―]/g, '-')
     .replace(/[×·⋅∙]/g, '*')
     .replace(/[÷∕]/g, '/')

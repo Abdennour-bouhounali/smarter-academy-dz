@@ -1,6 +1,6 @@
 # « مختبر التفكير » — Implementation plan (2026-10-30)
 
-> **Status: phase 0 (« Foundations ») implemented on 2026-10-30; phases 1–7 Planned.** This is the build plan for
+> **Status: phase 0 (« Foundations ») implemented on 2026-10-30, phase 1 (« Ladder core ») on 2026-11-01; phases 2–7 Planned.** This is the build plan for
 > the thinking space.
 >
 > - The binding contract for what exists is [`architecture/THINKING_LAB.md`](../architecture/THINKING_LAB.md). It was
@@ -581,10 +581,20 @@ nothing generated stays `draft`).
   - `EXERCISE_CONTRACT.md` pointer;
   - `BUNDLE_BOUNDARIES.md` (the core-by-path rule and the server-only index);
   - challenge bank status (#318 written to the schema).
+- **Phase 1, done on 2026-11-01:**
+  - `THINKING_LAB.md` rewritten: the ladder, the gate, the API, the presenter, the screens, the figures, the sounds and
+    the open decisions in effect;
+  - `ACCESS_AND_LIMITS.md` (the `thinking_lab.ladder` key);
+  - `MANIPULATION_CONTRACT.md` (the five new `playSfx` names);
+  - `BUNDLE_BOUNDARIES.md` (the `thinking` namespace, the lazy routes and figures, the measured entry);
+  - the `CLAUDE.md` paragraph, the `docs/README.md` rows, and the challenge bank status (46 published).
+- **Phase 1 deviations from this plan:**
+  - the bank's seed holds **46** entries, not 40, and all 46 were written;
+  - every student follows the independent rule until phase 2 (§6 of the contract);
+  - « قفزة » (the jump, §5.2) and the morning reminder (§6.3) are left for phase 4;
+  - the river (#33) and the balance (#47) are static figures.
 - **Still to do in later phases:**
-  - `ACCESS_AND_LIMITS.md`, `MATH_LAB.md`, `CLASSROOM_MODE.md`, `MANIPULATION_CONTRACT.md`;
-  - `BUNDLE_BOUNDARIES.md`: the `thinking.json` namespace and the lazy route (phase 1);
-  - the `CLAUDE.md` paragraph (once phase 1 ships).
+  - `MATH_LAB.md` and `CLASSROOM_MODE.md` (phases 2–3).
 - **New**:
   - `docs/architecture/THINKING_LAB.md`, the contract: the content schema, gate, scoring, league,
     privacy and screens. This plan points to it once it exists.

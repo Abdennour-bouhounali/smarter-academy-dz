@@ -1030,6 +1030,50 @@
       "value": 0.75
     },
     {
+      "name": "mathlive divide",
+      "input": "12 -: 4",
+      "vars": [],
+      "ok": true,
+      "normalized": "(12/4)",
+      "at": {},
+      "value": 3
+    },
+    {
+      "name": "mathlive times",
+      "input": "3 * 4",
+      "vars": [],
+      "ok": true,
+      "normalized": "(3*4)",
+      "at": {},
+      "value": 12
+    },
+    {
+      "name": "mathlive frac then var",
+      "input": "(1)/(2)x",
+      "vars": [
+        "x"
+      ],
+      "ok": true,
+      "normalized": "((1/2)*x)",
+      "at": {
+        "x": 6
+      },
+      "value": 3
+    },
+    {
+      "name": "mathlive 318 fraction",
+      "input": "(3+pi-3sqrt(3))/(3)x^2",
+      "vars": [
+        "x"
+      ],
+      "ok": true,
+      "normalized": "((((3+pi)-(3*sqrt(3)))/3)*(x^2))",
+      "at": {
+        "x": 2
+      },
+      "value": 1.2605869745108815
+    },
+    {
       "name": "mathlive power paren",
       "input": "x^(2)",
       "vars": [

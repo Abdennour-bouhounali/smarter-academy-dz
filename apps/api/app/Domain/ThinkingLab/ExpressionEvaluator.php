@@ -65,6 +65,8 @@ final class ExpressionEvaluator
         $s = preg_replace('/\\\\div/u', '/', $s);
         $s = preg_replace('/\\\\(sqrt|pi|sin|cos|tan|ln|exp)/u', '$1', $s);
         $s = str_replace("\u{066B}", '.', $s);
+        // MathLive écrit « ÷ » en ascii-math « -: » : à lire AVANT les tirets.
+        $s = str_replace('-:', '/', $s);
         $s = preg_replace('/[\x{2212}\x{2012}\x{2013}\x{2014}\x{2015}]/u', '-', $s);
         $s = preg_replace('/[×·⋅∙]/u', '*', $s);
         $s = preg_replace('/[÷∕]/u', '/', $s);

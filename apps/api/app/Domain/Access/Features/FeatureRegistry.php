@@ -22,6 +22,9 @@ use App\Domain\MathLab\MathLabTools;
  *   notebook        le cahier (كرّاسي). Quota : `notebook_copy`.
  *   documents       les travaux enregistrés du مختبر. Quota :
  *                   `document_generation`.
+ *   thinking_lab    « مختبر التفكير » : l'échelle des défis (`thinking_lab.ladder`).
+ *                   Accès par palier, sans quota ; ouverte aux deux paliers tant
+ *                   que l'administration ne la ferme pas (plan §17 n° 4, proposé).
  *
  * Deux TYPES DE CONSOMMATION, jamais additionnés :
  *
@@ -57,6 +60,11 @@ final class FeatureRegistry
 
     public const GROUP_DOCUMENTS = 'documents';
 
+    /** « مختبر التفكير » : l'échelle des défis (THINKING_LAB.md). Accès par palier, sans quota. */
+    public const THINKING_LAB_LADDER = 'thinking_lab.ladder';
+
+    public const GROUP_THINKING_LAB = 'thinking_lab';
+
     public const USAGE_DOCUMENT_GENERATION = 'document_generation';
 
     public const USAGE_NOTEBOOK_COPY = 'notebook_copy';
@@ -80,6 +88,7 @@ final class FeatureRegistry
         }
         $features[self::NOTEBOOK] = ['group' => self::GROUP_NOTEBOOK, 'usageType' => self::USAGE_NOTEBOOK_COPY, 'toolId' => null];
         $features[self::MATH_LAB_DOCUMENTS] = ['group' => self::GROUP_DOCUMENTS, 'usageType' => self::USAGE_DOCUMENT_GENERATION, 'toolId' => null];
+        $features[self::THINKING_LAB_LADDER] = ['group' => self::GROUP_THINKING_LAB, 'usageType' => null, 'toolId' => null];
 
         return $features;
     }

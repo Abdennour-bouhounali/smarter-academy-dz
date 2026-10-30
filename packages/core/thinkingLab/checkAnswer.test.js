@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, it, expect } from 'vitest';
 import { checkAnswer, CHECKS } from './checkAnswer.js';
 
@@ -83,4 +84,18 @@ describe('acceptation de la phase 0 — le défi vitrine #318', () => {
   it('une erreur non déclarée est refusée sans réponse ciblée', () => {
     expect(checkAnswer(spec, '0.2x^2', { mistakes })).toMatchObject({ correct: false, mistakeIndex: null });
   });
+});
+
+describe('fixture partagée du juge JS ↔ PHP (content/thinking-lab/_fixtures/answers.json)', () => {
+  const fixture = JSON.parse(readFileSync(new URL('../../../content/thinking-lab/_fixtures/answers.json', import.meta.url), 'utf8'));
+
+  it('couvre les cinq checks', () => {
+    expect(new Set(fixture.cases.map((c) => c.spec.check))).toEqual(new Set(CHECKS));
+  });
+
+  for (const { name, spec, raw, mistakes, expected } of fixture.cases) {
+    it(name, () => {
+      expect(checkAnswer(spec, raw, { mistakes })).toEqual(expected);
+    });
+  }
 });

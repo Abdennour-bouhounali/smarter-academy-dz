@@ -63,7 +63,7 @@ const OUT = reuse ?? mkdtempSync(join(tmpdir(), 'sa-entry-'));
 if (!reuse) {
   const r = spawnSync('npx', ['vite', 'build', '--config', 'vite.analyze.config.js', '--logLevel', 'error'], {
     cwd: join(ROOT, 'apps/web'), stdio: 'inherit',
-    env: { ...process.env, ANALYZE_OUT: OUT, NODE_OPTIONS: '--max-old-space-size=4096' },
+    env: { ...process.env, ANALYZE_OUT: OUT, NODE_OPTIONS: '--max-old-space-size=8192' },
   });
   if (r.status !== 0) process.exit(r.status ?? 1);
 }

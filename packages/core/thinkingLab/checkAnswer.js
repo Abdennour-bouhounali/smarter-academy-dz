@@ -4,6 +4,7 @@
  *   integer | rational | choice → DÉLÈGUE à l'évaluateur de la pratique
  *                                 (practice/answerEvaluator.js, miroir PHP AnswerEvaluator) ;
  *   number                      → lecture rationnelle (sinon expression sans variable) + tolérance ;
+ *                                 avec `percent: true`, « n % » se lit n ;
  *   expression                  → équivalence par évaluation (./expression.js).
  *
  * Les issues sont celles de la pratique (correct / equivalent_correct /
@@ -42,6 +43,47 @@ export function expressionOptions(spec) {
     domain: spec.domain ?? {},
     seed: spec.seed ?? DEFAULTS.seed,
   };
+}
+
+const SAFE = Number.MAX_SAFE_INTEGER;
+const exactOf = (n, d) => (Math.abs(n) <= SAFE && Math.abs(d) <= SAFE ? Rational.of(n, d) : null);
+
+/** Valeur EXACTE d'une expression constante (+ − × ÷, puissance entière) ; null si inexacte (√, π…). */
+function exactAst(node) {
+  switch (node.t) {
+    case 'num': return Rational.parse(node.v);
+    case 'neg': { const a = exactAst(node.a); return a && Rational.of(-a.n, a.d); }
+    case 'bin': {
+      const a = exactAst(node.a);
+      const b = exactAst(node.b);
+      if (!a || !b) return null;
+      switch (node.op) {
+        case '+': return a.add(b);
+        case '-': return a.subtract(b);
+        case '*': return exactOf(a.n * b.n, a.d * b.d);
+        case '/': return b.n === 0 ? null : exactOf(a.n * b.d, a.d * b.n);
+        case '^': {
+          if (b.d !== 1 || Math.abs(b.n) > 64 || (a.n === 0 && b.n < 0)) return null;
+          let r = Rational.of(1, 1);
+          for (let i = 0; i < Math.abs(b.n) && r; i++) r = exactOf(r.n * a.n, r.d * a.d);
+          return r && b.n < 0 ? exactOf(r.d, r.n) : r;
+        }
+        default: return null;
+      }
+    }
+    default: return null;
+  }
+}
+
+/**
+ * La valeur exacte d'une réponse ATTENDUE integer/rational : « 7 », « 3/10 », ou une expression
+ * constante remplie par params (« (41)*(2)-63 »). La saisie de l'élève, elle, reste lue par la pratique.
+ */
+export function exactValue(raw) {
+  const direct = Rational.parse(raw);
+  if (direct) return direct;
+  const parsed = parseExpression(raw, []);
+  return parsed.ok ? exactAst(parsed.ast) : null;
 }
 
 /** Valeur numérique d'une saisie (nombre, fraction, %, ou expression sans variable). */
@@ -87,7 +129,7 @@ function checkPractice(spec, raw, mistakes) {
     answer = { choiceId: typeof raw === 'object' && raw !== null ? raw.choiceId : raw };
   } else {
     question.answerType = 'rational';
-    question.expectedAnswer = String(spec.value);
+    question.expectedAnswer = exactValue(String(spec.value))?.toString() ?? String(spec.value);
     if (spec.tolerance) question.evaluationPolicy = { tolerance: String(spec.tolerance) };
     answer = { value: raw };
   }
@@ -96,16 +138,20 @@ function checkPractice(spec, raw, mistakes) {
   const sameValue = spec.check === 'choice'
     ? (m) => String(m.value) === String(answer.choiceId)
     : (m) => {
-      const a = Rational.parse(m.value);
+      const a = exactValue(String(m.value));
       const b = Rational.parse(raw);
       return Boolean(a && b && a.equals(b));
     };
   return verdict(OUTCOMES.INCORRECT, r.normalized, findMistake(spec, raw, mistakes, sameValue));
 }
 
+/** `percent: true` : la réponse est un pourcentage, « −4 % » se lit −4 (pas −0,04). */
+const withoutPercent = (spec, raw) => (spec.percent && typeof raw === 'string' ? raw.replace(/\s*[%٪]\s*$/, '') : raw);
+
 function checkNumber(spec, raw, mistakes) {
   const expected = numericValue(spec.value);
   if (expected === null) throw new Error(`answer.value illisible : ${spec.value}`);
+  raw = withoutPercent(spec, raw);
   const given = numericValue(raw);
   if (given === null) return verdict(OUTCOMES.SYNTAX_ERROR, String(raw ?? ''));
   const relTol = spec.relTol ?? DEFAULTS.relTol;

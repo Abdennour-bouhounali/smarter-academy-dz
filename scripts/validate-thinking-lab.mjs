@@ -17,15 +17,16 @@
  *
  *   node scripts/validate-thinking-lab.mjs [--strict] [--json]
  */
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateAgainstSchema } from './lib/jsonSchemaSubset.mjs';
-import { readChallenges, indexIsFresh, CONTENT_ROOT } from './build-thinking-lab-index.mjs';
-import { checkAnswer, mistakeExpression, expressionOptions } from '../packages/core/thinkingLab/checkAnswer.js';
+import { readChallenges, indexIsFresh, CONTENT_ROOT, repoRoot } from './build-thinking-lab-index.mjs';
+import { checkAnswer, mistakeExpression, expressionOptions, exactValue } from '../packages/core/thinkingLab/checkAnswer.js';
 import { parseExpression, equivalentExpressions, evaluateExpression, closeEnough } from '../packages/core/thinkingLab/expression.js';
 import { allTuples, fillChallenge } from '../packages/core/thinkingLab/params.js';
 
+const FIGURES_DIR = join(repoRoot, 'apps/web/src/features/thinkingLab/figures');
 const SCHEMA = JSON.parse(readFileSync(join(CONTENT_ROOT, '_schema/challenge.schema.json'), 'utf-8'));
 
 /** Tranches cachées (THINKING_LAB.md §5 ; banque §1). */
@@ -118,7 +119,10 @@ function checkAnswerSpec(spec, where, err) {
     return false;
   }
   try {
-    const self = checkAnswer(spec, String(spec.value));
+    // integer/rational : la valeur attendue peut être une expression constante remplie par params ;
+    // l'élève, lui, écrit le nombre — c'est ce nombre exact que l'on soumet.
+    const asTyped = ['integer', 'rational'].includes(spec.check) ? exactValue(String(spec.value))?.toString() ?? String(spec.value) : String(spec.value);
+    const self = checkAnswer(spec, asTyped);
     if (!self.correct) err(where, `la réponse ne s'accepte pas elle-même (${self.outcome})`);
     return self.correct;
   } catch (e) {
@@ -174,6 +178,7 @@ export function validateThinkingLab(entries, { strict = false } = {}) {
     });
     if (c.replay.some((s) => s.phase === 'B')) withDeadEnd++;
 
+    if (c.figure && !existsSync(join(FIGURES_DIR, `${c.figure.component}.jsx`))) err('figure.component', `aucune figure ${c.figure.component}.jsx dans apps/web/src/features/thinkingLab/figures/`);
     if (c.twin && !knownIds.has(c.twin)) warn('twin', `le jumeau « ${c.twin} » n'existe pas encore`);
     if (c.twin === c.id) err('twin', 'un défi n\'est pas son propre jumeau');
 
@@ -191,7 +196,8 @@ export function validateThinkingLab(entries, { strict = false } = {}) {
       if (!checkAnswerSpec(f.answer, `answer${tag}`, err)) continue;
       f.mistakes.forEach((m, i) => {
         try {
-          const r = checkAnswer(f.answer, mistakeExpression(m), { mistakes: f.mistakes });
+          const typed = ['integer', 'rational'].includes(f.answer.check) && !m.outside ? exactValue(String(m.value))?.toString() ?? String(m.value) : mistakeExpression(m);
+          const r = checkAnswer(f.answer, typed, { mistakes: f.mistakes });
           if (r.outcome === 'syntax_error') err(`mistakes[${i}]${tag}`, `valeur illisible « ${m.value} »`);
           else if (r.correct) err(`mistakes[${i}]${tag}`, 'l\'erreur déclarée est ACCEPTÉE comme juste');
           else if (r.mistakeIndex !== i) err(`mistakes[${i}]${tag}`, `l'erreur n'est pas reconnue comme elle-même (reconnue : ${r.mistakeIndex})`);

@@ -14,7 +14,7 @@ import { installExamKeyboard } from './examKeyboard';
  * Chargé À LA DEMANDE (lazy) : MathLive n'entre que dans le lot des feuilles
  * d'examen (docs/architecture/BUNDLE_BOUNDARIES.md §6).
  */
-export default function ExamMathField({ value = '', onChange, onEnter, disabled = false, ariaLabel, placeholder = '', className = '', autoFocus = false }) {
+export default function ExamMathField({ value = '', onChange, onEnter, disabled = false, ariaLabel, placeholder = '', className = '', autoFocus = false, keyboard = null }) {
   const ref = useRef(null);
   const onChangeRef = useRef(onChange);
   const onEnterRef = useRef(onEnter);
@@ -45,7 +45,8 @@ export default function ExamMathField({ value = '', onChange, onEnter, disabled 
       }
     };
     let restore = () => {};
-    const handleFocus = () => { restore = installExamKeyboard(); };
+    // `keyboard` : une autre disposition nommée (le « مختبر التفكير » a la sienne) ; sinon celle de la copie.
+    const handleFocus = () => { restore = installExamKeyboard(keyboard ?? undefined); };
     const handleBlur = () => restore();
     field.addEventListener('input', handleInput);
     field.addEventListener('keydown', handleKeyDown);

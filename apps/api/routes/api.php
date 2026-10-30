@@ -80,6 +80,7 @@ use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DailyChallengeController;
+use App\Http\Controllers\ThinkingLabController;
 use App\Http\Controllers\MadarController;
 use App\Http\Controllers\Teacher\TeacherClassroomMadarController;
 use App\Http\Controllers\Teacher\TeacherMadarPlayController;
@@ -261,6 +262,17 @@ Route::prefix('v1')->group(function () {
                 Route::post('/daily-challenge/attempts/{uuid}/answers', [DailyChallengeController::class, 'answer'])->whereUuid('uuid')->middleware('throttle:60,1');
                 Route::post('/daily-challenge/attempts/{uuid}/complete', [DailyChallengeController::class, 'complete'])->whereUuid('uuid');
                 Route::get('/daily-challenge/attempts/{uuid}/review', [DailyChallengeController::class, 'review'])->whereUuid('uuid');
+
+                // « مختبر التفكير » — l'échelle des défis (THINKING_LAB.md). Élève seulement :
+                // le serveur juge, compte et ouvre la porte ; rien de la réponse avant elle.
+                Route::get('/thinking-lab', [ThinkingLabController::class, 'home']);
+                Route::get('/thinking-lab/n/{number}', [ThinkingLabController::class, 'byNumber'])->whereNumber('number');
+                Route::get('/thinking-lab/challenges/{id}', [ThinkingLabController::class, 'show'])->where('id', '[a-z0-9-]+');
+                Route::post('/thinking-lab/challenges/{id}/attempts', [ThinkingLabController::class, 'attempt'])->where('id', '[a-z0-9-]+')->middleware('throttle:30,1');
+                Route::post('/thinking-lab/challenges/{id}/keys/{k}', [ThinkingLabController::class, 'openKey'])->where('id', '[a-z0-9-]+')->whereNumber('k');
+                Route::post('/thinking-lab/challenges/{id}/postpone', [ThinkingLabController::class, 'postpone'])->where('id', '[a-z0-9-]+');
+                Route::get('/thinking-lab/challenges/{id}/replay', [ThinkingLabController::class, 'replay'])->where('id', '[a-z0-9-]+');
+                Route::post('/thinking-lab/challenges/{id}/extra', [ThinkingLabController::class, 'extra'])->where('id', '[a-z0-9-]+')->middleware('throttle:60,1');
 
                 // « مدار » — le jeu (MADAR_GAME.md). Élève seulement : les
                 // réponses de la « محطة التزوّد » sont des preuves d'apprentissage.
