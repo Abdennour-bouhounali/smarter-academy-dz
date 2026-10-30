@@ -371,6 +371,19 @@ after the answer — the practice player still receives the full JSON (D5).
 Exercises with an interactive `support` lab are not excluded by the
 selector; none exists in the live bank.
 
+## The `expression` check lives in the thinking lab, not in practice (2026-10-30)
+
+The thinking space « مختبر التفكير » checks answers with `answer.check`, using `integer`, `number`, `rational`,
+`expression` or `choice`.
+
+- **Reused:** `integer`, `rational` and `choice` delegate to this contract's evaluator (`answerEvaluator.js` /
+  `AnswerEvaluator.php`) and its outcomes.
+- **Not a practice answer type:** `expression` (equivalence by evaluation at seeded points, `ExpressionEvaluator.php` ↔
+  `packages/core/thinkingLab/expression.js`) and `number`. Do not add them to `SUPPORTED_ANSWER_TYPES` or to the
+  exercise schema.
+
+Contract: [`THINKING_LAB.md`](./THINKING_LAB.md) §4.
+
 ## Platform-generated practice exercises (2026-09-30)
 
 For unit 2 « الحساب على الجذور » the owner asked for **10 exercises per level ×

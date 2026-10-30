@@ -122,7 +122,10 @@ Nothing below a line is fetched until the level above needs it.
 8. **Measure, don't guess**: before/after with the method in §6.
 9. **The core barrel holds only what eager code needs.** A module whose top
    level computes data (unit maths, registries) is imported by path, never
-   re-exported (`packages/core/barrel.test.js`).
+   re-exported (`packages/core/barrel.test.js`). The thinking lab's pure logic
+   `packages/core/thinkingLab/*` (2026-10-30, `THINKING_LAB.md` §2) follows this rule: it is imported by path,
+   and no entry module imports it. Its content index `content/thinking-lab/index.generated.json` holds the
+   answers, so no web module may import it at all.
 10. **The entry has a budget: 245 KB gzip** (330 until 2026-10-26; lowered to 245 after the catalogue left the entry, measured 233.1 KB, so it cannot silently come back — never raise it). `npm run check:entry-budget` (in `check:lessons`, own
     analysis build) and CI (`analyze-entry-bundle.mjs --dist apps/web/dist
     --budget 245`, after « Build ») fail above it. Find the leak with
