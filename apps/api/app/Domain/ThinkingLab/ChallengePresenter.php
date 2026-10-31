@@ -27,7 +27,7 @@ class ChallengePresenter
     }
 
     /** Le format de saisie de la réponse, sans la réponse. */
-    private static function answerFormat(array $spec): array
+    public static function answerFormat(array $spec): array
     {
         $out = ['check' => $spec['check']];
         if (! empty($spec['vars'])) {
@@ -64,7 +64,7 @@ class ChallengePresenter
      * (« 21 », pas le gabarit rempli « (7)*((7)-1)/2 »), la valeur calculée d'un number, l'expression
      * attendue d'une expression, l'id d'un choix.
      */
-    private static function displayValue(array $spec): string
+    public static function displayValue(array $spec): string
     {
         $raw = is_float($spec['value']) ? Rational::jsNumberToString($spec['value']) : (string) $spec['value'];
 

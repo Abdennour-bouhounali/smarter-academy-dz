@@ -152,6 +152,9 @@ const MadarPage = lazy(() => import('./pages/student/madar/MadarPage'));
 const ThinkingLadderPage = lazy(() => import('./pages/student/thinking/ThinkingLadderPage'));
 const ThinkingChallengePage = lazy(() => import('./pages/student/thinking/ThinkingChallengePage'));
 const ThinkingNumberPage = lazy(() => import('./pages/student/thinking/ThinkingNumberPage'));
+// … et sa « معاينة الأستاذ » (lecture seule, /enseignant/tafkir).
+const TeacherThinkingListPage = lazy(() => import('./pages/teacher/thinking/TeacherThinkingListPage'));
+const TeacherThinkingChallengePage = lazy(() => import('./pages/teacher/thinking/TeacherThinkingChallengePage'));
 const GamesHub = lazy(() => import('./pages/student/madar/GamesHub'));
 const TeacherMadarDisplay = lazy(() => import('./pages/teacher/MadarDisplayPage'));
 const TeacherGamesPage = lazy(() => import('./pages/teacher/TeacherGamesPage'));
@@ -466,6 +469,12 @@ function AppRoutes() {
           <Route path="atelier" element={<MathLabHome />} />
           <Route path="atelier/:toolSlug" element={<MathLabToolPage />} />
           <Route path="atelier/:toolSlug/:documentId" element={<MathLabToolPage />} />
+          {/* « مختبر التفكير » : la PRÉVISUALISATION de l'enseignant (THINKING_LAB.md §8bis) — tout ouvert,
+              rien d'écrit ; la porte du serveur est `can:teacher`. */}
+          <Route element={<RequireLargeScreen />}>
+            <Route path="tafkir" element={<TeacherThinkingListPage />} />
+            <Route path="tafkir/:challengeId" element={<TeacherThinkingChallengePage />} />
+          </Route>
           <Route path="cahier" element={<Notebook />} />
           <Route path="cahier/revision" element={<NotebookReviewPage />} />
           <Route path="cahier/:noteId" element={<NotebookNotePage />} />

@@ -79,6 +79,8 @@ NUMBERED challenges outside the curriculum: the band, primary → university, is
 - **Nothing of the answer reaches the client before that gate** (`ChallengePresenter`, `ThinkingLabLeakTest`).
 - **Content follows the pipeline** schema → `validate:thinking-lab --strict` (in `check:lessons`) → oracle → server-only
   generated index. Figures are SVG components in `features/thinkingLab/figures/`.
+- **Teachers get a read-only preview** (`/enseignant/tafkir`, owner 2026-10-31): everything open, the answer and the replay visible, an
+  answer to test, nothing written (`THINKING_LAB.md` §8bis).
 - Build plan, phases 2–7: `docs/reports/THINKING_LAB_PLAN_2026-10-30.md`. Contract: `docs/architecture/THINKING_LAB.md`.
 
 Since 2026-10-17 the platform has a **printed-books store** (`/books`, `/books/:slug`, admin « الكتب » at `/admin/livres/*`): orders WITHOUT online

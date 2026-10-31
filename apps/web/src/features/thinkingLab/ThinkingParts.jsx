@@ -38,6 +38,12 @@ export function prettyMath(raw) {
     .replace(/-/g, '−');
 }
 
+/** Une réponse attendue écrite pour l'œil : le texte du choix, ou l'expression en Unicode. */
+export function answerText(answer) {
+  if (answer.check === 'choice') return answer.choices?.find((c) => c.id === answer.value)?.text ?? answer.value;
+  return prettyMath(answer.value);
+}
+
 const FIGURE_CACHE = new Map();
 /** Le composant paresseux d'une figure ; `withBase` : les couches données s'ajoutent à BASE_LAYERS. */
 function lazyFigure(name, withBase) {

@@ -588,6 +588,9 @@ nothing generated stays `draft`).
   - `MANIPULATION_CONTRACT.md` (the five new `playSfx` names);
   - `BUNDLE_BOUNDARIES.md` (the `thinking` namespace, the lazy routes and figures, the measured entry);
   - the `CLAUDE.md` paragraph, the `docs/README.md` rows, and the challenge bank status (46 published).
+- **Teacher preview, 2026-10-31 (owner decision, answers §17 n° 3 for teachers):** a read-only preview at `/enseignant/tafkir`
+  (everything open, an answer to test, nothing written). `THINKING_LAB.md` §8bis, the `ACCESS_AND_LIMITS.md` note and the
+  `README.md` row were updated.
 - **Phase 1 deviations from this plan:**
   - the bank's seed holds **46** entries, not 40, and all 46 were written;
   - every student follows the independent rule until phase 2 (§6 of the contract);

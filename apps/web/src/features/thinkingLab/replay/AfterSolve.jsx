@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, Check, Mountain, Sparkles, Wrench } from 'lucide
 import { AuthContext } from '../../../context/AuthContext';
 import { checkExtra } from '../../../services/thinkingLabService';
 import { playSfx } from '../../../lessons/common/utils/playEffect';
-import { AnswerInput, MathRun, SoundToggle, prettyMath } from '../ThinkingParts';
+import { AnswerInput, MathRun, SoundToggle, answerText } from '../ThinkingParts';
 import ReplayPlayer from './ReplayPlayer';
 
 /**
@@ -59,11 +59,6 @@ function ExtraQuestion({ challengeId, kind, index = 0, prompt, format, solved: s
       )}
     </div>
   );
-}
-
-function answerText(answer) {
-  if (answer.check === 'choice') return answer.choices?.find((c) => c.id === answer.value)?.text ?? answer.value;
-  return prettyMath(answer.value);
 }
 
 export default function AfterSolve({ replay }) {

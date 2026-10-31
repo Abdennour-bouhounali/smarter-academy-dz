@@ -397,7 +397,7 @@ The refusal reasons are `not_found` (404), `locked`, `gate_closed` and `key_lock
 
 - **Feature key:** `thinking_lab.ladder` (group `thinking_lab`, no quota). It is open to both tiers until the admin closes
   it in « الوصول والحدود » (§17 n° 4, proposed). `ACCESS_AND_LIMITS.md` §3 lists it.
-- **Not open to teachers:** the routes are student-only (`learner`); a teacher gets a 403.
+- **Not open to teachers for PLAYING:** the routes are student-only (`learner`); a teacher gets a 403. A teacher uses the read-only preview (§8bis).
 
 ## 7. Screens (implemented, phase 1)
 
@@ -497,6 +497,31 @@ Phase 1 met these decisions and applies the **proposed** values, all in config:
 | — | at most 3 open challenges | `thinking_lab.max_open` |
 | — | the primary band has no day lock | `thinking_lab.gate.primary_think_hours` = 0 |
 
+## 8bis. The teacher's read-only preview (implemented, 2026-10-31)
+
+Owner decision, 2026-10-31: a teacher sees « مختبر التفكير » as a **read-only preview**, the same rule as lessons and
+practice (everything open, nothing written). Plan §17 n° 3 ("who can use the ladder") is therefore answered for teachers:
+they preview, they do not play.
+
+- **Server** (`TeacherPreview`, `TeacherThinkingLabController`, routes under `/teacher/thinking-lab`, `can:teacher`):
+  - `GET …/challenges` lists the 46 challenges with what a teacher may know: `band`, `family`, `title`, `summit`, `examTag`.
+  - `GET …/challenges/{id}?tuple=n` returns the whole challenge with no gate: the answer, the declared mistakes
+    with their replies, all keys, the replay, `keyMoves`, `move`, the parts and ceiling with their answers, and the twin.
+    `n` walks through the student's possible number sets (`params`).
+  - `POST …/challenges/{id}/check` `{answer, kind: answer|part|ceiling, index, tuple}` tests an answer with the **student's judge**
+    (`AnswerChecker`, the same declared mistakes) and returns `{outcome, correct, normalized, reply}`.
+- **Nothing is written.** There is no progress row, no attempt row, no quota and no feature check.
+  `TeacherThinkingLabTest` asserts that both tables stay empty after a full tour.
+- **The student's routes stay student-only** (`learner`): a teacher still gets a 403 on `/thinking-lab`, and a student gets
+  a 403 on `/teacher/thinking-lab/*`. This preview is the **only** place where an answer leaves the server before a gate.
+- **Closing the ladder** (`thinking_lab.ladder`) hides it from students. It does **not** hide the preview.
+- **Web:** `/enseignant/tafkir` (list, filter by band) and `/enseignant/tafkir/:challengeId`, inside `TeacherLayout` and
+  `RequireLargeScreen`. The nav entry « مختبر التفكير » sits after « المختبر » (`data/teacherNavigation.js`).
+  The view reuses the student's pieces: `MathRun`, `ChallengeFigure`, `AnswerInput` with the thinking keyboard, `PhaseChip`,
+  `ReplayPlayer` and `answerText`. A banner says « معاينة الأستاذ — للقراءة فقط ».
+- **Not in the preview:** the student's own flow (attempts, keys, gate). The teacher's *class* tools (requests, queue,
+  « اشرحه في القسم ») are phase 2 and will sit beside the preview.
+
 ## 9. Planned (phases 2–7, plan §8–§15)
 
 - **Phase 2 · Class flow:**
@@ -527,6 +552,7 @@ Phase 1 met these decisions and applies the **proposed** values, all in config:
 | PHPUnit (feature) | `tests/Feature/ThinkingLabLeakTest.php` | no answer, closed key or replay in any pre-gate response |
 | Vitest (scripts) | `scripts/validate-thinking-lab.test.mjs`, `scripts/thinking-lab-oracle.test.mjs` | each validator rule; the oracle for all 46 challenges |
 | Vitest (web) | `features/thinkingLab/{thinkingModel,serverOnly}.test.js`, `figures/figures.test.jsx` | state in words, math islands, Algiers time; the server-only content; every figure and every replay layer |
+| PHPUnit (feature) | `tests/Feature/TeacherThinkingLabTest.php` | the teacher preview: everything open, a tested answer judged like the student's, nothing written, a student refused (§8bis) |
 | Gate | `npm run validate:thinking-lab -- --strict` (in `check:lessons`) | §5.1 |
 
 The feature tests use a fixed content (`tests/Support/ThinkingLabFixtures.php`): the real #318 plus synthetic challenges
