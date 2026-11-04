@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { MIN_PAGE_FIT, pageBudget, planPages, clampPage, pageOfBlock } from './classroomPages';
+import { MIN_PAGE_FIT, pageBudget, planPages, clampPage, pageOfBlock, planOnePerPage, SMALL_BLOCK } from './classroomPages';
 
 describe('pageBudget', () => {
   it('rend la hauteur utile divisée par l’échelle choisie et la tolérance', () => {
@@ -50,5 +50,26 @@ describe('clampPage / pageOfBlock', () => {
   it('retrouve la page d’un bloc', () => {
     expect(pageOfBlock([[0, 1], [2]], 2)).toBe(1);
     expect(pageOfBlock([[0, 1], [2]], 9)).toBe(0);
+  });
+});
+
+describe('planOnePerPage — one item per screen (mission player)', () => {
+  it('gives every substantial block its own page', () => {
+    expect(planOnePerPage([200, 150, 300])).toEqual([[0], [1], [2]]);
+  });
+  it('lets small blocks ride with the item that follows them', () => {
+    // un titre (40) et un compteur (20) avant la première question
+    expect(planOnePerPage([40, 20, 200, 180])).toEqual([[0, 1, 2], [3]]);
+  });
+  it('puts trailing small blocks on the last page, and never returns no page', () => {
+    expect(planOnePerPage([200, 30])).toEqual([[0, 1]]);
+    expect(planOnePerPage([30, 20])).toEqual([[0, 1]]);
+    expect(planOnePerPage([])).toEqual([[]]);
+  });
+  it('never leaves a heading alone: a glued block rides with the next item, whatever its height', () => {
+    expect(planOnePerPage([130, 200, 200], SMALL_BLOCK, [true, false, false])).toEqual([[0, 1], [2]]);
+  });
+  it('uses SMALL_BLOCK as the default threshold', () => {
+    expect(planOnePerPage([SMALL_BLOCK - 1, SMALL_BLOCK])).toEqual([[0, 1]]);
   });
 });

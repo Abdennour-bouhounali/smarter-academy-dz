@@ -894,6 +894,212 @@ now and to the existing ones by the retrofit in [`../reports/LESSON_METHOD_RETRO
    `e2e/lesson-kit/1am-adad-tabiiya-ashriya.mjs`), the coach script `e2e/lesson-kit/lab-coach.mjs`, the retrofit check `e2e/lesson-kit/moyen-retrofit-phase1.mjs` (no `[data-module-brief]` above the lab, lab before the first question, bricks absent before their answer, coach step id — copy a block per new lesson); a step question asks WHY or about the student's own trial, never « which calculation » when the lab already asked it (phase-1 retrofit, 2026-10-15); `check:lessons`, `check:textbook`,
    web tests from `apps/web`; entry budget unchanged.
 
+### 4sexies. The student « focus » view — `studentView: 'focus'` (owner pilot, 2026-11-03, lesson `qasim-adad-tabii`)
+
+Gen Alpha does not read long text and must not see everything at once. A lesson that sets `studentView: 'focus'` in
+`lesson.config.js` shows the STUDENT what they need now; everything else is one tap away (« المزيد »).
+
+**Reduce what shows at once, never delete** (owner, 2026-11-04): every piece of content that focus takes off the screen must stay
+reachable by the student, through a fold, a switch, or the step it belongs to once reached. Removing a line, a chip, a title or a
+subtitle for the student is not allowed. Do not edit the lesson's text either: the teacher view must stay identical. The teacher (any
+`freeNavigation` viewer) and Classroom Mode never change: the switch is `isStudentFocus()` in
+`lessons/common/components/StudentFocus.jsx`. **Pilot status:** only `qasim-adad-tabii` has the flag. The owner compares, then the
+flag is rolled out lesson by lesson (checklist below).
+
+What focus changes. Every change lives in a shared component, so a lesson writes no extra code:
+
+| Where | Student in focus |
+| --- | --- |
+| Lesson home (`LessonIndex`) | Title, progress and ONE « واصل: <module> » button. The « مجال • محاور • مدة » chip, the skills, الكفاءات, prerequisites and labs list go in one « تفاصيل الدرس » fold. Module descriptions show on « عرض الوصف ». The lesson-problem card shows its title + drawing, and the statement goes behind « اقرأ المسألة ». |
+| Module header (`ModuleLayout`) | The H1, then « المزيد » holding the ⏱ chip and the `moduleSubtitle`. |
+| Steps (`ContentModule`) | **One step on screen.** An answered step stays open (its feedback is read) with « التالي ». Steps the student has moved past collapse to a ✓ line (« إظهار » reopens them). Later steps sit in « الأسئلة القادمة (n) » (titles, locked until reached) next to « السؤال n من N ». The streak and sound row stays. The `brief` body folds unless `brief.keepBody`. |
+| Lab (`ManipulationShell`) | Unchanged. |
+| `KnowledgeBrick` | Title, summary and visual. The body + try-it go behind « المزيد ». |
+| `TapQuestion`, `TextbookExercise` | A right answer shows « صحيح », with the explanation behind « لماذا؟ ». A wrong answer keeps its correction open. « خطأ شائع » folds. |
+| `MemoCard` | Each tile shows title + hook + rule. مثال / فخّ / في الامتحان fold, and « تعرفه من قبل » folds. |
+| `GuidedProblem` | The statement stays open (`keepBody`). The list of all part questions folds into « كل الأسئلة ». Locked sub-steps (with their instruction) fold into « الخطوات القادمة (n) ». |
+| Module 0 (`PrerequisiteDiagnostic`, `ReviewLinks`) | The advice line and the programme texts of each review link fold. |
+
+**`MoreToggle` is THE disclosure for lesson content** (`StudentFocus.jsx`): use it, never a local `<details>`.
+- In focus it is a « المزيد ▾ » button, and the content stays mounted under `hidden` (React state and `data-*` survive).
+- Out of focus it renders its children inline and nothing else. Wrapping content is therefore a no-op for the lessons without the flag.
+- **In the mission player there is NO « المزيد »** (owner, 2026-11-04: « since the content is divided in slides, no need for the read
+  more »): `MoreToggle` renders its children inline there (`InMissionPlayerContext`), and the paging gives each block its own screen.
+  - The module header shows the title, then ONE small line « ⏱ <time> · <subtitle> » (`data-mission-subtitle`).
+  - The locked « الخطوات القادمة » of a « مسألة » are not listed: each sub-step arrives on its own screen when it unlocks.
+  - Focus outside the player (`studentView: 'focus'`) keeps its « المزيد » buttons.
+- Put any separator INSIDE the toggle (`<> — {explain}</>`), so the non-focus rendering is byte-identical.
+
+Inside a component tree, read the switch with `useStudentFocus()`; `ModuleLayout` and `LessonIndex` provide it. A component that
+renders steps OUTSIDE that provider (`ContentModule`, `GuidedProblem`, which build their steps above `ModuleLayout`) uses
+`useStudentFocusFor(ctx.studentView)`. `MODULE_CTX.studentView` is copied from the config by `unit/buildModuleContext.js`.
+
+**The lesson's own text in focus** (done in `qasim-adad-tabii`): the text is NOT rewritten. An evidence list
+(`data-activity-evidence`) where nothing has been tried yet is wrapped in `<MoreToggle force={anyTried ? false : undefined} label="تجاربي">`.
+It folds while empty and opens by itself (inline) after the first try. The to-do paragraph stays visible: it is the instruction
+the student needs now.
+
+**Roll out to another lesson:**
+1. Add `studentView: 'focus'`.
+2. Wrap that lesson's empty evidence lists as above. Remove nothing.
+3. Run `check:lessons`, `lab-rollout-status.mjs --lesson <id>` and the web tests.
+4. Capture the student view (fresh progress per module) and the teacher view, and check the teacher view is unchanged.
+
+Before / after numbers of the pilot: `docs/reports/STUDENT_FOCUS_VIEW_2026-11-03.md`.
+
+### 4septies. The mission mode — `studentView: 'mission'` (owner pilot, 2026-11-04, lesson `qasim-adad-tabii`; stage 1 of 3)
+
+The lesson becomes a JOURNEY toward its « مسألة الدرس ». The student opens the lesson on the mission, collects the lesson's
+ideas as « tools », answers a short mission question between modules, and wins the mission in its مسألة module. Mission mode
+IMPLIES the focus view (§4sexies). The teacher (`freeNavigation`) and Classroom Mode see no change (`isMissionView`).
+Plan, decisions and stages: `docs/reports/MISSION_PLAYER_PLAN_2026-11-04.md`.
+
+**Never build it on Classroom Mode.** Presenting unlocks every step and module, stops writing module completion, and turns
+graded tests into the teacher's reveal-one-answer flow. The mission is a layer on the student's normal pages:
+progress, sequential unlock and evidence are the lesson's own.
+
+**The data** (`LESSON_CONFIG.mission`, literals):
+```js
+mission: {
+  title: 'مكتبة 756 كتابًا',
+  opening: { text: '<one sentence: the situation + the question>', cta: '<an honest « I can't yet » button>' },
+  tools: [{ id: '<knowledge.jsx item id>', icon: '🔑', label: '<2–3 words>' }],   // earned when that brick is established
+  climaxModule: 4,                                                              // the مسألة that IS the mission
+  checkpoints: [{ id, afterModule, prompt, options, correct, explain }],        // asked on ARRIVAL at afterModule + 1
+}
+```
+
+**What the student sees** (`lessons/common/mission/`):
+
+| Piece | Where | Behaviour |
+| --- | --- | --- |
+| `MissionHome` | the lesson page (from `LessonIndex`) | First visit: the opening scene (drawn library, one sentence, CTA), then module 0. Later: the library filling with the tools, the tool chips, ONE « واصل » button, the map and the lesson's practice entry (« ابدأ التمارين »). « تفاصيل الدرس » opens a dialog with the description, the skills and the prerequisite lessons. |
+| `MissionLayer` | top of every module (from `ModuleLayout`) | The `MissionBar` (mission title opens the full statement, the 4 tools, « n من N », « الخريطة »), the map dialog, and the checkpoint dialog on arrival. |
+| `MissionMap` | home + dialog | One station per module, with the REAL lock (`moduleGate.resolveModuleStatus`, same as the lesson page). The climax keeps a 🏆; stations after it are « مستوى إضافي ». |
+| `MissionCheckpoint` | dialog, on arrival | One `TapQuestion` that brings the mission closer with the tool just earned, WITHOUT answering any question of the مسألة. Formative: no XP, no evidence. « لاحقًا » skips it, and it is never asked twice. |
+| `LibraryScene` | everywhere | An SVG drawn in code. `fill` = earned tools / all tools, so the shelves fill as the student learns. |
+
+**Rules:**
+- A checkpoint must not solve the climax: it applies the newly earned tool to the mission in general (the remainder must be 0,
+  `756 = b × q` means `b` divides…), never computes `756 ÷ 32` or `756 ÷ 36`.
+- State is per student in `scopedStorage` (`smarter_mission_<lessonId>`: `opened`, `answered`). It is not progress.
+- Nothing is deleted: the full lesson page, the full statement and the lesson's practice stay one tap away (§4sexies rule).
+
+**Stage 2 — the player, NO SCROLLING (done 2026-11-04).** The owner's rule is « no scrolling in any part of the lesson-game ».
+`MissionPlayer` is a full window drawn in CSS: it is portalled to `<body>`, at `z-[35]` so « كرّاسي / بطاقاتي » stay on top,
+and the workspace sidebar is hidden. The browser full screen is an optional button.
+
+Layout:
+- **Top:** the mission bar, « الصوت » and ✕. ✕ leads back to the mission (or to the lessons list from the mission home).
+- **Middle:** the content.
+- **Bottom:** « السابق » · dots (and « صفحة n من m ») · « واصل ». At the last unit, « واصل » becomes « المحطة التالية » or
+  « إنهاء », and the module's OWN `handleNextClick` / `commitCompletion` writes completion.
+
+How the screens stay scroll-free:
+- `ContentModule` plays ONE unit at a time (brief → lab → each step → memo), with the classroom unit machinery but the
+  student's locks: « واصل » leaves a step only when it is done. It declares its navigation with `useDeclareUnitNav`
+  (`mission/missionPlayerContext.js`).
+- A unit taller than the window is split into pages by `ClassroomPaged` through `PagingContext` (`deepBlocks`; see
+  `CLASSROOM_MODE.md` « Paging outside Classroom Mode »).
+- Pages without units (أستعدّ, the final test) are paged by the player itself.
+- `GuidedProblem` gives each sub-step its own block.
+- `FitToArea` FITS every screen to the area (CSS `zoom`):
+  - it ENLARGES short content up to `MAX_GROW = 1.9` (a lab up to 1.3), aiming at 92 % of the height, and centres it vertically
+    (owner: « make the questions bigger, use the space »); text screens lay out in a 1100 px reading column before enlarging,
+    labs use the full width;
+  - it shrinks what does not fit, never below `MIN_FIT = 0.6`. Below that the area scrolls and
+  carries `data-fit-overflow` (a last resort that tests detect).
+
+Labs in the player:
+- they get `ManipulationImmersiveContext = true` and no second full screen (`useInMissionPlayer`);
+- the lab unit has no title row (DNA §17.9);
+- **the GAME LAYOUT** (`ManipulationShell`, area ≥ 900 px wide): the instructions, controls and result in a right-hand column
+  (18–26 rem), the SCENE across the rest of the width (`data-manipulation-game-layout`). Every shell-based lab gets it, with no
+  code of its own;
+- a lab can size its scene from the area: `useMissionArea()` gives `{ width, height }`. `TeamBuilder` sizes its pitch from the
+  height (2:3 kept, 150–360 px wide).
+
+**The student never reaches the old version** (owner, 2026-11-04):
+- the lesson page is ALWAYS `MissionHome` for a student (no `?view=details`);
+- a locked module redirects to the mission instead of the old « مقفل » page;
+- every module opens in the player.
+
+What only the old page had is in the mission: the details dialog and the practice entry. The teacher keeps the normal pages.
+
+Motion:
+- each unit or page slides in for 260 ms (CSS, replays when `hidden` is removed);
+- « واصل » pulses when the step is done;
+- a tool earned under the student's eyes flies into its slot (framer-motion, 1.1 s); with reduced motion it only glows;
+- the first arrival at a station shows « أنت هنا » with the map for 2 s (a tap skips it, never twice, never over a
+  checkpoint).
+
+**One item per screen** (owner, 2026-11-04: « the content must never be small because of the quantity »). The player pages with
+`onePerPage` (`classroomPages.planOnePerPage`):
+- each substantial block (≥ `SMALL_BLOCK` = 90 px) has its own screen, and small blocks (a heading, a counter) ride with the
+  next item;
+- a LIST (≥ 2 children ≥ 110 px: the 6 questions of أستعدّ, the cards of a memo) is opened into its items;
+- a replaced content (a test submitted: questions → result) is re-split from page 1 (`onRestructure`).
+- a block REVEALED by an answer (the next sub-step of a « مسألة ») gets its own screen after the current one: answering never
+  shrinks the screen the student is on (`ClassroomPaged`, MutationObserver).
+- a decoration (`aria-hidden`, an absolute/fixed layer) is never an item, so no screen is ever empty (`isDecor`).
+
+So أستعدّ shows its questions ONE BY ONE and its correction one by one. In the player it also has no per-skill progress cards
+(owner: « no need »; the result reports the skills).
+
+`FitToArea` is DAMPED: it grows only by a real step (`GROW_STEP` = 0.1). A zoom revisited within the last changes (a 1.17 ↔ 1.09
+reflow loop) settles on the smaller one.
+
+**One size for the whole lesson** (owner, 2026-11-04: « the consistency of the size of similar elements across the lesson is not
+negotiable »). Outside labs, the player's zoom depends on the SCREEN only, never on a screen's content: `uniformZoom(width, height)`
+(`FitToArea.jsx`: a 1100 px reading column, a 560 px reference height, between 1 and 1.6, in steps of 0.05). `MissionPlayer` passes
+it as `fixedZoom` to `FitToArea` and as `userScale` to the paging, so pages are cut AT that size. Only a single block too tall for a
+screen shrinks (last resort). Labs keep filling their space (`LAB_MAX_GROW`). Lay a big screen out in columns rather than let it
+shrink: the opening screen of a « مسألة » is two columns in the player (text and questions | support). Measured on the pilot lesson:
+64/64 screens at the same size at 1854×930, 62/64 at 1366×768 (two at 0.98).
+
+**A settled screen never moves** (owner, 2026-11-04: « new content on the same slide changes the position and font size of what is
+already there »). `FitToArea` takes a `screenKey` (module path + unit + page) from `MissionPlayer`:
+- a NEW screen fits and centres itself, then settles after `SETTLE_MS` (700 ms; `data-fit-settled`);
+- on a settled screen, what is already there keeps its place and its size (`keepInPlace`). New content takes the free space below.
+  If it does not fit, the screen slides up just enough (animated, 300 ms; the moment a screen SETTLES is never animated, or every
+  screen would appear twice: its entry, then a jump and a glide). Only if it still does not fit does it shrink, as little
+  as possible. It never grows;
+- in the player the streak chip « متتالية » lies OVER the screen (top corner), never above the content.
+
+**A « مسألة » in the player** (`GuidedProblem`, owner 2026-11-04):
+- each part's header, repeated on every screen of that part, carries the FULL question (`part.question`), not its short title;
+  the part's question box then keeps only « المطلوب » (and is not rendered when a part has none: no empty screen);
+- a « 📜 نصّ المسألة » button sits at the top of EVERY screen of the problem (`problems/ProblemSheet.jsx`, portalled outside
+  the zoomed area): it opens the whole problem (statement, support, all questions) in a wide two-column `MissionDialog`
+  (`wide`), which fits without scrolling at 1366×768 and 1024×768.
+
+**The lab's mission in big:** entering a lab opens its mission card (`MANIPULATION_CONTRACT.md` « The mission in big »).
+
+**Rounds with stars instead of levels** (owner, 2026-11-04): in the player a lab is a path of ROUNDS (`LabRounds`,
+`MANIPULATION_CONTRACT.md` « Rounds and stars »), each worth 1–3 ★, and the total shows in the mission bar.
+- **Module 1:** 15 → 3 teams, 16 players (who stays out, then a number of teams that works), 42: 5 or 6?, then the optional ⭐
+  challenge (EVERY number of teams that works for 42), then the free pitch.
+- **Module 2:** 48 in 6 teams, then in 8, then the free pitch.
+- **Only the FIRST round is shared by hand**, a short one (15 players). Every later round passes `handDone`, so « أنشئ الفرق »
+  distributes big numbers in one click (owner: « doing the same manipulation 48 times is so hard »). Rule for any lab played in
+  rounds: the gesture is learned once, then it becomes a button.
+
+**After the lab: « رتّب أفكارك »** (owner, 2026-11-04: the student already answered inside the lab, so the step must help
+STRUCTURE the ideas, not repeat them). In the player a lab step shows `mission/IdeasOrganizer`:
+- the student's OWN trials as a table, each number with its meaning (`TEAM_ROLES`: لاعبًا · فرق · في كل فريق · خارج الفرق),
+  rows with nothing left over in green, and the equality beside each;
+- then ONE question that formulates the concept from the table (« متى يدخل كل اللاعبين الفرق؟ » → « الباقي 0 »).
+
+The step is done when its round is won AND that question is answered; only then come the bridge, the brick and the name.
+
+The module's steps open from the rounds: module 1, step 1 ← round 2 and step 2 ← round 3; module 2, step 1 ← round a and
+step 2 ← round b.
+
+Measured (`play` walk, every unit and page of the 8 modules + home, at 1854×930, 1280×800 and 1024×768): EVERYTHING fits,
+nothing scrolls. Labs in the game layout run at zoom 0.83–1.04, and text screens are enlarged up to 1.9.
+
+**Stage 3** (planned): the climax animation (756 books → 21 shelves) and the bonus levels.
+
 ### The rule that breaks lessons most often
 
 A step is done when the student **answered**, not when they answered correctly:
@@ -1513,7 +1719,7 @@ references, not templates: read them for the pattern, never copy-and-modify.
 | Lesson | Read it for |
 |---|---|
 | **`qasim-adad-tabii`** | the complete canonical shape: module 0 diagnostic, a `trigger` module opening on a concrete manipulation, a `معارف` module laying knowledge bricks, practice, evaluation. The best first read. |
-| **`qasim-adad-tabii` module 1** | the **manipulation quality reference** (redesigned 2026-09-30, `MANIPULATION_DNA.md`): the **two-level workspace** (مبتدئ = the football pitch, partition, carry gesture; متقدم = the 420 books on a shelf the student **stretches**, quotition, stretch gesture); the refusal-as-definition and the ghost shelf as resistance; contrast-gated discovery; `DivisionRoles` and the two-readings bridge; the student's own trials listed above the question. A quality bar, **not a visual template**. Module 2 is the worked-example pattern (`levels={false}`, `discovery="symmetry"`). |
+| **`qasim-adad-tabii` module 1** | the **manipulation quality reference** (redesigned 2026-09-30, `MANIPULATION_DNA.md`): the **two-level workspace** (مبتدئ = the football pitch, partition, carry gesture; متقدم = since 2026-11-04 the SAME pitch with 42 players, 5 or 6 teams — the owner replaced the library shelf (420 books, quotition) by the football lab for the whole lesson); the refusal-as-definition and the ghost shelf as resistance; contrast-gated discovery; `DivisionRoles` and the two-readings bridge; the student's own trials listed above the question. A quality bar, **not a visual template**. Module 2 is the worked-example pattern (`levels={false}`): 48 players, 6 teams then 8, so 48 = 6 × 8 = 8 × 6. One lab for the whole lesson: the numbers live in `content/teams.js`. |
 | **`team-builder`** | a platform context replacing a textbook one, declared and traceable: equal teams on a real drawn pitch, where the remainder is a player left standing outside. Pure model in `packages/core/arithmetic/equalGrouping.js`, formation geometry swept by `teamFormation.test.js`. |
 | **`bahth-pgcd`** | two manipulations in one lesson (successive differences, then Euclid), and the longest module sequence in the unit. |
 | **`ikhtizal-kasr`** | a manipulation with two comparable paths (divide repeatedly vs divide once by the GCD), and the `Module00Astaidd` prerequisite diagnostic. |
@@ -1756,7 +1962,12 @@ lesson `<code>` of grade `<g>`:
    Its **modules and exercises** are born `draft` by the importer, but **every generated lesson, module and exercise must END
    `published`, never `draft`** (owner, 2026-10-26): right after the import, publish the lesson's `lesson_modules` and
    `practice_exercises` rows locally (`publication_status = 'published'` for the lesson's non-retired rows), and check that no
-   module of a published lesson is left `draft`. In production the deploy's import/prune does the same.
+   module of a published lesson is left `draft`. `php artisan smarter:publish-available-content` (`--dry-run` to count) does
+   exactly this for the whole database: `available` lessons still `draft` → `published`, then the non-retired `draft` modules
+   and exercises of every published lesson; it never touches an `archived` or `coming_soon` lesson, a retired row or a tier.
+   In production the deploy's import does NOT publish (new modules/exercises are born `draft`, the admin owns the state): after
+   the deploy, run the manual GitHub workflow « Publish available content (production) » (`publish-content.yml`,
+   `gh workflow run publish-content.yml --ref main`), which runs that command on the server.
 5. **Gates:** `npm test`, `npm run check:lessons`, `npm run build` (§ below). Then a browser check at 768 px and 1280 px, in RTL.
 6. **Commit and publish:** commit on a work branch, fast-forward `dev`, `git push origin dev`. CI (`ci.yml`) runs
    tests, build and the PHP suite. **Nothing reaches production until `dev` is merged into `main`**: `deploy.yml` then

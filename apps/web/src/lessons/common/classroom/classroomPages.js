@@ -75,3 +75,31 @@ export function pageOfBlock(pages, blockIndex) {
   const p = pages.findIndex((page) => page.includes(blockIndex));
   return p === -1 ? 0 : p;
 }
+
+/** Un bloc plus petit que ceci (un titre, un compteur, une consigne d'une ligne) n'est pas « un élément » : il accompagne. */
+export const SMALL_BLOCK = 90;
+
+/**
+ * UN ÉLÉMENT PAR PAGE (lecteur de mission, propriétaire 2026-11-04 : « le contenu ne doit jamais être petit à cause de la
+ * quantité »). Chaque bloc substantiel (≥ `small`) ferme sa page ; les petits blocs qui le PRÉCÈDENT l'accompagnent (un
+ * titre reste avec ce qu'il annonce) ; de petits blocs en fin de liste rejoignent la dernière page.
+ *
+ * @param {number[]} heights  hauteurs des blocs, à l'échelle 1
+ * @param {boolean[]} [glue]  les blocs qui ne ferment JAMAIS une page (en-têtes)
+ * @returns {number[][]} pour chaque page, les index des blocs qu'elle montre (au moins une page)
+ */
+export function planOnePerPage(heights, small = SMALL_BLOCK, glue = []) {
+  if (!heights.length) return [[]];
+  const pages = [];
+  let current = [];
+  heights.forEach((h, i) => {
+    current.push(i);
+    // `glue[i]` : un EN-TÊTE (le bandeau d'une carte « للتذكّر », un titre) accompagne toujours ce qui le suit, quelle que soit sa hauteur
+    if (h >= small && !glue[i]) { pages.push(current); current = []; }
+  });
+  if (current.length) {
+    if (pages.length) pages[pages.length - 1].push(...current);
+    else pages.push(current);
+  }
+  return pages;
+}

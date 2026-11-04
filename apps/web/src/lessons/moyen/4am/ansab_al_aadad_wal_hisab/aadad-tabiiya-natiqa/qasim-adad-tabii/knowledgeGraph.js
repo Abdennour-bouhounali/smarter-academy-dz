@@ -42,20 +42,20 @@
  *                     نستخلص
  *                  🎯 [الخلاصة]
  */
-import { ACTIVITY, KNOWLEDGE, PREP_ITEMS } from './content/textbook';
+import { KNOWLEDGE, PREP_ITEMS } from './content/textbook';
+import { TEAMS_ACTIVITY, euclid } from './content/teams';
 import { EX } from './content/exercises';
 
 const [defBaqi, defJidaa] = KNOWLEDGE.definitions;
 const [remSiyagh, remWahid, remNafsuh] = KNOWLEDGE.remarks;
 const div143 = defBaqi.example.division;
 
-// نشاط 1 : 420 livres, 28 puis 26 par rayon — les égalités se CALCULENT à
-// partir des nombres du manuel, elles ne sont pas recopiées à la main.
-const euclid = (a, b) => ({ q: Math.floor(a / b), r: a % b });
-const { total } = ACTIVITY.numbers;
-const [c26, c28] = ACTIVITY.numbers.candidates;
-const d28 = euclid(total, c28);
-const d26 = euclid(total, c26);
+// نشاط 1 : 42 joueurs, 6 puis 5 équipes (le terrain, content/teams.js) — les égalités se CALCULENT à partir des nombres,
+// elles ne sont pas recopiées à la main.
+const { total } = TEAMS_ACTIVITY;
+const [cNo, cYes] = TEAMS_ACTIVITY.candidates;
+const dYes = euclid(total, cYes);
+const dNo = euclid(total, cNo);
 const eq = (a, b, { q, r }) => `$${a} = ${b} \\times ${q} + ${r}$`;
 
 const ex1 = EX['ex-1'];
@@ -123,16 +123,16 @@ export const KNOWLEDGE_GRAPH = {
       reveals: [],
     },
     {
-      // 🔍 تحقّق — نشاط 1 (Module 1 : « 420 = 26 × 16 + 4 يبقى 4 كتب ؛
-      // 420 = 28 × 15 + 0 فلا يبقى شيء ») et Module 2, question 1 (« التعريف
+      // 🔍 تحقّق — نشاط 1 (Module 1 : « 42 = 5 × 8 + 2 يبقى لاعبان ؛
+      // 42 = 6 × 7 + 0 فلا يبقى أحد ») et Module 2, question 1 (« التعريف
       // كله في الباقي », contre « حاصل القسمة فردي » / « 11 عدد أولي »).
       id: 'tahaqqaq', kind: 'check', lane: 'start', requires: 'qasim-baqi',
-      title: 'نحسب الباقي', subtitle: eq(total, c28, d28),
+      title: 'نحسب الباقي', subtitle: eq(total, cYes, dYes),
       context: {
         text: 'هل $b$ قاسم للعدد $a$؟ نُجري القسمة الإقليدية لـ $a$ على $b$ وننظر إلى الباقي.',
         list: [
-          `${eq(total, c28, d28)}: الباقي 0، إذن ${c28} قاسم للعدد ${total}.`,
-          `${eq(total, c26, d26)}: الباقي ${d26.r} ليس معدومًا، إذن ${c26} ليس قاسمًا للعدد ${total}.`,
+          `${eq(total, cYes, dYes)}: الباقي 0، إذن ${cYes} قاسم للعدد ${total}.`,
+          `${eq(total, cNo, dNo)}: الباقي ${dNo.r} ليس معدومًا، إذن ${cNo} ليس قاسمًا للعدد ${total}.`,
         ],
         note: 'التعريف كله في الباقي: لا يكفي أن يكون حاصل القسمة فرديًّا أو أن يكون العدد أوليًّا.',
       },

@@ -5,15 +5,21 @@ import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { TextbookBox } from '../../../../../../common/textbook';
 import { Manipulation } from '../../../../../../common/manipulations';
+import { MoreToggle } from '../../../../../../common/components/StudentFocus';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { KNOWLEDGE } from '../content/textbook';
+import { TEAMS_EXAMPLE, M2_ROUNDS, TEAM_ROLES, eqTex } from '../content/teams';
+import IdeasOrganizer from '../../../../../../common/mission/IdeasOrganizer';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
 
 /**
  * Module 2 — معارف 1 (p. 10) : les deux définitions, les quatre formulations, les remarques (rétrofit 2026-10-15 : le labo en tête
- * SANS carte, SANS titre d'atelier ; chaque définition / brique APRÈS la question qui la nomme). L'exemple 143/11 est MANIPULÉ dans
- * le même rayon qu'on étire qu'au module 1. C'est un EXEMPLE TRAVAILLÉ : un seul niveau (`levels={false}`) et une découverte à lui :
- * 11 PUIS 13 vident le sol, donc le quotient aussi est un قاسم (`discovery="symmetry"`).
- * ORDRE : 1. ce que l'élève a vu à 11 → la définition par le reste ; 2. 13 vide aussi le sol → la définition par le produit et
+ * SANS carte, SANS titre d'atelier ; chaque définition / brique APRÈS la question qui la nomme). L'exemple est MANIPULÉ sur le
+ * MÊME terrain qu'au module 1 (propriétaire, 2026-11-04 : le labo du football pour toute la leçon ; le rayon de la bibliothèque —
+ * 143 livres, 11 puis 13 — a été retiré). EXEMPLE TRAVAILLÉ, un seul niveau (`levels={false}`) : 48 joueurs, 6 équipes PUIS 8
+ * vident le banc, donc le quotient aussi est un قاسم (48 = 6 × 8 = 8 × 6, content/teams.js).
+ * ORDRE : 1. ce que l'élève a vu à 6 équipes → la définition par le reste ; 2. 8 équipes vident aussi le banc → la définition par le produit et
  * l'exemple 120 = 6 × 20 ; 3. l'application à 120 ; 4. les quatre phrases (question d'abord, briques ensuite). LP : P2, P3, P4.
  */
 const [defBaqi, defJidaa] = KNOWLEDGE.definitions;
@@ -24,13 +30,19 @@ export default function Module02Maarif() {
   // les questions posées PAR-DESSUS le labo (LabCheckpoint) : la trace des réponses de l'élève
   const [trials, setTrials] = useState([]);
   const answered = (id) => trials.some((e) => e.tk === 'checkpoint-done' && e.id === id);
-  const q1 = answered('first');
-  const q2 = answered('contrast');
+  const { total, groups: [first, second], choices } = TEAMS_EXAMPLE;
+  // Dans le lecteur de mission : deux MANCHES (48 en 6, puis en 8 équipes) — LabRounds.
+  const [won, setWon] = useState({});
+  // « رتّب أفكارك » (lecteur) : l'étape est faite quand la manche est gagnée ET l'idée formulée à partir du tableau
+  const [org, setOrg] = useState({});
+  const q1 = (Boolean(won.a) && Boolean(org.s1)) || answered('first');
+  // la symétrie VUE : les deux répartitions justes (6 puis 8 équipes) — elle ne dépend pas d'un essai avec reste
+  const q2 = (Boolean(won.b) && Boolean(org.s2)) || Boolean(tried[first]?.exact && tried[second]?.exact);
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
 
   return (
-    <ContentModule objectives={["كيف نعرّف القاسم بطريقتين مختلفتين؟", "كيف أطبّق ذلك على 143 كتابًا؟"]}
+    <ContentModule objectives={["كيف نعرّف القاسم بطريقتين مختلفتين؟", "كيف أطبّق ذلك على 48 لاعبًا؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
       moduleNumber={2}
@@ -38,54 +50,81 @@ export default function Module02Maarif() {
       moduleSubtitle="تعريفان لنفس الفكرة"
       estimatedTime="12 دقيقة"
       intro={
-        // L'exemple du manuel (143 et 11) dans le MÊME laboratoire que le
-        // module 1 : le rayon qu'on étire. Réglette de 5 à 30, repères 11 et 13.
+        // L'exemple sur le MÊME terrain que le module 1 : 48 joueurs, 6 équipes puis 8.
+        <PlayerSwitch
+          player={(
+            <LabRounds
+              lessonId={MODULE_CTX.lessonId}
+              labId="m2-teams"
+              rounds={M2_ROUNDS}
+              onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))}
+              onVerdict={({ total: n, groups: k, perGroup, leftOver, exact }) => { if (n === total) setTried((t) => ({ ...t, [k]: { exact, quotient: perGroup, remainder: leftOver } })); }}
+            />
+          )}
+          page={(
         <Manipulation
-          type="divisor-explorer-books"
-          total={143}
-          min={5}
-          max={30}
-          marks={[11, 13]}
+          type="team-builder"
+          total={total}
+          groups={first}
+          teamChoices={choices}
+          squadChoices={[total]}
           levels={false}
-          discovery="symmetry"
-          title="مثال الكتاب: 143 كتابًا"
-          lead="143 كتابًا في رفوف متساوية. ضع الرفّ على 11 كتابًا ثم على 13: ماذا يحدث للأرض في المرّتين؟"
-          onVerdict={({ b, quotient, remainder }) => setTried((t) => ({ ...t, [b]: { quotient, remainder } }))}
+          title={`مثال: ${total} لاعبًا`}
+          lead={`في دورة الحيّ ${total} لاعبًا. وزّعهم في ${first} فرق متساوية، ثم في ${second} فرق: هل يبقى أحد خارج الفرق في المرّتين؟`}
+          onVerdict={({ total: n, groups: k, perGroup, leftOver, exact }) => { if (n === total) setTried((t) => ({ ...t, [k]: { exact, quotient: perGroup, remainder: leftOver } })); }}
           onTrial={(e) => setTrials((l) => [...l, e])}
+        />
+          )}
         />
       }
       steps={[
         {
-          num: 1, title: 'ما الذي يجعل 11 قاسمًا للعدد 143؟', subtitle: 'من تجربتك على الرفّ', done: q1,
+          num: 1, title: `ما الذي يجعل ${first} قاسمًا للعدد ${total}؟`, subtitle: 'من تجربتك في الملعب', done: q1,
           content: (
             <div className="space-y-3">
+              <PlayerSwitch
+                player={won.a ? (<IdeasOrganizer title="رتّب أفكارك: ماذا رأيت في الملعب؟" labels={TEAM_ROLES} rows={Object.keys(tried).map(Number).sort((x, y) => x - y).map((k) => ({ n: total, g: k, q: tried[k].quotient, r: tried[k].remainder }))} question={{ prompt: `ما الذي يجعل ${first} قاسمًا للعدد ${total}؟`, options: [`باقي قسمة ${total} على ${first} هو 0`, `${first} عدد زوجي`, `${total} أكبر من ${first}`], correct: 0, explain: 'التعريف كله في الباقي: باقي القسمة الإقليدية يحسم الأمر.' }} onAnswered={() => setOrg((o) => ({ ...o, s1: true }))} />) : (<p className="rounded-xl border-2 border-indigo-100 bg-indigo-50 px-4 py-3 text-lg font-bold text-indigo-900">العب الجولة 1 في المختبر.</p>)}
+                page={(
+                  <>
+              <MoreToggle force={[first, second].some((c) => tried[c]) ? false : undefined} label="تجاربي">
               <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>
-                {[11, 13].map((c) => (
+                {[first, second].map((c) => (
                   <li key={c} className={tried[c] ? 'font-bold text-slate-800' : 'text-slate-500'} data-evidence={c} data-tried={tried[c] ? 'true' : 'false'}>
                     {tried[c]
-                      ? <MathText>{`${c} كتابًا في كل رفّ: $143 = ${c} \\times ${tried[c].quotient} + ${tried[c].remainder}$`}</MathText>
-                      : `${c} كتابًا في كل رفّ: لم تجرّبه بعد على الرفّ أعلاه.`}
+                      ? <MathText>{`${total} لاعبًا في ${c} فرق: $${total} = ${c} \\times ${tried[c].quotient} + ${tried[c].remainder}$`}</MathText>
+                      : `${total} لاعبًا في ${c} فرق: لم تجرّبه بعد في الملعب أعلاه.`}
                   </li>
                 ))}
               </ul>
-              {!q1 && <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm text-slate-500" data-evidence="first-todo">ضع الرفّ على 11 ثم أجب عن الأسئلة التي تظهر فوق المختبر. التعريف كله في الباقي: باقي القسمة الإقليدية يحسم الأمر.</p>}
+              </MoreToggle>
+              {!q1 && <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm text-slate-500" data-evidence="first-todo">{`وزّع ${total} لاعبًا في ${first} فرق، ثم أجب عن الأسئلة التي تظهر فوق المختبر. التعريف كله في الباقي: باقي القسمة الإقليدية يحسم الأمر.`}</p>}
+                  </>
+                )}
+              />
               {q1 && (
                 <>
                   <TextbookBox kind="definition" text={defBaqi.text} source={KNOWLEDGE.source} />
-                  <TextbookBox kind="example" text={defBaqi.example.text} compact />
+                  <TextbookBox kind="example" text={`${first} قاسم للعدد ${total} لأنّ $${eqTex(total, first)}$: الباقي معدوم.`} compact />
                 </>
               )}
             </div>
           ),
         },
         {
-          num: 2, title: 'وماذا عن 13؟', subtitle: 'التعريف الثاني: بالجداء', done: q2,
+          num: 2, title: `وماذا عن ${second} فرق؟`, subtitle: 'التعريف الثاني: بالجداء', done: q2,
           content: (
             <div className="space-y-3">
-              {!q2 && <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm text-slate-500" data-evidence="second-todo">ضع الرفّ على 13 أيضًا، وأجب عن أسئلة المختبر حتى النهاية.</p>}
+              <PlayerSwitch
+                player={won.b ? (<IdeasOrganizer title="رتّب أفكارك: ماذا رأيت في الملعب؟" labels={TEAM_ROLES} rows={[first, second].filter((k) => tried[k]).map((k) => ({ n: total, g: k, q: tried[k].quotient, r: tried[k].remainder }))} question={{ prompt: `في المرّتين لم يبقَ أحد، و ${total} = ${first} × ${second}. ماذا نستنتج؟`, options: [`${first} و ${second} قاسمان للعدد ${total}`, `${first} وحده قاسم للعدد ${total}`, `${total} قاسم للعدد ${first}`], correct: 0, explain: `المساواة ${total} = ${first} × ${second} = ${second} × ${first} تُظهر قاسمين: ${first} و ${second}.` }} onAnswered={() => setOrg((o) => ({ ...o, s2: true }))} />) : (<p className="rounded-xl border-2 border-indigo-100 bg-indigo-50 px-4 py-3 text-lg font-bold text-indigo-900">العب الجولة 2 في المختبر.</p>)}
+                page={(
+                  <>
+              {!q2 && <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm text-slate-500" data-evidence="second-todo">{`وزّع الـ ${total} لاعبًا في ${second} فرق أيضًا.`}</p>}
+                  </>
+                )}
+              />
               {q2 && (
                 <>
-                  <KnowledgeBrick id="qasim-jidaa" lead="نفس الفكرة بكتابة أخرى: باقٍ معدوم يعني أن a هو جداء b في عدد طبيعي." />
+                  <KnowledgeBrick id="qasim-jidaa" lead={`في المرّتين لم يبقَ أحد: ${total} = ${first} × ${second} = ${second} × ${first}. نفس الفكرة بكتابة أخرى: باقٍ معدوم يعني أن a هو جداء b في عدد طبيعي.`} />
                   <TextbookBox kind="example" text={defJidaa.example.text} compact />
                 </>
               )}

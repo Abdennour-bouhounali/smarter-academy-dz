@@ -41,6 +41,8 @@ export function createModuleContextBuilder(unitMeta) {
       stageByNumber: Object.fromEntries(LESSON_CONFIG.modules.map((m) => [m.number, m.stage])),
       lastModuleNumber: LESSON_CONFIG.modules[LESSON_CONFIG.modules.length - 1].number,
       sequentialUnlock: LESSON_CONFIG.sequentialUnlock,
+      // Le regard « focus » de l'élève (components/StudentFocus.jsx), activé leçon par leçon.
+      studentView: LESSON_CONFIG.studentView,
     };
     const getNavLinks = (currentModuleNumber) => {
       const idx = LESSON_CONFIG.modules.findIndex((m) => m.number === currentModuleNumber);

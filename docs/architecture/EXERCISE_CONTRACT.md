@@ -902,6 +902,16 @@ Owner decision D7: links to earlier years go **inside exercises** too, not only 
   other way.
 - **Contract:** never gates and sends no evidence. Strings: `lesson.json › review.*`.
 
+### Lesson questions in the student « focus » view (pilot 2026-11-03)
+
+In a lesson with `studentView: 'focus'` (guide §4sexies), and for the student only:
+- A RIGHT answer in `TapQuestion` or `TextbookExercise` shows « صحيح », with its explanation behind « لماذا؟ ».
+- A WRONG answer keeps its correction open, as before.
+- `commonError` folds behind « خطأ شائع » (it is no longer read before answering).
+
+The fold is `MoreToggle`, which renders inline outside focus, so the teacher view and every other lesson are unchanged. Practice
+exam sheets (`features/practice/exam/`) are not affected.
+
 ## Level unlocking and the student setting « open all levels » (2026-10-06)
 
 **Default.** `LevelPolicy::levels` opens level 1. Each later level opens once the student

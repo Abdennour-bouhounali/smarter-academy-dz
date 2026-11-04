@@ -77,8 +77,9 @@ manipulations/
 └── systems/                    the 3 types of unit 5 « جمل معادلتين » (2026-10-01) — §2septies
 ```
 
-`divisibility/DivisorExplorerBooks.jsx` (`divisor-explorer-books`, Module 1 of
-`qasim-adad-tabii`, متقدم, and the 143 worked example of معارف) is **the shelf the
+`divisibility/DivisorExplorerBooks.jsx` (`divisor-explorer-books`; until 2026-11-04 Module 1 of
+`qasim-adad-tabii`, متقدم, and the 143 worked example of معارف — the owner then REPLACED it by the football
+lab `team-builder` for the whole lesson, and no lesson uses it any more; the component is kept) is **the shelf the
 student stretches** (redesigned 2026-09-30, `MANIPULATION_DNA.md` §7). Until then it was a
 standalone component with 17 size buttons, its own styles, no hints and no discovery;
 it now goes through `ManipulationShell` like the other types. The student drags the
@@ -2469,6 +2470,70 @@ last child — so a `target` may be ANY control of the frame (header, stage, bot
   nothing (several labs share a page). Tested in `primitives/labCoach.test.js`; **verified in the browser at 1280×800 only** — the owner skipped the
   mobile screens for this batch (`QA_MOBILE=1` runs 390 / 320), so the phone placement is unit-tested, not eyeballed.
 - Known limit: in `common-divisors` lists the bubble above the middle zone covers part of the 60-list chips (no room below); « فهمت » clears it.
+
+**Student « focus » view (pilot 2026-11-03, `qasim-adad-tabii`; guide §4sexies).** `ManipulationShell` is NOT changed by the
+focus view: the lab keeps its title, badge, mission, lead, idle line, coach, stepper, checkpoints, sound and full screen. Only
+the page around it is reduced. A lab needs no code for it.
+
+**Mission player (2026-11-04, guide §4septies).** Inside `MissionPlayer`, which is already a full window, `ManipulationShell`
+changes two things:
+- it does not offer its own « العب بملء الشاشة » (`useInMissionPlayer()`);
+- it provides `ManipulationImmersiveContext = true`, so a type that has a game layout uses it.
+
+**The game layout.** When the player's area is at least 900 px wide, the shell lays out in two columns:
+- header, controls, hint, result, discovery, explanation and footer in a side column (`data-manipulation-side`);
+- the scene (`children`) across the rest of the width (`data-manipulation-scene`).
+
+Outside the player the order is unchanged: the pieces are the same elements (`headerEl` / `controlsEl` / `restEl`). A lab
+type that renders the shell sits ABOVE these contexts. It reads `useInMissionPlayer()` / `useMissionArea()`:
+- `TeamBuilder` sizes its pitch from the area height (2:3 kept, 150–360 px wide);
+- the player fits the rest by `zoom` (labs from 0.6 up to 1.3).
+
+**The mission in big (2026-11-04).** In the player, ENTERING a lab (its screen becomes visible, `IntersectionObserver`)
+opens a card over the lab (`data-manipulation-mission-intro`): the lead in 2xl, « مهمتك: … » in 4xl, and « هيا نبدأ »
+(`manipulation.missionGo`). It never runs on a timer. It closes with a shrink toward the side column (no motion with reduced
+motion), and LabCoach waits until it is closed. It replays when the level changes.
+
+**Questions over the lab, in the player (2026-11-04, owner).**
+- **Layout:** in the mission player, `LabCheckpoint`'s card is portalled to `<body>` and centred on the SCREEN. A fixed full-screen
+  shade (`bg-slate-950/75`, blur) covers everything, so the result written beside the lab cannot be read while answering.
+  Outside the player it stays over the lab as before.
+- **NO LEAK, for every lab:** a question's confirmation (`explain`) says only ITS answer and never the answer of a LATER
+  question of the same chain. Example: team-builder's « كم لاعبًا في كل فريق؟ » confirms « في كل فريق 5 لاعبين », not
+  « 15 = 3 × 5 + 0 », which would give away « من بقي » and the equality question.
+- **The meaning of each number:** when the full equality is finally built, it is shown with `primitives/RolesEquation`:
+  a = b × q + r with the word of the scene under each number (`<type>.roles`, e.g. لاعبًا · فرق · في كل فريق · خارج الفرق).
+  The colours are those of `DivisionRoles`, and a zero remainder is green.
+
+**Rounds and stars — `LabRounds` (2026-11-04, owner: « the rounds system instead of the levels, with the stars »).** In
+the mission player a lab is played as a PATH of rounds instead of the مبتدئ / متقدم switch the student had to choose:
+`lessons/common/manipulations/rounds/LabRounds.jsx`, with its logic in `roundsModel.js` (tested).
+
+- **Data:** `rounds: [{ id, title, props, goal, stars, optional?, free? }]`.
+  - `props` go to `<Manipulation>`, which is remounted for each round, so each round gets its own big mission card.
+  - `goal` is a list of conditions measured from what the lab REPORTS: `{ checkpoint: 'first' | 'contrast' }` (the question
+    set over the lab finished), `{ exact: k }`, `{ allExact: [k…] }`.
+  - `free` marks the free pitch: always open, no goal, never blocking (the « جرّب أعدادك » rule). `optional` marks a challenge.
+- **Stars (1–3):**
+  - ★ the round is won;
+  - ★ its questions were answered right on the FIRST try (no error, no revealed answer);
+  - ★ few trials (`stars.maxTrials` splits).
+  
+  Never a timer: the stars reward thinking, not speed.
+- **Persistence:** the best stars per student in `scopedStorage` (`smarter_stars_<lessonId>`: `{ [labId]: { [roundId]: 1..3 } }`).
+  Replaying never loses a star. A change fires `sa-stars-changed`; the mission bar and home show the lesson's total ⭐.
+- **Unlocking:** a round opens when the previous REQUIRED round is won, and the student resumes at the first required round
+  not won. `onRoundWon(id)` lets the module open its steps; rounds won on an earlier visit are announced on arrival.
+- **The win card:** stars appear one by one, then « الجولة التالية » / « ابقَ في هذه الجولة ». It comes 2.4 s AFTER the
+  success, so the lab's own celebration (`useStepCelebration`, 2.2 s) plays first and the two never overlap.
+- **Where it applies:** only inside the player (`PlayerSwitch player={…} page={…}`). The teacher keeps the levels.
+- **Example:** lesson `qasim-adad-tabii`, `content/teams.js` (`M1_ROUNDS`, `M2_ROUNDS`).
+
+**`team-builder` options (2026-11-04):** `levels={false}` gives a worked example with no مبتدئ / متقدم selector (as for
+`divisor-explorer-books`). `handDone` opens « أنشئ الفرق » from the start: the student already shared BY HAND in an
+earlier round, and nobody carries 42 or 48 players one by one again (owner, 2026-11-04). Only the first, short round stays
+manual. `teamChoices` / `squadChoices` fix the offered numbers; the bounds stay `total ≤ 60` and
+`groups ≤ 12`.
 
 ### 8quinquies. LabCheckpoint — questions DURING the lab, over the lab (PROTOTYPE 2026-10-28 on `gear-crank`; owner: « if it works, every lab »)
 

@@ -18,6 +18,12 @@ import { useLabCheckpoint } from '../primitives/LabCheckpoint';
 import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
 import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
 import { playSfx } from '../../utils/playEffect';
+import RolesEquation from '../primitives/RolesEquation';
+import { useInMissionPlayer, useMissionArea } from '../../mission/missionPlayerContext';
+
+// Ce que la scène porte AU-DESSUS et AU-DESSOUS du terrain dans le lecteur (sélecteur de niveau, étapes, nombres, en-têtes
+// d'équipe, banc, marges) : le terrain prend toute la hauteur qui reste.
+const PLAYER_SCENE_OVERHEAD = 370;
 import MathText from '../../components/MathText';
 import { wrongEqualities, eqTex, splitKey } from './divisionChecks';
 import * as L from '../logic/teamBuilder';
@@ -96,7 +102,17 @@ export default function TeamBuilder({
   coach: coachOn = true,
   checkpoints: cpOn = true,
   onTrial,
+  // false : un EXEMPLE TRAVAILLÉ, sans sélecteur مبتدئ / متقدم (comme divisor-explorer-books)
+  levels: withLevels = true,
+  // true : l'élève a DÉJÀ partagé à la main (une manche précédente) — « أنشئ الفرق » s'ouvre d'emblée : on ne lui fait pas
+  // porter 42 ou 48 joueurs un par un une seconde fois (propriétaire, 2026-11-04).
+  handDone = false,
 }) {
+  // L'écran de jeu du lecteur de mission : le terrain s'y borne en largeur (voir data-team-pitch-area).
+  const gameScreen = useInMissionPlayer();
+  const area = useMissionArea();
+  // la largeur du terrain qui fait tenir sa hauteur (2:3) dans l'écran : aussi GRAND que possible, jamais trop petit
+  const pitchMax = gameScreen && area?.height ? Math.round(Math.min(360, Math.max(150, (area.height - PLAYER_SCENE_OVERHEAD) / 1.5))) : undefined;
   const { t } = useTranslation('lesson');
   const state = useManipulation({
     type: 'team-builder',
@@ -104,6 +120,7 @@ export default function TeamBuilder({
     initialMode,
     hintCount: 3,
     initialLevel: level,
+    withLevels: withLevels !== false,
   });
   // Le niveau VIVANT : celui du workspace, ou celui que l'élève a choisi
   // dans le sélecteur de la manipulation posée seule.
@@ -119,7 +136,7 @@ export default function TeamBuilder({
   const [tried, setTried] = useState({});
   // « أنشئ الفرق » s'ouvre après UNE répartition menée à la main jusqu'au
   // bout. `autoUsed` dit si le bouton a servi dans la configuration en cours.
-  const [handShared, setHandShared] = useState(false);
+  const [handShared, setHandShared] = useState(Boolean(handDone));
   const autoUsed = useRef(false);
   const [doneIds, setDoneIds] = useState({});
   const [retryN, setRetryN] = useState(0);
@@ -190,7 +207,7 @@ export default function TeamBuilder({
     questions: chain ? chain.map((q) => QUESTIONS[q]({ tried, keys: triedKeys }, kq)) : null,
     reached: !!cpId,
     resetKey: `${state.resetCount}:${retryN}`,
-    onRetry: () => { setTried({}); setHandShared(false); setLab(L.init({ total, groups })); autoUsed.current = false; setRetryN((n) => n + 1); setDoneIds({}); },
+    onRetry: () => { setTried({}); setHandShared(Boolean(handDone)); setLab(L.init({ total, groups })); autoUsed.current = false; setRetryN((n) => n + 1); setDoneIds({}); },
     onEvent: (ev) => state.report(onTrial, ev),
     onDone: (id) => {
       setDoneIds((d) => ({ ...d, [id]: true }));
@@ -491,7 +508,9 @@ export default function TeamBuilder({
                       position vient de `teamFormation`, balayée par ses
                       tests pour qu'aucun effectif atteignable ne superpose
                       deux joueurs. */}
-                  <div className="relative mx-auto w-full" style={{ aspectRatio: '2 / 3' }} data-team-pitch-area>
+                  {/* Sur l'écran de jeu (lecteur de mission), le terrain garde ses proportions et prend TOUTE la hauteur qui
+                      reste (pitchMax, d'après la zone du lecteur) : ni défilement, ni place perdue. */}
+                  <div className="relative mx-auto w-full" style={{ aspectRatio: '2 / 3', maxWidth: pitchMax }} data-team-pitch-area>
                     <div className="absolute inset-0 overflow-hidden rounded-xl">
                       <PitchBackdrop variant="full" />
                     </div>
@@ -602,7 +621,14 @@ export const QUESTIONS = {
     return {
       id: 'eq', kind: 'choice', cols: 3, prompt: Cq(k, 'eq.prompt', o),
       options: [opt(w1), { text: <MathText>{$(eqTex(c))}</MathText>, correct: true }, opt(w2)],
-      hints: [Cq(k, 'eq.hint1'), Cq(k, 'eq.hint2', o)], explain: Cq(k, 'eq.explain', o),
+      hints: [Cq(k, 'eq.hint1'), Cq(k, 'eq.hint2', o)],
+      // l'égalité ÉCRITE avec le SENS de chaque nombre (propriétaire, 2026-11-04 : « 3 → 3 فرق، 15 → 15 لاعبًا »)
+      explain: (
+        <div className="space-y-2">
+          <RolesEquation n={c.n} g={c.g} q={c.q} r={c.r} labels={{ n: k('roles.n'), g: k('roles.g'), q: k('roles.q'), r: k('roles.r') }} />
+          <p>{k('cp.eq.explainRoles')}</p>
+        </div>
+      ),
     };
   },
   pair: ({ tried, keys }, k) => {

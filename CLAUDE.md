@@ -43,6 +43,21 @@ Unit 1 is the **pilot unit**: rules are tried there, then extended. Three unit-1
 (2026-10-13) — were **extended to units 2–14 on 2026-10-13**; every synthesis lesson now has modules 1–6 « وضعيات تدريبية » and
 every `ContentModule` has `objectives` for the Classroom Mode entry slide. Report: `docs/reports/UNIT1_REFERENCE_CHANGES_2026-10-13.md`.
 
+Since 2026-11-03 the pilot lesson `qasim-adad-tabii` tries the **student « focus » view** (owner: Gen Alpha reads little):
+- `studentView: 'focus'` in its config makes the student see only what they need now: one step on screen, the lesson home reduced
+  to title + progress + « واصل », and details behind « المزيد » (`MoreToggle`, `lessons/common/components/StudentFocus.jsx`).
+- The teacher and Classroom Mode are unchanged.
+- **Reduce what shows at once, never delete** (owner, 2026-11-04): whatever leaves the student's screen stays reachable.
+- If the owner validates it, it is rolled out lesson by lesson. Rules and checklist: guide §4sexies; numbers:
+  `docs/reports/STUDENT_FOCUS_VIEW_2026-11-03.md`.
+- Since 2026-11-04 the same lesson tries the **mission mode** (`studentView: 'mission'`, implies focus): the lesson is a journey
+  toward its « مسألة الدرس » (opening scene, tools = knowledge items, mission bar, map with the real lock, one checkpoint between
+  modules). It is built on the student's normal pages, NEVER on Classroom Mode. Stage 2 (same day): the lesson plays in a
+  full-window player with **no scrolling anywhere** (owner rule): one unit per screen, tall units paged (`ClassroomPaged` via
+  `PagingContext`, not Classroom Mode), last-resort fit by zoom; no « المزيد » in the player (every block has its own screen). In the player a lab is played as ROUNDS with 1–3 ★
+  (`manipulations/rounds/LabRounds.jsx`) instead of مبتدئ / متقدم, and this lesson uses only the football lab.
+  Guide §4septies, plan `docs/reports/MISSION_PLAYER_PLAN_2026-11-04.md`.
+
 Since 2026-10-13 the **learning net « شبكة الكفاءات »** covers the WHOLE cycle moyen (1AM–4AM): the official
 programme of the four years as data (224 items transcribed from `docs/Math-Moyenne-programme/`, stable ids
 `<g>am.m<مقطع>.r<nn>`), typed links between items (`requires` / `extends` with its added value / `consolidates` —

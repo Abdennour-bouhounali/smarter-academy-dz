@@ -117,8 +117,11 @@ pour chaque entrée de `apps/web/src/features/books/shareCards.json`, un fichier
 `dist/share/<path>.html` (`share/books.html`, `share/books/smart-protocol.html`) = l'`index.html` du build dont `<title>`, description,
 `og:*`, `twitter:*` et `canonical` parlent de CETTE page
 (`apps/web/vite-plugin-share-pages.js`, testé par `vite-plugin-share-pages.test.js`), et remplace
-le marqueur `# @share-pages` de `dist/.htaccess` par UNE règle explicite par page
+le marqueur `# @share-pages` par UNE règle explicite par page
 (`RewriteRule ^books/smart-protocol/?$ share/books/smart-protocol.html [L]`, avec ou sans « / » final).
+Le plugin ne relit JAMAIS `dist/` comme source (depuis le 2026-10-29) : le modèle est `public/.htaccess`, le résultat
+est écrit dans `dist/.htaccess`, et l'`index.html` de base est pris dans le lot du build (`writeBundle`). Un `dist/`
+laissé par un autre build — deux builds lancés en même temps dans le même arbre — ne fait plus échouer `npm run build`.
 **Aucun dossier ni fichier ne porte le chemin public** : LiteSpeed (Hostinger) redirige tout dossier
 existant vers « …/ » AVANT les règles de réécriture et ignore `DirectorySlash` — jusqu'au 2026-10-17,
 `dist/books/smart-protocol/index.html` coûtait un 301 avant tout affichage. Le déploiement efface les

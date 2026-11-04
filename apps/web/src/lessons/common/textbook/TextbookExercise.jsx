@@ -10,6 +10,7 @@ import IntegerSetQuestion from './IntegerSetQuestion';
 import FractionQuestion from './FractionQuestion';
 import PairQuestion from './PairQuestion';
 import { ClassroomPresentation, ClassroomEntryButton, ClassroomFrame } from '../classroom';
+import { MoreToggle } from '../components/StudentFocus';
 
 /**
  * Rend UN exercice du manuel à partir de sa donnée (content/exercises.js) :
@@ -77,7 +78,7 @@ export default function TextbookExercise({ exercise, solved = false, onAnswered,
         <BatchChoiceQuestion
           rows={q.rows.map((r, i) => ({ id: `r${i}`, label: <MathText>{r.text}</MathText>, options: [t('textbook.true'), t('textbook.false')], correct: r.answer ? 0 : 1, correction: r.why ? <MathText>{r.why}</MathText> : r.why }))}
           requires={requires} solved={solved}
-          feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? t('textbook.allRight') : t('textbook.seeCorrections')}{explain && <> — {explain}</>}</Feedback>}
+          feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? t('textbook.allRight') : t('textbook.seeCorrections')}{explain && (allRight ? <MoreToggle label={t('focus.why')}><> — {explain}</></MoreToggle> : <> — {explain}</>)}</Feedback>}
           onAnswered={(ok) => onAnswered?.(ok)} />
       );
       break;
@@ -113,7 +114,7 @@ export default function TextbookExercise({ exercise, solved = false, onAnswered,
           intro={q.prompt ? <p className="text-sm font-semibold text-slate-700"><MathText>{q.prompt}</MathText></p> : undefined}
           rows={q.rows.map((r, i) => ({ id: `b${i}`, label: <MathText>{r.label}</MathText>, options: r.options.map((o) => (typeof o === 'string' ? <MathText key={o}>{o}</MathText> : o)), correct: r.correct, correction: typeof r.correction === 'string' ? <MathText>{r.correction}</MathText> : r.correction }))}
           requires={requires} solved={solved}
-          feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? t('textbook.allRight') : t('textbook.seeCorrections')}{explain && <> — {explain}</>}</Feedback>}
+          feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? t('textbook.allRight') : t('textbook.seeCorrections')}{explain && (allRight ? <MoreToggle label={t('focus.why')}><> — {explain}</></MoreToggle> : <> — {explain}</>)}</Feedback>}
           onAnswered={(ok) => onAnswered?.(ok)} />
       );
       break;
@@ -130,8 +131,11 @@ export default function TextbookExercise({ exercise, solved = false, onAnswered,
         <div className="rounded-2xl border-2 border-sky-200 bg-white p-4 space-y-3" data-textbook-exercise={ex.id}>
           {header}
           {body}
+          {/* Regard « focus » : le « خطأ شائع » n'est pas lu avant de répondre — il est à un geste. */}
           {ex.commonError && (
-            <p className="text-xs text-slate-500"><strong>{t('textbook.commonError')} :</strong> <MathText>{ex.commonError}</MathText></p>
+            <MoreToggle label={t('textbook.commonError')}>
+              <p className="text-xs text-slate-500"><strong>{t('textbook.commonError')} :</strong> <MathText>{ex.commonError}</MathText></p>
+            </MoreToggle>
           )}
         </div>
       </ClassroomFrame>

@@ -15,6 +15,10 @@ import { useLearningViewer } from '../../../features/learning/learningViewer';
 import { useClassroomMode, useClassroomStage, ClassroomFrame, ClassroomPaged } from '../classroom';
 import { clampPage } from '../classroom/classroomPages';
 import ModuleOverview from './ModuleOverview';
+import { useStudentFocusFor, MoreToggle } from '../components/StudentFocus';
+import { isMissionView } from '../mission/missionModel';
+import { useDeclareUnitNav } from '../mission/missionPlayerContext';
+import { getLoadedLessonConfig } from '../../registry';
 import { moduleUnits, clampUnit, resolveModuleNavigation } from '../classroom/classroomUnits';
 
 /**
@@ -86,6 +90,18 @@ export default function ContentModule({
   const doneCount = steps.filter((s) => s.done).length;
   const incompleteSteps = steps.filter((s) => !s.done).map(({ num, title }) => ({ num, title }));
 
+  // REGARD « FOCUS » DE L'ÉLÈVE (StudentFocus.jsx) : UNE étape à l'écran. L'étape répondue reste ouverte (son retour se
+  // lit) avec « التالي » ; celles qu'on a dépassées se replient en une ligne ✓ ; les suivantes n'apparaissent pas encore.
+  const focusView = useStudentFocusFor(ctx.studentView);
+  const firstOpen = steps.findIndex((s) => !s.done);
+  const [focusIndex, setFocusIndex] = useState(() => (alreadyCompleted || firstOpen === -1 ? steps.length : firstOpen));
+  const [reopened, setReopened] = useState({});
+  const advanceFocus = () => {
+    const next = focusIndex + 1;
+    setFocusIndex(next);
+    if (next < steps.length) requestAnimationFrame(() => document.getElementById(`step-${steps[next].num}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  };
+
   const kit = { react, alreadyCompleted, effectsEnabled };
   const renderSlot = (slot) => (typeof slot === 'function' ? slot(kit) : slot);
 
@@ -93,16 +109,22 @@ export default function ContentModule({
   const { t } = useTranslation('lesson');
   const classroom = useClassroomMode();
   const presenting = classroom.isClassroomMode;
+  // MODE MISSION (élève) : le module se JOUE unité par unité dans le lecteur (MissionPlayer), sans défilement — la même
+  // mécanique d'unités et de pages que le mode classe, mais avec les verrous, l'écriture et les tests de l'ÉLÈVE.
+  const play = Boolean(getLoadedLessonConfig(ctx.lessonId)?.mission) && isMissionView(ctx.studentView, viewer, classroom);
+  const paged = presenting || play;
+  // Le pas-à-pas du regard focus cède la place au lecteur, qui montre déjà une unité à la fois.
+  const focus = focusView && !play;
   const stepKey = steps.map((s) => s.num).join('|');
   // La khulasa est une UNITÉ en mode classe : sa présence doit être celle
   // que le rendu montre réellement (sinon le compteur « n / N » dérive).
   const showFooter = allDone || viewer.freeNavigation;
   const hasFooter = showFooter && Boolean(footer);
   const units = useMemo(
-    () => moduleUnits({ overview: true, brief: Boolean(brief), intro: Boolean(intro), steps, footer: hasFooter }),
+    () => moduleUnits({ overview: !play, brief: Boolean(brief), intro: Boolean(intro), steps, footer: hasFooter }),
     // `steps` est recréé à chaque rendu par le module : on suit ses numéros.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [Boolean(brief), Boolean(intro), stepKey, hasFooter],
+    [Boolean(brief), Boolean(intro), stepKey, hasFooter, play],
   );
   const [unitIndex, setUnitIndex] = useState(0);
   const current = clampUnit(unitIndex, units.length);
@@ -177,10 +199,26 @@ export default function ContentModule({
   ), [current, units.length, page, pageCount, t]);
   useClassroomStage({ title: moduleTitle, onPrevious: nav.onPrevious, onNext: nav.onNext, slot, priority: 2 }, presenting);
 
+  // Ce que le LECTEUR de mission montre et permet : les mêmes gestes que la présentation (pages, puis unités), mais on
+  // ne quitte une étape qu'une fois FAITE (le verrou de l'élève) ; au bout, le lecteur passe la main au module suivant.
+  const doneKey = steps.map((s) => (s.done ? 1 : 0)).join('');
+  const playNav = useMemo(() => {
+    if (!play) return null;
+    const unit = units[current];
+    const step = unit?.kind === 'step' ? steps.find((s) => `step-${s.num}` === unit.key) : null;
+    const morePages = page < pageCount - 1;
+    return {
+      index: current, count: units.length, page, pageCount, kind: unit?.kind,
+      onPrevious: nav.onPrevious, onNext: nav.onNext,
+      canNext: morePages || !step || step.done || alreadyCompleted,
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [play, current, units, page, pageCount, nav, doneKey, alreadyCompleted]);
+
   // Une unité : toujours rendue, cachée quand elle n'est pas la courante.
   const unitProps = (key) => {
     const i = units.findIndex((u) => u.key === key);
-    const hidden = presenting && i !== current;
+    const hidden = paged && i !== current;
     return { hidden, className: `sa-classroom-module__unit sa-classroom-module__unit--${key.startsWith('step-') ? 'step' : key}`, 'data-classroom-unit': i >= 0 ? i : undefined };
   };
 
@@ -201,16 +239,21 @@ export default function ContentModule({
         presentationFrame={false}
       >
         <div
-          className={presenting ? 'sa-classroom-module' : 'sa-page py-8 flex-1 space-y-8'}
+          className={presenting ? 'sa-classroom-module' : play ? 'space-y-4' : 'sa-page py-8 flex-1 space-y-8'}
           data-classroom-units={presenting ? units.length : undefined}
           data-classroom-current={presenting ? current : undefined}
         >
-          {!presenting && !allDone && <StepProgressBar doneCount={doneCount} total={steps.length} />}
+          {!presenting && !play && !allDone && <StepProgressBar doneCount={doneCount} total={steps.length} />}
+          {play && <DeclareUnitNav nav={playNav} />}
 
-          {!presenting && (
+          {/* Lecteur : la série se pose PAR-DESSUS l'écran (coin haut) — insérée au-dessus du contenu, elle le poussait vers le
+              bas à chaque bonne réponse (propriétaire, 2026-11-04 : rien ne bouge sur un écran posé). */}
+          {play && <div className="pointer-events-none absolute end-6 top-1 z-10" data-streak-overlay><StreakChip count={streak} /></div>}
+          {!presenting && !play && (
             <div className="flex items-center justify-between gap-3 flex-wrap">
               <StreakChip count={streak} />
-              <EffectsToggle enabled={effectsEnabled} onToggle={toggleEffects} />
+              {/* Dans le lecteur de mission, « الصوت » est dans sa barre du haut (même préférence partagée) : pas de doublon. */}
+              {!play && <EffectsToggle enabled={effectsEnabled} onToggle={toggleEffects} />}
             </div>
           )}
 
@@ -240,7 +283,7 @@ export default function ContentModule({
                   footer={brief.footer}
                   tone={brief.tone}
                 >
-                  {brief.body}
+                  {brief.body && (brief.keepBody ? brief.body : <MoreToggle>{brief.body}</MoreToggle>)}
                 </MissionBrief>
               </ClassroomFrame>
             )}
@@ -252,7 +295,7 @@ export default function ContentModule({
             {renderSlot(intro)}
           </div>
 
-          {steps.map((s, i) => (
+          {steps.map((s, i) => (focus && i > focusIndex ? null : (
             <div key={s.num} {...unitProps(`step-${s.num}`)}>
               <ClassroomFrame>
                 <StepCard
@@ -260,25 +303,50 @@ export default function ContentModule({
                   title={s.title}
                   subtitle={s.subtitle}
                   done={s.done}
-                  locked={isStepLocked(alreadyCompleted, i === 0 ? false : !steps[i - 1].done, { freeNavigation: viewer.freeNavigation, presenting })}
+                  locked={!focus && isStepLocked(alreadyCompleted, i === 0 ? false : !steps[i - 1].done, { freeNavigation: viewer.freeNavigation, presenting })}
+                  collapsible={focus}
+                  collapsed={focus && i < focusIndex && !reopened[s.num]}
+                  onToggle={() => setReopened((r) => ({ ...r, [s.num]: true }))}
                 >
                   <ClassroomPaged
-                    active={presenting && current === units.findIndex((u) => u.key === `step-${s.num}`)}
+                    active={paged && current === units.findIndex((u) => u.key === `step-${s.num}`)}
                     page={currentKey === `step-${s.num}` ? page : 0}
                     onPages={(n) => onPages(`step-${s.num}`, n)}
                   >
                     {renderSlot(s.content)}
                   </ClassroomPaged>
                 </StepCard>
+                {focus && i === focusIndex && (
+                  <div className="mt-3 flex flex-wrap items-center gap-4" data-focus-step-nav>
+                    <span className="text-sm font-semibold text-slate-500">{t('focus.questionOf', { n: i + 1, total: steps.length })}</span>
+                    {s.done && i < steps.length - 1 && (
+                      <button type="button" onClick={advanceFocus} data-focus-next
+                        className="min-h-[44px] rounded-xl bg-indigo-600 px-5 font-bold text-white shadow-sm hover:bg-indigo-700">
+                        {t('focus.next')} <span aria-hidden="true">←</span>
+                      </button>
+                    )}
+                  </div>
+                )}
               </ClassroomFrame>
             </div>
-          ))}
+          )))}
+
+          {/* Les étapes à venir ne sont pas supprimées : leurs titres s'ouvrent ici (verrouillées jusqu'à ce qu'on y arrive). */}
+          {focus && focusIndex < steps.length - 1 && (
+            <MoreToggle label={t('focus.upcoming', { count: steps.length - focusIndex - 1 })}>
+              <div className="space-y-3" data-focus-upcoming>
+                {steps.slice(focusIndex + 1).map((s) => (
+                  <StepCard key={s.num} num={s.num} title={s.title} done={s.done} locked />
+                ))}
+              </div>
+            </MoreToggle>
+          )}
 
           <div {...unitProps('footer')}>
             {showFooter && (
               <ClassroomFrame>
                 <ClassroomPaged
-                  active={presenting && currentKey === 'footer'}
+                  active={paged && currentKey === 'footer'}
                   page={currentKey === 'footer' ? page : 0}
                   onPages={(n) => onPages('footer', n)}
                 >
@@ -291,4 +359,10 @@ export default function ContentModule({
       </ModuleLayout>
     </KitContext.Provider>
   );
+}
+
+/** Déclare au lecteur de mission la navigation par unités (rendu SOUS ModuleLayout, là où le lecteur fournit son contexte). */
+function DeclareUnitNav({ nav }) {
+  useDeclareUnitNav(nav);
+  return null;
 }

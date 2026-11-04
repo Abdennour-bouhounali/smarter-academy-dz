@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { MessageCircleQuestion, Lightbulb, CheckCircle2, Eye, RotateCcw, ChevronLeft, Send } from 'lucide-react';
 import * as C from './labCheckpoint';
 import { playSfx } from '../../utils/playEffect';
+import { useInMissionPlayer } from '../../mission/missionPlayerContext';
 
 /**
  * LabCheckpoint — les QUESTIONS PENDANT LE LABO (2026-10-28, PROTOTYPE sur `gear-crank` ; à étendre à tous les labos, propriétaire).
@@ -87,6 +89,9 @@ function CheckpointCard({ id, questions, p, onAnswer, onNext, onLook, onRetry })
   const [bad, setBad] = useState(false);
   const cardRef = useRef(null);
   const inputRef = useRef(null);
+  // Lecteur de mission (propriétaire, 2026-11-04) : la question est centrée sur l'ÉCRAN, l'ombre couvre TOUT l'écran (portée
+  // dans <body>, hors du zoom du lecteur) — le résultat écrit à côté du labo ne se lit plus pendant qu'on répond.
+  const inPlayer = useInMissionPlayer();
 
   useEffect(() => {
     const el = cardRef.current;
@@ -118,9 +123,11 @@ function CheckpointCard({ id, questions, p, onAnswer, onNext, onLook, onRetry })
     right: 'border-emerald-600 bg-emerald-600 text-white shadow-[0_3px_0_0_#047857]',
   };
 
-  return (
+  const card = (
     <motion.div
-      className="absolute inset-0 z-40 flex items-center justify-center rounded-2xl bg-slate-900/55 p-3 backdrop-blur-[3px] md:p-5"
+      className={inPlayer
+        ? 'fixed inset-0 z-[200] flex items-center justify-center bg-slate-950/75 p-6 backdrop-blur-md'
+        : 'absolute inset-0 z-40 flex items-center justify-center rounded-2xl bg-slate-900/55 p-3 backdrop-blur-[3px] md:p-5'}
       initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.25, delay: p.qi === 0 && p.tries === 0 ? 0.6 : 0 }}
       data-lab-checkpoint data-checkpoint={id} data-q={q.id} data-status={p.status} onKeyDown={onKey}
     >
@@ -217,6 +224,7 @@ function CheckpointCard({ id, questions, p, onAnswer, onNext, onLook, onRetry })
       </div>
     </motion.div>
   );
+  return inPlayer && typeof document !== 'undefined' ? createPortal(card, document.body) : card;
 }
 
 function CheckpointPill({ onBack }) {

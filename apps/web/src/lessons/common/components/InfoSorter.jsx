@@ -61,7 +61,9 @@ export default function InfoSorter({ items, onSolved, solved, formative = false,
 
   const cardTone = (it) => {
     if (!checked) return 'bg-white border-slate-200 text-slate-700 hover:border-blue-400';
-    const right = it.useful;
+    // La couleur dit si la carte est BIEN RANGÉE (comme l'icône ✓ / ✗) — pas si la donnée est utile : une donnée inutile
+    // bien rangée était rouge, et l'élève croyait s'être trompé (propriétaire, 2026-11-04).
+    const right = assign[it.id] === (it.useful ? 'utile' : 'inutile');
     return right ? 'bg-emerald-50 border-emerald-300 text-emerald-800' : 'bg-rose-50 border-rose-300 text-rose-800';
   };
 

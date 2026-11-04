@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { MoreToggle } from '../components/StudentFocus';
 import { useTranslation } from 'react-i18next';
 import { Feedback } from '../components/LessonUI';
 import { CATEGORIES, useLessonKnowledge } from '../knowledge';
@@ -140,13 +141,18 @@ export default function KnowledgeBrick({
           </ConceptVisual>
         )}
 
-        <div className={style.body}>{item.body}</div>
+        {/* Regard « focus » : titre, résumé et dessin ; le corps et l'essai à un geste (« المزيد »). */}
+        <MoreToggle>
+          <div className="space-y-3">
+            <div className={style.body}>{item.body}</div>
 
-        {children && (
-          <div data-knowledge-brick-tryit className={`rounded-xl p-3.5 ${style.tryit}`}>
-            {children}
+            {children && (
+              <div data-knowledge-brick-tryit className={`rounded-xl p-3.5 ${style.tryit}`}>
+                {children}
+              </div>
+            )}
           </div>
-        )}
+        </MoreToggle>
       </div>
     </section>
   );

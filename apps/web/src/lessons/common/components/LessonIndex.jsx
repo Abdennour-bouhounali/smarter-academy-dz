@@ -26,6 +26,10 @@ import MathLabEntryButton from '../../../features/mathlab/overlay/MathLabEntryBu
 import MathLabel from './MathLabel';
 import PrerequisiteLessonChips from './PrerequisiteLessonChips';
 import LessonProblemCard from '../problems/LessonProblemCard';
+import { StudentFocusProvider, MoreToggle, isStudentFocus } from './StudentFocus';
+import MissionHome from '../mission/MissionHome';
+import MissionPlayer from '../mission/MissionPlayer';
+import { isMissionView } from '../mission/missionModel';
 import { mathToPlain } from '../../../utils/mathPlain';
 import { useCatalogueHref } from '../../../components/student/catalogueLink';
 import { useDeclarePageTour } from '../../../features/tours/PageTourProvider';
@@ -161,11 +165,18 @@ export default function LessonIndex({ config, basePath }) {
   // que déclarer son titre et son geste, et se présenter autrement.
   const classroom = useClassroomMode();
   const presenting = classroom.isClassroomMode;
+  // Regard « focus » de l'élève : le titre, la progression et UN bouton « واصل » ; le reste dans « تفاصيل الدرس ».
+  const focus = isStudentFocus(config.studentView, viewer, classroom);
+  // Mode mission (élève) : l'accueil EST la mission, et l'élève n'a JAMAIS accès à cette page (propriétaire, 2026-11-04) —
+  // ce qu'elle offrait (détails, prérequis, تمارين) est dans la mission (MissionHome).
+  const missionOn = Boolean(config.mission) && isMissionView(config.studentView, viewer, classroom);
   const lessonNav = classroom.lessonNavigation;
   // Le sommaire présenté tient en DEUX écrans — l'identité de la leçon (titre,
   // description, ce qu'on y apprend) puis مسار الدرس — au lieu d'un écran
   // surchargé : التالي passe de l'un à l'autre avant le premier محور.
   const [overviewPage, setOverviewPage] = useState(0);
+  // Regard « focus » : les descriptions des محاور, affichées sur demande.
+  const [showDesc, setShowDesc] = useState(false);
   const lessonNext = lessonNav?.next ?? undefined;
   const lessonPrevious = lessonNav?.previous ?? undefined;
   const overviewNext = useMemo(() => (overviewPage === 0 ? () => setOverviewPage(1) : lessonNext), [overviewPage, lessonNext]);
@@ -352,7 +363,45 @@ export default function LessonIndex({ config, basePath }) {
     );
   }
 
+  if (missionOn) {
+    return (
+      <StudentFocusProvider studentView={config.studentView}>
+        <MissionPlayer exitTo={catalogueHref({ level: config.level, grade: config.grade, chapter: config.chapter })} exitLabel={t('mission.exitToLessons')}>
+          <MissionHome config={config} basePath={basePath} />
+        </MissionPlayer>
+      </StudentFocusProvider>
+    );
+  }
+
+  // Le module où l'élève reprend : le premier non terminé (focus seulement).
+  const resumeModule = config.modules.find((m) => !(isModuleCompleted(m.id) || isModuleCompleted(m.number?.toString())));
+
+  // La ligne « مجال • محاور • مدة » : en tête hors focus, dans « تفاصيل الدرس » en focus.
+  const lessonChip = (
+    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 font-mono text-xs font-semibold">
+      {config.emoji} {config.chapterTitle ?? config.chapter} • <span dir="ltr">{totalModules}</span> {t('index.modulesLabel', { count: totalModules })} • ~{t('index.durationMin', { count: config.estimatedDurationMin })}
+    </div>
+  );
+
+  // Ce que le درس enseigne : en focus, replié dans UN « تفاصيل الدرس ».
+  const skillsList = config.skills && (
+    <ul className="text-slate-500 text-sm space-y-1 max-w-xl">
+      {config.skills.slice(0, 3).map((skill, i) => (
+        <li key={i} className="flex items-start gap-2">
+          <span className="text-blue-400 mt-0.5">▸</span>
+          <span><MathLabel>{skill}</MathLabel></span>
+        </li>
+      ))}
+      {config.skills.length > 3 && (
+        <li className="text-xs text-slate-400 ps-4">
+          {t('index.moreSkills', { count: config.skills.length - 3 })}
+        </li>
+      )}
+    </ul>
+  );
+
   return (
+    <StudentFocusProvider studentView={config.studentView}>
     <div className={`min-h-screen flex flex-col justify-between ${chrome.contentOffsetClass} bg-slate-50`}>
       <main className="sa-page py-8 flex-1 space-y-8">
 
@@ -392,9 +441,7 @@ export default function LessonIndex({ config, basePath }) {
           <div className="flex flex-row items-center justify-between gap-6">
 
             <div className="space-y-3" data-tour="lesson-index.hero">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 font-mono text-xs font-semibold">
-                {config.emoji} {config.chapterTitle ?? config.chapter} • <span dir="ltr">{totalModules}</span> {t('index.modulesLabel', { count: totalModules })} • ~{t('index.durationMin', { count: config.estimatedDurationMin })}
-              </div>
+              {!focus && lessonChip}
 
               <h1 className="font-space font-extrabold text-slate-900 leading-tight text-4xl">
                 <MathLabel>{config.title}</MathLabel>
@@ -411,20 +458,12 @@ export default function LessonIndex({ config, basePath }) {
                 <MathLabEntryButton scope={config.level} />
               </div>
 
-              {config.skills && (
-                <ul className="text-slate-500 text-sm space-y-1 max-w-xl">
-                  {config.skills.slice(0, 3).map((skill, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <span className="text-blue-400 mt-0.5">▸</span>
-                      <span><MathLabel>{skill}</MathLabel></span>
-                    </li>
-                  ))}
-                  {config.skills.length > 3 && (
-                    <li className="text-xs text-slate-400 ps-4">
-                      {t('index.moreSkills', { count: config.skills.length - 3 })}
-                    </li>
-                  )}
-                </ul>
+              {!focus && skillsList}
+              {focus && resumeModule && (
+                <Link to={`${basePath}/${resumeModule.slug}`} data-focus-resume
+                  className="inline-flex min-h-[52px] items-center gap-2 rounded-2xl bg-indigo-600 px-6 text-lg font-extrabold text-white shadow-[0_4px_0_0_#3730A3] hover:bg-indigo-700">
+                  {t(completedCount > 0 ? 'focus.continue' : 'focus.start', { title: mathToPlain(resumeModule.title) })} <span aria-hidden="true">←</span>
+                </Link>
               )}
             </div>
 
@@ -463,6 +502,8 @@ export default function LessonIndex({ config, basePath }) {
             maîtrise (profil serveur), prérequis PÉDAGOGIQUES (jamais bloquants),
             manipulations et méthodes déclarées dans lesson.config.js ── */}
         {catalogueLesson && (
+          <MoreToggle label={t('focus.details')} className="rounded-2xl border border-slate-200 bg-white px-3 py-1">
+          {focus && <div className="space-y-3 px-2 pb-3">{lessonChip}{skillsList}</div>}
           <section className="grid gap-4 grid-cols-2" data-lesson-structure>
             <div className="rounded-2xl border border-slate-200 bg-white p-5">
               <h2 className="mb-2 text-sm font-bold text-slate-800">{ts('unit.learningPoints')}</h2>
@@ -535,6 +576,7 @@ export default function LessonIndex({ config, basePath }) {
               )}
             </div>
           </section>
+          </MoreToggle>
         )}
 
         {/* « مسألة الدرس » (config.lessonProblem) : lue avant d'apprendre,
@@ -548,7 +590,16 @@ export default function LessonIndex({ config, basePath }) {
 
         {/* MODULES ROADMAP */}
         <section className="space-y-4" data-tour="lesson-index.modules">
-          <h2 className="text-xl font-space font-bold text-slate-900">{t('index.modulesPath')}</h2>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="text-xl font-space font-bold text-slate-900">{t('index.modulesPath')}</h2>
+            {/* Regard « focus » : les descriptions des محاور ne sont pas supprimées, elles s'affichent sur demande. */}
+            {focus && (
+              <button type="button" onClick={() => setShowDesc((v) => !v)} aria-pressed={showDesc} data-focus-show-desc
+                className="min-h-[44px] rounded-lg px-3 text-sm font-bold text-indigo-600 hover:bg-indigo-50">
+                {t(showDesc ? 'focus.hideDesc' : 'focus.showDesc')} <span aria-hidden="true">{showDesc ? '▴' : '▾'}</span>
+              </button>
+            )}
+          </div>
 
           <div className="space-y-3">
             {config.modules.map((module) => withSoftGateHint(module, (() => {
@@ -657,7 +708,7 @@ export default function LessonIndex({ config, basePath }) {
                             {inProgressBadge}
                           </div>
                           <h3 className="font-space font-bold text-slate-900 mt-0.5"><MathLabel>{module.title}</MathLabel></h3>
-                          <p className="text-slate-500 mt-0.5 text-sm"><MathLabel>{module.desc}</MathLabel></p>
+                          {(!focus || showDesc) && <p className="text-slate-500 mt-0.5 text-sm"><MathLabel>{module.desc}</MathLabel></p>}
                         </div>
                       </div>
                       <span className="px-3 py-1 rounded-full bg-teal-100 text-teal-700 font-mono text-xs font-semibold shrink-0 inline-block">
@@ -702,7 +753,7 @@ export default function LessonIndex({ config, basePath }) {
                             ))}
                             {inProgressBadge}
                           </div>
-                          <p className="text-slate-500 mt-0.5 text-sm"><MathLabel>{module.desc}</MathLabel></p>
+                          {(!focus || showDesc) && <p className="text-slate-500 mt-0.5 text-sm"><MathLabel>{module.desc}</MathLabel></p>}
                         </div>
                       </div>
                       <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-600 font-mono text-xs font-semibold shrink-0 inline-block">
@@ -734,7 +785,7 @@ export default function LessonIndex({ config, basePath }) {
                           {inProgressBadge}
                         </div>
                         <h3 className="font-bold text-white group-hover:text-amber-300 transition-colors"><MathLabel>{module.title}</MathLabel></h3>
-                        <p className="text-xs text-slate-400 mt-0.5"><MathLabel>{module.desc}</MathLabel></p>
+                        {(!focus || showDesc) && <p className="text-xs text-slate-400 mt-0.5"><MathLabel>{module.desc}</MathLabel></p>}
                       </div>
                       <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full shrink-0 ${isDone ? 'bg-emerald-500/20 text-emerald-400' : 'text-slate-400 bg-slate-800'}`}>
                         {isDone ? t('index.completed') : t('index.toDo')}
@@ -769,7 +820,7 @@ export default function LessonIndex({ config, basePath }) {
                             </span>
                             {inProgressBadge}
                           </div>
-                          <p className="text-slate-500 mt-0.5 text-sm"><MathLabel>{module.desc}</MathLabel></p>
+                          {(!focus || showDesc) && <p className="text-slate-500 mt-0.5 text-sm"><MathLabel>{module.desc}</MathLabel></p>}
                         </div>
                       </div>
                       <span className={`px-3 py-1 rounded-full font-mono text-xs font-bold shrink-0 inline-block
@@ -795,5 +846,6 @@ export default function LessonIndex({ config, basePath }) {
         <p>© {new Date().getFullYear()} Abdennour BOUHOUNALI — {t('common:footerRole')}</p>
       </footer>
     </div>
+    </StudentFocusProvider>
   );
 }

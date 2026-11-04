@@ -5,6 +5,7 @@ import MathText from '../components/MathText';
 import MathLabel from '../components/MathLabel';
 import MemoQuiz from './MemoQuiz';
 import { buildQuiz } from './memoQuiz';
+import { MoreToggle } from '../components/StudentFocus';
 
 /**
  * MemoCard — « 🔑 للتذكّر » en FICHE DE MÉMOIRE (PROTOTYPE 2026-10-28 sur `maqlub-qismat-kasrayn`, propriétaire : « la carte de fin de module
@@ -82,6 +83,7 @@ export default function MemoCard({ items, moduleNumber, openMap, children }) {
         </ol>
 
         {earlier.length > 0 && (
+          <MoreToggle label={t('focus.known')}>
           <div className="space-y-2 pt-1">
             <p className="text-xs font-black text-slate-500">{k('earlier')}</p>
             <div className="flex flex-wrap gap-2">
@@ -95,6 +97,7 @@ export default function MemoCard({ items, moduleNumber, openMap, children }) {
               ))}
             </div>
           </div>
+          </MoreToggle>
         )}
       </div>
 
@@ -125,6 +128,7 @@ function MemoTile({ item, n, isNew }) {
               <Sparkles className="h-4 w-4 shrink-0" aria-hidden="true" /> <MathLabel>{memo.hook}</MathLabel>
             </p>
           )}
+          <MoreToggle>
           <ul className="space-y-1 text-sm font-bold text-slate-700">
             {memo.example && (
               <li className="flex items-start gap-2"><Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" aria-hidden="true" />
@@ -144,6 +148,7 @@ function MemoTile({ item, n, isNew }) {
             )}
             {!item.memo && item.summary && <li className="text-slate-600"><MathLabel>{item.summary}</MathLabel></li>}
           </ul>
+          </MoreToggle>
         </div>
         {memo.rule && (
           <div data-memo-rule className={`order-first flex min-h-[96px] items-center justify-center overflow-x-auto rounded-2xl px-3 py-4 ring-1 xl:order-none ${a.soft}`}>

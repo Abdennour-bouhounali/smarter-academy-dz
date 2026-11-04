@@ -7,7 +7,13 @@ import MathText from '../components/MathText';
 import { SourceTag } from '../textbook';
 import WrittenAnswer from './WrittenAnswer';
 import ProblemSupport from './ProblemSupport';
+import ProblemSheet from './ProblemSheet';
 import { problemTone } from './problemTone';
+import { MoreToggle, useStudentFocusFor } from '../components/StudentFocus';
+import { isMissionView } from '../mission/missionModel';
+import { useLearningViewer } from '../../../features/learning/learningViewer';
+import { useClassroomMode } from '../classroom/ClassroomContext';
+import { getLoadedLessonConfig } from '../../registry';
 import { initialProgress, completeSubstep, isPartDone, substepRole } from './guidedProblem';
 
 /**
@@ -32,6 +38,12 @@ import { initialProgress, completeSubstep, isPartDone, substepRole } from './gui
 export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, estimatedTime, footer }) {
   const { t } = useTranslation('lesson');
   const T = problemTone(problem.tone);
+  // Regard « focus » de l'élève : décidé ICI (les étapes sont rendues par ContentModule, hors du fournisseur).
+  const focus = useStudentFocusFor(ctx.studentView);
+  // Lecteur de mission : chaque sous-étape devient un BLOC à part, que le découpage en pages peut séparer (aucun défilement).
+  const viewer = useLearningViewer();
+  const classroom = useClassroomMode();
+  const play = Boolean(getLoadedLessonConfig(ctx.lessonId)?.mission) && isMissionView(ctx.studentView, viewer, classroom);
   const [progress, setProgress] = useState(() => initialProgress(problem));
   const done = (p, i) => setProgress((prev) => completeSubstep(prev, p, i));
   // Ce que l'élève a répondu à chaque sous-étape (affiché dans la liste des demandes).
@@ -100,7 +112,9 @@ export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, es
 
   const steps = problem.parts.map((part, p) => ({
     num: p + 1,
-    title: `${part.label} ${part.title}`,
+    // Lecteur : l'en-tête de la partie, répété à chacun de ses écrans, porte la QUESTION ENTIÈRE, pas son titre court
+    // (propriétaire, 2026-11-04).
+    title: play ? `${part.label} ${part.question}` : `${part.label} ${part.title}`,
     done: isPartDone(progress, problem, p),
     content: (kit) => {
       // Revisite d'un module terminé : tout le chemin est ouvert.
@@ -114,12 +128,14 @@ export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, es
       });
       return (
         <div className="space-y-4" data-problem-part={p + 1}>
+          {(!play || asks.length > 0) && (
           <div className={`space-y-2 rounded-xl border-2 ${T.box} px-3 py-2`} data-problem-question>
-            <p className={`text-sm font-semibold ${T.title}`}><MathText>{`${part.label} ${part.question}`}</MathText></p>
+            {/* Lecteur : la question est déjà dans l'en-tête de la partie — la boîte garde les demandes */}
+            {!play && <p className={`text-sm font-semibold ${T.title}`}><MathText>{`${part.label} ${part.question}`}</MathText></p>}
             {/* LES DEMANDES, visibles d'emblée : deux questions = deux réponses
                 (règle du propriétaire, 2026-10-06). */}
             {asks.length > 0 && (
-              <div className={`space-y-1 border-t ${T.rule} pt-2`} data-problem-asks={asks.length}>
+              <div className={`space-y-1 ${play ? '' : `border-t ${T.rule} pt-2`}`} data-problem-asks={asks.length}>
                 <p className={`text-xs font-bold ${T.asksTitle}`}>{t('problem.asksTitle')}</p>
                 <ol className="space-y-1">
                   {asks.map((ask, k) => (
@@ -139,8 +155,9 @@ export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, es
               </div>
             )}
           </div>
-          <ol className="space-y-4">
-            {part.steps.map((step, i) => {
+          )}
+          {(() => {
+            const items = part.steps.map((step, i) => {
               const locked = i >= open;
               // La rédaction répond à TOUTE la question : pas d'étiquette d'une seule demande.
               const askChip = step.kind !== 'solution' && step.ask != null && asks[step.ask] && (
@@ -148,7 +165,7 @@ export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, es
                   <MathText>{t('problem.askChip', { ask: asks[step.ask] })}</MathText>
                 </p>
               );
-              return (
+              return { locked, el: (
                 <li key={i} className={`space-y-2 ${locked ? 'rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 px-3 py-2 opacity-70' : ''}`}
                   data-problem-substep={substepRole(step)} data-substep-done={progress[p] > i ? 'true' : 'false'} data-substep-locked={locked ? 'true' : 'false'}>
                   <p className="flex items-center gap-2 text-xs font-extrabold text-slate-600">
@@ -163,15 +180,38 @@ export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, es
                     ? (step.prompt && <p className="text-sm text-slate-500"><MathText>{step.prompt}</MathText></p>)
                     : renderSubstep(part, p, step, i)}
                 </li>
-              );
-            })}
-          </ol>
+              ) };
+            });
+            // Regard « focus » : les sous-étapes fermées ne s'affichent pas d'emblée — elles s'ouvrent dans « الخطوات القادمة ».
+            const upcoming = focus ? items.filter((x) => x.locked) : [];
+            return (
+              <>
+                {play
+                  // une liste d'un élément par sous-étape : du HTML valide, et autant de blocs que de sous-étapes
+                  ? items.filter((x) => !x.locked).map((x) => <ol key={x.el.key} className="list-none">{x.el}</ol>)
+                  : (
+                    <ol className="space-y-4">
+                      {items.filter((x) => !focus || !x.locked).map((x) => x.el)}
+                    </ol>
+                  )}
+                {/* Le lecteur n'a pas de « المزيد » : chaque sous-étape arrive sur SON écran quand elle s'ouvre (ClassroomPaged). */}
+                {upcoming.length > 0 && !play && (
+                  <MoreToggle force label={t('focus.upcomingSteps', { count: upcoming.length })}>
+                    <ol className="space-y-4" data-focus-upcoming-substeps>{upcoming.map((x) => x.el)}</ol>
+                  </MoreToggle>
+                )}
+              </>
+            );
+          })()}
         </div>
       );
     },
   }));
 
   return (
+    <>
+    {/* Lecteur : « نصّ المسألة » à TOUS les écrans — l'énoncé entier dans une fenêtre */}
+    {play && <ProblemSheet problem={problem} />}
     <ContentModule
       ctx={ctx}
       navLinks={navLinks}
@@ -185,22 +225,42 @@ export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, es
         emoji: problem.emoji,
         title: problem.context,
         tone: problem.tone ?? 'amber',
+        // L'énoncé EST la مسألة : il reste ouvert même en focus.
+        keepBody: true,
         body: (
+          play ? (
+            // Lecteur : en DEUX colonnes (le texte et les questions | le support) — l'énoncé tient à la taille commune de la leçon
+            <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]" data-problem-statement>
+              <div className="space-y-2">
+                <p className="leading-relaxed"><MathText>{problem.statement}</MathText></p>
+                <ol className="list-none space-y-0.5 font-semibold">
+                  {problem.parts.map((part) => <li key={part.label}><MathText>{`${part.label} ${part.question}`}</MathText></li>)}
+                </ol>
+                <p className="text-xs text-slate-600">{t('problem.briefLead')}</p>
+              </div>
+              <ProblemSupport figure={problem.figure} visual={problem.visual} table={problem.table} scene={problem.scene} illustration={problem.illustration} />
+            </div>
+          ) : (
           <div className="space-y-2" data-problem-statement>
             <p className="leading-relaxed"><MathText>{problem.statement}</MathText></p>
             {/* Le support de l'énoncé (2026-10-06) : une مسألة qui dit « الشكل » / « الجدول » / « التمثيل البياني »
                 le MONTRE — mêmes données déclaratives que la pratique (ExerciseStatement). */}
             <ProblemSupport figure={problem.figure} visual={problem.visual} table={problem.table} scene={problem.scene} illustration={problem.illustration} />
-            <ol className="list-none space-y-0.5 font-semibold">
-              {problem.parts.map((part) => <li key={part.label}><MathText>{`${part.label} ${part.question}`}</MathText></li>)}
-            </ol>
-            <p className="text-xs text-slate-600">{t('problem.briefLead')}</p>
+            {/* Regard « focus » : chaque partie repose déjà SA question — la liste complète est à un geste. */}
+            <MoreToggle label={t('focus.all')}>
+              <ol className="list-none space-y-0.5 font-semibold">
+                {problem.parts.map((part) => <li key={part.label}><MathText>{`${part.label} ${part.question}`}</MathText></li>)}
+              </ol>
+              <p className="text-xs text-slate-600">{t('problem.briefLead')}</p>
+            </MoreToggle>
           </div>
+          )
         ),
         footer: <SourceTag source={problem.source} />,
       }}
       steps={steps}
       footer={footer}
     />
+    </>
   );
 }
