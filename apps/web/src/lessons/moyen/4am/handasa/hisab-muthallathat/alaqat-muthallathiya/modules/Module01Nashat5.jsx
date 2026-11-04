@@ -40,7 +40,12 @@ export default function Module01Nashat5() {
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
   const [q5, setQ5] = useState(false);
-  const onTrial = (tr) => setTrials((t) => [...t, tr].slice(-8));
+  // les événements du labo `{ tk: 'checkpoint' | 'checkpoint-done' }` (questions posées PAR-DESSUS le labo) ne sont pas des constructions : on n'en garde que la TRACE
+  const [cpDone, setCpDone] = useState({});
+  const onTrial = (tr) => {
+    if (tr.tk) { if (tr.tk === 'checkpoint-done') setCpDone((d) => ({ ...d, [tr.id]: true })); return; }
+    setTrials((t) => [...t, tr].slice(-8));
+  };
 
   return (
     <ContentModule
@@ -67,19 +72,25 @@ export default function Module01Nashat5() {
       }
       steps={[
         {
-          num: 1, title: 'جيب تمام الزاوية التي بنيتها', subtitle: 'من إنشاءاتك', done: q1,
+          num: 1, title: 'جيب تمام الزاوية التي بنيتها', subtitle: 'من إنشاءاتك', done: q1 || !!cpDone.t0,
           content: (
             <div className="space-y-3">
               <TrialsEvidence trials={trials} />
-              <TapQuestion
-                prompt={<MathText>{'في المثلث الذي بنيته لزاوية x جيبها $\\dfrac{3}{5}$ (الارتفاع 3 والخيط 5)، المسافة على الرمل 4 . إذن $\\cos x =$'}</MathText>}
-                options={['$\\dfrac{4}{5}$', '$\\dfrac{3}{4}$', '$\\dfrac{5}{4}$'].map(M)}
-                correct={0}
-                cols={3}
-                requires={['fithaghuris', 'taarif-nisab']}
-                explain={<MathText>{'المجاور للزاوية x هو الضلع على الرمل (4) والوتر هو الخيط (5): $\\cos x = \\dfrac{4}{5}$ ، و 4 من خاصية فيثاغورس: $5^2 - 3^2 = 16$ . ($\\dfrac{3}{4}$ هو الظل، و $\\dfrac{5}{4} > 1$ نسبة مقلوبة.)'}</MathText>}
-                onAnswered={() => setQ1(true)}
-              />
+              {cpDone.t0 ? (
+                <p className="rounded-xl border-2 border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900" data-evidence="cos-trace" data-tried="true">
+                  <MathText>{'أجبتَ في المختبر عن أضلاع المثلث الذي بنيته ونسبه: جيب التمام قسمة المجاور على الوتر، والضلع الثالث من خاصية فيثاغورس (انظر أضلاع إنشائك أعلاه).'}</MathText>
+                </p>
+              ) : (
+                              <TapQuestion
+                    prompt={<MathText>{'في المثلث الذي بنيته لزاوية x جيبها $\\dfrac{3}{5}$ (الارتفاع 3 والخيط 5)، المسافة على الرمل 4 . إذن $\\cos x =$'}</MathText>}
+                    options={['$\\dfrac{4}{5}$', '$\\dfrac{3}{4}$', '$\\dfrac{5}{4}$'].map(M)}
+                    correct={0}
+                    cols={3}
+                    requires={['fithaghuris', 'taarif-nisab']}
+                    explain={<MathText>{'المجاور للزاوية x هو الضلع على الرمل (4) والوتر هو الخيط (5): $\\cos x = \\dfrac{4}{5}$ ، و 4 من خاصية فيثاغورس: $5^2 - 3^2 = 16$ . ($\\dfrac{3}{4}$ هو الظل، و $\\dfrac{5}{4} > 1$ نسبة مقلوبة.)'}</MathText>}
+                    onAnswered={() => setQ1(true)}
+                  />
+              )}
             </div>
           ),
         },
@@ -170,7 +181,7 @@ export default function Module01Nashat5() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

@@ -17,7 +17,7 @@ export default function Module03Awazzif() {
         num: i + 1, title: ex.id === 'now-11-1' ? 'دوري الآن — 65 و 78' : `تمرين ${ex.source.number}`, done: !!done[ex.id],
         content: <div className="space-y-3">{i === 0 && <KnowledgeBrick id="qawasim-mushtaraka" variant="rappel" compact />}<TextbookExercise exercise={ex} requires={['qawasim-mushtaraka']} onAnswered={() => setDone((d) => ({ ...d, [ex.id]: true }))} /></div>,
       }))}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Minus, Plus, Scissors, SearchCheck } from 'lucide-react';
 import ManipulationShell from '../ManipulationShell';
@@ -13,6 +13,11 @@ import EquationDisplay from '../primitives/EquationDisplay';
 import MathText from '../../components/MathText';
 import { bidi } from '../../../../utils/bidi';
 import * as B from '../logic/equationBalance';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 
 /**
  * equation-balance — LA BALANCE DU VESTIAIRE (unité 4 « معادلات ومتراجحات من الدرجة الأولى
@@ -52,6 +57,15 @@ import * as B from '../logic/equationBalance';
  *   DISCOVERY      « نجري العملية نفسها على الطرفين » — choisie parmi des conjectures réfutables
  *   FORMALIZATION  معارف 1 (p. 46) : ax = b, a ≠ 0, a pour solution unique b/a
  *   TRANSFER       طرائق p. 47 (2x − 5 = 8 ; 2,5x + 4,6 = 1,3x − 0,2), تمارين 1–9 p. 50
+ *
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 3, 2026-10-28) : une scène libre (une équation) ; quand la
+ * découverte est atteinte (le fléau a penché, un sac est lu, la valeur vérifiée), une suite unique se pose PAR-DESSUS le labo : ce qu'il a fait
+ * à l'autre plateau dans SA première étape (les mauvaises options sont réfutées par l'étape elle-même) · ce que devient sa première équation
+ * écrite avec la valeur trouvée · ce que pèse un sac (les erreurs réelles : le signe, la division oubliée, le quotient renversé) · LA RÈGLE
+ * (l'ancienne découverte, qui formalise). Obligatoires pour tout élève ; l'enseignant seul les coupe pour SON compte (`checkpoints` = false
+ * les coupe aussi). `onCheckpoint(ev)` : la trace pour les étapes du module. ÉTAPES `LabStepper` (`[data-eb-step=<i>]` : un fléau qui penche
+ * puis revient · un sac lu · la vérification + questions) + fête ; « إعادة » repart de zéro ; « أعِد التجربة » remet la balance au départ.
+ * SON : `tooth` (objet posé / ôté), `bell` (étape écrite des DEUX côtés, partage), `flag` (sac lu, valeur vérifiée), `over` (geste refusé).
  *
  * AUTO-COMPLÉTION : NON (§6bis). Chaque geste est une décision (quoi retirer, de quel
  * côté, combien de parts) : « compléter » voudrait dire « résoudre à la place de l'élève ».
@@ -182,25 +196,57 @@ function Icon({ kind, size = 30 }) {
 }
 
 export default function EquationBalance({
-  eq: eq0 = '3x+2=11', title, lead, mission, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onFinished, onTrial,
+  eq: eq0 = '3x+2=11', title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true,
+  initialMode = 'student', allowModeSwitch = false, onFinished, onTrial, onCheckpoint,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.equationBalance.${key}`, o), [t]);
   const state = useManipulation({ type: 'equation-balance', initialNumbers: { eq: eq0 }, initialMode, initialLevel: level, withLevels, hintCount: 3 });
   const { eq } = state.numbers;
 
-  const sceneKey = `${eq}:${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
+  const sceneKey = `${eq}:${state.epoch}:${state.resetCount}`;
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
   const [lab, setLab] = useState(() => B.init(eq0));
   const [notice, setNotice] = useState(null);
   const [parts, setParts] = useState(1);
   const [liveParts, setLiveParts] = useState(null);
   const [hop, setHop] = useState(0);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(B.init(eq)); setNotice(null); setParts(1); setLiveParts(null); }
+  // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la balance, les étapes et les questions du labo
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(B.init(eq)); setNotice(null); setParts(1); setLiveParts(null); }
 
   const ready = B.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : une suite unique quand la découverte est atteinte ; celle qui finit par la règle remplace la découverte automatique
+  const cpSettings = useLabCheckpointSettings('equation-balance');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpLive = cpOn && cpSettings.enabled;
+  const chain = cpLive ? CHAIN : null;
+  const cp = useLabCheckpoint({
+    id: chain ? eq : null,
+    questions: chain && ready ? chain.map((q) => QUESTIONS[q](lab, k)) : null,
+    reached: ready,
+    resetKey: scene.inits,
+    onRetry: () => { setLab(B.init(eq)); setNotice(null); setParts(1); setLiveParts(null); },
+    onEvent: (ev) => state.report(onCheckpoint, ev),   // {tk:'checkpoint'|'checkpoint-done', id: eq, …} — la TRACE que les étapes du module relisent
+    onDone: () => { state.discover(); state.formalize(); },
+  });
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // une étape est FAITE quand son objectif est atteint ET (la dernière) ses questions répondues : la pastille passe au vert et on fête
+  const solvedNow = B.isSolved(lab);
+  const stepDone = [lab.tippedSeen && B.steps(lab).length > 0, solvedNow, ready && !cp.blocking];
+  const nDone = stepDone.findIndex((d) => !d) < 0 ? stepDone.length : stepDone.findIndex((d) => !d);
+  const party = useStepCelebration();
+  const celebrated = useRef({ n: 0, inits: scene.inits });
+  if (celebrated.current.inits !== scene.inits) celebrated.current = { n: 0, inits: scene.inits };   // « إعادة » : on refête
+  useEffect(() => {
+    if (nDone <= celebrated.current.n) return;
+    celebrated.current.n = nDone;
+    party.celebrate({ n: nDone, total: stepDone.length });
+  }, [nDone]); // eslint-disable-line react-hooks/exhaustive-deps
+  const wasSolved = useRef(false);
+  useEffect(() => {
+    if (solvedNow && !wasSolved.current) playSfx('flag');
+    wasSolved.current = solvedNow;
+  }, [solvedNow]);
   useEffect(() => { if (state.isFormal) state.report(onFinished, eq); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const summary = (l) => ({
@@ -228,12 +274,15 @@ export default function EquationBalance({
       const next = src.startsWith('r:')
         ? B.gesture(lab, side(zone), `add:${src.slice(2)}`)
         : B.gesture(lab, src.split(':')[1], `remove:${src.split(':')[2]}`);
+      playSfx('tooth');
+      if (next.history.length > lab.history.length) playSfx('bell');
       setNotice(next.pending ? { tone: 'tip', key: 'tipped', d: B.tippedDetails(next) }
         : next.zero ? { tone: 'info', key: next.zero.kind === 'bag' ? 'zeroBag' : 'zeroUnit' }
           : next.history.length > lab.history.length ? { tone: 'ok', key: 'balanced' } : null);
       commit(next);
     },
     onReject: (_s, _z, reason) => {
+      if (reason) playSfx('over');
       if (reason === 'tipped') setLab((l) => ({ ...l, refusals: l.refusals + 1 }));
       setNotice(reason ? { tone: 'ko', key: reason, d: B.tippedDetails(lab) } : null);
     },
@@ -272,11 +321,12 @@ export default function EquationBalance({
   const doDivide = () => {
     if (B.canDivide(lab, parts) !== true) return;
     const next = B.divide(lab, parts);
+    playSfx('bell');
     setParts(1);
     setNotice(B.isSolved(next) ? { tone: 'ok', key: 'oneBag', v: B.fracLatex(B.readValue(next)) } : { tone: 'ok', key: 'divided' });
     commit(next);
   };
-  const doVerify = () => { const next = B.verify(lab); setNotice(null); commit(next); };
+  const doVerify = () => { const next = B.verify(lab); playSfx('flag'); setNotice(null); commit(next); };
 
   /* ── la scène ── */
   const counts = { L: B.drawCounts(lab.pans.L), R: B.drawCounts(lab.pans.R) };
@@ -350,6 +400,8 @@ export default function EquationBalance({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={!!chain}
       hints={[k('hint1'), k('hint2'), k('hint3')].map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       representation={last && (
@@ -359,23 +411,17 @@ export default function EquationBalance({
         <ManipulationDiscovery
           state={state}
           prompt={k('discoveryPrompt')}
-          options={[
-            { text: <MathText>{k('opt2')}</MathText>, why: <MathText>{k('why2')}</MathText> },
-            { text: <MathText>{k('opt1')}</MathText>, correct: true },
-            { text: <MathText>{k('opt3')}</MathText>, why: <MathText>{k('why3')}</MathText> },
-          ]}
-          formal={(
-            <div className="space-y-2" data-balance-formal>
-              <EquationDisplay tone="result" tex={k('rule')} note={<MathText>{k('ruleNote')}</MathText>} />
-              {sub && <EquationDisplay tone="neutral" tex={`${B.equationTex(lab.start)} \\;\\Rightarrow\\; x = ${B.fracLatex(sub.x)}`} note={<MathText>{k('yourCase')}</MathText>} />}
-            </div>
-          )}
+          options={discoveryOptions(k)}
+          formal={<Formal lab={lab} k={k} />}
         />
       )}
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-sky-50/70 to-white" data-dragging={drag.dragging || stretch.dragging ? 'true' : undefined}>
-        <div className="space-y-3" data-equation-balance data-eq={eq} data-tilt={tilt} data-solved={String(solved)}>
+        <div className="relative space-y-3" data-equation-balance data-eq={eq} data-tilt={tilt} data-solved={String(solved)}>
+          {party.node}
+          {cp.node}
+          <LabStepper count={stepDone.length} current={Math.min(nDone, stepDone.length - 1)} done={stepDone} stepAttr="data-eb-step" />
           {/* ── la balance ── */}
           <div className="mx-auto w-full max-w-[720px]" dir="ltr">
             <div className="relative w-full" style={{ aspectRatio: `${W} / ${H}` }} data-balance-scene>
@@ -549,3 +595,115 @@ export default function EquationBalance({
     </ManipulationShell>
   );
 }
+
+const discoveryOptions = (k) => [
+  { text: <MathText>{k('opt2')}</MathText>, why: <MathText>{k('why2')}</MathText> },
+  { text: <MathText>{k('opt1')}</MathText>, correct: true },
+  { text: <MathText>{k('opt3')}</MathText>, why: <MathText>{k('why3')}</MathText> },
+];
+
+function Formal({ lab, k }) {
+  const sub = B.isSolved(lab) ? B.substitution(lab) : null;
+  return (
+    <div className="space-y-2" data-balance-formal>
+      <EquationDisplay tone="result" tex={k('rule')} note={<MathText>{k('ruleNote')}</MathText>} />
+      {sub && <EquationDisplay tone="neutral" tex={`${B.equationTex(lab.start)} \\;\\Rightarrow\\; x = ${B.fracLatex(sub.x)}`} note={<MathText>{k('yourCase')}</MathText>} />}
+    </div>
+  );
+}
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite unique : la première étape, l'équation équivalente, le poids d'un sac, puis LA RÈGLE. */
+export const CHAIN = Object.freeze(['same', 'equiv', 'value', 'rule']);
+
+const $ = (x) => `$${x}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+
+/** La valeur lue : le contenu d'un sac. */
+const valueOf = (lab) => B.substitution(lab).x;
+/** Les étapes de l'élève (la première est celle qui l'a fait pencher). */
+const firstStep = (lab) => lab.history[1];
+
+/** Un membre {a, u} de balance → polynôme, évalué en v. */
+const evalPan = (p, v) => Lin.linAt(Lin.lin(p.a, p.u), v);
+
+/**
+ * Les mauvais poids d'un sac, chacun une erreur réelle : `sign` (le signe renversé), `nodiv` (la valeur d'avant le partage : le poids de k sacs),
+ * `inv` (le quotient renversé), `off` (un ballon de trop). Écartés s'ils égalent la bonne valeur ou un autre.
+ */
+export function wrongValues(lab) {
+  const v = valueOf(lab);
+  const div = lab.history.filter((s) => s.kind === 'divide').at(-1);
+  const cands = [
+    { id: 'sign', val: Lin.isZero(v) ? null : Lin.neg(v) },
+    { id: 'nodiv', val: div ? Lin.mul(v, div.k) : null },
+    { id: 'inv', val: Lin.isZero(v) ? null : Lin.div(1, v) },
+    { id: 'off', val: Lin.add(v, 1) },
+  ];
+  const out = [];
+  for (const c of cands) {
+    if (!c.val || Lin.eq(c.val, v) || out.some((o) => Lin.eq(o.val, c.val))) continue;
+    out.push({ ...c, k: div?.k });
+  }
+  return out;
+}
+
+export const QUESTIONS = {
+  same: (lab, k) => {
+    const st = B.steps(lab)[0];
+    const o = { op: k(st.key, { term: st.term }), term: $(st.term) };
+    return {
+      id: 'same', kind: 'choice', cols: 1,
+      prompt: Cq(k, 'same.prompt', o),
+      options: [
+        { text: Cq(k, 'same.opposite'), why: Cq(k, 'same.whyOpposite', o) },
+        { text: Cq(k, 'same.sameThing'), correct: true },
+        { text: Cq(k, 'same.other'), why: Cq(k, 'same.whyOther', o) },
+      ],
+      hints: [Cq(k, 'same.hint1'), Cq(k, 'same.hint2', o)],
+      explain: Cq(k, 'same.explain', o),
+    };
+  },
+  equiv: (lab, k) => {
+    const st = B.steps(lab)[0];
+    const v = valueOf(lab);
+    const after = firstStep(lab).after;
+    const l = evalPan(after.L, v); const r = evalPan(after.R, v);
+    const o = { first: $(st.result), start: $(B.equationTex(lab.start)), x: $(B.fracLatex(v)), l: $(B.fracLatex(l)), r: $(B.fracLatex(r)) };
+    return {
+      id: 'equiv', kind: 'choice', cols: 1,
+      prompt: Cq(k, 'equiv.prompt', o),
+      options: [
+        { text: Cq(k, 'equiv.differ'), why: Cq(k, 'equiv.whyDiffer', o) },
+        { text: Cq(k, 'equiv.equal'), correct: true },
+        { text: Cq(k, 'equiv.onlyStart'), why: Cq(k, 'equiv.whyOnlyStart', o) },
+      ],
+      hints: [Cq(k, 'equiv.hint1', o), Cq(k, 'equiv.hint2', o)],
+      explain: Cq(k, 'equiv.explain', o),
+    };
+  },
+  value: (lab, k) => {
+    const v = valueOf(lab);
+    const wrong = wrongValues(lab).slice(0, 2);
+    const o = { start: $(B.equationTex(lab.start)), k: wrong.find((w) => w.id === 'nodiv')?.k ?? '' };
+    const why = (w) => Cq(k, `value.why.${w.id}`, { ...o, got: $(`x = ${B.fracLatex(w.val)}`), v: $(B.fracLatex(v)) });
+    return {
+      id: 'value', kind: 'choice', cols: 3,
+      prompt: Cq(k, 'value.prompt', o),
+      options: [
+        { text: <MathText>{$(`x = ${B.fracLatex(wrong[0].val)}`)}</MathText>, why: why(wrong[0]) },
+        { text: <MathText>{$(`x = ${B.fracLatex(v)}`)}</MathText>, correct: true },
+        { text: <MathText>{$(`x = ${B.fracLatex(wrong[1].val)}`)}</MathText>, why: why(wrong[1]) },
+      ],
+      hints: [Cq(k, 'value.hint1'), Cq(k, 'value.hint2', o)],
+      explain: Cq(k, 'value.explain', { ...o, v: $(B.fracLatex(v)), calc: $(B.substitutedTex(lab.start.L, v)), left: $(B.fracLatex(B.substitution(lab).left)) }),
+    };
+  },
+  rule: (lab, k) => ({
+    id: 'rule', kind: 'choice', prompt: <MathText>{k('discoveryPrompt')}</MathText>,
+    options: discoveryOptions(k),
+    hints: [Cq(k, 'rule.hint1'), Cq(k, 'rule.hint2')],
+    explain: <Formal lab={lab} k={k} />,
+  }),
+};

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { CheckCircle2, Sparkles, Hand, FlaskConical, Undo2, RotateCcw, ChevronLeft, Plus, ShieldAlert, FlipHorizontal2 } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
-import { links as chainLinks, tileTex, tileValue, ratTexStd } from '@smarter-academy/core/arithmetic/fractions3.js';
+import { links as chainLinks, tileTex, tileValue, ratTexStd, evaluateChain } from '@smarter-academy/core/arithmetic/fractions3.js';
 import MathText from '../../components/MathText';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
@@ -11,6 +11,10 @@ import { useManipulation } from '../useManipulation';
 import { LabCard, StageFrame, PromptCard, VerdictBanner } from '../primitives/LabKit';
 import KidFigure from '../primitives/KidFigure';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { LEVELS } from '../levels';
 import * as L from '../logic/mergeBoard';
 import { CSS, SignBar, Magnet, MiniLine, colorOf } from './mergeBoard/boardArt';
@@ -47,7 +51,13 @@ import { CSS, SignBar, Magnet, MiniLine, colorOf } from './mergeBoard/boardArt';
  * « جرّب كل الإمكانيات » : NON. « جرّب أعدادك » est TOUJOURS ouvert sous le labo (2 à 4 nombres, |a| et b ≤ 20, un seul couple de parenthèses ; rien n'est compté).
  * D'UN SEUL REGARD (§8bis) : `[data-mb-glance]` enveloppe la consigne, la borne, les pavés et le verdict.
  * ONBOARDING : `coach` (défaut true) → `LabCoach` ; `logic/mergeBoard.js › coachOf` (pair · flip · sign · magnet · bubble · free).
- * Props : `tasks` ([{ id, chain, hidden, signOnly }]), `world` ('board' | 'signs'), `level`, `levels`, `coach`, `title`, `lead`, `onTrial(event)`, `onFinished({ world })`.
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 5, 2026-10-28) : `checkpoints` (défaut true). Après CHAQUE tâche, une suite de questions se pose PAR-DESSUS le labo et
+ * retient « المهمة التالية » (`CHAINS`) : c1 dénominateur commun · le numérateur converti ; c2 pourquoi le signe · le dénominateur du produit ; c3 le résultat réduit · la RÈGLE (l'ancienne découverte, qui
+ * formalise) ; c4 le quotient d'abord · le dénominateur du dernier pas ; a1–a4 le signe puis le numérateur du résultat ; monde `signs` : à la fin de la série, pourquoi 5/6 − 7/8 < 0 et pourquoi
+ * (−6) × (−5/12) > 0. OBLIGATOIRES pour tout élève ; l'ENSEIGNANT seul les coupe pour SON compte (`useLabCheckpointSettings`, interrupteur dans l'en-tête) ; coupées, la découverte d'avant reprend.
+ * ÉTAPES `LabStepper` (`[data-mb-step=<i>]`) + fête ; « إعادة » repart de la tâche 1 ; « أعِد التجربة » remet LA MÊME tâche. SON (`playSfx`) : `bell` à chaque fusion, `tooth` au retournement,
+ * `flag` à l'objectif, `over` quand une prédiction ou une fusion est refusée.
+ * Props : `tasks` ([{ id, chain, hidden, signOnly }]), `world` ('board' | 'signs'), `level`, `levels`, `coach`, `checkpoints`, `title`, `lead`, `onTrial(event)`, `onFinished({ world })`.
  * CONTRAT DOM : [data-merge-board][data-task][data-world][data-solved], [data-mb-glance], [data-mb-board][data-tiles], [data-mb-tile][data-id][data-state][data-sign], [data-mb-chip][data-op],
  * [data-mb-bubble], [data-mb-bar-rail], [data-mb-magnet], [data-mb-pads], [data-mb-pad][data-sign], [data-mb-flip][data-id], [data-mb-miniline], [data-mb-trail], [data-mb-score], [data-mb-retry],
  * [data-mb-next], [data-mb-verdict], [data-mb-step], [data-mb-free][data-active], [data-mb-free-input], [data-mb-free-add], [data-mb-free-refusal], [data-mb-kid], [data-mb-formal].
@@ -68,7 +78,7 @@ export function numbersFor({ tasks, world, level }) {
 }
 
 export default function MergeBoard({
-  tasks, world, title, lead, level, levels: withLevels = true, coach: coachOn = true,
+  tasks, world, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -78,13 +88,27 @@ export default function MergeBoard({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
   if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    const restart = scene.key === numsKey && scene.rc !== state.resetCount;
-    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-    setLab(restart ? L.restartTask(lab) : L.init(nums));
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la tâche 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
+    setLab(L.init(nums));
   }
-  const ready = L.discoveryReady(lab);
+  // les questions pendant le labo : la suite de la tâche courante ; celle qui finit par la règle remplace la découverte automatique
+  const cpSettings = useLabCheckpointSettings('merge-board');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const curTask = L.taskOf(lab);
+  const chain = cpOn && cpSettings.enabled && !L.isFree(lab) ? CHAINS[curTask.id] ?? null : null;
+  const ruleByCheckpoint = cpOn && cpSettings.enabled && lab.tasks.some((tk) => CHAINS[tk.id]?.includes('rule'));
+  const cp = useLabCheckpoint({
+    id: chain ? curTask.id : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, curTask, k)) : null,
+    reached: L.taskDone(lab),
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.restartTask),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => { if (CHAINS[id]?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  const ready = L.discoveryReady(lab) && !ruleByCheckpoint;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   const finishedOnce = useRef(false);
   const everyDone = L.allDone(lab);
@@ -100,7 +124,7 @@ export default function MergeBoard({
     reported.current = nTrials;
   }, [nTrials, lab.trials]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'merge-board', step: coachStep,
     text: coachStep ? k(`coach.${coachStep.id}`) : '',
@@ -120,6 +144,8 @@ export default function MergeBoard({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       coach={coachOn ? coach : null}
+      headerAction={cpSettings.control}
+      guided={!!chain || ruleByCheckpoint}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={discovery}
@@ -128,7 +154,7 @@ export default function MergeBoard({
       <ManipulationStage className="bg-gradient-to-b from-violet-50/70 to-white">
         <div className="space-y-2" data-merge-board data-task={lab.ti} data-world={lab.world} data-solved={everyDone ? 'true' : 'false'}>
           <style dangerouslySetInnerHTML={{ __html: CSS }} />
-          <Lab lab={lab} setLab={setLab} k={k} lead={state.isAuthoredLevel ? lead : null} />
+          <Lab lab={lab} setLab={setLab} k={k} lead={state.isAuthoredLevel ? lead : null} cp={cp} />
         </div>
       </ManipulationStage>
     </ManipulationShell>
@@ -137,7 +163,7 @@ export default function MergeBoard({
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-function Lab({ lab, setLab, k, lead }) {
+function Lab({ lab, setLab, k, lead, cp }) {
   const free = L.isFree(lab);
   const task = L.taskOf(lab);
   const done = L.taskDone(lab);
@@ -150,6 +176,30 @@ function Lab({ lab, setLab, k, lead }) {
   const shakeIds = last?.kind === 'refused' ? new Set(last.pair ?? lab.sel) : new Set();
   const shakeCls = lab.flash % 2 ? 'mb-shake-a' : 'mb-shake-b';
 
+  /* ── les étapes, la fête et le son (2026-10-28) */
+  const stepDone = lab.tasks.map((_, i) => !!lab.done[i] && (i !== lab.ti || !cp.blocking));
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // L.init (« إعادة », autre niveau) : on refête
+  const nowDone = !free && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.ti)) return;
+    celebrated.current.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son (muet sans « الصوت ») : une cloche à chaque fusion, un déclic au retournement, le drapeau à l'objectif, « over » quand c'est refusé
+  const heard = useRef(lab.trials.length);
+  useEffect(() => {
+    if (lab.trials.length < heard.current) heard.current = 0;
+    const fresh = lab.trials.slice(heard.current);
+    heard.current = lab.trials.length;
+    if (!fresh.length) return;
+    if (fresh.some((e) => e.kind === 'solved')) playSfx('flag');
+    else if (fresh.some((e) => e.kind === 'refused' || (e.kind === 'flip' && e.ok === false))) playSfx('over');
+    else if (fresh.some((e) => e.kind === 'merge')) playSfx('bell');
+    else if (fresh.some((e) => e.kind === 'flip')) playSfx('tooth');
+  }, [lab.trials]);
+
   const chainTexOf = L.chainTex(task.root);
   const kind = free ? 'free' : signs ? 'signs' : 'board';
   const contextKey = free ? 'board' : signs ? 'signs' : task.hidden ? 'hidden' : 'board';
@@ -157,7 +207,7 @@ function Lab({ lab, setLab, k, lead }) {
     <PromptCard size="md" context={<MathText>{`${free ? `${k('context.freePrefix')} ` : ''}${k(`context.${contextKey}`, { chain: M(chainTexOf) })}`}</MathText>} contextProps={{ 'data-mb-context': kind }}
       title={<MathText>{k(`question.${kind}`)}</MathText>} titleClassName="text-base" lamp={free ? null : done ? 'on' : 'off'}
       titleProps={{ 'data-mb-prompt': kind, 'data-lit': done ? 'true' : 'false' }}
-      aside={lab.tasks.length > 1 && !free ? <Steps lab={lab} k={k} /> : undefined}
+      aside={lab.tasks.length > 1 && !free ? <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-mb-step" /> : undefined}
       instruction={lead || (!free && !signs && lab.ti === 0 && lab.history.length === 0 ? k('lead') : undefined)} />
   );
 
@@ -272,7 +322,7 @@ function Lab({ lab, setLab, k, lead }) {
 
   /* ── le verdict */
   const vv = verdictOf(lab, k, all);
-  const canNext = L.canNext(lab);
+  const canNext = L.canNext(lab) && !cp.blocking;
   const Icon = vv.tone === 'emerald' ? CheckCircle2 : vv.tone === 'amber' ? ShieldAlert : vv.tone === 'indigo' ? Hand : Sparkles;
   const btn = `inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-full border-2 px-3.5 text-sm font-black transition-all duration-150 active:translate-y-0.5 motion-reduce:transition-none ${ring}`;
   const banner = (
@@ -298,6 +348,8 @@ function Lab({ lab, setLab, k, lead }) {
   return (
     <>
       <div className="relative space-y-2" data-mb-glance>
+        {party.node}
+        {cp.node}
         {prompt}
         {stage}
         {pads}
@@ -306,23 +358,6 @@ function Lab({ lab, setLab, k, lead }) {
       </div>
       <FreeCard lab={lab} setLab={setLab} k={k} />
     </>
-  );
-}
-
-function Steps({ lab, k }) {
-  return (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={tk.id} role="listitem" data-mb-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-violet-700 bg-violet-600 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-violet-200 bg-white text-violet-700'}`}>
-            <bdi dir="ltr">{i + 1}</bdi>
-          </span>
-        );
-      })}
-    </div>
   );
 }
 
@@ -440,3 +475,175 @@ export function Formal({ k }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de questions de chaque tâche : elle interroge ce que l'élève vient de FAIRE ; c3 finit par la règle (l'ancienne découverte). */
+export const CHAINS = Object.freeze({
+  c1: ['commonDen', 'toDen'],
+  c2: ['prodSign', 'prodDen'],
+  c3: ['simplify', 'rule'],
+  c4: ['divResult', 'lastDen'],
+  a1: ['finalSign', 'finalAbs'],
+  a2: ['finalSign', 'finalAbs'],
+  a3: ['finalSign', 'finalAbs'],
+  a4: ['finalSign', 'finalAbs'],
+  s6: ['signSum', 'signProd'],
+});
+
+const Q = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const at = (list, i) => { const [first, ...rest] = list; const out = [...rest]; out.splice(Math.min(i, out.length), 0, first); return out; };
+const rt = (x) => M(ratTexStd(x));
+const absB = (x) => (x < 0n ? -x : x);
+const numTxt = (x) => <MathText>{M(String(x))}</MathText>;
+const stepsOf = (task) => evaluateChain(task.chain).steps;
+const stepOfId = (lab, id) => lab.tasks.find((t) => t.id === id);
+
+/** Chaque question est construite sur LES nombres de la tâche (rien n'est écrit en dur) ; `k` : les textes de `mergeBoard`. */
+export const QUESTIONS = {
+  commonDen: (lab, task, k) => {
+    const st = stepsOf(task)[0];
+    const o = { a: rt(st.a), b: rt(st.b), da: M(String(st.a.d)), db: M(String(st.b.d)), D: M(String(st.den)) };
+    return {
+      id: 'commonDen', kind: 'number', expected: String(st.den), answer: numTxt(st.den),
+      prompt: Q(k, 'commonDen.prompt', o),
+      hints: [Q(k, 'commonDen.hint1', o), Q(k, 'commonDen.hint2', o)],
+      explain: Q(k, 'commonDen.explain', o),
+    };
+  },
+  toDen: (lab, task, k) => {
+    const st = stepsOf(task)[0];
+    const big = absB((st.a.n * BigInt(st.den)) / st.a.d);
+    const o = { a: rt(st.a), D: M(String(st.den)), da: M(String(st.a.d)), f: M(String(BigInt(st.den) / st.a.d)), n: M(String(big)), calc: M(`${rt(st.a).slice(1, -1)}=\\frac{${st.a.n < 0n ? '-' : ''}${big}}{${st.den}}`) };
+    return {
+      id: 'toDen', kind: 'number', expected: String(big), answer: numTxt(big),
+      prompt: Q(k, 'toDen.prompt', o),
+      hints: [Q(k, 'toDen.hint1', o), Q(k, 'toDen.hint2', o)],
+      explain: Q(k, 'toDen.explain', o),
+    };
+  },
+  prodSign: (lab, task, k) => {
+    const st = stepsOf(task)[0];
+    const o = { a: rt(st.a), b: rt(st.b), r: rt(st.result) };
+    return {
+      id: 'prodSign', kind: 'choice',
+      prompt: Q(k, 'prodSign.prompt', o),
+      options: at([
+        { text: Q(k, 'prodSign.right'), correct: true },
+        { text: Q(k, 'prodSign.first'), why: Q(k, 'prodSign.whyFirst', o) },
+        { text: Q(k, 'prodSign.always'), why: Q(k, 'prodSign.whyAlways', o) },
+      ], 1),
+      hints: [Q(k, 'prodSign.hint1', o), Q(k, 'prodSign.hint2', o)],
+      explain: Q(k, 'prodSign.explain', o),
+    };
+  },
+  prodDen: (lab, task, k) => {
+    const st = stepsOf(task)[0];
+    const o = { a: rt(st.a), b: rt(st.b), r: rt(st.result) };
+    return {
+      id: 'prodDen', kind: 'number', expected: String(st.result.d), answer: numTxt(st.result.d),
+      prompt: Q(k, 'prodDen.prompt', o),
+      hints: [Q(k, 'prodDen.hint1', o), Q(k, 'prodDen.hint2', o)],
+      explain: Q(k, 'prodDen.explain', o),
+    };
+  },
+  simplify: (lab, task, k) => {
+    const st = stepsOf(task)[0];
+    const o = { a: rt(st.a), b: rt(st.b), r: rt(st.result), m: rt({ n: st.b.n < 0n ? -st.b.d : st.b.d, d: absB(st.b.n) }) };
+    return {
+      id: 'simplify', kind: 'number', expected: String(absB(st.result.n)), answer: numTxt(absB(st.result.n)),
+      prompt: Q(k, 'simplify.prompt', o),
+      hints: [Q(k, 'simplify.hint1', o), Q(k, 'simplify.hint2', o)],
+      explain: Q(k, 'simplify.explain', o),
+    };
+  },
+  rule: (lab, task, k) => ({
+    id: 'rule', kind: 'choice',
+    prompt: <MathText>{k('discovery.prompt')}</MathText>,
+    options: discoveryOptions(k),
+    hints: [Q(k, 'rule.hint1'), Q(k, 'rule.hint2')],
+    explain: <Formal k={k} />,
+  }),
+  divResult: (lab, task, k) => {
+    const st = stepsOf(task).find((x) => x.op === '÷') ?? stepsOf(task)[0];
+    const o = { a: rt(st.a), b: rt(st.b), r: rt(st.result) };
+    return {
+      id: 'divResult', kind: 'number', expected: String(absB(st.result.n)), answer: numTxt(absB(st.result.n)),
+      prompt: Q(k, 'divResult.prompt', o),
+      hints: [Q(k, 'divResult.hint1', o), Q(k, 'divResult.hint2', o)],
+      explain: Q(k, 'divResult.explain', o),
+    };
+  },
+  lastDen: (lab, task, k) => {
+    const sts = stepsOf(task);
+    const st = sts[sts.length - 1];
+    const o = { a: rt(st.a), b: rt(st.b), D: M(String(st.den)) };
+    return {
+      id: 'lastDen', kind: 'number', expected: String(st.den), answer: numTxt(st.den),
+      prompt: Q(k, 'lastDen.prompt', o),
+      hints: [Q(k, 'lastDen.hint1', o), Q(k, 'lastDen.hint2', o)],
+      explain: Q(k, 'lastDen.explain', o),
+    };
+  },
+  finalSign: (lab, task, k) => {
+    const v = evaluateChain(task.chain).value;
+    const sg = v.n > 0n ? 'pos' : v.n < 0n ? 'neg' : 'zero';
+    const label = (x) => k(`cp.finalSign.${x}`);
+    const o = { r: rt(v) };
+    return {
+      id: 'finalSign', kind: 'choice', cols: 3,
+      prompt: Q(k, 'finalSign.prompt', { chain: M(L.chainTex(task.root)) }),
+      options: at([
+        { text: Q(k, `finalSign.${sg}`), correct: true },
+        ...['pos', 'neg', 'zero'].filter((x) => x !== sg).map((x) => ({ text: Q(k, `finalSign.${x}`), why: Q(k, 'finalSign.why', { s: label(x) }) })),
+      ], task.id === 'a1' ? 0 : task.id === 'a2' ? 1 : 2),
+      hints: [Q(k, 'finalSign.hint1'), Q(k, 'finalSign.hint2')],
+      explain: Q(k, 'finalSign.explain', { ...o, s: label(sg) }),
+    };
+  },
+  finalAbs: (lab, task, k) => {
+    const v = evaluateChain(task.chain).value;
+    const o = { r: rt(v) };
+    return {
+      id: 'finalAbs', kind: 'number', expected: String(absB(v.n)), answer: numTxt(absB(v.n)),
+      prompt: Q(k, 'finalAbs.prompt', { chain: M(L.chainTex(task.root)) }),
+      hints: [Q(k, 'finalAbs.hint1'), Q(k, 'finalAbs.hint2')],
+      explain: Q(k, 'finalAbs.explain', o),
+    };
+  },
+  signSum: (lab, task, k) => {
+    const t5 = stepOfId(lab, 's5') ?? task;
+    const st = stepsOf(t5)[0];
+    const N = BigInt(st.den);
+    const fr = (x) => M(`\\frac{${absB(x.n * (N / x.d))}}{${N}}`);
+    const o = { a: rt(st.a), b: rt(st.b), r: rt(st.result), N: M(String(N)), fa: fr(st.a), fb: fr(st.b) };
+    return {
+      id: 'signSum', kind: 'choice',
+      prompt: Q(k, 'signSum.prompt', o),
+      options: at([
+        { text: Q(k, 'signSum.right', o), correct: true },
+        { text: Q(k, 'signSum.always'), why: Q(k, 'signSum.whyAlways', o) },
+        { text: Q(k, 'signSum.den', o), why: Q(k, 'signSum.whyDen', o) },
+      ], 2),
+      hints: [Q(k, 'signSum.hint1', o), Q(k, 'signSum.hint2', o)],
+      explain: Q(k, 'signSum.explain', o),
+    };
+  },
+  signProd: (lab, task, k) => {
+    const st = stepsOf(task)[0];
+    const t2 = stepOfId(lab, 's2');
+    const s2 = t2 ? stepsOf(t2)[0] : st;
+    const o = { a: rt(st.a), b: rt(st.b), r: rt(st.result), a2: rt(s2.a), b2: rt(s2.b), r2: rt(s2.result) };
+    return {
+      id: 'signProd', kind: 'choice',
+      prompt: Q(k, 'signProd.prompt', o),
+      options: at([
+        { text: Q(k, 'signProd.right'), correct: true },
+        { text: Q(k, 'signProd.always'), why: Q(k, 'signProd.whyAlways', o) },
+        { text: Q(k, 'signProd.whole'), why: Q(k, 'signProd.whyWhole', o) },
+      ], 0),
+      hints: [Q(k, 'signProd.hint1', o), Q(k, 'signProd.hint2', o)],
+      explain: Q(k, 'signProd.explain', o),
+    };
+  },
+};

@@ -79,3 +79,51 @@ it('valeurs par défaut : la trottinette s’ouvre sur une durée (1 minute), au
   expect(html).toContain('data-x="1"');
   expect(html).toMatch(/data-columns=""/);
 });
+
+/* ── lot 5 (2026-10-28) : les questions pendant le labo (LabCheckpoint) et le mode guidé ── */
+import { describe } from 'vitest';
+import i18n from '../../../../i18n';
+import * as RL from '../logic/ratioRide';
+
+describe('ratio-ride — questions pendant le labo (LabCheckpoint)', () => {
+  it('chaque question de chaque suite, aux deux niveaux : texte, 2 indices, une seule bonne réponse, ni clé brute ni {{', async () => {
+    const { CHAINS, QUESTIONS } = await import('./RatioRide');
+    const k = (key, o) => i18n.t(`lesson:manipulation.ratioRide.${key}`, o);
+    const RAW = /manipulation\.[a-zA-Z]/;
+    for (const plans of ['15x', '15x|10x+50']) {
+      let s = RL.init({ plans });
+      s = RL.record(RL.record(RL.record(s, 2), 5), 8);
+      for (const p of s.plans) s = RL.claim(s, p.id, p.linear ? 'yes' : 'no');
+      expect(RL.allJudged(s), plans).toBe(true);
+      s = s.two ? RL.formulaTry(s, '15') : RL.ghostTry(s, '180');
+      expect(RL.discoveryReady(s), plans).toBe(true);
+      const discoveryOptions = [{ text: 'a', why: 'w' }, { text: 'b', correct: true }, { text: 'c', why: 'w' }];
+      const chains = [s.two ? CHAINS.judgeTwo : CHAINS.judgeOne, CHAINS.rule];
+      for (const chain of chains) {
+        for (const qid of chain) {
+          const q = QUESTIONS[qid](s, k, { discoveryOptions, formalNode: <p>formal</p> });
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${plans}.${qid}`).not.toMatch(RAW);
+          expect(out, `${plans}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${plans}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${plans}.${qid}`).toHaveLength(1);
+          else expect(q.expected, `${plans}.${qid}`).toBeTruthy();
+        }
+      }
+      expect(QUESTIONS.ratio(s, k).expected).toBe('15');
+      expect(QUESTIONS.predict(s, k).expected).toBe(plans === '15x' ? '300' : '600');
+      if (s.two) expect(QUESTIONS.zero(s, k).expected).toBe('50');
+      else expect(QUESTIONS.double(s, k).expected).toBe('60');   // 2 min = 30 DA → 4 min = 60 DA
+    }
+  });
+});
+
+describe('ratio-ride — mode guidé et étapes', () => {
+  it('questions actives : deux étapes, ni la progression ni le bouton d’indice', () => {
+    const out = renderToString(<RatioRide plans="15x" levels={false} />);
+    expect(out).toContain('data-lab-stepper');
+    expect(out).toContain('data-ride-step="1"');
+    expect(out).not.toContain('data-manipulation-progress');
+    expect(out).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+  });
+});

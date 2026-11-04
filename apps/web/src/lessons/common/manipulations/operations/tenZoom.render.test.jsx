@@ -2,7 +2,8 @@ import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import i18n from '../../../../i18n';
-import TenZoom, { discoveryOptions, Formal } from './TenZoom';
+import TenZoom, { discoveryOptions, Formal, CHAINS, QUESTIONS } from './TenZoom';
+import * as TZ from '../logic/tenZoom';
 import { LEVELS } from '../levels';
 import * as L from '../logic/tenZoom';
 import { SCENE_IDS } from './tenZoom/art';
@@ -105,5 +106,52 @@ describe('ten-zoom — chaînes de texte', () => {
   it('la prose ne dit pas la règle avant la découverte (consigne, coach, indices)', () => {
     const early = ['context.first', 'context.again', 'question.zoom', 'coach.ring', 'coach.plate', 'coach.dock', 'hints.0', 'hints.1', 'hints.2'].map((x) => k(x)).join(' ');
     expect(early).not.toMatch(/أصفار|صفر|الفاصلة|رتبة|قوة|أس /);
+  });
+});
+
+describe('ten-zoom — questions pendant le labo (LabCheckpoint)', () => {
+  it('chaque question de chaque tâche (deux niveaux et monde des préfixes) : texte, 2 indices, une seule bonne réponse, ni clé brute ni {{', () => {
+    for (const [tag, numbers] of [['beginner', LV.beginner.numbers], ['advanced', LV.advanced.numbers], ['prefixes', TZ.PRESETS.prefixes]]) {
+      const base = TZ.init(numbers);
+      base.tasks.forEach((tk, i) => {
+        expect(CHAINS[tk.id], `${tag}.${tk.id}`).toBeTruthy();
+        const lab = { ...base, ti: i };
+        for (const qid of CHAINS[tk.id]) {
+          const q = QUESTIONS[qid](lab, tk, k);
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${tag}.${tk.id}.${qid}`).not.toMatch(RAW);
+          expect(out, `${tag}.${tk.id}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${tag}.${tk.id}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') {
+            expect(q.options.filter((o) => o.correct), `${tag}.${tk.id}.${qid}`).toHaveLength(1);
+            expect(q.options.filter((o) => !o.correct).every((o) => o.why), `${tag}.${tk.id}.${qid} why`).toBe(true);
+            expect(new Set(q.options.map((o) => renderToString(<span>{o.text}</span>))).size, `${tag}.${tk.id}.${qid} distinct`).toBe(q.options.length);
+          } else expect(Number(q.expected)).toBeGreaterThan(0);
+        }
+      });
+    }
+  });
+  it('les nombres : 3 crans pour 1 000 m, 3 pour le retour de 0,001 m, 3 entre milli et micro ; la dernière tâche de chaque niveau finit par la règle', () => {
+    const b = TZ.init(LV.beginner.numbers);
+    expect(QUESTIONS.clicks(b, b.tasks[0], k).expected).toBe('3');
+    expect(QUESTIONS.back({ ...b, ti: 3 }, b.tasks[3], k).expected).toBe('3');
+    const p = TZ.init(TZ.PRESETS.prefixes);
+    expect(QUESTIONS.between({ ...p, ti: 2 }, p.tasks[2], k).expected).toBe('3');
+    expect(CHAINS.z4.at(-1)).toBe('rule');
+    expect(CHAINS.z8.at(-1)).toBe('rule');
+  });
+  it('« أعِد التجربة » : la même tâche repart (celle qui part de la précédente, du cadre précédent) et son drapeau « fait » tombe', () => {
+    const lab = { ...TZ.init(LV.beginner.numbers), ti: 3, n: 0, done: [true, true, true, true] };
+    const r = TZ.retryTask(lab);
+    expect(r.done[3]).toBe(false);
+    expect(r.n).toBe(-3);
+  });
+  it('mode guidé : ni la progression ni le bouton d’indice, les étapes et le son sont là', () => {
+    const out = html({ ...LV.beginner.numbers, level: 'beginner' });
+    expect(out).not.toContain('data-manipulation-progress');
+    expect(out).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    expect(out).toContain('data-tz-step="3"');
+    expect(out).toContain('data-manipulation-sound');
+    expect(html({ ...LV.beginner.numbers, level: 'beginner', checkpoints: false })).toContain('data-manipulation-progress');
   });
 });

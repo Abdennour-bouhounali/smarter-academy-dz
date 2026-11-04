@@ -13,6 +13,11 @@ import LabFold from '../primitives/LabFold';
 import MovablePanel from '../primitives/MovablePanel';
 import PlayerFigure from '../primitives/PlayerFigure';
 import MathText from '../../components/MathText';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { Mx, $, useTick } from './vecCp';
 import * as L from '../logic/shapeProver';
 
 /**
@@ -88,7 +93,7 @@ const C_OK = '#059669'; const C_NO = '#E11D48';
 
 export default function ShapeProver({
   numbers, mode: mode0, A: A0, B: B0, C: C0, D: D0, rail: rail0, theme = 'football', title, lead, mission, level,
-  levels: withLevels = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.shapeProver.${key}`, o), [t]);
@@ -99,13 +104,53 @@ export default function ShapeProver({
   const make = () => L.init(nums);
   const [lab, setLab] = useState(make);
   const sceneKey = `${JSON.stringify(nums)}|${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); }
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  const [doneIds, setDoneIds] = useState([]);   // les preuves dont la suite de questions est finie
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(make()); setDoneIds([]); }   // « إعادة » : tout repart
   const unknown = lab.mode === 'unknown';
   const quad = lab.stage === 'quad';
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
 
-  const ready = L.discoveryReady(lab);
+  /* ── les questions PENDANT le labo (primitives/LabCheckpoint) : après chaque preuve acceptée par le فار, une suite sur ce qu'il vient de
+     calculer ; la dernière preuve finit par la règle et remplace la découverte automatique. L'enseignant seul peut les couper. ── */
+  const cpSettings = useLabCheckpointSettings('shape-prover');
+  const cpEnabled = cpOn && cpSettings.enabled;
+  const proofs = L.proofsOf(lab);
+  const pending = cpEnabled ? proofs.find((g) => lab.solved[g] && !doneIds.includes(g)) ?? null : null;
+  const chain = pending ? chainOf(lab, pending) : null;
+  const cp = useLabCheckpoint({
+    id: chain ? pending : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, pending, k)) : null,
+    reached: !!pending,
+    resetKey: scene.inits,
+    onRetry: () => { celebrated.current.delete(pending); setLab((s) => L.retryClaim(s, pending)); },
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => (d.includes(id) ? d : [...d, id]));
+      if (chainOf(lab, id).includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const solvedAll = L.discoveryReady(lab);
+  const ready = solvedAll && !cpEnabled;
+  const tick = useTick();
+  const stepDone = proofs.map((g) => !!lab.solved[g] && (!cpEnabled || doneIds.includes(g)));
+  const stepNow = Math.max(0, stepDone.findIndex((d) => !d));
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(proofs[i])) return;
+      celebrated.current.add(proofs[i]);
+      party.celebrate({ n: stepDone.filter(Boolean).length, total: proofs.length });
+    });
+  }, [stepDone.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son : un déclic par pas du plot ou par carte, le drapeau quand le فار accepte, « over » quand il refuse
+  const trialN = lab.trials.length;
+  useEffect(() => {
+    const tr = lab.trials[trialN - 1];
+    if (tr) playSfx(tr.kind === 'ok' ? 'flag' : 'over');
+  }, [trialN]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (state.isFormal) state.report(onFinished, { mode: lab.mode, trials: lab.trials.length });
@@ -163,13 +208,13 @@ export default function ShapeProver({
     const p = nodeFromEvent(e);
     setLab((s) => L.moveHeld(s, p));
   };
-  const onSceneMove = (e) => { if (dragging) { const p = nodeFromEvent(e); setLab((s) => L.moveHeld(s, p)); } };
+  const onSceneMove = (e) => { if (dragging) { const p = nodeFromEvent(e); tick(); setLab((s) => L.moveHeld(s, p)); } };
   const onSceneUp = (e) => {
     if (!dragging) return;
     e.currentTarget.releasePointerCapture?.(e.pointerId);
     setDragging(false);
   };
-  const nudge = (dx, dy) => setLab((s) => L.nudge(s, dx, dy));
+  const nudge = (dx, dy) => { tick(dx + dy < 0 ? 0.75 : 1); setLab((s) => L.nudge(s, dx, dy)); };
   const onHandleKey = (e) => {
     const m = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, 1], ArrowDown: [0, -1] }[e.key];
     if (m) { e.preventDefault(); nudge(...m); return; }
@@ -260,25 +305,7 @@ export default function ShapeProver({
     }
   })();
 
-  /* ── la découverte : distracteurs réfutés par les essais de l'élève ── */
-  const discoveryOptions = useMemo(() => {
-    if (!unknown) {
-      const f = L.firstFalse(lab);
-      const lookWhy = f ? k('dTriLookWhy', { eq: verdictEqStatic(lab, f) }) : k('dTriLookWhyGeneric');
-      return [
-        { text: <MathText>{k('dTriLook')}</MathText>, why: <MathText>{lookWhy}</MathText> },
-        { text: <MathText>{k('dTriAny')}</MathText>, why: <MathText>{k('dTriAnyWhy')}</MathText> },
-        { text: <MathText>{k('dTriRight')}</MathText>, correct: true },
-        { text: <MathText>{k('dTriTwo')}</MathText>, why: <MathText>{k('dTriTwoWhy')}</MathText> },
-      ];
-    }
-    return [
-      { text: <MathText>{k('dQuadPara')}</MathText>, why: <MathText>{k('dQuadParaWhy')}</MathText> },
-      { text: <MathText>{k('dQuadDiag')}</MathText>, why: <MathText>{k('dQuadDiagWhy')}</MathText> },
-      { text: <MathText>{k('dQuadRight')}</MathText>, correct: true },
-      { text: <MathText>{k('dQuadLook')}</MathText>, why: <MathText>{k('dQuadLookWhy')}</MathText> },
-    ];
-  }, [lab, unknown, k]);
+  const discoveryOptions = useMemo(() => discoveryOptionsOf(lab, k), [lab, k]);
 
   const formalKeys = unknown ? ['formalU1', 'formalU2', 'formalQ1', 'formalQ2', 'formalQ3'] : ['formalTri1', 'formalTri2', 'formalTri3'];
   const formal = (
@@ -336,7 +363,7 @@ export default function ShapeProver({
           const fs = compact ? `text-[11px] ${c.id === 'mid' ? '' : 'whitespace-nowrap'}` : 'text-xs';
           return (
             <button key={c.id} type="button" aria-pressed={on} data-sp-card={c.id} data-balanced={c.balanced ? 'true' : 'false'}
-              onClick={() => setLab((s) => L.toggleCard(s, c.id))}
+              onClick={() => { tick(1.2); setLab((s) => L.toggleCard(s, c.id)); }}
               className={`min-h-11 rounded-xl border-2 px-1.5 py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${row ? 'flex items-center justify-between gap-2' : 'text-center'} ${on ? 'border-amber-500 bg-amber-50 shadow' : 'border-slate-200 bg-white'}`}>
               <span className={`${row ? '' : 'block'} ${fs} font-bold ${w.body ? 'text-slate-800' : ''}`} style={w.body ? undefined : { color: c.balanced ? C_OK : C_NO }}><MathText>{w.head}</MathText></span>
               {w.body && <span className={`${row ? '' : 'block'} ${fs} font-semibold`} style={{ color: c.balanced ? C_OK : C_NO }}><MathText>{w.body}</MathText></span>}
@@ -355,7 +382,7 @@ export default function ShapeProver({
   );
   const stageNav = (
     <>
-      {unknown && !quad && lab.solved['right:B'] && (
+      {unknown && !quad && lab.solved['right:B'] && !cp.blocking && (
         <button type="button" className={`${btn} border-violet-400 bg-violet-50 text-violet-900`} onClick={() => setLab(L.openQuad)} data-sp-next-quad>{k('nextQuad')}</button>
       )}
       {quad && (
@@ -413,6 +440,7 @@ export default function ShapeProver({
 
   const dossier = (
     <div className="space-y-2" data-sp-dossier>
+      <LabStepper count={proofs.length} current={stepNow} done={stepDone} stepAttr="data-sp-step" />
       {claimRow}
       {cardGrid}
       {checkRow}
@@ -445,6 +473,8 @@ export default function ShapeProver({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={cpEnabled}
       hints={hintKeys.map((h) => <MathText key={h}>{k(h)}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={(
@@ -454,10 +484,14 @@ export default function ShapeProver({
     >
       <ManipulationStage className="bg-gradient-to-b from-emerald-50/60 to-white" minHeight="min-h-[160px]">
         <div ref={boxRef} className="space-y-2" data-shape-prover data-mode={lab.mode} data-stage={lab.stage}
-          data-world={theme} data-solved={ready ? 'true' : 'false'} data-scene-h={sceneH}>
+          data-world={theme} data-solved={solvedAll ? 'true' : 'false'} data-scene-h={sceneH}>
+          <div className="relative">
+            {party.node}
+            {cp.node}
           <div ref={glanceRef} className={wide ? 'grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3' : `space-y-2`} data-sp-glance>
             {sceneBlock}
             {dossier}
+          </div>
           </div>
 
           <LabFold id="shape-prover.calc" title={k('calcTitle')}>
@@ -483,6 +517,27 @@ export default function ShapeProver({
     </ManipulationShell>
   );
 }
+
+/** La découverte : distracteurs réfutés par les essais de l'élève (aussi la dernière question de la suite). */
+export function discoveryOptionsOf(lab, k) {
+  const unknown = lab.mode === 'unknown';
+    if (!unknown) {
+      const f = L.firstFalse(lab);
+      const lookWhy = f ? k('dTriLookWhy', { eq: verdictEqStatic(lab, f) }) : k('dTriLookWhyGeneric');
+      return [
+        { text: <MathText>{k('dTriLook')}</MathText>, why: <MathText>{lookWhy}</MathText> },
+        { text: <MathText>{k('dTriAny')}</MathText>, why: <MathText>{k('dTriAnyWhy')}</MathText> },
+        { text: <MathText>{k('dTriRight')}</MathText>, correct: true },
+        { text: <MathText>{k('dTriTwo')}</MathText>, why: <MathText>{k('dTriTwoWhy')}</MathText> },
+      ];
+    }
+    return [
+      { text: <MathText>{k('dQuadPara')}</MathText>, why: <MathText>{k('dQuadParaWhy')}</MathText> },
+      { text: <MathText>{k('dQuadDiag')}</MathText>, why: <MathText>{k('dQuadDiagWhy')}</MathText> },
+      { text: <MathText>{k('dQuadRight')}</MathText>, correct: true },
+      { text: <MathText>{k('dQuadLook')}</MathText>, why: <MathText>{k('dQuadLookWhy')}</MathText> },
+    ];
+  }
 
 /** L'égalité d'un essai (pour la découverte), hors du composant. */
 function verdictEqStatic(lab, trial) {
@@ -677,3 +732,149 @@ function Ball({ lab, fr }) {
     </button>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de la preuve `claim` : lire ce que le فار a calculé, puis pourquoi cela suffit ; la dernière preuve finit par la règle. */
+export function chainOf(lab, claim) {
+  let q;
+  if (claim === 'right:B' && lab.mode === 'unknown') q = ['railY', 'pythRead'];
+  else if (claim.startsWith('right:')) q = ['pythRead', 'pythWhy'];
+  else if (claim.startsWith('iso:')) q = ['isoRead', 'isoWhy'];
+  else if (claim === 'square') q = ['sqRead', 'sqWhy'];
+  else q = ['circRead', 'circWhy'];
+  if (L.proofsOf(lab).every((g) => lab.solved[g])) q.push('rule');
+  return q;
+}
+
+const ti = (n) => (n < 0 ? `-${Math.abs(n)}` : `${n}`);
+const intOf = (f) => { const n = Lq.toNumber(f); return Number.isInteger(n) ? String(n) : null; };
+const numAnswer = (f) => ({ kind: 'number', expected: intOf(f) ?? tex(f), answer: <MathText>{$(tex(f))}</MathText> });
+
+/** Chaque question est construite sur LES nombres de la preuve acceptée ; `k` : les textes de `shapeProver`. */
+export const QUESTIONS = {
+  railY: (lab, claim, k) => {
+    const s = L.atProof(lab, claim);
+    const [cx, cy] = L.xy(s.pts.C);
+    const good = new Set(L.railSolutions(s));
+    const at = (y) => L.card({ ...s, pts: { ...s.pts, C: V.point(cx, y) } }, 'pyth:B');
+    const cands = [-cy, cy + 1, cy - 1, cy + 2].filter((y) => !good.has(y) && y >= s.rail.min && y <= s.rail.max);
+    const uniq = [...new Set(cands)].slice(0, 2);
+    const o = { C: 'C', x: cx };
+    return {
+      id: 'railY', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'railY.prompt', o),
+      options: [
+        { text: <MathText>{$(`C(${ti(cx)}\\,;\\,${ti(cy)})`)}</MathText>, correct: true },
+        ...uniq.map((y) => { const c = at(y); return { text: <MathText>{$(`C(${ti(cx)}\\,;\\,${ti(y)})`)}</MathText>, why: Mx(k, 'railY.whyNot', { eq: $(`${c.names[0]}^2 + ${c.names[1]}^2 = ${tex(c.parts[0])} + ${tex(c.parts[1])} = ${tex(c.left)} \\neq ${tex(c.right)} = ${c.names[2]}^2`) }) }; }),
+      ],
+      hints: [Mx(k, 'railY.hint1'), Mx(k, 'railY.hint2')],
+      explain: Mx(k, 'railY.explain', { pt: $(`C(${ti(cx)}\\,;\\,${ti(cy)})`) }),
+    };
+  },
+  pythRead: (lab, claim, k) => {
+    const c = L.card(L.atProof(lab, claim), `pyth:${claim.slice(6)}`);
+    const [p, q, r] = c.names;
+    const sum = $(`${p}^2 + ${q}^2 = ${tex(c.parts[0])} + ${tex(c.parts[1])} = ${tex(c.left)}`);
+    return {
+      id: 'pythRead', ...numAnswer(c.left),
+      prompt: Mx(k, 'pythRead.prompt', { sum: $(`${p}^2 + ${q}^2`), X: claim.slice(6) }),
+      hints: [Mx(k, 'pythRead.hint1'), Mx(k, 'pythRead.hint2', { p: $(`${p}^2`), q: $(`${q}^2`) })],
+      explain: Mx(k, 'pythRead.explain', { sum, r: $(`${r}^2 = ${tex(c.right)}`) }),
+    };
+  },
+  pythWhy: (lab, claim, k) => {
+    const s = L.atProof(lab, claim); const X = claim.slice(6);
+    const c = L.card(s, `pyth:${X}`); const [p, q, r] = c.names;
+    const f = L.firstFalse(lab);
+    const eq = $(`${p}^2 + ${q}^2 = ${tex(c.left)} = ${tex(c.right)} = ${r}^2`);
+    return {
+      id: 'pythWhy', kind: 'choice',
+      prompt: Mx(k, 'pythWhy.prompt', { X }),
+      options: [
+        { text: Mx(k, 'pythWhy.right', { eq }), correct: true },
+        { text: Mx(k, 'pythWhy.look'), why: f ? Mx(k, 'pythWhy.whyLook', { eq: verdictEqStatic(lab, f) }) : Mx(k, 'pythWhy.whyLookGeneric') },
+        { text: Mx(k, 'pythWhy.equal', { p, q }), why: Mx(k, 'pythWhy.whyEqual') },
+      ],
+      hints: [Mx(k, 'pythWhy.hint1', { X }), Mx(k, 'pythWhy.hint2', { X, p: $(`${p}^2`), q: $(`${q}^2`), r: $(`${r}^2`) })],
+      explain: Mx(k, 'pythWhy.explain', { eq }),
+    };
+  },
+  isoRead: (lab, claim, k) => {
+    const c = L.card(L.atProof(lab, claim), claim);
+    return {
+      id: 'isoRead', ...numAnswer(c.left),
+      prompt: Mx(k, 'isoRead.prompt', { p: $(`${c.names[0]}^2`), X: claim.slice(4) }),
+      hints: [Mx(k, 'isoRead.hint1'), Mx(k, 'isoRead.hint2', { p: $(`${c.names[0]}^2`) })],
+      explain: Mx(k, 'isoRead.explain', { eq: $(`${c.names[0]}^2 = ${tex(c.left)} = ${tex(c.right)} = ${c.names[1]}^2`) }),
+    };
+  },
+  isoWhy: (lab, claim, k) => {
+    const X = claim.slice(4);
+    const s = L.atProof(lab, claim);
+    const c = L.card(s, claim); const [p, q] = c.names;
+    const [Y, Z] = ['A', 'B', 'C'].filter((n) => n !== X);
+    const eq = $(`${p}^2 = ${tex(c.left)} = ${tex(c.right)} = ${q}^2`);
+    return {
+      id: 'isoWhy', kind: 'choice',
+      prompt: Mx(k, 'isoWhy.prompt', { X }),
+      options: [
+        { text: <MathText>{$(`${p}^2 = ${q}^2`)}</MathText>, correct: true },
+        { text: <MathText>{$(`${p}^2 + ${q}^2 = ${Y}${Z}^2`)}</MathText>, why: Mx(k, 'isoWhy.whyPyth') },
+        { text: <MathText>{$(`${Y}${Z}^2 = ${Y}${X}^2`)}</MathText>, why: Mx(k, 'isoWhy.whyApex', { X }) },
+      ],
+      hints: [Mx(k, 'isoWhy.hint1', { X }), Mx(k, 'isoWhy.hint2', { X })],
+      explain: Mx(k, 'isoWhy.explain', { eq, X }),
+    };
+  },
+  sqRead: (lab, claim, k) => {
+    const c = L.card(L.atProof(lab, claim), 'diag');
+    return {
+      id: 'sqRead', ...numAnswer(c.left),
+      prompt: Mx(k, 'sqRead.prompt'),
+      hints: [Mx(k, 'sqRead.hint1'), Mx(k, 'sqRead.hint2')],
+      explain: Mx(k, 'sqRead.explain', { eq: $(`AC^2 = ${tex(c.left)} = ${tex(c.right)} = BD^2`) }),
+    };
+  },
+  sqWhy: (lab, claim, k) => ({
+    id: 'sqWhy', kind: 'choice',
+    prompt: Mx(k, 'sqWhy.prompt'),
+    options: [
+      { text: Mx(k, 'sqWhy.right'), correct: true },
+      { text: Mx(k, 'sqWhy.noSide'), why: Mx(k, 'sqWhy.whyNoSide') },
+      { text: Mx(k, 'sqWhy.noPara'), why: Mx(k, 'sqWhy.whyNoPara') },
+    ],
+    hints: [Mx(k, 'sqWhy.hint1'), Mx(k, 'sqWhy.hint2')],
+    explain: Mx(k, 'sqWhy.explain'),
+  }),
+  circRead: (lab, claim, k) => {
+    const c = L.card(L.atProof(lab, claim), 'circ');
+    return {
+      id: 'circRead', ...numAnswer(c.right),
+      prompt: Mx(k, 'circRead.prompt'),
+      hints: [Mx(k, 'circRead.hint1'), Mx(k, 'circRead.hint2')],
+      explain: Mx(k, 'circRead.explain', { eq: $(`IA^2 = ${tex(c.right)}\\,,\\ IB^2 = ${tex(c.parts[0])}\\,,\\ ID^2 = ${tex(c.parts[1])}`) }),
+    };
+  },
+  circWhy: (lab, claim, k) => ({
+    id: 'circWhy', kind: 'choice',
+    prompt: Mx(k, 'circWhy.prompt'),
+    options: [
+      { text: Mx(k, 'circWhy.right'), correct: true },
+      { text: Mx(k, 'circWhy.square'), why: Mx(k, 'circWhy.whySquare') },
+      { text: Mx(k, 'circWhy.mid'), why: Mx(k, 'circWhy.whyMid') },
+    ],
+    hints: [Mx(k, 'circWhy.hint1'), Mx(k, 'circWhy.hint2')],
+    explain: Mx(k, 'circWhy.explain'),
+  }),
+  rule: (lab, claim, k) => {
+    const unknown = lab.mode === 'unknown';
+    return {
+      id: 'rule', kind: 'choice',
+      prompt: <MathText>{k(unknown ? 'dPromptQuad' : 'dPromptTri')}</MathText>,
+      options: discoveryOptionsOf(lab, k),
+      hints: [Mx(k, 'rule.hint1'), Mx(k, 'rule.hint2')],
+      explain: <ol className="list-decimal space-y-1 ps-5 text-sm" data-sp-formal>{(unknown ? ['formalU1', 'formalU2', 'formalQ1', 'formalQ2', 'formalQ3'] : ['formalTri1', 'formalTri2', 'formalTri3']).map((f) => <li key={f}><MathText>{k(f)}</MathText></li>)}</ol>,
+    };
+  },
+};

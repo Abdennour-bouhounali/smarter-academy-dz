@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import '../../../../i18n';
+import i18n from '../../../../i18n';
+import * as L from '../logic/vectorSum';
 import VectorSum from './VectorSum';
 import ManipulationWorkspace from '../ManipulationWorkspace';
 import { LEVELS } from '../levels';
@@ -60,5 +61,60 @@ describe('vector-sum — rendu', () => {
     expect(html).toContain('data-mode="chasles"');
     expect(html).toContain('data-mode="parallelogram"');
     clean(html);
+  });
+});
+
+const k = (key, o) => i18n.t(`lesson:manipulation.vectorSum.${key}`, o);
+const m = (mode) => (key, o) => k(`${mode}.${key}`, o);
+const PRE = /manipulation\.[a-zA-Z]/;
+const checkQ = (qid, q) => {
+  const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+  expect(out, qid).not.toMatch(PRE);
+  expect(out, qid).not.toContain('{{');
+  expect(out, qid).not.toContain('undefined');
+  expect(q.hints, qid).toHaveLength(2);
+  if (q.kind === 'choice') { expect(q.options.filter((o) => o.correct), qid).toHaveLength(1); q.options.filter((o) => !o.correct).forEach((o) => expect(o.why, qid).toBeTruthy()); } else expect(q.expected).toBeTruthy();
+};
+
+describe('vector-sum — questions pendant le labo (LabCheckpoint)', () => {
+  it('chasles : le virage (sumVec · shorter) puis le retour (zeroSum · opposite · règle) ; elles lisent les essais de l’élève', async () => {
+    const { chainOf, QUESTIONS } = await import('./VectorSum');
+    let s = L.init(LEVELS['vector-sum'].beginner.numbers);
+    s = L.attach(s, 0, 'B');
+    expect(L.reachedKinds(s)).toEqual(['turn']);
+    expect(chainOf(s, 'turn', false)).toEqual(['sumVec', 'shorter']);
+    for (const qid of chainOf(s, 'turn', false)) checkQ(qid, QUESTIONS[qid](s, k, { options: [], formal: null, m: m('chasles') }));
+    s = L.attach(s, 2, 'B');
+    expect(L.reachedKinds(s)).toEqual(['turn', 'zero']);
+    expect(chainOf(s, 'zero', true)).toEqual(['zeroSum', 'opposite', 'rule']);
+    for (const qid of ['zeroSum', 'opposite']) checkQ(qid, QUESTIONS[qid](s, k, {}));
+    const r = L.restartStep(s, 'zero');
+    expect(L.reachedKinds(r)).toEqual(['turn']);
+    expect(r.placed).toBe(null);
+  });
+
+  it('nageur : l’arrivée (angle · real) puis un départ manqué (miss · règle) ; angle attendu = celui de l’élève', async () => {
+    const { chainOf, QUESTIONS } = await import('./VectorSum');
+    let s = L.init(LEVELS['vector-sum'].advanced.numbers);
+    s = L.launch(s, 0);
+    expect(L.reachedKinds(s)).toEqual(['miss']);
+    checkQ('miss', QUESTIONS.miss(s, k, {}));
+    s = L.launch(s, 30);
+    expect(L.reachedKinds(s)).toEqual(['target', 'miss']);
+    expect(chainOf(s, 'target', true)).toEqual(['angle', 'real', 'rule']);
+    expect(QUESTIONS.angle(s, k).expected).toBe('30');
+    for (const qid of ['angle', 'real']) checkQ(qid, QUESTIONS[qid](s, k, {}));
+    expect(QUESTIONS.real(s, k).options.filter((o) => o.correct)).toHaveLength(1);
+  });
+});
+
+describe('vector-sum — mode guidé', () => {
+  it('questions actives : ni la progression ni le bouton d’indice ; coupées : ils reviennent', () => {
+    const a = renderToString(<VectorSum {...LEVELS['vector-sum'].beginner.numbers} level="beginner" />);
+    expect(a).not.toContain('data-manipulation-progress');
+    expect(a).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    expect(a).toContain('data-vs-step="0"');
+    const b = renderToString(<VectorSum {...LEVELS['vector-sum'].beginner.numbers} level="beginner" checkpoints={false} />);
+    expect(b).toContain('data-manipulation-progress');
   });
 });

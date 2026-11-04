@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, BatchChoiceQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
@@ -30,7 +30,10 @@ import { METHOD_MODELLING, RACE, MISTAKE_ONE_X } from '../content/textbook';
 export default function Module01Sibaq() {
   const [model, setModel] = useState(null);
   const [trials, setTrials] = useState([]);
-  const [q1, setQ1] = useState(false);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : l'étape 1 est faite quand la suite « build » du niveau متقدم est terminée
+  const [cps, setCps] = useState([]);
+  const onCheckpoint = (e) => setCps((l) => [...l, e]);
+  const answeredBuild = cps.some((e) => e.tk === 'checkpoint-done' && e.id === 'build');
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
   const addTrial = (tr) => setTrials((ts) => (ts.some((u) => u.x === tr.x) ? ts : [...ts, tr]));
@@ -84,6 +87,7 @@ export default function Module01Sibaq() {
                 lead="عمر الأب 36 سنة وأعمار أبنائه الثلاثة 4 و 6 و 8: ضع البطاقة «+ x» على كل من يكبر، ثم تحقّق من نموذجك."
                 onModel={({ tex }) => setModel(tex)}
                 onTrial={addTrial}
+                onCheckpoint={onCheckpoint}
               />
             ),
           }}
@@ -91,23 +95,17 @@ export default function Module01Sibaq() {
       }
       steps={[
         {
-          num: 1, title: 'لماذا يحمل كل ابن «+ x» وحده؟', subtitle: 'ابنِ النموذج في المستوى المتقدّم، ثم أجب', done: q1,
+          num: 1, title: 'لماذا يحمل كل ابن «+ x» وحده؟', subtitle: 'ابنِ النموذج في المستوى المتقدّم، ثم أجب', done: answeredBuild,
           content: (
             <div className="space-y-3">
               {evidence}
-              <TapQuestion
-                prompt={<span>في نموذج الأبناء الثلاثة وضعتَ «+ x» على كل ابن، لا «+ x» واحدة على مجموع أعمارهم. لماذا؟</span>}
-                options={[
-                  'لأنّ كل ابن يكبر بـ x سنة، فمجموع أعمار الأبناء الثلاثة يزيد ثلاث مرّات x',
-                  'لأنّ مجموع أعمار الأبناء يزيد بـ x سنة فقط مهما كان عدد الأبناء',
-                  'لأنّ الأب وحده هو الذي يكبر مع الزمن',
-                ]}
-                correct={0}
-                cols={1}
-                requires={['hal-muadala']}
-                explain={<span className="block space-y-1"><MathText>{MISTAKE_ONE_X.why}</MathText><MathText>{MISTAKE_ONE_X.right}</MathText></span>}
-                onAnswered={() => setQ1(true)}
-              />
+              <p data-evidence="checkpoint" data-tried={answeredBuild ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${answeredBuild ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {answeredBuild
+                  ? 'أجبتَ في المختبر: كل ابن يكبر بنفسه، لذلك يحمل كل ابن «+ x» وحده ويزيد مجموع أعمار الأبناء ثلاث مرّات x.'
+                  : 'تحقّق من نموذج الأبناء الثلاثة في المستوى المتقدّم، ثم أجب عن الأسئلة التي تظهر فوق المختبر.'}
+              </p>
+              {answeredBuild && <span className="block space-y-1 text-sm"><MathText>{MISTAKE_ONE_X.why}</MathText><MathText>{MISTAKE_ONE_X.right}</MathText></span>}
             </div>
           ),
         },
@@ -152,7 +150,7 @@ export default function Module01Sibaq() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

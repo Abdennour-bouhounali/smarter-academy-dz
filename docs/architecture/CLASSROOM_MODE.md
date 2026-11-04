@@ -264,6 +264,32 @@ changes; a block added later (feedback) joins the current page. Applies to steps
 every `ContentModule`; a single block taller than a screen (a lab) still shrinks. `userScale` is now in
 the classroom context. Tests: `classroomPages.test.js`, `classroomUnits.test.js`.
 
+**Paging outside Classroom Mode (2026-11-04, the student mission player).** `ClassroomPaged` reads its geometry from
+`PagingContext` (`classroom/PagingContext.js`) when one is provided, otherwise from the classroom as before:
+`{ isClassroomMode: true, scale: 1, userScale: 1, area, deepBlocks: true }`. The mission player
+(`lessons/common/mission/MissionPlayer.jsx`, guide §4septies) uses it to page units WITHOUT turning Classroom Mode on.
+Classroom Mode would unlock steps and modules, stop writing completion, and switch tests to the reveal flow.
+`deepBlocks` changes only that player's paging:
+- blocks are found through every single-child wrapper;
+- a block taller than a page is OPENED into its children, up to 5 levels deep (the five exercises of a test, the
+  cards of a memo);
+- its first child stays glued to the next when they fit together, so a heading is never alone on a page.
+- a DECORATIVE child (`aria-hidden="true"`, or positioned absolute/fixed: a card's gradient background) is never an item:
+  it is skipped when a block is opened and stays visible with its parent (`isDecor`). Before this rule (2026-11-04) a
+  module's opening card could open on its empty background, an empty first screen.
+
+With `onePerPage` (one item per screen):
+- a block starting with a heading (`<header>`, h1–h4) is GLUED to the next item, so a memo's header never stands alone;
+- a list is also found through a single large child (up to 3 levels: the body of a « للتذكّر » card);
+- a `<li>` is ONE item and is never opened for this rule (only when it is taller than the page);
+- an opened list's items each keep their own screen.
+- a block that APPEARS after an answer (the next sub-step of a « مسألة ») and is substantial (≥ `SMALL_BLOCK`) gets its OWN
+  screen, inserted just after the current one (hidden until « واصل »). Small added blocks join the current screen. Without this
+  the current screen grows and `FitToArea` shrinks everything (owner, 2026-11-04).
+
+Blocks are GROUPS of elements, shown or hidden together. Without `deepBlocks` each group is one element, and the
+classroom plan is unchanged.
+
 **Presenting is not learning.** While a session is active, `ModuleLayout` writes neither
 `markModuleVisited` nor `markModuleCompleted`, and the sequential unlock does not apply — a teacher
 projects module 3 without having completed 0–2 on their own account.

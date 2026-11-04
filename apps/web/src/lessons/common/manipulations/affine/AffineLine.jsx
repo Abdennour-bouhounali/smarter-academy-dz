@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useSta
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, ArrowUp, ArrowDown, MapPin, Minus, Plus } from 'lucide-react';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
@@ -11,6 +12,10 @@ import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
 import MathText from '../../components/MathText';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import * as L from '../logic/affineLine';
 import { ticks as tickValues } from '../logic/originLine';
 
@@ -53,6 +58,11 @@ import { ticks as tickValues } from '../logic/originLine';
  *   FORMALIZATION  « نسمّي العدد b … الترتيب عند المبدأ » (نشاط 3) ; la propriété écrite par la plateforme
  *   TRANSFER       معارف (رسم بنقطتين) ; القراءة البيانية (read) ; أوظّف ; les leçons 3–5 de l'unité
  *
+ * QUESTIONS PENDANT LE LABO (2026-10-28, lot 4) : quand un laboratoire (shift, identify, draw, read) est accompli, une suite de questions se pose PAR-DESSUS le
+ * labo (`CHAINS`, sur les essais de l'élève) et retient la suite (rien ne se pose plus, « التالي » attend) ; le dernier laboratoire finit par LA RÈGLE.
+ * Étapes `LabStepper` (`[data-al-lab-step=<i>]`, fête à chaque laboratoire fait) ; « إعادة » repart de zéro ; obligatoires pour tout élève, coupées par
+ * l'enseignant pour SON compte (`useLabCheckpointSettings`) ; `checkpoints` = false les coupe aussi ; `onCheckpoint(ev)` : la trace pour les étapes du module.
+ *
  * Manuel (§6bis) : chaque droite, chaque point, chaque lecture est un essai ou une réponse — pas d'auto-complétion.
  * Enchaînement (§7quater) : « shift|identify » — le second laboratoire s'ouvre par un BOUTON quand le premier est
  * accompli (« إلى المنحدر الثاني ← »), avec un retour ; l'état de chacun survit à l'aller-retour.
@@ -89,8 +99,8 @@ const COLORS = { line: '#7C2D12', ghost: '#94A3B8', hidden: '#D97706', mine: '#2
 
 export default function AffineLine({
   a: a0, b: b0, mode: mode0 = 'shift', find, reads, xMin, xMax, yMin, yMax, showRule = false, theme: theme0 = 'ramp',
-  title, lead, mission, level, levels: withLevels = true, initialMode = 'student', allowModeSwitch = false,
-  onTrial, onFinished,
+  title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false,
+  onTrial, onFinished, onCheckpoint,
 }) {
   const { t, i18n } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.affineLine.${key}`, o), [t]);
@@ -108,8 +118,9 @@ export default function AffineLine({
   const theme = L.THEMES.includes(theme0) ? theme0 : 'ramp';
   const make = () => L.init({ a, b, mode: modesRaw, find: findN, reads: readsN, ...(authored ? { xMin, xMax, yMin, yMax } : {}) });
   const [lab, setLab] = useState(make);
-  const sceneKey = `${a}:${b}:${modesRaw}:${findN ?? ''}:${readsN ?? ''}:${state.epoch}:${authored}`;
-  const [scene, setScene] = useState(sceneKey);
+  const sceneKey = `${a}:${b}:${modesRaw}:${findN ?? ''}:${readsN ?? ''}:${state.epoch}:${state.resetCount}:${authored}`;
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  const [cleared, setCleared] = useState([]);   // les laboratoires dont la suite de questions est finie
   const [pin, setPin] = useState(() => (L.mode(lab) === 'draw' ? L.startPin(lab) : null));
   const [liveB, setLiveB] = useState(null);
   const [liveA, setLiveA] = useState(null);
@@ -117,9 +128,10 @@ export default function AffineLine({
   const [liveYi, setLiveYi] = useState(null);
   const [drag, setDrag] = useState(null); // 'pin' | 'line' | 'b' | 'a' | null
   const [shake, setShake] = useState(0);
-  if (scene !== sceneKey) {
+  // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — les droites, les essais et les questions du labo
+  if (scene.key !== sceneKey) {
     const fresh = make();
-    setScene(sceneKey); setLab(fresh); setPin(L.mode(fresh) === 'draw' ? L.startPin(fresh) : null);
+    setScene({ key: sceneKey, inits: scene.inits + 1 }); setCleared([]); setLab(fresh); setPin(L.mode(fresh) === 'draw' ? L.startPin(fresh) : null);
     setLiveB(null); setLiveA(null); setLiveXi(null); setLiveYi(null); setDrag(null);
   }
   const mode = L.mode(lab);
@@ -128,7 +140,44 @@ export default function AffineLine({
   const NT = (p) => L.numText(p, st);
 
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  const cpSettings = useLabCheckpointSettings('affine-line');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpLive = cpOn && cpSettings.enabled;
+  const lastStage = lab.stage === lab.modes.length - 1;
+  const reachedNow = L.stageDone(lab);
+  const cp = useLabCheckpoint({
+    id: cpLive ? mode : null,
+    questions: cpLive && reachedNow ? chainOf(lab, mode, lastStage).map((q) => QUESTIONS[q](lab, k)) : null,
+    reached: reachedNow,
+    resetKey: scene.inits,
+    onRetry: () => { const fresh = L.restartStage(lab); setLab(fresh); setPin(L.mode(fresh) === 'draw' ? L.startPin(fresh) : null); setLiveB(null); setLiveA(null); setLiveXi(null); setLiveYi(null); },
+    onEvent: (ev) => state.report(onCheckpoint, ev),   // {tk:'checkpoint'|'checkpoint-done', id: laboratoire, …} — la TRACE que les étapes du module relisent
+    onDone: (id) => {
+      setCleared((c) => (c.includes(id) ? c : [...c, id]));
+      if (id === lab.modes[lab.modes.length - 1]) { state.discover(); state.formalize(); }
+    },
+  });
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // un laboratoire est FAIT quand son objectif est atteint ET sa suite de questions répondue : la pastille passe au vert et on fête
+  const stepDone = lab.modes.map((m) => L.stageDone(lab, m) && (!cpLive || cleared.includes(m)));
+  const nDone = stepDone.findIndex((d) => !d) < 0 ? stepDone.length : stepDone.findIndex((d) => !d);
+  const party = useStepCelebration();
+  const celebrated = useRef({ n: 0, inits: scene.inits });
+  if (celebrated.current.inits !== scene.inits) celebrated.current = { n: 0, inits: scene.inits };   // « إعادة » : on refête
+  useEffect(() => {
+    if (nDone <= celebrated.current.n) return;
+    celebrated.current.n = nDone;
+    party.celebrate({ n: nDone, total: stepDone.length });
+  }, [nDone]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son du GESTE (muet sans « الصوت ») : « tooth » une lecture ou un essai, « flag » l'objectif, « bell » un point posé, « over » un refus
+  useEffect(() => {
+    const kind = lab.last?.kind;
+    if (!kind) return;
+    if (kind === 'shiftOk' || kind === 'rel-match') playSfx('flag');
+    else if (kind === 'refused' || kind === 'originRefused' || kind === 'shiftZero' || kind === 'aFixed') playSfx('over');
+    else if (kind === 'accepted') playSfx(lab.last.line ? 'flag' : 'bell');
+    else playSfx('tooth');
+  }, [lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, { modes: lab.modes, a: NT(lab.a), b: NT(lab.b) }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const nTrials = lab.trials.length;
@@ -191,6 +240,7 @@ export default function AffineLine({
 
   /* ── gestes ── */
   const commitA = (j) => {
+    if (cp.blocking) return;
     setLiveA(j);
     setLab((s) => {
       // la marche : la droite de l'élève (b′ courant) prend a′ ; en shift elle résiste
@@ -201,6 +251,7 @@ export default function AffineLine({
     });
   };
   const commitBId = (j) => {
+    if (cp.blocking) return;
     setLiveB(j);
     setLab((s) => {
       if (s.modes[s.stage] === 'identify') return L.setB({ ...s, aNow: L.valueAt(aRef.current, s.snap.dA) }, L.valueAt(j, s.snap.dB));
@@ -210,7 +261,7 @@ export default function AffineLine({
     });
   };
   const commitPin = (p) => {
-    if (!p) return;
+    if (!p || cp.blocking) return;
     setLab((s) => {
       const n = L.place(s, L.valueAt(p.i, s.snap.dx), L.valueAt(p.j, s.snap.dyPin));
       if (n.last?.kind === 'refused' || n.last?.kind === 'originRefused') setShake((x) => x + 1);
@@ -266,7 +317,7 @@ export default function AffineLine({
     else if (kind === 'a') { const j = L.aIndexUnder(lab, bNow, v.x, v.y); if (j != null) setLiveA(clamp(j, ar)); }
   };
   const onPlaneDown = (e) => {
-    if (e.button > 0 || !planeRef.current || mode === 'read') return;
+    if (e.button > 0 || !planeRef.current || mode === 'read' || cp.blocking) return;
     const p = local(e);
     e.preventDefault();
     e.currentTarget.setPointerCapture?.(e.pointerId);
@@ -322,7 +373,7 @@ export default function AffineLine({
   // Sondes : jamais vides à l'ouverture (2026-10-09). Le départ n'est ni un essai ni une cible de `reads`.
   const xi = liveXi ?? (lastX ? L.indexOf(L.toNum(lastX.x ?? lastX.v), snap.dx) : L.defaultProbeIndex(lab, 'x'));
   const yi = liveYi ?? (lastY ? L.indexOf(L.toNum(lastY.v), snap.dyRead) : L.defaultProbeIndex(lab, 'y'));
-  const canX = mode === 'shift' || mode === 'read' || (mode === 'draw' && L.drawLine(lab));
+  const canX = (mode === 'shift' || mode === 'read' || (mode === 'draw' && L.drawLine(lab))) && !cp.blocking;
   const sX = useStretchInteraction({
     value: xi, range: xr, direction: 'ltr',
     toValue: useCallback((cx, _cy, rect) => geo.fromPx(cx - rect.left, 0).x / L.toNum(snap.dx), [geo, snap.dx]),
@@ -333,7 +384,7 @@ export default function AffineLine({
     value: yi, range: yr, direction: 'ltr',
     toValue: useCallback(yToIndex(snap.dyRead), [geo, snap.dyRead]), // eslint-disable-line react-hooks/exhaustive-deps
     onChange: (v) => yOn && setLiveYi(v),
-    onCommit: (v) => { if (!yOn) return; setLiveYi(v); setLab((s) => L.readY(s, L.valueAt(v, s.snap.dyRead))); },
+    onCommit: (v) => { if (!yOn || cp.blocking) return; setLiveYi(v); setLab((s) => L.readY(s, L.valueAt(v, s.snap.dyRead))); },
   });
 
   /* ── lectures vivantes ── */
@@ -615,7 +666,7 @@ export default function AffineLine({
               {k(`back.${lab.modes[lab.stage - 1]}`)}
             </button>
           )}
-          {L.hasNext(lab) && L.stageDone(lab) && (
+          {L.hasNext(lab) && L.stageDone(lab) && !cp.blocking && (
             <div className="flex flex-1 flex-wrap items-center gap-2 rounded-xl border-2 border-indigo-200 bg-indigo-50 px-2 py-1" data-al-next-card>
               <span className="text-xs font-bold text-indigo-900">{T(k(`done.${mode}`, { b: N(lab.b) }))}</span>
               <button type="button" onClick={goNext} data-al-next
@@ -639,6 +690,8 @@ export default function AffineLine({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpLive}
       hints={hintKeys.map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{
         autoStep: () => false,
@@ -658,8 +711,11 @@ export default function AffineLine({
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-orange-50/60 to-white">
-        <div ref={boxRef} className="space-y-3" data-affine-line data-mode={mode} data-modes={lab.modes.join('|')} data-stage={lab.stage}
+        <div ref={boxRef} className="relative space-y-3" data-affine-line data-mode={mode} data-modes={lab.modes.join('|')} data-stage={lab.stage}
           data-theme={theme} data-a={a ?? ''} data-b={b ?? ''} data-b-now={NT(bNow)} data-a-now={NT(aNow)} data-layout={layout} data-budget={budget}>
+          {party.node}
+          {cp.node}
+          {lab.modes.length > 1 && <LabStepper count={lab.modes.length} current={lab.stage} done={stepDone} stepAttr="data-al-lab-step" />}
           <div className={wide ? 'grid items-start gap-3' : 'space-y-3'} style={wide ? { gridTemplateColumns: `${planeCol}px 1fr` } : undefined} data-al-glance>
             {plane}
             {controls}
@@ -923,3 +979,158 @@ function Skater({ seg, geo, reduce, dragging }) {
 
 const AL_CSS = '.al-shake{animation:al-s .35s ease-in-out 1}@keyframes al-s{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}'
   + '@media (prefers-reduced-motion: reduce){.al-shake{animation:none}}';
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de questions de chaque laboratoire ; le DERNIER finit par LA RÈGLE. */
+export function chainOf(lab, mode, last) {
+  const placedOrigin = lab.trials.some((tr) => tr.kind === 'point' && tr.origin && !tr.ok);
+  const base = {
+    shift: ['lift', 'predict', 'cut'],
+    identify: ['readB', 'readA'],
+    draw: [placedOrigin ? 'origin' : null, 'enough', 'third'].filter(Boolean),
+    read: ['vocab', lab.readsDone.some((r) => r.axis === 'y') ? 'antec' : null, 'compute'].filter(Boolean),
+  }[mode];
+  return last ? [...base, 'rule'] : base;
+}
+export const CHAINS = Object.freeze({ shift: ['lift', 'predict', 'cut'], identify: ['readB', 'readA'], draw: ['origin', 'enough', 'third'], read: ['vocab', 'antec', 'compute'] });
+
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const D = (x) => `$${x}$`;
+const shuffled = (list, seed) => { const r = seed % list.length; return [...list.slice(r), ...list.slice(0, r)]; };
+const seedOf = (lab) => Math.abs(Number(lab.a.n) + Number(lab.b.n)) + lab.modes.length;
+
+/** Une valeur à calculer : saisie libre si elle est ≥ 0 (une réponse saisie ne peut être négative), sinon trois choix aux erreurs réelles (signe, décalage). */
+function valueQ(lab, k, { id, v, prompt, hints, explain }) {
+  const st = lab.style;
+  const T = (x) => <MathText>{D(L.numTex(x, st))}</MathText>;
+  if (Lin.cmp(v, 0) >= 0) return { id, kind: 'number', expected: Lin.fracText(v), answer: T(v), prompt, hints, explain };
+  const opts = [
+    { text: T(v), correct: true },
+    { text: T(Lin.neg(v)), why: Cq(k, 'sign') },
+    { text: T(Lin.add(v, 1)), why: Cq(k, 'off') },
+  ];
+  return { id, kind: 'choice', cols: 3, prompt, options: shuffled(opts, seedOf(lab)), hints, explain };
+}
+/** Trois valeurs distinctes : la bonne et deux erreurs réelles (`why` propre à chacune). */
+function choiceOf(lab, k, { id, good, wrongs, prompt, hints, explain, seed = 0 }) {
+  const st = lab.style;
+  const T = (x) => <MathText>{D(L.numTex(x, st))}</MathText>;
+  const list = [{ v: good, correct: true }];
+  for (const w of wrongs) if (!list.some((o) => L.same(o.v, w.v))) list.push(w);
+  for (let bump = 1; list.length < 3; bump += 1) { const v = Lin.add(good, bump); if (!list.some((o) => L.same(o.v, v))) list.push({ v, why: Cq(k, 'off') }); }
+  const opts = list.map((o) => ({ text: T(o.v), ...(o.correct ? { correct: true } : { why: o.why }) }));
+  return { id, kind: 'choice', cols: 3, prompt, options: shuffled(opts, seedOf(lab) + seed), hints, explain };
+}
+
+export const QUESTIONS = {
+  lift: (lab, k) => {
+    const st = lab.style; const N = (x) => D(L.numTex(x, st));
+    const p = lab.probes.find((q) => L.same(q.b, lab.b));
+    const o = { x: L.numText(p.x, st), yd: N(p.yd), yl: N(p.yl), b: N(lab.b), calc: D(`${L.numTex(p.yl, st)} - ${Lin.cmp(p.yd, 0) < 0 ? `(${L.numTex(p.yd, st)})` : L.numTex(p.yd, st)} = ${L.numTex(lab.b, st)}`) };
+    return valueQ(lab, k, { id: 'lift', v: lab.b, prompt: Cq(k, 'lift.prompt', o), hints: [Cq(k, 'lift.hint1', o), Cq(k, 'lift.hint2')], explain: Cq(k, 'lift.explain', o) });
+  },
+  predict: (lab, k) => {
+    const st = lab.style; const N = (x) => D(L.numTex(x, st));
+    const used = lab.probes.map((q) => Lin.fracText(q.x));
+    const xq = [3, 4, 5, 6, 2, 1, -1].find((c) => !used.includes(String(c))) ?? 7;
+    const yd = L.image(lab.a, 0, xq);
+    const v = Lin.add(yd, lab.b);
+    const o = { x: xq, yd: N(yd), b: N(lab.b), calc: D(`${L.numTex(yd, st)} + ${Lin.cmp(lab.b, 0) < 0 ? `(${L.numTex(lab.b, st)})` : L.numTex(lab.b, st)} = ${L.numTex(v, st)}`) };
+    return valueQ(lab, k, { id: 'predict', v, prompt: Cq(k, 'predict.prompt', o), hints: [Cq(k, 'predict.hint1', o), Cq(k, 'predict.hint2', o)], explain: Cq(k, 'predict.explain', o) });
+  },
+  cut: (lab, k) => {
+    const st = lab.style; const N = (x) => D(L.numTex(x, st));
+    const o = { b: N(lab.b), good: D(L.pointTex(0, lab.b, st)) };
+    const opts = [
+      { text: <MathText>{o.good}</MathText>, correct: true },
+      { text: <MathText>{D(L.pointTex(lab.b, 0, st))}</MathText>, why: Cq(k, 'cut.whySwap', o) },
+      { text: <MathText>{D(L.pointTex(0, 0, st))}</MathText>, why: Cq(k, 'cut.whyOrigin', o) },
+    ];
+    return { id: 'cut', kind: 'choice', cols: 3, prompt: Cq(k, 'cut.prompt'), options: shuffled(opts, seedOf(lab)), hints: [Cq(k, 'cut.hint1'), Cq(k, 'cut.hint2', o)], explain: Cq(k, 'cut.explain', o) };
+  },
+  readB: (lab, k) => {
+    const st = lab.style; const N = (x) => D(L.numTex(x, st)); const h = lab.hidden;
+    const o = { a: N(h.a), b: N(h.b) };
+    return choiceOf(lab, k, {
+      id: 'readB', good: h.b, seed: 0,
+      wrongs: [{ v: h.a, why: Cq(k, 'readB.whySwap', o) }, { v: Lin.neg(h.b), why: Cq(k, 'sign') }],
+      prompt: Cq(k, 'readB.prompt'), hints: [Cq(k, 'readB.hint1'), Cq(k, 'readB.hint2')], explain: Cq(k, 'readB.explain', o),
+    });
+  },
+  readA: (lab, k) => {
+    const st = lab.style; const N = (x) => D(L.numTex(x, st)); const h = lab.hidden;
+    const o = { a: N(h.a), b: N(h.b) };
+    return choiceOf(lab, k, {
+      id: 'readA', good: h.a, seed: 1,
+      wrongs: [{ v: h.b, why: Cq(k, 'readA.whySwap', o) }, { v: Lin.neg(h.a), why: Cq(k, 'sign') }],
+      prompt: Cq(k, 'readA.prompt'), hints: [Cq(k, 'readA.hint1'), Cq(k, 'readA.hint2')], explain: Cq(k, 'readA.explain', o),
+    });
+  },
+  origin: (lab, k) => {
+    const st = lab.style; const N = (x) => D(L.numTex(x, st));
+    const o = { b: N(lab.b), f: D(`f(0) = ${L.numTex(lab.b, st)}`) };
+    const opts = [
+      { text: Cq(k, 'origin.right', o), correct: true },
+      { text: Cq(k, 'origin.window'), why: Cq(k, 'origin.whyWindow', o) },
+      { text: Cq(k, 'origin.two'), why: Cq(k, 'origin.whyTwo') },
+    ];
+    return { id: 'origin', kind: 'choice', cols: 1, prompt: Cq(k, 'origin.prompt'), options: shuffled(opts, seedOf(lab)), hints: [Cq(k, 'origin.hint1'), Cq(k, 'origin.hint2', o)], explain: Cq(k, 'origin.explain', o) };
+  },
+  enough: (lab, k) => {
+    const st = lab.style;
+    const [p, q] = lab.placed;
+    const o = { p: D(L.pointTex(p.x, p.y, st)), q: D(L.pointTex(q.x, q.y, st)) };
+    const opts = [
+      { text: Cq(k, 'enough.two'), correct: true },
+      { text: Cq(k, 'enough.three'), why: Cq(k, 'enough.whyThree', o) },
+      { text: Cq(k, 'enough.one'), why: Cq(k, 'enough.whyOne', o) },
+    ];
+    return { id: 'enough', kind: 'choice', cols: 1, prompt: Cq(k, 'enough.prompt'), options: shuffled(opts, seedOf(lab) + 1), hints: [Cq(k, 'enough.hint1'), Cq(k, 'enough.hint2')], explain: Cq(k, 'enough.explain', o) };
+  },
+  third: (lab, k) => {
+    const st = lab.style; const N = (x) => D(L.numTex(x, st));
+    const used = lab.placed.map((q) => Lin.fracText(q.x));
+    const cands = [2, 4, 1, 3, 5, -1].filter((c) => !used.includes(String(c)));
+    const xq = cands.find((c) => Lin.cmp(L.image(lab.a, lab.b, c), 0) >= 0) ?? cands[0] ?? 7;
+    const v = L.image(lab.a, lab.b, xq);
+    const o = { x: xq, f: D(`f(x) = ${L.affineTex(lab.a, lab.b, st)}`), calc: D(L.imageCalcTex(lab.a, lab.b, xq, st)), v: N(v) };
+    return valueQ(lab, k, { id: 'third', v, prompt: Cq(k, 'third.prompt', o), hints: [Cq(k, 'third.hint1', o), Cq(k, 'third.hint2')], explain: Cq(k, 'third.explain', o) });
+  },
+  vocab: (lab, k) => {
+    const st = lab.style; const N = (x) => D(L.numTex(x, st));
+    const r = lab.readsDone.find((q) => q.axis === 'x') ?? lab.readsDone[0];
+    const x = r.axis === 'x' ? r.v : r.other; const y = r.axis === 'x' ? r.other : r.v;
+    const o = { x: N(x), y: N(y) };
+    const opts = [
+      { text: Cq(k, 'vocab.right', o), correct: true },
+      { text: Cq(k, 'vocab.swap', o), why: Cq(k, 'vocab.whySwap', o) },
+      { text: Cq(k, 'vocab.same', o), why: Cq(k, 'vocab.whySame', o) },
+    ];
+    return { id: 'vocab', kind: 'choice', cols: 1, prompt: Cq(k, 'vocab.prompt', o), options: shuffled(opts, seedOf(lab)), hints: [Cq(k, 'vocab.hint1', o), Cq(k, 'vocab.hint2')], explain: Cq(k, 'vocab.explain', o) };
+  },
+  antec: (lab, k) => {
+    const st = lab.style; const N = (x) => D(L.numTex(x, st));
+    const r = [...lab.readsDone].reverse().find((q) => q.axis === 'y');
+    const o = { x: N(r.other), y: N(r.v) };
+    return valueQ(lab, k, { id: 'antec', v: r.other, prompt: Cq(k, 'antec.prompt', o), hints: [Cq(k, 'antec.hint1', o), Cq(k, 'antec.hint2', o)], explain: Cq(k, 'antec.explain', o) });
+  },
+  compute: (lab, k) => {
+    const st = lab.style; const N = (x) => D(L.numTex(x, st));
+    const r = lab.readsDone.find((q) => q.axis === 'x') ?? lab.readsDone[0];
+    const x = r.axis === 'x' ? r.v : r.other; const y = r.axis === 'x' ? r.other : r.v;
+    const o = { x: N(x), f: D(`f(x) = ${L.affineTex(lab.a, lab.b, st)}`), calc: D(L.imageCalcTex(lab.a, lab.b, x, st)) };
+    return valueQ(lab, k, { id: 'compute', v: y, prompt: Cq(k, 'compute.prompt', o), hints: [Cq(k, 'compute.hint1', o), Cq(k, 'compute.hint2')], explain: Cq(k, 'compute.explain', o) });
+  },
+  rule: (lab, k) => {
+    const opts = discoveryFor(lab, k);
+    const ci = opts.findIndex((o) => o.correct);
+    return {
+      id: 'rule', kind: 'choice', cols: 1,
+      prompt: <MathText>{k(`dPrompt.${L.primaryMode(lab)}`)}</MathText>,
+      options: ci === opts.length - 1 ? [opts[ci], ...opts.slice(0, ci)] : opts,
+      hints: [Cq(k, `rule.hint1.${L.primaryMode(lab)}`), Cq(k, `rule.hint2.${L.primaryMode(lab)}`)],
+      explain: Cq(k, `rule.explain.${L.primaryMode(lab)}`),
+    };
+  },
+};

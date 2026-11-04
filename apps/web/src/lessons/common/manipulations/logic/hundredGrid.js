@@ -138,6 +138,9 @@ export function nextTask(s) {
 /** « إعادة » : la même tâche, plateau propre ; les essais restent. */
 export const restartTask = (s) => (s.free ? { ...s, t: 0, last: null } : { ...s, t: startT(taskOf(s)), guess: '', last: null, opened: { ...s.opened, [s.ti]: false } });
 
+/** « أعِد التجربة » (carte de questions) : la même tâche repart — plateau propre, panier refermé, et la tâche n'est plus « faite » (la carte se rouvrira à la prochaine réussite). */
+export const retryTask = (s) => (s.free ? restartTask(s) : { ...restartTask(s), done: { ...s.done, [s.ti]: false } });
+
 export function setFree(s, raw) {
   const x = P.parseStock(raw);
   if (!x) return s;

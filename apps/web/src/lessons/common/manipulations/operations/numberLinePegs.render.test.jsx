@@ -82,3 +82,39 @@ describe('number-line-pegs — rendu', () => {
     expect(formal).toContain('data-npp-formal');
   });
 });
+
+describe('number-line-pegs — questions pendant le labo (LabCheckpoint)', () => {
+  it('chaque tâche : chaque question a un texte, une seule bonne réponse, deux indices, ni clé brute ni {{', async () => {
+    const { CHAINS, QUESTIONS } = await import('./NumberLinePegs');
+    const tasks = [...LV.beginner.numbers.tasks, ...LV.advanced.numbers.tasks, ...L.PRESETS.writings.tasks];
+    for (const raw of tasks) {
+      let s = L.init({ tasks: [raw], world: raw.id === 'k1' ? 'writings' : 'rope' });
+      const tk = s.tasks[0];
+      expect(CHAINS[tk.id], tk.id).toBeTruthy();
+      for (const qid of CHAINS[tk.id]) {
+        const q = QUESTIONS[qid](s, tk, k);
+        const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+        expect(out, `${tk.id}.${qid}`).not.toMatch(RAW);
+        expect(out, `${tk.id}.${qid}`).not.toContain('{{');
+        expect(q.hints, `${tk.id}.${qid}`).toHaveLength(2);
+        if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${tk.id}.${qid}`).toHaveLength(1);
+        else expect(q.expected).toBeTruthy();
+      }
+    }
+    const s = L.init(LV.beginner.numbers);
+    expect(QUESTIONS.stackCount(s, s.tasks[1], k).expected).toBe('3');       // −7/3, 7/(−3), −14/6
+    expect(QUESTIONS.pegCount(L.init({ ...L.PRESETS.writings }), L.init({ ...L.PRESETS.writings }).tasks[0], k).expected).toBe('2');
+    const a = L.init(LV.advanced.numbers);
+    expect(QUESTIONS.commonDen(a, a.tasks[2], k).expected).toBe('12');       // −3/4, −3/4, −5/6
+  });
+});
+
+describe('number-line-pegs — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('مبتدئ (questions) : ni la progression ni le bouton d’indice ; les étapes sont un LabStepper', () => {
+    const b = html({ ...LV.beginner.numbers, level: 'beginner' });
+    expect(b).not.toContain('data-manipulation-progress');
+    expect(b).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    expect(b).toContain('data-lab-stepper');
+    expect(b).toContain('data-npp-step');
+  });
+});

@@ -80,7 +80,7 @@ export default function Module04Awazzif() {
         { num: 6, title: 'تمرين 8 — المستطيل ومنتصفات أضلاعه', done: all('8'),
           content: <div className="space-y-3">{block('8', ['tasawi-shuaayn', 'mutawazi-adlaa'])}</div> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

@@ -48,7 +48,7 @@ export default function Module02NataijMubashira() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={2} />}
+      footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />
   );
 }

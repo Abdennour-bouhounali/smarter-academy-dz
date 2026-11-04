@@ -10,6 +10,10 @@ import { useManipulation } from '../useManipulation';
 import useStretchInteraction from '../useStretchInteraction';
 import LabFold from '../primitives/LabFold';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import KidFigure from '../primitives/KidFigure';
 import { LabCard, StageFrame, PromptCard, StepperCard, RoundButton, VerdictBanner, ChoiceCard } from '../primitives/LabKit';
 import { LEVELS } from '../levels';
@@ -76,6 +80,14 @@ import * as L from '../logic/fractionKnife';
  * `lead`, `onTrial(e)` — e = { kind: 'cut', share, d, inShare, readable, writing? } | { kind: 'claim', claim, ok, answer }
  * | { kind: 'pin', share, d, readable } —, `onFinished({ share })` à la règle ; tous par `state.report`.
  *
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 1, 2026-10-28) : `checkpoints` (défaut true).
+ * مبتدئ (une seule scène) : quand la découverte serait prête (3 écritures, une coupe illisible, Amine jugé), UNE suite par-dessus le
+ * labo (`chainsOf`) : le k de SES écritures · pourquoi 4/6 déborde · le كسر عشري · LA RÈGLE. متقدم : la part 1 quand les cibles sont
+ * tamponnées (k · le كسر عشري), la part 2 quand 27/45 est ramené (combien de morceaux réunis · le diviseur refusé · LA RÈGLE). La règle
+ * formalise (`onDone`). « أعِد التجربة » remet LA MÊME part (`L.retryStage`) ; « إعادة » la part 1. Mode guidé (`guided`) dès qu'une suite
+ * est active ; l'enseignant seul coupe les questions pour SON compte. ÉTAPES `LabStepper` (`[data-fk-step=<i>]`, متقدم) et la fête par
+ * part. SON : `tooth` pour chaque coupe du couteau (plus grave en arrière), `bell` une écriture tamponnée, `over` une coupe à cheval,
+ * `flag` la part terminée.
  * ONBOARDING (prop `coach`, défaut true — `LabCoach`, §8quater) : `logic/fractionKnife.js › coachOf` montre la poignée du couteau,
  * la proposition à ouvrir, la carte de réponse, le cadeau, puis le curseur / « غرس » / « ابدأ » des épingles ; jamais un nombre
  * de morceaux ni une réponse.
@@ -118,6 +130,7 @@ function Row({ children, className = '', ...rest }) {
 export default function FractionKnife({
   world: world0, share: share0, start: start0, max: max0, claim: claim0, targets: targets0, then: then0,
   title, lead, level, levels: withLevels = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished, coach: coachOn = true,
+  checkpoints: cpOn = true,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
@@ -141,18 +154,68 @@ export default function FractionKnife({
   const numbers = state.numbers;
   const sceneKey = `${JSON.stringify(numbers)}|${state.epoch}`;
   const [lab, setLab] = useState(() => L.init(numbers));
-  const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init(numbers)); }
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  // « إعادة » (epoch), un autre niveau : TOUT recommence — la part 1, le cahier, les essais et les questions du labo
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(L.init(numbers)); }
   const world = lab.world;
   const st = L.current(lab);
 
   const ready = L.discoveryReady(lab);
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  // les questions pendant le labo : la suite de la part courante (`chainsOf`)
+  const cpSettings = useLabCheckpointSettings('fraction-knife');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const chains = cpOn && cpSettings.enabled ? chainsOf(lab) : null;
+  const chain = chains?.[lab.stage] ?? null;
+  const ruleByCheckpoint = !!chains;
+  const stageReached = stageDone(lab, lab.stage);
+  const cp = useLabCheckpoint({
+    id: chain ? `stage-${lab.stage}` : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, k)) : null,
+    reached: stageReached,
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.retryStage),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => { if (chains?.[Number(id.slice(6))]?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  // le son : chaque coupe du couteau (au plus une note toutes les 35 ms), puis le relâchement jugé, puis la part terminée
+  const prevD = useRef({ d: lab.d, at: 0 });
+  useEffect(() => {
+    const p = prevD.current;
+    const now = Date.now();
+    if (lab.d !== p.d && now - p.at > 35) { playSfx('tooth', { pitch: lab.d > p.d ? 1 : 0.75 }); p.at = now; }
+    p.d = lab.d;
+  }, [lab.d]);
+  const lastSeen = useRef(lab.last);
+  useEffect(() => {
+    const v = lab.last;
+    if (v === lastSeen.current) return;
+    lastSeen.current = v;
+    if (!v) return;
+    if (v.stamped) playSfx('bell');
+    else if (!v.cut.readable) playSfx('over');
+  }, [lab.last]);
+  const flagged = useRef(false);
+  useEffect(() => {
+    if (!stageReached) { flagged.current = false; return; }
+    if (!flagged.current) { flagged.current = true; playSfx('flag'); }
+  }, [stageReached]);
+  // les étapes (متقدم : deux parts) : une part est FAITE quand son but est atteint ET que ses questions sont répondues
+  const nStages = lab.stages.length;
+  const stepDone = lab.stages.map((_, i) => stageDone(lab, i) && (i !== lab.stage || !cp.blocking));
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();
+  const nowDone = stepDone[lab.stage];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.stage)) return;
+    celebrated.current.add(lab.stage);
+    party.celebrate({ n: lab.stage + 1, total: nStages });
+  }, [nowDone, lab.stage]); // eslint-disable-line react-hooks/exhaustive-deps
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'fraction-knife', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '',
     labels: { hide: k('coach.hide'), show: k('coach.show'), ok: k('coach.ok'), stop: k('coach.stop') },
   });
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (ready && !ruleByCheckpoint) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, { share: L.finishedShare(lab) }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
   // chaque essai rapporté UNE fois, même quand un geste en produit plusieurs (une épingle traversée + la coupe)
   const reported = useRef(0);
@@ -462,7 +525,7 @@ export default function FractionKnife({
   );
 
   /* ── le cadeau du grand-père (متقدم) ── */
-  const nextCard = L.canOpenNext(lab) && (
+  const nextCard = L.canOpenNext(lab) && !cp.blocking && (
     <LabCard className={`space-y-2 border-amber-200 bg-amber-50/70 ${compact ? 'p-2.5' : 'p-3'}`} data-fk-next>
       <p className={`${compact ? 'text-xs' : 'text-sm'} flex flex-wrap items-center gap-x-2 gap-y-1 font-bold leading-snug text-amber-950`}>
         <span className="font-black">{k('next.title')}</span> <span>{k('next.text', { p0: s0.p, q0: s0.q, p: lab.stages[1].p, q: lab.stages[1].q })}</span>
@@ -556,6 +619,8 @@ export default function FractionKnife({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={[0, 1, 2].map((i) => k(`hints.${world}.${i}`))}
+      guided={!!chain || ruleByCheckpoint}
+      headerAction={cpSettings.control}
       coach={coachOn ? coach : null}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={k(`discovery.prompt.${world}`, discoveryPromptArgs)} options={discoveryOptions} formal={formal} />}
@@ -565,10 +630,17 @@ export default function FractionKnife({
         <div ref={boxRef} className="space-y-2" data-fraction-knife data-world={world} data-share={st.label} data-d={lab.d}
           data-stage={lab.stage} data-solved={ready ? 'true' : 'false'} data-layout={wide ? 'wide' : 'narrow'}>
           <style dangerouslySetInnerHTML={{ __html: MOTION_CSS }} />
-          <div className="space-y-2.5" data-fk-glance>
+          <div className="relative space-y-2.5" data-fk-glance>
+            {party.node}
+            {cp.node}
             <PromptCard
               size={compact ? 'md' : 'lg'}
-              aside={targetsAside}
+              aside={nStages > 1 || targetsAside ? (
+                <div className="flex flex-wrap items-center gap-2">
+                  {nStages > 1 && <LabStepper count={nStages} current={lab.stage} done={stepDone} stepAttr="data-fk-step" />}
+                  {targetsAside}
+                </div>
+              ) : null}
               context={promptContext}
               contextProps={{ 'data-fk-context': promptKey }}
               title={promptTitle}
@@ -912,3 +984,115 @@ function KnifeIcon() {
     </svg>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** Le but d'une part : مبتدئ — la découverte prête ; متقدم — la part 1 : les cibles tamponnées ; la part 2 : la découverte prête. */
+export function stageDone(lab, i) {
+  if (lab.world === 'paper' && lab.stages.length > 1) return i === 0 ? L.allTargetsDone(lab) : L.discoveryReady(lab);
+  return L.discoveryReady(lab);
+}
+
+/** Les suites de chaque part ; `decimal` seulement si la part s'écrit en dixièmes ; `rule` clôt la dernière part. */
+export function chainsOf(lab) {
+  const s0 = lab.stages[0];
+  const dec = L.readCut(s0.p, s0.q, 10).readable ? ['decimal'] : [];
+  if (lab.world === 'paper' && lab.stages.length > 1) return { 0: ['times', ...dec], 1: ['glue', 'divisor', 'rule'] };
+  return { 0: ['times', ...(lab.claim ? ['claim'] : []), ...dec, 'rule'] };
+}
+
+const iso = (s) => `⁦${s}⁩`;
+const C = (k, key, o) => k(`cp.${key}`, o);
+const pick = (list, right, whys) => list.map((text, i) => (i === right ? { text, correct: true } : { text, why: whys[i] }));
+const fr = (a, b) => iso(`${a}/${b}`);
+
+export const QUESTIONS = {
+  times: (lab, k) => {
+    const s0 = lab.stages[0];
+    const base = L.readCut(s0.p, s0.q, s0.start);
+    const m = L.multiplyLines(lab)[0] ?? { k: 2, a: base.a, d: s0.start, a2: base.a * 2, d2: s0.start * 2 };
+    const o = { from: fr(m.a, m.d), to: fr(m.a2, m.d2), k: iso(m.k), d: iso(m.d), d2: iso(m.d2), a: iso(m.a), a2: iso(m.a2) };
+    return {
+      id: 'times', kind: 'number', expected: String(m.k), answer: <bdi dir="ltr">{m.k}</bdi>,
+      prompt: C(k, 'times.prompt', o), hints: [C(k, 'times.hint1', o), C(k, 'times.hint2', o)], explain: C(k, 'times.explain', o),
+    };
+  },
+  claim: (lab, k) => {
+    const s0 = lab.stages[0];
+    const c = lab.claim;
+    const v = L.judgeClaim(s0.p, s0.q, [c.a, c.b]);
+    const o = { share: fr(s0.p, s0.q), claim: fr(c.a, c.b), x: iso(L.decimalText(v.cut.inShare)), a: iso(c.a), b: iso(c.b), p: iso(s0.p), q: iso(s0.q) };
+    return {
+      id: 'claim', kind: 'choice', prompt: C(k, 'claim.prompt', o),
+      options: pick([C(k, 'claim.add', o), C(k, 'claim.big', o), C(k, 'claim.same', o)], 0, [null, C(k, 'claim.whyBig', o), C(k, 'claim.whySame', o)]),
+      hints: [C(k, 'claim.hint1', o), C(k, 'claim.hint2', o)], explain: C(k, 'claim.explain', o),
+    };
+  },
+  decimal: (lab, k) => {
+    const s0 = lab.stages[0];
+    const c = L.readCut(s0.p, s0.q, 10);
+    const o = { share: fr(s0.p, s0.q), ten: fr(c.a, 10), dec: iso(c.decimal), a: iso(c.a) };
+    const glued = `${c.a},10`;
+    const hundredth = `0,0${c.a}`;
+    return {
+      id: 'decimal', kind: 'choice', cols: 3, prompt: C(k, 'decimal.prompt', o),
+      options: pick([iso(c.decimal), iso(glued), iso(hundredth)], 0, [null, C(k, 'decimal.whyGlued', { ...o, glued: iso(glued) }), C(k, 'decimal.whyHundredth', { ...o, h: iso(hundredth) })]),
+      hints: [C(k, 'decimal.hint1', o), C(k, 'decimal.hint2', o)], explain: C(k, 'decimal.explain', o),
+    };
+  },
+  glue: (lab, k) => {
+    const g = L.totalGlue(lab);
+    const s1 = lab.stages[1];
+    const o = { from: fr(s1.p, s1.q), to: fr(g.a2, g.d2), k: iso(g.k), calc: iso(`${s1.p} ÷ ${g.k} = ${g.a2} ; ${s1.q} ÷ ${g.k} = ${g.d2}`) };
+    return {
+      id: 'glue', kind: 'number', expected: String(g.k), answer: <bdi dir="ltr">{g.k}</bdi>,
+      prompt: C(k, 'glue.prompt', o), hints: [C(k, 'glue.hint1', o), C(k, 'glue.hint2', o)], explain: C(k, 'glue.explain', o),
+    };
+  },
+  divisor: (lab, k) => {
+    const s1 = lab.stages[1];
+    const dv = L.refusedDivisor(lab) ?? s1.start;
+    const kk = s1.start / dv;
+    const o = { dv: iso(dv), q: iso(s1.q), p: iso(s1.p), k: iso(kk), x: iso(L.decimalText(L.product(s1.p, s1.q, dv))) };
+    return {
+      id: 'divisor', kind: 'choice', prompt: C(k, 'divisor.prompt', o),
+      options: pick([C(k, 'divisor.right', o), C(k, 'divisor.notDiv', o), C(k, 'divisor.big', o)], 0, [null, C(k, 'divisor.whyNotDiv', o), C(k, 'divisor.whyBig', o)]),
+      hints: [C(k, 'divisor.hint1', o), C(k, 'divisor.hint2', o)], explain: C(k, 'divisor.explain', o),
+    };
+  },
+  rule: (lab, k) => {
+    const paper = lab.world === 'paper' && lab.stages.length > 1;
+    let options;
+    let args = {};
+    if (paper) {
+      const s1 = lab.stages[1];
+      const dv = L.refusedDivisor(lab) ?? 9;
+      const kk = s1.start / dv;
+      const den = L.readablePeriod(s1.p, s1.q);
+      const r = L.readCut(s1.p, s1.q, den);
+      args = { p: s1.p, q: s1.q, a2: r.a, d2: r.d };
+      options = [
+        { text: k('discovery.anyDivisor'), why: k('discovery.whyAnyDivisor', { d: dv, k: kk, q: s1.start, p: s1.p, x: L.decimalText(L.product(s1.p, s1.q, dv)) }) },
+        { text: k('discovery.denOnly'), why: k('discovery.whyDenOnly', { p: s1.p, d: den, x: L.decimalText(L.shareValue(s1.p, den)) }) },
+        { text: k('discovery.rightPaper', { k: s1.start / den }), correct: true },
+      ];
+    } else {
+      const s0 = lab.stages[0];
+      const c = lab.claim ?? { a: s0.p + 1, b: s0.q + 1 };
+      const cv = L.judgeClaim(s0.p, s0.q, [c.a, c.b]);
+      const dd = L.firstUnreadable(lab) ?? (s0.start + 2);
+      const rc = L.readCut(s0.p, s0.q, dd);
+      const pieces = (n) => k('pieces', { count: n });
+      options = [
+        { text: k('discovery.add'), why: k('discovery.whyAdd', { a: c.a, b: c.b, x: L.decimalText(cv.cut.inShare), piecesB: pieces(c.b) }) },
+        { text: k('discovery.rightTray'), correct: true },
+        { text: k('discovery.bigger'), why: k('discovery.whyBigger', { piecesD: pieces(dd), reading: rc.whole === 0 ? k('count.partOnly') : k('count.straddle', { pieces: pieces(rc.whole) }) }) },
+      ];
+    }
+    return {
+      id: 'rule', kind: 'choice', prompt: k(`discovery.prompt.${lab.world}`, args), options,
+      hints: [C(k, `rule.${lab.world}.hint1`), C(k, `rule.${lab.world}.hint2`)],
+      explain: <p>{k(`formal.rule.${lab.world}`)}</p>,
+    };
+  },
+};

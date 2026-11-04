@@ -1,8 +1,10 @@
-import { it, expect } from 'vitest';
+import { it, expect, describe } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
-import AffineMeter from './AffineMeter';
+import i18n from '../../../../i18n';
+import AffineMeter, { chainOf, QUESTIONS } from './AffineMeter';
+import * as L from '../logic/affineMeter';
 import ManipulationWorkspace from '../ManipulationWorkspace';
 import manipulationAr from '../../../../i18n/locales/ar/lesson.manipulation.json';
 import source from './AffineMeter.jsx?raw';
@@ -34,13 +36,14 @@ it('affine-meter se rend aux deux niveaux, sans clé brute', () => {
     expect(html).not.toMatch(/manipulation\.[a-zA-Z]/);
     if (c.theme === 'payroll') {
       expect(html).toContain('data-deco="timecard"');
-      expect(html).toContain('data-am-stage-tab="antecedent"');
+      expect(html).toContain('data-am-stages');
+      expect(html).toContain('data-am-step="2"');
       expect(html).toContain('data-am-mark="15"');
       expect(html).toContain('aria-valuemax="20"');
     } else {
       expect(html).toContain('data-deco="car"');
       expect(html).toContain('data-deco="street"');
-      expect(html).not.toContain('data-am-stage-tab');
+      expect(html).not.toContain('data-am-stages');
       expect(html).toContain('aria-valuemax="12"');
     }
   }
@@ -86,4 +89,51 @@ it('affine-meter : le compteur n\'est jamais vide à l\'ouverture et « جرّب
   expect(out).not.toContain('data-am-x=""');
   expect(out).not.toContain('data-fx=""');
   expect(out).toContain('data-manipulation-autocomplete="ready"');
+});
+
+describe('affine-meter — questions pendant le labo (LabCheckpoint)', () => {
+  const RAW = /manipulation\.[a-zA-Z]/;
+  const k = (key, o) => i18n.t(`lesson:manipulation.affineMeter.${key}`, o);
+  const wOf = (theme) => (key, o) => i18n.t(`lesson:manipulation.affineMeter.worlds.${theme}.${key}`, o);
+  const check = (lab, stage, w, FN) => {
+    for (const qid of chainOf(lab, stage)) {
+      const q = QUESTIONS[qid](lab, k, w, FN);
+      const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+      expect(out, `${stage}.${qid}`).not.toMatch(RAW);
+      expect(out, `${stage}.${qid}`).not.toContain('{{');
+      expect(q.hints, `${stage}.${qid}`).toHaveLength(2);
+      if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${stage}.${qid}`).toHaveLength(1);
+      else expect(q.expected).toBeTruthy();
+    }
+  };
+  it('niveau مبتدئ : fixed · step · règle, avec les nombres de l’élève', () => {
+    let lab = L.init({ rule: '40x+100', mode: 'image' });
+    for (const x of [0, 3, 6]) lab = L.commit(lab, x);
+    expect(chainOf(lab, 'image')).toEqual(['fixed', 'step', 'rule']);
+    check(lab, 'image', wOf('ride'), 'f');
+    expect(QUESTIONS.fixed(lab, k, wOf('ride'), 'f').expected).toBe('100');
+    expect(QUESTIONS.step(lab, k, wOf('ride'), 'f').expected).toBe('40');
+  });
+  it('niveau متقدم : image (double), antécédent (règle), classify', () => {
+    let lab = L.init({ rule: '185x+35000', mode: 'image|antecedent|classify', target: '37775', marks: '5|8|10|12|15' });
+    for (const x of [5, 8, 10, 12, 15]) lab = L.commit(lab, x);
+    expect(L.stageDone(lab, 'image')).toBe(true);
+    expect(chainOf(lab, 'image')).toEqual(['fixed', 'step']);
+    check(lab, 'image', wOf('payroll'), 'S');
+    expect(QUESTIONS.fixed(lab, k, wOf('payroll'), 'S').expected).toBe('35000');
+    lab = L.setStage(lab, 'antecedent');
+    lab = L.commit(lab, 15);
+    expect(chainOf(lab, 'antecedent')).toEqual(['first', 'rest', 'rule']);
+    check(lab, 'antecedent', wOf('payroll'), 'S');
+    expect(QUESTIONS.rest(lab, k, wOf('payroll'), 'S').expected).toBe('2775');
+    lab = L.setStage(lab, 'classify');
+    expect(chainOf(lab, 'classify')).toEqual(['linear', 'constant']);
+    check(lab, 'classify', wOf('payroll'), 'S');
+  });
+  it('mode guidé : ni la progression ni le bouton d’indice (questions actives)', () => {
+    const out = renderToString(<AffineMeter rule="40x+100" mode="image" theme="ride" />);
+    expect(out).not.toContain('data-manipulation-progress');
+    expect(out).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    expect(out).toContain('data-manipulation-sound');
+  });
 });

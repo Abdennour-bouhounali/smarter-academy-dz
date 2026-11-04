@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import { parseDec } from '@smarter-academy/core';
-import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
-import { FractionQuestion } from '../../../../../../common/textbook';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { GUIDE } from '../content/textbook';
 
 /**
  * Module 1 — l'ENTRÉE de la leçon, choisie par la plateforme (LESSON_DEVELOPMENT_GUIDE §4ter) : la دوّاسة. UNE SEULE PISTE (§4quater) : le labo `gear-crank` en haut, sans
- * carte au-dessus — il porte son contexte et SA question ; la main TOURNE la manivelle, le nombre de tours de pédale est la variable. Les ÉTAPES interrogent ce que
- * l'élève a FAIT, avec SES essais : combien de tours de pédale pour 6 tours de roue (la surprise : plus que 6), pour UN tour de roue (le مقلوب, 3/4 × 4/3 = 1), pourquoi
- * « fois le مقلوب », puis une cible fractionnaire. Les noms (briques) viennent APRÈS la réponse. Le نشاط 1 du manuel est posé en application au module 4.
+ * carte au-dessus — il porte son contexte et SA question ; la main TOURNE la manivelle, le nombre de tours de pédale est la variable. PROTOTYPE 2026-10-28 : les
+ * questions sur ce que l'élève a FAIT sont posées PAR-DESSUS le labo après chaque tâche (`primitives/LabCheckpoint`, chaînes `GearCrank › CHAINS`) et retiennent la
+ * tâche suivante ; les étapes ci-dessous en gardent la TRACE (événements `checkpoint-done`) puis posent les noms (briques). Seule la cible fractionnaire (متقدم)
+ * reste une question d'étape. Le نشاط 1 du manuel est posé en application au module 4.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const Ltr = ({ children }) => <bdi dir="ltr">{String(children)}</bdi>;
@@ -20,8 +19,10 @@ const Ltr = ({ children }) => <bdi dir="ltr">{String(children)}</bdi>;
 export default function Module01Nashat() {
   const [trials, setTrials] = useState([]);
   const [q, setQ] = useState({});
-  const answered = (k) => () => setQ((s) => ({ ...s, [k]: true }));
+  const markAnswered = (k) => () => setQ((s) => ({ ...s, [k]: true }));
   const record = (e) => setTrials((list) => [...list, e]);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand la suite de questions de sa tâche l'est
+  const answered = (id) => trials.some((e) => e.tk === 'checkpoint-done' && e.id === id);
   const mine = trials.filter((e) => !e.free && e.tk === 'release' && e.ok);
   const m2 = mine.findLast((e) => e.id === 'm2');
   const m3 = mine.findLast((e) => e.id === 'm3');
@@ -53,92 +54,29 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'كم دورة للدوّاسة تلزم؟', subtitle: 'أكثر من دورات العجلة', done: !!q.a && !!q.a2,
+          num: 1, title: 'كم دورة للدوّاسة تلزم؟', subtitle: 'أكثر من دورات العجلة', done: answered('m2'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="m2" ok={!!m2}
-                done={<span>في المهمة 2 دارت العجلة <Ltr>{m2?.wheel}</Ltr> دورات حتى بلغت العلم.</span>}
-                todo="أنجز المهمة 2 في الدوّاسة حتى تقف العجلة عند العلم، ثم عُد إلى هذا السؤال." />
-              <NumericQuestion
-                prompt="كم دورةً دارت الدوّاسة حتى بلغت العجلة العلم؟"
-                expected={8} display="8" parse={parseDec} requires={['qisma-darb-3am']}
-                explain={<MathText>{'كلّ دورة للدوّاسة تُدير العجلة $\\frac{3}{4}$ دورة فقط، فلبلوغ $6$ دورات للعجلة تلزم $8$ دورات للدوّاسة.'}</MathText>}
-                onAnswered={answered('a')}
-              />
-              {q.a && (
-                <TapQuestion
-                  prompt="لماذا دارت الدوّاسة أكثر من 6 دورات؟"
-                  options={[
-                    'لأنّ دورة دوّاسة واحدة تُدير العجلة $\\frac{3}{4}$ دورة فقط',
-                    'لأنّ الصحن الأمامي أكبر من الترس الخلفي',
-                    'لأنّ السلسلة تنزلق',
-                  ].map(M)}
-                  correct={0} cols={1} requires={['qisma-darb-3am']}
-                  explain={<MathText>{'الصحن الأمامي أصغر من الترس الخلفي ($24 < 32$ سنًّا)، فيقدّم السلسلة بسنّ أقلّ من العجلة في كلّ دورة. السلسلة لا تنزلق.'}</MathText>}
-                  onAnswered={answered('a2')}
-                />
-              )}
+              <Evidence id="m2" ok={answered('m2') && !!m2}
+                done={<span>أجبتَ في المختبر: <Ltr>{m2?.wheel}</Ltr> دورات للعجلة احتاجت <Ltr>{m2?.pedal}</Ltr> دورات للدوّاسة، لأنّ الصحن أصغر من الترس فلا تُدير دورة الدوّاسة إلّا <MathText>{'$\\frac{3}{4}$'}</MathText> دورة للعجلة.</span>}
+                todo="أنجز المهمتين 1 و 2 في الدوّاسة، وأجب عن الأسئلة التي تظهر فوق المختبر بعد كلّ مهمة." />
             </div>
           ),
         },
         {
-          num: 2, title: 'وللعجلة دورة واحدة؟', subtitle: 'المقلوب', done: !!q.b && !!q.b2,
+          num: 2, title: 'وللعجلة دورة واحدة؟', subtitle: 'المقلوب، والقسمة ضرب', done: answered('m3'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="m3" ok={!!m3}
-                done={<span>في المهمة 3 احتاجت دورة واحدة للعجلة إلى <Ltr>{m3?.pedal}</Ltr> دورة للدوّاسة.</span>}
-                todo="أنجز المهمة 3 في الدوّاسة (دورة واحدة للعجلة)، ثم عُد إلى هذا السؤال." />
-              <FractionQuestion
-                prompt="كم دورةً للدوّاسة تلزم لدورة واحدة للعجلة؟ (كسر)"
-                expected="4/3" requires={['qisma-darb-3am']}
-                explain={<MathText>{'$32 \\div 24 = \\frac{32}{24} = \\frac{4}{3}$ دورة للدوّاسة.'}</MathText>}
-                onAnswered={answered('b')}
-              />
-              {q.b && (
-                <NumericQuestion
-                  prompt={<MathText>{'احسب $\\frac{3}{4} \\times \\frac{4}{3}$ :'}</MathText>}
-                  expected={1} display="1" parse={parseDec} requires={['jida-kasrayn-2am']}
-                  explain={<MathText>{GUIDE.one}</MathText>}
-                  onAnswered={answered('b2')}
-                />
-              )}
-              {q.b2 && (
-                <TapQuestion
-                  prompt={<MathText>{'اكتب القاعدة: العددان $\\frac{3}{4}$ و $\\frac{4}{3}$ جداؤهما $1$ . أيّ عبارة تصف العلاقة بينهما؟'}</MathText>}
-                  options={[
-                    'كلّ منهما مقلوب الآخر: جداؤهما $1$',
-                    'كلّ منهما معاكس الآخر: مجموعهما $0$',
-                    'هما عددان متساويان',
-                  ].map(M)}
-                  correct={0} cols={1} requires={['jida-kasrayn-2am']}
-                  explain={<MathText>{'المعاكس يعطي مجموعًا $0$ مع العدد ($\\frac{3}{4} + (-\\frac{3}{4}) = 0$) ؛ أمّا المقلوب فيعطي جداءً $1$ .'}</MathText>}
-                  onAnswered={answered('b3')}
-                />
-              )}
-              {q.b3 && <KnowledgeBrick id="maqlub" lead="عددان جداؤهما 1: كيف نسمّي كلًّا منهما بالنسبة إلى الآخر؟" />}
+              <Evidence id="m3" ok={answered('m3') && !!m3}
+                done={<span>أجبتَ في المختبر: دورة واحدة للعجلة احتاجت <Ltr>{m3?.pedal}</Ltr> دورة للدوّاسة، و <MathText>{'$\\frac{3}{4} \\times \\frac{4}{3} = 1$'}</MathText> .</span>}
+                todo="أنجز المهمة 3 في الدوّاسة (دورة واحدة للعجلة)، وأجب عن أسئلتها فوق المختبر." />
+              {answered('m3') && <KnowledgeBrick id="maqlub" lead="عددان جداؤهما 1: كيف نسمّي كلًّا منهما بالنسبة إلى الآخر؟" />}
+              {answered('m3') && <KnowledgeBrick id="qisma-darb" lead="6 ÷ 3/4 = 6 × 4/3 : ما الذي فعلناه بالقسمة على عدد؟" />}
             </div>
           ),
         },
         {
-          num: 3, title: 'من دورة إلى ست دورات', subtitle: 'القسمة ضرب', done: !!q.c,
-          content: (
-            <div className="space-y-3" data-activity-evidence>
-              <Evidence id="chain" ok={!!m2 && !!m3}
-                done={<span>دورة واحدة للعجلة تحتاج <Ltr>{m3?.pedal}</Ltr> دورة للدوّاسة، و <Ltr>{m2?.wheel}</Ltr> دورات للعجلة احتاجت <Ltr>{m2?.pedal}</Ltr> دورات.</span>}
-                todo="أنجز المهمتين 2 و 3 في الدوّاسة، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt="6 دورات للعجلة هي 6 مرّات دورة واحدة. أيّ حساب يعطي عدد دورات الدوّاسة؟"
-                options={[M('$6 \\times \\frac{4}{3}$'), M('$6 \\times \\frac{3}{4}$'), M('$6 + \\frac{4}{3}$')]}
-                correct={0} cols={3} requires={['maqlub']}
-                explain={<MathText>{'$6 \\times \\frac{4}{3} = 8$ . ($6 \\times \\frac{3}{4} = \\frac{9}{2}$ هو عدد دورات العجلة لو دارت الدوّاسة 6 دورات؛ و $6 + \\frac{4}{3}$ لا معنى له هنا.)'}</MathText>}
-                onAnswered={answered('c')}
-              />
-              {q.c && <KnowledgeBrick id="qisma-darb" lead="6 ÷ 3/4 = 6 × 4/3 : ما الذي فعلناه بالقسمة على عدد؟" />}
-            </div>
-          ),
-        },
-        {
-          num: 4, title: 'وإذا كان الهدف كسرًا؟', subtitle: 'كسر على كسر', done: !!q.d,
+          num: 3, title: 'وإذا كان الهدف كسرًا؟', subtitle: 'كسر على كسر', done: !!q.d,
           content: (
             <div className="space-y-3" data-activity-evidence>
               <Evidence id="a1" ok={!!a1}
@@ -148,14 +86,14 @@ export default function Module01Nashat() {
                 prompt={<MathText>{'احسب $\\frac{9}{2} \\div \\frac{3}{4}$ :'}</MathText>}
                 expected={6} display="6" parse={parseDec} requires={['qisma-darb']}
                 explain={<MathText>{'$\\frac{9}{2} \\times \\frac{4}{3} = \\frac{36}{6} = 6$ .'}</MathText>}
-                onAnswered={answered('d')}
+                onAnswered={markAnswered('d')}
               />
               {q.d && <KnowledgeBrick id="qismat-kasrayn" lead="قسمة كسر على كسر: ماذا نفعل بالكسر الثاني؟" />}
             </div>
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

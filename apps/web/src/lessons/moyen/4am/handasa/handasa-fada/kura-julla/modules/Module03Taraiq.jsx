@@ -151,7 +151,7 @@ export default function Module03Taraiq() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }

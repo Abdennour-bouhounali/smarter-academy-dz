@@ -39,7 +39,7 @@ export default function Module04Atamarran() {
         step(8, 'ex-17b', 'جداء سالب ومجموع معدوم', ['ishara-jidaa']),
         step(9, 'deep-37', 'جداء سالب ومجموع موجب', ['ishara-jidaa']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

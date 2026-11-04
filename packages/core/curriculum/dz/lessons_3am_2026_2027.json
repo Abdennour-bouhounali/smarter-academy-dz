@@ -48,11 +48,15 @@
         "حساب جداء عددين نسبيين (صحيحين أو عشريين) بتعيين إشارته ثم ضرب المسافتين إلى الصفر، ومعرفة أنّ $a\\times0=0$"
       ],
       "pointPrerequisites": {
+        "P1": [
+          "2am_jam-tarh-nisbiya_P1"
+        ],
         "P2": [
           "3am_jidaa-adadayn-nisbiyayn_P1"
         ],
         "P3": [
-          "3am_jidaa-adadayn-nisbiyayn_P2"
+          "3am_jidaa-adadayn-nisbiyayn_P2",
+          "2am_jam-tarh-nisbiya_P2"
         ],
         "P4": [
           "3am_jidaa-adadayn-nisbiyayn_P2"
@@ -112,7 +116,7 @@
         "P1": ["3am_jidaa-adadayn-nisbiyayn_P2"],
         "P2": ["3am_jidaa-ida-nisbiya_P1", "3am_jidaa-adadayn-nisbiyayn_P4"],
         "P3": ["3am_jidaa-ida-nisbiya_P2", "3am_jidaa-adadayn-nisbiyayn_P2"],
-        "P4": ["3am_jidaa-ida-nisbiya_P2", "3am_jidaa-adadayn-nisbiyayn_P4"]
+        "P4": ["3am_jidaa-ida-nisbiya_P2", "3am_jidaa-adadayn-nisbiyayn_P4", "2am_jam-tarh-nisbiya_P2", "2am_jam-tarh-nisbiya_P3"]
       },
       "programmeItems": [
         "3am.m1.r01"
@@ -292,6 +296,9 @@
       },
       "status": "available",
       "pointPrerequisites": {
+        "P1": [
+          "2am_jida-kasrayn_P1"
+        ],
         "P2": [
           "3am_maqlub-qismat-kasrayn_P1"
         ],
@@ -328,9 +335,14 @@
         "اختيار طريقة مناسبة لمقارنة كسرين: الجداءان المتصالبان، أو المقارنة بالعدد $1$ أو بكسر وسيط، أو نفس البسط"
       ],
       "pointPrerequisites": {
+        "P2": [
+          "2am_muqarana-kasrayn_P3"
+        ],
         "P3": [
           "3am_tasawi-muqaranat-kasrayn_P1",
-          "3am_tasawi-muqaranat-kasrayn_P2"
+          "3am_tasawi-muqaranat-kasrayn_P2",
+          "2am_muqarana-kasrayn_P2",
+          "2am_muqarana-kasrayn_P4"
         ]
       },
       "programmeItems": [
@@ -383,8 +395,13 @@
         "اختيار أصغر مضاعف مشترك للمقامين (أوّل مضاعف للمقام الأكبر يقبل القسمة على المقام الآخر) لتبسيط الحساب"
       ],
       "pointPrerequisites": {
+        "P1": [
+          "2am_jam-tarh-kusur_P2"
+        ],
         "P2": [
-          "3am_jam-tarh-kasrayn_P1"
+          "3am_jam-tarh-kasrayn_P1",
+          "2am_jam-tarh-kusur_P1",
+          "2am_jam-tarh-kusur_P3"
         ],
         "P3": [
           "3am_jam-tarh-kasrayn_P1"
@@ -791,7 +808,10 @@
           "3am_quwat-adad-nisbi_P2"
         ],
         "P4": [
-          "3am_quwat-adad-nisbi_P1"
+          "3am_quwat-adad-nisbi_P1",
+          "2am_silsila-bidun-aqwas_P2",
+          "2am_silsila-bi-aqwas_P1",
+          "2am_silsila-bi-aqwas_P3"
         ]
       },
       "programmeItems": [
@@ -832,7 +852,7 @@
       "decisionStatus": "draft",
       "titleSource": "textbook",
       "title": "أدمج تعلّماتي — القوى ذات أسس نسبية صحيحة",
-      "description": "",
+      "description": "وضعية إدماجية (رقاقة الذهب: قطر الذرّة وسُمك الرقيقة وعدد الطبقات ورتبة القدر) تُعبّئ قوى العدد 10 وقواعدها والكتابة العلمية ورتبة القدر وقوة عدد نسبي، تسبقها ست وضعيات تدريبية.",
       "prerequisites": [],
       "prerequisiteLessonCodes": [
         "quwa-adad-ashara",
@@ -840,17 +860,37 @@
         "kitaba-ilmiya-rutba",
         "quwat-adad-nisbi"
       ],
-      "pointsToLearn": [],
+      "pointsToLearn": [
+        "توظيف قوى العدد 10 وقواعدها، والكتابة العلمية والحصر ورتبة القدر، وقوة عدد نسبي وأولوية العمليات، لحلّ وضعيات مركّبة من الحياة والعلوم"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "3am_quwa-adad-ashara_P3",
+          "3am_qawaid-quwa-ashara_P4",
+          "3am_kitaba-ilmiya-rutba_P3",
+          "3am_quwat-adad-nisbi_P3",
+          "3am_quwat-adad-nisbi_P4"
+        ]
+      },
       "programmeItems": [],
       "textbookRef": {
         "unit": 3,
         "pages": {
           "integration": [
             52
+          ],
+          "evaluation": [
+            52
+          ],
+          "ict": [
+            53
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 30,
+      "difficulty": "متوسط",
+      "icon": "🧩"
     },
     {
       "code": "tabsit-hadhf-aqwas",
@@ -900,6 +940,9 @@
       },
       "status": "available",
       "pointPrerequisites": {
+        "P1": [
+          "2am_tawzi-darb-jam-tarh_P3"
+        ],
         "P2": [
           "3am_tabsit-hadhf-aqwas_P1"
         ],
@@ -1030,14 +1073,16 @@
       "status": "available",
       "pointPrerequisites": {
         "P1": [
-          "3am_amaliyat-natiqa_P4"
+          "3am_amaliyat-natiqa_P4",
+          "1am_tatbiq-qaida-harfiya_P2"
         ],
         "P2": [
           "3am_qimat-ibara-harfiya_P1"
         ],
         "P3": [
           "3am_qimat-ibara-harfiya_P1",
-          "3am_qimat-ibara-harfiya_P2"
+          "3am_qimat-ibara-harfiya_P2",
+          "1am_tatbiq-qaida-harfiya_P3"
         ]
       },
       "durationMinutes": 64,
@@ -1198,12 +1243,16 @@
       },
       "status": "available",
       "pointPrerequisites": {
+        "P1": [
+          "2am_ikhtibar-musawat-mutabayina_P1"
+        ],
         "P2": [
           "3am_musawiyat-amaliyat_P1"
         ],
         "P3": [
           "3am_musawiyat-amaliyat_P1",
-          "3am_musawiyat-amaliyat_P2"
+          "3am_musawiyat-amaliyat_P2",
+          "2am_ikhtibar-musawat-mutabayina_P1"
         ]
       },
       "durationMinutes": 59,
@@ -1259,7 +1308,8 @@
       "status": "available",
       "pointPrerequisites": {
         "P1": [
-          "3am_musawiyat-amaliyat_P1"
+          "3am_musawiyat-amaliyat_P1",
+          "2am_ikhtibar-musawat-mutabayina_P3"
         ],
         "P2": [
           "3am_mutabayinat-amaliyat_P1",
@@ -1390,6 +1440,9 @@
       },
       "status": "available",
       "pointPrerequisites": {
+        "P1": [
+          "2am_hall-mushkil-muadala_P2"
+        ],
         "P2": [
           "3am_muadalat-darajat-ula_P1"
         ],
@@ -1400,7 +1453,8 @@
           "3am_musawiyat-amaliyat_P2"
         ],
         "P4": [
-          "3am_muadalat-darajat-ula_P3"
+          "3am_muadalat-darajat-ula_P3",
+          "2am_hall-mushkil-muadala_P1"
         ]
       },
       "durationMinutes": 62,
@@ -1418,7 +1472,7 @@
       "decisionStatus": "draft",
       "titleSource": "textbook",
       "title": "أدمج تعلّماتي — المساويات – المتباينات – المعادلات",
-      "description": "",
+      "description": "وضعية إدماجية تجمع خواص المساويات والمتباينات والحصر ومعادلة من الدرجة الأولى (ملاحقة في سباق دراجات، شاحنتا التمر والبرتقال)، تسبقها ست وضعيات تدريبية.",
       "prerequisites": [],
       "prerequisiteLessonCodes": [
         "musawiyat-amaliyat",
@@ -1426,17 +1480,44 @@
         "hasr-adad-ushri",
         "muadalat-darajat-ula"
       ],
-      "pointsToLearn": [],
+      "pointsToLearn": [
+        "تجنيد خواص المساويات والمتباينات والعمليات وحصر عدد عشري موجب لمعالجة وضعيات مركّبة من الحياة اليومية",
+        "ترييض وضعية بمعادلة من الدرجة الأولى بمجهول واحد وحلّها والتحقق من الحل، ثم الحكم على النتيجة أو تقريبها بمتباينة أو بحصر أو بتدوير"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "3am_musawiyat-amaliyat_P3",
+          "3am_mutabayinat-amaliyat_P4",
+          "3am_hasr-adad-ushri_P3"
+        ],
+        "P2": [
+          "3am_muadalat-darajat-ula_P3",
+          "3am_muadalat-darajat-ula_P4",
+          "3am_wadiya-idmajiya-musawiyat-mutabayinat_P1"
+        ]
+      },
       "programmeItems": [],
       "textbookRef": {
         "unit": 5,
         "pages": {
           "integration": [
             84
+          ],
+          "evaluation": [
+            84
+          ],
+          "challenge": [
+            70
+          ],
+          "opener": [
+            70
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 28,
+      "difficulty": "متوسط",
+      "icon": "🚴"
     },
     {
       "code": "tanasub-tamthil-bayani",
@@ -1486,6 +1567,9 @@
       },
       "status": "available",
       "pointPrerequisites": {
+        "P1": [
+          "2am_talim-nuqta-mustawi_P3"
+        ],
         "P2": [
           "3am_tanasub-tamthil-bayani_P1"
         ],
@@ -1493,7 +1577,8 @@
           "3am_tanasub-tamthil-bayani_P2"
         ],
         "P4": [
-          "3am_tanasub-tamthil-bayani_P2"
+          "3am_tanasub-tamthil-bayani_P2",
+          "2am_talim-nuqta-mustawi_P2"
         ]
       },
       "durationMinutes": 62,

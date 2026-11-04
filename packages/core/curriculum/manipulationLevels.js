@@ -286,6 +286,82 @@ export const VISUAL_THEMES = Object.freeze({
   //   attar  le دكّان العطّار d'un souk : des étagères de bocaux d'épices, un sac de cumin avec sa louche de laiton, une balance numérique dont le grand écran à sept segments ARRONDIT la masse,
   //          un plateau où un cône d'épice grandit avec la masse, une bande de précision en dessous, une élève (KidFigure, hijab) au comptoir (`scoop-scale`)
   attar: { kind: 'objects', shows: 'دكّان عطّار: ميزان رقمي يدوِّر الكتلة على شاشته وكيس كمّون ومغرفة نحاسية وشريط دقّة' },
+  // 2AM, unité 2, leçon 6 (2026-10-28) :
+  //   harbor  le مرسى الصيّادين : un quai de pierre vu d'en haut, la mer et deux barques peintes (ni drapeau ni texte), une corde posée sur un ruban gradué avec un mousqueton de laiton,
+  //           un cadran de précision sur un poteau de bois, deux enfants (KidFigure : un garçon et sa sœur en hijab) qui tiennent le ruban (`mooring-lines`)
+  harbor: { kind: 'lengths', shows: 'مرسى الصيّادين: حبل ممدود على الرصيف فوق شريط قياس مدرّج ومشبك نحاسي وقرص دقّة وقوارب على الماء' },
+  // 2AM, unité 2, leçon 7 (2026-10-29) :
+  //   mountaintrail  un sentier de forêt de cèdres vu de côté : collines, cèdres, le ruban du sentier en S doux (ou un circuit fermé), des poteaux blancs tous les 1/n et des poteaux
+  //                  rouges tous les k blancs, le portail en bois « مدخل الحظيرة », la source « العين », une randonneuse (KidFigure : fille en hijab) ou un randonneur (`trail-odometer`)
+  mountaintrail: { kind: 'lengths', shows: 'مسلك جبلي في غابة الأرز: أعمدة بيضاء وحمراء وبوّابة وعين ماء' },
+  // 2AM, unité 2, leçon 9 (2026-10-29) :
+  //   oilpress  معصرة الزيتون التعاونية : deux ou trois réservoirs d'inox sur pieds devant un mur de pierre, un tube de verre gradué sur chacun, l'huile dorée, le trait « 1 » du plein, un niveau laser rouge sur un rail vertical ; Anis (KidFigure, sweat) ou Salma (hijab, tunique, tablier) (`level-laser`)
+  oilpress: { kind: 'levels', shows: 'معصرة الزيتون التعاونية: خزّانات بأنابيب زجاجية مدرّجة وليزر مستوى' },
+  // 2AM, unité 3, leçon 1 (2026-10-29) :
+  //   corniche  le كورنيش de la ville au soleil devant la mer : une balustrade bleue, des palmiers, une fontaine, deux bancs, un lampadaire, un kiosque de glaces, un arrêt de bus, un kiosque de pêcheurs,
+  //             et sous la balustrade une planche en bois graduée (13 graduations) où chaque repère laisse tomber un fil à plomb ; un drapeau rouge « 0 » et un levier de laiton à crans ; une guide (KidFigure, hijab) à côté du drapeau (`corniche-ruler`)
+  corniche: { kind: 'lengths', shows: 'كورنيش المدينة: معالم ولوحة مدرّجة تحت الدرابزين' },
+  // 2AM, unité 3, leçon 4 (2026-10-29) :
+  //   digsite  une fouille archéologique près de Djemila vue d'en haut : terre ocre, ficelles blanches tous les mètres (9 × 7), murs de pierre d'une maison ruinée, une brosse, un seau, un tamis ; des trouvailles sur des croisements (une jarre, une lampe à huile, un tesson d'assiette, une pièce lisse, une tesselle de mosaïque géométrique, une perle) ; un piquet rouge
+  //            avec deux cordes (bleue vers l'est, verte vers le nord) graduées par des étiquettes ; Selma (KidFigure, hijab) à مبتدئ, Anis (sweat) à متقدم (`dig-grid`)
+  digsite: { kind: 'areas', shows: 'حفرية أثرية: شبكة خيوط ووتد المبدأ ولُقى' },
+  // 2AM, unité 3, leçon 5 (2026-10-29) :
+  //   balloonvalley  un montgolfière au bord d'un plateau de grès du Tassili (arches, cyprès sahariens) : le bord est la ligne « 0 », le canyon en dessous est négatif, une échelle d'altitude (−12 … +12 m) à droite ; l'enveloppe rayée et la nacelle d'osier
+  //                  portent des flammes orange (+1 m) et des sacs de sable bruns (−1 m) noués aux cordes — une flamme et un sac côte à côte se verrouillent en paire neutre ; deux bacs et un lot « paire neutre » sous la scène ;
+  //                  Sara (KidFigure, fille en hijab) ou Rayan (sweat) dans la nacelle (`balloon-ballast`)
+  balloonvalley: { kind: 'objects', shows: 'منطاد فوق وادي التاسيلي: نفخات لهب وأكياس رمل' },
+  // 2AM, unité 3, leçon 5 « المسافة بين نقطتين » (2026-10-29) :
+  //   meteoboard  la cour du club d'astronomie (نادي الأرصاد) : un grand thermomètre blanc gradué de −10 à +12 °C, un trait bleu au zéro, une station météo et une girouette ; des graines colorées pincées sur l'échelle (étiquettes de villes) et
+  //               un compas en laiton le long de l'échelle (mâchoire fixe, mâchoire libre, vis à cadran) ; Nour (KidFigure, hijab) à مبتدئ, Ilyes (sweat) à متقدم (`gap-caliper`)
+  meteoboard: { kind: 'lengths', shows: 'لوحة نادي الأرصاد: مقياس حرارة كبير وخرزات ومسماك نحاسي' },
+  // 1AM, unité 1, leçon 3 « الأعداد العشرية ونصف المستقيم المدرّج » (2026-10-30) :
+  //   sportsday  la journée sportive du collège : une fosse de saut en longueur (sable ratissé, planche d'appel blanche à gauche, bord de la fosse à droite), un ruban de mesure déroulé le long de la fosse (la planche = le métré O), des drapeaux colorés et
+  //              l'empreinte d'une athlète dans le sable ; Salma et Yasmine (KidFigure, filles en hijab) et Anis (sweat) aux bacs de drapeaux, les juges ne sont jamais dessinés (`jump-tape`)
+  sportsday: { kind: 'lengths', shows: 'يوم رياضي: حفرة قفز وشريط قياس وأعلام' },
+  // 1AM, unité 5, leçon 1 « الأعداد النسبية وسياقات استعمالها » (2026-10-30) :
+  //   winterdjelfa  une semaine de janvier à Djelfa : un thermomètre sur le mur d'une maison de pierre, une ligne de gel (0) et la neige au-dessous des gouttières ; des collines blanches derrière ;
+  //                 Salma (KidFigure, fille en hijab) lit le liquide ; deux autres décors portent le même niveau — une jauge d'altitude (mer sous le zéro, colline au-dessus) et les étages d'un immeuble
+  //                 (la cabine d'ascenseur est le niveau) ; l'ombre d'un niveau dans un miroir posé sur le 0 (`frost-gauge`)
+  winterdjelfa: { kind: 'lengths', shows: 'شتاء الجلفة: مقياس حرارة وخط الصفر وجهاز ارتفاع وعمارة بمصعد' },
+  // 1AM, unité 6, leçon 1 « البحث عن أعداد ناقصة » (2026-10-30) :
+  //   packingline  un atelier de conditionnement de fournitures scolaires : un tapis roulant (LTR : plateau de sortie, machine à carte, bac d'entrée), des caisses numérotées, une rangée de cartes d'opérations
+  //                (+ − × ÷ et « a − ») ; Salma (KidFigure, fille en hijab) pousse les caisses et Anis (sweat) range les cartes (`rewind-belt`)
+  packingline: { kind: 'lengths', shows: 'ورشة تعبئة: حزام ناقل وآلة ببطاقة عملية وصناديق مرقّمة' },
+  // 1AM, unité 6, leçon 2 « تطبيق قاعدة حرفية » (2026-10-30) :
+  //   copyshop  le comptoir d'une papeterie-photocopie : une pile de feuilles, une photocopieuse, la caisse dont l'écran affiche le nombre calculé par la carte de règle, un comparateur à deux écrans ; Salma (KidFigure, fille en hijab)
+  //             tient la caisse ; ce que la main tourne : un cadran gradué par lettre (`letter-dial`)
+  copyshop: { kind: 'lengths', shows: 'مكتبة وتصوير: لائحة أسعار وصندوق دفع وأقراص لتعيين قيمة كلّ حرف' },
+  // 1AM, unité 5, leçon 2 « التعليم على مستقيم مدرّج » (2026-10-30) :
+  //   villageroad  une route de village droite vue de côté : la station de bus (poteau et panneau) est l'origine O, l'école avec son drapeau à l'EST (à droite), la place de la mosquée (dôme et minaret) à l'OUEST (à gauche) ; la route est finie,
+  //                sans autre inscription que le zéro ; Salma (KidFigure, fille en hijab) regarde le bâton-foulée ; ce que la main porte : le bâton de bois d'une foulée, des maisons, un cadre d'une foulée, le drapeau de la station (`stride-stamp`)
+  villageroad: { kind: 'lengths', shows: 'طريق قرية: محطّة حافلة هي المبدأ، المدرسة شرقًا وساحة المسجد غربًا، وعصا الخطوة' },
+  // 1AM, unité 5, leçon 3 « التعليم في المستوي » (2026-10-30) :
+  //   schoolcourt  le plan d'une cour d'école vu d'EN HAUT : un sol dallé entouré d'un mur, le mât du drapeau au point O (l'origine), deux lignes peintes en jaune (les axes, gradués) et, sur le papier quadrillé, les dalles ;
+  //                des objets de la cour vus d'en haut (fontaine, porte de bibliothèque, banc, robinet, portail, kiosque, arbre, tableau d'affichage, chaise, puits) ; ce que la main conduit : un drone à quatre hélices
+  //                qui ne va que sur UN axe à la fois (`courtyard-drone`) ; Salma (KidFigure, fille en hijab) et Anis (sweat) regardent l'écran de la télécommande
+  schoolcourt: { kind: 'lengths', shows: 'ساحة مدرسة من الأعلى: سارية العلم هي المبدأ، وخطّان مطليّان هما المحوران، ومسيّرة تحلّق فوق الساحة' },
+  // 2AM, unité 3, leçon 6 (2026-10-29) :
+  //   tugfield  la cour du collège un jour de sport : une corde sur toute la largeur, un ruban rouge noué à son milieu au-dessus d'un « 0 » sur une bande graduée (−20 … +20), un drapeau vert à droite (+) et un
+  //             orange à gauche (−), deux équipes d'enfants à dossards (KidFigure : filles en hijab, garçons en sweat) qui tirent, un petit tapis pour un petit équipage entre crochets (`tug-rope`)
+  tugfield: { kind: 'sorting', shows: 'ساحة يوم الرياضة: حبل وفريقان وشريط في الوسط' },
+  // 2AM, unité 2, leçon 8 (2026-10-29) :
+  //   classwindow  l'intérieur d'une salle de classe : une grande fenêtre à cadre d'aluminium blanc (ou un mur de 2 × 2 fenêtres, « واجهة المكتبة الزجاجية ») sur la cour et un palmier, un rideau latéral sur un
+  //                rail à crans, un store à enrouleur sur un cordon à crans, deux ombres translucides qui s'additionnent là où elles se recouvrent, un écran de projection dans le coin sombre, une élève
+  //                (KidFigure : fille en hijab) ou un élève (`window-blinds`)
+  classwindow: { kind: 'areas', shows: 'نافذة القسم: ستارة جانبية وستارة دوّارة وظلّ مزدوج' },
+  // 2AM, unité 4, leçon 1 (2026-10-29) :
+  //   apiary  منحل الجدّ : des ruches en bois au bord d'un verger, des fleurs, quelques abeilles dessinées petites (jamais sur les enfants), un CADRE en bois qui porte le rang de cellules (8 au plus), un plateau de tiges de cire
+  //           avec son compte, un tableau n / tiges et une ardoise de compteur ; Yacine (KidFigure, garçon) construit, Rania (KidFigure, fille en hijab) tient l'ardoise (`wax-cells`)
+  apiary: { kind: 'patterns', shows: 'منحل الجدّ: صفّ من خلايا الشمع السداسية' },
+  // 2AM, unité 4, leçon 2 (2026-10-29) :
+  //   juicery  la معصرة البرتقال التعاونية : des caisses d'oranges, un réservoir en inox à fenêtre graduée (litres, graduation tous les 5 L), un tapis roulant, une buse, des bouteilles (≤ 12 visibles, « × n » au-delà), le moule de la bouteille
+  //            (poignée en haut) et deux essais ; Lina (KidFigure, fille en hijab) au pupitre à مبتدئ, Anis (KidFigure, garçon) au réservoir à متقدم ; les ouvriers ne sont jamais dessinés (`juice-line`)
+  juicery: { kind: 'quantities', shows: 'معصرة البرتقال التعاونية: خزّان وخطّ تعبئة' },
+  // 2AM, unité 4, leçon 3 (2026-10-29) :
+  //   weighbridge  جسر الوادي وميزانه : un dépôt de matériaux au bord d'un oued à sec — des sacs de ciment (gris, 50 kg) et de sable (beige, 40 kg) sur des palettes —, un camion à benne ouverte (sa masse à vide peinte sur la portière), la dalle d'un
+  //                pèse-camion (son écran écrit la substitution et la comparaison), une barrière et la pancarte ronde du pont ; deux voies (camions A et B) pour les égalités ; Anis (KidFigure, garçon) à مبتدئ, Salma (KidFigure, fille en hijab) à متقدم,
+  //                les chauffeurs ne sont jamais dessinés (`bridge-load`)
+  weighbridge: { kind: 'quantities', shows: 'جسر الوادي وميزانه: شاحنة مواد البناء' },
   // 3AM, unité 4 (2026-10-21) :
   //   schoolgarden  le jardin de l'école vu d'en haut : un terrain rectangulaire (pelouse, massif de fleurs, allée dallée) que la
   //                 main coupe en parcelles, et une jardinière (KidFigure, hijab) à son bord (`area-split`)
@@ -310,6 +386,22 @@ export const VISUAL_THEMES = Object.freeze({
   //              avancent dent par dent, une roue à valve colorée, une manivelle qu'on tourne, un drapeau craie à la distance voulue (à l'échelle) et une
   //              élève (KidFigure, hijab) qui l'attend (`gear-crank`)
   bikestand: { kind: 'objects', shows: 'درّاجة جبلية: دوّاسة وصحن أمامي وترس خلفي وسلسلة وعجلة' },
+  // 2AM, unité 1, leçon 1 (2026-10-28) :
+  //   tramline  le tramway d'une ville algérienne : la voie et le fil de contact tirés de gauche à droite, trois ou quatre arrêts avec leur panneau et leur abri, la rame articulée à deux voitures,
+  //             le compteur de passagers (afficheur lumineux) au-dessus de la cabine, des élèves (KidFigure, hijab pour les filles) qui montent ou descendent, des fanions de groupes, le kiosque à tickets
+  //             (`tram-route`)
+  tramline: { kind: 'objects', shows: 'ترامواي مدينة جزائرية: محطات وعربة وعدّاد الركّاب وكشك التذاكر' },
+  // 2AM, unité 1, leçon 2 (2026-10-29) :
+  //   coopshop  le comptoir de la coopérative de l'école : étagères de cahiers et de boîtes de crayons, comptoir en bois, une grande calculatrice scientifique avec son ruban imprimé, les marchandises de
+  //             l'histoire et leur partage, Hiba (KidFigure, hijab) derrière le comptoir (`coop-calculator`)
+  coopshop: { kind: 'objects', shows: 'تعاونية المدرسة: منضدة وآلة حاسبة علمية كبيرة بشريط مطبوع وسلعة الوضعية' },
+  // 2AM, unité 1, leçon 3 (2026-10-29) :
+  //   corkboard  la السبّورة الفلّينية du class : un ruban de papier imprimé porte la chaîne, des agrafes en métal posées par le calcul, des ciseaux, deux poches étiquetées et une planche d'autocollants ; Yasmine (KidFigure, hijab) tient le téléphone (`chain-cutter`)
+  corkboard: { kind: 'objects', shows: 'سبّورة فلّين في القسم: شريط ورقي مطبوع، دبابيس ومقصّ وجيوب بطاقات' },
+  // 2AM, unité 1, leçon 4 (2026-10-29) :
+  //   solidarity  l'atelier du نادي التضامن : des étagères de cahiers (piles bleues) et de boîtes de stylos (rouges), un compteur « خرج من المخزن », deux distributeurs à cadran au-dessus d'un tapis qui passe devant
+  //               les cartables ouverts, Fatima (KidFigure, hijab) qui remplit cartable par cartable et Ali (sweat à capuche) qui règle les distributeurs (`kit-packer`)
+  solidarity: { kind: 'objects', shows: 'ورشة نادي التضامن: حقائب مدرسية، رفوف كراريس وأقلام، موزّعان وحزام ناقل' },
   // 3AM, unité 2, leçon 2 (2026-10-26) :
   //   paintshop  la machine à teinter d'un magasin de peinture de quartier : un bec de laiton au-dessus du seau B et une manette, le seau de référence A
   //              scellé avec son étiquette et sa pastille, deux grandes pastilles de couleur côte à côte et un mesureur à aiguille « أفتح · أغمق »,

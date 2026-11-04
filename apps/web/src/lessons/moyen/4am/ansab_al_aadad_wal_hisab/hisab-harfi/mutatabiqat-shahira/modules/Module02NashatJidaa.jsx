@@ -38,6 +38,16 @@ export default function Module02NashatJidaa() {
   const [d, setD] = useState({});
   const done = (k) => () => setD((s) => ({ ...s, [k]: true }));
   const { side, change } = HOOK.rectangle;
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand la suite de questions de son terrain l'est
+  const [cps, setCps] = useState([]);
+  const answered = (id) => cps.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const sawAdvanced = answered(LABS.sumDiffAdvanced);
+  const Evidence = ({ ok, done: line, todo }) => (
+    <p data-evidence="checkpoint" data-tried={ok ? 'true' : 'false'}
+      className={`rounded-xl border-2 px-3 py-2 text-sm ${ok ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+      {ok ? line : todo}
+    </p>
+  );
 
   return (
     <ContentModule
@@ -60,6 +70,7 @@ export default function Module02NashatJidaa() {
                 title="ملعب طوله x + 3 وعرضه x − 3"
                 lead="ملعب يطول بقدر ما يضيق: شريط يُضاف في الطول وشريط يُقتطع من العرض."
                 onTrial={(t) => setBeginnerTrials((list) => upsertTrial(list, t))}
+                onCheckpoint={(e) => setCps((l) => [...l, e])}
               />
             ),
             advanced: () => (
@@ -70,6 +81,7 @@ export default function Module02NashatJidaa() {
                 title="ملعب طوله 2x + 5 وعرضه 2x − 5"
                 lead="الفكرة نفسها بأعداد أكبر: ملعب يطول بقدر ما يضيق."
                 onTrial={(t) => setAdvancedTrials((list) => upsertTrial(list, t))}
+                onCheckpoint={(e) => setCps((l) => [...l, e])}
               />
             ),
           }}
@@ -77,7 +89,7 @@ export default function Module02NashatJidaa() {
       }
       steps={[
         {
-          num: 1, title: 'لماذا اختفى الحدّ في x؟', subtitle: 'من ملعبك', done: !!d.w,
+          num: 1, title: 'لماذا اختفى الحدّ في x؟', subtitle: 'من ملعبك', done: answered(LABS.sumDiffBeginner) || sawAdvanced,
           content: (
             <div className="space-y-3">
               <p className="text-sm font-semibold text-slate-700">ما تحقّقت منه في المختبر:</p>
@@ -91,19 +103,9 @@ export default function Module02NashatJidaa() {
                 line={(x) => `$x = ${x}$ : $(x + 3)(x - 3) = ${(x + 3) * (x - 3)}$ و $${x * x} - ${3 * x} + ${3 * x} - 9 = ${x * x - 9}$`}
                 empty="المستوى المبتدئ: لم تتحقّق بعد."
               />
-              <TapQuestion
-                prompt={<span>في ملعبك <MathText>{'$(x + 3)(x - 3)$'}</MathText> وجدتَ منطقة <MathText>{'$+3x$'}</MathText> ومنطقة <MathText>{'$-3x$'}</MathText>، ولم يبقَ في الجواب حدّ في <MathText>{'$x$'}</MathText>. لماذا؟</span>}
-                options={[
-                  'لأنّ المنطقتين مساحتاهما متساويتان وإشارتاهما متعاكستان، فتتعادلان عند الجمع',
-                  'لأنّ المنطقة $-3x$ أصغر من $+3x$ فتُحذف',
-                  'لأنّ كل حدّ فيه $x$ يُهمل في الجواب',
-                ].map(m)}
-                correct={0}
-                cols={1}
-                requires={['nashr-qawsayn', 'tabsit-hudud']}
-                explain={<MathText>{'$+3x$ و $-3x$ حدّان متشابهان مجموعهما $0$ مهما كان $x$: يبقى $x^2 - 9$. وكذلك $+10x$ و $-10x$ في ملعب $(2x + 5)(2x - 5)$.'}</MathText>}
-                onAnswered={done('w')}
-              />
+              <Evidence ok={answered(LABS.sumDiffBeginner) || sawAdvanced}
+                done={<span>أجبتَ في المختبر: المنطقتان <MathText>{'$+3x$'}</MathText> و <MathText>{'$-3x$'}</MathText> (أو <MathText>{'$+10x$'}</MathText> و <MathText>{'$-10x$'}</MathText> ) متساويتان وإشارتاهما متعاكستان، فتتعادلان ولا يبقى في الجواب حدّ في <MathText>{'$x$'}</MathText> .</span>}
+                todo="أتمّ ملعبًا من المستويين (احمل المناطق، اجمع، وتحقّق من قيمتين)، ثم أجب عن الأسئلة التي تظهر فوق المختبر." />
             </div>
           ),
         },
@@ -208,7 +210,7 @@ export default function Module02NashatJidaa() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={2} />}
+      footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />
   );
 }

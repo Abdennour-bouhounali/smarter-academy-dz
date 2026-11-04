@@ -15,6 +15,11 @@ import GroupStock, { GroupWrapper } from '../primitives/GroupStock';
 import { themeWords } from '../themeWords';
 import EquationDisplay from '../primitives/EquationDisplay';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import MathText from '../../components/MathText';
 import * as L from '../logic/commonDivisors';
 
 /**
@@ -54,6 +59,12 @@ import * as L from '../logic/commonDivisors';
  * « + » (groupes), le bouton vers les listes ; dans les listes il montre la zone du milieu puis la case PGCD, jamais un jeton
  * (savoir lesquels divisent les deux nombres EST l'exercice : la complétion par le guide seul y est volontairement impossible).
  *
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, lot 2, 2026-10-28) : deux ÉTAPES (`LabStepper`, `[data-cd-step]`) — les GROUPES
+ * (le plus grand nombre de groupes trouvé : `greatest` · ce qui reste au-delà : `beyond`, puis LA RÈGLE si c'est la seule étape) et les LISTES
+ * (`listCommon` · `listWhy`, puis LA RÈGLE qui remplace la découverte automatique). Une seule étape quand le labo ne montre qu'une scène (مبتدئ,
+ * `startWith="lists"`). Obligatoires pour tout élève ; l'enseignant seul les coupe. SON : `tooth` (un groupe ajouté, un jeton porté), `bell` (ça tombe
+ * juste pour les deux nombres), `flag` (étape atteinte), `over` (refus). « إعادة » repart de zéro ; « أعِد التجربة » remet l'étape.
+ *
  * `theme` choisit les OBJETS DESSINÉS de la scène des groupes (fleurs rouges
  * et blanches, ballons et maillots, stylos et cahiers — primitives/itemThemes)
  * et `context` peut en remplacer les mots par ceux de la SITUATION du manuel
@@ -64,7 +75,7 @@ import * as L from '../logic/commonDivisors';
  * nombre d'objets dessinés en dehors, jamais une décimale.
  */
 export default function CommonDivisors({
-  a: a0, b: b0, title, lead, mission, context, theme = 'garden', startWith = 'bouquets', initialMode = 'student', allowModeSwitch = false, onFinished, coach: coachOn = true,
+  a: a0, b: b0, title, lead, mission, context, theme = 'garden', startWith = 'bouquets', initialMode = 'student', allowModeSwitch = false, onFinished, coach: coachOn = true, checkpoints: cpOn = true, onTrial,
 }) {
   const { t } = useTranslation('lesson');
   const state = useManipulation({ type: 'common-divisors', initialNumbers: { a: a0, b: b0 }, initialMode, hintCount: 3 });
@@ -75,25 +86,30 @@ export default function CommonDivisors({
   const [bouquets, setBouquets] = useState(() => ({ ...L.initBouquets({ a: a0, b: b0 }), epoch: 0 }));
   const [lists, setLists] = useState(() => L.initLists({ a: a0, b: b0 }));
   const [reject, setReject] = useState(null);
+  const [doneIds, setDoneIds] = useState({});
+  const [retryN, setRetryN] = useState(0);
   // Miroir synchrone des groupes : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
   const bouquetsRef = useRef(bouquets);
   bouquetsRef.current = bouquets;
 
   useEffect(() => {
-    setBouquets({ ...L.initBouquets({ a, b }), epoch: state.epoch }); setLists(L.initLists({ a, b })); setStage(startWith); setReject(null);
+    setBouquets({ ...L.initBouquets({ a, b }), epoch: state.epoch }); setLists(L.initLists({ a, b })); setStage(startWith); setReject(null); setDoneIds({});
   }, [a, b, state.epoch, startWith]);
 
   // مبتدئ : les groupes SEULEMENT (voir l'en-tête).
   const groupsOnly = startWith !== 'lists' && state.level !== 'advanced';
   const groupsDone = L.greatestGroupFound(bouquets);
+  // les questions pendant le labo : obligatoires pour tout élève, l'enseignant seul les coupe pour SON compte
+  const cpSettings = useLabCheckpointSettings('common-divisors');
+  const cpLive = cpOn && cpSettings.enabled;
   // `state.epoch` dans les dépendances : `setNumbers` remet la phase à 'act',
   // la découverte doit être ré-affirmée sur la scène qui l'a méritée.
   // Sur « إعادة », les deux effets tournent dans le MÊME commit : celui-ci
   // voyait encore l'ancienne scène (le plus grand groupe posé) et rouvrait la
   // découverte sur une scène vide. Une scène d'un autre epoch ne compte pas.
   useEffect(() => {
-    if (groupsOnly && stage === 'bouquets' && groupsDone && bouquets.epoch === state.epoch) state.discover();
-  }, [groupsOnly, stage, groupsDone, state.epoch, bouquets.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (groupsOnly && stage === 'bouquets' && groupsDone && bouquets.epoch === state.epoch && !cpLive) state.discover();
+  }, [groupsOnly, stage, groupsDone, state.epoch, bouquets.epoch, cpLive]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const drag = useDragInteraction({
     onDrop: (sourceId, zoneId) => {
@@ -121,8 +137,57 @@ export default function CommonDivisors({
   // Les listes : la découverte suit la case PGCD remplie — dans un effet,
   // jamais dans un updater d'état (playbook §10.10).
   const listsReady = stage === 'lists' && L.listsDiscoveryReady(lists);
-  useEffect(() => { if (listsReady) state.discover(); }, [listsReady, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (listsReady && !cpLive) state.discover(); }, [listsReady, state.epoch, cpLive]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, lists.g); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // la suite de la scène atteinte : les groupes (le plus grand trouvé) ou les listes (le PGCD posé)
+  const words0 = themeWords(t, theme, context);
+  const cpId = cpLive ? (stage === 'bouquets' && groupsDone && bouquets.epoch === state.epoch ? 'groups' : listsReady ? 'lists' : null) : null;
+  const chain = cpId === 'groups' ? (groupsOnly ? CHAINS.groupsOnly : CHAINS.groups) : cpId === 'lists' ? CHAINS.lists : null;
+  const kq = (key, o) => t(`manipulation.common.${key}`, o);
+  const cp = useLabCheckpoint({
+    id: cpId,
+    questions: chain ? chain.map((q) => QUESTIONS[q]({ a, b, bouquets, lists, words: words0 }, kq)) : null,
+    reached: !!cpId,
+    resetKey: `${state.resetCount}:${retryN}`,
+    onRetry: () => {
+      if (cpId === 'lists') setLists(L.initLists({ a, b })); else setBouquets({ ...L.initBouquets({ a, b }), epoch: state.epoch });
+      setReject(null); setDoneIds((d) => ({ ...d, [cpId]: false })); setRetryN((n) => n + 1);
+    },
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => ({ ...d, [id]: true }));
+      if (CHAINS[id === 'groups' && groupsOnly ? 'groupsOnly' : id].includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  // les étapes : les groupes puis les listes (une seule quand le labo ne montre qu'une scène)
+  const single = groupsOnly || startWith === 'lists';
+  const stepDone = single ? [!!(groupsOnly ? doneIds.groups : doneIds.lists)] : [!!doneIds.groups, !!doneIds.lists];
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (bouquets.k === null && lists.placed.length === 0 && celebrated.current.size) celebrated.current = new Set();
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(i)) return;
+      celebrated.current.add(i);
+      party.celebrate({ n: i + 1, total: stepDone.length });
+    });
+  }, [stepDone[0], stepDone[1]]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son du geste (muet sans « الصوت ») : un groupe ajouté · un jeton porté · ça tombe juste · l'étape atteinte · un refus
+  const heard = useRef({ k: null, placed: 0, works: false, id: null, reject: null, at: 0 });
+  useEffect(() => {
+    const h = heard.current;
+    if (bouquets.k !== h.k && bouquets.k !== null && h.k !== null && Date.now() - h.at > 35) { playSfx('tooth', { pitch: bouquets.k < h.k ? 0.8 : 1 }); h.at = Date.now(); }
+    if (bouquets.works && !h.works) playSfx('bell');
+    h.k = bouquets.k; h.works = !!bouquets.works;
+  }, [bouquets.k, bouquets.works]);
+  useEffect(() => {
+    const h = heard.current;
+    if (lists.placed.length > h.placed) playSfx('tooth');
+    h.placed = lists.placed.length;
+  }, [lists.placed.length]);
+  useEffect(() => { if (cpId && heard.current.id !== cpId) playSfx('flag'); heard.current.id = cpId; }, [cpId]);
+  useEffect(() => { if (reject && heard.current.reject !== reject) playSfx('over'); heard.current.reject = reject; }, [reject]);
 
   const heldValue = drag.held ? Number(drag.held.split(':')[1]) : null;
   // Les mots de la scène : ceux du thème (lesson.json), remplacés par ceux
@@ -153,6 +218,8 @@ export default function CommonDivisors({
       lead={lead}
       state={state}
       coach={coachOn ? coach : null}
+      headerAction={cpSettings.control}
+      guided={!!chain || cpLive}
       numberFields={[{ key: 'a', label: 'a' }, { key: 'b', label: 'b' }]}
       allowModeSwitch={allowModeSwitch}
       hints={stage === 'bouquets'
@@ -244,6 +311,10 @@ export default function CommonDivisors({
       explanation={t('manipulation.common.explanation')}
     >
       <ManipulationStage dragging={drag.dragging}>
+        <div className="relative">
+        {party.node}
+        {cp.node}
+        <div className="mb-2"><LabStepper count={stepDone.length} current={single ? 0 : stage === 'lists' ? 1 : 0} done={stepDone} stepAttr="data-cd-step" /></div>
         {stage === 'bouquets' ? (
           <div className="space-y-3">
             {/* LA RÉSERVE : on TIRE un emballage vide vers la table (ou on en
@@ -277,7 +348,7 @@ export default function CommonDivisors({
                 {t('manipulation.common.groupsNeedBeyond', { g })}
               </p>
             )}
-            {!groupsOnly && groupsDone && (
+            {!groupsOnly && groupsDone && !cp.blocking && (
               <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border-2 border-emerald-300 bg-emerald-50 p-3" data-common-next>
                 <p className="text-sm font-bold text-emerald-900">{t('manipulation.common.groupsDone', { g: lists.g, a, b })}</p>
                 <button type="button" onClick={() => setStage('lists')}
@@ -333,8 +404,61 @@ export default function CommonDivisors({
               : t(`manipulation.common.listReject.${reject.reason}`, { d: reject.d, a, b, defaultValue: t('manipulation.common.reject.tooMany') })}
           </p>
         )}
+        </div>
       </ManipulationStage>
       <DragGhost ghost={drag.ghost}>{drag.held?.startsWith('group:') ? wrapper : heldValue !== null && <NumberTile value={heldValue} tone="divisor" />}</DragGhost>
     </ManipulationShell>
   );
 }
+
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+export const CHAINS = { groupsOnly: ['greatest', 'beyond', 'rule'], groups: ['greatest', 'beyond'], lists: ['listCommon', 'listWhy', 'rule'] };
+
+const $ = (x) => `$${x}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const tryKeys = (bq) => Object.keys(bq.tried).map(Number).sort((x, y) => x - y);
+/** Le plus grand nombre de groupes essayé qui tombait juste pour les DEUX nombres. */
+export const greatestTried = (bq) => Math.max(...tryKeys(bq).filter((x) => bq.tried[x] === 'common'));
+
+export const QUESTIONS = {
+  greatest: ({ a, b, bouquets, words }, k) => {
+    const g = greatestTried(bouquets);
+    const o = { groups: words.groups, itemsA: words.itemsA, itemsB: words.itemsB, g: $(g), eqa: $(`${a} = ${g} \\times ${a / g}`), eqb: $(`${b} = ${g} \\times ${b / g}`) };
+    return { id: 'greatest', kind: 'number', expected: String(g), answer: <MathText>{$(g)}</MathText>, prompt: Cq(k, 'greatest.prompt', o), hints: [Cq(k, 'greatest.hint1'), Cq(k, 'greatest.hint2')], explain: Cq(k, 'greatest.explain', o) };
+  },
+  beyond: ({ a, b, bouquets, words }, k) => {
+    const g = greatestTried(bouquets);
+    const over = tryKeys(bouquets).find((x) => x > g);
+    const useA = a % over !== 0;
+    const n = useA ? a : b; const r = n % over;
+    const o = { groups: words.groups, items: useA ? words.itemsA : words.itemsB, kk: $(over), n: $(n), r: $(r), eq: $(`${n} = ${over} \\times ${Math.floor(n / over)} + ${r}`) };
+    return { id: 'beyond', kind: 'number', expected: String(r), answer: <MathText>{$(r)}</MathText>, prompt: Cq(k, 'beyond.prompt', o), hints: [Cq(k, 'beyond.hint1', o), Cq(k, 'beyond.hint2', o)], explain: Cq(k, 'beyond.explain', o) };
+  },
+  listCommon: ({ a, b, lists }, k) => {
+    const n = lists.common.length;
+    const o = { list: $(`\\{${lists.common.join(' ; ')}\\}`), n: $(n), a: $(a), b: $(b) };
+    return { id: 'listCommon', kind: 'number', expected: String(n), answer: <MathText>{$(n)}</MathText>, prompt: Cq(k, 'listCommon.prompt', o), hints: [Cq(k, 'listCommon.hint1'), Cq(k, 'listCommon.hint2', o)], explain: Cq(k, 'listCommon.explain', o) };
+  },
+  listWhy: ({ a, b, lists }, k) => {
+    const g = lists.g; const big = Math.max(a, b); const other = Math.min(a, b);
+    const o = { g: $(g), big: $(big), other: $(other), list: $(`\\{${lists.common.join(' ; ')}\\}`) };
+    const options = [
+      { text: Cq(k, 'listWhy.right'), correct: true },
+      { text: Cq(k, 'listWhy.big', o), why: Cq(k, 'listWhy.whyBig', o) },
+      g > 1 && { text: Cq(k, 'listWhy.small'), why: Cq(k, 'listWhy.whySmall', o) },
+    ].filter(Boolean);
+    return { id: 'listWhy', kind: 'choice', prompt: Cq(k, 'listWhy.prompt', o), options, hints: [Cq(k, 'listWhy.hint1'), Cq(k, 'listWhy.hint2')], explain: Cq(k, 'listWhy.explain', o) };
+  },
+  rule: ({ a, b, lists }, k) => ({
+    id: 'rule', kind: 'choice', prompt: <MathText>{k('discoverPrompt')}</MathText>,
+    options: [
+      { text: <MathText>{k('opt2', { a })}</MathText>, why: <MathText>{k('why2', { b })}</MathText> },
+      { text: <MathText>{k('opt1')}</MathText>, correct: true },
+      { text: <MathText>{k('opt3')}</MathText>, why: <MathText>{k('why3')}</MathText> },
+    ],
+    hints: [Cq(k, 'rule.hint1'), Cq(k, 'rule.hint2')],
+    explain: <MathText>{`${$(`\\mathrm{PGCD}(${a}\\ ;\\ ${b}) = ${lists.g}`)} — ${k('conclusion')}`}</MathText>,
+  }),
+};

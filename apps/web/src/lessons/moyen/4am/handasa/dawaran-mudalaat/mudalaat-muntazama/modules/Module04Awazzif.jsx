@@ -79,7 +79,7 @@ export default function Module04Awazzif() {
         { num: 5, title: 'تمرين 15 — خمسة دورانات حول A', done: all('15'),
           content: <div className="space-y-3">{block('15', ['ruus-bidawaran', 'tarif-muntazam', 'dil-mudalla'])}</div> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

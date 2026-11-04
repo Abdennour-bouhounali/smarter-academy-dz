@@ -9,8 +9,10 @@
  * des valeurs égales ne prouvent rien : on développe). Simplifier et développer sont des OUTILS déjà publiés (`tabsit-hadhf-aqwas`, `nashr-jabri-3am`), jamais enseignés ici ;
  * comparer par le signe de la différence est `muqaranat-natiqayn` ; résoudre une équation est l'unité 5 ; la notation A(−3) est celle de 4AM (on écrit « من أجل x = −3 »).
  * Le réseau : ses liens « راجع » — 3am.m1.r08 (حساب مجموع وفرق وجداء وحاصل قسمة عددين ناطقين, leçon NON publiée `amaliyat-natiqa`) et 1am.m5.r08 (تطبيق قاعدة حرفية,
- * leçon 1AM NON publiée `tatbiq-qaida-harfiya`) — sont mesurés par « أستعدّ » ; la puissance d'un relatif (`quwat-adad-nisbi`, publiée) et la priorité des opérations y sont
- * mesurées hors réseau. Aucune arête de الكفاءات n'est écrite vers une leçon non publiée (pointPrerequisites internes).
+ * leçon 1AM `tatbiq-qaida-harfiya`, publiée le 2026-10-30) — sont mesurés par « أستعدّ » ; la puissance d'un relatif (`quwat-adad-nisbi`, publiée) et la priorité des opérations y sont
+ * mesurées hors réseau. Aucune arête de الكفاءات n'est écrite vers une leçon non publiée.
+ * 2026-10-30 : `tatbiq-qaida-harfiya` (1AM, 1am.m5.r08) est publiée — arêtes LP P1 ← 1am_tatbiq-qaida-harfiya_P2 (remplacer le(s) lettre(s) par une valeur et calculer) et P3 ← 1am_tatbiq-qaida-harfiya_P3
+ * (un contre-exemple suffit) le long du lien du réseau 1am.m5.r08 → 3am.m5.r03 (`extends`) ; le « تذكّر — السنة الأولى » (lien déjà branché par `getLessonPath`) pointe vers la leçon.
  *
  * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter) — le manuel fixe les الكفاءات, pas le parcours, et la leçon ne renvoie jamais au livre.
  *   Entrée retenue : le MUR DE BILLES du نادي العلوم (labo `marble-run`, thème `marblerun`). Les stations du mur sont les opérations de l'expression (la copieuse du carré,

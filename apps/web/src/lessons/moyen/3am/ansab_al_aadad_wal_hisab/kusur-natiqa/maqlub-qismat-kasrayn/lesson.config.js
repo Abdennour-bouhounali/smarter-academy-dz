@@ -6,6 +6,8 @@
  * Le réseau : `3am.m1.r02 → r03` (requires, qismat-nisbiyayn : a ÷ b = q ⇔ b × q = a, leçon du même cahier NON publiée) et `2am.m1.r07 → r03` (jida-kasrayn, 2AM,
  * NON publiée) : « أستعدّ » mesure les DEUX avec des affirmations de la plateforme, معارف ouvre sur un « تذكّر — السنة الثانية » sans lien ; `pointPrerequisites` :
  * arêtes internes seulement (aucune arête vers une leçon non publiée).
+ * 2026-10-29 : `jida-kasrayn` (2AM) publiée — P1 ← `2am_jida-kasrayn_P1` (le long de `2am.m1.r07 → r03`), et le « تذكّر — السنة الثانية »
+ * de معارف porte désormais son lien (`getLessonPath`).
  *
  * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter) — le manuel fixe les الكفاءات, pas le parcours.
  *   Entrée retenue : « دوّاسة الدرّاجة » (labo `gear-crank`, thème `bikestand`). La MAIN tourne la manivelle d'une درّاجة de club : le nombre de tours de pédale est la

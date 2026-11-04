@@ -251,12 +251,12 @@ E.append({
 
 # ── p. 10 : اكتشف (suite) ─────────────────────────────────────────────────────────────────────────
 E.append({
-    'id': 'act-4', 'kind': 'activity', 'number': 4, 'page': 10, 'section': 'اكتشف', 'title': 'الأعداد العشرية ونصف المستقيم المدرّج', 'verified': False,
+    'id': 'act-4', 'kind': 'activity', 'number': 4, 'page': 10, 'section': 'اكتشف', 'title': 'الأعداد العشرية ونصف المستقيم المدرّج', 'verified': True,
     'text': 'على نصف المستقيم المدرّج الذي مبدؤه النقطة O ، قمنا بتعليم النقط A ، B ، C. نرفق بالنقطة O العدد 0، نقول إن فاصلة النقطة O هي 0 ونكتب اختصارا O(0). النقطة A تبعد عن النقطة O بـ 2,4 وحدة، نقول إن فاصلة النقطة A هي 2,4 ونكتب اختصارا A(2,4). أ) عبّر بكسر عن التباعد بين تدريجتين صغيرتين متتاليتين من الوحدة. ب) ماهما فاصلتا النقطتين C و B ؟ ج) علّم على نصف المستقيم المدرّج النقط E(3) ، F(2,5) ، G(0,8) ، K(2,9) ، L(3 + 2/10).',
-    'figure': 'نصف مستقيم مدرّج من 0، كل وحدة مقسّمة إلى 10 ؛ C على التدريجة 0,6 تقريبا، B عند 1,9، A عند 2,4.',
-    'answer': {'step': '1/10', 'B': '1,9', 'C': '0,6'},
+    'figure': 'نصف مستقيم مدرّج من 0، كل وحدة مقسّمة إلى 10 ؛ C على التدريجة 0,5، B عند 1,7، A عند 2,4 (relu à 400 dpi, tick = 35,5 px : 5, 17 et 24 tics).',
+    'answer': {'step': '1/10', 'B': '1,7', 'C': '0,5'},
     'answerSource': 'computed',
-    'note': 'Positions de B et C lues sur le scan à 110 dpi (à relire à 200 dpi par la leçon adad-ashri-mustaqim-mudarraj).',
+    'note': 'Positions relues à 400 dpi par la leçon adad-ashri-mustaqim-mudarraj : C = 0,5 et B = 1,7 (la lecture à 110 dpi donnait 0,6 et 1,9, fausse).',
 })
 E.append({
     'id': 'act-5', 'kind': 'activity', 'number': 5, 'page': 10, 'section': 'اكتشف', 'title': 'مقارنة عددين عشريين', 'verified': False,
@@ -344,7 +344,7 @@ E.append({
 assert fr(6 * 1000 + 3 * 100 + 9 * 10 + 2 + 4 * dec('0.1') + 5 * dec('0.01') + 9 * dec('0.001')) == '6392,459'
 assert decompose(6392) == '6 × 1000 + 3 × 100 + 9 × 10 + 2'
 E.append({
-    'id': 'know-5', 'kind': 'knowledge', 'number': 5, 'page': 13, 'section': 'أحوصل تعلّماتي', 'title': 'التعليم على نصف مستقيم مدرّج', 'verified': False,
+    'id': 'know-5', 'kind': 'knowledge', 'number': 5, 'page': 13, 'section': 'أحوصل تعلّماتي', 'title': 'التعليم على نصف مستقيم مدرّج', 'verified': True,
     'text': '• لتدريج نصف مستقيم، نختار وحدة طول مناسبة وننقلها عليه انطلاقا من مبدئه. • كل نقطة من نصف المستقيم المدرج يمكن تعيينها بعدد يسمى فاصلة تلك النقطة. فاصلة النقطة O مبدأ نصف المستقيم المدرّج هي 0. فاصلة النقطة A هي 2، نكتب اختصارا A(2). فاصلة النقطة B هي 2,8، نكتب اختصارا B(2,8). فاصلة النقطة C هي 3,5، نكتب اختصارا C(3,5). ملاحظة: في حالات معيّنة يمكن أن لا يظهر مبدأ نصف المستقيم المدرّج. في المثال، نقرأ: فاصلة النقطة K هي 2047 (تدريج 2017، 2027، …).',
     'answer': {'K': 2017 + 3 * 10},
     'answerSource': 'computed',
@@ -487,10 +487,10 @@ E.append({
 })
 
 # ── p. 18 : أتمرّن (suite) ────────────────────────────────────────────────────────────────────────
-E.append({'id': 'ex-15', 'kind': 'exercise', 'number': 15, 'page': 18, 'section': 'أتمرّن', 'title': 'التعليم على نصف مستقيم مدرّج', 'verified': False,
+E.append({'id': 'ex-15', 'kind': 'exercise', 'number': 15, 'page': 18, 'section': 'أتمرّن', 'title': 'التعليم على نصف مستقيم مدرّج', 'verified': True,
           'text': 'لاحظ وأكمل متتاليات الأعداد (القراءة من اليسار إلى اليمين): 1) 10 ; 12 ; 14 ; … ; … ; 24 2) 50 ; 70 ; 90 ; … ; … ; 170 3) 0 ; 0,5 ; 1 ; … ; … ; 6 4) 1,05 ; 1,08 ; 1,11 ; … ; … ; 2,02 5) 5,2 ; 5,1 ; 5 ; … ; … ; 4,6 6) 5,04 ; 5,3 ; 5,56 ; … ; … ; 6,6',
-          'note': 'Lecture des bornes finales à confirmer par la leçon adad-ashri-mustaqim-mudarraj.'})
-E.append({'id': 'ex-16', 'kind': 'exercise', 'number': 16, 'page': 18, 'section': 'أتمرّن', 'verified': False,
+          'note': 'Les « … » représentent plusieurs termes jusqu’à la borne finale ; la leçon réécrit les suites (autres nombres) et garde le pas constant.'})
+E.append({'id': 'ex-16', 'kind': 'exercise', 'number': 16, 'page': 18, 'section': 'أتمرّن', 'verified': True,
           'text': 'اكتب على أربعة أنصاف المستقيمات المدرّجة الآتية الأعداد التي تشير إليها الأسهم. (تدريجات: 0–4 ؛ 9–12 ؛ 0–0,4 ؛ 9,1–9,2)'})
 E.append({'id': 'ex-17', 'kind': 'exercise', 'number': 17, 'page': 18, 'section': 'أتمرّن', 'title': 'مقارنة عددين عشريين', 'verified': True,
           'text': 'قارن بين كل عددين في كل حالة مماثلي: 1) 5/10 و 7/10 2) 78/100 و 87/100 3) 25/10 و 32/100 4) 4/10 و 40/100 5) 2017/100 و 20,17'})
@@ -535,7 +535,7 @@ E.append({'id': 'self-6', 'kind': 'self_assessment', 'number': 6, 'page': 19, 's
           'text': 'عبّر بكتابة عشرية عن كل عدد من الأعداد الآتية: أ) 15 + 0,12 ب) 5 + 6 × 100 + 3 × 1000 + 2/10 ج) 2 + 6 × 10 + 8 × 1000 + 9 × 0,1 + 5 × 0,001',
           'answer': [fr(15 + dec('0.12')), fr(5 + 600 + 3000 + dec(2) / 10), fr(2 + 60 + 8000 + 9 * dec('0.1') + 5 * dec('0.001'))], 'answerSource': 'computed',
           'note': 'Termes dans le désordre (ب, ج) : le rang, pas la place dans la somme, donne la valeur.'})
-E.append({'id': 'self-7', 'kind': 'self_assessment', 'number': 7, 'page': 19, 'section': 'أقوّم تعلّماتي', 'verified': False,
+E.append({'id': 'self-7', 'kind': 'self_assessment', 'number': 7, 'page': 19, 'section': 'أقوّم تعلّماتي', 'verified': True,
           'text': 'ماهي فاصلة النقطة B ؟ (A عند 2,4 و C عند 2,9 على نصف مستقيم مدرّج)'})
 E.append({'id': 'self-8', 'kind': 'self_assessment', 'number': 8, 'page': 19, 'section': 'أقوّم تعلّماتي', 'verified': False,
           'text': 'قارن بين كل عددين من الأعداد الآتية: أ) 3,14 و 3,7 ب) 0,9999 و 1,0002 ج) 2,5 و 2,500'})
@@ -655,6 +655,7 @@ DEST = {
 }
 
 DISCREPANCIES = [
+    {'elementId': 'act-4', 'kind': 'reading', 'text': 'Positions de B et C : 1,7 et 0,5 (400 dpi : 17 et 5 petites graduations de 35,5 px depuis O), non 1,9 et 0,6 comme transcrit d’abord à 110 dpi.'},
     {'elementId': 'unit', 'kind': 'scope', 'text': 'Frontière kitabat-adad-tabii / kusur-ashriya-kitaba (même item 1am.m1.r02) : voir l’en-tête de build-extraction.py. know-4 et ex-12 sont partagés par `items` ; « عدد الأعشار » (deep-4, corpus 1am-s1-97 ex 1 q 4) reste à kusur.'},
     {'elementId': 'know-1', 'kind': 'words', 'text': 'Accord du nombre en lettres : le manuel écrit « خمس وأربعون ألفا » (know-1) et « سبعة آلاف وخمس وستون » (prep 3) mais « ثمانية آلاف », « أربعة ملايين », « تسعة وتسعون ». La plateforme écrit la forme avec ة pour 3–9 (خمسة وأربعون ألفا، خمسة وستون), celle du reste du manuel ; les deux formes sont acceptées en lecture, jamais opposées dans un QCM.'},
     {'elementId': 'know-1', 'kind': 'words', 'text': 'Le manuel écrit « مائة » (avec alif) et les composés soudés « ستمائة، تسعمائة » ; accusatif sans tanwīn écrit « ألفا، مليونا ». Pluriel de مليار : « ملايير » (usage algérien).'},

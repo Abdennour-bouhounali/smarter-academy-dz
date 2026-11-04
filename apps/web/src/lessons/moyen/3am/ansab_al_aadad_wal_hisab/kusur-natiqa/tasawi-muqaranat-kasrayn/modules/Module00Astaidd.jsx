@@ -6,7 +6,7 @@ import { PREP_ITEMS, PREP_PLATFORM_ITEMS } from '../content/textbook';
 
 /**
  * Module 0 — أستعدّ : sept affirmations. Deux viennent de « أستعدّ » (p. 23, items 3 et 5, réécrits) ; cinq de la plateforme mesurent le lien « راجع » du réseau (LEARNING_NET.md §4.4) :
- * `2am.m1.r08` (comparer deux fractions de même dénominateur, de même numérateur, ou dont un dénominateur est multiple de l'autre — leçon 2AM `muqarana-kasrayn`, NON publiée : « قريبًا »).
+ * `2am.m1.r08` (comparer deux fractions de même dénominateur, de même numérateur, ou dont un dénominateur est multiple de l'autre — leçon 2AM `muqarana-kasrayn`, publiée 2026-10-29 : « راجع » porte son lien).
  * JAMAIS bloquant ; `id` et `requires` littéraux. L'item 4 du manuel (des figures) est repris par la banque d'exercices.
  */
 export default function Module00Astaidd() {

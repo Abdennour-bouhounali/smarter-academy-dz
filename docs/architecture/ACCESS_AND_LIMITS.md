@@ -71,6 +71,7 @@ through the same checks. Reading a **student's** notebook
 | `math_lab.tool.<id>` — one per id in `MathLabTools` (14 today) | `math_lab_tool` | none | opening a saved work of that instrument, changing its state, duplicating it, attaching a file to it, creating a work in it |
 | `notebook` | `notebook` | `notebook_copy` | creating, editing and reviewing notes |
 | `math_lab.documents` | `documents` | `document_generation` | creating a saved Math Lab work (first save or copy) |
+| `thinking_lab.ladder` (2026-11-01) | `thinking_lab` | none | every `/thinking-lab/*` route of « مختبر التفكير » (`THINKING_LAB.md` §6.6). No row = open to both tiers (plan §17 n° 4, proposed); the admin's « مختبر التفكير » section closes it. The teacher's read-only preview (`/teacher/thinking-lab/*`) is behind `can:teacher` only and is not affected. |
 
 The tool keys **derive** from `MathLabTools::ids()`: a new instrument has a
 key the moment it is in the server registry. A key with **no row** in

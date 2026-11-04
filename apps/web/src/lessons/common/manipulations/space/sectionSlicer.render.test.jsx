@@ -2,6 +2,8 @@ import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
+import i18n from '../../../../i18n';
+import * as L from '../logic/sectionSlicer';
 import SectionSlicer from './SectionSlicer';
 import ManipulationWorkspace from '../ManipulationWorkspace';
 import { LEVELS } from '../levels';
@@ -68,5 +70,75 @@ describe('section-slicer — rendu', () => {
     expect((html.match(/data-section-slicer/g) ?? []).length).toBe(2);
     expect((html.match(/data-stage3d="true"/g) ?? []).length).toBe(2);
     clean(html);
+  });
+});
+
+const k = (key, o) => i18n.t(`lesson:manipulation.sectionSlicer.${key}`, o);
+const checkQ = (qid, q) => {
+  const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+  expect(out, qid).not.toMatch(RAW);
+  expect(out, qid).not.toContain('{{');
+  expect(q.hints, qid).toHaveLength(2);
+  if (q.kind === 'choice') { expect(q.options.filter((o) => o.correct), qid).toHaveLength(1); q.options.filter((o) => !o.correct).forEach((o) => expect(o.why, qid).toBeTruthy()); } else expect(q.expected).toBeTruthy();
+};
+/** L'élève va à un étage, place le plan et prédit juste. */
+const printRight = (lab, stage, i) => {
+  let s = L.goStage(lab, stage);
+  s = L.moveTo(s, i);
+  s = L.print(s);
+  return L.choose(s, s.pending.cards.find((c) => c.correct).id);
+};
+
+describe('section-slicer — questions pendant le labo (LabCheckpoint)', () => {
+  it('sphère : le contraste (grand cercle, petit cercle, contact) ouvre sphR2 · sphEdge · règle ; r² attendu = R² − h² de SA couche', async () => {
+    const { chainOf, QUESTIONS } = await import('./SectionSlicer');
+    let s = L.init(LEVELS['section-slicer'].advanced.numbers);
+    expect(L.stepsOf(s)[0].reached).toBe(false);
+    s = printRight(s, 'sphere', 0);
+    s = printRight(s, 'sphere', 30);   // h = 1,5 : R² − h² = 9 − 2,25 = 6,75
+    expect(L.stepsOf(s)[0].reached).toBe(false);
+    s = printRight(s, 'sphere', 60);   // h = R : un point
+    const st = L.stepsOf(s)[0];
+    expect(st.reached).toBe(true);
+    expect(chainOf('sphere')).toEqual(['sphR2', 'sphEdge', 'rule']);
+    const ctx = { lab: s, step: st, letter: 'x', options: [{ text: 'a', correct: true }], formal: null };
+    expect(QUESTIONS.sphR2(ctx, k).expected).toBe('27/4');
+    for (const qid of ['sphR2', 'sphEdge']) checkQ(qid, QUESTIONS[qid](ctx, k));
+    checkQ('rule', QUESTIONS.rule(ctx, k));
+    s = printRight(s, 'sphere', 70);   // h > R : rien
+    const none = L.retryStep(s, 'sphere');
+    expect(none.trials.filter((x) => x.stage === 'sphere')).toHaveLength(0);
+    expect(L.stepsOf(none)[0].reached).toBe(false);
+  });
+
+  it('les solides : une suite par étage, des nombres exacts de SA couche', async () => {
+    const { chainOf, QUESTIONS } = await import('./SectionSlicer');
+    let s = L.init(LEVELS['section-slicer'].advanced.numbers);
+    s = printRight(s, 'cuboid-face', 10);
+    s = printRight(s, 'cuboid-edge', 8);
+    s = printRight(s, 'cylinder-base', 10);
+    s = printRight(s, 'cylinder-axis', 10);   // d = 0,5 : r² − d² = 2,89 − 0,25 = 2,64
+    s = printRight(s, 'pyramid', 3);          // k = 5/8 : côté = 5/2
+    const steps = L.stepsOf(s);
+    expect(steps.slice(1).every((x) => x.reached)).toBe(true);
+    for (const st of steps.slice(1)) {
+      for (const qid of chainOf(st.id)) checkQ(`${st.id}.${qid}`, QUESTIONS[qid]({ lab: s, step: st, letter: 'x' }, k));
+    }
+    const ax = steps.find((x) => x.id === 'cylinder-axis');
+    expect(QUESTIONS.caHalf2({ lab: s, step: ax }, k).expected).toBe('66/25');
+    expect(QUESTIONS.pySide({ lab: s, step: steps.find((x) => x.id === 'pyramid') }, k).expected).toBe('5/2');
+    const r = L.retryStep(s, 'pyramid');
+    expect(L.stepsOf(r).find((x) => x.id === 'pyramid').reached).toBe(false);
+  });
+});
+
+describe('section-slicer — mode guidé', () => {
+  it('questions actives : ni la progression ni le bouton d’indice, un stepper ; coupées : ils reviennent', () => {
+    const a = renderToString(<SectionSlicer {...LEVELS['section-slicer'].advanced.numbers} level="advanced" />);
+    expect(a).not.toContain('data-manipulation-progress');
+    expect(a).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    expect(a).toContain('data-sl-step="0"');
+    const b = renderToString(<SectionSlicer {...LEVELS['section-slicer'].advanced.numbers} level="advanced" checkpoints={false} />);
+    expect(b).toContain('data-manipulation-progress');
   });
 });

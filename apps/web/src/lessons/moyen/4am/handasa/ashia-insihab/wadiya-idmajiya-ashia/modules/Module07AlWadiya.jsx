@@ -68,7 +68,13 @@ export default function Module07AlWadiya() {
   const [trials, setTrials] = useState([]);
   const [q, setQ] = useState({});
   const mark = (n) => () => setQ((s) => ({ ...s, [n]: true }));
-  const keep = (e) => setTrials((list) => [...list, e]);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint, rubriques explore · translate · straight) : leur trace (`checkpoint-done`) fait avancer les étapes 4, 5 et 7
+  const [cpDone, setCpDone] = useState({});
+  const keep = (e) => {
+    if (!e) return;
+    if (e.tk) { if (e.tk === 'checkpoint-done') setCpDone((d) => ({ ...d, [e.id]: true })); return; }
+    setTrials((list) => [...list, e]);
+  };
 
   return (
     <ContentModule objectives={["أين نضع الممر ليكون المسلك أقصر ما يمكن؟", "ما الذي يتغيّر في المسلك وما الذي يبقى ثابتًا؟", "كيف أستبدل المسلك بمسلك له الطول نفسه؟"]} ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="الوضعية وتحليلها" moduleSubtitle="ممر الراجلين أمام المدرسة: أين نضعه؟" estimatedTime="22 دقيقة"
@@ -152,42 +158,31 @@ export default function Module07AlWadiya() {
               {q[3] && <p className="text-xs text-slate-600" data-misconception-note="ittijah"><MathText>{`خطأ شائع: ${REMARKS.ittijahWrong} ${REMARKS.ittijahWhy}`}</MathText></p>}
             </div>
           ) },
-        { num: 4, title: 'تنفيذ: دراسة الرباعي MB′BN', subtitle: 'المرحلة 3 من الكتاب', done: !!q[4],
+        { num: 4, title: 'تنفيذ: دراسة الرباعي MB′BN', subtitle: 'المرحلة 3 من الكتاب', done: !!cpDone.translate,
           content: (
             <div className="space-y-3">
               <Phase i={2} />
-              <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700"><MathText>{"لدينا $\\overrightarrow{BB'} = \\overrightarrow{NM}$ . احكم على كل عبارة."}</MathText></p>}
-                rows={[
-                  { id: 'p1', label: 'الرباعي MB′BN متوازي أضلاع.', options: TRUE_FALSE, correct: 0, correction: <MathText>{REMARKS.mutawazi}</MathText> },
-                  { id: 'p2', label: <MathText>{"$NB = MB'$"}</MathText>, options: TRUE_FALSE, correct: 0, correction: 'ضلعان متقابلان في متوازي أضلاع لهما نفس الطول.' },
-                  { id: 'p3', label: 'الرباعي MB′BN مستطيل مهما كان موضع الممر.', options: TRUE_FALSE, correct: 1, correction: 'الضلع [MB′] مائل في أغلب المواضع: لا زاوية قائمة في M.' },
-                  { id: 'p4', label: <MathText>{"$AM + MN + NB = AM + MB' + MN$"}</MathText>, options: TRUE_FALSE, correct: 0, correction: <MathText>{REMARKS.masar}</MathText> },
-                ]}
-                requires={['mutawazi-tartib', 'sura-insihab']}
-                feedback={({ allRight }) => <MathText>{allRight ? `أحسنت. ${REMARKS.masar}` : REMARKS.mutawazi}</MathText>}
-                onAnswered={mark(4)} />
+              {!cpDone.translate && (
+                <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm text-slate-500" data-evidence="translate-todo">
+                  <MathText>{"جرّب مرّتين في المختبر، ثم افتح النقل وضع B′ حيث $\\overrightarrow{BB'} = \\overrightarrow{NM}$ ، وأجب عن أسئلته فوق المختبر."}</MathText>
+                </p>
+              )}
+              {cpDone.translate && <p className="text-sm font-bold text-emerald-900" data-evidence="translate-answered"><MathText>{REMARKS.masar}</MathText></p>}
               <BackLink lesson="shuaayn-mutasawiyayn" what="الشعاعان المتساويان ومتوازي الأضلاع" />
               {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : image par translation et égalité de vecteurs (`sura-insihab`), parallélogramme (`mutawazi-tartib`,
                   درس shuaayn-mutasawiyayn) ; l’étape 3 et les corrections p1–p4 (REMARKS.mutawazi / masar) viennent de le dire. */}
-              {q[4] && <KnowledgeBrick id="insihab-mamar" variant="rappel" />}
+              {cpDone.translate && <KnowledgeBrick id="insihab-mamar" variant="rappel" />}
             </div>
           ) },
-        { num: 5, title: 'تنفيذ: موقع M', subtitle: 'متى يكون AM + MB′ أقصر ما يمكن؟', done: !!q[5],
+        { num: 5, title: 'تنفيذ: موقع M', subtitle: 'متى يكون AM + MB′ أقصر ما يمكن؟', done: !!cpDone.straight,
           content: (
             <div className="space-y-3">
-              <TapQuestion
-                prompt="ما هو موقع النقطة M حتى يكون المسلك أقصر ما يمكن؟"
-                options={[
-                  "نقطة تقاطع القطعة $[AB']$ مع الحافة العليا",
-                  'نقطة تقاطع القطعة [AB] مع الحافة العليا',
-                  'نقطة الحافة العليا الأقرب إلى A',
-                  'نقطة الحافة العليا التي تبعد بنفس المسافة عن A و B',
-                ].map(M)}
-                correct={0} cols={1} requires={['insihab-mamar', 'mutabayina-muthallathiya']}
-                explain={<MathText>{`${REMARKS.M} ${REMARKS.mubashirWhy} وأقرب نقطة إلى A تقصّر AM وتطيل NB كثيرا (جرّبها في المختبر).`}</MathText>}
-                onAnswered={mark(5)} />
-              {q[5] && <p className="text-xs text-slate-600" data-misconception-note="mubashir"><MathText>{`خطأ شائع: ${REMARKS.mubashirWrong} ${REMARKS.mubashirWhy}`}</MathText></p>}
+              {!cpDone.straight && (
+                <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm text-slate-500" data-evidence="straight-todo">
+                  حرّك الممر في المختبر حتى تستقيم A و M و B′ ، وأجب عن أسئلة هذا الوضع فوق المختبر.
+                </p>
+              )}
+              {cpDone.straight && <p className="text-xs text-slate-600" data-misconception-note="mubashir"><MathText>{`خطأ شائع: ${REMARKS.mubashirWrong} ${REMARKS.mubashirWhy}`}</MathText></p>}
             </div>
           ) },
         { num: 6, title: 'تنفيذ: موقع N', subtitle: 'آخر سؤال من الكتاب', done: !!q[6],
@@ -210,23 +205,13 @@ export default function Module07AlWadiya() {
               <BackLink lesson="barahin-ashia" what="حل مشكلات بتوظيف الأشعة والانسحاب" />
             </div>
           ) },
-        { num: 7, title: 'تنفيذ بالأعداد', subtitle: 'مثال المنصّة على ورقة مرصوفة', done: !!q[7],
+        { num: 7, title: 'تنفيذ بالأعداد', subtitle: 'مثال المنصّة على ورقة مرصوفة', done: !!cpDone.straight,
           content: (
             <div className="space-y-3">
               <Evidence id="mamar-min" trials={trials} title="محاولاتك في المختبر:"
                 empty="جرّب في المختبر: بعد نقل B إلى B′، حرّك الممر حتى يستقيم المسلك A ثم M ثم B′." />
               <p className="text-sm"><MathText>{REMARKS.Bp}</MathText></p>
-              <TapQuestion
-                prompt="طول أقصر مسلك (الوحدة: ضلع مربع) هو:"
-                options={[
-                  '$\\sqrt{85} + 2 \\approx 11{,}22$',
-                  '$\\sqrt{113} \\approx 10{,}63$',
-                  '$\\sqrt{85} \\approx 9{,}22$',
-                  '$7 + 6 + 2 = 15$',
-                ].map(M)}
-                correct={0} cols={2} requires={['aqsar-masar', 'fithaghuris']}
-                explain={<MathText>{`${REMARKS.ABp} ${REMARKS.Lmin} ${REMARKS.AB} و $\\sqrt{85}$ وحده ينسى عرض الطريق، و $7 + 6$ يجمع ضلعي الزاوية القائمة بدل الوتر.`}</MathText>}
-                onAnswered={mark(7)} />
+              {cpDone.straight && <p className="text-sm font-bold text-emerald-900" data-evidence="minimum-answered"><MathText>{`${REMARKS.ABp} ${REMARKS.Lmin}`}</MathText></p>}
             </div>
           ) },
         { num: 8, title: 'التحقّق وتحرير الحل', subtitle: 'آخر المرحلة 3: هل النتيجة ملائمة؟', done: !!q[8],
@@ -254,6 +239,6 @@ export default function Module07AlWadiya() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={7} />} />
+      footer={<KnowledgeSnapshot moduleNumber={7} variant="memo" />} />
   );
 }

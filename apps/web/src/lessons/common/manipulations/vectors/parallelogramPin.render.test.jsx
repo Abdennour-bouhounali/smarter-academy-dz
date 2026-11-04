@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import '../../../../i18n';
+import i18n from '../../../../i18n';
+import * as L from '../logic/parallelogramPin';
 import ParallelogramPin from './ParallelogramPin';
 import ManipulationWorkspace from '../ManipulationWorkspace';
 import { LEVELS } from '../levels';
@@ -57,5 +58,62 @@ describe('parallelogram-pin — rendu', () => {
     );
     expect((html.match(/data-parallelogram-pin/g) ?? []).length).toBe(2);
     expect(html).not.toMatch(RAW);
+  });
+});
+
+const k = (key, o) => i18n.t(`lesson:manipulation.parallelogramPin.${key}`, o);
+const PRE = /manipulation\.[a-zA-Z]/;
+const CTX = { prompt: 'dPromptMid', options: [{ text: 'a', correct: true }, { text: 'b', why: 'w' }], formal: <span>f</span> };
+const checkQ = (qid, q) => {
+  const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+  expect(out, qid).not.toMatch(PRE);
+  expect(out, qid).not.toContain('{{');
+  expect(out, qid).not.toContain('undefined');
+  expect(q.hints, qid).toHaveLength(2);
+  if (q.kind === 'choice') { expect(q.options.filter((o) => o.correct), qid).toHaveLength(1); q.options.filter((o) => !o.correct).forEach((o) => expect(o.why, qid).toBeTruthy()); } else expect(q.expected).toBeTruthy();
+};
+
+describe('parallelogram-pin — questions pendant le labo (LabCheckpoint)', () => {
+  it('midpoint : le milieu (parts · equalWhy) puis une encoche où seules les longueurs diffèrent (partsIB · notEqual · règle)', async () => {
+    const { chainOf, QUESTIONS } = await import('./ParallelogramPin');
+    let s = L.init(LEVELS['parallelogram-pin'].beginner.numbers);
+    s = L.commitI(s, 4);
+    expect(L.reachedKinds(s)).toEqual(['equal']);
+    expect(chainOf('equal', false)).toEqual(['parts', 'equalWhy']);
+    for (const qid of chainOf('equal', false)) checkQ(qid, QUESTIONS[qid](s, k, CTX));
+    expect(QUESTIONS.parts(s, k).expected).toBe('4');
+    s = L.commitI(s, 3);
+    expect(L.reachedKinds(s)).toEqual(['equal', 'length']);
+    for (const qid of chainOf('length', true)) checkQ(qid, QUESTIONS[qid](s, k, CTX));
+    expect(QUESTIONS.partsIB(s, k).expected).toBe('5');
+    const r = L.restartStep(s, 'length');
+    expect(L.reachedKinds(r)).toEqual(['equal']);
+    expect(r.k).toBe(2);
+  });
+
+  it('parallelogram : D (dWhy · dMids) puis E (eWhy · bMid · règle) ; « أعِد التجربة » remet l’étape', async () => {
+    const { chainOf, QUESTIONS } = await import('./ParallelogramPin');
+    let s = L.init(LEVELS['parallelogram-pin'].advanced.numbers);
+    s = L.commitPoint(s, 'D', s.target);
+    expect(L.reachedKinds(s)).toEqual(['D']);
+    for (const qid of chainOf('D', false)) checkQ(qid, QUESTIONS[qid](s, k, CTX));
+    s = L.openE(s);
+    s = L.commitPoint(s, 'E', s.targetE);
+    expect(L.reachedKinds(s)).toEqual(['D', 'E']);
+    for (const qid of chainOf('E', true)) checkQ(qid, QUESTIONS[qid](s, k, { ...CTX, prompt: 'dPromptPara' }));
+    const r = L.restartStep(s, 'E');
+    expect(L.reachedKinds(r)).toEqual(['D']);
+    expect(L.reachedKinds(L.restartStep(s, 'D'))).toEqual([]);
+  });
+});
+
+describe('parallelogram-pin — mode guidé', () => {
+  it('questions actives : ni la progression ni le bouton d’indice ; coupées : ils reviennent', () => {
+    const a = renderToString(<ParallelogramPin {...LEVELS['parallelogram-pin'].beginner.numbers} level="beginner" />);
+    expect(a).not.toContain('data-manipulation-progress');
+    expect(a).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    expect(a).toContain('data-pp-step="0"');
+    const b = renderToString(<ParallelogramPin {...LEVELS['parallelogram-pin'].beginner.numbers} level="beginner" checkpoints={false} />);
+    expect(b).toContain('data-manipulation-progress');
   });
 });

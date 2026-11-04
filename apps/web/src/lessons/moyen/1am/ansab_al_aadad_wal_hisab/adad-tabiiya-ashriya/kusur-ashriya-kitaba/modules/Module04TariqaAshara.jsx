@@ -12,6 +12,9 @@ import { LAB, METHOD_SHIFT, KNOWLEDGE } from '../content/textbook';
  * module 1, monde `machine` (« آلة العشرة »), posé EN HAUT avec ses deux niveaux — la virgule glisse sous les chiffres, des zéros
  * viennent remplir les rangs qui apparaissent. Puis des questions sur CE QUE L'ÉLÈVE A FAIT (3,5 × 100 = 350, 3,5 × 10 = 35 et non 3,50,
  * 3,5 ÷ 100 = 0,035), la solution d'un exemple ligne à ligne, et le contraste × 0,1 = ÷ 10 (extension du programme `1am.m1.r03`).
+ * Déploiement du prototype (2026-10-28) : « ماذا حدث للأرقام » (× 100) et « من أين جاء الصفر » (÷ 100) sont posées PAR-DESSUS le labo
+ * (`DecimalComma › chainOf` : le résultat, le glissement, le zéro) ; les étapes 1 et 3 en gardent la TRACE. Le rejet de « × 10 = un zéro
+ * en plus » (رأي كريم) reste une question d'étape.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const Ltr = ({ children }) => <bdi dir="ltr">{children}</bdi>;
@@ -20,13 +23,15 @@ const num = (s) => Number(String(s ?? '').replace(/[\s ]/g, '').replace(',', '.
 export default function Module04TariqaAshara() {
   const [trials, setTrials] = useState([]);
   const [read, setRead] = useState(false);
-  const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
-  const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
   const [q5, setQ5] = useState(false);
   const record = (e) => { if (!e.free) setTrials((list) => [...list, e]); };
   const solved = (target) => trials.some((e) => e.kind === 'shift' && e.ok && num(e.target) === num(target));
+  // les questions posées PAR-DESSUS le labo : une suite est finie (`checkpoint-done`) juste après la réussite de SA tâche (son résultat)
+  const answeredFor = (target) => trials.some((e, j) => e.tk === 'checkpoint-done' && num(trials.slice(0, j).findLast((x) => !x.tk && x.ok)?.target) === num(target));
+  const q1 = answeredFor('350');
+  const q3 = answeredFor('0,035');
 
   const Evidence = ({ id, ok, done, todo }) => (
     <p data-evidence={id} data-tried={ok ? 'true' : 'false'}
@@ -57,16 +62,9 @@ export default function Module04TariqaAshara() {
           num: 1, title: 'ماذا حدث للأرقام؟', subtitle: '3,5 × 100', done: q1,
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="times100" ok={solved('350')}
-                done={<span>ضربتَ <Ltr>3,5</Ltr> في 100 فأعطتك الآلة <Ltr>350</Ltr>.</span>}
-                todo="شغّل الآلة على 3,5 × 100 في المستوى المبتدئ، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt="في 3,5 × 100 كانت الأرقام 3 و 5. ماذا حدث لها؟"
-                options={[M('بقيت 3 و 5 وانتقلت الفاصلة مرتبتين نحو اليمين مع صفر في الآخر'), M('تغيّرت الأرقام إلى أرقام أخرى'), M('أُضيف صفران فصار العدد 3,500')]}
-                correct={0} cols={1} requires={['fasila-hajm']}
-                explain={<MathText>{'الرقمان 3 و 5 باقيان، وكل منهما صار يعدّ قطعًا أكبر بمئة مرّة: $3{,}5\\times100=350$ . أمّا $3{,}500$ فهو $3{,}5$ نفسه.'}</MathText>}
-                onAnswered={() => setQ1(true)}
-              />
+              <Evidence id="times100" ok={q1}
+                done={<span>أجبتَ في المختبر: <Ltr>3,5 × 100 = 350</Ltr> — بقي الرقمان 3 و 5، وانزلقت الفاصلة مرتبتين نحو اليمين، وملأ صفرٌ المرتبة الفارغة.</span>}
+                todo="شغّل الآلة على 3,5 × 100 في المستوى المبتدئ، وأجب عن الأسئلة التي تظهر فوق المختبر." />
             </div>
           ),
         },
@@ -92,16 +90,9 @@ export default function Module04TariqaAshara() {
           num: 3, title: 'من أين جاء الصفر؟', subtitle: '3,5 ÷ 100', done: q3,
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="div100" ok={solved('0.035')}
-                done={<span>قسمتَ <Ltr>3,5</Ltr> على 100 فأعطتك الآلة <Ltr>0,035</Ltr>.</span>}
-                todo="شغّل الآلة على 3,5 ÷ 100 في المستوى المبتدئ، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt="في 3,5 ÷ 100 تتحرّك الفاصلة مرتبتين نحو اليسار، لكنّ 3,5 فيه رقمان فقط. ماذا نفعل بالمرتبة التي لا رقم فيها؟"
-                options={[M('نكتب فيها صفرًا فنحصل على 0,035'), M('نتركها فارغة فنحصل على 0,35'), M('نحذف الرقم 3 فنحصل على 0,05')]}
-                correct={0} cols={1} requires={['azaha-fasila']}
-                explain={<MathText>{'كل رقم ينزل مرتبتين: الرقم 3 من الآحاد إلى الأجزاء من مائة، والرقم 5 من الأعشار إلى الأجزاء من ألف. تبقى مرتبتا الآحاد والأعشار فارغتين فنكتب فيهما صفرين: $3{,}5\\div100=0{,}035$ .'}</MathText>}
-                onAnswered={() => setQ3(true)}
-              />
+              <Evidence id="div100" ok={q3}
+                done={<span>أجبتَ في المختبر: <Ltr>3,5 ÷ 100 = 0,035</Ltr> — انزلقت الفاصلة مرتبتين نحو اليسار، فأضفتَ صفرًا لمرتبة لا رقم فيها.</span>}
+                todo="شغّل الآلة على 3,5 ÷ 100 في المستوى المبتدئ، وأجب عن الأسئلة التي تظهر فوق المختبر." />
             </div>
           ),
         },
@@ -137,7 +128,7 @@ export default function Module04TariqaAshara() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

@@ -50,7 +50,7 @@ export default function Module03Awazzif() {
         { num: 4, title: 'تمرين 21 — أتعمّق', done: all('21'),
           content: <div className="space-y-3">{block('21', ['tabrir-taqsim', 'talis-aksiya', 'talis-nisab', 'fithaghuris'])}</div> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }

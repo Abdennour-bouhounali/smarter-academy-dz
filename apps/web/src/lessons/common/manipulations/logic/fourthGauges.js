@@ -204,6 +204,12 @@ export function nextTask(s) {
 /** « إعادة » sur la même tâche : la poignée revient à 0, les essais restent (la découverte s'en sert). */
 export function restartTask(s) { return { ...s, hh: 0, shown: null, last: null }; }
 
+/** « أعِد التجربة » (questions du labo) : LA MÊME tâche repart de zéro — poignée à 0, tâche, leurre et réussite effacés (les essais restent). */
+export function retryTask(s) {
+  const strip = (o) => { const c = { ...o }; delete c[s.ti]; return c; };
+  return { ...restartTask(s), done: strip(s.done), solved: strip(s.solved), decoyLit: strip(s.decoyLit) };
+}
+
 /** Ouvre / ferme les deux nombres exacts sous une balance. */
 export function toggleGauge(s, id) {
   if (!['unit', 'between', 'cross', 'diff'].includes(id)) return s;

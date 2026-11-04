@@ -43,6 +43,21 @@ Unit 1 is the **pilot unit**: rules are tried there, then extended. Three unit-1
 (2026-10-13) — were **extended to units 2–14 on 2026-10-13**; every synthesis lesson now has modules 1–6 « وضعيات تدريبية » and
 every `ContentModule` has `objectives` for the Classroom Mode entry slide. Report: `docs/reports/UNIT1_REFERENCE_CHANGES_2026-10-13.md`.
 
+Since 2026-11-03 the pilot lesson `qasim-adad-tabii` tries the **student « focus » view** (owner: Gen Alpha reads little):
+- `studentView: 'focus'` in its config makes the student see only what they need now: one step on screen, the lesson home reduced
+  to title + progress + « واصل », and details behind « المزيد » (`MoreToggle`, `lessons/common/components/StudentFocus.jsx`).
+- The teacher and Classroom Mode are unchanged.
+- **Reduce what shows at once, never delete** (owner, 2026-11-04): whatever leaves the student's screen stays reachable.
+- If the owner validates it, it is rolled out lesson by lesson. Rules and checklist: guide §4sexies; numbers:
+  `docs/reports/STUDENT_FOCUS_VIEW_2026-11-03.md`.
+- Since 2026-11-04 the same lesson tries the **mission mode** (`studentView: 'mission'`, implies focus): the lesson is a journey
+  toward its « مسألة الدرس » (opening scene, tools = knowledge items, mission bar, map with the real lock, one checkpoint between
+  modules). It is built on the student's normal pages, NEVER on Classroom Mode. Stage 2 (same day): the lesson plays in a
+  full-window player with **no scrolling anywhere** (owner rule): one unit per screen, tall units paged (`ClassroomPaged` via
+  `PagingContext`, not Classroom Mode), last-resort fit by zoom; no « المزيد » in the player (every block has its own screen). In the player a lab is played as ROUNDS with 1–3 ★
+  (`manipulations/rounds/LabRounds.jsx`) instead of مبتدئ / متقدم, and this lesson uses only the football lab.
+  Guide §4septies, plan `docs/reports/MISSION_PLAYER_PLAN_2026-11-04.md`.
+
 Since 2026-10-13 the **learning net « شبكة الكفاءات »** covers the WHOLE cycle moyen (1AM–4AM): the official
 programme of the four years as data (224 items transcribed from `docs/Math-Moyenne-programme/`, stable ids
 `<g>am.m<مقطع>.r<nn>`), typed links between items (`requires` / `extends` with its added value / `consolidates` —
@@ -70,6 +85,18 @@ diagram « مخطط بأقواس » is the shared figure `ArcTape` (statement fi
 and its modules/exercises published in the LOCAL database so the owner can browse it. **Nothing generated stays `draft`** (owner,
 2026-10-26): every lesson, module and exercise you generate must end `published` — never leave a `draft` module or exercise behind
 (guide §11 « Publish a lesson », step 4).
+
+Since 2026-11-01 (phase 1 of 7) the student space has **« مختبر التفكير »**, the thinking space at `/espace/tafkir`. It is a ladder of
+NUMBERED challenges outside the curriculum: the band, primary → university, is hidden, and every challenge is `content/thinking-lab/challenges/*.json`.
+- **The student tries first.** The server alone grades (`AnswerChecker.php`: the `expression` check is a safe parser written in
+  JS and PHP over one shared fixture), counts only honest attempts, opens one key per attempt, and opens the replay of a
+  mathematician's thinking after 3 attempts + 24 h (primary band: no wait).
+- **Nothing of the answer reaches the client before that gate** (`ChallengePresenter`, `ThinkingLabLeakTest`).
+- **Content follows the pipeline** schema → `validate:thinking-lab --strict` (in `check:lessons`) → oracle → server-only
+  generated index. Figures are SVG components in `features/thinkingLab/figures/`.
+- **Teachers get a read-only preview** (`/enseignant/tafkir`, owner 2026-10-31): everything open, the answer and the replay visible, an
+  answer to test, nothing written (`THINKING_LAB.md` §8bis).
+- Build plan, phases 2–7: `docs/reports/THINKING_LAB_PLAN_2026-10-30.md`. Contract: `docs/architecture/THINKING_LAB.md`.
 
 Since 2026-10-17 the platform has a **printed-books store** (`/books`, `/books/:slug`, admin « الكتب » at `/admin/livres/*`): orders WITHOUT online
 payment, delivery fee set later by the admin, payments recorded as lines; the first book is « بروتوكول SMART » (`BookSeeder`, slug
@@ -145,6 +172,11 @@ shared with the student too, on the link page as well. The parent pages are phon
   GENERATE YOUR OWN content — own boxes, own contexts, own numbers, own wording. Never copy the book's text to the student and never write a
   student-visible line that sends them to the book (« الكتاب ص 55 », « اقرأ ما يقوله الكتاب », « تمارين من الكتاب »); `SourceTag` is muted for
   students (`LESSON_DEVELOPMENT_GUIDE.md` §4ter-bis).
+- **The lab prototype goes to EVERY lesson — rollout DONE (112/112) and now BINDING on every NEW lab and lesson** (owner, 2026-10-28; a generated lesson is not done until `lab-rollout-status.mjs --lesson <id>` prints ✅; `LESSON_DEVELOPMENT_GUIDE.md` §6ter): questions OVER the lab after each step (mandatory for students; a teacher
+  may switch them off for his own account), a clear stepper and a success celebration, game sounds (off by default, a « الصوت » switch in
+  every lab), « إعادة » that restarts everything, full screen in every lab, and the end-of-module card as a memo sheet with its timed
+  challenge « اختبر ذاكرتك ». Ground truth, batches of 20 lessons and per-session prompt: `docs/reports/LAB_PROTOTYPE_ROLLOUT.md`;
+  status: `node apps/web/scripts/lab-rollout-status.mjs`.
 - **Every manipulation has the onboarding** (owner, 2026-10-14): `LabCoach` — at each moment a ring + one-sentence bubble on the button or
   gesture needed now, shown once, hidable, re-summonable; same design in every lab, every lesson, every grade
   (`MANIPULATION_CONTRACT.md` §8quater, `MANIPULATION_DNA.md` §17.11; rollout and its prompt: `docs/reports/LAB_COACH_ROLLOUT.md`).

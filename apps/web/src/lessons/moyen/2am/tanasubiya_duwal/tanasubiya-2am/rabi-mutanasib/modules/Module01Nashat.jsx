@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
-import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { GUIDE } from '../content/textbook';
 
 /**
  * Module 1 — l'ENTRÉE de la leçon, choisie par la plateforme (LESSON_DEVELOPMENT_GUIDE §4ter) : la « لوحة الأسعار ». UNE SEULE PISTE
@@ -15,20 +13,23 @@ import { GUIDE } from '../content/textbook';
  * Les ÉTAPES interrogent ce que l'élève a FAIT, avec SES essais : pourquoi les balances s'équilibrent ensemble (P1), pourquoi on ne garde
  * pas le prix de la balance « الفرق » (P1), ce que disent les produits en croix à l'équilibre (P2). Les noms (briques) viennent APRÈS la
  * réponse. Le نشاط 2 du manuel (l'éprouvette graduée) est posé en application au module 4.
+ * Déploiement du prototype (2026-10-28) : ces questions sont posées PAR-DESSUS le labo après chaque tâche (`FourthGauges › chainOf`) ;
+ * les étapes en gardent la TRACE (`checkpoint-done` des tâches f0 et f2) puis posent les noms.
  */
-const M = (s) => <MathText key={s}>{s}</MathText>;
 const Ltr = ({ children }) => <bdi dir="ltr">{String(children)}</bdi>;
 
 export default function Module01Nashat() {
   const [trials, setTrials] = useState([]);
-  const [q1, setQ1] = useState(false);
-  const [q2, setQ2] = useState(false);
-  const [q3, setQ3] = useState(false);
   const record = (e) => setTrials((list) => [...list, e]);
   const mine = trials.filter((e) => e.kind === 'release' && !e.free);
   // la tâche 1 (4 kg → 520 DA, 6 kg → ?) juste ; la balance « الفرق » allumée seule dans la tâche 3 (8 kg → 400 DA, 12 kg → ?)
   const fair = mine.findLast((e) => e.task === 0 && e.ok);
   const lie = mine.findLast((e) => e.task === 2 && e.decoyHit);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand la suite de questions de sa tâche l'est
+  const answered = (id) => trials.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const q1 = answered('f0');
+  const q2 = answered('f2');
+  const q3 = q1;
 
   /** Ce que l'élève a fait au labo, rappelé au-dessus de la question qui s'en sert. */
   const Evidence = ({ id, ok, done, todo }) => (
@@ -60,20 +61,9 @@ export default function Module01Nashat() {
           num: 1, title: 'ماذا تؤكّد الموازين الثلاثة؟', subtitle: 'الثمن العادل', done: q1,
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="fair" ok={!!fair}
-                done={<span>ضبطتَ ثمن <Ltr>6</Ltr> kg على <Ltr>{fair?.value}</Ltr> DA فتوازنت الموازين الثلاثة معًا.</span>}
-                todo="أنجز في المستوى المبتدئ المهمّة الأولى (ثمن 6 kg)، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<span>عند <Ltr>780</Ltr> DA ، ماذا يعني توازن ميزان «في الكيلو» (علمًا أنّ <Ltr>4</Ltr> kg بـ <Ltr>520</Ltr> DA)؟</span>}
-                options={[
-                  M('ثمن الكيلوغرام الواحد هو نفسه في العمودين: $130$ DA'),
-                  M('الثمن الكلي هو نفسه في العمودين'),
-                  M('الفرق بين الثمنين يساوي الفرق بين الكتلتين'),
-                ]}
-                correct={0} cols={1} requires={['jadwal-tanasubiya']}
-                explain={<MathText>{'$520 \\div 4 = 130$ و $780 \\div 6 = 130$ : ثمن الكيلوغرام لم يتغيّر. أمّا الثمنان فمختلفان، والفرق بينهما $260$ لا $2$ .'}</MathText>}
-                onAnswered={() => setQ1(true)}
-              />
+              <Evidence id="fair" ok={q1 && !!fair}
+                done={<span>أجبتَ في المختبر: ضبطتَ ثمن <Ltr>6</Ltr> kg على <Ltr>{fair?.value}</Ltr> DA فتوازنت الموازين الثلاثة معًا، وثمن الكيلوغرام <Ltr>130</Ltr> DA في العمودين.</span>}
+                todo="أنجز في المستوى المبتدئ المهمّة الأولى (ثمن 6 kg)، وأجب عن الأسئلة التي تظهر فوق المختبر." />
               {q1 && <KnowledgeBrick id="rabi" lead="ثلاثة أعداد معلومة وعدد واحد يوازنها: ما اسمه؟" />}
             </div>
           ),
@@ -82,20 +72,9 @@ export default function Module01Nashat() {
           num: 2, title: 'لماذا لا نقبل ثمن ميزان الفرق؟', subtitle: 'ميزان يكذب', done: q2,
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="lie" ok={!!lie}
-                done={<span>وضعتَ الثمن <Ltr>{lie?.value}</Ltr> DA لـ <Ltr>12</Ltr> kg فأضاء ميزان الفرق وحده.</span>}
-                todo="أنجز في المستوى المبتدئ المهمّة الثالثة: اضبط الثمن حتى يتوازن ميزان «الفرق» أوّلًا، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<span>أضاء ميزان الفرق عند <Ltr>404</Ltr> DA ولم يتوازن غيره. لماذا لا نقبل هذا الثمن لـ <Ltr>12</Ltr> kg ؟</span>}
-                options={[
-                  M('لأنّ ثمن الكيلوغرام يتغيّر: $50$ DA في العمود الأوّل وأقلّ من $34$ DA في الثاني'),
-                  M('لأنّ $12$ kg لا يمكن أن يكون ثمنها عددًا عشريًا'),
-                  M('لأنّ ميزان الفرق لم يضئ فعلًا'),
-                ]}
-                correct={0} cols={1} requires={['itmam-jadwal']}
-                explain={<MathText>{'$400 \\div 8 = 50$ بينما $404 \\div 12$ أقلّ من $34$ . ' + GUIDE.addDiff.why}</MathText>}
-                onAnswered={() => setQ2(true)}
-              />
+              <Evidence id="lie" ok={q2 && !!lie}
+                done={<span>وضعتَ الثمن <Ltr>{lie?.value}</Ltr> DA لـ <Ltr>12</Ltr> kg فأضاء ميزان الفرق وحده، ولم يكن الثمن الصحيح.</span>}
+                todo="أنجز في المستوى المبتدئ المهمّة الثالثة: اضبط الثمن حتى يتوازن ميزان «الفرق» أوّلًا، وأجب عن الأسئلة التي تظهر فوق المختبر." />
               {q2 && <KnowledgeBrick id="farq" lead="نزيد الكتلة بـ 4 فهل نزيد الثمن بـ 4 ؟" />}
             </div>
           ),
@@ -104,26 +83,15 @@ export default function Module01Nashat() {
           num: 3, title: 'ماذا يقول ميزان الجداءين؟', subtitle: 'الجداءان المتصالبان', done: q3,
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="cross" ok={!!fair}
-                done={<span>عند <Ltr>{fair?.value}</Ltr> DA توازن ميزان «الجداءان» أيضًا.</span>}
-                todo="أنجز في المستوى المبتدئ المهمّة الأولى (ثمن 6 kg)، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<span>الجدول <Ltr>4</Ltr> ؛ <Ltr>6</Ltr> في الأعلى و <Ltr>520</Ltr> ؛ <Ltr>780</Ltr> في الأسفل. ما العلاقة بين جداءي القطرين؟</span>}
-                options={[
-                  M('$4 \\times 780 = 520 \\times 6 = 3120$'),
-                  M('$4 \\times 780 > 520 \\times 6$'),
-                  M('$4 \\times 520 = 780 \\times 6$'),
-                ]}
-                correct={0} cols={1} requires={['rabi']}
-                explain={<MathText>{'$4 \\times 780 = 3120$ و $520 \\times 6 = 3120$ . أمّا $4 \\times 520 = 2080$ و $780 \\times 6 = 4680$ فليسا متساويين.'}</MathText>}
-                onAnswered={() => setQ3(true)}
-              />
+              <Evidence id="cross" ok={q3 && !!fair}
+                done={<span>عند <Ltr>{fair?.value}</Ltr> DA توازن ميزان «الجداءان» أيضًا: <Ltr>4 × 780 = 520 × 6</Ltr> .</span>}
+                todo="أنجز في المستوى المبتدئ المهمّة الأولى (ثمن 6 kg)، وأجب عن الأسئلة التي تظهر فوق المختبر." />
               {q3 && <KnowledgeBrick id="jidaan" lead="جداءا القطرين عند الثمن العادل: ماذا نقول عنهما؟" />}
             </div>
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

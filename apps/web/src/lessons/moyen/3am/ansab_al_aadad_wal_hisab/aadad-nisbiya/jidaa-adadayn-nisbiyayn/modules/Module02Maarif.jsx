@@ -18,6 +18,8 @@ import { Link } from 'react-router-dom';
  * (−3) × 4 + (−3) × (−4) ne vaudrait pas (−3) × 0 = 0. Le raisonnement est le نشاط 3 du manuel, redessiné (autres nombres) : la
  * distributivité sert UNE fois, comme ARGUMENT (jamais enseignée ici comme technique), puis le tableau (−4) × n hors machine (transfert),
  * puis les décimaux. Les additions de 2AM sont RAPPELÉES (« تذكّر »), jamais reconstruites. Les encadrés viennent APRÈS la réponse. LP : P2, P3.
+ * Déploiement du prototype (2026-10-28) : « de combien le produit monte ? » et « pourquoi il passe de l'autre côté de 0 » sont posées PAR-DESSUS
+ * le labo (`SignMachine › CHAINS`) ; l'étape 1 en garde la TRACE (`checkpoint-done` de la prédiction).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const Ltr = ({ children }) => <bdi dir="ltr">{String(children).replace(/-/g, '−')}</bdi>;
@@ -28,6 +30,7 @@ export default function Module02Maarif() {
   const [trials, setTrials] = useState([]);
   const answered = (k) => () => setQ((s) => ({ ...s, [k]: true }));
   const record = (e) => setTrials((list) => [...list, e]);
+  const asked = (...ids) => trials.some((e) => e.tk === 'checkpoint-done' && ids.includes(e.id));
   const recallPath = getLessonPath(RECALL_ADD.lesson);
   // ce que l'élève a vu à la machine : la prédiction réussie (le premier produit allumé de l'autre côté de 0)
   const seen = trials.findLast((e) => e.kind === 'predict' && e.ok && !e.free);
@@ -52,21 +55,15 @@ export default function Module02Maarif() {
       }
       steps={[
         {
-          num: 1, title: 'ماذا فعل الجداء بعد الصفر؟', subtitle: 'أعمدة آلتك', done: !!q.z,
+          num: 1, title: 'ماذا فعل الجداء بعد الصفر؟', subtitle: 'أعمدة آلتك', done: asked('p1', 'a1'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <p data-evidence="sign-machine" data-tried={seen ? 'true' : 'false'}
-                className={`rounded-xl border-2 px-3 py-2 text-sm ${seen ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
-                {seen
-                  ? <span>في آلتك: <Ltr>{`${par(a)} × 1 = ${a}`}</Ltr> ثم <Ltr>{`${par(a)} × 0 = 0`}</Ltr> ثم <Ltr>{`${par(a)} × (-1) = ${-a}`}</Ltr> .</span>
-                  : 'أنجز التوقّع في الآلة أعلاه (العمود الأول بعد الصفر)، ثم عُد إلى هذا السؤال.'}
+              <p data-evidence="sign-machine" data-tried={asked('p1', 'a1') ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${asked('p1', 'a1') ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {asked('p1', 'a1')
+                  ? <span>أجبتَ في الآلة: <Ltr>{`${par(a)} × 1 = ${a}`}</Ltr> ثم <Ltr>{`${par(a)} × 0 = 0`}</Ltr> ثم <Ltr>{`${par(a)} × (-1) = ${-a}`}</Ltr> — الجداء يزيد بـ <Ltr>{stepUp}</Ltr> في كل مرّة، قبل الصفر وبعده.</span>
+                  : 'أنجز المهمتين الأوليين في الآلة أعلاه (حتى التوقّع بعد الصفر)، وأجب عن الأسئلة التي تظهر فوقها.'}
               </p>
-              <NumericQuestion
-                prompt="كلّما نقص العامل الثاني بـ 1 في آلتك، بكم زاد الجداء؟ (قبل الصفر وبعده)"
-                expected={stepUp} requires={['ishara-jidaa']}
-                explain={<MathText>{`من عمود إلى العمود الذي يليه يزيد الجداء بـ $${stepUp}$ ، ولا يتوقّف ذلك عند الصفر: $0 + ${stepUp} = ${stepUp}$ ، فـ $${par(a)} \\times (-1) = ${stepUp}$ موجب.`}</MathText>}
-                onAnswered={answered('z')}
-              />
             </div>
           ),
         },
@@ -149,7 +146,7 @@ export default function Module02Maarif() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={2} />}
+      footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />
   );
 }

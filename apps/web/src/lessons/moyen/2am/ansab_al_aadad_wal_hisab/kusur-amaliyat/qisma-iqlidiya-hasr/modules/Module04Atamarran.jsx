@@ -24,7 +24,7 @@ export default function Module04Atamarran() {
       moduleSubtitle="تمرين الكتاب 33 وتمارين على منوال اختبارات الفصل الأول"
       estimatedTime="12 دقيقة"
       brief={{ tag: 'أوظّف تعلّماتي — الكتاب ص 32', title: 'خمسة تمارين', tone: 'amber',
-        body: <p>تمرين من الكتاب وأربعة على منوال اختبارات الفصل الأول. الخطأ هنا يُصحَّح ولا يُحتسب.</p> }}
+        body: <p>خمسة تمارين، أربعة منها على منوال اختبارات الفصل الأول. الخطأ هنا يُصحَّح ولا يُحتسب.</p> }}
       steps={[
         { num: 1, title: 'تمرين 33 — الطريقة الأنجلو-سكسونية', done: !!done['ex-33'],
           content: <div className="space-y-3"><KnowledgeBrick id="hasr-hasil" variant="rappel" compact /><TextbookExercise exercise={EX['ex-33']} requires={['hasr-hasil']} onAnswered={mark('ex-33')} /></div> },
@@ -37,7 +37,7 @@ export default function Module04Atamarran() {
         { num: 5, title: 'الباقي المعدوم', done: !!done['ex-p4'],
           content: <TextbookExercise exercise={EX['ex-p4']} requires={['qabiliya']} onAnswered={mark('ex-p4')} /> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

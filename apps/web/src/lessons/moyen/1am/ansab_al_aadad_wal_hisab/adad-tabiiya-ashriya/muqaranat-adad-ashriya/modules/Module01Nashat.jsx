@@ -15,6 +15,9 @@ import { LAB } from '../content/textbook';
  * Les ÉTAPES interrogent ce que l'élève a FAIT, avec SES nombres : pourquoi « 35 > 6 » ne tient pas (P1/P2), ce qui a décidé entre 8,05
  * et 8,5 (P1), 12,70 et 12,7 (P2), quelle règle a suffi pour 9,87 et 10,2 (P1), le premier de la suite (P3). Les noms (briques) viennent
  * APRÈS la réponse. Le نشاط 5 du manuel est posé en application au module 4.
+ * Déploiement du prototype (2026-10-28) : les questions des quatre comparaisons (lecture, graduation, le 0 final, la règle) sont posées
+ * PAR-DESSUS le labo après chaque tâche (`RulerCompare › chainOf`) ; les étapes 1–4 en gardent la TRACE (`checkpoint-done`) puis posent
+ * les noms. La question du podium (متقدم) reste posable ici pour qui n'a pas fait ce niveau.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const Ltr = ({ children }) => <bdi dir="ltr">{children}</bdi>;
@@ -22,10 +25,6 @@ const GRAD = ['المتر', 'الديسيمتر', 'السنتيمتر', 'الم�
 
 export default function Module01Nashat() {
   const [trials, setTrials] = useState([]);
-  const [q1, setQ1] = useState(false);
-  const [q2, setQ2] = useState(false);
-  const [q3, setQ3] = useState(false);
-  const [q4, setQ4] = useState(false);
   const [q5, setQ5] = useState(false);
   // La demande libre (« جرّب أعدادك ») n'est jamais une preuve.
   const record = (e) => { if (!e.free) setTrials((list) => [...list, e]); };
@@ -45,6 +44,14 @@ export default function Module01Nashat() {
   const v2 = verdictFor('8,05', '8,5');
   const v3 = verdictFor('12,70', '12,7');
   const v4 = verdictFor('9,87', '10,2');
+  // les questions posées PAR-DESSUS le labo : une suite est finie (`checkpoint-done`) juste après la réussite de SA tâche
+  const answeredAfter = (test) => trials.some((e, j) => e.tk === 'checkpoint-done' && test(trials.slice(0, j).findLast((x) => !x.tk && x.ok && (x.event === 'verdict' || x.event === 'check'))));
+  const pair = (a, b) => (x) => !!x && ((x.a === a && x.b === b) || (x.a === b && x.b === a));
+  const q1 = answeredAfter(pair('4,6', '4,35'));
+  const q2 = answeredAfter(pair('8,05', '8,5'));
+  const q3 = answeredAfter(pair('12,70', '12,7'));
+  const q4 = answeredAfter(pair('9,87', '10,2'));
+  const inLabOrder = answeredAfter((x) => !!x && x.event === 'check');
 
   return (
     <ContentModule
@@ -70,14 +77,7 @@ export default function Module01Nashat() {
             <div className="space-y-3" data-activity-evidence>
               <Evidence id="first-jump" ok={!!v1}
                 done={<span>حكمتَ بين <Ltr>4,6</Ltr> و <Ltr>4,35</Ltr> {where(v1)}.</span>}
-                todo="احكم بين القفزتين الأوليين في المستوى المبتدئ (4,6 و 4,35) ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<span>قبل أن تضبط المسطرة، قد يظنّ المرء أنّ <Ltr>4,35</Ltr> هو الأبعد لأنّ 35 أكبر من 6. لماذا يخطئ هذا الظنّ؟</span>}
-                options={[M('لأنّ أعشار 4,6 ستة وأعشار 4,35 ثلاثة فقط، وما بعدها لا يعوّض الفرق'), M('لأنّ العدد الأقصر كتابةً هو الأكبر دائمًا'), M('لأنّ الفاصلة تُهمل عند المقارنة')]}
-                correct={0} cols={1} requires={['maratib-ibtidai']}
-                explain={<MathText>{'$4{,}6$ هو 4 أمتار و6 ديسيمترات، و $4{,}35$ هو 4 أمتار و3 ديسيمترات و5 سنتيمترات فقط: الأعشار تعدّ قطعًا أكبر من الأجزاء من مائة.'}</MathText>}
-                onAnswered={() => setQ1(true)}
-              />
+                todo="احكم بين القفزتين الأوليين في المستوى المبتدئ (4,6 و 4,35) وأجب عن الأسئلة التي تظهر فوق المختبر." />
               {q1 && <KnowledgeBrick id="taqarun-rutab" lead="في 4,6 و 4,35: بأيّ رتبة بدأتَ المقارنة، وما الذي حسم؟" />}
             </div>
           ),
@@ -88,14 +88,7 @@ export default function Module01Nashat() {
             <div className="space-y-3" data-activity-evidence>
               <Evidence id="second-jump" ok={!!v2}
                 done={<span>حكمتَ بين <Ltr>8,05</Ltr> و <Ltr>8,5</Ltr> {where(v2)}.</span>}
-                todo="احكم بين القفزتين الثانيتين في المستوى المبتدئ (8,05 و 8,5) ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<span><Ltr>8,05</Ltr> فيه رقمان بعد الفاصلة و <Ltr>8,5</Ltr> فيه رقم واحد، ومع ذلك فالأول هو الأقصر. ما الذي حسم؟</span>}
-                options={[M('رقم الأعشار: 0 في الأول و 5 في الثاني'), M('عدد الأرقام بعد الفاصلة: الأطول أصغر'), M('الجزء الصحيح، فهو مختلف')]}
-                correct={0} cols={1} requires={['taqarun-rutab']}
-                explain={<MathText>{'الجزآن الصحيحان متساويان (8)، فنقارن الأعشار: $0<5$ ، إذن $8{,}05<8{,}5$ . عدد الأرقام لا يحسم شيئًا.'}</MathText>}
-                onAnswered={() => setQ2(true)}
-              />
+                todo="احكم بين القفزتين الثانيتين في المستوى المبتدئ (8,05 و 8,5) وأجب عن الأسئلة التي تظهر فوق المختبر." />
             </div>
           ),
         },
@@ -105,14 +98,7 @@ export default function Module01Nashat() {
             <div className="space-y-3" data-activity-evidence>
               <Evidence id="third-jump" ok={!!v3}
                 done={<span>حكمتَ بين <Ltr>12,70</Ltr> و <Ltr>12,7</Ltr> {where(v3)}.</span>}
-                todo="احكم بين القفزتين الثالثتين في المستوى المبتدئ (12,70 و 12,7) ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<span>هل استطاعت أيّ مسطرة، مهما دقّ تدريجها، أن تفصل بين <Ltr>12,70</Ltr> و <Ltr>12,7</Ltr> ؟</span>}
-                options={[M('لا: قُرئتا على كل تدريج بالعدد نفسه، فهما متساويتان'), M('نعم: على الميليمتر'), M('نعم: على السنتيمتر')]}
-                correct={0} cols={1} requires={['taqarun-rutab']}
-                explain={<MathText>{'$12{,}70$ هو $12{,}7$ مكتوبًا بصفر زائد في آخره: القطع نفسها، لذلك لم يظهر أيّ فرق على أيّ تدريج.'}</MathText>}
-                onAnswered={() => setQ3(true)}
-              />
+                todo="احكم بين القفزتين الثالثتين في المستوى المبتدئ (12,70 و 12,7) وأجب عن الأسئلة التي تظهر فوق المختبر." />
               {q3 && <KnowledgeBrick id="itmam-asfar" lead="12,70 و 12,7 يُقرآن بالعدد نفسه: كيف نستعمل ذلك لنقارن 4,6 و 4,35؟" />}
             </div>
           ),
@@ -123,24 +109,18 @@ export default function Module01Nashat() {
             <div className="space-y-3" data-activity-evidence>
               <Evidence id="fourth-jump" ok={!!v4}
                 done={<span>حكمتَ بين <Ltr>9,87</Ltr> و <Ltr>10,2</Ltr> {where(v4)}.</span>}
-                todo="احكم بين القفزتين الرابعتين في المستوى المبتدئ (9,87 و 10,2) ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<span>أيّ تدريج كفى للحكم بين <Ltr>9,87</Ltr> و <Ltr>10,2</Ltr> حتى وهو الأخشن؟</span>}
-                options={[M('المتر وحده: جزآهما الصحيحان 9 و 10 مختلفان'), M('الديسيمتر: لا بدّ من رقم الأعشار'), M('السنتيمتر: لا بدّ من رقم الأجزاء من مائة')]}
-                correct={0} cols={1} requires={['taqarun-rutab']}
-                explain={<MathText>{'$9<10$ ، فالقفزة الأولى أقل من 10 أمتار ومهما كان ما بعد الفاصلة فهو أقل من متر واحد: $9{,}87<10{,}2$ .'}</MathText>}
-                onAnswered={() => setQ4(true)}
-              />
+                todo="احكم بين القفزتين الرابعتين في المستوى المبتدئ (9,87 و 10,2) وأجب عن الأسئلة التي تظهر فوق المختبر." />
             </div>
           ),
         },
         {
-          num: 5, title: 'من يتصدّر المنصّة؟', subtitle: 'ترتيب خمس قفزات', done: q5,
+          num: 5, title: 'من يتصدّر المنصّة؟', subtitle: 'ترتيب خمس قفزات', done: q5 || inLabOrder,
           content: (
             <div className="space-y-3" data-activity-evidence>
               <Evidence id="podium" ok={orderDone}
                 done={<span>رتّبتَ قفزات المنصّة ترتيبًا صحيحًا.</span>}
-                todo="جرّب المستوى المتقدّم: ضع القفزات الخمس على المنصّة ثم عُد إلى هذا السؤال." />
+                todo="جرّب المستوى المتقدّم: ضع القفزات الخمس على المنصّة وأجب عن الأسئلة التي تظهر فوق المختبر." />
+              {!inLabOrder && (
               <TapQuestion
                 prompt={<span>في السلسلة <Ltr>7,4</Ltr> ؛ <Ltr>7,04</Ltr> ؛ <Ltr>7,45</Ltr> ؛ <Ltr>6,98</Ltr> ؛ <Ltr>7,405</Ltr> : أيّ قفزة تأتي أولًا في الترتيب من الأقصر إلى الأبعد؟</span>}
                 options={[M('6,98 لأنّ جزأها الصحيح أصغر'), M('7,04 لأنّ رقم أعشارها 0'), M('7,4 لأنّها أقصر كتابةً')]}
@@ -148,12 +128,13 @@ export default function Module01Nashat() {
                 explain={<MathText>{'$6<7$ ، فالقفزة $6{,}98$ أقصر من كل قفزة جزؤها الصحيح 7؛ وبين الأربع الباقية نفصل بالأعشار ثم بالأجزاء من مائة.'}</MathText>}
                 onAnswered={() => setQ5(true)}
               />
-              {q5 && <KnowledgeBrick id="tartib-silsila" lead="خمس قفزات على المنصّة: كيف تقرّر أيّ قفزتين تتجاوران؟" />}
+              )}
+              {(q5 || inLabOrder) && <KnowledgeBrick id="tartib-silsila" lead="خمس قفزات على المنصّة: كيف تقرّر أيّ قفزتين تتجاوران؟" />}
             </div>
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

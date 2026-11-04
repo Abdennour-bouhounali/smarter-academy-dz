@@ -9,6 +9,11 @@ import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
 import MathText from '../../components/MathText';
 import * as L from '../logic/vanishingPitch';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 
 /**
  * vanishing-pitch — LE TERRAIN QUI S'ANNULE (unité 4 « معادلات ومتراجحات », leçon 2
@@ -61,14 +66,22 @@ import * as L from '../logic/vanishingPitch';
  * dénominateurs des zéros (logic/vanishingPitch.js) : chaque zéro est une graduation.
  * Manuel (§6bis) : chaque épingle est une réponse — pas d'auto-complétion.
  *
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 3, 2026-10-28) : le labo n'a qu'UNE scène libre ; quand la
+ * découverte est atteinte (un x refusé, tous les zéros épinglés, « لا حلول أخرى »), une suite unique se pose PAR-DESSUS le labo : l'aire lue pour
+ * le x REFUSÉ (les mauvaises options sont les erreurs réelles : additionner les côtés, oublier le signe) · quel côté s'est annulé pour SON
+ * épingle · combien de valeurs il a épinglées · LA RÈGLE (l'ancienne découverte, qui formalise). Obligatoires pour tout élève ; l'enseignant seul
+ * les coupe pour SON compte (`checkpoints` = false les coupe aussi). `onCheckpoint(ev)` : la trace pour les étapes du module. ÉTAPES
+ * `LabStepper` (`[data-vp-step=<i>]` : épingler les zéros · un x refusé · « لا حلول أخرى » + questions) + fête ; « إعادة » repart de zéro ;
+ * « أعِد التجربة » remet le terrain au départ. SON : `tooth` (x bougé), `bell` (un côté s'annule), `flag` (épingle posée), `over` (refus).
+ *
  * DÉCOR (exigence du propriétaire) : bandes de tonte, buts et un ballon que l'élève
  * peut taper (il roule dans le terrain ; quand le terrain s'écrase, il tombe sur la
  * ligne). Le décor ne porte AUCUNE information : `aria-hidden`, `tabIndex={-1}`, il ne
  * change jamais l'état du lab, et `prefers-reduced-motion` l'immobilise.
  */
 export default function VanishingPitch({
-  expr: expr0 = 'x-2|x+5', title, lead, mission, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onFinished, onTrial,
+  expr: expr0 = 'x-2|x+5', title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true,
+  initialMode = 'student', allowModeSwitch = false, onFinished, onTrial, onCheckpoint,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.vanishingPitch.${key}`, o), [t]);
@@ -77,17 +90,31 @@ export default function VanishingPitch({
 
   const make = () => L.init({ expr });
   const [lab, setLab] = useState(make);
-  const sceneKey = `${expr}:${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
+  const sceneKey = `${expr}:${state.epoch}:${state.resetCount}`;
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
   const [live, setLive] = useState(null);
   const [kick, setKick] = useState(0);
   // Miroir synchrone de `lab` : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
   const labRef = useRef(lab);
   labRef.current = lab;
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setLive(null); }
+  // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — le terrain, les essais et les questions du labo
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(make()); setLive(null); }
 
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : une suite unique quand la découverte est atteinte ; celle qui finit par la règle remplace la découverte automatique
+  const cpSettings = useLabCheckpointSettings('vanishing-pitch');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpLive = cpOn && cpSettings.enabled;
+  const chain = cpLive ? CHAIN : null;
+  const cp = useLabCheckpoint({
+    id: chain ? expr : null,
+    questions: chain && ready ? chain.map((q) => QUESTIONS[q](lab, k)) : null,
+    reached: ready,
+    resetKey: scene.inits,
+    onRetry: () => { setLab(make()); setLive(null); },
+    onEvent: (ev) => state.report(onCheckpoint, ev),   // {tk:'checkpoint'|'checkpoint-done', id: expr, …} — la TRACE que les étapes du module relisent
+    onDone: () => { state.discover(); state.formalize(); },
+  });
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, expr); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── mesure ── */
@@ -126,6 +153,31 @@ export default function VanishingPitch({
   const productTex = L.productTex(lab);
   const xText = L.labText(lab, cur.x);
 
+  // une étape est FAITE quand son objectif est atteint ET (la dernière) ses questions répondues : la pastille passe au vert et on fête
+  const stepDone = [L.allPinned(lab), L.allPinned(lab) && lab.refused.length > 0, ready && !cp.blocking];
+  const nDone = stepDone.findIndex((d) => !d) < 0 ? stepDone.length : stepDone.findIndex((d) => !d);
+  const party = useStepCelebration();
+  const celebrated = useRef({ n: 0, inits: scene.inits });
+  if (celebrated.current.inits !== scene.inits) celebrated.current = { n: 0, inits: scene.inits };   // « إعادة » : on refête
+  useEffect(() => {
+    if (nDone <= celebrated.current.n) return;
+    celebrated.current.n = nDone;
+    party.celebrate({ n: nDone, total: stepDone.length });
+  }, [nDone]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son du geste (muet sans « الصوت ») : x bougé (au plus un toutes les 35 ms), un côté qui s'annule
+  const heard = useRef({ at: 0, v: null, zero: false });
+  const zeroNow = Lin.isZero(cur.A) || Lin.isZero(cur.B);
+  useEffect(() => {
+    const h = heard.current;
+    if (h.v == null) { h.v = v; h.zero = zeroNow; return; }
+    if (h.v === v) return;
+    h.v = v;
+    const now = Date.now();
+    if (now - h.at > 35) { playSfx('tooth'); h.at = now; }
+    if (zeroNow && !h.zero) playSfx('bell');
+    h.zero = zeroNow;
+  }, [v]); // eslint-disable-line react-hooks/exhaustive-deps
+
   /* ── épingler, conclure ── */
   const pin = () => {
     stretch.flush();
@@ -135,6 +187,7 @@ export default function VanishingPitch({
     setLab(next);
     const last = next.last;
     if (last && (last.kind === 'pinned' || last.kind === 'notZero')) {
+      playSfx(last.kind === 'pinned' ? 'flag' : 'over');
       const sd = L.sides(next, last.v);
       state.report(onTrial, { x: L.labText(next, sd.x), xTex: L.labTex(next, sd.x), A: L.labText(next, sd.A), B: L.labText(next, sd.B), area: L.labText(next, sd.area), areaTex: L.areaTex(next, last.v), ok: last.kind === 'pinned', expr });
     }
@@ -156,43 +209,7 @@ export default function VanishingPitch({
   }[last.kind]?.());
 
   /* ── la découverte : distracteurs réfutés par les nombres du lab ── */
-  const discoveryOptions = useMemo(() => {
-    const opts = [{ text: <MathText>{k('dOptRight')}</MathText>, correct: true }];
-    // « les deux à la fois » : une épingle où UN SEUL côté s'annule le réfute.
-    const single = lab.pins.find((p) => L.zeroSides(lab, p).length === 1);
-    if (single != null) {
-      const sd = L.sides(lab, single);
-      const z = L.zeroSides(lab, single)[0];
-      opts.push({ text: <MathText>{k('dOptBoth')}</MathText>, why: <MathText>{k('dWhyBoth', { x: L.labTex(lab, sd.x), side: sideName(z), other: sideName(1 - z), v: L.labTex(lab, z === 0 ? sd.B : sd.A) })}</MathText> });
-    }
-    // « x = 0 » : l'aire en 0, lue.
-    if (L.sides(lab, 0).area.n !== 0) {
-      opts.push({ text: <MathText>{k('dOptZero')}</MathText>, why: <MathText>{k('dWhyZero', { area: L.areaTex(lab, 0) })}</MathText> });
-    }
-    // « un côté négatif » : un x de la règle où un seul côté est négatif.
-    for (let u = lab.range.min; u <= lab.range.max; u += 1) {
-      const sd = L.sides(lab, u);
-      if ((sd.A.n < 0) !== (sd.B.n < 0) && sd.area.n !== 0) {
-        opts.push({ text: <MathText>{k('dOptNeg')}</MathText>, why: <MathText>{k('dWhyNeg', { x: L.labTex(lab, sd.x), area: L.areaTex(lab, u) })}</MathText> });
-        break;
-      }
-    }
-    // ordre stable, la bonne réponse jamais en premier
-    return [...opts.slice(1, 2), opts[0], ...opts.slice(2)].filter(Boolean);
-  }, [lab, k]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const equations = L.equationsOf(lab);
-  const constIdx = [0, 1].find((i) => !lab.square && L.isConstant(lab, i));
-  const yourCase = `${productTex} = 0`;
-  const caseNote = (
-    <span>
-      {k('means')}{' '}
-      {equations.map((e, i) => (
-        <React.Fragment key={e.i}>{i > 0 ? ` ${k('or')} ` : ''}<bdi dir="ltr"><MathText>{`$${e.tex}$`}</MathText></bdi></React.Fragment>
-      ))}
-      {constIdx != null && <> <MathText>{k('becauseConst', { c: L.labTex(lab, lab.factors[constIdx].b) })}</MathText></>}
-    </span>
-  );
+  const discoveryOptions = useMemo(() => discoveryOptionsOf(lab, k), [lab, k]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── le terrain ── */
   const uid = useId().replace(/:/g, '');
@@ -219,6 +236,8 @@ export default function VanishingPitch({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={!!chain}
       hints={[k('hint1'), k('hint2'), k('hint3')].map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{
         autoStep: () => false,
@@ -258,25 +277,16 @@ export default function VanishingPitch({
           state={state}
           prompt={k('dPrompt')}
           options={discoveryOptions}
-          formal={(
-            <div className="space-y-2" data-vanishing-formal>
-              <EquationDisplay tone="result" tex="A \times B = 0" note={<MathText>{k('fRule')}</MathText>} />
-              <p className="text-sm text-emerald-900"><MathText>{k('fProperty')}</MathText></p>
-              <EquationDisplay tone="neutral" tex={yourCase} note={caseNote} />
-              <p className="text-sm text-slate-800" data-vanishing-solutions-formal>
-                {k('fSolutions', { n: k('nSolutions', { count: lab.roots.length }) })}{' '}
-                {lab.roots.map((r, i) => (
-                  <React.Fragment key={i}>{i > 0 ? ` ${k('and')} ` : ''}<bdi dir="ltr"><MathText>{`$${L.rootTex(r, lab.decimal)}$`}</MathText></bdi></React.Fragment>
-                ))}
-              </p>
-            </div>
-          )}
+          formal={<RuleFormal lab={lab} k={k} />}
         />
       )}
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-emerald-50/70 to-white" data-dragging={stretch.dragging ? 'true' : undefined}>
-        <div ref={boxRef} className="space-y-3" data-vanishing-pitch data-expr={expr} data-graduation={g}>
+        <div ref={boxRef} className="relative space-y-3" data-vanishing-pitch data-expr={expr} data-graduation={g}>
+          {party.node}
+          {cp.node}
+          <LabStepper count={stepDone.length} current={Math.min(nDone, stepDone.length - 1)} done={stepDone} stepAttr="data-vp-step" />
           {/* ── la règle de x, et la piste des solutions ── */}
           <p className="text-sm font-bold text-slate-700"><MathText>{k('ruler')}</MathText></p>
           <div dir="ltr" {...stretch.trackProps} className="relative" style={{ ...stretch.trackProps.style, height: 92 }} data-vanishing-ruler>
@@ -423,3 +433,161 @@ export default function VanishingPitch({
 }
 
 const Lin0 = (p) => p.n === 0;
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite unique : l'aire du x refusé, le côté qui s'annule, le nombre de valeurs épinglées, puis LA RÈGLE. */
+export const CHAIN = Object.freeze(['area', 'which', 'count', 'rule']);
+
+const $ = (x) => `$${x}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+
+/** Le x refusé de l'élève (le premier) et le premier zéro qu'il a épinglé. */
+const refusedOf = (lab) => lab.refused[0];
+const pinnedOf = (lab) => lab.pins[0];
+
+/**
+ * Les mauvaises aires d'un x refusé, chacune une erreur réelle : `sum` (A + B au lieu de A × B), `abs` (le signe oublié), `diff` (A − B), `first`
+ * (on lit seulement le côté A). Écartées si elles égalent la bonne aire ou une autre déjà prise.
+ */
+export function wrongAreas(lab) {
+  const sd = L.sides(lab, refusedOf(lab));
+  const cands = [
+    { id: 'sum', val: Lin.add(sd.A, sd.B) },
+    { id: 'abs', val: sd.area.n < 0 ? Lin.neg(sd.area) : null },
+    { id: 'diff', val: Lin.sub(sd.A, sd.B) },
+    { id: 'first', val: sd.A },
+  ];
+  const out = [];
+  for (const c of cands) {
+    if (!c.val || Lin.eq(c.val, sd.area) || out.some((o) => Lin.eq(o.val, c.val))) continue;
+    out.push(c);
+  }
+  return out;
+}
+
+export const QUESTIONS = {
+  area: (lab, k) => {
+    const u = refusedOf(lab);
+    const sd = L.sides(lab, u);
+    const o = { x: L.labTex(lab, sd.x), a: $(L.labTex(lab, sd.A, true)), b: $(L.labTex(lab, sd.B, true)), calc: $(L.areaTex(lab, u)) };
+    const wrong = wrongAreas(lab).slice(0, 2);
+    const wrongTex = (w) => ({ ...o, got: $(L.labTex(lab, w.val)) });
+    return {
+      id: 'area', kind: 'choice', cols: 3,
+      prompt: Cq(k, 'area.prompt', o),
+      options: [
+        { text: <MathText>{$(L.labTex(lab, wrong[0].val))}</MathText>, why: Cq(k, `area.why.${wrong[0].id}`, wrongTex(wrong[0])) },
+        { text: <MathText>{$(L.labTex(lab, sd.area))}</MathText>, correct: true },
+        { text: <MathText>{$(L.labTex(lab, wrong[1].val))}</MathText>, why: Cq(k, `area.why.${wrong[1].id}`, wrongTex(wrong[1])) },
+      ],
+      hints: [Cq(k, 'area.hint1', o), Cq(k, 'area.hint2', o)],
+      explain: Cq(k, 'area.explain', o),
+    };
+  },
+  which: (lab, k) => {
+    const p = pinnedOf(lab);
+    const sd = L.sides(lab, p);
+    const zs = L.zeroSides(lab, p);
+    const o = { x: L.labTex(lab, sd.x), a: $(L.labTex(lab, sd.A)), b: $(L.labTex(lab, sd.B)) };
+    const sideName = (i) => k(i === 0 ? 'sideA' : 'sideB').replace(/[:：]\s*$/, '');
+    if (zs.length === 2) {
+      return {
+        id: 'which', kind: 'choice', cols: 3,
+        prompt: Cq(k, 'which.prompt', o),
+        options: [
+          { text: Cq(k, 'which.onlyA'), why: Cq(k, 'which.whySquare', o) },
+          { text: Cq(k, 'which.both'), correct: true },
+          { text: Cq(k, 'which.onlyB'), why: Cq(k, 'which.whySquare', o) },
+        ],
+        hints: [Cq(k, 'which.hint1', o), Cq(k, 'which.hint2', o)],
+        explain: Cq(k, 'which.explainSquare', o),
+      };
+    }
+    const z = zs[0];
+    const other = L.labTex(lab, z === 0 ? sd.B : sd.A);
+    const w = { ...o, side: sideName(z), other: sideName(1 - z), v: $(other) };
+    return {
+      id: 'which', kind: 'choice', cols: 3,
+      prompt: Cq(k, 'which.prompt', o),
+      options: [
+        { text: <MathText>{sideName(1 - z)}</MathText>, why: Cq(k, 'which.whyOther', w) },
+        { text: <MathText>{sideName(z)}</MathText>, correct: true },
+        { text: Cq(k, 'which.both'), why: Cq(k, 'which.whyBoth', w) },
+      ],
+      hints: [Cq(k, 'which.hint1', o), Cq(k, 'which.hint2', o)],
+      explain: Cq(k, 'which.explain', w),
+    };
+  },
+  count: (lab, k) => {
+    const n = lab.pins.length;
+    const o = { prod: $(L.productTex(lab)), n: $(String(n)) };
+    return {
+      id: 'count', kind: 'number', expected: String(n), answer: <MathText>{$(String(n))}</MathText>,
+      prompt: Cq(k, 'count.prompt', o), hints: [Cq(k, 'count.hint1'), Cq(k, 'count.hint2', o)],
+      explain: Cq(k, lab.square ? 'count.explainSquare' : 'count.explain', o),
+    };
+  },
+  rule: (lab, k) => ({
+    id: 'rule', kind: 'choice', prompt: <MathText>{k('dPrompt')}</MathText>,
+    options: discoveryOptionsOf(lab, k),
+    hints: [Cq(k, 'rule.hint1'), Cq(k, 'rule.hint2', { prod: $(L.productTex(lab)) })],
+    explain: <RuleFormal lab={lab} k={k} />,
+  }),
+};
+
+/** Les options de la règle : la bonne, et des distracteurs réfutés par les propres essais de l'élève. */
+function discoveryOptionsOf(lab, k) {
+  const sideName = (i) => k(i === 0 ? 'sideA' : 'sideB');
+    const opts = [{ text: <MathText>{k('dOptRight')}</MathText>, correct: true }];
+    // « les deux à la fois » : une épingle où UN SEUL côté s'annule le réfute.
+    const single = lab.pins.find((p) => L.zeroSides(lab, p).length === 1);
+    if (single != null) {
+      const sd = L.sides(lab, single);
+      const z = L.zeroSides(lab, single)[0];
+      opts.push({ text: <MathText>{k('dOptBoth')}</MathText>, why: <MathText>{k('dWhyBoth', { x: L.labTex(lab, sd.x), side: sideName(z), other: sideName(1 - z), v: L.labTex(lab, z === 0 ? sd.B : sd.A) })}</MathText> });
+    }
+    // « x = 0 » : l'aire en 0, lue.
+    if (L.sides(lab, 0).area.n !== 0) {
+      opts.push({ text: <MathText>{k('dOptZero')}</MathText>, why: <MathText>{k('dWhyZero', { area: L.areaTex(lab, 0) })}</MathText> });
+    }
+    // « un côté négatif » : un x de la règle où un seul côté est négatif.
+    for (let u = lab.range.min; u <= lab.range.max; u += 1) {
+      const sd = L.sides(lab, u);
+      if ((sd.A.n < 0) !== (sd.B.n < 0) && sd.area.n !== 0) {
+        opts.push({ text: <MathText>{k('dOptNeg')}</MathText>, why: <MathText>{k('dWhyNeg', { x: L.labTex(lab, sd.x), area: L.areaTex(lab, u) })}</MathText> });
+        break;
+      }
+    }
+    // ordre stable, la bonne réponse jamais en premier
+    return [...opts.slice(1, 2), opts[0], ...opts.slice(2)].filter(Boolean);
+}
+
+/** La forme et les solutions : A × B = 0 ⇔ A = 0 أو B = 0, puis les équations du premier degré de CE produit. */
+function RuleFormal({ lab, k }) {
+  const equations = L.equationsOf(lab);
+  const constIdx = [0, 1].find((i) => !lab.square && L.isConstant(lab, i));
+  const yourCase = `${L.productTex(lab)} = 0`;
+  const caseNote = (
+    <span>
+      {k('means')}{' '}
+      {equations.map((e, i) => (
+        <React.Fragment key={e.i}>{i > 0 ? ` ${k('or')} ` : ''}<bdi dir="ltr"><MathText>{`$${e.tex}$`}</MathText></bdi></React.Fragment>
+      ))}
+      {constIdx != null && <> <MathText>{k('becauseConst', { c: L.labTex(lab, lab.factors[constIdx].b) })}</MathText></>}
+    </span>
+  );
+  return (
+    <div className="space-y-2" data-vanishing-formal>
+      <EquationDisplay tone="result" tex="A \times B = 0" note={<MathText>{k('fRule')}</MathText>} />
+      <p className="text-sm text-emerald-900"><MathText>{k('fProperty')}</MathText></p>
+      <EquationDisplay tone="neutral" tex={yourCase} note={caseNote} />
+      <p className="text-sm text-slate-800" data-vanishing-solutions-formal>
+        {k('fSolutions', { n: k('nSolutions', { count: lab.roots.length }) })}{' '}
+        {lab.roots.map((r, i) => (
+          <React.Fragment key={i}>{i > 0 ? ` ${k('and')} ` : ''}<bdi dir="ltr"><MathText>{`$${L.rootTex(r, lab.decimal)}$`}</MathText></bdi></React.Fragment>
+        ))}
+      </p>
+    </div>
+  );
+}

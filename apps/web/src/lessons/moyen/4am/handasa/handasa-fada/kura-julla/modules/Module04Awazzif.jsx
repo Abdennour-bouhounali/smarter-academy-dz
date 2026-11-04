@@ -49,7 +49,7 @@ export default function Module04Awazzif() {
         { num: 5, title: 'تمثيل نقطة من الجلة', done: !!done['aw-4'],
           content: <div className="space-y-3">{block('aw-4', ['tamthil-nuqta'])}</div> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

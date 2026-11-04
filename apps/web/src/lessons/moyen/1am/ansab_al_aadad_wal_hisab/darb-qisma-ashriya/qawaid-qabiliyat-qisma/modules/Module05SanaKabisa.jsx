@@ -43,7 +43,7 @@ export default function Module05SanaKabisa() {
         { num: 2, title: 'أتعمّق 8 — أيّ السنوات كبيسة؟', done: d1,
           content: <TextbookExercise exercise={EX['deep-8']} requires={['qabiliya-4']} onAnswered={() => setD1(true)} /> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={5} />}
+      footer={<KnowledgeSnapshot moduleNumber={5} variant="memo" />}
     />
   );
 }

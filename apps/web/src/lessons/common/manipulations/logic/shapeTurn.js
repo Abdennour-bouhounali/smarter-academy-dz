@@ -340,6 +340,32 @@ export function evidenceOf(s) {
   return Object.freeze({ mode: s.mode, ...e, between: e.between ?? null });
 }
 
+// ── Les questions pendant le labo (primitives/LabCheckpoint) ──────────────────
+
+/** L'angle (degrés) du دوران qui envoie A sur B (mode 'prove') — celui que la feuille a trouvé en tombant sur [BD]. */
+export function landedAlpha(s) {
+  const r = s.mode === 'prove' ? R.findRotation(s.O, s.pts.A, s.pts.B) : null;
+  return r ? Math.round(r.alpha) : s.alpha;
+}
+/** La première copie imprimée DONT le mot de l'angle se lit net (θ ≤ 90°, sinon la première qui n'est pas sur le motif) : { at, between }. */
+export function readableStamp(s) {
+  const list = (s.stamps ?? []).map((st) => ({ at: st.at, between: gauges(s, st.at, STRETCH.min).between }));
+  return list.find((x) => x.at <= 90 && x.between > 0) ?? list.find((x) => x.between > 0) ?? list[0] ?? null;
+}
+/** Le dernier étirement refusé par l'élève (« ليس دورانا ») : { orig, copy, stretch } ou null. */
+export const lastStretch = (s) => s.trials.findLast((e) => e.kind === 'stretch' && !e.rotation) ?? null;
+/**
+ * « أعِد التجربة » : remet LA MÊME étape au départ. r1 / p1 : tout recommence ; r2 : la feuille se recolle et l'étirement est oublié ;
+ * p2 : les affirmations sont à reprendre ; p3 : l'épingle revient, les médiatrices s'effacent.
+ */
+export function retryStep(s, id, nums = {}) {
+  const fresh = init(nums);
+  if (id === 'r2') return Object.freeze({ ...s, stretch: STRETCH.min, fakeTried: false, last: null, trials: Object.freeze(s.trials.filter((e) => e.kind !== 'stretch' && !(e.kind === 'refuse' && e.reason === 'stretch'))) });
+  if (id === 'p2') return Object.freeze({ ...s, claims: Object.freeze({}), last: null, stage: 'turn' });
+  if (id === 'p3') return Object.freeze({ ...s, center: null, pin: fresh.pin, pins: fresh.pins, bisectors: fresh.bisectors, last: null });
+  return fresh;
+}
+
 // ── Mise en page (pixels) ─────────────────────────────────────────────────────
 
 /**

@@ -118,6 +118,41 @@ export const MANIPULATION_COMPONENTS = {
   'loom-threads': lazy(() => import('./algebra/LoomThreads')),
   // 3AM, unité 5, leçon « حصر عدد عشري موجب » : la masse sous la main — ميزان العطّار dont l'écran arrondit (2026-10-26).
   'scoop-scale': lazy(() => import('./operations/ScoopScale')),
+  // 2AM, unité 2, leçon 7 « جمع وطرح كسرين » : la distance sous la main — عدّاد المسلك (2026-10-29).
+  'trail-odometer': lazy(() => import('./operations/TrailOdometer')),
+  // 2AM, unité 2, leçon 9 « مقارنة كسرين » : la hauteur d'un laser lue dans deux graduations — ليزر المستوى (2026-10-29).
+  'level-laser': lazy(() => import('./operations/LevelLaser')),
+  // 2AM, unité 3, leçon 5 « جمع وطرح عددين نسبيين » : la charge d'un montgolfière sous la main — أكياس المنطاد (2026-10-29).
+  'balloon-ballast': lazy(() => import('./operations/BalloonBallast')),
+  'tug-rope': lazy(() => import('./operations/TugRope')),
+  // 2AM, unité 3, leçon 1 « التعليم على مستقيم مدرّج » : l'origine et la graduation sous la main — مسطرة الكورنيش (2026-10-29).
+  'corniche-ruler': lazy(() => import('./operations/CornicheRuler')),
+  // 2AM, unité 3, leçon 4 « تعليم نقطة في المستوي » : le piquet d'origine sous la main — شبكة الحفرية (2026-10-29).
+  'dig-grid': lazy(() => import('./operations/DigGrid')),
+  // 1AM, unité 1, leçon 3 « الأعداد العشرية ونصف المستقيم المدرّج » : l'unité de longueur étirée puis le drapeau sur le ruban — شريط القفز (2026-10-30).
+  'jump-tape': lazy(() => import('./operations/JumpTape')),
+  // 1AM, unité 5, leçon 1 « الأعداد النسبية وسياقات استعمالها » : le niveau d'une jauge verticale tenu par la main, lu comme un nombre relatif — ميزان الصقيع (2026-10-30).
+  'frost-gauge': lazy(() => import('./operations/FrostGauge')),
+  // 1AM, unité 6, leçon 1 « البحث عن أعداد ناقصة » : la carte INVERSE d'une machine d'atelier et le nombre manquant, remonté puis vérifié — الحزام المعاكس (2026-10-30).
+  'rewind-belt': lazy(() => import('./operations/RewindBelt')),
+  // 1AM, unité 6, leçon 2 « تطبيق قاعدة حرفية » : la valeur d'un cadran tombe dans chaque fente d'une lettre — قرص الحروف (2026-10-30).
+  'letter-dial': lazy(() => import('./operations/LetterDial')),
+  // 1AM, unité 5, leçon 2 « التعليم على مستقيم مدرّج » : la foulée portée des deux côtés de l'origine — خطوة الطابع (2026-10-30).
+  'stride-stamp': lazy(() => import('./operations/StrideStamp')),
+  // 1AM, unité 5, leçon 3 « التعليم في المستوي » : un drone conduit sur UN axe à la fois au-dessus du plan d'une cour d'école — مسيّرة الساحة (2026-10-30).
+  'courtyard-drone': lazy(() => import('./operations/CourtyardDrone')),
+  // 2AM, unité 3, leçon 5 « المسافة بين نقطتين على مستقيم مدرّج » : l'ouverture d'un compas sous la main — مسماك الفرق (2026-10-29).
+  'gap-caliper': lazy(() => import('./operations/GapCaliper')),
+  // 2AM, unité 2, leçon 8 « جداء كسرين » : les deux facteurs sous la main — ستائر النافذة (2026-10-29).
+  'window-blinds': lazy(() => import('./operations/WindowBlinds')),
+  // 2AM, unité 4, leçon 1 « إنتاج عبارة حرفية واستعمالها » : le nombre de cellules sous la main — خلايا الشمع (2026-10-29).
+  'wax-cells': lazy(() => import('./operations/WaxCells')),
+  // 2AM, unité 4, leçon 2 « حلّ مشكل باستعمال معادلة » : l'inconnue (capacité du moule, contenu du réservoir) sous la main — خطّ العصير (2026-10-29).
+  'juice-line': lazy(() => import('./operations/JuiceLine')),
+  // 2AM, unité 4, leçon 3 « اختبار مساواة أو متباينة » : la charge d'un camion (des comptes de sacs) pesée contre la règle d'une pancarte — حمولة الجسر (2026-10-29).
+  'bridge-load': lazy(() => import('./operations/BridgeLoad')),
+  // 2AM, unité 2, leçon 6 « الكسر: نسبة وحاصل قسمة وقيم مقرّبة » : le quotient sous la main — حبال المرسى (2026-10-28).
+  'mooring-lines': lazy(() => import('./operations/MooringLines')),
   // 3AM, unité 5 : le signe d'un terme sous la main — la عبّارة des caisses d'une équation (2026-10-21).
   'term-ferry': lazy(() => import('./algebra/TermFerry')),
   // 3AM, unité 1 « الأعداد النسبية » : le temps signé sous la main — le شريط المصعد (2026-10-26).
@@ -137,6 +172,13 @@ export const MANIPULATION_COMPONENTS = {
   'robot-track': lazy(() => import('./operations/RobotTrack')),
   // 3AM, unité 2 « العمليات على الكسور والأعداد الناطقة » : la division par un rapport sous la main — la manivelle de la درّاجة (2026-10-25).
   'gear-crank': lazy(() => import('./proportion/GearCrank')),
+  // 2AM, unité 1, leçon 1 : l'ordre des opérations sous la main — le خطّ الترامواي (2026-10-28).
+  'tram-route': lazy(() => import('./operations/TramRoute')),
+  // 2AM, unité 1, leçon 2 : les parenthèses sous la main — la حاسبة التعاونية (2026-10-29).
+  'coop-calculator': lazy(() => import('./operations/CoopCalculator')),
+  // 2AM, unité 1, leçon 3 : la dernière opération nomme la chaîne — le مقصّ السلسلة (2026-10-29).
+  'chain-cutter': lazy(() => import('./operations/ChainCutter')),
+  'kit-packer': lazy(() => import('./operations/KitPacker')),
   // 3AM, unité 2 : le numérateur sous la main — la machine à teinter (آلة مزج الألوان, 2026-10-26).
   'shade-match': lazy(() => import('./operations/ShadeMatch')),
   // 3AM, unité 2, leçon 3 : l'espacement sous la main — le مشط الشتلات (2026-10-26).

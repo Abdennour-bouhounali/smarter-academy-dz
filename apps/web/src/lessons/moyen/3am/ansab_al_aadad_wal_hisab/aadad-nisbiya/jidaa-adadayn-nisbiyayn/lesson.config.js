@@ -23,6 +23,8 @@
  *   le signe d'abord, puis le produit des distances, les décimaux, × 0 (P4) → أتمرّن (le puits et l'escalator redessinés) → trois مسائل.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
+ * 2026-10-29 : `jam-tarh-nisbiya` (2AM, 2am.m4.r05) est publiée — arêtes LP P1 ← 2am_jam-tarh-nisbiya_P1 et P3 ← 2am_jam-tarh-nisbiya_P2
+ * (lien du réseau 2am.m4.r05 → 3am.m1.r01) ; le « تذكّر — السنة الثانية » (RECALL_ADD) devient un lien tout seul.
  */
 export const LESSON_BASE_PATH = '/courses/moyen/3am/ansab_al_aadad_wal_hisab/jidaa-adadayn-nisbiyayn';
 

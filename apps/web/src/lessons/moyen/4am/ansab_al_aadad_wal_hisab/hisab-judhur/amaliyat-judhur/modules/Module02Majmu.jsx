@@ -112,7 +112,7 @@ export default function Module02Majmu() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={2} />}
+      footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />
   );
 }

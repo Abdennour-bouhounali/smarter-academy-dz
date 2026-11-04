@@ -49,7 +49,7 @@ export default function Module02Taraiq() {
       // طرائق ne nomment la construction ; l'énoncé du manuel est le `lead` du labo, l'étape 3 interroge ses deux points.
       intro={(
         <Manipulation type="segment-divider" levels={false} mode={LAB.m2.mode} p={LAB.m2.p} q={LAB.m2.q} marks={LAB.m2.marks}
-          theme={LAB.m2.theme} lead="(xy) مستقيم، A و B نقطتان منه. لا تتوفّر إلا مسطرة غير مدرّجة ومدور." onTrial={(t) => setNowTrials((x) => [...x, t].slice(-8))} />
+          theme={LAB.m2.theme} lead="(xy) مستقيم، A و B نقطتان منه. لا تتوفّر إلا مسطرة غير مدرّجة ومدور." onTrial={(t) => { if (!t?.tk) setNowTrials((x) => [...x, t].slice(-8)); }} />
       )}
       steps={[
         {
@@ -168,7 +168,7 @@ export default function Module02Taraiq() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={2} />}
+      footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />
   );
 }

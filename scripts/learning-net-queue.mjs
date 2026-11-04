@@ -135,6 +135,14 @@ for (const g of ['4am', '3am', '2am', '1am']) {
     for (const up of upstreamPlanned(anchor)) push(up.lesson, anchor.code, up.via);
     if (anchor.status === 'planned') push(anchor, anchor.code);
   }
+  // Comme pour les unités du propriétaire : une unité de l'année dont toutes les leçons sont publiées n'appelle plus `push`, sa synthèse entre ici.
+  for (const [unit, items] of plannedByUnit) {
+    const syn = items.find((l) => l.kind === 'synthesis');
+    if (syn && syn.grade === g && !done.has(syn.code) && items.every((l) => l.kind === 'synthesis' || done.has(l.code))) {
+      done.add(syn.code);
+      queue.push({ code: syn.code, grade: syn.grade, unit, titleAr: syn.titleAr, kind: 'synthesis', trigger: `unité ${unit} complète`, via: [] });
+    }
+  }
   phases.push({ grade: g, from: start, to: queue.length });
 }
 const isoStart = queue.length;

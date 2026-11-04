@@ -2,6 +2,8 @@ import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
+import i18n from '../../../../i18n';
+import * as L from '../logic/bucketFill';
 import BucketFill from './BucketFill';
 import ManipulationWorkspace from '../ManipulationWorkspace';
 import { LEVELS } from '../levels';
@@ -57,5 +59,60 @@ describe('bucket-fill — rendu', () => {
     expect(ids.length).toBe(6);
     expect(new Set(ids).size).toBe(6);
     expect(html).not.toMatch(RAW);
+  });
+});
+
+const k = (key, o) => i18n.t(`lesson:manipulation.bucketFill.${key}`, o);
+const checkQ = (qid, q) => {
+  const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+  expect(out, qid).not.toMatch(RAW);
+  expect(out, qid).not.toContain('{{');
+  expect(q.hints, qid).toHaveLength(2);
+  if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), qid).toHaveLength(1); else expect(q.expected).toBeTruthy();
+};
+
+describe('bucket-fill — questions pendant le labo (LabCheckpoint)', () => {
+  it('le niveau, le sommet, le volume : chaque étape pose des questions sur les nombres du seau, la dernière finit par la règle', async () => {
+    const { chainOf, QUESTIONS } = await import('./BucketFill');
+    const nums = LEVELS['bucket-fill'].advanced.numbers;
+    const F = L.facts(nums);
+    let s = L.init(nums);
+    expect(L.stepsOf(s).map((x) => x.reached)).toEqual([false, false, false]);
+    s = L.fixLevel(L.setLevel(s, nums.depth));
+    expect(L.stepsOf(s)[0].reached).toBe(true);
+    const ctx = { lab: s, nums, F, options: [{ text: 'a', correct: true }], formal: null };
+    for (const qid of chainOf('level')) checkQ(qid, QUESTIONS[qid](ctx, k));
+    expect(QUESTIONS.lvAbove(ctx, k).expected).toBe('28');
+    expect(QUESTIONS.lvRadius(ctx, k).expected).toBe('19');
+    s = L.openPhase(s, 'apex');
+    s = L.commitApex(L.setApex(s, 105));
+    expect(L.stepsOf(s)[1].reached).toBe(true);
+    for (const qid of chainOf('apex')) checkQ(qid, QUESTIONS[qid](ctx, k));
+    expect(QUESTIONS.apexSO(ctx, k).expected).toBe('105');
+    expect(QUESTIONS.apexK(ctx, k).expected).toBe('15/19');   // k = SO / SW = 105 / 133
+    s = L.openPhase(s, 'volume');
+    s = L.pickCard(s, 'avg');
+    expect(L.stepsOf(s)[2].reached).toBe(false);
+    s = L.pickCard(s, 'k3');
+    expect(L.stepsOf(s)[2].reached).toBe(true);
+    for (const qid of chainOf('volume')) checkQ(qid, QUESTIONS[qid](ctx, k));
+    for (const qid of ['kCube', 'oneMinus']) {
+      const q = QUESTIONS[qid](ctx, k);
+      expect(q.options.filter((o) => o.correct)).toHaveLength(1);
+      q.options.filter((o) => !o.correct).forEach((o) => expect(o.why).toBeTruthy());
+    }
+    expect(L.stepsOf(L.retryStep(s, 'volume'))[2].reached).toBe(false);
+    expect(L.stepsOf(L.retryStep(s, 'apex'))[1].reached).toBe(false);
+  });
+});
+
+describe('bucket-fill — mode guidé', () => {
+  it('questions actives : ni la progression ni le bouton d’indice, un stepper ; coupées : ils reviennent', () => {
+    const a = renderToString(<BucketFill {...LEVELS['bucket-fill'].advanced.numbers} level="advanced" />);
+    expect(a).not.toContain('data-manipulation-progress');
+    expect(a).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    expect(a).toContain('data-bf-step="0"');
+    const b = renderToString(<BucketFill {...LEVELS['bucket-fill'].advanced.numbers} level="advanced" checkpoints={false} />);
+    expect(b).toContain('data-manipulation-progress');
   });
 });

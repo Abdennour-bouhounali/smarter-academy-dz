@@ -1,22 +1,17 @@
 <?php
 
 use App\Http\Controllers\AccessController;
-use App\Http\Controllers\AnswerImageController;
-use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ActivationCodeController;
 use App\Http\Controllers\Admin\AdminAccessPolicyController;
 use App\Http\Controllers\Admin\AdminAccountController;
 use App\Http\Controllers\Admin\AdminActivationCodeController;
 use App\Http\Controllers\Admin\AdminActivityLogController;
+use App\Http\Controllers\Admin\AdminBookController;
+use App\Http\Controllers\Admin\AdminBookMessageController;
+use App\Http\Controllers\Admin\AdminBookOrderController;
 use App\Http\Controllers\Admin\AdminClassroomController;
-use App\Http\Controllers\Admin\AdminSchoolController;
-use App\Http\Controllers\School\SchoolHomeController;
-use App\Http\Controllers\School\SchoolProgressController;
-use App\Http\Controllers\School\SchoolReportController;
-use App\Http\Controllers\School\SchoolStructureController;
-use App\Http\Controllers\School\SchoolStudentController;
-use App\Http\Controllers\Teacher\TeacherSchoolController;
 use App\Http\Controllers\Admin\AdminContentController;
+use App\Http\Controllers\Admin\AdminDailyChallengeController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminEntitlementController;
 use App\Http\Controllers\Admin\AdminHealthController;
@@ -25,24 +20,27 @@ use App\Http\Controllers\Admin\AdminMasteryReplayController;
 use App\Http\Controllers\Admin\AdminPlanController;
 use App\Http\Controllers\Admin\AdminProviderEventController;
 use App\Http\Controllers\Admin\AdminReportController;
+use App\Http\Controllers\Admin\AdminSchoolController;
 use App\Http\Controllers\Admin\AdminStudentController;
-use App\Http\Controllers\Admin\AdminUserDeletionController;
 use App\Http\Controllers\Admin\AdminSubscriptionController;
 use App\Http\Controllers\Admin\AdminTeacherController;
+use App\Http\Controllers\Admin\AdminUserDeletionController;
+use App\Http\Controllers\AnswerImageController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BillingCheckoutController;
 use App\Http\Controllers\BillingSubscriptionController;
-use App\Http\Controllers\ContactController;
 use App\Http\Controllers\BookStoreController;
-use App\Http\Controllers\Admin\AdminBookController;
-use App\Http\Controllers\Admin\AdminBookOrderController;
-use App\Http\Controllers\Admin\AdminBookMessageController;
+use App\Http\Controllers\ClassJoinLinkController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContentAvailabilityController;
-use App\Http\Controllers\FeatureAccessController;
 use App\Http\Controllers\CurriculumController;
+use App\Http\Controllers\DailyChallengeController;
 use App\Http\Controllers\DiagnosticController;
 use App\Http\Controllers\EmailVerificationController;
-use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\Family\ParentController;
+use App\Http\Controllers\Family\ParentLinkController;
+use App\Http\Controllers\Family\StudentFamilyController;
+use App\Http\Controllers\FeatureAccessController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\LearningEvidenceController;
 use App\Http\Controllers\LearningPointExplanationController;
@@ -50,43 +48,48 @@ use App\Http\Controllers\LearningProfileController;
 use App\Http\Controllers\LegalController;
 use App\Http\Controllers\LessonFinalTestAttemptController;
 use App\Http\Controllers\LessonProgressController;
+use App\Http\Controllers\MadarController;
 use App\Http\Controllers\MathLabDocumentController;
 use App\Http\Controllers\MathLabFileController;
 use App\Http\Controllers\MeSubscriptionController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PageTourController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\PracticeAnswerController;
 use App\Http\Controllers\PracticeNotebookController;
 use App\Http\Controllers\PracticeSessionController;
 use App\Http\Controllers\ProviderWebhookController;
 use App\Http\Controllers\RecommendationController;
+use App\Http\Controllers\School\SchoolHomeController;
+use App\Http\Controllers\School\SchoolProgressController;
+use App\Http\Controllers\School\SchoolReportController;
+use App\Http\Controllers\School\SchoolStructureController;
+use App\Http\Controllers\School\SchoolStudentController;
 use App\Http\Controllers\StudentClassroomController;
-use App\Http\Controllers\ClassJoinLinkController;
 use App\Http\Controllers\StudentReportController;
 use App\Http\Controllers\StudentSettingsController;
-use App\Http\Controllers\Teacher\TeacherClassroomController;
 use App\Http\Controllers\Teacher\TeacherAnswerReviewController;
-use App\Http\Controllers\Teacher\TeacherPracticeResponseController;
+use App\Http\Controllers\Teacher\TeacherClassroomController;
+use App\Http\Controllers\Teacher\TeacherClassroomDailyChallengeController;
 use App\Http\Controllers\Teacher\TeacherClassroomInsightController;
 use App\Http\Controllers\Teacher\TeacherClassroomInterventionController;
 use App\Http\Controllers\Teacher\TeacherClassroomLearningPointController;
 use App\Http\Controllers\Teacher\TeacherClassroomLessonController;
+use App\Http\Controllers\Teacher\TeacherClassroomMadarController;
 use App\Http\Controllers\Teacher\TeacherClassroomNotebookController;
 use App\Http\Controllers\Teacher\TeacherClassroomStudentController;
-use App\Http\Controllers\Teacher\TeacherStudentSettingsController;
 use App\Http\Controllers\Teacher\TeacherDashboardController;
+use App\Http\Controllers\Teacher\TeacherLabSettingsController;
+use App\Http\Controllers\Teacher\TeacherMadarPlayController;
+use App\Http\Controllers\Teacher\TeacherPracticeResponseController;
+use App\Http\Controllers\Teacher\TeacherSchoolController;
+use App\Http\Controllers\Teacher\TeacherStudentSettingsController;
+use App\Http\Controllers\Teacher\TeacherThinkingLabController;
+use App\Http\Controllers\ThinkingLabController;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DailyChallengeController;
-use App\Http\Controllers\MadarController;
-use App\Http\Controllers\Teacher\TeacherClassroomMadarController;
-use App\Http\Controllers\Teacher\TeacherMadarPlayController;
-use App\Http\Controllers\Teacher\TeacherClassroomDailyChallengeController;
-use App\Http\Controllers\Admin\AdminDailyChallengeController;
-use App\Http\Controllers\Family\ParentController;
-use App\Http\Controllers\Family\ParentLinkController;
-use App\Http\Controllers\Family\StudentFamilyController;
 use Laravel\Sanctum\Http\Middleware\AuthenticateSession;
 
 Route::prefix('v1')->group(function () {
@@ -260,6 +263,17 @@ Route::prefix('v1')->group(function () {
                 Route::post('/daily-challenge/attempts/{uuid}/answers', [DailyChallengeController::class, 'answer'])->whereUuid('uuid')->middleware('throttle:60,1');
                 Route::post('/daily-challenge/attempts/{uuid}/complete', [DailyChallengeController::class, 'complete'])->whereUuid('uuid');
                 Route::get('/daily-challenge/attempts/{uuid}/review', [DailyChallengeController::class, 'review'])->whereUuid('uuid');
+
+                // « مختبر التفكير » — l'échelle des défis (THINKING_LAB.md). Élève seulement :
+                // le serveur juge, compte et ouvre la porte ; rien de la réponse avant elle.
+                Route::get('/thinking-lab', [ThinkingLabController::class, 'home']);
+                Route::get('/thinking-lab/n/{number}', [ThinkingLabController::class, 'byNumber'])->whereNumber('number');
+                Route::get('/thinking-lab/challenges/{id}', [ThinkingLabController::class, 'show'])->where('id', '[a-z0-9-]+');
+                Route::post('/thinking-lab/challenges/{id}/attempts', [ThinkingLabController::class, 'attempt'])->where('id', '[a-z0-9-]+')->middleware('throttle:30,1');
+                Route::post('/thinking-lab/challenges/{id}/keys/{k}', [ThinkingLabController::class, 'openKey'])->where('id', '[a-z0-9-]+')->whereNumber('k');
+                Route::post('/thinking-lab/challenges/{id}/postpone', [ThinkingLabController::class, 'postpone'])->where('id', '[a-z0-9-]+');
+                Route::get('/thinking-lab/challenges/{id}/replay', [ThinkingLabController::class, 'replay'])->where('id', '[a-z0-9-]+');
+                Route::post('/thinking-lab/challenges/{id}/extra', [ThinkingLabController::class, 'extra'])->where('id', '[a-z0-9-]+')->middleware('throttle:60,1');
 
                 // « مدار » — le jeu (MADAR_GAME.md). Élève seulement : les
                 // réponses de la « محطة التزوّد » sont des preuves d'apprentissage.
@@ -509,6 +523,12 @@ Route::prefix('v1')->group(function () {
             Route::get('/dashboard', [TeacherDashboardController::class, 'index']);
             Route::get('/entitlements', [TeacherDashboardController::class, 'entitlements']);
 
+            // « مختبر التفكير » en PRÉVISUALISATION (THINKING_LAB.md §8bis) : tout est ouvert, la réponse
+            // et la relecture se lisent, une réponse se TESTE — rien n'est écrit (ni progression, ni tentative).
+            Route::get('/thinking-lab/challenges', [TeacherThinkingLabController::class, 'index']);
+            Route::get('/thinking-lab/challenges/{id}', [TeacherThinkingLabController::class, 'show'])->where('id', '[a-z0-9-]+');
+            Route::post('/thinking-lab/challenges/{id}/check', [TeacherThinkingLabController::class, 'check'])->where('id', '[a-z0-9-]+')->middleware('throttle:60,1');
+
             // « Mon offre », vue de l'enseignant : mêmes points d'entrée que /me.
             Route::get('/plans', [MeSubscriptionController::class, 'plans']);
             Route::get('/plans/{planId}/quote', [MeSubscriptionController::class, 'quote'])->whereNumber('planId');
@@ -573,12 +593,14 @@ Route::prefix('v1')->group(function () {
             Route::get('/classrooms/{id}/students/{studentId}/notebook/{noteId}', [TeacherClassroomNotebookController::class, 'show'])
                 ->whereNumber('id')->whereNumber('studentId')->whereNumber('noteId');
 
-
             // Le lot AVANT `{lessonId}`, pour que « bulk » ne soit pas lu comme un identifiant.
             Route::get('/classrooms/{id}/lessons', [TeacherClassroomLessonController::class, 'index'])->whereNumber('id');
             Route::post('/classrooms/{id}/lessons/bulk', [TeacherClassroomLessonController::class, 'bulk'])->whereNumber('id');
             Route::patch('/classrooms/{id}/lessons/{lessonId}', [TeacherClassroomLessonController::class, 'update'])
                 ->whereNumber('id')->whereNumber('lessonId');
+            // Les questions PENDANT les labos, pour le compte de l'enseignant SEULEMENT (LabCheckpoint, 2026-10-28) : obligatoires pour tout élève.
+            Route::get('/labs/{lessonCode}', [TeacherLabSettingsController::class, 'show']);
+            Route::patch('/labs/{lessonCode}', [TeacherLabSettingsController::class, 'update']);
 
             // Classe × learning point (Mastery V2, phase 7) — agrégation de
             // l'état canonique, en lecture seule, cadrée sur les leçons

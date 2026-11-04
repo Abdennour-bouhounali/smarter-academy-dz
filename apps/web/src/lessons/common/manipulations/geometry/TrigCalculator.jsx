@@ -7,6 +7,10 @@ import ManipulationStage from '../ManipulationStage';
 import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
 import useStretchInteraction from '../useStretchInteraction';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import LabFold from '../primitives/LabFold';
 import MathText from '../../components/MathText';
 import * as L from '../logic/trigCalculator';
@@ -85,11 +89,12 @@ const TONES = {
   rose: 'bg-rose-50 text-rose-900', emerald: 'bg-emerald-50 text-emerald-900', sky: 'bg-sky-50 text-sky-900', slate: 'bg-slate-50 text-slate-800',
 };
 const tex = (s) => String(s).replace(',', '{,}');
+const iso = (x) => `\u2066${x}\u2069`;
 const fnTex = (fn) => (fn ? `\\${fn.kind}${fn.inverse ? '^{-1}' : ''}` : '');
 
 export default function TrigCalculator({
   angles: angles0 = [30, 45, 60], inverse: inverse0 = null, digits: digits0 = 2, theme = 'drone', title, lead, mission, level,
-  levels: withLevels = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.trigCalculator.${key}`, o), [t]);
@@ -102,9 +107,30 @@ export default function TrigCalculator({
   const sceneKey = `${JSON.stringify([angles, inverse, digits])}|${state.epoch}`;
   const [scene, setScene] = useState(sceneKey);
   const [liveCut, setLiveCut] = useState(null);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setLiveCut(null); }
+  const [inits, setInits] = useState(0);
+  const [doneIds, setDoneIds] = useState([]);
+  // « إعادة », un autre niveau ou d'autres nombres : TOUT recommence — le tableau, les angles, les questions et les fêtes
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setLiveCut(null); setInits((n) => n + 1); setDoneIds([]); }
 
-  const ready = L.discoveryReady(lab);
+  /* ── les questions pendant le labo (primitives/LabCheckpoint) : une suite par étape, posée PAR-DESSUS le labo ── */
+  const cpSettings = useLabCheckpointSettings('trig-calculator');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpId = cpOn && cpSettings.enabled ? (lab.stage === 'inverse' ? 'inv' : 'tbl') : null;
+  const cpReached = cpId === 'inv' ? L.inverseReady(lab) : L.tableReady(lab);
+  const ruleByCheckpoint = cpOn && cpSettings.enabled;
+  const cp = useLabCheckpoint({
+    id: cpId,
+    questions: cpId && cpReached ? chainFor(lab, cpId).map((q) => QUESTIONS[q](lab, k)) : null,
+    reached: cpReached,
+    resetKey: inits,
+    onRetry: () => setLab(L.restartStage),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => (d.includes(id) ? d : [...d, id]));
+      if (chainFor(lab, id).includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+
+  const ready = L.discoveryReady(lab) && !ruleByCheckpoint;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, L.evidenceOf(lab)); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (lab.n > 0) state.report(onTrial, L.evidenceOf(lab)); }, [lab.n]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -142,7 +168,12 @@ export default function TrigCalculator({
   const narrow = width < 380;
 
   /* ── les gestes ── */
-  const act = useCallback((key) => { setLab((s) => L.key(s, key)); }, []);
+  const lastTick = useRef(0);
+  const act = useCallback((key) => {
+    const now = performance.now();
+    if (now - lastTick.current > 35) { playSfx('tooth', { pitch: key === 'DEL' || key === 'ON' ? 0.75 : 1 }); lastTick.current = now; }
+    setLab((s) => L.key(s, key));
+  }, []);
   const onCalcKey = (e) => {
     const map = { Enter: '=', '=': '=', Backspace: 'DEL', Escape: 'ON', '.': ',', ',': ',' };
     const keyName = /^[0-9]$/.test(e.key) ? e.key : map[e.key];
@@ -166,6 +197,29 @@ export default function TrigCalculator({
     onChange: (v) => setLiveCut(v),
     onCommit: (v) => { setLiveCut(null); setLab((s) => L.setCut(s, v)); },
   });
+
+  /* ── les étapes (1 : le tableau ; 2 : les angles, متقدم), la fête, le son ── */
+  const nSteps = L.hasInverse(lab) ? 2 : 1;
+  const stepDone = [cpId ? doneIds.includes('tbl') : L.tableReady(lab), cpId ? doneIds.includes('inv') : L.inverseReady(lab)].slice(0, nSteps);
+  const steps = <LabStepper count={nSteps} current={lab.stage === 'inverse' ? 1 : 0} done={stepDone} stepAttr="data-tc-step" />;
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.n === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(i)) return;
+      celebrated.current.add(i);
+      party.celebrate({ n: i + 1, total: nSteps });
+    });
+  }, [stepDone[0], stepDone[1]]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son : un tic par touche (ci-dessus), `flag` quand un arrondi est accepté, `over` quand la calculatrice ou l'arrondi est refusé, `bell` quand une étape est complète
+  const tr = lab.trials[lab.trials.length - 1];
+  useEffect(() => {
+    if (!tr) return;
+    if (tr.type === 'refused') playSfx('over'); else playSfx('flag');
+  }, [lab.n]); // eslint-disable-line react-hooks/exhaustive-deps
+  const stageReady = L.tableReady(lab) || L.inverseReady(lab);
+  useEffect(() => { if (stageReady) playSfx('bell'); }, [stageReady, lab.stage]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── la lecture ── */
   const sc = L.sceneOf(lab);
@@ -214,49 +268,9 @@ export default function TrigCalculator({
     : null;
 
   /* ── la découverte : distracteurs réfutés par les essais de l'élève ── */
-  const discoveryOptions = useMemo(() => {
-    if (!L.hasInverse(lab)) {
-      const rad = lab.rad;
-      const any = Object.values(lab.cells)[0];
-      return [
-        { text: <MathText>{k('dOptAnyMode')}</MathText>, why: <MathText>{rad ? k('dWhyAnyMode', { f: fnTex(rad.fn), x: tex(L.dec(rad.x)), screen: tex(rad.screen), drawn: tex(rad.expectedScreen.slice(0, 6)) }) : k('dWhyAnyModeNone')}</MathText> },
-        { text: <MathText>{k('dOptRight')}</MathText>, correct: true },
-        { text: <MathText>{k('dOptExact')}</MathText>, why: <MathText>{any ? k('dWhyExact', { f: `\\${any.kind}`, x: any.angle, screen: tex(any.screen), rounded: tex(any.rounded) }) : k('dWhyExactNone')}</MathText> },
-      ];
-    }
-    const task = lab.tasks[0];
-    return [
-      { text: <MathText>{k('dOptDirect', { x: tex(L.dec(task.value)) })}</MathText>, why: <MathText>{k('dWhyDirect', { x: tex(L.dec(task.value)), screen: tex(L.evaluate({ fn: { kind: task.kind, inverse: false }, entry: L.dec(task.value), mode: 'DEG' }).screen) })}</MathText> },
-      { text: <MathText>{k('dOptRatioIsAngle', { x: tex(L.dec(task.value)) })}</MathText>, why: <MathText>{k('dWhyRatioIsAngle', { x: tex(L.dec(task.value)), angle: tex(lab.inv[task.kind]?.[2] ?? lab.inv[task.kind]?.[1] ?? lab.inv[task.kind]?.[0] ?? '') })}</MathText> },
-      { text: <MathText>{k('dOptInverse', { x: tex(L.dec(task.value)) })}</MathText>, correct: true },
-    ];
-  }, [lab, k]); // eslint-disable-line react-hooks/exhaustive-deps
+  const discoveryOptions = useMemo(() => discoveryOptionsOf(lab, k), [lab, k]);
 
-  const formal = (
-    <div className="space-y-2" data-tc-formal>
-      {L.hasInverse(lab) ? (
-        <>
-          {lab.tasks.map((tk) => (
-            <div key={tk.kind} className="flex flex-wrap items-center gap-2 text-sm">
-              <Keys seq={['ON', '2nd', L.INV_LABEL[tk.kind], L.dec(tk.value), '=']} />
-              <MathText>{`$x \\approx ${tex(lab.inv[tk.kind]?.[2] ?? '…')}^{\\circ} \\approx ${tex(lab.inv[tk.kind]?.[1] ?? '…')}^{\\circ} \\approx ${tex(lab.inv[tk.kind]?.[0] ?? '…')}^{\\circ}$`}</MathText>
-            </div>
-          ))}
-          <p className="text-sm text-emerald-900"><MathText>{k('fRuleInverse')}</MathText></p>
-        </>
-      ) : (
-        <>
-          {Object.values(lab.cells).slice(0, 3).map((c) => (
-            <div key={`${c.angle}${c.kind}`} className="flex flex-wrap items-center gap-2 text-sm">
-              <Keys seq={['ON', c.kind, String(c.angle), '=']} />
-              <MathText>{`$\\${c.kind} ${c.angle}^{\\circ} \\approx ${tex(c.rounded)}$`}</MathText>
-            </div>
-          ))}
-          <p className="text-sm text-emerald-900"><MathText>{k('fRule')}</MathText></p>
-        </>
-      )}
-    </div>
-  );
+  const formal = formalOf(lab, k);
 
   /* ── la calculatrice ── */
   const shift = lab.calc.shift;
@@ -303,7 +317,7 @@ export default function TrigCalculator({
     </div>
   );
   const stageNav = L.hasInverse(lab) && (lab.stage === 'table'
-    ? (L.tableReady(lab) && (
+    ? (L.tableReady(lab) && !cp.blocking && (
       <div className="flex flex-wrap items-center justify-center gap-2 rounded-xl border border-indigo-200 bg-indigo-50 px-2 py-1 text-sm" data-tc-next-card>
         {!narrow && <span className="text-indigo-950">{k('nextCard')}</span>}
         <button type="button" onClick={() => setLab((s) => L.openInverse(s))} data-tc-next
@@ -384,15 +398,20 @@ export default function TrigCalculator({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={!!cpId}
       hints={(lab.stage === 'inverse' ? ['hintI1', 'hintI2', 'hintI3'] : ['hint1', 'hint2', 'hint3']).map((hk) => <MathText key={hk}>{k(hk)}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={<MathText>{k(L.hasInverse(lab) ? 'dPromptInverse' : 'dPrompt')}</MathText>} options={discoveryOptions} formal={formal} />}
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-sky-50/70 to-white" minHeight="min-h-[150px]">
-        <div ref={boxRef} className="space-y-2" data-trig-calculator data-world={theme} data-stage={lab.stage} data-mode={lab.calc.mode}
+        <div ref={boxRef} className="relative space-y-2" data-trig-calculator data-world={theme} data-stage={lab.stage} data-mode={lab.calc.mode}
           data-solved={ready ? 'true' : 'false'}>
+          {party.node}
+          {cp.node}
           <div ref={glanceRef} className="space-y-1.5" data-tc-glance>
+            {steps}
             <div className={wide ? 'flex items-start justify-center gap-3' : 'flex flex-col items-center gap-1.5'}>
               {sceneSvg}
               {calculator}
@@ -458,6 +477,55 @@ export default function TrigCalculator({
         </div>
       </ManipulationStage>
     </ManipulationShell>
+  );
+}
+
+
+/* ══════════════ La découverte et la règle (aussi la dernière question de la suite) ══════════════ */
+
+export function discoveryOptionsOf(lab, k) {
+    if (!L.hasInverse(lab)) {
+      const rad = lab.rad;
+      const any = Object.values(lab.cells)[0];
+      return [
+        { text: <MathText>{k('dOptAnyMode')}</MathText>, why: <MathText>{rad ? k('dWhyAnyMode', { f: fnTex(rad.fn), x: tex(L.dec(rad.x)), screen: tex(rad.screen), drawn: tex(rad.expectedScreen.slice(0, 6)) }) : k('dWhyAnyModeNone')}</MathText> },
+        { text: <MathText>{k('dOptRight')}</MathText>, correct: true },
+        { text: <MathText>{k('dOptExact')}</MathText>, why: <MathText>{any ? k('dWhyExact', { f: `\\${any.kind}`, x: any.angle, screen: tex(any.screen), rounded: tex(any.rounded) }) : k('dWhyExactNone')}</MathText> },
+      ];
+    }
+    const task = lab.tasks[0];
+    return [
+      { text: <MathText>{k('dOptDirect', { x: tex(L.dec(task.value)) })}</MathText>, why: <MathText>{k('dWhyDirect', { x: tex(L.dec(task.value)), screen: tex(L.evaluate({ fn: { kind: task.kind, inverse: false }, entry: L.dec(task.value), mode: 'DEG' }).screen) })}</MathText> },
+      { text: <MathText>{k('dOptRatioIsAngle', { x: tex(L.dec(task.value)) })}</MathText>, why: <MathText>{k('dWhyRatioIsAngle', { x: tex(L.dec(task.value)), angle: tex(lab.inv[task.kind]?.[2] ?? lab.inv[task.kind]?.[1] ?? lab.inv[task.kind]?.[0] ?? '') })}</MathText> },
+      { text: <MathText>{k('dOptInverse', { x: tex(L.dec(task.value)) })}</MathText>, correct: true },
+    ];
+}
+
+export function formalOf(lab, k) {
+  return (
+    <div className="space-y-2" data-tc-formal>
+      {L.hasInverse(lab) ? (
+        <>
+          {lab.tasks.map((tk) => (
+            <div key={tk.kind} className="flex flex-wrap items-center gap-2 text-sm">
+              <Keys seq={['ON', '2nd', L.INV_LABEL[tk.kind], L.dec(tk.value), '=']} />
+              <MathText>{`$x \\approx ${tex(lab.inv[tk.kind]?.[2] ?? '…')}^{\\circ} \\approx ${tex(lab.inv[tk.kind]?.[1] ?? '…')}^{\\circ} \\approx ${tex(lab.inv[tk.kind]?.[0] ?? '…')}^{\\circ}$`}</MathText>
+            </div>
+          ))}
+          <p className="text-sm text-emerald-900"><MathText>{k('fRuleInverse')}</MathText></p>
+        </>
+      ) : (
+        <>
+          {Object.values(lab.cells).slice(0, 3).map((c) => (
+            <div key={`${c.angle}${c.kind}`} className="flex flex-wrap items-center gap-2 text-sm">
+              <Keys seq={['ON', c.kind, String(c.angle), '=']} />
+              <MathText>{`$\\${c.kind} ${c.angle}^{\\circ} \\approx ${tex(c.rounded)}$`}</MathText>
+            </div>
+          ))}
+          <p className="text-sm text-emerald-900"><MathText>{k('fRule')}</MathText></p>
+        </>
+      )}
+    </div>
   );
 }
 
@@ -640,4 +708,134 @@ function Hud({ w, reduce }) {
       <rect x={w - 28} y={9} width={12} height={6} fill="#22C55E" />
     </g>
   );
+}
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de chaque étape : le tableau (مبتدئ : finit par la règle), les angles (متقدم : finit par la règle). */
+export function chainFor(lab, id) {
+  if (id === 'inv') return ['readAngle', 'key', 'tenth', 'rule'];
+  return L.hasInverse(lab) ? ['read', 'mode', 'round'] : ['read', 'mode', 'round', 'rule'];
+}
+
+const $$ = (s) => `$${s}$`;
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const numTex = (s) => String(s).replace(',', '{,}');
+const Code = ({ children }) => <code dir="ltr" className="rounded-md border border-slate-300 bg-slate-100 px-1.5 py-0.5 font-mono text-sm font-bold text-slate-800">{children}</code>;
+const asNum = (s) => Number(String(s).replace(',', '.'));
+/** Le pas de la dernière décimale (0,01 pour 2 chiffres). */
+const unit = (d) => 10 ** -d;
+const fixed = (x, d) => x.toFixed(d).replace('.', ',');
+
+/** La cellule dont l'arrondi a le plus à dire : le chiffre suivant ≥ 5 (on ajoute 1), de préférence un sinus ou un cosinus. */
+function bestCell(lab) {
+  const cells = Object.values(lab.cells);
+  const up = cells.filter((c) => L.roundingOf(asNum(c.screen), lab.digits).up);
+  return up.find((c) => c.kind !== 'tan') ?? up[0] ?? cells[0];
+}
+
+export const QUESTIONS = {
+  read: (lab, k) => {
+    const c = bestCell(lab);
+    const f = $$(`\\${c.kind}\\,${c.angle}^{\\circ}`);
+    const prec = k(`prec_${lab.digits}`);
+    const cut = L.cutScreen(c.screen, lab.digits);
+    return {
+      id: 'read', kind: 'number', expected: c.rounded, answer: <MathText>{$$(numTex(c.rounded))}</MathText>,
+      prompt: Mx(k, 'read.prompt', { f, prec }),
+      hints: [Mx(k, 'read.hint1', { f }), Mx(k, 'read.hint2', { screen: $$(numTex(c.screen)), prec })],
+      explain: Mx(k, 'read.explain', { screen: $$(numTex(c.screen)), next: iso(cut.next), rounded: $$(numTex(c.rounded)), prec }),
+    };
+  },
+  mode: (lab, k) => {
+    const c = bestCell(lab);
+    return {
+      id: 'mode', kind: 'choice',
+      prompt: Mx(k, 'mode.prompt'),
+      options: [
+        { text: Mx(k, 'mode.digits'), why: Mx(k, 'mode.whyDigits', { f: $$(`\\${c.kind}\\,${c.angle}^{\\circ}`), screen: $$(numTex(c.screen)) }) },
+        { text: Mx(k, 'mode.right'), correct: true },
+        { text: Mx(k, 'mode.keys'), why: Mx(k, 'mode.whyKeys') },
+      ],
+      hints: [Mx(k, 'mode.hint1'), Mx(k, 'mode.hint2')],
+      explain: Mx(k, 'mode.explain'),
+    };
+  },
+  round: (lab, k) => {
+    const c = bestCell(lab);
+    const d = lab.digits;
+    const v = asNum(c.screen);
+    const { rounded, truncated } = L.roundingOf(v, d);
+    const cut = L.cutScreen(c.screen, d);
+    const alt = [truncated !== rounded ? truncated : fixed(asNum(rounded) - unit(d), d), L.roundingOf(v, d + 1).rounded];
+    const wrong = [...new Set(alt.filter((x) => x !== rounded))];
+    while (wrong.length < 2) wrong.push(fixed(asNum(rounded) + unit(d) * (wrong.length + 1), d));
+    const o = { f: $$(`\\${c.kind}\\,${c.angle}^{\\circ}`), screen: $$(numTex(c.screen)), next: iso(cut.next), prec: k(`prec_${d}`) };
+    const items = [
+      { text: <MathText>{$$(numTex(wrong[0]))}</MathText>, why: Mx(k, truncated !== rounded ? 'round.whyTrunc' : 'round.whyLow', { ...o, v: $$(numTex(wrong[0])) }) },
+      { text: <MathText>{$$(numTex(rounded))}</MathText>, correct: true },
+      { text: <MathText>{$$(numTex(wrong[1]))}</MathText>, why: Mx(k, 'round.whyMore', { ...o, v: $$(numTex(wrong[1])) }) },
+    ];
+    return {
+      id: 'round', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'round.prompt', o),
+      options: items,
+      hints: [Mx(k, 'round.hint1', o), Mx(k, 'round.hint2', o)],
+      explain: Mx(k, 'round.explain', { ...o, rounded: $$(numTex(rounded)), add: cut.next >= 5 ? k('cp.round.addYes') : k('cp.round.addNo') }),
+    };
+  },
+  rule: (lab, k) => ({
+    id: 'rule', kind: 'choice',
+    prompt: <MathText>{k(L.hasInverse(lab) ? 'dPromptInverse' : 'dPrompt')}</MathText>,
+    options: discoveryOptionsOf(lab, k),
+    hints: [Mx(k, L.hasInverse(lab) ? 'rule.hintInv1' : 'rule.hint1'), Mx(k, L.hasInverse(lab) ? 'rule.hintInv2' : 'rule.hint2')],
+    explain: formalOf(lab, k),
+  }),
+  /** La tâche aux trois précisions (celle qui montre 31,33 / 31,3 / 31). */
+  readAngle: (lab, k) => {
+    const t = angleTask(lab);
+    const f = $$(`\\${t.kind}\\,x=${numTex(L.dec(t.value))}`);
+    const row = lab.inv[t.kind];
+    return {
+      id: 'readAngle', kind: 'number', expected: row[0], answer: <MathText>{$$(`${numTex(row[0])}^{\\circ}`)}</MathText>,
+      prompt: Mx(k, 'readAngle.prompt', { f }),
+      hints: [Mx(k, 'readAngle.hint1'), Mx(k, 'readAngle.hint2', { hundredth: $$(`${numTex(row[2])}^{\\circ}`) })],
+      explain: Mx(k, 'readAngle.explain', { f, hundredth: $$(`${numTex(row[2])}^{\\circ}`), unit: $$(`${numTex(row[0])}^{\\circ}`) }),
+    };
+  },
+  key: (lab, k) => {
+    const t = angleTask(lab);
+    const x = L.dec(t.value);
+    const other = t.kind === 'cos' ? 'sin' : 'cos';
+    const direct = L.evaluate({ fn: { kind: t.kind, inverse: false }, entry: x, mode: 'DEG' });
+    const swapped = L.evaluate({ fn: { kind: other, inverse: true }, entry: x, mode: 'DEG' });
+    const o = { f: $$(`\\${t.kind}\\,x=${numTex(x)}`), x: iso(x), kind: k(`name_${t.kind}`), other: k(`name_${other}`) };
+    return {
+      id: 'key', kind: 'choice', cols: 1,
+      prompt: Mx(k, 'key.prompt', o),
+      options: [
+        { text: <span className="inline-flex flex-wrap items-center gap-1" dir="ltr"><Code>{t.kind}</Code><Code>{x}</Code><Code>=</Code></span>, why: Mx(k, 'key.whyDirect', { ...o, screen: $$(numTex(direct.screen)) }) },
+        { text: <span className="inline-flex flex-wrap items-center gap-1" dir="ltr"><Code>2nd</Code><Code>{L.INV_LABEL[t.kind]}</Code><Code>{x}</Code><Code>=</Code></span>, correct: true },
+        { text: <span className="inline-flex flex-wrap items-center gap-1" dir="ltr"><Code>2nd</Code><Code>{L.INV_LABEL[other]}</Code><Code>{x}</Code><Code>=</Code></span>, why: Mx(k, 'key.whyOther', { ...o, screen: $$(numTex(swapped.status === 'ok' ? swapped.screen.slice(0, 6) : '…')) }) },
+      ],
+      hints: [Mx(k, 'key.hint1', o), Mx(k, 'key.hint2', o)],
+      explain: Mx(k, 'key.explain', o),
+    };
+  },
+  tenth: (lab, k) => {
+    const t = angleTask(lab);
+    const row = lab.inv[t.kind];
+    const f = $$(`\\${t.kind}\\,x=${numTex(L.dec(t.value))}`);
+    const cut = L.cutScreen(row[2], 1);
+    return {
+      id: 'tenth', kind: 'number', expected: row[1], answer: <MathText>{$$(`${numTex(row[1])}^{\\circ}`)}</MathText>,
+      prompt: Mx(k, 'tenth.prompt', { f }),
+      hints: [Mx(k, 'tenth.hint1', { hundredth: $$(`${numTex(row[2])}^{\\circ}`) }), Mx(k, 'tenth.hint2', { next: iso(cut.next) })],
+      explain: Mx(k, 'tenth.explain', { hundredth: $$(`${numTex(row[2])}^{\\circ}`), tenth: $$(`${numTex(row[1])}^{\\circ}`), next: iso(cut.next) }),
+    };
+  },
+};
+
+function angleTask(lab) {
+  return lab.tasks.find((t) => L.taskDone(lab, t.kind) === L.PRECISIONS.length) ?? lab.tasks[0];
 }

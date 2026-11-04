@@ -275,6 +275,15 @@ export function openInverse(lab) {
   if (!hasInverse(lab) || !tableReady(lab)) return lab;
   return freeze({ ...lab, stage: 'inverse', pending: null, last: null, calc: { ...lab.calc, result: null, fn: null, entry: '', shift: false } });
 }
+/**
+ * « أعِد التجربة » (LabCheckpoint) : on refait la MÊME étape — le tableau (cellules, mode R de départ, essais d'arrondi) ou les angles
+ * (la ligne des trois précisions). Les essais déjà notés restent ; le drapeau « fait » de l'étape s'efface avec ses cellules.
+ */
+export function restartStage(lab) {
+  const clean = { ...lab.calc, result: null, fn: null, entry: '', shift: false };
+  if (lab.stage === 'inverse') return freeze({ ...lab, inv: freeze({}), pending: null, cut: null, last: null, calc: freeze(clean) });
+  return freeze({ ...lab, cells: freeze({}), pending: null, cut: null, last: null, modeChanged: false, rad: null, calc: initCalc('RAD') });
+}
 export const backToTable = (lab) => freeze({ ...lab, stage: 'table', pending: null, last: null });
 export const setActive = (lab, kind) => (lab.tasks.some((t) => t.kind === kind) ? freeze({ ...lab, active: kind }) : lab);
 

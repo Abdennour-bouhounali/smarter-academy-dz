@@ -1,4 +1,4 @@
-import { House, BookOpen, PencilRuler, NotebookPen, Users, ClipboardCheck, BadgeCheck, UserRound, Gamepad2, Building2 } from 'lucide-react';
+import { House, BookOpen, PencilRuler, NotebookPen, Users, ClipboardCheck, BadgeCheck, UserRound, Gamepad2, Building2, Brain } from 'lucide-react';
 
 /**
  * L'espace ENSEIGNANT (« فضاء الأستاذ ») — sa propre navigation, comme
@@ -15,6 +15,9 @@ export const teacherNavLinks = [
   { labelKey: 'teacherHome', path: '/enseignant', icon: House, end: true },
   { labelKey: 'courses', path: '/enseignant/cours', icon: BookOpen },
   { labelKey: 'mathLab', path: '/enseignant/atelier', icon: PencilRuler },
+  // « مختبر التفكير » en « معاينة الأستاذ » (2026-10-31, THINKING_LAB.md §8bis) : tous les défis ouverts, la réponse
+  // et la relecture visibles, une réponse à tester — rien n'est écrit.
+  { labelKey: 'thinkingLab', path: '/enseignant/tafkir', icon: Brain, mobile: false },
   { labelKey: 'notebook', path: '/enseignant/cahier', icon: NotebookPen },
   { labelKey: 'myClasses', path: '/enseignant/classes', icon: Users },
   // « تصحيح الإجابات » (2026-10-06) : les copies de SES élèves en « تصحيح الأستاذ ».

@@ -3,6 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { Check, X, Wand2, Lock, Hand, CheckCircle2, XCircle, RefreshCw, ClipboardList, Lightbulb, Trophy, Ban, Move } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
@@ -83,6 +87,16 @@ import * as L from '../logic/digitCards';
  * case, la carte ou l'affirmation juste — table : un coloriage → la table → « أكمل » → le coloriage suivant ; cartes : une carte → une
  * ampoule → « هذا هو الأكبر » → la cible suivante → l'échange de deux cartes posées (« لا يوجد » n'est jamais montré).
  *
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 1, 2026-10-28) : `checkpoints` (défaut true). Table : à
+ * chaque coloriage COMPLET, une suite sur SES cases (les chiffres des unités, la colonne qui ne décide pas, le suivant pour 5 ; pour 3 le
+ * chiffre des unités qui ne suffit pas, la somme des chiffres). Cartes : à chaque cible atteinte (le plus grand nombre, ou « لا يوجد ») et à
+ * l'échange retenu (3 gardée, 2 basculée), une suite sur SES nombres (`stepOf`, `chainOf`, `QUESTIONS`). La suite qui rend la découverte
+ * prête finit par la règle (l'ancienne découverte, qui formalise). Obligatoires pour tout élève ; l'enseignant seul les coupe pour SON
+ * compte. Questions actives → `guided` (ni « جرّب › اكتشف › صِغ » ni « تلميح »). ÉTAPES : table — `LabStepper` (`[data-dc-step=<i>]`, un
+ * coloriage = une étape ; les cartes de coloriage restent les commandes) ; cartes — les pastilles de cibles restent (ce sont des commandes),
+ * gelées tant qu'une question attend. Fête par étape ; « إعادة » repart de zéro ; « أعِد التجربة » rouvre LA MÊME étape (`L.retryStep`).
+ * SON : `tooth` pour une case acceptée ou une carte posée, `bell` pour une lampe juste, `flag` quand une étape est atteinte, `over` pour un
+ * refus.
  * Props (contrat fixé avec la leçon) : `mode` ('grid' | 'cards'), `divisors`, `digits` (cartes), `from`, `to`,
  * `columns` (table), `level`, `levels`, `title`, `lead`, `onTrial` à chaque geste JUGÉ — table
  * `{ mode: 'grid', n, d, r, ok }` ; cartes `{ mode: 'cards', n, d, claim, r, ok }` avec claim 'yes' | 'no' (une
@@ -184,21 +198,56 @@ export function numbersFor({ mode, divisors, digits, from, to, columns, level })
 
 export default function DigitCards({
   mode, divisors, digits, from, to, columns, title, lead, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished, coach: coachOn = true,
+  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished, coach: coachOn = true, checkpoints: cpOn = true,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
   const initialNumbers = useMemo(() => numbersFor({ mode, divisors, digits, from, to, columns, level }), []); // eslint-disable-line react-hooks/exhaustive-deps
   const state = useManipulation({ type: 'digit-cards', initialNumbers, initialMode, initialLevel: level, withLevels, hintCount: 3 });
   const nums = state.numbers;
-  const sceneKey = `${JSON.stringify(nums)}|${state.epoch}`;
+  // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — les étapes, les essais et les questions du labo
+  const sceneKey = `${JSON.stringify(nums)}|${state.epoch}|${state.resetCount}`;
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init(nums)); }
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(L.init(nums)); }
   const m = lab.mode;
 
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : la suite de l'étape atteinte ; celle qui rend la découverte prête finit par la règle
+  const cpSettings = useLabCheckpointSettings('digit-cards');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpActive = cpOn && cpSettings.enabled;
+  const [answered, setAnswered] = useState({ inits: 0, ids: [] });
+  const doneIds = answered.inits === scene.inits ? answered.ids : [];
+  const step = cpActive ? stepOf(lab, doneIds) : null;
+  const cp = useLabCheckpoint({
+    id: step?.reached ? step.id : null,
+    questions: step?.reached ? chainOf(lab, step).map((q) => QUESTIONS[q](lab, step, k)) : null,
+    reached: !!step?.reached,
+    resetKey: scene.inits,
+    onRetry: () => setLab((s) => L.retryStep(s, step.key)),
+    onEvent: (ev) => {
+      if (ev.tk === 'checkpoint-done') setAnswered((a) => ({ inits: scene.inits, ids: [...(a.inits === scene.inits ? a.ids : []), ev.id] }));
+      state.report(onTrial, ev);
+    },
+    onDone: () => { if (L.discoveryReady(lab)) { state.discover(); state.formalize(); } },
+  });
+  useEffect(() => { if (ready && !cpActive) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son du geste (muet sans « الصوت »)
+  const lastSeen = useRef(lab.last);
+  const doneCount = m === 'grid' ? lab.divisors.filter((d) => L.colouringComplete(lab, d)).length : Object.keys(lab.tasks).length + (lab.swap ? 1 : 0);
+  const doneSeen = useRef(doneCount);
+  useEffect(() => {
+    const v = lab.last;
+    const more = doneCount > doneSeen.current;
+    doneSeen.current = doneCount;
+    if (v === lastSeen.current && !more) return;
+    lastSeen.current = v;
+    if (more) { playSfx('flag'); return; }
+    if (!v) return;
+    if (v.ok === false) playSfx('over');
+    else if (v.kind === 'claim') playSfx('bell');
+    else if (v.ok === true || v.kind === 'change') playSfx('tooth', { pitch: v.again ? 0.75 : 1 });
+  }, [lab.last, doneCount]);
   useEffect(() => { if (state.isFormal) state.report(onFinished, { mode: m }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
   // chaque essai est rapporté UNE fois, même si deux gestes tombent dans le même rendu ; « إعادة » repart de zéro
   const reported = useRef(0);
@@ -238,31 +287,7 @@ export default function DigitCards({
   const narrow = width < 380;
 
   /* ── la découverte : les conjectures fausses réfutées par les cases / les nombres de l'élève ── */
-  const discoveryOptions = useMemo(() => {
-    if (m === 'grid') {
-      const col = L.columnRefutation(lab);
-      const un = L.unitsRefutation(lab);
-      return [
-        { text: k('discovery.column'), why: col ? k('discovery.whyColumn', { ...col, eq: iso(L.equationText(col.n, col.d)) }) : k('discovery.whyGeneric') },
-        { text: k('discovery.right.grid'), correct: true },
-        { text: k('discovery.units3'), why: un ? k('discovery.whyUnits3', { ...un, eq: iso(L.equationText(un.n, un.d)) }) : k('discovery.whyGeneric') },
-      ];
-    }
-    const ans2 = lab.tasks[2]?.answer;
-    const even = ans2 != null && L.division(ans2, 4).r !== 0 ? ans2 : null;
-    const sw = lab.swap;
-    const sumWhy = sw
-      ? k('discovery.whySum2', {
-        a: sw.from, b: sw.to, s: L.digitSum(sw.from),
-        even: L.division(sw.from, 2).divides ? sw.from : sw.to, odd: L.division(sw.from, 2).divides ? sw.to : sw.from,
-      })
-      : k('discovery.whyGeneric');
-    return [
-      { text: k('discovery.even4'), why: even != null ? k('discovery.whyEven4', { n: even, eq: iso(L.equationText(even, 4)), r: L.division(even, 4).r }) : k('discovery.whyGeneric') },
-      { text: k('discovery.right.cards'), correct: true },
-      { text: k('discovery.sum2'), why: sumWhy },
-    ];
-  }, [m, lab, k]);
+  const discoveryOptions = useMemo(() => discoveryOptionsOf(lab, k), [lab, k]);
 
   const formal = <Formal lab={lab} k={k} />;
   // §17.9 : le CONTEXTE (tous les nombres) ouvre la carte de consigne ; la leçon peut l'écrire (`lead`) pour SES nombres
@@ -270,7 +295,7 @@ export default function DigitCards({
     ? k('context.grid', { from: lab.from, to: lab.to })
     : k('context.cards', { digits: iso(lab.digits.join(' ، ')) }));
 
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'digit-cards', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '',
     labels: { hide: k('coach.hide'), show: k('coach.show'), ok: k('coach.ok'), stop: k('coach.stop') },
@@ -278,6 +303,7 @@ export default function DigitCards({
 
   return (
     <ManipulationShell
+      headerAction={cpSettings.control}
       type="digit-cards"
       title={title ?? k(`title.${m}`)}
       titleHidden
@@ -287,6 +313,7 @@ export default function DigitCards({
       coach={coachOn ? coach : null}
       hints={[0, 1, 2].map((i) => k(`hints.${m}.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
+      guided={cpActive}
       discovery={<ManipulationDiscovery state={state} prompt={k(`discovery.prompt.${m}`)} options={discoveryOptions} formal={formal} />}
       explanation={k('explanation')}
     >
@@ -294,8 +321,8 @@ export default function DigitCards({
         <div ref={boxRef} className="space-y-2" data-digit-cards data-mode={m} data-solved={ready ? 'true' : 'false'}
           data-layout={narrow ? 'narrow' : 'wide'}>
           {m === 'grid'
-            ? <GridLab lab={lab} setLab={setLab} k={k} width={width} room={room} screenH={screenH} overhead={overhead} narrow={narrow} glanceRef={glanceRef} tableHRef={tableHRef} context={context} />
-            : <CardsLab lab={lab} setLab={setLab} k={k} width={width} glanceRef={glanceRef} context={context} />}
+            ? <GridLab lab={lab} setLab={setLab} k={k} width={width} room={room} screenH={screenH} overhead={overhead} narrow={narrow} glanceRef={glanceRef} tableHRef={tableHRef} context={context} cp={cp} />
+            : <CardsLab lab={lab} setLab={setLab} k={k} width={width} glanceRef={glanceRef} context={context} cp={cp} />}
 
           {lab.trials.length > 0 && (
             <LabFold id="digit-cards.trials" title={k('trialsTitle')}>
@@ -331,7 +358,20 @@ const stamp = (el) => {
   el.animate([{ transform: 'scale(1.3)' }, { transform: 'scale(0.92)' }, { transform: 'scale(1)' }], { duration: 300, easing: 'ease-out' });
 };
 
-function GridLab({ lab, setLab, k, width, room, screenH, overhead, narrow, glanceRef, tableHRef, context }) {
+function GridLab({ lab, setLab, k, width, room, screenH, overhead, narrow, glanceRef, tableHRef, context, cp }) {
+  // une étape = un coloriage ; FAITE quand il est complet ET que ses questions (LabCheckpoint) sont répondues
+  const cur = lab.active ?? 0;
+  const stepDone = lab.divisors.map((dd, i) => L.colouringComplete(lab, dd) && (i !== cur || !cp.blocking));
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  const nowDone = stepDone[cur];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(cur)) return;
+    celebrated.current.add(cur);
+    party.celebrate({ n: cur + 1, total: lab.divisors.length });
+  }, [nowDone, cur]); // eslint-disable-line react-hooks/exhaustive-deps
+  const stepper = lab.divisors.length > 1 && <LabStepper count={lab.divisors.length} current={cur} done={stepDone} stepAttr="data-dc-step" />;
   const cells = L.cellsOf(lab);
   const wide = width >= WIDE_MIN;
   // TÉLÉPHONE (320 px : 238 px utiles) : le bloc « d'un seul regard » déborde symétriquement sur les cadres de la leçon,
@@ -400,7 +440,7 @@ function GridLab({ lab, setLab, k, width, room, screenH, overhead, narrow, glanc
   const prompt = (
     <PromptCard size={narrow ? 'md' : 'lg'}
       context={context} contextProps={{ 'data-dc-context': 'grid' }}
-      aside={reveal || null}
+      aside={(stepper || reveal) ? <div className="flex flex-wrap items-center gap-2">{stepper}{reveal}</div> : null}
       title={k('question.grid', { list: lab.divisors.map((x) => iso(x)).join(k('then')) })}
       titleClassName={narrow ? 'text-base' : undefined}
       lamp={allDone ? 'on' : 'off'}
@@ -415,7 +455,7 @@ function GridLab({ lab, setLab, k, width, room, screenH, overhead, narrow, glanc
           const lg = L.ledger(lab, dd);
           const look = open ? tone.open : !can ? 'border-slate-200 bg-white/70 text-slate-400' : done ? tone.done : tone.idle;
           return (
-            <button key={dd} type="button" onClick={() => setLab((s) => L.openColouring(s, i))} disabled={!can}
+            <button key={dd} type="button" onClick={() => setLab((s) => L.openColouring(s, i))} disabled={!can || (cp.blocking && i !== cur)}
               aria-pressed={open} title={can ? undefined : k('colouring.locked', { d: lab.divisors[i - 1] })}
               aria-label={k('colouring.aria', { d: dd, colour: k(`colourName.${L.colourOf(dd)}`) })}
               data-dc-colouring={dd} data-open={open ? 'true' : 'false'} data-complete={done ? 'true' : 'false'}
@@ -488,8 +528,10 @@ function GridLab({ lab, setLab, k, width, room, screenH, overhead, narrow, glanc
   const ledger = <Ledger lab={lab} k={k} narrow={narrow} compact={narrow} only={null} action={null} />;
 
   return (
-    <div ref={glanceRef} className={`space-y-2.5 ${margin > 0 ? 'relative z-[1] rounded-3xl bg-[#F7F7FF]' : ''}`}
+    <div ref={glanceRef} className={`relative space-y-2.5 ${margin > 0 ? 'z-[1] rounded-3xl bg-[#F7F7FF]' : ''}`}
       style={margin > 0 ? { marginInline: -margin } : undefined} data-dc-glance data-bleed={margin > 0 ? Math.round(margin) : undefined}>
+      {party.node}
+      {cp.node}
       {prompt}
       {wide ? (
         <div className="flex items-start gap-3">
@@ -564,7 +606,18 @@ function Chips({ values, tone, small = false, ...rest }) {
 
 /* ══════════════ متقدم : les cartes du تمرين 26 ══════════════ */
 
-function CardsLab({ lab, setLab, k, width, glanceRef, context }) {
+function CardsLab({ lab, setLab, k, width, glanceRef, context, cp }) {
+  // une étape = une cible atteinte (les pastilles de cibles sont les commandes) ; fête quand ses questions sont répondues
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  const curD = lab.divisors[lab.task];
+  const nowDone = L.taskDone(lab, curD) && !cp.blocking;
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(curD)) return;
+    celebrated.current.add(curD);
+    party.celebrate({ n: celebrated.current.size, total: lab.divisors.length });
+  }, [nowDone, curD]); // eslint-disable-line react-hooks/exhaustive-deps
   const wide = width >= WIDE_MIN;
   const inner = width;
   const narrow = inner < 380;
@@ -700,7 +753,7 @@ function CardsLab({ lab, setLab, k, width, glanceRef, context }) {
         const done = L.taskDone(lab, x);
         const sel = lab.task === i;
         return (
-          <button key={x} type="button" onClick={() => setLab((s) => L.selectTask(s, i))} aria-pressed={sel}
+          <button key={x} type="button" onClick={() => setLab((s) => L.selectTask(s, i))} aria-pressed={sel} disabled={cp.blocking && !sel}
             aria-label={k('taskAria', { d: x })} data-dc-task={x} data-done={done ? 'true' : 'false'}
             className={`relative inline-flex ${narrow ? 'h-10 min-w-[40px]' : 'h-11 min-w-[44px]'} items-center justify-center gap-0.5 rounded-full border-2 px-2 text-base font-black tabular-nums transition-colors motion-reduce:transition-none ${ring} ${sel ? 'border-indigo-600 bg-gradient-to-b from-indigo-500 to-indigo-600 text-white shadow-[0_6px_14px_-8px_rgba(79,70,229,0.9)]' : done ? 'border-emerald-300 bg-emerald-50 text-emerald-800' : 'border-indigo-100 bg-white text-indigo-900 hover:border-indigo-300'}`}>
             <bdi dir="ltr">{x}</bdi>
@@ -810,7 +863,9 @@ function CardsLab({ lab, setLab, k, width, glanceRef, context }) {
   );
 
   return (
-    <div ref={glanceRef} className="space-y-2.5" data-dc-glance>
+    <div ref={glanceRef} className="relative space-y-2.5" data-dc-glance>
+      {party.node}
+      {cp.node}
       {prompt}
       {wide ? (
         <div className="flex items-start gap-3">
@@ -930,3 +985,210 @@ function Formal({ lab, k }) {
     </div>
   );
 }
+
+/** La découverte : les conjectures fausses réfutées par les cases / les nombres de l'élève (aussi la dernière question du labo). */
+export function discoveryOptionsOf(lab, k) {
+  const m = lab.mode;
+  if (m === 'grid') {
+    const col = L.columnRefutation(lab);
+    const un = L.unitsRefutation(lab);
+    return [
+      { text: k('discovery.column'), why: col ? k('discovery.whyColumn', { ...col, eq: iso(L.equationText(col.n, col.d)) }) : k('discovery.whyGeneric') },
+      { text: k('discovery.right.grid'), correct: true },
+      { text: k('discovery.units3'), why: un ? k('discovery.whyUnits3', { ...un, eq: iso(L.equationText(un.n, un.d)) }) : k('discovery.whyGeneric') },
+    ];
+  }
+  const ans2 = lab.tasks[2]?.answer;
+  const even = ans2 != null && L.division(ans2, 4).r !== 0 ? ans2 : null;
+  const sw = lab.swap;
+  const sumWhy = sw
+    ? k('discovery.whySum2', {
+      a: sw.from, b: sw.to, s: L.digitSum(sw.from),
+      even: L.division(sw.from, 2).divides ? sw.from : sw.to, odd: L.division(sw.from, 2).divides ? sw.to : sw.from,
+    })
+    : k('discovery.whyGeneric');
+  return [
+    { text: k('discovery.even4'), why: even != null ? k('discovery.whyEven4', { n: even, eq: iso(L.equationText(even, 4)), r: L.division(even, 4).r }) : k('discovery.whyGeneric') },
+    { text: k('discovery.right.cards'), correct: true },
+    { text: k('discovery.sum2'), why: sumWhy },
+  ];
+}
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/**
+ * L'étape dont la suite de questions est en jeu : table — le coloriage ouvert (atteinte quand il est complet) ; cartes — la cible
+ * affichée (atteinte quand elle est faite), ou l'échange retenu dès qu'il existe et que sa suite n'a pas encore été posée.
+ * `doneIds` : les suites déjà finies (événements `checkpoint-done`).
+ */
+export function stepOf(lab, doneIds = []) {
+  if (lab.mode === 'grid') {
+    if (lab.active == null) return null;
+    const d = lab.divisors[lab.active];
+    return { id: `g${d}`, key: d, kind: 'grid', d, reached: L.colouringComplete(lab, d) };
+  }
+  const d = lab.divisors[lab.task];
+  const target = { id: `c${d}`, key: d, kind: 'target', d, reached: L.taskDone(lab, d) };
+  const targetPending = target.reached && !doneIds.includes(target.id);
+  if (lab.swap && !doneIds.includes('swap') && !targetPending) return { id: 'swap', key: 'swap', kind: 'swap', reached: true };
+  return target;
+}
+
+/** La suite d'une étape ; celle qui rend la découverte prête finit par la règle. */
+export function chainOf(lab, step) {
+  let out;
+  if (step.kind === 'grid') out = step.d === 2 ? ['units', 'column'] : step.d === 5 ? ['units', 'next'] : ['unitsNo', 'sum'];
+  else if (step.kind === 'swap') out = ['swap', 'swapSum'];
+  else if (lab.tasks[step.d]?.none) out = step.d === 4 ? ['noneWhy', 'even4'] : ['noneWhy', 'cardSum'];
+  else out = step.d === 3 || step.d === 9 ? ['cardSum', 'anyOrder'] : ['largest', 'flip'];
+  return L.discoveryReady(lab) ? [...out, 'rule'] : out;
+}
+
+const C = (k, key, o) => k(`cp.${key}`, o);
+const pick = (list, right, whys) => list.map((text, i) => (i === right ? { text, correct: true } : { text, why: whys[i] }));
+const list = (xs) => iso(xs.join(' ، '));
+const ALL = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+const UNITS = { 2: [0, 2, 4, 6, 8], 5: [0, 5] };
+/** Les nombres des cartes après échange des deux derniers chiffres. */
+const swapLast = (n) => { const t = String(n); return Number(t.slice(0, -2) + t.at(-1) + t.at(-2)); };
+/** Un autre rangement des cartes (le plus petit qui diffère de n). */
+const otherOrder = (lab, n) => L.arrangements(lab.digits).find((x) => x !== n);
+
+/** Chaque question est construite sur LES cases / LES cartes de l'élève (rien en dur). */
+export const QUESTIONS = {
+  units: (lab, step, k) => {
+    const d = step.d;
+    const lg = L.ledger(lab, d);
+    const other = d === 2 ? UNITS[5] : UNITS[2];
+    const o = { d: iso(d), units: list(lg.units), other: list(other), last: iso(L.colouredIn(lab, d).at(-1)) };
+    return {
+      id: 'units', kind: 'choice', prompt: C(k, 'units.prompt', o),
+      options: pick([list(lg.units), list(ALL), list(other)], 0, [null, C(k, 'units.whyAll', o), C(k, 'units.whyOther', o)]),
+      hints: [C(k, 'units.hint1', o), C(k, 'units.hint2', o)], explain: C(k, 'units.explain', o),
+    };
+  },
+  column: (lab, step, k) => {
+    const d = step.d;
+    const ref = L.columnRefutation({ ...lab, divisors: [d] }) ?? { m: d * 2, n: d * 2 + lab.columns, col: 1 };
+    const div = L.division(ref.n, d);
+    const o = { d: iso(d), m: iso(ref.m), n: iso(ref.n), eq: iso(L.equationWithRemainder(ref.n, d)), u: iso(L.unitsDigit(ref.n)), r: iso(div.r) };
+    return {
+      id: 'column', kind: 'choice', prompt: C(k, 'column.prompt', o),
+      options: pick([C(k, 'column.right', o), C(k, 'column.same'), C(k, 'column.both', o)], 0, [null, C(k, 'column.whySame', o), C(k, 'column.whyBoth', o)]),
+      hints: [C(k, 'column.hint1', o), C(k, 'column.hint2', o)], explain: C(k, 'column.explain', o),
+    };
+  },
+  next: (lab, step, k) => {
+    const d = step.d;
+    const last = L.colouredIn(lab, d).at(-1);
+    const o = { d: iso(d), last: iso(last), to: iso(lab.to), n: iso(last + d) };
+    return {
+      id: 'next', kind: 'number', expected: String(last + d), answer: <bdi dir="ltr">{last + d}</bdi>,
+      prompt: C(k, 'next.prompt', o), hints: [C(k, 'next.hint1', o), C(k, 'next.hint2', o)], explain: C(k, 'next.explain', o),
+    };
+  },
+  unitsNo: (lab, step, k) => {
+    const d = step.d;
+    const ref = L.unitsRefutation(lab, d) ?? { m: d * 4, n: d * 4 + 10, u: L.unitsDigit(d * 4) };
+    const o = { d: iso(d), m: iso(ref.m), n: iso(ref.n), u: iso(ref.u), eq: iso(L.equationWithRemainder(ref.n, d)) };
+    return {
+      id: 'unitsNo', kind: 'choice', prompt: C(k, 'unitsNo.prompt', o),
+      options: pick([C(k, 'unitsNo.right', o), C(k, 'unitsNo.both', o), C(k, 'unitsNo.neither', o)], 0, [null, C(k, 'unitsNo.whyBoth', o), C(k, 'unitsNo.whyNeither', o)]),
+      hints: [C(k, 'unitsNo.hint1', o), C(k, 'unitsNo.hint2', o)], explain: C(k, 'unitsNo.explain', o),
+    };
+  },
+  sum: (lab, step, k) => {
+    const d = step.d;
+    const m = L.colouredIn(lab, d).filter((x) => x >= 10).at(-1) ?? L.colouredIn(lab, d).at(-1);
+    const sm = L.digitSum(m);
+    const o = { d: iso(d), m: iso(m), s: iso(sm), calc: iso(`${L.digitsOf(m).join(' + ')} = ${sm}`) };
+    return {
+      id: 'sum', kind: 'number', expected: String(sm), answer: <bdi dir="ltr">{sm}</bdi>,
+      prompt: C(k, 'sum.prompt', o), hints: [C(k, 'sum.hint1', o), C(k, 'sum.hint2', o)], explain: C(k, 'sum.explain', o),
+    };
+  },
+  largest: (lab, step, k) => {
+    const d = step.d;
+    const n = lab.tasks[d].answer;
+    const o = { d: iso(d), n: iso(n), u: iso(L.unitsDigit(n)), s: iso(L.digitSum(n)), first: iso(L.digitsOf(n)[0]) };
+    return {
+      id: 'largest', kind: 'choice', prompt: C(k, 'largest.prompt', o),
+      options: pick([C(k, `largest.right${d === 4 ? '4' : ''}`, { ...o, two: iso(n % 100) }), C(k, 'largest.sum', o), C(k, 'largest.first', o)], 0,
+        [null, C(k, 'largest.whySum', o), C(k, 'largest.whyFirst', o)]),
+      hints: [C(k, 'largest.hint1', o), C(k, 'largest.hint2', o)], explain: C(k, 'largest.explain', o),
+    };
+  },
+  flip: (lab, step, k) => {
+    const d = step.d;
+    const n = lab.tasks[d].answer;
+    const m = swapLast(n);
+    const yes = L.division(m, d).divides;
+    const o = { d: iso(d), n: iso(n), m: iso(m), eq: iso(yes ? L.equationText(m, d) : L.equationWithRemainder(m, d)), u: iso(L.unitsDigit(m)) };
+    return {
+      id: 'flip', kind: 'choice', prompt: C(k, 'flip.prompt', o),
+      options: pick([C(k, yes ? 'flip.yes' : 'flip.no', o), C(k, yes ? 'flip.no' : 'flip.yes', o), C(k, 'flip.divide')], 0,
+        [null, C(k, 'flip.whyWrong', o), C(k, 'flip.whyDivide', o)]),
+      hints: [C(k, 'flip.hint1', o), C(k, 'flip.hint2', o)], explain: C(k, 'flip.explain', o),
+    };
+  },
+  cardSum: (lab, step, k) => {
+    const sm = lab.digits.reduce((a, b) => a + b, 0);
+    const o = { d: iso(step.d), digits: list(lab.digits), s: iso(sm), calc: iso(`${lab.digits.join(' + ')} = ${sm}`) };
+    return {
+      id: 'cardSum', kind: 'number', expected: String(sm), answer: <bdi dir="ltr">{sm}</bdi>,
+      prompt: C(k, 'cardSum.prompt', o), hints: [C(k, 'cardSum.hint1'), C(k, 'cardSum.hint2', o)], explain: C(k, `cardSum.explain${L.division(sm, step.d).divides ? 'Yes' : 'No'}`, o),
+    };
+  },
+  anyOrder: (lab, step, k) => {
+    const d = step.d;
+    const n = lab.tasks[d].answer;
+    const other = otherOrder(lab, n);
+    const o = { d: iso(d), n: iso(n), other: iso(other), s: iso(L.digitSum(other)) };
+    return {
+      id: 'anyOrder', kind: 'choice', prompt: C(k, 'anyOrder.prompt', o),
+      options: pick([C(k, 'anyOrder.right', o), C(k, 'anyOrder.no'), C(k, 'anyOrder.divide')], 0, [null, C(k, 'anyOrder.whyNo', o), C(k, 'anyOrder.whyDivide', o)]),
+      hints: [C(k, 'anyOrder.hint1', o), C(k, 'anyOrder.hint2', o)], explain: C(k, 'anyOrder.explain', o),
+    };
+  },
+  noneWhy: (lab, step, k) => {
+    const d = step.d;
+    const sm = lab.digits.reduce((a, b) => a + b, 0);
+    const o = { d: iso(d), s: iso(sm), count: iso(L.arrangements(lab.digits).length) };
+    return {
+      id: 'noneWhy', kind: 'choice', prompt: C(k, 'noneWhy.prompt', o),
+      options: pick([C(k, `noneWhy.right${d === 4 ? '4' : '9'}`, o), C(k, 'noneWhy.tried'), C(k, 'noneWhy.big', o)], 0, [null, C(k, 'noneWhy.whyTried', o), C(k, 'noneWhy.whyBig', o)]),
+      hints: [C(k, `noneWhy.hint1_${d === 4 ? '4' : '9'}`, o), C(k, 'noneWhy.hint2', o)], explain: C(k, `noneWhy.explain${d === 4 ? '4' : '9'}`, o),
+    };
+  },
+  even4: (lab, step, k) => {
+    const n = L.validArrangements(lab.digits, 2).at(-1) ?? L.arrangements(lab.digits).at(-1);
+    const o = { n: iso(n), two: iso(n % 100), eq: iso(L.equationWithRemainder(n % 100, 4)) };
+    return {
+      id: 'even4', kind: 'choice', prompt: C(k, 'even4.prompt', o),
+      options: pick([C(k, 'even4.right', o), C(k, 'even4.even'), C(k, 'even4.big')], 0, [null, C(k, 'even4.whyEven', o), C(k, 'even4.whyBig')]),
+      hints: [C(k, 'even4.hint1'), C(k, 'even4.hint2', o)], explain: C(k, 'even4.explain', o),
+    };
+  },
+  swap: (lab, step, k) => {
+    const { from, to } = lab.swap;
+    const o = { a: iso(from), b: iso(to), s: iso(L.digitSum(from)) };
+    return {
+      id: 'swap', kind: 'choice', prompt: C(k, 'swap.prompt', o),
+      options: pick([C(k, 'swap.right'), C(k, 'swap.luck'), C(k, 'swap.never')], 0, [null, C(k, 'swap.whyLuck', o), C(k, 'swap.whyNever')]),
+      hints: [C(k, 'swap.hint1', o), C(k, 'swap.hint2', o)], explain: C(k, 'swap.explain', o),
+    };
+  },
+  swapSum: (lab, step, k) => {
+    const { from, to } = lab.swap;
+    const sm = L.digitSum(to);
+    const o = { a: iso(from), b: iso(to), s: iso(sm) };
+    return {
+      id: 'swapSum', kind: 'number', expected: String(sm), answer: <bdi dir="ltr">{sm}</bdi>,
+      prompt: C(k, 'swapSum.prompt', o), hints: [C(k, 'swapSum.hint1'), C(k, 'swapSum.hint2', o)], explain: C(k, 'swapSum.explain', o),
+    };
+  },
+  rule: (lab, step, k) => ({
+    id: 'rule', kind: 'choice', prompt: k(`discovery.prompt.${lab.mode}`), options: discoveryOptionsOf(lab, k),
+    hints: [C(k, `rule.${lab.mode}.hint1`), C(k, `rule.${lab.mode}.hint2`)], explain: <Formal lab={lab} k={k} />,
+  }),
+};

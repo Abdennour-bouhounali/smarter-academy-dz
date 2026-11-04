@@ -14,6 +14,10 @@ import EquationDisplay from '../primitives/EquationDisplay';
 import MathText from '../../components/MathText';
 import { bidi } from '../../../../utils/bidi';
 import * as L from '../logic/growthRace';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 
 /**
  * growth-race — LA COURSE DE DEUX GRANDEURS (unité 4 « معادلات ومتراجحات من الدرجة الأولى
@@ -44,6 +48,18 @@ import * as L from '../logic/growthRace';
  *   Toutes passent par `state.report` : elles ne partent que du niveau de la leçon.
  *   La synthèse : left="75x" right="560+5x" theme="pool" goal="greater" (formule 2 moins chère à
  *   partir de 9 séances ; à 8 elles sont égales : 600 دج).
+ *
+ * ── QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 3, 2026-10-28) ───────────────────
+ * Deux suites, une par étape du labo (`id` = 'build' | 'race' dans les événements `onCheckpoint`) :
+ *   build  — quand le modèle est vérifié, AVANT d'ouvrir la course : de combien chaque membre croît quand x augmente de 1 (une question par
+ *            membre, sur SES cartes) · lequel croît le plus vite. Retient « افتح السباق ».
+ *   race   — quand la découverte est atteinte : `meet` → où ils se rejoignent (entre SES deux essais) · qui devance ensuite (ou, pour
+ *            une inéquation, la première valeur) · LA RÈGLE (l'ancienne découverte, qui formalise) ; `negative` / `none` → l'écart
+ *            grandit-il ? · LA RÈGLE ; `between` / `all` → LA RÈGLE.
+ * Obligatoires pour tout élève ; l'enseignant seul les coupe pour SON compte (`checkpoints` = false les coupe aussi). `onCheckpoint(ev)` :
+ * la trace pour les étapes du module. ÉTAPES `LabStepper` (`[data-gr2-step=<i>]` : modèle vérifié · course ouverte avec un essai · découverte
+ * + questions) + fête ; « إعادة » repart de zéro ; « أعِد التجربة » remet l'étape courante au départ. SON : `tooth` (carte posée, x validé),
+ * `bell` (égalité trouvée), `flag` (modèle vérifié), `over` (modèle refusé).
  *
  * ── LES CINQ QUESTIONS (MANIPULATION_CONTRACT §1) ─────────────────────────────────────
  * A. L'élève PORTE une carte « + x » (« × x ») sur chaque personne (chaque tarif) qui change
@@ -104,8 +120,8 @@ const REL_TEX = { '<': '<', '=': '=', '>': '>' };
 
 export default function GrowthRace({
   left: left0 = '36+x', right: right0 = '4+x+6+x+8+x', theme = 'ages', domain = 'natural', goal = 'equal', maxX,
-  context, startWith = 'build', title, lead, mission, level, levels: withLevels = true, initialMode = 'student', allowModeSwitch = false,
-  onFinished, onTrial, onModel,
+  context, startWith = 'build', title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false,
+  onFinished, onTrial, onModel, onCheckpoint,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.growthRace.${key}`, o), [t]);
@@ -113,14 +129,15 @@ export default function GrowthRace({
   const { left, right } = state.numbers;
 
   const [lab, setLab] = useState(() => L.init(left, right, { startWith }));
-  const sceneKey = `${left}|${right}|${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
+  const sceneKey = `${left}|${right}|${state.epoch}|${state.resetCount}`;
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
   const [x, setX] = useState(null); // null : pas encore d'essai — la course montre alors le x par défaut
   const labRef = useRef(lab);
   labRef.current = lab;
   const [live, setLive] = useState(null);
   const [notice, setNotice] = useState(null);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init(left, right, { startWith })); setX(null); setLive(null); setNotice(null); }
+  // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — le modèle, les essais et les questions du labo
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(L.init(left, right, { startWith })); setX(null); setLive(null); setNotice(null); }
 
   const { model } = lab;
   // L'opération vient des expressions ; le thème qui la contredit cède (voir l'en-tête).
@@ -175,7 +192,6 @@ export default function GrowthRace({
 
   /* ── découverte et règle formelle ── */
   const ready = racing && L.discoveryReady(lab, range);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (state.isFormal) state.report(onFinished, { kind, x: sol.x ? L.valueText(sol.x) : null });
   }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -201,12 +217,13 @@ export default function GrowthRace({
       const v = L.canCarry(lab, zone.slice(3));
       return v === true ? true : v;
     },
-    onDrop: (_src, zone) => { setLab((s) => L.carry(s, zone.slice(3))); setNotice(null); },
-    onReject: (_s, zone, reason) => setNotice(reason ? { key: reason, id: zone?.slice?.(3) } : null),
+    onDrop: (_src, zone) => { tick(); setLab((s) => L.carry(s, zone.slice(3))); setNotice(null); },
+    onReject: (_s, zone, reason) => { if (reason) playSfx('over'); setNotice(reason ? { key: reason, id: zone?.slice?.(3) } : null); },
   });
   const verify = () => {
     const next = L.check(lab);
     setLab(next);
+    playSfx(next.verdict.ok ? 'flag' : 'over');
     if (next.verdict.ok) state.report(onModel, { tex: L.modelTex(model, next.carried) });
   };
 
@@ -218,6 +235,8 @@ export default function GrowthRace({
   const toValue = useCallback((clientX, _y, rect) => range.min + (clientX - rect.left - EDGE) / mu, [range.min, mu]);
   const trialPayload = (v) => { const trial = L.trialAt(model, v); return { ...trial, leftText: L.valueText(trial.left), rightText: L.valueText(trial.right) }; };
   const commit = (v) => {
+    tick();
+    if (L.trialAt(model, v).rel === '=') playSfx('bell');
     setLive(null); setX(v);
     labRef.current = L.commitTrial(labRef.current, v);
     setLab((s) => L.commitTrial(s, v));
@@ -249,87 +268,46 @@ export default function GrowthRace({
   const shownMission = racing ? tw('missionRace', { question }) : (mission ?? tw('missionBuild'));
 
   /* ── la découverte : la conjecture se choisit, la règle suit ── */
-  const trialAtX = (v) => lab.trials.find((tr) => tr.x === v) ?? L.trialAt(model, v);
-  const lead2 = L.leaders(model);
-  const whoOf = (rel) => (rel === '>' ? titleL : titleR);
-  const fmt = (tr) => ({ x: tr.x, left: L.valueText(tr.left), right: L.valueText(tr.right), rel: REL_TEX[tr.rel] });
-  const relWord = goal === 'less' ? tw('lessWord') : tw('greaterWord');
-  let options = null;
-  const s = sol.x != null ? L.toNumber(sol.x) : null;
-  if (kind === 'meet') {
-    const notEqual = lab.trials.find((tr) => tr.rel !== '=') ?? trialAtX(s === range.max ? range.min : range.max);
-    const after = lab.trials.find((tr) => tr.x > s) ?? trialAtX(Math.min(range.max, s + 1));
-    const before = lab.trials.find((tr) => tr.x < s) ?? trialAtX(Math.max(0, s - 1));
-    if (goal !== 'equal' && ans.toInfinity && ans.first != null) {
-      options = [
-        { text: <MathText>{k('goalAtEqual', { x: s })}</MathText>, why: <MathText>{k('goalAtEqualWhy', { ...fmt(trialAtX(s)), relWord })}</MathText> },
-        { text: <MathText>{k('goalRight', { x: s, first: ans.first, left: titleL, right: titleR, relWord })}</MathText>, correct: true },
-        { text: <MathText>{k('goalBefore', { x: s })}</MathText>, why: <MathText>{k('goalBeforeWhy', { ...fmt(before), y: before.x })}</MathText> },
-      ];
-    } else {
-      options = [
-        { text: <MathText>{k('allEqual')}</MathText>, why: <MathText>{k('allEqualWhy', fmt(notEqual))}</MathText> },
-        { text: <MathText>{k('meetRight', { x: s, before: whoOf(lead2.before), after: whoOf(lead2.after) })}</MathText>, correct: true },
-        { text: <MathText>{k('alwaysAhead', { who: whoOf(lead2.before) })}</MathText>, why: <MathText>{k('alwaysAheadWhy', fmt(after))}</MathText> },
-      ];
-    }
-  } else if (kind === 'between') {
-    const lo = Math.floor(s);
-    options = [
-      { text: <MathText>{k('equalAt', { x: lo })}</MathText>, why: <MathText>{k('equalAtWhy', fmt(trialAtX(lo)))}</MathText> },
-      { text: <MathText>{k('betweenRight', { lo, hi: lo + 1 })}</MathText>, correct: true },
-      { text: <MathText>{k('equalAt', { x: lo + 1 })}</MathText>, why: <MathText>{k('equalAtWhy', fmt(trialAtX(lo + 1)))}</MathText> },
-    ];
-  } else if (kind === 'negative' || kind === 'none') {
-    const xs = lab.trials.map((tr) => tr.x).sort((p, q) => p - q);
-    const a = trialAtX(xs[0] ?? 0); const b = trialAtX(xs.at(-1) ?? range.max);
-    const gap = (tr) => { const d = L.add(tr.left, L.mul(tr.right, -1)); return L.valueText(d.n < 0 ? L.mul(d, -1) : d); };
-    options = [
-      { text: <MathText>{k('waitLonger')}</MathText>, why: <MathText>{k('waitLongerWhy', { a: a.x, b: b.x, da: gap(a), db: gap(b) })}</MathText> },
-      { text: <MathText>{k('neverRight', { who: whoOf(lead2.before), gap: kind === 'none' ? k('gapSame') : k('gapGrows') })}</MathText>, correct: true },
-    ];
-  } else if (kind === 'all') {
-    options = [{ text: <MathText>{k('allEqual')}</MathText>, correct: true }];
-  }
+  const raceCtx = { lab, model, range, goal, ans, kind, sol, k, tw, titleL, titleR, unitsLabel };
+  const options = raceOptions(raceCtx);
+  const formal = <RaceFormal c={raceCtx} />;
 
-  const solving = L.solvingLines(model);
-  const goalIneq = goal !== 'equal' && ans.toInfinity && ans.first != null && kind === 'meet';
-  const ineqLines = goalIneq ? L.inequalityLines(model, ans.rel) : null;
-  const relTexOf = (rel) => ({ '<': '<', '<=': '\\leq', '>': '>', '>=': '\\geq' })[rel];
-  const formal = (
-    <div className="space-y-2" data-gr-formal data-kind={kind}>
-      {goalIneq ? (
-        <>
-          <EquationDisplay tone="result" tex={`${L.sideTex(model, 'left', L.storyCarried(model))} ${relTexOf(ans.rel)} ${L.sideTex(model, 'right', L.storyCarried(model))}`} note={k('formalModelIneq')} />
-          <div className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2">
-            <p className="text-xs font-bold text-slate-600">{k('formalSolve')}</p>
-            {ineqLines.lines.map((ln) => <p key={ln} dir="ltr" className="font-mono"><MathText>{`$${ln}$`}</MathText></p>)}
-          </div>
-          <EquationDisplay tone="neutral" tex={`${L.readoutTex(model, 'left', s).tex} \\quad ; \\quad ${L.readoutTex(model, 'right', s).tex}`} note={k('formalCheck')} />
-          <p className="text-sm font-bold text-emerald-900"><MathText>{tw('firstFormal', { units: unitsLabel(ans.first), left: titleL, right: titleR, relWord })}</MathText></p>
-        </>
-      ) : (
-        <>
-          <EquationDisplay tone="result" tex={L.modelTex(model, L.storyCarried(model))} note={k('formalModel')} />
-          <div className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2">
-            <p className="text-xs font-bold text-slate-600">{k('formalSolve')}</p>
-            {solving.lines.map((ln) => <p key={ln} dir="ltr" className="font-mono"><MathText>{`$${ln}$`}</MathText></p>)}
-          </div>
-          {kind === 'meet' && (
-            <>
-              <EquationDisplay tone="neutral" tex={`${L.readoutTex(model, 'left', s).tex} \\quad ; \\quad ${L.readoutTex(model, 'right', s).tex}`} note={k('formalCheck')} />
-              <p className="text-sm font-bold text-emerald-900"><MathText>{tw('meetFormal', { units: unitsLabel(s), left: titleL, right: titleR })}</MathText></p>
-              <p className="text-sm text-slate-700"><MathText>{k('formalBeyond', { x: s, left: L.reducedTex(model, 'left'), right: L.reducedTex(model, 'right'), rel: REL_TEX[lead2.after] })}</MathText></p>
-            </>
-          )}
-          {kind === 'between' && <p className="text-sm font-bold text-rose-900"><MathText>{k('formalBetween', { x: L.valueText(sol.x), unitWord: tw('unitWord') })}</MathText></p>}
-          {kind === 'negative' && <p className="text-sm font-bold text-rose-900"><MathText>{tw('pastFormal', { units: unitsLabel(Math.abs(s)) })}</MathText></p>}
-          {kind === 'none' && <p className="text-sm font-bold text-rose-900">{k('formalNone')}</p>}
-          {kind === 'all' && <p className="text-sm font-bold text-emerald-900">{k('formalAll')}</p>}
-        </>
-      )}
-    </div>
-  );
+  /* ── les questions pendant le labo : une suite par étape ── */
+  const cpSettings = useLabCheckpointSettings('growth-race');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const raceChain = options ? RACE_CHAINS[kind === 'meet' ? (goal !== 'equal' && ans.toInfinity && ans.first != null ? 'first' : 'meet') : kind] ?? null : null;
+  const cpLive = cpOn && cpSettings.enabled;
+  const cpId = !cpLive ? null : racing ? (raceChain ? 'race' : null) : 'build';
+  const cpCtx = { ...raceCtx, options, formal };
+  const cp = useLabCheckpoint({
+    id: cpId,
+    questions: !cpId ? null : racing ? (ready ? raceChain.map((q) => QUESTIONS[q](lab, k, cpCtx)) : null)
+      : (lab.verdict?.ok ? BUILD_CHAIN.map((q) => QUESTIONS[q](lab, k, cpCtx)) : null),
+    reached: racing ? ready : !!lab.verdict?.ok,
+    resetKey: scene.inits,
+    onRetry: () => {
+      if (racing) { setLab((st) => ({ ...st, trials: [] })); setX(null); setLive(null); }
+      else setLab((st) => ({ ...st, carried: [], verdict: null }));
+      setNotice(null);
+    },
+    onEvent: (ev) => state.report(onCheckpoint, ev),   // {tk:'checkpoint'|'checkpoint-done', id: 'build'|'race', …} — la TRACE que les étapes du module relisent
+    onDone: (id) => { if (id === 'race') { state.discover(); state.formalize(); } },
+  });
+  const raceByCheckpoint = racing && !!cpId;
+  useEffect(() => { if (ready && !raceByCheckpoint) state.discover(); }, [ready, raceByCheckpoint, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // une étape est FAITE quand son objectif est atteint ET ses questions répondues : la pastille passe au vert et on fête
+  const stepDone = [!!lab.verdict?.ok && (racing || !cp.blocking), racing && lab.trials.length > 0, ready && !cp.blocking];
+  const nDone = stepDone.findIndex((d) => !d) < 0 ? stepDone.length : stepDone.findIndex((d) => !d);
+  const party = useStepCelebration();
+  const celebrated = useRef(null);
+  if (celebrated.current == null || celebrated.current.inits !== scene.inits) celebrated.current = { n: startWith === 'race' ? 1 : 0, inits: scene.inits };   // « إعادة » : on refête
+  useEffect(() => {
+    if (nDone <= celebrated.current.n) return;
+    celebrated.current.n = nDone;
+    party.celebrate({ n: nDone, total: stepDone.length });
+  }, [nDone]); // eslint-disable-line react-hooks/exhaustive-deps
+  const heard = useRef(0);
+  const tick = () => { const now = Date.now(); if (now - heard.current > 35) { playSfx('tooth'); heard.current = now; } };
 
   /* ── la course : les colonnes ── */
   const tops = [L.trialAt(model, range.min), L.trialAt(model, range.max)].flatMap((tr) => [L.toNumber(tr.left), L.toNumber(tr.right)]);
@@ -438,6 +416,8 @@ export default function GrowthRace({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpLive && (!racing || !!raceChain)}
       hints={hints.map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{
         autoStep: () => false,
@@ -464,7 +444,10 @@ export default function GrowthRace({
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-sky-50/70 to-white" data-dragging={stretch.dragging || drag.dragging ? 'true' : undefined}>
-        <div ref={boxRef} className="space-y-3" data-growth-race data-stage={lab.stage} data-op={model.op} data-theme={themeId}>
+        <div ref={boxRef} className="relative space-y-3" data-growth-race data-stage={lab.stage} data-op={model.op} data-theme={themeId}>
+          {party.node}
+          {cp.node}
+          <LabStepper count={stepDone.length} current={Math.min(nDone, stepDone.length - 1)} done={stepDone} stepAttr="data-gr2-step" />
           {/* ── les deux étapes, toujours lisibles ── */}
           <ol className="flex flex-wrap gap-2 text-xs font-bold" aria-hidden="true">
             <li className={`rounded-full px-3 py-1 ${!racing ? 'bg-indigo-600 text-white' : 'bg-indigo-100 text-indigo-700'}`}>{k('stageBuild')}</li>
@@ -504,9 +487,9 @@ export default function GrowthRace({
                   <div className="space-y-2 rounded-2xl border-2 border-emerald-300 bg-emerald-50 p-3" data-gr-verdict="ok">
                     <p className="text-sm font-bold text-emerald-900">{k('modelOk')}</p>
                     <p dir="ltr" className="font-mono text-base"><MathText>{`$${L.modelTex(model, lab.carried)}$`}</MathText></p>
-                    <p className="text-sm text-slate-700">{k('nextCard')}</p>
-                    <button type="button" onClick={() => { setLab(L.openRace); setNotice(null); }} data-gr-open-race
-                      className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-emerald-600 px-4 font-bold text-white focus:outline-none focus-visible:ring-4 focus-visible:ring-emerald-300">
+                    {!cp.blocking && <p className="text-sm text-slate-700">{k('nextCard')}</p>}
+                    <button type="button" disabled={cp.blocking} onClick={() => { setLab(L.openRace); setNotice(null); }} data-gr-open-race
+                      className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-emerald-600 px-4 font-bold text-white focus:outline-none focus-visible:ring-4 focus-visible:ring-emerald-300 disabled:opacity-40">
                       {k('openRace')} <ArrowLeft className="h-5 w-5" aria-hidden="true" />
                     </button>
                   </div>
@@ -723,4 +706,207 @@ function Decor({ themeId }) {
       </svg>
     </button>
   );
+}
+
+/** Les options de la règle (la conjecture se choisit, réfutée par les propres essais de l'élève). */
+export function raceOptions(c) {
+  const { lab, model, range, goal, ans, kind, sol, k, tw, titleL, titleR } = c;
+  const trialAtX = (v) => lab.trials.find((tr) => tr.x === v) ?? L.trialAt(model, v);
+  const lead2 = L.leaders(model);
+  const whoOf = (rel) => (rel === '>' ? titleL : titleR);
+  const fmt = (tr) => ({ x: tr.x, left: L.valueText(tr.left), right: L.valueText(tr.right), rel: REL_TEX[tr.rel] });
+  const relWord = goal === 'less' ? tw('lessWord') : tw('greaterWord');
+  let options = null;
+  const s = sol.x != null ? L.toNumber(sol.x) : null;
+  if (kind === 'meet') {
+    const notEqual = lab.trials.find((tr) => tr.rel !== '=') ?? trialAtX(s === range.max ? range.min : range.max);
+    const after = lab.trials.find((tr) => tr.x > s) ?? trialAtX(Math.min(range.max, s + 1));
+    const before = lab.trials.find((tr) => tr.x < s) ?? trialAtX(Math.max(0, s - 1));
+    if (goal !== 'equal' && ans.toInfinity && ans.first != null) {
+      options = [
+        { text: <MathText>{k('goalAtEqual', { x: s })}</MathText>, why: <MathText>{k('goalAtEqualWhy', { ...fmt(trialAtX(s)), relWord })}</MathText> },
+        { text: <MathText>{k('goalRight', { x: s, first: ans.first, left: titleL, right: titleR, relWord })}</MathText>, correct: true },
+        { text: <MathText>{k('goalBefore', { x: s })}</MathText>, why: <MathText>{k('goalBeforeWhy', { ...fmt(before), y: before.x })}</MathText> },
+      ];
+    } else {
+      options = [
+        { text: <MathText>{k('allEqual')}</MathText>, why: <MathText>{k('allEqualWhy', fmt(notEqual))}</MathText> },
+        { text: <MathText>{k('meetRight', { x: s, before: whoOf(lead2.before), after: whoOf(lead2.after) })}</MathText>, correct: true },
+        { text: <MathText>{k('alwaysAhead', { who: whoOf(lead2.before) })}</MathText>, why: <MathText>{k('alwaysAheadWhy', fmt(after))}</MathText> },
+      ];
+    }
+  } else if (kind === 'between') {
+    const lo = Math.floor(s);
+    options = [
+      { text: <MathText>{k('equalAt', { x: lo })}</MathText>, why: <MathText>{k('equalAtWhy', fmt(trialAtX(lo)))}</MathText> },
+      { text: <MathText>{k('betweenRight', { lo, hi: lo + 1 })}</MathText>, correct: true },
+      { text: <MathText>{k('equalAt', { x: lo + 1 })}</MathText>, why: <MathText>{k('equalAtWhy', fmt(trialAtX(lo + 1)))}</MathText> },
+    ];
+  } else if (kind === 'negative' || kind === 'none') {
+    const xs = lab.trials.map((tr) => tr.x).sort((p, q) => p - q);
+    const a = trialAtX(xs[0] ?? 0); const b = trialAtX(xs.at(-1) ?? range.max);
+    const gap = (tr) => { const d = L.add(tr.left, L.mul(tr.right, -1)); return L.valueText(d.n < 0 ? L.mul(d, -1) : d); };
+    options = [
+      { text: <MathText>{k('waitLonger')}</MathText>, why: <MathText>{k('waitLongerWhy', { a: a.x, b: b.x, da: gap(a), db: gap(b) })}</MathText> },
+      { text: <MathText>{k('neverRight', { who: whoOf(lead2.before), gap: kind === 'none' ? k('gapSame') : k('gapGrows') })}</MathText>, correct: true },
+    ];
+  } else if (kind === 'all') {
+    options = [{ text: <MathText>{k('allEqual')}</MathText>, correct: true }];
+  }
+
+  return options;
+}
+
+/** La règle formelle du cas (modèle, résolution, vérification, interprétation). */
+export function RaceFormal({ c }) {
+  const { model, range, goal, ans, kind, sol, k, tw, titleL, titleR, unitsLabel } = c;
+  const lead2 = L.leaders(model);
+  const s = sol.x != null ? L.toNumber(sol.x) : null;
+  const relWord = goal === 'less' ? tw('lessWord') : tw('greaterWord');
+  const solving = L.solvingLines(model);
+  const goalIneq = goal !== 'equal' && ans.toInfinity && ans.first != null && kind === 'meet';
+  const ineqLines = goalIneq ? L.inequalityLines(model, ans.rel) : null;
+  const relTexOf = (rel) => ({ '<': '<', '<=': '\\leq', '>': '>', '>=': '\\geq' })[rel];
+  return (
+    <div className="space-y-2" data-gr-formal data-kind={kind}>
+      {goalIneq ? (
+        <>
+          <EquationDisplay tone="result" tex={`${L.sideTex(model, 'left', L.storyCarried(model))} ${relTexOf(ans.rel)} ${L.sideTex(model, 'right', L.storyCarried(model))}`} note={k('formalModelIneq')} />
+          <div className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2">
+            <p className="text-xs font-bold text-slate-600">{k('formalSolve')}</p>
+            {ineqLines.lines.map((ln) => <p key={ln} dir="ltr" className="font-mono"><MathText>{`$${ln}$`}</MathText></p>)}
+          </div>
+          <EquationDisplay tone="neutral" tex={`${L.readoutTex(model, 'left', s).tex} \\quad ; \\quad ${L.readoutTex(model, 'right', s).tex}`} note={k('formalCheck')} />
+          <p className="text-sm font-bold text-emerald-900"><MathText>{tw('firstFormal', { units: unitsLabel(ans.first), left: titleL, right: titleR, relWord })}</MathText></p>
+        </>
+      ) : (
+        <>
+          <EquationDisplay tone="result" tex={L.modelTex(model, L.storyCarried(model))} note={k('formalModel')} />
+          <div className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2">
+            <p className="text-xs font-bold text-slate-600">{k('formalSolve')}</p>
+            {solving.lines.map((ln) => <p key={ln} dir="ltr" className="font-mono"><MathText>{`$${ln}$`}</MathText></p>)}
+          </div>
+          {kind === 'meet' && (
+            <>
+              <EquationDisplay tone="neutral" tex={`${L.readoutTex(model, 'left', s).tex} \\quad ; \\quad ${L.readoutTex(model, 'right', s).tex}`} note={k('formalCheck')} />
+              <p className="text-sm font-bold text-emerald-900"><MathText>{tw('meetFormal', { units: unitsLabel(s), left: titleL, right: titleR })}</MathText></p>
+              <p className="text-sm text-slate-700"><MathText>{k('formalBeyond', { x: s, left: L.reducedTex(model, 'left'), right: L.reducedTex(model, 'right'), rel: REL_TEX[lead2.after] })}</MathText></p>
+            </>
+          )}
+          {kind === 'between' && <p className="text-sm font-bold text-rose-900"><MathText>{k('formalBetween', { x: L.valueText(sol.x), unitWord: tw('unitWord') })}</MathText></p>}
+          {kind === 'negative' && <p className="text-sm font-bold text-rose-900"><MathText>{tw('pastFormal', { units: unitsLabel(Math.abs(s)) })}</MathText></p>}
+          {kind === 'none' && <p className="text-sm font-bold text-rose-900">{k('formalNone')}</p>}
+          {kind === 'all' && <p className="text-sm font-bold text-emerald-900">{k('formalAll')}</p>}
+        </>
+      )}
+    </div>
+  );
+}
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de l'étape CONSTRUIRE : la croissance de chaque membre, puis lequel croît le plus vite. */
+export const BUILD_CHAIN = Object.freeze(['slopeLeft', 'slopeRight', 'faster']);
+/** La suite de l'étape COURIR, selon le cas de découverte. */
+export const RACE_CHAINS = Object.freeze({
+  meet: ['where', 'after', 'rule'],
+  first: ['where', 'first', 'rule'],
+  negative: ['trend', 'rule'],
+  none: ['trend', 'rule'],
+  between: ['rule'],
+  all: ['rule'],
+});
+
+const $ = (x) => `$${x}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+/** De combien un membre croît quand x augmente de 1 (le coefficient de x de son expression réduite). */
+const slopeOf = (lab, side) => L.storyLin(lab.model, side).a;
+
+export const QUESTIONS = {
+  slopeLeft: (lab, k, c) => slopeQuestion(lab, k, c, 'left'),
+  slopeRight: (lab, k, c) => slopeQuestion(lab, k, c, 'right'),
+  faster: (lab, k, c) => {
+    const aL = slopeOf(lab, 'left'); const aR = slopeOf(lab, 'right');
+    const c0 = L.add(aL, L.mul(aR, -1));
+    const right = c0.n > 0 ? 'left' : c0.n < 0 ? 'right' : 'same';
+    const o = { titleL: c.titleL, titleR: c.titleR, aL: $(L.valueText(aL)), aR: $(L.valueText(aR)) };
+    const mk = (id) => ({ text: Cq(k, `faster.${id}`, o), ...(id === right ? { correct: true } : { why: Cq(k, `faster.why.${id}`, o) }) });
+    return {
+      id: 'faster', kind: 'choice', cols: 1,
+      prompt: Cq(k, 'faster.prompt'),
+      options: [mk('left'), mk('right'), mk('same')],
+      hints: [Cq(k, 'faster.hint1'), Cq(k, 'faster.hint2', o)],
+      explain: Cq(k, `faster.explain.${right}`, o),
+    };
+  },
+  where: (lab, k, c) => {
+    const s = L.toNumber(c.sol.x);
+    const before = Math.max(-1, ...lab.trials.map((t) => t.x).filter((v) => v < s));
+    const after = Math.min(Infinity, ...lab.trials.map((t) => t.x).filter((v) => v > s));
+    const o = { a: before, b: after, titleL: c.titleL, titleR: c.titleR, unit: c.tw('xUnit') };
+    const e = L.trialAt(lab.model, s);
+    return {
+      id: 'where', kind: 'number', expected: String(s), answer: <MathText>{$(String(s))}</MathText>,
+      prompt: Cq(k, before >= 0 && after < Infinity ? 'where.prompt' : 'where.promptPlain', o),
+      hints: [Cq(k, 'where.hint1'), Cq(k, 'where.hint2', o)],
+      explain: Cq(k, 'where.explain', { x: s, v: $(L.valueText(e.left)), titleL: c.titleL, titleR: c.titleR }),
+    };
+  },
+  after: (lab, k, c) => {
+    const lead = L.leaders(lab.model).after;
+    const s = L.toNumber(c.sol.x);
+    const x2 = lab.trials.map((t) => t.x).find((v) => v > s) ?? s + 1;
+    const tr = L.trialAt(lab.model, x2);
+    const o = { titleL: c.titleL, titleR: c.titleR, x: x2, l: $(L.valueText(tr.left)), r: $(L.valueText(tr.right)) };
+    const right = lead === '>' ? 'left' : 'right';
+    const mk = (id) => ({ text: Cq(k, `after.${id}`, o), ...(id === right ? { correct: true } : { why: Cq(k, `after.why.${id}`, o) }) });
+    return {
+      id: 'after', kind: 'choice', cols: 1,
+      prompt: Cq(k, 'after.prompt', { x: s }),
+      options: [mk('equal'), mk('left'), mk('right')],
+      hints: [Cq(k, 'after.hint1'), Cq(k, 'after.hint2', o)],
+      explain: Cq(k, 'after.explain', o),
+    };
+  },
+  first: (lab, k, c) => {
+    const s = L.toNumber(c.sol.x);
+    const o = { x: s, left: c.titleL, right: c.titleR, relWord: c.goal === 'less' ? c.tw('lessWord') : c.tw('greaterWord'), first: c.ans.first, unit: c.unitsLabel(c.ans.first) };
+    return {
+      id: 'first', kind: 'number', expected: String(c.ans.first), answer: <MathText>{$(String(c.ans.first))}</MathText>,
+      prompt: Cq(k, 'first.prompt', o), hints: [Cq(k, 'first.hint1', o), Cq(k, 'first.hint2', o)], explain: Cq(k, 'first.explain', o),
+    };
+  },
+  trend: (lab, k, c) => {
+    const gap = (v) => { const t = L.trialAt(lab.model, v); const d = L.add(t.left, L.mul(t.right, -1)); return d.n < 0 ? L.mul(d, -1) : d; };
+    const g0 = gap(c.range.min); const g1 = gap(c.range.max);
+    const d = L.add(g1, L.mul(g0, -1));
+    const right = d.n > 0 ? 'grows' : d.n < 0 ? 'shrinks' : 'same';
+    const o = { a: c.range.min, b: c.range.max, g0: $(L.valueText(g0)), g1: $(L.valueText(g1)), titleL: c.titleL, titleR: c.titleR };
+    const mk = (id) => ({ text: Cq(k, `trend.${id}`), ...(id === right ? { correct: true } : { why: Cq(k, `trend.why.${id}`, o) }) });
+    return {
+      id: 'trend', kind: 'choice', cols: 1,
+      prompt: Cq(k, 'trend.prompt', o),
+      options: [mk('shrinks'), mk('grows'), mk('same')],
+      hints: [Cq(k, 'trend.hint1', o), Cq(k, 'trend.hint2')],
+      explain: Cq(k, `trend.explain.${right}`, o),
+    };
+  },
+  rule: (lab, k, c) => ({
+    id: 'rule', kind: 'choice', prompt: <MathText>{k('discoveryPrompt')}</MathText>,
+    options: c.options,
+    hints: [Cq(k, 'rule.hint1'), Cq(k, 'rule.hint2')],
+    explain: c.formal,
+  }),
+};
+
+function slopeQuestion(lab, k, c, side) {
+  const a = slopeOf(lab, side);
+  const mul = lab.model.op === 'mul';
+  const title = side === 'left' ? c.titleL : c.titleR;
+  const o = { title, a: $(L.valueText(a)), expr: $(L.reducedTex(lab.model, side)) };
+  const key = `slope.${mul ? 'mul' : 'add'}`;
+  return {
+    id: `slope${side === 'left' ? 'Left' : 'Right'}`, kind: 'number', expected: L.valueText(a), answer: <MathText>{o.a}</MathText>,
+    prompt: Cq(k, `${key}.prompt`, o), hints: [Cq(k, `${key}.hint1`, o), Cq(k, `${key}.hint2`, o)], explain: Cq(k, `${key}.explain`, o),
+  };
 }

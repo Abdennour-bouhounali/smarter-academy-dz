@@ -11,6 +11,10 @@ import { useManipulation } from '../useManipulation';
 import { LabCard, StageFrame, PromptCard, VerdictBanner } from '../primitives/LabKit';
 import KidFigure from '../primitives/KidFigure';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { LEVELS } from '../levels';
 import * as L from '../logic/tenZoom';
 import { CSS, VB_W, VB_H, CX, CY, R_IN, R_OUT, FRAME, NOTCH_DEG, Bench, Ring, Frame, Vignette, SCENE_IDS } from './tenZoom/art';
@@ -44,6 +48,11 @@ import { CSS, VB_W, VB_H, CX, CY, R_IN, R_OUT, FRAME, NOTCH_DEG, Bench, Ring, Fr
  *   FORMALIZATION  10³ = 10 × 10 × 10 = 1 000 ; 10⁰ = 1 ; 10⁻³ = 1/10³ = 0,001
  *   TRANSFER       « جرّب أعدادك » (toujours ouvert), les exercices et la banque
  *
+ * QUESTIONS PENDANT LE LABO (2026-10-28, lot 6) : après chaque tâche une suite de 2 questions se pose PAR-DESSUS le labo (`CHAINS`, `QUESTIONS` en bas du fichier) sur ce que l'élève vient de
+ * FAIRE avec SA bague : le nombre de crans, ce que fait un cran, les zéros, la rang du 1, le retour à 1 m, les noms d'unités ; la dernière tâche de chaque niveau finit par LA RÈGLE
+ * (la découverte d'avant passe dans la carte) ; le monde `prefixes` n'a pas de règle. Étapes `LabStepper` (`[data-tz-step=<i>]`) + fête ; « إعادة » repart de la tâche 1 ; obligatoires pour
+ * tout élève, coupées par l'enseignant pour SON compte (`useLabCheckpointSettings`) ; `checkpoints` = false les coupe aussi ; `onCheckpoint(ev)` : la trace pour les étapes du module.
+ *
  * D'UN SEUL REGARD (§8bis) : `[data-tz-glance]` enveloppe la consigne, la carte, la lentille, la plaque, les boutons et le verdict.
  * ONBOARDING : `coach` (défaut true) → `LabCoach` ; `logic/tenZoom.js › coachOf` (predict · ring · plate · dock · next · free).
  * Props : `tasks`, `world` ('zoom' | 'prefixes'), `level`, `levels`, `coach`, `title`, `lead`, `onTrial(event)`, `onFinished({ world })`.
@@ -68,8 +77,8 @@ export function numbersFor({ tasks, world, level }) {
 }
 
 export default function TenZoom({
-  tasks, world, title, lead, level, levels: withLevels = true, coach: coachOn = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  tasks, world, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
+  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished, onCheckpoint,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
@@ -78,14 +87,60 @@ export default function TenZoom({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
   if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    const restart = scene.key === numsKey && scene.rc !== state.resetCount;
-    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-    setLab(restart ? L.restartTask(lab) : L.init(nums));
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la tâche 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
+    setLab(L.init(nums));
   }
   const kind = L.discoveryKind(lab);
-  useEffect(() => { if (kind) state.discover(); }, [kind, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : la suite de la tâche courante ; celle qui finit par la règle remplace la découverte automatique
+  const cpSettings = useLabCheckpointSettings('ten-zoom');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cur = L.taskOf(lab);
+  const chain = cpOn && cpSettings.enabled && !L.isFree(lab) ? CHAINS[cur.id] ?? null : null;
+  const ruleByCheckpoint = cpOn && cpSettings.enabled && lab.tasks.some((tk) => CHAINS[tk.id]?.includes('rule'));
+  const taskReached = L.taskDone(lab);
+  const cp = useLabCheckpoint({
+    id: chain ? cur.id : null,
+    questions: chain && taskReached ? chain.map((q) => QUESTIONS[q](lab, cur, k)) : null,
+    reached: taskReached,
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.retryTask),
+    onEvent: (ev) => state.report(onCheckpoint, ev),
+    onDone: (id) => { if (CHAINS[id]?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  useEffect(() => { if (kind && !ruleByCheckpoint) state.discover(); }, [kind, state.epoch, ruleByCheckpoint]); // eslint-disable-line react-hooks/exhaustive-deps
+  // une étape est FAITE quand son cadre est posé ET que ses questions sont répondues : alors la pastille passe au vert et on fête
+  const stepDone = lab.tasks.map((_, i) => !!lab.done[i] && (i !== lab.ti || !cp.blocking));
+  const stepper = lab.tasks.length > 1 && !L.isFree(lab) && (
+    <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-tz-step" />
+  );
+  const party = useStepCelebration();
+  const celebrated = useRef({ inits: 0, set: new Set() });
+  if (celebrated.current.inits !== scene.inits) celebrated.current = { inits: scene.inits, set: new Set() };   // « إعادة » : on refête
+  const nowDone = !L.isFree(lab) && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.set.has(lab.ti)) return;
+    celebrated.current.set.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
+  /* ── le son (muet sauf « الصوت ») : un cran à chaque nouvelle dent de la bague (plus grave en réduisant), la cloche quand la plaque nomme une unité, le drapeau au cadre posé, « over » pour un refus ── */
+  const heardAt = useRef({ notches: 0, at: 0 });
+  useEffect(() => {
+    const h = heardAt.current;
+    if (lab.notches > h.notches) {
+      const now = performance.now();
+      if (now - h.at > 35) { playSfx('tooth', { pitch: lab.dir < 0 ? 0.75 : 1 }); h.at = now; }
+      if (L.unitPill(lab.n, lab.world)) playSfx('bell');
+    }
+    h.notches = lab.notches;
+  }, [lab.notches]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    const l = lab.last;
+    if (!l) return;
+    if (l.kind === 'refused' || l.kind === 'limit') playSfx('over');
+    else if (l.kind === 'solved') playSfx('flag');
+  }, [lab.flash]); // eslint-disable-line react-hooks/exhaustive-deps
   const finishedOnce = useRef(false);
   const everyDone = L.allDone(lab);
   useEffect(() => {
@@ -120,6 +175,8 @@ export default function TenZoom({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       coach={coachOn ? coach : null}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={!!chain || ruleByCheckpoint}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={discovery}
@@ -128,7 +185,8 @@ export default function TenZoom({
       <ManipulationStage className="bg-gradient-to-b from-amber-50/70 to-white">
         <div className="space-y-2" data-ten-zoom data-world={lab.world} data-n={lab.n} data-task={lab.ti} data-solved={everyDone ? 'true' : 'false'}>
           <style dangerouslySetInnerHTML={{ __html: CSS }} />
-          <Lab lab={lab} setLab={setLab} k={k} lead={state.isAuthoredLevel ? lead : null} />
+          <Lab lab={lab} setLab={setLab} k={k} lead={state.isAuthoredLevel ? lead : null}
+            overlay={<>{party.node}{cp.node}</>} stepper={stepper} blocked={cp.blocking} />
         </div>
       </ManipulationStage>
     </ManipulationShell>
@@ -149,7 +207,7 @@ function cardText(card, k) {
   return k('card.unit', { p: p.name });
 }
 
-function Lab({ lab, setLab, k, lead }) {
+function Lab({ lab, setLab, k, lead, overlay, stepper, blocked }) {
   const free = L.isFree(lab);
   const task = L.taskOf(lab);
   const done = L.taskDone(lab);
@@ -162,11 +220,11 @@ function Lab({ lab, setLab, k, lead }) {
       contextProps={{ 'data-tz-context': ctxKey }}
       title={<MathText>{k(prefixes ? 'question.prefixes' : 'question.zoom')}</MathText>} titleClassName="text-base" lamp={free ? null : done ? 'on' : 'off'}
       titleProps={{ 'data-tz-prompt': prefixes ? 'prefixes' : 'zoom', 'data-lit': done ? 'true' : 'false' }}
-      aside={lab.tasks.length > 1 && !free ? <Steps lab={lab} k={k} /> : undefined}
+      aside={stepper || undefined}
       instruction={lead || undefined} />
   );
   const vv = verdictOf(lab, k);
-  const canNext = L.canNext(lab);
+  const canNext = L.canNext(lab) && !blocked;
   const Icon = vv.tone === 'emerald' ? CheckCircle2 : vv.tone === 'amber' ? ShieldAlert : vv.tone === 'indigo' ? Hand : Sparkles;
   const btn = `inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-full border-2 px-3.5 text-sm font-black transition-all duration-150 active:translate-y-0.5 motion-reduce:transition-none ${ring}`;
   const banner = (
@@ -198,6 +256,7 @@ function Lab({ lab, setLab, k, lead }) {
   return (
     <>
       <div className="relative space-y-2" data-tz-glance>
+        {overlay}
         {prompt}
         <MissionRow lab={lab} setLab={setLab} k={k} task={task} />
         <Scene lab={lab} setLab={setLab} k={k} />
@@ -206,23 +265,6 @@ function Lab({ lab, setLab, k, lead }) {
       </div>
       <FreeCard lab={lab} setLab={setLab} k={k} />
     </>
-  );
-}
-
-function Steps({ lab, k }) {
-  return (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={tk.id} role="listitem" data-tz-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-amber-700 bg-amber-500 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-amber-200 bg-white text-amber-700'}`}>
-            <bdi dir="ltr">{i + 1}</bdi>
-          </span>
-        );
-      })}
-    </div>
   );
 }
 
@@ -505,3 +547,205 @@ export function Formal({ k }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de chaque tâche : ce que la main vient de faire avec SA bague ; la dernière tâche de chaque niveau finit par LA RÈGLE ; le monde `prefixes` n'a pas de règle. */
+export const CHAINS = Object.freeze({
+  z1: ['clicks', 'each'],
+  z2: ['clicks', 'zeros'],
+  z3: ['clicks', 'rank'],
+  z4: ['back', 'rule'],
+  z5: ['clicks', 'zeros'],
+  z6: ['clicks', 'rank'],
+  z7: ['clicks', 'neg'],
+  z8: ['kmToM', 'rule'],
+  p1: ['prefix', 'clicks'],
+  p2: ['prefix', 'mirror'],
+  p3: ['prefix', 'between'],
+  p4: ['prefix', 'between'],
+  p5: ['prefix', 'chain'],
+});
+
+const $ = (s) => `$${s}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const sideOf = (n) => tex(T.pow10(n));
+const minus = (n) => String(n).replace('-', '−');
+/** La bonne option à la place `want` ; une seule bonne. */
+const place = (opts, want) => {
+  const ci = opts.findIndex((o) => o.correct);
+  const rest = opts.filter((_, i) => i !== ci);
+  rest.splice(Math.min(want, rest.length), 0, opts[ci]);
+  return rest;
+};
+const distinct = (list, count = 3) => { const seen = new Set(); const out = []; for (const x of list) { if (!seen.has(x.v)) { seen.add(x.v); out.push(x); } } return out.slice(0, count); };
+/** « 1 \\times 10 \\times 10 » ou « 1 \\div 10 \\div 10 » (LaTeX) pour n crans. */
+const tallyTex = (n) => L.tallyOf(n).replace(/×/g, '\\times').replace(/÷/g, '\\div');
+const prevTarget = (lab) => lab.tasks[Math.max(0, lab.ti - 1)].target;
+const pillOf = (n, world) => L.unitPill(n, world) ?? '';
+
+/** Chaque question est construite sur LA tâche (rien n'est écrit en dur) ; `k` : les textes de `tenZoom`. */
+export const QUESTIONS = {
+  /* combien de crans, dans quel sens */
+  clicks: (lab, task, k) => {
+    const n = task.target; const c = Math.abs(n);
+    const dir = k(n > 0 ? 'cp.clicks.grow' : 'cp.clicks.shrink');
+    const side = sideOf(n);
+    return {
+      id: 'clicks', kind: 'number', expected: String(c), answer: <MathText>{$(String(c))}</MathText>,
+      prompt: Cq(k, 'clicks.prompt', { side, dir }),
+      hints: [Cq(k, 'clicks.hint1', { side }), Cq(k, 'clicks.hint2')],
+      explain: Cq(k, 'clicks.explain', { calc: $(`${tallyTex(n)}=${texs(T.pow10(n))}`), n: c, dir }),
+    };
+  },
+  /* ce que fait un cran */
+  each: (lab, task, k) => {
+    const opts = [
+      { text: Cq(k, 'each.times'), correct: true },
+      { text: Cq(k, 'each.plus'), why: Cq(k, 'each.whyPlus') },
+      { text: Cq(k, 'each.double'), why: Cq(k, 'each.whyDouble') },
+    ];
+    return {
+      id: 'each', kind: 'choice', cols: 1,
+      prompt: Cq(k, 'each.prompt'),
+      options: place(opts, 0),
+      hints: [Cq(k, 'each.hint1'), Cq(k, 'each.hint2')],
+      explain: Cq(k, 'each.explain'),
+    };
+  },
+  /* les zéros après le 1 = les crans */
+  zeros: (lab, task, k) => {
+    const n = task.target;
+    return {
+      id: 'zeros', kind: 'number', expected: String(n), answer: <MathText>{$(String(n))}</MathText>,
+      prompt: Cq(k, 'zeros.prompt', { side: sideOf(n) }),
+      hints: [Cq(k, 'zeros.hint1'), Cq(k, 'zeros.hint2')],
+      explain: Cq(k, 'zeros.explain', { n }),
+    };
+  },
+  /* la rang du 1 après la virgule = les crans de réduction */
+  rank: (lab, task, k) => {
+    const n = Math.abs(task.target);
+    const side = sideOf(task.target);
+    const mk = (x, why) => ({ v: x, text: <MathText>{k('cp.rank.at', { x })}</MathText>, ...(why ? { why } : { correct: true }) });
+    const opts = distinct([mk(n), mk(n - 1, Cq(k, 'rank.whyZeros', { x: n - 1 })), mk(n + 1, Cq(k, 'rank.whyNext', { side, n }))]);
+    return {
+      id: 'rank', kind: 'choice', cols: 3,
+      prompt: Cq(k, 'rank.prompt', { side }),
+      options: place(opts, (lab.ti + 1) % 3),
+      hints: [Cq(k, 'rank.hint1'), Cq(k, 'rank.hint2')],
+      explain: Cq(k, 'rank.explain', { n }),
+    };
+  },
+  /* le retour à 1 m : le même nombre de crans, dans l'autre sens */
+  back: (lab, task, k) => {
+    const pt = prevTarget(lab);
+    const dir = k(pt < 0 ? 'cp.clicks.grow' : 'cp.clicks.shrink');
+    const c = Math.abs(pt);
+    return {
+      id: 'back', kind: 'number', expected: String(c), answer: <MathText>{$(String(c))}</MathText>,
+      prompt: Cq(k, 'back.prompt', { from: sideOf(pt), dir }),
+      hints: [Cq(k, 'back.hint1'), Cq(k, 'back.hint2')],
+      explain: Cq(k, 'back.explain', { n: c, dir }),
+    };
+  },
+  /* le côté reste positif quand on réduit */
+  neg: (lab, task, k) => {
+    const side = sideOf(task.target);
+    const opts = [
+      { text: Cq(k, 'neg.right'), correct: true },
+      { text: Cq(k, 'neg.neg'), why: Cq(k, 'neg.whyNeg', { side }) },
+      { text: Cq(k, 'neg.gone'), why: Cq(k, 'neg.whyGone', { side }) },
+    ];
+    return {
+      id: 'neg', kind: 'choice', cols: 1,
+      prompt: Cq(k, 'neg.prompt', { side }),
+      options: place(opts, 1),
+      hints: [Cq(k, 'neg.hint1'), Cq(k, 'neg.hint2')],
+      explain: Cq(k, 'neg.explain'),
+    };
+  },
+  /* 10 km → mètres */
+  kmToM: (lab, task, k) => {
+    const km = Number(task.card.km);
+    const m = km * 1000;
+    const mk = (mult) => { const x = km * mult; return { v: x, text: <MathText>{$(texs({ m: BigInt(x), e: 0 }))}</MathText>, ...(mult === 1000 ? { correct: true } : { why: Cq(k, 'kmToM.why', { x: $(texs({ m: BigInt(x), e: 0 })), y: $(String(x / 1000)), km: $(String(km)) }) }) }; };
+    return {
+      id: 'kmToM', kind: 'choice', cols: 3,
+      prompt: Cq(k, 'kmToM.prompt', { km: $(String(km)) }),
+      options: place([mk(1000), mk(100), mk(10000)], (lab.ti + 1) % 3),
+      hints: [Cq(k, 'kmToM.hint1'), Cq(k, 'kmToM.hint2')],
+      explain: Cq(k, 'kmToM.explain', { calc: $(`${km}\\times1\\,000=${texs({ m: BigInt(m), e: 0 })}`) }),
+    };
+  },
+  /* monde `prefixes` : combien de mètres dans l'unité nommée */
+  prefix: (lab, task, k) => {
+    const n = task.target;
+    const unit = pillOf(n, 'prefixes');
+    const good = sideOf(n);
+    const sg = n > 0 ? 1 : -1;
+    const mk = (e, kind) => ({ v: e, text: <MathText>{sideOf(e)}</MathText>, ...(kind === 'good' ? { correct: true } : { why: Cq(k, kind === 'mirror' ? (n > 0 ? 'prefix.whyBigger' : 'prefix.whySmaller') : 'prefix.whyOff', { unit, side: good, x: sideOf(e) }) }) });
+    const opts = distinct([mk(n, 'good'), mk(-n, 'mirror'), mk(n - sg, 'off'), mk(n + sg, 'off')]);
+    return {
+      id: 'prefix', kind: 'choice', cols: 3,
+      prompt: Cq(k, 'prefix.prompt', { unit }),
+      options: place(opts, (lab.ti + 2) % 3),
+      hints: [Cq(k, 'prefix.hint1'), Cq(k, 'prefix.hint2')],
+      explain: Cq(k, 'prefix.explain', { unit, side: good }),
+    };
+  },
+  /* kilo et milli : deux ordres de grandeur symétriques */
+  mirror: (lab, task, k) => {
+    const big = pillOf(3, 'prefixes'); const small = pillOf(-3, 'prefixes');
+    const bv = sideOf(3); const sv = sideOf(-3);
+    const opts = [
+      { text: Cq(k, 'mirror.right'), correct: true },
+      { text: Cq(k, 'mirror.bigger'), why: Cq(k, 'mirror.whyBigger', { big, small, bv, sv }) },
+      { text: Cq(k, 'mirror.both'), why: Cq(k, 'mirror.whyBoth', { small, sv }) },
+    ];
+    return {
+      id: 'mirror', kind: 'choice', cols: 1,
+      prompt: Cq(k, 'mirror.prompt', { big, small }),
+      options: place(opts, 2),
+      hints: [Cq(k, 'mirror.hint1', { big, small }), Cq(k, 'mirror.hint2')],
+      explain: Cq(k, 'mirror.explain', { calc: $('1\\,000\\times0{,}001=1') }),
+    };
+  },
+  /* d'une unité à la suivante sur la bague */
+  between: (lab, task, k) => {
+    const pt = prevTarget(lab);
+    const n = Math.abs(task.target - pt);
+    return {
+      id: 'between', kind: 'number', expected: String(n), answer: <MathText>{$(String(n))}</MathText>,
+      prompt: Cq(k, 'between.prompt', { from: pillOf(pt, 'prefixes'), to: pillOf(task.target, 'prefixes') }),
+      hints: [Cq(k, 'between.hint1', { from: pillOf(pt, 'prefixes'), to: pillOf(task.target, 'prefixes') }), Cq(k, 'between.hint2')],
+      explain: Cq(k, 'between.explain', { fv: sideOf(pt), tv: sideOf(task.target), n }),
+    };
+  },
+  /* méga en kilomètres : on soustrait les zéros */
+  chain: (lab, task, k) => {
+    const n = task.target;
+    const unit = pillOf(n, 'prefixes');
+    const r = n - 3;
+    const mk = (e) => ({ v: e, text: <MathText>{sideOf(e)}</MathText>, ...(e === r ? { correct: true } : { why: Cq(k, 'chain.why', { x: sideOf(e), xm: tex({ m: 1n, e: e + 3 }), side: sideOf(n) }) }) });
+    const opts = distinct([mk(r), mk(Math.round(n / 3)), mk(n + 3), mk(r + 1)]);
+    return {
+      id: 'chain', kind: 'choice', cols: 3,
+      prompt: Cq(k, 'chain.prompt', { unit, side: sideOf(n) }),
+      options: place(opts, (lab.ti + 1) % 3),
+      hints: [Cq(k, 'chain.hint1', { unit }), Cq(k, 'chain.hint2')],
+      explain: Cq(k, 'chain.explain', { calc: $(`${texs(T.pow10(n))}\\div1\\,000=${texs(T.pow10(r))}`), unit, res: sideOf(r) }),
+    };
+  },
+  /* la règle : l'ancienne découverte, posée en dernier */
+  rule: (lab, task, k) => {
+    const kind = lab.discovery === 'rank' ? 'rank' : 'count';
+    return {
+      id: 'rule', kind: 'choice', cols: 1,
+      prompt: <MathText>{k(`discovery.${kind}.prompt`)}</MathText>,
+      options: place(discoveryOptions(k, kind), 2),
+      hints: [Cq(k, `rule.${kind}.hint1`), Cq(k, `rule.${kind}.hint2`)],
+      explain: <Formal k={k} />,
+    };
+  },
+};

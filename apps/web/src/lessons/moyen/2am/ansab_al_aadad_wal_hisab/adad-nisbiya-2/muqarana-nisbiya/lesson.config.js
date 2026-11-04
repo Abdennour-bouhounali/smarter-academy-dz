@@ -7,6 +7,8 @@
  * Le réseau : son seul lien « راجع » — 2am.m4.r01 (lire / placer une abscisse), leçon `talim-mustaqim-mudarraj-2` NON publiée — est mesuré
  * par « أستعدّ » (abscisse, opposé, distance à zéro), jamais reconstruit ; `noRebuildForLesson` est vide ; `pointPrerequisites` : arêtes
  * internes seulement.
+ * 2026-10-29 : `talim-mustaqim-mudarraj-2` est publiée (marche `2am.m4`) — arête LP P1 ← 2am_talim-mustaqim-mudarraj-2_P1 (lien du réseau
+ * 2am.m4.r01 → 2am.m4.r02) ; le panneau « راجع » vers r01 devient un lien tout seul.
  *
  * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter) — le manuel fixe les الكفاءات, pas le parcours.
  *   Entrée retenue : le « المسبار » (labo `zero-probe`, monde `sea`, thème `researchBoat`). Un capteur A est fixé à −3 m ; la main tient la

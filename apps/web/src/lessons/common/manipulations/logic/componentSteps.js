@@ -192,6 +192,11 @@ export function restartOrder(lab) {
   return { ...withState(lab, lab.t, freshOrder(lab, o)), last: null };
 }
 
+/** « أعِد التجربة » : la MÊME commande repart du départ, même déjà livrée (le drapeau est effacé) ; les essais restent au journal. */
+export function retryOrder(lab, i = lab.t) {
+  return { ...withState(lab, i, freshOrder(lab, lab.orders[i])), t: i, last: null };
+}
+
 /** Régler une des deux molettes du code (axe 0 = horizontal, 1 = vertical). */
 export function setCode(lab, axis, value) {
   const s = stateOf(lab);

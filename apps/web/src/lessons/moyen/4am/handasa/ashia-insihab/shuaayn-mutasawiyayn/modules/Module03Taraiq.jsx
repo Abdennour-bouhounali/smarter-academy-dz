@@ -23,8 +23,9 @@ import { FIG_METHOD_IMAGE, FIG_METHOD_EQUAL } from '../content/figures';
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
 export default function Module03Taraiq() {
-  const [q1, setQ1] = useState(false);
-  const [q2, setQ2] = useState(false);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint, rubriques D puis E) : leur trace (`checkpoint-done`) fait avancer les étapes 1 et 2
+  const [cpDone, setCpDone] = useState({});
+  const onTrial = (ev) => { if (ev?.tk === 'checkpoint-done') setCpDone((d) => ({ ...d, [ev.id]: true })); };
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
 
@@ -41,17 +42,17 @@ export default function Module03Taraiq() {
           defaultLevel="advanced"
           levels={{
             beginner: () => (
-              <Manipulation type="parallelogram-pin" level="beginner" {...LAB.beginner.numbers} theme="tifo" />
+              <Manipulation type="parallelogram-pin" level="beginner" {...LAB.beginner.numbers} theme="tifo" onTrial={onTrial} />
             ),
             advanced: () => (
-              <Manipulation type="parallelogram-pin" level="advanced" {...LAB.advanced.numbers} theme="tifo" lead="الشبكة شبكة المدرّج: أربعة مشجّعين يمسكون أركان الراية." />
+              <Manipulation type="parallelogram-pin" level="advanced" {...LAB.advanced.numbers} theme="tifo" lead="الشبكة شبكة المدرّج: أربعة مشجّعين يمسكون أركان الراية." onTrial={onTrial} />
             ),
           }}
         />
       }
       steps={[
         {
-          num: 1, title: 'صورة نقطة بانسحاب', subtitle: 'الطريقة 1، السؤال 1', done: q1,
+          num: 1, title: 'صورة نقطة بانسحاب', subtitle: 'الطريقة 1، السؤال 1', done: !!cpDone.D,
           content: (
             <div className="space-y-3">
               <GeoFigure {...FIG_METHOD_IMAGE} />
@@ -60,42 +61,26 @@ export default function Module03Taraiq() {
                 <MethodSteps method={{ ...METHOD_IMAGE, solution: METHOD_IMAGE.solution.slice(0, 4) }} />
                 <p className="text-xs text-slate-500">{METHOD_IMAGE.note}</p>
               </PredictRule>
-              <TapQuestion
-                prompt={<MathText>{'أعدتَ من C الحركة نفسها التي تنقل A إلى B فبلغتَ D. ماذا تقول المساواة بين الشعاعين، وماذا يعني ذلك للرباعي؟'}</MathText>}
-                options={[
-                  '$\\overrightarrow{CD} = \\overrightarrow{AB}$ ، أي ABDC متوازي أضلاع',
-                  '$\\overrightarrow{DC} = \\overrightarrow{AB}$ ، أي ABCD متوازي أضلاع', // la flèche part de C : la banderole se croise
-                  '$\\overrightarrow{AD} = \\overrightarrow{BC}$', // ce sont les diagonales
-                ].map(M)}
-                correct={0}
-                cols={1}
-                requires={['tasawi-shuaayn', 'mutawazi-shuaa']}
-                explain={<MathText>{`${METHOD_IMAGE.solution[1]} (${METHOD_IMAGE.note})`}</MathText>}
-                onAnswered={() => setQ1(true)}
-              />
-              {q1 && <KnowledgeBrick id="surat-nuqta" lead="ما فعلته بالراية، بكلمات الطريقة:" />}
-              {q1 && <MethodSteps method={CONSTRUCTION} />}
+              {!cpDone.D && (
+                <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm text-slate-500" data-evidence="d-todo">
+                  ضع النقطة D في المستوى «متقدم» ثم أجب عن الأسئلة التي تظهر فوق المختبر.
+                </p>
+              )}
+              {cpDone.D && <KnowledgeBrick id="surat-nuqta" lead="ما فعلته بالراية، بكلمات الطريقة:" />}
+              {cpDone.D && <MethodSteps method={CONSTRUCTION} />}
             </div>
           ),
         },
         {
-          num: 2, title: 'النقطة E', subtitle: 'الطريقة 1، السؤال 2', done: q2,
+          num: 2, title: 'النقطة E', subtitle: 'الطريقة 1، السؤال 2', done: !!cpDone.E,
           content: (
             <div className="space-y-3">
-              <TapQuestion
-                prompt={<MathText>{'وضعتَ E بحيث $\\overrightarrow{EB} = \\overrightarrow{AC}$ . أين تقع E بالنسبة إلى D و B ؟'}</MathText>}
-                options={[
-                  'نظيرة D بالنسبة إلى B',
-                  'صورة B بالانسحاب الذي شعاعه $\\overrightarrow{AC}$', // c'est D (BD = AC)
-                  'نظيرة B بالنسبة إلى D', // B est le milieu, pas D
-                ].map(M)}
-                correct={0}
-                cols={1}
-                requires={['surat-nuqta', 'muntasaf-shuaa']}
-                explain={<MathText>{'$\\overrightarrow{EB} = \\overrightarrow{AC} = \\overrightarrow{BD}$ : B منتصف [DE]. أما صورة B بالانسحاب الذي شعاعه $\\overrightarrow{AC}$ فهي D نفسها ($\\overrightarrow{BD} = \\overrightarrow{AC}$).'}</MathText>}
-                onAnswered={() => setQ2(true)}
-              />
-              {q2 && <TextbookBox kind="solution" lines={METHOD_IMAGE.solution.slice(4)} source={METHOD_IMAGE.source} compact />}
+              {!cpDone.E && (
+                <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm text-slate-500" data-evidence="e-todo">
+                  <MathText>{'ضع النقطة E بحيث $\\overrightarrow{EB} = \\overrightarrow{AC}$ في المستوى «متقدم»، ثم أجب عن أسئلتها فوق المختبر.'}</MathText>
+                </p>
+              )}
+              {cpDone.E && <TextbookBox kind="solution" lines={METHOD_IMAGE.solution.slice(4)} source={METHOD_IMAGE.source} compact />}
             </div>
           ),
         },
@@ -148,7 +133,7 @@ export default function Module03Taraiq() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }

@@ -304,6 +304,32 @@ export function discoveryReady(s) {
   return new Set(oks.map(key)).size >= 2;
 }
 
+/* ── les ÉTAPES du labo (questions pendant le labo, lot 4) ────────────────────────────────────────── */
+
+/** Les étapes d'un mode : equal — les marques, la 1re construction juste, le contraste ; ratio — un 1er point juste, les deux points. */
+export const stepsOf = (mode) => (mode === 'ratio' ? ['one', 'two'] : ['marks', 'built', 'contrast']);
+
+/** L'étape est atteinte quand l'élève a FAIT ce qu'elle demande. */
+export function stepReached(s, step) {
+  if (s.mode === 'ratio') return step === 'one' ? s.joins.some((j) => j.ok) : discoveryReady(s);
+  if (step === 'marks') return rayMarks(s).length >= s.parts || s.joined != null;
+  if (step === 'built') return s.trials.some((t) => t.ok);
+  return discoveryReady(s);
+}
+
+/** La même étape repart : tout est effacé, sauf ce que les étapes déjà finies ont établi (le 1er essai juste). */
+export function retryStage(s, step) {
+  const fresh = init({ mode: s.mode, parts: s.parts ?? undefined, p: s.p ?? undefined, q: s.q ?? undefined, marks: s.cap, length: s.length });
+  if (s.mode === 'ratio') {
+    if (step === 'one') return fresh;
+    const first = s.joins.find((j) => j.ok);
+    return Object.freeze({ ...fresh, joins: first ? [first] : [] });
+  }
+  if (step !== 'contrast') return fresh;
+  const first = s.trials.find((t) => t.ok);
+  return Object.freeze({ ...fresh, trials: first ? [first] : [] });
+}
+
 /** La preuve d'un essai, pour la leçon (`onTrial`). */
 export function evidenceOf(s) {
   if (s.mode === 'ratio') {

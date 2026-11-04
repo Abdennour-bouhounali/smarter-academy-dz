@@ -11,6 +11,8 @@ import TestPresentation, { useTestPresentation } from './TestPresentation';
 import { revealAll, revealOne } from './testPresentation';
 import { diagnosticAdviceLevel } from './diagnosticLevel';
 import ReviewLinks from './ReviewLinks';
+import { MoreToggle } from '../components/StudentFocus';
+import { useInMissionPlayer } from '../mission/missionPlayerContext';
 
 /**
  * Lesson kit — moteur du module 0 « Mission de départ » (diagnostic des
@@ -190,7 +192,8 @@ function DiagnosticResult({ lessonId, score, maxScore, skills, skillScores, leve
             <>{t('diagnostic.payAttentionTo')} <strong>{skills[weakestKey].label}</strong>.</>
           )}
         </p>
-        <p className="mt-2">💡 {text(meta, 'advice')}</p>
+        {/* Regard « focus » : le verdict d'abord ; le conseil à un geste. */}
+        <MoreToggle><p className="mt-2">💡 {text(meta, 'advice')}</p></MoreToggle>
       </Feedback>
 
       {/* Les الكفاءات des leçons antérieures sur lesquelles celle-ci s'appuie
@@ -235,6 +238,7 @@ export default function PrerequisiteDiagnostic({
   const { result: savedResult, save: saveResult, redo: redoResult } = usePrerequisiteDiagnostic(ctx.lessonId);
 
   const [answers, setAnswers] = useState({});
+  const inPlayer = useInMissionPlayer();
   const [submitted, setSubmitted] = useState(false);
   // CE QUI EST RÉVÉLÉ, question par question. Uniquement en présentation :
   // sur la page, le diagnostic garde son unique « عرض نتيجتي », et `submitted`
@@ -356,7 +360,9 @@ export default function PrerequisiteDiagnostic({
             {brief?.body}
           </MissionBrief>
 
-          {Object.keys(skills).length > 1 && (
+          {/* Lecteur de mission : pas de cartes de suivi par كفاءة pendant le test (propriétaire, 2026-11-04 : « pas besoin ») —
+              le résultat les rapporte après l'envoi. */}
+          {Object.keys(skills).length > 1 && !inPlayer && (
             <div className="grid gap-3 grid-cols-2">
               {Object.entries(skills).map(([key, skill]) => {
                 const doneCount = questions.filter((q) => q.skill === key && answers[q.id] != null).length;

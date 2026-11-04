@@ -35,6 +35,9 @@ export default function Module02Maarif() {
         body: (
           <div className="space-y-3">
             <p>جرّب أوّلًا مهمّة النول أدناه، ثم أجب؛ كل خلاصة تظهر بعد السؤال.</p>
+            <TextbookBox kind="remark" title={RECALL.year2.title} text={RECALL.year2.text} source={RECALL.year2.source} compact>
+              {link(RECALL.year2.lesson, 'درس « اختبار صحة مساواة أو متباينة » — السنة الثانية متوسط')}
+            </TextbookBox>
             <TextbookBox kind="remark" title={RECALL.equality.title} text={RECALL.equality.text} source={RECALL.equality.source} compact>
               {link(RECALL.equality.lesson, 'درس « المساويات والعمليات » — السنة الثالثة متوسط')}
             </TextbookBox>
@@ -127,7 +130,7 @@ export default function Module02Maarif() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={2} />}
+      footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />
   );
 }

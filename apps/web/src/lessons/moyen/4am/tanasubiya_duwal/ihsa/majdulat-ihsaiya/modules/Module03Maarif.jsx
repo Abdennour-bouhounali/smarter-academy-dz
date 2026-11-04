@@ -97,7 +97,7 @@ export default function Module03Maarif() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }

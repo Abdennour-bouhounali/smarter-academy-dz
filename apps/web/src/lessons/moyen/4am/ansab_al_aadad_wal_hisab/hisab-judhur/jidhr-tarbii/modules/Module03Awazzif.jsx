@@ -50,7 +50,7 @@ export default function Module03Awazzif() {
         { num: 10, title: 'تمرين 8 — دون استعمال الرمز', done: !!done.e8,
           content: <TextbookExercise exercise={EX['ex-8']} requires={['jidhr-murabba']} onAnswered={mark('e8')} /> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }

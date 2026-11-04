@@ -7,6 +7,8 @@
  * `jam-tarh-kusur` NON publiée) : « أستعدّ » mesure cette base avec des affirmations de la plateforme, معارف ouvre sur un « تذكّر — السنة الثانية » sans lien, et la leçon ne construit
  * que la valeur ajoutée « deux fractions QUELCONQUES sur un dénominateur commun ». La leçon recalle aussi `tasawi-muqaranat-kasrayn` (publiée : le même dénominateur commun, avec un lien).
  * `pointPrerequisites` : arêtes internes seulement (P2 ← P1, P3 ← P1) ; AUCUNE arête vers `tasawi` : le réseau n'a pas de lien 3am.m1.r05 → 3am.m1.r06 (plan README, question 1).
+ * 2026-10-29 : la leçon 2AM `jam-tarh-kusur` (2am.m1.r09) est publiée — le catalogue porte P1 ← `2am_jam-tarh-kusur_P2` et P2 ← `2am_jam-tarh-kusur_P1`, `_P3`
+ * (le long du lien `2am.m1.r09 → 3am.m1.r06`), et le « تذكّر — السنة الثانية » de معارف porte son lien.
  *
  * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter) — le manuel fixe les الكفاءات, pas le parcours.
  *   Entrée retenue : « مشط الشتلات » (labo `seed-rake`, thème `seedbed`). Un حوض de 1 m : 1/4 pour les tomates, 1/6 pour les piments, côte à côte. « 1/4 + 1/6 = 2/10 » est impossible (2/10 m est

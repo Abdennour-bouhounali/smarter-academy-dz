@@ -120,14 +120,40 @@ import { ORACLE as ORACLE_1AM_MANA_JAM_TARH } from './practice-oracle/mana-jam-t
 import { ORACLE as ORACLE_1AM_QISMA_IQLIDIYA_BAQI } from './practice-oracle/qisma-iqlidiya-baqi.mjs';
 // Le premier banc 2AM (2026-10-14) : القسمة الإقليدية وحصر حاصل القسمة.
 import { ORACLE as ORACLE_2AM_QISMA_IQLIDIYA_HASR } from './practice-oracle/qisma-iqlidiya-hasr.mjs';
+import { ORACLE as ORACLE_2AM_KASR_HASIL_QISMA } from './practice-oracle/kasr-hasil-qisma.mjs';
+import { ORACLE as ORACLE_2AM_JAM_TARH_KUSUR, audit as auditJamKusur } from './practice-oracle/jam-tarh-kusur.mjs';
+import { ORACLE as ORACLE_2AM_JIDA_KASRAYN, audit as auditJidaKasrayn } from './practice-oracle/jida-kasrayn.mjs';
+import { ORACLE as ORACLE_2AM_MUQARANA_KASRAYN, audit as auditMuqaranaKasrayn } from './practice-oracle/muqarana-kasrayn.mjs';
 import { ORACLE as ORACLE_2AM_MUQARANA_NISBIYA } from './practice-oracle/muqarana-nisbiya.mjs';
+import { ORACLE as ORACLE_2AM_TALIM_MUDARRAJ, audit as auditTalimMudarraj } from './practice-oracle/talim-mustaqim-mudarraj-2.mjs';
+import { ORACLE as ORACLE_2AM_TALIM_NUQTA, audit as auditTalimNuqta } from './practice-oracle/talim-nuqta-mustawi.mjs';
+import { ORACLE as ORACLE_2AM_JAM_TARH_NISBIYA, audit as auditJamTarhNisbiya } from './practice-oracle/jam-tarh-nisbiya.mjs';
+import { ORACLE as ORACLE_2AM_MAJMU_JABRI, audit as auditMajmuJabri } from './practice-oracle/majmu-jabri.mjs';
+import { ORACLE as ORACLE_2AM_MASAFA_NUQTATAYN, audit as auditMasafaNuqtatayn } from './practice-oracle/masafa-nuqtatayn.mjs';
 import { ORACLE as ORACLE_2AM_RABI_MUTANASIB } from './practice-oracle/rabi-mutanasib.mjs';
+import { ORACLE as ORACLE_2AM_SILSILA, audit as auditSilsila } from './practice-oracle/silsila-bidun-aqwas.mjs';
+import { ORACLE as ORACLE_2AM_SILSILA_AQWAS, audit as auditSilsilaAqwas } from './practice-oracle/silsila-bi-aqwas.mjs';
+import { ORACLE as ORACLE_2AM_WASF_SILSILA, audit as auditWasfSilsila } from './practice-oracle/wasf-silsila-hisab.mjs';
+import { ORACLE as ORACLE_2AM_TAWZI, audit as auditTawzi } from './practice-oracle/tawzi-darb-jam-tarh.mjs';
+import { ORACLE as ORACLE_2AM_IBARA_INTAJ, audit as auditIbaraIntaj } from './practice-oracle/ibara-harfiya-intaj.mjs';
+import { ORACLE as ORACLE_2AM_HALL_MUSHKIL, audit as auditHallMushkil } from './practice-oracle/hall-mushkil-muadala.mjs';
+import { ORACLE as ORACLE_2AM_IKHTIBAR, audit as auditIkhtibar } from './practice-oracle/ikhtibar-musawat-mutabayina.mjs';
+import { ORACLE as ORACLE_2AM_WADIYA_MUADALA, audit as auditWadiyaMuadala } from './practice-oracle/wadiya-idmajiya-mafhum-muadala.mjs';
+import { ORACLE as ORACLE_2AM_WADIYA_KUSUR_AMALIYAT, audit as auditWadiyaKusurAmaliyat } from './practice-oracle/wadiya-idmajiya-kusur-amaliyat.mjs';
+import { ORACLE as ORACLE_2AM_WADIYA_ADAD_NISBIYA, audit as auditWadiyaAdadNisbiya } from './practice-oracle/wadiya-idmajiya-adad-nisbiya-2.mjs';
+import { ORACLE as ORACLE_2AM_WADIYA_AMALIYAT, audit as auditWadiyaAmaliyat } from './practice-oracle/wadiya-idmajiya-amaliyat-tabiiya-ushriya.mjs';
 import { ORACLE as ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA } from './practice-oracle/ikhtizal-kitaba-kasriya.mjs';
 import { ORACLE as ORACLE_1AM_QAWAID_QABILIYAT_QISMA } from './practice-oracle/qawaid-qabiliyat-qisma.mjs';
 import { ORACLE as ORACLE_1AM_KITABAT_ADAD_TABII } from './practice-oracle/kitabat-adad-tabii.mjs';
 import { ORACLE as ORACLE_1AM_HASIL_QISMA_KASR } from './practice-oracle/hasil-qisma-kasr.mjs';
 import { ORACLE as ORACLE_1AM_KUSUR_ASHRIYA_KITABA } from './practice-oracle/kusur-ashriya-kitaba.mjs';
 import { ORACLE as ORACLE_1AM_MUQARANAT_ADAD_ASHRIYA } from './practice-oracle/muqaranat-adad-ashriya.mjs';
+import { ORACLE as ORACLE_1AM_ADAD_ASHRI_MUSTAQIM, audit as auditAdadAshriMustaqim } from './practice-oracle/adad-ashri-mustaqim-mudarraj.mjs';
+import { ORACLE as ORACLE_1AM_ADAD_NISBIYA_SIYAQAT, audit as auditAdadNisbiyaSiyaqat } from './practice-oracle/adad-nisbiya-siyaqat.mjs';
+import { ORACLE as ORACLE_1AM_BAHTH_ADAD_NAQISA, audit as auditBahthAdadNaqisa } from './practice-oracle/bahth-adad-naqisa.mjs';
+import { ORACLE as ORACLE_1AM_TALIM_MUSTAQIM, audit as auditTalimMustaqim } from './practice-oracle/talim-mustaqim-mudarraj.mjs';
+import { ORACLE as ORACLE_1AM_TALIM_FI_MUSTAWI, audit as auditTalimFiMustawi } from './practice-oracle/talim-fi-mustawi.mjs';
+import { ORACLE as ORACLE_1AM_TATBIQ_QAIDA, audit as auditTatbiqQaida } from './practice-oracle/tatbiq-qaida-harfiya.mjs';
 import { ORACLE as ORACLE_1AM_MASAHAT_MUHIT_SATH } from './practice-oracle/masahat-muhit-sath.mjs';
 import { ORACLE as ORACLE_3AM_TABSIT_HADHF_AQWAS } from './practice-oracle/tabsit-hadhf-aqwas.mjs';
 import { ORACLE as ORACLE_3AM_KHASSIYAT_FITAGHURAS } from './practice-oracle/khassiyat-fitaghuras.mjs';
@@ -154,6 +180,8 @@ import { ORACLE as ORACLE_3AM_WADIYA_HARFIYA, audit as auditWadiyaHarfiya } from
 import { ORACLE as ORACLE_3AM_QUWA_ASHARA, audit as auditQuwaAshara } from './practice-oracle/quwa-adad-ashara.mjs';
 import { ORACLE as ORACLE_3AM_QAWAID_ASHARA, audit as auditQawaidAshara } from './practice-oracle/qawaid-quwa-ashara.mjs';
 import { ORACLE as ORACLE_3AM_KITABA_ILMIYA, audit as auditKitabaIlmiya } from './practice-oracle/kitaba-ilmiya-rutba.mjs';
+import { ORACLE as ORACLE_3AM_WADIYA_QUWA, audit as auditWadiyaQuwa } from './practice-oracle/wadiya-idmajiya-quwa-nisbiya.mjs';
+import { ORACLE as ORACLE_3AM_WADIYA_MUSAWIYAT, audit as auditWadiyaMusawiyat } from './practice-oracle/wadiya-idmajiya-musawiyat-mutabayinat.mjs';
 import { ORACLE as ORACLE_3AM_MUTABAYINAT } from './practice-oracle/mutabayinat-amaliyat.mjs';
 import { ORACLE as ORACLE_3AM_HASR, audit as auditHasr } from './practice-oracle/hasr-adad-ushri.mjs';
 // Toutes les années du cycle moyen (content/practice/<1am…4am>/<leçon>/level-N) : jusqu'au 2026-10-14 seul 4am
@@ -300,14 +328,40 @@ const ORACLE = {
   ...ORACLE_1AM_MANA_JAM_TARH,
   ...ORACLE_1AM_QISMA_IQLIDIYA_BAQI,
   ...ORACLE_2AM_QISMA_IQLIDIYA_HASR,
+  ...ORACLE_2AM_KASR_HASIL_QISMA,
+  ...ORACLE_2AM_JAM_TARH_KUSUR,
+  ...ORACLE_2AM_JIDA_KASRAYN,
+  ...ORACLE_2AM_MUQARANA_KASRAYN,
   ...ORACLE_2AM_MUQARANA_NISBIYA,
+  ...ORACLE_2AM_TALIM_MUDARRAJ,
+  ...ORACLE_2AM_TALIM_NUQTA,
+  ...ORACLE_2AM_JAM_TARH_NISBIYA,
+  ...ORACLE_2AM_MAJMU_JABRI,
+  ...ORACLE_2AM_MASAFA_NUQTATAYN,
   ...ORACLE_2AM_RABI_MUTANASIB,
+  ...ORACLE_2AM_SILSILA,
+  ...ORACLE_2AM_SILSILA_AQWAS,
+  ...ORACLE_2AM_WASF_SILSILA,
+  ...ORACLE_2AM_TAWZI,
+  ...ORACLE_2AM_IBARA_INTAJ,
+  ...ORACLE_2AM_HALL_MUSHKIL,
+  ...ORACLE_2AM_IKHTIBAR,
+  ...ORACLE_2AM_WADIYA_MUADALA,
+  ...ORACLE_2AM_WADIYA_KUSUR_AMALIYAT,
+  ...ORACLE_2AM_WADIYA_ADAD_NISBIYA,
+  ...ORACLE_2AM_WADIYA_AMALIYAT,
   ...ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA,
   ...ORACLE_1AM_QAWAID_QABILIYAT_QISMA,
   ...ORACLE_1AM_KITABAT_ADAD_TABII,
   ...ORACLE_1AM_HASIL_QISMA_KASR,
   ...ORACLE_1AM_KUSUR_ASHRIYA_KITABA,
   ...ORACLE_1AM_MUQARANAT_ADAD_ASHRIYA,
+  ...ORACLE_1AM_ADAD_ASHRI_MUSTAQIM,
+  ...ORACLE_1AM_ADAD_NISBIYA_SIYAQAT,
+  ...ORACLE_1AM_BAHTH_ADAD_NAQISA,
+  ...ORACLE_1AM_TALIM_MUSTAQIM,
+  ...ORACLE_1AM_TALIM_FI_MUSTAWI,
+  ...ORACLE_1AM_TATBIQ_QAIDA,
   ...ORACLE_1AM_MASAHAT_MUHIT_SATH,
   ...ORACLE_3AM_TABSIT_HADHF_AQWAS,
   ...ORACLE_3AM_KHASSIYAT_FITAGHURAS,
@@ -333,6 +387,8 @@ const ORACLE = {
   ...ORACLE_3AM_QUWA_ASHARA,
   ...ORACLE_3AM_QAWAID_ASHARA,
   ...ORACLE_3AM_KITABA_ILMIYA,
+  ...ORACLE_3AM_WADIYA_QUWA,
+  ...ORACLE_3AM_WADIYA_MUSAWIYAT,
   ...ORACLE_3AM_MUTABAYINAT,
   ...ORACLE_3AM_HASR,
 };
@@ -440,6 +496,18 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     expect(auditKitabaIlmiya(own)).toEqual([]);
   });
 
+  it('أدمج تعلّماتي — القوى ذات أسس نسبية صحيحة (3AM, synthèse) : rationnels exacts BigInt propres à l\'oracle (aucun import de tenPowers.js ni de powers.js), expressions retapées et leurs littéraux relus dans la feuille, « n tel que base^n = valeur » et « 1 ≤ a < 10 » uniques, rang de grandeur demi supérieur, QCM à une seule bonne option (encadrement lu sur les puissances de l\'option), signatures MISC-WQ-* recalculées', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-3am-wadiya-idmajiya-quwa-nisbiya-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditWadiyaQuwa(own)).toEqual([]);
+  });
+
+  it('أدمج تعلّماتي — المساويات – المتباينات – المعادلات (3AM, synthèse) : rationnels exacts BigInt et formes affines propres à l\'oracle (aucun import de packages/core), expressions retapées et leurs littéraux relus dans la feuille, équations résolues en x, arrondi au demi supérieur et encadrements [lo, hi[ recalculés, QCM à une seule bonne option jugée option par option (sat, holds, eqsol, br, law sur grille, always / undecided), signatures MISC-* recalculées', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-3am-wadiya-idmajiya-musawiyat-mutabayinat-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditWadiyaMusawiyat(own)).toEqual([]);
+  });
+
   it('حساب قيمة عبارة حرفية (3AM) : évaluateur exact propre (BigInt, polynômes à plusieurs lettres, π), chaque signature = valeur de la mauvaise lecture, chaque « différent » par un témoin et chaque « égal » par l\'égalité des polynômes développés, QCM à une seule bonne option, énoncés relus, MISC-QIMA-*', () => {
     const own = bank.filter((b) => b.key.startsWith('ex-3am-qimat-ibara-harfiya-'));
     expect(own.length).toBeGreaterThan(0);
@@ -462,6 +530,139 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     const own = bank.filter((b) => b.key.startsWith('ex-3am-hasr-adad-ushri-'));
     expect(own.length).toBeGreaterThan(0);
     expect(auditHasr(own)).toEqual([]);
+  });
+
+  it('سلسلة عمليات دون أقواس (2AM) : évaluateur exact propre (BigInt, priorités, décimaux ; aucun import de chainOps.js), chaque « احسب » relu en LaTeX et recalculé, aucun intermédiaire négatif, chaque distracteur = la valeur de sa lecture fautive (ADDFIRST, MULFIRST, NOPRIORITY, RIGHTLEFT, PARTIAL), situations rejouées par un arbre de calcul, QCM à une seule option vraie, aucun crochet ni barre de fraction, 50 feuilles dont 7 sujets lus', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-silsila-bidun-aqwas-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditSilsila(own)).toEqual([]);
+  });
+
+  it('جمع وطرح كسرين (2AM) : rationnels exacts BigInt propres à l\'oracle (aucun import de packages/core), chaque clé recalculée depuis les nombres de l\'énoncé, LaTeX de chaque énoncé / option / ligne de corrigé relu : aucune opération sur deux dénominateurs dont l\'un ne divise pas l\'autre (cas de 3AM), chaque « احسب » réévalué, clés réduites, QCM à une seule option juste, signatures MISC-JAMKASR-* (ACROSS, NOSCALE, DENSUM, NATURAL) recalculées', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-jam-tarh-kusur-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditJamKusur(own)).toEqual([]);
+  });
+
+  it('جداء كسرين (2AM) : rationnels exacts BigInt propres à l\'oracle (aucun import de packages/core), chaque clé recalculée depuis les nombres de l\'énoncé (produits, « a/b de x », « du reste », aires, volumes, montants en دج), chaque signature MISC-JIDAKASR-* (SUMACROSS, DENSUM, CROSS, BOTHMUL, FLIP, HALFWAY, OFWHOLE, OFSPENT) recalculée et fausse, chaque QCM jugé option par option (une seule juste, chaque distracteur = la valeur de son erreur), aucune somme de dénominateurs non liés (cas de 3AM), ni division par une fraction, ni pourcentage', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-jida-kasrayn-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditJidaKasrayn(own)).toEqual([]);
+  });
+
+  it('مقارنة كسرين (2AM) : rationnels exacts BigInt propres à l\'oracle (aucun import de packages/core), chaque clé recalculée par produit en croix caché depuis les opérandes retapés (relations, plus grand / plus petit, ordres, « entre », « avant 1 / 2 », réécriture a/b = □/d, x entier, restes et montants), chaque paire du banc est un CAS 2AM (même dénominateur, même numérateur, un dénominateur multiple de l\'autre, ou de part et d\'autre de 1 — jamais un multiple commun quelconque), chaque option de QCM relue en LaTeX (une seule vraie), chaque signature MISC-MUQKASR-* (NUMONLY, BIGDEN, NOSCALE, GAP, ONEWRONG, REVERSED) recalculée depuis les opérandes et fausse', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-muqarana-kasrayn-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditMuqaranaKasrayn(own)).toEqual([]);
+  });
+
+  it('سلسلة عمليات تتضمّن أقواسا (2AM) : évaluateur exact propre (BigInt, ( ) [ ] et barres de fraction ; aucun import de chainOps.js), chaque clé recalculée, LaTeX de chaque énoncé / option / ligne de corrigé relu (\\dfrac, convention [ ( ) ], aucun intermédiaire négatif, aucune multiplication implicite aux niveaux 1–3), chaque QCM jugé option par option (une seule vraie), chaque distracteur = la lecture que nomme sa misconception (IGNORED, DROPOUTER, BARSPLIT, DROPBR, MISPLACED, ALLUSELESS, ALLNEEDED), chaque crochet « inutile » vérifié par retrait sur 40 jeux de valeurs, 50 feuilles dont 11 sujets lus', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-silsila-bi-aqwas-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditSilsilaAqwas(own)).toEqual([]);
+  });
+
+  it('وصف سلسلة حسابات (2AM) : parseur propre (BigInt, ( ) , position de chaque nœud ; la RACINE nomme la chaîne), chaque nom, chaque bloc (الحدّ الأول… / المقسوم / القاسم), chaque phrase écrite ici puis comparée à chainOps.describe et à une table écrite à la main (HAND), chaque clé recalculée, chaque QCM jugé option par option (une seule option juste), chaque distracteur = la lecture que nomme sa misconception reconstruite ici (FIRSTOP, FIRSTWRITTEN, PIECES, ORDERDIFF, NOBRACKET), aucun intermédiaire négatif, 50 feuilles dont 2 sujets lus sur l\'image du PDF', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-wasf-silsila-hisab-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditWasfSilsila(own)).toEqual([]);
+  });
+  it('توزيع الضرب على الجمع والطرح (2AM) : rationnels exacts BigInt et formes affines a·x + b propres à l\'oracle (aucun import de packages/core), parseur ASCII (4x = 4 × x, « ? » résolu par évaluation en 0 et 1), chaque clé recalculée et recoupée en flottant, chaque QCM jugé option par option avec des options CONSTRUITES ici (exp, lexp, fac1, yn, prop, name : une seule option juste), chaque distracteur = la lecture que nomme sa misconception reconstruite (FIRSTONLY, SIGNCHANGE, ADDK, FACTORMULT, FACTORWRONG, NOTATION), chaque $…$ relu (lisible, aucun intermédiaire négatif, chaînes du corrigé égales), 50 feuilles dont les sujets réellement lus, une partie de sujet jamais citée deux fois', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-tawzi-darb-jam-tarh-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditTawzi(own)).toEqual([]);
+  });
+  it('أدمج تعلّماتي — الكسور والعمليات عليها (2AM, synthèse) : évaluateur de chaînes importé du banc frère amaliyat-natiqa (BigInt, décimaux, « a/b » littéral), chaque clé recalculée depuis les nombres de l\'énoncé retapés (sommes, restes, produits, « a/b de x », « de ce qui reste », le tout depuis une fraction unitaire par multiplication, divisions euclidiennes, valeurs approchées par défaut / par excès par division longue — jamais arrondies —, aires et périmètres), chaque opérande dans la feuille ou clé d\'une question précédente, QCM jugés option par option (une seule vraie), chaque signature / option = la valeur EXACTE de l\'erreur MISC nommée (JAMKASR, JIDAKASR, MUQKASR, HASR, QARIBA, SYN-KASR2), corrigés relus en LaTeX, aucune somme de dénominateurs non emboîtés, aucune division par une fraction, aucun pourcentage', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-wadiya-idmajiya-kusur-amaliyat-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditWadiyaKusurAmaliyat(own)).toEqual([]);
+  });
+  it('أدمج تعلّماتي — العمليات على الأعداد الطبيعية والأعداد العشرية (2AM, synthèse) : évaluateur exact importé de silsila-bi-aqwas (BigInt, ( ) [ ] et barres de fraction), chaque clé recalculée, lectures fautives nommées (NOPRIORITY, ADDFIRST, MULFIRST, IGNORED, BARSPLIT, ROUNDUP, MAX), nom d\'une chaîne, QCM jugé option par option, 4 term_exam lus et 6 feuilles adaptées', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-wadiya-idmajiya-amaliyat-tabiiya-ushriya-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditWadiyaAmaliyat(own)).toEqual([]);
+  });
+
+  it('إنتاج عبارة حرفية واستعمالها (2AM) : rationnels exacts BigInt et polynômes à plusieurs lettres propres à l\'oracle (aucun import de packages/core), chaque valeur recalculée depuis l\'expression retapée de l\'énoncé (aucun intermédiaire négatif), chaque QCM de production / de simplification jugé option par option par égalité de polynômes (une seule option vraie), chaque distracteur = la recette de sa lecture nommée et FAUX (PERCELL, NOFIRST, POWER, ADDFOR, PRODSQUARE, SQUARE2, ADDPOWERS, MULTCOEF, ZEROSKIP, BRACKET ; signatures de valeur JUXTA / ADDFOR / SQUARE2 / PRODSQUARE recalculées), « نعم / لا » par comparaison exacte, LaTeX de chaque énoncé / option / indice / corrigé relu (chaînes d\'égalités vraies, lettres n x y a b c), provenance : 6 term_exam lus dont 2 du 3e trimestre, 36 modelled, 6 adaptés vérifiés dans l\'extraction', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-ibara-harfiya-intaj-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditIbaraIntaj(own)).toEqual([]);
+  });
+  it('الأعداد العشرية ونصف المستقيم المدرّج (1AM) : décimaux exacts BigInt (évaluateur de muqaranat-adad-ashriya, aucun import de packages/core), chaque abscisse w + t/p, chaque nombre de graduations, chaque extrapolation de suite et chaque encadrement recalculés depuis l\'énoncé retapé, une seule option juste par QCM, chaque signature différente de la clé', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-1am-adad-ashri-mustaqim-mudarraj-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditAdadAshriMustaqim(own)).toEqual([]);
+  });
+  it('الأعداد النسبية وسياقات استعمالها (1AM) : décimaux exacts BigInt propres à l\'oracle (aucun import de packages/core), chaque valeur relative d\'une situation (au-dessus +d, au-dessous −d), chaque distance, chaque opposé, chaque durée entre deux dates, chaque comptage de négatifs et chaque « plus petit » / « plus loin du zéro » recalculés depuis l\'énoncé retapé, chaque vrai-faux jugé, une seule option juste par QCM, chaque signature MISC-REL-* différente de la clé', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-1am-adad-nisbiya-siyaqat-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditAdadNisbiyaSiyaqat(own)).toEqual([]);
+  });
+  it('البحث عن أعداد ناقصة (1AM) : rationnels exacts BigInt propres à l\'oracle (aucun import de packages/core), chaque nombre manquant (somme : b − a ; différence : b + a ou a − b ; produit : b ÷ a, une fraction quand la division ne s\'arrête pas) recalculé depuis l\'énoncé retapé, chaque programme à plusieurs cartes remonté dans l\'ordre inverse, chaque égalité d\'un QCM rendue par l\'oracle, chaque substitution et chaque vrai-faux jugés, une seule option juste par QCM, chaque signature MISC-NAQISA-* différente de la clé et recalculée (SAMEOP, TRAPADD, REVSUB, MULAGAIN, DIVREV, ORDER)', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-1am-bahth-adad-naqisa-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditBahthAdadNaqisa(own)).toEqual([]);
+  });
+  it('التعليم على مستقيم مدرّج (1AM) : décimaux exacts BigInt propres à l\'oracle (aucun import de packages/core ni du labo), chaque abscisse recalculée par « unités + petites graduations » signée par le côté ou lue sur la figure (position vérifiée dans le fichier), chaque encadrement par la borne gauche ⌊x⌋, chaque symétrique par changement de signe, chaque origine cachée par les deux graduations écrites, chaque position en cm par x × unité, chaque unité maximale par le min des deux côtés, chaque QCM et vrai-faux jugé, une seule option juste, chaque signature MISC-TALIM1-* différente de la clé', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-1am-talim-mustaqim-mudarraj-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditTalimMustaqim(own)).toEqual([]);
+  });
+  it('التعليم في المستوي (1AM) : coordonnées en dixièmes exactes (BigInt) propres à l\'oracle (aucun import de packages/core ni du labo), chaque couple lu à l\'ordre (abscisse d\'abord), chaque lecture recalculée sur la figure (points relus dans le fichier), chaque symétrique par axe ou origine, chaque distance |coordonnée| (÷ valeur du centimètre exacte), chaque point décalé b + d, chaque quatrième sommet A + C − B (côtés parallèles aux axes vérifiés), chaque intersection (abscisse de la verticale, ordonnée de l\'horizontale, dans les deux segments), chaque QCM jugé option par option (une seule juste), chaque signature MISC-MUSTAWI-* (SWAP, SIGNX, SIGNY, SIGNBOTH, AXISSWAP, SWAPSAME, SYMMIX, SYMBOTH, NEGDIST, DISTSWAP, SCALEIGN, HIDDENOFFSET, SAMEMIX, NATSQUARE) recalculée depuis son erreur et jamais égale à la bonne réponse', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-1am-talim-fi-mustawi-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditTalimFiMustawi(own)).toEqual([]);
+  });
+  it('تطبيق قاعدة حرفية (1AM) : rationnels exacts BigInt et évaluateur à jetons (shunting-yard) propres à l\'oracle (aucun import de packages/core ni du labo), chaque valeur d\'une règle recalculée depuis la règle et les valeurs retapées (une lettre remplacée dans CHAQUE position, priorités : parenthèses, × ÷, + −), chaque lecture fautive recalculée (GLUED 2x → 23, ONCE, NOBR, LTR, PLUS 3x → 3+x, SWAP, NOCOMMA, NOSIGN), chaque écriture d\'un QCM jugée sur six jeux de valeurs, chaque contre-exemple (la seule option où les côtés diffèrent), chaque décision (la plus petite quantité, un montant suffisant, une déclaration réfutée par un témoin), une seule option juste par QCM, chaque signature MISC-TATBIQ-* différente de la clé et recalculée, الكفاءة de chaque question et étapes hors leçon (counted: false) relues', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-1am-tatbiq-qaida-harfiya-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditTatbiqQaida(own)).toEqual([]);
+  });
+  it('التعليم على مستقيم مدرّج (2AM) : décimaux exacts BigInt propres à l\'oracle (aucun import de packages/core), chaque abscisse recalculée par « nombre de graduations × valeur d\'une graduation » signé par le côté, chaque changement d\'origine par soustraction, chaque opposé par changement de signe, chaque « graduation convenable » vérifiée (toutes les abscisses sur une graduation ET à au plus 6 graduations de l\'origine, une seule option juste), chaque signature MISC-TALIM2-* (UNITIGNORED, SIGNSIDE, ADDSTEP, OPPSAME, RECIP, DIGITSWAP, TOOSMALL, TOOBIG, NEGDIST, ORIGINFIXED, ADDORIGIN) recalculée et fausse, chaque QCM jugé option par option', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-talim-mustaqim-mudarraj-2-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditTalimMudarraj(own)).toEqual([]);
+  });
+  it('تعليم نقطة في المستوي (2AM) : décimaux exacts BigInt propres à l\'oracle (aucun import de packages/core), chaque point lu sur la figure relu dans le fichier et comparé aux points retapés, chaque région par les signes, chaque nature de point (axe / origine / hors axes), chaque symétrique par rapport à UN axe (une seule coordonnée change de signe) et par rapport à l\'origine / à un point (2c − p, étapes counted: false), chaque 4e sommet de rectangle de côtés parallèles aux axes (X + Z − Y, parallélisme vérifié), chaque sommet de triangle rectangle à abscisse positive et de carré, chaque longueur COMPTÉE sur une ligne de grille (× valeur de l\'unité), chaque aire, coût, distance à un axe, changement d\'origine (p − o), nombre de graduations, unité de repère (toutes les coordonnées sur une graduation ET au plus 6 graduations), nature d\'un repère (perpendiculaire ET même unité), ordre des abscisses / ordonnées et nature d\'un quadrilatère recalculés, chaque QCM jugé option par option (une seule vraie), chaque signature / distracteur MISC-NUQTA2-* (SWAP, SIGNAXIS, SIGNLEFT, BOTHSIGNS, SYMMIX, ONAXIS, UNITIGNORED, ORIGINFIXED2, ADDORIGIN, NEGDIST, LENSUM, LENOFF, LENMAX, SCALEMISS, AREASUM, AREAPERIM, COSTADD, NOSCALE, FRAMESMALL, FRAMEBIG, WRONGSIDE, ORDERABS, ORDERDEC) recalculé depuis son erreur nommée et FAUX, coordonnées imprimées = coordonnées retapées (jamais la réponse d\'une lecture), الكفاءة de chaque question et une seule étape non comptée par feuille recalculées, provenance : 10 term_exam lus, 33 modelled, 7 adaptés', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-talim-nuqta-mustawi-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditTalimNuqta(own)).toEqual([]);
+  });
+  it('جمع وطرح عددين نسبيين (2AM) : centièmes BigInt propres à l\'oracle (aucun import de packages/core), chaque somme / différence de DEUX relatifs recalculée par la règle de la leçon (même signe : distances additionnées, signe commun ; signes différents : distances soustraites, signe du plus éloigné ; opposés : 0 ; a − b = a + (−b)) puis recoupée avec l\'addition directe, chaque « par combien a changé » = finale − initiale, chaque terme manquant résolu puis vérifié par substitution, pyramides recalculées étage par étage, couples (somme, différence) à un seul couple juste, QCM jugés option par option (une seule vraie), chaque signature / distracteur MISC-JAMNISB-* (SIGNLOST, SUBDIST, ADDDIST, SIGNFIRST, SUBNOFLIP, FLIPBOTH, ADDINSTEAD, REVERSED) recalculé depuis son erreur nommée et FAUX, الكفاءة de chaque question recalculée, étapes des leçons antérieures counted: false, texte relu (chiffres en îlots $…$, aucune fraction, aucun terme interdit), provenance : 7 term_exam lus et 50 feuilles', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-jam-tarh-nisbiya-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditJamTarhNisbiya(own)).toEqual([]);
+  });
+  it('حساب مجموع جبري (2AM) : centièmes BigInt et analyseur à pile propres à l\'oracle (aucun import de packages/core/arithmetic/relative.js ; ( ) et [ ] emboîtés, signe initial de la forme simplifiée), chaque chaîne recalculée de deux façons (évaluation de l\'arbre ET règle de la leçon : retrait → ajout de l\'opposé, positifs groupés, négatifs groupés, deux totaux additionnés ; un groupe est calculé AVANT d\'être soustrait, jamais en changeant les signes de l\'intérieur), QCM de valeur / d\'écriture en somme / de forme simplifiée / de signe / de cible / de carré magique / de rang jugés option par option (une seule vraie, jamais la première), chaque signature et chaque distracteur MISC-JABRI-* (NOTURN, TURNALL, SIMPLIFYSIGN, FIRSTSIGN, BRACKETDROP, ALLNEG) ou MISC-JAMNISB-* (ADDDIST, FLIPBOTH) recalculé depuis son erreur nommée et FAUX, الكفاءة de chaque étape comptée recalculée, étapes des leçons antérieures counted: false, corrigé relu (groupes d\'abord, chaque étape présente, jamais « نغيّر إشارات »), texte relu (chiffres en îlots $…$, aucune fraction, aucun terme interdit), provenance : term_exam lus (une partie de feuille par leçon) et 8 feuilles adaptées', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-majmu-jabri-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditMajmuJabri(own)).toEqual([]);
+  });
+  it('المسافة بين نقطتين على مستقيم مدرّج (2AM) : centièmes BigInt propres à l\'oracle (aucun import de packages/core), chaque distance = plus grande abscisse − plus petite (jamais négative, AB = BA), chaque paire de points à la distance d de M (M ± d), chaque milieu = plus petite abscisse + moitié de la distance (refusé s\'il exige 3 décimales, aucune formule (a+b)/2 dans le texte), chaque trajet (somme des tronçons), nombre de graduations (quotient exact), déduction de AB (somme ou différence selon la position de C), déplacement commun (distance inchangée), comparaisons de distances (extremum unique), étapes des leçons antérieures counted: false (ordre, différence de relatifs, opposé, coût), QCM jugés option par option (une seule vraie, jamais toujours la première), chaque signature / distracteur MISC-MASAFA2-* (SUBDIST, ADDSAME, NEGDIST, ONEANSWER, SIGNSWAP, HALFDIST, SUMNOHALF, ORDERSWAP) recalculé depuis son erreur nommée et FAUX, الكفاءة de chaque question, nombres imprimés = nombres retapés, texte relu (aucun renvoi au manuel, aucun terme interdit, unités et nombres signés dans $…$), provenance : 7 term_exam lus, 37 modelled, 6 adaptés', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-masafa-nuqtatayn-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditMasafaNuqtatayn(own)).toEqual([]);
+  });
+  it('حلّ مشكل باستعمال معادلة (2AM) : rationnels exacts BigInt propres à l\'oracle (aucun import de packages/core), chaque équation retapée de l\'énoncé résolue par annulation de la chaîne d\'opérations (dernière opération d\'abord, aucune étape négative) puis vérifiée par substitution, chaque QCM de valeur / d\'équation d\'histoire / d\'étape jugé option par option (une seule vraie), chaque distracteur et chaque signature = la recette de sa lecture nommée et FAUX (MULTDIV, FLIP, SUBFORM, ADDFORM, DIVDIVIDEND, RANK, UNDOFIRST, SWAP, ROLE), « نعم / لا » par comparaison exacte, LaTeX de chaque énoncé / option / corrigé relu (chiffres et unités dans des îlots $…$, aucun renvoi au manuel), provenance : 8 term_exam lus (2am-s2-72 / -50 ×2 / -73 / -75, 1am-s2-79, 2am-s3-25 ×2, une partie par feuille), 36 modelled, 6 adaptés vérifiés dans l\'extraction', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-hall-mushkil-muadala-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditHallMushkil(own)).toEqual([]);
+  });
+  it('اختبار صحة مساواة أو متباينة (2AM) : rationnels exacts BigInt propres à l\'oracle (aucun import de packages/core), chaque relation retapée de l\'énoncé évaluée membre à membre avec les valeurs données (signées, deux inconnues) et comparée par son opérateur, chaque « احسب قيمة » recalculé, chaque QCM de valeur / d\'ensemble de valeurs / de cas de situation jugé option par option (une seule vraie), égalité de deux expressions décidée par identité polynomiale sur 12 points avec contre-exemple unique ré-évalué, distributivité (une seule option identique), chaque distracteur et chaque signature = la recette de sa lecture nommée et FAUX (ONESIDE, SWAP, BOUNDARY, STRICT, ONEVALUE, MANYEX, JUXTA, SIGNSUB), LaTeX relu (chiffres et unités dans des îlots $…$, aucun renvoi au manuel, ni « معادلة » ni « حلّ »), provenance : 12 term_exam lus (une partie par feuille), 32 modelled, 6 adaptés vérifiés dans l\'extraction', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-ikhtibar-musawat-mutabayina-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditIkhtibar(own)).toEqual([]);
+  });
+  it('أدمج تعلّماتي — مفهوم معادلة (2AM, synthèse) : rationnels exacts BigInt et parseur ASCII propres à l\'oracle (aucun import de packages/core), chaque valeur / chaque équation (a·x = b, x ÷ a = b, a ÷ x = b, k·x ± c = d) recalculée depuis l\'énoncé retapé (annulation de la dernière opération, vérification par substitution), chaque relation TESTÉE à des valeurs données (jamais résolue : x des deux côtés reste hors périmètre), chaque QCM d\'expression jugé par identité de polynômes (une seule option vraie), chaque signature / distracteur = la recette de son erreur nommée et FAUX (SYN-MUAD2-FIXED, -ADDCOEF, -ROLE, -SIGN, IBARA2, MAJHUL, IKHTIBAR), la formule la moins chère recalculée (la lecture « prix de l\'unité seul » renverse le choix), LaTeX relu (îlots $…$, aucun renvoi au manuel, aucun négatif), provenance : 3 term_exam lus (2am-s2-52, 2am-s2-53, 2am-s2-56 ex 5), 45 modelled, 2 adaptés vérifiés dans l\'extraction', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-wadiya-idmajiya-mafhum-muadala-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditWadiyaMuadala(own)).toEqual([]);
+  });
+
+  it('أدمج تعلّماتي — الأعداد النسبية (2AM, synthèse) : centièmes BigInt et évaluateur par réduction des groupes propres à l\'oracle (aucun import de packages/core), chaque somme algébrique recalculée de deux façons (réduction des ( ) et [ ] puis chaîne plate, et somme des positifs + somme des négatifs), distances (la plus grande moins la plus petite), milieux (refusés à 3 décimales), changements (nouveau − ancien), lectures d\'abscisses (graduations × valeur), opposés, quatrième sommet d\'un rectangle, symétriques par rapport à un axe, points sur les axes, QCM jugés option par option (une seule vraie, jamais toujours la première : comparaisons, rangements, « نعم / لا », axes), chaque signature et chaque distracteur MISC-* (JAMNISB, JABRI, MASAFA2, MUQARANA-NISBIYA, TALIM2, NUQTA2) recalculé depuis son erreur nommée et FAUX, aire et prix (étapes antérieures counted: false), الكفاءة P1 de chaque étape, nombres imprimés = nombres retapés, texte relu (aucun renvoi au manuel, aucun terme interdit, lettres, unités et nombres signés dans $…$), provenance : 2 term_exam lus (2am-s2-62 et 2am-s2-71, exercice 5) et 48 modelled', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-2am-wadiya-idmajiya-adad-nisbiya-2-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditWadiyaAdadNisbiya(own)).toEqual([]);
   });
 
   it('le cas signalé (6 | 120) : « 6 مضاعف للعدد 120 » est faux, seul « لا » est accepté', () => {

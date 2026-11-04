@@ -304,6 +304,12 @@ These rules complete `LESSON_DEVELOPMENT_GUIDE.md` §14.2 for any year other tha
    the generated lesson declares only its intra-lesson edges (`mana-jam-tarh`: P3 ← P1) and the cross-year link stays at item and
    lesson level (« راجع », `prerequisiteLessonCodes`) until that lesson is generated — it then adds the edge to its successors.
    First edge written this way: `qisma-iqlidiya-baqi` P3 ← `1am_mana-jam-tarh_P1` (net link `1am.m1.r01` → `1am.m3.r01`).
+   First back-edges written from PUBLISHED 3AM lessons toward a newly generated earlier year (2AM مقطع `2am.m1`, 2026-10-29,
+   `docs/curriculum/PLAN_2AM_M1.md`): `quwat-adad-nisbi` P4, `jam-tarh-kasrayn` P1/P2, `maqlub-qismat-kasrayn` P1,
+   `tasawi-muqaranat-kasrayn` P2/P3, `tabsit-hadhf-aqwas` P1 ← the 2AM الكفاءات, each only along a net link, and the successor's
+   « تذكّر — السنة الثانية » box gains its `getLessonPath` link in the same commit (`feat(lessons): connect …`). Where the net has
+   no link (`wasf-silsila-hisab` → `tabsit-hadhf-aqwas`, `tawzi-darb-jam-tarh` → `nashr-jabri-3am` …) no edge is written; the
+   link is an owner question. 4AM is reached only through these 3AM lessons (no `2am.m1` item links straight into 4AM).
    The unit's extraction is written whole; its elements destined to lessons not yet generated are « en attente » in
    `check:textbook` (`LESSON_DEVELOPMENT_GUIDE.md` § « Generating a 1AM–3AM unit LESSON BY LESSON »).
 
@@ -317,6 +323,8 @@ the queue's first entries that are still `coming_soon`, in order.
    `quwa-nisbiya`, `ibarat-harfiya-3`, `musawiyat-mutabayinat`, in that order; `OWNER_FIRST_UNITS` in the script) come first, in
    catalogue order, each synthesis after its unit's last lesson — 20 entries. Each one has a written generation plan
    (`docs/sources/3am/unit<N>/plan/<code>.md`, index `docs/curriculum/PLAN_3AM_UNITS_1_5.md`) that the generator executes.
+   The same method then generated the 2AM مقطع `2am.m1` (units 1–2, 10 entries, owner request 2026-10-29; index
+   `docs/curriculum/PLAN_2AM_M1.md`).
 1. **Phase A — what the 4AM student needs NOW** (owner, 2026-10-20). The 4AM students already use the platform, so their
    current needs come first, before lessons they will need later in the year or not at all in 4AM. The 4AM units are taken in
    textbook order (`units_4am › number`, 1 → 14), and their lessons in catalogue order. For each lesson:
@@ -334,7 +342,8 @@ the queue's first entries that are still `coming_soon`, in order.
 3. **Phases C, D, E** — the same from the remaining 3AM lessons (with their own 1AM–2AM chains), then 2AM, then 1AM.
 4. **Phase F — isolated lessons** (no item, or items linked to nothing) come last.
 5. A **synthesis** enters the queue right after the last lesson of its unit, in any phase. In Phase A, for example,
-   `wadiya-idmajiya-tanasubiya-sura` follows #9–#11.
+   `wadiya-idmajiya-tanasubiya-sura` follows #9–#11. A unit whose lessons are ALL published before its synthesis
+   (2AM units 1–2, 2026-10-29) puts its synthesis at the end of its grade's phase (`learning-net-queue.mjs`).
 6. The queue also lists the **renvois en avant**: same-year prerequisites the textbook teaches later. The lesson that
    suffers one recalls it itself (a « تذكّر » box), without building it.
 

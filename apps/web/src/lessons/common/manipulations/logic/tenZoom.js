@@ -212,3 +212,13 @@ export function coachOf(s) {
   if (s.notches === 1) return { id: 'plate', target: '[data-tz-plate]', gesture: 'look', prefer: 'below' };
   return { id: 'dock', target: '[data-tz-dock]', gesture: 'tap', prefer: 'above' };
 }
+
+/** « أعِد التجربة » (questions pendant le labo) : la MÊME tâche repart ET son drapeau « fait » tombe — sinon l'étape resterait verte et la carte de questions ne se rouvrirait pas.
+ *  Une tâche qui part de la précédente (`startAt: 'prev'`) repart du cadre de la tâche d'avant, pas de celui qu'on vient d'atteindre. */
+export function retryTask(s) {
+  const n = restartTask(s);
+  if (s.free) return n;
+  const t = s.tasks[s.ti];
+  const back = t.startAt === 'prev' && s.ti > 0 ? s.tasks[s.ti - 1].target : n.n;
+  return { ...n, n: back, done: n.done.map((d, i) => (i === s.ti ? false : d)) };
+}

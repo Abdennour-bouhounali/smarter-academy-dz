@@ -204,6 +204,9 @@ export function nextTask(s) {
 /** « إعادة » : la même tâche, planche propre ; les essais restent. */
 export const restartTask = (s) => (s.free ? { ...s, rod: [null, null], rods: [], last: null } : { ...s, ...fresh(taskOf(s)), last: null, readPos: null, done: { ...s.done, [s.ti]: s.done[s.ti] } });
 
+/** « أعِد التجربة » (carte de questions) : la même tâche repart — planche propre, règle et lecture effacées, et la tâche n'est plus « faite » (la carte se rouvrira au prochain jugement). */
+export const retryTask = (s) => (s.free ? restartTask(s) : { ...s, ...fresh(taskOf(s)), last: null, readPos: null, done: { ...s.done, [s.ti]: false } });
+
 /* ── « جرّب أعدادك » ─────────────────────────────────────────────────────────────────────────── */
 
 export function setFree(s, aRaw, bRaw = '0') {

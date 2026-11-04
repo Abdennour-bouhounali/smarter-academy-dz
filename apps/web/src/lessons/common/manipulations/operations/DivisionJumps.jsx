@@ -16,6 +16,10 @@ import { SvgPill, pillWidth } from '../primitives/SvgPill';
 import { FlowerFigure, BouquetSleeve, BouquetTie, hueOf } from '../primitives/FlowerFigure';
 import HopperFigure from '../primitives/HopperFigure';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { LEVELS } from '../levels';
 import * as L from '../logic/divisionJumps';
 
@@ -45,6 +49,14 @@ import * as L from '../logic/divisionJumps';
  *    10 bouquets ») sont réfutées avec SES nombres (47 : 5 restent et aucun bouquet n'est possible).
  *    Le second nombre (47 → 48, la carte « زهرة جديدة! ») vient après, en transfert : il ne compte PAS dans
  *    `discoveryReady` (choix de l'auteur du lab, brief unité 3).
+ *
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 1, 2026-10-28) : `checkpoints` (défaut true). Étape 1 —
+ * le nombre de la leçon, atteinte quand l'arrêt exact ET le contraste (un de trop, un de moins) sont faits : le quotient, le reste, (متقدم)
+ * le حصر, puis LA RÈGLE (l'ancienne découverte, qui formalise). Étape 2 (مبتدئ, 47 → 48) : le nouveau reste et pourquoi un bouquet de plus
+ * (`chainOf`, `QUESTIONS`, sur SES nombres). Obligatoires pour tout élève ; l'enseignant seul les coupe pour SON compte. Questions actives →
+ * `guided`. ÉTAPES : `LabStepper` (`[data-dj-step=<i>]`) quand il y a deux nombres, fête par étape ; « إعادة » repart de zéro ; « أعِد
+ * التجربة » remet LE MÊME nombre (`L.retryStep`). SON : `tooth` à chaque bouquet noué / saut (plus grave en arrière), `flag` à l'arrêt exact,
+ * `over` pour un groupe de trop.
  *
  * FICHE (MANIPULATION_DNA §7)
  *   CONCEPT        le quotient euclidien = le plus grand nombre de groupes complets ; r < b
@@ -98,6 +110,7 @@ import * as L from '../logic/divisionJumps';
  * (47 → 48), [data-dj-back], [data-dj-formal], [data-lab-fold=division-jumps.trials].
  */
 const NS = 'manipulation.divisionJumps';
+const iso = (x) => `\u2066${x}\u2069`;   // un nombre ou une égalité isolé(e) dans une phrase arabe (LRI … PDI)
 const WIDE_MIN = 600;
 const SIDE_W = 214;
 const STRIP_H = 58;
@@ -143,7 +156,7 @@ function StatPill({ label, value, tone = 'indigo', small = false, ...rest }) {
 
 export default function DivisionJumps({
   a: a0, b: b0, world: world0, then: then0, title, lead, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished, coach: coachOn = true,
+  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished, coach: coachOn = true, checkpoints: cpOn = true,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
@@ -158,15 +171,62 @@ export default function DivisionJumps({
   const state = useManipulation({ type: 'division-jumps', initialNumbers, initialMode, initialLevel: level, withLevels, hintCount: 3 });
   const { a: na, b, world } = state.numbers;
   const nthen = thenOf(world, na, b, state.numbers.then);
-  const sceneKey = `${na}|${b}|${world}|${nthen}|${state.epoch}`;
+  // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — les étapes, les essais et les questions du labo
+  const sceneKey = `${na}|${b}|${world}|${nthen}|${state.epoch}|${state.resetCount}`;
   const [lab, setLab] = useState(() => L.init({ a: na, b, world, then: nthen }));
-  const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init({ a: na, b, world, then: nthen })); }
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(L.init({ a: na, b, world, then: nthen })); }
 
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : la suite du nombre affiché ; celle du nombre de la leçon finit par la règle
+  const cpSettings = useLabCheckpointSettings('division-jumps');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpActive = cpOn && cpSettings.enabled;
+  const onFirst = lab.a === lab.a0;
+  const stepReached = onFirst ? ready : L.thenDone(lab);
+  const chain = cpActive ? chainOf(lab) : null;
+  const cp = useLabCheckpoint({
+    id: chain ? `a${lab.a}` : null,
+    questions: chain && stepReached ? chain.map((q) => QUESTIONS[q](lab, k)) : null,
+    reached: stepReached,
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.retryStep),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => { if (id === `a${lab.a0}`) { state.discover(); state.formalize(); } },
+  });
+  useEffect(() => { if (ready && !cpActive) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son du geste (muet sans « الصوت ») : chaque bouquet noué / saut, l'arrêt exact, un groupe de trop
+  const qSeen = useRef({ q: lab.q, at: 0 });
+  useEffect(() => {
+    const p = qSeen.current;
+    const now = Date.now();
+    if (lab.q !== p.q && now - p.at > 35) { playSfx('tooth', { pitch: lab.q > p.q ? 1 : 0.75 }); p.at = now; }
+    p.q = lab.q;
+  }, [lab.q]);
+  const lastSeen = useRef(lab.last);
+  useEffect(() => {
+    const v = lab.last;
+    if (v === lastSeen.current) return;
+    lastSeen.current = v;
+    if (!v) return;
+    if (v.verdict.kind === 'exact') playSfx('flag');
+    else if (v.verdict.kind === 'over') playSfx('over');
+  }, [lab.last]);
+  // les étapes : le nombre de la leçon, puis (s'il existe) le second ; FAITE quand l'étape est atteinte ET ses questions répondues
+  const nSteps = lab.then != null ? 2 : 1;
+  const curStep = onFirst ? 0 : 1;
+  const stepDone = [ready && (curStep !== 0 || !cp.blocking), L.thenDone(lab) && (curStep !== 1 || !cp.blocking)].slice(0, nSteps);
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  const nowDone = stepDone[curStep];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(curStep)) return;
+    celebrated.current.add(curStep);
+    party.celebrate({ n: curStep + 1, total: nSteps });
+  }, [nowDone, curStep]); // eslint-disable-line react-hooks/exhaustive-deps
+  const labSteps = nSteps > 1 && <LabStepper count={nSteps} current={curStep} done={stepDone} stepAttr="data-dj-step" />;
   useEffect(() => { if (state.isFormal) state.report(onFinished, { a: lab.a0, b }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'division-jumps', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '',
     labels: { hide: k('coach.hide'), show: k('coach.show'), ok: k('coach.ok'), stop: k('coach.stop') },
@@ -254,18 +314,7 @@ export default function DivisionJumps({
   const need = L.stillToTry(lab);
 
   /* ── la découverte : les conjectures fausses réfutées par les nombres de l'élève ── */
-  const discoveryOptions = useMemo(() => {
-    const { q, r } = divmod(lab.a0, b);
-    const n = q === 10 ? 20 : 10;
-    const ten = L.judge(lab.a0, b, n);
-    const o = { a: lab.a0, b, q, n, left: r, land: b * q, flowers: flowers(lab.a0), bouquets: groups(q), leftF: flowers(r), per: flowers(b), jumps: groups(q) };
-    const tenO = { n, a: lab.a0, b, land: ten.need, left: ten.left, need: flowers(ten.need), have: flowers(lab.a0), leftF: flowers(ten.left ?? 0), groupsN: groups(n) };
-    return [
-      { text: k(`discovery.nothing.${world}`), why: k(`discovery.whyNothing.${world}`, o) },
-      { text: k(`discovery.right.${world}`), correct: true },
-      { text: k(`discovery.ten.${world}`, { n }), why: k(`discovery.whyTen.${world}.${ten.kind === 'over' ? 'over' : 'short'}`, tenO) },
-    ];
-  }, [lab.a0, b, world, k]); // eslint-disable-line react-hooks/exhaustive-deps
+  const discoveryOptions = useMemo(() => discoveryOptionsOf(lab, k), [lab.a0, b, world, k]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const formalFor = (a) => (
     <p className="flex flex-wrap items-baseline justify-center gap-x-4 gap-y-0.5 font-mono font-extrabold text-indigo-950 text-base" key={a}>
@@ -375,7 +424,7 @@ export default function DivisionJumps({
       <bdi dir="ltr" className="whitespace-nowrap font-mono text-rose-700">{`${v.a} − ${v.need} = ${v.left}`}</bdi>
     </p>
   );
-  const nextCard = L.canAddFlower(lab) && (
+  const nextCard = L.canAddFlower(lab) && !cp.blocking && (
     <LabCard className={`space-y-2 border-amber-200 bg-amber-50/70 ${compact ? 'p-2.5' : 'p-3'}`} data-dj-next>
       <p className={`${compact ? 'text-xs' : 'text-sm'} font-bold leading-snug text-amber-950`}>
         <span className="font-black">{k('next.title')}</span> {k('next.text', { flowers: flowers(lab.then) })}
@@ -407,6 +456,7 @@ export default function DivisionJumps({
 
   return (
     <ManipulationShell
+      headerAction={cpSettings.control}
       type="division-jumps"
       title={title ?? k(`title.${world}`)}
       titleHidden
@@ -416,6 +466,7 @@ export default function DivisionJumps({
       coach={coachOn ? coach : null}
       hints={[0, 1].map((i) => k(`hints.${world}.${i}`, { a: lab.a0, b }))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
+      guided={cpActive}
       discovery={<ManipulationDiscovery state={state} prompt={k(`discovery.prompt.${world}`)} options={discoveryOptions} formal={formal} />}
       explanation={k('explanation')}
     >
@@ -423,7 +474,9 @@ export default function DivisionJumps({
         <div ref={boxRef} className="space-y-2" data-division-jumps data-world={world} data-a={lab.a} data-b={b}
           data-solved={ready ? 'true' : 'false'} data-q={lab.q} data-layout={wide ? 'wide' : 'narrow'} data-scene-h={world === 'flowers' ? flowerH : undefined}>
           <style dangerouslySetInnerHTML={{ __html: MOTION_CSS }} />
-          <div className="space-y-3" data-dj-glance>
+          <div className="relative space-y-3" data-dj-glance>
+            {party.node}
+            {cp.node}
             {/* la consigne : la question, la phrase de l'histoire (sa lampe s'allume à l'arrêt exact), la lecture vivante */}
             <div ref={promptRef}>
               {/* §17.9 : le CONTEXTE (tous les nombres) puis UNE question qui nomme l'état final — pas de puce, pas de titre ;
@@ -432,7 +485,7 @@ export default function DivisionJumps({
                 size={compact ? 'md' : 'lg'}
                 context={(state.isAuthoredLevel && lab.a === lab.a0 && lead) || k(`context.${world}`, promptArgs)}
                 contextProps={{ 'data-dj-context': world }}
-                aside={compact ? null : readingPills}
+                aside={compact ? labSteps || null : (labSteps ? <div className="flex flex-wrap items-center gap-2">{labSteps}{readingPills}</div> : readingPills)}
                 title={<span className={compact ? 'text-base' : ''}>{k(`question.${world}`, promptArgs)}</span>}
                 lamp={v?.kind === 'exact' ? 'on' : 'off'}
                 titleProps={{ 'data-dj-prompt': true, 'data-lit': v?.kind === 'exact' ? 'true' : 'false' }}
@@ -697,3 +750,90 @@ function LineScene({ lab, lay, st, k, W, lineY: Y, lineH, compact, v, groups, st
     </StageFrame>
   );
 }
+
+/** La découverte : les conjectures fausses réfutées avec SES nombres (aussi la dernière question de l'étape 1). */
+export function discoveryOptionsOf(lab, k) {
+  const { b, world } = lab;
+  const flowers = (n) => k('flowers', { count: n });
+  const groups = (n) => k(world === 'line' ? 'jumps' : 'bouquets', { count: n });
+  const { q, r } = divmod(lab.a0, b);
+  const n = q === 10 ? 20 : 10;
+  const ten = L.judge(lab.a0, b, n);
+  const o = { a: lab.a0, b, q, n, left: r, land: b * q, flowers: flowers(lab.a0), bouquets: groups(q), leftF: flowers(r), per: flowers(b), jumps: groups(q) };
+  const tenO = { n, a: lab.a0, b, land: ten.need, left: ten.left, need: flowers(ten.need), have: flowers(lab.a0), leftF: flowers(ten.left ?? 0), groupsN: groups(n) };
+  return [
+    { text: k(`discovery.nothing.${world}`), why: k(`discovery.whyNothing.${world}`, o) },
+    { text: k(`discovery.right.${world}`), correct: true },
+    { text: k(`discovery.ten.${world}`, { n }), why: k(`discovery.whyTen.${world}.${ten.kind === 'over' ? 'over' : 'short'}`, tenO) },
+  ];
+}
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite du nombre affiché : le nombre de la leçon (quotient, reste, [حصر], la règle) ou le second nombre (47 → 48). */
+export function chainOf(lab) {
+  if (lab.a !== lab.a0) return ['thenRemainder', 'thenWhy'];
+  return lab.world === 'line' ? ['quotient', 'remainder', 'bracket', 'rule'] : ['quotient', 'remainder', 'rule'];
+}
+
+const C = (k, key, o) => k(`cp.${key}`, o);
+const pick = (list, right, whys) => list.map((text, i) => (i === right ? { text, correct: true } : { text, why: whys[i] }));
+const numsOf = (lab, a = lab.a) => {
+  const { q, r } = divmod(a, lab.b);
+  return { a: iso(a), b: iso(lab.b), q: iso(q), r: iso(r), bq: iso(lab.b * q), eq: iso(L.formalLine(a, lab.b)), lt: iso(L.remainderLine(a, lab.b)) };
+};
+
+/** Chaque question est construite sur LES nombres du labo (rien en dur). */
+export const QUESTIONS = {
+  quotient: (lab, k) => {
+    const { q } = divmod(lab.a, lab.b);
+    const o = numsOf(lab);
+    return {
+      id: 'quotient', kind: 'number', expected: String(q), answer: <bdi dir="ltr">{q}</bdi>,
+      prompt: C(k, `quotient.prompt.${lab.world}`, o), hints: [C(k, `quotient.hint1.${lab.world}`), C(k, 'quotient.hint2', o)], explain: C(k, 'quotient.explain', o),
+    };
+  },
+  remainder: (lab, k) => {
+    const { r } = divmod(lab.a, lab.b);
+    const o = numsOf(lab);
+    return {
+      id: 'remainder', kind: 'number', expected: String(r), answer: <bdi dir="ltr">{r}</bdi>,
+      prompt: C(k, `remainder.prompt.${lab.world}`, o), hints: [C(k, `remainder.hint1.${lab.world}`, o), C(k, 'remainder.hint2', o)], explain: C(k, 'remainder.explain', o),
+    };
+  },
+  bracket: (lab, k) => {
+    const { a, b } = lab;
+    const { q } = divmod(a, b);
+    const o = { ...numsOf(lab), q1: iso(q + 1), bq1: iso(b * (q + 1)), qm: iso(q - 1), bqm: iso(b * (q - 1)) };
+    return {
+      id: 'bracket', kind: 'choice', prompt: C(k, 'bracket.prompt', o),
+      options: pick([iso(L.bracketLine(a, b)), iso(`${b} × ${q - 1} ≤ ${a} < ${b} × ${q}`), iso(`${b} × ${q + 1} ≤ ${a} < ${b} × ${q + 2}`)], 0,
+        [null, C(k, 'bracket.whyShort', o), C(k, 'bracket.whyOver', o)]),
+      hints: [C(k, 'bracket.hint1'), C(k, 'bracket.hint2', o)], explain: C(k, 'bracket.explain', { ...o, line: iso(L.bracketLine(a, b)) }),
+    };
+  },
+  thenRemainder: (lab, k) => {
+    const { r } = divmod(lab.a, lab.b);
+    const o = numsOf(lab);
+    return {
+      id: 'thenRemainder', kind: 'number', expected: String(r), answer: <bdi dir="ltr">{r}</bdi>,
+      prompt: C(k, 'thenRemainder.prompt', o), hints: [C(k, 'thenRemainder.hint1'), C(k, 'thenRemainder.hint2', o)], explain: C(k, 'thenRemainder.explain', o),
+    };
+  },
+  thenWhy: (lab, k) => {
+    const first = numsOf(lab, lab.a0);
+    const o = { ...numsOf(lab), a0: first.a, q0: first.q, r0: first.r };
+    return {
+      id: 'thenWhy', kind: 'choice', prompt: C(k, 'thenWhy.prompt', o),
+      options: pick([C(k, 'thenWhy.right', o), C(k, 'thenWhy.zero'), C(k, 'thenWhy.smaller')], 0, [null, C(k, 'thenWhy.whyZero', o), C(k, 'thenWhy.whySmaller', o)]),
+      hints: [C(k, 'thenWhy.hint1', o), C(k, 'thenWhy.hint2', o)], explain: C(k, 'thenWhy.explain', o),
+    };
+  },
+  rule: (lab, k) => {
+    const o = numsOf(lab, lab.a0);
+    return {
+      id: 'rule', kind: 'choice', prompt: k(`discovery.prompt.${lab.world}`), options: discoveryOptionsOf(lab, k),
+      hints: [C(k, `rule.hint1.${lab.world}`, o), C(k, 'rule.hint2', o)], explain: C(k, 'rule.explain', { ...o, rule: k(`formal.rule.${lab.world}`) }),
+    };
+  },
+};

@@ -12,6 +12,6 @@ export default function Module03Awazzif() {
       brief={{ tag: 'أوظّف تعلّماتي — الكتاب ص 15', title: 'أثبت أو أنفي', tone: 'amber', body: <p>الخطأ هنا يُصحَّح ولا يُحتسب.</p> }}
       steps={EXERCISES.map((ex, i) => ({ num: i + 1, title: `تمرين ${ex.source.number}`, done: !!done[ex.id],
         content: <div className="space-y-3">{i === 0 && <KnowledgeBrick id="ithbat-awwaliyan" variant="rappel" compact />}<TextbookExercise exercise={ex} requires={['ithbat-awwaliyan', 'nafy-awwaliyan']} onAnswered={() => setDone((d) => ({ ...d, [ex.id]: true }))} /></div> }))}
-      footer={<KnowledgeSnapshot moduleNumber={3} />} />
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />} />
   );
 }

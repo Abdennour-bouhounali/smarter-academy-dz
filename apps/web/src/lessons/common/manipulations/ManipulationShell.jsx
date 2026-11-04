@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Maximize2, Minimize2 } from 'lucide-react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { MANIPULATION_TYPES } from '@smarter-academy/core/curriculum/manipulationTypes.js';
 import { useFullscreen } from '../classroom/useFullscreen';
 import { useScrollLock } from '../classroom/useScrollLock';
@@ -14,13 +15,16 @@ import ManipulationExplanation from './ManipulationExplanation';
 import ManipulationFreeLab from './ManipulationFreeLab';
 import ManipulationLevelSelector from './ManipulationLevelSelector';
 import { MANIPULATION_LEVEL_IDS } from './levels';
+import { EffectsToggle } from '../components/LessonUI';
+import { useEffectsPreference } from '../hooks/useEffectsPreference';
+import { useInMissionPlayer, useMissionArea } from '../mission/missionPlayerContext';
 
 /**
  * L'ENVELOPPE commune de toute manipulation (§7 du brief). De haut en bas :
  *
  *   ┌ en-tête : titre, badge « مناولة », sélecteur مبتدئ / متقدم (seule)
  *   ├ MISSION  — une consigne arabe courte et grande (« مهمتك : … »)
- *   ├ progression (جرّب › اكتشف › صِغ · الخطوة n من N)
+ *   ├ progression (جرّب › اكتشف › صِغ · الخطوة n من N) — ABSENTE quand `guided`
  *   ├ contrôles élève (إعادة · تلميح · تحقّق · الشرح)
  *   ├ indices demandés
  *   ├ AIRE DE MANIPULATION (`children`, le centre visuel)
@@ -58,7 +62,8 @@ import { MANIPULATION_LEVEL_IDS } from './levels';
  * `target` peut être un contrôle de l'en-tête, de la scène ou du bas. L'interrupteur se pose sous la consigne.
  *
  * ÉCRAN DE JEU (`immersive`, 2026-10-27, propriétaire : « le labo couvre exactement tout l'écran du laptop, l'élève se sent dans un
- * jeu ») : le type qui l'active reçoit un bouton « العب بملء الشاشة » dans l'en-tête. Le labo passe alors en VRAI plein écran du
+ * jeu ») : DEPUIS LE 2026-10-28 ACTIVÉ PAR DÉFAUT pour TOUS les labos (propriétaire : « toutes les manipulations ont le bouton plein
+ * écran et sa sortie » ; `immersive={false}` pour s'en passer) — un bouton « العب بملء الشاشة » dans l'en-tête. Le labo passe alors en VRAI plein écran du
  * navigateur (`useFullscreen` du mode classe — jamais un second plein écran), le défilement de la page est verrouillé
  * (`useScrollLock`), l'en-tête se réduit à UNE barre (sortie · guide · جرّب › اكتشف › صِغ · إعادة / تلميح) et le type lit
  * `useManipulationImmersive()` pour poser sa scène à la hauteur de l'écran. Échap (le navigateur) ou « خروج » rendent la page.
@@ -72,12 +77,18 @@ import { MANIPULATION_LEVEL_IDS } from './levels';
 export default function ManipulationShell({
   type, title, mission, lead, state, controller, hints = [], numberFields = [], validate, controlsOverride,
   onCheck, checkDisabled, allowModeSwitch = false, representation, explanation, discovery, children, footer, allowFreeLab = true, freeLabAlwaysOpen = false, freeLabLead,
-  headerAction, titleHidden = false, coach = null, immersive = false,
+  headerAction, titleHidden = false, coach = null, immersive = true, guided = false,
 }) {
   const { t } = useTranslation('lesson');
   const rootRef = useRef(null);
+  // le SON de tout labo (2026-10-28) : la préférence « الصوت » de l'appareil, partagée avec la page et le défi ; coupable ici à tout moment
+  const effects = useEffectsPreference();
+  const soundToggle = <span data-manipulation-sound><EffectsToggle enabled={effects.enabled} onToggle={effects.toggle} /></span>;
   const classroom = useClassroomMode();
-  const canImmerse = immersive && !classroom.isClassroomMode;
+  // Dans le lecteur de mission, le labo est DÉJÀ en fenêtre pleine : pas de second plein écran par-dessus.
+  const inPlayer = useInMissionPlayer();
+  const missionArea = useMissionArea();
+  const canImmerse = immersive && !classroom.isClassroomMode && !inPlayer;
   const fullscreen = useFullscreen(rootRef);
   const [pinned, setPinned] = useState(false); // la couche fixe, quand le navigateur refuse le plein écran
   const immersed = canImmerse && (fullscreen.isFullscreen || pinned);
@@ -110,12 +121,145 @@ export default function ManipulationShell({
   const shownRepresentation = representation || (state.answerHidden ? null : held.current.node);
   const stale = !representation && !!shownRepresentation;
 
-  const progress = <ManipulationProgress state={state} />;
-  const studentControls = <ManipulationControls state={state} controls={controls} hints={hints} onCheck={onCheck} checkDisabled={checkDisabled} autoComplete={controller?.autoComplete} />;
+  // `guided` (2026-10-28, propriétaire) : un labo qui pose ses QUESTIONS PENDANT LE LABO (LabCheckpoint) montre seulement SES étapes
+  // (LabStepper) — ni « جرّب › اكتشف › صِغ القاعدة », ni « تلميح » : les questions guident déjà.
+  const progress = guided ? null : <ManipulationProgress state={state} />;
+  const shownHints = guided ? [] : hints;
+  const studentControls = <ManipulationControls state={state} controls={controls} hints={shownHints} onCheck={onCheck} checkDisabled={checkDisabled} autoComplete={controller?.autoComplete} />;
   const pill = 'inline-flex min-h-[44px] items-center gap-2 rounded-full px-4 text-sm font-black outline-none focus-visible:ring-4 focus-visible:ring-indigo-300 transition-all duration-150 active:translate-y-0.5 motion-reduce:transition-none';
 
+  // Les pièces du labo, posées soit l'une sous l'autre (page), soit en deux colonnes (mise en page de jeu du lecteur).
+  const headerEl = (
+    <header className={immersed ? 'sr-only' : 'space-y-2'}>
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        {/* `titleHidden` (MANIPULATION_DNA §17.9) : un labo s'ouvre sur son contexte et sa question, sans titre visible — le titre reste pour les lecteurs d'écran */}
+        <h3 className={titleHidden ? 'sr-only' : 'font-bold text-slate-900 text-lg'}>{shownTitle}</h3>
+        <div className="flex items-center gap-2">
+          {headerAction}
+          {soundToggle}
+          {canImmerse && !immersed && (
+            <button type="button" onClick={enter} data-manipulation-immersive-enter
+              className={`${pill} border-2 border-indigo-600 bg-indigo-600 text-white shadow-[0_3px_0_0_#3730A3] hover:bg-indigo-700`}>
+              <Maximize2 className="h-4 w-4" aria-hidden="true" /> {t('manipulation.immersive.enter')}
+            </button>
+          )}
+          <span className="rounded-full bg-white px-2 py-0.5 text-[11px] font-mono uppercase tracking-wider text-indigo-500">{t('manipulation.badge')}</span>
+        </div>
+      </div>
+      {freeLabAlwaysOpen && (
+        <ManipulationFreeLab state={state} numberFields={numberFields} constraints={constraints} validate={validate} allowFreeLab={allowFreeLab} alwaysOpen lead={freeLabLead} />
+      )}
+      {state.levels && (
+        <ManipulationLevelSelector levels={MANIPULATION_LEVEL_IDS} value={state.level} onChange={state.setLevel} />
+      )}
+      {!state.isAuthoredLevel && state.levelPreset?.source === 'platform' && (
+        <p className="text-[11px] font-bold text-slate-500">{t('textbook.platformAddition')}</p>
+      )}
+      {mission && (
+        <p className="rounded-2xl bg-white/80 px-4 py-3 font-extrabold leading-relaxed text-indigo-950 text-lg" data-manipulation-mission>
+          <span className="text-indigo-500">{t('manipulation.mission')}</span> {mission}
+        </p>
+      )}
+      {shownLead && <p className="text-sm text-slate-700">{shownLead}</p>}
+      {/* L'ONBOARDING (LabCoach, MANIPULATION_CONTRACT §8quater) : l'interrupteur sous la consigne, avant la scène */}
+      {coach && !immersed && <div className="flex" data-lab-coach-slot>{coach.toggle}</div>}
+      {spec?.shows && state.showExplanation && (
+        <p className="text-xs text-indigo-700"><strong>{t('manipulation.shows')}:</strong> {spec.shows}</p>
+      )}
+    </header>
+  );
+  const controlsEl = (
+    <>
+      {!immersed && progress}
+
+      <ManipulationTeacherMode
+        state={state} controller={controller} controls={controls} numberFields={numberFields} constraints={constraints} validate={validate} allowModeSwitch={allowModeSwitch}
+      />
+      {!immersed && studentControls}
+      {!immersed && <ManipulationHint hints={shownHints} open={state.hintsOpen} />}
+
+      {hasRepresentation && (
+        shownRepresentation ? (
+          <div className="space-y-2" data-manipulation-representation data-representation-top data-representation-stale={stale ? 'true' : undefined} aria-live="polite">
+            {shownRepresentation}
+          </div>
+        ) : (
+          <p className="flex min-h-[3.75rem] items-center rounded-2xl border-2 border-dashed border-slate-200 bg-white/60 px-4 py-2 text-sm font-bold text-slate-500" data-representation-slot="idle">
+            {t('manipulation.resultIdle')}
+          </p>
+        )
+      )}
+    </>
+  );
+  const restEl = (
+    <>
+      {discovery}
+
+      <ManipulationExplanation show={state.showExplanation}>{explanation}</ManipulationExplanation>
+
+      {!freeLabAlwaysOpen && <ManipulationFreeLab state={state} numberFields={numberFields} constraints={constraints} validate={validate} allowFreeLab={allowFreeLab} lead={freeLabLead} />}
+      {footer}
+    </>
+  );
+  // Le lecteur de mission EST un écran de jeu : deux colonnes dès qu'il y a la place (≥ 900 px de zone).
+  const gameLayout = inPlayer && !immersed && (missionArea?.width ?? 0) >= 900;
+
+  // LA MISSION EN GRAND (lecteur de mission, propriétaire 2026-11-04 : « la mission du labo doit apparaître en grand quand il
+  // entre dans le labo »). À l'ENTRÉE dans le labo (il devient visible), une carte couvre le labo : le contexte et « مهمتك »
+  // en gros caractères, puis « هيا نبدأ » — jamais un minuteur. Rejouée quand le niveau change (la mission change avec lui).
+  const reduceMotion = useReducedMotion();
+  const introKey = `${state.level}`;
+  const [introOpen, setIntroOpen] = useState(false);
+  const introSeen = useRef(new Set());
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!inPlayer || immersed || !(mission || shownLead) || !el || typeof IntersectionObserver === 'undefined') return undefined;
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !introSeen.current.has(introKey)) {
+        introSeen.current.add(introKey);
+        setIntroOpen(true);
+      }
+    }, { threshold: 0.3 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [inPlayer, immersed, introKey, mission, shownLead]);
+  const missionIntro = (
+    <AnimatePresence>
+      {introOpen && (
+        <motion.div
+          key="mission-intro"
+          className="absolute inset-0 z-30 flex items-center justify-center rounded-3xl bg-indigo-950/75 p-6 backdrop-blur-sm"
+          initial={reduceMotion ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={reduceMotion ? { opacity: 0, transition: { duration: 0 } } : { opacity: 0 }}
+          data-manipulation-mission-intro
+        >
+          <motion.div
+            className="w-full max-w-4xl space-y-7 rounded-3xl bg-white p-12 text-center shadow-2xl"
+            initial={reduceMotion ? false : { scale: 0.85, y: 20 }}
+            animate={{ scale: 1, y: 0 }}
+            exit={reduceMotion ? undefined : { scale: 0.4, x: '45%', y: '-40%' }}
+            transition={{ type: 'spring', stiffness: 260, damping: 24 }}
+          >
+            {shownLead && <p className="text-2xl leading-relaxed text-slate-700">{shownLead}</p>}
+            {mission && (
+              <p className="text-4xl font-black leading-snug text-indigo-950">
+                <span className="text-indigo-500">{t('manipulation.mission')}</span> {mission}
+              </p>
+            )}
+            <button type="button" onClick={() => setIntroOpen(false)} data-manipulation-mission-go autoFocus
+              className="inline-flex min-h-[56px] items-center gap-2 rounded-2xl bg-indigo-600 px-10 text-xl font-black text-white shadow-[0_4px_0_0_#3730A3] hover:bg-indigo-700 active:translate-y-0.5">
+              {t('manipulation.missionGo')} <span aria-hidden="true">←</span>
+            </button>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+
   return (
-    <ManipulationImmersiveContext.Provider value={immersed}>
+    // Le lecteur de mission EST un écran de jeu : le labo y pose sa mise en page de jeu, sans couche fixe à lui.
+    <ManipulationImmersiveContext.Provider value={immersed || inPlayer}>
     <section
       ref={rootRef}
       data-manipulation={type}
@@ -137,77 +281,34 @@ export default function ManipulationShell({
             <Minimize2 className="h-4 w-4" aria-hidden="true" /> {t('manipulation.immersive.exit')}
           </button>
           {coach && coach.toggle}
+          {soundToggle}
           <div className="min-w-0 flex-1">{progress}</div>
           {studentControls}
         </div>
       )}
-      {immersed && <ManipulationHint hints={hints} open={state.hintsOpen} />}
-      <header className={immersed ? 'sr-only' : 'space-y-2'}>
-        <div className="flex flex-wrap items-start justify-between gap-2">
-          {/* `titleHidden` (MANIPULATION_DNA §17.9) : un labo s'ouvre sur son contexte et sa question, sans titre visible — le titre reste pour les lecteurs d'écran */}
-          <h3 className={titleHidden ? 'sr-only' : 'font-bold text-slate-900 text-lg'}>{shownTitle}</h3>
-          <div className="flex items-center gap-2">
-            {headerAction}
-            {canImmerse && !immersed && (
-              <button type="button" onClick={enter} data-manipulation-immersive-enter
-                className={`${pill} border-2 border-indigo-600 bg-indigo-600 text-white shadow-[0_3px_0_0_#3730A3] hover:bg-indigo-700`}>
-                <Maximize2 className="h-4 w-4" aria-hidden="true" /> {t('manipulation.immersive.enter')}
-              </button>
-            )}
-            <span className="rounded-full bg-white px-2 py-0.5 text-[11px] font-mono uppercase tracking-wider text-indigo-500">{t('manipulation.badge')}</span>
+      {immersed && <ManipulationHint hints={shownHints} open={state.hintsOpen} />}
+      {gameLayout ? (
+        // LA MISE EN PAGE DE JEU (lecteur de mission, 2026-11-04, propriétaire : « le labo doit utiliser tout l'espace ») :
+        // la consigne, les commandes et le résultat dans une colonne ; la SCÈNE prend tout le reste de la largeur.
+        <div className="grid grid-cols-[minmax(18rem,26rem)_minmax(0,1fr)] items-start gap-5" data-manipulation-game-layout>
+          <div className="min-w-0 space-y-3" data-manipulation-side>
+            {headerEl}
+            {controlsEl}
+            {restEl}
           </div>
+          <div className="min-w-0" data-manipulation-scene>{children}</div>
         </div>
-        {freeLabAlwaysOpen && (
-          <ManipulationFreeLab state={state} numberFields={numberFields} constraints={constraints} validate={validate} allowFreeLab={allowFreeLab} alwaysOpen lead={freeLabLead} />
-        )}
-        {state.levels && (
-          <ManipulationLevelSelector levels={MANIPULATION_LEVEL_IDS} value={state.level} onChange={state.setLevel} />
-        )}
-        {!state.isAuthoredLevel && state.levelPreset?.source === 'platform' && (
-          <p className="text-[11px] font-bold text-slate-500">{t('textbook.platformAddition')}</p>
-        )}
-        {mission && (
-          <p className="rounded-2xl bg-white/80 px-4 py-3 font-extrabold leading-relaxed text-indigo-950 text-lg" data-manipulation-mission>
-            <span className="text-indigo-500">{t('manipulation.mission')}</span> {mission}
-          </p>
-        )}
-        {shownLead && <p className="text-sm text-slate-700">{shownLead}</p>}
-        {/* L'ONBOARDING (LabCoach, MANIPULATION_CONTRACT §8quater) : l'interrupteur sous la consigne, avant la scène */}
-        {coach && !immersed && <div className="flex" data-lab-coach-slot>{coach.toggle}</div>}
-        {spec?.shows && state.showExplanation && (
-          <p className="text-xs text-indigo-700"><strong>{t('manipulation.shows')}:</strong> {spec.shows}</p>
-        )}
-      </header>
-
-      {!immersed && progress}
-
-      <ManipulationTeacherMode
-        state={state} controller={controller} controls={controls} numberFields={numberFields} constraints={constraints} validate={validate} allowModeSwitch={allowModeSwitch}
-      />
-      {!immersed && studentControls}
-      {!immersed && <ManipulationHint hints={hints} open={state.hintsOpen} />}
-
-      {hasRepresentation && (
-        shownRepresentation ? (
-          <div className="space-y-2" data-manipulation-representation data-representation-top data-representation-stale={stale ? 'true' : undefined} aria-live="polite">
-            {shownRepresentation}
-          </div>
-        ) : (
-          <p className="flex min-h-[3.75rem] items-center rounded-2xl border-2 border-dashed border-slate-200 bg-white/60 px-4 py-2 text-sm font-bold text-slate-500" data-representation-slot="idle">
-            {t('manipulation.resultIdle')}
-          </p>
-        )
+      ) : (
+        <>
+          {headerEl}
+          {controlsEl}
+          {children}
+          {restEl}
+        </>
       )}
-
-      {children}
-
-      {discovery}
-
-      <ManipulationExplanation show={state.showExplanation}>{explanation}</ManipulationExplanation>
-
-      {!freeLabAlwaysOpen && <ManipulationFreeLab state={state} numberFields={numberFields} constraints={constraints} validate={validate} allowFreeLab={allowFreeLab} lead={freeLabLead} />}
-      {footer}
-      {coach && coach.overlay}
+      {/* la bulle du guide attend que la mission en grand soit lue */}
+      {coach && !introOpen && coach.overlay}
+      {missionIntro}
     </section>
     </ManipulationImmersiveContext.Provider>
   );

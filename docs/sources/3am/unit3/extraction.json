@@ -3067,9 +3067,9 @@
    "page": 52,
    "section": "أدمج تعلّماتي",
    "title": "جزيء ثاني أكسيد الكربون",
-   "verified": false,
+   "verified": true,
    "text": "وضعية: ثنائي أكسيد الكربون هو جزيء مكون من ذرة واحدة للكربون وذرتي أكسجين. r1 نصف قطر ذرة الأكسجين هو 48pm ؛ r2 نصف قطر ذرة الكربون هو 67pm ؛ d المسافة بين مركزي الذرتين هي 0,112nm . 1) أعط الكتابة العلمية لكل من r1 ؛ r2 و d . 2) ما هو طول جزيء ثاني أكسيد الكربون؟ استعن بالجدول التالي (البادئات: تيرا 10^12 ، جيغا 10^9 ، ميغا 10^6 ، كيلو 10^3 ، هكتو 10^2 ، ديكا 10^1 ؛ ديسي 10^-1 ، سنتي 10^-2 ، ميلي 10^-3 ، ميكرو 10^-6 ، نانو 10^-9 ، بيكو 10^-12). توجيهات — قراءة وفهم الوضعية: 1) ما دلالة كل من r1 ؛ r2 ؛ d ؟ 2) ما دلالة pm ؛ nm ؟ 3) ما هو المطلوب؟ تحليل الوضعية واختيار استراتيجية حل مناسبة: 1) كيف نكتب عددا عشريا كتابة علمية؟ 2) ما هي الوحدة المناسبة التي نختارها لتحويل الأطوال المعطاة إليها. 3) هل الشكل متناظر؟ أعط عبارة مبسطة لطول الجزيء بدلالة r1 ؛ r2 ؛ d . حل مختصر: 1pm = 10^-12 m ؛ r1 = 48pm = 48 × 10^-12 m ؛ r1 = 48p = 48 × 10^-11 m ؛ r2 = 67pm = 1,7 × 10^-11 m ؛ 1nm : d = 0,112nm ؛ d = 0,112 × 10^-9 m ؛ d = 1,12 × 10^-10 m ؛ d = 2(r1 + r2 + d) ؛ 4,54 × 10^-10 m ؛ 4,54 × 10^-7 nm .",
-   "reading": "jeu de préfixes : le tableau imprime « 10^-12 » sous تيرا et « 10^6 » sous جيغا (coquilles, voir discrepancies)",
+   "reading": "jeu de préfixes : le tableau imprime « 10^-12 » sous تيرا et « 10^6 » sous جيغا (coquilles, voir discrepancies) Relu par la synthèse (2026-10-28) à 110 dpi (pdf pp. 52–53) : conforme ; réécrit avec d'autres nombres.",
    "answer": {
     "r1": "4,8 × 10^-11 m",
     "r2": "6,7 × 10^-11 m",
@@ -3084,13 +3084,14 @@
    "kind": "integration",
    "page": 52,
    "section": "وضعية للتقويم",
-   "verified": false,
+   "verified": true,
    "text": "1) يحتوي 1mm³ من الدم على 4 500 000 كرية دم حمراء، ويحتوي جسم الإنسان على 6L من الدم. كم كرية حمراء يحتوي عليها؟ 2) شكل الكرية الحمراء قابل للتشبيه مع أسطوانة قطرها 7,5µm وارتفاعها 2µm (1µm = 10^-3 mm). إذا تراكمت الكريات الحمراء ؛ ما هو ارتفاع العمود المتحصّل عليه؟",
    "answer": {
     "cells": "2,7 × 10^13",
     "column": "5,4 × 10^7 m"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la synthèse (2026-10-28) à 110 dpi (pdf pp. 52–53) : conforme ; réécrit avec d'autres nombres."
   },
   {
    "id": "ict",
@@ -3098,7 +3099,7 @@
    "page": 53,
    "section": "أوظّف تكنولوجيات الإعلام والاتصال",
    "title": "حساب قوى عدد نسبي باستعمال مجدول إكسال",
-   "verified": false,
+   "verified": true,
    "text": "مكافأة «سيسا»: وعد «شيران» وهو ملك هندي، «سيسا» مخترع لعبة الشطرنج، بأن يعطيه كل ما يطلبه مكافأة له على اختراعه ؛ وطلب منه ما يريد، فأجاب سيسا: أعطني حبة قمح في الخانة الأولى من لعبة الشطرنج، وحبتين في الخانة الثانية وأربع حبات في الخانة الثالثة وهكذا بوضع الضعف في الخانة الموالية حتى الخانة الرابعة والستين. 1) هل تظن كما ظن الملك أن هذا الطلب متواضع جدا؟ 2) ما هو عدد حبات القمح في كل خانة؟ 3) ما هو عدد حبات القمح الإجمالي؟ 4) إذا كانت حبة القمح تزن 50mg ما هي بالطن الكمية اللازمة؟ 5) إذا كانت حصيلة القمح السنوية هي 50 000 طن، كم من سنة يلزم الملك للوفاء بعهده؟ حل: (مجدول: A رقم الخانة، B عدد حبات القمح ؛ A3 = A2+1 ؛ B3 = B2*2 ؛ سحب القاعدتين حتى B65 ؛ D2 = SOMME(B2:B65)).",
    "answer": {
     "cell_n": "2^(n−1)",
@@ -3107,7 +3108,8 @@
     "tonnes": "9,2233720368547758075 × 10^11",
     "years": "1,8446744073709551615 × 10^7"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la synthèse (2026-10-28) à 110 dpi (pdf pp. 52–53) : conforme ; réécrit avec d'autres nombres."
   }
  ],
  "discrepancies": [
@@ -3795,15 +3797,18 @@
   },
   "integration": {
    "lesson": "wadiya-idmajiya-quwa-nisbiya",
-   "module": null
+   "module": 8,
+   "note": "redessinée : la feuille d'or de Nour (288 pm, 0,1 µm) ; et la banque (feuille adaptée « طول جزيء », module practice)"
   },
   "evaluation": {
    "lesson": "wadiya-idmajiya-quwa-nisbiya",
-   "module": null
+   "module": 4,
+   "note": "situation 4 « الكريات الحمراء » (autres nombres) ; et la banque (feuille adaptée)"
   },
   "ict": {
    "lesson": "wadiya-idmajiya-quwa-nisbiya",
-   "module": null
+   "module": 1,
+   "note": "situation 1 « رقعة القمح » (2ⁿ, rang de grandeur, masse) ; et la banque (feuille adaptée « تضاعف خانات لوحة »)"
   }
  }
 }

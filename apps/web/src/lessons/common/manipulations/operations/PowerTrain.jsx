@@ -13,6 +13,10 @@ import { LabCard, StageFrame, PromptCard, VerdictBanner, StepperCard } from '../
 import { SvgPill } from '../primitives/SvgPill';
 import KidFigure from '../primitives/KidFigure';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { TrainDefs, Backdrop, Locomotive, Wagon, Knob } from './powerTrain/TrainArt';
 import { LEVELS } from '../levels';
 import * as L from '../logic/powerTrain';
@@ -56,6 +60,12 @@ import * as L from '../logic/powerTrain';
  *
  * ONBOARDING : `coach` (défaut true) → `LabCoach` ; `logic/powerTrain.js › coachOf` (grab · try · divide · next ; couple : grabB ·
  * tryB) montre la poignée, −/+ ou « التالي », jamais le nombre de wagons.
+ *
+ * QUESTIONS PENDANT LE LABO (2026-10-28, lot 6) : après chaque tâche une suite de 2 questions se pose PAR-DESSUS le labo (`CHAINS` par monde et niveau, `QUESTIONS` en bas du fichier) sur ce
+ * que l'élève vient de FAIRE avec SON train : le nombre de wagons, la charge après deux wagons, l'inversion du signe, le train vide, la parité, les wagons « ÷ », l'exposant d'un train
+ * attelé ; la dernière tâche de chaque monde et niveau finit par LA RÈGLE (la découverte d'avant passe dans la carte). Étapes `LabStepper` (`[data-pt-step=<i>]`) + fête ; « إعادة » repart
+ * de la tâche 1 ; obligatoires pour tout élève, coupées par l'enseignant pour SON compte (`useLabCheckpointSettings`) ; `checkpoints` = false les coupe aussi ; `onCheckpoint(ev)` : la trace
+ * (`checkpoint-done`) que les étapes du module relisent.
  *
  * Props (contrat fixé avec la leçon) : `world` ('build' | 'couple'), `base`, `targets` (build : charges cibles, textes « 16 »,
  * « -1/27 »), `tasks` (couple : [{ m, target, op: 'times'|'divide' }]), `level`, `levels`, `coach`, `title`, `lead`,
@@ -103,8 +113,8 @@ export function numbersFor({ world, base, targets, tasks, level }) {
 const loadTex = (t) => P.ratTex(P.parseRat(t));
 
 export default function PowerTrain({
-  world, base, targets, tasks, title, lead, level, levels: withLevels = true, coach: coachOn = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  world, base, targets, tasks, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
+  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished, onCheckpoint,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
@@ -113,16 +123,63 @@ export default function PowerTrain({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
   if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    const restart = scene.key === numsKey && scene.rc !== state.resetCount;
-    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-    setLab(restart ? L.restartTask(lab) : L.init(nums));
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la tâche 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
+    setLab(L.init(nums));
   }
   const W0 = lab.world;
   const advanced = resolveLevelId(state.level) === 'advanced';
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : la suite de la tâche courante ; celle qui finit par la règle remplace la découverte automatique
+  const cpSettings = useLabCheckpointSettings('power-train');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cur = L.taskOf(lab);
+  const chain = cpOn && cpSettings.enabled && !L.isFree(lab) ? chainOf(lab, cur, advanced) : null;
+  const ruleByCheckpoint = cpOn && cpSettings.enabled && lab.tasks.some((tk) => chainOf(lab, tk, advanced)?.includes('rule'));
+  const taskReached = L.taskDone(lab);
+  const cp = useLabCheckpoint({
+    id: chain ? cur.id : null,
+    questions: chain && taskReached ? chain.map((q) => QUESTIONS[q](lab, cur, k, advanced)) : null,
+    reached: taskReached,
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.retryTask),
+    onEvent: (ev) => state.report(onCheckpoint, ev),
+    onDone: (id) => { if (chainOf(lab, lab.tasks.find((tk) => tk.id === id), advanced)?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  useEffect(() => { if (ready && !ruleByCheckpoint) state.discover(); }, [ready, state.epoch, ruleByCheckpoint]); // eslint-disable-line react-hooks/exhaustive-deps
+  // une étape est FAITE quand sa charge est atteinte ET que ses questions sont répondues : alors la pastille passe au vert et on fête
+  const stepDone = lab.tasks.map((_, i) => !!lab.done[i] && (i !== lab.ti || !cp.blocking));
+  const stepper = lab.tasks.length > 1 && !L.isFree(lab) && (
+    <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-pt-step" />
+  );
+  const party = useStepCelebration();
+  const celebrated = useRef({ inits: 0, set: new Set() });
+  if (celebrated.current.inits !== scene.inits) celebrated.current = { inits: scene.inits, set: new Set() };   // « إعادة » : on refête
+  const nowDone = !L.isFree(lab) && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.set.has(lab.ti)) return;
+    celebrated.current.set.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
+  /* ── le son (muet sauf « الصوت ») : un cran à chaque wagon de plus ou de moins (plus grave en retirant), la cloche quand la charge change de signe, le drapeau quand la cible est atteinte, « over » pour un lâcher raté ── */
+  const heardAt = useRef({ n: lab.n, at: 0, key: '' });
+  const sfxKey = `${scene.inits}:${lab.ti}`;
+  useEffect(() => {
+    const h = heardAt.current;
+    if (h.key !== sfxKey) { heardAt.current = { n: lab.n, at: 0, key: sfxKey }; return; }
+    if (lab.n !== h.n) {
+      const now = performance.now();
+      if (now - h.at > 35) { playSfx('tooth', { pitch: lab.n > h.n ? 1 : 0.75 }); h.at = now; }
+      if (lab.world === 'build' && P.sign(P.pow(L.baseOf(lab), lab.n)) !== P.sign(P.pow(L.baseOf(lab), h.n))) playSfx('bell');
+      h.n = lab.n;
+    }
+  }, [lab.n, sfxKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    const l = lab.last;
+    if (!l || l.free) return;
+    playSfx(l.ok ? 'flag' : 'over');
+  }, [lab.trials.length]); // eslint-disable-line react-hooks/exhaustive-deps
   const finishedOnce = useRef(false);
   useEffect(() => {
     if (!ready) { finishedOnce.current = false; return; }
@@ -174,6 +231,8 @@ export default function PowerTrain({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       coach={coachOn ? coach : null}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={!!chain || ruleByCheckpoint}
       hints={[0, 1, 2].map((i) => k(`hints.${W0}.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={discovery}
@@ -184,7 +243,7 @@ export default function PowerTrain({
           data-solved={ready ? 'true' : 'false'} data-layout={width >= WIDE_MIN ? 'wide' : 'narrow'}>
           <style dangerouslySetInnerHTML={{ __html: CSS }} />
           <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} advanced={advanced}
-            lead={state.isAuthoredLevel ? lead : null} />
+            lead={state.isAuthoredLevel ? lead : null} overlay={<>{party.node}{cp.node}</>} stepsNode={stepper} blocked={cp.blocking} />
         </div>
       </ManipulationStage>
     </ManipulationShell>
@@ -193,7 +252,7 @@ export default function PowerTrain({
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-function Lab({ lab, setLab, k, width, screenH, advanced, lead }) {
+function Lab({ lab, setLab, k, width, screenH, advanced, lead, overlay, stepsNode, blocked }) {
   const uid = `pt${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
   const couple = lab.world === 'couple';
   const free = L.isFree(lab);
@@ -216,24 +275,9 @@ function Lab({ lab, setLab, k, width, screenH, advanced, lead }) {
   const question = free ? k('question.free')
     : couple ? k(`question.couple.${task.op}`, { target: iso(minus(task.target)) })
       : k('question.build', { target: iso(minus(task.target)) });
-  const steps = lab.tasks.length > 1 && !free && (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      <span className="text-xs font-black text-indigo-900/60" aria-hidden="true">{k('stepsLabel')}</span>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={tk.id} role="listitem" data-pt-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-indigo-600 bg-indigo-600 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-indigo-100 bg-white text-indigo-400'}`}>
-            {d && !cur ? <Check className="h-3.5 w-3.5" strokeWidth={3} aria-hidden="true" /> : <bdi dir="ltr">{i + 1}</bdi>}
-          </span>
-        );
-      })}
-    </div>
-  );
   const lit = !free && done;
   const prompt = (
-    <PromptCard size={wide ? 'lg' : 'md'} aside={steps || null} context={context} contextProps={{ 'data-pt-context': free ? 'free' : lab.world }}
+    <PromptCard size={wide ? 'lg' : 'md'} aside={stepsNode || null} context={context} contextProps={{ 'data-pt-context': free ? 'free' : lab.world }}
       title={question} titleClassName={wide ? 'text-xl' : 'text-lg'} lamp={free ? null : lit ? 'on' : 'off'}
       titleProps={{ 'data-pt-prompt': free ? 'free' : lab.world, 'data-lit': lit ? 'true' : 'false' }} />
   );
@@ -277,7 +321,7 @@ function Lab({ lab, setLab, k, width, screenH, advanced, lead }) {
   const vkey = !last ? '' : last.free ? 'free' : last.ok ? 'right' : 'load';
   const tone = !last ? 'indigo' : last.ok && !last.free ? 'emerald' : 'amber';
   const Icon = !last ? Hand : last.ok && !last.free ? CheckCircle2 : Sparkles;
-  const canNext = L.canNext(lab);
+  const canNext = L.canNext(lab) && !blocked;
   const banner = (
     <VerdictBanner tone={tone} icon={wide ? Icon : null} size="sm" className="min-h-[3.5rem]" data-pt-verdict={vkey}>
       <div className="flex items-start gap-2">
@@ -307,6 +351,7 @@ function Lab({ lab, setLab, k, width, screenH, advanced, lead }) {
   return (
     <>
       <div className="relative space-y-2.5" data-pt-glance>
+        {overlay}
         {prompt}
         {wide ? (
           <div className="flex items-start gap-3">
@@ -696,3 +741,209 @@ export function Formal({ lab, advanced, k }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de chaque tâche, par monde et niveau : ce que la main vient de faire avec SON train ; la dernière tâche de chaque suite de tâches finit par LA RÈGLE. */
+export const CHAINS = Object.freeze({
+  'build.beginner': { b0: ['wagons', 'twoWagons'], b1: ['wagons', 'flip'], b2: ['zero', 'rule'] },
+  'build.advanced': { b0: ['wagons', 'flip'], b1: ['wagons', 'parity'], b2: ['divide', 'invLoad'], b3: ['divide', 'rule'] },
+  'couple.beginner': { c0: ['coupleN', 'sum'], c1: ['sum', 'negN'], c2: ['sum', 'rule'] },
+  'couple.advanced': { c0: ['coupleN', 'sum'], c1: ['sum', 'rule'] },
+});
+/** La suite de la tâche `task` du monde et du niveau courants, ou null (tâche inconnue : les indices et la progression reviennent). */
+export const chainOf = (lab, task, advanced) => CHAINS[`${lab.world}.${advanced ? 'advanced' : 'beginner'}`]?.[task?.id] ?? null;
+
+const $ = (s) => `$${s}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+/** « -2 », « 1/9 » → « $-2$ », « $\\frac{1}{9}$ » (accepte un rationnel ou son texte). */
+const tx = (r) => $(P.ratTex(typeof r === 'string' ? P.parseRat(r) : r));
+const bx = (a) => $(P.baseTex(P.parseRat(String(a))));
+const num = (n) => $(String(n).replace('-', '−'));
+const place = (opts, want) => {
+  const ci = opts.findIndex((o) => o.correct);
+  const rest = opts.filter((_, i) => i !== ci);
+  rest.splice(Math.min(want, rest.length), 0, opts[ci]);
+  return rest;
+};
+const distinct = (list, count = 3) => { const seen = new Set(); const out = []; for (const x of list) { if (!seen.has(x.v)) { seen.add(x.v); out.push(x); } } return out.slice(0, count); };
+const val = (a, n) => P.pow(P.parseRat(String(a)), n);
+
+/** Chaque question est construite sur LA tâche et la base (rien n'est écrit en dur) ; `k` : les textes de `powerTrain`. */
+export const QUESTIONS = {
+  /* combien de wagons « × a » pour la charge cible */
+  wagons: (lab, task, k) => {
+    const a = lab.base; const n = task.goal;
+    return {
+      id: 'wagons', kind: 'number', expected: String(n), answer: <MathText>{num(n)}</MathText>,
+      prompt: Cq(k, 'wagons.prompt', { load: tx(task.target), a: bx(a) }),
+      hints: [Cq(k, 'wagons.hint1', { load: tx(task.target), a: bx(a) }), Cq(k, 'wagons.hint2')],
+      explain: Cq(k, 'wagons.explain', { calc: $(`${P.powTex(a, n)}=${P.factorsTex(a, n)}=${P.ratTex(P.parseRat(task.target))}`), n }),
+    };
+  },
+  /* la charge après deux wagons : un produit, pas une somme */
+  twoWagons: (lab, task, k) => {
+    const a = lab.base; const A = P.parseRat(a);
+    const good = val(a, 2);
+    const o = { a: bx(a), good: tx(good) };
+    const mk = (r, why) => ({ v: P.ratText(r), text: <MathText>{tx(r)}</MathText>, ...(why ? { why } : { correct: true }) });
+    const opts = distinct([
+      mk(good),
+      mk(P.add(A, A), Cq(k, 'twoWagons.whyAdd', { ...o, x: tx(P.add(A, A)) })),
+      mk(P.neg(good), Cq(k, 'twoWagons.whyOther', { ...o, x: tx(P.neg(good)) })),
+      mk(val(a, 3), Cq(k, 'twoWagons.whyOther', { ...o, x: tx(val(a, 3)) })),
+    ]);
+    return {
+      id: 'twoWagons', kind: 'choice', cols: 3,
+      prompt: Cq(k, 'twoWagons.prompt'),
+      options: place(opts, (lab.ti + 1) % 3),
+      hints: [Cq(k, 'twoWagons.hint1', o), Cq(k, 'twoWagons.hint2', o)],
+      explain: Cq(k, 'twoWagons.explain', { ...o, calc: $(`1\\times${P.baseTex(A)}\\times${P.baseTex(A)}=${P.ratTex(good)}`) }),
+    };
+  },
+  /* la base est négative : l'étiquette change de signe à chaque wagon */
+  flip: (lab, task, k) => {
+    const a = lab.base;
+    const o = { a: bx(a), x1: tx(val(a, 1)), x2: tx(val(a, 2)), x3: tx(val(a, 3)) };
+    const opts = [
+      { text: Cq(k, 'flip.right'), correct: true },
+      { text: Cq(k, 'flip.stay'), why: Cq(k, 'flip.whyStay', o) },
+      { text: Cq(k, 'flip.pos'), why: Cq(k, 'flip.whyPos', o) },
+    ];
+    return {
+      id: 'flip', kind: 'choice', cols: 1,
+      prompt: Cq(k, 'flip.prompt'),
+      options: place(opts, (lab.ti + 1) % 3),
+      hints: [Cq(k, 'flip.hint1'), Cq(k, 'flip.hint2')],
+      explain: Cq(k, 'flip.explain', o),
+    };
+  },
+  /* le train vide porte 1 */
+  zero: (lab, task, k) => {
+    const a = lab.base;
+    const opts = [
+      { text: <MathText>{$('1')}</MathText>, correct: true },
+      { text: <MathText>{$('0')}</MathText>, why: Cq(k, 'zero.whyZero') },
+      { text: <MathText>{bx(a)}</MathText>, why: Cq(k, 'zero.whyBase', { a: bx(a) }) },
+    ];
+    return {
+      id: 'zero', kind: 'choice', cols: 3,
+      prompt: Cq(k, 'zero.prompt'),
+      options: place(opts, (lab.ti + 2) % 3),
+      hints: [Cq(k, 'zero.hint1'), Cq(k, 'zero.hint2')],
+      explain: Cq(k, 'zero.explain', { calc: $(`${P.powTex(a, 0)}=1`) }),
+    };
+  },
+  /* pair / impair */
+  parity: (lab, task, k) => {
+    const a = lab.base; const n = task.goal; const m = n - 1;
+    const o = { n, m, load: tx(task.target), prev: tx(val(a, m)), one: tx(val(a, 1)) };
+    const opts = [
+      { text: Cq(k, 'parity.even'), correct: true },
+      { text: Cq(k, 'parity.odd'), why: Cq(k, 'parity.whyOdd', o) },
+      { text: Cq(k, 'parity.always'), why: Cq(k, 'parity.whyAlways', o) },
+    ];
+    return {
+      id: 'parity', kind: 'choice', cols: 1,
+      prompt: Cq(k, 'parity.prompt', o),
+      options: place(opts, (lab.ti + 2) % 3),
+      hints: [Cq(k, 'parity.hint1'), Cq(k, 'parity.hint2')],
+      explain: Cq(k, 'parity.explain'),
+    };
+  },
+  /* combien de wagons « ÷ a » */
+  divide: (lab, task, k) => {
+    const a = lab.base; const c = Math.abs(task.goal);
+    const aT = P.baseTex(P.parseRat(a));
+    return {
+      id: 'divide', kind: 'number', expected: String(c), answer: <MathText>{num(c)}</MathText>,
+      prompt: Cq(k, 'divide.prompt', { load: tx(task.target), a: bx(a) }),
+      hints: [Cq(k, 'divide.hint1'), Cq(k, 'divide.hint2', { load: tx(task.target), a: bx(a) })],
+      explain: Cq(k, 'divide.explain', { calc: $(`1${`\\div${aT}`.repeat(c)}=${P.ratTex(P.parseRat(task.target))}`), n: c }),
+    };
+  },
+  /* la charge de wagons « ÷ » : un inverse */
+  invLoad: (lab, task, k) => {
+    const a = lab.base; const c = Math.abs(task.goal);
+    const A = P.parseRat(a);
+    const good = P.parseRat(task.target);
+    const times = val(a, c);
+    const o = { a: bx(a), c, good: tx(good) };
+    const mk = (r, why) => ({ v: P.ratText(r), text: <MathText>{tx(r)}</MathText>, ...(why ? { why } : { correct: true }) });
+    const opts = distinct([
+      mk(good),
+      mk(times, Cq(k, 'invLoad.whyTimes', { ...o, x: tx(times) })),
+      mk(P.neg(times), Cq(k, 'invLoad.whyOther', { ...o, x: tx(P.neg(times)) })),
+      mk(P.neg(good), Cq(k, 'invLoad.whyOther', { ...o, x: tx(P.neg(good)) })),
+    ]);
+    return {
+      id: 'invLoad', kind: 'choice', cols: 3,
+      prompt: Cq(k, 'invLoad.prompt', { ...o, div: $(`1${`\\div${P.baseTex(A)}`.repeat(c)}`) }),
+      options: place(opts, (lab.ti + 1) % 3),
+      hints: [Cq(k, 'invLoad.hint1', o), Cq(k, 'invLoad.hint2')],
+      explain: Cq(k, 'invLoad.explain', { calc: $(`1${`\\div${P.baseTex(A)}`.repeat(c)}=${P.ratTex(good)}`) }),
+    };
+  },
+  /* monde couple : combien de wagons dans le train B */
+  coupleN: (lab, task, k) => {
+    const a = lab.base; const n = task.goal;
+    return {
+      id: 'coupleN', kind: 'number', expected: String(n), answer: <MathText>{num(n)}</MathText>,
+      prompt: Cq(k, 'coupleN.prompt', { m: num(task.m), target: num(task.target) }),
+      hints: [Cq(k, 'coupleN.hint1'), Cq(k, 'coupleN.hint2')],
+      explain: Cq(k, 'coupleN.explain', { calc: $(`${task.target}-${task.m < 0 ? `(${task.m})` : task.m}=${n}`), n }),
+    };
+  },
+  /* monde couple : l'exposant du train attelé (somme ou différence) */
+  sum: (lab, task, k) => {
+    const a = lab.base; const m = task.m; const n = task.goal; const times = task.op !== 'divide';
+    const e = times ? m + n : m - n;
+    const p = m * n;
+    const other = times ? m - n : m + n;
+    const o = { m: num(m), n: num(n), e: num(e), p: num(p), x: num(other) };
+    const mk = (v, why) => ({ v, text: <MathText>{num(v)}</MathText>, ...(why ? { why } : { correct: true }) });
+    const opts = distinct([
+      mk(e),
+      mk(p, Cq(k, times ? 'sum.whyProductTimes' : 'sum.whyProductDivide', o)),
+      mk(other, Cq(k, times ? 'sum.whySubWrong' : 'sum.whyAddWrong', o)),
+      mk(e + 1, Cq(k, times ? 'sum.whySubWrong' : 'sum.whyAddWrong', { ...o, x: num(e + 1) })),
+    ]);
+    const A = P.baseTex(P.parseRat(a));
+    const calc = times ? `${A}^{${m}}\\times${A}^{${n}}=${A}^{${m}+(${n})}=${A}^{${e}}` : `\\frac{${A}^{${m}}}{${A}^{${n}}}=${A}^{${m}-(${n})}=${A}^{${e}}`;
+    return {
+      id: 'sum', kind: 'choice', cols: 3,
+      prompt: Cq(k, times ? 'sum.promptTimes' : 'sum.promptDivide', o),
+      options: place(opts, (lab.ti + 2) % 3),
+      hints: [Cq(k, times ? 'sum.hint1Times' : 'sum.hint1Divide'), Cq(k, times ? 'sum.hint2Times' : 'sum.hint2Divide')],
+      explain: Cq(k, 'sum.explain', { calc: $(calc) }),
+    };
+  },
+  /* monde couple : un exposant négatif = des wagons « ÷ » */
+  negN: (lab, task, k) => {
+    const n = task.goal;
+    const o = { n: num(n), c: Math.abs(n) };
+    const opts = [
+      { text: Cq(k, 'negN.right'), correct: true },
+      { text: Cq(k, 'negN.empty'), why: Cq(k, 'negN.whyEmpty', o) },
+      { text: Cq(k, 'negN.longer'), why: Cq(k, 'negN.whyLonger', o) },
+    ];
+    return {
+      id: 'negN', kind: 'choice', cols: 1,
+      prompt: Cq(k, 'negN.prompt', o),
+      options: place(opts, 1),
+      hints: [Cq(k, 'negN.hint1'), Cq(k, 'negN.hint2')],
+      explain: Cq(k, 'negN.explain', o),
+    };
+  },
+  /* la règle : l'ancienne découverte, posée en dernier */
+  rule: (lab, task, k, advanced) => {
+    const key = discoveryKey(lab, advanced);
+    return {
+      id: 'rule', kind: 'choice', cols: 1,
+      prompt: <MathText>{k(`discovery.${key}.prompt`)}</MathText>,
+      options: place(discoveryOptions(lab, advanced, k), 2),
+      hints: [Cq(k, `rule.${key}.hint1`), Cq(k, `rule.${key}.hint2`)],
+      explain: <Formal lab={lab} advanced={advanced} k={k} />,
+    };
+  },
+};

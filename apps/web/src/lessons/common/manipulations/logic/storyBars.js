@@ -204,6 +204,11 @@ export function init(id) {
 }
 /** « إعادة » : tout recommencer, mémoire des essais comprise. */
 export const reset = (s) => init(s.story);
+/** « أعِد التجربة » (questions du labo) : l'item en cours repart de zéro (stretch) ; en mode cartes, la scène entière (une seule suite). */
+export function retryItem(s) {
+  if (s.mode !== 'stretch') return init(s.story);
+  return put(s, { items: withItem(s, s.cur, { h: defaultHeight(s.story), stretchOk: false, calcOk: false, ghost: null }), last: null });
+}
 
 /* ── Mode stretch ─────────────────────────────────────────────────────────────────── */
 

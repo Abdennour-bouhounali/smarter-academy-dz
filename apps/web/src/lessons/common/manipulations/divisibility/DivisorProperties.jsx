@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
@@ -13,7 +13,15 @@ import BrickWall from '../primitives/BrickWall';
 import EquationDisplay from '../primitives/EquationDisplay';
 import { measureLayout } from '../primitives/brickLayout';
 import { useLabCoach } from '../primitives/LabCoach';
+import MathText from '../../components/MathText';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { ordered } from './cpOrder';
 import * as L from '../logic/divisorProperties';
+
+const NS = 'manipulation.props';
 
 /**
  * divisor-properties — LE CHANTIER DES MURS EN BRIQUES DE n.
@@ -37,6 +45,11 @@ import * as L from '../logic/divisorProperties';
  * ONBOARDING (prop `coach`, défaut true — `LabCoach`, §8quater) : `logic/divisorProperties.js › coachOf` montre le mur de b à porter
  * (et, au niveau avancé, la prédiction à choisir d'abord) ; la zone est désignée par son rang, jamais par ses mots.
  *
+ * QUESTIONS PENDANT LE LABO (2026-10-28, `primitives/LabCheckpoint`) : TROIS ÉTAPES (`LabStepper`, `[data-dp-step=<i>]`), une par mur bâti (a + b, a − b, le reste) ; chaque mur
+ * pose sa suite de questions (`CHAINS`, textes dans `props.cp.*`) par-dessus le chantier, dans l'ordre où l'élève les bâtit ; la suite du dernier mur (le reste) finit par
+ * la RÈGLE, qui remplace la découverte automatique et formalise dans `onDone`. Obligatoires pour tout élève ; l'enseignant seul les coupe (`useLabCheckpointSettings`).
+ * Le guide `LabCoach` se tait pendant une question. SON : `tooth` par mur posé, `flag` quand les trois sont bâtis, `over` pour un geste refusé.
+ *
  * Thème `construction` (packages/core VISUAL_THEMES). Le geste est le même
  * à tous les niveaux ; au niveau avancé (900, 90, 9) les briques sont trop
  * petites pour être comptées : l'élève PRÉDIT avec la propriété — « طوب كامل »
@@ -54,17 +67,65 @@ const ZONES = Object.freeze([
 const targetOfZone = (zoneId) => ZONES.find((z) => `zone:${z.id}` === zoneId)?.target ?? null;
 
 export default function DivisorProperties({
-  n: n0, a: a0, b: b0, title, lead, mission, initialMode = 'student', allowModeSwitch = false, onFinished, coach: coachOn = true,
+  n: n0, a: a0, b: b0, title, lead, mission, initialMode = 'student', allowModeSwitch = false, onFinished, onTrial, coach: coachOn = true, checkpoints: cpOn = true,
 }) {
   const { t } = useTranslation('lesson');
   const state = useManipulation({ type: 'divisor-properties', initialNumbers: { n: n0, a: a0, b: b0 }, initialMode, hintCount: 3 });
   const { n, a, b } = state.numbers;
+  const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
   const [lab, setLab] = useState(() => L.init({ n: n0, a: a0, b: b0 }));
   const [reject, setReject] = useState(null);
 
-  useEffect(() => { setLab(L.init({ n, a, b })); setReject(null); }, [n, a, b, state.epoch]);
+  // « إعادة », d'autres nombres ou un autre niveau : TOUT recommence — les murs, les questions du labo, la fête
+  const sceneKey = `${n}|${a}|${b}|${state.epoch}|${state.resetCount}`;
+  const [scene, setScene] = useState(sceneKey);
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init({ n, a, b })); setReject(null); }
+  const [answered, setAnswered] = useState({ key: sceneKey, ids: [] });
+  const answeredIds = answered.key === sceneKey ? answered.ids : [];
+
+  // les questions pendant le labo : la suite du premier mur bâti dont les questions ne sont pas finies
+  const cpSettings = useLabCheckpointSettings('divisor-properties');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const ruleByCheckpoint = cpOn && cpSettings.enabled;
+  const pending = ruleByCheckpoint ? lab.built.find((x) => !answeredIds.includes(x)) : null;
+  const chain = pending ? CHAINS[pending] : null;
+  const cp = useLabCheckpoint({
+    id: chain ? pending : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q]({ n, a, b, lab }, k)) : null,
+    reached: true,
+    resetKey: sceneKey,
+    onRetry: () => setLab((s) => ({ ...s, built: s.built.filter((x) => x !== pending) })),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setAnswered((x) => ({ key: sceneKey, ids: [...(x.key === sceneKey ? x.ids : []), id] }));
+      if (CHAINS[id].includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const stepDone = L.TARGETS.map((x) => lab.built.includes(x) && (!ruleByCheckpoint || answeredIds.includes(x)));
+  const party = useStepCelebration();
+  const celebrated = useRef({ key: sceneKey, set: new Set() });
+  if (celebrated.current.key !== sceneKey) celebrated.current = { key: sceneKey, set: new Set() };
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.set.has(i)) return;
+      celebrated.current.set.add(i);
+      party.celebrate({ n: stepDone.filter(Boolean).length, total: L.TARGETS.length });
+    });
+  }, [stepDone.join()]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // le son : un pas par mur posé, le drapeau quand les trois sont bâtis
+  const heard = useRef({ built: 0, at: 0 });
+  useEffect(() => {
+    const h = heard.current;
+    if (lab.built.length !== h.built) {
+      const now = Date.now();
+      if (lab.built.length < h.built || now - h.at > 35) { playSfx('tooth', { pitch: lab.built.length > h.built ? 1 : 0.75 }); h.at = now; }
+      if (lab.built.length === L.TARGETS.length && h.built < L.TARGETS.length) playSfx('flag');
+      h.built = lab.built.length;
+    }
+  }, [lab.built.length]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const isAdvanced = state.level === 'advanced';
-  const coachStep = coachOn ? L.coachOf(lab, { advanced: isAdvanced }) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab, { advanced: isAdvanced }) : null;
   const coachK = (key, o) => t(`manipulation.props.coach.${key}`, o);
   const coach = useLabCoach({
     lab: 'divisor-properties', step: coachStep, text: coachStep ? coachK(coachStep.id === 'carry-next' ? 'carryNext' : coachStep.id, { zone: coachK(`zone${coachStep.rank}`) }) : '',
@@ -89,11 +150,11 @@ export default function DivisorProperties({
       }
       return 'wrongZone';
     },
-    onReject: (_s, _z, reason) => setReject(reason),
+    onReject: (_s, _z, reason) => { if (reason) playSfx('over'); setReject(reason); },
   });
 
   // La découverte suit les trois murs bâtis — dans un effet, pas un updater.
-  const ready = L.discoveryReady(lab);
+  const ready = L.discoveryReady(lab) && !ruleByCheckpoint;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -144,6 +205,8 @@ export default function DivisorProperties({
       numberFields={[{ key: 'n', label: 'n' }, { key: 'a', label: 'a' }, { key: 'b', label: 'b' }]}
       validate={(x) => (x.a % x.n !== 0 || x.b % x.n !== 0 ? t('manipulation.props.mustDivideBoth') : x.a < x.b ? t('manipulation.props.aBeforeB') : '')}
       allowModeSwitch={allowModeSwitch}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={!!chain || ruleByCheckpoint}
       hints={[t('manipulation.props.hint1', { a, b }), t('manipulation.props.hint2'), t('manipulation.props.hint3', { n })]}
       // (réf. §6bis : MANUEL — trois opérations distinctes, rien ne se répète.)
       controller={{
@@ -182,8 +245,12 @@ export default function DivisorProperties({
       )}
       explanation={t('manipulation.props.explanation')}
     >
+      <div className="relative min-h-[600px]" data-dp-glance>
+      {party.node}
+      {cp.node}
       <ManipulationStage dragging={drag.dragging} className="bg-gradient-to-b from-orange-50/60 to-white">
         <div className="space-y-3" data-brick-site>
+          <LabStepper count={L.TARGETS.length} current={Math.max(0, stepDone.indexOf(false))} done={stepDone} stepAttr="data-dp-step" />
           {/* ── LES DEUX MURS, bâtis en briques de n, à la même échelle ──── */}
           <div className="space-y-2 rounded-2xl border-2 border-slate-200 bg-white p-2">
             <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-slate-700">
@@ -248,6 +315,7 @@ export default function DivisorProperties({
           {reject && <p role="status" className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">{t(`manipulation.props.reject.${reject}`)}</p>}
         </div>
       </ManipulationStage>
+      </div>
       <DragGhost ghost={drag.ghost}>
         {heldWall && (
           <span className="flex w-40 items-center gap-2 rounded-xl border-2 border-blue-500 bg-blue-50 px-2 py-1">
@@ -259,3 +327,94 @@ export default function DivisorProperties({
     </ManipulationShell>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de questions de chaque mur bâti : elle interroge ce que l'élève vient de FAIRE ; celle du reste finit par la RÈGLE. */
+export const CHAINS = Object.freeze({
+  sum: ['sumCount', 'sumWhole'],
+  diff: ['diffCount', 'diffWhole'],
+  rem: ['remPanels', 'remBricks', 'rule'],
+});
+
+const $ = (x) => `$${x}$`;
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+
+/** Chaque question est construite sur LES nombres de l'élève (rien n'est écrit en dur) ; `k` : les textes de `props`. */
+const BUILD = {
+  sumCount: ({ n, a, b, lab }, k) => {
+    const c = lab.q + lab.qp;
+    return {
+      id: 'sumCount', kind: 'number', expected: String(c), answer: <MathText>{$(c)}</MathText>,
+      prompt: Mx(k, 'sumCount.prompt', { n, a, b }),
+      hints: [Mx(k, 'sumCount.hint1', { n, a, b, q: lab.q, qp: lab.qp }), Mx(k, 'sumCount.hint2', { q: lab.q, qp: lab.qp })],
+      explain: Mx(k, 'sumCount.explain', { calc: $(`${a}+${b}=${n}\\times(${lab.q}+${lab.qp})=${n}\\times${c}`) }),
+    };
+  },
+  sumWhole: ({ n, a, b, lab }, k) => {
+    const o = { n, a, b, sum: a + b, c: lab.q + lab.qp };
+    return {
+      id: 'sumWhole', kind: 'choice',
+      prompt: Mx(k, 'sumWhole.prompt', o),
+      options: [
+        { text: Mx(k, 'sumWhole.yes'), why: Mx(k, 'sumWhole.whyYes', o) },
+        { text: Mx(k, 'sumWhole.wholeBecause', o), correct: true },
+        { text: Mx(k, 'sumWhole.bigger'), why: Mx(k, 'sumWhole.whyBigger', o) },
+      ],
+      hints: [Mx(k, 'sumWhole.hint1', o), Mx(k, 'sumWhole.hint2', o)],
+      explain: Mx(k, 'sumWhole.explain', o),
+    };
+  },
+  diffCount: ({ n, a, b, lab }, k) => {
+    const c = lab.q - lab.qp;
+    return {
+      id: 'diffCount', kind: 'number', expected: String(c), answer: <MathText>{$(c)}</MathText>,
+      prompt: Mx(k, 'diffCount.prompt', { n, a, b }),
+      hints: [Mx(k, 'diffCount.hint1', { a, q: lab.q, qp: lab.qp }), Mx(k, 'diffCount.hint2', { q: lab.q, qp: lab.qp })],
+      explain: Mx(k, 'diffCount.explain', { calc: $(`${a}-${b}=${n}\\times(${lab.q}-${lab.qp})=${n}\\times${c}`) }),
+    };
+  },
+  diffWhole: ({ n, a, b, lab }, k) => {
+    const o = { n, a, b, diff: a - b, c: lab.q - lab.qp };
+    return {
+      id: 'diffWhole', kind: 'choice',
+      prompt: Mx(k, 'diffWhole.prompt', o),
+      options: [
+        { text: Mx(k, 'diffWhole.smaller', o), why: Mx(k, 'diffWhole.whySmaller', o) },
+        { text: Mx(k, 'diffWhole.wholeBoth', o), correct: true },
+        { text: Mx(k, 'diffWhole.even'), why: Mx(k, 'diffWhole.whyEven', o) },
+      ],
+      hints: [Mx(k, 'diffWhole.hint1', o), Mx(k, 'diffWhole.hint2', o)],
+      explain: Mx(k, 'diffWhole.explain', o),
+    };
+  },
+  remPanels: ({ n, a, b, lab }, k) => ({
+    id: 'remPanels', kind: 'number', expected: String(lab.k), answer: <MathText>{$(lab.k)}</MathText>,
+    prompt: Mx(k, 'remPanels.prompt', { a, b }),
+    hints: [Mx(k, 'remPanels.hint1', { b }), Mx(k, 'remPanels.hint2', { a, b })],
+    explain: Mx(k, 'remPanels.explain', { calc: $(`${a}=${b}\\times${lab.k}+${lab.r}`) }),
+  }),
+  remBricks: ({ n, a, b, lab }, k) => {
+    const c = lab.r / n;
+    const o = { n, a, b, r: lab.r, c };
+    return {
+      id: 'remBricks', kind: 'number', expected: String(c), answer: <MathText>{$(c)}</MathText>,
+      prompt: Mx(k, 'remBricks.prompt', o),
+      hints: [Mx(k, 'remBricks.hint1', o), Mx(k, 'remBricks.hint2', o)],
+      explain: Mx(k, 'remBricks.explain', { calc: $(`${lab.r}=${n}\\times${c}`), n }),
+    };
+  },
+  rule: ({ n, lab }, k) => ({
+    id: 'rule', kind: 'choice',
+    prompt: <MathText>{k('discoverPrompt')}</MathText>,
+    options: [
+      { text: <MathText>{k('opt1', { n })}</MathText>, correct: true },
+      { text: <MathText>{k('opt2', { n })}</MathText>, why: <MathText>{k('why2')}</MathText> },
+      { text: <MathText>{k('opt3', { n })}</MathText>, why: <MathText>{k('why3')}</MathText> },
+    ],
+    hints: [Mx(k, 'rule.hint1', { n }), Mx(k, 'rule.hint2', { n, sum: lab.a + lab.b, diff: lab.a - lab.b, r: lab.r })],
+    explain: Mx(k, 'rule.explain', { n }),
+  }),
+};
+
+export const QUESTIONS = ordered(BUILD);

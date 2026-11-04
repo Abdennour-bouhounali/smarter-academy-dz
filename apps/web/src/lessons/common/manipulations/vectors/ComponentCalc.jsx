@@ -8,6 +8,11 @@ import ManipulationStage from '../ManipulationStage';
 import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
 import LabFold from '../primitives/LabFold';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { Mx, $, useTick } from './vecCp';
 import MathText from '../../components/MathText';
 import * as L from '../logic/componentCalc';
 
@@ -83,7 +88,7 @@ const col = ([x, y]) => `\\begin{pmatrix} ${tex(x)} \\\\ ${tex(y)} \\end{pmatrix
 
 export default function ComponentCalc({
   numbers, points: points0, missions: missions0, live: live0, theme = 'game-map', title, lead, mission, level,
-  levels: withLevels = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.componentCalc.${key}`, o), [t]);
@@ -94,8 +99,8 @@ export default function ComponentCalc({
   const make = () => L.init(nums);
   const [lab, setLab] = useState(make);
   const sceneKey = `${JSON.stringify(nums)}|${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); }
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(make()); }   // « إعادة », un autre niveau : la mission 1 et les questions repartent
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
   const m = L.mission(lab);
   const calc = m.kind === 'calc';
@@ -104,7 +109,41 @@ export default function ComponentCalc({
   const [burst, setBurst] = useState(0);
   const coins = lab.solved.filter(Boolean).length * 10 + burst * 3;
 
-  const ready = L.discoveryReady(lab);
+  /* ── les questions PENDANT le labo (primitives/LabCheckpoint) : après chaque porte résolue, une suite sur ce que l'élève vient de faire ;
+     celle de la dernière mission finit par la règle et remplace la découverte automatique. L'enseignant seul peut les couper. ── */
+  const cpSettings = useLabCheckpointSettings('component-calc');
+  const cpEnabled = cpOn && cpSettings.enabled;
+  const chain = cpEnabled ? chainOf(lab, lab.idx) : null;
+  const lastIdx = lab.missions.length - 1;
+  const cp = useLabCheckpoint({
+    id: chain ? `m${lab.idx}` : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, lab.idx, k)) : null,
+    reached: !!solvedNow,
+    resetKey: scene.inits,
+    onRetry: () => { celebrated.current.delete(lab.idx); setLab(L.restartMission); },
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => { if (id === `m${lastIdx}`) { state.discover(); state.formalize(); } },
+  });
+  const solvedAll = L.discoveryReady(lab);
+  const ready = solvedAll && !cpEnabled;
+  const tick = useTick();
+  // une étape est FAITE quand la porte est ouverte ET que ses questions sont répondues : la pastille passe au vert et on fête
+  const stepDone = lab.missions.map((_, i) => !!lab.solved[i] && (i !== lab.idx || !cp.blocking));
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  const nowDone = stepDone[lab.idx];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.idx)) return;
+    celebrated.current.add(lab.idx);
+    party.celebrate({ n: lab.idx + 1, total: lab.missions.length });
+  }, [nowDone, lab.idx]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son : un déclic par geste (compteur, nœud), le drapeau quand la porte s'ouvre, « over » quand le verdict la refuse
+  const trialN = lab.trials.length;
+  useEffect(() => {
+    const tr = lab.trials[trialN - 1];
+    if (tr) playSfx(tr.kind === 'ok' ? 'flag' : 'over');
+  }, [trialN]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (state.isFormal) state.report(onFinished, { missions: lab.missions.length, trials: lab.trials.length });
@@ -158,6 +197,7 @@ export default function ComponentCalc({
   }, []);
   const settleLater = () => { if (settle.current) clearTimeout(settle.current); settle.current = setTimeout(commitPlace, 1100); };
   const nudgePlace = (dx, dy) => {
+    tick(dx + dy < 0 ? 0.75 : 1);
     setLab((s) => {
       const mm = L.mission(s); if (mm.kind !== 'place') return s;
       const [x, y] = L.xy(s.placed[mm.point]);
@@ -178,7 +218,7 @@ export default function ComponentCalc({
     const n = nodeFromEvent(e);
     setLab((s) => L.movePlace(s, n));
   };
-  const onSceneMove = (e) => { if (dragging) { const n = nodeFromEvent(e); setLab((s) => L.movePlace(s, n)); } };
+  const onSceneMove = (e) => { if (dragging) { const n = nodeFromEvent(e); tick(); setLab((s) => L.movePlace(s, n)); } };
   const onSceneUp = (e) => {
     if (!dragging) return;
     e.currentTarget.releasePointerCapture?.(e.pointerId);
@@ -196,6 +236,7 @@ export default function ComponentCalc({
   /* ── les compteurs : le code (calc) ou les coordonnées du point (place) ── */
   const counter = (comp) => (calc ? lab.entry[lab.idx][comp] : L.xy(lab.placed[m.point])[comp]);
   const setCounter = (comp, v) => {
+    tick(v < counter(comp) ? 0.75 : 1);
     if (calc) setLab((s) => L.setEntry(s, comp, v));
     else { setLab((s) => L.setPlaceCoord(s, comp, v)); settleLater(); }
   };
@@ -238,31 +279,7 @@ export default function ComponentCalc({
     return { kind: last.kind, text: k(`p_${last.kind}`, o) };
   })();
 
-  /* ── la découverte : distracteurs réfutés par les essais de l'élève ── */
-  const discoveryOptions = useMemo(() => {
-    const rev = L.lastTrial(lab, (x) => x.kind === 'reversed');
-    const firstCalc = lab.missions.findIndex((x) => x.kind === 'calc');
-    const mc = lab.missions[firstCalc];
-    const known = L.knownPoints(lab, firstCalc);
-    const tc = L.xy(L.calcTarget(lab, firstCalc));
-    const to = L.xy(known[mc.to]);
-    const neg = lab.missions.map((x, i) => (x.kind === 'calc' ? L.xy(L.calcTarget(lab, i)) : null)).find((u) => u && (u[0] < 0 || u[1] < 0));
-    return [
-      {
-        text: <MathText>{k('dReversed')}</MathText>,
-        why: <MathText>{rev ? k('dReversedMine', { code: `$${col(rev.u)}$` }) : k('dReversedWhy', { back: `$${arrow(`${mc.to}${mc.from}`)}$` })}</MathText>,
-      },
-      { text: <MathText>{k('dRight')}</MathText>, correct: true },
-      {
-        text: <MathText>{k('dCoords')}</MathText>,
-        why: <MathText>{k('dCoordsWhy', { p: `$${mc.to}(${tex(to[0])}\\,;\\,${tex(to[1])})$`, v: `$${arrow(`${mc.from}${mc.to}`)}${col(tc)}$` })}</MathText>,
-      },
-      {
-        text: <MathText>{k('dCount')}</MathText>,
-        why: <MathText>{neg ? k('dCountWhy', { code: `$${col(neg)}$` }) : k('dCountWhyPlace')}</MathText>,
-      },
-    ];
-  }, [lab, k]);
+  const discoveryOptions = useMemo(() => discoveryOptionsOf(lab, k), [lab, k]);
 
   const formal = (
     <ol className="list-decimal space-y-1 ps-5 text-sm text-emerald-900" data-cc-formal>
@@ -346,7 +363,7 @@ export default function ComponentCalc({
           </button>
         ))}
         <Chest onOpen={() => setBurst((n) => n + 1)} burst={burst} />
-        {solvedNow && lab.idx < lab.missions.length - 1 && (
+        {solvedNow && lab.idx < lab.missions.length - 1 && !cp.blocking && (
           <button type="button" className={`${btn} border-violet-400 bg-violet-50`} onClick={() => setLab(L.nextMission)} data-cc-next>
             {k('next')}<ChevronLeft className="h-4 w-4" aria-hidden="true" />
           </button>
@@ -394,6 +411,8 @@ export default function ComponentCalc({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={cpEnabled}
       hints={['hint1', 'hint2', 'hint3'].map((h) => <MathText key={h}>{k(h)}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={(
@@ -403,18 +422,12 @@ export default function ComponentCalc({
     >
       <ManipulationStage className="bg-gradient-to-b from-sky-50/60 to-white" minHeight="min-h-[160px]">
         <div ref={boxRef} className="space-y-2" data-component-calc data-mission={lab.idx} data-kind={m.kind}
-          data-world={theme} data-solved={ready ? 'true' : 'false'} data-scene-h={sceneH}>
-          <div ref={glanceRef} className="space-y-1.5" data-cc-glance>
+          data-world={theme} data-solved={solvedAll ? 'true' : 'false'} data-scene-h={sceneH}>
+          <div ref={glanceRef} className="relative space-y-1.5" data-cc-glance>
+            {party.node}
+            {cp.node}
             <div className="flex flex-wrap items-center justify-center gap-1.5" data-cc-missions>
-              {lab.missions.map((mm, i) => (
-                <button key={i} type="button" onClick={() => setLab((s) => L.goMission(s, i))}
-                  disabled={!(i <= lab.idx || lab.solved[i - 1])}
-                  aria-label={k('missionDot', { n: i + 1, state: k(lab.solved[i] ? 'dotDone' : i === lab.idx ? 'dotNow' : 'dotLater') })}
-                  aria-current={i === lab.idx ? 'step' : undefined} data-cc-dot={i} data-done={lab.solved[i] ? 'true' : 'false'}
-                  className={`inline-flex h-8 min-w-8 items-center justify-center rounded-full border-2 px-2 text-xs font-extrabold focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${lab.solved[i] ? 'border-emerald-500 bg-emerald-100 text-emerald-900' : i === lab.idx ? 'border-violet-500 bg-violet-100 text-violet-900' : 'border-slate-300 bg-white text-slate-500'}`}>
-                  {lab.solved[i] ? '✓' : i + 1}
-                </button>
-              ))}
+              <LabStepper count={lab.missions.length} current={lab.idx} done={stepDone} stepAttr="data-cc-dot" />
               <span className="text-xs font-bold text-slate-700"><MathText>{calc ? k('stripCalc', { v: `$${arrow(vecName)}$` }) : k('stripPlace', { name: m.point })}</MathText></span>
               <span className="rounded-full bg-slate-900/80 px-2 py-0.5 font-mono text-[11px] font-bold text-amber-300" dir="ltr" data-deco="coins" aria-hidden="true">● {coins}</span>
             </div>
@@ -457,6 +470,32 @@ export default function ComponentCalc({
     </ManipulationShell>
   );
 }
+
+/* ── la découverte : distracteurs réfutés par les essais de l'élève (aussi la dernière question de la suite) ── */
+export function discoveryOptionsOf(lab, k) {
+    const rev = L.lastTrial(lab, (x) => x.kind === 'reversed');
+    const firstCalc = lab.missions.findIndex((x) => x.kind === 'calc');
+    const mc = lab.missions[firstCalc];
+    const known = L.knownPoints(lab, firstCalc);
+    const tc = L.xy(L.calcTarget(lab, firstCalc));
+    const to = L.xy(known[mc.to]);
+    const neg = lab.missions.map((x, i) => (x.kind === 'calc' ? L.xy(L.calcTarget(lab, i)) : null)).find((u) => u && (u[0] < 0 || u[1] < 0));
+    return [
+      {
+        text: <MathText>{k('dReversed')}</MathText>,
+        why: <MathText>{rev ? k('dReversedMine', { code: `$${col(rev.u)}$` }) : k('dReversedWhy', { back: `$${arrow(`${mc.to}${mc.from}`)}$` })}</MathText>,
+      },
+      { text: <MathText>{k('dRight')}</MathText>, correct: true },
+      {
+        text: <MathText>{k('dCoords')}</MathText>,
+        why: <MathText>{k('dCoordsWhy', { p: `$${mc.to}(${tex(to[0])}\\,;\\,${tex(to[1])})$`, v: `$${arrow(`${mc.from}${mc.to}`)}${col(tc)}$` })}</MathText>,
+      },
+      {
+        text: <MathText>{k('dCount')}</MathText>,
+        why: <MathText>{neg ? k('dCountWhy', { code: `$${col(neg)}$` }) : k('dCountWhyPlace')}</MathText>,
+      },
+    ];
+  }
 
 /* ── le coffre du jeu : touché, il fait jaillir des pièces (décor) ── */
 function Chest({ onOpen, burst }) {
@@ -697,3 +736,118 @@ function Scene({ lab, fr, uid, width, height, last, quad, tw }) {
     </svg>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de la mission i : un code calculé → les deux composantes ; une porte tenue → l'équation puis les coordonnées ; la dernière finit par la règle. */
+export function chainOf(lab, i) {
+  const m = lab.missions[i];
+  const q = m.kind === 'calc' ? ['calcX', 'calcBack'] : ['placeEq', 'placeVal'];
+  if (m.kind === 'calc' && L.twin(lab, i)?.equal) q.push('twin');
+  if (i === lab.missions.length - 1) q.push('rule');
+  return q;
+}
+
+const compOf = (v) => (v[0] !== 0 ? 0 : 1);
+
+/** Chaque question est construite sur LES nombres de la mission (rien n'est écrit en dur) ; `k` : les textes de `componentCalc`. */
+export const QUESTIONS = {
+  calcX: (lab, i, k) => {
+    const m = lab.missions[i]; const pts = L.knownPoints(lab, i);
+    const [ax] = L.xy(pts[m.from]); const [bx] = L.xy(pts[m.to]);
+    const o = { v: $(arrow(`${m.from}${m.to}`)), from: m.from, to: m.to };
+    const sub = (a, b, p, q) => `x_{${p}} - x_{${q}} = ${tex(a)} - ${par(b)}`;
+    return {
+      id: 'calcX', kind: 'choice',
+      prompt: Mx(k, 'calcX.prompt', o),
+      options: [
+        { text: <MathText>{$(sub(bx, ax, m.to, m.from))}</MathText>, correct: true },
+        { text: <MathText>{$(sub(ax, bx, m.from, m.to))}</MathText>, why: Mx(k, 'calcX.whyReverse', { ...o, r: $(tex(ax - bx)) }) },
+        { text: <MathText>{$(`x_{${m.to}} + x_{${m.from}} = ${tex(bx)} + ${par(ax)}`)}</MathText>, why: Mx(k, 'calcX.whySum', { ...o, s: $(tex(bx + ax)) }) },
+      ],
+      hints: [Mx(k, 'calcX.hint1', o), Mx(k, 'calcX.hint2', o)],
+      explain: Mx(k, 'calcX.explain', { ...o, calc: $(`${sub(bx, ax, m.to, m.from)} = ${tex(bx - ax)}`) }),
+    };
+  },
+  calcBack: (lab, i, k) => {
+    const m = lab.missions[i];
+    const [ux, uy] = L.xy(L.calcTarget(lab, i));
+    const back = [-ux, -uy];
+    const o = { from: m.from, to: m.to, v: $(arrow(`${m.from}${m.to}`)), w: $(arrow(`${m.to}${m.from}`)), u: $(col([ux, uy])), r: $(col(back)) };
+    const cands = [{ a: [ux, uy], why: 'whySame' }, { a: [uy, ux], why: 'whySwap' }, { a: [-uy, -ux], why: 'whySwapBack' }, { a: [-ux + 1, -uy], why: 'whyOff' }];
+    const seen = new Set([back.join(';')]); const ds = [];
+    for (const c of cands) { const key = c.a.join(';'); if (ds.length < 2 && !seen.has(key)) { seen.add(key); ds.push(c); } }
+    return {
+      id: 'calcBack', kind: 'choice',
+      prompt: Mx(k, 'calcBack.prompt', o),
+      options: [
+        { text: <MathText>{$(col(back))}</MathText>, correct: true },
+        ...ds.map((d) => ({ text: <MathText>{$(col(d.a))}</MathText>, why: Mx(k, `calcBack.${d.why}`, { ...o, n: $(col(d.a)) }) })),
+      ],
+      hints: [Mx(k, 'calcBack.hint1', o), Mx(k, 'calcBack.hint2', o)],
+      explain: Mx(k, 'calcBack.explain', o),
+    };
+  },
+  twin: (lab, i, k) => {
+    const m = lab.missions[i]; const tw = L.twin(lab, i);
+    const u = L.xy(L.calcTarget(lab, i));
+    const o = { v: $(arrow(`${m.from}${m.to}`)), w: $(arrow(tw.names.join(''))), code: $(col(u)) };
+    return {
+      id: 'twin', kind: 'choice',
+      prompt: Mx(k, 'twin.prompt', o),
+      options: [
+        { text: Mx(k, 'twin.same', o), correct: true },
+        { text: Mx(k, 'twin.origin'), why: Mx(k, 'twin.whyOrigin') },
+        { text: Mx(k, 'twin.end'), why: Mx(k, 'twin.whyEnd') },
+      ],
+      hints: [Mx(k, 'twin.hint1'), Mx(k, 'twin.hint2', o)],
+      explain: Mx(k, 'twin.explain', o),
+    };
+  },
+  placeEq: (lab, i, k) => {
+    const m = lab.missions[i]; const r = L.xy(m.ref);
+    const c = compOf(r); const ax = c === 0 ? 'x' : 'y';
+    const [p, q] = m.vec;
+    const eq = m.refNamed ? $(`${arrow(`${p}${q}`)} = ${arrow(m.refNames.join(''))}`) : $(`${arrow(`${p}${q}`)}${col(r)}`);
+    const o = { p: m.point, v: $(arrow(`${p}${q}`)), rev: $(arrow(`${q}${p}`)), eq, comp: k(c === 0 ? 'cp.placeEq.compX' : 'cp.placeEq.compY') };
+    const form = (a, b) => `${ax}_{${a}} - ${ax}_{${b}} = ${tex(r[c])}`;
+    return {
+      id: 'placeEq', kind: 'choice',
+      prompt: Mx(k, 'placeEq.prompt', o),
+      options: [
+        { text: <MathText>{$(form(q, p))}</MathText>, correct: true },
+        { text: <MathText>{$(form(p, q))}</MathText>, why: Mx(k, 'placeEq.whyOrder', o) },
+        { text: <MathText>{$(`${ax}_{${p}} + ${ax}_{${q}} = ${tex(r[c])}`)}</MathText>, why: Mx(k, 'placeEq.whySum', o) },
+      ],
+      hints: [Mx(k, 'placeEq.hint1'), Mx(k, 'placeEq.hint2', o)],
+      explain: Mx(k, 'placeEq.explain', { ...o, calc: $(form(q, p)) }),
+    };
+  },
+  placeVal: (lab, i, k) => {
+    const m = lab.missions[i]; const r = L.xy(m.ref);
+    const t = L.xy(m.target); const tr = L.xy(m.trap);
+    const [p, q] = m.vec;
+    const pt = (a) => $(`${m.point}(${tex(a[0])}\\,;\\,${tex(a[1])})`);
+    const o = { p: m.point, v: $(arrow(`${p}${q}`)), rev: $(arrow(`${q}${p}`)), q: m.other };
+    const cands = [{ a: tr, why: 'whyTrap' }, { a: [t[1], t[0]], why: 'whySwap' }, { a: r, why: 'whyComps' }, { a: [t[0] + 1, t[1] - 1], why: 'whyOff' }];
+    const seen = new Set([t.join(';')]); const ds = [];
+    for (const c of cands) { const key = c.a.join(';'); if (ds.length < 2 && !seen.has(key)) { seen.add(key); ds.push(c); } }
+    return {
+      id: 'placeVal', kind: 'choice',
+      prompt: Mx(k, 'placeVal.prompt', o),
+      options: [
+        { text: <MathText>{pt(t)}</MathText>, correct: true },
+        ...ds.map((d) => ({ text: <MathText>{pt(d.a)}</MathText>, why: Mx(k, `placeVal.${d.why}`, { ...o, pt: pt(d.a) }) })),
+      ],
+      hints: [Mx(k, 'placeVal.hint1'), Mx(k, 'placeVal.hint2', o)],
+      explain: Mx(k, 'placeVal.explain', { ...o, pt: pt(t) }),
+    };
+  },
+  rule: (lab, i, k) => ({
+    id: 'rule', kind: 'choice',
+    prompt: <MathText>{k('dPrompt')}</MathText>,
+    options: discoveryOptionsOf(lab, k),
+    hints: [Mx(k, 'rule.hint1'), Mx(k, 'rule.hint2')],
+    explain: <ol className="list-decimal space-y-1 ps-5 text-sm" data-cc-formal>{['formal1', 'formal2', 'formal3'].map((f) => <li key={f}><MathText>{k(f)}</MathText></li>)}</ol>,
+  }),
+};

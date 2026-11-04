@@ -39,7 +39,7 @@ export default function Module04Atamarran() {
         step(9, 'deep-39', 'عدد العوامل السالبة ضعف عدد الموجبة', ['adad-salib']),
         step(10, 'deep-49', 'بطريقتين مختلفتين', ['tawzi-aadad']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

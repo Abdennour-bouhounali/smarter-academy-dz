@@ -85,7 +85,7 @@ function initTriangle({ A = [0, 0], B = [3, 1], C = [-1, 2] } = {}) {
   for (const p of [a, b, c]) if (!xy(p).every(Number.isInteger)) throw new Error('shape-prover: nœuds entiers');
   if (V.collinear(a, b, c)) throw new Error('shape-prover: C de départ aligné avec A et B');
   return Object.freeze({
-    mode: 'triangle', stage: 'tri', held: 'C', rail: null,
+    mode: 'triangle', stage: 'tri', held: 'C', rail: null, starts: Object.freeze({ C: c }),
     pts: Object.freeze({ A: a, B: b, C: c }),
     win: windowAround([a, b, c], 2),
     goals: Object.freeze(['right:A', 'iso:C']), claims: Object.freeze(['right:A', 'iso:C']), cards: TRI_CARDS,
@@ -103,7 +103,7 @@ function initUnknown({ A = [0, 2], B = [-4, 0], rail = { x: -2, min: -5, max: 3,
   const fourth = railSolutions({ pts: { A: a, B: b }, rail: r }).map((y) => V.fourthVertex(a, b, V.point(r.x, y)));
   const win = windowAround([a, b, d, V.point(r.x, r.min), V.point(r.x, r.max), ...fourth], 0.6);
   return Object.freeze({
-    mode: 'unknown', stage: 'tri', held: 'C', rail: r,
+    mode: 'unknown', stage: 'tri', held: 'C', rail: r, starts: Object.freeze({ C: c, D: d }),
     pts: Object.freeze({ A: a, B: b, C: c, D: d }), dStart: d,
     win,
     goals: Object.freeze(['right:B']), claims: Object.freeze(['right:B']), cards: Object.freeze(['pyth:A', 'pyth:B', 'pyth:C']),
@@ -282,6 +282,26 @@ export function backToTri(s) {
     goals: Object.freeze(['right:B']), claims: Object.freeze(['right:B']), cards: Object.freeze(['pyth:A', 'pyth:B', 'pyth:C']),
     claim: 'right:B', picked: Object.freeze([]), last: null,
   });
+}
+
+/** Les preuves (affirmations à établir) du mode, dans l'ordre : ce sont les ÉTAPES du labo. */
+export const proofsOf = (s) => (s.mode === 'triangle' ? ['right:A', 'iso:C'] : ['right:B', 'square', 'circle']);
+
+/** « أعِد التجربة » : la MÊME preuve repart — son drapeau est effacé, le plot tenu revient au départ, les cartes sont retirées. */
+export function retryClaim(s, claim) {
+  const solved = { ...s.solved }; delete solved[claim];
+  const held = claim === 'square' || claim === 'circle' ? 'D' : 'C';
+  return Object.freeze({
+    ...s, solved: Object.freeze(solved), claim, picked: Object.freeze([]), last: null,
+    pts: Object.freeze({ ...s.pts, [held]: s.starts[held] ?? s.pts[held] }),
+  });
+}
+
+/** La situation au moment où la preuve `claim` a été acceptée (le plot tenu a pu bouger depuis) : les nombres des questions. */
+export function atProof(s, claim) {
+  const tr = [...s.trials].reverse().find((t) => t.kind === 'ok' && t.claim === claim);
+  if (!tr) return s;
+  return Object.freeze({ ...s, pts: Object.freeze({ ...s.pts, [tr.held]: V.point(...tr.at) }) });
 }
 
 // ── la découverte ────────────────────────────────────────────────────────────

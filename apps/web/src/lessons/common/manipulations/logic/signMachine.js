@@ -235,6 +235,14 @@ export function restartTask(s) {
   return { ...s, a: aOpening(task, s.a), b: B_START, lit: { [B_START]: true }, last: null, picked: null, free: null };
 }
 
+/** « أعِد التجربة » (questions du labo) : LA MÊME mission repart, non résolue (b = 4, ses colonnes éteintes). */
+export function retryTask(s) {
+  const { [s.ti]: _d, ...done } = s.done;
+  const { [s.ti]: _s, ...solved } = s.solved;
+  const { [s.ti]: _c, ...classes } = s.classes;
+  return { ...restartTask(s), done, solved, classes };
+}
+
 /* ── « جرّب أعدادك » ─────────────────────────────────────────────────────────────────────────── */
 
 /** a : entier de −4 à 4 (0 permis : toutes les colonnes restent sur la ligne). null si illisible. */

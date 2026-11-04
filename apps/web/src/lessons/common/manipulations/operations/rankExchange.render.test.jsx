@@ -3,7 +3,8 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import i18n from '../../../../i18n';
-import RankExchange, { numbersFor, discoveryKindOf } from './RankExchange';
+import RankExchange, { numbersFor, discoveryKindOf, chainsOf, QUESTIONS } from './RankExchange';
+import * as L from '../logic/rankExchange';
 import ManipulationWorkspace from '../ManipulationWorkspace';
 import { LEVELS } from '../levels';
 
@@ -38,14 +39,14 @@ describe('rank-exchange — rendu', () => {
     expect(out).toContain('data-rx-digit-caption');
     expect(out).toContain(say('predictAsk.pack.pencils'));
     expect(out.indexOf('data-rx-predict-ask')).toBeLessThan(out.indexOf('data-rx-cards'));
-    expect(out).toContain('data-rx-steps-label');
+    expect(out).toContain('data-lab-stepper');
     expect(attrs(out, 'data-rx-predict')).toEqual(['75', '2577', '1132437']);
     expect(out).toMatch(/data-rx-written[^>]*><\/bdi>/);
     expect(out).not.toContain('data-rx-tie'); // no gesture before the prediction
     expect(out).not.toContain('data-rx-tray');
     expect(out).not.toContain('data-rx-formal');
     expect(out).not.toContain('data-rx-counter');
-    expect(attrs(out, 'data-rx-step')).toEqual(['pack', 'unpack']);
+    expect(attrs(out, 'data-rx-step')).toEqual(['0', '1']);
     expect(out).toContain('data-manipulation-levels-selector');
     // the items drawn: one per object up to the column's room, each once
     const items = attrs(out, 'data-rx-item');
@@ -69,7 +70,7 @@ describe('rank-exchange — rendu', () => {
     expect(out).toContain('data-rx-plusminus="0"');
     expect(out).toMatch(/data-rx-written[^>]*>999<\/bdi>/);
     expect(out).toContain('تسعمائة وتسعة وتسعون');
-    expect(attrs(out, 'data-rx-step')).toEqual(['next', 'previous', 'borrow', 'dictation']);
+    expect(attrs(out, 'data-rx-step')).toEqual(['0', '1', '2', '3']);
     expect(out).not.toMatch(RAW);
     expect(out).not.toContain('{{');
     expect(latinWords(out)).toEqual([]);
@@ -241,6 +242,64 @@ describe('rank-exchange — onboarding (prop `coach`, prototype)', () => {
       expect(text, key).toBeTruthy();
       expect(text, key).not.toMatch(/manipulation\.|\{\{/);
       expect(statesRule(text), key).toBe(false);
+    }
+  });
+});
+
+describe('rank-exchange — questions pendant le labo (LabCheckpoint)', () => {
+  const k = (key, o) => i18n.t(`lesson:manipulation.rankExchange.${key}`, o);
+  const nm = (world) => [0, 1, 2, 3, 4, 5, 6].map((r) => ({
+    count: (c) => `${c}`, the: `r${r}`, one: `واحد${r}`, col: `عمود${r}`,
+  }));
+  const cases = [
+    ['beginner', LEVELS['rank-exchange'].beginner.numbers],
+    ['advanced', LEVELS['rank-exchange'].advanced.numbers],
+    ['money', { world: 'money', tasks: ['unpack'], n: 1345, rank: 2 }],
+    ['dictation', { world: 'tokens', tasks: ['dictation'], dictation: [7065, 4908732] }],
+  ];
+  for (const [name, numbers] of cases) {
+    it(`${name} : chaque question a un texte, une seule bonne réponse, deux indices, et ni clé brute ni {{`, () => {
+      const lab = L.init(numbers);
+      const dk = discoveryKindOf(lab.tasks);
+      const chains = chainsOf(lab, dk);
+      for (const tk of lab.tasks) {
+        expect(chains[tk].length, tk).toBeGreaterThanOrEqual(2);
+        for (const qid of chains[tk]) {
+          const q = QUESTIONS[qid](lab, tk, k, nm(lab.world), dk);
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${tk}.${qid}`).not.toMatch(RAW);
+          expect(out, `${tk}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${tk}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${tk}.${qid}`).toHaveLength(1);
+          else expect(q.expected, `${tk}.${qid}`).toBeTruthy();
+        }
+      }
+    });
+  }
+  it('les nombres viennent de la tâche ; la règle clôt la dernière tâche de la découverte', () => {
+    const lab = L.init(LEVELS['rank-exchange'].beginner.numbers);
+    const chains = chainsOf(lab);
+    expect(chains.unpack.at(-1)).toBe('rule');
+    expect(chains.pack).not.toContain('rule');
+    expect(QUESTIONS.count(lab, 'unpack', k, nm('pencils')).expected).toBe('201');
+    const adv = L.init(LEVELS['rank-exchange'].advanced.numbers);
+    expect(QUESTIONS.value(adv, 'next', k, nm('tokens')).expected).toBe('1000');
+    expect(QUESTIONS.links(adv, 'next', k, nm('tokens')).expected).toBe('3');
+    expect(QUESTIONS.opens(adv, 'borrow', k, nm('tokens')).expected).toBe('3');
+    expect(chainsOf(L.init({ world: 'money', tasks: ['unpack'], n: 1345, rank: 2 })).unpack).toEqual(['count', 'digitCount']);
+    expect(chainsOf(adv).dictation.at(-1)).toBe('rule');
+  });
+});
+
+describe('rank-exchange — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('questions actives : ni la progression ni le bouton d’indice ; checkpoints={false} : les deux reviennent', () => {
+    for (const numbers of [LEVELS['rank-exchange'].beginner.numbers, { world: 'money', tasks: ['unpack'], n: 1345, rank: 2, levels: false }]) {
+      const g = html(numbers);
+      expect(g).not.toContain('data-manipulation-progress');
+      expect(g).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+      const off = html({ ...numbers, checkpoints: false });
+      expect(off).toContain('data-manipulation-progress');
+      expect(off).toContain(i18n.t('lesson:manipulation.hint.show'));
     }
   });
 });

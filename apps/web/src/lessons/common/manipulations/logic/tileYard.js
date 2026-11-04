@@ -218,6 +218,23 @@ export function keep(s) {
   return next;
 }
 
+/**
+ * « أعِد التجربة » (questions du labo) : LA MÊME tâche repart — la cour de départ, la tâche rouverte, et la cour du carnet qui l'avait
+ * remplie retirée (sinon la refaire serait refusée comme doublon). Sol : la scène repart vide.
+ */
+export function retryTask(s) {
+  const done = s.done.map((d, i) => (i === s.ti ? false : d));
+  if (isFloor(s)) {
+    const reads = { ...s.reads };
+    delete reads[s.tasks[s.ti]];
+    return { ...s, done, reads, phase: 'one', pieces: [], swept: false, laidAny: false, last: null };
+  }
+  const goal = TASK_GOAL[taskOf(s)] ?? {};
+  const fits = (k) => (goal.fence == null || goal.fence === k.fence) && (goal.tiles == null || goal.tiles === k.tiles);
+  const tiles = s.mode === 'fence' ? rectangleYard() : [];
+  return { ...s, done, kept: s.kept.filter((k) => !fits(k)), tiles, nextId: tiles.length, last: null, keptNow: false };
+}
+
 export function nextTask(s) {
   if (!canNext(s)) return s;
   return { ...s, ti: s.ti + 1, last: null, keptNow: false };

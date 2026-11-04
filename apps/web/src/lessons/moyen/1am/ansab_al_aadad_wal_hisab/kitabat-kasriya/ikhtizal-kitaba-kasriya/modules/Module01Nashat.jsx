@@ -16,16 +16,19 @@ import { ACTIVITY, GUIDE } from '../content/textbook';
  *            la proposition d'Amine « 4/6 » jugée par le plateau.
  *   متقدم  — le MANUEL : les trois rectangles (3/5, 6/10, 12/20), puis le cadeau du grand-père 27/45, prédit puis réduit.
  * Les ÉTAPES sont les questions ② et ③ du manuel, puis le grand-père (③ ب). LP : P1 (et P3, au niveau متقدم).
+ * Déploiement du prototype (2026-10-28) : « même part, k pour le numérateur ET le dénominateur » est posée PAR-DESSUS le labo
+ * (`FractionKnife › chainsOf`) ; l'étape 1 en garde la TRACE (`checkpoint-done` de `stage-0`). Le grand-père (متقدم) reste une question d'étape.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const { share, targets, gift } = ACTIVITY.numbers;
 
 export default function Module01Nashat() {
   const [trials, setTrials] = useState([]);
-  const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
   const record = (e) => setTrials((list) => [...list, e]);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : la première part (la صينية, ou les rectangles du manuel)
+  const q1 = trials.some((e) => e.tk === 'checkpoint-done' && e.id === 'stage-0');
   const writings = [...new Set(trials.filter((e) => e.kind === 'cut' && e.readable && e.writing).map((e) => e.writing))];
 
   return (
@@ -53,7 +56,7 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'قارن بين السطوح الملوّنة', subtitle: 'السؤال ② من الكتاب', done: q1,
+          num: 1, title: 'قارن بين السطوح الملوّنة', subtitle: 'نفس الحصّة، كتابات كثيرة', done: q1,
           content: (
             <div className="space-y-3">
               <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={writings.length ? 'true' : 'false'}>
@@ -61,19 +64,18 @@ export default function Module01Nashat() {
                   ? <span className="font-bold text-slate-800">كتاباتك: <bdi dir="ltr">{writings.join(' = ')}</bdi></span>
                   : <span className="text-slate-500">لم تكتب أيّ كسر بعد في الصينية أو في المستطيلات.</span>}
               </p>
-              <TapQuestion
-                prompt={<MathText>{'السطوح الملوّنة بـ $\\frac{3}{5}$ ، $\\frac{6}{10}$ و $\\frac{12}{20}$ من ثلاثة مستطيلات متماثلة:'}</MathText>}
-                options={[M('لها نفس المساحة: الكسور الثلاثة متساوية'), M('أكبرها $\\frac{12}{20}$ لأنّ بسطه أكبر'), M('أصغرها $\\frac{12}{20}$ لأنّ قطعه أصغر')]}
-                correct={0} cols={1} requires={['kasr-juz-ibtidai']}
-                explain={<MathText>{'قطع أكثر، لكنّ كل قطعة أصغر: نفس السطح. $\\frac{3}{5}=\\frac{6}{10}=\\frac{12}{20}$.'}</MathText>}
-                onAnswered={() => setQ1(true)}
-              />
+              <p data-evidence="stage-0" data-tried={q1 ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${q1 ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {q1
+                  ? <MathText>{'أجبتَ في المختبر: نفس الحصّة، قطع أكثر وأصغر — البسط والمقام ضُربا في نفس العدد: $\\frac{3}{5}=\\frac{6}{10}=\\frac{12}{20}$.'}</MathText>
+                  : 'اقطع الصينية (أو المستطيلات) حتى تكتب الحصّة بعدّة كسور، وأجب عن الأسئلة التي تظهر فوق المختبر.'}
+              </p>
               {q1 && <KnowledgeBrick id="kitabat-mutasawiya" lead="قطعنا كل قطعة إلى قطعتين، ثم إلى أربع: ماذا حدث للبسط وللمقام؟" />}
             </div>
           ),
         },
         {
-          num: 2, title: 'أُنقل وأتمم', subtitle: 'السؤال ③ أ) من الكتاب', done: q2,
+          num: 2, title: 'أُنقل وأتمم', subtitle: 'نفس العدد للبسط وللمقام', done: q2,
           content: (
             <div className="space-y-3">
               <BatchChoiceQuestion
@@ -90,7 +92,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 3, title: 'هديّة الجدّ: لماذا لا فرق بين الكسرين؟', subtitle: 'السؤال ③ ب) من الكتاب', done: q3,
+          num: 3, title: 'هديّة الجدّ: لماذا لا فرق بين الكسرين؟', subtitle: '27/45 أم 3/5؟', done: q3,
           content: (
             <div className="space-y-3">
               <TapQuestion
@@ -105,7 +107,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

@@ -249,3 +249,33 @@ export function evidenceOf(lab) {
   if (e.kind === 'stroke' && e.count === lab.target) return { kind: 'star', strokes: e.count, mode: lab.mode };
   return null;
 }
+
+/* ── les étapes du labo et leurs questions (LabCheckpoint, lot 4) ─────────── */
+
+/**
+ * Les ÉTAPES (une suite de questions s'ouvre quand l'objectif de l'étape ET des précédentes est atteint) :
+ *   مبتدئ : `forge` (une alvéole qui se ferme), `contrast` (+ un tour qui ne l'a pas donnée = `discoveryReady`) ;
+ *   متقدم : `forge` (le pentagone fermé), `radius` (R juste), `draw` (l'étoile entièrement tracée).
+ */
+export function stepsOf(lab) {
+  const closed = lab.trials.some((t) => t.outcome === 'closed');
+  const flags = lab.mode === 'star'
+    ? [['forge', lab.found != null], ['radius', lab.radiusOk], ['draw', starDone(lab)]]
+    : [['forge', closed], ['contrast', discoveryReady(lab)]];
+  return flags.map(([id], i) => ({ id, reached: flags.slice(0, i + 1).every(([, ok]) => ok) }));
+}
+
+/** « أعِد التجربة » : remet LA MÊME étape au départ (les étapes précédentes ne bougent pas). */
+export function retryStep(lab, id) {
+  const base = { ...lab, images: 0, run: null, last: null };
+  if (id === 'forge') return { ...base, trials: lab.trials.filter((t) => t.outcome !== 'closed'), found: null, stage: 'forge', radiusOk: false, radiusTrials: [], strokes: [], pen: 0 };
+  if (id === 'contrast') return { ...base, trials: lab.trials.filter((t) => t.outcome === 'closed') };
+  if (id === 'radius') return { ...lab, stage: 'radius', radius: 600, radiusTrials: [], radiusOk: false, strokes: [], pen: 0, last: null };
+  if (id === 'draw') return { ...lab, stage: 'draw', strokes: [], pen: 0, last: null };
+  return lab;
+}
+
+/** Un autre angle qui referme aussi un polygone (la moitié de α, sinon le double) — pour PRÉDIRE le nombre d'images. */
+export const otherAlpha = (alpha) => (alpha % 2 === 0 && 360 % (alpha / 2) === 0 ? alpha / 2 : alpha * 2);
+export const closedTrial = (lab) => lab.trials.find((t) => t.outcome === 'closed') ?? null;
+export const lastOpenTrial = (lab) => [...lab.trials].reverse().find((t) => t.outcome !== 'closed') ?? null;

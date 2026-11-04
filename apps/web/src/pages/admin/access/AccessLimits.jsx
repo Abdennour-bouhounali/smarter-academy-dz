@@ -39,6 +39,7 @@ export default function AccessLimits() {
   const tools = features.filter((f) => f.group === 'math_lab_tool');
   const notebook = features.find((f) => f.key === 'notebook');
   const documents = features.find((f) => f.key === 'math_lab.documents');
+  const thinkingLab = features.find((f) => f.key === 'thinking_lab.ladder');
 
   return (
     <AdminPage eyebrow={t('access.eyebrow')} title={t('access.title')} subtitle={t('access.subtitle')}>
@@ -71,6 +72,11 @@ export default function AccessLimits() {
           {notebook && (
             <AdminSection title={t('access.notebookTitle')}>
               <QuotaEditor feature={notebook} token={token} onSaved={replace} accessLabel={t('access.notebookAccess')} limitLabel={t('access.notebookLimit')} hint={t('access.notebookHint')} />
+            </AdminSection>
+          )}
+          {thinkingLab && (
+            <AdminSection title={t('access.thinkingLabTitle')}>
+              <QuotaEditor feature={thinkingLab} token={token} onSaved={replace} accessLabel={t('access.thinkingLabAccess')} hint={t('access.thinkingLabHint')} quota={false} />
             </AdminSection>
           )}
           {documents && (
@@ -204,7 +210,7 @@ function ToolRow({ feature, token, onSaved }) {
   );
 }
 
-function QuotaEditor({ feature, token, onSaved, accessLabel, limitLabel, hint }) {
+function QuotaEditor({ feature, token, onSaved, accessLabel, limitLabel, hint, quota = true }) {
   const { t } = useTranslation('admin');
   const [draft, setDraft] = useState(() => toDraft(feature));
   useEffect(() => setDraft(toDraft(feature)), [feature]);
@@ -236,7 +242,7 @@ function QuotaEditor({ feature, token, onSaved, accessLabel, limitLabel, hint })
                 </td>
               ))}
             </tr>
-            <tr className="border-t border-slate-100">
+            {quota && <tr className="border-t border-slate-100">
               <td className="py-2 text-slate-700">{limitLabel}</td>
               {TIERS.map((tier) => (
                 <td key={tier} className="py-2">
@@ -260,17 +266,17 @@ function QuotaEditor({ feature, token, onSaved, accessLabel, limitLabel, hint })
                   </div>
                 </td>
               ))}
-            </tr>
+            </tr>}
           </tbody>
         </table>
       </div>
-      <label className="flex items-center gap-2 font-inter text-sm text-slate-700">
+      {quota && <label className="flex items-center gap-2 font-inter text-sm text-slate-700">
         {t('access.period')}
         <select value={draft.period} onChange={(e) => setDraft({ ...draft, period: e.target.value })} className={`${inputClass} max-w-[20rem]`}>
           <option value="month">{t('access.periodMonth')}</option>
           <option value="lifetime">{t('access.periodLifetime')}</option>
         </select>
-      </label>
+      </label>}
       <ErrorLine error={state.error} />
       <div className="flex items-center justify-between gap-2">
         <span className="font-inter text-xs text-slate-400">{feature.updatedAt ? t('access.updatedAt', { date: formatDate(feature.updatedAt, { withTime: true }) }) : t('access.notConfigured')}</span>

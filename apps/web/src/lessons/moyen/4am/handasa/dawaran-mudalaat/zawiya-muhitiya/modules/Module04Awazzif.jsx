@@ -79,7 +79,7 @@ export default function Module04Awazzif() {
         { num: 5, title: 'تمرين 20 — من شهادة التعليم المتوسط', done: all('20'),
           content: <div className="space-y-3">{block('20', ['qutr-qaima', 'khassiya-nisf'])}</div> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

@@ -5,6 +5,7 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { SourceTag } from '../../../../../../common/textbook';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
+import { useLabCheckpointSettings } from '../../../../../../common/manipulations/primitives/labCheckpointSettings';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, ACT_ROW_OPTIONS, ACTIVITY2 } from '../content/textbook';
 import ValueTable from '../components/ValueTable';
@@ -37,6 +38,11 @@ export default function Module01Nashat() {
   const [q2b, setQ2b] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
+  const [cps, setCps] = useState([]);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : « كم تساوي النسبة ؟ » y est posée ; coupées par l'enseignant, la question d'origine revient
+  const cpOn = useLabCheckpointSettings('linear-machine').enabled;
+  const answered = (id) => cps.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const onCheckpoint = (e) => setCps((l) => [...l, e]);
 
   const onTrial = (tr) => setTrials((t) => [...t.filter((u) => u.x !== tr.x), tr]);
   const onReverse = (h) => setHits((t) => [...t.filter((u) => u.target !== h.target), h]);
@@ -99,6 +105,7 @@ export default function Module01Nashat() {
                 lead="أدخل أسعار الكتاب (50، 100، 150، 200) وأسعارًا أخرى، ثم ابحث عن السعر الذي يصبح 6DA وعن الذي يصبح 1,4DA."
                 onTrial={onTrial}
                 onReverse={onReverse}
+                onCheckpoint={onCheckpoint}
               />
             ),
             advanced: () => (
@@ -108,6 +115,7 @@ export default function Module01Nashat() {
                 rules={ACTIVITY2.rules}
                 theme="souk"
                 lead="ثلاث آلات بقواعد مخفية: لكل آلة، هل يوجد عدد a تطابق به آلتك الشاهدة الآلةَ؟ أثبت ذلك بجدولك."
+                onCheckpoint={onCheckpoint}
               />
             ),
           }}
@@ -115,7 +123,7 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'ماذا فعلت الآلة بالأسعار التي أدخلتها؟', subtitle: 'السؤال 1', done: q1,
+          num: 1, title: 'ماذا فعلت الآلة بالأسعار التي أدخلتها؟', subtitle: 'السؤال 1', done: q1a && (cpOn ? answered('feed') : q1),
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[0]}</MathText></p>
@@ -131,7 +139,15 @@ export default function Module01Nashat() {
                 explain={<MathText>{`${ACTIVITY_LINES.reduce} أما $48$ ، $98$ … فتطرح 2DA من كل سعر، و $30$ ، $80$ … تطرح 20DA، و $10$ ، $20$ … هي مبالغ التخفيض لا الأسعار بعده.`}</MathText>}
                 onAnswered={() => setQ1a(true)}
               />
-              {q1a && (
+              {q1a && cpOn && (
+                <p data-checkpoint-trace="feed" data-tried={answered('feed') ? 'true' : 'false'}
+                  className={`rounded-xl border-2 px-3 py-2 text-sm ${answered('feed') ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                  {answered('feed')
+                    ? <MathText>{'أجبتَ في المخبر: السعر بعد التخفيض ÷ السعر قبله يساوي $0{,}8$ في كل أعمدتك، فالجدول جدول تناسبية ومعامله $0{,}8$ .'}</MathText>
+                    : 'أدخل بطاقتين مختلفتين في الآلة (المستوى المبتدئ)، وأجب عن الأسئلة التي تظهر فوق المخبر.'}
+                </p>
+              )}
+              {q1a && !cpOn && (
                 <TapQuestion
                   prompt="هذا الجدول جدول تناسبية. معامل التناسبية هو:"
                   options={['$0{,}8$', '$0{,}2$', '$1{,}25$', '$10$'].map((o) => <MathText key={o}>{o}</MathText>)}
@@ -213,7 +229,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

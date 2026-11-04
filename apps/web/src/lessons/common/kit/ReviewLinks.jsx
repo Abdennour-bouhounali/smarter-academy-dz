@@ -5,6 +5,7 @@ import { BookOpen } from 'lucide-react';
 import { getLessonPath } from '@smarter-academy/core';
 import { GRADES, reviewLinksForLesson } from '@smarter-academy/core/curriculum/dz/net/learningNet.js';
 import MathText from '../components/MathText';
+import { MoreToggle } from '../components/StudentFocus';
 
 const gradeLabel = new Map(GRADES.map((g) => [g.id, g.labelAr]));
 
@@ -59,11 +60,14 @@ export default function ReviewLinks({ lessonId }) {
                   )
                 )}
               </div>
-              <ul className="space-y-1 text-sm text-slate-700 list-disc ps-5">
-                {group.items.map((item) => (
-                  <li key={item.id}><MathText>{item.textAr}</MathText></li>
-                ))}
-              </ul>
+              {/* Regard « focus » : le lien d'abord ; les textes du programme à un geste. */}
+              <MoreToggle>
+                <ul className="space-y-1 text-sm text-slate-700 list-disc ps-5">
+                  {group.items.map((item) => (
+                    <li key={item.id}><MathText>{item.textAr}</MathText></li>
+                  ))}
+                </ul>
+              </MoreToggle>
             </li>
           );
         })}

@@ -36,7 +36,7 @@ export default function Module01Nashat() {
   const [q4, setQ4] = useState(false);
   const [q5, setQ5] = useState(false);
 
-  const onTrial = (ev) => { if (ev && ev.ok) setTrips((s) => (s.some((x) => x.order === ev.order) ? s : [...s, ev])); };
+  const onTrial = (ev) => { if (ev && !ev.tk && ev.ok) setTrips((s) => (s.some((x) => x.order === ev.order) ? s : [...s, ev])); };
 
   const evidence = (
     <div className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={trips.length ? 'true' : 'false'}>
@@ -208,7 +208,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

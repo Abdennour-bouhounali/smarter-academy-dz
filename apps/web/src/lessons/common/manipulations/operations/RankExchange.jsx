@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Hand, CheckCircle2, XCircle, ArrowLeft, Link2, PackageOpen, ChevronLeft, Check, Sparkles, Minus, Plus, ArrowRight } from 'lucide-react';
+import { Hand, CheckCircle2, XCircle, ArrowLeft, Link2, PackageOpen, ChevronLeft, Sparkles, Minus, Plus, ArrowRight } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import { RANK_NAMES, spaced, classWordsOf, digitsByRank, toArabicWords } from '@smarter-academy/core/arithmetic/placeValue.js';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
@@ -15,6 +15,10 @@ import KidFigure from '../primitives/KidFigure';
 import { LabCard, StageFrame, PromptCard, ChoiceTray, ChoiceCard, VerdictBanner } from '../primitives/LabKit';
 import { SvgPill } from '../primitives/SvgPill';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { LEVELS } from '../levels';
 import * as L from '../logic/rankExchange';
 
@@ -72,6 +76,15 @@ import * as L from '../logic/rankExchange';
  * d'une phrase montrent le bouton ou le geste attendu (`logic/rankExchange.js › coachOf`, pure et testée : suivre le guide
  * à la lettre termine chaque tâche), masquable (« فهمت », « إيقاف الإرشاد », Échap, l'interrupteur sous la consigne).
  *
+ * QUESTIONS PENDANT LE LABO (prototype de `primitives/LabCheckpoint`, déploiement lot 1, 2026-10-28) : `checkpoints` (défaut true). Après
+ * CHAQUE tâche, une suite de questions sur ce que l'élève vient de FAIRE se pose par-dessus le labo et retient « المهمة التالية » (`CHAINS`) :
+ * pack ce qui reste · la valeur d'un chiffre · pourquoi lier ; unpack le compteur · رقم ≠ عدد · le 0 · LA RÈGLE (l'ancienne découverte `rank`) ;
+ * next / previous / borrow la valeur · les liens ou les ouvertures ; dictation le 0 · les classes · LA RÈGLE (`zero`). La suite qui finit par
+ * la règle formalise (`onDone`). Obligatoires pour tout élève ; l'enseignant seul les coupe pour SON compte (`useLabCheckpointSettings`).
+ * SEULEMENT LES ÉTAPES (L9) : questions actives → `guided` (ni « جرّب › اكتشف › صِغ القاعدة » ni « تلميح ») ; coupées → les deux reviennent.
+ * ÉTAPES : `LabStepper` (`[data-rx-step=<i>]`) et la fête `useStepCelebration` par tâche. « إعادة » repart de la tâche 1 ; « أعِد التجربة »
+ * (la carte) remet LA MÊME tâche (`L.retryTask`). SON (`playSfx`) : `tooth` pour un geste (porter, ouvrir, ±, plus grave en arrière), `bell`
+ * pour dix liés en un (ou un nombre dicté juste), `flag` quand la tâche est faite, `over` pour un refus.
  * Props (contrat fixé avec la leçon) : `world` ('pencils' | 'tokens' | 'money'), `tasks`, `start`, `n`, `rank`, `next`,
  * `borrow`, `dictation`, `level`, `levels`, `coach`, `title`, `lead`, `onTrial({ task, kind, rank, ok, counts, value })`,
  * `onFinished({ tasks })` — à la règle, ou (sans découverte : `money`) quand la tâche est faite ; tous par `state.report`.
@@ -135,7 +148,7 @@ export function numbersFor({ world, tasks, start, n, rank, next, borrow, dictati
 export const discoveryKindOf = (tasks) => (tasks.includes('pack') && tasks.includes('unpack') ? 'rank' : tasks.includes('dictation') ? 'zero' : null);
 
 export default function RankExchange({
-  world, tasks, start, n, rank, next, borrow, dictation, title, lead, level, levels: withLevels = true, coach = true,
+  world, tasks, start, n, rank, next, borrow, dictation, title, lead, level, levels: withLevels = true, coach = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -145,17 +158,44 @@ export default function RankExchange({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
   if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    const restart = scene.key === numsKey && scene.rc !== state.resetCount;
-    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-    setLab(restart ? L.restartTask(lab) : L.init(nums));
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la tâche 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
+    setLab(L.init(nums));
   }
   const W0 = lab.world;
   const task = L.taskOf(lab);
   const dk = discoveryKindOf(lab.tasks);
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready && dk) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : la suite de la tâche courante ; celle qui finit par la règle remplace la découverte automatique
+  const cpSettings = useLabCheckpointSettings('rank-exchange');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpChains = cpOn && cpSettings.enabled ? chainsOf(lab, dk) : null;
+  const chain = cpChains?.[task] ?? null;
+  const ruleByCheckpoint = !!cpChains && Object.values(cpChains).some((c) => c.includes('rule'));
+  const cpNames = useMemo(() => namesFor(W0, k), [W0, k]);
+  const cp = useLabCheckpoint({
+    id: chain ? task : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, task, k, cpNames, dk)) : null,
+    reached: L.taskDone(lab),
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.retryTask),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => { if (cpChains?.[id]?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  useEffect(() => { if (ready && dk && !ruleByCheckpoint) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son du geste (muet sans « الصوت ») : un geste, dix liés, la tâche faite, un refus
+  const lastSeen = useRef(lab.last);
+  useEffect(() => {
+    const v = lab.last;
+    if (v === lastSeen.current) return;
+    lastSeen.current = v;
+    if (!v) return;
+    if (v.type === 'refused') playSfx('over');
+    else if (v.type === 'done' || (v.type === 'answer' && v.finished)) playSfx('flag');
+    else if (v.type === 'tie' || v.type === 'answer') playSfx('bell');
+    else playSfx('tooth', { pitch: v.type === 'remove' || v.type === 'open' ? 0.75 : 1 });
+  }, [lab.last]);
   useEffect(() => { if (state.isFormal) state.report(onFinished, { tasks: [...lab.tasks] }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
   const finishedOnce = useRef(false);
   useEffect(() => {
@@ -213,6 +253,8 @@ export default function RankExchange({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      guided={!!chain || ruleByCheckpoint}
+      headerAction={cpOn ? cpSettings.control : null}
       hints={[0, 1, 2].map((i) => k(`hints.${hintKey(task, W0)}.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={discovery || undefined}
@@ -223,7 +265,7 @@ export default function RankExchange({
           data-solved={ready ? 'true' : 'false'} data-layout={width >= WIDE_MIN ? 'wide' : 'narrow'}>
           <style dangerouslySetInnerHTML={{ __html: MOTION_CSS }} />
           <Lab lab={lab} setLab={setLab} k={k} names={names} width={width} room={room} screenH={screenH} overhead={overhead}
-            glanceRef={glanceRef} bodyHRef={bodyHRef} lead={state.isAuthoredLevel ? lead : null} coach={coach} />
+            glanceRef={glanceRef} bodyHRef={bodyHRef} lead={state.isAuthoredLevel ? lead : null} coach={coach} cp={cp} />
           {lab.trials.length > 0 && (
             <LabFold id="rank-exchange.trials" title={k('trialsTitle')}>
               <ul className="space-y-0.5 text-xs" data-rx-trials={lab.trials.length}>
@@ -293,7 +335,7 @@ function trialText(tr, k, names) {
 
 /* ══════════════ Le laboratoire (consigne, scène, verdict) ══════════════ */
 
-function Lab({ lab, setLab, k, names, width, room, screenH, overhead, glanceRef, bodyHRef, lead, coach: coachOn }) {
+function Lab({ lab, setLab, k, names, width, room, screenH, overhead, glanceRef, bodyHRef, lead, coach: coachOn, cp }) {
   const world = lab.world;
   const task = L.taskOf(lab);
   const cols = lab.columns;
@@ -399,7 +441,7 @@ function Lab({ lab, setLab, k, names, width, room, screenH, overhead, glanceRef,
   /* ── les tâches et la consigne ── */
   const nm = names;
   // l'onboarding : la prochaine action attendue, dite en UNE phrase (désactivé : aucun pas, aucun rendu)
-  const coachStep = coachOn ? L.coachOf(lab, { focusCol }) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab, { focusCol }) : null;
   const coach = useLabCoach({
     lab: 'rank-exchange', step: coachStep, text: coachText(coachStep, lab, k, nm),
     labels: { hide: k('coach.hide'), show: k('coach.show'), ok: k('coach.ok'), stop: k('coach.stop') },
@@ -418,22 +460,20 @@ function Lab({ lab, setLab, k, names, width, room, screenH, overhead, glanceRef,
   const sub = task === 'pack' ? (world === 'pencils' ? 'pencils' : 'other') : world;
   const context = lead ?? (task === 'pack' || task === 'unpack' ? k(`context.${task}.${sub}`, { have }) : k(`context.${task}`, promptO));
   const promptTitle = task === 'pack' || task === 'unpack' ? k(`question.${task}.${sub}`, promptO) : k(`question.${task}`, promptO);
+  // une étape est FAITE quand la tâche est finie ET que ses questions (LabCheckpoint) sont répondues : la pastille passe au vert et on fête
+  const stepDone = lab.tasks.map((tk, i) => !!lab.done[tk] && (i !== lab.ti || !cp.blocking));
   const steps = lab.tasks.length > 1 && (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      <span className="text-xs font-black text-indigo-900/60" aria-hidden="true" data-rx-steps-label>{k('stepsLabel')}</span>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[tk];
-        const cur = i === lab.ti;
-        return (
-          <span key={tk} role="listitem" data-rx-step={tk} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined}
-            aria-label={k('stepAria', { i: i + 1, name: k(`chip.${tk}`) })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-indigo-600 bg-indigo-600 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-indigo-100 bg-white text-indigo-400'}`}>
-            {d && !cur ? <Check className="h-3.5 w-3.5" strokeWidth={3} aria-hidden="true" /> : <bdi dir="ltr">{i + 1}</bdi>}
-          </span>
-        );
-      })}
-    </div>
+    <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-rx-step" />
   );
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // L.init (« إعادة », autre niveau) : on refête
+  const nowDone = stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.ti)) return;
+    celebrated.current.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
   const result = lab.results[task];
   const predictPill = !predicting && lab.predict != null && (
     <span data-rx-predict={lab.predict} data-state={!done ? 'chosen' : result?.ok ? 'right' : 'tried'}
@@ -552,7 +592,7 @@ function Lab({ lab, setLab, k, names, width, room, screenH, overhead, glanceRef,
       <div className="space-y-1.5">
         {v?.type === 'done' && task === 'unpack' && <UnpackResult lab={lab} k={k} nm={nm} />}
         <p className={v ? '' : 'font-bold text-indigo-900'}>{verdict}</p>
-        {(lab.tray || openAllRank != null || (done && lab.ti < lab.tasks.length - 1)) && (
+        {(lab.tray || openAllRank != null || (done && !cp.blocking && lab.ti < lab.tasks.length - 1)) && (
           <div className="flex flex-wrap gap-2">
             {lab.tray && (
               <button type="button" onClick={() => setLab((s) => L.carry(s, s.tray.from + 1))} data-rx-carry
@@ -566,7 +606,7 @@ function Lab({ lab, setLab, k, names, width, room, screenH, overhead, glanceRef,
                 <PackageOpen className="h-4 w-4" aria-hidden="true" /> {k('openAll', { obj: nm[openAllRank].count(lab.counts[openAllRank]) })}
               </button>
             )}
-            {done && lab.ti < lab.tasks.length - 1 && (
+            {done && !cp.blocking && lab.ti < lab.tasks.length - 1 && (
               <button type="button" onClick={() => setLab(L.nextTask)} data-rx-next
                 className={`${actionBtn} border-emerald-600 bg-emerald-600 text-white shadow-[0_3px_0_0_#047857] ${ring}`}>
                 {k('nextTask')} <ChevronLeft className="h-4 w-4" aria-hidden="true" />
@@ -604,6 +644,8 @@ function Lab({ lab, setLab, k, names, width, room, screenH, overhead, glanceRef,
   return (
     <div ref={glanceRef} className={`relative space-y-2.5 ${margin > 0 ? 'z-[1] rounded-3xl bg-[#F7F7FF]' : ''}`}
       style={margin > 0 ? { marginInline: -margin } : undefined} data-rx-glance data-bleed={margin > 0 ? Math.round(margin) : undefined}>
+      {party.node}
+      {cp.node}
       {prompt}
       {coachOn && <div className="flex">{coach.toggle}</div>}
       {wide ? <div className="flex items-start gap-3">{stage}{side}</div> : <>{stage}{banner}</>}
@@ -1071,3 +1113,168 @@ function Formal({ lab, dk, k, names }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de questions de chaque tâche : elle interroge ce que l'élève vient de FAIRE ; `rule` (la découverte) clôt la dernière. */
+export const CHAINS = Object.freeze({
+  pack: ['stay', 'digit', 'whyTie'],
+  unpack: ['count', 'digitCount', 'zero'],
+  next: ['value', 'links'],
+  previous: ['value', 'oneGesture'],
+  borrow: ['value', 'opens'],
+  dictation: ['zeroBox', 'classes'],
+});
+
+const hasInnerZero = (n) => /[1-9]0+[1-9]/.test(String(n));
+
+/** Les suites de CE labo : une question sans objet est retirée (pas de 0 intérieur, moins de 10 à lier) ; la règle clôt sa tâche. */
+export function chainsOf(lab, dk = discoveryKindOf(lab.tasks)) {
+  const c = lab.cfg;
+  const out = {};
+  for (const tk of lab.tasks) {
+    out[tk] = (CHAINS[tk] ?? []).filter((q) => !(q === 'stay' && (c.start[0] ?? 0) < 10)
+      && !(q === 'zero' && !hasInnerZero(c.n)) && !(q === 'zeroBox' && !c.dictation.some(hasInnerZero)));
+  }
+  const ruleTask = dk === 'rank' ? lab.tasks.filter((tk) => tk === 'pack' || tk === 'unpack').at(-1) : dk === 'zero' ? 'dictation' : null;
+  if (ruleTask) out[ruleTask] = [...out[ruleTask], 'rule'];
+  return out;
+}
+
+const n$ = (x) => iso(spaced(x));
+const C = (k, key, o) => k(`cp.${key}`, o);
+const pick = (list, right, whys) => list.map((text, i) => (i === right ? { text, correct: true } : { text, why: whys[i] }));
+
+/** Chaque question est construite sur LES nombres de la tâche (rien en dur) ; `nm` : les noms comptés du monde. */
+export const QUESTIONS = {
+  stay: (lab, task, k, nm) => {
+    const n0 = lab.cfg.start[0];
+    const tens = Math.floor(n0 / 10);
+    const o = { have: nm[0].count(n0), col: nm[0].col, packs: nm[1].count(tens), n0: iso(n0), tens: iso(tens), rest: nm[0].count(n0 % 10) };
+    return {
+      id: 'stay', kind: 'choice', prompt: C(k, 'stay.prompt', o),
+      options: pick([nm[0].count(n0 % 10), nm[0].count(n0), nm[0].count(tens)], 0, [null, C(k, 'stay.whyAll', o), C(k, 'stay.whyTens', o)]),
+      hints: [C(k, 'stay.hint1', o), C(k, 'stay.hint2', o)],
+      explain: C(k, 'stay.explain', { ...o, calc: iso(`${n0} = ${tens} × 10 + ${n0 % 10}`) }),
+    };
+  },
+  digit: (lab, task, k, nm) => {
+    const value = lab.results.pack?.value ?? L.packCards(lab.cfg.start).right;
+    const d = digitsByRank(value);
+    const r = [1, 2, 3].find((x) => (d[x] ?? 0) > 0) ?? 1;
+    const p = 10 ** r;
+    const o = { value: n$(value), d: iso(d[r]), col: nm[r].col, one: nm[r].one, units: nm[0].col, below: nm[Math.max(0, r - 1)].col, above: nm[Math.min(nm.length - 1, r + 1)].col, p: iso(spaced(p)) };
+    return {
+      id: 'digit', kind: 'choice', prompt: C(k, 'digit.prompt', o),
+      options: pick([nm[0].count(d[r] * p), nm[0].count(d[r]), nm[0].count(d[r] * p * 10)], 0, [null, C(k, 'digit.whyDigit', o), C(k, 'digit.whyAbove', o)]),
+      hints: [C(k, 'digit.hint1', o), C(k, 'digit.hint2', o)],
+      explain: C(k, 'digit.explain', { ...o, calc: iso(`${d[r]} × ${spaced(p)} = ${spaced(d[r] * p)}`) }),
+    };
+  },
+  whyTie: (lab, task, k) => {
+    const pc = L.packCards(lab.cfg.start);
+    const ranks = Object.keys(lab.cfg.start).map(Number).sort((a, b) => b - a);
+    const o = { start: iso(ranks.map((r) => lab.cfg.start[r]).join(' · ')), concat: n$(pc.concat), sum: n$(pc.sum), value: n$(pc.right) };
+    return {
+      id: 'whyTie', kind: 'choice', prompt: C(k, 'whyTie.prompt', o),
+      options: pick([C(k, 'whyTie.right'), C(k, 'whyTie.big'), C(k, 'whyTie.sum', o)], 0, [null, C(k, 'whyTie.whyBig', o), C(k, 'whyTie.whySum', o)]),
+      hints: [C(k, 'whyTie.hint1'), C(k, 'whyTie.hint2')],
+      explain: C(k, 'whyTie.explain', o),
+    };
+  },
+  count: (lab, task, k, nm) => {
+    const { n, rank } = lab.cfg;
+    const u = L.unpackCards(n, rank);
+    const o = { n: n$(n), col: nm[rank].col, rankName: RANK_NAMES[rank] };
+    return {
+      id: 'count', kind: 'number', expected: String(u.right), answer: <bdi dir="ltr">{u.right}</bdi>,
+      prompt: C(k, 'count.prompt', o), hints: [C(k, 'count.hint1', o), C(k, 'count.hint2', o)],
+      explain: C(k, 'count.explain', { ...o, calc: iso(L.unpackLine(n, rank)), count: nm[rank].count(u.right) }),
+    };
+  },
+  digitCount: (lab, task, k, nm) => {
+    const { n, rank } = lab.cfg;
+    const u = L.unpackCards(n, rank);
+    const o = { n: n$(n), digit: iso(u.digit), count: nm[rank].count(u.right), col: nm[rank].col, rankName: RANK_NAMES[rank], right: iso(u.right) };
+    return {
+      id: 'digitCount', kind: 'choice', prompt: C(k, 'digitCount.prompt', o),
+      options: pick([C(k, 'digitCount.right'), C(k, 'digitCount.wrongBoard', o), C(k, 'digitCount.fromRight', o)], 0,
+        [null, C(k, 'digitCount.whyWrongBoard', o), C(k, 'digitCount.whyFromRight', o)]),
+      hints: [C(k, 'digitCount.hint1', o), C(k, 'digitCount.hint2')],
+      explain: C(k, 'digitCount.explain', o),
+    };
+  },
+  zero: (lab, task, k) => {
+    const { n } = lab.cfg;
+    const without = L.withoutZeros(n);
+    const o = { n: n$(n), without: n$(without), ten: n$(n * 10), words: toArabicWords(without) };
+    return {
+      id: 'zero', kind: 'choice', prompt: C(k, 'zero.prompt', o),
+      options: pick([n$(without), n$(n), n$(n * 10)], 0, [null, C(k, 'zero.whySame', o), C(k, 'zero.whyTen', o)]),
+      hints: [C(k, 'zero.hint1', o), C(k, 'zero.hint2', o)],
+      explain: C(k, 'zero.explain', o),
+    };
+  },
+  value: (lab, task, k) => {
+    const base = task === 'borrow' ? lab.cfg.borrow : lab.cfg.next;
+    const target = L.targetOf(lab, task);
+    const o = { n: n$(base), calc: iso(`${spaced(base)} ${task === 'next' ? '+' : '−'} 1 = ${spaced(target)}`) };
+    return {
+      id: 'value', kind: 'number', expected: String(target), answer: <bdi dir="ltr">{spaced(target)}</bdi>,
+      prompt: C(k, `value.prompt.${task}`, o), hints: [C(k, 'value.hint1'), C(k, `value.hint2.${task === 'next' ? 'up' : 'down'}`)],
+      explain: C(k, 'value.explain', o),
+    };
+  },
+  links: (lab, task, k) => {
+    const packs = lab.results.next?.packs ?? String(lab.cfg.next).match(/9*$/)[0].length;
+    const o = { n: n$(lab.cfg.next), t: n$(lab.cfg.next + 1), packs: iso(packs) };
+    return {
+      id: 'links', kind: 'number', expected: String(packs), answer: <bdi dir="ltr">{packs}</bdi>,
+      prompt: C(k, 'links.prompt', o), hints: [C(k, 'links.hint1'), C(k, 'links.hint2', o)], explain: C(k, 'links.explain', o),
+    };
+  },
+  oneGesture: (lab, task, k) => {
+    const o = { n: n$(lab.cfg.next), up: n$(lab.cfg.next + 1), down: n$(lab.cfg.next - 1) };
+    return {
+      id: 'oneGesture', kind: 'choice', prompt: C(k, 'oneGesture.prompt', o),
+      options: pick([C(k, 'oneGesture.right'), C(k, 'oneGesture.easier'), C(k, 'oneGesture.noTie')], 0,
+        [null, C(k, 'oneGesture.whyEasier', o), C(k, 'oneGesture.whyNoTie', o)]),
+      hints: [C(k, 'oneGesture.hint1'), C(k, 'oneGesture.hint2', o)], explain: C(k, 'oneGesture.explain', o),
+    };
+  },
+  opens: (lab, task, k) => {
+    const opens = lab.results.borrow?.opens ?? String(lab.cfg.borrow).match(/0*$/)[0].length;
+    const o = { n: n$(lab.cfg.borrow), t: n$(lab.cfg.borrow - 1), opens: iso(opens) };
+    return {
+      id: 'opens', kind: 'number', expected: String(opens), answer: <bdi dir="ltr">{opens}</bdi>,
+      prompt: C(k, 'opens.prompt', o), hints: [C(k, 'opens.hint1'), C(k, 'opens.hint2', o)], explain: C(k, 'opens.explain', o),
+    };
+  },
+  zeroBox: (lab, task, k) => {
+    const z = lab.cfg.dictation.find(hasInnerZero);
+    const d = digitsByRank(z);
+    const ranks = Object.keys(d).map(Number).sort((a, b) => b - a);
+    const empty = ranks.find((r) => d[r] === 0 && r < ranks[0]);
+    const without = L.withoutZeros(z);
+    const o = { z: n$(z), empty: RANK_NAMES[empty], without: n$(without), words: toArabicWords(without) };
+    return {
+      id: 'zeroBox', kind: 'choice', cols: 3, prompt: C(k, 'zeroBox.prompt', o),
+      options: pick([iso('0'), C(k, 'zeroBox.blank'), iso('1')], 0, [null, C(k, 'zeroBox.whyBlank', o), C(k, 'zeroBox.whyOne', o)]),
+      hints: [C(k, 'zeroBox.hint1', o), C(k, 'zeroBox.hint2', o)], explain: C(k, 'zeroBox.explain', o),
+    };
+  },
+  classes: (lab, task, k) => {
+    const big = lab.cfg.dictation.reduce((a, b) => Math.max(a, b), 0);
+    const n = Math.ceil(String(big).length / 3);
+    const o = { big: n$(big), digits: iso(String(big).length), n: iso(n), list: classWordsOf(big).map((c) => c.words).join(' و') };
+    return {
+      id: 'classes', kind: 'number', expected: String(n), answer: <bdi dir="ltr">{n}</bdi>,
+      prompt: C(k, 'classes.prompt', o), hints: [C(k, 'classes.hint1'), C(k, 'classes.hint2', o)], explain: C(k, 'classes.explain', o),
+    };
+  },
+  rule: (lab, task, k, nm, dk) => ({
+    id: 'rule', kind: 'choice', prompt: discoveryPrompt(lab, dk, k), options: discoveryOptions(lab, dk, k, nm),
+    hints: [C(k, `rule.${dk}.hint1`), C(k, `rule.${dk}.hint2`)],
+    explain: <Formal lab={lab} dk={dk} k={k} names={nm} />,
+  }),
+};

@@ -344,16 +344,16 @@
    "page": 10,
    "section": "اكتشف",
    "title": "الأعداد العشرية ونصف المستقيم المدرّج",
-   "verified": false,
+   "verified": true,
    "text": "على نصف المستقيم المدرّج الذي مبدؤه النقطة O ، قمنا بتعليم النقط A ، B ، C. نرفق بالنقطة O العدد 0، نقول إن فاصلة النقطة O هي 0 ونكتب اختصارا O(0). النقطة A تبعد عن النقطة O بـ 2,4 وحدة، نقول إن فاصلة النقطة A هي 2,4 ونكتب اختصارا A(2,4). أ) عبّر بكسر عن التباعد بين تدريجتين صغيرتين متتاليتين من الوحدة. ب) ماهما فاصلتا النقطتين C و B ؟ ج) علّم على نصف المستقيم المدرّج النقط E(3) ، F(2,5) ، G(0,8) ، K(2,9) ، L(3 + 2/10).",
-   "figure": "نصف مستقيم مدرّج من 0، كل وحدة مقسّمة إلى 10 ؛ C على التدريجة 0,6 تقريبا، B عند 1,9، A عند 2,4.",
+   "figure": "نصف مستقيم مدرّج من 0، كل وحدة مقسّمة إلى 10 ؛ C على التدريجة 0,5، B عند 1,7، A عند 2,4 (relu à 400 dpi, tick = 35,5 px : 5, 17 et 24 tics).",
    "answer": {
     "step": "1/10",
-    "B": "1,9",
-    "C": "0,6"
+    "B": "1,7",
+    "C": "0,5"
    },
    "answerSource": "computed",
-   "note": "Positions de B et C lues sur le scan à 110 dpi (à relire à 200 dpi par la leçon adad-ashri-mustaqim-mudarraj)."
+   "note": "Positions relues à 400 dpi par la leçon adad-ashri-mustaqim-mudarraj : C = 0,5 et B = 1,7 (la lecture à 110 dpi donnait 0,6 et 1,9, fausse)."
   },
   {
    "id": "act-5",
@@ -570,7 +570,7 @@
    "page": 13,
    "section": "أحوصل تعلّماتي",
    "title": "التعليم على نصف مستقيم مدرّج",
-   "verified": false,
+   "verified": true,
    "text": "• لتدريج نصف مستقيم، نختار وحدة طول مناسبة وننقلها عليه انطلاقا من مبدئه. • كل نقطة من نصف المستقيم المدرج يمكن تعيينها بعدد يسمى فاصلة تلك النقطة. فاصلة النقطة O مبدأ نصف المستقيم المدرّج هي 0. فاصلة النقطة A هي 2، نكتب اختصارا A(2). فاصلة النقطة B هي 2,8، نكتب اختصارا B(2,8). فاصلة النقطة C هي 3,5، نكتب اختصارا C(3,5). ملاحظة: في حالات معيّنة يمكن أن لا يظهر مبدأ نصف المستقيم المدرّج. في المثال، نقرأ: فاصلة النقطة K هي 2047 (تدريج 2017، 2027، …).",
    "answer": {
     "K": 2047
@@ -967,9 +967,9 @@
    "page": 18,
    "section": "أتمرّن",
    "title": "التعليم على نصف مستقيم مدرّج",
-   "verified": false,
+   "verified": true,
    "text": "لاحظ وأكمل متتاليات الأعداد (القراءة من اليسار إلى اليمين): 1) 10 ; 12 ; 14 ; … ; … ; 24 2) 50 ; 70 ; 90 ; … ; … ; 170 3) 0 ; 0,5 ; 1 ; … ; … ; 6 4) 1,05 ; 1,08 ; 1,11 ; … ; … ; 2,02 5) 5,2 ; 5,1 ; 5 ; … ; … ; 4,6 6) 5,04 ; 5,3 ; 5,56 ; … ; … ; 6,6",
-   "note": "Lecture des bornes finales à confirmer par la leçon adad-ashri-mustaqim-mudarraj."
+   "note": "Les « … » représentent plusieurs termes jusqu’à la borne finale ; la leçon réécrit les suites (autres nombres) et garde le pas constant."
   },
   {
    "id": "ex-16",
@@ -977,7 +977,7 @@
    "number": 16,
    "page": 18,
    "section": "أتمرّن",
-   "verified": false,
+   "verified": true,
    "text": "اكتب على أربعة أنصاف المستقيمات المدرّجة الآتية الأعداد التي تشير إليها الأسهم. (تدريجات: 0–4 ؛ 9–12 ؛ 0–0,4 ؛ 9,1–9,2)"
   },
   {
@@ -1180,7 +1180,7 @@
    "number": 7,
    "page": 19,
    "section": "أقوّم تعلّماتي",
-   "verified": false,
+   "verified": true,
    "text": "ماهي فاصلة النقطة B ؟ (A عند 2,4 و C عند 2,9 على نصف مستقيم مدرّج)"
   },
   {
@@ -1447,6 +1447,11 @@
   }
  ],
  "discrepancies": [
+  {
+   "elementId": "act-4",
+   "kind": "reading",
+   "text": "Positions de B et C : 1,7 et 0,5 (400 dpi : 17 et 5 petites graduations de 35,5 px depuis O), non 1,9 et 0,6 comme transcrit d’abord à 110 dpi."
+  },
   {
    "elementId": "unit",
    "kind": "scope",

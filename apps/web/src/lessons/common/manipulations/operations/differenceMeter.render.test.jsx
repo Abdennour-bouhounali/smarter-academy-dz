@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import i18n from '../../../../i18n';
-import DifferenceMeter, { discoveryOptions, Formal } from './DifferenceMeter';
+import DifferenceMeter, { discoveryOptions, Formal, chainOf, QUESTIONS } from './DifferenceMeter';
 import { LEVELS } from '../levels';
 import * as L from '../logic/differenceMeter';
 
@@ -110,5 +110,52 @@ describe('difference-meter — chaînes de texte', () => {
   it('la prose ne dit pas la règle avant la découverte (consigne, coach, indices)', () => {
     const early = ['context.rail', 'question.rail', 'coach.plug', 'coach.verdict', 'hints.0', 'hints.1', 'hints.2'].map((x) => k(x)).join(' ');
     expect(early).not.toMatch(/موجب|سالب|إشارة الفرق/);
+  });
+});
+
+describe('difference-meter — questions pendant le labo (LabCheckpoint)', () => {
+  const kk = (key, o) => i18n.t(`lesson:manipulation.differenceMeter.${key}`, o);
+  const RAWK = /manipulation\.[a-zA-Z]/;
+  const cases = [['beginner', LEVELS['difference-meter'].beginner.numbers], ['advanced', LEVELS['difference-meter'].advanced.numbers], ['race', { world: 'race', tasks: L.PRESETS.race.tasks }]];
+  for (const [name, numbers] of cases) {
+    it(`${name} : chaque question a un texte, une seule bonne réponse, deux indices, et ni clé brute ni {{`, () => {
+      const lab = { ...L.init(numbers), red: 'a', black: 'b' };
+      lab.tasks.forEach((t, i) => {
+        const chain = chainOf(lab, i);
+        expect(chain.length, t.id).toBeGreaterThanOrEqual(2);
+        for (const qid of chain) {
+          const q = QUESTIONS[qid]({ ...lab, ti: i }, t, kk);
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${t.id}.${qid}`).not.toMatch(RAWK);
+          expect(out, `${t.id}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${t.id}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${t.id}.${qid}`).toHaveLength(1);
+          else expect(q.expected, `${t.id}.${qid}`).toBeTruthy();
+        }
+      });
+    });
+  }
+  it('les nombres viennent de la tâche ; la règle clôt la dernière tâche du niveau', () => {
+    const b = { ...L.init(LEVELS['difference-meter'].beginner.numbers), red: 'a', black: 'b' };
+    expect(chainOf(b, 2).at(-1)).toBe('rule');
+    expect(chainOf(b, 0)).not.toContain('rule');
+    expect(QUESTIONS.reading(b, b.tasks[0], kk).expected).toBe('1/2');
+    expect(QUESTIONS.order(b, b.tasks[2], kk).options.findIndex((o) => o.correct)).toBe(0);
+    const r = L.init({ world: 'race', tasks: L.PRESETS.race.tasks });
+    expect(chainOf(r, 0)).toEqual(['atZero', 'cross']);
+    expect(QUESTIONS.cross(r, r.tasks[0], kk).expected).toBe('4');
+    expect(chainOf(r, 1)).toEqual(['atZero', 'never']);
+    expect(QUESTIONS.cross(r, r.tasks[2], kk).expected).toBe('3');
+  });
+});
+
+describe('difference-meter — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('avec questions : ni la progression ni le bouton d’indice ; checkpoints={false} : les deux reviennent', () => {
+    const g = renderToString(<DifferenceMeter {...LEVELS['difference-meter'].beginner.numbers} level="beginner" />);
+    expect(g).not.toContain('data-manipulation-progress');
+    expect(g).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    const off = renderToString(<DifferenceMeter {...LEVELS['difference-meter'].beginner.numbers} level="beginner" checkpoints={false} />);
+    expect(off).toContain('data-manipulation-progress');
+    expect(off).toContain(i18n.t('lesson:manipulation.hint.show'));
   });
 });

@@ -6,6 +6,10 @@ import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
 import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
 import MathText from '../../components/MathText';
@@ -72,7 +76,7 @@ const pairTex = ([i, j]) => `P_{${i + 1}}P_{${j + 1}}`;
 
 export default function LampRing({
   n: n0, r: r0, extra: extra0, numbers: nums, theme = 'flower-bed', title, lead, mission, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  initialMode = 'student', allowModeSwitch = false, checkpoints: cpOn = true, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.lampRing.${key}`, o), [t]);
@@ -85,14 +89,20 @@ export default function LampRing({
   const [scene, setScene] = useState(sceneKey);
   const [drag, setDrag] = useState(null);
   const [selected, setSelected] = useState(null);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setDrag(null); setSelected(null); }
+  const [inits, setInits] = useState(0);
+  const [doneIds, setDoneIds] = useState({});
+  // « إعادة », un autre niveau ou d'autres nombres : TOUT recommence — le massif, les essais, les questions du labo
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setDrag(null); setSelected(null); setInits((c) => c + 1); setDoneIds({}); }
   const [freeOpen, setFreeOpen] = useState(false);
   useEffect(() => { setFreeOpen(false); }, [state.resetCount]);
   const reduce = useReducedMotion();
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
 
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : obligatoires pour tout élève, l'enseignant seul les coupe pour SON compte (L2) ; la règle trouvée, le massif libre (n supplémentaire) n'en repose plus
+  const cpSettings = useLabCheckpointSettings('lamp-ring');
+  const cpLive = cpOn && cpSettings.enabled && !freeOpen;
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch, cpLive]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!state.isFormal) return;
     setFreeOpen(true);
@@ -227,6 +237,57 @@ export default function LampRing({
     </div>
   );
 
+  /* ── les étapes et leurs questions : une étape atteinte (ET les précédentes) ouvre sa suite, dans l'ordre ── */
+  const stepList = L.stepsOf(lab).map((st) => ({ ...st, chain: chainOf(st.id) }));
+  const stepDone = stepList.map((st) => !!doneIds[st.id] || (!cpLive && st.reached));
+  const nextStep = cpLive ? stepList.find((st) => !doneIds[st.id]) : null;
+  const cpId = nextStep && nextStep.reached ? nextStep.id : null;
+  const chain = cpId ? nextStep.chain : null;
+  const cp = useLabCheckpoint({
+    id: cpId,
+    questions: chain ? chain.map((q) => QUESTIONS[q]({ lab, options: discoveryOptions, formal }, k)) : null,
+    reached: !!cpId,
+    resetKey: inits,
+    onRetry: () => { setDrag(null); setLab((cur) => L.retryStep(cur, cpId)); },
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => ({ ...d, [id]: true }));
+      if (stepList.find((st) => st.id === id)?.chain.includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && lab.handTries === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  const doneKey = stepDone.join();
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(i)) return;
+      celebrated.current.add(i);
+      party.celebrate({ n: i + 1, total: stepList.length });
+    });
+  }, [doneKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── le son : un déclic par poteau qui bouge / par image posée (au plus un toutes les 35 ms), « flag » à l'objectif juste, « bell » au tour allumé,
+     « over » à un refus. Muet sauf « الصوت ». ── */
+  const tick = useRef(0);
+  const heard = useRef(null);
+  const gestureKey = `${lab.posts.join(',')}|${lab.rot.p2}`;
+  const lastGesture = useRef(gestureKey);
+  useEffect(() => {
+    if (lastGesture.current === gestureKey) return;
+    lastGesture.current = gestureKey;
+    const now = performance.now();
+    if (now - tick.current > 35) { playSfx('tooth'); tick.current = now; }
+  }, [gestureKey]);
+  useEffect(() => {
+    const e = lab.last;
+    if (!e || heard.current === e) return;
+    heard.current = e;
+    if (e.kind === 'rotated') { playSfx('tooth'); return; }
+    if (e.ok === false) { playSfx('over'); return; }
+    if (['handOk', 'ringOk', 'formulaOk'].includes(e.kind)) { playSfx('flag'); if (e.kind !== 'handOk') playSfx('bell'); }
+  }, [lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
+
   /* ── le dessin ── */
   const fs = narrow ? 11 : 13;
   const textP = { style: { direction: 'ltr', unicodeBidi: 'isolate' }, fontFamily: 'ui-monospace, monospace' };
@@ -266,6 +327,8 @@ export default function LampRing({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpLive}
       hints={['hint1', 'hint2', 'hint3'].map((hk) => <MathText key={hk}>{k(hk, { n })}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={k('dPrompt')} options={discoveryOptions} formal={formal} />}
@@ -274,6 +337,9 @@ export default function LampRing({
       <ManipulationStage className="bg-gradient-to-b from-slate-900 to-indigo-950" minHeight="min-h-[180px]">
         <div ref={boxRef} className="space-y-2" data-lamp-ring data-world="flower-bed" data-phase={phase} data-lit={lit}
           data-n={n} data-r={r} data-scene-s={S}>
+          {party.node}
+          {cp.node}
+          <LabStepper count={stepList.length} current={Math.max(0, stepDone.indexOf(false) < 0 ? stepList.length - 1 : stepDone.indexOf(false))} done={stepDone} stepAttr="data-lr-step" />
           <div ref={glanceRef} className="space-y-1.5" data-lr-glance>
             <div ref={planeRef} className="relative mx-auto" style={{ width: S, height: S }} onClick={onPlaneClick} data-lr-plane data-lr-scale={scale.toFixed(2)}>
               <svg width={S} height={S} viewBox={`0 0 ${S} ${S}`} className="absolute inset-0 rounded-2xl" style={{ direction: 'ltr' }} role="img" aria-label={sceneLabel}>
@@ -388,7 +454,7 @@ export default function LampRing({
               {phase === 'hand' && (
                 <>
                   <button type="button" data-lr-light onClick={() => setLab((s) => L.light(s))} className={`${btnBase} border-amber-300 bg-amber-300 text-slate-900`}>{k('light')}</button>
-                  {L.canRotate(lab) && <button type="button" data-lr-to-rotate onClick={() => setLab((s) => L.openRotate(s))} className={`${btnBase} border-violet-300 bg-white text-violet-900`}>{k(lab.rotLit ? 'toMeasure' : 'toRotate')}</button>}
+                  {L.canRotate(lab) && !cp.blocking && <button type="button" data-lr-to-rotate onClick={() => setLab((s) => L.openRotate(s))} className={`${btnBase} border-violet-300 bg-white text-violet-900`}>{k(lab.rotLit ? 'toMeasure' : 'toRotate')}</button>}
                 </>
               )}
               {phase === 'rotate' && (
@@ -544,3 +610,69 @@ function Deco({ S, lit, reduce }) {
     </g>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de l'étape `id` : la main (angle · œil), le دوران (somme · image), la distance (demi-angle · règle). */
+export function chainOf(id) {
+  if (id === 'hand') return ['arc', 'eye'];
+  if (id === 'rotate') return ['times', 'image'];
+  return ['half', 'rule'];
+}
+
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+
+/** Chaque question est construite sur LES nombres de l'élève (n, α) ; `k` : les textes de `lampRing`. */
+export const QUESTIONS = {
+  arc: ({ lab }, k) => {
+    const o = { n: lab.n, a: 360 / lab.n };
+    return {
+      id: 'arc', kind: 'number', expected: String(360 / lab.n), answer: <MathText>{`$${360 / lab.n}^{\\circ}$`}</MathText>,
+      prompt: Cq(k, 'arc.prompt', o), hints: [Cq(k, 'arc.hint1', o), Cq(k, 'arc.hint2', o)], explain: Cq(k, 'arc.explain', o),
+    };
+  },
+  eye: ({ lab }, k) => {
+    const o = { n: lab.n, a: 360 / lab.n };
+    return {
+      id: 'eye', kind: 'choice', cols: 1, prompt: Cq(k, 'eye.prompt', o),
+      options: [
+        { text: Cq(k, 'eye.enough', o), why: Cq(k, 'eye.whyEnough', o) },
+        { text: Cq(k, 'eye.angle', o), correct: true },
+        { text: Cq(k, 'eye.first', o), why: Cq(k, 'eye.whyFirst', o) },
+      ],
+      hints: [Cq(k, 'eye.hint1', o), Cq(k, 'eye.hint2', o)], explain: Cq(k, 'eye.explain', o),
+    };
+  },
+  times: ({ lab }, k) => {
+    const a = 360 / lab.n;
+    const o = { n: lab.n, a };
+    return {
+      id: 'times', kind: 'number', expected: String(lab.n * a), answer: <MathText>{`$${lab.n * a}^{\\circ}$`}</MathText>,
+      prompt: Cq(k, 'times.prompt', o), hints: [Cq(k, 'times.hint1', o), Cq(k, 'times.hint2', o)], explain: Cq(k, 'times.explain', { ...o, total: lab.n * a }),
+    };
+  },
+  image: ({ lab }, k) => {
+    const o = { n: lab.n, a: 360 / lab.n };
+    return {
+      id: 'image', kind: 'choice', cols: 1, prompt: Cq(k, 'image.prompt', o),
+      options: [
+        { text: Cq(k, 'image.p1', o), why: Cq(k, 'image.whyP1', o) },
+        { text: Cq(k, 'image.p2', o), correct: true },
+        { text: Cq(k, 'image.pn', o), why: Cq(k, 'image.whyPn', o) },
+      ],
+      hints: [Cq(k, 'image.hint1', o), Cq(k, 'image.hint2', o)], explain: Cq(k, 'image.explain', o),
+    };
+  },
+  half: ({ lab }, k) => {
+    const a = 360 / lab.n;
+    const o = { n: lab.n, a, half: a / 2 };
+    return {
+      id: 'half', kind: 'number', expected: String(a / 2), answer: <MathText>{`$${a / 2}^{\\circ}$`}</MathText>,
+      prompt: Cq(k, 'half.prompt', o), hints: [Cq(k, 'half.hint1', o), Cq(k, 'half.hint2', o)], explain: Cq(k, 'half.explain', o),
+    };
+  },
+  rule: ({ options, formal }, k) => ({
+    id: 'rule', kind: 'choice', prompt: <MathText>{k('dPrompt')}</MathText>, options,
+    hints: [Cq(k, 'rule.hint1'), Cq(k, 'rule.hint2')], explain: formal,
+  }),
+};

@@ -13,6 +13,6 @@ export default function Module04Awazzif() {
       brief={{ tag: 'الكتاب ص 7، 13 و 14', title: 'أحسب بالخوارزميتين', tone: 'amber', body: <p>الأعداد كبيرة هنا: اختر الطريقة الأنسب. في الأخير نعود إلى تحدّي بداية الوحدة.</p> }}
       steps={EXERCISES.map((ex, i) => ({ num: i + 1, title: title(ex), done: !!done[ex.id],
         content: <div className="space-y-3">{i === 0 && <KnowledgeBrick id="khwarizmiyat-iqlidus" variant="rappel" compact />}<TextbookExercise exercise={ex} requires={['khwarizmiyat-iqlidus', 'khwarizmiyat-al-furuq']} onAnswered={() => setDone((d) => ({ ...d, [ex.id]: true }))} /></div> }))}
-      footer={<KnowledgeSnapshot moduleNumber={4} />} />
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />} />
   );
 }

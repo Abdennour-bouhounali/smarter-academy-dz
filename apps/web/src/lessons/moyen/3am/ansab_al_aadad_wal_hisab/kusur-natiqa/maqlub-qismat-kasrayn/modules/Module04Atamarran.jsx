@@ -37,7 +37,7 @@ export default function Module04Atamarran() {
         step(6, 'ex-7', 'احسب ثم بسّط', ['qismat-kasrayn']),
         step(7, 'deep-59', 'عرض قطعة خشب', ['qismat-kasrayn']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

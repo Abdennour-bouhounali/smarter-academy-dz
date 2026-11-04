@@ -305,6 +305,17 @@ export function stageDone(s, m = mode(s)) {
   return s.readsDone.some((r) => r.axis === 'x') && s.readsDone.some((r) => r.axis === 'y');
 }
 
+/** « أعِد التجربة » (LabCheckpoint) : le laboratoire COURANT repart de zéro (les autres gardent leur état). */
+export function restartStage(s) {
+  const m = mode(s);
+  const own = { shift: ['shift', 'probe'], identify: ['try'], draw: ['point'], read: ['read-x', 'read-y'] }[m];
+  const trials = s.trials.filter((tr) => !own.includes(tr.kind));
+  if (m === 'shift') return { ...s, bNow: frac(0), shiftDone: false, probes: [], trials, last: null };
+  if (m === 'identify') return { ...s, bNow: frac(0), aNow: startSlope(s.hidden), tries: [], matched: false, trials, last: null };
+  if (m === 'draw') return { ...s, placed: [], trials, last: null };
+  return { ...s, readsDone: [], trials, last: null };
+}
+
 export const hasNext = (s) => s.stage < s.modes.length - 1;
 /** Passer au laboratoire suivant — seulement quand celui-ci est accompli (le geste de l'élève). */
 export function next(s) {

@@ -14,6 +14,10 @@ import CommaSlip from '../primitives/CommaSlip';
 import { MosaicBlocks, MosaicDefs, ClientTable, WoodTray, StarWall, Craftswoman, CraftswomanAvatar, TenMachine, rankHue, MOSAIC_CSS } from '../primitives/MosaicFigure';
 import { layoutBlocks, commonScale } from '../primitives/mosaicLayout';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { LEVELS } from '../levels';
 import * as L from '../logic/decimalComma';
 
@@ -59,6 +63,14 @@ import * as L from '../logic/decimalComma';
  * ONBOARDING : `coach` (défaut true) → `LabCoach` ; `logic/decimalComma.js › coachOf` (grab · move · zero · next) ne dit jamais OÙ la virgule
  * doit finir.
  *
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 1, 2026-10-28) : `checkpoints` (défaut true). Après CHAQUE
+ * tâche réussie, une suite de questions sur ce que l'élève vient de FAIRE, construite sur SES chiffres (`chainOf`, `QUESTIONS`) : mosaïque —
+ * combien de petites pièces, combien de pièces dans le chiffre des dixièmes, à quoi sert le 0, combien de chiffres après la virgule, le 0
+ * final ; machine — le résultat, de combien de rangs et dans quel sens la virgule a glissé, pourquoi un zéro ; la DERNIÈRE suite finit par
+ * la règle (l'ancienne découverte, qui formalise). Obligatoires pour tout élève ; l'enseignant seul les coupe pour SON compte. Questions
+ * actives → `guided` (ni « جرّب › اكتشف › صِغ » ni « تلميح »). ÉTAPES : `LabStepper` (`[data-dc-step=<i>]`) + fête par tâche ; « إعادة »
+ * repart de la tâche 1 ; « أعِد التجربة » remet LA MÊME tâche (`L.retryTask`). SON : `tooth` à chaque relâchement / zéro (plus grave quand
+ * la planche est en dessous de la table), `flag` à la tâche réussie, `over` pour « لا رقم هنا ».
  * Props (contrat fixé avec la leçon) : `world` ('mosaic' | 'machine'), `tasks` ([{ kind: 'match'|'fraction', digits, target } | { kind: 'shift', start, op }]),
  * `level`, `levels`, `coach`, `title`, `lead`, `onTrial({ task, kind, digits, point, shown, value, target, ok, verdict, zeros, free })`,
  * `onFinished({ tasks })` — par `state.report`.
@@ -89,7 +101,7 @@ export function numbersFor({ world, tasks, level }) {
 }
 
 export default function DecimalComma({
-  world, tasks, title, lead, level, levels: withLevels = true, coach: coachOn = true,
+  world, tasks, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -99,15 +111,39 @@ export default function DecimalComma({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
   if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    const restart = scene.key === numsKey && scene.rc !== state.resetCount;
-    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-    setLab(restart ? L.restartTask(lab) : L.init(nums));
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la tâche 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
+    setLab(L.init(nums));
   }
   const W0 = lab.world;
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : la suite de la tâche courante ; la dernière finit par la règle (elle remplace la découverte automatique)
+  const cpSettings = useLabCheckpointSettings('decimal-comma');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpActive = cpOn && cpSettings.enabled;
+  const chain = cpActive && !lab.free ? chainOf(lab, lab.ti) : null;
+  const cp = useLabCheckpoint({
+    id: chain ? `t${lab.ti}` : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, lab.ti, k)) : null,
+    reached: L.taskDone(lab) && !lab.free,
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.retryTask),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => { if (chainOf(lab, Number(id.slice(1))).includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  useEffect(() => { if (ready && !cpActive) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son du geste (muet sans « الصوت ») : chaque relâchement / zéro, la tâche réussie, le refus
+  const lastSeen = useRef(lab.last);
+  useEffect(() => {
+    const v = lab.last;
+    if (v === lastSeen.current) return;
+    lastSeen.current = v;
+    if (!v) return;
+    if (v.verdict === 'nodigit') playSfx('over');
+    else if (v.verdict === 'exact' && !v.free) playSfx('flag');
+    else playSfx('tooth', { pitch: v.verdict === 'less' ? 0.75 : 1 });
+  }, [lab.last]);
   // `onFinished` : UNE fois, quand toutes les tâches guidées sont faites (la découverte et la règle suivent, dans le même cadre)
   const finishedOnce = useRef(false);
   useEffect(() => {
@@ -124,7 +160,7 @@ export default function DecimalComma({
   }, [nTrials, lab.trials]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── onboarding ── */
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'decimal-comma', step: coachStep,
     text: coachStep ? (coachStep.id === 'move' ? k(`coach.move${W0 === 'machine' ? 'Machine' : 'Mosaic'}`) : k(`coach.${coachStep.id}`)) : '',
@@ -162,6 +198,7 @@ export default function DecimalComma({
 
   return (
     <ManipulationShell
+      headerAction={cpSettings.control}
       type="decimal-comma"
       title={title ?? k(`title.${W0}`)}
       titleHidden
@@ -172,6 +209,7 @@ export default function DecimalComma({
       hints={[0, 1, 2].map((i) => k(`hints.${W0}.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={discovery}
+      guided={cpActive}
       explanation={k('explanation')}
     >
       <ManipulationStage className="bg-gradient-to-b from-indigo-50/40 to-white">
@@ -179,7 +217,7 @@ export default function DecimalComma({
           data-solved={ready ? 'true' : 'false'} data-layout={width >= WIDE_MIN ? 'wide' : 'narrow'}>
           <style dangerouslySetInnerHTML={{ __html: MOSAIC_CSS }} />
           <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} overhead={overhead} glanceRef={glanceRef} bodyHRef={bodyHRef}
-            lead={state.isAuthoredLevel ? lead : null} />
+            lead={state.isAuthoredLevel ? lead : null} cp={cp} />
           {lab.trials.length > 0 && (
             <LabFold id="decimal-comma.trials" title={k('trialsTitle')}>
               <ul className="space-y-0.5 text-xs" data-dc-trials={lab.trials.length}>
@@ -239,7 +277,7 @@ function Frac({ num, zeros, size = 'md', ...rest }) {
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-function Lab({ lab, setLab, k, width, screenH, overhead, glanceRef, bodyHRef, lead }) {
+function Lab({ lab, setLab, k, width, screenH, overhead, glanceRef, bodyHRef, lead, cp }) {
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
   const world = lab.world;
   const machine = world === 'machine';
@@ -288,21 +326,20 @@ function Lab({ lab, setLab, k, width, screenH, overhead, glanceRef, bodyHRef, le
   const ctxArgs = { digits: iso(task.digits ?? ''), start: iso(task.start ?? ''), op: iso(task.op ?? ''), pieces: task.kind === 'match' ? piecesText(task.targetValue, k) : '' };
   const context = free ? k('context.free') : (lead || k(`context.${task.kind}`, ctxArgs));
   const question = free ? k(machine ? 'question.freeMachine' : 'question.freeMosaic') : k(`question.${task.kind}`);
+  // une étape est FAITE quand la tâche est réussie ET que ses questions (LabCheckpoint) sont répondues : la pastille passe au vert et on fête
+  const stepDone = lab.tasks.map((_, i) => !!lab.done[i] && (i !== lab.ti || !cp.blocking));
   const steps = lab.tasks.length > 1 && !free && (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      <span className="text-xs font-black text-indigo-900/60" aria-hidden="true">{k('stepsLabel')}</span>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={i} role="listitem" data-dc-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-indigo-600 bg-indigo-600 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-indigo-100 bg-white text-indigo-400'}`}>
-            {d && !cur ? <Check className="h-3.5 w-3.5" strokeWidth={3} aria-hidden="true" /> : <bdi dir="ltr">{i + 1}</bdi>}
-          </span>
-        );
-      })}
-    </div>
+    <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-dc-step" />
   );
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // L.init (« إعادة », autre niveau) : on refête
+  const nowDone = !free && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.ti)) return;
+    celebrated.current.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
   const prompt = (
     <PromptCard size={wide ? 'lg' : 'md'} aside={steps || null} context={context} contextProps={{ 'data-dc-context': free ? 'free' : task.kind }}
       title={question} titleClassName={wide ? 'text-xl' : 'text-lg'} lamp={!free && done ? 'on' : 'off'}
@@ -325,7 +362,7 @@ function Lab({ lab, setLab, k, width, screenH, overhead, glanceRef, bodyHRef, le
 
   /* ── le bandeau de verdict + « المهمة التالية » ── */
   const kidMood = !last ? 'neutral' : last.verdict === 'exact' ? 'proud' : last.verdict === 'nodigit' ? 'wonder' : 'happy';
-  const canNext = L.canNext(lab);
+  const canNext = L.canNext(lab) && !cp.blocking;
   const banner = (
     <VerdictBanner tone={tone} icon={wide ? Icon : null} size="sm" className={wide ? 'min-h-[3.75rem]' : 'min-h-[4rem]'}
       data-dc-verdict={last ? (last.verdict ?? '') : ''}>
@@ -359,6 +396,8 @@ function Lab({ lab, setLab, k, width, screenH, overhead, glanceRef, bodyHRef, le
   return (
     <>
     <div ref={glanceRef} className="relative space-y-2.5" style={margin ? { marginInline: -margin } : undefined} data-dc-glance>
+      {party.node}
+      {cp.node}
       {prompt}
       {wide ? (
         <div className="flex items-start gap-3">
@@ -695,3 +734,139 @@ function FormalMachine({ lab, k }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La planche RÉUSSIE de la tâche i (celle de l'élève, sinon la solution la plus courte) : { str, point, shown, zeros }. */
+export function solvedOf(lab, i) {
+  const s = lab.solved[i];
+  if (s) return { str: s.digits, point: s.point, shown: s.shown, zeros: s.zeros };
+  const sol = L.solutions(lab.tasks[i]).reduce((b, x) => (b === null || x.zl + x.zr < b.zl + b.zr ? x : b), null);
+  const point = sol.str.length - sol.pos;
+  return { str: sol.str, point, shown: D.slipText(sol.str, point), zeros: { left: sol.zl, right: sol.zr } };
+}
+
+const decimalsOf = (str, point) => str.slice(str.length - point);
+const hasKeptZero = (str, point) => point >= 2 && /^0+[1-9]/.test(decimalsOf(str, point));
+const hasTrailingZero = (str, point) => point >= 1 && /0$/.test(str) && /[1-9]/.test(decimalsOf(str, point));
+
+/** La suite de la tâche i : une question sans objet est retirée ; la DERNIÈRE tâche finit par la règle (l'ancienne découverte). */
+export function chainOf(lab, i) {
+  const t = lab.tasks[i];
+  let out;
+  if (t.kind === 'shift') {
+    const z = L.zerosNeeded(t) ?? { left: 0, right: 0 };
+    out = ['result', 'moved', ...(z.left + z.right > 0 ? ['zeros'] : [])];
+  } else {
+    const { str, point } = solvedOf(lab, i);
+    if (t.kind === 'fraction') out = ['places', 'count'];
+    else if (hasTrailingZero(str, point)) out = ['trailing', 'count'];
+    else out = ['count', hasKeptZero(str, point) ? 'zero' : point >= 2 && Number(decimalsOf(str, point)[0]) > 0 ? 'tenth' : 'places'];
+  }
+  return i === lab.tasks.length - 1 ? [...out, 'rule'] : out;
+}
+
+const C = (k, key, o) => k(`cp.${key}`, o);
+const pick = (list, right, whys) => list.map((text, i) => (i === right ? { text, correct: true } : { text, why: whys[i] }));
+const big = (x) => <bdi dir="ltr">{x}</bdi>;
+
+/** Chaque question est construite sur LES chiffres de la tâche (rien en dur). */
+export const QUESTIONS = {
+  count: (lab, i, k) => {
+    const { str, point, shown } = solvedOf(lab, i);
+    const v = D.fromSlip(str, point);
+    const n = Number(v.n);
+    const int = D.integerPart(v);
+    const fracOnly = n - int * 10 ** point;
+    const unit = D.rankName(-point);
+    let other; let whyOther;
+    if (int > 0 && fracOnly !== n) { other = fracOnly; whyOther = C(k, 'count.whyFrac', { w: iso(fracOnly), int: iso(int) }); }
+    else if (n >= 10) { other = Math.floor(n / 10); whyOther = C(k, 'count.whyBigger', { w: iso(other), bigger: D.rankName(-point + 1) }); }
+    else { other = n * 100; whyOther = C(k, 'count.whySmaller', { w: iso(other), smaller: D.rankName(-point - 2) }); }
+    const o = { shown: iso(shown), unit, n: iso(n), frac: iso(`${n}/${D.pow10(point)}`) };
+    return {
+      id: 'count', kind: 'choice', cols: 3, prompt: C(k, 'count.prompt', o),
+      options: pick([iso(n), iso(n * 10), iso(other)], 0, [null, C(k, 'count.whySmaller', { w: iso(n * 10), smaller: D.rankName(-point - 1) }), whyOther]),
+      hints: [C(k, 'count.hint1', o), C(k, 'count.hint2', o)], explain: C(k, 'count.explain', o),
+    };
+  },
+  tenth: (lab, i, k) => {
+    const { str, point } = solvedOf(lab, i);
+    const d = Number(decimalsOf(str, point)[0]);
+    const ten = 10 ** (point - 1);
+    const o = { d: iso(d), unit: D.rankName(-point), ten: iso(ten), calc: iso(`${d} × ${ten} = ${d * ten}`) };
+    return {
+      id: 'tenth', kind: 'number', expected: String(d * ten), answer: big(d * ten),
+      prompt: C(k, 'tenth.prompt', o), hints: [C(k, 'tenth.hint1', o), C(k, 'tenth.hint2', o)], explain: C(k, 'tenth.explain', o),
+    };
+  },
+  zero: (lab, i, k) => {
+    const { str, point, shown } = solvedOf(lab, i);
+    const dec = decimalsOf(str, point);
+    const lead = dec.match(/^0+/)[0].length;
+    const without = D.slipText(str.slice(0, str.length - point) + dec.slice(1), point - 1);
+    const d = dec[lead];
+    const o = { shown: iso(shown), without: iso(without), d: iso(d), unit: D.rankName(-point), bigger: D.rankName(-point + 1), empty: D.rankName(-lead) };
+    return {
+      id: 'zero', kind: 'choice', prompt: C(k, 'zero.prompt', o),
+      options: pick([C(k, 'zero.right', o), C(k, 'zero.same'), C(k, 'zero.smaller')], 0, [null, C(k, 'zero.whySame', o), C(k, 'zero.whySmaller', o)]),
+      hints: [C(k, 'zero.hint1', o), C(k, 'zero.hint2', o)], explain: C(k, 'zero.explain', o),
+    };
+  },
+  places: (lab, i, k) => {
+    const t = lab.tasks[i];
+    const { point, shown } = solvedOf(lab, i);
+    const den = D.pow10(point);
+    const o = { shown: iso(shown), target: iso(t.target), den: iso(den), p: iso(point) };
+    return {
+      id: 'places', kind: 'number', expected: String(point), answer: big(point),
+      prompt: C(k, t.kind === 'fraction' ? 'places.promptFraction' : 'places.prompt', o),
+      hints: [C(k, 'places.hint1'), C(k, t.kind === 'fraction' ? 'places.hint2Fraction' : 'places.hint2', o)],
+      explain: C(k, 'places.explain', o),
+    };
+  },
+  trailing: (lab, i, k) => {
+    const t = lab.tasks[i];
+    const { point, shown } = solvedOf(lab, i);
+    const o = { shown: iso(shown), target: iso(t.target), unit: D.rankName(-point) };
+    return {
+      id: 'trailing', kind: 'choice', prompt: C(k, 'trailing.prompt', o),
+      options: pick([C(k, 'trailing.right'), C(k, 'trailing.bigger', o), C(k, 'trailing.smaller', o)], 0, [null, C(k, 'trailing.whyBigger', o), C(k, 'trailing.whySmaller', o)]),
+      hints: [C(k, 'trailing.hint1', o), C(k, 'trailing.hint2', o)], explain: C(k, 'trailing.explain', o),
+    };
+  },
+  result: (lab, i, k) => {
+    const t = lab.tasks[i];
+    const o = { start: iso(t.start), op: iso(t.op), result: iso(t.target), eq: iso(`${t.start} ${t.op} = ${t.target}`) };
+    return {
+      id: 'result', kind: 'number', expected: t.target, answer: big(t.target),
+      prompt: C(k, 'result.prompt', o), hints: [C(k, 'result.hint1'), C(k, t.e > 0 ? 'result.hint2Up' : 'result.hint2Down')], explain: C(k, 'result.explain', o),
+    };
+  },
+  moved: (lab, i, k) => {
+    const t = lab.tasks[i];
+    const n = Math.abs(t.e);
+    const dir = (right) => k(right ? 'formal.dirRight' : 'formal.dirLeft');
+    const opt = (m, right) => C(k, 'moved.opt', { n: k('places', { count: m }), dir: dir(right) });
+    const m2 = n < 3 ? n + 1 : n - 1;
+    const o = { start: iso(t.start), op: iso(t.op), result: iso(t.target), n: k('places', { count: n }) };
+    return {
+      id: 'moved', kind: 'choice', prompt: C(k, 'moved.prompt', o),
+      options: pick([opt(n, t.e > 0), opt(n, t.e < 0), opt(m2, t.e > 0)], 0, [null, C(k, 'moved.whyDir', o), C(k, 'moved.whyCount', o)]),
+      hints: [C(k, 'moved.hint1', o), C(k, 'moved.hint2', o)], explain: C(k, 'moved.explain', o),
+    };
+  },
+  zeros: (lab, i, k) => {
+    const t = lab.tasks[i];
+    const o = { start: iso(t.start), op: iso(t.op), result: iso(t.target) };
+    return {
+      id: 'zeros', kind: 'choice', prompt: C(k, 'zeros.prompt', o),
+      options: pick([C(k, 'zeros.right'), C(k, 'zeros.always'), C(k, 'zeros.bigger')], 0, [null, C(k, 'zeros.whyAlways'), C(k, 'zeros.whyBigger')]),
+      hints: [C(k, 'zeros.hint1'), C(k, 'zeros.hint2', o)], explain: C(k, 'zeros.explain', o),
+    };
+  },
+  rule: (lab, i, k) => ({
+    id: 'rule', kind: 'choice', prompt: k(`discovery.${lab.world}.prompt`), options: discoveryOptions(lab, k),
+    hints: [C(k, `rule.${lab.world}.hint1`), C(k, `rule.${lab.world}.hint2`)], explain: <Formal lab={lab} k={k} />,
+  }),
+};

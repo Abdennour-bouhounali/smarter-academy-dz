@@ -70,7 +70,7 @@ export default function Module07AlWadiya() {
   const [trials, setTrials] = useState([]);
   const [q, setQ] = useState({});
   const mark = (n) => () => setQ((s) => ({ ...s, [n]: true }));
-  const keep = (e) => setTrials((list) => [...list, e]);
+  const keep = (e) => { if (e && !e.tk) setTrials((list) => [...list, e]); };   // les événements du labo (checkpoint) ne sont pas des gestes
 
   return (
     <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="الوضعية وتحليلها" moduleSubtitle="عدّاءان ومساران في معلم: أيّهما أقصر؟" estimatedTime="22 دقيقة"
@@ -260,6 +260,6 @@ export default function Module07AlWadiya() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={7} />} />
+      footer={<KnowledgeSnapshot moduleNumber={7} variant="memo" />} />
   );
 }

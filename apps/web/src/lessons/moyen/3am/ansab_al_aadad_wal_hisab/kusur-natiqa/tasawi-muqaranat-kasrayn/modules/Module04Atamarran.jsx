@@ -43,7 +43,7 @@ export default function Module04Atamarran() {
         },
         step(6, 'deep-55', 'حاسبة تخدع', ['ikhtiyar-tariqa']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

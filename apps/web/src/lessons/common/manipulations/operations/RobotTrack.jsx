@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Check, Play, Eraser, Plus as PlusIcon, Ban } from 'lucide-react';
+import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Play, Eraser, Plus as PlusIcon, Ban } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import MathText from '../../components/MathText';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
@@ -13,6 +13,10 @@ import DraggableObject from '../primitives/DraggableObject';
 import DropZone from '../primitives/DropZone';
 import DragGhost from '../primitives/DragGhost';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import MatArt, { minus } from './robotTrack/MatArt';
 import { LEVELS } from '../levels';
 import * as L from '../logic/robotTrack';
@@ -51,6 +55,15 @@ import * as L from '../logic/robotTrack';
  *
  * ONBOARDING : `coachOf` (tray · sign · swap · side · run · repeat · square · impossible · next) montre le contrôle, jamais le nombre.
  *
+ * QUESTIONS PENDANT LE LABO (déploiement lot 1, 2026-10-28, `primitives/LabCheckpoint`) : `checkpoints` (défaut true). Après CHAQUE mission,
+ * une suite de questions sur ce que l'élève vient de FAIRE se pose par-dessus le labo et retient « التالي » (`chainsOf`) : ce qu'a fait la carte
+ * −1 (le saut, le معاكس), le retour par une 2e carte −1, le nombre de cartes négatives de SON programme, l'ordre qui ne change pas l'arrêt, et
+ * ce que partagent les programmes du côté négatif (la parité — que le MODULE nomme ensuite) ; monde `square` : le carré de SON nombre négatif,
+ * « aucun carré négatif », a et −a. Une réponse signée est un CHOIX (le champ numérique ne lit pas « − »). Obligatoires pour tout élève ;
+ * l'enseignant seul les coupe pour SON compte. Questions actives → `guided`. ÉTAPES : `LabStepper` (`[data-rt-step=<i>]`) et la fête par
+ * mission. « إعادة » repart de la mission 1 ; « أعِد التجربة » remet LA MÊME mission (`L.retryTask`). SON : `tooth` à chaque changement du
+ * programme ou de a (plus grave pour un programme qui manque la raie), `flag` à la mission réussie, `over` à une prédiction fausse ou un
+ * « لا يمكن » trop tôt.
  * Props : `tasks`, `world` ('track' | 'square'), `level`, `levels`, `coach`, `title`, `lead`, `onTrial(event)`, `onFinished({ world })`.
  *
  * CONTRAT DOM : [data-robot-track][data-task][data-solved][data-layout][data-world], [data-rt-glance], [data-rt-stage], [data-rt-svg], [data-rt-robot][data-pos],
@@ -85,7 +98,7 @@ export function numbersFor({ tasks, world, level }) {
 const reduced = () => typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
 export default function RobotTrack({
-  tasks, world, title, lead, level, levels: withLevels = true, coach: coachOn = true,
+  tasks, world, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -95,13 +108,43 @@ export default function RobotTrack({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
   if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    const restart = scene.key === numsKey && scene.rc !== state.resetCount;
-    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-    setLab(restart ? L.restartTask(lab) : L.init(nums));
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la mission 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
+    setLab(L.init(nums));
   }
   const ready = L.discoveryReady(lab);
+  // les questions pendant le labo : la suite de la mission courante (la règle de la parité reste écrite par le MODULE)
+  const cpSettings = useLabCheckpointSettings('robot-track');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpChains = cpOn && cpSettings.enabled ? chainsOf(lab) : null;
+  const cur = L.taskOf(lab);
+  const chain = cpChains && !L.isFree(lab) ? cpChains[cur.id] ?? null : null;
+  const cp = useLabCheckpoint({
+    id: chain?.length ? cur.id : null,
+    questions: chain?.length ? chain.map((q) => QUESTIONS[q](lab, cur, k)) : null,
+    reached: !L.isFree(lab) && L.taskDone(lab),
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.retryTask),
+    onEvent: (ev) => state.report(onTrial, ev),
+  });
+  // le son (muet sans « الصوت ») : un geste sur le programme, puis la raie atteinte, ou la prédiction fausse
+  const lastSeen = useRef(lab.last);
+  useEffect(() => {
+    const v = lab.last;
+    if (v === lastSeen.current) return;
+    lastSeen.current = v;
+    if (!v || v.free) { if (v) playSfx('tooth'); return; }
+    if (v.ok && (v.kind !== 'square')) playSfx('flag');
+    else if ((v.kind === 'predict' && !v.ok) || (v.kind === 'claim' && !v.ok)) playSfx('over');
+    else playSfx('tooth', { pitch: v.reason === 'side' || v.reason === 'distance' ? 0.75 : 1 });
+  }, [lab.last]);
+  const doneSeen = useRef(lab.done);
+  useEffect(() => {
+    const before = doneSeen.current;
+    doneSeen.current = lab.done;
+    if (lab.done[lab.ti] && !before[lab.ti] && lab.last?.kind === 'square') playSfx('flag');
+  }, [lab.done]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   const finishedOnce = useRef(false);
   useEffect(() => {
@@ -117,7 +160,7 @@ export default function RobotTrack({
   }, [nTrials, lab.trials]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── onboarding ── */
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'robot-track', step: coachStep,
     text: coachStep ? k(`coach.${coachStep.id}`) : '',
@@ -143,12 +186,14 @@ export default function RobotTrack({
 
   return (
     <ManipulationShell
+      headerAction={cpSettings.control}
       type="robot-track"
       title={title ?? k('title')}
       titleHidden
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      guided={!!cpChains}
       coach={coachOn ? coach : null}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
@@ -157,7 +202,7 @@ export default function RobotTrack({
       <ManipulationStage className="bg-gradient-to-b from-indigo-50/50 to-white">
         <div ref={boxRef} className="space-y-2" data-robot-track data-task={lab.ti} data-world={lab.world} data-solved={ready ? 'true' : 'false'} data-layout={width >= WIDE_MIN ? 'wide' : 'narrow'}>
           <style dangerouslySetInnerHTML={{ __html: CSS }} />
-          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} advanced={advanced} lead={state.isAuthoredLevel ? lead : null} />
+          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} advanced={advanced} lead={state.isAuthoredLevel ? lead : null} cp={cp} />
         </div>
       </ManipulationStage>
     </ManipulationShell>
@@ -192,7 +237,7 @@ function Tile({ v, size, onFlip, flippable, k, id, drag = null, label = '' }) {
   );
 }
 
-function Lab({ lab, setLab, k, width, screenH, advanced, lead }) {
+function Lab({ lab, setLab, k, width, screenH, advanced, lead, cp }) {
   const uid = `rt${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
   const free = L.isFree(lab);
   const task = L.taskOf(lab);
@@ -260,19 +305,20 @@ function Lab({ lab, setLab, k, width, screenH, advanced, lead }) {
     if (task.flip) return k(task.minNeg ? 'question.flipMin' : 'question.flip', { target: iso(flagText) });
     return k('question.place', { target: iso(flagText) });
   })();
+  // une étape est FAITE quand la mission est réussie ET que ses questions (LabCheckpoint) sont répondues : la pastille passe au vert et on fête
+  const stepDone = lab.tasks.map((_, i) => !!lab.done[i] && (i !== lab.ti || !cp.blocking));
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // L.init (« إعادة », autre niveau) : on refête
+  const nowDone = !free && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.ti)) return;
+    celebrated.current.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
   const steps = lab.tasks.length > 1 && !free && (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      <span className="text-xs font-black text-indigo-900/60" aria-hidden="true">{k('stepsLabel')}</span>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={tk.id} role="listitem" data-rt-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-indigo-600 bg-indigo-600 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-indigo-100 bg-white text-indigo-400'}`}>
-            {d && !cur ? <Check className="h-3.5 w-3.5" strokeWidth={3} aria-hidden="true" /> : <bdi dir="ltr">{i + 1}</bdi>}
-          </span>
-        );
-      })}
+    <div className="flex flex-wrap items-center gap-2">
+      <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-rt-step" />
       {task.flag != null && (
         <span data-rt-chip className="ms-2 inline-flex items-center gap-1 rounded-full border-2 border-rose-200 bg-rose-50 px-2.5 py-0.5 text-xs font-black text-rose-900">
           {k('flagChip')} <bdi dir="ltr">{flagText}</bdi>
@@ -491,7 +537,7 @@ function Lab({ lab, setLab, k, width, screenH, advanced, lead }) {
   const vkey = !last ? '' : last.free ? 'free' : last.ok ? 'right' : (last.reason === 'incomplete' ? '' : 'wrong');
   const tone = !last ? 'indigo' : last.ok && !last.free ? 'emerald' : 'amber';
   const Icon = !last ? Hand : last.ok && !last.free ? CheckCircle2 : Sparkles;
-  const canNext = L.canNext(lab);
+  const canNext = L.canNext(lab) && !cp.blocking;
   const banner = (
     <VerdictBanner tone={tone} icon={Icon} size="sm" className="min-h-[3.5rem]" data-rt-verdict={vkey}>
       <div className="min-w-0 space-y-1.5">
@@ -532,6 +578,8 @@ function Lab({ lab, setLab, k, width, screenH, advanced, lead }) {
   return (
     <>
       <div className="relative space-y-2.5" data-rt-glance>
+        {party.node}
+        {cp.node}
         {prompt}
         {mat}
         {line}
@@ -594,3 +642,160 @@ function FreeCard({ lab, setLab, k }) {
     </LabCard>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de chaque mission (par id) ; une mission inconnue suit son genre. Pas de `rule` : la parité est écrite par le MODULE. */
+export const CHAINS = Object.freeze({
+  m1: ['jump', 'opposite'], m2: ['back', 'negCount'], m3: ['negCount', 'order'], m4: ['negCount', 'parity'],
+  a1: ['negCount'], a2: ['negCount', 'order'], a3: ['repeatParity'], q1: ['sqValue', 'never'], q2: ['twoRoots'],
+});
+const BY_KIND = Object.freeze({ goal: ['negCount', 'order'], predict: ['negCount'], repeat: ['repeatParity'], sqNeg: ['sqValue', 'never'], sqVal: ['twoRoots'] });
+
+/** Ce que l'élève a résolu pour une mission (sinon une solution des données de la mission, pour les tests et le rendu à blanc). */
+export function solvedOf(lab, task) {
+  const s = lab.solved[lab.tasks.indexOf(task)];
+  if (s) return s;
+  if (task.kind === 'goal') {
+    const values = [...task.placed, ...task.tray].slice(0, task.need);
+    return { stop: L.text(task.flag), negatives: L.negativesOf(values), values };
+  }
+  if (task.kind === 'predict' && task.cards) return { stop: L.text(L.finalOf(task.cards)), negatives: L.negativesOf(task.cards), values: task.cards };
+  return { stop: '1', negatives: 0, values: [] };
+}
+
+/** Les suites de CE labo : une question sans objet est retirée. */
+export function chainsOf(lab) {
+  const out = {};
+  for (const tk of lab.tasks) {
+    const s = solvedOf(lab, tk);
+    out[tk.id] = (CHAINS[tk.id] ?? BY_KIND[tk.kind] ?? []).filter((q) => {
+      if (q === 'jump' || q === 'opposite') return (s.values ?? []).some((v) => L.num(v) === -1);
+      if (q === 'back') return (s.values ?? []).filter((v) => L.num(v) === -1).length >= 2;
+      if (q === 'order') return (s.values ?? []).length >= 2;
+      return true;
+    });
+  }
+  return out;
+}
+
+const C = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const pick = (list, right, whys) => list.map((text, i) => (i === right ? { text, correct: true } : { text, why: whys[i] }));
+const sn = (v) => iso(minus(L.text(v)));
+const prog = (values) => iso(minus(L.lineText(values)));
+
+/** Avant la PREMIÈRE carte −1 du programme : où était le robot, et où il est arrivé. */
+function aroundMinusOne(values) {
+  const i = values.findIndex((v) => L.num(v) === -1);
+  const before = i > 0 ? L.finalOf(values.slice(0, i)) : L.finalOf([]);
+  const after = L.finalOf(values.slice(0, i + 1));
+  return { before: L.num(L.text(before)), after: L.num(L.text(after)) };
+}
+
+/** Chaque question est construite sur LE programme de l'élève (rien en dur). */
+export const QUESTIONS = {
+  jump: (lab, task, k) => {
+    const s = solvedOf(lab, task);
+    const { before, after } = aroundMinusOne(s.values);
+    const o = { from: sn(before), to: sn(after), step: sn(before - 1) };
+    return {
+      id: 'jump', kind: 'choice', prompt: C(k, 'jump.prompt', o),
+      options: pick([C(k, 'jump.right'), C(k, 'jump.step'), C(k, 'jump.stay')], 0, [null, C(k, 'jump.whyStep', o), C(k, 'jump.whyStay', o)]),
+      hints: [C(k, 'jump.hint1'), C(k, 'jump.hint2', o)], explain: C(k, 'jump.explain', o),
+    };
+  },
+  opposite: (lab, task, k) => {
+    const s = solvedOf(lab, task);
+    const { before, after } = aroundMinusOne(s.values);
+    const o = { from: sn(before), to: sn(after), prod: sn(before * after), sum: sn(before + after) };
+    return {
+      id: 'opposite', kind: 'choice', prompt: C(k, 'opposite.prompt', o),
+      options: pick([C(k, 'opposite.right'), C(k, 'opposite.inverse'), C(k, 'opposite.double')], 0, [null, C(k, 'opposite.whyInverse', o), C(k, 'opposite.whyDouble', o)]),
+      hints: [C(k, 'opposite.hint1'), C(k, 'opposite.hint2', o)], explain: C(k, 'opposite.explain', o),
+    };
+  },
+  back: (lab, task, k) => {
+    const s = solvedOf(lab, task);
+    const o = { stop: sn(s.stop), prog: prog(s.values) };
+    return {
+      id: 'back', kind: 'choice', prompt: C(k, 'back.prompt', o),
+      options: pick([C(k, 'back.right'), C(k, 'back.further'), C(k, 'back.zero')], 0, [null, C(k, 'back.whyFurther', o), C(k, 'back.whyZero', o)]),
+      hints: [C(k, 'back.hint1'), C(k, 'back.hint2')], explain: C(k, 'back.explain', o),
+    };
+  },
+  negCount: (lab, task, k) => {
+    const s = solvedOf(lab, task);
+    const n = s.negatives ?? 0;
+    const o = { stop: sn(s.stop), n: iso(n), prog: prog(s.values ?? []) };
+    return {
+      id: 'negCount', kind: 'number', expected: String(n), answer: <bdi dir="ltr">{n}</bdi>,
+      prompt: C(k, 'negCount.prompt', o), hints: [C(k, 'negCount.hint1'), C(k, 'negCount.hint2', o)], explain: C(k, 'negCount.explain', o),
+    };
+  },
+  order: (lab, task, k) => {
+    const s = solvedOf(lab, task);
+    const o = { stop: sn(s.stop), n: iso(s.negatives), prog: prog(s.values) };
+    return {
+      id: 'order', kind: 'choice', prompt: C(k, 'order.prompt', o),
+      options: pick([C(k, 'order.same', o), C(k, 'order.other'), C(k, 'order.last')], 0, [null, C(k, 'order.whyOther', o), C(k, 'order.whyLast', o)]),
+      hints: [C(k, 'order.hint1'), C(k, 'order.hint2', o)], explain: C(k, 'order.explain', o),
+    };
+  },
+  parity: (lab, task, k) => {
+    const s = solvedOf(lab, task);
+    const rows = [...L.recordRows(lab).filter((r) => r.taskId !== task.id), { values: s.values, stop: s.stop, negatives: s.negatives }];
+    const pos = rows.filter((r) => L.num(r.stop) > 0);
+    const neg = rows.filter((r) => L.num(r.stop) < 0);
+    const row = (r) => iso(`${minus(L.lineText(r.values))}`);
+    const atLeast = pos.find((r) => r.negatives > 0);
+    const most = pos.find((r) => r.negatives * 2 > r.values.length);
+    return {
+      id: 'parity', kind: 'choice', prompt: C(k, 'parity.prompt'),
+      options: pick([C(k, 'parity.odd'), C(k, 'parity.atLeast'), C(k, 'parity.most')], 0,
+        [null, atLeast ? C(k, 'parity.whyRow', { row: row(atLeast), n: iso(atLeast.negatives) }) : C(k, 'parity.whyGeneric'),
+          most ? C(k, 'parity.whyRow', { row: row(most), n: iso(most.negatives) }) : C(k, 'parity.whyGeneric')]),
+      hints: [C(k, 'parity.hint1'), C(k, 'parity.hint2')],
+      explain: C(k, 'parity.explain', { neg: neg.map((r) => iso(r.negatives)).join(' ، ') || '—', pos: pos.map((r) => iso(r.negatives)).join(' ، ') || '—' }),
+    };
+  },
+  repeatParity: (lab, task, k) => {
+    const got = solvedOf(lab, task).reached ?? {};
+    const [g1, g2] = task.goals;
+    const n1 = got[g1] ?? 1; const n2 = got[g2] ?? 2;
+    const o = { a: sn(g1), b: sn(g2), n1: iso(n1), n2: iso(n2) };
+    return {
+      id: 'repeatParity', kind: 'choice', prompt: C(k, 'repeatParity.prompt', o),
+      options: pick([C(k, 'repeatParity.right'), C(k, 'repeatParity.bigger'), C(k, 'repeatParity.luck')], 0, [null, C(k, 'repeatParity.whyBigger', o), C(k, 'repeatParity.whyLuck', o)]),
+      hints: [C(k, 'repeatParity.hint1'), C(k, 'repeatParity.hint2', o)], explain: C(k, 'repeatParity.explain', o),
+    };
+  },
+  sqValue: (lab, task, k) => {
+    const a = lab.tried.vals.find((v) => v < 0) ?? -3;
+    const v = a * a;
+    const shown = String(v).replace('.', ',');
+    const o = { a: iso(minus(String(a).replace('.', ','))), v: iso(shown) };
+    return {
+      id: 'sqValue', kind: 'number', expected: String(v), answer: <bdi dir="ltr">{shown}</bdi>,
+      prompt: C(k, 'sqValue.prompt', o), hints: [C(k, 'sqValue.hint1'), C(k, 'sqValue.hint2', o)], explain: C(k, 'sqValue.explain', o),
+    };
+  },
+  never: (lab, task, k) => {
+    const a = lab.tried.vals.find((v) => v < 0) ?? -3;
+    const o = { a: iso(minus(String(a).replace('.', ','))), v: iso(String(a * a).replace('.', ',')) };
+    return {
+      id: 'never', kind: 'choice', prompt: C(k, 'never.prompt'),
+      options: pick([C(k, 'never.right'), C(k, 'never.negNeg'), C(k, 'never.depends')], 0, [null, C(k, 'never.whyNeg', o), C(k, 'never.whyDepends')]),
+      hints: [C(k, 'never.hint1'), C(k, 'never.hint2')], explain: C(k, 'never.explain'),
+    };
+  },
+  twoRoots: (lab, task, k) => {
+    const t = L.text(task.target ?? '2,25');
+    const r = Math.sqrt(L.num(task.target ?? '2,25'));
+    const o = { t: iso(t), a: iso(String(r).replace('.', ',')), m: iso(minus(String(-r).replace('.', ','))) };
+    return {
+      id: 'twoRoots', kind: 'choice', prompt: C(k, 'twoRoots.prompt', o),
+      options: pick([C(k, 'twoRoots.right'), C(k, 'twoRoots.equal'), C(k, 'twoRoots.drop')], 0, [null, C(k, 'twoRoots.whyEqual', o), C(k, 'twoRoots.whyDrop', o)]),
+      hints: [C(k, 'twoRoots.hint1'), C(k, 'twoRoots.hint2', o)], explain: C(k, 'twoRoots.explain', o),
+    };
+  },
+};

@@ -25,7 +25,9 @@ const M = (tex) => <MathText key={tex}>{tex}</MathText>;
 
 export default function Module02Maarif() {
   const [q1, setQ1] = useState(false);
-  const [q2, setQ2] = useState(false);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : l'étape 2 est faite quand leur suite l'est
+  const [cps, setCps] = useState([]);
+  const answered = (id) => cps.some((e) => e.tk === 'checkpoint-done' && e.id === id);
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
 
@@ -45,6 +47,7 @@ export default function Module02Maarif() {
           levels={false}
           title={bidi('مثال الكتاب: ملعب بعداه 2x − 1 و x + 4')}
           lead={<MathText>{'مثال الكتاب نفسه: أربع مناطق، منها اثنتان مقتطعتان.'}</MathText>}
+          onCheckpoint={(e) => setCps((l) => [...l, e])}
         />
       }
       steps={[
@@ -67,20 +70,17 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 2, title: 'جداء قوسين: مثال الكتاب', subtitle: 'الملعب أعلاه', done: q2,
+          num: 2, title: 'جداء قوسين: مثال الكتاب', subtitle: 'الملعب أعلاه', done: answered(KNOWLEDGE.pitch),
           content: (
             <div className="space-y-3">
-              <TapQuestion
-                prompt={<MathText>{'في السطر $2x^2 + 8x - x - 4$ ، من أين جاء الحد $-x$ ؟'}</MathText>}
-                options={['$2x \\times 4$', '$(-1) \\times x$', '$(-1) \\times 4$'].map(M)}
-                correct={1}
-                cols={3}
-                requires={['nashr-qawsayn']}
-                explain={<MathText>{'الجداءات الأربعة: $2x \\times x = 2x^2$ ، $2x \\times 4 = 8x$ ، $(-1) \\times x = -x$ و $(-1) \\times 4 = -4$ — المناطق الأربع في الملعب.'}</MathText>}
-                onAnswered={() => setQ2(true)}
-              />
-              {q2 && <KnowledgeBrick id="nashr-qawsayn" variant="rappel" compact />}
-              {q2 && <TextbookBox kind="example" lines={KNOWLEDGE.examples} compact />}
+              <p data-evidence="checkpoint" data-tried={answered(KNOWLEDGE.pitch) ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${answered(KNOWLEDGE.pitch) ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {answered(KNOWLEDGE.pitch)
+                  ? <MathText>{'أجبتَ في المختبر: مناطق الملعب الأربع $2x \\times x = 2x^2$ ، $2x \\times 4 = 8x$ ، $(-1) \\times x = -x$ و $(-1) \\times 4 = -4$ ، فجاء الحدّ $-x$ من $(-1) \\times x$.'}</MathText>
+                  : 'احمل مناطق الملعب أعلاه كلّها، وتحقّق من قيمتين، ثم أجب عن الأسئلة التي تظهر فوق المختبر.'}
+              </p>
+              {answered(KNOWLEDGE.pitch) && <KnowledgeBrick id="nashr-qawsayn" variant="rappel" compact />}
+              {answered(KNOWLEDGE.pitch) && <TextbookBox kind="example" lines={KNOWLEDGE.examples} compact />}
             </div>
           ),
         },
@@ -115,7 +115,7 @@ export default function Module02Maarif() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={2} />}
+      footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />
   );
 }

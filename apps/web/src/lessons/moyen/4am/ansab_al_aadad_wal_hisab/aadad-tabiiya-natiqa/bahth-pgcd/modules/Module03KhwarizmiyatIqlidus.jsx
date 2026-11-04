@@ -48,7 +48,7 @@ export default function Module03KhwarizmiyatIqlidus() {
             <div className="space-y-3">
               <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>
                 <li data-evidence="divisions" data-tried={e1 ? 'true' : 'false'} className={e1 ? 'font-bold text-slate-800' : 'text-slate-500'}>
-                  {e1 ? 'أنهيتَ القسمات حتى صار الباقي معدومًا.' : 'لم تنهِ القسمات بعد: عُد إلى المناولة أعلاه وضع النسخ، ثم انقل ما يبقى إلى السطر التالي.'}
+                  {e1 ? 'أنهيتَ القسمات حتى صار الباقي معدومًا.' : 'لم تنهِ القسمات بعد: عُد إلى المناولة أعلاه وضع النسخ، ثم انقل ما يبقى إلى السطر التالي، وأجب عن الأسئلة التي تظهر فوق المختبر.'}
                 </li>
               </ul>
               <TapQuestion prompt={<span>في كل سطر تنقل الباقي وتترك الشريط الأكبر. باقي القسمة الإقليدية للعدد 765 على 135 هو 90. لماذا <MathText>{'$\\mathrm{PGCD}(765\\ ;\\ 135) = \\mathrm{PGCD}(135\\ ;\\ 90)$'}</MathText>؟</span>}
@@ -67,6 +67,6 @@ export default function Module03KhwarizmiyatIqlidus() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />} />
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />} />
   );
 }

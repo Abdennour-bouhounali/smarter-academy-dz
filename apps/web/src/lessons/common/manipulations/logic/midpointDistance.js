@@ -73,7 +73,7 @@ export function initMeet({ A = [1, -1], B = [4, 3], names = ['A', 'B', 'I'] } = 
   const quarter = V.point(Math.round(xy(a)[0] + (xy(b)[0] - xy(a)[0]) / 4), Math.round(xy(a)[1] + (xy(b)[1] - xy(a)[1]) / 4));
   const avoid = [a, b, I, sum, diff];
   const M = avoid.some((q) => V.vecEq(q, quarter)) ? freeStart(quarter, avoid, insideOf(win)) : quarter;
-  return Object.freeze({ A: a, B: b, names, I, sum, diff, win, M, solved: false, trials: Object.freeze([]) });
+  return Object.freeze({ A: a, B: b, names, I, sum, diff, win, M, start: M, solved: false, trials: Object.freeze([]) });
 }
 
 /**
@@ -121,7 +121,7 @@ export function initDistance({ A = [1, -1], B = [4, 3], names = ['A', 'B', 'C'] 
   return Object.freeze({
     A: a, B: b, names, cornerH, cornerV, win, C,
     h, v, taxi: Q.add(h, v), square: V.normSquared(d), root: V.distance(a, b),
-    cornerOk: null, solved: false, trials: Object.freeze([]),
+    start: C, cornerOk: null, solved: false, trials: Object.freeze([]),
   });
 }
 
@@ -219,6 +219,11 @@ export function claim(s, which) {
 
 /** Rouvrir l'escalier (changer de coin) — l'étape reste accomplie si la distance a été trouvée. */
 export const reopenCorner = (s) => (s.stage === 'distance' ? put(s, 'dist', { cornerOk: null }, null) : s);
+
+/** « أعِد التجربة » : la MÊME étape repart (le point tenu au départ, le drapeau « réussie » effacé) ; les essais restent au journal. */
+export const retryStage = (s, stage) => (stage === 'meet'
+  ? put(s, 'meet', { M: s.meet.start, solved: false }, null)
+  : put(s, 'dist', { C: s.dist.start, cornerOk: null, solved: false }, null));
 
 export const openDistance = (s) => (s.meet.solved ? Object.freeze({ ...s, stage: 'distance', last: null }) : s);
 export const backToMeet = (s) => Object.freeze({ ...s, stage: 'meet', last: null });

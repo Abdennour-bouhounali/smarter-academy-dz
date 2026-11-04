@@ -23,7 +23,7 @@ export default function Module02Maarif() {
               <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={labDone ? 'true' : 'false'}>
                 {labDone
                   ? <span className="font-bold text-slate-800">أنهيتَ اختزال <bdi dir="ltr">84/48</bdi> في المناولة.</span>
-                  : <span className="text-slate-500">لم تختزل 84/48 بعد في المناولة: جرّب القسمة على 12 مباشرة.</span>}
+                  : <span className="text-slate-500">لم تختزل 84/48 بعد في المناولة: جرّب القسمة على 12 مباشرة، ثم أجب عن الأسئلة التي تظهر فوق المختبر.</span>}
               </p>
               <TapQuestion prompt={<span>سمير احتاج إلى القسمة على 4 ثم على 3، أمّا القسمة على 12 فاختزلت <MathText>{'$\\dfrac{84}{48}$'}</MathText> دفعة واحدة. لماذا لا يبقى بعدها قاسم مشترك؟</span>}
                 options={['لأن 12 هو أكبر قاسم مشترك للعددين 84 و 48، و 12 = 4 × 3', 'لأن 12 أكبر من 4 ومن 3', 'لأن 12 عدد زوجي', 'لأن 84 − 48 = 36']} correct={0} cols={1}
@@ -52,6 +52,6 @@ export default function Module02Maarif() {
         { num: 4, title: 'طريقة الكتاب: 595/560', done: read,
           content: <div className="space-y-3"><MethodSteps method={METHOD} onAllRevealed={() => setRead(true)} />{read && <KnowledgeBrick id="tahaqquq-al-ikhtizal" compact />}</div> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={2} />} />
+      footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />} />
   );
 }

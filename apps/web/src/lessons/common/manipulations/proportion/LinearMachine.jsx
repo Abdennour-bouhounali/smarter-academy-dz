@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { Minus, Plus, CheckCheck, Ban } from 'lucide-react';
 import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
+import * as Pr from '@smarter-academy/core/arithmetic/proportional.js';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
@@ -15,6 +16,10 @@ import DropZone from '../primitives/DropZone';
 import DragGhost from '../primitives/DragGhost';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import MathText from '../../components/MathText';
 import * as L from '../logic/linearMachine';
 
@@ -91,8 +96,8 @@ const MACHINE_TONES = [
   { fill: '#7C3AED', soft: '#EDE9FE', ring: 'border-violet-500', text: 'text-violet-800' },
 ];
 export default function LinearMachine({
-  rules: rules0 = '0,8x', cards, targets, theme, title, lead, mission, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onVerdict, onReverse, onFinished,
+  rules: rules0 = '0,8x', cards, targets, theme, title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true,
+  initialMode = 'student', allowModeSwitch = false, onTrial, onVerdict, onReverse, onFinished, onCheckpoint,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.linearMachine.${key}`, o), [t]);
@@ -110,7 +115,9 @@ export default function LinearMachine({
   // Valeur PAR DÉFAUT de la carte vierge (jamais une cible) : ce n'est pas un essai, seule une carte portée en est un.
   const [blankI, setBlankI] = useState(() => L.defaultBlankIndex(make()));
   const [spin, setSpin] = useState(0);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setLiveA(null); setBlankI(L.defaultBlankIndex(make())); }
+  const [inits, setInits] = useState(0);        // « إعادة », un autre niveau : les questions du labo repartent aussi
+  const [cleared, setCleared] = useState([]);   // les étapes dont la suite de questions est répondue
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setLiveA(null); setBlankI(L.defaultBlankIndex(make())); setInits((n) => n + 1); setCleared([]); }
 
   const W = lab.world;
   const w = (key, o) => k(`worlds.${W}.${key}`, o);
@@ -118,8 +125,6 @@ export default function LinearMachine({
   const many = lab.machines.length > 1;
   const tone = MACHINE_TONES[lab.current % MACHINE_TONES.length];
 
-  const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, rules); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Chaque NOUVEL essai, chaque verdict, chaque étiquette atteinte : rapportés à la leçon.
@@ -282,6 +287,55 @@ export default function LinearMachine({
     </div>
   );
 
+  /* ── les questions PENDANT le labo (primitives/LabCheckpoint) : « nourrir » puis « affirmer » (souk) ; une suite par machine (numbers) ── */
+  const cpSettings = useLabCheckpointSettings('linear-machine');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpLive = cpOn && cpSettings.enabled;
+  const stageIds = many ? lab.machines.map((u) => `m${u.id}`) : ['feed', 'claim'];
+  const reachedOf = (id) => (many ? lab.machines[Number(id.slice(1))].verdict != null : id === 'feed' ? L.feedReached(lab) : lab.machines[0].verdict?.kind === 'linear');
+  const activeId = many ? `m${lab.current}` : (cleared.includes('feed') ? 'claim' : 'feed');
+  const activeReached = reachedOf(activeId);
+  const readyNow = L.discoveryReady(lab);
+  const chain = cpLive && activeReached ? chainOf(lab, activeId, readyNow) : null;
+  const ruleByCheckpoint = cpLive;
+  const cp = useLabCheckpoint({
+    id: cpLive ? activeId : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, k, { w, rulePrompt: many ? k('dPromptMany') : w('dPrompt'), ruleOptions: discoveryOptions, formal })) : null,
+    reached: activeReached,
+    resetKey: inits,
+    onRetry: () => {
+      if (activeId === 'feed') { setLab(make()); setLiveA(null); setBlankI(L.defaultBlankIndex(make())); } else setLab(L.reopen);
+    },
+    onEvent: (ev) => state.report(onCheckpoint, ev),   // {tk:'checkpoint'|'checkpoint-done', id, …} — la TRACE que les étapes du module relisent
+    onDone: (id) => {
+      setCleared((c) => (c.includes(id) ? c : [...c, id]));
+      if (chainOf(lab, id, readyNow).includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  useEffect(() => { if (readyNow && !cpLive) state.discover(); }, [readyNow, cpLive, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // une étape est FAITE quand son objectif est atteint ET sa suite répondue : la pastille passe au vert et on fête
+  const stepDone = stageIds.map((id) => reachedOf(id) && (!cpLive || cleared.includes(id)));
+  const nDone = stepDone.findIndex((d) => !d) < 0 ? stepDone.length : stepDone.findIndex((d) => !d);
+  const party = useStepCelebration();
+  const celebrated = useRef({ n: 0, inits });
+  if (celebrated.current.inits !== inits) celebrated.current = { n: 0, inits };   // « إعادة » : on refête
+  useEffect(() => {
+    if (nDone <= celebrated.current.n) return;
+    celebrated.current.n = nDone;
+    party.celebrate({ n: nDone, total: stepDone.length });
+  }, [nDone]); // eslint-disable-line react-hooks/exhaustive-deps
+  const stepCurrent = many ? lab.current : (cleared.includes('feed') ? 1 : 0);
+
+  // le son du GESTE (muet sans « الصوت ») : « tooth » une carte, « bell » une étiquette atteinte, « flag » l'affirmation acceptée, « over » un refus
+  useEffect(() => {
+    const kind = last?.kind;
+    if (!kind) return;
+    if (kind === 'fed') playSfx(last.hit ? 'bell' : 'tooth');
+    else if (kind === 'acceptedLinear' || kind === 'acceptedNot') playSfx('flag');
+    else if (kind === 'refusedLinear' || kind === 'refusedNot' || kind === 'zeroFixesNothing') playSfx('over');
+    else if (kind === 'fixed' || kind === 'again') playSfx('tooth');
+  }, [last]); // eslint-disable-line react-hooks/exhaustive-deps
+
   /* ── la représentation vivante ── */
   const repTex = m.verdict?.kind === 'linear'
     ? `f(x) = ${L.axTex(m.verdict.a)}`
@@ -441,6 +495,8 @@ export default function LinearMachine({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={ruleByCheckpoint}
       hints={[k('hint1'), k('hint2'), w('hint3')].map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{
         autoStep: () => false,
@@ -454,9 +510,12 @@ export default function LinearMachine({
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-amber-50/60 to-white" data-dragging={drag.dragging || sDial.dragging || sBlank.dragging ? 'true' : undefined}>
-        <div ref={boxRef} className="space-y-3" data-linear-machine data-world={W} data-machine={lab.current} data-rules={rules}
+        <div ref={boxRef} className="relative space-y-3" data-linear-machine data-world={W} data-machine={lab.current} data-rules={rules}
           data-layout={wide ? 'side' : 'stack'} data-screen-h={screenH}
           data-verdict={lab.machines.map((u) => u.verdict?.kind ?? 'open').join('|')}>
+          {party.node}
+          {cp.node}
+          <LabStepper count={stageIds.length} current={stepCurrent} done={stepDone} stepAttr="data-lm-step" />
           <div className={wide ? 'grid grid-cols-2 items-start gap-3' : 'space-y-2'} data-lm-glance>
             {machineBlock}
             {tableBlock}
@@ -646,3 +705,121 @@ function Deco({ world }) {
     </button>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/**
+ * La suite de questions de chaque étape. Souk : « feed » (deux cartes non nulles passées) puis « claim » (f(x) = a·x acceptée, finit par LA RÈGLE) ;
+ * numbers : une suite par machine jugée (`m0`, `m1`, `m2`), la dernière finit par la règle quand la découverte est prête.
+ */
+export function chainOf(lab, id, ready) {
+  if (id === 'feed') return Pr.isLinear(lab.machines[0].rule) ? ['ratio', 'again', 'kind'] : ['ratio', 'again'];
+  if (id === 'claim') return ['image', 'zero', 'rule'];
+  const m = lab.machines[Number(id.slice(1))];
+  const base = m.verdict?.kind === 'linear' ? ['evidence', 'image'] : ['evidence', 'witness'];
+  return ready ? [...base, 'rule'] : base;
+}
+
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const D = (x) => `$${x}$`;
+const spread = (list, seed) => { const r = seed % list.length; return [...list.slice(r), ...list.slice(0, r)]; };
+const seedOf = (lab) => lab.machines.reduce((n, m) => n + m.trials.length, 0) + lab.current;
+const T = (x) => <MathText>{D(L.numTex(x))}</MathText>;
+
+/** Une valeur à calculer : saisie libre si elle est ≥ 0 (une réponse saisie ne peut être négative), sinon trois choix aux erreurs réelles (signe, décalage). */
+function valueQ(lab, k, { id, v, prompt, hints, explain }) {
+  if (Lin.cmp(v, 0) >= 0) return { id, kind: 'number', expected: Lin.fracText(v), answer: T(v), prompt, hints, explain };
+  const opts = [
+    { text: T(v), correct: true },
+    { text: T(Lin.neg(v)), why: Cq(k, 'sign') },
+    { text: T(Lin.add(v, 1)), why: Cq(k, 'off') },
+  ];
+  return { id, kind: 'choice', cols: 3, prompt, options: spread(opts, seedOf(lab)), hints, explain };
+}
+
+export const QUESTIONS = {
+  ratio: (lab, k) => {
+    const m = lab.machines[0];
+    const [p] = L.studentNonZero(m);
+    const r = Pr.ratio(p.x, p.fx);
+    const o = { x: D(L.numTex(p.x)), fx: D(L.numTex(p.fx)), q: D(`${L.numTex(p.fx)} \\div ${L.numTex(p.x)}`), a: D(L.numTex(r)), calc: D(`${L.numTex(p.fx)} \\div ${L.numTex(p.x)} = ${L.numTex(r)}`) };
+    return valueQ(lab, k, { id: 'ratio', v: r, prompt: Cq(k, 'ratio.prompt', o), hints: [Cq(k, 'ratio.hint1', o), Cq(k, 'ratio.hint2', o)], explain: Cq(k, 'ratio.explain', o) });
+  },
+  again: (lab, k) => {
+    const nz = L.studentNonZero(lab.machines[0]);
+    const p = nz[0]; const q = nz[nz.length - 1];
+    const r1 = Pr.ratio(p.x, p.fx); const r2 = Pr.ratio(q.x, q.fx);
+    const c = Lin.cmp(r2, r1);
+    const o = { x: D(L.numTex(q.x)), fx: D(L.numTex(q.fx)), q: D(`${L.numTex(q.fx)} \\div ${L.numTex(q.x)}`), r1: D(L.numTex(r1)), r2: D(L.numTex(r2)), calc: D(`${L.numTex(q.fx)} \\div ${L.numTex(q.x)} = ${L.numTex(r2)}`) };
+    const opts = [
+      { text: Cq(k, 'again.same', o), ...(c === 0 ? { correct: true } : { why: Cq(k, 'again.whyCompare', o) }) },
+      { text: Cq(k, 'again.bigger'), ...(c > 0 ? { correct: true } : { why: Cq(k, 'again.whyCompare', o) }) },
+      { text: Cq(k, 'again.smaller'), ...(c < 0 ? { correct: true } : { why: Cq(k, 'again.whyCompare', o) }) },
+    ];
+    return { id: 'again', kind: 'choice', cols: 3, prompt: Cq(k, 'again.prompt', o), options: spread(opts, seedOf(lab) + 1), hints: [Cq(k, 'again.hint1', o), Cq(k, 'again.hint2', o)], explain: Cq(k, 'again.explain', o) };
+  },
+  kind: (lab, k) => {
+    const nz = L.studentNonZero(lab.machines[0]);
+    const p = nz[0]; const q = nz[nz.length - 1];
+    const d1 = Lin.sub(p.x, p.fx); const d2 = Lin.sub(q.x, q.fx);
+    const o = {
+      x1: D(L.numTex(p.x)), f1: D(L.numTex(p.fx)), x2: D(L.numTex(q.x)), f2: D(L.numTex(q.fx)), p1: D(`(${L.numTex(p.x)} \\,;\\, ${L.numTex(p.fx)})`), p2: D(`(${L.numTex(q.x)} \\,;\\, ${L.numTex(q.fx)})`), d1: D(L.numTex(d1)), d2: D(L.numTex(d2)),
+      a: D(L.numTex(Pr.ratio(p.x, p.fx))),
+    };
+    const opts = [{ text: Cq(k, 'kind.times', o), correct: true }];
+    if (!Lin.eq(d1, d2)) opts.push({ text: Cq(k, 'kind.minus'), why: Cq(k, 'kind.whyMinus', o) });
+    if (!Lin.eq(p.fx, q.fx)) opts.push({ text: Cq(k, 'kind.const'), why: Cq(k, 'kind.whyConst', o) });
+    return { id: 'kind', kind: 'choice', cols: 3, prompt: Cq(k, 'kind.prompt', o), options: spread(opts, seedOf(lab)), hints: [Cq(k, 'kind.hint1', o), Cq(k, 'kind.hint2', o)], explain: Cq(k, 'kind.explain', o) };
+  },
+  image: (lab, k) => {
+    const m = lab.machines[lab.current];
+    const a = m.verdict?.a ?? m.rule.a;
+    const used = m.trials.map((t) => Lin.fracText(t.x));
+    const mm = lab.world === 'souk' ? (['30', '40', '60', '12'].find((c) => !used.includes(c)) ?? '70') : (['3', '4', '5', '6'].find((c) => !used.includes(c)) ?? '7');
+    const x = Lin.parseNumber(mm);
+    const v = Pr.image(a, x);
+    const o = { a: D(L.numTex(a)), m: D(L.numTex(x)), ax: D(`${L.numTex(a)} \\times ${L.numTex(x)}`), calc: D(`${L.numTex(a)} \\times ${L.numTex(x)} = ${L.numTex(v)}`) };
+    return valueQ(lab, k, { id: 'image', v, prompt: Cq(k, 'image.prompt', o), hints: [Cq(k, 'image.hint1', o), Cq(k, 'image.hint2', o)], explain: Cq(k, 'image.explain', o) });
+  },
+  zero: (lab, k) => {
+    const a = lab.machines[0].verdict?.a ?? lab.machines[0].rule.a;
+    const o = { a: D(L.numTex(a)), calc: D(`${L.numTex(a)} \\times 0 = 0`) };
+    const opts = [
+      { text: T(0), correct: true },
+      { text: T(a), why: Cq(k, 'zero.whyA', o) },
+      { text: Cq(k, 'zero.refuse'), why: Cq(k, 'zero.whyRefuse', o) },
+    ];
+    return { id: 'zero', kind: 'choice', cols: 3, prompt: Cq(k, 'zero.prompt'), options: spread(opts, seedOf(lab)), hints: [Cq(k, 'zero.hint1', o), Cq(k, 'zero.hint2')], explain: Cq(k, 'zero.explain', o) };
+  },
+  evidence: (lab, k) => {
+    const m = lab.machines[lab.current];
+    const kind = m.verdict?.kind === 'linear' ? 'same' : m.verdict?.witness?.kind === 'zero' ? 'zero' : 'ratios';
+    const o = { n: lab.current + 1 };
+    const opts = [
+      { text: Cq(k, 'evidence.same'), ...(kind === 'same' ? { correct: true } : { why: Cq(k, 'evidence.whySame', o) }) },
+      { text: Cq(k, 'evidence.zero'), ...(kind === 'zero' ? { correct: true } : { why: Cq(k, 'evidence.whyZero', o) }) },
+      { text: Cq(k, 'evidence.ratios'), ...(kind === 'ratios' ? { correct: true } : { why: Cq(k, 'evidence.whyRatios', o) }) },
+    ];
+    return { id: 'evidence', kind: 'choice', cols: 3, prompt: Cq(k, 'evidence.prompt', o), options: spread(opts, seedOf(lab)), hints: [Cq(k, 'evidence.hint1', o), Cq(k, 'evidence.hint2', o)], explain: Cq(k, `evidence.explain.${kind}`, o) };
+  },
+  witness: (lab, k) => {
+    const m = lab.machines[lab.current];
+    const wi = m.verdict?.witness;
+    const o = { n: lab.current + 1 };
+    if (wi?.kind === 'zero') {
+      const oo = { ...o, f0: D(`f(0) = ${L.numTex(wi.fx)}`) };
+      return valueQ(lab, k, { id: 'witness', v: wi.fx, prompt: Cq(k, 'witness.zeroPrompt', o), hints: [Cq(k, 'witness.zeroHint1'), Cq(k, 'witness.zeroHint2', o)], explain: Cq(k, 'witness.zeroExplain', oo) });
+    }
+    const p = wi.p;
+    const r = Pr.ratio(p.x, p.fx);
+    const oo = { ...o, x: D(L.numTex(p.x)), fx: D(L.numTex(p.fx)), calc: D(`${L.numTex(p.fx)} \\div ${L.numTex(p.x)} = ${L.numTex(r)}`) };
+    return valueQ(lab, k, { id: 'witness', v: r, prompt: Cq(k, 'witness.ratioPrompt', oo), hints: [Cq(k, 'witness.ratioHint1', oo), Cq(k, 'witness.ratioHint2', oo)], explain: Cq(k, 'witness.ratioExplain', oo) });
+  },
+  rule: (lab, k, ctx) => ({
+    id: 'rule', kind: 'choice',
+    prompt: <MathText>{ctx.rulePrompt}</MathText>,
+    options: spread(ctx.ruleOptions, seedOf(lab) + 2),
+    hints: [Cq(k, 'rule.hint1'), Cq(k, 'rule.hint2')],
+    explain: ctx.formal,
+  }),
+};

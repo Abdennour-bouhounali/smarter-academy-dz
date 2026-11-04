@@ -12,6 +12,10 @@ import useDragInteraction from '../useDragInteraction';
 import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import MovablePanel from '../primitives/MovablePanel';
 import MathText from '../../components/MathText';
 import { vectorArrow } from '../../components/geoFigure';
@@ -83,7 +87,7 @@ const tx = (s) => String(s).replace(',', '{,}');
 const btn = 'inline-flex h-11 min-w-[44px] items-center justify-center rounded-xl border-2 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2';
 
 export default function VectorSum(props) {
-  const { numbers: grouped, theme: theme0, title, lead, mission, level, levels: withLevels = true,
+  const { numbers: grouped, theme: theme0, title, lead, mission, level, levels: withLevels = true, checkpoints = true,
     initialMode = 'student', allowModeSwitch = false, onTrial, onFinished } = props;
   const authored = useMemo(() => {
     const out = {};
@@ -131,7 +135,10 @@ export default function VectorSum(props) {
     },
   } : null;
 
-  const ready = L.discoveryReady(lab);
+  // les questions pendant le labo (obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte) : la règle vient de la dernière suite
+  const cpSettings = useLabCheckpointSettings('vector-sum');
+  const cpActive = checkpoints && cpSettings.enabled;
+  const ready = L.discoveryReady(lab) && !cpActive;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!state.isFormal) return;
@@ -174,6 +181,54 @@ export default function VectorSum(props) {
     </div>
   );
 
+  /* ── les étapes : deux contrastes (chasles : un virage puis le retour · nageur : l'arrivée puis un départ manqué) ── */
+  const KINDS = L.STEP_KINDS[mode];
+  const [answered, setAnswered] = useState({ epoch: state.epoch, ids: {} });
+  const ans = answered.epoch === state.epoch ? answered.ids : {};
+  const reachedK = L.reachedKinds(lab);
+  const pending = KINDS.filter((kd) => reachedK.includes(kd) && !ans[kd]);
+  const stepId = pending[0] ?? null;
+  const withRule = pending.length === 1 && reachedK.length === KINDS.length;
+  const chain = cpActive && stepId ? chainOf(lab, stepId, withRule) : null;
+  const cp = useLabCheckpoint({
+    id: chain ? stepId : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, k, { options: discoveryOptions, formal, m })) : null,
+    reached: !!stepId,
+    resetKey: state.epoch,
+    onRetry: () => setLab((x) => L.restartStep(x, stepId)),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setAnswered((a) => ({ epoch: state.epoch, ids: { ...(a.epoch === state.epoch ? a.ids : {}), [id]: true } }));
+      if (chain.includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const stepDone = KINDS.map((kd) => reachedK.includes(kd) && (!cpActive || !!ans[kd]));
+  const stepper = <LabStepper count={KINDS.length} current={stepDone.every(Boolean) ? KINDS.length - 1 : stepDone.findIndex((d) => !d)} done={stepDone} stepAttr="data-vs-step" />;
+  const party = useStepCelebration();
+  const celebrated = useRef({ epoch: state.epoch, set: new Set() });
+  if (celebrated.current.epoch !== state.epoch) celebrated.current = { epoch: state.epoch, set: new Set() };
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.set.has(i)) return;
+      celebrated.current.set.add(i);
+      party.celebrate({ n: i + 1, total: KINDS.length });
+    });
+  }, [stepDone.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son : un déclic par essai accepté, « over » pour un refus ou un départ manqué, le drapeau quand une étape est faite
+  const doneN = stepDone.filter(Boolean).length;
+  const sfx = useRef({ n: nEvents, d: doneN, epoch: state.epoch });
+  useEffect(() => {
+    const p = sfx.current;
+    if (p.epoch !== state.epoch) { sfx.current = { n: nEvents, d: doneN, epoch: state.epoch }; return; }
+    if (nEvents > p.n) {
+      const lt = lab.last;
+      playSfx(lt?.kind === 'refusal' || (lt?.trial && lt.trial.side !== 'target') ? 'over' : 'tooth');
+    }
+    if (doneN > p.d) playSfx('flag');
+    sfx.current = { n: nEvents, d: doneN, epoch: state.epoch };
+  }, [nEvents, doneN, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  const lay = { stepper, party: party.node, cp: cp.node, open: cp.open };
+
   return (
     <ManipulationShell
       type="vector-sum"
@@ -183,6 +238,8 @@ export default function VectorSum(props) {
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpActive}
       hints={['hint1', 'hint2', 'hint3'].map((hk) => <MathText key={hk}>{m(hk)}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false, ...(swimAuto ? { autoComplete: swimAuto } : {}) }}
       discovery={<ManipulationDiscovery state={state} prompt={m('dPrompt')} options={discoveryOptions} formal={formal} />}
@@ -190,8 +247,8 @@ export default function VectorSum(props) {
     >
       <ManipulationStage className={mode === 'parallelogram' ? 'bg-gradient-to-b from-sky-50/70 to-white' : 'bg-gradient-to-b from-amber-50/60 to-white'} minHeight="min-h-[150px]">
         {mode === 'parallelogram'
-          ? <SwimLab lab={lab} setLab={setLab} m={m} k={k} theme={theme} solved={ready} />
-          : <ChaslesLab lab={lab} setLab={setLab} m={m} k={k} theme={theme} solved={ready} />}
+          ? <SwimLab lab={lab} setLab={setLab} m={m} k={k} theme={theme} solved={L.discoveryReady(lab)} lay={lay} />
+          : <ChaslesLab lab={lab} setLab={setLab} m={m} k={k} theme={theme} solved={L.discoveryReady(lab)} lay={lay} />}
       </ManipulationStage>
     </ManipulationShell>
   );
@@ -256,7 +313,7 @@ function nameAt(a, b, off = 14) {
 
 /* ════════════════════════════ مبتدئ — la trottinette (علاقة شال) ════════════════════════════ */
 
-function ChaslesLab({ lab, setLab, m, k, theme, solved }) {
+function ChaslesLab({ lab, setLab, m, k, theme, solved, lay }) {
   const reduce = useReducedMotion();
   const { boxRef, glanceRef, drawnH, width, budget } = useBudget(190, 430);
   const wide = width >= 600;
@@ -363,8 +420,10 @@ function ChaslesLab({ lab, setLab, m, k, theme, solved }) {
   );
 
   return (
-    <div ref={boxRef} className="space-y-2" data-vector-sum data-mode="chasles" data-world={theme} data-solved={solved ? 'true' : 'false'} data-scene-h={svgH}>
+    <div ref={boxRef} className={`relative space-y-2 ${lay.open ? 'min-h-[620px]' : ''}`} data-vector-sum data-mode="chasles" data-world={theme} data-solved={solved ? 'true' : 'false'} data-scene-h={svgH}>
+      {lay.party}{lay.cp}
       <div ref={glanceRef} className="space-y-1.5" data-vs-glance>
+      {lay.stepper}
       <div className={`gap-3 ${wide ? 'flex items-start justify-center' : 'space-y-1.5'}`}>
         <div className="space-y-1.5">
           <div ref={sceneRef} className="relative mx-auto overflow-hidden rounded-xl border border-slate-200" style={{ width: svgW, height: svgH }}>
@@ -506,7 +565,7 @@ function CityDeco({ G, svgW }) {
 
 /* ════════════════════════════ متقدم — le nageur (قاعدة متوازي الأضلاع, le تحدّ) ════════════════════════════ */
 
-function SwimLab({ lab, setLab, m, k, theme, solved }) {
+function SwimLab({ lab, setLab, m, k, theme, solved, lay }) {
   const reduce = useReducedMotion();
   const { boxRef, glanceRef, drawnH, width, budget } = useBudget(200, 380);
   const narrow = width < 380;
@@ -562,8 +621,10 @@ function SwimLab({ lab, setLab, m, k, theme, solved }) {
   const speedLive = L.velocities(lab, theta).speed;
 
   return (
-    <div ref={boxRef} className="space-y-2" data-vector-sum data-mode="parallelogram" data-world={theme} data-solved={solved ? 'true' : 'false'} data-scene-h={svgH}>
+    <div ref={boxRef} className={`relative space-y-2 ${lay.open ? 'min-h-[620px]' : ''}`} data-vector-sum data-mode="parallelogram" data-world={theme} data-solved={solved ? 'true' : 'false'} data-scene-h={svgH}>
+      {lay.party}{lay.cp}
       <div ref={glanceRef} className="space-y-1.5" data-vs-glance>
+        {lay.stepper}
         <div ref={sceneRef} className="relative mx-auto overflow-hidden rounded-xl border border-slate-200" style={{ width: svgW, height: svgH }}>
           <svg width={svgW} height={svgH} viewBox={`0 0 ${svgW} ${svgH}`} className="absolute inset-0" style={{ direction: 'ltr' }}
             role="img" aria-label={m('sceneLabel', { theta, swim: lab.swim, current: lab.current })}>
@@ -706,3 +767,121 @@ function RiverDeco({ svgW, yA, yB, reduce }) {
     </g>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+const $ = (s) => `$${s}$`;
+const Mx = (k, mode, key, o) => <MathText>{k(`${mode}.cp.${key}`, o)}</MathText>;
+
+/** La suite de questions de l'étape `kd` (chasles : turn · zero ; nageur : target · miss) ; la règle ferme la DERNIÈRE étape à finir. */
+export function chainOf(lab, kd, withRule) {
+  const base = { turn: ['sumVec', 'shorter'], zero: ['zeroSum', 'opposite'], target: ['angle', 'real'], miss: ['miss'] }[kd];
+  return withRule ? [...base, 'rule'] : base;
+}
+
+/** Chaque question est construite sur LES nombres de l'essai de l'élève (rien en dur) ; `k` : les textes de `vectorSum` (`chasles.cp.*`, `parallelogram.cp.*`). */
+export const QUESTIONS = {
+  sumVec: (lab, k) => {
+    const tr = L.trialOfKind(lab, 'turn');
+    const o = { n: tr.leg + 1 };
+    return {
+      id: 'sumVec', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'chasles', 'sumVec.prompt', o),
+      options: [
+        { text: <MathText>{$('\\overrightarrow{CA}')}</MathText>, why: Mx(k, 'chasles', 'sumVec.whyCA', o) },
+        { text: <MathText>{$('\\overrightarrow{AC}')}</MathText>, correct: true },
+        { text: <MathText>{$('\\overrightarrow{BC}')}</MathText>, why: Mx(k, 'chasles', 'sumVec.whyBC', o) },
+      ],
+      hints: [Mx(k, 'chasles', 'sumVec.hint1', o), Mx(k, 'chasles', 'sumVec.hint2', o)],
+      explain: Mx(k, 'chasles', 'sumVec.explain', o),
+    };
+  },
+  shorter: (lab, k) => {
+    const tr = L.trialOfKind(lab, 'turn');
+    const ev = L.evidenceOf({ ...lab, last: { kind: 'chain', chain: tr } });
+    const o = { path: $(tx(ev.path)), straight: $(tx(ev.straight)) };
+    return {
+      id: 'shorter', kind: 'choice',
+      prompt: Mx(k, 'chasles', 'shorter.prompt', o),
+      options: [
+        { text: Mx(k, 'chasles', 'shorter.equal'), why: Mx(k, 'chasles', 'shorter.whyEqual', o) },
+        { text: Mx(k, 'chasles', 'shorter.less'), correct: true },
+        { text: Mx(k, 'chasles', 'shorter.more'), why: Mx(k, 'chasles', 'shorter.whyMore', o) },
+      ],
+      hints: [Mx(k, 'chasles', 'shorter.hint1'), Mx(k, 'chasles', 'shorter.hint2', o)],
+      explain: Mx(k, 'chasles', 'shorter.explain', o),
+    };
+  },
+  zeroSum: (lab, k) => {
+    const tr = L.trialOfKind(lab, 'zero');
+    const o = { n: tr.leg + 1 };
+    return {
+      id: 'zeroSum', kind: 'choice',
+      prompt: Mx(k, 'chasles', 'zeroSum.prompt', o),
+      options: [
+        { text: Mx(k, 'chasles', 'zeroSum.number'), why: Mx(k, 'chasles', 'zeroSum.whyNumber', o) },
+        { text: Mx(k, 'chasles', 'zeroSum.twice'), why: Mx(k, 'chasles', 'zeroSum.whyTwice', o) },
+        { text: Mx(k, 'chasles', 'zeroSum.zero'), correct: true },
+      ],
+      hints: [Mx(k, 'chasles', 'zeroSum.hint1', o), Mx(k, 'chasles', 'zeroSum.hint2')],
+      explain: Mx(k, 'chasles', 'zeroSum.explain', o),
+    };
+  },
+  opposite: (lab, k) => ({
+    id: 'opposite', kind: 'choice',
+    prompt: Mx(k, 'chasles', 'opposite.prompt'),
+    options: [
+      { text: Mx(k, 'chasles', 'opposite.equal'), why: Mx(k, 'chasles', 'opposite.whyEqual') },
+      { text: Mx(k, 'chasles', 'opposite.opposite'), correct: true },
+      { text: Mx(k, 'chasles', 'opposite.perp'), why: Mx(k, 'chasles', 'opposite.whyPerp') },
+    ],
+    hints: [Mx(k, 'chasles', 'opposite.hint1'), Mx(k, 'chasles', 'opposite.hint2')],
+    explain: Mx(k, 'chasles', 'opposite.explain'),
+  }),
+  angle: (lab, k) => {
+    const tr = L.trialOfKind(lab, 'target');
+    const o = { theta: $(String(Math.abs(tr.theta))), swim: lab.swim, current: lab.current };
+    return {
+      id: 'angle', kind: 'number', expected: String(Math.abs(tr.theta)), answer: <MathText>{$(`${Math.abs(tr.theta)}^{\\circ}`)}</MathText>,
+      prompt: Mx(k, 'parallelogram', 'angle.prompt', o), hints: [Mx(k, 'parallelogram', 'angle.hint1', o), Mx(k, 'parallelogram', 'angle.hint2', o)],
+      explain: Mx(k, 'parallelogram', 'angle.explain', o),
+    };
+  },
+  real: (lab, k) => {
+    const cr = L.crossingResult(lab);
+    const o = { swim: lab.swim, current: lab.current, plus: $(`${lab.swim}+${lab.current}=${lab.swim + lab.current}`), minus: $(`${lab.swim}-${lab.current}=${lab.swim - lab.current}`), real: $(`${cr.speedTex}\\approx ${tx(cr.speedText)}`) };
+    return {
+      id: 'real', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'parallelogram', 'real.prompt', o),
+      options: [
+        { text: <MathText>{o.plus}</MathText>, why: Mx(k, 'parallelogram', 'real.whyPlus', o) },
+        { text: <MathText>{o.real}</MathText>, correct: true },
+        { text: <MathText>{o.minus}</MathText>, why: Mx(k, 'parallelogram', 'real.whyMinus', o) },
+      ],
+      hints: [Mx(k, 'parallelogram', 'real.hint1', o), Mx(k, 'parallelogram', 'real.hint2', o)],
+      explain: Mx(k, 'parallelogram', 'real.explain', o),
+    };
+  },
+  miss: (lab, k) => {
+    const tr = L.trialOfKind(lab, 'miss');
+    const o = { theta: $(`${Math.abs(tr.theta)}^{\\circ}`), drift: $(`${tr.driftText}`), swim: lab.swim, current: lab.current };
+    return {
+      id: 'miss', kind: 'choice',
+      prompt: Mx(k, 'parallelogram', 'miss.prompt', o),
+      options: [
+        { text: Mx(k, 'parallelogram', 'miss.slow'), why: Mx(k, 'parallelogram', 'miss.whySlow', o) },
+        { text: Mx(k, 'parallelogram', 'miss.sum'), correct: true },
+        { text: Mx(k, 'parallelogram', 'miss.protractor'), why: Mx(k, 'parallelogram', 'miss.whyProtractor', o) },
+      ],
+      hints: [Mx(k, 'parallelogram', 'miss.hint1', o), Mx(k, 'parallelogram', 'miss.hint2', o)],
+      explain: Mx(k, 'parallelogram', 'miss.explain', o),
+    };
+  },
+  rule: (lab, k, ctx) => ({
+    id: 'rule', kind: 'choice',
+    prompt: ctx.m('dPrompt') ? <MathText>{ctx.m('dPrompt')}</MathText> : null,
+    options: ctx.options,
+    hints: [Mx(k, lab.mode === 'parallelogram' ? 'parallelogram' : 'chasles', 'rule.hint1'), Mx(k, lab.mode === 'parallelogram' ? 'parallelogram' : 'chasles', 'rule.hint2')],
+    explain: ctx.formal,
+  }),
+};

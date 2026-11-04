@@ -7,6 +7,11 @@ import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { spread } from './spaceCp';
 import MathText from '../../components/MathText';
 import SpaceFigure from '../../components/SpaceFigure';
 import Stage3D from './stage3d/Stage3D';
@@ -79,7 +84,7 @@ const pointTex = (name, p) => `${name.replace('′', "'")}(${p[0]}\\,;\\,${p[1]}
 
 export default function SphereProbe({
   numbers: nums, R: R0, bound: bound0, probes: probes0, tasks: tasks0, start: start0, theme, title, lead, mission, level,
-  levels: withLevels = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.sphereProbe.${key}`, o), [t]);
@@ -97,8 +102,10 @@ export default function SphereProbe({
   const [lab, setLab] = useState(make);
   const [object, setObject] = useState('sphere');
   const sceneKey = `${JSON.stringify(state.numbers)}|${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setObject('sphere'); }
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  const [doneIds, setDoneIds] = useState({});
+  // « إعادة » (epoch), un autre niveau ou d'autres nombres : TOUT recommence — les essais, les étapes et les questions du labo
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(make()); setObject('sphere'); setDoneIds({}); }
   const [grabbing, setGrabbing] = useState(false);
   const [hue, setHue] = useState(0); // le décor seulement (la télécommande RGB)
   const reduce = useReducedMotion();
@@ -111,7 +118,9 @@ export default function SphereProbe({
   const name = mode === 'tasks' && L.PLACE_TASKS.includes(task) ? L.taskName(task) : 'M';
 
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  const cpSettings = useLabCheckpointSettings('sphere-probe');   // obligatoires pour tout élève ; l'enseignant seul les coupe, pour SON compte
+  const cpLive = cpOn && cpSettings.enabled;
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch, cpLive]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!state.isFormal) return;
     state.report(onFinished, { R, kinds: [...new Set(lab.trials.filter((x) => x.ok && x.truth).map((x) => x.truth))] });
@@ -229,6 +238,63 @@ export default function SphereProbe({
     </div>
   );
 
+  /* ── les étapes et leurs questions : la position jugée juste (ou la tâche faite) ouvre sa suite, dans l'ordre ── */
+  const stepList = L.stepsOf(lab).map((st) => ({ ...st, chain: chainOf(st.id) }));
+  const stepDone = stepList.map((st) => !!doneIds[st.id] || (!cpLive && st.reached));
+  const nextStep = cpLive ? stepList.find((st) => !doneIds[st.id]) : null;
+  const cpId = nextStep && nextStep.reached ? nextStep.id : null;
+  const chain = cpId ? nextStep.chain : null;
+  const cp = useLabCheckpoint({
+    id: cpId,
+    questions: chain ? chain.map((q) => QUESTIONS[q]({ lab, step: nextStep, options: discoveryOptions, formal }, k)) : null,
+    reached: !!cpId,
+    resetKey: scene.inits,
+    onRetry: () => setLab((cur) => L.retryStep(cur, cpId)),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => ({ ...d, [id]: true }));
+      if (stepList.find((st) => st.id === id)?.chain.includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  const doneKey = stepDone.join();
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(i)) return;
+      celebrated.current.add(i);
+      party.celebrate({ n: i + 1, total: stepList.length });
+    });
+  }, [doneKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── le son : un déclic quand la sonde (ou le plan) change de nœud, « flag » à la position juste, « over » à la position refusée, « bell » quand
+     une étape est finie. Muet sauf « الصوت ». ── */
+  const tick = useRef({ key: null, at: 0 });
+  const gestureKey = `${lab.M}|${lab.prime}|${lab.h}`;
+  useEffect(() => {
+    const p = tick.current;
+    if (p.key === null) { p.key = gestureKey; return; }
+    if (p.key === gestureKey) return;
+    p.key = gestureKey;
+    const now = performance.now();
+    if (now - p.at > 35) { playSfx('tooth'); p.at = now; }
+  }, [gestureKey]);
+  const heard = useRef(0);
+  useEffect(() => {
+    const n = lab.trials.length;
+    if (n < heard.current) heard.current = 0;
+    if (n === 0 || n === heard.current) return;
+    heard.current = n;
+    playSfx(lab.last?.ok ? 'flag' : 'over');
+  }, [lab.trials.length]); // eslint-disable-line react-hooks/exhaustive-deps
+  const bells = useRef(0);
+  useEffect(() => {
+    const n = stepDone.filter(Boolean).length;
+    if (n > bells.current) playSfx('bell');
+    bells.current = n;
+  }, [doneKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
   /* ── les commandes ── */
   const btn = `inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-1 rounded-xl border-2 ${narrow ? 'px-2 text-xs' : 'px-3 text-sm'} font-bold focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300 disabled:opacity-40`;
   const stepFor = circles ? (axis, d) => setLab((s) => L.stepPrime(s, axis, d)) : (axis, d) => setLab((s) => L.stepM(s, axis, d));
@@ -289,14 +355,19 @@ export default function SphereProbe({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpLive}
       hints={(mode === 'tasks' ? ['hintT1', 'hintT2', 'hintT3'] : ['hint1', 'hint2', 'hint3']).map((hk) => <MathText key={hk}>{k(hk, { R, R2: R * R })}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={k('dPrompt')} options={discoveryOptions} formal={formal} />}
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className={world === 'shot-put' ? 'bg-gradient-to-b from-indigo-950 to-slate-900' : 'bg-gradient-to-b from-[#120a2a] to-[#1e1b4b]'} minHeight="min-h-[180px]">
-        <div ref={boxRef} className="space-y-2" data-sphere-probe data-world={world} data-mode={mode} data-stage={lab.stage} data-object={object}
+        <div ref={boxRef} className="relative space-y-2" data-sphere-probe data-world={world} data-mode={mode} data-stage={lab.stage} data-object={object}
           data-task={task ?? ''} data-r={R}>
+          {party.node}
+          {cp.node}
+          <LabStepper count={stepList.length} current={Math.max(0, stepDone.indexOf(false) < 0 ? stepList.length - 1 : stepDone.indexOf(false))} done={stepDone} stepAttr="data-sp-step" />
           <div className={wide ? 'grid grid-cols-[minmax(0,1.35fr)_minmax(250px,1fr)] items-start gap-3' : `space-y-1.5 ${narrow ? '-mx-2' : ''}`} data-sp-glance>
             {/* la fenêtre 3D, son décor derrière, la bascule كرة / جلة posée dessus */}
             <div className="relative overflow-hidden rounded-2xl" style={{ height: stageHeight }}>
@@ -534,3 +605,126 @@ function DecoTap({ world, onTap }) {
     </button>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/**
+ * La suite de chaque étape. Les trois positions (كرة, داخل, خارج) : OM² de SON point · sa comparaison à R² · sa place (كرة / جلة) ; la dernière
+ * (خارج) finit par la RÈGLE. Les tâches du متقدم : le قطر, la دائرة كبرى, la دائرة صغرى.
+ */
+export function chainOf(id) {
+  if (id === 'outside') return ['om2', 'cmp', 'ball', 'rule'];
+  if (id === 'surface' || id === 'inside') return ['om2', 'cmp', 'ball'];
+  if (id === 'diameter') return ['diamLen', 'diamMid'];
+  if (id === 'great-circle') return ['gcRadius', 'gcCentre'];
+  return ['scRadius2', 'scSmaller'];
+}
+
+const $ = (x) => `$${x}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const KINDI = { surface: 0, inside: 1, outside: 2 };
+
+/** Chaque question est construite sur LES nombres de l'élève (rien n'est écrit en dur) ; `k` : les textes de `sphereProbe`. */
+export const QUESTIONS = {
+  om2: ({ lab, step }, k) => {
+    const tr = step.trial; const [x, y, z] = tr.at;
+    const o = { name: $(tr.name), p: $(pointTex(tr.name, tr.at)), x: $(x), y: $(y), z: $(z), calc: $(`${x * x} + ${y * y} + ${z * z}`), n: tr.OM2 };
+    return {
+      id: 'om2', kind: 'number', expected: String(tr.OM2), answer: <MathText>{$(tr.OM2)}</MathText>,
+      prompt: Cq(k, 'om2.prompt', o), hints: [Cq(k, 'om2.hint1', o), Cq(k, 'om2.hint2', o)], explain: Cq(k, 'om2.explain', o),
+    };
+  },
+  cmp: ({ lab, step }, k) => {
+    const tr = step.trial; const R = lab.R;
+    const o = { name: $(tr.name), n: tr.OM2, R2: R * R, R, om: $(`OM = ${tr.OMTex}`) };
+    const right = KINDI[tr.truth];
+    return {
+      id: 'cmp', kind: 'choice', cols: 1, prompt: Cq(k, 'cmp.prompt', o),
+      options: [
+        { text: Cq(k, 'cmp.eq', o), correct: right === 0, why: Cq(k, tr.truth === 'surface' ? 'cmp.whyEq' : 'cmp.whyNotEq', o) },
+        { text: Cq(k, 'cmp.lt', o), correct: right === 1, why: Cq(k, 'cmp.whyLt', o) },
+        { text: Cq(k, 'cmp.gt', o), correct: right === 2, why: Cq(k, 'cmp.whyGt', o) },
+      ],
+      hints: [Cq(k, 'cmp.hint1', o), Cq(k, 'cmp.hint2', o)], explain: Cq(k, 'cmp.explain', o),
+    };
+  },
+  ball: ({ lab, step }, k) => {
+    const tr = step.trial; const R = lab.R;
+    const o = { name: $(tr.name), n: tr.OM2, R2: R * R };
+    const right = KINDI[tr.truth];
+    return {
+      id: 'ball', kind: 'choice', cols: 1, prompt: Cq(k, 'ball.prompt', o),
+      options: [
+        { text: Cq(k, 'ball.both', o), correct: right === 0, why: Cq(k, 'ball.whyBoth', o) },
+        { text: Cq(k, 'ball.ballOnly', o), correct: right === 1, why: Cq(k, 'ball.whyBallOnly', o) },
+        { text: Cq(k, 'ball.neither', o), correct: right === 2, why: Cq(k, 'ball.whyNeither', o) },
+      ],
+      hints: [Cq(k, 'ball.hint1', o), Cq(k, 'ball.hint2', o)], explain: Cq(k, `ball.explain.${tr.truth}`, o),
+    };
+  },
+  rule: ({ options, formal }, k) => ({
+    id: 'rule', kind: 'choice', prompt: <MathText>{k('dPrompt')}</MathText>, options,
+    hints: [Cq(k, 'rule.hint1'), Cq(k, 'rule.hint2')], explain: formal,
+  }),
+  diamLen: ({ lab, step }, k) => {
+    const tr = step.trial; const R = lab.R; const A = L.anchorOf(lab);
+    const o = { R, d: 2 * R, m: $(pointTex('M', A)), mp: $(pointTex("M'", tr.at)) };
+    return {
+      id: 'diamLen', kind: 'number', expected: String(2 * R), answer: <MathText>{$(2 * R)}</MathText>,
+      prompt: Cq(k, 'diamLen.prompt', o), hints: [Cq(k, 'diamLen.hint1', o), Cq(k, 'diamLen.hint2', o)], explain: Cq(k, 'diamLen.explain', o),
+    };
+  },
+  diamMid: ({ lab, step }, k) => {
+    const o = { R: lab.R, mp: $(pointTex("M'", step.trial.at)) };
+    return {
+      id: 'diamMid', kind: 'choice', cols: 1, prompt: Cq(k, 'diamMid.prompt', o),
+      options: spread([
+        { text: Cq(k, 'diamMid.centre', o), correct: true },
+        { text: Cq(k, 'diamMid.end', o), why: Cq(k, 'diamMid.whyEnd', o) },
+        { text: Cq(k, 'diamMid.any', o), why: Cq(k, 'diamMid.whyAny', o) },
+      ], 1),
+      hints: [Cq(k, 'diamMid.hint1', o), Cq(k, 'diamMid.hint2', o)], explain: Cq(k, 'diamMid.explain', o),
+    };
+  },
+  gcRadius: ({ lab, step }, k) => {
+    const o = { R: lab.R, h: step.trial.h };
+    return {
+      id: 'gcRadius', kind: 'number', expected: String(lab.R), answer: <MathText>{$(lab.R)}</MathText>,
+      prompt: Cq(k, 'gcRadius.prompt', o), hints: [Cq(k, 'gcRadius.hint1', o), Cq(k, 'gcRadius.hint2', o)], explain: Cq(k, 'gcRadius.explain', o),
+    };
+  },
+  gcCentre: ({ lab, step }, k) => {
+    const o = { R: lab.R };
+    return {
+      id: 'gcCentre', kind: 'choice', cols: 1, prompt: Cq(k, 'gcCentre.prompt', o),
+      options: spread([
+        { text: Cq(k, 'gcCentre.o', o), correct: true },
+        { text: Cq(k, 'gcCentre.other', o), why: Cq(k, 'gcCentre.whyOther', o) },
+        { text: Cq(k, 'gcCentre.none', o), why: Cq(k, 'gcCentre.whyNone', o) },
+      ], 2),
+      hints: [Cq(k, 'gcCentre.hint1', o), Cq(k, 'gcCentre.hint2', o)], explain: Cq(k, 'gcCentre.explain', o),
+    };
+  },
+  scRadius2: ({ lab, step }, k) => {
+    const h = step.trial.h; const R = lab.R;
+    const r2 = R * R - h * h;
+    const o = { R, h, R2: R * R, h2: h * h, r2, calc: $(`${R * R} - ${h * h}`) };
+    return {
+      id: 'scRadius2', kind: 'number', expected: String(r2), answer: <MathText>{$(r2)}</MathText>,
+      prompt: Cq(k, 'scRadius2.prompt', o), hints: [Cq(k, 'scRadius2.hint1', o), Cq(k, 'scRadius2.hint2', o)], explain: Cq(k, 'scRadius2.explain', o),
+    };
+  },
+  scSmaller: ({ lab, step }, k) => {
+    const h = step.trial.h; const R = lab.R;
+    const o = { R, h, r2: R * R - h * h, R2: R * R };
+    return {
+      id: 'scSmaller', kind: 'choice', cols: 1, prompt: Cq(k, 'scSmaller.prompt', o),
+      options: spread([
+        { text: Cq(k, 'scSmaller.less', o), correct: true },
+        { text: Cq(k, 'scSmaller.same', o), why: Cq(k, 'scSmaller.whySame', o) },
+        { text: Cq(k, 'scSmaller.more', o), why: Cq(k, 'scSmaller.whyMore', o) },
+      ], 0),
+      hints: [Cq(k, 'scSmaller.hint1', o), Cq(k, 'scSmaller.hint2', o)], explain: Cq(k, 'scSmaller.explain', o),
+    };
+  },
+};

@@ -38,7 +38,7 @@ export default function Module04Atamarran() {
         step(8, 'deep-41', 'إشارة جداءين', ['ishara-jadaa']),
         step(9, 'deep-45', 'متتالية', ['tariqat-qisma']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

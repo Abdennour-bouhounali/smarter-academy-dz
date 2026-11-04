@@ -206,6 +206,15 @@ function markTarget(s, t) {
   return { s: { ...s, reverse: { ...s.reverse, hits: [...s.reverse.hits, { target: hit, x: t.x }] } }, hit };
 }
 
+/* ── Les questions pendant le labo (2026-10-28, lot 5) ───────────────────────────────── */
+
+/** Les essais de l'ÉLÈVE avec une entrée non nulle (la machine en ajoute elle-même pour réfuter : ils ne comptent pas). */
+export const studentNonZero = (m) => m.trials.filter((t) => t.by === 'student' && !Lin.isZero(t.x));
+/** Monde « souk » : l'étape « nourrir » est atteinte quand deux cartes non nulles sont passées dans la machine. */
+export const feedReached = (s) => studentNonZero(s.machines[0]).length >= 2;
+/** « أعِد التجربة » sur l'affirmation : la machine courante reprend sans verdict (sa table est gardée). */
+export const reopen = (s) => withMachine(s, { ...cur(s), verdict: null }, null);
+
 /** Le nombre dont l'image est t (affichage de la ligne écrite x = t ÷ a). */
 export const antecedentOf = (s, t) => Pr.antecedent(cur(s).rule.a, t);
 

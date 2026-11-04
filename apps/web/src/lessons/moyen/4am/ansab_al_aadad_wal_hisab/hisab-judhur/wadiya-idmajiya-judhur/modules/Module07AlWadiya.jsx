@@ -85,6 +85,6 @@ export default function Module07AlWadiya() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={7} />} />
+      footer={<KnowledgeSnapshot moduleNumber={7} variant="memo" />} />
   );
 }

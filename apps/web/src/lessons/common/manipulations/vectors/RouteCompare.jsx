@@ -11,6 +11,11 @@ import LabFold from '../primitives/LabFold';
 import MathText from '../../components/MathText';
 import * as V from '@smarter-academy/core/arithmetic/vectors.js';
 import * as TR from '@smarter-academy/core/arithmetic/trigonometry.js';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { Mx, useTick } from './vecCp';
 import * as L from '../logic/routeCompare';
 
 /**
@@ -69,12 +74,26 @@ import * as L from '../logic/routeCompare';
  * [data-rc-glance], [data-rc-plane], [data-rc-bet=1|2], [data-rc-route=1|2], [data-rc-pin] (bouton : flèches + Entrée),
  * [data-rc-watch=1|2][data-total], [data-rc-reading], [data-rc-verdict=<kind>], [data-lab-fold=route-compare.trials], [data-deco].
  */
+/** La découverte : des distracteurs réfutés par les nombres de la scène (aussi la dernière question de la suite). */
+export function discoveryOptionsOf(lab, k) {
+  const r1 = lab.routes[0].total; const r2 = lab.routes[1].total;
+  const sh = L.shorter(lab);
+  const unitTex = `\\,\\mathrm{${lab.unit}}`;
+  const n1 = lab.routes[0].pieces.length; const n2 = lab.routes[1].pieces.length;
+  return [
+    { text: k('dOptEye'), why: <MathText>{k('dWhyEye', { gap: L.decTex(L.gap(lab)), total: L.decTex(Math.min(r1.number, r2.number)), u: unitTex })}</MathText> },
+    { text: k('dOptPieces'), why: <MathText>{k(n1 === n2 ? 'dWhyPiecesSame' : 'dWhyPiecesDiff', { n: n1, n1, n2 })}</MathText> },
+    { text: k('dOptStraight'), why: <MathText>{k(sh === 0 ? 'dWhyStraightAdv' : 'dWhyStraightBeg', { l1: L.decTex(r1.number), l2: L.decTex(r2.number), u: unitTex })}</MathText> },
+    { text: <MathText>{k('dOptRight')}</MathText>, correct: true },
+  ];
+}
+
 const ROUTE = ['#EA580C', '#2563EB'];
 const C = { ok: '#059669', ko: '#E11D48', live: '#7C3AED' };
 
 export default function RouteCompare({
   routes: routes0, unit: unit0, numbers: nums, theme = 'cross', title, lead, mission, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.routeCompare.${key}`, o), [t]);
@@ -84,16 +103,54 @@ export default function RouteCompare({
   const make = () => L.init({ routes, unit });
   const [lab, setLab] = useState(make);
   const sceneKey = `${JSON.stringify(routes)}|${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  const [doneIds, setDoneIds] = useState([]);   // les parcours dont la suite de questions est finie
   const [drag, setDrag] = useState(false);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setDrag(false); }
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(make()); setDrag(false); setDoneIds([]); }   // « إعادة » : tout repart
   const reduce = useReducedMotion();
   const world = theme === 'rally' ? 'rally' : 'cross';
   const beginner = state.level === 'beginner';
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
 
   const done = L.allDone(lab);
-  const ready = L.discoveryReady(lab);
+  /* ── les questions PENDANT le labo (primitives/LabCheckpoint) : après chaque parcours construit, une suite sur ses longueurs ; celle du dernier
+     parcours finit par la comparaison puis la règle et remplace la découverte automatique. L'enseignant seul peut les couper. ── */
+  const cpSettings = useLabCheckpointSettings('route-compare');
+  const cpEnabled = cpOn && cpSettings.enabled;
+  const pendingIdx = cpEnabled ? [0, 1].find((i) => L.isComplete(lab, i) && !doneIds.includes(`r${i}`)) ?? -1 : -1;
+  const chain = pendingIdx >= 0 ? chainOf(lab, pendingIdx) : null;
+  const cp = useLabCheckpoint({
+    id: chain ? `r${pendingIdx}` : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, pendingIdx, k)) : null,
+    reached: pendingIdx >= 0,
+    resetKey: scene.inits,
+    onRetry: () => { celebrated.current.delete(pendingIdx); setLab((s) => L.retryRoute(s, pendingIdx)); setDoneIds((d) => d.filter((x) => x !== `r${pendingIdx}`)); },
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => (d.includes(id) ? d : [...d, id]));
+      if (chainOf(lab, Number(id.slice(1))).includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const solvedAll = L.discoveryReady(lab);
+  const ready = solvedAll && !cpEnabled;
+  const tick = useTick();
+  const stepDone = [0, 1].map((i) => L.isComplete(lab, i) && (!cpEnabled || doneIds.includes(`r${i}`)));
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && lab.built[0] + lab.built[1] === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(i)) return;
+      celebrated.current.add(i);
+      party.celebrate({ n: stepDone.filter(Boolean).length, total: 2 });
+    });
+  }, [stepDone.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son : un déclic par pas de l'épingle, le drapeau quand un morceau est posé (ou le parcours fini), « over » quand il est refusé
+  const nTr = lab.trials.length;
+  useEffect(() => {
+    const tr = lab.trials[nTr - 1];
+    if (tr) playSfx(tr.kind === 'ok' ? 'flag' : 'over');
+  }, [nTr]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (state.isFormal) state.report(onFinished, { shorter: L.shorter(lab) + 1, l1: L.dec(lab.routes[0].total.number), l2: L.dec(lab.routes[1].total.number) });
@@ -134,7 +191,7 @@ export default function RouteCompare({
   const planeRef = useRef(null);
   const pinRef = useRef(lab.pin);
   pinRef.current = lab.pin;
-  const building = lab.bet != null && !!L.nextPiece(lab);
+  const building = lab.bet != null && !!L.nextPiece(lab) && !cp.blocking;
   const nodeAt = (e) => {
     const r = planeRef.current.getBoundingClientRect();
     return G.fromPx((e.clientX - r.left) * (G.width / r.width), (e.clientY - r.top) * (G.height / r.height));
@@ -146,7 +203,7 @@ export default function RouteCompare({
     setDrag(true);
     setLab((s) => L.movePin(s, nodeAt(e)));
   };
-  const onPlaneMove = (e) => { if (drag) setLab((s) => L.movePin(s, nodeAt(e))); };
+  const onPlaneMove = (e) => { if (drag) { tick(); setLab((s) => L.movePin(s, nodeAt(e))); } };
   const onPlaneUp = (e) => {
     if (!drag) return;
     e.currentTarget.releasePointerCapture?.(e.pointerId);
@@ -160,7 +217,7 @@ export default function RouteCompare({
     const P = pinRef.current;
     if (!P) return;
     const px = P.x.n / P.x.d; const py = P.y.n / P.y.d;
-    if (m) { e.preventDefault(); setLab((s) => L.movePin(s, { x: px + m[0], y: py + m[1] })); return; }
+    if (m) { e.preventDefault(); tick(m[0] + m[1] < 0 ? 0.75 : 1); setLab((s) => L.movePin(s, { x: px + m[0], y: py + m[1] })); return; }
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setLab((s) => L.placePin(s, { x: P.x, y: P.y })); }
   };
 
@@ -217,16 +274,7 @@ export default function RouteCompare({
     }
   })();
 
-  /* ── la découverte : des distracteurs réfutés par les nombres de la scène ── */
-  const discoveryOptions = useMemo(() => {
-    const n1 = lab.routes[0].pieces.length; const n2 = lab.routes[1].pieces.length;
-    return [
-      { text: k('dOptEye'), why: <MathText>{k('dWhyEye', { gap: L.decTex(L.gap(lab)), total: L.decTex(Math.min(r1.number, r2.number)), u: unitTex })}</MathText> },
-      { text: k('dOptPieces'), why: <MathText>{k(n1 === n2 ? 'dWhyPiecesSame' : 'dWhyPiecesDiff', { n: n1, n1, n2 })}</MathText> },
-      { text: k('dOptStraight'), why: <MathText>{k(sh === 0 ? 'dWhyStraightAdv' : 'dWhyStraightBeg', { l1: L.decTex(r1.number), l2: L.decTex(r2.number), u: unitTex })}</MathText> },
-      { text: <MathText>{k('dOptRight')}</MathText>, correct: true },
-    ];
-  }, [lab, k]); // eslint-disable-line react-hooks/exhaustive-deps
+  const discoveryOptions = useMemo(() => discoveryOptionsOf(lab, k), [lab, k]);
 
   const formal = (
     <div className="space-y-2" data-rc-formal>
@@ -263,6 +311,8 @@ export default function RouteCompare({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={cpEnabled}
       hints={['hint1', 'hint2', 'hint3'].map((hk) => <MathText key={hk}>{k(hk)}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={k('dPrompt')} options={discoveryOptions} formal={formal} />}
@@ -270,8 +320,12 @@ export default function RouteCompare({
     >
       <ManipulationStage className={world === 'rally' ? 'bg-gradient-to-b from-amber-50/70 to-white' : 'bg-gradient-to-b from-sky-50/70 to-white'} minHeight="min-h-[180px]">
         <div ref={boxRef} className="space-y-2" data-route-compare data-world={world} data-stage={lab.bet == null ? 'bet' : done ? 'compare' : 'build'}
-          data-active={lab.active + 1} data-built={lab.built.join(',')} data-scene-h={G.height}>
+          data-active={lab.active + 1} data-built={lab.built.join(',')} data-solved={solvedAll ? 'true' : 'false'} data-scene-h={G.height}>
+          <div className="relative">
+            {party.node}
+            {cp.node}
           <div ref={glanceRef} className="space-y-1.5" data-rc-glance>
+            <LabStepper count={2} current={lab.active} done={stepDone} stepAttr="data-rc-step" />
             <div
               ref={planeRef}
               className={`relative mx-auto ${building ? 'cursor-crosshair' : ''}`}
@@ -400,6 +454,7 @@ export default function RouteCompare({
             </div>
             <p className={`min-h-[1.5rem] text-center ${narrow ? 'text-[11px]' : 'text-sm'} text-slate-800`} data-rc-reading aria-live="polite">{reading && <MathText>{reading}</MathText>}</p>
             <p role="status" className={`min-h-[2.5rem] ${narrow ? 'text-xs' : 'text-sm'} font-bold leading-snug`} data-rc-verdict={verdictKind}>{verdict}</p>
+          </div>
           </div>
 
           {lab.trials.length > 0 && (
@@ -589,3 +644,115 @@ function Deco({ world, G, lab, reduce, builtD }) {
     </g>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite du parcours i : la longueur d'un morceau, celle du parcours entier ; le dernier parcours construit ajoute la comparaison puis la règle. */
+export function chainOf(lab, i) {
+  const q = ['pieceLen', 'routeSum'];
+  if (L.allDone(lab)) q.push('compare', 'rule');
+  return q;
+}
+
+const iso = (s) => `$${s}$`;
+const plain = (n) => Number(n).toFixed(2);
+const fixUnit = (lab) => `\\,\\mathrm{${lab.unit}}`;
+
+/** Le morceau le plus instructif du parcours : le premier demi-cercle, sinon le premier morceau droit. */
+const keyPiece = (lab, i) => lab.routes[i].pieces.find((p) => p.kind === 'arc') ?? lab.routes[i].pieces[0];
+
+export const QUESTIONS = {
+  pieceLen: (lab, i, k) => {
+    const p = keyPiece(lab, i);
+    const u = fixUnit(lab);
+    const o = { from: p.fromName, to: p.toName, n: i + 1 };
+    if (p.kind === 'arc') {
+      const r = TR.surdLatex(p.radius); const rn = TR.surdNumber(p.radius);
+      const twice = /^\d+$/.test(r) ? String(2 * Number(r)) : `2${r}`;
+      const lenTex = (mult) => `${mult === 1 ? (r === '1' ? '' : r) : (r === '1' ? '2' : twice)}\\pi`;
+      const fmt = (v) => iso(`${v}${u}`);
+      const P = { ...o, r: iso(`r = ${r}`), c: iso(L.pairTex(p.centre)) };
+      return {
+        id: 'pieceLen', kind: 'choice', cols: 3,
+        prompt: Mx(k, 'pieceLen.promptArc', P),
+        options: [
+          { text: <MathText>{iso(`${lenTex(1)} \\approx ${L.decTex(Math.PI * rn)}${u}`)}</MathText>, correct: true },
+          { text: <MathText>{iso(`${lenTex(2)} \\approx ${L.decTex(2 * Math.PI * rn)}${u}`)}</MathText>, why: Mx(k, 'pieceLen.whyFull', { ...P, len: fmt(L.decTex(2 * Math.PI * rn)) }) },
+          { text: <MathText>{iso(`${twice} \\approx ${L.decTex(2 * rn)}${u}`)}</MathText>, why: Mx(k, 'pieceLen.whyDiameter', { ...P, d: fmt(L.decTex(2 * rn)) }) },
+        ],
+        hints: [Mx(k, 'pieceLen.hint1Arc', P), Mx(k, 'pieceLen.hint2Arc', P)],
+        explain: Mx(k, 'pieceLen.explainArc', { ...P, len: iso(`${lenTex(1)} \\approx ${L.decTex(Math.PI * rn)}${u}`) }),
+      };
+    }
+    const comp = V.vec(p.from, p.to);
+    const hx = Math.abs(Number(V.numLatex(comp.x))); const hy = Math.abs(Number(V.numLatex(comp.y)));
+    const len = TR.surdNumber(p.length);
+    const P = { ...o, comp: iso(`${V.vecLatex(comp)}`), dx: iso(String(hx)), dy: iso(String(hy)) };
+    return {
+      id: 'pieceLen', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'pieceLen.promptSeg', P),
+      options: [
+        { text: <MathText>{iso(`${TR.surdLatex(p.length)} \\approx ${L.decTex(len)}${u}`)}</MathText>, correct: true },
+        { text: <MathText>{iso(`${hx} + ${hy} = ${hx + hy}${u}`)}</MathText>, why: Mx(k, 'pieceLen.whyTaxi', { ...P, taxi: iso(String(hx + hy)) }) },
+        { text: <MathText>{iso(`${hx}^2 + ${hy}^2 = ${hx * hx + hy * hy}`)}</MathText>, why: Mx(k, 'pieceLen.whySquare', { ...P, sq: iso(String(hx * hx + hy * hy)) }) },
+      ],
+      hints: [Mx(k, 'pieceLen.hint1Seg', P), Mx(k, 'pieceLen.hint2Seg', P)],
+      explain: Mx(k, 'pieceLen.explainSeg', { ...P, len: iso(`\\sqrt{${hx}^2 + ${hy}^2} = ${TR.surdLatex(p.length)} \\approx ${L.decTex(len)}${u}`) }),
+    };
+  },
+  routeSum: (lab, i, k) => {
+    const R = lab.routes[i].total;
+    const u = fixUnit(lab);
+    const P = { n: i + 1, L: iso(`L_{${i + 1}}`), unit: lab.unit };
+    const short = L.shortcut(lab, i);
+    const shortN = TR.surdNumber(short);
+    // l'erreur propre au parcours : demi-cercles pris pour des cercles entiers, ou marche en « escalier » sur les morceaux droits
+    let off = 0;
+    lab.routes[i].pieces.forEach((p) => {
+      if (p.kind === 'arc') { off += 2 * Math.PI * TR.surdNumber(p.radius); } else {
+        const c = V.vec(p.from, p.to); off += Math.abs(Number(V.numLatex(c.x))) + Math.abs(Number(V.numLatex(c.y)));
+      }
+    });
+    const hasArc = lab.routes[i].pieces.some((p) => p.kind === 'arc');
+    const line = (n) => iso(`\\approx ${L.decTex(n)}${u}`);
+    const ds = [{ n: shortN, why: 'whyShortcut' }, { n: off, why: hasArc ? 'whyFull' : 'whyStairs' }].filter((d) => L.dec(d.n) !== L.dec(R.number));
+    if (ds.length < 2) ds.push({ n: R.number + 1, why: 'whyOff' });
+    return {
+      id: 'routeSum', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'routeSum.prompt', P),
+      options: [
+        { text: <MathText>{iso(`${R.latex} \\approx ${L.decTex(R.number)}${u}`)}</MathText>, correct: true },
+        ...ds.slice(0, 2).map((d) => ({ text: <MathText>{line(d.n)}</MathText>, why: Mx(k, `routeSum.${d.why}`, { ...P, v: line(d.n), short: iso(`${TR.surdLatex(short)} \\approx ${L.decTex(shortN)}${u}`) }) })),
+      ],
+      hints: [Mx(k, 'routeSum.hint1', P), Mx(k, 'routeSum.hint2', P)],
+      explain: Mx(k, 'routeSum.explain', { ...P, eq: iso(`L_{${i + 1}} = ${R.latex} \\approx ${L.decTex(R.number)}${u}`) }),
+    };
+  },
+  compare: (lab, i, k) => {
+    const sh = L.shorter(lab); const u = fixUnit(lab);
+    const r = lab.routes;
+    const P = {
+      a: sh + 1, b: 2 - sh,
+      cmp: iso(`L_{${sh + 1}} \\approx ${L.decTex(r[sh].total.number)}${u} \\,<\\, L_{${2 - sh}} \\approx ${L.decTex(r[1 - sh].total.number)}${u}`),
+      gap: iso(`${L.decTex(L.gap(lab))}${u}`),
+    };
+    return {
+      id: 'compare', kind: 'choice',
+      prompt: Mx(k, 'compare.prompt'),
+      options: [
+        { text: Mx(k, 'compare.route', { n: sh + 1 }), correct: true },
+        { text: Mx(k, 'compare.route', { n: 2 - sh }), why: Mx(k, 'compare.whyOther', P) },
+        { text: Mx(k, 'compare.same'), why: Mx(k, 'compare.whySame', P) },
+      ],
+      hints: [Mx(k, 'compare.hint1'), Mx(k, 'compare.hint2', P)],
+      explain: Mx(k, 'compare.explain', P),
+    };
+  },
+  rule: (lab, i, k) => ({
+    id: 'rule', kind: 'choice',
+    prompt: k('dPrompt'),
+    options: discoveryOptionsOf(lab, k),
+    hints: [Mx(k, 'rule.hint1'), Mx(k, 'rule.hint2')],
+    explain: <p className="text-sm" data-rc-formal><MathText>{k('fRule')}</MathText></p>,
+  }),
+};

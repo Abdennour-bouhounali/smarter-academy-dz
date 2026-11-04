@@ -40,7 +40,18 @@ export default function Module01AtTahaddi() {
   const [trials, setTrials] = useState([]);
   const [q, setQ] = useState({});
   const mark = (n) => () => setQ((s) => ({ ...s, [n]: true }));
-  const keep = (e) => setTrials((list) => [...list, e].slice(-30));
+  const [cps, setCps] = useState({});
+  // les événements `checkpoint-done` du labo (questions posées par-dessus le labo) ne sont pas des essais : ils marquent les étapes faites
+  const keep = (e) => {
+    if (e?.tk) { if (e.tk === 'checkpoint-done') setCps((c) => ({ ...c, [e.id]: true })); return; }
+    setTrials((list) => [...list, e].slice(-30));
+  };
+  const Trace = ({ id, ok, done, todo }) => (
+    <p data-evidence={id} data-tried={ok ? 'true' : 'false'}
+      className={`rounded-xl border-2 px-3 py-2 text-sm ${ok ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+      {ok ? done : todo}
+    </p>
+  );
 
   return (
     <ContentModule objectives={['كيف نترجم الوضعية إلى مثلث قائم؟', 'أيّ نسبة تربط المعلوم بالمجهول؟', 'كيف نحسب ارتفاعًا لا نستطيع الوصول إليه؟']} ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} moduleTitle="التحدّ — سلّم الجدارية"
@@ -59,58 +70,37 @@ export default function Module01AtTahaddi() {
         />
       }
       steps={[
-        { num: 1, title: 'أين الارتفاع 1,60 من الزاوية 59°؟', subtitle: 'ما المقابل؟ ما الوتر؟', done: !!q[1],
+        { num: 1, title: 'أين الارتفاع 1,60 من الزاوية 59°؟', subtitle: 'ما المقابل؟ ما الوتر؟', done: !!cps.l1,
           content: (
             <div className="space-y-3">
               <LabEvidence id="advanced-read" trials={trials} filter={isLadder} title="محاولاتك بالسلّم (المستوى المتقدّم):"
                 empty="لم تحرّك السلّم بعد: في المستوى المتقدّم اسحب رأسه (⇕) على الجدار." />
-              <TextbookBox kind="exercise" title="تحدّ" text={CHALLENGE.text} source={CHALLENGE.source} compact>
-                <LadderFigure height={CHALLENGE.numbers.height} angle={CHALLENGE.numbers.angle} label={CHALLENGE.ariaLabel} />
-              </TextbookBox>
-              <TapQuestion
-                prompt={<MathText>{'الجدار شاقولي والأرض أفقية. بالنسبة إلى الزاوية التي قيسها $59^{\\circ}$ ، الارتفاع $1{,}60\\,\\mathrm{m}$ هو:'}</MathText>}
-                options={['الضلع المقابل، والسلّم هو الوتر', 'الضلع المجاور، والسلّم هو الوتر', 'الوتر، والسلّم هو الضلع المقابل'].map(M)}
-                correct={0} cols={1} requires={['shaquli-ufuqi', 'tarif-nisab']}
-                explain={<MathText>{`${REMARKS.muqabilWatar} المجاور هو بعد قاعدة السلّم عن الجدار، والوتر يقابل الزاوية القائمة (عند قاعدة الجدار): إنه السلّم.`}</MathText>}
-                onAnswered={mark(1)} />
-              {q[1] && <KnowledgeBrick id="tarid-muthallath" lead="أول خطوة في كل وضعية:" />}
+              <Trace id="l1" ok={!!cps.l1}
+                done={<MathText>{`أجبتَ في المختبر: ${REMARKS.muqabilWatar} المجاور هو بعد قاعدة السلّم عن الجدار، والوتر يقابل الزاوية القائمة (عند قاعدة الجدار): إنه السلّم.`}</MathText>}
+                todo="في المستوى المتقدّم، حرّك السلّم حتى تحصره بين طولين، ثم أجب عن الأسئلة التي تظهر فوق المختبر." />
+              {cps.l1 && <KnowledgeBrick id="tarid-muthallath" lead="أول خطوة في كل وضعية:" />}
             </div>
           ) },
-        { num: 2, title: 'لماذا الجيب لحساب طول السلّم؟', subtitle: 'ماذا نعرف؟ وماذا نريد؟', done: !!q[2],
+        { num: 2, title: 'لماذا الجيب لحساب طول السلّم؟', subtitle: 'ماذا نعرف؟ وماذا نريد؟', done: !!cps.l2,
           content: (
             <div className="space-y-3">
               <LabEvidence id="advanced" trials={trials} filter={isLadder} title="محاولاتك بالسلّم (المستوى المتقدّم):"
                 empty="لم تحرّك السلّم بعد: في المستوى المتقدّم اسحب رأسه (⇕) على الجدار وراقب هل يصل إلى العلامة." />
-              <TapQuestion
-                prompt={<MathText>{'اخترت أنت نسبة وقسمة لتحسب طول السلّم L. المساواة $\\sin 59^{\\circ} = \\dfrac{1{,}6}{L}$ هي التي تصلح. لماذا الجيب وليس جيب التمام أو الظل؟'}</MathText>}
-                options={[
-                  'لأن الارتفاع 1,6 مقابل للزاوية والسلّم هو الوتر، والجيب هو النسبة التي تجمع المقابل والوتر',
-                  'لأن قيس الزاوية $59^{\\circ}$ أكبر من $45^{\\circ}$',
-                  'لأن الجيب أكبر من جيب التمام دائما',
-                ].map(M)}
-                correct={0} cols={1} requires={['tarid-muthallath', 'tarif-nisab']}
-                explain={<MathText>{REMARKS.sinChoice}</MathText>}
-                onAnswered={mark(2)} />
-              {q[2] && <KnowledgeBrick id="ikhtiyar-nisba" variant="rappel" lead="النسبة التي تجمع المعلوم والمطلوب:" />}
+              <Trace id="l2" ok={!!cps.l2}
+                done={<MathText>{`اخترتَ في المختبر $\\sin 59^{\\circ} = \\dfrac{1{,}6}{L}$ . ${REMARKS.sinChoice}`}</MathText>}
+                todo="اختر في المختبر النسبة والعملية بعد أن تحصر السلّم، وأجب عن الأسئلة التي تظهر فوقه." />
+              {cps.l2 && <KnowledgeBrick id="ikhtiyar-nisba" variant="rappel" lead="النسبة التي تجمع المعلوم والمطلوب:" />}
             </div>
           ) },
-        { num: 3, title: 'هل يوافق الحساب ما حصرته بيدك؟', subtitle: 'قيمة مقربة إلى الجزء من 10', done: !!q[3],
+        { num: 3, title: 'هل يوافق الحساب ما حصرته بيدك؟', subtitle: 'قيمة مقربة إلى الجزء من 10', done: !!cps.l2,
           content: (
             <div className="space-y-3">
               <LabEvidence id="advanced-result" trials={trials} filter={isLadder} title="محاولاتك بالسلّم (المستوى المتقدّم):"
                 empty="جرّب في المستوى المتقدّم: طولان متتاليان، واحد تحت العلامة وواحد فوقها، يحصران طول السلّم." />
-              <NumericQuestion
-                prompt={<MathText>{'حصرت السلّم بين طولين بالتجريب. من $\\sin 59^{\\circ} = \\dfrac{1{,}6}{L}$ ، ما قيمة L المقربة إلى الجزء من 10 (بالمتر)؟'}</MathText>}
-                expected={close(1.9)} display="1,9" parse={parseDec}
-                requires={['ikhtiyar-nisba', 'muadala-majhul-maqam', 'hasiba']}
-                explain={<MathText>{REMARKS.ladderCalc}</MathText>}
-                explainFor={(n) => <MathText>{close(1.4)(n) ? `${REMARKS.darbWrong} ${REMARKS.darbWhy}`
-                  : close(1.6)(n) ? 'السلّم ليس بطول الارتفاع: سلّم طوله $1{,}6\\,\\mathrm{m}$ مائل بـ $59^{\\circ}$ لا يصل إلا إلى $1{,}37\\,\\mathrm{m}$ .'
-                    : close(1.8)(n) ? 'بترت $1{,}866$ : المدوّر إلى الجزء من 10 هو $1{,}9$ لأن الرقم الموالي 6 أكبر من 5.'
-                      : close(3.1)(n) ? 'قسمت على $\\cos 59^{\\circ}$ : جيب التمام يربط المجاور بالوتر، و $1{,}6$ مقابل للزاوية.'
-                        : REMARKS.ladderCalc}</MathText>}
-                onAnswered={mark(3)} />
-              {q[3] && (
+              <Trace id="l2-calc" ok={!!cps.l2}
+                done={<MathText>{`حسبتَ في المختبر طول السلّم ووجدتَه داخل المجال الذي حصرته: ${REMARKS.ladderCalc}`}</MathText>}
+                todo="احسب طول السلّم في المختبر (القسمة على الجيب) بعد اختيار النسبة والعملية." />
+              {cps.l2 && (
                 <>
                   <KnowledgeBrick id="majhul-maqam" variant="rappel" lead="المجهول في المقام:" />
                   <p className="text-xs text-slate-600" data-misconception-note="darb"><MathText>{`خطأ شائع: ${REMARKS.darbWrong} ${REMARKS.darbWhy}`}</MathText></p>
@@ -146,6 +136,6 @@ export default function Module01AtTahaddi() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />} />
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />} />
   );
 }

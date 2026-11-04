@@ -149,15 +149,25 @@ export function shareRewriteRules(cards) {
 export default function sharePages({ cards }) {
   let outDir = 'dist';
   let projectRoot = process.cwd();
+  let publicDir = null;
   let apiUrl = null;
   let bookChunks = [];
+  let baseHtml = null;
   return {
     name: 'sa-share-pages',
     apply: 'build',
     configResolved(config) {
       outDir = config.build.outDir;
       projectRoot = config.root;
+      publicDir = config.publicDir;
       apiUrl = config.env?.VITE_API_URL || process.env.VITE_API_URL || null;
+    },
+    // index.html et le modèle .htaccess ne sont JAMAIS relus dans dist/ : un dist/ laissé par un autre build
+    // (deux builds lancés en même temps dans le même arbre, constaté le 2026-10-29) n'a plus le marqueur
+    // « # @share-pages » ou n'a plus d'index.html — le build échouait sur un état qui n'est pas le sien.
+    writeBundle(_options, bundle) {
+      const html = bundle['index.html'];
+      if (html?.type === 'asset') baseHtml = String(html.source);
     },
     generateBundle(_options, bundle) {
       // Le lot de BookDetailPage et ses imports statiques : préchargés par la page du livre.
@@ -177,7 +187,7 @@ export default function sharePages({ cards }) {
     async closeBundle() {
       // resolve, pas join : l'outDir peut être absolu (scripts/analyze-entry-bundle.mjs construit dans /tmp).
       const root = resolve(projectRoot, outDir);
-      const base = readFileSync(join(root, 'index.html'), 'utf8');
+      const base = baseHtml ?? readFileSync(join(root, 'index.html'), 'utf8');
       let renderHero = null;
       for (const card of cards) {
         const file = join(root, shareFileOf(card.path));
@@ -189,8 +199,8 @@ export default function sharePages({ cards }) {
         writeFileSync(file, book ? renderBookPage(base, { card, book, heroHtml: renderHero(book), preloadChunks: bookChunks }) : renderSharePage(base, card));
       }
       const htaccess = join(root, '.htaccess');
-      const rules = readFileSync(htaccess, 'utf8');
-      if (!rules.includes('# @share-pages')) throw new Error('dist/.htaccess sans le marqueur « # @share-pages » : les pages de partage ne seraient pas servies.');
+      const rules = readFileSync(publicDir ? join(publicDir, '.htaccess') : htaccess, 'utf8');
+      if (!rules.includes('# @share-pages')) throw new Error('public/.htaccess sans le marqueur « # @share-pages » : les pages de partage ne seraient pas servies.');
       writeFileSync(htaccess, rules.replace('  # @share-pages', shareRewriteRules(cards)));
     },
   };

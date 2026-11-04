@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Check } from 'lucide-react';
+import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2 } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import MathText from '../../components/MathText';
 import ManipulationShell from '../ManipulationShell';
@@ -11,6 +11,10 @@ import { LabCard, StageFrame, PromptCard, VerdictBanner, StepperCard, ChoiceTray
 import { SvgPill } from '../primitives/SvgPill';
 import KidFigure from '../primitives/KidFigure';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { boardGeometry } from './signMachine/geometry';
 import { LEVELS } from '../levels';
 import * as L from '../logic/signMachine';
@@ -49,6 +53,14 @@ import * as L from '../logic/signMachine';
  * « جرّب كل الإمكانيات » : NON (chaque b lâché EST l'essai). « جرّب أعدادك » est TOUJOURS ouvert sous le labo.
  * ONBOARDING : `coachOf` (cards · grab · sign · try · next) montre le contrôle, jamais le nombre.
  *
+ * QUESTIONS PENDANT LE LABO (déploiement lot 1, 2026-10-28, `primitives/LabCheckpoint`) : `checkpoints` (défaut true). Après CHAQUE mission,
+ * une suite de questions sur ce que l'élève vient de FAIRE se pose par-dessus le labo et retient « التالي » (`chainsOf`) : le pas entre deux
+ * colonnes et la colonne 0 (remplir), pourquoi le produit passe de l'autre côté et la colonne suivante (prédire), la colonne trouvée, ce
+ * qu'a fait le retournement de a (بطريقتين), et LA RÈGLE (l'ancienne découverte, qui formalise) à la dernière mission. Une réponse signée est
+ * un CHOIX (le champ numérique ne lit pas « − »). Obligatoires pour tout élève ; l'enseignant seul les coupe pour SON compte. Questions
+ * actives → `guided` (ni « جرّب › اكتشف › صِغ » ni « تلميح »). ÉTAPES : `LabStepper` (`[data-sm-step=<i>]`) et la fête par mission.
+ * « إعادة » repart de la mission 1 ; « أعِد التجربة » remet LA MÊME mission (`L.retryTask`). SON : `tooth` à chaque colonne parcourue
+ * (plus grave en descendant), `bell` quand une colonne s'allume pour la première fois, `flag` à la mission réussie, `over` à une colonne refusée.
  * Props : `tasks`, `a`, `level`, `levels`, `coach`, `title`, `lead`, `onTrial(event)`, `onFinished({})` — par `state.report`.
  *
  * CONTRAT DOM : [data-sign-machine][data-task][data-solved][data-layout], [data-sm-glance], [data-sm-stage], [data-sm-board],
@@ -88,7 +100,7 @@ const factor = (v) => (v < 0 ? `(${minus(v)})` : minus(v));
 export const calcText = (a, b) => `${factor(a)} × ${factor(b)} = ${minus(L.productOf(a, b))}`;
 
 export default function SignMachine({
-  tasks, a, title, lead, level, levels: withLevels = true, coach: coachOn = true,
+  tasks, a, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -98,14 +110,45 @@ export default function SignMachine({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
   if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    const restart = scene.key === numsKey && scene.rc !== state.resetCount;
-    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-    setLab(restart ? L.restartTask(lab) : L.init(nums));
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la mission 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
+    setLab(L.init(nums));
   }
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : la suite de la mission courante ; celle qui finit par la règle remplace la découverte automatique
+  const cpSettings = useLabCheckpointSettings('sign-machine');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpChains = cpOn && cpSettings.enabled ? chainsOf(lab) : null;
+  const cur = L.taskOf(lab);
+  const chain = cpChains && !L.isFree(lab) ? cpChains[cur.id] ?? null : null;
+  const ruleByCheckpoint = !!cpChains && Object.values(cpChains).some((c) => c.includes('rule'));
+  const cp = useLabCheckpoint({
+    id: chain ? cur.id : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, cur, k)) : null,
+    reached: !L.isFree(lab) && L.taskDone(lab),
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.retryTask),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => { if (cpChains?.[id]?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  useEffect(() => { if (ready && !ruleByCheckpoint) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son (muet sans « الصوت ») : un tic par colonne parcourue, une cloche pour une colonne neuve, puis le jugement de la mission
+  const sfx = useRef({ b: lab.b, at: 0, last: lab.last, lit: Object.keys(lab.lit).length });
+  useEffect(() => {
+    const p = sfx.current;
+    const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+    const nLit = Object.keys(lab.lit).length;
+    if (nLit > p.lit) playSfx('bell');
+    else if (lab.b !== p.b && now - p.at > 35) { playSfx('tooth', { pitch: lab.b > p.b ? 1 : 0.75 }); p.at = now; }
+    p.b = lab.b; p.lit = nLit;
+    const v = lab.last;
+    if (v && v !== p.last && !v.free && !v.look) {
+      if (v.ok) playSfx('flag');
+      else if (L.taskOf(lab).kind !== 'fill') playSfx('over');
+    }
+    p.last = v;
+  }, [lab.b, lab.lit, lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
   const finishedOnce = useRef(false);
   useEffect(() => {
     if (!ready) { finishedOnce.current = false; return; }
@@ -120,7 +163,7 @@ export default function SignMachine({
   }, [nTrials, lab.trials]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── onboarding ── */
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'sign-machine', step: coachStep,
     text: coachStep ? k(`coach.${coachStep.id}`) : '',
@@ -148,12 +191,14 @@ export default function SignMachine({
 
   return (
     <ManipulationShell
+      headerAction={cpSettings.control}
       type="sign-machine"
       title={title ?? k('title')}
       titleHidden
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      guided={!!chain || ruleByCheckpoint}
       coach={coachOn ? coach : null}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
@@ -163,7 +208,7 @@ export default function SignMachine({
       <ManipulationStage className="bg-gradient-to-b from-violet-50/50 to-white">
         <div ref={boxRef} className="space-y-2" data-sign-machine data-task={lab.ti} data-solved={ready ? 'true' : 'false'} data-layout={width >= WIDE_MIN ? 'wide' : 'narrow'}>
           <style dangerouslySetInnerHTML={{ __html: CSS }} />
-          <Lab lab={lab} setLab={setLab} k={k} width={width} lead={state.isAuthoredLevel ? lead : null} />
+          <Lab lab={lab} setLab={setLab} k={k} width={width} lead={state.isAuthoredLevel ? lead : null} cp={cp} />
         </div>
       </ManipulationStage>
     </ManipulationShell>
@@ -172,7 +217,7 @@ export default function SignMachine({
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-function Lab({ lab, setLab, k, width, lead }) {
+function Lab({ lab, setLab, k, width, lead, cp }) {
   const uid = `sm${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
   const free = L.isFree(lab);
   const task = L.taskOf(lab);
@@ -193,21 +238,20 @@ function Lab({ lab, setLab, k, width, lead }) {
     if (task.kind === 'both') return k('question.both', { goal: iso(minus(task.product)) });
     return k('question.reach', { goal: iso(minus(task.product)) });
   })();
+  // une étape est FAITE quand la mission est réussie ET que ses questions (LabCheckpoint) sont répondues : la pastille passe au vert et on fête
+  const stepDone = lab.tasks.map((_, i) => !!lab.done[i] && (i !== lab.ti || !cp.blocking));
   const steps = lab.tasks.length > 1 && !free && (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      <span className="text-xs font-black text-indigo-900/60" aria-hidden="true">{k('stepsLabel')}</span>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={tk.id} role="listitem" data-sm-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-violet-600 bg-violet-600 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-violet-100 bg-white text-violet-400'}`}>
-            {d && !cur ? <Check className="h-3.5 w-3.5" strokeWidth={3} aria-hidden="true" /> : <bdi dir="ltr">{i + 1}</bdi>}
-          </span>
-        );
-      })}
-    </div>
+    <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-sm-step" />
   );
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // L.init (« إعادة », autre niveau) : on refête
+  const nowDone = !free && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.ti)) return;
+    celebrated.current.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
   const lit = !free && done;
   const prompt = (
     <PromptCard size={wide ? 'lg' : 'md'} aside={steps || null} context={context} contextProps={{ 'data-sm-context': free ? 'free' : task.kind }}
@@ -299,7 +343,7 @@ function Lab({ lab, setLab, k, width, lead }) {
   const vkey = !last ? '' : last.free ? 'free' : last.look ? 'look' : last.ok ? (task.kind === 'both' && !done ? 'part' : 'right') : (task.kind === 'fill' ? 'part' : 'wrong');
   const tone = !last || last.look ? 'indigo' : last.ok && !last.free ? 'emerald' : 'amber';
   const Icon = !last || last.look ? Hand : last.ok && !last.free ? CheckCircle2 : Sparkles;
-  const canNext = L.canNext(lab);
+  const canNext = L.canNext(lab) && !cp.blocking;
   // le calcul de la colonne tenue, sur sa propre ligne LTR — jamais celui d'une carte fausse (la réponse)
   const showCalc = !!last && !(last.kind === 'predict' && !last.ok);
   const banner = (
@@ -333,6 +377,8 @@ function Lab({ lab, setLab, k, width, lead }) {
   return (
     <>
       <div className="relative space-y-2.5" data-sm-glance>
+        {party.node}
+        {cp.node}
         {prompt}
         <div className={wide ? 'flex items-start justify-center gap-3' : 'space-y-2'}>
           <StageFrame className="shrink-0 overflow-hidden p-1.5" data-sm-stage style={wide ? { width: boardW } : undefined}>{board}</StageFrame>
@@ -579,3 +625,112 @@ export function Formal({ lab, k }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de chaque genre de mission ; `rule` clôt la dernière mission. */
+export const CHAINS = Object.freeze({ fill: ['gap', 'zero'], predict: ['continue', 'next'], reach: ['column'], both: ['flip', 'column'] });
+
+/** Ce que l'élève a résolu pour une mission (sinon : la solution, pour les tests et le rendu à blanc). */
+export function solvedOf(lab, task) {
+  const s = lab.solved[lab.tasks.indexOf(task)];
+  if (s) return s;
+  if (task.kind === 'fill') return { a: task.a, b: task.to, product: L.productOf(task.a, task.to) };
+  if (task.kind === 'predict') return { a: task.a, b: task.b, product: L.productOf(task.a, task.b) };
+  if (task.kind === 'both') {
+    const b = [1, 2, 3, 4].find((x) => Number.isInteger(task.product / x) && Math.abs(task.product / x) <= L.RANGE_A[1]);
+    return { a: task.product / b, b, product: task.product, also: { a: -task.product / b, b: -b } };
+  }
+  return { a: task.a, b: L.bFor(task.a, task.product), product: task.product };
+}
+
+/** Les suites de CE labo : une question sans objet est retirée (la colonne suivante hors du tableau ou négative). */
+export function chainsOf(lab) {
+  const out = {};
+  for (const tk of lab.tasks) {
+    const s = solvedOf(lab, tk);
+    out[tk.id] = (CHAINS[tk.kind] ?? []).filter((q) => {
+      if (q === 'next') return s.b - 1 >= L.RANGE_B[0] && L.productOf(s.a, s.b - 1) > 0;
+      if (q === 'zero') return tk.to <= 0 && tk.from >= 0 && s.a !== 0;
+      if (q === 'column') return tk.kind !== 'both' || s.also;
+      return true;
+    });
+  }
+  const last = lab.tasks[lab.tasks.length - 1];
+  if (last) out[last.id] = [...out[last.id], 'rule'];
+  return out;
+}
+
+const C = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const pick = (list, right, whys) => list.map((text, i) => (i === right ? { text, correct: true } : { text, why: whys[i] }));
+const calc$ = (a, b) => `$${tex(a)} \\times ${tex(b)} = ${L.productOf(a, b)}$`;
+const big = (v) => <bdi dir="ltr">{minus(v)}</bdi>;
+
+/** Chaque question est construite sur LA mission résolue par l'élève (rien en dur). */
+export const QUESTIONS = {
+  gap: (lab, task, k) => {
+    const a = task.a; const d = Math.abs(a);
+    const o = { from: iso(minus(task.from)), to: iso(minus(task.to)), d: iso(d), c1: calc$(a, task.from), c2: calc$(a, task.from - 1) };
+    const up = -a > 0;
+    return {
+      id: 'gap', kind: 'choice', prompt: C(k, 'gap.prompt', o),
+      options: pick([C(k, 'gap.up', o), C(k, 'gap.down', o), C(k, 'gap.one')], up ? 0 : 1, [C(k, 'gap.whySeen', o), C(k, 'gap.whySeen', o), C(k, 'gap.whyOne', o)]),
+      hints: [C(k, 'gap.hint1'), C(k, 'gap.hint2', o)], explain: C(k, up ? 'gap.explainUp' : 'gap.explainDown', o),
+    };
+  },
+  zero: (lab, task, k) => {
+    const a = task.a;
+    const o = { calc: `$${tex(a)} \\times 0$`, a: iso(minus(a)) };
+    const why = C(k, 'zero.why', o);
+    return {
+      id: 'zero', kind: 'choice', cols: 3, prompt: C(k, 'zero.prompt', o),
+      options: pick([big(0), big(a), big(-a)], 0, [null, why, why]),
+      hints: [C(k, 'zero.hint1'), C(k, 'zero.hint2')], explain: C(k, 'zero.explain', o),
+    };
+  },
+  continue: (lab, task, k) => {
+    const s = solvedOf(lab, task);
+    const seq = [1, 0];
+    for (let b = -1; b >= s.b; b -= 1) seq.push(b);
+    const o = { calc: calc$(s.a, s.b), p: iso(minus(s.product)), step: iso(minus(-s.a)), seq: iso(seq.map((b) => minus(L.productOf(s.a, b))).join(' ، ')) };
+    return {
+      id: 'continue', kind: 'choice', prompt: C(k, 'continue.prompt', o),
+      options: pick([C(k, 'continue.right', o), C(k, 'continue.flip'), C(k, 'continue.back')], 0, [null, C(k, 'continue.whyFlip', o), C(k, 'continue.whyBack', o)]),
+      hints: [C(k, 'continue.hint1'), C(k, 'continue.hint2', o)], explain: C(k, 'continue.explain', o),
+    };
+  },
+  next: (lab, task, k) => {
+    const s = solvedOf(lab, task);
+    const v = L.productOf(s.a, s.b - 1);
+    const o = { calc: `$${tex(s.a)} \\times ${tex(s.b - 1)}$`, p: iso(minus(s.product)), step: iso(minus(-s.a)), full: calc$(s.a, s.b - 1) };
+    return {
+      id: 'next', kind: 'number', expected: String(v), answer: big(v),
+      prompt: C(k, 'next.prompt', o), hints: [C(k, 'next.hint1', o), C(k, 'next.hint2', o)], explain: C(k, 'next.explain', o),
+    };
+  },
+  column: (lab, task, k) => {
+    const s = solvedOf(lab, task);
+    const a = s.a; const b = s.b;
+    const alt = b + (b > L.RANGE_B[0] ? -1 : 1);
+    const o = { a: iso(minus(a)), p: iso(minus(s.product)) };
+    const why = (x) => C(k, 'column.why', { calc: calc$(a, x) });
+    return {
+      id: 'column', kind: 'choice', cols: 3, prompt: C(k, 'column.prompt', o),
+      options: pick([big(b), big(-b), big(alt)], 0, [null, why(-b), why(alt)]),
+      hints: [C(k, 'column.hint1'), C(k, 'column.hint2', o)], explain: C(k, 'column.explain', { calc: calc$(a, b) }),
+    };
+  },
+  flip: (lab, task, k) => {
+    const s = solvedOf(lab, task);
+    const o = { p: iso(minus(task.product)), pos: calc$(s.a, s.b), neg: calc$(s.also.a, s.also.b) };
+    return {
+      id: 'flip', kind: 'choice', prompt: C(k, 'flip.prompt', o),
+      options: pick([C(k, 'flip.right'), C(k, 'flip.same'), C(k, 'flip.product')], 0, [null, C(k, 'flip.whySame', o), C(k, 'flip.whyProduct', o)]),
+      hints: [C(k, 'flip.hint1'), C(k, 'flip.hint2', o)], explain: C(k, 'flip.explain', o),
+    };
+  },
+  rule: (lab, task, k) => ({
+    id: 'rule', kind: 'choice', prompt: <MathText>{k('discovery.prompt')}</MathText>, options: discoveryOptions(lab, k),
+    hints: [C(k, 'rule.hint1'), C(k, 'rule.hint2')], explain: <Formal lab={lab} k={k} />,
+  }),
+};

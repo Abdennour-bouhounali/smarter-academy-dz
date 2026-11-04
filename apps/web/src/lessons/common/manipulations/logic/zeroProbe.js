@@ -181,6 +181,11 @@ export function nextTask(s) {
 /** « إعادة » sur la même tâche : le câble remonte à 0, les essais restent (la découverte s'en sert). */
 export function restartTask(s) { return { ...s, dh: 0, last: null, side: s.free ? s.side : (taskOf(s).side ?? s.side) }; }
 
+/** « أعِد التجربة » (questions du labo) : LA MÊME tâche repart de zéro — câble à 0, tâche et crédits effacés (les essais restent). */
+export function retryTask(s) {
+  const strip = (o) => { const c = { ...o }; delete c[s.ti]; return c; };
+  return { ...restartTask(s), done: strip(s.done), solved: strip(s.solved), credit: strip(s.credit) };
+}
 /** « جرّب أعدادك » : un relatif décimal |A| ≤ 9,9 ; null si illisible. */
 export const parseFreeA = (raw) => R.parseFree(raw);
 export function setFree(s, raw) {

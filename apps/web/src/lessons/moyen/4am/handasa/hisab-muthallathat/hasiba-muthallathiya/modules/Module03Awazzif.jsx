@@ -70,7 +70,7 @@ export default function Module03Awazzif() {
         { num: 5, title: 'تمرين 23 — أخطاء ليلى ورضا', done: all('23'),
           content: <div className="space-y-3">{block('23', ['hasiba-zawiya', 'barmaja-daraja'])}</div> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }

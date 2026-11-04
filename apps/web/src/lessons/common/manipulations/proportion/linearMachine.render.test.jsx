@@ -1,4 +1,4 @@
-import { it, expect } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
@@ -6,6 +6,8 @@ import LinearMachine from './LinearMachine';
 import ManipulationWorkspace from '../ManipulationWorkspace';
 import manipulationAr from '../../../../i18n/locales/ar/lesson.manipulation.json';
 import source from './LinearMachine.jsx?raw';
+import i18n from '../../../../i18n';
+import * as LG from '../logic/linearMachine';
 
 /**
  * linear-machine se rend pour ses deux mondes (la remise de l'Aïd, les trois machines du نشاط 2),
@@ -86,4 +88,61 @@ it('valeurs par défaut : le cadran a et la carte vierge s’ouvrent sur une val
   expect(html).not.toContain('data-lm-a="0,8"');
   expect(html).toMatch(/data-lm-blank="2"/);
   expect((html.match(/data-lm-col=/g) ?? []).length).toBe(0);
+});
+
+import * as Lin0 from '@smarter-academy/core/arithmetic/linear.js';
+const Lin = (v) => Lin0.parseNumber(v);
+const RAW = /manipulation\.[a-zA-Z]/;
+const kk = (key, o) => i18n.t(`lesson:manipulation.linearMachine.${key}`, o);
+
+describe('linear-machine — questions pendant le labo (LabCheckpoint)', () => {
+  const check = (q, label) => {
+    const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+    expect(out, label).not.toMatch(RAW);
+    expect(out, label).not.toContain('{{');
+    expect(q.hints, label).toHaveLength(2);
+    if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), label).toHaveLength(1);
+    else expect(q.expected, label).toBeTruthy();
+  };
+  it('souk : nourrir (ratio · again · kind) puis affirmer (image · zero · règle) — chaque question juste, deux indices, aucune clé brute', async () => {
+    const { chainOf, QUESTIONS } = await import('./LinearMachine');
+    let s = LG.init({ rules: '0,8x', targets: '6|1,4' });
+    expect(LG.feedReached(s)).toBe(false);
+    s = LG.feed(LG.feed(s, Lin('50')), Lin('100'));
+    expect(LG.feedReached(s)).toBe(true);
+    for (const qid of chainOf(s, 'feed', false)) check(QUESTIONS[qid](s, kk, {}), `feed.${qid}`);
+    expect(QUESTIONS.ratio(s, kk).expected).toBe('4/5');
+    s = LG.claimLinear(LG.setDial(s, '0,8'));
+    expect(s.machines[0].verdict.kind).toBe('linear');
+    const ctx = { rulePrompt: 'p', ruleOptions: [{ text: 'a', correct: true }, { text: 'b', why: 'c' }], formal: 'f' };
+    for (const qid of chainOf(s, 'claim', true)) check(QUESTIONS[qid](s, kk, ctx), `claim.${qid}`);
+    expect(QUESTIONS.image(s, kk).expected).toBe('24');
+  });
+  it('numbers : une suite par machine (preuve · valeur ou témoin), la dernière finit par la règle', async () => {
+    const { chainOf, QUESTIONS } = await import('./LinearMachine');
+    let s = LG.init({ rules: 'x^2|2x|2x-1' });
+    const ctx = { rulePrompt: 'p', ruleOptions: [{ text: 'a', correct: true }, { text: 'b', why: 'c' }], formal: 'f' };
+    [['0,5', '1', '2'], ['1', '2', '3'], ['0', '1', '2']].forEach((cards, i) => {
+      s = LG.select(s, i);
+      cards.forEach((c) => { s = LG.feed(s, Lin(c)); });
+    });
+    s = LG.select(s, 0); s = LG.claimNotLinear(s);
+    s = LG.select(s, 1); s = LG.claimLinear(LG.setDial(s, '2'));
+    s = LG.select(s, 2); s = LG.claimNotLinear(s);
+    expect(LG.discoveryReady(s)).toBe(true);
+    [0, 1, 2].forEach((i) => {
+      s = LG.select(s, i);
+      const ids = chainOf(s, `m${i}`, i === 2);
+      expect(ids.includes('rule')).toBe(i === 2);
+      for (const qid of ids) check(QUESTIONS[qid](s, kk, ctx), `m${i}.${qid}`);
+    });
+    s = LG.select(s, 1);
+    expect(QUESTIONS.evidence(s, kk).options.findIndex((o) => o.correct)).toBeGreaterThanOrEqual(0);
+  });
+  it('mode guidé : ni la progression ni le bouton d’indice (les questions guident)', () => {
+    const out = renderToString(<LinearMachine rules="0,8x" targets="6|1,4" levels={false} />);
+    expect(out).not.toContain('data-manipulation-progress');
+    expect(out).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    expect(out).toContain('data-lab-stepper');
+  });
 });

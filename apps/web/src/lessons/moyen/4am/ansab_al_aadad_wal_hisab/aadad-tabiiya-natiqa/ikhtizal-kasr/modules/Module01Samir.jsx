@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
@@ -18,8 +18,11 @@ import { ACTIVITY } from '../content/textbook';
  */
 export default function Module01Samir() {
   const [labDone, setLabDone] = useState(false);
-  const [q1, setQ1] = useState(false);
-  const [q2, setQ2] = useState(false);
+  const [trials, setTrials] = useState([]);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : les deux étapes en gardent la TRACE (`checkpoint-done`), puis posent les noms (briques)
+  const answered = (id) => trials.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const q1 = answered('steps');
+  const q2 = q1;
   const { n, d, path } = ACTIVITY.numbers;
   return (
     <ContentModule objectives={["كيف اختزل سمير 84/48 خطوة بعد خطوة؟", "متى لا يمكن الاختزال أكثر؟", "كيف أتأكّد أن الكسر انتهى اختزاله؟"]} ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} moduleTitle="نشاط 8 — كيف اختزل سمير 84/48؟" moduleSubtitle="÷4 ثم ÷3 … ثم لا شيء" estimatedTime="12 دقيقة"
@@ -35,7 +38,7 @@ export default function Module01Samir() {
             ),
             advanced: () => (
               <Manipulation type="fraction-reduction" n={n} d={d} path={path}
-                onFinished={() => setLabDone(true)} />
+                onTrial={(e) => setTrials((list) => [...list, e])} onFinished={() => setLabDone(true)} />
             ),
           }}
         />
@@ -45,13 +48,10 @@ export default function Module01Samir() {
           content: (
             <div className="space-y-3">
               <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={labDone ? 'true' : 'false'}>
-                {labDone
-                  ? <span className="font-bold text-slate-800">أنهيتَ اختزال <bdi dir="ltr">84/48</bdi> في المناولة.</span>
-                  : <span className="text-slate-500">لم تنهِ اختزال 84/48 بعد في المناولة (المستوى المتقدّم): وزّع الوصفة على حصص متماثلة حتى لا تستطيع المواصلة.</span>}
+                {q1
+                  ? <span className="font-bold text-slate-800">أجبتَ في المختبر: بعد كل قسمة على قاسم مشترك بقيت قيمة <bdi dir="ltr">84/48</bdi> هي نفسها، لأنّ البسط والمقام قُسما على العدد نفسه.</span>
+                  : <span className="text-slate-500">لم تنهِ اختزال 84/48 بعد في المناولة (المستوى المتقدّم): وزّع الوصفة على حصص متماثلة حتى لا تستطيع المواصلة، ثم أجب عن الأسئلة التي تظهر فوق المختبر.</span>}
               </p>
-              <TapQuestion prompt={<span>في كل مرة وزّعتَ فيها الوصفة على حصص متماثلة، كانت الحصة الواحدة تحمل الكسر الجديد. لماذا بقيت قيمة الكسر نفسها؟</span>}
-                options={['لأن البسط والمقام قُسما على العدد نفسه، وهو قاسم لهما معًا', 'لأن العددين صغرا، فصار الكسر أصغر', 'لأننا قسمنا البسط فقط', 'لأننا طرحنا العدد نفسه من البسط والمقام']} correct={0} cols={1}
-                explain={<span>القسمة على قاسم مشترك لا تغيّر قيمة الكسر: <MathText>{'$\\dfrac{84}{48} = \\dfrac{21}{12} = \\dfrac{7}{4}$'}</MathText>.</span>} onAnswered={() => setQ1(true)} />
               {q1 && <KnowledgeBrick id="ikhtizal" />}
               {q1 && (
                 <div className="space-y-1 text-center">
@@ -65,14 +65,16 @@ export default function Module01Samir() {
         { num: 2, title: 'هل يمكن مواصلة اختزال 7/4؟ لماذا؟', done: q2,
           content: (
             <div className="space-y-3">
-              <TapQuestion prompt={<span>لماذا لا يمكن مواصلة اختزال <MathText>{'$\\dfrac{7}{4}$'}</MathText>؟</span>}
-                options={['لأن 7 و 4 أوليان فيما بينهما: PGCD(7 ; 4) = 1', 'لأن 7 عدد أولي', 'لأن 4 أصغر من 7', 'لأن 7 − 4 = 3 عدد فردي']} correct={0} cols={1}
-                explain={<MathText>{ACTIVITY.questions[2]}</MathText>} onAnswered={() => setQ2(true)} />
+              <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={q2 ? 'true' : 'false'}>
+                {q2
+                  ? <span className="font-bold text-slate-800">أجبتَ في المختبر: توقّفتَ عند <MathText>{'$\\dfrac{7}{4}$'}</MathText> لأنّ 7 و 4 أوليان فيما بينهما، فلا قاسم مشترك غير 1.</span>
+                  : <span className="text-slate-500">أنهِ اختزال 84/48 في المناولة وأجب عن أسئلتها: ستعرف لماذا لا نواصل بعد الكسر الأخير.</span>}
+              </p>
               {q2 && <KnowledgeBrick id="kasr-ghayr-qabil" lead="7 و 4 لا يقسمهما معًا إلا 1: أوليان فيما بينهما." />}
               {q2 && <TextbookBox kind="remark" text={ACTIVITY.questions[2]} compact />}
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />} />
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />} />
   );
 }

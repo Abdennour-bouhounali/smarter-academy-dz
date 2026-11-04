@@ -35,7 +35,7 @@ export default function Module01Nashat() {
   const [q3, setQ3] = useState(false);
 
   const onTrial = (ev) => {
-    if (!ev) return;
+    if (!ev || ev.tk) return;
     if (['major', 'diameter', 'interior'].includes(ev.kind) || (ev.kind === 'relation' && ev.ok)) setTrials((s) => [...s, ev].slice(-10));
   };
   const mezian = trials.find((t) => t.kind === 'diameter');
@@ -193,7 +193,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

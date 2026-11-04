@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { FractionQuestion } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 
 /**
@@ -12,19 +11,14 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
  *   مبتدئ — d1 5/4 et 3/4, d2 −3/2 et −1/2 (l'échange), d3 9/11 et 13/16 (0,85 px) ;  متقدم — volet d'écriture (d4, d5), rideau (d6 : a − b = −0,3).
  * Les ÉTAPES interrogent ce que l'élève a FAIT, avec SES essais : le côté de l'aiguille (P1), l'échange des sondes (P1), deux perles qui se recouvrent (P2), l'ordre lu sur la différence seule (P1, P2).
  * Les noms (briques) viennent APRÈS la réponse. Le نشاط 5 du manuel est posé en application au module 4.
+ * Déploiement du prototype (2026-10-28) : ces questions sont posées PAR-DESSUS le labo après chaque tâche (`DifferenceMeter › chainOf`, la règle
+ * clôt d3 et d6) ; les étapes en gardent la TRACE (`checkpoint-done`) puis posent les noms.
  */
-const M = (s) => <MathText key={s}>{s}</MathText>;
-
 export default function Module01Nashat() {
   const [trials, setTrials] = useState([]);
-  const [q1, setQ1] = useState(false);
-  const [q2, setQ2] = useState(false);
-  const [q3, setQ3] = useState(false);
-  const [q3b, setQ3b] = useState(false);
-  const [q4, setQ4] = useState(false);
   const record = (e) => setTrials((list) => [...list, e]);
-  const solved = (id) => trials.find((e) => e.kind === 'solved' && e.taskId === id);
-  const swapped = trials.find((e) => e.kind === 'swap');
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand la suite de questions de sa tâche l'est
+  const answered = (id) => trials.some((e) => e.tk === 'checkpoint-done' && e.id === id);
 
   const Evidence = ({ id, ok, done, todo }) => (
     <p data-evidence={id} data-tried={ok ? 'true' : 'false'}
@@ -52,93 +46,50 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'متى مالت الإبرة إلى اليمين؟', subtitle: 'جهة الإبرة', done: q1,
+          num: 1, title: 'متى مالت الإبرة إلى اليمين؟', subtitle: 'جهة الإبرة', done: answered('d1'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="solved12" ok={!!solved('d1') && !!solved('d2')}
-                done="وصلتَ المجسّين في الزوجين الأولين وحكمتَ على كل منهما بعد قراءة الإبرة."
-                todo="أنهِ الزوجين الأولين على السكّة (الزوج 5/4 و 3/4 ثم الزوج −3/2 و −1/2)، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<MathText>{String.raw`في الزوجين الأولين على السكّة، متى مالت الإبرة إلى اليمين؟`}</MathText>}
-                options={[
-                  M('عندما كان العدد تحت المجسّ الأحمر هو الأكبر'),
-                  M('عندما كانت الحبّة الحمراء أبعد عن الصفر'),
-                  M('دائمًا عند الكسر ذي المقام الأكبر'),
-                ]}
-                correct={0} cols={1}
-                explain={<MathText>{'في الزوج الثاني كان $-\\frac32$ أبعد عن الصفر لكنّ الإبرة مالت إلى اليسار لأنّ $-\\frac32<-\\frac12$ ؛ والإبرة إلى اليمين حين يكون عدد المجسّ الأحمر هو الأكبر.'}</MathText>}
-                onAnswered={() => setQ1(true)}
-              />
-              {q1 && <KnowledgeBrick id="ishara-farq" lead="الإبرة مالت يمينًا ثم يسارًا: ماذا كان تحت المجسّ الأحمر؟" />}
+              <Evidence id="d1" ok={answered('d1')}
+                done={<MathText>{'أجبتَ في المختبر: المجسّ الأحمر على $\\frac54$ والأسود على $\\frac34$ ، فقرأت الإبرة $\\frac12$ إلى اليمين، و $\\frac54>\\frac34$ .'}</MathText>}
+                todo="صِل المجسّين في الزوج الأوّل على السكّة، وأجب عن الأسئلة التي تظهر فوق المختبر." />
+              {answered('d1') && <KnowledgeBrick id="ishara-farq" lead="الإبرة مالت يمينًا: ماذا كان تحت المجسّ الأحمر؟" />}
             </div>
           ),
         },
         {
-          num: 2, title: 'ماذا حدث حين بدّلتَ المجسّين؟', subtitle: 'الجهة والترتيب', done: q2,
+          num: 2, title: 'ماذا حدث حين بدّلتَ المجسّين؟', subtitle: 'الجهة والترتيب', done: answered('d2'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="swap" ok={!!swapped}
-                done="بدّلتَ المجسّين في الزوج الثاني فعبرت الإبرة إلى الجهة الأخرى والحبّتان في مكانهما."
-                todo="في الزوج الثاني المس «بدّل المجسّين»، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<MathText>{String.raw`في الزوج الثاني قرأتَ $-1$ ثم $1$ عند تبديل المجسّين. هل تغيّر الترتيب بين $-\frac32$ و $-\frac12$ ؟`}</MathText>}
-                options={[
-                  M('لا: $-\\frac32<-\\frac12$ في الحالتين؛ $a-b=-1$ و $b-a=1$'),
-                  M('نعم: صار $-\\frac32$ أكبر'),
-                ]}
-                correct={0} cols={1} requires={['ishara-farq']}
-                explain={<MathText>{'الحبّتان لم تتحرّكا: $-\\frac32$ على يسار $-\\frac12$ دائمًا. تبدّلت إشارة الفرق ($-1$ ثم $1$) ولم يتبدّل الترتيب.'}</MathText>}
-                onAnswered={() => setQ2(true)}
-              />
-              {q2 && <KnowledgeBrick id="ibdal-mujassayn" lead="الإبرة عبرت الصفر والحبّتان ثابتتان: ماذا تغيّر وماذا لم يتغيّر؟" />}
+              <Evidence id="d2" ok={answered('d2')}
+                done={<MathText>{'أجبتَ في المختبر: بدّلتَ المجسّين فصارت القراءة $1$ بعد $-1$ ، والحبّتان في مكانهما: $-\\frac32<-\\frac12$ في الحالتين.'}</MathText>}
+                todo="في الزوج الثاني بدّل المجسّين، وأجب عن الأسئلة التي تظهر فوق المختبر." />
+              {answered('d2') && <KnowledgeBrick id="ibdal-mujassayn" lead="الإبرة عبرت الصفر والحبّتان ثابتتان: ماذا تغيّر وماذا لم يتغيّر؟" />}
             </div>
           ),
         },
         {
-          num: 3, title: 'حبّتان لا تفصلهما العين', subtitle: 'الإبرة تحسم', done: q3 && q3b,
+          num: 3, title: 'حبّتان لا تفصلهما العين', subtitle: 'الإبرة تحسم', done: answered('d3'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="solved3" ok={!!solved('d3')}
-                done="الحبّتان 9/11 و 13/16 كانتا متراكبتين، ومع ذلك حسمتَ الترتيب بالإبرة."
-                todo="أنهِ الزوج الثالث (9/11 و 13/16) ثم عُد إلى هذا السؤال." />
-              <FractionQuestion
-                prompt={<MathText>{String.raw`الحبّتان $\frac9{11}$ و $\frac{13}{16}$ متراكبتان على السكّة. ما الفرق $\frac9{11}-\frac{13}{16}$ ؟ (اكتب كسرًا)`}</MathText>}
-                expected="1/176" requires={['ibdal-mujassayn']}
-                explain={<MathText>{'$\\frac{9\\times16-13\\times11}{176}=\\frac{144-143}{176}=\\frac1{176}$.'}</MathText>}
-                onAnswered={() => setQ3(true)}
-              />
-              {q3 && (
-                <TapQuestion
-                  prompt={<MathText>{String.raw`فأيّهما أكبر؟`}</MathText>}
-                  options={[M('$\\frac9{11}$ ، لأنّ الفرق موجب'), M('$\\frac{13}{16}$ ، لأنّ بسطه أكبر'), M('متساويان لأنّهما متراكبتان')]}
-                  correct={0} cols={1} requires={['ibdal-mujassayn']}
-                  explain={<MathText>{'الفرق $\\frac1{176}$ موجب: $\\frac9{11}>\\frac{13}{16}$ ؛ بسط $\\frac{13}{16}$ أكبر لكنّ ذلك لا يحسم.'}</MathText>}
-                  onAnswered={() => setQ3b(true)}
-                />
-              )}
-              {q3b && <KnowledgeBrick id="farq-wahdahu" lead="الحبّتان متراكبتان ومع ذلك حسمتِ الإبرة: ما الذي كفى؟" />}
+              <Evidence id="d3" ok={answered('d3')}
+                done={<MathText>{'أجبتَ في المختبر: الحبّتان $\\frac9{11}$ و $\\frac{13}{16}$ متراكبتان، والإبرة قرأت $\\frac1{176}$ موجبًا، إذن $\\frac9{11}>\\frac{13}{16}$ .'}</MathText>}
+                todo="أنهِ الزوج الثالث (الحبّتان المتراكبتان)، وأجب عن الأسئلة التي تظهر فوق المختبر." />
+              {answered('d3') && <KnowledgeBrick id="farq-wahdahu" lead="الحبّتان متراكبتان ومع ذلك حسمتِ الإبرة: ما الذي كفى؟" />}
             </div>
           ),
         },
         {
-          num: 4, title: 'بلا حبّتين: الفرق وحده', subtitle: 'الستارة', done: q4,
+          num: 4, title: 'بلا حبّتين: الفرق وحده', subtitle: 'الستارة', done: answered('d6'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="solved6" ok={!!solved('d6')}
-                done="خلف الستارة لم ترَ الحبّتين، وحكمتَ بالقراءة المعلومة وحدها."
-                todo="في المستوى المتقدّم أنهِ المهمة السادسة (الستارة) ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<MathText>{String.raw`في المهمة الأخيرة لم تَرَ الحبّتين، ورأيتَ فقط $a-b=-0{,}3$ . ماذا تستنتج؟`}</MathText>}
-                options={[M('$a<b$'), M('$a>b$ لأنّ $0{,}3$ موجب'), M('لا نستطيع الحكم دون معرفة $a$ و $b$')]}
-                correct={0} cols={1} requires={['farq-wahdahu']}
-                explain={<MathText>{'الفرق $a-b$ سالب، إذن $a<b$ : إشارة الفرق وحدها تكفي.'}</MathText>}
-                onAnswered={() => setQ4(true)}
-              />
+              <Evidence id="d6" ok={answered('d6')}
+                done={<MathText>{'أجبتَ في المختبر: خلف الستارة رأيتَ فقط $a-b=-0{,}3$ ، فحكمتَ $a<b$ دون أن ترى الحبّتين.'}</MathText>}
+                todo="في المستوى المتقدّم أنهِ المهمة السادسة (الستارة)، وأجب عن أسئلتها فوق المختبر." />
             </div>
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

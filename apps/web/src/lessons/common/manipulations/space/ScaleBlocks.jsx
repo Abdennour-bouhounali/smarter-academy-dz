@@ -9,11 +9,17 @@ import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { spread } from './spaceCp';
 import MovablePanel from '../primitives/MovablePanel';
 import MathText from '../../components/MathText';
 import SpaceFigure from '../../components/SpaceFigure';
 import { cuboidPoints, cuboidFaces } from '../../components/spaceFigure';
 import Stage3D, { prefersReducedMotion } from './stage3d/Stage3D';
+import * as Sp from '@smarter-academy/core/arithmetic/space.js';
 import { toThree } from './stage3d/spaceStage';
 import { box as box3, edges as edges3, handle as handle3, setAt } from './stage3d/solids3d';
 import * as L from '../logic/scaleBlocks';
@@ -82,7 +88,7 @@ const kTex = (k) => { const s = L.kText(k); return s.includes('/') ? `\\tfrac{${
 const qTex = (q) => { const s = L.decText(q); return s.includes('/') ? `\\tfrac{${s.split('/')[0]}}{${s.split('/')[1]}}` : tx(s); };
 
 export default function ScaleBlocks(props) {
-  const { numbers: grouped, theme = 'voxel-blocks', title, lead, mission, level, levels: withLevels = true,
+  const { numbers: grouped, theme = 'voxel-blocks', title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true,
     initialMode = 'student', allowModeSwitch = false, onTrial, onFinished } = props;
   const authored = useMemo(() => {
     const out = {};
@@ -100,11 +106,15 @@ export default function ScaleBlocks(props) {
   const make = () => L.init(nums);
   const [lab, setLab] = useState(make);
   const sceneKey = `${numKey}|${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); }
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  const [doneIds, setDoneIds] = useState({});
+  // « إعادة » (epoch), un autre niveau ou d'autres nombres : TOUT recommence — les bâtis, les étapes et les questions du labo
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(make()); setDoneIds({}); }
 
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  const cpSettings = useLabCheckpointSettings('scale-blocks');   // obligatoires pour tout élève ; l'enseignant seul les coupe, pour SON compte
+  const cpLive = cpOn && cpSettings.enabled;
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch, cpLive]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!state.isFormal) return;
     state.report(onFinished, { ks: lab.ks.map(L.kText) });
@@ -136,6 +146,70 @@ export default function ScaleBlocks(props) {
     </div>
   );
 
+  /* ── les étapes et leurs questions : chaque rapport visé bâti (puis le contraste « + 1 cm ») ouvre sa suite, dans l'ordre ── */
+  const stepList = L.stepsOf(lab).map((st, i, all) => ({ ...st, chain: chainOf(st.id, i, all.length, all[all.length - 1].id) }));
+  const stepDone = stepList.map((st) => !!doneIds[st.id] || (!cpLive && st.reached));
+  const nextStep = cpLive ? stepList.find((st) => !doneIds[st.id]) : null;
+  const cpId = nextStep && nextStep.reached ? nextStep.id : null;
+  const chain = cpId ? nextStep.chain : null;
+  const cp = useLabCheckpoint({
+    id: cpId,
+    questions: chain ? chain.map((q) => QUESTIONS[q]({ lab, step: nextStep, options: discoveryOptions, formal }, k)) : null,
+    reached: !!cpId,
+    resetKey: scene.inits,
+    onRetry: () => setLab((cur) => L.retryStep(cur, cpId)),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => ({ ...d, [id]: true }));
+      if (stepList.find((st) => st.id === id)?.chain.includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.n === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  const doneKey = stepDone.join();
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(i)) return;
+      celebrated.current.add(i);
+      party.celebrate({ n: i + 1, total: stepList.length });
+    });
+  }, [doneKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── le son : un déclic quand k change de cran, « flag » au bâti prédit juste, « over » au bâti raté ou au cadre « + 1 cm » (pas un agrandissement),
+     « bell » quand une étape est finie. Muet sauf « الصوت ». ── */
+  const tick = useRef({ key: null, at: 0 });
+  const kKey = L.kText(lab.k);
+  useEffect(() => {
+    const p = tick.current;
+    if (p.key === null) { p.key = kKey; return; }
+    if (p.key === kKey) return;
+    p.key = kKey;
+    const now = performance.now();
+    if (now - p.at > 35) { playSfx('tooth'); p.at = now; }
+  }, [kKey]);
+  const heard = useRef(0);
+  useEffect(() => {
+    if (lab.n < heard.current) heard.current = 0;
+    if (lab.n === 0 || lab.n === heard.current) return;
+    heard.current = lab.n;
+    const e = lab.last;
+    playSfx(e?.kind === 'build' && (e.verdict === 'ok' || e.verdict === 'identity') ? 'flag' : 'over');
+  }, [lab.n]); // eslint-disable-line react-hooks/exhaustive-deps
+  const bells = useRef(0);
+  useEffect(() => {
+    const n = stepDone.filter(Boolean).length;
+    if (n > bells.current) playSfx('bell');
+    bells.current = n;
+  }, [doneKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  const overlay = (
+    <>
+      {party.node}
+      {cp.node}
+      <LabStepper count={stepList.length} current={Math.max(0, stepDone.indexOf(false) < 0 ? stepList.length - 1 : stepDone.indexOf(false))} done={stepDone} stepAttr="data-sb-step" />
+    </>
+  );
+
   return (
     <ManipulationShell
       type="scale-blocks"
@@ -145,13 +219,15 @@ export default function ScaleBlocks(props) {
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpLive}
       hints={['hint1', 'hint2', 'hint3'].map((hk) => <MathText key={hk}>{k(hk)}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={k('dPrompt')} options={discoveryOptions} formal={formal} />}
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-sky-50/70 to-white" minHeight="min-h-[150px]">
-        <Blocks lab={lab} setLab={setLab} k={k} theme={theme} solved={ready} formal={state.isFormal} />
+        <Blocks lab={lab} setLab={setLab} k={k} theme={theme} solved={ready} formal={state.isFormal} overlay={overlay} />
       </ManipulationStage>
     </ManipulationShell>
   );
@@ -184,7 +260,7 @@ function useBudget(min, max) {
   return { boxRef, glanceRef, drawnH, width, budget };
 }
 
-function Blocks({ lab, setLab, k, theme, solved, formal }) {
+function Blocks({ lab, setLab, k, theme, solved, formal, overlay }) {
   const { boxRef, glanceRef, drawnH, width, budget } = useBudget(170, 420);
   const H = budget;
   drawnH.current = H;
@@ -220,7 +296,8 @@ function Blocks({ lab, setLab, k, theme, solved, formal }) {
   const dimsTex = (ds) => ds.map(qTex).join(' \\;;\\; ');
 
   return (
-    <div ref={boxRef} className="space-y-2" data-scale-blocks data-world={theme} data-k={L.kText(lab.k)} data-solved={solved ? 'true' : 'false'}>
+    <div ref={boxRef} className="relative space-y-2" data-scale-blocks data-world={theme} data-k={L.kText(lab.k)} data-solved={solved ? 'true' : 'false'}>
+      {overlay}
       <div ref={glanceRef} className="space-y-1.5" data-sb-glance>
         <div ref={sceneRef} className="relative overflow-hidden rounded-2xl border border-sky-200" style={{ height: H }}>
           <VoxelDecor reduce={prefersReducedMotion()} hotbar={H >= 230} />
@@ -663,3 +740,57 @@ function VoxelDecor({ reduce, hotbar = true }) {
     </svg>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de chaque étape : la 1re (arête · aire), les suivantes (arête · volume) ; la dernière finit par la RÈGLE (le contraste « + 1 cm » du pavé, ou le volume du cube). */
+export function chainOf(id, index, total, lastId) {
+  if (id === 'plus') return ['plusRatio', 'rule'];
+  if (id === lastId) return total === 1 ? ['edge', 'area', 'vol', 'rule'] : ['vol', 'rule'];
+  return index === 0 ? ['edge', 'area'] : ['edge', 'vol'];
+}
+
+const $ = (x) => `$${x}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const num = (k, id, o, expected, answer) => ({
+  id, kind: 'number', expected, answer: <MathText>{$(answer)}</MathText>,
+  prompt: Cq(k, `${id}.prompt`, o), hints: [Cq(k, `${id}.hint1`, o), Cq(k, `${id}.hint2`, o)], explain: Cq(k, `${id}.explain`, o),
+});
+
+/** Chaque question est construite sur LES rapports et les dimensions de l'élève (rien n'est écrit en dur) ; `k` : les textes de `scaleBlocks`. */
+export const QUESTIONS = {
+  edge: ({ lab, step }, k) => {
+    const g = L.scaledAt(lab, step.k);
+    const o = { k: $(kTex(step.k)), a: $(qTex(g.edge0)), a2: $(qTex(g.edge1)) };
+    return num(k, 'edge', o, L.kText(g.edge1), qTex(g.edge1));
+  },
+  area: ({ lab, step }, k) => {
+    const g = L.scaledAt(lab, step.k);
+    const dims = Sp.scaleAll(lab.dims, step.k).map((d) => qTex(d)).join(' \\times ');
+    const o = { k: $(kTex(step.k)), dims: $(dims), A: $(qTex(g.area0)), A2: $(qTex(g.area1)) };
+    return num(k, 'area', o, L.kText(g.area1), qTex(g.area1));
+  },
+  vol: ({ lab, step }, k) => {
+    const g = L.scaledAt(lab, step.k);
+    const dims = Sp.scaleAll(lab.dims, step.k).map((d) => qTex(d)).join(' \\times ');
+    const o = { k: $(kTex(step.k)), dims: $(dims), V: $(qTex(g.vol0)), V2: $(qTex(g.vol1)) };
+    return num(k, 'vol', o, L.kText(g.vol1), qTex(g.vol1));
+  },
+  plusRatio: ({ lab, step }, k) => {
+    const r = step.trial.ratios.map((x) => $(qTex(x)));
+    const o = { a: $(qTex(lab.dims[0])), b: $(qTex(lab.dims[1])), c: $(qTex(lab.dims[2])), r1: r[0], r2: r[1], r3: r[2] };
+    return {
+      id: 'plusRatio', kind: 'choice', cols: 1, prompt: Cq(k, 'plusRatio.prompt', o),
+      options: spread([
+        { text: Cq(k, 'plusRatio.no', o), correct: true },
+        { text: Cq(k, 'plusRatio.yes', o), why: Cq(k, 'plusRatio.whyYes', o) },
+        { text: Cq(k, 'plusRatio.bigger', o), why: Cq(k, 'plusRatio.whyBigger', o) },
+      ], 1),
+      hints: [Cq(k, 'plusRatio.hint1', o), Cq(k, 'plusRatio.hint2', o)], explain: Cq(k, 'plusRatio.explain', o),
+    };
+  },
+  rule: ({ options, formal }, k) => ({
+    id: 'rule', kind: 'choice', prompt: <MathText>{k('dPrompt')}</MathText>, options,
+    hints: [Cq(k, 'rule.hint1'), Cq(k, 'rule.hint2')], explain: formal,
+  }),
+};

@@ -3,6 +3,7 @@ import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
+import { useLabCheckpointSettings } from '../../../../../../common/manipulations/primitives/labCheckpointSettings';
 import { SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACT_4, LAB, MISTAKE_FIXED } from '../content/textbook';
@@ -32,6 +33,12 @@ export default function Module01Ishtirak() {
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
   const [q5, setQ5] = useState(false);
+  const [cps, setCps] = useState([]);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : « pourquoi x ne multiplie pas l'abonnement » y est posée ; coupées par l'enseignant, la question d'origine revient
+  const cpOn = useLabCheckpointSettings('plan-compare').enabled;
+  const answered = (id) => cps.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const onCheckpoint = (e) => setCps((l) => [...l, e]);
+  const built = cpOn ? answered('build') : q1;
   const onModel = (level) => ({ tex }) => setModels((m) => ({ ...m, [level]: tex }));
   const onTrial = (level) => (tr) => {
     if (tr.kind !== 'x') return;
@@ -73,32 +80,41 @@ export default function Module01Ishtirak() {
           defaultLevel="beginner"
           levels={{
             beginner: () => <Manipulation type="plan-compare" level="beginner" {...LAB.m1.beginner}
-              onModel={onModel('beginner')} onTrial={onTrial('beginner')} />,
+              onModel={onModel('beginner')} onTrial={onTrial('beginner')} onCheckpoint={onCheckpoint} />,
             advanced: () => <Manipulation type="plan-compare" {...LAB.m1.advanced}
-              onModel={onModel('advanced')} onTrial={onTrial('advanced')} />,
+              onModel={onModel('advanced')} onTrial={onTrial('advanced')} onCheckpoint={onCheckpoint} />,
           }}
         />
       }
       steps={[
         {
-          num: 1, title: 'لماذا لا يُضرب الاشتراك في x؟', subtitle: 'عن الفاتورة التي بنيتها', done: q1,
+          num: 1, title: 'لماذا لا يُضرب الاشتراك في x؟', subtitle: 'عن الفاتورة التي بنيتها', done: built,
           content: (
             <div className="space-y-3">
               {evidence}
-              <TapQuestion
-                prompt={<span>في فاتورتك كتب المختبر <MathText>{'$x$'}</MathText> عند أحد المبلغين فقط. لماذا لا يظهر <MathText>{'$x$'}</MathText> عند مبلغ الاشتراك (أو البطاقة)؟</span>}
-                options={[
-                  'لأنه يُدفع مرّة واحدة مهما كبر x، أمّا الآخر فيتكرّر x مرّة',
-                  'لأنه أصغر المبلغين',
-                  'لأنه يتكرّر x مرّة، أمّا الآخر فيُدفع مرّة واحدة',
-                  'لأن x لا يُضرب إلا في عدد من رقم واحد',
-                ]}
-                correct={0}
-                cols={1}
-                explain={<MathText>{'الاشتراك يُدفع مرّة واحدة في الموسم فلا يتغيّر عندما يكبر $x$ ، أمّا المبلغ عن كل مقابلة فيُدفع $x$ مرّة: نضربه في $x$ ثم نضيف الاشتراك.'}</MathText>}
-                onAnswered={() => setQ1(true)}
-              />
-              {q1 && <KnowledgeBrick id="namdhaja-taalufiya" lead="ما فعلته في المختبر بالفاتورة، بكلمات الدرس:" />}
+              {cpOn ? (
+                <p data-checkpoint-trace="build" data-tried={built ? 'true' : 'false'}
+                  className={`rounded-xl border-2 px-3 py-2 text-sm ${built ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                  {built
+                    ? <MathText>{'أجبتَ في المخبر: المبلغ الثابت يُدفع مرّة واحدة فلا يُضرب في $x$ ، أمّا ثمن الوحدة فيُدفع $x$ مرّة.'}</MathText>
+                    : 'ضع كل مبلغ في خانته وتحقّق في المخبر، وأجب عن الأسئلة التي تظهر فوقه.'}
+                </p>
+              ) : (
+                <TapQuestion
+                  prompt={<span>في فاتورتك كتب المختبر <MathText>{'$x$'}</MathText> عند أحد المبلغين فقط. لماذا لا يظهر <MathText>{'$x$'}</MathText> عند مبلغ الاشتراك (أو البطاقة)؟</span>}
+                  options={[
+                    'لأنه يُدفع مرّة واحدة مهما كبر x، أمّا الآخر فيتكرّر x مرّة',
+                    'لأنه أصغر المبلغين',
+                    'لأنه يتكرّر x مرّة، أمّا الآخر فيُدفع مرّة واحدة',
+                    'لأن x لا يُضرب إلا في عدد من رقم واحد',
+                  ]}
+                  correct={0}
+                  cols={1}
+                  explain={<MathText>{'الاشتراك يُدفع مرّة واحدة في الموسم فلا يتغيّر عندما يكبر $x$ ، أمّا المبلغ عن كل مقابلة فيُدفع $x$ مرّة: نضربه في $x$ ثم نضيف الاشتراك.'}</MathText>}
+                  onAnswered={() => setQ1(true)}
+                />
+              )}
+              {built && <KnowledgeBrick id="namdhaja-taalufiya" lead="ما فعلته في المختبر بالفاتورة، بكلمات الدرس:" />}
             </div>
           ),
         },
@@ -165,7 +181,7 @@ export default function Module01Ishtirak() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

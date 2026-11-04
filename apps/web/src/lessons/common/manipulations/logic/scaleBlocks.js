@@ -209,6 +209,35 @@ export function discoveryReady(lab) {
   return done && distinct && (!needsPlus || lab.plusTried);
 }
 
+/* ── les étapes du labo et leurs questions (lot 4, `primitives/LabCheckpoint`) ───────────────────────────── */
+
+const buildAt = (lab, k) => [...lab.builds].reverse().find((bd) => eq(bd.k, k) && bd.prediction) ?? null;
+/** Une étape par rapport visé (un bâti prédit), puis (pavé) le contraste « + 1 cm » ; la DERNIÈRE n'est atteinte qu'au contraste complet (la règle). */
+export function stepsOf(lab) {
+  const steps = lab.ks.map((k, i) => ({ id: `k${i}`, k, trial: buildAt(lab, k), reached: !!buildAt(lab, k) }));
+  if (!isCube(lab.dims)) steps.push({ id: 'plus', k: null, trial: lab.plusTried ? plusReading(lab.dims) : null, reached: lab.plusTried });
+  const last = steps.length - 1;
+  steps[last] = { ...steps[last], reached: steps[last].reached && discoveryReady(lab) };
+  return steps.map((x) => Object.freeze(x));
+}
+/** « أعِد التجربة » : le bâti de l'étape (ou le cadre « + 1 cm ») est effacé, k et la prédiction repartent. */
+export function retryStep(lab, id) {
+  const st = stepsOf(lab).find((x) => x.id === id);
+  if (!st) return lab;
+  if (id === 'plus') return Object.freeze({ ...lab, plus: false, plusTried: false, last: null });
+  return Object.freeze({
+    ...lab, k: st.k, prediction: null, built: null, plus: false, last: null,
+    builds: Object.freeze(lab.builds.filter((bd) => !eq(bd.k, st.k))),
+  });
+}
+/** Les grandeurs EXACTES d'un rapport k pour la 1re arête, l'aire totale et le volume du pavé de départ. */
+export function scaledAt(lab, k) {
+  const c = Sp.cuboid(...lab.dims);
+  return Object.freeze({
+    edge0: lab.dims[0], edge1: Sp.scaled(lab.dims[0], k, 1), area0: c.area, area1: Sp.scaled(c.area, k, 2), vol0: c.volume, vol1: Sp.scaled(c.volume, k, 3),
+  });
+}
+
 /** Ce que reçoit `onTrial` : un bâti ou le contraste (pour la liste des essais de l'élève dans la leçon). */
 export function evidenceOf(lab) {
   const e = lab.last;

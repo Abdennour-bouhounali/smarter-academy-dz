@@ -175,3 +175,50 @@ describe('division-jumps — rendu', () => {
     expect([1, 2, 10, 20].map((count) => say('jumps', { count }))).toEqual(['قفزة واحدة', 'قفزتان', '10 قفزات', '20 قفزةً']);
   });
 });
+
+describe('division-jumps — questions pendant le labo (LabCheckpoint)', () => {
+  const k = (key, o) => i18n.t(`lesson:manipulation.divisionJumps.${key}`, o);
+  const RAW_KEY = /manipulation\.[a-zA-Z]/;
+  const check = (lab, QUESTIONS, chainOf) => {
+    for (const qid of chainOf(lab)) {
+      if (qid === 'rule') continue;   // la découverte : couverte ailleurs
+      const q = QUESTIONS[qid](lab, k);
+      const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+      expect(out, qid).not.toMatch(RAW_KEY);
+      expect(out, qid).not.toContain('{{');
+      expect(q.hints, qid).toHaveLength(2);
+      if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), qid).toHaveLength(1);
+      else expect(q.expected, qid).toBeTruthy();
+    }
+  };
+  it('مبتدئ : 47 (quotient 7, reste 5, la règle) puis 48 ; متقدم : 279 ÷ 14 avec le حصر', async () => {
+    const { chainOf, QUESTIONS } = await import('./DivisionJumps');
+    const L = await import('../logic/divisionJumps');
+    const lab = L.init(LEVELS['division-jumps'].beginner.numbers);
+    expect(chainOf(lab)).toEqual(['quotient', 'remainder', 'rule']);
+    expect(QUESTIONS.quotient(lab, k).expected).toBe('7');
+    expect(QUESTIONS.remainder(lab, k).expected).toBe('5');
+    check(lab, QUESTIONS, chainOf);
+    const then = { ...lab, a: lab.then };
+    expect(chainOf(then)).toEqual(['thenRemainder', 'thenWhy']);
+    expect(QUESTIONS.thenRemainder(then, k).expected).toBe('0');
+    check(then, QUESTIONS, chainOf);
+    const adv = L.init(LEVELS['division-jumps'].advanced.numbers);
+    expect(chainOf(adv)).toContain('bracket');
+    expect(QUESTIONS.quotient(adv, k).expected).toBe('19');
+    check(adv, QUESTIONS, chainOf);
+  });
+});
+
+describe('division-jumps — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('questions actives : ni la progression ni le bouton d’indice ; checkpoints={false} : les deux reviennent', async () => {
+    const { default: DivisionJumps } = await import('./DivisionJumps');
+    const props = { ...LEVELS['division-jumps'].beginner.numbers, level: 'beginner' };
+    const g = renderToString(<DivisionJumps {...props} />);
+    expect(g).not.toContain('data-manipulation-progress');
+    expect(g).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    const off = renderToString(<DivisionJumps {...props} checkpoints={false} />);
+    expect(off).toContain('data-manipulation-progress');
+    expect(off).toContain(i18n.t('lesson:manipulation.hint.show'));
+  });
+});

@@ -49,7 +49,7 @@ export default function Module03Awazzif() {
         { num: 6, title: 'تمرين 31 (1) — هل هذا العدد العشري يساوي الجذر؟', done: d6,
           content: <TextbookExercise exercise={EX['ex-31-1']} requires={['ghayr-natiq', 'qima-mudbuta']} onAnswered={() => setD6(true)} /> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }

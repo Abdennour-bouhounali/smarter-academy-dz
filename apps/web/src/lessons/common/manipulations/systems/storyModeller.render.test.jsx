@@ -1,8 +1,10 @@
-import { it, expect } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
-import StoryModeller from './StoryModeller';
+import StoryModeller, { CHAINS, QUESTIONS, chainOf, makeCtx } from './StoryModeller';
+import * as L from '../logic/storyModeller';
+import i18n from '../../../../i18n';
 
 /**
  * story-modeller se rend pour ses TROIS mondes (stade : le niveau débutant ; musée : نشاط 3 ;
@@ -80,4 +82,83 @@ it('« startWith="solve" » épingle la résolution, le modèle du manuel déjà
 
 it('une histoire dont un nombre n’a pas de jeton est une erreur de contenu', () => {
   expect(() => renderToString(<StoryModeller system="x+y=140|300x+150y=30300" chips={[{ value: '140', label: '' }]} />)).toThrow();
+});
+
+/* ── L8 : les questions pendant le labo (primitives/LabCheckpoint) et le mode guidé ── */
+const kS = (key, o) => i18n.t(`lesson:manipulation.storyModeller.${key}`, o);
+
+function check(q, label) {
+  const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+  expect(out, label).not.toMatch(RAW);
+  expect(out, label).not.toContain('{{');
+  expect(out, label).not.toContain('undefined');
+  expect(q.hints, label).toHaveLength(2);
+  if (q.kind === 'choice') {
+    expect(q.options.filter((o) => o.correct), label).toHaveLength(1);
+    q.options.filter((o) => !o.correct).forEach((o) => expect(o.why, `${label} why`).toBeTruthy());
+  } else expect(q.expected, label).toBeTruthy();
+}
+
+/** L'histoire intégrée d'un thème, comme le composant la lit (`themes.<id>`). */
+function defOf(themeId, system) {
+  const b = i18n.t(`lesson:manipulation.storyModeller.themes.${themeId}`, { returnObjects: true });
+  const unknowns = b.unknowns.map((noun, i) => ({ id: ['x', 'y'][i], noun }));
+  return { unknowns, facts: b.facts, chips: b.chips, answer: b.answer, system: system ?? L.THEME_SYSTEMS[themeId] };
+}
+
+describe('story-modeller — questions pendant le labo', () => {
+  it.each([['stadium'], ['museum'], ['party']])('%s : chaque étape pose des questions complètes (2 indices, une bonne réponse)', (themeId) => {
+    const def = defOf(themeId);
+    const model = L.parseModel({ system: def.system, unknowns: def.unknowns, facts: def.facts, chips: def.chips });
+    for (const method of ['sub', 'add']) {
+      let lab = L.init(model, { named: true });
+      lab = { ...lab, slots: L.targetSlots(model, lab.naming) };
+      lab = L.checkModel(lab, model);
+      expect(lab.verdict.ok).toBe(true);
+      const at = (stage, plan, sys) => makeCtx({ model, def, lab, plan, sys, k: kS });
+      for (const q of chainOf('model', lab, at('model'))) check(QUESTIONS[q](lab, kS, at('model')), `${themeId}.model.${q}`);
+      lab = L.openSolve(lab);
+      const sys = L.studentSystem(lab, model);
+      lab = L.chooseMethod(lab, method);
+      const plan = L.solvePlan(sys, model.ids, method);
+      while (L.canReveal(lab, plan) || lab.revealed < plan.lines.length) { lab = L.claimHalf(L.reveal(lab, plan), 'more'); if (lab.revealed >= plan.lines.length) break; }
+      expect(L.solved(lab, plan)).toBe(true);
+      for (const q of chainOf('solve', lab, makeCtx({ model, def, lab, plan, sys, k: kS }))) check(QUESTIONS[q](lab, kS, makeCtx({ model, def, lab, plan, sys, k: kS })), `${themeId}.${method}.solve.${q}`);
+      lab = L.openVerify(lab, plan);
+      for (const id of model.ids) lab = L.gate(lab, lab.naming[id], L.gateId(id));
+      lab = L.replay(lab, model, plan.values);
+      expect(lab.replay.ok).toBe(true);
+      const ctx = makeCtx({ model, def, lab, plan, sys, k: kS });
+      for (const q of chainOf('verify', lab, ctx)) check(QUESTIONS[q](lab, kS, ctx), `${themeId}.verify.${q}`);
+      lab = L.chooseAnswer(L.openAnswer(lab), def.answer.correct ?? 0, def.answer.correct ?? 0);
+      expect(L.discoveryReady(lab)).toBe(true);
+      const c2 = makeCtx({ model, def, lab, plan, sys, k: kS });
+      for (const q of chainOf('answer', lab, c2)) check(QUESTIONS[q](lab, kS, c2), `${themeId}.answer.${q}`);
+    }
+    // l'étape « name » : sur une histoire nommée à la main
+    let lab = L.init(model, {});
+    lab = L.name(L.name(lab, 'x', 'x'), 'y', 'y');
+    expect(L.namingDone(lab)).toBe(true);
+    const c0 = makeCtx({ model, def, lab, k: kS });
+    for (const q of chainOf('name', lab, c0)) check(QUESTIONS[q](lab, kS, c0), `${themeId}.name.${q}`);
+    expect(Object.keys(CHAINS)).toEqual(['name', 'model', 'solve', 'verify', 'answer']);
+  });
+  it('le musée : la réponse de solveFirst / solveSecond est calculée sur la jumla (62 ; 78)', () => {
+    const def = defOf('museum');
+    const model = L.parseModel({ system: def.system, unknowns: def.unknowns, facts: def.facts, chips: def.chips });
+    let lab = L.init(model, { named: true, startWith: 'solve' });
+    const sys = L.studentSystem(lab, model);
+    lab = L.chooseMethod(lab, 'sub');
+    const plan = L.solvePlan(sys, model.ids, 'sub');
+    const ctx = makeCtx({ model, def, lab, plan, sys, k: kS });
+    expect([QUESTIONS.solveFirst(lab, kS, ctx).expected, QUESTIONS.solveSecond(lab, kS, ctx).expected].sort()).toEqual(['62', '78']);
+  });
+  it('mode guidé : ni la progression ni « إظهار التلميح », les étapes sont là', () => {
+    const html = renderToString(<StoryModeller />);
+    expect(html).not.toContain('data-manipulation-progress');
+    expect(html).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    expect(html).toContain('data-lab-stepper');
+    const off = renderToString(<StoryModeller checkpoints={false} />);
+    expect(off).toContain('data-manipulation-progress');
+  });
 });

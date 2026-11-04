@@ -108,6 +108,23 @@ export function discoveryReady(s) {
   return hs.size >= 2 && (s.refusals > 0 || s.trials.some((t) => !t.inscribed));
 }
 
+/* ── les ÉTAPES du labo (questions pendant le labo, lot 4) ────────────────────────────────────────── */
+
+export const STEPS = Object.freeze(['first', 'second']);
+
+/** Étape 1 : un premier cylindre INSCRIT ; étape 2 : le contraste complet de la découverte (deux inscrits de longueurs différentes + un refus ou un jeu). */
+export function stepReached(s, step) {
+  return step === 'first' ? inscribedTrials(s).length >= 1 : discoveryReady(s);
+}
+
+/** La même étape repart : le cylindre revient au départ ; l'étape 2 garde le 1er cylindre inscrit (acquis de l'étape 1). */
+export function retryStage(s, step) {
+  const fresh = init({ H: s.H, R: s.R });
+  if (step === 'first') return fresh;
+  const first = inscribedTrials(s)[0];
+  return Object.freeze({ ...fresh, trials: Object.freeze(first ? [first] : []) });
+}
+
 /** Le cylindre cherché par la وضعية : inscrit ET h = r (sa demi-coupe est un carré). */
 export const goalFound = (s) => s.trials.some((t) => t.square);
 

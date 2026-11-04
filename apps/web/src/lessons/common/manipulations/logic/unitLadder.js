@@ -225,3 +225,9 @@ export function coachOf(s) {
   if (s.moves === 1) return { id: 'readout', target: '[data-ul-readout]', gesture: 'look', prefer: 'below' };
   return { id: 'dock', target: '[data-ul-dock]', gesture: 'tap', prefer: 'above' };
 }
+
+/** « أعِد التجربة » (questions pendant le labo) : la MÊME tâche repart ET son drapeau « fait » tombe — sinon l'étape resterait verte et la carte de questions ne se rouvrirait pas. */
+export function retryTask(s) {
+  const n = restartTask(s);
+  return s.free ? n : { ...n, done: n.done.map((d, i) => (i === s.ti ? false : d)) };
+}

@@ -78,7 +78,7 @@ export default function Module04Awazzif() {
         { num: 5, title: 'تمرين 5 — المروحة', done: all('5'),
           content: <div className="space-y-3">{block('5', ['dawaran', 'ittijah'])}</div> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

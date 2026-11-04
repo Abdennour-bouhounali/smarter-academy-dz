@@ -30,7 +30,7 @@ import MathText from '../../components/MathText';
  * [data-sw-quiz-option=<id>][data-tried], [data-sw-help=<level>], [data-sw-hint], [data-sw-action=<id>].
  */
 export default function ShadowTutor({
-  avatar, narrow, progress, thread, card, hint, onHint, onPick, action,
+  avatar, narrow, progress, showProgress = true, thread, card, hint, onHint, onPick, action,
 }) {
   const { t: tr } = useTranslation('lesson');
   const t = useCallback((key, o) => tr(`manipulation.shadowWorld.${key}`, o), [tr]);
@@ -52,6 +52,7 @@ export default function ShadowTutor({
         {avatar}
         <div className="min-w-0 flex-1">
           <p className="text-sm font-extrabold text-teal-800">{t('companion')} <span className="text-xs font-normal text-slate-500">· {t('companionRole')}</span></p>
+          {showProgress && (
           <div className="flex items-center gap-1.5" data-sw-progress={`${doneCount}/${counted}`}>
             <span className="text-[11px] font-bold text-slate-500">{t('progressLabel')}</span>
             <ol className="flex items-center gap-1" aria-label={t('progressLabel')}>
@@ -66,6 +67,7 @@ export default function ShadowTutor({
               ))}
             </ol>
           </div>
+          )}
         </div>
       </header>
 

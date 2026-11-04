@@ -63,6 +63,6 @@ export default function Module07TahlilWadiya() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={7} />} />
+      footer={<KnowledgeSnapshot moduleNumber={7} variant="memo" />} />
   );
 }

@@ -10,8 +10,13 @@ import { useManipulation } from '../useManipulation';
 import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import MathText from '../../components/MathText';
 import * as L from '../logic/pairScoreboard';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 
 /**
  * pair-scoreboard — LE TABLEAU DES DEUX CONDITIONS (unité 5 « جمل معادلتين من الدرجة الأولى
@@ -81,6 +86,12 @@ import * as L from '../logic/pairScoreboard';
  * (`primitives/LabFold`), jamais entre le monde et ses commandes. `MovablePanel` n'est pas utilisé :
  * rien ne flotte sur les bureaux, tout tient sans recouvrement.
  *
+ * QUESTIONS PENDANT LE LABO (2026-10-28, `primitives/LabCheckpoint`, `checkpoints` défaut true) : deux étapes `LabStepper`, la 2e s'ouvre après la 1re.
+ *   1. « الحل » (dès qu'une ثنائية est acceptée) : la valeur commune de la jauge (2), pourquoi la ثنائية est acceptée, la ثنائية renversée (l'ordre) ;
+ *   2. « الشرط الواحد » (dès qu'un essai n'allume qu'UNE jauge) : quelle jauge, pourquoi ce n'est pas un حل, puis la RÈGLE (l'ancienne découverte).
+ * Toutes construites sur les ثنائيات de l'élève (`CHAINS`, `QUESTIONS`, `chainOf` exportés). `onCheckpoint(ev)` reçoit les événements `checkpoint` / `checkpoint-done`
+ * (pour la trace des étapes de la leçon) ; `onTrial` ne reçoit que les ثنائيات.
+ *
  * Props : `system` (« eq1|eq2 », écrites comme le manuel), `theme` ('football' | 'staff' |
  * 'coins'), `ranges` ({ x: {min,max}, y: {min,max} }, sinon celles de l'histoire), `title`,
  * `lead`, `mission`, `level`, `levels` (false : exemple posé seul), `onTrial(t)` à chaque
@@ -96,7 +107,7 @@ import * as L from '../logic/pairScoreboard';
  */
 export default function PairScoreboard({
   system: system0 = 'x+y=32|2(x-5)=y-3', theme, ranges, title, lead, mission, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onSolved, onFinished,
+  checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false, onTrial, onCheckpoint, onSolved, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.pairScoreboard.${key}`, o), [t]);
@@ -109,15 +120,42 @@ export default function PairScoreboard({
   const make = () => L.init({ system, theme: themeHere, ranges: rangesHere });
   const [lab, setLab] = useState(make);
   const sceneKey = `${system}:${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  const [doneSteps, setDoneSteps] = useState([]);
   // Une ثنائية PAR DÉFAUT (le minimum de chaque règle) : la manipulation n'est jamais vide à l'ouverture
   // (2026-10-09). Ce n'est pas un essai : seul un geste validé (relâchement, pause clavier, « اقلب », « حل »)
   // entre dans `lab.trials` ; `lab.x` / `lab.y` restent `null` tant que la main n'a rien posé.
   const [liveX, setLiveX] = useState(null);
   const [liveY, setLiveY] = useState(null);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setLiveX(null); setLiveY(null); }
+  if (scene.key !== sceneKey) {
+    // « إعادة » ou un autre niveau : TOUT recommence — les essais, les étapes et les questions du labo
+    setScene({ key: sceneKey, inits: scene.inits + 1 });
+    setLab(make()); setLiveX(null); setLiveY(null); setDoneSteps([]);
+  }
 
-  const ready = L.discoveryReady(lab);
+  const cpSettings = useLabCheckpointSettings('pair-scoreboard');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpActive = cpOn && cpSettings.enabled;
+  const stepNow = !doneSteps.includes('solve') ? (lab.solved ? 'solve' : null) : !doneSteps.includes('half') ? (L.discoveryReady(lab) ? 'half' : null) : null;
+  const chain = cpActive && stepNow ? chainOf(stepNow, lab) : null;
+  const party = useStepCelebration();
+  const cp = useLabCheckpoint({
+    id: chain ? stepNow : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, k)) : null,
+    reached: stepNow != null,
+    resetKey: scene.inits,
+    // la MÊME étape au départ : « solve » retire la réponse acceptée ; « half » retire les essais à une seule jauge
+    onRetry: () => setLab((s) => (stepNow === 'solve'
+      ? { ...s, solved: null, last: null }
+      : { ...s, trials: s.trials.filter((tr) => tr.ok[0] === tr.ok[1]), last: null })),
+    onEvent: (ev) => state.report(onCheckpoint, ev),
+    onDone: (id) => {
+      setDoneSteps((d) => (d.includes(id) ? d : [...d, id]));
+      party.celebrate({ n: id === 'solve' ? 1 : 2, total: 2 });
+      if (id === 'half') { state.discover(); state.formalize(); }
+    },
+  });
+
+  const ready = L.discoveryReady(lab) && !cpActive;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, system); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -157,6 +195,15 @@ export default function PairScoreboard({
     if (legendRef.current) ro.observe(legendRef.current);
     return () => ro.disconnect();
   }, []);
+  /* ── le son (muet sauf « الصوت ») : un geste (dent), la ثنائية acceptée (cloche), un refus (grave), le contraste atteint (drapeau) ── */
+  const sfx = useRef(0);
+  const lastKind = lab.last?.kind;
+  useEffect(() => {
+    if (lastKind === 'accepted') playSfx('bell');
+    else if (lastKind === 'onlyOne' || lastKind === 'none' || lastKind === 'swapOut') playSfx('over');
+  }, [lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (L.discoveryReady(lab)) playSfx('flag'); }, [L.discoveryReady(lab)]); // eslint-disable-line react-hooks/exhaustive-deps
+  const tick = () => { const now = performance.now(); if (now - sfx.current > 35) { playSfx('tooth'); sfx.current = now; } };
   const vp = useLessonViewport(true);
   // La hauteur disponible sous le chrome de l'application (barre du haut, barre du bas sur
   // téléphone) : `useLessonViewport` lit la boîte de <main>. Hors navigateur : un téléphone.
@@ -178,11 +225,11 @@ export default function PairScoreboard({
   const toValueY = useCallback((cx, _y, rect) => ry.min + (cx - rect.left - EDGE) / muOf(ry), [ry.min, ry.max, tw]); // eslint-disable-line react-hooks/exhaustive-deps
   const dflt = useMemo(() => L.defaultPair(lab), [lab.system, lab.range]); // eslint-disable-line react-hooks/exhaustive-deps
   const sx = useStretchInteraction({
-    value: liveX ?? lab.x ?? dflt.x, range: rx, toValue: toValueX, onChange: setLiveX,
+    value: liveX ?? lab.x ?? dflt.x, range: rx, toValue: toValueX, onChange: (v) => { setLiveX(v); tick(); },
     onCommit: (v) => { setLiveX(v); setLab((s) => L.set(s, 'x', v)); }, direction: 'ltr',
   });
   const sy = useStretchInteraction({
-    value: liveY ?? lab.y ?? dflt.y, range: ry, toValue: toValueY, onChange: setLiveY,
+    value: liveY ?? lab.y ?? dflt.y, range: ry, toValue: toValueY, onChange: (v) => { setLiveY(v); tick(); },
     onCommit: (v) => { setLiveY(v); setLab((s) => L.set(s, 'y', v)); }, direction: 'ltr',
   });
   // PAR DÉFAUT : une ثنائية qui n'est PAS la solution (L.defaultPair ; jamais « ? ») — un état montré, pas un essai.
@@ -313,6 +360,8 @@ export default function PairScoreboard({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={cpActive}
       hints={[k('hint1'), k('hint2'), k('hint3')].map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       representation={(
@@ -340,9 +389,20 @@ export default function PairScoreboard({
       )}
       explanation={<MathText>{k('explanation')}</MathText>}
     >
+      <div className="relative" data-pair-lab style={{ minHeight: cp.open ? 560 : undefined }}>
+      {party.node}
+      {cp.node}
       <ManipulationStage className="bg-gradient-to-b from-sky-50/70 to-white" data-dragging={sx.dragging || sy.dragging ? 'true' : undefined}>
         <div ref={boxRef} className="space-y-3" data-pair-scoreboard data-world={W} data-system={system}
           data-x={X ?? ''} data-y={Y ?? ''} data-solved={sol ? 'true' : 'false'} data-layout={wide ? 'side' : 'stack'} data-budget={budget} data-scene-max={sceneMax} data-ctrl-h={ctrlH} data-legend-h={legendH}>
+          {cpActive && (
+            <div className="space-y-1">
+              <LabStepper count={2} current={doneSteps.includes('solve') ? 1 : 0} done={[doneSteps.includes('solve'), doneSteps.includes('half')]} stepAttr="data-pair-step" />
+              {doneSteps.includes('solve') && !doneSteps.includes('half') && !L.halfTrial(lab) && (
+                <p className="text-sm font-bold text-sky-900" data-pair-nudge><MathText>{k('cp.nudge')}</MathText></p>
+              )}
+            </div>
+          )}
           {/* LA MANIPULATION, D'UN SEUL REGARD : le monde et ses commandes (poignées, jauges, réponse)
               tiennent ensemble dans la hauteur de l'écran de leçon — côte à côte quand c'est large,
               les commandes juste sous le monde sinon ; la grille rétrécit, jamais les commandes. */}
@@ -377,9 +437,123 @@ export default function PairScoreboard({
           )}
         </div>
       </ManipulationStage>
+      </div>
     </ManipulationShell>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** Étape « solve » : la ثنائية acceptée ; étape « half » : un essai à une seule jauge, puis la règle. */
+export const CHAINS = Object.freeze({
+  solve: ['readValue', 'bothWhy', 'order'],
+  half: ['halfWhich', 'halfNot', 'rule'],
+});
+const intOf = (p) => (Lin.isInteger(p) ? Lin.toNumber(p) : null);
+/** Les questions de l'étape, sans celles que les nombres de l'élève rendent sans objet (valeur non entière, x = y). */
+export const chainOf = (step, lab) => CHAINS[step].filter((q) => {
+  if (q === 'readValue') return intOf(L.gauges(lab, lab.solved.x, lab.solved.y)[1].left) != null;
+  if (q === 'order') return lab.solved.x !== lab.solved.y;
+  return true;
+});
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const pairT = (x, y) => `$${L.pairTex(x, y)}$`;
+/** La dernière ligne de la lecture d'une jauge (« 16 = 16 », « 24 + 5 = 29 \neq 32 ») en KaTeX. */
+const lineT = (lab, i, x, y) => { const l = L.readingTex(lab, i, x, y).lines; return `$ ${l[l.length - 1]} $`; };
+const ansTex = (n) => <MathText>{`$${n}$`}</MathText>;
+
+/** Chaque question est construite sur LES ثنائيات de l'élève (rien n'est écrit en dur) ; `k` : les textes de `pairScoreboard`. */
+export const QUESTIONS = {
+  readValue: (lab, k) => {
+    const { x, y } = lab.solved; const v = intOf(L.gauges(lab, x, y)[1].left);
+    const nums = { pair: pairT(x, y), v };
+    return {
+      id: 'readValue', kind: 'number', expected: String(v), answer: ansTex(v),
+      prompt: Mx(k, 'readValue.prompt', nums), hints: [Mx(k, 'readValue.hint1', nums), Mx(k, 'readValue.hint2', { ...nums, r: lineT(lab, 1, x, y) })],
+      explain: Mx(k, 'readValue.explain', { ...nums, r: lineT(lab, 1, x, y) }),
+    };
+  },
+  bothWhy: (lab, k) => {
+    const { x, y } = lab.solved; const nums = { pair: pairT(x, y), r1: lineT(lab, 0, x, y), r2: lineT(lab, 1, x, y) };
+    return {
+      id: 'bothWhy', kind: 'choice',
+      prompt: Mx(k, 'bothWhy.prompt', nums),
+      options: [
+        { text: Mx(k, 'bothWhy.wrongFirst'), why: Mx(k, 'bothWhy.whyFirst', nums) },
+        { text: Mx(k, 'bothWhy.right'), correct: true },
+        { text: Mx(k, 'bothWhy.wrongSecond'), why: Mx(k, 'bothWhy.whySecond', nums) },
+      ],
+      hints: [Mx(k, 'bothWhy.hint1', nums), Mx(k, 'bothWhy.hint2', nums)], explain: Mx(k, 'bothWhy.explain', nums),
+    };
+  },
+  order: (lab, k) => {
+    const { x, y } = lab.solved; const sw = { x: y, y: x };
+    const ok = L.okPair(lab, sw.x, sw.y); const both = ok[0] && ok[1];
+    const bad = ok[0] ? 1 : 0;   // la jauge qui reste éteinte (la 1re éteinte)
+    const nums = { pair: pairT(x, y), swap: pairT(sw.x, sw.y), i: bad + 1, r: lineT(lab, bad, sw.x, sw.y), r1: lineT(lab, 0, sw.x, sw.y), r2: lineT(lab, 1, sw.x, sw.y) };
+    return {
+      id: 'order', kind: 'choice', cols: 2,
+      prompt: Mx(k, 'order.prompt', nums),
+      options: [
+        { text: Mx(k, 'order.yes'), correct: both, why: both ? undefined : Mx(k, 'order.whyYes', nums) },
+        { text: Mx(k, 'order.no'), correct: !both, why: both ? Mx(k, 'order.whyNoBoth', nums) : undefined },
+      ],
+      hints: [Mx(k, 'order.hint1', nums), Mx(k, 'order.hint2', nums)], explain: Mx(k, both ? 'order.explainBoth' : 'order.explainNo', nums),
+    };
+  },
+  halfWhich: (lab, k) => {
+    const h = L.halfTrial(lab); const w = h.ok[0] ? 1 : 2; const o = 3 - w;
+    const nums = { pair: pairT(h.x, h.y), w, o, rw: lineT(lab, w - 1, h.x, h.y), ro: lineT(lab, o - 1, h.x, h.y) };
+    const opts = [
+      { n: 1, text: Mx(k, 'halfWhich.only1'), why: Mx(k, 'halfWhich.whyOnly', { ...nums, n: 1, rn: lineT(lab, 0, h.x, h.y) }) },
+      { n: 2, text: Mx(k, 'halfWhich.only2'), why: Mx(k, 'halfWhich.whyOnly', { ...nums, n: 2, rn: lineT(lab, 1, h.x, h.y) }) },
+    ].map((e) => (e.n === w ? { text: e.text, correct: true } : { text: e.text, why: e.why }));
+    opts.push({ text: Mx(k, 'halfWhich.both'), why: Mx(k, 'halfWhich.whyBoth', nums) });
+    return {
+      id: 'halfWhich', kind: 'choice',
+      prompt: Mx(k, 'halfWhich.prompt', nums), options: opts,
+      hints: [Mx(k, 'halfWhich.hint1', nums), Mx(k, 'halfWhich.hint2', nums)], explain: Mx(k, 'halfWhich.explain', nums),
+    };
+  },
+  halfNot: (lab, k) => {
+    const h = L.halfTrial(lab); const w = h.ok[0] ? 1 : 2; const o = 3 - w;
+    const nums = { pair: pairT(h.x, h.y), w, o, rw: lineT(lab, w - 1, h.x, h.y), ro: lineT(lab, o - 1, h.x, h.y) };
+    return {
+      id: 'halfNot', kind: 'choice',
+      prompt: Mx(k, 'halfNot.prompt', nums),
+      options: [
+        { text: Mx(k, 'halfNot.wrongYes', nums), why: Mx(k, 'halfNot.whyYes', nums) },
+        { text: Mx(k, 'halfNot.right', nums), correct: true },
+        { text: Mx(k, 'halfNot.wrongNone', nums), why: Mx(k, 'halfNot.whyNone', nums) },
+      ],
+      hints: [Mx(k, 'halfNot.hint1', nums), Mx(k, 'halfNot.hint2', nums)], explain: Mx(k, 'halfNot.explain', nums),
+    };
+  },
+  rule: (lab, k) => {
+    const sol = lab.solved;
+    const reducedDiffers = lab.src.some((_, i) => L.eqWrittenTex(lab, i) !== L.eqReducedTex(lab, i));
+    const only1 = L.halfTrial(lab, 1); const only2 = L.halfTrial(lab, 2);
+    const options = [];
+    if (only1) options.push({ text: <MathText>{k('dOptFirst')}</MathText>, why: <MathText>{k('dWhyFirst', { pair: pairT(only1.x, only1.y) })}</MathText> });
+    if (only2) options.push({ text: <MathText>{k('dOptSecond')}</MathText>, why: <MathText>{k('dWhySecond', { pair: pairT(only2.x, only2.y) })}</MathText> });
+    const sw = L.swappedRefused(lab) ?? (sol.x !== sol.y ? { x: sol.y, y: sol.x } : null);
+    if (sw && !L.okPair(lab, sw.x, sw.y).every(Boolean)) options.push({ text: <MathText>{k('dOptAny')}</MathText>, why: <MathText>{k('dWhyAny', { pair: pairT(sw.x, sw.y) })}</MathText> });
+    options.push({ text: <MathText>{k('dOptRight')}</MathText>, correct: true });
+    return {
+      id: 'rule', kind: 'choice',
+      prompt: <MathText>{k('dPrompt')}</MathText>, options,
+      hints: [Mx(k, 'rule.hint1'), Mx(k, 'rule.hint2')],
+      explain: (
+        <div className="space-y-2" data-pair-formal>
+          <EquationDisplay tone="neutral" tex={L.systemWrittenTex(lab)} note={<MathText>{k('fSystem')}</MathText>} />
+          {reducedDiffers && <EquationDisplay tone="neutral" tex={L.systemReducedTex(lab)} note={<MathText>{k('fReduced')}</MathText>} />}
+          <EquationDisplay tone="result" tex={L.pairTex(sol.x, sol.y)} note={<MathText>{k('fSolution', { pair: pairT(sol.x, sol.y), x: sol.x, y: sol.y })}</MathText>} />
+          <p className="text-sm text-emerald-900"><MathText>{k('fRule')}</MathText></p>
+        </div>
+      ),
+    };
+  },
+};
 
 /* ── une règle graduée, une poignée : un nombre de la ثنائية (− à gauche, près du minimum) ── */
 function Ruler({ which, stretch, range, value, width, edge, handleLabel, notSet, less, more, tone }) {

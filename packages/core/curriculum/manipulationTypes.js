@@ -741,6 +741,140 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'المدوَّر r إلى الرتبة $10^{-k}$ يعني أنّ $r-\\frac{1}{2}\\times10^{-k}\\le x<r+\\frac{1}{2}\\times10^{-k}$ ؛ وحاصل قسمة غير عشري لا تبلغه قيمة مقرّبة بل يُحصَر بينها',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 2AM, unité 2 « الكسور والعمليات عليها », leçon 6 « الكسر: نسبة وحاصل قسمة وقيم مقرّبة » (2026-10-28) — le quotient candidat et son encadrement à 0,1 / 0,01.
+  'mooring-lines': {
+    // LE QUOTIENT SOUS LA MAIN : au quai du port, une corde de a mètres posée sur un ruban gradué ; la main glisse un MOUSQUETON (le quotient candidat q, à un rang : 1, 0,1 ou 0,01)
+    // et « ضع القطع » pose les morceaux bout à bout : il reste du câble (يكفي), la dernière pièce tombe sur le bout (تماما) ou elle déborde au-dessus de l'eau (لا يكفي). Le cadran n'ouvre le rang
+    // suivant qu'une fois l'encadrement du rang courant TROUVÉ (la plus grande valeur qui tient, la plus petite qui déborde) et la règle ZOOME dans ce segment. مبتدئ : couper a m en b cordes
+    // égales (q = la longueur d'une corde) ; متقدم : des cordes de b m, b décimal (q = le nombre de cordes), où la main change aussi l'UNITÉ du ruban (m → dm : les deux longueurs ×10). Chaque pose est un essai jugé exactement : MANUEL (§6bis).
+    shows: 'حاصل القسمة $\\frac{a}{b}$ عدد واحد (قيمته المضبوطة) ؛ نحصره بين قيمتين مقرّبتين بالنقصان وبالزيادة إلى $0{,}1$ أو $0{,}01$ ، ولا يبلغه عدد عشري إذا لم تنتهِ القسمة ؛ وضرب الحدّين في $10$ أو $100$ لا يغيّر حاصل القسمة',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 2 « الكسور والعمليات عليها », leçon 7 « جمع وطرح كسرين » (2026-10-29) — la distance marchée, en poteaux blancs, sur un sentier à deux sortes de poteaux.
+  'trail-odometer': {
+    // LA DISTANCE SOUS LA MAIN : un sentier de longueur 1 (ou un circuit), des poteaux BLANCS tous les 1/n et, selon la tâche, des poteaux ROUGES tous les k blancs (l'unité grossière 1/m, n = k·m). La main FAIT
+    // MARCHER une scoute (glisser, −/+ un blanc, « مرحلة حمراء » −/+ k blancs) ; « وصلنا » juge l'étape : elle doit se tenir EXACTEMENT sur le poteau visé. L'élève ÉCRIT ensuite où est le groupe : toute écriture
+    // égale est acceptée, les fausses (a+c)/(b+d), le rouge compté comme un blanc, (n+a)/b sont refusées et un drapeau en pointillé est planté à leur position. مبتدئ : même dénominateur, deux sortes de poteaux,
+    // un retour ; متقدم : la fraction d'arrivée et le reste sont ÉCRITS avant de marcher, puis un circuit (1 + 5/6). « جرّب أعدادك » : toujours ouvert, deux fractions dont un dénominateur est multiple de l'autre.
+    shows: 'لا نجمع إلا أجزاء من الحجم نفسه: كسران مقام أحدهما مضاعف لمقام الآخر نكتبهما بالمقام نفسه (نضرب حدّي أحدهما في العدد نفسه) ثم نجمع البسطين أو نطرحهما ونحافظ على المقام ؛ والباقي من الكلّ هو الفرق بين $1$ وما مُشي',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 2 « الكسور والعمليات عليها », leçon 9 « مقارنة كسرين » (2026-10-29) — une hauteur lue dans deux graduations.
+  'level-laser': {
+    // LA HAUTEUR D'UN LASER SOUS LA MAIN : deux (trois) réservoirs identiques portent chacun un tube de verre gradué en SON nombre de crans ; l'huile monte à a/b de réservoir. La main glisse un niveau laser rouge
+    // qui traverse tous les tubes et se colle à la UNION des graduations : une même hauteur se LIT dans les deux (3/4 coupe l'autre tube au cran 9 sur 12, ou « entre les crans 4 et 5 »). L'élève dit quel réservoir
+    // a le plus d'huile et ÉCRIT le premier niveau dans les crans de l'autre quand un nombre de crans est multiple de l'autre ; les modèles faux (comparer les seuls numérateurs, croire que plus de crans = plus d'huile,
+    // réécrire le seul dénominateur, « un cran de moins que le plein, donc égaux ») sont réfutés PAR LE MONDE : le laser saute au niveau revendiqué et l'autre huile est du mauvais côté du trait rouge. مبتدئ :
+    // 5/8 | 7/8, 3/4 | 7/12, 3/5 | 3/8, 9/8 | 5/6 (le trait « 1 ») ; متقدم : tubes voilés (on écrit avant de voir), trois réservoirs à ordonner, numérateurs décimaux, deux réservoirs trop pleins. « جرّب أعدادك » : toujours ouvert.
+    shows: 'لمقارنة كسرين: إن كان لهما نفس المقام فأكبرهما ما له أكبر بسط، وإن كان لهما نفس البسط فأكبرهما ما له أصغر مقام، وإن كان مقام أحدهما مضاعفًا لمقام الآخر كتبنا الكسرين بنفس المقام ثم قارنّا البسطين، ونقارن كسرًا بالعدد $1$ بمقارنة بسطه بمقامه',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 3 « الأعداد النسبية », leçon 5 « جمع وطرح عددين نسبيين » (2026-10-29) — la charge d'un montgolfière : sommes et différences de deux relatifs.
+  'balloon-ballast': {
+    // LA CHARGE SOUS LA MAIN : l'altitude d'un montgolfière est (flammes − sacs). La main attache une flamme (+1) ou un sac (−1), jette l'un ou l'autre, et à متقدم attache une paire neutre. Une carte a ± b dit le geste
+    // (« + (−4) » attacher 4 sacs ; « − (−3) » jeter 3 sacs) ; le juge compare le JOURNAL des gestes à la carte ET l'altitude écrite à a ± b. Jeter un sac absent est impossible : on attache d'abord des paires neutres.
+    // مبتدئ : sommes (même signe, signes différents, opposés) ; متقدم : différences, l'altitude est écrite AVANT d'exécuter. « جرّب أعدادك » : une carte libre, jamais comptée. MANUEL (§6bis).
+    shows: 'جمع عددين نسبيين لهما الإشارة نفسها: نجمع مسافتيهما ونحتفظ بالإشارة ؛ ومن إشارتين مختلفتين: نطرح المسافة الصغرى من الكبرى ونأخذ إشارة الأبعد عن الصفر ؛ ومجموع متعاكسين معدوم ؛ وطرح عدد هو جمع معاكسه',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 3 « الأعداد النسبية », leçon 6 « حساب مجموع جبري » (2026-10-29) — l'équipe de chaque terme d'une somme algébrique.
+  'tug-rope': {
+    // L'ÉQUIPE DE CHAQUE TERME SOUS LA MAIN : une somme algébrique est une file d'enfants à dossards (un nombre relatif chacun). La main RETOURNE l'enfant précédé de « − » (son dossard devient l'opposé) puis
+    // l'ENVOIE dans l'équipe de gauche (drapeau « − ») ou de droite (drapeau « + ») d'une corde ; au coup de sifflet le ruban au milieu avance de (force de droite − force de gauche) : la somme est une SORTIE.
+    // Le juge compare, enfant par enfant, le retournement et l'équipe à la contribution vraie ; un crochet est un petit équipage réglé d'abord. مبتدئ : trois chaînes d'entiers ; متقدم : la position est écrite
+    // AVANT de siffler, des décimaux, un crochet, la forme simplifiée. « جرّب أعدادك » : toujours ouvert. MANUEL (§6bis).
+    shows: 'المجموع الجبري سلسلة جمع وطرح: نحوّل كلّ طرح إلى جمع المعاكس، ثم نجمع الحدود الموجبة معًا والحدود السالبة معًا، ونجمع الناتجين ؛ ويمكن تغيير ترتيب الحدود وحذف المتعاكسين، ونحسب ما بين الأقواس أوّلًا ؛ وتُبسَّط الكتابة بحذف إشارة الجمع وأقواس الأعداد',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 3 « الأعداد النسبية », leçon 1 « التعليم على مستقيم مدرّج » (2026-10-29) — l'abscisse dépend de l'origine et de la valeur d'une graduation.
+  'corniche-ruler': {
+    // L'ORIGINE ET LA GRADUATION SOUS LA MAIN : une planche de 13 graduations est fixée sous les repères du front de mer ; le drapeau « 0 » se plante sous un repère (مبتدئ) et un levier à crans règle la valeur
+    // d'une graduation (متقدم). L'abscisse d'un repère est une SORTIE : elle change quand l'origine bouge alors que le repère n'a pas bougé, deux repères à la même distance de part et d'autre sont opposés,
+    // et une graduation trop petite jette un point hors de la planche, trop grande le laisse entre deux graduations. Chaque dépôt, lecture et touche est un essai jugé exactement : MANUEL (§6bis).
+    shows: 'فاصلة نقطة هي موضعها مرئيًا من المبدأ: نعدّ التدريجات من المبدأ، يمينًا موجبة ويسارًا سالبة، ونضرب عددها في قيمة التدريجة الواحدة ؛ تتغيّر الفاصلة إذا تغيّر المبدأ، والعددان المتعاكسان لهما المسافة نفسها إلى الصفر وإشارتان مختلفتان، ونختار تدريجة تُبقي كل النقاط داخل المستقيم وعلى تدريجات',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 3 « الأعداد النسبية », leçon 4 « تعليم نقطة في المستوي » (2026-10-29) — les coordonnées d'un point dépendent du piquet d'origine et de l'ordre des deux nombres.
+  'dig-grid': {
+    // LE PIQUET D'ORIGINE SOUS LA MAIN : une fouille quadrillée de ficelles d'un mètre ; le piquet porte deux cordes (l'axe des abscisses, bleu, et l'axe des ordonnées, vert) qui suivent la ficelle. Les coordonnées d'une trouvaille sont une
+    // SORTIE : sa position moins celle du piquet, l'abscisse d'abord. مبتدئ : la main tient le PIQUET (un glissement 2D) pour rendre vrais les relevés du carnet — une trouvaille, deux trouvailles à la fois (un seul piquet), puis un carnet impossible
+    // (deux nombres échangés) où « لا يوجد موضع » est la bonne réponse. متقدم : le piquet est fixe, étiquettes voilées : l'élève PRÉDIT les coordonnées (une trouvaille sur l'axe vertical), pose une bague à (2,5 ; −1,5) entre deux ficelles, et marque la place
+    // miroir d'une pièce par rapport à la corde bleue. Chaque dépôt, relevé et touche est un essai jugé exactement : MANUEL (§6bis).
+    shows: 'نحدّد موضع نقطة في المستوي بعددين في معلم متعامد ومتجانس: الفاصلة أولًا على المحور الأفقي ثمّ الترتيب على المحور العمودي، مثل $A(-3\\,;2)$ ؛ تتغيّر الإحداثيات بتغيّر المبدأ، والنقطة على المحورين إحدى إحداثيتيها معدومة، ونظيرة نقطة بالنسبة إلى محور تحتفظ بالإحداثية التي على هذا المحور',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 1AM, unité 1 « الأعداد الطبيعية والأعداد العشرية », leçon 3 « الأعداد العشرية ونصف المستقيم المدرّج » (2026-10-30) — l'unité de longueur étirée, puis le drapeau planté sur le ruban gradué.
+  'jump-tape': {
+    // L'UNITÉ ET LE DRAPEAU SOUS LA MAIN : un jour de sport, un ruban de mesure part de la planche d'appel (le MÉTRÉ O) et ne montre RIEN d'autre. مبتدئ : la main étire la marque « 1 » (l'unité de longueur) jusqu'à ce que le plus long saut tienne dans la fosse
+    // et que les petites graduations restent distinctes — le ruban dessine alors DIX graduations par unité, chacune à 1/10 = 0,1 ; puis la main plante un drapeau par saut (le métré lit la fenêtre à la volée) ; un drapeau mal planté est refusé par le DESSIN
+    // (l'empreinte du saut à sa vraie place, un trait pointillé entre les deux). متقدم : les drapeaux sont déjà plantés, la main promène un curseur de lecture : sur une graduation on lit la valeur exacte, entre deux graduations on lit un ENCADREMENT ;
+    // ruban sans son origine (fenêtre 9 … 12) et ruban gradué en centièmes. « جرّب أعدادك » : toujours ouvert. MANUEL (§6bis).
+    shows: 'لتدريج نصف مستقيم نختار وحدة طول مناسبة وننقلها انطلاقًا من مبدئه $O$ ثمّ نقسّم كلّ وحدة إلى عشرة أجزاء متساوية، فيكون التباعد بين تدريجتين صغيرتين متتاليتين $\\frac{1}{10}=0{,}1$ وحدة ؛ وفاصلة النقطة $A(2{,}4)$ عددٌ يعيّن موضعها: تبعد عن المبدإ بوحدتين وأربع تدريجات صغيرة ؛ وإذا وقعت نقطة بين تدريجتين متتاليتين قرأنا فاصلتها بحصر لها بينهما',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 1AM, unité 5 « الأعداد النسبية », leçon 1 « الأعداد النسبية وسياقات استعمالها » (2026-10-30) — le niveau d'une jauge verticale, lu comme un nombre relatif.
+  'frost-gauge': {
+    // LE NIVEAU SOUS LA MAIN : une semaine de janvier à Djelfa. Chaque matin la main FAIT MONTER ou DESCENDRE le liquide d'un thermomètre jusqu'à la lecture donnée en MOTS (« 3 درجات تحت الصفر ») ; l'échelle ne
+    // montre que le zéro, et un signe n'apparaît devant la lecture qu'une fois le liquide passé SOUS le 0. Deux autres décors portent le même geste : une jauge d'altitude (le point le plus bas du pays, au-dessous du niveau de
+    // la mer, à côté d'une colline) et les étages d'un immeuble (la cabine d'ascenseur est le niveau). Le niveau est tenu, le NOMBRE RELATIF est sa sortie : le signe (de quel côté du zéro) et la DISTANCE au zéro sont deux
+    // lectures différentes du même niveau. Mode « معاكس » : la main tient un niveau et son ombre suit de l'autre côté du zéro à la même distance. متقدم : deux lectures à la même distance du zéro (6 et −6), les étages,
+    // puis qui est le plus loin de la mer. « جرّب أعدادك » : toujours ouvert. Chaque lecture enregistrée est un essai jugé exactement par `signedGauge.js` : MANUEL (§6bis).
+    shows: 'العدد النسبي موجب أو سالب: السالب مسبوق بإشارة − ويقع تحت الصفر، والموجب فوق الصفر ؛ وللعدد إشارة ومسافة إلى الصفر مختلفتان ؛ والعددان المتعاكسان لهما المسافة نفسها إلى الصفر وإشارتان متعاكستان، مثل $3$ و $-3$ ؛ والصفر معاكس نفسه',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 1AM, unité 6 « الحساب الحرفي », leçon 1 « البحث عن أعداد ناقصة » (2026-10-30) — le tapis d'une machine tourné à rebours avec la carte inverse.
+  'rewind-belt': {
+    // LA CARTE INVERSE SOUS LA MAIN : un atelier de conditionnement. Une machine à carte (« + 9 », « − 14 », « × 6 » ou la carte piège « 80 − ») a reçu un nombre d'objets et a rendu 54. La main choisit dans une rangée la carte qui
+    // FAIT TOURNER LE TAPIS À REBOURS, tire la caisse de la sortie à travers la machine jusqu'au bac d'entrée (le nombre manquant □ apparaît), puis la REPOUSSE en avant à travers la machine d'origine : ce qui sort est comparé à 54
+    // (la contre-épreuve par substitution). Une mauvaise carte n'est pas corrigée : la contre-épreuve dit ce qui sort (« 72 au lieu de 54 »). La carte piège « a − □ » est son propre inverse (□ = a − b) : on ne prend pas l'inverse du moins.
+    // متقدم : décimaux, la carte « a − » avec des décimaux, et une division qui ne s'arrête pas (20 ÷ 7, une fraction) vérifiée exactement. « جرّب أعدادك » : toujours ouvert. Chaque contre-épreuve est jugée exactement par `missingNumber.js` : MANUEL (§6bis).
+    shows: 'للبحث عن العدد الناقص □ في مساواة نعيد الآلة إلى الوراء بالعملية العكسية ثمّ نتحقّق بالتعويض: في مجموع □ + a = b نطرح فنجد □ = b − a ؛ في فرق □ − a = b نجمع ؛ وفي a − □ = b نطرح الناتج من a ؛ وفي جداء a × □ = b نقسم فنجد □ = b ÷ a (وقد يكون الناتج كسرًا)',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 1AM, unité 6 « الحساب الحرفي », leçon 2 « تطبيق قاعدة حرفية » (2026-10-30) — la valeur d'un cadran qui remplace une lettre dans toutes ses fentes.
+  'letter-dial': {
+    // LA VALEUR DU CADRAN SOUS LA MAIN : une papeterie-photocopie. La règle du prix « الثمن = 5 × n + 20 » est imprimée avec sa lettre ; la main TOURNE le cadran de n (12 feuilles, puis le client qui a payé 95, puis une règle où n est écrit DEUX fois) :
+    // la valeur tombe dans CHAQUE fente de la lettre et la carte calcule (parenthèses, produits, sommes ; 5 × 12 jamais lu 512). متقدم : la règle d'une clôture P = 2 × (a + b) avec DEUX cadrans (15 et 8, puis 8 et 15 : même périmètre), puis
+    // une prétendue règle « a + b = a × b » : (2 ; 2) donne 4 = 4 et ne prouve rien, UN contre-exemple (3 ; 4 : 7 ≠ 12) suffit à la réfuter. « جرّب قاعدتك أنت » : toujours ouvert (une règle tapée, 2x lu 2 × x). Calcul exact : `letterRule.js` : MANUEL (§6bis).
+    shows: 'لتطبيق قاعدة حرفية نعوّض كلّ حرف بقيمته في كلّ موضع يظهر فيه ثمّ نحسب (الأقواس أوّلًا ثمّ الضرب ثمّ الجمع والطرح): $5\\times 12+20=60+20=80$ ؛ والضرب المخفيّ بين عدد وحرف يبقى ضربًا: $5n$ من أجل $n=12$ تعني $5\\times 12$ لا $512$ ؛ ويكفي مثال مضادّ واحد، مثل $3+4\\neq 3\\times 4$ ، لإسقاط قاعدة تدّعي أنّها صحيحة دائمًا',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 1AM, unité 5 « الأعداد النسبية », leçon 2 « التعليم على مستقيم مدرّج » (2026-10-30) — la foulée portée des deux côtés de l'origine, lue comme une abscisse.
+  'stride-stamp': {
+    // LA FOULÉE PORTÉE DES DEUX CÔTÉS : une route de village, la station de bus est l'origine O (l'école à l'est, la place de la mosquée à l'ouest). La main PORTE un bâton d'une foulée à partir de O vers l'est puis vers l'ouest : les ticks 1, 2, 3 puis
+    // −1, −2, −3 n'apparaissent que tamponnés ; la route est finie, une foulée trop longue ne rejoint pas la lecture ; changer de foulée efface les ticks. Puis le jumeau d'un bâtiment de l'autre côté de O (abscisses opposées), puis des bâtiments
+    // placés à leur abscisse (A(−3), B(2,7), C(−1,5)) : l'abscisse est la SORTIE de la main, son signe dit la jambe de la route. متقدم : le drapeau de l'origine sur une droite dont seules deux graduations sont écrites, et l'encadrement d'un
+    // bâtiment entre deux ticks consécutifs. « جرّب أعدادك » : toujours ouvert. Chaque enregistrement est un essai jugé exactement par `graduatedLine.js` : MANUEL (§6bis).
+    shows: 'لتدريج مستقيم نختار مبدأً واتجاهًا ووحدة طول وننقل الوحدة نفسها من جهتي المبدإ: أعداد موجبة في جهة الاتجاه وسالبة في الجهة الأخرى ؛ وفاصلة النقطة $A(-3)$ هي بعدها عن المبدإ مع إشارة جهتها ؛ والنقطتان المتناظرتان بالنسبة إلى المبدإ فاصلتاهما متعاكستان، مثل $3$ و $-3$ ؛ وإذا وقعت نقطة بين علامتين متتاليتين حصرنا فاصلتها بينهما، مثل $-2<-1{,}5<-1$',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 1AM, unité 5 « الأعداد النسبية », leçon 3 « التعليم في المستوي » (2026-10-30) — un drone conduit sur UN axe à la fois, lu comme un couple de coordonnées.
+  'courtyard-drone': {
+    // LE DRONE SUR UN AXE À LA FOIS : le plan d'une cour d'école vu d'en haut (l'origine est le mât du drapeau, deux lignes peintes sont les axes gradués). La main conduit un drone D'ABORD le long de la ligne horizontale, fixe l'abscisse,
+    // puis le long de la verticale (jamais en diagonale : le drone refuse) et prend la photo. Le lieu est dit par ses DEUX nombres (« la fontaine est à (3 ; −2) ») ou dessiné et lu à la volée ; échanger l'ordre des deux nombres mène à un
+    // AUTRE lieu (−2 ; 3). Les points des axes (une coordonnée nulle), puis en متقدم les demi-cases et un papier SANS carreaux (le drone projette ses deux parallèles aux axes). Chaque photo est un essai jugé exactement par `planeFrame.js`. « جرّب أعدادك » : toujours ouvert.
+    shows: 'المعلم المتعامد للمستوي يتشكّل من مستقيمين مدرّجين متعامدين لهما المبدأ نفسه: المحور الأفقي هو محور الفواصل والمحور الشاقولي هو محور التراتيب ؛ نعلّم كلّ نقطة بعددين هما إحداثياها $M(x\ ;\ y)$ ونقرأ الفاصلة أوّلًا ثمّ الترتيب، فالنقطة $(3\ ;\ -2)$ غير النقطة $(-2\ ;\ 3)$ ؛ ونقطة محور الفواصل ترتيبها معدوم ونقطة محور التراتيب فاصلتها معدومة',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 3 « الأعداد النسبية », leçon 5 « المسافة بين نقطتين على مستقيم مدرّج » (2026-10-29) — l'ouverture d'un compas serré sur une lecture.
+  'gap-caliper': {
+    // L'OUVERTURE D'UN COMPAS SOUS LA MAIN : un compas en laiton est serré sur une graine d'un grand thermomètre ; la main tourne la vis pour OUVRIR le compas jusqu'à ce que l'autre mâchoire touche la seconde graine.
+    // L'ouverture (toujours ≥ 0) est la distance ; une ouverture qui traverse le zéro additionne les deux morceaux. Le juge compare l'atterrissage de la mâchoire à la graine visée. مبتدئ : la graine du bas porte le compas,
+    // quatre lectures entières puis la règle ; متقدم : l'ouverture est ÉCRITE avant de tourner la vis (décimaux), le compas serré sur la graine du haut, et une ouverture fixe balancée vers le haut ou vers le bas
+    // (deux points à la même distance). « جرّب أعدادك » : toujours ouvert. MANUEL (§6bis).
+    shows: 'المسافة بين نقطتين على مستقيم مدرّج هي الفاصلة الكبرى ناقص الفاصلة الصغرى، فهي عدد موجب دائمًا و $AB=BA$ ؛ وللنقطتين اللتين تبعدان بمسافة $d$ عن نقطة فاصلتها $a$ الفاصلتان $a-d$ و $a+d$',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 2 « الكسور والعمليات عليها », leçon 8 « جداء كسرين » (2026-10-29) — les deux facteurs d'un produit de fractions, tenus par deux tirages perpendiculaires sur une fenêtre.
+  'window-blinds': {
+    // LES DEUX FACTEURS SOUS LA MAIN : la main tire DEUX couvertures perpendiculaires sur une fenêtre — le rideau latéral (largeur a/b, il se colle aux crans de son rail) et le store à enrouleur (hauteur c/d,
+    // il se colle aux crans de son cordon). Le verre couvert par les DEUX est le coin doublement ombré ; les deux ombres découpent le verre en b × d petits carrés par fenêtre et le coin en compte a × c. L'élève
+    // ÉCRIT la fraction de fenêtre doublement ombrée : toute écriture égale est acceptée, les fausses (a/b + c/d, ac/(b+d), ad/(bc), un seul facteur, ac sans dénominateur) sont refusées et un CADRE en pointillé de
+    // l'aire écrite est posé à côté du coin sombre réel. مبتدئ : une fenêtre, 2/3 × 3/4, 1/2 × 3/5, 4/5 × 2/3 ; متقدم : un mur de fenêtres (une fenêtre = 1), le produit est ÉCRIT avant de tirer, des facteurs > 1
+    // (3/2 × 2/3, 7/4 × 4/3) et un entier (2 × 3/5). « جرّب أعدادك » : toujours ouvert.
+    shows: 'جداء كسرين $\\frac{a}{b}\\times\\frac{c}{d}$ هو مساحة مستطيل بُعداه $\\frac{a}{b}$ و $\\frac{c}{d}$ : يقسّم الظلّان الزجاج إلى $b\\times d$ مربّعًا صغيرًا في النافذة الواحدة، والداكن منها $a\\times c$ ؛ فنضرب البسطين معًا والمقامين معًا، ثم نختزل ؛ و «كسر من كسر» جداء',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 3AM, unité 5 (2026-10-21) — résoudre ax + b = cx + d en traversant les termes avec leur signe, puis en divisant.
   'term-ferry': {
     // LE SIGNE D'UN TERME SOUS LA MAIN : une équation dont la solution est CACHÉE ; chaque membre est une rive, chaque terme une caisse. La
@@ -880,6 +1014,68 @@ export const MANIPULATION_TYPES = Object.freeze({
     // En متقدم : décider sur des « photos » de points, puis LIRE sur la droite (la punaise glisse sur sa rainure ou le long de sa rangée
     // jusqu'à la droite). Chaque lâcher est un essai jugé exactement : MANUEL (§6bis).
     shows: 'تمثّل وضعية تناسبية بنقط على استقامة واحدة مع مبدأ المعلم ؛ وإذا لم تمرّ المسطرة بالمبدأ أو لم تكن النقط على استقامة فليست الوضعية تناسبية ؛ ويُقرأ معامل التناسبية $a$ من $y = ax$',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 1 « العمليات على الأعداد الطبيعية والأعداد العشرية », leçon 1 (2026-10-28) — l'ordre des opérations d'une série sans parenthèses.
+  'tram-route': {
+    // L'ORDRE DES OPÉRATIONS SOUS LA MAIN : un voyage en tramway (les arrêts arrivent dans l'ordre où la chaîne est écrite) ou un kiosque à tickets. La main POSE des tickets numérotés ① ② ③ sur les
+    // opérateurs de la chaîne du voyage : c'est le PLAN de calcul. « انطلق » le rejoue : le plan calcule dans SON ordre, le tram roule dans l'ordre du temps et son compteur est la vérité. Un plan
+    // qui donne autre chose est refusé et le monde dessine l'étape qui n'a pas de sens (« نزل 13 ؟ لم ينزل إلا 9 », « 18 فوجًا من 4 ؟ », « 4 تذاكر بـ 6,25 DA ؟ ») ; un plan différent qui donne la même
+    // valeur (une chaîne de + seulement) est accepté : « هنا كلّ ترتيب يعطي العدد نفسه ». En متقدم l'élève ÉCRIT d'abord la chaîne de l'histoire (plaques et puces, jugée par sa valeur) puis écrit
+    // sa prédiction. Chaque « انطلق » est un essai jugé exactement : MANUEL (§6bis). « جرّب أعدادك » : toujours ouvert (jusqu'à quatre arrêts). `tram-route` n'énonce jamais la règle.
+    shows: 'في سلسلة عمليات دون أقواس: نحسب الجمع والطرح فقط (أو الضرب والقسمة فقط) من اليسار نحو اليمين، ونحسب الضرب والقسمة قبل الجمع والطرح؛ وهذا اتّفاق تتبّعه الآلة الحاسبة العلمية أيضًا',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 1, leçon 2 (2026-10-29) — les parenthèses d'une série d'opérations.
+  'coop-calculator': {
+    // LES PARENTHÈSES SOUS LA MAIN : au comptoir de la coopérative de l'école, la main POSE les parenthèses de la ligne tapée sur une calculatrice scientifique (مبتدئ : toucher un intervalle puis « ( » ou
+    // « ) » ; متقدم : taper toute la ligne depuis une histoire ou une barre de fraction). « = » imprime la ligne et la valeur de la machine, qui obéit aux priorités : une valeur que l'histoire refuse est barrée et
+    // l'histoire dit pourquoi (« 48,75 DA لكلّ صديق؟ ثمن الكتاب كلّه 60 DA »), une ligne mal équilibrée donne « Syntax ERROR », une paire inutile est acceptée avec une remarque. `coop-calculator` n'énonce jamais la règle.
+    shows: 'الأقواس تجعل الآلة (والقارئ) تحسب جزءًا من السلسلة أوّلًا؛ في الأقواس المتداخلة نبدأ بالداخلية ونكتب الخارجية [ ]، وخطّ الكسر يجمع البسط ويجمع المقام فنكتبهما بين قوسين على الآلة، وقوسان لا يغيّران ترتيب الحساب غير ضروريين',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 1, leçon 3 (2026-10-29) — la dernière opération nomme une série d'opérations.
+  'chain-cutter': {
+    // LA DERNIÈRE OPÉRATION SOUS LES CISEAUX : sur la السبّورة الفلّينية du class, la main choisit OÙ couper en deux un ruban de papier imprimé (« 7 + 4 × 5 ») pour que chaque morceau se calcule seul ; seule la dernière
+    // opération recolle sans mordre une agrafe que le calcul a posée, et la valeur recollée ailleurs (55 ≠ 27, ou la même par hasard : l'agrafe refuse quand même) le montre. L'élève colle le NOM sur la coupe, les morceaux tombent
+    // dans deux poches qui s'étiquettent d'après l'opération, il recoupe jusqu'aux nombres et la phrase grandit ; en متقدم les agrafes sont cachées jusqu'à la coupe, puis il COLLE des blocs deux à deux avec les agrafes-parenthèses
+    // qu'une phrase exige. `chain-cutter` n'énonce jamais la règle.
+    shows: 'آخر عملية تُنجز في سلسلة هي التي تسمّيها (مجموع، فرق، جداء، حاصل قسمة)، وبها تنقسم السلسلة إلى حدّين أو عاملين أو مقسوم وقاسم تُحسب كلّ منها وحدها، فنصف السلسلة بجملة ونكتب سلسلة من جملة بالأقواس اللازمة',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 1, leçon 4 (2026-10-29) — la distributivité du produit sur la somme et la différence.
+  'kit-packer': {
+    // DEUX FAÇONS DE REMPLIR LES MÊMES CARTABLES : dans l'atelier du نادي التضامن, Fatima remplit k cartables identiques cartable par cartable (k × (a + b)) ; la MAIN d'Ali règle ce que chaque distributeur sort (cahiers, stylos) et le
+    // tapis distribue UN PAR CARTABLE. Un cartable manquant, trop plein ou inégal se voit ; les deux compteurs ne s'allument ensemble que si tous les cartables sont prêts (n = k × a et m = k × b). Dans une différence une benne reçoit
+    // les cahiers abîmés ; lue à l'envers (distributeurs verrouillés), la main règle le nombre de cartables et le facteur commun sort ; en متقدم le total est prédit, 48 s'écrit 50 − 2, les rubans sont en mètres. `kit-packer` n'énonce jamais la règle.
+    shows: 'ضرب عدد في مجموع أو فرق هو ضرب هذا العدد في كلّ حدّ ثم الجمع أو الطرح: k × (a + b) = k × a + k × b و k × (a − b) = k × a − k × b، ومنه نحلّل بإخراج العامل المشترك ونحسب ذهنيًا',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 4 « مفهوم معادلة », leçon 1 « إنتاج عبارة حرفية واستعمالها » (2026-10-29) — le nombre de cellules d'un rang, puis la règle écrite avec une lettre.
+  'wax-cells': {
+    // LE NOMBRE n SOUS LA MAIN : un rang de cellules hexagonales en tiges de cire, deux cellules voisines PARTAGENT une tige. La main glisse des cellules du plateau au bout du rang (elle les reprend aussi), lit le compteur de tiges (le DESSIN,
+    // un décompte d'arêtes), remplit un tableau n / tiges, puis ÉCRIT la règle avec la lettre n : elle est jugée sur CHAQUE rang construit ; les modèles faux (6n : tiges partagées comptées deux fois ; 5n : la première oubliée ; 5n + 6) sont refusés et
+    // dessinés (tiges qui clignotent, première tige en pointillé). Le cadre ne tient que 8 cellules : la valeur de 40 cellules se CALCULE. مبتدئ : un rang, le compteur visible ; متقدم : le compteur est caché jusqu'à ce que le nombre soit tapé,
+    // une bande de deux rangs décalés (8n + 3), deux écritures du même décompte (observation), puis deux lettres (un rang de n cellules et une bande de m colonnes). « جرّب أعدادك » : toujours ouvert.
+    shows: 'نكتب عدد الأعواد لصفّ من $n$ خلية بعبارة حرفية: الخلية الأولى تحتاج $6$ أعواد وكلّ خلية بعدها تضيف $5$ لأنّها تشترك في عود مع جارتها، أي $5\\times n+1$ أو $5n+1$ ؛ ثم نعوّض الحرف بقيمة فنجد مثلًا $5\\times 40+1=201$',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 4 « مفهوم معادلة », leçon 2 « حلّ مشكل باستعمال معادلة » (2026-10-29) — l'inconnue d'une équation à une opération, puis à deux opérations.
+  'juice-line': {
+    // L'INCONNUE SOUS LA MAIN : une coopérative remplit des bouteilles depuis un réservoir. مبتدئ : la main tient la capacité x du moule (0,05 … 2 L) et n'a que DEUX essais ; chaque remplissage dit combien de bouteilles sont pleines, la bouteille
+    // partielle (tracée à son niveau) et le jus resté — l'équation lue dans le monde. Elle écrit ensuite l'opération (ou le nombre) qui donne x : les opérations fausses (×, renversée, soustraite, ajoutée) sont refusées et DESSINÉES ; puis elle choisit TOUTES
+    // les bonnes équations (deux écritures). متقدم : la main tient le contenu du réservoir (le dividende manquant), l'ardoise s'ouvre d'abord, et la dernière tâche (4 + x) ÷ 0,25 = 40 demande deux étapes (défaire la DERNIÈRE opération d'abord).
+    // « جرّب أعدادك » : toujours ouvert. Chaque remplissage, opération et carte est un essai jugé exactement (centilitres entiers) : MANUEL (§6bis).
+    shows: 'المعادلة تترجم وضعية، وحلّها هو القيمة التي تجعل المساواة صحيحة: نجد العامل الناقص أو القاسم الناقص بالقسمة، والمقسوم الناقص بالضرب، وفي معادلة من خطوتين نلغي آخر عملية أوّلًا، ثمّ نتحقّق بالتعويض',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 4 « مفهوم معادلة », leçon 3 « اختبار مساواة أو متباينة » (2026-10-29) — اختبار قيمة في مساواة أو متباينة بالتعويض.
+  'bridge-load': {
+    // LA CHARGE SOUS LA MAIN : un camion de matériaux de construction doit passer un pont dont la pancarte donne une règle (« أقلّ من 5000 kg », « ≤ 7000 kg »). La main tient des COMPTES de sacs (x de ciment, y de sable), glissés du dépôt
+    // vers la benne ; le pèse-camion écrit la substitution (4000 + 50 × 15 = 4750) puis la comparaison (4750 < 5000 ؟) et l'élève doit répondre AVANT que la barrière ne bouge. La charge limite (20 sacs : 5000 pile) sépare « < » de « ≤ » ;
+    // deux inconnues (l'ordre des comptes compte) ; deux camions à UNE charge (une égalité vraie pour une seule valeur). متقدم : l'écran est masqué jusqu'à ce que les deux masses soient tapées, et une affirmation « toujours » tombe devant UNE charge.
+    // « جرّب أعدادك » : toujours ouvert. Chaque pesée, verdict, carte et contre-exemple est un essai jugé exactement par `equation2.js` E3 : MANUEL (§6bis).
+    shows: 'نختبر قيمة في مساواة أو متباينة بأن نعوّضها في كلّ طرف ونحسب الطرفين ثمّ نقارن الناتجين: $4000+50\\times15=4750$ و $4750<5000$ ؛ ولا يكفي أن يكون العدد قريبًا من الحدّ ($5000<5000$ خاطئة بينما $5000\\le5000$ صحيحة) ؛ وقيمة واحدة لا تثبت أنّ عبارتين متساويتان دائمًا، لكن قيمة واحدة كافية لإبطال ذلك',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
 });

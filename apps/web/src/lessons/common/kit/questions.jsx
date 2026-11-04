@@ -4,6 +4,7 @@ import { formatFr, parseFr } from '@smarter-academy/core';
 import { Feedback, ChoiceGrid, ValidateButton, NumberField, XPBurst } from '../components/LessonUI';
 import { useKit } from './kitContext';
 import MathLabel from '../components/MathLabel';
+import { MoreToggle, useStudentFocus } from '../components/StudentFocus';
 
 /**
  * Lesson kit — les trois formes de question formative.
@@ -46,6 +47,7 @@ export function TapQuestion({
   const [revealed, setRevealed] = useState(false);
   const [burst, setBurst] = useState(0);
   const isCorrect = pick === correct;
+  const focus = useStudentFocus();
 
   return (
     <div className="space-y-3">
@@ -78,7 +80,8 @@ export function TapQuestion({
               {t('question.correctAnswer')} <strong>{correctionLabel ?? options[correct]}</strong>. {' '}
             </>
           )}
-          {!isCorrect && explainWrong ? explainWrong : explain}
+          {/* Regard « focus » : une bonne réponse dit « ✓ صحيح » ; le pourquoi est à un geste. Une erreur garde sa correction ouverte. */}
+          {!isCorrect && explainWrong ? explainWrong : (isCorrect && focus && explain ? <>{t('focus.correct')} <MoreToggle label={t('focus.why')}>{explain}</MoreToggle></> : explain)}
         </Feedback>
       )}
     </div>

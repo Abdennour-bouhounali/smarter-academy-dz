@@ -68,7 +68,7 @@ export default function Module04Awazzif() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

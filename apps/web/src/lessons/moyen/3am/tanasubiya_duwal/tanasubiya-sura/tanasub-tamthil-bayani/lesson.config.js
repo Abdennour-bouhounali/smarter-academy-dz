@@ -23,6 +23,8 @@
  *   le pourcentage ne sont PAS ici : `haraka-muntazama-sura` et `nisba-miawiya-3am`.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
+ * 2026-10-29 : `talim-nuqta-mustawi` (2AM, 2am.m4.r04) est publiée — arêtes LP P1 ← 2am_talim-nuqta-mustawi_P3 et P4 ← 2am_talim-nuqta-mustawi_P2
+ * (lien du réseau 2am.m4.r04 → 3am.m7.r01) ; le panneau « راجع » vers r04 devient un lien tout seul.
  */
 export const LESSON_BASE_PATH = '/courses/moyen/3am/tanasubiya_duwal/tanasub-tamthil-bayani';
 

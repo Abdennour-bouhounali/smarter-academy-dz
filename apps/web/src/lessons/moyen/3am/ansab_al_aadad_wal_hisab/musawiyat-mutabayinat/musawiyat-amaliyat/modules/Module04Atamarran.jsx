@@ -35,7 +35,7 @@ export default function Module04Atamarran() {
         step(5, 'ex-4', 'اضرب في عدد سالب', ['musawat-darb']),
         step(6, 'ex-5', 'أكمل من 4x = −2', ['tahwil']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

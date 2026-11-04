@@ -7,6 +7,10 @@
  * Le réseau : ses liens « راجع » — 3am.m1.r01 (جداء عددين نسبيين), 2am.m1.r01 (سلسلة عمليات), 3am.m3.r02 (قواعد قوى العدد 10) —
  * mènent à des leçons NON publiées : « أستعدّ » les mesure, la leçon ne les reconstruit pas (les règles des puissances de 10 sont
  * RAPPELÉES dans معارف par un « تذكّر »), et `pointPrerequisites` ne porte que des arêtes internes.
+ * 2026-10-29 : la leçon 2AM `silsila-bidun-aqwas` (2am.m1.r01) est publiée — le catalogue porte P4 ← `2am_silsila-bidun-aqwas_P2`
+ * (le long du lien `2am.m1.r01 → 3am.m3.r08`) et طريقة (étape 2) un « تذكّر — السنة الثانية » avec son lien.
+ * 2026-10-29 : la leçon 2AM `silsila-bi-aqwas` (2am.m1.r01–r02) est publiée — P4 ← aussi `2am_silsila-bi-aqwas_P1`, `_P3` (les parenthèses,
+ * la barre de fraction) et طريقة (étape 4) un second « تذكّر — السنة الثانية » avec son lien.
  *
  * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter) — le manuel fixe les الكفاءات, pas le parcours.
  *   Entrée retenue : le « قطار القوى » (labo `power-train`, monde `build`, thème `railway`). Un train part de la gare en portant 1 ;

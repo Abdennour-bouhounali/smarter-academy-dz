@@ -1,11 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ArrowRight, CheckCircle, Lock, ListChecks } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useProgress } from '../hooks/useProgress';
 import { lockedReasonData, isValidModuleNumber } from '@smarter-academy/core';
 import { resolveModuleUnlock } from '../utils/moduleGate';
+import { StudentFocusProvider, useStudentFocusFor, MoreToggle } from './StudentFocus';
+import MissionLayer from '../mission/MissionLayer';
+import MissionPlayer from '../mission/MissionPlayer';
+import { isMissionView } from '../mission/missionModel';
+import { getLoadedLessonConfig } from '../../registry';
 import { useLearningViewer } from '../../../features/learning/learningViewer';
 import ReportButton from '../../../features/reports/ReportButton';
 import PublicationBadge from '../../../components/content/PublicationBadge';
@@ -102,6 +107,8 @@ export default function ModuleLayout({
   levelId,
   gradeId: gradeIdProp,
   presentationFrame = true,
+  // Le regard « focus » de l'élève (StudentFocus.jsx) : vient de MODULE_CTX.
+  studentView,
 }) {
   const navigate = useNavigate();
 
@@ -114,6 +121,11 @@ export default function ModuleLayout({
   // QUI lit : un enseignant navigue librement (tous les modules ouverts) et
   // n'écrit rien — useProgress est déjà muet pour lui.
   const viewer = useLearningViewer();
+  // En focus, l'en-tête se réduit au titre (ni minuterie, ni sous-titre).
+  const focus = useStudentFocusFor(studentView);
+  // MODE MISSION (élève) : le module se joue dans le lecteur plein écran, sans défilement (mission/MissionPlayer.jsx).
+  const missionConfig = lessonId ? getLoadedLessonConfig(lessonId) : null;
+  const play = Boolean(missionConfig?.mission) && isMissionView(studentView, viewer, classroom);
 
   // Le décalage haut réservé par la coquille du module dépend du bandeau
   // réellement rendu au-dessus : la Navbar visiteur est `fixed` sans
@@ -146,7 +158,7 @@ export default function ModuleLayout({
   // seulement (une fois par compte, toutes leçons confondues) ; sur les
   // autres, elle reste rejouable par « جولة في الصفحة ». Jamais en وضع القسم.
   // Voir docs/architecture/PAGE_TOURS.md.
-  useDeclarePageTour('lesson-module', !presenting, { autoStart: modulePosition === 1 });
+  useDeclarePageTour('lesson-module', !presenting && !play, { autoStart: modulePosition === 1 });
   // CE QUI EST FAIT RESTE OUVERT (même règle que getModuleStatus) : un module
   // déjà terminé ne se referme jamais, même si son prédécesseur ne l'est pas.
   // Sans cela, revenir sur un module fini affichait « أتمِم المحور 00 » et
@@ -269,6 +281,9 @@ export default function ModuleLayout({
     );
   }
 
+  // Mode mission : l'élève ne voit JAMAIS l'ancienne page « مقفل » — un module fermé le renvoie à la mission (sa carte
+  // montre la même serrure). Propriétaire, 2026-11-04 : l'élève n'a pas accès à l'ancienne version.
+  if (!unlocked && play) return <Navigate to={coursePath} replace />;
   if (!unlocked) {
     return (
       <LessonChromeContext.Provider value={chrome}>
@@ -320,8 +335,52 @@ export default function ModuleLayout({
     );
   }
 
+  if (play) {
+    // Les MÊMES gestes que la barre du bas de la page : terminer écrit la complétion par commitCompletion / handleNextClick.
+    const next = isLastModule ? (
+      isCompleted ? (
+        <Link to={coursePath} onClick={commitCompletion} data-mission-finish
+          className="inline-flex min-h-[48px] items-center gap-2 rounded-2xl bg-emerald-600 px-5 font-black text-white shadow-sm hover:bg-emerald-700">
+          {t('nav.finish')} <CheckCircle size={16} aria-hidden="true" />
+        </Link>
+      ) : (
+        <IncompleteStepsHint label={t('nav.finish')} icon={<CheckCircle size={16} aria-hidden="true" />} incompleteSteps={incompleteSteps} onStepClick={scrollToStep} />
+      )
+    ) : nextLink ? (
+      <button type="button" onClick={handleNextClick} data-mission-next-module
+        className="sa-mission-ready inline-flex min-h-[48px] items-center gap-2 rounded-2xl bg-gradient-to-l from-indigo-600 to-violet-600 px-5 font-black text-white shadow-sm hover:from-indigo-700 hover:to-violet-700">
+        {t('mission.nextStation')} <ArrowLeft size={16} aria-hidden="true" />
+      </button>
+    ) : (
+      <IncompleteStepsHint label={t('mission.nextStation')} icon={<ArrowLeft size={16} aria-hidden="true" />} incompleteSteps={incompleteSteps} onStepClick={scrollToStep} />
+    );
+    return (
+      <LessonChromeContext.Provider value={chrome}>
+      <StudentFocusProvider studentView={studentView}>
+        <MissionPlayer
+          top={<MissionLayer config={missionConfig} moduleNumber={moduleNumber} basePath={coursePath} />}
+          title={<MathLabel>{moduleTitle}</MathLabel>}
+          more={(
+            // Plus de « المزيد » dans le lecteur : la durée et le sous-titre en UNE petite ligne sous le titre.
+            <p className="w-full truncate text-center text-xs text-slate-500" data-mission-subtitle>
+              <span aria-hidden="true">⏱️</span> {estimatedTime || `5 ${t('nav.minutesShort')}`}
+              {moduleSubtitle ? <> · <MathLabel>{moduleSubtitle}</MathLabel></> : null}
+            </p>
+          )}
+          exitTo={coursePath}
+          exitLabel={t('mission.exitToMission')}
+          moduleNav={{ prevLink, next }}
+        >
+          {children}
+        </MissionPlayer>
+      </StudentFocusProvider>
+      </LessonChromeContext.Provider>
+    );
+  }
+
   return (
     <LessonChromeContext.Provider value={chrome}>
+    <StudentFocusProvider studentView={studentView}>
     <div
       className={presenting ? 'sa-classroom-module-page' : `min-h-screen flex flex-col justify-between ${chrome.contentOffsetClass} bg-slate-50`}
       data-module-presented={presenting ? moduleNumber : undefined}
@@ -434,12 +493,15 @@ export default function ModuleLayout({
 </div>
         </div>}
 
+        {/* Le fil de MISSION (mode mission, élève seulement) : barre, carte, point d'étape à l'arrivée. */}
+        {!presenting && lessonId && <MissionLayer config={missionConfig} moduleNumber={moduleNumber} basePath={coursePath} />}
+
         {/* Module Header */}
         {!presenting && <header className="space-y-2 text-center" data-tour="lesson.module">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 font-mono text-xs font-semibold">
+          {!focus && <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 font-mono text-xs font-semibold">
             <span aria-hidden="true">⏱️</span>
             {estimatedTime || `5 ${t('nav.minutesShort')}`} · {t('nav.module')} {moduleNumber}
-          </div>
+          </div>}
           <h1 className="text-3xl font-space font-extrabold text-slate-900"><MathLabel>{moduleTitle}</MathLabel></h1>
           {/* Relecteur seulement (admin, سفير) : l'état de la leçon et du module. */}
           {lessonId && (
@@ -448,9 +510,24 @@ export default function ModuleLayout({
               {hasModuleNumber && <PublicationBadge status={moduleStatus(lessonId, moduleNumber)} />}
             </div>
           )}
-          <p className="text-slate-600 max-w-xl mx-auto text-sm">
-            <MathLabel>{moduleSubtitle}</MathLabel>
-          </p>
+          {focus ? (
+            // Regard « focus » : le titre seul à l'écran ; la durée et le sous-titre à un geste, jamais supprimés.
+            <MoreToggle className="flex flex-col items-center">
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 font-mono text-xs font-semibold">
+                  <span aria-hidden="true">⏱️</span>
+                  {estimatedTime || `5 ${t('nav.minutesShort')}`} · {t('nav.module')} {moduleNumber}
+                </div>
+                <p className="text-slate-600 max-w-xl mx-auto text-sm">
+                  <MathLabel>{moduleSubtitle}</MathLabel>
+                </p>
+              </div>
+            </MoreToggle>
+          ) : (
+            <p className="text-slate-600 max-w-xl mx-auto text-sm">
+              <MathLabel>{moduleSubtitle}</MathLabel>
+            </p>
+          )}
         </header>}
 
         {/* Module Content — le même élément dans les deux modes. */}
@@ -521,6 +598,7 @@ export default function ModuleLayout({
         </div>
       </footer>}
     </div>
+    </StudentFocusProvider>
     </LessonChromeContext.Provider>
   );
 }

@@ -156,7 +156,7 @@ export function ValidateButton({ onClick, disabled, children, tone = 'blue' }) {
 }
 
 /* ── Étape d'un module ────────────────────────────────────────────── */
-export function StepCard({ num, title, subtitle, done, locked, children, tone = 'slate' }) {
+export function StepCard({ num, title, subtitle, done, locked, children, tone = 'slate', collapsible = false, collapsed = false, onToggle }) {
   const { t } = useTranslation('lesson');
   const badgeTone = done
     ? 'bg-emerald-500 text-white'
@@ -188,7 +188,8 @@ export function StepCard({ num, title, subtitle, done, locked, children, tone = 
       id={anchorId}
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`border-2 rounded-2xl space-y-4 scroll-mt-24 p-6 ${
+      data-step-collapsed={collapsible ? String(collapsed) : undefined}
+      className={`border-2 rounded-2xl space-y-4 scroll-mt-24 ${collapsed ? 'px-5 py-3' : 'p-6'} ${
         done ? 'border-emerald-300 bg-emerald-50/40' : 'border-slate-200 bg-white'
       }`}
     >
@@ -196,12 +197,18 @@ export function StepCard({ num, title, subtitle, done, locked, children, tone = 
         <span className={`w-8 h-8 rounded-lg ${badgeTone} font-mono font-bold text-xs flex items-center justify-center shrink-0`}>
           {done ? '✓' : num}
         </span>
-        <div>
+        <div className="flex-1">
           <h3 className="font-space font-bold text-slate-800 leading-snug"><MathLabel>{title}</MathLabel></h3>
-          {subtitle && <p className="text-slate-500 mt-0.5 leading-relaxed text-sm"><MathLabel>{subtitle}</MathLabel></p>}
+          {subtitle && !collapsed && <p className="text-slate-500 mt-0.5 leading-relaxed text-sm"><MathLabel>{subtitle}</MathLabel></p>}
         </div>
+        {collapsible && collapsed && (
+          <button type="button" onClick={onToggle} aria-expanded={false} className="min-h-[44px] shrink-0 rounded-lg px-3 text-sm font-bold text-indigo-600 hover:bg-indigo-50">
+            {t('focus.reopen')} <span aria-hidden="true">▾</span>
+          </button>
+        )}
       </div>
-      {children}
+      {/* Repliable (regard « focus ») : le contenu reste MONTÉ dans le même nœud — replier ne remet rien à zéro. */}
+      {collapsible ? <div className="space-y-4" hidden={collapsed}>{children}</div> : children}
     </motion.section>
   );
 }

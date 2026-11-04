@@ -369,6 +369,28 @@ export function nextStage(lab) {
   return FIRST_STAGE[solids[j + 1]];
 }
 
+/* ── les étapes du labo et leurs questions (lot 4, `primitives/LabCheckpoint`) ───────────────────────────── */
+
+/** Une étape par étage : la sphère est atteinte au CONTRASTE (grand cercle, petit cercle, contact ou rien), les autres à une impression prédite juste. */
+export function stepsOf(lab) {
+  return lab.cfg.order.map((id) => {
+    const mine = lab.trials.filter((x) => x.stage === id);
+    const trial = id === 'sphere' ? witness(lab)
+      : [...mine].reverse().find((x) => x.ok && (id !== 'cylinder-axis' || x.kind === 'rectangle')) ?? null;
+    const reached = id === 'sphere' ? discoveryReady(lab) && !!trial : !!trial;
+    return Object.freeze({ id, reached, trial });
+  });
+}
+/** « أعِد التجربة » : efface les impressions de l'étage (la sphère : toutes, le contraste est à refaire) et rouvre la prédiction. */
+export function retryStep(lab, id) {
+  const st = stepsOf(lab).find((x) => x.id === id);
+  if (!st || !st.trial) return lab;
+  const drop = id === 'sphere' ? (x) => x.stage === 'sphere' : (x) => x === st.trial;
+  const trials = lab.trials.filter((x) => !drop(x));
+  const stillOk = trials.some((x) => x.stage === id && x.ok);
+  return { ...lab, trials, layers: id === 'sphere' ? lab.layers.filter((l) => l.stage !== 'sphere') : lab.layers, found: { ...lab.found, [id]: stillOk }, pending: null, ghost: null, last: null };
+}
+
 /** Ce que le module lit des essais de l'élève (onTrial) : l'étage, la valeur, le verdict, la section en LaTeX. */
 export function evidenceOf(trial, lab) {
   if (!trial) return null;

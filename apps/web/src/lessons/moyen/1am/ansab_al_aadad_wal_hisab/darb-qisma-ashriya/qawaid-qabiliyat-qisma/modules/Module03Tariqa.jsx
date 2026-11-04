@@ -46,7 +46,7 @@ export default function Module03Tariqa() {
         { num: 2, title: 'دوري الآن', subtitle: 'أربعة أعداد', done: now,
           content: <TextbookExercise exercise={EX['now-42']} requires={['qabiliya-4']} onAnswered={() => setNow(true)} /> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }

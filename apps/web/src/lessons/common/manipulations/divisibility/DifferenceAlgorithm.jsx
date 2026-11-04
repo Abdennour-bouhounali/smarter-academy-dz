@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as divisibility from '@smarter-academy/core/arithmetic/divisibility.js';
 import ManipulationShell from '../ManipulationShell';
@@ -12,7 +12,15 @@ import DragGhost from '../primitives/DragGhost';
 import RibbonStrip from '../primitives/RibbonStrip';
 import DraggableObject from '../primitives/DraggableObject';
 import EquationDisplay from '../primitives/EquationDisplay';
+import MathText from '../../components/MathText';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { ordered } from './cpOrder';
 import * as L from '../logic/algorithms';
+
+const NS = 'manipulation.diff';
 
 const { differenceStepTex, pgcdEqualityTex } = divisibility;
 
@@ -28,6 +36,11 @@ const { differenceStepTex, pgcdEqualityTex } = divisibility;
  *    se coupe sous les yeux, la différence reste.
  * D. Émerge : la ligne « 252 − 140 = 112 » et, à côté, l'invariant qui ne
  *    change pas d'un maillon à l'autre.
+ * QUESTIONS PENDANT LE LABO (2026-10-28, `primitives/LabCheckpoint`, déploiement du prototype) : deux ÉTAPES (`LabStepper`, `[data-da-step]`) — « القصّ » (la
+ * chaîne est finie : combien de coupes, qu'est-ce qui ne change pas) puis « PGCD » (le dernier fruit non nul est posé : pourquoi s'arrêter, puis la RÈGLE, qui
+ * remplace la découverte automatique et formalise dans `onDone`). Obligatoires pour tout élève ; l'enseignant seul les coupe pour SON compte
+ * (`useLabCheckpointSettings`). « أعِد التجربة » remet l'étape (`CHAINS` / `QUESTIONS` ci-dessous, textes dans `diff.cp.*`). SON : `tooth` à chaque coupe,
+ * `bell` quand le dernier fruit est nul, `flag` quand le PGCD est posé, `over` pour un geste refusé.
  * E. À découvrir : la chaîne s'arrête au fruit nul, et le PGCD est le
  *    DERNIER FRUIT NON NUL — l'élève le porte lui-même dans la case PGCD.
  *    La case refuse les autres fruits PAR LA DIVISIBILITÉ (« 56 لا يقسم
@@ -35,15 +48,65 @@ const { differenceStepTex, pgcdEqualityTex } = divisibility;
  *    par taille, pas dans l'ordre de la chaîne (2026-09-30).
  */
 export default function DifferenceAlgorithm({
-  a: a0, b: b0, title, lead, mission, initialMode = 'student', allowModeSwitch = false, answerHiddenByDefault = false, showStepCount = true, onFinished,
+  a: a0, b: b0, title, lead, mission, initialMode = 'student', allowModeSwitch = false, answerHiddenByDefault = false, showStepCount = true, onFinished, onTrial, checkpoints: cpOn = true,
 }) {
   const { t } = useTranslation('lesson');
   const state = useManipulation({ type: 'pgcd-differences', initialNumbers: { a: a0, b: b0 }, initialMode, hintCount: 3, answerHiddenByDefault });
   const { a, b } = state.numbers;
+  const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
   const [lab, setLab] = useState(() => L.initDifferences({ a: a0, b: b0 }));
   const [reject, setReject] = useState(null);
 
-  useEffect(() => { setLab(L.initDifferences({ a, b })); setReject(null); }, [a, b, state.epoch]);
+  // « إعادة », d'autres nombres ou un autre niveau : TOUT recommence — la chaîne, les questions du labo, la fête
+  const sceneKey = `${a}|${b}|${state.epoch}|${state.resetCount}`;
+  const [scene, setScene] = useState(sceneKey);
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.initDifferences({ a, b })); setReject(null); }
+  const [answered, setAnswered] = useState({ key: sceneKey, ids: [] });
+  const answeredIds = answered.key === sceneKey ? answered.ids : [];
+
+  // les questions pendant le labo : obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpSettings = useLabCheckpointSettings('pgcd-differences');
+  const ruleByCheckpoint = cpOn && cpSettings.enabled;
+  const reachedOf = { cuts: L.isDifferencesFinished(lab), pgcd: lab.pgcdPlaced };
+  const pending = ruleByCheckpoint ? STEPS.find((id) => !answeredIds.includes(id)) : null;
+  const chain = pending && reachedOf[pending] ? CHAINS[pending] : null;
+  const cp = useLabCheckpoint({
+    id: chain ? pending : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q]({ a, b, lab }, k)) : null,
+    reached: true,
+    resetKey: sceneKey,
+    onRetry: () => setLab((s) => (pending === 'cuts' ? L.initDifferences({ a, b }) : { ...s, pgcdPlaced: false })),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setAnswered((x) => ({ key: sceneKey, ids: [...(x.key === sceneKey ? x.ids : []), id] }));
+      if (id === 'pgcd') { state.discover(); state.formalize(); }
+    },
+  });
+  const stepDone = STEPS.map((id) => reachedOf[id] && (!ruleByCheckpoint || answeredIds.includes(id)));
+  const party = useStepCelebration();
+  const celebrated = useRef({ key: sceneKey, set: new Set() });
+  if (celebrated.current.key !== sceneKey) celebrated.current = { key: sceneKey, set: new Set() };
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.set.has(i)) return;
+      celebrated.current.set.add(i);
+      party.celebrate({ n: i + 1, total: STEPS.length });
+    });
+  }, [stepDone.join()]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // le son : un pas par coupe (plus grave en arrière), la cloche au fruit nul, le drapeau au PGCD posé
+  const heard = useRef({ done: 0, placed: false, at: 0 });
+  useEffect(() => {
+    const h = heard.current;
+    if (lab.done !== h.done) {
+      const now = Date.now();
+      if (now - h.at > 35) { playSfx('tooth', { pitch: lab.done > h.done ? 1 : 0.75 }); h.at = now; }
+      if (lab.done > h.done && L.isDifferencesFinished(lab)) playSfx('bell');
+      h.done = lab.done;
+    }
+    if (lab.pgcdPlaced && !h.placed) playSfx('flag');
+    h.placed = lab.pgcdPlaced;
+  }, [lab.done, lab.pgcdPlaced]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const drag = useDragInteraction({
     onDrop: (sourceId, zoneId) => {
@@ -52,7 +115,7 @@ export default function DifferenceAlgorithm({
       if (zoneId === 'pgcd') {
         const v = Number(sourceId.replace('diff:', ''));
         setLab((s) => ({ ...s, pgcdPlaced: v === s.gcd }));
-        state.discover();
+        if (!ruleByCheckpoint) state.discover();
       }
     },
     accepts: (sourceId, zoneId) => {
@@ -60,7 +123,7 @@ export default function DifferenceAlgorithm({
       if (zoneId === 'pgcd') return L.canPlaceDifferencePgcd(lab, Number(sourceId.replace('diff:', '')));
       return 'invalid';
     },
-    onReject: (sourceId, _z, reason) => setReject({ reason, v: Number(String(sourceId).replace('diff:', '')) }),
+    onReject: (sourceId, _z, reason) => { playSfx('over'); setReject({ reason, v: Number(String(sourceId).replace('diff:', '')) }); },
   });
 
   useEffect(() => { if (state.isFormal) state.report(onFinished, lab.gcd); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -89,6 +152,8 @@ export default function DifferenceAlgorithm({
       numberFields={[{ key: 'a', label: 'a' }, { key: 'b', label: 'b' }]}
       validate={validateNumbers}
       allowModeSwitch={allowModeSwitch}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={!!chain || ruleByCheckpoint}
       hints={[t('manipulation.diff.hint1'), t('manipulation.diff.hint2'), t('manipulation.diff.hint3')]}
       controller={{
         autoStep: () => { if (L.isDifferencesFinished(lab)) return false; setLab(L.subtract); return true; },
@@ -145,8 +210,12 @@ export default function DifferenceAlgorithm({
       )}
       explanation={t('manipulation.diff.explanation')}
     >
+      <div className="relative min-h-[460px]" data-da-glance>
+      {party.node}
+      {cp.node}
       <ManipulationStage dragging={drag.dragging}>
         <div className="space-y-3">
+          <LabStepper count={STEPS.length} current={Math.max(0, stepDone.indexOf(false))} done={stepDone} stepAttr="data-da-step" />
           <p className="text-xs text-slate-500">{t('manipulation.dragHint')}</p>
 
           <div className="space-y-2" data-ribbons>
@@ -206,7 +275,86 @@ export default function DifferenceAlgorithm({
           {reject && <p role="status" className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">{t(`manipulation.diff.reject.${reject.reason}`, { v: reject.v, a, b })}</p>}
         </div>
       </ManipulationStage>
+      </div>
       <DragGhost ghost={drag.ghost}>{heldLabel !== null && <NumberTile value={heldLabel} tone="divisor" />}</DragGhost>
     </ManipulationShell>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** Les deux étapes : la chaîne de coupes finie, puis le PGCD posé. */
+const STEPS = Object.freeze(['cuts', 'pgcd']);
+/** La suite de questions de chaque étape : elle interroge ce que l'élève vient de FAIRE ; la dernière finit par la RÈGLE. */
+export const CHAINS = Object.freeze({
+  cuts: ['count', 'invariant'],
+  pgcd: ['stop', 'rule'],
+});
+
+const $ = (x) => `$${x}$`;
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const lineOf = (s) => `${s.big} - ${s.small} = ${s.diff}`;
+
+/** Chaque question est construite sur LES nombres de l'élève (rien n'est écrit en dur) ; `k` : les textes de `diff`. */
+const BUILD = {
+  count: ({ a, b, lab }, k) => {
+    const n = lab.steps.length;
+    const last = lab.steps[n - 1];
+    return {
+      id: 'count', kind: 'number', expected: String(n), answer: <MathText>{$(n)}</MathText>,
+      prompt: Mx(k, 'count.prompt', { a, b }),
+      hints: [Mx(k, 'count.hint1'), Mx(k, 'count.hint2', { first: $(lineOf(lab.steps[0])), last: $(lineOf(last)) })],
+      explain: Mx(k, 'count.explain', { n, last: $(lineOf(last)) }),
+    };
+  },
+  invariant: ({ a, b, lab }, k) => {
+    const [s0, s1] = lab.steps;
+    const o = { a, b, big0: s0.big, big1: s1.big, d0: s0.diff, dLast: lab.steps[lab.steps.length - 1].diff };
+    return {
+      id: 'invariant', kind: 'choice',
+      prompt: Mx(k, 'invariant.prompt'),
+      options: [
+        { text: Mx(k, 'invariant.big'), why: Mx(k, 'invariant.whyBig', o) },
+        { text: Mx(k, 'invariant.pgcd'), correct: true },
+        { text: Mx(k, 'invariant.diff'), why: Mx(k, 'invariant.whyDiff', o) },
+      ],
+      hints: [Mx(k, 'invariant.hint1'), Mx(k, 'invariant.hint2', { a, b, big1: s1.big, small1: s1.small })],
+      explain: Mx(k, 'invariant.explain', { a, b, big1: s1.big, small1: s1.small }),
+    };
+  },
+  stop: ({ a, b, lab }, k) => {
+    const last = lab.steps[lab.steps.length - 1];
+    const o = { a, b, g: lab.gcd, last: $(lineOf(last)) };
+    return {
+      id: 'stop', kind: 'choice',
+      prompt: Mx(k, 'stop.prompt', o),
+      options: [
+        { text: Mx(k, 'stop.zero'), why: Mx(k, 'stop.whyZero', o) },
+        { text: Mx(k, 'stop.equal', o), correct: true },
+        { text: Mx(k, 'stop.small'), why: Mx(k, 'stop.whySmall', o) },
+      ],
+      hints: [Mx(k, 'stop.hint1', o), Mx(k, 'stop.hint2', o)],
+      explain: Mx(k, 'stop.explain', o),
+    };
+  },
+  rule: ({ a, b, lab }, k) => {
+    // quand le PREMIER fruit est déjà le PGCD (21 et 14 : 7), « أوّل فرق » serait juste aussi : on le remplace par le grand nombre de départ
+    const firstIsGcd = lab.steps[0].diff === lab.gcd;
+    const big = Math.max(a, b); const small = Math.min(a, b);
+    return {
+      id: 'rule', kind: 'choice',
+      prompt: <MathText>{k('discoverPrompt')}</MathText>,
+      options: [
+        { text: <MathText>{k('opt1')}</MathText>, correct: true },
+        firstIsGcd
+          ? { text: Mx(k, 'rule.optBig'), why: Mx(k, 'rule.whyBig', { big, small }) }
+          : { text: <MathText>{k('opt2')}</MathText>, why: Mx(k, 'rule.whyFirst', { first: lab.steps[0].diff, a, b }) },
+        { text: <MathText>{k('opt3')}</MathText>, why: <MathText>{k('why3')}</MathText> },
+      ],
+      hints: [Mx(k, 'rule.hint1'), Mx(k, 'rule.hint2', { g: lab.gcd })],
+      explain: <MathText>{k('cp.rule.explain', { a, b, g: lab.gcd })}</MathText>,
+    };
+  },
+};
+
+export const QUESTIONS = ordered(BUILD);

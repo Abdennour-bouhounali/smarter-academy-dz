@@ -41,7 +41,7 @@ export default function Module03Atamarran() {
         { num: 5, title: 'تمرين 19 — أين الخطأ؟', done: !!done['ex-19'],
           content: <TextbookExercise exercise={EX['ex-19']} requires={['qisma-amudiya']} onAnswered={mark('ex-19')} /> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }

@@ -43,7 +43,7 @@ export default function Module01Anshita() {
   const [q6, setQ6] = useState(false);
   const [q7, setQ7] = useState(false);
 
-  const onTrial = (ev) => { if (ev) setTrials((s) => [...s, ev].slice(-12)); };
+  const onTrial = (ev) => { if (ev && !ev.tk) setTrials((s) => [...s, ev].slice(-12)); };
   const evidence = (stages, empty) => {
     const mine = trials.filter((t) => stages.includes(t.stage));
     return (
@@ -291,7 +291,7 @@ export default function Module01Anshita() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

@@ -1,26 +1,24 @@
 import React, { useState } from 'react';
-import { parseDec } from '@smarter-academy/core';
-import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
+import { useLabCheckpointSettings } from '../../../../../../common/manipulations/primitives/labCheckpointSettings';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 
 /**
  * Module 1 — l'ENTRÉE de la leçon, choisie par la plateforme (LESSON_DEVELOPMENT_GUIDE §4ter) : le râteau du jardin. UNE SEULE PISTE (§4quater) : le labo `seed-rake` en haut, sans carte
- * au-dessus — il porte son contexte et SA question ; la main ÉTIRE le râteau, l'espacement 1/N m est la variable. Les ÉTAPES interrogent ce que l'élève a FAIT, avec SES essais : pourquoi
- * l'espacement qu'il a essayé a été refusé (combien de plants entrent dans la zone), combien de plants et quelle longueur pour l'espacement qui a convenu, ce qui se passe pour un
- * second espacement qui convient (la MÊME longueur), puis l'espacement le plus large. Les noms (briques) viennent APRÈS la réponse. Le نشاط 4 du manuel (des disques déjà découpés) est posé en application (أتمرّن).
+ * au-dessus — il porte son contexte et SA question ; la main ÉTIRE le râteau, l'espacement 1/N m est la variable. PROTOTYPE 2026-10-28 (déploiement lot 5) : les questions sur ce que l'élève a
+ * FAIT (pourquoi l'espacement refusé l'a été, combien de plants et quelle longueur, la MÊME longueur pour un second espacement, l'espacement le plus large) sont posées PAR-DESSUS le labo après
+ * la tâche 1 (`primitives/LabCheckpoint`, chaîne `SeedRake › CHAINS.g1`) ; les étapes ci-dessous en gardent la TRACE (événements `checkpoint` du labo) puis posent les noms (briques).
+ * Si l'enseignant a coupé les questions pour son compte, une étape se valide dès que l'élève a produit l'essai correspondant. Le نشاط 4 du manuel est posé en application (أتمرّن).
  */
-const M = (s) => <MathText key={s}>{s}</MathText>;
 const Ltr = ({ children }) => <bdi dir="ltr">{String(children)}</bdi>;
-const ZONES = [{ p: [1, 4], name: 'الطماطم' }, { p: [1, 6], name: 'الفلفل' }];
 const WIDEST = 12;
 
 export default function Module01Nashat() {
   const [trials, setTrials] = useState([]);
-  const [q, setQ] = useState({});
-  const answered = (k) => () => setQ((s) => ({ ...s, [k]: true }));
+  const cpOn = useLabCheckpointSettings('seed-rake').enabled;
   const record = (e) => setTrials((list) => [...list, e]);
   const mine = trials.filter((e) => !e.free && e.mission === 'g1');
   const bad = mine.findLast((e) => e.kind === 'refused');
@@ -28,11 +26,8 @@ export default function Module01Nashat() {
   const first = oks[0];
   const second = first ? oks.find((e) => e.N !== first.N) : undefined;
   const widest = oks.find((e) => e.N === WIDEST);
-
-  // la zone refusée : ses cases (a/b × N), ses deux entiers voisins
-  const zone = bad ? ZONES[bad.zone] ?? ZONES[0] : ZONES[0];
-  const [za, zb] = zone.p;
-  const lo = bad ? Math.floor((bad.N * za) / zb) : 0;
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand SA question est répondue (ou, questions coupées par l'enseignant, quand l'essai existe)
+  const answered = (qid, evidence) => trials.some((e) => e.tk === 'checkpoint' && e.id === 'g1' && e.q === qid && (e.ok || e.revealed)) || (!cpOn && !!evidence);
 
   const Evidence = ({ id, ok, done, todo }) => (
     <p data-evidence={id} data-tried={ok ? 'true' : 'false'}
@@ -60,111 +55,50 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'لماذا رُفضت المسافة؟', subtitle: 'شتلة على الحدّ', done: !!q.a && !!q.a2,
+          num: 1, title: 'لماذا رُفضت المسافة؟', subtitle: 'شتلة على الحدّ', done: answered('whyRefused', bad),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="g1-refused" ok={!!bad}
-                done={<span>في المهمة 1 رفض الحوض المسافة <Ltr>{`1/${bad?.N}`}</Ltr> م.</span>}
-                todo="جرّب في المهمة 1 مسافة لا تنجح (لتريَ الحوض شتلة على الحدّ)، ثم عُد إلى هذا السؤال." />
-              {bad && (
-              <>
-              <TapQuestion
-                prompt={<MathText>{`بالمسافة $\\frac{1}{${bad?.N ?? ''}}$ م : جزء ${zone.name} طوله $\\frac{${za}}{${zb}}$ م . كم شتلة يتّسع له؟`}</MathText>}
-                options={[M(`بين $${lo}$ و $${lo + 1}$ شتلات`), M(`$${lo}$ شتلات بالضبط`), M(`$${lo + 1}$ شتلات بالضبط`)]}
-                correct={0} cols={1} requires={['mudaaf-1am']}
-                explain={<MathText>{`جزء ${zone.name} يتّسع لـ $${bad?.N}\\times\\frac{${za}}{${zb}}$ شتلة، وهذا ليس عددًا صحيحًا: آخر شتلة تقع على الحدّ بين جزأين.`}</MathText>}
-                onAnswered={answered('a')}
-              />
-              {q.a && (
-                <TapQuestion
-                  prompt={<MathText>{`لماذا رُفضت المسافة $\\frac{1}{${bad?.N ?? ''}}$ ؟`}</MathText>}
-                  options={[M(`لأنّ $${bad?.N}$ ليس مضاعفًا للعدد $${zb}$`), M('لأنّ المسافة صغيرة جدًّا'), M('لأنّ جزء الفلفل أقصر من جزء الطماطم')]}
-                  correct={0} cols={1} requires={['mudaaf-1am']}
-                  explain={<MathText>{`جزء ${zone.name} هو $\\frac{${za}}{${zb}}$ م : يمتلئ بشتلات كاملة إذا كان عدد الخانات في المتر $N$ مضاعفًا للعدد $${zb}$ ، و $${bad?.N}$ ليس كذلك.`}</MathText>}
-                  onAnswered={answered('a2')}
-                />
-              )}
-              </>
-              )}
+              <Evidence id="g1-refused" ok={!!bad && answered('whyRefused', bad)}
+                done={<span>في المهمة 1 رفض الحوض المسافة <Ltr>{`1/${bad?.N}`}</Ltr> م، وأجبتَ في المختبر عن السبب: شتلة وقعت على الحدّ بين جزأين.</span>}
+                todo="جرّب في المهمة 1 مسافة لا تنجح (لتريَ الحوض شتلة على الحدّ)، ثم أجب عن الأسئلة التي تظهر فوق المختبر بعد المهمة." />
             </div>
           ),
         },
         {
-          num: 2, title: 'وإذا نجحت المسافة؟', subtitle: 'شتلات وطول', done: !!q.b && !!q.b2,
+          num: 2, title: 'وإذا نجحت المسافة؟', subtitle: 'شتلات وطول', done: answered('plantsTotal', first),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="g1-plant" ok={!!first}
-                done={<span>نجحت المسافة <Ltr>{`1/${first?.N}`}</Ltr> م في المهمة 1 وزرعتَ <Ltr>{first?.signed}</Ltr> شتلة في المجموع.</span>}
-                todo="أنجز في المهمة 1 مسافة تنجح (يمتلئ فيها الجزءان بشتلات كاملة)، ثم عُد إلى هذا السؤال." />
-              {first && (
-              <>
-              <NumericQuestion
-                prompt={<MathText>{`بالمسافة $\\frac{1}{${first?.N ?? ''}}$ م : كم شتلة زرعتَ في الجزأين معًا؟`}</MathText>}
-                expected={first?.signed ?? 0} display={String(first?.signed ?? '')} parse={parseDec} requires={['mudaaf-1am']}
-                explain={<MathText>{`${first?.counts?.[0]} شتلات في الطماطم و ${first?.counts?.[1]} في الفلفل : ${first?.signed}.`}</MathText>}
-                onAnswered={answered('b')}
-              />
-              {q.b && (
-                <TapQuestion
-                  prompt={<MathText>{'وما طول الجزء المزروع؟ (كلّ شتلة تأخذ مسافة واحدة)'}</MathText>}
-                  options={[M(`$\\frac{${first?.total?.split('/')[0]}}{${first?.total?.split('/')[1]}}$ م`), M('$\\frac{2}{10}$ م'), M(`$\\frac{${first?.signed}}{${(first?.N ?? 0) + 6}}$ م`)]}
-                  correct={0} cols={3} requires={['mudaaf-1am']}
-                  explain={<MathText>{`${first?.signed} شتلة، وكلّ شتلة $\\frac{1}{${first?.N}}$ م : الطول $\\frac{${first?.signed}}{${first?.N}}=\\frac{${first?.total?.split('/')[0]}}{${first?.total?.split('/')[1]}}$ م . ($\\frac{2}{10}$ أقصر من جزء الطماطم وحده.)`}</MathText>}
-                  onAnswered={answered('b2')}
-                />
-              )}
-              {q.b2 && <KnowledgeBrick id="tawhid-qabl-jam" lead="لماذا كتبنا الكسرين بالمقام نفسه قبل أن نجمع؟" />}
-              </>
-              )}
+              <Evidence id="g1-plant" ok={!!first && answered('plantsTotal', first)}
+                done={<span>نجحت المسافة <Ltr>{`1/${first?.N}`}</Ltr> م في المهمة 1 وزرعتَ <Ltr>{first?.signed}</Ltr> شتلة في المجموع، وطول الجزء المزروع <MathText>{`$\\frac{${first?.total?.split('/')[0]}}{${first?.total?.split('/')[1]}}$`}</MathText> م.</span>}
+                todo="أنجز في المهمة 1 مسافة تنجح (يمتلئ فيها الجزءان بشتلات كاملة)، ثم أجب عن الأسئلة فوق المختبر." />
+              {answered('plantsTotal', first) && <KnowledgeBrick id="tawhid-qabl-jam" lead="لماذا كتبنا الكسرين بالمقام نفسه قبل أن نجمع؟" />}
             </div>
           ),
         },
         {
-          num: 3, title: 'مسافة أخرى تنجح', subtitle: 'الطول نفسه', done: !!q.c,
+          num: 3, title: 'مسافة أخرى تنجح', subtitle: 'الطول نفسه', done: answered('sameLength', second),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="g1-second" ok={!!second}
-                done={<span>نجحت أيضًا المسافة <Ltr>{`1/${second?.N}`}</Ltr> م وزرعتَ <Ltr>{second?.signed}</Ltr> شتلة.</span>}
-                todo="جرّب في المهمة 1 مسافة ثانية تنجح (تختلف عن الأولى)، ثم عُد إلى هذا السؤال." />
-              {second && (
-              <>
-              <TapQuestion
-                prompt={<MathText>{`بالمسافة $\\frac{1}{${second?.N ?? ''}}$ م زرعتَ $${second?.signed ?? ''}$ شتلة : هل تغيّر طول الجزء المزروع؟`}</MathText>}
-                options={[M(`لا: الطول نفسه $\\frac{${second?.total?.split('/')[0]}}{${second?.total?.split('/')[1]}}$ م`), M('نعم، صار أطول لأنّ الشتلات أكثر'), M('نعم، صار أقصر لأنّ المسافة أضيق')]}
-                correct={0} cols={1} requires={['mudaaf-1am']}
-                explain={<MathText>{`$\\frac{${second?.signed}}{${second?.N}}$ و $\\frac{${first?.signed}}{${first?.N}}$ هما الكسر نفسه: كلّ مضاعف مشترك للمقامين يعطي الطول نفسه.`}</MathText>}
-                onAnswered={answered('c')}
-              />
-              {q.c && <KnowledgeBrick id="mudaaf-mushtarak" lead="أيّ عدد يصلح مقامًا مشتركًا للكسرين؟" />}
-              </>
-              )}
+              <Evidence id="g1-second" ok={!!second && answered('sameLength', second)}
+                done={<span>نجحت أيضًا المسافة <Ltr>{`1/${second?.N}`}</Ltr> م وزرعتَ <Ltr>{second?.signed}</Ltr> شتلة، وبقي الطول نفسه.</span>}
+                todo="جرّب في المهمة 1 مسافة ثانية تنجح (تختلف عن الأولى)، ثم أجب عن الأسئلة فوق المختبر." />
+              {answered('sameLength', second) && <KnowledgeBrick id="mudaaf-mushtarak" lead="أيّ عدد يصلح مقامًا مشتركًا للكسرين؟" />}
             </div>
           ),
         },
         {
-          num: 4, title: 'أوسع مسافة', subtitle: 'مكان للشتلات', done: !!q.d,
+          num: 4, title: 'أوسع مسافة', subtitle: 'مكان للشتلات', done: answered('widest', widest),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="g1-widest" ok={!!widest}
+              <Evidence id="g1-widest" ok={!!widest && answered('widest', widest)}
                 done={<span>وجدتَ المسافة <Ltr>{`1/${WIDEST}`}</Ltr> م.</span>}
-                todo="جرّب في المهمة 1 أوسع مسافة تنجح (تظهر النجمة بعد نجاحين)، ثم عُد إلى هذا السؤال." />
-              {widest && (
-              <>
-              <TapQuestion
-                prompt={<MathText>{'الشتلات تحتاج مكانًا. أيّ مسافة يفضّلها البستاني لتبقى الشتلات متباعدة ما أمكن؟'}</MathText>}
-                options={[M(`$\\frac{1}{${WIDEST}}$ م`), M('$\\frac{1}{24}$ م'), M('$\\frac{1}{36}$ م')]}
-                correct={0} cols={3} requires={['mudaaf-1am']}
-                explain={<MathText>{`كلّها تنجح، لكنّ $\\frac{1}{${WIDEST}}$ هي الأوسع: $${WIDEST}$ هو أصغر مضاعف مشترك للعددين $4$ و $6$ .`}</MathText>}
-                onAnswered={answered('d')}
-              />
-              {q.d && <KnowledgeBrick id="asghar-mudaaf" lead="ما أوسع مسافة تنجح، وكيف نصل إليها بسرعة؟" />}
-              </>
-              )}
+                todo="جرّب في المهمة 1 أوسع مسافة تنجح (تظهر النجمة بعد نجاحين)، ثم أجب عن الأسئلة فوق المختبر." />
+              {answered('widest', widest) && <KnowledgeBrick id="asghar-mudaaf" lead="ما أوسع مسافة تنجح، وكيف نصل إليها بسرعة؟" />}
             </div>
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

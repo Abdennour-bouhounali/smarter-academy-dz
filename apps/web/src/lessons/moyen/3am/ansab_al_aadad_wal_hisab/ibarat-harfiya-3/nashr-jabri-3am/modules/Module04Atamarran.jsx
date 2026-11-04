@@ -38,7 +38,7 @@ export default function Module04Atamarran() {
         step(6, 'now-59', 'انشر وبسّط ورتّب', ['tariqat-nashr']),
         step(7, 'deep-43', 'صحيح أم خاطئ؟', ['tariqat-nashr']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

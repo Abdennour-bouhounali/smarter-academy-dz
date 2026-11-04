@@ -78,7 +78,8 @@
    "answer": {
     "egyptian": "5/6"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la synthèse (2026-10-29) à 110 dpi (pdf p. 19 et 33) : conforme ; réécrit avec d'autres nombres et un autre contexte."
   },
   {
    "id": "challenge",
@@ -105,7 +106,8 @@
     "possible": false,
     "note": "Aucun choix de quatre des cinq cartes imprimées ne fait 1 (au plus 7/8) — voir discrepancies."
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la synthèse (2026-10-29) à 110 dpi (pdf p. 19 et 33) : conforme ; réécrit avec d'autres nombres et un autre contexte."
   },
   {
    "id": "prep",
@@ -368,7 +370,7 @@
    "page": 25,
    "section": "أنشطة",
    "title": "جداء كسرين",
-   "verified": false,
+   "verified": true,
    "text": "يمثّل الشكل المقابل كعكة مستطيلة الشكل تم تقسيمها إلى حصص متطابقة شكل كل واحدة منها مستطيل (أنظر المستطيل البرتقالي). الكعكة 13cm × 5cm مقسّمة إلى 7 × 3 حصص. 1) لاحظ الشكل ثم أجب. أ) بالنسبة للمستطيل البرتقالي، ماذا يمثل الكسر 13/7 ؟ عيّن الكسر الذي يمثل عرض المستطيل البرتقالي. ب) اكتب العملية التي تسمح لك بحساب مساحة المستطيل البرتقالي. 2) احسب مساحة المستطيل البرتقالي بطريقتين مختلفتين. ماذا تستنتج؟ 3) أعط القاعدة التي تسمح بحساب جداء كسرين.",
    "answer": {
     "length": "13/7",
@@ -385,7 +387,7 @@
    "page": 25,
    "section": "أنشطة",
    "title": "مقارنة كسرين",
-   "verified": false,
+   "verified": true,
    "text": "1) قمنا بتقسيم رغيف إلى أربعة حصص متساوية. ما هو السهم الذي تمثله حصة واحدة؟ ما هو السهم الذي تمثله حصتان؟ أي السهمين أكبر؟ 2) قامت سعاد بتقسيم رغيف إلى 6 حصص بينما قسّمت ليلى رغيفا مماثلا إلى 8 حصص. ارسم شكلين أحدهما يمثل رغيف سعاد والآخر يمثل رغيف ليلى. أي الحصتين أكبر: حصة من رغيف سعاد أم حصة من رغيف ليلى؟ برّر إجابتك بتلوين الشكلين؟ 3) ما هو الكسر الذي يمثّل حصة من رغيف سعاد؟ ما هو الكسر الذي يمثّل حصة من رغيف ليلى؟ قارن هذين الكسرين باستعمال السؤال السابق.",
    "answer": {
     "one": "1/4",
@@ -476,7 +478,7 @@
    "page": 26,
    "section": "معارف",
    "title": "قيمة مقربة لحاصل قسمة عدد عشري",
-   "verified": false,
+   "verified": true,
    "text": "• لقسمة عدد على عدد عشري غير طبيعي، نحوّل العملية إلى القسمة على عدد طبيعي، وذلك بضرب كلا من القاسم والمقسوم في 10 أو 100 أو 1000... • عندما يكون حاصل عملية القسمة ليس عددا عشريا يمكننا البحث عن قيمة مقربة له. أمثلة: • لحساب 15,96 ÷ 2,8 ، نحوّل العملية إلى قسمة على عدد طبيعي. لدينا 15,96/2,8 = (15,96 × 10)/(2,8 × 10) = 159,6/28 ، إذن، لقسمة 15,96 على 2,8 ، نُجري عملية القسمة للعدد 1596 على 280 فنجد: 15,96/2,8 = 159,6/28 = 5,7 . • لدينا 4/2,75 = (4 × 100)/(2,75 × 100) = 400/275 … (bas de page coupé par le scan)",
    "answer": {
     "15,96/2,8": "5,7",
@@ -547,7 +549,7 @@
    "page": 28,
    "section": "معارف",
    "title": "جمع (أو طرح) كسرين لهما نفس المقام",
-   "verified": false,
+   "verified": true,
    "text": "خاصية: لجمع (أو طرح) عددين مكتوبين على شكل كسرين لهما نفس المقام نقوم بما يلي: نجمع (أو نطرح) البسطين و نحتفظ بالمقام المشترك. أمثلة: 13/7 + 11/7 = (13 + 11)/7 = 24/7 ؛ 3,2/3 − 1,6/3 = (3,2 − 1,6)/3 = 1,6/3 .",
    "answer": {
     "1": "24/7",
@@ -562,7 +564,7 @@
    "page": 28,
    "section": "معارف",
    "title": "جمع (أو طرح) كسرين مقام أحدهما مضاعف لمقام الآخر",
-   "verified": false,
+   "verified": true,
    "text": "خاصية: لجمع (أو طرح) عددين مكتوبين على شكل كسرين مقام أحدهما مضاعف لمقام الآخر نقوم بما يلي: نكتب الكسرين بنفس المقام (توحيد المقامات). ثمّ نجمع (أو نطرح) البسطين اللذين حصلنا عليهما محتفظين بالمقام المشترك الجديد. أمثلة: 5/12 + 1/4 = 5/12 + (11 × 3)/(4 × 3) = 5/12 + 33/12 = (5 + 33)/12 = 38/12 = 19/6 ؛ 3/4 − 5/12 = (3 × 3)/(4 × 3) − 5/12 = 9/12 − 5/12 = (9 − 5)/12 = 4/12 = 1/3 .",
    "answer": {
     "1": "19/6",
@@ -577,7 +579,7 @@
    "page": 28,
    "section": "معارف",
    "title": "ضرب كسرين",
-   "verified": false,
+   "verified": true,
    "text": "قاعدة: لضرب عددين مكتوبين على شكل كسر، نضرب البسطين فيما بينهما و نضرب المقامين فيما بينهما. أمثلة: 5/7 × 11/3 = (5 × 11)/(7 × 3) = 55/21 ؛ 3 × 2/5 = (3 × 2)/5 = 6/5 ؛ 5/7 × 2,6 = 5/7 × 2,6/1 = (5 × 2,6)/(7 × 1) = 13/7 .",
    "answer": {
     "1": "55/21",
@@ -593,7 +595,7 @@
    "page": 28,
    "section": "معارف",
    "title": "مقارنة كسرين لهما نفس البسط",
-   "verified": false,
+   "verified": true,
    "text": "خاصية: إذا كان لكسرين نفس البسط، فإنّ أكبرهما هو الذي له أصغر مقام. مثال: قارن بين 11/5 و 11/7 . لدينا 5 < 7 إذن، 11/5 > 11/7 .",
    "answer": "11/5 > 11/7",
    "answerSource": "computed"
@@ -605,7 +607,7 @@
    "page": 28,
    "section": "معارف",
    "title": "مقارنة كسرين لهما نفس المقام",
-   "verified": false,
+   "verified": true,
    "text": "خاصية: إذا كان لكسرين نفس المقام فإنّ أكبرهما هو الذي له أكبر بسط. مثال: قارن بين 4/13 و 6/13 . لدينا 4 < 6 إذن، 4/13 < 6/13 .",
    "answer": "4/13 < 6/13",
    "answerSource": "computed"
@@ -617,7 +619,7 @@
    "page": 28,
    "section": "معارف",
    "title": "مقارنة كسرين ليس لهما نفس المقام",
-   "verified": false,
+   "verified": true,
    "text": "خاصية: إذا كان مقام أحد الكسرين مضاعفا لمقام الكسر الآخر نكتب الكسرين بنفس المقام، ثم نقارن البسطين الجديدين حسب الخاصية … مثال: قارن بين 3/4 و 17/20 . نكتب الكسر 3/4 بمقام يساوي 20، أي: 3/4 = (3 × 5)/(4 × 5) = 15/20 … (bas de page coupé par le scan)",
    "answer": "3/4 = 15/20 < 17/20",
    "answerSource": "computed"
@@ -1123,7 +1125,7 @@
    "page": 32,
    "section": "أوظّف تعلّماتي",
    "group": "تطبيقات",
-   "verified": false,
+   "verified": true,
    "text": "باستعمال وحدة طول مختارة، احسب حجم هذه العلبة إذا علمت أنّ: طولها 14/3 وعرضها 12/7 وارتفاعها 5/2 .",
    "answer": "20",
    "answerSource": "computed"
@@ -1135,7 +1137,7 @@
    "page": 32,
    "section": "أوظّف تعلّماتي",
    "group": "الكسور و الهندسة",
-   "verified": false,
+   "verified": true,
    "text": "احسب محيط و مساحة مستطيل إذا علمت أن طوله 121m و عرضه يساوي 7/11 من طوله.",
    "answer": {
     "width": "77",
@@ -1151,7 +1153,7 @@
    "page": 32,
    "section": "أوظّف تعلّماتي",
    "group": "تطبيقات",
-   "verified": false,
+   "verified": true,
    "text": "بعدما باع مزارع ثلث غلته من البرتقال، اشترت منه إحدى التعاونيات ثلاثة أخماس الباقي. 1) ما هو الكسر الذي يُمثّل ما أخذته التعاونية؟ 2) ما هو الكسر الذي يُمثّل الحصة المباعة؟ 3) ما هو الكسر الذي يُمثّل الباقي؟",
    "answer": {
     "coop": "2/5",
@@ -1179,7 +1181,7 @@
    "page": 32,
    "section": "أوظّف تعلّماتي",
    "group": "تطبيقات",
-   "verified": false,
+   "verified": true,
    "text": "في شركة ذات أسهم، اقتسم 3 شركاء فوائد شركتهم. فكانت حصة الأول 2/3 ، وحصة الثاني 1/6 في حين يُمثّل الباقي حصة الثالث. في سنة 2016، قُدّرت أرباح الشركة بـ: 675000DA . • احسب حصة كل واحد من الشركاء.",
    "answer": {
     "third": "1/6",
@@ -1258,7 +1260,7 @@
    "page": 32,
    "section": "أوظّف تعلّماتي",
    "group": "تطبيقات",
-   "verified": false,
+   "verified": true,
    "text": "في رحلة بين العاصمة وعنابة كان السائق يراقب مؤشر البنزين، حيث لاحظ في المرحلة الأولى من الرحلة أنه استهلك ربع سعة خزان البنزين. وبعد الاستراحة استهلك نصف البنزين الباقي في خزان السيارة. 1) ما هو الكسر الذي يمثل استهلاك السيارة من البنزين؟ 2) ما هو الكسر الذي يمثل ما بقي من البنزين؟ هل هذا يوافق ما يشير إليه مؤشر البنزين في الصورة؟",
    "answer": {
     "used": "5/8",
@@ -1672,27 +1674,29 @@
    "page": 36,
    "section": "أدمج تعلّماتي",
    "title": "التنمية المستدامة",
-   "verified": false,
+   "verified": true,
    "text": "وضعية: إذا فرضنا أنّ تعداد سكان العالم هو 7,5 مليار نسمة. أ) ما هو عدد الأشخاص الذين حصلوا على مرافق صرف صحي بين عامي 1990 و 2012؟ ب) احسب عدد الأشخاص الذين لا يملكون مرحاضا إلى غاية 2012. (يُطلب كتابة كل نسبة على شكل كسر مبسط قدر الإمكان). جـ) إذا علمت أن عدد الوفيات المرتبطة بالمياه والصرف الصحي في السنة يقدر بحوالي 488 ألف شخص، ما هو عدد الأطفال المتوفين نتيجة لأمراض مرتبطة بالمياه؟ — النص: … حتى عام 2012، لم يكن لدى 3/25 من الأشخاص حول العالم مرحاض. ورغم أن أكثر من 19/75 من الأشخاص حصلوا على مرافق صرف صحي بين عامي 1990 و 2012 …، فإنه ما زال 600 مليون شخص على مستوى العالم لا يحصلون على مياه صالحة للشرب. … يمثل الأطفال 23/61 من مجمل الوفيات.",
    "answer": {
     "sanitation": 1900000000,
     "noToilet": 900000000,
     "children": 184000
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la synthèse (2026-10-29) à 110 dpi (pdf p. 19 et 33) : conforme ; réécrit avec d'autres nombres et un autre contexte."
   },
   {
    "id": "evaluation",
    "kind": "integration",
    "page": 36,
    "section": "وضعية للتقويم",
-   "verified": false,
+   "verified": true,
    "text": "استهلك رشيد 4/12 من الرصيد الشهري لهاتفه المحمول في الأسبوع الأول، ثم استهلك 4/5 الباقي فيما بقي من الشهر. أ) ما هي الحصة غير المستهلكة من الرصيد الشهري؟ ب) إذا علمت أن ما بقي له من الرصيد في نهاية الشهر هو 10min ، ما هو عدد الدقائق التي كانت في رصيده في بداية الشهر؟",
    "answer": {
     "left": "2/15",
     "start": 75
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la synthèse (2026-10-29) à 110 dpi (pdf p. 19 et 33) : conforme ; réécrit avec d'autres nombres et un autre contexte."
   },
   {
    "id": "ict-1",
@@ -1783,6 +1787,21 @@
   {
    "elementId": "unit",
    "kind": "scope",
+   "text": "Hors périmètre 2AM (il faut un dénominateur commun quand AUCUN dénominateur n’est multiple de l’autre — 3AM r06) : opener (1/3 + 1/2), ex-11 (9/2 + 4/5, 1/4 + 4/5), ex-12 (11/6 + 10/9 seul), ex-14 (13/6 + 3/4), ex-28 q2 (1/3 + 2/5), ex-29 (2/5 + 1/4), self-6 (10/3 − 5/7), deep-40 (1/20 + 1/30) ; chacun est ADAPTÉ (nombres propres dans le cas 2AM) ; l’opener n’est qu’une histoire."
+  },
+  {
+   "elementId": "ex-30",
+   "kind": "reading",
+   "text": "Le texte parle de « فوائد شركتهم » (= bénéfices) : ne jamais montrer « فوائد » (lu comme intérêt) ; toute adaptation dit « أرباح »."
+  },
+  {
+   "elementId": "deep-45",
+   "kind": "scope",
+   "text": "Les enfants (1/6) et les femmes (3/7) se calculent séparément ; ne jamais demander leur SOMME en fraction (dénominateurs 6 et 7 : hors périmètre 2AM)."
+  },
+  {
+   "elementId": "unit",
+   "kind": "scope",
    "text": "Pages 22–37 complètes mais scan médiocre : marge droite de la p. 25 coupée, bas des pp. 26 et 28 coupés, ex-5/ex-13 tronqués (p. 30), deep-36 et ict-3 coupés, numéro de deep-44 masqué. Les éléments des leçons non encore générées sont transcrits brièvement (verified: false) : leur leçon les relira."
   }
  ],
@@ -1793,12 +1812,19 @@
    "module": "page"
   },
   "opener": {
-   "lesson": "jam-tarh-kusur",
-   "module": null
+   "lesson": "wadiya-idmajiya-kusur-amaliyat",
+   "module": 0
   },
   "challenge": {
-   "lesson": "unit",
-   "module": "page"
+   "lesson": "wadiya-idmajiya-kusur-amaliyat",
+   "module": 3,
+   "duplicatedIn": [
+    {
+     "lesson": "unit",
+     "module": "page"
+    }
+   ],
+   "note": "cartes de Sara (1/2, 1/3, 1/4, 1/6, 1/12 : UN choix de quatre fait 1) ; la carte de l'unité garde le texte du livre (README du plan, question 3)"
   },
   "prep": {
    "lesson": "qisma-iqlidiya-hasr",
@@ -1828,23 +1854,23 @@
   },
   "act-2": {
    "lesson": "kasr-hasil-qisma",
-   "module": 1
+   "module": 4
   },
   "act-3": {
    "lesson": "kasr-hasil-qisma",
-   "module": 1
+   "module": 4
   },
   "act-4": {
    "lesson": "jam-tarh-kusur",
-   "module": 1
+   "module": 4
   },
   "act-5": {
    "lesson": "jida-kasrayn",
-   "module": 1
+   "module": 4
   },
   "act-6": {
    "lesson": "muqarana-kasrayn",
-   "module": 1
+   "module": 4
   },
   "know-1a": {
    "lesson": "qisma-iqlidiya-hasr",
@@ -1856,85 +1882,85 @@
   },
   "know-1c": {
    "lesson": "kasr-hasil-qisma",
-   "module": null
+   "module": 2
   },
   "know-1d": {
    "lesson": "kasr-hasil-qisma",
-   "module": null
+   "module": 2
   },
   "know-1e": {
    "lesson": "kasr-hasil-qisma",
-   "module": null
+   "module": 2
   },
   "method-1": {
    "lesson": "kasr-hasil-qisma",
-   "module": null
+   "module": 4
   },
   "method-2": {
    "lesson": "kasr-hasil-qisma",
-   "module": null
+   "module": 3
   },
   "now-27": {
    "lesson": "kasr-hasil-qisma",
-   "module": null
+   "module": 4
   },
   "know-2a": {
    "lesson": "jam-tarh-kusur",
-   "module": null
+   "module": 2
   },
   "know-2b": {
    "lesson": "jam-tarh-kusur",
-   "module": null
+   "module": 2
   },
   "know-2c": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 2
   },
   "know-3a": {
    "lesson": "muqarana-kasrayn",
-   "module": null
+   "module": 2
   },
   "know-3b": {
    "lesson": "muqarana-kasrayn",
-   "module": null
+   "module": 2
   },
   "know-3c": {
    "lesson": "muqarana-kasrayn",
-   "module": null
+   "module": 2
   },
   "method-3": {
    "lesson": "jam-tarh-kusur",
-   "module": null
+   "module": 3
   },
   "method-4": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 3
   },
   "method-5": {
    "lesson": "muqarana-kasrayn",
-   "module": null
+   "module": 3
   },
   "now-29": {
    "lesson": "kasr-hasil-qisma",
-   "module": null,
+   "module": 4,
    "items": {
     "1": {
      "lesson": "kasr-hasil-qisma",
-     "module": null
+     "module": 4
     },
     "2": {
      "lesson": "muqarana-kasrayn",
-     "module": null
+     "module": 4
     }
    }
   },
   "ex-1": {
    "lesson": "kasr-hasil-qisma",
-   "module": null
+   "module": 4
   },
   "ex-2": {
    "lesson": "kasr-hasil-qisma",
-   "module": null
+   "module": 4
   },
   "ex-3": {
    "lesson": "kasr-hasil-qisma",
@@ -1954,75 +1980,75 @@
   },
   "ex-7": {
    "lesson": "jam-tarh-kusur",
-   "module": null
+   "module": 4
   },
   "ex-8": {
    "lesson": "jam-tarh-kusur",
-   "module": null
+   "module": 4
   },
   "ex-9": {
    "lesson": "jam-tarh-kusur",
-   "module": null
+   "module": 4
   },
   "ex-10": {
    "lesson": "jam-tarh-kusur",
-   "module": null
+   "module": 4
   },
   "ex-11": {
    "lesson": "jam-tarh-kusur",
-   "module": null
+   "module": 4
   },
   "ex-12": {
    "lesson": "jam-tarh-kusur",
-   "module": null
+   "module": 4
   },
   "ex-13": {
    "lesson": "jam-tarh-kusur",
-   "module": null
+   "module": 4
   },
   "ex-14": {
    "lesson": "jam-tarh-kusur",
-   "module": null
+   "module": 4
   },
   "ex-29": {
    "lesson": "jam-tarh-kusur",
-   "module": null
+   "module": 4
   },
   "ex-31": {
    "lesson": "jam-tarh-kusur",
-   "module": null
+   "module": 4
   },
   "ex-15": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-16": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-17": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-18": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-19": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-26": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-27": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-28": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 5
   },
   "ex-30": {
    "lesson": "jida-kasrayn",
@@ -2030,27 +2056,27 @@
   },
   "ex-34": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 6
   },
   "ex-20": {
    "lesson": "muqarana-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-21": {
    "lesson": "muqarana-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-22": {
    "lesson": "muqarana-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-23": {
    "lesson": "muqarana-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-24": {
    "lesson": "muqarana-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-25": {
    "lesson": "muqarana-kasrayn",
@@ -2085,16 +2111,16 @@
    "module": null
   },
   "self-12": {
-   "lesson": "kasr-hasil-qisma",
-   "module": null
+   "lesson": "jida-kasrayn",
+   "module": 4
   },
   "self-5": {
    "lesson": "jam-tarh-kusur",
-   "module": null
+   "module": 4
   },
   "self-6": {
    "lesson": "jam-tarh-kusur",
-   "module": null
+   "module": 4
   },
   "self-7": {
    "lesson": "jida-kasrayn",
@@ -2117,32 +2143,32 @@
    "module": null
   },
   "deep-46": {
-   "lesson": "muqarana-kasrayn",
+   "lesson": "kasr-hasil-qisma",
    "module": null
   },
   "deep-47": {
-   "lesson": "muqarana-kasrayn",
-   "module": null
+   "lesson": "jam-tarh-kusur",
+   "module": 4
   },
   "deep-35": {
    "lesson": "kasr-hasil-qisma",
-   "module": null
+   "module": 4
   },
   "deep-38": {
    "lesson": "kasr-hasil-qisma",
-   "module": null
+   "module": 4
   },
   "deep-36": {
    "lesson": "jam-tarh-kusur",
-   "module": null
+   "module": 4
   },
   "deep-37": {
    "lesson": "jam-tarh-kusur",
-   "module": null
+   "module": 4
   },
   "deep-40": {
    "lesson": "jam-tarh-kusur",
-   "module": null
+   "module": 4
   },
   "deep-39": {
    "lesson": "jida-kasrayn",
@@ -2154,7 +2180,7 @@
   },
   "deep-42": {
    "lesson": "jida-kasrayn",
-   "module": null
+   "module": 4
   },
   "deep-43": {
    "lesson": "jida-kasrayn",
@@ -2170,15 +2196,15 @@
   },
   "integration": {
    "lesson": "wadiya-idmajiya-kusur-amaliyat",
-   "module": null
+   "module": 1
   },
   "evaluation": {
    "lesson": "wadiya-idmajiya-kusur-amaliyat",
-   "module": null
+   "module": 2
   },
   "ict-1": {
    "lesson": "jam-tarh-kusur",
-   "module": null
+   "module": 4
   },
   "ict-2": {
    "lesson": "kasr-hasil-qisma",

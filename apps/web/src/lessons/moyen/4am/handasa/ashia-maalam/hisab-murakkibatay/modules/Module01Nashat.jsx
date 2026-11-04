@@ -36,7 +36,7 @@ export default function Module01Nashat() {
   const [q3, setQ3] = useState(false);
   const [q5, setQ5] = useState(false);
 
-  const onTrial = (ev) => { if (ev) setTrials((s) => [...s, ev].slice(-8)); };
+  const onTrial = (ev) => { if (ev && !ev.tk) setTrials((s) => [...s, ev].slice(-8)); };
 
   const evidence = (
     <div className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={trials.length ? 'true' : 'false'}>
@@ -225,7 +225,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

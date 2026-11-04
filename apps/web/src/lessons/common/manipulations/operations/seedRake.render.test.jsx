@@ -116,3 +116,39 @@ describe('seed-rake — rendu', () => {
     expect(formal).toContain('frac');
   });
 });
+
+describe('seed-rake — questions pendant le labo (LabCheckpoint)', () => {
+  it('chaque tâche : chaque question a un texte, une seule bonne réponse, deux indices, ni clé brute ni {{', async () => {
+    const { CHAINS, QUESTIONS } = await import('./SeedRake');
+    const tasks = [...LV.beginner.numbers.tasks, ...LV.advanced.numbers.tasks, ...L.PRESETS.fewest.tasks];
+    const s = L.init({ tasks });
+    for (const tk of s.tasks) {
+      expect(CHAINS[tk.id], tk.id).toBeTruthy();
+      for (const qid of CHAINS[tk.id]) {
+        const q = QUESTIONS[qid](s, tk, k);
+        const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+        expect(out, `${tk.id}.${qid}`).not.toMatch(RAW);
+        expect(out, `${tk.id}.${qid}`).not.toContain('{{');
+        expect(q.hints, `${tk.id}.${qid}`).toHaveLength(2);
+        if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${tk.id}.${qid}`).toHaveLength(1);
+        else expect(q.expected).toBeTruthy();
+      }
+    }
+    const byId = (id) => s.tasks.find((t) => t.id === id);
+    expect(QUESTIONS.plantsTotal(s, byId('g1'), k).expected).toBe('5');     // 1/12 : 3 + 2
+    expect(QUESTIONS.harvestLeft(s, byId('g3'), k).expected).toBe('7');     // 1/12 : 9 − 2
+    expect(QUESTIONS.cells(s, byId('a1'), k).expected).toBe('20');          // 5/6 à 1/24
+    expect(QUESTIONS.totalNum(s, byId('a2'), k).expected).toBe('13');       // 7/10 − 4/15 à 1/30
+    expect(QUESTIONS.plantsAt(s, byId('f1'), k).expected).toBe('19');       // 9 + 10
+  });
+});
+
+describe('seed-rake — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('مبتدئ (questions) : ni la progression ni le bouton d’indice ; les étapes sont un LabStepper', () => {
+    const b = html({ ...LV.beginner.numbers, level: 'beginner' });
+    expect(b).not.toContain('data-manipulation-progress');
+    expect(b).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    expect(b).toContain('data-lab-stepper');
+    expect(b).toContain('data-sr-step');
+  });
+});

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
@@ -14,7 +14,15 @@ import EquationDisplay from '../primitives/EquationDisplay';
 import GroupingScene from '../primitives/GroupingScene';
 import GroupStock, { GroupWrapper } from '../primitives/GroupStock';
 import { themeWords } from '../themeWords';
+import MathText from '../../components/MathText';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { ordered } from './cpOrder';
 import * as L from '../logic/coprime';
+
+const NS = 'manipulation.coprime';
 
 /**
  * coprime-explorer — « أوليان فيما بينهما », PROUVÉ et pas deviné.
@@ -35,18 +43,24 @@ import * as L from '../logic/coprime';
  *       Sinon « تحقّق » dit ce qui manque, au lieu de se taire. Avant, poser 1
  *       puis « تحقّق » concluait (1 est le seul commun).
  *
+ * QUESTIONS PENDANT LE LABO (2026-10-28, `primitives/LabCheckpoint`) : UNE étape (`LabStepper`, `[data-cp-step]`), car la scène est libre — la suite s'ouvre quand
+ * la preuve est complète (trousses : `groupsInsightReady` ; listes : « تحقّق » concluant) et finit par la RÈGLE, qui remplace la découverte automatique et formalise
+ * dans `onDone`. Trousses : `gWork` · `gBecause` · `rule` ; listes : `lTested` · `lCommon` · `rule` (`CHAINS`, textes dans `coprime.cp.*`). Obligatoires pour tout élève ;
+ * l'enseignant seul les coupe (`useLabCheckpointSettings`). SON : `tooth` par trousse / jeton posé, `bell` quand une répartition marche, `flag` à la preuve, `over` au refus.
+ *
  * FICHE (MANIPULATION_DNA §7) — variable : k (trousses) / le diviseur
  * confronté ; résistance : les objets dehors, le jeton refusé avec sa raison ;
  * contraste : 1 marche, 2 … 17 non (ou 3 marche pour 27 et 36) ; découverte :
  * une propriété du COUPLE, pas de chaque nombre.
  */
 export default function CoprimeExplorer({
-  a: a0, b: b0, title, lead, mission, theme = 'school', startWith = 'lists', initialMode = 'student', allowModeSwitch = false, onFinished,
+  a: a0, b: b0, title, lead, mission, theme = 'school', startWith = 'lists', initialMode = 'student', allowModeSwitch = false, onFinished, onTrial, checkpoints: cpOn = true,
 }) {
   const { t } = useTranslation('lesson');
   const state = useManipulation({ type: 'coprime-explorer', initialNumbers: { a: a0, b: b0 }, initialMode, hintCount: 3 });
   const { a, b } = state.numbers;
   const inGroups = startWith === 'groups';
+  const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
   const [lab, setLab] = useState(() => L.init({ a: a0, b: b0 }));
   const [groups, setGroups] = useState(() => L.initGroups({ a: a0, b: b0 }));
   const [reject, setReject] = useState(null);
@@ -57,7 +71,10 @@ export default function CoprimeExplorer({
   const groupsRef = useRef(groups);
   groupsRef.current = groups;
 
-  useEffect(() => { setLab(L.init({ a, b })); setGroups(L.initGroups({ a, b })); setReject(null); setCheckNote(null); }, [a, b, state.epoch]);
+  // « إعادة », d'autres nombres ou un autre niveau : TOUT recommence — les essais, les questions du labo, la fête
+  const sceneKey = `${a}|${b}|${state.epoch}|${state.resetCount}`;
+  const [scene, setScene] = useState(sceneKey);
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init({ a, b })); setGroups(L.initGroups({ a, b })); setReject(null); setCheckNote(null); }
 
   const words = themeWords(t, theme);
   const top = Math.min(a, b);
@@ -65,6 +82,7 @@ export default function CoprimeExplorer({
   const drag = useDragInteraction({
     onDrop: (sourceId, zoneId) => {
       setReject(null);
+      playSfx('tooth');
       if (sourceId === 'group:add') { setGroups(L.addGroupTo); return; }
       if (sourceId === 'group:remove') { setGroups(L.removeGroupFrom); return; }
       if (zoneId === 'shared') { setCheckNote(null); setLab((s) => L.share(s, sourceId)); }
@@ -75,6 +93,7 @@ export default function CoprimeExplorer({
       return zoneId === 'shared' ? L.canShare(lab, sourceId) : '';
     },
     onReject: (sourceId, zoneId, reason) => {
+      if (reason) playSfx('over');
       if (sourceId.startsWith('group:')) { setReject({ kind: 'group', reason }); return; }
       // Un jeton REFUSÉ au milieu est un diviseur TESTÉ : il compte dans la preuve.
       if (zoneId === 'shared') setLab((s) => L.share(s, sourceId));
@@ -85,13 +104,15 @@ export default function CoprimeExplorer({
   // LES TROUSSES : la découverte suit la preuve (tout essayé, ou un k > 1 qui marche).
   const insight = inGroups && L.groupsInsightReady(groups);
   const working = L.workingCounts(groups);
-  useEffect(() => { if (insight) state.discover(); }, [insight, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  const cpSettings = useLabCheckpointSettings('coprime-explorer');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const ruleByCheckpoint = cpOn && cpSettings.enabled;
+  useEffect(() => { if (insight && !ruleByCheckpoint) state.discover(); }, [insight, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // LES LISTES : « تحقّق » conclut quand la preuve est complète, sinon il dit ce qui manque.
   const conclusive = L.listsConclusive(lab);
   const check = () => {
     setLab(L.check);
-    if (conclusive) { setCheckNote(null); state.discover(); return; }
+    if (conclusive) { setCheckNote(null); if (!ruleByCheckpoint) state.discover(); return; }
     const missing = L.untested(lab);
     setCheckNote(L.isCoprime(lab)
       ? t('manipulation.coprime.checkUntested', { n: Math.min(a, b), list: missing.join(' ، ') })
@@ -106,6 +127,42 @@ export default function CoprimeExplorer({
   const firstWorking = working.find((k) => k > 1);
   const wrapper = <GroupWrapper theme={theme} />;
 
+  // les questions pendant le labo : la suite s'ouvre quand la preuve est complète, et finit par la règle
+  const mode = inGroups ? 'groups' : 'lists';
+  const reached = inGroups ? insight : lab.checked && conclusive;
+  const [answered, setAnswered] = useState({ key: sceneKey, done: false });
+  const isAnswered = answered.key === sceneKey && answered.done;
+  const chain = ruleByCheckpoint && !isAnswered && reached ? CHAINS[mode] : null;
+  const cp = useLabCheckpoint({
+    id: chain ? mode : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q]({ a, b, lab, groups, words, mode }, k)) : null,
+    reached: true,
+    resetKey: sceneKey,
+    onRetry: () => { setCheckNote(null); setReject(null); if (inGroups) setGroups(L.initGroups({ a, b })); else setLab(L.init({ a, b })); },
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: () => { setAnswered({ key: sceneKey, done: true }); state.discover(); state.formalize(); },
+  });
+  const stepDone = [reached && (!ruleByCheckpoint || isAnswered)];
+  const party = useStepCelebration();
+  const celebrated = useRef({ key: sceneKey, done: false });
+  if (celebrated.current.key !== sceneKey) celebrated.current = { key: sceneKey, done: false };
+  useEffect(() => {
+    if (!stepDone[0] || celebrated.current.done) return;
+    celebrated.current.done = true;
+    party.celebrate({ n: 1, total: 1 });
+  }, [stepDone[0]]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // le son : la cloche quand une répartition en trousses marche, le drapeau quand la preuve est complète
+  const heard = useRef({ works: false, proof: false });
+  useEffect(() => {
+    if (groups.k !== null && groups.works && !heard.current.works) playSfx('bell');
+    heard.current.works = groups.k !== null && !!groups.works;
+  }, [groups.k, groups.works]);
+  useEffect(() => {
+    if (reached && !heard.current.proof) playSfx('flag');
+    heard.current.proof = !!reached;
+  }, [reached]);
+
   return (
     <ManipulationShell
       type="coprime-explorer"
@@ -117,6 +174,8 @@ export default function CoprimeExplorer({
       state={state}
       numberFields={[{ key: 'a', label: 'a' }, { key: 'b', label: 'b' }]}
       allowModeSwitch={allowModeSwitch}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={!!chain || ruleByCheckpoint}
       hints={inGroups
         ? [t('manipulation.coprime.groupsHint1'), t('manipulation.coprime.groupsHint2'), t('manipulation.coprime.groupsHint3')]
         : [t('manipulation.coprime.hint1'), t('manipulation.coprime.hint2'), t('manipulation.coprime.hint3')]}
@@ -131,7 +190,7 @@ export default function CoprimeExplorer({
           }
           const small = a <= b ? lab.da : lab.db;
           const d = small.find((x) => !lab.tested.includes(x));
-          if (d === undefined) { if (!state.isDiscovered) { setLab(L.check); state.discover(); return true; } return false; }
+          if (d === undefined) { if (!state.isDiscovered) { setLab(L.check); if (!ruleByCheckpoint) state.discover(); return true; } return false; }
           setLab((s) => L.share(s, L.chipId(a <= b ? 'a' : 'b', d)));
           return true;
         },
@@ -225,7 +284,11 @@ export default function CoprimeExplorer({
       )}
       explanation={t('manipulation.coprime.explanation')}
     >
+      <div className="relative min-h-[520px]" data-cp-glance>
+      {party.node}
+      {cp.node}
       <ManipulationStage dragging={drag.dragging}>
+        <LabStepper count={1} current={0} done={stepDone} stepAttr="data-cp-step" />
         {inGroups ? (
           <div className="space-y-3" data-coprime-groups>
             <GroupStock drag={drag} theme={theme} words={words} k={groups.k} tried={groups.tried}
@@ -304,7 +367,104 @@ export default function CoprimeExplorer({
           </p>
         )}
       </ManipulationStage>
+      </div>
       <DragGhost ghost={drag.ghost}>{drag.held?.startsWith('group:') ? wrapper : heldValue !== null && <NumberTile value={heldValue} tone="divisor" />}</DragGhost>
     </ManipulationShell>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de questions de chaque niveau : elle interroge ce que l'élève vient de FAIRE ; la dernière finit par la RÈGLE. */
+export const CHAINS = Object.freeze({
+  groups: ['gWork', 'gBecause', 'rule'],
+  lists: ['lTested', 'lCommon', 'rule'],
+});
+
+const $ = (x) => `$${x}$`;
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const listText = (xs) => xs.join(' ، ');
+
+/** Chaque question est construite sur LES nombres de l'élève (rien n'est écrit en dur) ; `k` : les textes de `coprime`. */
+const BUILD = {
+  gWork: ({ a, b, groups, words }, k) => {
+    const works = L.workingCounts(groups).filter((x) => x > 1);
+    const top = Math.min(a, b);
+    const o = { a, b, top, itemsA: words.itemsA, itemsB: words.itemsB, groups: words.groups };
+    return {
+      id: 'gWork', kind: 'number', expected: String(works.length), answer: <MathText>{$(works.length)}</MathText>,
+      prompt: Mx(k, 'gWork.prompt', o),
+      hints: [Mx(k, 'gWork.hint1', o), Mx(k, 'gWork.hint2', o)],
+      explain: Mx(k, works.length === 0 ? 'gWork.explainNone' : 'gWork.explainSome', { ...o, n: works.length, list: works.join(' ، ') }),
+    };
+  },
+  gBecause: ({ a, b, groups, words }, k) => {
+    const works = L.workingCounts(groups).filter((x) => x > 1);
+    const coprime = L.isCoprime(L.init({ a, b }));
+    const o = { a, b, top: Math.min(a, b), kk: works[0], itemsA: words.itemsA, itemsB: words.itemsB, groups: words.groups };
+    return {
+      id: 'gBecause', kind: 'choice',
+      prompt: Mx(k, 'gBecause.prompt', o),
+      options: [
+        { text: Mx(k, 'gBecause.parity'), why: Mx(k, 'gBecause.whyParity', o) },
+        { text: Mx(k, coprime ? 'gBecause.noCommon' : 'gBecause.common', o), correct: true },
+        { text: Mx(k, 'gBecause.big'), why: Mx(k, 'gBecause.whyBig', o) },
+      ],
+      hints: [Mx(k, 'gBecause.hint1', o), Mx(k, coprime ? 'gBecause.hint2None' : 'gBecause.hint2Some', o)],
+      explain: Mx(k, coprime ? 'gBecause.explainNone' : 'gBecause.explainSome', o),
+    };
+  },
+  lTested: ({ a, b, lab }, k) => {
+    const small = Math.min(a, b); const big = Math.max(a, b);
+    const o = { small, big, list: listText(lab.tested) };
+    return {
+      id: 'lTested', kind: 'number', expected: String(lab.tested.length), answer: <MathText>{$(lab.tested.length)}</MathText>,
+      prompt: Mx(k, 'lTested.prompt', o),
+      hints: [Mx(k, 'lTested.hint1', o), Mx(k, 'lTested.hint2', o)],
+      explain: Mx(k, 'lTested.explain', { ...o, n: lab.tested.length }),
+    };
+  },
+  lCommon: ({ a, b, lab }, k) => {
+    const small = Math.min(a, b); const big = Math.max(a, b);
+    const allList = [...new Set([...lab.da, ...lab.db])].sort((x, y) => x - y);
+    const extra = [...lab.da, ...lab.db].find((d) => !lab.common.includes(d));
+    const refused = lab.tested.find((d) => !lab.shared.includes(d)) ?? extra;
+    const side = (d) => (a % d === 0 ? b : a);
+    const o = { a, b, small, big, shared: listText(lab.shared), refused, only: refused !== undefined ? side(refused) : big, all: listText(allList) };
+    return {
+      id: 'lCommon', kind: 'choice',
+      prompt: Mx(k, 'lCommon.prompt', o),
+      options: [
+        { text: <MathText>{$(`${lab.shared.join(' ; ')}`)}</MathText>, correct: true },
+        { text: <MathText>{$(`${[...lab.shared, refused].filter((x) => x !== undefined).sort((x, y) => x - y).join(' ; ')}`)}</MathText>, why: Mx(k, 'lCommon.whyRefused', o) },
+        { text: <MathText>{$(`${allList.join(' ; ')}`)}</MathText>, why: Mx(k, 'lCommon.whyAll', o) },
+      ],
+      cols: 3,
+      hints: [Mx(k, 'lCommon.hint1', o), Mx(k, 'lCommon.hint2', o)],
+      explain: Mx(k, 'lCommon.explain', o),
+    };
+  },
+  rule: ({ a, b, lab, groups, words, mode }, k) => {
+    const inGroups = mode === 'groups';
+    const coprime = L.isCoprime(lab);
+    const extra = inGroups ? L.workingCounts(groups).filter((x) => x > 1) : lab.common.filter((x) => x > 1);
+    const options = coprime ? [
+      { text: <MathText>{k('opt2')}</MathText>, why: <MathText>{k('why2')}</MathText> },
+      { text: <MathText>{k('opt1')}</MathText>, correct: true },
+      { text: <MathText>{k('opt3')}</MathText>, why: <MathText>{k(inGroups ? 'groupsWhy3' : 'why3')}</MathText> },
+    ] : [
+      { text: <MathText>{k('notOpt2')}</MathText>, why: <MathText>{k('notWhy2', { list: extra.join(' ، ') })}</MathText> },
+      { text: <MathText>{k('notOpt1')}</MathText>, correct: true },
+      { text: <MathText>{k('notOpt3')}</MathText>, why: <MathText>{k('notWhy3')}</MathText> },
+    ];
+    return {
+      id: 'rule', kind: 'choice',
+      prompt: <MathText>{k('discoverPrompt', { a, b })}</MathText>,
+      options,
+      hints: [Mx(k, 'rule.hint1', { a, b }), Mx(k, coprime ? 'rule.hint2Coprime' : 'rule.hint2Not', { a, b, list: extra.join(' ، ') })],
+      explain: Mx(k, coprime ? 'rule.explainCoprime' : 'rule.explainNot', { a, b, g: lab.g, list: extra.join(' ، ') }),
+    };
+  },
+};
+
+export const QUESTIONS = ordered(BUILD);

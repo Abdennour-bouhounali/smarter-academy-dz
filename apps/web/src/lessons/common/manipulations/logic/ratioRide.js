@@ -158,6 +158,11 @@ export function formulaTry(s, raw) {
   return with_(s, { last: { kind: 'formulaWrong', a, x, got: Lin.mul(a, x), want: price(s, lp.id, x) } });
 }
 
+/** « أعِد التجربة » de l'étape 2 : efface seulement la colonne fantôme et la formule (le tableau et les jugements restent). */
+export const retryRule = (s) => with_(s, {
+  ghost: Object.freeze({ ...s.ghost, done: false }), formula: Object.freeze({ done: false }), last: null,
+});
+
 /** Chaque tarif a-t-il reçu son BON jugement ? */
 export const allJudged = (s) => s.plans.every((p) => s.verdicts[p.id] === (p.linear ? 'yes' : 'no'));
 

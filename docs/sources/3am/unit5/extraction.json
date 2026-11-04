@@ -67,9 +67,9 @@
    "kind": "aside",
    "page": 70,
    "section": "تمهيد",
-   "verified": false,
+   "verified": true,
    "text": "استعمال المعادلات الرياضية قديم قدم الحضارة الإنسانية: منذ 2000 سنة قبل الميلاد استعملت في مصر القديمة لتقسيم المحاصيل بين الفراعنة والكهنة والعمال، وعرفوا معادلات من الدرجة الثانية. الخوارزمي (القرن 8م) أول من حلّ معادلات من الدرجة الثانية بطريقة جبرية، ثم عمر الخيام (القرن 11) حلّ معادلات من الدرجة الثالثة، ولم يتم حلّ معادلات من الدرجة الرابعة إلا بعد 5 قرون (القرن 16) من طرف رافائيل بومبيلي.",
-   "reading": "photo de عمر بن إبراهيم الخيام (1048م – 1131م)"
+   "reading": "p. 70 relue à 130 dpi : conforme en substance ; le cadre rose cite aussi les Babyloniens et les Grecs et compte « 27 siècles » après l'Égypte ancienne (détail non repris). Photo de عمر بن إبراهيم الخيام (1048م – 1131م)."
   },
   {
    "id": "challenge",
@@ -83,7 +83,8 @@
     "third": "4725 DA"
    },
    "answerSource": "computed",
-   "note": "« المبلغ » = 15750 DA : ربع المبلغ = 3937,5 DA ؛ ثلاثة أعشاره = 4725 DA."
+   "note": "« المبلغ » = 15750 DA : ربع المبلغ = 3937,5 DA ؛ ثلاثة أعشاره = 4725 DA.",
+   "reading": "p. 70 relue à 130 dpi : conforme (15 750 DA, un quart, trois dixièmes)."
   },
   {
    "id": "prep",
@@ -1727,25 +1728,27 @@
    "kind": "integration",
    "page": 84,
    "section": "أدمج تعلّماتي — وضعية",
-   "verified": false,
+   "verified": true,
    "text": "في منافسة سباق الدراجات، انطلق دراج بسرعة متوسطة قدرها 50km/h وهو يتابع دراجا آخر انطلق قبله بسرعة متوسطة قدرها 45km/h. ما هي المدة الزمنية اللازمة لهذا الدراج للالتحاق بمنافسه إذا علمت أن المسافة التي كانت تفصلهما عند الانطلاق هي 1km ؟ ما هي المسافة التي يقطعها الدراجان عندما يلتحق الدراج الثاني بالدراج الأول؟ تحليل: المجهول t الزمن؛ 50 × t = 45 × t + 1 ؛ t = 1/5 h = 12 min ؛ المسافة 10 km.",
    "answer": {
     "t": "قيمة 1/5 h = 12 min",
     "distance": "10 km"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "p. 84 relue à 130 dpi : conforme (50 / 45 km/h, 1 km ; t = 1/5 h = 12 min ; 10 km ; analyse en cinq temps et « حل مختصر » inclus)."
   },
   {
    "id": "evaluation",
    "kind": "integration",
    "page": 84,
    "section": "وضعية للتقويم",
-   "verified": false,
+   "verified": true,
    "text": "تحمل سيارة 15 كيسا من الفرينة و 25kg من السكر، وتحمل سيارة أخرى 10 أكياس مماثلة من الفرينة و 150kg من السكر. يقول إحدى السائقين للآخر: «إن السيارتين تحملان نفس الكتلة من السلع». ماهي كتلة كل كيس من الفرينة؟",
    "answer": {
     "sack": "25 kg"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "p. 84 relue à 130 dpi : conforme (15 sacs + 25 kg contre 10 sacs + 150 kg ; 25 kg le sac)."
   },
   {
    "id": "ict",
@@ -1892,11 +1895,13 @@
   },
   "opener": {
    "lesson": "wadiya-idmajiya-musawiyat-mutabayinat",
-   "module": null
+   "module": 7,
+   "note": "la « حكاية » du module 7 (ouverture historique réécrite), montrée après la dernière réponse"
   },
   "challenge": {
    "lesson": "wadiya-idmajiya-musawiyat-mutabayinat",
-   "module": null
+   "module": 1,
+   "note": "situation 1 « مكافأة النجاح » (T inconnu, 24 800 DA distribués, autres nombres)"
   },
   "prep": {
    "lesson": "musawiyat-amaliyat",
@@ -2357,11 +2362,13 @@
   },
   "integration": {
    "lesson": "wadiya-idmajiya-musawiyat-mutabayinat",
-   "module": null
+   "module": 7,
+   "note": "module 7 : la poursuite de Tipaza (40 / 36 km/h, 2 km), analysée et résolue ; variantes : ligne d'arrivée, arrondi à la minute, borne de l'écart"
   },
   "evaluation": {
    "lesson": "wadiya-idmajiya-musawiyat-mutabayinat",
-   "module": null
+   "module": 8,
+   "note": "module 8 : les deux camions de dattes et d'oranges (12 caisses + 40 kg contre 8 caisses + 140 kg), autres nombres"
   },
   "ict": {
    "lesson": "muadalat-darajat-ula",

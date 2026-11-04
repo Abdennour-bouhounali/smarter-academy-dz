@@ -14,11 +14,12 @@ export const LAB = {
   fewest: { world: 'fewest', tasks: [{ id: 'f1', terms: [{ p: '3/4' }, { p: '5/6' }], widest: true }] },
 };
 
-/** « تذكّر — السنة الثانية » : additionner ou soustraire deux fractions de même dénominateur, ou dont un dénominateur est multiple de l'autre (leçon 2AM `jam-tarh-kusur`, NON publiée : pas de lien). RAPPELÉ, jamais reconstruit. */
+/** « تذكّر — السنة الثانية » : additionner ou soustraire deux fractions de même dénominateur, ou dont un dénominateur est multiple de l'autre (leçon 2AM `jam-tarh-kusur`, PUBLIÉE 2026-10-29 : avec un lien). RAPPELÉ, jamais reconstruit. */
 export const RECALL = {
   source: src('method-5', 27, 'طرائق', 5),
   title: 'تذكّر — السنة الثانية',
   text: 'في السنة الثانية جمعنا كسرين لهما نفس المقام بجمع البسطين وإبقاء المقام: $\\frac{5}{9}+\\frac{2}{9}=\\frac{7}{9}$ ؛ وإذا كان مقام أحدهما مضاعفًا لمقام الآخر كتبنا الثاني بمقام الأول: $\\frac{7}{12}-\\frac{1}{4}=\\frac{7}{12}-\\frac{3}{12}=\\frac{1}{3}$ . وفي هذا الدرس نتعلّم ما بقي: كسران مقاماهما أيّ عددين.',
+  lesson: 'jam-tarh-kusur',
 };
 
 /** « تذكّر » du درس `tasawi-muqaranat-kasrayn` (PUBLIÉE : avec un lien) : le même dénominateur commun, ici pour calculer. */

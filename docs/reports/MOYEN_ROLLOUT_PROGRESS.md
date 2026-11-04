@@ -377,7 +377,7 @@ author and a bank author per lesson from the brief. Paste:
 Phase 3 of the cycle moyen rollout — generate the next N=3 lessons of the learning-net queue.
 Read first: CLAUDE.md, docs/README.md, docs/architecture/LEARNING_NET.md (§3bis platform/DB, §4 generation contract,
 §4bis order), docs/reports/MOYEN_ROLLOUT_PHASE2_REPORT_2026-10-14.md (owner decisions D1–D12; D12: publish = push
-to dev), docs/lessons/LESSON_DEVELOPMENT_GUIDE.md end to end (§3 « How a lesson is mounted » and « Adding a GRADE »,
+to dev), docs/lessons/LESSON_DEVELOPMENT_GUIDE.md end to end (incl. §6ter, the lab prototype) and docs/reports/LAB_PROTOTYPE_ROLLOUT.md §2–§6 (§3 « How a lesson is mounted » and « Adding a GRADE »,
 §11 « Publish a lesson », §14), docs/architecture/BUNDLE_BOUNDARIES.md §4 (rules 3, 4, 9, 10),
 docs/architecture/MANIPULATION_DNA.md, docs/architecture/EXERCISE_CONTRACT.md (« Term-exam provenance »,
 « Earlier-year review link »), docs/sources/moyen/exams/EXAM_PATTERN.md §6.
@@ -397,7 +397,7 @@ Run `node scripts/learning-net-queue.mjs` so the queue is fresh, then take its f
    it, then questions on what the student did, then the name). Then: « أستعدّ » measures every review-link item; nothing
    noRebuildForLesson lists is rebuilt; pointPrerequisites only along net links; the lab follows MANIPULATION_DNA with
    two levels and meets its §17 Gen Alpha quality bar (push the UI/UX to the limit; the shared kit and KidFigure — girls in
-   hijab; no title — context then ONE direct question naming the goal and end state, §17.9; screenshots of initial and mid-activity states at four sizes, reviewed and iterated; the LabCoach onboarding on the lab — MANIPULATION_CONTRACT §8quater, default on; the module redesign checklist of guide §4quinquies); knowledge map, « أتوقّع القاعدة », « مسائل », values woven into story contexts. Lab strings go to
+   hijab; no title — context then ONE direct question naming the goal and end state, §17.9; screenshots of initial and mid-activity states at four sizes, reviewed and iterated; the LabCoach onboarding on the lab — MANIPULATION_CONTRACT §8quater, default on; the LAB PROTOTYPE layer, MANDATORY since 2026-10-28 — guide §6ter and docs/reports/LAB_PROTOTYPE_ROLLOUT.md §2–§2bis: questions over the lab after each step with the teacher switch, LabStepper, celebration, playSfx sound, restart-all, guided shell, render tests, the `memo` card data on every knowledge item and `variant="memo"` footers, module steps keeping only the trace — the lesson is done only when `node apps/web/scripts/lab-rollout-status.mjs --lesson <id>` prints ✅; the module redesign checklist of guide §4quinquies); knowledge map, « أتوقّع القاعدة », « مسائل », values woven into story contexts. Lab strings go to
    apps/web/src/i18n/locales/ar/lesson.manipulation.json (keys lesson:manipulation.<type>.*), never lesson.json;
    unit maths in packages/core/arithmetic/ are imported BY PATH, never added to the core barrel. Do NOT touch App.jsx:
    run `npm run generate:lesson-index` once the lesson's lesson.config.js and routes.jsx exist. The draft الكفاءات may
@@ -469,6 +469,25 @@ Plan `docs/sources/3am/unit3/plan/kitaba-ilmiya-rutba.md` (« Generator notes »
 
 Programme item `3am.m5.x1` (extends 1AM `1am.m3.r05`). Plan `docs/sources/3am/unit5/plan/hasr-adad-ushri.md` (« Generator notes » at its end). `decimals.js` extended (`floorAt`, `ceilAt`, `roundAt`, `roundingInterval`, `quotientDigits`, `quotientBracket`, swept). New lab `scoop-scale` « ميزان العطّار » (theme `attar`, `MANIPULATION_CONTRACT` § 2septquadragies, DNA row, LabCoach row): the hand pours / pinches a MASS onto a spice scale whose seven-segment screen rounds; the student finds where the screen flips (1,25 included, 1,35 excluded; 1,50 and 2,49 for the kilo screen; 5,675 / 5,684 and the 2/7 sachet whose lamp never says « balanced » in متقدم); free panel (a reading — « 7 » and « 7,0 » differ — or a quotient). Nine modules (0 أستعدّ 7 statements · 1 نشاط with four evidence questions (the 2/7 step optional) · 2 معارف (6,358, the 8,5 · 9 · 9,5 figure) · 3 طريقة with three methods · 4 أتمرّن 7 exercises · 5–7 مسائل (a semolina bag read 24,9 kg, a family car trip 437 km / 31 L, a 100 m race at 0,01 s) · 8 إختبار أولي); catalogue `available`, `durationMinutes` 58 (82 with the مسائل), icon ⚖️. الكفاءات reworded as in the plan (P1 names the approximations, P2 adds « وحصره بهما », P3 adds the INVERSE — a number known by its rounding — and P4 « وتعيين مدوّره »). Bank 5 × 10 (3 `term_exam`, 31 `term_exam_modelled`, 9 `adapted`; oracle with its own BigInt decimals, 193 entries). Extraction: elements verified at 200 dpi (`prep` 14 and 15 and `now-77-1` corrected). Gates: lab logic + render tests, content / problems / figures tests, unit tests, e2e `apps/web/e2e/lesson-kit/3am-unit5-hasr-adad-ushri.mjs` (4 sizes × 9 modules + gestures + glance at 5 sizes).
 
+### Phase 0, entry 20 — `wadiya-idmajiya-quwa-nisbiya` « أدمج تعلّماتي — القوى ذات أسس نسبية صحيحة » (3AM unit 3, synthesis, queue #14, generated 2026-10-28, published on `dev`)
+
+Fourth synthesis of the 3AM plan and the LAST entry of unit 3 (`quwa-nisbiya`: 4 lessons + synthesis). No lab; nine modules: 0 أستعدّ (one or two statements per lesson of the unit + a « هل تعلم » on the metric prefixes) · 1–6 « الوضعية التدريبية » via `GuidedProblem` (the grains on a 64-cell board, ten-fold bacteria, Salma's notebook of six lines, red cells in a litre of blood, three numbers A / B / C, Algeria in numbers) · 7 analysis of « رقاقة الذهب » (the book's CO₂ molecule redesigned: leaf 0,1 µm, atom 288 pm, a 350 DA price as the parasite datum, prefixes recalled) · 8 final test, five stages (2,88 × 10⁻¹⁰ m, 10⁻⁷ m, 3,47 × 10² layers, order 3 × 10², between 10⁶ and 10⁷ atoms on 1 mm). One الكفاءة P1 (`pointPrerequisites` toward the four lessons), `programmeItems: []`, `durationMinutes` 30. Catalogue flipped to `available` (`difficulty` « متوسط », icon 🧩); LP total of `coursesData.test.js` is now 528.
+
+- **Textbook elements** (`integration`, `evaluation`, `ict`) re-read at 110 dpi (pdf pp. 52–53), `verified: True`, destinations moved to module 8 / situation 4 / situation 1 in `docs/sources/3am/unit3/build-extraction.py` (extraction rebuilt, `check:textbook` green). The unit card's تحدّ is NOT moved to « رقاقة الذهب » (owner question 1 of the plan stays open).
+- **Answers in scientific writing are TWO numbers** (`a` then `n`, two `numeric` steps with `ask` 0 / 1) — a `GuidedProblem` cannot hold « 7,2 × 10¹⁴ »; a pure choice (« which power? ») stays a `choice`. A power of 10 never appears with a raw `^` in a sorter item (`10¹²` or words).
+- **Bank (50 sheets, 210 questions) generated from TEMPLATES, not typed one by one** — reusable for any numbers synthesis: `content/practice/3am/wadiya-idmajiya-quwa-nisbiya/`, built by a throw-away Python generator (Fraction arithmetic, ASCII expression → LaTeX) whose every question carries an oracle spec; the committed oracle `scripts/practice-oracle/wadiya-idmajiya-quwa-nisbiya.mjs` RETYPES nothing from `expectedAnswer`: it evaluates the spec in its own BigInt rationals (power before unary minus, negative exponents), checks that each 2-digit / decimal literal of the spec appears in the sheet, finds the unique `n` (scientific writing tested over all n, never by counting digits), rounds half up with the `a' = 10` carry, judges every choice option by READING its two powers of 10 (brackets) or its words (compare / sign) and recomputes the named misconceptions it can (SIGN, PRIORITY, MULEXP, POWSUM, DIGITS, ROUND, FIRST). Six situation templates (layers = thickness ÷ diameter, a count × a volume, light travel time, ten-fold growth, area per inhabitant, a mass) × two parameter sets in levels 4 / 5. Provenance: **0 `term_exam`** (no corpus paper was re-read at the scan for this entry, and the rule is « `term_exam` only for exercises actually read »), 47 `term_exam_modelled` (`3am-s2` / `3am-s3` badges alternate), 3 `adapted` (`evaluation`, `ict`, `integration` of the book, new numbers); 24 `MISC-WQ-*` in `misconceptions.json`. A signature must be readable by `validate-exercises`: a value like 0,000000000000000125 is refused (« illisible »), so tiny-decimal distractors are left out.
+- **Not done / deviations from the plan:** the plan's « ≈ 6 faithful `term_exam` » (3am-s2-76 / -80 / -83, 3am-s3-51, 3am-s2-69 / -75) is replaced by `term_exam_modelled` (honest, reading skipped); the optional `UnitOpenerFigure` challenge drawing is not built; no new e2e interaction script is committed beyond `apps/web/e2e/lesson-kit/3am-unit3-wadiya-idmajiya-quwa-nisbiya.mjs` (mounts every module at 4 tablet / laptop sizes, no console error, no raw `$`).
+
+### Phase 0, entry 21 — `wadiya-idmajiya-musawiyat-mutabayinat` « أدمج تعلّماتي — المساويات – المتباينات – المعادلات » (3AM unit 5, synthesis, queue #20, generated 2026-10-28, published on `dev`)
+
+Fifth and LAST synthesis of the 3AM units 1–5 plan (`musawiyat-mutabayinat`: 4 lessons + synthesis). No lab; nine modules: 0 أستعدّ (seven statements, one or two per lesson) · 1–6 « الوضعية التدريبية » via `GuidedProblem` (the reward split with T unknown and 24 800 DA, Salma's notebooks `4x + 32 = 200`, the spice shelf with a rounded scale reading, the taxi `50 + 30d`, the cold room with ×1,8 and ×(−2), the ages `41 + n = 3(9 + n)` then `n > 23`) · 7 analysis of the pursuit in Tipaza (40 / 36 km/h, 2 km — the book's `integration` redesigned, analysed AND solved in five steps, then four decisions: finish line, rounding 19,5 min → 20, 13 km < 15, `d ≤ 1,5`; the « حكاية » card after the last answer) · 8 final test on ANOTHER situation (the two trucks `12x + 40 = 8x + 140`, x = 25, 340 kg, 6 more boxes, `339,4 ≤ L < 340,6`). TWO الكفاءات (P1 properties and brackets, P2 model / solve / check; E1–E3 are P2, E4–E5 P1), `programmeItems: []`, `durationMinutes` 28, catalogue `available` (`difficulty` « متوسط », icon 🚴); the LP total of `coursesData.test.js` is now 530. The unit card's تحدّ is rewritten in the platform's words (24 800 DA, T unknown; no `sourceElementId`).
+
+- **No `term-ferry` lab in module 7** (plan risk 3, fallback taken): a synthesis has no lab and the solution x = 1/2 is fractional; the analysis is a `MethodSteps` block + `TapQuestion`s.
+- **`requires` of a synthesis' questions are the unit's four LESSON slugs** (`musawiyat-amaliyat-3am`, `mutabayinat-amaliyat-3am`, `hasr-adad-ushri-3am`, `muadalat-darajat-ula-3am` — `priorKnowledge`), never another lesson's brick ids (`E_REQUIRES_NOT_ESTABLISHED`); `knowledgeGraph.js` carries each knowledge item on exactly ONE `notebook` node (`lessonGraphs.test.js`); a drawing may not contain a digit absent from the statement (`masailIllustrations.test.js`: « ربع T », not « 1/4 »).
+- **Textbook elements** `opener`, `challenge` (p. 70), `integration`, `evaluation` (p. 84) re-read at 130 dpi, `verified: True`, destinations → modules 7 / 1 / 7 / 8 in `docs/sources/3am/unit5/build-extraction.py` (extraction rebuilt, `check:textbook` green).
+- **Bank (50 sheets, 210 questions) generated from TEMPLATES** (family builders with seeded numbers: property of equalities, scaling, solve, solve with brackets, sat / holds / translate choices, ranges of an affine expression, `law` implications, rounding, rounded-reading brackets, integer cap, bracket vs limit decision) and checked by the committed oracle `scripts/practice-oracle/wadiya-idmajiya-musawiyat-mutabayinat.mjs`: BigInt rationals + AFFINE FORMS `a·x + b` (an equation is solved in x, a number is tested by substitution), round-half-up `rnd`, `lo / hi` (r ∓ p/2), `fl / ce`, and every MC option judged by its own spec (`sat`, `holds`, `eqsol` — a distractor must NOT have the context's solution, `br`, `law` on a ½-step grid, `always` / `undecided` / `never` for « is the limit inside the bracket »); exactly ONE true option per MC, every signature `via` recomputed, every ≥ 2-digit literal re-read in the sheet. Two generator lessons: **no two signatures of one question may share a value** (`content.test.js` evaluates the first declared id), and a translation distractor must be re-solved (x = 1 made `30 = 2t + 28` accidentally correct). Provenance: **0 `term_exam`**, 47 `term_exam_modelled`, 3 `adapted` (`integration`, `evaluation`, `challenge`, new numbers); NO new misconception id (`MISC-MUSAWIYA-*`, `MISC-MUADALA-*`, `MISC-MUTABAYINA-*`, `MISC-TADWIR-*` reused).
+- **Not done / deviations:** the plan's « 7 faithful `term_exam` » became `term_exam_modelled` (no corpus paper re-read); `objectives` exist only where the component takes them (`ContentModule`: module 7; `GuidedProblem`, `PrerequisiteDiagnostic`, `BossFinal` have no such prop); owner questions 1 (P1 / P2 wording), 4 (two different situations, M7 and M8) keep the plan's default.
+
 ## HANDOFF — 3AM units 1–5 plan, state at the end of the 2026-10-26 session (coordinator notes)
 
 Master plan: `docs/curriculum/PLAN_3AM_UNITS_1_5.md` (20 entries). **18 of 20 are generated, gated, committed, pushed to `dev` and
@@ -479,8 +498,8 @@ published in the LOCAL database (modules + exercises `published`, nothing draft)
 
 | Lane | Entry | Code | Unit dir | Port | Notes |
 |---|---|---|---|---|---|
-| A | #20 | `wadiya-idmajiya-musawiyat-mutabayinat` | `unit5` | 5173 | unit-5 synthesis; module 7 reuses `term-ferry`; plan `docs/sources/3am/unit5/plan/wadiya-idmajiya-musawiyat-mutabayinat.md` |
-| B | #14 | `wadiya-idmajiya-quwa-nisbiya` | `unit3` | 5174 | unit-3 synthesis + « رقاقة الذهب »; plan `docs/sources/3am/unit3/plan/wadiya-idmajiya-quwa-nisbiya.md` |
+| A | #20 | `wadiya-idmajiya-musawiyat-mutabayinat` | `unit5` | 5173 | **DONE 2026-10-28** (entry 21): unit-5 synthesis; module 7 WITHOUT `term-ferry` (fallback); plan `docs/sources/3am/unit5/plan/wadiya-idmajiya-musawiyat-mutabayinat.md` |
+| B | #14 | `wadiya-idmajiya-quwa-nisbiya` | `unit3` | 5174 | **DONE 2026-10-28** (entry 20): unit-3 synthesis + « رقاقة الذهب »; plan `docs/sources/3am/unit3/plan/wadiya-idmajiya-quwa-nisbiya.md` |
 
 Start both with the plan's « generator prompt » (`PLAN_3AM_UNITS_1_5.md` § « The generator prompt »; replace `<CODE>`, `<UNIT_DIR>`,
 `<PORT>`, `<OTHER>`), launched as two background Sonnet sub-agents, plus these rules added since the plan was written:
@@ -494,7 +513,8 @@ Syntheses have no new lab (nine modules; modules 1–6 « وضعيات تدري�
 
 ### Coordinator sequence after each pair (exactly what was run)
 
-1. `rm -rf apps/web/dist` (a stale `dist/.htaccess` breaks the `sa-share-pages` plugin), then `npm test` (web + scripts),
+1. `npm test` (web + scripts) — the former `rm -rf apps/web/dist` step is no longer needed: since 2026-10-29 the
+   `sa-share-pages` plugin never reads `dist/` (template from `public/.htaccess`), so a stale `dist/` or two parallel builds pass —,
    `npm run check:lessons`, `NODE_OPTIONS=--max-old-space-size=8192 npm run build`, `node scripts/learning-net-queue.mjs --check`.
    The `buildLessonMemo` 4AM `insihab-shuaa` test is a known load flake (passes alone); `examSheet.test.js` timeout is 180 s.
 2. Grep the changed files for `🐷 🃏 🎰 🍺 🍷` (the guide's own rule text is the only legitimate hit).
@@ -520,3 +540,268 @@ When pair 10 is done the 3AM unit 1–5 plan is complete: update `docs/curriculu
 - `kitaba-ilmiya-rutba`: ex-61 / ex-62 (Pythagoras, Thales) notIntegrated; order-of-magnitude convention follows the book (half up); negatives only in P1.
 - `hasr-adad-ushri`: unit-5 README Q1 (net links `2am.m1.r05` / `r06 → 3am.m5.x1`), Q3 (P3 adds the inverse), Q4 (no 2AM papers, 3 faithful term-exam sheets); loose `RANK` distractors on L1–L3 (helper offered a rework); the 1AM home lesson `hasr-qiyam-muqarraba` is unpublished so its « تذكّر » box has no link yet.
 - Other: 🎲 in `ProbabilityStatsTool.jsx` / `MATH_LAB.md` (probability object); whether the importer should create content as `published` directly; unchecked `term_exam` claims in pair-5 banks (`amaliyat-natiqa` 16, `qimat-ibara-harfiya` 14); unit-card تحدّ texts of units 1/2 still book-verbatim; `node apps/web/e2e/lesson-route-boundary.mjs` never run against the real API.
+
+## 2AM مقطع `2am.m1` (units 1–2) — 10 entries, plan and run index `docs/curriculum/PLAN_2AM_M1.md` (from 2026-10-28)
+
+Owner request: the 10 `coming_soon` entries of 2AM « ميدان الأنشطة العددية », مقطع 2am.m1, along the net, connected to 3AM / 4AM by
+BACK links only (successor `pointPrerequisites` ← `2am_<code>_P<m>` along net links + linked « تذكّر — السنة الثانية »). Plans per entry
+in `docs/sources/2am/unit{1,2}/plan/` (owner questions in each README). One commit per lesson; the successor connection is its own commit.
+
+### Pair 1 — `silsila-bidun-aqwas` (unit 1, seeds the unit) and `kasr-hasil-qisma` (unit 2), published on `dev` 2026-10-29
+
+- `silsila-bidun-aqwas` « سلسلة عمليات دون أقواس »: lab `tram-route` (theme `tramline`), `packages/core/arithmetic/chainOps.js`, unit 1 `_unit/` +
+  whole-unit extraction (`docs/sources/2am/unit1/`), unit تحدّ rewritten (40 − 12 + 6). Bank 7 `term_exam` / 33 modelled / 10 adapted.
+- `kasr-hasil-qisma` « الكسر وحاصل القسمة »: lab `mooring-lines` (theme `harbor`), `packages/core/arithmetic/fractions2.js`. Bank 10 `term_exam` /
+  32 modelled / 8 adapted. « تذكّر » links to `hasil-qisma-kasr`, `ikhtizal-kitaba-kasriya`, `qisma-iqlidiya-hasr`; P4 ← `2am_qisma-iqlidiya-hasr_P2`.
+- Successor connection (commit `feat(lessons): connect quwat-adad-nisbi to silsila-bidun-aqwas`): `quwat-adad-nisbi` P4 ←
+  `2am_silsila-bidun-aqwas_P2` (link `2am.m1.r01 → 3am.m3.r08`), linked « تذكّر — السنة الثانية » in its طريقة step 2. `kasr-hasil-qisma` has
+  no 3AM successor in the net (owner question `2am.m1.r05/r06 → 3am.m5.x1` still open).
+- Gates (coordinator, whole tree): `npm test` exit 0 (core, web 714 files / 14 576 tests, scripts 18 211), `check:lessons` (entry 236.6 KB gzip),
+  build, net tests, queue check, `lab-rollout-status` ✅ for both. Local DB: 9 modules + 50 exercises each `published`.
+- Known: `apps/web/e2e/lesson-route-boundary.mjs` fails its student-phone check (390×844 on a 4AM lesson) since the 2026-10-27 large-screen
+  enforcement — the check is stale, not these lessons.
+- Owner points added: bank L4 sheets 1–3 of `silsila-bidun-aqwas` use the arc tape (`ArcTape`) — drop if arcs count as grouping; textbook
+  misprints listed in `docs/sources/2am/unit1/build-extraction.py › DISCREPANCIES`.
+
+### Pair 2 — `silsila-bi-aqwas` (unit 1) and `jam-tarh-kusur` (unit 2), published on `dev` 2026-10-29
+
+- `silsila-bi-aqwas` « سلسلة عمليات تتضمّن أقواسا »: lab `coop-calculator` (brackets typed on a calculator at the school cooperative's
+  counter), extends `chainOps.js`. Bank 13 `term_exam` / 28 modelled / 9 adapted (modelled = `platform_addition` + `reason: term_exam_modelled`,
+  the contract's form). Eighth misconception `MISC-AQWAS-MISPLACED`.
+- `jam-tarh-kusur` « جمع وطرح كسرين »: lab `trail-odometer` (theme `mountaintrail`: a scout walks a trail of white posts; the hand holds the
+  distance), extends `fractions2.js`. Bank 8 `term_exam` / 35 modelled / 7 adapted. Its متقدم predict phase was reflowed to fit 1024×768
+  (886 → 706 px; « Screen budget » in `MANIPULATION_CONTRACT.md` §2novenquinquagies bis).
+- Successor connection (commit `feat(lessons): connect quwat-adad-nisbi and jam-tarh-kasrayn to pair 2`): `quwat-adad-nisbi` P4 ← also
+  `2am_silsila-bi-aqwas_P1`, `_P3`, and a second linked « تذكّر — السنة الثانية » (the fraction bar) in طريقة step 4; `jam-tarh-kasrayn`
+  P1 ← `2am_jam-tarh-kusur_P2`, P2 ← `_P1`, `_P3`, and its معارف « تذكّر — السنة الثانية » now links. Both links checked in the browser.
+  Still to write the day `muqarana-kasrayn` is published: `2am_jam-tarh-kusur_P2` ← `2am_muqarana-kasrayn_P3`.
+- Gates (coordinator, whole tree): `npm test` exit 0 (core 1094, web 722 files / 14 717 tests, scripts 18 548), `check:lessons` (entry
+  236.7 KB gzip), build, net tests, queue check, `lab-rollout-status` ✅ for both. Local DB: 9 modules + 50 exercises each `published`.
+- Known: `apps/web/e2e/lesson-kit/3am-unit2-jam-tarh-kasrayn.mjs` stalls in its lab drive (a lab question overlay intercepts the click) —
+  the script predates the lab-prototype rollout (lot 5, 2026-10-28); its module checks up to the lab pass.
+- Owner points added: `coop-calculator` prints the calculator's honest −5,8 for a numerator-only line (negatives not taught; refuse the line
+  instead?); `2am-s1-77` ex 1 is cited as `term_exam` on three `silsila-bi-aqwas` sheets (L2-002, L5-002 may reuse the same part);
+  many unit-1 extraction elements are still `verified: False` (re-read at 100 dpi only).
+
+### Pair 3 — `wasf-silsila-hisab` (unit 1) and `jida-kasrayn` (unit 2), published on `dev` 2026-10-29
+
+- `wasf-silsila-hisab` « وصف سلسلة حسابات »: lab `chain-cutter` « مقصّ السلسلة » (theme `corkboard`: the hand chooses where a printed chain
+  is cut; only a cut at the last operation works, any other bites a staple and shows the recollected value), extends `chainOps.js` (L3 row:
+  `analyse`, `lastOperation`, `describe`, `cutAt`, `build`…). Bank 2 `term_exam` / 40 modelled / 8 adapted (few faithful sheets: the 2AM
+  papers describe chains rarely). Coordinator fix: two level-5 bank sheets still said « الساحر » / « خدعة » (the lead had renamed the
+  مسألة only) — now « لغز سالم » / « لغز العدد ».
+- `jida-kasrayn` « جداء كسرين »: lab `window-blinds` « ستائر النافذة » (theme `classwindow`: two perpendicular pulls — a side curtain on rail
+  stops for a/b, a roller blind on cord notches for c/d — the doubly shaded corner is the product), extends `fractions2.js` (E3:
+  `productGrid`, `timesNumber`, `fractionOf`, `ofRemainder`). Bank 9 `term_exam` / 31 modelled / 10 adapted. M4 has seven exercises.
+- Successor connection (commit `feat(lessons): connect maqlub-qismat-kasrayn to jida-kasrayn`): `maqlub-qismat-kasrayn` P1 ←
+  `2am_jida-kasrayn_P1` (net `2am.m1.r07 → 3am.m1.r03`); its معارف « تذكّر — السنة الثانية » already computed `getLessonPath('jida-kasrayn')`
+  and now renders the link. `wasf-silsila-hisab` has NO successor edge: its plan's `tabsit-hadhf-aqwas` P4 ← `2am_wasf-silsila-hisab_P1`
+  waits for the owner to add the net link `2am.m1.r02 → 3am.m5.r01` (and with it the « تذكّر » in that lesson's « مجموع أم جداء » item).
+- Gates (coordinator, whole tree): `npm test` exit 0 (core 1106, web 730 files / 14 857 tests, scripts 18 928), `check:lessons` (entry
+  236.7 KB gzip), build, net tests, queue check, `lab-rollout-status` ✅ for both; lesson-kit e2e green (227 and 196 checks). Local DB:
+  9 modules + 50 exercises each `published`; the new 3AM edge is in `learning_point_prerequisites`.
+- Owner points added: the net link `2am.m1.r02 → 3am.m5.r01` (above); `ex-9` of `wasf-silsila-hisab` (a calculation tree) is a `selfCheck`
+  because no tree figure kind exists; `jida-kasrayn` M4 `ex-7` uses 450 seats from the plan's reading of `deep-42`, not re-checked on the scan;
+  unit-1 extraction stays `verified: False`.
+
+### Pair 4 — `tawzi-darb-jam-tarh` (unit 1) and `muqarana-kasrayn` (unit 2), published on `dev` 2026-10-29
+
+- `tawzi-darb-jam-tarh` « توزيع الضرب على الجمع والطرح »: lab `kit-packer` « ورشة الحقائب التضامنية » (theme `solidarity`: the hand sets
+  what each dispenser releases, a belt deals one item per bag, and the BAG is the referee — two equal counters are not enough), extends
+  `chainOps.js` (L4: `expand`, `factorOut`, `commonFactor`, `mentalSplits`, `expandLetter`). Bank 9 `term_exam` / 32 modelled / 9 adapted.
+- `muqarana-kasrayn` « مقارنة كسرين »: lab `level-laser` « ليزر المستوى » (theme `oilpress`: the hand holds the height of a laser level
+  across tanks whose tubes are graduated differently; wrong models are refuted by the laser jumping to the claimed level), extends
+  `fractions2.js` (E4: `compareCase`, `compareSimple`, `orderSimple`, `vsOne`). Bank 12 `term_exam` / 28 modelled / 10 adapted.
+- Successor connection (commit `feat(lessons): connect tasawi-muqaranat-kasrayn, tabsit-hadhf-aqwas and jam-tarh-kusur to pair 4`):
+  `tasawi-muqaranat-kasrayn` P2 ← `2am_muqarana-kasrayn_P3`, P3 ← also `_P2`, `_P4` (its معارف « تذكّر » now links by itself);
+  `tabsit-hadhf-aqwas` P1 ← `2am_tawzi-darb-jam-tarh_P3` (net `2am.m1.r03 → 3am.m5.r01`); `jam-tarh-kusur` P2 ← `2am_muqarana-kasrayn_P3`
+  and its forward renvoi on comparison is now a linked « تذكّر ». NOT written (no net link): `nashr-jabri-3am`, `jidaa-adadayn-nisbiyayn`,
+  `jidaa-ida-nisbiya` ← `tawzi-darb-jam-tarh`; the plan's recall box in `tabsit-hadhf-aqwas` معارف has no like-terms brick to sit before
+  (its أستعدّ « راجع » card links by itself).
+- Coordinator fix: `scripts/learning-net-queue.mjs` dropped the synthesis of a unit whose lessons were all published lesson by lesson
+  (`--check` failed on both 2AM syntheses); each grade phase now closes with the syntheses of its complete units (commit `fix(net): …`,
+  `LEARNING_NET.md` §4bis rule 5).
+- Gates (coordinator, whole tree): `npm test` exit 0 (core 1113, web 739 files / 15 003 tests, scripts 19 312), `check:lessons` (entry
+  236.8 KB gzip), build, net tests, `lab-rollout-status` ✅ for both; lesson-kit e2e green. The coordinator re-captured the `level-laser`
+  lab at 1024×768, 1366×768 and 768×1024 (the lead's captures were gone). Local DB: 9 modules + 50 exercises each `published`, no draft
+  module left among the eight 2AM lessons.
+- Owner points added: the three net links above (`2am.m1.r03 → 3am.m5.r02`, `→ 3am.m1.r01`); `2am-s1-75` ex 5 was read on the text layer
+  only (the shakiest `term_exam` of `muqarana-kasrayn`); the net direction `r08 ↔ r09` question stays open (current direction kept).
+
+### Pair 5 — the syntheses `wadiya-idmajiya-amaliyat-tabiiya-ushriya` (unit 1) and `wadiya-idmajiya-kusur-amaliyat` (unit 2), published on `dev` 2026-10-29
+
+- Both copy the 3AM synthesis architecture (00 أستعدّ · 01–06 « الوضعية التدريبية » · 07 analysis of the final situation, the only
+  `ContentModule`, with `objectives` · 08 final test), no lab, one الكفاءة each with `pointPrerequisites` P1 ← the unit's lessons
+  (unit 1: `silsila-bidun-aqwas_P3`, `silsila-bi-aqwas_P3`, `wasf-silsila-hisab_P3`, `tawzi-darb-jam-tarh_P4`; unit 2:
+  `qisma-iqlidiya-hasr_P2`, `kasr-hasil-qisma_P4`, `jam-tarh-kusur_P3`, `jida-kasrayn_P3`, `muqarana-kasrayn_P3`). Banks: unit 1
+  4 `term_exam` / 40 modelled / 6 adapted; unit 2 8 `term_exam` / 42 modelled. `coursesData.test.js` LP total 530 → 532.
+- No successor connection (a synthesis has no item and no net link).
+- Gates (coordinator, whole tree): `npm test` exit 0 (core 1113, web 743 files / 15 108 tests, scripts 19 722), `check:lessons` (entry
+  236.8 KB gzip, queue 146), build, net tests; lesson-kit e2e green for both. Local DB: 9 modules + 50 exercises each `published`.
+- Owner points added: unit-1 synthesis L5 sheets `l5-004`, `l5-006`, `l5-007` divide by a decimal (22 ÷ 0,4 …) — inside the unit's
+  boundary?; L3-008 uses « diameter × 3,14 » for a half circle; unit-2 synthesis redesigned the printed challenge cards (the book's set
+  has no sum-to-1 choice) and replaced the book's sanitation statistics by a water-network situation — confirm.
+
+### 2AM مقطع `2am.m1` — closing summary (2026-10-29)
+
+All ten `coming_soon` entries of 2AM units 1–2 are generated, `available`, pushed to `dev` and published in the local DB (9 modules + 50
+exercises each, no draft): `silsila-bidun-aqwas`, `silsila-bi-aqwas`, `wasf-silsila-hisab`, `tawzi-darb-jam-tarh`,
+`wadiya-idmajiya-amaliyat-tabiiya-ushriya` (unit 1) and `kasr-hasil-qisma`, `jam-tarh-kusur`, `jida-kasrayn`, `muqarana-kasrayn`,
+`wadiya-idmajiya-kusur-amaliyat` (unit 2) — with `qisma-iqlidiya-hasr`, published earlier, the whole مقطع. Eight new labs: `tram-route`,
+`coop-calculator`, `chain-cutter`, `kit-packer`, `mooring-lines`, `trail-odometer`, `window-blinds`, `level-laser`; shared maths in
+`packages/core/arithmetic/chainOps.js` and `fractions2.js`. Connection to 3AM (and through it to 4AM), back links only, along net links:
+`quwat-adad-nisbi`, `jam-tarh-kasrayn`, `maqlub-qismat-kasrayn`, `tasawi-muqaranat-kasrayn`, `tabsit-hadhf-aqwas` (LP edges + linked
+« تذكّر »), and inside 2AM `jam-tarh-kusur` ← `muqarana-kasrayn`. Open owner questions are listed in each pair's entry and in
+`docs/sources/2am/unit{1,2}/plan/README.md`. Next in the queue: `docs/curriculum/GENERATION_QUEUE.md`.
+
+## 2AM مقطع `2am.m4` (units 3–4) — 10 entries, plan and run index `docs/curriculum/PLAN_2AM_M4.md` (from 2026-10-29)
+
+Owner request: « continue generating the ميدان الأنشطة العددية lessons 2AM » — after `2am.m1`, the 10 `coming_soon` entries of مقطع 2am.m4
+« الأعداد النسبية – مفهوم معادلة » (unit 3 `adad-nisbiya-2`: 5 lessons + its synthesis; unit 4 `mafhum-muadala`: 3 lessons + its synthesis;
+`muqarana-nisbiya` had been published earlier), along the net, connected by BACK links only. Plans per entry in `docs/sources/2am/unit{3,4}/plan/`
+(owner questions in each README, defaults applied). Five pairs in two lanes; one commit per lesson; the successor connection is its own commit.
+
+### Pair 1 — `talim-mustaqim-mudarraj-2` (unit 3) and `ibara-harfiya-intaj` (unit 4, seeds the unit), published on `dev` 2026-10-29
+- `talim-mustaqim-mudarraj-2` « التعليم على مستقيم مدرّج »: lab `corniche-ruler` (the hand holds the ORIGIN, then the value of a graduation; wrong
+  readings raise a ghost), `relative.js` E1. Bank 5 `term_exam` / 40 modelled / 5 adapted.
+- `ibara-harfiya-intaj` « إنتاج عبارة حرفية واستعمالها »: lab `wax-cells` (hexagonal cells; the rod count is read off the DRAWN cells), `equation2.js` E1,
+  letters option in `substitution.js`; unit 4 `_unit/` + whole-unit extraction (92 elements). Bank 6 `term_exam` / 36 modelled / 6 adapted.
+- Successor connection (`feat(lessons): connect muqarana-nisbiya to talim-mustaqim-mudarraj-2`): `muqarana-nisbiya` P1 ← `2am_talim-mustaqim-mudarraj-2_P1`
+  (net r01 → r02). `ibara-harfiya-intaj` has no net link: none.
+- Coordinator review caught: « value + unit » reversed in `corniche-ruler` strings (« m 3 »), a clipped off-board label, a cramped tray pill in
+  `wax-cells`, a missing `predictPrompt` (strict audit).
+
+### Pair 2 — `jam-tarh-nisbiya` (unit 3) and `hall-mushkil-muadala` (unit 4), published on `dev` 2026-10-29
+- `jam-tarh-nisbiya` « جمع وطرح عددين نسبيين »: lab `balloon-ballast` (flames and sandbags tied or thrown; the judge reads the gesture log AND the typed
+  altitude), `relative.js` E2. Bank 7 `term_exam` / 37 modelled / 6 adapted.
+- `hall-mushkil-muadala` « حلّ مشكل باستعمال معادلة »: lab `juice-line` (the hand holds a bottle mould or the tank; the world checks the typed
+  operation), `equation2.js` E2; the advanced slate drops its digit chips (`inputMode="decimal"`) to fit one screen. Bank 8 `term_exam` / 36 / 6.
+- Production bug found at the local import: the third الكفاءة of `hall-mushkil-muadala` was 292 characters and `learning_points.title` is a VARCHAR(255)
+  (`smarter:import-curriculum` crashed; production would have too). Shortened to 181; `learningPoints.test.js` now guards every title at 255.
+- Successor connection: `jidaa-adadayn-nisbiyayn` P1 ← `2am_jam-tarh-nisbiya_P1`, P3 ← `_P2`; `jidaa-ida-nisbiya` P4 ← `_P2`, `_P3`;
+  `muadalat-darajat-ula` P1 ← `2am_hall-mushkil-muadala_P2`, P4 ← `_P1` (their linked « تذكّر » go live by themselves).
+
+### Pair 3 — `majmu-jabri` and `talim-nuqta-mustawi` (both unit 3), published on `dev` 2026-10-29
+- `majmu-jabri` « حساب مجموع جبري »: lab `tug-rope` (turn the children whose term follows « − », send each to a team; the ribbon moves by the
+  difference), `relative.js` E3. Bank 15 `term_exam` / 27 modelled / 8 adapted.
+- `talim-nuqta-mustawi` « تعليم نقطة في المستوي »: lab `dig-grid` (drag the origin stake in 2D; a swapped reading is drawn), `relative.js` E4,
+  `TextbookExercise` accepts `figure`. Bank 10 `term_exam` / 33 modelled / 7 adapted.
+- Successor connection: `tanasub-tamthil-bayani` P1 ← `2am_talim-nuqta-mustawi_P3`, P4 ← `_P2`. `majmu-jabri`: none (`ikhtibar-musawat-mutabayina`
+  writes its own edge). **The direct 2AM → 4AM edges (`murakkibata-shuaa`, `muntasaf-masafa`) are NOT written**: `decomposition.test.js` requires every 4AM
+  الكفاءة prerequisite to be a 4AM one; the edges are ready as a patch (owner decision, below).
+- Coordinator review caught: clipped / overprinting memo-card formulas in both lessons (new e2e assertion), 8 failing `lessonGraphs` tests for `majmu-jabri`.
+
+### Pair 4 — `masafa-nuqtatayn` (unit 3) and `ikhtibar-musawat-mutabayina` (unit 4), published on `dev` 2026-10-30
+- `masafa-nuqtatayn` « المسافة بين نقطتين على مستقيم مدرّج »: lab `gap-caliper` (a caliper screw on a thermometer; the opening is the distance),
+  `relative.js` E5. Bank 7 `term_exam` / 37 modelled / 6 adapted.
+- `ikhtibar-musawat-mutabayina` « اختبار صحة مساواة أو متباينة »: lab `bridge-load` (sacks on a truck on a weighbridge; the world tests the sign),
+  `equation2.js` E3; writes `P1 ← 2am_majmu-jabri_P2` itself. Bank 12 `term_exam` / 32 modelled / 6 adapted.
+- Successor connection (`feat(lessons): connect musawiyat-amaliyat and mutabayinat-amaliyat …`): `musawiyat-amaliyat` P1/P3 ← `2am_ikhtibar-musawat-mutabayina_P1`,
+  `mutabayinat-amaliyat` P1 ← `_P3`, and a linked « تذكّر — السنة الثانية » (`RECALL.year2`) in both معارف modules. Found and fixed on the way: two doubled
+  backslashes in JSX `prompt="…"` attributes of `musawiyat-amaliyat` Module02 showed « frac23 » / « times » to the student.
+  `masafa-nuqtatayn` → 4AM: not written (same guard).
+
+### Pair 5 — the syntheses `wadiya-idmajiya-adad-nisbiya-2` (unit 3) and `wadiya-idmajiya-mafhum-muadala` (unit 4), published on `dev` 2026-10-30
+- Both copy the 2AM synthesis architecture (00 أستعدّ · 01–06 « الوضعية التدريبية » · 07 analysis of the final situation, the only `ContentModule`, with
+  `objectives` · 08 final test), no lab, one الكفاءة each with `pointPrerequisites` P1 ← the unit's lessons (unit 3: `talim-mustaqim-mudarraj-2_P2`,
+  `muqarana-nisbiya_P3`, `talim-nuqta-mustawi_P3`, `jam-tarh-nisbiya_P3`, `majmu-jabri_P2`, `masafa-nuqtatayn_P1`; unit 4: `ibara-harfiya-intaj_P2`,
+  `hall-mushkil-muadala_P3`, `ikhtibar-musawat-mutabayina_P1`, `_P3`). Banks: unit 3 2 `term_exam` / 48 modelled; unit 4 3 `term_exam` / 45 modelled /
+  2 adapted. `coursesData.test.js` LP total 532 → 534. Unit 3's تحدّ rewritten with Chott Melghir / Tahat (`challenge.textAr` and the textbook map).
+- No successor connection (a synthesis has no item and no net link).
+
+### Gates (coordinator, whole tree, after each pair)
+Final run (2026-10-30): `npm test` exit 0 (core 1147, web 780 files / 15 798 tests, scripts 21 428); `check:lessons` exit 0 (entry 237.1 KB gzip ≤ 245;
+predict audit 586/586); build; net tests 98; queue check 136; `lab-rollout-status` ✅ for the eight lab lessons; each lesson's own lesson-kit e2e green
+at 768×1024, 1024×768, 1280×800, 1366×768 (the lab glance asserted ≤ 700 px at 1024×768 in both levels). Local DB: 9 modules + 50 exercises each
+`published` for all ten. Old 3AM lesson-kit scripts (`3am-unit5-mutabayinat-amaliyat.mjs`, `3am-musawiyat-mutabayinat.mjs`) time out in their lab drive
+(they predate the lab prototype); their module-mount checks have no failure.
+
+### 2AM مقطع `2am.m4` — closing summary (2026-10-30)
+All ten `coming_soon` entries of 2AM units 3–4 are generated, `available`, pushed to `dev` and published in the local DB: `talim-mustaqim-mudarraj-2`,
+`jam-tarh-nisbiya`, `majmu-jabri`, `talim-nuqta-mustawi`, `masafa-nuqtatayn`, `wadiya-idmajiya-adad-nisbiya-2` (unit 3) and `ibara-harfiya-intaj`,
+`hall-mushkil-muadala`, `ikhtibar-musawat-mutabayina`, `wadiya-idmajiya-mafhum-muadala` (unit 4) — with `muqarana-nisbiya`, the whole مقطع, and with
+مقطع `2am.m1` the whole ميدان الأنشطة العددية of 2AM. Eight new labs: `corniche-ruler`, `balloon-ballast`, `tug-rope`, `dig-grid`, `gap-caliper`, `wax-cells`,
+`juice-line`, `bridge-load`; shared maths in `relative.js` (E1–E5) and `equation2.js` (E1–E3). Back links: `muqarana-nisbiya`, `jidaa-adadayn-nisbiyayn`,
+`jidaa-ida-nisbiya`, `muadalat-darajat-ula`, `tanasub-tamthil-bayani`, `musawiyat-amaliyat`, `mutabayinat-amaliyat` (LP edges + linked « تذكّر »).
+Next in the queue: `docs/curriculum/GENERATION_QUEUE.md`.
+
+**Open owner decisions:**
+1. **2AM → 4AM LP edges** (`4am_murakkibata-shuaa_P2/P3` ← `2am_talim-nuqta-mustawi_P2/P3`, `4am_muntasaf-masafa_P1` ← `_P2`, and the `masafa-nuqtatayn`
+   edges toward `hisab-murakkibatay` / `ithbat-khawas-maalam`): blocked by `decomposition.test.js` (the 4AM decomposition accepts only 4AM prerequisites).
+   Open the guard to earlier-year LP ids, or keep the item / lesson level links.
+2. Net links proposed by the planners and NOT added: `2am.m4.r02 → r07`, `r01 → r04`, `2am.m4.r09 → 3am.m5.r03` / `→ 3am.m5.r06`; the direction of
+   `2am.m4.r08 ↔ r09` in the net is unchanged.
+3. The unit 3 تحدّ was rewritten (Chott Melghir / Tahat); the unit 4 تحدّ (wax cells) too — confirm.
+4. Extraction elements not re-read at 200 dpi stay `verified: False` in `docs/sources/2am/unit{3,4}/` (the lessons use none of the book's numbers).
+5. Several bank sheets cite two parts of one exam paper in different lessons (`2am-s2-52` ex 3, `2am-s2-71` ex 1, `2am-s1-73` ex 3): the validator accepts it;
+   drop them if you want one bank per exercise.
+6. `juice-line` advanced slate has no on-screen digit chips (tablet students use the numeric keyboard).
+
+## 1AM ميدان الأنشطة العددية (units 1–6) — 20 entries, plan and run index `docs/curriculum/PLAN_1AM_NUMBERS.md` (from 2026-10-30)
+
+Planned on 2026-10-30 (14 lessons + 6 syntheses, 11 pairs, one design card per entry, 14 new labs). Entry 1 below; the others not started.
+
+### 1AM entry 1 — `adad-ashri-mustaqim-mudarraj` « الأعداد العشرية ونصف المستقيم المدرّج » (1AM unit 1 `adad-tabiiya-ashriya`, pair 1 A, 2026-10-30) — generated, published locally
+
+- **Shape:** nine modules (0 أستعدّ · 1 نشاط · 2 معارف · 3 طريقة (platform addition: the book has none) · 4 أتمرّن · 5–7 مسائل · 8 إختبار أولي), `durationMinutes` 58, three الكفاءات kept as drafted (P1 draw the graduation, P2 read the abscissa exactly or by bounds, P3 plant a known abscissa), programme item **`1am.m5.r04`** (the card's « r04 » is the net prerequisite `1am.m1.r04`), `pointPrerequisites` P2, P3 ← `1am_muqaranat-adad-ashriya_P1`.
+- **Lab `jump-tape` « شريط القفز »** (theme `sportsday`, contract `MANIPULATION_CONTRACT.md` § 2novenquinquagies duodecies): the hand STRETCHES the unit (the « 1 » mark), then plants a flag per jump; متقدم: a reading cursor, exact or by bounds, on a tape without its origin and on a tape in hundredths. Core maths `packages/core/arithmetic/halfLine.js`.
+- **Bank:** 5 × 10 sheets (5 `term_exam` / 31 modelled / 14 adapted / 0 other `platform_addition`), 16 `MISC-ABSC-*`.
+- **Corrections:** extraction `act-4`: B = 1,7 and C = 0,5 (not 1,9 / 0,6); `prerequisiteLessonCodes` stays `[]` (a forward reference cannot be a prerequisite lesson). See « Generator notes » in `docs/curriculum/PLAN_1AM_NUMBERS.md`.
+- **Patterns to reuse:** a lab whose FIRST step makes the student choose the SCALE (unit stretch with a plage refused by drawing) and whose second step plants marks on it; a hidden-origin window as a task of a reading lab; module-4 arrows drawn with `NumberLine` static + `markers` (values never written); `NumberLine` needs `format={(v) => formatDec(v, …)}` for decimals (the default drops them).
+
+### 1AM entry 2 — `adad-nisbiya-siyaqat` « الأعداد النسبية وسياقات استعمالها » (1AM unit 5 `adad-nisbiya`, pair 1 B, SEEDS UNIT 5, 2026-10-30) — generated, published locally
+
+- **Unit seeded:** `lessons/moyen/1am/ansab_al_aadad_wal_hisab/adad-nisbiya/_unit/` (lessonRoutes, moduleContext, prepDiagnostic + test, unitMeta) and the whole-unit extraction `docs/sources/1am/unit5/` (`build-extraction.py` → `extraction.json`, 60 elements, pp. 63–76, answers computed; 18 for this lesson, 40 pending for `talim-mustaqim-mudarraj`, `talim-fi-mustawi` and the synthesis; `brief-authors.md`). The unit prints **no تحدّ**: `units_1am › adad-nisbiya.challenge` stays `null`.
+- **Shape:** nine modules (0 أستعدّ · 1 نشاط · 2 معارف · 3 طريقة (platform addition: the book has none for this lesson) · 4 أتمرّن · 5–7 مسائل · 8 إختبار أولي), `durationMinutes` 58, programme item **`1am.m5.r05`** (as in the card). « أستعدّ » measures `1am.m5.r04` and `1am.m1.r04` (the item has no net predecessor, so « راجع » adds nothing).
+- **الكفاءات (draft → final, order kept):** P1 « …الارتفاعات والأعماق » → « …الارتفاعات والأعماق، **طوابق العمارة** » (the lift of the book's opening and the lab's third world); P2, P3 unchanged. `pointPrerequisites`: none (the item has no net predecessor, card).
+- **Lab `frost-gauge` « ميزان الصقيع »** (theme `winterdjelfa`, contract `MANIPULATION_CONTRACT.md` § 2novenquinquagies terdecies): the hand holds the LEVEL of a vertical gauge (thermometer, altitude pin, lift cabin) and puts it on a reading given IN WORDS; the pill writes `−3` live; a mirror on the 0 makes the shadow; متقدم: two levels at the same distance, floors, who is farther from the sea. Core maths `packages/core/arithmetic/signedGauge.js`. Reviewed at 768×1024, 1024×768, 1280×800, 1366×768 (initial, mid, wrong, mirror, altitude, floors, free).
+- **Bank:** 5 × 10 sheets (5 `term_exam` — `1am-s3-37` ex 1 ×2 and `1am-s2-72` ex 1 ×3, read from the PDFs / 33 modelled / 12 adapted / 0 other `platform_addition`), 16 `MISC-REL-*`; oracle `scripts/practice-oracle/adad-nisbiya-siyaqat.mjs`.
+- **Corrections to the card:** see « Generator notes » entry 2 in `docs/curriculum/PLAN_1AM_NUMBERS.md` (the unit has no تحدّ; the « mountain peak » is a 50 m hill on the 10-m gauge; a module 3 طريقة is added).
+- **Patterns to reuse:** see the guide's « 1AM unit 5, lesson 1 » bullet (KaTeX negatives inside `MathText`, a vertical-gauge lab with three worlds, `GuidedProblem` role rules, no « is 0 positive? » item).
+- **URL:** `/courses/moyen/1am/ansab_al_aadad_wal_hisab/adad-nisbiya-siyaqat`.
+
+### 1AM entry 3 — `talim-mustaqim-mudarraj` « التعليم على مستقيم مدرّج » (1AM unit 5 `adad-nisbiya`, pair 2 A, 2026-10-30) — generated, published locally
+
+- **Shape:** nine modules (0 أستعدّ · 1 نشاط · 2 معارف · 3 طريقة · 4 أتمرّن (eight exercises with `GeoFigure` number lines) · 5–7 مسائل · 8 إختبار أولي), `durationMinutes` 60, programme items **`1am.m5.r06` + `1am.m5.r05`** (as in the catalogue). « أستعدّ » measures `1am.m5.r04` (items 1–3) and `1am.m5.r05` (items 4–6), the two net prerequisites of the item.
+- **الكفاءات (draft → final, order kept):** P1 and P3 unchanged; **P2 gains « ولو لم يُعلَّم المبدإ »** (the hidden-origin tasks of متقدم, as in `adad-ashri-mustaqim-mudarraj_P2`). `pointPrerequisites`: **P1 ← `1am_adad-nisbiya-siyaqat_P2`** (net `1am.m5.r05 → r06`), **P2 ← `1am_adad-ashri-mustaqim-mudarraj_P2`**, **P3 ← `1am_adad-ashri-mustaqim-mudarraj_P3`** (net `1am.m5.r04 → r06`); `prerequisiteLessonCodes` gains `adad-nisbiya-siyaqat`.
+- **Lab `stride-stamp` « خطوة الطابع »** (theme `villageroad`, contract `MANIPULATION_CONTRACT.md` § 2novenquinquagies quaterdecies): the hand CARRIES a unit stride from the bus stop O to both sides of a village road (ticks `−1, −2, −3` exist only once stamped west; the road is finite, a stride too long cannot reach −3, changing the stride erases the ticks), then the twin of a house, then `A(−3)`, `B(2,7)`, `C(−1,5)`; متقدم: the flag of the origin between two written graduations (−3 and 3; −8 and −2 two by two) and a one-stride frame between two consecutive ticks. Core maths `packages/core/arithmetic/graduatedLine.js`. Reviewed at 768×1024, 1024×768, 1280×800, 1366×768 (initial, mid, road-ends refusal, both sides, twin, houses, origin, frame, free).
+- **Bank:** 5 × 10 sheets, 191 questions (6 `term_exam` — `1am-s3-37` ex 1 part 2, `1am-s2-82` ex 2 and `1am-s3-39` ex 2, read from the PDFs, each cited on two sheets / 30 modelled / 14 adapted / 0 other `platform_addition`), 17 `MISC-TALIM1-*`; oracle `scripts/practice-oracle/talim-mustaqim-mudarraj.mjs`. Number lines are `GeoFigure` data (the same drawing as the module's figures).
+- **Corrections to the card:** see « Generator notes » entry 3 in `docs/curriculum/PLAN_1AM_NUMBERS.md`.
+- **Patterns to reuse:** see the guide's « 1AM unit 5, lesson 2 » bullet (a finite world as a resistance, one lab with five judged task kinds, `GeoFigure` number lines, KaTeX for every negative in a hint, two programme items and their LP edges).
+- **URL:** `/courses/moyen/1am/ansab_al_aadad_wal_hisab/talim-mustaqim-mudarraj`.
+- **Successor connection:** `talim-mustaqim-mudarraj-2` (2AM, net `1am.m5.r06 → 2am.m4.r01`, consolidates): LP edge P1 ← `1am_talim-mustaqim-mudarraj_P3`; its « تذكّر — السنة الأولى » links to this lesson by itself.
+
+### 1AM entry 4 — `bahth-adad-naqisa` « البحث عن أعداد ناقصة » (1AM unit 6 `ibarat-harfiya`, pair 2 B, SEEDS UNIT 6, 2026-10-30) — generated, published locally
+
+- **Unit seeded:** `lessons/moyen/1am/ansab_al_aadad_wal_hisab/ibarat-harfiya/_unit/` (lessonRoutes, moduleContext, prepDiagnostic + test, unitMeta) and the whole-unit extraction `docs/sources/1am/unit6/` (`build-extraction.py` → `extraction.json`, 51 elements, pp. 77–88; boundary of the four entries written in the header; the تحدّ of al-Kāshī goes to the synthesis; two misprints read and recorded).
+- **Shape:** nine modules (0 أستعدّ · 1 نشاط · 2 معارف (platform addition: the book has none) · 3 طريقة (the book's p. 82 method with the platform's numbers) · 4 أتمرّن (seven exercises) · 5–7 مسائل · 8 إختبار أولي), `durationMinutes` 60, programme item **`1am.m5.r10`**.
+- **الكفاءات (draft → final, order kept):** P1 explicit with the lab's numbers (« □ + 9 = 54 أو 6 × □ = 54 »); **P3 gains « (ولو كان الناتج كسرًا) » and « كلّ نتيجة »**; P2 unchanged. `pointPrerequisites`: **P2 ← `1am_mana-jam-tarh_P1`** along the net link `1am.m1.r05 → 1am.m5.r10`; P3 has no edge (see Generator notes 4 a).
+- **Lab `rewind-belt` « الحزام المعاكس »** (theme `packingline`, contract `MANIPULATION_CONTRACT.md` § 2novenquinquagies quindecies; `packages/core/arithmetic/missingNumber.js`): the hand picks the OPERATION CARD that runs a packing-workshop belt backward, drags the crate from the output tray through the machine to the input bin (the missing number is the crate's number as it crosses), then pushes it forward through the original machine (check by substitution); a wrong card is never corrected (« وضعتَ 63 في الآلة فخرج 72 بدل 54 »); the trap card « 80 − » refuses « + » (134, then −54); متقدم: decimals, « 12,5 − », and `20 ÷ 7` as the fraction `20/7`, checked exactly.
+- **Bank:** 5 × 10 sheets, 172 questions (5 `term_exam` — `1am-s3-47` ex 1, `-39` ex 2, `-43` ex 4, `-44` ex 1, `-37` ex 2, all read in the PDFs / 34 modelled / 11 adapted / 0 other `platform_addition`), 11 `MISC-NAQISA-*`; oracle `scripts/practice-oracle/bahth-adad-naqisa.mjs` (exact BigInt rationals; solve, calc, back, eq, calcchoice, verify, tf).
+- **Corrections to the card:** see « Generator notes » entry 4 in `docs/curriculum/PLAN_1AM_NUMBERS.md` (P3 edge not written, الكفاءات wording, the unit's تحدّ, the official `a − … = b` form, two textbook misprints, level 2 split in three tasks).
+- **Patterns to reuse:** see the guide's « 1AM unit 6, lesson 1 » bullet (a lab whose hand holds an OPERATION CARD and a direction, a two-phase move with a check by substitution, a fraction that is checked exactly, a bank generated from a typed DSL with an oracle spec per question).
+- **URL:** `/courses/moyen/1am/ansab_al_aadad_wal_hisab/bahth-adad-naqisa`.
+- **Successor connection:** `hall-mushkil-muadala` (2AM, net `1am.m5.r10 → 2am.m4.r08`, extends): its « تذكّر — السنة الأولى » links to this lesson and LP edges written: P2 ← `1am_bahth-adad-naqisa_P3` (the check by substitution), P3 ← `1am_bahth-adad-naqisa_P2` and `_P3` (the inverse operation; the two-step equation undoes a `+` first).
+
+### 1AM entry 5 — `talim-fi-mustawi` « التعليم في المستوي » (1AM unit 5 `adad-nisbiya`, pair 3 A, 2026-10-30) — generated, published locally
+
+- **Shape:** nine modules (0 أستعدّ · 1 نشاط · 2 معارف · 3 طريقة (the book's p. 70 method with the platform's numbers) · 4 أتمرّن (eight exercises: read coordinates, points of an axis, the words, true/false, the hidden frame, points on one line, describing a place, the scale in cm) · 5–7 مسائل · 8 إختبار أولي), `durationMinutes` 60, programme item **`1am.m5.r07`**, `prerequisiteLessonCodes: ['talim-mustaqim-mudarraj']` (unchanged).
+- **الكفاءات:** the draft's three, UNCHANGED and in order (P1 the orthogonal frame, P2 reading `M(x ; y)` abscissa first, P3 marking a point on squared or plain paper). `pointPrerequisites`: **P1 ← `1am_talim-mustaqim-mudarraj_P1`, P2 ← `_P2`, P3 ← `_P3`** along the net link `1am.m5.r06 → r07` (the card named P2, P3 only; P1 added, see Generator notes 5).
+- **Lab `courtyard-drone` « مسيّرة الساحة »** (theme `schoolcourt`, contract `MANIPULATION_CONTRACT.md` § 2novenquinquagies sexdecies; `packages/core/arithmetic/planeFrame.js`): the hand drives a drone over a school courtyard one axis at a time — horizontal, « ثبّت الأفقي », vertical, « صوّر » —; the drone refuses a diagonal (it shakes); the place is said by its two numbers (fountain `(3 ; −2)`; the swapped order lands on `(−2 ; 3)`) or drawn and read live (gate `(−3 ; 2)`, kiosk `(2 ; −4)`); points of an axis (`(4 ; 0)`, `(0 ; −3)`); متقدم: half tiles, then a map WITHOUT squares where the drone projects its two parallels.
+- **Bank:** 5 × 10 sheets, 160 questions (4 `term_exam` — `1am-s3-43` ex 2, `-37` ex 4, `-45` ex 4, `-39` ex 3, all read in the PDFs / 34 modelled / 12 adapted / 0 other `platform_addition`), 15 `MISC-MUSTAWI-*`; oracle `scripts/practice-oracle/talim-fi-mustawi.mjs` (exact BigInt tenths; pairs are `answerType: "point"`).
+- **Corrections to the card:** see « Generator notes » entry 5 in `docs/curriculum/PLAN_1AM_NUMBERS.md` (P1 edge, the bank's four read papers, `cognitiveDemand` vocabulary, tall-plane glance height).
+- **Patterns to reuse:** see the guide's « 1AM unit 5, lesson 3 » bullet (a lab locked to ONE AXIS at a time, a place said by its numbers is not drawn before the photo, plane figures as `GeoFigure` frames, a bank of pairs in `answerType: "point"`).
+- **URL:** `/courses/moyen/1am/ansab_al_aadad_wal_hisab/talim-fi-mustawi`.
+- **Successor connection:** `talim-nuqta-mustawi` (2AM, net `1am.m5.r07 → 2am.m4.r04`, consolidates): its « تذكّر — السنة الأولى » links to this lesson by itself and its LP edges are written (see the connection commit and the plan's Generator notes 5).
+
+### 1AM entry 6 — `tatbiq-qaida-harfiya` « تطبيق قاعدة حرفية » (1AM unit 6 `ibarat-harfiya`, pair 3 B, 2026-10-30) — generated, published locally
+
+- **Shape:** nine modules (0 أستعدّ · 1 نشاط · 2 معارف (the definition and the omitted-× conventions of the book's p. 81 with the platform's words, the « تذكّر » for the rectangle's perimeter and area) · 3 طريقة (platform addition: the book has none) · 4 أتمرّن (seven exercises) · 5–7 مسائل · 8 إختبار أولي), `durationMinutes` 60, programme item `1am.m5.r08`.
+- **الكفاءات (draft → final, order kept):** P1 gains « دون الخلط مع 2 × 3 = 6 لا 23 »; P2 « كلّ حرف … في كلّ موضع … بالأولويات » with a = 15, b = 8; P3 gains « وإدراك أنّ الأمثلة التي تصحّ فيها لا تثبت صحّتها ». No LP edge in 1AM (the only net prerequisite, `1am.m2.r08`, is unpublished).
+- **Lab `letter-dial` « قرص الحروف »** (theme `copyshop`, contract `MANIPULATION_CONTRACT.md` § 2novenquinquagies septdecies; `packages/core/arithmetic/letterRule.js`): the hand holds the VALUE of each letter on a rotary dial; it drops into EVERY slot of the letter and the card computes (`5 × 12 + 20 → 60 + 20 → 80`); a value counts at the release; level 2: `2 × (a + b)` with two dials, then `a + b = a × b` that holds at (2 ; 2) and falls to ONE counterexample.
+- **Bank:** 5 × 10 sheets, 177 questions (3 `term_exam` — `1am-s3-47` ex 3, `1am-s3-37` ex 5 ×2, read in the PDFs / 37 modelled / 10 adapted / 0 other), 10 `MISC-TATBIQ-*`; oracle `scripts/practice-oracle/tatbiq-qaida-harfiya.mjs` (own BigInt rationals and expression evaluator).
+- **Corrections to the card:** see « Generator notes » entry 6 in `docs/curriculum/PLAN_1AM_NUMBERS.md`.
+- **Patterns to reuse:** see the guide's « 1AM unit 6, lesson 2 » bullet.
+- **URL:** `/courses/moyen/1am/ansab_al_aadad_wal_hisab/tatbiq-qaida-harfiya`.
+- **Successor connections:** `ikhtibar-musawat-mutabayina` (2AM, net `1am.m5.r08 → 2am.m4.r09`, requires): « تذكّر — السنة الأولى » is a live link, LP edges P1 ← `1am_tatbiq-qaida-harfiya_P2`, P2 ← `_P3`; `qimat-ibara-harfiya` (3AM, net `r08 → 3am.m5.r03`, extends): LP edges P1 ← `_P2`, P3 ← `_P3` (its link was already wired).
+

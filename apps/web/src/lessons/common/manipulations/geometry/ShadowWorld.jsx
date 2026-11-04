@@ -10,6 +10,11 @@ import { useManipulation } from '../useManipulation';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
 import MathText from '../../components/MathText';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { spreadAll } from './thalesCp';
 import * as W from '../logic/shadowWorld';
 import ShadowTutor from './ShadowTutor';
 
@@ -67,7 +72,7 @@ const QUIZ_OPTIONS = Object.freeze({
  */
 export default function ShadowWorld({
   minaret: minaret0 = '7,25', theme = 'minaret', title, lead, mission, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  initialMode = 'student', allowModeSwitch = false, checkpoints: cpOn = true, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.shadowWorld.${key}`, o), [t]);
@@ -76,7 +81,8 @@ export default function ShadowWorld({
   const make = () => W.init({ minaret: String(state.numbers.minaret) });
   const [lab, setLab] = useState(make);
   const sceneKey = `${state.numbers.minaret}|${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  const [doneIds, setDoneIds] = useState([]);   // les arrêts dont la suite de questions est finie
   const [liveT, setLiveT] = useState(null);
   const [liveStick, setLiveStick] = useState(null);
   const [liveFlag, setLiveFlag] = useState(null);
@@ -91,14 +97,65 @@ export default function ShadowWorld({
   const [tried, setTried] = useState({ quizId: null, ids: [] }); // les options FAUSSES déjà tapées pour la question affichée
   const [thread, setThread] = useState([]); // la conversation avec مقران : { key, who: 'maqran' | 'you', msg | spec, tone, kind }
   const entrySeq = useRef(0);
-  if (scene !== sceneKey) {
-    setScene(sceneKey); setLab(make()); setLiveT(null); setLiveStick(null); setLiveFlag(null); setTape(null);
+  if (scene.key !== sceneKey) {
+    setScene({ key: sceneKey, inits: scene.inits + 1 }); setDoneIds([]); setLab(make()); setLiveT(null); setLiveStick(null); setLiveFlag(null); setTape(null);
     setMeasuring(false); setHelpLevel(0); setOp(null); setNum(''); setAns(''); setTried({ quizId: null, ids: [] }); setThread([]);
   }
 
   useEffect(() => { setBetOpen(false); }, [lab.predictions.length]);
-  const ready = W.discoveryReady(lab);
+  const solvedAll = W.discoveryReady(lab);
   const solved = W.goals(lab).minaret;
+
+  /* ── les questions PENDANT le labo (primitives/LabCheckpoint) : six arrêts = les six objectifs ; chacun s'ouvre sur une suite de questions
+     posée quand l'élève a fait ce qu'il demande (les cinq questions tapées de مقران en font partie) ; la suite de l'arrêt « rule2 » finit
+     par la règle et remplace la découverte automatique. Sans suite (enseignant), مقران pose ses questions comme avant. ── */
+  const cpSettings = useLabCheckpointSettings('shadow-world');
+  const cpEnabled = cpOn && cpSettings.enabled;
+  const stops = W.STOPS;
+  const stopOk = Object.fromEntries(stops.map((id) => [id, W.stopReached(lab, id)]));
+  const pending = cpEnabled ? stops.find((id) => stopOk[id] && !doneIds.includes(id)) ?? null : null;
+  const chain = pending ? chainOf(pending, lab) : null;
+  const say = useMemo(() => makeSay(k), [k]);
+  const cp = useLabCheckpoint({
+    id: chain ? pending : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, pending, k, say)) : null,
+    reached: !!pending,
+    resetKey: scene.inits,
+    onRetry: () => { celebrated.current.delete(pending); setTape(null); setLab((x) => W.retryStop(x, pending)); },
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => (d.includes(id) ? d : [...d, id]));
+      if (W.QUIZZES_OF_STOP[id]) setLab((x) => W.winQuizzes(x, W.QUIZZES_OF_STOP[id]));
+      if (chainOf(id, lab).includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const ready = solvedAll && !cpEnabled;
+  const goalsNow = W.goals(lab);
+  const stepDone = stops.map((id) => !!goalsNow[id] && (!cpEnabled || doneIds.includes(id) || !W.stopReached(lab, id)));
+  const stepNow = stepDone.includes(false) ? stepDone.indexOf(false) : stops.length - 1;
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  const celKey = useRef(scene.inits);
+  if (celKey.current !== scene.inits) { celKey.current = scene.inits; celebrated.current = new Set(); }   // « إعادة » : on refête
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(stops[i])) return;
+      celebrated.current.add(stops[i]);
+      party.celebrate({ n: stepDone.filter(Boolean).length, total: stops.length });
+    });
+  }, [stepDone.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son : un déclic par geste, la cloche quand les deux ombres se rejoignent, le drapeau quand c'est juste, « over » quand c'est refusé
+  useEffect(() => {
+    const l = lab.last;
+    if (!l) return;
+    if (l.kind === 'sun') playSfx('tooth', { pitch: l.to > l.from ? 1 : 0.8 });
+    else if (l.kind === 'stick') playSfx(l.meet ? 'bell' : 'tooth');
+    else if (l.kind === 'measure') playSfx('tooth');
+    else if (l.kind === 'measureHidden' || l.kind === 'climb' || l.kind === 'answerInvalid') playSfx('over');
+    else if (l.kind === 'install') playSfx(l.pred.kind === 'right' ? 'flag' : 'over');
+    else if (l.kind === 'rule') playSfx(l.trial.allFit ? 'flag' : 'over');
+    else if (l.kind === 'answer') playSfx(l.a.kind === 'right' ? 'bell' : 'over');
+  }, [lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (solved) state.report(onFinished, { h: W.m(lab.minaret) }); }, [solved]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
@@ -182,7 +239,7 @@ export default function ShadowWorld({
   // drapeau est posé, ou quand l'élève rouvre la puce pour la 2ᵉ installation (optionnelle).
   const predicting = !!installObj && ((g.measure && !g.predict) || lab.flagP != null || betOpen);
   const betChip = !!installObj && !predicting && g.predict;
-  const phase = { discovered: state.isDiscovered, formal: state.isFormal };
+  const phase = { discovered: state.isDiscovered, formal: state.isFormal, skipQuizzes: cpEnabled };
   const goal = W.currentGoal(lab, phase);
 
   /* ── pointeur → monde ── */
@@ -316,31 +373,10 @@ export default function ShadowWorld({
   };
   const tryAnswer = () => setLab((s) => W.answer(s, ans));
 
-  /* ── le compagnon ── */
-  // Les clés dont la VALEUR est en centimètres bruts (`judge*` de logic/shadowWorld.js) : passées par `W.tex()`
-  // pour s'écrire en mètres à virgule. Les clés déjà pré-formatées par le juge lui-même (`m()`, ex. `ra`/`rb`/
-  // `num`/`k1`/`k2`) ne doivent PAS y entrer une seconde fois — `tex()` sur une chaîne casserait l'affichage.
-  const CM = useMemo(() => new Set([
-    'shadow', 'H', 'p', 'truth', 'gap', 'add', 'x', 'O', 'S', 'h', 'd', 'pred', 'stick', 'farid', 'num', 'd1', 'd2', 's1', 's2',
-    'before', 'after', 'sa', 'sb', 'Ha', 'Hb',
-    // dStick / dMinaret / pctStick / pctMinaret : le TEMPLATE arabe les lit en centimètres / pourcentage entiers
-    // (« تغيّر 87 سم », « بنسبة 12% ») — ne PAS les passer par `tex()` (mètres), sinon « 0{,}87 سم » (ni cm ni m).
-  ]), []);
-  const say = useCallback((msg) => {
-    if (!msg) return '';
-    const o = {};
-    for (const [key, v] of Object.entries(msg.p ?? {})) {
-      if (v == null || v === '') continue;
-      if (CM.has(key)) o[key] = W.tex(v);
-      else if (['obj', 'okObj', 'a', 'b'].includes(key)) o[key] = k(`obj.${v}`);
-      else if (key === 'op') o[key] = v === '×' ? '\\times' : '+';
-      else o[key] = v;
-    }
-    return k(msg.id, o);
-  }, [CM, k]);
+  /* ── le compagnon : `say` (makeSay) met en forme ses messages ── */
 
   /* ── le tuteur : UNE carte — la question courante (bloquante) ou la mission du moment ── */
-  const activeQuiz = W.currentCheckpoint(lab);
+  const activeQuiz = cpEnabled ? null : W.currentCheckpoint(lab);   // avec les suites de questions, ce sont elles qui posent les questions tapées
   const standing = W.guide(lab, phase); // q_<quiz> si une question est ouverte, sinon g_<objectif>
   // les indices repartent de zéro quand la CARTE change (autre question, autre mission), pas à chaque geste
   useEffect(() => { setHelpLevel(0); }, [standing.id]);
@@ -350,7 +386,7 @@ export default function ShadowWorld({
     setLab((s) => W.answerQuiz(s, activeQuiz, optionId));
   };
   const quizVerdict = activeQuiz ? W.QUIZZES[activeQuiz](lab) : null;
-  const progress = W.checkpointStatus(lab);
+  const progress = cpEnabled ? [] : W.checkpointStatus(lab);
   const counted = progress.filter((c) => c.status !== 'skipped');
   const quizStep = activeQuiz ? counted.findIndex((c) => c.id === activeQuiz) + 1 : 0;
   const triedIds = tried.quizId === activeQuiz ? tried.ids : [];
@@ -374,28 +410,8 @@ export default function ShadowWorld({
   const rules = W.fittingRules(lab);
   const r1 = rules[0];
   const r2 = rules.at(-1);
-  const discoveryOptions = useMemo(() => {
-    if (!r1 || !r2) return [];
-    const h = r2.hour;
-    const s1 = W.shadowAt(100, h); const s2 = W.shadowAt(150, h);
-    const p = { h1: W.HOURS[r1.hour], h2: W.HOURS[r2.hour], k1: W.tex(r1.num), k2: W.tex(r2.num) };
-    return [
-      { text: <MathText>{k('dOptPlus')}</MathText>, why: <MathText>{k('dWhyPlus', { h: W.HOURS[h], d1: W.tex(s1 - 100), d2: W.tex(s2 - 150) })}</MathText> },
-      { text: <MathText>{k('dOptRight')}</MathText>, correct: true },
-      { text: <MathText>{k('dOptSameAlways')}</MathText>, why: <MathText>{k('dWhySameAlways', p)}</MathText> },
-      { text: <MathText>{k('dOptHourOnly')}</MathText>, why: <MathText>{k('dWhyHourOnly', { h: W.HOURS[h], s1: W.tex(s1), s2: W.tex(s2) })}</MathText> },
-    ];
-  }, [r1, r2, k]);
-  const formal = r1 && r2 ? (
-    <div className="space-y-2" data-sw-formal>
-      <p className="text-sm text-emerald-900"><MathText>{k('fNames')}</MathText></p>
-      <EquationDisplay tone="result" tex={`s = ${W.tex(r1.num)} \\times h`} note={W.HOURS[r1.hour]} />
-      <EquationDisplay tone="result" tex={`s = ${W.tex(r2.num)} \\times h`} note={W.HOURS[r2.hour]} />
-      <EquationDisplay tone="result" tex={'\\dfrac{s_1}{h_1} = \\dfrac{s_2}{h_2} = k'} />
-      <p className="text-sm text-emerald-900"><MathText>{k('fRule')}</MathText></p>
-      <p className="text-sm text-emerald-900"><MathText>{k('fMinaret')}</MathText></p>
-    </div>
-  ) : null;
+  const discoveryOptions = useMemo(() => discoveryOptionsOf(lab, k), [lab, k]);
+  const formal = formalOf(lab, k);
 
   /* ── dessin ── */
   const sun = G.sunAt(kLive);
@@ -423,6 +439,7 @@ export default function ShadowWorld({
         avatar={<Avatar />}
         narrow={narrow}
         progress={progress}
+        showProgress={!cpEnabled}
         thread={threadNodes}
         card={activeQuiz ? {
           type: 'question', msgId: standing.id, quizId: activeQuiz,
@@ -522,15 +539,19 @@ export default function ShadowWorld({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={cpEnabled}
       hints={[]}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={r1 && r2 ? <MathText>{k('dPrompt', { h1: W.HOURS[r1.hour], h2: W.HOURS[r2.hour], k1: W.tex(r1.num), k2: W.tex(r2.num) })}</MathText> : ''} options={discoveryOptions} formal={formal} />}
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-sky-50/70 to-white" minHeight="min-h-[200px]">
-        <div className="space-y-2" data-shadow-world data-world={theme} data-hour={W.HOURS[lab.hour]} data-goal={goal}
+        <div className="relative space-y-2" data-shadow-world data-world={theme} data-hour={W.HOURS[lab.hour]} data-goal={goal}
           data-solved={solved ? 'true' : 'false'} data-meets={meetNow ? 'true' : 'false'} data-scene-h={svgH}>
-          {quests}
+          {party.node}
+          {cp.node}
+          {cpEnabled ? <LabStepper count={stops.length} current={stepNow} done={stepDone} stepAttr="data-sw-step-n" /> : quests}
           <div className="grid gap-2 lg:grid-cols-[minmax(0,1fr)_20rem]">
             <div className="lg:col-start-2 lg:row-start-1">{companion}</div>
 
@@ -999,3 +1020,213 @@ function Tape({ tp, G, objs, textP }) {
     </g>
   );
 }
+
+/* ══════════════ Mise en forme des messages de مقران et questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** Les clés dont la VALEUR est en centimètres bruts (`judge*` de logic/shadowWorld.js) : passées par `W.tex()` pour s'écrire en mètres à virgule.
+ *  Les clés déjà pré-formatées par le juge lui-même (`m()`, ex. `ra`/`rb`/`numText`/`k1`/`k2`) ne doivent PAS y entrer une seconde fois.
+ *  dStick / dMinaret / pctStick / pctMinaret : le TEMPLATE arabe les lit en centimètres / pourcentage entiers — jamais par `tex()`. */
+const CM = new Set([
+  'shadow', 'H', 'p', 'truth', 'gap', 'add', 'x', 'O', 'S', 'h', 'd', 'pred', 'stick', 'farid', 'num', 'd1', 'd2', 's1', 's2',
+  'before', 'after', 'sa', 'sb', 'Ha', 'Hb',
+]);
+
+/** `say({ id, p })` → le texte arabe de `shadowWorld.<id>` avec ses paramètres mis en forme (mètres, noms d'objets, opérateur). */
+export function makeSay(k) {
+  return (msg) => {
+    if (!msg) return '';
+    const o = {};
+    for (const [key, v] of Object.entries(msg.p ?? {})) {
+      if (v == null || v === '') continue;
+      if (CM.has(key)) o[key] = W.tex(v);
+      else if (['obj', 'okObj', 'a', 'b'].includes(key)) o[key] = k(`obj.${v}`);
+      else if (key === 'op') o[key] = v === '×' ? '\\times' : '+';
+      else o[key] = v;
+    }
+    return k(msg.id, o);
+  };
+}
+
+/** La suite de chaque arrêt (les questions sans donnée à juger sont écartées). */
+export function chainOf(stop, lab) {
+  const has = (id) => W.QUIZZES[id](lab) != null;
+  switch (stop) {
+    case 'observe': return ['trend', 'fastest'];
+    case 'measure': return ['ratioSeed', 'ratioVal'];
+    case 'predict': return [...(has('predictReflect') ? ['predictReflect'] : []), 'predictK', 'predictCompare'];
+    case 'rule': return [...(has('ruleReflect') ? ['ruleReflect'] : []), 'ruleWhich'];
+    case 'rule2': return ['ruleChanged', 'rule'];
+    default: return ['minaretIdea', 'minaretCheck'];
+  }
+}
+
+const cpt = (say, id, p) => <MathText>{say({ id: `cp.${id}`, p })}</MathText>;
+
+/** Une question tapée de مقران, rejouée comme question de la suite : son prompt, ses options, sa réaction juste/fausse et ses indices sont ceux de مقران. */
+const quizQuestion = (quizId) => (lab, stop, k, say) => {
+  const v = W.QUIZZES[quizId](lab);
+  const ids = QUIZ_OPTIONS[quizId] ?? v.options;
+  return {
+    id: quizId, kind: 'choice',
+    prompt: <MathText>{say({ id: `q_${quizId}`, p: v })}</MathText>,
+    options: ids.map((id) => (id === v.correct
+      ? { text: k(`quizOpt_${quizId}_${id}`), correct: true }
+      : { text: k(`quizOpt_${quizId}_${id}`), why: <MathText>{say({ id: `qWrong_${quizId}`, p: v })}</MathText> })),
+    hints: [1, 2].map((l) => <MathText key={l}>{say({ id: `hq_${quizId}_${l}`, p: v })}</MathText>),
+    explain: <MathText>{say({ id: `qRight_${quizId}`, p: v })}</MathText>,
+  };
+};
+
+/** « 1,04 » : ombre ÷ hauteur d'un objet (centimètres entiers). */
+const kOf = (shadow, H) => W.m((shadow * 100) / H);
+/** « 1,04 » → « 1{,}04 » : la virgule d'un nombre dans une île KaTeX. */
+const tx = (v) => String(v).replace(',', '{,}');
+
+const RAW_QUESTIONS = {
+  trend: quizQuestion('trend'),
+  fastest: quizQuestion('fastest'),
+  ratioSeed: quizQuestion('ratioSeed'),
+  predictReflect: quizQuestion('predictReflect'),
+  ruleReflect: quizQuestion('ruleReflect'),
+  /* measure — le rapport ombre ÷ hauteur de l'objet que l'élève vient de mesurer */
+  ratioVal: (lab, stop, k, say) => {
+    const v = W.judgeRatioSeed(lab);
+    const p = { hour: v.hour, a: v.a, sa: v.sa, Ha: v.Ha, ra: tx(v.ra) };
+    return {
+      id: 'ratioVal', kind: 'number', expected: v.ra, answer: <MathText>{`$${v.ra.replace(',', '{,}')}$`}</MathText>,
+      prompt: cpt(say, 'ratioVal.prompt', p),
+      hints: [cpt(say, 'ratioVal.hint1', p), cpt(say, 'ratioVal.hint2', p)],
+      explain: cpt(say, 'ratioVal.explain', p),
+    };
+  },
+  /* predict — le rapport du pari, puis sa comparaison avec celui de la عصا */
+  predictK: (lab, stop, k, say) => {
+    const q = lab.predictions.at(-1);
+    const kk = kOf(q.truth, q.H);
+    const p = { obj: q.obj, H: q.H, truth: q.truth, hour: W.HOURS[q.hour], kk: tx(kk) };
+    return {
+      id: 'predictK', kind: 'number', expected: kk, answer: <MathText>{`$${kk.replace(',', '{,}')}$`}</MathText>,
+      prompt: cpt(say, 'predictK.prompt', p),
+      hints: [cpt(say, 'predictK.hint1', p), cpt(say, 'predictK.hint2', p)],
+      explain: cpt(say, 'predictK.explain', p),
+    };
+  },
+  predictCompare: (lab, stop, k, say) => {
+    const q = lab.predictions.at(-1);
+    const sStick = W.shadowAt(100, q.hour);
+    const p = { obj: q.obj, hour: W.HOURS[q.hour], stick: sStick, ks: tx(kOf(sStick, 100)), ko: tx(kOf(q.truth, q.H)), H: q.H, truth: q.truth };
+    return {
+      id: 'predictCompare', kind: 'choice',
+      prompt: cpt(say, 'predictCompare.prompt', p),
+      options: [
+        { text: cpt(say, 'predictCompare.same', p), correct: true },
+        { text: cpt(say, 'predictCompare.stickBigger', p), why: cpt(say, 'predictCompare.whyStickBigger', p) },
+        { text: cpt(say, 'predictCompare.objBigger', p), why: cpt(say, 'predictCompare.whyObjBigger', p) },
+      ],
+      hints: [cpt(say, 'predictCompare.hint1', p), cpt(say, 'predictCompare.hint2', p)],
+      explain: cpt(say, 'predictCompare.explain', p),
+    };
+  },
+  /* rule — la règle de l'élève appliquée à un objet de 4 m */
+  ruleWhich: (lab, stop, k, say) => {
+    const r = W.fittingRules(lab)[0];
+    const ans = W.m(4 * r.num);
+    const p = { hour: W.HOURS[r.hour], numText: tx(W.m(r.num)), ans: tx(ans) };
+    return {
+      id: 'ruleWhich', kind: 'number', expected: ans, answer: <MathText>{`$${ans.replace(',', '{,}')}$`}</MathText>,
+      prompt: cpt(say, 'ruleWhich.prompt', p),
+      hints: [cpt(say, 'ruleWhich.hint1', p), cpt(say, 'ruleWhich.hint2', p)],
+      explain: cpt(say, 'ruleWhich.explain', p),
+    };
+  },
+  /* rule2 — ce qui a changé entre les deux heures, puis la règle */
+  ruleChanged: (lab, stop, k, say) => {
+    const [r1, r2] = [W.fittingRules(lab)[0], W.fittingRules(lab).at(-1)];
+    const p = { h1: W.HOURS[r1.hour], h2: W.HOURS[r2.hour], k1: W.tex(r1.num), k2: W.tex(r2.num) };
+    return {
+      id: 'ruleChanged', kind: 'choice',
+      prompt: cpt(say, 'ruleChanged.prompt', p),
+      options: [
+        { text: cpt(say, 'ruleChanged.right', p), correct: true },
+        { text: cpt(say, 'ruleChanged.form', p), why: cpt(say, 'ruleChanged.whyForm', p) },
+        { text: cpt(say, 'ruleChanged.nothing', p), why: cpt(say, 'ruleChanged.whyNothing', p) },
+      ],
+      hints: [cpt(say, 'ruleChanged.hint1', p), cpt(say, 'ruleChanged.hint2', p)],
+      explain: cpt(say, 'ruleChanged.explain', p),
+    };
+  },
+  rule: (lab, stop, k, say) => {
+    const [r1, r2] = [W.fittingRules(lab)[0], W.fittingRules(lab).at(-1)];
+    const options = discoveryOptionsOf(lab, k);
+    return {
+      id: 'rule', kind: 'choice',
+      prompt: <MathText>{k('dPrompt', { h1: W.HOURS[r1.hour], h2: W.HOURS[r2.hour], k1: W.tex(r1.num), k2: W.tex(r2.num) })}</MathText>,
+      options,
+      hints: [cpt(say, 'rule.hint1', {}), cpt(say, 'rule.hint2', {})],
+      explain: formalOf(lab, k),
+    };
+  },
+  /* minaret — pourquoi la méthode marche, puis la vérification de la hauteur trouvée */
+  minaretIdea: (lab, stop, k, say) => {
+    const a = lab.answers.find((x) => x.kind === 'right');
+    const hour = lab.hour;
+    const p = { hour: W.HOURS[hour], S: W.shadowAt(lab.minaret, hour), h: a.h, stick: W.shadowAt(100, hour) };
+    return {
+      id: 'minaretIdea', kind: 'choice',
+      prompt: cpt(say, 'minaretIdea.prompt', p),
+      options: [
+        { text: cpt(say, 'minaretIdea.right', p), correct: true },
+        { text: cpt(say, 'minaretIdea.shadow', p), why: cpt(say, 'minaretIdea.whyShadow', p) },
+        { text: cpt(say, 'minaretIdea.add', p), why: cpt(say, 'minaretIdea.whyAdd', p) },
+      ],
+      hints: [cpt(say, 'minaretIdea.hint1', p), cpt(say, 'minaretIdea.hint2', p)],
+      explain: cpt(say, 'minaretIdea.explain', p),
+    };
+  },
+  minaretCheck: (lab, stop, k, say) => {
+    const a = lab.answers.find((x) => x.kind === 'right');
+    const hour = lab.hour;
+    const S = W.shadowAt(lab.minaret, hour);
+    const kk = kOf(S, lab.minaret);
+    const p = { hour: W.HOURS[hour], S, h: a.h, kk: tx(kk), stick: W.shadowAt(100, hour) };
+    return {
+      id: 'minaretCheck', kind: 'number', expected: kk, answer: <MathText>{`$${kk.replace(',', '{,}')}$`}</MathText>,
+      prompt: cpt(say, 'minaretCheck.prompt', p),
+      hints: [cpt(say, 'minaretCheck.hint1', p), cpt(say, 'minaretCheck.hint2', p)],
+      explain: cpt(say, 'minaretCheck.explain', p),
+    };
+  },
+};
+
+/* ── la découverte, écrite avec les règles de l'élève (fin du labo ET dernière question de la suite) ── */
+export function discoveryOptionsOf(lab, k) {
+  const r1 = W.fittingRules(lab)[0];
+  const r2 = W.fittingRules(lab).at(-1);
+    if (!r1 || !r2) return [];
+    const h = r2.hour;
+    const s1 = W.shadowAt(100, h); const s2 = W.shadowAt(150, h);
+    const p = { h1: W.HOURS[r1.hour], h2: W.HOURS[r2.hour], k1: W.tex(r1.num), k2: W.tex(r2.num) };
+    return [
+      { text: <MathText>{k('dOptPlus')}</MathText>, why: <MathText>{k('dWhyPlus', { h: W.HOURS[h], d1: W.tex(s1 - 100), d2: W.tex(s2 - 150) })}</MathText> },
+      { text: <MathText>{k('dOptRight')}</MathText>, correct: true },
+      { text: <MathText>{k('dOptSameAlways')}</MathText>, why: <MathText>{k('dWhySameAlways', p)}</MathText> },
+      { text: <MathText>{k('dOptHourOnly')}</MathText>, why: <MathText>{k('dWhyHourOnly', { h: W.HOURS[h], s1: W.tex(s1), s2: W.tex(s2) })}</MathText> },
+    ];
+}
+
+export function formalOf(lab, k) {
+  const r1 = W.fittingRules(lab)[0];
+  const r2 = W.fittingRules(lab).at(-1);
+  return r1 && r2 ? (
+    <div className="space-y-2" data-sw-formal>
+      <p className="text-sm text-emerald-900"><MathText>{k('fNames')}</MathText></p>
+      <EquationDisplay tone="result" tex={`s = ${W.tex(r1.num)} \\times h`} note={W.HOURS[r1.hour]} />
+      <EquationDisplay tone="result" tex={`s = ${W.tex(r2.num)} \\times h`} note={W.HOURS[r2.hour]} />
+      <EquationDisplay tone="result" tex={'\\dfrac{s_1}{h_1} = \\dfrac{s_2}{h_2} = k'} />
+      <p className="text-sm text-emerald-900"><MathText>{k('fRule')}</MathText></p>
+      <p className="text-sm text-emerald-900"><MathText>{k('fMinaret')}</MathText></p>
+    </div>
+  ) : null;
+}
+
+export const QUESTIONS = spreadAll(RAW_QUESTIONS, (lab) => lab.minaret);

@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **112** leçons publiées · **158** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **140** leçons publiées · **130** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -832,13 +832,13 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | `1am.m5.r01` | التعرّف في حالات بسيطة على الكتابات الكسرية لعدد. | `hasil-qisma-kasr` | `1am.m1.r02` |
 | `1am.m5.r02` | اختزال كتابة كسرية (كسر). | `ikhtizal-kitaba-kasriya` | `1am.m5.r01`، `1am.m3.r02` |
 | `1am.m5.r03` | جمع وطرح وضرب كسور عشرية. | `kusur-ashriya-kitaba` | `1am.m5.r01`، `1am.m1.r05` |
-| `1am.m5.r04` | قراءة فاصلة نقطة (أو إعطاء حصر لها) أو تعيين نقطة ذات فاصلة معلومة على نصف مستقيم مدرّج. | `adad-ashri-mustaqim-mudarraj` _(prévue)_ | `1am.m1.r04` |
-| `1am.m5.r05` | إدراج الأعداد السالبة في وضعيات متنوّعة. | `adad-nisbiya-siyaqat` _(prévue)_ | — |
-| `1am.m5.r06` | توظيف الأعداد النسبية في: تدريج مستقيم؛ قراءة فاصلة نقطة معلومة أو تعيين نقطة ذات فاصلة معلومة على مستقيم مدرّج. | `talim-mustaqim-mudarraj` _(prévue)_ | `1am.m5.r04`، `1am.m5.r05` |
-| `1am.m5.r07` | قراءة إحداثيي نقطة معلومة، أو تعليم نقطة ذات إحداثيين معلومين في مستوٍ مزوّد بمعلم. | `talim-fi-mustawi` _(prévue)_ | `1am.m5.r06` |
-| `1am.m5.r08` | تطبيق قاعدة حرفية في وضعية بسيطة. | `tatbiq-qaida-harfiya` _(prévue)_ | `1am.m2.r08` |
+| `1am.m5.r04` | قراءة فاصلة نقطة (أو إعطاء حصر لها) أو تعيين نقطة ذات فاصلة معلومة على نصف مستقيم مدرّج. | `adad-ashri-mustaqim-mudarraj` | `1am.m1.r04` |
+| `1am.m5.r05` | إدراج الأعداد السالبة في وضعيات متنوّعة. | `adad-nisbiya-siyaqat` | — |
+| `1am.m5.r06` | توظيف الأعداد النسبية في: تدريج مستقيم؛ قراءة فاصلة نقطة معلومة أو تعيين نقطة ذات فاصلة معلومة على مستقيم مدرّج. | `talim-mustaqim-mudarraj` | `1am.m5.r04`، `1am.m5.r05` |
+| `1am.m5.r07` | قراءة إحداثيي نقطة معلومة، أو تعليم نقطة ذات إحداثيين معلومين في مستوٍ مزوّد بمعلم. | `talim-fi-mustawi` | `1am.m5.r06` |
+| `1am.m5.r08` | تطبيق قاعدة حرفية في وضعية بسيطة. | `tatbiq-qaida-harfiya` | `1am.m2.r08` |
 | `1am.m5.r09` | إنتاج عبارة حرفية بسيطة. | `intaj-ibara-harfiya` _(prévue)_ | `1am.m5.r08` |
-| `1am.m5.r10` | إتمام مساواة من الشكل: a + … = b ؛ a - … = b ؛ a × … = b حيث a و b عددان مفروضان. | `bahth-adad-naqisa` _(prévue)_ | `1am.m1.r05` |
+| `1am.m5.r10` | إتمام مساواة من الشكل: a + … = b ؛ a - … = b ؛ a × … = b حيث a و b عددان مفروضان. | `bahth-adad-naqisa` | `1am.m1.r05` |
 | `1am.m5.x1` | الانتقال من الكتابة العشرية لعدد عشري إلى كتابة كسرية له. _(منهاج 2016)_ | `kusur-ashriya-kitaba` | `1am.m5.r01` |
 
 #### المقطع 6 — التناسبية وتنظيم معطيات (`1am.m6`, 3 أسابيع)
@@ -874,15 +874,15 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 
 | item | المورد المعرفي (نص البرنامج) | leçon d’accueil | repart de |
 |---|---|---|---|
-| `2am.m1.r01` | إجراء سلسلة عمليات. | `silsila-bidun-aqwas` _(prévue)_ | `1am.m1.r05` |
-| `2am.m1.r02` | استعمال الأقواس. | `silsila-bi-aqwas` _(prévue)_ | `2am.m1.r01` |
-| `2am.m1.r03` | معرفة خاصة توزيع الضرب بالنسبة إلى الجمع والطرح واستعمالها. | `tawzi-darb-jam-tarh` _(prévue)_ | `2am.m1.r02` |
+| `2am.m1.r01` | إجراء سلسلة عمليات. | `silsila-bidun-aqwas` | `1am.m1.r05` |
+| `2am.m1.r02` | استعمال الأقواس. | `silsila-bi-aqwas` | `2am.m1.r01` |
+| `2am.m1.r03` | معرفة خاصة توزيع الضرب بالنسبة إلى الجمع والطرح واستعمالها. | `tawzi-darb-jam-tarh` | `2am.m1.r02` |
 | `2am.m1.r04` | تعيين حاصل وباقي القسمة الإقليدية لعدد على عدد غير معدوم. | `qisma-iqlidiya-hasr` | يمدّد `1am.m3.r01` |
-| `2am.m1.r05` | تعيين قيمة مقرّبة بالزيادة (أو بالنقصان) لحاصل قسمة عشري. | `kasr-hasil-qisma` _(prévue)_ | يمدّد `1am.m3.r04` |
+| `2am.m1.r05` | تعيين قيمة مقرّبة بالزيادة (أو بالنقصان) لحاصل قسمة عشري. | `kasr-hasil-qisma` | يمدّد `1am.m3.r04` |
 | `2am.m1.r06` | حصر حاصل القسمة. | `qisma-iqlidiya-hasr` | `2am.m1.r05` |
-| `2am.m1.r07` | ضرب كسرين. | `jida-kasrayn` _(prévue)_ | يمدّد `1am.m5.r03` |
-| `2am.m1.r08` | مقارنة كسرين لهما نفس المقام أو مقام أحدهما مضاعف لمقام الآخر. | `muqarana-kasrayn` _(prévue)_ | `1am.m5.r01`، `1am.m5.r02` |
-| `2am.m1.r09` | جمع أو طرح كسرين لهما نفس المقام أو مقام أحدهما مضاعف لمقام الآخر. | `jam-tarh-kusur` _(prévue)_ | `2am.m1.r08`، يمدّد `1am.m5.r03` |
+| `2am.m1.r07` | ضرب كسرين. | `jida-kasrayn` | يمدّد `1am.m5.r03` |
+| `2am.m1.r08` | مقارنة كسرين لهما نفس المقام أو مقام أحدهما مضاعف لمقام الآخر. | `muqarana-kasrayn` | `1am.m5.r01`، `1am.m5.r02` |
+| `2am.m1.r09` | جمع أو طرح كسرين لهما نفس المقام أو مقام أحدهما مضاعف لمقام الآخر. | `jam-tarh-kusur` | `2am.m1.r08`، يمدّد `1am.m5.r03` |
 
 #### المقطع 2 — إنشاء أشكال هندسية بسيطة – التناظر المركزي (`2am.m2`, 4 أسابيع)
 
@@ -911,15 +911,15 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 
 | item | المورد المعرفي (نص البرنامج) | leçon d’accueil | repart de |
 |---|---|---|---|
-| `2am.m4.r01` | قراءة فاصلة نقطة معلومة أو وضع نقطة ذات فاصلة معلومة على مستقيم مدرّج. | `talim-mustaqim-mudarraj-2` _(prévue)_ | يرسّخ `1am.m5.r06` |
+| `2am.m4.r01` | قراءة فاصلة نقطة معلومة أو وضع نقطة ذات فاصلة معلومة على مستقيم مدرّج. | `talim-mustaqim-mudarraj-2` | يرسّخ `1am.m5.r06` |
 | `2am.m4.r02` | مقارنة عددين نسبيين. | `muqarana-nisbiya` | `2am.m4.r01` |
 | `2am.m4.r03` | ترتيب أعداد نسبية تصاعديا أو تنازليا. | `muqarana-nisbiya` | `2am.m4.r02` |
-| `2am.m4.r04` | قراءة إحداثيي نقطة معلومة أو وضع نقطة ذات إحداثيين معلومين في مستوٍ منسوب إلى معلم متعامد ومتجانس. | `talim-nuqta-mustawi` _(prévue)_ | يرسّخ `1am.m5.r07` |
-| `2am.m4.r05` | جمع وطرح عددين نسبيين. | `jam-tarh-nisbiya` _(prévue)_ | `2am.m4.r01` |
-| `2am.m4.r06` | حساب مجموع جبري. | `majmu-jabri` _(prévue)_ | `2am.m4.r05`، `2am.m1.r02` |
-| `2am.m4.r07` | حساب المسافة بين نقطتين ذات فاصلتين معلومتين على مستقيم مدرّج. | `masafa-nuqtatayn` _(prévue)_ | `2am.m4.r05` |
-| `2am.m4.r08` | حل المعادلات من الشكل: a ÷ … = b حيث a، b عددان عشريان معلومان في وضعيات بسيطة. | `hall-mushkil-muadala` _(prévue)_ | يمدّد `1am.m5.r10` |
-| `2am.m4.r09` | اختبار صحة مساواة أو متباينة تتضمّن عددا مجهولا (أو عددين مجهولين) عندما نستبدله بقيمة معلومة. | `ikhtibar-musawat-mutabayina` _(prévue)_ | `1am.m5.r08`، `2am.m4.r06` |
+| `2am.m4.r04` | قراءة إحداثيي نقطة معلومة أو وضع نقطة ذات إحداثيين معلومين في مستوٍ منسوب إلى معلم متعامد ومتجانس. | `talim-nuqta-mustawi` | يرسّخ `1am.m5.r07` |
+| `2am.m4.r05` | جمع وطرح عددين نسبيين. | `jam-tarh-nisbiya` | `2am.m4.r01` |
+| `2am.m4.r06` | حساب مجموع جبري. | `majmu-jabri` | `2am.m4.r05`، `2am.m1.r02` |
+| `2am.m4.r07` | حساب المسافة بين نقطتين ذات فاصلتين معلومتين على مستقيم مدرّج. | `masafa-nuqtatayn` | `2am.m4.r05` |
+| `2am.m4.r08` | حل المعادلات من الشكل: a ÷ … = b حيث a، b عددان عشريان معلومان في وضعيات بسيطة. | `hall-mushkil-muadala` | يمدّد `1am.m5.r10` |
+| `2am.m4.r09` | اختبار صحة مساواة أو متباينة تتضمّن عددا مجهولا (أو عددين مجهولين) عندما نستبدله بقيمة معلومة. | `ikhtibar-musawat-mutabayina` | `1am.m5.r08`، `2am.m4.r06` |
 
 #### المقطع 5 — متوازي الأضلاع (`2am.m5`, 4 أسابيع)
 
@@ -1151,7 +1151,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 |---:|---|---|---|
 | 1 | `kitabat-adad-tabii` — كتابة الأعداد الطبيعية ودلالة الأرقام | publiée | `1am.m1.r02` |
 | 2 | `kusur-ashriya-kitaba` — الكسور العشرية والكتابة العشرية | publiée | `1am.m1.r02` `1am.m5.x1` `1am.m1.r03` `1am.m5.r03` |
-| 3 | `adad-ashri-mustaqim-mudarraj` — الأعداد العشرية ونصف المستقيم المدرّج | prévue | `1am.m5.r04` |
+| 3 | `adad-ashri-mustaqim-mudarraj` — الأعداد العشرية ونصف المستقيم المدرّج | publiée | `1am.m5.r04` |
 | 4 | `muqaranat-adad-ashriya` — مقارنة الأعداد العشرية وترتيبها | publiée | `1am.m1.r04` |
 | 5 | `hasr-qiyam-muqarraba` — حصر عدد عشري وقيمه المقرّبة | prévue | `1am.m3.r05` `1am.m3.r04` |
 | 6 | `wadiya-idmajiya-adad-tabiiya-ashriya` — أدمج تعلّماتي — الأعداد الطبيعية والأعداد العشرية | synthèse | — |
@@ -1169,12 +1169,12 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 18 | `akhdh-kasr-min-adad` — أخذ كسر من عدد | prévue | `1am.m5.r01` `1am.m5.r03` |
 | 19 | `ikhtizal-kitaba-kasriya` — الكتابات الكسرية لحاصل قسمة واختزال كسر | publiée | `1am.m5.r01` `1am.m5.r02` `1am.m5.x1` |
 | 20 | `wadiya-idmajiya-kitabat-kasriya` — أدمج تعلّماتي — الكتابات الكسرية | synthèse | — |
-| 21 | `adad-nisbiya-siyaqat` — الأعداد النسبية وسياقات استعمالها | prévue | `1am.m5.r05` |
-| 22 | `talim-mustaqim-mudarraj` — التعليم على مستقيم مدرّج | prévue | `1am.m5.r06` `1am.m5.r05` |
-| 23 | `talim-fi-mustawi` — التعليم في المستوي | prévue | `1am.m5.r07` |
+| 21 | `adad-nisbiya-siyaqat` — الأعداد النسبية وسياقات استعمالها | publiée | `1am.m5.r05` |
+| 22 | `talim-mustaqim-mudarraj` — التعليم على مستقيم مدرّج | publiée | `1am.m5.r06` `1am.m5.r05` |
+| 23 | `talim-fi-mustawi` — التعليم في المستوي | publiée | `1am.m5.r07` |
 | 24 | `wadiya-idmajiya-adad-nisbiya` — أدمج تعلّماتي — الأعداد النسبية | synthèse | — |
-| 25 | `bahth-adad-naqisa` — البحث عن أعداد ناقصة | prévue | `1am.m5.r10` |
-| 26 | `tatbiq-qaida-harfiya` — تطبيق قاعدة حرفية | prévue | `1am.m5.r08` |
+| 25 | `bahth-adad-naqisa` — البحث عن أعداد ناقصة | publiée | `1am.m5.r10` |
+| 26 | `tatbiq-qaida-harfiya` — تطبيق قاعدة حرفية | publiée | `1am.m5.r08` |
 | 27 | `intaj-ibara-harfiya` — إنتاج عبارات حرفية | prévue | `1am.m5.r09` |
 | 28 | `wadiya-idmajiya-ibarat-harfiya` — أدمج تعلّماتي — الحساب الحرفي | synthèse | — |
 | 29 | `wadiyat-tanasubiya` — وضعيات تناسبية وجداول تناسبية | prévue | `1am.m6.r01` `1am.m6.r02` `1am.m6.r03` |
@@ -1223,27 +1223,27 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 
 | # | leçon | statut | items |
 |---:|---|---|---|
-| 1 | `silsila-bidun-aqwas` — سلسلة عمليات دون أقواس وأولوية العمليات | prévue | `2am.m1.r01` |
-| 2 | `silsila-bi-aqwas` — سلسلة عمليات تتضمّن أقواسا | prévue | `2am.m1.r01` `2am.m1.r02` |
-| 3 | `wasf-silsila-hisab` — وصف سلسلة حسابات | prévue | `2am.m1.r01` `2am.m1.r02` |
-| 4 | `tawzi-darb-jam-tarh` — توزيع الضرب على الجمع والطرح | prévue | `2am.m1.r03` |
+| 1 | `silsila-bidun-aqwas` — سلسلة عمليات دون أقواس وأولوية العمليات | publiée | `2am.m1.r01` |
+| 2 | `silsila-bi-aqwas` — سلسلة عمليات تتضمّن أقواسا | publiée | `2am.m1.r01` `2am.m1.r02` |
+| 3 | `wasf-silsila-hisab` — وصف سلسلة حسابات | publiée | `2am.m1.r01` `2am.m1.r02` |
+| 4 | `tawzi-darb-jam-tarh` — توزيع الضرب على الجمع والطرح | publiée | `2am.m1.r03` |
 | 5 | `wadiya-idmajiya-amaliyat-tabiiya-ushriya` — أدمج تعلّماتي — العمليات على الأعداد الطبيعية والأعداد العشرية | synthèse | — |
 | 6 | `qisma-iqlidiya-hasr` — القسمة الإقليدية وحصر حاصل القسمة | publiée | `2am.m1.r04` `2am.m1.r06` |
-| 7 | `kasr-hasil-qisma` — الكسر: نسبة وحاصل قسمة وقيم مقرّبة | prévue | `2am.m1.r05` `2am.m1.r06` |
-| 8 | `jam-tarh-kusur` — جمع وطرح كسرين | prévue | `2am.m1.r09` |
-| 9 | `jida-kasrayn` — جداء كسرين | prévue | `2am.m1.r07` |
-| 10 | `muqarana-kasrayn` — مقارنة كسرين | prévue | `2am.m1.r08` |
+| 7 | `kasr-hasil-qisma` — الكسر: نسبة وحاصل قسمة وقيم مقرّبة | publiée | `2am.m1.r05` `2am.m1.r06` |
+| 8 | `jam-tarh-kusur` — جمع وطرح كسرين | publiée | `2am.m1.r09` |
+| 9 | `jida-kasrayn` — جداء كسرين | publiée | `2am.m1.r07` |
+| 10 | `muqarana-kasrayn` — مقارنة كسرين | publiée | `2am.m1.r08` |
 | 11 | `wadiya-idmajiya-kusur-amaliyat` — أدمج تعلّماتي — الكسور والعمليات عليها | synthèse | — |
-| 12 | `talim-mustaqim-mudarraj-2` — التعليم على مستقيم مدرّج | prévue | `2am.m4.r01` |
+| 12 | `talim-mustaqim-mudarraj-2` — التعليم على مستقيم مدرّج | publiée | `2am.m4.r01` |
 | 13 | `muqarana-nisbiya` — مقارنة وترتيب أعداد نسبية | publiée | `2am.m4.r02` `2am.m4.r03` |
-| 14 | `talim-nuqta-mustawi` — تعليم نقطة في المستوي | prévue | `2am.m4.r04` |
-| 15 | `jam-tarh-nisbiya` — جمع وطرح عددين نسبيين | prévue | `2am.m4.r05` |
-| 16 | `masafa-nuqtatayn` — المسافة بين نقطتين على مستقيم مدرّج | prévue | `2am.m4.r07` |
-| 17 | `majmu-jabri` — حساب مجموع جبري | prévue | `2am.m4.r06` |
+| 14 | `talim-nuqta-mustawi` — تعليم نقطة في المستوي | publiée | `2am.m4.r04` |
+| 15 | `jam-tarh-nisbiya` — جمع وطرح عددين نسبيين | publiée | `2am.m4.r05` |
+| 16 | `masafa-nuqtatayn` — المسافة بين نقطتين على مستقيم مدرّج | publiée | `2am.m4.r07` |
+| 17 | `majmu-jabri` — حساب مجموع جبري | publiée | `2am.m4.r06` |
 | 18 | `wadiya-idmajiya-adad-nisbiya-2` — أدمج تعلّماتي — الأعداد النسبية | synthèse | — |
-| 19 | `ibara-harfiya-intaj` — إنتاج عبارة حرفية واستعمالها | prévue | — |
-| 20 | `ikhtibar-musawat-mutabayina` — اختبار صحة مساواة أو متباينة | prévue | `2am.m4.r09` |
-| 21 | `hall-mushkil-muadala` — حلّ مشكل باستعمال معادلة | prévue | `2am.m4.r08` |
+| 19 | `ibara-harfiya-intaj` — إنتاج عبارة حرفية واستعمالها | publiée | — |
+| 20 | `ikhtibar-musawat-mutabayina` — اختبار صحة مساواة أو متباينة | publiée | `2am.m4.r09` |
+| 21 | `hall-mushkil-muadala` — حلّ مشكل باستعمال معادلة | publiée | `2am.m4.r08` |
 | 22 | `wadiya-idmajiya-mafhum-muadala` — أدمج تعلّماتي — مفهوم معادلة | synthèse | — |
 | 23 | `wadiya-tanasubiya-jadwal` — التعرّف على وضعية تناسبية من جدول | prévue | `2am.m6.r01` `2am.m6.r02` |
 | 24 | `rabi-mutanasib` — حساب الرابع المتناسب | publiée | `2am.m6.r02` `2am.m6.r03` |

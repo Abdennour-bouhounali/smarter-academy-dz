@@ -140,6 +140,16 @@ export function init({ world = 'tray', share, start, max, claim = null, targets 
 
 /** « إعادة » : tout recommencer, le cahier et la mémoire des essais compris. */
 export const reset = (s) => init(s.config);
+/** « أعِد التجربة » (questions du labo) : LA MÊME part repart — la première : tout ; la seconde : son cahier, ses épingles, ses essais. */
+export function retryStage(s) {
+  if (s.stage === 0) return init(s.config);
+  const st = s.stages[1];
+  return put(s, {
+    d: st.start, predicting: st.predict, cursor: st.predict ? Math.max(1, st.start - 1) : null, pins: Object.freeze([]), last: null,
+    notebook: Object.freeze([s.notebook[0], Object.freeze(initialStamp(st, null))]),
+    trials: Object.freeze(s.trials.filter((t) => t.stage !== 1)),
+  });
+}
 
 /** La part en cours. */
 export const current = (s) => s.stages[s.stage];

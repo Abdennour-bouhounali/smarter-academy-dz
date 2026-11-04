@@ -25,9 +25,10 @@ import LabEvidence from '../components/LabEvidence';
  *   2. échanger : pourquoi AD peut devenir BC                            → brique taawid-musawi      (P1)
  *   3. annuler : OA + AO = 0⃗ (pas le nombre 0)                           → brique mutaakisan-sifr    (P1)
  *   4. la figure ne prouve pas : OL = AC refusé                           → brique shakl-la-yubarhin  (P2)
- * « أتوقّع القاعدة » : l'explication (et la bonne option) des questions 1, 2 et 4 ÉNONCE la règle de la brique qui suit ;
- * chaque question est donc enveloppée dans une PredictRule (même id que la brique) — l'élève écrit la règle (predictPrompt de knowledge.jsx)
- * après le laboratoire et AVANT la question. La brique 3 (mutaakisan-sifr) est un rappel : la leçon 3 a posé AB + BA = 0⃗.
+ * PROTOTYPE 2026-10-28 : les questions 1 et 2 sont désormais posées PAR-DESSUS le labo (`vector-chain › CHAINS`, après chaque rubrique : `couple`, `swap`, `final`)
+ * ; les étapes 1 et 2 gardent la TRACE (événements `checkpoint-done`) puis posent la brique, qui demande elle-même la règle (predictPrompt de knowledge.jsx).
+ * Les questions 3 et 4 restent des questions d'étape (le labo ne les pose pas) ; l'explication des questions restantes ÉNONCE la règle de la brique qui suit :
+ * chacune est enveloppée dans une PredictRule. La brique 3 (mutaakisan-sifr) est un rappel : la leçon 3 a posé AB + BA = 0⃗.
  * La « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) ferme la dernière étape : le métro, d'autres stations, résolue au module 5.
  */
 const METRO_LEAD = 'في مترو الجزائر كل محطة نقطة وكل تذكرة شعاع: $\\overrightarrow{AB}$ تعني «من A إلى B».';
@@ -37,7 +38,14 @@ export default function Module01Metro() {
   const [trials, setTrials] = useState([]);
   const [q, setQ] = useState({});
   const mark = (n) => () => setQ((s) => ({ ...s, [n]: true }));
-  const keep = (level) => (e) => { if (e) setTrials((list) => [...list, { ...e, level }].slice(-40)); };
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand la suite de questions de sa rubrique l'est (événement `checkpoint-done`)
+  const [cpDone, setCpDone] = useState({});
+  const keep = (level) => (e) => {
+    if (!e) return;
+    if (e.tk) { if (e.tk === 'checkpoint-done') setCpDone((d) => ({ ...d, [`${level}:${e.id}`]: true })); return; }
+    setTrials((list) => [...list, { ...e, level }].slice(-40));
+  };
+  const answered = (level, id) => !!cpDone[`${level}:${id}`];
 
   return (
     <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} objectives={['متى نستطيع أن نربط تذكرتين فنختصر الرحلة؟', 'متى نقبل أن ننقل تذكرة إلى محطة أخرى؟', 'ماذا يعطي ذهاب وإياب على نفس الطريق؟', 'هل يكفي أن نرى المساواة على الشكل لنبرهنها؟']} moduleTitle="مترو الجزائر — نختصر ونبرهن"
@@ -55,40 +63,20 @@ export default function Module01Metro() {
         />
       }
       steps={[
-        { num: 1, title: 'نربط تذكرتين', subtitle: 'متى يقبل القطار العربة؟', done: !!q[1],
+        { num: 1, title: 'نربط تذكرتين', subtitle: 'متى يقبل القطار العربة؟', done: answered('beginner', 'r0'),
           content: (
             <div className="space-y-3">
               <LabEvidence id="beginner-chain" trials={trials} level="beginner" title="ما فعلته في المستوى المبتدئ:"
-                empty="في المستوى المبتدئ، الرحلة 1: اسحب تذكرة إلى القطار، ثم اربط الأخرى قبله أو بعده." />
-              <PredictRule id="rabt-shal">
-                <TapQuestion
-                  prompt={<MathText>{'ربط المترو التذكرتين $\\overrightarrow{AB}$ و $\\overrightarrow{BC}$ في تذكرة واحدة. لماذا قبل الربط؟'}</MathText>}
-                  options={['لأن التذكرة الثانية تنطلق من المحطة التي وصلت إليها الأولى، والمحطة الأخيرة بقيت هي نفسها: $\\overrightarrow{AC}$', 'لأن للتذكرتين الطول نفسه', 'لأن التذكرتين تحملان الحرفين نفسيهما'].map(M)}
-                  correct={0} cols={1} requires={['shal']}
-                  explain={<MathText>{REMARKS.shalRule}</MathText>}
-                  onAnswered={mark(1)} />
-              </PredictRule>
-              {q[1] && <KnowledgeBrick id="rabt-shal" lead="ما فعله القطار:" />}
+                empty="في المستوى المبتدئ، الرحلة 1: اسحب تذكرة إلى القطار، ثم اربط الأخرى قبله أو بعده، وأجب عن الأسئلة التي تظهر فوق المختبر." />
+              {answered('beginner', 'r0') && <KnowledgeBrick id="rabt-shal" lead="ما فعله القطار:" />}
             </div>
           ) },
-        { num: 2, title: 'ننقل تذكرة إلى محطة أخرى', subtitle: 'AB + AD', done: !!q[2],
+        { num: 2, title: 'ننقل تذكرة إلى محطة أخرى', subtitle: 'AB + AD', done: answered('beginner', 'r1'),
           content: (
             <div className="space-y-3">
               <LabEvidence id="beginner-swap" trials={trials} level="beginner" title="ما فعلته في المستوى المبتدئ:"
-                empty="في المستوى المبتدئ، الرحلة 2: حاول أن تربط التذكرتين، ثم اسحب إحداهما إلى محطة أخرى." />
-              <PredictRule id="taawid-musawi">
-                <TapQuestion
-                  prompt={<MathText>{'في متوازي الأضلاع ABCD، لماذا قبل المختبر أن تنقل $\\overrightarrow{AD}$ إلى المحطة B فتصبح $\\overrightarrow{BC}$ ؟'}</MathText>}
-                  options={[
-                    'لأن $\\overrightarrow{AD} = \\overrightarrow{BC}$ في متوازي الأضلاع ABCD',
-                    'لأن للقطعتين [AD] و [BC] نفس الطول فقط',
-                    'لأن $\\overrightarrow{AD} = \\overrightarrow{CB}$',
-                  ].map(M)}
-                  correct={0} cols={1} requires={['rabt-shal', 'tasawi-shuaayn']}
-                  explain={<MathText>{`${REMARKS.swapRule} ${REMARKS.rabtRight}`}</MathText>}
-                  onAnswered={mark(2)} />
-              </PredictRule>
-              {q[2] && (
+                empty="في المستوى المبتدئ، الرحلة 2: حاول أن تربط التذكرتين، ثم اسحب إحداهما إلى محطة أخرى، وأجب عن أسئلة الرحلة فوق المختبر." />
+              {answered('beginner', 'r1') && (
                 <>
                   <KnowledgeBrick id="taawid-musawi" lead="إذا لم يتتابع شعاعان:" />
                   <p className="text-xs text-slate-600" data-misconception-note="rabt"><MathText>{`خطأ شائع: ${REMARKS.rabtWrong} ${REMARKS.rabtWhy}`}</MathText></p>
@@ -134,6 +122,6 @@ export default function Module01Metro() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />} />
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />} />
   );
 }

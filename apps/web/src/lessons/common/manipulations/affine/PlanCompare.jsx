@@ -13,6 +13,11 @@ import DraggableObject from '../primitives/DraggableObject';
 import DropZone from '../primitives/DropZone';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import MathText from '../../components/MathText';
 import * as L from '../logic/planCompare';
 
@@ -87,6 +92,11 @@ import * as L from '../logic/planCompare';
  *   TRANSFER       les forfaits téléphone, les applications de taxi, la salle de sport (أوظّف) ; la plage
  *                  de la synthèse (vélo / kayak, jusqu'à trois formules)
  *
+ * QUESTIONS PENDANT LE LABO (2026-10-28, lot 5) : à la fin de chaque étape (`L.stepsOf` : build · slide · mark · paint, selon `mode`) une suite de
+ * questions se pose PAR-DESSUS le labo (`CHAINS`) et retient la suite (« إلى المقارنة » attend la fin de `slide`) ; la dernière étape finit par LA RÈGLE.
+ * Étapes `LabStepper` (`[data-pc-step=<i>]`) + fête ; « إعادة » repart de zéro ; obligatoires pour tout élève, coupées par l'enseignant pour SON
+ * compte (`useLabCheckpointSettings`) ; `checkpoints` = false les coupe aussi ; `onCheckpoint(ev)` : la trace pour les étapes du module.
+ *
  * AUTO-COMPLÉTION : MANUELLE (§6bis) — chaque montant posé est une décision de modélisation, chaque marque
  * et chaque couleur une réponse.
  *
@@ -117,8 +127,8 @@ const LETTERS = ['أ', 'ب', 'جـ'];
 
 export default function PlanCompare({
   plans: plans0 = '200x+2000|400x', mode: mode0 = 'model|compare', ask, xMax, yMax, theme: theme0 = 'stadium',
-  title, lead, mission, level, levels: withLevels = true, initialMode = 'student', allowModeSwitch = false,
-  onFinished, onTrial, onModel,
+  title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false,
+  onFinished, onTrial, onModel, onCheckpoint,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.planCompare.${key}`, o), [t]);
@@ -129,16 +139,18 @@ export default function PlanCompare({
   const authored = state.isAuthoredLevel;
   const make = () => L.init({ plans, mode, ...(authored ? { ask, xMax, yMax } : {}) });
   const [lab, setLab] = useState(make);
-  const sceneKey = `${plans}|${mode}|${state.epoch}|${authored}`;
-  const [scene, setScene] = useState(sceneKey);
+  const sceneKey = `${plans}|${mode}|${state.epoch}|${state.resetCount}|${authored}`;
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  const [cleared, setCleared] = useState([]);   // les étapes dont la suite de questions est finie
   const [liveX, setLiveX] = useState(null);
   // Un x PAR DÉFAUT, ni essai ni réponse (2026-10-09).
   const [x, setX] = useState(() => L.defaultX(lab));
   const [pin, setPin] = useState(null);
   const [pinDrag, setPinDrag] = useState(false);
   const [shake, setShake] = useState(0);
-  if (scene !== sceneKey) {
-    setScene(sceneKey); { const fresh = make(); setLab(fresh); setX(L.defaultX(fresh)); } setLiveX(null); setPin(null); setPinDrag(false);
+  // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la facture, les essais, les marques et les questions du labo
+  if (scene.key !== sceneKey) {
+    setScene({ key: sceneKey, inits: scene.inits + 1 }); { const fresh = make(); setLab(fresh); setX(L.defaultX(fresh)); } setLiveX(null); setPin(null); setPinDrag(false); setCleared([]);
   }
 
   const { win, grid, env } = lab;
@@ -149,7 +161,48 @@ export default function PlanCompare({
 
   /* ── découverte et règle formelle ── */
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  const cpSettings = useLabCheckpointSettings('plan-compare');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpLive = cpOn && cpSettings.enabled;
+  const steps = L.stepsOf(lab);
+  const ruleStep = steps[steps.length - 1];
+  const active = cpLive ? steps.find((st) => !cleared.includes(st)) ?? null : null;
+  const reachedActive = !!active && L.stepReached(lab, active);
+  const cp = useLabCheckpoint({
+    id: active,
+    questions: reachedActive ? chainOf(lab, active).map((q) => QUESTIONS[q](lab, k, tw)) : null,
+    reached: reachedActive,
+    resetKey: scene.inits,
+    onRetry: () => { const fresh = L.restartStep(lab, active, make()); setLab(fresh); if (active === 'build') setX(L.defaultX(fresh)); setLiveX(null); setPin(null); },
+    onEvent: (ev) => state.report(onCheckpoint, ev),   // {tk:'checkpoint'|'checkpoint-done', id: étape, …} — la TRACE que les étapes du module relisent
+    onDone: (id) => {
+      setCleared((c) => (c.includes(id) ? c : [...c, id]));
+      if (id === ruleStep) { state.discover(); state.formalize(); }
+    },
+  });
+  const blockedRef = useRef(false);
+  blockedRef.current = cp.blocking;
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // une étape est FAITE quand son objectif est atteint ET sa suite de questions répondue : la pastille passe au vert et on fête
+  const stepDone = steps.map((st) => L.stepReached(lab, st) && (!cpLive || cleared.includes(st)));
+  const nDone = stepDone.findIndex((d) => !d) < 0 ? stepDone.length : stepDone.findIndex((d) => !d);
+  const party = useStepCelebration();
+  const celebrated = useRef({ n: 0, inits: scene.inits });
+  if (celebrated.current.inits !== scene.inits) celebrated.current = { n: 0, inits: scene.inits };   // « إعادة » : on refête
+  useEffect(() => {
+    if (nDone <= celebrated.current.n) return;
+    celebrated.current.n = nDone;
+    party.celebrate({ n: nDone, total: stepDone.length });
+  }, [nDone]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son du GESTE (muet sans « الصوت ») : « tooth » un x, « bell » une marque ou une couleur juste, « flag » le modèle accepté, « over » un refus
+  useEffect(() => {
+    const kd = lab.last?.kind;
+    if (!kd) return;
+    if (kd === 'modelOk' || kd === 'noCrossOk') playSfx('flag');
+    else if (kd === 'cross' || kd === 'paintOk') playSfx('bell');
+    else if (kd === 'trial' || kd === 'crossAbove') playSfx('tooth');
+    else if (['modelKo', 'offLine', 'unequal', 'noCrossKo', 'paintKo', 'noBrush'].includes(kd)) playSfx('over');
+  }, [lab.last]); // eslint-disable-line react-hooks/exhaustive-deps
   const kind = L.discoveryKind(lab);
   useEffect(() => {
     if (!state.isFormal) return;
@@ -200,6 +253,7 @@ export default function PlanCompare({
   const xr = { min: 0, max: win.xMax };
   const xx = Math.max(0, Math.min(win.xMax, liveX ?? x));
   const commitX = (v) => {
+    if (blockedRef.current) { setLiveX(null); return; }
     setLiveX(null); setX(v);
     if (!lab.accepted) return;
     const next = L.commitX(lab, v);
@@ -222,7 +276,7 @@ export default function PlanCompare({
   const sx = useStretchInteraction({
     value: lab.accepted ? xx : null, range: xr, direction: 'ltr',
     toValue: useCallback((cx, _cy, rect) => geo.fromPx(cx - rect.left, 0).x, [geo]),
-    onChange: (v) => lab.accepted && setLiveX(v),
+    onChange: (v) => lab.accepted && !blockedRef.current && setLiveX(v),
     onCommit: (v) => lab.accepted && commitX(v),
   });
 
@@ -230,6 +284,7 @@ export default function PlanCompare({
   const drag = useDragInteraction({
     accepts: (src, zone) => (src.startsWith('chip:') && (zone === 'slot:once' || zone === 'slot:each' || zone === 'reserve') ? true : ''),
     onDrop: (src, zone) => {
+      if (blockedRef.current) return;
       const chip = src.slice(5);
       setLab((s) => (zone === 'reserve' ? L.takeBack(s, chip) : L.place(s, chip, zone.slice(5))));
     },
@@ -260,7 +315,7 @@ export default function PlanCompare({
   const pinX = curPin ? L.valueAt(curPin.i, grid.dx) : null;
   const pinY = curPin ? L.valueAt(curPin.j, grid.dy) : null;
   const placeMark = (p = pinRef.current) => {
-    if (!p) return;
+    if (!p || blockedRef.current) return;
     const mx = L.valueAt(p.i, grid.dx); const my = L.valueAt(p.j, grid.dy);
     const next = L.placeMark(lab, mx, my);
     if (!next.last.ok) setShake((n) => n + 1);
@@ -279,7 +334,7 @@ export default function PlanCompare({
     return { i: clampI(L.indexOf(v.x, grid.dx)), j: clampJ(L.indexOf(v.y, grid.dy)) };
   };
   const onPlaneDown = (e) => {
-    if (step !== 'mark' || e.button > 0 || !planeRef.current) return;
+    if (step !== 'mark' || e.button > 0 || !planeRef.current || blockedRef.current) return;
     e.preventDefault();
     e.currentTarget.setPointerCapture?.(e.pointerId);
     setPinDrag(true); setPin(pinAt(e));
@@ -294,12 +349,14 @@ export default function PlanCompare({
     placeMark(p);
   };
   const claimNoCross = () => {
+    if (blockedRef.current) return;
     const next = L.claimNoCross(lab);
     apply(next, { kind: 'noCross', ok: next.last.kind === 'noCrossOk' });
   };
 
   /* ── peindre : la couleur de chaque intervalle ── */
   const paintSeg = (i) => {
+    if (blockedRef.current) return;
     if (lab.brush == null) { setLab((s) => ({ ...s, last: { kind: 'noBrush' } })); return; }
     const next = L.paint(lab, i);
     apply(next, { kind: 'paint', ok: next.last.kind === 'paintOk', seg: i, plan: P[lab.brush].id });
@@ -576,7 +633,7 @@ export default function PlanCompare({
           ))}
         </ul>
       )}
-      {!compare && L.canCompare(lab) && (
+      {!compare && L.canCompare(lab) && !cp.blocking && (!cpLive || cleared.includes('slide')) && (
         <div className="flex flex-wrap items-center gap-2 rounded-xl border-2 border-emerald-300 bg-emerald-50 px-2 py-1.5" data-pc-next>
           <p className="min-w-0 flex-1 text-xs font-bold text-emerald-900">{k('nextCard', { n: P.length })}</p>
           <button type="button" onClick={() => { setLab(L.openCompare); setPin(null); }} data-pc-open-compare
@@ -647,6 +704,7 @@ export default function PlanCompare({
 
   const side = (
     <div ref={sideRef} className="min-w-0 space-y-2" data-pc-side>
+      {cpLive && steps.length > 1 && <LabStepper count={steps.length} current={Math.min(nDone, steps.length - 1)} done={stepDone} stepAttr="data-pc-step" />}
       {step === 'build' ? buildPanel : compare ? comparePanel : slidePanel}
       <p role="status" className={`${wide ? 'min-h-[2.25rem] text-sm' : 'min-h-[1.25rem] text-xs'} font-bold leading-snug`} data-pc-notice={lab.last?.kind ?? ''}>{notice}</p>
     </div>
@@ -654,7 +712,7 @@ export default function PlanCompare({
 
   const head = (
     <div className="flex items-center gap-2 overflow-hidden" style={{ height: HEAD }}>
-      <ol className="flex flex-wrap gap-1.5 text-xs font-bold" aria-hidden="true">
+      <ol className={`flex flex-wrap gap-1.5 text-xs font-bold ${cpLive ? 'hidden' : ''}`} aria-hidden="true">
         {lab.modes.map((m) => (
           <li key={m} className={`rounded-full px-2.5 py-1 ${lab.stage === m ? 'bg-indigo-600 text-white' : 'bg-indigo-100 text-indigo-700'}`}>{k(m === 'model' ? 'stageModel' : 'stageCompare')}</li>
         ))}
@@ -681,6 +739,8 @@ export default function PlanCompare({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpLive}
       hints={hints}
       controller={{
         autoStep: () => false,
@@ -702,8 +762,10 @@ export default function PlanCompare({
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-sky-50/70 to-white" data-dragging={sx.dragging || drag.dragging || pinDrag ? 'true' : undefined}>
-        <div ref={boxRef} className="space-y-3" data-plan-compare data-stage={lab.stage} data-step={step} data-theme={theme}
+        <div ref={boxRef} className="relative space-y-3" data-plan-compare data-stage={lab.stage} data-step={step} data-theme={theme}
           data-plans={P.map((p) => p.src).join('|')} data-x={xx} data-layout={layout} data-budget={budget}>
+          {party.node}
+          {cp.node}
           <div className="space-y-2" data-pc-glance>
             {head}
             <div className={wide ? 'grid items-start gap-3' : 'space-y-2'} style={wide ? { gridTemplateColumns: `${planeW}px 1fr` } : undefined}>
@@ -966,3 +1028,123 @@ const PC_CSS = '.pc-shake{animation:pc-s .35s ease-in-out 1}@keyframes pc-s{0%,1
   + '.pc-flick{animation:pc-f .3s steps(2) 3}@keyframes pc-f{50%{opacity:.35}}'
   + '.pc-bob{animation:pc-b .8s ease-in-out 2}@keyframes pc-b{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}'
   + '@media (prefers-reduced-motion: reduce){.pc-shake,.pc-jump,.pc-wave,.pc-flick,.pc-bob{animation:none}}';
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de questions de chaque étape ; la dernière étape (slide si model seul, paint sinon) finit par LA RÈGLE. */
+export function chainOf(lab, step) {
+  const steps = L.stepsOf(lab);
+  const br = lab.env.breaks[0];
+  const base = {
+    build: ['atZero', 'costAt'],
+    slide: ['rate', lab.asks.some((q) => q.axis === 'y') ? 'budget' : null],
+    mark: br ? ['crossCost'] : ['order'],
+    paint: br ? [L.sideX(lab, br, 'before') != null ? 'before' : null, L.sideX(lab, br, 'after') != null ? 'after' : null] : [],
+  }[step].filter(Boolean);
+  return step === steps[steps.length - 1] ? [...base, 'rule'] : base;
+}
+export const CHAINS = Object.freeze({ build: ['atZero', 'costAt'], slide: ['rate', 'budget'], mark: ['crossCost', 'order'], paint: ['before', 'after'] });
+
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const T = (x) => <MathText>{`$${x}$`}</MathText>;
+const shuffled = (list, seed) => { const r = Math.abs(seed) % list.length; return [...list.slice(r), ...list.slice(0, r)]; };
+const seedOf = (lab) => lab.trials.length + lab.marks.length + L.toNumber(lab.plans[0].f.a);
+const nameOf = (k, i) => k('planName', { letter: LETTERS[i] });
+const lastTrial = (lab, stage) => [...lab.trials].reverse().find((t) => t.stage === stage) ?? lab.trials[lab.trials.length - 1];
+
+export const QUESTIONS = {
+  /* build : la facture que l'élève vient de construire */
+  atZero: (lab, k) => {
+    const f = lab.plans[0].f;
+    const o = { f: L.fnTex(lab, 0), b: L.numText(f.b) };
+    return {
+      id: 'atZero', kind: 'number', expected: Lin.fracText(f.b), answer: T(L.numTex(f.b)),
+      prompt: Cq(k, 'atZero.prompt', o), hints: [Cq(k, 'atZero.hint1', o), Cq(k, 'atZero.hint2', o)], explain: Cq(k, 'atZero.explain', o),
+    };
+  },
+  costAt: (lab, k) => {
+    const x = lab.verdict?.x ?? L.sampleX(lab);
+    const cost = L.costsAt(lab, x)[0];
+    const o = { f: L.fnTex(lab, 0), x: L.numText(x), calc: L.costTex(lab, 0, x), a: L.numText(lab.plans[0].f.a), b: L.numText(lab.plans[0].f.b) };
+    return {
+      id: 'costAt', kind: 'number', expected: Lin.fracText(cost), answer: T(L.numTex(cost)),
+      prompt: Cq(k, 'costAt.prompt', o), hints: [Cq(k, 'costAt.hint1', o), Cq(k, 'costAt.hint2', o)], explain: Cq(k, 'costAt.explain', o),
+    };
+  },
+  /* slide : ce que la facture donne quand x glisse */
+  rate: (lab, k) => {
+    const tr = lastTrial(lab, 'model') ?? { x: 0 };
+    const f = lab.plans[0].f;
+    const x1 = tr.x + 1;
+    const c0 = L.costsAt(lab, tr.x)[0]; const c1 = L.costsAt(lab, x1)[0];
+    const o = { x: tr.x, x1, c0: L.numText(c0), c1: L.numText(c1), a: L.numText(f.a), f: L.fnTex(lab, 0) };
+    return {
+      id: 'rate', kind: 'number', expected: Lin.fracText(f.a), answer: T(L.numTex(f.a)),
+      prompt: Cq(k, 'rate.prompt', o), hints: [Cq(k, 'rate.hint1', o), Cq(k, 'rate.hint2', o)], explain: Cq(k, 'rate.explain', o),
+    };
+  },
+  budget: (lab, k) => {
+    const q = lab.asks.find((a) => a.axis === 'y');
+    const x = L.antecedentX(lab, q.v);
+    const f = lab.plans[0].f;
+    const o = { f: L.fnTex(lab, 0), m: L.numText(q.v), b: L.numText(f.b), a: L.numText(f.a), rest: L.numText(Lin.sub(q.v, f.b)), lines: L.antecedentLines(lab, q.v).join(' ,\\quad ') };
+    return {
+      id: 'budget', kind: 'number', expected: Lin.fracText(x), answer: T(L.numTex(x)),
+      prompt: Cq(k, 'budget.prompt', o), hints: [Cq(k, 'budget.hint1', o), Cq(k, 'budget.hint2', o)], explain: Cq(k, 'budget.explain', o),
+    };
+  },
+  /* mark : le coût commun au croisement, ou l'ordre qui ne change pas */
+  crossCost: (lab, k) => {
+    const br = lab.env.breaks[0];
+    const p = br.before; const q = br.after;
+    const o = { x: L.numText(br.x), p: nameOf(k, p), q: nameOf(k, q), fp: L.fnTex(lab, p), calc: L.costTex(lab, p, br.x), y: L.numText(br.y) };
+    return {
+      id: 'crossCost', kind: 'number', expected: Lin.fracText(br.y), answer: T(L.numTex(br.y)),
+      prompt: Cq(k, 'crossCost.prompt', o), hints: [Cq(k, 'crossCost.hint1', o), Cq(k, 'crossCost.hint2', o)], explain: Cq(k, 'crossCost.explain', o),
+    };
+  },
+  order: (lab, k) => {
+    const best = lab.env.segments[0].plan;
+    const xm = lab.win.xMax;
+    const costs = L.costsAt(lab, xm);
+    const opts = lab.plans.map((p) => (p.index === best
+      ? { text: nameOf(k, p.index), correct: true }
+      : { text: nameOf(k, p.index), why: Cq(k, 'order.why', { p: nameOf(k, p.index), cp: L.numText(costs[p.index]), best: nameOf(k, best), cb: L.numText(costs[best]), x: xm }) }));
+    const o = { best: nameOf(k, best), x: xm, xMax: xm };
+    return {
+      id: 'order', kind: 'choice', cols: 1, prompt: Cq(k, 'order.prompt', o), options: shuffled(opts, seedOf(lab)),
+      hints: [Cq(k, 'order.hint1', o), Cq(k, 'order.hint2', o)], explain: Cq(k, 'order.explain', o),
+    };
+  },
+  /* paint : de chaque côté du croisement */
+  before: (lab, k) => sideQuestion(lab, k, 'before'),
+  after: (lab, k) => sideQuestion(lab, k, 'after'),
+  rule: (lab, k, tw) => {
+    const units = (n) => tw('units', { count: n });
+    const opts = discoveryFor(lab, { k, tw, planName: (i) => nameOf(k, i), units });
+    const ci = opts.findIndex((o) => o.correct);
+    const dk = L.discoveryKind(lab);
+    return {
+      id: 'rule', kind: 'choice', cols: 1,
+      prompt: <MathText>{k(dk === 'model' ? 'dPromptModel' : 'dPromptCompare')}</MathText>,
+      options: ci === opts.length - 1 ? [opts[ci], ...opts.slice(0, ci)] : opts,
+      hints: [Cq(k, `rule.hint1.${dk === 'model' ? 'model' : 'compare'}`), Cq(k, `rule.hint2.${dk === 'model' ? 'model' : 'compare'}`)],
+      explain: Cq(k, `rule.explain.${dk === 'model' ? 'model' : 'compare'}`),
+    };
+  },
+};
+
+function sideQuestion(lab, k, side) {
+  const br = lab.env.breaks[0];
+  const x = L.sideX(lab, br, side);
+  const best = L.cheapest(lab, x)[0];
+  const costs = L.costsAt(lab, x);
+  const opts = lab.plans.map((p) => (p.index === best
+    ? { text: nameOf(k, p.index), correct: true }
+    : { text: nameOf(k, p.index), why: Cq(k, 'side.why', { p: nameOf(k, p.index), cp: L.numText(costs[p.index]), best: nameOf(k, best), cb: L.numText(costs[best]), x }) }));
+  const o = { x, cross: L.numText(br.x), best: nameOf(k, best), cb: L.numText(costs[best]) };
+  return {
+    id: side, kind: 'choice', cols: 1, prompt: Cq(k, `${side}.prompt`, o), options: shuffled(opts, seedOf(lab) + (side === 'after' ? 1 : 0)),
+    hints: [Cq(k, `${side}.hint1`, o), Cq(k, 'side.hint2', o)], explain: Cq(k, `${side}.explain`, o),
+  };
+}

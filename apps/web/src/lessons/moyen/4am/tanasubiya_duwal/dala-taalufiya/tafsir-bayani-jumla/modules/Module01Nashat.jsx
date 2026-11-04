@@ -29,15 +29,19 @@ const Opt = (s) => <MathText key={s}>{s}</MathText>;
 export default function Module01Nashat() {
   const [forms, setForms] = useState([]);
   const [points, setPoints] = useState([]);
-  const [q0, setQ0] = useState(false);
+  const [cps, setCps] = useState([]);
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
-  const [q4a, setQ4a] = useState(false);
   const [q4, setQ4] = useState(false);
   const [q5, setQ5] = useState(false);
 
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand la suite de questions de son étape l'est
+  const answered = (id) => cps.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const onCheckpoint = (e) => setCps((l) => [...l, e]);
+
   const onTrial = (tr) => {
+    if (tr.tk) return;   // un événement `checkpoint…` n'est pas un essai
     if (tr.kind === 'form') setForms((f) => [...f.filter((x) => x.tex !== tr.tex), tr]);
     if (tr.kind === 'point' && tr.stage !== 'cases') setPoints((p) => [...p.filter((x) => x.pair !== tr.pair), tr]);
   };
@@ -108,6 +112,7 @@ export default function Module01Nashat() {
                 theme="laser"
                 title="شعاعا ليزر: جملة بأعداد صغيرة"
                 onTrial={onTrial}
+                onCheckpoint={onCheckpoint}
               />
             ),
             advanced: () => (
@@ -120,6 +125,7 @@ export default function Module01Nashat() {
                 title="نشاط 5: 43 قطعة و 5000DA"
                 lead={<MathText>{'اكتب الشرطين على الشكل $y = ax + b$ ، ثم ابحث عن نقطة تُضيء المصباحين معًا. جرّب أيضًا نقطًا على مستقيم واحد.'}</MathText>}
                 onTrial={onTrial}
+                onCheckpoint={onCheckpoint}
               />
             ),
           }}
@@ -127,24 +133,16 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'لماذا يضيء مصباح واحد فقط؟', subtitle: 'ما رأيته على اللوحة', done: q0,
+          num: 1, title: 'لماذا يضيء مصباح واحد فقط؟', subtitle: 'ما رأيته على اللوحة', done: answered('probe'),
           content: (
             <div className="space-y-3">
               {pointsEvidence}
-              <TapQuestion
-                prompt={<MathText>{'حرّكتَ النقطة P على مستقيم واحد، فأضاء مصباح واحد فقط. لماذا لم يضئ الثاني؟'}</MathText>}
-                options={[
-                  'لأنّ إحداثيتَي P تحقّقان معادلة هذا المستقيم وحدها',
-                  'لأنّ المصباح الثاني معطّل',
-                  'لأنّ P بعيدة عن المبدأ',
-                  'لأنّ المستقيمين متطابقان',
-                ].map(Opt)}
-                correct={0}
-                cols={1}
-                requires={['thunaiya-hall']}
-                explain={<MathText>{'مصباح كل معادلة يضيء حين تحقّقها إحداثيتا P، أي حين تقع P على مستقيمها. نقطة على مستقيم واحد تحقّق معادلة واحدة، فيضيء مصباح واحد.'}</MathText>}
-                onAnswered={() => setQ0(true)}
-              />
+              <p data-checkpoint-trace="probe" data-tried={answered('probe') ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${answered('probe') ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {answered('probe')
+                  ? 'أجبتَ في المختبر: مصباح واحد يضيء حين تحقّق إحداثيتا P معادلة مستقيم واحد، فتكون P على هذا المستقيم وحده.'
+                  : 'أنجز مرحلة تحريك P على اللوحة (نقطة بمصباح واحد ثم نقطة بالمصباحين)، وأجب عن الأسئلة التي تظهر فوقها.'}
+              </p>
             </div>
           ),
         },
@@ -154,20 +152,13 @@ export default function Module01Nashat() {
             <div className="space-y-3">
               <p className="text-xs text-slate-600">على المنصّة، لوحة صندوق القسم (المستوى المتقدّم) هي الرسم على الورق المليمتري: كل عقدة من الشبكة نقطة إحداثياها عددان طبيعيان.</p>
               {pointsEvidence}
-              <TapQuestion
-                prompt="هل توجد نقاط إحداثياتها تحقّق معادلتي المستقيمين في آن واحد؟"
-                options={[
-                  'نعم، نقطة واحدة: النقطة المشتركة بين المستقيمين',
-                  'لا: كل نقطة تحقّق معادلة واحدة على الأكثر',
-                  'نعم: كل نقاط المستقيم (d₁)',
-                ]}
-                correct={0}
-                cols={1}
-                requires={['tamthil-taalufi', 'thunaiya-hall']}
-                explain={<MathText>{`النقطة $(36 ; 7)$ على المستقيمين معًا: إذا وضعت $x = 36$ في المعادلة (1) وجدت $y = 43 - 36 = 7$ ، وفي المعادلة (2) وجدت $y = 25 - 18 = 7$ . أمّا نقطة أخرى من $(d_1)$ ، مثل $(40 ; 3)$ ، فتحقّق المعادلة (1) وحدها: في المعادلة (2) نجد $y = 25 - 20 = 5 \\neq 3$.`}</MathText>}
-                onAnswered={() => setQ4a(true)}
-              />
-              {q4a && (
+              <p data-checkpoint-trace="pair" data-tried={answered('probe') ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${answered('probe') ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {answered('probe')
+                  ? <MathText>{'أجبتَ في المختبر: النقطة التي تُضيء المصباحين معًا هي نقطة تقاطع المستقيمين، وإحداثياها يحقّقان المعادلتين.'}</MathText>
+                  : 'ابحث على اللوحة عن النقطة التي تُضيء المصباحين معًا، وأجب عن أسئلتها.'}
+              </p>
+              {answered('probe') && (
                 <PairQuestion
                   prompt={<MathText>{'إحداثيتا نقطة تقاطع المستقيمين: $(x ; y)$ ='}</MathText>}
                   expected={ACTIVITY.answer}
@@ -273,7 +264,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

@@ -99,7 +99,7 @@ export default function Module04Awazzif() {
         { num: 10, title: 'تمرين 26 — منصف الزاوية (أتعمّق)', done: all('26'),
           content: <div className="space-y-3">{block('26', ['khassiyat-talis'])}</div> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

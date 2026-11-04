@@ -138,3 +138,160 @@ describe('relative — juger les tâches du labo', () => {
     expect(() => R.judge({ kind: 'beat', a: '1', want: 'equal' }, 'below', 1)).toThrow();
   });
 });
+
+describe('corniche-ruler : opposé, abscisse, planche', () => {
+  it('opposite / abscissaOf / positionOf', () => {
+    expect(R.opposite('-2,5')).toBe(250n);
+    expect(R.opposite(0)).toBe(0n);
+    expect(R.abscissaOf('30', '0')).toBe(3000n);
+    expect(R.abscissaOf('30', '-20')).toBe(5000n);
+    expect(R.positionOf('-30', '-10')).toBe(-4000n);
+  });
+  it('boardFit / smallestStep : les trois tâches متقدم', () => {
+    const S = ['0,1', '0,5', '1', '2', '5', '10', '20', '25', '50', '100'];
+    expect(R.smallestStep(['-50', '75', '150'], S)).toBe(2500n);
+    expect(R.smallestStep(['0,3', '-0,5', '-0,1', '0,6'], S)).toBe(10n);
+    expect(R.smallestStep(['-300', '400', '600'], S)).toBe(10000n);
+    expect(R.boardFit(['-50', '75', '150'], '20').off).toEqual([15000n]);
+    expect(R.boardFit(['0,5'], '0,3').between).toEqual([50n]);
+    expect(R.smallestStep(['1000'], ['1'])).toBeNull();
+  });
+  it('balayage : le plus petit pas convient et le précédent ne convient pas', () => {
+    const S = ['1', '2', '5', '10', '25', '100'];
+    for (let a = -600; a <= 600; a += 5) {
+      const vs = [String(a), '35'];
+      const got = R.smallestStep(vs, S);
+      if (got === null) continue;
+      const ok = (s) => { const r = R.boardFit(vs, s); return r.fits && r.between.length === 0; };
+      expect(ok(got)).toBe(true);
+      for (const s of S.map(R.parse)) if (s < got) expect(ok(s)).toBe(false);
+    }
+  });
+});
+
+describe('balloon-ballast : somme, différence, charge', () => {
+  it('add / sub / ruleCase / ballastOf', () => {
+    expect(R.add('-3,2', '-5')).toBe(-820n);
+    expect(R.sub('5', '-7')).toBe(1200n);
+    expect(R.sub('-2', '5')).toBe(-700n);
+    expect(R.ruleCase('-3', '-5')).toBe('same');
+    expect(R.ruleCase('-9', '5')).toBe('different');
+    expect(R.ruleCase('-6', '6')).toBe('opposites');
+    expect(R.ruleCase('0', '6')).toBe('zero');
+    expect(R.ballastOf('-4')).toEqual({ tokens: 0, bags: 4 });
+    expect(R.ballastOf(6)).toEqual({ tokens: 6, bags: 0 });
+    expect(() => R.ballastOf('1,5')).toThrow();
+  });
+  it('balayage : |a|,|b| ≤ 12 par 0,25 contre un calcul en entiers', () => {
+    for (let a = -1200; a <= 1200; a += 25) for (let b = -1200; b <= 1200; b += 25) {
+      const A = String(a / 100); const B = String(b / 100);
+      expect(R.add(A, B)).toBe(BigInt(a + b));
+      expect(R.sub(A, B)).toBe(BigInt(a - b));
+      expect(R.sub(A, B)).toBe(R.add(A, R.opposite(B)));
+    }
+  });
+});
+
+describe('relative — le plan (E4, dig-grid)', () => {
+  const P = R.point;
+  it('pointText, quadrantOf, parsePoint', () => {
+    expect(R.pointText(P('-1,5', '2,5'))).toBe('(-1,5 ; 2,5)');
+    expect([P(1, 2), P(-1, 2), P(-1, -2), P(1, -2)].map(R.quadrantOf)).toEqual([1, 2, 3, 4]);
+    expect([P(0, 0), P(3, 0), P(0, -2)].map(R.quadrantOf)).toEqual(['origin', 'axisX', 'axisY']);
+    expect(R.parsePoint('( −2,5 ; 3 )')).toEqual(P('-2,5', 3));
+    expect(R.parsePoint('3')).toBeNull();
+    expect(R.parsePoint('a ; 3')).toBeNull();
+  });
+  it('symX et symY sont des involutions, symX garde l’abscisse', () => {
+    for (let x = -6; x <= 6; x += 1) for (let y = -6; y <= 6; y += 1) {
+      const p = P(x, y);
+      expect(R.symX(R.symX(p))).toEqual(p);
+      expect(R.symY(R.symY(p))).toEqual(p);
+      expect(R.symX(p).x).toBe(p.x);
+      expect(R.symY(p).y).toBe(p.y);
+    }
+  });
+  it('originFor et coordsOf sont inverses ; consistent exhaustif sur une grille 13 × 13', () => {
+    const jar = P(5, 4); const plate = P(2, 1);
+    for (let ox = -6; ox <= 6; ox += 1) for (let oy = -6; oy <= 6; oy += 1) {
+      const o = P(ox, oy);
+      expect(R.originFor(jar, R.coordsOf(jar, o))).toEqual(o);
+      expect(R.consistent([{ world: jar, wanted: R.coordsOf(jar, o) }, { world: plate, wanted: R.coordsOf(plate, o) }])).toEqual(o);
+    }
+    expect(R.consistent([{ world: jar, wanted: P(2, 1) }, { world: plate, wanted: P(1, 2) }])).toBeNull();
+    expect(R.originFor(jar, P(2, 1))).toEqual(P(3, 3));
+  });
+});
+
+describe('E3 — tug-rope : somme algébrique (majmu-jabri)', () => {
+  const sumOf = (s) => R.algebraicSum(R.terms(s));
+  it('lit les formes du plan', () => {
+    expect(sumOf('(-9) - (+2) + (-5) - (-4)')).toBe(-1200n);
+    expect(sumOf('-9 - 2 - 5 + 4')).toBe(-1200n);
+    expect(sumOf('(+12) - [(-6) - (-2) + (+9)]')).toBe(700n);
+    expect(sumOf('-15 + 4 + 8 + 3')).toBe(0n);
+    expect(sumOf('(+4,5)+(-7)-(+8)+(+3,5)-(-4,5)-(-10)')).toBe(750n);
+    expect(sumOf('(+15)-[(-6)+(+4)]')).toBe(1700n);
+    expect(sumOf('-9+4-6+11')).toBe(0n);
+    expect(sumOf('(-8)-(+3)+(-6)-(-5)')).toBe(-1200n);
+    expect(sumOf('5-6-8')).toBe(-900n);
+    expect(sumOf('(-5)+(3-(2))')).toBe(-400n);
+    expect(() => R.terms('(1')).toThrow();
+    expect(() => R.terms('3 +')).toThrow();
+  });
+  it('asSum, groupBySign, simplifiedText', () => {
+    const t = R.terms('(-9) - (+2) + (-5) - (-4)');
+    const a = R.asSum(t);
+    expect(a).toEqual([-900n, -200n, -500n, 400n]);
+    expect(R.simplifiedText(a)).toBe('-9 - 2 - 5 + 4');
+    const g = R.groupBySign(a);
+    expect(g).toMatchObject({ posSum: 400n, negSum: -1600n, total: -1200n });
+    expect(R.bracketText(t)).toBe('(-9) - (+2) + (-5) - (-4)');
+  });
+  it('500 chaînes aléatoires : évaluation de gauche à droite = groupement par signe = écriture simplifiée relue', () => {
+    let seed = 7;
+    const rnd = (n) => { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed % n; };
+    for (let k = 0; k < 500; k += 1) {
+      const n = 2 + rnd(5);
+      const items = Array.from({ length: n }, () => ({ op: rnd(2) ? '+' : '-', v: BigInt((rnd(41) - 20) * 100 + (rnd(2) ? 50 : 0)) }));
+      items[0].op = '+';
+      const txt = items.map((it, i) => `${i ? it.op : ''}(${it.v < 0n ? '-' : '+'}${R.text(it.v < 0n ? -it.v : it.v)})`).join('');
+      const want = items.reduce((acc, it) => (it.op === '+' ? acc + it.v : acc - it.v), 0n);
+      expect(sumOf(txt)).toBe(want);
+      const a = R.asSum(R.terms(txt));
+      expect(R.groupBySign(a).total).toBe(want);
+      expect(sumOf(R.simplifiedText(a))).toBe(want);
+    }
+  });
+});
+
+describe('relative — la distance entre deux points (E5, gap-caliper)', () => {
+  it('gap : positive, symétrique, = grande − petite, sur toutes les paires |a|, |b| ≤ 10 par 0,25', () => {
+    for (let a = -1000n; a <= 1000n; a += 25n) {
+      for (let b = -1000n; b <= 1000n; b += 25n) {
+        const g = R.gap(a, b);
+        expect(g >= 0n).toBe(true);
+        expect(g).toBe(R.gap(b, a));
+        expect(g).toBe((a > b ? a : b) - (a > b ? b : a));
+      }
+    }
+  });
+  it('exemples : −4 et +9 → 13 ; −7 et −2 → 5 ; 0 et −6 → 6 ; −2,5 et 6 → 8,5', () => {
+    expect(R.text(R.gap('-4', '9'))).toBe('13');
+    expect(R.text(R.gap('-7', '-2'))).toBe('5');
+    expect(R.text(R.gap('0', '-6'))).toBe('6');
+    expect(R.text(R.gap('-2,5', '6'))).toBe('8,5');
+  });
+  it('pointsAt : deux points à égale distance, symétriques autour de a', () => {
+    expect(R.pointsAt('1,5', '4').map(R.text)).toEqual(['-2,5', '5,5']);
+    expect(R.pointsAt('3', '0')).toEqual([300n]);
+    for (const p of R.pointsAt('-1', '3')) expect(R.gap(p, '-1')).toBe(300n);
+    expect(() => R.pointsAt('1', '-1')).toThrow();
+  });
+  it('midpointAbscissa : plus petite + moitié de la distance ; null si un troisième chiffre', () => {
+    expect(R.text(R.midpointAbscissa('-24', '10'))).toBe('-7');
+    expect(R.text(R.midpointAbscissa('-4,6', '1,8'))).toBe('-1,4');
+    expect(R.text(R.midpointAbscissa('1,8', '-4,6'))).toBe('-1,4');
+    expect(R.midpointAbscissa('0', '0,01')).toBeNull();
+  });
+});

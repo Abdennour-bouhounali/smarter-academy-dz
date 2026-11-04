@@ -2,7 +2,9 @@ import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
-import OriginLine from './OriginLine';
+import i18n from '../../../../i18n';
+import OriginLine, * as OL from './OriginLine';
+import * as LG from '../logic/originLine';
 
 /**
  * origin-line se rend pour CHAQUE mode × CHAQUE monde avec les props du contrat de l'unité (brief §6),
@@ -96,5 +98,66 @@ describe('origin-line — ce que chaque mode pose', () => {
 
   it('un contrat incomplet est une erreur de contenu', () => {
     expect(() => renderToString(<OriginLine mode="fit" />)).toThrow();
+  });
+});
+
+/* ── lot 5 : les questions pendant le labo (LabCheckpoint) ── */
+describe('origin-line — questions pendant le labo (LabCheckpoint)', () => {
+  const k = (key, o) => i18n.t(`lesson:manipulation.originLine.${key}`, o);
+  const check = (q, label) => {
+    const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+    expect(out, label).not.toMatch(RAW);
+    expect(out, label).not.toContain('{{');
+    expect(q.hints, label).toHaveLength(2);
+    if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), label).toHaveLength(1);
+    else expect(q.expected, label).toBeTruthy();
+  };
+  const ctxOf = (lab) => ({ fTex: 'f', formal: <OL.Formal lab={lab} k={k} fTex="f" />, rulePrompt: 'p' });
+  const run = (lab, tag) => {
+    [0, 1].forEach((st) => {
+      if (!LG.stageReached(lab, st)) throw new Error(`${tag}: étape ${st} non atteinte`);
+      for (const qid of OL.chainOf(lab, st)) check(OL.QUESTIONS[qid](lab, k, ctxOf(lab)), `${tag}.${st}.${qid}`);
+    });
+  };
+  const V = (s) => LG.parseValue(s);
+
+  it('draw : deux points posés → dratio · dpredict · dalign · règle', () => {
+    let s = LG.init({ a: '0,5', mode: 'draw' });
+    s = LG.place(LG.place(s, V('2'), V('1')), V('4'), V('2'));
+    run(s, 'draw');
+    expect(OL.QUESTIONS.dratio(s, k).expected).toBe('1/2');
+    expect(OL.QUESTIONS.dpredict(s, k).expected).toBe('2');
+  });
+  it('draw (a = 9/4, point négatif) : la réponse positive reste saisie, aucune question de signe cassée', () => {
+    let s = LG.init({ a: '9/4', mode: 'draw', points: '-2/3:-3/2' });
+    s = LG.place(LG.place(s, V('-4'), V('-9')), V('4'), V('9'));
+    run(s, 'draw-neg');
+    expect(OL.QUESTIONS.dpredict(s, k).kind).toBe('choice');   // 9/4 × (−8) < 0 : trois choix
+  });
+  it('read : les deux lectures → rvocab · rcompute · rways · règle', () => {
+    let s = LG.init({ a: '0,4', mode: 'read', reads: 'x:4|y:3,5', xMin: '0', xMax: '10', yMin: '0', yMax: '5' });
+    s = LG.readY(LG.readX(s, V('4')), V('3,5'));
+    run(s, 'read');
+    expect(OL.QUESTIONS.rvocab(s, k).options.find((o) => o.correct)).toBeTruthy();
+  });
+  it('pivot : une droite qui monte et une qui descend → pdir · pordinate · psign · règle', () => {
+    let s = LG.init({ mode: 'pivot' });
+    s = LG.pivot(LG.pivot(s, V('1')), V('-1'));
+    run(s, 'pivot');
+    s = LG.init({ mode: 'pivot' });
+    s = LG.pivot(s, V('0,5'));
+    expect(OL.QUESTIONS.pordinate(s, k).expected).toBe('1');
+  });
+  it('fit : une droite par toutes les données → fhits · fratio · fcommon · règle', () => {
+    let s = LG.init({ mode: 'fit', points: '2:1|4:2|6:3', xMin: '0', xMax: '7', yMin: '0', yMax: '4' });
+    s = LG.pivot(LG.pivot(s, V('1')), V('0,5'));
+    run(s, 'fit');
+    expect(OL.QUESTIONS.fcommon(s, k).expected).toBe('1/2');
+  });
+  it('mode guidé : ni la progression ni le bouton d’indice, deux étapes', () => {
+    const out = renderToString(<OriginLine {...CONTRACT.draw} theme="cablecar" levels={false} />);
+    expect(out).not.toContain('data-manipulation-progress');
+    expect(out).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    expect(out).toContain('data-lab-stepper');
   });
 });

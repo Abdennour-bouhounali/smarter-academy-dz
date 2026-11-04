@@ -13,6 +13,11 @@ import { useManipulation } from '../useManipulation';
 import { LabCard, StageFrame, PromptCard, VerdictBanner } from '../primitives/LabKit';
 import KidFigure from '../primitives/KidFigure';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { $, Mx, spreadAll } from '../geometry/thalesCp';
 import { LEVELS } from '../levels';
 import * as L from '../logic/pinRails';
 
@@ -51,6 +56,12 @@ import * as L from '../logic/pinRails';
  * « جرّب كل الإمكانيات » : NON (chaque lâcher EST l'essai). « جرّب أعدادك » est TOUJOURS ouvert sous le labo.
  * D'UN SEUL REGARD (§8bis) : `[data-pr-glance]` enveloppe la consigne, le repère, la lecture et le verdict ; la hauteur du repère vient de l'écran de leçon.
  * ONBOARDING : `coach` (défaut true) → `LabCoach` ; `logic/pinRails.js › coachOf` (pin · rod · again · read · next), la bulle SOUS le repère de travail.
+ * QUESTIONS PENDANT LE LABO (rollout lot 6, 2026-10-28) : `checkpoints` (défaut true). Après chaque tâche jugée, une suite de questions se pose PAR-DESSUS le labo
+ * (`chainOf`) et retient « المهمّة التالية » : un tableau proportionnel → le prix d'une unité · ce que la règle touche · pourquoi elle passe par O ; alignée sans O → ce qu'elle
+ * touche · proportionnelle ? · où elle coupe l'axe ; brisée → aucune règle ne touche tout · ce que dit la planche ; une lecture → sens de la valeur à 1, l'opération
+ * (a × x ou y ÷ a) et son calcul ; la DERNIÈRE tâche du niveau finit par LA RÈGLE (l'ancienne découverte). Les événements `{ tk: 'checkpoint' | 'checkpoint-done', id, … }`
+ * partent vers `onTrial`. OBLIGATOIRES pour l'élève ; l'ENSEIGNANT seul peut les couper pour SON compte (interrupteur de l'en-tête) : la découverte d'avant reprend alors.
+ * ÉTAPES `LabStepper` (`data-pr-step`), fête à chaque tâche finie, sons (`tooth` une punaise ou une règle posée, `bell` la dernière punaise, `flag` jugé, `over` refusé).
  * Props : `tasks` ([{ mode, shop, xs, rule, frame, ask }]), `level`, `levels`, `coach`, `title`, `lead`, `onTrial(event)`, `onFinished()` — par `state.report`.
  * CONTRAT DOM : [data-pin-rails][data-task][data-mode][data-kind][data-solved][data-layout], [data-pr-glance], [data-pr-stage], [data-pr-plane], [data-pr-pin=<col>]
  * [data-y][data-placed], [data-pr-node=<id>][data-hit], [data-pr-rod][data-full], [data-pr-end=<0|1>][data-node], [data-pr-read], [data-pr-table], [data-pr-readout],
@@ -88,7 +99,7 @@ const tx = (v) => G.text(v);
 const tn = (v) => G.text(Lin.parseNumber(String(Math.round(v * 1000) / 1000)));
 
 export default function PinRails({
-  tasks, title, lead, level, levels: withLevels = true, coach: coachOn = true,
+  tasks, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -98,13 +109,27 @@ export default function PinRails({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-  if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    const restart = scene.key === numsKey && scene.rc !== state.resetCount;
-    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-    setLab(restart ? L.restartTask(lab) : L.init(nums));
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
+  if (scene.key !== numsKey || scene.epoch !== state.epoch || scene.rc !== state.resetCount) {
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la tâche 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
+    setLab(L.init(nums));
   }
-  const ready = L.discoveryReady(lab);
+  // les questions pendant le labo : la suite de la tâche courante ; celle qui finit par la règle remplace la découverte automatique
+  const cur = L.taskOf(lab);
+  const cpSettings = useLabCheckpointSettings('pin-rails');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const chain = cpOn && cpSettings.enabled && !L.isFree(lab) ? chainOf(lab) : null;
+  const ruleByCheckpoint = cpOn && cpSettings.enabled && lab.tasks.some((_, i) => chainOf({ ...lab, ti: i }).includes('rule'));
+  const cp = useLabCheckpoint({
+    id: chain ? cur.id : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, k)) : null,
+    reached: L.taskDone(lab),
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.retryTask),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: () => { if (chain?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  const ready = L.discoveryReady(lab) && !ruleByCheckpoint;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   const finishedOnce = useRef(false);
   useEffect(() => {
@@ -119,7 +144,7 @@ export default function PinRails({
     reported.current = nTrials;
   }, [nTrials, lab.trials]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'pin-rails', step: coachStep,
     text: coachStep ? k(`coach.${coachStep.id}`) : '',
@@ -156,6 +181,8 @@ export default function PinRails({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       coach={coachOn ? coach : null}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={!!chain || ruleByCheckpoint}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={discovery}
@@ -165,7 +192,7 @@ export default function PinRails({
         <div ref={boxRef} className="space-y-2" data-pin-rails data-task={lab.ti} data-mode={task.mode} data-kind={task.kind}
           data-solved={ready ? 'true' : 'false'} data-layout={width >= WIDE_MIN ? 'wide' : 'narrow'}>
           <style dangerouslySetInnerHTML={{ __html: CSS }} />
-          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} />
+          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} cp={cp} />
         </div>
       </ManipulationStage>
     </ManipulationShell>
@@ -174,7 +201,7 @@ export default function PinRails({
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-function Lab({ lab, setLab, k, width, screenH, lead }) {
+function Lab({ lab, setLab, k, width, screenH, lead, cp }) {
   const wide = width >= WIDE_MIN;
   const free = L.isFree(lab);
   const task = L.taskOf(lab);
@@ -186,20 +213,34 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
   const key = free ? 'free' : task.shop;
   const ctx = lead || k(`context.${key}`, free ? { a: iso(lab.free.a.replace('.', ',')), b: iso(lab.free.b) } : {});
   const question = k(`question.${key}`, free ? {} : { x: iso(task.ask ? tx(task.ask.value) : ''), y: iso(task.ask ? tx(task.ask.value) : '') });
+  // une étape est FAITE quand la situation est jugée ET que ses questions sont répondues : la pastille passe au vert et on fête
+  const stepDone = lab.tasks.map((_, i) => !!lab.done[i] && (i !== lab.ti || !cp.blocking));
   const steps = lab.tasks.length > 1 && !free && (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={tk.id} role="listitem" data-pr-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-amber-600 bg-amber-500 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-amber-100 bg-white text-amber-500'}`}>
-            <bdi dir="ltr">{i + 1}</bdi>
-          </span>
-        );
-      })}
-    </div>
+    <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-pr-step" />
   );
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة », autre niveau : on refête
+  const nowDone = !free && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.ti)) return;
+    celebrated.current.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── le son (muet sauf « الصوت ») : une punaise ou une règle posée = un déclic, la dernière punaise = une cloche, un jugement juste = le drapeau, un refus = « over » ──
+  const heard = useRef(lab.trials.length);
+  useEffect(() => {
+    if (lab.trials.length < heard.current) { heard.current = lab.trials.length; return; }
+    if (lab.trials.length === heard.current) return;
+    heard.current = lab.trials.length;
+    const e = lab.last;
+    if (!e) return;
+    if (e.kind === 'pin') { if (!e.ok) playSfx('over'); else if (L.allPlaced(lab)) playSfx('bell'); else playSfx('tooth'); }
+    else if (e.kind === 'read') playSfx(e.ok ? 'flag' : 'over');
+    else if (e.kind === 'rod') playSfx(e.full ? 'flag' : 'tooth');
+    else playSfx('over');
+  }, [lab.trials.length]); // eslint-disable-line react-hooks/exhaustive-deps
   const prompt = (
     <PromptCard size={wide ? 'lg' : 'md'} context={<MathText>{ctx}</MathText>} contextProps={{ 'data-pr-context': key }}
       title={<MathText>{question}</MathText>} titleClassName={wide ? 'text-xl' : 'text-lg'} lamp={free ? null : lit ? 'on' : 'off'}
@@ -207,7 +248,7 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
   );
 
   const vv = verdictOf(lab, k);
-  const canNext = L.canNext(lab);
+  const canNext = L.canNext(lab) && !cp.blocking;
   const mood = !last ? 'happy' : last.ok === false || last.kind === 'refused' ? 'wonder' : last.full || last.ok ? 'proud' : 'happy';
   const tone = !last ? 'indigo' : last.ok === true || last.full ? 'emerald' : 'amber';
   const Icon = !last ? Hand : tone === 'emerald' ? CheckCircle2 : Sparkles;
@@ -284,6 +325,8 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
   return (
     <>
       <div className="relative space-y-2.5" data-pr-glance>
+        {party.node}
+        {cp.node}
         {prompt}
         {wide ? (
           <div className="flex items-start gap-3">
@@ -761,3 +804,268 @@ export function Formal({ lab, k }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/**
+ * La suite de questions de la tâche affichée : elle interroge ce que l'élève vient de FAIRE ; la DERNIÈRE tâche du niveau finit par la règle (`rule`,
+ * l'ancienne découverte). Une tâche se reconnaît à la forme de sa situation (`prop` · `aligned` · `broken`) ou à sa lecture (`read`).
+ */
+export function chainOf(lab) {
+  const task = L.taskOf(lab);
+  let base;
+  if (task.mode === 'read') base = task.ask.axis === 'y' ? ['opy', 'numy'] : n(task.ask.value) === 1 ? ['sense', 'three'] : ['opx', 'numx'];
+  else if (task.kind === 'prop') base = task.mode === 'plot' ? ['point', 'touch', 'origin'] : ['unit', 'touch', 'origin'];
+  else if (task.kind === 'aligned') base = ['touchAll', 'prop', 'cuts'];
+  else base = ['none', 'shape'];
+  return lab.ti === lab.tasks.length - 1 ? [...base, 'rule'] : base;
+}
+
+const tt = (v) => $(G.text(v).replace(',', '{,}'));
+const BAGS = ['bags', 'crate', 'unit', 'seven', 'mass'];
+const nounOf = (task) => (BAGS.includes(task.shop) ? 'bag' : 'box');
+/** Les essais de règle de LA tâche (le fil de l'élève) : la meilleure pose et celle qui a tout touché. */
+const rodsOf = (lab) => lab.trials.filter((t) => t.kind === 'rod' && !t.free && t.task === lab.ti);
+const bestRod = (lab) => rodsOf(lab).reduce((b, t) => (!b || t.count > b.count ? t : b), null);
+
+const RAWQ = {
+  point: (lab, k) => {
+    const task = L.taskOf(lab);
+    const p = task.points[0];
+    const px = G.text(p.x).replace(',', '{,}'); const py = G.text(p.y).replace(',', '{,}');
+    const o = { x: tt(p.x), y: tt(p.y), pt: $(`(${px}\\ ;\\ ${py})`) };
+    return {
+      id: 'point', kind: 'choice',
+      prompt: Mx(k, 'point.prompt', o),
+      options: [
+        { text: <MathText>{$(`(${py}\\ ;\\ ${px})`)}</MathText>, why: Mx(k, 'point.whySwap', o) },
+        { text: <MathText>{o.pt}</MathText>, correct: true },
+        { text: <MathText>{$(`(${px}\\ ;\\ ${px})`)}</MathText>, why: Mx(k, 'point.whyTwice', o) },
+      ],
+      hints: [Mx(k, 'point.hint1'), Mx(k, 'point.hint2')],
+      explain: Mx(k, 'point.explain', o),
+    };
+  },
+  unit: (lab, k) => {
+    const task = L.taskOf(lab);
+    const p = task.points[0];
+    const a = G.coefficient(task.points);
+    const noun = nounOf(task);
+    const o = { x: tt(p.x), y: tt(p.y), a: tt(a), calc: $(`${G.text(p.y).replace(',', '{,}')}\\div${G.text(p.x).replace(',', '{,}')}=${G.text(a).replace(',', '{,}')}`) };
+    return {
+      id: 'unit', kind: 'number', expected: G.text(a), answer: <MathText>{o.a}</MathText>,
+      prompt: Mx(k, `unit.${noun}.prompt`, o),
+      hints: [Mx(k, `unit.${noun}.hint1`, o), Mx(k, 'unit.hint2', o)],
+      explain: Mx(k, `unit.${noun}.explain`, o),
+    };
+  },
+  touch: (lab, k) => {
+    const full = lab.trials.findLast((t) => t.kind === 'rod' && !t.free && t.task === lab.ti && t.full);
+    const best = bestRod(lab);
+    const o = { n: $(String(full?.count ?? best?.count ?? 5)), m: $(String(full?.total ?? best?.total ?? 5)) };
+    return {
+      id: 'touch', kind: 'choice',
+      prompt: Mx(k, 'touch.prompt'),
+      options: [
+        { text: Mx(k, 'touch.pinsOnly'), why: Mx(k, 'touch.whyPinsOnly', o) },
+        { text: Mx(k, 'touch.all'), correct: true },
+        { text: Mx(k, 'touch.some'), why: Mx(k, 'touch.whySome', o) },
+      ],
+      hints: [Mx(k, 'touch.hint1'), Mx(k, 'touch.hint2')],
+      explain: Mx(k, 'touch.explain', o),
+    };
+  },
+  origin: (lab, k) => {
+    const task = L.taskOf(lab);
+    const noun = nounOf(task);
+    const p = task.points[0];
+    const o = { x: tt(p.x) };
+    return {
+      id: 'origin', kind: 'choice',
+      prompt: Mx(k, 'origin.prompt'),
+      options: [
+        { text: Mx(k, 'origin.fixed'), why: Mx(k, 'origin.whyFixed') },
+        { text: Mx(k, 'origin.zero'), why: Mx(k, 'origin.whyZero', o) },
+        { text: Mx(k, `origin.${noun}`), correct: true },
+      ],
+      hints: [Mx(k, 'origin.hint1'), Mx(k, `origin.${noun}Hint2`)],
+      explain: Mx(k, `origin.${noun}Explain`),
+    };
+  },
+  touchAll: (lab, k) => {
+    const al = lab.trials.findLast((t) => t.kind === 'rod' && !t.free && t.task === lab.ti && t.pinsHit && !t.throughO);
+    const o = { n: $(String(al?.count ?? 4)), m: $(String(al?.total ?? 5)), cuts: $((al?.cuts ?? '10').replace(',', '{,}')) };
+    return {
+      id: 'touchAll', kind: 'choice',
+      prompt: Mx(k, 'touchAll.prompt'),
+      options: [
+        { text: Mx(k, 'touchAll.yes'), why: Mx(k, 'touchAll.whyYes', o) },
+        { text: Mx(k, 'touchAll.no'), correct: true },
+        { text: Mx(k, 'touchAll.onlyO'), why: Mx(k, 'touchAll.whyOnlyO', o) },
+      ],
+      hints: [Mx(k, 'touchAll.hint1'), Mx(k, 'touchAll.hint2')],
+      explain: Mx(k, 'touchAll.explain', o),
+    };
+  },
+  prop: (lab, k) => {
+    const task = L.taskOf(lab);
+    const [p, q] = task.points;
+    const times = Lin.div(q.x, p.x);
+    const al = lab.trials.findLast((t) => t.kind === 'rod' && !t.free && t.task === lab.ti && t.pinsHit && !t.throughO);
+    const o = { x1: tt(p.x), y1: tt(p.y), x2: tt(q.x), y2: tt(q.y), times: tt(times), cuts: $((al?.cuts ?? '10').replace(',', '{,}')) };
+    return {
+      id: 'prop', kind: 'choice',
+      prompt: Mx(k, 'prop.prompt'),
+      options: [
+        { text: Mx(k, 'prop.line'), why: Mx(k, 'prop.whyLine', o) },
+        { text: Mx(k, 'prop.noO'), correct: true },
+        { text: Mx(k, 'prop.grows'), why: Mx(k, 'prop.whyGrows', o) },
+      ],
+      hints: [Mx(k, 'prop.hint1'), Mx(k, 'prop.hint2')],
+      explain: Mx(k, 'prop.explain', o),
+    };
+  },
+  cuts: (lab, k) => {
+    const task = L.taskOf(lab);
+    const [p, q] = task.points;
+    const line = G.lineThrough(p, q);
+    const o = { x: tt(p.x), y: tt(p.y), a: tt(line.a), b: tt(line.b), calc: $(`${G.text(p.y).replace(',', '{,}')}-${G.text(line.a).replace(',', '{,}')}\\times${G.text(p.x).replace(',', '{,}')}=${G.text(line.b).replace(',', '{,}')}`) };
+    return {
+      id: 'cuts', kind: 'number', expected: G.text(line.b), answer: <MathText>{o.b}</MathText>,
+      prompt: Mx(k, 'cuts.prompt'),
+      hints: [Mx(k, 'cuts.hint1'), Mx(k, 'cuts.hint2', o)],
+      explain: Mx(k, 'cuts.explain', o),
+    };
+  },
+  none: (lab, k) => {
+    const best = bestRod(lab);
+    const o = { n: $(String(best?.count ?? 4)), m: $(String(best?.total ?? 5)) };
+    return {
+      id: 'none', kind: 'choice',
+      prompt: Mx(k, 'none.prompt'),
+      options: [
+        { text: Mx(k, 'none.withO'), why: Mx(k, 'none.whyWithO', o) },
+        { text: Mx(k, 'none.no'), correct: true },
+        { text: Mx(k, 'none.withoutO'), why: Mx(k, 'none.whyWithoutO', o) },
+      ],
+      hints: [Mx(k, 'none.hint1'), Mx(k, 'none.hint2')],
+      explain: Mx(k, 'none.explain', o),
+    };
+  },
+  shape: (lab, k) => {
+    const task = L.taskOf(lab);
+    const [p, , r] = task.points;
+    const o = { x1: tt(p.x), u1: tt(Lin.div(p.y, p.x)), x2: tt(r.x), u2: tt(Lin.div(r.y, r.x)) };
+    return {
+      id: 'shape', kind: 'choice',
+      prompt: Mx(k, 'shape.prompt'),
+      options: [
+        { text: Mx(k, 'shape.line'), why: Mx(k, 'shape.whyLine') },
+        { text: Mx(k, 'shape.grows'), why: Mx(k, 'shape.whyGrows', o) },
+        { text: Mx(k, 'shape.broken'), correct: true },
+      ],
+      hints: [Mx(k, 'shape.hint1'), Mx(k, 'shape.hint2', o)],
+      explain: Mx(k, 'shape.explain', o),
+    };
+  },
+  sense: (lab, k) => {
+    const task = L.taskOf(lab);
+    const o = { a: tt(task.a), xs: task.xs.map((v) => tt(v)).join(' ، '), calc: $(`y=${G.text(task.a).replace(',', '{,}')}\\times1=${G.text(task.a).replace(',', '{,}')}`) };
+    return {
+      id: 'sense', kind: 'choice',
+      prompt: Mx(k, 'sense.prompt', o),
+      options: [
+        { text: Mx(k, 'sense.smallest'), why: Mx(k, 'sense.whySmallest', o) },
+        { text: Mx(k, 'sense.coef', o), correct: true },
+        { text: Mx(k, 'sense.always'), why: Mx(k, 'sense.whyAlways') },
+      ],
+      hints: [Mx(k, 'sense.hint1'), Mx(k, 'sense.hint2')],
+      explain: Mx(k, 'sense.explain', o),
+    };
+  },
+  three: (lab, k) => {
+    const task = L.taskOf(lab);
+    const ans = Lin.mul(task.a, Lin.frac(3));
+    const o = { a: tt(task.a), ans: tt(ans), calc: $(`3\\times${G.text(task.a).replace(',', '{,}')}=${G.text(ans).replace(',', '{,}')}`) };
+    return {
+      id: 'three', kind: 'number', expected: G.text(ans), answer: <MathText>{o.ans}</MathText>,
+      prompt: Mx(k, 'three.prompt', o),
+      hints: [Mx(k, 'three.hint1', o), Mx(k, 'three.hint2', o)],
+      explain: Mx(k, 'three.explain', o),
+    };
+  },
+  opx: (lab, k) => {
+    const task = L.taskOf(lab);
+    const x = task.ask.value;
+    const o = {
+      a: tt(task.a), x: tt(x), ans: tt(task.answer), plus: tt(Lin.add(task.a, x)), quot: tt(Lin.div(x, task.a)),
+      times: $(`${G.text(task.a).replace(',', '{,}')}\\times${G.text(x).replace(',', '{,}')}`),
+      sum: $(`${G.text(task.a).replace(',', '{,}')}+${G.text(x).replace(',', '{,}')}`),
+      div: $(`${G.text(x).replace(',', '{,}')}\\div${G.text(task.a).replace(',', '{,}')}`),
+    };
+    return {
+      id: 'opx', kind: 'choice',
+      prompt: Mx(k, 'opx.prompt', o),
+      options: [
+        { text: <MathText>{o.div}</MathText>, why: Mx(k, 'opx.whyDiv', o) },
+        { text: <MathText>{o.times}</MathText>, correct: true },
+        { text: <MathText>{o.sum}</MathText>, why: Mx(k, 'opx.whyPlus', o) },
+      ],
+      hints: [Mx(k, 'opx.hint1', o), Mx(k, 'opx.hint2', o)],
+      explain: Mx(k, 'opx.explain', o),
+    };
+  },
+  numx: (lab, k) => {
+    const task = L.taskOf(lab);
+    const x = task.ask.value;
+    const o = { a: tt(task.a), x: tt(x), ans: tt(task.answer), calc: $(`${G.text(task.a).replace(',', '{,}')}\\times${G.text(x).replace(',', '{,}')}=${G.text(task.answer).replace(',', '{,}')}`) };
+    return {
+      id: 'numx', kind: 'number', expected: G.text(task.answer), answer: <MathText>{o.ans}</MathText>,
+      prompt: Mx(k, 'numx.prompt', o),
+      hints: [Mx(k, 'numx.hint1'), Mx(k, 'numx.hint2', o)],
+      explain: Mx(k, 'numx.explain', o),
+    };
+  },
+  opy: (lab, k) => {
+    const task = L.taskOf(lab);
+    const y = task.ask.value;
+    const o = {
+      a: tt(task.a), y: tt(y), ans: tt(task.answer), prod: tt(Lin.mul(task.a, y)), diff: tt(Lin.sub(y, task.a)),
+      times: $(`${G.text(y).replace(',', '{,}')}\\times${G.text(task.a).replace(',', '{,}')}`),
+      minus: $(`${G.text(y).replace(',', '{,}')}-${G.text(task.a).replace(',', '{,}')}`),
+      div: $(`${G.text(y).replace(',', '{,}')}\\div${G.text(task.a).replace(',', '{,}')}`),
+    };
+    return {
+      id: 'opy', kind: 'choice',
+      prompt: Mx(k, 'opy.prompt', o),
+      options: [
+        { text: <MathText>{o.times}</MathText>, why: Mx(k, 'opy.whyTimes', o) },
+        { text: <MathText>{o.minus}</MathText>, why: Mx(k, 'opy.whyMinus', o) },
+        { text: <MathText>{o.div}</MathText>, correct: true },
+      ],
+      hints: [Mx(k, 'opy.hint1', o), Mx(k, 'opy.hint2', o)],
+      explain: Mx(k, 'opy.explain', o),
+    };
+  },
+  numy: (lab, k) => {
+    const task = L.taskOf(lab);
+    const y = task.ask.value;
+    const o = { a: tt(task.a), y: tt(y), ans: tt(task.answer), calc: $(`${G.text(y).replace(',', '{,}')}\\div${G.text(task.a).replace(',', '{,}')}=${G.text(task.answer).replace(',', '{,}')}`) };
+    return {
+      id: 'numy', kind: 'number', expected: G.text(task.answer), answer: <MathText>{o.ans}</MathText>,
+      prompt: Mx(k, 'numy.prompt', o),
+      hints: [Mx(k, 'numy.hint1'), Mx(k, 'numy.hint2', o)],
+      explain: Mx(k, 'numy.explain', o),
+    };
+  },
+  rule: (lab, k) => ({
+    id: 'rule', kind: 'choice',
+    prompt: <MathText>{k('discovery.prompt')}</MathText>,
+    options: discoveryOptions(lab, k),
+    hints: [Mx(k, 'rule.hint1'), Mx(k, 'rule.hint2')],
+    explain: <Formal lab={lab} k={k} />,
+  }),
+};
+
+/** Chaque question est construite sur LES nombres de la tâche (rien n'est écrit en dur) ; la bonne réponse change de place d'une question à l'autre. */
+export const QUESTIONS = spreadAll(RAWQ, (lab) => lab.ti * 3 + 1);

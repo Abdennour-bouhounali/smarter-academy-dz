@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
-import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
@@ -16,21 +15,25 @@ import { ACTIVITY, CARDS } from '../content/textbook';
  *   متقدم  — l'exercice 26 : les cartes 4, 5, 9, 3 ; former, permuter, juger cinq divisibilités ; l'impossible pour 4 et 9.
  * Les ÉTAPES sont les questions ب) du manuel (les chiffres des unités, la somme des chiffres), puis les deux règles (briques
  * gardées par « أتوقّع القاعدة »). LP : P1, P2.
+ * Déploiement du prototype (2026-10-28) : les questions ب) sont posées PAR-DESSUS le labo à chaque coloriage complet (`DigitCards ›
+ * chainOf` : les chiffres des unités, la colonne, la somme ; la règle clôt le dernier) ; les étapes en gardent la TRACE (`checkpoint-done`)
+ * puis posent les règles.
  */
-const M = (s) => <MathText key={s}>{s}</MathText>;
 
 export default function Module01Nashat() {
   const [trials, setTrials] = useState([]);
-  const [q1, setQ1] = useState(false);
-  const [q2, setQ2] = useState(false);
-  const [q3, setQ3] = useState(false);
   const record = (e) => setTrials((list) => [...list, e]);
+  // les questions posées PAR-DESSUS le labo : une étape est faite quand la suite de SON coloriage l'est
+  const answered = (id) => trials.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const q1 = answered('g2');
+  const q2 = answered('g5');
+  const q3 = answered('g3');
   const found = (d) => [...new Set(trials.filter((e) => e.mode === 'grid' && e.d === d && e.ok).map((e) => e.n))].sort((a, b) => a - b);
   const ledger = (d, label) => {
     const ns = found(d);
     return (
       <li data-evidence={`grid-${d}`} data-tried={ns.length ? 'true' : 'false'} className={ns.length ? 'font-bold text-slate-800' : 'text-slate-500'}>
-        {ns.length ? <span>{label}: <bdi dir="ltr">{ns.join(' ، ')}</bdi></span> : `${label}: لم تلوّن أيّ خانة بعد في المستوى المبتدئ.`}
+        {ns.length ? <span>{label}: <bdi dir="ltr">{ns.join(' ، ')}</bdi></span> : `${label}: لم تلوّن أيّ خانة بعد في المستوى المبتدئ — لوّن، وأجب عن الأسئلة التي تظهر فوق المختبر.`}
       </li>
     );
   };
@@ -66,13 +69,6 @@ export default function Module01Nashat() {
           content: (
             <div className="space-y-3">
               <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>{ledger(2, 'خاناتك الحمراء')}</ul>
-              <TapQuestion
-                prompt={<span>ما القيم التي يأخذها رقم آحاد مضاعف للعدد 2؟</span>}
-                options={[M('0 ، 2 ، 4 ، 6 ، 8'), M('كل الأرقام من 0 إلى 9'), M('0 و 5')]}
-                correct={0} cols={1} requires={['mudaaf-ibtidai']}
-                explain={<span>في الجدول: 0 ، 2 ، 4 ، … ، 48 : رقم الآحاد دائمًا 0 أو 2 أو 4 أو 6 أو 8.</span>}
-                onAnswered={() => setQ1(true)}
-              />
             </div>
           ),
         },
@@ -81,13 +77,6 @@ export default function Module01Nashat() {
           content: (
             <div className="space-y-3">
               <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>{ledger(5, 'خاناتك الزرقاء')}</ul>
-              <TapQuestion
-                prompt={<span>ما القيم التي يأخذها رقم آحاد مضاعف للعدد 5؟</span>}
-                options={[M('5 فقط'), M('0 و 5'), M('0 ، 2 ، 4 ، 6 ، 8')]}
-                correct={1} cols={1} requires={['mudaaf-ibtidai']}
-                explain={<span>0 ، 5 ، 10 ، 15 ، … ، 45 : رقم الآحاد 0 أو 5.</span>}
-                onAnswered={() => setQ2(true)}
-              />
               {q2 && <KnowledgeBrick id="qabiliya-2-5" lead="أرقام آحاد خاناتك الحمراء والزرقاء: ماذا يكفي أن ننظر إليه؟" />}
             </div>
           ),
@@ -97,19 +86,12 @@ export default function Module01Nashat() {
           content: (
             <div className="space-y-3">
               <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>{ledger(3, 'خاناتك الخضراء')}</ul>
-              <TapQuestion
-                prompt={<span>في الجدول، مجموع أرقام كل مضاعف للعدد 3:</span>}
-                options={[M('يقبل القسمة على 3'), M('يساوي دائمًا 3'), M('عدد زوجي')]}
-                correct={0} cols={1} requires={['mudaaf-ibtidai']}
-                explain={<MathText>{'27 : $2 + 7 = 9$ ، 39 : $3 + 9 = 12$ ، 48 : $4 + 8 = 12$ — كلها تقبل القسمة على 3. أمّا رقم الآحاد فيأخذ كل القيم (3 ، 6 ، 9 ، 12 ، 15…).'}</MathText>}
-                onAnswered={() => setQ3(true)}
-              />
               {q3 && <KnowledgeBrick id="qabiliya-3" lead="رقم الآحاد لم يكفِ هنا: ما الذي كان مشتركًا بين خاناتك الخضراء؟" />}
             </div>
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

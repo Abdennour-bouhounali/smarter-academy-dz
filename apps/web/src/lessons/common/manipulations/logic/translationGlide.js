@@ -228,6 +228,20 @@ export function fixRogue(lab, to) {
   return pushTrial(next, trial);
 }
 
+/**
+ * « أعِد التجربة » : remet la MÊME étape au départ. `act1` : les images du tableau courant s'effacent. `show` : phase 0 = toute la
+ * formation (le meneur revient), phase 1 = le drone égaré redevient égaré.
+ */
+export function restartStep(lab, phase = 0) {
+  if (lab.scene === 'act1') {
+    const tb = lab.tableaux[lab.t];
+    return { ...lab, placed: { ...lab.placed, [tb.id]: {} }, last: null };
+  }
+  if (phase === 1) return { ...lab, rogue: { ...lab.rogue, fixed: false }, last: null };
+  const tb = lab.tableaux[0];
+  return { ...lab, tableaux: [{ ...tb, to: null, u: null }], placed: {}, rogue: { ...lab.rogue, at: null, fixed: false }, last: null };
+}
+
 /** Passer à un tableau (scène `act1`) ; les tableaux faits restent faits. */
 export const goTo = (lab, t) => (t >= 0 && t < lab.tableaux.length ? { ...lab, t, last: null } : lab);
 /** Le premier tableau non fini après t (ou t). */

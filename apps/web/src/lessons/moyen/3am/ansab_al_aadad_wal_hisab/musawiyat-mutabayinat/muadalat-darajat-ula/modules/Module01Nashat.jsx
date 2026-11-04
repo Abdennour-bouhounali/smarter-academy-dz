@@ -22,7 +22,9 @@ export default function Module01Nashat() {
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
-  const record = (e) => setTrials((list) => [...list, e]);
+  // les questions posées PENDANT le labo (checkpoint-done) : la TRACE de l'étape ; si l'enseignant les coupe, les questions d'ici reprennent
+  const [cp, setCp] = useState({});
+  const record = (e) => { if (e.tk) { if (e.tk === 'checkpoint-done') setCp((c) => ({ ...c, [e.id]: true })); return; } setTrials((list) => [...list, e]); };
   const mine = trials.filter((e) => !e.free);
   const moved = mine.findLast((e) => e.kind === 'move' && e.ok && e.flip);
   const refused = mine.findLast((e) => e.kind === 'refused' && e.reason === 'sign');
@@ -55,13 +57,13 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'لماذا بقيت المعادلة صحيحة بعد العبور؟', subtitle: 'الإشارة المعاكسة', done: q1,
+          num: 1, title: 'لماذا بقيت المعادلة صحيحة بعد العبور؟', subtitle: 'الإشارة المعاكسة', done: q1 || !!cp.b0 || !!cp.a0,
           content: (
             <div className="space-y-3" data-activity-evidence>
               <Evidence id="moved" ok={!!moved}
                 done={<span>عبر الصندوق <Ltr>{moved?.value}</Ltr> فصار <Ltr>{moved?.landed}</Ltr> في الضفّة الأخرى وبقيت المعادلة صحيحة.</span>}
                 todo="اجعل صندوقًا يعبر «بعكس إشارته» في العبّارة، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
+              {!(cp.b0 || cp.a0) && <TapQuestion
                 prompt="عبر الصندوق إلى الضفّة الأخرى بعكس إشارته ولم تنكسر المعادلة. لماذا؟"
                 options={[
                   'لأنّنا أضفنا معاكس الصندوق إلى الطرفين: يختفي من ضفّته ويظهر في الأخرى بإشارة معاكسة',
@@ -71,8 +73,8 @@ export default function Module01Nashat() {
                 correct={0} cols={1} requires={['khawass-musawiyat']}
                 explain={<MathText>{GUIDE.moved}</MathText>}
                 onAnswered={() => setQ1(true)}
-              />
-              {q1 && <KnowledgeBrick id="naql-hadd" lead="حدّ يعبر إلى الطرف الآخر: ماذا يحدث لإشارته؟" />}
+              />}
+              {(q1 || cp.b0 || cp.a0) && <KnowledgeBrick id="naql-hadd" lead="حدّ يعبر إلى الطرف الآخر: ماذا يحدث لإشارته؟" />}
             </div>
           ),
         },
@@ -98,13 +100,13 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 3, title: 'لماذا نقسم على معامل x؟', subtitle: 'x وحده', done: q3,
+          num: 3, title: 'لماذا نقسم على معامل x؟', subtitle: 'x وحده', done: q3 || !!cp.b1 || !!cp.a1,
           content: (
             <div className="space-y-3" data-activity-evidence>
               <Evidence id="divided" ok={!!divided}
                 done={<span>قسمتَ الطرفين على <Ltr>{divided?.c}</Ltr> فصارت المعادلة <Ltr>x</Ltr> وحده في ضفّة.</span>}
                 todo="اجمع الصناديق حتى يبقى x وحده مضروبًا في عدد، ثم اقسم، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
+              {!(cp.b1 || cp.a1) && <TapQuestion
                 prompt="بقي $x$ وحده مضروبًا في عدد $a$ . لماذا نقسم الطرفين على $a$ ؟"
                 options={[
                   'لأنّ $\\frac{ax}{a} = x$ : القسمة تترك $x$ وحده، والعملية نفسها على الطرفين',
@@ -114,8 +116,8 @@ export default function Module01Nashat() {
                 correct={0} cols={1} requires={['naql-hadd']}
                 explain={<MathText>{'نقسم الطرفين على $a$ ($a \\neq 0$) : $\\frac{ax}{a} = x$ ، فنجد $x = \\frac{n}{a}$ .'}</MathText>}
                 onAnswered={() => setQ3(true)}
-              />
-              {q3 && <KnowledgeBrick id="qisma-muamil" lead="x مضروب في عدد: ماذا نفعل بالطرفين؟" />}
+              />}
+              {(q3 || cp.b1 || cp.a1) && <KnowledgeBrick id="qisma-muamil" lead="x مضروب في عدد: ماذا نفعل بالطرفين؟" />}
             </div>
           ),
         },
@@ -141,7 +143,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

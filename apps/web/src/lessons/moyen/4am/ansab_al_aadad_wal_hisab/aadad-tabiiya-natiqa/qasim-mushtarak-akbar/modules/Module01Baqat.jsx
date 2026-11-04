@@ -101,7 +101,7 @@ export default function Module01Baqat() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

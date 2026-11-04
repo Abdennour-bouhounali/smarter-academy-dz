@@ -12,6 +12,10 @@ import { useManipulation } from '../useManipulation';
 import { LabCard, StageFrame, PromptCard, VerdictBanner, RoundButton } from '../primitives/LabKit';
 import KidFigure from '../primitives/KidFigure';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { LEVELS } from '../levels';
 import * as L from '../logic/scoopScale';
 import { COL, SevenSegLcd, Shelves, Sack, Scoop, SpiceCone, Grains, ModelSachet, PrecisionStrip } from './scoopScale/art';
@@ -86,7 +90,7 @@ export function numbersFor({ tasks, level }) {
 const fmt = (txt) => String(txt);
 
 export default function ScoopScale({
-  tasks, title, lead, level, levels: withLevels = true, coach: coachOn = true,
+  tasks, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -96,19 +100,34 @@ export default function ScoopScale({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
   if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    const restart = scene.key === numsKey && scene.rc !== state.resetCount;
-    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-    setLab(restart ? L.restartTask(lab) : L.init(nums));
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la tâche 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
+    setLab(L.init(nums));
   }
-  const ready = L.discoveryReady(lab);
+  // les questions pendant le labo : la suite de la tâche courante (construite seulement quand la tâche est faite) ; celle qui finit par la règle remplace la découverte
+  const cur = L.taskOf(lab);
+  const cpSettings = useLabCheckpointSettings('scoop-scale');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const chain = cpOn && cpSettings.enabled && !L.isFree(lab) ? CHAINS[cur.id] ?? null : null;
+  const ruleByCheckpoint = cpOn && cpSettings.enabled && lab.tasks.some((tk) => CHAINS[tk.id]?.includes('rule'));
+  const cp = useLabCheckpoint({
+    id: chain ? cur.id : null,
+    questions: chain && L.taskDone(lab) ? chain.map((q) => QUESTIONS[q](lab, cur, k)) : null,
+    reached: L.taskDone(lab),
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.restartTask),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => { if (CHAINS[id]?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  const ready = L.discoveryReady(lab) && !ruleByCheckpoint;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   const finishedOnce = useRef(false);
+  const finished = ruleByCheckpoint ? lab.tasks.every((_, i) => !!lab.done[i]) : ready;
   useEffect(() => {
-    if (!ready) { finishedOnce.current = false; return; }
+    if (!finished) { finishedOnce.current = false; return; }
     if (!finishedOnce.current) { finishedOnce.current = true; state.report(onFinished, {}); }
-  }, [ready]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [finished]); // eslint-disable-line react-hooks/exhaustive-deps
   const reported = useRef(0);
   const nTrials = lab.trials.length;
   useEffect(() => {
@@ -117,7 +136,7 @@ export default function ScoopScale({
     reported.current = nTrials;
   }, [nTrials, lab.trials]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'scoop-scale', step: coachStep,
     text: coachStep ? k(`coach.${coachStep.id}`) : '',
@@ -153,6 +172,8 @@ export default function ScoopScale({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       coach={coachOn ? coach : null}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={!!chain || ruleByCheckpoint}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={discovery}
@@ -160,9 +181,9 @@ export default function ScoopScale({
     >
       <ManipulationStage className="bg-gradient-to-b from-amber-50/60 to-white">
         <div ref={boxRef} className="space-y-2" data-scoop-scale data-task={lab.free ? 'free' : lab.ti} data-phase={L.phaseOf(lab)}
-          data-solved={ready ? 'true' : 'false'} data-layout={width >= WIDE_MIN ? 'wide' : 'narrow'}>
+          data-solved={finished ? 'true' : 'false'} data-layout={width >= WIDE_MIN ? 'wide' : 'narrow'}>
           <style dangerouslySetInnerHTML={{ __html: CSS }} />
-          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} />
+          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} cp={cp} />
         </div>
       </ManipulationStage>
     </ManipulationShell>
@@ -173,7 +194,7 @@ export default function ScoopScale({
 
 const rankKey = (n) => (n <= 0 ? 'rank0' : n === 1 ? 'rank1' : 'rank2');
 
-function Lab({ lab, setLab, k, width, screenH, lead }) {
+function Lab({ lab, setLab, k, width, screenH, lead, cp }) {
   const wide = width >= WIDE_MIN;
   const task = L.taskOf(lab);
   const ph = L.phaseOf(lab);
@@ -195,20 +216,40 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
   })();
   const question = trap ? k(`question.${ph}`) : k(`question.${ph}`, { r: kg(target) });
 
+  // une étape est FAITE quand l'objectif est atteint ET que ses questions (LabCheckpoint) sont répondues : alors la pastille passe au vert et on fête
+  const stepDone = lab.tasks.map((_, i) => !!lab.done[i] && (i !== lab.ti || !cp.blocking));
   const steps = lab.tasks.length > 1 && !free && (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={tk.id} role="listitem" data-ss-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-amber-600 bg-amber-600 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-amber-200 bg-white text-amber-500'}`}>
-            <bdi dir="ltr">{i + 1}</bdi>
-          </span>
-        );
-      })}
-    </div>
+    <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-ss-step" />
   );
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // L.init (« إعادة », autre niveau) : on refête
+  const nowDone = !free && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.ti)) return;
+    celebrated.current.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
+  /* ── le son (muet sauf « الصوت ») : un déclic par pincée (au plus un toutes les 35 ms), une cloche quand la masse passe un kilo plein,
+     et au « سلّم » : l'arrivée (flag) ou le refus (over). ── */
+  const sfx = useRef({ m: lab.m, at: 0, key: '' });
+  const sfxKey = `${free ? 'free' : lab.ti}`;
+  useEffect(() => {
+    const p = sfx.current;
+    if (p.key !== sfxKey) { sfx.current = { m: lab.m, at: 0, key: sfxKey }; return; }
+    const d = lab.m - p.m;
+    if (d === 0) return;
+    const now = performance.now();
+    if (now - p.at > 35) { playSfx('tooth', { pitch: d > 0 ? 1 : 0.75 }); p.at = now; }
+    const unit = 10 ** task.res;
+    if (d > 0 && Math.floor(lab.m / unit) > Math.floor(p.m / unit)) playSfx('bell');
+    p.m = lab.m;
+  }, [lab.m, sfxKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  const nTrials = lab.trials.length;
+  useEffect(() => {
+    if (!nTrials) return;
+    playSfx(lab.last?.ok ? 'flag' : 'over');
+  }, [nTrials]); // eslint-disable-line react-hooks/exhaustive-deps
   const prompt = (
     <PromptCard size={wide ? 'lg' : 'md'} context={<MathText>{ctx}</MathText>} contextProps={{ 'data-ss-context': trap ? 'trap' : free ? 'free' : 'reading' }}
       title={<MathText>{question}</MathText>} titleClassName={wide ? 'text-xl' : 'text-lg'} lamp={free ? null : lit ? 'on' : 'off'}
@@ -237,7 +278,7 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
   const vkey = !last ? '' : last.ok ? 'right' : 'refused';
   const tone = !last ? 'indigo' : last.ok ? 'emerald' : 'rose';
   const Icon = !last ? Hand : last.ok ? CheckCircle2 : Sparkles;
-  const canNext = L.canNext(lab);
+  const canNext = L.canNext(lab) && !cp.blocking;
   const mood = !last ? 'happy' : last.ok ? 'proud' : 'wonder';
   const banner = (
     <VerdictBanner tone={tone} icon={wide ? Icon : null} size="sm" className="min-h-[3.5rem]" data-ss-verdict={vkey}>
@@ -272,6 +313,8 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
   return (
     <>
       <div className="relative space-y-2" data-ss-glance>
+        {party.node}
+        {cp.node}
         {prompt}
         {wide ? (
           <div className="flex items-start gap-3">
@@ -535,3 +578,122 @@ export function Formal({ lab, k }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de questions de chaque tâche : elle interroge ce que l'élève vient de FAIRE avec SES masses ; la dernière suite d'un niveau finit par la règle. */
+export const CHAINS = Object.freeze({
+  t1: ['why', 'ghost'],
+  t2: ['ghost', 'interval'],
+  t3: ['halfRank', 'interval', 'rule'],
+  a1: ['why', 'ghost'],
+  a2: ['ghost', 'interval', 'rule'],
+  a3: ['between', 'never'],
+});
+
+const $ = (s) => `$${s}$`;
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const mine = (lab, phase) => lab.trials.filter((t) => !t.free && t.task === lab.ti && t.ok && (!phase || t.phase === phase)).at(-1);
+const bounds = (reading, rank) => {
+  const v = D.parse(String(reading));
+  return { lo: D.format(D.floorAt(v, rank)), hi: D.format(D.ceilAt(v, rank)) };
+};
+
+/** Chaque question est construite sur LES essais de la tâche (rien n'est écrit en dur) ; `k` : les textes de `scoopScale`. */
+export const QUESTIONS = {
+  why: (lab, task, k) => {
+    const tr = mine(lab, 'least');
+    const o = { mass: kg(tr.mass), reading: iso(tr.reading), ghost: kg(tr.neighbour.mass), gReading: iso(tr.neighbour.reading) };
+    return {
+      id: 'why', kind: 'choice',
+      prompt: Mx(k, 'why.prompt', o),
+      options: [
+        { text: Mx(k, 'why.chop'), why: Mx(k, 'why.whyChop', o) },
+        { text: Mx(k, 'why.right', o), correct: true },
+        { text: Mx(k, 'why.up'), why: Mx(k, 'why.whyUp', o) },
+      ],
+      hints: [Mx(k, 'why.hint1', o), Mx(k, 'why.hint2', o)],
+      explain: Mx(k, 'why.explain', o),
+    };
+  },
+  ghost: (lab, task, k) => {
+    const tr = mine(lab, task.phases.at(-1));
+    const side = tr.phase === 'least' ? 'least' : 'most';
+    const b = bounds(tr.neighbour.mass, task.rank);
+    const o = { mass: kg(tr.mass), ghost: kg(tr.neighbour.mass), lo: iso(b.lo), hi: iso(b.hi), rank: iso(D.format(D.make(1, task.rank))) };
+    return {
+      id: 'ghost', kind: 'number', expected: tr.neighbour.reading, answer: <MathText>{$(String(tr.neighbour.reading).replace(',', '{,}'))}</MathText>,
+      prompt: Mx(k, `ghost.${side}`, o), hints: [Mx(k, 'ghost.hint1', o), Mx(k, 'ghost.hint2', o)],
+      explain: Mx(k, 'ghost.explain', { ...o, reading: iso(tr.neighbour.reading) }),
+    };
+  },
+  halfRank: (lab, task, k) => {
+    const unit = D.format(D.make(1, task.rank));
+    const half = D.format(D.make(5, task.rank + 1));
+    return {
+      id: 'halfRank', kind: 'number', expected: half, answer: <MathText>{$(half.replace(',', '{,}'))}</MathText>,
+      prompt: Mx(k, 'halfRank.prompt', { unit: iso(unit) }), hints: [Mx(k, 'halfRank.hint1', { unit: iso(unit) }), Mx(k, 'halfRank.hint2', { unit: iso(unit) })],
+      explain: Mx(k, 'halfRank.explain', { unit: iso(unit), half: iso(half) }),
+    };
+  },
+  interval: (lab, task, k) => {
+    const pair = L.witnesses(lab).pairs[task.rank] ?? L.witnesses(lab).pairs[task.rank === 0 ? 0 : task.rank];
+    const lo = pair.lo; const hi = pair.hi;
+    const r = lo.reading;
+    const up = nextReading(r, task.rank);
+    const tx = texNum;
+    const o = { r: iso(r), least: kg(lo.mass), hi: kg(hi.neighbour.mass), e: iso(hi.neighbour.reading) };
+    return {
+      id: 'interval', kind: 'choice', cols: 1,
+      prompt: Mx(k, 'interval.prompt', o),
+      options: [
+        { text: <MathText>{$(`${tx(r)}\\leq m<${tx(up)}`)}</MathText>, why: Mx(k, 'interval.whyShift', o) },
+        { text: <MathText>{$(`${tx(lo.mass)}\\leq m\\leq ${tx(hi.neighbour.mass)}`)}</MathText>, why: Mx(k, 'interval.whyClosed', o) },
+        { text: <MathText>{$(`${tx(lo.mass)}\\leq m<${tx(hi.neighbour.mass)}`)}</MathText>, correct: true },
+      ],
+      hints: [Mx(k, 'interval.hint1', o), Mx(k, 'interval.hint2', o)],
+      explain: Mx(k, 'interval.explain', o),
+    };
+  },
+  rule: (lab, task, k) => {
+    const w = L.witnesses(lab).main;
+    const o = { r: iso(w?.reading ?? '1,3'), least: kg(w?.least ?? '1,25'), hi: kg(w?.excluded ?? '1,35'), e: iso(w?.excludedReading ?? '1,4') };
+    return {
+      id: 'rule', kind: 'choice',
+      prompt: <MathText>{k('discovery.prompt', { r: iso(w?.reading ?? '1,3') })}</MathText>,
+      options: discoveryOptions(lab, k),
+      hints: [Mx(k, 'rule.hint1', o), Mx(k, 'rule.hint2', o)],
+      explain: <Formal lab={lab} k={k} />,
+    };
+  },
+  between: (lab, task, k) => {
+    const lo = mine(lab, 'heavyLight'); const hi = mine(lab, 'lightHeavy');
+    const o = { lo: kg(lo.mass), hi: kg(hi.mass), frac: $(`\\frac{${task.ref.a}}{${task.ref.b}}`) };
+    return {
+      id: 'between', kind: 'choice', cols: 1,
+      prompt: Mx(k, 'between.prompt', o),
+      options: [
+        { text: <MathText>{$(`${texNum(lo.mass)}\\leq\\frac{${task.ref.a}}{${task.ref.b}}\\leq ${texNum(hi.mass)}`)}</MathText>, why: Mx(k, 'between.whyClosed', o) },
+        { text: <MathText>{$(`${texNum(lo.mass)}<\\frac{${task.ref.a}}{${task.ref.b}}<${texNum(hi.mass)}`)}</MathText>, correct: true },
+        { text: <MathText>{$(`\\frac{${task.ref.a}}{${task.ref.b}}=${texNum(lo.mass)}5`)}</MathText>, why: Mx(k, 'between.whyMid', o) },
+      ],
+      hints: [Mx(k, 'between.hint1', o), Mx(k, 'between.hint2', o)],
+      explain: Mx(k, 'between.explain', o),
+    };
+  },
+  never: (lab, task, k) => {
+    const lo = mine(lab, 'heavyLight'); const hi = mine(lab, 'lightHeavy');
+    const o = { lo: kg(lo.mass), hi: kg(hi.mass), frac: $(`\\frac{${task.ref.a}}{${task.ref.b}}`) };
+    return {
+      id: 'never', kind: 'choice',
+      prompt: Mx(k, 'never.prompt', o),
+      options: [
+        { text: Mx(k, 'never.finer'), why: Mx(k, 'never.whyFiner') },
+        { text: Mx(k, 'never.mid', o), why: Mx(k, 'never.whyMid', o) },
+        { text: Mx(k, 'never.right', o), correct: true },
+      ],
+      hints: [Mx(k, 'never.hint1', o), Mx(k, 'never.hint2')],
+      explain: Mx(k, 'never.explain', o),
+    };
+  },
+};

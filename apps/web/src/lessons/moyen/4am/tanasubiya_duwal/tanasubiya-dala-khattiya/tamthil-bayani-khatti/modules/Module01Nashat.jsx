@@ -3,6 +3,7 @@ import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
+import { useLabCheckpointSettings } from '../../../../../../common/manipulations/primitives/labCheckpointSettings';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { parseDec } from '@smarter-academy/core';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
@@ -31,6 +32,16 @@ import { ACTIVITY, ACTIVITY_LINES, ICT, ICT_PLATFORM } from '../content/textbook
  */
 const Opt = (s) => <MathText key={s}>{s}</MathText>;
 
+/** La TRACE d'une suite de questions posée par-dessus le labo (LabCheckpoint) : l'étape est faite quand la suite l'est. */
+function Trace({ id, done, children, idle }) {
+  return (
+    <p data-checkpoint-trace={id} data-tried={done ? 'true' : 'false'}
+      className={`rounded-xl border-2 px-3 py-2 text-sm ${done ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+      {done ? children : idle}
+    </p>
+  );
+}
+
 export default function Module01Nashat() {
   const [points, setPoints] = useState([]);
   const [reads, setReads] = useState([]);
@@ -40,6 +51,13 @@ export default function Module01Nashat() {
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
   const [q5, setQ5] = useState(false);
+  const [cps, setCps] = useState([]);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : « لماذا O و A و B على استقامة ؟ » et « ما الذي يحدّد الصعود ؟ » y sont posées ; coupées par l'enseignant, les questions d'origine reviennent
+  const cpOn = useLabCheckpointSettings('origin-line').enabled;
+  const answered = (id) => cps.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const onCheckpoint = (e) => setCps((l) => [...l, e]);
+  const aligned = cpOn ? answered('draw2') : q2;
+  const slopeDone = cpOn ? answered('pivot2') : q5;
 
   const onDraw = (tr) => {
     if (tr.kind === 'point') setPoints((p) => [...p.filter((x) => x.pointTex !== tr.pointTex), tr]);
@@ -120,6 +138,7 @@ export default function Module01Nashat() {
                 theme="cablecar"
                 lead={<MathText>{'حبل تلفريك قسنطينة مستقيم، مشدود من محطة الانطلاق O. نمثّل الدالة الخطية $f : x \\longmapsto 0{,}5x$ : احسب صورة $1$ وصورة $4$ وضع النقطتين A و B على المعلم. جرّب أيضًا نقطة لا تحقّق الحساب، وحاول أن تحرّك O.'}</MathText>}
                 onTrial={onDraw}
+                onCheckpoint={onCheckpoint}
               />
             ),
             advanced: () => (
@@ -130,6 +149,7 @@ export default function Module01Nashat() {
                 theme="cablecar"
                 lead="في هذا المستوى لا دالة معطاة: أمسك المستقيم أو حرّك الزالق على يمين المعلم، وثبّت عدّة مستقيمات: بعضها يصعد وبعضها ينزل."
                 onTrial={onPivot}
+                onCheckpoint={onCheckpoint}
               />
             ),
           }}
@@ -159,11 +179,16 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 2, title: 'لماذا وقعت B على المستقيم (OA)؟', subtitle: 'السؤال 1 ب', done: q2,
+          num: 2, title: 'لماذا وقعت B على المستقيم (OA)؟', subtitle: 'السؤال 1 ب', done: aligned,
           content: (
             <div className="space-y-3">
               {pointsEvidence}
-              <TapQuestion
+              {cpOn ? (
+                <Trace id="draw2" done={aligned} idle="ضع نقطتين على المعلم (المستوى المبتدئ) وأجب عن الأسئلة التي تظهر فوق المخبر.">
+                  <MathText>{'أجبتَ في المخبر: O و A و B على استقامة واحدة لأنّ ترتيب كل نقطة ÷ فاصلتها هو العدد نفسه $0{,}5$ ، فهي كلها من تمثيل الدالة نفسها.'}</MathText>
+                </Trace>
+              ) : (
+<TapQuestion
                 prompt={<MathText>{'المستقيم (OA) مرّ بالنقطة $B(4 ; 2)$ دون أن توجّهه إليها. لماذا O و A و B على استقامة واحدة؟'}</MathText>}
                 options={[
                   'لأنّ ترتيب B هو $2 = 0{,}5 \\times 4$ ، فهي من نقط تمثيل الدالة نفسها.',
@@ -176,6 +201,7 @@ export default function Module01Nashat() {
                 explain={<MathText>{ACTIVITY_LINES.aligned}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
+              )}
             </div>
           ),
         },
@@ -214,13 +240,18 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 5, title: 'متى يصعد المستقيم ومتى ينزل؟', subtitle: 'أوظّف تكنولوجيات الإعلام والاتصال — ص 76', done: q5,
+          num: 5, title: 'متى يصعد المستقيم ومتى ينزل؟', subtitle: 'أوظّف تكنولوجيات الإعلام والاتصال — ص 76', done: slopeDone,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" title="الزالق (جيوجيبرا)" text={ICT.question} source={ICT.source} compact />
               <p className="text-xs text-slate-600"><MathText>{ICT_PLATFORM.text}</MathText> <SourceTag source={ICT_PLATFORM.source} /></p>
               {linesEvidence}
-              <TapQuestion
+              {cpOn ? (
+                <Trace id="pivot2" done={slopeDone} idle="ثبّت في المستوى المتقدّم مستقيمًا يصعد ومستقيمًا ينزل، وأجب عن الأسئلة التي تظهر فوق المخبر.">
+                  <MathText>{'أجبتَ في المخبر: إشارة المعامل $a$ هي التي تحدّد الاتجاه: يصعد المستقيم إذا كان $a > 0$ وينزل إذا كان $a < 0$ ، والمبدأ O لا يتحرّك.'}</MathText>
+                </Trace>
+              ) : (
+<TapQuestion
                 prompt={<MathText>{'المستقيم الذي يمثّل دالة خطية معاملها $a$ يشمل دائمًا O، و:'}</MathText>}
                 options={[
                   'إذا كان $a > 0$ يصعد من اليسار إلى اليمين، وإذا كان $a < 0$ ينزل.',
@@ -233,7 +264,8 @@ export default function Module01Nashat() {
                 explain={<MathText>{`${ICT.answer} المبدأ O لا يتحرّك أبدًا.`}</MathText>}
                 onAnswered={() => setQ5(true)}
               />
-              {q5 && (
+              )}
+              {slopeDone && (
                 <p className="rounded-xl bg-violet-50 px-3 py-2 text-sm text-violet-900" data-next-module>
                   <MathText>{'رسمت مستقيمًا يشمل O بنقطة واحدة أخرى، وقرأت عليه ترتيب نقطة، ورأيته يصعد أو ينزل. المحور التالي يعطي هذا كلّه اسمه في الكتاب: التمثيل البياني لدالة خطية ومعامل توجيهه.'}</MathText>
                 </p>
@@ -242,7 +274,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

@@ -145,3 +145,66 @@ describe('digit-cards — rendu', () => {
     }
   });
 });
+
+describe('digit-cards — questions pendant le labo (LabCheckpoint)', () => {
+  const k = (key, o) => i18n.t(`lesson:manipulation.digitCards.${key}`, o);
+  const RAW_KEY = /manipulation\.[a-zA-Z]/;
+  const check = (lab, step, QUESTIONS, chainOf) => {
+    for (const qid of chainOf(lab, step)) {
+      if (qid === 'rule') continue;   // la découverte : couverte ailleurs
+      const q = QUESTIONS[qid](lab, step, k);
+      const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+      expect(out, `${step.id}.${qid}`).not.toMatch(RAW_KEY);
+      expect(out, `${step.id}.${qid}`).not.toContain('{{');
+      expect(q.hints, `${step.id}.${qid}`).toHaveLength(2);
+      if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${step.id}.${qid}`).toHaveLength(1);
+      else expect(q.expected, `${step.id}.${qid}`).toBeTruthy();
+    }
+  };
+  it('table : chaque coloriage complet (2, 5, 3) a sa suite ; la dernière finit par la règle', async () => {
+    const { chainOf, QUESTIONS, stepOf } = await import('./DigitCards');
+    const L = await import('../logic/digitCards');
+    let lab = L.init(LEVELS['digit-cards'].beginner.numbers);
+    lab.divisors.forEach((d, i) => {
+      lab = L.openColouring(lab, i);
+      for (const n of L.multiplesOf(d, lab.from, lab.to)) lab = L.tapCell(lab, n);
+      const step = stepOf(lab);
+      expect(step).toMatchObject({ id: `g${d}`, reached: true });
+      check(lab, step, QUESTIONS, chainOf);
+      expect(chainOf(lab, step).includes('rule')).toBe(i === lab.divisors.length - 1);
+    });
+    expect(QUESTIONS.next(lab, { d: 5 }, k).expected).toBe('50');
+  });
+  it('cartes : les cibles 2, 3, 5, le « لا يوجد » de 4 et 9, l’échange ; la règle quand tout est prêt', async () => {
+    const { chainOf, QUESTIONS, stepOf } = await import('./DigitCards');
+    const L = await import('../logic/digitCards');
+    let lab = L.init(LEVELS['digit-cards'].advanced.numbers);
+    const place = (s, n) => String(n).split('').reduce((acc, ch, slot) => L.placeCard(acc, acc.digits.indexOf(Number(ch)), slot), s);
+    lab.divisors.forEach((d, i) => {
+      lab = L.selectTask(lab, i);
+      const valid = L.validArrangements(lab.digits, d);
+      lab = valid.length ? L.submitLargest(place(lab, valid.at(-1)), d) : L.sayNone(lab, d);
+      const step = stepOf(lab, []);
+      expect(step.id).toBe(`c${d}`);
+      check(lab, step, QUESTIONS, chainOf);
+    });
+    expect(QUESTIONS.cardSum(lab, { d: 3 }, k).expected).toBe('21');
+    lab = { ...lab, swap: { from: 9534, to: 9543 } };
+    const sw = stepOf(lab, lab.divisors.map((d) => `c${d}`));
+    expect(sw.id).toBe('swap');
+    check(lab, sw, QUESTIONS, chainOf);
+    expect(chainOf(lab, sw).at(-1)).toBe('rule');
+  });
+});
+
+describe('digit-cards — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('questions actives : ni la progression ni le bouton d’indice ; checkpoints={false} : les deux reviennent', () => {
+    const props = { ...LEVELS['digit-cards'].beginner.numbers, level: 'beginner' };
+    const g = renderToString(<DigitCards {...props} />);
+    expect(g).not.toContain('data-manipulation-progress');
+    expect(g).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    const off = renderToString(<DigitCards {...props} checkpoints={false} />);
+    expect(off).toContain('data-manipulation-progress');
+    expect(off).toContain(i18n.t('lesson:manipulation.hint.show'));
+  });
+});

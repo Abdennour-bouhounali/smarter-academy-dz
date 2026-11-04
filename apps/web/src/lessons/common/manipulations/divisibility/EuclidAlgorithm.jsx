@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as divisibility from '@smarter-academy/core/arithmetic/divisibility.js';
 import ManipulationShell from '../ManipulationShell';
@@ -15,7 +15,15 @@ import DraggableObject from '../primitives/DraggableObject';
 import EquationBuilder from '../primitives/EquationBuilder';
 import EquationDisplay from '../primitives/EquationDisplay';
 import { Btn } from '../ManipulationTeacherMode';
+import MathText from '../../components/MathText';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { ordered } from './cpOrder';
 import * as L from '../logic/algorithms';
+
+const NS = 'manipulation.euclid';
 
 const { euclidStepTex, pgcdEqualityTex } = divisibility;
 
@@ -36,19 +44,74 @@ const { euclidStepTex, pgcdEqualityTex } = divisibility;
  *    couvert reste en pointillés, puis le reste apparaît en ambre.
  * D. Émerge : l'égalité se remplit case par case (le q vient du comptage des
  *    copies, le r de ce qui reste), puis l'invariant PGCD(a ; b) = PGCD(b ; r).
+ * QUESTIONS PENDANT LE LABO (2026-10-28, `primitives/LabCheckpoint`) : deux ÉTAPES (`LabStepper`, `[data-ea-step]`) — « القسمات » (la chaîne est finie : combien de
+ * divisions, ce qui passe à la ligne suivante, ce qui ne change pas) puis « PGCD » (le dernier reste non nul est posé : pourquoi s'arrêter, puis la RÈGLE, qui
+ * remplace la découverte automatique et formalise dans `onDone`). Obligatoires pour tout élève ; l'enseignant seul les coupe (`useLabCheckpointSettings`).
+ * SON : `tooth` par copie posée, `bell` par division confirmée, `flag` au PGCD posé, `over` pour un geste refusé. Textes dans `euclid.cp.*`.
  * E. À découvrir : la chaîne des divisions, et le PGCD = DERNIER RESTE NON
  *    NUL. `compareWith="differences"` montre 3 divisions contre 8 différences.
  */
 export default function EuclidAlgorithm({
-  a: a0, b: b0, title, lead, mission, compareWith, initialMode = 'student', allowModeSwitch = false, answerHiddenByDefault = false, onFinished,
+  a: a0, b: b0, title, lead, mission, compareWith, initialMode = 'student', allowModeSwitch = false, answerHiddenByDefault = false, onFinished, onTrial, checkpoints: cpOn = true,
 }) {
   const { t } = useTranslation('lesson');
   const state = useManipulation({ type: 'euclidean-algorithm', initialNumbers: { a: a0, b: b0 }, initialMode, hintCount: 3, answerHiddenByDefault });
   const { a, b } = state.numbers;
+  const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
   const [lab, setLab] = useState(() => L.initEuclid({ a: a0, b: b0 }));
   const [reject, setReject] = useState(null);
 
-  useEffect(() => { setLab(L.initEuclid({ a, b })); setReject(null); }, [a, b, state.epoch]);
+  // « إعادة », d'autres nombres ou un autre niveau : TOUT recommence — la chaîne, les questions du labo, la fête
+  const sceneKey = `${a}|${b}|${state.epoch}|${state.resetCount}`;
+  const [scene, setScene] = useState(sceneKey);
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.initEuclid({ a, b })); setReject(null); }
+  const [answered, setAnswered] = useState({ key: sceneKey, ids: [] });
+  const answeredIds = answered.key === sceneKey ? answered.ids : [];
+
+  // les questions pendant le labo : obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpSettings = useLabCheckpointSettings('euclidean-algorithm');
+  const ruleByCheckpoint = cpOn && cpSettings.enabled;
+  const reachedOf = { divs: L.isEuclidFinished(lab), pgcd: lab.pgcdPlaced };
+  const pending = ruleByCheckpoint ? STEPS.find((id) => !answeredIds.includes(id)) : null;
+  const chain = pending && reachedOf[pending] ? CHAINS[pending] : null;
+  const cp = useLabCheckpoint({
+    id: chain ? pending : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q]({ a, b, lab }, k)) : null,
+    reached: true,
+    resetKey: sceneKey,
+    onRetry: () => setLab((s) => (pending === 'divs' ? L.initEuclid({ a, b }) : { ...s, pgcdPlaced: false })),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setAnswered((x) => ({ key: sceneKey, ids: [...(x.key === sceneKey ? x.ids : []), id] }));
+      if (id === 'pgcd') { state.discover(); state.formalize(); }
+    },
+  });
+  const stepDone = STEPS.map((id) => reachedOf[id] && (!ruleByCheckpoint || answeredIds.includes(id)));
+  const party = useStepCelebration();
+  const celebrated = useRef({ key: sceneKey, set: new Set() });
+  if (celebrated.current.key !== sceneKey) celebrated.current = { key: sceneKey, set: new Set() };
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.set.has(i)) return;
+      celebrated.current.set.add(i);
+      party.celebrate({ n: i + 1, total: STEPS.length });
+    });
+  }, [stepDone.join()]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // le son : une dent par copie (plus grave en retirant), la cloche par division confirmée, le drapeau au PGCD posé
+  const heard = useRef({ copies: 0, confirmed: 0, placed: false, at: 0 });
+  useEffect(() => {
+    const h = heard.current;
+    if (lab.copies !== h.copies) {
+      const now = Date.now();
+      if (now - h.at > 35) { playSfx('tooth', { pitch: lab.copies > h.copies ? 1 : 0.75 }); h.at = now; }
+      h.copies = lab.copies;
+    }
+    if (lab.confirmed > h.confirmed) playSfx('bell');
+    h.confirmed = lab.confirmed;
+    if (lab.pgcdPlaced && !h.placed) playSfx('flag');
+    h.placed = lab.pgcdPlaced;
+  }, [lab.copies, lab.confirmed, lab.pgcdPlaced]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const drag = useDragInteraction({
     onDrop: (sourceId, zoneId) => {
@@ -59,7 +122,7 @@ export default function EuclidAlgorithm({
       if (sourceId.startsWith('rem:') && zoneId === 'pgcd') {
         const v = Number(sourceId.replace('rem:', ''));
         setLab((s) => ({ ...s, pgcdPlaced: v === s.gcd }));
-        state.discover();
+        if (!ruleByCheckpoint) state.discover();
       }
     },
     accepts: (sourceId, zoneId) => {
@@ -73,12 +136,13 @@ export default function EuclidAlgorithm({
       // La copie de trop, LÂCHÉE sur le ruban : refusée, mais vue — l'essai compte.
       // (Ici et pas dans `accepts`, que l'aimant consulte à chaque mouvement.)
       if (sourceId === 'copy' && reason === 'overflow') setLab(L.tryCopy);
+      playSfx('over');
       setReject({ reason, v: Number(String(sourceId).replace('rem:', '')) });
     },
   });
   /** « + » : ESSAYER une copie de plus — posée si elle tient, refusée sinon. */
   const tryPlus = () => {
-    if (L.canAddCopy(lab) === 'overflow') setReject({ reason: 'overflow' });
+    if (L.canAddCopy(lab) === 'overflow') { playSfx('over'); setReject({ reason: 'overflow' }); }
     else setReject(null);
     setLab(L.tryCopy);
   };
@@ -111,6 +175,8 @@ export default function EuclidAlgorithm({
       numberFields={[{ key: 'a', label: 'a' }, { key: 'b', label: 'b' }]}
       validate={validateNumbers}
       allowModeSwitch={allowModeSwitch}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={!!chain || ruleByCheckpoint}
       hints={[t('manipulation.euclid.hint1'), t('manipulation.euclid.hint2'), t('manipulation.euclid.hint3')]}
       controller={{
         autoStep: () => { if (L.isEuclidFinished(lab)) return false; setLab(L.euclidAutoStep); return true; },
@@ -186,8 +252,12 @@ export default function EuclidAlgorithm({
       )}
       explanation={t('manipulation.euclid.explanation')}
     >
+      <div className="relative min-h-[520px]" data-ea-glance>
+      {party.node}
+      {cp.node}
       <ManipulationStage dragging={drag.dragging}>
         <div className="space-y-3">
+          <LabStepper count={STEPS.length} current={Math.max(0, stepDone.indexOf(false))} done={stepDone} stepAttr="data-ea-step" />
           {div ? (
             <>
               <div className="flex flex-wrap items-center gap-2">
@@ -250,6 +320,7 @@ export default function EuclidAlgorithm({
           {reject && <p role="status" className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">{t(`manipulation.euclid.reject.${reject.reason}`, { v: reject.v, a, b, r: rest, d: div?.b })}</p>}
         </div>
       </ManipulationStage>
+      </div>
       <DragGhost ghost={drag.ghost}>
         {drag.held === 'copy' && div && <NumberTile value={div.b} tone="divisor" />}
         {drag.held?.startsWith('rem:') && <NumberTile value={Number(drag.held.replace('rem:', ''))} tone="remainder" />}
@@ -257,3 +328,96 @@ export default function EuclidAlgorithm({
     </ManipulationShell>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** Les deux étapes : la chaîne de divisions finie, puis le PGCD posé. */
+const STEPS = Object.freeze(['divs', 'pgcd']);
+/** La suite de questions de chaque étape : elle interroge ce que l'élève vient de FAIRE ; la dernière finit par la RÈGLE. */
+export const CHAINS = Object.freeze({
+  divs: ['count', 'next', 'invariant'],
+  pgcd: ['stop', 'rule'],
+});
+
+const $ = (x) => `$${x}$`;
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const lineOf = (s) => `${s.a} = ${s.b} \\times ${s.q} + ${s.r}`;
+
+/** Chaque question est construite sur LES nombres de l'élève (rien n'est écrit en dur) ; `k` : les textes de `euclid`. */
+const BUILD = {
+  count: ({ a, b, lab }, k) => {
+    const n = lab.steps.length;
+    const last = lab.steps[n - 1];
+    return {
+      id: 'count', kind: 'number', expected: String(n), answer: <MathText>{$(n)}</MathText>,
+      prompt: Mx(k, 'count.prompt', { a, b }),
+      hints: [Mx(k, 'count.hint1'), Mx(k, 'count.hint2', { first: $(lineOf(lab.steps[0])), last: $(lineOf(last)) })],
+      explain: Mx(k, 'count.explain', { n, last: $(lineOf(last)) }),
+    };
+  },
+  next: ({ lab }, k) => {
+    const [s0, s1] = lab.steps;
+    const o = { a: s0.a, b: s0.b, r: s0.r, line: $(lineOf(s0)), line2: $(lineOf(s1)) };
+    return {
+      id: 'next', kind: 'choice',
+      prompt: Mx(k, 'next.prompt', o),
+      options: [
+        { text: Mx(k, 'next.again', o), why: Mx(k, 'next.whyAgain', o) },
+        { text: Mx(k, 'next.shift', o), correct: true },
+        { text: Mx(k, 'next.swap', o), why: Mx(k, 'next.whySwap', o) },
+      ],
+      hints: [Mx(k, 'next.hint1', o), Mx(k, 'next.hint2', o)],
+      explain: Mx(k, 'next.explain', o),
+    };
+  },
+  invariant: ({ a, b, lab }, k) => {
+    const [s0, s1] = lab.steps;
+    const o = { a, b, a0: s0.a, a1: s1.a, r0: s0.r, rLast: lab.steps[lab.steps.length - 1].r, b1: s1.b };
+    return {
+      id: 'invariant', kind: 'choice',
+      prompt: Mx(k, 'invariant.prompt'),
+      options: [
+        { text: Mx(k, 'invariant.dividend'), why: Mx(k, 'invariant.whyDividend', o) },
+        { text: Mx(k, 'invariant.remainder'), why: Mx(k, 'invariant.whyRemainder', o) },
+        { text: Mx(k, 'invariant.pgcd'), correct: true },
+      ],
+      hints: [Mx(k, 'invariant.hint1'), Mx(k, 'invariant.hint2', o)],
+      explain: Mx(k, 'invariant.explain', o),
+    };
+  },
+  stop: ({ a, b, lab }, k) => {
+    const last = lab.steps[lab.steps.length - 1];
+    const o = { a, b, g: lab.gcd, last: $(lineOf(last)), q: last.q };
+    return {
+      id: 'stop', kind: 'choice',
+      prompt: Mx(k, 'stop.prompt', o),
+      options: [
+        { text: Mx(k, 'stop.zero'), why: Mx(k, 'stop.whyZero', o) },
+        { text: Mx(k, 'stop.divides', o), correct: true },
+        { text: Mx(k, 'stop.quotient'), why: Mx(k, 'stop.whyQuotient', o) },
+      ],
+      hints: [Mx(k, 'stop.hint1', o), Mx(k, 'stop.hint2', o)],
+      explain: Mx(k, 'stop.explain', o),
+    };
+  },
+  rule: ({ a, b, lab }, k) => {
+    // « آخر حاصل قسمة » ou « أوّل باقٍ » seraient justes aussi quand ils valent le PGCD (45 et 18 : 9) : on les remplace par un nombre de départ
+    const g = lab.gcd;
+    const big = Math.max(a, b); const small = Math.min(a, b);
+    const alts = [
+      { text: Mx(k, 'rule.optBig'), why: Mx(k, 'rule.whyBig', { big, small }) },
+      { text: Mx(k, 'rule.optSmall'), why: Mx(k, 'rule.whySmall', { big, small }) },
+    ];
+    const wrong2 = lab.steps[lab.steps.length - 1].q === g ? alts.shift() : { text: <MathText>{k('opt2')}</MathText>, why: <MathText>{k('why2')}</MathText> };
+    const wrong3 = lab.steps[0].r === g ? alts.shift() : { text: <MathText>{k('opt3')}</MathText>, why: <MathText>{k('why3')}</MathText> };
+    return {
+      id: 'rule', kind: 'choice',
+      prompt: <MathText>{k('discoverPrompt')}</MathText>,
+      options: [{ text: <MathText>{k('opt1')}</MathText>, correct: true }, wrong2, wrong3],
+      hints: [Mx(k, 'rule.hint1'), Mx(k, 'rule.hint2', { g })],
+      explain: <MathText>{k('cp.rule.explain', { a, b, g })}</MathText>,
+    };
+  },
+};
+
+export const QUESTIONS = ordered(BUILD);

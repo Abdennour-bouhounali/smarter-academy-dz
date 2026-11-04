@@ -126,7 +126,7 @@ export default function Module03Mutawazi() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }

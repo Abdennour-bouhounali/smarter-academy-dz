@@ -83,3 +83,42 @@ describe('merge-board — chaînes de texte', () => {
     expect(f).not.toMatch(RAW);
   });
 });
+
+describe('merge-board — questions pendant le labo (LabCheckpoint)', () => {
+  it('chaque tâche : chaque question a un texte, une seule bonne réponse, deux indices, ni clé brute ni {{', async () => {
+    const { CHAINS, QUESTIONS } = await import('./MergeBoard');
+    const tasks = [...LV.beginner.numbers.tasks, ...LV.advanced.numbers.tasks, ...L.PRESETS.signs.tasks];
+    const s = L.init({ tasks });
+    for (const tk of s.tasks) {
+      const chain = CHAINS[tk.id];
+      if (!chain) { expect(['s1', 's2', 's3', 's4', 's5'], tk.id).toContain(tk.id); continue; }
+      for (const qid of chain) {
+        const q = QUESTIONS[qid](s, tk, k);
+        const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+        expect(out, `${tk.id}.${qid}`).not.toMatch(RAW);
+        expect(out, `${tk.id}.${qid}`).not.toContain('{{');
+        expect(q.hints, `${tk.id}.${qid}`).toHaveLength(2);
+        if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${tk.id}.${qid}`).toHaveLength(1);
+        else expect(q.expected).toBeTruthy();
+      }
+    }
+    const byId = (id) => s.tasks.find((t) => t.id === id);
+    expect(QUESTIONS.commonDen(s, byId('c1'), k).expected).toBe('12');
+    expect(QUESTIONS.toDen(s, byId('c1'), k).expected).toBe('15');
+    expect(QUESTIONS.prodDen(s, byId('c2'), k).expected).toBe('65');
+    expect(QUESTIONS.simplify(s, byId('c3'), k).expected).toBe('3');
+    expect(QUESTIONS.divResult(s, byId('c4'), k).expected).toBe('32');
+    expect(QUESTIONS.lastDen(s, byId('c4'), k).expected).toBe('33');
+    expect(QUESTIONS.finalAbs(s, byId('a3'), k).expected).toBe('10');
+  });
+});
+
+describe('merge-board — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('مبتدئ (questions) : ni la progression ni le bouton d’indice ; les étapes sont un LabStepper', () => {
+    const b = html({ ...LV.beginner.numbers, level: 'beginner' });
+    expect(b).not.toContain('data-manipulation-progress');
+    expect(b).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    expect(b).toContain('data-lab-stepper');
+    expect(b).toContain('data-mb-step');
+  });
+});

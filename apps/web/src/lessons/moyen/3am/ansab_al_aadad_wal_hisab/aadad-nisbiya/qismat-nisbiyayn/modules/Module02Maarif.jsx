@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { TextbookBox } from '../../../../../../common/textbook';
@@ -14,9 +14,10 @@ import { LAB, KNOWLEDGE, RECALL_LESSONS, GUIDE } from '../content/textbook';
  * (les molettes disent −0,66 → 3,96 et −0,67 → 4,02) ; le bouton « وضع الكسر » apparaît après deux essais et l'élève ouvre le casier avec DEUX écritures différentes du même code.
  * Une seule piste (§4quater) : l'action, ce qu'elle a montré (quelles écritures ouvrent), puis le nom (le quotient écrit en fraction, les trois écritures, b ≠ 0). Les deux leçons
  * précédentes de l'unité (publiées) sont RAPPELÉES en tête (« تذكّر », avec leur lien), jamais reconstruites. LP : P3.
+ * Déploiement du prototype (2026-10-28) : « pourquoi aucun code décimal ? » et « quelle autre écriture ouvre ? » sont posées PAR-DESSUS le labo
+ * (`CodeLockers › CHAINS.f1`) ; l'étape 1 en garde la TRACE (`checkpoint-done`) puis pose les noms.
  */
 const Ltr = ({ children }) => <bdi dir="ltr">{String(children).replace(/-/g, '−')}</bdi>;
-const OPEN = ['يفتح', 'لا يفتح'];
 
 export default function Module02Maarif() {
   const [trials, setTrials] = useState([]);
@@ -24,8 +25,9 @@ export default function Module02Maarif() {
   const answered = (k) => () => setQ((s) => ({ ...s, [k]: true }));
   const record = (e) => setTrials((list) => [...list, e]);
   const writings = [...new Set(trials.filter((e) => e.kind === 'pull' && !e.free && e.taskId === 'f1' && e.ok).map((e) => e.writing))];
-  const decimals = trials.filter((e) => e.kind === 'pull' && !e.free && e.taskId === 'f1' && !e.ok && e.layout === 'dec').slice(0, 2);
   const f1 = writings.length >= 2;
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : l'étape 1 est faite quand la suite de questions du casier f1 l'est
+  const asked = (...ids) => trials.some((e) => e.tk === 'checkpoint-done' && ids.includes(e.id));
 
   return (
     <ContentModule
@@ -55,30 +57,18 @@ export default function Module02Maarif() {
       intro={<Manipulation type="code-lockers" world={LAB.fraction.world} tasks={LAB.fraction.tasks} levels={false} onTrial={record} />}
       steps={[
         {
-          num: 1, title: 'ما الكتابات التي فتحت الخزانة؟', subtitle: 'أكثر من كتابة لقفل واحد', done: !!q.a,
+          num: 1, title: 'ما الكتابات التي فتحت الخزانة؟', subtitle: 'أكثر من كتابة لقفل واحد', done: asked('f1'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <p data-evidence="fraction" data-tried={f1 ? 'true' : 'false'}
-                className={`rounded-xl border-2 px-3 py-2 text-sm ${f1 ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
-                {f1
-                  ? <span>في سجلّك: الرمزان العشريان <Ltr>{decimals[0]?.code ?? '−0,66'}</Ltr> و <Ltr>{decimals[1]?.code ?? '−0,67'}</Ltr> لم يفتحا الخزانة، وفتحتها الكتابتان <Ltr>{writings[0]}</Ltr> و <Ltr>{writings[1]}</Ltr> .</span>
-                  : 'افتح الخزانة الأولى في المختبر أعلاه بكتابتين مختلفتين، ثم عُد إلى هذا السؤال.'}
+              <p data-evidence="fraction" data-tried={asked('f1') ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${asked('f1') ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {asked('f1') && f1
+                  ? <span>أجبتَ في المختبر: لا رمز عشري يفتح الخزانة الأولى، وفتحتها الكتابتان <Ltr>{writings[0]}</Ltr> و <Ltr>{writings[1]}</Ltr> — كتابتان للعدد نفسه.</span>
+                  : 'افتح الخزانة الأولى في المختبر أعلاه بكتابتين مختلفتين، وأجب عن الأسئلة التي تظهر فوقه.'}
               </p>
-              <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'القفل $(-6) \\times ? = 4$ . هل تفتحه كل من هذه الكتابات؟'}</MathText></p>}
-                rows={[
-                  { id: 'w1', label: <MathText>{'$\\frac{-2}{3}$'}</MathText>, options: OPEN, correct: 0, correction: <MathText>{'$(-6) \\times \\frac{-2}{3} = 4$ ، فهي تفتحه.'}</MathText> },
-                  { id: 'w2', label: <MathText>{'$\\frac{2}{-3}$'}</MathText>, options: OPEN, correct: 0, correction: <MathText>{'$\\frac{2}{-3}$ هو العدد نفسه $-\\frac{2}{3}$ ، فهي تفتحه أيضًا.'}</MathText> },
-                  { id: 'w3', label: <MathText>{'$-\\frac{2}{3}$'}</MathText>, options: OPEN, correct: 0, correction: <MathText>{'$(-6) \\times \\left(-\\frac{2}{3}\\right) = 4$ ، فهي تفتحه.'}</MathText> },
-                  { id: 'w4', label: <MathText>{'$\\frac{-2}{-3}$'}</MathText>, options: OPEN, correct: 1, correction: <MathText>{GUIDE.frac.why}</MathText> },
-                ]}
-                requires={['jidaa-nisbi']}
-                feedback={({ allRight }) => <p className={`text-sm font-bold ${allRight ? 'text-emerald-700' : 'text-rose-700'}`}>{allRight ? 'أحسنت: ثلاث كتابات لقفل واحد.' : 'اقرأ التصحيح تحت كل كتابة.'}</p>}
-                onAnswered={answered('a')}
-              />
-              {q.a && <KnowledgeBrick id="kasr-qisma" lead="حين لا يوجد رمز عشري كتبنا حاصل القسمة على شكل كسر: كيف نكتبه، وأين نضع إشارة السالب؟" />}
-              {q.a && <TextbookBox kind="property" compact lines={KNOWLEDGE.fraction.lines} source={KNOWLEDGE.fraction.source} />}
-              {q.a && <TextbookBox kind="example" compact text={KNOWLEDGE.fraction.examples} source={KNOWLEDGE.fraction.source} />}
+              {asked('f1') && <KnowledgeBrick id="kasr-qisma" lead="حين لا يوجد رمز عشري كتبنا حاصل القسمة على شكل كسر: كيف نكتبه، وأين نضع إشارة السالب؟" />}
+              {asked('f1') && <TextbookBox kind="property" compact lines={KNOWLEDGE.fraction.lines} source={KNOWLEDGE.fraction.source} />}
+              {asked('f1') && <TextbookBox kind="example" compact text={KNOWLEDGE.fraction.examples} source={KNOWLEDGE.fraction.source} />}
             </div>
           ),
         },
@@ -118,7 +108,7 @@ export default function Module02Maarif() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={2} />}
+      footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />
   );
 }

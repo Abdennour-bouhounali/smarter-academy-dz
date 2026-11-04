@@ -2,24 +2,6 @@
   "_comment": "Généré par scripts/learning-net-queue.mjs — ne pas éditer.",
   "queue": [
     {
-      "code": "wadiya-idmajiya-quwa-nisbiya",
-      "grade": "3am",
-      "unit": "quwa-nisbiya",
-      "titleAr": "أدمج تعلّماتي — القوى ذات أسس نسبية صحيحة",
-      "kind": "synthesis",
-      "trigger": "unité quwa-nisbiya complète",
-      "via": []
-    },
-    {
-      "code": "wadiya-idmajiya-musawiyat-mutabayinat",
-      "grade": "3am",
-      "unit": "musawiyat-mutabayinat",
-      "titleAr": "أدمج تعلّماتي — المساويات – المتباينات – المعادلات",
-      "kind": "synthesis",
-      "trigger": "unité musawiyat-mutabayinat complète",
-      "via": []
-    },
-    {
       "code": "haraka-muntazama-sura",
       "grade": "3am",
       "unit": "tanasubiya-sura",
@@ -126,28 +108,6 @@
       "trigger": "shuaayn-mutasawiyayn",
       "via": [
         "2am.m5.r01"
-      ]
-    },
-    {
-      "code": "talim-nuqta-mustawi",
-      "grade": "2am",
-      "unit": "adad-nisbiya-2",
-      "titleAr": "تعليم نقطة في المستوي",
-      "kind": "lesson",
-      "trigger": "murakkibata-shuaa",
-      "via": [
-        "2am.m4.r04"
-      ]
-    },
-    {
-      "code": "masafa-nuqtatayn",
-      "grade": "2am",
-      "unit": "adad-nisbiya-2",
-      "titleAr": "المسافة بين نقطتين على مستقيم مدرّج",
-      "kind": "lesson",
-      "trigger": "hisab-murakkibatay",
-      "via": [
-        "2am.m4.r07"
       ]
     },
     {
@@ -282,211 +242,6 @@
       "via": [
         "1am.m2.r08"
       ]
-    },
-    {
-      "code": "adad-ashri-mustaqim-mudarraj",
-      "grade": "1am",
-      "unit": "adad-tabiiya-ashriya",
-      "titleAr": "الأعداد العشرية ونصف المستقيم المدرّج",
-      "kind": "lesson",
-      "trigger": "jidhr-tarbii",
-      "via": [
-        "1am.m5.r04"
-      ]
-    },
-    {
-      "code": "talim-mustaqim-mudarraj",
-      "grade": "1am",
-      "unit": "adad-nisbiya",
-      "titleAr": "التعليم على مستقيم مدرّج",
-      "kind": "lesson",
-      "trigger": "jidhr-tarbii",
-      "via": [
-        "1am.m5.r06"
-      ]
-    },
-    {
-      "code": "adad-nisbiya-siyaqat",
-      "grade": "1am",
-      "unit": "adad-nisbiya",
-      "titleAr": "الأعداد النسبية وسياقات استعمالها",
-      "kind": "lesson",
-      "trigger": "jidhr-tarbii",
-      "via": [
-        "1am.m5.r05"
-      ]
-    },
-    {
-      "code": "talim-mustaqim-mudarraj-2",
-      "grade": "2am",
-      "unit": "adad-nisbiya-2",
-      "titleAr": "التعليم على مستقيم مدرّج",
-      "kind": "lesson",
-      "trigger": "jidhr-tarbii",
-      "via": [
-        "2am.m4.r01"
-      ]
-    },
-    {
-      "code": "jam-tarh-nisbiya",
-      "grade": "2am",
-      "unit": "adad-nisbiya-2",
-      "titleAr": "جمع وطرح عددين نسبيين",
-      "kind": "lesson",
-      "trigger": "jidhr-tarbii",
-      "via": [
-        "2am.m4.r05"
-      ]
-    },
-    {
-      "code": "silsila-bi-aqwas",
-      "grade": "2am",
-      "unit": "amaliyat-tabiiya-ushriya",
-      "titleAr": "سلسلة عمليات تتضمّن أقواسا",
-      "kind": "lesson",
-      "trigger": "amaliyat-judhur",
-      "via": [
-        "2am.m1.r02"
-      ]
-    },
-    {
-      "code": "silsila-bidun-aqwas",
-      "grade": "2am",
-      "unit": "amaliyat-tabiiya-ushriya",
-      "titleAr": "سلسلة عمليات دون أقواس وأولوية العمليات",
-      "kind": "lesson",
-      "trigger": "amaliyat-judhur",
-      "via": [
-        "2am.m1.r01"
-      ]
-    },
-    {
-      "code": "tawzi-darb-jam-tarh",
-      "grade": "2am",
-      "unit": "amaliyat-tabiiya-ushriya",
-      "titleAr": "توزيع الضرب على الجمع والطرح",
-      "kind": "lesson",
-      "trigger": "amaliyat-judhur",
-      "via": [
-        "2am.m1.r03"
-      ]
-    },
-    {
-      "code": "jida-kasrayn",
-      "grade": "2am",
-      "unit": "kusur-amaliyat",
-      "titleAr": "جداء كسرين",
-      "kind": "lesson",
-      "trigger": "amaliyat-judhur",
-      "via": [
-        "2am.m1.r07"
-      ]
-    },
-    {
-      "code": "muqarana-kasrayn",
-      "grade": "2am",
-      "unit": "kusur-amaliyat",
-      "titleAr": "مقارنة كسرين",
-      "kind": "lesson",
-      "trigger": "amaliyat-judhur",
-      "via": [
-        "2am.m1.r08"
-      ]
-    },
-    {
-      "code": "jam-tarh-kusur",
-      "grade": "2am",
-      "unit": "kusur-amaliyat",
-      "titleAr": "جمع وطرح كسرين",
-      "kind": "lesson",
-      "trigger": "amaliyat-judhur",
-      "via": [
-        "2am.m1.r09"
-      ]
-    },
-    {
-      "code": "tatbiq-qaida-harfiya",
-      "grade": "1am",
-      "unit": "ibarat-harfiya",
-      "titleAr": "تطبيق قاعدة حرفية",
-      "kind": "lesson",
-      "trigger": "muadala-ula",
-      "via": [
-        "1am.m5.r08"
-      ]
-    },
-    {
-      "code": "bahth-adad-naqisa",
-      "grade": "1am",
-      "unit": "ibarat-harfiya",
-      "titleAr": "البحث عن أعداد ناقصة",
-      "kind": "lesson",
-      "trigger": "muadala-ula",
-      "via": [
-        "1am.m5.r10"
-      ]
-    },
-    {
-      "code": "majmu-jabri",
-      "grade": "2am",
-      "unit": "adad-nisbiya-2",
-      "titleAr": "حساب مجموع جبري",
-      "kind": "lesson",
-      "trigger": "muadala-ula",
-      "via": [
-        "2am.m4.r06"
-      ]
-    },
-    {
-      "code": "wadiya-idmajiya-adad-nisbiya-2",
-      "grade": "2am",
-      "unit": "adad-nisbiya-2",
-      "titleAr": "أدمج تعلّماتي — الأعداد النسبية",
-      "kind": "synthesis",
-      "trigger": "unité adad-nisbiya-2 complète",
-      "via": []
-    },
-    {
-      "code": "hall-mushkil-muadala",
-      "grade": "2am",
-      "unit": "mafhum-muadala",
-      "titleAr": "حلّ مشكل باستعمال معادلة",
-      "kind": "lesson",
-      "trigger": "muadala-ula",
-      "via": [
-        "2am.m4.r08"
-      ]
-    },
-    {
-      "code": "ikhtibar-musawat-mutabayina",
-      "grade": "2am",
-      "unit": "mafhum-muadala",
-      "titleAr": "اختبار صحة مساواة أو متباينة",
-      "kind": "lesson",
-      "trigger": "muadala-ula",
-      "via": [
-        "2am.m4.r09"
-      ]
-    },
-    {
-      "code": "talim-fi-mustawi",
-      "grade": "1am",
-      "unit": "adad-nisbiya",
-      "titleAr": "التعليم في المستوي",
-      "kind": "lesson",
-      "trigger": "tanasub-muamil",
-      "via": [
-        "1am.m5.r07"
-      ]
-    },
-    {
-      "code": "wadiya-idmajiya-adad-nisbiya",
-      "grade": "1am",
-      "unit": "adad-nisbiya",
-      "titleAr": "أدمج تعلّماتي — الأعداد النسبية",
-      "kind": "synthesis",
-      "trigger": "unité adad-nisbiya complète",
-      "via": []
     },
     {
       "code": "wadiyat-tanasubiya",
@@ -1116,24 +871,6 @@
       "via": []
     },
     {
-      "code": "wasf-silsila-hisab",
-      "grade": "2am",
-      "unit": "amaliyat-tabiiya-ushriya",
-      "titleAr": "وصف سلسلة حسابات",
-      "kind": "lesson",
-      "trigger": "wasf-silsila-hisab",
-      "via": []
-    },
-    {
-      "code": "wadiya-idmajiya-amaliyat-tabiiya-ushriya",
-      "grade": "2am",
-      "unit": "amaliyat-tabiiya-ushriya",
-      "titleAr": "أدمج تعلّماتي — العمليات على الأعداد الطبيعية والأعداد العشرية",
-      "kind": "synthesis",
-      "trigger": "unité amaliyat-tabiiya-ushriya complète",
-      "via": []
-    },
-    {
       "code": "qisma-ashriya-taqrib",
       "grade": "1am",
       "unit": "darb-qisma-ashriya",
@@ -1143,24 +880,6 @@
       "via": [
         "1am.m3.r03"
       ]
-    },
-    {
-      "code": "kasr-hasil-qisma",
-      "grade": "2am",
-      "unit": "kusur-amaliyat",
-      "titleAr": "الكسر: نسبة وحاصل قسمة وقيم مقرّبة",
-      "kind": "lesson",
-      "trigger": "kasr-hasil-qisma",
-      "via": []
-    },
-    {
-      "code": "wadiya-idmajiya-kusur-amaliyat",
-      "grade": "2am",
-      "unit": "kusur-amaliyat",
-      "titleAr": "أدمج تعلّماتي — الكسور والعمليات عليها",
-      "kind": "synthesis",
-      "trigger": "unité kusur-amaliyat complète",
-      "via": []
     },
     {
       "code": "qiraat-mutayat-ihsaiya",
@@ -1523,21 +1242,12 @@
       "via": []
     },
     {
-      "code": "ibara-harfiya-intaj",
-      "grade": "2am",
-      "unit": "mafhum-muadala",
-      "titleAr": "إنتاج عبارة حرفية واستعمالها",
-      "kind": "lesson",
-      "trigger": "isolée",
-      "via": []
-    },
-    {
-      "code": "wadiya-idmajiya-mafhum-muadala",
-      "grade": "2am",
-      "unit": "mafhum-muadala",
-      "titleAr": "أدمج تعلّماتي — مفهوم معادلة",
+      "code": "wadiya-idmajiya-adad-nisbiya",
+      "grade": "1am",
+      "unit": "adad-nisbiya",
+      "titleAr": "أدمج تعلّماتي — الأعداد النسبية",
       "kind": "synthesis",
-      "trigger": "unité mafhum-muadala complète",
+      "trigger": "unité adad-nisbiya complète",
       "via": []
     },
     {

@@ -3,7 +3,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import i18n from '../../../../i18n';
-import ZeroProbe, { discoveryOptions, discoveryKey, numbersFor } from './ZeroProbe';
+import ZeroProbe, { discoveryOptions, discoveryKey, numbersFor, chainOf, QUESTIONS } from './ZeroProbe';
 import { layout, labelBoxes, overlaps, minus } from './zeroProbe/geometry';
 import { LEVELS } from '../levels';
 import * as L from '../logic/zeroProbe';
@@ -173,5 +173,50 @@ describe('zero-probe — la scène : aucune étiquette ne se chevauche', () => {
       const boxes = labelBoxes(geo, { marks: [{ id: 'a', text: '-3' }], value: '-10', dText: '10', d: 10, side: 'below' });
       expect(boxes.find((b) => b.id === 'b').box.x1).toBeLessThan(geo.axisX - 4);
     }
+  });
+});
+
+describe('zero-probe — questions pendant le labo (LabCheckpoint)', () => {
+  const insert = { world: 'sea', step: '1', tasks: [{ kind: 'between', lo: '-7', hi: '-5', side: null }, { kind: 'between', lo: '3', hi: '6', side: null }] };
+  for (const [name, numbers, adv] of [['beginner', LV.beginner.numbers, false], ['advanced', LV.advanced.numbers, true], ['insert', insert, false]]) {
+    it(`${name} : chaque question a un texte, une seule bonne réponse, deux indices, et ni clé brute ni {{`, () => {
+      const lab = L.init(numbers);
+      lab.tasks.forEach((tk, i) => {
+        const chain = chainOf(lab, i);
+        expect(chain.length, tk.id).toBeGreaterThanOrEqual(2);
+        for (const qid of chain) {
+          const q = QUESTIONS[qid](lab, i, k, adv);
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${tk.id}.${qid}`).not.toMatch(RAW);
+          expect(out, `${tk.id}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${tk.id}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${tk.id}.${qid}`).toHaveLength(1);
+          else expect(q.expected).toBeTruthy();
+        }
+      });
+      expect(chainOf(lab, lab.tasks.length - 1).at(-1)).toBe('rule');
+    });
+  }
+  it('les réponses suivent SES essais : −5 sous −3 → « < » et un câble plus long', () => {
+    let s = L.init(LV.beginner.numbers);
+    s = L.release(s, 500);
+    expect(L.taskDone(s)).toBe(true);
+    expect(QUESTIONS.compare(s, 0, k).options[0].correct).toBe(true);
+    expect(QUESTIONS.cable(s, 0, k).options[0].correct).toBe(true);
+    expect(chainOf(s, 3)).toEqual(['whyNone', 'zeroOrder', 'rule']);
+    const r = L.retryTask(s);
+    expect(L.taskDone(r)).toBe(false);
+    expect(r.ti).toBe(0);
+  });
+});
+
+describe('zero-probe — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('questions actives : ni la progression ni le bouton d’indice ; checkpoints={false} : les deux reviennent', () => {
+    const g = html({ ...LV.beginner.numbers, level: 'beginner' });
+    expect(g).not.toContain('data-manipulation-progress');
+    expect(g).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    const off = html({ ...LV.beginner.numbers, level: 'beginner', checkpoints: false });
+    expect(off).toContain('data-manipulation-progress');
+    expect(off).toContain(i18n.t('lesson:manipulation.hint.show'));
   });
 });

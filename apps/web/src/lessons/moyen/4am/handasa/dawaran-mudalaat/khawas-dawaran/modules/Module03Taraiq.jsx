@@ -29,7 +29,11 @@ const M = (s) => <MathText key={s}>{s}</MathText>;
 
 export default function Module03Taraiq() {
   const [q, setQ] = useState({});
+  const [trials, setTrials] = useState([]);
   const mark = (n) => () => setQ((s) => ({ ...s, [n]: true }));
+  const keep = (e) => { if (e) setTrials((list) => [...list, e].slice(-60)); };
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint, `ShapeTurn › STEPS`) : p1 [AC] sur [BD], p2 les affirmations et la règle, p3 le centre W
+  const answered = (id) => trials.some((e) => e.tk === 'checkpoint-done' && e.id === id);
 
   return (
     <ContentModule
@@ -46,11 +50,11 @@ export default function Module03Taraiq() {
           levels={{
             beginner: () => (
               <Manipulation type="shape-turn" level="beginner" numbers={LAB.beginner.numbers} theme="zellige"
-                title="وردة الزليج: ورقة شفافة تدور حول دبوس" />
+                title="وردة الزليج: ورقة شفافة تدور حول دبوس" onTrial={keep} />
             ),
             advanced: () => (
               <Manipulation type="shape-turn" level="advanced" numbers={LAB.advanced.numbers} theme="zellige"
-                title="طريقة الكتاب (ص 155): [AC] و [BD]" />
+                title="طريقة الكتاب (ص 155): [AC] و [BD]" onTrial={keep} />
             ),
           }}
         />
@@ -116,7 +120,13 @@ export default function Module03Taraiq() {
           num: 3, title: 'مركز دوران', subtitle: 'معارف من المنصّة', done: !!q[3],
           content: (
             <div className="space-y-3">
-              <TapQuestion
+              <p data-evidence="p3" data-tried={answered('p3') ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${answered('p3') ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {answered('p3')
+                  ? 'أجبتَ في المختبر: مركز الدوران يقع على محور كل قطعة تصل نقطة بصورتها، وهو نقطة واحدة تقاطع محورين.'
+                  : 'في المستوى «متقدم» افتح التمرين 18، وضع الدبوس، ثم أجب عن الأسئلة التي تظهر فوق المختبر.'}
+              </p>
+              {answered('p3') && <TapQuestion
                 prompt={<MathText>{"M′ و N′ صورتا M و N بدوران مركزه W، لكن محوري [MM′] و [NN′] منطبقان. كيف نجد W؟"}</MathText>}
                 options={[
                   'نرسم محور قطعة أخرى تصل نقطة بصورتها، مثل [PP′]',
@@ -128,13 +138,13 @@ export default function Module03Taraiq() {
                 requires={['khawas-dawaran']}
                 explain={<MathText>{CENTER.warning}</MathText>}
                 onAnswered={mark(3)}
-              />
+              />}
               {q[3] && <KnowledgeBrick id="markaz-dawaran" lead="ما يفعله الدبوس في المستوى «متقدم» (تمرين 18):" />}
             </div>
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }

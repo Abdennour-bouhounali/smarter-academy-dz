@@ -305,3 +305,9 @@ export function coachOf(s) {
   if (st.phase === 'placed' && card.magnet && !st.magnetUsed) return { id: 'magnet', target: '[data-sl-magnet]', gesture: 'tap', prefer: 'above' };
   return null;
 }
+
+/** « أعِد التجربة » (questions pendant le labo) : la MÊME carte repart ET son drapeau « fait » tombe — sinon l'étape resterait verte et la carte de questions ne se rouvrirait pas. */
+export function retryTask(s) {
+  const n = restartTask(s);
+  return s.free ? n : { ...n, done: n.done.map((d, i) => (i === s.ti ? false : d)) };
+}

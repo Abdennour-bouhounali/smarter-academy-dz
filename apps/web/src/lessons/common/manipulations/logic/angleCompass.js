@@ -78,6 +78,22 @@ export function fresh(s) {
   return { ...s, ...blank(), last: { kind: 'fresh' } };
 }
 
+/** « أعِد التجربة » (questions pendant le labo) : la MÊME cible reprend au départ et n'est plus « atteinte » (les essais restent). */
+export function retryTarget(s) {
+  return { ...s, ...blank(), solved: s.solved.map((v, i) => (i === s.idx ? false : v)), last: { kind: 'fresh' } };
+}
+
+/** L'essai réussi de la cible `idx` (le dernier), ou null. */
+export function okTrialOf(s, idx = s.idx) {
+  return [...s.trials].reverse().find((t) => t.ok && t.idx === idx) ?? null;
+}
+
+/** Le côté de l'angle droit que le COMPAS a coupé (le côté non reporté) ; null si le triangle est fait à la règle. */
+export function cutLeg(trial) {
+  if (trial.mode !== 'compass') return null;
+  return trial.legs.h != null ? 'v' : 'h';
+}
+
 /** La cible suivante — seulement quand la cible courante est atteinte (le geste de l'élève, §7quater). */
 export function canNext(s) { return s.solved[s.idx] === true && s.idx < s.targets.length - 1; }
 export function next(s) {

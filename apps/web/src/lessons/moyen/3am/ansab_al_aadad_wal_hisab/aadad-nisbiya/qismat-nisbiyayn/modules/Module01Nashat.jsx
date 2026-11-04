@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { TextbookBox } from '../../../../../../common/textbook';
@@ -12,6 +12,9 @@ import { LAB, KNOWLEDGE } from '../content/textbook';
  * le labo `code-lockers` en haut, sans carte au-dessus — il porte son contexte et SA question ; la main roule les molettes du CODE (un signe, des chiffres).
  * Les ÉTAPES interrogent ce que l'élève a FAIT, avec SON سجلّ : le code de la première خزانة est le quotient (P1) ; les خزائن au code positif (P2) ; un calcul sans labo.
  * Le nom (brique + encadré) vient APRÈS la réponse. Le manuel n'a pour cette notion qu'une activité à trous (devenue E1) : l'entrée est celle de la plateforme.
+ * Déploiement du prototype (2026-10-28) : « quel quotient ? » (la phrase de division de SON casier) et « que partagent les casiers au code
+ * positif ? » sont posées PAR-DESSUS le labo (`CodeLockers › CHAINS`) ; les étapes 1 et 2 en gardent la TRACE (`checkpoint-done`) puis
+ * posent les noms. L'étape 3 (sans labo) reste une question d'étape.
  */
 const Ltr = ({ children }) => <bdi dir="ltr">{String(children).replace(/-/g, '−')}</bdi>;
 
@@ -20,6 +23,8 @@ export default function Module01Nashat() {
   const [q, setQ] = useState({});
   const answered = (k) => () => setQ((s) => ({ ...s, [k]: true }));
   const record = (e) => setTrials((list) => [...list, e]);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand la suite de questions de son casier l'est
+  const asked = (...ids) => trials.some((e) => e.tk === 'checkpoint-done' && ids.includes(e.id));
   const openedOf = (id) => trials.findLast((e) => e.kind === 'pull' && !e.free && e.taskId === id && e.ok);
   const m1 = openedOf('m1');
   const four = ['m1', 'm2', 'm3', 'm4'].map(openedOf);
@@ -53,42 +58,29 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'ما العدد الذي فتح الخزانة الأولى؟', subtitle: 'القسمة والضرب', done: !!q.a,
+          num: 1, title: 'ما العدد الذي فتح الخزانة الأولى؟', subtitle: 'القسمة والضرب', done: asked('m1', 'a1'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="m1" ok={!!m1}
-                done={<span>في سجلّك: فتحتَ الخزانة الأولى بالرمز <Ltr>{m1?.code}</Ltr> ، وقاعدتها <Ltr>{'(−6) × ? = 48'}</Ltr> .</span>}
-                todo="افتح الخزانة الأولى في المختبر أعلاه، ثم عُد إلى هذا السؤال." />
-              <NumericQuestion
-                prompt={<MathText>{'فتحتَ الخزانة الأولى بالرمز $-8$ لأنّ $(-6) \\times (-8) = 48$ . ما حاصل قسمة $48$ على $-6$ إذن؟ (اكتب العدد)'}</MathText>}
-                expected={-8} display="−8" requires={['jidaa-nisbi']}
-                explain={<MathText>{'الرمز الذي فتح القفل هو العدد الذي يعطي $48$ إذا ضُرب في $-6$ ، وهذا ما نسمّيه حاصل قسمة $48$ على $-6$ : $48 \\div (-6) = -8$ .'}</MathText>}
-                onAnswered={answered('a')}
-              />
-              {q.a && <KnowledgeBrick id="qisma-aamil" lead="الرمز الذي يفتح القفل هو العدد الذي يعطي النتيجة المطلوبة حين نضربه في العدد المكتوب على الباب: ماذا نسمّيه؟" />}
-              {q.a && <TextbookBox kind="definition" compact lines={KNOWLEDGE.definition.lines} source={KNOWLEDGE.definition.source} />}
-              {q.a && <TextbookBox kind="example" compact text={KNOWLEDGE.definition.examples} source={KNOWLEDGE.definition.source} />}
+              <Evidence id="m1" ok={asked('m1', 'a1') && !!m1}
+                done={<span>أجبتَ في المختبر: فتحتَ الخزانة الأولى بالرمز <Ltr>{m1?.code}</Ltr> ، وقاعدتها <Ltr>{'(−6) × ? = 48'}</Ltr> ، إذن <Ltr>{`48 ÷ (−6) = ${m1?.code ?? ''}`}</Ltr> .</span>}
+                todo="افتح الخزانة الأولى في المختبر أعلاه، وأجب عن الأسئلة التي تظهر فوقه." />
+              {asked('m1', 'a1') && <KnowledgeBrick id="qisma-aamil" lead="الرمز الذي يفتح القفل هو العدد الذي يعطي النتيجة المطلوبة حين نضربه في العدد المكتوب على الباب: ماذا نسمّيه؟" />}
+              {asked('m1', 'a1') && <TextbookBox kind="definition" compact lines={KNOWLEDGE.definition.lines} source={KNOWLEDGE.definition.source} />}
+              {asked('m1', 'a1') && <TextbookBox kind="example" compact text={KNOWLEDGE.definition.examples} source={KNOWLEDGE.definition.source} />}
             </div>
           ),
         },
         {
-          num: 2, title: 'في أيّ الخزائن كان الرمز موجبًا؟', subtitle: 'ما تشترك فيه أبوابها', done: !!q.b,
+          num: 2, title: 'في أيّ الخزائن كان الرمز موجبًا؟', subtitle: 'ما تشترك فيه أبوابها', done: asked('m4', 'a4'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="rule" ok={all}
-                done={<span>في سجلّك: الرمز كان موجبًا في الخزانتين <Ltr>{positive.join(' و ')}</Ltr> ، وسالبًا في الخزانتين الأخريين. أبواب الخزائن: <Ltr>{'(−6) × ? = 48'}</Ltr> ، <Ltr>{'9 × ? = −54'}</Ltr> ، <Ltr>{'? × (−7) = −63'}</Ltr> ، <Ltr>{'(−12) × ? = −60'}</Ltr> .</span>}
-                todo="افتح الخزائن الأربع الأولى في المختبر أعلاه، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt="في الخزانتين اللتين كان رمزهما موجبًا: ماذا تلاحظ على إشارتي العددين المكتوبين على بابهما؟"
-                options={['لهما الإشارة نفسها', 'العدد الثاني موجب', 'الناتج المطلوب موجب', 'العدد الأكبر مسافةً موجب']}
-                correct={0} cols={1} requires={['qisma-aamil']}
-                explain={<MathText>{'في الخزانة الثالثة العددان $-7$ و $-63$ سالبان، وفي الرابعة $-12$ و $-60$ سالبان: لهما الإشارة نفسها. أمّا في الخزانتين الأخريين فالعددان مختلفا الإشارة ($-6$ و $48$ ثم $9$ و $-54$) والرمز سالب. (الناتج المطلوب $-63$ و $-60$ سالب، والعدد الثاني سالب، فالخيارات الأخرى لا تصحّ.)'}</MathText>}
-                onAnswered={answered('b')}
-              />
-              {q.b && <KnowledgeBrick id="ishara-qisma" lead="الرمز موجب حين يكون للعددين المكتوبين على الباب الإشارة نفسها: كيف نكتب القاعدة؟" />}
-              {q.b && <TextbookBox kind="property" compact lines={KNOWLEDGE.signs.lines} source={KNOWLEDGE.signs.source} />}
-              {q.b && <TextbookBox kind="example" compact text={KNOWLEDGE.signs.examples} source={KNOWLEDGE.signs.source} />}
-              {q.b && <TextbookBox kind="remark" compact text={KNOWLEDGE.signs.remark} source={KNOWLEDGE.signs.source} />}
+              <Evidence id="rule" ok={asked('m4', 'a4') && all}
+                done={<span>أجبتَ في المختبر: الرمز كان موجبًا في الخزانتين <Ltr>{positive.join(' و ')}</Ltr> ، وفي كلّ منهما للعددين المكتوبين على الباب الإشارة نفسها؛ وفي الخزانتين الأخريين إشارتاهما مختلفتان والرمز سالب.</span>}
+                todo="افتح الخزائن الأربع في المختبر أعلاه، وأجب عن الأسئلة التي تظهر فوقه بعد الخزانة الأخيرة." />
+              {asked('m4', 'a4') && <KnowledgeBrick id="ishara-qisma" lead="الرمز موجب حين يكون للعددين المكتوبين على الباب الإشارة نفسها: كيف نكتب القاعدة؟" />}
+              {asked('m4', 'a4') && <TextbookBox kind="property" compact lines={KNOWLEDGE.signs.lines} source={KNOWLEDGE.signs.source} />}
+              {asked('m4', 'a4') && <TextbookBox kind="example" compact text={KNOWLEDGE.signs.examples} source={KNOWLEDGE.signs.source} />}
+              {asked('m4', 'a4') && <TextbookBox kind="remark" compact text={KNOWLEDGE.signs.remark} source={KNOWLEDGE.signs.source} />}
             </div>
           ),
         },
@@ -112,7 +104,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

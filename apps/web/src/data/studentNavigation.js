@@ -1,4 +1,4 @@
-import { House, BookOpen, Compass, TrendingUp, NotebookPen, PencilRuler, Users, Flame, Rocket } from 'lucide-react';
+import { House, BookOpen, Compass, TrendingUp, NotebookPen, PencilRuler, Users, Flame, Rocket, Brain } from 'lucide-react';
 
 // The authenticated student area's own navigation — deliberately separate
 // from data/navigation.js (the visitor IA). A student's workspace is a
@@ -15,6 +15,9 @@ export const studentNavLinks = [
   // justes à SES كفاءات — juste après le défi, l'autre porte « jouer pour
   // réviser » (docs/architecture/MADAR_GAME.md). Plein écran, hors de la coquille.
   { labelKey: 'madar', shortLabelKey: 'madarShort', path: '/espace/jeux', icon: Rocket },
+  // « مختبر التفكير » : des défis HORS programme, un numéro à la fois — essayer d'abord, puis
+  // voir comment pense un رياضي (docs/architecture/THINKING_LAB.md). Tablette et ordinateur.
+  { labelKey: 'thinkingLab', shortLabelKey: 'thinkingLabShort', path: '/espace/tafkir', icon: Brain },
   { labelKey: 'explore', path: '/espace/explorer', icon: Compass },
   // Le مختبر الرياضيات : les instruments LIBRES (سبّورة, et demain les
   // autres), hors de toute leçon. Après « explorer » (le programme) vient

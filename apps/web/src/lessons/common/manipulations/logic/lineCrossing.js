@@ -230,6 +230,22 @@ export function hold(s, m, p) {
  * La découverte s'ouvre : sans les cas, sur un essai à UNE lampe ET le point aux deux lampes (contraste) ;
  * avec les cas, en plus, des droites parallèles ET des droites confondues produites par l'élève.
  */
+/** Les étapes que la leçon pose (le `LabStepper`) : tracer, promener P, les trois cas ; `startWith="cases"` n'a que la dernière. */
+export const stepsOf = (s) => (s.startWith === 'cases' ? ['cases'] : s.cases ? ['build', 'probe', 'cases'] : ['build', 'probe']);
+/** L'objectif de chaque étape est atteint (avant ses questions). */
+export function stepReached(s, step) {
+  if (step === 'build') return s.built[0] && s.built[1];
+  if (step === 'probe') return s.cases ? s.seen.both : s.seen.both && s.seen.one;
+  return discoveryReady(s);
+}
+/** « أعِد التجربة » (LabCheckpoint) : l'étape courante repart de zéro (les autres gardent leurs écritures). */
+export function restartStep(s, step) {
+  const forms = s.trials.filter((tr) => tr.kind === 'form');
+  if (step === 'build') return { ...s, built: [false, false], stage: 'build', held: s.lines[1], trials: [], seen: { ...SEEN0 }, last: null };
+  if (step === 'probe') return { ...s, trials: forms, seen: { ...SEEN0 }, last: null };
+  return { ...s, held: s.lines[1], trials: forms, seen: { ...SEEN0 }, last: null, stage: s.startWith === 'cases' ? 'cases' : s.stage };
+}
+
 export function discoveryReady(s) {
   if (!s.cases) return s.seen.both && s.seen.one;
   return (s.seen.both || s.seen.secant) && s.seen.parallel && s.seen.same;

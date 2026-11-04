@@ -169,6 +169,24 @@ export function pickCard(s, id) {
 /** La découverte : le sommet trouvé, la bonne carte, et un contraste (au moins un refus). */
 export const discoveryReady = (s) => s.levelOk && s.apexOk && s.cardOk && s.refusals > 0;
 
+/* ── les étapes du labo et leurs questions (lot 4, `primitives/LabCheckpoint`) ───────────────────────────── */
+
+/** Trois étapes : le niveau de l'eau, le sommet du cône complété, le volume (contraste fait, puis la règle). */
+export function stepsOf(s) {
+  return [
+    { id: 'level', reached: s.levelOk },
+    { id: 'apex', reached: s.apexOk },
+    { id: 'volume', reached: discoveryReady(s) },
+  ].map((x) => Object.freeze(x));
+}
+/** « أعِد التجربة » : l'étape repart (niveau de départ, sommet de départ, carte non choisie ; les refus gardés comptent comme contraste). */
+export function retryStep(s, id) {
+  if (id === 'level') return Object.freeze({ ...s, phase: 'level', level: levelStart(s.nums), levelOk: false, last: null });
+  if (id === 'apex') return Object.freeze({ ...s, phase: 'apex', apex: apexRange(s.nums).start, apexOk: false, last: null });
+  if (id === 'volume') return Object.freeze({ ...s, phase: 'volume', card: null, cardOk: false, last: null });
+  return s;
+}
+
 /** Le dernier geste jugé, pour la leçon (`onTrial`) : sans fonction ni fraction, des nombres seulement. */
 export function evidenceOf(s) {
   const t = s.last ?? s.trials[s.trials.length - 1];

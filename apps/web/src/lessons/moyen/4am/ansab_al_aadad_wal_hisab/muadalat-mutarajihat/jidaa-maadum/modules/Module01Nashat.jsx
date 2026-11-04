@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
@@ -25,6 +25,8 @@ import { ACTIVITY, ACTIVITY_A, ELIAS_AMINE } from '../content/textbook';
  * (3) إلياس et أمين (تطبيق أ، س 1) ; (4) −1,2(3x + 2,7) = 0 des deux façons (س 2) ;
  * (5) (x − 2)(x + 5) = 0 (س 3) : le نشر d'إلياس échoue, la propriété réussit.
  *
+ * LAB PROTOTYPE (lot 3, 2026-10-28) : la règle est désormais posée par les QUESTIONS PAR-DESSUS le labo (`LabCheckpoint`, suite `area · which · count · rule`) ;
+ * l'étape 1 n'en garde que la TRACE (`onCheckpoint` → `checkpoint-done`) puis la brique. (Ce qui suit décrit l'état d'avant.)
  * « أتوقّع القاعدة » : la bonne option de س 3 (étape 2) EST la règle (« عبّر لغويا ») ;
  * la question est donc enveloppée dans <PredictRule id="khassiya-jidaa-maadum"> —
  * l'élève écrit la propriété avec ses mots (predictPrompt de knowledge.jsx) AVANT de
@@ -44,7 +46,10 @@ export default function Module01Nashat() {
   const [trials, setTrials] = useState({ [BEGINNER]: [], [ADVANCED]: [] });
   const [q1a, setQ1a] = useState(false);
   const [q1, setQ1] = useState(false);
-  const [q2, setQ2] = useState(false);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand la suite de questions d'un niveau terminée l'est
+  const [cps, setCps] = useState([]);
+  const onCheckpoint = (e) => setCps((l) => [...l, e]);
+  const answered = cps.some((e) => e.tk === 'checkpoint-done');
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
   const [q5a, setQ5a] = useState(false);
@@ -94,6 +99,7 @@ export default function Module01Nashat() {
                 title={'ملعب ضلعاه \u20663\u2069 و \u2066x − 5\u2069'}
                 lead={<MathText>{'يرسم مدرّب الحيّ ملعب تدريب ضلعه A طوله $3$ دائمًا وضلعه B طوله $x - 5$ ، ومساحته جداء الضلعين.'}</MathText>}
                 onTrial={onTrial(BEGINNER)}
+                onCheckpoint={onCheckpoint}
               />
             ),
             advanced: () => (
@@ -104,6 +110,7 @@ export default function Module01Nashat() {
                 title={'ملعب ضلعاه \u2066x − 2\u2069 و \u2066x + 5\u2069'}
                 lead="ملعب آخر في الحيّ: الضلعان يتغيّران معًا مع x، ومساحته جداؤهما."
                 onTrial={onTrial(ADVANCED)}
+                onCheckpoint={onCheckpoint}
               />
             ),
           }}
@@ -111,27 +118,18 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'ما الذي يجمع بين القيم التي ثبّتّها؟', subtitle: 'السؤال 3 — من تجربتك', done: q2,
+          num: 1, title: 'ما الذي يجمع بين القيم التي ثبّتّها؟', subtitle: 'من تجربتك', done: answered,
           content: (
             <div className="space-y-3">
               {/* LES ESSAIS DE L'ÉLÈVE, et rien d'autre. */}
               {evidence([BEGINNER, ADVANCED])}
-              <PredictRule id="khassiya-jidaa-maadum">
-                <TapQuestion
-                  prompt={<MathText>{'اختفى الملعب عند كل قيمة ثبّتّها. ما الذي يجمع بين هذه القيم؟ عبّر عنه بالعبارة الصحيحة.'}</MathText>}
-                  options={[
-                    M('إذا كان جداء عاملين معدوما فإن العاملين معدومان معًا.'),
-                    M('إذا كان أحد العاملين سالبًا فإن الجداء معدوم.'),
-                    M(ACTIVITY_A.statement),
-                  ]}
-                  correct={2}
-                  cols={1}
-                  requires={['darb-nisbiya']}
-                  explain={<MathText>{'في المختبر اختفى الملعب كلّما صار أحد ضلعيه $0$ ، ولو بقي الضلع الآخر غير معدوم: في $3(x - 5)$ الضلع $3$ لا ينعدم أبدًا والملعب يختفي عند $x = 5$. وضلع سالب يعطي مساحة سالبة، لا معدومة.'}</MathText>}
-                  onAnswered={() => setQ2(true)}
-                />
-              </PredictRule>
-              {q2 && <KnowledgeBrick id="khassiya-jidaa-maadum" lead="ما رأيته في الملعب يسمّيه الكتاب:" />}
+              <p data-evidence="checkpoint" data-tried={answered ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${answered ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {answered
+                  ? 'أجبتَ في المختبر: الملعب يختفي كلّما انعدم أحد ضلعيه، ولو بقي الآخر غير معدوم — في كل القيم التي ثبّتّها.'
+                  : 'ثبّت قيم x التي يختفي عندها الملعب، وجرّب قيمة ترفضها المساحة، ثم أجب عن الأسئلة التي تظهر فوق المختبر.'}
+              </p>
+              {answered && <KnowledgeBrick id="khassiya-jidaa-maadum" lead="ما رأيته في الملعب نسمّيه:" />}
             </div>
           ),
         },
@@ -253,7 +251,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

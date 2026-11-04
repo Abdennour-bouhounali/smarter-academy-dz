@@ -43,7 +43,7 @@ export default function Module01Nashat() {
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
 
-  const onTrial = (ev) => setStops((s) => [...s, ev].slice(-30));
+  const onTrial = (ev) => { if (!ev?.tk) setStops((s) => [...s, ev].slice(-30)); };   // pas les événements `checkpoint` des questions du labo
   const line = (e) => {
     if (e.stage === 'measure') return `${e.hour} · ${OBJ[e.obj]}: ${e.shadow} m`;
     if (e.stage === 'predict') return `${e.hour} · ${OBJ[e.obj]}: 🚩 ${e.p} m → ${e.truth} m ${e.kind === 'right' ? '✓' : '✗'}`;
@@ -278,7 +278,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

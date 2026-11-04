@@ -12,6 +12,10 @@ import { LabCard, StageFrame, PromptCard, RoundButton, VerdictBanner } from '../
 import { Cake, sectorPath as sectorPathOf } from '../primitives/CakeFigure';
 import KidFigure from '../primitives/KidFigure';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { LEVELS } from '../levels';
 import * as L from '../logic/fairShare';
 
@@ -53,6 +57,13 @@ import * as L from '../logic/fairShare';
  * pilules de lecture), scène dans un `StageFrame`, carte de commande (couper + prendre), `VerdictBanner` à place fixe, LabCoach.
  * D'UN SEUL REGARD : `[data-fs-glance]` enveloppe consigne, scène, commandes et verdict.
  *
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 1, 2026-10-28) : `checkpoints` (défaut true). Après
+ * CHAQUE demande résolue (tout partagé), une suite par-dessus le labo (`chainsOf`) : la part d'un enfant · b × la part · décimal (la part
+ * tombe juste en dixièmes) ou dixièmes (elle ne tombe jamais juste) ; la dernière demande finit par LA RÈGLE (l'ancienne découverte, qui
+ * formalise dans `onDone`). « أعِد التجربة » remet LA MÊME demande (`L.retryOrder`) ; « إعادة » la demande 1. Mode guidé (`guided`) dès
+ * qu'une suite est active ; l'enseignant seul coupe les questions pour SON compte. ÉTAPES `LabStepper` (`[data-fs-step=<i>]`) et la fête
+ * par demande ; la demande LIBRE n'a ni question ni étape. SON : `tooth` pour une coupe ou une part de plus (plus grave en arrière),
+ * `bell` quand la part fait un gâteau entier, `flag` tout partagé, `over` trop pris.
  * Props : `scene` ('canteen' | 'family'), `orders` [[a, b], …] (la première demande, puis le contraste), `level`, `levels`, `title`,
  * `lead`, `onTrial({ order, ruler, n, m, x, kind, ok, free })` à chaque essai VALIDÉ, `onFinished({ orders })` à la règle — par `state.report`.
  *
@@ -106,7 +117,7 @@ function StatPill({ label, value, tone = 'indigo', small = false, ...rest }) {
 
 export default function FairShare({
   scene: scene0, orders: orders0, title, lead, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished, coach: coachOn = true,
+  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished, coach: coachOn = true, checkpoints: cpOn = true,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
@@ -116,14 +127,56 @@ export default function FairShare({
   const { scene, orders } = state.numbers;
   const sceneKey = `${scene}|${JSON.stringify(orders)}|${state.epoch}`;
   const [lab, setLab] = useState(() => L.init({ orders }));
-  const [seen, setSeen] = useState(sceneKey);
-  if (seen !== sceneKey) { setSeen(sceneKey); setLab(L.init({ orders })); }
+  const [seen, setSeen] = useState({ key: sceneKey, inits: 0 });
+  // « إعادة » (epoch), un autre niveau : TOUT recommence — la demande 1, les essais et les questions du labo
+  if (seen.key !== sceneKey) { setSeen({ key: sceneKey, inits: seen.inits + 1 }); setLab(L.init({ orders })); }
 
   const { a, b, n, m } = lab;
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : la suite de la demande courante (jamais la demande libre)
+  const cpSettings = useLabCheckpointSettings('fair-share');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const chains = cpOn && cpSettings.enabled ? chainsOf(lab) : null;
+  const free0 = L.isFree(lab);
+  const chain = !free0 ? chains?.[lab.i] ?? null : null;
+  const ruleByCheckpoint = !!chains;
+  const cp = useLabCheckpoint({
+    id: chain ? `order-${lab.i}` : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, lab.i, k, scene)) : null,
+    reached: !free0 && L.orderSolved(lab),
+    resetKey: seen.inits,
+    onRetry: () => setLab(L.retryOrder),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => { if (chains?.[Number(id.slice(6))]?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  useEffect(() => { if (ready && !ruleByCheckpoint) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son : une coupe, une part de plus (au plus une note toutes les 35 ms), puis le verdict
+  const prevNM = useRef({ n, m, at: 0 });
+  useEffect(() => {
+    const p = prevNM.current;
+    const up = n !== p.n ? n > p.n : m > p.m;
+    if (n !== p.n || m !== p.m) {
+      const v0 = L.shownVerdict(lab);
+      const now = Date.now();
+      if (v0?.kind === 'exact') playSfx('flag');
+      else if (v0?.kind === 'over' && m > p.m) playSfx('over');
+      else if (m > 0 && m % n === 0 && m > p.m) playSfx('bell');
+      else if (now - p.at > 35) { playSfx('tooth', { pitch: up ? 1 : 0.75 }); p.at = now; }
+    }
+    prevNM.current = { n, m, at: p.at };
+  }, [n, m]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les étapes : une demande est FAITE quand tout est partagé ET que ses questions sont répondues ; on la fête une fois
+  const stepDone = lab.orders.slice(0, lab.base).map((_, i) => L.orderSolved(lab, i) && (i !== lab.i || !cp.blocking));
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();
+  const nowDone = !free0 && stepDone[lab.i];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.i)) return;
+    celebrated.current.add(lab.i);
+    party.celebrate({ n: lab.i + 1, total: lab.base });
+  }, [nowDone, lab.i]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, L.finishedEvidence(lab)); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'fair-share', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '',
     labels: { hide: k('coach.hide'), show: k('coach.show'), ok: k('coach.ok'), stop: k('coach.stop') },
@@ -320,7 +373,7 @@ export default function FairShare({
       <p className={v ? '' : 'font-bold text-indigo-900'}>{v ? verdictText : k('instruction')}</p>
     </VerdictBanner>
   );
-  const nextCard = L.canNext(lab) && (
+  const nextCard = L.canNext(lab) && !cp.blocking && (
     <LabCard className="space-y-2 border-amber-200 bg-amber-50/70 p-3" data-fs-next>
       <p className="text-sm font-bold leading-snug text-amber-950">
         <span className="font-black">{k('next.title')}</span> {k('next.text', { cakes: cakes(lab.orders[lab.i + 1][0]), kids: kidsOf(lab.orders[lab.i + 1][1]) })}
@@ -416,6 +469,8 @@ export default function FairShare({
       allowFreeLab={false}
       coach={coachOn ? coach : null}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
+      guided={!!chain || ruleByCheckpoint}
+      headerAction={cpSettings.control}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={k('discovery.prompt', { cakes: cakes(lastA), kids: kidsOf(lastB) })} options={discoveryOptions} formal={formal} />}
       explanation={k('explanation')}
@@ -424,12 +479,19 @@ export default function FairShare({
         <div ref={boxRef} className="space-y-2" data-fair-share data-scene={scene} data-order={`${a}/${b}`} data-split={n}
           data-solved={ready ? 'true' : 'false'} data-layout={wide ? 'wide' : 'narrow'}>
           <style dangerouslySetInnerHTML={{ __html: MOTION_CSS }} />
-          <div className="space-y-2" data-fs-glance>
+          <div className="relative space-y-2" data-fs-glance>
+            {party.node}
+            {cp.node}
             <PromptCard
               size={compact ? 'md' : 'lg'}
               context={(state.isAuthoredLevel && lab.i === 0 && lead) || k(`context.${scene}`, ctxArgs)}
               contextProps={{ 'data-fs-context': scene }}
-              aside={compact ? null : readingPills}
+              aside={(
+                <div className="flex flex-wrap items-center gap-2">
+                  {lab.base > 1 && !free0 && <LabStepper count={lab.base} current={lab.i} done={stepDone} stepAttr="data-fs-step" />}
+                  {!compact && readingPills}
+                </div>
+              )}
               title={<span className={compact ? 'text-base' : ''}>{k('question')}</span>}
               lamp={v?.kind === 'exact' ? 'on' : 'off'}
               titleProps={{ 'data-fs-prompt': true, 'data-lit': v?.kind === 'exact' ? 'true' : 'false' }}
@@ -458,3 +520,79 @@ export default function FairShare({
     </ManipulationShell>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** Les suites : une par demande de la leçon ; `decimal` si la part tombe juste en dixièmes, sinon `tenths` ; `rule` clôt la dernière. */
+export const CHAINS = Object.freeze({ lands: ['share', 'check', 'decimal'], never: ['share', 'check', 'tenths'] });
+
+export function chainsOf(lab) {
+  const out = {};
+  lab.orders.slice(0, lab.base).forEach(([a, b], i) => {
+    out[i] = [...(L.decimalLands(a, b) ? CHAINS.lands : CHAINS.never), ...(i === lab.base - 1 ? ['rule'] : [])];
+  });
+  return out;
+}
+
+const iso = (s) => `⁦${s}⁩`;
+const C = (k, key, o) => k(`cp.${key}`, o);
+const pick = (list, right, whys) => list.map((text, i) => (i === right ? { text, correct: true } : { text, why: whys[i] }));
+const words = (k, scene, a, b) => ({ cakes: k('cakes', { count: a }), kids: k(scene === 'family' ? 'persons' : 'kids', { count: b }), a: iso(a), b: iso(b), frac: iso(`${a}/${b}`) });
+
+export const QUESTIONS = {
+  share: (lab, i, k, scene) => {
+    const [a, b] = lab.orders[i];
+    const o = words(k, scene, a, b);
+    return {
+      id: 'share', kind: 'number', expected: `${a}/${b}`, answer: <bdi dir="ltr">{a}/{b}</bdi>,
+      prompt: C(k, 'share.prompt', o), hints: [C(k, 'share.hint1', o), C(k, 'share.hint2', o)], explain: C(k, 'share.explain', o),
+    };
+  },
+  check: (lab, i, k, scene) => {
+    const [a, b] = lab.orders[i];
+    const o = { ...words(k, scene, a, b), calc: iso(`${b} × ${a}/${b} = ${a}`) };
+    return {
+      id: 'check', kind: 'choice', prompt: C(k, 'check.prompt', o),
+      options: pick([o.cakes, k('cakes', { count: 1 }), k('cakes', { count: b })], 0, [null, C(k, 'check.whyOne', o), C(k, 'check.whyB', o)]),
+      hints: [C(k, 'check.hint1', o), C(k, 'check.hint2', o)], explain: C(k, 'check.explain', o),
+    };
+  },
+  decimal: (lab, i, k, scene) => {
+    const [a, b] = lab.orders[i];
+    const dec = L.decimalText(frac(a, b));
+    const o = { ...words(k, scene, a, b), dec: iso(dec) };
+    const glued = `${a},${b}`;
+    const flipped = `0,${a}${b}`;
+    return {
+      id: 'decimal', kind: 'choice', cols: 3, prompt: C(k, 'decimal.prompt', o),
+      options: pick([iso(dec), iso(glued), iso(flipped)], 0, [null, C(k, 'decimal.whyGlued', { ...o, glued: iso(glued) }), C(k, 'decimal.whyFlipped', { ...o, flipped: iso(flipped) })]),
+      hints: [C(k, 'decimal.hint1', o), C(k, 'decimal.hint2', o)], explain: C(k, 'decimal.explain', o),
+    };
+  },
+  tenths: (lab, i, k, scene) => {
+    const [a, b] = lab.orders[i];
+    const o = words(k, scene, a, b);
+    return {
+      id: 'tenths', kind: 'choice', prompt: C(k, 'tenths.prompt', o),
+      options: pick([C(k, 'tenths.never'), C(k, 'tenths.some'), C(k, 'tenths.always')], 0, [null, C(k, 'tenths.whySome', o), C(k, 'tenths.whyAlways', o)]),
+      hints: [C(k, 'tenths.hint1', o), C(k, 'tenths.hint2', o)], explain: C(k, 'tenths.explain', o),
+    };
+  },
+  rule: (lab, i, k, scene) => {
+    const [a, b] = lab.orders[i];
+    const ref = L.refutations(lab, i);
+    const o = { cakes: k('cakes', { count: a }), kids: k(scene === 'family' ? 'persons' : 'kids', { count: b }), a, b };
+    const dec = ref.decimal;
+    const inv = ref.inverse;
+    return {
+      id: 'rule', kind: 'choice', prompt: k('discovery.prompt', { cakes: o.cakes, kids: o.kids }),
+      options: [
+        { text: k('discovery.dec'), why: dec ? k(`discovery.whyDec.${dec.kind}`, { ...o, x: dec.x, total: dec.total, gap: dec.gap }) : k('discovery.whyDecNone', o) },
+        { text: k('discovery.right'), correct: true },
+        { text: k('discovery.inv'), why: k(`discovery.whyInv.${inv.kind}`, { ...o, x: inv.x, total: inv.total }) },
+      ],
+      hints: [C(k, 'rule.hint1'), C(k, 'rule.hint2')],
+      explain: <p>{k('formal.rule')}</p>,
+    };
+  },
+};

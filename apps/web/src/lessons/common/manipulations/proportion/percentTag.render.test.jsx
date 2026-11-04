@@ -77,3 +77,76 @@ it('chaque clé que le composant lit existe (aucune clé brute à l’écran)', 
   for (const id of ['mall', 'tank']) for (const key of ['name', 'what', 'unit']) expect(ns.worlds[id][key]).toBeTypeOf('string');
   for (const id of ['sneakers', 'jersey', 'cap', 'tank']) expect(ns.articles[id]).toBeTypeOf('string');
 });
+
+/* ── lot 5 (2026-10-28) : les questions pendant le labo (LabCheckpoint), les étapes et le mode guidé ── */
+import i18n from '../../../../i18n';
+import * as PL from '../logic/percentTag';
+import * as LINx from '@smarter-academy/core/arithmetic/linear.js';
+
+it('percent-tag — chaque question de chaque étape, aux deux niveaux : texte, 2 indices, une seule bonne réponse, ni clé brute ni {{', async () => {
+  const { CHAINS, QUESTIONS } = await import('./PercentTag');
+  const k = (key, o) => i18n.t(`lesson:manipulation.percentTag.${key}`, o);
+  const RAW = /manipulation\.[a-zA-Z]/;
+  const check = (lab, ids, env, tag) => {
+    for (const id of ids) {
+      for (const qid of CHAINS[id]) {
+        const q = QUESTIONS[qid](lab, env);
+        const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+        expect(out, `${tag}.${id}.${qid}`).not.toMatch(RAW);
+        expect(out, `${tag}.${id}.${qid}`).not.toContain('{{');
+        expect(q.hints, `${tag}.${id}.${qid}`).toHaveLength(2);
+        if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${tag}.${id}.${qid}`).toHaveLength(1);
+        else expect(q.expected, `${tag}.${id}.${qid}`).toBeTruthy();
+      }
+    }
+  };
+  const common = (lab) => {
+    const W = lab.world;
+    const unit = k(`worlds.${W}.unit`);
+    const changeWord = (s) => k(s > 0 ? 'changeUp' : 'changeDown', { t: Math.abs(s) });
+    const stepWord = (s) => k(s > 0 ? 'worlds.tank.stepUp' : 'worlds.tank.stepDown', { t: Math.abs(s) });
+    const change = W === 'tank' ? stepWord : changeWord;
+    return { k, W, unit, change, changes: lab.target.map(change).join(' '), artName: (id) => k(`articles.${id}`), discoveryOptions: [{ text: 'a', why: 'w' }, { text: 'b', correct: true }], discoveryPrompt: <p>p</p>, formal: <p>f</p> };
+  };
+  // single : 1200 DA, +5 % sur le 1er article puis un 2e, puis la barre additive
+  let a = PL.init({ price: '1200', steps: '+5', theme: 'mall' });
+  a = PL.select(a, 'sneakers'); a = PL.setS(a, 5);
+  a = PL.select(a, 'jersey'); a = PL.setS(a, 5);
+  a = PL.tryAdditive(a);
+  expect(PL.targetSet(a) && PL.table(a).length >= 2 && a.additiveTrials.length > 0).toBe(true);
+  check(a, ['set', 'table', 'add'], common(a), 'single');
+  expect(QUESTIONS.read(a, common(a)).expected).toBe('1260');
+  expect(QUESTIONS.mult(a, common(a)).expected).toBe('1,05');
+  expect(QUESTIONS.second(a, common(a)).expected).toBe('3150');
+  // chain : −30 puis +15, avec un pari faux puis juste, et la chaîne de contraste −20 puis +20
+  let b = PL.init({ price: '30', steps: '-30|+15', theme: 'tank' });
+  b = PL.setBet(b, -30);
+  b = PL.setDraft(b, -30); b = PL.commitStep(b);
+  b = PL.setDraft(b, 15); b = PL.commitStep(b);
+  expect(PL.betTriedOnTarget(b)).toBe(true);
+  b = PL.setBet(b, -39);
+  b = PL.newChain(b); b = PL.setDraft(b, -20); b = PL.commitStep(b); b = PL.setDraft(b, 20); b = PL.commitStep(b);
+  expect(PL.targetChainDone(b) && PL.betMatched(b) && !!PL.contrastChain(b)).toBe(true);
+  check(b, ['chain', 'contrast'], common(b), 'chain');
+  expect(QUESTIONS.mult(b, common(b)).expected).toBe('0,7');
+  expect(QUESTIONS.volume(b, common(b)).expected).toBe('24,15');
+  expect(QUESTIONS.back(b, common(b)).expected).toBe('28,8');
+  // « أعِد التجربة » n'efface que l'étape
+  expect(PL.retryTask(a, 'add').additiveTrials).toHaveLength(0);
+  expect(PL.targetSet(PL.retryTask(a, 'set'))).toBe(false);
+  expect(PL.table(PL.retryTask(a, 'table'))).toHaveLength(1);
+  expect(PL.targetChainDone(PL.retryTask(b, 'chain'))).toBe(false);
+  expect(PL.contrastChain(PL.retryTask(b, 'contrast'))).toBeNull();
+  expect(PL.targetChainDone(PL.retryTask(b, 'contrast'))).toBe(true);
+  expect(LINx).toBeTruthy();
+});
+
+it('percent-tag — mode guidé : les étapes remplacent la progression et le bouton d’indice', () => {
+  for (const c of CASES) {
+    const out = renderToString(<PercentTag price={c.price} steps={c.steps} theme={c.theme} levels={false} />);
+    expect(out).toContain('data-lab-stepper');
+    expect(out).toContain('data-pt-step="0"');
+    expect(out).not.toContain('data-manipulation-progress');
+    expect(out).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+  }
+});

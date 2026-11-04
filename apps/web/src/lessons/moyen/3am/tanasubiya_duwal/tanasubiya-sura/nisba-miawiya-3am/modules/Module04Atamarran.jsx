@@ -38,7 +38,7 @@ export default function Module04Atamarran() {
         step(7, 'deep-39', 'ثمن المعطف', ['ziyada-nuqsan']),
         step(8, 'deep-40', 'تخفيضان متتاليان', ['tatabu']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

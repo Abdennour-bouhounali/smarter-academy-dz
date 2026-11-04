@@ -36,9 +36,12 @@ const pm = (r) => `$x = ${r}$ أو $x = -${r}$`;
 export default function Module01Nashat() {
   const [q, setQ] = useState({});
   const done = (k) => () => setQ((s) => ({ ...s, [k]: true }));
-  // Le labo n'a pas d'`onTrial` : la seule trace est sa fin (le verdict de la découverte).
+  // Le labo : sa fin (le verdict de la découverte) et ses questions posées PAR-DESSUS (LabCheckpoint, 2026-10-28) dont la TRACE est `checkpoint-done`.
   const [finished, setFinished] = useState(false);
   const onFinished = () => setFinished(true);
+  const [cpDone, setCpDone] = useState({});
+  const onTrial = (e) => { if (e?.tk === 'checkpoint-done') setCpDone((d) => ({ ...d, [e.id]: true })); };
+  const mirrorDone = !!cpDone.c0 || !!q.m;
   const { table, equations } = ACTIVITY.numbers;
 
   return (
@@ -63,6 +66,7 @@ export default function Module01Nashat() {
                 table={table}
                 lead={<MathText>{'قال مراد إنّ حلّ المعادلة $x^2 = 9$ هو 3 لأنّ $3^2 = 9$، وقال عمر إنّه نسي حلًّا آخر. ابدأ بمعادلة مراد، ثم مرّ على قيم الجدول الستّ: مربّع كل قيمة تزورها يُكتب تحت المستقيم.'}</MathText>}
                 onFinished={onFinished}
+                onTrial={onTrial}
               />
             ),
             advanced: () => (
@@ -73,6 +77,7 @@ export default function Module01Nashat() {
                 scale={10}
                 lead="خمس معادلات بلا جدول: ثبّت كل حل تجده، أو صرّح بأن المعادلة لا تقبل أي حل."
                 onFinished={onFinished}
+                onTrial={onTrial}
               />
             ),
           }}
@@ -80,7 +85,7 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: <MathText>{'لماذا يصل سهم $x = -3$ إلى الدائرة 9 كما يصل إليها سهم $x = 3$؟'}</MathText>, subtitle: 'من تجربتك في المختبر', done: !!q.m,
+          num: 1, title: <MathText>{'لماذا يصل سهم $x = -3$ إلى الدائرة 9 كما يصل إليها سهم $x = 3$؟'}</MathText>, subtitle: 'من تجربتك في المختبر', done: mirrorDone,
           content: (
             <div className="space-y-3">
               <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>
@@ -90,20 +95,11 @@ export default function Module01Nashat() {
                     : 'لم تُنهِ المختبر بعد: ارجع إلى الأعلى وثبّت حلول البطاقات ليظهر سؤال الاستنتاج.'}
                 </li>
               </ul>
-              <TapQuestion
-                prompt={<span>في المختبر يصل سهم <MathText>{'$x = 3$'}</MathText> وسهم <MathText>{'$x = -3$'}</MathText> إلى الدائرة 9 نفسها. لماذا يصل سهمان مختلفان إلى النقطة نفسها؟</span>}
-                options={[
-                  'لأنّ $(-3) \\times (-3) = 3 \\times 3 = 9$: جداء عددين سالبين موجب',
-                  'لأنّ $(-3)^2 = -9$، لكنّ السهم ينحرف إلى الجهة الموجبة',
-                  'لأنّ 3 و $-3$ يبعدان عن الدائرة 9 المسافة نفسها',
-                  'لأنّ الحلّ الثاني دائمًا هو نصف الحلّ الأول',
-                ].map(M)}
-                correct={0}
-                cols={1}
-                requires={['murabba-adad']}
-                explain={<span><MathText>{'$3^2 = 9$'}</MathText> و <MathText>{'$(-3)^2 = 9$'}</MathText>: العددان المتعاكسان 3 و <MathText>{'$-3$'}</MathText> حلّان للمعادلة، فعمر على حق ومراد نسي <MathText>{'$-3$'}</MathText>.</span>}
-                onAnswered={done('m')}
-              />
+              <p className={`rounded-xl border-2 px-3 py-2 text-sm ${mirrorDone ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`} data-activity-evidence data-tried={mirrorDone ? 'true' : 'false'}>
+                {mirrorDone
+                  ? <span>أجبتَ في المختبر: العددان <MathText>{'$3$'}</MathText> و <MathText>{'$-3$'}</MathText> متعاكسان ولهما المربّع نفسه، فيصل سهماهما إلى الدائرة 9 نفسها.</span>
+                  : 'ثبّت حلّي معادلة موجبة في المختبر (مثل 9)، ثم أجب عن الأسئلة التي تظهر فوقه.'}
+              </p>
             </div>
           ),
         },
@@ -238,7 +234,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

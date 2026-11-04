@@ -8,6 +8,11 @@ import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
 import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import { spread } from './spaceCp';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
 import MovablePanel from '../primitives/MovablePanel';
@@ -87,7 +92,7 @@ function decTex(x, digits = 2) {
 const fracTex = (p) => LN.fracLatex(p);
 
 export default function BucketFill({
-  r: r0, R: R0, H: H0, depth: d0, numbers: nums, theme = 'beach-bucket', title, lead, mission, level, levels: withLevels = true,
+  r: r0, R: R0, H: H0, depth: d0, numbers: nums, theme = 'beach-bucket', title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -101,8 +106,10 @@ export default function BucketFill({
   const make = () => L.init(NUMS);
   const [lab, setLab] = useState(make);
   const sceneKey = `${r}|${R}|${H}|${depth}|${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); }
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  const [doneIds, setDoneIds] = useState({});
+  // « إعادة » (epoch), un autre niveau ou d'autres nombres : TOUT recommence — le seau, les étapes et les questions du labo
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(make()); setDoneIds({}); }
   const reduce = useReducedMotion();
   const stageBoxRef = useRef(null);
   // La largeur réelle du bloc (sur un téléphone, ≈ 180 px au fond d'un module) : en dessous de 420 px, la fenêtre 3D est
@@ -127,7 +134,9 @@ export default function BucketFill({
   const apexExact = LN.toNumber(F.apex);
 
   const ready = L.discoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  const cpSettings = useLabCheckpointSettings('bucket-fill');   // obligatoires pour tout élève ; l'enseignant seul les coupe, pour SON compte
+  const cpLive = cpOn && cpSettings.enabled;
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch, cpLive]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!state.isFormal) return;
     state.report(onFinished, { volume: F.volume.latex, approx: space.roundTo(F.volume.number, 1), litres: space.roundTo(F.litres, 2) });
@@ -235,6 +244,63 @@ export default function BucketFill({
     </div>
   );
 
+  /* ── les étapes et leurs questions : le niveau fixé, le sommet trouvé, le volume (puis la règle) ── */
+  const stepList = L.stepsOf(lab).map((st) => ({ ...st, chain: chainOf(st.id) }));
+  const stepDone = stepList.map((st) => !!doneIds[st.id] || (!cpLive && st.reached));
+  const nextStep = cpLive ? stepList.find((st) => !doneIds[st.id]) : null;
+  const cpId = nextStep && nextStep.reached ? nextStep.id : null;
+  const chain = cpId ? nextStep.chain : null;
+  const cp = useLabCheckpoint({
+    id: cpId,
+    questions: chain ? chain.map((q) => QUESTIONS[q]({ lab, nums: NUMS, F, options: discoveryOptions, formal }, k)) : null,
+    reached: !!cpId,
+    resetKey: scene.inits,
+    onRetry: () => setLab((cur) => L.retryStep(cur, cpId)),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => ({ ...d, [id]: true }));
+      if (stepList.find((st) => st.id === id)?.chain.includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
+  const doneKey = stepDone.join();
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(i)) return;
+      celebrated.current.add(i);
+      party.celebrate({ n: i + 1, total: stepList.length });
+    });
+  }, [doneKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── le son : un déclic quand l'eau monte ou que S descend d'un centimètre (au plus un toutes les 35 ms), « flag » au geste jugé juste,
+     « over » au geste refusé, « bell » quand une étape est finie. Muet sauf « الصوت ». ── */
+  const tick = useRef({ key: null, at: 0 });
+  const gestureKey = `${lab.level}|${lab.apex}`;
+  useEffect(() => {
+    const p = tick.current;
+    if (p.key === null) { p.key = gestureKey; return; }
+    if (p.key === gestureKey) return;
+    p.key = gestureKey;
+    const now = performance.now();
+    if (now - p.at > 35) { playSfx('tooth'); p.at = now; }
+  }, [gestureKey]);
+  const heard = useRef(0);
+  useEffect(() => {
+    const n = lab.trials.length;
+    if (n < heard.current) heard.current = 0;
+    if (n === 0 || n === heard.current) return;
+    heard.current = n;
+    playSfx(lab.trials[n - 1].ok ? 'flag' : 'over');
+  }, [lab.trials.length]); // eslint-disable-line react-hooks/exhaustive-deps
+  const bells = useRef(0);
+  useEffect(() => {
+    const n = stepDone.filter(Boolean).length;
+    if (n > bells.current) playSfx('bell');
+    bells.current = n;
+  }, [doneKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const fallback = <SpaceFigure {...L.fallbackFigure(NUMS, lab.level, k('figureAria'))} />;
   const sceneLabel = k('sceneLabel', { d: lab.level, phase: k(`phaseName.${phase}`) });
   const btn = 'inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center gap-1 rounded-xl border-2 px-3 text-sm font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 disabled:opacity-45';
@@ -249,14 +315,19 @@ export default function BucketFill({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpLive}
       hints={['hint1', 'hint2', 'hint3'].map((hk) => <MathText key={hk}>{k(hk)}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={k('dPrompt')} options={discoveryOptions} formal={formal} />}
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-sky-50 to-amber-50" minHeight="min-h-[180px]">
-        <div className="space-y-2" data-bucket-fill data-world={theme} data-phase={phase} data-level-ok={lab.levelOk ? 'true' : 'false'}
+        <div className="relative space-y-2" data-bucket-fill data-world={theme} data-phase={phase} data-level-ok={lab.levelOk ? 'true' : 'false'}
           data-apex-ok={lab.apexOk ? 'true' : 'false'} data-card-ok={lab.cardOk ? 'true' : 'false'} data-bf-depth={lab.level}>
+          {party.node}
+          {cp.node}
+          <LabStepper count={stepList.length} current={Math.max(0, stepDone.indexOf(false) < 0 ? stepList.length - 1 : stepDone.indexOf(false))} done={stepDone} stepAttr="data-bf-step" />
           <div ref={glanceRef} className="space-y-1.5" data-bf-glance>
             <div ref={stageBoxRef} className="relative overflow-hidden rounded-2xl ring-1 ring-sky-200" style={{ height: narrow ? 'clamp(170px, 40dvh, 340px)' : 'clamp(190px, 44dvh, 400px)' }}>
               <BeachDecor uid={uid} lit={lab.cardOk} phase={phase} reduce={!!reduce} />
@@ -681,3 +752,60 @@ function BeachDecor({ uid, lit, phase, reduce }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de chaque étape : le niveau (hauteur · rayon de la surface), le sommet (SO · k), le volume (k³ · 1 − k³ · règle). */
+export function chainOf(id) {
+  return ({ level: ['lvAbove', 'lvRadius'], apex: ['apexSO', 'apexK'], volume: ['kCube', 'oneMinus', 'rule'] })[id];
+}
+
+const $ = (x) => `$${x}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const fx = (p) => LN.fracText(p);
+const tex = (p) => LN.fracLatex(p).replace('\\dfrac', '\\frac');
+const choice = (k, id, o, texts) => ({
+  id, kind: 'choice', cols: 1, prompt: Cq(k, `${id}.prompt`, o),
+  options: spread(texts.map(([key, why], i) => ({ text: Cq(k, `${id}.${key}`, o), correct: i === 0, why: i === 0 ? undefined : Cq(k, `${id}.${why}`, o) })), id.length),
+  hints: [Cq(k, `${id}.hint1`, o), Cq(k, `${id}.hint2`, o)], explain: Cq(k, `${id}.explain`, o),
+});
+const num = (k, id, o, expected, answer) => ({
+  id, kind: 'number', expected, answer: <MathText>{$(answer)}</MathText>,
+  prompt: Cq(k, `${id}.prompt`, o), hints: [Cq(k, `${id}.hint1`, o), Cq(k, `${id}.hint2`, o)], explain: Cq(k, `${id}.explain`, o),
+});
+
+/** Chaque question est construite sur LES nombres du seau (rien n'est écrit en dur) ; `k` : les textes de `bucketFill`. */
+export const QUESTIONS = {
+  lvAbove: ({ nums }, k) => {
+    const gap = nums.H - nums.depth;
+    return num(k, 'lvAbove', { H: nums.H, gap, d: nums.depth, where: gap === 0 ? k('cp.lvAbove.atRim') : k('cp.lvAbove.below', { gap }) }, String(nums.depth), String(nums.depth));
+  },
+  lvRadius: ({ nums }, k) => {
+    const rho = L.surfaceRadiusAt(nums, nums.depth);
+    const o = { r: nums.r, R: nums.R, H: nums.H, d: nums.depth, step: $(tex(LN.div(LN.frac(nums.R - nums.r), LN.frac(nums.H)))), rho: tex(rho) };
+    return num(k, 'lvRadius', o, fx(rho), tex(rho));
+  },
+  apexSO: ({ nums, F }, k) => {
+    const o = { r: nums.r, R: nums.R, H: nums.H, a: tex(F.apex) };
+    return num(k, 'apexSO', o, fx(F.apex), tex(F.apex));
+  },
+  apexK: ({ nums, F }, k) => {
+    const sw = LN.add(F.apex, LN.frac(nums.depth));
+    const o = { a: tex(F.apex), sw: tex(sw), d: nums.depth, k: tex(F.k), r: nums.r, rho: tex(F.rho) };
+    return num(k, 'apexK', o, fx(F.k), tex(F.k));
+  },
+  kCube: ({ F }, k) => {
+    const k3 = LN.mul(F.k, LN.mul(F.k, F.k));
+    const o = { k: $(tex(F.k)), k3: $(tex(k3)), k1: $(tex(F.k)), k3k: $(tex(LN.mul(F.k, LN.frac(3)))) };
+    return choice(k, 'kCube', o, [['cube', ''], ['one', 'whyOne'], ['three', 'whyThree']]);
+  },
+  oneMinus: ({ F }, k) => {
+    const k3 = LN.mul(F.k, LN.mul(F.k, F.k));
+    const o = { k3: $(tex(k3)), res: $(tex(LN.sub(LN.frac(1), k3))), wrong1: $(tex(LN.sub(LN.frac(1), F.k))), V1: $(F.big.latex) };
+    return choice(k, 'oneMinus', o, [['right', ''], ['oneK', 'whyOneK'], ['small', 'whySmall']]);
+  },
+  rule: ({ options, formal }, k) => ({
+    id: 'rule', kind: 'choice', prompt: <MathText>{k('dPrompt')}</MathText>, options,
+    hints: [Cq(k, 'rule.hint1'), Cq(k, 'rule.hint2')], explain: formal,
+  }),
+};

@@ -12,6 +12,10 @@ import EquationDisplay from '../primitives/EquationDisplay';
 import MathText from '../../components/MathText';
 import { bidi } from '../../../../utils/bidi';
 import * as L from '../logic/solutionRay';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 
 const { toNumber } = Lin;
 
@@ -55,6 +59,16 @@ const { toNumber } = Lin;
  *   FORMALIZATION  معارف 3 et 4 (p. 48), طريقة p. 49
  *   TRANSFER       تمارين 21–32 ; QCM 5–9 ; ترييض مشكلة (leçon 4)
  *
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 3, 2026-10-28) : une scène libre par niveau ; quand la
+ * découverte du niveau est atteinte, une suite unique se pose PAR-DESSUS le labo (`CHAINS[mode]`) — sans crochet : le calcul à sa dernière trace
+ * rouge · la valeur extrême qui reste solution (les mauvaises options sont réfutées par SES nombres : le voisin extérieur est faux, le voisin
+ * intérieur n'est pas le dernier) · LA RÈGLE ; avec crochet : l'extrême · la borne est-elle solution et comment tourner le crochet · LA RÈGLE ;
+ * متقدم : l'extrême · la ligne finale qui épouse ses points rouges (sens renversé, borne stricte) · LA RÈGLE (l'ancienne découverte, qui
+ * formalise). Obligatoires pour tout élève ; l'enseignant seul les coupe pour SON compte (`checkpoints` = false les coupe aussi).
+ * `onCheckpoint(ev)` : la trace pour les étapes du module. ÉTAPES `LabStepper` (`[data-sr-step=<i>]`) + fête ; « إعادة » repart de zéro ;
+ * « أعِد التجربة » remet le rayon au départ. SON : `tooth` (x bougé), `bell` (ligne acceptée), `flag` (crochet posé, inéquation résolue),
+ * `over` (crochet ou ligne refusés).
+ *
  * MANUEL (§6bis) : chaque position, chaque crochet, chaque sens est une réponse.
  * DÉCOR (exigence du propriétaire) : le téléphone de يونس qui vibre quand on le touche
  * (contexte `phone`), le drapeau de juge de touche planté au crochet (sinon) — `aria-hidden`,
@@ -71,7 +85,7 @@ const EDGE = 22;
 
 export default function SolutionRay({
   ineq: ineq0 = '-3x+5<=20', context, whole, min, max, marks = [], bracket: withBracket = true, transform,
-  title, lead, mission, level, levels: withLevels = true, initialMode = 'student', allowModeSwitch = false, onFinished, onTrial,
+  title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false, onFinished, onTrial, onCheckpoint,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.solutionRay.${key}`, o), [t]);
@@ -85,8 +99,8 @@ export default function SolutionRay({
 
   const make = () => L.initLab({ ineq: ineqSrc, whole: isWhole, min, max });
   const [lab, setLab] = useState(make);
-  const sceneKey = `${ineqSrc}:${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
+  const sceneKey = `${ineqSrc}:${state.epoch}:${state.resetCount}`;
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
   const [live, setLive] = useState(null);
   const [last, setLast] = useState(null);           // dernière trace validée (pour aria-live)
   const [draft, setDraft] = useState({ k: null, side: null, toward: null });
@@ -98,13 +112,42 @@ export default function SolutionRay({
   // Miroir synchrone de `lab` : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
   const labRef = useRef(lab);
   labRef.current = lab;
-  if (scene !== sceneKey) {
-    setScene(sceneKey); setLab(make()); setLive(null); setLast(null);
+  const resetScene = () => {
+    setLab(make()); setLive(null); setLast(null);
     setDraft({ k: null, side: null, toward: null }); setBLive(null); setVerdict(null); setCard(null); setStepMsg(null);
-  }
+  };
+  // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — le rayon, les traces et les questions du labo
+  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); resetScene(); }
 
   const ready = mode === 'region' ? L.regionDiscoveryReady(lab) : mode === 'bracket' ? L.bracketDiscoveryReady(lab) : L.flipDiscoveryReady(lab);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : une suite unique quand la découverte est atteinte ; celle qui finit par la règle remplace la découverte automatique
+  const cpSettings = useLabCheckpointSettings('solution-ray');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpLive = cpOn && cpSettings.enabled;
+  const chain = cpLive ? CHAINS[mode] : null;
+  const cp = useLabCheckpoint({
+    id: chain ? ineqSrc : null,
+    questions: chain && ready ? chain.map((q) => QUESTIONS[q](lab, k, { mode, phone })) : null,
+    reached: ready,
+    resetKey: scene.inits,
+    onRetry: resetScene,
+    onEvent: (ev) => state.report(onCheckpoint, ev),   // {tk:'checkpoint'|'checkpoint-done', id: ineq, …} — la TRACE que les étapes du module relisent
+    onDone: () => { state.discover(); state.formalize(); },
+  });
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // une étape est FAITE quand son objectif est atteint ET (la dernière) ses questions répondues : la pastille passe au vert et on fête
+  const stepDone = (mode === 'region'
+    ? [lab.traces.length >= 2, L.hasContrast(lab), ready]
+    : [L.hasContrast(lab), !!lab.bracket, ready]).map((d, i, a) => (i === a.length - 1 ? d && !cp.blocking : d));
+  const nDone = stepDone.findIndex((d) => !d) < 0 ? stepDone.length : stepDone.findIndex((d) => !d);
+  const party = useStepCelebration();
+  const celebrated = useRef({ n: 0, inits: scene.inits });
+  if (celebrated.current.inits !== scene.inits) celebrated.current = { n: 0, inits: scene.inits };   // « إعادة » : on refête
+  useEffect(() => {
+    if (nDone <= celebrated.current.n) return;
+    celebrated.current.n = nDone;
+    party.celebrate({ n: nDone, total: stepDone.length });
+  }, [nDone]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, state.numbers); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── la géométrie de la droite ── */
@@ -130,8 +173,11 @@ export default function SolutionRay({
 
   /* ── geste 1 : le mobile ── */
   const defK = L.defaultK(lab);
+  const heard = useRef(0);
+  const tick = () => { const now = Date.now(); if (now - heard.current > 35) { playSfx('tooth'); heard.current = now; } };
   const trace = (v) => {
     if (!L.inRange(labRef.current, v)) return;
+    tick();
     const e = L.evaluate(labRef.current, v);
     labRef.current = L.addTrace(labRef.current, v);
     setLab((s) => L.addTrace(s, v));
@@ -160,10 +206,12 @@ export default function SolutionRay({
     const v = L.checkBracket(lab, draft);
     if (v === true) {
       setLab((s) => L.placeBracket(s, draft));
+      playSfx('flag');
       setVerdict({ tone: 'ok', key: 'bracketOk' });
       state.report(onTrial, { kind: 'bracket', k: draft.k, x: xs(draft.k), side: draft.side, toward: draft.toward, glyph: L.glyphOf(draft.side, draft.toward) });
     } else {
       setVerdict({ tone: 'ko', key: v.reason, witness: v.witness });
+      playSfx('over');
       state.report(onTrial, { kind: 'refusal', what: 'bracket', reason: v.reason });
     }
   };
@@ -176,10 +224,12 @@ export default function SolutionRay({
     const r = L.chooseStep(lab, card, rel);
     setLab(r.lab);
     if (r.accepted) {
+      playSfx(L.transformDone(r.lab) ? 'flag' : 'bell');
       setStepMsg({ tone: 'ok' });
       state.report(onTrial, { kind: 'step', op: card.op, opTex: L.cardTex(card), ineq: L.ineqTex(L.current(r.lab)), flipped: L.isNegativeScaling(card) });
       setCard(null);
     } else {
+      playSfx('over');
       setStepMsg({ tone: 'ko', reason: r.reason, proposed: r.proposed, witness: r.witness });
       state.report(onTrial, { kind: 'refusal', what: 'step', reason: r.reason, opTex: L.cardTex(card) });
     }
@@ -307,47 +357,8 @@ export default function SolutionRay({
   ) : null;
 
   /* ── découvertes ── */
-  const strictRed = L.strictRedTrace(lab);
-  const grey = L.greyTrace(lab);
-  const boundE = L.evaluate(lab, L.boundK(lab));
-  const keptStep = lab.steps.find((s) => !((s.op === 'mul' || s.op === 'div') && s.k.n < 0));
-  const discoveryOptions = {
-    region: [
-      { text: <MathText>{k('rOpt2')}</MathText>, why: strictRed && <MathText>{k('rWhy2', { x: L.numTex(strictRed.x), cmp: cmpTex(strictRed) })}</MathText> },
-      { text: <MathText>{k('rOpt1')}</MathText>, correct: true },
-      { text: <MathText>{k('rOpt3')}</MathText>, why: grey && <MathText>{k('rWhy3', { x: L.numTex(grey.x), cmp: cmpTex(grey) })}</MathText> },
-    ],
-    bracket: [
-      boundE.ok
-        ? { text: <MathText>{k('bOpt2b')}</MathText>, why: <MathText>{k('bWhy2b', { x: boundTex, cmp: cmpTex(boundE) })}</MathText> }
-        : { text: <MathText>{k('bOpt2')}</MathText>, why: <MathText>{k('bWhy2', { x: boundTex, cmp: cmpTex(boundE) })}</MathText> },
-      { text: <MathText>{k('bOpt1')}</MathText>, correct: true },
-      { text: <MathText>{k('bOpt3')}</MathText>, why: <MathText>{k('bWhy3')}</MathText> },
-    ],
-    flip: [
-      { text: <MathText>{k('fOpt2')}</MathText>, why: <MathText>{k('fWhy2', { op: keptStep ? L.cardTex(keptStep) : '' })}</MathText> },
-      { text: <MathText>{k('fOpt1')}</MathText>, correct: true },
-      { text: <MathText>{k('fOpt3')}</MathText>, why: <MathText>{k('fWhy3', { op: keptStep ? L.cardTex(keptStep) : '' })}</MathText> },
-    ],
-  }[mode];
-  const chainTex = lab.chain.map(L.ineqTex);
-  const formal = (
-    <div className="space-y-2" data-ray-formal>
-      {mode === 'region' && <EquationDisplay tone="result" tex={L.ineqTex(lab.ineq)} note={<MathText>{k('rFormal')}</MathText>} />}
-      {mode === 'bracket' && (
-        <>
-          <EquationDisplay tone="result" tex={`${L.ineqTex(lab.ineq)} \\quad (${boundE.ok ? '\\leq,\\ \\geq' : '<,\\ >'})`} note={<MathText>{k('bFormal')}</MathText>} />
-          <p className="text-sm text-slate-700"><MathText>{k(boundE.ok ? 'bYourCaseIn' : 'bYourCaseOut', { x: boundTex, cmp: cmpTex(boundE) })}</MathText></p>
-        </>
-      )}
-      {mode === 'flip' && (
-        <>
-          <EquationDisplay tone="result" tex={'a < 0 : \\quad ax \\leq b \\;\\Longrightarrow\\; x \\geq \\dfrac{b}{a}'} note={<MathText>{k('fFormal')}</MathText>} />
-          <EquationDisplay tone="neutral" tex={chainTex.join(' \\;\\Longrightarrow\\; ')} note={<MathText>{k('yourCase')}</MathText>} />
-        </>
-      )}
-    </div>
-  );
+  const discoveryOptions = discoveryOptionsOf(lab, k, mode);
+  const formal = <RayFormal lab={lab} k={k} mode={mode} />;
 
   const shownTitle = title ?? k(phone ? 'titlePhone' : 'title', { ineq: `\u2066${L.ineqPlain(lab.ineq)}\u2069` });
   const shownMission = mission ?? k(phone ? 'missionPhone' : mode === 'region' ? 'missionRegion' : mode === 'bracket' ? 'missionBracket' : 'missionFlip');
@@ -365,6 +376,8 @@ export default function SolutionRay({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={!!chain}
       hints={hintKeys.map((h) => <MathText key={h}>{k(h)}</MathText>)}
       controller={{
         autoStep: () => false,
@@ -387,7 +400,10 @@ export default function SolutionRay({
       explanation={<MathText>{k(mode === 'flip' ? 'explanationFlip' : 'explanationGraph')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-rose-50/50 to-white" data-dragging={probe.dragging || bStretch.dragging ? 'true' : undefined}>
-        <div ref={boxRef} className="space-y-3" data-solution-ray data-mode={mode} data-context={phone ? 'phone' : 'line'}>
+        <div ref={boxRef} className="relative space-y-3" data-solution-ray data-mode={mode} data-context={phone ? 'phone' : 'line'}>
+          {party.node}
+          {cp.node}
+          <LabStepper count={stepDone.length} current={Math.min(nDone, stepDone.length - 1)} done={stepDone} stepAttr="data-sr-step" />
           <p className="text-sm text-slate-700"><MathText>{k(phone ? 'legendPhone' : 'legend', { ineq: L.ineqTex(lab.ineq) })}</MathText></p>
 
           {/* les deux membres pour le x du mobile */}
@@ -544,3 +560,177 @@ export default function SolutionRay({
   );
 }
 
+
+/* ── Écritures partagées par la découverte et les questions (hors composant : les questions les rejouent) ── */
+const calcOf = (lab, e) => [L.sideTex(lab.ineq.L, e.x), L.sideTex(lab.ineq.R, e.x)].filter(Boolean).join(' \\quad ');
+const cmpOf = (lab, e) => `${L.numTex(e.left)} ${L.relTex(lab.ineq.rel)} ${L.numTex(e.right)}`;
+const lineOf = (lab, e, k) => k('witnessLine', { x: L.numTex(e.x), calc: calcOf(lab, e) ? `$${calcOf(lab, e)}$ ،` : '', cmp: cmpOf(lab, e), verdict: k(e.ok ? 'isTrue' : 'isFalse') });
+
+/** Les options de la règle du niveau : la bonne, et des conjectures réfutées par les propres traces de l'élève. */
+function discoveryOptionsOf(lab, k, mode) {
+  const strictRed = L.strictRedTrace(lab);
+  const grey = L.greyTrace(lab);
+  const boundE = L.evaluate(lab, L.boundK(lab));
+  const boundTex = L.numTex(lab.sol.bound);
+  const cmpTex = (e) => cmpOf(lab, e);
+  const keptStep = lab.steps.find((s) => !((s.op === 'mul' || s.op === 'div') && s.k.n < 0));
+  return {
+    region: [
+      { text: <MathText>{k('rOpt2')}</MathText>, why: strictRed && <MathText>{k('rWhy2', { x: L.numTex(strictRed.x), cmp: cmpTex(strictRed) })}</MathText> },
+      { text: <MathText>{k('rOpt1')}</MathText>, correct: true },
+      { text: <MathText>{k('rOpt3')}</MathText>, why: grey && <MathText>{k('rWhy3', { x: L.numTex(grey.x), cmp: cmpTex(grey) })}</MathText> },
+    ],
+    bracket: [
+      boundE.ok
+        ? { text: <MathText>{k('bOpt2b')}</MathText>, why: <MathText>{k('bWhy2b', { x: boundTex, cmp: cmpTex(boundE) })}</MathText> }
+        : { text: <MathText>{k('bOpt2')}</MathText>, why: <MathText>{k('bWhy2', { x: boundTex, cmp: cmpTex(boundE) })}</MathText> },
+      { text: <MathText>{k('bOpt1')}</MathText>, correct: true },
+      { text: <MathText>{k('bOpt3')}</MathText>, why: <MathText>{k('bWhy3')}</MathText> },
+    ],
+    flip: [
+      { text: <MathText>{k('fOpt2')}</MathText>, why: <MathText>{k('fWhy2', { op: keptStep ? L.cardTex(keptStep) : '' })}</MathText> },
+      { text: <MathText>{k('fOpt1')}</MathText>, correct: true },
+      { text: <MathText>{k('fOpt3')}</MathText>, why: <MathText>{k('fWhy3', { op: keptStep ? L.cardTex(keptStep) : '' })}</MathText> },
+    ],
+  }[mode];
+}
+
+/** La règle du niveau, écrite (la carte finale de la suite, et la découverte quand les questions sont coupées). */
+function RayFormal({ lab, k, mode }) {
+  const boundE = L.evaluate(lab, L.boundK(lab));
+  const boundTex = L.numTex(lab.sol.bound);
+  const chainTex = lab.chain.map(L.ineqTex);
+  return (
+    <div className="space-y-2" data-ray-formal>
+      {mode === 'region' && <EquationDisplay tone="result" tex={L.ineqTex(lab.ineq)} note={<MathText>{k('rFormal')}</MathText>} />}
+      {mode === 'bracket' && (
+        <>
+          <EquationDisplay tone="result" tex={`${L.ineqTex(lab.ineq)} \\quad (${boundE.ok ? '\\leq,\\ \\geq' : '<,\\ >'})`} note={<MathText>{k('bFormal')}</MathText>} />
+          <p className="text-sm text-slate-700"><MathText>{k(boundE.ok ? 'bYourCaseIn' : 'bYourCaseOut', { x: boundTex, cmp: cmpOf(lab, boundE) })}</MathText></p>
+        </>
+      )}
+      {mode === 'flip' && (
+        <>
+          <EquationDisplay tone="result" tex={'a < 0 : \\quad ax \\leq b \;\\Longrightarrow\; x \\geq \\dfrac{b}{a}'} note={<MathText>{k('fFormal')}</MathText>} />
+          <EquationDisplay tone="neutral" tex={chainTex.join(' \;\\Longrightarrow\; ')} note={<MathText>{k('yourCase')}</MathText>} />
+        </>
+      )}
+    </div>
+  );
+}
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite unique de chaque niveau : le calcul / l'extrême / la borne / la ligne finale, puis LA RÈGLE. */
+export const CHAINS = Object.freeze({
+  region: ['calc', 'edge', 'rule'],
+  bracket: ['edge', 'bound', 'rule'],
+  flip: ['edge', 'red', 'rule'],
+});
+
+const $ = (x) => `$${x}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const gradeTex = (lab, kk) => L.numTex(L.xOfK(lab, kk));
+
+/**
+ * La valeur extrême qui reste solution sur la droite graduée (la plus grande pour un rayon vers la gauche, la plus petite vers la droite),
+ * son voisin EXTÉRIEUR (faux) et son voisin INTÉRIEUR (vrai, mais pas le dernier) — `null` si la droite ne les contient pas.
+ */
+export function edgeOf(lab) {
+  const left = L.sideOf(lab.sol) === 'left';
+  let edge = null;
+  for (let kk = lab.kmin; kk <= lab.kmax; kk += 1) {
+    if (!L.evaluate(lab, kk).ok) continue;
+    if (left) edge = kk; else if (edge == null) edge = kk;
+  }
+  if (edge == null) return null;
+  const out = edge + (left ? 1 : -1);
+  const inn = edge + (left ? -1 : 1);
+  return { left, edge, out: L.inRange(lab, out) ? out : null, inn: L.inRange(lab, inn) && L.evaluate(lab, inn).ok ? inn : null };
+}
+
+const STRICT = { '<': '<=', '<=': '<', '>': '>=', '>=': '>' };
+
+export const QUESTIONS = {
+  calc: (lab, k, { phone } = {}) => {
+    const reds = lab.traces.filter((t) => t.ok).map((t) => t.k);
+    const kk = L.sideOf(lab.sol) === 'left' ? Math.max(...reds) : Math.min(...reds);
+    const e = L.evaluate(lab, kk);
+    const o = { x: gradeTex(lab, kk), calc: $(calcOf(lab, e)), cmp: $(cmpOf(lab, e)), v: $(L.numTex(e.left)) };
+    const base = {
+      id: 'calc', prompt: Cq(k, phone ? 'calc.promptPhone' : 'calc.prompt', o), hints: [Cq(k, 'calc.hint1', o), Cq(k, 'calc.hint2')],
+      explain: Cq(k, 'calc.explain', o),
+    };
+    if (e.left.n >= 0) return { ...base, kind: 'number', expected: Lin.fracText(e.left), answer: <MathText>{o.v}</MathText> };
+    const wrong = [Lin.neg(e.left), Lin.add(e.left, 1)];
+    return {
+      ...base, kind: 'choice', cols: 3,
+      options: [
+        { text: <MathText>{$(L.numTex(wrong[0]))}</MathText>, why: Cq(k, 'calc.whySign', o) },
+        { text: <MathText>{o.v}</MathText>, correct: true },
+        { text: <MathText>{$(L.numTex(wrong[1]))}</MathText>, why: Cq(k, 'calc.whyOff', o) },
+      ],
+    };
+  },
+  edge: (lab, k) => {
+    const g = edgeOf(lab);
+    const o = { edge: $(`x = ${gradeTex(lab, g.edge)}`) };
+    const pick = (kk) => ({ n: $(gradeTex(lab, kk)), line: lineOf(lab, L.evaluate(lab, kk), k) });
+    const out = g.out != null ? pick(g.out) : null;
+    const inn = g.inn != null ? pick(g.inn) : null;
+    const opts = [
+      out && { text: <MathText>{$(`x = ${gradeTex(lab, g.out)}`)}</MathText>, why: Cq(k, 'edge.whyOut', out) },
+      { text: <MathText>{o.edge}</MathText>, correct: true },
+      inn && { text: <MathText>{$(`x = ${gradeTex(lab, g.inn)}`)}</MathText>, why: Cq(k, 'edge.whyIn', { ...inn, edge: $(gradeTex(lab, g.edge)) }) },
+    ].filter(Boolean);
+    return {
+      id: 'edge', kind: 'choice', cols: 3,
+      prompt: Cq(k, g.left ? 'edge.promptMax' : 'edge.promptMin'),
+      options: opts,
+      hints: [Cq(k, 'edge.hint1'), Cq(k, 'edge.hint2')],
+      explain: Cq(k, 'edge.explain', { ...o, line: lineOf(lab, L.evaluate(lab, g.edge), k), lineOut: out ? out.line : '', n: out ? out.n : '' }),
+    };
+  },
+  bound: (lab, k) => {
+    const e = L.evaluate(lab, L.boundK(lab));
+    const o = { x: L.numTex(e.x), line: lineOf(lab, e, k) };
+    const right = e.ok ? 'in' : 'out';
+    const mk = (id) => ({ text: Cq(k, `bound.${id}`), ...(id === right ? { correct: true } : { why: Cq(k, `bound.why.${id}`, o) }) });
+    return {
+      id: 'bound', kind: 'choice', cols: 1,
+      prompt: Cq(k, 'bound.prompt', o),
+      options: [mk(e.ok ? 'out' : 'in'), mk(right), mk('any')],
+      hints: [Cq(k, 'bound.hint1', o), Cq(k, 'bound.hint2')],
+      explain: Cq(k, e.ok ? 'bound.explainIn' : 'bound.explainOut', o),
+    };
+  },
+  red: (lab, k) => {
+    const { rel, bound } = lab.sol;
+    const side = L.sideOf(lab.sol);
+    const tex = (r) => $(`x ${L.relTex(r)} ${L.numTex(bound)}`);
+    const flipped = Lin.flipRelation(rel);
+    const strict = STRICT[rel];
+    const redK = lab.traces.find((t) => t.ok && t.k !== L.boundK(lab))?.k ?? lab.traces.find((t) => t.ok)?.k;
+    const redE = L.evaluate(lab, redK);
+    const boundE = L.evaluate(lab, L.boundK(lab));
+    const o = { bound: $(L.numTex(bound)), side: k(side === 'left' ? 'sideLeftWord' : 'sideRightWord'), final: tex(rel) };
+    return {
+      id: 'red', kind: 'choice', cols: 3,
+      prompt: Cq(k, 'red.prompt', o),
+      options: [
+        { text: <MathText>{tex(flipped)}</MathText>, why: Cq(k, 'red.whyFlip', { ...o, wrong: tex(flipped), line: lineOf(lab, redE, k) }) },
+        { text: <MathText>{tex(rel)}</MathText>, correct: true },
+        { text: <MathText>{tex(strict)}</MathText>, why: Cq(k, 'red.whyStrict', { ...o, wrong: tex(strict), line: lineOf(lab, boundE, k) }) },
+      ],
+      hints: [Cq(k, 'red.hint1', o), Cq(k, 'red.hint2', o)],
+      explain: Cq(k, 'red.explain', o),
+    };
+  },
+  rule: (lab, k, { mode } = {}) => ({
+    id: 'rule', kind: 'choice',
+    prompt: <MathText>{k(mode === 'region' ? 'rPrompt' : mode === 'bracket' ? 'bPrompt' : 'fPrompt')}</MathText>,
+    options: discoveryOptionsOf(lab, k, mode),
+    hints: [Cq(k, `rule.hint1.${mode}`), Cq(k, `rule.hint2.${mode}`)],
+    explain: <RayFormal lab={lab} k={k} mode={mode} />,
+  }),
+};

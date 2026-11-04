@@ -40,7 +40,7 @@ export default function Module04Atamarran() {
         step(8, 'deep-37', 'قيمة مضبوطة وقيمة مقرّبة', ['tawid-qimat'], <GeoFigure {...FIGURE_E8} maxWidth={240} />),
         step(9, 'ict', 'جدول قيم', ['mithal-mudad', 'nashr-yuthbit']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

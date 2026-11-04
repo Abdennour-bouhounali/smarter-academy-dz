@@ -11,6 +11,12 @@ import EquationDisplay from '../primitives/EquationDisplay';
 import DivisionRoles from '../primitives/DivisionRoles';
 import { BOOK_PALETTE } from '../primitives/BookFigure';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
+import MathText from '../../components/MathText';
+import { wrongEqualities } from './divisionChecks';
 import * as S from '../logic/bookshelf';
 
 /**
@@ -58,6 +64,13 @@ import * as S from '../logic/bookshelf';
  * ONBOARDING (prop `coach`, défaut true — `LabCoach`, §8quater) : `logic/bookshelf.js › coachOf` montre la poignée du serre-livres
  * (glisser), puis les boutons « + / − » (le chemin sans glisser) ; jamais une longueur. Le guide se tait quand la découverte est méritée.
  *
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, lot 2, 2026-10-28). Pas de tâches : DEUX étapes (`LabStepper`, `[data-bk-step]`) —
+ * (1) la première longueur validée, interrogée sur SES nombres (`first` : combien de rayons, combien au sol, quelle égalité) ; (2) le contraste
+ * vu (`contrast`, discovery='remainder' : quelle longueur a vidé le sol · combien de livres manquent au rayon fantôme · LA RÈGLE ;
+ * discovery='symmetry' : combien de rayons avec q en tête · la symétrie). La règle remplace la découverte automatique. Obligatoires pour tout
+ * élève, l'enseignant seul les coupe (interrupteur dans l'en-tête). SON : `tooth` (le serre-livres bouge), `bell` (le sol est vide), `flag`
+ * (le contraste est vu). « إعادة » repart de zéro ; « أعِد التجربة » efface les essais.
+ *
  * Même coquille que les autres laboratoires (ManipulationShell) : indices,
  * conjecture, règle, « إعادة ». Le mode classe de la PLATEFORME (⛶ عرض
  * المناولة) enveloppe le tout sans rien remonter.
@@ -89,7 +102,7 @@ function BookshelfLab({
   levels: withLevels = true,
   discovery = 'remainder',
   title, lead, mission,
-  onVerdict, onFinished, coach: coachOn = true,
+  onVerdict, onFinished, coach: coachOn = true, checkpoints: cpOn = true, onTrial,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.bookshelf.${key}`, o), [t]);
@@ -116,6 +129,9 @@ function BookshelfLab({
   // Un rayon PAR DÉFAUT (jamais un diviseur de a : première longueur qui laisse des livres) : jamais vide à l'ouverture, et ce n'est pas un essai (2026-10-09).
   const [b, setB] = useState(() => S.defaultShelf(total, range));
   const [tried, setTried] = useState({});
+  const [order, setOrder] = useState([]);   // les longueurs validées, dans l'ordre où l'élève les a posées
+  const [doneIds, setDoneIds] = useState({});
+  const [retryN, setRetryN] = useState(0);
   // Nouvelle scène (niveau, « إعادة ») : le rayon est vide. Ajusté PENDANT le
   // rendu, comme TeamBuilder — jamais une frame avec l'ancien rayon.
   const sceneKey = `${total}:${state.epoch}`;
@@ -124,7 +140,7 @@ function BookshelfLab({
   // La mémoire des essais part avec « إعادة » et avec un autre stock de livres.
   const memoryKey = `${total}:${state.resetCount}`;
   const [memory, setMemory] = useState(memoryKey);
-  if (memory !== memoryKey) { setMemory(memoryKey); setTried({}); }
+  if (memory !== memoryKey) { setMemory(memoryKey); setTried({}); setOrder([]); setDoneIds({}); }
 
   // Miroir synchrone des essais : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
   const triedRef = useRef(tried);
@@ -133,6 +149,7 @@ function BookshelfLab({
     setB(v);
     triedRef.current = S.commit(triedRef.current, total, v);
     setTried((prev) => S.commit(prev, total, v));
+    setOrder((o) => (v == null || o.includes(v) ? o : [...o, v]));
     const a = S.arrange(total, v);
     state.report(onVerdict, { b: v, divides: a.exact, quotient: a.shelves, remainder: a.leftOver });
   }, [total, state, onVerdict]);
@@ -140,7 +157,54 @@ function BookshelfLab({
   // ── La découverte : méritée par le contraste (ou la symétrie en معارف) ──
   const pair = discovery === 'symmetry' ? S.symmetryPair(tried, total) : null;
   const ready = discovery === 'symmetry' ? pair != null : S.remainderDiscoveryReady(tried);
-  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : obligatoires pour tout élève, l'enseignant seul les coupe pour SON compte
+  const cpSettings = useLabCheckpointSettings('divisor-explorer-books');
+  const cpLive = cpOn && cpSettings.enabled;
+  const sym = discovery === 'symmetry';
+  const cpId = cpLive ? (ready ? 'contrast' : order.length ? 'first' : null) : null;
+  const chain = cpId ? (cpId === 'first' ? CHAINS.first : sym ? CHAINS.symmetry : CHAINS.contrast) : null;
+  const cp = useLabCheckpoint({
+    id: cpId,
+    questions: chain ? chain.map((q) => QUESTIONS[q]({ total, tried, order, pair, range, marks }, k, books)) : null,
+    reached: !!cpId,
+    resetKey: `${state.resetCount}:${retryN}`,
+    onRetry: () => { setTried({}); setOrder([]); setDoneIds({}); setB(S.defaultShelf(total, range)); setRetryN((n) => n + 1); },
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setDoneIds((d) => ({ ...d, [id]: true }));
+      if (id === 'contrast') { state.discover(); state.formalize(); }
+    },
+  });
+  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch, cpLive]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les deux étapes : une première longueur interrogée, puis le contraste et la règle
+  const stepDone = [!!doneIds.first || !!doneIds.contrast || (!cpLive && order.length > 0), !!doneIds.contrast || (!cpLive && ready)];
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (order.length === 0 && celebrated.current.size) celebrated.current = new Set();
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.has(i)) return;
+      celebrated.current.add(i);
+      party.celebrate({ n: i + 1, total: 2 });
+    });
+  }, [stepDone[0], stepDone[1]]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son du geste (muet sans « الصوت ») : le serre-livres bouge · le sol est vide · le contraste est vu
+  const heard = useRef({ b: null, at: 0, empty: false, ready: false });
+  useEffect(() => {
+    const h = heard.current;
+    if (b != null && b !== h.b && h.b != null) {
+      const now = Date.now();
+      if (now - h.at > 35) { playSfx('tooth', { pitch: b < h.b ? 0.8 : 1 }); h.at = now; }
+    }
+    h.b = b;
+  }, [b]);
+  useEffect(() => {
+    const h = heard.current;
+    const empty = b != null && total % b === 0 && order.includes(b);
+    if (empty && !h.empty) playSfx('bell');
+    h.empty = empty;
+  }, [b, total, order]);
+  useEffect(() => { if (ready && !heard.current.ready) playSfx('flag'); heard.current.ready = ready; }, [ready]);
   useEffect(() => { if (state.isFormal) state.report(onFinished, { tried }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── La place réelle : la bibliothèque se dessine pour SA largeur ──
@@ -343,7 +407,8 @@ function BookshelfLab({
       state={state}
       coach={coachOn ? coach : null}
       hints={hints}
-      headerAction={<ClassroomEntryButton />}
+      guided={!!chain || cpLive}
+      headerAction={<><ClassroomEntryButton />{cpSettings.control}</>}
       representation={settled && (
         <div className="space-y-2" data-bookshelf-verdict={a.exact ? 'exact' : 'remainder'}>
           <EquationDisplay tex={`${total} = ${b} \\times ${a.shelves} + ${a.leftOver}`} tone={a.exact ? 'ok' : 'result'} />
@@ -354,8 +419,11 @@ function BookshelfLab({
       explanation={k('explanation')}
     >
       <ManipulationStage className="bg-gradient-to-b from-amber-50/60 to-white" data-dragging={stretch.dragging ? 'true' : undefined}>
-        <div ref={boxRef} className={presentation ? 'flex items-start gap-4' : 'space-y-3'} data-bookshelf data-presentation={presentation ? 'true' : 'false'}>
+        <div ref={boxRef} className={`relative ${presentation ? 'flex items-start gap-4' : 'space-y-3'}`} data-bookshelf data-presentation={presentation ? 'true' : 'false'}>
+          {party.node}
+          {cp.node}
           <div className="space-y-3" style={presentation ? { width: modelW, flex: 'none' } : undefined}>
+          <LabStepper count={2} current={ready ? 1 : 0} done={stepDone} stepAttr="data-bk-step" />
           {/* ── LE RAYON MODÈLE : la grandeur que le doigt tient ───────────── */}
           <div
             {...stretch.trackProps}
@@ -488,3 +556,91 @@ function BookshelfLab({
     </ManipulationShell>
   );
 }
+
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+export const CHAINS = { first: ['shelves', 'floor', 'eq'], contrast: ['pickEmpty', 'missing', 'rule'], symmetry: ['symShelves', 'symRule'] };
+
+const $ = (x) => `$${x}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+/** Un essai du rayon sous la forme de la division euclidienne : a = b × q + r. */
+const divOf = (total, b) => ({ n: total, g: b, q: Math.floor(total / b), r: total % b });
+const eqOf = (d) => `${d.n} = ${d.g} \\times ${d.q} + ${d.r}`;
+
+export const QUESTIONS = {
+  shelves: ({ total, order }, k, books) => {
+    const d = divOf(total, order[0]);
+    const o = { books: books(d.g), shelves: $(d.q), eq: $(eqOf(d)) };
+    return { id: 'shelves', kind: 'number', expected: String(d.q), answer: <MathText>{$(d.q)}</MathText>, prompt: Cq(k, 'shelves.prompt', { ...o, total }), hints: [Cq(k, 'shelves.hint1'), Cq(k, 'shelves.hint2')], explain: Cq(k, 'shelves.explain', o) };
+  },
+  floor: ({ total, order }, k, books) => {
+    const d = divOf(total, order[0]);
+    const o = { books: books(d.g), r: $(d.r), eq: $(eqOf(d)) };
+    return { id: 'floor', kind: 'number', expected: String(d.r), answer: <MathText>{$(d.r)}</MathText>, prompt: Cq(k, 'floor.prompt', o), hints: [Cq(k, 'floor.hint1'), Cq(k, 'floor.hint2')], explain: Cq(k, 'floor.explain', o) };
+  },
+  eq: ({ total, order }, k, books) => {
+    const d = divOf(total, order[0]);
+    const [w1, w2] = wrongEqualities(d);
+    const o = { books: books(d.g), n: $(total), eq: $(eqOf(d)) };
+    const opt = (w) => ({ text: <MathText>{$(`${total} = ${w.tex}`)}</MathText>, why: Cq(k, 'eq.whyWrong', { ...o, calc: $(`${w.tex} = ${w.v}`) }) });
+    return {
+      id: 'eq', kind: 'choice', cols: 3, prompt: Cq(k, 'eq.prompt', o),
+      options: [opt(w1), { text: <MathText>{$(eqOf(d))}</MathText>, correct: true }, opt(w2)],
+      hints: [Cq(k, 'eq.hint1'), Cq(k, 'eq.hint2', o)], explain: Cq(k, 'eq.explain', o),
+    };
+  },
+  pickEmpty: ({ total, tried, order }, k, books) => {
+    const fine = divOf(total, order.find((x) => tried[x].exact));
+    const left = divOf(total, order.find((x) => !tried[x].exact));
+    const of = { books: books(fine.g), eq: $(eqOf(fine)) };
+    const ol = { books: books(left.g), left: books(left.r), eq: $(eqOf(left)) };
+    return {
+      id: 'pickEmpty', kind: 'choice', cols: 1, prompt: Cq(k, 'pickEmpty.prompt'),
+      options: [
+        { text: Cq(k, 'pickEmpty.opt', ol), why: Cq(k, 'pickEmpty.whyLeft', ol) },
+        { text: Cq(k, 'pickEmpty.opt', of), correct: true },
+        { text: Cq(k, 'pickEmpty.none'), why: Cq(k, 'pickEmpty.whyNone', of) },
+      ],
+      hints: [Cq(k, 'pickEmpty.hint1'), Cq(k, 'pickEmpty.hint2')], explain: Cq(k, 'pickEmpty.explain', of),
+    };
+  },
+  missing: ({ total, tried, order }, k, books) => {
+    const d = divOf(total, order.find((x) => !tried[x].exact));
+    const miss = d.g - d.r;
+    const o = { books: books(d.g), left: books(d.r), full: books(d.g), miss: $(miss), eq: $(`${d.r} + ${miss} = ${d.g}`) };
+    return { id: 'missing', kind: 'number', expected: String(miss), answer: <MathText>{$(miss)}</MathText>, prompt: Cq(k, 'missing.prompt', o), hints: [Cq(k, 'missing.hint1'), Cq(k, 'missing.hint2', o)], explain: Cq(k, 'missing.explain', o) };
+  },
+  rule: ({ total, range, marks }, k, books) => {
+    const cx = S.counterExamples(total, range, marks);
+    const T = (x) => <MathText>{x}</MathText>;
+    const options = [
+      cx.even && { text: T(k('opt2')), why: T(k('why2', { b: cx.even.b, left: books(cx.even.leftOver) })) },
+      { text: T(k('opt1', { total })), correct: true },
+      cx.small && cx.big && { text: T(k('opt3')), why: T(k('why3', { small: cx.small.b, left: books(cx.small.leftOver), big: cx.big.b })) },
+    ].filter(Boolean);
+    return {
+      id: 'rule', kind: 'choice', prompt: T(k('discoverPrompt')), options,
+      hints: [Cq(k, 'rule.hint1'), Cq(k, 'rule.hint2')],
+      explain: T(`${$('a = b \\times q + r')} — ${k('conclusion')}`),
+    };
+  },
+  symShelves: ({ total, pair }, k, books) => {
+    const [b, q] = pair;
+    const o = { books: books(b), other: books(q), shelves: $(b), q: $(q), eq: $(`${total} = ${q} \\times ${b} + 0`) };
+    return { id: 'symShelves', kind: 'number', expected: String(b), answer: <MathText>{$(b)}</MathText>, prompt: Cq(k, 'symShelves.prompt', o), hints: [Cq(k, 'symShelves.hint1', o), Cq(k, 'symShelves.hint2', o)], explain: Cq(k, 'symShelves.explain', o) };
+  },
+  symRule: ({ total, pair }, k) => {
+    const [b, q] = pair;
+    return {
+      id: 'symRule', kind: 'choice', prompt: <MathText>{k('symPrompt', { b, q })}</MathText>,
+      options: [
+        { text: <MathText>{k('symOpt2', { b, q })}</MathText>, why: <MathText>{k('symWhy2', { q })}</MathText> },
+        { text: <MathText>{k('symOpt1', { b, q, total })}</MathText>, correct: true },
+        { text: <MathText>{k('symOpt3')}</MathText>, why: <MathText>{k('symWhy3', { b, q })}</MathText> },
+      ],
+      hints: [Cq(k, 'symRule.hint1'), Cq(k, 'symRule.hint2')],
+      explain: <MathText>{`${$(`${total} = ${b} \\times ${q} = ${q} \\times ${b}`)} — ${k('symFormalNote')}`}</MathText>,
+    };
+  },
+};

@@ -40,7 +40,7 @@ export default function Module04Atamarran() {
         group(9, 'ترتيب ومقلوبات', ['deep-63-orig', 'deep-63-recip'], ['maqlub-natiq']),
         group(10, 'حدّ مجهول', ['ex-54'], ['qisma-natiqa']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

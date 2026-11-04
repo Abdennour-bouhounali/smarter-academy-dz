@@ -108,3 +108,69 @@ describe('gear-crank — rendu', () => {
     expect(formal).toContain('frac');
   });
 });
+
+describe('gear-crank — questions pendant le labo (LabCheckpoint)', () => {
+  it('m1 · m2 · m3 : chaque question a un texte, une seule bonne réponse, deux indices, et ni clé brute ni {{', async () => {
+    const { CHAINS, QUESTIONS } = await import('./GearCrank');
+    let s = L.init(LV.beginner.numbers);
+    for (let i = 0; i < 3; i += 1) { s = L.release(L.turnTo(s, L.taskOf(s).goalTeeth)); if (i < 2) s = L.nextTask(s); }
+    for (const tk of s.tasks) {
+      for (const qid of CHAINS[tk.id]) {
+        const q = QUESTIONS[qid](s, tk, k);
+        const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+        expect(out, `${tk.id}.${qid}`).not.toMatch(RAW);
+        expect(out, `${tk.id}.${qid}`).not.toContain('{{');
+        expect(q.hints, `${tk.id}.${qid}`).toHaveLength(2);
+        if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${tk.id}.${qid}`).toHaveLength(1);
+        else expect(q.expected).toBeTruthy();
+      }
+    }
+    expect(QUESTIONS.read(s, s.tasks[1], k).expected).toBe('8');
+    expect(QUESTIONS.read(s, s.tasks[2], k).expected).toBe('4/3');
+    expect(QUESTIONS.compare(s, s.tasks[0], k).options[0].correct).toBe(true);   // 3/2 < 3 : la pédale tourne MOINS
+  });
+});
+
+describe('gear-crank — questions des mondes `reverse` et متقدم (lot 5)', () => {
+  it('chaque question des suites r1 r2 et a1 … a4b : texte, deux indices, une seule bonne réponse, ni clé brute ni {{', async () => {
+    const { CHAINS, QUESTIONS } = await import('./GearCrank');
+    for (const [tag, numbers] of [['reverse', { ...L.PRESETS.reverse }], ['advanced', LV.advanced.numbers]]) {
+      const base = L.init(numbers);
+      const s0 = { ...base, done: Object.fromEntries(base.tasks.map((_, i) => [i, true])) };
+      base.tasks.forEach((tk, i) => {
+        const s = { ...s0, ti: i };
+        expect(CHAINS[tk.id], `${tag}.${tk.id}`).toBeTruthy();
+        for (const qid of CHAINS[tk.id]) {
+          const q = QUESTIONS[qid](s, tk, k);
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${tag}.${tk.id}.${qid}`).not.toMatch(RAW);
+          expect(out, `${tag}.${tk.id}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${tag}.${tk.id}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${tag}.${tk.id}.${qid}`).toHaveLength(1);
+          else expect(q.expected).toBeTruthy();
+        }
+      });
+    }
+    const rv = L.init({ ...L.PRESETS.reverse });
+    const sr = { ...rv, done: { 0: true, 1: true }, ti: 1 };
+    expect(QUESTIONS.read({ ...sr, ti: 0 }, rv.tasks[0], k).expected).toBe('3/5');
+    expect(QUESTIONS.read(sr, rv.tasks[1], k).expected).toBe('5/3');
+    expect(QUESTIONS.compare({ ...sr, ti: 1 }, rv.tasks[1], k).options[1].correct).toBe(true);   // 5/3 > 1 : la pédale tourne PLUS
+  });
+});
+
+describe('gear-crank — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('مبتدئ, `reverse` et متقدم (questions) : ni la progression ni le bouton d’indice ; des tâches hors `CHAINS` (sans questions) : les deux restent', () => {
+    const b = html({ ...LV.beginner.numbers, level: 'beginner' });
+    expect(b).not.toContain('data-manipulation-progress');
+    expect(b).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    for (const numbers of [{ ...L.PRESETS.reverse, levels: false }, { ...LV.advanced.numbers, level: 'advanced' }]) {
+      const out = html(numbers);
+      expect(out).not.toContain('data-manipulation-progress');
+      expect(out).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    }
+    const r = html({ tasks: [{ id: 'zz', F: 24, R: 32, target: '6' }], levels: false });
+    expect(r).toContain('data-manipulation-progress');
+    expect(r).toContain(i18n.t('lesson:manipulation.hint.show'));
+  });
+});

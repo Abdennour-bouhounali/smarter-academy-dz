@@ -85,6 +85,8 @@ export function init({ orders }) {
 }
 /** « إعادة » : tout recommencer, mémoire des essais comprise. */
 export const reset = (s) => init({ orders: s.orders.slice(0, s.base) });
+/** « أعِد التجربة » (questions du labo) : LA MÊME demande repart (coupe, parts et ses essais effacés). */
+export const retryOrder = (s) => put(s, { n: 1, m: 0, last: null, trials: Object.freeze(s.trials.filter((t) => t.i !== s.i)) });
 
 const clampN = (n) => Math.max(SPLIT_LIMITS[0], Math.min(SPLIT_LIMITS[1], Math.round(n)));
 const clampM = (s, m, n = s.n) => Math.max(0, Math.min(mMaxOf(s.a, s.b, n), Math.round(m)));

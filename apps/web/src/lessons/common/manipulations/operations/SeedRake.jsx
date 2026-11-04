@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef,
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Sprout, Star, Minus, Plus } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
-import { sumWith } from '@smarter-academy/core/arithmetic/fractions3.js';
+import { sumWith, cellsOf } from '@smarter-academy/core/arithmetic/fractions3.js';
 import MathText from '../../components/MathText';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
@@ -11,6 +11,10 @@ import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
 import { LabCard, StageFrame, PromptCard, VerdictBanner } from '../primitives/LabKit';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { LEVELS } from '../levels';
 import * as L from '../logic/seedRake';
 import SeedScene, { CSS as SCENE_CSS } from './seedRake/SeedScene';
@@ -51,7 +55,13 @@ import { W, H, ZONE_COLORS, HARVEST, borderOf, nFromX } from './seedRake/seedArt
  * quelconque est dessinée en pointillés sans être jugée).
  * D'UN SEUL REGARD (§8bis) : `[data-sr-glance]` enveloppe la consigne, la scène, les décomptes, les commandes et le verdict.
  * ONBOARDING : `coach` (défaut true) → `LabCoach` ; `logic/seedRake.js › coachOf` (rake · plant · border · predict · free).
- * Props : `tasks` ([{ id, kind, terms, need, needRefusal, widest }]), `world` ('bed' | 'fewest'), `level`, `levels`, `coach`, `title`, `lead`, `onTrial(event)`, `onFinished({ world })`.
+ * QUESTIONS PENDANT LE LABO (prototype `primitives/LabCheckpoint`, déploiement lot 5, 2026-10-28) : `checkpoints` (défaut true). Après CHAQUE tâche, une suite de questions se pose PAR-DESSUS le labo
+ * et retient « المهمة التالية » (`CHAINS`), construite sur SES essais (`lab.record`) : g1 pourquoi l'espacement refusé · combien de plants · la même longueur · le plus large ; g2 le total · lequel
+ * échoue ; g3 les plants restants · la RÈGLE (l'ancienne découverte, qui formalise) ; a1–a4 et `fewest` : les cases de la 1re zone et le total à l'espacement le plus large. OBLIGATOIRES pour tout
+ * élève ; l'ENSEIGNANT seul les coupe pour SON compte (`useLabCheckpointSettings`, interrupteur dans l'en-tête) ; coupées, la découverte d'avant reprend. Le module 1 de `jam-tarh-kasrayn` en
+ * garde la TRACE (événements `checkpoint` du labo). ÉTAPES `LabStepper` (`[data-sr-step=<i>]`) + fête ; « إعادة » repart de la tâche 1 ; « أعِد التجربة » remet LA MÊME tâche. SON (`playSfx`) :
+ * `tooth` quand le râteau change d'espacement, `bell` pour un semis qui convient, `flag` à l'objectif, `over` pour un semis refusé ou une prédiction fausse.
+ * Props : `tasks` ([{ id, kind, terms, need, needRefusal, widest }]), `world` ('bed' | 'fewest'), `level`, `levels`, `coach`, `checkpoints`, `title`, `lead`, `onTrial(event)`, `onFinished({ world })`.
  * CONTRAT DOM : [data-seed-rake][data-task][data-solved][data-world], [data-sr-glance], [data-sr-stage], [data-sr-svg][data-n], [data-sr-rake][data-n][data-locked], [data-sr-tooth],
  * [data-sr-bed], [data-sr-zone], [data-sr-sign], [data-sr-plant], [data-sr-wilt], [data-sr-borderline], [data-sr-bracket], [data-sr-second], [data-sr-readout][data-n], [data-sr-less],
  * [data-sr-more], [data-sr-plant-btn], [data-sr-star], [data-sr-count][data-zone][data-value], [data-sr-log][data-sr-log-item], [data-sr-predict], [data-sr-pred-n], [data-sr-pred-num],
@@ -74,7 +84,7 @@ export function numbersFor({ tasks, world, level }) {
 }
 
 export default function SeedRake({
-  tasks, world, title, lead, level, levels: withLevels = true, coach: coachOn = true,
+  tasks, world, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -84,13 +94,27 @@ export default function SeedRake({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
   if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    const restart = scene.key === numsKey && scene.rc !== state.resetCount;
-    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-    setLab(restart ? L.restartTask(lab) : L.init(nums));
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la tâche 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
+    setLab(L.init(nums));
   }
-  const ready = L.discoveryReady(lab);
+  // les questions pendant le labo : la suite de la tâche courante ; celle qui finit par la règle remplace la découverte automatique
+  const cpSettings = useLabCheckpointSettings('seed-rake');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const curTask = L.taskOf(lab);
+  const chain = cpOn && cpSettings.enabled && !L.isFree(lab) ? CHAINS[curTask.id] ?? null : null;
+  const ruleByCheckpoint = cpOn && cpSettings.enabled && lab.tasks.some((tk) => CHAINS[tk.id]?.includes('rule'));
+  const cp = useLabCheckpoint({
+    id: chain ? curTask.id : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, curTask, k)) : null,
+    reached: L.taskDone(lab),
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.restartTask),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => { if (CHAINS[id]?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  const ready = L.discoveryReady(lab) && !ruleByCheckpoint;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   const finishedOnce = useRef(false);
   const everyDone = L.allDone(lab);
@@ -106,7 +130,7 @@ export default function SeedRake({
     reported.current = nTrials;
   }, [nTrials, lab.trials]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'seed-rake', step: coachStep,
     text: coachStep ? k(`coach.${coachStep.id}`) : '',
@@ -142,6 +166,8 @@ export default function SeedRake({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       coach={coachOn ? coach : null}
+      headerAction={cpSettings.control}
+      guided={!!chain || ruleByCheckpoint}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={discovery}
@@ -150,7 +176,7 @@ export default function SeedRake({
       <ManipulationStage className="bg-gradient-to-b from-lime-50/70 to-white">
         <div ref={boxRef} className="space-y-2" data-seed-rake data-task={lab.ti} data-world={lab.world} data-solved={everyDone ? 'true' : 'false'}>
           <style dangerouslySetInnerHTML={{ __html: SCENE_CSS }} />
-          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} />
+          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} cp={cp} />
         </div>
       </ManipulationStage>
     </ManipulationShell>
@@ -188,7 +214,7 @@ function borderText(t, pl, k) {
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-function Lab({ lab, setLab, k, width, screenH, lead }) {
+function Lab({ lab, setLab, k, width, screenH, lead, cp }) {
   const uid = `sr${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
   const free = L.isFree(lab);
   const t = L.taskOf(lab);
@@ -223,20 +249,37 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
   /* ── la consigne : le contexte, puis UNE question */
   const ctx = contextOf(t, k, free);
   const question = free ? k('question.free') : predictKind ? k('question.predict') : lab.world === 'fewest' ? k('question.fewest') : k('question.plant');
+  // une étape est FAITE quand la tâche est finie ET que ses questions (LabCheckpoint) sont répondues : la pastille passe au vert et on fête
+  const stepDone = lab.tasks.map((_, i) => !!lab.done[i] && (i !== lab.ti || !cp.blocking));
   const steps = lab.tasks.length > 1 && !free && (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={tk.id} role="listitem" data-sr-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-emerald-700 bg-emerald-600 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-lime-200 bg-white text-emerald-700'}`}>
-            <bdi dir="ltr">{i + 1}</bdi>
-          </span>
-        );
-      })}
-    </div>
+    <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-sr-step" />
   );
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // L.init (« إعادة », autre niveau) : on refête
+  const nowDone = !free && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.ti)) return;
+    celebrated.current.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son (muet sans « الصوت ») : un déclic quand le râteau change d'espacement, une cloche pour un semis qui convient, le drapeau à l'objectif, « over » si refusé
+  const heard = useRef({ N: lab.N, at: 0, n: lab.trials.length, ti: lab.ti });
+  useEffect(() => {
+    const h = heard.current;
+    if (h.ti !== lab.ti || lab.trials.length < h.n) { heard.current = { N: lab.N, at: 0, n: lab.trials.length, ti: lab.ti }; return; }
+    if (lab.N !== h.N) {
+      const now = Date.now();
+      if (now - h.at > 35) { playSfx('tooth', { pitch: lab.N > h.N ? 1 : 0.75 }); h.at = now; }
+      h.N = lab.N;
+    }
+    const fresh = lab.trials.slice(h.n);
+    h.n = lab.trials.length;
+    if (!fresh.length) return;
+    if (fresh.some((e) => e.kind === 'solved')) playSfx('flag');
+    else if (fresh.some((e) => e.kind === 'refused' || (e.kind === 'predict' && e.ok === false))) playSfx('over');
+    else if (fresh.some((e) => e.kind === 'plant' && e.ok)) playSfx('bell');
+  }, [lab.N, lab.trials, lab.ti]);
   const prompt = (
     <PromptCard size="md" context={<MathText>{ctx}</MathText>} contextProps={{ 'data-sr-context': free ? 'free' : t.kind }}
       title={<MathText>{question}</MathText>} titleClassName="text-base" lamp={free ? null : done ? 'on' : 'off'}
@@ -348,7 +391,7 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
 
   /* ── le verdict */
   const vv = verdictOf(lab, k);
-  const canNext = L.canNext(lab);
+  const canNext = L.canNext(lab) && !cp.blocking;
   const Icon = vv.tone === 'emerald' ? CheckCircle2 : vv.tone === 'indigo' ? Hand : Sparkles;
   const banner = (
     <VerdictBanner tone={vv.tone} icon={Icon} size="sm" className="min-h-[2.75rem] !py-1.5" data-sr-verdict={vv.code}>
@@ -367,6 +410,8 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
   return (
     <>
       <div className="relative space-y-2" data-sr-glance>
+        {party.node}
+        {cp.node}
         {prompt}
         {stage}
         {counts}
@@ -514,3 +559,194 @@ export function Formal({ lab, k }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de questions de chaque tâche : elle interroge ce que l'élève vient de FAIRE (ses essais) ; g3 finit par la règle (l'ancienne découverte). */
+export const CHAINS = Object.freeze({
+  g1: ['whyRefused', 'plantsTotal', 'sameLength', 'widest'],
+  g2: ['totalAt', 'failsWhich'],
+  g3: ['harvestLeft', 'rule'],
+  a1: ['cells', 'totalNum'],
+  a2: ['cells', 'totalNum'],
+  a3: ['cells', 'totalNum'],
+  a4: ['cells', 'totalNum'],
+  f1: ['plantsAt', 'longerThanBed'],
+});
+
+const $ = (s) => `$${s}$`;
+const Q = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const at = (list, i) => { const [first, ...rest] = list; const out = [...rest]; out.splice(Math.min(i, out.length), 0, first); return out; };
+
+const worksOf = (lab, t) => (lab.record?.[t.id]?.works?.length ? lab.record[t.id].works : t.working.slice(0, 2));
+
+
+
+/** Chaque question est construite sur LES essais de la tâche (rien n'est écrit en dur) ; `k` : les textes de `seedRake`. */
+export const QUESTIONS = {
+  whyRefused: (lab, t, k) => {
+    const refused = lab.record?.[t.id]?.refused ?? [];
+    const bad = refused.length ? refused[refused.length - 1] : { N: 10, zone: 0 };
+    const zi = Math.max(0, Math.min(bad.zone, t.terms.length - 1));
+    const p = t.terms[zi].p;
+    const [pa, pb] = p.split('/');
+    const works = worksOf(lab, t);
+    const o = { bad: iso(bad.N), s: spacing(bad.N), zone: zoneName(k, t, zi), p: $(tex(p)), pb: iso(pb), sw1: spacing(works[0]), calc: $(`${bad.N}\\times${tex(p)}=\\frac{${bad.N * Number(pa)}}{${pb}}`) };
+    return {
+      id: 'whyRefused', kind: 'choice',
+      prompt: Q(k, 'whyRefused.prompt', o),
+      options: at([
+        { text: Q(k, 'whyRefused.right', o), correct: true },
+        { text: Q(k, 'whyRefused.small'), why: Q(k, 'whyRefused.whySmall', o) },
+        { text: Q(k, 'whyRefused.short'), why: Q(k, 'whyRefused.whyShort', o) },
+      ], 0),
+      hints: [Q(k, 'whyRefused.hint1', o), Q(k, 'whyRefused.hint2', o)],
+      explain: Q(k, 'whyRefused.explain', o),
+    };
+  },
+  plantsTotal: (lab, t, k) => {
+    const N = worksOf(lab, t)[0];
+    const r = sumWith(t.terms, N);
+    const o = { s: spacing(N), N: iso(N), c1: iso(r.counts[0]), c2: iso(r.counts[1] ?? 0), n: iso(r.signed) };
+    return {
+      id: 'plantsTotal', kind: 'number', expected: String(r.signed), answer: <MathText>{$(String(r.signed))}</MathText>,
+      prompt: Q(k, 'plantsTotal.prompt', o),
+      hints: [Q(k, 'plantsTotal.hint1', o), Q(k, 'plantsTotal.hint2', o)],
+      explain: Q(k, 'plantsTotal.explain', o),
+    };
+  },
+  sameLength: (lab, t, k) => {
+    const works = worksOf(lab, t);
+    const [N1, N2 = works[0]] = works;
+    const r1 = sumWith(t.terms, N1); const r2 = sumWith(t.terms, N2);
+    const len = L.valueText(t.totalValue);
+    const o = { s2: spacing(N2), s1: spacing(N1), n2: iso(r2.signed), n1: iso(r1.signed), len: $(tex(len)), f2: $(`\\frac{${r2.signed}}{${N2}}`), f1: $(`\\frac{${r1.signed}}{${N1}}`) };
+    return {
+      id: 'sameLength', kind: 'choice',
+      prompt: Q(k, 'sameLength.prompt', o),
+      options: at([
+        { text: Q(k, 'sameLength.right', o), correct: true },
+        { text: Q(k, 'sameLength.longer'), why: Q(k, 'sameLength.whyLonger', o) },
+        { text: Q(k, 'sameLength.shorter'), why: Q(k, 'sameLength.whyShorter', o) },
+      ], 1),
+      hints: [Q(k, 'sameLength.hint1', o), Q(k, 'sameLength.hint2', o)],
+      explain: Q(k, 'sameLength.explain', o),
+    };
+  },
+  widest: (lab, t, k) => {
+    const W0 = t.widestN;
+    const o = { w: iso(W0), d1: iso(t.dens[0]), d2: iso(t.dens[1] ?? t.dens[0]) };
+    return {
+      id: 'widest', kind: 'choice', cols: 3,
+      prompt: Q(k, 'widest.prompt'),
+      options: at([
+        { text: <MathText>{$(`\\frac{1}{${W0}}`)}</MathText>, correct: true },
+        { text: <MathText>{$(`\\frac{1}{${W0 * 2}}`)}</MathText>, why: Q(k, 'widest.why', { ...o, x: iso(W0 * 2) }) },
+        { text: <MathText>{$(`\\frac{1}{${W0 * 3}}`)}</MathText>, why: Q(k, 'widest.why', { ...o, x: iso(W0 * 3) }) },
+      ], 1),
+      hints: [Q(k, 'widest.hint1'), Q(k, 'widest.hint2', o)],
+      explain: Q(k, 'widest.explain', o),
+    };
+  },
+  totalAt: (lab, t, k) => {
+    const N = worksOf(lab, t)[0];
+    const r = sumWith(t.terms, N);
+    const o = { s: spacing(N), c1: iso(r.counts[0]), c2: iso(r.counts[1] ?? 0), n: iso(r.signed), p1: $(tex(t.terms[0].p)), p2: $(tex(t.terms[1]?.p ?? t.terms[0].p)) };
+    return {
+      id: 'totalAt', kind: 'number', expected: String(r.signed), answer: <MathText>{$(String(r.signed))}</MathText>,
+      prompt: Q(k, 'totalAt.prompt', o),
+      hints: [Q(k, 'totalAt.hint1', o), Q(k, 'totalAt.hint2', o)],
+      explain: Q(k, 'totalAt.explain', o),
+    };
+  },
+  failsWhich: (lab, t, k) => {
+    const [d1, d2 = d1] = t.dens;
+    const bad = d1 + d2;
+    const good1 = t.widestN; const good2 = t.widestN * 2;
+    const calc = (N) => $(`${N}\\times${tex(t.terms[0].p)}=\\frac{${N * Number(t.terms[0].p.split('/')[0])}}{${d1}}`);
+    const o = { p1: $(tex(t.terms[0].p)), p2: $(tex(t.terms[1]?.p ?? t.terms[0].p)), bad: iso(bad), d1: iso(d1), d2: iso(d2) };
+    const wk = (N) => {
+      const r = sumWith(t.terms, N);
+      return Q(k, 'failsWhich.whyWorks', { ...o, x: iso(N), c1: iso(r.counts[0]), c2: iso(r.counts[1] ?? 0) });
+    };
+    return {
+      id: 'failsWhich', kind: 'choice', cols: 3,
+      prompt: Q(k, 'failsWhich.prompt', o),
+      options: at([
+        { text: <MathText>{$(`\\frac{1}{${bad}}`)}</MathText>, correct: true },
+        { text: <MathText>{$(`\\frac{1}{${good1}}`)}</MathText>, why: wk(good1) },
+        { text: <MathText>{$(`\\frac{1}{${good2}}`)}</MathText>, why: wk(good2) },
+      ], 2),
+      hints: [Q(k, 'failsWhich.hint1', o), Q(k, 'failsWhich.hint2', { ...o, calc: calc(bad) })],
+      explain: Q(k, 'failsWhich.explain', { ...o, calc: calc(bad) }),
+    };
+  },
+  harvestLeft: (lab, t, k) => {
+    const N = worksOf(lab, t)[0];
+    const r = sumWith(t.terms, N);
+    const o = { s: spacing(N), c1: iso(r.counts[0]), c2: iso(r.counts[1] ?? 0), n: iso(r.signed) };
+    return {
+      id: 'harvestLeft', kind: 'number', expected: String(r.signed), answer: <MathText>{$(String(r.signed))}</MathText>,
+      prompt: Q(k, 'harvestLeft.prompt', o),
+      hints: [Q(k, 'harvestLeft.hint1', o), Q(k, 'harvestLeft.hint2', o)],
+      explain: Q(k, 'harvestLeft.explain', o),
+    };
+  },
+  rule: (lab, t, k) => ({
+    id: 'rule', kind: 'choice',
+    prompt: <MathText>{discoveryPrompt(lab, k)}</MathText>,
+    options: discoveryOptions(lab, k),
+    hints: [Q(k, 'rule.hint1'), Q(k, 'rule.hint2')],
+    explain: <Formal lab={lab} k={k} />,
+  }),
+  cells: (lab, t, k) => {
+    const N = t.widestN;
+    const p = t.terms[0].p;
+    const c = cellsOf(p, N).count;
+    const o = { s: spacing(N), N: iso(N), zone: zoneName(k, t, 0), p: $(tex(p)), calc: $(`${N}\\times${tex(p)}=${c}`) };
+    return {
+      id: 'cells', kind: 'number', expected: String(c), answer: <MathText>{$(String(c))}</MathText>,
+      prompt: Q(k, 'cells.prompt', o),
+      hints: [Q(k, 'cells.hint1', o), Q(k, 'cells.hint2', o)],
+      explain: Q(k, 'cells.explain', o),
+    };
+  },
+  totalNum: (lab, t, k) => {
+    const N = t.widestN;
+    const r = sumWith(t.terms, N);
+    const o = { s: spacing(N), N: iso(N), counts: r.counts.map((c) => iso(c)).join(' ، '), n: iso(r.signed), len: $(tex(t.totalText)) };
+    return {
+      id: 'totalNum', kind: 'number', expected: String(r.signed), answer: <MathText>{$(String(r.signed))}</MathText>,
+      prompt: Q(k, 'totalNum.prompt', o),
+      hints: [Q(k, 'totalNum.hint1', o), Q(k, 'totalNum.hint2', o)],
+      explain: Q(k, 'totalNum.explain', o),
+    };
+  },
+  plantsAt: (lab, t, k) => {
+    const N = t.widestN;
+    const r = sumWith(t.terms, N);
+    const o = { s: spacing(N), c1: iso(r.counts[0]), c2: iso(r.counts[1] ?? 0), n: iso(r.signed) };
+    return {
+      id: 'plantsAt', kind: 'number', expected: String(r.signed), answer: <MathText>{$(String(r.signed))}</MathText>,
+      prompt: Q(k, 'plantsAt.prompt', o),
+      hints: [Q(k, 'plantsAt.hint1', o), Q(k, 'plantsAt.hint2', o)],
+      explain: Q(k, 'plantsAt.explain', o),
+    };
+  },
+  longerThanBed: (lab, t, k) => {
+    const N = t.widestN;
+    const r = sumWith(t.terms, N);
+    const o = { len: $(tex(t.totalText)), N: iso(N), n: iso(r.signed), rest: $(`\\frac{${r.signed - BigInt(N)}}{${N}}`) };
+    return {
+      id: 'longerThanBed', kind: 'choice',
+      prompt: Q(k, 'longerThanBed.prompt', o),
+      options: at([
+        { text: Q(k, 'longerThanBed.longer'), correct: true },
+        { text: Q(k, 'longerThanBed.shorter'), why: Q(k, 'longerThanBed.whyShorter', o) },
+        { text: Q(k, 'longerThanBed.equal'), why: Q(k, 'longerThanBed.whyEqual', o) },
+      ], 2),
+      hints: [Q(k, 'longerThanBed.hint1', o), Q(k, 'longerThanBed.hint2', o)],
+      explain: Q(k, 'longerThanBed.explain', o),
+    };
+  },
+};

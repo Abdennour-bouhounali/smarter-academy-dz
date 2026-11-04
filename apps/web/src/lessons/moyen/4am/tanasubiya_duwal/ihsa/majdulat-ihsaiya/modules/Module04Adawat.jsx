@@ -66,7 +66,7 @@ export default function Module04Adawat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

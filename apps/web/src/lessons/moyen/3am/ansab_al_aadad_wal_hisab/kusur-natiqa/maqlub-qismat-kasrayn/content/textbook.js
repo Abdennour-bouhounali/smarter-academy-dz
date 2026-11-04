@@ -14,7 +14,7 @@ export const LAB = {
   reverse: { world: 'reverse', tasks: [{ id: 'r1', F: 40, R: 24, target: '1' }, { id: 'r2', F: 24, R: 40, target: '1' }] },
 };
 
-/** « تذكّر — السنة الثانية » : جداء كسرين (leçon 2AM `jida-kasrayn`, NON publiée : pas de lien). RAPPELÉ, jamais reconstruit. */
+/** « تذكّر — السنة الثانية » : جداء كسرين (leçon 2AM `jida-kasrayn`, PUBLIÉE 2026-10-29 : avec un lien). RAPPELÉ, jamais reconstruit. */
 export const RECALL = {
   source: addition('prior_year_reminder'),
   title: 'تذكّر — السنة الثانية',

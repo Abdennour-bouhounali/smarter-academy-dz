@@ -30,15 +30,19 @@ const M = (s) => <MathText key={s}>{s}</MathText>;
 export default function Module01Nashat() {
   const [trials, setTrials] = useState([]);
   const [hits, setHits] = useState([]);
-  const [q1, setQ1] = useState(false);
   const [q1b, setQ1b] = useState(false);
-  const [q2, setQ2] = useState(false);
+  const [cps, setCps] = useState([]);
   const [q3, setQ3] = useState(false);
   const [q4a, setQ4a] = useState(false);
   const [q4, setQ4] = useState(false);
   const [q5, setQ5] = useState(false);
 
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand la suite de questions de son laboratoire l'est
+  const answered = (id) => cps.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const onCheckpoint = (e) => setCps((l) => [...l, e]);
+
   const onTrial = (tr) => {
+    if (tr.tk) return;   // un événement `checkpoint…` n'est pas un essai
     if (tr.kind === 'image') setTrials((t) => [...t.filter((u) => u.x !== tr.x), tr].sort((p, q) => p.x - q.x));
     if (tr.kind === 'hit') setHits((t) => (t.some((u) => u.x === tr.x) ? t : [...t, tr]));
   };
@@ -105,6 +109,7 @@ export default function Module01Nashat() {
                 title="عدّاد سيارة الأجرة: 100DA عند الركوب و 40DA للكيلومتر"
                 lead="رحلة في شوارع العاصمة بتطبيق سيارات الأجرة: جرّب عدة مسافات، وجرّب 0 كيلومتر."
                 onTrial={onTrial}
+                onCheckpoint={onCheckpoint}
               />
             ),
             advanced: () => (
@@ -119,6 +124,7 @@ export default function Module01Nashat() {
                 title="نشاط 1: أجرة قاعدية 35000DA يضاف إليها 185DA لكل ساعة إضافية"
                 lead="المثلثات الحمراء هي أعمدة جدول الكتاب (5، 8، 10، 12، 15): أتمّها على العدّاد، ثم افتح المرحلتين التاليتين."
                 onTrial={onTrial}
+                onCheckpoint={onCheckpoint}
               />
             ),
           }}
@@ -126,46 +132,30 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'لماذا لا يبدأ العدّاد من 0؟', subtitle: 'ما رأيته عند x = 0', done: q1,
+          num: 1, title: 'لماذا لا يبدأ العدّاد من 0؟', subtitle: 'ما رأيته عند x = 0', done: answered('image'),
           content: (
             <div className="space-y-3">
               {evidence}
-              <TapQuestion
-                prompt={<MathText>{'جرّبتَ $x = 0$ على العدّاد (لا كيلومتر، لا ساعة إضافية) فلم تكن القراءة $0$ . لماذا؟'}</MathText>}
-                options={[
-                  'لأنّ القطعة الثابتة تُدفع مرّة واحدة، قبل أن يبدأ x في الزيادة',
-                  'لأنّ العدّاد معطّل عند 0',
-                  'لأنّ القطعة التي تُضاف عن كل وحدة لا تساوي 0 عندما x = 0',
-                  'لأنّ القراءة تتناسب مع x',
-                ].map(M)}
-                correct={0}
-                cols={1}
-                requires={['taawid-qima']}
-                explain={<MathText>{'عند $x = 0$ تكون القطعة المتغيّرة $a \\times 0 = 0$ ، فلا يبقى إلا ما يُدفع مرّة واحدة: الجزء الثابت (100DA في سيارة الأجرة، 35000DA في الأجرة).'}</MathText>}
-                onAnswered={() => setQ1(true)}
-              />
+              <p data-checkpoint-trace="image" data-tried={answered('image') ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${answered('image') ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {answered('image')
+                  ? <MathText>{'أجبتَ في المختبر: عند $x = 0$ لا تكون القراءة $0$ ، لأنّ القطعة الثابتة تُدفع مرة واحدة قبل أن يبدأ $x$ في الزيادة.'}</MathText>
+                  : 'أنجز مرحلة «الصورة» في العدّاد (جرّب 0، ثم عدّة قيم)، وأجب عن الأسئلة التي تظهر فوقه.'}
+              </p>
             </div>
           ),
         },
         {
-          num: 2, title: 'هل تتضاعف القراءة حين يتضاعف x؟', subtitle: 'جدول الأجور ليس جدول تناسبية', done: q2,
+          num: 2, title: 'هل تتضاعف القراءة حين يتضاعف x؟', subtitle: 'جدول الأجور ليس جدول تناسبية', done: answered('image'),
           content: (
             <div className="space-y-3">
               {evidence}
-              <TapQuestion
-                prompt={<MathText>{'ضاعفتَ $x$ على العدّاد (من $5$ إلى $10$ مثلًا). هل تضاعفت القراءة أيضًا؟ لماذا؟'}</MathText>}
-                options={[
-                  M('لا: الجزء الثابت لا يتضاعف، فتتضاعف القطعة المتغيّرة وحدها'),
-                  M('نعم: القراءة تزداد كلما زاد $x$ ، فهي تتضاعف'),
-                  M('نعم: لأنّ ثمن الوحدة ثابت'),
-                  M('لا: لأنّ ثمن الوحدة يتغيّر مع $x$'),
-                ]}
-                correct={0}
-                cols={1}
-                requires={['mafhum-khattiya']}
-                explain={<MathText>{`${ACTIVITY_LINES.prop} فجدول الأجور هنا ليس جدول تناسبية.`}</MathText>}
-                onAnswered={() => setQ2(true)}
-              />
+              <p data-checkpoint-trace="rule" data-tried={answered('image') ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${answered('image') ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {answered('image')
+                  ? <MathText>{`${ACTIVITY_LINES.prop} فجدول الأجور هنا ليس جدول تناسبية: الجزء الثابت لا يتضاعف.`}</MathText>
+                  : 'أنجز مرحلة «الصورة» ثم قارن قراءة عدد وقراءة ضعفه في جدول محاولاتك.'}
+              </p>
             </div>
           ),
         },
@@ -267,7 +257,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

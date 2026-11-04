@@ -50,7 +50,7 @@ export default function Module04Awazzif() {
         { num: 4, title: 'أتعمّق 8 — مدخل الحديقة', done: d4,
           content: <TextbookExercise exercise={EX['deep-8']} requires={['ikhtiyar-amaliya']} onAnswered={() => setD4(true)} /> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

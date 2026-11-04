@@ -133,3 +133,206 @@ export function parseFree(raw, limit = 990n) {
     return abs(h) <= limit ? text(h) : null;
   } catch { return null; }
 }
+
+/* ── `corniche-ruler` (2AM, درس « التعليم على مستقيم مدرّج », 2026-10-29) : origine et valeur d'une graduation ── */
+
+/** Le nombre opposé (centièmes). */
+export const opposite = (a) => -parse(a);
+
+/** L'abscisse (centièmes) d'un point de position `pos` : la distance signée à l'origine, dans l'unité du monde. Positions et pas en centièmes. */
+export const abscissaOf = (pos, origin) => parse(pos) - parse(origin);
+/** Le point de position monde pour l'abscisse `x` quand l'origine est `origin`. */
+export const positionOf = (x, origin) => parse(x) + parse(origin);
+
+/** Le point d'abscisse x tombe-t-il sur une graduation (multiple entier du pas) ? */
+export const onGraduation = (x, step) => parse(x) % parse(step) === 0n;
+
+/**
+ * `boardFit(values, step, half = 6)` : la planche a `half` graduations de chaque côté du zéro. `off` : valeurs hors de ±half graduations ;
+ * `between` : valeurs qui ne sont pas sur une graduation ; `fits` : aucune hors de la planche.
+ */
+export function boardFit(values, step, half = 6) {
+  const s = parse(step);
+  const vs = values.map(parse);
+  const off = vs.filter((v) => abs(v) > BigInt(half) * s);
+  const between = vs.filter((v) => v % s !== 0n);
+  return { fits: off.length === 0, off, between };
+}
+
+/** La plus petite valeur de `steps` qui garde toutes les valeurs sur la planche ET sur des graduations ; sinon null. */
+export function smallestStep(values, steps, half = 6) {
+  const sorted = steps.map(parse).sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+  for (const s of sorted) {
+    const r = boardFit(values, s, half);
+    if (r.fits && r.between.length === 0) return s;
+  }
+  return null;
+}
+
+/* ── `balloon-ballast` (2AM, درس « جمع وطرح عددين نسبيين », 2026-10-29) : somme et différence de deux relatifs (E2) ── */
+
+/** La somme exacte de deux relatifs (centièmes). */
+export const add = (a, b) => parse(a) + parse(b);
+/** La différence : a − b = a + opposé(b). */
+export const sub = (a, b) => add(a, opposite(b));
+/**
+ * Le cas de la règle de la somme a + b : 'zero' (un terme nul), 'opposites' (a = −b ≠ 0), 'same' (même signe) ou 'different'.
+ */
+export function ruleCase(a, b) {
+  const p = parse(a); const q = parse(b);
+  if (p === 0n || q === 0n) return 'zero';
+  if (p === -q) return 'opposites';
+  return (p < 0n) === (q < 0n) ? 'same' : 'different';
+}
+/** La charge minimale d'une altitude entière a (en mètres) : |a| nacelles de flamme ou |a| sacs. a est un entier (centièmes multiples de 100). */
+export function ballastOf(a) {
+  const p = parse(a);
+  if (p % 100n !== 0n) throw new Error('altitude non entière');
+  const n = Number(abs(p) / 100n);
+  return p >= 0n ? { tokens: n, bags: 0 } : { tokens: 0, bags: n };
+}
+
+/* ── `dig-grid` (2AM, درس « تعليم نقطة في المستوي », 2026-10-29) : points du plan { x, y } en centièmes (E4) ── */
+
+/** Un point { x, y } depuis deux nombres (texte, nombre ou centièmes). */
+export const point = (x, y) => ({ x: parse(x), y: parse(y) });
+/** « (-1,5 ; 2,5) » : l'abscisse d'abord, séparées par « ; » (signe moins ASCII). */
+export const pointText = (p) => `(${text(p.x)} ; ${text(p.y)})`;
+/** Le quadrant 1 … 4 (sens trigonométrique), ou 'axisX' (ordonnée nulle), 'axisY' (abscisse nulle), 'origin'. */
+export function quadrantOf(p) {
+  if (p.x === 0n && p.y === 0n) return 'origin';
+  if (p.y === 0n) return 'axisX';
+  if (p.x === 0n) return 'axisY';
+  if (p.x > 0n) return p.y > 0n ? 1 : 4;
+  return p.y > 0n ? 2 : 3;
+}
+/** Le symétrique par rapport à l'axe des abscisses (l'ordonnée change de signe) — symétrie axiale seulement. */
+export const symX = (p) => ({ x: p.x, y: -p.y });
+/** Le symétrique par rapport à l'axe des ordonnées (l'abscisse change de signe). */
+export const symY = (p) => ({ x: -p.x, y: p.y });
+/** Les coordonnées d'un point de position monde `world` quand le piquet (origine) est en `origin`. */
+export const coordsOf = (world, origin) => ({ x: world.x - origin.x, y: world.y - origin.y });
+/** Le piquet qui donne au point `world` les coordonnées `wanted`. */
+export const originFor = (world, wanted) => ({ x: world.x - wanted.x, y: world.y - wanted.y });
+/** Un seul piquet pour plusieurs trouvailles `[{ world, wanted }]` : le piquet, ou null si les relevés sont incompatibles. */
+export function consistent(pairs) {
+  if (!pairs.length) return null;
+  const o = originFor(pairs[0].world, pairs[0].wanted);
+  return pairs.every((q) => { const r = originFor(q.world, q.wanted); return r.x === o.x && r.y === o.y; }) ? o : null;
+}
+/** « (-1,5 ; 2,5) », « -1,5 ; 2,5 », « ( ٣ ؛ 4 ) » → { x, y } ; null si illisible. */
+export function parsePoint(raw) {
+  const parts = String(raw ?? '').replace(/[⁦⁩()]/g, '').split(/[;؛]/).map((s) => s.trim());
+  if (parts.length !== 2 || parts.some((s) => s === '')) return null;
+  try { return { x: parse(parts[0]), y: parse(parts[1]) }; } catch { return null; }
+}
+
+/* ── `tug-rope` (2AM, درس « حساب مجموع جبري », 2026-10-29) : chaînes de additions/soustractions de relatifs (E3) ── */
+
+/**
+ * `terms(text)` → arbre de termes `[{ op: '+' | '-', value } | { op, group: [...] }]` : `op` est l'opération qui PRÉCÈDE le terme (le premier : '+').
+ * Lit « (−9) − (+2) + (−5) − (−4) », « −9 − 2 − 5 + 4 » et « (+12) − [(−6) − (−2) + (+9)] » : « ( ) » et « [ ] » d'UN nombre sont ses crochets de signe,
+ * ceux de plusieurs termes forment un groupe imbriqué. Lève si illisible.
+ */
+export function terms(raw) {
+  const s = String(raw).replace(/[⁦⁩\s]/g, '').replace(/−/g, '-').replace(/[٠-٩]/g, (c) => String(ARABIC_DIGITS.indexOf(c))).replace(/\[/g, '(').replace(/\]/g, ')');
+  let pos = 0;
+  const fail = () => { throw new Error(`somme illisible : ${raw}`); };
+  function number() {
+    const m = /^[+-]?\d+(?:[.,٫]\d{1,2})?/.exec(s.slice(pos));
+    if (!m) fail();
+    pos += m[0].length;
+    return parse(m[0].replace('+', ''));
+  }
+  /** un opérande : nombre signé, ou « ( expr ) » ; renvoie { value } ou { group }. */
+  function operand(signed) {
+    if (s[pos] === '(') {
+      pos += 1;
+      const inner = expr(true);
+      if (s[pos] !== ')') fail();
+      pos += 1;
+      return inner.length === 1 && inner[0].value !== undefined && inner[0].lone ? { value: inner[0].value } : { group: inner.map(({ lone, ...r }) => r) };
+    }
+    if (!signed && !/[\d]/.test(s[pos] ?? '')) fail();
+    return { value: number() };
+  }
+  function expr(nested) {
+    const out = [];
+    let first = true;
+    while (pos < s.length && s[pos] !== ')') {
+      let op = '+';
+      if (first) {
+        if (s[pos] === '-' && s[pos + 1] === '(') { op = '-'; pos += 1; }
+        else if (s[pos] === '+' && s[pos + 1] === '(') pos += 1;
+      } else {
+        if (s[pos] !== '+' && s[pos] !== '-') fail();
+        op = s[pos]; pos += 1;
+      }
+      const o = operand(first);
+      // un nombre sans signe après un opérateur : « 5 − 6 » (écriture simplifiée) ; un nombre signé après un opérateur doit être entre parenthèses
+      out.push({ op, ...o, ...(first && nested ? { lone: true } : {}) });
+      first = false;
+    }
+    if (!out.length) fail();
+    if (!nested && pos < s.length) fail();
+    if (out.length > 1) out.forEach((t) => { delete t.lone; });
+    return out;
+  }
+  const tree = expr(false);
+  return tree.map(({ lone, ...t }) => t);
+}
+
+/** Les termes signés (addends) de l'arbre ; un groupe vaut son résultat. `-x` devient `+opposé(x)` (le groupe est calculé D'ABORD). */
+export function asSum(nodes) {
+  return nodes.map((n) => {
+    const v = n.group ? algebraicSum(n.group) : n.value;
+    return n.op === '-' ? -v : v;
+  });
+}
+/** La somme algébrique, de gauche à droite, les groupes d'abord (centièmes). */
+export function algebraicSum(nodes) {
+  return nodes.reduce((acc, n) => {
+    const v = n.group ? algebraicSum(n.group) : n.value;
+    return n.op === '-' ? acc - v : acc + v;
+  }, 0n);
+}
+/** Termes signés → { pos, neg, posSum, negSum, total } (les termes nuls sont ignorés). */
+export function groupBySign(addends) {
+  const pos = addends.filter((x) => x > 0n);
+  const neg = addends.filter((x) => x < 0n);
+  const posSum = pos.reduce((a, b) => a + b, 0n);
+  const negSum = neg.reduce((a, b) => a + b, 0n);
+  return { pos, neg, posSum, negSum, total: posSum + negSum };
+}
+/** L'écriture simplifiée des termes signés : « -9 - 2 - 5 + 4 » (signe moins ASCII, virgule décimale). */
+export function simplifiedText(addends) {
+  return addends.map((x, i) => {
+    const t = text(x < 0n ? -x : x);
+    if (i === 0) return x < 0n ? `-${t}` : t;
+    return `${x < 0n ? '-' : '+'} ${t}`;
+  }).join(' ');
+}
+/** L'écriture avec parenthèses : « (-9) - (+2) + (-5) » pour des termes `[{ op, value }]` plats. */
+export const bracketText = (nodes) => nodes.map((n, i) => {
+  const v = `(${n.value < 0n ? '-' : '+'}${text(n.value < 0n ? -n.value : n.value)})`;
+  return i === 0 ? v : `${n.op} ${v}`;
+}).join(' ');
+
+/* ── `gap-caliper` (2AM, درس « المسافة بين نقطتين على مستقيم مدرّج », 2026-10-29) : la distance entre deux abscisses (E5) ── */
+
+/** La distance entre deux points d'abscisses a et b : l'abscisse la plus grande moins la plus petite — toujours ≥ 0 et symétrique (AB = BA). */
+export const gap = (a, b) => { const p = parse(a); const q = parse(b); return p >= q ? sub(p, q) : sub(q, p); };
+/** Les DEUX abscisses à la distance d ≥ 0 d'un point a : [a − d, a + d] (une seule si d = 0). */
+export function pointsAt(a, d) {
+  const dist = parse(d);
+  if (dist < 0n) throw new Error('une distance est positive');
+  const lo = sub(a, dist);
+  const hi = add(a, dist);
+  return lo === hi ? [lo] : [lo, hi];
+}
+/** L'abscisse du milieu de [AB] = la plus petite + la moitié de la distance ; null si elle exige un troisième chiffre décimal (centièmes impairs). */
+export function midpointAbscissa(a, b) {
+  const lo = parse(a) <= parse(b) ? parse(a) : parse(b);
+  const g = gap(a, b);
+  return g % 2n === 0n ? add(lo, g / 2n) : null;
+}

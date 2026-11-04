@@ -59,6 +59,22 @@ export const RECALL_TEN = {
   lesson: 'qawaid-quwa-ashara',
 };
 
+/** « تذكّر — السنة الثانية » (leçon 2AM `silsila-bidun-aqwas`, PUBLIÉE : avec un lien) : l'ordre des opérations, rappelé avant la priorité des puissances. */
+export const RECALL_2AM = {
+  source: addition('prior_year_reminder'),
+  title: 'تذكّر — السنة الثانية',
+  text: 'في سلسلة عمليات دون أقواس نحسب الضرب والقسمة قبل الجمع والطرح، ومن اليسار نحو اليمين: $15 + 3 \\times 4 = 15 + 12 = 27$ .',
+  lesson: 'silsila-bidun-aqwas',
+};
+
+/** « تذكّر — السنة الثانية » (leçon 2AM `silsila-bi-aqwas`, PUBLIÉE : avec un lien) : la barre de fraction groupe le numérateur et le dénominateur, rappelée avant la fraction de l'étape 4. */
+export const RECALL_2AM_AQWAS = {
+  source: addition('prior_year_reminder'),
+  title: 'تذكّر — السنة الثانية',
+  text: 'خطّ الكسر يجمع البسط ويجمع المقام كأنّ كلًّا منهما بين قوسين، فنحسب كلًّا منهما أوّلًا ثم نقسم: $\\frac{20+4}{9-3} = (20+4) \\div (9-3) = 24 \\div 6 = 4$ .',
+  lesson: 'silsila-bi-aqwas',
+};
+
 /** طرائق p. 45 (« قواعد الحساب على قوى عدد نسبي ») et معارف 8 p. 44 (la priorité) — réécrits, autres nombres. */
 export const METHOD = {
   simplify: {

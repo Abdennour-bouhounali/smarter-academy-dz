@@ -120,6 +120,6 @@ export default function Module02BilHisab() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={2} />} />
+      footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />} />
   );
 }

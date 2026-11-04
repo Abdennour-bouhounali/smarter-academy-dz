@@ -33,7 +33,11 @@ function normalize(text) {
     .replace(/\s+/g, '');
 }
 
-function tokenize(src) {
+/** Les lettres acceptées par défaut (3AM) ; les leçons de 2AM (unité 4) passent `{ letters: LETTERS_2AM }` (2026-10-29, `ibara-harfiya-intaj`). */
+export const DEFAULT_LETTERS = ['x', 'y'];
+export const LETTERS_2AM = ['n', 'x', 'y', 'a', 'b', 'c', 'm'];
+
+function tokenize(src, letters = DEFAULT_LETTERS) {
   const out = [];
   let i = 0;
   while (i < src.length) {
@@ -42,18 +46,21 @@ function tokenize(src) {
       let j = i; while (j < src.length && /\d/.test(src[j])) j += 1;
       if (src[j] === '.' && /\d/.test(src[j + 1] ?? '')) { j += 1; while (j < src.length && /\d/.test(src[j])) j += 1; }
       out.push({ k: 'num', s: src.slice(i, j) }); i = j;
-    } else if (c === 'x' || c === 'y' || c === 'X' || c === 'Y') { out.push({ k: 'var', s: c.toLowerCase() }); i += 1; }
+    } else if (letters.includes(c.toLowerCase())) { out.push({ k: 'var', s: c.toLowerCase() }); i += 1; }
     else if ('+-*()^'.includes(c)) { out.push({ k: c }); i += 1; }
     else throw new Error(`caractère illisible : ${c}`);
   }
   return out;
 }
 
-/** Texte → arbre (grammaire : entiers et décimaux, x, y, + − × ( ), ², ^2, ^3, coefficient implicite « 3x » ; 24 caractères au plus). Lève une erreur sinon. */
-export function parseExpression(text) {
+/**
+ * Texte → arbre (grammaire : entiers et décimaux, x, y, + − × ( ), ², ^2, ^3, coefficient implicite « 3x » ; 24 caractères au plus). Lève une erreur sinon.
+ * `options.letters` : la liste des lettres acceptées (défaut `['x', 'y']`, les appelants de 3AM sont inchangés ; 2AM : `LETTERS_2AM`).
+ */
+export function parseExpression(text, options = {}) {
   const raw = String(text);
   if (raw.replace(/\s+/g, '').length > MAX_EXPR_LENGTH) throw new Error('expression trop longue');
-  const toks = tokenize(normalize(raw));
+  const toks = tokenize(normalize(raw), options.letters ?? DEFAULT_LETTERS);
   let p = 0;
   const peek = () => toks[p];
   const eat = (k) => { if (toks[p]?.k !== k) throw new Error(`« ${k} » attendu`); p += 1; return toks[p - 1]; };
@@ -497,8 +504,8 @@ export function judgeLine(tree, env = {}, choices = []) {
 
 /* ═════════════ Outils pour la طريقة (deux expressions) ═════════════ */
 
-/** Le polynôme en x de l'arbre, en termes { c, p } entiers, ou null (autre lettre, coefficient non entier, degré > 6). */
-export function toTerms(tree) {
+/** Le polynôme en `letter` (défaut x) de l'arbre, en termes { c, p } entiers, ou null (autre lettre, coefficient non entier, degré > 6). */
+export function toTerms(tree, letter = 'x') {
   const ps = (d) => d;
   const addP = (a, b, k = 1) => { const r = { ...a }; for (const [p, c] of Object.entries(b)) r[p] = add(r[p] ?? ZERO, k === 1 ? c : neg(c)); return r; };
   const mulP = (a, b) => { const r = {}; for (const [p, c] of Object.entries(a)) for (const [q, e] of Object.entries(b)) { const k = Number(p) + Number(q); r[k] = add(r[k] ?? ZERO, mul(c, e)); } return r; };
@@ -506,7 +513,7 @@ export function toTerms(tree) {
   const go = (n) => {
     switch (n.t) {
       case 'num': return ps({ 0: n.v });
-      case 'var': if (n.name !== 'x') { ok = false; return {}; } return { 1: rat(1) };
+      case 'var': if (n.name !== letter) { ok = false; return {}; } return { 1: rat(1) };
       case 'neg': return addP({}, go(n.a), -1);
       case 'add': return addP(go(n.a), go(n.b));
       case 'sub': return addP(go(n.a), go(n.b), -1);
@@ -527,17 +534,17 @@ export function toTerms(tree) {
   return terms.sort((a, b) => b.p - a.p);
 }
 
-/** Deux arbres sont-ils égaux comme polynômes en x (la preuve par développement) ? null si l'un n'est pas un polynôme entier en x. */
-export function samePolynomial(a, b) {
-  const ta = toTerms(a); const tb = toTerms(b);
+/** Deux arbres sont-ils égaux comme polynômes en `letter` (défaut x ; la preuve par développement) ? null si l'un n'est pas un polynôme entier en cette lettre. */
+export function samePolynomial(a, b, letter = 'x') {
+  const ta = toTerms(a, letter); const tb = toTerms(b, letter);
   if (!ta || !tb) return null;
   return ta.length === tb.length && ta.every((t, i) => t.c === tb[i].c && t.p === tb[i].p);
 }
 
-/** Le premier candidat (liste de rationnels) où les deux expressions (en x) diffèrent, sinon null — le CONTRE-EXEMPLE. */
-export function witness(a, b, candidates) {
+/** Le premier candidat (liste de rationnels) où les deux expressions (en `letter`, défaut x) diffèrent, sinon null — le CONTRE-EXEMPLE. */
+export function witness(a, b, candidates, letter = 'x') {
   for (const c of candidates) {
-    const env = { x: c };
+    const env = { [letter]: c };
     if (!eq(evaluate(a, env), evaluate(b, env))) return c;
   }
   return null;

@@ -56,3 +56,64 @@ describe('hundred-grid — rendu', () => {
     expect(wrong).toContain('225');
   });
 });
+
+describe('hundred-grid — questions pendant le labo (LabCheckpoint, lot 6)', () => {
+  it('chaque tâche des deux niveaux : chaque question a un texte, deux indices, une seule bonne réponse, ni clé brute ni {{', async () => {
+    const { chainOf, QUESTIONS } = await import('./HundredGrid');
+    for (const level of ['beginner', 'advanced']) {
+      const base = L.init(LV[level].numbers);
+      base.tasks.forEach((tk, i) => {
+        const s = { ...base, ti: i };
+        const chain = chainOf(s);
+        expect(chain.length, `${level}.${tk.id}`).toBeGreaterThanOrEqual(2);
+        expect(chain.includes('rule'), `${level}.${tk.id} rule`).toBe(i === base.tasks.length - 1);
+        for (const qid of chain) {
+          const q = QUESTIONS[qid](s, k);
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${level}.${tk.id}.${qid}`).not.toMatch(RAW);
+          expect(out, `${level}.${tk.id}.${qid}`).not.toContain('{{');
+          expect(out, `${level}.${tk.id}.${qid}`).not.toContain('NaN');
+          expect(q.hints, `${level}.${tk.id}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${level}.${tk.id}.${qid}`).toHaveLength(1);
+          else expect(q.expected).toBeTruthy();
+        }
+      });
+    }
+  });
+
+  it('les réponses attendues viennent des nombres de la tâche (la case 2,4 ; 72 ; 115 ; 80 ; 1,4)', async () => {
+    const { QUESTIONS } = await import('./HundredGrid');
+    const b = L.init(LV.beginner.numbers);
+    expect(QUESTIONS.cell(b, k).expected).toBe('2,4');
+    expect(QUESTIONS.double(b, k).expected).toBe('72');
+    expect(QUESTIONS.cell({ ...b, ti: 1 }, k).expected).toBe('1,5');
+    expect(QUESTIONS.fraction({ ...b, ti: 1 }, k).expected).toBe('40/100');
+    expect(QUESTIONS.cells({ ...b, ti: 2 }, k).expected).toBe('115');
+    expect(QUESTIONS.cells({ ...b, ti: 3 }, k).expected).toBe('80');
+    const a = L.init(LV.advanced.numbers);
+    expect(QUESTIONS.cell({ ...a, ti: 2 }, k).expected).toBe('1,4');
+  });
+
+  it('« أعِد التجربة » : la tâche n’est plus faite et le plateau est propre', () => {
+    let s = L.init(LV.beginner.numbers);
+    s = L.setT(s, 15);
+    s = L.setGuess(s, '36');
+    s = L.go(s);
+    expect(L.taskDone(s)).toBe(true);
+    const r = L.retryTask(s);
+    expect(L.taskDone(r)).toBe(false);
+    expect(r.t).toBe(0);
+    expect(r.guess).toBe('');
+    expect(r.trials).toHaveLength(1);
+  });
+
+  it('mode guidé : ni la progression ni le bouton d’indice ; LabStepper à 4 puis 5 pastilles', () => {
+    for (const [level, n] of [['beginner', 4], ['advanced', 5]]) {
+      const out = html({ ...LV[level].numbers, level });
+      expect(out).not.toContain('data-manipulation-progress');
+      expect(out).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+      expect(out).toContain('data-lab-stepper');
+      expect([...out.matchAll(/data-hg-step="/g)]).toHaveLength(n);
+    }
+  });
+});

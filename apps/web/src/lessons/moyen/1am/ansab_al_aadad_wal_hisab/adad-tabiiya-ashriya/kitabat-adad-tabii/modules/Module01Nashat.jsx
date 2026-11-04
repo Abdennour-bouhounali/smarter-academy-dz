@@ -16,14 +16,17 @@ import { LAB, WORKSHOP } from '../content/textbook';
  *   2. des questions sur CE QUE L'ÉLÈVE A FAIT : les deux 7 de SON 2577, le crayon ajouté à 999, le 0 de 2017 ;
  *   3. les noms (briques), APRÈS la réponse — une brique visible avant la réponse la donnerait.
  * Le نشاط 1 du manuel (0 1 3 8 ; 25 / 52 ; 999) est posé en application au module 4. LP : P2.
+ * Déploiement du prototype (2026-10-28) : les questions sur ce que l'élève a FAIT (ce qui reste, les deux 7, le 0 de 2017, la règle) sont
+ * posées PAR-DESSUS le labo après chaque tâche (`RankExchange › CHAINS`) ; les étapes 1 et 3 en gardent la TRACE (`checkpoint-done`) puis
+ * posent les noms. La cascade 999 + 1 (المستوى المتقدّم) reste une question d'étape.
  */
 export default function Module01Nashat() {
   const [trials, setTrials] = useState([]);
-  const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
-  const [q3, setQ3] = useState(false);
   const record = (e) => setTrials((list) => [...list, e]);
-  const did = (task) => trials.some((e) => e.task === task && e.ok);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : une étape est faite quand la suite de questions de sa tâche l'est
+  const answered = (task) => trials.some((e) => e.tk === 'checkpoint-done' && e.id === task);
+  const did = (task) => answered(task) || trials.some((e) => e.task === task && e.ok && task === 'next');
 
   /** Ce que l'élève a fait au labo, rappelé au-dessus de la question qui s'en sert. */
   const Evidence = ({ task, done, todo }) => (
@@ -58,19 +61,13 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'هل يعدّ الرقمان 7 نفس العدد من الأقلام؟', subtitle: 'في لوحتك', done: q1,
+          num: 1, title: 'هل يعدّ الرقمان 7 نفس العدد من الأقلام؟', subtitle: 'في لوحتك', done: answered('pack'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence task="pack" done={<span>ربطتَ حتى صار العدد مكتوبًا: <bdi dir="ltr">{LAB.packValue}</bdi>.</span>}
-                todo="اربط أقلام الورشة أوّلًا (مبتدئ)، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<span>في لوحتك <bdi dir="ltr">{LAB.packValue}</bdi> يظهر الرقم 7 مرّتين: في عمود الأقلام وفي عمود الحزم. كم قلمًا يعدّ كلّ واحد منهما؟</span>}
-                options={['7 أقلام ، و 70 قلمًا', '7 أقلام ، و 7 أقلام', '70 قلمًا ، و 7 أقلام']}
-                correct={0} cols={1} requires={['maratib-ibtidai']}
-                explain={WORKSHOP.sevens}
-                onAnswered={() => setQ1(true)}
-              />
-              {q1 && <KnowledgeBrick id="qima-mawdi" />}
+              <Evidence task="pack" done={<span>أجبتَ في المختبر: ربطتَ كل عشرة حتى صار العدد مكتوبًا <bdi dir="ltr">{LAB.packValue}</bdi>، والرقم 7 في عمود الحزم يعدّ 70 قلمًا لا 7.</span>}
+                todo="اربط أقلام الورشة (المهمة 1 في المستوى المبتدئ)، وأجب عن الأسئلة التي تظهر فوق المختبر." />
+              {answered('pack') && <KnowledgeBrick id="tabadul" lead="عمود فيه 10: ماذا فعلتَ قبل أن تستطيع كتابة العدد؟" />}
+              {answered('pack') && <KnowledgeBrick id="qima-mawdi" />}
             </div>
           ),
         },
@@ -87,28 +84,20 @@ export default function Module01Nashat() {
                 explain={<MathText>{WORKSHOP.cascade}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
-              {q2 && <KnowledgeBrick id="tabadul" lead="عمود فيه 10: ماذا فعلتَ قبل أن تستطيع كتابة العدد؟" />}
             </div>
           ),
         },
         {
-          num: 3, title: 'لماذا نكتب 0 في عمود فارغ؟', subtitle: 'طلبية المدرسة الجبلية', done: q3,
+          num: 3, title: 'لماذا نكتب 0 في عمود فارغ؟', subtitle: 'طلبية المدرسة الجبلية', done: answered('unpack'),
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence task="unpack" done={<span>فتحتَ صندوقَي المخزن: <bdi dir="ltr">{LAB.unpack.n}</bdi> قلمًا.</span>}
-                todo="افتح صناديق المخزن (المهمة 2 في المستوى المبتدئ)، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<span>في المخزن صندوقان، ولا علبة، وحزمة واحدة، و 7 أقلام. لو لم نكتب شيئًا في عمود العلب الفارغ، ماذا نقرأ؟</span>}
-                options={['217 — عددًا آخر أصغر بكثير', '2017 — نفس العدد', '2170 — عددًا أكبر']}
-                correct={0} cols={1} requires={['tabadul']}
-                explain={WORKSHOP.zero}
-                onAnswered={() => setQ3(true)}
-              />
+              <Evidence task="unpack" done={<span>أجبتَ في المختبر: فتحتَ صندوقَي المخزن فوجدتَ <bdi dir="ltr">{LAB.unpack.count}</bdi> حزمة، مع أنّ رقم العشرات في <bdi dir="ltr">{LAB.unpack.n}</bdi> هو 1؛ وبدون الصفر نقرأ <bdi dir="ltr">217</bdi>.</span>}
+                todo="افتح صناديق المخزن (المهمة 2 في المستوى المبتدئ)، وأجب عن الأسئلة التي تظهر فوق المختبر." />
             </div>
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

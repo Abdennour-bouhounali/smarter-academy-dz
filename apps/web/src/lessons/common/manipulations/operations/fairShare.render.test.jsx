@@ -3,7 +3,8 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import i18n from '../../../../i18n';
-import FairShare from './FairShare';
+import FairShare, { chainsOf, QUESTIONS } from './FairShare';
+import * as FL from '../logic/fairShare';
 import ManipulationWorkspace from '../ManipulationWorkspace';
 import { LEVELS } from '../levels';
 
@@ -97,5 +98,48 @@ describe('fair-share — rendu', () => {
   it('counted nouns agree', () => {
     expect([1, 2, 3, 11, 100].map((count) => say('cakes', { count }))).toEqual(['كعكة واحدة', 'كعكتان', '3 كعكات', '11 كعكةً', '100 كعكة']);
     expect([1, 2, 6].map((count) => say('persons', { count }))).toEqual(['شخص واحد', 'شخصان', '6 أشخاص']);
+  });
+});
+
+describe('fair-share — questions pendant le labo (LabCheckpoint)', () => {
+  const k = (key, o) => i18n.t(`lesson:manipulation.fairShare.${key}`, o);
+  const RAW_ = /manipulation\.[a-zA-Z]/;
+  for (const level of ['beginner', 'advanced']) {
+    it(`${level} : chaque question a un texte, une seule bonne réponse, deux indices, et ni clé brute ni {{`, () => {
+      const { scene, orders } = LEVELS['fair-share'][level].numbers;
+      const lab = FL.init({ orders });
+      const chains = chainsOf(lab);
+      expect(Object.keys(chains)).toHaveLength(orders.length);
+      for (const [i, chain] of Object.entries(chains)) {
+        for (const qid of chain) {
+          const q = QUESTIONS[qid](lab, Number(i), k, scene);
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${i}.${qid}`).not.toMatch(RAW_);
+          expect(out, `${i}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${i}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${i}.${qid}`).toHaveLength(1);
+          else expect(q.expected, `${i}.${qid}`).toBeTruthy();
+        }
+      }
+      expect(chains[orders.length - 1].at(-1)).toBe('rule');
+    });
+  }
+  it('les nombres viennent de la demande : 3 ÷ 4 tombe juste (0,75), 2 ÷ 3 jamais', () => {
+    const lab = FL.init({ orders: [[3, 4], [2, 3]] });
+    expect(chainsOf(lab)[0]).toEqual(['share', 'check', 'decimal']);
+    expect(chainsOf(lab)[1]).toEqual(['share', 'check', 'tenths', 'rule']);
+    expect(QUESTIONS.share(lab, 1, k, 'canteen').expected).toBe('2/3');
+    expect(renderToString(<span>{QUESTIONS.decimal(lab, 0, k, 'canteen').options[0].text}</span>)).toContain('0,75');
+  });
+});
+
+describe('fair-share — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('questions actives : ni la progression ni le bouton d’indice ; checkpoints={false} : les deux reviennent', () => {
+    const g = renderToString(<FairShare {...LEVELS['fair-share'].beginner.numbers} />);
+    expect(g).not.toContain('data-manipulation-progress');
+    expect(g).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    const off = renderToString(<FairShare {...LEVELS['fair-share'].beginner.numbers} checkpoints={false} />);
+    expect(off).toContain('data-manipulation-progress');
+    expect(off).toContain(i18n.t('lesson:manipulation.hint.show'));
   });
 });

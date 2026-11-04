@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { CheckCircle2, Sparkles, Hand, FlaskConical, Undo2, RotateCcw, ChevronLeft, ShieldAlert, Plus, ChevronUp, ChevronDown, ChevronsLeft, ChevronsRight, Magnet, Crown } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
+import * as T from '@smarter-academy/core/arithmetic/tenPowers.js';
 import MathText from '../../components/MathText';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
@@ -10,6 +11,10 @@ import { useManipulation } from '../useManipulation';
 import { LabCard, StageFrame, PromptCard, VerdictBanner } from '../primitives/LabKit';
 import KidFigure from '../primitives/KidFigure';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { LEVELS } from '../levels';
 import * as L from '../logic/sizeLadder';
 import { CSS, ROW, ZONE, Rung, Given, SciNode, sciTexOf } from './sizeLadder/art';
@@ -42,6 +47,11 @@ import { CSS, ROW, ZONE, Rung, Given, SciNode, sciTexOf } from './sizeLadder/art
  *   FORMALIZATION  265 = 2,65 × 10² ; 10² ≤ 265 < 10³ ; rang de grandeur 3 × 10²
  *   TRANSFER       « جرّب أعدادك » (toujours ouvert), les exercices et la banque
  *
+ * QUESTIONS PENDANT LE LABO (2026-10-28, lot 6) : après chaque carte (une tâche) une suite de 2 à 3 questions se pose PAR-DESSUS le labo (`CHAINS`, `QUESTIONS` en bas du fichier) sur ce que
+ * l'élève vient de FAIRE avec SA carte : la barreau, l'écriture scientifique, l'aimant, la comparaison ; la dernière tâche finit par LA RÈGLE (la découverte d'avant passe dans la carte).
+ * Étapes `LabStepper` (`[data-sl-step=<i>]`) + fête ; « إعادة » repart de la carte 1 ; obligatoires pour tout élève, coupées par l'enseignant pour SON compte
+ * (`useLabCheckpointSettings`) ; `checkpoints` = false les coupe aussi ; `onCheckpoint(ev)` : la trace que les étapes du module relisent (`checkpoint-done`).
+ *
  * D'UN SEUL REGARD (§8bis) : `[data-sl-glance]` enveloppe la consigne, la carte, le mur, les boutons et le verdict.
  * ONBOARDING : `coach` (défaut true) → `LabCoach` ; `logic/sizeLadder.js › coachOf` (card · rung · cell · magnet · type · pick · next · free).
  * Props : `tasks`, `level`, `levels`, `coach`, `title`, `lead`, `onTrial(event)`, `onFinished()`.
@@ -58,8 +68,8 @@ export function numbersFor({ tasks, level }) {
 }
 
 export default function SizeLadder({
-  tasks, title, lead, level, levels: withLevels = true, coach: coachOn = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  tasks, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
+  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished, onCheckpoint,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
@@ -68,14 +78,57 @@ export default function SizeLadder({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
   if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    const restart = scene.key === numsKey && scene.rc !== state.resetCount;
-    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-    setLab(restart ? L.restartTask(lab) : L.init(nums));
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la carte 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
+    setLab(L.init(nums));
   }
   const kind = L.discoveryKind(lab);
-  useEffect(() => { if (kind) state.discover(); }, [kind, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // les questions pendant le labo : la suite de la tâche courante ; celle qui finit par la règle remplace la découverte automatique
+  const cpSettings = useLabCheckpointSettings('size-ladder');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cur = L.taskOf(lab);
+  const chain = cpOn && cpSettings.enabled && !L.isFree(lab) ? CHAINS[cur.id] ?? null : null;
+  const ruleByCheckpoint = cpOn && cpSettings.enabled && lab.tasks.some((tk) => CHAINS[tk.id]?.includes('rule'));
+  const taskReached = L.taskDone(lab);
+  const cp = useLabCheckpoint({
+    id: chain ? cur.id : null,
+    questions: chain && taskReached ? chain.map((q) => QUESTIONS[q](lab, cur, k)) : null,
+    reached: taskReached,
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.retryTask),
+    onEvent: (ev) => state.report(onCheckpoint, ev),
+    onDone: (id) => { if (CHAINS[id]?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  useEffect(() => { if (kind && !ruleByCheckpoint) state.discover(); }, [kind, state.epoch, ruleByCheckpoint]); // eslint-disable-line react-hooks/exhaustive-deps
+  // une étape est FAITE quand sa carte est posée ET que ses questions sont répondues : alors la pastille passe au vert et on fête
+  const stepDone = lab.tasks.map((_, i) => !!lab.done[i] && (i !== lab.ti || !cp.blocking));
+  const stepper = lab.tasks.length > 1 && !L.isFree(lab) && (
+    <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-sl-step" />
+  );
+  const party = useStepCelebration();
+  const celebrated = useRef({ inits: 0, set: new Set() });
+  if (celebrated.current.inits !== scene.inits) celebrated.current = { inits: scene.inits, set: new Set() };   // « إعادة » : on refête
+  const nowDone = !L.isFree(lab) && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.set.has(lab.ti)) return;
+    celebrated.current.set.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
+  /* ── le son (muet sauf « الصوت ») : un cran à chaque déplacement de la carte, la cloche quand un barreau ou une case est accepté, le drapeau pour l'aimant, la couronne, la saisie juste, « over » pour un refus ── */
+  const heardAt = useRef({ moves: 0, at: 0 });
+  useEffect(() => {
+    const h = heardAt.current;
+    if (lab.moves > h.moves) { const now = performance.now(); if (now - h.at > 35) { playSfx('tooth'); h.at = now; } }
+    h.moves = lab.moves;
+  }, [lab.moves]);
+  useEffect(() => {
+    const l = lab.last;
+    if (!l) return;
+    if (l.kind === 'refused') playSfx('over');
+    else if (l.kind === 'rung' || l.kind === 'dock') playSfx('bell');
+    else if (l.kind === 'magnet' || l.kind === 'crown' || l.kind === 'typed-ok') playSfx('flag');
+  }, [lab.flash]); // eslint-disable-line react-hooks/exhaustive-deps
   const finishedOnce = useRef(false);
   const everyDone = L.allDone(lab);
   useEffect(() => {
@@ -110,6 +163,8 @@ export default function SizeLadder({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       coach={coachOn ? coach : null}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={!!chain || ruleByCheckpoint}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={discovery}
@@ -118,7 +173,8 @@ export default function SizeLadder({
       <ManipulationStage className="bg-gradient-to-b from-amber-50/70 to-white">
         <div className="space-y-2" data-size-ladder data-task={lab.ti} data-solved={everyDone ? 'true' : 'false'}>
           <style dangerouslySetInnerHTML={{ __html: CSS }} />
-          <Lab lab={lab} setLab={setLab} k={k} lead={state.isAuthoredLevel ? lead : null} />
+          <Lab lab={lab} setLab={setLab} k={k} lead={state.isAuthoredLevel ? lead : null}
+            overlay={<>{party.node}{cp.node}</>} stepper={stepper} blocked={cp.blocking} />
         </div>
       </ManipulationStage>
     </ManipulationShell>
@@ -154,7 +210,7 @@ function placement(card, st) {
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-function Lab({ lab, setLab, k, lead }) {
+function Lab({ lab, setLab, k, lead, overlay, stepper, blocked }) {
   const free = L.isFree(lab);
   const task = L.taskOf(lab);
   const done = L.taskDone(lab);
@@ -167,37 +223,21 @@ function Lab({ lab, setLab, k, lead }) {
       contextProps={{ 'data-sl-context': ctxKey }}
       title={<MathText>{k(`question.${qKey}`)}</MathText>} titleClassName="text-base" lamp={free ? null : done ? 'on' : 'off'}
       titleProps={{ 'data-sl-prompt': qKey, 'data-lit': done ? 'true' : 'false' }}
-      aside={lab.tasks.length > 1 && !free ? <Steps lab={lab} k={k} /> : undefined}
+      aside={stepper || undefined}
       instruction={lead || undefined} />
   );
   return (
     <>
       <div className="relative space-y-2" data-sl-glance>
+        {overlay}
         {prompt}
         <Tray lab={lab} k={k} />
         <Wall lab={lab} setLab={setLab} k={k} />
         <TypedRow lab={lab} setLab={setLab} k={k} />
-        <Banner lab={lab} setLab={setLab} k={k} />
+        <Banner lab={lab} setLab={setLab} k={k} blocked={blocked} />
       </div>
       <FreeCard lab={lab} setLab={setLab} k={k} />
     </>
-  );
-}
-
-function Steps({ lab, k }) {
-  return (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={tk.id} role="listitem" data-sl-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-amber-700 bg-amber-500 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-amber-200 bg-white text-amber-700'}`}>
-            <bdi dir="ltr">{i + 1}</bdi>
-          </span>
-        );
-      })}
-    </div>
   );
 }
 
@@ -438,13 +478,13 @@ function verdictOf(lab, k) {
   return { text: readoutOf(lab, k), tone: 'indigo', code: 'idle' };
 }
 
-function Banner({ lab, setLab, k }) {
+function Banner({ lab, setLab, k, blocked }) {
   const vv = verdictOf(lab, k);
   const task = L.taskOf(lab);
   const done = L.taskDone(lab);
   const st = L.activeState(lab);
   const phase = L.pickPending(lab) ? 'pick' : st.phase;
-  const canNext = L.canNext(lab);
+  const canNext = L.canNext(lab) && !blocked;
   const Icon = vv.tone === 'emerald' ? CheckCircle2 : vv.tone === 'amber' ? ShieldAlert : vv.tone === 'indigo' ? Hand : Sparkles;
   const btn = `inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-full border-2 px-3.5 text-sm font-black transition-all duration-150 active:translate-y-0.5 motion-reduce:transition-none ${ring}`;
   const round = `inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-[3px] border-amber-600 bg-white text-amber-950 shadow-[0_3px_0_0_rgba(180,83,9,.45)] disabled:border-slate-200 disabled:text-slate-300 disabled:shadow-none ${ring}`;
@@ -559,3 +599,142 @@ export function Formal({ k, kind = 'order' }) {
   );
 }
 
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de chaque tâche : ce que la main vient de faire avec SA carte ; la dernière tâche de chaque niveau finit par LA RÈGLE. */
+export const CHAINS = Object.freeze({
+  c1: ['rung', 'sci', 'order'],
+  c2: ['rung', 'sci', 'order'],
+  c3: ['rung', 'sci', 'order'],
+  c4: ['cmpHow', 'rule'],
+  c5: ['rung', 'order'],
+  c6: ['sci', 'order'],
+  c7: ['rung', 'order'],
+  c8: ['cmpHow', 'rule'],
+});
+
+const $ = (s) => `$${s}$`;
+const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const valueTex = (card) => $(texNum(T.decText(card.value)));
+const sciOf = (a, n) => $(sciTexOf(a, n));
+/** La bonne option à la place `want` (le défaut « toujours au milieu » se voit) ; une seule bonne. */
+const place = (opts, want) => {
+  const ci = opts.findIndex((o) => o.correct);
+  const rest = opts.filter((_, i) => i !== ci);
+  rest.splice(Math.min(want, rest.length), 0, opts[ci]);
+  return rest;
+};
+const dec = (t) => T.parseDec(t);
+const decShow = (v) => T.decText(v, { group: false });
+
+/** Chaque question est construite sur LA carte de la tâche (rien n'est écrit en dur) ; `k` : les textes de `sizeLadder`. */
+export const QUESTIONS = {
+  /* la barreau : ce que le mur a accepté ou refusé */
+  rung: (lab, task, k) => {
+    const c = task.cards[0];
+    const value = valueTex(c);
+    const n = c.n;
+    const mk = (r) => {
+      const lo = $(`10^{${r}}`); const hi = $(`10^{${r + 1}}`);
+      const text = <MathText>{$(`10^{${r}}\\le A<10^{${r + 1}}`)}</MathText>;
+      if (r === n) return { text, correct: true };
+      if (r > n) return { text, why: Cq(k, n >= 0 && r === n + 1 ? 'rung.whyDigits' : 'rung.whyUp', { value, lo, d: String(r) }) };
+      return { text, why: Cq(k, 'rung.whyDown', { value, hi }) };
+    };
+    const rs = [n, n + 1, n - 1];
+    return {
+      id: 'rung', kind: 'choice', cols: 3,
+      prompt: Cq(k, 'rung.prompt', { what: k(`cards.${c.key}`), value }),
+      options: place(rs.map(mk), (lab.ti + 1) % 3),
+      hints: [Cq(k, 'rung.hint1'), Cq(k, 'rung.hint2')],
+      explain: Cq(k, 'rung.explain', { value, lo: $(`10^{${n}}`), hi: $(`10^{${n + 1}}`), n: $(String(n).replace('-', '−')) }),
+    };
+  },
+  /* l'écriture scientifique : a × 10ⁿ avec 1 ≤ a < 10 */
+  sci: (lab, task, k) => {
+    const c = task.cards[0];
+    const value = valueTex(c);
+    const a = c.sci.a; const n = c.n;
+    const big = decShow(T.timesPow10(dec(a), 1)); const small = decShow(T.timesPow10(dec(a), -1));
+    const opts = [
+      { text: <MathText>{sciOf(a, n)}</MathText>, correct: true },
+      { text: <MathText>{sciOf(big, n - 1)}</MathText>, why: Cq(k, 'sci.whyBig', { x: $(texNum(big)), w: sciOf(big, n - 1), value }) },
+      { text: <MathText>{sciOf(small, n + 1)}</MathText>, why: Cq(k, 'sci.whySmall', { x: $(texNum(small)), w: sciOf(small, n + 1), value }) },
+    ];
+    return {
+      id: 'sci', kind: 'choice', cols: 3,
+      prompt: Cq(k, 'sci.prompt', { value }),
+      options: place(opts, (lab.ti + 2) % 3),
+      hints: [Cq(k, 'sci.hint1', { value }), Cq(k, 'sci.hint2')],
+      explain: Cq(k, 'sci.explain', { w: sciOf(a, n), a: $(texNum(a)), n: $(String(n).replace('-', '−')) }),
+    };
+  },
+  /* l'aimant : a est ARRONDI à l'unité */
+  order: (lab, task, k) => {
+    const c = task.cards[0];
+    const { a1, n1 } = c.order;
+    const a = c.sci.a; const n = c.n;
+    const o = sciOf(a1, n1);
+    const trunc = Number(a.split(',')[0]);
+    const cand = [
+      { text: o, correct: true },
+      { text: sciOf(trunc, n), kind: 'trunc', diff: !(trunc === a1 && n === n1) },
+      { text: sciOf(1, n + 1), kind: 'next', diff: !(a1 === 1 && n1 === n + 1) },
+      { text: sciOf(a1 + 1, n1), kind: 'other', diff: a1 + 1 < 10 },
+      { text: sciOf(Math.max(1, a1 - 1), n1), kind: 'other', diff: a1 - 1 >= 1 },
+    ];
+    const opts = [cand[0], ...cand.slice(1).filter((x) => x.diff)].slice(0, 3).map((x) => (x.correct
+      ? { text: <MathText>{x.text}</MathText>, correct: true }
+      : { text: <MathText>{x.text}</MathText>, why: Cq(k, x.kind === 'trunc' ? 'order.whyTrunc' : x.kind === 'next' ? 'order.whyNext' : 'order.whyOther', { x: x.text, o, a: $(texNum(a)) }) }));
+    return {
+      id: 'order', kind: 'choice', cols: 3,
+      prompt: Cq(k, 'order.prompt', { w: sciOf(a, n) }),
+      options: place(opts, lab.ti % 3),
+      hints: [Cq(k, 'order.hint1', { a: $(texNum(a)) }), Cq(k, 'order.hint2', { a: $(texNum(a)), n: $(String(n).replace('-', '−')) })],
+      explain: Cq(k, 'order.explain', { a: $(texNum(a)), a1: $(String(a1)), w: sciOf(a, n), o }),
+    };
+  },
+  /* la comparaison : la barreau d'abord, puis le premier nombre */
+  cmpHow: (lab, task, k) => {
+    const [x, y] = task.cards;
+    const same = x.n === y.n;
+    const winner = T.compareDec(x.value, y.value) > 0 ? x : y;
+    const loser = winner === x ? y : x;
+    const o = { x: sciOf(x.sci.a, x.n), y: sciOf(y.sci.a, y.n) };
+    const p = $(`10^{${x.n}}`);
+    const win = sciOf(winner.sci.a, winner.n);
+    const opts = same
+      ? [
+        { text: Cq(k, 'cmpHow.sameRight'), correct: true },
+        { text: Cq(k, 'cmpHow.sameRung'), why: Cq(k, 'cmpHow.whySameRung', { p }) },
+        { text: Cq(k, 'cmpHow.sameCount'), why: Cq(k, 'cmpHow.whyCount') },
+      ]
+      : [
+        { text: Cq(k, 'cmpHow.diffRight'), correct: true },
+        { text: Cq(k, 'cmpHow.diffA'), why: Cq(k, 'cmpHow.whyDiffA', { a1: $(texNum(x.sci.a)), a2: $(texNum(y.sci.a)) }) },
+        { text: Cq(k, 'cmpHow.diffCount'), why: Cq(k, 'cmpHow.whyCount') },
+      ];
+    return {
+      id: 'cmpHow', kind: 'choice', cols: 1,
+      prompt: Cq(k, 'cmpHow.prompt', o),
+      options: place(opts, (lab.ti + 1) % 3),
+      hints: [Cq(k, same ? 'cmpHow.hint1Same' : 'cmpHow.hint1Diff'), Cq(k, same ? 'cmpHow.hint2Same' : 'cmpHow.hint2Diff')],
+      explain: same
+        ? Cq(k, 'cmpHow.explainSame', { p, a1: $(texNum(x.sci.a)), a2: $(texNum(y.sci.a)), win })
+        : Cq(k, 'cmpHow.explainDiff', { p1: $(`10^{${winner.n}}`), p2: $(`10^{${loser.n}}`), win }),
+    };
+  },
+  /* la règle : l'ancienne découverte, posée en dernier */
+  rule: (lab, task, k) => {
+    const kind = lab.discovery === 'sci' ? 'sci' : 'order';
+    const opts = discoveryOptions(k, kind);
+    return {
+      id: 'rule', kind: 'choice', cols: 1,
+      prompt: <MathText>{k(`discovery.${kind}.prompt`)}</MathText>,
+      options: place(opts, 2),
+      hints: [Cq(k, `rule.${kind}.hint1`), Cq(k, `rule.${kind}.hint2`)],
+      explain: <Formal k={k} kind={kind} />,
+    };
+  },
+};

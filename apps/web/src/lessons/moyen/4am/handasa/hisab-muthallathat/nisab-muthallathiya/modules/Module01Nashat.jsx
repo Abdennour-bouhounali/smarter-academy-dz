@@ -38,11 +38,13 @@ export default function Module01Nashat() {
   const [q2, setQ2] = useState(false);
   const [q3a, setQ3a] = useState(false);
   const [q3, setQ3] = useState(false);
-  const [q4, setQ4] = useState(false);
   const [q5, setQ5] = useState(false);
 
-  const onTrialName = (ev) => setTrials((s) => [...s, ev].slice(-8));
-  const onTrialScale = (ev) => setRamps((s) => [...s, ev].slice(-8));
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : leurs événements `tk` ne sont pas des lectures — on en garde la TRACE
+  const [cps, setCps] = useState([]);
+  const answered = (id) => cps.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const onTrialName = (ev) => { if (ev.tk) setCps((s) => [...s, ev]); else setTrials((s) => [...s, ev].slice(-8)); };
+  const onTrialScale = (ev) => { if (ev.tk) setCps((s) => [...s, ev]); else setRamps((s) => [...s, ev].slice(-8)); };
 
   const evidenceName = (
     <div className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={trials.length ? 'true' : 'false'}>
@@ -203,24 +205,17 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 4, title: 'ماذا لاحظت في منحدراتك؟', subtitle: 'ثلاثة منحدرات بزاوية 40°', done: q4,
+          num: 4, title: 'ماذا لاحظت في منحدراتك؟', subtitle: 'ثلاثة منحدرات بزاوية 40°', done: answered('sizes'),
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACTIVITY_2.part1} source={ACTIVITY_2.source} compact />
               {evidenceScale}
-              <TapQuestion
-                prompt="ماذا تلاحظ؟ التخمين:"
-                options={[
-                  'في كل مثلث ABC قائم في A حيث $\\widehat{ABC} = 40^{\\circ}$ ، النسبتان $\\dfrac{AC}{BC}$ و $\\dfrac{AC}{AB}$ هما نفسهما مهما كان طول الأضلاع',
-                  'النسبتان تكبران كلما كبر المثلث',
-                  'النسبتان تختلفان من تلميذ لآخر لأن كل واحد رسم مثلثا بأطوال مختلفة',
-                ].map(M)}
-                correct={0}
-                cols={1}
-                requires={['watar']}
-                explain={<MathText>{`${ACTIVITY_2.conjecture} (الاختلافات الصغيرة بين التلاميذ تأتي من دقة القياس، لا من الطول.)`}</MathText>}
-                onAnswered={() => setQ4(true)}
-              />
+              <p data-evidence="conjecture" data-tried={answered('sizes') ? 'true' : 'false'}
+                className={`rounded-xl border-2 px-3 py-2 text-sm ${answered('sizes') ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                {answered('sizes')
+                  ? <MathText>{`أجبتَ في المختبر: منحدرات بأطوال مختلفة عند $\\widehat{B} = 40^{\\circ}$ أعطت النسبتين $\\dfrac{AC}{BC}$ و $\\dfrac{AC}{AB}$ نفسيهما تقريبًا. ${ACTIVITY_2.conjecture}`}</MathText>
+                  : 'سجّل ثلاثة منحدرات بأطوال مختلفة عند الزاوية 40° في المستوى «متقدم»، وأجب عن الأسئلة التي تظهر فوق المختبر.'}
+              </p>
             </div>
           ),
         },
@@ -262,7 +257,7 @@ export default function Module01Nashat() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

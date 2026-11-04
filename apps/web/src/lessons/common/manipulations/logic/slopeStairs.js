@@ -333,3 +333,40 @@ export const absOf = absF;
 /** Pour la vue (distracteur « b = y ÷ x ») : quotient et égalité EXACTS. */
 export const divide = (p, q) => div(F(p), F(q));
 export const same = (p, q) => eq(F(p), F(q));
+
+/* ── les ÉTAPES du labo (questions pendant le labo, lot 5) ───────────────── */
+
+/**
+ * rule   : 'stair' (une première marche validée) puis 'contrast' (trois marches, deux largeurs : le quotient ne bouge pas) ;
+ * points : 'find' (la marche entre les deux couples : a) puis 'b' (un marqueur en 0 : b).
+ */
+export const stepsOf = (s) => (s.mode === 'points' ? ['find', 'b'] : ['stair', 'contrast']);
+
+/** L'objectif de l'étape est-il atteint ? */
+export function stepReached(s, step) {
+  if (step === 'stair') return stairs(s).length >= 1;
+  if (step === 'contrast') return discoveryReady(s);
+  if (step === 'find') return !!s.found;
+  if (step === 'b') return s.bRead != null;
+  return false;
+}
+
+/**
+ * « أعِد التجربة » : la MÊME étape repart. `fresh` est l'état de départ du niveau.
+ *   stair / find : tout repart ; contrast : on garde la première marche ; b : on oublie la lecture de b (et les essais en 0).
+ */
+export function restartStep(s, step, fresh) {
+  if (step === 'contrast') {
+    const first = stairs(s)[0];
+    return { ...fresh, trials: first ? [first] : [], m: s.m };
+  }
+  if (step === 'b') {
+    const zero = (t) => isZero(t.x1) || isZero(t.x2);
+    return { ...s, bRead: null, last: null, trials: s.trials.filter((t) => !zero(t)) };
+  }
+  return fresh;
+}
+
+/** Produit et somme EXACTS (pour construire les options des questions). */
+export const times = (p, q) => mul(F(p), F(q));
+export const plus = (p, q) => Lin.add(F(p), F(q));

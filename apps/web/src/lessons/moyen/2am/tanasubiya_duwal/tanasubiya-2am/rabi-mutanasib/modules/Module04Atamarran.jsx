@@ -37,7 +37,7 @@ export default function Module04Atamarran() {
         step(6, 'ex-18', 'أنبوب يتسرّب', ['hisab-jidaan']),
         step(7, 'opener', 'محيط الأرض', ['rabi']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

@@ -76,7 +76,18 @@ export default function Module07AlWadiya() {
   const [trials, setTrials] = useState([]);
   const [q, setQ] = useState({});
   const mark = (n) => () => setQ((s) => ({ ...s, [n]: true }));
-  const keep = (e) => setTrials((list) => [...list, e]);
+  const [cps, setCps] = useState({});
+  // les événements `checkpoint-done` du labo (questions posées par-dessus le labo) ne sont pas des essais : ils marquent les étapes faites
+  const keep = (e) => {
+    if (e?.tk) { if (e.tk === 'checkpoint-done') setCps((c) => ({ ...c, [e.id]: true })); return; }
+    setTrials((list) => [...list, e]);
+  };
+  const Trace = ({ id, ok, done, todo }) => (
+    <p data-evidence={id} data-tried={ok ? 'true' : 'false'}
+      className={`rounded-xl border-2 px-3 py-2 text-sm ${ok ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+      {ok ? done : todo}
+    </p>
+  );
 
   return (
     <ContentModule objectives={["كيف نقيس ارتفاع معلم لا نصعده؟", "أيّ معرفة تناسب الشكل: طالس أم النسب المثلثية؟", "كيف نعيّن قيس الزاوية x ثم نتحقّق من ملاءمة النتيجة؟"]}
@@ -174,37 +185,25 @@ export default function Module07AlWadiya() {
               {q[4] && <p className="rounded-xl bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900" data-real-height="92"><MathText>{REMARKS.real}</MathText></p>}
             </div>
           ) },
-        { num: 5, title: 'تنفيذ: الزاوية x', subtitle: 'أيّ نسبة في المثلث الصغير؟', done: !!q[5],
+        { num: 5, title: 'تنفيذ: الزاوية x', subtitle: 'أيّ نسبة في المثلث الصغير؟', done: !!cps.a2,
           content: (
             <div className="space-y-3">
-              <TapQuestion
-                prompt="في المثلث APQ القائم في P، المساواة الصحيحة هي:"
-                options={[
-                  '$\\tan x = \\dfrac{2{,}30}{2{,}45}$',
-                  '$\\sin x = \\dfrac{2{,}30}{2{,}45}$',
-                  '$\\tan x = \\dfrac{2{,}45}{2{,}30}$',
-                  '$\\cos x = \\dfrac{2{,}30}{2{,}45}$',
-                ].map(M)}
-                correct={0} cols={2} requires={['nisab-tarif']}
-                explain={<MathText>{`${REMARKS.tanX} الجيب يحتاج الوتر AQ وهو غير معطى، و $\\dfrac{2{,}45}{2{,}30}$ هو مقلوب الظل.`}</MathText>}
-                onAnswered={mark(5)} />
+              <Trace id="a2-ratio" ok={!!cps.a2}
+                done={<MathText>{`أجبتَ في المختبر: ${REMARKS.tanX} الجيب يحتاج الوتر AQ وهو غير معطى.`}</MathText>}
+                todo="أوقف أريس حيث تختفي قمة المقام خلف قمة العمود، ثم اختر النسبة وأجب عن الأسئلة التي تظهر فوق المختبر." />
               <BackLink lesson="nisab-muthallathiya" what="الظل: الضلع المقابل على الضلع المجاور" />
             </div>
           ) },
-        { num: 6, title: 'تنفيذ: قيس الزاوية x', subtitle: 'الحاسبة ثم التدوير إلى الدرجة', done: !!q[6],
+        { num: 6, title: 'تنفيذ: قيس الزاوية x', subtitle: 'الحاسبة ثم التدوير إلى الدرجة', done: !!cps.a2,
           content: (
             <div className="space-y-3">
               <Evidence id="maqam-angle" trials={trials} title="مواضعك أمام المقام (المختبر):"
                 empty="جرّب في المختبر: عندما تختفي قمة المقام خلف قمة العمود اختر النسبة التي تعطي الزاوية x." />
-              <NumericQuestion
-                prompt="ما المدوّر إلى الدرجة لقيس الزاوية x؟"
-                expected={close(43)} display="43" parse={parseDec}
-                requires={['hasiba-aks', 'tadwir']}
-                explain={<MathText>{REMARKS.xCalc}</MathText>}
-                explainFor={(n) => <MathText>{close(0.94)(n) ? `${REMARKS.qaysWhy} ${REMARKS.xCalc}` : close(47)(n) ? `${REMARKS.mutammima} ${REMARKS.xCalc}` : close(42)(n) ? `${REMARKS.tadwirMubakkir} ${REMARKS.xCalc}` : REMARKS.xCalc}</MathText>}
-                onAnswered={mark(6)} />
+              <Trace id="a2-angle" ok={!!cps.a2}
+                done={<MathText>{`حسبتَ x في المختبر وقرّبتَه إلى الدرجة: ${REMARKS.xCalc}`}</MathText>}
+                todo="احسب x في المختبر بالحاسبة (tan⁻¹) وقرّبه إلى الدرجة." />
               <BackLink lesson="hasiba-muthallathiya" what="تعيين قيس زاوية بالحاسبة وتدويره" />
-              {q[6] && (
+              {cps.a2 && (
                 <>
                   {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la tangente (`nisab-tarif`, درس nisab-muthallathiya) et la touche inverse (`hasiba-aks`,
                       درس hasiba-muthallathiya) ; les explications des étapes 5 et 6 (REMARKS.tanX / xCalc) viennent de l’énoncer. */}
@@ -245,6 +244,6 @@ export default function Module07AlWadiya() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={7} />} />
+      footer={<KnowledgeSnapshot moduleNumber={7} variant="memo" />} />
   );
 }

@@ -304,4 +304,32 @@ export function discSlots(count, rho, cols = 3) {
 }
 
 /** Ce que la leçon reçoit à chaque geste jugé (`onTrial`). */
+/* ── les étapes du labo et leurs questions (lot 4, `primitives/LabCheckpoint`) ───────────────────────────── */
+
+/** La peau (aire juste), le jus (volume juste), le CONTRASTE puis la règle ; et (متقدم) l'exemple arrondi. */
+export function stepsOf(s) {
+  const steps = [
+    { id: 'peel', reached: s.areaOk },
+    { id: 'pour', reached: s.volumeOk },
+    { id: 'rule', reached: discoveryReady(s) },
+  ];
+  if (s.level === 'advanced') steps.push({ id: 'book', reached: s.phase === 'book' && bookDone(s) });
+  return steps.map((x) => Object.freeze(x));
+}
+/** « أعِد التجربة » : l'expérience de l'étape repart (la peau remise, le verre vidé ; le contraste : les essais réussis et refus sont effacés). */
+export function retryStep(s, id) {
+  if (id === 'peel') return Object.freeze({ ...s, phase: 'peel', areaOk: false, areaCard: null, p: 0, peeled: null, last: null });
+  if (id === 'pour') return Object.freeze({ ...s, phase: 'pour', volumeOk: false, volumeCard: null, q: 0, poured: null, last: null });
+  if (id === 'rule') {
+    return Object.freeze({
+      ...s, phase: 'peel', p: 0, peeled: null, areaCard: null, q: 0, poured: null, volumeCard: null,
+      refusals: 0, okPeelR: Object.freeze([]), okPourR: Object.freeze([]), last: null,
+    });
+  }
+  if (id === 'book') return Object.freeze({ ...s, book: Object.freeze({ ...s.book, areaOk: false, volumeOk: false }), last: null });
+  return s;
+}
+/** Un nombre exact écrit comme une réponse (« 36 », « 7,84 » → « 196/25 »). */
+export const answerText = (p) => Q.fracText(p);
+
 export const evidenceOf = (s) => (s.last ? { ...s.last, okPeelR: s.okPeelR.map(rText), okPourR: s.okPourR.map(rText) } : null);

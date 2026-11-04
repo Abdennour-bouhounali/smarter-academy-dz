@@ -28,6 +28,8 @@ import {
  * le labo (la roue) ouvre la page, son contexte (le parc de Ben Aknoun) est la `lead` de la roue. Le نشاط 1 du manuel (trois
  * formes, papier calque) n'est plus l'entrée mais l'APPLICATION qui suit la roue (étape 1 : évidence `onFinished` de la roue,
  * jamais bloquante). Les briques / figures-solutions étaient déjà après leur réponse.
+ * PROTOTYPE DU LABO (2026-10-28, lot 3) : `rotation-dial` pose ses questions PAR-DESSUS le labo après chaque tâche (roue) ou mission (feuille) — `RotationDial › chainOf` ;
+ * la dernière suite finit par la règle (ce qui déclenche `onFinished`) ; les événements `checkpoint` (qui portent aussi `ok`) sont écartés de la liste des images.
  * AUCUNE étape n'attend `onFinished`. LP : P1 (le دوران), P2 (l'image d'un point), P3 (les images de figures).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -44,7 +46,7 @@ export default function Module01Anshita() {
   const [q5, setQ5] = useState(false);
   const [q6, setQ6] = useState(false);
 
-  const onTrial = (ev) => { if (ev && ev.ok) setTrials((s) => [...s, ev].slice(-10)); };
+  const onTrial = (ev) => { if (ev && ev.ok && !ev.tk) setTrials((s) => [...s, ev].slice(-10)); };
 
   const evidence = (
     <div className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={trials.length ? 'true' : 'false'}>
@@ -110,7 +112,7 @@ export default function Module01Anshita() {
             <div className="space-y-3">
               <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence="wheel" data-tried={wheelDone ? 'true' : 'false'}>
                 {wheelDone
-                  ? <span className="font-bold text-slate-800">أنهيت مهام العجلة: وضعت صورة كل مقصورة في الاتجاهين.</span>
+                  ? <span className="font-bold text-slate-800">أنهيت مهام العجلة وأجبت عن أسئلتها: وضعت صورة كل مقصورة في الاتجاهين.</span>
                   : <span className="text-slate-500">لم تنهِ العجلة بعد (المستوى «مبتدئ»): ضع الصورة التي تصل إليها كل مقصورة، في الاتجاهين، قبل أن تنتقل إلى الورقة.</span>}
               </p>
               <TextbookBox kind="situation" text={`${ACTIVITY.intro} ${ACTIVITY.part1}`} source={ACTIVITY.source} compact />
@@ -279,7 +281,7 @@ export default function Module01Anshita() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

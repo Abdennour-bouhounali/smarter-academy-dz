@@ -86,7 +86,7 @@ export const KNOWLEDGE = {
   },
 };
 
-/** « تذكّر — السنة الثانية » : جمع الأعداد النسبية (درس 2AM غير منشور بعد : لا رابط). */
+/** « تذكّر — السنة الثانية » : جمع الأعداد النسبية (درس 2AM `jam-tarh-nisbiya`، منشور منذ 2026-10-29 : الرابط يظهر وحده). */
 export const RECALL_ADD = {
   source: addition('prior_year_reminder'),
   title: 'تذكّر — السنة الثانية',

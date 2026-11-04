@@ -80,8 +80,139 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(advanced.numbers.tasks.some((tk) => tk.kind === 'trap'), type).toBe(true);
         expect(beginner.numbers.tasks.some((tk) => tk.kind === 'trap'), type).toBe(false);
       }
+      // Unité 2 de 2AM, leçon 9 : `level-laser` se mesure par la PRÉDICTION voilée (متقدم seul) et par le nombre de RÉSERVOIRS (trois à ordonner, متقدم seul).
+      else if (type === 'level-laser') {
+        expect(advanced.numbers.tasks.every((tk) => tk.predict), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.predict), type).toBe(false);
+        expect(Math.max(...advanced.numbers.tasks.map((tk) => tk.tanks.length)), type).toBeGreaterThan(Math.max(...beginner.numbers.tasks.map((tk) => tk.tanks.length)));
+      }
+      // Unité 4 de 2AM, leçon 1 : `wax-cells` se mesure par la PRÉDICTION (compteur caché, متقدم seul) et par la BANDE de deux rangs et les DEUX LETTRES (متقدم seul).
+      else if (type === 'wax-cells') {
+        expect(advanced.numbers.tasks.every((tk) => tk.predict), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.predict), type).toBe(false);
+        expect(advanced.numbers.tasks.some((tk) => tk.strip) && advanced.numbers.tasks.some((tk) => tk.kind === 'two'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.strip || tk.kind === 'two'), type).toBe(false);
+      }
+      // Unité 4 de 2AM, leçon 2 : `juice-line` se mesure par la MAIN (مبتدئ : le moule, deux essais ; متقدم : le réservoir, le dividende manquant) et par le REPORT `carry` (متقدم seul).
+      else if (type === 'juice-line') {
+        expect(beginner.numbers.tasks.every((tk) => tk.kind === 'mould' && tk.tests === 2), type).toBe(true);
+        expect(advanced.numbers.tasks.every((tk) => tk.kind === 'tank'), type).toBe(true);
+        expect(advanced.numbers.tasks.some((tk) => tk.carry > 0) && !beginner.numbers.tasks.some((tk) => tk.carry), type).toBe(true);
+      }
+      // Unité 4 de 2AM, leçon 3 : `bridge-load` se mesure par la PRÉDICTION de l'écran masqué (متقدم seul), les AFFIRMATIONS à réfuter (متقدم seul) et le signe ≤ (متقدم seul).
+      else if (type === 'bridge-load') {
+        expect(beginner.numbers.tasks.some((tk) => tk.predict || tk.kind === 'claim'), type).toBe(false);
+        expect(advanced.numbers.tasks.some((tk) => tk.predict) && advanced.numbers.tasks.some((tk) => tk.kind === 'claim'), type).toBe(true);
+        expect(advanced.numbers.tasks.some((tk) => /<=|≤/.test(tk.rule)) && !beginner.numbers.tasks.some((tk) => /<=|≤/.test(tk.rule)), type).toBe(true);
+      }
+      // Unité 1 de 1AM, leçon 3 : `jump-tape` se mesure par l'UNITÉ étirée par la main puis le drapeau planté (مبتدئ seul : `plant`) et par la LECTURE d'un drapeau déjà planté, exacte ou par encadrement (متقدم seul : `read`, fenêtre sans origine, centièmes).
+      else if (type === 'jump-tape') {
+        expect(beginner.numbers.tasks.every((tk) => tk.kind === 'plant') && advanced.numbers.tasks.every((tk) => tk.kind === 'read'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.unit === 'free'), type).toBe(true);
+        expect(advanced.numbers.tasks.some((tk) => tk.from !== '0') && advanced.numbers.tasks.some((tk) => tk.step === '0,1'), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => tk.from === '0' && tk.step === '1'), type).toBe(true);
+      }
+      // Unité 5 de 1AM, leçon 1 : `frost-gauge` se mesure par le NIVEAU tenu et enregistré lecture par lecture (`set`, `mirror` pour l'ombre/l'opposé au niveau مبتدئ) puis la paire à même distance du zéro, les étages et la distance à la mer (`pair`/`set` au niveau متقدم).
+      else if (type === 'frost-gauge') {
+        const kinds = (lv) => lv.numbers.tasks.map((tk) => tk.kind);
+        expect(kinds(beginner).includes('mirror') && !kinds(beginner).includes('pair'), type).toBe(true);
+        expect(kinds(advanced).includes('pair') && advanced.numbers.tasks.some((tk) => tk.scene === 'floors'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.scene === 'altitude') && beginner.numbers.tasks.some((tk) => tk.reads.some((r) => r === 0 || r.self === 0)), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => /^b\d$/.test(tk.id)) && advanced.numbers.tasks.every((tk) => /^a\d$/.test(tk.id)), type).toBe(true);
+      }
+      // Unité 6 de 1AM, leçon 2 : `letter-dial` se mesure par la VALEUR du cadran qui tombe dans chaque fente : مبتدئ = une lettre (une valeur donnée, une valeur à trouver, une lettre écrite deux fois), متقدم = deux lettres puis une prétendue règle réfutée par un contre-exemple.
+      else if (type === 'letter-dial') {
+        const kinds = (lv) => lv.numbers.tasks.map((tk) => tk.kind);
+        expect(kinds(beginner), type).toEqual(['set', 'find', 'set']);
+        expect(beginner.numbers.tasks.every((tk) => Object.keys(tk.dials).length === 1), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => (tk.formula.match(/n/g) ?? []).length === 2), type).toBe(true);
+        expect(kinds(advanced).includes('claim') && advanced.numbers.tasks.some((tk) => Object.keys(tk.dials).length === 2), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => /^b\d$/.test(tk.id)) && advanced.numbers.tasks.every((tk) => /^a\d$/.test(tk.id)), type).toBe(true);
+      }
+      // Unité 6 de 1AM, leçon 1 : `rewind-belt` se mesure par la CARTE choisie à rebours puis la contre-épreuve : مبتدئ = entiers (somme, différence, produit, carte piège « a − »), متقدم = décimaux et un quotient qui ne s'arrête pas.
+      else if (type === 'rewind-belt') {
+        const kinds = (lv) => lv.numbers.tasks.map((tk) => tk.kind);
+        expect(kinds(beginner).includes('rsub') && kinds(beginner).includes('mul') && kinds(beginner).includes('add'), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => /^\d+$/.test(tk.a) && /^\d+$/.test(tk.out)), type).toBe(true);
+        expect(advanced.numbers.tasks.some((tk) => tk.a.includes(',')) && advanced.numbers.tasks.some((tk) => tk.kind === 'mul' && Number(tk.out) % Number(tk.a) !== 0), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => /^b\d$/.test(tk.id)) && advanced.numbers.tasks.every((tk) => /^a\d$/.test(tk.id)), type).toBe(true);
+      }
+      // Unité 5 de 1AM, leçon 2 : `stride-stamp` se mesure par la FOULÉE portée des deux côtés et enregistrée lecture par lecture (`stamp`, `twin`, `place` au niveau مبتدئ) puis le drapeau de l'origine sur une droite à origine cachée et l'encadrement entre deux ticks (`origin`, `bound` au niveau متقدم).
+      else if (type === 'stride-stamp') {
+        const kinds = (lv) => lv.numbers.tasks.map((tk) => tk.kind);
+        expect(['stamp', 'twin', 'place'].every((x) => kinds(beginner).includes(x)) && !kinds(beginner).includes('origin'), type).toBe(true);
+        expect(['origin', 'bound'].every((x) => kinds(advanced).includes(x)), type).toBe(true);
+        expect(beginner.numbers.tasks.find((tk) => tk.kind === 'stamp').stride, type).toBe(2); // la foulée longue : la route s'arrête avant −3
+        expect(beginner.numbers.tasks.find((tk) => tk.kind === 'place').reads.map((r) => r.x), type).toEqual([-30, 27, -15]);
+        expect(beginner.numbers.tasks.every((tk) => /^b\d$/.test(tk.id)) && advanced.numbers.tasks.every((tk) => /^a\d$/.test(tk.id)), type).toBe(true);
+      }
+      // Unité 5 de 1AM, leçon 3 : `courtyard-drone` se mesure par l'ORDRE des deux nombres (le lieu échangé est un autre lieu), les points d'un axe (une coordonnée nulle) et la lecture d'un couple : مبتدئ = `fly` sur papier quadrillé puis `read`, entiers ; متقدم = demi-cases et papier SANS carreaux.
+      else if (type === 'courtyard-drone') {
+        const kinds = (lv) => lv.numbers.tasks.map((tk) => tk.kind);
+        expect(kinds(beginner).includes('fly') && kinds(beginner).includes('read'), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => tk.paper === 'squared' && tk.reads.every((r) => r.x % 10 === 0 && r.y % 10 === 0)), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.reads.some((r) => r.y === 0)) && beginner.numbers.tasks.some((tk) => tk.reads.some((r) => r.x === 0)), type).toBe(true); // deux points d'un axe
+        expect(beginner.numbers.tasks[0].reads[0], type).toMatchObject({ x: 30, y: -20 }); // la fontaine (3 ; −2) : l'échangé est (−2 ; 3)
+        expect(advanced.numbers.tasks.some((tk) => tk.paper === 'plain') && advanced.numbers.tasks.some((tk) => tk.reads.some((r) => r.x % 10 !== 0 || r.y % 10 !== 0)), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => /^b\d$/.test(tk.id)) && advanced.numbers.tasks.every((tk) => /^a\d$/.test(tk.id)), type).toBe(true);
+      }
+      // Unité 2 de 2AM, leçon 8 : `window-blinds` se mesure par la PRÉDICTION écrite avant de tirer (متقدم seul) et par les FACTEURS > 1 (متقدم seul).
+      else if (type === 'window-blinds') {
+        const val = (f) => { const [n, d] = f.split('/').map(Number); return n / d; };
+        const big = (tk) => val(tk.curtain) > 1 || val(tk.blind) > 1;
+        expect(advanced.numbers.tasks.every((tk) => tk.predict), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.predict), type).toBe(false);
+        expect(advanced.numbers.tasks.every(big), type).toBe(true);
+        expect(beginner.numbers.tasks.some(big), type).toBe(false);
+      }
+      // Unité 2 de 2AM, leçon 7 : `trail-odometer` se mesure par la PRÉDICTION écrite avant de marcher (متقدم seul) et par le CIRCUIT (a4).
+      else if (type === 'trail-odometer') {
+        expect(advanced.numbers.tasks.every((tk) => tk.predict), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.predict), type).toBe(false);
+        expect(advanced.numbers.tasks.some((tk) => tk.loop), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.loop), type).toBe(false);
+      }
+      // Unité 2 de 2AM, leçon 6 : `mooring-lines` se mesure par le DIVISEUR DÉCIMAL (متقدم : des cordes de 0,7 m, le ruban change d'unité) contre un diviseur naturel (مبتدئ : couper en b cordes).
+      else if (type === 'mooring-lines') {
+        expect(advanced.numbers.tasks.every((tk) => tk.kind === 'count' && tk.b.includes(',') || tk.kind === 'count'), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => tk.kind === 'share' && !tk.b.includes(',')), type).toBe(true);
+        expect(advanced.numbers.tasks.some((tk) => tk.b.includes(',')), type).toBe(true);
+      }
       // Unité 5 de 3AM : `term-ferry` se mesure par le NOMBRE DE TÂCHES (2 équations, puis 3 dont un coefficient négatif et un grand nombre).
       else if (type === 'term-ferry') expect(advanced.numbers.tasks.length, type).toBeGreaterThan(beginner.numbers.tasks.length);
+      // Unité 3 de 2AM, leçon 5 : `balloon-ballast` se mesure par l'OPÉRATION (مبتدئ : sommes seules ; متقدم : différences seules, écrites AVANT d'exécuter).
+      else if (type === 'balloon-ballast') {
+        expect(beginner.numbers.tasks.every((tk) => tk.op === '+' && !tk.predict), type).toBe(true);
+        expect(advanced.numbers.tasks.every((tk) => tk.op === '-' && tk.predict), type).toBe(true);
+      }
+      // Unité 3 de 2AM, leçon 6 : `tug-rope` se mesure par la PRÉDICTION écrite avant le coup de sifflet (متقدم seul), les DÉCIMAUX et le CROCHET réglé d'abord (متقدم seul).
+      else if (type === 'tug-rope') {
+        expect(advanced.numbers.tasks.every((tk) => tk.predict), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.predict), type).toBe(false);
+        expect(advanced.numbers.tasks.some((tk) => tk.chain.includes('[')) && !beginner.numbers.tasks.some((tk) => tk.chain.includes('[')), type).toBe(true);
+        expect(advanced.numbers.tasks.some((tk) => tk.chain.includes(',')) && !beginner.numbers.tasks.some((tk) => tk.chain.includes(',')), type).toBe(true);
+      }
+      // Unité 3 de 2AM, leçon 1 : `corniche-ruler` se mesure par le GESTE (مبتدئ : l'origine — lire, déplacer, placer ; متقدم : la graduation, tâches `fit` seules) et par les décimaux.
+      else if (type === 'corniche-ruler') {
+        expect(advanced.numbers.tasks.every((tk) => tk.kind === 'fit'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.kind === 'fit'), type).toBe(false);
+        expect(beginner.numbers.tasks.some((tk) => tk.kind === 'move') && beginner.numbers.tasks.some((tk) => tk.kind === 'opp'), type).toBe(true);
+        expect(advanced.numbers.tasks.some((tk) => tk.marks.some((m) => m.x.includes(','))), type).toBe(true);
+      }
+      // Unité 3 de 2AM, leçon 4 : `dig-grid` se mesure par le GESTE (مبتدئ : le piquet, tâches `stake` seules, dont une impossible ; متقدم : un point écrit, touché ou symétrique) et par les demi-mètres (متقدم).
+      else if (type === 'dig-grid') {
+        expect(beginner.numbers.tasks.every((tk) => tk.kind === 'stake'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.none), type).toBe(true);
+        expect(advanced.numbers.tasks.every((tk) => tk.kind !== 'stake'), type).toBe(true);
+        expect(advanced.numbers.tasks.some((tk) => tk.targets?.some((g) => g.at.includes('.'))), type).toBe(true);
+      }
+      // Unité 3 de 2AM, leçon 5 : `gap-caliper` se mesure par la PRÉDICTION de l'ouverture écrite avant la vis (متقدم : tâches `predict` ou `swing`), les DÉCIMAUX (متقدم seul) et le compas serré sur la graine du HAUT.
+      else if (type === 'gap-caliper') {
+        expect(advanced.numbers.tasks.every((tk) => tk.predict || tk.kind === 'swing'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.predict || tk.kind === 'swing'), type).toBe(false);
+        expect(advanced.numbers.tasks.some((tk) => (tk.anchor + (tk.target ?? '')).includes('.')) && !beginner.numbers.tasks.some((tk) => (tk.anchor + tk.target).includes('.')), type).toBe(true);
+        expect(advanced.numbers.tasks.some((tk) => tk.target !== undefined && Number(tk.anchor) > Number(tk.target)) && beginner.numbers.tasks.every((tk) => Number(tk.anchor) < Number(tk.target)), type).toBe(true);
+      }
       // Unité 3 de 2AM : `zero-probe` se mesure par la FINESSE du pas (1 puis 0,1) et le nombre de décimales des nombres à juger.
       else if (type === 'zero-probe') {
         const decimals = (n) => Math.max(...n.tasks.flatMap((t) => [t.a, t.lo, t.hi].filter(Boolean)).map((v) => (String(v).split(',')[1] ?? '').length));
@@ -117,6 +248,27 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(beginner.numbers.tasks[0].kind, type).toBe('fill');
         expect(advanced.numbers.tasks.some((tk) => tk.kind === 'both'), type).toBe(true);
         expect(beginner.numbers.tasks.some((tk) => tk.kind === 'both'), type).toBe(false);
+      }
+      // Unité 1 de 2AM, leçon 1 : `tram-route` se mesure par l'ÉCRITURE de la chaîne (متقدم seul : plaques et puces à poser avant de tamponner) et par la PRÉDICTION écrite avant « انطلق ».
+      else if (type === 'tram-route') {
+        expect(advanced.numbers.tasks.every((tk) => tk.build && tk.predict), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.build || tk.predict), type).toBe(false);
+      }
+      // Unité 1 de 2AM, leçon 2 : `coop-calculator` se mesure par la FRAPPE de toute la ligne (متقدم seul : `type`) contre l'insertion de parenthèses dans une ligne donnée (`insert`).
+      else if (type === 'chain-cutter') {
+        expect(beginner.numbers.tasks.every((tk) => tk.kind === 'cut'), type).toBe(true);
+        expect(advanced.numbers.tasks.some((tk) => tk.kind === 'glue') && advanced.numbers.tasks.some((tk) => tk.hidden), type).toBe(true);
+      }
+      // Unité 1 de 2AM, leçon 4 : `kit-packer` se mesure par la PRÉDICTION du total écrite avant « وزّع » (متقدم seul) et par la FORME de la tâche (بطاقات verrouillées / nombre rond ± petit nombre / décimaux).
+      else if (type === 'kit-packer') {
+        expect(advanced.numbers.tasks.every((tk) => tk.predict), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.predict), type).toBe(false);
+        expect(beginner.numbers.tasks.some((tk) => tk.kind === 'bags') && beginner.numbers.tasks.some((tk) => tk.op === '−'), type).toBe(true);
+        expect(advanced.numbers.tasks.some((tk) => tk.kind === 'split') && advanced.numbers.tasks.some((tk) => tk.unit === 'm'), type).toBe(true);
+      }
+      else if (type === 'coop-calculator') {
+        expect(advanced.numbers.tasks.every((tk) => tk.kind === 'type' && !tk.pre), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => tk.kind === 'insert' && tk.pre), type).toBe(true);
       }
       // Unité 4 de 3AM, leçon 3 : `marble-run` se mesure par la PRÉDICTION écrite avant le lancement (متقدم seul) et par les DEUX lettres (r6).
       else if (type === 'marble-run') {

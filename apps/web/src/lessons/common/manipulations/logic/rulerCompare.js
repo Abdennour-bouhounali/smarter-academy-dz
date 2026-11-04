@@ -291,6 +291,15 @@ export function restartTask(s) {
   return put(s, { boards: Object.freeze(boards), last: null });
 }
 
+/** « أعِد التجربة » (questions du labo) : LA MÊME tâche repart de la règle au mètre, NON faite (la carte se rouvrira à la réussite). */
+export function retryTask(s) {
+  const boards = s.boards.slice();
+  boards[s.ti] = board0(s.tasks[s.ti]);
+  const done = { ...s.done }; delete done[s.ti];
+  const solved = { ...s.solved }; delete solved[s.ti];
+  return put(s, { boards: Object.freeze(boards), done: Object.freeze(done), solved: Object.freeze(solved), last: null, free: null });
+}
+
 /* ── Ses propres nombres : l'essai LIBRE ────────────────────────────────────────────────── */
 
 /** Le plus grand nombre de champs de l'essai libre en rangement. */

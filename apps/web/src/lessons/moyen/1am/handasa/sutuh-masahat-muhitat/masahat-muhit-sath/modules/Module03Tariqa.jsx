@@ -12,6 +12,8 @@ import { LAB, METHOD_TILING } from '../content/textbook';
  * (`levels={false}`, monde `floor`) — une terrasse à paver avec des dalles entières et des demi-dalles le long d'un bord en biais, puis le même
  * sol avec une unité double ; puis l'élève répond sur ce qu'il a lu, lit la méthode ligne à ligne, puis la brique (gardée par « أتوقّع القاعدة »),
  * puis un transfert. Les nombres du labo (16 ; 21 et 10,5) sont ceux de `content/textbook.js › LAB.floor`.
+ * Déploiement du prototype (2026-10-28) : les questions sur les demis et sur les deux unités sont posées PAR-DESSUS le labo (`TileYard ›
+ * CHAINS`) ; les étapes 1 et 3 en gardent la TRACE (`checkpoint-done` de chaque scène).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const Ltr = ({ children }) => <bdi dir="ltr">{children}</bdi>;
@@ -19,10 +21,12 @@ const Ltr = ({ children }) => <bdi dir="ltr">{children}</bdi>;
 export default function Module03Tariqa() {
   const [trials, setTrials] = useState([]);
   const [read, setRead] = useState(false);
-  const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
-  const [q3, setQ3] = useState(false);
   const record = (e) => setTrials((list) => [...list, e]);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint), une suite par scène
+  const answered = (id) => trials.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const q1 = answered('terrace-halves');
+  const q3 = answered('terrace-double');
   const readHalves = trials.find((e) => e.kind === 'read' && e.scene === 'terrace-halves');
   const readTwo = trials.find((e) => e.kind === 'read' && e.scene === 'terrace-double' && e.unit === 'two');
 
@@ -51,17 +55,7 @@ export default function Module03Tariqa() {
               <Evidence id="halves" ok={!!readHalves}
                 done={<span>قرأتَ مساحة الشرفة: <Ltr>{readHalves?.value}</Ltr> وحدة ①.</span>}
                 todo="ارصف الشرفة الأولى (الأرضية ذات الحافة المائلة) واقرأ مساحتها، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<span>في الشرفة التي رصصتَها <Ltr>{LAB.floor.wholes}</Ltr> بلاطة كاملة و <Ltr>{LAB.floor.halves}</Ltr> أنصاف بلاطات. لماذا نعدّ كل نصفين بلاطة واحدة عند حساب المساحة؟</span>}
-                options={[
-                  M('لأنّ نصفين يكوّنان بلاطة كاملة تغطّي الأرض نفسها'),
-                  M('لأنّ نصف البلاطة لا يغطّي شيئًا من الأرض'),
-                  M('لأنّ الأنصاف لا تدخل في المساحة'),
-                ]}
-                correct={0} cols={1} requires={['masaha-adad']}
-                explain={<MathText>{'ألصق نصفين على قطرهما فتحصل على بلاطة كاملة: الأرض المغطّاة بنصفين هي الأرض المغطّاة ببلاطة. لهذا ننضمّ الأنصاف مثنى مثنى ولا نهملها.'}</MathText>}
-                onAnswered={() => setQ1(true)}
-              />
+              <Evidence id="cp-halves" ok={q1} done="أجبتَ في المختبر: نصفان يكوّنان بلاطة كاملة تغطّي الأرض نفسها، فنعدّ كل نصفين بلاطة." todo="أجب عن الأسئلة التي تظهر فوق المختبر بعد أن تؤكّد قراءتك." />
             </div>
           ),
         },
@@ -88,23 +82,13 @@ export default function Module03Tariqa() {
               <Evidence id="two-units" ok={!!readTwo}
                 done={<span>الأرضية نفسها: <Ltr>{LAB.floor.ones}</Ltr> وحدة ① أو <Ltr>{readTwo?.value}</Ltr> وحدة ②.</span>}
                 todo="في الشرفة الثانية ارصف الأرضية بالبلاطة المفردة ثم بالمزدوجة واقرأ المساحة بالوحدتين، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<span>الأرضية نفسها مساحتها <Ltr>{LAB.floor.ones}</Ltr> وحدة ① أو <Ltr>{LAB.floor.twos}</Ltr> وحدة ②. لماذا العدد الثاني أصغر مع أنّ الأرضية لم تتغيّر؟</span>}
-                options={[
-                  M('لأنّ الوحدة ② ضعف الوحدة ①، فنحتاج إلى عدد أقل منها لتغطية الأرض نفسها'),
-                  M('لأنّ الأرضية صارت أصغر حين غيّرنا البلاطة'),
-                  M('لأنّ الوحدة ② نصف الوحدة ① فنحتاج إلى عدد أقل منها'),
-                ]}
-                correct={0} cols={1} requires={['tariqat-rasf']}
-                explain={<MathText>{'المساحة هي الأرض نفسها. وبلاطة مزدوجة تغطّي بلاطتين مفردتين، فنعدّ منها نصف ما نعدّه من المفردة: $21\\div2=10{,}5$ .'}</MathText>}
-                onAnswered={() => setQ3(true)}
-              />
+              <Evidence id="cp-two" ok={q3} done="أجبتَ في المختبر: الوحدة ② ضعف الوحدة ①، فنحتاج إلى نصف عددها لتغطية الأرضية نفسها." todo="أجب عن الأسئلة التي تظهر فوق المختبر بعد أن تقرأ المساحة بالوحدتين." />
               {q3 && <KnowledgeBrick id="wahdatan-adad" lead="21 و 10,5 لأرضية واحدة: ما الذي غيّر العدد؟" />}
             </div>
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }

@@ -11,8 +11,8 @@ import { LAB, KNOWLEDGE, RECALL, RECALL_TASAWI } from '../content/textbook';
 
 /**
  * Module 2 — معارف : le module s'ouvre sur un labo (le MÊME type `seed-rake`, monde `fewest`, posé seul `levels={false}`) : 3/4 et 5/6, « أوسع مسافة » (1/12 : 9 + 10 = 19 plants, 19/12 m, le second
- * حوض s'ouvre). Chaque encadré NOMME ce que l'élève vient de faire (question → encadré → brique), avec les mots de la plateforme (guide §4ter-bis) : un « تذكّر — السنة الثانية » sans lien
- * (`jam-tarh-kusur`, 2AM, NON publiée), un « تذكّر » de `tasawi-muqaranat-kasrayn` (PUBLIÉE : avec lien), le rappel du même dénominateur, la règle et deux exemples. LP : P1, P2.
+ * حوض s'ouvre). Chaque encadré NOMME ce que l'élève vient de faire (question → encadré → brique), avec les mots de la plateforme (guide §4ter-bis) : un « تذكّر — السنة الثانية » avec son lien
+ * (`jam-tarh-kusur`, 2AM, publiée 2026-10-29), un « تذكّر » de `tasawi-muqaranat-kasrayn` (PUBLIÉE : avec lien), le rappel du même dénominateur, la règle et deux exemples. LP : P1, P2.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -20,6 +20,7 @@ export default function Module02Maarif() {
   const [q, setQ] = useState({});
   const answered = (k) => () => setQ((s) => ({ ...s, [k]: true }));
   const base = getLessonPath(RECALL_TASAWI.lesson);
+  const year2 = getLessonPath(RECALL.lesson);
   return (
     <ContentModule
       objectives={['ما أوسع مسافة تملأ الجزأين؟', 'كيف نكتب الحساب؟', 'ما قاعدة جمع كسرين وطرحهما؟']}
@@ -43,7 +44,9 @@ export default function Module02Maarif() {
                 onAnswered={answered('a')}
               />
               {q.a && (
-                <TextbookBox kind="remark" title={RECALL.title} text={RECALL.text} source={RECALL.source} compact />
+                <TextbookBox kind="remark" title={RECALL.title} text={RECALL.text} source={RECALL.source} compact>
+                  {year2 && <Link to={year2} className="inline-flex min-h-[44px] items-center text-sm font-bold text-teal-700 underline underline-offset-4" data-recall-link>درس « جمع وطرح كسرين » (السنة الثانية)</Link>}
+                </TextbookBox>
               )}
               {q.a && (
                 <TextbookBox kind="remark" title={RECALL_TASAWI.title} text={RECALL_TASAWI.text} source={RECALL_TASAWI.source} compact>
@@ -72,7 +75,7 @@ export default function Module02Maarif() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={2} />}
+      footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />
   );
 }

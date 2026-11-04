@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef,
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, Sparkles, ChevronLeft, ChevronRight, FlaskConical, Undo2, RotateCcw, Send } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
-import { ratText, sub, add } from '@smarter-academy/core/arithmetic/powers.js';
+import { ratText, sub, add, mul, rat } from '@smarter-academy/core/arithmetic/powers.js';
 import MathText from '../../components/MathText';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
@@ -11,6 +11,10 @@ import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
 import { LabCard, StageFrame, PromptCard, VerdictBanner } from '../primitives/LabKit';
 import { useLabCoach } from '../primitives/LabCoach';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import { LEVELS } from '../levels';
 import * as L from '../logic/gearCrank';
 import BikeScene, { CSS as SCENE_CSS, BB } from './gearCrank/BikeScene';
@@ -51,7 +55,12 @@ import BikeScene, { CSS as SCENE_CSS, BB } from './gearCrank/BikeScene';
  * « جرّب كل الإمكانيات » : NON (chaque lâcher EST l'essai). « جرّب أعدادك » est TOUJOURS ouvert sous le labo.
  * D'UN SEUL REGARD (§8bis) : `[data-gc-glance]` enveloppe la consigne, la scène, les compteurs, les commandes et le verdict.
  * ONBOARDING : `coach` (défaut true) → `LabCoach` ; `logic/gearCrank.js › coachOf` (predict · crank · flag · teeth · free).
- * Props : `tasks` ([{ id, F, R, target, predict }]), `world` ('ride' | 'reverse'), `level`, `levels`, `coach`, `title`, `lead`, `onTrial(event)`, `onFinished({ world })`.
+ * QUESTIONS PENDANT LE LABO (2026-10-28, PROTOTYPE de `primitives/LabCheckpoint`) : `checkpoints` (défaut true). Après chaque tâche de مبتدئ
+ * (m1, m2, m3), une suite de questions se pose PAR-DESSUS le labo et retient « المهمة التالية » (`CHAINS`) : m1 lire · comparer · une dent de
+ * pédale ; m2 lire · pourquoi plus · 3/4 de tour · quelle opération ; m3 lire · 3/4 × 4/3 · la règle (l'ancienne découverte, qui formalise).
+ * Les événements `{ tk: 'checkpoint' | 'checkpoint-done', id, … }` partent vers `onTrial`. OBLIGATOIRES pour tout élève ; l'ENSEIGNANT seul peut
+ * les couper pour SON compte (`useLabCheckpointSettings`, interrupteur dans l'en-tête du labo) ; coupées, la découverte d'avant reprend (sous le labo).
+ * Props : `tasks` ([{ id, F, R, target, predict }]), `world` ('ride' | 'reverse'), `level`, `levels`, `coach`, `checkpoints`, `title`, `lead`, `onTrial(event)`, `onFinished({ world })`.
  * CONTRAT DOM : [data-gear-crank][data-task][data-solved][data-layout][data-world], [data-gc-glance], [data-gc-stage], [data-gc-crank], [data-gc-teeth-less], [data-gc-teeth-more],
  * [data-gc-home], [data-gc-pedal][data-value], [data-gc-wheel][data-value], [data-gc-flag], [data-gc-gap], [data-gc-predict], [data-gc-predict-num], [data-gc-predict-den],
  * [data-gc-go], [data-gc-next], [data-gc-verdict], [data-gc-log], [data-gc-free][data-active], [data-gc-free-f], [data-gc-free-r], [data-gc-free-target], [data-gc-formal].
@@ -73,7 +82,7 @@ export function numbersFor({ tasks, world, level }) {
 }
 
 export default function GearCrank({
-  tasks, world, title, lead, level, levels: withLevels = true, coach: coachOn = true,
+  tasks, world, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -83,13 +92,27 @@ export default function GearCrank({
   const nums = state.numbers;
   const numsKey = JSON.stringify(nums);
   const [lab, setLab] = useState(() => L.init(nums));
-  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
+  const [scene, setScene] = useState({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: 0 });
   if (scene.key !== numsKey || scene.epoch !== state.epoch) {
-    const restart = scene.key === numsKey && scene.rc !== state.resetCount;
-    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount });
-    setLab(restart ? L.restartTask(lab) : L.init(nums));
+    // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — la tâche 1, les essais et les questions du labo
+    setScene({ key: numsKey, epoch: state.epoch, rc: state.resetCount, inits: scene.inits + 1 });
+    setLab(L.init(nums));
   }
-  const ready = L.discoveryReady(lab);
+  // les questions pendant le labo : la suite de la tâche courante ; celle qui finit par la règle remplace la découverte automatique
+  const cur = L.taskOf(lab);
+  const cpSettings = useLabCheckpointSettings('gear-crank');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const chain = cpOn && cpSettings.enabled && !L.isFree(lab) ? CHAINS[cur.id] ?? null : null;
+  const ruleByCheckpoint = cpOn && cpSettings.enabled && lab.tasks.some((tk) => CHAINS[tk.id]?.includes('rule'));
+  const cp = useLabCheckpoint({
+    id: chain ? cur.id : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, cur, k)) : null,
+    reached: L.taskDone(lab),
+    resetKey: scene.inits,
+    onRetry: () => setLab(L.restartTask),
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => { if (CHAINS[id]?.includes('rule')) { state.discover(); state.formalize(); } },
+  });
+  const ready = L.discoveryReady(lab) && !ruleByCheckpoint;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   const finishedOnce = useRef(false);
   const everyDone = L.allDone(lab);
@@ -105,7 +128,7 @@ export default function GearCrank({
     reported.current = nTrials;
   }, [nTrials, lab.trials]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coachStep = coachOn && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
     lab: 'gear-crank', step: coachStep,
     text: coachStep ? k(`coach.${coachStep.id}`) : '',
@@ -141,6 +164,8 @@ export default function GearCrank({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       coach={coachOn ? coach : null}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={!!chain || ruleByCheckpoint}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={discovery}
@@ -150,7 +175,7 @@ export default function GearCrank({
         <div ref={boxRef} className="space-y-2" data-gear-crank data-task={lab.ti} data-world={lab.world}
           data-solved={everyDone ? 'true' : 'false'} data-layout={width >= WIDE_MIN ? 'wide' : 'narrow'}>
           <style dangerouslySetInnerHTML={{ __html: SCENE_CSS }} />
-          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} />
+          <Lab lab={lab} setLab={setLab} k={k} width={width} screenH={screenH} lead={state.isAuthoredLevel ? lead : null} cp={cp} />
         </div>
       </ManipulationStage>
     </ManipulationShell>
@@ -175,7 +200,7 @@ function turnsWith(k, val, abs = false) {
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-function Lab({ lab, setLab, k, width, screenH, lead }) {
+function Lab({ lab, setLab, k, width, screenH, lead, cp }) {
   const uid = `gc${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
   const wide = width >= WIDE_MIN;
   const free = L.isFree(lab);
@@ -186,6 +211,26 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
   const turnsText = useCallback((v, abs) => turnsWith(k, v, abs), [k]);
   const j = L.judge(lab);
   const atFlagNow = lab.settled && lab.settled.atFlag && lab.teeth === lab.settled.teeth;
+
+  /* ── le son (2026-10-28) : un déclic par dent (au plus un toutes les 35 ms, plus grave en arrière), une cloche à chaque tour COMPLET de
+     roue, et au lâcher : l'arrivée au drapeau ou le dépassement. Muet sauf « الصوت » (l'interrupteur de l'en-tête du labo). ── */
+  const sfx = useRef({ teeth: lab.teeth, at: 0, key: '' });
+  const sfxKey = `${free ? 'free' : lab.ti}`;
+  useEffect(() => {
+    const p = sfx.current;
+    if (p.key !== sfxKey) { sfx.current = { teeth: lab.teeth, at: 0, key: sfxKey }; return; }
+    const d = lab.teeth - p.teeth;
+    if (d === 0) return;
+    const now = performance.now();
+    if (now - p.at > 35) { playSfx('tooth', { pitch: d > 0 ? 1 : 0.75 }); p.at = now; }
+    if (d > 0 && Math.floor(lab.teeth / task.R) > Math.floor(p.teeth / task.R)) playSfx('bell');
+    p.teeth = lab.teeth;
+  }, [lab.teeth, sfxKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (!lab.settled) return;
+    if (lab.settled.atFlag) playSfx('flag');
+    else if (lab.teeth > task.goalTeeth) playSfx('over');
+  }, [lab.settled]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── le geste : glisser autour de l'axe, les tours s'accumulent ── */
   const svgRef = useRef(null);
@@ -248,20 +293,20 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
     : swapped ? k('context.moved', { F: iso(task.F), R: iso(task.R), turns: turnsOfFlag })
       : k('context.ride', { F: iso(task.F), R: iso(task.R), turns: turnsOfFlag });
   const question = free ? k('question.free') : task.predict ? k('question.predict') : k('question.ride');
+  // une étape est FAITE quand la roue est au drapeau ET que ses questions (LabCheckpoint) sont répondues : alors la pastille passe au vert et on fête
+  const stepDone = lab.tasks.map((_, i) => !!lab.done[i] && (i !== lab.ti || !cp.blocking));
   const steps = lab.tasks.length > 1 && !free && (
-    <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
-      {lab.tasks.map((tk, i) => {
-        const d = !!lab.done[i];
-        const cur = i === lab.ti;
-        return (
-          <span key={tk.id} role="listitem" data-gc-step={i} data-done={d ? 'true' : 'false'} aria-current={cur ? 'step' : undefined} aria-label={k('stepAria', { i: i + 1 })}
-            className={`inline-flex h-7 min-w-[28px] items-center justify-center rounded-full border-2 px-1.5 text-xs font-black tabular-nums ${cur ? 'border-sky-600 bg-sky-500 text-white' : d ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-sky-100 bg-white text-sky-500'}`}>
-            <bdi dir="ltr">{i + 1}</bdi>
-          </span>
-        );
-      })}
-    </div>
+    <LabStepper count={lab.tasks.length} current={lab.ti} done={stepDone} stepAttr="data-gc-step" />
   );
+  const party = useStepCelebration();
+  const celebrated = useRef(new Set());
+  if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // L.init (« إعادة », autre niveau) : on refête
+  const nowDone = !free && stepDone[lab.ti];
+  useEffect(() => {
+    if (!nowDone || celebrated.current.has(lab.ti)) return;
+    celebrated.current.add(lab.ti);
+    party.celebrate({ n: lab.ti + 1, total: lab.tasks.length });
+  }, [nowDone, lab.ti]); // eslint-disable-line react-hooks/exhaustive-deps
   const prompt = (
     <PromptCard size="md" context={<MathText>{ctx}</MathText>} contextProps={{ 'data-gc-context': free ? 'free' : swapped ? 'moved' : 'ride' }}
       title={<MathText>{question}</MathText>} titleClassName="text-lg" lamp={free ? null : done ? 'on' : 'off'}
@@ -338,7 +383,7 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
 
   /* ── le verdict ── */
   const vv = verdictOf(lab, k, turnsText);
-  const canNext = L.canNext(lab);
+  const canNext = L.canNext(lab) && !cp.blocking;
   const Icon = vv.tone === 'emerald' ? CheckCircle2 : vv.tone === 'indigo' ? Hand : Sparkles;
   const banner = (
     <VerdictBanner tone={vv.tone} icon={wide ? Icon : null} size="sm" className="min-h-[2.75rem] !py-1.5" data-gc-verdict={vv.code}>
@@ -357,6 +402,8 @@ function Lab({ lab, setLab, k, width, screenH, lead }) {
   return (
     <>
       <div className="relative space-y-2" data-gc-glance>
+        {party.node}
+        {cp.node}
         {prompt}
         {wide ? (
           <div className="flex items-stretch gap-2">
@@ -534,7 +581,7 @@ function discoveryPrompt(lab, k) {
 export function discoveryOptions(lab, k) {
   const w = L.witnesses(lab);
   const big = w.bigger ?? lab.tasks[1] ?? lab.tasks[0];
-  const first = w.first && w.first.id !== big.id ? w.first : lab.tasks[0];
+  const first = w.first && w.first.id !== big.id ? w.first : lab.tasks.find((t) => t.id !== big.id) ?? lab.tasks[0];
   const f = L.formalOf(big);
   const gap = sub(big.goalPedal, big.target);
   const plusOfFirst = add(first.target, gap);
@@ -564,3 +611,137 @@ export function Formal({ lab, k }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de questions de chaque tâche de مبتدئ : elle interroge ce que l'élève vient de FAIRE, et mène à la règle. */
+export const CHAINS = Object.freeze({
+  m1: ['read', 'compare', 'perTurn'],
+  m2: ['read', 'why', 'perTurn', 'operation'],
+  m3: ['read', 'product', 'rule'],
+  // le monde `reverse` (module 2, 2026-10-28 lot 5) : la chaîne est déplacée, le plateau devient le pignon — 3/5 puis 5/3 de tour de pédale
+  r1: ['read', 'compare', 'perTurn'],
+  r2: ['read', 'swap', 'product'],
+  // متقدم : la prédiction a déjà été écrite ; on interroge le rapport, la comparaison et l'opération, puis la chaîne déplacée et la règle
+  a1: ['perTurn', 'operation'],
+  a2: ['compare', 'operation'],
+  a3: ['perTurn', 'product'],
+  a4a: ['compare', 'perTurn'],
+  a4b: ['swap', 'product', 'rule'],
+});
+
+const $ = (s) => `$${s}$`;
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+
+/** Chaque question est construite sur LES nombres de la tâche (rien n'est écrit en dur) ; `k` : les textes de `gearCrank`. */
+export const QUESTIONS = {
+  read: (lab, task, k) => {
+    const f = L.formalOf(task);
+    return {
+      id: 'read', kind: 'number', expected: f.answer, answer: <MathText>{$(tex(f.answer))}</MathText>,
+      prompt: Mx(k, 'read.prompt'), hints: [Mx(k, 'read.hint1'), Mx(k, 'read.hint2')],
+      explain: Mx(k, 'read.explain', { pedal: turnsWith(k, task.goalPedal), wheel: turnsWith(k, task.target) }),
+    };
+  },
+  compare: (lab, task, k) => {
+    const d = sub(task.goalPedal, task.target);
+    const right = d.n < 0n ? 0 : d.n > 0n ? 1 : 2;
+    const p = $(tex(ratText(task.goalPedal)));
+    return {
+      id: 'compare', kind: 'choice',
+      prompt: Mx(k, 'compare.prompt', { pedal: turnsWith(k, task.goalPedal), wheel: turnsWith(k, task.target) }),
+      options: ['less', 'more', 'same'].map((o, i) => ({ text: Mx(k, `compare.${o}`), correct: i === right })),
+      hints: [
+        Mx(k, 'compare.hint1', { p, w: $(tex(task.targetText)) }),
+        right === 0 ? Mx(k, 'compare.hint2', { p, up: $(String(task.goalPedal.n / task.goalPedal.d + 1n)) }) : Mx(k, 'compare.hint2More', { p, w: $(tex(task.targetText)) }),
+      ],
+      explain: Mx(k, right === 0 ? 'compare.explainLess' : 'compare.explainMore'),
+    };
+  },
+  perTurn: (lab, task, k) => {
+    const f = L.formalOf(task);
+    const nums = { F: iso(task.F), R: iso(task.R) };
+    return {
+      id: 'perTurn', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'perTurn.prompt'),
+      options: [
+        { text: <MathText>{$(tex(f.mirror))}</MathText>, why: Mx(k, 'perTurn.whyMirror', nums) },
+        { text: <MathText>{$(tex(f.ratio))}</MathText>, correct: true },
+        { text: <MathText>{$('1')}</MathText>, why: Mx(k, 'perTurn.whyOne', nums) },
+      ],
+      hints: [Mx(k, 'perTurn.hint1', nums), Mx(k, 'perTurn.hint2', { frac: $(`\\frac{${task.F}}{${task.R}}`) })],
+      explain: Mx(k, 'perTurn.explain', { calc: $(`\\frac{${task.F}}{${task.R}}=${tex(f.ratio)}`), turns: turnsWith(k, f.ratio) }),
+    };
+  },
+  why: (lab, task, k) => {
+    const nums = { F: iso(task.F), R: iso(task.R) };
+    return {
+      id: 'why', kind: 'choice',
+      prompt: Mx(k, 'why.prompt'),
+      options: [
+        { text: Mx(k, 'why.bigger'), why: Mx(k, 'why.whyBigger', nums) },
+        { text: Mx(k, 'why.slip'), why: Mx(k, 'why.whySlip') },
+        { text: Mx(k, 'why.right', nums), correct: true },
+      ],
+      hints: [Mx(k, 'why.hint1'), Mx(k, 'why.hint2', nums)],
+      explain: Mx(k, 'why.explain', nums),
+    };
+  },
+  operation: (lab, task, k) => {
+    const f = L.formalOf(task);
+    const t = tex(f.target); const r = tex(f.ratio);
+    const gap = ratText(sub(task.goalPedal, task.target));
+    const target = turnsWith(k, task.target);
+    return {
+      id: 'operation', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'operation.prompt', { ratio: $(r), target, pedal: $(tex(f.answer)) }),
+      options: [
+        { text: <MathText>{$(`${t}\\times${r}`)}</MathText>, why: Mx(k, 'operation.whyTimes', { calc: $(`${t}\\times${r}=${tex(f.wrong)}`), target }) },
+        { text: <MathText>{$(`${t}+${tex(gap)}`)}</MathText>, why: Mx(k, 'operation.whyPlus', { gap: $(tex(gap)) }) },
+        { text: <MathText>{$(`${t}\\div${r}`)}</MathText>, correct: true },
+      ],
+      hints: [Mx(k, 'operation.hint1', { ratio: $(r), target }), Mx(k, 'operation.hint2')],
+      explain: Mx(k, 'operation.explain', { calc: $(`${t}\\div${r}=${tex(f.answer)}`) }),
+    };
+  },
+  swap: (lab, task, k) => {
+    const prev = L.swappedFrom(lab) ?? lab.tasks[Math.max(0, lab.ti - 1)];
+    const before = turnsWith(k, prev.goalPedal);
+    const after = turnsWith(k, task.goalPedal);
+    const o = { F: iso(task.F), R: iso(task.R), before, after, wheel: turnsWith(k, task.target), half: turnsWith(k, mul(prev.goalPedal, rat(1n, 2n))), teeth: iso(task.goalTeeth) };
+    return {
+      id: 'swap', kind: 'choice',
+      prompt: Mx(k, 'swap.prompt', o),
+      options: [
+        { text: Mx(k, 'swap.right', o), correct: true },
+        { text: Mx(k, 'swap.same', o), why: Mx(k, 'swap.whySame', o) },
+        { text: Mx(k, 'swap.half', o), why: Mx(k, 'swap.whyHalf') },
+      ],
+      hints: [Mx(k, 'swap.hint1'), Mx(k, 'swap.hint2', o)],
+      explain: Mx(k, 'swap.explain', o),
+    };
+  },
+  product: (lab, task, k) => {
+    const f = L.formalOf(task);
+    const [a, b = '1'] = f.ratio.split('/'); const [c, d = '1'] = f.mirror.split('/');
+    const r = tex(f.ratio); const m = tex(f.mirror);
+    return {
+      id: 'product', kind: 'number', expected: '1', answer: <MathText>{$('1')}</MathText>,
+      prompt: Mx(k, 'product.prompt', { ratio: $(r), mirror: $(m), calc: $(`${r}\\times${m}`) }),
+      hints: [Mx(k, 'product.hint1'), Mx(k, 'product.hint2', { calc: $(`${r}\\times${m}=\\frac{${a}\\times${c}}{${b}\\times${d}}`) })],
+      explain: Mx(k, 'product.explain', { calc: $(`${r}\\times${m}=1`), ratio: $(r), mirror: $(m), one: $('1') }),
+    };
+  },
+  rule: (lab, task, k) => {
+    const w = L.witnesses(lab);
+    const big = w.bigger ?? lab.tasks[1] ?? lab.tasks[0];
+    const f = L.formalOf(big);
+    return {
+      id: 'rule', kind: 'choice',
+      prompt: <MathText>{discoveryPrompt(lab, k)}</MathText>,
+      options: discoveryOptions(lab, k),
+      hints: [Mx(k, 'rule.hint1', { mirror: $(tex(f.mirror)), target: turnsWith(k, big.target) }), Mx(k, 'rule.hint2', { n: iso(big.targetText) })],
+      explain: <Formal lab={lab} k={k} />,
+    };
+  },
+};

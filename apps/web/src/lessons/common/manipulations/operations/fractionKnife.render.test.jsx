@@ -3,7 +3,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import i18n from '../../../../i18n';
-import FractionKnife from './FractionKnife';
+import FractionKnife, { chainsOf, QUESTIONS } from './FractionKnife';
 import ManipulationWorkspace from '../ManipulationWorkspace';
 import { LEVELS } from '../levels';
 import * as L from '../logic/fractionKnife';
@@ -60,7 +60,7 @@ describe('fraction-knife — rendu', () => {
     expect(out).toContain('data-world="paper"');
     expect(out).toContain('data-stage="0"');
     expect(attrs(out, 'data-fk-target')).toEqual(['6/10', '12/20']);
-    expect(attrs(out, 'data-done')).toEqual(['false', 'false']);
+    expect(attrs(out, 'data-done')).toEqual(['false', 'false', 'false', 'false']); // les 2 étapes (LabStepper) puis les 2 cibles
     expect(out).toContain('data-fk-stamp="3/5" data-figure="1"');
     expect(out).not.toContain('data-fk-girl');
     expect(out).not.toContain('data-fk-next');
@@ -154,5 +154,47 @@ describe('fraction-knife — rendu', () => {
 
   it('the logic the scene draws is the lesson\'s: 27/45 reduced to 3/5 by a glue of 9', () => {
     expect(L.glue(27, 45, 45, 5).k).toBe(9);
+  });
+});
+
+describe('fraction-knife — questions pendant le labo (LabCheckpoint)', () => {
+  const k = (key, o) => i18n.t(`lesson:manipulation.fractionKnife.${key}`, o);
+  const RAW_ = /manipulation\.[a-zA-Z]/;
+  for (const level of ['beginner', 'advanced']) {
+    it(`${level} : chaque question a un texte, une seule bonne réponse, deux indices, et ni clé brute ni {{`, () => {
+      let lab = L.init(LEVELS['fraction-knife'][level].numbers);
+      for (const d of [10, 15, 20]) lab = L.commitD(lab, d);
+      const chains = chainsOf(lab);
+      for (const [i, chain] of Object.entries(chains)) {
+        expect(chain.length, i).toBeGreaterThanOrEqual(2);
+        for (const qid of chain) {
+          const q = QUESTIONS[qid](lab, k);
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${i}.${qid}`).not.toMatch(RAW_);
+          expect(out, `${i}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${i}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${i}.${qid}`).toHaveLength(1);
+          else expect(q.expected, `${i}.${qid}`).toBeTruthy();
+        }
+      }
+      expect(Object.values(chains).at(-1).at(-1)).toBe('rule');
+    });
+  }
+  it('les nombres viennent des coupes : 3/5 → 6/10 (k = 2), 27/45 → 3/5 (9 morceaux réunis)', () => {
+    const lab = L.commitD(L.init(LEVELS['fraction-knife'].advanced.numbers), 10);
+    expect(QUESTIONS.times(lab, k).expected).toBe('2');
+    expect(QUESTIONS.glue(lab, k).expected).toBe('9');
+    expect(chainsOf(L.init(LEVELS['fraction-knife'].beginner.numbers))[0]).toEqual(['times', 'claim', 'decimal', 'rule']);
+  });
+});
+
+describe('fraction-knife — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('questions actives : ni la progression ni le bouton d’indice ; checkpoints={false} : les deux reviennent', () => {
+    const g = renderToString(<FractionKnife {...LEVELS['fraction-knife'].beginner.numbers} />);
+    expect(g).not.toContain('data-manipulation-progress');
+    expect(g).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    const off = renderToString(<FractionKnife {...LEVELS['fraction-knife'].beginner.numbers} checkpoints={false} />);
+    expect(off).toContain('data-manipulation-progress');
+    expect(off).toContain(i18n.t('lesson:manipulation.hint.show'));
   });
 });

@@ -3,7 +3,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import i18n from '../../../../i18n';
-import SignMachine, { discoveryOptions, calcText } from './SignMachine';
+import SignMachine, { discoveryOptions, calcText, chainsOf, QUESTIONS } from './SignMachine';
 import { LEVELS } from '../levels';
 import * as L from '../logic/signMachine';
 
@@ -81,5 +81,61 @@ describe('sign-machine — rendu', () => {
       expect(opts.filter((o) => o.correct).length).toBe(1);
       expect(opts.filter((o) => o.why).length).toBe(2);
     }
+  });
+});
+
+/** Résout toutes les missions d'un niveau par la logique (la main de l'élève). */
+function solveAll(numbers) {
+  let s = L.init(numbers);
+  for (let i = 0; i < s.tasks.length; i += 1) {
+    const tk = L.taskOf(s);
+    if (tk.kind === 'predict') s = L.choose(s, tk.key);
+    else if (tk.kind === 'fill') for (let b = tk.from; b >= tk.to; b -= 1) s = L.release(s, b);
+    else if (tk.kind === 'both') { s = L.release(s, L.bFor(s.a, tk.product)); s = L.flipSign(s); s = L.release(s, L.bFor(s.a, tk.product)); }
+    else s = L.release(s, L.bFor(tk.a, tk.product));
+    if (i < s.tasks.length - 1) s = L.nextTask(s);
+  }
+  return s;
+}
+
+describe('sign-machine — questions pendant le labo (LabCheckpoint)', () => {
+  for (const name of ['beginner', 'advanced']) {
+    it(`${name} : chaque question a un texte, une seule bonne réponse, deux indices, et ni clé brute ni {{`, () => {
+      const s = solveAll(LV[name].numbers);
+      expect(L.discoveryReady(s)).toBe(true);
+      const chains = chainsOf(s);
+      for (const tk of s.tasks) {
+        expect(chains[tk.id].length, tk.id).toBeGreaterThanOrEqual(1);
+        for (const qid of chains[tk.id]) {
+          const q = QUESTIONS[qid](s, tk, k);
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${tk.id}.${qid}`).not.toMatch(RAW);
+          expect(out, `${tk.id}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${tk.id}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') {
+            expect(q.options.filter((o) => o.correct), `${tk.id}.${qid}`).toHaveLength(1);
+            expect(new Set(q.options.map((o) => renderToString(<>{o.text}</>))).size, `${tk.id}.${qid} distinct`).toBe(q.options.length);
+          } else expect(Number(q.expected), `${tk.id}.${qid}`).toBeGreaterThanOrEqual(0);
+        }
+      }
+      expect(chains[s.tasks.at(-1).id].at(-1)).toBe('rule');
+    });
+  }
+  it('les nombres viennent de la mission résolue', () => {
+    const s = solveAll(LV.beginner.numbers);
+    expect(chainsOf(s)).toEqual({ m1: ['gap', 'zero'], p1: ['continue', 'next'], m2: ['column', 'rule'] });
+    expect(QUESTIONS.next(s, s.tasks[1], k).expected).toBe('6');
+    expect(QUESTIONS.gap(s, s.tasks[0], k).options[0].correct).toBe(true);   // a = −3 : le produit MONTE de 3
+  });
+});
+
+describe('sign-machine — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('questions actives : ni la progression ni le bouton d’indice ; checkpoints={false} : les deux reviennent', () => {
+    const g = html(cases.beginner);
+    expect(g).not.toContain('data-manipulation-progress');
+    expect(g).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    const off = html({ ...cases.beginner, checkpoints: false });
+    expect(off).toContain('data-manipulation-progress');
+    expect(off).toContain(i18n.t('lesson:manipulation.hint.show'));
   });
 });

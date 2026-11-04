@@ -199,6 +199,18 @@ export function claim(s, says) {
   return { ...s, pending: null, ramps: [...s.ramps, ramp], last: { kind: ok ? 'claimOk' : 'claimWrong', truth, n: ramp.n, ref: prev.n } };
 }
 
+/* ── refaire LA MÊME étape (« أعِد التجربة » des questions pendant le labo, 2026-10-28) ── */
+
+const emptyRows = () => ({ cos: {}, sin: {}, tan: {} });
+/** مبتدئ : les étiquettes de l'angle choisi (et donc les rapports composés avec elles) sont effacées. */
+export const retryNames = (s) => (s.mode !== 'name' || !s.at ? s : { ...s, names: { ...s.names, [s.at]: {} }, compose: { ...s.compose, [s.at]: emptyRows() }, last: null });
+/** مبتدئ : les trois rapports de l'angle choisi sont à recomposer. */
+export const retryCompose = (s) => (s.mode !== 'name' || !s.at ? s : { ...s, compose: { ...s.compose, [s.at]: emptyRows() }, last: null });
+/** متقدم : les rampes à l'angle de départ sont à refaire (l'angle revient à celui du départ). */
+export const retrySizes = (s) => (s.mode !== 'scale' ? s : { ...s, b: s.angle0, i: LEN_START, ramps: [], pending: null, last: null });
+/** متقدم : les rampes à un autre angle sont retirées ; on revient à l'angle de départ. */
+export const retryTurn = (s) => (s.mode !== 'scale' ? s : { ...s, b: s.angle0, ramps: s.ramps.filter((r) => r.b === s.angle0), pending: null, last: null });
+
 /* ── ce qui reste à faire (orientation, jamais la réponse) et la découverte ── */
 
 export function progress(s) {

@@ -75,6 +75,9 @@ const ON_DEMAND_NAMESPACES = {
   family: () => import('./locales/ar/family.json'),
   // « فضاء الإدارة », l'espace du directeur d'un établissement (SCHOOL_ADMIN_SPACE.md).
   idara: () => import('./locales/ar/idara.json'),
+  // « مختبر التفكير » : l'échelle des défis, l'espace de travail, la relecture (THINKING_LAB.md).
+  // Lu seulement sous la frontière paresseuse de /espace/tafkir ; le libellé de navigation vit dans `nav`.
+  thinking: () => import('./locales/ar/thinking.json'),
 };
 
 const onDemandBackend = {

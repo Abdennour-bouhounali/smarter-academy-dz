@@ -7,6 +7,10 @@ import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
 import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
@@ -73,7 +77,7 @@ import * as L from '../logic/bridgePath';
 const C = { path: '#D97706', bp: '#7C3AED', ok: '#059669', ko: '#E11D48', nm: '#0369A1' };
 
 export default function BridgePath({
-  width: width0, A: A0, B: B0, numbers: nums, theme = 'crosswalk', title, lead, mission, level, levels: withLevels = true,
+  width: width0, A: A0, B: B0, numbers: nums, theme = 'crosswalk', title, lead, mission, level, levels: withLevels = true, checkpoints = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -117,7 +121,10 @@ export default function BridgePath({
     },
   };
 
-  const ready = L.discoveryReady(lab);
+  // les questions pendant le labo (obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte) : la règle vient de la dernière suite
+  const cpSettings = useLabCheckpointSettings('bridge-path');
+  const cpActive = checkpoints && cpSettings.enabled;
+  const ready = L.discoveryReady(lab) && !cpActive;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, { min: L.dec(L.minimum(lab).number), x: L.numText(lab.best.x) }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
   const nEvents = lab.trials.length + lab.pinTrials.length;
@@ -261,6 +268,50 @@ export default function BridgePath({
   const refused = last?.kind === 'pin' && last.pin.kind !== 'equal' ? [X(last.pin.P.x), Y(last.pin.P.y)] : null;
   const showBp = lab.stage === 'straight';
   const pathColor = alignedNow ? C.ok : C.path;
+  /* ── les étapes : les trois temps de la scène (explorer · translater · aligner) ── */
+  const KINDS = L.STEP_KINDS;
+  const [answered, setAnswered] = useState({ epoch: state.epoch, ids: {} });
+  const ans = answered.epoch === state.epoch ? answered.ids : {};
+  const reachedK = L.reachedKinds(lab);
+  const pending = KINDS.filter((kd) => reachedK.includes(kd) && !ans[kd]);
+  const stepId = pending[0] ?? null;
+  const withRule = pending.length === 1 && reachedK.length === KINDS.length;
+  const chain = cpActive && stepId ? chainOf(stepId, withRule) : null;
+  const cp = useLabCheckpoint({
+    id: chain ? stepId : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, k, { options: discoveryOptions, formal })) : null,
+    reached: !!stepId,
+    resetKey: state.epoch,
+    onRetry: () => { setLiveI(null); setLab((x) => L.restartStep(x, stepId)); },
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      setAnswered((a) => ({ epoch: state.epoch, ids: { ...(a.epoch === state.epoch ? a.ids : {}), [id]: true } }));
+      if (chain.includes('rule')) { state.discover(); state.formalize(); }
+    },
+  });
+  const stepDone = KINDS.map((kd) => reachedK.includes(kd) && (!cpActive || !!ans[kd]));
+  const stepper = <LabStepper count={KINDS.length} current={stepDone.every(Boolean) ? KINDS.length - 1 : stepDone.findIndex((d) => !d)} done={stepDone} stepAttr="data-bp-step" />;
+  const party = useStepCelebration();
+  const celebrated = useRef({ epoch: state.epoch, set: new Set() });
+  if (celebrated.current.epoch !== state.epoch) celebrated.current = { epoch: state.epoch, set: new Set() };
+  useEffect(() => {
+    stepDone.forEach((d, i) => {
+      if (!d || celebrated.current.set.has(i)) return;
+      celebrated.current.set.add(i);
+      party.celebrate({ n: i + 1, total: KINDS.length });
+    });
+  }, [stepDone.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
+  // le son : un déclic par place validée, « over » pour une épingle refusée ou un trajet brisé, le drapeau quand une étape est faite
+  const doneN = stepDone.filter(Boolean).length;
+  const sfx = useRef({ n: nEvents, d: doneN, epoch: state.epoch });
+  useEffect(() => {
+    const p = sfx.current;
+    if (p.epoch !== state.epoch) { sfx.current = { n: nEvents, d: doneN, epoch: state.epoch }; return; }
+    if (nEvents > p.n) playSfx((lab.last?.kind === 'pin' && lab.last.pin.kind !== 'equal') || lab.last?.kind === 'bent' ? 'over' : 'tooth');
+    if (doneN > p.d) playSfx('flag');
+    sfx.current = { n: nEvents, d: doneN, epoch: state.epoch };
+  }, [nEvents, doneN, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const btn = 'inline-flex h-11 min-w-[44px] items-center justify-center rounded-xl border-2 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2';
   const words = (key) => k(`world.${world}.${key}`);
 
@@ -273,15 +324,20 @@ export default function BridgePath({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided={cpActive}
       hints={['hint1', 'hint2', 'hint3'].map((hk) => <MathText key={hk}>{k(hk)}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false, autoComplete }}
       discovery={<ManipulationDiscovery state={state} prompt={k('dPrompt')} options={discoveryOptions} formal={formal} />}
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className={world === 'bridge' ? 'bg-gradient-to-b from-amber-50/60 to-white' : 'bg-gradient-to-b from-slate-50 to-white'} minHeight="min-h-[170px]">
-        <div ref={boxRef} className="space-y-2" data-bridge-path data-world={world} data-stage={lab.stage}
+        <div ref={boxRef} className={`relative space-y-2 ${cp.open ? 'min-h-[620px]' : ''}`} data-bridge-path data-world={world} data-stage={lab.stage}
           data-aligned={alignedNow ? 'true' : 'false'} data-solved={lab.solved ? 'true' : 'false'} data-scene-h={G.height}>
+          {party.node}
+          {cp.node}
           <div ref={glanceRef} className="space-y-1.5" data-bp-glance>
+            {stepper}
             <div
               ref={planeRef}
               className={`relative mx-auto ${translating ? 'cursor-crosshair' : ''}`}
@@ -631,3 +687,109 @@ function Chart({ lab, k, solved }) {
     </div>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+const $ = (s) => `$${s}$`;
+const Mq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+
+/** La suite de questions de l'étape `kd` (explore · translate · straight) ; la règle ferme la DERNIÈRE étape à finir. */
+export function chainOf(kd, withRule) {
+  const base = { explore: ['width', 'compare'], translate: ['pinWhy', 'para'], straight: ['alignedWhy', 'minimum'] }[kd];
+  return withRule ? [...base, 'rule'] : base;
+}
+
+/** Chaque question est construite sur LES nombres de la scène (largeur, places essayées, minimum) ; `k` : les textes de `bridgePath`. */
+export const QUESTIONS = {
+  width: (lab, k) => {
+    const w = L.numText(lab.w);
+    const o = { w: $(w), MN: $('MN') };
+    return {
+      id: 'width', kind: 'number', expected: w, answer: <MathText>{$(w)}</MathText>,
+      prompt: Mq(k, 'width.prompt', o), hints: [Mq(k, 'width.hint1', o), Mq(k, 'width.hint2', o)],
+      explain: Mq(k, 'width.explain', o),
+    };
+  },
+  compare: (lab, k) => {
+    const places = []; lab.trials.filter((t) => t.stage === 'explore').forEach((t) => { if (!places.some((x) => x.i === t.i)) places.push(t); });
+    const [a, b] = places.slice(-2);
+    const best = a.total <= b.total ? a : b; const worse = best === a ? b : a;
+    const xs = (t) => $(L.numText(t.x));
+    const o = { xa: xs(a), xb: xs(b), ta: $(L.dec(a.total)), tb: $(L.dec(b.total)), xbest: xs(best), tbest: $(L.dec(best.total)), tworse: $(L.dec(worse.total)) };
+    const opts = [
+      { text: Mq(k, 'compare.at', { x: xs(a) }), ...(a === best ? { correct: true } : { why: Mq(k, 'compare.whyLonger', { x: xs(a), t: $(L.dec(a.total)), tbest: $(L.dec(b.total)) }) }) },
+      { text: Mq(k, 'compare.at', { x: xs(b) }), ...(b === best ? { correct: true } : { why: Mq(k, 'compare.whyLonger', { x: xs(b), t: $(L.dec(b.total)), tbest: $(L.dec(a.total)) }) }) },
+      { text: Mq(k, 'compare.same'), why: Mq(k, 'compare.whySame', o) },
+    ];
+    return {
+      id: 'compare', kind: 'choice', cols: 3,
+      prompt: Mq(k, 'compare.prompt', o), options: opts,
+      hints: [Mq(k, 'compare.hint1'), Mq(k, 'compare.hint2', o)],
+      explain: Mq(k, 'compare.explain', o),
+    };
+  },
+  pinWhy: (lab, k) => {
+    const o = { w: $(L.numText(lab.w)), NM: $("\\overrightarrow{NM}"), BB: $("\\overrightarrow{BB'}") };
+    return {
+      id: 'pinWhy', kind: 'choice',
+      prompt: Mq(k, 'pinWhy.prompt', o),
+      options: [
+        { text: Mq(k, 'pinWhy.below', o), why: Mq(k, 'pinWhy.whyBelow', o) },
+        { text: Mq(k, 'pinWhy.above', o), correct: true },
+        { text: Mq(k, 'pinWhy.side', o), why: Mq(k, 'pinWhy.whySide', o) },
+      ],
+      hints: [Mq(k, 'pinWhy.hint1', o), Mq(k, 'pinWhy.hint2', o)],
+      explain: Mq(k, 'pinWhy.explain', o),
+    };
+  },
+  para: (lab, k) => {
+    const o = { NB: $('NB'), MB: $("MB'") };
+    return {
+      id: 'para', kind: 'choice',
+      prompt: Mq(k, 'para.prompt', o),
+      options: [
+        { text: Mq(k, 'para.rect'), why: Mq(k, 'para.whyRect') },
+        { text: Mq(k, 'para.para', o), correct: true },
+        { text: Mq(k, 'para.trap'), why: Mq(k, 'para.whyTrap', o) },
+      ],
+      hints: [Mq(k, 'para.hint1'), Mq(k, 'para.hint2', o)],
+      explain: Mq(k, 'para.explain', o),
+    };
+  },
+  alignedWhy: (lab, k) => {
+    const o = { AM: $('AM'), NB: $('NB'), MB: $("MB'"), AB: $("AB'") };
+    return {
+      id: 'alignedWhy', kind: 'choice',
+      prompt: Mq(k, 'alignedWhy.prompt', o),
+      options: [
+        { text: Mq(k, 'alignedWhy.perp'), why: Mq(k, 'alignedWhy.whyPerp') },
+        { text: Mq(k, 'alignedWhy.straight', o), correct: true },
+        { text: Mq(k, 'alignedWhy.equalLegs', o), why: Mq(k, 'alignedWhy.whyEqualLegs', o) },
+      ],
+      hints: [Mq(k, 'alignedWhy.hint1', o), Mq(k, 'alignedWhy.hint2', o)],
+      explain: Mq(k, 'alignedWhy.explain', o),
+    };
+  },
+  minimum: (lab, k) => {
+    const mn = L.minimum(lab); const w = $(L.numText(lab.w));
+    const o = { w, min: $(`${mn.latex} \\approx ${L.dec(mn.number).replace(',', '{,}')}`) };
+    return {
+      id: 'minimum', kind: 'choice',
+      prompt: Mq(k, 'minimum.prompt', o),
+      options: [
+        { text: <MathText>{$(`AB + ${L.numText(lab.w)}`)}</MathText>, why: Mq(k, 'minimum.whyAB', o) },
+        { text: <MathText>{$(`${"AB'"} + ${L.numText(lab.w)}`)}</MathText>, correct: true },
+        { text: <MathText>{$("AB'")}</MathText>, why: Mq(k, 'minimum.whyBare', o) },
+      ],
+      hints: [Mq(k, 'minimum.hint1', o), Mq(k, 'minimum.hint2', o)],
+      explain: Mq(k, 'minimum.explain', o),
+    };
+  },
+  rule: (lab, k, ctx) => ({
+    id: 'rule', kind: 'choice',
+    prompt: <MathText>{k('dPrompt')}</MathText>,
+    options: ctx.options,
+    hints: [Mq(k, 'rule.hint1'), Mq(k, 'rule.hint2')],
+    explain: ctx.formal,
+  }),
+};

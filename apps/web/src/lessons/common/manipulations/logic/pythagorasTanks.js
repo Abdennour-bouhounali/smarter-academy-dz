@@ -192,6 +192,15 @@ export const taskDone = (s) => !s.free && Boolean(s.done[s.ti]);
 export const allDone = (s) => s.done.every(Boolean);
 export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 1;
 
+/** « أعِد التجربة » (carte de questions) : la MÊME tâche repart — ses versements sont effacés, la machine revient au départ. */
+export function restartTask(s) {
+  if (s.free) return s;
+  const id = s.tasks[s.ti].id;
+  const trials = s.trials.filter((t) => t.free || t.task !== id);
+  const done = s.tasks.map((_, i) => (i === s.ti ? false : s.done[i]));
+  return evt(place({ ...s, trials, done }), { kind: 'retry', task: id, free: false });
+}
+
 /** La tâche suivante (la machine change seulement si ses côtés changent). */
 export function nextTask(s) {
   if (!canNext(s)) return s;

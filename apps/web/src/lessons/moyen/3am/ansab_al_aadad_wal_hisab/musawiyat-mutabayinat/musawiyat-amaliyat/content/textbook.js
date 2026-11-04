@@ -36,6 +36,16 @@ export const KNOWLEDGE = {
 };
 
 /** طرائق p. 75 — « توظيف خواص المساويات والعمليات », RÉÉCRITE avec d'autres nombres. */
+/** « تذكّر — السنة الثانية » : اختبار صحة مساواة بقيمة (2am.m4.r09), JAMAIS reconstruit ici ; renvoie à sa leçon. */
+export const RECALL = {
+  year2: {
+    lesson: 'ikhtibar-musawat-mutabayina',
+    title: 'تذكّر — السنة الثانية',
+    text: 'في السنة الثانية اختبرنا صحّة مساواة بتعويض الحرف بقيمة وحساب الطرفين: $3x-5=7$ صحيحة من أجل $x=4$ لأنّ $3\\times4-5=7$ .',
+    source: addition('prior_year_reminder'),
+  },
+};
+
 export const METHOD = {
   transform: {
     source: src('method-1a', 75, 'طرائق'),

@@ -2,7 +2,8 @@ import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import i18n from '../../../../i18n';
-import UnitLadder, { discoveryOptions, Formal, colsText } from './UnitLadder';
+import UnitLadder, { discoveryOptions, Formal, colsText, CHAINS, QUESTIONS } from './UnitLadder';
+import * as UL from '../logic/unitLadder';
 import { LEVELS } from '../levels';
 
 const RAW = /manipulation\.[a-zA-Z]/;
@@ -86,5 +87,54 @@ describe('unit-ladder — chaînes de texte', () => {
   it('la prose ne dit pas la règle avant la découverte (consigne, coach, indices)', () => {
     const early = ['context.first', 'context.again', 'context.tables', 'question.ladder', 'question.tables', 'coach.handle', 'coach.readout', 'coach.dock', 'coach.predict', 'coach.mode', 'hints.0', 'hints.1', 'hints.2'].map((x) => k(x)).join(' ');
     expect(early).not.toMatch(/نجمع|نطرح|الأس|قوة|أسّ|الأسّين/);
+  });
+});
+
+describe('unit-ladder — questions pendant le labo (LabCheckpoint)', () => {
+  const RAWK = /manipulation\.[a-zA-Z]/;
+  it('chaque question de chaque tâche des deux niveaux : texte, 2 indices, une seule bonne réponse, ni clé brute ni {{', () => {
+    for (const lv of ['beginner', 'advanced']) {
+      const base = UL.init(LV[lv].numbers);
+      base.tasks.forEach((tk, i) => {
+        expect(CHAINS[tk.id], tk.id).toBeTruthy();
+        // les rubans posés par la tâche : un par saut, chacun de k colonnes (le total est la somme)
+        const bands = tk.path.slice(0, -1).map((u, j) => ({ from: u, to: tk.path[j + 1], k: UL.bandOf(u, tk.path[j + 1], tk.mode) }));
+        const lab = { ...base, ti: i, mode: tk.mode, bands };
+        for (const qid of CHAINS[tk.id]) {
+          const q = QUESTIONS[qid](lab, tk, k);
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${tk.id}.${qid}`).not.toMatch(RAWK);
+          expect(out, `${tk.id}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${tk.id}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') {
+            expect(q.options.filter((o) => o.correct), `${tk.id}.${qid}`).toHaveLength(1);
+            expect(q.options.filter((o) => !o.correct).every((o) => o.why), `${tk.id}.${qid} why`).toBe(true);
+            expect(new Set(q.options.map((o) => renderToString(<span>{o.text}</span>))).size, `${tk.id}.${qid} distinct`).toBe(q.options.length);
+          } else expect(q.expected).toBeTruthy();
+        }
+      });
+    }
+  });
+  it('les nombres : 3 + 3 colonnes, km → cm = 5, aire 6, volume 6', () => {
+    const b = UL.init(LV.beginner.numbers); const a = UL.init(LV.advanced.numbers);
+    const bandsOf = (tk) => tk.path.slice(0, -1).map((u, j) => ({ k: UL.bandOf(u, tk.path[j + 1], tk.mode) }));
+    expect(QUESTIONS.hopsTotal({ ...b, bands: bandsOf(b.tasks[0]) }, b.tasks[0], k).expected).toBe('6');
+    const across = QUESTIONS.across(b, b.tasks[1], k);
+    expect(renderToString(<span>{across.options.find((o) => o.correct).text}</span>)).toContain('5');
+    expect(QUESTIONS.power({ ...a, ti: 0 }, a.tasks[0], k).options.filter((o) => o.correct)).toHaveLength(1);
+    expect(CHAINS.u3.at(-1)).toBe('rule');
+    expect(CHAINS.u7.at(-1)).toBe('rule');
+  });
+  it('« أعِد التجربة » : la même tâche repart et son drapeau « fait » tombe', () => {
+    const lab = { ...UL.init(LV.beginner.numbers), done: [true, false, false] };
+    expect(UL.retryTask(lab).done[0]).toBe(false);
+  });
+  it('mode guidé : ni la progression ni le bouton d’indice, les étapes et le son sont là', () => {
+    const out = html({ ...LV.beginner.numbers, level: 'beginner' });
+    expect(out).not.toContain('data-manipulation-progress');
+    expect(out).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    expect(out).toContain('data-ul-step="2"');
+    expect(out).toContain('data-manipulation-sound');
+    expect(html({ ...LV.beginner.numbers, level: 'beginner', checkpoints: false })).toContain('data-manipulation-progress');
   });
 });

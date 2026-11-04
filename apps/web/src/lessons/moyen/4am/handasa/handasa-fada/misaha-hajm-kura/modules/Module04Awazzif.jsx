@@ -47,7 +47,7 @@ export default function Module04Awazzif() {
           ) },
         { num: 5, title: 'كرة الطاولة في علبتها', done: !!done['ex-p5'], content: one('ex-p5', ['arkhimidis-hajm', 'hajm-julla']) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

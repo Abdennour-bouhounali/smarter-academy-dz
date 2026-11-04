@@ -1,12 +1,17 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Minus, Plus } from 'lucide-react';
+import * as squareRoots from '@smarter-academy/core/arithmetic/squareRoots.js';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
 import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
 import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
+import { useLabCheckpoint } from '../primitives/LabCheckpoint';
+import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
+import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { playSfx } from '../../utils/playEffect';
 import MathText from '../../components/MathText';
 import * as L from '../logic/squareTiling';
 
@@ -41,8 +46,13 @@ import * as L from '../logic/squareTiling';
  *   FORMALIZATION  خاصية 1 (معارف 4) ; طريقة p. 25
  *   TRANSFER       تمارين 18, 19, 26, 27 ; تبسيط A = √8 − 3√18 + 2√50 − 7√2
  */
+/*
+ * QUESTIONS PENDANT LE LABO (2026-10-28, `primitives/LabCheckpoint`) : `checkpoints` (défaut true). Deux étapes : 1 « tile » (un pavage juste k > 1) — l'aire de
+ * la dalle, puis le côté lu comme k côtés de dalle ; 2 « rule » (la découverte atteinte) — product : pourquoi le pavage est refusé, puis la règle ; simplest :
+ * l'aire de la dalle du plus grand k, la comparaison avec une autre dalle, puis la règle. Elles remplacent la découverte (`ManipulationDiscovery`) et retiennent la fin.
+ */
 export default function SquareTiling({
-  n: n0 = 28, mode = 'product', title, lead, mission, level, levels: withLevels = true, initialMode = 'student', allowModeSwitch = false, onFinished, onTrial,
+  n: n0 = 28, mode = 'product', title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false, onFinished, onTrial,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.squareTiling.${key}`, o), [t]);
@@ -55,11 +65,39 @@ export default function SquareTiling({
   const labRef = useRef(lab);
   labRef.current = lab;
   const sceneKey = `${n}:${mode}:${state.epoch}`;
-  const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init({ n, mode })); setLive(null); }
+  const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
+  const [done, setDone] = useState([false, false]);
+  const snap = useRef(null);
+  if (scene.key !== sceneKey) {
+    // « إعادة », un autre niveau ou un autre n : TOUT recommence — les essais, les étapes et les questions du labo
+    setScene({ key: sceneKey, inits: scene.inits + 1 });
+    setLab(L.init({ n, mode })); setLive(null); setDone([false, false]); snap.current = null;
+  }
   const range = L.range(lab);
 
-  const ready = L.discoveryReady(lab);
+  const cpSettings = useLabCheckpointSettings('square-tiling');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
+  const cpActive = cpOn && cpSettings.enabled;
+  const stepIdx = done[0] ? 1 : 0;
+  const stepId = stepIdx === 0 ? 'tile' : 'rule';
+  const chainKey = stepIdx === 0 ? 'tile' : mode === 'simplest' ? 'ruleS' : 'ruleP';
+  const reachedNow = stepIdx === 0 ? !!firstValid(lab) : L.discoveryReady(lab);
+  const chain = cpActive && !done[1] && reachedNow ? chainOf(chainKey, lab) : null;
+  const party = useStepCelebration();
+  const cp = useLabCheckpoint({
+    id: chain ? stepId : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, k)) : null,
+    reached: reachedNow,
+    resetKey: scene.inits,
+    onRetry: () => { setLive(null); setLab(stepIdx === 0 ? L.init({ n, mode }) : (snap.current ?? L.init({ n, mode }))); },
+    onEvent: (ev) => state.report(onTrial, ev),
+    onDone: (id) => {
+      if (id === 'tile') { snap.current = labRef.current; setDone([true, false]); party.celebrate({ n: 1, total: 2 }); return; }
+      setDone([true, true]); party.celebrate({ n: 2, total: 2 });
+      state.discover(); state.formalize();
+    },
+  });
+
+  const ready = L.discoveryReady(lab) && !cpActive;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, n); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -80,12 +118,15 @@ export default function SquareTiling({
   const mu = (width - 2 * EDGE) / span;
   const xOf = (v) => EDGE + (v - range.min) * mu;
   const toValue = useCallback((clientX, _y, rect) => range.min + (clientX - rect.left - EDGE) / mu, [range.min, mu]);
+  const sfx = useRef(0);
   const stretch = useStretchInteraction({
-    value: live ?? lab.k ?? L.defaultK(lab), range, toValue, onChange: setLive,
+    value: live ?? lab.k ?? L.defaultK(lab), range, toValue,
+    onChange: (v) => { setLive(v); const now = performance.now(); if (now - sfx.current > 35) { playSfx('tooth'); sfx.current = now; } },
     // L'essai validé part vers la leçon HORS du setState (un updater reste pur).
     onCommit: (v) => {
       setLive(v);
       if (L.canTile(lab, v) !== true) return;
+      playSfx(L.tiling(n, v).valid ? 'bell' : 'over');
       setLab((s) => L.tile(s, v));
       state.report(onTrial, L.tiling(n, v));
     },
@@ -106,6 +147,7 @@ export default function SquareTiling({
   const untried = () => Array.from({ length: L.range(labRef.current).max }, (_, i) => i + 1).filter((v) => !labRef.current.tried.some((x) => x.k === v));
   const runTrial = (v) => {
     labRef.current = L.tile(labRef.current, v);
+    playSfx(L.tiling(n, v).valid ? 'bell' : 'over');
     setLive(v);
     setLab((s) => L.tile(s, v));
     state.report(onTrial, L.tiling(n, v));
@@ -120,6 +162,8 @@ export default function SquareTiling({
       state={state}
       numberFields={[{ key: 'n', label: 'n' }]}
       allowModeSwitch={allowModeSwitch}
+      headerAction={cpOn ? cpSettings.control : null}
+      guided={cpActive}
       hints={(mode === 'simplest' ? [k('sHint1'), k('sHint2'), k('sHint3')] : [k('pHint1'), k('pHint2'), k('pHint3')]).map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{
         autoStep: () => false,
@@ -167,8 +211,12 @@ export default function SquareTiling({
       )}
       explanation={<MathText>{k('explanation')}</MathText>}
     >
+      <div className="relative" data-st-glance>
+        {party.node}
+        {cp.node}
       <ManipulationStage className="bg-gradient-to-b from-emerald-50/60 to-white" data-dragging={stretch.dragging ? 'true' : undefined}>
         <div ref={boxRef} className="space-y-3" data-square-tiling data-mode={mode}>
+          {cpActive && <LabStepper count={2} current={stepIdx} done={done.map((d, i) => d && (i !== stepIdx || !cp.blocking))} stepAttr="data-st-step" />}
           <p className="text-sm font-bold text-slate-700">{k('perSide')}</p>
           <div dir="ltr" {...stretch.trackProps} className="relative" style={{ ...stretch.trackProps.style, height: 60 }} data-tiling-ruler>
             <svg width={width} height={60} className="absolute inset-0" aria-hidden="true" focusable="false">
@@ -235,6 +283,109 @@ export default function SquareTiling({
           </div>
         </div>
       </ManipulationStage>
+      </div>
     </ManipulationShell>
   );
 }
+
+/* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
+
+/** La suite de questions de chaque étape ; `small` n'est posée que si un AUTRE pavage juste existe. */
+export const CHAINS = Object.freeze({
+  tile: ['area', 'side'],
+  ruleP: ['why', 'rule'],
+  ruleS: ['best', 'small', 'rule'],
+});
+const hasOther = (lab) => L.validKs(lab).some((v) => v > 1 && v !== L.kmax(lab) && lab.tried.some((x) => x.valid && x.k === v));
+export const chainOf = (key, lab) => CHAINS[key].filter((q) => q !== 'small' || hasOther(lab));
+
+/** Le pavage juste (k > 1) que l'élève a fait, le premier par k. */
+export const firstValid = (lab) => lab.tried.find((x) => x.valid && x.k > 1);
+const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
+const $ = (s) => `$${s}$`;
+
+/** Chaque question est construite sur LES nombres de l'élève (rien n'est écrit en dur) ; `k` : les textes de `squareTiling`. */
+export const QUESTIONS = {
+  area: (lab, k) => {
+    const v = firstValid(lab); const nums = { n: lab.n, k: v.k, kk: v.k * v.k, b: v.b };
+    return {
+      id: 'area', kind: 'number', expected: String(v.b), answer: <MathText>{$(String(v.b))}</MathText>,
+      prompt: Mx(k, 'area.prompt', nums), hints: [Mx(k, 'area.hint1', nums), Mx(k, 'area.hint2', nums)], explain: Mx(k, 'area.explain', nums),
+    };
+  },
+  side: (lab, k) => {
+    const v = firstValid(lab); const nums = { n: lab.n, k: v.k, kk: v.k * v.k, b: v.b };
+    return {
+      id: 'side', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'side.prompt', nums),
+      options: [
+        { text: Mx(k, 'side.wrongSquare', nums), why: Mx(k, 'side.whySquare', nums) },
+        { text: Mx(k, 'side.right', nums), correct: true },
+        { text: Mx(k, 'side.wrongSum', nums), why: Mx(k, 'side.whySum', nums) },
+      ],
+      hints: [Mx(k, 'side.hint1', nums), Mx(k, 'side.hint2', nums)], explain: Mx(k, 'side.explain', nums),
+    };
+  },
+  why: (lab, k) => {
+    const r = lab.tried.find((x) => !x.valid); const v = firstValid(lab);
+    const nums = { n: lab.n, k: r.k, kk: r.k * r.k, kv: v.k, calc: L.refusedTex(lab.n, r.k) };
+    return {
+      id: 'why', kind: 'choice',
+      prompt: Mx(k, 'why.prompt', nums),
+      options: [
+        { text: Mx(k, 'why.wrongCover', nums), why: Mx(k, 'why.whyCover', nums) },
+        { text: Mx(k, 'why.wrongSide', nums), why: Mx(k, 'why.whySide', nums) },
+        { text: Mx(k, 'why.right', nums), correct: true },
+      ],
+      hints: [Mx(k, 'why.hint1', nums), Mx(k, 'why.hint2', nums)], explain: Mx(k, 'why.explain', nums),
+    };
+  },
+  best: (lab, k) => {
+    const km = L.kmax(lab); const t = L.tiling(lab.n, km); const nums = { n: lab.n, km, kk: km * km, b: t.b };
+    return {
+      id: 'best', kind: 'number', expected: String(t.b), answer: <MathText>{$(String(t.b))}</MathText>,
+      prompt: Mx(k, 'best.prompt', nums), hints: [Mx(k, 'best.hint1', nums), Mx(k, 'best.hint2', nums)], explain: Mx(k, 'best.explain', nums),
+    };
+  },
+  small: (lab, k) => {
+    const km = L.kmax(lab);
+    const ko = lab.tried.filter((x) => x.valid && x.k > 1 && x.k !== km).at(-1).k;
+    const bo = lab.n / (ko * ko); const bk = lab.n / (km * km);
+    const m = squareRoots.squareDivisors(bo).at(-1);
+    const nums = { n: lab.n, km, ko, bo, bk, sq: m * m };
+    return {
+      id: 'small', kind: 'choice', cols: 3,
+      prompt: Mx(k, 'small.prompt', nums),
+      options: [
+        { text: Mx(k, 'small.second', nums), why: Mx(k, 'small.whySecond', nums) },
+        { text: Mx(k, 'small.neither', nums), why: Mx(k, 'small.whyNeither', nums) },
+        { text: Mx(k, 'small.first', nums), correct: true },
+      ],
+      hints: [Mx(k, 'small.hint1', nums), Mx(k, 'small.hint2', nums)], explain: Mx(k, 'small.explain', nums),
+    };
+  },
+  rule: (lab, k) => {
+    const simplest = lab.mode === 'simplest';
+    const km = L.kmax(lab); const ko = lab.tried.filter((x) => x.valid && x.k > 1 && x.k !== km).at(-1)?.k ?? 2;
+    const t0 = L.tiling(lab.n, km);
+    return {
+      id: 'rule', kind: 'choice',
+      prompt: <MathText>{simplest ? k('sPrompt', { n: lab.n }) : k('pPrompt')}</MathText>,
+      options: simplest
+        ? [
+          { text: <MathText>{k('sOpt2')}</MathText>, why: <MathText>{k('sWhy2', { n: lab.n, big: km })}</MathText> },
+          { text: <MathText>{k('sOpt1')}</MathText>, correct: true },
+          { text: <MathText>{k('sOpt3')}</MathText>, why: <MathText>{k('sWhy3', { n: lab.n, big: km })}</MathText> },
+        ]
+        : [
+          { text: <MathText>{k('pOpt2')}</MathText>, why: <MathText>{k('pWhy2')}</MathText> },
+          { text: <MathText>{k('pOpt3')}</MathText>, why: <MathText>{k('pWhy3')}</MathText> },
+          { text: <MathText>{k('pOpt1')}</MathText>, correct: true },
+        ],
+      hints: simplest ? [Mx(k, 'rule.hint1s', { ko, km }), Mx(k, 'rule.hint2s')] : [Mx(k, 'rule.hint1p'), Mx(k, 'rule.hint2p')],
+      explain: simplest
+        ? <div className="space-y-1"><EquationDisplay tex={L.equationTex(lab.n, t0)} tone="result" /><p><MathText>{k('sRule')}</MathText></p></div>
+        : <div className="space-y-1"><EquationDisplay tex="\sqrt{k^2 \times b} = \sqrt{k^2} \times \sqrt{b} = k\sqrt{b}" tone="result" /><p><MathText>{k('pRule')}</MathText></p></div>,
+    };
+  },
+};

@@ -106,7 +106,7 @@ export default function Module03Awazzif() {
           content: <TextbookExercise exercise={E14} requires={['tariqat-hall-x2', 'muadala-daraja-ula']} onAnswered={done('e14')} />,
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={3} />}
+      footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}
     />
   );
 }

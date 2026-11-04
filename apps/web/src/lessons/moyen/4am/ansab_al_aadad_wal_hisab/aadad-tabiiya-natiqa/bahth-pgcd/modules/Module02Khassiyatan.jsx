@@ -47,6 +47,6 @@ export default function Module02Khassiyatan() {
             </div>
           ) },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={2} />} />
+      footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />} />
   );
 }

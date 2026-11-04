@@ -518,6 +518,22 @@ export function backTo(lab, stage) {
   return next;
 }
 
+/**
+ * « أعِد التجربة » d'une étape (LabCheckpoint) : la MÊME étape repart de son départ — sans quitter l'étape ni toucher aux précédentes.
+ * name : les lettres sont reprises ; model : les cases et le verdict ; solve : la méthode et les lignes ; verify : les portes et le rejeu ;
+ * answer : la réponse choisie.
+ */
+export function retryStage(lab, model) {
+  switch (lab.stage) {
+    case 'name': return { ...lab, naming: { [model.ids[0]]: null, [model.ids[1]]: null } };
+    case 'model': return { ...lab, slots: emptySlots(), verdict: null };
+    case 'solve': return { ...lab, method: null, revealed: 0, half: null };
+    case 'verify': return { ...lab, gates: Object.fromEntries(Object.keys(lab.gates).map((k) => [k, null])), replay: null };
+    case 'answer': return { ...lab, answer: null, answered: false };
+    default: return lab;
+  }
+}
+
 /* ── Écritures (aucun calcul) ───────────────────────────────────────────────────────────────── */
 
 /** « 30300 », « 2,8 », « 7/3 » : un nombre lisible (virgule décimale, aucun groupement — bidi). */

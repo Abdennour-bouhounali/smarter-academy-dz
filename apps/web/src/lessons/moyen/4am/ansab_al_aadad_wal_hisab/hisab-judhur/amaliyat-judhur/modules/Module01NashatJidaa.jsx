@@ -38,10 +38,15 @@ const fb = ({ allRight }) => (
 );
 
 export default function Module01NashatJidaa() {
-  const [qRefuse, setQRefuse] = useState(false);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint, 2026-10-28) : leur TRACE est l'événement `checkpoint-done`
+  const [cpDone, setCpDone] = useState({});
+  const answered = (id) => !!cpDone[id];
   // Les essais de l'élève dans le labo (k validés par la main), pour la ligne de trace de l'étape 1.
   const [trials, setTrials] = useState({});
-  const addTrial = (n, t) => setTrials((o) => ({ ...o, [n]: { ...(o[n] || {}), [t.k]: t } }));
+  const addTrial = (n, t) => {
+    if (t.tk) { if (t.tk === 'checkpoint-done') setCpDone((d) => ({ ...d, [`${n}:${t.id}`]: true, [t.id]: true })); return; }
+    setTrials((o) => ({ ...o, [n]: { ...(o[n] || {}), [t.k]: t } }));
+  };
   const tried = Object.values(trials).flatMap((o) => Object.values(o));
   const refusedTry = tried.filter((t) => !t.valid).sort((x, y) => x.k - y.k)[0];
   const validTry = tried.filter((t) => t.valid && t.k > 1).sort((x, y) => x.k - y.k)[0];
@@ -96,7 +101,7 @@ export default function Module01NashatJidaa() {
       }
       steps={[
         {
-          num: 1, title: 'لماذا يُرفض بعض التبليط؟', subtitle: 'عن تبليطاتك في المناولة', done: qRefuse,
+          num: 1, title: 'لماذا يُرفض بعض التبليط؟', subtitle: 'أسئلة المختبر عن تبليطاتك', done: answered('rule'),
           content: (
             <div className="space-y-3">
               {/* LA TRACE DE L'ÉLÈVE (jamais bloquante) : ses propres essais dans le labo. */}
@@ -108,21 +113,13 @@ export default function Module01NashatJidaa() {
                       {refusedTry ? <>ورُفض عندك <MathText>{`$k = ${refusedTry.k}$`}</MathText>. </> : null}
                     </span>
                   )
-                  : 'لم تجرّب تبليطًا بعدُ: اسحب عدد البلاطات على الضلع في المناولة أعلاه.'}
+                  : 'لم تجرّب تبليطًا بعدُ: اسحب عدد البلاطات على الضلع في المناولة أعلاه، وأجب عن الأسئلة التي تظهر فوقها.'}
               </p>
-              <TapQuestion
-                prompt={<span>في مربّع مساحته <MathText>{'$36$'}</MathText> يُرفض التبليط بـ <MathText>{'$4$'}</MathText> بلاطات على الضلع ويُقبل بـ <MathText>{'$3$'}</MathText>. لماذا؟</span>}
-                options={[
-                  'لأنّ $4 \\times 4 = 16$ لا يقسم $36$، فلا تكون مساحة البلاطة عددًا طبيعيًا',
-                  'لأنّ $4$ أكبر من $3$',
-                  'لأنّ $4$ لا يقسم $36$',
-                ].map(cell)}
-                correct={0}
-                cols={1}
-                requires={['murabba-jidhr']}
-                explain={<span>عدد البلاطات في المربّع الكبير هو <MathText>{'$k \\times k$'}</MathText>، ومساحة البلاطة <MathText>{'$36 \\div k^2$'}</MathText>: مع <MathText>{'$k = 3$'}</MathText> تساوي <MathText>{'$4$'}</MathText>، ومع <MathText>{'$k = 4$'}</MathText> تساوي <MathText>{'$36 \\div 16 = 2{,}25$'}</MathText>.</span>}
-                onAnswered={() => setQRefuse(true)}
-              />
+              {answered('rule') && (
+                <p className="rounded-xl border-2 border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900" data-activity-evidence data-tried="true">
+                  أجبتَ في المختبر: يُرفض التبليط حين لا تكون مساحة البلاطة عددًا طبيعيًا، أي حين لا يقسم <MathText>{'$k^2$'}</MathText> المساحة.
+                </p>
+              )}
             </div>
           ),
         },
@@ -303,7 +300,7 @@ export default function Module01NashatJidaa() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={1} />}
+      footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );
 }

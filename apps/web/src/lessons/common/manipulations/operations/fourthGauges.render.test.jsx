@@ -3,7 +3,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import i18n from '../../../../i18n';
-import FourthGauges, { discoveryOptions, discoveryKey, numbersFor, contextOf, columnText, gaugeNames, gaugeView } from './FourthGauges';
+import FourthGauges, { discoveryOptions, discoveryKey, numbersFor, contextOf, columnText, gaugeNames, gaugeView, chainOf, QUESTIONS } from './FourthGauges';
 import { layout, labelBoxes, overlaps, tiltOf, splitLabel, labelLines, gaugeGeo, MAX_TILT, xOfValue, valueOfX } from './fourthGauges/geometry';
 import { LEVELS } from '../levels';
 import * as L from '../logic/fourthGauges';
@@ -295,5 +295,49 @@ describe('fourth-gauges — la scène : aucune étiquette ne se chevauche', () =
     expect(splitLabel('الثمن')).toEqual({ name: 'الثمن', unit: '' });
     expect(labelLines('مساحة الجدار (m²)', 8)).toEqual({ lines: ['مساحة', 'الجدار'], unit: 'm²' });
     expect(labelLines('مساحة الجدار (m²)', 20)).toEqual({ lines: ['مساحة الجدار'], unit: 'm²' });
+  });
+});
+
+describe('fourth-gauges — questions pendant le labo (LabCheckpoint)', () => {
+  for (const [level, adv] of [['beginner', false], ['advanced', true]]) {
+    it(`${level} : chaque question a un texte, une seule bonne réponse, deux indices, et ni clé brute ni {{`, () => {
+      const lab = L.init(LV[level].numbers);
+      lab.tasks.forEach((tk, i) => {
+        const chain = chainOf(lab, i);
+        expect(chain.length, tk.id).toBeGreaterThanOrEqual(2);
+        for (const qid of chain) {
+          const q = QUESTIONS[qid](lab, i, k, adv);
+          const out = renderToString(<div>{q.prompt}{q.options?.map((o, j) => <span key={j}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+          expect(out, `${tk.id}.${qid}`).not.toMatch(RAW);
+          expect(out, `${tk.id}.${qid}`).not.toContain('{{');
+          expect(q.hints, `${tk.id}.${qid}`).toHaveLength(2);
+          if (q.kind === 'choice') expect(q.options.filter((o) => o.correct), `${tk.id}.${qid}`).toHaveLength(1);
+          else expect(q.expected).toBeTruthy();
+        }
+      });
+      expect(chainOf(lab, lab.tasks.length - 1).at(-1)).toBe('rule');
+    });
+  }
+  it('les nombres viennent de la tâche : 520 ÷ 4 = 130, 840 ÷ 3 = 280, 3 ÷ 12 = 0,25 ; le leurre ouvre la tâche 3', () => {
+    const b = L.init(LV.beginner.numbers);
+    expect(QUESTIONS.unit(b, 0, k).expected).toBe('130');
+    expect(QUESTIONS.unit(b, 1, k).expected).toBe('280');
+    expect(chainOf(b, 2)).toEqual(['decoy', 'unit', 'cross', 'rule']);
+    const a = L.init(LV.advanced.numbers);
+    expect(QUESTIONS.unit(a, 3, k).expected).toBe('0.25');
+    expect(QUESTIONS.unit(a, 1, k).expected).toBe('300');
+    const s = L.retryTask(L.release(b, L.answerOf(b)));
+    expect(L.taskDone(s)).toBe(false);
+  });
+});
+
+describe('fourth-gauges — mode guidé (les questions remplacent جرّب › اكتشف › صِغ et تلميح)', () => {
+  it('questions actives : ni la progression ni le bouton d’indice ; checkpoints={false} : les deux reviennent', () => {
+    const g = html({ ...LV.beginner.numbers, level: 'beginner' });
+    expect(g).not.toContain('data-manipulation-progress');
+    expect(g).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    const off = html({ ...LV.beginner.numbers, level: 'beginner', checkpoints: false });
+    expect(off).toContain('data-manipulation-progress');
+    expect(off).toContain(i18n.t('lesson:manipulation.hint.show'));
   });
 });

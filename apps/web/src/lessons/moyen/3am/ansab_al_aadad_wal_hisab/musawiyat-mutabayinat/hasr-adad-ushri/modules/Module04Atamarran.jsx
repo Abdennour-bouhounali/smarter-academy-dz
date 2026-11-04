@@ -37,7 +37,7 @@ export default function Module04Atamarran() {
         step(6, 'ex-28', 'حجم علبة', ['hasr-min-mudawwar']),
         step(7, 'ex-20', 'أقارن بالحصر', ['hasr-rutba']),
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={4} />}
+      footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );
 }

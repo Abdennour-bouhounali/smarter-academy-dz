@@ -621,12 +621,18 @@ patch('self-5', answer={'rounded': 10, 'bracket': '9 ≤ 136/14 < 10', 'value': 
       reading='p. 81 relue à 200 dpi : « عيّن المدوّر إلى الوحدة لحاصل القسمة 136/14 ; احصر هذا العدد بين عددين طبيعيين متتاليين » ; retour 76 و 77.')
 
 
+# ── wadiya-idmajiya-musawiyat-mutabayinat (synthèse) : relecture 2026-10-28 (pp. 70 et 84 rendues à 130 dpi : lisibles, conformes à la transcription) ──────
+patch('opener', reading='p. 70 relue à 130 dpi : conforme en substance ; le cadre rose cite aussi les Babyloniens et les Grecs et compte « 27 siècles » après l\'Égypte ancienne (détail non repris). Photo de عمر بن إبراهيم الخيام (1048م – 1131م).')
+patch('challenge', reading='p. 70 relue à 130 dpi : conforme (15 750 DA, un quart, trois dixièmes).')
+patch('integration', reading='p. 84 relue à 130 dpi : conforme (50 / 45 km/h, 1 km ; t = 1/5 h = 12 min ; 10 km ; analyse en cinq temps et « حل مختصر » inclus).')
+patch('evaluation', reading='p. 84 relue à 130 dpi : conforme (15 sacs + 25 kg contre 10 sacs + 150 kg ; 25 kg le sac).')
+
 A, B, C, D_, S = 'musawiyat-amaliyat', 'mutabayinat-amaliyat', 'hasr-adad-ushri', 'muadalat-darajat-ula', 'wadiya-idmajiya-musawiyat-mutabayinat'
 DEST = {
     '_comment': 'elementId → { lesson, module } ; `items` répartit un élément ; une leçon encore coming_soon est une destination EN ATTENTE (check-textbook-coverage.mjs). Modules de musawiyat-amaliyat : 0 أستعدّ · 1 نشاط (lab) · 2 معارف · 3 طريقة · 4 أتمرّن · 5–7 مسائل · 8 إختبار أولي.',
     'objectives': {'lesson': 'unit', 'module': 'page'},
-    'opener': {'lesson': S, 'module': None},
-    'challenge': {'lesson': S, 'module': None},
+    'opener': {'lesson': S, 'module': 7, 'note': 'la « حكاية » du module 7 (ouverture historique réécrite), montrée après la dernière réponse'},
+    'challenge': {'lesson': S, 'module': 1, 'note': 'situation 1 « مكافأة النجاح » (T inconnu, 24 800 DA distribués, autres nombres)'},
     'prep': {'lesson': A, 'module': 0, 'items': {'1-3-4-9': {'lesson': A, 'module': 0}, '7-8': {'lesson': B, 'module': 0}, '13-14-15': {'lesson': C, 'module': 0}, '2-5-6-10-11-12': {'lesson': D_, 'module': None}}},
     'act-1': {'lesson': A, 'module': 4, 'note': 'APPLICATION (guide §4ter) : le lab `equality-lanes` est l’entrée conçue ; l’activité du manuel est posée en أتمرّن.'},
     'act-2': {'lesson': B, 'module': 4, 'note': 'أتمرّن E1–E2 (« إن أمكن » avec une ligne indécidable) ; la table de signe de a − b est RAPPELÉE (r04), jamais ré-enseignée.'},
@@ -664,7 +670,8 @@ DEST = {
     'self-1': {'lesson': A, 'module': 8}, 'self-2': {'lesson': A, 'module': 8},
     'self-3': {'lesson': B, 'module': 8}, 'self-4': {'lesson': B, 'module': 8}, 'self-5': {'lesson': C, 'module': 8, 'note': 'إختبار أولي item 1 (nombres propres).'},
     **{f'self-{n}': {'lesson': D_, 'module': None} for n in range(6, 14)},
-    'integration': {'lesson': S, 'module': None}, 'evaluation': {'lesson': S, 'module': None},
+    'integration': {'lesson': S, 'module': 7, 'note': 'module 7 : la poursuite de Tipaza (40 / 36 km/h, 2 km), analysée et résolue ; variantes : ligne d\'arrivée, arrondi à la minute, borne de l\'écart'},
+    'evaluation': {'lesson': S, 'module': 8, 'note': 'module 8 : les deux camions de dattes et d\'oranges (12 caisses + 40 kg contre 8 caisses + 140 kg), autres nombres'},
     'ict': {'lesson': D_, 'module': None},
 }
 

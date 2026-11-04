@@ -24,6 +24,49 @@ export const LESSON_CONFIG = {
   unit: 'aadad-tabiiya-natiqa',
   unitTitle: 'الأعداد الطبيعيّة والأعداد النّاطقة',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (pilote 2026-11-04, lessons/common/mission/) implique le regard « focus » (2026-11-03) et
+  // fait de la leçon un parcours vers la مسألة du درس. L'enseignant et le mode classe ne voient aucun changement.
+  studentView: 'mission',
+  // LA MISSION (LESSON_DEVELOPMENT_GUIDE « Le mode mission ») : l'ouverture avoue qu'on ne sait pas encore la résoudre ;
+  // les outils sont les connaissances de knowledge.jsx ; les points d'étape RAPPROCHENT de la mission sans en résoudre
+  // aucune question (la مسألة 1 du module 4 reste entière) ; formatifs, jamais une preuve de maîtrise.
+  mission: {
+    title: 'مكتبة 756 كتابًا',
+    opening: {
+      text: 'وصلت إلى مكتبة المتوسطة 756 كتابًا. هل تستطيع ترتيبها في رفوف مملوءة تمامًا، دون أن يبقى أيّ كتاب على الأرض؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'qasim-baqi', icon: '🔑', label: 'القاسم بالباقي' },
+      { id: 'qasim-jidaa', icon: '🗝️', label: 'القاسم بالجداء' },
+      { id: 'siyagh-mutakafia', icon: '🗣️', label: 'أربع جمل' },
+      { id: 'wahid-wa-nafsuh', icon: '⭐', label: '1 والعدد نفسه' },
+    ],
+    climaxModule: 4,
+    checkpoints: [
+      {
+        id: 'cp-baqi', afterModule: 1,
+        prompt: 'لكي لا يبقى أيّ كتاب على الأرض، ماذا يجب أن يكون باقي قسمة 756 على عدد كتب الرفّ الواحد؟',
+        options: ['الباقي 0', 'الباقي أصغر من 10', 'الباقي 1'],
+        correct: 0,
+        explain: 'كل كتاب يبقى على الأرض هو باقٍ. لا يبقى أيّ كتاب فقط عندما يكون الباقي 0: عندئذ يكون عدد كتب الرفّ قاسمًا للعدد 756.',
+      },
+      {
+        id: 'cp-jidaa', afterModule: 2,
+        prompt: 'لو وجدنا عددًا طبيعيًا $q$ بحيث $756 = b \times q$، فماذا نعرف عن الرفوف من $b$ كتابًا؟',
+        options: ['$b$ قاسم للعدد 756: الرفوف تُملأ تمامًا', 'يبقى كتاب واحد على الأرض', 'لا نعرف شيئًا قبل حساب الباقي'],
+        correct: 0,
+        explain: 'المساواة $756 = b \times q$ تعني أن الباقي 0: $b$ قاسم للعدد 756، و $q$ هو عدد الرفوف.',
+      },
+      {
+        id: 'cp-khitta', afterModule: 3,
+        prompt: 'القيّم يتردّد بين رفوف من 32 كتابًا ورفوف من 36 كتابًا. ماذا يفعل ليختار؟',
+        options: ['يُجري القسمة الإقليدية للعدد 756 على كلّ منهما وينظر إلى الباقي', 'يختار الرفوف الأكبر', 'يختار الرفوف الأرخص'],
+        correct: 0,
+        explain: 'الرفّ المناسب هو الذي يجعل الباقي 0. هذه خطّتك في المهمة الكبرى التالية.',
+      },
+    ],
+  },
   title: 'التعرّف على قاسم لعدد طبيعي',
   description: 'التعرّف على قاسم لعدد طبيعي من خلال القسمة الإقليدية والمساواة a = b × q، واستعمال الصيغ المتكافئة: قاسم لـ، يقسم، يقبل القسمة على، مضاعف لـ.',
   level: 'moyen',
@@ -47,7 +90,7 @@ export const LESSON_CONFIG = {
   },
   // « مسألة الدرس » (pilote مسائل, 2026-10-05) : montrée dès le sommaire,
   // rappelée au module 1, résolue pas à pas au module 4 (content/problems.js).
-  // Prolonge le rayon du niveau متقدم : mêmes rayons, d'autres nombres.
+  // La مسألة reste celle de la bibliothèque (756 livres) : c'est la MISSION de la leçon ; le labo, lui, est le terrain.
   lessonProblem: {
     module: 4,
     title: 'مكتبة المتوسطة: 756 كتابًا في رفوف',
@@ -71,7 +114,9 @@ export const LESSON_CONFIG = {
     // §7bis-levels) : même objectif mathématique, deux expériences.
     //
     //   مبتدئ  — les équipes : contexte de la PLATEFORME, petits nombres.
-    //   متقدم  — les 420 livres du manuel : la situation d'origine, sans aide.
+    //   متقدم  — le MÊME terrain, 42 joueurs, 5 ou 6 équipes (content/teams.js) : le contraste du نشاط 1 du manuel (420 livres,
+    //            26 ou 28 par rayon). Le labo de la bibliothèque a été RETIRÉ de la leçon le 2026-11-04 (propriétaire : « le labo
+    //            du football pour toute la leçon »).
     //
     // `experience` porte la traçabilité exigée : d'où vient la mathématique
     // (toujours le manuel) et ce que la plateforme a fait de la situation.
@@ -86,22 +131,21 @@ export const LESSON_CONFIG = {
       sourceElementIds: ['act-1'],
     },
     {
-      kind: 'manipulation', code: 'divisor-explorer-420', type: 'divisor-explorer-books', module: 1,
+      kind: 'manipulation', code: 'team-builder-42', type: 'team-builder', module: 1,
       level: 'advanced',
-      title: 'هل هو قاسم؟ — رفّ يمدّه التلميذ لـ 420 كتابًا',
+      title: 'هل هو قاسم؟ — 42 لاعبًا في 5 أو 6 فرق',
       objective: 'التوزيع بالتساوي: a = b × q + r، والباقي معدوم ⇔ b قاسم لـ a',
-      autonomy: 'التلميذ يمدّ الرفّ بنفسه من 10 إلى 60 كتابًا دون أحجام مقترحة، ويقرّر متى تفرغ الأرض؛ العدد المختار هنا حجم المجموعة لا عدد المجموعات',
-      experience: { type: 'textbook', reason: '', theme: 'library' },
+      autonomy: 'التلميذ يختار بنفسه عدد الفرق (4 إلى 7) لـ 42 لاعبًا، ويرى متى لا يبقى أحد خارج الفرق',
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'football' },
       learningPointIds: ['4am_qasim-adad-tabii_P1', '4am_qasim-adad-tabii_P2'],
       sourceElementIds: ['act-1'],
     },
-    // Module 2 (معارف) — l'exemple du manuel, dans le MÊME rayon qu'on
-    // étire qu'au module 1. Un seul instrument pour toute la leçon. Un seul
-    // niveau ici (`levels={false}` dans le module) — c'est un exemple
-    // travaillé ; sa découverte est la symétrie 143 = 11 × 13 = 13 × 11.
+    // Module 2 (معارف) — l'exemple travaillé sur le MÊME terrain qu'au module 1. Un seul instrument pour toute la leçon. Un seul
+    // niveau ici (`levels={false}` dans le module) ; sa découverte est la symétrie 48 = 6 × 8 = 8 × 6 (6 équipes PUIS 8).
     {
-      kind: 'manipulation', code: 'divisor-explorer-143', type: 'divisor-explorer-books', module: 2,
-      title: 'مثال الكتاب: 143 كتابًا — 11 ثم 13 في كل رفّ',
+      kind: 'manipulation', code: 'team-builder-48', type: 'team-builder', module: 2,
+      title: 'مثال: 48 لاعبًا — 6 ثم 8 فرق',
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'football' },
       learningPointIds: ['4am_qasim-adad-tabii_P2'],
       sourceElementIds: ['know-1'],
     },
@@ -113,10 +157,10 @@ export const LESSON_CONFIG = {
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
-      title: 'أستعدّ', desc: 'ست عبارات من الكتاب: صحيح أم خاطئ؟ القسمة الإقليدية وقواعد قابلية القسمة.',
+      title: 'أستعدّ', desc: 'ست عبارات: صحيح أم خاطئ؟ القسمة الإقليدية وقواعد قابلية القسمة.',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'al-maktaba', path: `${LESSON_BASE_PATH}/al-maktaba`,
-      title: 'نشاط 1 — 420 كتابًا في رفوف', desc: '26 كتابًا في كل رفّ أم 28؟ جرّب، ولاحظ الباقي.',
+      title: 'نشاط 1 — فرق متساوية', desc: 'كم فريقًا لا يترك أحدًا خارج الفرق؟ جرّب، ولاحظ الباقي.',
       stage: 'trigger', teachesLearningPointIds: ['4am_qasim-adad-tabii_P1'],
       color: 'indigo', style: 'featured', estimatedMin: 10, difficulty: 1, actionText: 'أجرّب' },
     { id: '02', number: 2, slug: 'maarif', path: `${LESSON_BASE_PATH}/maarif`,
@@ -124,7 +168,7 @@ export const LESSON_CONFIG = {
       stage: 'discovery', teachesLearningPointIds: ['4am_qasim-adad-tabii_P2', '4am_qasim-adad-tabii_P3', '4am_qasim-adad-tabii_P4'],
       color: 'violet', style: 'featured', estimatedMin: 12, difficulty: 2, actionText: 'أكتشف' },
     { id: '03', number: 3, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
-      title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 1، 2 و5.',
+      title: 'أوظّف تعلّماتي', desc: 'ثلاثة تمارين للتطبيق.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_qasim-adad-tabii_P1', '4am_qasim-adad-tabii_P2'],
       color: 'amber', style: 'featured', estimatedMin: 10, difficulty: 2, actionText: 'أتدرّب' },
     // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui

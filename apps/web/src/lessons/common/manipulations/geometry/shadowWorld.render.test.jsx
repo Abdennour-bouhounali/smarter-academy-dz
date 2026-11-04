@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import i18n from '../../../../i18n';
-import ShadowWorld from './ShadowWorld';
+import ShadowWorld, { chainOf, QUESTIONS, makeSay } from './ShadowWorld';
 import ManipulationWorkspace from '../ManipulationWorkspace';
 import { LEVELS } from '../levels';
 import * as W from '../logic/shadowWorld';
@@ -16,8 +16,8 @@ import manipulationAr from '../../../../i18n/locales/ar/lesson.manipulation.json
 const RAW = /manipulation\.[a-zA-Z]/;
 
 describe('shadow-world — rendu', () => {
-  it('beginner: the square, the sun at 13:00, the companion, the quests, no notebook yet', () => {
-    const html = renderToString(<ShadowWorld {...LEVELS['shadow-world'].beginner.numbers} />);
+  it('beginner: the square, the sun at 13:00, the companion, the quests, no notebook yet (questions du labo coupées par l’enseignant)', () => {
+    const html = renderToString(<ShadowWorld {...LEVELS['shadow-world'].beginner.numbers} checkpoints={false} />);
     expect(html).toContain('data-shadow-world');
     expect(html).toContain('data-sw-glance');
     expect(html).toContain('data-hour="13:00"');
@@ -33,8 +33,8 @@ describe('shadow-world — rendu', () => {
     expect(html).not.toContain('{{');
   });
 
-  it('le panneau de مقران : au premier écran UNE mission (pas de question), la progression des 5 questions, aucun fil encore', () => {
-    const html = renderToString(<ShadowWorld {...LEVELS['shadow-world'].advanced.numbers} />);
+  it('le panneau de مقران (questions du labo coupées) : au premier écran UNE mission (pas de question), la progression des 5 questions, aucun fil encore', () => {
+    const html = renderToString(<ShadowWorld {...LEVELS['shadow-world'].advanced.numbers} checkpoints={false} />);
     expect(html).toContain('data-sw-card="task"');
     expect(html).not.toContain('data-sw-card="question"');
     expect(html).toContain('data-sw-progress="0/5"');
@@ -137,5 +137,79 @@ describe('shadow-world — la voix de مقران existe en entier', () => {
     const s = W.init();
     expect(W.currentCheckpoint(s)).toBe(null); // aucun geste encore : rien à juger, مقران questionne, ne bloque pas
     expect(W.currentGoal(s)).toBe('observe');
+  });
+});
+
+describe('shadow-world — questions pendant le labo (LabCheckpoint)', () => {
+  const k = (key, o) => i18n.t(`lesson:manipulation.shadowWorld.${key}`, o);
+  const say = makeSay(k);
+
+  /** Une partie complète, un état par arrêt : 3 heures vues → 2 mesures → un pari faux → une règle × → la règle réparée → la hauteur. */
+  const journey = () => {
+    let s = W.init({ minaret: '7,25' });
+    s = W.setHour(W.setHour(s, 2), 3);
+    const observe = s;
+    s = W.measure(W.measure(s, 'stick'), 'farid');
+    const measure = s;
+    s = W.install(W.setFlag(s, 300));               // le lampadaire (3 m) : « l'ombre égale la hauteur » à 14:00
+    const predict = s;
+    s = W.applyRule(s, '×', 120);
+    const rule = s;
+    s = W.applyRule(W.setHour(s, 5), '×', 160);
+    const rule2 = s;
+    s = W.answer(s, '7,25');
+    return { observe, measure, predict, rule, rule2, minaret: s };
+  };
+
+  it('chaque arrêt est atteint à son étape, avec une suite de 2 à 3 questions complètes (texte, 2 indices, une seule bonne réponse, ni clé brute ni {{)', () => {
+    const j = journey();
+    const order = ['observe', 'measure', 'predict', 'rule', 'rule2', 'minaret'];
+    order.forEach((stop, i) => {
+      const lab = j[stop];
+      expect(W.stopReached(lab, stop), `${stop} atteint`).toBe(true);
+      if (i > 0) expect(W.stopReached(j[order[i - 1]], stop), `${stop} pas avant`).toBe(false);
+      const chain = chainOf(stop, lab);
+      expect(chain.length, stop).toBeGreaterThanOrEqual(2);
+      for (const qid of chain) {
+        const q = QUESTIONS[qid](lab, stop, k, say);
+        const out = renderToString(<div>{q.prompt}{q.options?.map((o, n) => <span key={n}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);
+        expect(out, `${stop}.${qid}`).not.toMatch(RAW);
+        expect(out, `${stop}.${qid}`).not.toContain('{{');
+        expect(q.hints, `${stop}.${qid}`).toHaveLength(2);
+        if (q.kind === 'choice') {
+          expect(q.options.filter((o) => o.correct), `${stop}.${qid}`).toHaveLength(1);
+          expect(q.options.filter((o) => !o.correct).every((o) => o.why), `${stop}.${qid} why`).toBe(true);
+        } else expect(q.expected, `${stop}.${qid}`).toMatch(/^\d+(,\d+)?$/);
+      }
+    });
+    // les nombres de l'élève : 1,2 à 14:00 (ombre 120 cm pour 100 cm), 4 × 1,2 = 4,8 m, 7,25 m ⇒ 11,6 ÷ 7,25 = 1,6
+    expect(QUESTIONS.ratioVal(j.measure, 'measure', k, say).expected).toBe('1,2');
+    expect(QUESTIONS.ruleWhich(j.rule, 'rule', k, say).expected).toBe('4,8');
+    expect(QUESTIONS.minaretCheck(j.minaret, 'minaret', k, say).expected).toBe('1,6');
+  });
+
+  it('les questions tapées de مقران rejouées dans la suite gagnent les mêmes quiz ; « أعِد التجربة » défait SEULEMENT son arrêt', () => {
+    const j = journey();
+    const won = W.winQuizzes(W.winQuizzes(j.rule2, W.QUIZZES_OF_STOP.observe), W.QUIZZES_OF_STOP.measure);
+    expect(won.quizzes.trend && won.quizzes.fastest && won.quizzes.ratioSeed).toBe(true);
+    expect(W.goals(won).observe && W.goals(won).measure).toBe(true);
+    const back = W.retryStop(j.rule2, 'rule2');
+    expect(W.fittingRules(back)).toHaveLength(1);
+    expect(W.stopReached(back, 'rule2')).toBe(false);
+    expect(W.stopReached(back, 'rule')).toBe(true);
+    expect(W.stopReached(W.retryStop(j.predict, 'predict'), 'predict')).toBe(false);
+    expect(W.stopReached(W.retryStop(j.observe, 'observe'), 'observe')).toBe(false);
+    expect(W.stopReached(W.retryStop(j.measure, 'measure'), 'measure')).toBe(false);
+    expect(W.stopReached(W.retryStop(j.minaret, 'minaret'), 'minaret')).toBe(false);
+  });
+
+  it('mode guidé : ni la progression ni le bouton d’indice du shell, les étapes à la place des pastilles, et مقران sans ses points de questions', () => {
+    const html = renderToString(<ShadowWorld minaret="7,25" level="beginner" />);
+    expect(html).not.toContain('data-manipulation-progress');
+    expect(html).not.toContain(i18n.t('lesson:manipulation.hint.show'));
+    expect(html).toContain('data-lab-stepper');
+    expect(html).not.toContain('data-sw-progress');
+    expect(html).not.toContain('data-sw-quest=');
+    expect(W.currentGoal(W.init(), { skipQuizzes: true })).toBe('observe');
   });
 });

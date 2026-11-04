@@ -24,6 +24,8 @@ export default function Module02Maarif() {
   const solved = (task) => trials.findLast((e) => e.kind === 'release' && e.tk === 'between' && e.task === task && e.ok);
   const s0 = solved(0);
   const s1 = solved(1);
+  // « pourquoi −8 ne convient pas » est posée PAR-DESSUS le labo (`ZeroProbe › QUESTIONS.outside`, tâche z0) : l'étape 1 en garde la TRACE
+  const inLab = trials.some((e) => e.tk === 'checkpoint-done' && e.id === 'z0');
 
   const Evidence = ({ id, ok, done, todo }) => (
     <p data-evidence={id} data-tried={ok ? 'true' : 'false'}
@@ -44,24 +46,13 @@ export default function Module02Maarif() {
       intro={<Manipulation type="zero-probe" tasks={LAB.insert.tasks} levels={false} onTrial={record} />}
       steps={[
         {
-          num: 1, title: 'لماذا لا يصلح −8 بين −7 و −5 ؟', subtitle: 'مقارنة سالبين', done: !!q.a,
+          num: 1, title: 'لماذا لا يصلح −8 بين −7 و −5 ؟', subtitle: 'مقارنة سالبين', done: inLab,
           content: (
             <div className="space-y-3" data-activity-evidence>
-              <Evidence id="neg" ok={!!s0}
-                done={<span>وضعتَ B عند <Ltr>{s0?.value}</Ltr> بين <Ltr>-7</Ltr> و <Ltr>-5</Ltr> .</span>}
-                todo="أنجز المهمة الأولى في المختبر أعلاه (B بين −7 و −5)، ثم عُد إلى هذا السؤال." />
-              <TapQuestion
-                prompt={<span>لماذا لا يصلح العدد <Ltr>-8</Ltr> ليكون بين <Ltr>-7</Ltr> و <Ltr>-5</Ltr> ؟</span>}
-                options={[
-                  M('لأنّ $-8$ أبعد عن الصفر من $-7$ ، فهو أصغر منه'),
-                  M('لأنّ $8$ أصغر من $7$'),
-                  M('لأنّ $-8$ سالب والحدّان موجبان'),
-                ]}
-                correct={0} cols={1} requires={['salibayn']}
-                explain={<MathText>{'$-8 < -7 < -6 < -5$ : الأبعد عن الصفر هو الأصغر، فـ $-8$ يقع قبل $-7$ لا بعده.'}</MathText>}
-                onAnswered={answered('a')}
-              />
-              {q.a && <TextbookBox kind="property" compact lines={[KNOWLEDGE.negatives.text, KNOWLEDGE.positives.text, KNOWLEDGE.different.text]} source={KNOWLEDGE.negatives.source} />}
+              <Evidence id="neg" ok={inLab && !!s0}
+                done={<span>أجبتَ في المختبر: وضعتَ B عند <Ltr>{s0?.value}</Ltr> بين <Ltr>-7</Ltr> و <Ltr>-5</Ltr> ، و <Ltr>-8</Ltr> لا يصلح لأنّه أبعد عن الصفر من <Ltr>-7</Ltr> ، فهو أصغر منه.</span>}
+                todo="أنجز المهمة الأولى في المختبر أعلاه (B بين −7 و −5)، وأجب عن الأسئلة التي تظهر فوقه." />
+              {inLab && <TextbookBox kind="property" compact lines={[KNOWLEDGE.negatives.text, KNOWLEDGE.positives.text, KNOWLEDGE.different.text]} source={KNOWLEDGE.negatives.source} />}
             </div>
           ),
         },
@@ -103,7 +94,7 @@ export default function Module02Maarif() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={2} />}
+      footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />
   );
 }

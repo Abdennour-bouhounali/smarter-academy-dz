@@ -148,6 +148,13 @@ const ChallengeReviewPage = lazy(() => import('./pages/student/challenge/Challen
 const TeacherChallengeDisplay = lazy(() => import('./pages/teacher/ChallengeDisplayPage'));
 // « مدار » : le jeu (plein écran, hors des coquilles) et son écran du tableau.
 const MadarPage = lazy(() => import('./pages/student/madar/MadarPage'));
+// « مختبر التفكير » (THINKING_LAB.md) : trois lots paresseux, sous RequireLargeScreen.
+const ThinkingLadderPage = lazy(() => import('./pages/student/thinking/ThinkingLadderPage'));
+const ThinkingChallengePage = lazy(() => import('./pages/student/thinking/ThinkingChallengePage'));
+const ThinkingNumberPage = lazy(() => import('./pages/student/thinking/ThinkingNumberPage'));
+// … et sa « معاينة الأستاذ » (lecture seule, /enseignant/tafkir).
+const TeacherThinkingListPage = lazy(() => import('./pages/teacher/thinking/TeacherThinkingListPage'));
+const TeacherThinkingChallengePage = lazy(() => import('./pages/teacher/thinking/TeacherThinkingChallengePage'));
 const GamesHub = lazy(() => import('./pages/student/madar/GamesHub'));
 const TeacherMadarDisplay = lazy(() => import('./pages/teacher/MadarDisplayPage'));
 const TeacherGamesPage = lazy(() => import('./pages/teacher/TeacherGamesPage'));
@@ -378,6 +385,11 @@ function AppRoutes() {
           <Route path="pratique/:lessonCode/bilan/:sessionId" element={<PracticeSummary />} />
           {/* La correction de l'enseignant, ouverte depuis la cloche — en lecture seule. */}
           <Route path="tashih/:reviewId" element={<AnswerReviewPage />} />
+          {/* « مختبر التفكير » : l'échelle, un défi (par son id stable), un numéro (« التحدّي 318 »).
+              Le serveur juge, compte et ouvre la porte ; ces pages ne font qu'afficher. */}
+          <Route path="tafkir" element={<ThinkingLadderPage />} />
+          <Route path="tafkir/n/:number" element={<ThinkingNumberPage />} />
+          <Route path="tafkir/:challengeId" element={<ThinkingChallengePage />} />
           </Route>
           {/* « التحدّي اليومي » : le serveur tient la tentative ; ces
               routes ne font que l'afficher (DAILY_CHALLENGE.md). */}
@@ -457,6 +469,12 @@ function AppRoutes() {
           <Route path="atelier" element={<MathLabHome />} />
           <Route path="atelier/:toolSlug" element={<MathLabToolPage />} />
           <Route path="atelier/:toolSlug/:documentId" element={<MathLabToolPage />} />
+          {/* « مختبر التفكير » : la PRÉVISUALISATION de l'enseignant (THINKING_LAB.md §8bis) — tout ouvert,
+              rien d'écrit ; la porte du serveur est `can:teacher`. */}
+          <Route element={<RequireLargeScreen />}>
+            <Route path="tafkir" element={<TeacherThinkingListPage />} />
+            <Route path="tafkir/:challengeId" element={<TeacherThinkingChallengePage />} />
+          </Route>
           <Route path="cahier" element={<Notebook />} />
           <Route path="cahier/revision" element={<NotebookReviewPage />} />
           <Route path="cahier/:noteId" element={<NotebookNotePage />} />

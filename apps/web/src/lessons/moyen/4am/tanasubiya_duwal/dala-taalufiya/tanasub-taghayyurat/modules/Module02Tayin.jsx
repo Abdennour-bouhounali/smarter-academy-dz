@@ -5,6 +5,7 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
+import { useLabCheckpointSettings } from '../../../../../../common/manipulations/primitives/labCheckpointSettings';
 import { TextbookBox, SourceTag, MethodSteps, TextbookExercise } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { CHALLENGE, CHALLENGE_READ, KNOWLEDGE, METHOD, MISTAKES, LAB, BEGINNER_M2 } from '../content/textbook';
@@ -39,6 +40,16 @@ const SYSTEM_EXERCISE = {
   },
 };
 
+/** La TRACE d'une suite de questions posée par-dessus le labo (LabCheckpoint) : l'étape est faite quand la suite l'est. */
+function Trace({ id, done, children, idle }) {
+  return (
+    <p data-checkpoint-trace={id} data-tried={done ? 'true' : 'false'}
+      className={`rounded-xl border-2 px-3 py-2 text-sm ${done ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+      {done ? children : idle}
+    </p>
+  );
+}
+
 export default function Module02Tayin() {
   const [q1a, setQ1a] = useState(false);
   const [q1b, setQ1b] = useState(false);
@@ -49,6 +60,13 @@ export default function Module02Tayin() {
   const [read, setRead] = useState(false);
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
+  const [cps, setCps] = useState([]);
+  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : a (étape « find ») puis b (étape « b ») y sont posées ; coupées par l'enseignant, les questions d'origine reviennent
+  const cpOn = useLabCheckpointSettings('slope-stairs').enabled;
+  const answered = (id) => cps.some((e) => e.tk === 'checkpoint-done' && e.id === id);
+  const onCheckpoint = (e) => setCps((l) => [...l, e]);
+  const doneA = cpOn ? answered('find') : q2b;
+  const doneB = cpOn ? answered('b') : q2c;
 
   return (
     <ContentModule
@@ -71,11 +89,11 @@ export default function Module02Tayin() {
           levels={{
             beginner: () => (
               <Manipulation type="slope-stairs" level="beginner" {...LAB.m2.beginner}
-                lead={<MathText>{BEGINNER_M2.text}</MathText>} />
+                lead={<MathText>{BEGINNER_M2.text}</MathText>} onCheckpoint={onCheckpoint} />
             ),
             advanced: () => (
               <Manipulation type="slope-stairs" level="advanced" {...LAB.m2.advanced}
-                lead={<MathText>{`محرار بتدريجتين: $x$ درجة الحرارة بالسلسيوس و $f(x)$ بالفهرنهايت. لا نعرف عبارة $f(x)$ ، لكن نعرف صورتي عددين.`}</MathText>} />
+                lead={<MathText>{`محرار بتدريجتين: $x$ درجة الحرارة بالسلسيوس و $f(x)$ بالفهرنهايت. لا نعرف عبارة $f(x)$ ، لكن نعرف صورتي عددين.`}</MathText>} onCheckpoint={onCheckpoint} />
             ),
           }}
         />
@@ -125,7 +143,7 @@ export default function Module02Tayin() {
           ),
         },
         {
-          num: 2, title: 'التحدّي', subtitle: 'من الدرجة سلسيوس إلى الفهرنهايت', done: q2a && q2b && q2c && q2d,
+          num: 2, title: 'التحدّي', subtitle: 'من الدرجة سلسيوس إلى الفهرنهايت', done: q2a && doneA && doneB && q2d,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" title={CHALLENGE.title} lines={[CHALLENGE.text, ...CHALLENGE.questions]} source={CHALLENGE.source} compact />
@@ -140,7 +158,11 @@ export default function Module02Tayin() {
                 explain={<MathText>{'النقطة التي فاصلتها 10 ترتيبها 50 : $f(10) = 50$ ، أي 50 درجة فهرنهايت.'}</MathText>}
                 onAnswered={() => setQ2a(true)}
               />
-              {q2a && (
+              {q2a && (cpOn ? (
+                <Trace id="find" done={doneA} idle="ابنِ في المخبر الدرجة بين الصورتين المعلومتين، وأجب عن الأسئلة التي تظهر فوقه.">
+                  <MathText>{'أجبتَ في المخبر: $a$ هو حاصل قسمة فرق الصورتين على فرق العددين.'}</MathText>
+                </Trace>
+              ) : (
                 <>
                   <NumericQuestion
                     prompt="المعامل $a$ :"
@@ -153,23 +175,29 @@ export default function Module02Tayin() {
                     onAnswered={() => setQ2b(true)}
                   />
                 </>
-              )}
-              {q2b && (
+              ))}
+              {doneA && (
                 <>
                   <KnowledgeBrick id="hisab-muamil-a" lead="الدرجة بين 10 و 30 ، حسابًا:" />
-                  <NumericQuestion
-                    prompt="العدد $b$ :"
-                    expected={near(CHALLENGE.answer.b)}
-                    display="32"
-                    parse={parseDec}
-                    requires={['hisab-muamil-a']}
-                    explain={<MathText>{KNOWLEDGE.hisabB.example}</MathText>}
-                    explainFor={(n) => (near(5)(n) ? <MathText>{`خطأ شائع: ${MISTAKES.bNisba.wrong} ${MISTAKES.bNisba.why}`}</MathText> : null)}
-                    onAnswered={() => setQ2c(true)}
-                  />
+                  {cpOn ? (
+                    <Trace id="b" done={doneB} idle="انزل في المخبر إلى العدد 0 لتقرأ ترتيب نقطته، وأجب عن الأسئلة التي تظهر فوقه.">
+                      <MathText>{'أجبتَ في المخبر: $b$ هو ترتيب النقطة التي فاصلتها 0 ، أي $b = f(x_1) - a x_1$ .'}</MathText>
+                    </Trace>
+                  ) : (
+                    <NumericQuestion
+                      prompt="العدد $b$ :"
+                      expected={near(CHALLENGE.answer.b)}
+                      display="32"
+                      parse={parseDec}
+                      requires={['hisab-muamil-a']}
+                      explain={<MathText>{KNOWLEDGE.hisabB.example}</MathText>}
+                      explainFor={(n) => (near(5)(n) ? <MathText>{`خطأ شائع: ${MISTAKES.bNisba.wrong} ${MISTAKES.bNisba.why}`}</MathText> : null)}
+                      onAnswered={() => setQ2c(true)}
+                    />
+                  )}
                 </>
               )}
-              {q2c && (
+              {doneB && (
                 <>
                   <KnowledgeBrick id="hisab-b" lead="بعد a ، العدد b من عدد واحد وصورته:" />
                 <TapQuestion
@@ -227,7 +255,7 @@ export default function Module02Tayin() {
           ),
         },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={2} />}
+      footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />
   );
 }

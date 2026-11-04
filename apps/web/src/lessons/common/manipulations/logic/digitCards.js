@@ -335,6 +335,21 @@ export function sayNone(s, d = taskDivisor(s)) {
 export const reachableTargets = (s) => s.divisors.filter((d) => targetPossible(s, d));
 export const cardsDiscoveryReady = (s) => reachableTargets(s).every((d) => taskDone(s, d)) && s.swap != null;
 
+/**
+ * « أعِد التجربة » (questions du labo) : l'étape repart, NON faite (la carte se rouvrira quand elle sera de nouveau atteinte) — table :
+ * le coloriage de d est vidé et rouvert ; cartes : la cible d est rouverte ; `'swap'` : l'échange retenu est oublié.
+ */
+export function retryStep(s, step) {
+  if (s.mode === 'grid') {
+    const i = s.divisors.indexOf(step);
+    if (i < 0) return s;
+    return put(s, { active: i, found: freezeMap({ ...s.found, [step]: [] }), revealed: freezeMap({ ...s.revealed, [step]: [] }), last: null });
+  }
+  if (step === 'swap') return put(s, { swap: null, flips: null, last: null });
+  const tasks = { ...s.tasks }; delete tasks[step];
+  return put(s, { tasks: Object.freeze(tasks), last: null });
+}
+
 /* ══════════════ Commun ══════════════ */
 
 export function init(numbers = {}) {
