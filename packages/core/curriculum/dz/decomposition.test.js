@@ -176,7 +176,13 @@ describe('découpage 4AM — traçabilité sujet ↔ leçon', () => {
 
   it('ne déclare que des prérequis pédagogiques qui existent, et jamais circulaires', () => {
     const codes = new Set(catalogueLessons.map((l) => l.id));
-    const lpIds = new Set(catalogueLessons.flatMap((l) => l.learningPoints.map((lp) => lp.id)));
+    // Une الكفاءة d'une année ANTÉRIEURE est admise (LEARNING_NET.md §4.8), mais seulement
+    // si sa leçon est PUBLIÉE : on n'écrit jamais d'arête vers une الكفاءة brouillon.
+    const lpIds = new Set(dzCourseLevels
+      .flatMap((l) => l.grades)
+      .flatMap((g) => g.chapters.flatMap((c) => c.lessons))
+      .filter((l) => l.status === 'available')
+      .flatMap((l) => l.learningPoints.map((lp) => lp.id)));
     const byId = new Map(catalogueLessons.map((l) => [l.id, l]));
     const visiting = new Set();
     const visit = (id, trail) => {

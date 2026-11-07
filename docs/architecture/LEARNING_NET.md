@@ -310,6 +310,11 @@ These rules complete `LESSON_DEVELOPMENT_GUIDE.md` §14.2 for any year other tha
    « تذكّر — السنة الثانية » box gains its `getLessonPath` link in the same commit (`feat(lessons): connect …`). Where the net has
    no link (`wasf-silsila-hisab` → `tabsit-hadhf-aqwas`, `tawzi-darb-jam-tarh` → `nashr-jabri-3am` …) no edge is written; the
    link is an owner question. 4AM is reached only through these 3AM lessons (no `2am.m1` item links straight into 4AM).
+   First cross-year LP edges INTO a 4AM lesson (2026-11-07, `qasim-adad-tabii`, item `4am.m1.r01`): P1 ← `1am_qisma-iqlidiya-baqi_P1` +
+   `1am_qawaid-qabiliyat-qisma_P4`, P2 ← `1am_qisma-iqlidiya-baqi_P2`, P3 ← `1am_qawaid-qabiliyat-qisma_P4`, along `1am.m3.r01 → 4am.m1.r01`
+   (`requires`) and `1am.m3.r02 → 4am.m1.r01` (`extends`). The 4AM `prerequisiteLessonCodes` stay 4AM-only (§3bis); the 2AM lesson
+   `qisma-iqlidiya-hasr` (2am.m1.r04) gets no edge — the net links it to 4am.m1.r03, not r01. `decomposition.test.js` accepts an
+   earlier-year LP only when its lesson is published.
    The unit's extraction is written whole; its elements destined to lessons not yet generated are « en attente » in
    `check:textbook` (`LESSON_DEVELOPMENT_GUIDE.md` § « Generating a 1AM–3AM unit LESSON BY LESSON »).
 

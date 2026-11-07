@@ -80,7 +80,18 @@
         "استعمال الصيغ المتكافئة: قاسم لـ، يقسم، يقبل القسمة على، مضاعف لـ",
         "معرفة أن 1 قاسم لكل عدد طبيعي وأن كل عدد طبيعي غير معدوم قاسم لنفسه"
       ],
-      "pointPrerequisites": {},
+      "pointPrerequisites": {
+        "P1": [
+          "1am_qisma-iqlidiya-baqi_P1",
+          "1am_qawaid-qabiliyat-qisma_P4"
+        ],
+        "P2": [
+          "1am_qisma-iqlidiya-baqi_P2"
+        ],
+        "P3": [
+          "1am_qawaid-qabiliyat-qisma_P4"
+        ]
+      },
       "programmeItems": [
         "4am.m1.r01"
       ],

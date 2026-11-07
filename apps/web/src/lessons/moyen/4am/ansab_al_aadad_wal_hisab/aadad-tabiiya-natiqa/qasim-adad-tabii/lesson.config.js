@@ -3,6 +3,10 @@
  * Unité 1 du manuel (4AM), activité 1 (p. 8), معارف 1 (p. 10), exercices 1, 2, 5 (p. 14),
  * puis trois « مسائل » de la plateforme (modules 4–6, pilote du 2026-10-05).
  * Source de vérité : docs/sources/4am/unit1/extraction.json.
+ * Le réseau (2026-11-07) : 4am.m1.r01 REQUIERT 1am.m3.r01 (`qisma-iqlidiya-baqi`, publiée) et ÉTEND 1am.m3.r02 (`qawaid-qabiliyat-qisma`, publiée).
+ *   Arêtes LP le long de ces deux liens : P1 ← 1am_qisma-iqlidiya-baqi_P1 (faire la division) + 1am_qawaid-qabiliyat-qisma_P4 (« يقبل القسمة » = reste nul),
+ *   P2 ← 1am_qisma-iqlidiya-baqi_P2 (a = b × q + r), P3 ← 1am_qawaid-qabiliyat-qisma_P4. Aucune arête vers 2AM `qisma-iqlidiya-hasr` : le réseau n'a pas de lien
+ *   2am.m1.r04 → 4am.m1.r01 (question au propriétaire). « راجع قبل أن تنطلق » et « راجع » après une erreur pointent déjà vers les deux leçons 1AM (réseau + `getLessonPath`).
  *
  * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
  *   Entrée retenue : le TERRAIN (15 joueurs en 3 équipes, puis 16 : un joueur n'a pas d'équipe) — la main FIXE le nombre de groupes
