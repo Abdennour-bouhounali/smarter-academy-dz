@@ -69,11 +69,11 @@
       "titleSource": "textbook",
       "title": "التعرّف على قاسم لعدد طبيعي",
       "description": "التعرّف على قاسم لعدد طبيعي من خلال القسمة الإقليدية والمساواة a = b × q، واستعمال الصيغ المتكافئة: قاسم لـ، يقسم، يقبل القسمة على، مضاعف لـ.",
-      "prerequisites": [
-        "القسمة الإقليدية",
-        "قواعد قابلية القسمة على 2 و3 و5 و9"
+      "prerequisites": [],
+      "prerequisiteLessonCodes": [
+        "qisma-iqlidiya-baqi",
+        "qawaid-qabiliyat-qisma"
       ],
-      "prerequisiteLessonCodes": [],
       "pointsToLearn": [
         "التعرّف على قاسم لعدد طبيعي من خلال الباقي المعدوم للقسمة الإقليدية",
         "التعبير عن «b قاسم لـ a» بالمساواة a = b × q",

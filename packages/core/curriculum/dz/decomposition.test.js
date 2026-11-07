@@ -175,15 +175,15 @@ describe('découpage 4AM — traçabilité sujet ↔ leçon', () => {
   });
 
   it('ne déclare que des prérequis pédagogiques qui existent, et jamais circulaires', () => {
-    const codes = new Set(catalogueLessons.map((l) => l.id));
+    // Une leçon prérequise peut être d'une année ANTÉRIEURE (LEARNING_NET.md §3bis) : on cherche dans tout le cycle.
+    const allLessons = dzCourseLevels.flatMap((l) => l.grades).flatMap((g) => g.chapters.flatMap((c) => c.lessons));
+    const codes = new Set(allLessons.map((l) => l.id));
     // Une الكفاءة d'une année ANTÉRIEURE est admise (LEARNING_NET.md §4.8), mais seulement
     // si sa leçon est PUBLIÉE : on n'écrit jamais d'arête vers une الكفاءة brouillon.
-    const lpIds = new Set(dzCourseLevels
-      .flatMap((l) => l.grades)
-      .flatMap((g) => g.chapters.flatMap((c) => c.lessons))
+    const lpIds = new Set(allLessons
       .filter((l) => l.status === 'available')
       .flatMap((l) => l.learningPoints.map((lp) => lp.id)));
-    const byId = new Map(catalogueLessons.map((l) => [l.id, l]));
+    const byId = new Map(allLessons.map((l) => [l.id, l]));
     const visiting = new Set();
     const visit = (id, trail) => {
       expect(visiting.has(id), `cycle : ${[...trail, id].join(' → ')}`).toBe(false);

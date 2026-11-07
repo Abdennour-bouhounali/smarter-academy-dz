@@ -241,8 +241,10 @@ An "every LP depends on every LP of the review lesson" rule would write hundreds
 the owner has not validated (D1). `RecommendationService` and the teacher map would then name prerequisites that do
 not exist yet. The precise LP→LP edges are written when a lesson is generated, on its final الكفاءات and only
 along a net link (§4.6). Until then cross-year navigation is lesson- and item-level: the « راجع » panel, the « راجع »
-after an error, and the prerequisite chips. The 4AM lessons' `prerequisiteLessonCodes` are unchanged (4AM only);
-their cross-year links come from the net at run time.
+after an error, and the prerequisite chips. The 4AM lessons' `prerequisiteLessonCodes` were left 4AM-only by phase 2;
+their cross-year links come from the net at run time. Since 2026-11-07 a 4AM lesson connected to its PUBLISHED earlier-year
+lessons also lists them there (first: `qasim-adad-tabii` ← `qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma`), so « المتطلبات السابقة »
+shows them as clickable chips with their year, and the free-text `prerequisites` they replace are removed (no duplicate chip).
 
 **Database — imported, closed, ignored by Mastery V2.**
 
@@ -312,9 +314,9 @@ These rules complete `LESSON_DEVELOPMENT_GUIDE.md` §14.2 for any year other tha
    link is an owner question. 4AM is reached only through these 3AM lessons (no `2am.m1` item links straight into 4AM).
    First cross-year LP edges INTO a 4AM lesson (2026-11-07, `qasim-adad-tabii`, item `4am.m1.r01`): P1 ← `1am_qisma-iqlidiya-baqi_P1` +
    `1am_qawaid-qabiliyat-qisma_P4`, P2 ← `1am_qisma-iqlidiya-baqi_P2`, P3 ← `1am_qawaid-qabiliyat-qisma_P4`, along `1am.m3.r01 → 4am.m1.r01`
-   (`requires`) and `1am.m3.r02 → 4am.m1.r01` (`extends`). The 4AM `prerequisiteLessonCodes` stay 4AM-only (§3bis); the 2AM lesson
+   (`requires`) and `1am.m3.r02 → 4am.m1.r01` (`extends`); both lessons are also in its `prerequisiteLessonCodes` (§3bis); the 2AM lesson
    `qisma-iqlidiya-hasr` (2am.m1.r04) gets no edge — the net links it to 4am.m1.r03, not r01. `decomposition.test.js` accepts an
-   earlier-year LP only when its lesson is published.
+   earlier-year LP only when its lesson is published, and an earlier-year prerequisite lesson from anywhere in the cycle.
    The unit's extraction is written whole; its elements destined to lessons not yet generated are « en attente » in
    `check:textbook` (`LESSON_DEVELOPMENT_GUIDE.md` § « Generating a 1AM–3AM unit LESSON BY LESSON »).
 
