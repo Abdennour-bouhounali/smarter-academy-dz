@@ -1241,13 +1241,13 @@ nothing scrolls. Labs in the game layout run at zoom 0.83–1.04, and text scree
 
 **Stage 3** (planned): the climax animation (756 books → 21 shelves) and the bonus levels.
 
-### Rollout recipe — converting a lesson whose lab is NOT the football lab (first conversion: `qawasim-adad-tabii`, 2026-11-08)
+### Rollout recipe — converting a lesson whose lab is NOT the football lab (first conversions: `qawasim-adad-tabii` with `factor-pairs`, `khawass-qawasim` with `divisor-properties`, 2026-11-08)
 
 The owner validated the pilot on 2026-11-08; lessons are converted one by one (`docs/reports/MISSION_ROLLOUT_PROGRESS.md`, plan
 `PILOT_PROTOTYPE_ROLLOUT_PLAN_2026-11-08.md` §5). What a lesson with another lab needs beyond the checklist:
 
 - **The mission scene is per lesson.** `mission.scene` in the config picks a drawn SVG from `mission/MissionScene.jsx` (a registry:
-  `'library'` = 756 books, `'library-wall'` = 96 books + a `KidFigure` librarian). A new scene is a component `<Nom>Scene({ fill,
+  `'library'` = 756 books, `'library-wall'` = 96 books + a `KidFigure` librarian, `'construction-wall'` = a brick wall that rises + a `KidFigure` apprentice). A new scene is a component `<Nom>Scene({ fill,
   label, className })` drawn in code (never a generated image), `fill` ∈ [0, 1] following the tools earned; it must not show any
   number of the مسألة (rows, capacities). `MissionHome`, `MissionCheckpoint` and `MissionLayer` read `mission.scene`.
 - **Checkpoints use other numbers.** A point d'étape speaks of 30, 50 or « n » — never of the climax's numbers (96 here).
@@ -1277,7 +1277,12 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
      width of the hidden copy;
   7. in the player the lab is always `guided` (no « جرّب › اكتشف », no hint button, no « ماذا لاحظت؟ » card), `freeLabAlwaysOpen` and
      the free-lab panel are off.
-  The rollout log lists which lab families already have it.
+  `divisor-properties` (lesson `khawass-qawasim`) is the second example and adds three reusable ideas: (a) a `sequence` of cases played one after the other
+  INSIDE one round (the next case loads when the three operations are built; the verdict `groups` keep counting, +3 per case, `Math.max(seqIdx, 0)` for a round
+  without a sequence), so a step that covers two textbook cases still has ONE door; (b) « a zone becomes a button » for the learned gesture when the lab has no
+  « try all » (the drop zones render a big button once `handDone`); (c) a lab whose steps already hold questions per operation turns each operation's number
+  question into `fill` and the division into `build`, and hides the written formulas while a question is open. In the player never celebrate « all tasks
+  done » when the stepper is hidden. The rollout log lists which lab families already have it.
 - **« ورقة زميل »** (`content/peerSheet.js`): an invented classmate (`KidFigure`; girls in hijab), 3–5 lines with ONE error on the
   lesson's main misconception, three fixes each with a `why`, the numbers computed from the same helpers as the rounds, and a test
   (`peerSheet.test.js`) that the error line is the only wrong one.

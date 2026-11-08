@@ -20,6 +20,57 @@ export const LESSON_CONFIG = {
   unit: 'aadad-tabiiya-natiqa',
   unitTitle: 'الأعداد الطبيعيّة والأعداد النّاطقة',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (modèle du pilote qasim-adad-tabii, VALIDÉ par le propriétaire le 2026-11-08 ; rollout leçon par
+  // leçon, docs/reports/MISSION_ROLLOUT_PROGRESS.md) — implique le regard « focus » ; l'enseignant et le mode classe ne voient aucun changement.
+  studentView: 'mission',
+  // LA MISSION : l'ouverture avoue qu'on ne sait pas encore la résoudre ; les outils sont les connaissances de knowledge.jsx ; les points
+  // d'étape RAPPROCHENT de la mission sans en résoudre aucune question (la مسألة 1 du module 5 reste entière : ils parlent de 6, 7, 18,
+  // de n — jamais de la brique de 25, ni des murs de 875 et 350) ; formatifs, jamais une preuve de maîtrise.
+  mission: {
+    scene: 'construction-wall',
+    title: 'ورشة البناء',
+    opening: {
+      text: 'يبني البنّاء في الورشة جدارين بطوب طول الطوبة الواحدة منه 25 سم، ويرصّ كل صفّ دون أن يقطع أيّ طوبة. هل يستطيع أن يعرف، من غير أن يقسم من جديد، أنّ الجدارين معًا — وما بينهما من فرق — مبنيّان أيضًا بطوب كامل؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'qasim-mushtarak-rappel', icon: '🧱', label: 'n يقسم a' },
+      { id: 'khassiya-1', icon: '➕', label: 'المجموع والفرق' },
+      { id: 'khassiya-2', icon: '➗', label: 'باقي القسمة' },
+      { id: 'burhan-idha-fainna', icon: '✍️', label: 'البرهان' },
+    ],
+    climaxModule: 5,
+    checkpoints: [
+      {
+        id: 'cp-jidaa', afterModule: 1,
+        prompt: 'جدارا بنّاء آخر مبنيّان بطوب طوله 6 سم: طولاهما 30 سم و 18 سم. ماذا يعرف عن طولهما معًا، أي عن العدد 48؟',
+        options: ['6 يقسم 48 أيضًا: الجدار الملصوق مبنيّ بطوب كامل', 'قد تظهر نصف طوبة في الجدار الملصوق', 'لا يعرف شيئًا قبل أن يجري القسمة'],
+        correct: 0,
+        explain: 'كل جدار مبنيّ بطوب كامل، فالجداران معًا طوب كامل. هذه هي الفكرة التي ستستعملها في المهمة الكبرى.',
+      },
+      {
+        id: 'cp-khassiya', afterModule: 2,
+        prompt: '7 يقسم 63 ويقسم 28. أيّ هذه الأعداد يقسمه 7 دون أن نجري قسمة جديدة؟',
+        options: ['الفرق 35 والمجموع 91', 'العدد 63 + 1', 'العدد 28 − 1'],
+        correct: 0,
+        explain: 'خاصية 1: العدد الذي يقسم عددين يقسم مجموعهما وفرقهما: $63 - 28 = 35 = 7 \\times 5$ و $63 + 28 = 91 = 7 \\times 13$.',
+      },
+      {
+        id: 'cp-burhan', afterModule: 3,
+        prompt: 'لبرهان أنّ عددًا طبيعيًّا $d$ يقسم عددًا $m$، ماذا يكفي أن نجد؟',
+        options: ['عددًا طبيعيًّا $k$ حيث $m = d \\times k$', 'عددًا أصغر من $m$ فقط', 'مثالًا عدديًّا واحدًا يتحقّق'],
+        correct: 0,
+        explain: 'هذه هي جملة الطريقة: نفرض الشرط ونصل إلى $m = d \\times k$ بحروف لا بأعداد معيّنة.',
+      },
+      {
+        id: 'cp-khitta', afterModule: 4,
+        prompt: 'يريد البنّاء أن يتأكّد أنّ طولًا مثل $a + b$ مبنيّ بطوب طوله $n$ كامل. ما أفضل خطّة؟',
+        options: ['يكتب $a$ و $b$ جداءين في $n$ ثم يجمع', 'يرسم الجدار كلّه ويعدّ الطوب', 'يقسّم الجدار إلى نصفين'],
+        correct: 0,
+        explain: 'إذا كان $a = n \\times q$ و $b = n \\times q\'$ فإنّ $a + b = n \\times (q + q\')$: لا حاجة إلى قسمة جديدة. هذه خطّتك في المسألة التالية.',
+      },
+    ],
+  },
   title: 'خواص قواسم عدد طبيعي',
   description: 'خواص قواسم عدد طبيعي: القاسم المشترك لعددين يقسم مجموعهما وفرقهما وباقي القسمة الإقليدية لأحدهما على الآخر، وتعلّم البرهنة على خاصية من الشكل «إذا … فإنّ …».',
   level: 'moyen',
@@ -53,6 +104,8 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début, sans verrou par محور.
+  knowledgeMapOpen: true,
   priorKnowledge: ['qasim-jidaa', 'qisma-iqlidiya'],
   resources: [
     // Module 1 — workspace à deux niveaux. La propriété est la même ; ce qui

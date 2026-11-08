@@ -2581,6 +2581,9 @@ the mission player a lab is played as a PATH of rounds instead of the مبتدئ
   105 → ⭐ 84 → free), played by `LabRounds icon="📚"`. The v2 treatment of a lab other than `team-builder` is described in the
   lesson guide § « Rollout recipe » (`FactorPairs`: props `onVerdict`, `handDone`, `chains`, `predict`, `nChoices`, `levels={false}`;
   `PredictTray`; `CHAINS_PLAYER = { first: ['observe', 'build'], rule: ['turned', 'rule'] }`; rectangle cell cap `maxCell`).
+- **Third example (2026-11-08):** lesson `khawass-qawasim`, `content/walls.js` (`M1_ROUNDS`: 3 | 18, 12 → cases 2 and 3 as one `sequence` round → 9 | 900, 90 → ⭐ → free),
+  `LabRounds icon="🧱"`. `divisor-properties` player props: `onVerdict` (`groups` 1 = ألصق · 2 = انزع · 3 = قِس, +3 per case), `levels`, `handDone`, `chains`,
+  `predict`, `choices`, `sequence`; `CHAINS_PLAYER = { sum: ['sumObserve','sumWhole'], diff: ['diffObserve','diffWhole'], rem: ['remObserve','remBuild','rule'] }`.
 
 **`team-builder` options (2026-11-04):** `levels={false}` gives a worked example with no مبتدئ / متقدم selector (as for
 `divisor-explorer-books`). `handDone` opens « أنشئ الفرق » from the start: the student already shared BY HAND in an

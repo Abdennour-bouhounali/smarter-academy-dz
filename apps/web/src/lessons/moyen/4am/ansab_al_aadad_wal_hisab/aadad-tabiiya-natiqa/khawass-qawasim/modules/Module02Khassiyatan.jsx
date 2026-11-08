@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick, PeerSheet } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { TextbookBox } from '../../../../../../common/textbook';
 import DivisionDisplay from '../../../../../../common/manipulations/primitives/DivisionDisplay';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { KNOWLEDGE } from '../content/textbook';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
 
-/** Module 2 — معارف 2 (p. 10) : خاصية 1 و خاصية 2 avec leurs exemples du manuel. LP : P1, P2, P3. */
+/**
+ * Module 2 — معارف 2 (p. 10) : خاصية 1 و خاصية 2 avec leurs exemples du manuel, puis « ورقة هند » (rollout 2026-11-08) : trouver et corriger l'erreur
+ * d'une camarade inventée qui INVERSE la خاصية. LP : P1, P2, P3.
+ */
 const [p1, p2] = KNOWLEDGE.properties;
 export default function Module02Khassiyatan() {
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
+  const [q4, setQ4] = useState(false);
   return (
     <ContentModule objectives={["ماذا خمّنت من الحالات الثلاث؟", "متى تصير الملاحظة خاصية؟"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(2)} moduleNumber={2}
@@ -50,6 +55,9 @@ export default function Module02Khassiyatan() {
               )}
             </div>
           ) },
+        // « ورقة زميل » : APRÈS le nom des deux خاصيتين — l'élève juge un raisonnement ; l'idée fausse visée : inverser la خاصية.
+        { num: 4, title: 'ورقة هند: أين الخطأ؟', subtitle: 'جد السطر الخاطئ وصحّحه', done: q4,
+          content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={() => setQ4(true)} /> },
       ]}
       footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />
