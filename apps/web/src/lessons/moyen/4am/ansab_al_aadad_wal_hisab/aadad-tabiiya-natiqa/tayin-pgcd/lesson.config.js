@@ -21,6 +21,49 @@ export const LESSON_CONFIG = {
   unit: 'aadad-tabiiya-natiqa',
   unitTitle: 'الأعداد الطبيعيّة والأعداد النّاطقة',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (modèle du pilote qasim-adad-tabii, VALIDÉ par le propriétaire le 2026-11-08 ; rollout leçon par
+  // leçon, docs/reports/MISSION_ROLLOUT_PROGRESS.md) — implique le regard « focus » ; l'enseignant et le mode classe ne voient aucun changement.
+  studentView: 'mission',
+  // LA MISSION : l'ouverture avoue qu'on ne sait pas encore la résoudre ; les outils sont les connaissances de knowledge.jsx ; les points
+  // d'étape RAPPROCHENT de la mission sans en résoudre aucune question (la مسألة 1 du module 4 reste entière : ils parlent de 12, 20, 15 et
+  // 45 — jamais de 90, de 126 ni de leur PGCD) ; formatifs, jamais une preuve de maîtrise.
+  mission: {
+    scene: 'school-bags',
+    title: 'حقائب التضامن',
+    opening: {
+      text: 'جمعت جمعية أولياء التلاميذ 90 قلمًا و 126 كرّاسًا لتحضير حقائب مدرسية متماثلة لتلاميذ معوزين، دون أن يبقى قلم ولا كرّاس. القائمتان طويلتان: كيف نجد أكبر عدد من الحقائب بطريقة لا ننسى فيها شيئًا؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'tayin-bil-hasr', icon: '📋', label: 'حصر القواسم' },
+      { id: 'nataij-mubashira', icon: '⚡', label: 'نتائج مباشرة' },
+      { id: 'pgcd-idha-qasim', icon: '🔗', label: 'أحدهما يقسم الآخر' },
+    ],
+    climaxModule: 4,
+    checkpoints: [
+      {
+        id: 'cp-hasr', afterModule: 1,
+        prompt: 'قواسم 12: 1 ، 2 ، 3 ، 4 ، 6 ، 12 — قواسم 20: 1 ، 2 ، 4 ، 5 ، 10 ، 20. ما $\\mathrm{PGCD}(12\\ ;\\ 20)$ ؟',
+        options: ['4', '20', '2'],
+        correct: 0,
+        explain: 'القواسم المشتركة 1 ، 2 ، 4، وأكبرها 4. هذه الخطوات الثلاث نفسها ستعيدها في المهمة الكبرى بعددين أكبر.',
+      },
+      {
+        id: 'cp-mubashira', afterModule: 2,
+        prompt: '15 قاسم للعدد 45. ما $\\mathrm{PGCD}(45\\ ;\\ 15)$ دون حصر القواسم؟',
+        options: ['15', '45', '3'],
+        correct: 0,
+        explain: 'عندما يكون b قاسمًا لـ a فإنّ $\\mathrm{PGCD}(a\\ ;\\ b) = b$: هنا 15، لا الأكبر 45.',
+      },
+      {
+        id: 'cp-khitta', afterModule: 3,
+        prompt: 'لتحضير أكبر عدد من الحقائب المتماثلة دون أن يبقى شيء، ماذا نبحث عنه؟',
+        options: ['القاسم المشترك الأكبر لعدد الأقلام وعدد الكراريس', 'مجموع عدد الأقلام وعدد الكراريس', 'أكبر العددين'],
+        correct: 0,
+        explain: 'عدد الحقائب يقسم العددين معًا، وأكبره هو PGCD. هذه خطّتك في المسألة التالية.',
+      },
+    ],
+  },
   title: 'تعيين القاسم المشترك الأكبر لعددين طبيعيين',
   description: 'تعيين القاسم المشترك الأكبر لعددين بحصر قواسم كل عدد ثم القواسم المشتركة ثم أكبرها، والنتائج المباشرة: PGCD(a ; a) = a، PGCD(a ; 0) = a، PGCD(a ; b) = PGCD(b ; a).',
   level: 'moyen',
@@ -51,6 +94,8 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début, sans verrou par محور.
+  knowledgeMapOpen: true,
   priorKnowledge: ['pgcd-taarif', 'tariqa-qawasim'],
   resources: [
     // Module 1 — workspace à deux niveaux. La MÉTHODE est la même (حصر :
@@ -83,7 +128,7 @@ export const LESSON_CONFIG = {
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
-      title: 'أستعدّ', desc: 'أربع عبارات: صحيح أم خاطئ؟ قواسم عدد والقاسم المشترك الأكبر.',
+      title: 'أستعدّ', desc: 'عشر عبارات: صحيح أم خاطئ؟ قواسم عدد والقاسم المشترك الأكبر.',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: '42-wa-60', path: `${LESSON_BASE_PATH}/42-wa-60`,
       title: 'نشاط 5 — 42 و 60', desc: 'أوجد قواسم كل عدد، ثم القواسم المشتركة، ثم أكبرها.',
