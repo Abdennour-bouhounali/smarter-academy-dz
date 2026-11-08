@@ -138,3 +138,15 @@ describe('anyExact — « some perfect split was seen »', () => {
     expect(conditionMet({ anyExact: true }, logEvent(miss, 'verdict', { groups: 6, exact: true }))).toBe(true);
   });
 });
+
+describe('above — the common-divisors goal « the greatest is SEEN: a larger number of groups was tried »', () => {
+  it('needs a verdict strictly above g; with { exact: g } it is the lab\'s « greatest group found »', () => {
+    const round = { id: 'r', goal: [{ exact: 6 }, { above: 6 }] };
+    let log = emptyLog();
+    [1, 2, 3, 4, 5, 6].forEach((g) => { log = logEvent(log, 'verdict', { groups: g, exact: 12 % g === 0 && 18 % g === 0 }); });
+    expect(conditionMet({ above: 6 }, log)).toBe(false);
+    expect(roundWon(round, log)).toBe(false);
+    log = logEvent(log, 'verdict', { groups: 7, exact: false });
+    expect(roundWon(round, log)).toBe(true);
+  });
+});

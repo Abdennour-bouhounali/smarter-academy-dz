@@ -70,7 +70,8 @@ export function useLabCheckpoint({ id, questions, reached, resetKey, onRetry, on
       ? <CheckpointCard key={`${id}:${p.qi}`} id={id} questions={questions} p={p} onAnswer={answer} onNext={go} onLook={fold} onRetry={retry} />
       : <CheckpointPill onBack={unfold} />
   ) : null;
-  return { blocking, open, done: has && !!p?.done, node };
+  // `qid` : la question à l'écran (un labo peut montrer la scène dont elle parle — common-divisors, lecteur)
+  return { blocking, open, done: has && !!p?.done, node, qid: open ? questions[p.qi]?.id ?? null : null };
 }
 
 const ring = 'outline-none focus-visible:ring-4 focus-visible:ring-indigo-300';

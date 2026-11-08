@@ -11,6 +11,8 @@
  *             { anyExact: true }                    — au moins une répartition / un rectangle JUSTE vu (n'importe lequel)
  *             { allPairs: n }                       — (factor-pairs) TOUS les rectangles de n livres vus : pour chaque couple (s, n÷s), l'un des deux
  *                                                     a été essayé et tombait juste ; `groups` d'un verdict = le nombre de livres par rangée d
+ *             { above: g }                          — (common-divisors) un nombre de groupes PLUS GRAND que g essayé : avec { exact: g },
+ *                                                     « g est le plus grand » a été VU, jamais deviné (comme greatestGroupFound)
  * Une manche peut porter `easier` : une manche d'ENTRAÎNEMENT plus petite (« لا بأس — جرّب أصغر », pilote 2026-11-08),
  * proposée seulement quand l'élève peine (needsHelp) — jamais à celui qui réussit.
  * Ce que la manche a VU (`log`) : { verdicts: [{ groups, exact }], checkpoints: { [id]: true }, answers: [{ ok, tries, revealed }] }
@@ -44,6 +46,7 @@ export function conditionMet(cond, log) {
   if (cond.inexact) return log.verdicts.some((v) => !v.exact);
   if (cond.anyExact) return exactGroups(log).size > 0;
   if (cond.allPairs) return allPairsSeen(Number(cond.allPairs), exactGroups(log));
+  if (cond.above != null) return log.verdicts.some((v) => v.groups > Number(cond.above));
   return false;
 }
 

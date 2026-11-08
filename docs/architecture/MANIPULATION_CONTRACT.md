@@ -2560,7 +2560,8 @@ the mission player a lab is played as a PATH of rounds instead of the مبتدئ
     set over the lab finished), `{ exact: k }`, `{ allExact: [k…] }`, `{ inexact: true }` (a split leaving someone out seen).
     Added 2026-11-08 for `factor-pairs` (`groups` of a verdict = the number of books per row `d`): `{ checkpoint: 'rule' }`,
     `{ anyExact: true }` (some perfect rectangle seen) and `{ allPairs: n }` (every rectangle of `n` books seen: for each pair
-    (s, n ÷ s) one of the two was tried and fell exact).
+    (s, n ÷ s) one of the two was tried and fell exact). Added for `common-divisors`: `{ above: g }` (a number of groups larger than g tried) —
+    `[{ exact: g }, { above: g }]` means « g is the greatest, and it was SEEN » (as `greatestGroupFound`).
   - `easier` (PILOT, 2026-11-08): a smaller PRACTICE round `{ goal, props }` — see « The second chance » below.
   - `free` marks the free pitch: always open, no goal, never blocking (the « جرّب أعدادك » rule). `optional` marks a challenge.
 - **Stars (1–3):**
@@ -2584,6 +2585,11 @@ the mission player a lab is played as a PATH of rounds instead of the مبتدئ
 - **Third example (2026-11-08):** lesson `khawass-qawasim`, `content/walls.js` (`M1_ROUNDS`: 3 | 18, 12 → cases 2 and 3 as one `sequence` round → 9 | 900, 90 → ⭐ → free),
   `LabRounds icon="🧱"`. `divisor-properties` player props: `onVerdict` (`groups` 1 = ألصق · 2 = انزع · 3 = قِس, +3 per case), `levels`, `handDone`, `chains`,
   `predict`, `choices`, `sequence`; `CHAINS_PLAYER = { sum: ['sumObserve','sumWhole'], diff: ['diffObserve','diffWhole'], rem: ['remObserve','remBuild','rule'] }`.
+- **Fourth example (2026-11-08):** lesson `qasim-mushtarak-akbar`, `content/bouquets.js` (`M1_ROUNDS`: 12 and 18 by hand → 90 and 54 with predictions → the lists of
+  90 and 54 → ⭐ 60 and 45 → free; `M2_ROUNDS`: the lists of 28 and 42 → ⭐ → free), `LabRounds icon="💐"`. `common-divisors` player props: `onVerdict` (each k
+  tried once; in the lists the PGCD placed), `levels`, `handDone`, `chains` (`['groups', 'lists']`), `predict` (`PredictTray`, k ≥ 2, ≤ 2 per round), `choices`
+  (`{ a, b }` pairs); one stage per round; `CHAINS_PLAYER = { groupsOnly: ['observe','build','beyondFill','rule'], groups: ['observe','build','beyondFill'],
+  lists: ['listCommonFill','listWhy','rule'] }`; while a question is open the scene shows the distribution it speaks of (`cp.qid`).
 
 **`team-builder` options (2026-11-04):** `levels={false}` gives a worked example with no مبتدئ / متقدم selector (as for
 `divisor-explorer-books`). `handDone` opens « أنشئ الفرق » from the start: the student already shared BY HAND in an
@@ -2599,7 +2605,8 @@ until the rule, they sit OVER the lab, they stop the student from going to the n
 redo the same step to find the answer, and the answer is never given on the first attempt.
 
 **Files.** `primitives/labCheckpoint.js` (pure: `readNumber`, `isCorrect`, `submit`, `advance`, `feedbackOf`, `MAX_TRIES = 3`;
-tested in `labCheckpoint.test.js`) and `primitives/LabCheckpoint.jsx` (`useLabCheckpoint` + the card + the waiting band).
+tested in `labCheckpoint.test.js`) and `primitives/LabCheckpoint.jsx` (`useLabCheckpoint` + the card + the waiting band). `useLabCheckpoint` returns
+`{ blocking, open, done, node, qid }` — `qid` is the id of the question on screen (null when closed), so a lab can draw the scene that question speaks of.
 
 **Behaviour.**
 - When the lab's step is reached (`reached`, e.g. `taskDone`), a card covers the lab (backdrop over the `relative` glance

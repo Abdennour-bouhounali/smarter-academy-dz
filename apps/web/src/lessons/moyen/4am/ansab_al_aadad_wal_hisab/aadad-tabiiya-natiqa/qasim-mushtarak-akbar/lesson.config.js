@@ -22,6 +22,50 @@ export const LESSON_CONFIG = {
   unit: 'aadad-tabiiya-natiqa',
   unitTitle: 'الأعداد الطبيعيّة والأعداد النّاطقة',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (modèle du pilote qasim-adad-tabii, VALIDÉ par le propriétaire le 2026-11-08 ; rollout leçon par
+  // leçon, docs/reports/MISSION_ROLLOUT_PROGRESS.md) — implique le regard « focus » ; l'enseignant et le mode classe ne voient aucun changement.
+  studentView: 'mission',
+  // LA MISSION : l'ouverture avoue qu'on ne sait pas encore la résoudre ; les outils sont les connaissances de knowledge.jsx ; les points
+  // d'étape RAPPROCHENT de la mission sans en résoudre aucune question (la مسألة 1 du module 4 reste entière : ils parlent de 20, 30 et
+  // 10 — jamais de 120, de 84 ni de leur PGCD) ; formatifs, jamais une preuve de maîtrise.
+  mission: {
+    scene: 'flower-shop',
+    title: 'محلّ الورود',
+    opening: {
+      text: 'اقتنى بائع الزهور 120 وردة حمراء و 84 وردة بيضاء، ويريد أن يصنع منها كلّها باقات متماثلة لا تبقى بعدها وردة. كم باقة على الأكثر يستطيع أن يصنع؟ وكم وردة من كل لون في الباقة الواحدة؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'qawasim-mushtaraka', icon: '🤝', label: 'القواسم المشتركة' },
+      { id: 'pgcd-taarif', icon: '🏆', label: 'أكبرها' },
+      { id: 'pgcd-ramz', icon: '✍️', label: 'الرمز PGCD' },
+      { id: 'qawasim-al-pgcd', icon: '🔗', label: 'قواسم PGCD' },
+    ],
+    climaxModule: 4,
+    checkpoints: [
+      {
+        id: 'cp-mushtarak', afterModule: 1,
+        prompt: 'عند أمين المكتبة 20 قلمًا و 30 كرّاسًا يريد أن يوزّعها كلّها على علب متماثلة. هل تصلح 5 علب؟',
+        options: ['نعم: 5 يقسم 20 ويقسم 30 معًا', 'لا: 5 يقسم 20 فقط', 'لا نعرف قبل أن نملأ العلب'],
+        correct: 0,
+        explain: '$20 = 5 \\times 4$ و $30 = 5 \\times 6$: لا يبقى قلم ولا كرّاس. عدد العلب المقبول قاسم مشترك للعددين.',
+      },
+      {
+        id: 'cp-akbar', afterModule: 2,
+        prompt: 'القواسم المشتركة للعددين 20 و 30 هي 1 ، 2 ، 5 ، 10. ما $\\mathrm{PGCD}(20\\ ;\\ 30)$ ؟',
+        options: ['10', '30', '5'],
+        correct: 0,
+        explain: 'أكبر القواسم المشتركة هو 10. أمّا 30 فلا يقسم 20. هذا ما ستبحث عنه في المهمة الكبرى: أكبر عدد من الباقات.',
+      },
+      {
+        id: 'cp-qawasim', afterModule: 3,
+        prompt: 'إذا كان $\\mathrm{PGCD}(a\\ ;\\ b) = 10$، فهل 4 قاسم مشترك للعددين $a$ و $b$ ؟',
+        options: ['لا: القواسم المشتركة هي قواسم 10، أي 1 ، 2 ، 5 ، 10', 'نعم دائمًا', 'لا نعرف قبل أن نعرف a و b'],
+        correct: 0,
+        explain: 'القواسم المشتركة لعددين هي بالضبط قواسم قاسمهما المشترك الأكبر، و 4 لا يقسم 10. خطّتك في المسألة: جد الأكبر أوّلًا.',
+      },
+    ],
+  },
   title: 'القاسم المشترك الأكبر لعددين طبيعيين',
   description: 'القواسم المشتركة لعددين طبيعيين والقاسم المشترك الأكبر لهما، من وضعية تشكيل باقات متماثلة إلى التعريف والترميز PGCD (a ; b).',
   level: 'moyen',
@@ -55,6 +99,8 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début, sans verrou par محور.
+  knowledgeMapOpen: true,
   priorKnowledge: ['tariqa-qawasim'],
   resources: [
     // Module 1 — workspace à deux niveaux. Même objectif, deux échelles :
@@ -84,7 +130,7 @@ export const LESSON_CONFIG = {
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
-      title: 'أستعدّ', desc: 'أربع عبارات: صحيح أم خاطئ؟ البحث عن كل قواسم عدد.',
+      title: 'أستعدّ', desc: 'عشر عبارات: صحيح أم خاطئ؟ القاسم والبحث عن كل قواسم عدد.',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'baqat', path: `${LESSON_BASE_PATH}/baqat`,
       title: 'نشاط 4 — باقات متماثلة', desc: '90 زهرة حمراء و 54 زهرة بيضاء: 9 باقات؟ وما أكبر عدد ممكن من الباقات؟',
