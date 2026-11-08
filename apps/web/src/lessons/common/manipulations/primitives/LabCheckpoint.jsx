@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { MessageCircleQuestion, Lightbulb, CheckCircle2, Eye, RotateCcw, ChevronLeft, Send } from 'lucide-react';
@@ -125,14 +124,16 @@ function CheckpointCard({ id, questions, p, onAnswer, onNext, onLook, onRetry })
 
   const card = (
     <motion.div
+      // Lecteur (conseil + propriétaire, 2026-11-07) : une COLONNE à côté du terrain, SANS voile — le terrain reste net, entier et
+      // visible, la question porte sur ce qu'il montre (l'ombre plein écran du 2026-11-04 cachait la preuve). Le labo la place.
       className={inPlayer
-        ? 'fixed inset-0 z-[200] flex items-center justify-center bg-slate-950/75 p-6 backdrop-blur-md'
+        ? 'w-full'
         : 'absolute inset-0 z-40 flex items-center justify-center rounded-2xl bg-slate-900/55 p-3 backdrop-blur-[3px] md:p-5'}
       initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.25, delay: p.qi === 0 && p.tries === 0 ? 0.6 : 0 }}
       data-lab-checkpoint data-checkpoint={id} data-q={q.id} data-status={p.status} onKeyDown={onKey}
     >
       <div ref={cardRef} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby={`lab-cp-${id}-${q.id}`}
-        className="flex max-h-full w-full max-w-4xl flex-col overflow-hidden rounded-[1.75rem] bg-white shadow-2xl outline-none">
+        className={`flex max-h-full w-full flex-col overflow-hidden rounded-[1.75rem] bg-white shadow-2xl outline-none ${inPlayer ? 'ring-4 ring-indigo-200' : 'max-w-4xl'}`}>
         <div className="flex items-center justify-between gap-4 bg-gradient-to-l from-indigo-700 via-violet-700 to-fuchsia-700 px-5 py-3 text-white">
           <p className="flex items-center gap-2 text-base font-black">
             <MessageCircleQuestion className="h-6 w-6" aria-hidden="true" /> {k('title', { i: p.qi + 1, n: questions.length })}
@@ -147,7 +148,11 @@ function CheckpointCard({ id, questions, p, onAnswer, onNext, onLook, onRetry })
         <div className="flex-1 space-y-5 overflow-y-auto px-5 py-5 md:px-8">
           <h4 id={`lab-cp-${id}-${q.id}`} className="text-center text-xl font-black leading-relaxed text-slate-900 md:text-2xl">{q.prompt}</h4>
 
-          {q.kind === 'choice' ? (
+          {q.kind === 'fill' ? (
+            <FillAnswer q={q} settled={settled} revealed={p.status === 'revealed'} onAnswer={onAnswer} k={k} />
+          ) : q.kind === 'build' ? (
+            <BuildAnswer q={q} settled={settled} revealed={p.status === 'revealed'} onAnswer={onAnswer} k={k} />
+          ) : q.kind === 'choice' ? (
             <div className={`grid gap-3 ${q.cols === 3 ? 'md:grid-cols-3' : q.cols === 2 ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
               {q.options.map((o, i) => {
                 const st = optionState(i);
@@ -224,7 +229,95 @@ function CheckpointCard({ id, questions, p, onAnswer, onNext, onLook, onRetry })
       </div>
     </motion.div>
   );
-  return inPlayer && typeof document !== 'undefined' ? createPortal(card, document.body) : card;
+  // lecteur : une colonne DANS le labo (le labo la pose à côté du terrain) — plus de portail plein écran
+  return card;
+}
+
+/**
+ * `fill` : une case par grandeur (« في كل فريق ▢ · على المقاعد ▢ »), remplie d'un TOUCHER sur une pastille — pas de clavier
+ * sur la tablette. « تحقّق » quand toutes les cases sont remplies. Révélée : les bonnes valeurs s'allument.
+ */
+function FillAnswer({ q, settled, revealed, onAnswer, k }) {
+  const [pick, setPick] = useState(() => q.fields.map(() => null));
+  const shown = revealed ? q.fields.map((f) => f.expected) : pick;
+  return (
+    <div className="space-y-4" data-lab-checkpoint-fill>
+      {q.fields.map((f, i) => (
+        <div key={i} className="space-y-2">
+          <p className="text-center text-base font-black text-slate-700">{f.label}</p>
+          <div className="flex flex-wrap justify-center gap-2" dir="ltr">
+            {f.options.map((o) => {
+              const on = String(shown[i]) === String(o);
+              return (
+                <button key={o} type="button" disabled={settled} onClick={() => setPick((x) => x.map((v, j) => (j === i ? o : v)))}
+                  data-lab-checkpoint-chip={`${i}:${o}`} aria-pressed={on}
+                  className={`h-14 min-w-[3.5rem] rounded-2xl border-2 px-3 text-2xl font-black tabular-nums transition-colors ${on ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-indigo-200 bg-white text-indigo-950 hover:border-indigo-500'} ${ring}`}>
+                  {o}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+      {!settled && (
+        <div className="flex justify-center">
+          <button type="button" disabled={pick.some((v) => v == null)} onClick={() => onAnswer(pick)} data-lab-checkpoint-check
+            className={`inline-flex min-h-[56px] items-center gap-2 rounded-2xl border-2 border-sky-600 bg-sky-500 px-8 text-xl font-black text-white shadow-[0_4px_0_0_#0369A1] disabled:border-slate-300 disabled:bg-slate-200 disabled:text-slate-500 disabled:shadow-none ${ring}`}>
+            {k('check')}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * `build` : l'élève BÂTIT l'égalité — chaque emplacement porte le SENS de son nombre (« اللاعبون = الفرق × في كل فريق + خارج
+ * الفرق ») ; un toucher sur une tuile la pose dans le premier emplacement vide, un toucher sur un emplacement la rend.
+ */
+function BuildAnswer({ q, settled, revealed, onAnswer, k }) {
+  const [placed, setPlaced] = useState(() => q.slots.map(() => null)); // index de tuile par emplacement
+  const used = new Set(placed.filter((x) => x != null));
+  const values = revealed ? q.expected : placed.map((ti) => (ti == null ? null : q.tiles[ti]));
+  const put = (ti) => setPlaced((pl) => { const i = pl.indexOf(null); return i < 0 ? pl : pl.map((v, j) => (j === i ? ti : v)); });
+  const take = (si) => setPlaced((pl) => pl.map((v, j) => (j === si ? null : v)));
+  const ops = ['=', '×', '+'];
+  return (
+    <div className="space-y-5" data-lab-checkpoint-build>
+      <div className="flex items-start justify-center gap-2" dir="ltr">
+        {q.slots.map((label, si) => (
+          <React.Fragment key={si}>
+            {si > 0 && <span className="pt-3 text-2xl font-black text-slate-400" aria-hidden="true">{ops[si - 1]}</span>}
+            <button type="button" disabled={settled || values[si] == null} onClick={() => take(si)} data-lab-checkpoint-slot={si}
+              className={`flex w-[4.5rem] flex-col items-center gap-1 ${ring} rounded-xl`}>
+              <span className={`flex h-14 w-full items-center justify-center rounded-2xl border-2 border-dashed text-2xl font-black tabular-nums ${values[si] == null ? 'border-slate-300 bg-slate-50 text-slate-300' : 'border-indigo-500 bg-indigo-50 text-indigo-950'}`}>
+                {values[si] ?? '▢'}
+              </span>
+              <span className="text-center text-xs font-bold leading-tight text-slate-600" dir="rtl">{label}</span>
+            </button>
+          </React.Fragment>
+        ))}
+      </div>
+      {!settled && (
+        <>
+          <div className="flex flex-wrap justify-center gap-2" dir="ltr">
+            {q.tiles.map((n, ti) => (
+              <button key={ti} type="button" disabled={used.has(ti)} onClick={() => put(ti)} data-lab-checkpoint-tile={ti}
+                className={`h-14 min-w-[3.5rem] rounded-2xl border-2 border-amber-300 bg-amber-50 px-3 text-2xl font-black tabular-nums text-amber-950 shadow-[0_3px_0_0_#FCD34D] disabled:opacity-25 ${ring}`}>
+                {n}
+              </button>
+            ))}
+          </div>
+          <div className="flex justify-center">
+            <button type="button" disabled={placed.some((v) => v == null)} onClick={() => onAnswer(placed.map((ti) => q.tiles[ti]))} data-lab-checkpoint-check
+              className={`inline-flex min-h-[56px] items-center gap-2 rounded-2xl border-2 border-sky-600 bg-sky-500 px-8 text-xl font-black text-white shadow-[0_4px_0_0_#0369A1] disabled:border-slate-300 disabled:bg-slate-200 disabled:text-slate-500 disabled:shadow-none ${ring}`}>
+              {k('check')}
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
 }
 
 function CheckpointPill({ onBack }) {

@@ -21,7 +21,9 @@ export function useMission(config) {
   const classroom = useClassroomMode();
   const { completedModules, isModuleCompleted, currentModule } = useProgress(config?.id);
   const { isModuleClosed } = useContentAvailability();
-  const { items } = useLessonKnowledge();
+  // les outils = ce que l'élève a ÉTABLI, jamais la carte ouverte (pilote 2026-11-08 : la carte peut tout montrer d'emblée)
+  const { items: mapItems, learnedItems } = useLessonKnowledge();
+  const items = learnedItems ?? mapItems;
   const [state, setState] = useState(() => readMissionState(scopedStorage, config?.id));
 
   const on = Boolean(config?.mission) && isMissionView(config?.studentView, viewer, classroom);

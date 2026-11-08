@@ -7,26 +7,43 @@
  * Condition : { checkpoint: 'first' | 'contrast' }   — la suite de questions du labo terminée
  *             { exact: k }                          — une répartition JUSTE avec k groupes vue
  *             { allExact: [k…] }                    — toutes ces répartitions justes vues (le défi : tous les قواسم)
+ *             { inexact: true }                     — une répartition qui laisse quelqu'un dehors vue
+ *             { anyExact: true }                    — au moins une répartition / un rectangle JUSTE vu (n'importe lequel)
+ *             { allPairs: n }                       — (factor-pairs) TOUS les rectangles de n livres vus : pour chaque couple (s, n÷s), l'un des deux
+ *                                                     a été essayé et tombait juste ; `groups` d'un verdict = le nombre de livres par rangée d
+ * Une manche peut porter `easier` : une manche d'ENTRAÎNEMENT plus petite (« لا بأس — جرّب أصغر », pilote 2026-11-08),
+ * proposée seulement quand l'élève peine (needsHelp) — jamais à celui qui réussit.
  * Ce que la manche a VU (`log`) : { verdicts: [{ groups, exact }], checkpoints: { [id]: true }, answers: [{ ok, tries, revealed }] }
  */
 
-export const emptyLog = () => ({ verdicts: [], checkpoints: {}, answers: [] });
+export const emptyLog = () => ({ verdicts: [], checkpoints: {}, answers: [], predictions: [] });
 
 /** Le journal d'une manche après un événement du labo (onVerdict → 'verdict', onTrial → les événements LabCheckpoint). */
 export function logEvent(log, kind, ev) {
   if (kind === 'verdict') return { ...log, verdicts: [...log.verdicts, { groups: Number(ev.groups), exact: Boolean(ev.exact) }] };
   if (ev?.tk === 'checkpoint') return { ...log, answers: [...log.answers, { ok: Boolean(ev.ok), tries: ev.tries ?? 1, revealed: Boolean(ev.revealed) }] };
   if (ev?.tk === 'checkpoint-done') return { ...log, checkpoints: { ...log.checkpoints, [ev.id]: true } };
+  // une PRÉDICTION faite avant d'agir, jugée par le terrain (pilote 2026-11-07)
+  if (ev?.tk === 'predict') return { ...log, predictions: [...(log.predictions ?? []), { ok: Boolean(ev.ok) }] };
   return log;
 }
 
 const exactGroups = (log) => new Set(log.verdicts.filter((v) => v.exact).map((v) => v.groups));
+
+/** Tous les couples (s, n ÷ s) de n sont-ils vus ? (un rectangle parfait d × e livre d ET e : il suffit d'avoir essayé l'un des deux) */
+export function allPairsSeen(n, seen) {
+  for (let s = 1; s * s <= n; s += 1) if (n % s === 0 && !seen.has(s) && !seen.has(n / s)) return false;
+  return true;
+}
 
 /** Une condition de but est-elle remplie ? */
 export function conditionMet(cond, log) {
   if (cond.checkpoint) return Boolean(log.checkpoints[cond.checkpoint]);
   if (cond.exact != null) return exactGroups(log).has(Number(cond.exact));
   if (cond.allExact) { const seen = exactGroups(log); return cond.allExact.every((k) => seen.has(Number(k))); }
+  if (cond.inexact) return log.verdicts.some((v) => !v.exact);
+  if (cond.anyExact) return exactGroups(log).size > 0;
+  if (cond.allPairs) return allPairsSeen(Number(cond.allPairs), exactGroups(log));
   return false;
 }
 
@@ -37,18 +54,41 @@ export function roundWon(round, log) {
 }
 
 /**
- * Les ÉTOILES d'une manche gagnée (1 à 3) : ★ gagnée ; ★ ses questions justes du PREMIER coup (aucune erreur, aucune réponse
- * révélée — sans question, l'étoile est acquise) ; ★ peu d'essais (au plus `maxTrials` répartitions). Mesurables, jamais un
- * chronomètre : l'étoile récompense la réflexion, pas la vitesse.
+ * Les ÉTOILES d'une manche gagnée (1 à 3) — elles récompensent le JEU, plus la frappe (conseil + propriétaire, 2026-11-07 :
+ * « juste du premier coup » apprenait la peur et la devinette rapide) : ★ gagnée ; ★ ses PRÉDICTIONS justes (au moins une
+ * faite, toutes justes — sans prédiction possible, l'étoile est acquise) ; ★ peu d'essais (au plus `maxTrials` répartitions).
+ * Mesurables, jamais un chronomètre : l'étoile récompense la réflexion, pas la vitesse.
  */
+export function predictionsRight(log) {
+  const preds = log.predictions ?? [];
+  return preds.length > 0 && preds.every((x) => x.ok);
+}
+
 export function starsFor(round, log) {
   if (!roundWon(round, log)) return 0;
   let stars = 1;
-  const clean = log.answers.every((a) => a.ok && a.tries <= 1 && !a.revealed);
-  if (round.stars?.firstTry === false || clean) stars += 1;
+  if (round.stars?.predict === false || predictionsRight(log)) stars += 1;
   const max = round.stars?.maxTrials;
   if (max == null || log.verdicts.length <= max) stars += 1;
   return Math.min(3, stars);
+}
+
+/**
+ * L'élève PEINE-t-il dans cette manche ? (conseil 2026-11-08 : une seconde chance PLUS PETITE, déclenchée par des preuves du
+ * terrain, pas par une seule réponse ratée — une question à 3 choix se devine une fois sur trois.)
+ * Vrai quand la manche a une version `easier`, n'est pas gagnée, et qu'on voit AU MOINS 2 ratés : prédictions fausses, questions
+ * ratées au premier essai (ou dont la réponse a été montrée) — ou bien beaucoup d'essais sans gagner (maxTrials + 2, 5 par défaut).
+ */
+export const HELP_MISSES = 2;
+export function missesOf(log) {
+  const preds = (log.predictions ?? []).filter((x) => !x.ok).length;
+  const answers = (log.answers ?? []).filter((a) => !a.ok || a.tries > 1 || a.revealed).length;
+  return preds + answers;
+}
+export function needsHelp(round, log) {
+  if (!round?.easier || round.free || roundWon(round, log)) return false;
+  const manyTrials = log.verdicts.length >= (round.stars?.maxTrials ?? 3) + 2;
+  return missesOf(log) >= HELP_MISSES || manyTrials;
 }
 
 /** Une manche est-elle ouverte ? La première, une manche libre, ou celle dont la manche requise précédente est gagnée. */

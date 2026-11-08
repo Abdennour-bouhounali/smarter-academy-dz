@@ -13,10 +13,10 @@ import {
 import { isStepLocked, canAdvance } from '../utils/stepUnlock';
 import { useLearningViewer } from '../../../features/learning/learningViewer';
 import { useClassroomMode, useClassroomStage, ClassroomFrame, ClassroomPaged } from '../classroom';
-import { clampPage } from '../classroom/classroomPages';
 import ModuleOverview from './ModuleOverview';
 import { useStudentFocusFor, MoreToggle } from '../components/StudentFocus';
 import { isMissionView } from '../mission/missionModel';
+import { LabJumpContext } from '../mission/missionPlayerContext';
 import { useDeclareUnitNav } from '../mission/missionPlayerContext';
 import { getLoadedLessonConfig } from '../../registry';
 import { moduleUnits, clampUnit, resolveModuleNavigation } from '../classroom/classroomUnits';
@@ -102,7 +102,8 @@ export default function ContentModule({
     if (next < steps.length) requestAnimationFrame(() => document.getElementById(`step-${steps[next].num}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   };
 
-  const kit = { react, alreadyCompleted, effectsEnabled };
+  // `lessonId` / `moduleNumber` : la clé des réponses gardées pour l'élève (answers/useSavedAnswer, pilote 2026-11-07)
+  const kit = { react, alreadyCompleted, effectsEnabled, lessonId: ctx.lessonId, moduleNumber };
   const renderSlot = (slot) => (typeof slot === 'function' ? slot(kit) : slot);
 
   // ── Mode classe : les unités et leur navigation ──────────────────────────
@@ -138,6 +139,31 @@ export default function ContentModule({
   const currentKey = units[current]?.key;
   const pageCount = pageCounts[currentKey] ?? 1;
   const goTo = useCallback((i) => { setPage(0); setUnitIndex(i); }, []);
+  // LA PORTE DU LABO (lecteur) : une étape qui attend une manche (`step.needsRound`) mène au labo SUR cette manche, et la victoire
+  // ramène à l'étape. La demande vit le temps d'un aller-retour ; quitter le labo autrement l'efface.
+  const introIndex = units.findIndex((u) => u.kind === 'intro');
+  const [labRequest, setLabRequest] = useState(null);
+  const jumpToRound = useCallback((roundId, returnIndex) => {
+    setLabRequest({ roundId, returnIndex, nonce: Date.now() });
+    if (introIndex >= 0) goTo(introIndex);
+  }, [introIndex, goTo]);
+  // l'étape qu'une manche ouvre : la carte de victoire y mène, que l'élève soit venu par la porte ou ait joué de lui-même
+  const stepIndexFor = useCallback((roundId) => {
+    const st = steps.find((s) => s.needsRound?.id === roundId);
+    return st ? units.findIndex((u) => u.key === `step-${st.num}`) : -1;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [units, stepKey]);
+  const labJump = useMemo(() => ({
+    request: labRequest,
+    jump: jumpToRound,
+    stepIndexFor,
+    toStep: (roundId) => {
+      const i = labRequest?.roundId === roundId && labRequest.returnIndex != null ? labRequest.returnIndex : stepIndexFor(roundId);
+      setLabRequest(null);
+      if (i >= 0) goTo(i);
+    },
+  }), [labRequest, jumpToRound, goTo, stepIndexFor]);
+  useEffect(() => { if (labRequest && current !== introIndex) setLabRequest(null); }, [current]); // eslint-disable-line react-hooks/exhaustive-deps
   const onPages = useCallback((key, count) => {
     setPageCounts((prev) => (prev[key] === count ? prev : { ...prev, [key]: count }));
     if (pendingLast.current === key) {
@@ -207,6 +233,17 @@ export default function ContentModule({
     const unit = units[current];
     const step = unit?.kind === 'step' ? steps.find((s) => `step-${s.num}` === unit.key) : null;
     const morePages = page < pageCount - 1;
+    // PORTE DOUCE (conseil 2026-11-07) : sur le labo, si l'étape suivante attend une manche pas encore gagnée, « واصل » devient
+    // « العب الجولة … » et choisit cette manche — l'élève n'arrive jamais par mégarde sur une étape fermée
+    const nextUnit = units[current + 1];
+    const nextStep = nextUnit?.kind === 'step' ? steps.find((s) => `step-${s.num}` === nextUnit.key) : null;
+    if (unit?.kind === 'intro' && !morePages && nextStep?.needsRound && !nextStep.needsRound.won && !nextStep.done && !alreadyCompleted) {
+      return {
+        index: current, count: units.length, page, pageCount, kind: unit?.kind, onPrevious: nav.onPrevious,
+        onNext: () => setLabRequest({ roundId: nextStep.needsRound.id, returnIndex: current + 1, nonce: Date.now() }),
+        nextLabel: t('mission.playRound', { round: nextStep.needsRound.label }), canNext: true,
+      };
+    }
     return {
       index: current, count: units.length, page, pageCount, kind: unit?.kind,
       onPrevious: nav.onPrevious, onNext: nav.onNext,
@@ -224,6 +261,7 @@ export default function ContentModule({
 
   return (
     <KitContext.Provider value={kit}>
+    <LabJumpContext.Provider value={play ? labJump : null}>
       <ModuleLayout
         {...ctx}
         moduleTitle={moduleTitle}
@@ -308,6 +346,14 @@ export default function ContentModule({
                   collapsed={focus && i < focusIndex && !reopened[s.num]}
                   onToggle={() => setReopened((r) => ({ ...r, [s.num]: true }))}
                 >
+                  {/* LA PORTE : une étape fermée par une manche porte SA clé — un toucher ouvre le labo sur la bonne manche */}
+                  {play && !s.done && !alreadyCompleted && s.needsRound && !s.needsRound.won && (
+                    <button type="button" onClick={() => jumpToRound(s.needsRound.id, units.findIndex((u) => u.key === `step-${s.num}`))}
+                      data-lab-door={s.needsRound.id}
+                      className="mb-3 inline-flex min-h-[56px] w-full items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-6 text-lg font-black text-white shadow-[0_4px_0_0_#3730A3] hover:bg-indigo-700">
+                      {s.needsRound.icon ?? '⚽'} {t('mission.playRound', { round: s.needsRound.label })} <span aria-hidden="true">←</span>
+                    </button>
+                  )}
                   <ClassroomPaged
                     active={paged && current === units.findIndex((u) => u.key === `step-${s.num}`)}
                     page={currentKey === `step-${s.num}` ? page : 0}
@@ -357,6 +403,7 @@ export default function ContentModule({
           </div>
         </div>
       </ModuleLayout>
+    </LabJumpContext.Provider>
     </KitContext.Provider>
   );
 }

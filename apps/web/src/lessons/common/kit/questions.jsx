@@ -1,10 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatFr, parseFr } from '@smarter-academy/core';
 import { Feedback, ChoiceGrid, ValidateButton, NumberField, XPBurst } from '../components/LessonUI';
 import { useKit } from './kitContext';
 import MathLabel from '../components/MathLabel';
 import { MoreToggle, useStudentFocus } from '../components/StudentFocus';
+import { useSavedAnswer } from '../answers/useSavedAnswer';
+import SavedAnswerChip from '../answers/SavedAnswerChip';
+
+/**
+ * Les réponses gardées pour l'élève (pilote 2026-11-07) : une question RETROUVE sa réponse quand l'élève revient — une seule
+ * fois, à l'arrivée, sans son ni fête ; `onAnswered` est rappelé pour que l'étape reprenne où il en était. Inactif hors pilote.
+ */
+function useRestore(saved, apply) {
+  const done = useRef(false);
+  useEffect(() => {
+    if (!saved || done.current) return;
+    done.current = true;
+    apply(saved);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [saved]);
+}
 
 /**
  * Lesson kit — les trois formes de question formative.
@@ -48,6 +64,12 @@ export function TapQuestion({
   const [burst, setBurst] = useState(0);
   const isCorrect = pick === correct;
   const focus = useStudentFocus();
+  const memory = useSavedAnswer([prompt, options]);
+  const [restoredAt, setRestoredAt] = useState(null);
+  useRestore(memory.saved, (m) => {
+    if (pick !== null || typeof m.v !== 'number' || m.v < 0 || m.v >= options.length) return;
+    setPick(m.v); setRevealed(true); setRestoredAt(m.at); onAnswered?.(m.v === correct, m.v);
+  });
 
   return (
     <div className="space-y-3">
@@ -60,6 +82,8 @@ export function TapQuestion({
           onSelect={(i) => {
             setPick(i);
             setRevealed(true);
+            setRestoredAt(null);
+            memory.save(i);
             const ok = i === correct;
             const id = react(ok);
             if (ok) setBurst(id);
@@ -73,6 +97,7 @@ export function TapQuestion({
         />
         <XPBurst amount={xp} tick={burst} />
       </div>
+      {restoredAt && <SavedAnswerChip at={restoredAt} />}
       {revealed && (
         <Feedback tone={isCorrect ? 'ok' : 'ko'}>
           {!isCorrect && (
@@ -108,6 +133,13 @@ export function BatchChoiceQuestion({
   const [picks, setPicks] = useState({});
   const [checked, setChecked] = useState(false);
   const [burst, setBurst] = useState(0);
+  const memory = useSavedAnswer([intro, rows.map((r) => [r.label, r.options])]);
+  const [restoredAt, setRestoredAt] = useState(null);
+  useRestore(memory.saved, (m) => {
+    const v = m.v && typeof m.v === 'object' ? m.v : null;
+    if (checked || !v || !rows.every((r) => typeof v[r.id] === 'number')) return;
+    setPicks(v); setChecked(true); setRestoredAt(m.at); onAnswered?.(rows.every((r) => v[r.id] === r.correct));
+  });
 
   const nCorrect = rows.filter((r) => picks[r.id] === r.correct).length;
   const allRight = nCorrect === rows.length;
@@ -115,6 +147,7 @@ export function BatchChoiceQuestion({
   return (
     <div className="space-y-4">
       {intro}
+      {restoredAt && <SavedAnswerChip at={restoredAt} />}
       <div className="space-y-3">
         {rows.map((r) => {
           const pick = picks[r.id];
@@ -123,7 +156,7 @@ export function BatchChoiceQuestion({
           return (
             <div
               key={r.id}
-              className={`rounded-2xl border-2 p-3.5 flex gap-3 flex-row items-center ${
+              className={`rounded-2xl border-2 p-3.5 flex flex-wrap gap-3 flex-row items-center ${
                 rowRight ? 'border-emerald-300 bg-emerald-50/50' : rowWrong ? 'border-rose-300 bg-rose-50/50' : 'border-slate-200 bg-white'
               }`}
             >
@@ -146,6 +179,7 @@ export function BatchChoiceQuestion({
                       // Dernier choix posé → correction immédiate, sans bouton.
                       if (rows.every((row) => next[row.id] !== undefined)) {
                         setChecked(true);
+                        memory.save(next);
                         const allR = rows.every((row) => next[row.id] === row.correct);
                         const id = react(allR);
                         if (allR) setBurst(id);
@@ -153,7 +187,7 @@ export function BatchChoiceQuestion({
                       }
                     }}
                     aria-pressed={pick === oi}
-                    className={`px-3 py-2 rounded-lg border-2 font-mono text-xs font-bold min-h-[40px] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+                    className={`whitespace-nowrap px-3 py-2 rounded-lg border-2 font-mono text-xs font-bold min-h-[40px] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                       checked
                         ? oi === r.correct
                           ? 'bg-emerald-600 border-emerald-700 text-white'
@@ -170,7 +204,9 @@ export function BatchChoiceQuestion({
                 ))}
               </div>
               {rowWrong && r.correction && (
-                <span className="w-full text-xs font-mono text-rose-600">{r.correction}</span>
+                // sa PROPRE ligne sous la rangée (la rangée passe à la ligne) : dans la même ligne, la correction écrasait les choix
+                // en colonne et se superposait à eux (propriétaire, 2026-11-07)
+                <span className="basis-full text-sm font-mono text-rose-600">{r.correction}</span>
               )}
             </div>
           );
@@ -212,6 +248,14 @@ export function NumericQuestion({
   const [val, setVal] = useState('');
   const [revealed, setRevealed] = useState(false);
   const [wasCorrect, setWasCorrect] = useState(false);
+  const memory = useSavedAnswer([prompt, prefix, suffix, typeof expected === 'number' ? expected : 'fn']);
+  const [restoredAt, setRestoredAt] = useState(null);
+  useRestore(memory.saved, (m) => {
+    if (revealed || typeof m.v !== 'string' || m.v === '') return;
+    const n = parse(m.v);
+    const ok = typeof expected === 'function' ? expected(n) : n === expected;
+    setVal(m.v); setWasCorrect(ok); setRevealed(true); setRestoredAt(m.at); onAnswered?.(ok, n);
+  });
 
   const correctDisplay = display ?? (typeof expected === 'number' ? formatFr(expected) : null);
 
@@ -222,6 +266,7 @@ export function NumericQuestion({
     react(ok);
     setWasCorrect(ok);
     setRevealed(true);
+    memory.save(val);
     onAnswered?.(ok, n);
   };
 
@@ -231,6 +276,7 @@ export function NumericQuestion({
     <div className="space-y-3">
       {prompt && <p className="text-sm font-semibold text-slate-700">{typeof prompt === 'string' ? <MathLabel>{prompt}</MathLabel> : prompt}</p>}
       {typeof above === 'function' ? above(done) : above}
+      {restoredAt && <SavedAnswerChip at={restoredAt} />}
       {!done ? (
         <div className="flex items-center gap-2 flex-wrap">
           {prefix && <span className="text-sm font-mono text-slate-600">{prefix}</span>}

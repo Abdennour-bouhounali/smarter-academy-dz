@@ -75,15 +75,16 @@ export function defaultWidth(n) {
  * par rangée, `rows` rangées pleines, et une rangée incomplète de `rest`. La
  * cellule est la plus grande qui fait tenir le rectangle ENTIER dans le cadre
  * : un rectangle haut et mince devient carré puis large et plat quand d
- * grandit — le carré, c'est √n, et l'élève le VOIT.
+ * grandit — le carré, c'est √n, et l'élève le VOIT. `maxCell` : la plus grande cellule (44 px ; le lecteur de mission en accorde plus,
+ * son écran de jeu est plus grand).
  */
-export function rectangleLayout({ n, d, box, boxW = box, boxH = box }) {
+export function rectangleLayout({ n, d, box, boxW = box, boxH = box, maxCell = 44 }) {
   const rows = Math.floor(n / d);
   const rest = n - rows * d;
   const tall = rows + (rest > 0 ? 1 : 0);
   // Cadre RECTANGULAIRE possible (boxW × boxH) : on remplit la place offerte ;
   // le carré reste celui des livres (d = rows), jamais celui du cadre.
-  const cell = Math.max(2, Math.min(boxW / d, boxH / tall, 44));
+  const cell = Math.max(2, Math.min(boxW / d, boxH / tall, maxCell));
   return { cell, cols: d, rows, rest, width: d * cell, height: tall * cell, square: d === rows && rest === 0 };
 }
 

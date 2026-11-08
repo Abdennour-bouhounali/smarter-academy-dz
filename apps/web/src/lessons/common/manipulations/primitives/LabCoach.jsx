@@ -63,8 +63,16 @@ export function useLabCoach({ lab, step, text, labels }) {
       {visible ? labels.hide : labels.show}
     </button>
   );
+  // la version ICÔNE (colonne mince du lecteur, conseil 2026-11-07) : le même interrupteur, un « ؟ » rond
+  const toggleIcon = (
+    <button type="button" onClick={visible ? stop : resume} data-lab-coach-toggle data-state={visible ? 'on' : 'off'}
+      aria-pressed={visible} aria-label={visible ? labels.hide : labels.show} title={visible ? labels.hide : labels.show}
+      className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 text-lg font-black shadow-sm outline-none focus-visible:ring-4 focus-visible:ring-indigo-300 ${visible ? 'border-amber-400 bg-amber-50 text-amber-700' : 'border-indigo-200 bg-white text-indigo-700 hover:bg-indigo-50'}`}>
+      ؟
+    </button>
+  );
   const overlay = <CoachOverlay visible={visible} step={step} text={text} labels={labels} onOk={() => step && learn(step.id)} onStop={stop} />;
-  return { toggle, overlay, visible };
+  return { toggle, toggleIcon, overlay, visible };
 }
 
 const BUBBLE_W = 272;

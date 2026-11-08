@@ -952,7 +952,9 @@ Before / after numbers of the pilot: `docs/reports/STUDENT_FOCUS_VIEW_2026-11-03
 The lesson becomes a JOURNEY toward its « مسألة الدرس ». The student opens the lesson on the mission, collects the lesson's
 ideas as « tools », answers a short mission question between modules, and wins the mission in its مسألة module. Mission mode
 IMPLIES the focus view (§4sexies). The teacher (`freeNavigation`) and Classroom Mode see no change (`isMissionView`).
-Plan, decisions and stages: `docs/reports/MISSION_PLAYER_PLAN_2026-11-04.md`.
+Plan, decisions and stages: `docs/reports/MISSION_PLAYER_PLAN_2026-11-04.md`. **Rolling the whole prototype out to other lessons
+(the owner validated the pilot on 2026-11-08 — it is now BINDING):** `docs/reports/PILOT_PROTOTYPE_ROLLOUT_PLAN_2026-11-08.md` — old vs new, shared vs per-lesson work,
+the conversion checklist, verification, traps and open items.
 
 **Never build it on Classroom Mode.** Presenting unlocks every step and module, stops writing module completion, and turns
 graded tests into the teacher's reveal-one-answer flow. The mission is a layer on the student's normal pages:
@@ -1065,6 +1067,59 @@ already there »). `FitToArea` takes a `screenKey` (module path + unit + page) f
   screen would appear twice: its entry, then a jump and a glide). Only if it still does not fit does it shrink, as little
   as possible. It never grows;
 - in the player the streak chip « متتالية » lies OVER the screen (top corner), never above the content.
+- **exception — an intended layout change re-fits once:** a component inside the player can call `useFitRefit()` (from
+  `mission/missionPlayerContext.js`, provided by `FitToArea`) when its layout really changes; the lab shell calls it when its
+  mission goes from big to compact. A settled screen whose content shrinks under 70 % of the height also re-fits once
+  (`shrunkALot`). Small changes still move nothing.
+
+**Revise first, return in one click** (owner, 2026-11-07):
+- the FIRST view of a mission lesson (the opening scene, then the game home) shows « 🧭 راجع قبل أن تنطلق »: one card per
+  prerequisite lesson of the catalogue (`prerequisiteLessonCodes`, often an earlier year), « راجع ← » when the lesson is
+  `available`, « قيد الإعداد » otherwise (`mission/ReviseFirst.jsx`);
+- opening one remembers where the student came from (sessionStorage `smarter_return_to`, `mission/returnToLesson.js`). Every page of
+  ANY lesson then shows « ↩ العودة إلى درس: <title> » at the bottom (`mission/ReturnToLessonButton.jsx`, mounted once in
+  `LessonPageFrame`) until the student is back in the starting lesson (by the button or otherwise), or closes it with ×.
+
+**« أستعدّ » in the player** (owner, 2026-11-07):
+- no intro card: on arrival a window says « أنجز هاته الأسئلة السريعة لتختبر معارفك السابقة التي ستحتاجها في هذا الدرس », with a
+  bar at its top emptying in 5 s (`mission/TimedNotice.jsx`, `diagnostic.playIntro`); « ابدأ الآن » or a click beside it closes
+  it earlier. Then the first question is the first screen;
+- the « أنت هنا » welcome is skipped on a `prerequisite_check` station: never two windows at once;
+- each answer brings the next question by itself after 0.6 s (`useAutoAdvance` + `MissionAdvanceContext`, which `MissionPlayer`
+  provides as its « next » action, null on the last screen). Changing an answer already given does not jump;
+- after the LAST answer the result shows by itself (0.7 s): no « عرض نتيجتي » in the player (the page keeps its button);
+- the review is ONE screen (owner, 2026-11-07, « simpler than السابق / واصل »; it was 10): `DiagnosticReviewCompact`, two columns —
+  the score, ONE circle per question (✓ green / ✗ red; a tap opens that correction in a window with « السؤال السابق / التالي »),
+  the الكفاءات as two chips, the advice | the lessons to revise (`ReviseFirst columns={1}`), « 🚀 continue » and « إعادة التشخيص ».
+  The page and the teacher keep the full list of corrections;
+- `data-paging-keep` marks a screen DESIGNED to hold as one: the player's paging neither walks into it nor opens it into its
+  children (`ClassroomPaged`); if it is too tall, the size fitting handles it (last resort);
+- **sounds when answering** (owner, 2026-11-07; silent until the student turns « الصوت » on, `playSfx`): a TEST that corrects nothing
+  before its result (« أستعدّ », the final test `BossFinal`) plays a NEUTRAL « pop » per answer and the « step » chime when the result
+  comes; a right/wrong sound there would give the answer away. `InfoSorter` plays correct / wrong at « تحقّق » unless its parent passes
+  `onCheck` (then the parent's sound, never two). The kit questions (`TapQuestion`, `BatchChoiceQuestion`, `NumericQuestion`) and
+  the lab checkpoints already react with sound;
+- `PrerequisiteDiagnostic` decides « in the player? » ITSELF (`isMissionView`), like `ContentModule`: it renders the player further
+  down, so `useInMissionPlayer()` is always false at its level.
+
+**« أستعدّ » v2 — BINDING since 2026-11-08 (owner validated the prototype `qasim-adad-tabii`)**: every change made on the pilot is the rule for
+later updates and new lessons; roll it out lesson by lesson (`docs/reports/MISSION_ROLLOUT_PROGRESS.md`):
+- **10 questions, from VERY easy to harder** (« شعور النشوة والذكاء »): the lesson's own ladder `content/prep.js › PREP_LADDER`
+  (written by the platform, `addition('prerequisite_diagnostic')`; the textbook's items stay in `textbook.js` as source). The
+  skills ALTERNATE, each climbing on its own; levels never go down; the first three are near-certain wins; at least one answer of
+  each value (true/false). `content/prep.test.js` checks every division and divisibility claim. The unit test accepts a lesson
+  ladder in place of the textbook items.
+- **A signal on each question, never the answer** (council of 2026-11-07, owner's choice « signal only »):
+  `kit/DiagnosticPlayQuestion.jsx` in the player —
+  1. « 🤔 غير متأكّد » can be ticked BEFORE answering (optional; « sure » by default);
+  2. a tap chooses, then a 1 s bar with « ↶ غيّر إجابتي » (a slip does not count); tapping another choice restarts it;
+  3. the answer is COMMITTED and the question LOCKED (first answer only), then « ✓ أحسنت! » (green, `correct` sound) or
+     « ↻ سنعود إليه في النهاية » (amber, `pop`) — never « خطأ », never the correct answer: showing it would spoil the
+     diagnosis of the next questions of the same skill;
+  4. the next question comes by itself (`SIGNAL_MS` + 200 ms); after the last one, the result.
+- **The review knows doubt and points to ONE lesson**: a right-but-unsure answer is « ✓؟ » (amber) and its skill is « to
+  reinforce »; the weakest skill (an unsure answer counts as half an error) gives the big « راجع » card (`skills.<key>.lesson`,
+  `ReviseFirst priority`), the other lessons follow small under « وأيضًا ». `unsure` is saved with the result.
 
 **A « مسألة » in the player** (`GuidedProblem`, owner 2026-11-04):
 - each part's header, repeated on every screen of that part, carries the FULL question (`part.question`), not its short title;
@@ -1084,21 +1139,148 @@ already there »). `FitToArea` takes a `screenKey` (module path + unit + page) f
   distributes big numbers in one click (owner: « doing the same manipulation 48 times is so hard »). Rule for any lab played in
   rounds: the gesture is learned once, then it becomes a button.
 
-**After the lab: « رتّب أفكارك »** (owner, 2026-11-04: the student already answered inside the lab, so the step must help
-STRUCTURE the ideas, not repeat them). In the player a lab step shows `mission/IdeasOrganizer`:
-- the student's OWN trials as a table, each number with its meaning (`TEAM_ROLES`: لاعبًا · فرق · في كل فريق · خارج الفرق),
-  rows with nothing left over in green, and the equality beside each;
-- then ONE question that formulates the concept from the table (« متى يدخل كل اللاعبين الفرق؟ » → « الباقي 0 »).
+**Questions during the lab, v2 — BINDING since 2026-11-08 (owner validated)** (council of 2026-11-07 + owner's choices; replaces the
+centred full-screen card of 2026-11-04 and the separate « رتّب أفكارك » step, in the player only):
+- **Where:** the question is a COLUMN inside the lab, beside the pitch (`TeamBuilder` places `cp.node` in a flex row in the game);
+  no shade — the pitch stays sharp and whole, the questions are about what it shows. While the questions on the CURRENT
+  distribution are open, nothing written may give the answer: `ManipulationShell hideRepresentation` hides the equality /
+  roles (also the stale one it keeps), and the trials table hides.
+- **Three moments per round:** (1) PREDICT before acting — « 🔮 توقّع قبل أن تلعب: هل سيبقى أحد على المقاعد؟ », free, judged by the
+  pitch (« ✓ توقّعك صحيح! » / « الملعب يقول غير ذلك — هذا هو الاكتشاف! »), once per new configuration (`onTrial { tk: 'predict' }`);
+  (2) OBSERVE by tapping — `fill`: « كم لاعبًا في كل فريق؟ ▢ · وكم على المقاعد؟ ▢ » with 4 number chips each (`chipsAround`),
+  no typing, no « اكتب 0 إن لم يبقَ أحد »; (3) BUILD the equality — `build`: tap tiles into « اللاعبون كلّهم = الفرق × في كل فريق
+  + خارج الفرق »; the meaning counts (15 = 5 × 3 + 0 is refused when 5 is not the teams). After the contrast: « أيّ توزيع ترك لاعبًا
+  خارج الفرق؟ » then the rule (`CHAINS_PLAYER`); « fix » leaves the mandatory set (the action covers it).
+- **The trials table lives IN the lab** (« 📋 جدول تجاربك »: players · teams · per team · outside; green row when nothing is
+  left) and replaces the « رتّب أفكارك » step: the module step after the lab opens on the definition once its round is won.
+- **Stars reward play, not typing:** ★ round won · ★ predictions right (`roundsModel.predictionsRight`; rounds without
+  questions declare `stars.predict: false`) · ★ few trials. A wrong answer to a question no longer costs a star.
+- Engine: `labCheckpoint.js` kinds `fill` and `build` (judged only when complete), widgets `FillAnswer` / `BuildAnswer` in
+  `LabCheckpoint.jsx`. Outside the player every lab keeps the card over the lab (unchanged until the owner validates).
 
-The step is done when its round is won AND that question is answered; only then come the bridge, the brick and the name.
+**The lab door — never walk back through screens** (council + owner, 2026-11-07). A step that waits for a round declares it:
+`{ num, title, needsRound: { id: 'r3', label: 'الجولة 3' }, … }`. In the player (`ContentModule`, `LabJumpContext` from
+`mission/missionPlayerContext.js`):
+- **soft gate:** on the lab screen, when the NEXT step still waits for its round, « واصل » reads « العب الجولة 3 » and selects that
+  round (`playNav.nextLabel`) — the student never lands on a locked step by accident;
+- **the door:** a locked step shows ONE big button « ⚽ العب الجولة 3 ← » (`data-lab-door`) that opens the lab ON that round;
+- **the way back:** when a round that opens a step is won, the win card's first button is « عُد إلى السؤال ← » (`data-round-return`,
+  `labJump.toStep`), which goes to that step — whether the student came through the door or played on their own; « الجولة التالية »
+  steps aside. The jump request is never saved and is dropped when the student leaves the lab another way.
+The module's own « العب الجولة … في المختبر » hint lines are gone in the player (the door replaces them).
 
 The module's steps open from the rounds: module 1, step 1 ← round 2 and step 2 ← round 3; module 2, step 1 ← round a and
 step 2 ← round b.
+
+**Two ideas from a competitor's lesson, rebuilt our way** (council + owner, 2026-11-08, BINDING since the owner validated the pilot). A council compared the same
+lesson on another platform (a narrated teacher, AI chat, choice-only game). Rejected: the told lecture (it breaks « discover
+before being told »), the AI chat (minors' data and voice to a third party, wrong maths, leaks answers) and the choice-only game.
+Taken, rebuilt:
+- **The second chance in the lab** — a struggling student (≥ 2 misses, never one) is offered a SMALLER round of the same
+  gesture, then sent back to the real one; a student who succeeds never sees it. Contract: `MANIPULATION_CONTRACT.md`
+  « The second chance ». Not a re-explanation: another try with numbers seen at a glance.
+- **« ورقة زميل » — `kit/PeerSheet.jsx`** (logic `kit/peerSheet.js`, tested). A step where the student corrects an INVENTED
+  classmate's worked solution (drawn with `KidFigure`, never a real student's work): tap the line where the error STARTS (2 tries,
+  then the line is shown — never stuck), pick the fix (each wrong fix carries a `why` naming the misconception, never the answer),
+  then the corrected sheet (wrong lines struck, right lines in green) + « لماذا يقع هذا الخطأ؟ ». Found first try: « أمسكتَ الخطأ!
+  أنتَ الأستاذ اليوم 🎓 ». Data: `{ id, task, lines, errorLine, fixes: [{ text, ok?, why? }], fixedLines?, why }`; numbers are
+  computed, not typed. Place it AFTER the name (an application, not a discovery). The sheet is one paging unit
+  (`data-paging-keep`) and its answer is saved and restored like the others (key `peer:<id>`). In the pilot: module 2, step 5,
+  « ورقة سلمى » (`content/peerSheet.js`) — the misconception « the quotient is a natural number, so the division is exact ».
+
+**« التمارين » on the mission path** (owner, 2026-11-08, BINDING): `MissionMap` (given `lessonId`) adds a last station after the
+final test — 📝 « التمارين », a link to the lesson's practice hub (`practiceHubPath`), locked (🔒 « تُفتح بعد الاختبار الأولي »)
+until the last station is mastered, shown only when `isPracticeActive(lessonId)`. It is not a module: no slug, no gate.
+
+**« إختبار أولي » in the player — like « أستعدّ »** (owner, 2026-11-08, BINDING). `BossFinal` decides « in the player » itself (same
+test as `PrerequisiteDiagnostic`: mission config + `isMissionView`). In the player, phase « التحدي »:
+- no tabs and no brief: a 5 s `TimedNotice` « الآن لنختبر تقدّمك بمجموعة من الأسئلة » (`boss.playIntro`), then question 1 directly;
+- ONE épreuve per screen through `DiagnosticPlayQuestion` (« 🤔 غير متأكّد », 1 s undo, signal ✓ / « سنعود إليه » — never the right
+  answer; options keep the test's shuffled order via `q.order`); the player advances by itself (`useAutoAdvance`);
+- the timer stays OPTIONAL: a chip « ⏱ مؤقّت 7 دقائق » on question 1 (before any answer), then the countdown on every question
+  (red in the last minute); at zero the test is sent;
+- after the last answer the result comes by itself (`submitBoss`, the SAME single submit: grading, evidence and saved attempt
+  unchanged): `BossReviewCompact` — score, one circle per épreuve opening its correction (`EpreuveReview`, « راجع » links), skills
+  in one line, « واصل: نتيجتي حسب الكفاءات » and « إعادة الاختبار ».
+- « نتيجتي » in the player (owner, 2026-11-08): NO tabs — « التحدي النهائي » is reached with the player's « السابق » (declared by
+  `BossFinal` through `useDeclareUnitNav`: back = the test result, no longer the lesson home) and « الحوصلة » is removed from the
+  player. ONE screen (`PlayerProfile`, `data-paging-keep`): title + score chip, a card per skill (✓ / ~ / ✗ in a big circle, its
+  status, « 🔁 مراجعة المحور n » under the name when not mastered), the badges earned, and « 📊 حالتي على كل الكفاءات » opening the
+  server الكفاءات status in a dialog. « إنهاء » is the player's own button.
+Outside the player (page, teacher, Classroom Mode) nothing changes: the three tabs and the synthesis stay.
+**Timer bug fixed for every lesson** (2026-11-08): `useCountdownTimer.start()` read a stale `enabled` when the toggle enabled then
+started in the same click, so the countdown never ran; it now reads a ref.
+
+**The knowledge map is totally open** (owner, 2026-11-08, BINDING): `knowledgeMapOpen: true` — every card of the lesson's map is
+readable from the start, no unlocking by محور; the coins and « أتوقّع القاعدة » still follow what the student established
+(`learnedItems`). Contract: `KNOWLEDGE_MAP.md` A.4 « Exception — the OPEN map ». In the player the mission bar
+carries « 🧠 بطاقتي » (opens the map FULL-SCREEN, `openMap({ expanded: true })`, on the interactive « الاستكشاف » view; inside the player full screen
+covers the WHOLE window — `KnowledgeMap` uses the window, not the page's content box, when `[data-mission-player]` is mounted) and
+« 📓 كرّاسي » (the floating buttons are under the player); below 1280 px both are icons and « n من 8 » folds into « الخريطة ».
+
+**The student's answers come back — synced and private** (council + owner, 2026-11-07, BINDING). In the pilot lesson only
+(`studentView: 'mission'`) and for a real STUDENT account (`answers/useSavedAnswer.js › useSavedAnswersOn`), each answer in the
+lesson is saved and restored when the student comes back, on this device or another:
+- **What is saved:** `TapQuestion`, `BatchChoiceQuestion`, `NumericQuestion` (`kit/questions.jsx`, via `useRestore`), the progress
+  and data of a `GuidedProblem` (key `gp:<problem id>`), and the text and reveals of a `WrittenAnswer`. The rule a student writes in
+  « أتوقّع القاعدة » goes to « كرّاسي » instead (`docs/architecture/NOTEBOOK.md` « قاعدتي »).
+- **Key:** `m<module>:<fingerprint>`, an FNV-1a hash of the question's own text and options (`answers/answersModel.js`). When a
+  question is reworded, its old answer is ignored rather than shown under the wrong question.
+- **Store:** a device copy (`scopedStorage` `smarter_answers_<lessonId>`) and a debounced `PUT /lessons/{code}/answers` (900 ms,
+  retried on failure). On load, `GET` is merged key by key and the latest `at` wins (`mergeAnswers`, same rule on the server).
+- **Restore:** a restored answer sets the state and calls `onAnswered` once, with no sound and no celebration. A chip
+  « ↺ إجابتك السابقة · <date> » (`answers/SavedAnswerChip.jsx`, `data-saved-answer`) shows under it. The step continues as done.
+- **Privacy:** the table `student_lesson_answers` is read ONLY by `StudentLessonAnswersController`, in the `learner` route group,
+  for the student themselves. No teacher, school, parent or admin view reads it. The model hides `answers` from serialisation. It is
+  never learning evidence and feeds no mastery (`apps/api/tests/Feature/StudentLessonAnswersTest.php`).
+- Teachers, reviewers and every other lesson are unchanged. A component that renders outside `ContentModule` passes `lessonId` and
+  `moduleNumber` itself (the hook reads the kit context optionally).
 
 Measured (`play` walk, every unit and page of the 8 modules + home, at 1854×930, 1280×800 and 1024×768): EVERYTHING fits,
 nothing scrolls. Labs in the game layout run at zoom 0.83–1.04, and text screens are enlarged up to 1.9.
 
 **Stage 3** (planned): the climax animation (756 books → 21 shelves) and the bonus levels.
+
+### Rollout recipe — converting a lesson whose lab is NOT the football lab (first conversion: `qawasim-adad-tabii`, 2026-11-08)
+
+The owner validated the pilot on 2026-11-08; lessons are converted one by one (`docs/reports/MISSION_ROLLOUT_PROGRESS.md`, plan
+`PILOT_PROTOTYPE_ROLLOUT_PLAN_2026-11-08.md` §5). What a lesson with another lab needs beyond the checklist:
+
+- **The mission scene is per lesson.** `mission.scene` in the config picks a drawn SVG from `mission/MissionScene.jsx` (a registry:
+  `'library'` = 756 books, `'library-wall'` = 96 books + a `KidFigure` librarian). A new scene is a component `<Nom>Scene({ fill,
+  label, className })` drawn in code (never a generated image), `fill` ∈ [0, 1] following the tools earned; it must not show any
+  number of the مسألة (rows, capacities). `MissionHome`, `MissionCheckpoint` and `MissionLayer` read `mission.scene`.
+- **Checkpoints use other numbers.** A point d'étape speaks of 30, 50 or « n » — never of the climax's numbers (96 here).
+- **Rounds are data, in `content/<lab>.js`** (`books.js` for `factor-pairs`): `M<n>_ROUNDS = [{ id, title, goal, stars, easier?,
+  optional?, free?, props }]`. Only round 1 is by hand (the next rounds set `handDone: true`); a challenge round (`optional: true`);
+  a free round (`free: true`, bounded `nChoices`); `easier` on every hard round (a smaller number, `goal` = the same kind).
+  Goals available: `{ checkpoint }`, `{ exact }`, `{ allExact }`, `{ inexact }`, plus (factor-pairs) `{ anyExact: true }` and
+  `{ allPairs: n }` (every perfect rectangle of `n` seen — one side of each pair is enough). Numbers are COMPUTED (`divisorsOf`,
+  `pairsOf`), never typed by hand. `LabRounds` takes `icon` / `freeIcon` (📚 / 🗂️ for books) and a round's `easier.helpLine` replaces
+  the football sentence of the « جرّب أصغر » card.
+- **One step = one round AND its question.** `needsRound: { id, label, icon?, won }` — pass `won: Boolean(won.<id>)` so the door and
+  the soft gate disappear once the round is won even when the step's own question is still unanswered (`ContentModule`).
+- **The v2 lab treatment, for any lab** (recipe taken from `team-builder`, applied to `divisibility/FactorPairs.jsx`; everything is
+  gated by `useInMissionPlayer()` so the teacher's page and Classroom Mode are byte-for-byte the old lab):
+  1. the lab reports each try to the round: `onVerdict({ groups, exact })` (and `onTrial` events, `{ tk: 'predict', ok }`);
+  2. props `levels={false}` (no مبتدئ / متقدم), `handDone` (the learned gesture becomes the big « جرّب كل الإمكانيات » button; hidden
+     in round 1), `chains` (which question sets to ask: `['first']`, `['rule']`, `[]`), `predict` (false = no prediction), `nChoices`
+     (free round chips);
+  3. PREDICT before the first tries (`primitives/PredictTray.jsx`, shared with `team-builder`, at most 2 per round): the rectangle is
+     veiled until the student answered — a prediction made while looking at the answer is a reading;
+  4. OBSERVE (`fill`) then BUILD (`build`) the equality of the FIRST try (`CHAINS_PLAYER`); the controls freeze while a question or a
+     prediction is open (the picture must describe THAT try);
+  5. the trials table (« 📋 جدول تجاربك », the last 3, newest last) and the found pairs live INSIDE the lab; nothing written gives an
+     answer while the questions on the first try are open (`hideRepresentation`, `hideAnswers`);
+  6. the scene is sized from `useMissionArea()` (`boxH = area.height − overhead`, the cell cap raised: `rectangleLayout({ maxCell })`)
+     and measured again on every render — the player mounts the lab in a hidden measuring copy, so a `ResizeObserver` alone keeps the
+     width of the hidden copy;
+  7. in the player the lab is always `guided` (no « جرّب › اكتشف », no hint button, no « ماذا لاحظت؟ » card), `freeLabAlwaysOpen` and
+     the free-lab panel are off.
+  The rollout log lists which lab families already have it.
+- **« ورقة زميل »** (`content/peerSheet.js`): an invented classmate (`KidFigure`; girls in hijab), 3–5 lines with ONE error on the
+  lesson's main misconception, three fixes each with a `why`, the numbers computed from the same helpers as the rounds, and a test
+  (`peerSheet.test.js`) that the error line is the only wrong one.
 
 ### The rule that breaks lessons most often
 

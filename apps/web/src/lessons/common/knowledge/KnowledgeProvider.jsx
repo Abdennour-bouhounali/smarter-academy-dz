@@ -5,6 +5,7 @@ import { useLearningViewer } from '../../../features/learning/learningViewer';
 import { cumulativeKnowledge, findKnowledgeItem, knowledgeModuleNumbers, toModuleSet } from './knowledgeState';
 import { lazy, Suspense } from 'react';
 import { isolateOutsideMath } from '../../../utils/bidi';
+import { getLoadedLessonConfig } from '../../registry';
 // `KnowledgeMap` tire framer-motion et les visuels de concept. C'est un
 // TIROIR : il ne s'ouvre que sur clic, et son déclencheur flotte au-dessus de
 // la page. Le charger avec le provider plaçait framer-motion dans le lot
@@ -91,9 +92,15 @@ export function LessonKnowledgeProvider({ lessonId, knowledge: rawKnowledge, gra
   // COMPLÈTE d'emblée — la même règle que `freeNavigation` pour les verrous.
   // Aucun rôle testé ici ; rien n'est écrit.
   const { freeNavigation } = useLearningViewer();
+  // CARTE OUVERTE (propriétaire, 2026-11-08, PILOTE `qasim-adad-tabii`) : `knowledgeMapOpen: true` dans la config montre
+  // TOUTES les connaissances de la leçon dès le début, sans attendre la fin des محاور. Seuls les ITEMS de la carte s'ouvrent :
+  // `unlockedModules` reste la vraie progression (la surcouche de maîtrise le lit comme « modules terminés »), et la fiche
+  // de fin de module ne montre toujours que ses propres connaissances (KnowledgeSnapshot).
+  const mapOpen = Boolean(lessonId) && getLoadedLessonConfig(lessonId)?.knowledgeMapOpen === true;
   const [liveUnlocked, setLiveUnlocked] = useState([]);
   const [liveItems, setLiveItems] = useState([]);
   const [open, setOpen] = useState(false);
+  const [expandRequest, setExpandRequest] = useState(0);
 
   // La coquille doit savoir qu'une carte est ouverte pour lui réserver sa
   // colonne (mode « prior »). Le provider est le seul à connaître cette
@@ -133,7 +140,9 @@ export function LessonKnowledgeProvider({ lessonId, knowledge: rawKnowledge, gra
     const stored = toModuleSet(freeNavigation ? knowledgeModuleNumbers(knowledge) : completedModules);
     const newModules = liveUnlocked.filter((n) => !stored.has(n));
     const unlocked = [...stored, ...liveUnlocked];
-    const items = cumulativeKnowledge(knowledge, unlocked, newModules, liveItems);
+    // ce que l'élève a VRAIMENT établi (les outils de la mission le lisent) ; la carte ouverte montre en plus tout le reste
+    const learnedItems = cumulativeKnowledge(knowledge, unlocked, newModules, liveItems);
+    const items = mapOpen ? cumulativeKnowledge(knowledge, [...new Set([...unlocked, ...knowledgeModuleNumbers(knowledge)])], newModules, liveItems) : learnedItems;
     return {
       lessonId,
       knowledge,
@@ -141,6 +150,8 @@ export function LessonKnowledgeProvider({ lessonId, knowledge: rawKnowledge, gra
       items,
       unlockedModules: toModuleSet(unlocked),
       freeNavigation,
+      mapOpen,
+      learnedItems,
       newModules,
       liveItems,
       unlockModule,
@@ -148,10 +159,11 @@ export function LessonKnowledgeProvider({ lessonId, knowledge: rawKnowledge, gra
       getItem,
       unlockAll,
       isOpen: open,
-      openMap: () => setOpen(true),
+      // `openMap({ expanded: true })` ouvre la carte en plein écran (barre de mission) ; appelée sans option, comme avant
+      openMap: (opts) => { if (opts?.expanded === true) setExpandRequest((n) => n + 1); setOpen(true); },
       closeMap: () => setOpen(false),
     };
-  }, [lessonId, knowledge, graph, freeNavigation, completedModules, liveUnlocked, liveItems, unlockModule, unlockItem, getItem, unlockAll, open]);
+  }, [lessonId, knowledge, graph, freeNavigation, mapOpen, completedModules, liveUnlocked, liveItems, unlockModule, unlockItem, getItem, unlockAll, open]);
 
   return (
     <KnowledgeContext.Provider value={value}>
@@ -161,6 +173,7 @@ export function LessonKnowledgeProvider({ lessonId, knowledge: rawKnowledge, gra
         items={value.items}
         open={open}
         onOpenChange={setOpen}
+        expandRequest={expandRequest}
         printTitle={printTitle}
         printSubject={printSubject}
       />
@@ -170,7 +183,7 @@ export function LessonKnowledgeProvider({ lessonId, knowledge: rawKnowledge, gra
 }
 
 const FALLBACK = {
-  lessonId: null, knowledge: null, graph: null, items: [], unlockedModules: new Set(), freeNavigation: false, newModules: [], liveItems: [],
+  lessonId: null, knowledge: null, graph: null, items: [], unlockedModules: new Set(), freeNavigation: false, mapOpen: false, learnedItems: [], newModules: [], liveItems: [],
   unlockModule: () => {}, unlockItem: () => {}, getItem: () => null,
   unlockAll: () => {}, isOpen: false, openMap: () => {}, closeMap: () => {},
 };

@@ -52,17 +52,8 @@ export const PREP_ITEMS = [
 export const TEAM_EXPERIENCE = {
   source: addition('interaction_generation'),
   // La situation de la carte d'ouverture (« هيا نلعب كرة القدم! ») : celle du
-  // terrain, pas celle des livres — l'énoncé du manuel est rendu au niveau
-  // متقدم, là où l'élève range les 420 livres.
+  // terrain, pas celle des livres (ACTIVITY ci-dessus reste la SOURCE citée).
   situation: 'تحت شعار «الرياضة صحة وأخلاق»، جمع مدرّب الحيّ المتطوّع 15 لاعبًا ليمارسوا الرياضة حفاظًا على صحّتهم وتعلّمًا للروح الرياضية والاحترام. يريد توزيعهم على 3 فرق بحيث يكون في كل فريق نفس العدد من اللاعبين، ليتعاون الجميع على قدم المساواة.',
   options: ['هل يمكنه ذلك؟ وكم لاعبًا في كل فريق؟', 'ثم يلتحق لاعب سادس عشر: أين يلعب؟'],
   numbers: { beginner: { total: 15, groups: 3 }, contrast: { total: 16, groups: 3 } },
 };
-
-/**
- * Un ajout de la plateforme pour la manipulation, déclaré comme tel : le
- * serre-livres va de 10 à 60 livres par rayon, et pas seulement aux deux
- * propositions du manuel (26, 28), qui restent marquées sur la réglette.
- * En dessous de 10, 420 livres feraient plus de 42 rayons à dessiner.
- */
-export const SHELF_RANGE = { source: addition('interaction_generation'), min: 10, max: 60 };

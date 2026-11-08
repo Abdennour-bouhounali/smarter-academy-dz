@@ -19,13 +19,14 @@ import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
 import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
 import { playSfx } from '../../utils/playEffect';
 import RolesEquation from '../primitives/RolesEquation';
+import PredictTray from '../primitives/PredictTray';
 import { useInMissionPlayer, useMissionArea } from '../../mission/missionPlayerContext';
 
-// Ce que la scène porte AU-DESSUS et AU-DESSOUS du terrain dans le lecteur (sélecteur de niveau, étapes, nombres, en-têtes
-// d'équipe, banc, marges) : le terrain prend toute la hauteur qui reste.
-const PLAYER_SCENE_OVERHEAD = 370;
+// Ce que la scène porte autour des terrains dans le lecteur (étapier, pastilles, journal, en-têtes d'équipe, banc en groupes
+// de 5 SOUS les terrains — conseil 2026-11-07) : le terrain prend toute la hauteur qui reste.
+const PLAYER_SCENE_OVERHEAD_SIDE_BENCH = 330;
 import MathText from '../../components/MathText';
-import { wrongEqualities, eqTex, splitKey } from './divisionChecks';
+import { wrongEqualities, eqTex, splitKey, chipsAround, buildTiles } from './divisionChecks';
 import * as L from '../logic/teamBuilder';
 import { formationPositions, playerScale } from './teamFormation';
 
@@ -112,7 +113,7 @@ export default function TeamBuilder({
   const gameScreen = useInMissionPlayer();
   const area = useMissionArea();
   // la largeur du terrain qui fait tenir sa hauteur (2:3) dans l'écran : aussi GRAND que possible, jamais trop petit
-  const pitchMax = gameScreen && area?.height ? Math.round(Math.min(360, Math.max(150, (area.height - PLAYER_SCENE_OVERHEAD) / 1.5))) : undefined;
+  const pitchMax = gameScreen && area?.height ? Math.round(Math.min(360, Math.max(150, (area.height - PLAYER_SCENE_OVERHEAD_SIDE_BENCH) / 1.5))) : undefined;
   const { t } = useTranslation('lesson');
   const state = useManipulation({
     type: 'team-builder',
@@ -184,6 +185,14 @@ export default function TeamBuilder({
     if (!autoUsed.current) setHandShared(true);
     state.report(onVerdict, { total, groups, perGroup: v.perGroup, leftOver: v.leftOver, exact: v.exact });
   }, [settled, v.exact, total, groups]); // eslint-disable-line react-hooks/exhaustive-deps
+  // la prédiction de CETTE configuration, jugée par le terrain dès qu'il se stabilise
+  useEffect(() => {
+    if (!settled || !pred || pred.key !== `${total}:${groups}` || pred.ok != null) return;
+    const ok = (pred.says === 'left') === !v.exact;
+    setPred({ ...pred, ok });
+    playSfx(ok ? 'correct' : 'pop');
+    state.report(onTrial, { tk: 'predict', ok });
+  }, [settled]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // La découverte s'ouvre quand les DEUX cas ont été vus — un partage qui
   // tombe juste et un partage qui laisse quelqu'un dehors. C'est le contraste
@@ -195,12 +204,20 @@ export default function TeamBuilder({
   // qui produit le contraste. Sans réaffirmer la découverte après la remise
   // à zéro, elle serait annulée à l'instant même où elle est méritée.
   const contrastSeen = L.discoveryReady(tried);
+  // PRÉDIRE AVANT D'AGIR (lecteur, pilote 2026-11-07) : avant de distribuer une nouvelle configuration, « هل سيبقى أحد على المقاعد؟ ».
+  // Gratuit (une prédiction fausse ne coûte rien : le terrain répond), jugé quand la scène se stabilise, et compté pour l'étoile.
+  const [pred, setPred] = useState(null); // { key, says: 'left' | 'none', ok?: boolean }
+  // la mission en grand d'abord (ManipulationShell › onIntroChange), la prédiction ensuite : une chose à lire à la fois
+  const [missionBig, setMissionBig] = useState(false);
+  const configKey = `${total}:${groups}`;
   // les questions pendant le labo : obligatoires pour tout élève, l'enseignant seul les coupe pour SON compte
   const cpSettings = useLabCheckpointSettings('team-builder');
   const cpLive = cpOn && cpSettings.enabled;
   const triedKeys = Object.keys(tried);
   const cpId = cpLive && !stale ? (contrastSeen ? 'contrast' : triedKeys.length ? 'first' : null) : null;
-  const chain = cpId ? CHAINS[cpId] : null;
+  // Lecteur (pilote 2026-11-07, conseil) : 2 questions par arrêt — l'observation d'un toucher puis l'égalité BÂTIE ; après le
+  // contraste, « laquelle a laissé quelqu'un » puis la règle (« fix » quitte la suite obligatoire : l'action le couvre).
+  const chain = cpId ? (gameScreen ? CHAINS_PLAYER : CHAINS)[cpId] : null;
   const kq = (key, o) => t(`manipulation.teamBuilder.${key}`, o);
   const cp = useLabCheckpoint({
     id: cpId,
@@ -319,7 +336,7 @@ export default function TeamBuilder({
   const validateNumbers = (n) => (n.groups > n.total ? t('manipulation.teamBuilder.reject.moreTeamsThanPlayers') : '');
 
   const kk = (key, o) => t(`manipulation.teamBuilder.${key}`, o);
-  const coachStep = coachOn && !stale ? L.coachOf(lab, { memory: tried, teamOptions, freeLab: state.freeLab }) : null;
+  const coachStep = coachOn && !stale ? L.coachOf(lab, { memory: tried, teamOptions, freeLab: state.freeLab, button: Boolean(handDone) }) : null;
   const coach = useLabCoach({
     lab: 'team-builder', step: coachStep, text: coachStep ? kk(`coach.${coachStep.id}`) : '',
     labels: { hide: kk('coach.hide'), show: kk('coach.show'), ok: kk('coach.ok'), stop: kk('coach.stop') },
@@ -338,6 +355,106 @@ export default function TeamBuilder({
   const positions = useMemo(() => formationPositions(Math.max(1, v.perGroup)), [v.perGroup]);
   const scale = useMemo(() => playerScale(Math.max(1, v.perGroup)), [v.perGroup]);
 
+  // Lecteur : la question (ou la prédiction) est une COLONNE du labo, à côté du terrain qui reste entier et visible
+  // LE BANC — au lecteur (conseil + propriétaire, 2026-11-07), un BLOC à côté des terrains, en rangées de 5 : le reste se compte
+  // d'un coup d'œil (2 joueurs dans un bloc presque vide), le glisser de la manche 1 est court ; hors lecteur, la bande d'avant.
+  const benchNode = (block) => (
+    <DropZone
+      drag={drag}
+      id="bench"
+      label={`${benchName}: ${players(lab.bench.length)}`}
+      tone={settled && !v.exact ? 'amber' : 'slate'}
+      minHeight="min-h-[86px]"
+      className="border-dashed bg-[repeating-linear-gradient(45deg,#F8FAFC_0_8px,#F1F5F9_8px_16px)] p-2"
+      data-bench-count={lab.bench.length}
+    >
+      <div className="mb-1 flex items-center justify-between gap-2">
+        <span className="flex items-center gap-1.5 text-[11px] font-extrabold text-slate-700">
+          <FootballIcon size={14} />
+          {benchName}
+        </span>
+        <span dir="ltr" className="font-mono text-[11px] font-bold text-slate-600">{lab.bench.length}</span>
+      </div>
+      {block ? (
+      // en GROUPES DE 5, côte à côte (un groupe = une petite rangée) : 42 joueurs = 9 groupes sur ~3 lignes, et le reste se lit
+      // d'un coup d'œil (« 2 » = un groupe à moitié vide) ; jamais une longue file à compter
+      <div className="flex flex-wrap items-end gap-x-3 gap-y-2" data-bench-layout="groups-of-5">
+        {Array.from({ length: Math.ceil(lab.bench.length / 5) }, (_, gi) => lab.bench.slice(gi * 5, gi * 5 + 5)).map((group, gi) => (
+          <div key={gi} className="flex items-end gap-0.5 rounded-xl bg-white/70 px-1 py-0.5 ring-1 ring-slate-200" data-bench-group={group.length}>
+            {group.map((p) => (
+              <DraggableObject
+                key={p} drag={drag} id={`player:${p}`}
+                label={t('manipulation.teamBuilder.playerOnBench', { n: p + 1 })}
+                className="flex justify-center rounded-lg"
+              >
+                <PlayerFigure index={p} team={null} size={30} held={drag.held === `player:${p}`} benched={settled && !v.exact} />
+              </DraggableObject>
+            ))}
+          </div>
+        ))}
+        {lab.bench.length === 0 && (
+          <span className="px-2 py-3 text-xs font-bold text-emerald-700">{t('manipulation.teamBuilder.benchEmpty')}</span>
+        )}
+      </div>
+    ) : (
+    <div className="flex flex-wrap items-end gap-0.5" data-bench-layout="strip">
+        {lab.bench.map((p) => (
+          <DraggableObject
+            key={p} drag={drag} id={`player:${p}`}
+            label={t('manipulation.teamBuilder.playerOnBench', { n: p + 1 })}
+            className="flex min-w-[44px] justify-center rounded-lg"
+          >
+            <PlayerFigure
+              index={p} team={null} size={34}
+              held={drag.held === `player:${p}`}
+              benched={settled && !v.exact}
+            />
+          </DraggableObject>
+        ))}
+        {lab.bench.length === 0 && (
+          <span className="px-2 py-3 text-xs font-bold text-emerald-700">{t('manipulation.teamBuilder.benchEmpty')}</span>
+        )}
+      </div>
+    )}
+    </DropZone>
+  );
+  // LE RÉSULTAT (l'égalité, les rôles, le conseil) : la colonne hors lecteur ; DANS la scène au lecteur, dans l'espace libre à
+  // côté des équipes (propriétaire, 2026-11-07 : « compressé dans la colonne alors qu'il y a de la place à côté du terrain »)
+  const resultNode = settled ? (
+        <div className="space-y-2">
+          <EquationDisplay
+            tex={equality}
+            tone={v.exact ? 'ok' : 'result'}
+            note={v.exact
+              ? t('manipulation.teamBuilder.allPlaying', { players: players(v.perGroup) })
+              : t('manipulation.teamBuilder.leftOutNote', { players: players(v.perGroup), left: players(v.leftOver) })}
+          />
+          <DivisionRoles roles={[
+            { key: 'b', text: t('manipulation.teamBuilder.roleB', { b: groups }) },
+            { key: 'q', text: t('manipulation.teamBuilder.roleQ', { q: v.perGroup }) },
+            { key: 'r', text: t('manipulation.teamBuilder.roleR', { r: v.leftOver, b: groups }) },
+          ]} />
+          {!v.exact && (
+            <p className="rounded-xl border-2 border-amber-300 bg-amber-50 px-3 py-2 text-sm font-bold text-amber-900">
+              {t('manipulation.teamBuilder.fixHint', { up: total + v.fix.add, down: total - v.fix.remove })}
+            </p>
+          )}
+        </div>
+      
+  ) : null;
+  // les questions sur le premier partage sont ouvertes : rien d'écrit ne doit souffler q ou r (ni l'égalité, ni le journal)
+  const hideAnswers = gameScreen && cp.open && cpId === 'first';
+  const predictOpen = gameScreen && !missionBig && cpLive && !stale && placedCount === 0 && !settled && !(configKey in tried) && pred?.key !== configKey && !cp.open;
+  const trayNode = !gameScreen ? null : predictOpen ? (
+    <PredictTray
+      attr="tb"
+      title={kk('cp.predict.title')}
+      prompt={kk('cp.predict.prompt', { players: players(total), teams: t('manipulation.teamBuilder.teamsIn', { count: groups }) })}
+      options={[{ says: 'left', text: kk('cp.predict.left') }, { says: 'none', text: kk('cp.predict.none') }]}
+      onSay={(says) => { playSfx('pop'); setPred({ key: configKey, says }); }}
+    />
+  ) : cp.open ? cp.node : null;
+
   return (
     <ManipulationShell
       type="team-builder"
@@ -345,12 +462,17 @@ export default function TeamBuilder({
         players: t('manipulation.teamBuilder.playersIn', { count: total }),
         teams: t('manipulation.teamBuilder.teamsIn', { count: groups }),
       })}
-      mission={mission ?? t('manipulation.teamBuilder.mission')}
+      // une manche où « أنشئ الفرق » est ouvert d'emblée (handDone) ne dit pas « اسحب كل لاعب » : la consigne suit le geste réel
+      mission={mission ?? t(handDone ? 'manipulation.teamBuilder.missionButton' : 'manipulation.teamBuilder.mission')}
       lead={lead}
       state={state}
       coach={coachOn ? coach : null}
       headerAction={cpSettings.control}
       guided={!!chain || cpLive}
+      hideRepresentation={hideAnswers || gameScreen}
+      onIntroChange={setMissionBig}
+      // la question / la prédiction prend la COLONNE du labo (pas une colonne de plus dans la scène) : terrains + banc gardent la largeur
+      sidePanel={trayNode ? <div data-tb-tray>{trayNode}</div> : null}
       numberFields={[
         { key: 'total', label: t('manipulation.teamBuilder.squadLabel') },
         { key: 'groups', label: t('manipulation.teamBuilder.teamsLabel') },
@@ -385,27 +507,9 @@ export default function TeamBuilder({
           finish: () => { autoUsed.current = true; setLab(L.fill); },
         },
       }}
-      representation={settled && (
-        <div className="space-y-2">
-          <EquationDisplay
-            tex={equality}
-            tone={v.exact ? 'ok' : 'result'}
-            note={v.exact
-              ? t('manipulation.teamBuilder.allPlaying', { players: players(v.perGroup) })
-              : t('manipulation.teamBuilder.leftOutNote', { players: players(v.perGroup), left: players(v.leftOver) })}
-          />
-          <DivisionRoles roles={[
-            { key: 'b', text: t('manipulation.teamBuilder.roleB', { b: groups }) },
-            { key: 'q', text: t('manipulation.teamBuilder.roleQ', { q: v.perGroup }) },
-            { key: 'r', text: t('manipulation.teamBuilder.roleR', { r: v.leftOver, b: groups }) },
-          ]} />
-          {!v.exact && (
-            <p className="rounded-xl border-2 border-amber-300 bg-amber-50 px-3 py-2 text-sm font-bold text-amber-900">
-              {t('manipulation.teamBuilder.fixHint', { up: total + v.fix.add, down: total - v.fix.remove })}
-            </p>
-          )}
-        </div>
-      )}
+      // pendant les questions sur CE partage (« observe » / « build »), le résultat écrit ne s'affiche pas : il donnerait la réponse
+      // (la colonne de questions laisse désormais le terrain ET la colonne visibles)
+      representation={!gameScreen && !hideAnswers && resultNode}
       discovery={(
         <ManipulationDiscovery
           state={state}
@@ -426,9 +530,18 @@ export default function TeamBuilder({
       explanation={t('manipulation.teamBuilder.explanation')}
     >
       <ManipulationStage dragging={drag.dragging} className="bg-gradient-to-b from-emerald-50 to-white">
+        <div>
         <div className="relative space-y-3">
           {party.node}
-          {cp.node}
+          {!(gameScreen && cp.open) && cp.node}
+          {gameScreen && pred?.key === configKey && settled && pred.ok != null && (
+            <p role="status" data-tb-predict-result={pred.ok ? 'ok' : 'wrong'}
+              className={`rounded-2xl px-4 py-2 text-center text-lg font-black ${pred.ok ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>
+              {pred.ok ? kk('cp.predict.right') : kk('cp.predict.wrong')}
+            </p>
+          )}
+          {/* LE JOURNAL DES ESSAIS dans le labo (lecteur) : il remplace l'étape « رتّب أفكارك » d'après — « pair » et « rule » s'y lisent */}
+          {gameScreen && triedKeys.length > 0 && !hideAnswers && <TrialsTable keys={triedKeys} tried={tried} k={kk} />}
           <LabStepper count={2} current={contrastSeen ? 1 : 0} done={stepDone} stepAttr="data-tb-step" />
           {/* ── Les réglages de la situation : combien d'équipes, combien de joueurs ── */}
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
@@ -469,10 +582,14 @@ export default function TeamBuilder({
               réelle (`auto-fill` sur une largeur minimale) au lieu d'imposer
               une colonne par équipe : une colonne sur un téléphone, deux sur
               une tablette, jusqu'à quatre sur un grand écran. */}
+          <div className={gameScreen ? 'flex items-start gap-4' : ''} data-tb-pitch-row>
           <div
-            className="grid gap-2"
+            className={`grid gap-2 ${gameScreen ? 'min-w-0 flex-1' : ''}`}
             style={{
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 160px), 1fr))',
+              // lecteur : les équipes sur UNE rangée (deux au-delà de 7) — chaque terrain rétrécit plutôt que de passer à la ligne ;
+              // sinon la hauteur du labo dépendait du zoom (plus de zoom → moins de largeur → terrains repliés → labo plus haut) et
+              // l'écran se posait petit, avec de grandes bandes vides (2026-11-07)
+              gridTemplateColumns: gameScreen ? `repeat(${groups <= 7 ? groups : Math.ceil(groups / 2)}, minmax(0, 1fr))` : 'repeat(auto-fit, minmax(min(100%, 160px), 1fr))',
               maxWidth: `${Math.min(groups, 4) * 260}px`,
             }}
             data-team-pitch
@@ -537,43 +654,16 @@ export default function TeamBuilder({
               );
             })}
           </div>
+          {/* lecteur : le résultat dans l'espace libre à côté des équipes, jamais pendant les questions sur ce partage */}
+          {gameScreen && resultNode && !hideAnswers && (
+            <div className="w-[22rem] max-w-[38%] shrink-0 space-y-2" data-tb-result>{resultNode}</div>
+          )}
+          </div>
 
-          {/* ── LE BANC : ceux qui n'ont pas (encore) d'équipe ──────────────── */}
-          <DropZone
-            drag={drag}
-            id="bench"
-            label={`${benchName}: ${players(lab.bench.length)}`}
-            tone={settled && !v.exact ? 'amber' : 'slate'}
-            minHeight="min-h-[86px]"
-            className="border-dashed bg-[repeating-linear-gradient(45deg,#F8FAFC_0_8px,#F1F5F9_8px_16px)] p-2"
-            data-bench-count={lab.bench.length}
-          >
-            <div className="mb-1 flex items-center justify-between gap-2">
-              <span className="flex items-center gap-1.5 text-[11px] font-extrabold text-slate-700">
-                <FootballIcon size={14} />
-                {benchName}
-              </span>
-              <span dir="ltr" className="font-mono text-[11px] font-bold text-slate-600">{lab.bench.length}</span>
-            </div>
-            <div className="flex flex-wrap items-end gap-0.5">
-              {lab.bench.map((p) => (
-                <DraggableObject
-                  key={p} drag={drag} id={`player:${p}`}
-                  label={t('manipulation.teamBuilder.playerOnBench', { n: p + 1 })}
-                  className="flex min-w-[44px] justify-center rounded-lg"
-                >
-                  <PlayerFigure
-                    index={p} team={null} size={34}
-                    held={drag.held === `player:${p}`}
-                    benched={settled && !v.exact}
-                  />
-                </DraggableObject>
-              ))}
-              {lab.bench.length === 0 && (
-                <span className="px-2 py-3 text-xs font-bold text-emerald-700">{t('manipulation.teamBuilder.benchEmpty')}</span>
-              )}
-            </div>
-          </DropZone>
+          {/* ── LE BANC : sous les terrains hors lecteur ; au lecteur, il est À CÔTÉ (voir data-tb-pitch-row) ── */}
+          {/* le banc SOUS les terrains : au lecteur en GROUPES DE 5 sur toute la largeur (42 joueurs = 2 lignes courtes) ; mesuré à
+              1848, 1366 et 1024 px, c'est ce qui laisse aux terrains la plus grande taille (le banc à côté les écrasait à 31 px) */}
+          {benchNode(gameScreen)}
 
           {reject && (
             <p role="status" className="rounded-lg border-2 border-rose-300 bg-rose-50 px-3 py-2 text-sm font-bold text-rose-900">
@@ -582,6 +672,7 @@ export default function TeamBuilder({
               })}
             </p>
           )}
+        </div>
         </div>
       </ManipulationStage>
 
@@ -593,9 +684,41 @@ export default function TeamBuilder({
 }
 
 
+/* ══════════════ Lecteur : prédire, et le journal des essais (pilote 2026-11-07) ══════════════ */
+
+/** Les essais de l'élève, au fil de la manche : chaque nombre avec son sens ; une ligne verte quand personne ne reste. */
+// au plus 3 lignes à l'écran (les plus récentes) : un journal qui grandit à chaque essai faisait rétrécir tout l'écran au terrain
+// libre (2026-11-07) ; le titre dit combien d'essais il y a — tous restent dans la mémoire du labo (« pair » / « rule » s'en servent)
+const TRIALS_SHOWN = 3;
+function TrialsTable({ keys, tried, k }) {
+  const rows = keys.slice(-TRIALS_SHOWN).map((key) => ({ key, ...splitKey(key), exact: tried[key] }));
+  return (
+    <div className="overflow-hidden rounded-2xl border-2 border-indigo-100 bg-white" data-tb-trials>
+      <p className="bg-indigo-50 px-3 py-1.5 text-sm font-black text-indigo-900">
+        📋 {k('trials.title')}{keys.length > TRIALS_SHOWN && <span className="ms-2 text-xs font-bold text-indigo-500">{k('trials.lastOf', { n: TRIALS_SHOWN, total: keys.length })}</span>}
+      </p>
+      <table className="w-full text-center text-sm">
+        <thead className="text-xs font-black text-slate-500">
+          <tr><th className="px-2 py-1">{k('trials.players')}</th><th className="px-2 py-1">{k('trials.teams')}</th><th className="px-2 py-1">{k('trials.perTeam')}</th><th className="px-2 py-1">{k('trials.bench')}</th></tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr key={r.key} data-tb-trial={r.key} data-exact={r.exact ? 'true' : 'false'} className={`border-t border-indigo-50 text-base font-black ${r.exact ? 'bg-emerald-50 text-emerald-800' : 'text-slate-800'}`}>
+              <td className="px-2 py-1">{r.n}</td><td className="px-2 py-1">{r.g}</td><td className="px-2 py-1">{r.q}</td>
+              <td className={`px-2 py-1 ${r.exact ? '' : 'text-rose-600'}`}>{r.r}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 /* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
 
 export const CHAINS = { first: ['perTeam', 'left', 'eq'], contrast: ['pair', 'fix', 'rule'] };
+/** Lecteur (pilote 2026-11-07, conseil) : observer d'un toucher puis BÂTIR l'égalité ; après le contraste, laquelle puis la règle. */
+export const CHAINS_PLAYER = { first: ['observe', 'build'], contrast: ['pair', 'rule'] };
 
 const $ = (x) => `$${x}$`;
 const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
@@ -603,6 +726,36 @@ const split = splitKey;
 const words = (k, { n, g }) => ({ players: k('players', { count: n }), teams: k('teamsIn', { count: g }) });
 
 export const QUESTIONS = {
+  // « في كل فريق ▢ · على المقاعد ▢ » : ce que le TERRAIN montre, d'un toucher (le terrain reste visible à côté) — sans
+  // « اكتب 0 إن لم يبقَ أحد », qui soufflait que 0 est possible à l'instant même où il doit être découvert
+  observe: ({ keys }, k) => {
+    const c = split(keys[0]);
+    const o = { ...words(k, c), q: $(c.q), r: $(c.r) };
+    return {
+      id: 'observe', kind: 'fill', prompt: Cq(k, 'observe.prompt', o),
+      fields: [
+        { label: k('cp.observe.perTeam'), expected: c.q, options: chipsAround(c.q, { min: 1 }) },
+        { label: k('cp.observe.bench'), expected: c.r, options: chipsAround(c.r) },
+      ],
+      hints: [Cq(k, 'observe.hint1'), Cq(k, 'observe.hint2')], explain: Cq(k, 'observe.explain', o),
+    };
+  },
+  // l'égalité BÂTIE : chaque emplacement porte le sens de son nombre ; 15 = 5 × 3 + 0 est refusé si 5 n'est pas « الفرق »
+  build: ({ keys }, k) => {
+    const c = split(keys[0]);
+    return {
+      id: 'build', kind: 'build', prompt: Cq(k, 'build.prompt'),
+      slots: [k('cp.build.slotN'), k('cp.build.slotG'), k('cp.build.slotQ'), k('cp.build.slotR')],
+      tiles: buildTiles(c), expected: [c.n, c.g, c.q, c.r],
+      hints: [Cq(k, 'build.hint1'), Cq(k, 'build.hint2')],
+      explain: (
+        <div className="space-y-2">
+          <RolesEquation n={c.n} g={c.g} q={c.q} r={c.r} labels={{ n: k('roles.n'), g: k('roles.g'), q: k('roles.q'), r: k('roles.r') }} />
+          <p>{k('cp.eq.explainRoles')}</p>
+        </div>
+      ),
+    };
+  },
   perTeam: ({ keys }, k) => {
     const c = split(keys[0]);
     const o = { ...words(k, c), q: $(c.q), eq: $(eqTex(c)) };

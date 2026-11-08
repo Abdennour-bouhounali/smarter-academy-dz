@@ -2489,15 +2489,48 @@ type that renders the shell sits ABOVE these contexts. It reads `useInMissionPla
 - `TeamBuilder` sizes its pitch from the area height (2:3 kept, 150–360 px wide);
 - the player fits the rest by `zoom` (labs from 0.6 up to 1.3).
 
-**The mission in big (2026-11-04).** In the player, ENTERING a lab (its screen becomes visible, `IntersectionObserver`)
-opens a card over the lab (`data-manipulation-mission-intro`): the lead in 2xl, « مهمتك: … » in 4xl, and « هيا نبدأ »
-(`manipulation.missionGo`). It never runs on a timer. It closes with a shrink toward the side column (no motion with reduced
-motion), and LabCoach waits until it is closed. It replays when the level changes.
+**The mission in big (2026-11-04; reworked 2026-11-07 after a council: no more dark shade).** In the player, ENTERING a lab
+(its screen becomes visible, `IntersectionObserver`) shows the mission BIG in its own place, the side column
+(`data-manipulation-mission-intro`): the lead in large type, « مهمتك: … » in 2xl, and « هيا نبدأ » (`manipulation.missionGo`). The
+scene stays bright and LIVE — never blocked: a first touch on it makes the mission flash (`animate-pulse`), a second touch or
+« هيا نبدأ » makes it compact. It never runs on a timer; LabCoach waits until it is compact; it replays when the level changes. The
+lab can listen (`onIntroChange`): team-builder waits for it before posing its prediction (one thing to read at a time). The
+mission text must describe the REAL gesture of the round: team-builder says « اضغط «أنشئ الفرق» » (`missionButton`) when
+`handDone` opens the button from the start, never « اسحب كل لاعب ».
+
+**The slim side column, in the player (council + owner, 2026-11-07).** Once the mission is compact, the lab's side column holds
+only what the student needs now (`ManipulationShell`, `gameColumn = inPlayer && !immersed`):
+- ONE goal line: the round's context (`lead`, which carries its goal; else the mission), large and bold; a tap reopens the big
+  mission (`data-manipulation-goal`, `manipulation.missionReopen`). The title stays for screen readers only;
+- « ؟ »: the LabCoach toggle as an icon (`useLabCoach › toggleIcon`), next to the goal line;
+- the main action BIG and coloured (`ManipulationControls game`: « أنشئ الفرق » full width), « إعادة » small and apart;
+- NOT in the column in the player: the lab's own « الصوت » (the player's top bar has it — same preference, so the « sound switch
+  in every lab » rule holds through the top bar), the « مناولة » badge, and the empty « ستظهر هنا… » placeholder (the result
+  appears at its place on the first try). Teacher controls (`headerAction`) stay.
+- The guide's tip follows the round's real gesture: team-builder's `coachOf({ button: handDone })` points at « أنشئ الفرق »
+  in a button round, never at a player to drag.
+- A question or a prediction of the lab TAKES the side column (`ManipulationShell sidePanel`, wider: `min(34rem, 40%)`) while it
+  is open — never an extra column in the scene: the scene keeps its whole width, the screen stays at TWO columns, the controls
+  come back after. The side column is capped as a share of the width (`min(26rem, 30%)`, so a 1024 px screen keeps its pitches).
+  `RolesEquation` wraps instead of overflowing.
+- **The football lab's scene (council + owner, 2026-11-07, measured at 1848/1366/1024 px):** the teams on ONE row in the player
+  (two beyond 7 teams: `repeat(k, minmax(0,1fr))`), each pitch narrowing rather than wrapping — otherwise the lab's height
+  depended on the zoom and the screen settled small; the bench BELOW the pitches, full width, in GROUPS OF 5 side by side
+  (`data-bench-layout="groups-of-5"`: 42 players = 2 short lines, the remainder read at a glance). A bench beside the pitches
+  was tried and measured: it crushed the pitches (31 px at 1024). Pitch height budget: `PLAYER_SCENE_OVERHEAD_SIDE_BENCH` = 330.
+- **The free pitch (« الملعب الحرّ ») offers BOUNDED chips** (owner, 2026-11-07): module 1 — players 12–30, teams 2–6; module 2 —
+  players 24–48, teams 2–6. Never more than 6 teams on the player's screen (one row of readable pitches), never a bench beyond
+  ~2 short lines. The trials table shows the 3 most recent trials in the player, with « (آخر 3 من n تجارب) » when there are more.
+- The lab's RESULT (equality, roles, tip) is not squeezed into the column: in the player team-builder renders it IN the scene,
+  in the free space beside the teams (`data-tb-result`, the row shared 3:2 with the pitch), and passes `hideRepresentation` to
+  the shell. A lab whose scene leaves free width should do the same.
 
 **Questions over the lab, in the player (2026-11-04, owner).**
-- **Layout:** in the mission player, `LabCheckpoint`'s card is portalled to `<body>` and centred on the SCREEN. A fixed full-screen
-  shade (`bg-slate-950/75`, blur) covers everything, so the result written beside the lab cannot be read while answering.
-  Outside the player it stays over the lab as before.
+- **Layout (pilot, 2026-11-07, replaces the full-screen card of 2026-11-04):** in the mission player, `LabCheckpoint`'s card
+  renders IN FLOW (no portal, no shade) and the lab places it as a column beside its scene — the scene stays visible, it is the
+  evidence. A lab that does this must hide its written result while the questions on it are open (`ManipulationShell`
+  `hideRepresentation`). Outside the player it stays over the lab as before. New answer kinds `fill` (chips per blank) and
+  `build` (tiles into named slots), see `primitives/labCheckpoint.js`; full rules: guide §4septies « Questions during the lab, v2 ».
 - **NO LEAK, for every lab:** a question's confirmation (`explain`) says only ITS answer and never the answer of a LATER
   question of the same chain. Example: team-builder's « كم لاعبًا في كل فريق؟ » confirms « في كل فريق 5 لاعبين », not
   « 15 = 3 × 5 + 0 », which would give away « من بقي » and the equality question.
@@ -2505,14 +2538,30 @@ motion), and LabCoach waits until it is closed. It replays when the level change
   a = b × q + r with the word of the scene under each number (`<type>.roles`, e.g. لاعبًا · فرق · في كل فريق · خارج الفرق).
   The colours are those of `DivisionRoles`, and a zero remainder is green.
 
+**The second chance « لا بأس — جرّب أصغر » (council + owner, 2026-11-08, PILOT `qasim-adad-tabii`).** A round may carry
+`easier: { goal, props }`. `roundsModel.needsHelp(round, log)` is true when that round is not won and the lab shows AT LEAST 2
+misses (wrong predictions, questions missed on the first try or revealed — `missesOf`) or `maxTrials + 2` splits (5 by default).
+One miss is noise: a 3-option question is guessed one time in three. Then `LabRounds` shows a LIGHT card at the bottom of the
+pitch (no dark backdrop, nothing in the page moves, `data-round-help="offer"`): « لا بأس 💪 جرّب أوّلًا بلاعبين أقلّ، ثم عُد. » with
+« جرّب أصغر » / « أواصل هنا ». The practice round is the same gesture with numbers seen at a glance (`checkpoints: false`, badge
+« 🎯 جولة تدريب », `data-round-practice`), it earns NO star, is not on the track, and its events are NOT forwarded to the module
+(other numbers than the real round). Won, a card « أحسنت! الآن أنت جاهز. » + « عُد إلى الجولة n » restarts the real round fresh.
+A student who succeeds never sees any of it. Lesson data: `content/teams.js › practice(total, groups, choices, exact, lead)`.
+
 **Rounds and stars — `LabRounds` (2026-11-04, owner: « the rounds system instead of the levels, with the stars »).** In
 the mission player a lab is played as a PATH of rounds instead of the مبتدئ / متقدم switch the student had to choose:
 `lessons/common/manipulations/rounds/LabRounds.jsx`, with its logic in `roundsModel.js` (tested).
 
 - **Data:** `rounds: [{ id, title, props, goal, stars, optional?, free? }]`.
+- **Stars (pilot, 2026-11-07):** ★ won · ★ predictions right (`{ tk: 'predict', ok }` events; `stars.predict: false` on a round
+  that holds no prediction) · ★ trials ≤ `stars.maxTrials`. « Questions right on the first try » no longer earns a star.
   - `props` go to `<Manipulation>`, which is remounted for each round, so each round gets its own big mission card.
   - `goal` is a list of conditions measured from what the lab REPORTS: `{ checkpoint: 'first' | 'contrast' }` (the question
-    set over the lab finished), `{ exact: k }`, `{ allExact: [k…] }`.
+    set over the lab finished), `{ exact: k }`, `{ allExact: [k…] }`, `{ inexact: true }` (a split leaving someone out seen).
+    Added 2026-11-08 for `factor-pairs` (`groups` of a verdict = the number of books per row `d`): `{ checkpoint: 'rule' }`,
+    `{ anyExact: true }` (some perfect rectangle seen) and `{ allPairs: n }` (every rectangle of `n` books seen: for each pair
+    (s, n ÷ s) one of the two was tried and fell exact).
+  - `easier` (PILOT, 2026-11-08): a smaller PRACTICE round `{ goal, props }` — see « The second chance » below.
   - `free` marks the free pitch: always open, no goal, never blocking (the « جرّب أعدادك » rule). `optional` marks a challenge.
 - **Stars (1–3):**
   - ★ the round is won;
@@ -2528,6 +2577,10 @@ the mission player a lab is played as a PATH of rounds instead of the مبتدئ
   success, so the lab's own celebration (`useStepCelebration`, 2.2 s) plays first and the two never overlap.
 - **Where it applies:** only inside the player (`PlayerSwitch player={…} page={…}`). The teacher keeps the levels.
 - **Example:** lesson `qasim-adad-tabii`, `content/teams.js` (`M1_ROUNDS`, `M2_ROUNDS`).
+- **Second example (2026-11-08):** lesson `qawasim-adad-tabii`, `content/books.js` (`M1_ROUNDS`: 24 → 60 → 48 → ⭐ 36 → free; `M2_ROUNDS`:
+  105 → ⭐ 84 → free), played by `LabRounds icon="📚"`. The v2 treatment of a lab other than `team-builder` is described in the
+  lesson guide § « Rollout recipe » (`FactorPairs`: props `onVerdict`, `handDone`, `chains`, `predict`, `nChoices`, `levels={false}`;
+  `PredictTray`; `CHAINS_PLAYER = { first: ['observe', 'build'], rule: ['turned', 'rule'] }`; rectangle cell cap `maxCell`).
 
 **`team-builder` options (2026-11-04):** `levels={false}` gives a worked example with no مبتدئ / متقدم selector (as for
 `divisor-explorer-books`). `handDone` opens « أنشئ الفرق » from the start: the student already shared BY HAND in an

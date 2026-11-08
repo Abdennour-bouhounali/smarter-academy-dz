@@ -5,6 +5,9 @@ import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { IntegerSetQuestion } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
+import { M1_ROUNDS } from '../content/books';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
 
 /**
  * Module 1 — نشاط 2 (p. 8) : les jداءات de 60 puis ses diviseurs.
@@ -26,6 +29,10 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
  * Rétrofit 2026-10-15 (§4quater) : le labo ouvre le module, SANS carte ni titre ni `lead` de workspace (le labo dit son contexte et
  * sa question) ; les étapes : ce qu'un rectangle parfait livre (la brique APRÈS la réponse), tous les diviseurs de 60, puis 48
  * et 17. LP : P1, P2.
+ *
+ * LECTEUR DE MISSION (rollout 2026-11-08) : dans le lecteur le labo se joue en MANCHES (content/books.js › M1_ROUNDS : 24 → 60 → 48 →
+ * défi ⭐ 36 → rayon libre) au lieu de مبتدئ / متقدم ; chaque étape attend sa manche (`needsRound`, porte douce + retour au
+ * question). Hors lecteur (enseignant, classe) : les deux niveaux d'avant, inchangés.
  */
 export default function Module01AlAdad60() {
   const [tested, setTested] = useState({});
@@ -33,11 +40,19 @@ export default function Module01AlAdad60() {
   const [q60, setQ60] = useState(false);
   const [q17, setQ17] = useState(false);
   const finish = (n) => setTested((t) => ({ ...t, [n]: true }));
+  // Dans le lecteur : la manche gagnée ouvre l'étape (la porte disparaît dès qu'elle est gagnée, même si la question reste à faire).
+  const [won, setWon] = useState({});
   return (
     <ContentModule objectives={["ماذا يعطيني كل مستطيل تامّ؟", "كم قاسمًا للعدد 60؟", "هل نجد القواسم بنفس الطريقة مع 48؟"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1}
       moduleTitle="نشاط 2 — قواسم العدد 60" moduleSubtitle="جداء عاملين بكلّ الأشكال الممكنة" estimatedTime="12 دقيقة"
       intro={
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="m1-books" rounds={M1_ROUNDS} icon="📚" freeIcon="🗂️"
+              onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))} />
+          )}
+          page={(
         // LE LABO OUVRE LE MODULE (§4quater) : ni carte du manuel, ni titre / `lead` de workspace. Le workspace s'ouvre sur
         // مبتدئ (24, un regard suffit) puis متقدم = le 60 du manuel. Le CONTEXTE ne change pas d'un niveau à l'autre : le rectangle
         // de livres EST l'argument (n = d × e ⇔ rectangle parfait). `lead` ci-dessous = le contexte seul ; la question est celle du labo.
@@ -54,14 +69,18 @@ export default function Module01AlAdad60() {
             ),
           }}
         />
+          )}
+        />
       }
       steps={[
-        { num: 1, title: 'ماذا يعطيك كل مستطيل تامّ؟', subtitle: 'سطر في لوح الأزواج', done: q1,
+        { needsRound: { id: 'r1', label: 'الجولة 1', icon: '📚', won: Boolean(won.r1) }, num: 1, title: 'ماذا يعطيك كل مستطيل تامّ؟', subtitle: 'سطر في لوح الأزواج', done: q1,
           content: (
             <div className="space-y-3">
+              <PlayerSwitch player={null} page={(
               <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm text-slate-600" data-activity-evidence data-tried={tested[24] || tested[60] ? 'true' : 'false'}>
                 {tested[24] || tested[60] ? 'أكملت لوح الأزواج في المناولة.' : 'لم تُكمل بعدُ لوح الأزواج: جرّب الصفوف في المناولة أعلاه.'}
               </p>
+              )} />
               <TapQuestion prompt={<span>في لوح الأزواج سطر مثل <MathText>{'$60 = 4 \\times 15$'}</MathText> : في كل صفّ 4 كتب وهناك 15 صفًّا. ماذا يعطيك هذا السطر عن العدد 60؟</span>}
                 options={['قاسمًا واحدًا: عدد الكتب في الصفّ', 'قاسمين: عدد الكتب في الصفّ وعدد الصفوف', 'مضاعفًا للعدد 60']} correct={1} cols={1}
                 explain={<span>عدد الكتب في الصفّ (4) وعدد الصفوف (15) يقسمان 60 معًا: كل مستطيل تامّ يعطي قاسمين.</span>}
@@ -69,18 +88,19 @@ export default function Module01AlAdad60() {
               {q1 && <KnowledgeBrick id="jidaa-aamilayn" lead="كل سطر في لوح الأزواج أعطاك قاسمين: العاملين." />}
             </div>
           ) },
-        { num: 2, title: 'استنتج كل قواسم العدد 60', subtitle: 'من أسطر اللوح', done: q60,
+        { needsRound: { id: 'r2', label: 'الجولة 2', icon: '📚', won: Boolean(won.r2) }, num: 2, title: 'استنتج كل قواسم العدد 60', subtitle: 'من أسطر اللوح', done: q60,
           content: (
             <div className="space-y-3">
               <IntegerSetQuestion prompt={<span>اكتب كل قواسم العدد <MathText>{'$60$'}</MathText>.</span>} expected={[1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60]}
                 explain="ستّ كتابات على شكل جداء عاملين، اثنا عشر قاسمًا." requires={['jidaa-aamilayn']} onAnswered={() => setQ60(true)} />
             </div>
           ) },
-        { num: 3, title: 'ب) قواسم العدد 48، كذلك بالنسبة إلى العدد 17', done: q17,
+        { needsRound: { id: 'r3', label: 'الجولة 3', icon: '📚', won: Boolean(won.r3) }, num: 3, title: 'ب) قواسم العدد 48، كذلك بالنسبة إلى العدد 17', done: q17,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="qasim-rappel" variant="rappel" compact />
-              <Manipulation type="factor-pairs" n={48} title="العدد 48" lead="نفس الطريقة: أطِل الصفّ كتابًا بعد كتاب واكتب كل قواسم العدد 48." />
+              {/* le 48 se joue dans le lecteur (manche 3) ; la page de l'enseignant garde son second labo */}
+              <PlayerSwitch player={null} page={<Manipulation type="factor-pairs" n={48} title="العدد 48" lead="نفس الطريقة: أطِل الصفّ كتابًا بعد كتاب واكتب كل قواسم العدد 48." />} />
               <TapQuestion prompt={<span>ما هي قواسم العدد <MathText>{'$17$'}</MathText>؟</span>}
                 options={['1 و 17', '1 ، 7 و 17', '17 فقط', '1 ، 2 و 17']} correct={0} cols={2} requires={['qasim-rappel']}
                 explain={<span>لا يقسم 17 أيّ عدد من 2 إلى 16، فقاسماه الوحيدان هما 1 و 17.</span>}

@@ -191,12 +191,15 @@ export function remainingMoves(state) {
  * @param {{memory:Object, teamOptions:number[], squadOptions?:number[], freeLab?:boolean}} ctx
  *   `memory` : les configurations stabilisées (`{ "15:3": true }`), comme `discoveryReady`.
  */
-export function coachOf(lab, { memory = {}, teamOptions = [], freeLab = false } = {}) {
+export function coachOf(lab, { memory = {}, teamOptions = [], freeLab = false, button = false } = {}) {
   if (discoveryReady(memory)) return null;
   if (!isSettled(lab)) {
     const p = lab.bench[0];
     if (p === undefined) return null;
     const placed = lab.teams.some((team) => team.length > 0);
+    // une manche jouée au BOUTON (« أنشئ الفرق » ouvert d'emblée, `handDone`) : le guide montre le bouton, pas un glisser
+    // que la consigne ne demande pas (propriétaire, 2026-11-07 — même contradiction que la mission « اسحب »)
+    if (button && !placed) return { id: 'auto', target: '[data-manipulation-autocomplete] button', gesture: 'tap' };
     return { id: placed ? 'more' : 'place', target: `[data-drag-source="player:${p}"]`, rank: p, gesture: 'drag' };
   }
   const k = teamOptions.find((x) => x !== lab.groups && !(`${lab.total}:${x}` in memory));

@@ -16,6 +16,14 @@ import TestPresentation, { useTestPresentation } from './TestPresentation';
 import { revealAll, revealOne, optionOrder } from './testPresentation';
 import LessonLearningPointsStatus from '../components/LessonLearningPointsStatus';
 import EarlierYearReview from '../../../features/learning/EarlierYearReview';
+import { playSfx } from '../utils/playEffect';
+import { useInMissionPlayer, useAutoAdvance, useDeclareUnitNav } from '../mission/missionPlayerContext';
+import TimedNotice from '../mission/TimedNotice';
+import MissionDialog from '../mission/MissionDialog';
+import DiagnosticPlayQuestion, { SIGNAL_MS } from './DiagnosticPlayQuestion';
+import { isMissionView } from '../mission/missionModel';
+import { useClassroomMode } from '../classroom/ClassroomContext';
+import { getLoadedLessonConfig } from '../../registry';
 
 /**
  * Lesson kit — moteur du module final « Boss Final » (évaluatif).
@@ -249,6 +257,199 @@ function ProfilMaitrise({ skills, scores, lessonConfig }) {
   );
 }
 
+/** Lu SOUS le lecteur (BossFinal le rend plus bas) : avance quand une réponse de plus est donnée. */
+function AutoAdvance({ count, delayMs }) {
+  useAutoAdvance(count, delayMs);
+  return null;
+}
+
+/**
+ * LE MINUTEUR DANS LE LECTEUR (propriétaire, 2026-11-08) : facultatif comme sur la page, mais au bon endroit — une pastille
+ * « ⏱ مؤقّت 7 دقائق » sur la PREMIÈRE question (avant toute réponse) ; une fois lancé, le décompte reste visible sur chaque
+ * question (rouge la dernière minute). À zéro, le test s'envoie seul (onExpire → submitBoss).
+ */
+function TimerChip({ timer, durationLabel, canEnable }) {
+  const { t } = useTranslation('lesson');
+  if (timer.enabled) {
+    return (
+      <span dir="ltr" role="timer" data-boss-timer={timer.label}
+        className={`inline-flex min-h-[40px] items-center gap-1.5 rounded-full px-4 font-mono text-lg font-black ${timer.remaining <= 60 ? 'bg-rose-100 text-rose-800' : 'bg-slate-100 text-slate-800'}`}>
+        ⏱ {timer.label}
+      </span>
+    );
+  }
+  if (!canEnable) return null;
+  return (
+    <button type="button" data-boss-timer-on onClick={() => { timer.setEnabled(true); timer.start(); }}
+      className="inline-flex min-h-[40px] items-center gap-1.5 rounded-full border-2 border-slate-200 bg-white px-4 text-sm font-bold text-slate-600 hover:border-indigo-300">
+      ⏱ {t('boss.timerOn', { label: durationLabel })}
+    </button>
+  );
+}
+
+/**
+ * LE RÉSULTAT EN UN ÉCRAN (lecteur, propriétaire 2026-11-08 : « comme أستعدّ ») — le score, UN cercle par épreuve (✓ / ✗, ✓؟ si
+ * juste mais « غير متأكّد ») qui ouvre SA correction (même bloc EpreuveReview que la page), les compétences en une ligne, puis
+ * « واصل » (le profil et la synthèse — rien n'est supprimé) et « أعد الاختبار ». `data-paging-keep` : un seul écran.
+ */
+function BossReviewCompact({ epreuves, answers, unsure = {}, skills, misses, lessonId, onContinue, onRedo }) {
+  const { t } = useTranslation('lesson');
+  const [open, setOpen] = useState(null);
+  const oks = epreuves.map((ep) => answers[ep.id] === correctIndexOf(ep));
+  const doubts = epreuves.map((ep, i) => oks[i] && Boolean(unsure[ep.id]));
+  const score = oks.filter(Boolean).length;
+  const perfect = score === epreuves.length;
+  const ep = open == null ? null : epreuves[open];
+  return (
+    <div className="mx-auto max-w-3xl space-y-6" data-paging-keep data-boss-review>
+      <div className={`flex items-center justify-center gap-5 rounded-3xl bg-gradient-to-br px-6 py-5 text-white ${perfect ? 'from-amber-500 to-orange-600' : 'from-slate-800 to-slate-900'}`}>
+        <span className="text-5xl" aria-hidden="true">{perfect ? '🏆' : '🎯'}</span>
+        <span dir="ltr" className="font-space text-4xl font-extrabold" data-boss-score={`${score}/${epreuves.length}`}>{score} / {epreuves.length}</span>
+        <span className="text-lg font-bold">{t('boss.challengeResult')}</span>
+      </div>
+
+      <div className="space-y-2">
+        <p className="text-sm font-black text-slate-700">{t('diagnostic.yourAnswers')}</p>
+        <ol className="flex flex-wrap gap-3" data-review-circles>
+          {epreuves.map((e, i) => (
+            <li key={e.id}>
+              <button type="button" onClick={() => setOpen(i)} data-review-circle={i + 1} data-review-ok={oks[i] ? 'true' : 'false'}
+                aria-label={`${t('question.label')} ${i + 1} — ${oks[i] ? t('diagnostic.reviewRight') : t('diagnostic.reviewWrong')}`}
+                className={`flex h-16 w-16 flex-col items-center justify-center rounded-full border-2 font-black transition-transform hover:scale-105 ${doubts[i] ? 'border-amber-400 bg-amber-50 text-amber-700' : oks[i] ? 'border-emerald-400 bg-emerald-50 text-emerald-700' : 'border-rose-400 bg-rose-50 text-rose-700'}`}>
+                <span dir="ltr" className="text-lg leading-none">{i + 1}</span>
+                <span className="text-sm leading-none" aria-hidden="true">{doubts[i] ? '✓؟' : oks[i] ? '✓' : '✗'}</span>
+              </button>
+            </li>
+          ))}
+        </ol>
+        <p className="text-xs text-slate-500">{t('diagnostic.reviewHintTap')}</p>
+      </div>
+
+      <ul className="flex flex-wrap gap-2">
+        {Object.entries(skills).map(([key, sk]) => {
+          const m = misses[key] ?? 0;
+          return (
+            <li key={key} data-boss-skill={key} className={`rounded-full px-3 py-1 text-sm font-bold ${m === 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
+              {m === 0 ? '✓' : m === 1 ? '~' : '✗'} {sk.label}
+            </li>
+          );
+        })}
+      </ul>
+
+      <div className="flex gap-3">
+        <button type="button" onClick={onContinue} data-boss-continue autoFocus
+          className="min-h-[56px] flex-1 rounded-2xl bg-indigo-600 px-6 text-lg font-black text-white shadow-[0_4px_0_0_#3730A3] hover:bg-indigo-700">
+          {t('boss.playContinue')} <span aria-hidden="true">←</span>
+        </button>
+        <button type="button" onClick={onRedo} data-boss-redo
+          className="min-h-[56px] rounded-2xl border-2 border-slate-300 bg-white px-5 font-bold text-slate-700 hover:border-slate-500">
+          {t('boss.retakeTest')}
+        </button>
+      </div>
+
+      {ep && (
+        <MissionDialog label={`${t('question.label')} ${open + 1}`} onClose={() => setOpen(null)}>
+          <div className="space-y-4 pt-6 text-start" data-review-dialog={open + 1}>
+            <p className={`flex items-center gap-2 text-lg font-black ${oks[open] ? 'text-emerald-700' : 'text-rose-700'}`}>
+              {oks[open] ? '✓' : '✗'} {t('question.label')} <span dir="ltr">{open + 1} / {epreuves.length}</span>
+            </p>
+            <div className="text-lg leading-relaxed text-slate-800">{ep.prompt}</div>
+            <EpreuveReview ep={ep} pick={answers[ep.id]} isCorrect={oks[open]} lessonId={lessonId} />
+            <div className="flex items-center justify-between border-t border-slate-200 pt-3">
+              <button type="button" disabled={open === 0} onClick={() => setOpen(open - 1)} data-review-prev
+                className="min-h-[44px] rounded-xl px-4 font-bold text-indigo-700 hover:bg-indigo-50 disabled:opacity-30">→ {t('diagnostic.reviewPrev')}</button>
+              <button type="button" disabled={open === epreuves.length - 1} onClick={() => setOpen(open + 1)} data-review-next
+                className="min-h-[44px] rounded-xl px-4 font-bold text-indigo-700 hover:bg-indigo-50 disabled:opacity-30">{t('diagnostic.reviewNext')} ←</button>
+            </div>
+          </div>
+        </MissionDialog>
+      )}
+    </div>
+  );
+}
+
+/** Déclare au lecteur le bouton « السابق » de l'écran courant (rendu SOUS le lecteur). */
+function UnitBack({ onPrevious }) {
+  const nav = React.useMemo(() => ({ onPrevious, canNext: true }), [onPrevious]);
+  useDeclareUnitNav(nav);
+  return null;
+}
+
+/**
+ * « نتيجتي » DANS LE LECTEUR (propriétaire, 2026-11-08) — sans onglets (« التحدي النهائي » : le bouton « السابق » du lecteur y
+ * ramène ; « الحوصلة » retirée du lecteur) et en UN écran : le score, une carte par compétence (✓ / ~ / ✗ en grand, « راجع
+ * المحور n » quand ce n'est pas acquis), les badges gagnés. L'état serveur des الكفاءات (LessonLearningPointsStatus) reste à un
+ * geste, dans une fenêtre — jamais supprimé. « إنهاء » est le bouton du lecteur.
+ */
+function PlayerProfile({ skills, misses, score, total, lessonConfig, badges, masterBadge, completion, lessonId, tracksProgress, evidenceBatch }) {
+  const { t } = useTranslation('lesson');
+  const [statusOpen, setStatusOpen] = useState(false);
+  const LEVEL = {
+    ok: { glyph: '✓', ring: 'border-emerald-300 bg-emerald-50', dot: 'bg-emerald-500 text-white', text: 'text-emerald-800', label: t('boss.masteredWell') },
+    mid: { glyph: '~', ring: 'border-amber-300 bg-amber-50', dot: 'bg-amber-400 text-amber-950', text: 'text-amber-800', label: t('boss.someErrors') },
+    low: { glyph: '✗', ring: 'border-rose-300 bg-rose-50', dot: 'bg-rose-500 text-white', text: 'text-rose-800', label: t('boss.needsWork') },
+  };
+  const levelOf = (m) => (m === 0 ? 'ok' : m === 1 ? 'mid' : 'low');
+  return (
+    <div className="mx-auto max-w-4xl space-y-6" data-paging-keep data-boss-profile>
+      <div className="flex flex-wrap items-center justify-center gap-4 text-center">
+        <h2 className="font-space text-3xl font-extrabold text-slate-900">{t('boss.playProfileTitle')}</h2>
+        <span dir="ltr" className="rounded-full bg-slate-900 px-4 py-1.5 font-space text-xl font-extrabold text-white">{score} / {total}</span>
+      </div>
+      {masterBadge && completion?.masterBadgeLabel && (
+        <p className="rounded-2xl bg-gradient-to-l from-amber-400 to-orange-500 px-5 py-3 text-center text-xl font-black text-white" data-boss-master>🏆 {completion.masterBadgeLabel}</p>
+      )}
+      <ul className="grid gap-4 sm:grid-cols-2" data-attempt-by-skill>
+        {Object.entries(skills).map(([key, skill]) => {
+          const lvl = levelOf(misses[key] ?? 0);
+          const L = LEVEL[lvl];
+          const target = lessonConfig.modules.find((m) => m.number === skill.module);
+          return (
+            <li key={key} className={`flex items-center gap-4 rounded-3xl border-2 px-5 py-4 ${L.ring}`} data-attempt-skill-level={lvl}>
+              <span className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full text-3xl font-black ${L.dot}`} aria-hidden="true">{L.glyph}</span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-lg font-black text-slate-900">{skill.label}</span>
+                <span className={`block text-sm font-bold ${L.text}`}>{L.label}</span>
+                {/* sous le nom (pas à côté) : le nom de la compétence garde toute la largeur de la carte */}
+                {lvl !== 'ok' && target && (
+                  <Link to={target.path} data-boss-review-module={skill.module}
+                    className="mt-2 inline-flex min-h-[44px] items-center gap-1 rounded-2xl bg-white px-3 text-sm font-black text-indigo-700 ring-1 ring-indigo-200 hover:bg-indigo-50">
+                    🔁 {t('boss.reviewModule', { number: skill.module })}
+                  </Link>
+                )}
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+      {badges.length > 0 && (
+        <ul className="flex flex-wrap justify-center gap-2" aria-label={t('boss.badgesUnlocked')}>
+          {badges.map((b) => (
+            <li key={b.id} className="inline-flex items-center gap-2 rounded-full border-2 border-amber-200 bg-amber-50 px-4 py-1.5 text-sm font-bold text-amber-900">
+              <span aria-hidden="true">{b.emoji}</span> {b.label}
+            </li>
+          ))}
+        </ul>
+      )}
+      {tracksProgress && (
+        <div className="text-center">
+          <button type="button" onClick={() => setStatusOpen(true)} data-boss-lp-status
+            className="min-h-[44px] rounded-2xl px-4 text-sm font-bold text-slate-600 ring-1 ring-slate-200 hover:bg-slate-50">
+            📊 {t('boss.playLpStatus')}
+          </button>
+        </div>
+      )}
+      {statusOpen && (
+        <MissionDialog label={t('boss.playLpStatus')} onClose={() => setStatusOpen(false)}>
+          <div className="pt-6 text-start">
+            <LessonLearningPointsStatus lessonId={lessonId} refreshToken={evidenceBatch} />
+          </div>
+        </MissionDialog>
+      )}
+    </div>
+  );
+}
+
 const PHASES = [
   { key: 'boss', labelKey: 'boss.phaseBoss', Icon: Trophy },
   { key: 'profil', labelKey: 'boss.phaseProfile', Icon: Target },
@@ -306,6 +507,16 @@ export default function BossFinal({
   // fois en dupliquerait l'evidence de maîtrise.
   const [revealed, setRevealed] = useState({});
   const { presenting } = useTestPresentation();
+  // LE LECTEUR DE MISSION (pilote, propriétaire 2026-11-08 : « comme أستعدّ ») — décidé ICI comme PrerequisiteDiagnostic : ce
+  // composant rend ModuleLayout, qui rend le lecteur plus bas. Dans le lecteur : un message de 5 s au lieu des onglets et de la
+  // carte d'introduction, puis UNE épreuve par écran (doute, se raviser 1 s, signal ✓ / ↻ — jamais la bonne réponse), le
+  // lecteur avance seul, le résultat vient seul après la dernière réponse. La notation, l'evidence et la tentative sont
+  // EXACTEMENT celles de la page : un seul envoi, submitBoss().
+  const classroomMode = useClassroomMode();
+  const inPlayer = useInMissionPlayer()
+    || (Boolean(getLoadedLessonConfig(ctx.lessonId)?.mission) && isMissionView(ctx.studentView, viewer, classroomMode));
+  const [notice, setNotice] = useState(true);
+  const [unsure, setUnsure] = useState({});
 
   // Une tentative sauvegardée (cet appareil, ou un autre une fois synchro)
   // gagne dès son chargement : correction affichée, jamais un quiz vierge.
@@ -344,6 +555,8 @@ export default function BossFinal({
   function submitBoss() {
     if (submittedRef.current) return;
     submittedRef.current = true;
+    // le test ne corrige rien avant l'envoi : un son NEUTRE à chaque réponse, le carillon d'étape à l'envoi
+    playSfx('step');
 
     const nextMisses = {};
     const attemptAnswers = [];
@@ -376,7 +589,17 @@ export default function BossFinal({
     setEvidenceBatch((n) => n + 1);
   }
 
+  // Lecteur : la DERNIÈRE réponse donnée, le résultat vient seul (le délai laisse voir le signal de cette réponse).
+  useEffect(() => {
+    if (!inPlayer || bossSubmitted || !allAnswered) return undefined;
+    const id = setTimeout(submitBoss, SIGNAL_MS + 300);
+    return () => clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inPlayer, bossSubmitted, allAnswered, bossAnswers]);
+
   function redoBoss() {
+    setNotice(true);
+    setUnsure({});
     redoAttempt();
     hydratedFromSaved.current = true;
     submittedRef.current = false;
@@ -388,6 +611,7 @@ export default function BossFinal({
     timer.setEnabled(false);
   }
 
+  const backToTest = useCallback(() => setPhase('boss'), []);
   const isEpreuveCorrect = useCallback((ep, pick) => pick === correctIndexOf(ep), []);
 
   const badgesGagnes = badges.filter((b) => b.test(misses));
@@ -468,6 +692,41 @@ export default function BossFinal({
             </div>
           )}
         />
+      ) : inPlayer && phase !== 'boss' ? (
+      <div className="sa-page py-8 flex-1" data-boss-player-profile>
+        {/* « السابق » ramène au résultat du test (onglet « التحدي النهائي » retiré du lecteur) */}
+        <UnitBack onPrevious={backToTest} />
+        <PlayerProfile skills={skills} misses={misses} score={epreuves.filter((ep) => bossAnswers[ep.id] === correctIndexOf(ep)).length}
+          total={epreuves.length} lessonConfig={lessonConfig} badges={badgesGagnes} masterBadge={masterBadge} completion={completion}
+          lessonId={ctx.lessonId} tracksProgress={viewer.tracksProgress} evidenceBatch={evidenceBatch} />
+      </div>
+      ) : inPlayer && phase === 'boss' ? (
+      <div className="sa-page py-8 flex-1 space-y-8" data-boss-player>
+        {!bossSubmitted && <AutoAdvance count={epreuves.filter((ep) => bossAnswers[ep.id] != null).length} delayMs={SIGNAL_MS + 200} />}
+        <AnimatePresence mode="wait">
+          {!bossSubmitted && (
+            <motion.div key="play" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-6">
+              {notice && <TimedNotice ms={5000} onDone={() => setNotice(false)}>{t('boss.playIntro')}</TimedNotice>}
+              {epreuves.map((ep, i) => (
+                <div key={ep.id} className="space-y-3">
+                  <div className="flex justify-end">
+                    <TimerChip timer={timer} durationLabel={timerLabel} canEnable={i === 0 && Object.keys(bossAnswers).length === 0} />
+                  </div>
+                  <DiagnosticPlayQuestion q={{ ...ep, order: displayOrderOf(ep) }} index={i} total={epreuves.length} skill={skills[ep.skill]}
+                    pick={bossAnswers[ep.id]} unsure={Boolean(unsure[ep.id])} isCorrect={(q, p) => p === correctIndexOf(q)}
+                    onCommit={(v, doubt) => { setBossAnswers((a) => ({ ...a, [ep.id]: v })); if (doubt) setUnsure((u) => ({ ...u, [ep.id]: true })); }} />
+                </div>
+              ))}
+            </motion.div>
+          )}
+          {bossSubmitted && (
+            <motion.div key="result" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <BossReviewCompact epreuves={epreuves} answers={bossAnswers} unsure={unsure} skills={skills} misses={misses}
+                lessonId={ctx.lessonId} onContinue={() => setPhase('profil')} onRedo={redoBoss} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
       ) : (
       <div className="sa-page py-8 flex-1 space-y-8">
         <div className="grid grid-cols-3 gap-2">
@@ -548,7 +807,7 @@ export default function BossFinal({
                   index={i}
                   total={epreuves.length}
                   pick={bossAnswers[ep.id] ?? null}
-                  onPick={(idx) => setBossAnswers((a) => ({ ...a, [ep.id]: idx }))}
+                  onPick={(idx) => { playSfx('pop'); setBossAnswers((a) => ({ ...a, [ep.id]: idx })); }}
                 />
               ))}
 

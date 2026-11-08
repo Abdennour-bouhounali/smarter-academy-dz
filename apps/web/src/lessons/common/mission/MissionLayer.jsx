@@ -23,7 +23,9 @@ export default function MissionLayer({ config, moduleNumber, basePath }) {
   const [checkpoint] = useState(() => (on ? pendingCheckpoint(mission, completedModules, state.answered, moduleNumber) : null));
   const [checkpointOpen, setCheckpointOpen] = useState(Boolean(checkpoint));
   // L'ACCUEIL de la station (première arrivée, sans point d'étape) : la carte « أنت هنا », 2 s, un geste la ferme.
-  const [welcome, setWelcome] = useState(() => on && shouldWelcome(state.seen, moduleNumber, checkpoint));
+  // « أستعدّ » a SA fenêtre d'arrivée (TimedNotice, 5 s) : jamais deux fenêtres l'une sur l'autre (propriétaire, 2026-11-07).
+  const ownArrival = config.modules?.find((m) => Number(m.number) === Number(moduleNumber))?.stage === 'prerequisite_check';
+  const [welcome, setWelcome] = useState(() => on && !ownArrival && shouldWelcome(state.seen, moduleNumber, checkpoint));
   useEffect(() => {
     if (!welcome) return undefined;
     update({ seen: { [String(moduleNumber)]: true } });
@@ -40,7 +42,7 @@ export default function MissionLayer({ config, moduleNumber, basePath }) {
       {open === 'map' && (
         <MissionDialog label={t('mission.mapTitle')} onClose={() => setOpen(null)}>
           <h2 className="mb-5 text-xl font-black text-slate-900">{t('mission.mapTitle')}</h2>
-          <MissionMap stations={stations} basePath={basePath} here={moduleNumber} onNavigate={() => setOpen(null)} />
+          <MissionMap lessonId={config.id} stations={stations} basePath={basePath} here={moduleNumber} onNavigate={() => setOpen(null)} />
         </MissionDialog>
       )}
       {open === 'text' && (
@@ -56,13 +58,13 @@ export default function MissionLayer({ config, moduleNumber, basePath }) {
           <button type="button" className="block w-full text-start" onClick={() => setWelcome(false)} data-mission-welcome={moduleNumber}>
             <p className="text-xs font-black uppercase tracking-wide text-indigo-500">{t('mission.here')}</p>
             <p className="mb-5 mt-1 text-2xl font-black text-slate-900">{stationLabel(here.title)}</p>
-            <MissionMap stations={stations} basePath={basePath} here={moduleNumber} />
+            <MissionMap lessonId={config.id} stations={stations} basePath={basePath} here={moduleNumber} />
           </button>
         </MissionDialog>
       )}
       {checkpoint && checkpointOpen && (
         <MissionDialog label={t('mission.checkpointTag')} closable={false}>
-          <MissionCheckpoint checkpoint={checkpoint} fill={fill} onDone={(answer) => {
+          <MissionCheckpoint checkpoint={checkpoint} fill={fill} scene={mission.scene} onDone={(answer) => {
             // la station est accueillie par son point d'étape : pas de carte « أنت هنا » en plus au retour
             update({ answered: { [checkpoint.id]: answer }, seen: { [String(moduleNumber)]: true } });
             setCheckpointOpen(false);

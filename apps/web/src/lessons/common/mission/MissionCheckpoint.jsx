@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { KitContext } from '../kit/kitContext';
 import { TapQuestion } from '../kit/questions';
 import MathText from '../components/MathText';
-import LibraryScene from './LibraryScene';
+import MissionScene from './MissionScene';
 
 // Un point d'étape n'est PAS un module : pas d'XP ni d'effets (react → 0 : aucune bulle « +XP »), aucune preuve.
 const CHECKPOINT_KIT = { react: () => 0, alreadyCompleted: false, effectsEnabled: false };
@@ -13,13 +13,13 @@ const CHECKPOINT_KIT = { react: () => 0, alreadyCompleted: false, effectsEnabled
  * l'outil qu'on vient de gagner — sans jamais la résoudre à la place de l'élève. Formatif : la correction s'affiche,
  * rien ne bloque (« لاحقًا » le passe). `onDone(answer)` : l'indice choisi, ou 'skipped'.
  */
-export default function MissionCheckpoint({ checkpoint, fill, onDone }) {
+export default function MissionCheckpoint({ checkpoint, fill, scene, onDone }) {
   const { t } = useTranslation('lesson');
   const [answer, setAnswer] = useState(null);
   return (
     <div className="space-y-4" data-mission-checkpoint={checkpoint.id}>
       <div className="flex items-center gap-4">
-        <LibraryScene fill={fill} className="w-40 shrink-0" />
+        <MissionScene scene={scene} fill={fill} className="w-40 shrink-0" />
         <div>
           <p className="text-xs font-black uppercase tracking-wide text-amber-700">{t('mission.checkpointTag')}</p>
           <p className="mt-1 text-sm font-bold text-slate-600">{t('mission.checkpointLead')}</p>

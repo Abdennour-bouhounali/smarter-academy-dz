@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { fitFactor, MIN_FIT, keepInPlace, uniformZoom, UNIFORM_MAX } from './FitToArea';
+import { fitFactor, MIN_FIT, keepInPlace, uniformZoom, UNIFORM_MAX, shrunkALot } from './FitToArea';
 
 describe('fitFactor — a page shrinks to fit, never below readability', () => {
   it('leaves content that fits at full size', () => {
@@ -42,5 +42,13 @@ describe('uniformZoom — une taille pour toute la leçon (propriétaire, 2026-1
     expect(uniformZoom(900, 500)).toBe(1);
     expect(uniformZoom(4000, 2000)).toBe(UNIFORM_MAX);
     expect(uniformZoom(0, 0)).toBe(1);
+  });
+});
+
+describe('shrunkALot — un écran posé qui a beaucoup rétréci se ré-ajuste une fois (2026-11-07)', () => {
+  it('sous 70 % de la hauteur : oui ; au-dessus : non (les petits changements ne bougent rien)', () => {
+    expect(shrunkALot({ natural: 700, zoom: 0.63, height: 775 })).toBe(true);
+    expect(shrunkALot({ natural: 700, zoom: 1, height: 775 })).toBe(false);
+    expect(shrunkALot({ natural: 0, zoom: 1, height: 775 })).toBe(false);
   });
 });

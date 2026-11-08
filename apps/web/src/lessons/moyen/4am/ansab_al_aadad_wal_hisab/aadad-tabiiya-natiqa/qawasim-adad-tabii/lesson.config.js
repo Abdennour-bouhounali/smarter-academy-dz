@@ -22,6 +22,50 @@ export const LESSON_CONFIG = {
   unit: 'aadad-tabiiya-natiqa',
   unitTitle: 'الأعداد الطبيعيّة والأعداد النّاطقة',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (modèle du pilote qasim-adad-tabii, VALIDÉ par le propriétaire le 2026-11-08 ; rollout leçon par
+  // leçon, docs/reports/MISSION_ROLLOUT_PROGRESS.md) — implique le regard « focus » ; l'enseignant et le mode classe ne voient aucun changement.
+  studentView: 'mission',
+  // LA MISSION (LESSON_DEVELOPMENT_GUIDE « Le mode mission ») : l'ouverture avoue qu'on ne sait pas encore la résoudre ; les outils sont
+  // les connaissances de knowledge.jsx ; les points d'étape RAPPROCHENT de la mission sans en résoudre aucune question (la مسألة 1 du
+  // module 4 reste entière : ils parlent de 30, 50, de n — jamais de 96) ; formatifs, jamais une preuve de maîtrise.
+  mission: {
+    scene: 'library-wall',
+    title: 'جدار المكتبة: 96 كتابًا',
+    opening: {
+      text: 'تلقّت المكتبة هديّة من 96 كتابًا، ويريد القيّم عرضها على الجدار في صفوف متساوية تمامًا، دون صفّ ناقص. كم كتابًا في الصفّ الواحد؟ وهل توجد إمكانيات أخرى؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'jidaa-aamilayn', icon: '🧱', label: 'جداء عاملين' },
+      { id: 'qasim-rappel', icon: '🔑', label: 'تذكير: القاسم' },
+      { id: 'tariqa-qawasim', icon: '🔍', label: 'أين نتوقّف' },
+      { id: 'qawaid-qisma', icon: '⚡', label: 'قواعد القسمة' },
+    ],
+    climaxModule: 4,
+    checkpoints: [
+      {
+        id: 'cp-jidaa', afterModule: 1,
+        prompt: 'لو رتّب القيّم 30 كتابًا في صفوف تامّة وكتب $30 = 5 \\times 6$، فماذا يعرف عن العددين 5 و 6؟',
+        options: ['كلاهما قاسم للعدد 30', 'العدد 5 وحده قاسم للعدد 30', 'لا يعرف شيئًا حتى يجرّب كل الأعداد'],
+        correct: 0,
+        explain: 'كل جداء يعطي قاسمين معًا: صفوف من 5 كتب عددها 6، وصفوف من 6 كتب عددها 5. هذه هي الفكرة التي ستستعملها في المهمة الكبرى.',
+      },
+      {
+        id: 'cp-tawaqquf', afterModule: 2,
+        prompt: 'لتعيين قواسم عدد مثل 50، إلى أيّ عدد يكفي أن نختبر القسمة؟',
+        options: ['إلى 7، لأنّ $7^2 = 49 \\leq 50 < 8^2$', 'إلى 25، أي نصف العدد', 'إلى 50 نفسه'],
+        correct: 0,
+        explain: 'بعد المربّع، كل مستطيل تامّ هو مستطيل سابق مقلوب: نتوقّف عند العدد الذي مربّعه أقرب أسفل العدد.',
+      },
+      {
+        id: 'cp-khitta', afterModule: 3,
+        prompt: 'القيّم يريد كل ترتيبات صفوف تامّة لعدد $n$ من الكتب. ما أفضل خطّة؟',
+        options: ['يختبر الأعداد التي مربّعها ≤ n، ويضيف إلى كل قسمة تامّة قاسمها الشريك', 'يختبر كل الأعداد من 1 إلى n', 'يختبر الأعداد الأولية فقط'],
+        correct: 0,
+        explain: 'هذه خطّتك في المهمة الكبرى التالية: اختبار قصير، وكل قسمة تامّة تعطي قاسمين.',
+      },
+    ],
+  },
   title: 'قواسم عدد طبيعي',
   description: 'تعيين كل قواسم عدد طبيعي بكتابته على شكل جداء عاملين بكل الأشكال الممكنة، وبطريقة اختبار الأعداد التي مربعها أصغر من العدد أو يساويه.',
   level: 'moyen',
@@ -55,6 +99,8 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début, sans verrou par محور.
+  knowledgeMapOpen: true,
   // Acquis du درس 1 (rappelés par une brique « rappel ») et des années antérieures.
   priorKnowledge: ['qasim-jidaa', 'qawaid-qabiliyat-al-qisma'],
   resources: [

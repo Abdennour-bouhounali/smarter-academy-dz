@@ -14,11 +14,21 @@ import { useLabCoach } from '../primitives/LabCoach';
 import { useLabCheckpoint } from '../primitives/LabCheckpoint';
 import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
 import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import PredictTray from '../primitives/PredictTray';
+import NumberTile from '../primitives/NumberTile';
+import RolesEquation from '../primitives/RolesEquation';
+import { useInMissionPlayer, useMissionArea } from '../../mission/missionPlayerContext';
+import { chipsAround, buildTiles } from './divisionChecks';
 import { playSfx } from '../../utils/playEffect';
 import MathText from '../../components/MathText';
 import * as L from '../logic/factorPairs';
 
 const { divisionTestBound } = divisibility;
+
+// Lecteur de mission : ce que la scène porte autour du rectangle (étapier, réglette, boutons − / +, bandeau de prédiction), en px.
+const PLAYER_SCENE_OVERHEAD = 300;
+// Au plus 2 prédictions par manche : l'élève prédit les premières largeurs, puis joue librement (pas de lassitude)
+const PRED_MAX = 2;
 
 /**
  * factor-pairs — LE RECTANGLE QUI SE COUCHE.
@@ -48,10 +58,26 @@ const { divisionTestBound } = divisibility;
  * au-delà de √n étaient grisées d'avance — la règle d'arrêt était affichée
  * avant d'être découverte. Rien ici ne marque √n : c'est le carré qui le dit.
  */
-export default function FactorPairs({ n: n0, title, lead, mission, initialMode = 'student', allowModeSwitch = false, onFinished, coach: coachOn = true, checkpoints: cpOn = true, onTrial }) {
+export default function FactorPairs({
+  n: n0, title, lead, mission, initialMode = 'student', allowModeSwitch = false, onFinished, coach: coachOn = true, checkpoints: cpOn = true, onTrial,
+  // ── LECTEUR DE MISSION (rollout 2026-11-08, traitement v2 du labo) ──
+  onVerdict,
+  // false : pas de sélecteur مبتدئ / متقدم (le lecteur joue en manches, LabRounds)
+  levels: withLevels = true,
+  // true : l'élève a DÉJÀ dessiné les rectangles à la main (manche 1) — « جرّب كل الإمكانيات » s'ouvre d'emblée
+  handDone = false,
+  // les suites de questions permises : 'first' (observe → build) et 'rule' (le rectangle couché → la règle d'arrêt)
+  chains: chainsOn = ['first', 'rule'],
+  // false : pas de prédiction avant les premières largeurs
+  predict: predictOn = true,
+  // des pastilles de nombres de livres à essayer (terrain libre)
+  nChoices,
+}) {
   const { t } = useTranslation('lesson');
+  const gameScreen = useInMissionPlayer();
+  const area = useMissionArea();
   const k = useCallback((key, o) => t(`manipulation.factorPairs.${key}`, o), [t]);
-  const state = useManipulation({ type: 'factor-pairs', initialNumbers: { n: n0 }, initialMode, hintCount: 3 });
+  const state = useManipulation({ type: 'factor-pairs', initialNumbers: { n: n0 }, initialMode, hintCount: 3, withLevels: withLevels !== false });
   const { n } = state.numbers;
   const bound = divisionTestBound(n);
   const range = L.widthRange(n);
@@ -63,13 +89,31 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
   const [scene, setScene] = useState(sceneKey);
   const [doneIds, setDoneIds] = useState({});
   const [retryN, setRetryN] = useState(0);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init({ n })); setD(L.defaultWidth(n)); setDoneIds({}); }
+  // lecteur : la largeur qui attend sa PRÉDICTION, la dernière prédiction jugée, l'ordre des essais (le journal)
+  const [pending, setPending] = useState(null);
+  const [pred, setPred] = useState(null);
+  const [hist, setHist] = useState([]);
+  const predsMade = useRef(0);
+  const [missionBig, setMissionBig] = useState(false);
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init({ n })); setD(L.defaultWidth(n)); setDoneIds({}); setPending(null); setPred(null); setHist([]); predsMade.current = 0; }
 
   // Miroir synchrone de `lab` : « جرّب كل الإمكانيات » enchaîne des pas plus
   // vite qu'un rendu, il lui faut toujours le dernier état.
   const labRef = useRef(lab);
   labRef.current = lab;
-  const commit = useCallback((v) => { setD(v); setLab((s) => L.test(s, v)); }, []);
+  // le VERDICT d'un essai (largeur v) remonte à la manche (LabRounds) : `groups` = le nombre de livres par rangée
+  const verdictRef = useRef(null);
+  verdictRef.current = (v) => {
+    setHist((h) => [...h, v]);
+    state.report(onVerdict, { n, groups: v, exact: n % v === 0, rows: Math.floor(n / v), rest: n % v });
+  };
+  const commit = useCallback((v) => { setD(v); setLab((s) => L.test(s, v)); verdictRef.current?.(v); }, []);
+  // lecteur : une largeur NOUVELLE attend d'abord la prédiction de l'élève (holdRef dit si on prédit encore)
+  const holdRef = useRef(false);
+  const commitPlayer = useCallback((v) => {
+    if (holdRef.current && !labRef.current.tested.some((x) => x.d === v)) { setD(v); setPending(v); return; }
+    commit(v);
+  }, [commit]);
   const ready = L.discoveryReady(lab);
   // le PREMIER essai de la scène (le tableau `tested` est trié par d, il ne garde pas l'ordre) : la 1re suite de questions s'y rapporte
   const firstRef = useRef(null);
@@ -78,8 +122,10 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
   // les questions pendant le labo : obligatoires pour tout élève, l'enseignant seul les coupe pour SON compte
   const cpSettings = useLabCheckpointSettings('factor-pairs');
   const cpLive = cpOn && cpSettings.enabled;
-  const cpId = cpLive ? (ready ? 'rule' : lab.tested.length > 0 ? 'first' : null) : null;
-  const chain = cpId ? CHAINS[cpId] : null;
+  const wanted = ready ? 'rule' : lab.tested.length > 0 ? 'first' : null;
+  const cpId = cpLive && wanted && chainsOn.includes(wanted) ? wanted : null;
+  // lecteur : observer d'un toucher puis BÂTIR l'égalité ; après le rectangle couché, laquelle puis la règle (pilote 2026-11-07)
+  const chain = cpId ? (gameScreen ? CHAINS_PLAYER : CHAINS)[cpId] : null;
   const kq = (key, o) => t(`manipulation.factorPairs.${key}`, o);
   const cp = useLabCheckpoint({
     id: cpId,
@@ -93,8 +139,25 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
       if (id === 'rule') { state.discover(); state.formalize(); }
     },
   });
-  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch, cpLive]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (ready && !cpLive && !gameScreen) state.discover(); }, [ready, state.epoch, cpLive]); // eslint-disable-line react-hooks/exhaustive-deps
+  // lecteur : prédire avant d'agir — encore PRED_MAX fois par manche, jamais pendant une suite de questions
+  holdRef.current = gameScreen && predictOn && cpLive && predsMade.current < PRED_MAX && !cp.open;
+  const hideAnswers = gameScreen && cp.open && cpId === 'first';
+  const predictOpen = gameScreen && !missionBig && pending != null && pending === d && !cp.open && !!d;
+  const sayPredict = (says) => {
+    const dd = pending;
+    const ok = (says === 'perfect') === (n % dd === 0);
+    predsMade.current += 1;
+    playSfx(ok ? 'correct' : 'pop');
+    setPred({ d: dd, ok });
+    state.report(onTrial, { tk: 'predict', ok });
+    setPending(null);
+    commit(dd);
+  };
+  // la largeur qui attend sa prédiction ne montre RIEN du rectangle : sinon la prédiction est déjà une lecture
+  const veil = holdRef.current && d != null && !lab.tested.some((x) => x.d === d);
   // les étapes : un premier essai interrogé, puis la règle d'arrêt (le rectangle couché) et la règle
+  const stepCount = chainsOn.includes('rule') ? 2 : 1;
   const stepDone = [!!doneIds.first || !!doneIds.rule || (!cpLive && lab.tested.length > 0), !!doneIds.rule || (!cpLive && ready)];
   const party = useStepCelebration();
   const celebrated = useRef(new Set());
@@ -103,7 +166,7 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
     stepDone.forEach((x, i) => {
       if (!x || celebrated.current.has(i)) return;
       celebrated.current.add(i);
-      party.celebrate({ n: i + 1, total: 2 });
+      if (i < stepCount) party.celebrate({ n: i + 1, total: stepCount });
     });
   }, [stepDone[0], stepDone[1]]); // eslint-disable-line react-hooks/exhaustive-deps
   // le son du geste (muet sans « الصوت ») : un essai · un rectangle tamam · un rectangle couché · l'étape atteinte
@@ -138,7 +201,7 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
   const x0 = width - EDGE;
   const xOf = (v) => x0 - v * mu;
   const toValue = useCallback((clientX, _y, rect) => (x0 - (clientX - rect.left)) / mu, [x0, mu]);
-  const stretch = useStretchInteraction({ value: d, range, toValue, onChange: setD, onCommit: commit, direction: 'rtl' });
+  const stretch = useStretchInteraction({ value: d, range, toValue, onChange: setD, onCommit: commitPlayer, direction: 'rtl' });
 
   // Le cadre du rectangle prend TOUTE la place offerte (largeur mesurée, hauteur
   // bornée pour que la manipulation reste lisible sans défilement long).
@@ -154,9 +217,20 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
+  // Dans le lecteur de mission le labo est monté dans une copie cachée (largeur 0) puis déplacé : le ResizeObserver ne ré-annonce
+  // pas toujours la vraie largeur. On re-mesure donc aussi à chaque rendu (même valeur = aucun nouveau rendu) ; la zone du
+  // lecteur (`useMissionArea`) change quand l'écran se pose, ce qui rend ce composant à nouveau.
+  useLayoutEffect(() => {
+    const el = boxRef.current;
+    if (el) { const w = Math.max(200, Math.floor(el.clientWidth)); setWidth((cur) => (cur === w ? cur : w)); }
+    const fr = frameRef.current;
+    if (fr) { const w = Math.max(160, Math.floor(fr.clientWidth) - 16); setFrameW((cur) => (cur === w ? cur : w)); }
+  });
+
   const boxW = frameW;
-  const boxH = width < 520 ? 280 : 360;
-  const R = d == null ? null : L.rectangleLayout({ n, d, boxW, boxH });
+  // lecteur : le rectangle prend la hauteur qui reste dans l'écran de jeu (jamais de défilement), borné pour rester lisible
+  const boxH = gameScreen && area?.height ? Math.round(Math.min(340, Math.max(170, area.height - PLAYER_SCENE_OVERHEAD))) : (width < 520 ? 280 : 360);
+  const R = d == null || veil ? null : L.rectangleLayout({ n, d, boxW, boxH, maxCell: gameScreen ? 72 : 44 });
 
   // Saisie directe de d (grands nombres : 452 → on tape 4 au lieu de tirer).
   const [typed, setTyped] = useState('');
@@ -176,19 +250,38 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
   });
   const color = (i) => BOOK_PALETTE[i % BOOK_PALETTE.length][0];
   const labelStep = [1, 2, 5, 10].find((s) => s * mu >= 22) ?? 10;
+  // lecteur : la prédiction ou la question PREND la colonne du labo ; la réglette se fige le temps d'y répondre (le rectangle décrit CET essai)
+  const trayNode = !gameScreen ? null : predictOpen ? (
+    <PredictTray
+      attr="fp"
+      title={k('cp.predict.title')}
+      prompt={k('cp.predict.prompt', { n, d })}
+      options={[{ says: 'perfect', text: k('cp.predict.perfect') }, { says: 'short', text: k('cp.predict.short') }]}
+      onSay={sayPredict}
+    />
+  ) : cp.open ? cp.node : null;
+  const locked = gameScreen && (cp.open || predictOpen);
+  const showStepper = !(gameScreen && (!cpLive || chainsOn.length === 0));
 
   return (
     <ManipulationShell
       type="factor-pairs"
       // Un autre nombre testé au « مختبر حر » : le titre écrit pour n0 ne le décrit plus.
       title={n === n0 ? (title ?? k('title', { n })) : k('title', { n })}
-      mission={mission ?? k('mission', { n })}
+      // une manche où « جرّب كل الإمكانيات » est ouvert d'emblée (handDone) ne dit plus « اسحب » : la consigne suit le geste réel
+      mission={mission ?? k(gameScreen && handDone ? 'missionButton' : 'mission', { n })}
       lead={n === n0 ? lead : null}
       state={state}
       coach={coachOn ? coach : null}
       headerAction={cpSettings.control}
-      guided={!!chain || cpLive}
-      freeLabAlwaysOpen
+      // lecteur : l'écran de jeu est toujours GUIDÉ (ni « جرّب › اكتشف », ni تلميح, ni carte « ماذا لاحظت؟ » — les manches et les questions guident)
+      guided={!!chain || cpLive || gameScreen}
+      hideRepresentation={hideAnswers || gameScreen}
+      onIntroChange={setMissionBig}
+      // la question / la prédiction prend la COLONNE du labo : le rectangle et la réglette gardent toute la largeur
+      sidePanel={trayNode ? <div data-fp-tray>{trayNode}</div> : null}
+      freeLabAlwaysOpen={!gameScreen}
+      allowFreeLab={!gameScreen}
       freeLabLead={k('freeLead')}
       numberFields={[{ key: 'n', label: 'a' }]}
       allowModeSwitch={allowModeSwitch}
@@ -201,7 +294,8 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
           return true;
         },
         canAutoStep: () => lab.tested.length < range.max,
-        autoComplete: {
+        // lecteur : « جرّب كل الإمكانيات » est le BOUTON du geste appris — il s'ouvre après la manche à la main (handDone)
+        autoComplete: gameScreen && !handDone ? undefined : {
           label: t('manipulation.autoComplete.tryAll'),
           ready: true,
           remaining: untested().length,
@@ -214,6 +308,7 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
             labRef.current = L.test(labRef.current, next);
             setD(next);
             setLab((s) => L.test(s, next));
+            verdictRef.current?.(next);
           },
           finish: () => {
             const todo = untested();
@@ -221,11 +316,12 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
             labRef.current = todo.reduce((acc, v) => L.test(acc, v), labRef.current);
             setD(todo[todo.length - 1]);
             setLab((s) => todo.reduce((acc, v) => L.test(acc, v), s));
+            todo.forEach((v) => verdictRef.current?.(v));
           },
         },
         showSolution: () => { setLab((s) => Array.from({ length: range.max }, (_, i) => i + 1).reduce((acc, v) => L.test(acc, v), s)); state.discover(); state.formalize(); },
       }}
-      representation={live && (
+      representation={!gameScreen && !hideAnswers && live && (
         <div className="space-y-2" data-factor-result>
           {live.divides
             ? <EquationDisplay tex={`${n} = ${d} \\times ${live.rows}`} tone={live.repeat ? 'muted' : 'ok'} note={live.repeat ? k('turned', { d, e: live.rows }) : k('perfect', { n, d, e: live.rows })} />
@@ -254,8 +350,26 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
       <ManipulationStage className="bg-gradient-to-b from-amber-50/50 to-white" data-dragging={stretch.dragging ? 'true' : undefined}>
         <div ref={boxRef} className="relative space-y-3" data-factor-rectangle>
           {party.node}
-          {cp.node}
-          <LabStepper count={2} current={ready ? 1 : 0} done={stepDone} stepAttr="data-fp-step" />
+          {!(gameScreen && cp.open) && cp.node}
+          {gameScreen && pred && pred.d === d && lab.tested.some((x) => x.d === d) && !cp.open && (
+            <p role="status" data-fp-predict-result={pred.ok ? 'ok' : 'wrong'}
+              className={`rounded-2xl px-4 py-2 text-center text-lg font-black ${pred.ok ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>
+              {pred.ok ? k('cp.predict.right') : k('cp.predict.wrong')}
+            </p>
+          )}
+          {showStepper && <LabStepper count={stepCount} current={ready && stepCount > 1 ? 1 : 0} done={stepDone.slice(0, stepCount)} stepAttr="data-fp-step" />}
+          {gameScreen && nChoices?.length > 0 && (
+            <div className="flex flex-wrap items-center gap-1.5" data-fp-n-choices>
+              <span className="text-xs font-bold text-slate-700">{k('booksLabel')}</span>
+              <div dir="ltr" className="flex flex-wrap gap-1.5" role="group" aria-label={k('booksLabel')}>
+                {nChoices.map((v) => (
+                  <NumberTile key={v} value={v} size="sm" data-fp-n={v} onClick={() => state.setNumbers({ ...state.numbers, n: v })}
+                    label={k('makeBooks', { n: v })} tone={v === n ? 'common' : 'neutral'} />
+                ))}
+              </div>
+            </div>
+          )}
+          <div className={`space-y-3 ${locked ? 'pointer-events-none opacity-60' : ''}`} aria-disabled={locked || undefined} data-fp-controls={locked ? 'locked' : 'open'}>
           {/* ── LA RÉGLETTE : le nombre de livres par rangée, tenu au doigt ── */}
           <div {...stretch.trackProps} className="relative" style={{ ...stretch.trackProps.style, height: 66 }} data-width-ruler>
             <svg width={width} height={66} className="absolute inset-0" aria-hidden="true" focusable="false">
@@ -303,12 +417,13 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
                 className="inline-flex h-11 min-w-[2.75rem] items-center justify-center rounded-xl border-2 border-slate-300 bg-white px-2 text-sm font-extrabold disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" dir="ltr">+5</button>
             )}
           </div>
+          </div>
 
-          <div className="grid gap-3 grid-cols-[1fr_minmax(10rem,14rem)]">
+          <div className={`grid gap-3 ${gameScreen ? 'grid-cols-[minmax(0,1fr)_17rem]' : 'grid-cols-[1fr_minmax(10rem,14rem)]'}`}>
             {/* ── LE CADRE CARRÉ : le rectangle de n livres, entier ── */}
             <div ref={frameRef} className="flex items-end justify-center rounded-2xl border-2 border-slate-200 bg-white p-2" style={{ minHeight: boxH + 16 }}>
               {R == null ? (
-                <p className="max-w-[16rem] self-center text-center text-sm font-bold text-slate-500">{k('dropCols', { n })}</p>
+                <p className="max-w-[16rem] self-center text-center text-sm font-bold text-slate-500" data-fp-veil={veil ? 'true' : undefined}>{veil && pending === d ? k('veiled') : k('dropCols', { n })}</p>
               ) : (
                 <svg width={boxW} height={boxH} viewBox={`0 0 ${boxW} ${boxH}`} role="img"
                   aria-label={R.rest ? `${n} = ${d} × ${R.rows} + ${R.rest}` : `${n} = ${d} × ${R.rows}`}
@@ -330,7 +445,26 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
               )}
             </div>
 
-            {/* ── LES PAIRES : deux diviseurs par rectangle parfait ── */}
+            {/* ── lecteur : l'égalité de CET essai, le JOURNAL des essais, puis les paires en pastilles (jamais pendant les questions sur le premier essai) ── */}
+            {gameScreen ? (
+              <div className="min-w-0 space-y-2" data-fp-side>
+                {live && !veil && !hideAnswers && (
+                  <EquationDisplay tex={live.divides ? `${n} = ${d} \\times ${live.rows}` : `${n} = ${d} \\times ${live.rows} + ${live.rest}`} tone={live.divides ? (live.repeat ? 'muted' : 'ok') : 'result'} size="lg" />
+                )}
+                {hist.length > 0 && !hideAnswers && <WidthTrials n={n} hist={hist} k={k} />}
+                {!hideAnswers && (
+                  <div className="rounded-2xl border-2 border-slate-200 bg-white p-2" data-fp-pairs-card>
+                    <div className="mb-1 text-xs font-bold text-slate-700">{k('pairsBoard')}</div>
+                    <ul className="grid grid-cols-2 gap-1" dir="ltr" data-pairs>
+                      {lab.pairs.length === 0 && <li className="col-span-2 text-xs text-slate-400">—</li>}
+                      {lab.pairs.map((p) => (
+                        <li key={p.key} data-pair={p.key} className="rounded-lg bg-emerald-50 px-2 py-0.5 text-center font-mono text-sm font-extrabold text-emerald-900">{p.small} × {p.big}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            ) : (
             <div className="rounded-2xl border-2 border-slate-200 bg-white p-3 min-w-[10rem]">
               <div className="mb-1.5 text-xs font-bold text-slate-700">{k('pairsBoard')}</div>
               <ul className="space-y-1" dir="ltr" data-pairs>
@@ -345,6 +479,7 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
                 })}
               </ul>
             </div>
+            )}
           </div>
         </div>
       </ManipulationStage>
@@ -356,11 +491,67 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
 /* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
 
 export const CHAINS = { first: ['rows', 'rest', 'verdict'], rule: ['pairsCount', 'turned', 'rule'] };
+/** Lecteur (rollout 2026-11-08, même traitement que team-builder) : observer d'un toucher puis BÂTIR l'égalité ; ensuite le rectangle couché, puis la règle. */
+export const CHAINS_PLAYER = { first: ['observe', 'build'], rule: ['turned', 'rule'] };
+
+/** Les essais de l'élève dans l'ordre, au fil de la manche (lecteur) : les 3 derniers, chacun avec son sens ; le titre dit combien il y en a. */
+const TRIALS_SHOWN = 3;
+function WidthTrials({ n, hist, k }) {
+  const rows = hist.slice(-TRIALS_SHOWN).map((d) => ({ d, e: Math.floor(n / d), r: n % d }));
+  return (
+    <div className="overflow-hidden rounded-2xl border-2 border-indigo-100 bg-white" data-fp-trials>
+      <p className="bg-indigo-50 px-2 py-1 text-sm font-black text-indigo-900">
+        📋 {k('trials.title')}{hist.length > TRIALS_SHOWN && <span className="ms-2 text-xs font-bold text-indigo-500">{k('trials.lastOf', { n: TRIALS_SHOWN, total: hist.length })}</span>}
+      </p>
+      <table className="w-full text-center">
+        <thead className="text-[11px] font-black text-slate-500">
+          <tr><th className="px-1 py-0.5">{k('trials.perRow')}</th><th className="px-1 py-0.5">{k('trials.rows')}</th><th className="px-1 py-0.5">{k('trials.rest')}</th></tr>
+        </thead>
+        <tbody>
+          {rows.map((r, i) => (
+            <tr key={`${r.d}:${i}`} data-fp-trial={r.d} data-exact={r.r === 0 ? 'true' : 'false'} className={`border-t border-indigo-50 text-base font-black ${r.r === 0 ? 'bg-emerald-50 text-emerald-800' : 'text-slate-800'}`}>
+              <td className="px-1 py-0.5">{r.d}</td><td className="px-1 py-0.5">{r.e}</td><td className={`px-1 py-0.5 ${r.r === 0 ? '' : 'text-rose-600'}`}>{r.r}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
 
 const $ = (x) => `$${x}$`;
 const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
 
 export const QUESTIONS = {
+  // « صفوف تامّة ▢ · كتب ناقصة ▢ » : ce que le RECTANGLE montre, d'un toucher (le rectangle reste visible à côté)
+  observe: ({ n, first }, k) => {
+    const d = first.d; const e = Math.floor(n / d); const r = n % d;
+    const o = { n: $(n), d: $(d), rows: $(e), r: $(r) };
+    return {
+      id: 'observe', kind: 'fill', prompt: Cq(k, 'observe.prompt', o),
+      fields: [
+        { label: k('cp.observe.rows'), expected: e, options: chipsAround(e) },
+        { label: k('cp.observe.rest'), expected: r, options: chipsAround(r) },
+      ],
+      hints: [Cq(k, 'observe.hint1'), Cq(k, 'observe.hint2')], explain: Cq(k, 'observe.explain', o),
+    };
+  },
+  // l'égalité BÂTIE : chaque emplacement porte le sens de son nombre (n = d × e + r)
+  build: ({ n, first }, k) => {
+    const d = first.d; const e = Math.floor(n / d); const r = n % d;
+    return {
+      id: 'build', kind: 'build', prompt: Cq(k, 'build.prompt'),
+      slots: [k('cp.build.slotN'), k('cp.build.slotD'), k('cp.build.slotE'), k('cp.build.slotR')],
+      tiles: buildTiles({ n, g: d, q: e, r }), expected: [n, d, e, r],
+      hints: [Cq(k, 'build.hint1'), Cq(k, 'build.hint2')],
+      explain: (
+        <div className="space-y-2">
+          <RolesEquation n={n} g={d} q={e} r={r} labels={{ n: k('roles.n'), g: k('roles.d'), q: k('roles.e'), r: k('roles.r') }} />
+          <p>{k('cp.build.explainRoles')}</p>
+        </div>
+      ),
+    };
+  },
   rows: ({ n, first }, k) => {
     const d = first.d; const rows = Math.floor(n / d); const r = n % d;
     const o = { n: $(n), d: $(d), rows: $(rows), eq: $(r ? `${n} = ${d} \\times ${rows} + ${r}` : `${n} = ${d} \\times ${rows}`) };

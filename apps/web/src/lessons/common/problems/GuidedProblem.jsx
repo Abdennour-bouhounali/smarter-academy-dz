@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSavedAnswer } from '../answers/useSavedAnswer';
 import { useTranslation } from 'react-i18next';
 import { parseDec } from '@smarter-academy/core';
 import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion } from '../kit';
@@ -45,10 +46,24 @@ export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, es
   const classroom = useClassroomMode();
   const play = Boolean(getLoadedLessonConfig(ctx.lessonId)?.mission) && isMissionView(ctx.studentView, viewer, classroom);
   const [progress, setProgress] = useState(() => initialProgress(problem));
-  const done = (p, i) => setProgress((prev) => completeSubstep(prev, p, i));
+  // l'avancement de la مسألة gardé POUR L'ÉLÈVE (pilote 2026-11-07) : il revient à la sous-étape où il s'était arrêté
+  const memory = useSavedAnswer([], { key: `gp:${problem.id ?? problem.title}`, lessonId: ctx.lessonId, moduleNumber });
+  const touched = useRef(false);
+  const done = (p, i) => { touched.current = true; setProgress((prev) => completeSubstep(prev, p, i)); };
   // Ce que l'élève a répondu à chaque sous-étape (affiché dans la liste des demandes).
   const [given, setGiven] = useState({});
+  const restored = useRef(false);
+  useEffect(() => {
+    const m = memory.saved;
+    if (restored.current || !m?.v || touched.current) return;
+    restored.current = true;
+    if (Array.isArray(m.v.progress) && m.v.progress.length === progress.length) setProgress(m.v.progress);
+    if (m.v.given && typeof m.v.given === 'object') setGiven(m.v.given);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [memory.saved]);
+  useEffect(() => { if (touched.current) memory.save({ progress, given }); }, [progress, given]); // eslint-disable-line react-hooks/exhaustive-deps
   const answer = (p, i, value) => {
+    touched.current = true;
     setGiven((g) => ({ ...g, [`${p}:${i}`]: value }));
     done(p, i);
   };

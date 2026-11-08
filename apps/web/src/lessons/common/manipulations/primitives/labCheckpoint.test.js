@@ -72,3 +72,25 @@ describe('labCheckpointSettings — la clé du labo pour le réglage de l’ense
     expect(labKeyFromPath('/courses/moyen/3am/x/y/z', '')).toBeNull();
   });
 });
+
+describe('fill / build — les réponses à cases du lecteur (pilote 2026-11-07)', () => {
+  const FILL = { id: 'observe', kind: 'fill', fields: [{ label: 'q', expected: 5, options: [4, 5, 6, 7] }, { label: 'r', expected: 0, options: [0, 1, 2, 3] }], hints: ['h1', 'h2'] };
+  const BUILD = { id: 'build', kind: 'build', slots: ['n', 'g', 'q', 'r'], tiles: [0, 5, 15, 3], expected: [15, 3, 5, 0], hints: ['h1', 'h2'] };
+  it('fill : juste seulement quand TOUTES les cases le sont', () => {
+    expect(C.isCorrect(FILL, [5, 0])).toBe(true);
+    expect(C.isCorrect(FILL, [5, 1])).toBe(false);
+  });
+  it('fill / build : une réponse incomplète n’est pas jugée (aucun essai consommé)', () => {
+    const p = C.fresh();
+    expect(C.submit(p, FILL, [5, null])).toBe(p);
+    expect(C.submit(p, BUILD, [15, 3, 5])).toBe(p);
+  });
+  it('build : l’égalité bâtie dans l’ordre des emplacements nommés', () => {
+    expect(C.isCorrect(BUILD, [15, 3, 5, 0])).toBe(true);
+    // 15 = 5 × 3 + 0 est vrai en calcul, mais 5 n'est pas « الفرق » : le sens de chaque nombre compte
+    expect(C.isCorrect(BUILD, [15, 5, 3, 0])).toBe(false);
+    const p = C.submit(C.fresh(), BUILD, [15, 5, 3, 0]);
+    expect(p.status).toBe('wrong');
+    expect(C.submit(p, BUILD, [15, 3, 5, 0]).status).toBe('right');
+  });
+});

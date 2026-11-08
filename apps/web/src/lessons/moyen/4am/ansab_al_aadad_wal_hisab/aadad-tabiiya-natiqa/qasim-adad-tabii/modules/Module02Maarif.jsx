@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PeerSheet } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
@@ -8,8 +8,8 @@ import { Manipulation } from '../../../../../../common/manipulations';
 import { MoreToggle } from '../../../../../../common/components/StudentFocus';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { KNOWLEDGE } from '../content/textbook';
-import { TEAMS_EXAMPLE, M2_ROUNDS, TEAM_ROLES, eqTex } from '../content/teams';
-import IdeasOrganizer from '../../../../../../common/mission/IdeasOrganizer';
+import { TEAMS_EXAMPLE, M2_ROUNDS, eqTex } from '../content/teams';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
 import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
 import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
 
@@ -33,13 +33,12 @@ export default function Module02Maarif() {
   const { total, groups: [first, second], choices } = TEAMS_EXAMPLE;
   // Dans le lecteur de mission : deux MANCHES (48 en 6, puis en 8 équipes) — LabRounds.
   const [won, setWon] = useState({});
-  // « رتّب أفكارك » (lecteur) : l'étape est faite quand la manche est gagnée ET l'idée formulée à partir du tableau
-  const [org, setOrg] = useState({});
-  const q1 = (Boolean(won.a) && Boolean(org.s1)) || answered('first');
+  const q1 = Boolean(won.a) || answered('first');
   // la symétrie VUE : les deux répartitions justes (6 puis 8 équipes) — elle ne dépend pas d'un essai avec reste
-  const q2 = (Boolean(won.b) && Boolean(org.s2)) || Boolean(tried[first]?.exact && tried[second]?.exact);
+  const q2 = Boolean(won.b) || Boolean(tried[first]?.exact && tried[second]?.exact);
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
+  const [q5, setQ5] = useState(false);
 
   return (
     <ContentModule objectives={["كيف نعرّف القاسم بطريقتين مختلفتين؟", "كيف أطبّق ذلك على 48 لاعبًا؟"]}
@@ -79,11 +78,11 @@ export default function Module02Maarif() {
       }
       steps={[
         {
-          num: 1, title: `ما الذي يجعل ${first} قاسمًا للعدد ${total}؟`, subtitle: 'من تجربتك في الملعب', done: q1,
+          needsRound: { id: 'a', label: 'الجولة 1' }, num: 1, title: `ما الذي يجعل ${first} قاسمًا للعدد ${total}؟`, subtitle: 'من تجربتك في الملعب', done: q1,
           content: (
             <div className="space-y-3">
               <PlayerSwitch
-                player={won.a ? (<IdeasOrganizer title="رتّب أفكارك: ماذا رأيت في الملعب؟" labels={TEAM_ROLES} rows={Object.keys(tried).map(Number).sort((x, y) => x - y).map((k) => ({ n: total, g: k, q: tried[k].quotient, r: tried[k].remainder }))} question={{ prompt: `ما الذي يجعل ${first} قاسمًا للعدد ${total}؟`, options: [`باقي قسمة ${total} على ${first} هو 0`, `${first} عدد زوجي`, `${total} أكبر من ${first}`], correct: 0, explain: 'التعريف كله في الباقي: باقي القسمة الإقليدية يحسم الأمر.' }} onAnswered={() => setOrg((o) => ({ ...o, s1: true }))} />) : (<p className="rounded-xl border-2 border-indigo-100 bg-indigo-50 px-4 py-3 text-lg font-bold text-indigo-900">العب الجولة 1 في المختبر.</p>)}
+                player={null}
                 page={(
                   <>
               <MoreToggle force={[first, second].some((c) => tried[c]) ? false : undefined} label="تجاربي">
@@ -111,11 +110,11 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 2, title: `وماذا عن ${second} فرق؟`, subtitle: 'التعريف الثاني: بالجداء', done: q2,
+          needsRound: { id: 'b', label: 'الجولة 2' }, num: 2, title: `وماذا عن ${second} فرق؟`, subtitle: 'التعريف الثاني: بالجداء', done: q2,
           content: (
             <div className="space-y-3">
               <PlayerSwitch
-                player={won.b ? (<IdeasOrganizer title="رتّب أفكارك: ماذا رأيت في الملعب؟" labels={TEAM_ROLES} rows={[first, second].filter((k) => tried[k]).map((k) => ({ n: total, g: k, q: tried[k].quotient, r: tried[k].remainder }))} question={{ prompt: `في المرّتين لم يبقَ أحد، و ${total} = ${first} × ${second}. ماذا نستنتج؟`, options: [`${first} و ${second} قاسمان للعدد ${total}`, `${first} وحده قاسم للعدد ${total}`, `${total} قاسم للعدد ${first}`], correct: 0, explain: `المساواة ${total} = ${first} × ${second} = ${second} × ${first} تُظهر قاسمين: ${first} و ${second}.` }} onAnswered={() => setOrg((o) => ({ ...o, s2: true }))} />) : (<p className="rounded-xl border-2 border-indigo-100 bg-indigo-50 px-4 py-3 text-lg font-bold text-indigo-900">العب الجولة 2 في المختبر.</p>)}
+                player={null}
                 page={(
                   <>
               {!q2 && <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm text-slate-500" data-evidence="second-todo">{`وزّع الـ ${total} لاعبًا في ${second} فرق أيضًا.`}</p>}
@@ -172,6 +171,12 @@ export default function Module02Maarif() {
               )}
             </div>
           ),
+        },
+        {
+          // « ورقة زميل » (conseil + propriétaire, 2026-11-08, PILOTE) : APRÈS le nom — l'élève juge un raisonnement au lieu
+          // d'en produire un ; l'idée fausse visée : « le quotient est un entier, donc la division est exacte ».
+          num: 5, title: 'ورقة سلمى: أين الخطأ؟', subtitle: 'جد السطر الخاطئ وصحّحه', done: q5,
+          content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={() => setQ5(true)} />,
         },
       ]}
       footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}

@@ -10,7 +10,7 @@ import { useFullscreen } from '../classroom/useFullscreen';
 import FitToArea, { uniformZoom } from './FitToArea';
 import { EffectsToggle } from '../components/LessonUI';
 import { useEffectsPreference } from '../hooks/useEffectsPreference';
-import { InMissionPlayerContext, MissionUnitNavContext, MissionAreaContext } from './missionPlayerContext';
+import { InMissionPlayerContext, MissionUnitNavContext, MissionAreaContext, MissionAdvanceContext } from './missionPlayerContext';
 import './mission.css';
 
 /** La part de la zone qu'une page a le droit de prendre : le reste va à l'en-tête d'étape, hors du découpage. */
@@ -103,6 +103,7 @@ export default function MissionPlayer({ top, title, more, exitTo, exitLabel, mod
 
         <div ref={area} className="relative min-h-0 flex-1 px-6 py-2" data-mission-area>
           <PagingContext.Provider value={paging}>
+            <MissionAdvanceContext.Provider value={inModuleNext && canNext ? inModuleNext : null}>
             <MissionUnitNavContext.Provider value={setUnitNav}>
               <MissionAreaContext.Provider value={size}>
                 {/* Tout s'AGRANDIT pour occuper l'espace (FitToArea grow) : un texte dans une colonne de lecture (1100 px avant
@@ -116,6 +117,7 @@ export default function MissionPlayer({ top, title, more, exitTo, exitLabel, mod
                 </FitToArea>
               </MissionAreaContext.Provider>
             </MissionUnitNavContext.Provider>
+            </MissionAdvanceContext.Provider>
           </PagingContext.Provider>
         </div>
 
@@ -144,7 +146,7 @@ export default function MissionPlayer({ top, title, more, exitTo, exitLabel, mod
             {inModuleNext ? (
               <button type="button" onClick={inModuleNext} disabled={!canNext} data-mission-next
                 className={`${btn} bg-indigo-600 text-white enabled:hover:bg-indigo-700 disabled:opacity-40 ${unitNav?.canNext ? 'sa-mission-ready' : ''}`}>
-                {t('mission.next')} <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                {unitNav?.nextLabel ?? t('mission.next')} <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               </button>
             ) : (moduleNav.next ?? <span />)}
           </nav>

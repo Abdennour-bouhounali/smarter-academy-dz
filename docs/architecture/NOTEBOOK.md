@@ -231,3 +231,22 @@ n'y entre jamais.
 - `apps/web/e2e/notebook.mjs` — l'exercice : pastille, ouverture en grand et centrée, huit tailles d'écran, pied de question non recouvert, glisser.
 - `apps/web/e2e/notebook-lesson.mjs` — la leçon : contexte, navigation, brique, retour, sécurité.
 - `apps/web/e2e/notebook-space.mjs` — Mon cahier : compteurs, vues, recherche, filtres, carte, page, groupé, impression, révision, mobile.
+
+## « قاعدتي » — the rule the student writes becomes a card (PILOT, 2026-11-07)
+
+Council of 2026-11-07 + owner's choices. In the pilot lesson only (`studentView: 'mission'`) and for a real STUDENT account,
+when the student writes a rule in their own words in « أتوقّع القاعدة » (`kit/PredictRule.jsx › PredictPanel`) and reveals the
+official rule, a NORMAL note is created through `POST /practice/notes` (`predictRule.ruleNoteOf`):
+`title` « قاعدتي: <rule title> », `content` « كتبتُ: <their words> » then « القاعدة: <official rule> », `lessonCode`, `noteType: 'note'`.
+- It is an ordinary note, so the class teacher can READ it (read-only, the 2026-09-24 rule); the panel says so before the
+  student writes: « ستُحفظ قاعدتك في كرّاسي — يراها أستاذك. » (`predict.toNotebook`).
+- It is never learning evidence and feeds no mastery. A failed request (offline) never blocks the lesson.
+- Not yet extended to other lessons (pilot rule: extended only after the owner validates the prototype).
+
+
+### Not the notebook: the lesson's saved answers (PILOT, 2026-11-07)
+
+The answers a student gives inside the pilot lesson (choices, numbers, problem progress, written answers) are restored when the
+student comes back. They are NOT notes: they live in their own table `student_lesson_answers`, behind `GET/PUT
+/lessons/{code}/answers` (student only, `learner` routes), and no adult view reads them. Only the rule written in « أتوقّع القاعدة »
+reaches « كرّاسي », as described above. Details: `docs/lessons/LESSON_DEVELOPMENT_GUIDE.md` §4septies « The student's answers come back ».

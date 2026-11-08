@@ -7,7 +7,6 @@ import ConceptVisual from '../knowledge/ConceptVisual';
 import AddToNotebookButton from '../../../features/practice/notebook/AddToNotebookButton';
 import { bidi } from '../../../utils/bidi';
 import MathLabel from '../components/MathLabel';
-import { mathToPlain } from '../../../utils/mathPlain';
 import { usePredictGate, PredictPanel, PredictionEcho } from './PredictRule';
 
 /**
@@ -71,6 +70,7 @@ export default function KnowledgeBrick({
   const item = getItem(id);
   const { gated, saved, reveal } = usePredictGate({
     id, itemType: item?.type, itemPredict: item?.predict, brickPredict: predict, variant, ready: Boolean(item),
+    itemTitle: item?.title, itemRule: item?.summary,
   });
 
   // La carte ne reçoit la connaissance qu'une fois montrée (après la prédiction).

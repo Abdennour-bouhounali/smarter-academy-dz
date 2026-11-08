@@ -3,8 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import Manipulation from '../Manipulation';
 import { scopedStorage } from '../../../../utils/storage';
+import { useLabJump } from '../../mission/missionPlayerContext';
 import {
-  emptyLog, logEvent, roundWon, starsFor, roundUnlocked, resumeRound, readStars, recordStars, STARS_EVENT,
+  emptyLog, logEvent, roundWon, starsFor, predictionsRight, needsHelp, roundUnlocked, resumeRound, readStars, recordStars, STARS_EVENT,
 } from './roundsModel';
 
 /**
@@ -21,19 +22,33 @@ import {
 // la célébration du labo (LabSteps.useStepCelebration) dure 2,2 s : la carte de la manche vient APRÈS elle
 const WIN_DELAY_MS = 2400;
 
-export default function LabRounds({ lessonId, labId, rounds, onRoundWon, onVerdict, onTrial }) {
+export default function LabRounds({ lessonId, labId, rounds, onRoundWon, onVerdict, onTrial, icon = '⚽', freeIcon = '🏟️' }) {
   const { t } = useTranslation('lesson');
   const reduceMotion = useReducedMotion();
   const [best, setBest] = useState(() => readStars(scopedStorage, lessonId)[labId] ?? {});
   const [index, setIndex] = useState(() => resumeRound(rounds, readStars(scopedStorage, lessonId)[labId] ?? {}));
   const [log, setLog] = useState(emptyLog);
   const [win, setWin] = useState(null); // { roundId, stars, why: [bool, bool, bool] }
+  // LA SECONDE CHANCE (conseil + propriétaire, 2026-11-08) : quand l'élève peine (needsHelp), une carte « لا بأس — جرّب أصغر »
+  // ouvre la manche d'entraînement `round.easier` (plus petite, sans étoiles, hors du chemin) ; gagnée, elle ramène à la manche.
+  const [practice, setPractice] = useState(false);
+  const [helpOff, setHelpOff] = useState(false);
+  const [practiceDone, setPracticeDone] = useState(false);
   const announced = useRef(new Set());
   // gagnée UNE fois par passage ; le minuteur de la carte vit hors de l'effet (un nouvel événement ne doit pas l'annuler)
   const wonRef = useRef(false);
   const winTimer = useRef(null);
   useEffect(() => () => clearTimeout(winTimer.current), []);
   const round = rounds[index];
+  // la PORTE du labo : une étape demande une manche → on la choisit ; sa victoire proposera d'abord de revenir à l'étape
+  const labJump = useLabJump();
+  const asked = labJump?.request;
+  useEffect(() => {
+    if (!asked) return;
+    const i = rounds.findIndex((r) => r.id === asked.roundId);
+    if (i >= 0 && i !== index) go(i);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [asked?.nonce]);
 
   // Les manches DÉJÀ gagnées (une visite précédente) comptent pour le module dès l'arrivée.
   useEffect(() => {
@@ -43,10 +58,17 @@ export default function LabRounds({ lessonId, labId, rounds, onRoundWon, onVerdi
 
   // La victoire : une seule fois par passage dans la manche.
   useEffect(() => {
+    if (practice) {
+      if (wonRef.current || !round?.easier || !roundWon(round.easier, log)) return;
+      wonRef.current = true;
+      winTimer.current = setTimeout(() => setPracticeDone(true), WIN_DELAY_MS);
+      return;
+    }
     if (wonRef.current || !round || !roundWon(round, log)) return;
     wonRef.current = true;
     const stars = starsFor(round, log);
-    const clean = log.answers.every((a) => a.ok && a.tries <= 1 && !a.revealed);
+    // l'étoile 2 : les prédictions justes (pilote 2026-11-07), plus « questions justes du premier coup »
+    const clean = round.stars?.predict === false || predictionsRight(log);
     const few = round.stars?.maxTrials == null || log.verdicts.length <= round.stars.maxTrials;
     const all = recordStars(scopedStorage, lessonId, labId, round.id, stars);
     setBest(all[labId] ?? {});
@@ -59,7 +81,13 @@ export default function LabRounds({ lessonId, labId, rounds, onRoundWon, onVerdi
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [log]);
 
-  const go = (i) => { clearTimeout(winTimer.current); wonRef.current = false; setIndex(i); setLog(emptyLog()); setWin(null); };
+  const go = (i) => {
+    clearTimeout(winTimer.current); wonRef.current = false; setIndex(i); setLog(emptyLog()); setWin(null);
+    setPractice(false); setPracticeDone(false); setHelpOff(false);
+  };
+  const startPractice = () => { clearTimeout(winTimer.current); wonRef.current = false; setLog(emptyLog()); setPractice(true); setPracticeDone(false); };
+  const showHelp = !practice && !win && !helpOff && needsHelp(round, log);
+  const returnsToStep = Boolean(win && labJump?.stepIndexFor?.(win.roundId) >= 0);
   const nextIndex = rounds.findIndex((r, i) => i > index && roundUnlocked(rounds, i, best));
 
   const chipLabel = (r, i) => (r.free ? t('manipulation.rounds.free') : r.optional ? t('manipulation.rounds.challenge') : t('manipulation.rounds.round', { n: i + 1 }));
@@ -81,7 +109,7 @@ export default function LabRounds({ lessonId, labId, rounds, onRoundWon, onVerdi
               <button type="button" disabled={!open} onClick={() => go(i)} aria-current={current ? 'step' : undefined}
                 title={open ? r.title : t('manipulation.rounds.locked')} data-round={r.id} data-round-stars={got}
                 className={`flex min-h-[52px] items-center gap-2 rounded-2xl border-2 px-3 text-start transition-colors ${current ? 'border-indigo-600 bg-indigo-600 text-white shadow' : open ? 'border-indigo-200 bg-white text-indigo-950 hover:bg-indigo-50' : 'border-slate-200 bg-slate-50 text-slate-400'}`}>
-                <span className="text-lg" aria-hidden="true">{!open ? '🔒' : r.free ? '🏟️' : r.optional ? '⭐' : got ? '✓' : '⚽'}</span>
+                <span className="text-lg" aria-hidden="true">{!open ? '🔒' : r.free ? freeIcon : r.optional ? '⭐' : got ? '✓' : icon}</span>
                 <span className="leading-tight">
                   <span className="block text-sm font-black">{chipLabel(r, i)}</span>
                   {!r.free && <Stars n={got} size="text-xs" />}
@@ -93,7 +121,17 @@ export default function LabRounds({ lessonId, labId, rounds, onRoundWon, onVerdi
       </ol>
 
       <div className="relative">
-        {round && (
+        {round && practice && round.easier && (
+          // la manche d'entraînement : ses événements NE remontent PAS au module (d'autres nombres que la vraie manche)
+          <Manipulation
+            key={`${labId}:${round.id}:easy`}
+            {...round.easier.props}
+            levels={false}
+            onVerdict={(v) => setLog((l) => logEvent(l, 'verdict', v))}
+            onTrial={(e) => setLog((l) => logEvent(l, 'trial', e))}
+          />
+        )}
+        {round && !practice && (
           <Manipulation
             key={`${labId}:${round.id}`}
             {...round.props}
@@ -102,7 +140,41 @@ export default function LabRounds({ lessonId, labId, rounds, onRoundWon, onVerdi
             onTrial={(e) => { setLog((l) => logEvent(l, 'trial', e)); onTrial?.(e); }}
           />
         )}
+        {practice && (
+          <span className="pointer-events-none absolute start-3 top-3 z-30 rounded-full bg-amber-100 px-3 py-1 text-sm font-black text-amber-900 ring-1 ring-amber-300" data-round-practice>
+            🎯 {t('manipulation.rounds.practiceBadge')}
+          </span>
+        )}
         <AnimatePresence>
+          {/* une carte CLAIRE posée en bas du terrain — pas de fond sombre, rien ne bouge dans la page (conseil 2026-11-07) */}
+          {(showHelp || practiceDone) && (
+            <motion.div key={practiceDone ? 'practice-done' : 'help'} role="status"
+              data-round-help={practiceDone ? 'done' : 'offer'}
+              className="absolute inset-x-0 bottom-4 z-40 mx-auto flex w-fit max-w-[92%] flex-wrap items-center justify-center gap-3 rounded-3xl border-2 border-amber-300 bg-white px-6 py-4 shadow-2xl"
+              initial={reduceMotion ? false : { opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 24 }}>
+              <p className="text-xl font-black text-indigo-950">
+                {practiceDone ? t('manipulation.rounds.practiceWon') : t('manipulation.rounds.helpTitle')}
+                <span className="ms-2 text-base font-bold text-slate-600">{practiceDone ? '' : (round?.easier?.helpLine ?? t('manipulation.rounds.helpLine'))}</span>
+              </p>
+              {practiceDone ? (
+                <button type="button" onClick={() => go(index)} data-round-practice-back autoFocus
+                  className="min-h-[52px] rounded-2xl bg-emerald-600 px-6 text-lg font-black text-white shadow-[0_4px_0_0_#047857] hover:bg-emerald-700">
+                  {t('manipulation.rounds.practiceBack', { n: index + 1 })} <span aria-hidden="true">←</span>
+                </button>
+              ) : (
+                <>
+                  <button type="button" onClick={startPractice} data-round-help-go autoFocus
+                    className="min-h-[52px] rounded-2xl bg-amber-500 px-6 text-lg font-black text-white shadow-[0_4px_0_0_#B45309] hover:bg-amber-600">
+                    {t('manipulation.rounds.helpGo')} <span aria-hidden="true">←</span>
+                  </button>
+                  <button type="button" onClick={() => setHelpOff(true)} data-round-help-stay
+                    className="min-h-[52px] rounded-2xl px-4 text-base font-bold text-slate-600 ring-1 ring-slate-200 hover:bg-slate-50">
+                    {t('manipulation.rounds.helpStay')}
+                  </button>
+                </>
+              )}
+            </motion.div>
+          )}
           {win && (
             <motion.div key="round-win" data-round-win={win.roundId}
               className="absolute inset-0 z-40 flex items-center justify-center rounded-3xl bg-indigo-950/70 p-6 backdrop-blur-sm"
@@ -123,7 +195,14 @@ export default function LabRounds({ lessonId, labId, rounds, onRoundWon, onVerdi
                   ))}
                 </ul>
                 <div className="flex flex-wrap justify-center gap-3">
-                  {nextIndex >= 0 && (
+                  {/* la manche ouvre une étape du module : on y retourne d'abord (conseil 2026-11-07), la manche suivante passe après */}
+                  {returnsToStep && (
+                    <button type="button" onClick={() => { setWin(null); labJump.toStep(win.roundId); }} data-round-return autoFocus
+                      className="min-h-[56px] rounded-2xl bg-emerald-600 px-8 text-xl font-black text-white shadow-[0_4px_0_0_#047857] hover:bg-emerald-700">
+                      {t('manipulation.rounds.backToStep')} <span aria-hidden="true">←</span>
+                    </button>
+                  )}
+                  {nextIndex >= 0 && !returnsToStep && (
                     <button type="button" onClick={() => go(nextIndex)} data-round-next autoFocus
                       className="min-h-[56px] rounded-2xl bg-indigo-600 px-8 text-xl font-black text-white shadow-[0_4px_0_0_#3730A3] hover:bg-indigo-700">
                       {t('manipulation.rounds.next')} <span aria-hidden="true">←</span>

@@ -45,7 +45,7 @@ the literal `steps` » trap) were deleted on 2026-09-25 together with those less
 | Engine | shared: `common/knowledge/` + `common/knowledge/progressive/`, lazy-loaded — **no fork per lesson** |
 | Gates | `scripts/validate-lessons.mjs` (a lesson with `knowledgeMap: true` must declare the mode, own a `knowledgeGraph.js` and re-export it) and `progressive/lessonGraphs.test.js` (the A.14 invariants, for **every** lesson, automatically) |
 | Fallback | a lesson declaring the mode with a missing or invalid graph gets a graph **derived** from its items (A.9) — never a blank map; no current lesson uses it |
-| Escape hatch | `knowledgeMapMode` absent or `'legacy'` shows the stratified map (Part B) — refused by the gate for a lesson with `knowledgeMap: true` |
+| Escape hatch | **none since 2026-11-08** — the stratified presentation was deleted; `knowledgeMapMode` stays declared (the gate checks it) but the panel always shows the mind map |
 
 ## A.2 One knowledge model, two representations
 
@@ -82,6 +82,10 @@ The Mind Map is **visual, spatial and interactive**:
   layout as a recap (locked nodes as ghosts);
 - **the learner's progression** — the map never shows knowledge the learner has not reached (A.4).
 
+**The finger on the first card** (owner, 2026-11-08): in the explore view, while nothing is discovered yet, a hand 👇 bobs
+ABOVE the root card (« ابدأ هنا ») pointing at it — « tap here to see the explanation » without one more sentence
+(`GraphNode`, `data-kg-start-finger`). It leaves at the first tap; with reduced motion it stays still. Every lesson's map.
+
 The learner **discovers** the structure progressively — the root first, then each relationship
 leads to the next idea, with exactly one « التالي » node flashing to show the next step. The whole
 structure is never handed over before learning.
@@ -91,6 +95,14 @@ structure is never handed over before learning.
 **Central principle.** The map reveals knowledge **as the learner learns the corresponding part of
 the lesson**. It is not a static graph of the whole lesson shown before learning. And « available
 to learn » is not « mastered ».
+
+> **Exception — the OPEN map (owner, 2026-11-08, PILOT `qasim-adad-tabii` only, not yet a rule).** `knowledgeMapOpen: true` in
+> the lesson config shows EVERY knowledge item from the start, with no lock by محور, and the map opens on its « full » view
+> (exploration stays one tap away). Only the map's `items` open. What the student has really ESTABLISHED stays separate:
+> `useLessonKnowledge().learnedItems` (the progression-based list) is what the mission's tool coins (`useMission`) and
+> « أتوقّع القاعدة » (`usePredictGate › known`) read — otherwise every coin would be lit and every rule prediction skipped.
+> `unlockedModules` stays the real progression (the mastery overlay reads it), and the end-of-module memo still shows only its
+> own items (`KnowledgeSnapshot`, same rule as the teacher's view).
 
 Recommended progression, and how the implementation realises each step **with the existing
 progress system** (no second progression, no second mastery system):
@@ -313,6 +325,13 @@ The map follows `ARABIC_RTL_CONTRACT.md` with nothing specific to relax:
 
 ## A.12 Responsive and accessible
 
+**Readable without leaning in** (owner, 2026-11-08). In FULL-SCREEN mode the whole content (nodes, arrows, labels, context card,
+« المعارف مفصّلة ») is scaled by ONE factor from the panel width — `readZoom = clamp(width / 900, 1.15, 1.5)` (CSS `zoom`,
+`data-km-read-zoom`), like the mission player; the graph geometry does not change. The two tabs are `text-base` there. The
+graph never grows beyond two 250 px lanes (≈ 600 px), so the side CONTEXT card takes the rest: from 300 to 560 px
+(`ProgressiveKnowledgeMap`, `sideW`) instead of leaving an empty margin between the card and the graph. Drawer and column
+modes are unchanged.
+
 | | Behaviour |
 | --- | --- |
 | Desktop (map body ≥ 760 px: full-screen panel, wide column) | graph + context panel beside it; column mode has a fixed best width (« The column ») |
@@ -419,6 +438,16 @@ engine's UI strings go through i18n (`map.progressive.*`) — a French lesson wo
 ---
 
 # Part B — The cumulative map engine and the stratified presentation
+
+> **REMOVED 2026-11-08 (owner): the stratified PRESENTATION.** The panel now shows ONLY the interactive mind map (Part A) and its
+> linear reading « المعارف مفصّلة ». Deleted from `KnowledgeMap.jsx`: the « navigation » strata list (`StructuredView`,
+> `HighlightBand`, `KnowledgeRow`), the item and category detail screens (`ItemDetailView`, `CategoryDetailView`,
+> `NavigationView`) and the stratified print sheet (`PrintView`, `PrintCard`, `PrintHero`); print now always uses
+> `LinearKnowledgeView variant="print"`. `useProgressiveGraph` no longer reads `knowledgeMapMode`: every lesson gets its
+> `KNOWLEDGE_GRAPH` or the graph derived from its items. KEPT (still used): the engine below (items, cumulative state, bricks,
+> the panel and its geometry), `CompleteView` + `knowledgeStructure.js` (the end-of-module / final synthesis cards,
+> `KnowledgeSnapshot`) and the « بطاقتك » strip. Where this Part describes the stratified list as what the panel shows, it is
+> historical.
 
 > Everything below « Purpose » describes the engine both layers share (items, cumulative state,
 > module completion, bricks, the panel, its drawer / column / full-screen geometry, print) and the

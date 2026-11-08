@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import LessonClassroomShell from './classroom/LessonClassroomShell';
 import LessonAccessGate from './components/LessonAccessGate';
 import { LazyLessonKnowledgeProvider } from './knowledge/LazyKnowledgeProvider';
+import ReturnToLessonButton from './mission/ReturnToLessonButton';
 import LessonNotebookAnchor from './notebook/LessonNotebookAnchor';
 
 /**
@@ -43,6 +44,8 @@ export function LessonPageFrame({ config, Component, module = null, loadKnowledg
         <LazyLessonKnowledgeProvider load={loadKnowledge} lessonId={config.id} printTitle={config.title} printSubject={printSubject}>
           <Component />
           <LessonNotebookAnchor config={config} module={module} />
+          {/* Révision d'un prérequis ouverte depuis « راجع قبل أن تنطلق » : UN clic ramène à la leçon de départ */}
+          <ReturnToLessonButton />
         </LazyLessonKnowledgeProvider>
       </Suspense>
     </LessonAccessGate>

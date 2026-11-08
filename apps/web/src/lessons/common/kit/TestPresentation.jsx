@@ -259,7 +259,6 @@ export default function TestPresentation({
   // déclaration l'emporte sur celle, générique, de ModuleLayout.
   useClassroomStage({ title, onPrevious: nav.onPrevious, onNext: nav.onNext, slot, priority: 2 }, presenting);
 
-  const state = states[current];
   const atLast = !atOverview && current === questions.length - 1;
 
   return (

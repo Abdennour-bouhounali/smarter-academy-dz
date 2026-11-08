@@ -2,13 +2,12 @@ import React from 'react';
 import { PrerequisiteDiagnostic } from '../../../../../../common/kit';
 import { prepQuestion } from '../../_unit/prepDiagnostic';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { PREP_ITEMS } from '../content/textbook';
+import { PREP_LADDER } from '../content/prep';
 
 /**
- * Module 0 — أستعدّ (p. 7, items 1–6). Les six affirmations sont celles du manuel ;
- * l'élève dit vrai/faux et lit la justification (le manuel demande « برّر إجابتك »).
- * Diagnostic des acquis antérieurs, JAMAIS bloquant : aucune `assessment`, la
- * suite est toujours ouverte. `id` et `requires` restent littéraux (audit).
+ * Module 0 — أستعدّ : DIX affirmations de la plateforme (content/prep.js › PREP_LADDER), de très facile à plus difficile, les
+ * deux كفاءات en alternance (pilote, propriétaire 2026-11-07). Les six énoncés du manuel (p. 7) restent dans textbook.js comme
+ * source. Diagnostic des acquis antérieurs, JAMAIS bloquant : aucune `assessment`. `id` et `requires` restent littéraux (audit).
  */
 export default function Module00Astaidd() {
   return (
@@ -17,14 +16,15 @@ export default function Module00Astaidd() {
       navLinks={getNavLinks(0)}
       moduleTitle="🎯 أستعدّ"
       moduleSubtitle="أصحيح أم خاطئ؟ برّر إجابتك. تشخيص قصير لا يمنعك من متابعة الدرس."
-      estimatedTime="6 دقائق"
+      estimatedTime="8 دقائق"
       brief={{
-        tag: 'أستعدّ', title: 'ست عبارات قبل الانطلاق', tone: 'teal',
+        tag: 'أستعدّ', title: 'عشر عبارات قبل الانطلاق', tone: 'teal',
         body: <p>ليست اختبارًا: الغاية أن تعرف أنت ما ينبغي أن تراجعه قبل أن تبدأ.</p>,
       }}
       skills={{
-        qisma: { label: 'القسمة الإقليدية', emoji: '➗' },
-        qawaid: { label: 'قواعد قابلية القسمة', emoji: '🔎' },
+        // `lesson` : la leçon à réviser quand cette كفاءة est fragile (carte « راجع » prioritaire de la revue)
+        qisma: { label: 'القسمة الإقليدية', emoji: '➗', lesson: 'qisma-iqlidiya-baqi' },
+        qawaid: { label: 'قواعد قابلية القسمة', emoji: '🔎', lesson: 'qawaid-qabiliyat-qisma' },
       }}
       levels={{
         fragile: { emoji: '🌱', title: 'مكتسباتك لا تزال هشّة.', body: 'لا بأس: النشاط الأول يبدأ من وضعية ملموسة ولا يفترض شيئًا.', advice: 'راجع كتابة القسمة الإقليدية a = b × q + r مع r < b.', cta: 'أبدأ الدرس على كل حال', tone: 'from-emerald-500 to-teal-500' },
@@ -32,12 +32,16 @@ export default function Module00Astaidd() {
         pret: { emoji: '🚀', title: 'أنت جاهز!', body: 'القسمة الإقليدية وقواعد قابلية القسمة متحكَّم فيها.', advice: 'حاول حلّ النشاط 1 دون مساعدة.', cta: 'أنا جاهز!', tone: 'from-cyan-500 to-blue-500' },
       }}
       questions={[
-        { ...prepQuestion(PREP_ITEMS[0], 2), id: 'prep-1', requires: ['qisma-iqlidiya'] },
-        { ...prepQuestion(PREP_ITEMS[1], 2), id: 'prep-2', requires: ['qisma-iqlidiya'] },
-        { ...prepQuestion(PREP_ITEMS[2], 2), id: 'prep-3', requires: ['qisma-iqlidiya'] },
-        { ...prepQuestion(PREP_ITEMS[3]), id: 'prep-4', requires: ['qawaid-qabiliyat-al-qisma'] },
-        { ...prepQuestion(PREP_ITEMS[4]), id: 'prep-5', requires: ['qawaid-qabiliyat-al-qisma'] },
-        { ...prepQuestion(PREP_ITEMS[5]), id: 'prep-6', requires: ['qawaid-qabiliyat-al-qisma'] },
+        { ...prepQuestion(PREP_LADDER[0]), id: 'prep-1', requires: ['qisma-iqlidiya'] },
+        { ...prepQuestion(PREP_LADDER[1]), id: 'prep-2', requires: ['qawaid-qabiliyat-al-qisma'] },
+        { ...prepQuestion(PREP_LADDER[2]), id: 'prep-3', requires: ['qisma-iqlidiya'] },
+        { ...prepQuestion(PREP_LADDER[3]), id: 'prep-4', requires: ['qawaid-qabiliyat-al-qisma'] },
+        { ...prepQuestion(PREP_LADDER[4]), id: 'prep-5', requires: ['qisma-iqlidiya'] },
+        { ...prepQuestion(PREP_LADDER[5]), id: 'prep-6', requires: ['qawaid-qabiliyat-al-qisma'] },
+        { ...prepQuestion(PREP_LADDER[6]), id: 'prep-7', requires: ['qisma-iqlidiya'] },
+        { ...prepQuestion(PREP_LADDER[7]), id: 'prep-8', requires: ['qawaid-qabiliyat-al-qisma'] },
+        { ...prepQuestion(PREP_LADDER[8]), id: 'prep-9', requires: ['qisma-iqlidiya'] },
+        { ...prepQuestion(PREP_LADDER[9]), id: 'prep-10', requires: ['qawaid-qabiliyat-al-qisma'] },
       ]}
     />
   );

@@ -48,6 +48,7 @@ use App\Http\Controllers\LearningProfileController;
 use App\Http\Controllers\LegalController;
 use App\Http\Controllers\LessonFinalTestAttemptController;
 use App\Http\Controllers\LessonProgressController;
+use App\Http\Controllers\StudentLessonAnswersController;
 use App\Http\Controllers\MadarController;
 use App\Http\Controllers\MathLabDocumentController;
 use App\Http\Controllers\MathLabFileController;
@@ -250,6 +251,9 @@ Route::prefix('v1')->group(function () {
             Route::middleware('learner')->group(function () {
                 Route::post('/lessons/{lessonCode}/evidence', [LearningEvidenceController::class, 'store']);
                 Route::put('/lessons/{lessonCode}/progress', [LessonProgressController::class, 'upsert']);
+                // les réponses de l'élève pendant la leçon : à LUI seul (StudentLessonAnswersController, pilote 2026-11-07)
+                Route::get('/lessons/{lessonCode}/answers', [StudentLessonAnswersController::class, 'show']);
+                Route::put('/lessons/{lessonCode}/answers', [StudentLessonAnswersController::class, 'upsert']);
                 Route::put('/lessons/{lessonCode}/final-test-attempt', [LessonFinalTestAttemptController::class, 'store']);
                 Route::delete('/lessons/{lessonCode}/final-test-attempt', [LessonFinalTestAttemptController::class, 'destroy']);
 

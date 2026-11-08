@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  emptyLog, logEvent, conditionMet, roundWon, starsFor, roundUnlocked, resumeRound, readStars, recordStars, totalStars, starsKey,
+  allPairsSeen, needsHelp, missesOf, emptyLog, logEvent, conditionMet, roundWon, starsFor, roundUnlocked, resumeRound, readStars, recordStars, totalStars, starsKey,
 } from './roundsModel';
 
 const play = (events) => events.reduce((log, [kind, ev]) => logEvent(log, kind, ev), emptyLog());
@@ -29,14 +29,21 @@ describe('round goals — measured from what the lab reports', () => {
   });
 });
 
-describe('stars — 1 for the win, 1 for first-try answers, 1 for few trials', () => {
-  it('gives 3 stars to a clean, economical round', () => {
-    expect(starsFor(R1, play([verdict(3, true), answer(true), answer(true), done('first')]))).toBe(3);
+describe('stars — 1 for the win, 1 for right predictions, 1 for few trials (pilote 2026-11-07 : le jeu, plus la frappe)', () => {
+  const predict = (ok) => ['trial', { tk: 'predict', ok }];
+  it('gives 3 stars to a won round with right predictions and few trials', () => {
+    expect(starsFor(R1, play([predict(true), verdict(3, true), answer(true), done('first')]))).toBe(3);
   });
-  it('drops a star for a wrong or revealed answer, and one for too many trials', () => {
-    expect(starsFor(R1, play([verdict(3, true), answer(false), answer(true, 2), done('first')]))).toBe(2);
-    expect(starsFor(R1, play([verdict(4, false), verdict(3, true), answer(true), done('first')]))).toBe(2);
-    expect(starsFor(R1, play([verdict(4, false), verdict(3, true), answer(true, 1, true), done('first')]))).toBe(1);
+  it('a wrong answer to a question no longer costs a star — a wrong prediction does', () => {
+    expect(starsFor(R1, play([predict(true), verdict(3, true), answer(false), answer(true, 2), done('first')]))).toBe(3);
+    expect(starsFor(R1, play([predict(false), verdict(3, true), answer(true), done('first')]))).toBe(2);
+  });
+  it('no prediction made: no prediction star; too many trials: one star less', () => {
+    expect(starsFor(R1, play([verdict(3, true), done('first')]))).toBe(2);
+    expect(starsFor(R1, play([predict(true), verdict(4, false), verdict(3, true), done('first')]))).toBe(2);
+  });
+  it('a round that cannot hold a prediction keeps the star (stars.predict false)', () => {
+    expect(starsFor({ ...R1, stars: { ...R1.stars, predict: false } }, play([verdict(3, true), done('first')]))).toBe(3);
   });
   it('gives no star to a round not won', () => {
     expect(starsFor(R3, play([verdict(5, false)]))).toBe(0);
@@ -68,5 +75,66 @@ describe('best stars — per student, never lost by replaying', () => {
     expect(totalStars(readStars(s, 'l1'))).toBe(5);
     s.setItem(starsKey('l2'), '{bad');
     expect(readStars(s, 'l2')).toEqual({});
+  });
+});
+
+describe('the second chance « لا بأس — جرّب أصغر » (pilot 2026-11-08)', () => {
+  const hard = { id: 'r3', goal: [{ checkpoint: 'contrast' }], stars: { maxTrials: 3 }, easier: { goal: [{ inexact: true }, { exact: 6 }] } };
+  const plain = { id: 'r1', goal: [{ checkpoint: 'first' }] };
+  const ev = (log, kind, e) => logEvent(log, kind, e);
+  it('is never offered to a student who succeeds, nor on a round without an easier version', () => {
+    let log = emptyLog();
+    log = ev(log, 'trial', { tk: 'predict', ok: true });
+    log = ev(log, 'trial', { tk: 'checkpoint', ok: true, tries: 1 });
+    expect(needsHelp(hard, log)).toBe(false);
+    log = ev(ev(log, 'trial', { tk: 'predict', ok: false }), 'trial', { tk: 'predict', ok: false });
+    expect(needsHelp(plain, log)).toBe(false);
+  });
+  it('one miss is noise; two misses (prediction or question) offer the smaller round', () => {
+    let log = ev(emptyLog(), 'trial', { tk: 'predict', ok: false });
+    expect(missesOf(log)).toBe(1);
+    expect(needsHelp(hard, log)).toBe(false);
+    log = ev(log, 'trial', { tk: 'checkpoint', ok: true, tries: 2 });
+    expect(needsHelp(hard, log)).toBe(true);
+  });
+  it('many trials without winning also offer it, and a won round never does', () => {
+    let log = emptyLog();
+    for (let k = 0; k < 5; k += 1) log = ev(log, 'verdict', { groups: 5, exact: false });
+    expect(needsHelp(hard, log)).toBe(true);
+    log = ev(log, 'trial', { tk: 'checkpoint-done', id: 'contrast' });
+    expect(needsHelp(hard, log)).toBe(false);
+  });
+  it('the practice goal « saw someone left out, then an exact split » is judged on the pitch', () => {
+    let log = ev(emptyLog(), 'verdict', { groups: 6, exact: true });
+    expect(roundWon(hard.easier, log)).toBe(false);
+    log = ev(log, 'verdict', { groups: 5, exact: false });
+    expect(roundWon(hard.easier, log)).toBe(true);
+  });
+});
+
+describe('allPairs — the factor-pairs goal « every perfect rectangle of n books seen »', () => {
+  const win = (n, ds) => ds.reduce((log, d) => logEvent(log, 'verdict', { groups: d, exact: n % d === 0 }), emptyLog());
+  it('one side of each pair is enough (12: 1, 2, 3 — or their partners 12, 6, 4)', () => {
+    expect(allPairsSeen(12, new Set([1, 2, 3]))).toBe(true);
+    expect(allPairsSeen(12, new Set([12, 6, 4]))).toBe(true);
+    expect(allPairsSeen(12, new Set([1, 2]))).toBe(false);
+  });
+  it('a square counts once (36: 1, 2, 3, 4, 6) and wrong widths never count', () => {
+    expect(allPairsSeen(36, new Set([1, 2, 3, 4, 6]))).toBe(true);
+    expect(allPairsSeen(36, new Set([1, 2, 3, 4]))).toBe(false);
+    expect(roundWon({ goal: [{ allPairs: 36 }] }, win(36, [1, 2, 3, 4, 5, 6]))).toBe(true);
+    expect(roundWon({ goal: [{ allPairs: 36 }] }, win(36, [1, 2, 3, 4, 5]))).toBe(false);
+  });
+  it('a prime has the single pair 1 × p', () => {
+    expect(allPairsSeen(17, new Set([1]))).toBe(true);
+    expect(allPairsSeen(17, new Set([2, 3]))).toBe(false);
+  });
+});
+
+describe('anyExact — « some perfect split was seen »', () => {
+  it('needs one exact verdict, whatever the width', () => {
+    const miss = logEvent(emptyLog(), 'verdict', { groups: 5, exact: false });
+    expect(conditionMet({ anyExact: true }, miss)).toBe(false);
+    expect(conditionMet({ anyExact: true }, logEvent(miss, 'verdict', { groups: 6, exact: true }))).toBe(true);
   });
 });

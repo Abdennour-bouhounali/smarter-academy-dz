@@ -5,9 +5,10 @@ import MathLabel from '../components/MathLabel';
 import { mathToPlain } from '../../../utils/mathPlain';
 import { useMission } from './useMission';
 import { stationLabel } from './missionModel';
-import LibraryScene from './LibraryScene';
+import MissionScene from './MissionScene';
 import MissionMap from './MissionMap';
 import MissionDialog from './MissionDialog';
+import ReviseFirst from './ReviseFirst';
 import PrerequisiteLessonChips from '../components/PrerequisiteLessonChips';
 import { isPracticeActive } from '../../../features/practice/practiceCapability';
 import PracticeEntryCard from '../../../features/practice/PracticeEntryCard';
@@ -32,13 +33,15 @@ export default function MissionHome({ config, basePath }) {
   if (!state.opened || replay) {
     return (
       <section className="mx-auto flex min-h-[70vh] max-w-3xl flex-col items-center justify-center gap-6 text-center" data-mission-opening>
-        <LibraryScene fill={0} className="w-full max-w-xl drop-shadow-sm" label={mathToPlain(mission.opening.text)} />
+        <MissionScene scene={mission.scene} fill={0} className="w-full max-w-xl drop-shadow-sm" label={mathToPlain(mission.opening.text)} />
         <p className="text-2xl font-extrabold leading-relaxed text-slate-900"><MathLabel>{mission.opening.text}</MathLabel></p>
         <button type="button" data-mission-start
           onClick={() => { update({ opened: true }); setReplay(false); go(); }}
           className="min-h-[56px] rounded-2xl bg-indigo-600 px-8 text-lg font-black text-white shadow-[0_4px_0_0_#3730A3] hover:bg-indigo-700 active:translate-y-0.5">
           {mission.opening.cta} <span aria-hidden="true">←</span>
         </button>
+        {/* La PREMIÈRE vue dit aussi quoi réviser avant de partir (propriétaire, 2026-11-07) */}
+        <ReviseFirst lessonId={config.id} title={config.title} basePath={basePath} className="w-full" />
       </section>
     );
   }
@@ -46,7 +49,7 @@ export default function MissionHome({ config, basePath }) {
   return (
     <section className="space-y-6" data-mission-home>
       <div className="flex flex-wrap items-center gap-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-        <LibraryScene fill={fill} className="w-64 shrink-0" label={mission.title} />
+        <MissionScene scene={mission.scene} fill={fill} className="w-64 shrink-0" label={mission.title} />
         <div className="min-w-0 flex-1 space-y-3">
           <p className="flex items-center gap-3 text-xs font-black uppercase tracking-wide text-indigo-500">📚 {t('mission.tag')}
             <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-sm text-amber-800" data-mission-stars={stars}>⭐ <span dir="ltr">{stars}</span></span>
@@ -71,9 +74,10 @@ export default function MissionHome({ config, basePath }) {
           )}
         </div>
       </div>
+      <ReviseFirst lessonId={config.id} title={config.title} basePath={basePath} />
       <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
         <h2 className="mb-5 text-lg font-black text-slate-900">{t('mission.mapTitle')}</h2>
-        <MissionMap stations={stations} basePath={basePath} here={resume?.number} />
+        <MissionMap lessonId={config.id} stations={stations} basePath={basePath} here={resume?.number} />
       </div>
       {/* Les تمارين de la leçon : dans la mission, l'élève n'ayant plus accès à l'ancienne page du درس. */}
       {isPracticeActive(config.id) && <PracticeEntryCard lessonId={config.id} />}

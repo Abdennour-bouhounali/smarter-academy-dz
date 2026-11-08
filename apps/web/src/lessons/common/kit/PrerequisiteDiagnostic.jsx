@@ -12,7 +12,16 @@ import { revealAll, revealOne } from './testPresentation';
 import { diagnosticAdviceLevel } from './diagnosticLevel';
 import ReviewLinks from './ReviewLinks';
 import { MoreToggle } from '../components/StudentFocus';
-import { useInMissionPlayer } from '../mission/missionPlayerContext';
+import { useInMissionPlayer, useAutoAdvance } from '../mission/missionPlayerContext';
+import TimedNotice from '../mission/TimedNotice';
+import MissionDialog from '../mission/MissionDialog';
+import ReviseFirst from '../mission/ReviseFirst';
+import DiagnosticPlayQuestion, { SIGNAL_MS } from './DiagnosticPlayQuestion';
+import { playSfx } from '../utils/playEffect';
+import { isMissionView } from '../mission/missionModel';
+import { useLearningViewer } from '../../../features/learning/learningViewer';
+import { useClassroomMode } from '../classroom/ClassroomContext';
+import { getLoadedLessonConfig } from '../../registry';
 
 /**
  * Lesson kit — moteur du module 0 « Mission de départ » (diagnostic des
@@ -220,6 +229,101 @@ function DiagnosticResult({ lessonId, score, maxScore, skills, skillScores, leve
   );
 }
 
+/**
+ * LA REVUE EN UN ÉCRAN (lecteur, propriétaire 2026-11-07 : « plus simple que السابق / واصل ») — au lieu de 10 écrans : le score,
+ * UN cercle par question (✓ vert / ✗ rouge) — un clic ouvre SA correction dans une fenêtre, ‹ › y passent d'une correction à
+ * l'autre —, les كفاءات en deux lignes, le conseil, les leçons à réviser (même carte que la première vue, retour en un clic) et
+ * « واصل ». `data-paging-keep` : le découpage du lecteur ne l'ouvre pas en écrans séparés.
+ */
+function DiagnosticReviewCompact({ lessonId, lessonTitle, basePath, questions, answers, unsure = {}, skills, skillScores, score, maxScore, levels, onContinue, onRedo }) {
+  const { t } = useTranslation('lesson');
+  const [open, setOpen] = useState(null); // index de la question ouverte
+  const text = (meta, field) => meta[field] ?? (meta[`${field}Key`] ? t(meta[`${field}Key`]) : '');
+  const meta = levels[diagnosticAdviceLevel(score, maxScore)];
+  const oks = questions.map((q) => isCorrectFor(q, answers[q.id]));
+  // juste mais « غير متأكّد » : ✓؟ — la كفاءة n'est pas solide
+  const doubts = questions.map((q, i) => oks[i] && Boolean(unsure[q.id]));
+  // LA كفاءة la plus fragile (une réponse incertaine compte pour une demi-erreur) : SA leçon est la carte « راجع » prioritaire
+  const weakness = Object.entries(skillScores).map(([key, sc]) => [key, (sc.score - 0.5 * (sc.unsure ?? 0)) / sc.max]);
+  const weakest = weakness.reduce((min, cur) => (cur[1] < min[1] ? cur : min), [null, 1]);
+  const priority = weakest[0] && weakest[1] < 1 ? skills[weakest[0]]?.lesson : null;
+  const q = open == null ? null : questions[open];
+  return (
+    // deux colonnes : le résultat | la suite — tout tient à la taille commune de la leçon
+    <div className="grid items-start gap-6 lg:grid-cols-2" data-paging-keep data-diagnostic-review>
+      <div className="space-y-5">
+      <div className={`flex items-center gap-5 rounded-3xl bg-gradient-to-br ${meta.tone} px-6 py-4 text-white`}>
+        <span className="text-4xl" aria-hidden="true">{meta.emoji}</span>
+        <span dir="ltr" className="font-space text-3xl font-extrabold">{score} / {maxScore}</span>
+        <span className="text-lg font-bold">{text(meta, 'title')}</span>
+      </div>
+
+      <div className="space-y-2">
+        <p className="text-sm font-black text-slate-700">{t('diagnostic.yourAnswers')}</p>
+        <ol className="flex flex-wrap gap-3" data-review-circles>
+          {questions.map((qq, i) => (
+            <li key={qq.id}>
+              <button type="button" onClick={() => setOpen(i)} data-review-circle={i + 1} data-review-ok={oks[i] ? 'true' : 'false'} data-review-unsure={doubts[i] ? 'true' : undefined}
+                aria-label={`${t('question.label')} ${i + 1} — ${oks[i] ? t('diagnostic.reviewRight') : t('diagnostic.reviewWrong')}`}
+                className={`flex h-14 w-14 flex-col items-center justify-center rounded-full border-2 font-black transition-transform hover:scale-105 ${doubts[i] ? 'border-amber-400 bg-amber-50 text-amber-700' : oks[i] ? 'border-emerald-400 bg-emerald-50 text-emerald-700' : 'border-rose-400 bg-rose-50 text-rose-700'}`}>
+                <span dir="ltr" className="text-base leading-none">{i + 1}</span>
+                <span className="text-sm leading-none" aria-hidden="true">{doubts[i] ? '✓؟' : oks[i] ? '✓' : '✗'}</span>
+              </button>
+            </li>
+          ))}
+        </ol>
+        <p className="text-xs text-slate-500">{t('diagnostic.reviewHintTap')}</p>
+      </div>
+
+      {Object.keys(skillScores).length > 1 && (
+        <ul className="flex flex-wrap gap-2">
+          {Object.entries(skillScores).map(([key, sc]) => (
+            <li key={key} className={`rounded-full px-3 py-1 text-sm font-bold ${sc.score === sc.max && !sc.unsure ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
+              {skills[key].emoji} {skills[key].label} · <span dir="ltr">{sc.score} / {sc.max}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <p className="rounded-2xl bg-sky-50 px-4 py-3 text-sm text-sky-900">💡 <strong>{t('diagnostic.yourAdvice')}:</strong> {text(meta, 'body')} {text(meta, 'advice')}</p>
+      </div>
+
+      <div className="space-y-5">
+      <ReviseFirst lessonId={lessonId} title={lessonTitle} basePath={basePath} columns={1} priority={priority} />
+
+      <div className="flex gap-3">
+        <button type="button" onClick={onContinue} className="min-h-[52px] flex-1 rounded-2xl bg-teal-600 px-6 text-lg font-black text-white hover:bg-teal-700">🚀 {text(meta, 'cta')}</button>
+        <button type="button" onClick={onRedo} className="min-h-[52px] rounded-2xl border-2 border-slate-300 bg-white px-5 font-bold text-slate-700 hover:border-slate-500">{t('diagnostic.redoDiagnostic')}</button>
+      </div>
+      </div>
+
+      {q && (
+        <MissionDialog label={`${t('question.label')} ${open + 1}`} onClose={() => setOpen(null)}>
+          <div className="space-y-4 pt-6 text-start" data-review-dialog={open + 1}>
+            <p className={`flex items-center gap-2 text-lg font-black ${oks[open] ? 'text-emerald-700' : 'text-rose-700'}`}>
+              {oks[open] ? '✓' : '✗'} {skills[q.skill]?.emoji} {t('question.label')} <span dir="ltr">{open + 1} / {questions.length}</span>
+            </p>
+            <div className="text-lg leading-relaxed text-slate-800">{q.prompt}</div>
+            <DiagnosticQuestionReview q={q} pick={answers[q.id]} ok={oks[open]} />
+            <div className="flex items-center justify-between border-t border-slate-200 pt-3">
+              <button type="button" disabled={open === 0} onClick={() => setOpen(open - 1)} data-review-prev
+                className="min-h-[44px] rounded-xl px-4 font-bold text-indigo-700 hover:bg-indigo-50 disabled:opacity-30">→ {t('diagnostic.reviewPrev')}</button>
+              <button type="button" disabled={open === questions.length - 1} onClick={() => setOpen(open + 1)} data-review-next
+                className="min-h-[44px] rounded-xl px-4 font-bold text-indigo-700 hover:bg-indigo-50 disabled:opacity-30">{t('diagnostic.reviewNext')} ←</button>
+            </div>
+          </div>
+        </MissionDialog>
+      )}
+    </div>
+  );
+}
+
+/** Lu SOUS le lecteur (ce composant le rend plus bas) : avance quand une réponse de plus est donnée. */
+function AutoAdvance({ count, delayMs }) {
+  useAutoAdvance(count, delayMs);
+  return null;
+}
+
 export default function PrerequisiteDiagnostic({
   ctx,
   navLinks,
@@ -238,7 +342,17 @@ export default function PrerequisiteDiagnostic({
   const { result: savedResult, save: saveResult, redo: redoResult } = usePrerequisiteDiagnostic(ctx.lessonId);
 
   const [answers, setAnswers] = useState({});
-  const inPlayer = useInMissionPlayer();
+  // Lecteur : « 🤔 غير متأكّد » coché avant de répondre — une réponse juste mais incertaine marque aussi la كفاءة comme fragile
+  const [unsure, setUnsure] = useState({});
+  // « Dans le lecteur ? » se décide ICI, comme ContentModule : ce composant rend ModuleLayout, qui rend le lecteur PLUS BAS —
+  // le contexte du lecteur n'existe pas encore à ce niveau (useInMissionPlayer y valait toujours false).
+  const viewer = useLearningViewer();
+  const classroomMode = useClassroomMode();
+  const inPlayer = useInMissionPlayer()
+    || (Boolean(getLoadedLessonConfig(ctx.lessonId)?.mission) && isMissionView(ctx.studentView, viewer, classroomMode));
+  // Lecteur : à l'entrée, un message de 5 s (TimedNotice) au lieu de la carte d'introduction — puis la question 1, directement
+  // (propriétaire, 2026-11-07).
+  const [notice, setNotice] = useState(true);
   const [submitted, setSubmitted] = useState(false);
   // CE QUI EST RÉVÉLÉ, question par question. Uniquement en présentation :
   // sur la page, le diagnostic garde son unique « عرض نتيجتي », et `submitted`
@@ -253,6 +367,7 @@ export default function PrerequisiteDiagnostic({
     if (hydratedFromSaved.current || !savedResult || submitted) return;
     hydratedFromSaved.current = true;
     setAnswers(savedResult.answers || {});
+    setUnsure(savedResult.unsure || {});
     setSubmitted(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [savedResult]);
@@ -264,6 +379,8 @@ export default function PrerequisiteDiagnostic({
     acc[key] = {
       score: qs.reduce((s, q) => s + (isCorrectFor(q, answers[q.id]) ? q.points : 0), 0),
       max: qs.reduce((s, q) => s + q.points, 0),
+      // réponses JUSTES mais « غير متأكّد » : la كفاءة n'est pas solide pour autant
+      unsure: qs.filter((q) => unsure[q.id] && isCorrectFor(q, answers[q.id])).length,
     };
     return acc;
   }, {});
@@ -271,20 +388,33 @@ export default function PrerequisiteDiagnostic({
   function handleSubmit() {
     if (submitted) return;
     setSubmitted(true);
+    playSfx('step');
     const adviceLevel = diagnosticAdviceLevel(score, maxScore);
-    saveResult({ score, maxScore, skills: skillScores, adviceLevel, answers });
+    saveResult({ score, maxScore, skills: skillScores, adviceLevel, answers, unsure });
     awardXP({ moduleId: 'L00', exerciseId: 'diagnostic', amount: xpAmount });
   }
+
+  // Lecteur : la DERNIÈRE réponse donnée, le résultat s'affiche seul (le délai laisse voir le choix fait).
+  useEffect(() => {
+    if (!inPlayer || submitted || !allAnswered) return undefined;
+    // le signal de la dernière réponse se voit d'abord, puis le résultat
+    const timer = setTimeout(handleSubmit, SIGNAL_MS + 300);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inPlayer, submitted, allAnswered, answers]);
 
   function handleRedo() {
     redoResult();
     hydratedFromSaved.current = true;
     setAnswers({});
+    setUnsure({});
     setSubmitted(false);
     setRevealed({});
   }
 
-  const pickAnswer = (id, v) => setAnswers((a) => ({ ...a, [id]: v }));
+  // Son à la réponse (propriétaire, 2026-11-07) : NEUTRE — le diagnostic ne corrige rien avant le résultat, un « juste / faux »
+  // sonore le trahirait. Muet tant que « الصوت » est coupé (playSfx lit la préférence au moment de jouer).
+  const pickAnswer = (id, v) => { playSfx('pop'); setAnswers((a) => ({ ...a, [id]: v })); };
 
   return (
     <ModuleLayout
@@ -349,9 +479,14 @@ export default function PrerequisiteDiagnostic({
         />
       ) : (
       <div className="sa-page py-8 flex-1 space-y-8">
+        {/* Lecteur : une réponse donnée → la question suivante vient seule (propriétaire, 2026-11-07) */}
+        {inPlayer && !submitted && <AutoAdvance count={questions.filter((q) => answers[q.id] != null).length} delayMs={SIGNAL_MS + 200} />}
         <AnimatePresence mode="wait">
       {!submitted && (
         <motion.div key="quiz" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-6">
+          {inPlayer ? (
+            notice && <TimedNotice ms={5000} onDone={() => setNotice(false)}>{t('diagnostic.playIntro')}</TimedNotice>
+          ) : (
           <MissionBrief
             tag={brief?.tag ?? t('diagnostic.defaultBriefTag')}
             title={brief?.title ?? t('diagnostic.defaultBriefTitle')}
@@ -359,6 +494,7 @@ export default function PrerequisiteDiagnostic({
           >
             {brief?.body}
           </MissionBrief>
+          )}
 
           {/* Lecteur de mission : pas de cartes de suivi par كفاءة pendant le test (propriétaire, 2026-11-04 : « pas besoin ») —
               le résultat les rapporte après l'envoi. */}
@@ -400,7 +536,12 @@ export default function PrerequisiteDiagnostic({
             </span>
           </div>
 
-          {questions.map((q, i) => (
+          {questions.map((q, i) => (inPlayer ? (
+            // Lecteur : la question jouée — doute, se raviser 1 s, signal ✓ / ↻ (jamais la réponse), réponse verrouillée
+            <DiagnosticPlayQuestion key={q.id} q={q} index={i} total={questions.length} skill={skills[q.skill]}
+              pick={answers[q.id]} unsure={Boolean(unsure[q.id])} isCorrect={isCorrectFor}
+              onCommit={(v, doubt) => { setAnswers((a) => ({ ...a, [q.id]: v })); if (doubt) setUnsure((u) => ({ ...u, [q.id]: true })); }} />
+          ) : (
             <motion.div
               key={q.id}
               initial={{ opacity: 0, y: 12 }}
@@ -419,27 +560,37 @@ export default function PrerequisiteDiagnostic({
               {q.type === 'custom' ? (
                 q.render({
                   pick: answers[q.id] ?? null,
-                  onPick: (v) => setAnswers((a) => ({ ...a, [q.id]: v })),
+                  onPick: (v) => pickAnswer(q.id, v),
                   revealed: false,
                 })
               ) : (
                 <ChoiceGrid
                   options={q.options}
                   selected={answers[q.id] ?? null}
-                  onSelect={(idx) => setAnswers((a) => ({ ...a, [q.id]: idx }))}
+                  onSelect={(idx) => pickAnswer(q.id, idx)}
                   cols={q.cols || 2}
                 />
               )}
             </motion.div>
-          ))}
+          )))}
 
+          {/* Lecteur : pas de « عرض نتيجتي » — le résultat vient seul après la dernière réponse (propriétaire, 2026-11-07) */}
+          {!inPlayer && (
           <ValidateButton onClick={handleSubmit} disabled={!allAnswered} tone="teal">
             {t('diagnostic.seeMyResult')}
           </ValidateButton>
+          )}
         </motion.div>
       )}
 
-      {submitted && (
+      {submitted && inPlayer && (
+        <motion.div key="result" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <DiagnosticReviewCompact lessonId={ctx.lessonId} lessonTitle={ctx.courseTitle} basePath={ctx.coursePath}
+            questions={questions} answers={answers} unsure={unsure} skills={skills} skillScores={skillScores} score={score} maxScore={maxScore}
+            levels={levels} onContinue={() => navigate(navLinks.nextLink)} onRedo={handleRedo} />
+        </motion.div>
+      )}
+      {submitted && !inPlayer && (
         <motion.div key="result" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-6">
           <div className="space-y-4">
             <h2 className="text-lg font-space font-bold text-slate-800 flex items-center gap-2">

@@ -50,7 +50,8 @@ function resolveBlocks(root, deep = false) {
   let host = root;
   for (let depth = 0; depth < (deep ? 6 : 2); depth += 1) {
     const kids = host.children;
-    if (kids.length === 1 && kids[0].tagName === 'DIV' && (deep || kids[0].children.length > 1)) host = kids[0];
+    // on ne descend jamais DANS un écran gardé entier (`data-paging-keep`) : il reste UN bloc
+    if (kids.length === 1 && kids[0].tagName === 'DIV' && !kids[0].hasAttribute('data-paging-keep') && (deep || kids[0].children.length > 1)) host = kids[0];
     else break;
   }
   return { host, blocks: Array.from(host.children) };
@@ -116,7 +117,8 @@ export default function ClassroomPaged({ active = true, page = 0, onPages, onRes
         // Un DÉCOR (fond dégradé `aria-hidden`, calque en position absolue) n'est jamais un élément : ouvert seul, il ferait
         // un écran VIDE — la carte d'ouverture d'un module s'ouvrait sur son seul fond (propriétaire, 2026-11-04, « l'ancienne
         // vue »). Il reste visible avec son parent.
-        const items = (el) => Array.from(el.children).filter((k) => !isDecor(k));
+        // `data-paging-keep` : un écran CONÇU pour tenir en un (la revue compacte de « أستعدّ ») ne s'ouvre jamais en ses enfants
+        const items = (el) => (el.hasAttribute?.('data-paging-keep') ? [] : Array.from(el.children).filter((k) => !isDecor(k)));
         const splittable = (el) => { let e = el; while (items(e).length === 1) [e] = items(e); return items(e).length > 1 ? e : null; };
         // `onePerPage` : une LISTE (≥ 2 enfants substantiels) s'ouvre même si elle tient — chaque élément aura sa page
         // une LISTE : ≥ 2 enfants substantiels — ou UN seul enfant substantiel qui en est une (le corps d'une carte « للتذكّر »
@@ -171,6 +173,8 @@ export default function ClassroomPaged({ active = true, page = 0, onPages, onRes
       // un groupe qui commence par un EN-TÊTE (<header>, h1–h4) reste avec le bloc suivant : jamais un bandeau seul à l'écran
       const glue = blocks.map((g) => /^(HEADER|H[1-4])$/.test(g[0]?.tagName ?? '') && g.length === 1);
       s.pages = onePerPageRef.current ? planOnePerPage(heights, SMALL_BLOCK, glue) : planPages({ heights, budget, overhead, gap });
+      // les blocs PETITS au moment du plan (une enveloppe vide, une ligne) : surveillés — s'ils grandissent, ils prennent leur écran
+      s.small = new Set(heights.map((h, i) => (h < SMALL_BLOCK ? i : -1)).filter((i) => i >= 0));
     }
     apply(pageRef.current);
     onPagesRef.current?.(s.pages.length);
@@ -206,16 +210,38 @@ export default function ClassroomPaged({ active = true, page = 0, onPages, onRes
         return;
       }
       const known = new Set(s.blocks.flat());
+      // un nouvel élément peut arriver dans le CONTENEUR d'un bloc ouvert (pas seulement à la racine) : les cartes d'une étape qui
+      // s'affichent après la réponse sont ajoutées là où vivaient la question et son retour — elles restaient alors visibles sur
+      // l'écran courant, qui débordait et rétrécissait tout (propriétaire, 2026-11-07, « la pire vue »)
+      const containers = new Set(s.blocks.flat().map((el) => el.parentElement).filter(Boolean));
       const added = [];
       for (const r of records) {
-        if (r.target !== s.host) continue;
+        // …ou dans un ANCÊTRE du conteneur (le plan était descendu à travers des enveloppes à enfant unique ; les cartes arrivent
+        // un étage plus haut, à côté de l'enveloppe)
+        const aboveHost = r.target !== s.host && r.target.contains?.(s.host) && ref.current?.contains(r.target);
+        if (r.target !== s.host && !containers.has(r.target) && !aboveHost) continue;
         r.addedNodes.forEach((n) => { if (n.nodeType === 1 && !known.has(n)) added.push(n); });
       }
-      if (!added.length) return;
       const current = clampPage(pageRef.current, s.pages.length);
       const sc = geometry.current.scale || 1;
       let insertAt = current + 1;
       let addedPages = false;
+      // Un bloc arrivé PETIT (une enveloppe encore vide) a rejoint l'écran courant ; s'il GRANDIT ensuite (les cartes d'une étape
+      // s'y ajoutent un instant plus tard), il prend SON écran juste après — sinon l'écran courant déborde et tout rétrécit.
+      if (onePerPageRef.current && s.small?.size) {
+        for (const idx of [...s.small]) {
+          const el = s.blocks[idx]?.[0];
+          const page = s.pages[current] ?? [];
+          if (!el || !el.isConnected) { s.small.delete(idx); continue; }
+          if (page.includes(idx) && page.length > 1 && el.getBoundingClientRect().height / sc >= SMALL_BLOCK) {
+            s.pages[current] = page.filter((x) => x !== idx);
+            s.pages.splice(insertAt, 0, [idx]);
+            el.setAttribute(HIDDEN, ''); el.setAttribute('data-classroom-page-of', String(insertAt + 1));
+            insertAt += 1; addedPages = true; s.small.delete(idx);
+          }
+        }
+      }
+      if (!added.length) { if (addedPages) onPagesRef.current?.(s.pages.length); return; }
       for (const el of added) {
         s.blocks.push([el]);
         const idx = s.blocks.length - 1;
@@ -232,6 +258,8 @@ export default function ClassroomPaged({ active = true, page = 0, onPages, onRes
           (s.pages[current] ??= []).push(idx);
           el.removeAttribute(HIDDEN);
           el.setAttribute('data-classroom-page-of', String(current + 1));
+          // petit à l'arrivée : surveillé, il prendra son écran s'il grandit
+          (s.small ??= new Set()).add(idx);
         }
       }
       if (addedPages) onPagesRef.current?.(s.pages.length);
