@@ -2430,6 +2430,15 @@ overlay in the positioned glance). Because a lab used in several lessons shares 
 are learned once per type, not per lesson. The `coach` prop is therefore ON by default for adopting labs (`coach = true`; a lab not yet
 adopted simply lacks the wiring — tracked by the gate in `LAB_COACH_ROLLOUT.md`).
 
+**In the mission player (owner, 2026-11-09)** the SAME component takes the player's look — no per-lab restyle: `CoachOverlay` reads
+`useInMissionPlayer()` and renders a wider bubble (`BUBBLE_W_GAME` 336 px, `data-coach-look="game"`), larger black text, an amber gesture icon, an
+amber pulsing ring and a thick « فهمت » button (bottom shadow, like the prediction cards); outside the player nothing changes. Its switch is the
+pill « 💡 المرشد » (`toggleIcon`, string `manipulation.coachGuide`), on its own line under the goal line, AND in the side column's top bar
+while a question / prediction fills that column (`[data-side-panel-bar]`) — so EVERY lab of a converted lesson always shows it. The three
+labs that had no coach got one the same day: `pgcd-differences` (`logic/algorithms.js › differencesCoachOf`: cut → again → pgcd),
+`euclidean-algorithm` (`euclidCoachOf`: copy → more → carry → pgcd), `fraction-reduction` (`logic/fraction.js › coachOf`: divide → more →
+pgcd; it never says when to stop) — tested in `logic/algorithmsCoach.test.js`; a lab hides its step while a prediction or a question is open.
+
 Goal: the student never wonders « how does this work? » or « what am I supposed to do now? ». `primitives/LabCoach.jsx`
 (`useLabCoach({ lab, step, text, labels })` → `{ toggle, overlay, visible }`) + pure `primitives/labCoach.js` (`placeBubble`, storage).
 Rules (the contract for any lab that adopts it):

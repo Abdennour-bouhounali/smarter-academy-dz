@@ -23,6 +23,7 @@ import { playSfx } from '../../utils/playEffect';
 import { ordered } from './cpOrder';
 import * as L from '../logic/algorithms';
 import PredictTray from '../primitives/PredictTray';
+import { useLabCoach } from '../primitives/LabCoach';
 import { useInMissionPlayer } from '../../mission/missionPlayerContext';
 import { chipsAround, buildTiles } from './divisionChecks';
 
@@ -65,7 +66,7 @@ const { euclidStepTex, pgcdEqualityTex } = divisibility;
  * ou une question ; toujours guidé ; pas de fête quand l'étape est cachée.
  */
 export default function EuclidAlgorithm({
-  a: a0, b: b0, title, lead, mission, compareWith, initialMode = 'student', allowModeSwitch = false, answerHiddenByDefault = false, onFinished, onTrial, checkpoints: cpOn = true,
+  a: a0, b: b0, title, lead, mission, compareWith, initialMode = 'student', allowModeSwitch = false, answerHiddenByDefault = false, onFinished, onTrial, checkpoints: cpOn = true, coach: coachOn = true,
   // ── LECTEUR DE MISSION (rollout 2026-11-08, traitement v2) ──
   onVerdict, levels: withLevels = true, handDone = false, chains: chainsOn = ['divs', 'pgcd'], predict: predictOn = true, choices,
 }) {
@@ -211,6 +212,9 @@ export default function EuclidAlgorithm({
       options={chipsAround(div.q, { min: 1 }).map((v) => ({ says: String(v), text: k('cp.predict.option', { v }) }))} onSay={sayPredict} />
   ) : cp.open ? cp.node : null;
 
+  // le GUIDE (LabCoach, 2026-11-09) : le geste du moment, jamais le résultat
+  const coachStep = coachOn && !locked ? L.euclidCoachOf(lab) : null;
+  const coach = useLabCoach({ lab: 'euclidean-algorithm', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '', labels: { hide: k('coach.hide'), show: k('coach.show'), ok: k('coach.ok'), stop: k('coach.stop') } });
   // la chaîne des divisions et l'égalité vivante : la représentation de la page, la colonne du labo dans le lecteur
   const chainNode = (
         <div className="space-y-2" data-euclid-chain>
@@ -247,6 +251,7 @@ export default function EuclidAlgorithm({
       validate={validateNumbers}
       allowModeSwitch={allowModeSwitch}
       headerAction={cpOn ? cpSettings.control : null}
+      coach={coachOn ? coach : null}
       // lecteur : l'écran de jeu est toujours GUIDÉ (les manches et les questions guident)
       guided={!!chain || ruleByCheckpoint || gameScreen}
       hideRepresentation={gameScreen || undefined}

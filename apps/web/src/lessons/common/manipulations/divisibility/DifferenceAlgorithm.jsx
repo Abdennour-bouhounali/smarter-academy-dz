@@ -20,6 +20,7 @@ import { playSfx } from '../../utils/playEffect';
 import { ordered } from './cpOrder';
 import * as L from '../logic/algorithms';
 import PredictTray from '../primitives/PredictTray';
+import { useLabCoach } from '../primitives/LabCoach';
 import { useInMissionPlayer } from '../../mission/missionPlayerContext';
 import { chipsAround } from './divisionChecks';
 
@@ -61,7 +62,7 @@ const { differenceStepTex, pgcdEqualityTex } = divisibility;
  * figés pendant une prédiction ou une question ; toujours guidé ; pas de fête quand l'étape est cachée.
  */
 export default function DifferenceAlgorithm({
-  a: a0, b: b0, title, lead, mission, initialMode = 'student', allowModeSwitch = false, answerHiddenByDefault = false, showStepCount = true, onFinished, onTrial, checkpoints: cpOn = true,
+  a: a0, b: b0, title, lead, mission, initialMode = 'student', allowModeSwitch = false, answerHiddenByDefault = false, showStepCount = true, onFinished, onTrial, checkpoints: cpOn = true, coach: coachOn = true,
   // ── LECTEUR DE MISSION (rollout 2026-11-08, traitement v2) ──
   onVerdict, levels: withLevels = true, handDone = false, chains: chainsOn = ['cuts', 'pgcd'], predict: predictOn = true, choices,
 }) {
@@ -191,6 +192,9 @@ export default function DifferenceAlgorithm({
     <PredictTray attr="da" title={k('cp.predict.title')} prompt={k('cp.predict.prompt', { big: step.big, small: step.small })}
       options={predOptions.map((v) => ({ says: String(v), text: k('cp.predict.option', { v }) }))} onSay={sayPredict} />
   ) : cp.open ? cp.node : null;
+  // le GUIDE (LabCoach, 2026-11-09) : le geste du moment, jamais le résultat
+  const coachStep = coachOn && !locked ? L.differencesCoachOf(lab) : null;
+  const coach = useLabCoach({ lab: 'pgcd-differences', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '', labels: { hide: k('coach.hide'), show: k('coach.show'), ok: k('coach.ok'), stop: k('coach.stop') } });
   const heldLabel = drag.held === 'num:small' ? pair.small : drag.held?.startsWith('diff:') ? Number(drag.held.replace('diff:', '')) : null;
 
   return (
@@ -204,6 +208,7 @@ export default function DifferenceAlgorithm({
       validate={validateNumbers}
       allowModeSwitch={allowModeSwitch}
       headerAction={cpOn ? cpSettings.control : null}
+      coach={coachOn ? coach : null}
       // lecteur : l'écran de jeu est toujours GUIDÉ (les manches et les questions guident)
       guided={!!chain || ruleByCheckpoint || gameScreen}
       hideRepresentation={gameScreen || undefined}

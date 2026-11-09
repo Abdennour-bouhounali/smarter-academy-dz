@@ -17,6 +17,9 @@ export const SIGNAL_MS = 900;
  *     juste : « ✓ أحسنت! » vert ; sinon : « ↻ سنعود إليه في النهاية » ambre, jamais « خطأ », jamais la bonne réponse (le conseil :
  *     montrer la réponse fausserait le diagnostic des questions suivantes de la même كفاءة). Son « correct » / « pop » (si « الصوت »).
  *  4. le lecteur passe seul à la suivante (useAutoAdvance) ; la correction complète est dans la revue finale.
+ * LA QUESTION NE BOUGE PAS (propriétaire, 2026-11-09) : rien de ce qui apparaît après le toucher ne change la hauteur de la carte —
+ * « غير متأكّد » garde sa place (invisible une fois la réponse engagée), la barre « غيّر إجابتي » vit dans une rangée de hauteur fixe
+ * toujours présente, et le signal « أحسنت » / « سنعود إليه » est un TAMPON posé PAR-DESSUS la carte (hors du flux), pas une ligne de plus.
  */
 export default function DiagnosticPlayQuestion({ q, index, total, skill, pick, unsure, isCorrect, onCommit }) {
   const { t } = useTranslation('lesson');
@@ -42,26 +45,27 @@ export default function DiagnosticPlayQuestion({ q, index, total, skill, pick, u
   const shown = locked ? pick : tentative;
 
   return (
-    <div className="space-y-4 rounded-2xl border-2 border-slate-200 bg-white p-5" data-play-question={index + 1}
+    <div className="relative space-y-4 rounded-2xl border-2 border-slate-200 bg-white p-5" data-play-question={index + 1}
       data-play-state={locked ? (ok ? 'ok' : 'later') : tentative != null ? 'undo' : 'ask'}>
       <div className="flex items-center justify-between gap-2">
         <span className="rounded-full bg-teal-600 px-2.5 py-1 font-mono text-xs font-bold text-white">
           {skill?.emoji} <span dir="ltr">{index + 1} / {total}</span>
         </span>
-        {!locked && (
-          <button type="button" onClick={() => setDoubt((d) => !d)} aria-pressed={doubt} data-play-doubt
-            className={`min-h-[40px] rounded-full border-2 px-3 text-sm font-bold transition-colors ${doubt ? 'border-amber-400 bg-amber-100 text-amber-900' : 'border-slate-200 bg-white text-slate-500 hover:border-amber-300'}`}>
-            🤔 {t('diagnostic.notSure')}
-          </button>
-        )}
+        {/* la place reste prise une fois la réponse engagée : la question ne remonte pas */}
+        <button type="button" onClick={() => setDoubt((d) => !d)} aria-pressed={doubt} data-play-doubt disabled={locked} aria-hidden={locked || undefined} tabIndex={locked ? -1 : undefined}
+          className={`min-h-[40px] rounded-full border-2 px-3 text-sm font-bold transition-colors ${locked ? 'invisible' : ''} ${doubt ? 'border-amber-400 bg-amber-100 text-amber-900' : 'border-slate-200 bg-white text-slate-500 hover:border-amber-300'}`}>
+          🤔 {t('diagnostic.notSure')}
+        </button>
       </div>
       <div className="text-lg leading-relaxed text-slate-800">{q.prompt}</div>
       {q.type === 'custom'
         ? q.render({ pick: shown ?? null, onPick: choose, revealed: false })
         : <ChoiceGrid options={q.options} order={q.order} selected={shown ?? null} onSelect={choose} disabled={locked} cols={q.cols || 2} renderOption={q.renderOption} />}
 
+      {/* la rangée « غيّر إجابتي » : TOUJOURS là, de hauteur fixe — la barre y apparaît sans pousser la question */}
+      <div className="flex min-h-[44px] items-center" data-play-undo-row>
       {!locked && tentative != null && (
-        <div className="flex items-center gap-3" data-play-undo>
+        <div className="flex w-full items-center gap-3" data-play-undo>
           <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-100" aria-hidden="true">
             <div key={tentative} className="sa-timed-notice-bar h-full origin-right bg-teal-500" style={{ animationDuration: `${UNDO_MS}ms` }} />
           </div>
@@ -70,13 +74,17 @@ export default function DiagnosticPlayQuestion({ q, index, total, skill, pick, u
           </button>
         </div>
       )}
+      </div>
 
+      {/* le SIGNAL : un tampon par-dessus la carte, hors du flux — la question reste exactement où elle était */}
       {locked && (
-        <p role="status" data-play-signal={ok ? 'ok' : 'later'}
-          className={`rounded-2xl px-4 py-3 text-center text-xl font-black ${ok ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-800'}`}>
-          {ok ? `✓ ${t('diagnostic.signalOk')}` : `↻ ${t('diagnostic.signalLater')}`}
-          {ok && unsure && <span className="ms-2 text-sm font-bold text-amber-700">🤔 {t('diagnostic.signalUnsure')}</span>}
-        </p>
+        <div className="pointer-events-none absolute inset-0 z-10 flex items-end justify-center rounded-2xl pb-4" data-play-signal-layer>
+          <p role="status" data-play-signal={ok ? 'ok' : 'later'}
+            className={`sa-play-signal rounded-2xl border-2 px-6 py-3 text-center text-xl font-black shadow-xl ${ok ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-amber-300 bg-amber-50 text-amber-800'}`}>
+            {ok ? `✓ ${t('diagnostic.signalOk')}` : `↻ ${t('diagnostic.signalLater')}`}
+            {ok && unsure && <span className="ms-2 text-sm font-bold text-amber-700">🤔 {t('diagnostic.signalUnsure')}</span>}
+          </p>
+        </div>
       )}
     </div>
   );

@@ -22,6 +22,7 @@ import { playSfx } from '../../utils/playEffect';
 import { ordered } from './cpOrder';
 import * as L from '../logic/fraction';
 import PredictTray from '../primitives/PredictTray';
+import { useLabCoach } from '../primitives/LabCoach';
 import { useInMissionPlayer } from '../../mission/missionPlayerContext';
 import { chipsAround } from './divisionChecks';
 
@@ -63,7 +64,7 @@ const { reductionStepTex, euclidStepTex } = divisibility;
  * pas de fête quand l'étape est cachée.
  */
 export default function FractionReduction({
-  n: n0, d: d0, title, lead, mission, path, theme = 'kitchen', initialMode = 'student', allowModeSwitch = false, onFinished, onTrial, checkpoints: cpOn = true,
+  n: n0, d: d0, title, lead, mission, path, theme = 'kitchen', initialMode = 'student', allowModeSwitch = false, onFinished, onTrial, checkpoints: cpOn = true, coach: coachOn = true,
   // ── LECTEUR DE MISSION (rollout 2026-11-09, traitement v2) ──
   onVerdict, levels: withLevels = true, chains: chainsOn = ['steps', 'pgcd'], predict: predictOn = true, choices,
 }) {
@@ -200,6 +201,9 @@ export default function FractionReduction({
     state.report(onTrial, { tk: 'predict', ok });
     setPredDone((x) => [...x, predWhich]);
   };
+  // le GUIDE (LabCoach, 2026-11-09) : le geste du moment, jamais le résultat ni le moment de s'arrêter
+  const coachStep = coachOn && !locked ? L.coachOf(lab) : null;
+  const coach = useLabCoach({ lab: 'fraction-reduction', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '', labels: { hide: k('coach.hide'), show: k('coach.show'), ok: k('coach.ok'), stop: k('coach.stop') } });
   const trayNode = !gameScreen ? null : predictOpen ? (
     <PredictTray attr="fr" title={k('cp.predict.title')}
       prompt={predWhich === 'value' ? k('cp.predict.valuePrompt', { n, d }) : k('cp.predict.onePrompt', { n, d, fn: cur.n, fd: cur.d })}
@@ -225,6 +229,7 @@ export default function FractionReduction({
       validate={(x) => (x.d === 0 ? t('manipulation.reduce.denominatorZero') : '')}
       allowModeSwitch={allowModeSwitch}
       headerAction={cpOn ? cpSettings.control : null}
+      coach={coachOn ? coach : null}
       guided={!!cpChain || ruleByCheckpoint || gameScreen}
       hints={[t('manipulation.reduce.hint1'), t('manipulation.reduce.hint2'), t('manipulation.reduce.hint3')]}
       controller={{
@@ -325,7 +330,7 @@ export default function FractionReduction({
               <span className="text-[11px] text-slate-500">{t('manipulation.dragHint')}</span>
             </div>
             {/* Tous les nombres 2 … 12, PAS seulement les bons ; aucun n'est désigné. */}
-            <div dir="ltr" className="flex flex-wrap gap-1.5" role="group">
+            <div dir="ltr" className="flex flex-wrap gap-1.5" role="group" data-fr-rail>
               {(finishedA ? L.railB(lab) : rail).map((k) => (
                 <DivisorChip key={k} value={k} drag={lab.pathB === null ? drag : undefined} id={finishedA ? `p:${k}` : `k:${k}`} label={`${k}`} state="idle" />
               ))}

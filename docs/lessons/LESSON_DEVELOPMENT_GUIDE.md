@@ -1117,6 +1117,10 @@ later updates and new lessons; roll it out lesson by lesson (`docs/reports/MISSI
      « ↻ سنعود إليه في النهاية » (amber, `pop`) — never « خطأ », never the correct answer: showing it would spoil the
      diagnosis of the next questions of the same skill;
   4. the next question comes by itself (`SIGNAL_MS` + 200 ms); after the last one, the result.
+  **The question never moves** (owner, 2026-11-09; « أستعدّ » AND « إختبار أولي », both render `kit/DiagnosticPlayQuestion.jsx`): nothing that
+  appears after the tap changes the card's height — « 🤔 غير متأكّد » keeps its place (invisible once committed), the « غيّر إجابتي » bar
+  lives in a fixed-height row that is always there (`[data-play-undo-row]`), and the signal is a STAMP laid OVER the card
+  (`[data-play-signal-layer]`, absolute, `.sa-play-signal` pop-in, none under reduced motion), never an extra line under the options.
 - **The review knows doubt and points to ONE lesson**: a right-but-unsure answer is « ✓؟ » (amber) and its skill is « to
   reinforce »; the weakest skill (an unsure answer counts as half an error) gives the big « راجع » card (`skills.<key>.lesson`,
   `ReviseFirst priority`), the other lessons follow small under « وأيضًا ». `unsure` is saved with the result.

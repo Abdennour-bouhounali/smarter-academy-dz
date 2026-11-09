@@ -217,9 +217,10 @@ export default function ManipulationShell({
       ) : gameColumn ? (
         // LA LIGNE DU BUT (lecteur, conseil + propriétaire, 2026-11-07) : UNE ligne — le contexte de la manche, qui porte son but —
         // à la place du titre + mission + contexte qui disaient trois fois la même chose ; un toucher rouvre la mission en grand.
-        <div className="flex items-start gap-2">
+        // le bouton du GUIDE (« 💡 المرشد ») sur sa propre ligne, sous le but : la colonne garde toute sa largeur pour le but (2026-11-09)
+        <div className="flex flex-col items-start gap-2">
           <button type="button" onClick={() => setIntroOpen(true)} data-manipulation-mission data-manipulation-goal title={t('manipulation.missionReopen')}
-            className="min-w-0 flex-1 rounded-2xl bg-white/90 px-4 py-3 text-start text-lg font-black leading-relaxed text-indigo-950 shadow-sm hover:bg-white">
+            className="w-full min-w-0 rounded-2xl bg-white/90 px-4 py-3 text-start text-lg font-black leading-relaxed text-indigo-950 shadow-sm hover:bg-white">
             {shownLead || mission} <span className="text-sm text-indigo-400" aria-hidden="true">↺</span>
           </button>
           {coach && coach.toggleIcon}
@@ -318,7 +319,8 @@ export default function ManipulationShell({
           <div className="min-w-0 space-y-3" data-manipulation-side data-side-panel={sidePanel ? 'open' : undefined}>
             {sidePanel ? (
               <>
-                {headerAction && <div className="flex justify-end">{headerAction}</div>}
+                {/* le bouton du GUIDE reste visible même quand une question / une prédiction prend la colonne (propriétaire, 2026-11-09) */}
+                {(headerAction || coach) && <div className="flex items-center justify-end gap-2" data-side-panel-bar>{coach && coach.toggleIcon}{headerAction}</div>}
                 {sidePanel}
               </>
             ) : (
