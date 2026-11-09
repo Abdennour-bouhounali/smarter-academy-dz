@@ -10,8 +10,7 @@ import MissionMap from './MissionMap';
 import MissionDialog from './MissionDialog';
 import ReviseFirst from './ReviseFirst';
 import PrerequisiteLessonChips from '../components/PrerequisiteLessonChips';
-import { isPracticeActive } from '../../../features/practice/practiceCapability';
-import PracticeEntryCard from '../../../features/practice/PracticeEntryCard';
+import { isPracticeActive, practiceHubPath } from '../../../features/practice/practiceCapability';
 
 /**
  * L'ACCUEIL de la leçon en mode mission (LessonIndex le rend pour l'élève). La première fois : la scène d'ouverture —
@@ -76,84 +75,61 @@ export default function MissionHome({ config, basePath }) {
     );
   }
 
-  // ── LE RETOUR : UNE prochaine étape claire, la progression d'un coup d'œil (propriétaire, 2026-11-09) ──
-  const climaxNum = Number(mission.climaxModule);
-  const climaxStation = stations.find((x) => x.kind === 'climax');
-  const before = stations.filter((x) => x.number < climaxNum && x.status !== 'mastered').length;
-  const climaxLine = climaxStation?.status === 'mastered' ? t('mission.climaxDone')
-    : resume?.kind === 'climax' ? t('mission.climaxNow') : t('mission.climaxIn', { count: before });
-  const resumeModule = resume ? config.modules.find((m) => Number(m.number) === resume.number) : null;
-  // la phrase « ce que tu vas faire » : la `desc` du module — jamais une qui renvoie au manuel (« ملاحظة الكتاب », « تمارين الكتاب ») : indépendance du livre
-  const resumeDesc = resumeModule?.desc && !/الكتاب|كتاب|ص\s*\d/.test(resumeModule.desc) ? resumeModule.desc : null;
-  const resumeIndex = resume ? stations.findIndex((x) => x.number === resume.number) : -1;
+  // ── LE RETOUR (propriétaire, 2026-11-09, v2) : un accueil COURT pour que le lecteur (FitToArea) l'AGRANDISSE au lieu de le réduire —
+  // l'élève ne doit jamais zoomer. Une seule grande carte (la scène, le titre, les outils, UN « واصل » + l'accès aux تمارين), le parcours,
+  // et « راجع » en une ligne. (La carte « التالي » séparée a été retirée : le bouton dit déjà où l'on va.)
   const doneCount = stations.filter((x) => x.status === 'mastered').length;
   const started = stations.some((x) => x.status === 'mastered');
+  const practiceOn = isPracticeActive(config.id);
   return (
-    <section className="space-y-6" data-mission-home>
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]" data-mission-hero>
-        {/* L'ÉTAPE SUIVANTE : la seule chose à faire maintenant, en grand */}
-        <div className="flex flex-col justify-between gap-4 rounded-[2rem] bg-gradient-to-br from-indigo-600 via-indigo-600 to-violet-600 p-6 text-white shadow-[0_12px_30px_-14px_rgba(67,56,202,0.7)]" data-mission-next-card>
-          {resume ? (
-            <>
-              <div className="space-y-2">
-                <p className="flex flex-wrap items-center gap-2 text-sm font-black text-indigo-100">
-                  <span className="rounded-full bg-white/15 px-3 py-1">➜ {t('mission.nextTag')}</span>
-                  <span>{t('mission.stationOf', { n: resumeIndex + 1, total: stations.length })}</span>
-                </p>
-                <h2 className="text-3xl font-black leading-snug"><MathLabel>{stationLabel(resume.title)}</MathLabel></h2>
-                {resumeDesc && <p className="line-clamp-2 text-lg font-bold leading-relaxed text-indigo-100" data-mission-next-desc><MathLabel>{resumeDesc}</MathLabel></p>}
-              </div>
-              <div className="flex flex-wrap items-center gap-2 text-sm font-black">
-                {resumeModule?.estimatedMin && <span className="rounded-full bg-white/15 px-3 py-1">⏱ {t('mission.minutes', { count: resumeModule.estimatedMin })}</span>}
-                <span className="rounded-full bg-amber-300 px-3 py-1 text-amber-950" data-mission-climax-in>{climaxLine}</span>
-              </div>
-              <button type="button" onClick={go} data-mission-continue
-                className="min-h-[60px] w-full rounded-2xl bg-white px-6 text-xl font-black text-indigo-700 shadow-[0_5px_0_0_#C7D2FE] hover:bg-indigo-50 active:translate-y-0.5">
-                {t(started ? 'mission.next' : 'mission.startNow')} <span aria-hidden="true">←</span>
-              </button>
-            </>
-          ) : (
-            <div className="flex flex-1 flex-col items-center justify-center gap-2 text-center">
-              <span className="text-6xl" aria-hidden="true">🏆</span>
-              <p className="text-2xl font-black">{t('mission.allDone')}</p>
-            </div>
-          )}
-        </div>
-        {/* LA SCÈNE ET LA PROGRESSION : les outils gagnés (anneau), les étoiles */}
-        <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm" data-mission-scene-card>
+    <section className="space-y-4" data-mission-home>
+      <div className="grid items-center gap-6 rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]" data-mission-hero>
+        <MissionScene scene={mission.scene} fill={fill} className="w-full" label={mission.title} />
+        <div className="min-w-0 space-y-4">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <p className="flex items-center gap-3 text-xs font-black uppercase tracking-wide text-indigo-500">📚 {t('mission.tag')}
-                <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-sm text-amber-800" data-mission-stars={stars}>⭐ <span dir="ltr">{stars}</span></span>
+              <p className="flex items-center gap-3 text-sm font-black uppercase tracking-wide text-indigo-500">📚 {t('mission.tag')}
+                <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-base text-amber-800" data-mission-stars={stars}>⭐ <span dir="ltr">{stars}</span></span>
               </p>
-              <h1 className="font-space text-2xl font-extrabold text-slate-900">{mission.title}</h1>
+              <h1 className="font-space text-4xl font-extrabold text-slate-900">{mission.title}</h1>
             </div>
             <ProgressRing value={earned} total={tools.length} label={t('mission.tools')} />
           </div>
-          <MissionScene scene={mission.scene} fill={fill} className="mt-2 w-full" label={mission.title} />
-          <div className="mt-3 flex flex-wrap items-center gap-1.5" data-mission-tools>
+          <div className="flex flex-wrap items-center gap-2" data-mission-tools>
             {tools.map((tool) => (
               <span key={tool.id} data-mission-tool={tool.id} data-earned={tool.earned ? 'true' : 'false'}
-                className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold ${tool.earned ? 'bg-amber-100 text-amber-900' : 'bg-slate-100 text-slate-400'}`}>
+                className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-base font-bold ${tool.earned ? 'bg-amber-100 text-amber-900' : 'bg-slate-100 text-slate-400'}`}>
                 <span aria-hidden="true">{tool.earned ? tool.icon : '🔒'}</span>{tool.label}
               </span>
             ))}
           </div>
+          {resume ? (
+            <button type="button" onClick={go} data-mission-continue
+              className="min-h-[64px] w-full rounded-2xl bg-indigo-600 px-6 text-xl font-black text-white shadow-[0_5px_0_0_#3730A3] hover:bg-indigo-700 active:translate-y-0.5">
+              {t(started ? 'mission.continue' : 'mission.start', { title: mathToPlain(stationLabel(resume.title)) })} <span aria-hidden="true">←</span>
+            </button>
+          ) : (
+            <p className="text-2xl font-black text-emerald-700">🏆 {t('mission.allDone')}</p>
+          )}
+          {/* les تمارين de la leçon, toujours ouvertes (l'élève n'a plus l'ancienne page du درس) */}
+          {practiceOn && (
+            <button type="button" onClick={() => navigate(practiceHubPath(config.id))} data-mission-practice
+              className="min-h-[52px] w-full rounded-2xl border-2 border-violet-200 bg-violet-50 px-6 text-lg font-black text-violet-800 hover:border-violet-400">
+              📝 {t('mission.practiceStation')} <span aria-hidden="true">←</span>
+            </button>
+          )}
         </div>
       </div>
-      <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm" data-mission-path-card>
-        <div className="mb-5 flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-lg font-black text-slate-900">{t('mission.mapTitle')}</h2>
-          <span className="rounded-full bg-emerald-50 px-3 py-1 text-sm font-black text-emerald-700" data-mission-done-count>✓ {t('mission.progress', { done: doneCount, total: stations.length })}</span>
+      <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm" data-mission-path-card>
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+          <h2 className="text-xl font-black text-slate-900">{t('mission.mapTitle')}</h2>
+          <span className="rounded-full bg-emerald-50 px-3 py-1 text-base font-black text-emerald-700" data-mission-done-count>✓ {t('mission.progress', { done: doneCount, total: stations.length })}</span>
         </div>
         <MissionMap lessonId={config.id} stations={stations} basePath={basePath} here={resume?.number} />
       </div>
-      <div className="grid grid-cols-1 items-stretch gap-6 empty:hidden lg:grid-cols-2 lg:[&>*:only-child]:col-span-2 [&>*]:h-full" data-mission-home-row>
-        <ReviseFirst lessonId={config.id} title={config.title} basePath={basePath} columns={1} />
-        {/* Les تمارين de la leçon : dans la mission, l'élève n'ayant plus accès à l'ancienne page du درس. */}
-        {isPracticeActive(config.id) && <PracticeEntryCard lessonId={config.id} />}
-      </div>
-      <div className="flex flex-wrap items-center gap-4 text-sm font-bold">
+      {/* « راجع » et les deux liens discrets sur UNE ligne : l'accueil reste court, le lecteur l'agrandit */}
+      <div className="flex flex-wrap items-center gap-4 text-sm font-bold" data-mission-home-foot>
+        <ReviseFirst lessonId={config.id} title={config.title} basePath={basePath} variant="slim" className="min-w-0 flex-1" />
         <button type="button" onClick={() => setReplay(true)} className="min-h-[44px] rounded-lg px-2 text-indigo-600 hover:bg-indigo-50" data-mission-replay>
           {t('mission.replay')}
         </button>
