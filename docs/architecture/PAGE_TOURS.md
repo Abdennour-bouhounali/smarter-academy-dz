@@ -149,7 +149,7 @@ i18n/locales/ar/tour.json   all tour text — ON-DEMAND namespace `tour`        
 | `student.notebook` | `/espace/cahier` | new note · search · views · filters (sidebar on desktop, button on phone) |
 | `student.class` | `/espace/qism` | current classes · teacher recommendations · join by code |
 | `student.profile` | `/espace/profil` | identity · access · settings |
-| `student.unit` | `/courses/:levelId/:gradeId/:chapterId/units/:unitId` | objectives · challenge · progress · first lesson card |
+| `student.unit` | `/courses/:levelId/:gradeId/:chapterId/units/:unitId` | objectives · challenge · progress · first lesson card — each target also matches the student view of a converted unit (`UnitMissionView`, 2026-11-09: the goals chip, the challenge card, the lessons-done counter, the unit path) |
 | `student.lesson-index` | **declared** (`lesson-index`) by `LessonIndex`, never in وضع القسم | hero · tools (المختبر) · progress · الكفاءات (`[data-lesson-structure]`) · modules |
 | `student.lesson` | **declared** (`lesson-module`) by `ModuleLayout` on EVERY module, never in وضع القسم; opens by itself only on the first module (position 1, so « أستعدّ » when the lesson starts at module 00), replayable from any module | welcome · module header · position in the lesson · « 🧠 بطاقتي » knowledge map (`[data-km-trigger]`) · « 📓 كرّاسي » notebook (`[data-nb-trigger="lesson"]`) · المختبر (`[data-ml-overlay-trigger]`) · previous/next navigation |
 | `teacher.home` | `/enseignant` | welcome · usage · new class · classes · nav · replay button |

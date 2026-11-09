@@ -281,6 +281,20 @@ no console error); teacher view and Classroom Mode unchanged.
 **Open on this lesson:** e2e specs of the old student view (plan §9.7); `resources` still describe the two-level labs for the teacher's page; the module-1 station
 label still reads « 17 و 18، 22 و 35، ومريم » (22 and 35 now live only in the teacher's متقدم level).
 
+## The unit page — student view of a converted unit (2026-11-09, owner)
+
+The unit page showed everything at once (6 000 px: الكفاءات, prerequisites, labs and textbook pages of every lesson). The owner approved the
+mockup `docs/experiments/unit-home-mockup-2026-11-09.html`, then the council chose a centred window over the side drawer, and the owner asked for a
+wider window with a centred title, no empty sides on wide screens, and no scrolling on a laptop. Built as `pages/unit/UnitMissionView.jsx` (guide §
+« Mission player », row `UnitMissionView`) for unit 1 « الأعداد الطبيعيّة والأعداد النّاطقة »; content in `pages/unit/unitMissions.js`.
+
+**Rule (owner):** each time ALL lessons of a unit are converted, write its entry in `unitMissions.js` (station icons and short labels, the challenge
+rewritten in the platform's words, the keys, the history note) — the unit's students then get this page. The teacher keeps the detailed page.
+
+**Verification:** `unitMissions.test.js`; `node apps/web/e2e/unit-mission-view.mjs` passes at 1366×768, 1024×768 (sidebar open and collapsed),
+1920×1080 and 1856×959: no page scroll, nothing cut on the sides, every lesson window and chip window fits folded and unfolded, the teacher keeps the
+old page. The student tour `student.unit` targets both pages; its two lines that cited the textbook were rewritten.
+
 ## Cross-lesson fix — the guide and the « أستعدّ » card (2026-11-09, owner)
 
 Applies to every converted lesson (and, for the card, to every lesson's « أستعدّ » and « إختبار أولي »):

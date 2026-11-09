@@ -19,6 +19,8 @@ import PublicationBadge from '../components/content/PublicationBadge';
 import PrerequisiteLessonChips from '../lessons/common/components/PrerequisiteLessonChips';
 import UnitOpenerFigure from './unit/UnitOpenerFigure';
 import { useCatalogueHref } from '../components/student/catalogueLink';
+import UnitMissionView from './unit/UnitMissionView';
+import { unitMissionOf } from './unit/unitMissions';
 
 /**
  * La page d'une UNITÉ du manuel (الوحدة) — le niveau entre le ميدان et le درس.
@@ -32,6 +34,10 @@ import { useCatalogueHref } from '../components/student/catalogueLink';
  *
  * Tout vient du catalogue (packages/core) et des lesson.config.js (registre) :
  * la page n'écrit aucun contenu pédagogique.
+ *
+ * REGARD ÉLÈVE D'UNE UNITÉ CONVERTIE (propriétaire, 2026-11-09) : quand l'unité a son contenu de mission (unit/unitMissions.js —
+ * ses leçons sont passées au prototype), l'élève voit `UnitMissionView` (un écran : « درسك الآن », le défi, le chemin, le reste replié
+ * dans une fenêtre). L'enseignant garde CETTE page, intacte.
  */
 const MASTERY_DOT = { unassessed: 'bg-slate-300', gap: 'bg-rose-500', reinforce: 'bg-amber-400', mastered: 'bg-emerald-500' };
 
@@ -196,8 +202,25 @@ export default function UnitPage() {
   // Même contrat de décalage haut que le sommaire et les modules de leçon.
   const chrome = useLessonChromeLayout();
   const mastery = useMemo(() => masteryIndex(profile), [profile]);
+  const { isTeacher } = useLearningViewer();
 
   if (!unit || unit.levelId !== levelId || unit.gradeId !== gradeId || unit.chapterId !== chapterId) return <Navigate to="/courses" replace />;
+
+  // L'élève d'une unité convertie : un écran, la page détaillée reste celle de l'enseignant.
+  const mission = unitMissionOf(unit.id);
+  if (mission && !isTeacher) {
+    return (
+      <div className={`min-h-screen bg-slate-50 ${chrome.contentOffsetClass}`}>
+        <main className="sa-page space-y-2 py-4">
+          <nav className="flex flex-wrap items-center gap-2 text-xs text-slate-500" aria-label={t('unit.breadcrumb')}>
+            <Link to={catalogueHref()} className="hover:text-blue-600">{t('unit.home')}</Link><span>/</span>
+            <Link to={catalogueHref({ level: levelId, grade: gradeId, chapter: chapterId })} className="hover:text-blue-600">{unit.chapterTitle}</Link>
+          </nav>
+          <UnitMissionView unit={unit} mission={mission} />
+        </main>
+      </div>
+    );
+  }
 
   const lessons = unit.lessons;
   const done = lessons.filter((l) => l.status === 'available' && getLessonProgress(l.id, getTotalModules(l.id)).progressPercent >= 100).length;
