@@ -282,7 +282,8 @@ function BuildAnswer({ q, settled, revealed, onAnswer, k }) {
   const values = revealed ? q.expected : placed.map((ti) => (ti == null ? null : q.tiles[ti]));
   const put = (ti) => setPlaced((pl) => { const i = pl.indexOf(null); return i < 0 ? pl : pl.map((v, j) => (j === i ? ti : v)); });
   const take = (si) => setPlaced((pl) => pl.map((v, j) => (j === si ? null : v)));
-  const ops = ['=', '×', '+'];
+  // `q.ops` : les signes entre les emplacements (défaut « n = g × q + r ») — p. ex. ['=', '+'] pour « grand = petit + reste » (pgcd-differences)
+  const ops = q.ops ?? ['=', '×', '+'];
   return (
     <div className="space-y-5" data-lab-checkpoint-build>
       <div className="flex items-start justify-center gap-2" dir="ltr">

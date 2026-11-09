@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, KnowledgeBrick, PeerSheet } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { TextbookBox, MethodSteps } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { PROPERTIES, METHOD_DIFF } from '../content/textbook';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
 
-/** Module 2 — معارف 4 « خاصيتان » (p. 12) + طريقة الفروق 117 و 91 (p. 13). LP : P1, P2, P3. */
+/**
+ * Module 2 — معارف 4 « خاصيتان » (p. 12) + طريقة الفروق 117 و 91 (p. 13). LP : P1, P2, P3.
+ * Rollout mission (2026-11-08) : l'étape 4 est « ورقة مريم » (`PeerSheet`, content/peerSheet.js) — perdre le couple dans les différences
+ * successives. Pas de labo dans ce module : rien d'autre ne change.
+ */
 const [pd, pr] = PROPERTIES.items;
 export default function Module02Khassiyatan() {
   const [q1, setQ1] = useState(false);
   const [read, setRead] = useState(false);
   const [q2, setQ2] = useState(false);
+  const [q4, setQ4] = useState(false);
   return (
     <ContentModule objectives={["لماذا تعطي طريقة الفروق النتيجة الصحيحة؟", "ما الذي يبقى ثابتًا حين نطرح؟", "كيف تصير عدّة طرحات قسمة واحدة؟"]} ctx={MODULE_CTX} navLinks={getNavLinks(2)} moduleNumber={2} moduleTitle="معارف — خاصيتان، وطريقة الفروق" moduleSubtitle="لماذا تعطي الطريقة النتيجة الصحيحة؟" estimatedTime="14 دقيقة"
       brief={{ tag: 'معارف ص 12 — طرائق ص 13', title: 'خاصيتان', tone: 'violet', body: <p>ما فعلته في النشاط يستند إلى خاصيتين يصوغهما الكتاب. الأولى تبرّر الفروق المتتابعة، والثانية ستبرّر خوارزمية إقليدس.</p> }}
@@ -46,6 +52,8 @@ export default function Module02Khassiyatan() {
               )}
             </div>
           ) },
+        { num: 4, title: 'ورقة مريم: أين الخطأ؟', subtitle: 'جد السطر الخاطئ وصحّحه', done: q4,
+          content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={() => setQ4(true)} /> },
       ]}
       footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />} />
   );

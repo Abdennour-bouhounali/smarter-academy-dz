@@ -24,6 +24,58 @@ export const LESSON_CONFIG = {
   unit: 'aadad-tabiiya-natiqa',
   unitTitle: 'الأعداد الطبيعيّة والأعداد النّاطقة',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (modèle du pilote qasim-adad-tabii, VALIDÉ par le propriétaire le 2026-11-08 ; rollout leçon par
+  // leçon, docs/reports/MISSION_ROLLOUT_PROGRESS.md) — implique le regard « focus » ; l'enseignant et le mode classe ne voient aucun changement.
+  studentView: 'mission',
+  // LA MISSION : l'ouverture avoue qu'on ne sait pas encore la résoudre vite ; les outils sont les connaissances de knowledge.jsx ; les points
+  // d'étape RAPPROCHENT de la mission sans en résoudre aucune question (la مسألة 1 du module 5 reste entière : ils parlent de 35, 20, 27, 12, 49
+  // et 14 — jamais de 210, de 150 ni de leur PGCD) ; formatifs, jamais une preuve de maîtrise.
+  mission: {
+    scene: 'sewing-workshop',
+    title: 'ورشة الخياطة',
+    opening: {
+      text: 'لدى الخيّاطة شريطان مطرّزان: 210 سم و 150 سم. تريد قصّهما إلى قطع متساوية، أطول ما يمكن، دون أن يضيع شيء. حصر كل القواسم طويل: هل توجد طريقة أسرع تصل بها إلى طول القطعة؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'pgcd-farq', icon: '➖', label: 'الفرق' },
+      { id: 'khwarizmiyat-al-furuq', icon: '✂️', label: 'الفروق المتتابعة' },
+      { id: 'pgcd-baqi', icon: '➗', label: 'الباقي' },
+      { id: 'khwarizmiyat-iqlidus', icon: '🔁', label: 'خوارزمية إقليدس' },
+      { id: 'ikhtiyar-al-tariqa', icon: '🧭', label: 'أيّ طريقة؟' },
+    ],
+    climaxModule: 5,
+    checkpoints: [
+      {
+        id: 'cp-farq', afterModule: 1,
+        prompt: 'قصصتَ شريطًا من 20 سم من شريط من 35 سم. أيّ زوج له القاسم المشترك الأكبر نفسه؟',
+        options: ['20 و 15', '35 و 55', '20 و 35 فقط، لا غير'],
+        correct: 0,
+        explain: '$\\mathrm{PGCD}(35\\ ;\\ 20) = \\mathrm{PGCD}(20\\ ;\\ 15)$ لأنّ $35 - 20 = 15$: القاسم المشترك يقسم الفرق.',
+      },
+      {
+        id: 'cp-silsila', afterModule: 2,
+        prompt: 'سلسلة الفروق للعددين 27 و 12 انتهت هكذا: … $6 - 3 = 3$ ثم $3 - 3 = 0$. ما $\\mathrm{PGCD}(27\\ ;\\ 12)$ ؟',
+        options: ['3', '0', '6'],
+        correct: 0,
+        explain: 'آخر فرق غير معدوم هو 3. الفرق 0 يعني أنّنا توقّفنا، لا أنّه القاسم المشترك الأكبر.',
+      },
+      {
+        id: 'cp-baqi', afterModule: 3,
+        prompt: '$49 = 14 \\times 3 + 7$. إذن $\\mathrm{PGCD}(49\\ ;\\ 14) = \\mathrm{PGCD}(14\\ ;\\ ?)$',
+        options: ['7', '3', '35'],
+        correct: 0,
+        explain: 'خاصية 2: القاسم المشترك يقسم الباقي 7، فنُكمل بالعددين 14 و 7.',
+      },
+      {
+        id: 'cp-khitta', afterModule: 4,
+        prompt: 'لقصّ شريطين إلى أطول قطع متساوية دون أن يضيع شيء، ماذا نحسب؟',
+        options: ['القاسم المشترك الأكبر لطولي الشريطين', 'الفرق بين طولي الشريطين', 'مجموع طولي الشريطين'],
+        correct: 0,
+        explain: 'طول القطعة يقسم الطولين معًا، وأطوله هو PGCD — بالفروق أو بالقسمات. هذه خطّتك في المسألة التالية.',
+      },
+    ],
+  },
   title: 'البحث عن القاسم المشترك الأكبر لعددين طبيعيين',
   description: 'البحث عن القاسم المشترك الأكبر لعددين بخوارزمية الفروق المتتابعة ثم بخوارزمية عمليات القسمات المتتابعة (خوارزمية إقليدس)، مع تبرير كل خطوة بالخاصيتين PGCD(a ; b) = PGCD(b ; a − b) و PGCD(a ; b) = PGCD(b ; r).',
   level: 'moyen',
@@ -56,6 +108,8 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début, sans verrou par محور.
+  knowledgeMapOpen: true,
   priorKnowledge: ['khassiya-1', 'khassiya-2', 'pgcd-taarif', 'nataij-mubashira'],
   resources: [
     // Module 1 — workspace à deux niveaux sur les différences successives,

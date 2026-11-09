@@ -22,6 +22,12 @@ import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
 import { playSfx } from '../../utils/playEffect';
 import { ordered } from './cpOrder';
 import * as L from '../logic/algorithms';
+import PredictTray from '../primitives/PredictTray';
+import { useInMissionPlayer } from '../../mission/missionPlayerContext';
+import { chipsAround, buildTiles } from './divisionChecks';
+
+/** Lecteur : une prédiction au début des PRED_MAX premières divisions de la manche. */
+const PRED_MAX = 2;
 
 const NS = 'manipulation.euclid';
 
@@ -50,12 +56,22 @@ const { euclidStepTex, pgcdEqualityTex } = divisibility;
  * SON : `tooth` par copie posée, `bell` par division confirmée, `flag` au PGCD posé, `over` pour un geste refusé. Textes dans `euclid.cp.*`.
  * E. À découvrir : la chaîne des divisions, et le PGCD = DERNIER RESTE NON
  *    NUL. `compareWith="differences"` montre 3 divisions contre 8 différences.
+ *
+ * LECTEUR DE MISSION (rollout 2026-11-08, traitement v2, comme pgcd-differences) : joué en MANCHES (LabRounds). `onVerdict` remonte le PGCD posé
+ * ({ groups: v, exact }) — une case refusée est un essai raté ; `levels={false}` ; `predict` : au DÉBUT d'une division (les PRED_MAX premières),
+ * « كم نسخة تدخل؟ » (`PredictTray`) ; `chains` (`['divs', 'pgcd']`) ; `CHAINS_PLAYER` = divs : compter d'un toucher (`fill`) → BÂTIR la première
+ * division a = b × q + r (`build`) → l'invariant ; pgcd : pourquoi s'arrêter → la règle ; la chaîne des divisions ET l'égalité vivante vont dans la
+ * colonne du labo (« 📋 جدول تجاربك ») ; `handDone` ouvre « أكمل القسمات » ; `choices` : des paires (a, b). Contrôles figés pendant une prédiction
+ * ou une question ; toujours guidé ; pas de fête quand l'étape est cachée.
  */
 export default function EuclidAlgorithm({
   a: a0, b: b0, title, lead, mission, compareWith, initialMode = 'student', allowModeSwitch = false, answerHiddenByDefault = false, onFinished, onTrial, checkpoints: cpOn = true,
+  // ── LECTEUR DE MISSION (rollout 2026-11-08, traitement v2) ──
+  onVerdict, levels: withLevels = true, handDone = false, chains: chainsOn = ['divs', 'pgcd'], predict: predictOn = true, choices,
 }) {
   const { t } = useTranslation('lesson');
-  const state = useManipulation({ type: 'euclidean-algorithm', initialNumbers: { a: a0, b: b0 }, initialMode, hintCount: 3, answerHiddenByDefault });
+  const gameScreen = useInMissionPlayer();
+  const state = useManipulation({ type: 'euclidean-algorithm', initialNumbers: { a: a0, b: b0 }, initialMode, hintCount: 3, answerHiddenByDefault, withLevels: withLevels !== false });
   const { a, b } = state.numbers;
   const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
   const [lab, setLab] = useState(() => L.initEuclid({ a: a0, b: b0 }));
@@ -64,7 +80,11 @@ export default function EuclidAlgorithm({
   // « إعادة », d'autres nombres ou un autre niveau : TOUT recommence — la chaîne, les questions du labo, la fête
   const sceneKey = `${a}|${b}|${state.epoch}|${state.resetCount}`;
   const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.initEuclid({ a, b })); setReject(null); }
+  // lecteur : les divisions déjà prédites (index), la dernière prédiction jugée
+  const [predDone, setPredDone] = useState([]);
+  const [pred, setPred] = useState(null);
+  const [missionBig, setMissionBig] = useState(false);
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.initEuclid({ a, b })); setReject(null); setPredDone([]); setPred(null); }
   const [answered, setAnswered] = useState({ key: sceneKey, ids: [] });
   const answeredIds = answered.key === sceneKey ? answered.ids : [];
 
@@ -72,8 +92,9 @@ export default function EuclidAlgorithm({
   const cpSettings = useLabCheckpointSettings('euclidean-algorithm');
   const ruleByCheckpoint = cpOn && cpSettings.enabled;
   const reachedOf = { divs: L.isEuclidFinished(lab), pgcd: lab.pgcdPlaced };
-  const pending = ruleByCheckpoint ? STEPS.find((id) => !answeredIds.includes(id)) : null;
-  const chain = pending && reachedOf[pending] ? CHAINS[pending] : null;
+  const pending = ruleByCheckpoint ? STEPS.find((id) => chainsOn.includes(id) && !answeredIds.includes(id)) : null;
+  // lecteur : compter d'un toucher puis BÂTIR la première division ; la page garde ses suites
+  const chain = pending && reachedOf[pending] ? (gameScreen ? CHAINS_PLAYER : CHAINS)[pending] : null;
   const cp = useLabCheckpoint({
     id: chain ? pending : null,
     questions: chain ? chain.map((q) => QUESTIONS[q]({ a, b, lab }, k)) : null,
@@ -86,7 +107,9 @@ export default function EuclidAlgorithm({
       if (id === 'pgcd') { state.discover(); state.formalize(); }
     },
   });
-  const stepDone = STEPS.map((id) => reachedOf[id] && (!ruleByCheckpoint || answeredIds.includes(id)));
+  const stepDone = STEPS.map((id) => reachedOf[id] && (!ruleByCheckpoint || !chainsOn.includes(id) || answeredIds.includes(id)));
+  // lecteur : une manche sans questions (défi, terrain libre) ne montre pas d'étapes, et ne fête rien
+  const showStepper = !(gameScreen && (!ruleByCheckpoint || chainsOn.length === 0));
   const party = useStepCelebration();
   const celebrated = useRef({ key: sceneKey, set: new Set() });
   if (celebrated.current.key !== sceneKey) celebrated.current = { key: sceneKey, set: new Set() };
@@ -94,7 +117,7 @@ export default function EuclidAlgorithm({
     stepDone.forEach((d, i) => {
       if (!d || celebrated.current.set.has(i)) return;
       celebrated.current.set.add(i);
-      party.celebrate({ n: i + 1, total: STEPS.length });
+      if (showStepper) party.celebrate({ n: i + 1, total: STEPS.length });
     });
   }, [stepDone.join()]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -122,26 +145,32 @@ export default function EuclidAlgorithm({
       if (sourceId.startsWith('rem:') && zoneId === 'pgcd') {
         const v = Number(sourceId.replace('rem:', ''));
         setLab((s) => ({ ...s, pgcdPlaced: v === s.gcd }));
-        if (!ruleByCheckpoint) state.discover();
+        state.report(onVerdict, { a, b, groups: v, exact: v === lab.gcd });
+        if (!ruleByCheckpoint && !gameScreen) state.discover();
       }
     },
     accepts: (sourceId, zoneId) => {
+      if (lockedRef.current) return '';
       if (sourceId === 'copy') return zoneId === 'dividend' ? L.canAddCopy(lab) : 'invalid';
       const v = Number(sourceId.replace('rem:', ''));
       if (zoneId === 'carry') return L.canCarryRemainder(lab, v);
       if (zoneId === 'pgcd') return L.canPlaceEuclidPgcd(lab, v);
       return 'invalid';
     },
-    onReject: (sourceId, _z, reason) => {
+    onReject: (sourceId, zoneId, reason) => {
       // La copie de trop, LÂCHÉE sur le ruban : refusée, mais vue — l'essai compte.
       // (Ici et pas dans `accepts`, que l'aimant consulte à chaque mouvement.)
+      if (!reason) return;
       if (sourceId === 'copy' && reason === 'overflow') setLab(L.tryCopy);
+      // une case PGCD refusée est un essai raté de la manche
+      if (zoneId === 'pgcd') state.report(onVerdict, { a, b, groups: Number(String(sourceId).replace('rem:', '')), exact: false });
       playSfx('over');
       setReject({ reason, v: Number(String(sourceId).replace('rem:', '')) });
     },
   });
   /** « + » : ESSAYER une copie de plus — posée si elle tient, refusée sinon. */
   const tryPlus = () => {
+    if (lockedRef.current) return;
     if (L.canAddCopy(lab) === 'overflow') { playSfx('over'); setReject({ reason: 'overflow' }); }
     else setReject(null);
     setLab(L.tryCopy);
@@ -164,50 +193,33 @@ export default function EuclidAlgorithm({
   const quotientReached = L.quotientReached(lab);
   const cmp = compareWith === 'differences' ? L.comparison(a, b) : null;
   const nonZeroRemainders = [...new Set(lab.steps.filter((s) => s.r !== 0).map((s) => s.r))];
+  // lecteur : au DÉBUT d'une division (les PRED_MAX premières), prédire combien de copies tiennent
+  const predictOpen = gameScreen && predictOn && ruleByCheckpoint && !missionBig && !cp.open && !!div && lab.copies === 0
+    && predDone.length < PRED_MAX && !predDone.includes(lab.index);
+  const locked = gameScreen && (cp.open || predictOpen);
+  const lockedRef = useRef(false);
+  lockedRef.current = locked;
+  const sayPredict = (says) => {
+    const ok = Number(says) === div.q;
+    playSfx(ok ? 'correct' : 'pop');
+    setPred({ at: lab.index, ok });
+    state.report(onTrial, { tk: 'predict', ok });
+    setPredDone((d) => [...d, lab.index]);
+  };
+  const trayNode = !gameScreen ? null : predictOpen ? (
+    <PredictTray attr="ea" title={k('cp.predict.title')} prompt={k('cp.predict.prompt', { a: div.a, b: div.b })}
+      options={chipsAround(div.q, { min: 1 }).map((v) => ({ says: String(v), text: k('cp.predict.option', { v }) }))} onSay={sayPredict} />
+  ) : cp.open ? cp.node : null;
 
-  return (
-    <ManipulationShell
-      type="euclidean-algorithm"
-      title={title ?? t('manipulation.euclid.title', { a, b })}
-      mission={mission ?? t('manipulation.euclid.ribbonMission', { a, b })}
-      lead={lead}
-      state={state}
-      numberFields={[{ key: 'a', label: 'a' }, { key: 'b', label: 'b' }]}
-      validate={validateNumbers}
-      allowModeSwitch={allowModeSwitch}
-      headerAction={cpOn ? cpSettings.control : null}
-      guided={!!chain || ruleByCheckpoint}
-      hints={[t('manipulation.euclid.hint1'), t('manipulation.euclid.hint2'), t('manipulation.euclid.hint3')]}
-      controller={{
-        autoStep: () => { if (L.isEuclidFinished(lab)) return false; setLab(L.euclidAutoStep); return true; },
-        canAutoStep: () => !L.isEuclidFinished(lab),
-        prevStep: () => setLab(L.removeCopy),
-        canPrev: () => lab.copies > 0,
-        showSolution: () => {
-          setLab((s) => { let x = s; let g = 0; while (!L.isEuclidFinished(x) && g++ < 30) x = L.euclidAutoStep(x); return { ...x, pgcdPlaced: true }; });
-          state.discover(); state.formalize();
-        },
-        // « أكمل القسمات » (§6bis) : la PREMIÈRE division se fait à la main —
-        // poser les copies, voir le bout qui dépasse, porter le reste. Les
-        // suivantes répètent ce geste : le bouton pose les copies une à une
-        // et porte les restes, jusqu'au reste nul. La case PGCD reste vide.
-        autoComplete: {
-          label: t('manipulation.euclid.autoComplete'),
-          ready: lab.a === a && lab.b === b && !validateNumbers({ a, b }),
-          manualDone: lab.confirmed > 0,
-          remaining: L.remainingEuclidGestures(lab),
-          step: () => setLab(L.euclidGestureStep),
-          finish: () => setLab(L.completeEuclid),
-        },
-      }}
-      controlsOverride={{ prevStep: true }}
-      representation={(
+  // la chaîne des divisions et l'égalité vivante : la représentation de la page, la colonne du labo dans le lecteur
+  const chainNode = (
         <div className="space-y-2" data-euclid-chain>
           {done.map((s, i) => (
-            <div key={i} className="grid gap-2 grid-cols-2">
+            // lecteur : la colonne est étroite — une ligne par division, sans l'invariant écrit (les questions le font dire)
+            <div key={i} className={gameScreen ? '' : 'grid gap-2 grid-cols-2'} data-ea-trial={s.r}>
               <EquationDisplay tex={euclidStepTex(s)} tone={s.r === 0 ? 'result' : 'ok'} size="sm" />
-              <EquationDisplay tex={s.r === 0 ? `\\mathrm{PGCD}(${a}\\ ;\\ ${b}) = ${lab.pgcdPlaced ? lab.gcd : '\\,?'}` : pgcdEqualityTex(s.a, s.b, s.b, s.r)} tone="muted" size="sm"
-                note={s.r === 0 ? t('manipulation.euclid.remainderZero') : t('manipulation.euclid.invariant')} />
+              {!gameScreen && <EquationDisplay tex={s.r === 0 ? `\\mathrm{PGCD}(${a}\\ ;\\ ${b}) = ${lab.pgcdPlaced ? lab.gcd : '\\,?'}` : pgcdEqualityTex(s.a, s.b, s.b, s.r)} tone="muted" size="sm"
+                note={s.r === 0 ? t('manipulation.euclid.remainderZero') : t('manipulation.euclid.invariant')} />}
             </div>
           ))}
           {div && (
@@ -222,7 +234,51 @@ export default function EuclidAlgorithm({
             />
           )}
         </div>
-      )}
+  );
+
+  return (
+    <ManipulationShell
+      type="euclidean-algorithm"
+      title={title ?? t('manipulation.euclid.title', { a, b })}
+      mission={mission ?? t(gameScreen && handDone ? 'manipulation.euclid.missionButton' : 'manipulation.euclid.ribbonMission', { a, b })}
+      lead={lead}
+      state={state}
+      numberFields={[{ key: 'a', label: 'a' }, { key: 'b', label: 'b' }]}
+      validate={validateNumbers}
+      allowModeSwitch={allowModeSwitch}
+      headerAction={cpOn ? cpSettings.control : null}
+      // lecteur : l'écran de jeu est toujours GUIDÉ (les manches et les questions guident)
+      guided={!!chain || ruleByCheckpoint || gameScreen}
+      hideRepresentation={gameScreen || undefined}
+      onIntroChange={setMissionBig}
+      sidePanel={trayNode ? <div data-ea-tray>{trayNode}</div> : null}
+      allowFreeLab={gameScreen ? false : undefined}
+      hints={[t('manipulation.euclid.hint1'), t('manipulation.euclid.hint2'), t('manipulation.euclid.hint3')]}
+      controller={{
+        autoStep: () => { if (L.isEuclidFinished(lab)) return false; setLab(L.euclidAutoStep); return true; },
+        canAutoStep: () => !L.isEuclidFinished(lab),
+        prevStep: () => setLab(L.removeCopy),
+        canPrev: () => lab.copies > 0,
+        showSolution: () => {
+          setLab((s) => { let x = s; let g = 0; while (!L.isEuclidFinished(x) && g++ < 30) x = L.euclidAutoStep(x); return { ...x, pgcdPlaced: true }; });
+          state.discover(); state.formalize();
+        },
+        // « أكمل القسمات » (§6bis) : la PREMIÈRE division se fait à la main —
+        // poser les copies, voir le bout qui dépasse, porter le reste. Les
+        // suivantes répètent ce geste : le bouton pose les copies une à une
+        // et porte les restes, jusqu'au reste nul. La case PGCD reste vide.
+        // lecteur : « أكمل القسمات » est le BOUTON du geste appris — il s'ouvre après la manche à la main (handDone)
+        autoComplete: gameScreen && !handDone ? undefined : {
+          label: t('manipulation.euclid.autoComplete'),
+          ready: lab.a === a && lab.b === b && !validateNumbers({ a, b }),
+          manualDone: lab.confirmed > 0,
+          remaining: L.remainingEuclidGestures(lab),
+          step: () => setLab(L.euclidGestureStep),
+          finish: () => setLab(L.completeEuclid),
+        },
+      }}
+      controlsOverride={{ prevStep: true }}
+      representation={chainNode}
       discovery={(
         <ManipulationDiscovery
           state={state}
@@ -254,10 +310,28 @@ export default function EuclidAlgorithm({
     >
       <div className="relative min-h-[520px]" data-ea-glance>
       {party.node}
-      {cp.node}
+      {!(gameScreen && cp.open) && cp.node}
       <ManipulationStage dragging={drag.dragging}>
-        <div className="space-y-3">
-          <LabStepper count={STEPS.length} current={Math.max(0, stepDone.indexOf(false))} done={stepDone} stepAttr="data-ea-step" />
+        <div className={gameScreen ? 'grid grid-cols-[minmax(0,1fr)_17rem] gap-3' : ''}>
+        <div className="min-w-0 space-y-3">
+          {showStepper && <LabStepper count={STEPS.length} current={Math.max(0, stepDone.indexOf(false))} done={stepDone} stepAttr="data-ea-step" />}
+          {gameScreen && choices?.length > 0 && (
+            <div className="flex flex-wrap items-center gap-1.5" data-ea-choices>
+              <span className="text-sm font-bold text-slate-600">{k('choicesLabel')}</span>
+              {choices.map((c) => (
+                <button key={`${c.a}-${c.b}`} type="button" data-ea-choice={`${c.a}-${c.b}`} disabled={locked} onClick={() => state.setNumbers({ a: c.a, b: c.b })}
+                  className={`min-h-[44px] rounded-xl border-2 px-3 text-base font-black ${c.a === a && c.b === b ? 'border-indigo-500 bg-indigo-50 text-indigo-900' : 'border-slate-200 bg-white text-slate-700 hover:border-indigo-300'}`}>
+                  <bdi dir="ltr">{c.a} · {c.b}</bdi>
+                </button>
+              ))}
+            </div>
+          )}
+          {gameScreen && pred && pred.at === lab.index && lab.copies > 0 && !cp.open && (
+            <p role="status" data-ea-predict-result={pred.ok ? 'ok' : 'wrong'}
+              className={`rounded-2xl px-4 py-2 text-center text-lg font-black ${pred.ok ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>
+              {pred.ok ? k('cp.predict.right') : k('cp.predict.wrong')}
+            </p>
+          )}
           {div ? (
             <>
               <div className="flex flex-wrap items-center gap-2">
@@ -272,7 +346,7 @@ export default function EuclidAlgorithm({
                   </DraggableObject>
                 </div>
                 <span className="ms-auto flex items-center gap-1.5">
-                  <Btn onClick={() => { setReject(null); setLab(L.removeCopy); }} disabled={lab.copies === 0} ariaLabel={t('manipulation.euclid.removeCopy')}>−</Btn>
+                  <Btn onClick={() => { setReject(null); setLab(L.removeCopy); }} disabled={lab.copies === 0 || locked} ariaLabel={t('manipulation.euclid.removeCopy')}>−</Btn>
                   <span className="font-mono text-xs font-bold text-slate-700">{t('manipulation.euclid.copies', { n: lab.copies })}</span>
                   <Btn onClick={tryPlus} ariaLabel={t('manipulation.euclid.addCopy')}>+</Btn>
                 </span>
@@ -319,6 +393,14 @@ export default function EuclidAlgorithm({
 
           {reject && <p role="status" className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">{t(`manipulation.euclid.reject.${reject.reason}`, { v: reject.v, a, b, r: rest, d: div?.b })}</p>}
         </div>
+        {/* lecteur : la chaîne des divisions et l'égalité vivante sont le JOURNAL, dans la colonne du labo */}
+        {gameScreen && (
+          <div className="min-w-0 overflow-hidden rounded-2xl border-2 border-indigo-100 bg-white" data-ea-side>
+            <p className="bg-indigo-50 px-2 py-1 text-sm font-black text-indigo-900">📋 {k('trials.title')}</p>
+            <div className="p-1.5" data-ea-trials>{chainNode}</div>
+          </div>
+        )}
+        </div>
       </ManipulationStage>
       </div>
       <DragGhost ghost={drag.ghost}>
@@ -338,6 +420,11 @@ export const CHAINS = Object.freeze({
   divs: ['count', 'next', 'invariant'],
   pgcd: ['stop', 'rule'],
 });
+/** Lecteur (rollout 2026-11-08, traitement v2) : compter d'un toucher → BÂTIR la première division → l'invariant ; puis pourquoi s'arrêter → la règle. */
+export const CHAINS_PLAYER = Object.freeze({
+  divs: ['countFill', 'build', 'invariant'],
+  pgcd: ['stop', 'rule'],
+});
 
 const $ = (x) => `$${x}$`;
 const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
@@ -345,6 +432,28 @@ const lineOf = (s) => `${s.a} = ${s.b} \\times ${s.q} + ${s.r}`;
 
 /** Chaque question est construite sur LES nombres de l'élève (rien n'est écrit en dur) ; `k` : les textes de `euclid`. */
 const BUILD = {
+  // combien de divisions, d'un toucher (la chaîne est à côté)
+  countFill: ({ a, b, lab }, k) => {
+    const n = lab.steps.length;
+    const last = lab.steps[n - 1];
+    return {
+      id: 'countFill', kind: 'fill', prompt: Mx(k, 'count.prompt', { a, b }),
+      fields: [{ label: k('cp.count.field'), expected: n, options: chipsAround(n, { min: 1 }) }],
+      hints: [Mx(k, 'count.hint1'), Mx(k, 'count.hint2', { first: $(lineOf(lab.steps[0])), last: $(lineOf(last)) })],
+      explain: Mx(k, 'count.explain', { n, last: $(lineOf(last)) }),
+    };
+  },
+  // la PREMIÈRE division bâtie : a = b × q + r, chaque emplacement porte le sens de son nombre
+  build: ({ lab }, k) => {
+    const s0 = lab.steps[0];
+    const o = { a: s0.a, b: s0.b, q: s0.q, r: s0.r, eq: $(lineOf(s0)) };
+    return {
+      id: 'build', kind: 'build', prompt: Mx(k, 'build.prompt', o),
+      slots: [k('cp.build.slotA'), k('cp.build.slotB'), k('cp.build.slotQ'), k('cp.build.slotR')],
+      tiles: buildTiles({ n: s0.a, g: s0.b, q: s0.q, r: s0.r }), expected: [s0.a, s0.b, s0.q, s0.r],
+      hints: [Mx(k, 'build.hint1'), Mx(k, 'build.hint2', o)], explain: Mx(k, 'build.explain', o),
+    };
+  },
   count: ({ a, b, lab }, k) => {
     const n = lab.steps.length;
     const last = lab.steps[n - 1];

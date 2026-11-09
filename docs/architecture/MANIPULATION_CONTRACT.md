@@ -2590,6 +2590,10 @@ the mission player a lab is played as a PATH of rounds instead of the مبتدئ
   tried once; in the lists the PGCD placed), `levels`, `handDone`, `chains` (`['groups', 'lists']`), `predict` (`PredictTray`, k ≥ 2, ≤ 2 per round), `choices`
   (`{ a, b }` pairs); one stage per round; `CHAINS_PLAYER = { groupsOnly: ['observe','build','beyondFill','rule'], groups: ['observe','build','beyondFill'],
   lists: ['listCommonFill','listWhy','rule'] }`; while a question is open the scene shows the distribution it speaks of (`cp.qid`).
+- **Fifth example (2026-11-09):** lesson `bahth-pgcd`, `content/ribbons.js` (`M1_ROUNDS` for `pgcd-differences`, `M3_ROUNDS` for `euclidean-algorithm`: by hand →
+  the activity with predictions → « the same way » → ⭐ → free). Both labs: `onVerdict` = the PGCD placed (`{ groups: v, exact }`, a refused box is a miss),
+  `levels`, `handDone`, `chains`, `predict` (at the START of a step), `choices`; `CHAINS_PLAYER = { cuts | divs: ['countFill','build','invariant'], pgcd:
+  ['stop','rule'] }`; the chain of steps is the journal in the lab's column.
 
 **`team-builder` options (2026-11-04):** `levels={false}` gives a worked example with no مبتدئ / متقدم selector (as for
 `divisor-explorer-books`). `handDone` opens « أنشئ الفرق » from the start: the student already shared BY HAND in an
@@ -2607,6 +2611,7 @@ redo the same step to find the answer, and the answer is never given on the firs
 **Files.** `primitives/labCheckpoint.js` (pure: `readNumber`, `isCorrect`, `submit`, `advance`, `feedbackOf`, `MAX_TRIES = 3`;
 tested in `labCheckpoint.test.js`) and `primitives/LabCheckpoint.jsx` (`useLabCheckpoint` + the card + the waiting band). `useLabCheckpoint` returns
 `{ blocking, open, done, node, qid }` — `qid` is the id of the question on screen (null when closed), so a lab can draw the scene that question speaks of.
+A `build` question may set `ops`, the signs between its slots (default `['=', '×', '+']`; `['=', '+']` for « grand = petit + reste »).
 
 **Behaviour.**
 - When the lab's step is reached (`reached`, e.g. `taskDone`), a card covers the lab (backdrop over the `relative` glance

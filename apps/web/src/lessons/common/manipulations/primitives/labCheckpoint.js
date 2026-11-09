@@ -7,7 +7,8 @@
  * (pilote 2026-11-07, conseil sur les questions du labo — lecteur de mission) :
  *  - `fill`  : plusieurs CASES remplies d'un toucher sur des pastilles de nombres, `fields: [{ label, expected, options: [n…] }]` —
  *    la réponse est le tableau des choix, juste quand TOUTES les cases le sont (« في كل فريق ▢ · على المقاعد ▢ ») ;
- *  - `build` : des TUILES de nombres posées dans des emplacements nommés, `slots: [label…]`, `tiles: [n…]`, `expected: [n…]` —
+ *  - `build` : des TUILES de nombres posées dans des emplacements nommés, `slots: [label…]`, `tiles: [n…]`, `expected: [n…]`, `ops?: [signe…]`
+ *    (les signes entre emplacements, défaut ['=', '×', '+']) —
  *    l'élève BÂTIT l'égalité (« اللاعبون = الفرق × في كل فريق + خارج الفرق ») au lieu de la choisir.
  * (les textes sont des nœuds React, la logique ne les lit pas). Un ARRÊT (checkpoint) est une suite de questions qui mène à l'idée.
  *
