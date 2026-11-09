@@ -25,6 +25,8 @@ const SEED = {
   'u_9001_smarter_lesson_qawasim-adad-tabii': { completedModules: ALL, completedExercises: [] },
   'u_9001_smarter_lesson_khawass-qawasim': { completedModules: [...ALL, 9], completedExercises: [] },
   'u_9001_smarter_stars_qasim-adad-tabii': { lab: { r1: 3, r2: 3, r3: 3 } },
+  // la visite guidée de la page (PageTourProvider) est déjà vue : sa carte ne couvre pas les stations
+  'u_9001_tours.pending': { 'student.unit': { status: 'completed' }, 'teacher.unit': { status: 'completed' } },
 };
 
 async function open(viewport, role = 'student', collapsed = false) {

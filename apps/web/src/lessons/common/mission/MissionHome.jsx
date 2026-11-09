@@ -62,7 +62,8 @@ export default function MissionHome({ config, basePath }) {
           <span aria-hidden="true" className="font-black text-slate-400">←</span>
           <span className="rounded-full bg-amber-100 px-3 py-1 text-sm font-black text-amber-900">🏆 {t('mission.climax')}</span>
         </div>
-        <div className="flex justify-center">
+        {/* « ابدأ » à DROITE, sous le texte (propriétaire, 2026-11-09 : même place que « واصل » partout) */}
+        <div className="flex justify-start px-6">
           <button type="button" data-mission-start
             onClick={() => { update({ opened: true }); setReplay(false); go(); }}
             className="min-h-[64px] rounded-2xl bg-indigo-600 px-10 text-xl font-black text-white shadow-[0_5px_0_0_#3730A3] hover:bg-indigo-700 active:translate-y-0.5">
@@ -83,8 +84,8 @@ export default function MissionHome({ config, basePath }) {
   const practiceOn = isPracticeActive(config.id);
   return (
     <section className="space-y-4" data-mission-home>
-      <div className="grid items-center gap-6 rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]" data-mission-hero>
-        <MissionScene scene={mission.scene} fill={fill} className="w-full" label={mission.title} />
+      <div className="grid items-center gap-6 rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm md:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]" data-mission-hero>
+        {/* le texte et « واصل » à DROITE, la scène à gauche (propriétaire, 2026-11-09 : le bouton au même endroit que celui de la page de l'unité) */}
         <div className="min-w-0 space-y-4">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
@@ -119,6 +120,7 @@ export default function MissionHome({ config, basePath }) {
             </button>
           )}
         </div>
+        <MissionScene scene={mission.scene} fill={fill} className="w-full" label={mission.title} />
       </div>
       <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm" data-mission-path-card>
         <div className="mb-4 flex flex-wrap items-center justify-between gap-2">

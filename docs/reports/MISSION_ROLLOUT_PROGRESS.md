@@ -295,6 +295,13 @@ rewritten in the platform's words, the keys, the history note) — the unit's st
 1920×1080 and 1856×959: no page scroll, nothing cut on the sides, every lesson window and chip window fits folded and unfolded, the teacher keeps the
 old page. The student tour `student.unit` targets both pages; its two lines that cited the textbook were rewritten.
 
+## Cross-lesson fix — the main button on the right (2026-11-09, owner)
+
+On the lesson home the big « واصل » was in the LEFT column (x ≈ 460 at 1366 px) while the unit page's « واصل الدرس » is on the right (x ≈ 877): the
+student crossed the screen between two clicks. `MissionHome` now puts its text column and « واصل » on the RIGHT and the scene on the left (x ≈ 906), and the
+first visit's CTA is aligned right (x ≈ 938). Applies to every converted lesson (shared component). The player's bottom bar keeps the RTL convention
+— « واصل » on the left, « السابق » on the right (owner: tried and refused the same day).
+
 ## Cross-lesson fix — the guide and the « أستعدّ » card (2026-11-09, owner)
 
 Applies to every converted lesson (and, for the card, to every lesson's « أستعدّ » and « إختبار أولي »):
