@@ -110,21 +110,33 @@
   .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;font-weight:800;font-size:14px;color:#334155}
   .chip:hover{border-color:#A5B4FC;color:var(--indigo)}
 
-  /* ── the drawer (folded details, never deleted) ── */
-  .veil{position:fixed;inset:0;background:rgba(15,23,42,.35);opacity:0;pointer-events:none;transition:opacity .2s}
+  /* ── the WINDOW (council 2026-11-09): centred, like MissionDialog; built so it CANNOT scroll — 3 goals, the rest behind « المزيد » ── */
+  .veil{position:fixed;inset:0;background:rgba(15,23,42,.38);opacity:0;pointer-events:none;transition:opacity .15s;z-index:8}
   .veil.on{opacity:1;pointer-events:auto}
-  .drawer{position:fixed;top:0;bottom:0;inset-inline-end:0;width:min(460px,92vw);background:#fff;box-shadow:-20px 0 50px rgba(15,23,42,.18);transform:translateX(-105%);transition:transform .25s ease;padding:24px 26px;display:flex;flex-direction:column;gap:14px;overflow:auto}
-  [dir=rtl] .drawer{inset-inline-end:auto;inset-inline-start:auto;left:0;right:auto}
-  .drawer.on{transform:none}
-  .drawer .x{align-self:flex-start;border:0;background:#F1F5F9;border-radius:12px;width:40px;height:40px;font-size:18px}
-  .drawer h4{margin:0;font-size:23px;font-weight:900;line-height:1.35}
-  .drawer .meta{display:flex;flex-wrap:wrap;gap:6px}
-  .drawer .meta span{background:#F1F5F9;border-radius:999px;padding:3px 11px;font-size:13px;font-weight:800;color:#475569}
-  .drawer h5{margin:6px 0 0;font-size:15px;font-weight:900;color:#334155}
-  .drawer ul{margin:0;padding-inline-start:20px;line-height:1.9;font-weight:600;font-size:15px}
-  .drawer .pre{display:flex;flex-wrap:wrap;gap:6px}
-  .drawer .pre span{border:1.5px solid #99F6E4;background:var(--teal-50);border-radius:999px;padding:3px 12px;font-weight:800;font-size:13px;color:#115E59}
-  .drawer .go{flex:0 0 auto;margin-top:auto}
+  .win{position:fixed;top:50%;left:50%;z-index:9;width:min(560px,90vw);max-height:86vh;overflow:hidden;background:#fff;border-radius:28px;
+    box-shadow:0 30px 80px rgba(15,23,42,.30);padding:24px 26px 22px;display:flex;flex-direction:column;gap:12px;
+    transform:translate(-50%,-50%) scale(.94);opacity:0;pointer-events:none;transition:transform .15s ease,opacity .15s ease}
+  .win.on{transform:translate(-50%,-50%) scale(1);opacity:1;pointer-events:auto}
+  @media (prefers-reduced-motion:reduce){.win,.veil{transition:none}}
+  .win .x{position:absolute;top:14px;left:14px;border:0;background:#F1F5F9;border-radius:50%;width:44px;height:44px;font-size:18px}
+  .win .top{display:flex;align-items:center;gap:14px;padding-left:44px}
+  .win .ic{width:64px;height:64px;border-radius:20px;background:var(--indigo-50);display:grid;place-items:center;font-size:34px;flex:0 0 auto}
+  .win h4{margin:0;font-size:22px;font-weight:900;line-height:1.35}
+  .win .line{color:#64748B;font-weight:800;font-size:14px;margin-top:2px}
+  .win h5{margin:2px 0 0;font-size:15px;font-weight:900;color:#334155}
+  .win ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+  .win li{display:flex;gap:10px;align-items:flex-start;font-weight:700;font-size:15.5px;line-height:1.55}
+  .win li:before{content:"";flex:0 0 auto;width:20px;height:20px;margin-top:3px;border-radius:7px;border:2.5px solid #A5B4FC}
+  .win li.ok:before{background:var(--green);border-color:var(--green)}
+  .win .more{border:0;background:none;color:var(--indigo);font-weight:900;font-size:14px;padding:4px 0;align-self:flex-start}
+  .win .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .win .chips span{background:#FEF3C7;color:#92400E;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:800;min-height:32px;display:inline-flex;align-items:center}
+  .win .pre span{background:var(--teal-50);color:#115E59;border:1.5px solid #99F6E4}
+  .win .warn{display:flex;align-items:center;gap:8px;background:#FFF7ED;border:1.5px solid #FDBA74;border-radius:16px;padding:8px 12px;font-weight:800;font-size:14px;color:#9A3412}
+  .win .warn button{margin-inline-start:auto;border:0;background:#FB923C;color:#fff;border-radius:12px;padding:6px 12px;font-weight:900}
+  .win .go{flex:0 0 auto;min-height:58px;width:100%}
+  .win p{margin:0}
+  .st.ring .dot{box-shadow:0 0 0 6px #FDE68A !important}
 
   /* ── mockup switch (not part of the product) ── */
   .demo{position:fixed;bottom:14px;left:14px;background:#0F172A;color:#fff;border-radius:16px;padding:6px;display:flex;gap:4px;font-size:13px;font-weight:800;z-index:5;box-shadow:0 8px 24px rgba(0,0,0,.25)}
@@ -206,10 +218,10 @@
 </div>
 
 <div class="veil" id="veil"></div>
-<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dTitle">
+<div class="win" id="win" role="dialog" aria-modal="true" aria-labelledby="dTitle">
   <button class="x" id="close" aria-label="إغلاق">✕</button>
-  <div id="dBody"></div>
-</aside>
+  <div id="dBody" style="display:flex;flex-direction:column;gap:12px"></div>
+</div>
 
 <div class="demo" role="group" aria-label="حالة النموذج">
   <button data-state="first">أول زيارة</button>
@@ -333,19 +345,33 @@ function fit() {
 function render() { renderHead(); renderNow(); renderKeys(); renderTrack(); fit(); }
 addEventListener('resize', fit);
 
-/* the drawer: everything the old page showed at once, one tap away */
-function open(html) { $('#dBody').innerHTML = html; $('#drawer').classList.add('on'); $('#veil').classList.add('on'); $('#close').focus(); }
-function closeD() { $('#drawer').classList.remove('on'); $('#veil').classList.remove('on'); }
-function lessonHtml(n) {
+/* the window: everything the old page showed at once, one tap away */
+let opener = null;
+function ringOnly(n) { document.querySelectorAll('.st').forEach((b) => b.classList.toggle('ring', n != null && b.dataset.lesson === String(n))); }
+function open(html, n = null, from = null) {
+  if (from) opener = from;
+  $('#dBody').innerHTML = html; ringOnly(n);
+  $('#win').classList.add('on'); $('#veil').classList.add('on');
+  ($('#win .go') ?? $('#close')).focus();
+}
+function closeD() { $('#win').classList.remove('on'); $('#veil').classList.remove('on'); ringOnly(null); opener?.focus(); opener = null; }
+/* the prerequisites are LESSON numbers of the unit (or earlier-year lessons): only an UNMET one shows up front (council) */
+const PRE_OF = { 2:[1], 3:[2], 4:[2], 5:[4], 6:[3,5], 7:[6], 8:[6], 9:[1,2,3,4,5,6,7,8] };
+function lessonHtml(n, more = false) {
   const L = LESSONS[n - 1]; const d = STATES[S].done;
-  const state = n - 1 < d ? '✓ أنهيته' : n - 1 === d ? '▶ درسك الآن' : '○ لاحقًا';
-  return `<h4 id="dTitle">${L.icon} ${L.t}</h4>
-    <div class="meta"><span>الدرس ${L.n} من 9</span><span>${state}</span><span>⏱ ${L.min} د</span><span>المهمة: ${L.mission}</span></div>
-    <h5>ستتعلّم</h5><ul>${L.skills.map((s) => `<li>${ltr(s)}</li>`).join('')}</ul>
-    ${L.tools.length ? `<h5>الأدوات التي ستجمعها</h5><div class="meta">${L.tools.map((x) => `<span>${x}</span>`).join('')}</div>` : ''}
-    <h5>ستحتاج إلى</h5><div class="pre">${L.pre.map((p) => `<span>${p}</span>`).join('')}</div>
-    <p style="margin:0;color:#64748B;font-size:13px;font-weight:600">تذكير لما تحتاجه، لا يمنعك من فتح الدرس.</p>
-    <button class="go">${n - 1 < d ? 'أعد الدرس ←' : 'افتح الدرس ←'}</button>`;
+  const status = n - 1 < d ? '✓ أنهيته' : n - 1 === d ? '▶ درسك الآن' : 'لاحقًا';
+  const unmet = (PRE_OF[n] ?? []).filter((k) => k > d).map((k) => LESSONS[k - 1]);
+  const goals = more ? L.skills : L.skills.slice(0, 3);
+  const rest = L.skills.length - 3;
+  return `<div class="top"><span class="ic">${L.icon}</span><div><h4 id="dTitle">${L.t}</h4>
+      <div class="line">الدرس ${L.n} من 9 · ⏱ ${L.min} د · ${status}</div></div></div>
+    <h5>ستتعلّم</h5><ul>${goals.map((g) => `<li class="${n - 1 < d ? 'ok' : ''}">${ltr(g)}</li>`).join('')}</ul>
+    ${more ? `${L.tools.length ? `<h5>🧰 الأدوات التي ستجمعها · المهمة: ${L.mission}</h5><div class="chips">${L.tools.map((x) => `<span>${x}</span>`).join('')}</div>` : ''}
+      <h5>🧭 يحتاج إلى</h5><div class="chips pre">${L.pre.map((p) => `<span>${p}</span>`).join('')}</div>
+      <button class="more" data-less="${n}">▲ أقلّ</button>`
+    : `<button class="more" data-more="${n}">▼ المزيد${rest > 0 ? ` (+${rest} ${rest === 1 ? 'هدف' : 'أهداف'}، الأدوات، ما يحتاجه)` : ' (الأدوات، ما يحتاجه)'}</button>`}
+    ${unmet.length && !more ? `<div class="warn">⚠️ راجع أولًا: ${unmet[0].short}<button data-lesson="${unmet[0].n}">افتحه</button></div>` : ''}
+    <button class="go">${n - 1 < d ? 'أعد الدرس ←' : n - 1 === d ? 'واصل الدرس ←' : 'افتح الدرس ←'}</button>`;
 }
 const PAGES = {
   goals: `<h4 id="dTitle">🎯 ما سأتعلّمه في هذه الوحدة</h4><ul>
@@ -360,13 +386,15 @@ const PAGES = {
     <p style="font-size:16px;font-weight:600;line-height:1.9;margin:0">عالم رياضيات إغريقي عاش في الإسكندرية. الطريقة التي ستتعلّمها في الدرس 6 لحساب القاسم المشترك الأكبر تحمل اسمه: «خوارزمية إقليدس»، وما زالت تُستعمل اليوم في الحواسيب.</p>`,
   review: `<h4 id="dTitle">🧭 راجع قبل الوحدة</h4>
     <p style="margin:0;color:#475569;font-weight:700">تحتاج هذه الوحدة إلى درسين من السنة الأولى متوسط:</p>
-    <div class="pre"><span>القسمة الإقليدية · 1 متوسط ↩ راجع</span><span>قواعد قابلية القسمة · 1 متوسط ↩ راجع</span></div>`,
+    <div class="chips pre"><span>القسمة الإقليدية · 1 متوسط ↩ راجع</span><span>قواعد قابلية القسمة · 1 متوسط ↩ راجع</span></div>`,
 };
 
 document.addEventListener('click', (e) => {
   const st = e.target.closest('[data-state]'); if (st) { S = st.dataset.state; document.querySelectorAll('.demo button').forEach((b) => b.classList.toggle('on', b === st)); render(); return; }
-  const ls = e.target.closest('[data-lesson]'); if (ls) { open(lessonHtml(Number(ls.dataset.lesson))); return; }
-  const op = e.target.closest('[data-open]'); if (op) { open(PAGES[op.dataset.open]); return; }
+  const mo = e.target.closest('[data-more]'); if (mo) { open(lessonHtml(Number(mo.dataset.more), true), Number(mo.dataset.more)); return; }
+  const le = e.target.closest('[data-less]'); if (le) { open(lessonHtml(Number(le.dataset.less)), Number(le.dataset.less)); return; }
+  const ls = e.target.closest('[data-lesson]'); if (ls) { const n = Number(ls.dataset.lesson); open(lessonHtml(n), n, ls.closest('.st') ?? opener); return; }
+  const op = e.target.closest('[data-open]'); if (op) { open(PAGES[op.dataset.open], null, op); return; }
   if (e.target.id === 'veil' || e.target.closest('#close')) closeD();
 });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeD(); });
