@@ -1299,6 +1299,10 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
   the PGCD placed (never the forced steps) with `maxTrials: 1`, and the `build` question may set `ops` (« 252 = 140 + 112 » → `['=', '+']`).
   `fraction-reduction` (lesson `ikhtizal-kasr`) follows the same shape: the verdict is path B (one division by the PGCD), and a premature « لا يمكن
   الاختزال أكثر » counts as a miss.
+  A lab whose proof is « NOTHING works but 1 » (`coprime-explorer`, lesson `awwaliyan-fima-baynahuma`): the first round is SMALL by hand (8 and 9: eight
+  taps), the activity's numbers come second with predictions and « جرّب كل الإمكانيات » (`handDone`), and its goal is « everything tried »
+  (`[{ exact: 1 }, { above: min − 1 }]`); the module's steps may wait for that second round (`needsRound: { id: 'r2' }`). The build question builds what is
+  LEFT (`n = k × q + r`), never an equality that would need a k that does not exist.
 - **« ورقة زميل »** (`content/peerSheet.js`): an invented classmate (`KidFigure`; girls in hijab), 3–5 lines with ONE error on the
   lesson's main misconception, three fixes each with a `why`, the numbers computed from the same helpers as the rounds, and a test
   (`peerSheet.test.js`) that the error line is the only wrong one.
@@ -1685,6 +1689,14 @@ different systems, often confused:
 | Rendered by | `TextbookExercise` inside a module | `PracticeSession` in the student space |
 | Purpose | أوظّف تعلّماتي — the textbook's exercises | levelled training, separate from the lesson |
 | Evidence | **never** — they are instructional (D9); their `learningPointId` is documentation | yes, a second evidence source, **judged by the server** |
+
+**Two answer-input standards (owner, 2026-11-09) — binding for every question you write:**
+1. **« الإجابة تُكتب في شكلها »** — a typed answer is drawn as the mathematics it completes: put the unknown as « … » in the
+   statement's formula, or name the target form in `answerFormat` (« يُكتب $A$ على الشكل $ax + b$ : اكتب العدد $b$ فقط »),
+   name the unit (« عدد بالدينار (دج) »), say « كسر » for a fraction. `templateFor()` turns that into the input; never rely on the
+   placeholder to explain the form. Contract: `EXERCISE_CONTRACT.md` § « قوالب الإجابة ».
+2. **A formula never breaks across two lines** — widen the card or let the formula's row scroll; never let it wrap.
+   Contract: `EXERCISE_CONTRACT.md` § « A formula never breaks ».
 
 **The practice bank is written as BEM exam sheets — the standard since 2026-10-06.** A new or
 reworked bank is 50 exercises (10 per level), each carrying `metadata.exam`: official papers from

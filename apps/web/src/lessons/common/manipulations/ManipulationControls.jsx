@@ -33,7 +33,7 @@ export default function ManipulationControls({ state, controls = {}, hints = [],
               <Lightbulb className="h-4 w-4" aria-hidden="true" /> {state.hintsOpen ? t('manipulation.hint.hide') : t('manipulation.hint.show')}
             </Btn>
           )}
-          {onCheck && <Btn tone="blue" onClick={onCheck} disabled={checkDisabled}><CheckCircle2 className="h-4 w-4" aria-hidden="true" /> {t('manipulation.check')}</Btn>}
+          {onCheck && <Btn tone="blue" onClick={onCheck} disabled={checkDisabled} data-manipulation-check><CheckCircle2 className="h-4 w-4" aria-hidden="true" /> {t('manipulation.check')}</Btn>}
           {controls.toggleExplanation !== false && (state.isDiscovered || state.isClass) && (
             <Btn onClick={state.toggleExplanation} pressed={state.showExplanation}>
               <BookOpen className="h-4 w-4" aria-hidden="true" /> {state.showExplanation ? t('manipulation.hideExplanation') : t('manipulation.showExplanation')}
@@ -58,7 +58,7 @@ export default function ManipulationControls({ state, controls = {}, hints = [],
       )}
       <ManipulationAutoComplete capability={controls.autoComplete} auto={autoComplete} resetKey={state.epoch} />
       {onCheck && (
-        <Btn tone="blue" onClick={onCheck} disabled={checkDisabled}><CheckCircle2 className="h-4 w-4" aria-hidden="true" /> {t('manipulation.check')}</Btn>
+        <Btn tone="blue" onClick={onCheck} disabled={checkDisabled} data-manipulation-check><CheckCircle2 className="h-4 w-4" aria-hidden="true" /> {t('manipulation.check')}</Btn>
       )}
       {controls.toggleExplanation !== false && (state.isDiscovered || state.isClass) && (
         <Btn onClick={state.toggleExplanation} pressed={state.showExplanation}>

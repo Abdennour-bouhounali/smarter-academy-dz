@@ -2437,7 +2437,8 @@ pill « 💡 المرشد » (`toggleIcon`, string `manipulation.coachGuide`), o
 while a question / prediction fills that column (`[data-side-panel-bar]`) — so EVERY lab of a converted lesson always shows it. The three
 labs that had no coach got one the same day: `pgcd-differences` (`logic/algorithms.js › differencesCoachOf`: cut → again → pgcd),
 `euclidean-algorithm` (`euclidCoachOf`: copy → more → carry → pgcd), `fraction-reduction` (`logic/fraction.js › coachOf`: divide → more →
-pgcd; it never says when to stop) — tested in `logic/algorithmsCoach.test.js`; a lab hides its step while a prediction or a question is open.
+pgcd; it never says when to stop) — tested in `logic/algorithmsCoach.test.js`; and `coprime-explorer` (`logic/coprime.js › coachOf`: the wrapper → « + »
+for the kits, the middle zone → « تحقّق » for the lists, never a chip; `[data-manipulation-check]` marks the check button) on the rollout of 2026-11-09; a lab hides its step while a prediction or a question is open.
 
 **Screen pixels vs layer pixels (2026-11-09, owner bug report).** The mission player fits its content with the CSS `zoom` property
 (`mission/FitToArea.jsx` — enlarged up to ×1.3 on a big screen, reduced on a small one; Classroom Mode's frame zooms too). `getBoundingClientRect`
@@ -2617,6 +2618,15 @@ the mission player a lab is played as a PATH of rounds instead of the مبتدئ
   with the one-step questions → 60/36 → ⭐ 595/560 → free). `fraction-reduction` player props: `onVerdict` (path B; a refused path-B box or a premature claim is a
   miss), `levels`, `chains`, `predict` (before the first division, at the start of path B), `choices` (`{ n, d }`); `CHAINS_PLAYER = { steps:
   ['countFill','build','why'], pgcd: ['oneStep','rule'] }`.
+- **Seventh example (2026-11-09):** lesson `awwaliyan-fima-baynahuma`, `content/kits.js` (`M1_ROUNDS`, the kits: 8 and 9 by hand → 17 and 18 with predictions and
+  « جرّب كل الإمكانيات » → ⭐ 21 and 28 → free; `M2_ROUNDS`, the lists: 15 and 22 with questions → 35 and 48 with one prediction → ⭐ 51 and 85 → free).
+  `coprime-explorer` player props: `onVerdict` (kits: each number tried `{ groups: k, exact }`; lists: each « تحقّق » — conclusive `{ groups: 1 | the common
+  placed, exact: true }`, early `{ groups: 0, exact: false }`), `levels`, `handDone`, `chains`, `predict` (kits: before a NEW k ≥ 2, ≤ 2 per round; lists:
+  ONCE before the first chip, « هل هما أوليان فيما بينهما؟ »), `choices` (`{ a, b }`); `CHAINS_PLAYER = { groups: ['gWorkFill','gLeftBuild','rule'], lists:
+  ['lTestedFill','lCommon','rule'] }` — `gLeftBuild` builds what is LEFT (`n = k × q + r`, the first k ≥ 2 tried, naming the object that has a remainder;
+  `n = k × q` with `ops ['=','×']` when a k > 1 works), and the scene shows that k while the question is open (`buildFocus`). The trials journal is
+  `GroupTrials`, exported by `CommonDivisors.jsx`. A « coprime » round with no questions is won by « everything tried »: `[{ exact: 1 }, { above: min − 1 }]`
+  (a kit is added one at a time, so reaching min(a ; b) passes every k).
 
 **`team-builder` options (2026-11-04):** `levels={false}` gives a worked example with no مبتدئ / متقدم selector (as for
 `divisor-explorer-books`). `handDone` opens « أنشئ الفرق » from the start: the student already shared BY HAND in an

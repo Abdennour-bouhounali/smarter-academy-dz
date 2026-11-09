@@ -21,6 +21,51 @@ export const LESSON_CONFIG = {
   unit: 'aadad-tabiiya-natiqa',
   unitTitle: 'الأعداد الطبيعيّة والأعداد النّاطقة',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (modèle du pilote qasim-adad-tabii, VALIDÉ par le propriétaire le 2026-11-08 ; rollout leçon par
+  // leçon, docs/reports/MISSION_ROLLOUT_PROGRESS.md) — implique le regard « focus » ; l'enseignant et le mode classe ne voient aucun changement.
+  studentView: 'mission',
+  // LA MISSION : l'ouverture avoue qu'on ne sait pas encore la résoudre ; les outils sont les connaissances de knowledge.jsx ; les points
+  // d'étape RAPPROCHENT de la mission sans en résoudre aucune question (la مسألة 1 du module 4 reste entière : ils parlent de 14/15, 34/51 et
+  // de la méthode — jamais de 26, 45, 39, 65 ni de leur PGCD 13) ; formatifs, jamais une preuve de maîtrise. Des TUILES numérotées, jamais
+  // des cartes à jouer (respect des valeurs, CLAUDE.md).
+  mission: {
+    scene: 'math-club',
+    title: 'لعبة الزوج الرابح',
+    opening: {
+      text: 'في نادي الرياضيات، يسحب كل لاعب بطاقتين مرقّمتين، ويكسب نقاطًا إذا كان العددان أوليين فيما بينهما. سحب ياسين 26 و 45، وتقول سلمى إنّ عدديها 39 و 65 أوليان فيما بينهما لأنّهما فرديّان. من الرابح؟ وهل سلمى على صواب؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'awwaliyan-taarif', icon: '🤝', label: 'أوليان فيما بينهما' },
+      { id: 'nafy-awwaliyan', icon: '✋', label: 'قاسم مشترك يكفي للنفي' },
+      { id: 'laysa-awwali', icon: '⚠️', label: 'ليسا عددين أوليين بالضرورة' },
+      { id: 'ithbat-awwaliyan', icon: '✅', label: 'الإثبات بـ PGCD' },
+    ],
+    climaxModule: 4,
+    checkpoints: [
+      {
+        id: 'cp-taarif', afterModule: 1,
+        prompt: 'هل العددان 14 و 15 أوليان فيما بينهما؟',
+        options: ['نعم: $\\mathrm{PGCD}(14\\ ;\\ 15) = 1$', 'لا: لأنّ 14 و 15 ليسا عددين أوليين', 'لا: لأنّ أحدهما زوجي'],
+        correct: 0,
+        explain: 'قواسم 14: 1 ، 2 ، 7 ، 14 — ولا يقسم 15 منها إلا 1.',
+      },
+      {
+        id: 'cp-nafy', afterModule: 2,
+        prompt: 'لتبيّن أنّ 34 و 51 ليسا أوليين فيما بينهما، يكفي أن:',
+        options: ['تجد قاسمًا مشتركًا لهما غير 1، مثل 17', 'تكتب كل قواسم العددين', 'تلاحظ أنّ أحدهما زوجي'],
+        correct: 0,
+        explain: '$34 = 17 \\times 2$ و $51 = 17 \\times 3$: القاسم المشترك 17 ≠ 1 يكفي.',
+      },
+      {
+        id: 'cp-khitta', afterModule: 3,
+        prompt: 'في لعبة الزوج الرابح، كيف تعرف أنّ بطاقتيك رابحتان؟',
+        options: ['أحسب PGCD العددين: إن كان 1 فهما رابحتان', 'أنظر هل العددان فرديان', 'أنظر هل كل عدد منهما أوّلي'],
+        correct: 0,
+        explain: 'أوليان فيما بينهما يعني PGCD = 1. هذه خطّتك في المسألة التالية.',
+      },
+    ],
+  },
   title: 'العددان الأوّليّان فيما بينهما',
   description: 'العددان الأوليان فيما بينهما: قاسمهما المشترك الأكبر يساوي 1؛ إثبات ذلك بحساب PGCD، ونفيه بإظهار قاسم مشترك يختلف عن 1.',
   level: 'moyen',
@@ -51,6 +96,8 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début, sans verrou par محور.
+  knowledgeMapOpen: true,
   priorKnowledge: ['pgcd-taarif', 'khwarizmiyat-iqlidus', 'qawaid-qisma'],
   resources: [
     // Module 1 — workspace à deux niveaux, sur les couples du manuel :

@@ -17,8 +17,8 @@
 | 5 | `tayin-pgcd` | `common-divisors` (already converted) | ✅ done 2026-11-08 | `feat(lessons): tayin-pgcd — mission prototype` | See « Lesson 5 » below. |
 | 6 | `bahth-pgcd` | `pgcd-differences`, `euclidean-algorithm` (v2 treatment, new) | ✅ done 2026-11-09 | `feat(lessons): bahth-pgcd — mission prototype` | Also the BEM exam-sheet prototype lesson (practice untouched). See « Lesson 6 » below. |
 | 7 | `ikhtizal-kasr` | `fraction-reduction` (v2 treatment, new) | ✅ done 2026-11-09 | `feat(lessons): ikhtizal-kasr — mission prototype` | See « Lesson 7 » below. |
-| 8 | `awwaliyan-fima-baynahuma` | — | ⏳ next in catalogue order | | |
-| 9 | `wadiya-idmajiya-aadad` | — | ⏳ | | |
+| 8 | `awwaliyan-fima-baynahuma` | `coprime-explorer` (v2 treatment, new) | ✅ done 2026-11-09 | `feat(lessons): awwaliyan-fima-baynahuma — mission prototype` | See « Lesson 8 » below. |
+| 9 | `wadiya-idmajiya-aadad` | — | ⏳ next in catalogue order | | |
 
 Catalogue order: `packages/core/curriculum/dz/lessons_4am_2026_2027.json`. Units 2–14 are not started.
 
@@ -33,6 +33,7 @@ Catalogue order: `packages/core/curriculum/dz/lessons_4am_2026_2027.json`. Units
 | `pgcd-differences` | ✅ (2026-11-09) | `bahth-pgcd` |
 | `euclidean-algorithm` | ✅ (2026-11-09) | `bahth-pgcd` |
 | `fraction-reduction` | ✅ (2026-11-09) | `ikhtizal-kasr` |
+| `coprime-explorer` | ✅ (2026-11-09) | `awwaliyan-fima-baynahuma` |
 | every other lab | ⏳ | — |
 
 ## Lesson 2 — `qawasim-adad-tabii` « قواسم عدد طبيعي » (2026-11-08)
@@ -249,6 +250,36 @@ rule → ★★★); home (2 of 4 tools), « أستعدّ » (10 questions, revi
 1–7 unit by unit at 1366×768, 1024×768 and 1920×1080 (0 `data-fit-overflow`, 0 page scroll); teacher view and Classroom Mode unchanged.
 
 **Open on this lesson:** e2e specs of the old student view (plan §9.7); `resources` still describe the two-level labs for the teacher's page.
+
+## Lesson 8 — `awwaliyan-fima-baynahuma` « العددان الأوّليّان فيما بينهما » (2026-11-09)
+
+**What was written (per lesson):** `lesson.config.js` (`studentView: 'mission'`, `mission` with the new scene `math-club`, title « لعبة الزوج الرابح », 4 tools =
+`awwaliyan-taarif`, `nafy-awwaliyan`, `laysa-awwali`, `ithbat-awwaliyan`, climax = module 4 « مسألة الدرس » (26 و 45، 39 و 65 and سلمى's claim), 3 checkpoints on
+14/15, 34/51 and the plan — never 26, 45, 39, 65 or 13, open knowledge map) · `content/prep.js` + test (10 « أستعدّ » questions: « PGCD وخوارزمية إقليدس » to revise
+with `bahth-pgcd`, « قواعد قابلية القسمة » with `qawaid-qabiliyat-qisma`; the five statements of before stay in `textbook.js`) · `content/kits.js` + test
+(module 1, the kits: 8 and 9 by hand with the questions → 17 and 18 with predictions and « جرّب كل الإمكانيات » → ⭐ 21 and 28 → free; module 2, the lists: 15 and
+22 with the questions → 35 and 48 with one prediction → ⭐ 51 and 85 → free; `easier` rounds) · `content/peerSheet.js` + test (« ورقة أنس »: 8 and 15 are not prime,
+« so they are not coprime » — the couple's property confused with each number's) · modules 0, 1 (both steps wait for round 2, 17 and 18), 2 (step 1 waits for
+round 1, the peer sheet is step 3). The mission draws numbered TILES, never playing cards (CLAUDE.md, respect of values).
+
+**What was added to the shared code:**
+- `coprime-explorer` v2 treatment (`CoprimeExplorer.jsx`, see `MANIPULATION_CONTRACT.md` « Seventh example ») and its first `LabCoach` (`logic/coprime.js ›
+  coachOf`); `GroupTrials` exported by `CommonDivisors.jsx` and reused; the check button carries `[data-manipulation-check]` (`Btn` passes `data-*`).
+- `mission/MathClubScene.jsx` registered as `mission.scene: 'math-club'` (four pairs of tiles go from « ? » to « ✓ » as tools are earned; a `KidFigure` in hijab).
+
+**Traps met:** a string whose value is already wrapped in `$…$` must not be wrapped again in the translation (`$$2$$` renders as display math on its own line);
+`PredictTray` shows plain text — no `$` in a prediction prompt; in a lists round the win dialog offers « عُد إلى السؤال » (the step waiting for it), not « next
+round ».
+
+**Verification:** `vitest run` of the unit, `common/mission` and `common/manipulations` green (295 files, 4 335 tests; new: `prep.test`, `kits.test`,
+`peerSheet.test`, `coprimePlayer.test`), `check:lessons` exit 0 (entry 240.7 KB ≤ 245), `lab-rollout-status --lesson awwaliyan-fima-baynahuma` ✅, Playwright walk
+with a mocked student session: module 1 round 1 by hand (8 kits, count 0, build 9 = 2 × 4 + 1, rule → ★★★), round 2 (two predictions, « جرّب كل الإمكانيات » →
+★★★); module 2 round 1 (four chips, « تحقّق », count 4, commons, rule → ★★★), round 2 (prediction tray first, four chips, « تحقّق » → ★★★, prediction result shown);
+home first visit and return (scene `math-club`, 4 tools); modules 1–7 unit by unit at 1366×768, 1024×768 and 1920×1080 (0 `data-fit-overflow`, 0 page scroll,
+no console error); teacher view and Classroom Mode unchanged.
+
+**Open on this lesson:** e2e specs of the old student view (plan §9.7); `resources` still describe the two-level labs for the teacher's page; the module-1 station
+label still reads « 17 و 18، 22 و 35، ومريم » (22 and 35 now live only in the teacher's متقدم level).
 
 ## Cross-lesson fix — the guide and the « أستعدّ » card (2026-11-09, owner)
 

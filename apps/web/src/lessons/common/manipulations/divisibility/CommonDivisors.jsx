@@ -538,7 +538,7 @@ export const CHAINS_PLAYER = { groupsOnly: ['observe', 'build', 'beyondFill', 'r
 
 /** Le JOURNAL des essais (lecteur) : chaque nombre de groupes essayé, ce qui reste de chaque objet, ✓ quand rien ne reste. Les 6 derniers. */
 const TRIALS_SHOWN = 6;
-function GroupTrials({ a, b, tried, words }) {
+export function GroupTrials({ a, b, tried, words }) {
   const { t } = useTranslation('lesson');
   const all = Object.keys(tried).map(Number).sort((x, y) => x - y);
   const rows = all.slice(-TRIALS_SHOWN);
