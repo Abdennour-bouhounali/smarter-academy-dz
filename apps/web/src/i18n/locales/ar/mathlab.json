@@ -5252,7 +5252,7 @@
       },
       "practice": {
         "heading": "تمارين",
-        "score": "{{solved}} / {{seen}}",
+        "score": "{{solved}} / {{seen}}",
         "levelLabel": "المستوى",
         "levels": {
           "1": "استدلال ملموس",
@@ -5389,15 +5389,15 @@
   "files": {
     "heading": "الملفات",
     "close": "إغلاق لوحة الملفات",
-    "boardCount": "{{used}} / {{max}} في هذه السبّورة",
-    "userCount": "{{used}} / {{max}} إجمالًا",
+    "boardCount": "{{used}} / {{max}} في هذه السبّورة",
+    "userCount": "{{used}} / {{max}} إجمالًا",
     "add": "إضافة ملفات",
     "addHint": "صور PNG وJPG وWEBP وSVG، أو PDF — حتى 1 ميغابايت للملف. كما تُقبل رسوم .excalidraw ومكتبات .excalidrawlib.",
     "boardFull": "تحتوي هذه السبّورة بالفعل على {{max}} ملفات.",
     "userFull": "لقد وصلت إلى الحدّ الأقصى البالغ {{max}} ملفًا.",
     "empty": "لا ملفات في هذه السبّورة بعد.",
     "loading": "جارٍ تحميل الملفات…",
-    "uploading": "جارٍ رفع «{{name}}» ({{index}} / {{total}})…",
+    "uploading": "جارٍ رفع «{{name}}» ({{index}} / {{total}})…",
     "uploadDone_zero": "لم يُرفع أيّ ملف.",
     "uploadDone_one": "تم رفع ملف واحد.",
     "uploadDone_two": "تم رفع ملفين.",
@@ -5599,7 +5599,7 @@
         "term": "اختر الحدّ الذي نتعامل معه في هذه الخطوة.",
         "pick": "اختر العناصر المعنيّة بهذه الخطوة."
       },
-      "picked": "{{current}} / {{total}}",
+      "picked": "{{current}} / {{total}}",
       "chooseOperator": "أحسنت الاختيار — والآن: أيّ عملية نُجري؟",
       "goodPick": "اختيار صحيح.",
       "correct": "أحسنت! هذا بالضبط ما نفعله.",

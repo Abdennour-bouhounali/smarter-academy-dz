@@ -156,7 +156,7 @@ function DiagnosticResult({ lessonId, score, maxScore, skills, skillScores, leve
         className={`bg-gradient-to-br ${meta.tone} text-white rounded-3xl p-8 text-center space-y-3 relative overflow-hidden`}
       >
         <div className="text-5xl" aria-hidden="true">{meta.emoji}</div>
-        <div dir="ltr" className="text-3xl font-space font-extrabold">{score} / {maxScore}</div>
+        <div dir="ltr" className="text-3xl font-space font-extrabold">{score}{'\u00A0/\u00A0'}{maxScore}</div>
         <div className="text-lg font-space font-bold">{text(meta, 'title')}</div>
         {isPerfect && (
           <div className="inline-flex items-center gap-2 bg-amber-400 text-amber-950 font-bold text-sm px-4 py-2 rounded-full mt-1">
@@ -176,7 +176,7 @@ function DiagnosticResult({ lessonId, score, maxScore, skills, skillScores, leve
                   <span className="font-space font-bold text-slate-800 text-sm">
                     {skills[key].emoji} {skills[key].label}
                   </span>
-                  <span dir="ltr" className="font-mono text-xs font-bold text-slate-500">{s.score} / {s.max}</span>
+                  <span dir="ltr" className="font-mono text-xs font-bold text-slate-500">{s.score}{'\u00A0/\u00A0'}{s.max}</span>
                 </div>
                 <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                   <div
@@ -254,7 +254,7 @@ function DiagnosticReviewCompact({ lessonId, lessonTitle, basePath, questions, a
       <div className="space-y-5">
       <div className={`flex items-center gap-5 rounded-3xl bg-gradient-to-br ${meta.tone} px-6 py-4 text-white`}>
         <span className="text-4xl" aria-hidden="true">{meta.emoji}</span>
-        <span dir="ltr" className="font-space text-3xl font-extrabold">{score} / {maxScore}</span>
+        <span dir="ltr" className="font-space text-3xl font-extrabold">{score}{'\u00A0/\u00A0'}{maxScore}</span>
         <span className="text-lg font-bold">{text(meta, 'title')}</span>
       </div>
 
@@ -279,7 +279,7 @@ function DiagnosticReviewCompact({ lessonId, lessonTitle, basePath, questions, a
         <ul className="flex flex-wrap gap-2">
           {Object.entries(skillScores).map(([key, sc]) => (
             <li key={key} className={`rounded-full px-3 py-1 text-sm font-bold ${sc.score === sc.max && !sc.unsure ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
-              {skills[key].emoji} {skills[key].label} · <span dir="ltr">{sc.score} / {sc.max}</span>
+              {skills[key].emoji} {skills[key].label} · <span dir="ltr">{sc.score}{'\u00A0/\u00A0'}{sc.max}</span>
             </li>
           ))}
         </ul>
@@ -301,7 +301,7 @@ function DiagnosticReviewCompact({ lessonId, lessonTitle, basePath, questions, a
         <MissionDialog label={`${t('question.label')} ${open + 1}`} onClose={() => setOpen(null)}>
           <div className="space-y-4 pt-6 text-start" data-review-dialog={open + 1}>
             <p className={`flex items-center gap-2 text-lg font-black ${oks[open] ? 'text-emerald-700' : 'text-rose-700'}`}>
-              {oks[open] ? '✓' : '✗'} {skills[q.skill]?.emoji} {t('question.label')} <span dir="ltr">{open + 1} / {questions.length}</span>
+              {oks[open] ? '✓' : '✗'} {skills[q.skill]?.emoji} {t('question.label')} <span dir="ltr">{open + 1}{'\u00A0/\u00A0'}{questions.length}</span>
             </p>
             <div className="text-lg leading-relaxed text-slate-800">{q.prompt}</div>
             <DiagnosticQuestionReview q={q} pick={answers[q.id]} ok={oks[open]} />
@@ -532,7 +532,7 @@ export default function PrerequisiteDiagnostic({
               </span>
             </span>
             <span>
-              <span dir="ltr">{score} / {maxScore}</span> {t('diagnostic.inProgress')}
+              <span dir="ltr">{score}{'\u00A0/\u00A0'}{maxScore}</span> {t('diagnostic.inProgress')}
             </span>
           </div>
 
@@ -552,7 +552,7 @@ export default function PrerequisiteDiagnostic({
               <div className="flex items-center justify-between gap-2 flex-wrap">
                 <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-teal-600 text-white">
                   {skills[q.skill].emoji}{' '}
-                  <span dir="ltr">{i + 1} / {questions.length}</span>
+                  <span dir="ltr">{i + 1}{'\u00A0/\u00A0'}{questions.length}</span>
                 </span>
                 {answers[q.id] != null && <CheckCircle2 className="w-4 h-4 text-teal-600" aria-hidden="true" />}
               </div>

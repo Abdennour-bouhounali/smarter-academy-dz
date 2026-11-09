@@ -60,7 +60,7 @@ function Epreuve({ epreuve, index, total, pick, onPick }) {
           {epreuve.title ?? `${t('boss.trial')} ${index + 1}`}
         </h3>
         <span dir="ltr" className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-slate-800 text-white">
-          {index + 1} / {total}
+          {index + 1}{'\u00A0/\u00A0'}{total}
         </span>
       </div>
 
@@ -152,7 +152,7 @@ function BossReview({ epreuves, answers, onContinue, onRedo, lessonId = null }) 
             bidi arabe inverse les deux nombres et « 10 / 11 » se lit
             « 11 / 10 » — le score et son maximum échangés. */}
         <div dir="ltr" className="text-3xl font-space font-extrabold">
-          {correctCount} / {epreuves.length}
+          {correctCount}{'\u00A0/\u00A0'}{epreuves.length}
         </div>
       </div>
 
@@ -176,7 +176,7 @@ function BossReview({ epreuves, answers, onContinue, onRedo, lessonId = null }) 
                   {ep.title ?? `${t('boss.trial')} ${i + 1}`}
                 </h3>
                 <span dir="ltr" className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-slate-800 text-white">
-                  {i + 1} / {epreuves.length}
+                  {i + 1}{'\u00A0/\u00A0'}{epreuves.length}
                 </span>
               </div>
 
@@ -304,7 +304,7 @@ function BossReviewCompact({ epreuves, answers, unsure = {}, skills, misses, les
     <div className="mx-auto max-w-3xl space-y-6" data-paging-keep data-boss-review>
       <div className={`flex items-center justify-center gap-5 rounded-3xl bg-gradient-to-br px-6 py-5 text-white ${perfect ? 'from-amber-500 to-orange-600' : 'from-slate-800 to-slate-900'}`}>
         <span className="text-5xl" aria-hidden="true">{perfect ? '🏆' : '🎯'}</span>
-        <span dir="ltr" className="font-space text-4xl font-extrabold" data-boss-score={`${score}/${epreuves.length}`}>{score} / {epreuves.length}</span>
+        <span dir="ltr" className="font-space text-4xl font-extrabold" data-boss-score={`${score}/${epreuves.length}`}>{score}{'\u00A0/\u00A0'}{epreuves.length}</span>
         <span className="text-lg font-bold">{t('boss.challengeResult')}</span>
       </div>
 
@@ -351,7 +351,7 @@ function BossReviewCompact({ epreuves, answers, unsure = {}, skills, misses, les
         <MissionDialog label={`${t('question.label')} ${open + 1}`} onClose={() => setOpen(null)}>
           <div className="space-y-4 pt-6 text-start" data-review-dialog={open + 1}>
             <p className={`flex items-center gap-2 text-lg font-black ${oks[open] ? 'text-emerald-700' : 'text-rose-700'}`}>
-              {oks[open] ? '✓' : '✗'} {t('question.label')} <span dir="ltr">{open + 1} / {epreuves.length}</span>
+              {oks[open] ? '✓' : '✗'} {t('question.label')} <span dir="ltr">{open + 1}{'\u00A0/\u00A0'}{epreuves.length}</span>
             </p>
             <div className="text-lg leading-relaxed text-slate-800">{ep.prompt}</div>
             <EpreuveReview ep={ep} pick={answers[ep.id]} isCorrect={oks[open]} lessonId={lessonId} />
@@ -394,7 +394,7 @@ function PlayerProfile({ skills, misses, score, total, lessonConfig, badges, mas
     <div className="mx-auto max-w-4xl space-y-6" data-paging-keep data-boss-profile>
       <div className="flex flex-wrap items-center justify-center gap-4 text-center">
         <h2 className="font-space text-3xl font-extrabold text-slate-900">{t('boss.playProfileTitle')}</h2>
-        <span dir="ltr" className="rounded-full bg-slate-900 px-4 py-1.5 font-space text-xl font-extrabold text-white">{score} / {total}</span>
+        <span dir="ltr" className="rounded-full bg-slate-900 px-4 py-1.5 font-space text-xl font-extrabold text-white">{score}{'\u00A0/\u00A0'}{total}</span>
       </div>
       {masterBadge && completion?.masterBadgeLabel && (
         <p className="rounded-2xl bg-gradient-to-l from-amber-400 to-orange-500 px-5 py-3 text-center text-xl font-black text-white" data-boss-master>🏆 {completion.masterBadgeLabel}</p>

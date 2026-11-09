@@ -95,7 +95,7 @@ function ToolbarSlot({ states, current, goTo, tally, revealing, lessonPosition }
     <div className="flex items-center gap-2">
       {revealing && (
         <span className="sa-classroom-position" data-test-tally>
-          <span dir="ltr">{tally.correct} / {tally.total}</span>
+          <span dir="ltr">{tally.correct}{'\u00A0/\u00A0'}{tally.total}</span>
         </span>
       )}
       {/* En session LEÇON, le repère « المحور 1 من 5 » reste : on déclare par
@@ -145,7 +145,7 @@ function QuestionHeading({ state, index, total, title }) {
     <div className="flex flex-wrap items-center justify-between gap-3">
       <div className="flex items-center gap-3">
         <span className="inline-flex items-center rounded-full bg-slate-900 px-3 py-1 font-mono text-xs font-bold text-white">
-          <span dir="ltr">{index + 1} / {total}</span>
+          <span dir="ltr">{index + 1}{'\u00A0/\u00A0'}{total}</span>
         </span>
         {title && <h3 className="font-space text-lg font-bold text-slate-800">{title}</h3>}
       </div>

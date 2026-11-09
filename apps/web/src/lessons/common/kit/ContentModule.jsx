@@ -219,7 +219,7 @@ export default function ContentModule({
         </span>
       )}
       <span className="sa-classroom-position" data-classroom-position data-classroom-unit-index={current} dir="ltr">
-        {current + 1} / {units.length}
+        {current + 1}{'\u00A0/\u00A0'}{units.length}
       </span>
     </>
   ), [current, units.length, page, pageCount, t]);

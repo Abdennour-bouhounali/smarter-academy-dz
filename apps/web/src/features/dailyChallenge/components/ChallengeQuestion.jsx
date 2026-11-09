@@ -39,7 +39,7 @@ export default function ChallengeQuestion({
       <ArenaPanel className="px-4 py-3 sm:px-6 sm:py-4">
         <div className="flex flex-wrap items-center gap-3">
           <p className="font-space text-sm font-black tracking-wide text-slate-900" data-question-of>
-            {t('session.question')} <span dir="ltr">{current.position} / {current.total}</span>
+            {t('session.question')} <span dir="ltr">{current.position}{'\u00A0/\u00A0'}{current.total}</span>
           </p>
           <div className="ms-auto"><ChallengeTimer startedAt={current.startedAt} serverNow={current.serverNow} receivedAt={current.receivedAt} frozenMs={result ? result.responseTimeMs : null} /></div>
         </div>

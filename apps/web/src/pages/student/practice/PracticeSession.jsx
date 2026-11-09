@@ -918,7 +918,7 @@ export default function PracticeSession() {
           {totalQuestions > 1 && (
             <>
               {' · '}{t('practice.exerciseScore')}{' '}
-              <bdi dir="ltr" className="font-bold tabular-nums">{score.correct} / {score.total}</bdi>
+              <bdi dir="ltr" className="font-bold tabular-nums">{score.correct}{'\u00A0/\u00A0'}{score.total}</bdi>
             </>
           )}
         </p>

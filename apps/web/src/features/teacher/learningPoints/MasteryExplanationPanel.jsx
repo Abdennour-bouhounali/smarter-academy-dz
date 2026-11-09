@@ -89,7 +89,7 @@ export default function MasteryExplanationPanel({ open, onClose, classGroupId, s
                     <dt className="text-slate-500">{t(`learningPoints.explanation.facts.${key}`)}</dt>
                     <dd className="font-mono-jetbrains font-bold tabular-nums text-slate-800" dir="ltr">
                       {key === 'distinctItemsSuccess' && data.evidence.needed !== undefined && data.evidence.needed !== null
-                        ? `${data.evidence[key] ?? 0} / ${data.evidence.needed}`
+                        ? `${data.evidence[key] ?? 0}\u00A0/\u00A0${data.evidence.needed}`
                         : (data.evidence[key] ?? '—')}
                     </dd>
                   </div>

@@ -141,7 +141,7 @@ export default function MemoQuiz({ open, onClose, build, storageKey }) {
             <div className="space-y-6 text-center">
               <p className="text-7xl" aria-hidden="true">⏱️</p>
               <p className="text-2xl font-black text-slate-900">{k('intro', { count: build().length, s: Q.SECONDS })}</p>
-              {best && <p className="text-base font-black text-violet-700">{k('best', { result: iso(`${best.score} / ${best.total}`) })}</p>}
+              {best && <p className="text-base font-black text-violet-700">{k('best', { result: iso(`${best.score}\u00A0/\u00A0${best.total}`) })}</p>}
               <button type="button" onClick={begin} data-memo-quiz-start
                 className={`inline-flex min-h-[64px] items-center gap-3 rounded-full bg-gradient-to-l from-violet-600 to-indigo-600 px-12 text-2xl font-black text-white shadow-[0_5px_0_0_#3730A3] active:translate-y-1 active:shadow-none ${ring}`}>
                 {k('start')} <ChevronLeft className="h-6 w-6" aria-hidden="true" />
@@ -199,10 +199,10 @@ export default function MemoQuiz({ open, onClose, build, storageKey }) {
           {phase === 'end' && sum && (
             <div className="space-y-5 text-center" data-memo-quiz-score={`${sum.score}/${sum.total}`}>
               <p className="text-6xl" aria-label={k('starsAria', { n: sum.stars })}>{'⭐'.repeat(sum.stars)}<span className="opacity-20">{'⭐'.repeat(3 - sum.stars)}</span></p>
-              <p className="text-7xl font-black text-slate-900"><bdi dir="ltr" data-memo-quiz-result>{`${sum.score} / ${sum.total}`}</bdi></p>
+              <p className="text-7xl font-black text-slate-900"><bdi dir="ltr" data-memo-quiz-result>{`${sum.score}\u00A0/\u00A0${sum.total}`}</bdi></p>
               <p className="text-lg font-bold text-slate-500">{k('seconds', { s: iso(sum.seconds) })}</p>
               {record && <p className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-4 py-1.5 text-lg font-black text-amber-900"><Trophy className="h-5 w-5" aria-hidden="true" /> {k('newBest')}</p>}
-              {!record && best && <p className="text-base font-black text-violet-700">{k('best', { result: iso(`${best.score} / ${best.total}`) })}</p>}
+              {!record && best && <p className="text-base font-black text-violet-700">{k('best', { result: iso(`${best.score}\u00A0/\u00A0${best.total}`) })}</p>}
               <p className="mx-auto max-w-xl rounded-2xl bg-slate-50 px-4 py-3 text-lg font-bold text-slate-700">
                 {sum.review.length === 0 ? k('allGood') : k('review', { list: iso(sum.review.map((n) => String(n).padStart(2, '0')).join(' · ')) })}
               </p>

@@ -41,7 +41,7 @@ export default function JourneyStats({ activity, agg, profileStatus }) {
   } else if (assessed === 0) {
     masteredHint = t('home.statNothingAssessed');
   } else {
-    masteredValue = <span dir="ltr">{mastered} / {assessed}</span>;
+    masteredValue = <span dir="ltr">{mastered}{'\u00A0/\u00A0'}{assessed}</span>;
     masteredHint = t('home.statMasteredOfAssessed', { assessed });
     masteredAria = t('home.statMasteredAria', { mastered, assessed });
   }

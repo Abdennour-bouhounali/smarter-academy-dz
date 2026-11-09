@@ -36,7 +36,7 @@
     "noData": "لا توجد بيانات لعرضها حالياً.",
     "previous": "السابق",
     "next": "التالي",
-    "pageOf": "{{page}} / {{last}}",
+    "pageOf": "{{page}} / {{last}}",
     "rangeOf": "{{from}}–{{to}} من {{total}}",
     "selectAllPage": "تحديد الكل في هذه الصفحة ({{count}})",
     "unselectAllPage": "إلغاء التحديد في هذه الصفحة",

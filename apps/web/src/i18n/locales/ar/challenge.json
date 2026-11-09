@@ -55,7 +55,7 @@
     "generic": "حدث خطأ. أعد المحاولة."
   },
   "session": {
-    "questionOf": "السؤال {{n}} / {{total}}",
+    "questionOf": "السؤال {{n}} / {{total}}",
     "progress": "التقدّم في التحدّي",
     "timer": "الوقت",
     "timerLabel": "الوقت المنقضي في هذا السؤال: {{time}}",
@@ -95,7 +95,7 @@
       "streak": "مواظبة",
       "penalty": "أيام فائتة"
     },
-    "correctOf": "{{correct}} / {{total}} صحيحة",
+    "correctOf": "{{correct}} / {{total}} صحيحة",
     "averageTime": "متوسّط الوقت",
     "seconds": "{{value}} ث",
     "classPosition": "ترتيبك في القسم",
@@ -223,7 +223,7 @@
       "date": "اليوم",
       "noChallenge": "لم يُفتح تحدّي هذا اليوم بعد: يُنشأ عندما يفتحه أوّل تلميذ.",
       "participation": "المشاركة",
-      "participationValue": "{{completed}} / {{members}}",
+      "participationValue": "{{completed}} / {{members}}",
       "averageScore": "متوسّط الدقّة",
       "averageTime": "متوسّط وقت الإجابة",
       "accuracy": "دقّة القسم",

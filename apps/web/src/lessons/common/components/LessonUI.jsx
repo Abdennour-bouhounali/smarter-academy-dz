@@ -478,7 +478,7 @@ export function StepProgressBar({ doneCount, total }) {
           />
         </div>
         <span dir="ltr" className="text-[10px] font-mono font-bold text-slate-400 tabular-nums shrink-0">
-          {doneCount} / {total}
+          {doneCount}{'\u00A0/\u00A0'}{total}
         </span>
       </div>
     </div>

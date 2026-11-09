@@ -193,7 +193,7 @@ export default function Lobby({ state, game = 'orbit', busy, error, muted, onTog
                     <span className="block h-full rounded-full bg-gradient-to-l from-amber-300 to-orange-500" style={{ width: `${goal.ratio * 100}%` }} />
                   </span>
                 </div>
-                <span className="font-space text-xs font-bold text-white/60" dir="ltr">{formatScore(goal.rule.progress)} / {formatScore(goal.rule.threshold)}</span>
+                <span className="font-space text-xs font-bold text-white/60" dir="ltr">{formatScore(goal.rule.progress)}{'\u00A0/\u00A0'}{formatScore(goal.rule.threshold)}</span>
               </div>
             )}
           </Panel>

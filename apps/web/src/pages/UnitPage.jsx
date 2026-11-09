@@ -227,7 +227,7 @@ export default function UnitPage() {
             </div>
             <div className="w-full shrink-0 space-y-2 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-center md:w-52" data-tour="unit.progress">
               <div className="text-xs font-mono font-bold uppercase text-slate-500">{t('unit.progress')}</div>
-              <div dir="ltr" className="text-3xl font-extrabold text-blue-600">{done} / {lessons.length}</div>
+              <div dir="ltr" className="text-3xl font-extrabold text-blue-600">{done}{'\u00A0/\u00A0'}{lessons.length}</div>
               <div className="text-xs text-slate-500">{t('unit.lessonsDone')}</div>
             </div>
           </div>

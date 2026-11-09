@@ -78,7 +78,7 @@ export default function LessonsTab({ classGroup, entitlements }) {
     <div className="space-y-4" data-lessons-tab>
       <div className="flex flex-wrap items-center gap-3">
         <p className="font-inter text-sm text-slate-600">
-          <span className="font-semibold text-slate-900">{t('lessons.effective')}</span> <span dir="ltr">{counts.effective} / {rows.length}</span>
+          <span className="font-semibold text-slate-900">{t('lessons.effective')}</span> <span dir="ltr">{counts.effective}{'\u00A0/\u00A0'}{rows.length}</span>
         </p>
         <p className="text-xs text-slate-400">{t('lessons.subtitle')}</p>
       </div>

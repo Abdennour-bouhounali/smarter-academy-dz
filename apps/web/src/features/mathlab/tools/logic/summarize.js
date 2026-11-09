@@ -138,7 +138,7 @@ function describe(area, data) {
 
       return {
         first: preset.id,
-        current: `${placed} / ${total}`,
+        current: `${placed}\u00A0/\u00A0${total}`,
         text: [preset.id, preset.strategy],
       };
     }

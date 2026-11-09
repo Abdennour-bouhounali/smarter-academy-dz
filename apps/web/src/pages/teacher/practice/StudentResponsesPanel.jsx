@@ -100,7 +100,7 @@ export default function StudentResponsesPanel({ lessonCode, exerciseId, question
                   </span>
                   <span className="flex shrink-0 items-center gap-1.5">
                     <bdi dir="ltr" className={`rounded-md px-1.5 py-0.5 text-xs font-bold tabular-nums ${allRight ? TONE_STYLE.correct.chip : 'bg-slate-100 text-slate-700'}`}>
-                      {s.questionsCorrect} / {s.questionsAnswered}
+                      {s.questionsCorrect}{'\u00A0/\u00A0'}{s.questionsAnswered}
                     </bdi>
                     <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
                   </span>

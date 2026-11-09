@@ -71,7 +71,7 @@ export default function LevelSelector({ levels, recommendedLevel, onSelect, busy
               <span className={`block h-full rounded-full ${done ? 'bg-emerald-500' : 'bg-indigo-500'}`} style={{ width: `${Math.round(ratio * 100)}%` }} />
             </span>
             <span className="whitespace-nowrap text-xs font-semibold text-slate-600">
-              <bdi dir="ltr" className="font-bold tabular-nums text-slate-800">{level.completedCount} / {level.exerciseCount}</bdi>
+              <bdi dir="ltr" className="font-bold tabular-nums text-slate-800">{level.completedCount}{'\u00A0/\u00A0'}{level.exerciseCount}</bdi>
               {' '}{t('practice.lp.exercises')}
             </span>
           </span>

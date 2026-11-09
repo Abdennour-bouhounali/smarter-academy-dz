@@ -451,8 +451,8 @@
     "scale": "حجم العرض",
     "scaleUp": "تكبير العرض",
     "scaleDown": "تصغير العرض",
-    "unitOf": "{{current}} / {{total}}",
-    "pageOf": "الجزء {{current}} / {{total}}",
+    "unitOf": "{{current}} / {{total}}",
+    "pageOf": "الجزء {{current}} / {{total}}",
     "overview": {
       "module": "المحور {{number}}",
       "learn": "ماذا سنتعلّم في هذا المحور؟",

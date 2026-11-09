@@ -763,3 +763,11 @@ text. Classify each hit: notation and identifiers stay, prose gets translated.
 - [`LESSON_DESIGN_PLAYBOOK.md`](./LESSON_DESIGN_PLAYBOOK.md) §13bis/§13ter — the same rules in the lesson-authoring workflow.
 - [`MANIPULATION_CONTRACT.md`](./MANIPULATION_CONTRACT.md) §8 — RTL inside a manipulation.
 - [`CLASSROOM_MODE.md`](./CLASSROOM_MODE.md) §9 — RTL in presentation.
+
+## A counter « x / y » never breaks (owner, 2026-11-09)
+
+A browser breaks a line at a SPACE: « 6 / 10 » written with ordinary spaces showed « 6 / » on one line and « 10 » on the next. Around the « / » of
+any counter (score, question number, progress, seats, pages), the spaces are NON-BREAKING (` `): in JSX `{a}{' / '}{b}`, in a
+template string `${a} / ${b}`, in a translation `{{a}} / {{b}}`. Enforced over the WHOLE `apps/web/src` by
+`lessons/common/unbreakableCounters.test.js` (a template that is not a displayed counter — a CSS ratio, a developer message, a formula, an
+ARIA label — is listed there by name). `6/10` without spaces does not break and needs nothing.

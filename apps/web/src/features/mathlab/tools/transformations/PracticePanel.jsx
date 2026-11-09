@@ -116,7 +116,7 @@ export default function PracticePanel({
         <div className="sa-ml-tr__stackhead">
           <h3 className="sa-ml-tr__paneltitle">{t('tools.transformations.practice.title')}</h3>
           <span className="sa-ml-tr__score" data-ml-score dir="ltr">
-            {`${score.solved} / ${score.attempts}`}
+            {`${score.solved}\u00A0/\u00A0${score.attempts}`}
           </span>
         </div>
 

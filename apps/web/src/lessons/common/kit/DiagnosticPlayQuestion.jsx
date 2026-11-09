@@ -49,7 +49,7 @@ export default function DiagnosticPlayQuestion({ q, index, total, skill, pick, u
       data-play-state={locked ? (ok ? 'ok' : 'later') : tentative != null ? 'undo' : 'ask'}>
       <div className="flex items-center justify-between gap-2">
         <span className="rounded-full bg-teal-600 px-2.5 py-1 font-mono text-xs font-bold text-white">
-          {skill?.emoji} <span dir="ltr">{index + 1} / {total}</span>
+          {skill?.emoji} <span dir="ltr">{index + 1}{'\u00A0/\u00A0'}{total}</span>
         </span>
         {/* la place reste prise une fois la réponse engagée : la question ne remonte pas */}
         <button type="button" onClick={() => setDoubt((d) => !d)} aria-pressed={doubt} data-play-doubt disabled={locked} aria-hidden={locked || undefined} tabIndex={locked ? -1 : undefined}

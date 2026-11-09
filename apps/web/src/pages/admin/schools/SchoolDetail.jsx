@@ -56,7 +56,7 @@ function LicenceSection({ schoolId, licence, onChange }) {
         <div className="space-y-3 rounded-xl border border-slate-200 bg-white p-4" data-school-licence>
           <dl className="grid grid-cols-2 gap-3 font-inter text-sm lg:grid-cols-4">
             <div><dt className="text-xs font-semibold text-slate-400">{t('common.status')}</dt><dd className="mt-0.5"><StatusBadge status={licence.status} label={t(`schools.licence.status.${licence.status}`)} /></dd></div>
-            <div><dt className="text-xs font-semibold text-slate-400">{t('schools.licence.used')} / {t('schools.licence.seats')}</dt><dd className="mt-0.5"><Num>{`${licence.current} / ${licence.seats}`}</Num></dd></div>
+            <div><dt className="text-xs font-semibold text-slate-400">{t('schools.licence.used')}{'\u00A0/\u00A0'}{t('schools.licence.seats')}</dt><dd className="mt-0.5"><Num>{`${licence.current}\u00A0/\u00A0${licence.seats}`}</Num></dd></div>
             <div><dt className="text-xs font-semibold text-slate-400">{t('schools.licence.endsAt')}</dt><dd className="mt-0.5"><Num>{licence.endsAt ? formatDate(licence.endsAt) : t('schools.licence.noEnd')}</Num></dd></div>
             <div><dt className="text-xs font-semibold text-slate-400">{t('schools.licence.note')}</dt><dd className="mt-0.5">{licence.note || t('common.dash')}</dd></div>
           </dl>

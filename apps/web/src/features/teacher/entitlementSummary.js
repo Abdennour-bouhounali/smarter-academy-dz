@@ -22,7 +22,7 @@ export function describeMeter(meter) {
     overLimit: !unlimited && current > maximum,
     atLimit: !unlimited && current >= maximum,
     // Toujours en chiffres LTR : « 3 / 5 » — le composant pose dir="ltr".
-    text: unlimited ? `${current} / ∞` : `${current} / ${maximum}`,
+    text: unlimited ? `${current}\u00A0/\u00A0∞` : `${current}\u00A0/\u00A0${maximum}`,
   };
 }
 

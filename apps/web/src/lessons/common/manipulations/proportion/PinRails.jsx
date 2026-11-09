@@ -276,8 +276,8 @@ function Lab({ lab, setLab, k, width, screenH, lead, cp }) {
       <span className="whitespace-nowrap text-[11px] font-extrabold text-amber-800">{task.mode === 'read' ? k('read.reading') : !reading && task.mode === 'plot' && !L.allPlaced(lab) ? k('read.pins') : k('read.touched')}</span>
       <span key={`${lab.rod.join('-')}-${lab.pins.filter(Boolean).length}-${lab.readPos}`} className="pr-pop whitespace-nowrap text-sm font-black text-indigo-950" dir="ltr">
         {task.mode === 'read' ? <bdi dir="ltr">{lab.readPos != null ? `${tx(task.ask.axis === 'x' ? task.ask.value : lab.readPos)} ; ${tx(task.ask.axis === 'x' ? lab.readPos : task.ask.value)}` : '؟'}</bdi>
-          : reading ? <bdi dir="ltr">{`${reading.count} / ${reading.total}`}</bdi>
-            : task.mode === 'plot' && !L.allPlaced(lab) ? <bdi dir="ltr">{`${lab.pins.filter(Boolean).length} / ${lab.pins.length}`}</bdi> : <bdi>—</bdi>}
+          : reading ? <bdi dir="ltr">{`${reading.count}\u00A0/\u00A0${reading.total}`}</bdi>
+            : task.mode === 'plot' && !L.allPlaced(lab) ? <bdi dir="ltr">{`${lab.pins.filter(Boolean).length}\u00A0/\u00A0${lab.pins.length}`}</bdi> : <bdi>—</bdi>}
       </span>
     </div>
   );

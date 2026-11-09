@@ -377,7 +377,7 @@ export default function MadarTab({ classGroup }) {
   const isSniper = ['sniper', 'odd', 'mental'].includes(results.game);
   const { summary, students, adjustments } = results;
   const tiles = [
-    ['players', `${summary.players} / ${results.members}`],
+    ['players', `${summary.players}\u00A0/\u00A0${results.members}`],
     ['runs', summary.runs],
     ['refuel', summary.refuelAnswered],
     ['accuracy', percent(summary.refuelAccuracy)],
@@ -488,7 +488,7 @@ export default function MadarTab({ classGroup }) {
                       {isExplorer && <td className="px-3 py-3 font-space font-bold" dir="ltr">★ {row.levelStars ?? 0}</td>}
                       {isExplorer && <td className="px-3 py-3" dir="ltr">{row.levelsCompleted ?? 0} / 12</td>}
                       <td className="px-3 py-3" dir="ltr">{row.runs}</td>
-                      <td className="px-3 py-3" dir="ltr">{row.refuelCorrect} / {row.refuelAnswered}</td>
+                      <td className="px-3 py-3" dir="ltr">{row.refuelCorrect}{'\u00A0/\u00A0'}{row.refuelAnswered}</td>
                       <td className="px-3 py-3">
                         <span className="flex flex-wrap gap-1">
                           {row.alerts.map((a) => (

@@ -45,7 +45,7 @@ export default function StepStack({
     <div className="sa-ml-tr__stack" data-ml-stack>
       <div className="sa-ml-tr__stackhead">
         <h3 className="sa-ml-tr__paneltitle">{t('tools.transformations.stack.title')}</h3>
-        <span className="sa-ml-tr__stackcount">{`${steps.length} / ${maxSteps}`}</span>
+        <span className="sa-ml-tr__stackcount">{`${steps.length}\u00A0/\u00A0${maxSteps}`}</span>
       </div>
 
       <p className="sa-ml-tr__stacknode" data-ml-node="original">{t('tools.transformations.stack.original')}</p>

@@ -663,7 +663,7 @@ function CardsLab({ lab, setLab, story, def, k, textWords, narrow, compact, glan
         aside={(
           <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-sm font-black text-emerald-800" data-sb-progress={matchedCount}>
             <Check className="h-4 w-4" strokeWidth={3} aria-hidden="true" />{k('solvedLabel')}
-            <bdi dir="ltr">{matchedCount} / {def.items.length}</bdi>
+            <bdi dir="ltr">{matchedCount}{'\u00A0/\u00A0'}{def.items.length}</bdi>
           </span>
         )}
         data-sb-cards

@@ -63,7 +63,7 @@ export default function AnswerImagePicker({ images, loader, onAdd, onRemove, dis
         </button>
         {busy && <Loader2 className="h-4 w-4 animate-spin text-slate-500" aria-label={t('practice.exam.images.uploading')} />}
         <span className="text-xs text-slate-500" data-image-count>
-          <bdi dir="ltr">{images.length} / {MAX_IMAGES_PER_STEP}</bdi>
+          <bdi dir="ltr">{images.length}{'\u00A0/\u00A0'}{MAX_IMAGES_PER_STEP}</bdi>
         </span>
         <input ref={camera} type="file" accept="image/*" capture="environment" className="hidden" onChange={pick} data-image-input="camera" />
         <input ref={file} type="file" accept="image/*" multiple className="hidden" onChange={pick} data-image-input="file" />
