@@ -14,7 +14,7 @@ import { themeWords } from '../themeWords';
  */
 const t = (key, o) => i18n.t(`lesson:${key}`, o);
 const k = (key, o) => t(`manipulation.coprime.${key}`, o);
-const RAW = /manipulation\.[a-zA-Z]|\{\{/;
+const rawKey = /manipulation\.[a-zA-Z]|\{\{/;
 const text = (q) => renderToString(<div>{q.prompt}{q.hints}{q.explain}{q.fields?.map((f) => f.label)}{q.slots}</div>);
 const gcd = (x, y) => (y === 0 ? x : gcd(y, x % y));
 /** Les trousses ajoutées une à une jusqu'à la preuve — ce que fait l'élève (et ce que groupsInsightReady exige). */
@@ -51,7 +51,7 @@ describe('coprime-explorer in the mission player', () => {
     }
     expect(isCorrect(bld, bld.expected)).toBe(true);
     bld.expected.forEach((x) => expect(bld.tiles).toContain(x));
-    [count, bld].forEach((q) => { expect(text(q)).not.toMatch(RAW); expect(q.hints).toHaveLength(2); });
+    [count, bld].forEach((q) => { expect(text(q)).not.toMatch(rawKey); expect(q.hints).toHaveLength(2); });
   });
 
   it('lists: the tested count is what the student confronted', () => {
@@ -62,7 +62,7 @@ describe('coprime-explorer in the mission player', () => {
     const q = QUESTIONS.lTestedFill({ a: 15, b: 22, lab }, k);
     expect(q.fields[0].expected).toBe(4);
     expect(q.fields[0].options).toContain(4);
-    expect(text(q)).not.toMatch(RAW);
+    expect(text(q)).not.toMatch(rawKey);
   });
 
   it('the guide shows the wrapper, then «+», then the middle, then «تحقّق» — never a chip', () => {
@@ -75,6 +75,6 @@ describe('coprime-explorer in the mission player', () => {
     for (const d of L.untested(lab)) lab = L.share(lab, L.chipId('a', d));
     expect(L.coachOf({ inGroups: false, groups: null, lab }).id).toBe('check');
     expect(L.coachOf({ inGroups: false, groups: null, lab: L.check(lab) })).toBeNull();
-    ['add', 'more', 'shared', 'check'].forEach((id) => expect(t(`manipulation.coprime.coach.${id}`, { group: 'حقيبة' })).not.toMatch(RAW));
+    ['add', 'more', 'shared', 'check'].forEach((id) => expect(t(`manipulation.coprime.coach.${id}`, { group: 'حقيبة' })).not.toMatch(rawKey));
   });
 });

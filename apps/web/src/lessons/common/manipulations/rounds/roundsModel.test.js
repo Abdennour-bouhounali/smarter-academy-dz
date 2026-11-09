@@ -150,3 +150,33 @@ describe('above — the common-divisors goal « the greatest is SEEN: a larger n
     expect(roundWon(round, log)).toBe(true);
   });
 });
+
+describe('bracketed / resists — the square-root-side goals (2026-11-09)', () => {
+  it('bracketed: g needs a tight bracket SEEN at that graduation; a verdict alone is not enough', () => {
+    let log = logEvent(emptyLog(), 'verdict', { groups: 1, exact: false });
+    expect(conditionMet({ bracketed: 1 }, log)).toBe(false);
+    log = logEvent(log, 'trial', { tk: 'bracket', card: 0, scale: 1, resisting: false });
+    expect(conditionMet({ bracketed: 1 }, log)).toBe(true);
+    expect(conditionMet({ bracketed: 10 }, log)).toBe(false);
+  });
+  it('resists needs a bracket event whose card now resists', () => {
+    let log = logEvent(emptyLog(), 'trial', { tk: 'bracket', card: 1, scale: 2, resisting: false });
+    expect(conditionMet({ resists: true }, log)).toBe(false);
+    log = logEvent(log, 'trial', { tk: 'bracket', card: 1, scale: 5, resisting: true });
+    expect(conditionMet({ resists: true }, log)).toBe(true);
+  });
+});
+
+describe('reset — « إعادة » in the lab empties the round', () => {
+  it('a reset event drops the verdicts, predictions, brackets and answers seen before it', () => {
+    let log = logEvent(emptyLog(), 'verdict', { groups: 1, exact: false });
+    log = logEvent(log, 'trial', { tk: 'predict', ok: false });
+    log = logEvent(log, 'trial', { tk: 'bracket', card: 0, scale: 1, resisting: false });
+    log = logEvent(log, 'trial', { tk: 'checkpoint-done', id: 'rule' });
+    expect(conditionMet({ bracketed: 1 }, log)).toBe(true);
+    log = logEvent(log, 'trial', { tk: 'reset' });
+    expect(log).toEqual(emptyLog());
+    expect(conditionMet({ bracketed: 1 }, log)).toBe(false);
+    expect(conditionMet({ checkpoint: 'rule' }, log)).toBe(false);
+  });
+});

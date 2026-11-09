@@ -2438,7 +2438,9 @@ while a question / prediction fills that column (`[data-side-panel-bar]`) — so
 labs that had no coach got one the same day: `pgcd-differences` (`logic/algorithms.js › differencesCoachOf`: cut → again → pgcd),
 `euclidean-algorithm` (`euclidCoachOf`: copy → more → carry → pgcd), `fraction-reduction` (`logic/fraction.js › coachOf`: divide → more →
 pgcd; it never says when to stop) — tested in `logic/algorithmsCoach.test.js`; and `coprime-explorer` (`logic/coprime.js › coachOf`: the wrapper → « + »
-for the kits, the middle zone → « تحقّق » for the lists, never a chip; `[data-manipulation-check]` marks the check button) on the rollout of 2026-11-09; a lab hides its step while a prediction or a question is open.
+for the kits, the middle zone → « تحقّق » for the lists, never a chip; `[data-manipulation-check]` marks the check button) on the rollout of 2026-11-09; and `square-root-side` (`logic/squareRootSide.js ›
+coachOf`: the handle `[data-root-handle]` → again → « دقّق » (refine) / another graduation → another card (graduation); never a value nor a direction; tested by
+FOLLOWING it to the end of both modes in `roots/squareRootPlayer.test.jsx`) on unit 2's rollout; a lab hides its step while a prediction or a question is open.
 
 **Screen pixels vs layer pixels (2026-11-09, owner bug report).** The mission player fits its content with the CSS `zoom` property
 (`mission/FitToArea.jsx` — enlarged up to ×1.3 on a big screen, reduced on a small one; Classroom Mode's frame zooms too). `getBoundingClientRect`
@@ -2582,6 +2584,11 @@ the mission player a lab is played as a PATH of rounds instead of the مبتدئ
     `{ anyExact: true }` (some perfect rectangle seen) and `{ allPairs: n }` (every rectangle of `n` books seen: for each pair
     (s, n ÷ s) one of the two was tried and fell exact). Added for `common-divisors`: `{ above: g }` (a number of groups larger than g tried) —
     `[{ exact: g }, { above: g }]` means « g is the greatest, and it was SEEN » (as `greatestGroupFound`).
+    Added 2026-11-09 for `square-root-side` (a verdict per release, `groups` = the graduation 1/g, `exact` = the side landed): `{ bracketed: g }`
+    (the side bracketed between two NEIGHBOUR ticks of graduation 1/g, seen) and `{ resists: true }` (a card bracketed at 3 graduations without
+    landing) — both fed by the lab's `onTrial { tk: 'bracket', card, scale, resisting }`, logged in `log.brackets`.
+    A lab that restarts its scene (« إعادة », other numbers) reports `onTrial { tk: 'reset' }`: `logEvent` empties the round's log, so verdicts,
+    predictions and brackets of before never count (first: `square-root-side`, 2026-11-09; the unit-1 labs do not report it yet).
   - `easier` (PILOT, 2026-11-08): a smaller PRACTICE round `{ goal, props }` — see « The second chance » below.
   - `free` marks the free pitch: always open, no goal, never blocking (the « جرّب أعدادك » rule). `optional` marks a challenge.
 - **Stars (1–3):**
@@ -2627,6 +2634,22 @@ the mission player a lab is played as a PATH of rounds instead of the مبتدئ
   `n = k × q` with `ops ['=','×']` when a k > 1 works), and the scene shows that k while the question is open (`buildFocus`). The trials journal is
   `GroupTrials`, exported by `CommonDivisors.jsx`. A « coprime » round with no questions is won by « everything tried »: `[{ exact: 1 }, { above: min − 1 }]`
   (a kit is added one at a time, so reaching min(a ; b) passes every k).
+- **Eighth example (2026-11-09, unit 2):** lesson `jidhr-tarbii`, `content/squares.js` (`M1_ROUNDS`: 16 by hand → 5 to 0,001 with two predictions → 2,25,
+  required → ⭐ 20 to 0,01 → free garden; `M2_ROUNDS`: 0,04 → ⭐ 1,69 → free), `LabRounds icon="🌷"`. `square-root-side` player props (BOTH modes, so lesson 2
+  `natiqa-ghayr-natiqa` is content only): `onVerdict` (each release `{ groups: scale, exact }`) and `onTrial { tk: 'bracket', … }` (goals `{ bracketed: g }`,
+  `{ resists: true }`), `levels`, `handDone`, `chains` (`['exact', 'never', 'grad']`), `predict` + `predictAt` (refine: the graduations where « هل سيقع طرف
+  الضلع بالضبط على تدريجة؟ » is asked before the first release, default `[1, 10]`; graduation: before a card's first release; ≤ 2 per round; the truth is
+  COMPUTED — `logic/squareRootSide.js › landsAt` / `landsSomewhere` — and the result is shown when the graduation or card has decided), `choices` (areas
+  `{ num, den }`, refine). `CHAINS_PLAYER` (council of 2026-11-09) = exact: `['exSideFill','exBuild']` then `['rule']` — read the side, BUILD
+  « area = side × side » (decoy: half the area, or its double when the half IS the side); never: `['nBetweenFill','nSquaresBuild']` then
+  `['nDecimalsFill','rule']` — the bracket in one tap, BUILD « 4 < 5 < 9 » (`ops ['<','<']`, decoy the product of the two neighbours, or their sum when the
+  product is the area), then COUNT the decimals of c² (2k, last digit never 0: the « never » is SEEN, not told); grad: `['gGradFill','gBuild']` then
+  `['gResist','rule']` (graduations written « 1/3 »). In the player the chain follows the TRUTH (`truthKeyOf`: will the side land on an offered graduation?),
+  so an exact area bracketed first (0,04 between 0 and 1) opens its « exact » chain when the side lands. While the bracket questions are open the scene
+  shows the LOWER square of the bracket; the journal « 📋 جدول تجاربك » (graduation · below · above) is the bracket table, shown in both modes in the player and
+  muted during a question. The ruler and the square re-measure on every render and the square takes the height left (`useMissionArea`, overhead 290 px).
+  In the player the « never » rule's explanation and the formal block are COMPACT (`discoveryParts({ compact })`: the last bracket and (√a)² = a on one line,
+  then the sentence) — the full list of brackets made the question column 580 px in a 555 px area at 1024×768.
 
 **`team-builder` options (2026-11-04):** `levels={false}` gives a worked example with no مبتدئ / متقدم selector (as for
 `divisor-explorer-books`). `handDone` opens « أنشئ الفرق » from the start: the student already shared BY HAND in an

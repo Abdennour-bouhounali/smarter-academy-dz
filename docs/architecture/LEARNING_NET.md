@@ -244,7 +244,9 @@ along a net link (§4.6). Until then cross-year navigation is lesson- and item-l
 after an error, and the prerequisite chips. The 4AM lessons' `prerequisiteLessonCodes` were left 4AM-only by phase 2;
 their cross-year links come from the net at run time. Since 2026-11-07 a 4AM lesson connected to its PUBLISHED earlier-year
 lessons also lists them there (first: `qasim-adad-tabii` ← `qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma`), so « المتطلبات السابقة »
-shows them as clickable chips with their year, and the free-text `prerequisites` they replace are removed (no duplicate chip).
+shows them as clickable chips with their year, and the free-text `prerequisites` they replace are removed (no duplicate chip). Second
+(2026-11-09, unit 2 mission rollout): `jidhr-tarbii` ← `quwat-adad-nisbi`, `khassiyat-fitaghuras` (3AM, the net's `requires` links of its items) — its
+« أستعدّ » review and « راجع قبل أن تنطلق » were empty without them.
 
 **Database — imported, closed, ignored by Mastery V2.**
 

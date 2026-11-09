@@ -13,20 +13,27 @@
  *                                                     a été essayé et tombait juste ; `groups` d'un verdict = le nombre de livres par rangée d
  *             { above: g }                          — (common-divisors) un nombre de groupes PLUS GRAND que g essayé : avec { exact: g },
  *                                                     « g est le plus grand » a été VU, jamais deviné (comme greatestGroupFound)
+ *             { bracketed: g }                      — (square-root-side, 2026-11-09) le côté ENCADRÉ par deux graduations voisines 1/g, vu
+ *                                                     (événement onTrial { tk: 'bracket', card, scale, resisting }) ; un balayage aussi
+ *             { resists: true }                     — (square-root-side, mode graduation) une carte a RÉSISTÉ : encadrée à 3 graduations sans tomber
  * Une manche peut porter `easier` : une manche d'ENTRAÎNEMENT plus petite (« لا بأس — جرّب أصغر », pilote 2026-11-08),
  * proposée seulement quand l'élève peine (needsHelp) — jamais à celui qui réussit.
  * Ce que la manche a VU (`log`) : { verdicts: [{ groups, exact }], checkpoints: { [id]: true }, answers: [{ ok, tries, revealed }] }
  */
 
-export const emptyLog = () => ({ verdicts: [], checkpoints: {}, answers: [], predictions: [] });
+export const emptyLog = () => ({ verdicts: [], checkpoints: {}, answers: [], predictions: [], brackets: [] });
 
 /** Le journal d'une manche après un événement du labo (onVerdict → 'verdict', onTrial → les événements LabCheckpoint). */
 export function logEvent(log, kind, ev) {
+  // « إعادة » (ou d'autres nombres) dans le labo : la manche repart de zéro — ses essais d'avant ne comptent plus (revue 2026-11-09)
+  if (ev?.tk === 'reset') return emptyLog();
   if (kind === 'verdict') return { ...log, verdicts: [...log.verdicts, { groups: Number(ev.groups), exact: Boolean(ev.exact) }] };
   if (ev?.tk === 'checkpoint') return { ...log, answers: [...log.answers, { ok: Boolean(ev.ok), tries: ev.tries ?? 1, revealed: Boolean(ev.revealed) }] };
   if (ev?.tk === 'checkpoint-done') return { ...log, checkpoints: { ...log.checkpoints, [ev.id]: true } };
   // une PRÉDICTION faite avant d'agir, jugée par le terrain (pilote 2026-11-07)
   if (ev?.tk === 'predict') return { ...log, predictions: [...(log.predictions ?? []), { ok: Boolean(ev.ok) }] };
+  // un ENCADREMENT serré (square-root-side) : la carte, la graduation, et si la carte résiste désormais
+  if (ev?.tk === 'bracket') return { ...log, brackets: [...(log.brackets ?? []), { card: Number(ev.card ?? 0), scale: Number(ev.scale), resisting: Boolean(ev.resisting) }] };
   return log;
 }
 
@@ -47,6 +54,8 @@ export function conditionMet(cond, log) {
   if (cond.anyExact) return exactGroups(log).size > 0;
   if (cond.allPairs) return allPairsSeen(Number(cond.allPairs), exactGroups(log));
   if (cond.above != null) return log.verdicts.some((v) => v.groups > Number(cond.above));
+  if (cond.bracketed != null) return (log.brackets ?? []).some((b) => b.scale === Number(cond.bracketed));
+  if (cond.resists) return (log.brackets ?? []).some((b) => b.resisting);
   return false;
 }
 

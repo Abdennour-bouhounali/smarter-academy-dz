@@ -22,6 +22,19 @@
 
 Catalogue order: `packages/core/curriculum/dz/lessons_4am_2026_2027.json`. Units 2–14 are not started. The full prompt for unit 2 « الحساب على الجذور » (every rule, check and review step of unit 1): `docs/reports/UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. Still open in unit 1: its synthesis `wadiya-idmajiya-aadad` (no synthesis recipe yet — the prompt's §5).
 
+## Unit 2 « الحساب على الجذور » — the table
+
+Prompt for the whole unit: `UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. Folder `lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/`.
+
+| # | Lesson (unit 2) | Labs converted | Status | Commit | Notes |
+|---|---|---|---|---|---|
+| 1 | `jidhr-tarbii` | `square-root-side` (v2 treatment, new, both modes) | ✅ done 2026-11-09 | `feat(lessons): jidhr-tarbii — mission prototype` | See « Unit 2, lesson 1 » below. |
+| 2 | `natiqa-ghayr-natiqa` | `square-root-side` (graduation mode, already treated) | ⏳ next | | content only |
+| 3 | `muadalat-x-murabba` | `square-fold` | ⏳ | | |
+| 4 | `amaliyat-judhur` | `square-tiling` | ⏳ | | |
+| 5 | `tawzif-khawass-judhur` | `square-tiling` | ⏳ | | content only after lesson 4 |
+| S | `wadiya-idmajiya-judhur` | — | ⏳ council first (prompt §5) | | |
+
 ## Lab families — which have the v2 treatment
 
 | Lab (`type`) | v2 treatment | First converted in |
@@ -34,6 +47,7 @@ Catalogue order: `packages/core/curriculum/dz/lessons_4am_2026_2027.json`. Units
 | `euclidean-algorithm` | ✅ (2026-11-09) | `bahth-pgcd` |
 | `fraction-reduction` | ✅ (2026-11-09) | `ikhtizal-kasr` |
 | `coprime-explorer` | ✅ (2026-11-09) | `awwaliyan-fima-baynahuma` |
+| `square-root-side` | ✅ (2026-11-09, both modes `refine` and `graduation`) | `jidhr-tarbii` (unit 2) |
 | every other lab | ⏳ | — |
 
 ## Lesson 2 — `qawasim-adad-tabii` « قواسم عدد طبيعي » (2026-11-08)
@@ -338,3 +352,72 @@ Applies to every converted lesson (and, for the card, to every lesson's « أس�
   row (`[data-mission-home-foot]`). The `PracticeEntryCard` left the home (practice is the button and the path's last station). Being short, the home
   is now ENLARGED by `FitToArea`: zoom 1–1.04 at 1366×768 and 1024×768, 1.46–1.51 at 1920×1080 (was 0.85–0.92), no scroll, 0 overflow, on
   `qasim-mushtarak-akbar` and `qasim-adad-tabii`.
+
+## Unit 2, lesson 1 — `jidhr-tarbii` « الجذر التربيعي لعدد موجب » (2026-11-09)
+
+**Council (2026-11-09) on the lab's player design** — five advisors, verdict applied: keep BUILDING an inequality for a side that never lands
+(« 4 < 5 < 9 » is the bracket the hand made; « 2 × 2 = 4 » adds nothing); the yes/no prediction « lands on a tick? » becomes a pattern after one
+« no » on area 5, so it is asked at graduation 1 and at 0,01 only, and 2,25 (« no » at 1, « yes » at 0,1 — the prediction that FLIPS) is a REQUIRED
+round right after 5; « will a finer graduation EVER land? » cannot be proven by doing, so the old « zoom » choice is replaced in the player by an
+OBSERVABLE fact — « c has k decimals → c² has 2k, its last digit is never 0, so c² is never the whole number 5 »; the « few trials » star is a
+per-graduation budget (bisection ≈ 4 releases per refined graduation); graduation mode asks the « resists » question only after a card really
+resisted and names graduations « 1/3 », never a bare g. Rejected: a « digit prediction » (0–9) at each graduation (more UI than the lesson needs) and
+coprime denominators for `resists` (the lab's own `cardStatus` already decides it).
+
+**What was written (per lesson):** `lesson.config.js` (`studentView: 'mission'`, `mission` with the new scene `garden-bed`, title « حوض الأزهار على الوتر »,
+4 tools = `qima-mudbuta`, `jidhr-taarif`, `murabba-jidhr`, `jidhr-murabba`, climax = module 4 (the flower bed on the hypotenuse of a 3 م / 5 م corner), 3
+checkpoints on 7, 11 and √20 — never 34, √34, the 3 / 5 sides or 5,83…, open knowledge map; the opening writes « م », not « m », so « 5 م. » cannot
+bidi-scramble) · `content/prep.js` + test (10 « أستعدّ » questions: « مربع عدد » with `quwat-adad-nisbi` and « خاصية فيثاغورس » with
+`khassiyat-fitaghuras` to revise; a formula-only statement has no final period — it jumps left in RTL; the six statements of before stay in
+`textbook.js`) · `content/squares.js` + test (module 1: 16 by hand → 5 to 0,001 with two predictions → 2,25 → ⭐ 20 to 0,01 → free garden; module 2:
+0,04 → ⭐ 1,69 → free; `easier` rounds 4, 2, 0,25, 0,01) · `content/peerSheet.js` + test (« ورقة إلياس »: « 0,06 × 0,06 = 0,36 » so « √0,36 = 0,06 » — the
+square of a decimal) · modules 0, 1 (steps 1–3 wait for round 2, whose trials still fill step 3's evidence through `onTrial`; « المستوى المتقدّم »
+became « المختبر » in three lines), 2 (step 1 waits for round 1, the peer sheet is step 4) · the catalogue: `prerequisiteLessonCodes` =
+`quwat-adad-nisbi`, `khassiyat-fitaghuras` (the net's `requires` links; the two free-text prerequisites they replace are removed — same rule as
+`qasim-adad-tabii`), without which « راجع قبل أن تنطلق » and the review's priority card were empty.
+
+**What was added to the shared code:**
+- `square-root-side` v2 treatment (`roots/SquareRootSide.jsx`, contract « Eighth example ») and its first `LabCoach` (`logic/squareRootSide.js › coachOf`:
+  the handle → again → « دقّق » / another graduation → another card; never a value). Pure helpers `landsAt`, `landsSomewhere`, `decimalsOf`, `cellOf`.
+- `roundsModel`: goals `{ bracketed: g }` and `{ resists: true }`, fed by the lab's `onTrial { tk: 'bracket', card, scale, resisting }` (tested).
+- `mission/GardenBedScene.jsx` registered as `mission.scene: 'garden-bed'` (a right-triangle corner; the square bed on its hypotenuse fills with rows of
+  flowers as tools are earned, its stone frame closes at the end; a `KidFigure` gardener).
+- `BatchChoiceQuestion rowCols` (default 1): `TextbookExercise` lays a batch of ≥ 6 rows on two columns INSIDE the player only, as one designed screen
+  (`data-paging-keep`) — module 3's exercises 3 and 5 (7 rows) were 524 px in a 497 px area at 1024×768 (`data-fit-overflow`). Applies to every converted
+  lesson; the page and the teacher are unchanged.
+- `coprimePlayer.test.jsx`: `RAW` → `rawKey` (the static i18n-scope scanner read an upper-case `const` as a component calling `t()` — the suite was red on HEAD).
+
+**Traps met:**
+- A chain chosen by what is FOUND hides the stepper of an exact area until the side lands (0,04 is first bracketed between 0 and 1): in the player the
+  chain follows the computed TRUTH (`truthKeyOf`), and the « exact » chain opens when the side lands.
+- A prediction this lab cannot judge at once (the ruler answers later) is judged by the computed truth when it is made (the star), and its result is SHOWN
+  when the graduation has decided.
+- A Python patch script with `\\times` in a normal string writes `\times` → a TAB in a JS template string (`\t`): one formula and seven config strings lost
+  their backslash (`check:katex` caught the config; a test now asserts the built equality keeps ` \\times `).
+- A long list made two-column grows rows ≥ 110 px, and the player then pages it ONE ROW per screen: mark the grid `data-paging-keep`.
+- The coach bubble sits over the −/+ buttons until « فهمت » (once per tip): a walk must tap it before using them.
+- A lab whose rule explanation lists every step (four brackets) overflows the side column at 1024×768 once the answer opens, and again in the
+  formal block after the win: in the player both are compact (the last bracket only).
+
+**Verification:** `vitest run src/lessons` 631 files / 11 924 tests green after the fixes (new: `prep.test`, `squares.test`, `peerSheet.test`,
+`squareRootPlayer.test`, `roundsModel` « bracketed / resists »), `check:lessons` exit 0 (entry 241.3 KB ≤ 245), `lab-rollout-status --lesson jidhr-tarbii` ✅,
+Playwright walk with a mocked student session: module 1 round 1 by hand (16 → 4, fill 4, build 16 = 4 × 4, rule → ★★★), round 2 (prediction « no » at 1,
+bracket 2 / 3, fill, build 4 < 5 < 9, prediction « no » at 0,01, down to 2,236 / 2,237, decimals 6, rule → ★★★, « عُد إلى السؤال »), round 3 (no → yes, 1,5 →
+★★★), challenge 20 (4,47 / 4,48 → ★★★), free garden (choices, « جرّب كل الإمكانيات »), the « easier » round after five misses (4 → back to round 1);
+module 2 round 1 (0 / 1, then 0,2 → fill, build, rule → ★★★); peer sheet (wrong line, wrong fix, fix, restored after reload with its chip); home first visit
+and return, « أستعدّ » (notice, 10 questions, one-screen review with « خاصية فيثاغورس » as the priority lesson), final test (5 questions, review), knowledge
+map; modules 1–7 unit by unit at 1366×768, 1024×768 and 1920×1080 (0 `data-fit-overflow`, 0 page scroll, no console error); teacher view unchanged (no
+player, no rounds, the two levels) and Classroom Mode untouched.
+
+**ECC review (react, code, a11y — 2026-11-09), fixed:** the free-round chip kept no graduation (`setNumbers` now keeps `scale`); the coach could show
+over an open question on the page (`!cp.open`); « إعادة » left the round's log full — the lab now reports `{ tk: 'reset' }` and `logEvent` empties the log
+(tested); releasing on the same value counted as a new trial; the third checkpoint (√20 → its area) was the climax's own operation and named the plan —
+now « √(9²) »; five student-visible lines sent to the textbook (modules 1–3, module 3's map `desc`); « {{n}} أرقام » with n = 1 or 2 (now « عدد أرقامه… »);
+the card ✓ / ✗ is `aria-hidden` with a screen-reader word, the frozen handle is `aria-disabled`, every « {,} » becomes a comma in labels (`replaceAll`),
+the journal's headers have `scope="col"`, the scene is `aria-hidden` without a label, and two columns of a long batch apply from `lg` only (a
+768-px tablet keeps one). **Kept, with reason:** `alat-hasiba-jidhr` stays in `priorKnowledge` — module 1's calculator question `requires` it (the
+audit needs every literal `requires` declared); the release verdict is already announced by the shell's live representation (`aria-live`). Rejected by
+the coordinator: two « no » predictions on area 5 (council decision; round 3 gives the « yes »), the unused `resists` goal (lesson 2's groundwork).
+
+**Open on this lesson:** the unit-1 labs do not report `{ tk: 'reset' }` yet; e2e specs of the old student view (plan §9.7); `resources` still describe the two-level labs for the teacher's page; the API's
+catalogue import is not re-run for the new `prerequisiteLessonCodes` (local database: owner's publish step).

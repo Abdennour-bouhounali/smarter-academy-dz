@@ -128,6 +128,7 @@ export function BatchChoiceQuestion({
   xp = 10,
   solved = false,
   onAnswered,     // (allRight) => void — inconditionnel
+  rowCols = 1,    // 2 : les lignes sur deux colonnes (lecteur de mission, une longue liste tient dans l'écran — rollout 2026-11-09)
 }) {
   const { react } = useKit();
   const [picks, setPicks] = useState({});
@@ -148,7 +149,8 @@ export function BatchChoiceQuestion({
     <div className="space-y-4">
       {intro}
       {restoredAt && <SavedAnswerChip at={restoredAt} />}
-      <div className="space-y-3">
+      {/* deux colonnes : UN écran dessiné pour tenir ensemble — la pagination du lecteur ne l'ouvre pas ligne par ligne (`data-paging-keep`) */}
+      <div className={rowCols === 2 ? 'grid grid-cols-1 gap-3 lg:grid-cols-2' : 'space-y-3'} data-batch-cols={rowCols} data-paging-keep={rowCols === 2 ? '' : undefined}>
         {rows.map((r) => {
           const pick = picks[r.id];
           const rowRight = checked && pick === r.correct;

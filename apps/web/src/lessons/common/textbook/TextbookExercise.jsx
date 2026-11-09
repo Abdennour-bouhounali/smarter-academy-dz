@@ -11,6 +11,7 @@ import FractionQuestion from './FractionQuestion';
 import PairQuestion from './PairQuestion';
 import { ClassroomPresentation, ClassroomEntryButton, ClassroomFrame } from '../classroom';
 import { MoreToggle } from '../components/StudentFocus';
+import { useInMissionPlayer } from '../mission/missionPlayerContext';
 
 /**
  * Rend UN exercice du manuel à partir de sa donnée (content/exercises.js) :
@@ -40,6 +41,8 @@ import { MoreToggle } from '../components/StudentFocus';
  */
 export default function TextbookExercise({ exercise, solved = false, onAnswered, requires }) {
   const { t } = useTranslation('lesson');
+  // lecteur de mission : une longue liste (≥ 6 lignes) tient dans l'écran sur deux colonnes, jamais sous le zoom minimum (rollout 2026-11-09)
+  const inPlayer = useInMissionPlayer();
   const ex = exercise;
   const label = ex.source?.number != null ? t('textbook.exerciseN', { n: ex.source.number }) : t('textbook.exercise');
   const header = (
@@ -113,7 +116,7 @@ export default function TextbookExercise({ exercise, solved = false, onAnswered,
         <BatchChoiceQuestion
           intro={q.prompt ? <p className="text-sm font-semibold text-slate-700"><MathText>{q.prompt}</MathText></p> : undefined}
           rows={q.rows.map((r, i) => ({ id: `b${i}`, label: <MathText>{r.label}</MathText>, options: r.options.map((o) => (typeof o === 'string' ? <MathText key={o}>{o}</MathText> : o)), correct: r.correct, correction: typeof r.correction === 'string' ? <MathText>{r.correction}</MathText> : r.correction }))}
-          requires={requires} solved={solved}
+          requires={requires} solved={solved} rowCols={inPlayer && q.rows.length >= 6 ? 2 : 1}
           feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? t('textbook.allRight') : t('textbook.seeCorrections')}{explain && (allRight ? <MoreToggle label={t('focus.why')}><> — {explain}</></MoreToggle> : <> — {explain}</>)}</Feedback>}
           onAnswered={(ok) => onAnswered?.(ok)} />
       );

@@ -11,11 +11,19 @@ import EquationDisplay from '../primitives/EquationDisplay';
 import { useLabCheckpoint } from '../primitives/LabCheckpoint';
 import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
 import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { useLabCoach } from '../primitives/LabCoach';
+import PredictTray from '../primitives/PredictTray';
+import { chipsAround } from '../divisibility/divisionChecks';
+import { useInMissionPlayer, useMissionArea } from '../../mission/missionPlayerContext';
 import { playSfx } from '../../utils/playEffect';
 import MathText from '../../components/MathText';
 import * as L from '../logic/squareRootSide';
 
-const { squareOfDecimal, reduce } = squareRoots;
+const { squareOfDecimal, reduce, exactDecimal } = squareRoots;
+/** Lecteur : au plus PRED_MAX prédictions par manche (comme les autres labos), jamais pendant une suite de questions. */
+const PRED_MAX = 2;
+/** Lecteur : la hauteur prise par ce qui n'est pas le carré (manches, étape, pastilles, règle, − / +) — le carré prend le reste. */
+const PLAYER_SCENE_OVERHEAD = 290;
 
 /**
  * square-root-side — LE CARRÉ QU'ON ÉTIRE (unité 2 « الحساب على الجذور »).
@@ -55,12 +63,31 @@ const { squareOfDecimal, reduce } = squareRoots;
  * QUESTIONS PENDANT LE LABO (2026-10-28, `primitives/LabCheckpoint`) : `checkpoints` (défaut true). Deux étapes. refine : 1 « frame » (un encadrement serré, ou le côté
  * exact) — c² lu, puis l'encadrement (ou le nom du côté exact) ; 2 « rule » (la découverte atteinte) — le constat de l'encadrement qui ne rencontre jamais a, puis la
  * règle. graduation : 1 « frame » (une carte tombée juste) — le produit c × c, puis « ناطق » ; 2 « rule » (une carte qui résiste aussi) — le constat, puis la règle.
+ *
+ * ONBOARDING (prop `coach`, défaut true — `LabCoach`, §8quater, ajouté le 2026-11-09) : `logic/squareRootSide.js › coachOf` montre le bout du côté, puis
+ * « دقّق » (refine) ou une autre graduation / une autre carte (graduation) — jamais la graduation où tomber ni le sens où tirer.
+ *
+ * LECTEUR DE MISSION (rollout 2026-11-09, traitement v2 ; conseil du 2026-11-09) : joué en MANCHES (LabRounds) ; `onVerdict` remonte chaque relâchement
+ * ({ groups: la graduation, exact }) et `onTrial { tk: 'bracket', card, scale, resisting }` chaque NOUVEL encadrement serré (buts `{ bracketed: g }`,
+ * `{ resists: true }`) ; `levels={false}` ; `predict` : « هل سيقع طرف الضلع بالضبط على تدريجة؟ » au DÉBUT des graduations de `predictAt` (refine,
+ * défaut [1, 10]) ou avant le premier essai d'une carte (graduation), ≤ PRED_MAX par manche — la vérité est CALCULÉE (`landsAt` / `landsSomewhere`),
+ * le résultat s'affiche quand la règle a tranché ; `chains` (['exact', 'never', 'grad']) ; `CHAINS_PLAYER` = exact : lire le côté d'un toucher → BÂTIR
+ * « aire = côté × côté » (tuile de trop : la moitié) → la règle ; never : l'encadrement d'un toucher → BÂTIR « 4 < 5 < 9 » (tuile de trop : le produit des
+ * deux voisins) → compter les chiffres après la virgule de c² (2k, jamais 0 au bout : jamais l'entier a — le « jamais » se VOIT) → la règle ; grad :
+ * l'échelle 1/g d'un toucher → BÂTIR l'égalité → la carte qui résiste → la règle. Le JOURNAL « 📋 جدول تجاربك » (graduation · en dessous · au-dessus) dans la
+ * colonne de la scène ; `handDone` ouvre « جرّب كل الإمكانيات » ; `choices` : des aires { num, den } à toucher (terrain libre). Les commandes se figent
+ * pendant une prédiction ou une question ; toujours guidé ; pas de fête quand l'étape est cachée. Hors lecteur : inchangé.
  */
 export default function SquareRootSide({
   mode = 'refine', num: num0 = 36, den: den0 = 1, scale: maxScale0, areas: areas0,
   calculator, figure, title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false, onFinished, onTrial,
+  coach: coachOn = true,
+  // ── LECTEUR DE MISSION (rollout 2026-11-09, traitement v2) ──
+  onVerdict, handDone = false, chains: chainsOn = ['exact', 'never', 'grad'], predict: predictOn = true, predictAt = [1, 10], choices,
 }) {
   const { t } = useTranslation('lesson');
+  const gameScreen = useInMissionPlayer();
+  const missionArea = useMissionArea();
   const k = useCallback((key, o) => t(`manipulation.squareRoot.${key}`, o), [t]);
   const refineMode = mode === 'refine';
   const state = useManipulation({
@@ -83,11 +110,19 @@ export default function SquareRootSide({
   const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
   const [done, setDone] = useState([false, false]);
   const snap = useRef(null);
+  // lecteur : la dernière prédiction { key, ok }, les clés déjà prédites, le nombre de prédictions de la manche
+  const [pred, setPred] = useState(null);
+  const predsMade = useRef(0);
+  const asked = useRef(new Set());
+  const [missionBig, setMissionBig] = useState(false);
   if (scene.key !== sceneKey) {
     // « إعادة », un autre niveau ou d'autres aires : TOUT recommence — les essais, les étapes et les questions du labo
     setScene({ key: sceneKey, inits: scene.inits + 1 });
     setLab(makeLab()); setDone([false, false]); snap.current = null;
+    setPred(null); predsMade.current = 0; asked.current = new Set();
   }
+  // la manche (LabRounds) repart de zéro avec la scène : ses verdicts, prédictions et encadrements d'avant ne comptent plus
+  useEffect(() => { if (scene.inits > 0) state.report(onTrial, { tk: 'reset' }); }, [scene.inits]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [live, setLive] = useState(null); // la valeur sous le doigt
   const area = L.currentArea(lab);
@@ -101,17 +136,28 @@ export default function SquareRootSide({
   const testedRef = useRef({ scene: sceneKey, sets: {} });
   if (testedRef.current.scene !== sceneKey) testedRef.current = { scene: sceneKey, sets: {} };
   const setKey = (st) => `${st.card}:${st.scale}`;
+  // lecteur : les commandes se FIGENT pendant une prédiction ou une question (la scène ne bouge pas sous la question)
+  const lockedRef = useRef(false);
   const commit = useCallback((v) => {
+    if (lockedRef.current) { setLive(null); return; }
     setLive(v);
-    const next = L.test(labRef.current, v);
-    if (next === labRef.current) return;
-    const sk = setKey(labRef.current);
+    const prev = labRef.current;
+    // relâcher sur la MÊME valeur n'est pas un nouvel essai (ni verdict, ni son)
+    if (prev.last && prev.last.v === v) return;
+    const next = L.test(prev, v);
+    if (next === prev) return;
+    const sk = setKey(prev);
     testedRef.current.sets[sk] = new Set([...(testedRef.current.sets[sk] ?? []), v]);
     labRef.current = next;
     playSfx(next.last.cmp === 0 ? 'bell' : 'over');
     setLab(next);
     state.report(onTrial, { area: L.currentArea(next), side: v, scale: next.scale, cmp: next.last.cmp });
-  }, [state, onTrial]);
+    // la manche (LabRounds) : chaque relâchement est un essai ; chaque NOUVEL encadrement serré est un événement
+    state.report(onVerdict, { groups: next.scale, exact: next.last.cmp === 0 });
+    if (!L.tight(L.cellOf(prev)) && L.tight(L.cellOf(next))) {
+      state.report(onTrial, { tk: 'bracket', card: next.card, scale: next.scale, resisting: L.cardStatus(next, next.card) === 'resisting' });
+    }
+  }, [state, onTrial, onVerdict]);
   const untested = () => {
     const r = L.range(labRef.current);
     const done = testedRef.current.sets[setKey(labRef.current)] ?? new Set();
@@ -123,22 +169,63 @@ export default function SquareRootSide({
   const cpActive = cpOn && cpSettings.enabled;
   const stepIdx = done[0] ? 1 : 0;
   const stepId = stepIdx === 0 ? 'frame' : 'rule';
-  const reachedNow = stepIdx === 0 ? frameReached(lab) : L.discoveryReady(lab);
-  const chain = cpActive && !done[1] && reachedNow ? chainOf(stepIdx, lab) : null;
+  // lecteur : lire d'un toucher puis BÂTIR (traitement v2) ; la page garde ses suites. `chains` dit quelles suites cette manche pose.
+  // Dans le lecteur la suite suit la VÉRITÉ (le côté tombera-t-il ?), pas ce qui est déjà trouvé : la suite « exact » s'ouvre quand le côté TOMBE
+  // (0,04 s'encadre d'abord entre 0 et 1, puis tombe sur 0,2) ; la page garde son ordre (encadrement d'abord).
+  const chainKey = gameScreen ? truthKeyOf(lab) : chainKeyOf(lab);
+  const reachedNow = stepIdx === 0
+    ? (gameScreen && chainKey === 'exact' ? L.foundSide(lab, 0) != null : frameReached(lab))
+    : L.discoveryReady(lab);
+  const chainOn = chainsOn.includes(chainKey);
+  const chain = cpActive && chainOn && !done[1] && reachedNow ? (gameScreen ? chainOfPlayer : chainOf)(stepIdx, lab) : null;
+  const showStepper = cpActive && !(gameScreen && !chainOn);
   const party = useStepCelebration();
   const cp = useLabCheckpoint({
     id: chain ? stepId : null,
-    questions: chain ? chain.map((q) => QUESTIONS[q](lab, k, { calculator, figure })) : null,
+    // lecteur : l'explication de la règle reste COURTE (le dernier encadrement seul) — la colonne de la question tient dans l'écran
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, k, { calculator, figure, compact: gameScreen })) : null,
     reached: reachedNow,
     resetKey: scene.inits,
     onRetry: () => { setLive(null); labRef.current = stepIdx === 0 ? makeLab() : (snap.current ?? makeLab()); setLab(labRef.current); },
     onEvent: (ev) => state.report(onTrial, ev),
     onDone: (id) => {
-      if (id === 'frame') { snap.current = labRef.current; setDone([true, false]); party.celebrate({ n: 1, total: 2 }); return; }
-      setDone([true, true]); party.celebrate({ n: 2, total: 2 });
+      if (id === 'frame') { snap.current = labRef.current; setDone([true, false]); if (showStepper) party.celebrate({ n: 1, total: 2 }); return; }
+      setDone([true, true]); if (showStepper) party.celebrate({ n: 2, total: 2 });
       state.discover(); state.formalize();
     },
   });
+
+  // lecteur : les PRÉDICTIONS — refine : au début d'une graduation de `predictAt` ; graduation : avant le premier essai d'une carte
+  const here = L.cellOf(lab);
+  const untouched = refineMode ? here.below == null && here.above == null && here.exact == null : L.brackets(lab, lab.card).length === 0;
+  const predKey = refineMode ? `${lab.card}:${lab.scale}` : `card:${lab.card}`;
+  const predictOpen = gameScreen && predictOn && cpActive && !cp.open && !missionBig && predsMade.current < PRED_MAX && untouched
+    && !asked.current.has(predKey) && (!refineMode || predictAt.includes(lab.scale)) && !L.discoveryReady(lab);
+  const locked = gameScreen && (cp.open || predictOpen);
+  lockedRef.current = locked;
+  const sayPredict = (says) => {
+    const truth = refineMode ? L.landsAt(L.currentArea(lab), lab.scale) : L.landsSomewhere(L.currentArea(lab), maxScale);
+    const ok = (says === 'yes') === truth;
+    asked.current.add(predKey);
+    predsMade.current += 1;
+    playSfx('pop');
+    setPred({ key: predKey, ok });
+    state.report(onTrial, { tk: 'predict', ok });
+  };
+  // la prédiction est JUGÉE par la règle : son résultat s'affiche quand la graduation (ou la carte) a tranché
+  const predResolved = !!pred && pred.key === predKey
+    && (refineMode ? here.exact != null || L.tight(here) : L.cardStatus(lab, lab.card) !== 'open');
+  const heardPred = useRef(null);
+  useEffect(() => {
+    if (!predResolved || heardPred.current === pred.key) return;
+    heardPred.current = pred.key;
+    playSfx(pred.ok ? 'correct' : 'pop');
+  }, [predResolved]); // eslint-disable-line react-hooks/exhaustive-deps
+  const predResult = gameScreen && predResolved && !cp.open;
+  // pendant une question, ce que la scène ÉCRIT se tait ; pendant les questions de l'encadrement, la scène montre le carré du BAS de l'encadrement
+  const quiet = gameScreen && cp.open;
+  const frameFocus = quiet && (cp.qid === 'nBetweenFill' || cp.qid === 'nSquaresBuild') ? firstTight(lab) : null;
+  const focusSide = frameFocus && frameFocus.scale === lab.scale ? frameFocus.below : null;
 
   const ready = L.discoveryReady(lab) && !cpActive;
   const sfx = useRef(0);
@@ -163,6 +250,12 @@ export default function SquareRootSide({
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
+  // Dans le lecteur de mission le labo est monté dans une copie cachée puis déplacé : le ResizeObserver ne ré-annonce pas toujours la vraie
+  // largeur (piège du rollout, leçon qawasim-adad-tabii). On re-mesure donc aussi à chaque rendu (même valeur = aucun nouveau rendu).
+  useLayoutEffect(() => {
+    const el = boxRef.current;
+    if (el) { const w = Math.max(240, Math.floor(el.clientWidth)); setWidth((cur) => (cur === w ? cur : w)); }
+  });
   const EDGE = 22;
   const span = range.max - range.min;
   const mu = (width - 2 * EDGE) / Math.max(1, span);
@@ -170,19 +263,22 @@ export default function SquareRootSide({
   const toValue = useCallback((clientX, _y, rect) => range.min + (clientX - rect.left - EDGE) / mu, [range.min, mu]);
   const stretch = useStretchInteraction({
     value: live ?? lab.side ?? range.min, range, toValue,
-    onChange: (v) => { setLive(v); const now = performance.now(); if (now - sfx.current > 35) { playSfx('tooth'); sfx.current = now; } },
+    onChange: (v) => { if (lockedRef.current) return; setLive(v); const now = performance.now(); if (now - sfx.current > 35) { playSfx('tooth'); sfx.current = now; } },
     onCommit: commit, direction: 'ltr',
   });
 
   // Une valeur PAR DÉFAUT (le début de la règle : un carré trop petit, jamais la réponse) : jamais vide à l'ouverture.
   // Ce n'est pas un essai : `L.test` n'est appelé ici que pour LIRE la comparaison, son résultat est jeté.
-  const shown = live ?? lab.side ?? range.min;
+  const shown = focusSide ?? live ?? lab.side ?? range.min;
   const isDefault = lab.last == null && live == null;
   const readout = isDefault ? L.test(lab, range.min).last : lab.last;
   const settled = readout != null && !stretch.dragging && shown === readout.v;
-  const cmp = settled ? readout.cmp : null;
+  const cmp = focusSide != null ? -1 : settled ? readout.cmp : null;
   const frameUnits = Math.max(2, Math.ceil(L.drawRoot(area)) + 1);
-  const box = Math.min(260, Math.max(180, width * 0.55));
+  // lecteur : le carré prend la hauteur qui reste dans l'écran de jeu (jamais de défilement), borné pour rester lisible
+  const box = gameScreen && missionArea?.height
+    ? Math.round(Math.min(380, width * 0.5, Math.max(180, missionArea.height - PLAYER_SCENE_OVERHEAD)))
+    : Math.min(260, Math.max(180, width * 0.55));
   const px = box / frameUnits;
   const sidePx = shown == null ? 0 : Math.min(box, L.drawSide(shown, lab.scale) * px);
   const targetPx = L.drawRoot(area) * px;
@@ -192,7 +288,25 @@ export default function SquareRootSide({
   const cmpWord = cmp === 0 ? k('equal', { area: L.areaText(area) }) : cmp < 0 ? k('smaller', { area: L.areaText(area) }) : k('larger', { area: L.areaText(area) });
 
   const brackets = L.brackets(lab);
-  const disc = discoveryParts(lab, k, { calculator, figure });
+  const disc = discoveryParts(lab, k, { calculator, figure, compact: gameScreen });
+  // le journal : sur la page, le tableau des encadrements (refine) ; dans le lecteur, « 📋 جدول تجاربك » dans les deux modes, muet pendant une question
+  const showMemo = brackets.length > 0 && (gameScreen ? !quiet : refineMode);
+
+  const coachStep = coachOn && !locked && !cp.open ? L.coachOf(lab) : null;
+  const coach = useLabCoach({
+    lab: 'square-root-side', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '',
+    labels: { hide: t('manipulation.common.coach.hide'), show: t('manipulation.common.coach.show'), ok: t('manipulation.common.coach.ok'), stop: t('manipulation.common.coach.stop') },
+  });
+
+  // lecteur : la prédiction ou la question PREND la colonne du labo
+  const gradText = lab.scale === 1 ? '1' : L.sideText(1, lab.scale);
+  const trayNode = !gameScreen ? null : predictOpen ? (
+    <PredictTray attr="rs"
+      title={t('manipulation.common.cp.predict.title')}
+      prompt={refineMode ? k('predict.prompt', { grad: gradText }) : k('predict.promptCard', { area: L.areaText(L.currentArea(lab)) })}
+      options={[{ says: 'yes', text: k('predict.yes') }, { says: 'no', text: k('predict.no') }]}
+      onSay={sayPredict} />
+  ) : cp.open ? cp.node : null;
 
   return (
     <ManipulationShell
@@ -201,19 +315,25 @@ export default function SquareRootSide({
       mission={mission ?? k(refineMode ? 'missionRefine' : 'missionGraduation', { area: L.areaText(area) })}
       lead={lead}
       state={state}
+      coach={coachOn ? coach : null}
       numberFields={refineMode ? [{ key: 'num', label: 'a' }] : []}
       allowModeSwitch={allowModeSwitch}
-      allowFreeLab={refineMode}
+      allowFreeLab={gameScreen ? false : refineMode}
       headerAction={cpOn ? cpSettings.control : null}
-      guided={cpActive}
+      // lecteur : l'écran de jeu est toujours GUIDÉ (les manches et les questions guident)
+      guided={cpActive || gameScreen}
+      hideRepresentation={(gameScreen && locked) || undefined}
+      onIntroChange={setMissionBig}
+      sidePanel={trayNode ? <div data-rs-tray>{trayNode}</div> : null}
       hints={(refineMode ? [k('hint1'), k('hint2', { area: L.areaText(area) }), k('hint3')] : [k('gHint1'), k('gHint2'), k('gHint3')]).map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{
         autoStep: () => false,
         canAutoStep: () => false,
         // Balayer la règle, graduation après graduation : chaque position est un essai (c² vs a lu exactement).
-        autoComplete: {
+        // lecteur : « جرّب كل الإمكانيات » est le BOUTON du geste appris — il s'ouvre après la manche à la main (handDone)
+        autoComplete: gameScreen && !handDone ? undefined : {
           label: t('manipulation.autoComplete.tryAll'),
-          ready: true,
+          ready: !locked,
           remaining: untested().length,
           intervalMs: 480,
           maxTicks: 80,
@@ -240,16 +360,33 @@ export default function SquareRootSide({
     >
       <div className="relative" data-rs-glance>
         {party.node}
-        {cp.node}
+        {!(gameScreen && cp.open) && cp.node}
       <ManipulationStage className="bg-gradient-to-b from-sky-50/60 to-white" data-dragging={stretch.dragging ? 'true' : undefined}>
         <div ref={boxRef} className="space-y-3" data-root-side data-mode={mode}>
-          {cpActive && <LabStepper count={2} current={stepIdx} done={done.map((d, i) => d && (i !== stepIdx || !cp.blocking))} stepAttr="data-rs-step" />}
+          {showStepper && <LabStepper count={2} current={stepIdx} done={done.map((d, i) => d && (i !== stepIdx || !cp.blocking))} stepAttr="data-rs-step" />}
+          {predResult && (
+            <p role="status" data-rs-predict-result={pred.ok ? 'ok' : 'wrong'}
+              className={`rounded-2xl px-4 py-2 text-center text-lg font-black ${pred.ok ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>
+              {pred.ok ? t('manipulation.common.cp.predict.right') : t('manipulation.common.cp.predict.wrong')}
+            </p>
+          )}
+          {gameScreen && refineMode && choices?.length > 0 && (
+            <div className="flex flex-wrap items-center gap-1.5" data-rs-choices>
+              <span className="text-sm font-bold text-slate-600">{k('choicesLabel')}</span>
+              {choices.map((c) => (
+                <button key={`${c.num}/${c.den}`} type="button" data-rs-choice={`${c.num}/${c.den}`} disabled={locked} onClick={() => state.setNumbers({ ...state.numbers, num: c.num, den: c.den })}
+                  className={`min-h-[44px] rounded-xl border-2 px-3 text-base font-black ${c.num === num && c.den === den ? 'border-indigo-500 bg-indigo-50 text-indigo-900' : 'border-slate-200 bg-white text-slate-700 hover:border-indigo-300'}`}>
+                  <bdi dir="ltr">{L.areaText(c)}</bdi>
+                </button>
+              ))}
+            </div>
+          )}
           {/* ── Les cartes (graduation) ou l'aire visée (refine) ── */}
           {refineMode ? (
             <div className="flex flex-wrap items-center gap-2 text-sm font-bold text-slate-700">
               <span className="rounded-full bg-white px-3 py-1 ring-1 ring-slate-200">{k('target')}{' '}<bdi dir="ltr" className="font-mono">{L.areaText(area)}</bdi></span>
               <span className="rounded-full bg-white px-3 py-1 ring-1 ring-slate-200" data-root-scale={lab.scale}>{k('graduation')}{' '}<bdi dir="ltr" className="font-mono">{lab.scale === 1 ? '1' : L.sideText(1, lab.scale)}</bdi></span>
-              <button type="button" onClick={() => setLab((s) => L.refine(s))} disabled={!L.canRefine(lab)} data-root-refine
+              <button type="button" onClick={() => setLab((s) => L.refine(s))} disabled={!L.canRefine(lab) || locked} data-root-refine
                 className="inline-flex min-h-[44px] items-center gap-1 rounded-xl border-2 border-sky-400 bg-white px-3 py-1 text-sky-800 disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
                 <ZoomIn className="h-4 w-4" aria-hidden="true" /> {k('refine')}
               </button>
@@ -260,9 +397,9 @@ export default function SquareRootSide({
                 {lab.cards.map((c, i) => {
                   const st = L.cardStatus(lab, i);
                   return (
-                    <button key={`${c.num}/${c.den}`} type="button" onClick={() => setLab((s) => L.setCard(s, i))} aria-pressed={lab.card === i} data-root-card={i} data-status={st}
+                    <button key={`${c.num}/${c.den}`} type="button" onClick={() => setLab((s) => L.setCard(s, i))} disabled={locked} aria-pressed={lab.card === i} data-root-card={i} data-status={st}
                       className={`min-h-[44px] rounded-xl border-2 px-3 py-1 text-sm font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${lab.card === i ? 'border-sky-600 bg-sky-50' : 'border-slate-300 bg-white'} ${st === 'exact' ? 'text-emerald-800' : st === 'resisting' ? 'text-rose-800' : 'text-slate-800'}`}>
-                      <span dir="ltr"><MathText>{`$\\sqrt{${L.areaTex(c)}}$`}</MathText></span>{st === 'exact' ? ' ✓' : st === 'resisting' ? ' ✗' : ''}
+                      <span dir="ltr"><MathText>{`$\\sqrt{${L.areaTex(c)}}$`}</MathText></span>{st !== 'open' && <span aria-hidden="true">{st === 'exact' ? ' ✓' : ' ✗'}</span>}{st !== 'open' && <span className="sr-only">{k(st === 'exact' ? 'cardExactSr' : 'cardResistingSr')}</span>}
                     </button>
                   );
                 })}
@@ -270,7 +407,7 @@ export default function SquareRootSide({
               <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label={k('graduations')} data-root-graduations>
                 <span className="text-xs font-bold text-slate-600">{k('graduations')}</span>
                 {Array.from({ length: maxScale }, (_, i) => i + 1).map((g) => (
-                  <button key={g} type="button" onClick={() => setLab((s) => L.setScale(s, g))} aria-pressed={lab.scale === g} aria-label={k('graduationAria', { g })} data-root-grad={g}
+                  <button key={g} type="button" onClick={() => setLab((s) => L.setScale(s, g))} disabled={locked} aria-pressed={lab.scale === g} aria-label={k('graduationAria', { g })} data-root-grad={g}
                     className={`h-11 min-w-[2.75rem] rounded-lg border-2 font-mono text-sm font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${lab.scale === g ? 'border-sky-600 bg-sky-600 text-white' : 'border-slate-300 bg-white text-slate-800'}`}>
                     <span dir="ltr">1/{g}</span>
                   </button>
@@ -280,7 +417,7 @@ export default function SquareRootSide({
           )}
 
           {/* ── LA RÈGLE : la longueur du côté, tenue au doigt ── */}
-          <div dir="ltr" {...stretch.trackProps} className="relative" style={{ ...stretch.trackProps.style, height: 64 }} data-root-ruler>
+          <div dir="ltr" {...stretch.trackProps} className="relative" style={{ ...stretch.trackProps.style, height: 64, ...(locked ? { pointerEvents: 'none' } : {}) }} data-root-ruler>
             <svg width={width} height={64} className="absolute inset-0" aria-hidden="true" focusable="false">
               <rect x={EDGE - 4} y={28} width={span * mu + 8} height={5} rx={2} fill="#0369A1" />
               {shown != null && <rect x={EDGE} y={14} width={Math.max(0, (shown - range.min) * mu)} height={12} rx={3} fill={tone} opacity={0.85} />}
@@ -293,6 +430,8 @@ export default function SquareRootSide({
             </svg>
             <div
               {...stretch.handleProps({ label: k('handle'), valueText: shown == null ? k('notSet') : k('valueText', { c: L.sideText(shown, lab.scale) }) })}
+              data-root-handle
+              aria-disabled={locked || undefined}
               className={`absolute top-1 flex h-11 w-11 -translate-x-1/2 items-start justify-center rounded-xl border-2 outline-none focus-visible:ring-4 focus-visible:ring-blue-300 ${stretch.dragging ? 'border-blue-500 bg-blue-500/10' : 'border-slate-400 bg-white/60'}`}
               style={{ left: xOf(shown ?? range.min), cursor: stretch.dragging ? 'grabbing' : 'grab' }}
             >
@@ -300,10 +439,10 @@ export default function SquareRootSide({
             </div>
           </div>
           <div className="flex items-center justify-center gap-2">
-            <button type="button" onClick={() => stretch.nudge(-1)} aria-label={k('shorter')} disabled={shown != null && shown <= range.min}
+            <button type="button" onClick={() => stretch.nudge(-1)} aria-label={k('shorter')} disabled={locked || (shown != null && shown <= range.min)}
               className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"><Minus className="h-5 w-5" aria-hidden="true" /></button>
             <p className="min-w-[8rem] text-center text-sm font-bold text-slate-700">{shown == null ? k('notSet') : k('valueText', { c: L.sideText(shown, lab.scale) })}</p>
-            <button type="button" onClick={() => stretch.nudge(1)} aria-label={k('longer')} disabled={shown != null && shown >= range.max}
+            <button type="button" onClick={() => stretch.nudge(1)} aria-label={k('longer')} disabled={locked || (shown != null && shown >= range.max)}
               className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"><Plus className="h-5 w-5" aria-hidden="true" /></button>
           </div>
 
@@ -311,7 +450,7 @@ export default function SquareRootSide({
             {/* ── LE CARRÉ sur son quadrillage, et le carré visé en pointillés ── */}
             <div className="flex justify-center rounded-2xl border-2 border-slate-200 bg-white p-2" dir="ltr">
               <svg width={box} height={box} viewBox={`0 0 ${box} ${box}`} role="img" data-root-square data-cmp={cmp ?? ''}
-                aria-label={shown == null ? k('notSet') : `c = ${L.sideText(shown, lab.scale)} ; c² = ${settled ? L.squareTex(shown, lab.scale).replace('{,}', ',') : '…'}`}>
+                aria-label={shown == null ? k('notSet') : `c = ${L.sideText(shown, lab.scale)} ; c² = ${settled ? L.squareTex(shown, lab.scale).replaceAll('{,}', ',') : '…'}`}>
                 {Array.from({ length: frameUnits + 1 }, (_, i) => (
                   <g key={i}>
                     <line x1={i * px} x2={i * px} y1={0} y2={box} stroke="#E2E8F0" />
@@ -325,15 +464,16 @@ export default function SquareRootSide({
             <div className="space-y-2 text-sm">
               <p className="font-bold text-slate-800">{k('legend')}</p>
               <p className="text-slate-600">{k('legendTarget', { area: L.areaText(area) })}</p>
-              {refineMode && brackets.length > 0 && (
+              {gameScreen && showMemo && <p className="text-sm font-black text-indigo-900" data-root-journal>{k('journal')}</p>}
+              {showMemo && (
                 <table className="w-full text-center text-sm" dir="ltr" data-root-memory>
-                  <thead><tr className="text-xs text-slate-500"><th className="font-bold">{k('colGraduation')}</th><th className="font-bold">{k('colBelow')}</th><th className="font-bold">{k('colAbove')}</th></tr></thead>
+                  <thead><tr className="text-xs text-slate-500"><th scope="col" className="font-bold">{k('colGraduation')}</th><th scope="col" className="font-bold">{k('colBelow')}</th><th scope="col" className="font-bold">{k('colAbove')}</th></tr></thead>
                   <tbody>
                     {brackets.map((b) => (
                       <tr key={b.scale} className={b.exact != null ? 'text-emerald-800' : 'text-slate-800'}>
                         <td className="font-mono">{L.sideText(1, b.scale)}</td>
-                        <td className="font-mono">{b.exact != null ? `${L.sideText(b.exact, b.scale)} ✓` : b.below != null ? `${L.sideText(b.below, b.scale)}² = ${L.squareTex(b.below, b.scale).replace('{,}', ',')}` : '—'}</td>
-                        <td className="font-mono">{b.exact != null ? '' : b.above != null ? `${L.sideText(b.above, b.scale)}² = ${L.squareTex(b.above, b.scale).replace('{,}', ',')}` : '—'}</td>
+                        <td className="font-mono">{b.exact != null ? `${L.sideText(b.exact, b.scale)} ✓` : b.below != null ? `${L.sideText(b.below, b.scale)}² = ${plain(L.squareTex(b.below, b.scale))}` : '—'}</td>
+                        <td className="font-mono">{b.exact != null ? '' : b.above != null ? `${L.sideText(b.above, b.scale)}² = ${plain(L.squareTex(b.above, b.scale))}` : '—'}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -353,7 +493,7 @@ export default function SquareRootSide({
 }
 
 /** La découverte (prompt, options, formalisation) : posée sous le labo quand les questions sont coupées, sinon c'est la dernière question du labo. */
-export function discoveryParts(lab, k, { calculator, figure } = {}) {
+export function discoveryParts(lab, k, { calculator, figure, compact = false } = {}) {
   const refineMode = lab.mode === 'refine';
   const area = L.currentArea(lab);
   const aTex = L.areaTex(area);
@@ -382,6 +522,14 @@ export function discoveryParts(lab, k, { calculator, figure } = {}) {
       <div className="space-y-2">
         <EquationDisplay tex={`\\sqrt{${aTex}} = ${foundTex(lab)} \\qquad (${foundTex(lab)})^2 = ${aTex}`} tone="result" note={<MathText>{k('fExact', { area: L.areaText(area), side: foundText(lab) })}</MathText>} />
         <p className="text-sm text-slate-700">{k('fPositive', { side: foundText(lab), area: L.areaText(area) })}</p>
+      </div>
+    ) : compact ? (
+      // lecteur : DEUX lignes — le dernier encadrement et (√a)² = a — puis la phrase ; la colonne de la question tient dans l'écran
+      <div className="space-y-1" data-root-brackets-compact>
+        {brackets.filter(L.tight).slice(-1).map((b) => (
+          <p key={b.scale} dir="ltr" className="text-center"><MathText>{`$${L.sideTex(b.below, b.scale)} < \\sqrt{${aTex}} < ${L.sideTex(b.above, b.scale)} \\qquad (\\sqrt{${aTex}})^2 = ${aTex}$`}</MathText></p>
+        ))}
+        <p className="text-sm font-bold text-emerald-900"><MathText>{k('fNever', { area: L.areaText(area) })}</MathText></p>
       </div>
     ) : (
       <div className="space-y-2">
@@ -437,7 +585,7 @@ export const CHAINS = Object.freeze({
 export const chainOf = (stepIdx, lab) => CHAINS[lab.mode === 'graduation' ? 'grad' : (L.foundSide(lab, 0) ? 'exact' : 'never')][stepIdx];
 
 const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
-const plain = (tex) => String(tex).replace('{,}', ',');
+const plain = (tex) => String(tex).replaceAll('{,}', ',');
 const ratText = (a) => `${a.num}/${a.den}`;
 
 export const QUESTIONS = {
@@ -555,6 +703,143 @@ export const QUESTIONS = {
     };
   },
 };
+
+/* ══════════════ Lecteur de mission : lire d'un toucher → BÂTIR → la règle (rollout 2026-11-09, conseil) ══════════════ */
+
+/** La suite à poser : 'grad' (mode graduation), 'exact' (le côté tombé juste), 'never' (jamais juste). */
+export const chainKeyOf = (lab) => (lab.mode === 'graduation' ? 'grad' : (L.foundSide(lab, 0) ? 'exact' : 'never'));
+export const CHAINS_PLAYER = Object.freeze({
+  exact: [['exSideFill', 'exBuild'], ['rule']],
+  never: [['nBetweenFill', 'nSquaresBuild'], ['nDecimalsFill', 'rule']],
+  grad: [['gGradFill', 'gBuild'], ['gResist', 'rule']],
+});
+export const chainOfPlayer = (stepIdx, lab) => CHAINS_PLAYER[truthKeyOf(lab)][stepIdx];
+/** La suite que la VÉRITÉ appelle (lecteur) : 'grad', 'exact' (le côté tombera sur une graduation offerte), 'never'. */
+export const truthKeyOf = (lab) => {
+  if (lab.mode === 'graduation') return 'grad';
+  const area = L.currentArea(lab);
+  return L.REFINE_SCALES.some((g) => g <= lab.maxScale && L.landsAt(area, g)) ? 'exact' : 'never';
+};
+
+const tx = (s) => String(s).replace(',', '{,}');
+const digitsOfDen = (den) => { const d = Math.round(Math.log10(den)); return 10 ** d === den ? d : null; };
+const sideChips = (v, scale) => chipsAround(v, { min: 1 }).map((x) => L.sideText(x, scale));
+
+/** La moitié d'une aire, écrite comme l'aire (0,04 → 0,02 ; 16 → 8 ; 16/9 → 8/9) : la tuile de trop (« le côté, c'est la moitié »). */
+export function halfText({ num, den }) {
+  if (digitsOfDen(den) != null) return L.areaText(num % 2 === 0 ? { num: num / 2, den } : { num: num * 5, den: den * 10 });
+  return L.areaText(reduce({ num, den: den * 2 }));
+}
+
+/** L'égalité « aire = côté × côté » d'une carte tombée juste : ses tuiles et la tuile de trop (la moitié, ou le double si la moitié EST le côté). */
+export function exactBuild(lab, i) {
+  const f = L.foundSide(lab, i); const area = lab.cards[i];
+  const side = L.sideText(f.v, f.scale); const areaT = L.areaText(area);
+  const half = halfText(area);
+  const decoy = half === side ? L.areaText(reduce({ num: area.num * 2, den: area.den })) : half;
+  return {
+    side, area: areaT, decoy, scale: f.scale,
+    expected: [areaT, side, side], tiles: [side, decoy, areaT, side],
+    eq: `${L.areaTex(area)} = ${L.sideTex(f.v, f.scale)} \\times ${L.sideTex(f.v, f.scale)}`,
+  };
+}
+
+/** Le produit des deux voisins d'un encadrement, écrit exactement (la tuile de trop de « 4 < 5 < 9 »). */
+function productText(a, b, scale) {
+  const d = digitsOfDen(scale);
+  if (d != null) return exactDecimal(a * b, 2 * d);
+  const r = reduce({ num: a * b, den: scale * scale });
+  return r.den === 1 ? String(r.num) : `${r.num}/${r.den}`;
+}
+
+/** L'encadrement des CARRÉS « b² < a < (b+1)² » du premier encadrement serré : ses tuiles et la tuile de trop (b × (b+1), sinon b + (b+1)). */
+export function squaresBuild(lab) {
+  const b = firstTight(lab); const area = L.currentArea(lab);
+  const sqb = plain(L.squareTex(b.below, b.scale)); const sqa = plain(L.squareTex(b.above, b.scale)); const areaT = L.areaText(area);
+  let decoy = productText(b.below, b.above, b.scale);
+  if ([sqb, sqa, areaT].includes(decoy)) decoy = L.sideText(b.below + b.above, b.scale);
+  return {
+    below: L.sideText(b.below, b.scale), above: L.sideText(b.above, b.scale), sqb, sqa, area: areaT, decoy,
+    expected: [sqb, areaT, sqa], tiles: [sqa, decoy, sqb, areaT],
+    tex: `${L.squareTex(b.below, b.scale)} < ${L.areaTex(area)} < ${L.squareTex(b.above, b.scale)}`,
+  };
+}
+
+/** Le côté le plus FIN encadré (refine) dont le dernier chiffre n'est pas 0 : son écriture, ses k décimales, son carré exact (2k décimales). */
+export function finestSide(lab) {
+  const bs = L.brackets(lab, 0).filter((b) => b.exact == null && L.tight(b));
+  const b = bs.at(-1);
+  const v = b.below % 10 === 0 ? b.above : b.below;
+  const c = L.sideText(v, b.scale);
+  const sq = plain(L.squareTex(v, b.scale));
+  return { c, k: L.decimalsOf(c), sq, n: L.decimalsOf(sq), last: sq.at(-1), cTex: L.sideTex(v, b.scale), sqTex: L.squareTex(v, b.scale) };
+}
+
+Object.assign(QUESTIONS, {
+  exSideFill: (lab, k) => {
+    const x = exactBuild(lab, 0);
+    const o = { area: x.area, c: x.side };
+    return {
+      id: 'exSideFill', kind: 'fill', prompt: Mx(k, 'exSideFill.prompt', o),
+      fields: [{ label: k('cp.exSideFill.field'), expected: x.side, options: sideChips(L.foundSide(lab, 0).v, x.scale) }],
+      hints: [Mx(k, 'exSideFill.hint1', o), Mx(k, 'exSideFill.hint2', o)], explain: Mx(k, 'exSideFill.explain', o),
+    };
+  },
+  exBuild: (lab, k) => buildOf(exactBuild(lab, 0), k, 'exBuild'),
+  gGradFill: (lab, k) => {
+    const i = exactCard(lab); const x = exactBuild(lab, i);
+    const o = { area: x.area, c: x.side, g: `1/${x.scale}` };
+    return {
+      id: 'gGradFill', kind: 'fill', prompt: Mx(k, 'gGradFill.prompt', o),
+      fields: [{ label: k('cp.gGradFill.field'), expected: `1/${x.scale}`, options: chipsAround(x.scale, { min: 1 }).map((g) => `1/${g}`) }],
+      hints: [Mx(k, 'gGradFill.hint1', o), Mx(k, 'gGradFill.hint2', o)], explain: Mx(k, 'gGradFill.explain', o),
+    };
+  },
+  gBuild: (lab, k) => ({ ...buildOf(exactBuild(lab, exactCard(lab)), k, 'exBuild'), id: 'gBuild' }),
+  nBetweenFill: (lab, k) => {
+    const b = firstTight(lab); const area = L.currentArea(lab);
+    const o = { area: L.areaText(area), below: L.sideText(b.below, b.scale), above: L.sideText(b.above, b.scale) };
+    return {
+      id: 'nBetweenFill', kind: 'fill', prompt: Mx(k, 'nBetweenFill.prompt', o),
+      fields: [
+        { label: k('cp.nBetweenFill.fieldBelow'), expected: o.below, options: sideChips(b.below, b.scale) },
+        { label: k('cp.nBetweenFill.fieldAbove'), expected: o.above, options: sideChips(b.above, b.scale) },
+      ],
+      hints: [Mx(k, 'nBetweenFill.hint1', o), Mx(k, 'nBetweenFill.hint2', o)], explain: Mx(k, 'nBetweenFill.explain', o),
+    };
+  },
+  nSquaresBuild: (lab, k) => {
+    const x = squaresBuild(lab);
+    const o = { area: x.area, below: x.below, above: x.above, tex: x.tex };
+    return {
+      id: 'nSquaresBuild', kind: 'build', prompt: Mx(k, 'nSquaresBuild.prompt', o),
+      slots: [k('cp.nSquaresBuild.slotBelow', o), k('cp.nSquaresBuild.slotArea'), k('cp.nSquaresBuild.slotAbove', o)], ops: ['<', '<'],
+      tiles: x.tiles, expected: x.expected,
+      hints: [Mx(k, 'nSquaresBuild.hint1', o), Mx(k, 'nSquaresBuild.hint2', o)], explain: Mx(k, 'nSquaresBuild.explain', o),
+    };
+  },
+  nDecimalsFill: (lab, k) => {
+    const x = finestSide(lab); const area = L.currentArea(lab);
+    const o = { area: L.areaText(area), c: x.c, k: x.k, n: x.n, last: x.last, cTex: x.cTex, sqTex: x.sqTex };
+    return {
+      id: 'nDecimalsFill', kind: 'fill', prompt: Mx(k, 'nDecimalsFill.prompt', o),
+      fields: [{ label: k('cp.nDecimalsFill.field'), expected: x.n, options: chipsAround(x.n, { min: 1 }) }],
+      hints: [Mx(k, 'nDecimalsFill.hint1', o), Mx(k, 'nDecimalsFill.hint2', o)],
+      explain: Mx(k, area.den === 1 ? 'nDecimalsFill.explain' : 'nDecimalsFill.explainFrac', o),
+    };
+  },
+});
+
+/** Une question « build » d'égalité aire = côté × côté (exact ou carte tombée juste). */
+function buildOf(x, k, key) {
+  const o = { area: x.area, c: x.side, half: x.decoy, eq: x.eq };
+  return {
+    id: key, kind: 'build', prompt: Mx(k, `${key}.prompt`, o),
+    slots: [k(`cp.${key}.slotArea`), k(`cp.${key}.slotSide`), k(`cp.${key}.slotSide`)], ops: ['=', '×'],
+    tiles: x.tiles, expected: x.expected,
+    hints: [Mx(k, `${key}.hint1`, o), Mx(k, `${key}.hint2`, o)], explain: Mx(k, `${key}.explain`, o),
+  };
+}
 
 function foundTex(lab) { const f = L.foundSide(lab, 0); return f ? L.sideTex(f.v, f.scale) : ''; }
 function foundText(lab) { const f = L.foundSide(lab, 0); return f ? L.sideText(f.v, f.scale) : ''; }

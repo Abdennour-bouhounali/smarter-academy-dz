@@ -8,6 +8,9 @@ import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, CHALLENGE, ICT_CONSTRUCT } from '../content/textbook';
 import { TriangleABC, RootSpiral } from '../components/RootFigures';
+import { M1_ROUNDS } from '../content/squares';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
 
 const { squareOf, squareOfDecimal, exactDecimal } = squareRoots;
 
@@ -33,6 +36,10 @@ const { squareOf, squareOfDecimal, exactDecimal } = squareRoots;
  * et 4, la spirale de la p. 30 et le retour au تحدّ. LP : P1, P2.
  * Les ateliers vivent dans l'`intro` (deux niveaux) : le rappel de « مسألة الدرس »
  * (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) clôt donc la DERNIÈRE étape.
+ *
+ * LECTEUR DE MISSION (rollout 2026-11-09) : le labo se joue en MANCHES (content/squares.js › M1_ROUNDS : 16 à la main avec ses questions → 5
+ * jusqu'au millième avec deux prédictions et ses questions → 2,25 → défi ⭐ 20 → jardin libre) au lieu de مبتدئ / متقدم ; les étapes 1 à 3 attendent
+ * la manche 5 (`needsRound`), et ses essais remplissent les preuves de l'étape 3 (`onTrial`). Hors lecteur : inchangé.
  */
 const AREA_5 = '5/1';
 const LADDER = [1, 10, 100, 1000];
@@ -72,6 +79,9 @@ export default function Module01Nashat() {
     });
   };
   const tight = (c) => c && c.below != null && c.above != null && c.above - c.below === 1;
+  // Dans le lecteur : la manche gagnée (5, jamais juste) ouvre les étapes 1 à 3.
+  const [won, setWon] = useState({});
+  const round = { id: 'r2', label: 'الجولة 2', icon: '🌷', won: Boolean(won.r2) };
 
   return (
     <ContentModule
@@ -84,6 +94,12 @@ export default function Module01Nashat() {
       objectives={['كيف نكتب طول الوتر $BC$ الذي مربّعه 5 دون خطأ في الأرقام؟', 'هل تعطينا الحاسبة القيمة المضبوطة؟', 'ماذا نحصل عليه إذا ربّعنا جذرًا تربيعيًا، أو أخذنا جذر مربّع؟']}
       intro={
         // LE LABO OUVRE LE MODULE (§4quater) : pas de carte du manuel ni de titre / `lead` de workspace ; le contexte est le `lead` du labo.
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="m1-squares" rounds={M1_ROUNDS} icon="🌷" freeIcon="🌻"
+              onTrial={onTrial} onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))} />
+          )}
+          page={(
         <ManipulationWorkspace
           defaultLevel="beginner"
           levels={{
@@ -114,10 +130,12 @@ export default function Module01Nashat() {
             ),
           }}
         />
+          )}
+        />
       }
       steps={[
         {
-          num: 1, title: 'لماذا مساحة المربّع على الوتر BC تساوي 5؟', subtitle: 'خاصية فيثاغورس في المثلث ABC — السؤال 1 أ', done: q1,
+          needsRound: round, num: 1, title: 'لماذا مساحة المربّع على الوتر BC تساوي 5؟', subtitle: 'خاصية فيثاغورس في المثلث ABC — السؤال 1 أ', done: q1,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800">{ACTIVITY.text}</p>
@@ -137,7 +155,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 2, title: 'الطول BC هو العدد الموجب الذي مربعه ...', subtitle: 'السؤال 1 ب', done: q2,
+          needsRound: round, num: 2, title: 'الطول BC هو العدد الموجب الذي مربعه ...', subtitle: 'السؤال 1 ب', done: q2,
           content: (
             <TapQuestion
               prompt={<MathText>{ACTIVITY.questions[1]}</MathText>}
@@ -145,13 +163,13 @@ export default function Module01Nashat() {
               correct={3}
               cols={2}
               requires={['khassiyat-fithaghuras', 'murabba-adad']}
-              explain={<MathText>{`$BC^2 = ${ab * ab + ac * ac}$، والطول عدد موجب: BC هو العدد الموجب الذي مربعه 5 — ضلع المربّع الذي مساحته 5 في المستوى المتقدّم.`}</MathText>}
+              explain={<MathText>{`$BC^2 = ${ab * ab + ac * ac}$، والطول عدد موجب: BC هو العدد الموجب الذي مربعه 5 — ضلع المربّع الذي مساحته 5 في المختبر.`}</MathText>}
               onAnswered={() => setQ2(true)}
             />
           ),
         },
         {
-          num: 3, title: 'الحاسبة، وقول إيمان', subtitle: 'السؤال 2 — احصر الضلع في المستوى المتقدّم، ثم أجب', done: q3,
+          needsRound: round, num: 3, title: 'الحاسبة، وقول إيمان', subtitle: 'السؤال 2 — احصر الضلع في المختبر، ثم أجب', done: q3,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[2]}</MathText></p>
@@ -171,7 +189,7 @@ export default function Module01Nashat() {
                     </li>
                   ) : (
                     <li key={scale} data-evidence={scale} data-tried="false" className="text-slate-500">
-                      التدريجة <bdi dir="ltr">{label}</bdi>: لم تحصر الضلع بعد في المستوى المتقدّم.
+                      التدريجة <bdi dir="ltr">{label}</bdi>: لم تحصر الضلع بعد عند هذه التدريجة في المختبر.
                     </li>
                   );
                 })}
@@ -200,7 +218,7 @@ export default function Module01Nashat() {
                 explain={<MathText>{`$${texNum(calculator)}^2 = ${texNum(squareOfDecimal(calculator))}$ وهو ليس 5. والطول BC موجود (مربّعه 5 بخاصية فيثاغورس)، لكن الحاسبة لا تعرض إلا قيمة مقربة له.`}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
-              {q3 && <KnowledgeBrick id="qima-mudbuta" lead="ما وجدته له اسم ورمز في الكتاب:" />}
+              {q3 && <KnowledgeBrick id="qima-mudbuta" lead="ما وجدته له اسم ورمز:" />}
             </div>
           ),
         },
@@ -290,7 +308,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 7, title: 'التحدّي: خزان الفلاح', subtitle: 'تحدّ — الكتاب ص 19', done: q7,
+          num: 7, title: 'التحدّي: خزان الفلاح', subtitle: 'تحدٍّ', done: q7,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{CHALLENGE.text}</MathText></p>

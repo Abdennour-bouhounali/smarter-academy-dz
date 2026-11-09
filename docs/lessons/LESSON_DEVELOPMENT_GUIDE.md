@@ -1254,7 +1254,8 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
 - **The mission scene is per lesson.** `mission.scene` in the config picks a drawn SVG from `mission/MissionScene.jsx` (a registry:
   `'library'` = 756 books, `'library-wall'` = 96 books + a `KidFigure` librarian, `'construction-wall'` = a brick wall that rises + a `KidFigure` apprentice, `'flower-shop'` = identical bouquets on a counter + a `KidFigure` florist in hijab, `'school-bags'` = identical school bags filling on a table + a
   `KidFigure` volunteer, `'sewing-workshop'` = two ribbons cut into equal pieces + a `KidFigure` seamstress in hijab, `'bakery'` = identical dough portions on a tray + a
-  `KidFigure` baker). A new scene is a component `<Nom>Scene({ fill,
+  `KidFigure` baker, `'math-club'` = pairs of numbered tiles judged « ✓ » + a `KidFigure` in hijab, `'garden-bed'` = a square flower bed on the
+  hypotenuse of a right-triangle corner, filling with rows of flowers + a `KidFigure` gardener). A new scene is a component `<Nom>Scene({ fill,
   label, className })` drawn in code (never a generated image), `fill` ∈ [0, 1] following the tools earned; it must not show any
   number of the مسألة (rows, capacities). `MissionHome`, `MissionCheckpoint` and `MissionLayer` read `mission.scene`.
 - **Checkpoints use other numbers.** A point d'étape speaks of 30, 50 or « n » — never of the climax's numbers (96 here).
@@ -1262,7 +1263,9 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
   optional?, free?, props }]`. Only round 1 is by hand (the next rounds set `handDone: true`); a challenge round (`optional: true`);
   a free round (`free: true`, bounded `nChoices`); `easier` on every hard round (a smaller number, `goal` = the same kind).
   Goals available: `{ checkpoint }`, `{ exact }`, `{ allExact }`, `{ inexact }`, plus (factor-pairs) `{ anyExact: true }` and
-  `{ allPairs: n }` (every perfect rectangle of `n` seen — one side of each pair is enough). Numbers are COMPUTED (`divisorsOf`,
+  `{ allPairs: n }` (every perfect rectangle of `n` seen — one side of each pair is enough), (common-divisors) `{ above: g }`, (square-root-side)
+  `{ bracketed: g }` and `{ resists: true }`. A « few trials » star for a lab with nested steps (a magnifier) is a budget PER STEP (bisection: ≈ 4
+  releases per refined graduation), tested by playing the round the efficient way. Numbers are COMPUTED (`divisorsOf`,
   `pairsOf`), never typed by hand. `LabRounds` takes `icon` / `freeIcon` (📚 / 🗂️ for books) and a round's `easier.helpLine` replaces
   the football sentence of the « جرّب أصغر » card.
 - **One step = one round AND its question.** `needsRound: { id, label, icon?, won }` — pass `won: Boolean(won.<id>)` so the door and
@@ -1304,6 +1307,14 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
   taps), the activity's numbers come second with predictions and « جرّب كل الإمكانيات » (`handDone`), and its goal is « everything tried »
   (`[{ exact: 1 }, { above: min − 1 }]`); the module's steps may wait for that second round (`needsRound: { id: 'r2' }`). The build question builds what is
   LEFT (`n = k × q + r`), never an equality that would need a k that does not exist.
+  A lab where the hand APPROXIMATES (`square-root-side`, unit 2, lesson `jidhr-tarbii`, council of 2026-11-09): (g) the « build » step may build an
+  INEQUALITY (« 4 < 5 < 9 », `ops ['<','<']`) — the bracket the hand made, written as maths; (h) « never » is not asked as a belief (« will a finer
+  graduation EVER land? » cannot be proven by doing): the student COUNTS an observable fact instead (c has k decimals, c² has 2k and its last digit
+  is never 0, so c² is never the whole number a), and the rule comes after; (i) a yes/no prediction that would always get the same answer becomes a
+  pattern — ask it at non-consecutive steps (`predictAt: [1, 100]`) and add a round where the answer FLIPS (2,25: « no » at 1, « yes » at 0,1), required;
+  (j) a prediction the lab answers later is judged by the computed truth when it is made and its result shown when the lab has decided; (k) in the player
+  the question chain follows the computed TRUTH, not what is already found. In the player a `TextbookExercise` batch of ≥ 6 rows is laid on two
+  columns (from `lg`; a 768-px tablet keeps one) as one screen (`BatchChoiceQuestion rowCols`, `data-paging-keep`) so a long list never falls under the minimum zoom.
 - **« ورقة زميل »** (`content/peerSheet.js`): an invented classmate (`KidFigure`; girls in hijab), 3–5 lines with ONE error on the
   lesson's main misconception, three fixes each with a `why`, the numbers computed from the same helpers as the rounds, and a test
   (`peerSheet.test.js`) that the error line is the only wrong one.

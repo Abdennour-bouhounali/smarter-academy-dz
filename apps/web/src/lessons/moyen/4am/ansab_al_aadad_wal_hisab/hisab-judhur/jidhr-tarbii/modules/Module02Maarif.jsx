@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, KnowledgeBrick, PeerSheet } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { TextbookBox } from '../../../../../../common/textbook';
 import { Manipulation } from '../../../../../../common/manipulations';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { KNOWLEDGE } from '../content/textbook';
+import { M2_ROUNDS } from '../content/squares';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
 
 /**
  * Module 2 — معارف 1 (p. 22) : la définition, le symbole et sa lecture, les
@@ -13,11 +17,17 @@ import { KNOWLEDGE } from '../content/textbook';
  * APRÈS l'essai qui la prépare (rétrofit 2026-10-15 : labo en tête sans carte ni titre, définition et briques après les réponses). L'exemple √0,04 = 0,2 est manipulé dans le
  * MÊME instrument qu'au module 1 (le carré qu'on étire) : un exemple
  * travaillé, un seul niveau (`levels={false}`). LP : P1, P2, P3.
+ *
+ * LECTEUR DE MISSION (rollout 2026-11-09) : le labo se joue en MANCHES (content/squares.js › M2_ROUNDS : 0,04 avec ses questions → défi ⭐ 1,69
+ * avec prédictions → jardin libre), l'étape 1 attend la manche 1, l'étape 4 est « ورقة إلياس » (`PeerSheet`). Hors lecteur : inchangé.
  */
 export default function Module02Maarif() {
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
+  const [q4, setQ4] = useState(false);
+  // Dans le lecteur : la manche gagnée ouvre l'étape.
+  const [won, setWon] = useState({});
 
   return (
     <ContentModule
@@ -29,19 +39,27 @@ export default function Module02Maarif() {
       estimatedTime="10 دقائق"
       objectives={['كيف نعرّف الجذر التربيعي لعدد موجب، وكيف نتحقّق من نتيجته؟', 'ماذا نحصل عليه إذا ربّعنا جذرًا تربيعيًا؟ وإذا أخذنا جذر مربّع عدد؟']}
       intro={
-        <Manipulation
-          type="square-root-side"
-          mode="refine"
-          num={4}
-          den={100}
-          scale={100}
-          levels={false}
-          lead="مثال الكتاب: مربّع مساحته 0,04. الكتاب يكتب أن الجذر التربيعي للعدد 0,04 هو 0,2. تحقّق: احصر الضلع بين تدريجتين، ثم دقّق."
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="m2-squares" rounds={M2_ROUNDS} icon="🌷" freeIcon="🌻"
+              onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))} />
+          )}
+          page={(
+            <Manipulation
+              type="square-root-side"
+              mode="refine"
+              num={4}
+              den={100}
+              scale={100}
+              levels={false}
+              lead="مربّع مساحته 0,04. هل طول ضلعه 0,2؟ تحقّق: احصر الضلع بين تدريجتين، ثم دقّق."
+            />
+          )}
         />
       }
       steps={[
         {
-          num: 1, title: 'التعريف والرمز', done: q1,
+          needsRound: { id: 'r1', label: 'الجولة 1', icon: '🌷', won: Boolean(won.r1) }, num: 1, title: 'التعريف والرمز', done: q1,
           content: (
             <div className="space-y-3">
               <TapQuestion
@@ -100,6 +118,8 @@ export default function Module02Maarif() {
             </div>
           ),
         },
+        { num: 4, title: 'ورقة إلياس: أين الخطأ؟', subtitle: 'جد السطر الخاطئ وصحّحه', done: q4,
+          content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={() => setQ4(true)} /> },
       ]}
       footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />
