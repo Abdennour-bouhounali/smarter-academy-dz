@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import FitLine from '../components/FitLine';
 import { useTranslation } from 'react-i18next';
 import { BookOpen, Timer, Lightbulb, TriangleAlert, Target, Sparkles } from 'lucide-react';
 import MathText from '../components/MathText';
@@ -133,7 +134,7 @@ function MemoTile({ item, n, isNew }) {
             {memo.example && (
               <li className="flex items-start gap-2"><Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" aria-hidden="true" />
                 <span className="w-[5.75rem] shrink-0 whitespace-nowrap text-slate-500">{k('example')}</span>
-                <span className="whitespace-nowrap" dir="ltr"><MathText>{`$${memo.example}$`}</MathText></span>
+                <FitLine className="flex-1" dir="ltr"><MathText>{`$${memo.example}$`}</MathText></FitLine>
               </li>
             )}
             {memo.trap && (
@@ -151,8 +152,9 @@ function MemoTile({ item, n, isNew }) {
           </MoreToggle>
         </div>
         {memo.rule && (
-          <div data-memo-rule className={`order-first flex min-h-[96px] items-center justify-center overflow-x-auto rounded-2xl px-3 py-4 ring-1 xl:order-none ${a.soft}`}>
-            <span className="whitespace-nowrap text-2xl text-slate-900" dir="ltr"><MathText>{`$${memo.rule}$`}</MathText></span>
+          // la règle TIENT dans son cadre (FitLine, 2026-11-09) : avant, centrée dans un cadre trop étroit, elle était coupée des deux côtés
+          <div data-memo-rule className={`order-first flex min-h-[96px] min-w-0 items-center justify-center rounded-2xl px-3 py-4 ring-1 xl:order-none ${a.soft}`}>
+            <FitLine className="text-center text-2xl text-slate-900" dir="ltr"><MathText>{`$${memo.rule}$`}</MathText></FitLine>
           </div>
         )}
       </div>

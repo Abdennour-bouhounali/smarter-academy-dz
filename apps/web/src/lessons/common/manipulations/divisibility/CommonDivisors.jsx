@@ -593,7 +593,10 @@ export const QUESTIONS = {
   // l'égalité BÂTIE : a = k × q, chaque emplacement porte le sens de son nombre (une tuile de trop : le nombre de l'autre objet)
   build: ({ a, b, bouquets, words }, k) => {
     const g = greatestTried(bouquets);
-    const o = { groups: words.groups, itemsA: words.itemsA, a: $(a), g: $(g), q: $(a / g), eq: $(`${a} = ${g} \\times ${a / g}`) };
+    // la question NOMME l'objet (propriétaire, 2026-11-09 : on ne voyait pas si c'étaient les maillots ou les ballons) — « كل الكرات »,
+    // « عدد الفرق », « كرات في كل فريق » ; la tuile de trop est le nombre de l'AUTRE objet par groupe : confondre les deux est une erreur vue
+    const o = { groups: words.groups, group: words.group, itemsA: words.itemsA, theA: words.theA, theB: words.theB, theGroups: words.theGroups,
+      a: $(a), g: $(g), q: $(a / g), eq: $(`${a} = ${g} \\times ${a / g}`) };
     return {
       id: 'build', kind: 'build', prompt: Cq(k, 'build.prompt', o),
       slots: [k('cp.build.slotA', o), k('cp.build.slotK', o), k('cp.build.slotQ', o)],

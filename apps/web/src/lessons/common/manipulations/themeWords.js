@@ -19,6 +19,10 @@ export function themeWords(t, theme, context = {}) {
     itemB: context.itemB ?? k('itemB'),
     itemsA: context.itemsA ?? k('itemsA'),
     itemsB: context.itemsB ?? k('itemsB'),
+    // les formes DÉFINIES (« الكرات », « الزهرات الحمراء ») pour une phrase arabe correcte (2026-11-09) — repli : la forme nue
+    theA: context.theA ?? t(`manipulation.themes.${id}.theA`, { defaultValue: context.itemsA ?? k('itemsA') }),
+    theB: context.theB ?? t(`manipulation.themes.${id}.theB`, { defaultValue: context.itemsB ?? k('itemsB') }),
+    theGroups: context.theGroups ?? t(`manipulation.themes.${id}.theGroups`, { defaultValue: context.groups ?? k('groups') }),
     scene: k('scene'),
     leftover: k('leftover'),
     allUsed: k('allUsed'),
