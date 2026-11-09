@@ -15,7 +15,7 @@ import { setReturnTo } from './returnToLesson';
  * `priority` (revue de « أستعدّ ») : la leçon de la كفاءة la plus fragile — sa carte seule en grand, les autres en petit dessous
  * (« وأيضًا »), jamais retirées.
  */
-export default function ReviseFirst({ lessonId, title, basePath, className = '', columns = 2, priority = null }) {
+export default function ReviseFirst({ lessonId, title, basePath, className = '', columns = 2, priority = null, variant = 'card' }) {
   const { t } = useTranslation('lesson');
   const navigate = useNavigate();
   const lesson = getLessonById(lessonId);
@@ -28,6 +28,24 @@ export default function ReviseFirst({ lessonId, title, basePath, className = '',
     setReturnTo(typeof window !== 'undefined' ? window.sessionStorage : null, { path: basePath, title });
     navigate(p.path);
   };
+  // `variant="slim"` (première vue de la mission, propriétaire 2026-11-09) : UNE ligne — « قبل أن تبدأ: » puis chaque leçon en pastille
+  if (variant === 'slim') {
+    return (
+      <div className={`flex flex-wrap items-center justify-center gap-2 rounded-2xl border border-teal-200 bg-teal-50/70 px-4 py-2.5 ${className}`} data-revise-first data-revise-variant="slim">
+        <span className="text-sm font-black text-teal-900">🧭 {t('mission.beforeStart')}</span>
+        {prereqs.map((p) => {
+          const available = p.status === 'available';
+          return (
+            <button key={p.id} type="button" disabled={!available} onClick={() => open(p)} data-revise-lesson={p.id} data-revise-status={p.status}
+              className="inline-flex min-h-[40px] items-center gap-1.5 rounded-full border-2 border-teal-300 bg-white px-3 text-sm font-bold text-slate-900 hover:border-teal-500 disabled:border-dashed disabled:text-slate-500">
+              <span aria-hidden="true">📘</span><MathLabel>{p.title}</MathLabel>
+              {available ? <span className="font-black text-teal-700">↩ {t('mission.revise')}</span> : <span className="text-xs">· {t('mission.comingSoon')}</span>}
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
   return (
     <div className={`rounded-3xl border-2 border-teal-200 bg-teal-50/60 p-5 text-start ${className}`} data-revise-first>
       <p className="text-lg font-black text-teal-900">🧭 {t('diagnostic.reviewTitle')}</p>
