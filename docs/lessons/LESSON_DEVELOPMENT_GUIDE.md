@@ -1248,7 +1248,8 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
 
 - **The mission scene is per lesson.** `mission.scene` in the config picks a drawn SVG from `mission/MissionScene.jsx` (a registry:
   `'library'` = 756 books, `'library-wall'` = 96 books + a `KidFigure` librarian, `'construction-wall'` = a brick wall that rises + a `KidFigure` apprentice, `'flower-shop'` = identical bouquets on a counter + a `KidFigure` florist in hijab, `'school-bags'` = identical school bags filling on a table + a
-  `KidFigure` volunteer, `'sewing-workshop'` = two ribbons cut into equal pieces + a `KidFigure` seamstress in hijab). A new scene is a component `<Nom>Scene({ fill,
+  `KidFigure` volunteer, `'sewing-workshop'` = two ribbons cut into equal pieces + a `KidFigure` seamstress in hijab, `'bakery'` = identical dough portions on a tray + a
+  `KidFigure` baker). A new scene is a component `<Nom>Scene({ fill,
   label, className })` drawn in code (never a generated image), `fill` ∈ [0, 1] following the tools earned; it must not show any
   number of the مسألة (rows, capacities). `MissionHome`, `MissionCheckpoint` and `MissionLayer` read `mission.scene`.
 - **Checkpoints use other numbers.** A point d'étape speaks of 30, 50 or « n » — never of the climax's numbers (96 here).
@@ -1292,6 +1293,8 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
   label has no Latin letters (« b قاسم لـ a » reorders in RTL). A lab whose steps are FORCED (a chain of cuts or divisions — `pgcd-differences`,
   `euclidean-algorithm`, lesson `bahth-pgcd`): the prediction opens at the START of a step (« كم سيبقى؟ », « كم نسخة تدخل؟ »), the round's verdict is
   the PGCD placed (never the forced steps) with `maxTrials: 1`, and the `build` question may set `ops` (« 252 = 140 + 112 » → `['=', '+']`).
+  `fraction-reduction` (lesson `ikhtizal-kasr`) follows the same shape: the verdict is path B (one division by the PGCD), and a premature « لا يمكن
+  الاختزال أكثر » counts as a miss.
 - **« ورقة زميل »** (`content/peerSheet.js`): an invented classmate (`KidFigure`; girls in hijab), 3–5 lines with ONE error on the
   lesson's main misconception, three fixes each with a `why`, the numbers computed from the same helpers as the rounds, and a test
   (`peerSheet.test.js`) that the error line is the only wrong one.

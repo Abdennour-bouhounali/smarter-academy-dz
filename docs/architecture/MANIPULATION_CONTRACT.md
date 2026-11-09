@@ -2594,6 +2594,10 @@ the mission player a lab is played as a PATH of rounds instead of the مبتدئ
   the activity with predictions → « the same way » → ⭐ → free). Both labs: `onVerdict` = the PGCD placed (`{ groups: v, exact }`, a refused box is a miss),
   `levels`, `handDone`, `chains`, `predict` (at the START of a step), `choices`; `CHAINS_PLAYER = { cuts | divs: ['countFill','build','invariant'], pgcd:
   ['stop','rule'] }`; the chain of steps is the journal in the lab's column.
+- **Sixth example (2026-11-09):** lesson `ikhtizal-kasr`, `content/recipes.js` (`M1_ROUNDS`: 12/18 by hand → 84/48 with predictions → ⭐ → free; `M2_ROUNDS`: 84/48
+  with the one-step questions → 60/36 → ⭐ 595/560 → free). `fraction-reduction` player props: `onVerdict` (path B; a refused path-B box or a premature claim is a
+  miss), `levels`, `chains`, `predict` (before the first division, at the start of path B), `choices` (`{ n, d }`); `CHAINS_PLAYER = { steps:
+  ['countFill','build','why'], pgcd: ['oneStep','rule'] }`.
 
 **`team-builder` options (2026-11-04):** `levels={false}` gives a worked example with no مبتدئ / متقدم selector (as for
 `divisor-explorer-books`). `handDone` opens « أنشئ الفرق » from the start: the student already shared BY HAND in an

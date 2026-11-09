@@ -21,6 +21,9 @@ import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
 import { playSfx } from '../../utils/playEffect';
 import { ordered } from './cpOrder';
 import * as L from '../logic/fraction';
+import PredictTray from '../primitives/PredictTray';
+import { useInMissionPlayer } from '../../mission/missionPlayerContext';
+import { chipsAround } from './divisionChecks';
 
 const NS = 'manipulation.reduce';
 
@@ -50,12 +53,23 @@ const { reductionStepTex, euclidStepTex } = divisibility;
  * SON : `tooth` par division, `bell` quand le chemin أ est fini, `flag` quand le chemin ب l'est, `over` pour un geste refusé. Textes dans `reduce.cp.*`.
  * E. À découvrir : « أي الطريقين أوفر؟ » — l'utilité du PGCD, comptée en
  *    étapes, pas affirmée.
+ *
+ * LECTEUR DE MISSION (rollout 2026-11-09, traitement v2, comme pgcd-differences) : joué en MANCHES (LabRounds). `onVerdict` remonte le chemin ب
+ * (`{ groups: k, exact }` : la division unique par le PGCD ; une case refusée ou une affirmation « لا يمكن الاختزال أكثر » fausse = un essai raté) ;
+ * `levels={false}` ; `predict` : DEUX prédictions — avant la première division (« هل تتغيّر قيمة الكسر؟ ») et au début du chemin ب (« بأيّ عدد نقسم مرّة
+ * واحدة؟ ») ; `chains` (`['steps', 'pgcd']`) ; `CHAINS_PLAYER` = steps : compter d'un toucher (`fill`) → BÂTIR la première division « n = k × n′ »
+ * (`build`, ops `=` `×`) → pourquoi s'arrêter ; pgcd : une seule division → la règle ; la chaîne des réductions est le JOURNAL « 📋 جدول تجاربك »
+ * dans la colonne du labo ; `choices` : des fractions { n, d } à toucher. Contrôles figés pendant une prédiction ou une question ; toujours guidé ;
+ * pas de fête quand l'étape est cachée.
  */
 export default function FractionReduction({
   n: n0, d: d0, title, lead, mission, path, theme = 'kitchen', initialMode = 'student', allowModeSwitch = false, onFinished, onTrial, checkpoints: cpOn = true,
+  // ── LECTEUR DE MISSION (rollout 2026-11-09, traitement v2) ──
+  onVerdict, levels: withLevels = true, chains: chainsOn = ['steps', 'pgcd'], predict: predictOn = true, choices,
 }) {
   const { t } = useTranslation('lesson');
-  const state = useManipulation({ type: 'fraction-reduction', initialNumbers: { n: n0, d: d0 }, initialMode, hintCount: 3 });
+  const gameScreen = useInMissionPlayer();
+  const state = useManipulation({ type: 'fraction-reduction', initialNumbers: { n: n0, d: d0 }, initialMode, hintCount: 3, withLevels: withLevels !== false });
   const { n, d } = state.numbers;
   const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
   const [lab, setLab] = useState(() => L.init({ n: n0, d: d0 }));
@@ -64,7 +78,11 @@ export default function FractionReduction({
   // « إعادة », d'autres nombres ou un autre niveau : TOUT recommence — les chemins, les questions du labo, la fête
   const sceneKey = `${n}|${d}|${state.epoch}|${state.resetCount}`;
   const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init({ n, d })); setReject(null); }
+  // lecteur : les prédictions faites ('value' avant la 1re division, 'one' au début du chemin ب), la dernière jugée
+  const [predDone, setPredDone] = useState([]);
+  const [pred, setPred] = useState(null);
+  const [missionBig, setMissionBig] = useState(false);
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init({ n, d })); setReject(null); setPredDone([]); setPred(null); }
   const [answered, setAnswered] = useState({ key: sceneKey, ids: [] });
   const answeredIds = answered.key === sceneKey ? answered.ids : [];
 
@@ -72,8 +90,9 @@ export default function FractionReduction({
   const cpSettings = useLabCheckpointSettings('fraction-reduction');
   const ruleByCheckpoint = cpOn && cpSettings.enabled;
   const reachedOf = { steps: L.pathAFinished(lab), pgcd: lab.pathB !== null };
-  const pending = ruleByCheckpoint ? STEPS.find((id) => !answeredIds.includes(id)) : null;
-  const cpChain = pending && reachedOf[pending] ? CHAINS[pending] : null;
+  const pending = ruleByCheckpoint ? STEPS.find((id) => chainsOn.includes(id) && !answeredIds.includes(id)) : null;
+  // lecteur : compter d'un toucher puis BÂTIR la première division ; la page garde ses suites
+  const cpChain = pending && reachedOf[pending] ? (gameScreen ? CHAINS_PLAYER : CHAINS)[pending] : null;
   const cp = useLabCheckpoint({
     id: cpChain ? pending : null,
     questions: cpChain ? cpChain.map((q) => QUESTIONS[q]({ n, d, lab }, k)) : null,
@@ -86,7 +105,9 @@ export default function FractionReduction({
       if (id === 'pgcd') { state.discover(); state.formalize(); }
     },
   });
-  const stepDone = STEPS.map((id) => reachedOf[id] && (!ruleByCheckpoint || answeredIds.includes(id)));
+  const stepDone = STEPS.map((id) => reachedOf[id] && (!ruleByCheckpoint || !chainsOn.includes(id) || answeredIds.includes(id)));
+  // lecteur : une manche sans questions (défi, terrain libre) ne montre pas d'étapes, et ne fête rien
+  const showStepper = !(gameScreen && (!ruleByCheckpoint || chainsOn.length === 0));
   const party = useStepCelebration();
   const celebrated = useRef({ key: sceneKey, set: new Set() });
   if (celebrated.current.key !== sceneKey) celebrated.current = { key: sceneKey, set: new Set() };
@@ -94,7 +115,7 @@ export default function FractionReduction({
     stepDone.forEach((done, i) => {
       if (!done || celebrated.current.set.has(i)) return;
       celebrated.current.set.add(i);
-      party.celebrate({ n: i + 1, total: STEPS.length });
+      if (showStepper) party.celebrate({ n: i + 1, total: STEPS.length });
     });
   }, [stepDone.join()]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -119,22 +140,32 @@ export default function FractionReduction({
       setReject(null);
       const k = Number(sourceId.replace(/^[kp]:/, ''));
       if (zoneId === 'fraction') { setLab((s) => L.reduceA(s, k)); return; }
-      if (zoneId === 'pgcd') setLab((s) => L.reduceB(s, k));
+      if (zoneId === 'pgcd') { setLab((s) => L.reduceB(s, k)); state.report(onVerdict, { n, d, groups: k, exact: true }); }
     },
     accepts: (sourceId, zoneId) => {
+      if (lockedRef.current) return '';
       const k = Number(sourceId.replace(/^[kp]:/, ''));
       if (zoneId === 'fraction') return L.canReduceA(lab, k);
       if (zoneId === 'pgcd') return L.canReduceB(lab, k);
       return 'invalid';
     },
-    onReject: (sourceId, _z, reason) => { playSfx('over'); setReject({ reason, k: Number(sourceId.replace(/^[kp]:/, '')) }); },
+    onReject: (sourceId, zoneId, reason) => {
+      if (!reason) return;
+      playSfx('over');
+      const k = Number(sourceId.replace(/^[kp]:/, ''));
+      // une case du chemin ب refusée est un essai raté de la manche
+      if (zoneId === 'pgcd') state.report(onVerdict, { n, d, groups: k, exact: false });
+      setReject({ reason, k });
+    },
   });
 
-  const ready = L.discoveryReady(lab) && !ruleByCheckpoint;
+  const ready = L.discoveryReady(lab) && !ruleByCheckpoint && !gameScreen;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   const claim = () => {
+    if (lockedRef.current) return;
     const ok = L.canClaimIrreducible(lab);
-    if (ok !== true) { playSfx('over'); setReject({ reason: ok }); return; }
+    // « لا يمكن الاختزال أكثر » trop tôt : un essai raté de la manche
+    if (ok !== true) { playSfx('over'); setReject({ reason: ok }); state.report(onVerdict, { n, d, groups: 0, exact: false }); return; }
     setReject(null);
     setLab(L.claimIrreducible);
   };
@@ -155,19 +186,46 @@ export default function FractionReduction({
   // nombres de la leçon SEULEMENT (il fuyait sur 595/560 : 12 proposé, refusé).
   const classPath = state.isAuthoredLevel ? path : undefined;
   const cmp = L.pathComparison(lab);
+  // lecteur : deux prédictions — avant la 1re division, puis au début du chemin ب
+  const predWhich = lab.pathA.length === 0 ? 'value' : finishedA && lab.pathB === null ? 'one' : null;
+  const predictOpen = gameScreen && predictOn && ruleByCheckpoint && !missionBig && !cp.open && !!predWhich && !predDone.includes(predWhich);
+  const locked = gameScreen && (cp.open || predictOpen);
+  const lockedRef = useRef(false);
+  lockedRef.current = locked;
+  const oneOptions = [...new Set([lab.gcd, ...lab.pathA, ...chipsAround(lab.gcd, { min: 2 })])].slice(0, 3).sort((x, y) => x - y);
+  const sayPredict = (says) => {
+    const ok = predWhich === 'value' ? says === 'same' : Number(says) === lab.gcd;
+    playSfx(ok ? 'correct' : 'pop');
+    setPred({ which: predWhich, ok });
+    state.report(onTrial, { tk: 'predict', ok });
+    setPredDone((x) => [...x, predWhich]);
+  };
+  const trayNode = !gameScreen ? null : predictOpen ? (
+    <PredictTray attr="fr" title={k('cp.predict.title')}
+      prompt={predWhich === 'value' ? k('cp.predict.valuePrompt', { n, d }) : k('cp.predict.onePrompt', { n, d, fn: cur.n, fd: cur.d })}
+      options={predWhich === 'value'
+        ? [{ says: 'same', text: k('cp.predict.same') }, { says: 'smaller', text: k('cp.predict.smaller') }]
+        : oneOptions.map((v) => ({ says: String(v), text: k('cp.predict.by', { v }) }))}
+      onSay={sayPredict} />
+  ) : cp.open ? cp.node : null;
 
   return (
     <ManipulationShell
       type="fraction-reduction"
       title={title ?? t('manipulation.reduce.title', { n, d })}
       mission={mission ?? t('manipulation.reduce.recipeMission')}
+      // lecteur : l'écran de jeu est toujours GUIDÉ ; la question / la prédiction prend la colonne du labo
+      hideRepresentation={gameScreen || undefined}
+      onIntroChange={setMissionBig}
+      sidePanel={trayNode ? <div data-fr-tray>{trayNode}</div> : null}
+      allowFreeLab={gameScreen ? false : undefined}
       lead={lead}
       state={state}
       numberFields={[{ key: 'n', label: t('manipulation.reduce.numerator') }, { key: 'd', label: t('manipulation.reduce.denominator') }]}
       validate={(x) => (x.d === 0 ? t('manipulation.reduce.denominatorZero') : '')}
       allowModeSwitch={allowModeSwitch}
       headerAction={cpOn ? cpSettings.control : null}
-      guided={!!cpChain || ruleByCheckpoint}
+      guided={!!cpChain || ruleByCheckpoint || gameScreen}
       hints={[t('manipulation.reduce.hint1'), t('manipulation.reduce.hint2'), t('manipulation.reduce.hint3')]}
       controller={{
         autoStep: () => {
@@ -239,10 +297,28 @@ export default function FractionReduction({
     >
       <div className="relative min-h-[520px]" data-fr-glance>
       {party.node}
-      {cp.node}
+      {!(gameScreen && cp.open) && cp.node}
       <ManipulationStage dragging={drag.dragging}>
-        <div className="space-y-3">
-          <LabStepper count={STEPS.length} current={Math.max(0, stepDone.indexOf(false))} done={stepDone} stepAttr="data-fr-step" />
+        <div className={gameScreen ? 'grid grid-cols-[minmax(0,1fr)_15rem] gap-3' : ''}>
+        <div className="min-w-0 space-y-3">
+          {showStepper && <LabStepper count={STEPS.length} current={Math.max(0, stepDone.indexOf(false))} done={stepDone} stepAttr="data-fr-step" />}
+          {gameScreen && choices?.length > 0 && (
+            <div className="flex flex-wrap items-center gap-1.5" data-fr-choices>
+              <span className="text-sm font-bold text-slate-600">{k('choicesLabel')}</span>
+              {choices.map((c) => (
+                <button key={`${c.n}-${c.d}`} type="button" data-fr-choice={`${c.n}-${c.d}`} disabled={locked} onClick={() => state.setNumbers({ n: c.n, d: c.d })}
+                  className={`min-h-[44px] rounded-xl border-2 px-3 text-base font-black ${c.n === n && c.d === d ? 'border-indigo-500 bg-indigo-50 text-indigo-900' : 'border-slate-200 bg-white text-slate-700 hover:border-indigo-300'}`}>
+                  <bdi dir="ltr">{c.n}/{c.d}</bdi>
+                </button>
+              ))}
+            </div>
+          )}
+          {gameScreen && pred && !cp.open && !predictOpen && ((pred.which === 'value' && lab.pathA.length === 1) || (pred.which === 'one' && lab.pathB !== null)) && (
+            <p role="status" data-fr-predict-result={pred.ok ? 'ok' : 'wrong'}
+              className={`rounded-2xl px-4 py-2 text-center text-lg font-black ${pred.ok ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>
+              {pred.ok ? k('cp.predict.right') : k('cp.predict.wrong')}
+            </p>
+          )}
           <div className="space-y-1.5">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <span className="text-sm font-bold text-slate-800">{t('manipulation.reduce.chooseParts')}</span>
@@ -255,7 +331,7 @@ export default function FractionReduction({
               ))}
             </div>
             {!finishedA && lab.pathA.length > 0 && (
-              <button type="button" onClick={claim} data-claim-irreducible
+              <button type="button" onClick={claim} disabled={locked} data-claim-irreducible
                 className="min-h-[44px] rounded-xl border-2 border-emerald-600 bg-white px-3 py-1.5 text-sm font-bold text-emerald-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500">
                 {t('manipulation.reduce.claim')}
               </button>
@@ -299,6 +375,29 @@ export default function FractionReduction({
 
           {reject && <p role="status" className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">{t(`manipulation.reduce.reject.${reject.reason}`, { k: reject.k, n2: reject.k ? n / reject.k : '', d2: reject.k ? d / reject.k : '' })}</p>}
         </div>
+        {/* lecteur : la chaîne des réductions est le JOURNAL, dans la colonne du labo */}
+        {gameScreen && (
+          <div className="min-w-0" data-fr-side>
+            {chain.length > 1 && (
+              <div className="overflow-hidden rounded-2xl border-2 border-indigo-100 bg-white" data-fr-trials>
+                <p className="bg-indigo-50 px-2 py-1 text-sm font-black text-indigo-900">📋 {k('trials.title')}</p>
+                <ol className="space-y-1 p-1.5">
+                  {chain.slice(1).map((c, i) => (
+                    <li key={`${c.k}-${i}`} data-fr-trial={c.k}>
+                      <EquationDisplay tex={`\\dfrac{${chain[i].n} \\div ${c.k}}{${chain[i].d} \\div ${c.k}} = \\dfrac{${c.n}}{${c.d}}`} tone={finishedA && i === chain.length - 2 ? 'ok' : 'neutral'} size="sm" />
+                    </li>
+                  ))}
+                  {lab.pathB !== null && (
+                    <li data-fr-trial-b={lab.pathB}>
+                      <EquationDisplay tex={`\\dfrac{${n} \\div ${lab.gcd}}{${d} \\div ${lab.gcd}} = \\dfrac{${lab.final.n}}{${lab.final.d}}`} tone="result" size="sm" />
+                    </li>
+                  )}
+                </ol>
+              </div>
+            )}
+          </div>
+        )}
+        </div>
       </ManipulationStage>
       </div>
       <DragGhost ghost={drag.ghost}>{heldValue !== null && <NumberTile value={heldValue} tone="divisor" />}</DragGhost>
@@ -315,12 +414,38 @@ export const CHAINS = Object.freeze({
   steps: ['count', 'same', 'why'],
   pgcd: ['oneStep', 'rule'],
 });
+/** Lecteur (rollout 2026-11-09, traitement v2) : compter d'un toucher → BÂTIR la première division → pourquoi s'arrêter ; puis une division → la règle. */
+export const CHAINS_PLAYER = Object.freeze({
+  steps: ['countFill', 'build', 'why'],
+  pgcd: ['oneStep', 'rule'],
+});
 
 const $ = (x) => `$${x}$`;
 const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
 
 /** Chaque question est construite sur LES nombres de l'élève (rien n'est écrit en dur) ; `k` : les textes de `reduce`. */
 const BUILD = {
+  // combien de divisions, d'un toucher (le journal est à côté)
+  countFill: ({ n, d, lab }, k) => {
+    const c = lab.pathA.length;
+    return {
+      id: 'countFill', kind: 'fill', prompt: Mx(k, 'count.prompt', { n, d }),
+      fields: [{ label: k('cp.count.field'), expected: c, options: chipsAround(c, { min: 1 }) }],
+      hints: [Mx(k, 'count.hint1'), Mx(k, 'count.hint2', { path: lab.pathA.map((x) => $(`\\div ${x}`)).join(' ، ') })],
+      explain: Mx(k, 'count.explain', { c, fn: lab.final.n, fd: lab.final.d }),
+    };
+  },
+  // la PREMIÈRE division bâtie : l'ancien numérateur = le diviseur × le nouveau (une tuile de trop : le nouveau dénominateur)
+  build: ({ n, d, lab }, k) => {
+    const k1 = lab.pathA[0];
+    const o = { n, k1, n1: n / k1, d1: d / k1, eq: $(`${n} = ${k1} \\times ${n / k1}`) };
+    return {
+      id: 'build', kind: 'build', ops: ['=', '×'], prompt: Mx(k, 'build.prompt', o),
+      slots: [k('cp.build.slotN'), k('cp.build.slotK'), k('cp.build.slotN1')],
+      tiles: [n / k1, n, d / k1, k1], expected: [n, k1, n / k1],
+      hints: [Mx(k, 'build.hint1'), Mx(k, 'build.hint2', o)], explain: Mx(k, 'build.explain', o),
+    };
+  },
   count: ({ n, d, lab }, k) => {
     const c = lab.pathA.length;
     return {

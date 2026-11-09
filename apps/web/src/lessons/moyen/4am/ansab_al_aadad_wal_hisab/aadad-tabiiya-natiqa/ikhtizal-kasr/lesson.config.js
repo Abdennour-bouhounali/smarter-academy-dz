@@ -22,6 +22,57 @@ export const LESSON_CONFIG = {
   unit: 'aadad-tabiiya-natiqa',
   unitTitle: 'الأعداد الطبيعيّة والأعداد النّاطقة',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (modèle du pilote qasim-adad-tabii, VALIDÉ par le propriétaire le 2026-11-08 ; rollout leçon par
+  // leçon, docs/reports/MISSION_ROLLOUT_PROGRESS.md) — implique le regard « focus » ; l'enseignant et le mode classe ne voient aucun changement.
+  studentView: 'mission',
+  // LA MISSION : l'ouverture avoue qu'on ne sait pas encore la résoudre ; les outils sont les connaissances de knowledge.jsx ; les points
+  // d'étape RAPPROCHENT de la mission sans en résoudre aucune question (la مسألة 1 du module 5 reste entière : ils parlent de 18/30, 20/32, 9/14 —
+  // jamais de 105, de 147 ni de leur PGCD) ; formatifs, jamais une preuve de maîtrise.
+  mission: {
+    scene: 'bakery',
+    title: 'عجينة الخبّاز',
+    opening: {
+      text: 'في وصفة الخبّاز 105 ملاعق سكّر و 147 كوبًا من الدقيق. يريد أن يكتب نسبة السكّر إلى الدقيق بأبسط كسر، ليقسم العجينة حصصًا متماثلة. كيف يصل إلى أبسط كسر دون أن يتيه في القسمات؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'ikhtizal', icon: '➗', label: 'اختزال كسر' },
+      { id: 'kasr-ghayr-qabil', icon: '🔒', label: 'غير قابل للاختزال' },
+      { id: 'ikhtizal-bil-pgcd', icon: '⚡', label: 'قسمة واحدة' },
+      { id: 'tahaqquq-al-ikhtizal', icon: '✅', label: 'هل انتهيت؟' },
+    ],
+    climaxModule: 5,
+    checkpoints: [
+      {
+        id: 'cp-ikhtizal', afterModule: 1,
+        prompt: 'قسمنا بسط الكسر $\\dfrac{18}{30}$ ومقامه على 2 ثم على 3. ما الكسر الذي وصلنا إليه؟',
+        options: ['$\\dfrac{3}{5}$', '$\\dfrac{9}{15}$', '$\\dfrac{6}{10}$'],
+        correct: 0,
+        explain: '$\\dfrac{18}{30} = \\dfrac{9}{15} = \\dfrac{3}{5}$، و 3 و 5 لا قاسم مشترك لهما غير 1.',
+      },
+      {
+        id: 'cp-pgcd', afterModule: 2,
+        prompt: '$\\mathrm{PGCD}(20\\ ;\\ 32) = 4$. ما الشكل غير القابل للاختزال للكسر $\\dfrac{20}{32}$ ؟',
+        options: ['$\\dfrac{5}{8}$', '$\\dfrac{10}{16}$', '$\\dfrac{4}{8}$'],
+        correct: 0,
+        explain: 'قسمة واحدة على PGCD: $\\dfrac{20 \\div 4}{32 \\div 4} = \\dfrac{5}{8}$.',
+      },
+      {
+        id: 'cp-tahaqquq', afterModule: 3,
+        prompt: 'هل الكسر $\\dfrac{9}{14}$ قابل للاختزال؟',
+        options: ['لا: $\\mathrm{PGCD}(9\\ ;\\ 14) = 1$', 'نعم: نقسم على 2', 'نعم: 9 و 14 ليسا أوّليين'],
+        correct: 0,
+        explain: 'قواسم 9: 1 ، 3 ، 9 — ولا أحد منها غير 1 يقسم 14. الكسر غير قابل للاختزال.',
+      },
+      {
+        id: 'cp-khitta', afterModule: 4,
+        prompt: 'يريد الخبّاز أن يكتب نسبة السكّر إلى الدقيق بأبسط كسر. ماذا يحسب أوّلًا؟',
+        options: ['PGCD عدد الملاعق وعدد الأكواب', 'مجموع العددين', 'الفرق بين العددين'],
+        correct: 0,
+        explain: 'القسمة على PGCD تعطي الشكل غير القابل للاختزال مرّة واحدة. هذه خطّتك في المسألة التالية.',
+      },
+    ],
+  },
   title: 'اختزال كسر',
   description: 'اختزال كسر بالقسمة المتتابعة على قواسم مشتركة، التعرّف على الكسر غير القابل للاختزال، وكتابة كسر على الشكل غير القابل للاختزال بالقسمة على القاسم المشترك الأكبر.',
   level: 'moyen',
@@ -53,6 +104,8 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début, sans verrou par محور.
+  knowledgeMapOpen: true,
   // Acquis des années antérieures (أستعدّ 7–10) et des دروس 6–7 (deux ajouts
   // de la plateforme dans « أستعدّ », déclarés « عبارة إضافية من المنصّة »).
   priorKnowledge: ['al-aadad-al-natiqa', 'awwaliyan-taarif', 'khwarizmiyat-iqlidus'],
