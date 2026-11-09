@@ -975,7 +975,7 @@ mission: {
 
 | Piece | Where | Behaviour |
 | --- | --- | --- |
-| `MissionHome` | the lesson page (from `LessonIndex`) | First visit: the opening scene (drawn library, one sentence, CTA), then module 0. Later: the library filling with the tools, the tool chips, ONE « واصل » button, the map and the lesson's practice entry (« ابدأ التمارين »). « تفاصيل الدرس » opens a dialog with the description, the skills and the prerequisite lessons. |
+| `MissionHome` | the lesson page (from `LessonIndex`) | First visit: the opening scene (drawn library, one sentence, CTA), then module 0. Later, top to bottom (owner, 2026-11-09): the mission card (its scene filling with the tools, the tool chips, ONE « واصل » button), then « مسار المهمة » (the map), then ONE row with « راجع قبل أن تنطلق » and the practice entry (« ابدأ التمارين ») side by side (≥ `lg`, equal heights; one alone takes the whole row, none hides it — `[data-mission-home-row]`). « تفاصيل الدرس » opens a dialog with the description, the skills and the prerequisite lessons. |
 | `MissionLayer` | top of every module (from `ModuleLayout`) | The `MissionBar` (mission title opens the full statement, the 4 tools, « n من N », « الخريطة »), the map dialog, and the checkpoint dialog on arrival. |
 | `MissionMap` | home + dialog | One station per module, with the REAL lock (`moduleGate.resolveModuleStatus`, same as the lesson page). The climax keeps a 🏆; stations after it are « مستوى إضافي ». |
 | `MissionCheckpoint` | dialog, on arrival | One `TapQuestion` that brings the mission closer with the tool just earned, WITHOUT answering any question of the مسألة. Formative: no XP, no evidence. « لاحقًا » skips it, and it is never asked twice. |

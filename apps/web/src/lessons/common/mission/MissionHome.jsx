@@ -74,13 +74,18 @@ export default function MissionHome({ config, basePath }) {
           )}
         </div>
       </div>
-      <ReviseFirst lessonId={config.id} title={config.title} basePath={basePath} />
-      <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+      {/* L'ORDRE DE L'ACCUEIL (propriétaire, 2026-11-09) : la carte de la mission, puis le PARCOURS juste dessous, puis « راجع قبل أن تنطلق » et les
+          تمارين CÔTE À CÔTE sur une ligne (≥ lg) — toute la largeur sert. Chacune peut être absente (pas de leçon à revoir, pas d'exercices) :
+          seule, elle prend la ligne entière ; aucune, la ligne disparaît. */}
+      <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm" data-mission-path-card>
         <h2 className="mb-5 text-lg font-black text-slate-900">{t('mission.mapTitle')}</h2>
         <MissionMap lessonId={config.id} stations={stations} basePath={basePath} here={resume?.number} />
       </div>
-      {/* Les تمارين de la leçon : dans la mission, l'élève n'ayant plus accès à l'ancienne page du درس. */}
-      {isPracticeActive(config.id) && <PracticeEntryCard lessonId={config.id} />}
+      <div className="grid grid-cols-1 items-stretch gap-6 empty:hidden lg:grid-cols-2 lg:[&>*:only-child]:col-span-2 [&>*]:h-full" data-mission-home-row>
+        <ReviseFirst lessonId={config.id} title={config.title} basePath={basePath} columns={1} />
+        {/* Les تمارين de la leçon : dans la mission, l'élève n'ayant plus accès à l'ancienne page du درس. */}
+        {isPracticeActive(config.id) && <PracticeEntryCard lessonId={config.id} />}
+      </div>
       <div className="flex flex-wrap items-center gap-4 text-sm font-bold">
         <button type="button" onClick={() => setReplay(true)} className="min-h-[44px] rounded-lg px-2 text-indigo-600 hover:bg-indigo-50" data-mission-replay>
           {t('mission.replay')}
