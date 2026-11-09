@@ -24,7 +24,7 @@ import { useInMissionPlayer } from '../../mission/missionPlayerContext';
  * Usage : `const coach = useLabCoach({ lab: 'rank-exchange', step, text, labels })` puis rendre `coach.toggle` (dans le
  * flux, sous la consigne) et `coach.overlay` (dans un conteneur POSITIONNÉ qui enveloppe la scène).
  *
- * Contrat DOM : [data-lab-coach-toggle][data-state=on|off], [data-lab-coach][data-step=<id>], [data-lab-coach-ring],
+ * Contrat DOM : [data-lab-coach-toggle][data-state=on|off], [data-lab-coach][data-step=<id>], [data-lab-coach-ring][data-lab-coach-target=<sélecteur>],
  * [data-lab-coach-ok], [data-lab-coach-stop].
  *
  * LECTEUR DE MISSION (propriétaire, 2026-11-09) : dans le lecteur, le guide prend le dessin du lecteur — une bulle plus large, texte plus grand
@@ -108,15 +108,21 @@ function CoachOverlay({ visible, step, text, labels, onOk, onStop }) {
     const w = wrap.getBoundingClientRect();
     const r = el.getBoundingClientRect();
     if (r.width < 2 || r.height < 2) { setGeo((g) => (g === null ? g : null)); return; }
-    const target = { x: r.left - w.left, y: r.top - w.top, w: r.width, h: r.height };
-    const bw = Math.min(game ? BUBBLE_W_GAME : BUBBLE_W, Math.max(200, w.width - 12));
+    // L'ÉCHELLE de la couche (2026-11-09) : le lecteur de mission ajuste son contenu par `zoom` CSS (FitToArea — agrandi sur un grand écran,
+    // réduit sur un petit) ; getBoundingClientRect donne des pixels d'ÉCRAN, alors que left / top / width de l'anneau et de la bulle sont
+    // des pixels de la couche, eux-mêmes zoomés. Sans cette division, l'anneau était agrandi et décalé (zoomé deux fois).
+    const scale = wrap.offsetWidth > 0 ? w.width / wrap.offsetWidth : 1;
+    const z = Number.isFinite(scale) && scale > 0 ? scale : 1;
+    const box = { w: w.width / z, h: w.height / z };
+    const target = { x: (r.left - w.left) / z, y: (r.top - w.top) / z, w: r.width / z, h: r.height / z };
+    const bw = Math.min(game ? BUBBLE_W_GAME : BUBBLE_W, Math.max(200, box.w - 12));
     const bh = bubbleRef.current?.offsetHeight || 104;
     const bandTop = VIEW_TOP;
     const bandBottom = window.innerHeight - (window.innerWidth < 1024 ? VIEW_BOTTOM_NARROW : VIEW_BOTTOM);
     // un labo ENTIÈREMENT hors écran (il y en a plusieurs dans une page) ne colle pas de bulle au bord de l'écran : il n'est pas regardé
     const onScreen = w.bottom > bandTop && w.top < bandBottom;
-    const view = onScreen ? { top: bandTop - w.top, bottom: bandBottom - w.top } : null;
-    const place = placeBubble({ target, box: { w: w.width, h: w.height }, bubble: { w: bw, h: bh }, view, prefer: step.prefer, noFlip: step.noFlip });
+    const view = onScreen ? { top: (bandTop - w.top) / z, bottom: (bandBottom - w.top) / z } : null;
+    const place = placeBubble({ target, box, bubble: { w: bw, h: bh }, view, prefer: step.prefer, noFlip: step.noFlip });
     const next = { target, bw, ...place };
     setGeo((g) => (g && Object.keys(next).every((k) => JSON.stringify(g[k]) === JSON.stringify(next[k])) ? g : next));
   }, [visible, step, game]);
@@ -143,7 +149,7 @@ function CoachOverlay({ visible, step, text, labels, onOk, onStop }) {
     <div ref={wrapRef} className="pointer-events-none absolute inset-0 z-30" data-lab-coach-layer aria-live="polite">
       {visible && geo && (
         <>
-          <span data-lab-coach-ring aria-hidden="true"
+          <span data-lab-coach-ring data-lab-coach-target={step.target} aria-hidden="true"
             className={`absolute rounded-2xl border-[3px] motion-safe:animate-pulse ${game ? 'border-amber-400 bg-amber-300/10 shadow-[0_0_0_7px_rgba(251,191,36,0.25)]' : 'border-indigo-500 bg-indigo-400/10 shadow-[0_0_0_6px_rgba(99,102,241,0.18)]'}`}
             style={{ left: t.x - 5, top: t.y - 5, width: t.w + 10, height: t.h + 10 }} />
           <div ref={bubbleRef} role="status" data-lab-coach data-step={step.id} data-edge={geo.edge ? 'true' : undefined} data-coach-look={game ? 'game' : 'page'} dir="rtl"

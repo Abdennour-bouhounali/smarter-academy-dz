@@ -46,7 +46,7 @@ manipulations/
 ├── useManipulation.js          numbers · phase · hints · level · mode · epoch
 ├── useStepSequence.js          bounded step cursor
 ├── useDragInteraction.js       CARRY gesture: pointer drag + magnet + reject + edge auto-scroll + keyboard/tap
-├── useStretchInteraction.js    STRETCH gesture: a magnitude that follows the finger (slider semantics, −/+)
+├── useStretchInteraction.js    STRETCH gesture: a magnitude that follows the finger (slider semantics, −/+); zoom-safe (see « Screen pixels vs layer pixels »)
 ├── levels.js                   the TWO levels per type { beginner, advanced } + resolveManipulationLevels (§7)
 ├── logic/                      PURE interaction logic per type (unit-tested, no React)
 ├── themeWords.js               the Arabic words of a theme (lesson.manipulation.json) merged with a lesson's `context`
@@ -2438,6 +2438,16 @@ while a question / prediction fills that column (`[data-side-panel-bar]`) — so
 labs that had no coach got one the same day: `pgcd-differences` (`logic/algorithms.js › differencesCoachOf`: cut → again → pgcd),
 `euclidean-algorithm` (`euclidCoachOf`: copy → more → carry → pgcd), `fraction-reduction` (`logic/fraction.js › coachOf`: divide → more →
 pgcd; it never says when to stop) — tested in `logic/algorithmsCoach.test.js`; a lab hides its step while a prediction or a question is open.
+
+**Screen pixels vs layer pixels (2026-11-09, owner bug report).** The mission player fits its content with the CSS `zoom` property
+(`mission/FitToArea.jsx` — enlarged up to ×1.3 on a big screen, reduced on a small one; Classroom Mode's frame zooms too). `getBoundingClientRect`
+and pointer `clientX/Y` are SCREEN pixels, while `left` / `top` / `width` set inside the zoomed content and every geometry a lab computes from
+`clientWidth` are LAYER pixels. Any code that turns one into the other divides by the element's scale `rect.width / el.offsetWidth`:
+`CoachOverlay` (the ring and bubble were drawn zoomed twice — too big and shifted) and `useStretchInteraction › readPointer` (the factor-pairs
+ruler picked 2 for a press on tick 6 at zoom 1.23). Drop zones are found with `elementFromPoint` and the drag ghost is portalled outside the
+zoom, so they need nothing. Checked in the browser: ring centred on its target (0 px) on the 11 converted labs at 1837×890, 1920×1080,
+1366×768 and 1024×768; ruler ticks 6, 10, 3 land on 6, 10, 3 at zoom 1.23 / 0.87 / 0.86. A new lab that positions something from a measured
+rectangle MUST follow the same rule. The ring carries `data-lab-coach-target` (its selector) so a test can compare it with its target.
 
 Goal: the student never wonders « how does this work? » or « what am I supposed to do now? ». `primitives/LabCoach.jsx`
 (`useLabCoach({ lab, step, text, labels })` → `{ toggle, overlay, visible }`) + pure `primitives/labCoach.js` (`placeBubble`, storage).
