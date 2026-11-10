@@ -1,9 +1,10 @@
 import { describe, it, expect } from 'vitest';
+import { CLIMAX_TEXT as TALIS_1 } from '../talis-hisab-atwal/content/forbidden.js';
 
 /**
  * Unité 9 « خاصية طالس » — ce que l'élève LIT de la mission, de la carte des معارف et des données du manuel (modèle : l'unité 2,
  * hisab-judhur/_unit/missionStrings.test.js ; rollout 2026-11-10). Une leçon CONVERTIE entre dans `CLIMAX` avec la signature de SA مسألة
- * (aksiya-talis et inshaat-talis le 2026-11-10) ; la leçon 1 (talis-hisab-atwal) s'y ajoute quand elle est convertie (une ligne) :
+ * (aksiya-talis, inshaat-talis puis talis-hisab-atwal le 2026-11-10 — les trois leçons de l'unité) :
  *   - aucun caractère de contrôle dans un point d'étape ni dans l'ouverture (« \times » dans une chaîne JS à apostrophes devient TAB + « imes ») ;
  *   - aucune ligne de la carte des معارف (knowledgeGraph.js) ne renvoie au manuel ;
  *   - les cartes de connaissance (knowledge.jsx) et la carte des معارف — ouvertes dès le début (`knowledgeMapOpen`) — ne montrent pas la
@@ -33,6 +34,10 @@ const strings = (src) => src
  *   10/7, 40/3 et l'écriture décimale 5,7. (3/7 — le leurre MB/AB de la مسألة — n'est PAS dans ce balayage de texte : la طريقة « قطعة طولها
  *   14/3 » écrit la proportion DONNÉE 3/7 = 2/AB, un autre rôle ; dans le labo, le balayage par rôle de content/forbidden.js l'interdit comme
  *   part du tout.)
+ *   talis-hisab-atwal (module 5, le ciné-club) : ses nombres sont de PETITS nombres (3, 4, 5, 6, 8, 9, 10, 12) que les données du manuel de la
+ *   leçon portent dans d'AUTRES rôles (AC = 4,5 du نشاط, BE = 12, AP = 10…) — sa signature de texte est donc PAR RÔLE (content/forbidden.js ›
+ *   CLIMAX_TEXT) : 180, 54, 56, 4,8, 2,4, 5,6, 0,4, la fraction 2/5, et les couples « AB = 10 », « AC = 12 », « BC = 6 », « AB′ = 4 / 4,5 / 5 »,
+ *   « AD = 15 », « DE = 9 ». Aucune liste d'exceptions, la مسألة n'est pas retouchée (conseil du 2026-11-10).
  */
 const num = (list) => new RegExp(`(^|[^0-9,{}.])(${list.join('|')})(?![0-9]|\\{,\\})`);
 const frac = (n, d) => new RegExp(`frac\\{${n}\\}\\{${d}\\}`);
@@ -40,6 +45,7 @@ const CLIMAX = {
   'aksiya-talis': [num(['80', '100', '24', '30', '36', '44', '45', '46', '2400', '3600', '3680']), frac(3, 10), frac(9, 20), frac(23, 50), /0\{?,\}?(3|45|46)(?![0-9])/],
   'inshaat-talis': [num(['10', '40', '30', '35', '20', '15', '650', '600', '13000', '9000', '22000', '3000']), frac(4, 3), frac(3, 4), frac(4, 7),
     frac(40, 7), frac(30, 7), frac(10, 7), frac(40, 3), /5\{?,\}?7(?![0-9])/],
+  'talis-hisab-atwal': TALIS_1,
 };
 const BOOK = [/الكتاب(?!ة)/, /تمرين\s*\d+\s*:/, /خطأً? مطبعي/];
 const lessonOf = (path) => path.split('/')[1];
@@ -60,6 +66,10 @@ describe('unit 9 — mission strings and knowledge maps', () => {
     const hit3 = (s) => CLIMAX['inshaat-talis'].some((re) => re.test(s));
     ['طولها 10 cm', '$\\dfrac{MA}{MB} = \\dfrac{4}{3}$', '\\dfrac{4}{7}', '$AN = 40$', '35 m', '$5{,}7$', '\\dfrac{40}{7}', '650'].forEach((s) => expect(hit3(s), s).toBe(true));
     ['$AB = 9$', '\\dfrac{14}{3}', '\\dfrac{2}{3}', '$2{,}4$', '\\sqrt{13}', '\\dfrac{3}{5}', '12 cm', '110', '5,75', '$a^2+b^2$'].forEach((s) => expect(hit3(s), s).toBe(false));
+    // leçon 1 : des jetons PAR RÔLE — le couple « lettre = valeur » de la مسألة, jamais ses petits nombres nus
+    const hit1 = (s) => CLIMAX['talis-hisab-atwal'].some((re) => re.test(s));
+    ['$AB = 10$', 'AC = 12', "$AB' = 4$", "$AB' = 4{,}5$", '$4{,}8$', '$B\'C\' = 2{,}4$', '5,6', '\\dfrac{2}{5}', '$0{,}4$', '180 كرسيًّا', '54', '$AD = 15$', '$DE = 9$', '$BC = 6$'].forEach((s) => expect(hit1(s), s).toBe(true));
+    ['$AC = 4{,}5$', '$BE = 12$', '$AP = 10$', '$AB = 6$', "$AB' = 3{,}2$", "$AB' = 1{,}6$", '$BC = 6{,}1$', '$2{,}45$', '12,54', '$DN = 2{,}5$', '\\dfrac{1}{3}', '$AB = 5$', '$OE = 1{,}5$', '2,24', '$0{,}45$', '154'].forEach((s) => expect(hit1(s), s).toBe(false));
   });
   it('no checkpoint string holds a control character (a lost backslash)', () => {
     Object.entries(configs).forEach(([path, m]) => {

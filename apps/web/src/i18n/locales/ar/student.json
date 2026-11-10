@@ -382,6 +382,20 @@
     }
   },
   "practice": {
+    "template": {
+      "sign": "الإشارة",
+      "gap": "العدد الناقص",
+      "numerator": "البسط",
+      "denominator": "المقام",
+      "irreducible": "كسر لا يقبل الاختزال — اترك المقام فارغًا إن كان الجواب عددًا صحيحًا",
+      "wholeOk": "اترك المقام فارغًا إن كان الجواب عددًا صحيحًا",
+      "percent": "النسبة المئوية",
+      "quantity": "القيمة",
+      "digit": "اختر رقمًا",
+      "natural": "عدد طبيعي",
+      "signed": "القيمة",
+      "decimal": "العدد"
+    },
     "eyebrow": "التمارين",
     "breadcrumbMyCourses": "دروسي",
     "backToMyCourses": "رجوع إلى دروسي",

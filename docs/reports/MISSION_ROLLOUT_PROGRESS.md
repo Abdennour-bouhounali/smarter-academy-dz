@@ -43,7 +43,7 @@ every lab of the unit at once (verdict « Cross-lesson », « L1 », « L2 », �
 
 | # | Lesson (unit 9) | Labs converted | Status | Commit | Notes |
 |---|---|---|---|---|---|
-| 1 | `talis-hisab-atwal` | `shadow-world` → a new one-lane `ShadowMeet` (verdict L1.1 = C) | ⏳ not converted | | Page mode until converted whole (verdict cut line). |
+| 1 | `talis-hisab-atwal` | `shadow-meet` (a NEW one-lane player lab — verdict L1.1 = C; `shadow-world` stays the page and teacher lab, untouched) | ✅ done 2026-11-10 | `feat(lessons): talis-hisab-atwal — mission prototype` | See « Unit 9, lesson 1 » below. |
 | 2 | `aksiya-talis` | `parallel-level` (v2 treatment + LabCoach, new; « ضع الميزان ») | ✅ done 2026-11-10 | `feat(lessons): aksiya-talis — mission prototype` | See « Unit 9, lesson 2 » below. |
 | 3 | `inshaat-talis` | `segment-divider` (v2 treatment + LabCoach, new; both modes `equal` and `ratio`, `sameUnitOnly`, the cap) | ✅ done 2026-11-10 | `feat(lessons): inshaat-talis — mission prototype` | See « Unit 9, lesson 3 » below. |
 | S | `wadiya-idmajiya-talis` | `cone-cylinder` (to treat), `shadow-world` → `ShadowMeet` in the player | ⏳ converted LAST — owner rule 2026-11-10: « the synthesis must be built too, start with this unit » (pilot of the synthesis recipe, prompt §5); the student never sees the old view, so module 7's labs are treated for the player | | Decisions: two councils + the owner, 2026-11-10. |
@@ -65,6 +65,7 @@ every lab of the unit at once (verdict « Cross-lesson », « L1 », « L2 », �
 | `square-tiling` | ✅ (2026-11-10, both modes `product` and `simplest`) | `amaliyat-judhur` (unit 2) |
 | `parallel-level` | ✅ (2026-11-10, both modes `ladder` and `crossing`, with or without an imposed ratio) | `aksiya-talis` (unit 9) |
 | `segment-divider` | ✅ (2026-11-10, both modes `equal` and `ratio`; `sameUnitOnly`, 3 graduations per rail) | `inshaat-talis` (unit 9) |
+| `shadow-meet` | ✅ (2026-11-10, born in the player: tasks `meet`, `ratio`, `flag`; asks `tap` and `type`; reusable through `steps`) | `talis-hisab-atwal` (unit 9) |
 | every other lab | ⏳ | — |
 
 ## Lesson 2 — `qawasim-adad-tabii` « قواسم عدد طبيعي » (2026-11-08)
@@ -802,6 +803,58 @@ modules 1–9 unit by unit — 0 `data-fit-overflow`, 0 page scroll, no console 
 
 **Rejected / later (coordinator):** teachingScope « طريقة الكتاب » (teacher scope only); PeerSheet's struck-line text and status-with-content (shared,
 final report).
+
+## Unit 9, lesson 1 — `talis-hisab-atwal` « خاصية طالس وحساب الأطوال » (2026-11-10)
+
+**Council verdict (2026-11-10, binding — `L1`):** L1.1 = C, a NEW one-lane player lab `shadow-meet` on `shadowWorld.js`'s pure functions; `shadow-world`
+(1 232 lines, page and teacher) is untouched — the page modules keep it, the player plays `shadow-meet` through `PlayerSwitch`. 1 cm resolution in the
+player, a meet magnet, the stick starts away from the meet, the sun's rays drawn parallel and said. The meet is the verdict; then the height is asked
+(a 3-option tap in r1–r2, a template « H = [ ] م » in r3 and ⭐). No rule text box (r1 ends on a pick among three rule sentences). Decoy BA in r1 and
+the inverted ratio in r3 as TILES only; « 3,96 » nowhere; quarter-metre heights; hours never 12:30 nor 15:00; a WATER TOWER as the big object. Peer
+sheet « ورقة رانية » (the segment error OB/BA). Prerequisites: `amaliyat-natiqa` only.
+
+**What was written:**
+- `content/shadows.js` (`M1_ROUNDS`): r1 lamppost 2,75 m at 14:00 (OA 3,3 · OB 1,2 · BA 2,1; chains « read » then « rule »), easier 1,5 m; r2 the water
+  tower 6,5 m at 14:00 then 16:00 (7,8 / 1,2 / 6,6 then 14,82 / 2,28 / 12,54; one hour on screen at a time; predictions « the stick's ratio at 16:00 still
+  1,2? » → no and « the 16:00 shadow is more than double / about double / less than double? » → less than double, ×1,9; chain « same »: OB/OA = 2/13);
+  r3 a new pole 3,75 m at 14:30 — plant the flag where its shadow ends (4,95), easier 2,25 m → 2,7, chain « build » with the inverted ratio as decoy;
+  ⭐ at 15:30 the palm by ratio (7,82 → 4,25) and the tower by meet (13,8 / 1,84 / 11,96 → 7,5); free: heights 5,75 / 6,75 / 9,25, hours 13:00–16:00
+  without 15:00. Every round is PLAYED to its goal in the content test.
+- `content/forbidden.js` + `content/mission.test.js` (the climax « عرض في ساحة الحيّ » by role, plus the synthesis's 7,25 / 11,6 / 1,6 / 15:00 and 3,96
+  in no role; the dry-run over `logic › shownValues` of every round, with positive controls), `content/prep.js` + test (10 statements; skills « تساوي
+  كسرين » → revise `tasawi-muqaranat-kasrayn`, « التناسبية والرابع المتناسب » → revise `rabi-mutanasib`), `content/peerSheet.js` + test (« ورقة رانية »:
+  BE/AM = OB/BA, AM = 2,25 instead of 3,25), lesson 1 added to `_unit/missionStrings.test.js`.
+- Config: `studentView: 'mission'`, `knowledgeMapOpen: true`, scene `night-cinema` (`mission/NightCinemaScene.jsx` on `thalesSceneKit.jsx`: the
+  neighbourhood night cinema, a projector, the screen, a girl in hijab holding the board — KidFigure only, no number), five tools, `climaxModule: 5`,
+  four checkpoints (cp-zill 2,8 × 1,25 = 3,5; cp-farasha k = 0,3; cp-ew EW = 9,5; cp-fitha OE = 1,5 → OM = 8,5). Catalogue: `prerequisiteLessonCodes`
+  = ['amaliyat-natiqa'], exported and imported (local DB: lesson 207 ← 770).
+
+**Added to shared code:** the lab `shadow-meet` (`geometry/ShadowMeet.jsx`, `logic/shadowMeet.js`, tests `shadowMeet.test.js` and
+`shadowMeetPlayer.test.jsx`), registered in `manipulationRegistry.js`, `levels.js`, `packages/core/curriculum/manipulationTypes.js`, strings
+`shadowMeet` in `lesson.manipulation.json`; `LabCheckpoint` › build `render` (tiles drawn as real fractions); `lab-rollout-status.mjs` also checks the
+labs named in a lesson's `content/*_ROUNDS` (a player-only lab is checked too); `thalesSceneKit.jsx` primitives for the night cinema. Built to be
+REUSED by the unit's synthesis (module 7 plays one `shadow-meet` round on the minaret): object, heights, hours and texts are round data.
+
+**Review (2026-11-10, `ecc:react-reviewer`, `ecc:code-reviewer`, `ecc:a11y-architect`; each finding verified in the code):**
+- Fixed — a typed answer could survive its box being unmounted (a question or the intro opening): « تحقّق » then sent a value the student no longer saw,
+  and the ⭐ round lost one of its three attempts. The draft is cleared whenever the box is not shown.
+- Fixed — the same wrong typed answer twice played the sound and reached the round's trace again: it is « already tried », nothing is counted.
+- Fixed — a11y: the lengths written on the ground lived only in the `aria-hidden` SVG while the questions say « اقرأ على الأرض »: an always-mounted
+  `sr-only` text gives them (`[data-sm-ground-sr]`); after a right answer focus goes to « التالي » (the question unmounts); « تحقّق » reads disabled
+  for 0 or less; one live region on the page view (the visible box lost its `role="status"`); the O label darker (#92400E).
+- Fixed — module 1's step « الحالة الأولى: الحساب » displayed « 56/15 ≈ 3,73 »: 56 is a climax number in no role allowed; the answer shows « ≈ 3,73 ».
+- Fixed after the walk — module 4 overflowed the player at 1024 and 1366 (« النسب المتساوية », « أربعة أشكال », « فيثاغورس ثم طالس »): in the player a
+  single-figure exercise has its figure BESIDE it (`data-ex-side`, one `data-paging-keep` block — without it the pager cut the row into ten pages), the
+  four figures of « أربعة أشكال » sit on ONE row above it, and the rappel card under exercise 1 is not repeated (it stays in « بطاقتي », open from the
+  first screen); the final test's butterfly figure (`FIG_E4`) is narrower (140) — it pushed the fourth option off the screen. Page unchanged.
+- Not changed: the retry re-sends `onFinished` (LabRounds ignores a second one); `Scene` re-renders on drag ticks (no lag measured); the tray above the
+  scene under 900 px (768-wide tablets fit by the last-resort zoom); slider wording and per-cm announcements; KaTeX names of fraction tiles.
+
+**Verification:** vitest `src/lessons src/features/practice src/pages/unit` 692 files / 12 473 tests green; `check:lessons` exit 0, entry 241,4 KB
+gzip; `lab-rollout-status` ✅ for the three lessons. Playwright at 1366×768, 1024×768, 1920×1080: home (scene, 5 tools, non-empty « راجع »), « أستعدّ »
+(10 + review), every module unit by unit (0 `data-fit-overflow`, 0 page scroll, 0 clipped `.katex`, 0 raw `$`, 0 console error after the fixes above),
+the peer sheet (found, fixed, restored after a reload), the final test (6 questions + review), the knowledge map (no climax number, no « الكتاب »),
+the teacher view (the old `shadow-world` with its two levels, no player element), module 1's rounds by hand to ★★★.
 
 ## Unit 9, lesson 2 — `aksiya-talis` « الخاصية العكسية لخاصية طالس وإثبات التوازي » (2026-11-10)
 

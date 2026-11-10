@@ -309,6 +309,12 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { minaret: 5 }, ...P },
     advanced: { numbers: { minaret: 7.25 }, ...T('challenge') },
   },
+  // Les deux ombres qui se rencontrent (2026-11-10, le labo à un couloir du lecteur de mission). مبتدئ : un lampadaire de 2,75 m à 14:00 (ombres
+  // 3,3 m et 1,2 m) ; متقدم : le château d'eau de 6,5 m (la hauteur de la minaret متقدم de `shadow-world`, نشاط 1 du درس).
+  'shadow-meet': {
+    beginner: { numbers: { height: 2.75 }, ...P },
+    advanced: { numbers: { height: 6.5 }, ...T('act-1') },
+  },
   // La coupe du cône. مبتدئ : un cône de 12 sur 4 (h = r ⇒ r = 3) ; متقدم (أدمج تعلّماتي) : 18 sur 6 (r = 4,5).
   'cone-cylinder': {
     beginner: { numbers: { H: 12, R: 4 }, ...P },

@@ -16,6 +16,10 @@ const R = (x) => `\\textcolor{#e11d48}{${x}}`;
  *   module 2 (معارف)   khassiyat-talis (معارف 1 : la propriété, ses trois positions, le tableau de
  *                      proportionnalité), adam-tawazi (ملاحظة 1 et 2), muamil-tanasub (معارف 2 : k, تكبير / تصغير) ;
  *   module 3 (طرائق)   hisab-atwal (la طريقة « حساب أطوال », ses gestes nommés — plateforme, déclaré).
+ *
+ * LECTEUR DE MISSION (2026-11-10) : la carte est ouverte dès le début (`knowledgeMapOpen`) — aucune carte ne montre la مسألة du module 5 dans
+ * son rôle (k = 2/5 sur AB = 10 → 4 était EXACTEMENT sa première question : les exemples de khassiyat-talis et muamil-tanasub ont d'autres
+ * nombres) ; aucun texte ne renvoie au manuel (_unit/missionStrings.test.js).
  */
 export const LESSON_KNOWLEDGE = {
   modules: {
@@ -51,7 +55,7 @@ export const LESSON_KNOWLEDGE = {
         memo: {
           rule: `\\dfrac{AM}{AB}=\\dfrac{AN}{AC}=${R("\\dfrac{MN}{BC}")}`,
           hook: 'موازيان يعطيان ثلاث نسب',
-          example: `\\dfrac{AM}{AB}=\\dfrac{AN}{AC}=\\dfrac{MN}{BC}=${R("\\dfrac{2}{5}")}`,
+          example: `\\dfrac{AM}{AB}=\\dfrac{AN}{AC}=\\dfrac{MN}{BC}=${R("\\dfrac{3}{7}")}`,
           trap: 'نقارن MN بـ AB بدل أن نقارنها بـ BC',
           exam: 'ارسم الشكل وحدّد الرأس، ثم اكتب النسب الثلاث مع ذكر التوازي',
           chip: `\\tfrac{AM}{AB}=\\tfrac{AN}{AC}=\\tfrac{MN}{BC}`,
@@ -100,12 +104,12 @@ export const LESSON_KNOWLEDGE = {
         memo: {
           rule: `\\begin{aligned}AB'&=${R("k")}\\times AB\\\\[2pt]AC'&=${R("k")}\\times AC\\end{aligned}`,
           hook: 'اضرب كل الأطوال في k',
-          example: `AB'=${R("\\dfrac{2}{5}")}\\times10=4`,
+          example: `AB'=${R("\\dfrac{1}{4}")}\\times28=7`,
           trap: 'نضيف k إلى الطول بدل أن نضرب فيه',
           exam: 'اكتب k مرة واحدة ثم اضرب فيه كل ضلع في المثلث الأول',
           chip: `AB'=k\\times AB`,
           quiz: [
-            { q: "إذا كان $k=\\frac{2}{5}$ و $AB=10$ فإن $AB'$ يساوي:", options: ["$4$", "$25$", "$10{,}4$"], correct: 0 },
+            { q: "إذا كان $k=\\frac{1}{4}$ و $AB=28$ فإن $AB'$ يساوي:", options: ["$7$", "$112$", "$28{,}25$"], correct: 0 },
             { q: "معامل التكبير k هو عدد:", options: ["أكبر من $1$", "أصغر من $1$", "يساوي $0$"], correct: 0 },
           ],
         },
@@ -133,7 +137,7 @@ export const LESSON_KNOWLEDGE = {
             { q: "نكتب المساواة التي فيها:", options: ["المجهول وثلاثة أطوال معلومة", "ثلاثة مجاهيل", "نسبة واحدة فقط"], correct: 0 },
           ],
         },
-        predictPrompt: "كشفت حلّ الكتاب سطرًا سطرًا لحساب $DN$ في متوازي الأضلاع. لو أعطيناك شكلًا آخر فيه طول مجهول، فبأيّ خطوات تحسبه؟ اكتب الطريقة بالترتيب.",
+        predictPrompt: "كشفت الحلّ سطرًا سطرًا لحساب $DN$ في متوازي الأضلاع. لو أعطيناك شكلًا آخر فيه طول مجهول، فبأيّ خطوات تحسبه؟ اكتب الطريقة بالترتيب.",
         summary: 'نتأكد من وضعية طالس، نكتب النسب الثلاث بالترتيب نفسه، نحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة، ثم نحسب بالجداء المتصالب.',
         body: (
           <div className="space-y-1.5">

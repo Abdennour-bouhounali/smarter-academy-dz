@@ -252,7 +252,8 @@ export const FIG_E4 = {
   points: { O: [0, 0], K: times(aF, 2), L: times(bF, 2.4), P: times(aF, -3), Q: times(bF, -3.6) },
   segments: [['K', 'P'], ['L', 'Q'], { from: 'K', to: 'L', arrows: 1 }, { from: 'P', to: 'Q', arrows: 1 }],
   ariaLabel: 'المستقيمان (KP) و (LQ) متقاطعان في O، K و L من جهة و P و Q من الجهة الأخرى، و (KL) يوازي (PQ)',
-  maxWidth: 220,
+  // une figure haute et étroite : à 220 elle poussait le 4e choix de la question hors de l'écran du lecteur (1024 et 1366, rollout 2026-11-10)
+  maxWidth: 140,
 };
 /** معارف 1 — question : (RS) et (TU) sécantes en O, M sur [OR]… — la figure de la question de l'étape 1. */
 const aG = at(35, 1); const bG = at(-25, 1);

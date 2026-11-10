@@ -36,13 +36,19 @@ it('étape 2 : seule OB/OA = BE/AM est vraie sur la figure ; l’inverse, le seg
   expect(d('O', 'A') - d('O', 'B')).not.toBeCloseTo(d('A', 'M') - d('B', 'E'), 3);
 });
 
-it('étape 3 : la palmeraie (ombre 5,4 m ; lampadaire 3 m d’ombre 3,6 m) mesure 4,5 m — le monde dit la même chose à 14:00', () => {
-  expect(LIN.fracText(TH.fourthProportional('3,6', '3', '5,4'))).toBe('9/2');
-  expect(SHADOW_STEPS.answers.palm).toBe(4.5);
+it("étape 3 : le palmier (ombre 9,3 m ; lampadaire de 2,75 m d'ombre 3,3 m) mesure 7,75 m — le monde dit la même chose à 14:00", () => {
+  // depuis le 2026-11-10 (lecteur de mission) : 3 m et 4,5 m étaient des nombres de la مسألة du module 5 (content/forbidden.js)
+  expect(LIN.fracText(TH.fourthProportional('3,3', '2,75', '9,3'))).toBe('31/4');
+  expect(SHADOW_STEPS.answers.palm).toBe(31 / 4);
+  // les deux réponses fausses reconnues : multiplier par 1,2 au lieu de diviser ; retrancher l'écart 3,3 − 2,75
+  expect(SHADOW_STEPS.wrong.times).toBeCloseTo(9.3 * 1.2, 9);
+  expect(SHADOW_STEPS.wrong.minus).toBeCloseTo(9.3 - (3.3 - 2.75), 9);
+  ['2{,}75', '3{,}3', '9{,}3'].forEach((n) => expect(SHADOW_STEPS.calc).toContain(n));
+  expect(SHADOW_STEPS.calcLine).toContain('7{,}75');
   const s = SW.setHour(SW.init(SHADOW_WORLD.beginner), 3); // 14:00
   expect(SW.HOURS[3]).toBe('14:00');
-  expect(SW.shadowAt(300, 3)).toBe(360);
-  expect(SW.shadowAt(450, 3)).toBe(540);
+  expect(SW.shadowAt(275, 3)).toBe(330);
+  expect(SW.shadowAt(775, 3)).toBe(930);
   expect(s.minaret).toBe(500);
 });
 

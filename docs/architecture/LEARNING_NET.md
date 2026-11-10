@@ -249,7 +249,10 @@ shows them as clickable chips with their year, and the free-text `prerequisites`
 « أستعدّ » review and « راجع قبل أن تنطلق » were empty without them. Third (2026-11-10, unit 9 mission rollout): `aksiya-talis` ← `talis-hisab-atwal` (4AM) + `amaliyat-natiqa` (3AM, the net's
 `3am.m1.r08 → 4am.m2.r01` link); its free-text « حساب واختبار تساوي نسبتين (كسرين) » removed (council of 2026-11-10: a `coming_soon` lesson is
 never a revise target). Fourth (the same day): `inshaat-talis` ← `talis-hisab-atwal` (already there) + `amaliyat-natiqa` (3AM, the same link — the
-lesson builds a point from a RATIO of lengths); its two free-text prerequisites stay (no lesson replaces « الإنشاءات الهندسية الأساسية »).
+lesson builds a point from a RATIO of lengths); its two free-text prerequisites stay (no lesson replaces « الإنشاءات الهندسية الأساسية »). Fifth (the
+same day): `talis-hisab-atwal` ← `amaliyat-natiqa` (3AM, the same link; it was `[]`, so « راجع قبل أن تنطلق » was empty); its two free-text
+prerequisites stay — « مستقيم المنتصفين » (3AM) is still `coming_soon`, so it is NOT a revise target (council of 2026-11-10). Its « أستعدّ »
+revises `tasawi-muqaranat-kasrayn` (3AM) and `rabi-mutanasib` (2AM), the published lessons that TEACH what its ten statements test.
 
 **Database — imported, closed, ignored by Mastery V2.**
 

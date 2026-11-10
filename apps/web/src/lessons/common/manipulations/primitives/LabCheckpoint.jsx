@@ -304,7 +304,8 @@ function BuildAnswer({ q, settled, revealed, onAnswer, k }) {
             <button type="button" disabled={settled || values[si] == null} onClick={() => take(si)} data-lab-checkpoint-slot={si}
               className={`flex w-[4.5rem] flex-col items-center gap-1 ${ring} rounded-xl`}>
               <span className={`flex h-14 w-full items-center justify-center rounded-2xl border-2 border-dashed text-2xl font-black tabular-nums ${values[si] == null ? 'border-slate-300 bg-slate-50 text-slate-300' : 'border-indigo-500 bg-indigo-50 text-indigo-950'}`}>
-                {values[si] ?? '▢'}
+                {/* `q.render` (2026-11-10, shadow-meet) : une tuile écrite dans SA forme (« BC/BE » en vraie fraction) ; la valeur comparée reste la tuile */}
+                {values[si] == null ? '▢' : q.render ? <span className="pointer-events-none">{q.render(values[si])}</span> : values[si]}
               </span>
               <span className="text-center text-xs font-bold leading-tight text-slate-600" dir="rtl">{label}</span>
             </button>
@@ -317,7 +318,7 @@ function BuildAnswer({ q, settled, revealed, onAnswer, k }) {
             {q.tiles.map((n, ti) => (
               <button key={ti} type="button" disabled={used.has(ti)} onClick={() => put(ti)} data-lab-checkpoint-tile={ti}
                 className={`h-14 min-w-[3.5rem] rounded-2xl border-2 border-amber-300 bg-amber-50 px-3 text-2xl font-black tabular-nums text-amber-950 shadow-[0_3px_0_0_#FCD34D] disabled:opacity-25 ${ring}`}>
-                {n}
+                {q.render ? <span className="pointer-events-none">{q.render(n)}</span> : n}
               </button>
             ))}
           </div>

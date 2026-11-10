@@ -36,6 +36,61 @@ export const LESSON_CONFIG = {
   unit: 'khassiyat-talis',
   unitTitle: 'خاصية طالس',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (modèle du pilote qasim-adad-tabii, VALIDÉ par le propriétaire le 2026-11-08 ; rollout leçon par leçon,
+  // docs/reports/MISSION_ROLLOUT_PROGRESS.md — unité 9, leçon 1, 2026-11-10) — implique le regard « focus » ; l'enseignant et le mode classe ne voient
+  // aucun changement (leur module 1 garde le monde `shadow-world` ; le lecteur joue le labo à un couloir `shadow-meet`, content/shadows.js).
+  studentView: 'mission',
+  // LA MISSION : l'ouverture avoue qu'on ne sait pas encore la résoudre ; les outils sont les connaissances de knowledge.jsx ; les points d'étape
+  // (conseil du 2026-11-10, verdict L1) RAPPROCHENT de la mission sans en résoudre aucune question : ni ses nombres dans leur rôle (AB = 10,
+  // AC = 12, BC = 6, AB′ = 4 / 4,5 / 5, 4,8, 2,4, 5,6, 54, 56, AD = 15, DE = 9, 180…), ni sa méthode (le faisceau, la planche, le test « non
+  // parallèles » par les produits, l'agrandissement au-delà de B) — content/forbidden.js, content/mission.test.js et _unit/missionStrings.test.js.
+  // La scène : le ciné-club de nuit sur la place (« night-cinema »).
+  mission: {
+    scene: 'night-cinema',
+    title: 'عرض ليلي في ساحة الحيّ: أين نضع اللوحة؟',
+    opening: {
+      text: 'يقيم نادي السينما عرضًا ليليًّا مجّانيًّا في ساحة الحيّ. جهاز الإسقاط في النقطة $A$ يرسل حزمة ضوئية نحو الشاشة الكبيرة $[BC]$ حيث $AB = 10\\,\\mathrm{m}$ و $AC = 12\\,\\mathrm{m}$ و $BC = 6\\,\\mathrm{m}$ . لضبط الصورة يضع التقنيّ في الحزمة لوحة بيضاء موازية للشاشة، على بعد $4\\,\\mathrm{m}$ من الجهاز. كم يكون عرض الصورة على اللوحة؟ وأين نضع لوحة عرضها $3\\,\\mathrm{m}$ لتملأها الصورة بالضبط؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'talis-nashat', icon: '☀️', label: 'النسب المتساوية' },
+      { id: 'khassiyat-talis', icon: '📐', label: 'خاصية طالس' },
+      { id: 'adam-tawazi', icon: '🚫', label: 'نسبتان غير متساويتين' },
+      { id: 'muamil-tanasub', icon: '🔍', label: 'معامل التناسبية' },
+      { id: 'hisab-atwal', icon: '📏', label: 'حساب طول بخاصية طالس' },
+    ],
+    climaxModule: 5,
+    checkpoints: [
+      {
+        id: 'cp-zill', afterModule: 1,
+        prompt: 'في اللحظة نفسها، عصا طولها 1 m ظلّها 1,25 m. ما طول ظلّ سارية ارتفاعها 2,8 m ؟',
+        options: ['3,5 m', '3,05 m', '2,24 m'],
+        correct: 0,
+        explain: 'ظلّ كل شيء شاقولي يساوي طوله مضروبًا في العدد نفسه: $2{,}8 \\times 1{,}25 = 3{,}5\\,\\mathrm{m}$ . (3,05 تضيف 0,25 ولا تضرب، و 2,24 تقسم على 1,25 .)',
+      },
+      {
+        id: 'cp-farasha', afterModule: 2,
+        prompt: 'المستقيمان (BM) و (CN) متقاطعان في A، والنقطتان M و N من الجهة الأخرى للنقطة A، و (MN)//(BC). إذا كان $AM = 2{,}1$ و $AB = 7$ فما معامل التناسبية $k$ الذي ينقل أطوال المثلث ABC إلى أطوال المثلث AMN ؟',
+        options: ['$0{,}3$', '$\\dfrac{10}{3}$', '$4{,}9$'],
+        correct: 0,
+        explain: '$k = \\dfrac{AM}{AB} = \\dfrac{2{,}1}{7} = 0{,}3$ ، والخاصية تصحّ من الجهة الأخرى للنقطة A أيضًا. ($\\dfrac{10}{3}$ هو المعامل في الاتجاه المعاكس، و $4{,}9$ فرق بين طولين لا نسبة.)',
+      },
+      {
+        id: 'cp-ew', afterModule: 3,
+        prompt: 'المستقيمان (UT) و (VW) متقاطعان في E، و (UV)//(WT). إذا كان $EU = 2$ و $ET = 2{,}5$ و $EV = 7{,}6$ فما الطول $EW$ ؟',
+        options: ['$9{,}5$', '$6{,}08$', '$8{,}1$'],
+        correct: 0,
+        explain: 'المثلثان EUV و ETW في وضعية طالس: $\\dfrac{EW}{EV} = \\dfrac{ET}{EU}$ ، ومنه $EW = \\dfrac{7{,}6 \\times 2{,}5}{2} = 9{,}5$ . ($6{,}08$ تقلب النسبة، و $8{,}1$ تضيف $0{,}5$ ولا تضرب.)',
+      },
+      {
+        id: 'cp-fitha', afterModule: 4,
+        prompt: 'عصا $[BE]$ عمودية على الأرض وظلّها $[OB]$ ، حيث $OB = 0{,}9\\,\\mathrm{m}$ و $BE = 1{,}2\\,\\mathrm{m}$ . ظلّ عمود $[AM]$ ينتهي في النقطة $O$ نفسها، حيث $OA = 5{,}1\\,\\mathrm{m}$ . ما طول الشعاع $OM$ من نهاية الظلّ إلى قمّة العمود؟',
+        options: ['8,5 m', '3,06 m', '5,7 m'],
+        correct: 0,
+        explain: 'خاصية فيثاغورس في المثلث OBE القائم في B: $OE^2 = 0{,}9^2 + 1{,}2^2 = 2{,}25$ ومنه $OE = 1{,}5\\,\\mathrm{m}$ . ثم $\\dfrac{OM}{OE} = \\dfrac{OA}{OB}$ ، ومنه $OM = \\dfrac{1{,}5 \\times 5{,}1}{0{,}9} = 8{,}5\\,\\mathrm{m}$ .',
+      },
+    ],
+  },
   title: 'خاصية طالس وحساب الأطوال',
   description: 'مدخل الوحدة: في ساحة الحيّ يحرّك التلميذ الشمس ويكتب بنفسه قاعدة الظلال، فتقوده إلى خاصية طالس؛ ثم النسب المتساوية بين أطوال مثلثين في وضعية طالس تُوظَّف لحساب أطوال مجهولة، ويُقرأ أحد المثلثين تكبيرا أو تصغيرا للآخر بمعامل التناسبية k.',
   level: 'moyen',
@@ -67,8 +122,10 @@ export const LESSON_CONFIG = {
   },
   knowledgeMap: true,
   knowledgeMapMode: 'progressive',
-  // Les acquis que « أستعدّ » diagnostique : le quatrième proportionnel et le produit en croix, la droite des
-  // milieux (et sa longueur), le tableau de proportionnalité (on multiplie, on n'ajoute pas).
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début, sans verrou par محور.
+  knowledgeMapOpen: true,
+  // Les acquis de la leçon : le quatrième proportionnel et le produit en croix, le tableau de proportionnalité (on multiplie, on n'ajoute pas) —
+  // diagnostiqués par « أستعدّ » (content/prep.js) — et la droite des milieux, rappelée dans les modules (sa leçon de 3AM n'est pas encore publiée).
   priorKnowledge: ['rabi-mutanasib', 'mustaqim-muntasafayn', 'jadwal-tanasub'],
   // « مسألة الدرس » (MASAIL_GENERATION_GUIDE.md) : annoncée dès le sommaire et rappelée au module 1, résolue
   // pas à pas au module 5 (content/problems.js). Prolonge le niveau متقدم du faisceau (thales-beam) : le
@@ -87,6 +144,8 @@ export const LESSON_CONFIG = {
     },
   },
   resources: [
+    // LECTEUR DE MISSION (2026-11-10) : l'élève y joue le labo à UN couloir `shadow-meet` en manches (content/shadows.js) ; les deux ressources
+    // ci-dessous restent celles de la PAGE (l'enseignant, le mode classe).
     // Le module 1 ouvre sur « ساحة الحيّ » (shadow-world, 2026-10-13) aux DEUX niveaux : le même monde, la minaret change
     // (مبتدئ 5 m, متقدم 6,5 m). Le faisceau (thales-beam) n'est plus dans cette leçon : il reste celui de la leçon 2.
     {
@@ -115,10 +174,10 @@ export const LESSON_CONFIG = {
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
-      title: 'أستعدّ', desc: 'ست عبارات: الرابع المتناسب والجداء المتصالب، مستقيم المنتصفين، وجدول التناسبية. صحيح أم خاطئ؟',
+      title: 'أستعدّ', desc: 'عشر عبارات من السهل إلى الأصعب: تساوي كسرين والجداء المتصالب، والتناسبية والرابع المتناسب. صحيح أم خاطئ؟',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 5, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'nashat', path: `${LESSON_BASE_PATH}/nashat`,
-      title: 'نشاط 1 — ساحة الحيّ: الظلال والمثلثات', desc: 'حرّك الشمس، قِس الظلال، توقّع واكتب قاعدتك؛ ثم من الساحة إلى الشكل الهندسي، وأسئلة النشاط: الحالة الأولى (AB′ = 3,2)، الحالة الثانية (وضعية الفراشة)، ونص خاصية طالس.',
+      title: 'ساحة الحيّ — الظلال والمثلثات', desc: 'في الساحة: ظلّ ما لا نستطيع قياسه وظلّ عصا؛ ثم من الساحة إلى الشكل الهندسي: الحالة الأولى (AB′ = 3,2)، الحالة الثانية (وضعية الفراشة)، ونص خاصية طالس.',
       stage: 'trigger', teachesLearningPointIds: ['4am_talis-hisab-atwal_P1', '4am_talis-hisab-atwal_P2'],
       color: 'indigo', style: 'featured', estimatedMin: 20, difficulty: 1, actionText: 'أدخل الساحة' },
     { id: '02', number: 2, slug: 'maarif', path: `${LESSON_BASE_PATH}/maarif`,
@@ -130,7 +189,7 @@ export const LESSON_CONFIG = {
       stage: 'formalization', teachesLearningPointIds: ['4am_talis-hisab-atwal_P2'],
       color: 'emerald', style: 'featured', estimatedMin: 7, difficulty: 2, actionText: 'أتعلّم الطريقة' },
     { id: '04', number: 4, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
-      title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 1 إلى 6 و 8 و 9 و 26، وعبارتا «أستعدّ» 4 و 5 تحكم عليهما الآن.',
+      title: 'أوظّف تعلّماتي', desc: 'تمارين متدرّجة: نسب متساوية، حساب أطوال، تكبير وتصغير، ثم فيثاغورس قبل طالس وتمرين للتعمّق.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_talis-hisab-atwal_P1', '4am_talis-hisab-atwal_P2', '4am_talis-hisab-atwal_P3'],
       color: 'amber', style: 'featured', estimatedMin: 10, difficulty: 2, actionText: 'أتدرّب' },
     // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui reste toujours ouvert. Elles comptent
@@ -148,7 +207,7 @@ export const LESSON_CONFIG = {
       stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_talis-hisab-atwal_P1', '4am_talis-hisab-atwal_P2', '4am_talis-hisab-atwal_P3'],
       color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
     { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم الكفاءات الثلاث، منها السؤالان 1 و 2 من أؤكّد تعلّماتي.',
+      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم الكفاءات الثلاث.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

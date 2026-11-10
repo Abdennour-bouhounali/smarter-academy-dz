@@ -7,6 +7,7 @@ import { TextbookExercise } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { partsOf } from '../content/exercises';
 import { PREP_REVISITED } from '../content/textbook';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
 import { FIG_EX1, FIG_EX2, FIG_EX3, FIG_EX4, FIG_EX5, FIG_EX8, FIG_EX9, FIG_PREP4, FIG_PREP5 } from '../content/figures';
 
 /**
@@ -16,11 +17,19 @@ import { FIG_EX1, FIG_EX2, FIG_EX3, FIG_EX4, FIG_EX5, FIG_EX8, FIG_EX9, FIG_PREP
  * réciproque d'abord, puis Thalès), ex-26 (la bissectrice, raisonnement), et les items 4–5 de « أستعدّ » que
  * l'élève peut maintenant trancher (item 5 corrigé : ADE → ADF). Une étape par exercice, faite quand chaque
  * partie a reçu une réponse (juste ou fausse). Les figures sont des données GeoFigure (content/figures.js).
+ * Aucun texte destiné à l'élève ne renvoie au manuel ni ne numérote ses exercices (rollout mission 2026-11-10).
+ *
+ * UNE PARTIE d'exercice par étape (rollout mission 2026-11-10, comme la leçon 2) : une étape de plusieurs parties, sa figure et son rappel
+ * dépassait l'écran du lecteur même réduite (`data-fit-overflow` à 1366 × 768). Chaque partie garde SA figure (et l'énoncé de l'exercice quand
+ * elle n'est pas la première). Dans le lecteur : la figure À CÔTÉ de l'exercice et pas de rappel sous la question (il reste dans « بطاقتي », ouverte
+ * dès le premier écran : rien n'est retiré).
  */
 const FIGURES = {
   ex1: <GeoFigure {...FIG_EX1} />,
   ex2: <GeoFigure {...FIG_EX2} />,
   ex3: <div className="grid grid-cols-2 gap-2">{FIG_EX3.map((f) => <GeoFigure key={f.caption} {...f} />)}</div>,
+  // lecteur : les quatre figures sur UNE ligne au-dessus de l'exercice (à côté, la colonne étroite empilait les trois choix de chaque ligne)
+  ex3Row: <div className="grid grid-cols-4 gap-2" data-paging-keep>{FIG_EX3.map((f) => <GeoFigure key={f.caption} {...f} maxWidth={150} />)}</div>,
   ex4: <GeoFigure {...FIG_EX4} />,
   ex5: <GeoFigure {...FIG_EX5} />,
   ex8: <GeoFigure {...FIG_EX8} />,
@@ -33,20 +42,66 @@ const PREP_EX = PREP_REVISITED.map((p) => ({
   question: { rows: [{ text: p.text, answer: p.answer, why: p.why }] },
 }));
 
-function Exercise({ ex, requires, onDone }) {
-  return (
-    <div className="space-y-2">
-      {ex.figure && FIGURES[ex.figure]}
-      <TextbookExercise exercise={ex} requires={requires} onAnswered={onDone} />
-    </div>
-  );
-}
-
 export default function Module04Awazzif() {
   const [done, setDone] = useState({});
   const mark = (id) => () => setDone((d) => ({ ...d, [id]: true }));
-  const all = (n) => partsOf(n).every((ex) => done[ex.id]);
-  const block = (n, requires) => partsOf(n).map((ex) => <Exercise key={ex.id} ex={ex} requires={requires} onDone={mark(ex.id)} />);
+  // une partie par étape — la figure de l'exercice sur chaque partie, son énoncé rappelé sur les suivantes ; lecteur : le rappel après la question
+  const GROUPS = [
+    ['1', 'النسب المتساوية', ['khassiyat-talis'], 'khassiyat-talis'], ['2', 'احسب BC', ['hisab-atwal']], ['3', 'أربعة أشكال', ['khassiyat-talis']],
+    ['4', 'القيم المضبوطة والمدوّرة', ['hisab-atwal']], ['5', 'تكبير', ['hisab-atwal', 'muamil-tanasub'], 'muamil-tanasub'],
+    ['6', 'محيط المثلث BKL', ['hisab-atwal', 'muamil-tanasub']], ['8', 'احسب AP و LP', ['hisab-atwal']], ['9', 'فيثاغورس ثم طالس', ['hisab-atwal']],
+  ];
+  const partSteps = ([n, title, requires, brick]) => {
+    const parts = partsOf(n);
+    const first = parts[0];
+    return parts.map((ex, i) => ({
+      title: parts.length > 1 ? `${title} (${i + 1})` : title, done: Boolean(done[ex.id]),
+      content: (
+        <div className="space-y-3">
+          {brick && i === 0 && <PlayerSwitch player={null} page={<KnowledgeBrick id={brick} variant="rappel" compact />} />}
+          {/* lecteur : la figure À CÔTÉ de l'exercice (au-dessus, l'étape dépassait l'écran même réduite — « أربعة أشكال », « النسب المتساوية (2) »,
+              « فيثاغورس ثم طالس (1) » à 1024 et 1366) ; la page garde la figure au-dessus */}
+          <PlayerSwitch
+            player={first.figure === 'ex3' ? (
+              <>
+                {FIGURES.ex3Row}
+                <TextbookExercise exercise={{ ...ex, figure: undefined, statement: ex.statement ?? first.statement }} requires={requires} onAnswered={mark(ex.id)} />
+              </>
+            ) : (
+              <div className="flex items-start gap-4" data-ex-side data-paging-keep>
+                {first.figure && <div className="w-[36%] shrink-0">{FIGURES[first.figure]}</div>}
+                <div className="min-w-0 flex-1">
+                  <TextbookExercise exercise={{ ...ex, figure: undefined, statement: ex.statement ?? first.statement }} requires={requires} onAnswered={mark(ex.id)} />
+                </div>
+              </div>
+            )}
+            page={(
+              <>
+                {first.figure && FIGURES[first.figure]}
+                <TextbookExercise exercise={{ ...ex, figure: undefined, statement: ex.statement ?? first.statement }} requires={requires} onAnswered={mark(ex.id)} />
+              </>
+            )}
+          />
+          {/* lecteur : pas de rappel sous l'exercice (l'étape dépassait l'écran de 10 px même réduite à 1366 × 768) — la carte reste dans « بطاقتي »,
+              ouverte dès le premier écran (on réduit ce qui s'affiche, on ne supprime rien) */}
+        </div>
+      ),
+    }));
+  };
+  const steps = [
+    ...GROUPS.flatMap(partSteps),
+    { title: 'الآن يمكنك أن تقرّر (1)', done: Boolean(done[PREP_EX[0].id]),
+      content: <div className="space-y-3"><GeoFigure {...FIG_PREP4} /><TextbookExercise exercise={PREP_EX[0]} requires={['hisab-atwal']} onAnswered={mark(PREP_EX[0].id)} /></div> },
+    { title: 'الآن يمكنك أن تقرّر (2)', done: Boolean(done[PREP_EX[1].id]),
+      content: (
+        <div className="space-y-3">
+          <GeoFigure {...FIG_PREP5} />
+          <TextbookExercise exercise={PREP_EX[1]} requires={['khassiyat-talis']} onAnswered={mark(PREP_EX[1].id)} />
+          <p className="text-xs text-slate-500" data-correction><MathText>{PREP_REVISITED[1].correction}</MathText></p>
+        </div>
+      ) },
+    ...partSteps(['26', 'أتعمّق: منصف الزاوية', ['khassiyat-talis']]),
+  ].map((st, i) => ({ ...st, num: i + 1 }));
 
   return (
     <ContentModule
@@ -54,51 +109,12 @@ export default function Module04Awazzif() {
       navLinks={getNavLinks(4)}
       moduleNumber={4}
       moduleTitle="أوظّف تعلّماتي"
-      moduleSubtitle="تمارين الكتاب 1 إلى 6 و 8 و 9 و 26"
-      objectives={['أحسب أطوالًا بخاصية طالس في أشكال الكتاب', 'متى أحتاج خاصية فيثاغورس قبل خاصية طالس؟', 'أتعمّق: كيف أتصرّف في وضعية لا أرى فيها طالس مباشرة؟']}
+      moduleSubtitle="تمارين متدرّجة: من التطبيق إلى التعمّق"
+      objectives={['أحسب أطوالًا بخاصية طالس في أشكال متنوّعة', 'متى أحتاج خاصية فيثاغورس قبل خاصية طالس؟', 'أتعمّق: كيف أتصرّف في وضعية لا أرى فيها طالس مباشرة؟']}
       estimatedTime="10 دقائق"
-      brief={{ tag: 'أوظّف تعلّماتي — الكتاب ص 110 و 113', title: 'تمارين الكتاب، بعباراته', tone: 'amber',
+      brief={{ tag: 'أوظّف تعلّماتي', title: 'تمارين للتطبيق والتعمّق', tone: 'amber',
         body: <p>اكتب الأعداد العشرية بالفاصلة (مثل 2,5) والكسور على الشكل a/b. الخطأ هنا يُصحَّح ولا يُحتسب.</p> }}
-      steps={[
-        { num: 1, title: 'تمرين 1 — النسب المتساوية', done: all('1'),
-          content: (
-            <div className="space-y-3">
-              <KnowledgeBrick id="khassiyat-talis" variant="rappel" compact />
-              {block('1', ['khassiyat-talis'])}
-            </div>
-          ) },
-        { num: 2, title: 'تمرين 2 — احسب BC', done: all('2'),
-          content: <div className="space-y-3">{block('2', ['hisab-atwal'])}</div> },
-        { num: 3, title: 'تمرين 3 — أربعة أشكال', done: all('3'),
-          content: <div className="space-y-3">{block('3', ['khassiyat-talis'])}</div> },
-        { num: 4, title: 'تمرين 4 — القيم المضبوطة والمدوّرة', done: all('4'),
-          content: <div className="space-y-3">{block('4', ['hisab-atwal'])}</div> },
-        { num: 5, title: 'تمرين 5 — تكبير', done: all('5'),
-          content: (
-            <div className="space-y-3">
-              <KnowledgeBrick id="muamil-tanasub" variant="rappel" compact />
-              {block('5', ['hisab-atwal', 'muamil-tanasub'])}
-            </div>
-          ) },
-        { num: 6, title: 'تمرين 6 — محيط المثلث BKL', done: all('6'),
-          content: <div className="space-y-3">{block('6', ['hisab-atwal', 'muamil-tanasub'])}</div> },
-        { num: 7, title: 'تمرين 8 — AP و LP', done: all('8'),
-          content: <div className="space-y-3">{block('8', ['hisab-atwal'])}</div> },
-        { num: 8, title: 'تمرين 9 — فيثاغورس ثم طالس', done: all('9'),
-          content: <div className="space-y-3">{block('9', ['hisab-atwal'])}</div> },
-        { num: 9, title: 'أستعدّ 4 و 5 — الآن تقرّر', done: PREP_EX.every((ex) => done[ex.id]),
-          content: (
-            <div className="space-y-3">
-              <GeoFigure {...FIG_PREP4} />
-              <TextbookExercise exercise={PREP_EX[0]} requires={['hisab-atwal']} onAnswered={mark(PREP_EX[0].id)} />
-              <GeoFigure {...FIG_PREP5} />
-              <TextbookExercise exercise={PREP_EX[1]} requires={['khassiyat-talis']} onAnswered={mark(PREP_EX[1].id)} />
-              <p className="text-xs text-slate-500" data-correction><MathText>{PREP_REVISITED[1].correction}</MathText></p>
-            </div>
-          ) },
-        { num: 10, title: 'تمرين 26 — منصف الزاوية (أتعمّق)', done: all('26'),
-          content: <div className="space-y-3">{block('26', ['khassiyat-talis'])}</div> },
-      ]}
+      steps={steps}
       footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}
     />
   );

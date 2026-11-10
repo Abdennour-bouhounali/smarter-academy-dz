@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { parseDec } from '@smarter-academy/core';
-import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule, PeerSheet } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
@@ -9,6 +9,7 @@ import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { KNOW1, KNOW2, PLATFORM_SOURCE } from '../content/textbook';
 import { FIG_KNOW1, FIG_REMARK1, FIG_KNOW2, FIG_M2Q1 } from '../content/figures';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
 
 /**
  * Module 2 — معارف 1 et 2 (p. 106).
@@ -22,6 +23,9 @@ import { FIG_KNOW1, FIG_REMARK1, FIG_KNOW2, FIG_M2Q1 } from '../content/figures'
  * (PredictRule : khassiyat-talis, adam-tawazi, muamil-tanasub) — l'élève écrit d'abord ; le rappel de
  * talis-nashat vient APRÈS l'encadré (il dirait les rapports égaux), la figure de ملاحظة 1 AVANT (le prompt la lit).
  * Les questions utilisent d'AUTRES nombres que les encadrés. LP : P1 (1–3), P3 (4).
+ *   5. « ورقة رانية » (`PeerSheet`, content/peerSheet.js) — rollout mission 2026-11-10 (conseil du 2026-11-10, L1.8) : OB/BA (la قطعة) au lieu de
+ *      OB/OA, d'où une hauteur fausse ; l'élève trouve la ligne et la corrige. Même étape sur la page et dans le lecteur.
+ * Aucun texte destiné à l'élève ne renvoie au manuel (rollout 2026-11-10).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -31,6 +35,7 @@ export default function Module02Maarif() {
   const [q3, setQ3] = useState(false);
   const [q4a, setQ4a] = useState(false);
   const [q4, setQ4] = useState(false);
+  const [q5, setQ5] = useState(false);
 
   return (
     <ContentModule
@@ -42,12 +47,12 @@ export default function Module02Maarif() {
       objectives={['أين يمكن أن تقع النقطتان M و N؟', 'كيف نكتب أطوال المثلثين في جدول؟', 'ماذا نقول إذا اختلفت نسبتان؟', 'متى يكون المثلث تكبيرًا ومتى يكون تصغيرًا؟']}
       estimatedTime="10 دقائق"
       brief={{
-        tag: 'معارف — الكتاب ص 106', title: KNOW1.title, tone: 'violet',
-        body: <p>معارف الكتاب في أربع خطوات: في كل خطوة سؤال أولًا، وبعد جوابك يأتي اسم ما وجدته وملاحظته.</p>,
+        tag: 'معارف', title: KNOW1.title, tone: 'violet',
+        body: <p>المعارف في أربع خطوات: في كل خطوة سؤال أولًا، وبعد جوابك يأتي اسم ما وجدته وملاحظته.</p>,
       }}
       steps={[
         {
-          num: 1, title: 'الخاصية في ثلاث وضعيات', subtitle: 'معارف 1', done: q1,
+          num: 1, title: 'الخاصية في ثلاث وضعيات', subtitle: 'أين تقع M و N؟', done: q1,
           content: (
             <div className="space-y-3">
               <PredictRule id="khassiyat-talis"><TextbookBox kind="property" title={KNOW1.title} text={KNOW1.property} source={KNOW1.source} compact /></PredictRule>
@@ -74,7 +79,7 @@ export default function Module02Maarif() {
                 explain={<MathText>{'G يقابل E و H يقابل F (طرفا المستقيمين المتوازيين): $\\dfrac{OG}{OE} = \\dfrac{OH}{OF} = \\dfrac{GH}{EF}$ ، والخاصية صحيحة من الجهة الأخرى للنقطة O أيضا. ($GE$ و $HF$ قطعتان وليستا ضلعين.)'}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
-              {q1 && <KnowledgeBrick id="khassiyat-talis" lead="ما رأيته في الساحة وفي الشكل، بكلمات الكتاب:" />}
+              {q1 && <KnowledgeBrick id="khassiyat-talis" lead="ما رأيته في الساحة وفي الشكل، مكتوبًا:" />}
             </div>
           ),
         },
@@ -99,7 +104,7 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 3, title: 'متى لا يتوازيان؟', subtitle: 'ملاحظة 1 و 2', done: q3,
+          num: 3, title: 'متى لا يتوازيان؟', subtitle: 'ملاحظتان', done: q3,
           content: (
             <div className="space-y-3">
               <GeoFigure {...FIG_REMARK1} />
@@ -119,7 +124,7 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 4, title: 'معامل التناسبية k', subtitle: 'معارف 2', done: q4,
+          num: 4, title: 'معامل التناسبية k', subtitle: 'تكبير أم تصغير؟', done: q4,
           content: (
             <div className="space-y-3">
               <PredictRule id="muamil-tanasub" prompt={"في الخطوة 2 ضربت كل أطوال المثلث في العدد نفسه. إذا كان $AB' = k \\times AB$ و $AC' = k \\times AC$، فمتى يكون المثلث $AB'C'$ تكبيرًا للمثلث $ABC$، ومتى يكون تصغيرًا له؟"}><TextbookBox kind="property" title={KNOW2.title} lines={KNOW2.lines} source={KNOW2.source} compact /></PredictRule>
@@ -151,6 +156,8 @@ export default function Module02Maarif() {
             </div>
           ),
         },
+        { num: 5, title: 'ورقة زميلة: أين الخطأ؟', subtitle: 'جد السطر الخاطئ وصحّحه', done: q5,
+          content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={() => setQ5(true)} /> },
       ]}
       footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />

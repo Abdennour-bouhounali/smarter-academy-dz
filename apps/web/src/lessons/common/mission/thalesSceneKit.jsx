@@ -3,7 +3,7 @@ import React from 'react';
 /**
  * LES PRIMITIVES DES SCÈNES DE L'UNITÉ 9 « خاصية طالس » (rollout 2026-11-10 ; conseil du 2026-11-10, verdict « Scenes: shared SVG primitives + one
  * thin scene file per lesson ») — dessinées en code, sans aucun nombre. Chaque leçon de l'unité a SA scène, mince, qui compose ces pièces :
- * `PaintWallScene` (leçon 2) et `TifoBannerScene` (leçon 3) ; la leçon 1 les reprendra (jamais un « variant » à trois branches).
+ * `PaintWallScene` (leçon 2), `TifoBannerScene` (leçon 3) et `NightCinemaScene` (leçon 1) — jamais un « variant » à trois branches.
  *
  *   <SceneBackdrop width height ground sky? />           le ciel et le sol (une bande)
  *   <XTrestle cx foot height spread plankAt level? />     le tréteau en X : deux barres croisées en A, la planche entre elles
@@ -11,6 +11,7 @@ import React from 'react';
  *   <PaintRoller x y color? /> · <PaintBucket x y color? />
  *   <FloorBanner x y w h? split? painted? colors? strokes? />   la banderole étendue, en deux couleurs (leçon 3)
  *   <BigCompass x y open? height? /> · <Straightedge x1 y1 x2 y2 />   le compas d'atelier, la règle NON graduée (leçon 3)
+ *   <Projector x y /> · <LightBeam from top bottom lit? /> · <CinemaScreen x y w h lit? /> · <ChairRows x y w rows? />   le ciné-club de nuit (leçon 1)
  * Les personnes ne sont JAMAIS dessinées ici : KidFigure seulement (filles en hijab), posé par la scène.
  */
 export function SceneBackdrop({ width = 480, height = 260, ground = 232, sky = '#E0F2FE', soil = '#D6D3D1' }) {
@@ -127,6 +128,78 @@ export function Straightedge({ x1, y1, x2, y2 }) {
     <g data-straightedge>
       <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#CA8A04" strokeWidth="9" strokeLinecap="round" />
       <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#FDE68A" strokeWidth="5" strokeLinecap="round" />
+    </g>
+  );
+}
+
+/** Un projecteur sur son pied (leçon 1, `NightCinemaScene`) : l'objectif est en (x, y), tourné vers la droite. */
+export function Projector({ x, y }) {
+  return (
+    <g data-projector>
+      <line x1={x - 22} y1={y + 12} x2={x - 34} y2={y + 62} stroke="#475569" strokeWidth="3" strokeLinecap="round" />
+      <line x1={x - 22} y1={y + 12} x2={x - 10} y2={y + 62} stroke="#475569" strokeWidth="3" strokeLinecap="round" />
+      <line x1={x - 22} y1={y + 12} x2={x - 22} y2={y + 62} stroke="#64748B" strokeWidth="2.5" strokeLinecap="round" />
+      <rect x={x - 40} y={y - 12} width="36" height="24" rx="5" fill="#334155" stroke="#0F172A" strokeWidth="1.5" />
+      <rect x={x - 6} y={y - 7} width="8" height="14" rx="2" fill="#94A3B8" stroke="#0F172A" strokeWidth="1" />
+      <circle cx={x - 30} cy={y - 18} r="7" fill="#475569" stroke="#0F172A" strokeWidth="1.2" />
+      <circle cx={x - 14} cy={y - 18} r="7" fill="#475569" stroke="#0F172A" strokeWidth="1.2" />
+    </g>
+  );
+}
+
+/**
+ * Le faisceau du projecteur : deux bords issus de `from` qui s'écartent jusqu'aux points `top` et `bottom` (les bords de l'image), et la
+ * lumière entre eux — pâle tant que `lit` ∈ [0, 1] est faible. Aucune graduation, aucun nombre.
+ */
+export function LightBeam({ from, top, bottom, lit = 1 }) {
+  const l = Math.max(0, Math.min(1, lit));
+  return (
+    <g data-light-beam data-beam-lit={l.toFixed(2)}>
+      <polygon points={`${from.x},${from.y} ${top.x},${top.y} ${bottom.x},${bottom.y}`} fill="#FDE68A" opacity={0.1 + 0.32 * l} />
+      <line x1={from.x} y1={from.y} x2={top.x} y2={top.y} stroke="#FCD34D" strokeWidth="1.6" strokeDasharray="6 5" />
+      <line x1={from.x} y1={from.y} x2={bottom.x} y2={bottom.y} stroke="#FCD34D" strokeWidth="1.6" strokeDasharray="6 5" />
+    </g>
+  );
+}
+
+/** Le grand écran sur ses deux poteaux ; `lit` ∈ [0, 1] : la part de l'image déjà nette (des bandes qui s'allument de gauche à droite). */
+export function CinemaScreen({ x, y, w, h, lit = 0 }) {
+  const l = Math.max(0, Math.min(1, lit));
+  const bands = 5;
+  const on = Math.round(l * bands);
+  return (
+    <g data-cinema-screen data-screen-lit={l.toFixed(2)}>
+      <line x1={x + 6} y1={y} x2={x + 6} y2={y + h + 40} stroke="#64748B" strokeWidth="4" strokeLinecap="round" />
+      <line x1={x + w - 6} y1={y} x2={x + w - 6} y2={y + h + 40} stroke="#64748B" strokeWidth="4" strokeLinecap="round" />
+      <rect x={x} y={y} width={w} height={h} rx="3" fill="#E2E8F0" stroke="#0F172A" strokeWidth="2" />
+      {Array.from({ length: bands }, (_, i) => (
+        i < on ? <rect key={i} x={x + 3 + (i * (w - 6)) / bands} y={y + 3} width={(w - 6) / bands + 0.5} height={h - 6} fill={['#38BDF8', '#7DD3FC', '#FDE68A', '#86EFAC', '#4ADE80'][i]} /> : null
+      ))}
+      {l >= 1 && (
+        <g data-screen-picture>
+          <path d={`M ${x + 3} ${y + h - 3} L ${x + w * 0.3} ${y + h * 0.42} L ${x + w * 0.5} ${y + h * 0.7} L ${x + w * 0.72} ${y + h * 0.36} L ${x + w - 3} ${y + h - 3} Z`} fill="#166534" opacity="0.85" />
+          <circle cx={x + w * 0.8} cy={y + h * 0.24} r={Math.min(9, h * 0.14)} fill="#F59E0B" />
+        </g>
+      )}
+    </g>
+  );
+}
+
+/** Des rangées de chaises vues de dos (de simples dossiers arrondis) : le public n'est pas encore là. */
+export function ChairRows({ x, y, w, rows = 2, perRow = 7 }) {
+  return (
+    <g data-chair-rows>
+      {Array.from({ length: rows }, (_, r) => Array.from({ length: perRow }, (__, i) => {
+        const cx = x + ((i + 0.5 + (r % 2) * 0.5) * w) / (perRow + 0.5);
+        const cy = y + r * 15;
+        return (
+          <g key={`${r}-${i}`}>
+            <rect x={cx - 7} y={cy - 12} width="14" height="12" rx="3" fill={r % 2 ? '#7C3AED' : '#6D28D9'} stroke="#2E1065" strokeWidth="0.8" />
+            <line x1={cx - 6} y1={cy} x2={cx - 6} y2={cy + 6} stroke="#2E1065" strokeWidth="1.5" />
+            <line x1={cx + 6} y1={cy} x2={cx + 6} y2={cy + 6} stroke="#2E1065" strokeWidth="1.5" />
+          </g>
+        );
+      }))}
     </g>
   );
 }

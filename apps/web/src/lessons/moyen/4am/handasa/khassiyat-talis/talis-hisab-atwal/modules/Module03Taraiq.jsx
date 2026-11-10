@@ -14,6 +14,7 @@ import { FIG_METHOD, FIG_NOW107 } from '../content/figures';
  * (MethodSteps), la ligne 2/1 CORRIGÉE (une ligne discrète), les quatre gestes nommés (plateforme, déclaré —
  * brique hisab-atwal), puis دوري الآن (EW = 3,15). LP : P2. L'encadré des quatre gestes ÉNONCE la méthode juste
  * avant sa brique : il est enveloppé dans PredictRule « hisab-atwal » (l'élève écrit d'abord sa méthode).
+ * Aucun texte destiné à l'élève ne renvoie au manuel (rollout mission 2026-11-10).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -32,8 +33,8 @@ export default function Module03Taraiq() {
       objectives={['كيف أحسب طولًا مجهولًا في وضعية طالس؟', 'أيّ مساواة أختار من بين النسب الثلاث؟', 'ما خطواتي بالترتيب؟']}
       estimatedTime="7 دقائق"
       brief={{
-        tag: 'طرائق — الكتاب ص 107', title: METHOD.title, tone: 'emerald',
-        body: <p>تمرين محلول من الكتاب: اقرأ كل سطر وحاول أن تتوقّع السطر التالي قبل أن تكشفه.</p>,
+        tag: 'طرائق', title: METHOD.title, tone: 'emerald',
+        body: <p>تمرين محلول: اقرأ كل سطر وحاول أن تتوقّع السطر التالي قبل أن تكشفه.</p>,
       }}
       steps={[
         {

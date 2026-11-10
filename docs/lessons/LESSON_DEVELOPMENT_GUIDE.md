@@ -1374,6 +1374,28 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
 - **Role-paired forbidden values when a textbook method owns a number.** A value may be forbidden in the lab (`content/forbidden.js`, by role)
   and still be legitimate in a method card (here 3/7: the climax's decoy « MB/AB », but also the DATA of the method « 3/7 = 2/AB »). Keep it
   out of the unit's text scan (`_unit/missionStrings.test.js`), say why in the test's comment, and keep it in the lab's role scan.
+- **A player-only lab beside a page lab (unit 9, `talis-hisab-atwal`: `shadow-world` on the page, `shadow-meet` in the player; council
+  2026-11-10, verdict L1.1 = C).** When the page lab is a WORLD (many objects, a written rule, a companion) that cannot be cut into rounds
+  without keeping dead state alive underneath, do not reduce it: write a NEW small lab for the player and leave the page lab untouched.
+  The recipe: (1) the new lab has its own type in the registry, `levels.js` and `manipulationTypes.js`, its own logic file built on the
+  PURE functions of the old one (`shadowMeet.js` imports `HOURS`, `K25`, `shadowAt`, `m` from `shadowWorld.js` — one source for the sun);
+  (2) the module mounts `<PlayerSwitch player={<LabRounds … rounds={M1_ROUNDS} />} page={<ManipulationWorkspace …the old lab… />} />`;
+  `lesson.config.js › resources` keeps declaring the PAGE lab (a comment says what the player plays); (3) `lab-rollout-status.mjs` reads
+  the labs of a lesson's rounds too (`content/*.js` holding `…_ROUNDS`, `type: '…'`), so the player lab passes the same gate — it must
+  also work outside the player (stepper, celebration, the questions above the scene); (4) the sentences of the steps that named the page
+  lab's objects get a player variant (`inPlayer ? SHADOW_STEPS.bridgePlayer : SHADOW_STEPS.bridge` — the student never saw the minaret);
+  (5) **nothing of the lesson is written in the component**: objects, heights, hours, tasks and texts are round data (`steps`), so another
+  lesson (the unit's synthesis) plays the same lab with its own round; `shownValues(props)` lists what that round can show.
+- **Round data may be a list of `steps` (the same lab, one hour then another, one object then another).** `verdict.groups` is then the step
+  index and the goal is `{ solvedAll: n }`; a step that asks nothing (an observation) reports a `free` exact verdict — it counts for the
+  goal, never as a trial. A round without prediction sets `stars: { predict: false }` (otherwise the second star can never be won).
+- **A typed answer inside a lab uses the platform's answer template** (`templateFor()` + `TemplateInput`, « H = [ ] m » —
+  `EXERCISE_CONTRACT.md` § « قوالب الإجابة »): build the template from a statement with a gap (`'$H = \\ldots\\,\\mathrm{m}$'`), read
+  `{ value }`, and judge it in the lab's logic in whole centimetres. Keep one tap for the early rounds (typing is a barrier), the template
+  for the later ones.
+- **Scan only what a screen WRITES.** `shownValues` must follow the round's chains: `shadow-meet` lists the ratio OB/OA only when
+  `chains: 'same'` writes it (the practice lamppost of 1,5 m has OB/OA = 2/3, a climax ratio, but no screen of that round writes a ratio).
+
 
 ### The rule that breaks lessons most often
 
