@@ -311,6 +311,20 @@ rewritten in the platform's words, the keys, the history note) — the unit's st
 1920×1080 and 1856×959: no page scroll, nothing cut on the sides, every lesson window and chip window fits folded and unfolded, the teacher keeps the
 old page. The student tour `student.unit` targets both pages; its two lines that cited the textbook were rewritten.
 
+**Unit 2 « الحساب على الجذور » (2026-11-10).** Its five lessons converted, its entry is written in `unitMissions.js`:
+- stations = the object of each lesson's scene: 🌷 الجذر التربيعي, 🧶 ناطق أم غير ناطق, 📐 المعادلة x² = a, 🧱 العمليات على الجذور,
+  🏫 أبسط صيغة لجذر, then 🧩 أدمج تعلّماتي (the synthesis, still unconverted, as in unit 1);
+- the challenge is the synthesis's module-7 situation (the Oued Souf carpet: 24 m², length twice the width) rewritten by the platform; its price,
+  a parasite datum, is left out (12 000 is also lesson 5's climax total); solvable after `muadalat-x-murabba` (ℓ² = 12). Its answer (√12 = 2√3,
+  ≈ 3,46 m and ≈ 6,93 m) is never on the page — a test checks it;
+- five keys (الجذر التربيعي, ناطق أم غير ناطق, حلول x² = a, جذر جداء وجذر حاصل قسمة, أبسط صيغة لجذر), one per lesson in order;
+- history: القلصادي (1412 – 1486), who studied in Tlemcen and wrote the letter « جـ » for a root before √ spread (the catalogue's aside, the
+  golden number and the Parthenon, is not reused).
+
+`unitMissions.test.js` now also checks, for every unit, that the stations follow the catalogue order and that the five keys follow the lessons;
+`e2e/unit-mission-view.mjs` loops over every unit of `UNIT_MISSIONS` (three lessons done, « درسك الآن » = the fourth) — all checks pass for units 1
+and 2 at the five sizes, teacher view unchanged.
+
 ## Cross-lesson fix — the main button on the right (2026-11-09, owner)
 
 On the lesson home the big « واصل » was in the LEFT column (x ≈ 460 at 1366 px) while the unit page's « واصل الدرس » is on the right (x ≈ 877): the

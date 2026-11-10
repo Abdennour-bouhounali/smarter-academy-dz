@@ -58,6 +58,46 @@ export const UNIT_MISSIONS = Object.freeze({
       text: 'عالم رياضيات إغريقي عاش في الإسكندرية. الطريقة التي ستتعلّمها لحساب القاسم المشترك الأكبر تحمل اسمه: «خوارزمية إقليدس»، وما زالت تُستعمل اليوم في الحواسيب.',
     },
   },
+  // Unité 2 (2026-11-10) : ses cinq leçons sont converties (5a5c05d7 … 972933a1) ; la synthèse ne l'est pas encore (comme l'unité 1).
+  // Icônes = l'objet de la scène de chaque leçon (حوض الأزهار، النول، شريط الطيّ، بلاط الساحة، الساحة بالبلاط الكبير). Le défi est la
+  // situation du module 7 de la synthèse (la زربية), réécrite ; son prix (une donnée parasite) n'est pas repris ici. On le résout après
+  // « المعادلات x² = a » (ℓ² = 12) ; sa réponse n'est jamais écrite sur cette page.
+  'hisab-judhur': {
+    icons: {
+      'jidhr-tarbii': '🌷',
+      'natiqa-ghayr-natiqa': '🧶',
+      'muadalat-x-murabba': '📐',
+      'amaliyat-judhur': '🧱',
+      'tawzif-khawass-judhur': '🏫',
+      'wadiya-idmajiya-judhur': '🧩',
+    },
+    short: {
+      'jidhr-tarbii': 'الجذر التربيعي',
+      'natiqa-ghayr-natiqa': 'ناطق أم غير ناطق',
+      'muadalat-x-murabba': 'المعادلة x² = a',
+      'amaliyat-judhur': 'العمليات على الجذور',
+      'tawzif-khawass-judhur': 'أبسط صيغة لجذر',
+      'wadiya-idmajiya-judhur': 'أدمج تعلّماتي',
+    },
+    challenge: {
+      lead: 'زربية مستطيلة من وادي سوف مساحتها 24 مترًا مربّعًا، وطولها ضعف عرضها. ما طولها وما عرضها؟',
+      full: 'تريد أمّ أن تفرش غرفة الضيوف بزربية تقليدية من وادي سوف. قال لها الحِرفي: «الزربية مستطيلة، مساحتها 24 مترًا مربّعًا، وطولها ضعف عرضها». لم يذكر طولها ولا عرضها، وهي تريد أن تعرف هل تناسب الغرفة.',
+      question: 'ما عرض الزربية وما طولها؟ اكتبهما بالمتر مدوّرَين إلى السنتيمتر.',
+      numbers: [24],
+      solvedAfter: 'muadalat-x-murabba',
+    },
+    keys: [
+      { icon: '🌱', label: 'الجذر التربيعي', after: 'jidhr-tarbii' },
+      { icon: '🔍', label: 'ناطق أم غير ناطق', after: 'natiqa-ghayr-natiqa' },
+      { icon: '⚖️', label: 'حلول x² = a', after: 'muadalat-x-murabba' },
+      { icon: '✖️', label: 'جذر جداء وجذر حاصل قسمة', after: 'amaliyat-judhur' },
+      { icon: '✨', label: 'أبسط صيغة لجذر', after: 'tawzif-khawass-judhur' },
+    ],
+    history: {
+      title: 'القلصادي (1412 – 1486)',
+      text: 'عالم رياضيات أندلسي درس في تلمسان وعاش في المغرب العربي. كان يكتب حرف «جـ»، أوّلَ حرف من كلمة «جذر»، فوق العدد ليدلّ على جذره، قبل أن ينتشر الرمز √ الذي ستستعمله.',
+    },
+  },
 });
 
 export const unitMissionOf = (unitId) => UNIT_MISSIONS[unitId] ?? null;

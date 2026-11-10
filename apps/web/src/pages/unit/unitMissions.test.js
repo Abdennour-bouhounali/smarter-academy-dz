@@ -27,6 +27,22 @@ describe.each(Object.entries(UNIT_MISSIONS))('unit mission content « %s »', (u
     const text = JSON.stringify({ c: m.challenge, h: m.history, k: m.keys, s: m.short });
     expect(BOOK.test(text)).toBe(false);
   });
+  it('the stations follow the catalogue order (lessons, then the synthesis) — the path and the e2e read this order', () => {
+    expect(Object.keys(m.icons)).toEqual(ids);
+  });
+  it('five keys, one per lesson at most, in the order of the lessons', () => {
+    expect(m.keys).toHaveLength(5);
+    const at = m.keys.map((k) => ids.indexOf(k.after));
+    expect([...at].sort((a, b) => a - b)).toEqual(at);
+  });
+});
+
+describe('unit 2 « الحساب على الجذور » — the challenge never writes its answer', () => {
+  // ℓ² = 12 : ℓ = √12 = 2√3 ≈ 3,46 m, L = 4√3 ≈ 6,93 m — and the price, a parasite datum of the situation, is not on the page
+  const text = JSON.stringify(UNIT_MISSIONS['hisab-judhur'].challenge);
+  it.each(['√12', '2√3', '4√3', '3,46', '6,93', '12000', '12 000'])('« %s » is not on the unit page', (s) => {
+    expect(text.includes(s)).toBe(false);
+  });
 });
 
 describe('unit state for a student', () => {
