@@ -2546,7 +2546,8 @@
         "تطبيق كتابة تناسب الأطوال باستعمال خاصية طالس"
       ],
       "prerequisiteLessonCodes": [
-        "talis-hisab-atwal"
+        "talis-hisab-atwal",
+        "amaliyat-natiqa"
       ],
       "pointsToLearn": [
         "تقسيم قطعة مستقيم إلى عدد من القطع المتقايسة أو بنسبة معطاة باستعمال المسطرة غير المدرجة والمدور فقط",

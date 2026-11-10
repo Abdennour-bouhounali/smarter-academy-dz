@@ -2,8 +2,8 @@ import { describe, it, expect } from 'vitest';
 
 /**
  * Unité 9 « خاصية طالس » — ce que l'élève LIT de la mission, de la carte des معارف et des données du manuel (modèle : l'unité 2,
- * hisab-judhur/_unit/missionStrings.test.js ; rollout 2026-11-10). Une leçon CONVERTIE entre dans `CLIMAX` avec la signature de SA مسألة ;
- * les leçons 1 (talis-hisab-atwal) et 3 (inshaat-talis) s'y ajoutent quand elles sont converties (une ligne chacune) :
+ * hisab-judhur/_unit/missionStrings.test.js ; rollout 2026-11-10). Une leçon CONVERTIE entre dans `CLIMAX` avec la signature de SA مسألة
+ * (aksiya-talis et inshaat-talis le 2026-11-10) ; la leçon 1 (talis-hisab-atwal) s'y ajoute quand elle est convertie (une ligne) :
  *   - aucun caractère de contrôle dans un point d'étape ni dans l'ouverture (« \times » dans une chaîne JS à apostrophes devient TAB + « imes ») ;
  *   - aucune ligne de la carte des معارف (knowledgeGraph.js) ne renvoie au manuel ;
  *   - les cartes de connaissance (knowledge.jsx) et la carte des معارف — ouvertes dès le début (`knowledgeMapOpen`) — ne montrent pas la
@@ -28,11 +28,18 @@ const strings = (src) => src
  * La signature de la مسألة de chaque leçon CONVERTIE : ce que ses cartes de connaissance et ses points d'étape ne montrent jamais.
  *   aksiya-talis (module 5, le tréteau des peintres) : les barres 80 / 100, les trous 24, 30, 36, 44, 45, 46, les produits 2400 / 3600 / 3680,
  *   les rapports 3/10, 9/20, 23/50 et leurs écritures décimales 0,3 / 0,45 / 0,46.
+ *   inshaat-talis (module 4, la banderole du derby) : la banderole de 10 cm, AN = 40 et NB = 30, la banderole réelle de 35 m (20 m + 15 m),
+ *   les prix 650 / 600 / 13000 / 9000 / 22000, les 3000 supporters, les rapports 4/3 et 3/4, la part 4/7, les longueurs 40/7, 30/7,
+ *   10/7, 40/3 et l'écriture décimale 5,7. (3/7 — le leurre MB/AB de la مسألة — n'est PAS dans ce balayage de texte : la طريقة « قطعة طولها
+ *   14/3 » écrit la proportion DONNÉE 3/7 = 2/AB, un autre rôle ; dans le labo, le balayage par rôle de content/forbidden.js l'interdit comme
+ *   part du tout.)
  */
 const num = (list) => new RegExp(`(^|[^0-9,{}.])(${list.join('|')})(?![0-9]|\\{,\\})`);
 const frac = (n, d) => new RegExp(`frac\\{${n}\\}\\{${d}\\}`);
 const CLIMAX = {
   'aksiya-talis': [num(['80', '100', '24', '30', '36', '44', '45', '46', '2400', '3600', '3680']), frac(3, 10), frac(9, 20), frac(23, 50), /0\{?,\}?(3|45|46)(?![0-9])/],
+  'inshaat-talis': [num(['10', '40', '30', '35', '20', '15', '650', '600', '13000', '9000', '22000', '3000']), frac(4, 3), frac(3, 4), frac(4, 7),
+    frac(40, 7), frac(30, 7), frac(10, 7), frac(40, 3), /5\{?,\}?7(?![0-9])/],
 };
 const BOOK = [/الكتاب(?!ة)/, /تمرين\s*\d+\s*:/, /خطأً? مطبعي/];
 const lessonOf = (path) => path.split('/')[1];
@@ -50,6 +57,9 @@ describe('unit 9 — mission strings and knowledge maps', () => {
     const hit = (s) => sigs.some((re) => re.test(s));
     ['$AM = 24$', 'AB = 80', '\\dfrac{9}{20}', '$0{,}45$', '2400', 'الثقب 45'].forEach((s) => expect(hit(s), s).toBe(true));
     ['$AB = 9$', '\\dfrac{1}{3}', '$2{,}45$', '$0{,}35$', '124', '4,5'].forEach((s) => expect(hit(s), s).toBe(false));
+    const hit3 = (s) => CLIMAX['inshaat-talis'].some((re) => re.test(s));
+    ['طولها 10 cm', '$\\dfrac{MA}{MB} = \\dfrac{4}{3}$', '\\dfrac{4}{7}', '$AN = 40$', '35 m', '$5{,}7$', '\\dfrac{40}{7}', '650'].forEach((s) => expect(hit3(s), s).toBe(true));
+    ['$AB = 9$', '\\dfrac{14}{3}', '\\dfrac{2}{3}', '$2{,}4$', '\\sqrt{13}', '\\dfrac{3}{5}', '12 cm', '110', '5,75', '$a^2+b^2$'].forEach((s) => expect(hit3(s), s).toBe(false));
   });
   it('no checkpoint string holds a control character (a lost backslash)', () => {
     Object.entries(configs).forEach(([path, m]) => {
@@ -71,7 +81,7 @@ describe('unit 9 — mission strings and knowledge maps', () => {
     });
   });
   it('no knowledge-map line of a converted lesson sends the student to the textbook', () => {
-    // les leçons pas encore converties (1 et 3 le 2026-11-10 : inshaat-talis en a encore une) entrent ici avec leur conversion
+    // la leçon pas encore convertie (1, le 2026-11-10) entre ici avec sa conversion
     Object.entries(graphs).filter(([path]) => CLIMAX[lessonOf(path)]).forEach(([path, m]) => {
       expect(JSON.stringify(m.KNOWLEDGE_GRAPH ?? {}).includes('الكتاب'), path).toBe(false);
     });
@@ -81,6 +91,15 @@ describe('unit 9 — mission strings and knowledge maps', () => {
       const sigs = CLIMAX[lessonOf(path)];
       if (!sigs) return;
       strings(src).split('\n').forEach((line, i) => sigs.forEach((re) => expect(re.test(line), `${path}:${i + 1} ${re} — ${line.trim().slice(0, 90)}`).toBe(false)));
+    });
+    // la carte des معارف cite aussi des phrases IMPORTÉES (content/textbook.js › LINES…) : on balaie donc aussi son contenu ÉVALUÉ
+    Object.entries(graphs).forEach(([path, m]) => {
+      const sigs = CLIMAX[lessonOf(path)];
+      if (!sigs) return;
+      (m.KNOWLEDGE_GRAPH?.nodes ?? []).forEach((node) => {
+        const text = JSON.stringify(node).replace(/\\\\/g, '\\');
+        sigs.forEach((re) => expect(re.test(text), `${path} node ${node.id} ${re}`).toBe(false));
+      });
     });
   });
   it('the textbook data a student reads never names the book, an exercise number or a printing error', () => {

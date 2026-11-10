@@ -39,6 +39,51 @@ export const LESSON_CONFIG = {
   unit: 'khassiyat-talis',
   unitTitle: 'خاصية طالس',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (modèle du pilote qasim-adad-tabii, VALIDÉ par le propriétaire le 2026-11-08 ; rollout leçon par leçon,
+  // docs/reports/MISSION_ROLLOUT_PROGRESS.md — unité 9, leçon 3, 2026-11-10) — implique le regard « focus » ; l'enseignant et le mode classe ne voient
+  // aucun changement.
+  studentView: 'mission',
+  // LA MISSION : l'ouverture avoue qu'on ne sait pas encore la résoudre ; les outils sont les connaissances de knowledge.jsx ; les points d'étape
+  // (conseil du 2026-11-10, verdict L3) RAPPROCHENT de la mission sans en résoudre aucune question : ni ses nombres (10 cm, 4/3, 3/4, 4/7, 3/7,
+  // 40/7, 30/7, 40, 30, 35, 20, 15, 650, 600…), ni sa méthode (deux parallèles graduées, côtés opposés / même côté), ni sa correction (passer de
+  // MA/MB à AM/AB) — content/mission.test.js et _unit/missionStrings.test.js. La scène : la banderole du derby au sol (« tifo-banner »).
+  mission: {
+    scene: 'tifo-banner',
+    title: 'لافتة الدربي: أين نفصل الشريطين؟',
+    opening: {
+      text: 'يخيط أنصار فريق الحيّ لافتة «تيفو» للدربي من شريطين: أخضر ثم أحمر. على ورقة التصميم اللافتة $[AB]$ طولها 10 cm، والنقطة $M$ التي تفصل الشريطين يجب أن تحقّق $\\dfrac{MA}{MB} = \\dfrac{4}{3}$ . الطول $AM$ لا يُقاس بالضبط بمسطرة مدرّجة. كيف تنشئ $M$ بالمسطرة غير المدرّجة والمدور فقط؟ وكم مترًا من كل قماش يلزم للافتة الحقيقية؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'taqsim-qitaa', icon: '✂️', label: 'تقسيم قطعة إلى قطع متقايسة' },
+      { id: 'nuqta-nisba', icon: '🎯', label: 'نقطة تقسم قطعة بنسبة معلومة' },
+      { id: 'nuqtatan', icon: '↔️', label: 'نقطتان من المستقيم نفسه' },
+    ],
+    climaxModule: 4,
+    checkpoints: [
+      {
+        id: 'cp-alama', afterModule: 1,
+        prompt: 'نريد تقسيم قطعة [AB] إلى 6 قطع متقايسة. بعد تعيين العلامات المتقايسة على نصف المستقيم، أيّ علامة نصلها بالنقطة B؟',
+        options: ['العلامة السادسة', 'العلامة الخامسة', 'العلامة السابعة'],
+        correct: 0,
+        explain: 'عدد القطع هو رتبة العلامة الموصولة بالنقطة B: لست قطع نصل العلامة السادسة.',
+      },
+      {
+        id: 'cp-juz-kull', afterModule: 2,
+        prompt: 'قُسمت [AB] إلى 8 قطع متقايسة، و M هي نقطة التقسيم الثالثة ابتداءً من A. أيّ كتابة تقارن الجزء AM بالقطعة كلها AB؟',
+        options: ['$\\dfrac{AM}{AB} = \\dfrac{3}{8}$', '$\\dfrac{AM}{AB} = \\dfrac{3}{5}$', '$\\dfrac{AM}{AB} = \\dfrac{8}{3}$'],
+        correct: 0,
+        explain: 'AM ثلاث قطع من ثماني: $\\dfrac{AM}{AB} = \\dfrac{3}{8}$ . أما $\\dfrac{3}{5}$ فتقارن AM بالجزء الباقي MB (خمس قطع)، لا بالكل.',
+      },
+      {
+        id: 'cp-sharit', afterModule: 3,
+        prompt: 'شريط [AB] طوله 12 cm قُسم إلى 4 قطع متقايسة، و $M_3$ هي نقطة التقسيم الثالثة ابتداءً من A. ما الطول $AM_3$ ؟',
+        options: ['9 cm', '3 cm', '8 cm'],
+        correct: 0,
+        explain: 'طول القطعة الواحدة $12 \\div 4 = 3$ cm، و $AM_3$ ثلاث قطع: $3 \\times 3 = 9$ cm.',
+      },
+    ],
+  },
   title: 'إنشاءات هندسية وتطبيقات خاصية طالس (تقسيم قطعة مستقيم)',
   description: 'بالمسطرة غير المدرجة والمدور فقط: نقسم قطعة مستقيم إلى قطع متقايسة أو بنسبة معطاة، وننشئ قطعة طولها معلوم بكسر مثل $\\dfrac{14}{3}$ ، ونبرّر كل إنشاء بخاصية طالس.',
   level: 'moyen',
@@ -73,6 +118,8 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début, sans verrou par محور.
+  knowledgeMapOpen: true,
   // Les acquis que « أستعدّ » diagnostique (années précédentes et leçons 1–2 de l'unité).
   priorKnowledge: ['insha-muwazi', 'qitaa-mutaqayisa', 'kitabat-tanasub', 'talis-nisab', 'talis-aksiya', 'mustaqim-muntasafayn', 'fithaghuris'],
   // « مسألة الدرس » (MASAIL_GENERATION_GUIDE.md) : la banderole du laboratoire متقدم (deux parallèles graduées, rapport
@@ -120,7 +167,7 @@ export const LESSON_CONFIG = {
     {
       kind: 'manipulation', code: 'segment-divider-ratio-3-2', type: 'segment-divider', module: 1,
       level: 'advanced',
-      title: 'طرائق ص 109: نقطة تقسم اللافتة بنسبة 3 إلى 2',
+      title: 'نقطة تقسم اللافتة بنسبة 3 إلى 2',
       objective: 'تقسيم قطعة مستقيم بالمسطرة غير المدرّجة والمدور: قطع متقايسة على مستقيم مساعد وموازيات، وخاصية طالس تبرّر التقسيم',
       autonomy: 'مستقيمان متوازيان يدرّجهما التلميذ بنفسه من الجهتين: يختار عدد العلامات على كل مستقيم وجهتها دون أي اقتراح، ويبحث عن نقطتين من (AB) تحقّقان النسبة — داخل [AB] وخارجها',
       experience: { type: 'platform_adaptation', reason: 'improved_interactivity_and_age_appropriateness', theme: 'tifo' },
@@ -134,18 +181,18 @@ export const LESSON_CONFIG = {
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
-      title: 'أستعدّ', desc: 'سبع عبارات: الموازي بالكوس، نقل طول بالمدور، التناسب، خاصية طالس وعكسيتها، مستقيم المنتصفين، فيثاغورس. صحيح أم خاطئ؟',
+      title: 'أستعدّ', desc: 'عشر عبارات من السهل إلى الأصعب: خاصية طالس، والتناسب والرابع المتناسب. صحيح أم خاطئ؟',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 5, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'lafita', path: `${LESSON_BASE_PATH}/lafita`,
-      title: 'لافتة التيفو — قطع متقايسة دون قياس', desc: 'نصف مستقيم، مدور، كوس: قسّم اللافتة إلى ثلاثة أشرطة متساوية، ثم برّر بخاصية طالس وطالع طريقة الكتاب (ص 107).',
+      title: 'لافتة التيفو — قطع متقايسة دون قياس', desc: 'نصف مستقيم، مدور، كوس: قسّم اللافتة إلى أشرطة متساوية، ثم برّر بخاصية طالس واكتشف طريقة ثانية.',
       stage: 'trigger', teachesLearningPointIds: ['4am_inshaat-talis_P1'],
       color: 'indigo', style: 'featured', estimatedMin: 13, difficulty: 2, actionText: 'أقسم اللافتة' },
     { id: '02', number: 2, slug: 'taraiq', path: `${LESSON_BASE_PATH}/taraiq`,
-      title: 'طرائق — نسبة معلومة وطول معلوم', desc: 'النقطة M حيث MA على MB يساوي 3 على 2 ونقطة ثانية خارج [AB] (ص 109)، دوري الآن، طول $\\dfrac{14}{3}$ (ص 107)، ثم طول غير ناطق.',
+      title: 'طرائق — نسبة معلومة وطول معلوم', desc: 'النقطة M حيث MA على MB يساوي 3 على 2 ونقطة ثانية خارج [AB]، ثم قطعة طولها $\\dfrac{14}{3}$ ، ثم طول غير ناطق.',
       stage: 'discovery', teachesLearningPointIds: ['4am_inshaat-talis_P1', '4am_inshaat-talis_P2'],
       color: 'emerald', style: 'featured', estimatedMin: 12, difficulty: 3, actionText: 'أنشئ وأبرّر' },
     { id: '03', number: 3, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
-      title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 17 و 18 و 19 (وضع نقط على مستقيم) و 21 (أتعمّق).',
+      title: 'أوظّف تعلّماتي', desc: 'تمارين متدرّجة: وضع نقط على مستقيم بنسبة معطاة، ثم تمرين للتعمّق.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_inshaat-talis_P1', '4am_inshaat-talis_P2'],
       color: 'amber', style: 'featured', estimatedMin: 9, difficulty: 3, actionText: 'أتدرّب' },
     { id: '04', number: 4, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,

@@ -37,7 +37,7 @@ here (owner, 2026-11-08). Do not wait for the owner's validation between lessons
 | 1 | `talis-hisab-atwal` « خاصية طالس وحساب الأطوال » | `shadow-world` (`geometry/ShadowWorld.jsx`, `logic/shadowWorld.js`) | module 5 « عرض في ساحة الحيّ » |
 | 2 | `aksiya-talis` « الخاصية العكسية لخاصية طالس وإثبات التوازي » | `parallel-level` (`geometry/ParallelLevel.jsx`, `logic/parallelLevel.js`) | module 5 « حامل الدهّانين على شكل X » |
 | 3 | `inshaat-talis` « إنشاءات هندسية وتطبيقات خاصية طالس » | `segment-divider` (`geometry/SegmentDivider.jsx`, `logic/segmentDivider.js`) | module 4 « لافتة الدربي » |
-| S | `wadiya-idmajiya-talis` (synthesis) | `cone-cylinder`, `shadow-world` | NOT converted — see §5 |
+| S | `wadiya-idmajiya-talis` (synthesis) | `cone-cylinder`, `shadow-world` | converted LAST — see §5 (owner, 2026-11-10) |
 
 Folder: `apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/`. Order: catalogue order (lessons 45 → 47).
 
@@ -110,17 +110,26 @@ Model on `roots/SquareFold.jsx` and `roots/SquareTiling.jsx` (read their « LECT
 ## 4. Unit-level work (after the three lessons)
 
 **Unit page:** add unit 9 to `apps/web/src/pages/unit/unitMissions.js` — station icons (the scenes' objects) and short labels for the
-three lessons + the synthesis (🧩 « أدمج تعلّماتي », unconverted), the unit challenge REWRITTEN in the platform's words (`lead`, `full`,
+three lessons + the synthesis (🧩 « أدمج تعلّماتي »), the unit challenge REWRITTEN in the platform's words (`lead`, `full`,
 `question`, `numbers`, `solvedAfter`), no answer and no lesson climax number in it, 3 keys (`after` = lesson id; check what
 `unitMissions.test.js` expects for a 3-lesson unit and adapt the test, not the rule), the history note (a mathematician of the Islamic
 world if there is an honest one; never a religious symbol). `unitMissions.test.js` green;
 `node apps/web/e2e/unit-mission-view.mjs` (it already loops over every unit) green at every size; look at unit 9's screenshots. Separate
 commit `feat(unit): unit 9 « خاصية طالس » on the one-screen unit page`.
 
-## 5. The synthesis — do NOT convert
+## 5. The synthesis — converted too, LAST (owner rule, 2026-11-10)
 
-`wadiya-idmajiya-talis` waits: the synthesis council ran on 2026-11-10 and its seven questions are with the owner (unit 1 is the pilot,
-then unit 2, then the others; « convert each unit's synthesis only after its lessons »). Leave it as it is, and say so in the report.
+> Superseded the same day: this section said « do NOT convert ». The owner then decided: **« the synthesis must be built too, start with this
+> unit »**. Unit 9's `wadiya-idmajiya-talis` is therefore the PILOT of the synthesis recipe (not unit 1, as the synthesis council had proposed).
+
+Convert `wadiya-idmajiya-talis` after the three lessons, on the synthesis council's verdict of 2026-11-10; the owner did not answer its seven
+questions one by one, so the chairman's recommended answers are the working defaults (listed for the owner in the final report):
+the existing engine in the player (no synthesis-specific player, never Classroom Mode); no tool earned (the unit's keys are owned from the first
+screen, each training lights the keys it USES — `tools[].usedIn`); no checkpoints; « أستعدّ » = the 10-statement ladder built from the unit's
+lessons (old items stay reachable); the map open; M7 « أخطّط » its own station right before the 🏆 on M8 (`climaxModule: 8`); the opening button
+« أجرّب » (no « لا أعرف بعد »); one local ★ per training finished without opening « الحل » (never evidence, mastery, reports or « بوصلتي »); a
+peer sheet at the end of M7 = a classmate's wrong PLAN, never the solution; the honest duration, in two sittings; every typed step entered in
+its own shape (answer templates). The recipe that results is written in `MISSION_ROLLOUT_PROGRESS.md` and the guide for the other units.
 
 ## 6. Councils — in THIS session, never inside a sub-agent
 

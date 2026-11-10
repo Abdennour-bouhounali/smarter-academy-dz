@@ -45,8 +45,8 @@ every lab of the unit at once (verdict « Cross-lesson », « L1 », « L2 », �
 |---|---|---|---|---|---|
 | 1 | `talis-hisab-atwal` | `shadow-world` → a new one-lane `ShadowMeet` (verdict L1.1 = C) | ⏳ not converted | | Page mode until converted whole (verdict cut line). |
 | 2 | `aksiya-talis` | `parallel-level` (v2 treatment + LabCoach, new; « ضع الميزان ») | ✅ done 2026-11-10 | `feat(lessons): aksiya-talis — mission prototype` | See « Unit 9, lesson 2 » below. |
-| 3 | `inshaat-talis` | `segment-divider` | ⏳ not converted | | |
-| S | `wadiya-idmajiya-talis` | — | not converted — waiting on the owner (the synthesis council's seven questions, prompt §5) | | |
+| 3 | `inshaat-talis` | `segment-divider` (v2 treatment + LabCoach, new; both modes `equal` and `ratio`, `sameUnitOnly`, the cap) | ✅ done 2026-11-10 | `feat(lessons): inshaat-talis — mission prototype` | See « Unit 9, lesson 3 » below. |
+| S | `wadiya-idmajiya-talis` | `cone-cylinder` (to treat), `shadow-world` → `ShadowMeet` in the player | ⏳ converted LAST — owner rule 2026-11-10: « the synthesis must be built too, start with this unit » (pilot of the synthesis recipe, prompt §5); the student never sees the old view, so module 7's labs are treated for the player | | Decisions: two councils + the owner, 2026-11-10. |
 
 ## Lab families — which have the v2 treatment
 
@@ -64,6 +64,7 @@ every lab of the unit at once (verdict « Cross-lesson », « L1 », « L2 », �
 | `square-fold` | ✅ (2026-11-10) | `muadalat-x-murabba` (unit 2) |
 | `square-tiling` | ✅ (2026-11-10, both modes `product` and `simplest`) | `amaliyat-judhur` (unit 2) |
 | `parallel-level` | ✅ (2026-11-10, both modes `ladder` and `crossing`, with or without an imposed ratio) | `aksiya-talis` (unit 9) |
+| `segment-divider` | ✅ (2026-11-10, both modes `equal` and `ratio`; `sameUnitOnly`, 3 graduations per rail) | `inshaat-talis` (unit 9) |
 | every other lab | ⏳ | — |
 
 ## Lesson 2 — `qawasim-adad-tabii` « قواسم عدد طبيعي » (2026-11-08)
@@ -890,6 +891,108 @@ coach line about it. L2.8: shared scene primitives, a thin scene file. Peer shee
 the review: press → away → back shows the verdict, focus kept on « ضع الميزان », the live region mounted while « lv » is open, 0 scroll, 0
 `data-fit-overflow`, 0 console error).
 
-**Open:** lessons 1 and 3 and the synthesis of the unit; the unit page entry (after the three lessons); `inshaat-talis/knowledgeGraph.js` still names
-« طريقة الكتاب » (it joins the unit scan when converted).
+**Open:** lesson 1 and the synthesis of the unit; the unit page entry (after the three lessons). (`inshaat-talis` joined the unit scan with its
+conversion — see below.)
 
+## Unit 9, lesson 3 — `inshaat-talis` « إنشاءات هندسية وتطبيقات خاصية طالس (تقسيم قطعة مستقيم) » (2026-11-10)
+
+**Council verdict (2026-11-10, binding — `L3`):** L3.1 = A, cap 3 graduations per rail + `sameUnitOnly`, its refusal EXPLAINED in words, with tests.
+L3.2: module 1's required round = ratio 2/3, module 2's round = 3/2. L3.3: round 2 with n = 5. L3.4: the contrast (`discovered`) in round 2 only.
+L3.5: a wrong construction shows its bands and openings only, never computed lengths. L3.6: the prep's second skill. L3.7: p > q allowed (module 2:
+3/2; free: 3/2 and 2/1), and the « same side » prediction answers « after B » when p > q. The player's default length is 9 (never 10). Checkpoints: the
+√5 item replaced by « a 12 cm strip in 4 equal parts → AM₃ = 9 », plus one item telling part/whole from part/part. Peer sheet « ورقة سلمى » (two
+compass openings). Prerequisites talis-hisab-atwal + amaliyat-natiqa.
+
+**What was written:**
+- `content/banner.js` — `M1_ROUNDS` (`m1-divider`): r1 an 8 cm banner in 3 by hand (prediction « which mark joins B? » 2 / 3 / 4; at the first right
+  construction the chain « rule »: « AP₃ = ▢ × AP₁ » in one tap, BUILD « AM₁/AB = AP₁/AP₃ » with the decoy P₁P₃, then the rule), r2 11 cm in 5
+  (predictions: the mark 5 / 6 / 4, then the number of parallels 5 / 6 / 4; chain « build »: « AM₂/AB = AP₂/AP₅ »; AND the contrast — a second
+  construction with another opening or angle, or a failed one), r3 REQUIRED the point of ratio 2/3 (3 graduations per rail, one unit; predictions:
+  opposite sides → between A and B, same side → before A; chains « ranks » — the ranks of F and E, then BUILD « AF/BE = MA/MB » with the decoy AB —
+  and « rule » — AM/AB, then the rule), ⭐ ratio 1/3 (both points in three trials), free (3 or 5 parts of 12 cm; ratios 3/2, 2/1, 1/2). `M2_ROUNDS`
+  (`m2-divider`): the ratio 3/2 (prediction « same side » → AFTER B; chain « build »), then free. Practice rounds 6 cm in 2, 6 cm in 3, ratio 1/2 with
+  two graduations (« جرّب أصغر » after three refusals). Goals hold every question the round asks; the content test PLAYS each round to ★★★.
+- `content/forbidden.js` (the climax signature BY ROLE: a length never 10, 40, 30, 35, 20, 15, 10/7, 40/3, 5,7; a ratio MA/MB never 4/3 nor 3/4; a
+  part of the whole never 4/7, 3/7 nor 4; a graduation rank never 4, the pair 4 : 3 never; 650, 600, 13000, 9000, 22000, 3000, 40/7, 30/7 in no role
+  — 4 stays a number of marks on the ray, 30 / 35 / 40 stay angles in degrees, 3/4 stays a part of the whole), `content/mission.test.js` (the dry-run
+  over `logic › shownValues` of every round, practice round and free choice — every length, every reachable rank pair with its ratio and both its t,
+  the chips, the decoys — plus the prediction options, the lab's refusal strings, the checkpoints recomputed from their own prompts, the peer sheet
+  and the prep; no method nor fix of the climax in a checkpoint; no textbook line in the config), `content/banner.test.js`, `content/prep.js` + test
+  (10 statements: « خاصية طالس » → revise `talis-hisab-atwal`; « التناسب والرابع المتناسب » → revise `tasawi-muqaranat-kasrayn`, the 3AM lesson that
+  teaches the test — lesson 2's review finding applied from the start; the catalogue keeps `amaliyat-natiqa`), `content/peerSheet.js` + test
+  (« ورقة سلمى »: (d₁) graduated at 1,5 cm and (d₂) at 1 cm → 2 × 1,5 = 3 = 3 × 1, the ratio 1 instead of 2/3 and M at the midpoint; with one unit
+  AM = 2/5 × 6 = 2,4 cm; the test replays her construction in the lab's logic: refused as `units`), lesson 3's signature in
+  `_unit/missionStrings.test.js` (and an EVALUATED scan of the knowledge map's nodes — they cite imported lines the raw scan could not see).
+- Config: `studentView: 'mission'`, `knowledgeMapOpen: true`, the `mission` block (scene `tifo-banner`, opening = the climax question, tools
+  `taqsim-qitaa`, `nuqta-nisba`, `nuqtatan`, `climaxModule: 4`, three checkpoints after modules 1–3: the 6th mark for 6 parts; 3 parts of 8 against
+  3 to 5; a 12 cm strip in 4 → the third point at 9 cm). Module 0 on the ladder; module 1 in `PlayerSwitch` + `LabRounds` (step 1 waits for r1,
+  step 3 for r2 — their trace comes from the WON rounds); module 2 in `PlayerSwitch` + `LabRounds` (step 3 waits for its round and asks about the
+  student's two points on 3/2: 3/5, 3, after B — the page keeps 2/5), its last step the peer sheet. Every student-visible textbook reference removed
+  (« طريقة الكتاب » in `knowledge.jsx`, `knowledgeGraph.js` and module 1; « طرائق ص 107 / 109 », « دوري الآن، الكتاب ص 109 », « في شكل الكتاب »,
+  « تمارين الكتاب 17 … », « تمرين N — » step titles, the module descriptions, « مثال الكتاب »). The banner length 10 cm — the climax's — left the
+  questions of module 1 and the knowledge card's prompt (the page lab keeps its 10 cm default; the rounds use 8, 11, 12, 6). Catalogue:
+  `prerequisiteLessonCodes` = talis-hisab-atwal + amaliyat-natiqa, exported and imported (local DB: lesson 209 ← 207 talis-hisab-atwal, 770
+  amaliyat-natiqa, both available).
+- Scene `TifoBannerScene` (`data-scene="tifo-banner"`): the youth hall the evening before the derby, a long banner on the floor that takes its two
+  colours as tools are earned (its seam drawn only when everything is won), faint parallel strokes above it, a girl in hijab with a big compass, a
+  boy with an UNGRADUATED straightedge (KidFigure), no number; on the unit's shared primitives (`FloorBanner`, `BigCompass`, `Straightedge` added to
+  `mission/thalesSceneKit.jsx`).
+
+**Added to shared code:**
+- `segment-divider` (player only, gated by `useInMissionPlayer()`; page and teacher unchanged — `segmentDivider.render.test.jsx` green):
+  `onVerdict` (`logic › verdictOf`), `sameUnitOnly` (default true in the player), the cap by `marks`, `length` 9 by default in the player,
+  `init({ player })` (mark 1 never joins — `joinOne`, not a trial; a ruler posed again is shown, not appended), a wrong construction told in words
+  (`vp.count`, `vp.unequal`: bands and openings, no length), `chains` (`CHAINS_PLAYER.equal` / `.ratio`: `full`, `build`, `none`; questions `apFill`,
+  `apBuild`, `ranksFill`, `maBuild`), `predict` (keys; `logic › predictOptions`, `predictTruth`, `judgedPredictions`; results held `PRED_HOLD_MS`),
+  `contrast`, `choices` (the free round switches construction), the names P₁ … Pₙ / M₁ … / F / E on the figure, the journal « 📋 جدول تجاربك » and
+  the verdict in the side column, an always-mounted `sr-only` live region (`[data-sd-verdict-live]`), every control frozen during a prediction or
+  a question (`aria-disabled` + the `act` guard — never `disabled`), a player TOP BAR above the scene (« صِل B بالعلامة », the ruler arrows,
+  « إنشاء جديد »), `LabCoach` (`logic › coachOf`, with `idle` steps), `{ tk: 'reset' }`, `{ tk: 'retry' }` (a full reset), `{ tk: 'discovered' }`,
+  the first refusal free, zoom-safe pointer maths (the scene and the compass track), `shownValues(props)` for the forbidden-values scan.
+- One fix that reaches the page too: the rule question's hints spoke of « the inside point and the outside point » in equal mode; they now follow
+  the lab's mode (`cp.ruleEqual.*`). The rule's witness never cites a ruler refused for its units.
+- `mission/TifoBannerScene.jsx`, three primitives in `mission/thalesSceneKit.jsx`, registered in `MissionScene.jsx`.
+
+**Traps met:**
+- The coach bubble BLOCKED the next gesture: above the « صِل B بالعلامة » row it covered the dotted mark the student still had to tap (a
+  Playwright walk that never presses « فهمت » found it), under « إنشاء جديد » it covered the bands of the construction just finished, and in ratio
+  mode any bubble near the compass covered a dotted mark. Fix: in the player the join row, the ruler arrows and « إنشاء جديد » sit in a bar ABOVE
+  the scene (their bubble opens downwards over the empty top of the scene); the ratio steps are `idle` (shown only after 3,5 s without a gesture);
+  no bubble at all while only one line is graduated. Walk `x2.mjs`: no control blocked, no band covered, at the three sizes.
+- Vite HMR during a walk resets the lab: never edit `src/` while a Playwright walk runs (a run « lost » its refusal for that reason).
+- A stale ✗ from an old refused ruler stayed drawn beside the M just found: in the player the ✗ is only the POSED ruler's.
+- The `sr-only` live region holds a KaTeX formula: the `.katex` clipping probe must skip `.sr-only` (a false positive).
+- 3/7 is both the climax's decoy (MB/AB) and the DATA of the textbook method « 3/7 = 2/AB » (a segment of length 14/3): it stays out of the unit's
+  text scan (comment in `_unit/missionStrings.test.js`) and in the lab's role scan (role `t`).
+- « فتحته » contains « تحت »: a test that forbids a side word in the coach strings must use word boundaries.
+- `W_PRIOR_NOT_DIAGNOSED`-type warnings: the 10-statement ladder diagnoses Thales and proportions only; the other `priorKnowledge` ids stay
+  (modules require them).
+
+**Review (2026-11-10, `ecc:react-reviewer`, `ecc:code-reviewer`, `ecc:a11y-architect`, each finding verified in the code):**
+- Fixed — module 2's « same side » prediction was JUDGED at the first right point (the chain `build` opens there and « all judged » followed the
+  last chain): its result was shown before any outside point existed. In ratio mode « all judged » now waits for both points.
+- Fixed — a ruler posed again on the same positions and ranks but OTHER openings (8 + 12 where 10 + 10 stood, after « إنشاء جديد ») showed the old
+  « right » verdict again: a join now carries the signature of its openings (`unitsKey`), compared by `commitRuler` and `joinAtEnds`; tested.
+- Fixed (a11y) — the same refusal twice in a row was announced once (the live region's key is now per gesture); the join buttons' accessible name
+  starts with their visible digit in the player; the ruler ends are named F and E for a screen reader too (`endHandleP.*`); the visible verdict
+  carries a hidden « صحيح. / خطأ. »; the journal's « — » has a hidden « لا نسبة ».
+- Not changed (and why): the peer sheet and the reworded steps also reach the teacher page (intended, as in lesson 2 — text only, the lab is
+  unchanged); the apBuild prompt already says « العلامة P_k » (no extra sentence linking P_k to mark k); `common.cp.predict.right` holds an emoji
+  (shared by every lab); the checkpoint « 3 of 8 against 3 to 5 » names part / whole against part / rest, as the verdict asked — without the
+  climax's two parts MA and MB nor its conversion.
+
+**Verification:** vitest `src/lessons` (662 files, 12 170 tests, after the review fixes), `check:lessons` exit 0 (entry 241,3 KB gzip),
+`lab-rollout-status --lesson inshaat-talis` ✅ (and `aksiya-talis` still ✅), Playwright at 1366×768, 1024×768, 1920×1080: every round of module 1
+by hand to ★★★ (a refused join of mark 1, a free wrong construction, the two-units refusal, the challenge, every free choice), the home (first
+visit and return, « قبل أن تبدأ » with both lessons), « أستعدّ » (10 + a review with a « راجع » card), the peer sheet (wrong line, wrong fix,
+right fix, restored after a reload), every module unit by unit, the final test, the knowledge map, the teacher view (two levels, stepper, page
+verdict, 10 cm — unchanged); at 1024: a wrong prediction, three refusals → « جرّب أصغر » and back, a wrong answer then « أعِد التجربة », « إعادة »,
+a reload mid-module, module 2's round (the outside point first: « NA, NB » in the build; away and back shows the verdict again); the coach walk
+without « فهمت » at the three sizes. 0 `data-fit-overflow`, 0 page scroll, 0 clipped `.katex`, 0 console error.
+
+**Open:** lesson 1 (`talis-hisab-atwal`) and the synthesis of the unit; the unit page entry (after the three lessons). For the owner: (1) the
+textbook exercise of module 3 « AM/AB = 3/7 » (seven equal parts) precedes the climax, whose decoy is 3/7 — the exercise is textbook data and was
+not changed; (2) two checkpoints of the verdict fit three slots only (modules 1–3): « 2/5 = 3/x » was dropped for the part/whole item (the prep
+already asks proportions); (3) the ratio chain is split in two stops (`ranks` at the first point, `rule` at both) instead of one stop of four
+questions — each question follows the gesture it is about; (4) the coach has no « graduate (d₂) too » bubble (it blocked the next mark); the
+lead and the reading line say it.

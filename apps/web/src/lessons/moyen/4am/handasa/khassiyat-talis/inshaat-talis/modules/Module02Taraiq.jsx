@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule, PeerSheet } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
@@ -9,6 +9,10 @@ import { SourceTag, TextbookBox, MethodSteps } from '../../../../../../common/te
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { LAB, METHOD_RATIO, METHOD_LENGTH, NOW, ROOT13, LINES } from '../content/textbook';
 import TrialsEvidence from '../components/TrialsEvidence';
+import { M2_ROUNDS } from '../content/banner';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
 
 /**
  * Module 2 — طرائق (pp. 107 et 109), stage `discovery` (les طرائق : TOUCH → FORMALIZE). Chaque méthode est révélée ligne à ligne
@@ -24,6 +28,12 @@ import TrialsEvidence from '../components/TrialsEvidence';
  * « أتوقّع القاعدة » (2026-10-06) : les deux طرائق du manuel (figure + solution révélée) et l'exemple √13 énoncent la méthode
  * AVANT sa brique — ils sont enveloppés dans <PredictRule id="nuqta-nisba">, <PredictRule id="insha-tul">,
  * <PredictRule id="tul-ghayr-natiq"> : l'élève écrit sa construction, puis lit celle du livre.
+ *
+ * LECTEUR DE MISSION (rollout 2026-11-10, unité 9 leçon 3 ; conseil du 2026-11-10, verdict L3.2 et L3.7) : le labo se joue en MANCHES
+ * (content/banner.js › M2_ROUNDS : le rapport 3/2 — les deux points, le point extérieur APRÈS B — puis la ورشة libre) ; l'étape 3 attend la manche
+ * et interroge SES deux points (3/5, 3, après B) — la page garde « دوري الآن » (2/5). 6. « ورقة سلمى » (`PeerSheet`, content/peerSheet.js) : deux
+ * ouvertures de compas différentes sur les deux parallèles ; l'élève trouve la ligne et la corrige. Même étape sur la page et dans le lecteur.
+ * Aucun texte d'élève ne renvoie au manuel.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -35,6 +45,9 @@ export default function Module02Taraiq() {
   const [q4a, setQ4a] = useState(false);
   const [q4, setQ4] = useState(false);
   const [q5, setQ5] = useState(false);
+  const [q6, setQ6] = useState(false);
+  // lecteur : la manche gagnée (étoiles gardées, annoncée par LabRounds au montage) ouvre l'étape 3 et remplit sa trace
+  const [won, setWon] = useState({});
 
   return (
     <ContentModule
@@ -48,12 +61,20 @@ export default function Module02Taraiq() {
       // LE LABO OUVRE LE MODULE (§4quater, rétrofit 2026-10-15) : « دوري الآن » (CA/CB = 2/5, les deux points) est cherché AVANT que les
       // طرائق ne nomment la construction ; l'énoncé du manuel est le `lead` du labo, l'étape 3 interroge ses deux points.
       intro={(
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="m2-divider" rounds={M2_ROUNDS} icon="🧭" freeIcon="🥁"
+              onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))} />
+          )}
+          page={(
         <Manipulation type="segment-divider" levels={false} mode={LAB.m2.mode} p={LAB.m2.p} q={LAB.m2.q} marks={LAB.m2.marks}
           theme={LAB.m2.theme} lead="(xy) مستقيم، A و B نقطتان منه. لا تتوفّر إلا مسطرة غير مدرّجة ومدور." onTrial={(t) => { if (!t?.tk) setNowTrials((x) => [...x, t].slice(-8)); }} />
+          )}
+        />
       )}
       steps={[
         {
-          num: 1, title: 'نقطة تقسم [AB] بنسبة 3 إلى 2', subtitle: 'طرائق ص 109', done: q1,
+          num: 1, title: 'نقطة تقسم [AB] بنسبة 3 إلى 2', subtitle: 'الطريقة، سطرًا سطرًا', done: q1,
           content: (
             <div className="space-y-3">
               <PredictRule id="nuqta-nisba">
@@ -69,7 +90,7 @@ export default function Module02Taraiq() {
                 explain={<MathText>{`${LINES.partWhole} ($\\dfrac{2}{5}$ هي $\\dfrac{MB}{AB}$ .)`}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
-              {q1 && <KnowledgeBrick id="nuqta-nisba" lead="الطريقة كما يكتبها الكتاب:" />}
+              {q1 && <KnowledgeBrick id="nuqta-nisba" lead="الطريقة مكتوبة:" />}
             </div>
           ),
         },
@@ -77,7 +98,7 @@ export default function Module02Taraiq() {
           num: 2, title: 'والنقطة K؟', subtitle: 'نقطة ثانية خارج [AB]', done: q2,
           content: (
             <div className="space-y-3">
-              <p className="text-sm text-slate-800"><MathText>{'في شكل الكتاب، K على (d₁) من جهة E و $AK = 3$ . المستقيم (EK) يقطع المستقيم (AB) في نقطة N خارج [AB].'}</MathText></p>
+              <p className="text-sm text-slate-800"><MathText>{'في الشكل السابق، K على (d₁) من جهة E و $AK = 3$ . المستقيم (EK) يقطع المستقيم (AB) في نقطة N خارج [AB].'}</MathText></p>
               <TapQuestion
                 prompt={<MathText>{'المثلثان NAK و NBE في وضعية طالس، إذن $\\dfrac{NA}{NB} =$'}</MathText>}
                 options={['$\\dfrac{3}{2}$', '$\\dfrac{2}{3}$', '$\\dfrac{3}{5}$'].map(M)}
@@ -92,10 +113,32 @@ export default function Module02Taraiq() {
           ),
         },
         {
-          num: 3, title: 'عن نقطتيك في المختبر', subtitle: 'دوري الآن', done: q3,
+          needsRound: { id: 'r1', label: 'الجولة 1', icon: '🧭', won: Boolean(won.r1) },
+          num: 3, title: 'عن نقطتيك في المختبر', subtitle: 'نقطتان بالنسبة نفسها', done: q3,
           content: (
+            <PlayerSwitch
+              player={(
+                <div className="space-y-3">
+                  <p className={`rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm ${won.r1 ? 'font-bold text-emerald-900' : 'text-slate-500'}`}
+                    data-activity-evidence data-evidence="r1" data-tried={won.r1 ? 'true' : 'false'}>
+                    {won.r1 ? <><span aria-hidden="true">✓ </span>الجولة 1: وجدتَ النقطتين M و N اللتين تحقّقان النسبة نفسها.</> : 'الجولة 1: لم تجد بعد النقطتين في المختبر.'}
+                  </p>
+                  <BatchChoiceQuestion
+                    intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'النقطتان اللتان تحقّقان $\\dfrac{MA}{MB} = \\dfrac{3}{2}$ :'}</MathText></p>}
+                    rows={[
+                      { id: 'in', label: <MathText>{'M بين A و B : $\\dfrac{AM}{AB} =$'}</MathText>, options: ['$\\dfrac{3}{2}$', '$\\dfrac{3}{5}$', '$\\dfrac{2}{5}$'].map(M), correct: 1, correction: <MathText>{'$AB = AM + MB$ : خمسة أجزاء، و AM ثلاثة منها. ($\\dfrac{3}{2}$ هي $\\dfrac{MA}{MB}$ نفسها، و $\\dfrac{2}{5}$ هي $\\dfrac{MB}{AB}$ .)'}</MathText> },
+                      { id: 'out', label: <MathText>{'N خارج [AB] : $\\dfrac{AN}{AB} =$'}</MathText>, options: ['$3$', '$\\dfrac{3}{5}$', '$\\dfrac{1}{3}$'].map(M), correct: 0, correction: <MathText>{'$NA - NB = AB$ : AB جزء واحد و AN ثلاثة أجزاء، $\\dfrac{AN}{AB} = 3$ . ($\\dfrac{3}{5}$ تخصّ النقطة الداخلية.)'}</MathText> },
+                      { id: 'side', label: 'النقطة N الخارجية تقع', options: ['قبل A (من جهة A)', 'بعد B (من جهة B)'], correct: 1, correction: <MathText>{'$NA > NB$ : N أقرب إلى B ، فهي بعد B.'}</MathText> },
+                    ]}
+                    requires={['nuqtatan']}
+                    feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? <MathText>{'أحسنت: $AM = \\dfrac{3}{5}AB$ و $AN = 3AB$ .'}</MathText> : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
+                    onAnswered={() => setQ3(true)}
+                  />
+                </div>
+              )}
+              page={(
             <div className="space-y-3">
-              <TrialsEvidence trials={nowTrials} empty="أنشئ النقطتين في المختبر أعلاه: درّج (d₁) و (d₂) ثم ضع طرفي المسطرة. (دوري الآن، الكتاب ص 109)" />
+              <TrialsEvidence trials={nowTrials} empty="أنشئ النقطتين في المختبر أعلاه: درّج (d₁) و (d₂) ثم ضع طرفي المسطرة." />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'النقطتان C حيث $\\dfrac{CA}{CB} = \\dfrac{2}{5}$ :'}</MathText></p>}
                 rows={[
@@ -108,10 +151,12 @@ export default function Module02Taraiq() {
                 onAnswered={() => setQ3(true)}
               />
             </div>
+              )}
+            />
           ),
         },
         {
-          num: 4, title: 'قطعة طولها معلوم', subtitle: 'طرائق ص 107', done: q4,
+          num: 4, title: 'قطعة طولها معلوم', subtitle: 'الرابع المتناسب', done: q4,
           content: (
             <div className="space-y-3">
               <PredictRule id="insha-tul">
@@ -167,6 +212,8 @@ export default function Module02Taraiq() {
             </div>
           ),
         },
+        { num: 6, title: 'ورقة زميلة: أين الخطأ؟', subtitle: 'جد السطر الخاطئ وصحّحه', done: q6,
+          content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={() => setQ6(true)} /> },
       ]}
       footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />

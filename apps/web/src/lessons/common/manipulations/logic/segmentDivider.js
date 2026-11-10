@@ -58,7 +58,7 @@ export const RAILS = Object.freeze({ equal: Object.freeze(['ray']), ratio: Objec
 const clampInt = (v, lo, hi) => Math.min(hi, Math.max(lo, Math.round(Number(v))));
 const absFrac = (p) => (cmp(p, frac(0)) < 0 ? LIN.neg(p) : p);
 
-export function init({ mode = 'equal', parts = 3, p = 3, q = 2, marks = 5, length = 10 } = {}) {
+export function init({ mode = 'equal', parts = 3, p = 3, q = 2, marks = 5, length = 10, sameUnitOnly = false, player = false } = {}) {
   const m = MODES.includes(mode) ? mode : 'equal';
   if (m === 'equal' && (!Number.isInteger(parts) || parts < 2 || parts > 9)) throw new Error(`segment-divider: parts « ${parts} »`);
   if (m === 'ratio' && (!Number.isInteger(p) || !Number.isInteger(q) || p < 1 || q < 1 || p > marks || q > marks)) {
@@ -73,6 +73,10 @@ export function init({ mode = 'equal', parts = 3, p = 3, q = 2, marks = 5, lengt
     // `equal` : n + 1 marques possibles — de quoi poser une marque de trop (et la relier par erreur).
     cap: m === 'equal' ? parts + 1 : marks,
     length,
+    // LECTEUR DE MISSION (2026-11-10, conseil L3.1) — voir la fin du fichier. `sameUnitOnly` : une règle posée sur des graduations d'ouvertures
+    // différentes est REFUSÉE (`units`) ; `player` : la marque 1 ne se relie pas à B, une règle déjà essayée n'est pas un nouvel essai.
+    sameUnitOnly: m === 'ratio' && Boolean(sameUnitOnly),
+    player: Boolean(player),
     angle: ANGLE[m].start,
     opening: OPEN[m].start,
     rails,
@@ -147,6 +151,8 @@ export function join(s, idx) {
   if (marks.length === 0) return put(s, { last: { kind: 'noMarks' } });
   if (!Number.isInteger(idx) || idx < 0 || idx >= marks.length) return s;
   if (s.parallels.length > 0) return put(s, { last: { kind: 'joinLocked' } });
+  // lecteur : relier la marque 1 ne trace aucune parallèle et ne finit jamais un essai (impasse) — refusé, sans compter
+  if (s.player && idx === 0) return put(s, { last: { kind: 'joinOne' } });
   return put(s, { joined: idx, slide: marks[idx].pos, last: { kind: 'joined', idx } });
 }
 
@@ -268,23 +274,41 @@ export function rulerPoint(s, a, b) {
   return Object.freeze({ a, b, parallel: false, inside, t, ratio: TH.ratio(A, B) });
 }
 
+/** Les ouvertures des graduations comptées jusqu'à la marque `signed` d'une droite (de A ou de B jusqu'à elle). */
+export function unitsTo(s, line, signed) {
+  const info = markInfo(s, line, signed);
+  return info ? s.rails[info.rail].slice(0, info.rank).map((m) => m.r) : [];
+}
+
+/** La signature des ouvertures sous une règle posée (a sur (d₁), b sur (d₂)). */
+export const unitsKey = (s, a, b) => `${unitsTo(s, 'a', a).join(',')}|${unitsTo(s, 'b', b).join(',')}`;
+
 /** Valide la règle posée : un ESSAI de point. */
 export function commitRuler(s) {
   if (s.mode !== 'ratio') return s;
   const { a, b } = s.ends;
   if (a == null || b == null) return put(s, { last: { kind: 'rulerHalf' } });
   const prev = s.joins.at(-1);
-  if (prev && prev.a === a && prev.b === b) return s;
+  const ia = markInfo(s, 'a', a); const ib = markInfo(s, 'b', b);
+  // la même règle = les mêmes marques ET les mêmes ouvertures jusqu'à elles (revue 2026-11-10 : après « إنشاء جديد », des ouvertures 8 puis 12
+  // retombent sur la position et le rang d'une graduation régulière de 10 — l'ancien verdict « juste » ne doit pas se remontrer)
+  const units = unitsKey(s, a, b);
+  const sameAs = (j) => j.a === a && j.b === b && j.rankA === (ia?.rank ?? null) && j.rankB === (ib?.rank ?? null) && (j.units ?? units) === units;
+  if (prev && prev.a === a && prev.b === b && (!s.player || sameAs(prev))) return s.player ? put(s, { last: { kind: 'join', join: prev } }) : s;
+  // lecteur : une règle DÉJÀ essayée (mêmes marques) se remontre, sans nouvel essai
+  if (s.player) { const seen = s.joins.find(sameAs); if (seen) return put(s, { last: { kind: 'join', join: seen } }); }
   const pt = rulerPoint(s, a, b);
   const target = frac(s.p, s.q);
-  const ia = markInfo(s, 'a', a); const ib = markInfo(s, 'b', b);
+  // `sameUnitOnly` (conseil L3.1) : deux graduations d'ouvertures différentes ne se comparent pas — la règle est refusée AVANT tout rapport
+  const mixed = new Set([...unitsTo(s, 'a', a), ...unitsTo(s, 'b', b)]).size > 1;
   let kind;
   if (pt.parallel) kind = 'parallel';
+  else if (s.sameUnitOnly && mixed) kind = 'units';
   else if (eq(pt.ratio, target)) kind = pt.inside ? 'inside' : 'outside';
   else if (eq(pt.ratio, frac(s.q, s.p))) kind = 'inverted';
   else if (ia && ib && ia.rank * s.q === ib.rank * s.p) kind = 'units';
   else kind = 'other';
-  const j = Object.freeze({ ...pt, kind, ok: kind === 'inside' || kind === 'outside', rankA: ia?.rank ?? null, rankB: ib?.rank ?? null });
+  const j = Object.freeze({ ...pt, kind, ok: kind === 'inside' || kind === 'outside', rankA: ia?.rank ?? null, rankB: ib?.rank ?? null, mixed, units });
   return put(s, { joins: Object.freeze([...s.joins, j]), last: { kind: 'join', join: j } });
 }
 
@@ -319,7 +343,7 @@ export function stepReached(s, step) {
 
 /** La même étape repart : tout est effacé, sauf ce que les étapes déjà finies ont établi (le 1er essai juste). */
 export function retryStage(s, step) {
-  const fresh = init({ mode: s.mode, parts: s.parts ?? undefined, p: s.p ?? undefined, q: s.q ?? undefined, marks: s.cap, length: s.length });
+  const fresh = init({ mode: s.mode, parts: s.parts ?? undefined, p: s.p ?? undefined, q: s.q ?? undefined, marks: s.cap, length: s.length, sameUnitOnly: s.sameUnitOnly, player: s.player });
   if (s.mode === 'ratio') {
     if (step === 'one') return fresh;
     const first = s.joins.find((j) => j.ok);
@@ -334,7 +358,9 @@ export function retryStage(s, step) {
 export function evidenceOf(s) {
   if (s.mode === 'ratio') {
     const j = s.joins.at(-1);
-    return j && { mode: 'ratio', kind: j.kind, ok: j.ok, a: j.a, b: j.b, ratio: j.ratio ? fracText(j.ratio) : null, t: j.t ? fracText(j.t) : null };
+    // une règle refusée pour ses deux unités (`sameUnitOnly`) ne porte AUCUN rapport : il n'a pas de sens
+    const told = j && !(s.sameUnitOnly && j.kind === 'units');
+    return j && { mode: 'ratio', kind: j.kind, ok: j.ok, a: j.a, b: j.b, ratio: told && j.ratio ? fracText(j.ratio) : null, t: told && j.t ? fracText(j.t) : null };
   }
   const t = s.trials.at(-1);
   return t && { mode: 'equal', kind: t.kind, ok: t.ok, n: t.n, even: t.even, angle: t.angle, openings: [...t.openings], parts: t.parts.map(fracText) };
@@ -450,4 +476,177 @@ export function angleTo(s, pt) {
   let a = (Math.atan2(pt[1], pt[0]) * 180) / Math.PI;
   if (s.mode === 'ratio' && a < 0) a += 180;
   return a;
+}
+
+/* ══════════════ LECTEUR DE MISSION (rollout 2026-11-10, unité 9 leçon 3 `inshaat-talis` ; conseil du 2026-11-10, verdict L3.1–L3.7) ══════════════ */
+
+/**
+ * Ce que la manche reçoit d'un essai (`onVerdict`) :
+ *   equal — groups = le rang de la marque reliée à B (le nombre de parts obtenu), exact = n parts égales ;
+ *   ratio — groups = 1 (le point de [AB]) ou 2 (le point hors de [AB]) quand le rapport est le bon, 0 sinon ; exact = rapport demandé.
+ */
+export function verdictOf(lab) {
+  if (lab.mode === 'ratio') {
+    const j = lab.last?.kind === 'join' ? lab.last.join : lab.joins.at(-1);
+    return j ? Object.freeze({ groups: j.ok ? (j.inside ? 1 : 2) : 0, exact: Boolean(j.ok) }) : null;
+  }
+  const t = lab.trials.at(-1);
+  return t ? Object.freeze({ groups: t.n, exact: Boolean(t.ok) }) : null;
+}
+
+const trialKey = (t) => `${t.n}|${t.angle}|${t.openings.join(',')}`;
+/** equal : la dernière construction refait-elle EXACTEMENT une construction d'avant (même marque, mêmes ouvertures, même angle) ? Pas un nouvel essai. */
+export function repeatedTrial(lab) {
+  if (lab.mode !== 'equal' || lab.trials.length < 2) return false;
+  const last = lab.trials.at(-1);
+  return lab.trials.slice(0, -1).some((t) => trialKey(t) === trialKey(last));
+}
+
+/** Une construction juste dont les réglages (angle, ouverture) diffèrent d'une construction juste d'avant : les points de partage n'ont pas bougé. */
+export function sameCutsAgain(lab) {
+  if (lab.mode !== 'equal') return false;
+  const last = lab.trials.at(-1);
+  return Boolean(last?.ok) && lab.trials.slice(0, -1).some((t) => t.ok && trialKey(t) !== trialKey(last));
+}
+
+/** La règle posée aux bouts courants : l'essai (déjà fait) de CETTE position, ou null — le verdict se relit sur l'état, pas sur `last`. */
+export function joinAtEnds(lab) {
+  if (lab.mode !== 'ratio') return null;
+  const { a, b } = lab.ends;
+  if (a == null || b == null) return null;
+  const ra = markInfo(lab, 'a', a)?.rank ?? null; const rb = markInfo(lab, 'b', b)?.rank ?? null;
+  const units = unitsKey(lab, a, b);
+  return [...lab.joins].reverse().find((j) => j.a === a && j.b === b && j.rankA === ra && j.rankB === rb && j.units === units) ?? null;
+}
+
+/* ── les PRÉDICTIONS (≤ 2 par manche) : des clés ; les options et la vérité sont CALCULÉES ici ── */
+
+export const PREDICT_KEYS = Object.freeze({ equal: Object.freeze(['joinWhich', 'parallels']), ratio: Object.freeze(['opposite', 'same']) });
+
+/**
+ * Les options d'une prédiction, dans l'ordre de l'écran (la bonne ne tient jamais la même place d'une manche à l'autre) :
+ *   joinWhich « quelle marque relier à B ? » — n − 1, n, n + 1 (n multiple de 3) ou n, n + 1, n − 1 ;
+ *   parallels « combien de parallèles ? »    — n, n + 1, n − 1 (la bonne, n − 1, en dernier) ;
+ *   opposite  « marques de part et d'autre : où est le point ? » — avant A, entre A et B, après B ;
+ *   same      « marques du même côté »       — après B, entre A et B, avant A (L3.7 : avant A si p < q, APRÈS B si p > q).
+ */
+export function predictOptions(lab, key) {
+  const n = lab.parts;
+  if (key === 'joinWhich') return n % 3 === 0 ? [n - 1, n, n + 1] : [n, n + 1, n - 1];
+  if (key === 'parallels') return [n, n + 1, n - 1];
+  if (key === 'opposite') return ['before', 'between', 'after'];
+  if (key === 'same') return ['after', 'between', 'before'];
+  return [];
+}
+
+export function predictTruth(lab, key) {
+  if (key === 'joinWhich') return lab.parts;
+  if (key === 'parallels') return lab.parts - 1;
+  if (key === 'opposite') return 'between';
+  if (key === 'same') {
+    // par thales.ratioPoint : le point extérieur est à t·AB, t < 0 (avant A) ou t > 1 (après B)
+    if (lab.p === lab.q) return null;
+    return cmp(TH.ratioPoint(lab.p, lab.q, false), frac(0)) < 0 ? 'before' : 'after';
+  }
+  return null;
+}
+
+/** Les prédictions JUGÉES par le terrain : la construction juste (equal), le point intérieur / extérieur trouvé (ratio) ; toutes quand `all`. */
+export function judgedPredictions(lab, keys, all = false) {
+  const f = found(lab);
+  return keys.filter((key) => {
+    if (all) return true;
+    if (key === 'joinWhich' || key === 'parallels') return lab.trials.some((t) => t.ok);
+    if (key === 'opposite') return f.inside;
+    if (key === 'same') return f.outside;
+    return false;
+  });
+}
+
+/**
+ * Le GUIDE (LabCoach) du lecteur — le geste, jamais la réponse (ni le nombre de marques, ni la marque à relier, ni le côté) :
+ *   equal : la marque pointillée → la ligne « صِل B بالعلامة » (dès une marque : « quand en as-tu assez ? ») → l'équerre → « إنشاء جديد »
+ *           après une construction qui ne finit pas la manche ;
+ *   ratio : une marque pointillée de (d₁) → (les deux droites graduées) les flèches de la règle pour le bout F, puis E → « un second point ? ».
+ * `ctx` : { done } — la manche n'attend plus rien du labo. Une étape `idle` n'est montrée qu'après COACH_IDLE_MS sans geste (le labo attend).
+ */
+export const COACH_IDLE_MS = 3500;
+export function coachOf(lab, ctx = {}) {
+  if (ctx.done) return null;
+  if (lab.mode === 'ratio') {
+    const na = lineMarks(lab, 'a').length; const nb = lineMarks(lab, 'b').length;
+    if (na === 0 && nb === 0) return { id: 'carryA', target: '[data-sd-ghost="a+"]', gesture: 'tap' };
+    // tant qu'une seule droite est graduée : AUCUNE bulle (walk 2026-11-10 — au-dessus du compas elle couvrait le report suivant ; la consigne
+    // et la ligne de lecture « علامات (d₂): 0 » le disent)
+    if (na === 0 || nb === 0) return null;
+    const f = found(lab);
+    // les flèches de la règle sont AU-DESSUS de la scène dans le lecteur : la bulle s'ouvre dessous. `idle` : elle n'apparaît que si l'élève
+    // S'ARRÊTE (COACH_IDLE_MS sans geste) — en pleine graduation elle couvrirait la marque pointillée suivante (walk 2026-11-10)
+    if (f.inside !== f.outside) return { id: 'second', target: '[data-sd-ruler-row]', gesture: 'tap', prefer: 'below', idle: true };
+    if (lab.joins.length > 0) return null;
+    if (lab.ends.a == null) return { id: 'endA', target: '[data-sd-ruler-row]', gesture: 'tap', prefer: 'below', idle: true };
+    if (lab.ends.b == null) return { id: 'endB', target: '[data-sd-ruler-row]', gesture: 'tap', prefer: 'below', idle: true };
+    return null;
+  }
+  const n = rayMarks(lab).length;
+  // « إنشاء جديد » est AU-DESSUS de la scène dans le lecteur : la bulle s'ouvre dessous, sur le haut (vide) de la scène — jamais sur les bandes
+  // de la construction que l'élève vient de finir (elles sont la preuve)
+  if (complete(lab)) return { id: 'fresh', target: '[data-sd-fresh]', gesture: 'tap', prefer: 'below' };
+  if (lab.joined != null) return { id: 'square', target: '[data-sd-square]', gesture: 'drag', prefer: 'above' };
+  if (n === 0) return { id: 'carry', target: '[data-sd-ghost="ray"]', gesture: 'tap' };
+  // la ligne « صِل B بالعلامة » est AU-DESSUS de la scène dans le lecteur : la bulle s'ouvre dessous, loin de la marque pointillée à toucher
+  return { id: 'join', target: '[data-sd-join-row]', gesture: 'tap', prefer: 'below' };
+}
+
+const ftext = (f) => fracText(f).replace('-', '');
+
+/**
+ * TOUT ce qu'un écran du lecteur peut montrer pour une manche (règle « valeurs interdites par RÔLE », conseil du 2026-11-10) — `{ role, v }` :
+ *   length  AB (cm), et la longueur d'une part d'une construction JUSTE (AB/n — une construction fausse ne montre que ses bandes, L3.5) ;
+ *   count   le nombre de parts demandé, les rangs des marques du rayon, les pastilles n − 1 / n / n + 1, les options des prédictions ;
+ *   opening les ouvertures du compas (cm) ; angle les angles (degrés) ;
+ *   rank    (ratio) les rangs des graduations de (d₁) et (d₂), ≤ `marks` ;
+ *   ratio   MA/MB : le rapport demandé et celui de CHAQUE paire de rangs atteignable (même unité : `sameUnitOnly`) ;
+ *   t       AM/AB et AN/AB de chaque paire ; pair les paires de rangs ; decoy-ratio / decoy-t les leurres de la question « AM/AB » de la
+ *           suite `full` (p/q ; q/(p+q), p/|p−q|).
+ */
+export function shownValues(props = {}) {
+  const out = [];
+  const push = (role, v) => out.push(Object.freeze({ role, v: String(v) }));
+  const one = (p) => {
+    const mode = p.mode === 'ratio' ? 'ratio' : 'equal';
+    const length = p.length ?? 9;
+    push('length', length);
+    for (let o = OPEN[mode].min; o <= OPEN[mode].max; o += 1) push('opening', cmText(o));
+    for (let a = ANGLE[mode].min; a <= ANGLE[mode].max; a += 1) push('angle', a);
+    if (mode === 'equal') {
+      const n = p.parts ?? 3;
+      const part = LIN.mul(frac(1, n), length);
+      push('length', fracText(part)); push('length', TH.rounded(part, 2));
+      [n - 1, n, n + 1].forEach((x) => push('count', x));
+      for (let i = 1; i <= n + 1; i += 1) push('count', i);
+      return;
+    }
+    const cap = p.marks ?? 5;
+    push('ratio', fracText(frac(p.p, p.q)));
+    push('t', ftext(TH.ratioPoint(p.p, p.q, true)));
+    if (p.p !== p.q) push('t', ftext(TH.ratioPoint(p.p, p.q, false)));
+    // les leurres de la question « AM/AB » (suite `full` seulement) : le rapport lui-même pris pour une part du tout, MB/AB, AN/AB
+    if (p.chains === 'full') {
+      push('decoy-ratio', fracText(frac(p.p, p.q))); push('decoy-t', fracText(frac(p.q, p.p + p.q)));
+      if (p.p !== p.q) push('decoy-t', fracText(frac(p.p, Math.abs(p.p - p.q))));
+    }
+    for (let ra = 1; ra <= cap; ra += 1) {
+      push('rank', ra);
+      for (let rb = 1; rb <= cap; rb += 1) {
+        push('pair', `${ra}:${rb}`);
+        push('ratio', fracText(TH.ratio(ra, rb)));
+        push('t', ftext(TH.ratioPoint(ra, rb, true)));
+        if (ra !== rb) push('t', ftext(TH.ratioPoint(ra, rb, false)));
+      }
+    }
+  };
+  one(props);
+  (props.choices ?? []).forEach((c) => one({ ...c, length: c.length ?? props.length }));
+  return out;
 }

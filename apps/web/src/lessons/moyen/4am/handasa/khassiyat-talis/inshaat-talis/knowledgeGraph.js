@@ -59,7 +59,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'kitab', kind: 'method', lane: 'end', requires: 'tariqat-kitab-taqsim', notebook: true,
-      title: 'طريقة الكتاب', subtitle: '$BM = MN = NA$',
+      title: 'طريقة ثانية', subtitle: '$BM = MN = NA$',
       context: { text: METHOD_DIVIDE.solution[0], note: METHOD_DIVIDE.solution[5] },
       reveals: ['nisba'],
     },
@@ -111,7 +111,7 @@ export const KNOWLEDGE_GRAPH = {
   edges: [
     { from: 'taqsim', to: 'tabrir', label: 'لماذا؟' },
     { from: 'tabrir', to: 'khata-alamat', label: 'خطأ شائع' },
-    { from: 'tabrir', to: 'kitab', label: 'طريقة الكتاب' },
+    { from: 'tabrir', to: 'kitab', label: 'طريقة ثانية' },
     { from: 'kitab', to: 'nisba', label: 'بنسبة معلومة' },
     { from: 'nisba', to: 'khata-nisba', label: 'خطأ شائع' },
     { from: 'nisba', to: 'nuqtatan', label: 'وخارجها' },

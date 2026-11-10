@@ -1355,6 +1355,25 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
   figure twice (`TextbookExercise` already draws `exercise.figure`), give exercise figures a `maxWidth` that fits a 1024 × 768 page (230 here),
   and put ONE exercise per step. A player-only layout inside a module goes through `PlayerSwitch` (rendered INSIDE the player) — a
   `useInMissionPlayer()` called at the top of the module component is always false (the module renders the player).
+- **A construction lab in the player (unit 9, `inshaat-talis` / `segment-divider`, council 2026-11-10, verdict L3).** When a trial is a whole
+  construction (many gestures), keep the page's notion of a trial and (1) REFUSE in words, before any number is computed, a construction whose
+  premise is false (`sameUnitOnly`: two parallels graduated with two compass openings — otherwise the lab writes arbitrary ratios, and here one
+  of them was the climax's); (2) CAP what the hand can build (`marks: 3`) so that every reachable value can be listed and scanned
+  (`logic › shownValues`); (3) on a wrong construction show the evidence (bands, openings) and never the computed lengths; (4) refuse without
+  counting a gesture that can never finish a trial (joining mark 1); (5) give the figure the NAMES the questions use (P₁ … Pₙ, M₁ …, F, E) at
+  the moment the question needs them. A prediction may be a multiple choice given by KEY (`predict: ['joinWhich', 'parallels']`): the lab
+  computes its options and its truth, so a content file never writes an answer.
+- **The coach bubble must never block the next gesture.** Walk every lab ONCE without pressing « فهمت » (`click` with a short timeout and
+  list what was blocked): a bubble anchored under the scene covered the dotted mark the student still had to tap, and a bubble above a « new
+  construction » button covered the bands of the construction just finished. Remedies used in `segment-divider`: move the targeted controls to
+  a bar above the scene in the player, give `prefer`, drop a step whose bubble has no free place, or mark it `idle` (shown only when the student
+  stops for `COACH_IDLE_MS`).
+- **A contrast as a goal, not as a question.** A round that wants « do it again with another setting » states it in its `mission`, sets
+  `contrast: true` (the coach keeps « إنشاء جديد » after the chain) and puts `{ discovered: true }` in its goal; the lab's verdict then says what
+  was SEEN (« نقط التقسيم في أماكنها نفسها ») — never the rule. Ask the contrast in ONE round only (verdict L3.4).
+- **Role-paired forbidden values when a textbook method owns a number.** A value may be forbidden in the lab (`content/forbidden.js`, by role)
+  and still be legitimate in a method card (here 3/7: the climax's decoy « MB/AB », but also the DATA of the method « 3/7 = 2/AB »). Keep it
+  out of the unit's text scan (`_unit/missionStrings.test.js`), say why in the test's comment, and keep it in the lab's role scan.
 
 ### The rule that breaks lessons most often
 

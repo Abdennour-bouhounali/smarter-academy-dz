@@ -39,7 +39,7 @@ export const TIFO = {
 export const LAB = {
   m1: {
     beginner: { mode: 'equal', parts: 3, theme: 'tifo', title: 'لافتة التيفو: ثلاث قطع متقايسة' },
-    advanced: { mode: 'ratio', p: 3, q: 2, marks: 5, theme: 'tifo', title: 'طرائق ص 109: نقطة تقسم اللافتة بنسبة 3 إلى 2' },
+    advanced: { mode: 'ratio', p: 3, q: 2, marks: 5, theme: 'tifo', title: 'نقطة تقسم اللافتة بنسبة 3 إلى 2' },
   },
   // دوري الآن ص 109 : CA/CB = 2/5, le même instrument posé seul (un seul niveau)
   m2: { mode: 'ratio', p: 2, q: 5, marks: 5, theme: 'tifo', title: 'دوري الآن: النقطة C حيث CA على CB يساوي 2 على 5' },
@@ -177,7 +177,7 @@ export const TWO_POINTS = {
     'العلامتان في جهتين مختلفتين: النقطة M بين A و B و $\\dfrac{AM}{AB} = \\dfrac{p}{p + q}$ ؛',
     'العلامتان في نفس الجهة: النقطة N خارج [AB] — بعد B إذا كان $p > q$ وقبل A إذا كان $p < q$ .',
   ],
-  example: 'مثال الكتاب: $\\dfrac{AM}{AB} = \\dfrac{3}{3 + 2} = \\dfrac{3}{5}$ و $\\dfrac{AN}{AB} = \\dfrac{3}{3 - 2} = 3$ .',
+  example: 'مثال: $\\dfrac{AM}{AB} = \\dfrac{3}{3 + 2} = \\dfrac{3}{5}$ و $\\dfrac{AN}{AB} = \\dfrac{3}{3 - 2} = 3$ .',
 };
 
 /** Une longueur NON rationnelle (اقتراح المنصّة, LP2 « نسبة غير ناطقة ») : √13 puis ses 2/3 par Thalès. */

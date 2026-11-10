@@ -2739,6 +2739,38 @@ Since 2026-11-10 (unit 9, lesson 2) a `build` may also set `accept` (other filli
   (`[data-pl-verdict-live]`, keyed per trial) because the side column unmounts while a question is open; the visible box is plain text with an
   `aria-hidden` ✓ / ✗ (no glyph inside a translated string); the trial button is `aria-disabled`, never `disabled` (focus stays on it); the verdict
   shown is the trial AT the revealed position (moving away and back shows it again), not `lab.last`.
+- **Fourteenth example (2026-11-10, unit 9):** lesson `inshaat-talis`, `content/banner.js` (`M1_ROUNDS`: an 8 cm banner in 3 parts by hand → 11 cm
+  in 5 parts AND the contrast → the point of ratio 2/3, required → ⭐ ratio 1/3 → free; practice 6 cm in 2, 6 cm in 3, ratio 1/2 with two marks;
+  `M2_ROUNDS`: the ratio 3/2 → free), `LabRounds icon="🧭"`; council of 2026-11-10, verdict L3. What the player added to `segment-divider`: a
+  trial stays what it is on the page — a FINISHED construction (equal) or a posed ruler (ratio) — and is reported as `onVerdict { groups, exact,
+  free? }` (`logic › verdictOf`: equal → the rank of the mark joined to B; ratio → 1 the point of [AB], 2 the point outside, 0 any other ratio),
+  the first refusal free, the same construction redone exactly (`repeatedTrial`) or a ruler posed again (`commitRuler` with `player`) not a trial,
+  `{ tk: 'discovered' }` at `discoveryReady`. **`sameUnitOnly`** (default true in the player; `init({ sameUnitOnly })`): a ruler posed on
+  graduations of two compass openings is REFUSED as `units` BEFORE any ratio is judged, explained in words (« وحدتان مختلفتان … »), and no ratio
+  is ever written for it (verdict, journal, `evidenceOf`, the rule's witness) — two openings give arbitrary ratios. **The cap**: `marks`
+  (3 in the rounds) bounds the graduations per rail, so with one unit the reachable ratios are 1/3, 1/2, 2/3, 1, 3/2, 2, 3. `length` defaults to 9
+  in the player (10 on the page), and every equal round passes its own. `init({ player })`: joining mark 1 is refused without counting
+  (`joinOne` — it was a dead end), a wrong construction shows its bands and openings only, never computed lengths (`vp.count`, `vp.unequal`), a
+  question's « أعِد التجربة » is a FULL reset. `chains` — `full` (equal, at the first right construction: « AP_n = ▢ × AP₁ » in one tap, BUILD
+  « AM_k/AB = AP_k/AP_n » with AM_k/AB pre-placed, AP_k, AP_n and the decoy P_kP_n, then the rule; ratio: « ranks » at the first right point — the
+  ranks of F and E in one tap, then BUILD « AF/BE = MA/MB » with the decoy AB — and « rule » at both points — AM/AB, then the rule), `build` (the
+  build alone), `none`; the equality written the other way is accepted (`accept`). `predict` is a list of KEYS (≤ 2): `joinWhich`, `parallels`
+  (equal), `opposite`, `same` (ratio); options and truth come from the logic (`predictOptions`, `predictTruth` — « same side » → before A when
+  p < q, AFTER B when p > q, computed by `thales.ratioPoint`), judged by the field (`judgedPredictions`), held `PRED_HOLD_MS`. `contrast`: the
+  round also wants a second construction (the coach keeps « إنشاء جديد » after the chain). `choices` [{ mode: 'equal', parts, length? } | { mode:
+  'ratio', p, q, marks? }] (the free round switches lab through `state.setNumbers`). The figure NAMES what the questions name: marks become P₁ … Pₙ
+  and cut points M₁ … once a construction is finished, the ruler ends are F and E. The verdict and the journal « 📋 جدول تجاربك » (a word for
+  EVERY verdict kind — `rowWord.*`: a `units` refusal is « وحدتان مختلفتان », not « wrong ») are in the side column; the announcement is an
+  always-mounted `sr-only` live region (`[data-sd-verdict-live]`, keyed per trial); the visible verdict is the trial of the CURRENT state
+  (`joinAtEnds`; the finished construction), not `lab.last`; every control is frozen during a prediction or a question (`aria-disabled` + a guard
+  in `act`, never `disabled`). `LabCoach` (`coachOf`: the dotted mark, the join row, the set-square, « إنشاء جديد »; in ratio mode a dotted mark
+  of (d₁), then — both lines graduated — the ruler arrows for F, for E, « a second point? » — never a count, a rank or a side). **A bubble must
+  never block the next gesture**: in the player « صِل B بالعلامة », the ruler arrows and « إنشاء جديد » sit in a bar ABOVE the scene
+  (`[data-sd-topbar]`; their bubble opens downwards, off the dotted mark to tap and off a finished construction's bands), and a step may be
+  `idle: true` — shown only after `COACH_IDLE_MS` (3,5 s) without a gesture (the lab holds it with `idleLab`); walk it WITHOUT pressing « فهمت ». `shownValues(props)` lists by role
+  (`length`, `count`, `opening`, `angle`, `rank`, `pair`, `ratio`, `t`, `decoy-ratio`, `decoy-t`) everything a round can show. Page and teacher
+  unchanged (`segmentDivider.render.test.jsx` green); one shared fix reaches the page too: the rule question's hints now speak of the lab's own
+  mode (`cp.ruleEqual.*` — in equal mode they spoke of the two points of the ratio mode).
 - **Blocking:** `cp.blocking` stays true until the chain is finished; the lab hides its « next task » button meanwhile.
 - **Guided, never told first:** wrong try 1 → the chosen option's `why` (else hint 1); try 2 → hint 2 (sharper); try 3 →
   the answer AND its explanation (the student is never stuck forever). A wrong option stays struck and disabled.

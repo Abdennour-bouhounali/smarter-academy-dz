@@ -9,6 +9,9 @@ import { TextbookBox, MethodSteps } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { TIFO, LAB, METHOD_RAY, METHOD_DIVIDE, LINES } from '../content/textbook';
 import TrialsEvidence from '../components/TrialsEvidence';
+import { M1_ROUNDS } from '../content/banner';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
 
 /**
  * Module 1 — l'ENTRÉE de la leçon (le manuel n'a pas d'activité : le laboratoire est déclaré
@@ -25,6 +28,12 @@ import TrialsEvidence from '../components/TrialsEvidence';
  * l'élève écrit comment utiliser C, D, E AVANT de lire la solution (2026-10-06).
  * Fin de l'étape 4 (les deux niveaux du laboratoire sont dans `intro`) : la carte « مسألة الدرس » (module 4).
  * AUCUNE étape n'attend `onFinished` (pas d'activité du manuel). LP : P1.
+ *
+ * LECTEUR DE MISSION (rollout 2026-11-10, unité 9 leçon 3 ; conseil du 2026-11-10, verdict L3) : le labo se joue en MANCHES (content/banner.js ›
+ * M1_ROUNDS : 8 cm en 3 → 11 cm en 5 et le contraste → le point de rapport 2/3, requis → défi ⭐ 1/3 → la ورشة libre) au lieu de مبتدئ / متقدم.
+ * L'étape 1 attend la manche 1 (trois parts), l'étape 3 la manche 2 (la même banderole refaite avec un autre réglage). Ce que la ligne de trace dit
+ * vient des manches GAGNÉES (étoiles gardées, annoncées par LabRounds au montage) : un rechargement ne bloque ni ne vide jamais une étape.
+ * Aucun texte d'élève ne renvoie au manuel ; la longueur 10 cm (celle de la مسألة) ne figure plus dans les questions. Hors lecteur : le labo inchangé.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -36,6 +45,14 @@ export default function Module01Lafita() {
   const [q4a, setQ4a] = useState(false);
   const [q4, setQ4] = useState(false);
   const onTrial = (tr) => { if (!tr?.tk) setTrials((t) => [...t, tr].slice(-10)); };   // les événements `checkpoint` des questions du labo ne sont pas des constructions
+  // lecteur : les manches gagnées (étoiles gardées, annoncées par LabRounds au montage) ouvrent les étapes et remplissent leur trace
+  const [won, setWon] = useState({});
+  const wonLine = (id, yes, no) => (
+    <p className={`rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm ${won[id] ? 'font-bold text-emerald-900' : 'text-slate-500'}`}
+      data-activity-evidence data-evidence={id} data-tried={won[id] ? 'true' : 'false'}>
+      {won[id] ? <><span aria-hidden="true">✓ </span>{yes}</> : no}
+    </p>
+  );
 
   return (
     <ContentModule
@@ -44,10 +61,17 @@ export default function Module01Lafita() {
       moduleNumber={1}
       moduleTitle="لافتة التيفو — قطع متقايسة دون قياس"
       moduleSubtitle="نصف مستقيم، مدور، كوس: والقطع تتقايس من تلقاء نفسها"
-      objectives={['كيف نقسم [AB] إلى 3 قطع متقايسة دون قياس 10 ÷ 3 ؟', 'لماذا تتقايس القطع؟ وهل لفتحة المدور دور؟', 'كيف يقسم الكتاب ضلعًا بطريقة أخرى؟']}
+      objectives={['كيف نقسم [AB] إلى قطع متقايسة دون أي قياس؟', 'لماذا تتقايس القطع؟ وهل لفتحة المدور دور؟', 'هل توجد طريقة ثانية لتقسيم ضلع؟']}
       estimatedTime="13 دقيقة"
       intro={
         // LE LABO OUVRE LE MODULE (§4quater) : le contexte du tifo est le `lead` du labo, ni carte ni titre de workspace.
+        // Lecteur : les MANCHES (content/banner.js) ; la page garde ses deux niveaux.
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="m1-divider" rounds={M1_ROUNDS} icon="🧭" freeIcon="🥁"
+              onTrial={onTrial} onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))} />
+          )}
+          page={(
         <ManipulationWorkspace
           levels={{
             beginner: () => (
@@ -60,13 +84,19 @@ export default function Module01Lafita() {
             ),
           }}
         />
+          )}
+        />
       }
       steps={[
         {
+          needsRound: { id: 'r1', label: 'الجولة 1', icon: '🧭', won: Boolean(won.r1) },
           num: 1, title: 'كم علامة؟ وأيّها نصل بـ B ؟', subtitle: 'من إنشاءاتك', done: q1,
           content: (
             <div className="space-y-3">
-              <TrialsEvidence trials={trials} />
+              <PlayerSwitch
+                player={wonLine('r1', 'الجولة 1: قسمتَ اللافتة إلى 3 قطع متقايسة بالمدور والكوس، دون أي قياس.', 'الجولة 1: لم تقسم اللافتة بعد إلى 3 قطع متقايسة.')}
+                page={<TrialsEvidence trials={trials} />}
+              />
               <TapQuestion
                 prompt="في إنشائك الأخير: لماذا عيّنتَ 3 علامات متقايسة على [Ax) ثم وصلتَ الثالثة بـ B ؟"
                 options={[
@@ -105,16 +135,20 @@ export default function Module01Lafita() {
           ),
         },
         {
-          num: 3, title: 'فتحة المدور', subtitle: 'هل يجب أن تساوي 10 ÷ 3 ؟', done: q3,
+          needsRound: { id: 'r2', label: 'الجولة 2', icon: '🧭', won: Boolean(won.r2) },
+          num: 3, title: 'فتحة المدور', subtitle: 'هل يجب أن تساوي طول قطعة؟', done: q3,
           content: (
             <div className="space-y-3">
-              <TrialsEvidence trials={trials} />
+              <PlayerSwitch
+                player={wonLine('r2', 'الجولة 2: أعدتَ الإنشاء بضبط آخر، ونقط التقسيم بقيت في أماكنها.', 'الجولة 2: لم تُعد الإنشاء بعد بفتحة أخرى أو بميل آخر.')}
+                page={<TrialsEvidence trials={trials} />}
+              />
               <TapQuestion
-                prompt={<MathText>{'$AB = 10\\,\\mathrm{cm}$ . سليم فتح المدور 2cm وأمينة 3cm ، وعيّن كل منهما 3 علامات متقايسة ووصل الثالثة بـ B ثم رسم الموازيات. ماذا نلاحظ؟'}</MathText>}
+                prompt={<MathText>{'على القطعة نفسها [AB]: سليم فتح المدور 2cm وأمينة 3cm ، وعيّن كل منهما 3 علامات متقايسة ووصل الثالثة بـ B ثم رسم الموازيات. ماذا نلاحظ؟'}</MathText>}
                 options={[
-                  <MathText key="a">{'يحصلان على نقطتي التقسيم نفسيهما: كل قطعة $\\dfrac{10}{3}\\,\\mathrm{cm}$ عند كليهما'}</MathText>,
+                  'يحصلان على نقطتي التقسيم نفسيهما: كل قطعة ثلث AB عند كليهما',
                   'قطع سليم أقصر من قطع أمينة لأن فتحته أصغر',
-                  <MathText key="c">{'لا ينجح إلا من فتح المدور $\\dfrac{10}{3}\\,\\mathrm{cm}$ بالضبط'}</MathText>,
+                  'لا ينجح إلا من فتح المدور ثلث AB بالضبط',
                 ]}
                 correct={0}
                 cols={1}
@@ -126,11 +160,11 @@ export default function Module01Lafita() {
           ),
         },
         {
-          num: 4, title: 'طريقة الكتاب', subtitle: 'طرائق ص 107', done: q4,
+          num: 4, title: 'طريقة ثانية', subtitle: 'نقط متقايسة على مستقيم يشمل B', done: q4,
           content: (
             <div className="space-y-3">
               <PredictRule id="tariqat-kitab-taqsim">
-                <TextbookBox kind="remark" compact text="الكتاب يقسم الضلع [AB] بطريقة أخرى: النقط المتقايسة على مستقيم يشمل B، والموازيات للمستقيم (AE). اقرأ الحل سطرًا سطرًا." />
+                <TextbookBox kind="remark" compact text="يمكن تقسيم الضلع [AB] بطريقة أخرى: النقط المتقايسة على مستقيم يشمل B، والموازيات للمستقيم (AE). اقرأ الحل سطرًا سطرًا." />
                 <GeoFigure {...METHOD_DIVIDE.figure} />
                 <MethodSteps method={{ source: METHOD_DIVIDE.source, exercise: METHOD_DIVIDE.exercise, solution: METHOD_DIVIDE.solution }} />
               </PredictRule>
