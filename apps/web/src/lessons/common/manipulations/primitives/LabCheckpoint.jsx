@@ -74,7 +74,8 @@ export function useLabCheckpoint({ id, questions, reached, resetKey, onRetry, on
   return { blocking, open, done: has && !!p?.done, node, qid: open ? questions[p.qi]?.id ?? null : null };
 }
 
-const ring = 'outline-none focus-visible:ring-4 focus-visible:ring-indigo-300';
+// un anneau de focus VISIBLE (≥ 3:1) et détaché du bord — revue a11y 2026-11-10
+const ring = 'outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2';
 const pill = `inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-full border-2 px-4 text-sm font-black transition-all duration-150 active:translate-y-0.5 motion-reduce:transition-none ${ring}`;
 
 function CheckpointCard({ id, questions, p, onAnswer, onNext, onLook, onRetry }) {
@@ -112,6 +113,8 @@ function CheckpointCard({ id, questions, p, onAnswer, onNext, onLook, onRetry })
     if (q.kind === 'choice' && !settled && n >= 0 && n < q.options.length && e.target.tagName !== 'INPUT' && !p.wrong.includes(n)) { e.preventDefault(); onAnswer(n); }
   };
 
+  // l'option que l'élève a CHOISIE (une fausse, ou la juste s'il l'a trouvée) — `aria-pressed` ne vaut que pour elle
+  const chosen = (i) => p.wrong.includes(i) || (settled && p.status === 'right' && !!q.options[i]?.correct);
   const optionState = (i) => {
     if (p.wrong.includes(i)) return 'wrong';
     if (settled && q.options[i]?.correct) return 'right';
@@ -120,7 +123,7 @@ function CheckpointCard({ id, questions, p, onAnswer, onNext, onLook, onRetry })
   const optionClass = {
     idle: 'border-indigo-200 bg-white text-indigo-950 hover:border-indigo-500 hover:bg-indigo-50 shadow-[0_3px_0_0_#C7D2FE]',
     wrong: 'border-rose-200 bg-rose-50 text-rose-800 line-through decoration-rose-400 opacity-80',
-    right: 'border-emerald-600 bg-emerald-600 text-white shadow-[0_3px_0_0_#047857]',
+    right: 'border-emerald-700 bg-emerald-700 text-white shadow-[0_3px_0_0_#065F46]',
   };
 
   const card = (
@@ -133,7 +136,8 @@ function CheckpointCard({ id, questions, p, onAnswer, onNext, onLook, onRetry })
       initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.25, delay: p.qi === 0 && p.tries === 0 ? 0.6 : 0 }}
       data-lab-checkpoint data-checkpoint={id} data-q={q.id} data-status={p.status} onKeyDown={onKey}
     >
-      <div ref={cardRef} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby={`lab-cp-${id}-${q.id}`}
+      {/* sur la page la carte RECOUVRE le labo (dialogue modal) ; dans le lecteur elle est À CÔTÉ du labo, qu'on regarde encore : un groupe */}
+      <div ref={cardRef} tabIndex={-1} role={inPlayer ? 'group' : 'dialog'} aria-modal={inPlayer ? undefined : 'true'} aria-labelledby={`lab-cp-${id}-${q.id}`}
         className={`flex max-h-full w-full flex-col overflow-hidden rounded-[1.75rem] bg-white shadow-2xl outline-none ${inPlayer ? 'ring-4 ring-indigo-200' : 'max-w-4xl'}`}>
         <div className="flex items-center justify-between gap-4 bg-gradient-to-l from-indigo-700 via-violet-700 to-fuchsia-700 px-5 py-3 text-white">
           <p className="flex items-center gap-2 text-base font-black">
@@ -160,11 +164,14 @@ function CheckpointCard({ id, questions, p, onAnswer, onNext, onLook, onRetry })
                 const big = q.cols === 3;
                 return (
                   <button key={i} type="button" onClick={() => onAnswer(i)} disabled={settled || st === 'wrong'}
-                    data-lab-checkpoint-option={i} data-state={st} aria-pressed={st !== 'idle'}
+                    data-lab-checkpoint-option={i} data-state={st} aria-pressed={chosen(i)}
                     className={`relative flex items-center gap-3 rounded-2xl border-2 font-black transition-all duration-150 active:translate-y-0.5 disabled:cursor-default motion-reduce:transition-none ${
                       big ? 'min-h-[7.5rem] justify-center px-4 pb-3 pt-8 text-2xl md:text-3xl' : 'min-h-[4rem] px-4 py-3 text-start text-lg'} ${optionClass[st]} ${ring}`}>
-                    <span className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-sm font-black ${st === 'right' ? 'bg-white/25 text-white' : 'bg-slate-100 text-slate-500'} ${big ? 'absolute start-3 top-3' : ''}`}>{i + 1}</span>
-                    <span className={big ? 'text-center' : 'min-w-0 flex-1'}>{o.text}</span>
+                    <span className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-sm font-black ${st === 'right' ? 'bg-white/25 text-white' : 'bg-slate-100 text-slate-600'} ${big ? 'absolute start-3 top-3' : ''}`}>{i + 1}</span>
+                    {/* `pointer-events-none` : une formule KaTeX (√…) déborde, invisible, AU-DESSUS de son bouton — sans cela un toucher sur le
+                        choix du dessus choisissait celui du dessous (marche Playwright, leçon amaliyat-judhur, 2026-11-10) */}
+                    <span className={`pointer-events-none ${big ? 'text-center' : 'min-w-0 flex-1'}`}>{o.text}</span>
+                    {st !== 'idle' && <span className="sr-only">{k(st === 'right' ? 'srRight' : 'srWrong')}</span>}
                   </button>
                 );
               })}
@@ -175,10 +182,10 @@ function CheckpointCard({ id, questions, p, onAnswer, onNext, onLook, onRetry })
                 disabled={settled} maxLength={9} placeholder={k('placeholder')}
                 onChange={(e) => { setDraft(e.target.value); setBad(false); }} onKeyDown={(e) => { if (e.key === 'Enter' && !settled) check(); }}
                 aria-label={k('inputAria')} aria-invalid={bad} data-lab-checkpoint-input
-                className={`h-16 w-52 rounded-2xl border-2 ${bad ? 'border-rose-300' : 'border-indigo-300'} bg-white px-4 text-center text-4xl font-black tabular-nums text-indigo-950 placeholder:text-base placeholder:font-bold placeholder:text-slate-400 disabled:bg-slate-50 ${ring}`} />
+                className={`h-16 w-52 rounded-2xl border-2 ${bad ? 'border-rose-400' : 'border-indigo-500'} bg-white px-4 text-center text-4xl font-black tabular-nums text-indigo-950 placeholder:text-base placeholder:font-bold placeholder:text-slate-400 disabled:bg-slate-50 ${ring}`} />
               {!settled && (
                 <button type="button" onClick={check} disabled={!draft.trim()} data-lab-checkpoint-check
-                  className={`inline-flex min-h-[64px] items-center gap-2 rounded-2xl border-2 border-sky-600 bg-sky-500 px-8 text-xl font-black text-white shadow-[0_4px_0_0_#0369A1] transition-all active:translate-y-0.5 disabled:border-slate-300 disabled:bg-slate-200 disabled:text-slate-500 disabled:shadow-none ${ring}`}>
+                  className={`inline-flex min-h-[64px] items-center gap-2 rounded-2xl border-2 border-sky-700 bg-sky-700 px-8 text-xl font-black text-white shadow-[0_4px_0_0_#0369A1] transition-all active:translate-y-0.5 disabled:border-slate-300 disabled:bg-slate-200 disabled:text-slate-500 disabled:shadow-none ${ring}`}>
                   <Send className="h-5 w-5 -scale-x-100" aria-hidden="true" /> <span dir="rtl">{k('check')}</span>
                 </button>
               )}
@@ -222,7 +229,7 @@ function CheckpointCard({ id, questions, p, onAnswer, onNext, onLook, onRetry })
           </div>
           {settled && (
             <button type="button" onClick={onNext} data-lab-checkpoint-next autoFocus
-              className={`inline-flex min-h-[52px] items-center gap-2 rounded-full border-2 border-emerald-600 bg-emerald-600 px-8 text-lg font-black text-white shadow-[0_4px_0_0_#047857] active:translate-y-0.5 ${ring}`}>
+              className={`inline-flex min-h-[52px] items-center gap-2 rounded-full border-2 border-emerald-700 bg-emerald-700 px-8 text-lg font-black text-white shadow-[0_4px_0_0_#065F46] active:translate-y-0.5 ${ring}`}>
               {last ? k('finish') : k('next')} <ChevronLeft className="h-5 w-5" aria-hidden="true" />
             </button>
           )}
@@ -263,7 +270,7 @@ function FillAnswer({ q, settled, revealed, onAnswer, k }) {
       {!settled && (
         <div className="flex justify-center">
           <button type="button" disabled={pick.some((v) => v == null)} onClick={() => onAnswer(pick)} data-lab-checkpoint-check
-            className={`inline-flex min-h-[56px] items-center gap-2 rounded-2xl border-2 border-sky-600 bg-sky-500 px-8 text-xl font-black text-white shadow-[0_4px_0_0_#0369A1] disabled:border-slate-300 disabled:bg-slate-200 disabled:text-slate-500 disabled:shadow-none ${ring}`}>
+            className={`inline-flex min-h-[56px] items-center gap-2 rounded-2xl border-2 border-sky-700 bg-sky-700 px-8 text-xl font-black text-white shadow-[0_4px_0_0_#0369A1] disabled:border-slate-300 disabled:bg-slate-200 disabled:text-slate-500 disabled:shadow-none ${ring}`}>
             {k('check')}
           </button>
         </div>
@@ -312,7 +319,7 @@ function BuildAnswer({ q, settled, revealed, onAnswer, k }) {
           </div>
           <div className="flex justify-center">
             <button type="button" disabled={placed.some((v) => v == null)} onClick={() => onAnswer(placed.map((ti) => q.tiles[ti]))} data-lab-checkpoint-check
-              className={`inline-flex min-h-[56px] items-center gap-2 rounded-2xl border-2 border-sky-600 bg-sky-500 px-8 text-xl font-black text-white shadow-[0_4px_0_0_#0369A1] disabled:border-slate-300 disabled:bg-slate-200 disabled:text-slate-500 disabled:shadow-none ${ring}`}>
+              className={`inline-flex min-h-[56px] items-center gap-2 rounded-2xl border-2 border-sky-700 bg-sky-700 px-8 text-xl font-black text-white shadow-[0_4px_0_0_#0369A1] disabled:border-slate-300 disabled:bg-slate-200 disabled:text-slate-500 disabled:shadow-none ${ring}`}>
               {k('check')}
             </button>
           </div>
@@ -330,7 +337,7 @@ function CheckpointPill({ onBack }) {
         <MessageCircleQuestion className="h-5 w-5 text-amber-600" aria-hidden="true" /> {t('manipulation.checkpoint.waiting')}
       </p>
       <button type="button" onClick={onBack} data-lab-checkpoint-back
-        className={`${pill} border-amber-500 bg-amber-500 text-white shadow-[0_3px_0_0_#B45309]`}>
+        className={`${pill} border-amber-700 bg-amber-700 text-white shadow-[0_3px_0_0_#78350F]`}>
         {t('manipulation.checkpoint.back')} <ChevronLeft className="h-4 w-4" aria-hidden="true" />
       </button>
     </div>

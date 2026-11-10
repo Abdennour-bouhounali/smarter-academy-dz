@@ -5,7 +5,7 @@ import KidFigure from '../manipulations/primitives/KidFigure';
 import { KitContext } from './kitContext';
 import { useSavedAnswer } from '../answers/useSavedAnswer';
 import SavedAnswerChip from '../answers/SavedAnswerChip';
-import { startSheet, tapLine, pickFix, rightFix } from './peerSheet';
+import { startSheet, tapLine, pickFix, rightFix, peerFixOrder } from './peerSheet';
 
 /**
  * « ورقة زميل » — l'élève corrige la copie d'un camarade (conseil + propriétaire, 2026-11-08, PILOTE `qasim-adad-tabii`).
@@ -105,7 +105,8 @@ export default function PeerSheet({ sheet, kid = {}, onDone }) {
         <div className="space-y-2" data-peer-fixes>
           <p className="text-base font-black text-indigo-950">{t('peer.pickFix')}</p>
           <div className="grid gap-2 sm:grid-cols-3">
-            {sheet.fixes.map((f, k) => {
+            {peerFixOrder(sheet).map((k) => {
+              const f = sheet.fixes[k];
               const wrong = s.wrongFixes.includes(k);
               return (
                 <button key={k} type="button" disabled={wrong} onClick={() => onFix(k)} data-peer-fix={k}

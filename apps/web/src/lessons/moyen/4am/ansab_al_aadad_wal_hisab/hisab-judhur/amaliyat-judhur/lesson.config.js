@@ -26,8 +26,54 @@ export const LESSON_CONFIG = {
   unit: 'hisab-judhur',
   unitTitle: 'الحساب على الجذور',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (modèle du pilote qasim-adad-tabii, VALIDÉ par le propriétaire le 2026-11-08 ; rollout leçon par leçon,
+  // docs/reports/MISSION_ROLLOUT_PROGRESS.md — unité 2, leçon 4, 2026-11-10) — implique le regard « focus » ; l'enseignant et le mode classe ne voient
+  // aucun changement.
+  studentView: 'mission',
+  // LA MISSION : l'ouverture avoue qu'on ne sait pas encore la résoudre ; les outils sont les connaissances de knowledge.jsx ; les points d'étape
+  // (conseil du 2026-11-10) RAPPROCHENT de la mission sans en résoudre aucune question : ni ses nombres (180, 5 et 12 comme aires, 36 et 6 dalles,
+  // 6√5, 2√3, 16 et 192, 8√3, 108, 45, 3√5, 9 et 18, √90, 150 دج) ni sa méthode (« aire = dalles × aire d'une dalle, donc côté = k√b ») —
+  // content/mission.test.js.
+  mission: {
+    scene: 'courtyard-slabs',
+    title: 'لوحة الزليج: أيّ البلاطات تصلح؟',
+    opening: {
+      text: 'حِرَفيّ في تلمسان يصنع لوحة زليج مربّعة مساحتها $180\\,dm^2$، ويريد أن يغطّيها كلّها ببلاطات مربّعة متماثلة دون أن يقطع أيّ بلاطة. في ورشته بلاطات مساحتها $5\\,dm^2$ وأخرى مساحتها $12\\,dm^2$. أيّ البلاطات تصلح؟ وكيف نكتب طول ضلع اللوحة؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'jidaa-jidhrayn', icon: '✖️', label: 'جداء جذرين' },
+      { id: 'qismat-jidhrayn', icon: '➗', label: 'حاصل قسمة جذرين' },
+      { id: 'la-tawzi-jam', icon: '🚫', label: 'لا مساواة في الجمع' },
+      { id: 'jidhr-a2b', icon: '🧱', label: 'جذر جداء فيه مربّع' },
+    ],
+    climaxModule: 5,
+    checkpoints: [
+      {
+        id: 'cp-jidaa', afterModule: 1,
+        prompt: '$\\sqrt{7} \\times \\sqrt{28} = \\; ?$',
+        options: ['$14$', '$\\sqrt{35}$', '$196$'],
+        correct: 0,
+        explain: 'جذر الجداء هو جداء الجذرين: $\\sqrt{7} \\times \\sqrt{28} = \\sqrt{196} = 14$',
+      },
+      {
+        id: 'cp-jam', afterModule: 2,
+        prompt: 'هل $\\sqrt{2} + \\sqrt{2} = \\sqrt{4}$ ؟',
+        options: ['لا', 'نعم'],
+        correct: 0,
+        explain: '$\\sqrt{4} = 2$ ، أمّا كل $\\sqrt{2}$ فأكبر من 1: مجموعهما أكبر من 2. الجذر لا يتوزّع على الجمع.',
+      },
+      {
+        id: 'cp-qisma', afterModule: 3,
+        prompt: '$\\sqrt{147} \\div \\sqrt{3} = \\; ?$',
+        options: ['$7$', '$49$', '$7\\sqrt{3}$'],
+        correct: 0,
+        explain: 'جذر حاصل القسمة: $\\sqrt{147} \\div \\sqrt{3} = \\sqrt{147 \\div 3} = \\sqrt{49} = 7$',
+      },
+    ],
+  },
   title: 'العمليات على الجذور التربيعية (الجداء والقسمة)',
-  description: 'جذر جداء عددين موجبين هو جداء جذريهما، وجذر حاصل قسمتهما هو حاصل قسمة جذريهما — نكتشفهما بتبليط مربّع وبإكمال جدولَي الكتاب ونبرهنهما بالتربيع — أما الجمع والطرح فلا تتحقق فيهما المساواة.',
+  description: 'جذر جداء عددين موجبين هو جداء جذريهما، وجذر حاصل قسمتهما هو حاصل قسمة جذريهما — نكتشفهما بتبليط مربّع وبإكمال جدولين ونبرهنهما بالتربيع — أما الجمع والطرح فلا تتحقق فيهما المساواة.',
   level: 'moyen',
   grade: '4am',
   chapter: 'ansab_al_aadad_wal_hisab',
@@ -68,6 +114,8 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début, sans verrou par محور.
+  knowledgeMapOpen: true,
   // Leçon 1 de l'unité (jidhr-taarif, murabba-jidhr) et années antérieures
   // (quwa-jidaa-kasr : (ab)² = a²b², (a/b)² = a²/b² — « أستعدّ » 5 et 6).
   priorKnowledge: ['jidhr-taarif', 'murabba-jidhr', 'quwa-jidaa-kasr'],
@@ -88,7 +136,7 @@ export const LESSON_CONFIG = {
     {
       kind: 'manipulation', code: 'square-tiling-144', type: 'square-tiling', module: 1,
       level: 'advanced',
-      title: 'مربّع مساحته 144 = 4 × 36 — السطر الأول من جدول الكتاب',
+      title: 'مربّع مساحته 144 = 4 × 36 — السطر الأول من الجدول',
       objective: 'جذر جداء عددين موجبين يساوي جداء جذريهما: √(k² × b) = √(k²) × √b = k√b',
       autonomy: 'ستة تبليطات صالحة (k = 1، 2، 3، 4، 6، 12) وأخرى مرفوضة دون اقتراح: التلميذ يختار k بنفسه، ويقرأ الضلع جداءً في كل مرة، ويجد بينها السطر الأول من الجدول √(4 × 36) = √4 × √36',
       experience: { type: 'textbook', reason: '', theme: '' },
@@ -106,7 +154,7 @@ export const LESSON_CONFIG = {
       title: 'أستعدّ', desc: 'ست عبارات: صحيح أم خاطئ؟ مربع جداء ومربع حاصل قسمة، الجذر التربيعي ومربعه.',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'nashat-jidaa', path: `${LESSON_BASE_PATH}/nashat-jidaa`,
-      title: 'نشاط 4 — جداء جذرين وحاصل قسمتهما', desc: 'بلّط مربّعًا، أكمل جدولَي الكتاب، ضع تخمينًا ثم برهنه بالتربيع.',
+      title: 'نشاط 4 — جداء جذرين وحاصل قسمتهما', desc: 'بلّط مربّعًا، أكمل جدولين، ضع تخمينًا ثم برهنه بالتربيع.',
       stage: 'trigger', teachesLearningPointIds: ['4am_amaliyat-judhur_P1', '4am_amaliyat-judhur_P2'],
       color: 'indigo', style: 'featured', estimatedMin: 14, difficulty: 2, actionText: 'أجرّب' },
     { id: '02', number: 2, slug: 'majmu', path: `${LESSON_BASE_PATH}/majmu`,
@@ -118,7 +166,7 @@ export const LESSON_CONFIG = {
       stage: 'discovery', teachesLearningPointIds: ['4am_amaliyat-judhur_P1', '4am_amaliyat-judhur_P2', '4am_amaliyat-judhur_P3'],
       color: 'violet', style: 'featured', estimatedMin: 12, difficulty: 2, actionText: 'أتعلّم' },
     { id: '04', number: 4, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
-      title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 15، 16، 17، 20، 21 و 33 (العدد الذهبي).',
+      title: 'أوظّف تعلّماتي', desc: 'جذر جداء وجذر حاصل قسمة في تمارين، ثم العدد الذهبي.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_amaliyat-judhur_P1', '4am_amaliyat-judhur_P2'],
       color: 'amber', style: 'featured', estimatedMin: 12, difficulty: 3, actionText: 'أتدرّب' },
     // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui

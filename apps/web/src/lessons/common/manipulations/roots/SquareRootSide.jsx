@@ -189,7 +189,12 @@ export default function SquareRootSide({
     questions: chain ? chain.map((q) => QUESTIONS[q](lab, k, { calculator, figure, compact: gameScreen })) : null,
     reached: reachedNow,
     resetKey: scene.inits,
-    onRetry: () => { setLive(null); labRef.current = stepIdx === 0 ? makeLab() : (snap.current ?? makeLab()); setLab(labRef.current); },
+    onRetry: () => {
+      setLive(null); labRef.current = stepIdx === 0 ? makeLab() : (snap.current ?? makeLab()); setLab(labRef.current);
+      // lecteur : à l'étape 1 tout recommence — la manche oublie aussi ses verdicts et ses encadrements (revue ECC 2026-11-10) ; à l'étape 2
+      // le labo revient à l'instantané de l'étape 1, dont les essais restent des essais de la manche
+      if (gameScreen && stepIdx === 0) state.report(onTrial, { tk: 'retry' });
+    },
     onEvent: (ev) => state.report(onTrial, ev),
     onDone: (id) => {
       if (id === 'frame') { snap.current = labRef.current; setDone([true, false]); if (showStepper) party.celebrate({ n: 1, total: 2 }); return; }

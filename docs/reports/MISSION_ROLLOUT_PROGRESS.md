@@ -31,7 +31,7 @@ Prompt for the whole unit: `UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. Folder `lesso
 | 1 | `jidhr-tarbii` | `square-root-side` (v2 treatment, new, both modes) | ✅ done 2026-11-09 | `feat(lessons): jidhr-tarbii — mission prototype` | See « Unit 2, lesson 1 » below. |
 | 2 | `natiqa-ghayr-natiqa` | `square-root-side` (graduation mode; `truthful` « resists », compact rule, plain journal) | ✅ done 2026-11-09 | `feat(lessons): natiqa-ghayr-natiqa — mission prototype` | See « Unit 2, lesson 2 » below. |
 | 3 | `muadalat-x-murabba` | `square-fold` (v2 treatment + LabCoach, new; exact-only pin in the player) | ✅ done 2026-11-10 | `feat(lessons): muadalat-x-murabba — mission prototype` | See « Unit 2, lesson 3 » below. |
-| 4 | `amaliyat-judhur` | `square-tiling` | ⏳ next | | |
+| 4 | `amaliyat-judhur` | `square-tiling` (v2 treatment + LabCoach, new; both modes `product` and `simplest`) | ✅ done 2026-11-10 | `feat(lessons): amaliyat-judhur — mission prototype` | See « Unit 2, lesson 4 » below. |
 | 5 | `tawzif-khawass-judhur` | `square-tiling` | ⏳ | | content only after lesson 4 |
 | S | `wadiya-idmajiya-judhur` | — | ⏳ council first (prompt §5) | | |
 
@@ -49,6 +49,7 @@ Prompt for the whole unit: `UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. Folder `lesso
 | `coprime-explorer` | ✅ (2026-11-09) | `awwaliyan-fima-baynahuma` |
 | `square-root-side` | ✅ (2026-11-09, both modes `refine` and `graduation`) | `jidhr-tarbii` (unit 2) |
 | `square-fold` | ✅ (2026-11-10) | `muadalat-x-murabba` (unit 2) |
+| `square-tiling` | ✅ (2026-11-10, both modes `product` and `simplest`) | `amaliyat-judhur` (unit 2) |
 | every other lab | ⏳ | — |
 
 ## Lesson 2 — `qawasim-adad-tabii` « قواسم عدد طبيعي » (2026-11-08)
@@ -576,3 +577,109 @@ sign and the decimal comma; module 2's peer sheet on the page (as in lessons 1�
 
 **Open on this lesson:** module 2 keeps x² = 5 (its step 2 asks how to write the solutions of x² = 5; in the climax 5 is only a points penalty) — the
 test allows it there only; textbook exercise badges (« تمرين 12 ») stay inside `TextbookExercise` as in lessons 1–2; e2e specs of the old student view.
+
+## Unit 2, lesson 4 — `amaliyat-judhur` « العمليات على الجذور التربيعية (الجداء والقسمة) » (2026-11-10)
+
+**Council (2026-11-10, a real council: 5 advisors, 5 anonymous peer reviews, chairman; the arithmetic re-verified by the coordinator)** on how
+`square-tiling` lives in the player. Verdict applied:
+- **The content test FIRST.** `content/tilings.test.js` was written before the round data: per card, the accepted k > 1; every goal reachable by a
+  student who tiles (three stars on a clean play); every value the lab DISPLAYS — tile area, side k√b, refused quotient, chips and decoys of the
+  questions, predicted k — scanned against the climax's numbers (180, √180, 6√5, 5 as a tile area, 12, √12, 2√3, 192, 8√3, 108, 45, 3√5, 18, 90, 150) and
+  lesson 5's (200, 10√2). The values come from `logic/squareTiling.js › shownValues`, built on the SAME pure builders as the lab's questions. It would
+  have caught 72 → 18 and 288 → 12 (both dropped, with 36 and 48).
+- **Chains.** r1 (27): « مساحة البلاطة؟ » (3) → « الضلع؟ » among 3 × √3 / 9 × √3 / √3 × √3 → BUILD « √27 = 3 × √3 » (the decoy tile 9, « × » visible) →
+  the rule « √(k²×b) = k×√b » only (« جذر جداء = جداء الجذرين » stays on the page's steps). r2 (32): one chip at the discovery, the BRIDGE « √(4 × 8) =
+  √4 × … » → √8. r3 (98): the QUOTIENT chip « √2 = √(98 ÷ …) » → 49. ⭐ (96): the tile area. Lesson 5's chain is fixed now as data (`fullS`): the
+  largest-k tile's area → BUILD « √n = k × √m » (decoy: a smaller valid k and the root of ITS bigger tile) → the rule « أكبر بلاط يصلح ← بلاطة لا تُقسَم
+  من جديد ».
+- **Goals.** `{ discovered: true }` — the lab's own mode-aware `discoveryReady` (two valid k > 1 and a refusal; the largest k and a contrast), announced
+  once by `onTrial { tk: 'discovered' }` — on cards with two valid k > 1 (32, 96); `{ exact: k }` on single-valid cards (27 → 3, 98 → 7, practice 8 →
+  2). The FIRST refusal of a round is free (verdict `free: true`: it counts for the goals, never for the « few trials » star); trials count from the
+  second refusal. A k tried again is not a new trial.
+- **Predictions.** Two yes/no per round « هل يعطي k = … بلاطًا مساحته عدد طبيعي؟ », one on a valid k and one on a refused k (truths differ, also on
+  single-valid rounds): r1 2 ✗ / 3 ✓, r2 2 ✓ / 3 ✗, r3 4 ✗ / 7 ✓, ⭐ 4 ✓ / 3 ✗ — asked before the first gesture, judged when that k is tried. Lesson 5
+  (`predictKind: 'smallest'`): « which k gives the smallest tile? » among given k — which must include a refused k above the largest valid one.
+- **Rounds.** r1 27 · r2 32 (2√8 and 4√2: the same side, two names) · r3 required 98 · ⭐ 96 · free chips 27, 32, 50, 75, 96, 98 · practice 8 (2√2).
+- **No tile counts anywhere in the player.** k = 4 (16 tiles) or k = 6 (36 tiles) are accepted in the DRAWING only: no number of tiles, no question on
+  it, never « count × area » — only k, the tile area and the side. A refusal shows a large « ✗ مساحة البلاطة ليست عددًا طبيعيًا » with the exact quotient
+  small underneath, NOT reduced (« 98 ÷ 36 », never 49/18 — a reduced fraction can bring in another number).
+- **Stuck student.** Three refusals in a round offer « جرّب أصغر » (round field `helpAfterRefusals: 3`) → the practice round, whose win returns to
+  the round left. The guide (LabCoach) NEVER points at a valid k (the coordinator overrode the chairman): the handle, then the ruler for another try.
+- **Checkpoints.** « √7 × √28 = ? » (14 / √35 / 196); « √2 + √2 = √4 ؟ » (لا / نعم); « √147 ÷ √3 = ? » (7 / 49 / 7√3). No k√b reconstruction of an
+  area — `content/mission.test.js`.
+- **Scene.** A school courtyard paved with square slabs by two pupils (`KidFigure`, a girl in hijab, a boy), no numbers; `slabs` lets lesson 5 reuse it
+  with bigger slabs.
+- **Also.** A visible tally « ✓ … · ✗ … » so the student knows when the round is done; a refused tiling is crossed out in the drawing (not only its
+  colour); k√b inside Arabic text through `MathText`.
+
+**What was written (per lesson):** `lesson.config.js` (`studentView: 'mission'`, `mission` — scene `courtyard-slabs`, title « لوحة الزليج: أيّ البلاطات
+تصلح؟ », tools `jidaa-jidhrayn`, `qismat-jidhrayn`, `la-tawzi-jam`, `jidhr-a2b`, climax = module 5 (the zellige panel of 180 dm²), the three checkpoints
+above; `knowledgeMapOpen`; the description, module and resource lines no longer cite the textbook) · `content/prep.js` + test (10 « أستعدّ »: « مربّع
+جداء ومربّع حاصل قسمة » with `quwat-adad-nisbi`, « الجذر التربيعي » with `jidhr-tarbii` to revise; the three `priorKnowledge` are measured) ·
+`content/tilings.js` + test · `content/peerSheet.js` + test (« ورقة ياسمين »: « √(4 + 9) = √4 + √9 = 5 »; the module's own examples 16 + 9 and 100 − 36
+are not reused) · `content/mission.test.js` · modules 0 (the ladder), 1 (`PlayerSwitch` + `LabRounds labId="m1-tilings"`; step 1 waits for r1, step 6
+(the quotient table) for r3; the lab's trials and finished questions are SAVED — `useSavedAnswer` key `lab-tilings`, merged only once `ready` — so a
+reload never blocks a step), 2 (« ورقة ياسمين » is step 4), 3 and 4 (tags, step titles and objectives lose the pages and the textbook's exercise numbers).
+
+**What was added to the shared code:**
+- `logic/squareTiling.js`: `tilesWhole`, `validBig`, `tally`, `coachOf`, `rootText`, `refusedPlain` / `refusedPlainTex`, the question builders
+  `areaOptions`, `sideOptions`, `tileBuildOf`, `bridgeOptions`, `quotientOptions`, `simplestBuildOf`, and `shownValues` (what a player screen can show).
+- `roots/SquareTiling.jsx`: the v2 treatment in both modes (`onVerdict` with the free first refusal, `{ tk: 'discovered' }`, `chains` 'full' / 'bridge'
+  / 'quotient' / 'area' / 'fullS' / 'none', `predict` + `predictKs` + `predictKind` 'whole' / 'smallest', `choices`, `handDone`, the tally, the journal,
+  the crossed-out refusal, controls locked during a prediction or a question, always guided, `{ tk: 'reset' }`) and its first LabCoach; `CHAINS_PLAYER`,
+  `chainOfPlayer`, questions `areaFill`, `sideChoice`, `tileBuild`, `ruleP1`, `bridge`, `quotient`, `bestFill`, `simplestBuild`, `ruleS1`; a11y as in
+  `square-fold` (indigo rings with offset, `aria-disabled` handle, live prediction region always mounted, sr-only « صحيح. / خطأ. » before a verdict,
+  − / + in the ruler's LTR order, journal row headers). Page and teacher unchanged.
+- `rounds/roundsModel.js`: `{ discovered: true }`, verdicts `free`, `countedTrials`, round field `helpAfterRefusals`.
+- `mission/CourtyardSlabsScene.jsx` registered as `mission.scene: 'courtyard-slabs'`.
+- **shared:** `primitives/LabCheckpoint.jsx` — the content of a choice button no longer takes the pointer (`pointer-events-none`): a KaTeX
+  formula (√…) overflows, invisibly, ABOVE its button, so a tap on a choice selected the one BELOW it (found by the walk: the centre of choice 1
+  belonged to choice 2). Every lab's questions benefit.
+- **shared:** `kit/questions.jsx › BatchChoiceQuestion` takes `rowCols="auto"` — two columns in the player for 6 rows or more, one elsewhere —
+  because a MODULE does not see the player's context (`useInMissionPlayer` is false at a module's top level; only components inside the player
+  tree read it). Used by module 1's two tables (6 and 8 rows), which overflowed at 1024 × 768.
+- **shared:** `components/StatementFigure.jsx` draws nothing for a plane figure WITHOUT points (the golden-number exercise of this lesson keeps
+  its extraction data `{ AD: 1, AE: '1/2' }`, drawn apart by `GoldenFigure`): it rendered an empty box and logged « viewBox NaN » — on the page too.
+
+**Traps met:**
+- A tiling's refused quotient, once REDUCED, can show a number the lesson forbids (98 ÷ 36 = 49/18, 50 ÷ 4 = 12,5): the player shows it unreduced.
+- A count in Arabic (« 2 بلاطات », « 1 بلاطات ») is wrong grammar for k = 1, 2 and 11+: the player strings say « عدد البلاطات على كل ضلع: k ».
+- `useInMissionPlayer()` called at a module's top level is always false (the provider wraps the player's content, not the module): use a
+  component-level option (`rowCols="auto"`) instead.
+- The shell refused a heredoc holding JS template literals (« could not be checked for dangerous rm ») — those files were written with the file tool.
+
+**Verification:** vitest `src/lessons` green; `check:lessons` exit 0 (entry 241.3 KB ≤ 245); `lab-rollout-status --lesson amaliyat-judhur` ✅;
+Playwright at 1366×768, 1024×768 and 1920×1080: every round ★★★ (27, 32, 98, ⭐ 96, the free workshop on 50), the reset path, three refusals → the
+practice round 8 and back, a reload after r1 (step 1 complete), the peer sheet (restored after reload), home, « أستعدّ » (10), the final test (6),
+the knowledge map, modules 1–8 unit by unit — 0 `data-fit-overflow`, 0 page scroll, no console error —, teacher view unchanged.
+
+**ECC review (react, code, a11y — 2026-11-10), fixed:**
+- **shared:** the win card's « few trials » line counted the free verdicts while the stars did not — both now read `roundsModel › starCriteria`
+  (`clean`, `few`), one source, tested.
+- **shared, lessons 3 and 4:** a round could be WON while its question was open (the bridge of r2 met the goal `{ discovered }` in the same tick it
+  opened, and could be skipped). Every question a round asks is now in its goal: here `{ checkpoint: 'tile' }` on r2, r3 and ⭐ (r1 already waits for
+  `rule`); in `muadalat-x-murabba` `c0` / `c1` on its r2, `c0` on r3 and `c1` on module 2's round (a card solved in another order met the goal
+  first). Lessons 1–2: their only chains end on `rule`, already a goal. Tests in both content files.
+- **shared:** « أعِد التجربة » of a lab question put the task back but the round KEPT what the lab undid. New event `{ tk: 'retry', groups? }`
+  (`logEvent`): `square-tiling` drops every verdict and the discovery (its first refusal is free again), `square-fold` drops the retried card's
+  answers, `square-root-side` drops everything when step 1 restarts (a step-2 retry returns to the step-1 snapshot, whose trials stay trials).
+  Predictions and answered questions stay. Tested.
+- k = 1 (the tile IS the square) is no longer a trial nor a journal column.
+- Module 1's trial memory is keyed by SQUARE then by k (a one-level merge let one square's trials overwrite another's); the area of a trial is
+  recovered from the trial (b × k², or the reduced quotient × k²); the step-1 line speaks of round 1's square only (27) in the player.
+- The chains are never posed without a valid k > 1 (`firstValid`) — a latent crash on a card with a single valid tiling.
+- **Answer positions:** the chips and choices of the lab's questions turn with the numbers (`logic › spin`); **shared:** `PeerSheet` shows its fixes
+  in an order drawn from the sheet's id (`peerSheet › peerFixOrder`, the checkpoints' own `checkpointOrder`) — the right fix was first on every
+  sheet; tested over every converted lesson's sheet.
+- The wrong-prediction line is the lab's own (« انظر إلى مساحة البلاطة: هل هي عدد طبيعي؟ »), not the football's « ما بقي ».
+- `sideOptions` never writes the right side twice when √b = k (n = k⁴).
+- **a11y, shared (`LabCheckpoint`, every lab):** focus ring `ring-2 ring-indigo-600 ring-offset-2`; the input border indigo-500; white on sky-700,
+  emerald-700 and amber-700 (not sky-500 / emerald-600 / amber-500); the number badge slate-600; the card is `role="group"` beside the lab in the
+  player (a modal dialog only on the page, where it covers the lab); an answered option says « (صحيح) / (خطأ) » to a screen reader, and
+  `aria-pressed` is true only on the option the student chose. **`BatchChoiceQuestion`:** a text option (no formula) keeps the text font and may
+  wrap; the right option says « (صحيح) » after checking. **The tiling lab:** the journal's k cells are column headers; « k = N » under the ruler
+  is hidden from screen readers (the slider's value text carries it).
+
+**Rejected / later (coordinator):** `disabled` → `aria-disabled` focus loss on − / +, the checkpoint options and the choices (the same pattern in
+every lab — final report); the handle ring at k = min (verified on the screenshots, not clipped); reflow at 400 % zoom (phones unsupported); the
+slab-area font inside the decorative SVG; a full render test of `<SquareTiling>` in the player; « نشاط 4 » in a title (an activity number, not a page).

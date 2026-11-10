@@ -35,8 +35,8 @@ export default function Module03Maarif() {
       estimatedTime="12 دقيقة"
       objectives={['كيف أستعمل ما برهنته في الاتجاهين؟', 'ماذا يحدث إذا كان أحد العاملين مربّعًا؟', 'متى لا تصحّ المساواة؟']}
       brief={{
-        tag: 'معارف — الكتاب ص 24', title: KNOWLEDGE.title, tone: 'violet',
-        body: <p>ما برهنته في النشاط 4 يكتبه الكتاب في خاصيتين، ومعهما ملاحظات تبيّن كيف نستعملهما — في الاتجاهين — ومتى لا نستطيع.</p>,
+        tag: 'معارف', title: KNOWLEDGE.title, tone: 'violet',
+        body: <p>ما برهنته في النشاط 4 نكتبه في خاصيتين، ومعهما ملاحظات تبيّن كيف نستعملهما — في الاتجاهين — ومتى لا نستطيع.</p>,
       }}
       steps={[
         {
@@ -51,7 +51,7 @@ export default function Module03Maarif() {
                   { id: 'r2', label: m('$\\sqrt{0{,}9} \\times \\sqrt{0{,}4}$'), options: ['$0{,}6$', '$0{,}36$', '$\\sqrt{1{,}3}$'].map(m), correct: 0 },
                 ]}
                 requires={['jidaa-jidhrayn']}
-                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>أمثلة الكتاب أدناه.</Feedback>}
+                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>الأمثلة المحلولة أدناه.</Feedback>}
                 onAnswered={() => setQ1(true)}
               />
               {q1 && (
@@ -111,7 +111,7 @@ export default function Module03Maarif() {
                   { id: 'k4', label: m('$\\sqrt{\\dfrac{-36}{-4}}$'), options: ['لا معنى له', m('$3$'), m('$-3$')], correct: 1 },
                 ]}
                 requires={['qismat-jidhrayn']}
-                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>أمثلة الكتاب والملاحظة أدناه.</Feedback>}
+                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>الأمثلة المحلولة والملاحظة أدناه.</Feedback>}
                 onAnswered={() => setQ4(true)}
               />
               {q4 && (

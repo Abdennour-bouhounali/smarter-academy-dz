@@ -5,7 +5,7 @@ import Manipulation from '../Manipulation';
 import { scopedStorage } from '../../../../utils/storage';
 import { useLabJump } from '../../mission/missionPlayerContext';
 import {
-  emptyLog, logEvent, roundWon, starsFor, predictionsRight, needsHelp, roundUnlocked, jumpTarget, resumeRound, readStars, recordStars, STARS_EVENT,
+  emptyLog, logEvent, roundWon, starsFor, starCriteria, needsHelp, roundUnlocked, jumpTarget, resumeRound, readStars, recordStars, STARS_EVENT,
 } from './roundsModel';
 
 /**
@@ -69,8 +69,7 @@ export default function LabRounds({ lessonId, labId, rounds, onRoundWon, onVerdi
     wonRef.current = true;
     const stars = starsFor(round, log);
     // l'étoile 2 : les prédictions justes (pilote 2026-11-07), plus « questions justes du premier coup »
-    const clean = round.stars?.predict === false || predictionsRight(log);
-    const few = round.stars?.maxTrials == null || log.verdicts.length <= round.stars.maxTrials;
+    const { clean, few } = starCriteria(round, log);
     const all = recordStars(scopedStorage, lessonId, labId, round.id, stars);
     setBest(all[labId] ?? {});
     window.dispatchEvent(new Event(STARS_EVENT));

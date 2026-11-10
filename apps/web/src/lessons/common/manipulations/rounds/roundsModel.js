@@ -18,18 +18,33 @@
  *             { resists: true }                     — (square-root-side, mode graduation) une carte a RÉSISTÉ : encadrée à 3 graduations sans tomber
  *             { solvedAll: n }                      — (square-fold, 2026-11-10) les n cartes de la manche RÉSOLUES (toutes leurs solutions épinglées,
  *                                                     ou « لا حل » déclaré) ; `groups` d'un verdict = l'indice de la carte, `exact` = carte résolue
+ *             { discovered: true }                  — (square-tiling, 2026-11-10) la DÉCOUVERTE du labo atteinte, selon SON mode : le labo la juge
+ *                                                     (logic › discoveryReady : deux pavages justes et un refusé ; le plus grand k et un contraste)
+ *                                                     et l'annonce par onTrial { tk: 'discovered' }
+ * Un verdict peut porter `free: true` (square-tiling : le PREMIER refus d'une manche fait partie de la découverte) : il compte pour les buts,
+ * jamais comme un essai de l'étoile « peu d'essais ». Une manche peut porter `helpAfterRefusals: n` : n refus (verdicts non justes) suffisent
+ * à proposer la manche `easier` (conseil 2026-11-10 : trois pavages refusés de suite = l'élève tourne en rond).
  * Une manche peut porter `easier` : une manche d'ENTRAÎNEMENT plus petite (« لا بأس — جرّب أصغر », pilote 2026-11-08),
  * proposée seulement quand l'élève peine (needsHelp) — jamais à celui qui réussit.
  * Ce que la manche a VU (`log`) : { verdicts: [{ groups, exact }], checkpoints: { [id]: true }, answers: [{ ok, tries, revealed }] }
  */
 
-export const emptyLog = () => ({ verdicts: [], checkpoints: {}, answers: [], predictions: [], brackets: [] });
+export const emptyLog = () => ({ verdicts: [], checkpoints: {}, answers: [], predictions: [], brackets: [], discovered: false });
 
 /** Le journal d'une manche après un événement du labo (onVerdict → 'verdict', onTrial → les événements LabCheckpoint). */
 export function logEvent(log, kind, ev) {
   // « إعادة » (ou d'autres nombres) dans le labo : la manche repart de zéro — ses essais d'avant ne comptent plus (revue 2026-11-09)
   if (ev?.tk === 'reset') return emptyLog();
-  if (kind === 'verdict') return { ...log, verdicts: [...log.verdicts, { groups: Number(ev.groups), exact: Boolean(ev.exact) }] };
+  // « أعِد التجربة » d'une question du labo : la tâche revient au départ — ce que le labo vient de défaire quitte aussi la manche (revue ECC
+  // 2026-11-10 : un but ne doit pas rester atteint par des essais que le labo ne montre plus). `groups` : seulement les verdicts de ce groupe
+  // (une carte) ; sinon tous les verdicts, les encadrements et la découverte. Les prédictions et les questions déjà répondues restent.
+  if (ev?.tk === 'retry') {
+    if (ev.groups != null) return { ...log, verdicts: log.verdicts.filter((v) => v.groups !== Number(ev.groups)) };
+    return { ...log, verdicts: [], brackets: [], discovered: false };
+  }
+  if (kind === 'verdict') return { ...log, verdicts: [...log.verdicts, { groups: Number(ev.groups), exact: Boolean(ev.exact), ...(ev.free ? { free: true } : {}) }] };
+  // la découverte du labo atteinte (square-tiling : le labo la juge selon son mode)
+  if (ev?.tk === 'discovered') return { ...log, discovered: true };
   if (ev?.tk === 'checkpoint') return { ...log, answers: [...log.answers, { ok: Boolean(ev.ok), tries: ev.tries ?? 1, revealed: Boolean(ev.revealed) }] };
   if (ev?.tk === 'checkpoint-done') return { ...log, checkpoints: { ...log.checkpoints, [ev.id]: true } };
   // une PRÉDICTION faite avant d'agir, jugée par le terrain (pilote 2026-11-07)
@@ -58,6 +73,7 @@ export function conditionMet(cond, log) {
   if (cond.above != null) return log.verdicts.some((v) => v.groups > Number(cond.above));
   if (cond.bracketed != null) return (log.brackets ?? []).some((b) => b.scale === Number(cond.bracketed));
   if (cond.resists) return (log.brackets ?? []).some((b) => b.resisting);
+  if (cond.discovered) return Boolean(log.discovered);
   if (cond.solvedAll != null) { const seen = exactGroups(log); return Array.from({ length: Number(cond.solvedAll) }, (_, i) => i).every((i) => seen.has(i)); }
   return false;
 }
@@ -79,13 +95,25 @@ export function predictionsRight(log) {
   return preds.length > 0 && preds.every((x) => x.ok);
 }
 
+/** Les essais qui comptent pour l'étoile « peu d'essais » : les verdicts, sauf ceux marqués `free`. */
+export const countedTrials = (log) => log.verdicts.filter((v) => !v.free).length;
+
+/**
+ * Les deux critères des étoiles 2 et 3, UNE seule source (la carte de victoire de LabRounds les affiche — revue ECC 2026-11-10 : la carte
+ * comptait les essais gratuits et disait « trop d'essais » quand la 3e étoile était donnée).
+ */
+export function starCriteria(round, log) {
+  const max = round?.stars?.maxTrials;
+  return {
+    clean: round?.stars?.predict === false || predictionsRight(log),
+    few: max == null || countedTrials(log) <= max,
+  };
+}
+
 export function starsFor(round, log) {
   if (!roundWon(round, log)) return 0;
-  let stars = 1;
-  if (round.stars?.predict === false || predictionsRight(log)) stars += 1;
-  const max = round.stars?.maxTrials;
-  if (max == null || log.verdicts.length <= max) stars += 1;
-  return Math.min(3, stars);
+  const { clean, few } = starCriteria(round, log);
+  return Math.min(3, 1 + (clean ? 1 : 0) + (few ? 1 : 0));
 }
 
 /**
@@ -102,8 +130,9 @@ export function missesOf(log) {
 }
 export function needsHelp(round, log) {
   if (!round?.easier || round.free || roundWon(round, log)) return false;
-  const manyTrials = log.verdicts.length >= (round.stars?.maxTrials ?? 3) + 2;
-  return missesOf(log) >= HELP_MISSES || manyTrials;
+  const manyTrials = countedTrials(log) >= (round.stars?.maxTrials ?? 3) + 2;
+  const refusals = log.verdicts.filter((v) => !v.exact).length;
+  return missesOf(log) >= HELP_MISSES || manyTrials || (round.helpAfterRefusals != null && refusals >= round.helpAfterRefusals);
 }
 
 /** Une manche est-elle ouverte ? La première, une manche libre, ou celle dont la manche requise précédente est gagnée. */

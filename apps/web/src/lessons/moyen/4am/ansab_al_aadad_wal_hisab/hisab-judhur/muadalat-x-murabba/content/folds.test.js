@@ -38,7 +38,7 @@ describe('the folding lines of muadalat-x-murabba (square-fold rounds)', () => {
     WITH_EASY.filter((r) => !r.free).forEach((r) => {
       const { log } = play(r);
       r.goal.filter((c) => !c.checkpoint).forEach((c) => expect(conditionMet(c, log), `${r.id} ${JSON.stringify(c)}`).toBe(true));
-      const won = { ...log, checkpoints: { rule: true }, predictions: [{ ok: true }] };
+      const won = { ...log, checkpoints: Object.fromEntries(['rule', ...r.goal.filter((c) => c.checkpoint).map((c) => c.checkpoint)].map((id) => [id, true])), predictions: [{ ok: true }] };
       if (r.stars) expect(starsFor(r, won), r.id).toBe(3);
     });
   });
@@ -100,5 +100,12 @@ describe('the r1 table is the activity\'s table', () => {
 describe('the leads are plain Arabic', () => {
   it('no equation inside a plain-text lead (it reorders in an RTL line): the cards carry the equations', () => {
     [...M1_ROUNDS, ...M2_ROUNDS].flatMap((r) => [r, r.easier].filter(Boolean)).forEach((x) => expect(x.props.lead, x.props.lead).not.toMatch(/=|x²/));
+  });
+  it('every question a round asks is in its goal — solving the cards in another order never wins while a question is open (ECC 2026-11-10)', () => {
+    const goalCps = (r) => r.goal.filter((c) => c.checkpoint).map((c) => c.checkpoint).sort();
+    expect(goalCps(M1_ROUNDS.find((r) => r.id === 'r1'))).toEqual(['rule']);
+    expect(goalCps(M1_ROUNDS.find((r) => r.id === 'r2'))).toEqual(['c0', 'c1']);
+    expect(goalCps(M1_ROUNDS.find((r) => r.id === 'r3'))).toEqual(['c0']);
+    expect(goalCps(M2_ROUNDS.find((r) => r.id === 'r1'))).toEqual(['c1']);
   });
 });

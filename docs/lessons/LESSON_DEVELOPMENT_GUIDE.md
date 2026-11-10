@@ -1256,7 +1256,8 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
   `KidFigure` volunteer, `'sewing-workshop'` = two ribbons cut into equal pieces + a `KidFigure` seamstress in hijab, `'bakery'` = identical dough portions on a tray + a
   `KidFigure` baker, `'math-club'` = pairs of numbered tiles judged « ✓ » + a `KidFigure` in hijab, `'garden-bed'` = a square flower bed on the
   hypotenuse of a right-triangle corner, filling with rows of flowers + a `KidFigure` gardener, `'carpet-loom'` = a square carpet woven row by row on a loom, `'fold-strip'` = a paper strip folded in a V at a school science fair (two halves
-  coloured symmetrically, a rosette on the fold; a `KidFigure` girl in hijab and a boy),
+  coloured symmetrically, a rosette on the fold; a `KidFigure` girl in hijab and a boy), `'courtyard-slabs'` = a square school courtyard paved slab by slab (`slabs` sets the slabs per side, so lesson 5
+  can reuse it with bigger slabs; a `KidFigure` girl in hijab and a boy),
   its border and fringes closing at the end, + a `KidFigure` weaver in hijab). A new scene is a component `<Nom>Scene({ fill,
   label, className })` drawn in code (never a generated image), `fill` ∈ [0, 1] following the tools earned; it must not show any
   number of the مسألة (rows, capacities). `MissionHome`, `MissionCheckpoint` and `MissionLayer` read `mission.scene`.
@@ -1267,7 +1268,7 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
   a free round (`free: true`, bounded `nChoices`); `easier` on every hard round (a smaller number, `goal` = the same kind).
   Goals available: `{ checkpoint }`, `{ exact }`, `{ allExact }`, `{ inexact }`, plus (factor-pairs) `{ anyExact: true }` and
   `{ allPairs: n }` (every perfect rectangle of `n` seen — one side of each pair is enough), (common-divisors) `{ above: g }`, (square-root-side)
-  `{ bracketed: g }` and `{ resists: true }`, (square-fold) `{ solvedAll: n }` (the n cards of the round solved — a verdict's `groups` is the card). A « few trials » star for a lab with nested steps (a magnifier) is a budget PER STEP (bisection: ≈ 4
+  `{ bracketed: g }` and `{ resists: true }`, (square-fold) `{ solvedAll: n }` (the n cards of the round solved — a verdict's `groups` is the card). (square-tiling, 2026-11-10) `{ discovered: true }` — the lab's OWN discovery (its mode-aware `discoveryReady`), announced once by `onTrial { tk: 'discovered' }`. A verdict may carry `free: true` (a refusal that IS the discovery — the first of a round): it counts for the goals, never for the « few trials » star (`countedTrials`). A round may carry `helpAfterRefusals: n`: n refusals offer the `easier` round (a lab where a refusal is the normal move, and three in a row means the student is going round in circles). **Every question a round asks is in its goal** (`{ checkpoint: <the chain's id> }` — in the player a one-question chain of `square-tiling` is `'tile'`, of `square-fold` the card's `c<i>`, a chain holding the rule is `'rule'`): otherwise the round is won, and its win card shown, while the question is still open (ECC review 2026-11-10). A lab's « أعِد التجربة » sends `onTrial { tk: 'retry', groups? }` so the round forgets what the lab undid; the win card reads its criteria from `starCriteria`, never on its own. A « few trials » star for a lab with nested steps (a magnifier) is a budget PER STEP (bisection: ≈ 4
   releases per refined graduation), tested by playing the round the efficient way. Numbers are COMPUTED (`divisorsOf`,
   `pairsOf`), never typed by hand. `LabRounds` takes `icon` / `freeIcon` (📚 / 🗂️ for books) and a round's `easier.helpLine` replaces
   the football sentence of the « جرّب أصغر » card.
@@ -1317,7 +1318,7 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
   pattern — ask it at non-consecutive steps (`predictAt: [1, 100]`) and add a round where the answer FLIPS (2,25: « no » at 1, « yes » at 0,1), required;
   (j) a prediction the lab answers later is judged by the computed truth when it is made and its result shown when the lab has decided; (k) in the player
   the question chain follows the computed TRUTH, not what is already found. In the player a `TextbookExercise` batch of ≥ 6 rows is laid on two
-  columns (from `lg`; a 768-px tablet keeps one) as one screen (`BatchChoiceQuestion rowCols`, `data-paging-keep`) so a long list never falls under the minimum zoom.
+  columns (from `lg`; a 768-px tablet keeps one) as one screen (`BatchChoiceQuestion rowCols`, `data-paging-keep`) so a long list never falls under the minimum zoom. A module that calls `BatchChoiceQuestion` itself passes `rowCols="auto"` (two columns in the player for 6 rows or more): `useInMissionPlayer()` at a module's top level is always false. Choice buttons of the lab questions never let their content take the pointer (a √ overflows above its button).
   The same lab in GRADUATION mode (lesson `natiqa-ghayr-natiqa`, council of 2026-11-09): (l) a « resists » verdict must be TRUE — in the player a card
   whose side lands on an offered graduation never « resists », even bracketed on three rulers that are not its own (`init({ truthful })`; 16/9 on 1/1,
   1/2, 1/4 stays open and the coach says « another ruler »), and a round never offers a rational card a ruler too short for it (test); (m) every round

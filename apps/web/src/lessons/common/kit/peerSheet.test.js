@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { startSheet, tapLine, pickFix, rightFix } from './peerSheet';
+import { startSheet, tapLine, pickFix, rightFix, peerFixOrder } from './peerSheet';
+
+const SHEETS = Object.values(import.meta.glob('../../moyen/**/content/peerSheet.js', { eager: true })).map((m) => m.PEER_SHEET).filter(Boolean);
 
 const sheet = {
   id: 's', errorLine: 1, lines: ['a', 'b', 'c'],
@@ -37,5 +39,21 @@ describe('« ورقة زميل » — find the line, then the fix', () => {
     expect(pickFix(s, 1, sheet)).toBe(s);
     const f = tapLine(s, 1, sheet);
     expect(tapLine(f, 0, sheet)).toBe(f);
+  });
+});
+
+describe('the order the fixes are SHOWN (ECC review 2026-11-10)', () => {
+  it('is a permutation, stable, never the written order', () => {
+    const sh = { id: 'x', fixes: [{ ok: true }, {}, {}] };
+    const o = peerFixOrder(sh);
+    expect([...o].sort()).toEqual([0, 1, 2]);
+    expect(peerFixOrder(sh)).toEqual(o);
+    expect(o).not.toEqual([0, 1, 2]);
+  });
+  it('across every converted lesson\'s sheet, the right fix is not always shown first', () => {
+    expect(SHEETS.length).toBeGreaterThan(5);
+    const firstShown = SHEETS.map((sh) => peerFixOrder(sh).indexOf(rightFix(sh)));
+    expect(firstShown.filter((p) => p === 0).length).toBeLessThan(SHEETS.length);
+    expect(new Set(firstShown).size).toBeGreaterThan(1);
   });
 });

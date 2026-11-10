@@ -7,6 +7,7 @@ import MathLabel from '../components/MathLabel';
 import { MoreToggle, useStudentFocus } from '../components/StudentFocus';
 import { useSavedAnswer } from '../answers/useSavedAnswer';
 import SavedAnswerChip from '../answers/SavedAnswerChip';
+import { useInMissionPlayer } from '../mission/missionPlayerContext';
 
 /**
  * Les réponses gardées pour l'élève (pilote 2026-11-07) : une question RETROUVE sa réponse quand l'élève revient — une seule
@@ -128,8 +129,11 @@ export function BatchChoiceQuestion({
   xp = 10,
   solved = false,
   onAnswered,     // (allRight) => void — inconditionnel
-  rowCols = 1,    // 2 : les lignes sur deux colonnes (lecteur de mission, une longue liste tient dans l'écran — rollout 2026-11-09)
+  rowCols: rowColsProp = 1, // 2 : les lignes sur deux colonnes (lecteur de mission, une longue liste tient dans l'écran — rollout 2026-11-09) ;
+                  // 'auto' : 2 dans le lecteur pour 6 lignes ou plus, 1 ailleurs (un module ne voit pas le contexte du lecteur — 2026-11-10)
 }) {
+  const inPlayer = useInMissionPlayer();
+  const rowCols = rowColsProp === 'auto' ? (inPlayer && rows.length >= 6 ? 2 : 1) : rowColsProp;
   const { react } = useKit();
   const { t } = useTranslation('lesson');
   const uid = useId();
@@ -195,7 +199,8 @@ export function BatchChoiceQuestion({
                       }
                     }}
                     aria-pressed={pick === oi}
-                    className={`whitespace-nowrap px-3 py-2 rounded-lg border-2 font-mono text-xs font-bold min-h-[40px] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2 ${
+                    // une option en TEXTE (sans formule) garde la police du texte et peut passer à la ligne ; une formule ne se coupe jamais
+                    className={`${typeof opt === 'string' && !opt.includes('$') ? '' : 'whitespace-nowrap font-mono'} px-3 py-2 rounded-lg border-2 text-xs font-bold min-h-[40px] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2 ${
                       checked
                         ? oi === r.correct
                           ? 'bg-emerald-700 border-emerald-800 text-white'
@@ -208,6 +213,7 @@ export function BatchChoiceQuestion({
                     }`}
                   >
                     {typeof opt === 'string' ? <MathLabel>{opt}</MathLabel> : opt}
+                    {checked && oi === r.correct && <span className="sr-only"> {t('manipulation.checkpoint.srRight')}</span>}
                   </button>
                 ))}
               </div>

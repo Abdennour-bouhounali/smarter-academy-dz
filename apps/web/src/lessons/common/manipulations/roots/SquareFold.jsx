@@ -146,9 +146,14 @@ export default function SquareFold({
     reached: solvedNow,
     resetKey: scene.inits,
     // la MÊME équation au départ : ses épingles, ses marques exactes et son « لا حل » sont retirés
-    onRetry: () => setLab((s) => ({
-      ...s, pins: { ...s.pins, [s.card]: [] }, declaredNone: { ...s.declaredNone, [s.card]: false }, exactShown: { ...s.exactShown, [s.card]: [] }, last: null,
-    })),
+    onRetry: () => {
+      const card = labRef.current.card;
+      setLab((s) => ({
+        ...s, pins: { ...s.pins, [s.card]: [] }, declaredNone: { ...s.declaredNone, [s.card]: false }, exactShown: { ...s.exactShown, [s.card]: [] }, last: null,
+      }));
+      // lecteur : la manche oublie aussi les réponses de CETTE carte (revue ECC 2026-11-10 : un but atteint par une carte dépinglée)
+      if (gameScreen) { refusedAt.current = null; state.report(onFinishedTrial, { tk: 'retry', groups: card }); }
+    },
     onEvent: (ev) => state.report(onFinishedTrial, ev),
     onDone: () => {
       const i = lab.card;

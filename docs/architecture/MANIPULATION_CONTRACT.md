@@ -128,7 +128,7 @@ through `MathText`.
 |---|---|---|---|---|
 | `square-root-side` (`roots/SquareRootSide.jsx`) | the end of a square's side on a graduated ruler; the square grows on a unit grid beside the dashed target square | `refine`: « دقّق » (zoom the ruler ×10) opens only once the student has bracketed the side BY HAND at the current graduation; for 5 every graduation is too small or too big. `graduation`: a card « resists » after 3 graduations bracketed without a hit | `refine`: the side falls exactly (36 → 6) **or** the bracket reached 1/1000 with no hit (5) — the formal part names √5, shows `calculator`'s exact square (2,236067978² = 5,000000002…) and, with `figure="bc-square"`, the tilted square of area 9 − 4 × 1 = 5 on BC. `graduation`: one card exact **and** one resisting → « √a is rational ⇔ a is the square of a rational » | L1 (refine), L2 (graduation) |
 | `square-fold` (`roots/SquareFold.jsx`) | x on a number line; an arrow carries it to x² on the line of squares, whose negative half is hatched | pinning a solution for a < 0 is refused (« x² لا يكون سالبًا »); a wrong x is refused with its exact square; « لا حل » for a ≥ 0 is refused. For √3 the nearest graduation is accepted and **√3** (not 1,7) is pinned — in the mission player (`init({ exactOnly })`, 2026-11-10) the nearest graduation is REFUSED (« 1,7² = 2,89 ≠ 3 — لا تدريجة تعطي 3 بالضبط »), the exact mark √3 appears between the ticks and the student pins it | a solved card with a > 0 (two pins), a = 0 (one) and a < 0 (« لا حل ») → the three cases of خاصية 2. Optional `table` fills the textbook's x ↦ x² table from the student's own positions | L3 |
-| `square-tiling` (`roots/SquareTiling.jsx`) | k, the number of square tiles per side of a square of area n | k² ∤ n: the tiling is dashed and refused with `n ÷ k²` read exactly (72 ÷ 25 = 2,88) | `product`: two valid tilings with k > 1 and one refusal → √(k² × b) = √(k²) × √b = k√b. `simplest`: the largest k and another valid k → the largest square dividing n gives the smallest b | L4 (product), L5 (simplest) |
+| `square-tiling` (`roots/SquareTiling.jsx`) | k, the number of square tiles per side of a square of area n | k² ∤ n: the tiling is dashed and refused with `n ÷ k²` read exactly (72 ÷ 25 = 2,88) | `product`: two valid tilings with k > 1 and one refusal → √(k² × b) = √(k²) × √b = k√b. `simplest`: the largest k and another valid k → the largest square dividing n gives the smallest b. In the mission player (2026-11-10) a refusal is a large « ✗ مساحة البلاطة ليست عددًا طبيعيًا » with the quotient NOT reduced (« 98 ÷ 36 »), never a number of tiles | L4 (product), L5 (simplest) |
 
 Props: see the component headers (the design sheet of `MANIPULATION_DNA.md` §7 is filled in each).
 `square-root-side` and `square-tiling` report each validated trial through `onTrial` (via
@@ -2668,6 +2668,19 @@ the mission player a lab is played as a PATH of rounds instead of the مبتدئ
   sign BUILD « x² = a ⇔ x = √a أو x = −√a », its decoy the nearest tick or half of a, and the rule, chain id `'rule'`), 'predicted', 'build', 'none';
   `predict` with `predictCards` / `predictKind` ('count' 2 / 1 / 0, 'tick' yes / no); a refused arrow for a < 0 bounces off the hatched half; `radius`
   shortens the line; a one-line round `mission`. Page and teacher unchanged.
+- **Eleventh example (2026-11-10, unit 2):** lesson `amaliyat-judhur`, `content/tilings.js` (`M1_ROUNDS`, mode `product`: 27 by hand with the FULL
+  chain — the tile area, the side among three, BUILD « √27 = 3 × √3 » (decoy 9), the rule « √(k²×b) = k×√b » → 32 (2√8 and 4√2) with the bridge
+  « √(4 × 8) = √4 × … » → 98, required, with the quotient « √2 = √(98 ÷ …) » → ⭐ 96 with the tile area → free chips 27, 32, 50, 75, 96, 98; goals
+  `{ exact: k }` on single-valid cards and `{ discovered: true }` on cards with two valid k > 1; two yes/no predictions « هل يعطي k = … بلاطًا مساحته
+  عدد طبيعي؟ » per round, one valid k and one refused k; practice round 8 after three refusals — `helpAfterRefusals: 3`), `LabRounds icon="🧱"`. What
+  the player added to `square-tiling` (both modes, so lesson 5 is content only): the FIRST refusal of a round is a free verdict (`free: true` — it
+  counts for the goals, never for the « few trials » star); the discovery is the lab's own `discoveryReady`, announced once (`{ tk: 'discovered' }`);
+  `chains` 'full' / 'bridge' / 'quotient' / 'area' / 'fullS' (simplest: the largest-k tile's area → BUILD « √n = k × √m » with a smaller-k decoy
+  pair → the rule) / 'none'; `predictKind` 'whole' (yes/no per k) or 'smallest' (« which k gives the smallest tile? », the k shown must include a
+  refused k above the largest valid one); the tally « ✓ … · ✗ … »; a refusal crossed out in the drawing and written « ✗ » in large with the quotient
+  unreduced; NO number of tiles anywhere (k, the tile area and the side only); `choices` for the free round. The content test scans
+  `logic › shownValues` — everything a screen can show, built by the same functions as the questions — against the climax's numbers. Page and teacher
+  unchanged.
 
 **`team-builder` options (2026-11-04):** `levels={false}` gives a worked example with no مبتدئ / متقدم selector (as for
 `divisor-explorer-books`). `handDone` opens « أنشئ الفرق » from the start: the student already shared BY HAND in an

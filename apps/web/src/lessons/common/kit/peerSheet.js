@@ -7,7 +7,15 @@
  *
  * Une feuille : { id, lines: [string], errorLine: index, fixes: [{ text, ok?, why? }], tries?: 2 }
  */
+import { checkpointOrder } from '../mission/missionModel.js';
+
 export const PEER_TRIES = 2;
+
+/**
+ * L'ordre d'AFFICHAGE des corrections : tiré de l'id de la feuille (stable d'un rechargement à l'autre, jamais l'ordre écrit) — la bonne
+ * correction était toujours la première de chaque feuille (revue ECC 2026-11-10). Les indices restent ceux de `sheet.fixes`.
+ */
+export const peerFixOrder = (sheet) => checkpointOrder(sheet.id, sheet.fixes.length);
 
 export const startSheet = () => ({ phase: 'find', misses: 0, wrongLines: [], shown: false, foundFirst: false, wrongFixes: [] });
 

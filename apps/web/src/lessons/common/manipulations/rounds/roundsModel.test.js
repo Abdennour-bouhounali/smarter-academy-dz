@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  allPairsSeen, needsHelp, missesOf, emptyLog, logEvent, conditionMet, roundWon, starsFor, roundUnlocked, jumpTarget, resumeRound, readStars, recordStars, totalStars, starsKey,
+  countedTrials, starCriteria, allPairsSeen, needsHelp, missesOf, emptyLog, logEvent, conditionMet, roundWon, starsFor, roundUnlocked, jumpTarget, resumeRound, readStars, recordStars, totalStars, starsKey,
 } from './roundsModel';
 
 const play = (events) => events.reduce((log, [kind, ev]) => logEvent(log, kind, ev), emptyLog());
@@ -207,5 +207,58 @@ describe('the door to a round (jumpTarget, ECC review 2026-11-09)', () => {
   });
   it('an unknown round is -1', () => {
     expect(jumpTarget(rounds, -1, {})).toBe(-1);
+  });
+});
+
+describe('square-tiling (2026-11-10): the discovered goal, free refusals, help after refusals', () => {
+  it('{ discovered: true } is met only once the lab announced its discovery', () => {
+    let log = logEvent(emptyLog(), 'verdict', { groups: 2, exact: true });
+    expect(conditionMet({ discovered: true }, log)).toBe(false);
+    log = logEvent(log, 'trial', { tk: 'discovered' });
+    expect(conditionMet({ discovered: true }, log)).toBe(true);
+    expect(logEvent(log, 'trial', { tk: 'reset' }).discovered).toBe(false);
+  });
+  it('a free verdict counts for the goals but never as a trial of the « few trials » star', () => {
+    const round = { id: 'r', goal: [{ exact: 3 }], stars: { maxTrials: 1, predict: false } };
+    let log = logEvent(emptyLog(), 'verdict', { groups: 2, exact: false, free: true });
+    log = logEvent(log, 'verdict', { groups: 3, exact: true });
+    expect(log.verdicts[0].free).toBe(true);
+    expect(countedTrials(log)).toBe(1);
+    expect(starsFor(round, log)).toBe(3);
+    log = logEvent(log, 'verdict', { groups: 4, exact: false });
+    expect(starsFor(round, log)).toBe(2);
+  });
+  it('a retry drops what the lab undid: one card\'s verdicts, or every verdict and the discovery — predictions and answers stay', () => {
+    let log = logEvent(emptyLog(), 'verdict', { groups: 0, exact: true });
+    log = logEvent(log, 'verdict', { groups: 1, exact: true });
+    log = logEvent(log, 'trial', { tk: 'predict', ok: true });
+    log = logEvent(log, 'trial', { tk: 'discovered' });
+    log = logEvent(log, 'trial', { tk: 'checkpoint-done', id: 'c0' });
+    const one = logEvent(log, 'trial', { tk: 'retry', groups: 1 });
+    expect(one.verdicts.map((v) => v.groups)).toEqual([0]);
+    expect(one.discovered).toBe(true);
+    const all = logEvent(log, 'trial', { tk: 'retry' });
+    expect(all.verdicts).toEqual([]);
+    expect(all.discovered).toBe(false);
+    expect(all.predictions).toHaveLength(1);
+    expect(all.checkpoints.c0).toBe(true);
+  });
+  it('the win card\'s criteria are the stars\' own (a free verdict never makes the card say « too many trials »)', () => {
+    const round = { id: 'r', goal: [{ exact: 3 }], stars: { maxTrials: 1, predict: false } };
+    let log = logEvent(emptyLog(), 'verdict', { groups: 2, exact: false, free: true });
+    log = logEvent(log, 'verdict', { groups: 3, exact: true });
+    expect(starCriteria(round, log)).toEqual({ clean: true, few: true });
+    expect(starsFor(round, log)).toBe(1 + 1 + 1);
+    log = logEvent(log, 'verdict', { groups: 4, exact: false });
+    expect(starCriteria(round, log).few).toBe(false);
+  });
+  it('helpAfterRefusals: n refusals (free ones included) offer the easier round; without it, nothing changes', () => {
+    const round = { id: 'r', goal: [{ exact: 3 }], easier: { goal: [{ exact: 2 }] }, stars: { maxTrials: 9 }, helpAfterRefusals: 3 };
+    let log = logEvent(emptyLog(), 'verdict', { groups: 2, exact: false, free: true });
+    log = logEvent(log, 'verdict', { groups: 4, exact: false });
+    expect(needsHelp(round, log)).toBe(false);
+    log = logEvent(log, 'verdict', { groups: 5, exact: false });
+    expect(needsHelp(round, log)).toBe(true);
+    expect(needsHelp({ ...round, helpAfterRefusals: undefined }, log)).toBe(false);
   });
 });

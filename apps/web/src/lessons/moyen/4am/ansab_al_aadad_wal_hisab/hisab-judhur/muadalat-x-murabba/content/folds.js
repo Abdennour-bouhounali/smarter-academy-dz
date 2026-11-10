@@ -12,7 +12,9 @@
  *   libre : 9, 2, −1, 6,25, 0, −16 (les cartes SONT le choix).
  *   Les manches d'entraînement (« لا بأس — جرّب أصغر ») : graduation 1, x² = 1, 0, −1 ; pour r3 : x² = 2 et 1.
  *
- * But : `{ solvedAll: n }` (les n cartes résolues) ; r1 ajoute `{ checkpoint: 'rule' }`. Essais (`maxTrials`) : chaque réponse (ثبّت, لا حل, la
+ * But : `{ solvedAll: n }` (les n cartes résolues) ; r1 ajoute `{ checkpoint: 'rule' }` ; chaque question posée dans une manche est AUSSI dans
+ * son but (`c<carte>` : r2 c0 et c1, r3 c0, module 2 c1) — résoudre les cartes dans un autre ordre ne gagne jamais la manche pendant que la
+ * question est ouverte (revue ECC 2026-11-10). Essais (`maxTrials`) : chaque réponse (ثبّت, لا حل, la
  * marque exacte) — la PREMIÈRE graduation voisine de √a n'en est pas un ; la même réponse refusée deux fois non plus.
  * Aucun nombre de la مسألة (64 et 8, 0,09 et 0,3, 11, √11 et 3,3, 36 et 6, les points 10 / 15 / 5, les 42 élèves) ; ni 5 ni 25 dans le module 1.
  * `radius` : une droite assez courte pour que la graduation 1/10 se vise au doigt, jamais trop courte pour une carte.
@@ -44,11 +46,11 @@ export const M1_ROUNDS = [
     easier: practice(PRACTICE.r1, 1, 'جولة تدريب: ثلاث بطاقات أصغر، على مستقيم بالوحدات.'),
     props: props(R1, 2, { chains: 'full', predict: true, predictCards: [0, 1], predictKind: 'count', table: TABLE, radius: 3,
       lead: 'ثلاث بطاقات. حرّك x وتابع السهم: متى يصل إلى a؟' }) },
-  { id: 'r2', title: 'البطاقات −9 و 0,04 و 1,44 و 0', goal: [{ solvedAll: R2.length }], stars: { maxTrials: 8 },
+  { id: 'r2', title: 'البطاقات −9 و 0,04 و 1,44 و 0', goal: [{ solvedAll: R2.length }, { checkpoint: 'c0' }, { checkpoint: 'c1' }], stars: { maxTrials: 8 },
     easier: practice(PRACTICE.r2, 1, 'جولة تدريب: ثلاث بطاقات أصغر، على مستقيم بالوحدات.'),
     props: props(R2, 10, { chains: 'predicted', predict: true, predictCards: [0, 1], predictKind: 'count', handDone: true, radius: 3,
       lead: 'أربع بطاقات، ومستقيم مدرّج بالأعشار. توقّع، ثم جد كل الحلول.' }) },
-  { id: 'r3', title: 'البطاقتان 3 و 2,25', goal: [{ solvedAll: R3.length }], stars: { maxTrials: 6 },
+  { id: 'r3', title: 'البطاقتان 3 و 2,25', goal: [{ solvedAll: R3.length }, { checkpoint: 'c0' }], stars: { maxTrials: 6 },
     easier: practice(PRACTICE.r3, 1, 'جولة تدريب: بطاقتان، على مستقيم بالوحدات.', 'جرّب أوّلًا مستقيمًا بالوحدات، ثم عُد.'),
     props: props(R3, 10, { chains: 'build', predict: true, predictCards: [0, 1], predictKind: 'tick', handDone: true, radius: 2,
       lead: 'بطاقتان. هل يقع كل حلّ على تدريجة؟' }) },
@@ -59,7 +61,7 @@ export const M1_ROUNDS = [
 ];
 
 export const M2_ROUNDS = [
-  { id: 'r1', title: 'البطاقات 9 و 5 و −1', goal: [{ solvedAll: M2_EXAMPLE.length }], stars: { maxTrials: 7, predict: false },
+  { id: 'r1', title: 'البطاقات 9 و 5 و −1', goal: [{ solvedAll: M2_EXAMPLE.length }, { checkpoint: 'c1' }], stars: { maxTrials: 7, predict: false },
     easier: practice(PRACTICE.r3, 1, 'جولة تدريب: بطاقتان، على مستقيم بالوحدات.', 'جرّب أوّلًا مستقيمًا بالوحدات، ثم عُد.'),
     props: props(M2_EXAMPLE, 10, { chains: 'build', predict: false, radius: 3,
       lead: 'ثلاث بطاقات جديدة. بعض الحلول لا يقع على أيّ تدريجة.' }) },
