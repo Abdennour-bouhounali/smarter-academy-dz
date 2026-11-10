@@ -1729,6 +1729,9 @@ different systems, often confused:
    name the unit (« عدد بالدينار (دج) »), say « كسر » for a fraction. `templateFor()` turns that into the input; never rely on the
    placeholder to explain the form. Contract: `EXERCISE_CONTRACT.md` § « قوالب الإجابة ».
 2. **A formula never breaks across two lines** — widen the card or let the formula's row scroll; never let it wrap.
+   In a fixed narrow column (a lab's side column in the mission player) put the line in `components/FitLine.jsx`: its font
+   shrinks just enough to fit (never below `MIN_FIT` 0.55). `EquationDisplay` does it for every lab since 2026-11-10 — a flex
+   item without `min-w-0` overflowed the column to the LEFT in RTL and was clipped there, unseen by `data-fit-overflow`.
    Contract: `EXERCISE_CONTRACT.md` § « A formula never breaks ».
 
 **The practice bank is written as BEM exam sheets — the standard since 2026-10-06.** A new or

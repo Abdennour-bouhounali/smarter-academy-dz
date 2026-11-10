@@ -16,6 +16,7 @@ import PredictTray from '../primitives/PredictTray';
 import { useInMissionPlayer } from '../../mission/missionPlayerContext';
 import { playSfx } from '../../utils/playEffect';
 import MathText from '../../components/MathText';
+import FitLine from '../../components/FitLine';
 import * as L from '../logic/squareTiling';
 
 /** Lecteur : au plus PRED_MAX prédictions par manche (comme les autres labos), jamais pendant une suite de questions. */
@@ -315,7 +316,7 @@ export default function SquareTiling({
         : (
           <div className="rounded-xl border-2 border-rose-200 bg-rose-50 px-3 py-2 text-center" data-tiling-refused>
             <p className="text-xl font-black text-rose-800"><span aria-hidden="true">✗ </span>{k('refusedBig')}</p>
-            <p className="mt-1 text-sm text-slate-700"><MathText>{`$${L.refusedPlainTex(n, shown.k)}$`}</MathText></p>
+            <FitLine className="mt-1 text-sm text-slate-700" dir="ltr"><MathText>{`$${L.refusedPlainTex(n, shown.k)}$`}</MathText></FitLine>
           </div>
         )}
     </div>
