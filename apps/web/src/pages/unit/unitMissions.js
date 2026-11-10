@@ -98,6 +98,43 @@ export const UNIT_MISSIONS = Object.freeze({
       text: 'عالم رياضيات أندلسي درس في تلمسان وعاش في المغرب العربي. كان يكتب حرف «جـ»، أوّلَ حرف من كلمة «جذر»، فوق العدد ليدلّ على جذره، قبل أن ينتشر الرمز √ الذي ستستعمله.',
     },
   },
+  // Unité 9 (2026-11-10) : ses trois leçons ET sa synthèse sont converties (50e5f844, 76a4545b, 9f7fb170, puis la synthèse — le pilote du recette
+  // « synthèse »). Icônes = l'objet de la scène de chaque leçon (le ciné-club, le mur repeint, la banderole du derby) et 🧩 la synthèse. Le défi est
+  // le تحدّ du module 7 de la synthèse (la minaret du quartier), RÉÉCRIT : seulement les deux ombres (11,6 et 1,6) et la perche d'un mètre — ni la
+  // distance de 10 m (un nombre de la مسألة de la leçon 3 « إنشاءات »), ni la réponse. Une leçon donne deux clés (une unité de trois leçons) : les
+  // cinq clés sont les cinq outils de la mission de la synthèse (`mission.tools`).
+  'khassiyat-talis': {
+    icons: {
+      'talis-hisab-atwal': '🎬',
+      'aksiya-talis': '🖌️',
+      'inshaat-talis': '🚩',
+      'wadiya-idmajiya-talis': '🧩',
+    },
+    short: {
+      'talis-hisab-atwal': 'خاصية طالس',
+      'aksiya-talis': 'الخاصية العكسية',
+      'inshaat-talis': 'إنشاءات هندسية',
+      'wadiya-idmajiya-talis': 'أدمج تعلّماتي',
+    },
+    challenge: {
+      lead: 'في ساعة مشمسة، ظلّ مئذنة الحيّ طوله 11,6 m ، وظلّ عصا طولها متر واحد 1,6 m في اللحظة نفسها. ما ارتفاع المئذنة؟',
+      full: 'أراد فريد أن يعرف ارتفاع مئذنة حيّه دون أن يصعدها. في ساعة مشمسة غرس صديقه عصا شاقولية طولها متر واحد، وقاسا معًا على الأرض: ظلّ المئذنة طوله 11,6 m ، وظلّ العصا في اللحظة نفسها 1,6 m .',
+      question: 'كيف يحسبان ارتفاع المئذنة من هذين الظلّين؟ وما هذا الارتفاع؟',
+      numbers: ['11,6', '1,6'],
+      solvedAfter: 'talis-hisab-atwal',
+    },
+    keys: [
+      { icon: '📏', label: 'حساب طول بخاصية طالس', after: 'talis-hisab-atwal' },
+      { icon: '🔍', label: 'معامل التناسبية', after: 'talis-hisab-atwal' },
+      { icon: '🪜', label: 'إثبات التوازي', after: 'aksiya-talis' },
+      { icon: '⚖️', label: 'إثبات عدم التوازي', after: 'aksiya-talis' },
+      { icon: '✂️', label: 'تقسيم قطعة', after: 'inshaat-talis' },
+    ],
+    history: {
+      title: 'البيروني (973 – 1048)',
+      text: 'عالم من خوارزم كتب رسالة كاملة في الظلال وأطوالها في ساعات النهار، واستعمل الهندسة ليقيس ما لا تصل إليه اليد، حتى نصف قطر الأرض من قمّة جبل.',
+    },
+  },
 });
 
 export const unitMissionOf = (unitId) => UNIT_MISSIONS[unitId] ?? null;

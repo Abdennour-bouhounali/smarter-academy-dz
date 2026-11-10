@@ -160,7 +160,8 @@ function LessonWindow({ lesson, n, total, icon, status, unmet, onOpenLesson, ava
   const [more, setMore] = useState(false);
   const goals = lesson.learningPoints ?? [];
   const shown = more ? goals : goals.slice(0, 3);
-  const tools = config?.mission?.tools ?? [];
+  // une synthèse (`toolsOwned`) n'apporte aucun outil nouveau : ses clés sont celles de l'unité, déjà sur la page (et la fenêtre défilait)
+  const tools = config?.mission?.toolsOwned ? [] : (config?.mission?.tools ?? []);
   const statusText = status === 'done' ? t('unit.mission.statusDone') : status === 'now' ? t('unit.mission.statusNow') : t('unit.mission.statusLater');
   const button = status === 'done' ? t('unit.mission.redo') : status === 'now' ? t('unit.mission.continue') : t('unit.mission.open');
   return (

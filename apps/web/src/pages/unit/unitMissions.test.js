@@ -30,7 +30,7 @@ describe.each(Object.entries(UNIT_MISSIONS))('unit mission content « %s »', (u
   it('the stations follow the catalogue order (lessons, then the synthesis) — the path and the e2e read this order', () => {
     expect(Object.keys(m.icons)).toEqual(ids);
   });
-  it('five keys, one per lesson at most, in the order of the lessons', () => {
+  it('five keys, in the order of the lessons (a unit of three lessons hands two keys in one lesson)', () => {
     expect(m.keys).toHaveLength(5);
     const at = m.keys.map((k) => ids.indexOf(k.after));
     expect([...at].sort((a, b) => a - b)).toEqual(at);
@@ -42,6 +42,19 @@ describe('unit 2 « الحساب على الجذور » — the challenge never 
   const text = JSON.stringify(UNIT_MISSIONS['hisab-judhur'].challenge);
   it.each(['√12', '2√3', '4√3', '3,46', '6,93', '12000', '12 000'])('« %s » is not on the unit page', (s) => {
     expect(text.includes(s)).toBe(false);
+  });
+});
+
+describe('unit 9 « خاصية طالس » — the challenge never writes its answer nor another lesson\'s climax', () => {
+  // 11,6 ÷ 1,6 = 7,25 m (the synthesis, module 7) ; 10 m is a number of inshaat-talis's climax (the derby banner) — neither is on the page
+  const m = UNIT_MISSIONS['khassiyat-talis'];
+  const text = JSON.stringify(m.challenge);
+  it.each(['7,25', '7.25', '10 m', ' 10 ', '4/29'])('« %s » is not on the unit page', (s) => {
+    expect(text.includes(s)).toBe(false);
+  });
+  it('the five keys are the five tools of the synthesis mission', async () => {
+    const { LESSON_CONFIG } = await import('../../lessons/moyen/4am/handasa/khassiyat-talis/wadiya-idmajiya-talis/lesson.config.js');
+    expect(m.keys.map((k) => k.icon)).toEqual(LESSON_CONFIG.mission.tools.map((tl) => tl.icon));
   });
 });
 

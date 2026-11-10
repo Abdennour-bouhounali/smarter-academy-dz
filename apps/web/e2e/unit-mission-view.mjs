@@ -6,12 +6,20 @@
 // une fenêtre qui ne défile pas — repliée ET avec « المزيد » ouvert ; « واصل الدرس » mène à la leçon en cours ; l'enseignant garde l'ancienne
 // page (aucun `[data-unit-mission-view]`). Échec = code de sortie 1. Captures dans /tmp/unit-mission-view-qa.
 import { chromium } from 'playwright';
-import { mkdirSync } from 'node:fs';
+import { mkdirSync, readFileSync } from 'node:fs';
 import { UNIT_MISSIONS } from '../src/pages/unit/unitMissions.js';
+
+// le ميدان (chapitre d'affichage) de CHAQUE unité vient du catalogue : l'unité 9 est sous `handasa`, pas sous `ansab_al_aadad_wal_hisab`
+const CATALOGUE = JSON.parse(readFileSync(new URL('../../../packages/core/curriculum/dz/units_4am_2026_2027.json', import.meta.url), 'utf8'));
+const CHAPTER_OF = Object.fromEntries(CATALOGUE.units.map((u) => [u.code, u.chapterId]));
 
 const BASE = process.env.QA_BASE || 'http://localhost:5173';
 const OUT = process.env.QA_OUT || '/tmp/unit-mission-view-qa';
-const UNIT_URL = (unitId) => `${BASE}/courses/moyen/4am/ansab_al_aadad_wal_hisab/units/${unitId}`;
+const UNIT_URL = (unitId) => {
+  const chapter = CHAPTER_OF[unitId];
+  if (!chapter) throw new Error(`unit « ${unitId} » is not in units_4am_2026_2027.json`);
+  return `${BASE}/courses/moyen/4am/${chapter}/units/${unitId}`;
+};
 mkdirSync(OUT, { recursive: true });
 
 /** la barre latérale de l'application (WorkspaceLayoutContext › SIDEBAR_KEY) */
