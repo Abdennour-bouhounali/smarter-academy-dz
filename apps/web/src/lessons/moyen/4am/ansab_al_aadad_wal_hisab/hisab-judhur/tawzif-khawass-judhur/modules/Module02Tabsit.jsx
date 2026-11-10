@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, KnowledgeBrick, PeerSheet } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { MethodSteps, TextbookBox, TextbookExercise } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { METHOD_SIMPLIFY, METHOD_PRODUCT } from '../content/textbook';
 import { EX } from '../content/exercises';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
 
 /**
  * Module 2 — طرائق p. 25 : « توظيف خواص الجذور التربيعية ».
@@ -26,6 +27,8 @@ export default function Module02Tabsit() {
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
+  // « ورقة رياض » (`PeerSheet`, content/peerSheet.js) — rollout mission 2026-11-10 : s'arrêter à 2√24 parce que 24 n'est pas un carré
+  const [q4, setQ4] = useState(false);
 
   return (
     <ContentModule
@@ -37,12 +40,12 @@ export default function Module02Tabsit() {
       estimatedTime="12 دقيقة"
       objectives={['كيف أبسّط عبارة فيها جذور مختلفة؟', 'لماذا نكتب الجذور أولًا بدلالة الجذر نفسه؟', 'كيف أحسب جداء عدّة جذور دفعة واحدة؟']}
       brief={{
-        tag: 'طرائق — الكتاب ص 25', title: METHOD_SIMPLIFY.title, tone: 'violet',
-        body: <p>في المحور السابق كتبتَ ثلاثة جذور بدلالة الجذر نفسه. الكتاب يستعمل ذلك لتبسيط عبارة كاملة، ثم لحساب جداء جذور.</p>,
+        tag: 'طريقة', title: METHOD_SIMPLIFY.title, tone: 'violet',
+        body: <p>في المحور السابق كتبتَ ثلاثة جذور بدلالة الجذر نفسه. نستعمل ذلك الآن لتبسيط عبارة كاملة، ثم لحساب جداء جذور.</p>,
       }}
       steps={[
         {
-          num: 1, title: 'تمرين 1 — الحلّ سطرًا سطرًا', subtitle: 'اقرأ السطر، وحاول توقّع التالي قبل أن تكشفه', done: read,
+          num: 1, title: 'مثال محلول — سطرًا سطرًا', subtitle: 'اقرأ السطر، وحاول توقّع التالي قبل أن تكشفه', done: read,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="kitaba-a-jidhr-b" variant="rappel" compact />
@@ -73,7 +76,7 @@ export default function Module02Tabsit() {
           ),
         },
         {
-          num: 3, title: 'تمرين 2 — جداء جذور', done: q2,
+          num: 3, title: 'جداء جذور', done: q2,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="exercise" text={METHOD_PRODUCT.exercise} source={METHOD_PRODUCT.source} />
@@ -98,6 +101,8 @@ export default function Module02Tabsit() {
           num: 4, title: 'دوري الآن 1', done: q3,
           content: <TextbookExercise exercise={EX['now-25-1']} requires={['kitaba-a-jidhr-b', 'tabsit-tawzii']} onAnswered={() => setQ3(true)} />,
         },
+        { num: 5, title: 'ورقة زميل: أين الخطأ؟', subtitle: 'جد السطر الخاطئ وصحّحه', done: q4,
+          content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={() => setQ4(true)} /> },
       ]}
       footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />

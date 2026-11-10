@@ -32,7 +32,7 @@ Prompt for the whole unit: `UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. Folder `lesso
 | 2 | `natiqa-ghayr-natiqa` | `square-root-side` (graduation mode; `truthful` « resists », compact rule, plain journal) | ✅ done 2026-11-09 | `feat(lessons): natiqa-ghayr-natiqa — mission prototype` | See « Unit 2, lesson 2 » below. |
 | 3 | `muadalat-x-murabba` | `square-fold` (v2 treatment + LabCoach, new; exact-only pin in the player) | ✅ done 2026-11-10 | `feat(lessons): muadalat-x-murabba — mission prototype` | See « Unit 2, lesson 3 » below. |
 | 4 | `amaliyat-judhur` | `square-tiling` (v2 treatment + LabCoach, new; both modes `product` and `simplest`) | ✅ done 2026-11-10 | `feat(lessons): amaliyat-judhur — mission prototype` | See « Unit 2, lesson 4 » below. |
-| 5 | `tawzif-khawass-judhur` | `square-tiling` | ⏳ | | content only after lesson 4 |
+| 5 | `tawzif-khawass-judhur` | `square-tiling` (`simplest`: content, plus `predictAlso`, `avoid`, the chains `buildS` / `bestS`) | ✅ done 2026-11-10 | `feat(lessons): tawzif-khawass-judhur — mission prototype` | See « Unit 2, lesson 5 » below. |
 | S | `wadiya-idmajiya-judhur` | — | ⏳ council first (prompt §5) | | |
 
 ## Lab families — which have the v2 treatment
@@ -683,3 +683,94 @@ the knowledge map, modules 1–8 unit by unit — 0 `data-fit-overflow`, 0 page 
 **Rejected / later (coordinator):** `disabled` → `aria-disabled` focus loss on − / +, the checkpoint options and the choices (the same pattern in
 every lab — final report); the handle ring at k = min (verified on the screenshots, not clipped); reflow at 400 % zoom (phones unsupported); the
 slab-area font inside the decorative SVG; a full render test of `<SquareTiling>` in the player; « نشاط 4 » in a title (an activity number, not a page).
+
+## Unit 2, lesson 5 — `tawzif-khawass-judhur` « توظيف خواص الجذور التربيعية » (2026-11-10)
+
+**Why a second council.** The lesson-4 council had picked lesson 5's cards (128, 32, 75, 98). Reading lesson 5's OWN climax (module 6, « طاولة
+الفسيفساء » : 200 dm² → 10√2, 10 pieces a side, 100 pieces, the smallest piece 2 dm², a trainee's 2√50 with 50 = 5² × 2 and 25 sub-pieces, 120 دج,
+12 000 دج, 12 days) showed that those cards rehearse it: every one but 75 ends on a smallest tile of 2 (the climax's own answer), and 128's ruler
+reaches k = 10 (« 128 ÷ 100 »). The conversion stopped and asked.
+
+**Council (2026-11-10, a real council: 5 advisors, 5 anonymous peer reviews, chairman; predictions re-checked by the coordinator) — option C:**
+- **The forbidden rule, by ROLE** (`content/forbidden.js`, mechanical; guide rule « forbidden values by role »): never shown in the lab under any
+  role — 200, √200, 10√2, 2√50, 5√8, 100√2, 120, 12 000, 12, 10, 100, 50 (no contrast ends on a tile of 50); 25 only as k² (« n ÷ 25 »); 2 and √2
+  only on 32 and 72, as the RESULT of the student's own tiling (never a decoy; k = 2 as a count of tiles a side stays allowed); the method « number
+  of pieces = k × k, then the price » never shown; free-mode chips follow the rule (no 200, no 50).
+- **The test FIRST**, run on the card list before any content: `content/tilings.test.js` builds, per card, everything its screen can show —
+  `logic/squareTiling.js › simplestShown`: n, k from 1 to ⌊√n⌋, k², the tile areas, √b, the forms k√b, the area chips and decoys, the build tiles, the
+  predicted k — each with its ROLE, and asserts `violations()` is empty. Negative controls: 128 (k = 10 → 100), 200, 50, 98 (√2) are caught.
+- **Rounds:** r1 75 by hand (5√3; one valid tiling: the contrast is a refused k = 6, 7 or 8) with the full chain `fullS` (the largest-k tile's area →
+  BUILD « √75 = 5 × √3 » → the rule « أكبر بلاط يصلح ← بلاطة لا تُقسَم من جديد »); r2 32, the bridge from lesson 4 (2√8 or 4√2 — which is simplest?),
+  BUILD only (`buildS`); r3 80 required (4√5, contrast 2√20), the area only (`bestS`); ⭐ 72 (6√2, contrasts 3√8 and 2√18), BUILD; practice 27 (3√3,
+  refused 4 / 5); free chips 27, 32, 54, 63, 75, 80, 96. 128, 288, 45 and 98 dropped; 72 only as the challenge. Goals: `{ discovered: true }` +
+  the chain's checkpoint (`rule` for `fullS`, `tile` otherwise) — never won while its question is open; first refusal free; « جرّب أصغر » after three
+  refusals.
+- **Predictions:** « أيّ عدد من البلاطات على الضلع يعطي أصغر بلاطة تصلح؟ » among three k that include a refused k above the largest valid one, the
+  right k moving (r1 [7, 3, 5], r2 [4, 2, 5], r3 [2, 6, 4], ⭐ [6, 8, 3] — last, first, last, first), then a yes/no « هل يعطي k = … ؟ » whose truth
+  alternates (3 no, 2 yes, 3 no, 2 yes). New lab prop `predictAlso` (the yes/no after `predictKind: 'smallest'`).
+- **Checkpoints:** after M1 « √45 = ? » → 3√5 (decoys √9 × 5, 5√3); after M2 « 2√3 + 5√3 = ? » → 7√3 (module 2 PRACTISES adding like roots: its step 2
+  and the brick `tabsit-tawzii`); after M3 « 6 ÷ √3 = ? » → 2√3 (rationalising is TAUGHT in module 3 — `naqt-maqam` — so it is known when this
+  checkpoint, placed after module 3, is asked). None uses lesson 4's climax (180, 6√5).
+- **Scene:** the courtyard of lesson 4 re-paved with bigger slabs — a variant `courtyard-big` (`CourtyardSlabsScene slabs={3}`), not a new scene.
+
+**Done:**
+- **Lab (`square-tiling`, shared, player only):** `predictAlso` (a 2nd yes/no prediction after « smallest »; judged when that k is tried, « smallest »
+  at the largest k); `avoid` (numbers no « مساحة البلاطة » decoy may show — `areaOptions(n, k, avoid)` then takes the next candidates; without it,
+  nothing changes for lesson 4); the chains `buildS` and `bestS` (posed at the discovery, like `fullS`); « بلاطة تصلح » in the « smallest » prompt; the
+  rule chip worded « أكبر بلاط يصلح ← بلاطة لا تُقسَم من جديد ». `simplestShown` (pure) lists what a simplest screen can show, with roles.
+- **Content:** `content/forbidden.js` (the rule), `tilings.js` + test, `prep.js` + test (10 statements: « النشر والخاصية التوزيعية » → revise
+  `nashr-jabri-3am`, « جداء جذرين وحاصل قسمتهما » → revise `amaliyat-judhur`; the catalogue already lists `amaliyat-judhur` as the prerequisite),
+  `peerSheet.js` + test (« ورقة رياض »: √96 = 2√24 then « 24 is not a square, so it is the simplest » — the error is stopping; fixed to 4√6),
+  `mission.test.js`. Module 0 on the ladder (question 2 now diagnoses `jidhr-taarif`), module 1 in `PlayerSwitch` + `LabRounds` (`m1-simplest`; step 1
+  waits for round 2 — its question is about 2√8 — and its trace comes from the WON rounds, so a reload never blocks or empties it), module 2's last
+  step the peer sheet. `mission` block, `knowledgeMapOpen: true`. Every student-visible textbook reference removed (« الكتاب ص … » tags, exercise
+  numbers in step titles of modules 2, 4 and 5, « تمارين الكتاب … », the module descriptions, a knowledge card's « تمرين 1 »).
+
+**Verification:** vitest `src/lessons` 650 files, 12 057 tests green; `check:lessons` exit 0 (entry 241.2 KB ≤ 245; lesson 5's `W_PRIOR_NOT_DIAGNOSED` fixed);
+`lab-rollout-status` ✅ for the five unit-2 lessons. Playwright at 1366×768, 1024×768 and 1920×1080: every round ★★★ (75 with the full chain, 32, 80,
+⭐ 72, the free workshop on 54; both predictions per round), a wrong answer then « أعِد التجربة » (log and tally emptied, then ★★★), a wrong prediction
+then « إعادة » (★★★ again), three refusals → the practice round 27 and back, a reload with r1–r2 won (step 1's trace names 75 and 32), the peer sheet
+(restored after reload), home (the re-paved courtyard), « أستعدّ » (10, review « راجع » amaliyat-judhur), the final test (5), the knowledge map,
+modules 1–9 unit by unit — 0 `data-fit-overflow`, 0 page scroll, no console error —, teacher view unchanged (no player, no rounds, the two levels).
+
+**Traps met:**
+- A decoy builder can show a forbidden number the lesson never wrote (`areaOptions(72, 6)` → 12, `(80, 4)` → 10 as the third candidate): the lesson
+  hands its list to the lab (`avoid`).
+- A second prediction judged on the k that COMPLETES the discovery (r2: 4 then 2) opens the round's question in the same move, so its ✓ / ✗ line
+  is hidden behind the question (the star still counts) — tried in the other order, it shows.
+- The « جرّب أصغر » card after two wrong answers covers « التالي » at 1024 until « أواصل هنا » (existing behaviour, already noted in lesson 4).
+- The shell refused heredocs holding Arabic text (« could not be checked for dangerous rm »): patches were written as files.
+
+**ECC review (react, code, a11y — 2026-11-10), fixed:**
+- **The knowledge card and map showed the climax.** `knowledge.jsx`: the memo quiz « أبسط كتابة للعدد √200 » (10√2 / 5√8 / 100√2 — the climax's answer and
+  decoys, open from the start with `knowledgeMapOpen`) → √63 and √245; the example √72 = 6√2 (the ⭐ answer) → √54 = 3√6; the « توقّع » prompt on 288
+  and « 12 بلاطة » → on 32. `knowledgeGraph.js`: the node « 8، 18 و 50 » → « 8، 18 و 98 » (its own text, no longer the book's solution with √50), and
+  √8 + √50 → √8 + √18. `content/textbook.js › TILING.example` (shown on the card): 288 with « 12 × 12 بلاطة » → 32 with 4 slabs a side.
+- **Unit-wide scans** (`_unit/missionStrings.test.js`, the five lessons): the knowledge cards and map never show their OWN lesson's climax signature
+  (lesson 1 √34 / 5,83; 2 the 2,89 / 1,74; 3 √11, 3,3, 0,09, x² = 64 / −36; 4 √180, 6√5, 3√5, 180, 192; 5 √200, √50, 10√2, 2√50, 5√8, 100√2, 200, 120,
+  12 000); `knowledge.jsx`, `knowledgeGraph.js`, `content/textbook.js` and `content/exercises.js` never say « الكتاب », « تمرين N : » nor « خطأ مطبعي »
+  (comments and `src(…)` metadata excluded; a guard asserts the 18+ files are really read). Hits in lessons 1–4: lesson 2's « قائمة الكتاب » note
+  (reworded); none on the climax side.
+- **Textbook voice:** « تمرين 1: » / « تمرين 2: » stripped from the text module 2 renders; the two « صحّحت المنصّة خطأً مطبعيًا في نص الكتاب » notes
+  (modules 4 and 5) reworded in the platform's voice.
+- **Module 1 step 2:** √8, √18, √98 (was √50 → 5√2, one step from the climax's 2√50 = 10√2), on the page AND in the player; its title in `MathText`;
+  its intro the platform's own sentence. **Kept, noted:** module 2's worked example A = √8 − 3√18 + 2√50 − 7√2 (a worked example, lower risk).
+- **(shared, lab) A prediction's result was lost when the move that judged it also opened the round's question** (the question hides the lab's live
+  line). `logic › judgedPredictions` (pure, tested): a prediction is judged when its k is tried (« smallest » at the largest k) — and EVERY one at the
+  discovery, even a k never tried. The lab shows each judged result once (its own line, its own sound) and the round's question waits
+  `PRED_HOLD_MS` (1,6 s) — the same idea as the win card's delay. Also for lesson 4 (its chains open at the first valid tiling, which can be the
+  predicted k).
+- `predictAlso` never holds the largest k (filtered; tested on the rounds).
+- `areaOptions` always returns three distinct areas, with or without `avoid` (falls back to b + 4, b + 5, …) — swept n = 1..100, every valid k.
+- `simplestBuild` drops its second hint when no smaller valid k exists (« عدد البلاطات على الضلع 1 »).
+- `data-scene` is an explicit prop of `CourtyardSlabsScene` (`courtyard-big` passes it).
+- Module 1 step 1 chooses its version by the player itself (`PlayerSwitch`), never from the rounds already won.
+- **a11y:** one `PredictTray` per prediction (`key`), numbered « 1 من 2 / 2 من 2 »; **shared:** `PredictTray` focuses its question on mount (named by
+  it: `aria-labelledby`), its buttons have a border amber-600 and the indigo-600 focus ring, a choice may carry a spoken name (`aria`: « عدد البلاطات
+  على الضلع: 7 », k in `<bdi dir="ltr">`); after the last prediction focus returns to the ruler's handle. The live line keys each result by its
+  prediction, with a hidden « توقّعك عن أصغر بلاطة: » / « توقّعك عن k = …: »; its emoji and ✓ / ✗ are `aria-hidden`; a wrong « smallest » has its own
+  line (« قارن مساحات البلاطات: أيّها أصغر؟ »). The free round says « مساحة المربّع الآن N » when an area is chosen.
+
+**Rejected / later (coordinator):** teachingScope « طريقة الكتاب » (teacher scope only); PeerSheet's struck-line text and status-with-content (shared,
+final report).
+

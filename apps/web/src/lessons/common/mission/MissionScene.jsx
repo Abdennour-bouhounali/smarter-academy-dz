@@ -14,7 +14,7 @@ import CourtyardSlabsScene from './CourtyardSlabsScene';
 
 /**
  * LA SCÈNE d'une mission (rollout 2026-11-08) : chaque leçon dessine la sienne, choisie par `mission.scene` dans sa config
- * (`'library'` — la bibliothèque de 756 livres, valeur par défaut —, `'library-wall'` — le mur de 96 livres —, `'construction-wall'` — le chantier de la leçon khawass-qawasim, `'flower-shop'` — l'atelier du fleuriste de la leçon qasim-mushtarak-akbar, `'school-bags'` — les cartables de la leçon tayin-pgcd, `'sewing-workshop'` — l'atelier de couture de la leçon bahth-pgcd, `'bakery'` — la boulangerie de la leçon ikhtizal-kasr, `'math-club'` — le club de mathématiques de la leçon awwaliyan-fima-baynahuma, `'garden-bed'` — le bassin carré sur l'hypoténuse de la leçon jidhr-tarbii, `'carpet-loom'` — le métier à tisser de la leçon natiqa-ghayr-natiqa, `'fold-strip'` — la bande pliée de la foire scientifique de la leçon muadalat-x-murabba, `'courtyard-slabs'` — la cour de l'école pavée de dalles carrées de la leçon amaliyat-judhur). Une nouvelle scène =
+ * (`'library'` — la bibliothèque de 756 livres, valeur par défaut —, `'library-wall'` — le mur de 96 livres —, `'construction-wall'` — le chantier de la leçon khawass-qawasim, `'flower-shop'` — l'atelier du fleuriste de la leçon qasim-mushtarak-akbar, `'school-bags'` — les cartables de la leçon tayin-pgcd, `'sewing-workshop'` — l'atelier de couture de la leçon bahth-pgcd, `'bakery'` — la boulangerie de la leçon ikhtizal-kasr, `'math-club'` — le club de mathématiques de la leçon awwaliyan-fima-baynahuma, `'garden-bed'` — le bassin carré sur l'hypoténuse de la leçon jidhr-tarbii, `'carpet-loom'` — le métier à tisser de la leçon natiqa-ghayr-natiqa, `'fold-strip'` — la bande pliée de la foire scientifique de la leçon muadalat-x-murabba, `'courtyard-slabs'` — la cour de l'école pavée de dalles carrées de la leçon amaliyat-judhur, `'courtyard-big'` — la même cour repavée de dalles plus grandes, leçon tawzif-khawass-judhur). Une nouvelle scène =
  * un composant `<Nom>Scene({ fill, label, className })` dessiné en code, ajouté à ce registre ; `fill` ∈ [0, 1] suit les outils gagnés.
  */
 const SCENES = {
@@ -30,7 +30,13 @@ const SCENES = {
   'carpet-loom': CarpetLoomScene,
   'fold-strip': FoldStripScene,
   'courtyard-slabs': CourtyardSlabsScene,
+  // la MÊME cour, repavée de dalles plus GRANDES (leçon tawzif-khawass-judhur, conseil du 2026-11-10) : une variante, pas une scène de plus
+  'courtyard-big': CourtyardBigScene,
 };
+
+function CourtyardBigScene(props) {
+  return <CourtyardSlabsScene {...props} slabs={3} scene="courtyard-big" />;
+}
 
 export default function MissionScene({ scene, ...props }) {
   const Scene = SCENES[scene] ?? LibraryScene;

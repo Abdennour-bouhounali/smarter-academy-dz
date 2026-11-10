@@ -13,7 +13,7 @@ const YARD = { cx: 240, cy: 168, w: 300, h: 92 };
  * `fill` ∈ [0, 1] ; `slabs` : le nombre de dalles par côté (5 par défaut — la leçon 5 peut réutiliser la scène avec des dalles plus GRANDES,
  * `slabs={3}`). Aucun nombre n'est dessiné (ni nombre de dalles, ni aire) ; le texte arabe reste dans le DOM.
  */
-export default function CourtyardSlabsScene({ fill = 0, label, className = '', slabs = 5 }) {
+export default function CourtyardSlabsScene({ fill = 0, label, className = '', slabs = 5, scene = 'courtyard-slabs' }) {
   const f = Math.max(0, Math.min(1, fill));
   const n = Math.max(2, Math.min(8, Math.round(slabs)));
   const total = n * n;
@@ -24,7 +24,7 @@ export default function CourtyardSlabsScene({ fill = 0, label, className = '', s
   const quad = (u0, v0, u1, v1) => [P(u0, v0), P(u1, v0), P(u1, v1), P(u0, v1)].map((p) => `${p.x},${p.y}`).join(' ');
   const flagAt = P(0, 0);
   return (
-    <svg viewBox="0 0 480 260" className={className} {...(label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': true })} data-courtyard-fill={f.toFixed(2)} data-scene="courtyard-slabs">
+    <svg viewBox="0 0 480 260" className={className} {...(label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': true })} data-courtyard-fill={f.toFixed(2)} data-scene={scene}>
       <rect x="0" y="0" width="480" height={GROUND} fill="#E0F2FE" />
       {/* le mur de l'école et ses fenêtres */}
       <rect x="40" y="34" width="400" height="70" fill="#FDE68A" stroke="#D97706" strokeWidth="2" />

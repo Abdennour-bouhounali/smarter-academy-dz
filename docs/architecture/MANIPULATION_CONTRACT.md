@@ -2704,6 +2704,16 @@ A `build` question may set `ops`, the signs between its slots (default `['=', '�
 - When the lab's step is reached (`reached`, e.g. `taskDone`), a card covers the lab (backdrop over the `relative` glance
   block, card centred and scrolled into view) with « سؤال i من n », the question (`choice` or `number` — a number answer is
   checked as an EXACT rational, `8/6 = 4/3`, Arabic digits accepted).
+- **Twelfth example (2026-11-10, unit 2):** lesson `tawzif-khawass-judhur`, `content/tilings.js` (`M1_ROUNDS`, mode `simplest`, content only on the
+  lab of the eleventh example — council option C): 75 by hand with the FULL chain `fullS` (the largest-k tile's area → BUILD « √75 = 5 × √3 » → the
+  rule « أكبر بلاط يصلح ← بلاطة لا تُقسَم من جديد ») → 32, the bridge from lesson 4 (`buildS`: BUILD only) → 80, required (`bestS`: the area only) →
+  ⭐ 72 (`buildS`) → free chips 27, 32, 54, 63, 75, 80, 96; practice 27. Each round asks « أيّ عدد من البلاطات على الضلع يعطي أصغر بلاطة تصلح؟ »
+  (`predictKind: 'smallest'`, three k including a refused k above the largest valid one, the right k moving) THEN a yes/no on one k
+  (`predictAlso: [k]`, new — truths alternate across rounds). `avoid` (new) hands the lesson's forbidden numbers to the area decoys
+  (`areaOptions(n, k, avoid)` takes the next candidates); `simplestShown(n, …)` (new, pure) lists everything a simplest screen can show WITH its
+  role, for the lesson's « forbidden values by role » test (`content/forbidden.js`).
+  After its review: `judgedPredictions` (a result is never lost behind the round's question — the lab holds it `PRED_HOLD_MS`); the shared
+  `PredictTray` focuses its question on mount, is named by it, numbers « 1 من 2 » (`step`, `of`) and lets a choice carry a spoken name (`aria`).
 - **Blocking:** `cp.blocking` stays true until the chain is finished; the lab hides its « next task » button meanwhile.
 - **Guided, never told first:** wrong try 1 → the chosen option's `why` (else hint 1); try 2 → hint 2 (sharper); try 3 →
   the answer AND its explanation (the student is never stuck forever). A wrong option stays struck and disabled.

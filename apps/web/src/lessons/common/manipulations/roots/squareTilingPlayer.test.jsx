@@ -160,3 +160,62 @@ describe('square-tiling in the mission player', () => {
     expect(L.tally(s)).toEqual({ ok: 0, ko: 0 });
   });
 });
+
+describe('square-tiling simplest mode in the player (lesson 5, council of 2026-11-10)', () => {
+  it('area decoys skip an `avoid` list and still offer two wrong areas; without it, nothing changes', () => {
+    expect(L.areaOptions(80, 4)).toEqual(['5', '20', '9']);
+    expect(L.areaOptions(72, 6)).toEqual(['2', '12', '8']);
+    expect(L.areaOptions(72, 6, ['12', '10', '25', '2'])).toEqual(['2', '8', '4']);
+    expect(L.areaOptions(32, 2, ['10'])).toEqual(['8', '16', '9']);
+  });
+  it('the short simplest chains are asked at the discovery, the build or the area alone', () => {
+    expect(chainOfPlayer('buildS')).toEqual(['simplestBuild']);
+    expect(chainOfPlayer('bestS')).toEqual(['bestFill']);
+    const s = tileAll(L.init({ n: 80, mode: 'simplest' }), [4, 2]);
+    expect(L.discoveryReady(s)).toBe(true);
+    const q = QUESTIONS.bestFill(s, k, { avoid: ['10'] });
+    expect(q.fields[0].expected).toBe('5');
+    expect(q.fields[0].options).not.toContain('10');
+    expect(rawKey.test(text(q))).toBe(false);
+  });
+  it('simplestShown tags every value with its role (k² only inside « n ÷ k² »)', () => {
+    const shown = L.simplestShown(75, { chains: 'fullS', predictKs: [7, 3, 5], predictAlso: [3] });
+    expect(shown).toContainEqual({ role: 'kk', v: '25' });
+    expect(shown).toContainEqual({ role: 'form', v: '5√3' });
+    expect(shown.filter((x) => x.role === 'area').map((x) => x.v)).toContain('3');
+  });
+});
+
+describe('square-tiling predictions and decoys after the ECC review of lesson 5', () => {
+  it('a prediction is judged when its k is tried, and every one at the discovery — never lost behind the round\'s question', () => {
+    const keys = ['smallest', 'k:2'];
+    let s = L.init({ n: 32, mode: 'simplest' });
+    expect(L.judgedPredictions(s, keys)).toEqual([]);
+    s = L.tile(s, 4);                                   // the largest k first: « smallest » is judged, k = 2 not yet
+    expect(L.judgedPredictions(s, keys)).toEqual(['smallest']);
+    s = L.tile(s, 2);                                   // the discovery: both, so the lab shows the k = 2 result before the question
+    expect(L.discoveryReady(s)).toBe(true);
+    expect(L.judgedPredictions(s, keys)).toEqual(keys);
+    // a k never tried is still judged (and shown) at the discovery: r1 of lesson 5 predicts k = 3 on 75
+    const t = tileAll(L.init({ n: 75, mode: 'simplest' }), [5, 6]);
+    expect(L.judgedPredictions(t, ['smallest', 'k:3'])).toEqual(['smallest', 'k:3']);
+  });
+  it('« مساحة البلاطة » always offers three distinct areas, with or without an avoid list (n = 1..100, every valid k)', () => {
+    const AVOID = ['200', '√200', '10√2', '120', '12000', '12', '10', '100', '50', '25', '2'];
+    for (let n = 1; n <= 100; n += 1) {
+      L.validKs(L.init({ n })).forEach((v) => {
+        [[], AVOID].forEach((avoid) => {
+          const o = L.areaOptions(n, v, avoid);
+          expect(new Set(o).size, `${n}, k = ${v}`).toBe(3);
+          o.slice(1).forEach((x) => expect(avoid.includes(x), `${n}, k = ${v}: ${x}`).toBe(false));
+        });
+      });
+    }
+  });
+  it('simplestBuild drops its second hint when no smaller valid k exists (ko = 1)', () => {
+    const one = QUESTIONS.simplestBuild(tileAll(L.init({ n: 75, mode: 'simplest' }), [5, 6]), k);
+    const two = QUESTIONS.simplestBuild(tileAll(L.init({ n: 32, mode: 'simplest' }), [4, 2]), k);
+    expect(one.hints).toHaveLength(1);
+    expect(two.hints).toHaveLength(2);
+  });
+});

@@ -31,53 +31,53 @@ export default function Module05Atamaqq() {
       moduleSubtitle="نشر، هندسة، ومسائل من امتحان شهادة التعليم المتوسط"
       estimatedTime="12 دقيقة"
       objectives={['كيف أنشر وأبسّط عبارات فيها جذور؟', 'كيف أستعمل الجذور في مكعّب وفي مثلث قائم؟', 'هل يتساوى العددان من أجل كل قيمة للعدد $a$؟']}
-      brief={{ tag: 'أوظّف تعلّماتي وأتعمّق — الكتاب ص 27، 29 و 30', title: 'الجذور في الحساب وفي الهندسة', tone: 'rose',
+      brief={{ tag: 'أوظّف تعلّماتي وأتعمّق', title: 'الجذور في الحساب وفي الهندسة', tone: 'rose',
         body: <p>ننشر بالمتطابقات الشهيرة، نبسّط، ونجعل المقامات ناطقة — ثم نستعمل ذلك في مكعّب وفي مثلث قائم.</p> }}
       steps={[
-        { num: 1, title: 'تمرين 28 — انشر وبسّط', done: all('28'),
+        { num: 1, title: 'انشر وبسّط', done: all('28'),
           content: (
             <div className="space-y-3">
               {partsOf('28').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['mutatabiqat', 'jidaa-jidhrayn']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 2, title: 'تمرين 29 — المتطابقات الشهيرة', done: all('29'),
+        { num: 2, title: 'المتطابقات الشهيرة', done: all('29'),
           content: (
             <div className="space-y-3">
               {partsOf('29').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['mutatabiqat', 'tabsit-tawzii']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 3, title: 'تمرين 30 — العددان A و B', done: all('30'),
+        { num: 3, title: 'العددان A و B', done: all('30'),
           content: (
             <div className="space-y-3">
               {partsOf('30').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['mutatabiqat', 'naqt-maqam']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 4, title: 'تمرين 32 — المكعّب', done: all('32'),
+        { num: 4, title: 'المكعّب', done: all('32'),
           content: (
             <div className="space-y-3">
               <CubeFigure />
               {partsOf('32').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['kitaba-a-jidhr-b']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 5, title: 'تمرين 34 — مثلث قائم ومتساوي الساقين', done: all('34'),
+        { num: 5, title: 'مثلث قائم ومتساوي الساقين', done: all('34'),
           content: (
             <div className="space-y-3">
               {partsOf('34').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['kitaba-a-jidhr-b', 'tabsit-tawzii']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 6, title: 'تمرين 36 — هل المثلث قائم؟', done: all('36'),
+        { num: 6, title: 'هل المثلث قائم؟', done: all('36'),
           content: (
             <div className="space-y-3">
               {partsOf('36').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['kitaba-a-jidhr-b', 'tabsit-tawzii']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 7, title: 'تمرين 37 — من امتحان شهادة التعليم المتوسط', done: all('37'),
+        { num: 7, title: 'من امتحان شهادة التعليم المتوسط', done: all('37'),
           content: (
             <div className="space-y-3">
               {partsOf('37').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['kitaba-a-jidhr-b', 'tabsit-tawzii', 'naqt-maqam']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 8, title: 'تمرين 38 — من امتحان شهادة التعليم المتوسط', done: all('38'),
+        { num: 8, title: 'من امتحان شهادة التعليم المتوسط', done: all('38'),
           content: (
             <div className="space-y-3">
               {partsOf('38').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['kitaba-a-jidhr-b', 'tabsit-tawzii']} onAnswered={mark(ex.id)} />)}

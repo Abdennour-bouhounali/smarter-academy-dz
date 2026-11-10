@@ -82,6 +82,9 @@ export default function SquareTiling({
   coach: coachOn = true,
   // ── LECTEUR DE MISSION (rollout 2026-11-10, traitement v2) ──
   onVerdict, handDone = false, chains: chainsMode = 'full', predict: predictOn = false, predictKs = [], predictKind = 'whole', choices,
+  // (simplest, leçon 5 ; conseil du 2026-11-10) une 2e prédiction « هل يعطي k = … ؟ » après « أيّ k يعطي أصغر بلاطة تصلح؟ », et les nombres
+  // qu'aucun leurre de « مساحة البلاطة » ne doit montrer (ceux de la مسألة)
+  predictAlso = [], avoid = [],
 }) {
   const { t } = useTranslation('lesson');
   const gameScreen = useInMissionPlayer();
@@ -108,11 +111,19 @@ export default function SquareTiling({
   // lecteur : le nombre de refus déjà remontés (le premier est `free`), la découverte déjà annoncée
   const refusedSeen = useRef(0);
   const discoveredSent = useRef(false);
+  // lecteur : chaque prédiction JUGÉE est montrée et entendue UNE fois (revue ECC 2026-11-10) — la question de la manche attend ce temps
+  const heardPred = useRef(new Set());
+  const [shownPreds, setShownPreds] = useState([]);
+  const [predHold, setPredHold] = useState(false);
+  const holdTimer = useRef(null);
+  // atelier libre : l'aire choisie, dite à un lecteur d'écran
+  const [areaSaid, setAreaSaid] = useState(null);
   if (scene.key !== sceneKey) {
     // « إعادة », un autre niveau ou un autre n : TOUT recommence — les essais, les étapes et les questions du labo
     setScene({ key: sceneKey, inits: scene.inits + 1 });
     setLab(L.init({ n, mode })); setLive(null); setDone([false, false]); snap.current = null;
     setPreds({}); asked.current = new Set(); setPlayerDone(false); refusedSeen.current = 0; discoveredSent.current = false;
+    heardPred.current = new Set(); setShownPreds([]); setPredHold(false); setAreaSaid(null);
   }
   // la manche (LabRounds) repart de zéro avec la scène : ses pavages et prédictions d'avant ne comptent plus
   useEffect(() => { if (scene.inits > 0) state.report(onTrial, { tk: 'reset' }); }, [scene.inits]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -127,7 +138,12 @@ export default function SquareTiling({
   const reachedPage = stepIdx === 0 ? !!firstValid(lab) : L.discoveryReady(lab);
   // ── le lecteur : UNE suite, posée quand ce qu'elle interroge est là ──
   // les suites lisent le premier pavage juste k > 1 (firstValid) : jamais posées sans lui (revue ECC — un carré à un seul pavage juste)
-  const reachedPlayer = chainsMode === 'fullS' ? L.discoveryReady(lab) : chainsMode === 'bridge' ? L.discoveryReady(lab) && !!firstValid(lab) : !!firstValid(lab);
+  // une prédiction est JUGÉE quand l'élève essaie son k (« smallest » : le plus grand k) — et toutes le sont à la découverte, même un k jamais
+  // essayé : son résultat est alors montré avant la question, jamais perdu derrière elle
+  const judgedPreds = !gameScreen ? [] : L.judgedPredictions(lab, Object.keys(preds));
+  const pendingPreds = judgedPreds.filter((key) => !heardPred.current.has(key));
+  const holdChain = pendingPreds.length > 0 || predHold;
+  const reachedPlayer = !holdChain && (SIMPLEST_CHAINS.includes(chainsMode) ? L.discoveryReady(lab) && !!firstValid(lab) : chainsMode === 'bridge' ? L.discoveryReady(lab) && !!firstValid(lab) : !!firstValid(lab));
   const playerChain = cpActive && !playerDone && reachedPlayer ? chainOfPlayer(chainsMode) : null;
   const pageChain = cpActive && !done[1] && reachedPage ? chainOf(chainKey, lab) : null;
   const chain = gameScreen ? (playerChain?.length ? playerChain : null) : pageChain;
@@ -136,7 +152,7 @@ export default function SquareTiling({
   const party = useStepCelebration();
   const cp = useLabCheckpoint({
     id: chain ? chainId : null,
-    questions: chain ? chain.map((q) => QUESTIONS[q](lab, k)) : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q](lab, k, { avoid })) : null,
     reached: gameScreen ? reachedPlayer : reachedPage,
     resetKey: scene.inits,
     onRetry: () => {
@@ -160,7 +176,8 @@ export default function SquareTiling({
   });
 
   // ── lecteur : la PRÉDICTION, avant le premier geste ──
-  const predList = predictKind === 'smallest' ? ['smallest'] : predictKs.slice(0, PRED_MAX).map((v) => `k:${v}`);
+  const also = predictAlso.filter((v) => v !== L.kmax(lab));
+  const predList = (predictKind === 'smallest' ? ['smallest', ...also.map((v) => `k:${v}`)] : predictKs.map((v) => `k:${v}`)).slice(0, PRED_MAX);
   const nextPred = predList.find((key) => !asked.current.has(key));
   const predictOpen = gameScreen && predictOn && cpActive && !cp.open && !missionBig && lab.tried.length === 0 && nextPred != null;
   const locked = gameScreen && (cp.open || predictOpen);
@@ -174,6 +191,9 @@ export default function SquareTiling({
     playSfx('pop');
     setPreds((m) => ({ ...m, [key]: ok }));
     state.report(onTrial, { tk: 'predict', ok });
+    if (!predList.some((x) => x !== key && !asked.current.has(x))) {
+      setTimeout(() => boxRef.current?.querySelector('[data-tiling-handle]')?.focus(), 60);
+    }
   };
 
   const ready = L.discoveryReady(lab) && !cpActive;
@@ -246,18 +266,23 @@ export default function SquareTiling({
   const untried = () => Array.from({ length: L.range(labRef.current).max }, (_, i) => i + 1).filter((v) => !labRef.current.tried.some((x) => x.k === v));
   const runTrial = (v) => { setLive(v); tryK(v); };
 
-  // la prédiction est JUGÉE par le terrain : son résultat s'affiche quand l'élève essaie le k prédit (ou le plus grand k, pour « smallest »)
-  const predKeyNow = current ? (predictKind === 'smallest' ? (current.k === L.kmax(lab) ? 'smallest' : null) : `k:${current.k}`) : null;
-  const pred = predKeyNow && predKeyNow in preds ? { key: predKeyNow, ok: preds[predKeyNow] } : null;
-  const heard = useRef(new Set());
+  // la prédiction est JUGÉE par le terrain (voir `judgedPreds`) : ses résultats en attente sont montrés et entendus une fois, puis la question
+  // de la manche attend PRED_HOLD_MS (la même idée que le délai de la carte de victoire)
+  const pendingSig = pendingPreds.join('|');
   useEffect(() => {
-    if (!pred || heard.current.has(pred.key)) return;
-    heard.current.add(pred.key);
-    playSfx(pred.ok ? 'correct' : 'pop');
-  }, [pred?.key]); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => { heard.current = new Set(); }, [scene.inits]);
+    if (!pendingSig) return;
+    const keys = pendingSig.split('|');
+    keys.forEach((key) => heardPred.current.add(key));
+    setShownPreds(keys.map((key) => ({ key, ok: preds[key] })));
+    playSfx(keys.every((key) => preds[key]) ? 'correct' : 'pop');
+    setPredHold(true);
+    clearTimeout(holdTimer.current);
+    holdTimer.current = setTimeout(() => setPredHold(false), PRED_HOLD_MS);
+  }, [pendingSig]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => () => clearTimeout(holdTimer.current), []);
   const quiet = gameScreen && cp.open;
-  const predResult = gameScreen && !!pred && !quiet;
+  useEffect(() => { if (cp.open) setShownPreds([]); }, [cp.open]);
+  const predResult = gameScreen && !quiet && shownPreds.length > 0;
 
   const coachStep = coachOn && !locked && !cp.open ? L.coachOf(lab) : null;
   const coach = useLabCoach({
@@ -267,14 +292,14 @@ export default function SquareTiling({
 
   // lecteur : la prédiction ou la question PREND la colonne du labo
   const trayNode = !gameScreen ? null : predictOpen ? (
-    <PredictTray attr="st"
+    <PredictTray attr="st" key={nextPred} step={predList.indexOf(nextPred) + 1} of={predList.length}
       title={t('manipulation.common.cp.predict.title')}
       prompt={nextPred === 'smallest'
         ? <MathText>{k('predict.promptSmallest')}</MathText>
         : <MathText>{k('predict.promptWhole', { k: nextPred.slice(2) })}</MathText>}
       options={nextPred === 'smallest'
-        ? predictKs.map((v) => ({ says: String(v), text: k('predict.kOption', { k: v }) }))
-        : [{ says: 'yes', text: k('predict.yes') }, { says: 'no', text: k('predict.no') }]}
+        ? predictKs.map((v) => ({ says: String(v), text: <bdi dir="ltr">{k('predict.kOption', { k: v })}</bdi>, aria: k('predict.kAria', { k: v }) }))
+        : [{ says: 'yes', text: glyph(k('predict.yes')) }, { says: 'no', text: glyph(k('predict.no')) }]}
       onSay={sayPredict} />
   ) : cp.open ? cp.node : null;
 
@@ -369,12 +394,14 @@ export default function SquareTiling({
           {showStepper && <LabStepper count={2} current={stepIdx} done={done.map((d, i) => d && (i !== stepIdx || !cp.blocking))} stepAttr="data-st-step" />}
           {gameScreen && (
             <div role="status" aria-live="polite" data-st-predict-live>
-              {predResult && (
-                <p data-st-predict-result={pred.ok ? 'ok' : 'wrong'}
-                  className={`rounded-2xl px-4 py-2 text-center text-lg font-black ${pred.ok ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>
-                  {pred.ok ? t('manipulation.common.cp.predict.right') : k('predict.wrong')}
+              {predResult && shownPreds.map((pr) => (
+                <p key={pr.key} data-st-predict-result={pr.ok ? 'ok' : 'wrong'} data-st-predict-key={pr.key}
+                  className={`rounded-2xl px-4 py-2 text-center text-lg font-black ${pr.ok ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>
+                  <span className="sr-only">{pr.key === 'smallest' ? k('predict.aboutSmallest') : k('predict.aboutK', { k: pr.key.slice(2) })} </span>
+                  {glyph(pr.ok ? t('manipulation.common.cp.predict.right') : k(pr.key === 'smallest' ? 'predict.wrongSmallest' : 'predict.wrong'))}
                 </p>
-              )}
+              ))}
+              {areaSaid != null && <span key={`a${areaSaid}`} className="sr-only">{k('areaNow', { n: areaSaid })}</span>}
             </div>
           )}
           {gameScreen && choices?.length > 0 && (
@@ -382,7 +409,7 @@ export default function SquareTiling({
               <span id={`${uid}-choices`} className="text-sm font-bold text-slate-600">{k('choicesLabel')}</span>
               {choices.map((c) => (
                 <button key={c} type="button" data-st-choice={c} disabled={locked} aria-pressed={c === n}
-                  onClick={() => { if (!lockedRef.current) state.setNumbers({ ...state.numbers, n: c }); }}
+                  onClick={() => { if (!lockedRef.current) { state.setNumbers({ ...state.numbers, n: c }); setAreaSaid(c); } }}
                   className={`min-h-[44px] min-w-[3rem] rounded-xl border-2 px-3 text-base font-black ${ring} ${c === n ? 'border-indigo-600 bg-indigo-50 text-indigo-900' : 'border-slate-300 bg-white text-slate-700'}`}>
                   <bdi dir="ltr">{c}</bdi>
                 </button>
@@ -607,7 +634,8 @@ export const QUESTIONS = {
  * La suite à poser dans le lecteur (une seule par manche) :
  *   'full'     manche 1 : l'aire d'un toucher, le côté parmi trois, BÂTIR « √n = k × √b », la règle « √(k²×b) = k×√b » ;
  *   'bridge'   à la découverte : « √(k²×b) = √(k²) × … » ;   'quotient'  « √b = √(n ÷ …) » ;   'area'  l'aire d'un toucher ;
- *   'fullS'    simplest (leçon 5), à la découverte : l'aire de la dalle du plus grand k, BÂTIR « √n = k × √m », la règle ;   'none'.
+ *   'fullS'    simplest (leçon 5), à la découverte : l'aire de la dalle du plus grand k, BÂTIR « √n = k × √m », la règle ;
+ *   'buildS'   simplest, à la découverte : BÂTIR « √n = k × √m » seul ;   'bestS'  simplest : l'aire de la dalle du plus grand k seule ;   'none'.
  */
 export const CHAINS_PLAYER = Object.freeze({
   full: ['areaFill', 'sideChoice', 'tileBuild', 'ruleP1'],
@@ -615,20 +643,31 @@ export const CHAINS_PLAYER = Object.freeze({
   quotient: ['quotient'],
   area: ['areaFill'],
   fullS: ['bestFill', 'simplestBuild', 'ruleS1'],
+  buildS: ['simplestBuild'],
+  bestS: ['bestFill'],
   none: [],
 });
 export const chainOfPlayer = (mode) => CHAINS_PLAYER[mode] ?? [];
+/** Les suites du mode simplest : posées à la DÉCOUVERTE (le plus grand k et son contraste), jamais avant. */
+export const SIMPLEST_CHAINS = ['fullS', 'buildS', 'bestS'];
+/** Le temps pendant lequel un résultat de prédiction reste seul à l'écran avant la question de la manche. */
+export const PRED_HOLD_MS = 1600;
+/** Un texte qui commence par un symbole (« ✓ نعم », « 🤔 … ») : le symbole est caché au lecteur d'écran. */
+export function glyph(text) {
+  const m = String(text).match(/^([\p{Extended_Pictographic}\u2713\u2717\u2714\u2716]\uFE0F?)\s*/u);
+  return m ? <><span aria-hidden="true">{m[1]} </span>{String(text).slice(m[0].length)}</> : text;
+}
 
 const Px = (k, key, o) => <MathText>{k(`cpP.${key}`, o)}</MathText>;
 /** Le texte d'un choix (« 9 × √3 ») en LaTeX. */
 const asTex = (s) => `$${String(s).replace(/√(\d+)/g, (_m, d) => `\\sqrt{${d}}`).replace(/×/g, '\\times')}$`;
 
 Object.assign(QUESTIONS, {
-  areaFill: (lab, k) => {
+  areaFill: (lab, k, { avoid } = {}) => {
     const v = firstValid(lab); const o = { n: lab.n, k: v.k, b: v.b };
     return {
       id: 'areaFill', kind: 'fill', prompt: Px(k, 'areaFill.prompt', o),
-      fields: [{ label: k('cpP.tileField'), expected: String(v.b), options: L.spin(L.areaOptions(lab.n, v.k), lab.n + v.k) }],
+      fields: [{ label: k('cpP.tileField'), expected: String(v.b), options: L.spin(L.areaOptions(lab.n, v.k, avoid), lab.n + v.k) }],
       hints: [Px(k, 'areaFill.hint1', o), Px(k, 'areaFill.hint2', o)], explain: Px(k, 'areaFill.explain', o),
     };
   },
@@ -678,11 +717,11 @@ Object.assign(QUESTIONS, {
       hints: [Px(k, 'quotient.hint1', o), Px(k, 'quotient.hint2', o)], explain: Px(k, 'quotient.explain', o),
     };
   },
-  bestFill: (lab, k) => {
+  bestFill: (lab, k, { avoid } = {}) => {
     const km = L.kmax(lab); const m = lab.n / (km * km); const o = { n: lab.n, km, m };
     return {
       id: 'bestFill', kind: 'fill', prompt: Px(k, 'bestFill.prompt', o),
-      fields: [{ label: k('cpP.tileField'), expected: String(m), options: L.spin(L.areaOptions(lab.n, km), lab.n + km + 1) }],
+      fields: [{ label: k('cpP.tileField'), expected: String(m), options: L.spin(L.areaOptions(lab.n, km, avoid), lab.n + km + 1) }],
       hints: [Px(k, 'bestFill.hint1', o), Px(k, 'bestFill.hint2', o)], explain: Px(k, 'bestFill.explain', o),
     };
   },
@@ -692,7 +731,8 @@ Object.assign(QUESTIONS, {
       id: 'simplestBuild', kind: 'build', prompt: Px(k, 'simplestBuild.prompt', o),
       slots: [k('cpP.tileBuild.slotK'), k('cpP.tileBuild.slotRoot')], ops: [k('cpP.tileBuild.op')],
       tiles: x.tiles, expected: x.expected,
-      hints: [Px(k, 'simplestBuild.hint1', o), Px(k, 'simplestBuild.hint2', o)], explain: Px(k, 'simplestBuild.explain', o),
+      // ko = 1 (un seul pavage non trivial) : pas d'indice « عدد البلاطات على الضلع 1 »
+      hints: x.ko > 1 ? [Px(k, 'simplestBuild.hint1', o), Px(k, 'simplestBuild.hint2', o)] : [Px(k, 'simplestBuild.hint1', o)], explain: Px(k, 'simplestBuild.explain', o),
     };
   },
   ruleS1: (lab, k) => ({
