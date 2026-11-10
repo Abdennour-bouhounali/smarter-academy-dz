@@ -16,6 +16,8 @@
  *             { bracketed: g }                      — (square-root-side, 2026-11-09) le côté ENCADRÉ par deux graduations voisines 1/g, vu
  *                                                     (événement onTrial { tk: 'bracket', card, scale, resisting }) ; un balayage aussi
  *             { resists: true }                     — (square-root-side, mode graduation) une carte a RÉSISTÉ : encadrée à 3 graduations sans tomber
+ *             { solvedAll: n }                      — (square-fold, 2026-11-10) les n cartes de la manche RÉSOLUES (toutes leurs solutions épinglées,
+ *                                                     ou « لا حل » déclaré) ; `groups` d'un verdict = l'indice de la carte, `exact` = carte résolue
  * Une manche peut porter `easier` : une manche d'ENTRAÎNEMENT plus petite (« لا بأس — جرّب أصغر », pilote 2026-11-08),
  * proposée seulement quand l'élève peine (needsHelp) — jamais à celui qui réussit.
  * Ce que la manche a VU (`log`) : { verdicts: [{ groups, exact }], checkpoints: { [id]: true }, answers: [{ ok, tries, revealed }] }
@@ -56,6 +58,7 @@ export function conditionMet(cond, log) {
   if (cond.above != null) return log.verdicts.some((v) => v.groups > Number(cond.above));
   if (cond.bracketed != null) return (log.brackets ?? []).some((b) => b.scale === Number(cond.bracketed));
   if (cond.resists) return (log.brackets ?? []).some((b) => b.resisting);
+  if (cond.solvedAll != null) { const seen = exactGroups(log); return Array.from({ length: Number(cond.solvedAll) }, (_, i) => i).every((i) => seen.has(i)); }
   return false;
 }
 

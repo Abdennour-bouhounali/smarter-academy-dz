@@ -30,8 +30,8 @@ Prompt for the whole unit: `UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. Folder `lesso
 |---|---|---|---|---|---|
 | 1 | `jidhr-tarbii` | `square-root-side` (v2 treatment, new, both modes) | ✅ done 2026-11-09 | `feat(lessons): jidhr-tarbii — mission prototype` | See « Unit 2, lesson 1 » below. |
 | 2 | `natiqa-ghayr-natiqa` | `square-root-side` (graduation mode; `truthful` « resists », compact rule, plain journal) | ✅ done 2026-11-09 | `feat(lessons): natiqa-ghayr-natiqa — mission prototype` | See « Unit 2, lesson 2 » below. |
-| 3 | `muadalat-x-murabba` | `square-fold` | ⏳ next | | |
-| 4 | `amaliyat-judhur` | `square-tiling` | ⏳ | | |
+| 3 | `muadalat-x-murabba` | `square-fold` (v2 treatment + LabCoach, new; exact-only pin in the player) | ✅ done 2026-11-10 | `feat(lessons): muadalat-x-murabba — mission prototype` | See « Unit 2, lesson 3 » below. |
+| 4 | `amaliyat-judhur` | `square-tiling` | ⏳ next | | |
 | 5 | `tawzif-khawass-judhur` | `square-tiling` | ⏳ | | content only after lesson 4 |
 | S | `wadiya-idmajiya-judhur` | — | ⏳ council first (prompt §5) | | |
 
@@ -48,6 +48,7 @@ Prompt for the whole unit: `UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. Folder `lesso
 | `fraction-reduction` | ✅ (2026-11-09) | `ikhtizal-kasr` |
 | `coprime-explorer` | ✅ (2026-11-09) | `awwaliyan-fima-baynahuma` |
 | `square-root-side` | ✅ (2026-11-09, both modes `refine` and `graduation`) | `jidhr-tarbii` (unit 2) |
+| `square-fold` | ✅ (2026-11-10) | `muadalat-x-murabba` (unit 2) |
 | every other lab | ⏳ | — |
 
 ## Lesson 2 — `qawasim-adad-tabii` « قواسم عدد طبيعي » (2026-11-08)
@@ -487,3 +488,91 @@ always-mounted live region. **Kept:** `qima-mudbuta` in `priorKnowledge` (module
 
 **Open on this lesson:** `truthful` « resists » is player-only — the page still marks a rational card ✗ after three wrong rulers (owner's call); the
 `resources` still describe the two-level lab for the teacher's page; e2e specs of the old student view.
+
+## Unit 2, lesson 3 — `muadalat-x-murabba` « حل المعادلة من الشكل x² = a » (2026-11-10)
+
+**Council (2026-11-10, a real council: 5 advisors, 5 anonymous peer reviews, chairman)** on how `square-fold` lives in the player. Verdict applied:
+- **The irrational-root pin (the first change).** In the player a graduation NEXT to √3 is never accepted as a value: pinning 1,7 for x² = 3 answers
+  « $1{,}7^2 = 2{,}89 \neq 3$ — لا تدريجة تعطي 3 بالضبط » (computed), then a distinct exact mark √3 appears between the ticks and the student pins it
+  deliberately (« ثبّت √3 » — the pin is √3, never 1,7); −√3 the same way. That first nearest-tick try, on each side of zero, is the intended discovery and
+  is NOT a trial. The page keeps its behaviour (the nearest tick pins √3 directly).
+- **Chains.** r1: the full chain — the square of the pinned solution and the relation (opposites) by a tap, the number of solutions by a tap for 0 and
+  for a < 0, then at the third sign BUILD « x² = a ⇔ x = √a أو x = −√a » (« يعني » beside ⇔) and the rule. r2: one tap question on the predicted cards
+  only. r3: one build after √3 is pinned (its decoy tile is the nearest tick 1,7). Early in r1 a refused arrow (a < 0) visibly bounces off the hatched half.
+- **Goal.** One new goal `{ solvedAll: n }` (reuses the `exact` set of `allExact`) — tested. Refused pins and a wrong « لا حل » are trials; the
+  first nearest-tick beat and a repeated identical refusal are not.
+- **Predictions.** r1 (4, 0, −4) « كم حلًّا ؟ » on cards 1 and 2 → 2 / 1; r2 reordered −9, 0,04, 1,44, 0 → 0 / 2; r3 (3, 2,25) « هل تقع تدريجة على
+  حلّ ؟ » → no / yes. A test checks the truths differ in every round.
+- **Rounds.** r1 4, 0, −4 at 1/2 with the table of squares in the journal; r2 −9, 0,04, 1,44, 0 at 1/10 (25 replaced by 1,44); r3 required 3 and 2,25;
+  ⭐ 1,21, 7, −0,5, 0; free 9, 2, −1, 6,25, 0, −16; easier rounds 1, 0, −1 (and 2, 1 for r3) on the unit line. a = 0 in r1, r2, ⭐ and free — not in r3.
+- **Checkpoints.** « x² = 49 ? x² = −49 ? » (2 / 0); « as a shrinks, where do the two pins meet? » (at 0); « (−2,5)² — where does the arrow land? »
+  (6,25). No ±, no exact-√ fix, no climax number — `content/mission.test.js` also checks what the rounds SHOW (cards, leads).
+- **Scene.** A folding paper strip at a school science fair, two `KidFigure` pupils (a girl in hijab, a boy), no number on the fold.
+- **Also.** Few words per screen (a one-line round mission), the dragged value in `<bdi dir="ltr">` (decimal comma, minus sign), a shorter line per round
+  (`radius`) so 1/10 can be aimed at and − / + always there, no scroll with chain + cards + tiles; the peer sheet targets a real misconception without
+  the climax's errors.
+
+**What was written (per lesson):** `lesson.config.js` (`studentView: 'mission'`, `mission` — scene `fold-strip`, title « بطاقات سلمى الخمس », tools
+`murabba-mutaakisayn`, `hulul-x2-a`, `tariqat-hall-x2`, climax = module 4 (Salma's five cards 64, 0,09, 11, 0, −36 and her points), the three checkpoints
+above; `knowledgeMapOpen`; module and resource lines no longer cite the textbook) · `content/prep.js` + test (10 « أستعدّ »: « مربّع عدد ومعاكسه » with
+`quwat-adad-nisbi` and « الجذر التربيعي » with `jidhr-tarbii` to revise; the first-degree equations stay a `priorKnowledge` — module 3 requires them) ·
+`content/folds.js` + test (every goal PLAYED, three stars on a clean play, the line never too short for a card, no climax value among cards, roots,
+nearest ticks and build decoys; no equation in a plain-text lead) · `content/peerSheet.js` + test (« ورقة أمينة »: « √0,16 = 0,08 because 0,16 ÷ 2 =
+0,08 »; the number of solutions is RIGHT on the sheet) · `content/mission.test.js` · modules 0 (the ladder), 1 (`PlayerSwitch` + `LabRounds labId="m1-folds"`;
+step 1 waits for r1, step 5 for r2; what the lab did is SAVED — `useSavedAnswer` key `lab-folds` + stars — so a reload never blocks a step; step 1's title
+no longer names 9 and −3), 2 (`LabRounds labId="m2-folds"`: 9, 5, −1 with √5 pinned exact and the build, then a free line; step 2 waits for it; « ورقة
+أمينة » is step 4), 3 (title tag and step titles lose the pages and the textbook's exercise numbers).
+
+**What was added to the shared code:**
+- `logic/squareFold.js`: `init({ exactOnly, radius })`, `tickRoot` / `landsOnTick`, `pin` (the `nearTick` verdict with `free`), `pinExact`, `exactToPin`,
+  `allSolved`, `coachOf`; `xText` writes « 3 », never « 3,0 ».
+- `roots/SquareFold.jsx`: the v2 treatment (`onVerdict`, `chains` 'full' / 'predicted' / 'build' / 'none', `predict` + `predictCards` + `predictKind`,
+  `handDone`, `radius`, the journal, the bounce, controls locked during a prediction or a question, always guided, `{ tk: 'reset' }`) and its first LabCoach;
+  `CHAINS_PLAYER`, `chainOfPlayer`, `eqBuildOf`, questions `posSqFill`, `zeroCountFill`, `negCountFill`, `eqBuild`; a11y (indigo focus rings with offset,
+  live verdict and prediction regions always mounted, `aria-disabled` handle, sr-only « solved » word, table row headers). Page and teacher unchanged.
+- `rounds/roundsModel.js`: `{ solvedAll: n }`.
+- `kit/questions.jsx`: in the two-column batch (player), the row label no longer reserves 14rem — it stacked the choices and overflowed at 1024 × 768.
+- `mission/FoldStripScene.jsx` registered as `mission.scene: 'fold-strip'`.
+
+**Traps met:**
+- **`ns` is a reserved i18next option** (the namespace): a string interpolated with `{{ns}}` comes out as its RAW KEY in the browser while the jsdom
+  render test passed. The lab's page questions `posMirror` and `negWhy` had it already (a page bug too); renamed `{{neg}}`, and a test forbids `{{ns}}` in
+  `squareFold`. (Another lab's string still uses `{{ns}}` — `lesson.manipulation.json` line ≈ 5801 — not touched here.)
+- Several `$…$` runs in one Arabic sentence reorder (the build prompt « ابنِ: □ ⇔ □ أو □ ») — one formula per sentence; the ⇔ « يعني » lives in the
+  build's operator.
+- An equation in a PLAIN-text lead (« x² = 1 ، x² = 0 ») reorders in RTL — the cards carry the equations (test).
+- A Node script imports the content files (`check:lessons` coverage): `content/*.js` must not import a sibling without its extension — the r1 table is
+  inlined (`TABLE`, tested equal to the activity's).
+- The help card « لا بأس — جرّب أصغر » appears after two wrong answers — answer right in a walk.
+
+**Verification:** see the commit message (vitest `src/lessons`, `check:lessons`, `lab-rollout-status --lesson muadalat-x-murabba` ✅, Playwright at
+1366×768, 1024×768 and 1920×1080: every round ★★★, the reset path, the easier round and back, a reload after r1 (step 1 complete), module 2's round and
+peer sheet (restored after reload), home, « أستعدّ », final test, knowledge map, modules 1–7 unit by unit — 0 `data-fit-overflow`, 0 page scroll —,
+teacher view unchanged).
+
+**ECC review (react, code, a11y — 2026-11-10), fixed:**
+- the checkpoint after module 3 held `\times` in a single-quoted string — a TAB and « imes » on screen: now `\\times`, and `_unit/missionStrings.test.js`
+  forbids a control character in every unit-2 checkpoint and opening;
+- « أمثلة الكتاب » in the knowledge maps of this lesson AND of `jidhr-tarbii` (missed in lesson 1) → « أمثلة محلولة », and the same test scans every
+  unit-2 `knowledgeGraph.js`;
+- **shared:** every converted lesson (unit 1 included) wrote the right checkpoint answer FIRST — `MissionCheckpoint` now shows the options in an order
+  drawn from the checkpoint's `id` (`missionModel › checkpointOrder`: stable across reloads, different between checkpoints; the stored answer stays the
+  ORIGINAL index; test over every converted lesson that the right answer is not mostly first). No config was edited;
+- the lab kept ONE prediction — predicting card 2 before solving card 1 lost card 1's verdict: now one per card; a repeated refused answer is counted again
+  once x has moved (3 → 5 → 3), and still not when the same refusal is sent twice at the same x (a second non-free « nearTick » at the same x included);
+- **shared:** `useSavedAnswer` returns `ready` (the server's copy has arrived, or the server did not answer): the module-1 effects of lessons 1, 2 and 3
+  that MERGE what is kept no longer save before it — a partial, newer save could have overwritten the server's copy;
+- the scene's graduations now cross the strip (they were parallel to it);
+- **teacher view note:** `square-fold › xText` writes « 3 », never « 3,0 » — on the page and the teacher's view too (handle, journal, table, messages);
+- a11y of the lab: a negative a inside an Arabic verdict is an isolated LTR run (« −4 », never « 4− »); − / + follow the LTR line (− on the left); every
+  verdict is re-announced (keyed by the answer) after a hidden « صحيح. » / « خطأ. »; the slider says « x يساوي X ومربّعه Y »; the hatch is drawn at full
+  contrast and the refused arrow ends opaque; the note says « الأعداد السالبة … لا يبلغها أيّ مربّع »; « … » cells say « لم تُجرَّب بعد » to a screen
+  reader, and the page's table has a hidden caption;
+- **shared:** `BatchChoiceQuestion` — each choice group is named by its row label, a hidden « (صحيح) / (خطأ) » follows each row after checking, the
+  feedback sits in an always-mounted live region, emerald-700 / rose-700 behind white text, indigo focus rings with an offset.
+**Rejected by the coordinator (not now):** moving the focus into the prediction / question column when the lab locks (the same pattern in every lab);
+the SVG's `role="img"` content (the slider and the text carry it); the selected card's colour (`aria-pressed` is there); a TTS reading of the minus
+sign and the decimal comma; module 2's peer sheet on the page (as in lessons 1–2); x² = 5 in module 2.
+
+**Open on this lesson:** module 2 keeps x² = 5 (its step 2 asks how to write the solutions of x² = 5; in the climax 5 is only a points penalty) — the
+test allows it there only; textbook exercise badges (« تمرين 12 ») stay inside `TextbookExercise` as in lessons 1–2; e2e specs of the old student view.

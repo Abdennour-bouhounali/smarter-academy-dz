@@ -49,12 +49,12 @@ export default function Module03Awazzif() {
       navLinks={getNavLinks(3)}
       moduleNumber={3}
       moduleTitle="أوظّف تعلّماتي — أحل معادلات"
-      moduleSubtitle="الطريقة، دوري الآن والتمارين 11–14"
+      moduleSubtitle="الطريقة، ثم معادلات تؤول إلى الشكل x² = a"
       estimatedTime="13 دقيقة"
       objectives={['كيف أحلّ معادلة من الشكل $x^2 = a$ خطوة بخطوة؟', 'كيف أردّ معادلة أخرى إلى هذا الشكل؟', 'هل أجد حلّين، أو حلّا واحدًا، أو لا أجد شيئًا؟']}
       brief={{
-        tag: 'طرائق ص 23 — أوظّف تعلّماتي ص 26', title: <MathText>{METHOD.title}</MathText>, tone: 'amber',
-        body: <p>نقرأ طريقة الكتاب سطرًا سطرًا، ثم نحل معادلاته بنفس الأعداد. الخطأ هنا يُصحَّح ولا يُحتسب.</p>,
+        tag: 'طريقة — أوظّف تعلّماتي', title: <MathText>{METHOD.title}</MathText>, tone: 'amber',
+        body: <p>نكشف الطريقة سطرًا سطرًا، ثم نحلّ بها معادلات أخرى. الخطأ هنا يُصحَّح ولا يُحتسب.</p>,
       }}
       steps={[
         {
@@ -90,19 +90,19 @@ export default function Module03Awazzif() {
           content: <TextbookExercise exercise={NOW} requires={['tariqat-hall-x2', 'muadala-daraja-ula']} onAnswered={done('n')} />,
         },
         {
-          num: 3, title: 'تمرين 11', done: !!d.e11,
+          num: 3, title: 'معادلات من الشكل x² = a', done: !!d.e11,
           content: <TextbookExercise exercise={E11} requires={['tariqat-hall-x2']} onAnswered={done('e11')} />,
         },
         {
-          num: 4, title: 'تمرين 12', done: !!d.e12,
+          num: 4, title: 'حلول بالجذور والكسور', done: !!d.e12,
           content: <TextbookExercise exercise={E12} requires={['tariqat-hall-x2']} onAnswered={done('e12')} />,
         },
         {
-          num: 5, title: 'تمرين 13', done: !!d.e13,
+          num: 5, title: 'نردّها إلى الشكل x² = a', done: !!d.e13,
           content: <TextbookExercise exercise={E13} requires={['tariqat-hall-x2', 'muadala-daraja-ula']} onAnswered={done('e13')} />,
         },
         {
-          num: 6, title: 'تمرين 14 — أنشر، ثم أحل', done: !!d.e14,
+          num: 6, title: 'أنشر، ثم أحلّ', done: !!d.e14,
           content: <TextbookExercise exercise={E14} requires={['tariqat-hall-x2', 'muadala-daraja-ula']} onAnswered={done('e14')} />,
         },
       ]}

@@ -68,9 +68,10 @@ export default function Module01Nashat() {
   const trials = mergeBrackets(memory.saved?.v?.trials, live);
   const { save } = memory;
   useEffect(() => {
-    if (memory.on && Object.keys(live).length) save({ trials: mergeBrackets(memory.saved?.v?.trials, live) });
+    // jamais avant que la copie du serveur soit arrivée (`ready`) : une fusion partielle, plus récente, l'écraserait (revue ECC 2026-11-10)
+    if (memory.on && memory.ready && Object.keys(live).length) save({ trials: mergeBrackets(memory.saved?.v?.trials, live) });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [live]);
+  }, [live, memory.ready]);
   const [squared, setSquared] = useState(false);
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);

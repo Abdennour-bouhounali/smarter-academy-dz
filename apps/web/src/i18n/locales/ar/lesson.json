@@ -38,7 +38,9 @@
     "validate": "تحقّق",
     "answer": "إجابة",
     "ok": "حسنًا",
-    "validateMyAnswer": "تحقّق من إجابتي"
+    "validateMyAnswer": "تحقّق من إجابتي",
+    "rowRight": "(صحيح)",
+    "rowWrong": "(خطأ)"
   },
   "knowledge": {
     "goFurther": "لمعرفة المزيد"

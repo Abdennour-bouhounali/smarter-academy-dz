@@ -27,7 +27,7 @@ function writeLocal(lessonId, data) {
 }
 
 function storeOf(lessonId) {
-  if (!stores.has(lessonId)) stores.set(lessonId, { data: readLocal(lessonId), listeners: new Set(), loaded: false, pending: {}, timer: null, token: null });
+  if (!stores.has(lessonId)) stores.set(lessonId, { data: readLocal(lessonId), listeners: new Set(), loaded: false, settled: false, pending: {}, timer: null, token: null });
   return stores.get(lessonId);
 }
 const emit = (s) => s.listeners.forEach((fn) => fn());
@@ -38,8 +38,9 @@ function ensureLoaded(lessonId, token) {
   if (s.loaded) return;
   s.loaded = true;
   fetchLessonAnswers(token, lessonId)
-    .then((server) => { s.data = mergeAnswers(s.data, server); writeLocal(lessonId, s.data); emit(s); })
-    .catch(() => { s.loaded = false; /* hors ligne : on réessaiera ; l'appareil garde sa copie */ });
+    .then((server) => { s.data = mergeAnswers(s.data, server); s.settled = true; writeLocal(lessonId, s.data); emit(s); })
+    // hors ligne : on réessaiera ; l'appareil garde sa copie — et elle fait foi en attendant (`ready`)
+    .catch(() => { s.loaded = false; s.settled = true; emit(s); });
 }
 
 function saveAnswer(lessonId, key, v) {
@@ -84,5 +85,8 @@ export function useSavedAnswer(parts, { key: explicitKey, lessonId: lessonIdArg,
   const subscribe = useCallback((fn) => { if (!on) return () => {}; const s = storeOf(lessonId); s.listeners.add(fn); return () => s.listeners.delete(fn); }, [on, lessonId]);
   const saved = useSyncExternalStore(on ? subscribe : NOOP_SUB, () => (on ? storeOf(lessonId).data[key] ?? null : null), () => null);
   const save = useCallback((v) => { if (on && key) saveAnswer(lessonId, key, v); }, [on, lessonId, key]);
-  return { on, saved, save };
+  // `ready` : la copie du serveur est arrivée (ou le serveur n'a pas répondu). Une valeur qui FUSIONNE ce qui est gardé (les essais d'un labo)
+  // ne s'enregistre qu'après : sinon une sauvegarde partielle, plus récente, écraserait la copie du serveur (revue ECC 2026-11-10).
+  const ready = useSyncExternalStore(on ? subscribe : NOOP_SUB, () => (on ? storeOf(lessonId).settled : false), () => false);
+  return { on, saved, save, ready };
 }

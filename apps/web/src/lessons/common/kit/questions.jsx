@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useId, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatFr, parseFr } from '@smarter-academy/core';
 import { Feedback, ChoiceGrid, ValidateButton, NumberField, XPBurst } from '../components/LessonUI';
@@ -131,6 +131,8 @@ export function BatchChoiceQuestion({
   rowCols = 1,    // 2 : les lignes sur deux colonnes (lecteur de mission, une longue liste tient dans l'écran — rollout 2026-11-09)
 }) {
   const { react } = useKit();
+  const { t } = useTranslation('lesson');
+  const uid = useId();
   const [picks, setPicks] = useState({});
   const [checked, setChecked] = useState(false);
   const [burst, setBurst] = useState(0);
@@ -165,10 +167,14 @@ export function BatchChoiceQuestion({
               {/* L'étiquette garde 14rem au moins mais GRANDIT avec son contenu (jusqu'à 55 % de la ligne) : à largeur fixe,
                   trois formules « EF² = 20 ، FG² = 20 ، EG² = 40 » se cassaient après « = » et débordaient sur les choix
                   (vu par le propriétaire, unité 12, 2026-10-04). Une formule ne se coupe jamais à l'intérieur. */}
-              <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 min-w-[14rem] max-w-[55%] shrink-0 text-sm font-semibold text-slate-700 [&_.katex]:whitespace-nowrap">
+              {/* deux colonnes (lecteur) : l'étiquette ne réserve plus 14rem — dans une demi-colonne, ce minimum empilait les choix un par
+                  ligne et la liste débordait de l'écran à 1024 × 768 (leçon muadalat-x-murabba, 2026-11-10) */}
+              <div id={`${uid}-${r.id}`} className={`flex flex-wrap items-center gap-x-2.5 gap-y-1 ${rowCols === 2 ? 'min-w-[5rem]' : 'min-w-[14rem]'} max-w-[55%] shrink-0 text-sm font-semibold text-slate-700 [&_.katex]:whitespace-nowrap`}>
                 {typeof r.label === 'string' ? <MathLabel>{r.label}</MathLabel> : r.label}
+                {checked && pick !== undefined && <span className="sr-only">{rowRight ? t('question.rowRight') : t('question.rowWrong')}</span>}
               </div>
-              <div className="flex min-w-0 flex-1 gap-1.5 flex-wrap" role="group">
+              {/* le groupe de choix porte le nom de SA ligne (lecteur d'écran) */}
+              <div className="flex min-w-0 flex-1 gap-1.5 flex-wrap" role="group" aria-labelledby={`${uid}-${r.id}`}>
                 {r.options.map((opt, oi) => (
                   <button
                     key={oi}
@@ -189,12 +195,12 @@ export function BatchChoiceQuestion({
                       }
                     }}
                     aria-pressed={pick === oi}
-                    className={`whitespace-nowrap px-3 py-2 rounded-lg border-2 font-mono text-xs font-bold min-h-[40px] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+                    className={`whitespace-nowrap px-3 py-2 rounded-lg border-2 font-mono text-xs font-bold min-h-[40px] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2 ${
                       checked
                         ? oi === r.correct
-                          ? 'bg-emerald-600 border-emerald-700 text-white'
+                          ? 'bg-emerald-700 border-emerald-800 text-white'
                           : pick === oi
-                          ? 'bg-rose-600 border-rose-700 text-white'
+                          ? 'bg-rose-700 border-rose-800 text-white'
                           : 'bg-white border-slate-200 text-slate-400'
                         : pick === oi
                         ? 'bg-blue-600 border-blue-700 text-white'
@@ -222,9 +228,10 @@ export function BatchChoiceQuestion({
           affiche le feedback « tout juste ». Ne pas tester `solved` en
           premier : onAnswered étant inconditionnel, il devient vrai dès la
           révélation et masquerait le retour d'erreur. */}
-      {(checked || solved) && feedback && (
-        <div>{feedback({ allRight: checked ? allRight : true, nCorrect, total: rows.length })}</div>
-      )}
+      {/* toujours monté : le retour est ANNONCÉ quand il apparaît (un role="status" créé avec son texte ne l'est pas toujours) */}
+      <div role="status" aria-live="polite">
+        {(checked || solved) && feedback && feedback({ allRight: checked ? allRight : true, nCorrect, total: rows.length })}
+      </div>
     </div>
   );
 }

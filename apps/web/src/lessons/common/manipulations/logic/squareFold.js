@@ -26,8 +26,10 @@ export function toRational(a) {
   return reduce({ num: Math.round(a * den), den });
 }
 
-export function init({ targets, scale, radius }) {
-  const R = radius ?? Math.max(4, Math.ceil(Math.sqrt(Math.max(...targets.map((a) => Math.abs(a))))) + 1);
+export function init({ targets, scale, radius, exactOnly = false }) {
+  // `radius` (lecteur) : une droite plus courte, des graduations plus larges sous le doigt — jamais trop courte pour une carte (−9 garde sa place)
+  const need = Math.ceil(Math.sqrt(Math.max(...targets.map((a) => Math.abs(a)))));
+  const R = radius != null ? Math.max(radius, need) : Math.max(4, need + 1);
   return {
     targets: targets.map((a) => ({ a, r: toRational(a) })),
     card: 0,
@@ -38,6 +40,10 @@ export function init({ targets, scale, radius }) {
     pins: {}, // { [cardIndex]: [+1 | -1 | 0] } — signes des solutions épinglées
     declaredNone: {}, // { [cardIndex]: true }
     last: null, // le dernier verdict { kind, ... }
+    // lecteur de mission (conseil 2026-11-10) : une graduation VOISINE de √3 n'est jamais acceptée comme valeur — `exactOnly`
+    exactOnly,
+    exactShown: {}, // { [cardIndex]: [+1 | -1] } — les marques EXACTES (√a, −√a) révélées entre deux graduations
+    tried: {}, // { [cardIndex]: true } — une réponse (ثبّت / لا حل) déjà donnée pour cette carte
   };
 }
 
@@ -70,25 +76,85 @@ function near(v, scale, r, sign) {
   return Math.abs(v / scale - sign * root) <= 0.5 / scale + 1e-12;
 }
 
+/**
+ * La graduation (entier v) où tombe EXACTEMENT la solution positive de x² = a, ou null : √a rationnel p/q et q divise la graduation.
+ * (Aucun flottant : 2,25 → 3/2 tombe sur les dixièmes à v = 15 ; 3 n'a pas de racine rationnelle.)
+ */
+export function tickRoot(r, scale) {
+  if (r.num < 0) return null;
+  if (r.num === 0) return 0;
+  const rs = rationalSqrt(r);
+  if (!rs || scale % rs.den !== 0) return null;
+  return (rs.num * scale) / rs.den;
+}
+
+/** Une solution de x² = a tombe-t-elle sur une graduation ? (la vérité de la prédiction « هل تقع تدريجة على حلّ؟ », lecteur) */
+export const landsOnTick = (target, scale) => tickRoot(target.r, scale) != null;
+
 /** Épingler x = v comme solution de x² = a. */
 export function pin(s) {
   if (s.x == null) return { ...s, last: { kind: 'noX' } };
   const { r } = current(s);
   const v = s.x;
-  if (r.num < 0) return { ...s, last: { kind: 'negativeTarget' } };
+  const tried = { ...(s.tried ?? {}), [s.card]: true };
+  if (r.num < 0) return { ...s, tried, last: { kind: 'negativeTarget', v } };
   const sign = v > 0 ? 1 : v < 0 ? -1 : 0;
-  const ok = r.num === 0 ? v === 0 : sign !== 0 && near(v, s.scale, r, sign);
-  if (!ok) return { ...s, last: { kind: 'notSolution', v } };
+  const have = s.pins[s.card] ?? [];
+  if (s.exactOnly && r.num > 0) {
+    // lecteur : une valeur n'est acceptée que si x² = a EXACTEMENT ; la graduation voisine de √3 révèle la marque exacte
+    const t = tickRoot(r, s.scale);
+    if (t != null) {
+      if (sign === 0 || v !== sign * t) return { ...s, tried, last: { kind: 'notSolution', v } };
+    } else if (sign !== 0 && near(v, s.scale, r, sign)) {
+      const shown = s.exactShown?.[s.card] ?? [];
+      if (have.includes(sign)) return { ...s, last: { kind: 'alreadyPinned', sign } };
+      // la PREMIÈRE fois de ce côté du zéro : la découverte voulue (« لا تدريجة تعطي a بالضبط »), pas un essai
+      return { ...s, tried, exactShown: { ...s.exactShown, [s.card]: shown.includes(sign) ? shown : [...shown, sign] }, last: { kind: 'nearTick', v, sign, free: !shown.includes(sign) } };
+    } else {
+      return { ...s, tried, last: { kind: 'notSolution', v } };
+    }
+  } else {
+    const ok = r.num === 0 ? v === 0 : sign !== 0 && near(v, s.scale, r, sign);
+    if (!ok) return { ...s, tried, last: { kind: 'notSolution', v } };
+  }
+  if (have.includes(sign)) return { ...s, last: { kind: 'alreadyPinned', sign } };
+  return { ...s, tried, pins: { ...s.pins, [s.card]: [...have, sign] }, last: { kind: 'pinned', sign } };
+}
+
+/** Lecteur : épingler la marque EXACTE ±√a révélée entre deux graduations (l'élève la choisit — on épingle √3, jamais 1,7). */
+export function pinExact(s, sign) {
+  const shown = s.exactShown?.[s.card] ?? [];
+  if (!shown.includes(sign)) return s;
   const have = s.pins[s.card] ?? [];
   if (have.includes(sign)) return { ...s, last: { kind: 'alreadyPinned', sign } };
-  return { ...s, pins: { ...s.pins, [s.card]: [...have, sign] }, last: { kind: 'pinned', sign } };
+  return { ...s, pins: { ...s.pins, [s.card]: [...have, sign] }, last: { kind: 'pinned', sign, exact: true } };
 }
+
+/** Les marques exactes encore à épingler sur la carte courante (lecteur). */
+export const exactToPin = (s) => (s.exactShown?.[s.card] ?? []).filter((sign) => !(s.pins[s.card] ?? []).includes(sign));
 
 /** Déclarer « لا تقبل أي حل ». */
 export function declareNone(s) {
   const { r } = current(s);
-  if (r.num >= 0) return { ...s, last: { kind: 'hasSolution' } };
-  return { ...s, declaredNone: { ...s.declaredNone, [s.card]: true }, last: { kind: 'declaredNone' } };
+  const tried = { ...(s.tried ?? {}), [s.card]: true };
+  if (r.num >= 0) return { ...s, tried, last: { kind: 'hasSolution' } };
+  return { ...s, tried, declaredNone: { ...s.declaredNone, [s.card]: true }, last: { kind: 'declaredNone' } };
+}
+
+/** Toutes les cartes résolues ? */
+export const allSolved = (s) => s.targets.every((_, i) => cardSolved(s, i));
+
+/**
+ * LE GUIDE (LabCoach, MANIPULATION_CONTRACT §8quater) : le geste nécessaire MAINTENANT — jamais la réponse. Tenir x et le déplacer ;
+ * puis « ثبّت » (si le sommet de la flèche est sur a, c'est à l'élève de le voir) ; une autre carte quand celle-ci est résolue. Il ne
+ * montre jamais « لا حل » (ce serait dire que a < 0 n'a pas de solution) ni la marque exacte (elle se découvre).
+ */
+export function coachOf(s) {
+  if (!s || allSolved(s)) return null;
+  if (s.visited.length === 0) return { id: 'drag', target: '[data-fold-handle]', gesture: 'drag' };
+  if (cardSolved(s, s.card)) return { id: 'card', target: '[data-fold-cards]', gesture: 'tap' };
+  if (!s.tried?.[s.card]) return { id: 'pin', target: '[data-fold-pin-button]', gesture: 'tap' };
+  return { id: 'again', target: '[data-fold-handle]', gesture: 'drag' };
 }
 
 /** Une carte est résolue quand toutes ses solutions sont épinglées (ou « لا حل » déclaré pour a < 0). */
@@ -116,7 +182,8 @@ const pow10 = (n) => { const d = Math.round(Math.log10(n)); return 10 ** d === n
 /** x = v / scale en texte : « −1,5 », « 3 », « −3/2 » si la graduation n'est pas décimale. */
 export function xText(v, scale) {
   const d = pow10(scale);
-  if (d != null) return exactDecimal(v, d);
+  // « 3 », jamais « 3,0 » : la graduation 1/10 écrit l'entier comme les étiquettes de la droite (journal du lecteur, 2026-11-10)
+  if (d != null) return exactDecimal(v, d).replace(/,(\d*?)0+$/, ',$1').replace(/,$/, '');
   const r = reduce({ num: v, den: scale });
   const sign = r.num < 0 ? '−' : '';
   return r.den === 1 ? `${sign}${Math.abs(r.num)}` : `${sign}${Math.abs(r.num)}/${r.den}`;

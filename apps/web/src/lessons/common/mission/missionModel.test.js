@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  isMissionView, missionTools, pendingCheckpoint, missionStations, resumeStation, readMissionState, writeMissionState, missionKey, stationLabel, shouldWelcome,
+  isMissionView, missionTools, pendingCheckpoint, missionStations, resumeStation, readMissionState, writeMissionState, missionKey, stationLabel, shouldWelcome, checkpointOrder,
 } from './missionModel';
 import { describeLearningViewer } from '../../../features/learning/learningViewer';
 
@@ -85,5 +85,24 @@ describe('mission state — local, per lesson, never throws', () => {
     s.setItem(missionKey('l2'), '{broken');
     expect(readMissionState(s, 'l2')).toEqual({ opened: false, answered: {}, seen: {} });
     expect(readMissionState(null, 'l3')).toEqual({ opened: false, answered: {}, seen: {} });
+  });
+});
+
+describe('checkpointOrder — the right answer is not always first (ECC review 2026-11-10)', () => {
+  const configs = import.meta.glob('../../moyen/4am/**/lesson.config.js', { eager: true });
+  const cps = Object.values(configs).flatMap((m) => m.LESSON_CONFIG?.mission?.checkpoints ?? []);
+  it('a permutation, the same at every call (stable across reloads)', () => {
+    cps.forEach((cp) => {
+      const o = checkpointOrder(cp.id, cp.options.length);
+      expect([...o].sort()).toEqual(cp.options.map((_, i) => i));
+      expect(checkpointOrder(cp.id, cp.options.length)).toEqual(o);
+      expect(o.some((v, i) => v !== i), `${cp.id} never shown in its written order`).toBe(true);
+    });
+  });
+  it('across the converted lessons, the right answer is shown at more than one place, and not mostly first', () => {
+    expect(cps.length).toBeGreaterThanOrEqual(9);
+    const places = cps.map((cp) => checkpointOrder(cp.id, cp.options.length).indexOf(cp.correct));
+    expect(new Set(places).size).toBeGreaterThan(1);
+    expect(places.filter((p) => p === 0).length).toBeLessThan(cps.length / 2);
   });
 });

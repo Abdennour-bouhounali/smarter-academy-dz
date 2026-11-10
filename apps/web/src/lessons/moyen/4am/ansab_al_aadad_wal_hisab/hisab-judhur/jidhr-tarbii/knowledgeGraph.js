@@ -25,7 +25,7 @@
  *                     ┆       وأيضًا ┌─────┘
  *              [√(a²) = a] ◀────────┘
  *                          │ مثال
- *                    [أمثلة الكتاب]
+ *                    [أمثلة محلولة]
  *                          │ انتبه إلى
  *                   ⚠️ [الشرط: عدد موجب]
  *                          │ خطأ شائع
@@ -121,7 +121,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'amthila-khawass', kind: 'example', lane: 'center', requires: 'jidhr-murabba',
-      title: 'أمثلة الكتاب', subtitle: '$\\sqrt{3^2} = 3$',
+      title: 'أمثلة محلولة', subtitle: '$\\sqrt{3^2} = 3$',
       context: { list: KNOWLEDGE.propertyExamples },
       reveals: ['intabih'],
     },

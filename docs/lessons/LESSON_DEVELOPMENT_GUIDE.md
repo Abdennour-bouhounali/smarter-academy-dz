@@ -1255,17 +1255,19 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
   `'library'` = 756 books, `'library-wall'` = 96 books + a `KidFigure` librarian, `'construction-wall'` = a brick wall that rises + a `KidFigure` apprentice, `'flower-shop'` = identical bouquets on a counter + a `KidFigure` florist in hijab, `'school-bags'` = identical school bags filling on a table + a
   `KidFigure` volunteer, `'sewing-workshop'` = two ribbons cut into equal pieces + a `KidFigure` seamstress in hijab, `'bakery'` = identical dough portions on a tray + a
   `KidFigure` baker, `'math-club'` = pairs of numbered tiles judged « ✓ » + a `KidFigure` in hijab, `'garden-bed'` = a square flower bed on the
-  hypotenuse of a right-triangle corner, filling with rows of flowers + a `KidFigure` gardener, `'carpet-loom'` = a square carpet woven row by row on a loom,
+  hypotenuse of a right-triangle corner, filling with rows of flowers + a `KidFigure` gardener, `'carpet-loom'` = a square carpet woven row by row on a loom, `'fold-strip'` = a paper strip folded in a V at a school science fair (two halves
+  coloured symmetrically, a rosette on the fold; a `KidFigure` girl in hijab and a boy),
   its border and fringes closing at the end, + a `KidFigure` weaver in hijab). A new scene is a component `<Nom>Scene({ fill,
   label, className })` drawn in code (never a generated image), `fill` ∈ [0, 1] following the tools earned; it must not show any
   number of the مسألة (rows, capacities). `MissionHome`, `MissionCheckpoint` and `MissionLayer` read `mission.scene`.
-- **Checkpoints use other numbers.** A point d'étape speaks of 30, 50 or « n » — never of the climax's numbers (96 here).
+- **Checkpoints use other numbers.** A point d'étape speaks of 30, 50 or « n » — never of the climax's numbers (96 here). Its options are SHOWN in an
+  order drawn from its `id` (`missionModel › checkpointOrder`, 2026-11-10): write the right answer anywhere — it is never always first on screen.
 - **Rounds are data, in `content/<lab>.js`** (`books.js` for `factor-pairs`): `M<n>_ROUNDS = [{ id, title, goal, stars, easier?,
   optional?, free?, props }]`. Only round 1 is by hand (the next rounds set `handDone: true`); a challenge round (`optional: true`);
   a free round (`free: true`, bounded `nChoices`); `easier` on every hard round (a smaller number, `goal` = the same kind).
   Goals available: `{ checkpoint }`, `{ exact }`, `{ allExact }`, `{ inexact }`, plus (factor-pairs) `{ anyExact: true }` and
   `{ allPairs: n }` (every perfect rectangle of `n` seen — one side of each pair is enough), (common-divisors) `{ above: g }`, (square-root-side)
-  `{ bracketed: g }` and `{ resists: true }`. A « few trials » star for a lab with nested steps (a magnifier) is a budget PER STEP (bisection: ≈ 4
+  `{ bracketed: g }` and `{ resists: true }`, (square-fold) `{ solvedAll: n }` (the n cards of the round solved — a verdict's `groups` is the card). A « few trials » star for a lab with nested steps (a magnifier) is a budget PER STEP (bisection: ≈ 4
   releases per refined graduation), tested by playing the round the efficient way. Numbers are COMPUTED (`divisorsOf`,
   `pairsOf`), never typed by hand. `LabRounds` takes `icon` / `freeIcon` (📚 / 🗂️ for books) and a round's `easier.helpLine` replaces
   the football sentence of the « جرّب أصغر » card.
@@ -1322,8 +1324,16 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
   holds one card that lands and one that never does, and its two predictions have DIFFERENT truths (the card open at the start is « no » in one round,
   « yes » in the next) so always answering « no » cannot win the star; (n) the cards ARE the choice of the free round (no `choices` row); (o) a module step whose gate comes from the lab (a checkpoint
   event, the trials listed as evidence) must survive a reload — derive it from the round's STORED stars and keep the trials with `useSavedAnswer`
-  (`key`, `lessonId`, `moduleNumber`), never from memory alone; the module's door « العب الجولة … » never skips a closed round (`LabRounds` →
+  (`key`, `lessonId`, `moduleNumber`), never from memory alone — and save a value that MERGES what is kept only once `ready` (the server's copy has
+  arrived), or a partial newer save overwrites it; the module's door « العب الجولة … » never skips a closed round (`LabRounds` →
   `roundsModel › jumpTarget`).
+  `square-fold` in the player (lesson `muadalat-x-murabba`, council of 2026-11-10): (p) a value NEXT to an irrational answer is never accepted as the
+  answer — the lab says why with computed numbers (« 1,7² = 2,89 ≠ 3 ») and shows the exact object to take instead (the mark √3), and that first
+  discovery is not counted as a trial; (q) each round's two predictions ask about two cards whose truths differ (`predictCards`), and a later round
+  may ask ANOTHER question (« does a tick land on a solution? ») once the first one has become recall; (r) a build's decoy tile is the misconception of
+  the moment (the nearest tick 1,7, or half of a) — never a random number. Strings: never interpolate `{{ns}}` (i18next reads `ns` as the NAMESPACE:
+  the browser shows the raw key while a jsdom render passes), one formula per Arabic sentence (several `$…$` runs reorder), no equation in a
+  plain-text `lead` (the cards carry them), and `content/*.js` never imports a sibling without its extension (Node reads them for `check:lessons`).
 - **« ورقة زميل »** (`content/peerSheet.js`): an invented classmate (`KidFigure`; girls in hijab), 3–5 lines with ONE error on the
   lesson's main misconception, three fixes each with a `why`, the numbers computed from the same helpers as the rounds, and a test
   (`peerSheet.test.js`) that the error line is the only wrong one.

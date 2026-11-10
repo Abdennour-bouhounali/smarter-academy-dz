@@ -108,10 +108,11 @@ export default function Module01Nashat() {
   const ruleDone = !!cpDone.rule || !!won.r1 || !!kept.rule || q2;
   const { save } = memory;
   useEffect(() => {
-    if (!memory.on || (!Object.keys(live).length && !cpDone.rule)) return;
+    // jamais avant que la copie du serveur soit arrivée (`ready`) : une fusion partielle, plus récente, l'écraserait (revue ECC 2026-11-10)
+    if (!memory.on || !memory.ready || (!Object.keys(live).length && !cpDone.rule)) return;
     save({ trials: mergeTrials(kept.trials, live), rule: !!(kept.rule || cpDone.rule) });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [live, cpDone.rule]);
+  }, [live, cpDone.rule, memory.ready]);
   const record = useCallback(({ tk, id, area, side, scale, cmp }) => {
     if (tk === 'checkpoint-done') setCpDone((d) => ({ ...d, [id]: true }));
     if (tk || !area) return;   // les événements des questions du labo (LabCheckpoint) ne sont pas des essais

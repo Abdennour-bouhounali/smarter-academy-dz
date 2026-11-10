@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PeerSheet } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
@@ -7,6 +7,10 @@ import { Manipulation } from '../../../../../../common/manipulations';
 import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { KNOWLEDGE } from '../content/textbook';
+import { M2_ROUNDS } from '../content/folds';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
 
 /**
  * Module 2 — معارف 3 (p. 22) : « المعادلات من الشكل x² = a » (rétrofit 2026-10-15 : le labo ouvre SANS carte ni titre ; la question
@@ -21,6 +25,10 @@ import { KNOWLEDGE } from '../content/textbook';
  *   étape 3  pourquoi a < 0 ne donne aucune solution → les exemples de la خاصية 2 APRÈS.
  * La question « combien de solutions » des trois exemples n'est plus posée : le labo l'a déjà fait juger carte par carte.
  * LP : P1.
+ *
+ * LECTEUR DE MISSION (rollout 2026-11-10, unité 2 leçon 3) : le labo se joue en MANCHES (content/folds.js › M2_ROUNDS : 9, 5, −1 — √5 épinglé
+ * EXACT, la graduation voisine refusée, puis l'équivalence BÂTIE → droite libre) ; l'étape 2 (x² = 5) attend la manche ; l'étape 4 est
+ * « ورقة أمينة » (`PeerSheet`, content/peerSheet.js : la racine d'un décimal prise pour sa moitié). Hors lecteur : le même labo, la même 4e étape.
  */
 const { prop1, prop2 } = KNOWLEDGE;
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -31,6 +39,9 @@ export default function Module02Maarif() {
   const [q2a, setQ2a] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
+  const [q4, setQ4] = useState(false);
+  // Dans le lecteur : la manche gagnée (étoiles gardées) ouvre l'étape 2.
+  const [won, setWon] = useState({});
 
   return (
     <ContentModule
@@ -42,12 +53,20 @@ export default function Module02Maarif() {
       estimatedTime="12 دقيقة"
       objectives={['كيف نكتب حلول المعادلة $x^2 = a$ حسب إشارة $a$؟', 'ماذا يحدث للمعادلة $x^2 = -1$؟']}
       intro={
-        <Manipulation
-          type="square-fold"
-          targets={prop2.targets}
-          scale={10}
-          levels={false}
-          lead={<MathText>{'ثلاث بطاقات جديدة: $x^2 = 9$ ، $x^2 = 5$ ، $x^2 = -1$. بعضها لن يقع حلّه على أي تدريجة.'}</MathText>}
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="m2-folds" rounds={M2_ROUNDS} icon="📐" freeIcon="🎏"
+              onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))} />
+          )}
+          page={(
+            <Manipulation
+              type="square-fold"
+              targets={prop2.targets}
+              scale={10}
+              levels={false}
+              lead={<MathText>{'ثلاث بطاقات جديدة: $x^2 = 9$ ، $x^2 = 5$ ، $x^2 = -1$. بعضها لن يقع حلّه على أي تدريجة.'}</MathText>}
+            />
+          )}
         />
       }
       steps={[
@@ -80,6 +99,7 @@ export default function Module02Maarif() {
           ),
         },
         {
+          needsRound: { id: 'r1', label: 'الجولة 1', icon: '📐', won: Boolean(won.r1) },
           num: 2, title: <MathText>{'كيف نكتب حلّي $x^2 = 5$ بالضبط؟'}</MathText>, subtitle: 'لم يقع أيّ منهما على تدريجة', done: q2,
           content: (
             <div className="space-y-3">
@@ -99,7 +119,7 @@ export default function Module02Maarif() {
               />
               {q2a && (
                 <div className="space-y-3">
-                  <KnowledgeBrick id="hulul-x2-a" lead="الكتاب يجمع ما حدث على المستقيم في ثلاث حالات، حسب إشارة a:" />
+                  <KnowledgeBrick id="hulul-x2-a" lead="نجمع ما حدث على المستقيم في ثلاث حالات، حسب إشارة a:" />
                   <BatchChoiceQuestion
                     intro={<p className="text-sm font-semibold text-slate-700">طبّق الخاصية 2 على معادلات جديدة:</p>}
                     rows={[
@@ -142,6 +162,8 @@ export default function Module02Maarif() {
             </div>
           ),
         },
+        { num: 4, title: 'ورقة أمينة: أين الخطأ؟', subtitle: 'جد السطر الخاطئ وصحّحه', done: q4,
+          content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={() => setQ4(true)} /> },
       ]}
       footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />

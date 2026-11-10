@@ -80,3 +80,23 @@ export function readMissionState(storage, lessonId) {
 export function writeMissionState(storage, lessonId, state) {
   try { storage?.setItem(missionKey(lessonId), JSON.stringify(state)); } catch { /* stockage indisponible : la mission reste jouable */ }
 }
+
+/**
+ * L'ORDRE D'AFFICHAGE des choix d'un point d'étape (revue ECC 2026-11-10) : les leçons écrivent presque toujours la bonne réponse en
+ * premier (`correct: 0`) — l'élève l'aurait vite appris. Une permutation DÉTERMINISTE, tirée de l'`id` du point d'étape : la même à chaque
+ * rechargement, différente d'un point d'étape à l'autre. `order[k]` = l'indice d'origine du choix affiché en k ; la réponse gardée reste
+ * l'indice d'ORIGINE (MissionCheckpoint le remet).
+ */
+export function checkpointOrder(id, n) {
+  let h = 2166136261;
+  for (const ch of String(id)) { h ^= ch.codePointAt(0); h = Math.imul(h, 16777619) >>> 0; }
+  const order = Array.from({ length: n }, (_, i) => i);
+  for (let i = n - 1; i > 0; i -= 1) {
+    h = (Math.imul(h, 1103515245) + 12345) >>> 0;
+    const j = (h >>> 8) % (i + 1);
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  // jamais l'ordre ÉCRIT : il remettrait la bonne réponse en tête pour ce point d'étape — on le fait tourner d'un cran
+  if (n > 1 && order.every((v, i) => v === i)) order.push(order.shift());
+  return order;
+}

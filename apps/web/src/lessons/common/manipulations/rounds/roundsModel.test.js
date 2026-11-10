@@ -167,6 +167,19 @@ describe('bracketed / resists — the square-root-side goals (2026-11-09)', () =
   });
 });
 
+describe('solvedAll — the square-fold goal (2026-11-10)', () => {
+  it('every card 0..n-1 must be seen SOLVED; a refused answer or a half-solved card is not enough', () => {
+    let log = logEvent(emptyLog(), 'verdict', { groups: 0, exact: false }); // one root of x² = 4 pinned
+    log = logEvent(log, 'verdict', { groups: 0, exact: true });             // both roots
+    log = logEvent(log, 'verdict', { groups: 2, exact: false });            // a refused pin on x² = −4
+    expect(conditionMet({ solvedAll: 3 }, log)).toBe(false);
+    log = logEvent(log, 'verdict', { groups: 1, exact: true });
+    log = logEvent(log, 'verdict', { groups: 2, exact: true });             // « لا حل » declared
+    expect(conditionMet({ solvedAll: 3 }, log)).toBe(true);
+    expect(conditionMet({ solvedAll: 4 }, log)).toBe(false);
+  });
+});
+
 describe('reset — « إعادة » in the lab empties the round', () => {
   it('a reset event drops the verdicts, predictions, brackets and answers seen before it', () => {
     let log = logEvent(emptyLog(), 'verdict', { groups: 1, exact: false });
