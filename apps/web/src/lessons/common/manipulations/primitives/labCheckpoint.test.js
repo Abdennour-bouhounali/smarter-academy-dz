@@ -94,3 +94,22 @@ describe('fill / build — les réponses à cases du lecteur (pilote 2026-11-07)
     expect(C.submit(p, BUILD, [15, 3, 5, 0]).status).toBe('right');
   });
 });
+
+describe('build — `accept` : l’égalité écrite dans l’autre sens (unité 9, leçon 2, conseil L2.3)', () => {
+  const RATIO = {
+    id: 'ratioBuild', kind: 'build', slots: ['a', 'b', 'c', 'd'], tiles: ["AB′", 'AB', "AC′", 'AC', "CC′"],
+    expected: ["AB′", 'AB', "AC′", 'AC'], accept: [["AC′", 'AC', "AB′", 'AB']], preset: ["AB′", 'AB', null, null], hints: ['h1', 'h2'],
+  };
+  it('the written order and the swapped equality are both right; the decoy and an inverted side are not', () => {
+    expect(C.isCorrect(RATIO, ["AB′", 'AB', "AC′", 'AC'])).toBe(true);
+    expect(C.isCorrect(RATIO, ["AC′", 'AC', "AB′", 'AB'])).toBe(true);
+    expect(C.isCorrect(RATIO, ["AB′", 'AB', "AC′", "CC′"])).toBe(false);
+    expect(C.isCorrect(RATIO, ["AB′", 'AB', 'AC', "AC′"])).toBe(false);
+    expect(C.submit(C.fresh(), RATIO, ["AC′", 'AC', "AB′", 'AB']).status).toBe('right');
+  });
+  it('without `accept` nothing changes: only the written order', () => {
+    const plain = { ...RATIO, accept: undefined };
+    expect(C.isCorrect(plain, ["AC′", 'AC', "AB′", 'AB'])).toBe(false);
+    expect(C.isCorrect(plain, ["AB′", 'AB', "AC′", 'AC'])).toBe(true);
+  });
+});

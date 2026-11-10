@@ -32,9 +32,11 @@ export const MODES = Object.freeze(['ladder', 'crossing']);
 /** Les figures de نشاط 2 : 1 (B′, C′ de l'autre côté de A), 2 (entre A et les pieds), 3 et son miroir. */
 export const FIGURES = Object.freeze(['1', '2', '3', '3m']);
 
+/** Le plus petit montant : 2 (l'échelle 2 / 4 de la manche d'entraînement du lecteur, conseil du 2026-11-10, L2.6 — une seule encoche sur AB). */
+export const MIN_BAR = 2;
 const posInt = (v, name) => {
   const n = Number(v);
-  if (!Number.isInteger(n) || n < 3 || n > 30) throw new Error(`parallel-level: ${name} entier entre 3 et 30 (« ${v} »)`);
+  if (!Number.isInteger(n) || n < MIN_BAR || n > 30) throw new Error(`parallel-level: ${name} entier entre ${MIN_BAR} et 30 (« ${v} »)`);
   return n;
 };
 
@@ -108,11 +110,19 @@ export function move(lab, end, slot) {
   return Object.freeze({ ...lab, [key]: s, last: { kind: 'move', end } });
 }
 
-/** Le type d'un essai validé — ce que l'écran dit, et ce que la découverte compte. */
-function kindOf(lab, r) {
+/**
+ * Le type d'un essai validé — ce que l'écran dit, et ce que la découverte compte. Le tréteau SANS rapport imposé (manches du lecteur,
+ * 2026-11-10) : deux rapports différents donnent une planche penchée (`tilted`), pas « شرط الأستاذ » — il n'y a pas de professeur
+ * (bogue corrigé : `condition` valait null et chaque essai était marqué `condition`).
+ */
+export function kindOf(lab, r) {
   if (lab.mode === 'ladder') return r.parallel ? 'level' : 'tilted';
-  if (!r.condition) return 'condition';
-  return r.parallel ? 'figure' : 'order';
+  if (lab.target) {
+    if (!r.condition) return 'condition';
+    return r.parallel ? 'figure' : 'order';
+  }
+  if (r.parallel) return 'figure';
+  return r.ratiosEqual ? 'order' : 'tilted';
 }
 
 /** Valider une position (relâchement, pause du clavier, toucher) : un ESSAI, enregistré une fois. */
@@ -277,4 +287,125 @@ export function geometry(lab, { width, height, pad = 26, at = positions(lab) } =
     /** Le sens écran de la montée (vers A) sur une barre : +1 si monter va vers la droite. */
     upward(end) { const P1 = to(end === 'B' ? B : C); const P0 = to(A); return P0[0] >= P1[0] ? 1 : -1; },
   };
+}
+
+/* ══════════════ LECTEUR DE MISSION (rollout 2026-11-10, unité 9 leçon 2 ; conseil du 2026-11-10, L2.1–L2.7) ══════════════ */
+
+/**
+ * L'essai d'une manche est UN appui sur « ضع الميزان » (L2.1) : la bulle est CACHÉE pendant que les extrémités bougent, le bouton valide la
+ * position courante (`commit(lab, null)`), la même position deux fois n'est pas un nouvel essai. Ce que la manche reçoit (`onVerdict`) :
+ *   ladder   — groups = l'encoche de B′ (AB′), exact = planche de niveau ;
+ *   crossing — groups = la figure de la position (1 : au-delà de A, 2 : entre A et les pieds, 3 : une de chaque côté), exact = planche
+ *              parallèle ET (rapport imposé) condition du professeur respectée ; un essai refusé par le rapport imposé : groups 0.
+ */
+export function verdictOf(lab, trial) {
+  if (lab.mode === 'ladder') return Object.freeze({ groups: Math.abs(trial.bp), exact: Boolean(trial.parallel) });
+  if (trial.kind === 'condition') return Object.freeze({ groups: 0, exact: false });
+  const f = figureOf(trial.bp, trial.cp);
+  return Object.freeze({ groups: f === '3m' ? 3 : Number(f), exact: Boolean(trial.parallel) });
+}
+
+/** La découverte du lecteur : ladder — deux planches de niveau de rapports différents ; crossing — les figures 1, 2 et 3 (comme la page). */
+export function playerDiscovery(lab) {
+  if (lab.mode === 'ladder') return levelRatios(lab).length >= 2;
+  return discoveryReady(lab);
+}
+
+/** La « classe » d'une position, pour juger une prédiction : la même configuration, pas forcément les mêmes nombres. */
+export function classOf(r) {
+  if (r.parallel) return `par${figureOf(r.bp, r.cp) === '1' ? 1 : 2}`;
+  if (r.reason === 'order') return 'order';
+  return r.sameOrder ? 'ratios-same' : 'ratios-opp';
+}
+
+/** La vérité d'une prédiction « هل تتوسّط الفقاعة؟ » sur une position `at = [bp, cp]` : calculée par converse. */
+export const predictTruth = (lab, at) => (reading(lab, { bp: at[0], cp: at[1] }).parallel ? 'yes' : 'no');
+
+/**
+ * Les prédictions JUGÉES (leurs clés) : une prédiction sur la position `at` est jugée par le premier essai de la MÊME classe (classOf) ;
+ * toutes le sont quand `all` (la dernière suite de la manche est atteinte) — son résultat n'est jamais perdu derrière la question.
+ */
+export function judgedPredictions(lab, preds, all = false) {
+  return preds.filter((p) => {
+    if (all) return true;
+    const cls = classOf(reading(lab, { bp: p.at[0], cp: p.at[1] }));
+    return lab.trials.some((t) => classOf(t) === cls);
+  }).map((p) => p.key);
+}
+
+/** Un rapport de longueurs écrit exactement (réduit) : « 1/3 », « 4 », « −1/4 ». */
+const ft = (p) => LIN.fracText(p).replace('-', '−');
+
+/**
+ * Les PASTILLES d'un rapport (lecteur, manches 2+ : « les rapports sont calculés AVANT le verdict de la bulle ») : la bonne valeur, l'inverse
+ * (la partie en bas), et — échelle — la partie sur le RESTE (AB′/BB′) ; tréteau : la longueur de l'AUTRE barre (AB′/AC) — la pastille AB′/BB′
+ * n'a plus de sens quand B′ passe au-delà de A (conseil, L2.1). Toujours trois valeurs distinctes ; l'ordre tourne avec la position.
+ */
+export function chipOptions(lab, end, at = positions(lab)) {
+  const signed = end === 'B' ? at.bp : at.cp;
+  const a = Math.abs(signed);
+  const n = end === 'B' ? lab.b : lab.c;
+  const other = end === 'B' ? lab.c : lab.b;
+  const right = LIN.frac(a, n);
+  const cands = [{ v: LIN.frac(n, a), why: 'inverse' }];
+  if (lab.mode === 'ladder') cands.push({ v: LIN.frac(a, n - a), why: 'rest' });
+  else cands.push({ v: LIN.frac(a, other), why: 'other' });
+  for (let d = 1; d < 6; d += 1) cands.push({ v: LIN.frac(a + d, n), why: 'near' }, { v: LIN.frac(a, n + d), why: 'near' });
+  const out = [{ v: right, right: true }];
+  for (const c of cands) {
+    if (out.length >= 3) break;
+    if (!out.some((o) => LIN.eq(o.v, c.v))) out.push(c);
+  }
+  const shift = (a * 7 + n + (end === 'B' ? 0 : 1)) % 3;
+  const spun = out.map((_, i) => out[(i + shift) % 3]);
+  return spun.map((o) => Object.freeze({ text: ft(o.v), right: Boolean(o.right), why: o.why ?? null }));
+}
+
+/**
+ * Le GUIDE (LabCoach) du lecteur — jamais la réponse : la poignée de B′, puis celle de C′, puis (manches 2+) les pastilles, puis « ضع الميزان » ;
+ * après deux essais sans planche de niveau, le journal (ou la ligne des rapports quand elle est montrée). Rien quand la découverte est atteinte.
+ * `ctx` : { moved: { B, C }, pressedHere, picksDone, picking, ratiosShown, done }.
+ */
+export function coachOf(lab, ctx = {}) {
+  if (ctx.done) return null;
+  const moved = ctx.moved ?? {};
+  const anyLevel = lab.trials.some((t) => t.parallel && t.kind !== 'condition');
+  if (lab.trials.length >= 2 && !anyLevel) {
+    return ctx.ratiosShown
+      ? { id: 'ratios', target: '[data-pl-ratios]', gesture: 'tap' }
+      : { id: 'journal', target: '[data-pl-journal]', gesture: 'tap' };
+  }
+  if (!moved.B && lab.trials.length === 0) return { id: 'dragB', target: '[data-pl-handle="B"]', gesture: 'drag' };
+  if (!moved.C && lab.trials.length === 0) return { id: 'dragC', target: '[data-pl-handle="C"]', gesture: 'drag' };
+  if (ctx.pressedHere) return null;
+  if (ctx.picking && !ctx.picksDone) return { id: 'pick', target: '[data-pl-picks]', gesture: 'tap', prefer: 'below' };
+  return { id: 'press', target: '[data-pl-press]', gesture: 'tap' };
+}
+
+/**
+ * TOUT ce qu'un écran du lecteur peut montrer pour une manche (règle « valeurs interdites par RÔLE », conseil du 2026-11-10) : les longueurs
+ * des barres, les distances de chaque encoche à A et au pied, chaque rapport atteignable par le glisser (brut et réduit), les pastilles et
+ * leurs leurres à chaque position, le rapport imposé, les positions des prédictions. `{ role, v }`, v en texte (« 1/3 », « 12 »).
+ */
+export function shownValues(props) {
+  const lab = init({ AB: props.AB, AC: props.AC, ratio: props.ratio, mode: props.mode });
+  const out = [];
+  const push = (role, v) => out.push(Object.freeze({ role, v: String(v).replace('−', '-') }));
+  push('bar', lab.b); push('bar', lab.c);
+  if (lab.target) push('ratio', LIN.fracText(lab.target));
+  const slots = (r) => Array.from({ length: r.max - r.min + 1 }, (_, i) => abscissaOf(r.min + i));
+  for (const [end, n, r] of [['B', lab.b, lab.rangeB], ['C', lab.c, lab.rangeC]]) {
+    for (const a of slots(r)) {
+      push('distance', Math.abs(a));
+      if (lab.mode === 'ladder') push('distance', n - a);   // BB′ : la pastille « partie sur reste » de l'échelle (le tréteau ne la montre jamais)
+      push('ratio', `${Math.abs(a)}/${n}`);
+      push('ratio', LIN.fracText(LIN.frac(Math.abs(a), n)));
+      const at = end === 'B' ? { bp: a, cp: lab.c } : { bp: lab.b, cp: a };
+      chipOptions(lab, end, at).forEach((o) => push(o.right ? 'ratio' : 'decoy', o.text));
+      push('decoy', `-${LIN.fracText(LIN.frac(Math.abs(a), n))}`);   // la pastille « −r » d'une question au-delà de A
+    }
+  }
+  (props.predict ?? []).forEach((p) => { push('distance', Math.abs(p.at[0])); push('distance', Math.abs(p.at[1])); });
+  (props.choices ?? []).forEach(([b, c]) => shownValues({ AB: b, AC: c, mode: props.mode }).forEach((x) => out.push(x)));
+  return out;
 }

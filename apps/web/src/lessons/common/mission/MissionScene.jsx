@@ -11,10 +11,11 @@ import GardenBedScene from './GardenBedScene';
 import CarpetLoomScene from './CarpetLoomScene';
 import FoldStripScene from './FoldStripScene';
 import CourtyardSlabsScene from './CourtyardSlabsScene';
+import PaintWallScene from './PaintWallScene';
 
 /**
  * LA SCÈNE d'une mission (rollout 2026-11-08) : chaque leçon dessine la sienne, choisie par `mission.scene` dans sa config
- * (`'library'` — la bibliothèque de 756 livres, valeur par défaut —, `'library-wall'` — le mur de 96 livres —, `'construction-wall'` — le chantier de la leçon khawass-qawasim, `'flower-shop'` — l'atelier du fleuriste de la leçon qasim-mushtarak-akbar, `'school-bags'` — les cartables de la leçon tayin-pgcd, `'sewing-workshop'` — l'atelier de couture de la leçon bahth-pgcd, `'bakery'` — la boulangerie de la leçon ikhtizal-kasr, `'math-club'` — le club de mathématiques de la leçon awwaliyan-fima-baynahuma, `'garden-bed'` — le bassin carré sur l'hypoténuse de la leçon jidhr-tarbii, `'carpet-loom'` — le métier à tisser de la leçon natiqa-ghayr-natiqa, `'fold-strip'` — la bande pliée de la foire scientifique de la leçon muadalat-x-murabba, `'courtyard-slabs'` — la cour de l'école pavée de dalles carrées de la leçon amaliyat-judhur, `'courtyard-big'` — la même cour repavée de dalles plus grandes, leçon tawzif-khawass-judhur). Une nouvelle scène =
+ * (`'library'` — la bibliothèque de 756 livres, valeur par défaut —, `'library-wall'` — le mur de 96 livres —, `'construction-wall'` — le chantier de la leçon khawass-qawasim, `'flower-shop'` — l'atelier du fleuriste de la leçon qasim-mushtarak-akbar, `'school-bags'` — les cartables de la leçon tayin-pgcd, `'sewing-workshop'` — l'atelier de couture de la leçon bahth-pgcd, `'bakery'` — la boulangerie de la leçon ikhtizal-kasr, `'math-club'` — le club de mathématiques de la leçon awwaliyan-fima-baynahuma, `'garden-bed'` — le bassin carré sur l'hypoténuse de la leçon jidhr-tarbii, `'carpet-loom'` — le métier à tisser de la leçon natiqa-ghayr-natiqa, `'fold-strip'` — la bande pliée de la foire scientifique de la leçon muadalat-x-murabba, `'courtyard-slabs'` — la cour de l'école pavée de dalles carrées de la leçon amaliyat-judhur, `'courtyard-big'` — la même cour repavée de dalles plus grandes, leçon tawzif-khawass-judhur, `'paint-wall'` — le mur du stade repeint devant un tréteau en X, leçon aksiya-talis). Une nouvelle scène =
  * un composant `<Nom>Scene({ fill, label, className })` dessiné en code, ajouté à ce registre ; `fill` ∈ [0, 1] suit les outils gagnés.
  */
 const SCENES = {
@@ -32,6 +33,9 @@ const SCENES = {
   'courtyard-slabs': CourtyardSlabsScene,
   // la MÊME cour, repavée de dalles plus GRANDES (leçon tawzif-khawass-judhur, conseil du 2026-11-10) : une variante, pas une scène de plus
   'courtyard-big': CourtyardBigScene,
+  // unité 9, leçon 2 aksiya-talis (conseil du 2026-11-10, L2.8) : le mur du stade repeint, le tréteau en X et son niveau — primitives communes de
+  // l'unité dans thalesSceneKit.jsx, une scène mince par leçon
+  'paint-wall': PaintWallScene,
 };
 
 function CourtyardBigScene(props) {

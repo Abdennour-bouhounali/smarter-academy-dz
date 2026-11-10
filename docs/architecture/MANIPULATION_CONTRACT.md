@@ -2699,6 +2699,9 @@ redo the same step to find the answer, and the answer is never given on the firs
 tested in `labCheckpoint.test.js`) and `primitives/LabCheckpoint.jsx` (`useLabCheckpoint` + the card + the waiting band). `useLabCheckpoint` returns
 `{ blocking, open, done, node, qid }` — `qid` is the id of the question on screen (null when closed), so a lab can draw the scene that question speaks of.
 A `build` question may set `ops`, the signs between its slots (default `['=', '×', '+']`; `['=', '+']` for « grand = petit + reste »).
+Since 2026-11-10 (unit 9, lesson 2) a `build` may also set `accept` (other fillings that are ALL true — the equality written the other way,
+« AC′/AC = AB′/AB » for « AB′/AB = AC′/AC ») and `preset` (tiles already in their slots, e.g. a fixed left side, which the student can take back); a
+`fill` field may set `render(value)` to draw its chips in their own shape (a real fraction bar) — the compared value stays the string.
 
 **Behaviour.**
 - When the lab's step is reached (`reached`, e.g. `taskDone`), a card covers the lab (backdrop over the `relative` glance
@@ -2714,6 +2717,28 @@ A `build` question may set `ops`, the signs between its slots (default `['=', '�
   role, for the lesson's « forbidden values by role » test (`content/forbidden.js`).
   After its review: `judgedPredictions` (a result is never lost behind the round's question — the lab holds it `PRED_HOLD_MS`); the shared
   `PredictTray` focuses its question on mount, is named by it, numbers « 1 من 2 » (`step`, `of`) and lets a choice carry a spoken name (`aria`).
+- **Thirteenth example (2026-11-10, unit 9):** lesson `aksiya-talis`, `content/planks.js` (`M1_ROUNDS`: the ladder 3 / 6 by hand → the X-trestle
+  9 / 12 at the teacher's 1/3 → the FREE X-trestle 8 / 12, required → ⭐ 12 / 16 → free bar pairs; practice 2 / 4, 3 / 6 at 1/3, 3 / 6), `LabRounds
+  icon="⚖️"`; council of 2026-11-10, verdict L2. What the player added to `parallel-level`: **« ضع الميزان »** (`[data-pl-press]`) — the bubble is
+  HIDDEN while the ends move (a « ? » in the vial, a neutral plank), a trial is ONE press of the button (never a release), the same position pressed
+  again is not a trial; `onVerdict { groups, exact, free? }` (`logic › verdictOf`: ladder → the rung of B′; X-trestle → the figure 1 / 2 / 3, 0 for a
+  ratio the teacher refuses), the first refusal free, `{ tk: 'discovered' }` (`playerDiscovery`: two level planks of different ratios on the ladder;
+  figures 1, 2 and 3 on the X-trestle); `ratios` 'show' | 'hide' (round 1: the question asks them) | 'pick' (from round 2 the two chips AB′/AB and
+  AC′/AC are picked BEFORE the press is enabled — `logic › chipOptions`: the value, its inverse and, on the ladder, AB′/BB′; on the X-trestle the other
+  bar's length instead); `chains` — `ladder` (« lv »: the two ratios of the first level plank in one tap each; « rule »: BUILD « AB′/AB = AC′/AC »
+  with AB′/AB pre-placed (`preset`), AC′, AC and the decoy CC′, the swapped equality accepted (`accept`), then the rule), `ladderEasy`, `side`
+  (figures 1 and 2: what they share), `cross` (« beyond »: a level plank past A has POSITIVE ratios — chips r, −r, 1/r; « order »: which point lies
+  between the other two on each line, then the rule), `none`; `predict` [{ key, at: [bp, cp] }] « هل تتوسّط الفقاعة؟ », the truth from `converse`,
+  judged by the first trial of the same configuration (`classOf`) or all when the round's last chain is reached, held `PRED_HOLD_MS`; `choices`
+  [[AB, AC]…]; the chips, the side of A, the figure chips, the verdict and the journal « 📋 جدول تجاربك » in the side column (the scene keeps the
+  height of the mission area); `LabCoach` (`coachOf`: B′'s handle, C′'s handle, the chips, the button; the journal after two trials with no level
+  plank — never a notch). The logic minimum is 2 (`MIN_BAR`); an X-trestle WITHOUT an imposed ratio no longer marks every trial « condition »
+  (`kindOf`: figure / order / tilted). `shownValues(props)` lists, with a role, everything a round's screen can show (bars, every notch, every
+  drag-reachable ratio, chips and decoys, prediction positions, free pairs) for the lesson's forbidden-values test. Page and teacher unchanged.
+  Review of the same day (binding for the next labs): the verdict is announced by an ALWAYS-mounted `sr-only` live region in the stage
+  (`[data-pl-verdict-live]`, keyed per trial) because the side column unmounts while a question is open; the visible box is plain text with an
+  `aria-hidden` ✓ / ✗ (no glyph inside a translated string); the trial button is `aria-disabled`, never `disabled` (focus stays on it); the verdict
+  shown is the trial AT the revealed position (moving away and back shows it again), not `lab.last`.
 - **Blocking:** `cp.blocking` stays true until the chain is finished; the lab hides its « next task » button meanwhile.
 - **Guided, never told first:** wrong try 1 → the chosen option's `why` (else hint 1); try 2 → hint 2 (sharper); try 3 →
   the answer AND its explanation (the student is never stuck forever). A wrong option stays struck and disabled.

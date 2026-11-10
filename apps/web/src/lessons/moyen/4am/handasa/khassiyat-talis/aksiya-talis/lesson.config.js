@@ -40,6 +40,58 @@ export const LESSON_CONFIG = {
   unit: 'khassiyat-talis',
   unitTitle: 'خاصية طالس',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (modèle du pilote qasim-adad-tabii, VALIDÉ par le propriétaire le 2026-11-08 ; rollout leçon par leçon,
+  // docs/reports/MISSION_ROLLOUT_PROGRESS.md — unité 9, leçon 2, 2026-11-10) — implique le regard « focus » ; l'enseignant et le mode classe ne voient
+  // aucun changement.
+  studentView: 'mission',
+  // LA MISSION : l'ouverture avoue qu'on ne sait pas encore la résoudre ; les outils sont les connaissances de knowledge.jsx ; les points d'étape
+  // (conseil du 2026-11-10, verdict L2.5) RAPPROCHENT de la mission sans en résoudre aucune question : ni ses nombres (80, 100, 24, 30, 36, 44–46,
+  // 2400, 3600, 3680, 3/10, 9/20, 23/50), ni sa méthode (les produits en croix, le piège des côtés opposés, le trou partenaire), ni sa correction
+  // (même distance, même côté) — content/mission.test.js et _unit/missionStrings.test.js. La scène : le mur du stade repeint (« paint-wall »).
+  mission: {
+    scene: 'paint-wall',
+    title: 'لوح الدهّانين: أفقي أم مائل؟',
+    opening: {
+      text: 'لدهن جدار ملعب الحيّ، يقف دهّان على لوح يحمله حامل على شكل X: عارضتان متقاطعتان في $A$ ، طولاهما $AB = 80$ و $AC = 100$ ، تستمرّان فوق $A$ وفيهما ثقوب. ثُبّت طرفا اللوح على البعدين $AM = 24$ و $AN = 30$ من $A$ . هل اللوح أفقي؟ وإن رُفع طرفه الأول فوق $A$ ، في أيّ ثقب يُثبَّت طرفه الآخر؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'khassiya-aksiya', icon: '🪜', label: 'الخاصية العكسية لخاصية طالس' },
+      { id: 'shart-tartib', icon: '↔️', label: 'شرط الترتيب' },
+      { id: 'tariqa-adam-tawazi', icon: '⚖️', label: 'إثبات عدم التوازي' },
+    ],
+    climaxModule: 5,
+    checkpoints: [
+      {
+        id: 'cp-nisbatan', afterModule: 1,
+        prompt: "$\\dfrac{AB'}{AB} = \\dfrac{1}{4}$ و $\\dfrac{AC'}{AC} = \\dfrac{1}{2}$ ، والنقطتان B′ و C′ بين A والقدمين. هل اللوح (B′C′) أفقي؟",
+        options: ['لا: النسبتان مختلفتان', 'نعم: النقط مرتبة بالترتيب نفسه', 'نعم: $\\dfrac{1}{2}$ ضعف $\\dfrac{1}{4}$'],
+        correct: 0,
+        explain: 'الترتيب وحده لا يكفي: اللوح أفقي عندما تتساوى النسبتان، وهنا $\\dfrac{1}{4} \\neq \\dfrac{1}{2}$ .',
+      },
+      {
+        id: 'cp-muntasaf', afterModule: 2,
+        prompt: 'ABC مثلث، I منتصف [AB] و J منتصف [AC]. لماذا (IJ)//(BC) حسب الخاصية العكسية لخاصية طالس؟',
+        options: ["$\\dfrac{AI}{AB} = \\dfrac{AJ}{AC} = \\dfrac{1}{2}$ والنقط مرتبة بالترتيب نفسه", '$AI = AJ$', '$IJ$ أقصر من $BC$'],
+        correct: 0,
+        explain: 'المنتصف يعطي النسبة $\\dfrac{1}{2}$ على الضلعين، و I بين A و B و J بين A و C: الترتيب نفسه، فالمستقيمان متوازيان.',
+      },
+      {
+        id: 'cp-ayy', afterModule: 3,
+        prompt: 'لحساب طول مجهول نستعمل … ، ولإثبات أن مستقيمين متوازيان نستعمل …',
+        options: ['خاصية طالس ؛ الخاصية العكسية لخاصية طالس', 'الخاصية العكسية لخاصية طالس ؛ خاصية طالس', 'خاصية فيثاغورس ؛ خاصية طالس'],
+        correct: 0,
+        explain: 'خاصية طالس تنطلق من التوازي لتحسب الأطوال، والخاصية العكسية تنطلق من تساوي النسبتين والترتيب لتثبت التوازي.',
+      },
+      {
+        id: 'cp-nisba', afterModule: 4,
+        prompt: "$AB = 9$ و $AB' = 3$ ، و B′ بين A و B. ما قيمة النسبة $\\dfrac{AB'}{AB}$ ؟",
+        options: ['$\\dfrac{1}{3}$', '$\\dfrac{1}{2}$', '$3$'],
+        correct: 0,
+        explain: "الجزء على الطول كله: $\\dfrac{AB'}{AB} = \\dfrac{3}{9} = \\dfrac{1}{3}$ — لا الجزء على الجزء الباقي.",
+      },
+    ],
+  },
   title: 'الخاصية العكسية لخاصية طالس وإثبات التوازي',
   description: 'تساوي نسبتين وترتيب النقط: نطبّق الخاصية العكسية لخاصية طالس للبرهنة على توازي مستقيمين، ونثبت عدم توازيهما بنسبتين غير متساويتين، بعد التحقق من استقامية النقط وترتيبها بنفس الترتيب على المستقيمين المتقاطعين.',
   level: 'moyen',
@@ -85,6 +137,8 @@ export const LESSON_CONFIG = {
   },
   knowledgeMap: true,
   knowledgeMapMode: 'progressive',
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début, sans verrou par محور.
+  knowledgeMapOpen: true,
   // Les acquis que « أستعدّ » diagnostique : produit en croix, ordre de points alignés, Thalès (leçon 1), droite des
   // milieux (année précédente), Pythagore (année précédente, exercice 14).
   priorKnowledge: ['tasawi-kasrayn', 'tartib-nuqat', 'talis-mubashira', 'mustaqim-muntasafayn', 'fithaghuras'],
@@ -104,7 +158,7 @@ export const LESSON_CONFIG = {
     {
       kind: 'manipulation', code: 'parallel-level-act2-9-12', type: 'parallel-level', module: 1,
       level: 'advanced',
-      title: 'نشاط 2: النسبة 1/3 وأشكال التلاميذ الثلاثة',
+      title: 'الحامل على شكل X: النسبة 1/3 وأشكال التلاميذ الثلاثة',
       objective: 'يكون (B′C′) موازيا لـ (BC) عندما تتساوى النسبتان AB′/AB و AC′/AC وتكون النقط A، B، B′ و A، C، C′ مرتبة بنفس الترتيب؛ ونسبتان مختلفتان تعنيان عدم التوازي',
       autonomy: 'لا موضع مقترح: التلميذ يحسب ثلث AB = 9 وثلث AC = 12 بنفسه، ويضع النقطتين من جهتي A كما يشاء؛ الأستاذ يرفض كل نسبة غير 1/3، وأشكال التلاميذ الثلاثة تُنجز بوضعياته هو، والشكل 3 (نسبتان متساويتان في جهتين مختلفتين) ترفضه الفقاعة',
       experience: { type: 'textbook', reason: '', theme: 'mural' },
@@ -117,22 +171,22 @@ export const LESSON_CONFIG = {
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
-      title: 'أستعدّ', desc: 'ست عبارات: تساوي كسرين، ترتيب نقط على مستقيم، خاصية طالس، مستقيم المنتصفين، وخاصية فيثاغورس. صحيح أم خاطئ؟',
+      title: 'أستعدّ', desc: 'عشر عبارات من السهل إلى الأصعب: تساوي كسرين، وخاصية طالس وترتيب النقط. صحيح أم خاطئ؟',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 5, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'nashat', path: `${LESSON_BASE_PATH}/nashat`,
-      title: 'نشاط 2 — اللوح الأفقي والأشكال الثلاثة', desc: 'ضع طرفي اللوح على العارضتين وراقب ميزان الماء، ثم أنجز أشكال التلاميذ الثلاثة بالنسبة 1/3 وأجب عن أسئلة النشاط.',
+      title: 'اللوح الأفقي والأشكال الثلاثة', desc: 'ضع طرفي اللوح على العارضتين وراقب ميزان الماء، ثم أنجز أشكال التلاميذ الثلاثة بالنسبة 1/3 وأجب عن أسئلة النشاط.',
       stage: 'trigger', teachesLearningPointIds: ['4am_aksiya-talis_P1', '4am_aksiya-talis_P2'],
       color: 'indigo', style: 'featured', estimatedMin: 13, difficulty: 1, actionText: 'أجرّب الميزان' },
     { id: '02', number: 2, slug: 'maarif', path: `${LESSON_BASE_PATH}/maarif`,
-      title: 'معارف — الخاصية العكسية لخاصية طالس', desc: 'الخاصية ووضعيتاها، النسبتان المتساويتان دون الترتيب نفسه، مثال الكتاب، ونسبتان مختلفتان تكفيان لعدم التوازي.',
+      title: 'معارف — الخاصية العكسية لخاصية طالس', desc: 'الخاصية ووضعيتاها، النسبتان المتساويتان دون الترتيب نفسه، مثال محلول، ونسبتان مختلفتان تكفيان لعدم التوازي.',
       stage: 'discovery', teachesLearningPointIds: ['4am_aksiya-talis_P1', '4am_aksiya-talis_P2'],
       color: 'violet', style: 'featured', estimatedMin: 10, difficulty: 2, actionText: 'أكتشف' },
     { id: '03', number: 3, slug: 'taraiq', path: `${LESSON_BASE_PATH}/taraiq`,
-      title: 'طرائق — إثبات التوازي أو عدمه', desc: 'تمرين الكتاب محلولا سطرا سطرا: (CF)//(AB) بالخاصية العكسية، و (BD) لا يوازي (EF) بالاستدلال بالخلف، ثم تمرين للتدرّب.',
+      title: 'طرائق — إثبات التوازي أو عدمه', desc: 'تمرين محلول سطرا سطرا: (CF)//(AB) بالخاصية العكسية، و (BD) لا يوازي (EF) بالاستدلال بالخلف، ثم تمرين للتدرّب.',
       stage: 'formalization', teachesLearningPointIds: ['4am_aksiya-talis_P1', '4am_aksiya-talis_P2'],
       color: 'emerald', style: 'featured', estimatedMin: 9, difficulty: 2, actionText: 'أتعلّم الطريقة' },
     { id: '04', number: 4, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
-      title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 7 و 10 إلى 16 و 23 إلى 25: نسب، ترتيب، يونس وإيناس، فيثاغورس، مراكز الثقل.',
+      title: 'أوظّف تعلّماتي', desc: 'تمارين متدرّجة: نسب، ترتيب، يونس وإيناس، فيثاغورس، مراكز الثقل.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_aksiya-talis_P1', '4am_aksiya-talis_P2'],
       color: 'amber', style: 'featured', estimatedMin: 13, difficulty: 2, actionText: 'أتدرّب' },
     { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
@@ -148,7 +202,7 @@ export const LESSON_CONFIG = {
       stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_aksiya-talis_P1', '4am_aksiya-talis_P2'],
       color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
     { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءتين، منها السؤال 3 من أؤكّد تعلّماتي.',
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءتين.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

@@ -124,6 +124,7 @@ export const FIG_METHOD = {
 };
 
 /* ── أوظّف تعلّماتي (pp. 111, 113) ── */
+// maxWidth 230 (était 265–300) : chaque page d'exercice tient dans l'écran du lecteur de mission à 1024 × 768 (rollout 2026-11-10)
 export const FIG_EX = {
   10: {
     points: { C: [0, 0], A: [-1.8, 0.88], E: [2.7, -1.32], B: [1.99, 3.47], F: [-2.99, -5.2] },
@@ -132,7 +133,7 @@ export const FIG_EX = {
       ['A', 'B'], ['E', 'F'],
     ],
     ariaLabel: 'A و C و E على استقامة، B و C و F على استقامة، CA = 2 و CE = 3 و CB = 4 و CF = 6',
-    maxWidth: 265,
+    maxWidth: 230,
   },
   11: {
     points: { A: [0, 0], B: [-18, -31.18], C: [15.75, -42.16], M: [-8, -13.86], N: [7, -18.74] },
@@ -143,7 +144,7 @@ export const FIG_EX = {
     ],
     labels: { M: 'e', N: 'w' },
     ariaLabel: 'مثلث ABC، M من [AB] و N من [AC]، AB = 36 و MB = 20 و AN = 20 و AC = 45',
-    maxWidth: 300,
+    maxWidth: 190,
   },
   12: {
     points: { E: [0, 0], A: [-0.6, 1.04], C: [0.9, -1.56], D: [-3.09, -0.83], B: [4.64, 1.24] },
@@ -152,7 +153,7 @@ export const FIG_EX = {
       ['A', 'D'], ['B', 'C'],
     ],
     ariaLabel: 'A و E و C على استقامة، D و E و B على استقامة، EA = 1,2 و EC = 1,8 و ED = 3,2 و EB = 4,8',
-    maxWidth: 300,
+    maxWidth: 230,
   },
   13: {
     points: { A: [0, 0], B: [-6.4, -4.8], D: [3.6, -4.8], E: [-4.48, -3.36], F: [0.72, -0.96] },
@@ -163,7 +164,7 @@ export const FIG_EX = {
     ],
     rightAngles: [['B', 'A', 'D']],
     ariaLabel: 'مثلث ABD قائم في A، E من [AB] و F من [AD]، AB = 8 و EB = 2,4 و AD = 6 و AF = 1,2',
-    maxWidth: 300,
+    maxWidth: 230,
   },
   14: {
     points: { O: [0, 0], A: [-2, 0], C: [4, 0], D: [0, 3], B: [0, -1.5] },
@@ -173,7 +174,7 @@ export const FIG_EX = {
     ],
     rightAngles: [['C', 'O', 'D']],
     ariaLabel: 'مستقيمان متعامدان في O: A و C على الأول من جهتي O، D و B على الثاني من جهتي O؛ OC = 4 و DC = 5 و OB = 1,5 و AB = 2,5',
-    maxWidth: 300,
+    maxWidth: 230,
   },
   15: {
     points: { A: [0, 10], B: [0, 0], C: [15, 0], D: [15, 10], M: [0, 8], N: [3, 10] },
@@ -182,7 +183,7 @@ export const FIG_EX = {
       ['M', 'B'], ['N', 'D'], ['M', 'N'], ['B', 'D'],
     ],
     ariaLabel: 'مستطيل ABCD، M من [AB] و N من [AD]، AM = 2 و AN = 3 و DC = 10 و BC = 15',
-    maxWidth: 300,
+    maxWidth: 230,
   },
   16: {
     points: { O: [0, 0], M: [-3.14, 8.43], A: [1.88, -5.06], N: [3, 4], P: [-1.8, -2.4] },
@@ -200,19 +201,19 @@ export const FIG_EX = {
       { from: 'C', to: 'B', ticks: 3 }, { from: 'L', to: 'D', label: '13,5' }, ['L', 'K'], ['C', 'K'], { from: 'D', to: 'A', dashed: true },
     ],
     ariaLabel: 'A و K و B على استقامة، L تقاطع (AC) و (DK)؛ AK = 30 و KB = 20 و LD = 13,5؛ AL = KB و AK = CB حسب الترميز',
-    maxWidth: 300,
+    maxWidth: 230,
   },
   24: {
     points: { A: [-1, 4.5], B: [-6, 0], C: [6, 0], D: [1, -3.6], O: [0, 0], J: [-0.33, 1.5], K: [0.33, -1.2] },
     segments: [['A', 'B'], ['A', 'C'], ['D', 'B'], ['D', 'C'], ['B', 'C'], ['A', 'O'], ['D', 'O'], { from: 'J', to: 'K', dashed: true }],
     ariaLabel: 'مثلثان ABC و DBC، O منتصف [BC]، J مركز ثقل ABC على [AO] و K مركز ثقل DBC على [DO]',
-    maxWidth: 300,
+    maxWidth: 230,
   },
   25: {
     points: { A: [1, 6], B: [-4, 0], C: [6, 0], D: [1, 0], M: [1, 2.4], E: [3, 0], F: [-1, 0] },
     segments: [['A', 'B'], ['A', 'C'], ['B', 'C'], ['A', 'D'], { from: 'M', to: 'E', dashed: true }, { from: 'M', to: 'F', dashed: true }],
     ariaLabel: 'مثلث ABC و (AD) متوسط، M من [AD]، الموازي لـ (AC) المار بـ M يقطع [BC] في E، والموازي لـ (AB) المار بـ M يقطع [BC] في F',
-    maxWidth: 300,
+    maxWidth: 230,
   },
 };
 

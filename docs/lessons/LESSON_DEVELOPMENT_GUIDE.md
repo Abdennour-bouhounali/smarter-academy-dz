@@ -1339,6 +1339,22 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
 - **« ورقة زميل »** (`content/peerSheet.js`): an invented classmate (`KidFigure`; girls in hijab), 3–5 lines with ONE error on the
   lesson's main misconception, three fixes each with a `why`, the numbers computed from the same helpers as the rounds, and a test
   (`peerSheet.test.js`) that the error line is the only wrong one.
+- **A geometry lab whose verdict is a separate PRESS (unit 9, `aksiya-talis` / `parallel-level`, council 2026-11-10, verdict L2.1).** When the lab
+  shows its verdict LIVE (a bubble that centres as the hand moves), the hand can stop on the right place without thinking and every release
+  becomes a trial. In the player, hide the verdict while the student moves and give it a button (« ضع الميزان », `[data-pl-press]`): ONE press =
+  ONE trial, the same position twice is not a trial, and from round 2 the student first states the numbers the verdict depends on (the two ratio
+  chips) — « compute before you look ». Reuse this shape for any lab whose truth is visible at a glance.
+- **A build with a fixed side and several right fillings.** A `build` question may set `preset` (tiles already placed, e.g. the left side
+  « AB′/AB » of « AB′/AB = ▢/▢ », which the student may take back) and `accept` (other fillings that are ALL true — the equality written the
+  other way, « AC′/AC = AB′/AB »); test both, and test that the decoy (CC′, the rest of the bar) is refused. A `fill` field may set
+  `render(value)` to draw its chips in their own shape (a real fraction bar), the compared value staying the string. Contract:
+  `MANIPULATION_CONTRACT.md` § LabCheckpoint.
+- **Geometry in the player: figures and tall labs.** A lab whose drawing is tall (an X-trestle) bounds its scene by the mission area
+  (`useMissionArea()`) and puts everything but the controls (chips, the side of A, figure chips, verdict, journal) in the side column — otherwise
+  the player zooms the whole screen down. In module steps, keep a row of figures ONE paging block (`data-paging-keep`), never draw an exercise's
+  figure twice (`TextbookExercise` already draws `exercise.figure`), give exercise figures a `maxWidth` that fits a 1024 × 768 page (230 here),
+  and put ONE exercise per step. A player-only layout inside a module goes through `PlayerSwitch` (rendered INSIDE the player) — a
+  `useInMissionPlayer()` called at the top of the module component is always false (the module renders the player).
 
 ### The rule that breaks lessons most often
 

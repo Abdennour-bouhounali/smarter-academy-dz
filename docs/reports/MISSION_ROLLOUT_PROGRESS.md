@@ -20,7 +20,7 @@
 | 8 | `awwaliyan-fima-baynahuma` | `coprime-explorer` (v2 treatment, new) | ✅ done 2026-11-09 | `feat(lessons): awwaliyan-fima-baynahuma — mission prototype` | See « Lesson 8 » below. |
 | 9 | `wadiya-idmajiya-aadad` | — | ⏳ next in catalogue order | | |
 
-Catalogue order: `packages/core/curriculum/dz/lessons_4am_2026_2027.json`. Units 2–14 are not started. The full prompt for unit 2 « الحساب على الجذور » (every rule, check and review step of unit 1): `docs/reports/UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. Still open in unit 1: its synthesis `wadiya-idmajiya-aadad` (no synthesis recipe yet — the prompt's §5).
+Catalogue order: `packages/core/curriculum/dz/lessons_4am_2026_2027.json`. Unit 2 is converted (five lessons; synthesis waiting); units 3–14 are not started. The full prompt for unit 2 « الحساب على الجذور » (every rule, check and review step of unit 1): `docs/reports/UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. The next prompt, unit 9 « خاصية طالس » (unit 2's recipe plus every review lesson of unit 2): `docs/reports/UNIT9_KHASSIYAT_TALIS_MISSION_PROMPT.md`. Still open in unit 1: its synthesis `wadiya-idmajiya-aadad` (no synthesis recipe yet — the prompt's §5).
 
 ## Unit 2 « الحساب على الجذور » — the table
 
@@ -34,6 +34,19 @@ Prompt for the whole unit: `UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. Folder `lesso
 | 4 | `amaliyat-judhur` | `square-tiling` (v2 treatment + LabCoach, new; both modes `product` and `simplest`) | ✅ done 2026-11-10 | `feat(lessons): amaliyat-judhur — mission prototype` | See « Unit 2, lesson 4 » below. |
 | 5 | `tawzif-khawass-judhur` | `square-tiling` (`simplest`: content, plus `predictAlso`, `avoid`, the chains `buildS` / `bestS`) | ✅ done 2026-11-10 | `feat(lessons): tawzif-khawass-judhur — mission prototype` | See « Unit 2, lesson 5 » below. |
 | S | `wadiya-idmajiya-judhur` | — | ⏳ council first (prompt §5) | | |
+
+## Unit 9 « خاصية طالس » — the table
+
+Prompt for the whole unit: `UNIT9_KHASSIYAT_TALIS_MISSION_PROMPT.md`; the council of 2026-11-10 (5 advisors, 5 anonymous reviews, chairman) decided
+every lab of the unit at once (verdict « Cross-lesson », « L1 », « L2 », « L3 »). Work order L2 → L3 → L1. Folder
+`lessons/moyen/4am/handasa/khassiyat-talis/`.
+
+| # | Lesson (unit 9) | Labs converted | Status | Commit | Notes |
+|---|---|---|---|---|---|
+| 1 | `talis-hisab-atwal` | `shadow-world` → a new one-lane `ShadowMeet` (verdict L1.1 = C) | ⏳ not converted | | Page mode until converted whole (verdict cut line). |
+| 2 | `aksiya-talis` | `parallel-level` (v2 treatment + LabCoach, new; « ضع الميزان ») | ✅ done 2026-11-10 | `feat(lessons): aksiya-talis — mission prototype` | See « Unit 9, lesson 2 » below. |
+| 3 | `inshaat-talis` | `segment-divider` | ⏳ not converted | | |
+| S | `wadiya-idmajiya-talis` | — | not converted — waiting on the owner (the synthesis council's seven questions, prompt §5) | | |
 
 ## Lab families — which have the v2 treatment
 
@@ -50,6 +63,7 @@ Prompt for the whole unit: `UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. Folder `lesso
 | `square-root-side` | ✅ (2026-11-09, both modes `refine` and `graduation`) | `jidhr-tarbii` (unit 2) |
 | `square-fold` | ✅ (2026-11-10) | `muadalat-x-murabba` (unit 2) |
 | `square-tiling` | ✅ (2026-11-10, both modes `product` and `simplest`) | `amaliyat-judhur` (unit 2) |
+| `parallel-level` | ✅ (2026-11-10, both modes `ladder` and `crossing`, with or without an imposed ratio) | `aksiya-talis` (unit 9) |
 | every other lab | ⏳ | — |
 
 ## Lesson 2 — `qawasim-adad-tabii` « قواسم عدد طبيعي » (2026-11-08)
@@ -787,4 +801,95 @@ modules 1–9 unit by unit — 0 `data-fit-overflow`, 0 page scroll, no console 
 
 **Rejected / later (coordinator):** teachingScope « طريقة الكتاب » (teacher scope only); PeerSheet's struck-line text and status-with-content (shared,
 final report).
+
+## Unit 9, lesson 2 — `aksiya-talis` « الخاصية العكسية لخاصية طالس وإثبات التوازي » (2026-11-10)
+
+**Council verdict (2026-11-10, binding — `L2`):** L2.1 = B, an explicit « ضع الميزان » button: the bubble is HIDDEN while the ends move and a trial is
+ONE press (it also fixes the « every commit » counting); from round 2 the two ratio chips AB′/AB and AC′/AC are picked before the bubble shows (the
+chip AB′/BB′ is not offered on the X-trestle). L2.2: ladder → crossing at 1/3 → a FREE crossing (not a partner-hole task) → ⭐ → free. L2.3: the build
+keeps AB′/AB on the left; AC′, AC and the decoy CC′; the swapped equality is accepted (a shared `accept`). L2.4: the opposite-sides trap and the
+« order » question move to r3; r2 P1 « same side, wrong ratio » → no, P2 « both past A » → yes. L2.5: checkpoint 1 on a concrete pair (1/4 vs 1/2).
+L2.6: the logic minimum lowered to 2 (practice ladder 2 / 4, goal `{ exact: 1 }` + the chain). L2.7: the bars always go on past A on the X-trestle, no
+coach line about it. L2.8: shared scene primitives, a thin scene file. Peer sheet « ورقة رياض »; prerequisites talis-hisab-atwal + amaliyat-natiqa.
+
+**What was written:**
+- `content/planks.js` (`M1_ROUNDS`): r1 the ladder 3 / 6 by hand (`ratios: 'hide'`, chains `ladder`: « lv » — the two ratios of the first level plank in
+  one tap each — then « rule »: BUILD « AB′/AB = AC′/AC » and the rule), r2 the X-trestle 9 / 12 at the teacher's 1/3 (`ratios: 'pick'`, chain `side`,
+  predictions (3 ; 6) → no and (−3 ; −4) → yes), r3 REQUIRED the free X-trestle 8 / 12 (chain `cross`: « beyond » — the ratios of a level plank past A
+  are positive lengths — then « order » — which point lies between the other two on each line — and the rule; prediction (2 ; −3) → no, right option
+  second), ⭐ 12 / 16 (`{ allExact: [1, 2] }` in three trials), free pairs (6 ; 9), (4 ; 8), (12 ; 18), (14 ; 21). Practice rounds 2 / 4, 3 / 6 at 1/3,
+  3 / 6 free (« جرّب أصغر » after three refusals). Goals hold every question the round asks; the content test PLAYS each round to ★★★.
+- `content/forbidden.js` (the climax signature BY ROLE: bars never a multiple of 10 nor 24 nor in 4 : 5; distances never 24, 30, 36, 44–46; ratios
+  never 3/10, 9/20, 23/50 or their inverses / decimals; 80, 100, 25, 2400, 3600, 3680 in no role — 9 stays a length, it is a weight in the climax),
+  `content/mission.test.js` (the dry-run over `logic › shownValues` of every round and practice round — every notch, every drag-reachable ratio, every
+  chip and decoy, the prediction positions, the free pairs — plus the checkpoints, the peer sheet and the prep; no method or fix of the climax in a
+  checkpoint; no textbook line in the config), `content/prep.js` + test (10 statements: « تساوي كسرين » → revise `tasawi-muqaranat-kasrayn` (review: the 3AM lesson that teaches the test; the catalogue keeps `amaliyat-natiqa`, the net's `requires` link), « خاصية طالس
+  وترتيب النقط » → revise `talis-hisab-atwal`), `content/peerSheet.js` + test (« ورقة رياض »: AM/MB = 6/9 instead of AM/AB = 6/15 = 2/5 = AN/AC, hence a
+  wrong « not parallel »; `fixedLines` for the conclusion), the unit-level `_unit/missionStrings.test.js` (lesson 2's signature; lessons 1 and 3 join
+  it when converted).
+- Config: `studentView: 'mission'`, `knowledgeMapOpen: true`, the `mission` block (scene `paint-wall`, opening = the climax question, tools
+  `khassiya-aksiya`, `shart-tartib`, `tariqa-adam-tawazi`, `climaxModule: 5`, four checkpoints after modules 1–4: 1/4 vs 1/2 → not level; midpoints →
+  why parallel; Thales vs its converse; AB′/AB = 3/9 = 1/3 with the part-over-rest decoy). Module 0 on the ladder; module 1 in `PlayerSwitch` +
+  `LabRounds` (`m1-planks`; step 1 waits for r2, step 2 for r3, their trace comes from the WON rounds); module 2's last step the peer sheet. Every
+  student-visible textbook reference removed (« الكتاب ص … » tags and bodies of modules 2–4, « تمرين N — » step titles, « نشاط 2 » in titles, module
+  descriptions). Catalogue: `prerequisiteLessonCodes` = talis-hisab-atwal + amaliyat-natiqa (the free-text « حساب واختبار تساوي نسبتين » removed —
+  `LEARNING_NET.md` §3bis), exported and imported (local DB: lesson 208 ← 207 talis-hisab-atwal, 770 amaliyat-natiqa, both published).
+- Scene `PaintWallScene` (`data-scene="paint-wall"`): the stadium wall painted stripe by stripe as tools are earned, an X-trestle whose plank turns
+  level when everything is won, a girl in hijab with a roller, a boy at the level (KidFigure), no number; on the unit's shared primitives
+  `mission/thalesSceneKit.jsx` (`SceneBackdrop`, `XTrestle`, `BubbleLevel`, `PaintRoller`, `PaintBucket`).
+
+**Added to shared code:**
+- `parallel-level` (player only, gated by `useInMissionPlayer()`; page and teacher unchanged — `parallelLevel.render.test.jsx` green): « ضع الميزان »
+  (`[data-pl-press]`), the hidden bubble (`[data-pl-bubble-hidden]`, neutral plank), `onVerdict` (`logic › verdictOf`), `ratios` 'show' / 'hide' /
+  'pick' (`logic › chipOptions`), `chains` (`CHAINS_PLAYER`: `ladder`, `ladderEasy`, `side`, `cross`, `none`; questions `lvFill`, `ratioBuild`,
+  `beyondFill`, `orderFill`), `predict` ([{ key, at }], judged by `logic › classOf` / `judgedPredictions`, results held `PRED_HOLD_MS`), `choices`
+  (bar pairs), the journal « 📋 جدول تجاربك » and the verdict in the side column (with the chips, the side of A and the figure chips — the scene keeps
+  the height), `LabCoach` (`logic › coachOf`), `{ tk: 'reset' }`, `{ tk: 'retry' }`, `{ tk: 'discovered' }`, the first refusal free, the same position
+  pressed twice not a trial, controls in the drawing's order (`dir="ltr"`), no discovery panel in the player (the rule question's explanation is the
+  formal form). Logic: `MIN_BAR = 2`; `kindOf` exported and FIXED (an X-trestle WITHOUT an imposed ratio marked every trial « condition »: now
+  `figure` / `order` / `tilted`); `shownValues(props)` for the forbidden-values scan.
+- `primitives/labCheckpoint.js` › `isCorrect`: a `build` may carry `accept` (other fillings that are all true — the equality written the other way);
+  `LabCheckpoint.jsx` › `BuildAnswer`: `preset` (tiles already placed, which the student may take back); `FillAnswer`: `f.render` (a chip drawn in its
+  own shape — a real fraction bar). Tested in `labCheckpoint.test.js`; earlier lessons unaffected (both fields optional).
+- `mission/thalesSceneKit.jsx`, `mission/PaintWallScene.jsx`, registered in `MissionScene.jsx`.
+
+**Traps met:**
+- The X-trestle at its natural height pushed the chips and figure chips below the fold, and the player zoomed the whole screen down: in the player the
+  scene is bounded by the mission area (`useMissionArea`) and everything but the controls moved to the side column.
+- After the rule, the shell's discovery panel (formal) made the side column overflow at 1024: the player passes no `discovery`, and the journal gives
+  way once the rule is formal.
+- A walk that guesses wrong answers triggers « جرّب أصغر » whose card covers « التالي » at 1024 (known; press « أواصل هنا »).
+- Module 4 overflowed the player (`data-fit-overflow`): each exercise's figure was drawn TWICE (the module's own `GeoFigure` and
+  `TextbookExercise › StatementFigure`), steps grouped up to three exercises, and the figures were 265–300 px wide. Now one exercise per step, the
+  figure drawn once, `FIG_EX` at 230 px (ex-11 at 190), and the « rappel » brick after its exercise in the player (`PlayerSwitch`). Module 1's three
+  student figures are one paging block (`data-paging-keep`), narrower in the player.
+- `useInMissionPlayer()` at the top of a MODULE component is always false (the module renders the player): player-only layout goes through
+  `PlayerSwitch`.
+- `W_PRIOR_NOT_DIAGNOSED` (medium, non-blocking): `mustaqim-muntasafayn` and `fithaghuras` stay in `priorKnowledge` (module 4 requires `fithaghuras`)
+  but the council's 10-statement ladder diagnoses only fractions and Thales / order.
+
+**Review (2026-11-10, `ecc:react-reviewer`, `ecc:code-reviewer`, `ecc:a11y-architect`, each finding verified in the code):**
+- Fixed — after a press, moving an end away and BACK showed the bubble with « اضغط » instead of the verdict (`lab.last` was a move): in the player the
+  verdict is the trial at the revealed position. A position already tried can be shown again without re-picking the chips.
+- Fixed — the verdict's `role="status"` lived in the side column, which unmounts when a question opens (the first level plank opens « lv » at once):
+  an always-mounted `sr-only` live region in the stage (`[data-pl-verdict-live]`, keyed per trial; it also carries the predictions' results and the
+  pair chosen); the visible box (`[data-pl-verdict-box]`) is plain text with an `aria-hidden` ✓ / ✗ (the glyphs left the `vp_*` strings).
+- Fixed — « ضع الميزان » is `aria-disabled` (no `disabled`): focus stays on it after a press; the journal says « شرط الأستاذ غير محقّق »
+  (`rowCondition`) for a level plank refused by the imposed ratio, not « مائل »; the ↑ beyond-A mark is `aria-hidden` + a hidden word; the bar-pair
+  choices keep their visible text first in their name (label-in-name); `LabCheckpoint › FillAnswer` rows are `role="group"` named by their label (a
+  drawn fraction chip alone does not say which ratio it is); the coach step is memoised on its id; the discovery options are computed on the page only.
+- Fixed — the « تساوي كسرين » prep skill revised `amaliyat-natiqa` (operations on rationals); now `tasawi-muqaranat-kasrayn`; two constant asserts in
+  `mission.test.js` now read the checkpoints' numbers from their prompts.
+- Not changed (and why): a retry resumes the chain at its saved question (the shared `useLabCheckpoint` behaviour of every converted lab); the chips
+  and ▲▼ still use `disabled` (known open item, every lab); `orderFill`'s options are the drawing's order and its answer moves with the configuration;
+  `DiagnosticPlayQuestion` `data-paging-keep` is global (a question is never split from its figure — intended for every lesson); module 4's single
+  figure and narrower figures also apply to the teacher page (the page drew each figure twice).
+
+**Verification:** vitest `src/lessons` (657 files, 12 119 tests before the review fixes; the touched folders re-run after), `check:lessons` exit 0
+(entry 241,3 KB gzip), `lab-rollout-status --lesson aksiya-talis` ✅, Playwright at 1366×768, 1024×768, 1920×1080 (the build's full walk, then after
+the review: press → away → back shows the verdict, focus kept on « ضع الميزان », the live region mounted while « lv » is open, 0 scroll, 0
+`data-fit-overflow`, 0 console error).
+
+**Open:** lessons 1 and 3 and the synthesis of the unit; the unit page entry (after the three lessons); `inshaat-talis/knowledgeGraph.js` still names
+« طريقة الكتاب » (it joins the unit scan when converted).
 

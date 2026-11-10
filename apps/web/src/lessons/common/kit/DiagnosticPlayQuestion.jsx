@@ -45,7 +45,9 @@ export default function DiagnosticPlayQuestion({ q, index, total, skill, pick, u
   const shown = locked ? pick : tentative;
 
   return (
-    <div className="relative space-y-4 rounded-2xl border-2 border-slate-200 bg-white p-5" data-play-question={index + 1}
+    // UNE question = UN bloc pour les pages du lecteur (`data-paging-keep`, 2026-11-10, aksiya-talis) : une question avec une figure n'est jamais
+    // coupée en deux pages (l'énoncé et sa figure d'un côté, ses choix de l'autre) — trop haute, elle se réduit (FitToArea)
+    <div className="relative space-y-4 rounded-2xl border-2 border-slate-200 bg-white p-5" data-play-question={index + 1} data-paging-keep
       data-play-state={locked ? (ok ? 'ok' : 'later') : tentative != null ? 'undo' : 'ask'}>
       <div className="flex items-center justify-between gap-2">
         <span className="rounded-full bg-teal-600 px-2.5 py-1 font-mono text-xs font-bold text-white">

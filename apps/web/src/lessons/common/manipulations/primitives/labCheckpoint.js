@@ -8,7 +8,8 @@
  *  - `fill`  : plusieurs CASES remplies d'un toucher sur des pastilles de nombres, `fields: [{ label, expected, options: [n…] }]` —
  *    la réponse est le tableau des choix, juste quand TOUTES les cases le sont (« في كل فريق ▢ · على المقاعد ▢ ») ;
  *  - `build` : des TUILES de nombres posées dans des emplacements nommés, `slots: [label…]`, `tiles: [n…]`, `expected: [n…]`, `ops?: [signe…]`
- *    (les signes entre emplacements, défaut ['=', '×', '+']) —
+ *    (les signes entre emplacements, défaut ['=', '×', '+']), `accept?: [[n…]…]` (d'autres remplissages justes — l'égalité dans l'autre sens),
+ *    `preset?: [n | null…]` (des tuiles DÉJÀ posées au départ, que l'élève peut reprendre) —
  *    l'élève BÂTIT l'égalité (« اللاعبون = الفرق × في كل فريق + خارج الفرق ») au lieu de la choisir.
  * (les textes sont des nœuds React, la logique ne les lit pas). Un ARRÊT (checkpoint) est une suite de questions qui mène à l'idée.
  *
@@ -49,7 +50,9 @@ const sameList = (value, expected) => filled(value, expected.length) && value.ev
 export function isCorrect(q, value) {
   if (q.kind === 'choice') return !!q.options?.[value]?.correct;
   if (q.kind === 'fill') return sameList(value, q.fields.map((f) => f.expected));
-  if (q.kind === 'build') return sameList(value, q.expected);
+  // `accept` (2026-11-10, unit 9 lesson 2 — council L2.3) : d'autres remplissages TOUS justes, p. ex. l'égalité écrite dans l'autre sens
+  // (« AC′/AC = AB′/AB » pour « AB′/AB = AC′/AC ») ; chacun a la longueur de `expected`
+  if (q.kind === 'build') return sameList(value, q.expected) || (q.accept ?? []).some((alt) => sameList(value, alt));
   const r = readNumber(value);
   return r != null && eq(r, readNumber(q.expected) ?? rat(0));
 }

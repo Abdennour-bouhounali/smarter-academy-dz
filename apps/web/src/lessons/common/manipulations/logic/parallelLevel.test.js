@@ -164,7 +164,7 @@ describe('parallel-level — متقدم: نشاط 2 on the X-trestle (AB = 9, AC
 
   it('refuses impossible configurations', () => {
     expect(() => L.init({ AB: 9, AC: 12, mode: 'side' })).toThrow();
-    expect(() => L.init({ AB: 2, AC: 12 })).toThrow();
+    expect(() => L.init({ AB: 1, AC: 12 })).toThrow();   // le minimum est 2 (conseil L2.6 : l'échelle 2 / 4)
     expect(() => L.init({ AB: 9, AC: 12, ratio: '3/2', mode: 'crossing' })).toThrow();
   });
 });
@@ -188,5 +188,108 @@ describe('parallel-level — the opening board is never already level, never a t
       expect(r.parallel).toBe(false);
       expect(s.trials).toHaveLength(0);
     }
+  });
+});
+
+describe('parallel-level — the minimum is 2 (council L2.6: the practice ladder 2 / 4)', () => {
+  it('a 2 / 4 ladder: one notch on AB, a single level plank (1 ; 2) = 1/2, the start tilted', () => {
+    expect(L.MIN_BAR).toBe(2);
+    const s = L.init({ AB: 2, AC: 4, mode: 'ladder' });
+    expect(L.slotRange(2, 'ladder')).toEqual({ min: -1, max: -1 });
+    expect(L.positions(s)).toEqual({ bp: 1, cp: 3 });
+    expect(L.reading(s).parallel).toBe(false);
+    const levels = [];
+    for (let cp = 1; cp <= 3; cp += 1) if (L.reading(s, { bp: 1, cp }).parallel) levels.push(cp);
+    expect(levels).toEqual([2]);
+    const g = L.geometry(s, { width: 300, height: 220 });
+    for (const p of [g.A, g.B, g.C, g.Bp, g.Cp]) { expect(p[0]).toBeGreaterThanOrEqual(0); expect(p[1]).toBeLessThanOrEqual(220); }
+    // the crossing 3 / 6 of the practice rounds: past A up to ⌈2n/3⌉
+    expect(L.slotRange(3, 'crossing')).toEqual({ min: -2, max: 1 });
+  });
+  it('nothing else assumes 3: every bar from 2 to 30 initialises, its start is tilted, its notches are distinct', () => {
+    for (let n = 2; n <= 30; n += 1) {
+      for (const mode of ['ladder', 'crossing']) {
+        const s = L.init({ AB: n, AC: n + 2 > 30 ? 30 : n + 2, mode });
+        expect(s.trials).toHaveLength(0);
+        const g = L.geometry(s, { width: 320, height: 260 });
+        expect(new Set(g.notchesB.map((x) => x.a)).size).toBe(g.notchesB.length);
+      }
+    }
+  });
+});
+
+describe('parallel-level — the X-trestle WITHOUT an imposed ratio (mission player rounds)', () => {
+  const free = L.init({ AB: 8, AC: 12, mode: 'crossing' });
+  it('a trial is never « condition » (bug fixed): level → figure, equal ratios on opposite sides → order, else tilted', () => {
+    expect(L.commit(L.move(free, 'B', L.slotOf(2)), 'C', L.slotOf(3)).trials.at(-1)).toMatchObject({ kind: 'figure', figure: '2', parallel: true });
+    expect(L.commit(L.move(free, 'B', L.slotOf(-2)), 'C', L.slotOf(-3)).trials.at(-1)).toMatchObject({ kind: 'figure', figure: '1' });
+    expect(L.commit(L.move(free, 'B', L.slotOf(2)), 'C', L.slotOf(-3)).trials.at(-1)).toMatchObject({ kind: 'order', figure: '3', parallel: false });
+    expect(L.commit(L.move(free, 'B', L.slotOf(2)), 'C', L.slotOf(5)).trials.at(-1)).toMatchObject({ kind: 'tilted', figure: null });
+    for (let sb = free.rangeB.min; sb <= free.rangeB.max; sb += 1) {
+      for (let sc = free.rangeC.min; sc <= free.rangeC.max; sc += 1) {
+        expect(L.commit(L.move(free, 'B', sb), 'C', sc).trials.at(-1).kind).not.toBe('condition');
+      }
+    }
+  });
+  it('with the teacher\'s ratio nothing changes (the page\'s نشاط 2)', () => {
+    const t = L.init({ AB: 9, AC: 12, ratio: '1/3', mode: 'crossing' });
+    expect(L.commit(L.move(t, 'B', L.slotOf(2)), 'C', L.slotOf(5)).trials.at(-1).kind).toBe('condition');
+  });
+});
+
+describe('parallel-level — the player helpers (verdict, chips, predictions, coach, shown values)', () => {
+  it('verdictOf: ladder → the rung of B′; crossing → the figure (0 for a ratio the teacher refuses)', () => {
+    const lad = L.init({ AB: 3, AC: 6 });
+    const a = L.commit(L.move(lad, 'B', L.slotOf(1)), 'C', L.slotOf(2));
+    expect(L.verdictOf(a, a.trials.at(-1))).toEqual({ groups: 1, exact: true });
+    const t = L.init({ AB: 9, AC: 12, ratio: '1/3', mode: 'crossing' });
+    const f1 = L.commit(L.move(t, 'B', L.slotOf(-3)), 'C', L.slotOf(-4));
+    expect(L.verdictOf(f1, f1.trials.at(-1))).toEqual({ groups: 1, exact: true });
+    const bad = L.commit(L.move(t, 'B', L.slotOf(6)), 'C', L.slotOf(8));
+    expect(L.verdictOf(bad, bad.trials.at(-1))).toEqual({ groups: 0, exact: false });
+    const f3 = L.commit(L.move(t, 'B', L.slotOf(-3)), 'C', L.slotOf(4));
+    expect(L.verdictOf(f3, f3.trials.at(-1))).toEqual({ groups: 3, exact: false });
+  });
+  it('chipOptions: three distinct exact values, one right; the ladder offers AB′/BB′, the X-trestle never does', () => {
+    const lad = L.init({ AB: 3, AC: 6 });
+    const b = L.chipOptions(lad, 'B', { bp: 1, cp: 2 });
+    expect(b.map((o) => o.text).sort()).toEqual(['1/2', '1/3', '3']);
+    expect(b.filter((o) => o.right).map((o) => o.text)).toEqual(['1/3']);
+    const x = L.init({ AB: 9, AC: 12, ratio: '1/3', mode: 'crossing' });
+    for (let a = -6; a <= 8; a += 1) {
+      if (a === 0) continue;
+      const o = L.chipOptions(x, 'B', { bp: a, cp: 4 });
+      expect(new Set(o.map((y) => y.text)).size).toBe(3);
+      expect(o.filter((y) => y.right)).toHaveLength(1);
+      expect(o.some((y) => y.why === 'rest')).toBe(false);
+    }
+  });
+  it('predictions are judged by a trial of the same configuration, or all at the end', () => {
+    const t = L.init({ AB: 9, AC: 12, ratio: '1/3', mode: 'crossing' });
+    const preds = [{ key: 'p1', at: [3, 6] }, { key: 'p2', at: [-3, -4] }];
+    expect(L.predictTruth(t, [3, 6])).toBe('no');
+    expect(L.predictTruth(t, [-3, -4])).toBe('yes');
+    const s = L.commit(L.move(t, 'B', L.slotOf(-3)), 'C', L.slotOf(-4));
+    expect(L.judgedPredictions(s, preds)).toEqual(['p2']);
+    expect(L.judgedPredictions(s, preds, true)).toEqual(['p1', 'p2']);
+  });
+  it('coachOf points at the gesture, never at a notch', () => {
+    const s = L.init({ AB: 3, AC: 6 });
+    expect(L.coachOf(s, {}).id).toBe('dragB');
+    expect(L.coachOf(s, { moved: { B: true } }).id).toBe('dragC');
+    expect(L.coachOf(s, { moved: { B: true, C: true }, picking: true, picksDone: false }).id).toBe('pick');
+    expect(L.coachOf(s, { moved: { B: true, C: true } }).id).toBe('press');
+    expect(L.coachOf(s, { done: true })).toBeNull();
+    const two = L.commit(L.commit(s, 'B', L.slotOf(2)), 'C', L.slotOf(3));
+    expect(L.coachOf(two, { moved: { B: true, C: true } }).target).toBe('[data-pl-journal]');
+    for (const ctx of [{}, { moved: { B: true } }, { moved: { B: true, C: true } }]) expect(L.coachOf(s, ctx).target).not.toMatch(/notch/);
+  });
+  it('shownValues lists the bars, every notch, every reachable ratio and every chip with its role', () => {
+    const v = L.shownValues({ AB: 3, AC: 6, mode: 'ladder' });
+    expect(v).toContainEqual({ role: 'bar', v: '6' });
+    expect(v).toContainEqual({ role: 'ratio', v: '1/3' });
+    expect(v).toContainEqual({ role: 'decoy', v: '3' });
+    const w = L.shownValues({ AB: 6, AC: 9, mode: 'crossing', choices: [[14, 21]] });
+    expect(w).toContainEqual({ role: 'bar', v: '21' });
   });
 });

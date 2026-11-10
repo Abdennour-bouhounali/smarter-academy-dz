@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { MessageCircleQuestion, Lightbulb, CheckCircle2, Eye, RotateCcw, ChevronLeft, Send } from 'lucide-react';
@@ -248,19 +248,22 @@ function CheckpointCard({ id, questions, p, onAnswer, onNext, onLook, onRetry })
 function FillAnswer({ q, settled, revealed, onAnswer, k }) {
   const [pick, setPick] = useState(() => q.fields.map(() => null));
   const shown = revealed ? q.fields.map((f) => f.expected) : pick;
+  const uid = useId();
   return (
     <div className="space-y-4" data-lab-checkpoint-fill>
       {q.fields.map((f, i) => (
         <div key={i} className="space-y-2">
-          <p className="text-center text-base font-black text-slate-700">{f.label}</p>
-          <div className="flex flex-wrap justify-center gap-2" dir="ltr">
+          <p id={`${uid}-f${i}`} className="text-center text-base font-black text-slate-700">{f.label}</p>
+          {/* le groupe porte le nom de sa case : une pastille dessinée (`f.render`, « 1/3 ») ne dit pas seule de quelle grandeur elle parle */}
+          <div className="flex flex-wrap justify-center gap-2" dir="ltr" role="group" aria-labelledby={`${uid}-f${i}`}>
             {f.options.map((o) => {
               const on = String(shown[i]) === String(o);
               return (
                 <button key={o} type="button" disabled={settled} onClick={() => setPick((x) => x.map((v, j) => (j === i ? o : v)))}
                   data-lab-checkpoint-chip={`${i}:${o}`} aria-pressed={on}
                   className={`h-14 min-w-[3.5rem] rounded-2xl border-2 px-3 text-2xl font-black tabular-nums transition-colors ${on ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-indigo-200 bg-white text-indigo-950 hover:border-indigo-500'} ${ring}`}>
-                  {o}
+                  {/* `f.render` (2026-11-10) : une pastille écrite dans SA forme (une vraie barre de fraction) ; la valeur comparée reste `o` */}
+                  {f.render ? <span className="pointer-events-none">{f.render(o)}</span> : o}
                 </button>
               );
             })}
@@ -284,7 +287,8 @@ function FillAnswer({ q, settled, revealed, onAnswer, k }) {
  * الفرق ») ; un toucher sur une tuile la pose dans le premier emplacement vide, un toucher sur un emplacement la rend.
  */
 function BuildAnswer({ q, settled, revealed, onAnswer, k }) {
-  const [placed, setPlaced] = useState(() => q.slots.map(() => null)); // index de tuile par emplacement
+  // index de tuile par emplacement ; `q.preset` (2026-11-10) : des tuiles déjà posées au départ (« AB′/AB » fixé à gauche) — l'élève peut les reprendre
+  const [placed, setPlaced] = useState(() => q.slots.map((_, i) => { const v = q.preset?.[i]; const ti = v == null ? -1 : q.tiles.indexOf(v); return ti >= 0 ? ti : null; }));
   const used = new Set(placed.filter((x) => x != null));
   const values = revealed ? q.expected : placed.map((ti) => (ti == null ? null : q.tiles[ti]));
   const put = (ti) => setPlaced((pl) => { const i = pl.indexOf(null); return i < 0 ? pl : pl.map((v, j) => (j === i ? ti : v)); });

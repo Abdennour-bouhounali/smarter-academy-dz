@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PeerSheet } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
@@ -9,6 +9,7 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { KNOWLEDGE3, KNOW1_REMARK1 } from '../content/textbook';
 import { FIG_KNOW3_BETWEEN, FIG_KNOW3_BEYOND, FIG_KNOW3_EXAMPLE, FIG_KNOW1_REMARK1 } from '../content/figures';
 import { addition } from '../../_unit/unitMeta';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
 
 /**
  * Module 2 — معارف 3 (p. 108) « الخاصية العكسية لخاصية طالس », et la ملاحظة 1 de معارف 1 (p. 106, déclarée en
@@ -21,6 +22,8 @@ import { addition } from '../../_unit/unitMeta';
  * LP : P1 (1, 3, 4), P2 (2, 3).
  * « أتوقّع القاعدة » : khassiya-aksiya re-pose la règle déjà écrite et nommée au module 1 (aksiya-nashat) et
  * nisbatan-mukhtalifatan la ملاحظة 1 de la leçon 1 (adam-tawazi) → `variant="rappel"` ; shart-tartib est prédite.
+ * 5. « ورقة رياض » (`PeerSheet`, content/peerSheet.js) — rollout mission 2026-11-10 (conseil du 2026-11-10) : AM/MB (partie sur partie) au lieu de
+ *    AM/AB, d'où un faux « non parallèles » ; l'élève trouve la ligne et la corrige. Même étape sur la page et dans le lecteur.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const PLATFORM = addition('interaction_generation');
@@ -30,6 +33,7 @@ export default function Module02Maarif() {
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
+  const [q5, setQ5] = useState(false);
 
   return (
     <ContentModule
@@ -38,15 +42,15 @@ export default function Module02Maarif() {
       moduleNumber={2}
       moduleTitle="معارف — الخاصية العكسية لخاصية طالس"
       moduleSubtitle="نسبتان متساويتان ونفس الترتيب: توازٍ"
-      objectives={['كيف يصوغ الكتاب ما وجدناه على الحامل؟', 'هل يكفي تساوي نسبتين؟', 'متى تكفي نسبتان مختلفتان لنحكم؟']}
+      objectives={['كيف نصوغ ما وجدناه على الحامل؟', 'هل يكفي تساوي نسبتين؟', 'متى تكفي نسبتان مختلفتان لنحكم؟']}
       estimatedTime="10 دقائق"
       brief={{
-        tag: 'معارف — الكتاب ص 108 (و ص 106)', title: KNOWLEDGE3.title, tone: 'violet',
-        body: <p>معارف الكتاب في أربع خطوات: كل خطوة سؤال أولًا، وبعد جوابك يأتي الاسم أو الملاحظة.</p>,
+        tag: 'معارف', title: KNOWLEDGE3.title, tone: 'violet',
+        body: <p>المعارف في أربع خطوات: كل خطوة سؤال أولًا، وبعد جوابك يأتي الاسم أو الملاحظة.</p>,
       }}
       steps={[
         {
-          num: 1, title: 'الخاصية', subtitle: 'معارف 3', done: q1,
+          num: 1, title: 'الخاصية', subtitle: 'ووضعيتاها', done: q1,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-700">{KNOWLEDGE3.figuresText}</p>
@@ -66,7 +70,7 @@ export default function Module02Maarif() {
                 explain={<MathText>{"$\\dfrac{AB'}{AB} = \\dfrac{2}{5}$ و $\\dfrac{AC'}{AC} = \\dfrac{3}{7{,}5}$ و $2 \\times 7{,}5 = 15 = 5 \\times 3$ : النسبتان متساويتان، والنقط مرتبة بنفس الترتيب، فـ $(B'C') \\parallel (BC)$ ."}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
-              {q1 && <KnowledgeBrick id="khassiya-aksiya" variant="rappel" lead="الكتاب يكتب ما رأيته على الحامل:" />}
+              {q1 && <KnowledgeBrick id="khassiya-aksiya" variant="rappel" lead="نكتب ما رأيته على الحامل:" />}
             </div>
           ),
         },
@@ -87,7 +91,7 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 3, title: 'مثال الكتاب', subtitle: 'OM/OR و ON/OP', done: q3,
+          num: 3, title: 'مثال محلول', subtitle: 'OM/OR و ON/OP', done: q3,
           content: (
             <div className="space-y-3">
               <GeoFigure {...FIG_KNOW3_EXAMPLE} />
@@ -108,7 +112,7 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 4, title: 'نسبتان مختلفتان', subtitle: 'ملاحظة 1 من معارف 1', done: q4,
+          num: 4, title: 'نسبتان مختلفتان', subtitle: 'ملاحظة', done: q4,
           content: (
             <div className="space-y-3">
               <GeoFigure {...FIG_KNOW1_REMARK1} />
@@ -124,6 +128,8 @@ export default function Module02Maarif() {
             </div>
           ),
         },
+        { num: 5, title: 'ورقة زميل: أين الخطأ؟', subtitle: 'جد السطر الخاطئ وصحّحه', done: q5,
+          content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={() => setQ5(true)} /> },
       ]}
       footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />
