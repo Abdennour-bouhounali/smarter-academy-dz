@@ -246,3 +246,23 @@ describe('shadow-meet — what a screen can show, and the scene', () => {
     expect(f.x(Math.round(495 * 1.25))).toBeLessThanOrEqual(700);
   });
 });
+
+describe('shadow-meet — hideHeight (the synthesis round, 2026-11-10)', () => {
+  // the unit's minaret at 15:00: the meet shows BA, OB and OA; the height (module 7's own answer) is never written
+  const MINARET = { object: 'minaret', height: '7,25', hour: '15:00', hideHeight: true };
+  it('the meet solves the step, but the journal never writes the height', () => {
+    const lab = meet(L.init(MINARET));
+    expect(L.isSolved(lab)).toBe(true);
+    expect(L.journalRows(lab, { hideHeight: true })).toMatchObject([{ height: null, solved: true, shadow: shadow(725, '15:00') }]);
+    expect(L.journalRows(lab)).toMatchObject([{ height: 725 }]);           // without the flag (lesson 1): unchanged
+  });
+  it('shownValues lists the ground lengths and the 1 m stick — never the height', () => {
+    const v = L.shownValues(MINARET);
+    const of = (role) => v.filter((x) => x.role === role).map((x) => x.v).sort();
+    const OA = shadow(725, '15:00'); const OB = shadow(100, '15:00');
+    expect(of('height')).toEqual(['1']);
+    expect(of('length')).toEqual([L.m(OB), L.m(OA - OB), L.m(OA)].sort());
+    expect(v.some((x) => x.v === '7,25')).toBe(false);
+    expect(L.shownValues({ ...MINARET, hideHeight: false }).some((x) => x.role === 'height' && x.v === '7,25')).toBe(true);
+  });
+});

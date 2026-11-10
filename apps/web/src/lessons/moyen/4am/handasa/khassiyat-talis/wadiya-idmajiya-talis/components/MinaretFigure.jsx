@@ -20,8 +20,9 @@ export default function MinaretFigure({ stick = '1', stickAt = '10', tip = '11,6
   const lantern = yG - h * k * 0.9; const shaftTop = yG - h * k * 0.78; const balcony = yG - h * k * 0.72;
   const tp = { style: { direction: 'ltr', unicodeBidi: 'isolate' }, fontFamily: 'ui-monospace, monospace' };
   const aria = label ?? `مئذنة ارتفاعها مجهول، وعصا شاقولية طولها ${stick} m على بعد ${stickAt} m من قاعدتها؛ شعاع الشمس المارّ برأس المئذنة يمرّ برأس العصا ويصل الأرض على بعد ${tip} m من قاعدة المئذنة`;
+  // UN bloc pour les pages du lecteur de mission (`data-paging-keep`) : sinon le découpage descend DANS le SVG et en cache les pièces
   return (
-    <figure className="mx-auto w-full max-w-sm rounded-xl border-2 border-slate-200 bg-white p-2" data-figure="minaret">
+    <figure className="mx-auto w-full max-w-sm rounded-xl border-2 border-slate-200 bg-white p-2" data-figure="minaret" data-paging-keep>
       <svg viewBox={`0 0 ${W} 212`} className="h-auto w-full" style={{ direction: 'ltr' }} role="img" aria-label={aria}>
         <rect x={0} y={0} width={W} height={yG} fill="#F0F9FF" />
         <circle cx={22} cy={20} r={11} fill="#FACC15" stroke="#F59E0B" strokeWidth={2} />

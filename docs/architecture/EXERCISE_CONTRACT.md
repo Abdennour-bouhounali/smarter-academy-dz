@@ -986,6 +986,31 @@ Owner's rules, implemented in the shared players, so they hold for every practic
   (`features/mathlab/tools/functionGrapher/keyboardClose.js`, installed by `ensureMathLive()`), which closes like the
   built-in `[hide-keyboard]` key: command on the focused field, blur, hide — otherwise « auto » mode reopens it.
 
+### Typed steps of a guided problem — the step `shape` fields (2026-11-10, PROVISIONAL with the synthesis pilot)
+
+A `numeric` step of a guided problem (`content/problems.js`, played by `GuidedProblem`) has no `answerFormat` to read. It DECLARES
+the shape of its input with explicit optional fields. The shape is never derived from `expected`.
+
+| Step fields | The input | Template kind |
+|---|---|---|
+| `shape: 'quantity'`, `unit: 'm'` | [ ] m — the unit is printed. `unit` is one of the closed list `STEP_UNITS` (m, cm, mm, km, m², cm², mm², km², m³, cm³, L, cL, mL, g, kg, °, km/h, دج); « DA » is refused. | `quantity` |
+| `shape: 'form'`, `subject: 'V'`, `factor: '\\pi'` | « V = [ ]π » — the student types the coefficient | `form` |
+| `shape: 'gap'`, `subject: 'AM \\times AC'` | « AM × AC = [ ] ». If `subject` holds one `\ldots`, the box takes its place instead. | `gap` |
+| `shape: 'decimal'` | one box, « . » becomes « , » — a ratio without unit | `decimal` |
+
+- `subject` and `factor` are LaTeX without « $ ».
+- **Only a step that carries `shape` changes.** A step without it keeps the bare box with its `prefix` / `suffix`.
+- A step with a `shape` carries no `prefix` / `suffix` (the shape prints them).
+- **One pure rule** — `stepTemplate(step)` in `lessons/common/problems/guidedProblem.js` returns the template that `TemplateInput`
+  reads, or `null` (no shape, or an invalid one: the bare box, never a broken formula).
+- **Validation** — `validateProblem` (run by `check:lessons`) refuses an unknown shape, a missing or unknown unit, a missing `subject` /
+  `factor`, a field of another shape, a shape field without `shape`, a `\ldots` inside a `{…}` group, and a shape on a non-numeric step.
+- **Rendering** — `NumericQuestion` takes an optional `template` prop: `TemplateInput` replaces the bare box. `parse`, `expected`, the
+  saved answer and the feedback are unchanged. `TemplateInput` gained two optional props: `onEnter` (Enter in a box validates) and
+  `ariaLabel` (the step's prompt names the value box).
+- The answer shown in the list of asks is written in its shape too (`stepGiven`: « 7,25 m », « V = 81π »).
+- Tests: `problems/guidedProblem.test.js`, `kit/numericTemplate.render.test.jsx`.
+
 ### One step split into several questions — the model answer waits (2026-10-07)
 
 A paper step is often typed as several questions on the same `step` (and `sub`): the bound

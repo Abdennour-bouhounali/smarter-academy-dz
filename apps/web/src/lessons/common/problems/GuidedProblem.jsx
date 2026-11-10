@@ -15,7 +15,7 @@ import { isMissionView } from '../mission/missionModel';
 import { useLearningViewer } from '../../../features/learning/learningViewer';
 import { useClassroomMode } from '../classroom/ClassroomContext';
 import { getLoadedLessonConfig } from '../../registry';
-import { initialProgress, completeSubstep, isPartDone, substepRole } from './guidedProblem';
+import { initialProgress, completeSubstep, isPartDone, substepRole, stepTemplate, stepGiven, resumePart } from './guidedProblem';
 
 /**
  * GuidedProblem — un module « مسألة » : un exercice COMPLET de type امتحان,
@@ -49,21 +49,35 @@ export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, es
   // l'avancement de la مسألة gardé POUR L'ÉLÈVE (pilote 2026-11-07) : il revient à la sous-étape où il s'était arrêté
   const memory = useSavedAnswer([], { key: `gp:${problem.id ?? problem.title}`, lessonId: ctx.lessonId, moduleNumber });
   const touched = useRef(false);
-  const done = (p, i) => { touched.current = true; setProgress((prev) => completeSubstep(prev, p, i)); };
+  // Une sous-étape qui se RESTAURE (sa propre réponse gardée, ses effets passent AVANT celui de la مسألة) n'est pas un geste de l'élève :
+  // elle ne doit ni bloquer la reprise ni écraser l'avancement gardé (vu le 2026-11-10, synthèse de l'unité 9 : après un rechargement la
+  // وضعية repartait de l'écran 0 et l'avancement gardé était remplacé par celui des seules questions restaurées).
+  const restoring = () => !restored.current && memory.saved?.v != null;
+  const done = (p, i) => { if (!restoring()) touched.current = true; setProgress((prev) => completeSubstep(prev, p, i)); };
   // Ce que l'élève a répondu à chaque sous-étape (affiché dans la liste des demandes).
   const [given, setGiven] = useState({});
   const restored = useRef(false);
+  // REPRISE DANS la مسألة (`mission.resumeInside`, lecteur seulement) : une fois l'avancement gardé retrouvé, la première partie encore
+  // ouverte est dite à ContentModule, qui y saute UNE fois — l'élève ne repart pas de l'écran 0 d'une وضعية à moitié faite.
+  const resumeInside = play && getLoadedLessonConfig(ctx.lessonId)?.mission?.resumeInside === true;
+  const [resumeStep, setResumeStep] = useState(null);
   useEffect(() => {
     const m = memory.saved;
     if (restored.current || !m?.v || touched.current) return;
     restored.current = true;
-    if (Array.isArray(m.v.progress) && m.v.progress.length === progress.length) setProgress(m.v.progress);
-    if (m.v.given && typeof m.v.given === 'object') setGiven(m.v.given);
+    if (Array.isArray(m.v.progress) && m.v.progress.length === progress.length) {
+      // le plus avancé des deux, partie par partie : l'avancement gardé ET ce que les questions restaurées viennent de refaire
+      const merged = m.v.progress.map((n, k) => Math.max(Number(n) || 0, progress[k] ?? 0));
+      setProgress(merged);
+      const part = resumeInside ? resumePart(merged, problem) : null;
+      if (part != null) setResumeStep(part + 1);
+    }
+    if (m.v.given && typeof m.v.given === 'object') setGiven((g) => ({ ...m.v.given, ...g }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [memory.saved]);
   useEffect(() => { if (touched.current) memory.save({ progress, given }); }, [progress, given]); // eslint-disable-line react-hooks/exhaustive-deps
   const answer = (p, i, value) => {
-    touched.current = true;
+    if (!restoring()) touched.current = true;
     setGiven((g) => ({ ...g, [`${p}:${i}`]: value }));
     done(p, i);
   };
@@ -97,9 +111,11 @@ export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, es
             expected={step.expected} display={step.display ?? String(step.expected)}
             parse={parseDec}
             prefix={step.prefix} suffix={step.suffix}
+            // « الإجابة تُكتب في شكلها » : seule une étape qui DÉCLARE `shape` change (guidedProblem.js › stepTemplate)
+            template={stepTemplate(step) ?? undefined}
             explain={step.explain ? <MathText>{step.explain}</MathText> : undefined}
             requires={step.requires}
-            onAnswered={(_, n) => answer(p, i, `${n}${step.suffix ? ` ${step.suffix}` : ''}`)}
+            onAnswered={(_, n) => answer(p, i, stepGiven(step, n))}
           />
         );
       case 'batch':
@@ -275,6 +291,7 @@ export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, es
       }}
       steps={steps}
       footer={footer}
+      resumeStep={resumeStep}
     />
     </>
   );

@@ -3,7 +3,10 @@ import { useTranslation } from 'react-i18next';
 import LessonProblemCard from '../problems/LessonProblemCard';
 import { StudentFocusProvider } from '../components/StudentFocus';
 import { useMission } from './useMission';
-import { pendingCheckpoint, shouldWelcome, stationLabel } from './missionModel';
+import { pendingCheckpoint, shouldWelcome, stationLabel, sceneFill } from './missionModel';
+import MissionScene from './MissionScene';
+import MathLabel from '../components/MathLabel';
+import { mathToPlain } from '../../../utils/mathPlain';
 import MissionBar from './MissionBar';
 import MissionMap from './MissionMap';
 import MissionDialog from './MissionDialog';
@@ -35,7 +38,7 @@ export default function MissionLayer({ config, moduleNumber, basePath }) {
   }, [welcome]);
   if (!on) return null;
   const here = stations.find((s) => s.number === Number(moduleNumber));
-  const fill = tools.length ? tools.filter((x) => x.earned).length / tools.length : 0;
+  const fill = sceneFill(mission, tools);
   return (
     <>
       <MissionBar mission={mission} tools={tools} stations={stations} stars={stars} onOpenMap={() => setOpen('map')} onOpenMission={() => setOpen('text')} />
@@ -48,16 +51,27 @@ export default function MissionLayer({ config, moduleNumber, basePath }) {
       {open === 'text' && (
         <MissionDialog label={t('mission.readMission')} onClose={() => setOpen(null)}>
           {/* L'élève a DEMANDÉ l'énoncé : il le lit en entier ici, sans second pli. */}
-          <StudentFocusProvider>
-            <div className="pt-8"><LessonProblemCard problem={config.lessonProblem} /></div>
-          </StudentFocusProvider>
+          {config.lessonProblem ? (
+            <StudentFocusProvider>
+              <div className="pt-8"><LessonProblemCard problem={config.lessonProblem} /></div>
+            </StudentFocusProvider>
+          ) : (
+            // une leçon SANS « مسألة الدرس » (synthèse) : la mission est sa question d'ouverture, avec sa scène — jamais une fenêtre vide
+            <div className="grid items-center gap-5 pt-8 md:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)]" data-mission-text>
+              <div className="min-w-0 space-y-3 text-start">
+                <h2 className="text-2xl font-black text-slate-900">{mission.title}</h2>
+                <p className="text-xl font-extrabold leading-relaxed text-slate-900"><MathLabel>{mission.opening?.text}</MathLabel></p>
+              </div>
+              <MissionScene scene={mission.scene} fill={fill} className="w-full" label={mathToPlain(mission.opening?.text ?? mission.title)} />
+            </div>
+          )}
         </MissionDialog>
       )}
       {welcome && here && (
         <MissionDialog label={t('mission.mapTitle')} onClose={() => setWelcome(false)}>
           <button type="button" className="block w-full text-start" onClick={() => setWelcome(false)} data-mission-welcome={moduleNumber}>
             <p className="text-xs font-black uppercase tracking-wide text-indigo-500">{t('mission.here')}</p>
-            <p className="mb-5 mt-1 text-2xl font-black text-slate-900">{stationLabel(here.title)}</p>
+            <p className="mb-5 mt-1 text-2xl font-black text-slate-900">{here.label ?? stationLabel(here.title)}</p>
             <MissionMap lessonId={config.id} stations={stations} basePath={basePath} here={moduleNumber} />
           </button>
         </MissionDialog>

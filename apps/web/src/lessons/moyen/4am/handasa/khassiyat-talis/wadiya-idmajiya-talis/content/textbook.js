@@ -113,6 +113,27 @@ export const REMARKS = {
   tajnid: 'وضعية طالس تظهر حيث يوجد مستقيمان متوازيان يقطعان مستقيمين متقاطعين: ظلّان، مقطع محوري، ضفّتا نهر، قاعدتا شبه منحرف.',
 };
 
+/**
+ * Les mêmes idées EN LETTRES, pour ce qui est ouvert dès le premier écran (lecteur de mission, `knowledgeMapOpen`, 2026-11-10) : les cartes de
+ * connaissance (knowledge.jsx) et la carte des معارف (knowledgeGraph.js). Aucun nombre de la وضعية de l'unité (module 7 : 18 / 6, 4,5, 24r = 108,
+ * 91,125π) ni du défi 🏆 (module 8) — content/forbidden.js, content/mission.test.js. Le module 7 garde REMARKS, ses nombres, à SON heure.
+ */
+export const CARD = {
+  maqta: 'نقطع المجسّمين بالمستوي الذي يشمل محورهما: يظهر المثلث القائم OSK للمخروط ( $SK = R$ و $SO = H$ ) والمستطيل SDCT للأسطوانة ( $ST = h$ و $TC = r$ ).',
+  tawazi: REMARKS.tawazi,
+  talisSection: 'المثلثان OTC و OSK في وضعية طالس: $\\dfrac{OT}{OS} = \\dfrac{TC}{SK}$ أي $\\dfrac{H - h}{H} = \\dfrac{r}{R}$ .',
+  muadala: 'مع $h = r$ : $\\dfrac{r}{R} = \\dfrac{H - r}{H}$ ، نضرب ضربًا متصالبًا: $H \\times r = R \\times (H - r)$ ، ثم نجمع حدود r في طرف واحد.',
+  halR: 'نقسم على معامل r ، ونتحقّق أنّ القيمة التي وجدناها تحقّق المساواة الأولى.',
+  hajm: '$V = \\pi \\times r^2 \\times h$ : نكتب القيمة المضبوطة بدلالة $\\pi$ ثم القيمة المقرّبة.',
+  mulaama: 'نتحقّق: $r < R$ (الأسطوانة لا تخرج من المخروط) و $h < H$ ، و $\\dfrac{r}{R} = \\dfrac{H - h}{H}$ .',
+  otWrong: 'نكتب $\\dfrac{r}{R} = \\dfrac{h}{H}$ .',
+  otWhy: 'الضلع الذي رأسه O في المثلث الصغير هو $OT = H - h$ ، أمّا h فهو ST: طول الأسطوانة من قاعدة المخروط.',
+  otRight: '$\\dfrac{r}{R} = \\dfrac{H - h}{H}$',
+  qutrWrong: 'نحسب الحجم بالقطر: $\\pi \\times (2r)^2 \\times h$ .',
+  qutrWhy: 'قانون حجم الأسطوانة $V = \\pi r^2 h$ بنصف القطر r ، والقطر $2r$ يضاعف الحجم أربع مرات.',
+  qutrRight: '$V = \\pi \\times r^2 \\times h$',
+};
+
 export const LESSON_TITLES = {
   'talis-hisab-atwal': 'الدرس 1 — خاصية طالس وحساب الأطوال',
   'aksiya-talis': 'الدرس 2 — الخاصية العكسية لخاصية طالس وإثبات التوازي',

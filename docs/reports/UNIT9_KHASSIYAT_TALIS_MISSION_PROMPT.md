@@ -131,6 +131,12 @@ lessons (old items stay reachable); the map open; M7 « أخطّط » its own st
 peer sheet at the end of M7 = a classmate's wrong PLAN, never the solution; the honest duration, in two sittings; every typed step entered in
 its own shape (answer templates). The recipe that results is written in `MISSION_ROLLOUT_PROGRESS.md` and the guide for the other units.
 
+> **Built 2026-11-10 — read the result, not the defaults above, where they differ.** Two more councils changed three defaults: NO training ★
+> (a step is one try; the home shows « وضعيات تدريبية: n / 6 » and hides « ⭐ 0 »); module 7 is « وضعية الوحدة » (it computes — not « أخطّط ») and
+> module 8 « التحدّي 🏆 » (`mission.stationLabels`); module 7's labs are brought INTO the player as rounds (the student never sees the old view),
+> with the `cone-cylinder` player version, a meet-only minaret round, a notebook screen and a peer sheet whose error is a missing justification.
+> What was built and the provisional recipe: `MISSION_ROLLOUT_PROGRESS.md` › « Unit 9, synthesis » and « The synthesis recipe ».
+
 ## 6. Councils — in THIS session, never inside a sub-agent
 
 Sub-agents cannot spawn agents: a « council » run inside one is one model playing five advisors (that happened for unit 2's lessons 1–2).

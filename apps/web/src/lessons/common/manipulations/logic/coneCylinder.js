@@ -169,3 +169,170 @@ export function layout(s, { width, height, padX = 28, padY = 22 }) {
     height: yAxis + Rn * k + padY,
   };
 }
+
+/* ══════════════ LE LECTEUR DE MISSION (la synthèse de l'unité 9, 2026-11-10 — conseil C, verdict) ══════════════
+ *
+ * Dans le lecteur, le cylindre se RÈGLE librement (h et r, aucun verdict pendant le geste, aucun nombre dans un verdict) et se JUGE quand
+ * l'élève appuie sur « أدخِل الأسطوانة » : il touche (sa حافة sur le jarret du cône), il laisse un jeu, ou il perce (refusé, hachures ✗).
+ * Un ESSAI = un appui ; le même (h ; r) deux fois n'est pas un essai ; le premier refus peut être GRATUIT (`freeFirstRefusal` : refuser fait
+ * partie de la découverte). Le nombre de crans `n` est EXPLICITE (jamais `divisionsFor` : h = r ne doit PAS tomber sur la règle). Une manche
+ * peut fixer h (`lockH`, une valeur) ou r (`lockR`, une liste de valeurs : la suivante dès que la précédente touche) — la tâche inverse.
+ */
+const fz = Object.freeze;
+const idxOf = (step, v, n, what) => {
+  const i = div(F(v), step);
+  if (!isInteger(i) || toNumber(i) < 1 || toNumber(i) > n - 1) throw new Error(`coneCylinder: ${what} = ${v} n'est pas sur la règle`);
+  return toNumber(i);
+};
+
+/** L'état initial du lecteur : { H, R, n, lockH?, lockR?, start?: { h, r }, freeFirstRefusal? }. */
+export function initPlayer({ H = 25, R = 15, n, lockH = null, lockR = null, start = null, freeFirstRefusal = false } = {}) {
+  const HH = F(H); const RR = F(R);
+  if (!Number.isInteger(n) || n < 3) throw new Error('coneCylinder: le lecteur demande un nombre de crans `n` explicite (≥ 3)');
+  const hStep = div(HH, n); const rStep = div(RR, n);
+  if (fracDecimal(hStep, 2) == null || fracDecimal(rStep, 2) == null) throw new Error(`coneCylinder: pas non décimaux pour H = ${H}, R = ${R}, n = ${n}`);
+  const base = { H: HH, R: RR, cone: TH.cylinderInCone({ H: HH, R: RR }), n, hStep, rStep };
+  const lh = lockH == null ? null : idxOf(hStep, lockH, n, 'h');
+  const lr = lockR == null ? null : fz((Array.isArray(lockR) ? lockR : [lockR]).map((v) => idxOf(rStep, v, n, 'r')));
+  const hIdx = lh ?? (start?.h != null ? idxOf(hStep, start.h, n, 'h') : Math.ceil(n / 2));
+  const rIdx = lr ? lr[0] : (start?.r != null ? idxOf(rStep, start.r, n, 'r') : 1);
+  return fz({
+    ...base, hIdx, rIdx, lockH: lh, lockR: lr, freeFirstRefusal: Boolean(freeFirstRefusal),
+    trials: fz([]), refusals: 0, last: null, movedH: false, movedR: false,
+  });
+}
+
+/** Le cran de r que la manche impose maintenant (`lockR`) : le premier pas encore inscrit, sinon le dernier ; null sans verrou. */
+export function lockedR(lab) {
+  if (!lab.lockR) return null;
+  const done = (j) => lab.trials.some((t) => t.rIdx === j && t.inscribed);
+  return lab.lockR.find((j) => !done(j)) ?? lab.lockR[lab.lockR.length - 1];
+}
+
+/** Régler le cylindre (aucun jugement) : les crans sont bornés à 1 … n − 1, un verrou garde sa valeur. */
+export function moveTo(lab, { hIdx = lab.hIdx, rIdx = lab.rIdx } = {}) {
+  const c = (i) => Math.min(lab.n - 1, Math.max(1, Math.round(i)));
+  const h = lab.lockH ?? c(hIdx);
+  const r = lab.lockR ? lockedR(lab) : c(rIdx);
+  if (h === lab.hIdx && r === lab.rIdx) return lab;
+  return fz({ ...lab, hIdx: h, rIdx: r, movedH: lab.movedH || h !== lab.hIdx, movedR: lab.movedR || r !== lab.rIdx, last: fz({ kind: 'move' }) });
+}
+
+/** Le verdict d'un couple de crans : 'inscribed' | 'gap' | 'pierce'. */
+export const verdictKind = (lab, hIdx = lab.hIdx, rIdx = lab.rIdx) => { const p = probe(lab, hIdx, rIdx); return p.pierce ? 'pierce' : p.inscribed ? 'inscribed' : 'gap'; };
+/** Le cylindre à l'écran a-t-il changé depuis le dernier appui ? (le guide montre alors le bouton) */
+// comparé au DERNIER APPUI (pas au dernier essai) : un cylindre déjà essayé et repressé montre son verdict « جرّبتها » (revue 2026-11-10)
+export const isDirty = (lab) => { const l = lab.last; return !(l?.kind === 'press' && l.hIdx === lab.hIdx && l.rIdx === lab.rIdx); };
+
+/**
+ * APPUYER sur « أدخِل الأسطوانة » : le cylindre est jugé. `last` : { kind: 'press', verdict, repeat, free, hIdx, rIdx }. Un couple déjà
+ * essayé n'est pas un nouvel essai (`repeat`) ; le PREMIER refus est gratuit quand la manche le dit. Inscrit sous un verrou de r : r passe à
+ * la valeur suivante au prochain réglage (la manche ⭐ en demande deux).
+ */
+export function press(lab) {
+  const verdict = verdictKind(lab);
+  const repeat = lab.trials.some((t) => t.hIdx === lab.hIdx && t.rIdx === lab.rIdx);
+  const st = probe(lab);
+  const free = !repeat && verdict === 'pierce' && lab.freeFirstRefusal && lab.refusals === 0;
+  const trial = fz({ hIdx: lab.hIdx, rIdx: lab.rIdx, h: st.h, r: st.r, inscribed: st.inscribed, pierce: st.pierce, square: st.square, verdict });
+  const next = fz({
+    ...lab,
+    trials: repeat ? lab.trials : fz([...lab.trials, trial]),
+    refusals: lab.refusals + (!repeat && verdict === 'pierce' ? 1 : 0),
+    last: fz({ kind: 'press', verdict, repeat, free, hIdx: lab.hIdx, rIdx: lab.rIdx }),
+  });
+  // sous un verrou de r, la valeur suivante vient au PROCHAIN réglage (`moveTo` lit `lockedR`) : le verdict de cet appui reste à l'écran
+  return next;
+}
+
+/** Ce que la manche reçoit (`onVerdict`) d'un appui NOUVEAU : { groups: le cran de h, exact: il touche, free? }. */
+export function verdictOfPress(lab) {
+  const l = lab.last;
+  if (l?.kind !== 'press' || l.repeat) return null;
+  return fz({ groups: l.hIdx, exact: l.verdict === 'inscribed', ...(l.free ? { free: true } : {}) });
+}
+
+/** Les lignes du journal « 📋 جدول تجاربك » : # · h · r · le verdict · r/R et (H − h)/H en nombres (après la question `sec`). */
+export function journalPlayer(lab, { ratios = false } = {}) {
+  return lab.trials.map((t, i) => fz({
+    i: i + 1, h: dec(t.h), r: dec(t.r), verdict: t.verdict,
+    rr: ratios && t.inscribed ? `${dec(t.r)}/${dec(lab.R)}` : null,
+    hh: ratios && t.inscribed ? `${dec(sub(lab.H, t.h))}/${dec(lab.H)}` : null,
+  }));
+}
+
+/** Le premier cylindre inscrit (la question `sec` porte sur lui), ou null. */
+export const firstInscribed = (lab) => lab.trials.find((t) => t.inscribed) ?? null;
+/** Le cylindre inscrit au cran `hIdx` (la construction de r2 porte sur lui), ou null. */
+export const inscribedAt = (lab, hIdx) => lab.trials.find((t) => t.inscribed && t.hIdx === hIdx) ?? null;
+
+/** Les trois pastilles d'une question `sec` : r/R, (H − h)/H et le leurre h/H — non réduits (« 9/15 »), ordre tourné par la graine. */
+export function secOptions(lab, t) {
+  const rr = `${dec(t.r)}/${dec(lab.R)}`;
+  const hh = `${dec(sub(lab.H, t.h))}/${dec(lab.H)}`;
+  const decoy = `${dec(t.h)}/${dec(lab.H)}`;
+  const xs = [rr, hh, decoy];
+  const k = (t.hIdx + lab.n) % 3;
+  return fz({ rr, hh, decoy, options: fz(xs.map((_, i) => xs[(i + k) % 3])) });
+}
+
+/** La construction numérique de r2 : « r/R = □/□ » au cran `hIdx` — tuiles r, R, H − h, H et le leurre h. */
+export function buildOf(lab, hIdx) {
+  const h = hOf(lab, hIdx); const r = rMaxAt(lab, hIdx);
+  const vals = { r: dec(r), R: dec(lab.R), OT: dec(sub(lab.H, h)), H: dec(lab.H), h: dec(h) };
+  return fz({ ...vals, expected: fz([vals.r, vals.R, vals.OT, vals.H]), tiles: fz([vals.r, vals.R, vals.OT, vals.H, vals.h]) });
+}
+
+/** Les PRÉDICTIONS (calculées) : 'part' — « au cran 1 (h = H/n), r vaut-il R/n ? » ; 'double' — de h au cran 1 au cran 2, r devient … */
+export function predictTruthPlayer(lab, key) {
+  const r1 = rMaxAt(lab, 1); const r2 = rMaxAt(lab, 2);
+  if (key === 'part') return eq(r1, div(lab.R, lab.n)) ? 'yes' : 'no';
+  if (key === 'double') { const c = cmp(r2, div(r1, 2)); return c > 0 ? 'more' : c === 0 ? 'half' : 'less'; }
+  return null;
+}
+export const predictOptionsPlayer = (key) => (key === 'part' ? ['yes', 'no'] : key === 'double' ? ['less', 'half', 'more'] : []);
+/** Une prédiction est JUGÉE quand ce qu'elle annonce est à l'écran : le cylindre inscrit au cran 1 (et au cran 2 pour 'double'). */
+export const predictJudgedPlayer = (lab, key) => Boolean(inscribedAt(lab, 1) && (key !== 'double' || inscribedAt(lab, 2)));
+
+/** La découverte du lecteur : deux cylindres inscrits de longueurs différentes et un contraste (un refus ou un jeu). */
+export const discoveredPlayer = (lab) => discoveryReady(lab);
+
+/**
+ * Le GUIDE (LabCoach) du lecteur — jamais un cran, jamais « plus grand / plus petit » : la poignée de h (si elle est libre), celle de r, puis
+ * le bouton d'essai quand le cylindre a changé ; rien pendant une question ni à la fin. `ctx` : { done }.
+ */
+export function coachOfPlayer(lab, ctx = {}) {
+  if (ctx.done) return null;
+  const fresh = lab.trials.length === 0;
+  if (fresh && lab.lockH == null && !lab.movedH) return fz({ id: 'h', target: '[data-cc-h-handle]', gesture: 'drag' });
+  if (fresh && !lab.lockR && !lab.movedR) return fz({ id: 'r', target: '[data-cc-r-handle]', gesture: 'drag' });
+  if (isDirty(lab)) return fz({ id: 'press', target: '[data-cc-press]', gesture: 'tap' });
+  return null;
+}
+
+/**
+ * TOUT ce qu'un écran du lecteur peut montrer (règle « valeurs interdites par RÔLE », content/forbidden.js de la synthèse) : `{ role, v }`.
+ *   'cone-H' / 'cone-R' · 'h' et 'r' (chaque cran de la règle, chaque valeur verrouillée) · 'OT' (H − h, les pastilles) · 'ratio' (r/R, (H − h)/H,
+ *   h/H — RÉDUITS par le balayage) · 'value' (les tuiles de la construction) · 'square' (un cran où h = r tomberait sur la règle — jamais).
+ * Aucun volume n'est jamais montré. `choices` : { cones: [{ H, R, n }] } — la manche libre : chaque cône.
+ */
+export function shownValuesPlayer(props = {}) {
+  const out = [];
+  const push = (role, v) => out.push(fz({ role, v: String(v) }));
+  const one = (p) => {
+    const lab = initPlayer({ H: p.H, R: p.R, n: p.n, lockH: p.lockH, lockR: p.lockR, start: p.start });
+    push('cone-H', dec(lab.H)); push('cone-R', dec(lab.R));
+    for (let i = 1; i < lab.n; i += 1) {
+      const h = hOf(lab, i); const r = rOf(lab, i); const rm = rMaxAt(lab, i);
+      push('h', dec(h)); push('r', dec(r)); push('OT', dec(sub(lab.H, h)));
+      if (eq(h, rm)) push('square', dec(h));
+      const t = { hIdx: i, h, r: rm };
+      const s = secOptions(lab, t);
+      [s.rr, s.hh, s.decoy].forEach((x) => push('ratio', x));
+    }
+    if (p.build != null) buildOf(lab, idxOf(lab.hStep, p.build, lab.n, 'h')).tiles.forEach((x) => push('value', x));
+  };
+  one(props);
+  (props.choices?.cones ?? []).forEach((c) => one({ ...c }));
+  return out;
+}

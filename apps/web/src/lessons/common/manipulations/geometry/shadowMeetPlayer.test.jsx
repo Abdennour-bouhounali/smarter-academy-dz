@@ -209,3 +209,25 @@ describe('shadow-meet — strings', () => {
     });
   });
 });
+
+describe('shadow-meet — hideHeight and the « why » chain (the synthesis round, 2026-11-10)', () => {
+  const MINARET = { object: 'minaret', height: '7,25', hour: '15:00' };
+  it('the scene never writes the height, even when the meet solves the step', () => {
+    const html = inPlayer(<ShadowMeet {...MINARET} levels={false} chains="why" hideHeight />);
+    expect(html).toContain('data-sm-object="minaret"');
+    expect(html).not.toContain('7,25');
+    expect(html).not.toMatch(rawKey);
+  });
+  it('« why » is asked at the meet: three sentences, none with a number, the right one is the single ray', () => {
+    expect(chainsOf('why').map((c) => c.id)).toEqual(['why']);
+    const lab = meet(L.init(MINARET));
+    expect(chainsOf('why')[0].reached(lab)).toBe(true);
+    const q = QUESTIONS.whyMeet(lab, k, 'المئذنة');
+    expect(q.kind).toBe('choice');
+    expect(q.options).toHaveLength(3);
+    const html = text(q);
+    expect(html).not.toMatch(rawKey);
+    q.options.forEach((o) => expect(renderToString(<span>{o.text}</span>)).not.toMatch(/\d/));
+    expect(renderToString(<span>{q.options.find((o) => o.correct).text}</span>)).toContain(k('cp.whyMeet.right', { obj: 'المئذنة' }).slice(0, 12));
+  });
+});

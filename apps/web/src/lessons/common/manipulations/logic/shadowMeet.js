@@ -303,8 +303,12 @@ export const predictionJudged = (lab, from) => Boolean(lab.met[from + 1] || lab.
 
 /* ── le journal ────────────────────────────────────────────────────────── */
 
-/** Les lignes du journal « 📋 جدول تجاربك » : une par étape entamée — l'heure, l'objet, son ombre, celle du bâton, la hauteur (ou null). */
-export function journalRows(lab) {
+/**
+ * Les lignes du journal « 📋 جدول تجاربك » : une par étape entamée — l'heure, l'objet, son ombre, celle du bâton, la hauteur (ou null).
+ * `hideHeight` (la manche de la synthèse, 2026-11-10) : la hauteur n'est JAMAIS écrite — la rencontre suffit, la hauteur est la réponse de
+ * l'étape 2 du module 7 (content/forbidden.js de la synthèse).
+ */
+export function journalRows(lab, { hideHeight = false } = {}) {
   return lab.steps.map((s, i) => {
     const seen = i <= lab.at && (lab.met[i] || lab.solved[i] || s.task !== 'meet');
     if (!seen) return null;
@@ -312,7 +316,7 @@ export function journalRows(lab) {
     return fz({
       i, hour: HOURS[s.hour], object: s.object, name: s.name, task: s.task,
       shadow: shadowKnown ? s.OA : null, stick: s.OB,
-      height: s.task === 'flag' || lab.solved[i] ? s.H : null,
+      height: !hideHeight && (s.task === 'flag' || lab.solved[i]) ? s.H : null,
       solved: Boolean(lab.solved[i]), tries: lab.wrong[i].length,
     });
   }).filter(Boolean);
@@ -349,6 +353,7 @@ export function coachOf(lab, ctx = {}) {
  *   (seulement quand `chains: 'same'` l'écrit).
  * Le bâton en mouvement ne montre AUCUNE longueur (rien n'est écrit pendant le glisser) ; une réponse TAPÉE est celle de l'élève (non balayée).
  * `choices` : { heights, hours } — la manche libre : chaque couple.
+ * `hideHeight` : la hauteur de l'objet n'est jamais montrée (ni dans la scène, ni au journal) — elle n'est pas listée (le bâton de 1 m l'est).
  */
 export function shownValues(props = {}) {
   const out = [];
@@ -362,7 +367,7 @@ export function shownValues(props = {}) {
     if (s.task !== 'flag') {
       push('length', m(s.OA));
       if (s.task === 'meet') { push('length', m(s.meetX)); if (showsRatio) push('ratio', ratioText(s)); }
-      push('height', m(s.H));
+      if (!props.hideHeight) push('height', m(s.H));
       if (s.ask?.kind === 'tap') heightOptions(s).filter((o) => !o.right).forEach((o) => push('decoy-height', o.text));
     } else {
       push('height', m(s.H));

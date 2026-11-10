@@ -96,6 +96,8 @@ export default function ShadowMeet({
   checkpoints: cpOn = true, coach: coachOn = true, onTrial, onFinished,
   // ── LECTEUR DE MISSION ──
   onVerdict, chains: chainsMode = 'none', predict: predictList = [], choices,
+  // la manche de la synthèse (2026-11-10) : la hauteur de l'objet n'est jamais écrite — ni dans la scène, ni au journal, ni dans un verdict
+  hideHeight = false,
 }) {
   const { t } = useTranslation('lesson');
   const gameScreen = useInMissionPlayer();
@@ -355,7 +357,7 @@ export default function ShadowMeet({
   const lastAnswer = lab.last?.kind === 'answer' && lab.last.step === lab.at ? lab.last : null;
   const verdict = (() => {
     if (solved && step.task === 'flag') return { kind: 'right', node: k('v.flagRight', { obj: objName }) };
-    if (solved && step.ask) return { kind: 'right', node: <>{k('v.right', { obj: objName })} <Num>{`${L.m(step.H)} m`}</Num></> };
+    if (solved && step.ask) return { kind: 'right', node: hideHeight ? k('v.meet', { obj: objName }) : <>{k('v.right', { obj: objName })} <Num>{`${L.m(step.H)} m`}</Num></> };
     if (lastAnswer && !lastAnswer.ok) {
       const key = lastAnswer.repeat ? 'v.repeat' : step.task === 'flag' ? `v.flag.${lastAnswer.why}` : `v.wrong.${lastAnswer.why}`;
       return { kind: 'wrong', node: <>{step.task === 'flag' ? k(lastAnswer.value < step.OA ? 'v.flagShort' : 'v.flagLong') : <>{k('v.not')} <Num>{`${L.m(lastAnswer.value)} m`}</Num>.</>} {k(key, { obj: objName })}</> };
@@ -430,7 +432,7 @@ export default function ShadowMeet({
   ) : cp.open ? cp.node : askNode;
 
   /* ── le journal « 📋 جدول تجاربك » ── */
-  const rows = L.journalRows(lab);
+  const rows = L.journalRows(lab, { hideHeight });
   const journalTable = rows.length > 0 && (
     <div data-sm-journal>
       <p id={journalId} className="text-sm font-black text-indigo-900"><span aria-hidden="true">📋 </span>{k('journal')}</p>
@@ -557,7 +559,7 @@ export default function ShadowMeet({
                 <p className="rounded-full bg-sky-100 px-3 py-1 text-sm font-black text-sky-900" data-sm-hour={hourNow}><span aria-hidden="true">🕑 </span>{k('hour')} <Num>{hourNow}</Num></p>
               </div>
               <div className="relative mx-auto" style={{ width: sceneW, height: sceneH }} data-sm-scene>
-                <Scene geo={geo} lab={lab} step={step} side={side} met={met} solved={solved} reduce={reduce} unknown={k('unknown')} />
+                <Scene geo={geo} lab={lab} step={step} side={side} met={met} solved={solved && !hideHeight} reduce={reduce} unknown={k('unknown')} />
                 {/* la piste : toute la largeur du sol ; la poignée au pied du bâton */}
                 <div {...st.trackProps} data-sm-track className="absolute inset-x-0"
                   style={{ ...st.trackProps.style, top: geo.groundY - 30, height: 78, ...(freeze ? { pointerEvents: 'none', cursor: 'default' } : {}) }}>
@@ -816,6 +818,8 @@ export const CHAINS = Object.freeze({
   readEasy: [{ id: 'read', reached: metFirst, qs: ['segFill'] }],
   same: [{ id: 'same', reached: (lab) => lab.steps.length > 1 && L.allSolved(lab), qs: ['sameWhat'] }],
   flag: [{ id: 'build', reached: (lab) => L.cur(lab).task === 'flag' && L.isSolved(lab), qs: ['flagBuild'] }],
+  // la synthèse (2026-11-10) : la rencontre seule, puis POURQUOI ici — une phrase parmi trois, sans nombre
+  why: [{ id: 'why', reached: metFirst, qs: ['whyMeet'] }],
   none: [],
 });
 export const chainsOf = (mode) => CHAINS[mode] ?? [];
@@ -884,6 +888,16 @@ const RAW_QUESTIONS = {
       hints: [Mx(k, 'sameWhat.hint1', o), Mx(k, 'sameWhat.hint2', o)], explain: Mx(k, 'sameWhat.explain', o),
     };
   },
+  /* la synthèse : pourquoi les deux ombres finissent ici — un rayon unique par les deux sommets (ni « ombre = longueur », ni « au milieu ») */
+  whyMeet: (lab, k, obj) => ({
+    id: 'whyMeet', kind: 'choice', prompt: Mx(k, 'whyMeet.prompt', { obj }),
+    options: [
+      { text: Mx(k, 'whyMeet.right', { obj }), correct: true },
+      { text: Mx(k, 'whyMeet.equal', { obj }), why: Mx(k, 'whyMeet.whyEqual', { obj }) },
+      { text: Mx(k, 'whyMeet.middle', { obj }), why: Mx(k, 'whyMeet.whyMiddle', { obj }) },
+    ],
+    hints: [Mx(k, 'whyMeet.hint1', { obj }), Mx(k, 'whyMeet.hint2', { obj })], explain: Mx(k, 'whyMeet.explain', { obj }),
+  }),
   /* le drapeau : le rapport du poteau (ombre ÷ hauteur) est celui du bâton — le rapport inversé est une TUILE, pas un nombre */
   flagBuild: (lab, k, obj) => {
     const s = L.cur(lab);

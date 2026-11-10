@@ -8,6 +8,7 @@ import { MoreToggle, useStudentFocus } from '../components/StudentFocus';
 import { useSavedAnswer } from '../answers/useSavedAnswer';
 import SavedAnswerChip from '../answers/SavedAnswerChip';
 import { useInMissionPlayer } from '../mission/missionPlayerContext';
+import TemplateInput from '../../../features/practice/answerTemplates/TemplateInput';
 
 /**
  * Les réponses gardées pour l'élève (pilote 2026-11-07) : une question RETROUVE sa réponse quand l'élève revient — une seule
@@ -247,6 +248,8 @@ export function NumericQuestion({
   prompt,          // ReactNode
   above,           // ReactNode ou (revealed) => ReactNode
   prefix, suffix,  // ex. prefix="Nombre de milliers :" suffix="cL"
+  template,        // « الإجابة تُكتب في شكلها » : un modèle de TemplateInput (ex. guidedProblem.js › stepTemplate) remplace la case nue,
+                   // `prefix` et `suffix` ; `parse`, `expected`, la réponse gardée et le retour ne changent pas
   expected,        // number, ou (n) => boolean
   parse = parseFr,
   display,         // affichage de la bonne réponse (déf. formatFr(expected))
@@ -294,16 +297,26 @@ export function NumericQuestion({
       {restoredAt && <SavedAnswerChip at={restoredAt} />}
       {!done ? (
         <div className="flex items-center gap-2 flex-wrap">
-          {prefix && <span className="text-sm font-mono text-slate-600">{prefix}</span>}
-          <NumberField
-            value={val}
-            onChange={setVal}
-            onEnter={check}
-            ariaLabel={typeof prompt === 'string' ? prompt : t('question.answer')}
-            width={width}
-            size={size}
-          />
-          {suffix && <span className="font-mono text-sm text-slate-500">{suffix}</span>}
+          {template ? (
+            // la saisie a la FORME de la réponse : unité, « V = … π », « AM × AC = … » imprimés ; la ligne ne se coupe jamais (TemplateInput)
+            <div className="min-w-0 max-w-full" data-question-template={template.kind}>
+              <TemplateInput template={template} onChange={(v) => setVal(v?.value ?? '')} onEnter={check}
+                ariaLabel={typeof prompt === 'string' ? prompt : t('question.answer')} />
+            </div>
+          ) : (
+            <>
+              {prefix && <span className="text-sm font-mono text-slate-600">{prefix}</span>}
+              <NumberField
+                value={val}
+                onChange={setVal}
+                onEnter={check}
+                ariaLabel={typeof prompt === 'string' ? prompt : t('question.answer')}
+                width={width}
+                size={size}
+              />
+              {suffix && <span className="font-mono text-sm text-slate-500">{suffix}</span>}
+            </>
+          )}
           <ValidateButton onClick={check} disabled={!val}>
             {t('question.ok')}
           </ValidateButton>

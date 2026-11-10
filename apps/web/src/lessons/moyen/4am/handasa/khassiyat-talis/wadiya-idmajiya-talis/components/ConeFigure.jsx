@@ -12,8 +12,9 @@ export default function ConeFigure({ H = '18', R = '6', label }) {
   const e = 0.22;
   const tp = { style: { direction: 'ltr', unicodeBidi: 'isolate' }, fontFamily: 'ui-monospace, monospace' };
   const aria = label ?? `مخروط دوران ارتفاعه ${H} ونصف قطر قاعدته ${R}، وأسطوانة دوران داخله لها نفس المحور، طولها h ونصف قطرها r`;
+  // UN bloc pour les pages du lecteur de mission (`data-paging-keep`) : sinon le découpage descend DANS le SVG et en cache les pièces
   return (
-    <figure className="mx-auto w-full max-w-sm rounded-xl border-2 border-slate-200 bg-white p-2" data-figure="cone-cylinder">
+    <figure className="mx-auto w-full max-w-sm rounded-xl border-2 border-slate-200 bg-white p-2" data-figure="cone-cylinder" data-paging-keep>
       <svg viewBox={`0 0 ${W} 190`} className="h-auto w-full" style={{ direction: 'ltr' }} role="img" aria-label={aria}>
         <path d={`M${x0} ${yA - Rp} L${x0 + L} ${yA} L${x0} ${yA + Rp}`} fill="#FEF3C7" stroke="#92400E" strokeWidth={1.6} />
         <ellipse cx={x0} cy={yA} rx={e * Rp} ry={Rp} fill="#FDE68A" stroke="#92400E" strokeWidth={1.6} />

@@ -46,6 +46,11 @@ const CLIMAX = {
   'inshaat-talis': [num(['10', '40', '30', '35', '20', '15', '650', '600', '13000', '9000', '22000', '3000']), frac(4, 3), frac(3, 4), frac(4, 7),
     frac(40, 7), frac(30, 7), frac(10, 7), frac(40, 3), /5\{?,\}?7(?![0-9])/],
   'talis-hisab-atwal': TALIS_1,
+  // la synthèse (2026-11-10, pilote du recette « synthèse ») : des jetons DISTINCTIFS seulement — le défi 🏆 (module 8) et les réponses de la
+  // وضعية de l'unité (module 7). Jamais 2 ou 4 nus (ils toucheraient r^2 ou 1→2→3→4) ; le balayage complet par rôle est
+  // wadiya-idmajiya-talis/content/mission.test.js.
+  'wadiya-idmajiya-talis': [num(['201{,}06', '804{,}25', '50{,}27', '91{,}125', '286{,}28']), /10\{?,\}?5(?![0-9])/, /64\s*\\pi/, /\\dfrac\{14\}\{2\}/,
+    /12\s*-\s*h/, /18r\s*=\s*72/, /24r\s*=\s*108/, /7\{?,\}?25(?![0-9])/, /\\dfrac\{18\s*-\s*[hr]\}\{18\}/],
 };
 const BOOK = [/الكتاب(?!ة)/, /تمرين\s*\d+\s*:/, /خطأً? مطبعي/];
 const lessonOf = (path) => path.split('/')[1];
@@ -55,7 +60,10 @@ describe('unit 9 — mission strings and knowledge maps', () => {
     expect(Object.keys(configs).length).toBeGreaterThanOrEqual(4);
     expect(Object.keys(graphs).length).toBeGreaterThanOrEqual(4);
     // the raw scans really read each converted lesson's knowledge, map, textbook and exercise files
-    expect(Object.keys(raw).filter((path) => CLIMAX[lessonOf(path)]).length).toBeGreaterThanOrEqual(4 * Object.keys(CLIMAX).length);
+    // (la synthèse n'a pas de content/exercises.js : chaque leçon convertie a au moins ses cartes, sa carte des معارف et ses textes)
+    Object.keys(CLIMAX).forEach((id) => {
+      ['knowledge.jsx', 'knowledgeGraph.js', 'content/textbook.js'].forEach((f) => expect(Object.keys(raw).some((path) => path === `../${id}/${f}`), `${id}/${f}`).toBe(true));
+    });
     expect(Object.values(raw).every((src) => typeof src === 'string' && src.length > 100)).toBe(true);
   });
   it('the signature regexes catch what they must (negative controls)', () => {
@@ -67,6 +75,10 @@ describe('unit 9 — mission strings and knowledge maps', () => {
     ['طولها 10 cm', '$\\dfrac{MA}{MB} = \\dfrac{4}{3}$', '\\dfrac{4}{7}', '$AN = 40$', '35 m', '$5{,}7$', '\\dfrac{40}{7}', '650'].forEach((s) => expect(hit3(s), s).toBe(true));
     ['$AB = 9$', '\\dfrac{14}{3}', '\\dfrac{2}{3}', '$2{,}4$', '\\sqrt{13}', '\\dfrac{3}{5}', '12 cm', '110', '5,75', '$a^2+b^2$'].forEach((s) => expect(hit3(s), s).toBe(false));
     // leçon 1 : des jetons PAR RÔLE — le couple « lettre = valeur » de la مسألة, jamais ses petits nombres nus
+    // la synthèse : ses jetons distinctifs (défi 🏆 et réponses du module 7), jamais ses petits nombres
+    const hitS = (s) => CLIMAX['wadiya-idmajiya-talis'].some((re) => re.test(s));
+    ['$64\\pi$', '$10{,}5$ m', '$\\dfrac{14}{2}$', '$12 - h$', '$18r = 72$', '$24r = 108$', '$7{,}25$', '$\\dfrac{18 - h}{18}$', '201{,}06'].forEach((s) => expect(hitS(s), s).toBe(true));
+    ['$r^2$', '$1\\to2\\to3\\to4$', '$12{,}5$', '$40r=336$', '$75\\pi$', '$\\dfrac{16-h}{16}$', '$6{,}5$'].forEach((s) => expect(hitS(s), s).toBe(false));
     const hit1 = (s) => CLIMAX['talis-hisab-atwal'].some((re) => re.test(s));
     ['$AB = 10$', 'AC = 12', "$AB' = 4$", "$AB' = 4{,}5$", '$4{,}8$', '$B\'C\' = 2{,}4$', '5,6', '\\dfrac{2}{5}', '$0{,}4$', '180 كرسيًّا', '54', '$AD = 15$', '$DE = 9$', '$BC = 6$'].forEach((s) => expect(hit1(s), s).toBe(true));
     ['$AC = 4{,}5$', '$BE = 12$', '$AP = 10$', '$AB = 6$', "$AB' = 3{,}2$", "$AB' = 1{,}6$", '$BC = 6{,}1$', '$2{,}45$', '12,54', '$DN = 2{,}5$', '\\dfrac{1}{3}', '$AB = 5$', '$OE = 1{,}5$', '2,24', '$0{,}45$', '154'].forEach((s) => expect(hit1(s), s).toBe(false));

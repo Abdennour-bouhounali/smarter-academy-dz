@@ -6,6 +6,7 @@ import { scopedStorage } from '../../../../utils/storage';
 import { useLabJump } from '../../mission/missionPlayerContext';
 import {
   emptyLog, logEvent, roundWon, starsFor, starCriteria, needsHelp, roundUnlocked, jumpTarget, resumeRound, readStars, recordStars, STARS_EVENT,
+  easierProps, releasesOnEasyWin,
 } from './roundsModel';
 
 /**
@@ -34,6 +35,8 @@ export default function LabRounds({ lessonId, labId, rounds, onRoundWon, onVerdi
   const [practice, setPractice] = useState(false);
   const [helpOff, setHelpOff] = useState(false);
   const [practiceDone, setPracticeDone] = useState(false);
+  // le journal de la manche au moment où l'élève part s'entraîner : il choisit les nombres de l'entraînement (`easier.props` fonction)
+  const [mainLog, setMainLog] = useState(emptyLog);
   const announced = useRef(new Set());
   // gagnée UNE fois par passage ; le minuteur de la carte vit hors de l'effet (un nouvel événement ne doit pas l'annuler)
   const wonRef = useRef(false);
@@ -62,6 +65,14 @@ export default function LabRounds({ lessonId, labId, rounds, onRoundWon, onVerdi
     if (practice) {
       if (wonRef.current || !round?.easier || !roundWon(round.easier, log)) return;
       wonRef.current = true;
+      // l'entraînement gagné LIBÈRE la manche quand elle le dit : 1 ★ (jamais moins que ses meilleures), les étapes qui l'attendent s'ouvrent
+      if (releasesOnEasyWin(round)) {
+        const all = recordStars(scopedStorage, lessonId, labId, round.id, 1);
+        setBest(all[labId] ?? {});
+        window.dispatchEvent(new Event(STARS_EVENT));
+        announced.current.add(round.id);
+        onRoundWon?.(round.id);
+      }
       winTimer.current = setTimeout(() => setPracticeDone(true), WIN_DELAY_MS);
       return;
     }
@@ -85,7 +96,7 @@ export default function LabRounds({ lessonId, labId, rounds, onRoundWon, onVerdi
     clearTimeout(winTimer.current); wonRef.current = false; setIndex(i); setLog(emptyLog()); setWin(null);
     setPractice(false); setPracticeDone(false); setHelpOff(false);
   };
-  const startPractice = () => { clearTimeout(winTimer.current); wonRef.current = false; setLog(emptyLog()); setPractice(true); setPracticeDone(false); };
+  const startPractice = () => { clearTimeout(winTimer.current); wonRef.current = false; setMainLog(log); setLog(emptyLog()); setPractice(true); setPracticeDone(false); };
   const showHelp = !practice && !win && !helpOff && needsHelp(round, log);
   const returnsToStep = Boolean(win && labJump?.stepIndexFor?.(win.roundId) >= 0);
   const nextIndex = rounds.findIndex((r, i) => i > index && roundUnlocked(rounds, i, best));
@@ -125,7 +136,7 @@ export default function LabRounds({ lessonId, labId, rounds, onRoundWon, onVerdi
           // la manche d'entraînement : ses événements NE remontent PAS au module (d'autres nombres que la vraie manche)
           <Manipulation
             key={`${labId}:${round.id}:easy`}
-            {...round.easier.props}
+            {...easierProps(round, mainLog)}
             levels={false}
             onVerdict={(v) => setLog((l) => logEvent(l, 'verdict', v))}
             onTrial={(e) => setLog((l) => logEvent(l, 'trial', e))}
@@ -157,10 +168,28 @@ export default function LabRounds({ lessonId, labId, rounds, onRoundWon, onVerdi
                 <span className="ms-2 text-base font-bold text-slate-600">{practiceDone ? '' : (round?.easier?.helpLine ?? t('manipulation.rounds.helpLine'))}</span>
               </p>
               {practiceDone ? (
-                <button type="button" onClick={() => go(index)} data-round-practice-back autoFocus
-                  className="min-h-[52px] rounded-2xl bg-emerald-600 px-6 text-lg font-black text-white shadow-[0_4px_0_0_#047857] hover:bg-emerald-700">
-                  {t('manipulation.rounds.practiceBack', { n: index + 1 })} <span aria-hidden="true">←</span>
-                </button>
+                <>
+                  {/* la manche est LIBÉRÉE (`easier.releases`) : l'étape qui l'attendait, ou la manche suivante, est proposée d'abord */}
+                  {releasesOnEasyWin(round) && labJump?.stepIndexFor?.(round.id) >= 0 && (
+                    <button type="button" // la manche repart PROPRE (journal vide, wonRef remis) avant le retour à l'étape — revue 2026-11-10
+                      onClick={() => { go(index); labJump.toStep(round.id); }} data-round-return autoFocus
+                      className="min-h-[52px] rounded-2xl bg-emerald-700 px-6 text-lg font-black text-white shadow-[0_4px_0_0_#065F46] hover:bg-emerald-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2">
+                      {t('manipulation.rounds.backToStep')} <span aria-hidden="true">←</span>
+                    </button>
+                  )}
+                  {releasesOnEasyWin(round) && !(labJump?.stepIndexFor?.(round.id) >= 0) && nextIndex >= 0 && (
+                    <button type="button" onClick={() => go(nextIndex)} data-round-next autoFocus
+                      className="min-h-[52px] rounded-2xl bg-indigo-700 px-6 text-lg font-black text-white shadow-[0_4px_0_0_#3730A3] hover:bg-indigo-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2">
+                      {t('manipulation.rounds.next')} <span aria-hidden="true">←</span>
+                    </button>
+                  )}
+                  <button type="button" onClick={() => go(index)} data-round-practice-back
+                    // le focus va au PREMIER bouton de la carte : celui-ci quand ni « عُد إلى الخطوة » ni « الجولة التالية » ne s'affiche
+                    autoFocus={!releasesOnEasyWin(round) || !(labJump?.stepIndexFor?.(round.id) >= 0 || nextIndex >= 0)}
+                    className="min-h-[52px] rounded-2xl bg-emerald-700 px-6 text-lg font-black text-white shadow-[0_4px_0_0_#065F46] hover:bg-emerald-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2">
+                    {t('manipulation.rounds.practiceBack', { n: index + 1 })} <span aria-hidden="true">←</span>
+                  </button>
+                </>
               ) : (
                 <>
                   <button type="button" onClick={startPractice} data-round-help-go autoFocus

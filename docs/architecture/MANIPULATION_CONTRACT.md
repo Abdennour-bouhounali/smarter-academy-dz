@@ -2801,6 +2801,29 @@ Since 2026-11-10 (unit 9, lesson 2) a `build` may also set `accept` (other filli
   it) what a round can show. **No person is drawn in this lab**: a child beside the stick would cast a shadow longer than the stick's and the
   picture would lie (the people are in the mission scene). To play it in another lesson: pass `steps`, `chains`, `predict?`, `lead`, `mission`
   and, for a new object, `objectName`.
+- **Sixteenth example (2026-11-10, unit 9 — the FIRST synthesis):** lesson `wadiya-idmajiya-talis`, module 7 « وضعية الوحدة », `content/rounds.js`
+  (`M7_ROUNDS`, `LabRounds labId="m7-wadiya"`, councils S and C of 2026-11-10). **Two labs in one `LabRounds`**: round `zill` is `shadow-meet` (the
+  minaret 7,25 m at 15:00, `ask: null`, **`hideHeight`** — the meet alone; the height is the answer of module 7's step 2, so the scene, the
+  journal, the verdict and `shownValues` never write it — and the chain **`why`**: one sentence among three, no number); rounds `r1`, `r2`, ⭐ and
+  free are `cone-cylinder` in its **player version** `geometry/ConeCylinderPlayer.jsx` (`ConeCylinder.jsx`'s default export picks it when
+  `useInMissionPlayer()`; the page and teacher lab are unchanged). The player rules: **one trial = one press** on « أدخِل الأسطوانة » (h and r are
+  set freely, nothing is judged during the gesture, the cylinder stays blue); the verdict touches (green) / leaves a DRAWN gap / pierces (refused,
+  hatched, ✗ + a word); **no number, no volume and no point letter** in any verdict or on the drawing (only `H = …`, `R = …`, h, r); the same
+  (h ; r) pressed twice is not a trial (the verdict « جرّبتها من قبل » is shown and announced again); `freeFirstRefusal`; an **explicit `n`**
+  (`initPlayer` never calls `divisionsFor`: h = r must NOT be on the grid — it stays module 7's equation and the 🏆); **`lockH`** (h fixed: find r)
+  and **`lockR`** (a list: r fixed, find h — the reverse task; the next value comes at the next move, so the verdict of the press stays visible);
+  `start: { h, r }`. `onVerdict { groups: the h notch, exact, free? }`, goals `{ discovered }` (two touching cylinders of different h + a refusal
+  or a gap, `{ tk: 'discovered' }`), `{ exact: i }`, `{ allExact: [...] }`, `{ anyExact }`, checkpoints. `chains`: **`sec`** (at the first
+  cylinder that touches: r/R and (H − h)/H picked AS NUMBERS among three unreduced chips — the decoy h/H; `fill` with `render` = a real fraction
+  bar), **`r2`** (once the `build` cylinder AND another one touch: BUILD « r/R = □/□ » in numbers — r and R preset, tiles H − h, H and the decoy h —
+  then the rule IN WORDS, its decoys « $r + h$ ثابت » and « r/R = h/H » refuted by the student's own cylinders), `none`. `predict`: `part` (« at
+  the first notch, a fifth of H: is r a fifth of R? ») and `double` (h doubled from notch 1 to 2: r becomes less than / exactly / more than half),
+  asked at the start of the round, judged when those cylinders touch. `choices: { cones: [{ H, R, n }] }`. The journal « 📋 جدول تجاربك » (#, h, r,
+  the verdict word; r/R and (H − h)/H after `sec`), an always-mounted `sr-only` live region keyed per press, an `sr-only` scene description,
+  `aria-disabled` frozen controls, the r slider `aria-orientation="vertical"`, `LabCoach` (`coachOfPlayer`: h handle → r handle → the press
+  button; never a notch). `shownValuesPlayer(props)` lists by role (`cone-H`, `cone-R`, `h`, `r`, `OT`, `ratio`, `value`, `square`). Strings:
+  `lesson.manipulation.json › coneCylinderPlayer`. Two page fixes on the way: `discoveryOptionsOf` no longer says that two EQUAL products differ
+  (r × h is the same for h and H − h: `dWhyProdSame`), the r handle's pointer maths follows the track's displayed height.
 - **Blocking:** `cp.blocking` stays true until the chain is finished; the lab hides its « next task » button meanwhile.
 - **Guided, never told first:** wrong try 1 → the chosen option's `why` (else hint 1); try 2 → hint 2 (sharper); try 3 →
   the answer AND its explanation (the student is never stuck forever). A wrong option stays struck and disabled.

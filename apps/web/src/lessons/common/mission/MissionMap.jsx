@@ -37,7 +37,7 @@ export default function MissionMap({ stations, basePath, here, onNavigate, lesso
         );
         const label = (
           <span className={`mt-1.5 line-clamp-3 text-center text-xs leading-snug ${locked ? 'text-slate-400' : 'font-bold text-slate-700'}`}>
-            <MathLabel>{stationLabel(s.title)}</MathLabel>
+            <MathLabel>{s.label ?? stationLabel(s.title)}</MathLabel>
           </span>
         );
         const status = done ? t('mission.done') : locked ? t('mission.locked') : isHere ? t('mission.here') : big ? t('mission.climax') : s.kind === 'bonus' ? t('mission.bonus') : '';

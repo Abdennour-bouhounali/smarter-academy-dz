@@ -12,6 +12,8 @@ import React from 'react';
  *   <FloorBanner x y w h? split? painted? colors? strokes? />   la banderole étendue, en deux couleurs (leçon 3)
  *   <BigCompass x y open? height? /> · <Straightedge x1 y1 x2 y2 />   le compas d'atelier, la règle NON graduée (leçon 3)
  *   <Projector x y /> · <LightBeam from top bottom lit? /> · <CinemaScreen x y w h lit? /> · <ChairRows x y w rows? />   le ciné-club de nuit (leçon 1)
+ *   <Sun x y r? /> · <PlainTower x foot h w? /> · <SunRay from to /> · <GroundShadow x1 x2 y />   la place à l'heure de l'ombre (la synthèse) : une tour
+ *                                                           SANS aucun symbole, le soleil, un rayon, les ombres au sol
  * Les personnes ne sont JAMAIS dessinées ici : KidFigure seulement (filles en hijab), posé par la scène.
  */
 export function SceneBackdrop({ width = 480, height = 260, ground = 232, sky = '#E0F2FE', soil = '#D6D3D1' }) {
@@ -202,4 +204,40 @@ export function ChairRows({ x, y, w, rows = 2, perRow = 7 }) {
       }))}
     </g>
   );
+}
+
+/** Le soleil : un disque et huit rayons courts (la synthèse de l'unité 9, 2026-11-10). */
+export function Sun({ x, y, r = 16 }) {
+  return (
+    <g data-sun>
+      {Array.from({ length: 8 }, (_, i) => {
+        const a = (i * Math.PI) / 4;
+        return <line key={i} x1={x + Math.cos(a) * (r + 4)} y1={y + Math.sin(a) * (r + 4)} x2={x + Math.cos(a) * (r + 11)} y2={y + Math.sin(a) * (r + 11)} stroke="#F59E0B" strokeWidth="3" strokeLinecap="round" />;
+      })}
+      <circle cx={x} cy={y} r={r} fill="#FBBF24" stroke="#F59E0B" strokeWidth="2" />
+    </g>
+  );
+}
+
+/** Une tour CARRÉE et SIMPLE (aucun croissant, aucun dôme, aucun symbole) : un fût, un balcon, un toit plat — le haut M est en (x, foot − h). */
+export function PlainTower({ x, foot, h, w = 26 }) {
+  const top = foot - h;
+  return (
+    <g data-plain-tower>
+      <rect x={x - w / 2} y={top + 14} width={w} height={h - 14} fill="#FDE68A" stroke="#92400E" strokeWidth="1.4" />
+      <rect x={x - w / 2 - 5} y={top + 10} width={w + 10} height="6" fill="#B45309" />
+      <rect x={x - w / 2 + 4} y={top} width={w - 8} height="10" fill="#FEF3C7" stroke="#92400E" strokeWidth="1.2" />
+      {[0.35, 0.6].map((f) => <rect key={f} x={x - 4} y={top + 14 + (h - 14) * f} width="8" height="12" rx="4" fill="#92400E" opacity="0.7" />)}
+    </g>
+  );
+}
+
+/** Un rayon de soleil (pointillé doré) entre deux points. */
+export function SunRay({ from, to }) {
+  return <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke="#D97706" strokeWidth="2" strokeDasharray="6 4" data-sun-ray />;
+}
+
+/** Une ombre portée au sol, de x1 à x2. */
+export function GroundShadow({ x1, x2, y }) {
+  return <path d={`M${x1} ${y + 1} L${x2} ${y + 1} L${x2 - 5} ${y + 8} L${x1} ${y + 8} Z`} fill="#1E293B" opacity="0.32" data-ground-shadow />;
 }

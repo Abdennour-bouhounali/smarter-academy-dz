@@ -1396,6 +1396,72 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
 - **Scan only what a screen WRITES.** `shownValues` must follow the round's chains: `shadow-meet` lists the ratio OB/OA only when
   `chains: 'same'` writes it (the practice lamppost of 1,5 m has OB/OA = 2/3, a climax ratio, but no screen of that round writes a ratio).
 
+### Synthesis in the mission player — engine fields (PROVISIONAL until a real student has played the pilot)
+
+Added on 2026-11-10 for the first synthesis lesson (unit 9, `wadiya-idmajiya-talis`; councils of 2026-11-10). The pilot is now CONVERTED
+(same day) and uses every field below; the recipe for the other syntheses is in `docs/reports/MISSION_ROLLOUT_PROGRESS.md` › « The synthesis
+recipe » — PROVISIONAL until a real student has been timed on the pilot (module 7 ≤ 32 min, module 8 finished). The fields may still change.
+
+**Every field is opt-in.** A lesson that sets none of them behaves exactly as before (tests: `mission/missionModel.test.js`,
+`mission/missionOwned.render.test.jsx`).
+
+A synthesis teaches no new knowledge, so nothing is earned on the way: the student already owns the unit's keys and the six trainings
+show which key each situation USES.
+
+| Field (in `LESSON_CONFIG.mission` unless noted) | Default | Effect | Read in |
+|---|---|---|---|
+| `toolsOwned: true` | absent: tools are earned from the lesson's knowledge | Every tool is owned from the first screen, never 🔒. A tool is defined by the config alone, `{ id, label, emoji (or icon), usedIn: [modules] }`, so its `id` may be a knowledge item of ANOTHER lesson of the unit. Each tool carries `used` = one of its `usedIn` modules is completed. | `missionModel.js › missionTools`, `toolLit`, `toolProgress`, `sceneFill` |
+| `tools[].usedIn` | `[]` (the key is never lit) | The modules that use this key. Only read with `toolsOwned`. | `missionTools` |
+| `stationLabels: { [module]: label }` | the part of the module title after « — » | The short name of a station on the map, in « واصل: … » and on the arrival card. Unit syntheses use « وضعية الوحدة » (module 7) and « التحدّي 🏆 » (module 8). | `missionStations` (each station has `label`); `MissionMap`, `MissionHome`, `MissionLayer` |
+| `climaxModule: <last module>` | — (existing field) | The 🏆 station is the lesson's last module (`BossFinal`); no bonus station follows it, then « التمارين ». Needs no new code; it is now tested. | `missionStations` |
+| `checkpoints: []` | — (existing field) | No checkpoint is ever asked. Needs no new code; it is now tested. | `pendingCheckpoint` |
+| `trainings: [1, 2, 3, 4, 5, 6]` | absent: no counter | The home shows « وضعيات تدريبية: n / 6 », counted from the completed modules. There is NO training star (a step is one try, so a star would be a grade). | `trainingsDone`; `MissionHome` (`data-mission-trainings`) |
+| `hideStars: true` | absent: the ⭐ counter always shows | The ⭐ counter of the bar and the home is hidden **while it reads 0** and appears with the first lab star. It is not hidden for good, because a synthesis may have lab rounds (module 7) whose stars must show. | `showStars`; `MissionBar`, `MissionHome` |
+| `durationMin` | `config.estimatedDurationMin` | The duration shown on the opening view. The catalogue value is untouched. | `openingMinutes`; `MissionHome` |
+| `sittings: 2` | absent: nothing | The opening view adds « في جلستين ». Only the value 2 has a string. | `MissionHome` (`data-mission-sittings`) |
+| `resumeInside: true` | absent: a module opens on its first screen | In the player, a `GuidedProblem` whose saved answers are restored jumps ONCE to its first open part, at that part's last page (`resumePart`). It never jumps if the student already moved, on a completed module, or outside the player. | `GuidedProblem` → `ContentModule` prop `resumeStep` |
+| *(no `lessonProblem` in the config)* | — | The mission-title dialog of the bar shows `mission.title`, `mission.opening.text` and the scene instead of an empty window. | `MissionLayer` |
+| step `shape` / `unit` / `subject` / `factor` (in `content/problems.js`) | absent: the bare box with `prefix` / `suffix` | A typed step of a guided problem is entered in its own shape. Contract: `EXERCISE_CONTRACT.md` § « قوالب الإجابة », « Typed steps of a guided problem ». | `guidedProblem.js › stepTemplate`; `NumericQuestion` prop `template` |
+
+With `toolsOwned`, the home and the bar change as follows:
+
+- The opening view says « مفاتيحك معك: » instead of « ستجمع في الطريق: » and the scene is full (`fill = 1`) on every screen.
+- A **used** key is a filled amber chip with a ✓; an **owned, not used yet** key is a plain ring with its icon and label intact.
+- The two states never differ by colour alone: the ✓ is the visible cue, and the accessible name says « استعملته » or « معك، لم تستعمله بعد »
+  (`lesson.json › mission.toolUsed` / `mission.toolOwned`).
+- The ring reads used / total under « مفاتيحي ». On the bar, a key flies to its place when it has just been used.
+
+`opening.cta` was already config (« أجرّب » for a synthesis).
+
+**What the pilot added or fixed (2026-11-10), reusable by every synthesis:**
+
+- **The unit situation (module 7) plays its labs as rounds** (`LabRounds` behind `PlayerSwitch`; the teacher page keeps its workspace). Every
+  synthesis-only lab gets a player version first (here `cone-cylinder` → `geometry/ConeCylinderPlayer.jsx`; `MANIPULATION_CONTRACT.md` «
+  Sixteenth example »). `shadow-meet` takes `hideHeight` (a meet-only round whose height is a later step's answer) and the chain `why`.
+- **`LabRounds`**: `easier.props` may be a FUNCTION of the main round's log (the practice numbers avoid what the student already saw);
+  `easier.releases: true` — a practice win records 1 ★ (never fewer than the best) and announces the round as won, so the steps that wait for it
+  open and a stuck student is never locked out of the pen steps nor of the 🏆. `roundsModel › missesOf` counts a question ONCE (at its end:
+  right after retries, or revealed) — LabCheckpoint emits one event per try, and the wrong try + the right one used to count two misses.
+- **Role scan FIRST** (`content/forbidden.js` + `content/mission.test.js`): module 8's signature by role and module 7's own answers, scanned in the
+  six trainings, the memo cards (their BODIES too — the map is open), the knowledge map, the opening, « أستعدّ », the peer sheet and every round
+  (`shownValues` / `shownValuesPlayer`, practice rounds included). Cards and map write the method in LETTERS (`content/textbook.js › CARD`);
+  module 7 keeps its numbers at its own time.
+- **Steps for both views**: module 7 gained a notebook screen (« اكتب في 3 أسطر »), the letter equality « TC/SK = □/□ » before the substitution,
+  and a peer sheet (a wrong PLAN: Thales without the parallel) — text only, the teacher page sees them too. Links that leave the player
+  (`BackLink` to a lesson) are `PlayerSwitch`ed out. The pause before the 🏆 is a line in module 7's footer (player only).
+- **`resumeInside` really resumes now:** the questions of a guided problem restore their own saved answers BEFORE the problem restores its
+  saved progress (child effects run first); their `onAnswered` used to mark the problem « touched », which blocked the jump and overwrote the
+  saved progress with the partial one. `GuidedProblem` ignores those restoring calls and keeps the part-by-part maximum of both (walk: training
+  4, reload after part 1 → the player reopens on part 2).
+- **Answer shapes in a module** (outside `GuidedProblem`): `NumericQuestion template={stepTemplate({ kind: 'numeric', shape, unit })}` — without
+  `kind: 'numeric'` `stepTemplate` returns `null` (a bare box).
+- **Traps:** the data of a `sort` step are PLAIN text (`InfoSorter` writes them as they are: a « $ » showed raw — tested in `problems.test.js`);
+  a figure component inside a paged step must be ONE `data-paging-keep` block (the pager hid the minaret's SVG children); a long memo example
+  made `FitLine` oscillate (« Maximum update depth », teacher page) — `FitLine` now shrinks at once and grows again only when its frame's width changed; numbers with a Latin
+  unit in a lab `lead` reverse in RTL (« 25 cm » → write « 25 سم »), and « h = 5 » in a `PredictTray` prompt needs Unicode isolates (no `$`).
+
+*Not built:* the « smaller task » after a wrong training step (decided before the recipe binds); a home field announcing a station's minutes
+(module 7 says « ≈ 30 دقيقة ثم التحدّي 🏆 » in its own header).
 
 ### The rule that breaks lessons most often
 

@@ -46,7 +46,7 @@ every lab of the unit at once (verdict « Cross-lesson », « L1 », « L2 », �
 | 1 | `talis-hisab-atwal` | `shadow-meet` (a NEW one-lane player lab — verdict L1.1 = C; `shadow-world` stays the page and teacher lab, untouched) | ✅ done 2026-11-10 | `feat(lessons): talis-hisab-atwal — mission prototype` | See « Unit 9, lesson 1 » below. |
 | 2 | `aksiya-talis` | `parallel-level` (v2 treatment + LabCoach, new; « ضع الميزان ») | ✅ done 2026-11-10 | `feat(lessons): aksiya-talis — mission prototype` | See « Unit 9, lesson 2 » below. |
 | 3 | `inshaat-talis` | `segment-divider` (v2 treatment + LabCoach, new; both modes `equal` and `ratio`, `sameUnitOnly`, the cap) | ✅ done 2026-11-10 | `feat(lessons): inshaat-talis — mission prototype` | See « Unit 9, lesson 3 » below. |
-| S | `wadiya-idmajiya-talis` | `cone-cylinder` (to treat), `shadow-world` → `ShadowMeet` in the player | ⏳ converted LAST — owner rule 2026-11-10: « the synthesis must be built too, start with this unit » (pilot of the synthesis recipe, prompt §5); the student never sees the old view, so module 7's labs are treated for the player | | Decisions: two councils + the owner, 2026-11-10. |
+| S | `wadiya-idmajiya-talis` | `cone-cylinder` (player version, new — `ConeCylinderPlayer.jsx`) + `shadow-meet` (`hideHeight`, chain `why`) in ONE `LabRounds` of module 7; the page keeps `shadow-world` + `cone-cylinder` | ✅ built 2026-11-10 — the FIRST synthesis converted, pilot of the synthesis recipe (not committed: left to the owner) | | See « Unit 9, synthesis » and « The synthesis recipe » below. |
 
 ## Lab families — which have the v2 treatment
 
@@ -66,6 +66,7 @@ every lab of the unit at once (verdict « Cross-lesson », « L1 », « L2 », �
 | `parallel-level` | ✅ (2026-11-10, both modes `ladder` and `crossing`, with or without an imposed ratio) | `aksiya-talis` (unit 9) |
 | `segment-divider` | ✅ (2026-11-10, both modes `equal` and `ratio`; `sameUnitOnly`, 3 graduations per rail) | `inshaat-talis` (unit 9) |
 | `shadow-meet` | ✅ (2026-11-10, born in the player: tasks `meet`, `ratio`, `flag`; asks `tap` and `type`; reusable through `steps`) | `talis-hisab-atwal` (unit 9) |
+| `cone-cylinder` | ✅ (2026-11-10, a PLAYER VERSION `ConeCylinderPlayer.jsx` chosen by `ConeCylinder.jsx` in the player: one trial = one press, `n` explicit, `lockH` / `lockR`, no number / volume / point letter in a verdict; the page lab is unchanged) | `wadiya-idmajiya-talis` (unit 9, synthesis) |
 | every other lab | ⏳ | — |
 
 ## Lesson 2 — `qawasim-adad-tabii` « قواسم عدد طبيعي » (2026-11-08)
@@ -1049,3 +1050,115 @@ not changed; (2) two checkpoints of the verdict fit three slots only (modules 1�
 already asks proportions); (3) the ratio chain is split in two stops (`ranks` at the first point, `rule` at both) instead of one stop of four
 questions — each question follows the gesture it is about; (4) the coach has no « graduate (d₂) too » bubble (it blocked the next mark); the
 lead and the reading line say it.
+
+## Unit 9, synthesis — `wadiya-idmajiya-talis` « أدمج تعلّماتي » (2026-11-10) — the FIRST synthesis in the player
+
+**Decisions (binding):** the owner (2026-11-10: « the synthesis must be built too »; the student NEVER sees the old view; module 7's labs come
+into the player; a training step may reveal its answer after one wrong try for the pilot; « اكتب الحلّ في كرّاسك ثم قارن »), council S1 (the
+existing engine, keys owned, no checkpoints, the 10-statement ladder, open map, 🏆 on module 8, « أجرّب », two sittings, resume inside a
+training, the peer sheet = a classmate's wrong PLAN), council S2 (NO training ★ — « n / 6 » and the keys lighting; module 8 untouched; renumber
+training 1; fresh memo-card numbers; cone radius 6 = a named exemption; a role scan written FIRST; labels « وضعية الوحدة » / « التحدّي 🏆 »),
+council C (module 7's labs: two required cone rounds 25/15 by hand and 25/10 with predictions, ⭐ 21/14 with r fixed, a meet-only minaret round,
+no V / no square cylinder / no number in a lab verdict, the letter equality built in the first pen step, a notebook screen, the peer sheet's
+error = Thales without justifying (TC) ∥ (SK), module 7 ≈ 29 min).
+
+**What was written (lesson):**
+- `lesson.config.js`: `studentView: 'mission'`, `knowledgeMapOpen`, the `mission` block (scene `shadow-square`, title « مهمّة الوحدة », an
+  opening without a digit, `cta: 'أجرّب'`, `toolsOwned` with the five keys of the three lessons and their `usedIn`, `checkpoints: []`,
+  `climaxModule: 8`, `stationLabels`, `trainings`, `hideStars`, `durationMin: 82` = the honest sum (module 7 now 30), `sittings: 2`,
+  `resumeInside`); textbook mentions removed from resources; `mutawassitat` dropped from `priorKnowledge` (no step uses it).
+- `content/forbidden.js` + `content/mission.test.js` — **the role scan, written first. It FAILED first** on training 1 (stick 1,5 / shadow 2 =
+  the 🏆's minaret), on the memo card `tariqat-zill` (module 7's own minaret) and on the map's `otKhata` (module 7's equality); then the content was
+  fixed. It also replays every round of module 7 to its goal (★★★ reachable), scans every value a round or a practice round can show
+  (`shownValuesPlayer`, `shownValues`), the leads and missions, the opening, the ladder and the peer sheet, and checks the config.
+- Training 1 renumbered (stick 1,2 m, shadows 1,8 / 11,7, height 7,8, ratio 6,5, 1000 دج/m → 7800 دج, a pupil of 1,7 m → 2,55 m; figure and
+  tests recomputed). Its saved answers need no reset: saving is on only in the mission view, which the lesson never had before.
+- The 26 typed training steps carry `shape` (11 + 4 lengths, 1 volume, 3 prices in دج, 2 « V = [ ]π » forms, 2 cross-product gaps, 3 decimals);
+  module 7's two typed steps use `stepTemplate({ kind: 'numeric', shape: 'quantity', unit })`. « DA » is gone. The data of the three sorting steps
+  are plain text (`InfoSorter` printed a raw « $ »).
+- Memo cards: fresh worked numbers (a 6,5 m tower; cones 16/10 and 28/12 → 40r = 336, r = 8,4; V = 75π); their bodies and the map's mistakes
+  speak in LETTERS (`content/textbook.js › CARD`).
+- « أستعدّ »: `content/prep.js` (10 statements, talis → aksiya → inshaat in cycle, levels 1·1·1·2·2·2·2·3·3·3, the first three true, each truth
+  recomputed in `prep.test.js`; « راجع » points to the unit's three lessons — catalogue prerequisites). The old seven stay in `textbook.js`.
+- Module 7 (`Module07AlWadiya.jsx`): the player plays `LabRounds labId="m7-wadiya"` (`content/rounds.js`): `zill` (`shadow-meet`, the minaret
+  at 15:00, `hideHeight`, chain `why`), `r1` (25/15, first refusal free, `sec`; practice: h locked on a notch NOT yet seen, r starting off the
+  answer), `r2` (25/10, predictions `part` and `double`, cylinders 5 / 10 / 20, BUILD 2/10 = 5/25 then the rule in words; practice h = 15),
+  ⭐ (21/14, r fixed 10 then 4), free (the three cones). Both practice rounds RELEASE their round. Steps (both views): 1–2 wait for `zill`
+  (a rebuilt line « 15:00 · AB = 10 m · OA = 11,6 m »), 3–5, **6 the notebook screen**, **7 waits for `r2`** and opens on the letter equality
+  « TC/SK = □/□ » (OT/OS, the decoy ST — a tap on the filled pair) before the substitution 18/6 (its panel lists the r2 cylinders, no V), 8 h = r,
+  9 V, 10 the check (a cylinder refused in this sitting supports « 7,2 > 6 »), **11 « ورقة هاجر »** (`content/peerSheet.js`: a plan, no number,
+  the error line = two alignments without the parallel). The `BackLink`s are page-only; the footer adds a pause line before the 🏆 (player).
+- `components/MinaretFigure.jsx`, `ConeFigure.jsx`: `data-paging-keep` (the pager hid the SVG's children). Scene `mission/ShadowSquareScene.jsx`
+  on new `thalesSceneKit` primitives (`Sun`, `PlainTower` — no symbol —, `SunRay`, `GroundShadow`); KidFigure only, the girl in hijab.
+- Unit page: `pages/unit/unitMissions.js › khassiyat-talis` (icons 🎬 🖌️ 🚩 🧩, the challenge = the minaret rewritten from its two shadows 11,6 / 1,6
+  — never 7,25 nor 10 m, a number of `inshaat-talis`'s climax —, the five keys = the mission's five tools, al-Bīrūnī's treatise on shadows);
+  `unitMissions.test.js` adapted (a three-lesson unit hands two keys in one lesson).
+
+**Added to shared code:** `cone-cylinder`'s player version (`geometry/ConeCylinderPlayer.jsx`; logic appended to `logic/coneCylinder.js`;
+`MANIPULATION_CONTRACT.md` « Sixteenth example »); `shadow-meet` `hideHeight` + chain `why`; `LabRounds`/`roundsModel`: `easierProps` (a function of
+the main log), `easier.releases`, `missesOf` counts a question once; `FitLine` shrinks at once and grows only when its frame changed (an oscillation crashed the
+teacher page on a memo example); the page `cone-cylinder`: `discoveryOptionsOf` never calls two equal products different, the r handle follows the
+track's displayed height. `GuidedProblem` (`resumeInside`): restoring sub-questions no longer block the resume nor overwrite the saved progress.
+`UnitMissionView`: a synthesis window (`toolsOwned`) lists no tools (its keys are the unit's; the window scrolled at 1366 and 1024).
+
+**Review (`ecc:react-reviewer`, `ecc:code-reviewer`, `ecc:a11y-architect`; each finding checked in the code):**
+- Fixed — the practice-done « عُد إلى الخطوة » restarted the main round on the PRACTICE log with `wonRef` still set (no stars, no win card
+  afterwards): it now goes through `go(index)`. A cylinder pressed again after another one showed nothing (`isDirty` compared the last TRIAL, not the
+  last PRESS). The r1 practice round STARTED on its answer (h = 20, r = 3): its r now starts off the answer, tested for every seen-set. The `r2`
+  rule could quote a single sum: the chain now waits for two touching cylinders. `lockR` moved r at once, hiding the verdict of the press: the next
+  value now comes at the next move. ⭐'s hints spoke of r while r is fixed (`hintLockR*`). `said` survived « إعادة ». `FitLine`'s dead band could leave
+  a line < 2 % too wide (shrinking now always applies).
+- Fixed (a11y) — focus after a lab question and after the notebook press (the button stays, `aria-disabled`, beside an always-mounted status); a
+  repeated « جرّبتها » is announced again (the live key counts presses); the r slider is `aria-orientation="vertical"`; a locked slider says so in
+  its value text; the idle cylinder stroke is sky-700; the new LabRounds buttons are -700 with the indigo ring, and the practice-back button takes
+  the focus when it is the card's only way on; WonPanel's ✓ has a hidden word; the 🏆 of the pause line is `aria-hidden`.
+- Not changed (and why): `missesOf` now ignores intermediate wrong tries of a question until it settles (right after retries or revealed — the
+  reveal comes at the 3rd try): the help card no longer covers a lab after ONE wrong answer, which is what the « two misses » rule meant; the page's
+  `stickLine` / `coneLine` keep ✓ / ✗ in strings (page and teacher only, unchanged code); the zoom term in the handles' `toValue` is redundant when
+  `useStretchInteraction` already rescales — harmless, kept for the page fix; `onRoundWon` may fire twice for a released round (its consumers are
+  idempotent); the page `v.meet` names O — the minaret scene keeps module 7's letters (only the cone lab has none); the unit page shows 11,6 and 1,6
+  on purpose (the unit challenge IS module 7's تحدّ; never its answer).
+
+**Traps:** the walk found most of them — see the guide's « Synthesis in the mission player » › « What the pilot added or fixed ». Also: never edit
+`src/` while a Playwright walk runs (Vite HMR resets the lab mid-walk; a whole run was lost); Playwright refuses to click an `aria-disabled` button
+(a walk driver must skip them).
+
+**Verification:** vitest `src/lessons src/features/practice src/pages/unit` (695 files, 12 527 tests), `check:lessons` exit 0 (entry 241,3 KB
+gzip), `lab-rollout-status` ✅ for the synthesis and the unit's three lessons, `e2e/unit-mission-view.mjs` 251 ✓ / 0 ✗ (units 1, 2 and 9).
+Playwright (scratchpad `walk-s/`) at 1366×768, 1024×768 and 1920×1080: the home (first visit and return: five keys owned, « n / 6 », no ⭐ 0, the
+title dialog, « في جلستين », 82 min); « أستعدّ » (10 + the review with « راجع »); the six trainings unit by unit with all 26 typed steps in their
+shape, Enter validating each (one wrong first in training 2); module 7 by hand to ★★★ in every required round (a free refusal, the same cylinder
+twice, a wrong `sec` answer then the right one, both predictions, the build, the rule), the steps (7,25 m and 4,5 cm typed, the notebook, the letter
+build, the peer sheet), the round wins kept over a reload; « إعادة », three refusals → « جرّب أصغر » → the practice round (h locked off the answer)
+→ r1 released at 1 ★ and r2 open; resume inside training 4 after a reload (part 2 reopened); keys lighting after trainings 1–3; module 8 (fits,
+6 questions, the result); the knowledge map (no signature); the peer sheet restored after a reload; the teacher view (the workspace with its two
+levels, the page cone lab with its volume line, 11 steps, the back links) — 0 `data-fit-overflow`, 0 page scroll, 0 clipped or wrapped `.katex`,
+0 console error (outside the practice station, where the mocked API answers `{ data: [] }` — the same error on `talis-hisab-atwal`). **Module 7's
+required path, automated: ≈ 78 s** (a machine, not a student: 3 rounds = 9 presses, 4 lab questions, 11 steps) — the student target (≈ 29 min)
+is still to be measured on a real student.
+
+## The synthesis recipe (PROVISIONAL until a real student has been timed on the pilot: ≤ 32 min for module 7, module 8 finished)
+
+For the ~11 other unit syntheses, once the unit's lessons are converted. The pilot is `wadiya-idmajiya-talis` (above); the engine fields are in
+`LESSON_DEVELOPMENT_GUIDE.md` › « Synthesis in the mission player ». Do not copy before the owner has seen one student play the pilot.
+
+1. **Role scan FIRST** (`content/forbidden.js` + `content/mission.test.js`): the 🏆's signature (module 8, never retouched) BY ROLE and module 7's
+   own answers, over the trainings, the memo cards (bodies too), the knowledge map, the opening, « أستعدّ », the peer sheet, every lab round and
+   practice round (`shownValues`). Make it fail on the current content, then fix the content — renumber a training, give the cards fresh numbers,
+   write cards and map in letters. A shared GIVEN may be a named exemption (never a shared pair or answer).
+2. **Config:** `studentView: 'mission'`, `knowledgeMapOpen`, `mission.toolsOwned` with the unit's keys (ids of the unit's lessons' `knowledge.jsx`)
+   and their `usedIn`, `checkpoints: []`, `climaxModule` = the last module, `stationLabels: { 7: 'وضعية الوحدة', 8: 'التحدّي 🏆' }` (the same in
+   every unit), `trainings: [1..6]`, `hideStars: true` (**no training ★**: a step is one try), `durationMin` = the honest sum, `sittings: 2`,
+   `resumeInside: true`, `opening.cta: 'أجرّب'`, an opening without a digit, a thin scene on the unit's scene kit.
+3. **« أستعدّ »:** a 10-statement ladder on the unit's lessons (skills in cycle, each with its lesson to revise); the old items stay as source.
+4. **Typed steps in their own shape** (`shape` / `unit` / `subject` / `factor`; « دج » not « DA »); sorter data in plain text.
+5. **Module 7 (the unit situation) in the player:** every synthesis-only lab gets the player treatment first; ONE `LabRounds` behind `PlayerSwitch`
+   (the teacher page keeps its workspace); **the lab takes at most 11 required minutes, in two rounds, on sibling numbers that pass the role scan**,
+   ends on the phenomenon with a NUMERICAL build (never the situation's own numbers, never its letters, no answer); practice rounds on pairs not
+   yet seen, never starting on their answer, and they RELEASE the round (`easier.releases`); the steps that need the lab wait for it
+   (`needsRound`); the letter / model equality is built in the FIRST pen step; a notebook screen « اكتب في 3 أسطر » before the pen steps; the
+   peer sheet LAST, carrying a JUSTIFICATION error (a plan, no number); `BackLink`s out of the player removed; a pause line before the 🏆.
+6. **The student never sees the old view**; module 8 untouched; « التمارين » after the 🏆; the unit page entry once the synthesis is done.
+7. **Verify** as for a lesson (prompt §7), plus: time the required path of module 7 (target ≈ 29 min for a student) and every typed step
+   at the three sizes.
+

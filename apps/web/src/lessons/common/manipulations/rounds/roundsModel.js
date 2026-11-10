@@ -125,7 +125,10 @@ export function starsFor(round, log) {
 export const HELP_MISSES = 2;
 export function missesOf(log) {
   const preds = (log.predictions ?? []).filter((x) => !x.ok).length;
-  const answers = (log.answers ?? []).filter((a) => !a.ok || a.tries > 1 || a.revealed).length;
+  // une question compte UNE fois, à sa fin : juste après des essais (`tries > 1`) ou montrée (`revealed`). LabCheckpoint émet un événement
+  // par essai — l'essai faux PUIS le bon comptaient deux ratés pour une seule question (vu dans la synthèse de l'unité 9, 2026-11-10 : la carte
+  // « جرّب أصغر » couvrait le labo après UNE réponse fausse)
+  const answers = (log.answers ?? []).filter((a) => (a.ok && a.tries > 1) || a.revealed).length;
   return preds + answers;
 }
 export function needsHelp(round, log) {
@@ -134,6 +137,21 @@ export function needsHelp(round, log) {
   const refusals = log.verdicts.filter((v) => !v.exact).length;
   return missesOf(log) >= HELP_MISSES || manyTrials || (round.helpAfterRefusals != null && refusals >= round.helpAfterRefusals);
 }
+
+/**
+ * Les props de la manche d'ENTRAÎNEMENT (`round.easier`) : un objet, ou une fonction du journal de la manche au moment où l'élève la quitte
+ * (la synthèse de l'unité 9, 2026-11-10 : « h verrouillé sur un cran PAS ENCORE inscrit » — le choix dépend de ce que l'élève a déjà vu).
+ */
+export function easierProps(round, log = emptyLog()) {
+  const p = round?.easier?.props;
+  return typeof p === 'function' ? p(log) : p;
+}
+
+/**
+ * Une manche d'entraînement GAGNÉE peut LIBÉRER la manche (`easier.releases`, synthèse 2026-11-10 : un élève bloqué ne doit pas l'être aussi
+ * des étapes au crayon ni du défi) : la manche compte alors pour gagnée avec 1 ★ (jamais moins que ses meilleures étoiles).
+ */
+export const releasesOnEasyWin = (round) => Boolean(round?.easier?.releases);
 
 /** Une manche est-elle ouverte ? La première, une manche libre, ou celle dont la manche requise précédente est gagnée. */
 export function roundUnlocked(rounds, index, best) {

@@ -22,13 +22,23 @@ export default function FitLine({ children, className = '', dir, ...rest }) {
   const outer = useRef(null);
   const inner = useRef(null);
   const [scale, setScale] = useState(1);
+  // la largeur du cadre lors du dernier rétrécissement : grandir n'est permis que si LE CADRE a changé (un cadre dont la largeur suit son
+  // contenu — `flex-1` dans une ligne — faisait osciller rétrécir / grandir sans fin : « Maximum update depth », page enseignant, 2026-11-10)
+  const shrunkAt = useRef(null);
   const measure = () => {
     const o = outer.current; const i = inner.current;
     if (!o || !i) return;
     // largeur naturelle = largeur actuelle ramenée à l'échelle 1
     const natural = i.scrollWidth / scale;
     const next = fitScale(natural, o.clientWidth);
-    setScale((s) => (Math.abs(s - next) < 0.01 ? s : next));
+    // rétrécir s'applique TOUJOURS (sinon la ligne déborde) ; grandir demande 2 centièmes de marge : une HYSTÉRÉSIS : la largeur ramenée à l'échelle 1 varie d'un arrondi à l'autre ; à 0,01 près le facteur pouvait
+    // osciller entre deux valeurs voisines, sans fin (« Maximum update depth exceeded », carte mémo de la synthèse de l'unité 9, 2026-11-10)
+    const room = o.clientWidth;
+    setScale((s) => {
+      if (next < s - 0.001) { shrunkAt.current = room; return next; }
+      if (next - s >= 0.02 && room !== shrunkAt.current) return next;
+      return s;
+    });
   };
   useLayoutEffect(measure);
   useLayoutEffect(() => {

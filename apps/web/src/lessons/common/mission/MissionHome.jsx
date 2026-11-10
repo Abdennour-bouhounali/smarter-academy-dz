@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import MathLabel from '../components/MathLabel';
 import { mathToPlain } from '../../../utils/mathPlain';
 import { useMission } from './useMission';
-import { stationLabel } from './missionModel';
+import { stationLabel, toolLit, toolProgress, sceneFill, trainingsDone, showStars, openingMinutes } from './missionModel';
 import MissionScene from './MissionScene';
 import MissionMap from './MissionMap';
 import MissionDialog from './MissionDialog';
@@ -21,17 +21,20 @@ import { isPracticeActive, practiceHubPath } from '../../../features/practice/pr
 export default function MissionHome({ config, basePath }) {
   const { t } = useTranslation('lesson');
   const navigate = useNavigate();
-  const { mission, state, update, tools, stations, resume, stars } = useMission(config);
+  const { mission, state, update, tools, stations, resume, stars, completedModules } = useMission(config);
   const [replay, setReplay] = useState(false);
   const [details, setDetails] = useState(false);
-  const earned = tools.filter((x) => x.earned).length;
-  const fill = tools.length ? earned / tools.length : 0;
+  // SYNTHÈSE (`mission.toolsOwned`) : les clés de l'unité sont possédées d'emblée — la scène est pleine, l'anneau compte les clés UTILISÉES
+  const owned = mission.toolsOwned === true;
+  const { lit } = toolProgress(tools);
+  const fill = sceneFill(mission, tools);
+  const trainings = trainingsDone(mission, completedModules);
   const target = resume ?? stations[0];
   const go = () => target && navigate(`${basePath}/${target.slug}`);
 
   // ── LA PREMIÈRE VUE : l'accroche (propriétaire, 2026-11-09 : plus claire, plus attirante, plus motivante) ──
   if (!state.opened || replay) {
-    const minutes = Number(config.estimatedDurationMin) || null;
+    const minutes = openingMinutes(config);
     return (
       <section className="mx-auto flex max-w-5xl flex-col gap-5 py-1" data-mission-opening>
         <div className="grid items-center gap-6 rounded-[2rem] border border-indigo-100 bg-gradient-to-br from-white via-indigo-50/60 to-amber-50/70 p-6 shadow-sm lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
@@ -45,15 +48,16 @@ export default function MissionHome({ config, basePath }) {
             </div>
             <div className="flex flex-wrap gap-2 text-sm font-bold" data-mission-facts>
               {minutes && <span className="rounded-full bg-white px-3 py-1 text-slate-700 ring-1 ring-slate-200">⏱ {t('mission.duration', { count: minutes })}</span>}
+              {Number(mission.sittings) === 2 && <span className="rounded-full bg-white px-3 py-1 text-slate-700 ring-1 ring-slate-200" data-mission-sittings>{t('mission.twoSittings')}</span>}
               <span className="rounded-full bg-white px-3 py-1 text-slate-700 ring-1 ring-slate-200">🧰 {t('mission.toolsCount', { count: tools.length })}</span>
               <span className="rounded-full bg-amber-100 px-3 py-1 text-amber-900">🏆 {t('mission.climax')}</span>
             </div>
           </div>
-          <MissionScene scene={mission.scene} fill={0} className="w-full drop-shadow-sm" label={mathToPlain(mission.opening.text)} />
+          <MissionScene scene={mission.scene} fill={owned ? 1 : 0} className="w-full drop-shadow-sm" label={mathToPlain(mission.opening.text)} />
         </div>
         {/* ce que le voyage apporte : les outils à gagner, puis la mission */}
         <div className="flex flex-wrap items-center justify-center gap-2" data-mission-preview>
-          <span className="text-sm font-bold text-slate-500">{t('mission.willCollect')}</span>
+          <span className="text-sm font-bold text-slate-500">{t(owned ? 'mission.youHave' : 'mission.willCollect')}</span>
           {tools.map((tool) => (
             <span key={tool.id} className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm font-bold text-slate-600">
               <span aria-hidden="true">{tool.icon}</span>{tool.label}
@@ -90,24 +94,37 @@ export default function MissionHome({ config, basePath }) {
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
               <p className="flex items-center gap-3 text-sm font-black uppercase tracking-wide text-indigo-500">📚 {t('mission.tag')}
-                <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-base text-amber-800" data-mission-stars={stars}>⭐ <span dir="ltr">{stars}</span></span>
+                {showStars(mission, stars) && <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-base text-amber-800" data-mission-stars={stars}>⭐ <span dir="ltr">{stars}</span></span>}
+                {trainings && (
+                  <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-base normal-case tracking-normal text-emerald-800" data-mission-trainings={`${trainings.done}/${trainings.total}`}>
+                    {t('mission.trainings')} <span dir="ltr">{trainings.done}{'\u00A0/\u00A0'}{trainings.total}</span>
+                  </span>
+                )}
               </p>
               <h1 className="font-space text-4xl font-extrabold text-slate-900">{mission.title}</h1>
             </div>
-            <ProgressRing value={earned} total={tools.length} label={t('mission.tools')} />
+            <ProgressRing value={lit} total={tools.length} label={t(owned ? 'mission.keys' : 'mission.tools')} />
           </div>
           <div className="flex flex-wrap items-center gap-2" data-mission-tools>
-            {tools.map((tool) => (
+            {tools.map((tool) => (owned ? (
+              // clé POSSÉDÉE : jamais 🔒 — utilisée = pleine + ✓ et le mot dit ; pas encore = simple anneau (l'état ne tient pas à la couleur)
+              <span key={tool.id} data-mission-tool={tool.id} data-earned="true" data-used={tool.used ? 'true' : 'false'}
+                className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-base font-bold ${toolLit(tool) ? 'bg-amber-100 text-amber-900' : 'bg-white text-slate-700 ring-2 ring-inset ring-slate-300'}`}>
+                <span aria-hidden="true">{tool.icon}</span>{tool.label}
+                {tool.used && <span aria-hidden="true" className="font-black text-emerald-700">✓</span>}
+                <span className="sr-only"> — {t(tool.used ? 'mission.toolUsed' : 'mission.toolOwned')}</span>
+              </span>
+            ) : (
               <span key={tool.id} data-mission-tool={tool.id} data-earned={tool.earned ? 'true' : 'false'}
                 className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-base font-bold ${tool.earned ? 'bg-amber-100 text-amber-900' : 'bg-slate-100 text-slate-400'}`}>
                 <span aria-hidden="true">{tool.earned ? tool.icon : '🔒'}</span>{tool.label}
               </span>
-            ))}
+            )))}
           </div>
           {resume ? (
             <button type="button" onClick={go} data-mission-continue
               className="min-h-[64px] w-full rounded-2xl bg-indigo-600 px-6 text-xl font-black text-white shadow-[0_5px_0_0_#3730A3] hover:bg-indigo-700 active:translate-y-0.5">
-              {t(started ? 'mission.continue' : 'mission.start', { title: mathToPlain(stationLabel(resume.title)) })} <span aria-hidden="true">←</span>
+              {t(started ? 'mission.continue' : 'mission.start', { title: mathToPlain(resume.label ?? stationLabel(resume.title)) })} <span aria-hidden="true">←</span>
             </button>
           ) : (
             <p className="text-2xl font-black text-emerald-700">🏆 {t('mission.allDone')}</p>

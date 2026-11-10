@@ -75,6 +75,7 @@ export default function ContentModule({
   objectives,     // [string] « ماذا سنتعلّم » de la page d'entrée présentée ; défaut : les titres des étapes
   steps,          // [{ num, title, subtitle?, done, content }]
   footer,         // contenu de fin, rendu quand allDone
+  resumeStep = null, // lecteur de mission : le `num` de l'étape où reprendre (GuidedProblem, `mission.resumeInside`) — un seul saut
 }) {
   const { xp, isModuleCompleted } = useProgress(ctx.lessonId);
   // QUI lit ce module : l'enseignant navigue librement entre les parties.
@@ -172,6 +173,21 @@ export default function ContentModule({
     }
   }, []);
   const isPaged = (key) => key.startsWith('step-') || key === 'footer';
+
+  // REPRISE DANS le module (lecteur seulement, `resumeStep` donné par GuidedProblem quand ses réponses gardées sont retrouvées) : UN saut
+  // vers l'étape où l'élève s'était arrêté, à sa dernière page (là où est la sous-étape ouverte). Jamais si l'élève a déjà bougé, ni
+  // sur un module terminé (une revisite commence au début), ni hors du lecteur (la page ne change pas).
+  const resumed = useRef(false);
+  useEffect(() => {
+    if (!play || resumed.current || resumeStep == null) return;
+    resumed.current = true;
+    const key = `step-${resumeStep}`;
+    const i = units.findIndex((u) => u.key === key);
+    if (i <= 0 || current !== 0 || page !== 0 || alreadyCompleted) return;
+    pendingLast.current = key;
+    goTo(i);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resumeStep, play]);
 
   // Par quel bout entrer quand une session leçon arrive ici (« السابق »
   // depuis le module suivant → la dernière unité).

@@ -97,6 +97,14 @@ describe('the second chance « لا بأس — جرّب أصغر » (pilot 2026-
     log = ev(log, 'trial', { tk: 'checkpoint', ok: true, tries: 2 });
     expect(needsHelp(hard, log)).toBe(true);
   });
+  it('a question counts ONCE: its wrong try then its right answer is one miss, not two (synthesis walk, 2026-11-10)', () => {
+    let log = ev(emptyLog(), 'trial', { tk: 'checkpoint', ok: false, tries: 1 });
+    log = ev(log, 'trial', { tk: 'checkpoint', ok: true, tries: 2 });
+    expect(missesOf(log)).toBe(1);
+    expect(needsHelp(hard, log)).toBe(false);
+    log = ev(log, 'trial', { tk: 'checkpoint', ok: false, tries: 3, revealed: true });
+    expect(missesOf(log)).toBe(2);
+  });
   it('many trials without winning also offer it, and a won round never does', () => {
     let log = emptyLog();
     for (let k = 0; k < 5; k += 1) log = ev(log, 'verdict', { groups: 5, exact: false });
@@ -260,5 +268,20 @@ describe('square-tiling (2026-11-10): the discovered goal, free refusals, help a
     log = logEvent(log, 'verdict', { groups: 5, exact: false });
     expect(needsHelp(round, log)).toBe(true);
     expect(needsHelp({ ...round, helpAfterRefusals: undefined }, log)).toBe(false);
+  });
+});
+
+describe('the easier round of the synthesis (2026-11-10): numbers chosen from what was seen, and a win that releases the round', () => {
+  it('easierProps: an object as before, or a function of the main round log', async () => {
+    const { easierProps, releasesOnEasyWin, logEvent: ev, emptyLog: empty } = await import('./roundsModel');
+    expect(easierProps({ easier: { props: { a: 1 } } })).toEqual({ a: 1 });
+    const pick = (log) => ({ lockH: [4, 3, 2, 1].find((i) => !log.verdicts.some((v) => v.exact && v.groups === i)) });
+    let log = empty();
+    expect(easierProps({ easier: { props: pick } }, log)).toEqual({ lockH: 4 });
+    log = ev(log, 'verdict', { groups: 4, exact: true });
+    expect(easierProps({ easier: { props: pick } }, log)).toEqual({ lockH: 3 });
+    expect(releasesOnEasyWin({ easier: { releases: true } })).toBe(true);
+    expect(releasesOnEasyWin({ easier: {} })).toBe(false);
+    expect(releasesOnEasyWin({})).toBe(false);
   });
 });

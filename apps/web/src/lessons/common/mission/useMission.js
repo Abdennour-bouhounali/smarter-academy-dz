@@ -44,7 +44,8 @@ export function useMission(config) {
     });
   }, [config?.id]);
 
-  const tools = useMemo(() => missionTools(mission, items.map((it) => it.id)), [mission, items]);
+  // `completedModules` : avec `mission.toolsOwned`, une clé s'allume quand un de ses modules `usedIn` est terminé
+  const tools = useMemo(() => missionTools(mission, items.map((it) => it.id), completedModules), [mission, items, completedModules]);
 
   const stations = useMemo(() => {
     if (!on) return [];
