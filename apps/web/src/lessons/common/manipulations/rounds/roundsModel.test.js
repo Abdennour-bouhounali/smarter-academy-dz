@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  allPairsSeen, needsHelp, missesOf, emptyLog, logEvent, conditionMet, roundWon, starsFor, roundUnlocked, resumeRound, readStars, recordStars, totalStars, starsKey,
+  allPairsSeen, needsHelp, missesOf, emptyLog, logEvent, conditionMet, roundWon, starsFor, roundUnlocked, jumpTarget, resumeRound, readStars, recordStars, totalStars, starsKey,
 } from './roundsModel';
 
 const play = (events) => events.reduce((log, [kind, ev]) => logEvent(log, kind, ev), emptyLog());
@@ -178,5 +178,21 @@ describe('reset — « إعادة » in the lab empties the round', () => {
     expect(log).toEqual(emptyLog());
     expect(conditionMet({ bracketed: 1 }, log)).toBe(false);
     expect(conditionMet({ checkpoint: 'rule' }, log)).toBe(false);
+  });
+});
+
+describe('the door to a round (jumpTarget, ECC review 2026-11-09)', () => {
+  const rounds = [{ id: 'r1' }, { id: 'r2' }, { id: 'r3' }, { id: 'challenge', optional: true }, { id: 'free', free: true }];
+  it('leads to the requested round when it is open', () => {
+    expect(jumpTarget(rounds, 1, { r1: 2 })).toBe(1);
+    expect(jumpTarget(rounds, 4, {})).toBe(4); // the free round is always open
+  });
+  it('never skips a closed round: it leads to the first required round not won', () => {
+    expect(jumpTarget(rounds, 1, {})).toBe(0);
+    expect(jumpTarget(rounds, 2, { r1: 3 })).toBe(1);
+    expect(jumpTarget(rounds, 3, {})).toBe(0);
+  });
+  it('an unknown round is -1', () => {
+    expect(jumpTarget(rounds, -1, {})).toBe(-1);
   });
 });

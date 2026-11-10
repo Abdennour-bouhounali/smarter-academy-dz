@@ -2650,6 +2650,13 @@ the mission player a lab is played as a PATH of rounds instead of the مبتدئ
   muted during a question. The ruler and the square re-measure on every render and the square takes the height left (`useMissionArea`, overhead 290 px).
   In the player the « never » rule's explanation and the formal block are COMPACT (`discoveryParts({ compact })`: the last bracket and (√a)² = a on one line,
   then the sentence) — the full list of brackets made the question column 580 px in a 555 px area at 1024×768.
+- **Ninth example (2026-11-09, unit 2):** lesson `natiqa-ghayr-natiqa`, `content/rulers.js` (`M1_ROUNDS`, GRADUATION mode: 16 and 2 by hand to 1/4 with
+  the `grad` chain → 7 and 0,25 to 1/6 with two predictions (« no » then « yes ») → 16/9 and 13 to 1/6, required (« yes » then « no ») → ⭐ 25/13 and 49/36
+  to 1/8 → free workshop of the activity's six areas to 1/12; goals `{ checkpoint: 'rule' }` then `{ anyExact } + { resists }`; `easier` rounds on rulers
+  to 1/3), `LabRounds icon="🧶"`. What graduation mode added to the lab: in the player `init({ truthful: true })` — `cardStatus` never says « resisting »
+  for a card whose side lands on an offered graduation (the ✗ and « لن يسقط على أي تدريجة » stay true; the page keeps its three-graduation rule); the
+  rule's explanation is COMPACT (the rule alone — the cards above carry their ✓ / ✗); the journal writes a fraction square plainly, « (5/4)² = 25/16 »
+  (`squareLine`, never raw TeX nor « 5/4² »).
 
 **`team-builder` options (2026-11-04):** `levels={false}` gives a worked example with no مبتدئ / متقدم selector (as for
 `divisor-explorer-books`). `handDone` opens « أنشئ الفرق » from the start: the student already shared BY HAND in an

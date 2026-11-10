@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as squareRoots from '@smarter-academy/core/arithmetic/squareRoots.js';
 import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
@@ -11,6 +11,7 @@ import { TriangleABC, RootSpiral } from '../components/RootFigures';
 import { M1_ROUNDS } from '../content/squares';
 import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
 import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
+import { useSavedAnswer } from '../../../../../../common/answers/useSavedAnswer';
 
 const { squareOf, squareOfDecimal, exactDecimal } = squareRoots;
 
@@ -48,9 +49,28 @@ const side = (v, scale) => exactDecimal(v, digitsOf(scale)).replace(',', '{,}');
 const sq = (v, scale) => squareOf(v, scale).decimal.replace(',', '{,}');
 const texNum = (s) => s.replace(',', '{,}');
 
+/** Deux mémoires d'encadrements réunies, graduation par graduation (le plus grand « en dessous », le plus petit « au-dessus », l'exact). */
+function mergeBrackets(a = {}, b = {}) {
+  const out = { ...a };
+  Object.entries(b).forEach(([scale, c]) => {
+    const p = out[scale] ?? { below: null, above: null, exact: null };
+    const pick = (x, y, f) => (x == null ? y ?? null : y == null ? x : f(x, y));
+    out[scale] = { below: pick(p.below, c.below, Math.max), above: pick(p.above, c.above, Math.min), exact: p.exact ?? c.exact ?? null };
+  });
+  return out;
+}
+
 export default function Module01Nashat() {
-  // Les essais VALIDÉS au carré d'aire 5 : { [scale]: { below, above, exact } } en unités de 1/scale.
-  const [trials, setTrials] = useState({});
+  // Les essais VALIDÉS au carré d'aire 5 : { [scale]: { below, above, exact } } en unités de 1/scale — dans le lecteur, GARDÉS
+  // (answers/useSavedAnswer, revue ECC 2026-11-09) : après un rechargement les preuves de l'étape 3 ne disent plus « لم تحصر الضلع بعد ».
+  const memory = useSavedAnswer([], { key: 'lab-squares', lessonId: MODULE_CTX.lessonId, moduleNumber: 1 });
+  const [live, setTrials] = useState({});
+  const trials = mergeBrackets(memory.saved?.v?.trials, live);
+  const { save } = memory;
+  useEffect(() => {
+    if (memory.on && Object.keys(live).length) save({ trials: mergeBrackets(memory.saved?.v?.trials, live) });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [live]);
   const [squared, setSquared] = useState(false);
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
@@ -285,7 +305,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 6, title: 'أوظّف تكنولوجيات الإعلام والاتصال (ص 30)', subtitle: 'قطعة مستقيم طولها جذر تربيعي', done: q6,
+          num: 6, title: 'أوظّف تكنولوجيات الإعلام والاتصال', subtitle: 'قطعة مستقيم طولها جذر تربيعي', done: q6,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="exercise" title="إنشاء" lines={[ICT_CONSTRUCT.title, ...ICT_CONSTRUCT.steps]} source={ICT_CONSTRUCT.source} compact />

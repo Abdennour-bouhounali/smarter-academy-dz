@@ -5,7 +5,7 @@ import Manipulation from '../Manipulation';
 import { scopedStorage } from '../../../../utils/storage';
 import { useLabJump } from '../../mission/missionPlayerContext';
 import {
-  emptyLog, logEvent, roundWon, starsFor, predictionsRight, needsHelp, roundUnlocked, resumeRound, readStars, recordStars, STARS_EVENT,
+  emptyLog, logEvent, roundWon, starsFor, predictionsRight, needsHelp, roundUnlocked, jumpTarget, resumeRound, readStars, recordStars, STARS_EVENT,
 } from './roundsModel';
 
 /**
@@ -45,7 +45,8 @@ export default function LabRounds({ lessonId, labId, rounds, onRoundWon, onVerdi
   const asked = labJump?.request;
   useEffect(() => {
     if (!asked) return;
-    const i = rounds.findIndex((r) => r.id === asked.roundId);
+    // une manche fermée n'est jamais sautée : la porte mène à la première manche requise non gagnée (roundsModel › jumpTarget)
+    const i = jumpTarget(rounds, rounds.findIndex((r) => r.id === asked.roundId), best);
     if (i >= 0 && i !== index) go(i);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asked?.nonce]);

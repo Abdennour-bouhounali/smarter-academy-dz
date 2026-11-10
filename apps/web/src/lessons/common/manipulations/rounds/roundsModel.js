@@ -115,6 +115,17 @@ export function roundUnlocked(rounds, index, best) {
   return true;
 }
 
+/**
+ * La manche où mène une PORTE (« العب الجولة … », une étape qui attend une manche) : celle demandée si elle est ouverte ; sinon la première
+ * manche REQUISE pas encore gagnée avant elle — la porte ne fait jamais sauter une manche fermée (revue ECC 2026-11-09).
+ */
+export function jumpTarget(rounds, index, best) {
+  if (index < 0 || index >= rounds.length) return -1;
+  if (roundUnlocked(rounds, index, best)) return index;
+  const first = rounds.findIndex((r, i) => i < index && !r.free && !r.optional && !(best[r.id] > 0));
+  return first >= 0 ? first : index;
+}
+
 /** La manche où reprendre : la première manche requise non gagnée, sinon la dernière gagnée. */
 export function resumeRound(rounds, best) {
   const i = rounds.findIndex((r) => !r.free && !r.optional && !(best[r.id] > 0));

@@ -228,6 +228,8 @@ export default function ContentModule({
   // Ce que le LECTEUR de mission montre et permet : les mêmes gestes que la présentation (pages, puis unités), mais on
   // ne quitte une étape qu'une fois FAITE (le verrou de l'élève) ; au bout, le lecteur passe la main au module suivant.
   const doneKey = steps.map((s) => (s.done ? 1 : 0)).join('');
+  // la manche gagnée change « العب الجولة … » en « واصل » : sans elle dans les dépendances, le bouton restait figé (rollout 2026-11-09, leçon 2)
+  const wonKey = steps.map((s) => (s.needsRound?.won ? 1 : 0)).join('');
   const playNav = useMemo(() => {
     if (!play) return null;
     const unit = units[current];
@@ -250,7 +252,7 @@ export default function ContentModule({
       canNext: morePages || !step || step.done || alreadyCompleted,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [play, current, units, page, pageCount, nav, doneKey, alreadyCompleted]);
+  }, [play, current, units, page, pageCount, nav, doneKey, wonKey, alreadyCompleted]);
 
   // Une unité : toujours rendue, cachée quand elle n'est pas la courante.
   const unitProps = (key) => {

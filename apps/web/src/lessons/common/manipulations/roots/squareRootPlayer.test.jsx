@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import i18n from '../../../../i18n';
-import { CHAINS, CHAINS_PLAYER, QUESTIONS, chainOfPlayer, chainKeyOf, truthKeyOf, exactBuild, squaresBuild, finestSide, halfText, frameReached } from './SquareRootSide';
+import { CHAINS, CHAINS_PLAYER, QUESTIONS, chainOfPlayer, chainKeyOf, truthKeyOf, exactBuild, squaresBuild, finestSide, halfText, frameReached, squareLine } from './SquareRootSide';
 import * as L from '../logic/squareRootSide';
 import { isCorrect } from '../primitives/labCheckpoint';
 
@@ -119,6 +119,31 @@ describe('square-root-side in the mission player', () => {
     expect(bld.tiles).toContain('8/9');
     expect(isCorrect(bld, bld.expected)).toBe(true);
     [fill, bld].forEach((q) => expect(text(q)).not.toMatch(RAW));
+  });
+
+  it('graduation in the player (lesson 2): a rational card never « resists », so « it will never land » is always true', () => {
+    // 16/9 bracketed on 1/1, 1/2 and 1/4: on the page it resists (three rulers), in the player it stays open — it lands on 1/3
+    let s = L.init({ mode: 'graduation', areas: [{ num: 16, den: 9 }, { num: 13, den: 1 }], maxScale: 6, truthful: true });
+    const bracketAt = (st, g) => {
+      let x = L.setScale(st, g); const f = Math.floor(Math.sqrt(sq(L.currentArea(x))) * g + 1e-9);
+      x = L.test(x, f); return L.test(x, f + 1);
+    };
+    [1, 2, 4].forEach((g) => { s = bracketAt(s, g); });
+    expect(L.cardStatus(s, 0)).toBe('open');
+    expect(L.cardStatus({ ...s, truthful: false }, 0)).toBe('resisting');
+    s = L.setCard(s, 1);
+    [1, 2, 3].forEach((g) => { s = bracketAt(s, g); });
+    expect(L.cardStatus(s, 1)).toBe('resisting');
+    const res = QUESTIONS.gResist(s, k);
+    expect(text(res)).not.toMatch(RAW);
+    expect(L.landsSomewhere(s.cards[1], s.maxScale)).toBe(false);
+  });
+
+  it('the journal writes a fraction square plainly: (5/4)² = 25/16, never « \\dfrac » nor 5/4²', () => {
+    expect(squareLine(5, 4)).toBe('(5/4)² = 25/16');
+    expect(squareLine(3, 1)).toBe('3² = 9');
+    expect(squareLine(22, 10)).toBe('2,2² = 4,84');
+    expect(squareLine(5, 4)).not.toContain('dfrac');
   });
 
   it('landsAt / landsSomewhere tell the truth of a prediction', () => {

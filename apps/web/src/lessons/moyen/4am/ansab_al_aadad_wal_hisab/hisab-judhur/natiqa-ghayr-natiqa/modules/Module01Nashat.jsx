@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
@@ -6,6 +6,10 @@ import { Manipulation, ManipulationWorkspace } from '../../../../../../common/ma
 import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY } from '../content/textbook';
+import { M1_ROUNDS } from '../content/rulers';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
+import { useSavedAnswer } from '../../../../../../common/answers/useSavedAnswer';
 
 /**
  * Module 1 — نشاط 2 (p. 20) : « هل يقع الجذر على تدريجة ؟ » (rétrofit 2026-10-15 : le labo en tête SANS carte, SANS titre ni lead
@@ -29,6 +33,11 @@ import { ACTIVITY } from '../content/textbook';
  * Le laboratoire RÉDUIT chaque aire (logic/squareRootSide `init`) : la carte de 0,25 s'affiche √(1/4). La leçon le dit dans le
  * `lead` ; la liste des essais garde l'écriture du manuel (√0,25).
  * LP : P1, P2.
+ *
+ * LECTEUR DE MISSION (rollout 2026-11-09, unité 2 leçon 2) : le labo se joue en MANCHES (content/rulers.js › M1_ROUNDS : 16 et 2 à la main avec
+ * ses questions → 7 et 0,25 avec deux prédictions → 16/9 et 13 → défi ⭐ 25/13 et 49/36 → atelier libre des six aires) au lieu de مبتدئ / متقدم ;
+ * les étapes 1 et 2 attendent la manche 2 (`needsRound` : 0,25 y tombe, 7 y résiste), et ses essais remplissent les preuves (`onTrial`). Hors lecteur :
+ * inchangé.
  */
 const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
 const keyOf = ({ num, den }) => { const g = gcd(num, den); return `${num / g}/${den / g}`; };
@@ -71,14 +80,38 @@ function Evidence({ trials, entries }) {
   );
 }
 
+/** Deux mémoires d'essais réunies (racine par racine : le côté exact trouvé, l'union des graduations essayées). */
+function mergeTrials(a = {}, b = {}) {
+  const out = { ...a };
+  Object.entries(b).forEach(([key, t]) => {
+    const p = out[key] ?? { exact: null, grads: [] };
+    out[key] = { exact: p.exact ?? t.exact ?? null, grads: [...new Set([...p.grads, ...(t.grads ?? [])])] };
+  });
+  return out;
+}
+
 export default function Module01Nashat() {
-  // Les essais VALIDÉS sur la règle (onTrial), aux deux niveaux.
-  const [trials, setTrials] = useState({});
+  // Les essais VALIDÉS sur la règle (onTrial), aux deux niveaux — et, dans le lecteur, GARDÉS (answers/useSavedAnswer) : après un
+  // rechargement la liste des essais et la règle trouvée reviennent (revue ECC 2026-11-09 : sinon l'étape 2 attendait des questions
+  // invisibles et la liste disait « لم تجرّبه بعد » pour des manches gagnées).
+  const memory = useSavedAnswer([], { key: 'lab-rulers', lessonId: MODULE_CTX.lessonId, moduleNumber: 1 });
+  const [live, setTrials] = useState({});
   const [q1, setQ1] = useState(false);
   const [q2] = useState(false);
   const [q3, setQ3] = useState(false);
   const [cpDone, setCpDone] = useState({});
-  const ruleDone = !!cpDone.rule || q2;
+  // Dans le lecteur : la manche 2 gagnée (0,25 tombé juste, 7 qui résiste) ouvre les étapes 1 et 2 ; la manche 1 gagnée = sa suite
+  // de questions finie (son but est { checkpoint: 'rule' }) — ses étoiles sont gardées, la règle l'est donc aussi.
+  const [won, setWon] = useState({});
+  const kept = memory.saved?.v ?? {};
+  const trials = mergeTrials(kept.trials, live);
+  const ruleDone = !!cpDone.rule || !!won.r1 || !!kept.rule || q2;
+  const { save } = memory;
+  useEffect(() => {
+    if (!memory.on || (!Object.keys(live).length && !cpDone.rule)) return;
+    save({ trials: mergeTrials(kept.trials, live), rule: !!(kept.rule || cpDone.rule) });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [live, cpDone.rule]);
   const record = useCallback(({ tk, id, area, side, scale, cmp }) => {
     if (tk === 'checkpoint-done') setCpDone((d) => ({ ...d, [id]: true }));
     if (tk || !area) return;   // les événements des questions du labo (LabCheckpoint) ne sont pas des essais
@@ -91,6 +124,7 @@ export default function Module01Nashat() {
     });
   }, []);
   const { question } = ACTIVITY.numbers;
+  const round = { id: 'r2', label: 'الجولة 2', icon: '🧶', won: Boolean(won.r2) };
 
   return (
     <ContentModule
@@ -102,6 +136,12 @@ export default function Module01Nashat() {
       estimatedTime="12 دقيقة"
       objectives={['هل يقع الجذر التربيعي دائمًا على تدريجة المسطرة؟', 'ما الذي يميّز الأعداد تحت الجذر في الصنفين؟', 'كيف نصنّف جذرًا جديدًا دون مسطرة؟']}
       intro={
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="m1-rulers" rounds={M1_ROUNDS} icon="🧶" freeIcon="🪡"
+              onTrial={record} onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))} />
+          )}
+          page={(
         <ManipulationWorkspace
           defaultLevel="beginner"
           levels={{
@@ -129,10 +169,12 @@ export default function Module01Nashat() {
             ),
           }}
         />
+          )}
+        />
       }
       steps={[
         {
-          num: 1, title: <MathText>{'لماذا وقع ضلع المربّع الذي مساحته $0{,}25$ على تدريجة؟'}</MathText>, subtitle: 'جرّب مساحات على المسطرة، ثم أجب', done: q1,
+          needsRound: round, num: 1, title: <MathText>{'لماذا وقع ضلع المربّع الذي مساحته $0{,}25$ على تدريجة؟'}</MathText>, subtitle: 'جرّب مساحات على المسطرة، ثم أجب', done: q1,
           content: (
             <div className="space-y-3">
               <Evidence trials={trials} entries={ENTRIES} />
@@ -154,7 +196,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 2, title: ACTIVITY.questions[1], subtitle: 'ما الذي يميّز ما وقع على تدريجة عمّا لم يقع؟', done: ruleDone,
+          needsRound: round, num: 2, title: ACTIVITY.questions[1], subtitle: 'ما الذي يميّز ما وقع على تدريجة عمّا لم يقع؟', done: ruleDone,
           content: (
             <div className="space-y-3">
               <Evidence trials={trials} entries={ENTRIES} />
@@ -169,15 +211,13 @@ export default function Module01Nashat() {
                     ]}
                     source={ACTIVITY.source}
                     compact
-                  >
-                    <p className="text-xs text-slate-500">{ACTIVITY.correctionNote}</p>
-                  </TextbookBox>
+                  />
                   <p className={`rounded-xl border-2 px-3 py-2 text-sm ${ruleDone ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`} data-activity-evidence data-tried={ruleDone ? 'true' : 'false'}>
                     {ruleDone
                       ? 'أجبتَ في المختبر: يقع الجذر على تدريجة حين تكون المساحة مربّع عدد ناطق، ولا يقع على أي تدريجة حين لا تكون كذلك.'
                       : 'جرّب بطاقة تقع على تدريجة وبطاقة لا تقع على أي تدريجة في المختبر، وأجب عن الأسئلة التي تظهر فوقه.'}
                   </p>
-                  {ruleDone && <KnowledgeBrick id="murabba-natiq" lead="ما رأيته على المسطرة يقوله الكتاب في «معارف»:" />}
+                  {ruleDone && <KnowledgeBrick id="murabba-natiq" lead="ما رأيته على المسطرة نصوغه هكذا:" />}
                 </>
               )}
             </div>

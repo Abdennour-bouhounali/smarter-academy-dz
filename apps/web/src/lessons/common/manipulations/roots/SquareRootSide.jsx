@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Minus, Plus, ZoomIn } from 'lucide-react';
 import * as squareRoots from '@smarter-academy/core/arithmetic/squareRoots.js';
@@ -87,6 +87,9 @@ export default function SquareRootSide({
 }) {
   const { t } = useTranslation('lesson');
   const gameScreen = useInMissionPlayer();
+  const uid = useId();
+  const journalId = `${uid}-journal`;
+  const choicesId = `${uid}-choices`;
   const missionArea = useMissionArea();
   const k = useCallback((key, o) => t(`manipulation.squareRoot.${key}`, o), [t]);
   const refineMode = mode === 'refine';
@@ -104,7 +107,7 @@ export default function SquareRootSide({
   const areas = refineMode ? [{ num, den }] : (areas0 ?? [{ num, den }]);
   const areasKey = areas.map((a) => `${a.num}/${a.den}`).join(',');
 
-  const makeLab = () => L.init({ mode, areas, maxScale });
+  const makeLab = () => L.init({ mode, areas, maxScale, truthful: gameScreen });
   const [lab, setLab] = useState(makeLab);
   const sceneKey = `${areasKey}:${maxScale}:${state.epoch}`;
   const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
@@ -282,7 +285,7 @@ export default function SquareRootSide({
   const px = box / frameUnits;
   const sidePx = shown == null ? 0 : Math.min(box, L.drawSide(shown, lab.scale) * px);
   const targetPx = L.drawRoot(area) * px;
-  const tone = cmp === 0 ? '#059669' : cmp < 0 ? '#F59E0B' : cmp > 0 ? '#E11D48' : '#6366F1';
+  const tone = cmp === 0 ? '#059669' : cmp < 0 ? '#B45309' : cmp > 0 ? '#E11D48' : '#6366F1';
   const labelEvery = [1, 2, 5, 10, 20, 50].find((s) => s * mu >= 30) ?? 100;
   const aTex = L.areaTex(area);
   const cmpWord = cmp === 0 ? k('equal', { area: L.areaText(area) }) : cmp < 0 ? k('smaller', { area: L.areaText(area) }) : k('larger', { area: L.areaText(area) });
@@ -364,17 +367,19 @@ export default function SquareRootSide({
       <ManipulationStage className="bg-gradient-to-b from-sky-50/60 to-white" data-dragging={stretch.dragging ? 'true' : undefined}>
         <div ref={boxRef} className="space-y-3" data-root-side data-mode={mode}>
           {showStepper && <LabStepper count={2} current={stepIdx} done={done.map((d, i) => d && (i !== stepIdx || !cp.blocking))} stepAttr="data-rs-step" />}
+          <div role="status" aria-live="polite" data-rs-predict-live>
           {predResult && (
-            <p role="status" data-rs-predict-result={pred.ok ? 'ok' : 'wrong'}
+            <p data-rs-predict-result={pred.ok ? 'ok' : 'wrong'}
               className={`rounded-2xl px-4 py-2 text-center text-lg font-black ${pred.ok ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>
               {pred.ok ? t('manipulation.common.cp.predict.right') : t('manipulation.common.cp.predict.wrong')}
             </p>
           )}
+          </div>
           {gameScreen && refineMode && choices?.length > 0 && (
-            <div className="flex flex-wrap items-center gap-1.5" data-rs-choices>
-              <span className="text-sm font-bold text-slate-600">{k('choicesLabel')}</span>
+            <div className="flex flex-wrap items-center gap-1.5" role="group" aria-labelledby={choicesId} data-rs-choices>
+              <span id={choicesId} className="text-sm font-bold text-slate-600">{k('choicesLabel')}</span>
               {choices.map((c) => (
-                <button key={`${c.num}/${c.den}`} type="button" data-rs-choice={`${c.num}/${c.den}`} disabled={locked} onClick={() => state.setNumbers({ ...state.numbers, num: c.num, den: c.den })}
+                <button key={`${c.num}/${c.den}`} type="button" data-rs-choice={`${c.num}/${c.den}`} aria-pressed={c.num === num && c.den === den} disabled={locked} onClick={() => state.setNumbers({ ...state.numbers, num: c.num, den: c.den })}
                   className={`min-h-[44px] rounded-xl border-2 px-3 text-base font-black ${c.num === num && c.den === den ? 'border-indigo-500 bg-indigo-50 text-indigo-900' : 'border-slate-200 bg-white text-slate-700 hover:border-indigo-300'}`}>
                   <bdi dir="ltr">{L.areaText(c)}</bdi>
                 </button>
@@ -387,7 +392,7 @@ export default function SquareRootSide({
               <span className="rounded-full bg-white px-3 py-1 ring-1 ring-slate-200">{k('target')}{' '}<bdi dir="ltr" className="font-mono">{L.areaText(area)}</bdi></span>
               <span className="rounded-full bg-white px-3 py-1 ring-1 ring-slate-200" data-root-scale={lab.scale}>{k('graduation')}{' '}<bdi dir="ltr" className="font-mono">{lab.scale === 1 ? '1' : L.sideText(1, lab.scale)}</bdi></span>
               <button type="button" onClick={() => setLab((s) => L.refine(s))} disabled={!L.canRefine(lab) || locked} data-root-refine
-                className="inline-flex min-h-[44px] items-center gap-1 rounded-xl border-2 border-sky-400 bg-white px-3 py-1 text-sky-800 disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
+                className="inline-flex min-h-[44px] items-center gap-1 rounded-xl border-2 border-sky-400 bg-white px-3 py-1 text-sky-800 disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2">
                 <ZoomIn className="h-4 w-4" aria-hidden="true" /> {k('refine')}
               </button>
             </div>
@@ -398,7 +403,7 @@ export default function SquareRootSide({
                   const st = L.cardStatus(lab, i);
                   return (
                     <button key={`${c.num}/${c.den}`} type="button" onClick={() => setLab((s) => L.setCard(s, i))} disabled={locked} aria-pressed={lab.card === i} data-root-card={i} data-status={st}
-                      className={`min-h-[44px] rounded-xl border-2 px-3 py-1 text-sm font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${lab.card === i ? 'border-sky-600 bg-sky-50' : 'border-slate-300 bg-white'} ${st === 'exact' ? 'text-emerald-800' : st === 'resisting' ? 'text-rose-800' : 'text-slate-800'}`}>
+                      className={`min-h-[44px] rounded-xl border-2 px-3 py-1 text-sm font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2 ${lab.card === i ? 'border-sky-600 bg-sky-50' : 'border-slate-300 bg-white'} ${st === 'exact' ? 'text-emerald-800' : st === 'resisting' ? 'text-rose-800' : 'text-slate-800'}`}>
                       <span dir="ltr"><MathText>{`$\\sqrt{${L.areaTex(c)}}$`}</MathText></span>{st !== 'open' && <span aria-hidden="true">{st === 'exact' ? ' ✓' : ' ✗'}</span>}{st !== 'open' && <span className="sr-only">{k(st === 'exact' ? 'cardExactSr' : 'cardResistingSr')}</span>}
                     </button>
                   );
@@ -407,8 +412,8 @@ export default function SquareRootSide({
               <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label={k('graduations')} data-root-graduations>
                 <span className="text-xs font-bold text-slate-600">{k('graduations')}</span>
                 {Array.from({ length: maxScale }, (_, i) => i + 1).map((g) => (
-                  <button key={g} type="button" onClick={() => setLab((s) => L.setScale(s, g))} disabled={locked} aria-pressed={lab.scale === g} aria-label={k('graduationAria', { g })} data-root-grad={g}
-                    className={`h-11 min-w-[2.75rem] rounded-lg border-2 font-mono text-sm font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${lab.scale === g ? 'border-sky-600 bg-sky-600 text-white' : 'border-slate-300 bg-white text-slate-800'}`}>
+                  <button key={g} type="button" onClick={() => setLab((s) => L.setScale(s, g))} disabled={locked} aria-pressed={lab.scale === g} aria-label={`1/${g} — ${k('graduationAria', { g })}`} data-root-grad={g}
+                    className={`h-11 min-w-[2.75rem] rounded-lg border-2 font-mono text-sm font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2 ${lab.scale === g ? 'border-sky-700 bg-sky-700 text-white' : 'border-slate-300 bg-white text-slate-800'}`}>
                     <span dir="ltr">1/{g}</span>
                   </button>
                 ))}
@@ -432,25 +437,25 @@ export default function SquareRootSide({
               {...stretch.handleProps({ label: k('handle'), valueText: shown == null ? k('notSet') : k('valueText', { c: L.sideText(shown, lab.scale) }) })}
               data-root-handle
               aria-disabled={locked || undefined}
-              className={`absolute top-1 flex h-11 w-11 -translate-x-1/2 items-start justify-center rounded-xl border-2 outline-none focus-visible:ring-4 focus-visible:ring-blue-300 ${stretch.dragging ? 'border-blue-500 bg-blue-500/10' : 'border-slate-400 bg-white/60'}`}
+              className={`absolute top-1 flex h-11 w-11 -translate-x-1/2 items-start justify-center rounded-xl border-2 outline-none focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:ring-offset-2 ${stretch.dragging ? 'border-blue-500 bg-blue-500/10' : 'border-slate-400 bg-white/60'}`}
               style={{ left: xOf(shown ?? range.min), cursor: stretch.dragging ? 'grabbing' : 'grab' }}
             >
-              <span className="-mt-3 whitespace-nowrap rounded-full bg-slate-800 px-2 font-mono text-sm font-extrabold text-white" data-root-value>{shown == null ? '?' : L.sideText(shown, lab.scale)}</span>
+              <span className="-mt-3 whitespace-nowrap rounded-full bg-slate-800 px-2 font-mono text-sm font-extrabold text-white" aria-hidden="true" data-root-value>{shown == null ? '?' : L.sideText(shown, lab.scale)}</span>
             </div>
           </div>
           <div className="flex items-center justify-center gap-2">
             <button type="button" onClick={() => stretch.nudge(-1)} aria-label={k('shorter')} disabled={locked || (shown != null && shown <= range.min)}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"><Minus className="h-5 w-5" aria-hidden="true" /></button>
+              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2"><Minus className="h-5 w-5" aria-hidden="true" /></button>
             <p className="min-w-[8rem] text-center text-sm font-bold text-slate-700">{shown == null ? k('notSet') : k('valueText', { c: L.sideText(shown, lab.scale) })}</p>
             <button type="button" onClick={() => stretch.nudge(1)} aria-label={k('longer')} disabled={locked || (shown != null && shown >= range.max)}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"><Plus className="h-5 w-5" aria-hidden="true" /></button>
+              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2"><Plus className="h-5 w-5" aria-hidden="true" /></button>
           </div>
 
           <div className="grid gap-3 grid-cols-[auto_1fr]">
             {/* ── LE CARRÉ sur son quadrillage, et le carré visé en pointillés ── */}
             <div className="flex justify-center rounded-2xl border-2 border-slate-200 bg-white p-2" dir="ltr">
               <svg width={box} height={box} viewBox={`0 0 ${box} ${box}`} role="img" data-root-square data-cmp={cmp ?? ''}
-                aria-label={shown == null ? k('notSet') : `c = ${L.sideText(shown, lab.scale)} ; c² = ${settled ? L.squareTex(shown, lab.scale).replaceAll('{,}', ',') : '…'}`}>
+                aria-label={shown == null ? k('notSet') : `c = ${L.sideText(shown, lab.scale)} ; c² = ${settled ? plain(L.squareTex(shown, lab.scale)) : '…'}`}>
                 {Array.from({ length: frameUnits + 1 }, (_, i) => (
                   <g key={i}>
                     <line x1={i * px} x2={i * px} y1={0} y2={box} stroke="#E2E8F0" />
@@ -464,16 +469,16 @@ export default function SquareRootSide({
             <div className="space-y-2 text-sm">
               <p className="font-bold text-slate-800">{k('legend')}</p>
               <p className="text-slate-600">{k('legendTarget', { area: L.areaText(area) })}</p>
-              {gameScreen && showMemo && <p className="text-sm font-black text-indigo-900" data-root-journal>{k('journal')}</p>}
+              {gameScreen && showMemo && <p id={journalId} className="text-sm font-black text-indigo-900" data-root-journal><span aria-hidden="true">📋 </span>{k('journal').replace(/^📋\s*/u, '')}</p>}
               {showMemo && (
-                <table className="w-full text-center text-sm" dir="ltr" data-root-memory>
+                <table className="w-full text-center text-sm" dir="ltr" aria-labelledby={gameScreen ? journalId : undefined} data-root-memory>
                   <thead><tr className="text-xs text-slate-500"><th scope="col" className="font-bold">{k('colGraduation')}</th><th scope="col" className="font-bold">{k('colBelow')}</th><th scope="col" className="font-bold">{k('colAbove')}</th></tr></thead>
                   <tbody>
                     {brackets.map((b) => (
                       <tr key={b.scale} className={b.exact != null ? 'text-emerald-800' : 'text-slate-800'}>
-                        <td className="font-mono">{L.sideText(1, b.scale)}</td>
-                        <td className="font-mono">{b.exact != null ? `${L.sideText(b.exact, b.scale)} ✓` : b.below != null ? `${L.sideText(b.below, b.scale)}² = ${plain(L.squareTex(b.below, b.scale))}` : '—'}</td>
-                        <td className="font-mono">{b.exact != null ? '' : b.above != null ? `${L.sideText(b.above, b.scale)}² = ${plain(L.squareTex(b.above, b.scale))}` : '—'}</td>
+                        <th scope="row" className="font-mono font-normal">{L.sideText(1, b.scale)}</th>
+                        <td className="font-mono">{b.exact != null ? `${L.sideText(b.exact, b.scale)} ✓` : b.below != null ? squareLine(b.below, b.scale) : '—'}</td>
+                        <td className="font-mono">{b.exact != null ? '—' : b.above != null ? squareLine(b.above, b.scale) : '—'}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -545,6 +550,9 @@ export function discoveryParts(lab, k, { calculator, figure, compact = false } =
         {figure === 'bc-square' && <BcSquare k={k} />}
       </div>
     )
+  ) : compact ? (
+    // lecteur (graduation) : la RÈGLE seule — les cartes au-dessus portent déjà leur ✓ / ✗ ; la colonne de la question tient dans l'écran
+    <p className="rounded-xl border-2 border-emerald-200 bg-white px-3 py-2 text-sm text-emerald-900" data-root-classes-compact><MathText>{k('gFormal')}</MathText></p>
   ) : (
     <div className="space-y-2">
       <ul className="space-y-1" data-root-classes>
@@ -585,7 +593,10 @@ export const CHAINS = Object.freeze({
 export const chainOf = (stepIdx, lab) => CHAINS[lab.mode === 'graduation' ? 'grad' : (L.foundSide(lab, 0) ? 'exact' : 'never')][stepIdx];
 
 const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
-const plain = (tex) => String(tex).replaceAll('{,}', ',');
+// le texte SIMPLE d'une écriture TeX : la virgule décimale, et une fraction « \\dfrac{9}{4} » écrite 9/4 (journal du mode graduation, rollout 2026-11-09)
+const plain = (tex) => String(tex).replaceAll('{,}', ',').replace(/\\dfrac\{(\d+)\}\{(\d+)\}/g, '$1/$2');
+/** « c² = … » dans le journal : un côté fractionnaire s'écrit entre parenthèses — (5/4)², jamais 5/4² (qui serait 5/16). */
+export const squareLine = (v, scale) => { const c = L.sideText(v, scale); return `${c.includes('/') ? `(${c})` : c}² = ${plain(L.squareTex(v, scale))}`; };
 const ratText = (a) => `${a.num}/${a.den}`;
 
 export const QUESTIONS = {

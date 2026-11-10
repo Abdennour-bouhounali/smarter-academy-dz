@@ -1255,7 +1255,8 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
   `'library'` = 756 books, `'library-wall'` = 96 books + a `KidFigure` librarian, `'construction-wall'` = a brick wall that rises + a `KidFigure` apprentice, `'flower-shop'` = identical bouquets on a counter + a `KidFigure` florist in hijab, `'school-bags'` = identical school bags filling on a table + a
   `KidFigure` volunteer, `'sewing-workshop'` = two ribbons cut into equal pieces + a `KidFigure` seamstress in hijab, `'bakery'` = identical dough portions on a tray + a
   `KidFigure` baker, `'math-club'` = pairs of numbered tiles judged « ✓ » + a `KidFigure` in hijab, `'garden-bed'` = a square flower bed on the
-  hypotenuse of a right-triangle corner, filling with rows of flowers + a `KidFigure` gardener). A new scene is a component `<Nom>Scene({ fill,
+  hypotenuse of a right-triangle corner, filling with rows of flowers + a `KidFigure` gardener, `'carpet-loom'` = a square carpet woven row by row on a loom,
+  its border and fringes closing at the end, + a `KidFigure` weaver in hijab). A new scene is a component `<Nom>Scene({ fill,
   label, className })` drawn in code (never a generated image), `fill` ∈ [0, 1] following the tools earned; it must not show any
   number of the مسألة (rows, capacities). `MissionHome`, `MissionCheckpoint` and `MissionLayer` read `mission.scene`.
 - **Checkpoints use other numbers.** A point d'étape speaks of 30, 50 or « n » — never of the climax's numbers (96 here).
@@ -1315,6 +1316,14 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
   (j) a prediction the lab answers later is judged by the computed truth when it is made and its result shown when the lab has decided; (k) in the player
   the question chain follows the computed TRUTH, not what is already found. In the player a `TextbookExercise` batch of ≥ 6 rows is laid on two
   columns (from `lg`; a 768-px tablet keeps one) as one screen (`BatchChoiceQuestion rowCols`, `data-paging-keep`) so a long list never falls under the minimum zoom.
+  The same lab in GRADUATION mode (lesson `natiqa-ghayr-natiqa`, council of 2026-11-09): (l) a « resists » verdict must be TRUE — in the player a card
+  whose side lands on an offered graduation never « resists », even bracketed on three rulers that are not its own (`init({ truthful })`; 16/9 on 1/1,
+  1/2, 1/4 stays open and the coach says « another ruler »), and a round never offers a rational card a ruler too short for it (test); (m) every round
+  holds one card that lands and one that never does, and its two predictions have DIFFERENT truths (the card open at the start is « no » in one round,
+  « yes » in the next) so always answering « no » cannot win the star; (n) the cards ARE the choice of the free round (no `choices` row); (o) a module step whose gate comes from the lab (a checkpoint
+  event, the trials listed as evidence) must survive a reload — derive it from the round's STORED stars and keep the trials with `useSavedAnswer`
+  (`key`, `lessonId`, `moduleNumber`), never from memory alone; the module's door « العب الجولة … » never skips a closed round (`LabRounds` →
+  `roundsModel › jumpTarget`).
 - **« ورقة زميل »** (`content/peerSheet.js`): an invented classmate (`KidFigure`; girls in hijab), 3–5 lines with ONE error on the
   lesson's main misconception, three fixes each with a `why`, the numbers computed from the same helpers as the rounds, and a test
   (`peerSheet.test.js`) that the error line is the only wrong one.

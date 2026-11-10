@@ -29,8 +29,8 @@ Prompt for the whole unit: `UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. Folder `lesso
 | # | Lesson (unit 2) | Labs converted | Status | Commit | Notes |
 |---|---|---|---|---|---|
 | 1 | `jidhr-tarbii` | `square-root-side` (v2 treatment, new, both modes) | ✅ done 2026-11-09 | `feat(lessons): jidhr-tarbii — mission prototype` | See « Unit 2, lesson 1 » below. |
-| 2 | `natiqa-ghayr-natiqa` | `square-root-side` (graduation mode, already treated) | ⏳ next | | content only |
-| 3 | `muadalat-x-murabba` | `square-fold` | ⏳ | | |
+| 2 | `natiqa-ghayr-natiqa` | `square-root-side` (graduation mode; `truthful` « resists », compact rule, plain journal) | ✅ done 2026-11-09 | `feat(lessons): natiqa-ghayr-natiqa — mission prototype` | See « Unit 2, lesson 2 » below. |
+| 3 | `muadalat-x-murabba` | `square-fold` | ⏳ next | | |
 | 4 | `amaliyat-judhur` | `square-tiling` | ⏳ | | |
 | 5 | `tawzif-khawass-judhur` | `square-tiling` | ⏳ | | content only after lesson 4 |
 | S | `wadiya-idmajiya-judhur` | — | ⏳ council first (prompt §5) | | |
@@ -421,3 +421,69 @@ the coordinator: two « no » predictions on area 5 (council decision; round 3 g
 
 **Open on this lesson:** the unit-1 labs do not report `{ tk: 'reset' }` yet; e2e specs of the old student view (plan §9.7); `resources` still describe the two-level labs for the teacher's page; the API's
 catalogue import is not re-run for the new `prerequisiteLessonCodes` (local database: owner's publish step).
+
+## Unit 2, lesson 2 — `natiqa-ghayr-natiqa` « الأعداد الناطقة والأعداد غير الناطقة » (2026-11-09)
+
+**Council (2026-11-09) on the graduation-mode rounds** — five lenses (contrarian, first principles, expansionist, outsider, executor) run inline by the
+lesson's agent, with a peer-review pass and a chairman synthesis. Agreed: (1) a « resists » verdict must be TRUE — the lab's rule « three graduations
+bracketed without landing » marks 16/9 ✗ after 1/1, 1/2, 1/4, and the question then says « it will never land »; in the player a card whose side lands on
+an offered graduation never resists (`init({ truthful })`), and no round offers a rational card a ruler too short for it (test); (2) every round has one
+card that lands and one that never does, and its two predictions have DIFFERENT truths, with the card open at the start alternating « no » / « yes » /
+« no » across rounds — always answering « no » cannot win the star; (3) round 1 is small and played with the full `grad` chain (read the ruler → BUILD
+« 16 = 4 × 4 » → the card that resisted → the rule); the activity's numbers come second with predictions; 16/9 (it needs 1/3) is a REQUIRED round;
+(4) the challenge asks for the right ruler at once (49/36 → 1/6: « the denominator tells you »). Clash: the expansionist wanted a ruler-choice
+prediction (« on which ruler? ») instead of yes/no — rejected for now (one more tray type; the yes/no with varied truth already makes the student
+think); the contrarian wanted `truthful` on the page too — kept player-only (the page is unchanged by rule; noted below as open).
+
+**What was written (per lesson):** `lesson.config.js` (`studentView: 'mission'`, `mission` with the new scene `carpet-loom`, title « ثلاث زرابي مربّعة »,
+3 tools = `murabba-natiq`, `ghayr-natiq`, `qima-muqarraba`, climax = module 4 (the three square carpets: 2,89 م², 4 م² of 9 pieces, 3 م²; wool ribbon at
+500 دج), 3 checkpoints on √(49/25), « which is not rational: √11, √0,36, √(1/25) » and the lower value of √7 to 0,1 — never 2,89, 1,7, 4, the 9 pieces, 3,
+√3, 1,74 or 500; open knowledge map; three module `desc` lines no longer cite the textbook) · `content/prep.js` + test (10 « أستعدّ » questions:
+« العدد الناطق » with `adad-natiq` (3AM) and « الجذر التربيعي » with `jidhr-tarbii` to revise; the five statements of before stay in `textbook.js`) ·
+`content/rulers.js` + test (module 1, graduation mode: 16 and 2 by hand to 1/4 → 7 and 0,25 to 1/6 with predictions → 16/9 and 13 to 1/6 → ⭐ 25/13 and
+49/36 to 1/8 → free workshop of the activity's six areas to 1/12; `easier` rounds on rulers to 1/3: 1 and 2, 0,25 and 2, 1/9 and 5; every goal is checked
+by PLAYING it in the test) · `content/peerSheet.js` + test (« ورقة يونس »: « 49 = 7², so √(49/20) is rational » — judging the numerator alone; fixes: the
+denominator 20 is not a square, « √(49/20) = 7/10 » (half of 20), « the calculator shows 1,565247584 »; every number computed) · modules 0 (the ladder),
+1 (`PlayerSwitch` + `LabRounds labId="m1-rulers"`; steps 1 and 2 wait for round 2, whose trials still fill the evidence; the TextbookBox's « typo
+corrected in the textbook » note and the brick lead « يقوله الكتاب » are gone), 2 (no lab; « ورقة يونس » is step 4; tag and lead no longer cite the
+textbook), 3 (step titles lose the textbook's exercise numbers; subtitle and tag no longer cite pages).
+
+**What was added to the shared code:**
+- `logic/squareRootSide.js › init({ truthful })` and `cardStatus`: in the player a rational card never « resists » (`SquareRootSide` passes
+  `truthful: gameScreen`; the page keeps its three-graduation rule).
+- `roots/SquareRootSide.jsx`: the graduation rule's explanation is compact in the player (the rule alone); the journal writes a fraction square
+  plainly — `squareLine`: « (5/4)² = 25/16 », never raw `\dfrac` nor « 5/4² »; the square's `aria-label` uses the same plain text.
+- `kit/ContentModule.jsx`: the player's bottom button « العب الجولة … » now turns into « واصل » as soon as the round is won (`needsRound.won` was missing
+  from the `playNav` memo — the button stayed stale in every converted lesson).
+- `mission/CarpetLoomScene.jsx` registered as `mission.scene: 'carpet-loom'` (a loom; the square carpet is woven row by row with diamond motifs as tools
+  are earned, its border and fringes close at the end; a `KidFigure` weaver in hijab beside a measuring tape, no number drawn).
+
+**Traps met:**
+- An inequality chain inside Arabic prose (« ($16 < 20 < 25$) ») reads mirrored: write the two neighbouring squares one by one (« $4^2 = 16$ و
+  $5^2 = 25$ »).
+- A walk that answers a choice question wrongly twice triggers « لا بأس — جرّب أصغر » on the round (two misses): expected behaviour, not a bug.
+- Edits during a walk hot-reload the page and can log a one-off `MissionLayer` error (`?t=` in the stack): re-run before believing it.
+
+**Verification:** `vitest run src/lessons` 635 files / 11 951 tests green (new: `prep.test`, `rulers.test`, `peerSheet.test`, `mission.test`, `roundsModel` « jumpTarget », two `squareRootPlayer`
+tests — `truthful` « resists » and the plain journal), `check:lessons` exit 0 (entry 241.2 KB ≤ 245), `lab-rollout-status --lesson natiqa-ghayr-natiqa` ✅, Playwright (mocked student session) at 1366×768, 1024×768 and 1920×1080: every round of module 1 ★★★ (r1 by hand with fill, build,
+« resists » and rule; r2 « no » then « yes »; r3 with 16/9 bracketed on three wrong rulers staying open, then landing on 1/3; challenge; free workshop of six
+cards), the reset path (wrong prediction → « إعادة » → clean play ★★★), the « easier » round after two wrong predictions and back, module 2's peer sheet
+(wrong fix, fix, restored after reload), home first visit and return, « أستعدّ » (10 questions, review), final test, knowledge map, modules 1–7 unit by unit
+(0 `data-fit-overflow`, 0 page scroll, no console error), teacher view unchanged.
+
+**ECC review (react, code, a11y — 2026-11-09), fixed:** step 2 could become impossible — its rule flag lived in memory and only round 1 carries the
+« rule » chain: it now also reads round 1's stored stars (`won.r1`) and a SAVED copy (`useSavedAnswer` key `lab-rulers`, with the trials, so the evidence
+no longer says « لم تجرّبه بعد » after a reload); the module's door « العب الجولة 2 » could skip an unplayed round 1 — `LabRounds` now jumps through
+`roundsModel › jumpTarget` (a closed round leads to the first required round not won; tested; shared by every converted lesson); the same reload gap in
+lesson 1's step-3 evidence is closed the same way (`lab-squares`), and its step 6 lost a « (ص 30) »; the checkpoint after module 2 used 3² = 9 and
+4² = 16 (the climax's numbers and its bracketing of √3) — now « 11 is a whole number that is no whole number's square » and √(1/25), with a test that no
+checkpoint uses a climax number or a textbook line (`content/mission.test.js`); the teacher-facing `resources` lines no longer say « الكتاب »; the peer
+sheet's conclusion is corrected too (`fixedLines`), and its fix no longer puts a formula inside parentheses; a11y of the lab: the 1/g buttons' name
+starts with the visible « 1/g » (and « مسطرة مدرّجة بالجزء من g من الوحدة » replaces a wrong plural), focus rings indigo-600 with an offset, the selected
+ruler sky-700, the « too small » colour amber-700 (#B45309), the journal is a table labelled by its heading with row headers and « — » for empty cells,
+the choices row is a labelled group with `aria-pressed`, the value pill is `aria-hidden` (the slider says it), and the prediction result fills an
+always-mounted live region. **Kept:** `qima-mudbuta` in `priorKnowledge` (modules 2–3 and the problems `require` it). **Rejected by the coordinator:**
+`disabled` → `aria-disabled` on every control (a pattern across every lab — out of scope), the √7 checkpoint (the lesson's own skill, other numbers).
+
+**Open on this lesson:** `truthful` « resists » is player-only — the page still marks a rational card ✗ after three wrong rulers (owner's call); the
+`resources` still describe the two-level lab for the teacher's page; e2e specs of the old student view.

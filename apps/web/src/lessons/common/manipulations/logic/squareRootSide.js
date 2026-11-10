@@ -33,7 +33,7 @@ function ceilRoot({ num, den }) {
   return m;
 }
 
-export function init({ mode = 'refine', areas, maxScale = 1000 }) {
+export function init({ mode = 'refine', areas, maxScale = 1000, truthful = false }) {
   // Les aires gardent leur ÉCRITURE (0,25 reste 25/100, pas 1/4) : c'est ce
   // que l'élève lit sur la carte ; les comparaisons, elles, n'en dépendent pas.
   const cards = areas.map(({ num, den }) => { reduce({ num, den }); return { num, den }; });
@@ -42,6 +42,9 @@ export function init({ mode = 'refine', areas, maxScale = 1000 }) {
     cards,
     card: 0,
     maxScale,
+    // graduation, lecteur de mission (rollout 2026-11-09, leçon 2 ; conseil) : une carte dont le côté TOMBE sur une graduation offerte ne « résiste »
+    // jamais, même encadrée sur trois graduations qui ne sont pas la sienne (16/9 sur 1/1, 1/2, 1/4) — le ✗ et « لن يسقط على أي تدريجة » seraient faux.
+    truthful,
     scale: 1,
     // refine : la fenêtre de la règle, en unités de la graduation courante.
     window: { min: 0, max: ceilRoot(cards[0]) + 1 },
@@ -126,6 +129,7 @@ export function cardStatus(s, i) {
   const memo = s.memo[keyOf(s.cards[i])] ?? {};
   const cells = Object.values(memo);
   if (cells.some((c) => c.exact != null)) return 'exact';
+  if (s.truthful && landsSomewhere(s.cards[i], s.maxScale)) return 'open';
   if (cells.filter(tight).length >= RESIST_AFTER) return 'resisting';
   return 'open';
 }
