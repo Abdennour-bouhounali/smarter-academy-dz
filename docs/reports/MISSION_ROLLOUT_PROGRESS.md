@@ -356,6 +356,16 @@ old page. The student tour `student.unit` targets both pages; its two lines that
 `e2e/unit-mission-view.mjs` loops over every unit of `UNIT_MISSIONS` (three lessons done, « درسك الآن » = the fourth) — all checks pass for units 1
 and 2 at the five sizes, teacher view unchanged.
 
+## Cross-lesson fix — a figure and its question on ONE screen (2026-11-11, owner)
+
+The owner: « the student sees the figure on one screen, then must go to the next one to see the question, and come back to look at the figure ».
+In the player the pager put every block on its own screen, so a figure and the question about it were split. `ClassroomPaged › pairFigures`
+now keeps them together, side by side (guide, « a figure and its question share ONE screen »). Scan of every screen of the 20 converted
+lessons at 1366×768 and 1024×768 (scratchpad `fig9/scanall.mjs`): 13 paired screens, 0 `data-fit-overflow`, 0 page scroll; before, 7 screens
+showed a figure with nothing to answer. One remains on purpose: `aksiya-talis` module 1 step 1 opens on the situation (text + its general
+figure); the question's own three figures sit beside it on the next screen. Lowest zoom: 0.81 (`aksiya-talis`, three figures + a three-row
+batch at 1024; the batch label no longer reserves 14rem beside a figure). Classroom Mode and the page: unchanged.
+
 ## Cross-lesson fix — the main button on the right (2026-11-09, owner)
 
 On the lesson home the big « واصل » was in the LEFT column (x ≈ 460 at 1366 px) while the unit page's « واصل الدرس » is on the right (x ≈ 877): the

@@ -1097,8 +1097,16 @@ already there »). `FitToArea` takes a `screenKey` (module path + unit + page) f
   children (`ClassroomPaged`); if it is too tall, the size fitting handles it (last resort);
 - **a drawing is never split** (owner's screenshot, 2026-11-11): the pager's « one element per screen » used to open an `<svg>` into its
   strokes — unit 9's Thales figure showed the lone segment [AM] on « صفحة 1 من 3 ». `ClassroomPaged › isAtomic` now treats `<svg>` and
-  everything in it, `<figure>`, `<img>`, `<canvas>`, `<table>` and `data-paging-keep` as ONE element (tested in `classroomDecor.test.js`). A
-  question asked ON a figure goes in one `data-paging-keep` row with it (figure beside the question), or the pager puts them on two screens;
+  everything in it, `<figure>`, `<img>`, `<canvas>`, `<table>` and `data-paging-keep` as ONE element (tested in `classroomDecor.test.js`);
+- **a figure and its question share ONE screen, side by side** (owner, 2026-11-11: « the student sees the figure on one screen, the question on
+  the next, and has to go back to look at the figure »). Automatic in the player (`ClassroomPaged › pairFigures`, « one element per screen »
+  only — Classroom Mode and the page are unchanged): a block that SHOWS one or more figures and asks nothing (a figure, a row of figures, a
+  statement card holding its figure), then at most two short lines (≤ 300 characters, no figure), then a block that ASKS something (buttons,
+  inputs; no figure of its own; not a lab) become one screen. `data-paging-pair` places them (`mission/mission.css`): `figure` (42 %, at most
+  440 px) or `statement` (50 %) floats at the start of the line, the lines and the question (`side`, `question` — lifted to the figure's
+  sibling when the question sits deeper, e.g. inside a تمرين card) take the rest, and the container holds the float (`display: flow-root`).
+  Nothing to write in a lesson; a figure followed by a long card or by a lab stays alone. Check with a scan of every screen: no visible
+  figure on a screen with nothing to answer, unless it is a knowledge card;
 - **from a scene to a figure — show it in the lab, check it outside** (council of 2026-11-11, unit 9 lesson 1; PROVISIONAL until a real student
   is timed; decide unit by unit, only where the lab has a real scene — vectors and solids already work on the figure). The change of picture
   happens INSIDE the lab, on the drawing the student's hand placed: the décor fades, the named lines are drawn on the objects, then the lab's

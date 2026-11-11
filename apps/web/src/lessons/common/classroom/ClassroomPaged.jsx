@@ -57,6 +57,60 @@ export function isAtomic(el) {
   return /^(FIGURE|SVG|IMG|CANVAS|TABLE)$/i.test(el.tagName ?? '');
 }
 
+const FIGURE_SEL = '[data-geo-figure], figure, svg[role="img"]';
+const ANSWER_SEL = 'button, input, textarea, select, [role="radio"], [role="button"]';
+const LAB_SEL = '[data-manipulation], [data-lab-rounds]';
+/** Le texte d'un bloc HORS de ses figures. */
+const textOf = (el) => {
+  const clone = el.cloneNode(true);
+  clone.querySelectorAll(FIGURE_SEL).forEach((f) => f.remove());
+  return (clone.textContent ?? '').trim();
+};
+const isEl = (el) => Boolean(el && el.nodeType === 1);
+/** Un bloc qui MONTRE une ou plusieurs figures (seules, ou dans un énoncé) et ne demande rien. */
+export function holdsFigure(el) {
+  if (!isEl(el)) return false;
+  if (!el.matches?.(FIGURE_SEL) && !el.querySelector?.(FIGURE_SEL)) return false;
+  return !el.querySelector?.(ANSWER_SEL) && !el.querySelector?.(LAB_SEL);
+}
+/** Un bloc qui n'est QU'UNE figure (une figure, ou une enveloppe autour d'elle avec au plus une courte légende). */
+export function isFigureOnly(el) {
+  if (!holdsFigure(el)) return false;
+  return Boolean(el.matches?.(FIGURE_SEL)) || textOf(el).length <= 60;
+}
+/** Un bloc qui DEMANDE quelque chose (une question, ses options, sa case), sans figure à lui, et qui n'est pas un labo. */
+export function isQuestionBlock(el) {
+  return isEl(el) && Boolean(el.querySelector?.(ANSWER_SEL)) && !el.matches?.(FIGURE_SEL) && !el.querySelector?.(FIGURE_SEL) && !el.querySelector?.(LAB_SEL);
+}
+/** Une courte ligne ENTRE la figure et la question (une consigne, « اقرأ الشكل… ») : ni figure, ni question. */
+const isBridge = (el) => isEl(el) && !el.querySelector?.(ANSWER_SEL) && !el.matches?.(FIGURE_SEL) && !el.querySelector?.(FIGURE_SEL) && textOf(el).length <= 300;
+/**
+ * La FIGURE et la QUESTION qui la suit restent sur le même écran, côte à côte (propriétaire, 2026-11-11 : « l'élève voit le schéma sur un
+ * écran, puis doit passer au suivant pour la question, et revenir pour revoir le schéma »). Lecteur seulement (« un élément par écran ») :
+ * un bloc qui montre une figure (seule, plusieurs, ou dans un énoncé), au plus deux courtes lignes, puis une question → UN groupe.
+ * Rend { groups, paired } : `paired`, les indices des groupes ainsi formés (ClassroomPaged pose `data-paging-pair`, mission.css les range).
+ */
+export function pairFigures(blocks) {
+  const groups = [];
+  const paired = new Set();
+  for (let i = 0; i < blocks.length; i += 1) {
+    const g = blocks[i];
+    if (g.length === 1 && holdsFigure(g[0])) {
+      let j = i + 1;
+      const between = [];
+      while (j < blocks.length && between.length < 2 && blocks[j].length === 1 && isBridge(blocks[j][0])) { between.push(blocks[j][0]); j += 1; }
+      if (j < blocks.length && isQuestionBlock(blocks[j][0])) {
+        paired.add(groups.length);
+        groups.push([g[0], ...between, ...blocks[j]]);
+        i = j;
+        continue;
+      }
+    }
+    groups.push(g);
+  }
+  return { groups, paired };
+}
+
 function resolveBlocks(root, deep = false) {
   let host = root;
   for (let depth = 0; depth < (deep ? 6 : 2); depth += 1) {
@@ -101,7 +155,9 @@ export default function ClassroomPaged({ active = true, page = 0, onPages, onRes
   }, []);
 
   const clear = useCallback(() => {
-    state.current.blocks.flat().forEach((el) => { el.removeAttribute(HIDDEN); el.removeAttribute('data-classroom-page-of'); });
+    state.current.blocks.flat().forEach((el) => { el.removeAttribute(HIDDEN); el.removeAttribute('data-classroom-page-of'); el.removeAttribute('data-paging-pair'); });
+    (state.current.paired ?? []).forEach((el) => el.removeAttribute('data-paging-pair'));
+    state.current.paired = [];
   }, []);
 
   const plan = useCallback(() => {
@@ -169,6 +225,28 @@ export default function ClassroomPaged({ active = true, page = 0, onPages, onRes
         if (!changed) break;
         flattened = true;
       }
+    }
+    // lecteur : une figure et la question qui la suit, un seul écran, côte à côte
+    if (onePerPageRef.current) {
+      const { groups, paired } = pairFigures(blocks);
+      blocks = groups;
+      paired.forEach((gi) => {
+        const group = blocks[gi];
+        const fig = group[0];
+        // ce qui se range À CÔTÉ est un FRÈRE de la figure : la question ouverte plus bas dans l'arbre (la carte d'un تمرين) y monte
+        // jusqu'à son ancêtre frère de la figure — sinon la figure flotte dans un conteneur et la question dans un autre
+        const beside = [];
+        group.slice(1).forEach((el) => {
+          let e = el;
+          while (e && e.parentElement !== fig.parentElement) e = e.parentElement;
+          const at = e ?? el;
+          if (!beside.includes(at)) beside.push(at);
+        });
+        // une figure seule se pose étroite à côté ; un énoncé qui porte sa figure prend la moitié
+        fig.setAttribute('data-paging-pair', isFigureOnly(fig) ? 'figure' : 'statement');
+        beside.forEach((el, k) => el.setAttribute('data-paging-pair', k === beside.length - 1 ? 'question' : 'side'));
+        s.paired = [...(s.paired ?? []), fig, ...beside];
+      });
     }
     s.blocks = blocks;
     const frame = root.closest('[data-classroom-frame]') || root;
