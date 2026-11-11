@@ -58,6 +58,11 @@ Since 2026-11-03 the pilot lesson `qasim-adad-tabii` tries the **student « focu
   (`manipulations/rounds/LabRounds.jsx`) instead of مبتدئ / متقدم, and this lesson uses only the football lab.
   Guide §4septies, plan `docs/reports/MISSION_PLAYER_PLAN_2026-11-04.md`; the rollout to all lessons (after validation):
   `docs/reports/PILOT_PROTOTYPE_ROLLOUT_PLAN_2026-11-08.md`.
+- **No back-and-forth** (owner, 2026-11-11, BINDING for every lesson, existing and new): in the player, what a question asks the student to
+  look at — the figure, the table, the statement's numbers, the student's earlier result — is on the question's screen; the student never goes
+  back a screen and forward again. A figure and the question after it share one screen automatically (`ClassroomPaged › pairFigures`,
+  `data-paging-pair`); the other cases are written into the lesson (guide §4septies « NO BACK-AND-FORTH »). Check: `e2e/no-back-and-forth.mjs`
+  + a walk that answers; the lessons converted before the rule: `docs/reports/NO_BACK_AND_FORTH_PROMPT.md`.
 
 Since 2026-10-13 the **learning net « شبكة الكفاءات »** covers the WHOLE cycle moyen (1AM–4AM): the official
 programme of the four years as data (224 items transcribed from `docs/Math-Moyenne-programme/`, stable ids

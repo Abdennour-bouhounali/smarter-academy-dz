@@ -1098,6 +1098,22 @@ already there »). `FitToArea` takes a `screenKey` (module path + unit + page) f
 - **a drawing is never split** (owner's screenshot, 2026-11-11): the pager's « one element per screen » used to open an `<svg>` into its
   strokes — unit 9's Thales figure showed the lone segment [AM] on « صفحة 1 من 3 ». `ClassroomPaged › isAtomic` now treats `<svg>` and
   everything in it, `<figure>`, `<img>`, `<canvas>`, `<table>` and `data-paging-keep` as ONE element (tested in `classroomDecor.test.js`);
+- **NO BACK-AND-FORTH — BINDING for every lesson, existing and new** (owner, 2026-11-11): everything a question asks the student to LOOK AT
+  is on the question's screen — the figure, the table, the numbers of the statement, the rule it applies, the student's own earlier result. The
+  student never goes back a screen to read something and forward again to answer. How:
+  1. *a figure followed by its question*: automatic (below) — do not put a long card or more than two short lines between them;
+  2. *a later sub-question of the same statement* (part 2 appears after part 1 is answered, and the pager gives it its own screen): draw the
+     figure again beside it — figures are data, `<GeoFigure {...FIG} maxWidth={180} />` costs nothing — or keep the sub-questions in ONE
+     block with the figure (`data-paging-keep`) when they fit;
+  3. *statement data or a table on one screen, the question on the next*: one `data-paging-keep` row (data beside the question), or the needed
+     numbers repeated in the question's prompt in one short line;
+  4. *a question about what the student did before* (a lab round, an earlier answer): its result line on the question's screen (the `wonLine`
+     pattern of `talis-hisab-atwal`).
+  Player only (`PlayerSwitch` / `useInMissionPlayer()`); the page and the teacher are unchanged. Check: `node apps/web/e2e/no-back-and-forth.mjs
+  <lesson ids>` (every screen at 1366 and 1024: `LONE` = a figure with nothing to answer, `OVER` = overflow or scroll, `PAIR` captures to look
+  at) AND a walk that ANSWERS each question (the scan presses « واصل » only: sub-questions that appear after an answer are seen by hand).
+  A `LONE` screen left on purpose (a reading screen) is justified in the lesson's section of `MISSION_ROLLOUT_PROGRESS.md`. The lessons
+  converted before the rule are brought to it with `docs/reports/NO_BACK_AND_FORTH_PROMPT.md`.
 - **a figure and its question share ONE screen, side by side** (owner, 2026-11-11: « the student sees the figure on one screen, the question on
   the next, and has to go back to look at the figure »). Automatic in the player (`ClassroomPaged › pairFigures`, « one element per screen »
   only — Classroom Mode and the page are unchanged): a block that SHOWS one or more figures and asks nothing (a figure, a row of figures, a
@@ -1283,6 +1299,9 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
   its border and fringes closing at the end, + a `KidFigure` weaver in hijab). A new scene is a component `<Nom>Scene({ fill,
   label, className })` drawn in code (never a generated image), `fill` ∈ [0, 1] following the tools earned; it must not show any
   number of the مسألة (rows, capacities). `MissionHome`, `MissionCheckpoint` and `MissionLayer` read `mission.scene`.
+- **No back-and-forth** (owner, 2026-11-11, BINDING): before a conversion is done, `node apps/web/e2e/no-back-and-forth.mjs <id>` shows 0 `OVER`
+  and no unjustified `LONE`, and a walk that answers every question finds no screen whose question needs something shown on another screen
+  (§4septies, « NO BACK-AND-FORTH »).
 - **Checkpoints use other numbers.** A point d'étape speaks of 30, 50 or « n » — never of the climax's numbers (96 here). Its options are SHOWN in an
   order drawn from its `id` (`missionModel › checkpointOrder`, 2026-11-10): write the right answer anywhere — it is never always first on screen.
 - **Rounds are data, in `content/<lab>.js`** (`books.js` for `factor-pairs`): `M<n>_ROUNDS = [{ id, title, goal, stars, easier?,

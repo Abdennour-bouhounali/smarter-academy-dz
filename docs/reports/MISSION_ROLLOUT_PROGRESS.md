@@ -365,6 +365,10 @@ lessons at 1366×768 and 1024×768 (scratchpad `fig9/scanall.mjs`): 13 paired sc
 showed a figure with nothing to answer. One remains on purpose: `aksiya-talis` module 1 step 1 opens on the situation (text + its general
 figure); the question's own three figures sit beside it on the next screen. Lowest zoom: 0.81 (`aksiya-talis`, three figures + a three-row
 batch at 1024; the batch label no longer reserves 14rem beside a figure). Classroom Mode and the page: unchanged.
+The owner then made it a BINDING rule for every lesson, « NO BACK-AND-FORTH » (guide §4septies): what a question asks the student to look
+at is on its screen. The scan is now `apps/web/e2e/no-back-and-forth.mjs`; it presses « واصل » only, so the screens that appear after an
+answer (a later sub-question without its figure, data on the previous screen) are found by a walk that answers — the prompt for the lessons
+already converted: `docs/reports/NO_BACK_AND_FORTH_PROMPT.md` (not run yet).
 
 ## Cross-lesson fix — the main button on the right (2026-11-09, owner)
 
