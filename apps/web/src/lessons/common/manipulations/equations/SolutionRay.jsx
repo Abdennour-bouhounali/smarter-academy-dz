@@ -86,6 +86,8 @@ const { toNumber } = Lin;
 /** Le temps pendant lequel un résultat de prédiction reste seul à l'écran avant la question de la manche. */
 export const PRED_HOLD_MS = 1600;
 const ringP = 'focus-visible:ring-indigo-600 focus-visible:ring-offset-2';
+/** Lecteur : la place d'un bouton − / + au bout de la droite (44 px + 8 px d'écart) — la piste du crochet s'aligne sur la droite. */
+const PLAYER_END = 42;   // 52 px moins le bord (2) et le rembourrage (8) de la section du crochet
 const RED = '#DC2626';
 const GREY = '#94A3B8';
 const EDGE = 22;
@@ -248,10 +250,11 @@ export default function SolutionRay({
 
   /* ── la géométrie de la droite ── */
   const boxRef = useRef(null);
-  const lineRef = useRef(null);
+  // lecteur : la droite est REMONTÉE quand la colonne change de mise en page (question ouverte) — on observe l'élément vivant (callback ref)
+  const [lineEl, setLineEl] = useState(null);
   const [width, setWidth] = useState(320);
   useLayoutEffect(() => {
-    const el = lineRef.current ?? boxRef.current;
+    const el = lineEl ?? boxRef.current;
     if (!el) return undefined;
     const measure = () => setWidth(Math.max(260, Math.floor(el.clientWidth)));
     measure();
@@ -259,7 +262,7 @@ export default function SolutionRay({
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     return () => ro.disconnect();
-  }, []);
+  }, [lineEl]);
   const span = Math.max(1, lab.kmax - lab.kmin);
   const mu = (width - 2 * EDGE) / span;
   const xOf = (kk) => EDGE + (kk - lab.kmin) * mu;
@@ -353,7 +356,10 @@ export default function SolutionRay({
   const nextCase = () => {
     const i = caseRef.current + 1;
     if (!cases || i >= cases.length) return;
-    setDoneCases((d) => [...d, { tex: L.ineqTex(labRef.current.ineq), glyph: L.glyphOf(labRef.current.bracket.side, labRef.current.bracket.toward) }]);
+    const done = labRef.current;
+    if (!done.bracket) return;
+    const entry = { tex: L.ineqTex(done.ineq), glyph: L.glyphOf(done.bracket.side, done.bracket.toward) };
+    setDoneCases((d) => [...d, entry]);
     caseRef.current = i; setCaseIdx(i);
     const fresh = makeFor(cases[i]);
     labRef.current = fresh; setLab(fresh);
@@ -467,7 +473,7 @@ export default function SolutionRay({
         )}
         {/* les traces de l'élève */}
         {lab.traces.map((tr) => (
-          <circle key={tr.k} cx={xOf(tr.k)} cy={Y - 24} r={6} fill={tr.ok ? RED : GREY} stroke="#fff" strokeWidth={1.5} data-trace={tr.k} data-ok={String(tr.ok)} />
+          <circle key={tr.k} cx={xOf(tr.k)} cy={Y - 24} r={6} fill={tr.ok ? RED : (gameScreen ? '#fff' : GREY)} stroke={gameScreen && !tr.ok ? GREY : '#fff'} strokeWidth={gameScreen && !tr.ok ? 2.5 : 1.5} data-trace={tr.k} data-ok={String(tr.ok)} />
         ))}
       </svg>
       {/* étiquette de la borne fractionnaire : îlot LTR, sous la droite */}
@@ -496,7 +502,7 @@ export default function SolutionRay({
           style={{ left: xOf(pk), cursor: probe.dragging ? 'grabbing' : 'grab' }}
           data-ray-probe
         >
-          <span className={`-mt-3 rounded-full px-2 font-mono text-xs font-extrabold text-white ${pe && shownV ? (pe.ok ? 'bg-red-600' : 'bg-slate-500') : 'bg-slate-700'}`}>{xs(pk)}</span>
+          <span className={`-mt-3 rounded-full px-2 font-mono text-xs font-extrabold text-white ${pe && shownV ? (pe.ok ? 'bg-red-600' : 'bg-slate-500') : 'bg-slate-700'}`}>{gameScreen && pe && shownV ? <span aria-hidden="true">{pe.ok ? '● ' : '○ '}</span> : null}{xs(pk)}</span>
         </div>
       </div>
     </div>
@@ -519,7 +525,8 @@ export default function SolutionRay({
   const shownMission = mission ?? k(phone ? 'missionPhone' : mode === 'region' ? 'missionRegion' : mode === 'bracket' ? 'missionBracket' : 'missionFlip');
   const hintKeys = { region: ['gHint1', 'gHint2', 'gHint3'], bracket: ['gHint1', 'bHint2', 'bHint3'], flip: ['gHint1', 'fHint2', 'fHint3'] }[mode];
 
-  const btn = 'inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border-2 px-3 text-sm font-bold focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300';
+  // lecteur : l'anneau indigo-600 décalé (contraste ≥ 3:1, revue a11y 2026-11-11) ; la page garde le sien
+  const btn = `inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border-2 px-3 text-sm font-bold focus:outline-none ${gameScreen ? `focus-visible:ring-2 ${ringP}` : 'focus-visible:ring-4 focus-visible:ring-blue-300'}`;
   const pick = (on) => (on ? 'border-red-600 bg-red-50 text-red-900' : 'border-slate-300 bg-white text-slate-700');
 
   /* ── les deux étapes (crochet, transformation) : partagées par la page et le lecteur ── */
@@ -533,7 +540,7 @@ export default function SolutionRay({
               {bracketOpen && (
                 <>
                   <p className="text-sm text-slate-700">{k('bracketLead')}</p>
-                  <div {...bStretch.trackProps} className="relative h-12 rounded-lg bg-red-50/70" dir="ltr" style={{ ...bStretch.trackProps.style }} data-ray-bracket-track>
+                  <div {...bStretch.trackProps} className="relative h-12 rounded-lg bg-red-50/70" dir="ltr" style={{ ...bStretch.trackProps.style, ...(gameScreen ? { marginInline: PLAYER_END } : {}) }} data-ray-bracket-track>
                     <div
                       {...bStretch.handleProps({ label: k('bracketHandle'), valueText: bk == null ? k('bracketNotSet') : k('bracketValue', { x: xs(bk) }) })}
                       className={`absolute top-0.5 flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-xl border-2 font-mono text-xl font-black text-red-700 outline-none focus-visible:ring-4 focus-visible:ring-blue-300 ${bStretch.dragging ? 'border-blue-500 bg-blue-50' : 'border-red-300 bg-white'}`}
@@ -543,11 +550,11 @@ export default function SolutionRay({
                       {L.glyphOf(draft.side ?? 'left', draft.toward ?? true)}
                     </div>
                   </div>
-                  <div className="flex flex-wrap gap-2" data-ray-sides>
+                  <div className="flex flex-wrap gap-2" data-ray-sides {...(gameScreen ? { role: 'group', 'aria-label': k('bracketLead') } : {})}>
                     <button type="button" className={`${btn} ${pick(draft.side === 'left')}`} aria-pressed={draft.side === 'left'} onClick={() => { setDraft((d) => ({ ...d, side: 'left' })); setVerdict(null); }} data-ray-side="left">{k('sideLeft')}</button>
                     <button type="button" className={`${btn} ${pick(draft.side === 'right')}`} aria-pressed={draft.side === 'right'} onClick={() => { setDraft((d) => ({ ...d, side: 'right' })); setVerdict(null); }} data-ray-side="right">{k('sideRight')}</button>
                   </div>
-                  <div className="flex flex-wrap gap-2" data-ray-towards>
+                  <div className="flex flex-wrap gap-2" data-ray-towards {...(gameScreen ? { role: 'group', 'aria-label': k('bracketTitle') } : {})}>
                     <button type="button" className={`${btn} ${pick(draft.toward === true)}`} aria-pressed={draft.toward === true} onClick={() => { setDraft((d) => ({ ...d, toward: true })); setVerdict(null); }} data-ray-toward="true">{k('toward')}</button>
                     <button type="button" className={`${btn} ${pick(draft.toward === false)}`} aria-pressed={draft.toward === false} onClick={() => { setDraft((d) => ({ ...d, toward: false })); setVerdict(null); }} data-ray-toward="false">{k('away')}</button>
                   </div>
@@ -656,7 +663,7 @@ export default function SolutionRay({
 
   const showWord = shownV && pe;
   const verdictText = showWord
-    ? k(pe.ok ? 'player.vp.ok' : 'player.vp.no', { x: xs(pk) })
+    ? k(pe.ok ? 'player.vp.ok' : 'player.vp.no', { x: `\u2066${xs(pk)}\u2069` })
     : k(mode === 'region' ? 'player.vp.startRegion' : 'player.vp.startBracket');
   const journalId = `${uid}-journal`;
   const journalRows = trail.slice(-4).map((kk) => L.evaluate(lab, kk));
@@ -691,16 +698,17 @@ export default function SolutionRay({
       )}
     </div>
   );
-  const liveKey = `${gesture}:${pk}`;
+  // une annonce par GESTE (un relâchement, un crochet, une ligne), jamais à chaque graduation traversée
+  const liveKey = `${gesture}:${shownV ? 'v' : 'n'}`;
   const sweepAll = handDone ? {
     label: k('player.sweep'), ready: true, remaining: untraced().length, intervalMs: 480, maxTicks: 80,
     step: () => { if (lockedRef.current) return; const next = untraced()[0]; if (next !== undefined) { setLive(null); trace(next); } },
     finish: () => { if (lockedRef.current) return; untraced().forEach((v) => trace(v)); },
   } : undefined;
   const stepBtn = (dir) => {
-    const off = lockedRef.current || (dir < 0 ? pk <= lab.kmin : pk >= lab.kmax);
+    const off = locked || (dir < 0 ? pk <= lab.kmin : pk >= lab.kmax);
     return (
-      <button type="button" onClick={() => { if (!off) probe.nudge(dir); }} aria-label={k(dir < 0 ? 'less' : 'more')} aria-disabled={off || undefined} data-ray-nudge={dir < 0 ? 'less' : 'more'}
+      <button type="button" onClick={() => { if (!lockedRef.current && !off) probe.nudge(dir); }} aria-label={k(dir < 0 ? 'less' : 'more')} aria-disabled={off || undefined} data-ray-nudge={dir < 0 ? 'less' : 'more'}
         className={`inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border-2 border-slate-300 bg-white aria-disabled:opacity-40 focus:outline-none focus-visible:ring-2 ${ringP}`}>
         {dir < 0 ? <Minus className="h-5 w-5" aria-hidden="true" /> : <Plus className="h-5 w-5" aria-hidden="true" />}
       </button>
@@ -751,12 +759,13 @@ export default function SolutionRay({
             </div>
           )}
           <p className="text-sm text-slate-700" data-ray-legend>
-            {hideIneq ? k('player.legendHidden') : <MathText>{k(phone ? 'legendPhone' : 'legend', { ineq: L.ineqTex(lab.ineq) })}</MathText>}
+            {/* une inéquation = UNE île LTR (ARABIC_RTL_CONTRACT) : la chaîne de la page, interpolée, laissait le paragraphe RTL la renverser */}
+            {hideIneq ? k('player.legendHidden') : <>{k('player.legendLead')} <bdi dir="ltr" className="inline-block whitespace-nowrap"><MathText>{`$${L.ineqTex(lab.ineq)}$`}</MathText></bdi> {k('player.legendTail')}</>}
           </p>
           {doneCases.length > 0 && (
             <ul className="flex flex-wrap gap-2" data-ray-done-cases>
               {doneCases.map((c, i) => (
-                <li key={i} className="rounded-lg bg-emerald-50 px-2 py-0.5 text-xs font-bold text-emerald-900" dir="ltr"><span aria-hidden="true">✓ </span><MathText>{`$${c.tex}$`}</MathText></li>
+                <li key={i} className="rounded-lg bg-emerald-50 px-2 py-0.5 text-xs font-bold text-emerald-900"><span aria-hidden="true">✓ </span><bdi dir="ltr" className="inline-block whitespace-nowrap"><MathText>{`$${c.tex}$`}</MathText></bdi></li>
               ))}
             </ul>
           )}
@@ -766,14 +775,14 @@ export default function SolutionRay({
               <Bar v={pe ? pe.right : L.evaluate(lab, lab.kmin).right} color="#93C5FD" label={sidesR} data="right" hide={cp.open} />
               <p className="min-h-[1.5rem] text-sm" data-ray-live>
                 {showWord && !cp.open
-                  ? <MathText>{k('liveLine', { x: L.numTex(pe.x), calc: calcTex(pe) ? `$${calcTex(pe)}$ ،` : '', cmp: cmpTex(pe), verdict: k(pe.ok ? 'isTrue' : 'isFalse') })}</MathText>
+                  ? <>{k('player.liveFor')} <bdi dir="ltr" className="inline-block whitespace-nowrap"><MathText>{`$x = ${L.numTex(pe.x)}$`}</MathText></bdi> : <bdi dir="ltr" className="inline-block whitespace-nowrap"><MathText>{`$${calcTex(pe) ? `${calcTex(pe)} \\quad ` : ''}${cmpTex(pe)}$`}</MathText></bdi> {k(pe.ok ? 'isTrue' : 'isFalse')}</>
                   : <span className="text-slate-500">{k('player.releaseToSee')}</span>}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2" dir="ltr">
             {stepBtn(-1)}
-            <div ref={lineRef} className="min-w-0 flex-1" data-paging-keep data-ray-line-box>{line}</div>
+            <div ref={setLineEl} className="min-w-0 flex-1" data-paging-keep data-ray-line-box>{line}</div>
             {stepBtn(1)}
           </div>
           <p className="text-center text-sm font-bold text-slate-700" dir="ltr">{pk == null ? 'x = ?' : `x = ${xs(pk)}`}</p>
@@ -1105,7 +1114,7 @@ export const QUESTIONS_P = {
     const bp = P.buildIneqParts(lab);
     const g = P.edgeInfo(lab);
     let w = null;
-    [g.edge, g.out].filter((kk) => kk != null).forEach((kk) => {
+    [g?.edge, g?.out].filter((kk) => kk != null).forEach((kk) => {
       if (w) return;
       const e = L.evaluate(lab, kk);
       const okDecoy = Lin.compareWith(e.left, bp.decoyRel, e.right);

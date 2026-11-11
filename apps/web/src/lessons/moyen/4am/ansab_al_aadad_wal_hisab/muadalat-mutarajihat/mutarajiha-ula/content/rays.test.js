@@ -26,8 +26,9 @@ describe('the rays of mutarajiha-ula (council L3)', () => {
     expect(violations(P.shownValues({ ineq: '5x+40<=100', whole: true, bracket: false }), 'ctl').length).toBeGreaterThan(0);
     expect(violations(P.shownValues({ ineq: '-3x+480>=200', bracket: true, transform: true }), 'ctl').length).toBeGreaterThan(0);
   });
-  it('no phone before the climax; no round divides by a coefficient 3', () => {
+  it('no phone before the climax (no round sets `context`), and no round has a coefficient or a card ±3', () => {
     each((x) => expect(x.props.context).toBeUndefined());
+    each((x, r) => P.shownValues(x.props).filter((v) => v.role === 'coef' || v.role === 'divisor').forEach((v) => expect(['3', '-3'], r.id).not.toContain(v.v)));
   });
   it('every start is explicit, on the line, and is neither the bound nor a neighbour of it', () => {
     each((x, r) => {
@@ -58,7 +59,8 @@ describe('the rays of mutarajiha-ula (council L3)', () => {
     expect(P.predictTruth(labOf(M2_ROUNDS[2].props), 'redSide')).toBe('large');
     expect(P.predictTruth(labOf(M2_ROUNDS[2].props), 'isSol:2')).toBe('yes');
   });
-  it('each build has a decoy distinct from its tiles, and the sweep of the line shows no climax value', () => {
+  it('each build has a decoy distinct from its tiles, and every round line holds a solution and a non-solution', () => {
+    each((x, r) => (x.props.sequence ?? [x.props.ineq]).forEach((src) => { const lab = labOf(x.props, src); expect(P.edgeInfo(lab), `${r.id} ${src}`).not.toBeNull(); }));
     [M1_ROUNDS[0], M1_ROUNDS[1]].forEach((r) => {
       const b = P.buildIneqParts(labOf(r.props));
       expect(new Set(b.tiles).size).toBe(b.tiles.length);

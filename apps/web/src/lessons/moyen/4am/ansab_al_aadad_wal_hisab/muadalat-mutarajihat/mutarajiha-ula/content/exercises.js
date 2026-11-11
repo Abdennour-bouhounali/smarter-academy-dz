@@ -81,9 +81,9 @@ export const EXERCISES = [
     interaction: 'batch',
     question: {
       rows: [
-        { label: '$5x > \\ldots$', options: ['$20$', '$15$', '$9$'], correct: 0, correction: 'نضرب في 5 (موجب): $5x > 5 \\times 4 = 20$' },
+        { label: '$5x > \\ldots$', options: ['$20$', '$25$', '$24$'], correct: 0, correction: 'نضرب في 5 (موجب): $5x > 5 \\times 4 = 20$' },
         { label: '$-2x \\ldots -8$', options: ORDER, correct: 0, correction: 'نضرب في $-2$ (سالب) فنغيّر الاتجاه: $-2x < -2 \\times 4 = -8$' },
-        { label: '$5x + 1 \\ldots\\ldots$', options: ['$> 21$', '$< 21$', '$> 20$'], correct: 0, correction: 'من $5x > 20$ نضيف 1: $5x + 1 > 21$' },
+        { label: '$5x + 1 \\ldots\\ldots$', options: ['$> 21$', '$< 21$', '$> 22$'], correct: 0, correction: 'من $5x > 20$ نضيف 1: $5x + 1 > 21$' },
       ],
       explain: 'الضرب في عدد موجب أو إضافة عدد يحافظ على الاتجاه؛ الضرب في عدد سالب يغيّره. والإكمال المطلوب هو ما ينتج بالضبط من $x > 4$.',
     },
@@ -96,9 +96,9 @@ export const EXERCISES = [
     interaction: 'batch',
     question: {
       rows: [
-        { label: '$4x < \\ldots$', options: ['$-12$', '$-7$', '$-9$'], correct: 0, correction: 'نضرب في 4 (موجب): $4x < 4 \\times (-3) = -12$' },
+        { label: '$4x < \\ldots$', options: ['$-12$', '$-15$', '$-16$'], correct: 0, correction: 'نضرب في 4 (موجب): $4x < 4 \\times (-3) = -12$' },
         { label: '$-5x \\ldots 15$', options: ORDER, correct: 1, correction: 'نضرب في $-5$ (سالب) فنغيّر الاتجاه: $-5x > (-5) \\times (-3) = 15$' },
-        { label: '$2x - 1 \\ldots\\ldots$', options: ['$< -7$', '$> -7$', '$< -5$'], correct: 0, correction: '$2x < -6$ ثم نطرح 1: $2x - 1 < -7$' },
+        { label: '$2x - 1 \\ldots\\ldots$', options: ['$< -7$', '$> -7$', '$< -9$'], correct: 0, correction: '$2x < -6$ ثم نطرح 1: $2x - 1 < -7$' },
       ],
       explain: 'الإشارة السالبة للطرف الثاني لا تغيّر شيئًا: وحده الضرب في عدد سالب يغيّر الاتجاه.',
     },

@@ -19,7 +19,6 @@ const X = 1;
 const at = (x) => A * x + B;
 export const NUMS = { A, B, C, R1, BOUND, X, at: at(X), ray: RAY, wrong1: 9, wrong1At: at(9), wrong2: 10, wrong2At: at(10), good: -10, goodAt: at(-10) };
 
-const n = (v) => String(v).replace('-', '-');
 export const PEER_KID = { name: 'لقمان', figure: { outfit: 'teal' } };
 
 export const PEER_SHEET = {
@@ -40,4 +39,3 @@ export const PEER_SHEET = {
   why: `الاتجاه يتغيّر حين نضرب أو نقسم على عدد سالب، لا حين يكون أحد الطرفين سالبًا. هنا قسمنا على ${A} وهو موجب.`,
 };
 export const PLAIN = ineqPlain(I);
-void n;

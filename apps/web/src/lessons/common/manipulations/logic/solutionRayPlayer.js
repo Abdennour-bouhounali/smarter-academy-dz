@@ -77,6 +77,7 @@ const uniq = (xs) => [...new Set(xs.filter((v) => v != null))];
 /** Les chiffres à écrire d'après SES traces : la valeur du membre de gauche à la dernière trace rouge, ou cette trace elle-même, et leurs leurres. */
 export function edgeFillParts(lab) {
   const g = edgeInfo(lab);
+  if (!g) return null;   // une droite sans solution : aucune pastille à proposer (les manches en ont toujours une, rays.test.js)
   const cost = (k) => numText(evaluate(lab, k).left);
   const at = (k) => (inRange(lab, k) ? numText(xOfK(lab, k)) : null);
   const x = xOfK(lab, g.edge);

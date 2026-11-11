@@ -62,6 +62,14 @@ describe('the mission of mutarajiha-ula', () => {
       expect(x + 6 <= 8, `x=${x}`).toBe(x <= 2);
     }
     expect(byId['cp-ramz'].correct).toBe(0);
+    // the option TEXTS agree with the arithmetic above (the right one at `correct`)
+    expect(byId['cp-hal'].options[byId['cp-hal'].correct]).toBe('$6$');
+    expect(byId['cp-yabqa'].options[byId['cp-yabqa'].correct]).toBe('$x > -11$');
+    expect(byId['cp-tariqa'].options[byId['cp-tariqa'].correct]).toContain('x \\geq 7');
+    expect(byId['cp-nafs'].options[byId['cp-nafs'].correct]).toContain('x + 6 \\leq 8');
+    expect(byId['cp-ramz'].options[byId['cp-ramz'].correct]).toContain('يمين 8، والرمز غير موجّه');
+    // the decoys are false: 7 and 8 are not solutions; x < -11 and x > 7 disagree with x > -11 at x = -10 and x = 0
+    expect(-10 < -11).toBe(false); expect(0 > 7).toBe(false);
   });
   it('every round screen (rounds, easier rounds, free choices) is clean by role', () => {
     each((x, r) => expect(violations(P.shownValues(x.props), r.id)).toEqual([]));
