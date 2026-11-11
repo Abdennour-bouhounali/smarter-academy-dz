@@ -2,23 +2,24 @@
  * La carte PROGRESSIVE du درس 3 « المتراجحات من الدرجة الأولى بمجهول واحد » —
  * docs/architecture/KNOWLEDGE_MAP.md, Part A.
  *
- * Aucune mathématique n'est écrite ici : chaque texte vient de la leçon — نشاط 3, معارف 3
- * et 4, la طريقة p. 49 (content/textbook.js), les `commonError` / `method` des exercices
+ * Aucune mathématique n'est écrite ici : chaque texte vient de la leçon — le نشاط, معارف 3
+ * et 4, la طريقة (content/textbook.js), les `commonError` / `method` des exercices
  * (content/exercises.js), « أستعدّ ». Chaque nœud est gardé par l'item de knowledge.jsx qui
  * l'établit (`requires`). Rien de l'إختبار أولي (QCM 6, 8, 9 ; les questions de la plateforme)
  * n'est montré ici.
  *
- *   [المتراجحة] m1 → [رسائل يونس] → [حلّ متراجحة] ─ خطأ شائع → ⛔ [الحدّ في متراجحة صارمة]
+ *   [المتراجحة] m1 → [ميزانية هدى] → [حلّ متراجحة] ─ خطأ شائع → ⛔ [الحدّ في متراجحة صارمة]
  *        │ نمثّلها
  *   [الحلول على مستقيم مدرّج] m2 → [من الدرجة الأولى] m3 → [المثال 1] → [قواعد الاتجاه]
  *   → [المثال 2] ─┬ خطأ شائع → ⛔ [الاتجاه المنسي]
  *                 └ يعتمد على → 📌 [القسمة على سالب] → [التمثيل البياني] → [x > 6]
  *   → [طريقة الحل] m4 → [المثال أ] → 🔍 [نتحقّق بقيم] → 🎯 [خلاصة]
  */
-import { ACTIVITY, KNOWLEDGE_3, KNOWLEDGE_4, METHOD, PREP_ITEMS } from './content/textbook';
+import { ACTIVITY, KNOWLEDGE_3, KNOWLEDGE_4, METHOD } from './content/textbook';
+import { PREP_LADDER } from './content/prep';
 import { EX } from './content/exercises';
 
-const prep10 = PREP_ITEMS[4];
+const prep10 = PREP_LADDER[9];
 const ex25a = EX['ex-25-1'];
 const ex25b = EX['ex-25-2'];
 const ex24b = EX['ex-24-2'];
@@ -29,11 +30,11 @@ export const KNOWLEDGE_GRAPH = {
     {
       id: 'mutarajiha', kind: 'definition', lane: 'center', requires: 'mutarajiha', notebook: true,
       title: 'المتراجحة', subtitle: 'متباينة بمجهول x',
-      reveals: ['younes'],
+      reveals: ['huda'],
     },
     {
-      id: 'younes', kind: 'example', lane: 'end', requires: 'mutarajiha',
-      title: 'رسائل يونس', subtitle: '$2{,}5x + 100 \\leq 150$',
+      id: 'huda', kind: 'example', lane: 'end', requires: 'mutarajiha',
+      title: 'ميزانية هدى', subtitle: '$6x + 20 \\leq 80$',
       context: { text: ACTIVITY.text, note: ACTIVITY.box[0] },
       reveals: ['hal'],
     },
@@ -43,9 +44,9 @@ export const KNOWLEDGE_GRAPH = {
       reveals: ['khata-sarim', 'jadwal'],
     },
     {
-      // ⛔ خطأ شائع — l'exercice 25 : 8/3 donne 6 < 6, fausse (l'inégalité est stricte).
+      // ⛔ خطأ شائع — l'exercice 25 : 2 donne 5 < 5, fausse (l'inégalité est stricte).
       id: 'khata-sarim', kind: 'common_mistake', lane: 'start', requires: 'hal-mutarajiha',
-      title: 'الحدّ والرمز الصارم', subtitle: '$x = \\dfrac{8}{3}$',
+      title: 'الحدّ والرمز الصارم', subtitle: '$x = 2$',
       context: {
         parts: [
           { role: 'wrong', text: ex25a.commonError },
@@ -57,7 +58,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'jadwal', kind: 'relationship', lane: 'end', requires: 'tamthil-jadwal', notebook: true,
-      title: 'الحلول على المستقيم', subtitle: '$x < 3$ ، $x \\geq 2$',
+      title: 'الحلول على المستقيم', subtitle: '$x < 4$ ، $x \\leq 4$',
       reveals: ['ula'],
     },
     {
@@ -67,7 +68,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'ex1', kind: 'example', lane: 'end', requires: 'mutarajiha-ula',
-      title: 'عدد ليس حلًّا', subtitle: '$4 \\times (-2) = -8$',
+      title: 'عدد ليس حلًّا', subtitle: '$5 \\times (-1) = -5$',
       context: { text: KNOWLEDGE_3.example1 },
       reveals: ['qawaid'],
     },
@@ -78,14 +79,14 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'ex2', kind: 'example', lane: 'center', requires: 'qawaid-ittijah',
-      title: 'مثال: نغيّر الاتجاه', subtitle: '$x < -6$',
+      title: 'مثال: نغيّر الاتجاه', subtitle: '$x < -7$',
       context: { text: KNOWLEDGE_3.example2b, note: KNOWLEDGE_3.example2a },
       reveals: ['khata-ittijah', 'tadhakkar'],
     },
     {
-      // ⛔ خطأ شائع — l'exercice 24 (−2x < 4) : le sens gardé.
+      // ⛔ خطأ شائع — l'exercice 24 (−2x < 14) : le sens gardé.
       id: 'khata-ittijah', kind: 'common_mistake', lane: 'end', requires: 'qawaid-ittijah',
-      title: 'الاتجاه المنسي', subtitle: '$-2x < 4$',
+      title: 'الاتجاه المنسي', subtitle: '$-2x < 14$',
       context: {
         parts: [
           { role: 'wrong', text: ex24b.commonError },
@@ -96,9 +97,9 @@ export const KNOWLEDGE_GRAPH = {
       reveals: [],
     },
     {
-      // 📌 تذكّر — « أستعدّ » item 10 du manuel : diviser par un négatif.
+      // 📌 تذكّر — « أستعدّ » : diviser les deux membres d'une متباينة numérique par un négatif.
       id: 'tadhakkar', kind: 'prerequisite', lane: 'start', requires: 'qawaid-ittijah',
-      title: 'تذكّر: القسمة على سالب', subtitle: '$-2x \\geq -1$',
+      title: 'تذكّر: القسمة على سالب', subtitle: '$-20 < 8$',
       context: { text: prep10.text, note: prep10.why },
       reveals: ['tamthil'],
     },
@@ -109,7 +110,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'exk4', kind: 'example', lane: 'center', requires: 'tamthil-bayani',
-      title: 'حدّ ليس حلًّا', subtitle: '$x > 6$',
+      title: 'حدّ ليس حلًّا', subtitle: '$x > 8$',
       context: { text: KNOWLEDGE_4.example2, note: KNOWLEDGE_4.note2 },
       reveals: ['tariqa'],
     },
@@ -120,14 +121,14 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'exA', kind: 'example', lane: 'end', requires: 'tariqat-hal',
-      title: 'المتراجحة أ', subtitle: '$x > \\dfrac{1}{2}$',
+      title: 'المتراجحة أ', subtitle: '$x > 2$',
       context: { text: METHOD.solutionA[2], note: METHOD.solutionA[3] },
       reveals: ['tahaqqaq'],
     },
     {
       // 🔍 تحقّق — l'exercice 25 : les valeurs testées au 1) confirment la solution du 2).
       id: 'tahaqqaq', kind: 'check', lane: 'center', requires: 'tariqat-hal',
-      title: 'نتحقّق بقيم لـ x', subtitle: '$x = 0$ ، $x = 3$',
+      title: 'نتحقّق بقيم لـ x', subtitle: '$x = 0$ ، $x = 2$',
       context: { text: ex25b.question.explain, note: ex25a.method },
       reveals: ['khulasa'],
     },
@@ -140,8 +141,8 @@ export const KNOWLEDGE_GRAPH = {
     },
   ],
   edges: [
-    { from: 'mutarajiha', to: 'younes', label: 'مثال' },
-    { from: 'younes', to: 'hal', label: 'نسمّي' },
+    { from: 'mutarajiha', to: 'huda', label: 'مثال' },
+    { from: 'huda', to: 'hal', label: 'نسمّي' },
     { from: 'hal', to: 'khata-sarim', label: 'خطأ شائع' },
     { from: 'hal', to: 'jadwal', label: 'نمثّلها' },
     { from: 'jadwal', to: 'ula', label: 'نعمّم' },

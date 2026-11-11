@@ -41,14 +41,14 @@ export default function Module05Awazzif() {
       navLinks={getNavLinks(5)}
       moduleNumber={5}
       moduleTitle="أوظّف تعلّماتي"
-      moduleSubtitle="تمارين الكتاب 21 ← 32، وسؤالان من أؤكّد تعلّماتي"
+      moduleSubtitle="تمارين متنوّعة، وسؤالان بإجابتين صحيحتين"
       estimatedTime="11 دقيقة"
-      brief={{ tag: 'أوظّف تعلّماتي — الكتاب ص 51', title: 'تمارين الكتاب، بعباراته', tone: 'amber',
+      brief={{ tag: 'أوظّف تعلّماتي', title: 'تمارين بأعداد المنصّة', tone: 'amber',
         body: <p>لكل متراجحة اختر حلولها، ثم تمثيلها البياني إن طُلب، واقرأ التصحيح: الخطأ هنا يُصحَّح ولا يُحتسب.</p> }}
       steps={[
-        { num: 1, title: 'تمرين 21 — أكمل بالرمز المناسب', done: all('21'),
+        { num: 1, title: 'أكمل بالرمز المناسب', done: all('21'),
           content: <div className="space-y-3">{render('21', ['muqarana-adad'])}</div> },
-        { num: 2, title: 'تمرينا 22 و 23 — من متباينة إلى أخرى', done: all('22', '23'),
+        { num: 2, title: 'من متباينة إلى أخرى', done: all('22', '23'),
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="qawaid-ittijah" variant="rappel" compact />
@@ -56,11 +56,11 @@ export default function Module05Awazzif() {
               {render('23', ['qawaid-ittijah'])}
             </div>
           ) },
-        { num: 3, title: 'تمرين 24 — متراجحات بخطوة واحدة', done: all('24'),
+        { num: 3, title: 'متراجحات بخطوة واحدة', done: all('24'),
           content: <div className="space-y-3">{render('24', ['tariqat-hal'])}</div> },
-        { num: 4, title: 'تمرين 25 — اختبر ثم حلّ', done: all('25'),
+        { num: 4, title: 'اختبر ثم حلّ', done: all('25'),
           content: <div className="space-y-3">{render('25', ['hal-mutarajiha', 'tariqat-hal'])}</div> },
-        { num: 5, title: 'تمرينا 26 و 27 — حلّ كل متراجحة', done: all('26', '27'),
+        { num: 5, title: 'حلّ كل متراجحة', done: all('26', '27'),
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tariqat-hal" variant="rappel" compact />
@@ -68,27 +68,27 @@ export default function Module05Awazzif() {
               {render('27', ['tariqat-hal'])}
             </div>
           ) },
-        { num: 6, title: 'تمرين 28 — حلّ ثم مثّل', done: all('28'),
+        { num: 6, title: 'حلّ ثم مثّل', done: all('28'),
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tamthil-bayani" variant="rappel" compact />
               {render('28', ['tariqat-hal'])}
             </div>
           ) },
-        { num: 7, title: 'تمرين 29 — انشر، حلّل، ثم حلّ', done: all('29'),
+        { num: 7, title: 'انشر، حلّل، ثم حلّ', done: all('29'),
           content: <div className="space-y-3">{render('29', ['tariqat-hal'])}</div> },
-        { num: 8, title: 'تمرينا 31 و 32 — أقواس قبل الحل', done: all('31', '32'),
+        { num: 8, title: 'أقواس قبل الحل', done: all('31', '32'),
           content: (
             <div className="space-y-3">
               {render('31', ['tariqat-hal'])}
               {render('32', ['tariqat-hal'])}
             </div>
           ) },
-        { num: 9, title: 'أؤكّد تعلّماتي — السؤالان 5 و 7', subtitle: 'الكتاب ص 52', done: !!done.q5 && !!done.q7,
+        { num: 9, title: 'سؤالان بإجابتين صحيحتين', subtitle: 'أؤكّد تعلّماتي', done: !!done.q5 && !!done.q7,
           content: (
             <div className="space-y-4">
               <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700"><MathText>{Q5.text}</MathText> <SourceTag source={Q5.source} /> <span className="font-normal text-slate-600">في الكتاب أكثر من إجابة صحيحة: هل تنتج كل متباينة من المعطى؟</span></p>}
+                intro={<p className="text-sm font-semibold text-slate-700"><MathText>{Q5.text}</MathText> <SourceTag source={Q5.source} /> <span className="font-normal text-slate-600">قد تكون أكثر من إجابة صحيحة: هل تنتج كل متباينة من المعطى؟</span></p>}
                 rows={Q5.options.map((o, i) => ({
                   id: `q5-${i}`, label: <MathText>{o}</MathText>, options: FOLLOWS,
                   correct: Q5.correctSet.includes(i) ? 0 : 1,
@@ -98,14 +98,14 @@ export default function Module05Awazzif() {
                 feedback={({ allRight }) => (
                   <Feedback tone={allRight ? 'ok' : 'ko'}>
                     <MathText>{allRight
-                      ? 'متباينتان تنتجان: الضرب في 2 (موجب) ثم إضافة 2 يحافظان على الاتجاه.'
-                      : 'ابدأ من $x \\geq -1$ وطبّق العملية نفسها على الطرفين؛ وجرّب قيمة كبيرة لـ $x$ لتختبر ما لا ينتج.'}</MathText>
+                      ? 'متباينتان تنتجان: الضرب في 3 (موجب) ثم إضافة 4 يحافظان على الاتجاه.'
+                      : 'ابدأ من $x \\geq 2$ وطبّق العملية نفسها على الطرفين؛ وجرّب قيمة كبيرة لـ $x$ لتختبر ما لا ينتج.'}</MathText>
                   </Feedback>
                 )}
                 onAnswered={mark('q5')}
               />
               <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700"><MathText>{Q7.text}</MathText> <SourceTag source={Q7.source} /> <span className="font-normal text-slate-600"><MathText>{'في الكتاب أكثر من إجابة صحيحة: هل $-1$ حلّ لكل متراجحة؟'}</MathText></span></p>}
+                intro={<p className="text-sm font-semibold text-slate-700"><MathText>{Q7.text}</MathText> <SourceTag source={Q7.source} /> <span className="font-normal text-slate-600"><MathText>{'قد تكون أكثر من إجابة صحيحة: هل $-2$ حلّ لكل متراجحة؟'}</MathText></span></p>}
                 rows={Q7.options.map((o, i) => ({
                   id: `q7-${i}`, label: <MathText>{o}</MathText>, options: SOLVES,
                   correct: Q7.correctSet.includes(i) ? 0 : 1,
@@ -115,8 +115,8 @@ export default function Module05Awazzif() {
                 feedback={({ allRight }) => (
                   <Feedback tone={allRight ? 'ok' : 'ko'}>
                     <MathText>{allRight
-                      ? 'نعوّض $x$ بـ $-1$ في كل متراجحة: متراجحتان تعطيان متباينة صحيحة.'
-                      : 'عوّض $x$ بـ $-1$ واحسب الطرفين، ثم احكم على المتباينة العددية.'}</MathText>
+                      ? 'نعوّض $x$ بـ $-2$ في كل متراجحة: متراجحتان تعطيان متباينة صحيحة.'
+                      : 'عوّض $x$ بـ $-2$ واحسب الطرفين، ثم احكم على المتباينة العددية.'}</MathText>
                   </Feedback>
                 )}
                 onAnswered={mark('q7')}

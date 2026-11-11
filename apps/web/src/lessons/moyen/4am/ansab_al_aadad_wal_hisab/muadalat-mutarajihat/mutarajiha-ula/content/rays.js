@@ -42,11 +42,11 @@ export const STAR1 = { ineq: '4x-5<11', min: -3, max: 9, start: 8 };
 export const FREE1 = ['2x-1<9', 'x+9>=1', '8x+4<=52', '4x>6'];
 
 export const B1 = { sequence: ['x<4', 'x<=4'], min: -2, max: 10, start: 8 };
-export const B1_EASY = { ineq: 'x<=2', min: -4, max: 8, start: 3 };
+export const B1_EASY = { ineq: 'x<=2', min: -4, max: 8, start: 6 };
 export const F2 = { ineq: '2x+7<=9', min: -6, max: 6, start: 5 };
-export const F2_EASY = { ineq: '2x<=14', min: 0, max: 12, start: 8 };
+export const F2_EASY = { ineq: '2x<=14', min: 0, max: 12, start: 2 };
 export const F3 = { ineq: '-2x+7<=5', min: -6, max: 6, start: -5 };
-export const F3_EASY = { ineq: '-2x<=14', min: -12, max: 0, start: -8 };
+export const F3_EASY = { ineq: '-2x<=14', min: -12, max: 0, start: -2 };
 export const STAR2 = { ineq: '4x-3>6x+2', min: -8, max: 3, start: 2 };
 export const FREE2 = ['5x-4>31', '-x+2>=9', '-5x+10<0', '2x+9<=6', '-4x+1>3'];
 

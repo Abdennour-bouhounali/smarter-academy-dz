@@ -188,7 +188,7 @@ export function shownValues(props = {}) {
     }
     if (props.chains && props.chains !== 'none' && props.bracket === false) {
       buildIneqParts(lab).tiles.forEach((t) => push('tile', t));
-      if (edgeInfo(lab)) { const f = edgeFillParts(lab); [...f.costOptions, ...f.edgeOptions].forEach((v) => push('chip', v)); }
+      if (edgeInfo(lab)) { const f = edgeFillParts(lab); (props.chains === 'cost' ? f.costOptions : f.edgeOptions).forEach((v) => push('chip', v)); }
     }
     (props.predict ?? []).filter(isSolKey).forEach((key) => push('probe', key.slice(6)));
   };
