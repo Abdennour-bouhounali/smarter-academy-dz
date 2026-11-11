@@ -1,25 +1,14 @@
 /**
  * الدرس 2 — معادلات جداء معدوم
- * Unité 4 du manuel (4AM) : نشاط 2 (p. 44 : الجداء المعدوم، تطبيق أ، تطبيق ب),
- * معارف 2 (p. 46), طرائق p. 47 (حل معادلة من الشكل (ax + b)(cx + d) = 0,
- * دوري الآن 2), exercices 14 → 20 (pp. 50–51), « أستعدّ » items 3–5 (p. 43),
- * QCM 3 et 4 (p. 52), et — déclarés `duplicatedIn` — le تحدّ (x² + 12x = 85) et
- * l'encadré الخوارزمي (x² + 21 = 10x) de la page d'ouverture (p. 43),
- * puis trois « مسائل » de la plateforme (modules 5–7).
- * Source de vérité : docs/sources/4am/unit4/extraction.json.
+ * Unité 4 (4AM) : الجداء المعدوم، معارف، طرائق (حل معادلة من الشكل (ax + b)(cx + d) = 0), sept exercices, deux items de « أؤكّد تعلّماتي »
+ * (déclarés `duplicatedIn`), le تحدّ et l'encadré الخوارزمي de la page d'ouverture, puis trois « مسائل » de la plateforme (modules 5–7).
+ * Source de vérité : docs/sources/4am/unit4/extraction.json. Les nombres et les mots sont ceux de la plateforme (rollout 2026-11-11).
  *
- * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
- *   Entrée retenue (module 1) : le terrain d'entraînement dont les deux côtés sont les deux facteurs (vanishing-pitch), niveau مبتدئ
- *   3(x − 5) — un côté constant qui ne s'écrase jamais, un seul zéro — ajout déclaré de la plateforme (`platform_designed_entry`) ;
- *   le niveau متقدم (x − 2)(x + 5) est l'équation du نشاط 2. L'élève ÉPINGLE les valeurs où le terrain disparaît et c'est sur SES
- *   épingles que la règle est posée (PredictRule, puis la brique APRÈS la réponse).
- *   Rejetée : le نشاط 2 tel quel — « انقل وأكمل 2 × … = 0 » et « a × b = 0 ⇒ a = … أو b = … » comme carte au-dessus du labo : ce sont
- *   des questions auxquelles on répond de mémoire avant tout geste (un test, pas une découverte) ; elles viennent APRÈS la règle (étape 2),
- *   comme application sur des nombres. Le module 2 s'ouvre sur le terrain de l'exemple 3 du livre (3x − 4)(−2x + 1) ; la définition
- *   et la propriété y sont nommées APRÈS leur question.
- *   Ordre des idées : épingler les zéros → la règle (sur ses épingles) → les produits du livre → إلياس وأمين (pourquoi la propriété
- *   est plus courte) → −1,2(3x + 2,7) des deux façons → (x − 2)(x + 5) où le نشر échoue → M2 : l'exemple 3 sur le terrain, « de quelle
- *   forme ? », la définition, la propriété et ses solutions, (E). Modules 3–8 inchangés. Aucune destination du manuel n'a bougé.
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter) — le manuel fixe les كفاءات, pas le parcours.
+ *   Entrée retenue (module 1) : le terrain d'entraînement dont les deux côtés sont les deux facteurs (vanishing-pitch) — d'abord 2(x − 3) (un côté
+ *   constant qui ne s'écrase jamais, un seul zéro), puis (x − 1)(x + 4) (deux zéros), puis 2x(x + 2) (le zéro 0 vient du facteur 2x). L'élève ÉPINGLE
+ *   les valeurs où le terrain disparaît et c'est sur SES épingles que la règle est posée. Module 2 : la règle en demis COUVERTE (le terrain ne se voit
+ *   qu'après un pin, donc on SOLVE au lieu de lire), puis le carré. Modules 3–8 : méthode, exercices, مسائل, test.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -31,6 +20,57 @@ export const LESSON_CONFIG = {
   unit: 'muadalat-mutarajihat',
   unitTitle: 'معادلات ومتراجحات من الدرجة الأولى بمجهول واحد',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (modèle du pilote qasim-adad-tabii, VALIDÉ le 2026-11-08 ; rollout leçon par leçon — unité 4, leçon 2, 2026-11-11) —
+  // implique le regard « focus » ; l'enseignant et le mode classe ne voient aucun changement.
+  studentView: 'mission',
+  // LA MISSION : l'ouverture avoue qu'on ne sait pas encore la résoudre ; les outils sont les connaissances de knowledge.jsx ; les points d'étape
+  // RAPPROCHENT de la mission sans en résoudre aucune question : ni ses nombres (côtés, 792, 40 دج…), ni ses solutions, ni sa correction — content/forbidden.js,
+  // content/mission.test.js et _unit/missionStrings.test.js. La scène : le tableau du mentor sur le terrain du quartier (« pitch-planner »).
+  mission: {
+    scene: 'pitch-planner',
+    title: 'مسطرة المدرّب: متى يختفي الملعب؟',
+    opening: {
+      text: 'يرسم مدرّب نادي الحيّ ملعب تدريب على لوحته: يحرّك عددًا على مسطرة فيتغيّر ضلعا الملعب معًا. عند بعض القيم يختفي الملعب تمامًا! عند أيّ القيم؟ وأيّ قيمة تعطي المدرّب الملعب الذي يريده، وكم يكلّف طلاء خطوطه؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'khassiya-jidaa-maadum', icon: '🎯', label: 'خاصية الجداء المعدوم' },
+      { id: 'taarif-muadala-jidaa', icon: '🧾', label: 'معادلة جداء معدوم' },
+      { id: 'hulul-muadala-jidaa', icon: '✌️', label: 'حلول المعادلة: معادلتان' },
+      { id: 'tariqat-jidaa-maadum', icon: '🧩', label: 'طريقة: نحلّل ثم نحلّ' },
+    ],
+    climaxModule: 5,
+    checkpoints: [
+      {
+        id: 'cp-ahad', afterModule: 1,
+        prompt: '$(-8) \\times b = 0$ . ماذا نعرف عن العدد $b$ ؟',
+        options: ['$b = 0$', '$b = 8$', '$b = -\\dfrac{1}{8}$'],
+        correct: 0,
+        explain: '$(-8) \\times 0 = 0$ . أمّا $(-8) \\times 8 = -64$ و $(-8) \\times \\left(-\\dfrac{1}{8}\\right) = 1$ : لا ينعدم الجداء إلا إذا انعدم العامل الآخر.',
+      },
+      {
+        id: 'cp-shakl', afterModule: 2,
+        prompt: 'أيّ معادلة ليست معادلة جداء معدوم؟',
+        options: ['$(x - 9)(x + 2) = 7$', '$5x(x - 1) = 0$', '$(x + 2)^2 = 0$'],
+        correct: 0,
+        explain: 'طرفها الثاني $7$ وليس $0$ : خاصية الجداء المعدوم لا تُطبَّق. أمّا $5x(x - 1) = 0$ و $(x + 2)^2 = 0$ فجداءان يساويان $0$ .',
+      },
+      {
+        id: 'cp-farq', afterModule: 3,
+        prompt: 'حلول المعادلة $x^2 - 49 = 0$ :',
+        options: ['$7$ أو $-7$', '$7$ فقط', '$49$ أو $-49$'],
+        correct: 0,
+        explain: '$x^2 - 49 = (x - 7)(x + 7)$ ، إذن $x - 7 = 0$ أو $x + 7 = 0$ ، أي $x = 7$ أو $x = -7$ .',
+      },
+      {
+        id: 'cp-sifr', afterModule: 4,
+        prompt: 'حلول المعادلة $7x(x - 2) = 0$ :',
+        options: ['$0$ أو $2$', '$2$ فقط', '$7$ أو $2$'],
+        correct: 0,
+        explain: '$7x = 0$ يعني $x = 0$ ، و $x - 2 = 0$ يعني $x = 2$ . أمّا $7$ فعامل ثابت غير معدوم.',
+      },
+    ],
+  },
   title: 'معادلات جداء معدوم',
   description: 'التعرف على معادلة جداء معدوم من الشكل (ax + b)(cx + d) = 0 وحلها بخاصية الجداء المعدوم: ينعدم جداء عاملين إذا وفقط إذا انعدم أحدهما، ثم حل معادلات تؤول إليها بالتحليل.',
   level: 'moyen',
@@ -50,11 +90,11 @@ export const LESSON_CONFIG = {
   ],
   teachingScope: {
     include: [
-      'خاصية الجداء المعدوم (نشاط 2 ومعارف 2): إذا كان جداء عاملين معدومًا فإن أحد هذين العاملين على الأقل معدوم',
+      'خاصية الجداء المعدوم: إذا كان جداء عاملين معدومًا فإن أحد هذين العاملين على الأقل معدوم',
       'تعريف معادلة جداء معدوم وحلولها: حلول المعادلتين ax + b = 0 و cx + d = 0',
-      'عامل ثابت غير معدوم لا ينعدم: 3(x − 5) = 0 يعني x − 5 = 0 (طريقة أمين)',
-      'حل معادلة تؤول إلى جداء معدوم بالتحليل: طرائق ص 47، دوري الآن 2، تمارين 14 ← 20',
-      'المربّع المكمَّل في تحدّي الوحدة (x² + 12x = 85) ومعادلة الخوارزمي x² + 21 = 10x',
+      'عامل ثابت غير معدوم لا ينعدم: 2(x − 3) = 0 يعني x − 3 = 0',
+      'حل معادلة تؤول إلى جداء معدوم بالتحليل: العامل المشترك والمتطابقات الشهيرة، مع سبعة تمارين',
+      'المربّع المكمَّل في مسألة الوحدة (x² + 10x = 39) ومعادلة الخوارزمي x² + 21 = 10x',
     ],
     exclude: [
       'حل معادلة من الدرجة الأولى بمجهول واحد وخواص المساواة (الدرس 1)',
@@ -63,7 +103,7 @@ export const LESSON_CONFIG = {
     ],
   },
   // « مسألة الدرس » — l'énoncé de la مسألة 1 (content/problems.js), montré au sommaire
-  // et à la fin du module 1 : le ملعب du niveau متقدم, deux côtés qui varient avec x.
+  // et à la fin du module 1 : un ملعب dont les deux côtés varient avec x.
   lessonProblem: {
     module: 5,
     title: 'ملعب التدريب: ضلعان يتغيّران معًا',
@@ -73,19 +113,19 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début.
+  knowledgeMapOpen: true,
   // Les acquis que « أستعدّ » diagnostique : le نشر (unité 3), l'analyse par
   // facteur commun et par identité remarquable (unité 3), la résolution d'une
   // équation du premier degré (leçon 1 de l'unité), le produit de relatifs.
   priorKnowledge: ['nashr-jidaa', 'tahlil-amil', 'tahlil-huwiya', 'hal-muadala-ula', 'darb-nisbiya'],
   resources: [
-    // Le module 1 ouvre sur le نشاط 2 (تطبيق أ) : le TERRAIN dont les deux côtés sont
-    // les deux FACTEURS (vanishing-pitch). مبتدئ = س 1, 3(x − 5) : un côté constant
-    // qui ne s'écrase jamais ; متقدم = س 3, (x − 2)(x + 5), l'équation même de
-    // l'activité, ouverte par défaut. Même objectif aux deux niveaux.
+    // Le module 1 ouvre sur le TERRAIN dont les deux côtés sont les deux FACTEURS (vanishing-pitch). مبتدئ = 2(x − 3) : un côté constant
+    // qui ne s'écrase jamais ; متقدم = (x − 1)(x + 4). Même objectif aux deux niveaux (la page ; le lecteur joue des manches).
     {
       kind: 'manipulation', code: 'pitch-3-x-5', type: 'vanishing-pitch', module: 1,
       level: 'beginner',
-      title: 'ملعب ضلعاه 3 و x − 5: متى يختفي؟',
+      title: 'ملعب ضلعاه 2 و x − 3: متى يختفي؟',
       objective: 'خاصية الجداء المعدوم: A × B = 0 يعني A = 0 أو B = 0 — مساحة الملعب تنعدم فقط عندما ينعدم أحد ضلعيه',
       autonomy: '',
       experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'football' },
@@ -95,24 +135,24 @@ export const LESSON_CONFIG = {
     {
       kind: 'manipulation', code: 'pitch-x-2-x-5', type: 'vanishing-pitch', module: 1,
       level: 'advanced',
-      title: 'ملعب ضلعاه x − 2 و x + 5: كل القيم التي يختفي عندها',
+      title: 'ملعب ضلعاه x − 1 و x + 4: كل القيم التي يختفي عندها',
       objective: 'خاصية الجداء المعدوم: A × B = 0 يعني A = 0 أو B = 0 — مساحة الملعب تنعدم فقط عندما ينعدم أحد ضلعيه',
-      autonomy: 'الضلعان يتغيّران معًا وأحدهما ينقلب سالبًا بين −5 و 2: على التلميذ أن يجد وحده كل قيم x التي يختفي عندها الملعب ثم أن يحكم «لا حلول أخرى» بعد مسح المسطرة، ونشر إلياس لا يعطي معادلة من الدرجة الأولى',
+      autonomy: 'الضلعان يتغيّران معًا وأحدهما ينقلب سالبًا بين −4 و 1: على التلميذ أن يجد وحده كل قيم x التي يختفي عندها الملعب ثم أن يحكم «لا حلول أخرى» بعد مسح المسطرة، ونشر حاتم لا يعطي معادلة من الدرجة الأولى',
       experience: { type: 'platform_adaptation', reason: 'multiple_representations', theme: 'football' },
       learningPointIds: ['4am_jidaa-maadum_P2', '4am_jidaa-maadum_P1'],
       sourceElementIds: ['act-2b'],
     },
-    // معارف 2, مثال 3 : (3x − 4)(−2x + 1) = 0 — la règle graduée en sixièmes (zéros 1/2 et 4/3).
+    // معارف 2 : (2x − 3)(x + 1) = 0 — la règle graduée en demis (zéros 3/2 et −1).
     {
       kind: 'manipulation', code: 'pitch-3x-4-2x-1', type: 'vanishing-pitch', module: 2,
-      title: 'مثال الكتاب: ملعب ضلعاه 3x − 4 و −2x + 1',
+      title: 'ملعب ضلعاه 2x − 3 و x + 1: القيمتان بالأنصاف',
       learningPointIds: ['4am_jidaa-maadum_P2'],
       sourceElementIds: ['know-2'],
     },
-    // دوري الآن 2 (p. 47) : (2x + 1)² = 0 — un terrain CARRÉ, les deux côtés s'annulent ensemble.
+    // Un terrain CARRÉ (x + 1)² = 0 : les deux côtés s'annulent ensemble.
     {
       kind: 'manipulation', code: 'pitch-square-2x-1', type: 'vanishing-pitch', module: 3,
-      title: 'ملعب مربّع ضلعه 2x + 1: كم حلًّا؟',
+      title: 'ملعب مربّع ضلعه x + 1: كم حلًّا؟',
       learningPointIds: ['4am_jidaa-maadum_P2'],
       sourceElementIds: ['now-47-2'],
     },
@@ -124,22 +164,22 @@ export const LESSON_CONFIG = {
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
-      title: 'أستعدّ', desc: 'تسع عبارات: النشر، التحليل، حل معادلة من الدرجة الأولى، وضرب الأعداد النسبية. صحيح أم خاطئ؟',
+      title: 'أستعدّ', desc: 'عشر عبارات من السهل إلى الأصعب: حل معادلة من الدرجة الأولى وتحليل عبارة. صحيح أم خاطئ؟',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 5, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'nashat', path: `${LESSON_BASE_PATH}/nashat`,
-      title: 'نشاط 2 — خاصية الجداء المعدوم', desc: 'حرّك x فيتغيّر ضلعا الملعب: متى يختفي؟ ثم كرّاسا إلياس وأمين والمعادلة (x − 2)(x + 5) = 0 من الكتاب.',
+      title: 'أكتشف — خاصية الجداء المعدوم', desc: 'حرّك x فيتغيّر ضلعا الملعب: متى يختفي؟ ثم كرّاسا حاتم وبسّام والمعادلة (x − 1)(x + 4) = 0.',
       stage: 'trigger', teachesLearningPointIds: ['4am_jidaa-maadum_P1', '4am_jidaa-maadum_P2'],
       color: 'indigo', style: 'featured', estimatedMin: 13, difficulty: 2, actionText: 'أحرّك x' },
     { id: '02', number: 2, slug: 'maarif', path: `${LESSON_BASE_PATH}/maarif`,
-      title: 'معارف — معادلات جداء معدوم', desc: 'التعريف، خاصية الجداء المعدوم وحلول المعادلة، أمثلة الكتاب الثلاثة، ثم المعادلة (E) من النشاط.',
+      title: 'معارف — معادلات جداء معدوم', desc: 'التعريف، خاصية الجداء المعدوم وحلول المعادلة، مثال محلول، ثم المعادلة (E) وورقة زميل.',
       stage: 'discovery', teachesLearningPointIds: ['4am_jidaa-maadum_P1', '4am_jidaa-maadum_P2', '4am_jidaa-maadum_P3'],
       color: 'violet', style: 'featured', estimatedMin: 9, difficulty: 2, actionText: 'أكتشف' },
     { id: '03', number: 3, slug: 'tarayiq', path: `${LESSON_BASE_PATH}/tarayiq`,
-      title: 'طرائق — نحلّل ثم نحلّ', desc: 'حلّ الكتاب سطرًا سطرًا، دوري الآن، ثم تحدّي الوحدة (المربّع AEGF) ومعادلة الخوارزمي.',
+      title: 'طرائق — نحلّل ثم نحلّ', desc: 'حلّ مفصّل سطرًا سطرًا، تمارين سريعة، ثم مربّع الخوارزمي ومعادلته.',
       stage: 'formalization', teachesLearningPointIds: ['4am_jidaa-maadum_P2', '4am_jidaa-maadum_P3'],
       color: 'emerald', style: 'featured', estimatedMin: 9, difficulty: 3, actionText: 'أتعلّم الطريقة' },
     { id: '04', number: 4, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
-      title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 14 ← 20: معادلات جداء معدوم ومعادلات تؤول إليها.',
+      title: 'أوظّف تعلّماتي', desc: 'سبعة تمارين: معادلات جداء معدوم ومعادلات تؤول إليها.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_jidaa-maadum_P1', '4am_jidaa-maadum_P2', '4am_jidaa-maadum_P3'],
       color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أتدرّب' },
     // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
@@ -158,7 +198,7 @@ export const LESSON_CONFIG = {
       stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_jidaa-maadum_P2', '4am_jidaa-maadum_P3'],
       color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
     { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث، منها سؤالا أؤكّد تعلّماتي 3 و 4.',
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

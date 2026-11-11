@@ -35,16 +35,22 @@ export function parseProduct(expr) {
   return { factors: F.factors, zeros: F.zeros, roots: F.roots, g, square: !String(expr).includes('|') };
 }
 
-export function init({ expr }) {
+/**
+ * `startX` / `range` (lecteur, 2026-11-11, unité 4 leçon 2) : le x d'ouverture et la règle [min, max] donnés EN x par la manche ; sans eux,
+ * tout est dérivé comme avant (la page est inchangée).
+ */
+export function init({ expr, startX, range: wanted }) {
   const P = parseProduct(expr);
   const lo = Math.min(Math.floor(Lin.toNumber(P.roots[0])), 0) - 2;
   const hi = Math.max(Math.ceil(Lin.toNumber(P.roots.at(-1))), 0) + 2;
+  const own = wanted ? { min: wanted[0] * P.g, max: wanted[1] * P.g } : null;
   return {
+    ...(startX != null ? { startV: Math.round(startX * P.g) } : {}),
     expr,
     ...P,
     // Le produit écrit avec des décimaux (−1,2(3x + 2,7)) se lit en décimaux ; sinon en fractions (1/2, 4/3).
     decimal: /[.,]/.test(String(expr)),
-    range: { min: lo * P.g, max: hi * P.g },
+    range: own ?? { min: lo * P.g, max: hi * P.g },
     rootUnits: P.roots.map((r) => (r.n * P.g) / r.d),
     x: null, // l'entier v, x = v / g
     visited: [], // les v validés (le balayage)
@@ -209,6 +215,7 @@ export function geometry(s, v, { width, maxHeight = 320, pad = 26, maxUnit = 40 
  * jamais un zéro, qui serait la réponse. Sinon le minimum de la règle.
  */
 export function defaultV(s) {
+  if (s.startV != null) return s.startV;
   const ok = (v) => v >= s.range.min && v <= s.range.max && !Lin.isZero(sides(s, v).area);
   for (let d = 0; d <= s.range.max - s.range.min; d += 1) {
     if (ok(d)) return d;

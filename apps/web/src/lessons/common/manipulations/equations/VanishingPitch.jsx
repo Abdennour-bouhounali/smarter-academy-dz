@@ -9,10 +9,14 @@ import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
 import MathText from '../../components/MathText';
 import * as L from '../logic/vanishingPitch';
+import * as P from '../logic/vanishingPitchPlayer';
 import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 import { useLabCheckpoint } from '../primitives/LabCheckpoint';
 import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
 import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { useLabCoach } from '../primitives/LabCoach';
+import PredictTray from '../primitives/PredictTray';
+import { useInMissionPlayer, useMissionArea } from '../../mission/missionPlayerContext';
 import { playSfx } from '../../utils/playEffect';
 
 /**
@@ -45,21 +49,21 @@ import { playSfx } from '../../utils/playEffect';
  *   OBJECT         un terrain dont les côtés signés sont les deux facteurs
  *   VARIABLE       x (le doigt tient la poignée de la règle)
  *   INVARIANT      aire = A × B pour tout x ; un facteur constant non nul ne change
- *                  jamais (3 dans 3(x − 5))
+ *                  jamais (2 dans 2(x − 3))
  *   TRANSFORMATION les deux côtés, l'aire et son signe, en direct
  *   CONSTRAINT     une solution épinglée doit annuler l'aire
  *   RESISTANCE     l'épingle refusée avec l'aire exacte ; « لا حلول أخرى » refusé tant
  *                  qu'un zéro manque ou que la règle n'a pas été balayée des deux côtés
  *   EVIDENCE       le terrain réduit à une ligne ; les épingles sur la piste des solutions
- *   CONTRAST       un x refusé ET tous les zéros épinglés ; مبتدئ 3(x − 5) : le côté 3
- *                  ne s'écrase jamais (une solution) ; متقدم (x − 2)(x + 5) : deux
+ *   CONTRAST       un x refusé ET tous les zéros épinglés ; un côté constant (un seul
+ *                  zéro) contre deux côtés qui bougent (deux zéros)
  *   PREDICTION     « où le terrain va-t-il disparaître ? » — la règle est là, rien n'est marqué
  *   DISCOVERY      « الجداء ينعدم إذا وفقط إذا انعدم أحد عامليه » (distracteurs réfutés
  *                  par les propres essais : « les deux à la fois », « x = 0 », « un côté
  *                  négatif »)
  *   FORMALIZATION  A × B = 0 ⇔ A = 0 أو B = 0, puis les deux équations du premier degré
- *   TRANSFER       معارف 2 (3x − 4)(−2x + 1) en sixièmes ; دوري الآن (2x + 1)² : un carré,
- *                  un zéro ; طرائق : factoriser pour revenir à ce terrain
+ *   TRANSFER       une règle en demis, un carré (un zéro), un produit qui contient x
+ *                  (le zéro 0) ; طرائق : factoriser pour revenir à ce terrain
  *
  * Toute expression « f1|f2 » de deux facteurs du premier degré (ou constants) est
  * acceptée par `expr` ; un seul facteur veut dire son carré. La graduation vient des
@@ -78,48 +82,138 @@ import { playSfx } from '../../utils/playEffect';
  * peut taper (il roule dans le terrain ; quand le terrain s'écrase, il tombe sur la
  * ligne). Le décor ne porte AUCUNE information : `aria-hidden`, `tabIndex={-1}`, il ne
  * change jamais l'état du lab, et `prefers-reduced-motion` l'immobilise.
+ *
+ * LECTEUR DE MISSION (rollout 2026-11-11, unité 4 leçon 2 `jidaa-maadum` ; conseil du 2026-11-11, verdict « L2 ») : joué en MANCHES (LabRounds).
+ * Tout ce qui suit est gardé par `useInMissionPlayer()` ; hors lecteur (page, enseignant, mode classe) le labo est INCHANGÉ.
+ *   - Un ESSAI = épingler un x NOUVEAU (jamais jugé dans la manche) ou « لا حلول أخرى » alors qu'un zéro manque (UNE fois par ensemble d'épingles) :
+ *     `onVerdict { groups, exact, free? }` (`logic/vanishingPitchPlayer › pinVerdict, claimVerdict`). Bouger x, re-épingler le même x (son verdict est
+ *     RÉ-ANNONCÉ), « حرّك x أوّلًا », `notSwept` et la revendication acceptée ne sont pas des essais. Aucun refus n'est exigé (L2.2) ; `freeRefusal` rend le
+ *     PREMIER refus de la manche gratuit (M1 r1 et la manche couverte). La découverte (tous les zéros + revendication acceptée) est annoncée une fois
+ *     (`{ tk: 'discovered' }`). « جرّب كل الإمكانيات », les indices et les niveaux sont CACHÉS (le guide les remplace) ; toujours guidé ; pas de fête.
+ *   - `chains` : 'build' (côté constant : quel côté · combien vaut l'autre · BÂTIR « ▢ = 0 ⇒ x = ▢ » ; sinon BÂTIR « x = ▢ أو x = ▢ », précédé de « quel
+ *     côté » sur la manche couverte), 'rule' (quel côté · BÂTIR « ▢ = 0 ▢ ▢ = 0 » avec la tuile de TEXTE « أو » et le leurre « معًا » · LA RÈGLE),
+ *     'count' (carré : quel côté · combien de solutions), 'none'.
+ *   - `predict` : des CLÉS (≤ 2) — count, atZero, zeroB — posées AVANT le premier geste ; options et vérité de la logique
+ *     (`predictOptions`, `predictTruth`), jugées par le terrain (`judgedPredictions`).
+ *   - `covered` : le terrain est MASQUÉ ; seul un x déjà jugé (épinglé ou refusé) se voit (`isCovered`) — les lectures montrent les expressions, les
+ *     valeurs sont « ? ». `choices` : des terrains au choix (manche libre) [{ expr, startX }]. `startX` / `range` : ouverture et règle de la manche.
+ *   Journal « 📋 جدول تجاربك » (x · A · B · المساحة · le MOT du verdict) et verdict dans la colonne, une région vivante TOUJOURS montée (une clé par
+ *   geste) ; commandes figées pendant une prédiction ou une question (`aria-disabled` + garde) ; `LabCoach` (`logic › coachOf`) ;
+ *   `{ tk: 'reset' }` à chaque « إعادة », `{ tk: 'retry' }`. AUCUN défilement : le terrain est UN bloc `data-paging-keep` mis à l'échelle par la
+ *   largeur de la scène ET la hauteur de la zone du lecteur.
  */
+const PRED_MAX = 2;
+/** Le temps pendant lequel un résultat de prédiction reste seul à l'écran avant la question de la manche. */
+export const PRED_HOLD_MS = 1600;
+const ringP = 'focus-visible:ring-indigo-600 focus-visible:ring-offset-2';
+/** Lecteur : ce que la zone du lecteur porte EN PLUS du labo (le chemin des manches, la ligne du but, les marges). */
+const PLAYER_CHROME = 150;
+
 export default function VanishingPitch({
   expr: expr0 = 'x-2|x+5', title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onFinished, onTrial, onCheckpoint,
+  // ── LECTEUR DE MISSION (rollout 2026-11-11, unité 4 leçon 2) ──
+  startX: startX0, range: range0, onVerdict, chains: chainsMode = 'none', predict: predictList = [], choices, covered: covered0 = false,
+  freeRefusal = false, coachPin = false, coach: coachOn = true,
 }) {
   const { t } = useTranslation('lesson');
+  const gameScreen = useInMissionPlayer();
+  const uid = useId();
   const k = useCallback((key, o) => t(`manipulation.vanishingPitch.${key}`, o), [t]);
-  const state = useManipulation({ type: 'vanishing-pitch', initialNumbers: { expr: expr0 }, initialMode, initialLevel: level, withLevels, hintCount: 3 });
+  // lecteur : le x d'ouverture et la règle voyagent avec l'expression (la manche libre change de terrain) ; la page garde ses nombres d'avant
+  const initialNumbers = gameScreen ? { expr: expr0, startX: startX0, range: range0 } : { expr: expr0 };
+  const state = useManipulation({ type: 'vanishing-pitch', initialNumbers, initialMode, initialLevel: level, withLevels, hintCount: 3 });
   const { expr } = state.numbers;
+  const startX = gameScreen ? state.numbers.startX : undefined;
+  const range = gameScreen ? state.numbers.range : undefined;
+  const isCoveredRound = gameScreen && covered0;
 
-  const make = () => L.init({ expr });
-  const [lab, setLab] = useState(make);
-  const sceneKey = `${expr}:${state.epoch}:${state.resetCount}`;
+  const make = () => L.init({ expr, startX, range });
+  const [labState, setLab] = useState(make);
+  // the lab of THIS render: on a scene change (another choice of the free round) it is the fresh one at once
+  let lab = labState;
+  const sceneKey = `${expr}:${startX ?? ''}:${range ?? ''}:${state.epoch}:${state.resetCount}`;
   const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
   const [live, setLive] = useState(null);
   const [kick, setKick] = useState(0);
+  // lecteur : les suites finies, les prédictions (clé → juste ?), celles posées, les résultats montrés, le dernier geste (une clé par geste)
+  const [doneIds, setDoneIds] = useState([]);
+  const [preds, setPreds] = useState({});
+  const asked = useRef(new Set());
+  const [missionBig, setMissionBig] = useState(false);
+  const refusedSeen = useRef(0);
+  const claimSeen = useRef([]);
+  const discoveredSent = useRef(false);
+  const heardPred = useRef(new Set());
+  const [shownPreds, setShownPreds] = useState([]);
+  const [predHold, setPredHold] = useState(false);
+  const holdTimer = useRef(null);
+  const [choiceSaid, setChoiceSaid] = useState(null);
+  const [gesture, setGesture] = useState(0);
   // Miroir synchrone de `lab` : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
   const labRef = useRef(lab);
-  labRef.current = lab;
   // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — le terrain, les essais et les questions du labo
-  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(make()); setLive(null); }
+  if (scene.key !== sceneKey) {
+    lab = make();
+    setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(lab); setLive(null);
+    setDoneIds([]); setPreds({}); asked.current = new Set(); refusedSeen.current = 0; claimSeen.current = []; discoveredSent.current = false;
+    heardPred.current = new Set(); setShownPreds([]); setPredHold(false);
+  }
+  labRef.current = lab;
+  // la manche (LabRounds) repart de zéro avec la scène : ses essais et prédictions d'avant ne comptent plus
+  useEffect(() => { if (gameScreen && scene.inits > 0) state.report(onTrial, { tk: 'reset' }); }, [scene.inits]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const ready = L.discoveryReady(lab);
+  const ready = gameScreen ? P.playerReady(lab) : L.discoveryReady(lab);
   // les questions pendant le labo : une suite unique quand la découverte est atteinte ; celle qui finit par la règle remplace la découverte automatique
   const cpSettings = useLabCheckpointSettings('vanishing-pitch');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
   const cpLive = cpOn && cpSettings.enabled;
-  const chain = cpLive ? CHAIN : null;
+  // ── le lecteur : les suites de la manche (CHAINS_PLAYER), posées quand ce qu'elles interrogent est là, après les résultats des prédictions ──
+  const playerChains = gameScreen ? chainsOfPlayer(chainsMode, lab, covered0) : [];
+  const predKeys = gameScreen ? predictList.filter((key) => P.PREDICT_KEYS.includes(key)).slice(0, PRED_MAX) : [];
+  const judgedPreds = gameScreen ? P.judgedPredictions(lab, predKeys.filter((key) => key in preds), ready) : [];
+  const pendingPreds = judgedPreds.filter((key) => !heardPred.current.has(key));
+  const holdChain = pendingPreds.length > 0 || predHold;
+  const playerPending = gameScreen && cpLive && !holdChain ? playerChains.find((c) => c.reached(lab) && !doneIds.includes(c.id)) ?? null : null;
+  const chain = gameScreen ? null : (cpLive ? CHAIN : null);
   const cp = useLabCheckpoint({
-    id: chain ? expr : null,
-    questions: chain && ready ? chain.map((q) => QUESTIONS[q](lab, k)) : null,
-    reached: ready,
+    id: gameScreen ? playerPending?.id ?? null : (chain ? expr : null),
+    questions: gameScreen
+      ? (playerPending ? playerPending.qs.map((q) => QUESTIONS[q](lab, k)) : null)
+      : (chain && ready ? chain.map((q) => QUESTIONS[q](lab, k)) : null),
+    reached: gameScreen ? !!playerPending : ready,
     resetKey: scene.inits,
-    onRetry: () => { setLab(make()); setLive(null); },
-    onEvent: (ev) => state.report(onCheckpoint, ev),   // {tk:'checkpoint'|'checkpoint-done', id: expr, …} — la TRACE que les étapes du module relisent
-    onDone: () => { state.discover(); state.formalize(); },
+    onRetry: () => {
+      setLab(make()); setLive(null);
+      if (gameScreen) {
+        // lecteur : le terrain repart de ZÉRO ; la manche oublie ce que le labo vient de défaire, le 1er refus redevient gratuit
+        refusedSeen.current = 0; claimSeen.current = []; discoveredSent.current = false;
+        state.report(onTrial, { tk: 'retry' });
+      }
+    },
+    onEvent: (ev) => state.report(gameScreen ? onTrial : onCheckpoint, ev),   // {tk:'checkpoint'|'checkpoint-done', id, …} — la TRACE que la manche / les étapes relisent
+    onDone: (id) => {
+      if (gameScreen) {
+        setDoneIds((d) => (d.includes(id) ? d : [...d, id]));
+        if ((playerChains.find((c) => c.id === id)?.qs ?? []).includes('ruleP')) { state.discover(); state.formalize(); }
+        return;
+      }
+      state.discover(); state.formalize();
+    },
   });
-  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (ready && !cpLive && !gameScreen) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // lecteur : la découverte du labo, annoncée une fois à la manche
+  useEffect(() => {
+    if (gameScreen && ready && !discoveredSent.current) { discoveredSent.current = true; state.report(onTrial, { tk: 'discovered' }); }
+  }, [ready]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, expr); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── mesure ── */
   const boxRef = useRef(null);
+  const fieldRef = useRef(null);
+  // lecteur : la rangée « terrain + colonne des lectures » — ce qui est AU-DESSUS d'elle est l'en-plus (la règle, les choix)
+  const rowRef = useRef(null);
   const [width, setWidth] = useState(320);
+  const [overhead, setOverhead] = useState(260);
   useLayoutEffect(() => {
     const el = boxRef.current;
     if (!el) return undefined;
@@ -130,26 +224,85 @@ export default function VanishingPitch({
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
+  // lecteur : ce que le bloc du labo mesure EN PLUS du terrain (la règle, les lectures, les boutons) — re-mesuré à chaque rendu (même valeur = aucun rendu)
+  useLayoutEffect(() => {
+    if (!gameScreen) return;
+    const el = boxRef.current; const f = rowRef.current ?? fieldRef.current;
+    if (el) { const w = Math.max(260, Math.floor(el.clientWidth)); setWidth((cur) => (cur === w ? cur : w)); }
+    if (el && f) {
+      const o = Math.max(120, Math.ceil(el.getBoundingClientRect().height - f.getBoundingClientRect().height));
+      setOverhead((cur) => (Math.abs(cur - o) < 4 ? cur : o));
+    }
+  });
+  const area = useMissionArea();
+
+  /* ── lecteur : la PRÉDICTION, avant le premier geste ; les commandes sont figées pendant elle et pendant une question ── */
+  const untouched = lab.visited.length === 0 && lab.pins.length === 0 && lab.refused.length === 0 && live == null;
+  const nextPred = predKeys.find((key) => !asked.current.has(key)) ?? null;
+  const predictOpen = gameScreen && cpLive && !cp.open && !missionBig && untouched && nextPred != null;
+  const locked = gameScreen && (cp.open || predictOpen);
+  const lockedRef = useRef(false);
+  lockedRef.current = locked;
+  const sayPredict = (says) => {
+    const key = nextPred;
+    const ok = String(says) === String(P.predictTruth(lab, key));
+    asked.current.add(key);
+    playSfx('pop');
+    setPreds((m) => ({ ...m, [key]: ok }));
+    state.report(onTrial, { tk: 'predict', ok });
+    if (!predKeys.some((x) => x !== key && !asked.current.has(x))) {
+      setTimeout(() => boxRef.current?.querySelector('[data-vanishing-handle]')?.focus(), 60);
+    }
+  };
+  const pendingSig = pendingPreds.join('|');
+  useEffect(() => {
+    if (!pendingSig) return;
+    const keys = pendingSig.split('|');
+    keys.forEach((key) => heardPred.current.add(key));
+    setShownPreds(keys.map((key) => ({ key, ok: preds[key] })));
+    playSfx(keys.every((key) => preds[key]) ? 'correct' : 'pop');
+    setPredHold(true);
+    clearTimeout(holdTimer.current);
+    holdTimer.current = setTimeout(() => setPredHold(false), PRED_HOLD_MS);
+  }, [pendingSig]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => () => clearTimeout(holdTimer.current), []);
+  useEffect(() => { if (cp.open) setShownPreds([]); }, [cp.open]);
 
   /* ── la règle de x ── */
-  const { range, g } = lab;
+  const { range: rng, g } = lab;
   const EDGE = 22;
-  const steps = Math.max(1, range.max - range.min);
+  const steps = Math.max(1, rng.max - rng.min);
   const mu = (width - 2 * EDGE) / steps;
-  const xPx = (v) => EDGE + (v - range.min) * mu;
-  const toValue = useCallback((clientX, _y, rect) => range.min + (clientX - rect.left - EDGE) / mu, [range.min, mu]);
+  const xPx = (v) => EDGE + (v - rng.min) * mu;
+  // zoom du lecteur : les pixels de l'écran ramenés aux pixels du calque (rect.width / offsetWidth)
+  const rulerRef = useRef(null);
+  const toValue = useCallback((clientX, _y, rect) => {
+    const w = rulerRef.current?.offsetWidth || rect.width;
+    const z = (gameScreen && w ? rect.width / w : 1) || 1;
+    return rng.min + ((clientX - rect.left) / z - EDGE) / mu;
+  }, [rng.min, mu, gameScreen]);
   const stretch = useStretchInteraction({
-    value: live ?? lab.x ?? L.defaultV(lab), range, toValue, onChange: setLive,
-    onCommit: (v) => { setLive(v); setLab((s) => L.move(s, v)); },
+    value: live ?? lab.x ?? L.defaultV(lab), range: rng, toValue,
+    // lecteur : chaque position VUE pendant le geste est une visite (le balayage qui justifie « لا حلول أخرى ») — clavier et −/+ compris
+    onChange: (v0) => {
+      if (lockedRef.current) return;
+      setLive(v0);
+      // un geste rapide saute des crans : chaque cran entre la position d'avant et la nouvelle est aussi une visite
+      if (gameScreen && Number.isInteger(v0)) setLab((s) => { const from = s.x ?? L.defaultV(s); const lo = Math.min(from, v0); const hi = Math.max(from, v0); let n = s; for (let u = lo; u <= hi; u += 1) if (u !== from || s.x != null) n = L.move(n, u); return L.move(n, v0); });
+    },
+    onCommit: (v0) => { if (lockedRef.current) { setLive(null); return; } setLive(v0); setLab((s) => L.move(s, v0)); },
     direction: 'ltr', pageStep: g,
   });
+  const nudge = (d) => { if (!lockedRef.current) stretch.nudge(d); };
   // Un x PAR DÉFAUT (L.defaultV : un terrain qui ne s'écrase pas, jamais une réponse). Ce n'est pas une visite : `lab.visited` ne le contient pas.
   const isDefault = lab.x == null && live == null;
   const v = live ?? lab.x ?? L.defaultV(lab);
   const settled = !stretch.dragging && (isDefault || (lab.x != null && (live == null || live === lab.x)));
   const unvisited = () => Array.from({ length: labRef.current.range.max - labRef.current.range.min + 1 }, (_, i) => labRef.current.range.min + i).filter((u) => !labRef.current.visited.includes(u));
   const cur = L.sides(lab, v);
-  const geo = L.geometry(lab, v, { width: Math.min(width, 640) });
+  const coveredNow = isCoveredRound && P.isCovered(lab, v);
+  const playerRoom = gameScreen && area?.height > 0 ? Math.max(110, area.height - overhead - PLAYER_CHROME) : Infinity;
+  const geo = L.geometry(lab, v, gameScreen ? { width: Math.min(width - 188, 560), maxHeight: Math.min(320, playerRoom), pad: 16 } : { width: Math.min(width, 640) });
   const productTex = L.productTex(lab);
   const xText = L.labText(lab, cur.x);
 
@@ -160,6 +313,7 @@ export default function VanishingPitch({
   const celebrated = useRef({ n: 0, inits: scene.inits });
   if (celebrated.current.inits !== scene.inits) celebrated.current = { n: 0, inits: scene.inits };   // « إعادة » : on refête
   useEffect(() => {
+    if (gameScreen) return;   // lecteur : pas de fête quand l'étape est cachée
     if (nDone <= celebrated.current.n) return;
     celebrated.current.n = nDone;
     party.celebrate({ n: nDone, total: stepDone.length });
@@ -174,30 +328,58 @@ export default function VanishingPitch({
     h.v = v;
     const now = Date.now();
     if (now - h.at > 35) { playSfx('tooth'); h.at = now; }
-    if (zeroNow && !h.zero) playSfx('bell');
+    if (zeroNow && !h.zero && !coveredNow) playSfx('bell');
     h.zero = zeroNow;
   }, [v]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── épingler, conclure ── */
   const pin = () => {
+    if (lockedRef.current) return;
     stretch.flush();
     // La valeur en attente (clavier, −/+) est validée d'abord : on épingle ce qui est à l'écran.
-    const base = live != null && live !== lab.x ? L.move(lab, live) : lab;
-    const next = L.pin(base);
+    // Lecteur : le x d'ouverture peut être épinglé tel quel (une devinette refusée) — la page demande d'abord de bouger x.
+    const base = gameScreen ? (v !== lab.x ? L.move(lab, v) : lab) : (live != null && live !== lab.x ? L.move(lab, live) : lab);
+    const fresh = gameScreen && P.isNewPin(base, base.x);
+    let next = L.pin(base);
+    // lecteur : re-épingler un x déjà jugé RÉ-ANNONCE son verdict, relu sur l'état
+    if (gameScreen && next.last?.kind === 'already') next = { ...next, last: { kind: 'pinned', v: next.last.v, zero: L.zeroSides(next, next.last.v) } };
+    if (gameScreen && next.last?.kind === 'notZero' && !fresh) next = { ...next, last: { kind: 'notZero', v: next.last.v } };
     setLab(next);
     const last = next.last;
     if (last && (last.kind === 'pinned' || last.kind === 'notZero')) {
       playSfx(last.kind === 'pinned' ? 'flag' : 'over');
       const sd = L.sides(next, last.v);
       state.report(onTrial, { x: L.labText(next, sd.x), xTex: L.labTex(next, sd.x), A: L.labText(next, sd.A), B: L.labText(next, sd.B), area: L.labText(next, sd.area), areaTex: L.areaTex(next, last.v), ok: last.kind === 'pinned', expr });
+      if (gameScreen && fresh) {
+        const verdict = P.pinVerdict(next, last.v);
+        const free = freeRefusal && !verdict.exact && refusedSeen.current === 0;
+        if (!verdict.exact) refusedSeen.current += 1;
+        state.report(onVerdict, { ...verdict, ...(free ? { free: true } : {}) });
+      }
     }
+    if (gameScreen) setGesture((n) => n + 1);
     setKick((n) => n + 1);
   };
-  const claim = () => { stretch.flush(); setLab((s) => L.claimNoOther(live != null && live !== s.x ? L.move(s, live) : s)); };
+  const claim = () => {
+    if (lockedRef.current) return;
+    stretch.flush();
+    const base = gameScreen ? (v !== lab.x ? L.move(lab, v) : lab) : (live != null && live !== lab.x ? L.move(lab, live) : lab);
+    const next = L.claimNoOther(base);
+    setLab(next);
+    if (gameScreen) {
+      setGesture((n) => n + 1);
+      // lecteur : « لا حلول أخرى » alors qu'un zéro manque est un essai, UNE fois par ensemble d'épingles
+      if (next.last?.kind === 'missing' && P.isNewMissingClaim(base, claimSeen.current)) {
+        claimSeen.current = [...claimSeen.current, P.claimKey(base)];
+        state.report(onVerdict, P.claimVerdict(base));
+      }
+    }
+  };
 
   const last = lab.last;
   const sideName = (i) => k(i === 0 ? 'sideA' : 'sideB');
-  const zeroText = (zero) => (zero.length === 2 ? k('bothZero') : k('oneZero', { side: sideName(zero[0]) }));
+  // lecteur : le nom du côté sans ses deux-points dans la phrase du verdict (« الضلع B ينعدم ») ; la page garde sa phrase
+  const zeroText = (zero) => (zero.length === 2 ? k('bothZero') : k('oneZero', { side: gameScreen ? sideName(zero[0]).replace(/[:：]\s*$/, '') : sideName(zero[0]) }));
   const verdict = last && ({
     pinned: () => <span className="text-emerald-800"><MathText>{k('vPinned', { x: L.labTex(lab, L.xOf(lab, last.v)), which: zeroText(last.zero) })}</MathText></span>,
     notZero: () => <span className="text-rose-800"><MathText>{k('vNot', { x: L.labTex(lab, L.xOf(lab, last.v)), area: L.areaTex(lab, last.v) })}</MathText></span>,
@@ -212,9 +394,9 @@ export default function VanishingPitch({
   const discoveryOptions = useMemo(() => discoveryOptionsOf(lab, k), [lab, k]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── le terrain ── */
-  const uid = useId().replace(/:/g, '');
-  const hatchId = `vp-hatch-${uid}`;
-  const clipId = `vp-clip-${uid}`;
+  const hatchId = `vp-hatch-${uid.replace(/:/g, '')}`;
+  const clipId = `vp-clip-${uid.replace(/:/g, '')}`;
+  const tarpId = `vp-tarp-${uid.replace(/:/g, '')}`;
   const { rect } = geo;
   const stripe = Math.max(10, geo.unit);
   // Le ballon (décor) : dans le terrain, déplacé par chaque « tape » ; sur la ligne quand il s'écrase.
@@ -225,25 +407,249 @@ export default function VanishingPitch({
   const ballY = geo.collapsed ? ball.cy - 7 : ball.cy;
 
   const pinsHere = lab.pins;
-  const grads = Array.from({ length: steps + 1 }, (_, i) => range.min + i);
+  const grads = Array.from({ length: steps + 1 }, (_, i) => rng.min + i);
+
+  /* ── lecteur : le verdict VISIBLE (relu sur l'état), le guide, la prédiction ou la question qui PREND la colonne, le journal ── */
+  const shownKind = last?.kind;
+  const verdictOk = shownKind === 'pinned' || shownKind === 'claimed';
+  const verdictBad = shownKind === 'notZero' || shownKind === 'missing' || shownKind === 'notSwept';
+  const verdictPlain = <MathText>{verdict ? verdictText(last, lab, k, zeroText) : k('player.start')}</MathText>;
+  const liveKey = `${shownKind ?? 'info'}:${last?.v ?? ''}:${gesture}`;
+  const chainsDone = playerChains.length ? playerChains.every((c) => doneIds.includes(c.id)) : true;
+
+  const coachRaw = gameScreen && coachOn && !locked ? P.coachOf(lab, { done: chainsDone && ready, first: coachPin }) : null;
+  // un objet STABLE par étape (son id fixe la cible et le geste) : LabCoach ne se réabonne pas à chaque geste
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const coachStep = useMemo(() => coachRaw, [coachRaw?.id]);
+  const coach = useLabCoach({
+    lab: 'vanishing-pitch', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '',
+    labels: { hide: t('manipulation.common.coach.hide'), show: t('manipulation.common.coach.show'), ok: t('manipulation.common.coach.ok'), stop: t('manipulation.common.coach.stop') },
+  });
+
+  const predOptionText = (key, x) => {
+    if (key === 'atZero') return k(`predict.${x}`);
+    return <MathText>{`$${numTexOf(x)}$`}</MathText>;
+  };
+  const trayNode = !gameScreen ? null : predictOpen ? (
+    <PredictTray attr="vp" key={nextPred} step={predKeys.indexOf(nextPred) + 1} of={predKeys.length}
+      title={t('manipulation.common.cp.predict.title')}
+      prompt={<MathText>{k(`predict.${nextPred}`)}</MathText>}
+      options={P.predictOptions(lab, nextPred).map((x) => ({ says: String(x), text: predOptionText(nextPred, x) }))}
+      onSay={sayPredict} />
+  ) : cp.open ? cp.node : null;
+
+  const journalId = `${uid}-journal`;
+  const journalRows = [...lab.pins, ...lab.refused].sort((a, b) => a - b).map((u) => ({ u, ok: lab.pins.includes(u), sd: L.sides(lab, u) }));
+  const playerRepresentation = gameScreen && !cp.open && (
+    <div className="space-y-2" data-vanishing-player-col>
+      {/* le texte VISIBLE du verdict ; l'annonce passe par la région vivante toujours montée de la scène (`data-vanishing-verdict-live`) */}
+      <div data-vanishing-verdict-box>
+        <p className={`rounded-xl border bg-white px-3 py-2 text-center text-sm font-bold leading-snug ${verdictOk ? 'border-emerald-300 text-emerald-800' : verdictBad ? 'border-rose-300 text-rose-800' : 'border-dashed border-slate-300 text-slate-700'}`}
+          data-vanishing-verdict={shownKind ?? ''}>
+          {(verdictOk || verdictBad) && <span aria-hidden="true">{verdictOk ? '✓ ' : '✗ '}</span>}
+          {(verdictOk || verdictBad) && <span className="sr-only">{k(verdictOk ? 'player.cueRight' : 'player.cueRefused')} </span>}
+          <bdi>{verdictPlain}</bdi>
+        </p>
+        {shownPreds.map((pr) => (
+          <p key={pr.key} data-vanishing-predict-result={pr.ok ? 'ok' : 'wrong'} data-vanishing-predict-key={pr.key}
+            className={`mt-2 rounded-2xl px-4 py-2 text-center text-lg font-black ${pr.ok ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>
+            {pr.ok ? t('manipulation.common.cp.predict.right') : k('predict.wrong')}
+          </p>
+        ))}
+      </div>
+      {journalRows.length > 0 && (
+        <div data-vanishing-journal>
+          <p id={journalId} className="text-sm font-black text-indigo-900"><span aria-hidden="true">📋 </span>{k('player.journal')}</p>
+          <table className="mt-1 w-full text-center text-xs" aria-labelledby={journalId}>
+            <thead>
+              <tr className="bg-slate-50">
+                <th scope="col">{k('player.colX')}</th><th scope="col">{k('player.colA')}</th><th scope="col">{k('player.colB')}</th>
+                <th scope="col">{k('player.colArea')}</th><th scope="col">{k('player.colResult')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {journalRows.map((r) => (
+                <tr key={r.u} data-vanishing-row-word={r.ok ? 'ok' : 'refused'}>
+                  <th scope="row" className="border border-slate-200 font-mono font-normal"><bdi dir="ltr">{L.labText(lab, r.sd.x)}</bdi></th>
+                  <td className="border border-slate-200 font-mono"><bdi dir="ltr">{L.labText(lab, r.sd.A)}</bdi></td>
+                  <td className="border border-slate-200 font-mono"><bdi dir="ltr">{L.labText(lab, r.sd.B)}</bdi></td>
+                  <td className="border border-slate-200 font-mono"><bdi dir="ltr">{L.labText(lab, r.sd.area)}</bdi></td>
+                  <td className={`border border-slate-200 font-bold ${r.ok ? 'text-emerald-800' : 'text-rose-800'}`}>
+                    <span aria-hidden="true">{r.ok ? '✓ ' : '✗ '}</span>{k(r.ok ? 'player.wordPinned' : 'player.wordRefused')}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+  const choiceId = (c) => `pitch-${c.expr}`;
+  const sameChoice = (c) => expr === c.expr;
+
+  const frozen = locked ? { 'aria-disabled': true } : {};
+  const fr = (pageCls) => (gameScreen ? `focus-visible:ring-2 ${ringP}` : pageCls);
+
+  /* ── le terrain, les lectures, les deux gestes : la page les empile ; le lecteur met lectures et gestes dans une colonne À CÔTÉ du terrain (la hauteur va au terrain) ── */
+  const fieldNode = (
+    <>
+    {/* ── le terrain : côtés signés depuis le coin O (lecteur : UN bloc cadré, aucun défilement) ── */}
+    <div ref={fieldRef} {...(gameScreen ? { 'data-paging-keep': '' } : {})}
+      className={`overflow-hidden rounded-2xl border-2 border-emerald-200 bg-white p-1 ${predictOpen ? 'ring-4 ring-amber-300 ring-offset-2' : ''}`} dir="ltr">
+      <div className="relative mx-auto" style={{ width: geo.svgW, height: geo.svgH, maxWidth: '100%' }} data-vanishing-field data-collapsed={geo.collapsed && !coveredNow ? 'true' : 'false'} data-sign={coveredNow ? 'covered' : geo.sign} data-covered={coveredNow ? 'true' : undefined}>
+        <svg width={geo.svgW} height={geo.svgH} viewBox={`0 0 ${geo.svgW} ${geo.svgH}`} className="absolute inset-0 h-full w-full" role="img"
+          aria-label={coveredNow ? k('player.ariaCovered') : k('ariaPitch', { a: L.labText(lab, cur.A), b: L.labText(lab, cur.B), area: L.labText(lab, cur.area) })}>
+          <defs>
+            <pattern id={hatchId} width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="8" stroke="#E11D48" strokeWidth="2.2" strokeOpacity="0.7" />
+            </pattern>
+            <pattern id={tarpId} width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <rect width="14" height="14" fill="#CBD5E1" />
+              <line x1="0" y1="0" x2="0" y2="14" stroke="#94A3B8" strokeWidth="5" />
+            </pattern>
+            <clipPath id={clipId}><rect x={rect.x} y={rect.y} width={Math.max(rect.w, 0.01)} height={Math.max(rect.h, 0.01)} /></clipPath>
+          </defs>
+          {/* les axes du coin O */}
+          <line x1={0} x2={geo.svgW} y1={geo.oy} y2={geo.oy} stroke="#CBD5E1" strokeWidth={1} />
+          <line x1={geo.ox} x2={geo.ox} y1={0} y2={geo.svgH} stroke="#CBD5E1" strokeWidth={1} />
+          {coveredNow ? (
+            /* lecteur, manche couverte : la bâche — aucune longueur ne se lit tant qu'aucune épingle n'a levé le voile sur CE x */
+            <g data-vanishing-tarp>
+              <rect x={8} y={8} width={Math.max(10, geo.svgW - 16)} height={Math.max(10, geo.svgH - 16)} rx={10} fill={`url(#${tarpId})`} stroke="#64748B" strokeWidth={2} />
+              <circle cx={geo.ox} cy={geo.oy} r={4} fill="#0F172A" />
+            </g>
+          ) : (
+            <>
+              {/* décor : la pelouse tondue en bandes, les buts */}
+              {!geo.collapsed && (
+                <g data-decor clipPath={`url(#${clipId})`}>
+                  {Array.from({ length: Math.ceil(rect.w / stripe) + 1 }, (_, i) => (
+                    <rect key={i} x={rect.x + i * stripe} y={rect.y} width={stripe} height={rect.h} fill={i % 2 ? '#16A34A' : '#22C55E'} />
+                  ))}
+                  <line x1={rect.x + rect.w / 2} x2={rect.x + rect.w / 2} y1={rect.y} y2={rect.y + rect.h} stroke="#fff" strokeOpacity={0.45} strokeWidth={1.5} />
+                  {geo.sign < 0 && <rect x={rect.x} y={rect.y} width={rect.w} height={rect.h} fill={`url(#${hatchId})`} data-vanishing-negative-area />}
+                </g>
+              )}
+              {!geo.collapsed && rect.h >= 18 && (
+                <g data-decor>
+                  <rect x={rect.x - 6} y={rect.y + rect.h / 2 - Math.min(14, rect.h / 4)} width={6} height={Math.min(28, rect.h / 2)} fill="#F8FAFC" stroke="#94A3B8" />
+                  <rect x={rect.x + rect.w} y={rect.y + rect.h / 2 - Math.min(14, rect.h / 4)} width={6} height={Math.min(28, rect.h / 2)} fill="#F8FAFC" stroke="#94A3B8" />
+                </g>
+              )}
+              {!geo.collapsed && <rect x={rect.x} y={rect.y} width={rect.w} height={rect.h} fill="none" stroke="#fff" strokeWidth={2.5} />}
+              {/* le terrain ÉCRASÉ : une ligne, aire 0 */}
+              {geo.collapsed && (
+                <line x1={rect.x} y1={rect.y} x2={rect.x + rect.w} y2={rect.y + rect.h} stroke="#B45309" strokeWidth={5} strokeLinecap="round" data-vanishing-line />
+              )}
+              {/* les deux côtés signés, depuis O */}
+              <line x1={geo.ox} y1={geo.oy} x2={geo.ox + L.toNum(cur.A) * geo.unit} y2={geo.oy} stroke={geo.negA ? '#E11D48' : '#1D4ED8'} strokeWidth={4} strokeDasharray={geo.negA ? '6 4' : undefined} strokeLinecap="round" data-vanishing-side="A" data-negative={geo.negA ? 'true' : 'false'} />
+              <line x1={geo.ox} y1={geo.oy} x2={geo.ox} y2={geo.oy - L.toNum(cur.B) * geo.unit} stroke={geo.negB ? '#E11D48' : '#7C3AED'} strokeWidth={4} strokeDasharray={geo.negB ? '6 4' : undefined} strokeLinecap="round" data-vanishing-side="B" data-negative={geo.negB ? 'true' : 'false'} />
+              <circle cx={geo.ox} cy={geo.oy} r={4} fill="#0F172A" />
+              {/* décor : le ballon */}
+              <g data-decor style={{ transition: 'transform 450ms cubic-bezier(.3,1.6,.5,1)', transform: `translate(${ball.cx}px, ${ballY}px)` }} className="motion-reduce:transition-none">
+                <circle r={7} fill="#fff" stroke="#0F172A" strokeWidth={1.4} />
+                <path d="M0 -3 L3 -1 L2 3 L-2 3 L-3 -1 Z" fill="#0F172A" />
+              </g>
+            </>
+          )}
+        </svg>
+        {coveredNow && (
+          <p className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 text-center" data-vanishing-tarp-label>
+            <span className="inline-block rounded-full bg-slate-800/90 px-3 py-1 text-sm font-black text-white">{k('player.covered')}</span>
+          </p>
+        )}
+        {/* décor interactif : taper le ballon (hors clavier, sans effet mathématique) */}
+        {!coveredNow && (
+          <button type="button" tabIndex={-1} aria-hidden="true" onClick={() => setKick((n) => n + 1)}
+            className="absolute h-7 w-7 -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ left: `${(ball.cx / geo.svgW) * 100}%`, top: `${(ballY / geo.svgH) * 100}%` }} data-decor-ball />
+        )}
+      </div>
+    </div>
+
+    </>
+  );
+  const readoutNode = (
+    <>
+    {/* ── les côtés et l'aire, lus en direct (DOM) ── */}
+    <ul className={gameScreen ? 'grid grid-cols-1 gap-2 text-sm' : 'flex flex-wrap gap-2 text-sm'} data-vanishing-readout>
+      {[0, 1].map((i) => {
+        const val = i === 0 ? cur.A : cur.B;
+        const zero = val.n === 0;
+        const neg = val.n < 0;
+        const hidden = coveredNow;
+        return (
+          <li key={i} data-vanishing-reading={i === 0 ? 'A' : 'B'} className={`min-w-0 rounded-lg border-2 px-2 py-1 font-bold ${hidden ? 'border-slate-300 bg-slate-50 text-slate-800' : zero ? 'border-amber-400 bg-amber-50 text-amber-900' : neg ? 'border-rose-300 bg-rose-50 text-rose-900' : i === 0 ? 'border-blue-200 bg-blue-50 text-blue-900' : 'border-violet-200 bg-violet-50 text-violet-900'}`}>
+            {gameScreen ? (
+              <>
+                <span className="block text-xs font-bold">{sideName(i).replace(/[:：]\s*$/, '')}</span>
+                <bdi dir="ltr" className="block text-xs"><MathText>{`$${L.factorTex(lab, i)}$`}</MathText></bdi>
+                <bdi dir="ltr" className="block text-2xl font-black leading-tight">{hidden ? <><span aria-hidden="true">?</span><span className="sr-only">{k('player.hiddenValue')}</span></> : <MathText>{`$${L.labTex(lab, val)}$`}</MathText>}</bdi>
+              </>
+            ) : (
+              <>{sideName(i)}{' '}<bdi dir="ltr"><MathText>{`$${L.factorTex(lab, i)} = ${L.labTex(lab, val)}$`}</MathText></bdi></>
+            )}
+            {!hidden && neg && <span className="ms-1 text-xs font-semibold">({k('negSide')})</span>}
+            {!hidden && zero && <span className="ms-1 text-xs font-semibold">({k('zeroSide')})</span>}
+            {!lab.square && L.isConstant(lab, i) && <span className="ms-1 text-xs font-normal">({k('constSide')})</span>}
+          </li>
+        );
+      })}
+      <li className={`min-w-0 rounded-lg border-2 px-2 py-1 font-bold ${geo.collapsed && !coveredNow ? 'border-amber-400 bg-amber-100 text-amber-950' : 'border-slate-200 bg-white text-slate-800'}`} data-vanishing-area={coveredNow ? '?' : L.labText(lab, cur.area)}>
+        {gameScreen ? (
+          <>
+            <span className="block text-xs font-bold">{k('area').replace(/[:：]\s*$/, '')}</span>
+            <bdi dir="ltr" className="block text-2xl font-black leading-tight">{coveredNow ? <><span aria-hidden="true">?</span><span className="sr-only">{k('player.hiddenValue')}</span></> : <MathText>{`$${L.labTex(lab, cur.area)}$`}</MathText>}</bdi>
+          </>
+        ) : (
+          <>{k('area')}{' '}<bdi dir="ltr"><MathText>{`$${L.labTex(lab, cur.area)}$`}</MathText></bdi></>
+        )}
+        {geo.collapsed && !coveredNow && <span className="ms-1 text-xs font-semibold">— {k('collapsed')}</span>}
+      </li>
+    </ul>
+
+    </>
+  );
+  const answerNode = (
+    <>
+    {/* ── les deux gestes de réponse ── */}
+    <div className={gameScreen ? "flex flex-col gap-2" : "flex flex-wrap items-center gap-2"}>
+      <button type="button" onClick={pin} data-vanishing-pin-button {...frozen}
+        className={`inline-flex min-h-[44px] items-center gap-1 rounded-xl border-2 border-emerald-500 bg-white px-3 font-bold text-emerald-800 focus:outline-none ${fr('focus-visible:ring-2 focus-visible:ring-emerald-500')}`}>
+        <MapPin className="h-4 w-4" aria-hidden="true" /> {k('pin')}
+      </button>
+      <button type="button" onClick={claim} data-vanishing-claim {...frozen}
+        className={`inline-flex min-h-[44px] items-center gap-1 rounded-xl border-2 border-slate-400 bg-white px-3 font-bold text-slate-800 focus:outline-none ${fr('focus-visible:ring-2 focus-visible:ring-slate-500')}`}>
+        <ListChecks className="h-4 w-4" aria-hidden="true" /> {k('noOther')}
+      </button>
+    </div>
+    </>
+  );
 
   return (
     <ManipulationShell
       type="vanishing-pitch"
       title={title ?? k('title')}
-      mission={mission ?? k('mission')}
-      lead={lead}
+      mission={(typeof mission === 'string' && gameScreen ? <MathText>{mission}</MathText> : mission) ?? k('mission')}
+      lead={typeof lead === 'string' && gameScreen ? <MathText>{lead}</MathText> : lead}
       state={state}
+      coach={gameScreen && coachOn ? coach : null}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       headerAction={cpSettings.control}
-      guided={!!chain}
-      hints={[k('hint1'), k('hint2'), k('hint3')].map((h) => <MathText key={h}>{h}</MathText>)}
+      // lecteur : l'écran de jeu est toujours GUIDÉ (les manches et les questions guident)
+      guided={gameScreen || !!chain}
+      hideRepresentation={(gameScreen && locked) || undefined}
+      onIntroChange={gameScreen ? setMissionBig : undefined}
+      sidePanel={trayNode ? <div data-vanishing-tray>{trayNode}</div> : null}
+      // lecteur : le guide remplace les indices
+      hints={gameScreen ? [] : [k('hint1'), k('hint2'), k('hint3')].map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{
         autoStep: () => false,
         canAutoStep: () => false,
         // Balayer la règle, graduation après graduation : chaque position est une visite (le balayage qui justifie « لا حلول أخرى »). Épingler reste la réponse de l'élève.
-        autoComplete: {
+        // lecteur : le balayage est caché (il montrerait chaque écrasement sans une décision)
+        autoComplete: gameScreen ? undefined : {
           label: t('manipulation.autoComplete.tryAll'),
           ready: true,
           remaining: unvisited().length,
@@ -265,14 +671,14 @@ export default function VanishingPitch({
           },
         },
       }}
-      representation={settled && (
+      representation={gameScreen ? playerRepresentation : (settled && (
         <EquationDisplay
           tone={Lin0(cur.area) ? 'ok' : 'neutral'}
           tex={`x = ${L.labTex(lab, cur.x)} \\qquad A \\times B = ${L.areaTex(lab, v)}`}
           note={<MathText>{Lin0(cur.area) ? k('readZero') : k('readNot')}</MathText>}
         />
-      )}
-      discovery={(
+      ))}
+      discovery={gameScreen ? null : (
         <ManipulationDiscovery
           state={state}
           prompt={k('dPrompt')}
@@ -283,14 +689,50 @@ export default function VanishingPitch({
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-emerald-50/70 to-white" data-dragging={stretch.dragging ? 'true' : undefined}>
-        <div ref={boxRef} className="relative space-y-3" data-vanishing-pitch data-expr={expr} data-graduation={g}>
+        <div ref={boxRef} className="relative space-y-3" data-vanishing-pitch data-expr={expr} data-graduation={g} data-covered={isCoveredRound ? 'true' : undefined}>
           {party.node}
-          {cp.node}
-          <LabStepper count={stepDone.length} current={Math.min(nDone, stepDone.length - 1)} done={stepDone} stepAttr="data-vp-step" />
+          {/* lecteur : la région vivante TOUJOURS montée — la colonne se démonte quand une question s'ouvre ; une clé par geste */}
+          {gameScreen && (
+            <div role="status" aria-live="polite" className="sr-only" data-vanishing-verdict-live>
+              <span key={liveKey}>{(verdictOk || verdictBad) ? `${k(verdictOk ? 'player.cueRight' : 'player.cueRefused')} ` : ''}{verdictPlain}</span>
+              {shownPreds.map((pr) => <span key={pr.key}> {pr.ok ? t('manipulation.common.cp.predict.right') : k('predict.wrong')}</span>)}
+              {choiceSaid && <span key={choiceSaid}> {k('player.choiceNow')}</span>}
+            </div>
+          )}
+          {!(gameScreen && cp.open) && cp.node}
+          {!gameScreen && <LabStepper count={stepDone.length} current={Math.min(nDone, stepDone.length - 1)} done={stepDone} stepAttr="data-vp-step" />}
+          {gameScreen && choices?.length > 0 && (
+            <div className="flex flex-wrap items-center justify-center gap-1.5" role="group" aria-labelledby={`${uid}-choices`} data-vanishing-choices>
+              <span id={`${uid}-choices`} className="text-sm font-bold text-slate-600">{k('player.choicesLabel')}</span>
+              {choices.map((c) => {
+                const id = choiceId(c);
+                const on = sameChoice(c);
+                return (
+                  <button key={id} type="button" data-vanishing-choice={id} aria-disabled={locked || undefined} aria-pressed={on}
+                    onClick={() => { if (!lockedRef.current && !on) { state.setNumbers({ expr: c.expr, startX: c.startX, range: c.range }); setChoiceSaid(id); } }}
+                    className={`inline-flex min-h-[44px] items-center rounded-xl border-2 px-3 text-sm font-black focus:outline-none focus-visible:ring-2 ${ringP} ${on ? 'border-indigo-600 bg-indigo-50 text-indigo-900' : 'border-slate-300 bg-white text-slate-700'}`}>
+                    <span className="pointer-events-none"><bdi dir="ltr"><MathText>{`$${L.productTex(L.init({ expr: c.expr }))}$`}</MathText></bdi></span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
           {/* ── la règle de x, et la piste des solutions ── */}
-          <p className="text-sm font-bold text-slate-700"><MathText>{k('ruler')}</MathText></p>
-          <div dir="ltr" {...stretch.trackProps} className="relative" style={{ ...stretch.trackProps.style, height: 92 }} data-vanishing-ruler>
-            <svg width={width} height={92} className="absolute inset-0" aria-hidden="true" focusable="false">
+          {gameScreen ? (
+            <div className="flex flex-wrap items-center justify-between gap-2" data-vanishing-topbar>
+              <p className="text-sm font-bold text-slate-700"><MathText>{k('ruler')}</MathText></p>
+              <div className="flex items-center gap-2" dir="ltr">
+                <button type="button" onClick={() => { if (v > rng.min) nudge(-1); }} aria-label={k('less')} data-vanishing-less aria-disabled={locked || v <= rng.min || undefined}
+                  className={`inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white aria-disabled:opacity-40 focus:outline-none focus-visible:ring-2 ${ringP}`}><Minus className="h-5 w-5" aria-hidden="true" /></button>
+                <p className="min-w-[6rem] text-center text-sm font-bold text-slate-700" dir="ltr">x = {xText}</p>
+                <button type="button" onClick={() => { if (v < rng.max) nudge(1); }} aria-label={k('more')} data-vanishing-more aria-disabled={locked || v >= rng.max || undefined}
+                  className={`inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white aria-disabled:opacity-40 focus:outline-none focus-visible:ring-2 ${ringP}`}><Plus className="h-5 w-5" aria-hidden="true" /></button>
+              </div>
+            </div>
+          ) : <p className="text-sm font-bold text-slate-700"><MathText>{k('ruler')}</MathText></p>}
+          <div dir="ltr" {...stretch.trackProps} ref={(el) => { stretch.trackProps.ref.current = el; rulerRef.current = el; }} className="relative"
+            style={{ ...stretch.trackProps.style, height: gameScreen ? 84 : 92, ...(locked ? { pointerEvents: 'none' } : {}) }} data-vanishing-ruler>
+            <svg width={width} height={gameScreen ? 84 : 92} className="absolute inset-0" aria-hidden="true" focusable="false">
               <rect x={EDGE - 4} y={26} width={steps * mu + 8} height={5} rx={2} fill="#047857" />
               {grads.map((u) => {
                 const whole = u % g === 0;
@@ -318,106 +760,33 @@ export default function VanishingPitch({
             </svg>
             <div
               {...stretch.handleProps({ label: k('handle'), valueText: k('valueText', { x: xText }) })}
-              className={`absolute top-0 flex h-11 w-11 -translate-x-1/2 items-start justify-center rounded-xl border-2 outline-none focus-visible:ring-4 focus-visible:ring-blue-300 ${stretch.dragging ? 'border-blue-500 bg-blue-500/10' : 'border-slate-400 bg-white/60'}`}
+              {...frozen}
+              data-vanishing-handle={gameScreen ? '' : undefined}
+              className={`absolute top-0 flex h-11 w-11 -translate-x-1/2 items-start justify-center rounded-xl border-2 outline-none ${gameScreen ? `focus-visible:ring-2 ${ringP}` : 'focus-visible:ring-4 focus-visible:ring-blue-300'} ${stretch.dragging ? 'border-blue-500 bg-blue-500/10' : 'border-slate-400 bg-white/60'}`}
               style={{ left: xPx(v), cursor: stretch.dragging ? 'grabbing' : 'grab' }}
             >
               <span className="-mt-2 whitespace-nowrap rounded-full bg-slate-800 px-2 font-mono text-sm font-extrabold text-white" data-vanishing-x>{xText}</span>
             </div>
           </div>
-          <p className="text-xs text-slate-500">{k('trackNote')}</p>
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            <button type="button" onClick={() => stretch.nudge(-1)} aria-label={k('less')} disabled={v <= range.min} data-vanishing-less
-              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"><Minus className="h-5 w-5" aria-hidden="true" /></button>
-            <p className="min-w-[6rem] text-center text-sm font-bold text-slate-700" dir="ltr">x = {xText}</p>
-            <button type="button" onClick={() => stretch.nudge(1)} aria-label={k('more')} disabled={v >= range.max} data-vanishing-more
-              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"><Plus className="h-5 w-5" aria-hidden="true" /></button>
-          </div>
-
-          {/* ── le terrain : côtés signés depuis le coin O ── */}
-          <div className="overflow-hidden rounded-2xl border-2 border-emerald-200 bg-white p-1" dir="ltr">
-            <div className="relative mx-auto" style={{ width: geo.svgW, height: geo.svgH, maxWidth: '100%' }} data-vanishing-field data-collapsed={geo.collapsed ? 'true' : 'false'} data-sign={geo.sign}>
-              <svg width={geo.svgW} height={geo.svgH} viewBox={`0 0 ${geo.svgW} ${geo.svgH}`} className="absolute inset-0 h-full w-full" role="img"
-                aria-label={k('ariaPitch', { a: L.labText(lab, cur.A), b: L.labText(lab, cur.B), area: L.labText(lab, cur.area) })}>
-                <defs>
-                  <pattern id={hatchId} width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                    <line x1="0" y1="0" x2="0" y2="8" stroke="#E11D48" strokeWidth="2.2" strokeOpacity="0.7" />
-                  </pattern>
-                  <clipPath id={clipId}><rect x={rect.x} y={rect.y} width={Math.max(rect.w, 0.01)} height={Math.max(rect.h, 0.01)} /></clipPath>
-                </defs>
-                {/* les axes du coin O */}
-                <line x1={0} x2={geo.svgW} y1={geo.oy} y2={geo.oy} stroke="#CBD5E1" strokeWidth={1} />
-                <line x1={geo.ox} x2={geo.ox} y1={0} y2={geo.svgH} stroke="#CBD5E1" strokeWidth={1} />
-                {/* décor : la pelouse tondue en bandes, les buts */}
-                {!geo.collapsed && (
-                  <g data-decor clipPath={`url(#${clipId})`}>
-                    {Array.from({ length: Math.ceil(rect.w / stripe) + 1 }, (_, i) => (
-                      <rect key={i} x={rect.x + i * stripe} y={rect.y} width={stripe} height={rect.h} fill={i % 2 ? '#16A34A' : '#22C55E'} />
-                    ))}
-                    <line x1={rect.x + rect.w / 2} x2={rect.x + rect.w / 2} y1={rect.y} y2={rect.y + rect.h} stroke="#fff" strokeOpacity={0.45} strokeWidth={1.5} />
-                    {geo.sign < 0 && <rect x={rect.x} y={rect.y} width={rect.w} height={rect.h} fill={`url(#${hatchId})`} data-vanishing-negative-area />}
-                  </g>
-                )}
-                {!geo.collapsed && rect.h >= 18 && (
-                  <g data-decor>
-                    <rect x={rect.x - 6} y={rect.y + rect.h / 2 - Math.min(14, rect.h / 4)} width={6} height={Math.min(28, rect.h / 2)} fill="#F8FAFC" stroke="#94A3B8" />
-                    <rect x={rect.x + rect.w} y={rect.y + rect.h / 2 - Math.min(14, rect.h / 4)} width={6} height={Math.min(28, rect.h / 2)} fill="#F8FAFC" stroke="#94A3B8" />
-                  </g>
-                )}
-                {!geo.collapsed && <rect x={rect.x} y={rect.y} width={rect.w} height={rect.h} fill="none" stroke="#fff" strokeWidth={2.5} />}
-                {/* le terrain ÉCRASÉ : une ligne, aire 0 */}
-                {geo.collapsed && (
-                  <line x1={rect.x} y1={rect.y} x2={rect.x + rect.w} y2={rect.y + rect.h} stroke="#B45309" strokeWidth={5} strokeLinecap="round" data-vanishing-line />
-                )}
-                {/* les deux côtés signés, depuis O */}
-                <line x1={geo.ox} y1={geo.oy} x2={geo.ox + L.toNum(cur.A) * geo.unit} y2={geo.oy} stroke={geo.negA ? '#E11D48' : '#1D4ED8'} strokeWidth={4} strokeDasharray={geo.negA ? '6 4' : undefined} strokeLinecap="round" data-vanishing-side="A" data-negative={geo.negA ? 'true' : 'false'} />
-                <line x1={geo.ox} y1={geo.oy} x2={geo.ox} y2={geo.oy - L.toNum(cur.B) * geo.unit} stroke={geo.negB ? '#E11D48' : '#7C3AED'} strokeWidth={4} strokeDasharray={geo.negB ? '6 4' : undefined} strokeLinecap="round" data-vanishing-side="B" data-negative={geo.negB ? 'true' : 'false'} />
-                <circle cx={geo.ox} cy={geo.oy} r={4} fill="#0F172A" />
-                {/* décor : le ballon */}
-                <g data-decor style={{ transition: 'transform 450ms cubic-bezier(.3,1.6,.5,1)', transform: `translate(${ball.cx}px, ${ballY}px)` }} className="motion-reduce:transition-none">
-                  <circle r={7} fill="#fff" stroke="#0F172A" strokeWidth={1.4} />
-                  <path d="M0 -3 L3 -1 L2 3 L-2 3 L-3 -1 Z" fill="#0F172A" />
-                </g>
-              </svg>
-              {/* décor interactif : taper le ballon (hors clavier, sans effet mathématique) */}
-              <button type="button" tabIndex={-1} aria-hidden="true" onClick={() => setKick((n) => n + 1)}
-                className="absolute h-7 w-7 -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ left: `${(ball.cx / geo.svgW) * 100}%`, top: `${(ballY / geo.svgH) * 100}%` }} data-decor-ball />
+          {!gameScreen && <p className="text-xs text-slate-500">{k('trackNote')}</p>}
+          {!gameScreen && (
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <button type="button" onClick={() => stretch.nudge(-1)} aria-label={k('less')} disabled={v <= rng.min} data-vanishing-less
+                className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"><Minus className="h-5 w-5" aria-hidden="true" /></button>
+              <p className="min-w-[6rem] text-center text-sm font-bold text-slate-700" dir="ltr">x = {xText}</p>
+              <button type="button" onClick={() => stretch.nudge(1)} aria-label={k('more')} disabled={v >= rng.max} data-vanishing-more
+                className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"><Plus className="h-5 w-5" aria-hidden="true" /></button>
             </div>
-          </div>
+          )}
 
-          {/* ── les côtés et l'aire, lus en direct (DOM) ── */}
-          <ul className="flex flex-wrap gap-2 text-sm" data-vanishing-readout>
-            {[0, 1].map((i) => {
-              const val = i === 0 ? cur.A : cur.B;
-              const zero = val.n === 0;
-              const neg = val.n < 0;
-              return (
-                <li key={i} data-vanishing-reading={i === 0 ? 'A' : 'B'} className={`rounded-lg border-2 px-2 py-1 font-bold ${zero ? 'border-amber-400 bg-amber-50 text-amber-900' : neg ? 'border-rose-300 bg-rose-50 text-rose-900' : i === 0 ? 'border-blue-200 bg-blue-50 text-blue-900' : 'border-violet-200 bg-violet-50 text-violet-900'}`}>
-                  {sideName(i)}{' '}<bdi dir="ltr"><MathText>{`$${L.factorTex(lab, i)} = ${L.labTex(lab, val)}$`}</MathText></bdi>
-                  {neg && <span className="ms-1 text-xs font-semibold">({k('negSide')})</span>}
-                  {zero && <span className="ms-1 text-xs font-semibold">({k('zeroSide')})</span>}
-                  {!lab.square && L.isConstant(lab, i) && <span className="ms-1 text-xs font-normal">({k('constSide')})</span>}
-                </li>
-              );
-            })}
-            <li className={`rounded-lg border-2 px-2 py-1 font-bold ${geo.collapsed ? 'border-amber-400 bg-amber-100 text-amber-950' : 'border-slate-200 bg-white text-slate-800'}`} data-vanishing-area={L.labText(lab, cur.area)}>
-              {k('area')}{' '}<bdi dir="ltr"><MathText>{`$${L.labTex(lab, cur.area)}$`}</MathText></bdi>
-              {geo.collapsed && <span className="ms-1 text-xs font-semibold">— {k('collapsed')}</span>}
-            </li>
-          </ul>
-
-          {/* ── les deux gestes de réponse ── */}
-          <div className="flex flex-wrap items-center gap-2">
-            <button type="button" onClick={pin} data-vanishing-pin-button
-              className="inline-flex min-h-[44px] items-center gap-1 rounded-xl border-2 border-emerald-500 bg-white px-3 font-bold text-emerald-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500">
-              <MapPin className="h-4 w-4" aria-hidden="true" /> {k('pin')}
-            </button>
-            <button type="button" onClick={claim} data-vanishing-claim
-              className="inline-flex min-h-[44px] items-center gap-1 rounded-xl border-2 border-slate-400 bg-white px-3 font-bold text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500">
-              <ListChecks className="h-4 w-4" aria-hidden="true" /> {k('noOther')}
-            </button>
-          </div>
-          <p role="status" className="min-h-[1.5rem] text-sm font-bold" data-vanishing-verdict={last?.kind}>{verdict}</p>
-          {pinsHere.length > 0 && (
+          {gameScreen ? (
+            <div ref={rowRef} className="flex items-start gap-3" data-vanishing-player-row>
+              <div className="min-w-0 flex-1">{fieldNode}</div>
+              <div className="flex w-44 shrink-0 flex-col gap-2">{readoutNode}{answerNode}</div>
+            </div>
+          ) : <>{fieldNode}{readoutNode}{answerNode}</>}
+          {!gameScreen && <p role="status" className="min-h-[1.5rem] text-sm font-bold" data-vanishing-verdict={last?.kind}>{verdict}</p>}
+          {!gameScreen && pinsHere.length > 0 && (
             <p className="text-sm text-slate-800" data-vanishing-solutions>
               {k('solutionsOf')}{' '}<bdi dir="ltr"><MathText>{`$${productTex} = 0$`}</MathText></bdi>{' : '}
               {pinsHere.map((u, i) => (
@@ -431,6 +800,23 @@ export default function VanishingPitch({
     </ManipulationShell>
   );
 }
+
+/** Le texte du verdict affiché (lecteur) — le même que la page, en chaîne MathText. */
+function verdictText(last, lab, k, zeroText) {
+  switch (last.kind) {
+    case 'pinned': return k('vPinned', { x: L.labTex(lab, L.xOf(lab, last.v)), which: zeroText(last.zero) });
+    case 'notZero': return k('vNot', { x: L.labTex(lab, L.xOf(lab, last.v)), area: L.areaTex(lab, last.v) });
+    case 'already': return k('vAlready');
+    case 'noX': return k('vNoX');
+    case 'missing': return k('vMissing');
+    case 'notSwept': return k('vNotSwept');
+    case 'claimed': return k('vClaimed');
+    default: return '';
+  }
+}
+
+/** Une valeur de prédiction (« −1/2 », « 2 ») écrite en LaTeX : une vraie barre de fraction. */
+const numTexOf = (x) => String(x).replace('−', '-').replace(/^(-?)(\d+)\/(\d+)$/, '$1\\dfrac{$2}{$3}');
 
 const Lin0 = (p) => p.n === 0;
 
@@ -591,3 +977,112 @@ function RuleFormal({ lab, k }) {
     </div>
   );
 }
+
+/* ══════════════ Lecteur de mission : les suites des manches (rollout 2026-11-11, conseil du 2026-11-11, verdict L2) ══════════════ */
+
+/**
+ * Les suites du lecteur : chacune { id, reached(lab), qs } — l'id est le point d'étape de la manche (`{ checkpoint: id }`), posé quand la découverte du
+ * labo est atteinte (tous les zéros épinglés + « لا حلول أخرى » accepté). 'build' : un côté constant → quel côté, combien vaut l'autre, BÂTIR
+ * « ▢ = 0 ⇒ x = ▢ » ; sinon BÂTIR « x = ▢ أو x = ▢ » (précédé de « quel côté » sur la manche couverte) ; 'rule' : quel côté, BÂTIR « ▢ = 0 ▢ ▢ = 0 »,
+ * LA RÈGLE ; 'count' : quel côté, combien de solutions.
+ */
+export const chainsOfPlayer = (name, lab, covered = false) => {
+  if (name === 'build') {
+    const hasConst = lab.factors.some((_, i) => L.isConstant(lab, i));
+    return [{ id: 'build', reached: P.playerReady, qs: hasConst ? ['which', 'rest', 'buildConst'] : covered ? ['which', 'buildSol'] : ['buildSol'] }];
+  }
+  if (name === 'rule') return [{ id: 'rule', reached: P.playerReady, qs: ['which', 'buildOr', 'ruleP'] }];
+  if (name === 'count') return [{ id: 'count', reached: P.playerReady, qs: ['which', 'countP'] }];
+  return [];
+};
+
+/** Une liste qui tourne avec le terrain : la bonne pastille / le leurre ne tient jamais toujours la même place. */
+const spinList = (xs, seed) => { const s0 = ((seed % xs.length) + xs.length) % xs.length; return xs.map((_, i) => xs[(i + s0) % xs.length]); };
+const seedOf = (lab) => Math.abs(Math.round(lab.factors.reduce((n, f) => n + Lin.toNumber(f.a) * 7 + Lin.toNumber(f.b) * 3, 0))) + (lab.range.max - lab.range.min);
+const texNode = (v) => <MathText>{`$${v}$`}</MathText>;
+/** Le texte d'une clé `player.<key>` du labo (île KaTeX). */
+const Pq = (k, key, o) => <MathText>{k(`player.${key}`, o)}</MathText>;
+const sideLabel = (k, i) => k(i === 0 ? 'sideA' : 'sideB').replace(/[:：]\s*$/, '');
+
+Object.assign(QUESTIONS, {
+  /* côté constant — « وكم طول الضلع الآخر عند هذه القيمة ؟ » : la valeur du côté qui RESTE à la première épingle */
+  rest: (lab, k) => {
+    const r = P.restParts(lab);
+    const z = L.zeroSides(lab, r.v)[0];
+    const o = { xEq: $(`x = ${L.labTex(lab, L.xOf(lab, r.v))}`), side: sideLabel(k, z), other: sideLabel(k, 1 - z), expr: $(L.factorTex(lab, 1 - z)), val: $(r.expected) };
+    return {
+      id: 'rest', kind: 'fill', prompt: Pq(k, 'rest.prompt', o),
+      fields: [{ label: k('player.rest.label', { other: o.other }), expected: r.expected, options: spinList(r.options, seedOf(lab)) }],
+      hints: [Pq(k, 'rest.hint1', o), Pq(k, 'rest.hint2', o)], explain: Pq(k, 'rest.explain', o),
+    };
+  },
+  /* côté constant — BÂTIR « ▢ = 0 ⇒ x = ▢ » ; UN leurre : la constante prise pour une solution */
+  buildConst: (lab, k) => {
+    const b = P.buildConstParts(lab);
+    const prod = $(L.productTex(lab));
+    const o = { prod, factor: $(b.expected[0]), sol: $(b.expected[1]), decoy: $(b.decoy) };
+    return {
+      id: 'buildConst', kind: 'build', prompt: Pq(k, 'buildConst.prompt', { prod }),
+      slots: [k('player.buildConst.slotFactor'), k('player.buildConst.slotSol')],
+      ops: ['= 0 ⇒ x ='],
+      tiles: spinList([...b.expected, b.decoy], seedOf(lab)), render: texNode,
+      expected: b.expected,
+      hints: [Pq(k, 'buildConst.hint1', o), Pq(k, 'buildConst.hint2', o)], explain: Pq(k, 'buildConst.explain', o),
+    };
+  },
+  /* deux côtés qui bougent — BÂTIR « ▢ = 0 ▢ ▢ = 0 » : le connecteur est une tuile de TEXTE « أو » ; UN leurre « معًا » (les deux ensemble) */
+  buildOr: (lab, k) => {
+    const b = P.buildOrParts(lab);
+    const single = lab.pins.find((u) => L.zeroSides(lab, u).length === 1);
+    const sd = L.sides(lab, single ?? lab.pins[0]);
+    const z = L.zeroSides(lab, single ?? lab.pins[0])[0] ?? 0;
+    const o = {
+      prod: $(L.productTex(lab)), xEq: $(`x = ${L.labTex(lab, sd.x)}`), other: sideLabel(k, 1 - z), val: $(L.labTex(lab, z === 0 ? sd.B : sd.A)),
+      fa: $(b.factors[0]), fb: $(b.factors[1]),
+    };
+    return {
+      id: 'buildOr', kind: 'build', prompt: Pq(k, 'buildOr.prompt', o),
+      slots: [k('player.buildOr.slotA'), k('player.buildOr.slotConn'), k('player.buildOr.slotB')],
+      ops: ['= 0', ''], wrap: ['', '= 0'],
+      tiles: spinList([b.factors[0], b.factors[1], { text: 'أو' }, { text: b.decoy }], seedOf(lab)), render: texNode,
+      expected: b.expected, accept: b.accept,
+      hints: [Pq(k, 'buildOr.hint1', o), Pq(k, 'buildOr.hint2', o)], explain: Pq(k, 'buildOr.explain', o),
+    };
+  },
+  /* BÂTIR « x = ▢ أو x = ▢ » : les deux solutions ; UN leurre (le coefficient, ou le quotient retourné) */
+  buildSol: (lab, k) => {
+    const b = P.buildSolParts(lab);
+    const prod = $(L.productTex(lab));
+    const o = { prod, s1: $(b.expected[0]), s2: $(b.expected[1]), decoy: $(b.decoy) };
+    return {
+      id: 'buildSol', kind: 'build', prompt: Pq(k, 'buildSol.prompt', { eq: $(`${L.productTex(lab)} = 0`) }),
+      slots: [k('player.buildSol.slotA'), k('player.buildSol.slotB')],
+      ops: [<span key="or" dir="ltr"><span lang="ar">أو</span> x =</span>], wrap: ['x =', ''],
+      tiles: spinList([...b.expected, b.decoy], seedOf(lab)), render: texNode,
+      expected: b.expected, accept: b.accept,
+      hints: [Pq(k, 'buildSol.hint1', o), Pq(k, 'buildSol.hint2', o)], explain: Pq(k, 'buildSol.explain', o),
+    };
+  },
+  /* LA RÈGLE du lecteur : les options de la page (réfutées par SES épingles, trois au plus), une explication COURTE (une ligne : la règle, puis son cas) — la forme
+     formelle de la page ne tient pas sur un écran du lecteur */
+  ruleP: (lab, k) => {
+    const eqs = L.equationsOf(lab);
+    const page = QUESTIONS.rule(lab, k);
+    return {
+      ...page,
+      // trois options au plus (la bonne, « معًا », « x = 0 » que la prédiction a déjà réfuté) : une carte qui tient à 1024 × 768
+      options: page.options.slice(0, 3),
+      explain: Pq(k, 'ruleExplain', { eq: $(`${L.productTex(lab)} = 0`), a: $(eqs[0].tex), b: $(eqs[eqs.length - 1].tex) }),
+    };
+  },
+  /* le carré — « كم حلًّا للمعادلة ؟ » */
+  countP: (lab, k) => {
+    const n = lab.roots.length;
+    const o = { prod: $(L.productTex(lab)), n: $(String(n)) };
+    return {
+      id: 'countP', kind: 'fill', prompt: Pq(k, 'countP.prompt', o),
+      fields: [{ label: k('player.countP.label'), expected: String(n), options: spinList(['1', '2', '3'], seedOf(lab)) }],
+      hints: [Pq(k, 'countP.hint1', o), Pq(k, 'countP.hint2', o)], explain: Pq(k, 'countP.explain', o),
+    };
+  },
+});

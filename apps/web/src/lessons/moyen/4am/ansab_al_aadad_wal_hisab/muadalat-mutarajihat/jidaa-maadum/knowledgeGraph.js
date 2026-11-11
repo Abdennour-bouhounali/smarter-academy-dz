@@ -3,14 +3,14 @@
  * docs/architecture/KNOWLEDGE_MAP.md, Part A.
  *
  * Aucune mathématique n'est écrite ici : chaque texte vient de la leçon — le نشاط 2,
- * معارف 2 et la طريقة p. 47 (content/textbook.js), les `commonError` / `method` /
+ * معارف 2 et la طريقة (content/textbook.js, nombres de la plateforme), les `commonError` / `method` /
  * corrections des exercices (content/exercises.js). Chaque nœud est gardé par l'item
- * de knowledge.jsx qui l'établit (`requires`). Rien de l'إختبار أولي ((x − 3)(2x + 2),
- * x² − 1, −5(x + 4), x² = 3x…) n'est montré ici.
+ * de knowledge.jsx qui l'établit (`requires`). Rien de l'إختبار أولي ((x − 5)(3x + 6),
+ * 4x² − 25, −5(x + 4), x² = 3x…) ni de la مسألة n'est montré ici.
  *
  *            [خاصية الجداء المعدوم]                    m1
  *                    │ مثال
- *              [كرّاس أمين]
+ *              [كرّاس بسّام]
  *       خطأ شائع ┌───┴───┐ نسمّي
  *   ⛔ [النشر أولًا]   [معادلة جداء معدوم]            m2
  *                          │ نحلّها بـ
@@ -20,13 +20,13 @@
  *               خطأ شائع ┌─────┴─────┐ طريقة
  *            ⛔ [حلّ واحد؟]     [نحلّل ثم نحلّ]        m3
  *                                     │ مثال
- *                                [العبارة F]
+ *                                [العبارة G]
  *                                     │ خطأ شائع
  *                              ⛔ [القسمة على x]
  *                                     │ نستخلص
  *                                  🎯 [خلاصة]
  */
-import { ACTIVITY, ACTIVITY_A, ELIAS_AMINE, KNOWLEDGE, METHOD } from './content/textbook';
+import { ACTIVITY, ACTIVITY_A, NOTEBOOKS, KNOWLEDGE, METHOD } from './content/textbook';
 import { EX } from './content/exercises';
 
 const ex142 = EX['ex-14-2'];
@@ -43,19 +43,19 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'amine', kind: 'example', lane: 'center', requires: 'khassiya-jidaa-maadum',
-      title: 'كرّاس أمين', subtitle: '$x = 5$',
-      context: { text: ELIAS_AMINE.amineMethod, list: ACTIVITY.amine },
+      title: 'كرّاس بسّام', subtitle: '$x = 3$',
+      context: { text: NOTEBOOKS.bassamMethod, list: ACTIVITY.bassam },
       reveals: ['nashr', 'taarif'],
     },
     {
-      // ⛔ خطأ شائع — la méthode d'إلياس (س 1) qui échoue sur (x − 2)(x + 5) (س 3).
+      // ⛔ خطأ شائع — la méthode de حاتم (nashr d'abord) qui échoue sur (x − 1)(x + 4).
       id: 'nashr', kind: 'common_mistake', lane: 'start', requires: 'khassiya-jidaa-maadum',
-      title: 'النشر أولًا', subtitle: '$x^2 + 3x - 10 = 0$',
+      title: 'النشر أولًا', subtitle: '$x^2 + 3x - 4 = 0$',
       context: {
         parts: [
-          { role: 'wrong', text: ELIAS_AMINE.eliasMethod },
+          { role: 'wrong', text: NOTEBOOKS.hatimMethod },
           { role: 'why', text: ACTIVITY.q3note },
-          { role: 'right', text: ELIAS_AMINE.expandFails },
+          { role: 'right', text: NOTEBOOKS.expandFails },
         ],
       },
       reveals: [],
@@ -71,22 +71,22 @@ export const KNOWLEDGE_GRAPH = {
       reveals: ['thabit', 'ex3'],
     },
     {
-      // ⚠ انتبه — مثال 2 de معارف 2 et la ligne d'أمين : un facteur constant non nul.
+      // ⚠ انتبه — l'exemple de 5x = 0 et la ligne de بسّام : un facteur constant non nul.
       id: 'thabit', kind: 'warning', lane: 'start', requires: 'hulul-muadala-jidaa',
       title: 'عامل ثابت غير معدوم', subtitle: '$2 \\neq 0$',
-      context: { text: KNOWLEDGE.examples[1], note: ACTIVITY.amine[1] },
+      context: { text: KNOWLEDGE.examples[1], note: ACTIVITY.bassam[1] },
       reveals: [],
     },
     {
       id: 'ex3', kind: 'example', lane: 'end', requires: 'hulul-muadala-jidaa',
-      title: 'المثال 3', subtitle: '$\\dfrac{1}{2}$ و $\\dfrac{4}{3}$',
+      title: 'المثال المحلول', subtitle: '$-1$ و $\\dfrac{3}{2}$',
       context: { text: KNOWLEDGE.example3[0], list: KNOWLEDGE.example3.slice(1) },
       reveals: ['hal-wahid', 'tariqa'],
     },
     {
-      // ⛔ خطأ شائع — le `commonError` de l'exercice 14 (2) et sa correction.
+      // ⛔ خطأ شائع — le `commonError` de l'exercice (x + 8)(3 − x) et sa correction.
       id: 'hal-wahid', kind: 'common_mistake', lane: 'start', requires: 'hulul-muadala-jidaa',
-      title: 'حلّ واحد فقط؟', subtitle: '$(x + 5)(2 - x) = 0$',
+      title: 'حلّ واحد فقط؟', subtitle: '$(x + 8)(3 - x) = 0$',
       context: {
         parts: [
           { role: 'wrong', text: ex142.commonError },
@@ -103,14 +103,14 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'exF', kind: 'example', lane: 'end', requires: 'tariqat-jidaa-maadum',
-      title: 'العبارة F', subtitle: '$-1$ و $\\dfrac{3}{4}$',
+      title: 'العبارة G', subtitle: '$-\\dfrac{2}{3}$ و $2$',
       context: { text: METHOD.solution[0], note: METHOD.solution[3] },
       reveals: ['qisma'],
     },
     {
-      // ⛔ خطأ شائع — دوري الآن 2 (9x² = 4x) : la division par x perd 0.
+      // ⛔ خطأ شائع — دوري الآن (5x² = 2x) : la division par x perd 0.
       id: 'qisma', kind: 'common_mistake', lane: 'center', requires: 'tariqat-jidaa-maadum',
-      title: 'القسمة على x', subtitle: '$9x^2 = 4x$',
+      title: 'القسمة على x', subtitle: '$5x^2 = 2x$',
       context: {
         parts: [
           { role: 'wrong', text: now47d.commonError },
