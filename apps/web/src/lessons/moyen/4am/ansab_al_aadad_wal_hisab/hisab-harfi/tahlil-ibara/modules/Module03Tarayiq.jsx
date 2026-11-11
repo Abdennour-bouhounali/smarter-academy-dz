@@ -41,8 +41,8 @@ export default function Module03Tarayiq() {
       moduleSubtitle="عامل مشترك، متطابقة شهيرة، أو نشر ثم تحليل"
       estimatedTime="10 دقائق"
       brief={{
-        tag: 'طرائق — الكتاب ص 35 و 36', title: 'كيف نحلّل عبارة؟', tone: 'emerald',
-        body: <p>ثلاثة تمارين محلولة من الكتاب. اقرأ كل سطر، وحاول توقّع السطر التالي قبل أن تكشفه.</p>,
+        tag: 'طرائق', title: 'كيف نحلّل عبارة؟', tone: 'emerald',
+        body: <p>ثلاثة تمارين محلولة. اقرأ كل سطر، وحاول توقّع السطر التالي قبل أن تكشفه.</p>,
       }}
       steps={[
         {
@@ -56,7 +56,7 @@ export default function Module03Tarayiq() {
           ),
         },
         {
-          num: 2, title: 'دوري الآن (ص 35)', done: all(NOW_35_2),
+          num: 2, title: 'دوري الآن: عامل مشترك بين قوسين', done: all(NOW_35_2),
           content: (
             <div className="space-y-3">
               {NOW_35_2.map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['tariqat-amil-mushtarak']} onAnswered={mark(ex.id)} />)}
@@ -64,7 +64,7 @@ export default function Module03Tarayiq() {
           ),
         },
         {
-          num: 3, title: 'باستعمال المتطابقات الشهيرة', subtitle: 'تمرين 1 — الحلّ سطرًا سطرًا', done: read2,
+          num: 3, title: 'باستعمال المتطابقات الشهيرة', subtitle: 'الحلّ سطرًا سطرًا', done: read2,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tahlil-mutatabiqat" variant="rappel" compact />
@@ -75,7 +75,7 @@ export default function Module03Tarayiq() {
           ),
         },
         {
-          num: 4, title: 'نشر عبارة ثم تحليلها', subtitle: 'تمرين 2', done: read3 && q3,
+          num: 4, title: 'نشر عبارة ثم تحليلها', subtitle: 'الحلّ سطرًا سطرًا', done: read3 && q3,
           content: (
             <div className="space-y-3">
               <MethodSteps method={solutionOf(METHOD_EXPAND_FACTOR)} onAllRevealed={() => setRead3(true)} />
@@ -93,7 +93,7 @@ export default function Module03Tarayiq() {
           ),
         },
         {
-          num: 5, title: 'دوري الآن (ص 36)', done: all(NOW_36_2),
+          num: 5, title: 'دوري الآن: متطابقة ثم عامل مشترك', done: all(NOW_36_2),
           content: (
             <div className="space-y-3">
               {NOW_36_2.map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['tariqat-mutatabiqat', 'tariqat-amil-mushtarak']} onAnswered={mark(ex.id)} />)}

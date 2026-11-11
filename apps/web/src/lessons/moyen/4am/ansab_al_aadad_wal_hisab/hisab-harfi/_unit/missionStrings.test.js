@@ -1,10 +1,11 @@
 import { describe, it, expect } from 'vitest';
+import { TEXT as TAHLIL } from '../tahlil-ibara/content/forbidden.js';
 import { TEXT as NASHR } from '../nashr-tabsit/content/forbidden.js';
 
 /**
  * Unité 3 « الحساب الحرفي » — ce que l'élève LIT de la mission, de la carte des معارف et des données du manuel (modèle : l'unité 9,
  * khassiyat-talis/_unit/missionStrings.test.js ; rollout 2026-11-11). Une leçon CONVERTIE entre dans `CLIMAX` avec la signature de SA مسألة
- * (nashr-tabsit le 2026-11-11 ; tahlil-ibara et mutatabiqat-shahira y ajoutent la leur) :
+ * (tahlil-ibara le 2026-11-11 ; nashr-tabsit et mutatabiqat-shahira y ajoutent la leur) :
  *   - aucun caractère de contrôle dans un point d'étape ni dans l'ouverture (« \times » dans une chaîne JS à apostrophes devient TAB + « imes ») ;
  *   - aucune ligne de la carte des معارف (knowledgeGraph.js) d'une leçon convertie ne renvoie au manuel ;
  *   - les cartes de connaissance (knowledge.jsx) et la carte des معارف — ouvertes dès le début (`knowledgeMapOpen`) — ne montrent pas la
@@ -29,21 +30,28 @@ const strings = (src) => src
 
 /**
  * La signature de la مسألة de chaque leçon CONVERTIE : ce que ses cartes de connaissance et ses points d'étape ne montrent jamais.
- *   (une ligne par leçon convertie, à côté de son entrée)
+ *   tahlil-ibara (module 5, le gazon du terrain du quartier) : 10x² + 15x = 5x(2x + 3), 5(2x² + 3x), 5x²(2 + 3x), 2x + 15, PGCD(10 ; 15),
+ *   1500 / 450 / 135000, 5x posé en facteur d'une somme en x — content/forbidden.js › TEXT.
  */
 const CLIMAX = {
+  'tahlil-ibara': TAHLIL,
   // nashr-tabsit (module 4, le couloir des spectateurs) : 1820, 1760, 1944, 124, 186000, 1500, 350, x = 30, les facteurs 2x + 10, x − 4,
   // 2x + 12, x − 3, les termes −8x, 10x, −40, −36, 12x, −6x et les développements de la مسألة — content/forbidden.js › TEXT (2026-11-11).
   'nashr-tabsit': NASHR,
 };
 const BOOK = [/الكتاب(?!ة)/, /تمرين\s*\d+\s*:/, /خطأً? مطبعي/];
 const lessonOf = (path) => path.split('/')[1];
+const hit = (s) => TAHLIL.some((re) => re.test(s));
 
 describe('unit 3 — mission strings and knowledge maps', () => {
   it('found the lessons and the peer sheets', () => {
     expect(Object.keys(configs).length).toBeGreaterThanOrEqual(4);
     expect(Object.keys(raw).filter((path) => CLIMAX[lessonOf(path)]).length).toBe(4 * Object.keys(CLIMAX).length);
     expect(Object.keys(peers).length).toBeGreaterThanOrEqual(10);
+  });
+  it('the signature regexes catch what they must (negative controls)', () => {
+    ['$10x^2 + 15x$', '5x(2x + 3)', '$5(2x^2 + 3x)$', 'PGCD$(10 ; 15)$', '135000', 'السياج 1500 دج', '$5x(x - 1)$', '2x + 15'].forEach((s) => expect(hit(s), s).toBe(true));
+    ['$8x + 6 = 2(4x + 3)$', '(2x + 3)^2', '$5x(2x + 1) + (2x + 1)$', '15x', '$x(x + 5)$', '1,5'].forEach((s) => expect(hit(s), s).toBe(false));
   });
   it('the nashr-tabsit signature catches what it must (negative controls)', () => {
     const hitN = (s) => NASHR.some((re) => re.test(s));

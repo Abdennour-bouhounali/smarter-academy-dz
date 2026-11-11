@@ -29,6 +29,60 @@ export const LESSON_CONFIG = {
   unit: 'hisab-harfi',
   unitTitle: 'الحساب الحرفي',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (modèle du pilote qasim-adad-tabii, VALIDÉ par le propriétaire le 2026-11-08 ; rollout leçon par leçon,
+  // docs/reports/MISSION_ROLLOUT_PROGRESS.md — unité 3, leçon 3, 2026-11-11) — implique le regard « focus » ; l'enseignant et le mode classe ne voient
+  // aucun changement.
+  studentView: 'mission',
+  // LA MISSION : l'ouverture avoue qu'on ne sait pas encore la résoudre ; les outils sont les connaissances de knowledge.jsx ; les points d'étape
+  // (conseil du 2026-11-11, verdict L3) RAPPROCHENT de la mission sans en résoudre aucune question : ni ses nombres (10 et 15 plaques, 1500, 135000,
+  // 450, 30, 15, 90…), ni sa réponse (10x² + 15x = 5x(2x + 3)), ni sa correction (une analyse incomplète k(…) dont le crochet partage un x) —
+  // content/mission.test.js et _unit/missionStrings.test.js. La scène : les rouleaux de gazon empilés le long du grillage (« turf-rolls »).
+  mission: {
+    scene: 'turf-rolls',
+    title: 'لفائف العشب: كم صفًّا في الملعب الجواري؟',
+    opening: {
+      text: 'وصلت إلى الملعب الجواري قطع كثيرة من العشب الاصطناعي، مربّعات كبيرة وشرائط، يجب أن تُفرش كلّها صفوفًا متماثلة دون قطع أيّ قطعة. كم صفًّا على الأكثر؟ وما بعدا الملعب، وكم يكلّف سياجه؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'tahlil-taarif', icon: '🧩', label: 'تحليل عبارة: من مجموع إلى جداء' },
+      { id: 'khassiya-tawziiya', icon: '🟩', label: 'استخراج عامل مشترك' },
+      { id: 'tahlil-mutatabiqat', icon: '⬛', label: 'التحليل بالمتطابقات الشهيرة' },
+      { id: 'tariqat-amil-mushtarak', icon: '📐', label: 'طريقة العامل المشترك' },
+      { id: 'tariqat-mutatabiqat', icon: '🔁', label: 'طريقة المتطابقات الشهيرة' },
+    ],
+    climaxModule: 5,
+    checkpoints: [
+      {
+        id: 'cp-amil', afterModule: 1,
+        prompt: '$7x + 14 =$',
+        options: ['$7(x + 2)$', '$7(x + 14)$', '$7x(1 + 2)$'],
+        correct: 0,
+        explain: '$7x + 14 = 7 \\times x + 7 \\times 2 = 7(x + 2)$ . أمّا $7(x + 14) = 7x + 98$ ، و $7x(1 + 2) = 21x$ .',
+      },
+      {
+        id: 'cp-majmu', afterModule: 2,
+        prompt: 'أيّ عبارة لا تقبل تحليلًا بالمتطابقات الشهيرة؟',
+        options: ['$x^2 + 64$', '$x^2 - 64$', '$x^2 + 16x + 64$'],
+        correct: 0,
+        explain: '$x^2 - 64 = (x - 8)(x + 8)$ ، و $x^2 + 16x + 64 = (x + 8)^2$ . أمّا $x^2 + 64$ فمجموع مربّعين لا حدّ مضاعف فيه.',
+      },
+      {
+        id: 'cp-tahaqquq', afterModule: 3,
+        prompt: 'نتحقّق من التحليل $9x^2 - 12x + 4 = (3x - 2)^2$ بالنشر: $(3x - 2)^2 =$',
+        options: ['$9x^2 - 12x + 4$', '$9x^2 + 4$', '$9x^2 - 6x + 4$'],
+        correct: 0,
+        explain: '$(3x - 2)^2 = (3x)^2 - 2 \\times 3x \\times 2 + 2^2 = 9x^2 - 12x + 4$ : التحليل صحيح.',
+      },
+      {
+        id: 'cp-farq', afterModule: 4,
+        prompt: '$14 - 4x =$',
+        options: ['$2(7 - 2x)$', '$2(7 + 2x)$', '$2(7 - 4x)$'],
+        correct: 0,
+        explain: '$14 - 4x = 2 \\times 7 - 2 \\times 2x = 2(7 - 2x)$ . أمّا $2(7 + 2x) = 14 + 4x$ ، و $2(7 - 4x) = 14 - 8x$ .',
+      },
+    ],
+  },
   title: 'تحليل عبارة جبرية',
   description: 'كتابة عبارة جبرية معطاة على شكل مجموع أو فرق على شكل جداء عاملين من الدرجة الأولى: باستخراج العامل المشترك أو بالتعرّف على شكل متطابقة شهيرة.',
   level: 'moyen',
@@ -72,6 +126,8 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début, sans verrou par محور.
+  knowledgeMapOpen: true,
   // Les acquis que « أستعدّ » diagnostique : le نشر (leçon 1), la réduction des
   // termes semblables (leçon 1), les trois متطابقات (leçon 2), les diviseurs
   // communs et le PGCD des coefficients (unité 1).
@@ -123,22 +179,22 @@ export const LESSON_CONFIG = {
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
-      title: 'أستعدّ', desc: 'ثماني عبارات: النشر وتبسيط الحدود المتشابهة، المتطابقات الشهيرة، والقواسم المشتركة. صحيح أم خاطئ؟',
+      title: 'أستعدّ', desc: 'عشر عبارات من السهل إلى الأصعب: النشر والمتطابقات الشهيرة. صحيح أم خاطئ؟',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'nashat', path: `${LESSON_BASE_PATH}/nashat`,
-      title: 'نشاط 3 — تحليل عبارة جبرية', desc: 'افرش قطع العشب في ملعب واحد مستطيل: صفوف متماثلة، ثم مربّع يُغلق. ثم كرّاس إيمان وأسئلة النشاط 3 من الكتاب.',
+      title: 'الملعب الجواري — تحليل عبارة جبرية', desc: 'افرش قطع العشب في ملعب واحد مستطيل: صفوف متماثلة، ثم مربّع يُغلق. ثم كرّاس إيمان وأسئلة النشاط.',
       stage: 'trigger', teachesLearningPointIds: ['4am_tahlil-ibara_P1', '4am_tahlil-ibara_P2', '4am_tahlil-ibara_P3'],
       color: 'indigo', style: 'featured', estimatedMin: 13, difficulty: 2, actionText: 'أفرش العشب' },
     { id: '02', number: 2, slug: 'maarif', path: `${LESSON_BASE_PATH}/maarif`,
-      title: 'معارف — التحليل', desc: 'التعريف، الخاصية التوزيعية والمتطابقات الشهيرة مقروءة من اليمين إلى اليسار، وأمثلة الكتاب الخمسة.',
+      title: 'معارف — التحليل', desc: 'التعريف، الخاصية التوزيعية والمتطابقات الشهيرة مقروءة من اليمين إلى اليسار، وخمسة أمثلة.',
       stage: 'discovery', teachesLearningPointIds: ['4am_tahlil-ibara_P1', '4am_tahlil-ibara_P2', '4am_tahlil-ibara_P3'],
       color: 'violet', style: 'featured', estimatedMin: 8, difficulty: 2, actionText: 'أكتشف' },
     { id: '03', number: 3, slug: 'tarayiq', path: `${LESSON_BASE_PATH}/tarayiq`,
-      title: 'طرائق — تحليل عبارة', desc: 'باستخراج عامل مشترك، باستعمال المتطابقات الشهيرة، ونشر عبارة ثم تحليلها — حلول الكتاب سطرًا سطرًا، ثم دوري الآن.',
+      title: 'طرائق — تحليل عبارة', desc: 'باستخراج عامل مشترك، باستعمال المتطابقات الشهيرة، ونشر عبارة ثم تحليلها — حلول مكشوفة سطرًا سطرًا، ثم دوري الآن.',
       stage: 'formalization', teachesLearningPointIds: ['4am_tahlil-ibara_P1', '4am_tahlil-ibara_P2', '4am_tahlil-ibara_P3'],
       color: 'emerald', style: 'featured', estimatedMin: 10, difficulty: 3, actionText: 'أتعلّم الطريقة' },
     { id: '04', number: 4, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
-      title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 20 ← 27، 28 (ب)، 29 ← 33، وسؤالا أؤكّد تعلّماتي 5 و 9.',
+      title: 'أوظّف تعلّماتي', desc: 'تمارين متدرّجة: العامل المشترك، المتطابقات الشهيرة، الحساب الذهني، وسؤالان للتأكّد من التعلّمات.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_tahlil-ibara_P1', '4am_tahlil-ibara_P2', '4am_tahlil-ibara_P3'],
       color: 'amber', style: 'featured', estimatedMin: 11, difficulty: 3, actionText: 'أتدرّب' },
     // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
@@ -157,7 +213,7 @@ export const LESSON_CONFIG = {
       stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tahlil-ibara_P1', '4am_tahlil-ibara_P2'],
       color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
     { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم الكفاءات الثلاث، منها خمسة من أؤكّد تعلّماتي.',
+      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم الكفاءات الثلاث.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 7, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

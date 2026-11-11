@@ -11,6 +11,7 @@
  *    (les signes entre emplacements, défaut ['=', '×', '+']), `accept?: [[n…]…]` (d'autres remplissages justes — l'égalité dans l'autre sens),
  *    `preset?: [n | null…]` (des tuiles DÉJÀ posées au départ, que l'élève peut reprendre) —
  *    `render?: (tuile) => nœud` (2026-11-10, shadow-meet : une tuile dessinée dans sa forme — « BC/BE » en vraie fraction ; la comparaison lit toujours la tuile) —
+ *    `wrap?: [avant, après]` (2026-11-11, turf-factoring : un signe avant le premier emplacement et après le dernier, « ▢(▢ + ▢) », « (▢ + ▢)² ») —
  *    l'élève BÂTIT l'égalité (« اللاعبون = الفرق × في كل فريق + خارج الفرق ») au lieu de la choisir.
  * (les textes sont des nœuds React, la logique ne les lit pas). Un ARRÊT (checkpoint) est une suite de questions qui mène à l'idée.
  *

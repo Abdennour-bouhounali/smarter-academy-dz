@@ -57,6 +57,7 @@ after lesson 1. Folder `lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/`
 | # | Lesson (unit 3) | Labs converted | Status | Commit | Notes |
 |---|---|---|---|---|---|
 | 1 | `nashr-tabsit` | `pitch-expansion` (v2 treatment + its FIRST LabCoach, player only; `labels: 'area'`, collision-free ruler) | ✅ done 2026-11-11 | `feat(lessons): nashr-tabsit — mission prototype` | See « Unit 3, lesson 1 » below. |
+| 3 | `tahlil-ibara` | `turf-factoring` (v2 treatment + LabCoach, new; both modes `rows` and `square`) | ✅ built 2026-11-11 | `feat(lessons): tahlil-ibara — mission prototype` | See « Unit 3, lesson 3 » below. |
 
 ## Lab families — which have the v2 treatment
 
@@ -78,6 +79,7 @@ after lesson 1. Folder `lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/`
 | `shadow-meet` | ✅ (2026-11-10, born in the player: tasks `meet`, `ratio`, `flag`; asks `tap` and `type`; reusable through `steps`) | `talis-hisab-atwal` (unit 9) |
 | `pitch-expansion` | ✅ (2026-11-11, `labels` 'area' / 'terms', chains `dist` / `double` / `restored` / `result` + practice chains; lesson 2's identities still to add) | `nashr-tabsit` (unit 3) |
 | `cone-cylinder` | ✅ (2026-11-10, a PLAYER VERSION `ConeCylinderPlayer.jsx` chosen by `ConeCylinder.jsx` in the player: one trial = one press, `n` explicit, `lockH` / `lockR`, no number / volume / point letter in a verdict; the page lab is unchanged) | `wadiya-idmajiya-talis` (unit 9, synthesis) |
+| `turf-factoring` | ✅ (2026-11-11, both modes `rows` and `square`; a trial = a NEW r or a NEW split, r = 1 is not one; the sweep hidden; `wrap` builds) | `tahlil-ibara` (unit 3) |
 | every other lab | ⏳ | — |
 
 ## Lesson 2 — `qawasim-adad-tabii` « قواسم عدد طبيعي » (2026-11-08)
@@ -1207,6 +1209,70 @@ in `DropZone`, the blue focus ring and native `disabled` of `DraggableObject`, t
 
 **Open (for the owner)**: the page lab still has no coach (logged in `LAB_COACH_ROLLOUT.md`); « زينب » also appears as a data name in one practice
 JSON (`content/practice/4am/tafsir-bayani-jumla/level-5/…-002.json`) — not a peer sheet; the shared-primitive a11y items above.
+
+## Unit 3, lesson 3 — `tahlil-ibara` « تحليل عبارة جبرية » (2026-11-11)
+
+**Council verdict (2026-11-11, binding — `L3` + Cross-lesson):** L3.1 the Contrarian's reshape — module 1's three REQUIRED rounds `8x + 6`, an
+m = 1 rows set, the square `x² + 6x + 9`; ⭐ `x² + 8x + 16`; module 2 = `x² + 25`; the activity's `9x + 3` leaves the player. L3.2 r1 by hand.
+L3.3 the square build's decoy is c ((x + 9)²). L3.4 peer sheet = the lost « 1 », classmate « بلال ». L3.5 « أستعدّ » K1 → `nashr-tabsit`. L3.6 no
+catalogue / net change. L3.7 the rule after two different sets (m = 0 then m = 1), its right option gives the tiling reason. L3.8 replace the two
+role hits (memo 6x + 9, exercise decoy 5x(x − 1)). L3.9 free = rows sets, identities, x² + 9; 9x² − 6x only if rows mode is proved to draw and refuse
+negative counts. X1 sweep hidden in the player, X2 coach in the player only, X3 scan everything before the climax. The forbidden FIX defined narrowly.
+
+**What was written:**
+- `content/turf.js` — `M1_ROUNDS` (`lab-turf-m1`): r1 rows `8x+6` (chain `build`: « في كل صفّ: ▢ » then BUILD « 8x + 6 = ▢(▢ + ▢) », decoy 6; no
+  prediction, `stars.predict: false`), r2 rows **`6x^2+2x`** — the m = 1 set: `6x² + 4x` is the book's معارف example 1, so the verdict's « own set
+  whose counts are not 2 : 3 » applies; 3 : 1 and a/g = 3 so no other arrangement of the tiles {2x, 3x, 1, 2} is a true equality (predictions
+  `rowHeight` 1 / 2 / x and `maxRows` 6 / 2 / 1; chain `full`: « ارتفاع الملعب كاملًا = ▢ » 2 / x / 2x, BUILD with the decoy 2, the rule), r3 the
+  square `x²+6x+9` (prediction `sideStrips` 3 / 6 / 9; chain: the corner of the student's refused split, BUILD « (▢ + ▢)² » with the decoy 9, the
+  rule), ⭐ `x²+8x+16` (≤ 2 closes), free (`6x+3`, `2x^2+6x`, `9x^2-6x`, `x²+4x+4`, `x²+9`). Practice rounds `4x+2`, **`2x^2+4x`** (the designed
+  `4x²+2x` showed « 3 rows, one big square out » at r = 3 — سمير's picture — and was replaced), `x²+2x+1`. `M2_ROUNDS` (`lab-turf-m2`): `x²+25`
+  (prediction `closes` → « لا »; chain: the squares outside, why, the rule) then free.
+- `content/forbidden.js` (roles + `TEXT` regexes + `incompleteFactor`), `content/turf.test.js` (scan of every round, practice round and free choice;
+  every round PLAYED to ★★★; r = 1 and a repeated r are not trials, a repeated refusal never opens « جرّب أصغر »; each build has a decoy distinct
+  from its tiles), `content/mission.test.js` (config, checkpoints recomputed from the CONFIG — only the right option equals the sum —, strings,
+  knowledge, map, exercises, the raw sources of modules 0–4), `content/prep.js` + test (10 statements: النشر → `nashr-tabsit`, المتطابقات →
+  `mutatabiqat-shahira`, each re-expanded), `content/peerSheet.js` + test (« ورقة بلال »: 8x² + 4x = 4x(2x + 0) → 8 at x = 1 instead of 12; numbers
+  computed), `_unit/missionStrings.test.js` (CREATED for the unit — tahlil-ibara's signature, plus the rule « a unit-3 classmate name is used by no
+  other 4AM peer sheet »; lesson 1 added its own the same day). `_unit/prepDiagnostic.test.js` reads `content/prep.js › PREP_LADDER`.
+- Config: `studentView: 'mission'`, the `mission` block (scene `turf-rolls`, title « لفائف العشب: كم صفًّا في الملعب الجواري؟ », the opening with
+  no number, 5 tools, `climaxModule: 5`, checkpoints 7x + 14 · x² + 64 · (3x − 2)² · 14 − 4x), `knowledgeMapOpen: true`; module descriptions
+  without book references. Modules: 0 the ladder; 1 `PlayerSwitch` + `LabRounds` (steps 1 / 2 / 5 wait for r1 / r2 / r3; steps 1 and 2 get a
+  PLAYER-only question on the round's own field; step 4's first row reads `8x + 6` in the player; step 5's inline square lab is replaced by the
+  round in the player); 2 `PlayerSwitch` + `LabRounds`, step 1 waits for its round, step 3 « ورقة بلال » (shown on the page too); 3 and 4 the book
+  page / exercise numbers removed from titles and briefs. Scene `common/mission/TurfRollsScene.jsx` on the unit kit, registered in `MissionScene.jsx`.
+
+**Added to shared code:** the `turf-factoring` player treatment (`TurfFactoring.jsx` « LECTEUR DE MISSION » header, `CHAINS_PLAYER`,
+`chainsOfPlayer`, the questions `rowFill`, `heightFill`, `buildFactor`, `buildSquare`, `ruleP`; `logic/turfFactoring.js` `XU`, `isNewRows`,
+`isNewSplit`, `verdictOf`, `rowsBox`, `squareBox`, `PREDICT_KEYS`, `predictOptions`, `predictTruth`, `judgedPredictions`, `coachOf`, `rowFillParts`,
+`heightFillParts`, `buildFactorParts`, `buildSquareParts`, `shownValues`; new `logic/turfFactoring.test.js` and `algebra/turfFactoringPlayer.test.jsx`);
+`LabCheckpoint` build `wrap: [before, after]`; strings `lesson.manipulation.json › turfFactoring.player / vp / coach / predict / rowWord / …`.
+
+**Content rewrites:** SHARED-deliberate — book references removed (module titles, briefs, step titles « تمرين N — », « في الكتاب أكثر من إجابة »,
+« له اسم في الكتاب », « أمثلة الكتاب », « المثال الأول من الكتاب »; the four `correctionNote`s reworded without the book; `METHOD_IDENTITIES.exercise`
+without « تمرين 1: »; exercise 31's « نفس سؤال التمرين السابق » restated); the memo example `9x+3` → `8x+6`, its quiz `9x+3` → `8x+6`, the quiz
+`6x+9 → 3(2x+3)` → `4x+14 → 2(2x+7)`, the predictPrompt without 9x + 3; exercise 20-1's decoy `5x(x − 1)` → `x(x + 5)`. PLAYER-only — step 1 and 2
+questions, step 4's first row and the property option (`2` instead of `3`), step 5's lab, the rule's tiling reason (`player.rOpt1`, `player.sOpt1`).
+Exercises feed no other bank (the practice bank `content/practice/4am/tahlil-ibara/` and the compass index are separate JSON — checked).
+
+**Saved answers:** module questions are keyed by their content (`useSavedAnswer([prompt, options])`): the page keys are kept; the new player
+questions and the rewritten options get new keys (the old ones are simply not read again). New: `peer:m2-bilal`, stars under `lab-turf-m1` and
+`lab-turf-m2`. « أستعدّ » keeps its ids `prep-1…10` (not saved answers). No key reused with another meaning.
+
+**Traps found:** the coach bubble « انظر ماذا أضاء » over the refused pieces covered − / + → the controls go ABOVE the ruler in the player; KaTeX
+tiles read « 2\displaystyle22 » in the DOM (walk scripts compare the first part); a `heightFill` on an m = 0 field is meaningless → `full` falls back
+to `build`; the ratio-2 : 3 rule is ORDERED (x² : x = 2 : 3 gives 2x + 3; 3 : 2 does not).
+
+**Review (react, code, a11y — 2026-11-11):** fixed — the rows `full` chain on m = 0, drops / refusals now announced (gesture key), the hidden height
+chip has a spoken name, journal row headers `th scope="row"`, « r = n » in `<bdi>`, the verdict no longer says « مرفوض » twice, distinct slot names,
+`wrap` glyphs slate-600, page-only `setGesture` gated, `norm` replaces every « − », the checkpoint test reads the config, the decoy-distinct test.
+Rejected — refs reset in the render-time scene block (the same pattern as `segment-divider`, reset with the state it belongs to); `onRetry` keeps
+`doneIds` (a retry happens while a chain is OPEN, so nothing done is lost); mirror splits 2|4 and 4|2 stay two trials (two different placements
+the student made); `playerTrial` is mirrored by the rounds test's `play()` (as in unit 9) — open: a shared pure helper. Open for later: a sr-only
+summary of the field, the strip drag target under 24 px at small scales, `PRED_HOLD_MS` auto-advance, the shared `ops` contrast (slate-400).
+
+**Verification:** see the final report of the session (vitest `src/lessons`, `check:lessons` exit 0 with the entry at 241.4 KB, rollout status ✅,
+Playwright at 1366 / 1024 / 1920: every round ★★★, 0 `data-fit-overflow`, 0 page scroll, 0 KaTeX clip, 0 console error).
 
 ## The synthesis recipe (PROVISIONAL until a real student has been timed on the pilot: ≤ 32 min for module 7, module 8 finished)
 

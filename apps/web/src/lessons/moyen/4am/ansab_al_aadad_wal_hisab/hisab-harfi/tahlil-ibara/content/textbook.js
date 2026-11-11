@@ -56,7 +56,7 @@ export const KNOWLEDGE = {
   title: 'التحليل',
   definition: 'تحليل عبارة مجموع هو كتابتها على شكل جداء.',
   distributive: '$a$ ، $b$ و $k$ أعداد. • الخاصية التوزيعية: $ka + kb = k(a + b)$ ، $ka - kb = k(a - b)$',
-  correctionNote: 'صحّحت المنصّة خطأً مطبعيًا في نص الكتاب: في التحليل تُقرأ الخاصية من المجموع إلى الجداء، $ka - kb = k(a - b)$.',
+  correctionNote: 'في التحليل تُقرأ الخاصية من المجموع إلى الجداء: $ka - kb = k(a - b)$ .',
   identities: '• المتطابقات الشهيرة: $a^2 + 2ab + b^2 = (a + b)^2$ ، $a^2 - 2ab + b^2 = (a - b)^2$ ، $a^2 - b^2 = (a + b)(a - b)$',
   examples: [
     '$6x^2 + 4x = 2x \\times 3x + 2x \\times 2 = 2x(3x + 2)$',
@@ -88,8 +88,8 @@ export const METHOD_COMMON_FACTOR = {
 export const METHOD_IDENTITIES = {
   source: src('method-factor-identities', 36, 'طرائق'),
   title: 'تحليل عبارة باستعمال المتطابقات الشهيرة',
-  exercise: 'تمرين 1: حلّل كل عبارة مما يلي: أ) $A = 25 + 10x + x^2$ ، ب) $B = 49x^2 - 14x + 1$ ، جـ) $C = (4x - 1)^2 - (x - 4)^2$ .',
-  correctionNote: 'صحّحت المنصّة خطأً مطبعيًا في نص الكتاب: $C = (4x - 1)^2 - (x - 4)^2$ ، كما في الحلّ.',
+  exercise: 'حلّل كل عبارة مما يلي: أ) $A = 25 + 10x + x^2$ ، ب) $B = 49x^2 - 14x + 1$ ، جـ) $C = (4x - 1)^2 - (x - 4)^2$ .',
+  correctionNote: 'انتبه: في العبارة $C = (4x - 1)^2 - (x - 4)^2$ يُطرح مربّع $(x - 4)$ .',
   solution: [
     'أ) لدينا $A = 25 + 10x + x^2 = 5^2 + 2 \\times 5 \\times x + x^2$ أي العبارة A من الشكل $a^2 + 2ab + b^2$ حيث $a = 5$ و $b = x$. ومنه $A = (5 + x)^2$ .',
     'ب) لدينا $B = 49x^2 - 14x + 1 = (7x)^2 - 2 \\times (7x) + 1^2$ أي العبارة B من الشكل $a^2 - 2ab + b^2$ حيث $a = 7x$ و $b = 1$. ومنه $B = (7x - 1)^2$ .',
@@ -107,7 +107,7 @@ export const METHOD_EXPAND_FACTOR = {
   source: src('method-expand-factor', 36, 'طرائق'),
   title: 'نشر عبارة ثم تحليلها',
   exercise: 'لتكن العبارة الجبرية A حيث: $A = (x - 3)^2 + 2(x - 3)$ . أ) انشر A وبسّطها ثم حللها إلى جداء عاملين من الدرجة الأولى. ب) احسب A من أجل $x = 1$ .',
-  correctionNote: 'صحّحت المنصّة خطأً مطبعيًا في حلّ الكتاب: $-6x + 2x = -4x$.',
+  correctionNote: 'انتبه عند التبسيط: $-6x + 2x = -4x$ .',
   solution: [
     'أ) • نشر A وتبسيطها: $(x - 3)^2 = (x)^2 - 2(x) \\times 3 + 3^2 = x^2 - 6x + 9$ و $2(x - 3) = 2x - 6$ إذن $A = x^2 - 6x + 9 + 2x - 6 = x^2 - 4x + 3$ .',
     '• تحليل A: نلاحظ أن $(x - 3)$ عامل مشترك بين $(x - 3)^2$ و $2(x - 3)$ . $A = (x - 3)[x - 3 + 2] = (x - 3)(x - 1)$',
@@ -118,7 +118,7 @@ export const METHOD_EXPAND_FACTOR = {
 /** Exercice 25 (G) : l'énoncé affiché est la version corrigée (extraction.json → ex-25.correction). */
 export const EX25_NOTE = {
   source: addition('interaction_generation'),
-  text: 'صحّحت المنصّة خطأً مطبعيًا في نص الكتاب: العامل $(3{,}7 + x)$ مشترك بين الحدود الثلاثة للعبارة G.',
+  text: 'العامل $(3{,}7 + x)$ مشترك بين الحدود الثلاثة للعبارة G.',
 };
 
 /**

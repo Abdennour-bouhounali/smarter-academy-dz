@@ -16,6 +16,7 @@ import TifoBannerScene from './TifoBannerScene';
 import NightCinemaScene from './NightCinemaScene';
 import ShadowSquareScene from './ShadowSquareScene';
 import NeighbourhoodPitchScene from './NeighbourhoodPitchScene';
+import TurfRollsScene from './TurfRollsScene';
 
 /**
  * LA SCÈNE d'une mission (rollout 2026-11-08) : chaque leçon dessine la sienne, choisie par `mission.scene` dans sa config
@@ -49,6 +50,9 @@ const SCENES = {
   // unité 3, leçon 1 nashr-tabsit (2026-11-11) : le terrain du quartier et les bancs le long du couloir coupé — primitives communes de l'unité
   // dans pitchSceneKit.jsx, une scène mince par leçon
   'neighbourhood-pitch': NeighbourhoodPitchScene,
+  // unité 3, leçon 3 tahlil-ibara (conseil du 2026-11-11) : les rouleaux de gazon empilés le long du grillage, des RANGÉES de gazon posées au fil
+  // des outils — primitives communes de l'unité dans pitchSceneKit.jsx, une scène mince par leçon
+  'turf-rolls': TurfRollsScene,
 };
 
 function CourtyardBigScene(props) {

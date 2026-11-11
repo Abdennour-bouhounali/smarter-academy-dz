@@ -298,6 +298,8 @@ function BuildAnswer({ q, settled, revealed, onAnswer, k }) {
   return (
     <div className="space-y-5" data-lab-checkpoint-build>
       <div className="flex items-start justify-center gap-2" dir="ltr">
+        {/* `q.wrap` (2026-11-11, turf-factoring) : un signe AVANT le premier emplacement et APRÈS le dernier — « ▢(▢ + ▢) », « (▢ + ▢)² » */}
+        {q.wrap?.[0] ? <span className="pt-3 text-2xl font-black text-slate-600" aria-hidden="true" data-lab-checkpoint-wrap="before">{q.wrap[0]}</span> : null}
         {q.slots.map((label, si) => (
           <React.Fragment key={si}>
             {si > 0 && <span className="pt-3 text-2xl font-black text-slate-400" aria-hidden="true">{ops[si - 1]}</span>}
@@ -311,6 +313,7 @@ function BuildAnswer({ q, settled, revealed, onAnswer, k }) {
             </button>
           </React.Fragment>
         ))}
+        {q.wrap?.[1] ? <span className="pt-3 text-2xl font-black text-slate-600" aria-hidden="true" data-lab-checkpoint-wrap="after">{q.wrap[1]}</span> : null}
       </div>
       {!settled && (
         <>

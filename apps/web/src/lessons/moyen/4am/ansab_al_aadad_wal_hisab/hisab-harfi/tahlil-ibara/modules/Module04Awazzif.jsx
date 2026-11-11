@@ -33,103 +33,103 @@ export default function Module04Awazzif() {
       navLinks={getNavLinks(4)}
       moduleNumber={4}
       moduleTitle="أوظّف تعلّماتي"
-      moduleSubtitle="تمارين الكتاب 20 ← 33، وسؤالان من أؤكّد تعلّماتي"
+      moduleSubtitle="تمارين متدرّجة، وسؤالان للتأكّد من تعلّماتك"
       estimatedTime="11 دقيقة"
-      brief={{ tag: 'أوظّف تعلّماتي — الكتاب ص 38 و 39', title: 'تمارين الكتاب، بعباراته', tone: 'amber',
+      brief={{ tag: 'أوظّف تعلّماتي', title: 'تمارين متدرّجة', tone: 'amber',
         body: <p>لكل عبارة اختر تحليلها، ثم اقرأ التصحيح: الخطأ هنا يُصحَّح ولا يُحتسب.</p> }}
       steps={[
-        { num: 1, title: 'تمرين 20 — العامل المشترك', done: all('20'),
+        { num: 1, title: 'العامل المشترك', done: all('20'),
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tariqat-amil-mushtarak" variant="rappel" compact />
               {partsOf('20').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['tariqat-amil-mushtarak']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 2, title: 'تمرين 21 — ابحث عن الخطإ', done: all('21'),
+        { num: 2, title: 'ابحث عن الخطإ', done: all('21'),
           content: (
             <div className="space-y-3">
               {partsOf('21').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['tariqat-amil-mushtarak']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 3, title: 'تمرين 22 — حدّ وحده بين قوسين', done: all('22'),
+        { num: 3, title: 'حدّ وحده بين قوسين', done: all('22'),
           content: (
             <div className="space-y-3">
               {partsOf('22').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['tariqat-amil-mushtarak']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 4, title: 'تمرين 23 — عامل عددي أو حرفي', done: all('23'),
+        { num: 4, title: 'عامل عددي أو حرفي', done: all('23'),
           content: (
             <div className="space-y-3">
               {partsOf('23').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['khassiya-tawziiya']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 5, title: 'تمرين 24 — لاحظ وجود عامل مشترك', done: all('24'),
+        { num: 5, title: 'لاحظ وجود عامل مشترك', done: all('24'),
           content: (
             <div className="space-y-3">
               {partsOf('24').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['tariqat-amil-mushtarak']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 6, title: 'تمرين 25 — كسور وأعداد عشرية', done: all('25'),
+        { num: 6, title: 'كسور وأعداد عشرية', done: all('25'),
           content: (
             <div className="space-y-3">
               {partsOf('25').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['tariqat-amil-mushtarak']} onAnswered={mark(ex.id)} />)}
               <TextbookBox kind="remark" text={EX25_NOTE.text} source={EX25_NOTE.source} compact />
             </div>
           ) },
-        { num: 7, title: 'تمرين 26 — مربع مجموع', done: all('26'),
+        { num: 7, title: 'مربع مجموع', done: all('26'),
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tariqat-mutatabiqat" variant="rappel" compact />
               {partsOf('26').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['tariqat-mutatabiqat']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 8, title: 'تمرين 27 — مربع فرق', done: all('27'),
+        { num: 8, title: 'مربع فرق', done: all('27'),
           content: (
             <div className="space-y-3">
               {partsOf('27').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['tariqat-mutatabiqat']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 9, title: 'تمرين 28 (ب) — احسب ذهنيا', done: all('28'),
+        { num: 9, title: 'احسب ذهنيا', done: all('28'),
           content: (
             <div className="space-y-3">
               {partsOf('28').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['tahlil-mutatabiqat']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 10, title: 'تمرين 29 — أتمم المساويات', done: all('29'),
+        { num: 10, title: 'أتمم المساويات', done: all('29'),
           content: (
             <div className="space-y-3">
               {partsOf('29').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['tahlil-mutatabiqat']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 11, title: 'تمرين 30 — حلّل إلى جداء عوامل', done: all('30'),
+        { num: 11, title: 'حلّل إلى جداء عوامل', done: all('30'),
           content: (
             <div className="space-y-3">
               {partsOf('30').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['tariqat-mutatabiqat']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 12, title: 'تمرين 31 — معاملات كسرية', done: all('31'),
+        { num: 12, title: 'معاملات كسرية', done: all('31'),
           content: (
             <div className="space-y-3">
               {partsOf('31').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['tariqat-mutatabiqat']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 13, title: 'تمرين 32 — فرق مربّعين', done: all('32'),
+        { num: 13, title: 'فرق مربّعين', done: all('32'),
           content: (
             <div className="space-y-3">
               {partsOf('32').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['tariqat-mutatabiqat']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 14, title: 'تمرين 33 — حلّل ثم انشر', done: all('33'),
+        { num: 14, title: 'حلّل ثم انشر', done: all('33'),
           content: (
             <div className="space-y-3">
               {partsOf('33').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['tariqat-mutatabiqat', 'nashr-tawzii']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 15, title: 'أؤكّد تعلّماتي — السؤالان 5 و 9', subtitle: 'الكتاب ص 40', done: !!done.q5 && !!done.q9,
+        { num: 15, title: 'أؤكّد تعلّماتي', subtitle: 'سؤالان للتأكّد', done: !!done.q5 && !!done.q9,
           content: (
             <div className="space-y-4">
               <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700"><MathText>{Q5.text}</MathText> <SourceTag source={Q5.source} /> <span className="font-normal text-slate-600"><MathText>{'في الكتاب أكثر من إجابة صحيحة: هل كل كتابة تساوي العبارة $\\sqrt{2}x + 2$ ؟'}</MathText></span></p>}
+                intro={<p className="text-sm font-semibold text-slate-700"><MathText>{Q5.text}</MathText> <SourceTag source={Q5.source} /> <span className="font-normal text-slate-600"><MathText>{'لهذه العبارة أكثر من تحليل صحيح: هل كل كتابة تساوي العبارة $\\sqrt{2}x + 2$ ؟'}</MathText></span></p>}
                 rows={Q5.options.map((o, i) => ({
                   id: `q5-${i}`, label: <MathText>{o}</MathText>, options: EQUAL,
                   correct: Q5.correctSet.includes(i) ? 0 : 1,

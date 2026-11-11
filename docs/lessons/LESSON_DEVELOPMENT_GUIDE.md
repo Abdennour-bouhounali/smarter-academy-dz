@@ -1406,6 +1406,20 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
 - **Book exercises rewritten, the source kept for the teacher.** When a module's exercises were the book's, rewrite them with the platform's
   numbers, contexts and wording, keep `source: src(<id>, …)` (the competence they cover, `check:textbook`) and add `part: 'بأعداد المنصّة'` so
   the teacher's tag says it; check first that the practice bank / « بوصلتي » / BEM sheets do not read the file (they have their own data).
+- **What a question of the round ASKS, the lab does not PRINT (unit 3, `tahlil-ibara`, `turf-factoring`, 2026-11-11).** When the page lab writes
+  the answer of the round's BUILD (the equality `8x + 6 = 2(4x + 3)` under the field, the height chip `2x`, the corner reading `2 × 4 = 8`),
+  the player hides it while a chain of the round is open or still to come (`hideAnswer`: the chip says « ? », the verdict says only « عدد
+  الصفوف 2 : لا قطعة خارج الملعب », the corner reading is gone) and shows it again once the chain is done. Otherwise the build is a copy.
+- **The forbidden FIX, narrow definition (unit 3, council of 2026-11-11, verdict L3).** When the climax's part 2 is a classmate's INCOMPLETE
+  answer (here أمين's `5(2x^2 + 3x)`), the checkpoints, the peer sheet and « أستعدّ » never pose an incomplete factorisation k(…) whose bracket
+  still shares an x — tested by a regex (`content/forbidden.js › incompleteFactor`). The lab's own chain MAY teach « the letter comes out » and
+  « rows divide both counts » on its OWN numbers (`heightFill`, the build's decoy): that is the lesson's discovery, not the climax's fix.
+- **A build with brackets: `wrap: [before, after]`** on a `LabCheckpoint` `build` question writes a sign before the first slot and after the
+  last (« ▢(▢ + ▢) » = `ops: ['(', '+'], wrap: ['', ')']`; « (▢ + ▢)² » = `ops: ['+'], wrap: ['(', ')²']`). Choose the tiles so that NO other
+  arrangement is also a true equality (`x(3x + 6)` from the tiles of `3x(x + 2)` would be equal and refused): the logic test tries every
+  arrangement (`logic/turfFactoring.test.js`).
+- **The coach bubble must never cover the next control.** If the « look at what lit up » bubble opens above the refused pieces, the controls
+  (− r = n +) go ABOVE the scene in the player (`[data-turf-topbar]`), as `segment-divider` did with its join row.
 
 ### Synthesis in the mission player — engine fields (PROVISIONAL until a real student has played the pilot)
 

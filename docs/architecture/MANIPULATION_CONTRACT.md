@@ -2852,6 +2852,33 @@ Since 2026-11-10 (unit 9, lesson 2) a `build` may also set `accept` (other filli
   every subset sum —, `factor`, `term` — partial merges and tiles —, `expansion`, `decoy`). Lead and mission strings of a round are rendered with
   `MathText` in the player (letters in `$…$`). Strings: `lesson.manipulation.json › pitchExpansion.player`, `pred`, `coach`, `cp.build`,
   `cp.build4`, `cp.corner`, `cp.player`.
+- **Eighteenth example (2026-11-11, unit 3):** lesson `tahlil-ibara`, `content/turf.js` (`M1_ROUNDS`, `LabRounds labId="lab-turf-m1"`: rows
+  `8x+6` by hand → rows `6x^2+2x` (the book's `6x^2+4x` replaced, verdict L3) → the square `x^2+6x+9`, required → ⭐ the square `x^2+8x+16` →
+  free; practice `4x+2`, `2x^2+4x`, `x^2+2x+1`; `M2_ROUNDS`, `lab-turf-m2`: `x^2+25` then free), council of 2026-11-11, verdict L3. The lab
+  `turf-factoring` (`algebra/TurfFactoring.jsx`, `logic/turfFactoring.js`) gets the v2 treatment in shared code, page and teacher unchanged.
+  **A trial** is a NEW r committed (rows) or a NEW split closed (square): `onVerdict { groups: r | strips on the right, exact }` (`verdictOf`),
+  r = 1 is NOT a trial (one row always holds everything), the same r / split twice re-announces its verdict but is not counted (a repeated refusal
+  never opens « جرّب أصغر »), the round's first refusal is `free`. **The sweep « جرّب كل الإمكانيات » and the hints are hidden in the player**
+  (verdict X1). **What the round asks, the lab does not print**: the height chip says « ? », the verdict has no equality, the corner reading is
+  hidden while a chain is open or to come (`hideAnswer`). `chains`: rows `build` (at the gcd: « في كل صفّ: ▢ » one tap — `rowFillParts` — then
+  BUILD « ka + kb = ▢(▢ + ▢) », the decoy = the LAST TERM NOT DIVIDED, `buildFactorParts`, the swapped bracket accepted), rows `full`
+  (« ارتفاع الملعب كاملًا = ▢ » with the chips g / x / gx — `heightFillParts` —, the BUILD, then the RULE whose right option gives the tiling
+  reason « لأنّ القطع تُرصّ صفوفًا دون أن يبقى شيء », `player.rOpt1`), square `full` (`corner` of the student's refused split, BUILD
+  « (▢ + ▢)² » with the decoy c — `buildSquareParts` —, the rule `player.sOpt1`), and for a square that never closes (`x^2 + c` without strips)
+  `outside` → `why` → the rule; `none`. Builds use `LabCheckpoint`'s new **`wrap: [before, after]`**. `predict`: rows `rowHeight` (1, g, x)
+  and `maxRows` (the biggest count, g, 1), square `sideStrips` (b/2, b, c) and `closes` (yes (x + √c)², no, yes if spread), the field ringed while
+  a prediction is open, judged by the terrain (`judgedPredictions`). `choices`: `[{ mode: 'rows', expr } | { mode: 'square', b, c }]` (the mode
+  travels with the numbers in the player). Rows mode draws and refuses NEGATIVE counts (hatched tiles; `9x^2-6x = 3x(3x - 2)`, proved by
+  `logic/turfFactoring.test.js`). **No scroll**: the field is ONE `data-paging-keep` block scaled by the scene's width AND the player area's height
+  (`rowsBox(lab, r)`, `squareBox(lab)`), the page's `overflow-x-auto` is gone in the player. The controls « − r = n + » sit ABOVE the ruler in the
+  player (`[data-turf-topbar]`; the coach bubble « انظر ماذا أضاء » over the refused pieces must not cover them). Journal « 📋 جدول تجاربك »
+  (rows: r and « يصلح » / « مرفوض: قطع خارج الملعب » — never « خطأ »; square: right, bottom, « أُغلق » / « مرفوض »), an always-mounted `sr-only`
+  live region keyed per gesture (`[data-turf-verdict-live]`), ✓/✗ `aria-hidden` with a hidden « صحيح. » / « مرفوض. », − / + / « أغلق الملعب » /
+  « أعد فتح الملعب » with `aria-disabled` + a guard, indigo focus rings, the close button white on emerald-700. `LabCoach` (`coachOf`: the handle →
+  after a FIRST refusal a neutral « انظر ماذا أضاء » on the pieces left outside → « جرّب عددًا آخر من الصفوف » (never « أكبر »); square: the stock
+  → « أغلق الملعب » → « انظر ماذا أضاء » on the corner → move a strip; closed → « أعد فتح الملعب »). `shownValues(props)` lists by role (`count`,
+  `pair`, `tick`, `common`, `inner`, `perRow`, `eq`, `leftover`, `chip`, `tile`, `decoy-inner`, `decoy-eq`, `corner`, `extra`, `option`).
+  Strings: `lesson.manipulation.json › turfFactoring.player`, `vp`, `coach`, `predict`, `rowWord`, `journal`, `col*`, `choicesLabel`.
 - **Blocking:** `cp.blocking` stays true until the chain is finished; the lab hides its « next task » button meanwhile.
 - **Guided, never told first:** wrong try 1 → the chosen option's `why` (else hint 1); try 2 → hint 2 (sharper); try 3 →
   the answer AND its explanation (the student is never stuck forever). A wrong option stays struck and disabled.
