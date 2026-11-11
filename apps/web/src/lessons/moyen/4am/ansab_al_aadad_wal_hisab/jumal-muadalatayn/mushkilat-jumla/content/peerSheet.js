@@ -12,7 +12,7 @@ const herX = (TOTAL - SCI * MORE) / (STORY + SCI);           // 14
 const rightY = (TOTAL - STORY * MORE) / (STORY + SCI);       // 15
 export const NUMS = { herX, herY: herX + MORE, rightX: rightY + MORE, rightY };
 
-export const PEER_KID = { name: 'وئام', figure: { hairStyle: 'hijab', scarf: 'violet', outfit: 'teal' } };
+export const PEER_KID = { name: 'وئام', figure: { hairStyle: 'hijab', scarf: 'lavender', outfit: 'teal' } };
 
 export const PEER_SHEET = {
   id: 'm2-wiam',

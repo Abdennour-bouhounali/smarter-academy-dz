@@ -3,173 +3,143 @@ import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../co
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
+import { useModulePlayer } from '../../../../../../common/mission/useModulePlayer';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { ACTIVITY, LAB, MISTAKE_TARJAMA, MISTAKE_HALF } from '../content/textbook';
+import { LAB, MISTAKE_TARJAMA, MISTAKE_HALF } from '../content/textbook';
+import { M1_ROUNDS } from '../content/stories';
 import StepsTable from '../components/StepsTable';
 
 /**
- * Module 1 — نشاط 3 (p. 57) : les CINQ étapes faites à la main, puis le TABLEAU du manuel.
+ * Module 1 — « من القصة إلى الجملة » : les CINQ étapes faites à la main au labo `story-modeller`, puis le tableau des étapes.
  *
- * Rétrofit 2026-10-15 (§4quater) : le laboratoire OUVRE le module (ni carte du manuel, ni titre / `lead` de workspace). Le labo
- * `story-modeller` (deux niveaux) fait les cinq étapes — nommer, traduire, résoudre, REJOUER l'histoire, répondre :
- *   مبتدئ  — le derby (plateforme, ENTRÉE choisie) : 20 billets, 300 / 150 DA, 4800 DA ; inconnues déjà nommées ;
- *   متقدم  — le musée du manuel (140 visiteurs, 30300 DA) : l'élève nomme lui-même les inconnues ; ses réponses remplissent la
- *            colonne « حل » du tableau du manuel (`StepsTable`, `[data-activity-evidence]`).
- * Les DEUX niveaux rendent leurs essais (`onModel`, `onSolved`, `onTrial`) : chaque question parle des nombres du niveau que
- * l'élève vient de jouer (`WORLD`), jamais d'une réponse affichée d'office, et ne repose pas ce que le labo a déjà demandé.
- *
- * Étapes = POURQUOI, une par ligne du tableau : (1) pourquoi ces inconnues (et pas les prix) ; (2) pourquoi le labo refuse
- * « 300x + 150y = nombre de personnes », puis la brique « jumla-tarjama » ; (3) pourquoi x seul ne répond pas ; (4) pourquoi vérifier
- * les DEUX informations, puis la brique « khutuwat-hall » et le tableau du manuel rempli par l'élève. LP : P1, P2.
- *
- * LABO À QUESTIONS (2026-10-28, `primitives/LabCheckpoint`) : le labo pose lui-même, par-dessus chaque étape (المجاهيل, الترجمة, الحل, التحقق, الإجابة), les
- * questions sur ce que l'élève vient de faire. Les étapes ci-dessous en gardent la TRACE (`answered(<étape>)`, événements `checkpoint-done`) au lieu de reposer
- * la même question : (1) المجاهيل — au niveau متقدم seulement (le derby est déjà nommé) ; (2) الترجمة ; (3) الحل puis la phrase de réponse ; (4) التحقق.
+ * LA PAGE (enseignant, mode classe) : deux niveaux de la plateforme (verdict L3.10) — مبتدئ « نادي الرسم » (12 crayons, 70 / 20 دج, 440 دج),
+ * متقدم « معرض الكتب » (26 livres, 130 / 90 دج, 2820 دج ; l'élève nomme lui-même les inconnues).
+ * LECTEUR DE MISSION (rollout 2026-11-12, unité 5 leçon 3 ; conseil du 2026-11-11, verdict L3.4–L3.15) : le labo se joue en MANCHES
+ * (content/stories.js › M1_ROUNDS : نادي الرسم à la main avec la ligne tapée, مكتبة الحيّ argent + argent avec le jeton muet « 8 أيام », le défi ⭐,
+ * les histoires libres). Les étapes au crayon attendent leur manche (`needsRound`) et RAPPELLENT ses nombres dans leur énoncé (aucun aller-retour).
+ * UNE PISTE : labo en tête, puis (1) pourquoi ces inconnues ; (2) pourquoi le labo refuse « 70x + 20y = 12 », la brique `jumla-tarjama` APRÈS ;
+ * (3) pourquoi x = 4 seul ne répond pas ; (4) pourquoi vérifier les DEUX informations, la brique `khutuwat-hall` et le tableau APRÈS. LP : P1, P2.
  */
-// Les nombres de chaque niveau — ceux que l'élève vient de manipuler (derby par défaut : le niveau d'ouverture).
-const WORLD = {
-  beginner: {
-    unknowns: 'عدد تذاكر الكبار وعدد تذاكر الصغار', wrongUnknown: 'ثمن تذكرة الكبير وثمن تذكرة الصغير',
-    total: 20, countNoun: 'تذكرة', money: 4800, bad: '300x + 150y = 20', x: 12, y: 8, swap: [8, 12], swapMoney: 4200,
-    halfWrong: 'اشترت الرابطة 12 تذكرة.', priced: '300 و 150',
-  },
-  advanced: {
-    unknowns: 'عدد البالغين وعدد الصغار', wrongUnknown: 'ثمن تذكرة البالغ وثمن تذكرة الصغير',
-    total: 140, countNoun: 'زائرا', money: 30300, bad: '300x + 150y = 140', x: 62, y: 78, swap: [78, 62], swapMoney: 32700,
-    halfWrong: 'زار المتحف 62 زائرا.', priced: '300 و 150',
-  },
-};
+const R1_LINE = 'في نادي الرسم: 12 قلمًا، قلم التلوين بـ 70 دج وقلم الرصاص بـ 20 دج، ودفع النادي 440 دج.';
 
 export default function Module01Mathaf() {
-  const [evidence, setEvidence] = useState({});
-  const [world, setWorld] = useState('beginner');
-  const [seen, setSeen] = useState({ beginner: { refused: 0, model: false, pair: null }, advanced: { refused: 0, model: false, pair: null } });
-  const [cps, setCps] = useState([]);
-  const [q1, setQ1] = useState(false);
-  const add = (patch) => setEvidence((e) => ({ ...e, ...patch }));
-  const note = (lvl, patch) => { setWorld(lvl); setSeen((s) => ({ ...s, [lvl]: { ...s[lvl], ...(typeof patch === 'function' ? patch(s[lvl]) : patch) } })); };
-  // les questions posées PAR-DESSUS le labo : une étape est faite quand la suite de questions de son étape l'est (n'importe quel niveau)
-  const answered = (id) => cps.some((e) => e.tk === 'checkpoint-done' && e.id === id);
-  const onCheckpoint = (lvl) => (ev) => { setWorld(lvl); setCps((l) => [...l, ev]); };
-  const q2 = answered('model');
-  const q3 = answered('answer');
-  const q4 = answered('verify');
-  const W = WORLD[world];
-  const S = seen[world];
-  const nb = (v) => <bdi dir="ltr">{v}</bdi>;
+  const inPlayer = useModulePlayer(MODULE_CTX);
+  const [won, setWon] = useState({});
+  const [q, setQ] = useState({});
+  const mark = (id) => () => setQ((s) => ({ ...s, [id]: true }));
+  const round = (id, label) => (inPlayer ? { needsRound: { id, label, icon: '✏️', won: Boolean(won[id]) } } : {});
 
   return (
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
       moduleNumber={1}
-      moduleTitle="نشاط 3 — من القصة إلى الجملة"
+      moduleTitle="من القصة إلى الجملة"
       moduleSubtitle="لماذا هذان المجهولان؟ ولماذا هاتان المعادلتان؟"
       objectives={['ما المجهولان في القصة؟ وكيف نختارهما؟', 'كيف نحوّل كل معلومة في النص إلى معادلة؟', 'كيف نتأكد من الجواب في القصة نفسها؟']}
-      estimatedTime="15 دقيقة"
-      intro={
-        <ManipulationWorkspace
-          defaultLevel="beginner"
-          levels={{
-            beginner: () => (
-              <Manipulation
-                type="story-modeller"
-                level="beginner"
-                {...LAB.beginner}
-                onCheckpoint={onCheckpoint('beginner')}
-                onModel={() => note('beginner', { model: true })}
-                onSolved={({ x, y }) => note('beginner', { pair: `(${x} ; ${y})` })}
-                onTrial={(tr) => { if (tr.stage === 'model' && !tr.ok) note('beginner', (p) => ({ refused: p.refused + 1 })); }}
-              />
-            ),
-            advanced: () => (
-              <Manipulation
-                type="story-modeller"
-                {...LAB.advanced}
-                onCheckpoint={onCheckpoint('advanced')}
-                onModel={({ tex, system, unknowns }) => { note('advanced', { model: true }); add({ unknowns, system: tex, equations: system.split('|').map((eq) => eq.replace(/([+=-])/g, ' $1 ')) }); }}
-                onSolved={({ x, y }) => { note('advanced', { pair: `(${x} ; ${y})` }); add({ pair: `(${x} ; ${y})` }); }}
-                onTrial={(tr) => {
-                  if (tr.stage === 'model' && !tr.ok) note('advanced', (p) => ({ refused: p.refused + 1 }));
-                  if (tr.stage === 'verify' && tr.ok) add({ checked: [`${tr.values.x} + ${tr.values.y} = 140`, `300 \\times ${tr.values.x} + 150 \\times ${tr.values.y} = 30300`] });
-                }}
-                onFinished={() => add({ answer: ACTIVITY.closing })}
-              />
-            ),
-          }}
+      estimatedTime="14 دقيقة"
+      intro={(
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="lab-story-m1" rounds={M1_ROUNDS} icon="✏️" freeIcon="📚"
+              onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))} />
+          )}
+          page={(
+            <ManipulationWorkspace
+              defaultLevel="beginner"
+              levels={{
+                beginner: () => <Manipulation type="story-modeller" level="beginner" {...LAB.beginner} />,
+                advanced: () => <Manipulation type="story-modeller" {...LAB.advanced} />,
+              }}
+            />
+          )}
         />
-      }
+      )}
       steps={[
         {
-          num: 1, title: '1) لماذا هذان المجهولان؟', subtitle: 'ما يسأل عنه السؤال', done: q1 || answered('name'),
+          ...round('r1', 'نادي الرسم'),
+          num: 1, title: '1) لماذا هذان المجهولان؟', subtitle: 'ما يسأل عنه السؤال', done: Boolean(q.s1),
+          content: (
+            <TapQuestion
+              prompt={<span>{R1_LINE} لماذا جعلنا المجهولين «عدد أقلام التلوين» و«عدد أقلام الرصاص»، لا ثمنيهما؟</span>}
+              options={[
+                'لأنّ السؤال يطلب العددين، أمّا الثمنان فمعطيان في القصة',
+                'لأنّ الثمنين عددان كبيران يصعب الحساب بهما',
+                'لأنّ المجهول يكون دائمًا أصغر عدد في القصة',
+              ]}
+              correct={0}
+              cols={1}
+              requires={['tarjama-ibara']}
+              explain="المجهولان ما يسأل عنه السؤال: «كم قلم تلوين وكم قلم رصاص؟». عدد الأقلام كلّها والمبلغ والثمنان معطاة في القصة."
+              onAnswered={mark('s1')}
+            />
+          ),
+        },
+        {
+          ...round('r1', 'نادي الرسم'),
+          num: 2, title: '2) لماذا رفض المختبر هذه المعادلة؟', subtitle: 'كل معلومة معادلة، ووحدة واحدة في كل معادلة', done: Boolean(q.s2),
           content: (
             <div className="space-y-3">
-              {answered('name') ? (
-                <p className="rounded-xl border-2 border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900" data-activity-evidence="name" data-tried="true">
-                  أجبتَ في المختبر: المجهولان «{WORLD.advanced.unknowns}» لأنّ السؤال يطلبهما والنص لا يعطيهما، أمّا الأثمان (<MathText>{'$300$ DA و $150$ DA'}</MathText>) فمعطاة في النص.
-                </p>
-              ) : (
               <TapQuestion
-                prompt={<span>في قصتك أثمان التذاكر (<MathText>{'$300$ DA و $150$ DA'}</MathText>) مذكورة في النص. لماذا جعلنا المجهولين «{W.unknowns}» ولم نجعلهما «{W.wrongUnknown}»؟</span>}
+                prompt={<span>{R1_LINE} ترجم تلميذ المعلومة «اشترى النادي 12 قلمًا» بالمعادلة <MathText>{'$70x + 20y = 12$'}</MathText> فرفضها المختبر. لماذا؟</span>}
                 options={[
-                  'لأنّ السؤال يطلب عددين لا نعرفهما، أمّا الأثمان فمعطاة في النص',
-                  'لأنّ الأثمان أعداد كبيرة يصعب التعامل معها',
-                  'لأنّ المجهول يجب أن يكون دائمًا العدد الأصغر',
+                  <MathText key="a">{'$70x + 20y$ مبلغ بالدينار، و 12 عدد أقلام: لا نساوي مالًا بعدد أشياء'}</MathText>,
+                  'لأنّ العدد 12 أصغر من 70',
+                  <MathText key="c">{'لأنّ المعادلة يجب أن تبدأ بالحرف $x$ وحده'}</MathText>,
                 ]}
                 correct={0}
                 cols={1}
                 requires={['tarjama-ibara']}
-                explain="المجهولان ما يسأل عنه السؤال: «أوجد عدد البالغين وعدد الصغار». عدد الزوار والمداخيل وثمنا التذكرتين معطاة في النص."
-                onAnswered={() => setQ1(true)}
+                explain={<MathText>{`${MISTAKE_TARJAMA.why} ${MISTAKE_TARJAMA.right}`}</MathText>}
+                onAnswered={mark('s2')}
               />
-              )}
+              {q.s2 && <KnowledgeBrick id="jumla-tarjama" lead="ما رفضه المختبر وقبله هو المرحلة 2 من حلّ مشكلة:" />}
             </div>
           ),
         },
         {
-          num: 2, title: '2) لماذا رفض المختبر هذه المعادلة؟', subtitle: 'كل معلومة معادلة، وحدة واحدة في كل معادلة', done: q2,
+          ...round('r1', 'نادي الرسم'),
+          num: 3, title: '3) لماذا لا يكفي أحد العددين؟', subtitle: 'الحل ثنائية', done: Boolean(q.s3),
           content: (
-            <div className="space-y-3">
-              <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm text-slate-600" data-activity-evidence data-tried={S.model ? 'true' : 'false'}>
-                {S.refused > 0 ? `رفض المختبر ${S.refused === 1 ? 'محاولة واحدة' : `${S.refused} محاولات`} من محاولاتك قبل أن تقبل جملتك.` : S.model ? 'قبل المختبر جملتك من أول محاولة.' : 'لم تبنِ جملة بعدُ في المناولة أعلاه.'}
-              </p>
-              <p className={`rounded-xl border-2 px-3 py-2 text-sm ${q2 ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`} data-activity-evidence="model" data-tried={q2 ? 'true' : 'false'}>
-                {q2
-                  ? <span>أجبتَ في المختبر عمّا يجمعه طرف كل معادلة: لو كتب تلميذ <MathText>{`$${W.bad}$`}</MathText> لساوى مبلغًا بعدد أشخاص — <MathText>{MISTAKE_TARJAMA.why}</MathText></span>
-                  : 'ابنِ جملتك في المختبر، ثم أجب عن الأسئلة التي تظهر فوقه بعد قبولها.'}
-              </p>
-              {q2 && <KnowledgeBrick id="jumla-tarjama" lead="ما رفضه المختبر وقبله هو المرحلة 2 من جدول الكتاب:" />}
-            </div>
+            <TapQuestion
+              prompt={<span>{R1_LINE} وجد تلميذ <MathText>{'$x = 4$'}</MathText> فتوقّف وكتب: «اشترى النادي 4 أقلام». ما رأيك؟</span>}
+              options={[
+                'جوابه ناقص: السؤال يطلب عدد أقلام التلوين وعدد أقلام الرصاص معًا، فالحل ثنائية',
+                'جوابه كامل: أوّل عدد نجده هو الجواب',
+                'جوابه خاطئ لأنّ العدد 4 صغير',
+              ]}
+              correct={0}
+              cols={1}
+              requires={['hall-jumla']}
+              explain={<MathText>{`${MISTAKE_HALF.why} ${MISTAKE_HALF.right}`}</MathText>}
+              onAnswered={mark('s3')}
+            />
           ),
         },
         {
-          num: 3, title: '3) لماذا لا يكفي أحد العددين؟', subtitle: 'الحل ثنائية', done: q3,
+          ...round('r2', 'مكتبة الحيّ'),
+          num: 4, title: '4) لماذا نتحقّق من المعلومتين معًا؟', subtitle: 'نتحقّق في النص نفسه، ثم نجيب بجملة', done: Boolean(q.s4),
           content: (
             <div className="space-y-3">
-              <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm text-slate-600" data-activity-evidence data-tried={S.pair ? 'true' : 'false'}>
-                {S.pair ? <span>الثنائية التي وجدتها: <bdi dir="ltr">{S.pair}</bdi></span> : 'لم تحلّ الجملة بعدُ في المناولة أعلاه.'}
-              </p>
-              <p className={`rounded-xl border-2 px-3 py-2 text-sm ${q3 ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`} data-activity-evidence="answer" data-tried={q3 ? 'true' : 'false'}>
-                {q3
-                  ? <span>أجبتَ في المختبر: لو توقف تلميذ عند <MathText>{`$x = ${W.x}$`}</MathText> وكتب «{W.halfWrong}» لنقصه الجواب — <MathText>{MISTAKE_HALF.why}</MathText></span>
-                  : 'حلّ الجملة وتحقّق في المختبر ثم أجب عن الأسئلة التي تظهر فوقه عند الإجابة.'}
-              </p>
-            </div>
-          ),
-        },
-        {
-          num: 4, title: '4) لماذا نتحقق من المعلومتين معًا؟', subtitle: 'نتحقق في النص نفسه، ثم نجيب بجملة', done: q4,
-          content: (
-            <div className="space-y-3">
-              <p className={`rounded-xl border-2 px-3 py-2 text-sm ${q4 ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`} data-activity-evidence="verify" data-tried={q4 ? 'true' : 'false'}>
-                {q4
-                  ? <MathText>{`أجبتَ في المختبر: تبديل القيمتين يُبقي ${W.total} ${W.countNoun} لكنه يعطي ${W.swapMoney} DA لا ${W.money} DA، فنتحقق من المعلومتين معًا.`}</MathText>
-                  : 'أعد القصة بالحل في المختبر ثم أجب عن الأسئلة التي تظهر فوقه.'}
-              </p>
-              {q4 && (
+              <TapQuestion
+                prompt={<span>في مكتبة الحيّ: كرّاسان وقلم بـ 230 دج، وكرّاس وقلمان بـ 190 دج. وجدنا ثمن الكرّاس 90 دج وثمن القلم 50 دج. لو بدّلنا الثمنين (الكرّاس 50 دج والقلم 90 دج)، ماذا تقول القصة؟</span>}
+                options={[
+                  <MathText key="a">{'ترفضهما: $2 \\times 50 + 90 = 190$ لا 230 ، فالترتيب مهمّ ونعيد القصة بالعددين في مكانيهما'}</MathText>,
+                  'تقبلهما: الثمنان هما نفساهما، فالترتيب لا يهمّ',
+                  'لا نحتاج إلى القصة: يكفي أن نكون قد حللنا الجملة',
+                ]}
+                correct={0}
+                cols={1}
+                requires={['hall-jumla']}
+                explain={<MathText>{'مع الثمنين المبدّلين: $2 \\times 50 + 90 = 190$ و $50 + 2 \\times 90 = 230$ : المعلومتان تخالفان القصة. مع $(90 ; 50)$ : $2 \\times 90 + 50 = 230$ و $90 + 2 \\times 50 = 190$ .'}</MathText>}
+                onAnswered={mark('s4')}
+              />
+              {q.s4 && (
                 <>
-                  <KnowledgeBrick id="khutuwat-hall" lead="الأسطر الخمسة لجدول الكتاب هي مراحل حل كل مشكلة:" />
-                  <StepsTable evidence={evidence} emptyText="أكمل هذه المرحلة في المختبر (المستوى المتقدّم)." />
+                  <KnowledgeBrick id="khutuwat-hall" lead="المراحل الخمس التي مررتَ بها في المختبر هي مراحل حلّ كل مشكلة:" />
+                  <StepsTable />
                 </>
               )}
             </div>

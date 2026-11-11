@@ -10,7 +10,7 @@ import { QCM7 } from '../content/textbook';
 
 /**
  * Module 7 — إختبار أولي (stage: evaluation) : LA SEULE SOURCE DE PREUVE de la leçon.
- * E1 est l'item 7 de « أؤكّد تعلّماتي » (p. 62 — destinations → qcm items [7]) ; E2–E5 sont des
+ * E1 est l'item 7 de « أؤكّد تعلّماتي » RÉÉCRIT par la plateforme (rollout 2026-11-12 : deux angles complémentaires, 24°) ; E2–E5 sont des
  * épreuves de la PLATEFORME, chacune sur le modèle de نشاط 3 avec d'autres nombres et des contextes
  * de jeunes Algériens (forfaits Internet, karting, sortie scolaire, eSports). Chaque épreuve évalue
  * UN point d'apprentissage : P1 (traduire : E1, E2), P2 (résoudre, vérifier dans le texte, répondre :
@@ -39,35 +39,31 @@ export default function Module07Itqan() {
       }}
       epreuves={[
         {
-          // متكاملتان : x + y = 180 ; (B) 90 = متتامتان ; (C) « y + x = 15 » contredit x + y = 180
+          // متتامتان : x + y = 90 ; x − y = 24 → (57 ; 33). (B) y − x = 24 : la différence retournée → (33 ; 57) ; (C) les deux nombres échangés de place
           id: 'E1', skill: 'tarjama', requires: ['jumla-tarjama'],
           prompt: <Q source={QCM7.source}><MathText>{QCM7.text}</MathText></Q>,
-          options: [
-            M('$\\begin{cases} x + y = 180 \\\\ x = y + 15 \\end{cases}$'),
-            M('$\\begin{cases} y + x = 90 \\\\ y + 15 = x \\end{cases}$'),
-            M('$\\begin{cases} y = 180 - x \\\\ y + x = 15 \\end{cases}$'),
-          ],
-          correct: 0, cols: 1,
-          explain: <MathText>{'زاويتان متكاملتان مجموع قيسيهما $180°$ : $x + y = 180$ ، و«يزيد $x$ عن $y$ بـ $15°$» تعني $x = y + 15$ (ومنه $x = 97{,}5°$ و $y = 82{,}5°$). أما 90 فمجموع زاويتين متتامتين.'}</MathText>,
+          options: QCM7.options.map((o) => M(o)),
+          correct: QCM7.correct, cols: 1,
+          explain: <MathText>{'زاويتان متتامتان مجموع قيسيهما $90°$ : $x + y = 90$ ، و«يزيد $x$ عن $y$ بـ $24°$» تعني $x - y = 24$ (ومنه $x = 57°$ و $y = 33°$). أمّا $y - x = 24$ فتجعل $y$ هو الأكبر.'}</MathText>,
           assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_mushkilat-jumla_P1'] },
         },
         {
-          // 3x + 2y = 1100 ; x + 4y = 1200 → (200 ; 250). (B) 4x + y : les quantités de Yacine retournées ; (C) les deux totaux échangés
+          // 3x + 2y = 1100 ; x + 4y = 1200 → (200 ; 250). (B) 4x + y : les quantités du second client retournées ; (C) les deux totaux échangés
           id: 'E2', skill: 'tarjama', requires: ['jumla-tarjama'],
-          prompt: <Q source={SRC}>في محل للهواتف، دفع سامي 1100 DA ثمن 3 باقات إنترنت و 2 بطاقتي تعبئة، ودفع ياسين 1200 DA ثمن باقة إنترنت واحدة و 4 بطاقات تعبئة. نسمّي <MathText>{'$x$'}</MathText> ثمن الباقة و <MathText>{'$y$'}</MathText> ثمن البطاقة. الجملة التي تترجم المشكلة هي:</Q>,
+          prompt: <Q source={SRC}>في محل للهواتف، دفع زبون أوّل 1100 دج ثمن 3 باقات إنترنت وبطاقتي تعبئة، ودفع زبون ثانٍ 1200 دج ثمن باقة إنترنت واحدة و 4 بطاقات تعبئة. نسمّي <MathText>{'$x$'}</MathText> ثمن الباقة و <MathText>{'$y$'}</MathText> ثمن البطاقة. الجملة التي تترجم المشكلة هي:</Q>,
           options: [
             M('$\\begin{cases} 3x + 2y = 1100 \\\\ 4x + y = 1200 \\end{cases}$'),
             M('$\\begin{cases} 3x + 2y = 1100 \\\\ x + 4y = 1200 \\end{cases}$'),
             M('$\\begin{cases} 3x + 2y = 1200 \\\\ x + 4y = 1100 \\end{cases}$'),
           ],
           correct: 1, cols: 1,
-          explain: <MathText>{'سامي: $3x + 2y = 1100$ ، وياسين: باقة واحدة و 4 بطاقات، $x + 4y = 1200$ . (الحل: الباقة 200 DA والبطاقة 250 DA.)'}</MathText>,
+          explain: <MathText>{'الزبون الأوّل: $3x + 2y = 1100$ ، والزبون الثاني: باقة واحدة و 4 بطاقات، $x + 4y = 1200$ . (الحل: الباقة 200 دج والبطاقة 250 دج.)'}</MathText>,
           assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_mushkilat-jumla_P1'] },
         },
         {
           // x + y = 15 ; 350x + 200y = 3900 → 150x = 900 → (6 ; 9). 9 → 3150 + 1200 = 4350 ; 4 → 1400 + 2200 = 3600 ; 7 → 2450 + 1600 = 4050
           id: 'E3', skill: 'marahil', requires: ['khutuwat-hall', 'hall-jumla'],
-          prompt: <Q source={SRC}>في حلبة كارتينغ، الدورة بـ 350 DA للكبار و 200 DA للصغار. ركبت مجموعة 15 دورة ودفعت 3900 DA. كم دورة ركب الكبار؟</Q>,
+          prompt: <Q source={SRC}>في حلبة كارتينغ، الدورة بـ 350 دج للكبار و 200 دج للصغار. ركبت مجموعة 15 دورة ودفعت 3900 دج. كم دورة ركب الكبار؟</Q>,
           options: [M('$9$'), M('$4$'), M('$6$'), M('$7$')],
           correct: 2, cols: 2,
           explain: <MathText>{'$x + y = 15$ و $350x + 200y = 3900$ : $350x + 200(15 - x) = 3900$ أي $150x = 900$ ومنه $x = 6$ و $y = 9$ . تحقق: $2100 + 1800 = 3900$ .'}</MathText>,
@@ -76,11 +72,11 @@ export default function Module07Itqan() {
         {
           // x + y = 45 ; 400x + 600y = 19600 → (37 ; 8) ; 38 et 7 : 15200 + 4200 = 19400 ≠ 19600
           id: 'E4', skill: 'marahil', requires: ['tahaqquq-nas'],
-          prompt: <Q source={SRC}>رحلة مدرسية: 45 مشاركا بين تلاميذ (تذكرة 400 DA) ومرافقين (تذكرة 600 DA)، والمبلغ 19600 DA. وجد أنس «38 تلميذا و 7 مرافقين». ماذا يقول التحقق في النص؟</Q>,
+          prompt: <Q source={SRC}>رحلة مدرسية: 45 مشاركا بين تلاميذ (تذكرة 400 دج) ومرافقين (تذكرة 600 دج)، والمبلغ 19600 دج. وجد تلميذ «38 تلميذًا و 7 مرافقين». ماذا يقول التحقق في النص؟</Q>,
           options: [
-            M('جواب أنس صحيح لأنّ $38 + 7 = 45$ .'),
-            M('جواب أنس خاطئ: $400 \\times 38 + 600 \\times 7 = 19400$ وليس 19600 DA.'),
-            M('جواب أنس صحيح لأنّ 38 و 7 عددان طبيعيان.'),
+            M('جوابه صحيح لأنّ $38 + 7 = 45$ .'),
+            M('جوابه خاطئ: $400 \\times 38 + 600 \\times 7 = 19400$ وليس 19600 دج.'),
+            M('جوابه صحيح لأنّ 38 و 7 عددان طبيعيان.'),
           ],
           correct: 1, cols: 1,
           explain: <MathText>{'نتحقق في المعلومتين معًا: عدد المشاركين صحيح، لكن المبلغ $15200 + 4200 = 19400$ . الحل الصحيح 37 تلميذا و 8 مرافقين: $14800 + 4800 = 19600$ .'}</MathText>,

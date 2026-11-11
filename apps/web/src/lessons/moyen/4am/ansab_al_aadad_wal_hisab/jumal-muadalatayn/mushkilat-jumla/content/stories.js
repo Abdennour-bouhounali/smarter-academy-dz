@@ -6,7 +6,7 @@
  *
  *   M1 r1  نادي الرسم : 12 crayons à 70 / 20 دج, 440 دج → (4 ; 8) ; à la main, les lettres à porter, la ligne 50x = 200 TAPÉE avant d'être vue.
  *   M1 r2  مكتبة الحيّ : 2 كرّاسان + قلم 230 دج, كرّاس + 2 قلمان 190 دج → (90 ; 50) ; argent + argent, le jeton muet « 8 أيام », 3x = 270 tapé.
- *   M1 ⭐   معرض الكتاب : 26 livres à 130 / 90 دج, 2820 دج → (12 ; 14).
+ *   M1 ⭐   معرض الكتب : 26 livres à 130 / 90 دج, 2820 دج → (12 ; 14).
  *   M2 p1  دفتر التعاونية : 15 maillots à 1100 / 700 دج, 17700 دج → (18 ; −3) : les deux informations se vérifient, l'histoire REFUSE.
  *   Entraînements : r1 (1 ; 5) · r2 (45 ; 20) · p1 (7 ; −1). Libres : les ballons (9 ; 7), l'épicier (130 ; 85), la fraction (29/4 ; 11/4).
  * Aucun nombre de la مسألة (content/forbidden.js) n'est montré par un écran : content/stories.test.js (le balayage de `shownValues`).
@@ -69,13 +69,13 @@ export const R2_EASY = base({
   answer: { options: ['ثمن المسطرة 45 دج وثمن الممحاة 20 دج.', 'ثمن المسطرة 20 دج وثمن الممحاة 45 دج.', 'ثمن المسطرة 45 دج.'], correct: 0 },
 });
 
-/** ⭐ — معرض الكتاب (sans nombre en trop). */
+/** ⭐ — معرض الكتب (sans nombre en trop). */
 export const STAR = base({
   system: 'x+y=26|130x+90y=2820',
   named: true,
   unknowns: [{ id: 'x', noun: 'عدد الكتب بـ 130 دج', short: 'كتب 130 دج' }, { id: 'y', noun: 'عدد الكتب بـ 90 دج', short: 'كتب 90 دج' }],
   items: { x: { glyph: 'book', color: '#7C3AED' }, y: { glyph: 'book', color: '#0891B2' } },
-  story: 'في معرض الكتاب باع جناح الكتب المستعملة 26 كتابًا: كتبًا بـ 130 دج للكتاب وكتبًا بـ 90 دج للكتاب، وجمع 2820 دج. كم كتابًا باع من كل ثمن؟',
+  story: 'في معرض الكتب باع جناح الكتب المستعملة 26 كتابًا: كتبًا بـ 130 دج للكتاب وكتبًا بـ 90 دج للكتاب، وجمع 2820 دج. كم كتابًا باع من كل ثمن؟',
   facts: [{ quote: 'باع الجناح 26 كتابًا', kind: 'count' }, { quote: 'جمع الجناح 2820 دج', kind: 'money' }],
   chips: [{ value: '26', label: 'كتابًا' }, { value: '130', label: 'دج للكتاب' }, { value: '90', label: 'دج للكتاب' }, { value: '2820', label: 'دج المجموع' }],
   answer: { options: ['باع الجناح 12 كتابًا بـ 130 دج و 14 كتابًا بـ 90 دج.', 'باع الجناح 14 كتابًا بـ 130 دج و 12 كتابًا بـ 90 دج.', 'باع الجناح 12 كتابًا.'], correct: 0 },
@@ -151,7 +151,7 @@ export const PREDICT = { r2: [{ key: 'dearer', pos: 0 }], p1: [{ key: 'which', p
 const help = 'جرّب أوّلًا قصة أصغر، ثم عُد.';
 const choice = (id, label, props) => ({ id, label, props });
 
-export const M1_FREE = [choice('r1', 'نادي الرسم', R1), choice('r2', 'مكتبة الحيّ', R2), choice('star', 'معرض الكتاب', STAR), choice('balls', 'كرات الجمعية', BALLS), choice('grocer', 'بقّال الحيّ', GROCER)];
+export const M1_FREE = [choice('r1', 'نادي الرسم', R1), choice('r2', 'مكتبة الحيّ', R2), choice('star', 'معرض الكتب', STAR), choice('balls', 'كرات الجمعية', BALLS), choice('grocer', 'بقّال الحيّ', GROCER)];
 export const M2_FREE = [choice('p1', 'دفتر التعاونية', P1), choice('fraction', 'دفتر آخر', FRACTION), choice('r2', 'مكتبة الحيّ', R2)];
 
 export const M1_ROUNDS = [
@@ -170,8 +170,8 @@ export const M1_ROUNDS = [
     props: { ...R2, chains: 'second', predict: PREDICT.r2, lead: 'قصة مكتبة الحيّ: لا عدّ هنا، المعلومتان مبلغان.', mission: 'ما ثمن الكرّاس وما ثمن القلم؟ ترجم كل معلومة بمعادلة.' },
   },
   {
-    id: 'star', optional: true, title: 'تحدٍّ: معرض الكتاب', goal: [{ modelOk: true }, { discovered: true }], stars: { maxTrials: 2, predict: false },
-    props: { ...STAR, chains: 'none', lead: 'تحدٍّ: معرض الكتاب.', mission: 'كم كتابًا باع الجناح من كل ثمن؟ في محاولتين على الأكثر.' },
+    id: 'star', optional: true, title: 'تحدٍّ: معرض الكتب', goal: [{ modelOk: true }, { discovered: true }], stars: { maxTrials: 2, predict: false },
+    props: { ...STAR, chains: 'none', lead: 'تحدٍّ: معرض الكتب.', mission: 'كم كتابًا باع الجناح من كل ثمن؟ في محاولتين على الأكثر.' },
   },
   {
     id: 'free', free: true, title: 'قصص حرّة',
