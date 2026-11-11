@@ -263,6 +263,11 @@ the lessons that teach solving a first-degree equation and operating on both sid
 `nashr-tabsit` kept; `mutarajiha-ula` ← `mutabayinat-amaliyat` (3AM, operations on inequalities) + `muqarana-nisbiya` (2AM, comparing relative numbers),
 `muadala-ula` kept; `tarrid-mushkila` ← `muadalat-darajat-ula` (3AM, translating a situation into an equation) added before its three 4AM prerequisites.
 `jidaa-maadum` unchanged (`muadala-ula`, `tahlil-ibara`, verdict L2.9).
+Eighth (2026-11-11, unit 5 mission rollout, council verdict X6): `mafhum-jumla` ← `muadalat-darajat-ula` (3AM, solving a first-degree equation) +
+`qimat-ibara-harfiya` (3AM, the value of an expression with letters — testing a pair is substituting two values), `muadala-ula` kept;
+`hall-jabri` ← `musawiyat-amaliyat` (3AM, operating on both sides of an equality) + `qimat-ibara-harfiya`, its three 4AM prerequisites kept — the
+two skills its « أستعدّ » diagnoses; NOT `muadalat-darajat-ula` (`muadala-ula` already requires it). `mushkilat-jumla` unchanged. No `requires` link
+was added to the net: « راجع قبل أن تنطلق » reads the catalogue's `prerequisiteLessonCodes` (`mission/ReviseFirst.jsx`).
 
 **Database — imported, closed, ignored by Mastery V2.**
 
