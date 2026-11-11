@@ -1636,7 +1636,11 @@ real `<caption>`.
 
 **Verification:** vitest unit / manipulations / mission 4551 tests green; walks at the 3 sizes, every required round + the M1 ⭐ ★★★, 0 overflow /
 scroll / page error. `no-back-and-forth` reached module 1 only (seeded progress does not unlock later modules — module 2 was walked with
-`sequentialUnlock` temporarily false).
+`sequentialUnlock` temporarily false). At integration (after the `useModulePlayer` fix made the player-only steps really show), the scan over every
+module found LONE 3 (maarif 8, 10, 14) and OVER 1 (awazzif 17 at zoom 0.6) — fixed, player only: the reminder cards are kept whole on one screen,
+each worked example of maarif shares its screen with its ray and a new question on its bound (« هل 3/2 حلّ لـ 4x ≤ 6؟ », « هل 8 حلّ لـ
+−x/4 + 1 < −1؟ »), the « tamthil-bayani » card asks for the rule (its two notes in its body, its two rays side by side), the three answer rays of
+« مثّل بيانيا » (`GraphChoice.jsx`) in three columns. Rescan at 1366 / 1024 / 1920: LONE 0 · OVER 0; every awazzif screen at zoom ≥ 0.9.
 
 **Open (for the owner):** the PAGE strings `liveLine`, `legend`, `bracketDone` show maths / the bracket glyph in the wrong direction (the player
 avoids them); the coach bubble « ثبّت التمثيل » covers the « toward » buttons at 1024; the teacher view not walked; real-student timing.
