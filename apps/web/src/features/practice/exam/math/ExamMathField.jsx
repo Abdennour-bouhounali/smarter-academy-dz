@@ -14,7 +14,7 @@ import { installExamKeyboard } from './examKeyboard';
  * Chargé À LA DEMANDE (lazy) : MathLive n'entre que dans le lot des feuilles
  * d'examen (docs/architecture/BUNDLE_BOUNDARIES.md §6).
  */
-export default function ExamMathField({ value = '', onChange, onEnter, disabled = false, ariaLabel, placeholder = '', className = '', autoFocus = false, keyboard = null }) {
+export default function ExamMathField({ value = '', onChange, onEnter, disabled = false, ariaLabel, placeholder = '', className = '', autoFocus = false, keyboard = null, pad = false, onReady = null }) {
   const ref = useRef(null);
   const onChangeRef = useRef(onChange);
   const onEnterRef = useRef(onEnter);
@@ -25,7 +25,15 @@ export default function ExamMathField({ value = '', onChange, onEnter, disabled 
   useLayoutEffect(() => {
     const field = ref.current;
     if (!field) return undefined;
-    field.mathVirtualKeyboardPolicy = 'auto';
+    // Avec « لوحة الرموز » (pad) à côté du champ, le clavier flottant de MathLive reste fermé, et sur un
+    // écran tactile le clavier du SYSTÈME ne s'ouvre pas par-dessus (conseil, 2026-11-09) : seule la lettre.
+    field.mathVirtualKeyboardPolicy = pad ? 'manual' : 'auto';
+    if (pad && typeof window !== 'undefined' && window.matchMedia?.('(pointer: coarse)').matches) {
+      requestAnimationFrame(() => {
+        try { field.shadowRoot?.querySelector('textarea')?.setAttribute('inputmode', 'none'); } catch { /* rendu sans shadow DOM */ }
+      });
+    }
+    onReady?.(field);
     field.menuItems = [];
     field.smartMode = false;
     // « * » s'écrit « × » : c'est la notation du sujet algérien (pas « · »).
@@ -46,7 +54,7 @@ export default function ExamMathField({ value = '', onChange, onEnter, disabled 
     };
     let restore = () => {};
     // `keyboard` : une autre disposition nommée (le « مختبر التفكير » a la sienne) ; sinon celle de la copie.
-    const handleFocus = () => { restore = installExamKeyboard(keyboard ?? undefined); };
+    const handleFocus = () => { if (!pad) restore = installExamKeyboard(keyboard ?? undefined); };
     const handleBlur = () => restore();
     field.addEventListener('input', handleInput);
     field.addEventListener('keydown', handleKeyDown);
@@ -83,7 +91,7 @@ export default function ExamMathField({ value = '', onChange, onEnter, disabled 
       class={`sa-exam-mathfield ${className}`.trim()}
       aria-label={ariaLabel}
       placeholder={placeholder}
-      math-virtual-keyboard-policy="auto"
+      math-virtual-keyboard-policy={pad ? 'manual' : 'auto'}
       data-exam-mathfield
     />
   );

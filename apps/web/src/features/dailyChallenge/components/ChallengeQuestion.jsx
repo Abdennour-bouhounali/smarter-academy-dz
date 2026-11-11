@@ -62,11 +62,12 @@ export default function ChallengeQuestion({
           {current.learningPoint?.title && (
             <p className="mb-2 font-inter text-xs font-semibold text-indigo-600">{t('session.learningPoint')}: <MathLabel>{current.learningPoint.title}</MathLabel></p>
           )}
-          {statement?.content && (
+          {(statement?.content || statement?.formulas || statement?.table || statement?.figure) && (
             <div className="mb-4 rounded-2xl bg-slate-50 p-3 sm:p-4">
-              <ExerciseStatement content={statement.content} visual={statement.visual} figure={statement.figure} />
+              <ExerciseStatement content={statement.content} visual={statement.visual} formulas={statement.formulas} table={statement.table} figure={statement.figure} />
             </div>
           )}
+          {question?.lead && <p className="mb-1 text-lg text-slate-800"><RichText>{question.lead}</RichText></p>}
           <h2 ref={headingRef} tabIndex={-1} className="text-xl font-bold leading-relaxed text-slate-900 focus:outline-none sm:text-2xl">
             <RichText>{question?.statement ?? ''}</RichText>
           </h2>

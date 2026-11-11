@@ -425,7 +425,7 @@ the choke points: `MathText`'s plain segments; the knowledge provider (item
 options; `StepCard` / `MissionBrief` titles; `ModuleLayout` (module title,
 subtitle, breadcrumb, step list); `LessonIndex` (title, description, skills,
 module titles and descriptions, learning points, prerequisites, resources);
-and the catalogue surfaces (`LessonCard`, `LessonRow` — whose duration « 45 min » is an LTR island, else RTL prints « min 45 » —, `UnitPage`, `NextStepHero`, the
+and the catalogue surfaces (`LessonCard`, `LessonRow` — whose duration « 45 min » is an LTR island, else RTL prints « min 45 » —, `UnitPage`, the home (`CompassHomeSections`), the
 progression tree, practice hub/summary, the teacher's lesson memo, learning
 points and overview tabs). Lesson data stays clean: no invisible character is
 ever written into a lesson or the catalogue.
@@ -443,7 +443,7 @@ when a string carries a formula, the fallback meanwhile being `mathToPlain`. Whe
 each island becomes isolated Unicode (« x ⟼ ax + b », « (f(x₁) − f(x₂))/(x₁ − x₂) »). The kit does the same for a
 STRING prompt, batch-row label or option (`TapQuestion`, `BatchChoiceQuestion`, `ChoiceGrid`, `PredictionChips`).
 Applied in: `LessonIndex`, `ModuleLayout`, `LessonUI`, `KnowledgeBrick`, `KnowledgeSnapshot`, `KnowledgeMap`,
-`LinearKnowledgeView`, `UnitPage`, `UnitGroup`, `LessonCard`, `LessonRow`, `NextStepHero`, the progression tree, practice
+`LinearKnowledgeView`, `UnitPage`, `UnitGroup`, `LessonCard`, `LessonRow`, the home's `CompassHomeSections`, the progression tree, practice
 hub / summary, the teacher's memo, lessons, learning-points and overview tabs. **Never print a content string with
 `{bidi(x)}` in JSX** — write `<MathLabel>{x}</MathLabel>`. Guard: `apps/web/e2e/lesson-kit/math-raw-scan.mjs`
 (every visible text node outside `.katex`, every page of every 4AM lesson: 0 `$…$`, 0 `\command`, 0 `.katex-error`).

@@ -457,7 +457,7 @@ export default function TeacherPracticePlayer() {
                   <ExerciseStatement
                     content={exercise.statement?.content}
                     visual={exercise.statement?.visual}
-                    figure={exercise.statement?.figure}
+                    formulas={exercise.statement?.formulas} table={exercise.statement?.table} figure={exercise.statement?.figure}
                     support={exercise.statement?.support}
                   />
                 </section>

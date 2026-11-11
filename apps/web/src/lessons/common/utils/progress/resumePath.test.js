@@ -65,12 +65,11 @@ describe.skipIf(!fixtureLessonId)('getModulePath — le pont entre numéro et ro
 });
 
 describe('les appelants n’assemblent plus l’URL à la main', () => {
-  // L'accueil de l'espace délègue le rendu du héros à NextStepHero, qui
-  // reçoit la forme de getResumeLesson telle quelle (`step.resume`) : c'est
-  // là que « Continuer » lit son chemin.
+  // L'accueil de l'espace (mené par بوصلتي depuis le 2026-11-09) passe la forme de getResumeLesson
+  // telle quelle à CompassHomeSections (`resume`) : c'est là que « واصل » lit son chemin.
   const CALLERS = [
     ['pages/Courses.jsx', /continueCourse\.resumePath/],
-    ['features/home/components/NextStepHero.jsx', /resume\.resumePath/],
+    ['features/home/compass/CompassHomeSections.jsx', /resume\.resumePath/],
     ['components/student/StudentHomeBanner.jsx', /continueCourse\.resumePath/],
   ];
 

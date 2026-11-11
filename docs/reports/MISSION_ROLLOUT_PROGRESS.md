@@ -472,6 +472,19 @@ the screen re-settles at its own size — first visit and replay measure the sam
 exactly where the home's « ابدأ : … » / « واصل : … » button is (same grid, `md:grid-cols-[1.2fr_0.8fr]`; the section lost its `max-w-5xl`).
 Applies to every converted lesson (shared component). Probe: a Playwright script measuring `[data-mission-opening]` and `[data-mission-start]`.
 
+### The opening ON the home card — tried on `nashr-tabsit`, APPROVED and made the default (2026-11-11, owner)
+
+The fix above still left « شاهد البداية » at a different zoom than the home (1.35 vs 1.33) and the CTA ~320 px lower than « ابدأ : … », because the
+question bubble sat above it. Tried first on `nashr-tabsit` behind a flag; the owner approved the same day, so it is now the ONLY opening of
+`MissionHome` (flag and old branch deleted; every converted lesson and every future one gets it with no config). The opening reuses the home card's
+header and tool chips (`HomeHeader`, `ToolChips`; the tag line has a fixed 36 px height so the ⭐ badge never shifts it), puts the question bubble above
+the scene, moves the facts (with « ستجمع في الطريق: » / « مفاتيحك معك: ») under the CTA where the home has « التمارين », and « شاهد البداية » no
+longer refits — it keeps the home's zoom (`useFitRefit` is no longer called by `MissionHome`). Measured on nashr-tabsit at 2060×1067: same zoom (1.24),
+same card width, the CTA on the same pixel. Four lessons with a long statement or a tall scene (`jidhr-tarbii`, `muadalat-x-murabba`, `natiqa-ghayr-natiqa`, `aksiya-talis`) still re-zoomed, so the
+opening is given the home's natural height (measured at the click) and its scene shrinks into the room under the bubble. Verified on ALL 24 converted
+lessons × 1366×768 / 1024×768 / 1920×1080 with the new `apps/web/e2e/mission-opening-align.mjs`: same zoom, same card width, same button pixel, no
+overflow. Rule for future lessons: guide §4septies, `MissionHome` row — nothing to configure, and run that script after converting a lesson.
+
 ## Cross-lesson fix — « in the player » decided at module level (2026-11-11)
 
 Found by unit 4's lesson-1 builder: the player context (`InMissionPlayerContext`) is provided BELOW the module (`ContentModule › ModuleLayout ›

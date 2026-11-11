@@ -64,6 +64,21 @@ Since 2026-11-03 the pilot lesson `qasim-adad-tabii` tries the **student « focu
   `data-paging-pair`); the other cases are written into the lesson (guide §4septies « NO BACK-AND-FORTH »). Check: `e2e/no-back-and-forth.mjs`
   + a walk that answers; the lessons converted before the rule: `docs/reports/NO_BACK_AND_FORTH_PROMPT.md`.
 
+Since 2026-11-09 **« بوصلتي » (the year compass)** is being built (owner plan approved; contract `docs/architecture/YEAR_COMPASS.md`):
+a start check « جولة الانطلاق » scoped by the date and the class position (2 steps back in the net), a report « خريطة نقاطي »
+(positive bands, never evidence) and a plan « خطّتي ». P0 is done: ONE school calendar for the four grades and each grade's
+progression (week → catalogue lesson codes) in `packages/core/curriculum/dz/calendar/` (`schoolCalendar.js`, by path), checked by
+`check:year-calendar`. **The calendar is renewed EVERY school year** (owner): the check fails when the current year has none.
+P1 is done (4AM): `/espace/bawsala` + the home card; questions from the practice bank through the server-only
+`content/compass/index.generated.json` (`check:compass-index`), served WITHOUT key and graded by the server (`Domain/Compass`),
+bands recomputed server-side (`ItemBand` = `engine.js`, one fixture); never `learning_evidence`. Since the same day the student home `/espace`
+is LED by بوصلتي when it is open for the grade (`YEAR_COMPASS.md` §6bis: one card before the first check, then « مهمّة اليوم », the week,
+the bands, the year strip; the rest folded under « المزيد »). Every statement screen now renders `formulas` and `table` (`ExerciseStatement`).
+**Two owner standards since 2026-11-09, binding for EVERY question:** a typed answer is entered in its own shape
+(« الإجابة تُكتب في شكلها »: `templateFor()` + `TemplateInput`, « A = ax + [b] », a real fraction bar, printed units — applied to
+the « بوصلتي » check first, rollout planned), and **a formula never breaks across two lines** (`.katex{white-space:nowrap}`;
+widen the card instead). Contract: `EXERCISE_CONTRACT.md` § « قوالب الإجابة » and § « A formula never breaks ».
+
 Since 2026-10-13 the **learning net « شبكة الكفاءات »** covers the WHOLE cycle moyen (1AM–4AM): the official
 programme of the four years as data (224 items transcribed from `docs/Math-Moyenne-programme/`, stable ids
 `<g>am.m<مقطع>.r<nn>`), typed links between items (`requires` / `extends` with its added value / `consolidates` —

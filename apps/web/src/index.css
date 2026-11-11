@@ -774,6 +774,37 @@ html[data-sa-resizing] .sa-workspace-main {
 }
 .sa-exam-paper [data-answer-size='choice'] button[aria-pressed='true']::before { content: '✓'; color: #1e3a8a; border-color: #1e3a8a; }
 
+/* RÈGLE (propriétaire, 2026-11-09) : une expression mathématique ne se coupe JAMAIS sur deux lignes.
+   KaTeX autorise un retour après un « = » ou un « + » en ligne : interdit partout. Quand la place
+   manque, c'est le CONTENEUR qui s'élargit (carte plus large) ou qui défile dans sa boîte — jamais la
+   formule qui se casse. Seul `white-space` change : ne pas toucher aux polices de .katex (voir plus haut). */
+.katex { white-space: nowrap; }
+
+/* Le menu ☰ de MathLive est vidé (`menuItems = []`) : son bouton ne sert à rien, sur TOUT champ
+   de réponse (EXERCISE_CONTRACT.md « MathLive, every field »). */
+.sa-exam-mathfield::part(menu-toggle) { display: none; }
+
+/* « لوحة الرموز » (2026-11-09) : le champ à côté de la lettre écrit GRAND — les chiffres d'une
+   fraction se lisent de loin (propriétaire : « les nombres sont petits ») — et la lettre remplace
+   le bouton-clavier de MathLive. Le cadre est celui de la boîte qui l'entoure (RationalInput).
+   Deux classes : plus fort que `.sa-exam-paper math-field`, aussi sur la copie d'examen. */
+math-field.sa-exam-mathfield.sa-pad-mathfield {
+  display: block;
+  width: 100%;
+  min-height: 3.5rem;
+  padding: 0.35rem 0.75rem;
+  border: 0;
+  background: transparent;
+  color: #1e1b4b;
+  font-size: 1.9rem;
+  --caret-color: #4f46e5;
+  --selection-background-color: #e0e7ff;
+  --contains-highlight-background-color: transparent;
+  --placeholder-color: #94a3b8;
+}
+math-field.sa-exam-mathfield.sa-pad-mathfield:focus-within { outline: none; }
+math-field.sa-exam-mathfield.sa-pad-mathfield::part(virtual-keyboard-toggle) { display: none; }
+
 /* MathLive sur la feuille (2026-10-06) : la formule s'écrit à l'encre, sur le
    trait de la copie, sans cadre de plateforme. */
 .sa-exam-paper math-field {

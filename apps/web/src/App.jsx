@@ -143,6 +143,8 @@ const PracticeSummary = lazy(() => import('./pages/student/practice/PracticeSumm
 const AnswerReviewPage = lazy(() => import('./pages/student/practice/AnswerReviewPage'));
 // « التحدّي اليومي » : l'écran du jour, l'historique, la revue d'un jour.
 const DailyChallengePage = lazy(() => import('./pages/student/challenge/DailyChallengePage'));
+// « بوصلتي » (YEAR_COMPASS.md) : la jauge, le rapport, la semaine — un lot paresseux (réseau + calendrier).
+const CompassPage = lazy(() => import('./pages/student/CompassPage'));
 const ChallengeHistoryPage = lazy(() => import('./pages/student/challenge/ChallengeHistoryPage'));
 const ChallengeReviewPage = lazy(() => import('./pages/student/challenge/ChallengeReviewPage'));
 const TeacherChallengeDisplay = lazy(() => import('./pages/teacher/ChallengeDisplayPage'));
@@ -390,6 +392,8 @@ function AppRoutes() {
           <Route path="tafkir" element={<ThinkingLadderPage />} />
           <Route path="tafkir/n/:number" element={<ThinkingNumberPage />} />
           <Route path="tafkir/:challengeId" element={<ThinkingChallengePage />} />
+          {/* « بوصلتي » : la jauge de départ et sa خطّة (YEAR_COMPASS.md). Le serveur sert et corrige. */}
+          <Route path="bawsala" element={<CompassPage />} />
           </Route>
           {/* « التحدّي اليومي » : le serveur tient la tentative ; ces
               routes ne font que l'afficher (DAILY_CHALLENGE.md). */}

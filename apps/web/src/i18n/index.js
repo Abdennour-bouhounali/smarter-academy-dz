@@ -78,6 +78,9 @@ const ON_DEMAND_NAMESPACES = {
   // « مختبر التفكير » : l'échelle des défis, l'espace de travail, la relecture (THINKING_LAB.md).
   // Lu seulement sous la frontière paresseuse de /espace/tafkir ; le libellé de navigation vit dans `nav`.
   thinking: () => import('./locales/ar/thinking.json'),
+  // « بوصلتي » : la jauge de départ, le rapport et la semaine (YEAR_COMPASS.md). Lu seulement sous la
+  // frontière paresseuse de /espace/bawsala ; la carte de l'accueil lit `student.compassCard`.
+  compass: () => import('./locales/ar/compass.json'),
 };
 
 const onDemandBackend = {

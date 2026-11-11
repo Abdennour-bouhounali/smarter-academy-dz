@@ -187,7 +187,7 @@ export default function RefuelStation({ context = 'base', hearts, maxHearts, aud
               )}
               {statement?.content && (
                 <div className="mb-4 rounded-2xl bg-slate-50 p-3 sm:p-4">
-                  <ExerciseStatement content={statement.content} visual={statement.visual} figure={statement.figure} />
+                  <ExerciseStatement content={statement.content} visual={statement.visual} formulas={statement.formulas} table={statement.table} figure={statement.figure} />
                 </div>
               )}
               <h2 ref={headingRef} tabIndex={-1} className="text-xl font-bold leading-relaxed focus:outline-none sm:text-2xl">
