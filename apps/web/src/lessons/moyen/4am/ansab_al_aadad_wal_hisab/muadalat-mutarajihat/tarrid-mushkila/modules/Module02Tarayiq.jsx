@@ -1,29 +1,29 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PeerSheet } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation } from '../../../../../../common/manipulations';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
 import { MethodSteps, TextbookExercise } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { METHOD_MODELLING, RACE } from '../content/textbook';
+import { METHOD_MODELLING, RACE, FAMILY, AFTER } from '../content/textbook';
 import { EX } from '../content/exercises';
-import { SquareTriangleFigure } from '../components/Figures';
+import { M2_ROUNDS } from '../content/race';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
+import { HexSquareFigure } from '../components/Figures';
 
 /**
- * Module 2 — طرائق p. 49 : « ترييض مشكلة ».
- *   1. la solution du manuel, ligne à ligne (أ ب جـ التحقق) ;
- *   2. la brique « tarrid-tariqa » : à quelle étape appartient chaque geste ;
- *   3. دوري الآن 2 — la même طريقة avec une MÉTRAJIHA (le carré et le triangle, figure
- *      redessinée), puis la brique « tarrid-mutarajiha » ;
- *   4. la même course sur une question dont la solution est NÉGATIVE (36 + x = 3(14 + x)
- *      ⇔ x = −3) : l'élève voit que les colonnes ne se rejoignent jamais sur la règle —
- *      le laboratoire en un seul niveau (`levels={false}`, un exemple travaillé) ;
- *   5. la brique « tahaqquq-waqi », puis une solution à refuser (longueur négative).
- * Rétrofit 2026-10-15 : les trois briques (tarrid-tariqa, tarrid-mutarajiha, tahaqquq-waqi) s'affichent APRÈS la réponse de leur étape.
- * La leçon a `knowledgeMap: true` : pas de module de formalisation séparé. LP : P1, P2.
+ * Module 2 — طرائق : « ترييض مشكلة », écrite avec les nombres de la plateforme (la famille de la manche 1).
+ *   1. la solution, ligne à ligne (أ ب جـ التحقق) ; 2. la brique `tarrid-tariqa` ; 3. une métrajiha (le hexagone et le carré, figure redessinée),
+ *   puis `tarrid-mutarajiha` ; 4. la course dont la solution est NÉGATIVE (deux frères : 2x + 24 = 18 ⇔ x = −3) — le lecteur joue la manche
+ *   `p1` (la question « ماذا نستنتج؟ » est la suite de la manche) ; 5. la brique `tahaqquq-waqi`, puis une solution à refuser (longueur négative) ;
+ *   6. « ورقة شيماء » (`PeerSheet`) : une solution gardée alors que la situation la refuse. LP : P1, P2.
+ * Aucune clé de réponse gardée en plus : la ورقة (`peer:m2-shaymaa`) et les étoiles de `lab-race-m2` portent la trace.
  */
 const STEP_OPTIONS = ['أ) نسمّي', 'ب) نعبّر', 'جـ) نحلّ', 'التحقق'];
+const { father, children, years } = FAMILY;
 
 export default function Module02Tarayiq() {
   const [read, setRead] = useState(false);
@@ -31,6 +31,8 @@ export default function Module02Tarayiq() {
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
+  const [q5, setQ5] = useState(false);
+  const [won, setWon] = useState({});
 
   return (
     <ContentModule
@@ -42,12 +44,21 @@ export default function Module02Tarayiq() {
       moduleSubtitle="نسمّي، نعبّر، نحلّ، نتحقّق"
       estimatedTime="13 دقيقة"
       brief={{
-        tag: 'طرائق — الكتاب ص 49', title: METHOD_MODELLING.title, tone: 'violet',
-        body: <p>في المحور السابق بنيتَ المعادلة بيدك ووجدتَ الحل في السباق. الكتاب يكتب ذلك في أربع خطوات، ثم يطبّقها على متراجحة.</p>,
+        tag: 'طرائق', title: METHOD_MODELLING.title, tone: 'violet',
+        body: <p>في المحور السابق بنيتَ المعادلة بيدك ووجدتَ الحل في السباق. هنا نكتب ذلك في أربع خطوات، ثم نطبّقها على متراجحة.</p>,
       }}
+      intro={(
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="lab-race-m2" rounds={M2_ROUNDS} icon="🧒" freeIcon="🏁"
+              onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))} />
+          )}
+          page={null}
+        />
+      )}
       steps={[
         {
-          num: 1, title: 'حلّ الكتاب سطرًا سطرًا', subtitle: 'اقرأ السطر، وحاول توقّع التالي قبل أن تكشفه', done: read,
+          num: 1, title: 'الحلّ سطرًا سطرًا', subtitle: 'اقرأ السطر، وحاول توقّع التالي قبل أن تكشفه', done: read,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tarrid-namdhaja" variant="rappel" compact />
@@ -62,14 +73,14 @@ export default function Module02Tarayiq() {
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">إلى أيّ خطوة ينتمي كل سطر؟</p>}
                 rows={[
-                  { id: 'eq', label: <MathText>{'$36 + x = (4 + x) + (6 + x) + (8 + x)$'}</MathText>, options: STEP_OPTIONS, correct: 1, correction: <MathText>{'نعبّر عن الوضعية بمعادلة بدلالة $x$ .'}</MathText> },
-                  { id: 'sol', label: <MathText>{'$2x = 18$ أي $x = 9$'}</MathText>, options: STEP_OPTIONS, correct: 2, correction: 'نحلّ المعادلة التي وجدناها.' },
-                  { id: 'chk', label: <MathText>{'$13 + 15 + 17 = 45$'}</MathText>, options: STEP_OPTIONS, correct: 3, correction: 'نعوّض الحل في نص المشكلة: الأعمار بعد 9 سنوات.' },
+                  { id: 'eq', label: <MathText>{`$${father} + x = ${children.map((c) => `(${c} + x)`).join(' + ')}$`}</MathText>, options: STEP_OPTIONS, correct: 1, correction: <MathText>{'نعبّر عن الوضعية بمعادلة بدلالة $x$ .'}</MathText> },
+                  { id: 'sol', label: <MathText>{`$${AFTER.kids - 1}x = ${father - AFTER.constant}$ أي $x = ${years}$`}</MathText>, options: STEP_OPTIONS, correct: 2, correction: 'نحلّ المعادلة التي وجدناها.' },
+                  { id: 'chk', label: <MathText>{`$${AFTER.children.join(' + ')} = ${AFTER.sum}$`}</MathText>, options: STEP_OPTIONS, correct: 3, correction: `نعوّض الحل في نص المشكلة: الأعمار بعد ${years} سنوات.` },
                   { id: 'nm', label: 'عدد السنوات التي يكون بعدها عمر الأب هو مجموع أعمار أبنائه', options: STEP_OPTIONS, correct: 0, correction: <MathText>{'نسمّي المجهول: نقول بالكلمات ماذا يمثّل $x$ .'}</MathText> },
                 ]}
                 feedback={({ allRight }) => (
                   <Feedback tone={allRight ? 'ok' : 'ko'}>
-                    {allRight ? 'تمامًا: نسمّي، نعبّر، نحلّ، ثم نتحقّق في النص نفسه.' : 'أعد قراءة الأسطر أ) ب) جـ) والتحقق في حلّ الكتاب.'}
+                    {allRight ? 'تمامًا: نسمّي، نعبّر، نحلّ، ثم نتحقّق في النص نفسه.' : 'لكل سطر ما يميّزه: كلمات تسمّي المجهول، معادلة، حلّ، ثم تعويض في النص.'}
                   </Feedback>
                 )}
                 onAnswered={() => setQ1(true)}
@@ -79,41 +90,57 @@ export default function Module02Tarayiq() {
           ),
         },
         {
-          num: 3, title: 'دوري الآن 2 — مشكلة تترجمها متراجحة', done: q2,
+          num: 3, title: 'مشكلة تترجمها متراجحة', done: q2,
           content: (
             <div className="space-y-3">
-              <SquareTriangleFigure />
+              <HexSquareFigure />
               <TextbookExercise exercise={EX['now-49-2']} requires={['tarrid-tariqa', 'hal-mutarajiha']} onAnswered={() => setQ2(true)} />
+              {q2 && <KnowledgeBrick id="tarrid-mutarajiha" lead="ما فعلته في هذا التمرين:" />}
             </div>
           ),
         },
         {
-          num: 4, title: 'سباق جديد: هل يلتقي الطرفان؟', subtitle: 'ابنِ النموذج، ثم مدّد x وراقب', done: q3,
+          needsRound: { id: 'p1', label: 'سباق بلا لقاء', icon: '🧒', won: Boolean(won.p1) },
+          num: 4, title: 'سباق جديد: هل يلتقي الطرفان؟', subtitle: 'ابنِ النموذج، ثم مدّد x وراقب', done: PlayerDone(won.p1, q3),
           content: (
             <div className="space-y-3">
-              <Manipulation
-                type="growth-race"
-                levels={false}
-                theme="ages"
-                left={RACE.past.left}
-                right={RACE.past.right}
-                goal="equal"
-                title="أب عمره 36 سنة وابنه 14 سنة: بعد كم سنة يكون عمر الأب ثلاثة أضعاف عمر ابنه؟"
+              <PlayerSwitch
+                player={(
+                  <p data-evidence="checkpoint" data-tried={won.p1 ? 'true' : 'false'}
+                    className={`rounded-xl border-2 px-3 py-2 text-sm ${won.p1 ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+                    {won.p1
+                      ? <MathText>{'سباقك: $11 + x + 13 + x = 18$ أي $2x + 24 = 18$ و $x = -3$ : كان ذلك منذ 3 سنوات ($8 + 10 = 18$) ولن يحدث بعد اليوم.'}</MathText>
+                      : 'اربح جولة «سباق بلا لقاء» لتظهر هنا نتيجة سباقك.'}
+                  </p>
+                )}
+                page={(
+                  <>
+                    <Manipulation
+                      type="growth-race"
+                      levels={false}
+                      theme="ages"
+                      left={RACE.past.left}
+                      right={RACE.past.right}
+                      goal="equal"
+                      title="أخوان عمراهما 11 و 13 سنة: بعد كم سنة يصير مجموع عمريهما 18؟"
+                    />
+                    <TapQuestion
+                      prompt={<span>المعادلة <MathText>{'$11 + x + 13 + x = 18$'}</MathText> حلّها <MathText>{'$x = -3$'}</MathText>. ماذا نستنتج؟</span>}
+                      options={[
+                        'يكون ذلك بعد 3 سنوات.',
+                        'لن يحدث ذلك بعد اليوم: كان مجموع عمريهما 18 منذ 3 سنوات.',
+                        'المعادلة خاطئة، لأن الحل لا يكون سالبًا أبدًا.',
+                      ]}
+                      correct={1}
+                      cols={1}
+                      requires={['tarrid-tariqa']}
+                      explain={<MathText>{'منذ 3 سنوات كان عمراهما 8 و 10: $8 + 10 = 18$ . أما «بعد $x$ سنة» فيتطلّب $x \\geq 0$ : ليس للسؤال حلّ في المستقبل.'}</MathText>}
+                      onAnswered={() => setQ3(true)}
+                    />
+                  </>
+                )}
               />
-              <TapQuestion
-                prompt={<span>المعادلة <MathText>{'$36 + x = 3(14 + x)$'}</MathText> حلّها <MathText>{'$x = -3$'}</MathText>. ماذا نستنتج؟</span>}
-                options={[
-                  'يكون ذلك بعد 3 سنوات.',
-                  'لن يحدث ذلك بعد اليوم: كان عمر الأب ثلاثة أضعاف عمر ابنه منذ 3 سنوات.',
-                  'المعادلة خاطئة، لأن الحل لا يكون سالبًا أبدًا.',
-                ]}
-                correct={1}
-                cols={1}
-                requires={['tarrid-tariqa']}
-                explain={<MathText>{'منذ 3 سنوات كان الأب 33 والابن 11: $33 = 3 \\times 11$ . أما «بعد $x$ سنة» فيتطلّب $x \\geq 0$ : ليس للسؤال حلّ في المستقبل. التحقق يقول لنا متى يجيب الحل عن السؤال.'}</MathText>}
-                onAnswered={() => setQ3(true)}
-              />
-              {q3 && <KnowledgeBrick id="tarrid-mutarajiha" lead="ما فعلته في دوري الآن 2:" />}
+              {PlayerDone(won.p1, q3) && <KnowledgeBrick id="tahaqquq-waqi" lead="قبل أن نكتب الجواب، نسأل: هل يلائم هذا الحل الوضعية؟" />}
             </div>
           ),
         },
@@ -135,12 +162,20 @@ export default function Module02Tarayiq() {
                 explain={<MathText>{'الجداء معدوم: $x = -5$ أو $x = 3$ ، لكن $x$ عرض، فهو موجب: العرض 3cm والطول 5cm ، و $3 \\times 5 = 15$ .'}</MathText>}
                 onAnswered={() => setQ4(true)}
               />
-              {q4 && <KnowledgeBrick id="tahaqquq-waqi" lead="قبل أن نكتب الجواب، نسأل: هل يلائم هذا الحل الوضعية؟" />}
             </div>
           ),
+        },
+        {
+          num: 6, title: 'ورقة شيماء', subtitle: 'ابحث عن الخطأ في ورقة زميلة وأصلحه', done: q5,
+          content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={() => setQ5(true)} />,
         },
       ]}
       footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />
   );
+}
+
+/** Le lecteur ouvre l'étape par la manche gagnée ; la page, par la réponse de la question. */
+function PlayerDone(roundWon, answered) {
+  return Boolean(roundWon || answered);
 }
