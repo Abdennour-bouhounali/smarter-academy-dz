@@ -21,6 +21,9 @@
  *             { discovered: true }                  — (square-tiling, 2026-11-10) la DÉCOUVERTE du labo atteinte, selon SON mode : le labo la juge
  *                                                     (logic › discoveryReady : deux pavages justes et un refusé ; le plus grand k et un contraste)
  *                                                     et l'annonce par onTrial { tk: 'discovered' }
+ *             { modelOk: true }                     — (growth-race, 2026-11-11) un MODÈLE (la mise en équation de la situation) vérifié JUSTE ;
+ *                                                     événement onTrial { tk: 'model', ok, key?, free? } — jamais un essai de x : un modèle refusé
+ *                                                     compte comme un RATÉ (missesOf) et le même jeu de cartes vérifié deux fois (`key`) compte une fois
  * Un verdict peut porter `free: true` (square-tiling : le PREMIER refus d'une manche fait partie de la découverte) : il compte pour les buts,
  * jamais comme un essai de l'étoile « peu d'essais ». Une manche peut porter `helpAfterRefusals: n` : n refus (verdicts non justes) suffisent
  * à proposer la manche `easier` (conseil 2026-11-10 : trois pavages refusés de suite = l'élève tourne en rond).
@@ -29,7 +32,7 @@
  * Ce que la manche a VU (`log`) : { verdicts: [{ groups, exact }], checkpoints: { [id]: true }, answers: [{ ok, tries, revealed }] }
  */
 
-export const emptyLog = () => ({ verdicts: [], checkpoints: {}, answers: [], predictions: [], brackets: [], discovered: false });
+export const emptyLog = () => ({ verdicts: [], checkpoints: {}, answers: [], predictions: [], brackets: [], discovered: false, models: [] });
 
 /** Le journal d'une manche après un événement du labo (onVerdict → 'verdict', onTrial → les événements LabCheckpoint). */
 export function logEvent(log, kind, ev) {
@@ -39,10 +42,17 @@ export function logEvent(log, kind, ev) {
   // 2026-11-10 : un but ne doit pas rester atteint par des essais que le labo ne montre plus). `groups` : seulement les verdicts de ce groupe
   // (une carte) ; sinon tous les verdicts, les encadrements et la découverte. Les prédictions et les questions déjà répondues restent.
   if (ev?.tk === 'retry') {
+    if (ev.models) return { ...log, verdicts: [], brackets: [], discovered: false, models: [] };
     if (ev.groups != null) return { ...log, verdicts: log.verdicts.filter((v) => v.groups !== Number(ev.groups)) };
     return { ...log, verdicts: [], brackets: [], discovered: false };
   }
   if (kind === 'verdict') return { ...log, verdicts: [...log.verdicts, { groups: Number(ev.groups), exact: Boolean(ev.exact), ...(ev.free ? { free: true } : {}) }] };
+  // une vérification de MODÈLE (growth-race) : le même jeu de cartes (`key`) vérifié deux fois ne compte qu'une fois
+  if (ev?.tk === 'model') {
+    const models = log.models ?? [];
+    if (ev.key != null && models.some((m) => m.key === ev.key)) return log;
+    return { ...log, models: [...models, { ok: Boolean(ev.ok), ...(ev.key != null ? { key: ev.key } : {}), ...(ev.free ? { free: true } : {}) }] };
+  }
   // la découverte du labo atteinte (square-tiling : le labo la juge selon son mode)
   if (ev?.tk === 'discovered') return { ...log, discovered: true };
   if (ev?.tk === 'checkpoint') return { ...log, answers: [...log.answers, { ok: Boolean(ev.ok), tries: ev.tries ?? 1, revealed: Boolean(ev.revealed) }] };
@@ -74,6 +84,7 @@ export function conditionMet(cond, log) {
   if (cond.bracketed != null) return (log.brackets ?? []).some((b) => b.scale === Number(cond.bracketed));
   if (cond.resists) return (log.brackets ?? []).some((b) => b.resisting);
   if (cond.discovered) return Boolean(log.discovered);
+  if (cond.modelOk) return (log.models ?? []).some((m) => m.ok);
   if (cond.solvedAll != null) { const seen = exactGroups(log); return Array.from({ length: Number(cond.solvedAll) }, (_, i) => i).every((i) => seen.has(i)); }
   return false;
 }
@@ -129,7 +140,9 @@ export function missesOf(log) {
   // par essai — l'essai faux PUIS le bon comptaient deux ratés pour une seule question (vu dans la synthèse de l'unité 9, 2026-11-10 : la carte
   // « جرّب أصغر » couvrait le labo après UNE réponse fausse)
   const answers = (log.answers ?? []).filter((a) => (a.ok && a.tries > 1) || a.revealed).length;
-  return preds + answers;
+  // un modèle REFUSÉ (hors gratuit) est un raté ; l'événement ne vient qu'une fois par jeu de cartes (`key`)
+  const models = (log.models ?? []).filter((m) => !m.ok && !m.free).length;
+  return preds + answers + models;
 }
 export function needsHelp(round, log) {
   if (!round?.easier || round.free || roundWon(round, log)) return false;
