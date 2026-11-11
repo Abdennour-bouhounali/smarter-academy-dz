@@ -282,15 +282,23 @@ function FillAnswer({ q, settled, revealed, onAnswer, k }) {
   );
 }
 
+/** Une tuile de texte brut (opt-in) : `{ text }`. */
+const isTextTile = (t) => t != null && typeof t === 'object' && typeof t.text === 'string';
+
 /**
  * `build` : l'élève BÂTIT l'égalité — chaque emplacement porte le SENS de son nombre (« اللاعبون = الفرق × في كل فريق + خارج
  * الفرق ») ; un toucher sur une tuile la pose dans le premier emplacement vide, un toucher sur un emplacement la rend.
  */
-function BuildAnswer({ q, settled, revealed, onAnswer, k }) {
+export function BuildAnswer({ q, settled, revealed, onAnswer, k }) {
+  // `{ text: 'أو' }` (2026-11-11, jidaa-maadum — verdict L2.3) : une tuile de TEXTE brut (un mot arabe, le connecteur « أو ») ; sa valeur
+  // comparée est la chaîne `text`. Une tuile nombre ou chaîne garde le chemin d'avant (valeur = la tuile, rendue en maths).
+  const tileValue = (t) => (isTextTile(t) ? t.text : t);
+  const textValues = new Set(q.tiles.filter(isTextTile).map((t) => t.text));
+  const isText = (v) => textValues.has(v);
   // index de tuile par emplacement ; `q.preset` (2026-11-10) : des tuiles déjà posées au départ (« AB′/AB » fixé à gauche) — l'élève peut les reprendre
-  const [placed, setPlaced] = useState(() => q.slots.map((_, i) => { const v = q.preset?.[i]; const ti = v == null ? -1 : q.tiles.indexOf(v); return ti >= 0 ? ti : null; }));
+  const [placed, setPlaced] = useState(() => q.slots.map((_, i) => { const v = q.preset?.[i]; const ti = v == null ? -1 : q.tiles.findIndex((t) => tileValue(t) === v); return ti >= 0 ? ti : null; }));
   const used = new Set(placed.filter((x) => x != null));
-  const values = revealed ? q.expected : placed.map((ti) => (ti == null ? null : q.tiles[ti]));
+  const values = revealed ? q.expected : placed.map((ti) => (ti == null ? null : tileValue(q.tiles[ti])));
   const put = (ti) => setPlaced((pl) => { const i = pl.indexOf(null); return i < 0 ? pl : pl.map((v, j) => (j === i ? ti : v)); });
   const take = (si) => setPlaced((pl) => pl.map((v, j) => (j === si ? null : v)));
   // `q.ops` : les signes entre les emplacements (défaut « n = g × q + r ») — p. ex. ['=', '+'] pour « grand = petit + reste » (pgcd-differences)
@@ -307,7 +315,7 @@ function BuildAnswer({ q, settled, revealed, onAnswer, k }) {
               className={`flex w-[4.5rem] flex-col items-center gap-1 ${ring} rounded-xl`}>
               <span className={`flex h-14 w-full items-center justify-center rounded-2xl border-2 border-dashed text-2xl font-black tabular-nums ${values[si] == null ? 'border-slate-300 bg-slate-50 text-slate-300' : 'border-indigo-500 bg-indigo-50 text-indigo-950'}`}>
                 {/* `q.render` (2026-11-10, shadow-meet) : une tuile écrite dans SA forme (« BC/BE » en vraie fraction) ; la valeur comparée reste la tuile */}
-                {values[si] == null ? '▢' : q.render ? <span className="pointer-events-none">{q.render(values[si])}</span> : values[si]}
+                {values[si] == null ? '▢' : isText(values[si]) ? <span className="pointer-events-none text-xl" dir="rtl" lang="ar" data-lab-checkpoint-text>{values[si]}</span> : q.render ? <span className="pointer-events-none">{q.render(values[si])}</span> : values[si]}
               </span>
               <span className="text-center text-xs font-bold leading-tight text-slate-600" dir="rtl">{label}</span>
             </button>
@@ -321,12 +329,12 @@ function BuildAnswer({ q, settled, revealed, onAnswer, k }) {
             {q.tiles.map((n, ti) => (
               <button key={ti} type="button" disabled={used.has(ti)} onClick={() => put(ti)} data-lab-checkpoint-tile={ti}
                 className={`h-14 min-w-[3.5rem] rounded-2xl border-2 border-amber-300 bg-amber-50 px-3 text-2xl font-black tabular-nums text-amber-950 shadow-[0_3px_0_0_#FCD34D] disabled:opacity-25 ${ring}`}>
-                {q.render ? <span className="pointer-events-none">{q.render(n)}</span> : n}
+                {isTextTile(n) ? <span className="pointer-events-none text-xl" dir="rtl" lang="ar" data-lab-checkpoint-text>{n.text}</span> : q.render ? <span className="pointer-events-none">{q.render(n)}</span> : n}
               </button>
             ))}
           </div>
           <div className="flex justify-center">
-            <button type="button" disabled={placed.some((v) => v == null)} onClick={() => onAnswer(placed.map((ti) => q.tiles[ti]))} data-lab-checkpoint-check
+            <button type="button" disabled={placed.some((v) => v == null)} onClick={() => onAnswer(placed.map((ti) => tileValue(q.tiles[ti])))} data-lab-checkpoint-check
               className={`inline-flex min-h-[56px] items-center gap-2 rounded-2xl border-2 border-sky-700 bg-sky-700 px-8 text-xl font-black text-white shadow-[0_4px_0_0_#0369A1] disabled:border-slate-300 disabled:bg-slate-200 disabled:text-slate-500 disabled:shadow-none ${ring}`}>
               {k('check')}
             </button>
