@@ -566,7 +566,9 @@ off as the textbook:
 6. **Going live:** an imported exercise is born `published` when its lesson is
    published (`draft` otherwise), and a `draft` one under a published lesson is
    published at the next sync (owner, 2026-11-11); `hidden` / `archived` stay
-   admin acts and are kept. The server caches `active.json` and the
+   admin acts and are kept. Changing a LESSON's state in the admin gives that
+   state to all its exercises too (« publish the lesson, everything is
+   published »); one exercise can then be hidden alone. The server caches `active.json` and the
    exercise index (`practice.cache_ttl`, 1 h): the deploy runs
    `cache:clear`; locally run `php artisan cache:clear` after adding files.
 

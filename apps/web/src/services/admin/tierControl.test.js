@@ -29,8 +29,9 @@ describe('le contrôle du palier dans l’administration', () => {
   it('le contrôle est branché partout où le palier se voyait', () => {
     for (const page of [
       'src/pages/admin/content/Lessons.jsx',
+      // Le palier d'UN exercice se règle sur la fiche de sa leçon : la page
+      // « التمارين » est organisée par leçon depuis le 2026-11-11.
       'src/pages/admin/content/LessonDetail.jsx',
-      'src/pages/admin/content/Exercises.jsx',
     ]) {
       expect(read(page), page).toContain('TierControl');
     }

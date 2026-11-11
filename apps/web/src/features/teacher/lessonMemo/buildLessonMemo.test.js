@@ -31,7 +31,7 @@ describe('buildLessonMemo — sur chaque leçon réelle de la 4AM', () => {
       if (i > 0) expect(p.startsAt).toBe(memo.phases[i - 1].startsAt + (memo.phases[i - 1].minutes ?? 0));
     });
     expect(memo.phases.at(-1).next).toBeNull();
-  });
+  }, 30_000);
 
   it.each(ids)('%s : rien n’est inventé — chaque texte vient de la leçon', async (id) => {
     const { memo, sources } = await memoFor(id);

@@ -735,12 +735,11 @@ Route::prefix('v1')->group(function () {
             Route::get('/content/lessons/{code}', [AdminContentController::class, 'lesson']);
             // Vues transversales : la vue par leçon oblige à savoir OÙ
             // chercher, ce que « tous les modules masqués » n'a pas.
-            Route::get('/content/modules', [AdminContentController::class, 'modules']);
             Route::get('/content/exercises', [AdminContentController::class, 'exercises']);
-            // Un seul point d'entrée pour les trois niveaux de contenu :
-            // {type} vaut lesson | module | exercise.
+            // Un seul point d'entrée : {type} vaut lesson | exercise. Pas de
+            // module — il n'a pas d'état propre, il suit sa leçon (2026-11-11).
             Route::patch('/content/{type}/{id}/status', [AdminContentController::class, 'changeStatus'])
-                ->whereIn('type', ['lesson', 'module', 'exercise'])
+                ->whereIn('type', ['lesson', 'exercise'])
                 ->whereNumber('id');
             // Le PALIER commercial, sur une route distincte de la
             // publication : deux dimensions indépendantes. Pas de module —
@@ -753,7 +752,7 @@ Route::prefix('v1')->group(function () {
             // sont recopiées à l'identique : ce qui est interdit à l'unité
             // (le palier d'un module) reste interdit en lot.
             Route::post('/content/{type}/bulk-status', [AdminContentController::class, 'bulkChangeStatus'])
-                ->whereIn('type', ['lesson', 'module', 'exercise']);
+                ->whereIn('type', ['lesson', 'exercise']);
             Route::post('/content/{type}/bulk-tier', [AdminContentController::class, 'bulkChangeTier'])
                 ->whereIn('type', ['lesson', 'exercise']);
             // La banque d'exercices d'UNE leçon, d'un seul geste ; chaque

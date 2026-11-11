@@ -614,6 +614,9 @@
     "emptyTitle": "لا يوجد تمرين",
     "emptyHint": "لا تمرين يطابق هذه التصفية.",
     "subtitleLong": "سحب تمرين يُخفيه من قائمة التلميذ — دون مسح أيّ محاولة مسجَّلة من قبل.",
+    "subtitleByLesson": "اختر درساً ثم غيّر حالة كل تمارينه دفعة واحدة. لإخفاء تمرين واحد افتح صفحة الدرس. لا تُمسح أيّ محاولة مسجَّلة.",
+    "searchLessonPlaceholder": "البحث عن درس…",
+    "columnCount": "عدد التمارين",
     "columnLevel": "المستوى",
     "columnQuestions": "الأسئلة",
     "columnTier": "الوصول",
@@ -1396,7 +1399,7 @@
     "withdraw": "سحب",
     "withdrawOneMessage": "لن يعود للتلاميذ وصول إليه.",
     "withoutSubscription": "بلا اشتراك",
-    "cascadeModules": "كل محاور هذا الدرس ستأخذ الحالة نفسها: «{{status}}». يمكن بعد ذلك تغيير حالة أي محور وحده.",
+    "cascadeModules": "كل محاور هذا الدرس وكل تمارينه ستأخذ الحالة نفسها: «{{status}}».",
     "cascadeSkipped": "محاور بقيت على حالتها لأنها غير قابلة للنشر: {{count}}",
     "confirmPublishOneTitle": "نشر هذا الدرس؟",
     "publishOneMessage": "سيصبح الدرس ظاهراً لكل المستخدمين."

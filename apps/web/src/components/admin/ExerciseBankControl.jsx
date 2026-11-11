@@ -16,7 +16,7 @@ const STATUSES = ['published', 'hidden', 'draft', 'archived'];
  * exercice est le geste attendu. Le serveur traite chaque exercice comme à
  * l'unité (validation, journal) : `onChanged` relit la leçon.
  *
- * @param {{ id: number, exercises?: Array<{ publicationStatus: string }> }} lesson
+ * @param {{ id: number, exercises?: Array<{ publicationStatus: string }>, exerciseStatusCounts?: Record<string, number> }} lesson
  */
 export default function ExerciseBankControl({ lesson, onChanged }) {
   const { t } = useTranslation('admin');
@@ -25,12 +25,19 @@ export default function ExerciseBankControl({ lesson, onChanged }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
 
-  // Les exercices retirés du registre ne suivent pas (le serveur les écarte).
-  const exercises = (lesson.exercises ?? []).filter((e) => !e.retiredAt);
-  if (exercises.length === 0) return null;
+  // Deux sources : la fiche leçon donne la liste des exercices, la page
+  // « التمارين » (organisée par leçon) donne seulement les compteurs par état
+  // (`exerciseStatusCounts`). Les retirés ne suivent pas (le serveur les écarte).
+  const byStatus = lesson.exerciseStatusCounts
+    ?? Object.fromEntries(STATUSES.map((status) => [
+      status,
+      (lesson.exercises ?? []).filter((e) => !e.retiredAt && e.publicationStatus === status).length,
+    ]));
+  const total = STATUSES.reduce((sum, status) => sum + (byStatus[status] ?? 0), 0);
+  if (total === 0) return null;
 
   const counts = STATUSES
-    .map((status) => [status, exercises.filter((e) => e.publicationStatus === status).length])
+    .map((status) => [status, byStatus[status] ?? 0])
     .filter(([, n]) => n > 0);
 
   const apply = async () => {
@@ -80,7 +87,7 @@ export default function ExerciseBankControl({ lesson, onChanged }) {
         confirmLabel={pending ? t(`exerciseBank.action.${pending}`) : ''}
         message={(
           <>
-            <p>{t('exerciseBank.confirmMessage', { count: exercises.length, status: pending ? t(`status.${pending}`) : '' })}</p>
+            <p>{t('exerciseBank.confirmMessage', { count: total, status: pending ? t(`status.${pending}`) : '' })}</p>
             <p className="mt-2">{t('exerciseBank.confirmHint')}</p>
           </>
         )}

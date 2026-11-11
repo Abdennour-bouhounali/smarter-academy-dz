@@ -39,7 +39,6 @@ export const adminNavSections = [
     icon: BookOpen,
     links: [
       { labelKey: 'nav.lessons', path: '/admin/contenu/lecons', icon: BookOpen },
-      { labelKey: 'nav.modules', path: '/admin/contenu/modules', icon: BookOpen },
       { labelKey: 'nav.exercises', path: '/admin/contenu/exercices', icon: BookOpen },
     ],
   },

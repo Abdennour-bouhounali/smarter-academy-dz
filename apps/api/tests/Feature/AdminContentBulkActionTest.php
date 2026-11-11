@@ -202,16 +202,14 @@ class AdminContentBulkActionTest extends TestCase
 
     public function test_un_lot_refuse_les_modules_et_publie_des_exercices(): void
     {
-        // Un module n'a pas d'état propre (2026-11-11) : chaque module est refusé.
+        // Un module n'a pas d'état propre (2026-11-11) : la route n'existe pas.
         $before = $this->moduleA->fresh()->publication_status;
         $this->asAdmin()
             ->postJson('/api/v1/admin/content/module/bulk-status', [
                 'ids' => [$this->moduleA->id, $this->moduleB->id],
                 'status' => Lesson::PUB_HIDDEN,
             ])
-            ->assertStatus(200)
-            ->assertJsonCount(0, 'applied')
-            ->assertJsonCount(2, 'failed');
+            ->assertStatus(404);
 
         $this->assertSame($before, $this->moduleA->fresh()->publication_status);
 

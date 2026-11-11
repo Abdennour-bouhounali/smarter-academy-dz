@@ -206,10 +206,12 @@ class AdminContentPublicationTest extends TestCase
             $this->assertSame($state, $this->lesson->fresh()->publication_status, "leçon {$state}");
             $this->assertSame($state, $this->module->fresh()->publication_status, "module 2 → {$state}");
             $this->assertSame($state, $second->fresh()->publication_status, "module 3 → {$state}");
+            $this->assertSame($state, $this->exercise->fresh()->publication_status, "exercice → {$state}");
         }
 
         $this->assertSame(LessonModule::PUB_PUBLISHED, $retired->fresh()->publication_status, 'un module retiré ne suit pas');
-        $this->assertSame(PracticeExercise::PUB_PUBLISHED, $this->exercise->fresh()->publication_status, 'les exercices ne suivent pas');
+        // « Je publie la leçon, tout est publié » (2026-11-11) : les exercices suivent aussi.
+        $this->assertSame(PracticeExercise::PUB_PUBLISHED, $this->exercise->fresh()->publication_status, 'les exercices suivent la leçon');
     }
 
     public function test_la_cascade_rend_les_modules_changes_et_les_journalise(): void
@@ -237,7 +239,7 @@ class AdminContentPublicationTest extends TestCase
             ->assertStatus(200);
         $this->asAdmin()
             ->patchJson("/api/v1/admin/content/module/{$this->module->id}/status", ['status' => LessonModule::PUB_DRAFT])
-            ->assertStatus(422);
+            ->assertStatus(404);
 
         $this->assertSame(Lesson::PUB_HIDDEN, $this->lesson->fresh()->publication_status);
         $this->assertSame(LessonModule::PUB_HIDDEN, $this->module->fresh()->publication_status);
@@ -322,6 +324,22 @@ class AdminContentPublicationTest extends TestCase
         $this->assertSame(PracticeExercise::PUB_PUBLISHED, $this->exercise->fresh()->publication_status);
     }
 
+    /** La page « التمارين » est organisée par leçon : la liste porte la banque par état. */
+    public function test_la_liste_des_lecons_compte_les_exercices_par_etat(): void
+    {
+        PracticeExercise::create([
+            'lesson_id' => $this->lesson->id, 'exercise_code' => 'ex-frac-002', 'level' => 1,
+            'publication_status' => PracticeExercise::PUB_DRAFT,
+        ]);
+        $this->exercise->update(['publication_status' => PracticeExercise::PUB_PUBLISHED]);
+
+        $this->asAdmin()->getJson('/api/v1/admin/content/lessons?scope=all')
+            ->assertStatus(200)
+            ->assertJsonPath('lessons.data.0.exerciseStatusCounts', [
+                'published' => 1, 'hidden' => 0, 'draft' => 1, 'archived' => 0,
+            ]);
+    }
+
     public function test_la_banque_d_exercices_ne_touche_ni_la_lecon_ni_ses_modules(): void
     {
         $this->asAdmin()
@@ -332,11 +350,13 @@ class AdminContentPublicationTest extends TestCase
         $this->assertSame(Lesson::PUB_PUBLISHED, $this->lesson->fresh()->publication_status);
         $this->assertSame(LessonModule::PUB_PUBLISHED, $this->module->fresh()->publication_status);
 
-        // Et l'état de la leçon ne touche pas les exercices.
+        // L'état de la LEÇON, lui, s'applique à tout (2026-11-11 : « je publie
+        // la leçon, tout est publié ») — exercices compris.
         $this->asAdmin()
             ->patchJson("/api/v1/admin/content/lesson/{$this->lesson->id}/status", ['status' => Lesson::PUB_DRAFT])
-            ->assertStatus(200);
-        $this->assertSame(PracticeExercise::PUB_HIDDEN, $this->exercise->fresh()->publication_status);
+            ->assertStatus(200)
+            ->assertJsonPath('exercises.applied', [$this->exercise->id]);
+        $this->assertSame(PracticeExercise::PUB_DRAFT, $this->exercise->fresh()->publication_status);
     }
 
     public function test_la_banque_d_exercices_refuse_un_etat_inconnu_et_les_non_admins(): void
