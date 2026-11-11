@@ -303,19 +303,25 @@ export function BuildAnswer({ q, settled, revealed, onAnswer, k }) {
   const take = (si) => setPlaced((pl) => pl.map((v, j) => (j === si ? null : v)));
   // `q.ops` : les signes entre les emplacements (défaut « n = g × q + r ») — p. ex. ['=', '+'] pour « grand = petit + reste » (pgcd-differences)
   const ops = q.ops ?? ['=', '×', '+'];
+  // `q.wideText` (opt-in, 2026-11-11, unité 5 — verdict X10 / L3.11) : `true` (tous les emplacements) ou une liste d'indices — l'emplacement
+  // s'élargit pour un MOT arabe (« الكرّاس ») et la rangée se lit de droite à gauche et passe à la ligne (une phrase arabe à trous dans une
+  // colonne latérale de ≈ 388 px à 1024 × 768). Sans `wideText`, le rendu d'avant, octet pour octet.
+  const wideAt = (si) => (Array.isArray(q.wideText) ? q.wideText.includes(si) : q.wideText === true);
+  const sentence = q.wideText != null && q.wideText !== false;
   return (
     <div className="space-y-5" data-lab-checkpoint-build>
-      <div className="flex items-start justify-center gap-2" dir="ltr">
+      <div className={sentence ? 'flex flex-wrap items-start justify-center gap-x-2 gap-y-1' : 'flex items-start justify-center gap-2'} dir={sentence ? 'rtl' : 'ltr'}
+        {...(sentence ? { 'data-lab-checkpoint-sentence': true } : {})}>
         {/* `q.wrap` (2026-11-11, turf-factoring) : un signe AVANT le premier emplacement et APRÈS le dernier — « ▢(▢ + ▢) », « (▢ + ▢)² » */}
         {q.wrap?.[0] ? <span className="pt-3 text-2xl font-black text-slate-600" aria-hidden="true" data-lab-checkpoint-wrap="before">{q.wrap[0]}</span> : null}
         {q.slots.map((label, si) => (
           <React.Fragment key={si}>
             {si > 0 && <span className="pt-3 text-2xl font-black text-slate-400" aria-hidden="true">{ops[si - 1]}</span>}
             <button type="button" disabled={settled || values[si] == null} onClick={() => take(si)} data-lab-checkpoint-slot={si}
-              className={`flex w-[4.5rem] flex-col items-center gap-1 ${ring} rounded-xl`}>
+              className={`flex ${wideAt(si) ? 'w-[7rem]' : 'w-[4.5rem]'} flex-col items-center gap-1 ${ring} rounded-xl`} {...(wideAt(si) ? { 'data-lab-checkpoint-wide': true } : {})}>
               <span className={`flex h-14 w-full items-center justify-center rounded-2xl border-2 border-dashed text-2xl font-black tabular-nums ${values[si] == null ? 'border-slate-300 bg-slate-50 text-slate-300' : 'border-indigo-500 bg-indigo-50 text-indigo-950'}`}>
                 {/* `q.render` (2026-11-10, shadow-meet) : une tuile écrite dans SA forme (« BC/BE » en vraie fraction) ; la valeur comparée reste la tuile */}
-                {values[si] == null ? '▢' : isText(values[si]) ? <span className="pointer-events-none text-xl" dir="rtl" lang="ar" data-lab-checkpoint-text>{values[si]}</span> : q.render ? <span className="pointer-events-none">{q.render(values[si])}</span> : values[si]}
+                {values[si] == null ? '▢' : isText(values[si]) ? <span className={`pointer-events-none text-xl${wideAt(si) ? ' whitespace-nowrap' : ''}`} dir="rtl" lang="ar" data-lab-checkpoint-text>{values[si]}</span> : q.render ? <span className="pointer-events-none">{q.render(values[si])}</span> : values[si]}
               </span>
               <span className="text-center text-xs font-bold leading-tight text-slate-600" dir="rtl">{label}</span>
             </button>

@@ -1499,6 +1499,12 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
   object `{ text }` renders as Arabic text (`dir="rtl"`, `[data-lab-checkpoint-text]`) and is compared by its STRING in `expected` / `accept` /
   `preset`; number and string tiles keep their maths path. Use it for a connector the student must CHOOSE (« ▢ = 0 ▢ ▢ = 0 » with « أو » and the
   decoy « معًا » — never « و »). Test: `primitives/labCheckpointBuildText.test.jsx`.
+- **A wide text slot for an Arabic word: `wideText` (unit 5, verdict X10 / L3.11).** `wideText: true` (every slot) or a list of slot
+  indices (`[1]`) makes those `build` slots 7 rem wide (`[data-lab-checkpoint-wide]`; a placed word never wraps), and the row then reads
+  RIGHT TO LEFT and wraps (`[data-lab-checkpoint-sentence]`): write `wrap` / `ops` / `slots` in Arabic reading order — « ثمن ▢ هو 90 دج،
+  وثمن ▢ هو 50 دج. » with the text tiles « الكرّاس » · « القلم » and the decoy `x`. Measured at 1024 × 768 in a 388 px column: « الكرّاس »
+  ≈ 70 px in the 112 px slot (zoom 1 and 0.9), the sentence on two lines, no horizontal overflow. Without `wideText` the render is
+  unchanged byte for byte. Test: `primitives/labCheckpointBuildWide.test.jsx`.
 - **A model check is not a trial: `tk: 'model'` and the goal `modelOk` (unit 4, `tarrid-mushkila`, verdict L4.3).** A lab whose first act is
   to MODEL the situation (`growth-race`: carry « + x » onto whoever grows, then « تحقّق ») sends `onTrial { tk: 'model', ok, key?, free? }`;
   `roundsModel` logs it in `log.models` (the same `key` once), a round's goal may require `{ modelOk: true }`, a refused non-free model is a
