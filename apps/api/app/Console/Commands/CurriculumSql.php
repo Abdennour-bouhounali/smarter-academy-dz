@@ -20,10 +20,12 @@ use Illuminate\Support\Facades\Process;
  *   ON DUPLICATE KEY UPDATE title = VALUES(title), …
  *
  * Idempotent (rejouable), additif (jamais de DELETE), et il ne touche JAMAIS
- * `publication_status` ni `tier` d'une ligne existante — l'admin possède ces
- * deux états. Une leçon nouvelle naît `tier = 'free'`. Les
- * lignes nouvelles de `lesson_modules`/`practice_exercises` naissent en
- * `draft`, comme à l'import.
+ * `tier` d'une ligne existante. Une leçon nouvelle naît `tier = 'free'`.
+ * Publication — mêmes règles que les importeurs (propriétaire, 2026-11-11,
+ * « pousser en production publie ») : une leçon `available` encore `draft`
+ * devient `published` ; un module n'a pas d'état propre et reçoit celui de
+ * sa leçon ; un exercice naît `published` sous une leçon publiée et un
+ * `draft` y est publié. `hidden` / `archived` (gestes de l'admin) sont gardés.
  *
  *     php artisan smarter:curriculum-sql --out=docs/deployment/HOSTINGER_UNIT1_CURRICULUM_DATA.sql
  */
@@ -130,8 +132,8 @@ class CurriculumSql extends Command
         $this->sql[] = '-- SMARTER ACADEMY — MIROIR DU CURRICULUM (UPSERT PAR CODE)';
         $this->sql[] = '-- Généré par `php artisan smarter:curriculum-sql`. Rejouable : chaque ligne';
         $this->sql[] = '-- est identifiée par son CODE, les clés étrangères sont résolues par';
-        $this->sql[] = '-- sous-requête, et rien n\'est supprimé. Ni publication_status ni tier ne';
-        $this->sql[] = '-- sont modifiés sur une ligne existante : l\'administrateur en est l\'autorité.';
+        $this->sql[] = '-- sous-requête, et rien n\'est supprimé. Le tier d\'une ligne existante n\'est';
+        $this->sql[] = '-- jamais modifié ; une leçon available draft est publiée, ses modules la suivent.';
         $this->sql[] = '-- Une leçon nouvelle naît tier = \'free\'. Appliquer APRÈS le SQL de schéma.';
         $this->sql[] = '-- ============================================================================';
         $this->sql[] = 'SET NAMES utf8mb4;';
@@ -144,9 +146,9 @@ class CurriculumSql extends Command
      * expressions lisent encore l'ANCIEN `status` et l'ancien état.
      */
     private const PUBLICATION_ON_UPDATE =
-        "`published_at` = CASE WHEN VALUES(`status`) = 'available' AND `status` <> 'available' AND `publication_status` = 'draft' THEN NOW() ELSE `published_at` END, "
+        "`published_at` = CASE WHEN VALUES(`status`) = 'available' AND `publication_status` = 'draft' THEN NOW() ELSE `published_at` END, "
         ."`publication_status` = CASE WHEN VALUES(`status`) <> 'available' AND `publication_status` = 'published' THEN 'draft' "
-        ."WHEN VALUES(`status`) = 'available' AND `status` <> 'available' AND `publication_status` = 'draft' THEN 'published' "
+        ."WHEN VALUES(`status`) = 'available' AND `publication_status` = 'draft' THEN 'published' "
         .'ELSE `publication_status` END,';
 
     private function emitGrade(array $g): void
@@ -219,8 +221,8 @@ class CurriculumSql extends Command
     private function emitModules(array $lesson, string $grade): void
     {
         foreach ($lesson['modules'] ?? [] as $m) {
-            $this->sql[] = "INSERT INTO `lesson_modules` (`lesson_id`, `code`, `number`, `slug`, `title`, `description`, `stage`, `estimated_min`, `difficulty`, `teaches_learning_point_codes`, `publication_status`, `retired_at`, `created_at`, `updated_at`) SELECT l.id, {$this->q((string) $m['code'])}, ".(int) $m['number'].", {$this->qn($m['slug'] ?? null)}, {$this->q($m['title'] ?? '')}, {$this->qn($m['description'] ?? null)}, {$this->qn($m['stage'] ?? null)}, {$this->n($m['estimatedMin'] ?? null)}, {$this->n($m['difficulty'] ?? null)}, {$this->qj($m['teachesLearningPointCodes'] ?? null)}, 'draft', NULL, NOW(), NOW() FROM `lessons` l JOIN `chapters` c ON c.id = l.chapter_id JOIN `grades` g ON g.id = c.grade_id WHERE l.code = {$this->q($lesson['code'])} AND g.code = {$this->q($grade)}"
-                .' ON DUPLICATE KEY UPDATE `number` = VALUES(`number`), `slug` = VALUES(`slug`), `title` = VALUES(`title`), `description` = VALUES(`description`), `stage` = VALUES(`stage`), `estimated_min` = VALUES(`estimated_min`), `difficulty` = VALUES(`difficulty`), `teaches_learning_point_codes` = VALUES(`teaches_learning_point_codes`), `retired_at` = NULL, `updated_at` = NOW();';
+            $this->sql[] = "INSERT INTO `lesson_modules` (`lesson_id`, `code`, `number`, `slug`, `title`, `description`, `stage`, `estimated_min`, `difficulty`, `teaches_learning_point_codes`, `publication_status`, `retired_at`, `created_at`, `updated_at`) SELECT l.id, {$this->q((string) $m['code'])}, ".(int) $m['number'].", {$this->qn($m['slug'] ?? null)}, {$this->q($m['title'] ?? '')}, {$this->qn($m['description'] ?? null)}, {$this->qn($m['stage'] ?? null)}, {$this->n($m['estimatedMin'] ?? null)}, {$this->n($m['difficulty'] ?? null)}, {$this->qj($m['teachesLearningPointCodes'] ?? null)}, l.publication_status, NULL, NOW(), NOW() FROM `lessons` l JOIN `chapters` c ON c.id = l.chapter_id JOIN `grades` g ON g.id = c.grade_id WHERE l.code = {$this->q($lesson['code'])} AND g.code = {$this->q($grade)}"
+                .' ON DUPLICATE KEY UPDATE `number` = VALUES(`number`), `slug` = VALUES(`slug`), `title` = VALUES(`title`), `description` = VALUES(`description`), `stage` = VALUES(`stage`), `estimated_min` = VALUES(`estimated_min`), `difficulty` = VALUES(`difficulty`), `teaches_learning_point_codes` = VALUES(`teaches_learning_point_codes`), `publication_status` = VALUES(`publication_status`), `retired_at` = NULL, `updated_at` = NOW();';
         }
     }
 
@@ -234,8 +236,8 @@ class CurriculumSql extends Command
 
     private function emitExercise(array $e, string $grade): void
     {
-        $this->sql[] = "INSERT INTO `practice_exercises` (`lesson_id`, `exercise_code`, `level`, `title`, `question_count`, `publication_status`, `retired_at`, `created_at`, `updated_at`) SELECT l.id, {$this->q($e['exerciseCode'])}, ".(int) $e['level'].", {$this->qn($e['title'] ?? null)}, ".(int) ($e['questionCount'] ?? 0).", 'draft', NULL, NOW(), NOW() FROM `lessons` l JOIN `chapters` c ON c.id = l.chapter_id JOIN `grades` g ON g.id = c.grade_id WHERE l.code = {$this->q($e['lessonCode'])} AND g.code = {$this->q($grade)}"
-            .' ON DUPLICATE KEY UPDATE `level` = VALUES(`level`), `title` = VALUES(`title`), `question_count` = VALUES(`question_count`), `retired_at` = NULL, `updated_at` = NOW();';
+        $this->sql[] = "INSERT INTO `practice_exercises` (`lesson_id`, `exercise_code`, `level`, `title`, `question_count`, `publication_status`, `retired_at`, `created_at`, `updated_at`) SELECT l.id, {$this->q($e['exerciseCode'])}, ".(int) $e['level'].", {$this->qn($e['title'] ?? null)}, ".(int) ($e['questionCount'] ?? 0).", IF(l.publication_status = 'published', 'published', 'draft'), NULL, NOW(), NOW() FROM `lessons` l JOIN `chapters` c ON c.id = l.chapter_id JOIN `grades` g ON g.id = c.grade_id WHERE l.code = {$this->q($e['lessonCode'])} AND g.code = {$this->q($grade)}"
+            ." ON DUPLICATE KEY UPDATE `level` = VALUES(`level`), `title` = VALUES(`title`), `question_count` = VALUES(`question_count`), `publication_status` = IF(`publication_status` = 'draft' AND VALUES(`publication_status`) = 'published', 'published', `publication_status`), `retired_at` = NULL, `updated_at` = NOW();";
     }
 
     private function q(string $s): string

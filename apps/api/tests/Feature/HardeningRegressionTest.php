@@ -84,29 +84,16 @@ class HardeningRegressionTest extends TestCase
 
     // ----------------------------------------------------- PUBLICATION SÛRE
 
-    public function test_on_ne_publie_pas_un_module_retire_du_registre(): void
-    {
-        $module = LessonModule::create([
-            'lesson_id' => $this->lesson->id, 'code' => '01', 'number' => 1, 'title' => 'M',
-            'publication_status' => LessonModule::PUB_DRAFT, 'retired_at' => now(),
-        ]);
-
-        $this->expectException(DomainException::class);
-        $this->expectExceptionMessageMatches('/retiré du registre/');
-
-        app(ContentService::class)->changeStatus($this->admin, 'module', $module->id, LessonModule::PUB_PUBLISHED);
-    }
-
-    public function test_on_ne_publie_pas_un_module_qui_enseigne_un_point_inconnu(): void
+    /** Un module n'a pas d'état propre (2026-11-11) : il ne se publie pas seul. */
+    public function test_un_module_ne_se_publie_pas_seul(): void
     {
         $module = LessonModule::create([
             'lesson_id' => $this->lesson->id, 'code' => '01', 'number' => 1, 'title' => 'M',
             'publication_status' => LessonModule::PUB_DRAFT,
-            'teaches_learning_point_codes' => ['6e_fractions_INEXISTANT'],
         ]);
 
         $this->expectException(DomainException::class);
-        $this->expectExceptionMessageMatches('/inconnu/');
+        $this->expectExceptionMessageMatches('/suit sa leçon/');
 
         app(ContentService::class)->changeStatus($this->admin, 'module', $module->id, LessonModule::PUB_PUBLISHED);
     }
@@ -138,21 +125,24 @@ class HardeningRegressionTest extends TestCase
             'publication_status' => LessonModule::PUB_PUBLISHED,
             'teaches_learning_point_codes' => ['INEXISTANT'],
         ]);
+        $this->lesson->update(['publication_status' => Lesson::PUB_PUBLISHED]);
 
         $result = app(ContentService::class)
-            ->changeStatus($this->admin, 'module', $module->id, LessonModule::PUB_HIDDEN);
+            ->changeStatus($this->admin, 'lesson', $this->lesson->id, Lesson::PUB_HIDDEN);
 
         $this->assertTrue($result['changed']);
+        $this->assertSame(LessonModule::PUB_HIDDEN, $module->fresh()->publication_status);
     }
 
     // ------------------------------------------- POLITIQUE DU BROUILLON
 
     /**
-     * Un contenu découvert par la synchro naît en brouillon : publier doit
-     * rester un geste, pas un effet de bord du déploiement.
+     * Pousser en production publie (propriétaire, 2026-11-11) : sous une
+     * leçon publiée, un module et un exercice découverts naissent publiés.
      */
-    public function test_un_contenu_nouvellement_decouvert_nait_en_brouillon(): void
+    public function test_un_contenu_nouvellement_decouvert_nait_publie_sous_une_lecon_publiee(): void
     {
+        $this->lesson->update(['publication_status' => Lesson::PUB_PUBLISHED]);
         app(ContentRegistryImporter::class)->import([
             'lessons' => [[
                 'code' => 'fractions', 'grade' => '6e',
@@ -168,8 +158,8 @@ class HardeningRegressionTest extends TestCase
             ]],
         ]);
 
-        $this->assertSame(LessonModule::PUB_DRAFT, LessonModule::first()->publication_status);
-        $this->assertSame(PracticeExercise::PUB_DRAFT, PracticeExercise::first()->publication_status);
+        $this->assertSame(LessonModule::PUB_PUBLISHED, LessonModule::first()->publication_status);
+        $this->assertSame(PracticeExercise::PUB_PUBLISHED, PracticeExercise::first()->publication_status);
     }
 
     /** ...mais la règle ne rétroagit pas sur le contenu déjà publié. */
@@ -211,8 +201,10 @@ class HardeningRegressionTest extends TestCase
             'teaches_learning_point_codes' => ['INEXISTANT'],
         ]);
 
+        $this->lesson->update(['publication_status' => Lesson::PUB_HIDDEN]);
+
         try {
-            app(ContentService::class)->changeStatus($this->admin, 'module', $module->id, LessonModule::PUB_PUBLISHED);
+            app(ContentService::class)->changeStatus($this->admin, 'lesson', $this->lesson->id, Lesson::PUB_PUBLISHED);
         } catch (DomainException) {
             // attendu
         }

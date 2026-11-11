@@ -105,13 +105,23 @@ describe('« tout sélectionner »', () => {
  * d'environnement DOM.
  */
 describe('le branchement des actions groupées', () => {
+  // La liste des MODULES n'en fait plus partie (2026-11-11) : un module n'a
+  // pas d'état propre, il suit sa leçon — voir le test dédié plus bas.
   const PAGES = {
     'src/pages/admin/content/Lessons.jsx': 'lesson',
-    'src/pages/admin/content/Modules.jsx': 'module',
     'src/pages/admin/content/Exercises.jsx': 'exercise',
   };
 
-  it('les trois listes de contenu portent la sélection et la barre d’actions', () => {
+  it('la liste des modules n’a ni sélection, ni lot, ni geste d’état : elle affiche l’état de la leçon', () => {
+    const source = read('src/pages/admin/content/Modules.jsx');
+    expect(source).not.toContain('useBulkSelection');
+    expect(source).not.toContain('BulkActionBar');
+    expect(source).not.toContain('PublicationControl');
+    expect(source).toContain('StatusBadge');
+    expect(read('src/pages/admin/content/LessonDetail.jsx')).not.toContain('type="module"');
+  });
+
+  it('les listes de contenu portent la sélection et la barre d’actions', () => {
     for (const page of Object.keys(PAGES)) {
       const source = read(page);
       expect(source, page).toContain('useBulkSelection');
@@ -135,7 +145,6 @@ describe('le branchement des actions groupées', () => {
    * route — un bouton qui ne peut qu'échouer.
    */
   it('le palier en lot n’est proposé que là où il existe à l’unité', () => {
-    expect(read('src/pages/admin/content/Modules.jsx')).toContain('withTier: false');
     expect(read('src/pages/admin/content/Lessons.jsx')).toContain('withTier: true');
     expect(read('src/pages/admin/content/Exercises.jsx')).toContain('withTier: true');
     // « Hériter de la leçon » n'a de sens que pour un exercice.
@@ -288,7 +297,6 @@ describe('le nom compte du contenu', () => {
   it('les pages ne recopient plus le nom a la main', () => {
     for (const page of [
       'src/pages/admin/content/Lessons.jsx',
-      'src/pages/admin/content/Modules.jsx',
       'src/pages/admin/content/Exercises.jsx',
     ]) {
       expect(read(page), page).toContain('CONTENT_NOUNS.');

@@ -338,8 +338,8 @@ Visibility changes must be backend-enforced.
 > | `draft` | ✓ | — | — | — |
 > | `archived` | ✓ | — | — | — |
 >
-> Tier, active grade and per-class visibility still apply on top. Changing a
-> **lesson**'s state gives that state to all its modules (cascade, Annexe A1).
+> Tier, active grade and per-class visibility still apply on top. A **module**
+> has no state of its own since 2026-11-11: it follows its lesson (Annexe A1).
 
 ---
 
@@ -1309,21 +1309,20 @@ même chose.
 Un état inconnu ajouté plus tard sera fermé par défaut (sauf pour l'admin),
 jamais ouvert par oubli.
 
-**Cascade leçon → modules (2026-10-07, décision propriétaire, remplace
-« pas de cascade »)** : changer l'état d'une LEÇON (geste unitaire ou lot)
-donne ce même état à tous ses modules en registre (`retired_at` nul), dans la
-même transaction, avec une ligne `module.status_changed` par module changé
-(`after.cascadeFromLesson` = id de la leçon). La réponse de
-`PATCH …/lesson/{id}/status` porte `modules: {applied: [ids], skipped:
-[{id, message}]}`. Trois limites :
-
-- un module peut ensuite être changé **seul** — c'est toujours ce qui permet
-  de retirer *un* module cassé sans fermer la leçon ;
-- à la **publication**, un module qui échoue aux contrôles structurels (point
-  d'apprentissage inconnu ou retiré) garde son état et part dans `skipped` ;
-  la leçon n'est refusée (422) que si AUCUN module ne serait publié après la
-  cascade ;
-- les **exercices** ne suivent pas : ils gardent leur propre état.
+**Un module n'a pas d'état propre (2026-11-11, décision propriétaire, remplace
+la cascade du 2026-10-07)** : un module est ouvert exactement quand sa leçon
+l'est — `ContentAccess::assertModuleAvailable` ne lit que la leçon, et
+`closedInventory()` ne ferme plus aucun module à part (`modules` toujours vide).
+La colonne `lesson_modules.publication_status` reste, comme COPIE de l'état de
+la leçon : changer l'état d'une LEÇON (geste unitaire ou lot) le recopie sur
+TOUS ses modules en registre, dans la même transaction, avec une ligne
+`module.status_changed` par module changé (`after.cascadeFromLesson`). Changer
+un module seul est refusé (`PATCH …/module/{id}/status` → 422) ; les pages
+admin « المحاور » et la fiche leçon montrent l'état du module en lecture seule.
+La réponse de `PATCH …/lesson/{id}/status` porte toujours `modules: {applied,
+skipped}` (`skipped` est vide). Publier une leçon reste refusé (422) si elle a
+des modules en registre et qu'AUCUN ne passe les contrôles structurels. Les
+**exercices** ne suivent pas : ils gardent leur propre état.
 
 **Banque d'exercices d'une leçon (2026-10-07)** : les exercices ne suivent
 PAS l'état de la leçon, mais ils ont leur propre geste groupé —
@@ -1336,10 +1335,14 @@ la banque, puis masquer UN exercice). Panneau : `ExerciseBankControl` dans
 l'en-tête de la section تمارين de la fiche leçon (résumé par état + choix +
 confirmation). Ni la leçon ni ses modules ne bougent.
 
-Un module créé plus tard par l'import arrive toujours en `draft`, quel que
-soit l'état de sa leçon (décision propriétaire du 2026-10-07, verrouillée par
-`ContentRegistrySyncTest`) : la cascade agit au moment du geste admin, jamais
-à l'import — un déploiement ne publie aucun contenu que personne n'a relu.
+**Défaut publié à l'import (2026-11-11, décision propriétaire — « pousser en
+production publie », remplace « un module importé naît `draft` »)** :
+`CurriculumImporter` publie une leçon `available` encore `draft` à chaque
+synchronisation ; `ContentRegistryImporter` donne à chaque module l'état de sa
+leçon (création ET resynchro) et fait naître un exercice `published` sous une
+leçon publiée (un `draft` y est publié). `hidden` et `archived` sont gardés :
+c'est ainsi que l'admin RETIENT une leçon écrite. `smarter:curriculum-sql`
+(Hostinger) émet les mêmes règles. Verrouillé par `ContentRegistrySyncTest`.
 
 **L'inconnu reste ouvert** : une leçon, un module ou un exercice absent du
 registre est accessible. La base MIROITE le contenu, elle n'en est pas

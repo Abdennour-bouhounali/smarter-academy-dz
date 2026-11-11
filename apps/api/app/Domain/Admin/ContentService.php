@@ -268,13 +268,11 @@ class ContentService
      * Un seul chemin pour les trois : c'est ce qui garantit qu'aucun d'eux ne
      * peut changer d'état sans validation ni journal.
      *
-     * CASCADE (2026-10-07, décision propriétaire) : changer l'état d'une
-     * LEÇON donne ce même état à tous ses modules en registre (non retirés),
+     * UN MODULE N'A PAS D'ÉTAT PROPRE (propriétaire, 2026-11-11) : changer
+     * l'état d'une LEÇON le recopie sur TOUS ses modules en registre,
      * dans la même transaction, avec une ligne de journal par module changé.
-     * Un module peut ensuite être changé seul. Seule exception, à la
-     * publication : un module qui ne passe pas assertPublishable (point
-     * d'apprentissage inconnu ou retiré) garde son état et est rendu dans
-     * `modules.skipped` — publier ne doit jamais ouvrir un module cassé.
+     * Changer un module seul est refusé — il suit sa leçon. `modules.skipped`
+     * reste dans la réponse (toujours vide) pour la compatibilité du client.
      * Les exercices ne suivent pas : ils gardent leur propre état.
      *
      * Ce que cette méthode ne fait PAS, volontairement : toucher aux données
@@ -285,6 +283,10 @@ class ContentService
      */
     public function changeStatus(User $admin, string $type, int $id, string $status): array
     {
+        if ($type === 'module') {
+            throw new DomainException('Un module n\'a pas d\'état propre : il suit sa leçon. Changez l\'état de la leçon.');
+        }
+
         $model = match ($type) {
             'lesson' => Lesson::find($id),
             'module' => LessonModule::find($id),
@@ -379,44 +381,35 @@ class ContentService
     }
 
     /**
-     * Les modules d'une leçon qui prendront son nouvel état.
+     * Les modules d'une leçon qui prendront son nouvel état — TOUS, puisqu'un
+     * module n'a pas d'état propre (seuls ceux déjà dans l'état sont sautés).
      *
-     * Retirés exclus (leur source n'existe plus) ; ceux déjà dans l'état,
-     * rien à faire. À la publication, un module qui échoue aux contrôles
-     * structurels est écarté et expliqué, pas publié.
+     * `sound` compte les modules en registre qui passent les contrôles
+     * structurels : publier une leçon dont AUCUN module ne tient debout
+     * reste refusé (assertPublishable).
      *
-     * @return array{apply: \Illuminate\Support\Collection<int, LessonModule>, skipped: array<int, array{id: int, message: string}>, publishedAfter: int, registered: int}
+     * @return array{apply: \Illuminate\Support\Collection<int, LessonModule>, skipped: array<int, array{id: int, message: string}>, sound: int, registered: int}
      */
     private function moduleCascade(Lesson $lesson, string $status): array
     {
-        $modules = $lesson->modules()->whereNull('retired_at')->get();
-        $apply = collect();
-        $skipped = [];
+        // Les retirés n'ont plus de source ; l'import leur redonne l'état de la
+        // leçon s'ils reviennent (ContentRegistryImporter).
+        $registered = $lesson->modules()->whereNull('retired_at')->get();
+        $apply = $registered->filter(fn (LessonModule $m) => $m->publication_status !== $status)->values();
 
-        foreach ($modules as $module) {
-            if ($module->publication_status === $status) {
-                continue;
-            }
-
-            if ($status === Lesson::PUB_PUBLISHED) {
+        $sound = 0;
+        if ($status === Lesson::PUB_PUBLISHED) {
+            foreach ($registered as $module) {
                 try {
                     $this->assertPublishable('module', $module->setRelation('lesson', $lesson));
-                } catch (DomainException $e) {
-                    $skipped[] = ['id' => $module->id, 'message' => $e->getMessage()];
-
-                    continue;
+                    $sound++;
+                } catch (DomainException) {
+                    // Compté comme non publiable ; il suit quand même sa leçon.
                 }
             }
-
-            $apply->push($module);
         }
 
-        $publishedAfter = $modules->filter(
-            fn (LessonModule $m) => $m->publication_status === Lesson::PUB_PUBLISHED
-                || ($status === Lesson::PUB_PUBLISHED && $apply->contains('id', $m->id))
-        )->count();
-
-        return ['apply' => $apply, 'skipped' => $skipped, 'publishedAfter' => $publishedAfter, 'registered' => $modules->count()];
+        return ['apply' => $apply, 'skipped' => [], 'sound' => $sound, 'registered' => $registered->count()];
     }
 
     /**
@@ -650,7 +643,7 @@ class ContentService
             // les modules publiables seront publiés avec la leçon.
             $cascade ??= $this->moduleCascade($model, Lesson::PUB_PUBLISHED);
 
-            if ($cascade['registered'] > 0 && $cascade['publishedAfter'] === 0) {
+            if ($cascade['registered'] > 0 && $cascade['sound'] === 0) {
                 throw new DomainException(
                     'Aucun module de cette leçon n\'est publiable : l\'élève ouvrirait une leçon vide. '
                     .'Corrigez au moins un module d\'abord.'
