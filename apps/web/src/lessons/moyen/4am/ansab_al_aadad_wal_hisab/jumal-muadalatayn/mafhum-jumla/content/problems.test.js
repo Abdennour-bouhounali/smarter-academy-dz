@@ -71,7 +71,8 @@ describe('les مسائل du درس 1 (unité 5) « مفهوم جملة معاد�
     ]);
     expect(LESSON_CONFIG.modules.at(-1)).toMatchObject({ id: '07', number: 7, slug: 'itqan', stage: 'evaluation' });
     expect(LESSON_CONFIG.modules.map((m) => m.number)).toEqual([0, 1, 2, 3, 4, 5, 6, 7]);
-    expect(LESSON_CONFIG.modules.reduce((t, m) => t + m.estimatedMin, 0)).toBe(74);
+    // rollout 2026-11-12 : « أستعدّ » a dix affirmations (6 min) et le module 1 trois manches (17 min, verdict G2)
+    expect(LESSON_CONFIG.modules.reduce((t, m) => t + m.estimatedMin, 0)).toBe(76);
     expect(LESSON_CONFIG.lessonProblem.module).toBe(4);
     expect(PROBLEM['masala-1'].statement).toBe(LESSON_CONFIG.lessonProblem.statement);
     const situations = LESSON_CONFIG.resources.filter((r) => r.kind === 'situation');

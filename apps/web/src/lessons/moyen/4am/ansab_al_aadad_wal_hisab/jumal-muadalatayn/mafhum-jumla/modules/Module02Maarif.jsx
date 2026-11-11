@@ -1,25 +1,22 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule, PeerSheet } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
-import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { KNOWLEDGE, CASES_LINES } from '../content/textbook';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
 
 /**
- * Module 2 — معارف (p. 58) : 1) جملة معادلتين من الدرجة الأولى بمجهولين, 2) حل جملة — ses deux
- * exemples, la ملاحظة sur l'ordre —, et les حالات خاصة.
+ * Module 2 — معارف, écrit par la PLATEFORME (rollout 2026-11-12, verdict L1 ; X5 : pas de labo ; OQ1 : pas de manche « اللوحة العنيدة ») :
  *   1. la définition (brique jumla-tarif) et les coefficients (a, b, c, a', b', c') ;
- *   2. la définition du حل (hall-jumla), puis la vérification d'une ثنائية (ikhtibar-thunaiya) sur
- *      les deux exemples du livre ;
- *   3. l'ordre dans la ثنائية (tartib-thunaiya) ;
- *   4. les deux cas particuliers : les calculs que le livre résume en « تبسّط إلى الشكل » écrits
- *      ligne à ligne (déclarés), la brique halat-khassa, puis trois jumla à classer.
- * Rétrofit 2026-10-15 (§4quater) : module sans labo, qui s'ouvre sur « أتوقّع القاعدة » (PredictRule, intact) ; à l'étape 2 la question (la ثنائية
- * (1 ; −1)) précède les deux exemples du livre et la brique ikhtibar-thunaiya, qui la nomment APRÈS la réponse.
- * Les questions utilisent d'AUTRES nombres que les encadrés (la réponse n'est jamais au-dessus).
- * LP : P1, P2, P3, P4.
+ *   2. la définition du حل (hall-jumla), une question sur (6 ; −1) DANS la jumla de l'exemple (x + 2y = 4 ∣ 3x − y = 5), puis l'exemple
+ *      (2 ; 1) / (0 ; 2) et la brique ikhtibar-thunaiya qui nomment APRÈS la réponse ;
+ *   3. l'ordre dans la ثنائية (tartib-thunaiya) — (3 ; 2) et (2 ; 3) ;
+ *   4. les deux cas particuliers (2x + y = 3 ∣ 6x + 3y = 9 ; x − y = 1 ∣ 3x − 3y = 5) côte à côte, la brique halat-khassa, puis trois jumal à classer ;
+ *   5. « ورقة صهيب » (content/peerSheet.js) : le signe perdu en substituant une valeur négative.
+ * Chaque question porte sa jumla DANS son énoncé (aucun aller-retour). LP : P1, P2, P3, P4.
  */
 const Opt = (s) => <MathText key={s}>{s}</MathText>;
 const CASES = ['لها حل وحيد', 'ليس لها حلول', 'لها عدد غير منته من الحلول'];
@@ -30,6 +27,7 @@ export default function Module02Maarif() {
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
+  const [q5, setQ5] = useState(false);
 
   return (
     <ContentModule
@@ -41,22 +39,20 @@ export default function Module02Maarif() {
       objectives={['ما شكل جملة معادلتين؟ وما معنى حلّها؟', 'هل يهمّ ترتيب العددين في الثنائية؟', 'متى لا يكون للجملة حل وحيد؟']}
       estimatedTime="12 دقيقة"
       brief={{
-        tag: 'معارف — الكتاب ص 58', title: KNOWLEDGE.system.title, tone: 'violet',
-        body: <p><MathText>{'في النشاط 1 كتبنا معادلتين بمجهولين، ووجدنا ثنائية تُضيء اللوحتين معًا. الكتاب يسمّي هذا الشكل، ويعرّف حلّه، وينبّه إلى حالتين خاصتين.'}</MathText></p>,
+        tag: 'معارف', title: KNOWLEDGE.system.title, tone: 'violet',
+        body: <p><MathText>{'على لوحة الشرطين كتبنا شرطين على عددين، ووجدنا ثنائية تقبلها اللوحتان معًا. هنا نسمّي هذا الشكل، ونعرّف حلّه، ونرى حالتين خاصتين.'}</MathText></p>,
       }}
       steps={[
         {
-          num: 1, title: 'جملة معادلتين', subtitle: 'معارف 1 — الشكل والمعاملات', done: q1a && q1b,
+          num: 1, title: 'جملة معادلتين', subtitle: 'الشكل والمعاملات', done: q1a && q1b,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="jumla-nashat" variant="rappel" compact />
-              {/* La définition ÉNONCE la règle juste avant sa brique : l'élève l'écrit d'abord
-                  (predictPrompt de jumla-tarif), puis boîtes et brique — une seule « توقّعك ». */}
               <PredictRule id="jumla-tarif">
                 <TextbookBox kind="definition" text={KNOWLEDGE.system.definition} source={KNOWLEDGE.system.source} compact />
                 <TextbookBox kind="example" text={KNOWLEDGE.system.example} source={KNOWLEDGE.system.source} compact />
               </PredictRule>
-              <KnowledgeBrick id="jumla-tarif" lead="جملة النشاط 1 من هذا الشكل:" />
+              <KnowledgeBrick id="jumla-tarif" lead="جملة حصّالة القسم من هذا الشكل:" />
               <TapQuestion
                 prompt={<MathText>{'في الجملة $\\begin{cases} 3x + y = 5 \\\\ x - 4y = -2 \\end{cases}$ ، المعامل $b\'$ يساوي:'}</MathText>}
                 options={['$-4$', '$4$', '$1$', '$-2$'].map(Opt)}
@@ -80,38 +76,38 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 2, title: 'حل الجملة', subtitle: 'معارف 2 — المعادلتان في آن واحد', done: q2,
+          num: 2, title: 'حل الجملة', subtitle: 'المعادلتان في آن واحد', done: q2,
           content: (
             <div className="space-y-3">
-              <PredictRule id="hall-jumla" prompt={"ما الذي جعل الثنائية التي قبلتها اللوحتان في النشاط 1 حلًّا للجملة؟ متى نقول إنّ ثنائية $(x_0 ; y_0)$ حلّ لجملة معادلتين؟ وماذا يعني «حلّ الجملة»؟"}><TextbookBox kind="definition" title={KNOWLEDGE.solution.title} lines={[KNOWLEDGE.solution.definition, KNOWLEDGE.solution.rule]} source={KNOWLEDGE.solution.source} compact /></PredictRule>
-              <KnowledgeBrick id="hall-jumla" lead="ما قبلته لوحتا النشاط 1، معرَّفًا:" />
+              <PredictRule id="hall-jumla" prompt={'ما الذي جعل الثنائية التي قبلتها اللوحتان في الجولات حلًّا للجملة؟ متى نقول إنّ ثنائية $(x_0 ; y_0)$ حلّ لجملة معادلتين؟ وماذا يعني «حلّ الجملة»؟'}><TextbookBox kind="definition" title={KNOWLEDGE.solution.title} lines={[KNOWLEDGE.solution.definition, KNOWLEDGE.solution.rule]} source={KNOWLEDGE.solution.source} compact /></PredictRule>
+              <KnowledgeBrick id="hall-jumla" lead="ما قبلته لوحتا الشرطين، معرَّفًا:" />
               <TapQuestion
-                prompt={<MathText>{'هل الثنائية $(1 ; -1)$ حل للجملة $\\begin{cases} x - y = 2 \\\\ 2x - 5y = 4 \\end{cases}$ ؟'}</MathText>}
-                options={['نعم: $1 - (-1) = 2$', 'لا: $2 \\times 1 - 5 \\times (-1) = 7 \\neq 4$', 'لا: $1 - (-1) \\neq 2$'].map(Opt)}
+                prompt={<MathText>{'هل الثنائية $(6 ; -1)$ حلّ للجملة $\\begin{cases} x + 2y = 4 \\\\ 3x - y = 5 \\end{cases}$ ؟'}</MathText>}
+                options={['نعم: $6 + 2 \\times (-1) = 4$', 'لا: $3 \\times 6 - (-1) = 19 \\neq 5$', 'لا: $6 + 2 \\times (-1) \\neq 4$'].map(Opt)}
                 correct={1}
                 cols={1}
                 requires={['hall-jumla']}
-                explain={<MathText>{'المعادلة الأولى محقّقة: $1 - (-1) = 2$ ، لكن الثانية لا: $2 + 5 = 7 \\neq 4$. معادلة واحدة لا تكفي: $(1 ; -1)$ ليست حلا للجملة.'}</MathText>}
+                explain={<MathText>{'المعادلة الأولى محقّقة: $6 + 2 \\times (-1) = 4$ ، لكن الثانية لا: $18 + 1 = 19 \\neq 5$. معادلة واحدة لا تكفي: $(6 ; -1)$ ليست حلًّا للجملة.'}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
               {q2 && <TextbookBox kind="example" lines={KNOWLEDGE.solution.examples} source={KNOWLEDGE.solution.source} compact />}
-              {q2 && <KnowledgeBrick id="ikhtibar-thunaiya" lead="ما فعلتَه للتوّ، وما فعله الكتاب في المثالين، طريقةً:" />}
+              {q2 && <KnowledgeBrick id="ikhtibar-thunaiya" lead="ما فعلتَه للتوّ، طريقةً:" />}
             </div>
           ),
         },
         {
-          num: 3, title: 'الترتيب في الثنائية', subtitle: 'ملاحظة الكتاب', done: q3,
+          num: 3, title: 'الترتيب في الثنائية', subtitle: 'العدد الأول لـ x', done: q3,
           content: (
             <div className="space-y-3">
               <PredictRule id="tartib-thunaiya"><TextbookBox kind="remark" text={KNOWLEDGE.solution.note} source={KNOWLEDGE.solution.source} compact /></PredictRule>
               <KnowledgeBrick id="tartib-thunaiya" />
               <TapQuestion
-                prompt={<MathText>{'الثنائية $(3 ; 2)$ حل للجملة $\\begin{cases} x + 2y = 7 \\\\ 3x - y = 7 \\end{cases}$. هل الثنائية $(2 ; 3)$ حل لها؟'}</MathText>}
-                options={['نعم: فيها العددان نفسهما', 'لا: $2 + 2 \\times 3 = 8 \\neq 7$', 'لا يمكن أن نعرف دون حل الجملة'].map(Opt)}
+                prompt={<MathText>{'الثنائية $(3 ; 2)$ حلّ للجملة $\\begin{cases} x + 2y = 7 \\\\ 3x - y = 7 \\end{cases}$. هل الثنائية $(2 ; 3)$ حلّ لها؟'}</MathText>}
+                options={['نعم: فيها العددان نفسهما', 'لا: $2 + 2 \\times 3 = 8 \\neq 7$', 'لا يمكن أن نعرف دون حلّ الجملة'].map(Opt)}
                 correct={1}
                 cols={1}
                 requires={['tartib-thunaiya', 'ikhtibar-thunaiya']}
-                explain={<MathText>{'في $(2 ; 3)$ لدينا $x = 2$ و $y = 3$ : $2 + 2 \\times 3 = 8 \\neq 7$. أما $(3 ; 2)$ فتعطي $3 + 4 = 7$ و $9 - 2 = 7$. نعرف ذلك بالتعويض، دون حل الجملة.'}</MathText>}
+                explain={<MathText>{'في $(2 ; 3)$ لدينا $x = 2$ و $y = 3$ : $2 + 2 \\times 3 = 8 \\neq 7$. أمّا $(3 ; 2)$ فتعطي $3 + 4 = 7$ و $9 - 2 = 7$. نعرف ذلك بالتعويض، دون حلّ الجملة.'}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
             </div>
@@ -121,11 +117,11 @@ export default function Module02Maarif() {
           num: 4, title: 'حالات خاصة', subtitle: 'جملتان تُبسَّطان', done: q4,
           content: (
             <div className="space-y-3">
-              {/* L'encadré et les calculs écrits concluent déjà (« لا حلول » / « عدد غير منته ») :
-                  enveloppés, l'élève simplifie et prédit d'abord (predictPrompt de halat-khassa). */}
+              {/* L'encadré et les calculs écrits concluent déjà (« لا حلول » / « عدد غير منته ») : enveloppés, l'élève simplifie et prédit d'abord
+                  (predictPrompt de halat-khassa). Les deux cas CÔTE À CÔTE, jamais empilés. */}
               <PredictRule id="halat-khassa">
                 <TextbookBox kind="remark" title={KNOWLEDGE.cases.title} lines={KNOWLEDGE.cases.items} source={KNOWLEDGE.cases.source} compact />
-                <div className="grid gap-2 grid-cols-2" data-cases-lines>
+                <div className="grid grid-cols-2 gap-2" data-cases-lines data-paging-keep>
                   <div className="rounded-xl border-2 border-sky-200 bg-sky-50/60 p-3 text-sm" data-case="infinite">
                     <p className="mb-1 font-bold text-sky-900">1) معادلة واحدة مرّتين</p>
                     <ol className="space-y-1">{CASES_LINES.infinite.map((l) => <li key={l}><MathText>{l}</MathText></li>)}</ol>
@@ -135,15 +131,15 @@ export default function Module02Maarif() {
                     <ol className="space-y-1">{CASES_LINES.none.map((l) => <li key={l}><MathText>{l}</MathText></li>)}</ol>
                   </div>
                 </div>
-                <p className="text-xs text-slate-500"><MathText>{CASES_LINES.unique}</MathText> <SourceTag source={CASES_LINES.source} /></p>
+                <p className="text-xs text-slate-500"><MathText>{CASES_LINES.unique}</MathText></p>
               </PredictRule>
-              <KnowledgeBrick id="halat-khassa" lead="ما يقوله الكتاب عن هاتين الحالتين:" />
+              <KnowledgeBrick id="halat-khassa" lead="هاتان الحالتان، مكتوبتين:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">صنّف كل جملة:</p>}
                 rows={[
-                  { id: 'c1', label: <MathText>{'$\\begin{cases} x + y = 4 \\\\ 2x + 2y = 8 \\end{cases}$'}</MathText>, options: CASES, correct: 2, correction: <MathText>{'نقسم طرفي $2x + 2y = 8$ على 2: $x + y = 4$ ، المعادلة نفسها. كل ثنائية مجموعها 4 حل، مثل $(0 ; 4)$ و $(1 ; 3)$.'}</MathText> },
+                  { id: 'c1', label: <MathText>{'$\\begin{cases} x + y = 4 \\\\ 2x + 2y = 8 \\end{cases}$'}</MathText>, options: CASES, correct: 2, correction: <MathText>{'نقسم طرفي $2x + 2y = 8$ على 2: $x + y = 4$ ، المعادلة نفسها. كل ثنائية مجموعها 4 حلّ، مثل $(0 ; 4)$ و $(1 ; 3)$.'}</MathText> },
                   { id: 'c2', label: <MathText>{'$\\begin{cases} x + y = 4 \\\\ x + y = 5 \\end{cases}$'}</MathText>, options: CASES, correct: 1, correction: <MathText>{'لا يمكن أن يساوي $x + y$ العدد 4 والعدد 5 في آن واحد، و $4 \\neq 5$.'}</MathText> },
-                  { id: 'c3', label: <MathText>{'$\\begin{cases} x + y = 4 \\\\ x - y = 2 \\end{cases}$'}</MathText>, options: CASES, correct: 0, correction: <MathText>{'عددان مجموعهما 4 وفرقهما 2: 3 و 1 فقط. الثنائية $(3 ; 1)$ : $3 + 1 = 4$ و $3 - 1 = 2$.'}</MathText> },
+                  { id: 'c3', label: <MathText>{'$\\begin{cases} x + y = 8 \\\\ x - y = 4 \\end{cases}$'}</MathText>, options: CASES, correct: 0, correction: <MathText>{'عددان مجموعهما 8 وفرقهما 4: 6 و 2 فقط. الثنائية $(6 ; 2)$ : $6 + 2 = 8$ و $6 - 2 = 4$.'}</MathText> },
                 ]}
                 requires={['halat-khassa', 'ikhtibar-thunaiya']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: ثلاث جمل، ثلاث حالات.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
@@ -151,6 +147,10 @@ export default function Module02Maarif() {
               />
             </div>
           ),
+        },
+        {
+          num: 5, title: 'ورقة زميل: أين الخطأ؟', subtitle: 'جد السطر الخاطئ وصحّحه', done: q5,
+          content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={() => setQ5(true)} />,
         },
       ]}
       footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
