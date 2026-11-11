@@ -15,6 +15,7 @@ import PaintWallScene from './PaintWallScene';
 import TifoBannerScene from './TifoBannerScene';
 import NightCinemaScene from './NightCinemaScene';
 import ShadowSquareScene from './ShadowSquareScene';
+import NeighbourhoodPitchScene from './NeighbourhoodPitchScene';
 
 /**
  * LA SCÈNE d'une mission (rollout 2026-11-08) : chaque leçon dessine la sienne, choisie par `mission.scene` dans sa config
@@ -45,6 +46,9 @@ const SCENES = {
   'night-cinema': NightCinemaScene,
   // unité 9, la synthèse wadiya-idmajiya-talis (2026-11-10) : la place à l'heure de l'ombre — une tour SANS symbole, la perche, un rayon
   'shadow-square': ShadowSquareScene,
+  // unité 3, leçon 1 nashr-tabsit (2026-11-11) : le terrain du quartier et les bancs le long du couloir coupé — primitives communes de l'unité
+  // dans pitchSceneKit.jsx, une scène mince par leçon
+  'neighbourhood-pitch': NeighbourhoodPitchScene,
 };
 
 function CourtyardBigScene(props) {

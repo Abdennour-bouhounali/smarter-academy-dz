@@ -253,6 +253,11 @@ lesson builds a point from a RATIO of lengths); its two free-text prerequisites 
 same day): `talis-hisab-atwal` ← `amaliyat-natiqa` (3AM, the same link; it was `[]`, so « راجع قبل أن تنطلق » was empty); its two free-text
 prerequisites stay — « مستقيم المنتصفين » (3AM) is still `coming_soon`, so it is NOT a revise target (council of 2026-11-10). Its « أستعدّ »
 revises `tasawi-muqaranat-kasrayn` (3AM) and `rabi-mutanasib` (2AM), the published lessons that TEACH what its ten statements test.
+Sixth (2026-11-11, unit 3 mission rollout, council verdict L1.6): `nashr-tabsit` ← `nashr-jabri-3am` + `tabsit-hadhf-aqwas` (3AM). The net has NO
+`requires` link into `4am.m3.r02`: its only review link is `3am.m5.r02 → 4am.m3.r02` (`extends`, home `nashr-jabri-3am`). **An `extends` home counts
+as a prerequisite lesson** (the 4AM item consolidates what that lesson taught; « راجع قبل أن تنطلق » was empty without it); `tabsit-hadhf-aqwas`
+(`3am.m5.r01`, one `requires` step further) is the lesson its « أستعدّ » skill « تبسيط عبارة وحذف الأقواس » revises. Its two free-text prerequisites
+that these lessons replace are removed; « أولويات العمليات… » stays.
 
 **Database — imported, closed, ignored by Mastery V2.**
 

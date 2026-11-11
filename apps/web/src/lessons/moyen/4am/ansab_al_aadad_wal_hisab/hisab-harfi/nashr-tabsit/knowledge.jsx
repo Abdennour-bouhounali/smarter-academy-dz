@@ -22,7 +22,10 @@ export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
  * nommée « الخاصية المعتمدة » à la question 3).
  */
 const [propSum, propDiff, propDouble] = KNOWLEDGE.properties;
-const [exSimple, exDouble] = KNOWLEDGE.examples;
+// Les exemples des cartes sont ceux de la PLATEFORME (indépendance du manuel, rollout 2026-11-11) : ni l'exemple k(a ± b) ni l'exemple de
+// deux parenthèses du livre ; termes croisés de même signe (réduire deux termes croisés opposés est la méthode de la مسألة).
+const exSimple = '$6(x - 2) = 6 \\times x - 6 \\times 2 = 6x - 12$';
+const exDouble = '$(2x + 1)(x + 3) = 2x^2 + 6x + x + 3 = 2x^2 + 7x + 3$';
 
 /** `memo` — la FICHE DE MÉMOIRE (MemoCard) : ce qui CHANGE est en rouge (`R`). */
 const R = (x) => `\\textcolor{#e11d48}{${x}}`;
@@ -40,11 +43,11 @@ export const LESSON_KNOWLEDGE = {
           exam: 'أميّز الجداء أولًا ثم أنشره وأبسّط الناتج',
           chip: `k(a+b)\\to ka+kb`,
           quiz: [
-            { q: 'أيّ العبارات التالية جداء؟', options: ['$x+(3-2x)$', '$x(3x+1)$', '$x(x+1)-2+(x+1)$'], correct: 1 },
+            { q: 'أيّ العبارات التالية جداء؟', options: ['$x+(4-3x)$', '$x(2x+5)$', '$x(x+2)-1+(x+2)$'], correct: 1 },
             { q: 'نشر العبارة $3(x+5)$ يعطي:', options: ['$3x+5$', '$3x+15$', '$x+15$'], correct: 1 },
           ],
         },
-        predictPrompt: 'في السؤال 1 كتبت $3 \\times (9 + 5)$ على الشكل $3 \\times 9 + 3 \\times 5$، وفي الملعب حسبت المساحة منطقةً منطقة، ثم ميّزت في السؤال 2 بين نوعين من العبارات. يسمّي الكتاب هذا التحويل «نشرًا»: من أيّ نوع من العبارات ننطلق، وإلى أيّ نوع نصل؟ اكتب التعريف بكلماتك.',
+        predictPrompt: 'كتبت $3 \\times (9 + 5)$ على الشكل $3 \\times 9 + 3 \\times 5$ ، وفي الملعب حسبت المساحة منطقةً منطقة، ثم ميّزت بين نوعين من العبارات. يُسمّى هذا التحويل «نشرًا»: من أيّ نوع من العبارات ننطلق، وإلى أيّ نوع نصل؟ اكتب التعريف بكلماتك.',
         summary: 'نشر عبارة جداء يعني كتابة هذه العبارة على شكل مجموع (أو فرق).',
         body: (
           <div className="space-y-2">
@@ -64,7 +67,7 @@ export const LESSON_KNOWLEDGE = {
           chip: `(a+b)(c+d)`,
           quiz: [
             { q: '$(x+2)(x+3)=$', options: ['$x^2+6$', '$x^2+5x+6$', '$x^2+5x+5$'], correct: 1 },
-            { q: '$(2x-1)(x+4)=$', options: ['$2x^2+9x-4$', '$2x^2+8x-4$', '$2x^2+7x-4$'], correct: 2 },
+            { q: '$(2x+1)(x+3)=$', options: ['$2x^2+3$', '$2x^2+6x+3$', '$2x^2+7x+3$'], correct: 2 },
           ],
         },
         predictPrompt: 'في الملعب $(3x - 1)(3 + x)$ حسبت كل المناطق، منها اثنتان مقتطعتان، فساوى مجموعها مساحة الملعب من أجل كل قيمة جرّبتها لـ $x$. لو كان بعدا الملعب $a + b$ و $c + d$: كم جداءً تكتب، وكيف تختار عاملَي كل جداء؟ اكتب القاعدة بكلماتك.',
@@ -83,13 +86,13 @@ export const LESSON_KNOWLEDGE = {
         memo: {
           rule: `k(a-b)=ka-${R('kb')}`,
           hook: 'العدد يضرب كل حدّ',
-          example: `5(x-4)=5x-${R('20')}`,
+          example: `6(x-2)=6x-${R('12')}`,
           trap: 'ضرب الحدّ الأول وحده وترك الثاني',
           exam: 'أضرب العدد في كل حدّ مع حفظ الإشارة',
           chip: `k(a\\pm b)`,
           quiz: [
-            { q: '$-2(x-3)=$', options: ['$-2x-6$', '$-2x+6$', '$-2x-3$'], correct: 1 },
-            { q: '$4(2x+3)=$', options: ['$8x+3$', '$8x+12$', '$2x+12$'], correct: 1 },
+            { q: '$-2(x-5)=$', options: ['$-2x-10$', '$-2x+10$', '$-2x-5$'], correct: 1 },
+            { q: '$4(2x+5)=$', options: ['$8x+5$', '$8x+20$', '$2x+20$'], correct: 1 },
           ],
         },
         summary: 'نضرب العدد k في كل حد من حدّي المجموع أو الفرق، مع الإشارة.',
@@ -106,16 +109,16 @@ export const LESSON_KNOWLEDGE = {
         memo: {
           rule: `-(a-b)=-a+${R('b')}`,
           hook: 'ناقص قبل القوس يعكس الإشارات',
-          example: `3x-(x-4)=3x-x+${R('4')}=2x+4`,
+          example: `3x-(x-5)=3x-x+${R('5')}=2x+5`,
           trap: 'تغيير إشارة الحدّ الأول فقط داخل القوس',
           exam: 'أحذف الأقواس ثم أجمع الحدود التي لها قوة الحرف نفسها',
           chip: `-(a-b)`,
           quiz: [
             { q: '$5-(x-2)=$', options: ['$3-x$', '$7-x$', '$7+x$'], correct: 1 },
-            { q: 'تبسيط $2x^2+8x-x-4$ يعطي:', options: ['$9x^2-4$', '$2x^2+7x-4$', '$2x^2+9x-4$'], correct: 1 },
+            { q: 'تبسيط $3x^2+5x+2x-6$ يعطي:', options: ['$10x^2-6$', '$3x^2+7x-6$', '$3x^2+3x-6$'], correct: 1 },
           ],
         },
-        predictPrompt: 'في مثال الكتاب صار السطر $2x^2 + 8x - x - 4$ أقصر. لو أعطيناك عبارة طويلة فيها قوسان مسبوقان بإشارة $-$، وحدود فيها $x^2$ وحدود فيها $x$ وأعداد: بأيّ خطوات تبسّطها، وأيّ الحدود يحقّ لك أن تجمعها معًا؟ اكتب الطريقة.',
+        predictPrompt: 'في الملعب جمعتَ حدّين متشابهين فصار المجموع أقصر. لو أعطيناك عبارة طويلة فيها قوسان مسبوقان بإشارة $-$، وحدود فيها $x^2$ وحدود فيها $x$ وأعداد: بأيّ خطوات تبسّطها، وأيّ الحدود يحقّ لك أن تجمعها معًا؟ اكتب الطريقة.',
         summary: 'نبسّط عبارة بحذف الأقواس (قوسان مسبوقان بإشارة ناقص تتغيّر إشارة كل حد بداخلهما)، ثم بجمع الحدود المتشابهة، أي التي لها نفس قوة x.',
         body: (
           <div className="space-y-2">

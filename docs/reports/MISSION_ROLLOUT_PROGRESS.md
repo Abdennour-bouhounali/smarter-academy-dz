@@ -48,6 +48,16 @@ every lab of the unit at once (verdict « Cross-lesson », « L1 », « L2 », �
 | 3 | `inshaat-talis` | `segment-divider` (v2 treatment + LabCoach, new; both modes `equal` and `ratio`, `sameUnitOnly`, the cap) | ✅ done 2026-11-10 | `feat(lessons): inshaat-talis — mission prototype` | See « Unit 9, lesson 3 » below. |
 | S | `wadiya-idmajiya-talis` | `cone-cylinder` (player version, new — `ConeCylinderPlayer.jsx`) + `shadow-meet` (`hideHeight`, chain `why`) in ONE `LabRounds` of module 7; the page keeps `shadow-world` + `cone-cylinder` | ✅ built 2026-11-10 — the FIRST synthesis converted, pilot of the synthesis recipe (not committed: left to the owner) | | See « Unit 9, synthesis » and « The synthesis recipe » below. |
 
+## Unit 3 « الحساب الحرفي » — the table
+
+Prompt for the whole unit: `UNIT3_HISAB_HARFI_MISSION_PROMPT.md`; the council of 2026-11-11 decided every lab of the unit at once (verdict
+« Cross-lesson », « L1 », « L2 », « L3 »). Lessons 1 and 3 built in parallel on the shared kit `lessons/common/mission/pitchSceneKit.jsx`; lesson 2
+after lesson 1. Folder `lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/`.
+
+| # | Lesson (unit 3) | Labs converted | Status | Commit | Notes |
+|---|---|---|---|---|---|
+| 1 | `nashr-tabsit` | `pitch-expansion` (v2 treatment + its FIRST LabCoach, player only; `labels: 'area'`, collision-free ruler) | ✅ done 2026-11-11 | `feat(lessons): nashr-tabsit — mission prototype` | See « Unit 3, lesson 1 » below. |
+
 ## Lab families — which have the v2 treatment
 
 | Lab (`type`) | v2 treatment | First converted in |
@@ -66,6 +76,7 @@ every lab of the unit at once (verdict « Cross-lesson », « L1 », « L2 », �
 | `parallel-level` | ✅ (2026-11-10, both modes `ladder` and `crossing`, with or without an imposed ratio) | `aksiya-talis` (unit 9) |
 | `segment-divider` | ✅ (2026-11-10, both modes `equal` and `ratio`; `sameUnitOnly`, 3 graduations per rail) | `inshaat-talis` (unit 9) |
 | `shadow-meet` | ✅ (2026-11-10, born in the player: tasks `meet`, `ratio`, `flag`; asks `tap` and `type`; reusable through `steps`) | `talis-hisab-atwal` (unit 9) |
+| `pitch-expansion` | ✅ (2026-11-11, `labels` 'area' / 'terms', chains `dist` / `double` / `restored` / `result` + practice chains; lesson 2's identities still to add) | `nashr-tabsit` (unit 3) |
 | `cone-cylinder` | ✅ (2026-11-10, a PLAYER VERSION `ConeCylinderPlayer.jsx` chosen by `ConeCylinder.jsx` in the player: one trial = one press, `n` explicit, `lockH` / `lockR`, no number / volume / point letter in a verdict; the page lab is unchanged) | `wadiya-idmajiya-talis` (unit 9, synthesis) |
 | every other lab | ⏳ | — |
 
@@ -1136,6 +1147,66 @@ levels, the page cone lab with its volume line, 11 steps, the back links) — 0 
 0 console error (outside the practice station, where the mocked API answers `{ data: [] }` — the same error on `talis-hisab-atwal`). **Module 7's
 required path, automated: ≈ 78 s** (a machine, not a student: 3 rounds = 9 presses, 4 lab questions, 11 steps) — the student target (≈ 29 min)
 is still to be measured on a real student.
+
+## Unit 3, lesson 1 — `nashr-tabsit` « نشر وتبسيط عبارة جبرية » (2026-11-11)
+
+Prompt: `UNIT3_HISAB_HARFI_MISSION_PROMPT.md`; council of 2026-11-11 (5 advisors, 5 anonymous reviews, chairman), verdict « Cross-lesson » and
+« L1 » — binding over the designer's report. Built in parallel with lesson 3 (`tahlil-ibara`) on the unit's shared scene kit.
+
+**What was written**
+- `content/pitches.js` (`M1_ROUNDS` labId `m1-pitch`: r1 `3|x+5` in AREAS (x 1–9 without 5, start 3) → r2 `3x-1|3+x` in AREAS (x 1–6 without 3,
+  start 2; predictions `unhatched` « no », `otherX` « yes ») → r3 `x-2|2x-1` in terms, REQUIRED (prediction `termsLeft` 3; `corner`, then
+  `result`) → ⭐ `3x-2|2x-1` → free; practice `2|x+1`, `x-1|x+2`, `x-1|x-2`, each `releases`; `M2_ROUNDS` labId `m2-pitch`: the platform's
+  `2x-3|x-1`, chain `result`, then free) + `pitches.test.js` (the role scan, the collision SWEEP of every reachable x, every round PLAYED to ★★★).
+- `content/forbidden.js` (the climax signature by role + `TEXT` for prose + `oppositeCross`), `content/mission.test.js` (checkpoints recomputed,
+  dry-run of `shownValues` over every round / practice / module 2 / free pitch, peer, prep, memo BODIES, the map, the nine exercises, literal pins
+  of the hand-fixed module prose), `content/prep.js` (10 statements, skills `nashr` → `nashr-jabri-3am`, `tabsit` → `tabsit-hadhf-aqwas`, both
+  3AM), `content/peerSheet.js` « ورقة زينب » ((x + 3)(x + 6) with only the facing zones, checked at x = 0).
+- Config: `studentView: 'mission'`, `knowledgeMapOpen`, mission « مقاعد الممرّ: كم عشبًا يحتاج ملعب الحيّ؟ » (scene `neighbourhood-pitch`,
+  tools `nashr-qawsayn`, `tawziiya-nashr`, `tabsit`, `climaxModule: 4`, checkpoints `cp-ishara` −3(x − 2), `cp-qawsayn` (x + 1)(x + 6),
+  `cp-mutashabih` 2x² + 3x).
+- Modules: 0 = the ladder; 1 = `LabRounds m1-pitch` (step 1 waits for r1, step 4 for r2 — their trace from the WON rounds); 2 = `LabRounds
+  m2-pitch` (step 2 waits for it) and « ورقة زينب » as its last step; 3 = nine exercises REWRITTEN by the platform (verdict L1.7).
+- Catalogue: `prerequisiteLessonCodes: ['nashr-jabri-3am', 'tabsit-hadhf-aqwas']` (two free-text lines removed), exported, imported, checked in
+  the local DB (`lesson_prerequisites`).
+- Scene `lessons/common/mission/NeighbourhoodPitchScene.jsx` on the unit kit `pitchSceneKit.jsx` (PitchBackdrop, PitchPlot, TurfStrips,
+  PitchLines, Goal, Bench, BenchRow, CornerStand, TurfRoll, TurfRollStack, TapeMeasure, CutStrip — API stable, add only).
+
+**Added to shared code** (`pitch-expansion`, page unchanged — `logic/pitchExpansion.test.js` freezes the page defaults, the synthesis's
+`x+10+x` and lesson 2's identity kinds): the player treatment (MANIPULATION_CONTRACT « Seventeenth example »): `labels: 'area'` through one
+`zoneText`, `areaCollisions` / `playerXs` / `snapX` / `startXOf`, `trial.sig` and « the same x with the same tray is not a trial », `chains`,
+`predict`, `choices`, journal, live region, `coachOf` (the lab's FIRST coach — player only), `shownValues`; the player draws the pitch LANDSCAPE
+(a tall field such as 3 × (x + 5) is transposed). The sweep is hidden in the player (X1).
+
+**Content rewrites** — SHARED-deliberate (the teacher page gains too): module 1 step texts (the activity's questions, its numbers (2)/(3), its
+« printing error » note, the « السؤال n » subtitles), module 1/2 titles without « نشاط 1 » / « مثال الكتاب », module 2's brick leads and example
+box (platform examples), module 3's nine exercises and titles, memo examples `6(x − 2)` and `3x − (x − 5)` and three quizzes (`(2x + 1)(x + 3)`,
+`-2(x − 5)`, `4(2x + 5)`, `3x^2 + 5x + 2x - 6`), two predictPrompts, the map's nodes (activity text, prerequisite text, « مثالان », the
+« قوسان مسبوقان » mistake). PLAYER-only: the rounds, module 2's pitch (2x − 3)(x − 1) and its evidence line, the rule's geometric option
+(`player.rule.*`), the coach, the journal, the hidden sweep.
+
+**Saved-answer keys.** The lesson was never in mission mode, so NO key existed before (saved answers are on only for `studentView: 'mission'`):
+kept 0, retired 0. New: the fingerprint keys of every module question (automatic) — no explicit `lab-pitch` key is needed (the module steps read
+the stored STARS, announced by `LabRounds` at mount, so a reload never empties a step).
+
+**Traps (each was met)**
+- Area chips + a ruler on a collision x: 27 / 27 / −3 / −3 make the BUILD a guess — skip the x, sweep in a test.
+- A snap whose tie-break is the last direction FLICKERS under a resting finger: at a tie keep the shown value; commit the shown value.
+- `DraggableObject` forwards no `data-*`: coach targets are the SVG `[data-pitch-zone=<id>]`.
+- The text gate must read U+2212 and bare factors (`x − 4`, `2x + 10`) — and must not flag « + 2x + 10 » inside an expansion line.
+- A free pitch can leak the climax in its MERGES (`x-1|x-5` → −6x) and its factors (`x-1|x-3`): the scan caught both; replaced by `x-2|x-5`.
+- Exercises with a check value: x = 0 hides every x-zone — the peer sheet's lesson; the exercises check at x = 1 / 4.
+
+**Review** (react, code, a11y — every finding verified): FIXED — the snap flicker (HIGH); chains cut by the teacher's checkpoint switch in the
+player (rounds unwinnable); a double-tap prediction; the text gate (U+2212, bare factors); zone names now say « مقتطعة » / « مقتطعة مرّتين » /
+« لم تُحمل بعد »; the lit zone and the prediction ring in amber-700; unique SVG pattern ids; « تحقّق » with an empty tray says why; the live region
+isolates numbers and says when a check was not counted; the chip drop-zone label in the player; the `corner` options share one shape; journal
+headers « مساحة الملعب » / « مجموع المناطق ». REJECTED (shared primitives or project-wide, pre-existing in every lab): nested interactive roles
+in `DropZone`, the blue focus ring and native `disabled` of `DraggableObject`, the field overlay duplicating the table cells, `PRED_HOLD_MS`
+1,6 s (project standard), the « اسحب » wording, `DropZone`'s hint contrast.
+
+**Open (for the owner)**: the page lab still has no coach (logged in `LAB_COACH_ROLLOUT.md`); « زينب » also appears as a data name in one practice
+JSON (`content/practice/4am/tafsir-bayani-jumla/level-5/…-002.json`) — not a peer sheet; the shared-primitive a11y items above.
 
 ## The synthesis recipe (PROVISIONAL until a real student has been timed on the pilot: ≤ 32 min for module 7, module 8 finished)
 

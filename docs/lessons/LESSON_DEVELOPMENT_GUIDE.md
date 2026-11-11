@@ -1395,6 +1395,17 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
   for the later ones.
 - **Scan only what a screen WRITES.** `shownValues` must follow the round's chains: `shadow-meet` lists the ratio OB/OA only when
   `chains: 'same'` writes it (the practice lamppost of 1,5 m has OB/OA = 2/3, a climax ratio, but no screen of that round writes a ratio).
+- **Numbers on the zones, letters in the build — `labels: 'area'` (unit 3, `nashr-tabsit`, `pitch-expansion`, 2026-11-11).** When the tray of a lab
+  would print the very terms a BUILD asks for, show the zones' VALUES at the current x instead (one pure `zoneText(term, x, labels)` for every
+  place that shows a zone) and keep the letters on the sides: the student reads 18, 12, −3, −2 and writes 9x, 3x², −3, −x. A removed value keeps
+  a non-colour cue (✂ and hatching) and its name says « مقتطعة ». Reusable for any lab that turns a number at x into a letter term.
+- **The equal-values trap — `areaCollisions` (council of 2026-11-11).** When numbers stand for terms, two terms of DIFFERENT kinds (degree) must
+  never show the same number at a reachable x (27 and 27 at x = 3: which tile is 9x, which is 3x²?). The ruler skips such x (`playerXs`), the
+  start is never one, and a logic test sweeps EVERY reachable x of every round, practice rounds included. Same-kind twins (the two bx strips of a
+  square) are allowed by the rule itself — no per-round whitelist.
+- **Book exercises rewritten, the source kept for the teacher.** When a module's exercises were the book's, rewrite them with the platform's
+  numbers, contexts and wording, keep `source: src(<id>, …)` (the competence they cover, `check:textbook`) and add `part: 'بأعداد المنصّة'` so
+  the teacher's tag says it; check first that the practice bank / « بوصلتي » / BEM sheets do not read the file (they have their own data).
 
 ### Synthesis in the mission player — engine fields (PROVISIONAL until a real student has played the pilot)
 

@@ -27,7 +27,8 @@ export default function MissionLayer({ config, moduleNumber, basePath }) {
   const [checkpointOpen, setCheckpointOpen] = useState(Boolean(checkpoint));
   // L'ACCUEIL de la station (première arrivée, sans point d'étape) : la carte « أنت هنا », 2 s, un geste la ferme.
   // « أستعدّ » a SA fenêtre d'arrivée (TimedNotice, 5 s) : jamais deux fenêtres l'une sur l'autre (propriétaire, 2026-11-07).
-  const ownArrival = config.modules?.find((m) => Number(m.number) === Number(moduleNumber))?.stage === 'prerequisite_check';
+  // `config` peut être null (configuration pas encore chargée, rechargement à chaud) : useMission le tolère, ici aussi (2026-11-11)
+  const ownArrival = config?.modules?.find((m) => Number(m.number) === Number(moduleNumber))?.stage === 'prerequisite_check';
   const [welcome, setWelcome] = useState(() => on && !ownArrival && shouldWelcome(state.seen, moduleNumber, checkpoint));
   useEffect(() => {
     if (!welcome) return undefined;

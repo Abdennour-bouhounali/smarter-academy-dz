@@ -2824,6 +2824,34 @@ Since 2026-11-10 (unit 9, lesson 2) a `build` may also set `accept` (other filli
   button; never a notch). `shownValuesPlayer(props)` lists by role (`cone-H`, `cone-R`, `h`, `r`, `OT`, `ratio`, `value`, `square`). Strings:
   `lesson.manipulation.json › coneCylinderPlayer`. Two page fixes on the way: `discoveryOptionsOf` no longer says that two EQUAL products differ
   (r × h is the same for h and H − h: `dWhyProdSame`), the r handle's pointer maths follows the track's displayed height.
+- **Seventeenth example (2026-11-11, unit 3):** lesson `nashr-tabsit`, `content/pitches.js` (`M1_ROUNDS`, `LabRounds labId="m1-pitch"`: `3|x+5`
+  in AREAS by hand → `3x-1|3+x` in AREAS → `x-2|2x-1` in terms, required → ⭐ `3x-2|2x-1` → free; practice `2|x+1`, `x-1|x+2`, `x-1|x-2`, each
+  `releases`; `M2_ROUNDS`, `m2-pitch`: the platform's `2x-3|x-1`, then free), council of 2026-11-11, verdict L1. The lab `pitch-expansion`
+  (`algebra/PitchExpansion.jsx`, `logic/pitchExpansion.js`) gets the v2 treatment in shared code; the page (lesson 2, the synthesis, the teacher,
+  Classroom Mode) is unchanged — every new prop defaults to today, frozen by `logic/pitchExpansion.test.js`. **`labels: 'area'`**: the zones, the
+  Descartes cells and the tray chips show the zone's AREA at the x on screen (a NUMBER; a removed zone negative, hatched and marked ✂, its name
+  « مقتطعة n »), the sides keep their letter terms, merging is off — so the BUILD that writes the letter terms is not a copy. One pure function,
+  `logic › zoneText(term, x, labels)`, serves the three places. **Area collisions**: `areaCollisions(expr, x)` = two zones of DIFFERENT degree with
+  the same area (27, 27, −3, −3 at x = 3 for (3x − 1)(3 + x)); `playerXs({ expr, span, labels })` removes them in area mode (an edge collision
+  shrinks the ruler, an inner one is skipped: the ruler snaps past it — at a tie under the finger it KEEPS the shown value, the keyboard and ±
+  jump in the step's direction, the release commits the shown value), `startXOf` (an explicit `start` if reachable). A logic test sweeps every
+  reachable x of every area-mode round. **A trial** is a press on « تحقّق »: `onVerdict { groups: x, exact }` (`verdictOf`), the same x with the
+  same tray (`trial.sig = trayKey`) is not a trial and re-announces its verdict, the round's first refusal is `free`; a merge refusal (`notLike`) is a
+  notice, never a verdict; an empty tray says « احمل منطقة… أوّلًا ». **The sweep « جرّب كل الإمكانيات » is hidden in the player** (verdict X1).
+  `chains`: `dist` (at the first verified x « area » + BUILD k(a + b) = ▢ + ▢ — one slot per zone named by its two sides « 3 × x », the decoy =
+  the term NOT multiplied — then at discovery the rule `rulePlayer`, whose right option gives the geometric reason « لأنّ الملعب يُقطع إلى المناطق
+  نفسها مهما كان x », `player.rule.*`), `double` (BUILD the four zones, decoy = the removed zone ADDED, negative tiles drawn in parentheses; the
+  rule), `restored` (`corner`: why the doubly hatched corner counts +; at discovery the page's `result`), `result`, `distEasy` / `doubleEasy` /
+  `restoredEasy`, `none`. In the player the teacher's checkpoint switch does not cut the chains (they ARE the round's goals). `predict`:
+  `unhatched` (« المنطقتان غير المخطّطتين وحدهما تكفيان؟ », judged by a check with exactly those zones), `otherX` (judged at the second x),
+  `termsLeft` (options n − 1, n, n + 1, judged when reduced); the object is ringed (amber-700) while the prediction is open. `choices`: exprs.
+  Journal « 📋 جدول تجاربك » (x · مساحة الملعب · مجموع المناطق · « صحيحة » / « ناقصة »), an always-mounted `sr-only` live region
+  (`[data-pe-verdict-live]`), ✓/✗ `aria-hidden`, « تحقّق » and ± with `aria-disabled` + a guard, zone names that say « مقتطعة » / « مقتطعة
+  مرّتين » / « لم تُحمل بعد », unique SVG pattern ids. `LabCoach` (`coachOf`: an unhatched zone → the next → « تحقّق » → after a refusal the
+  framed zone still to carry → a chip to merge → the ruler after one verified x). `shownValues(props)` lists by role (`x`, `side`, `area`, `sum` —
+  every subset sum —, `factor`, `term` — partial merges and tiles —, `expansion`, `decoy`). Lead and mission strings of a round are rendered with
+  `MathText` in the player (letters in `$…$`). Strings: `lesson.manipulation.json › pitchExpansion.player`, `pred`, `coach`, `cp.build`,
+  `cp.build4`, `cp.corner`, `cp.player`.
 - **Blocking:** `cp.blocking` stays true until the chain is finished; the lab hides its « next task » button meanwhile.
 - **Guided, never told first:** wrong try 1 → the chosen option's `why` (else hint 1); try 2 → hint 2 (sharper); try 3 →
   the answer AND its explanation (the student is never stuck forever). A wrong option stays struck and disabled.
