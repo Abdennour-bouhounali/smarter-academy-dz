@@ -241,12 +241,14 @@ export const transformDone = (lab) => isSolved(current(lab));
  * nombres à droite, puis la division par le coefficient — offerte avec son opposé
  * (÷3 et ÷(−3)) : les deux chemins sont justes, seul le SENS diffère.
  */
-export function cardsFor(I) {
+export function cardsFor(I, divide) {
   if (isSolved(I)) return [];
   if (!isZero(I.R.a)) return [{ op: I.R.a.n > 0 ? 'subX' : 'addX', k: I.R.a.n > 0 ? I.R.a : frac(-I.R.a.n, I.R.a.d) }];
   if (!isZero(I.L.b)) return [{ op: I.L.b.n > 0 ? 'sub' : 'add', k: I.L.b.n > 0 ? I.L.b : frac(-I.L.b.n, I.L.b.d) }];
   if (isZero(I.L.a)) return [];
   if (eq(I.L.a, -1)) return [{ op: 'mul', k: frac(-1) }];
+  // lecteur (verdict L3.4) : `divide: 'coef'` — SEULE la division par le coefficient lui-même (÷2 pour 2x, ÷(−2) pour −2x) ; la page offre toujours les deux
+  if (divide === 'coef') return [{ op: 'div', k: I.L.a }];
   const a = I.L.a;
   const pos = a.n > 0 ? a : frac(-a.n, a.d);
   return [{ op: 'div', k: pos }, { op: 'div', k: frac(-pos.n, pos.d) }];

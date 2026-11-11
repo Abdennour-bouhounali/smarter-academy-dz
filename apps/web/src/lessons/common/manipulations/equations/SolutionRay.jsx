@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { Minus, Plus, Check } from 'lucide-react';
@@ -12,6 +12,10 @@ import EquationDisplay from '../primitives/EquationDisplay';
 import MathText from '../../components/MathText';
 import { bidi } from '../../../../utils/bidi';
 import * as L from '../logic/solutionRay';
+import * as P from '../logic/solutionRayPlayer';
+import { useLabCoach } from '../primitives/LabCoach';
+import PredictTray from '../primitives/PredictTray';
+import { useInMissionPlayer, useMissionArea } from '../../mission/missionPlayerContext';
 import { useLabCheckpoint } from '../primitives/LabCheckpoint';
 import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
 import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
@@ -79,6 +83,9 @@ const { toNumber } = Lin;
  * `bracket` (false : pas d'étape du crochet), `transform` (défaut : le niveau متقدم),
  * `onTrial({ kind: 'trace' | 'bracket' | 'step' | 'refusal', … })`, `onFinished`.
  */
+/** Le temps pendant lequel un résultat de prédiction reste seul à l'écran avant la question de la manche. */
+export const PRED_HOLD_MS = 1600;
+const ringP = 'focus-visible:ring-indigo-600 focus-visible:ring-offset-2';
 const RED = '#DC2626';
 const GREY = '#94A3B8';
 const EDGE = 22;
@@ -86,20 +93,29 @@ const EDGE = 22;
 export default function SolutionRay({
   ineq: ineq0 = '-3x+5<=20', context, whole, min, max, marks = [], bracket: withBracket = true, transform,
   title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false, onFinished, onTrial, onCheckpoint,
+  // ── LECTEUR DE MISSION (rollout 2026-11-11, unité 4 leçon 3) ──
+  onVerdict, chains: chainsMode = 'none', predict: predictList = [], choices, start, sequence, sides, divide, handDone = false, coach: coachOn = true,
 }) {
   const { t } = useTranslation('lesson');
+  const gameScreen = useInMissionPlayer();
+  const uid = useId();
   const k = useCallback((key, o) => t(`manipulation.solutionRay.${key}`, o), [t]);
   const reduce = useReducedMotion();
   const phone = context === 'phone';
   const isWhole = whole ?? phone;
-  const state = useManipulation({ type: 'solution-ray', initialNumbers: { ineq: ineq0 }, initialMode, initialLevel: level, withLevels, hintCount: 3 });
-  const ineqSrc = state.numbers.ineq;
+  const [caseIdx, setCaseIdx] = useState(0);
+  const caseRef = useRef(0);
+  const cases = gameScreen && sequence?.length ? sequence : null;
+  const state = useManipulation({ type: 'solution-ray', initialNumbers: { ineq: cases ? cases[0] : ineq0 }, initialMode, initialLevel: level, withLevels, hintCount: 3 });
+  const ineqSrc = cases ? cases[caseIdx] : state.numbers.ineq;
+  const primary = cases ? true : ineqSrc === ineq0;
   const doTransform = withBracket && (transform ?? state.level === 'advanced');
   const mode = doTransform ? 'flip' : withBracket ? 'bracket' : 'region';
 
-  const make = () => L.initLab({ ineq: ineqSrc, whole: isWhole, min, max });
+  const makeFor = (src) => L.initLab({ ineq: src, whole: isWhole, min: gameScreen && !primary ? undefined : min, max: gameScreen && !primary ? undefined : max });
+  const make = () => makeFor(cases ? cases[caseRef.current] : ineqSrc);
   const [lab, setLab] = useState(make);
-  const sceneKey = `${ineqSrc}:${state.epoch}:${state.resetCount}`;
+  const sceneKey = `${state.numbers.ineq}:${state.epoch}:${state.resetCount}`;
   const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
   const [live, setLive] = useState(null);
   const [last, setLast] = useState(null);           // dernière trace validée (pour aria-live)
@@ -112,28 +128,107 @@ export default function SolutionRay({
   // Miroir synchrone de `lab` : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
   const labRef = useRef(lab);
   labRef.current = lab;
+  // lecteur : les suites finies, les prédictions (clé → juste ?), celles posées, les résultats montrés, les essais déjà annoncés (une clé par essai)
+  const [doneIds, setDoneIds] = useState([]);
+  const [preds, setPreds] = useState({});
+  const asked = useRef(new Set());
+  const sent = useRef(new Set());
+  const refusedSeen = useRef(0);
+  const discoveredSent = useRef(false);
+  const heardPred = useRef(new Set());
+  const [shownPreds, setShownPreds] = useState([]);
+  const [predHold, setPredHold] = useState(false);
+  const holdTimer = useRef(null);
+  const [choiceSaid, setChoiceSaid] = useState(null);
+  const [gesture, setGesture] = useState(0);
+  const [trail, setTrail] = useState([]);          // lecteur : les graduations relâchées, dans l'ordre
+  const [missionBig, setMissionBig] = useState(false);
+  const [doneCases, setDoneCases] = useState([]);
   const resetScene = () => {
-    setLab(make()); setLive(null); setLast(null);
+    setLab(make()); setLive(null); setLast(null); setTrail([]);
     setDraft({ k: null, side: null, toward: null }); setBLive(null); setVerdict(null); setCard(null); setStepMsg(null);
   };
+  // lecteur : « أعِد التجربة » — la droite repart de zéro (et de la première متراجحة d'une manche à deux cas) ; la manche oublie ce qu'elle défait
+  const retryPlayer = () => {
+    caseRef.current = 0; setCaseIdx(0); setDoneCases([]);
+    sent.current = new Set(); refusedSeen.current = 0; discoveredSent.current = false;
+    setLab(makeFor(cases ? cases[0] : ineqSrc)); setLive(null); setLast(null); setTrail([]);
+    setDraft({ k: null, side: null, toward: null }); setBLive(null); setVerdict(null); setCard(null); setStepMsg(null);
+    state.report(onTrial, { tk: 'retry' });
+  };
   // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — le rayon, les traces et les questions du labo
-  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); resetScene(); }
+  if (scene.key !== sceneKey) {
+    setScene({ key: sceneKey, inits: scene.inits + 1 });
+    if (gameScreen) {
+      caseRef.current = 0; setCaseIdx(0); setDoneCases([]);
+      setDoneIds([]); setPreds({}); asked.current = new Set(); sent.current = new Set(); refusedSeen.current = 0; discoveredSent.current = false;
+      heardPred.current = new Set(); setShownPreds([]); setPredHold(false);
+    }
+    resetScene();
+  }
+  // la manche (LabRounds) repart de zéro avec la scène : ses essais et prédictions d'avant ne comptent plus
+  useEffect(() => { if (gameScreen && scene.inits > 0) state.report(onTrial, { tk: 'reset' }); }, [scene.inits]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const ready = mode === 'region' ? L.regionDiscoveryReady(lab) : mode === 'bracket' ? L.bracketDiscoveryReady(lab) : L.flipDiscoveryReady(lab);
+  const lastCase = !cases || caseIdx === cases.length - 1;
+  const divStage = gameScreen && mode === 'flip' && !!lab.bracket && divide === 'coef' && P.isDivisionStage(L.current(lab));
+  const ready = gameScreen
+    ? (mode === 'region' ? P.borderSeen(lab) : !!lab.bracket)
+    : (mode === 'region' ? L.regionDiscoveryReady(lab) : mode === 'bracket' ? L.bracketDiscoveryReady(lab) : L.flipDiscoveryReady(lab));
   // les questions pendant le labo : une suite unique quand la découverte est atteinte ; celle qui finit par la règle remplace la découverte automatique
   const cpSettings = useLabCheckpointSettings('solution-ray');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
   const cpLive = cpOn && cpSettings.enabled;
-  const chain = cpLive ? CHAINS[mode] : null;
+  const chain = !gameScreen && cpLive ? CHAINS[mode] : null;
+  // ── le lecteur : les suites de la manche (CHAINS_PLAYER), posées quand ce qu'elles interrogent est là, après les résultats des prédictions ──
+  const playerChains = gameScreen ? (CHAINS_PLAYER[chainsMode] ?? []) : [];
+  const chainCtx = { lastCase, divStage, cases };
+  const predKeys = gameScreen ? predictList.filter(P.PREDICT_KEYS_OK).slice(0, 2) : [];
+  const judgedPreds = gameScreen ? P.judgedPredictions(lab, predKeys.filter((key) => key in preds), ready) : [];
+  const pendingPreds = judgedPreds.filter((key) => !heardPred.current.has(key));
+  const holdChain = pendingPreds.length > 0 || predHold;
+  const playerPending = gameScreen && cpLive && !holdChain ? playerChains.find((c) => c.reached(lab, chainCtx) && !doneIds.includes(c.id)) ?? null : null;
+  /** lecteur : un ESSAI nouveau est annoncé une seule fois ; le premier refus de la manche est gratuit */
+  const emitVerdict = (key, groups, exact) => {
+    if (!gameScreen || sent.current.has(key)) return;
+    sent.current.add(key);
+    const free = !exact && refusedSeen.current === 0;
+    if (!exact) refusedSeen.current += 1;
+    state.report(onVerdict, { groups, exact, ...(free ? { free: true } : {}) });
+  };
+  /** lecteur : la division BÂTIE est juste → la ligne finale s'ajoute à la chaîne (l'indigo couvre ses points rouges) */
+  const finishDivision = () => {
+    const cur = labRef.current;
+    if (!P.isDivisionStage(L.current(cur))) return;
+    const parts = P.divisionParts(cur);
+    const r = L.chooseStep(cur, parts.card, parts.rel);
+    labRef.current = r.lab; setLab(r.lab); setGesture((g) => g + 1);
+    playSfx('flag');
+    emitVerdict(`c${caseRef.current}:s${cur.steps.length}:ok`, cur.steps.length + 1, true);
+  };
   const cp = useLabCheckpoint({
-    id: chain ? ineqSrc : null,
-    questions: chain && ready ? chain.map((q) => QUESTIONS[q](lab, k, { mode, phone })) : null,
-    reached: ready,
+    id: gameScreen ? playerPending?.id ?? null : (chain ? ineqSrc : null),
+    questions: gameScreen
+      ? (playerPending ? playerPending.qs.map((q) => QUESTIONS_P[q](lab, k, chainCtx)) : null)
+      : (chain && ready ? chain.map((q) => QUESTIONS[q](lab, k, { mode, phone })) : null),
+    reached: gameScreen ? !!playerPending : ready,
     resetKey: scene.inits,
-    onRetry: resetScene,
-    onEvent: (ev) => state.report(onCheckpoint, ev),   // {tk:'checkpoint'|'checkpoint-done', id: ineq, …} — la TRACE que les étapes du module relisent
-    onDone: () => { state.discover(); state.formalize(); },
+    onRetry: gameScreen ? retryPlayer : resetScene,
+    onEvent: (ev) => state.report(gameScreen ? onTrial : onCheckpoint, ev),   // {tk:'checkpoint'|'checkpoint-done', id: ineq, …} — la TRACE que les étapes du module relisent
+    onDone: (id) => {
+      if (gameScreen) {
+        setDoneIds((d) => (d.includes(id) ? d : [...d, id]));
+        const qs = playerChains.find((c) => c.id === id)?.qs ?? [];
+        if (qs.includes('buildDiv')) finishDivision();
+        if (qs.some((q) => /^rule/.test(q))) { state.discover(); state.formalize(); }
+        return;
+      }
+      state.discover(); state.formalize();
+    },
   });
-  useEffect(() => { if (ready && !cpLive) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (ready && !cpLive && !gameScreen) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  // lecteur : la découverte du labo (la frontière épinglée), annoncée une fois à la manche
+  useEffect(() => {
+    if (gameScreen && mode === 'region' && ready && !discoveredSent.current) { discoveredSent.current = true; state.report(onTrial, { tk: 'discovered' }); }
+  }, [ready]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // une étape est FAITE quand son objectif est atteint ET (la dernière) ses questions répondues : la pastille passe au vert et on fête
   const stepDone = (mode === 'region'
@@ -144,6 +239,7 @@ export default function SolutionRay({
   const celebrated = useRef({ n: 0, inits: scene.inits });
   if (celebrated.current.inits !== scene.inits) celebrated.current = { n: 0, inits: scene.inits };   // « إعادة » : on refête
   useEffect(() => {
+    if (gameScreen) return;   // lecteur : pas de fête quand l'étape est cachée
     if (nDone <= celebrated.current.n) return;
     celebrated.current.n = nDone;
     party.celebrate({ n: nDone, total: stepDone.length });
@@ -152,9 +248,10 @@ export default function SolutionRay({
 
   /* ── la géométrie de la droite ── */
   const boxRef = useRef(null);
+  const lineRef = useRef(null);
   const [width, setWidth] = useState(320);
   useLayoutEffect(() => {
-    const el = boxRef.current;
+    const el = lineRef.current ?? boxRef.current;
     if (!el) return undefined;
     const measure = () => setWidth(Math.max(260, Math.floor(el.clientWidth)));
     measure();
@@ -171,12 +268,46 @@ export default function SolutionRay({
   const xs = (kk) => L.numText(L.xOfK(lab, kk));
   const xt = (kk) => L.numTex(L.xOfK(lab, kk));
 
+  /* ── lecteur : la PRÉDICTION, avant le premier geste ; les commandes sont figées pendant elle et pendant une question ── */
+  const untouched = lab.traces.length === 0 && live == null && !lab.bracket && draft.k == null;
+  const nextPred = predKeys.find((key) => !asked.current.has(key)) ?? null;
+  const predictOpen = gameScreen && cpLive && !cp.open && !missionBig && untouched && nextPred != null;
+  const locked = gameScreen && (cp.open || predictOpen);
+  const lockedRef = useRef(false);
+  lockedRef.current = locked;
+  const sayPredict = (says) => {
+    const key = nextPred;
+    const ok = String(says) === String(P.predictTruth(lab, key));
+    asked.current.add(key);
+    playSfx('pop');
+    setPreds((m) => ({ ...m, [key]: ok }));
+    state.report(onTrial, { tk: 'predict', ok });
+    if (!predKeys.some((x) => x !== key && !asked.current.has(x))) {
+      setTimeout(() => boxRef.current?.querySelector('[data-ray-probe]')?.focus(), 60);
+    }
+  };
+  const pendingSig = pendingPreds.join('|');
+  useEffect(() => {
+    if (!pendingSig) return;
+    const keys = pendingSig.split('|');
+    keys.forEach((key) => heardPred.current.add(key));
+    setShownPreds(keys.map((key) => ({ key, ok: preds[key] })));
+    playSfx(keys.every((key) => preds[key]) ? 'correct' : 'pop');
+    setPredHold(true);
+    clearTimeout(holdTimer.current);
+    holdTimer.current = setTimeout(() => setPredHold(false), PRED_HOLD_MS);
+  }, [pendingSig]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => () => clearTimeout(holdTimer.current), []);
+  useEffect(() => { if (cp.open) setShownPreds([]); }, [cp.open]);
+
   /* ── geste 1 : le mobile ── */
-  const defK = L.defaultK(lab);
+  // lecteur : chaque manche fixe SON départ (jamais `defaultK`, que la page ferait tomber sur la borne ou son voisin)
+  const defK = gameScreen ? (start != null && primary ? start * lab.den : lab.kmin) : L.defaultK(lab);
   const heard = useRef(0);
   const tick = () => { const now = Date.now(); if (now - heard.current > 35) { playSfx('tooth'); heard.current = now; } };
   const trace = (v) => {
     if (!L.inRange(labRef.current, v)) return;
+    if (gameScreen) { setGesture((g) => g + 1); setTrail((tl) => [...tl.filter((x) => x !== v), v]); if (mode === 'region') emitVerdict(`t${v}`, v, true); }
     tick();
     const e = L.evaluate(labRef.current, v);
     labRef.current = L.addTrace(labRef.current, v);
@@ -186,8 +317,8 @@ export default function SolutionRay({
   };
   const untraced = () => Array.from({ length: labRef.current.kmax - labRef.current.kmin + 1 }, (_, i) => labRef.current.kmin + i).filter((v) => !labRef.current.traces.some((tr) => tr.k === v));
   const probe = useStretchInteraction({
-    value: live ?? last?.k ?? defK, range, toValue, onChange: setLive, direction: 'ltr',
-    onCommit: (v) => { setLive(null); trace(v); },
+    value: live ?? last?.k ?? defK, range, toValue, onChange: (v) => { if (!lockedRef.current) setLive(v); }, direction: 'ltr',
+    onCommit: (v) => { setLive(null); if (!lockedRef.current) trace(v); },
   });
   // Une graduation PAR DÉFAUT (L.defaultK : hors solution, jamais la borne) : le mobile n'est pas posé « nulle part ».
   // Ce n'est pas une trace : `lab.traces` ne la contient pas, `last` reste vide.
@@ -199,9 +330,10 @@ export default function SolutionRay({
   const bk = bLive ?? draft.k;
   const bStretch = useStretchInteraction({
     value: bk, range, toValue, onChange: setBLive, direction: 'ltr',
-    onCommit: (v) => { setBLive(null); setDraft((d) => ({ ...d, k: v })); setVerdict(null); },
+    onCommit: (v) => { setBLive(null); if (lockedRef.current) return; setDraft((d) => ({ ...d, k: v })); setVerdict(null); },
   });
   const fix = () => {
+    if (lockedRef.current) return;
     if (draft.k == null || draft.side == null || draft.toward == null) { setVerdict({ tone: 'ko', key: 'bracketIncomplete' }); return; }
     const v = L.checkBracket(lab, draft);
     if (v === true) {
@@ -209,19 +341,38 @@ export default function SolutionRay({
       playSfx('flag');
       setVerdict({ tone: 'ok', key: 'bracketOk' });
       state.report(onTrial, { kind: 'bracket', k: draft.k, x: xs(draft.k), side: draft.side, toward: draft.toward, glyph: L.glyphOf(draft.side, draft.toward) });
+      if (gameScreen) { setGesture((g) => g + 1); emitVerdict(`c${caseRef.current}:ok`, caseRef.current, true); }
     } else {
       setVerdict({ tone: 'ko', key: v.reason, witness: v.witness });
       playSfx('over');
       state.report(onTrial, { kind: 'refusal', what: 'bracket', reason: v.reason });
+      if (gameScreen) { setGesture((g) => g + 1); emitVerdict(`c${caseRef.current}:b:${draft.k}|${draft.side}|${draft.toward}`, caseRef.current, false); }
     }
+  };
+  /** lecteur : la manche à deux cas passe à la متراجحة suivante (la même borne) une fois le crochet de la première posé */
+  const nextCase = () => {
+    const i = caseRef.current + 1;
+    if (!cases || i >= cases.length) return;
+    setDoneCases((d) => [...d, { tex: L.ineqTex(labRef.current.ineq), glyph: L.glyphOf(labRef.current.bracket.side, labRef.current.bracket.toward) }]);
+    caseRef.current = i; setCaseIdx(i);
+    const fresh = makeFor(cases[i]);
+    labRef.current = fresh; setLab(fresh);
+    setLive(null); setLast(null); setTrail([]); setDraft({ k: null, side: null, toward: null }); setBLive(null); setVerdict(null); setCard(null); setStepMsg(null); setGesture((g) => g + 1);
   };
 
   /* ── geste 3 : transformer (متقدم) ── */
   const cur = L.current(lab);
-  const cards = doTransform && lab.bracket ? L.cardsFor(cur) : [];
+  const cards = doTransform && lab.bracket && !divStage ? L.cardsFor(cur, divide) : [];
   const cands = card ? L.candidates(lab, card) : null;
   const choose = (rel) => {
+    if (lockedRef.current) return;
     const r = L.chooseStep(lab, card, rel);
+    if (gameScreen) {
+      setGesture((g) => g + 1);
+      const n = lab.steps.length;
+      if (r.accepted) emitVerdict(`c${caseRef.current}:s${n}:ok`, n + 1, true);
+      else emitVerdict(`c${caseRef.current}:s${n}:${L.cardTex(card)}|${rel}`, n + 1, false);
+    }
     setLab(r.lab);
     if (r.accepted) {
       playSfx(L.transformDone(r.lab) ? 'flag' : 'bell');
@@ -242,13 +393,17 @@ export default function SolutionRay({
   const sideWord = (s) => k(s === 'left' ? 'sideLeftWord' : 'sideRightWord');
   const boundTex = L.numTex(lab.sol.bound);
 
+  /* ── lecteur : le verdict est CACHÉ pendant le glisser (la libération est la pression, L3.2) ── */
+  const traced = lab.traces.some((tr) => tr.k === pk);
+  const shownV = !gameScreen || (traced && live == null && !probe.dragging);
+
   /* ── barres des deux membres ── */
   const ends = [lab.kmin, lab.kmax].map((kk) => L.evaluate(lab, kk));
   const vals = ends.flatMap((e) => [toNumber(e.left), toNumber(e.right)]);
   const vLo = Math.min(0, ...vals);
   const vHi = Math.max(0, ...vals);
   const pct = (v) => ((v - vLo) / Math.max(1e-9, vHi - vLo)) * 100;
-  const Bar = ({ v, color, label, data }) => {
+  const Bar = ({ v, color, label, data, hide }) => {
     const a = pct(0); const b = pct(toNumber(v));
     return (
       <div className="flex items-center gap-2" data-member={data}>
@@ -257,7 +412,7 @@ export default function SolutionRay({
           <div className="absolute inset-y-0 w-px bg-slate-400" style={{ left: `${a}%` }} />
           <div className="absolute inset-y-0.5 rounded" style={{ left: `${Math.min(a, b)}%`, width: `${Math.abs(b - a)}%`, background: color, transition: reduce ? 'none' : 'width 120ms, left 120ms' }} />
         </div>
-        <span className="w-16 shrink-0 text-end font-mono text-sm font-bold text-slate-800" dir="ltr">{L.numText(v)}</span>
+        <span className="w-16 shrink-0 text-end font-mono text-sm font-bold text-slate-800" dir="ltr">{hide ? '؟' : L.numText(v)}</span>
       </div>
     );
   };
@@ -341,7 +496,7 @@ export default function SolutionRay({
           style={{ left: xOf(pk), cursor: probe.dragging ? 'grabbing' : 'grab' }}
           data-ray-probe
         >
-          <span className={`-mt-3 rounded-full px-2 font-mono text-xs font-extrabold text-white ${pe ? (pe.ok ? 'bg-red-600' : 'bg-slate-500') : 'bg-slate-700'}`}>{xs(pk)}</span>
+          <span className={`-mt-3 rounded-full px-2 font-mono text-xs font-extrabold text-white ${pe && shownV ? (pe.ok ? 'bg-red-600' : 'bg-slate-500') : 'bg-slate-700'}`}>{xs(pk)}</span>
         </div>
       </div>
     </div>
@@ -366,6 +521,273 @@ export default function SolutionRay({
 
   const btn = 'inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border-2 px-3 text-sm font-bold focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300';
   const pick = (on) => (on ? 'border-red-600 bg-red-50 text-red-900' : 'border-slate-300 bg-white text-slate-700');
+
+  /* ── les deux étapes (crochet, transformation) : partagées par la page et le lecteur ── */
+  const sectionsNode = (
+    <>
+          {/* ── étape 2 : le crochet ── */}
+          {withBracket && (
+            <section className="space-y-2 rounded-xl border-2 border-dashed border-red-200 bg-white/70 p-2" data-ray-bracket data-placed={String(!!lab.bracket)}>
+              <h4 className="text-sm font-extrabold text-red-900">{k('bracketTitle')}</h4>
+              {!L.hasContrast(lab) && <p className="text-sm text-slate-600">{k('needContrast')}</p>}
+              {bracketOpen && (
+                <>
+                  <p className="text-sm text-slate-700">{k('bracketLead')}</p>
+                  <div {...bStretch.trackProps} className="relative h-12 rounded-lg bg-red-50/70" dir="ltr" style={{ ...bStretch.trackProps.style }} data-ray-bracket-track>
+                    <div
+                      {...bStretch.handleProps({ label: k('bracketHandle'), valueText: bk == null ? k('bracketNotSet') : k('bracketValue', { x: xs(bk) }) })}
+                      className={`absolute top-0.5 flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-xl border-2 font-mono text-xl font-black text-red-700 outline-none focus-visible:ring-4 focus-visible:ring-blue-300 ${bStretch.dragging ? 'border-blue-500 bg-blue-50' : 'border-red-300 bg-white'}`}
+                      style={{ left: xOf(bk ?? lab.kmin), opacity: bk == null ? 0.6 : 1 }}
+                      data-ray-bracket-handle
+                    >
+                      {L.glyphOf(draft.side ?? 'left', draft.toward ?? true)}
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-2" data-ray-sides>
+                    <button type="button" className={`${btn} ${pick(draft.side === 'left')}`} aria-pressed={draft.side === 'left'} onClick={() => { setDraft((d) => ({ ...d, side: 'left' })); setVerdict(null); }} data-ray-side="left">{k('sideLeft')}</button>
+                    <button type="button" className={`${btn} ${pick(draft.side === 'right')}`} aria-pressed={draft.side === 'right'} onClick={() => { setDraft((d) => ({ ...d, side: 'right' })); setVerdict(null); }} data-ray-side="right">{k('sideRight')}</button>
+                  </div>
+                  <div className="flex flex-wrap gap-2" data-ray-towards>
+                    <button type="button" className={`${btn} ${pick(draft.toward === true)}`} aria-pressed={draft.toward === true} onClick={() => { setDraft((d) => ({ ...d, toward: true })); setVerdict(null); }} data-ray-toward="true">{k('toward')}</button>
+                    <button type="button" className={`${btn} ${pick(draft.toward === false)}`} aria-pressed={draft.toward === false} onClick={() => { setDraft((d) => ({ ...d, toward: false })); setVerdict(null); }} data-ray-toward="false">{k('away')}</button>
+                  </div>
+                  <button type="button" onClick={fix} className={`${btn} border-red-600 bg-red-600 text-white`} data-ray-fix>
+                    <Check className="h-5 w-5" aria-hidden="true" /> {k('fix')}
+                  </button>
+                </>
+              )}
+              {lab.bracket && (
+                <p className="text-sm font-bold text-red-900" data-ray-bracket-done>
+                  <MathText>{k('bracketDone', { x: boundTex, glyph: `\u2066${L.glyphOf(lab.bracket.side, lab.bracket.toward)}\u2069`, side: sideWord(lab.bracket.side) })}</MathText>
+                </p>
+              )}
+              <p className="min-h-[1.25rem] text-sm" aria-live="polite" data-ray-verdict={verdict?.key ?? ''}>
+                {verdict && verdict.tone === 'ko' && (
+                  <span className="text-rose-800">
+                    <MathText>{verdict.witness
+                      ? (verdict.key === 'glyph'
+                        ? k(verdict.witness.ok ? 'refuseGlyphToward' : 'refuseGlyphAway', { line: witnessLine(verdict.witness) })
+                        : k(verdict.witness.ok ? 'refuseOut' : 'refuseIn', { line: witnessLine(verdict.witness) }))
+                      : k(verdict.key)}</MathText>
+                  </span>
+                )}
+              </p>
+            </section>
+          )}
+
+          {/* ── étape 3 : transformer l'inéquation (متقدم) ── */}
+          {doTransform && lab.bracket && (
+            <section className="space-y-2 rounded-xl border-2 border-indigo-200 bg-white/80 p-2" data-ray-transform data-done={String(L.transformDone(lab))}>
+              <h4 className="text-sm font-extrabold text-indigo-900">{k('transformTitle')}</h4>
+              <ol className="space-y-1" dir="ltr" data-ray-chain>
+                {lab.chain.map((I, i) => (
+                  <li key={i} className="flex flex-wrap items-center gap-2 font-mono text-sm">
+                    {i > 0 && <span className="rounded-full bg-indigo-100 px-2 text-xs text-indigo-800"><MathText>{`$${L.cardTex(lab.steps[i - 1])}$`}</MathText></span>}
+                    <MathText>{`$${L.ineqTex(I)}$`}</MathText>
+                  </li>
+                ))}
+              </ol>
+              {!L.transformDone(lab) && (
+                <>
+                  {(!gameScreen || cards.length > 0 || cands) && <p className="text-sm text-slate-700">{k('transformLead')}</p>}
+                  <div className="flex flex-wrap gap-2" data-ray-cards>
+                    {cards.map((c) => {
+                      const on = card && card.op === c.op && Lin.eq(card.k, c.k);
+                      return (
+                        <button key={`${c.op}:${L.numText(c.k)}`} type="button" className={`${btn} ${on ? 'border-indigo-600 bg-indigo-50 text-indigo-900' : 'border-slate-300 bg-white text-slate-800'}`}
+                          aria-pressed={!!on} aria-label={k('cardAria', { op: L.cardTex(c).replace('\\div', '÷').replace('\\times', '×').replace(/\{,\}/g, ',') })} onClick={() => { setCard(c); setStepMsg(null); }} data-ray-card={L.cardTex(c)}>
+                          <span dir="ltr"><MathText>{`$${L.cardTex(c)}$`}</MathText></span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {cands && !cands.refused && (
+                    <div className="space-y-1">
+                      <p className="text-sm font-bold text-slate-700">{k('chooseLine')}</p>
+                      <div className="flex flex-wrap gap-2" dir="ltr" data-ray-choices>
+                        {[cands.kept, cands.flipped].map((I) => (
+                          <button key={I.rel} type="button" className={`${btn} border-slate-300 bg-white text-slate-800`} onClick={() => choose(I.rel)} data-ray-choice={I.rel}>
+                            <MathText>{`$${L.ineqTex(I)}$`}</MathText>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+              <p className="min-h-[1.25rem] text-sm" aria-live="polite" data-ray-step={stepMsg?.tone ?? ''}>
+                {stepMsg?.tone === 'ok' && !L.transformDone(lab) && <span className="text-emerald-800">{k('stepOk')}</span>}
+                {L.transformDone(lab) && <span className="font-bold text-emerald-800"><MathText>{k('solvedNote', { ineq: L.ineqTex(cur), first: L.ineqTex(lab.ineq) })}</MathText></span>}
+                {stepMsg?.tone === 'ko' && stepMsg.witness && (
+                  <span className="text-rose-800">
+                    <MathText>{k('refuseStep', {
+                      red: sideWord(L.sideOf(lab.sol)), bound: boundTex, p: L.ineqTex(stepMsg.proposed), pside: sideWord(L.sideOf(L.rayOf(stepMsg.proposed))),
+                      line: witnessLine(stepMsg.witness),
+                    })}</MathText>
+                  </span>
+                )}
+              </p>
+            </section>
+          )}
+    </>
+  );
+
+  /* ══════════════ LECTEUR DE MISSION : la scène du jeu (la page garde son rendu ci-dessous, inchangé) ══════════════ */
+  const sidesL = sides?.left ?? k(phone ? 'costLabel' : 'leftLabel');
+  const sidesR = sides?.right ?? k(phone ? 'creditLabel' : 'rightLabel');
+  const buildChain = playerChains.find((c) => c.qs.includes('buildIneq'));
+  const hideIneq = gameScreen && !!buildChain && !doneIds.includes(buildChain.id);
+  const regionDone = mode === 'region' && ready;
+  const coachRaw = gameScreen && coachOn && !locked ? P.coachOf(lab, { mode, done: regionDone, draft, card: !!card, divStage }) : null;
+  // un objet STABLE par étape (son id fixe la cible et le geste) : LabCoach ne se réabonne pas à chaque geste
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const coachStep = useMemo(() => coachRaw, [coachRaw?.id]);
+  const coachNode = useLabCoach({
+    lab: 'solution-ray', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '',
+    labels: { hide: t('manipulation.common.coach.hide'), show: t('manipulation.common.coach.show'), ok: t('manipulation.common.coach.ok'), stop: t('manipulation.common.coach.stop') },
+  });
+  const trayNode = !gameScreen ? null : predictOpen ? (
+    <PredictTray attr="ray" key={nextPred} step={predKeys.indexOf(nextPred) + 1} of={predKeys.length}
+      title={t('manipulation.common.cp.predict.title')}
+      prompt={P.isSolKey(nextPred) ? k('predict.isSol', { x: P.isSolX(nextPred) }) : k('predict.redSide')}
+      options={P.predictOptions(lab, nextPred).map((x) => ({ says: x, text: k(`predict.${x}`) }))}
+      onSay={sayPredict} />
+  ) : cp.open ? cp.node : null;
+
+  const showWord = shownV && pe;
+  const verdictText = showWord
+    ? k(pe.ok ? 'player.vp.ok' : 'player.vp.no', { x: xs(pk) })
+    : k(mode === 'region' ? 'player.vp.startRegion' : 'player.vp.startBracket');
+  const journalId = `${uid}-journal`;
+  const journalRows = trail.slice(-4).map((kk) => L.evaluate(lab, kk));
+  const playerRepresentation = gameScreen && !cp.open && (
+    <div className="space-y-2" data-ray-player-col>
+      <p className={`rounded-xl border border-slate-200 bg-white px-3 py-2 text-center text-sm font-bold leading-snug ${showWord ? (pe.ok ? 'text-red-800' : 'text-slate-700') : 'text-slate-700'}`} data-ray-verdict-box data-ray-verdict-state={showWord ? (pe.ok ? 'ok' : 'no') : ''}>
+        {showWord && <span aria-hidden="true">{pe.ok ? '● ' : '○ '}</span>}<bdi>{verdictText}</bdi>
+      </p>
+      {shownPreds.map((pr) => (
+        <p key={pr.key} data-ray-predict-result={pr.ok ? 'ok' : 'wrong'}
+          className={`rounded-2xl px-4 py-2 text-center text-lg font-black ${pr.ok ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>
+          {pr.ok ? t('manipulation.common.cp.predict.right') : k('predict.wrong')}
+        </p>
+      ))}
+      {mode === 'region' && journalRows.length > 0 && (
+        <div data-ray-journal>
+          <p id={journalId} className="text-sm font-black text-indigo-900"><span aria-hidden="true">📋 </span>{k('player.journal')}</p>
+          <table className="mt-1 w-full text-center text-xs" aria-labelledby={journalId}>
+            <thead><tr className="bg-slate-50"><th scope="col">x</th><th scope="col">{sidesL}</th><th scope="col">{sidesR}</th><th scope="col">{k('player.colResult')}</th></tr></thead>
+            <tbody>
+              {journalRows.map((e) => (
+                <tr key={e.k} data-ray-row-word={e.ok ? 'ok' : 'no'}>
+                  <th scope="row" className="border border-slate-200 font-mono font-normal"><bdi dir="ltr">{L.numText(e.x)}</bdi></th>
+                  <td className="border border-slate-200 font-mono"><bdi dir="ltr">{L.numText(e.left)}</bdi></td>
+                  <td className="border border-slate-200 font-mono"><bdi dir="ltr">{L.numText(e.right)}</bdi></td>
+                  <td className={`border border-slate-200 font-bold ${e.ok ? 'text-red-800' : 'text-slate-700'}`}><span aria-hidden="true">{e.ok ? '● ' : '○ '}</span>{k(e.ok ? 'player.rowOk' : 'player.rowNo')}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+  const liveKey = `${gesture}:${pk}`;
+  const sweepAll = handDone ? {
+    label: k('player.sweep'), ready: true, remaining: untraced().length, intervalMs: 480, maxTicks: 80,
+    step: () => { if (lockedRef.current) return; const next = untraced()[0]; if (next !== undefined) { setLive(null); trace(next); } },
+    finish: () => { if (lockedRef.current) return; untraced().forEach((v) => trace(v)); },
+  } : undefined;
+  const stepBtn = (dir) => {
+    const off = lockedRef.current || (dir < 0 ? pk <= lab.kmin : pk >= lab.kmax);
+    return (
+      <button type="button" onClick={() => { if (!off) probe.nudge(dir); }} aria-label={k(dir < 0 ? 'less' : 'more')} aria-disabled={off || undefined} data-ray-nudge={dir < 0 ? 'less' : 'more'}
+        className={`inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border-2 border-slate-300 bg-white aria-disabled:opacity-40 focus:outline-none focus-visible:ring-2 ${ringP}`}>
+        {dir < 0 ? <Minus className="h-5 w-5" aria-hidden="true" /> : <Plus className="h-5 w-5" aria-hidden="true" />}
+      </button>
+    );
+  };
+  const playerView = !gameScreen ? null : (
+    <ManipulationShell
+      type="solution-ray"
+      title={k('player.title')}
+      mission={typeof mission === 'string' ? <MathText>{mission}</MathText> : mission}
+      lead={typeof lead === 'string' ? <MathText>{lead}</MathText> : lead}
+      state={state}
+      coach={coachOn ? coachNode : null}
+      allowModeSwitch={allowModeSwitch}
+      allowFreeLab={false}
+      headerAction={cpSettings.control}
+      guided
+      hideRepresentation={locked || undefined}
+      onIntroChange={setMissionBig}
+      sidePanel={trayNode ? <div data-ray-tray>{trayNode}</div> : null}
+      hints={[]}
+      controller={{ autoStep: () => false, canAutoStep: () => false, autoComplete: sweepAll }}
+      representation={playerRepresentation}
+      discovery={null}
+      explanation={<MathText>{k(mode === 'flip' ? 'explanationFlip' : 'explanationGraph')}</MathText>}
+    >
+      <ManipulationStage className="bg-gradient-to-b from-rose-50/50 to-white" data-dragging={probe.dragging || bStretch.dragging ? 'true' : undefined}>
+        <div ref={boxRef} className="relative space-y-3" data-solution-ray data-mode={mode} data-context="line" data-player>
+          <div role="status" aria-live="polite" className="sr-only" data-ray-verdict-live>
+            <span key={liveKey}>{showWord ? `${k(pe.ok ? 'player.cueOk' : 'player.cueNo')} ${verdictText}` : verdictText}</span>
+            {shownPreds.map((pr) => <span key={pr.key}> {pr.ok ? t('manipulation.common.cp.predict.right') : k('predict.wrong')}</span>)}
+            {choiceSaid && <span key={choiceSaid}> {k('player.choiceNow')}</span>}
+          </div>
+          {!cp.open && cp.node}
+          {choices?.length > 0 && (
+            <div className="flex flex-wrap items-center justify-center gap-1.5" role="group" aria-labelledby={`${uid}-choices`} data-ray-choices-free>
+              <span id={`${uid}-choices`} className="text-sm font-bold text-slate-600">{k('player.choicesLabel')}</span>
+              {choices.map((c) => {
+                const on = state.numbers.ineq === c;
+                return (
+                  <button key={c} type="button" data-ray-choice-free={c} aria-disabled={locked || undefined} aria-pressed={on}
+                    onClick={() => { if (!lockedRef.current && !on) { state.setNumbers({ ineq: c }); setChoiceSaid(c); } }}
+                    className={`inline-flex min-h-[44px] items-center rounded-xl border-2 px-3 text-sm font-black focus:outline-none focus-visible:ring-2 ${ringP} ${on ? 'border-indigo-600 bg-indigo-50 text-indigo-900' : 'border-slate-300 bg-white text-slate-700'}`}>
+                    <span className="pointer-events-none" dir="ltr"><MathText>{`$${L.ineqTex(L.parseIneq(c))}$`}</MathText></span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+          <p className="text-sm text-slate-700" data-ray-legend>
+            {hideIneq ? k('player.legendHidden') : <MathText>{k(phone ? 'legendPhone' : 'legend', { ineq: L.ineqTex(lab.ineq) })}</MathText>}
+          </p>
+          {doneCases.length > 0 && (
+            <ul className="flex flex-wrap gap-2" data-ray-done-cases>
+              {doneCases.map((c, i) => (
+                <li key={i} className="rounded-lg bg-emerald-50 px-2 py-0.5 text-xs font-bold text-emerald-900" dir="ltr"><span aria-hidden="true">✓ </span><MathText>{`$${c.tex}$`}</MathText></li>
+              ))}
+            </ul>
+          )}
+          <div className="rounded-xl border border-slate-200 bg-white/80 p-2" data-ray-members>
+            <div className="space-y-1.5">
+              <Bar v={pe ? pe.left : L.evaluate(lab, lab.kmin).left} color={pe && shownV ? (pe.ok ? '#F87171' : '#CBD5E1') : '#E2E8F0'} label={sidesL} data="left" hide={cp.open} />
+              <Bar v={pe ? pe.right : L.evaluate(lab, lab.kmin).right} color="#93C5FD" label={sidesR} data="right" hide={cp.open} />
+              <p className="min-h-[1.5rem] text-sm" data-ray-live>
+                {showWord && !cp.open
+                  ? <MathText>{k('liveLine', { x: L.numTex(pe.x), calc: calcTex(pe) ? `$${calcTex(pe)}$ ،` : '', cmp: cmpTex(pe), verdict: k(pe.ok ? 'isTrue' : 'isFalse') })}</MathText>
+                  : <span className="text-slate-500">{k('player.releaseToSee')}</span>}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2" dir="ltr">
+            {stepBtn(-1)}
+            <div ref={lineRef} className="min-w-0 flex-1" data-paging-keep data-ray-line-box>{line}</div>
+            {stepBtn(1)}
+          </div>
+          <p className="text-center text-sm font-bold text-slate-700" dir="ltr">{pk == null ? 'x = ?' : `x = ${xs(pk)}`}</p>
+          {sectionsNode}
+          {cases && lab.bracket && !lastCase && (
+            <button type="button" onClick={nextCase} data-ray-next-case
+              className={`${btn} border-indigo-700 bg-indigo-700 text-white focus-visible:ring-indigo-600`}>{k('player.nextCase')} <span aria-hidden="true">←</span></button>
+          )}
+        </div>
+      </ManipulationStage>
+    </ManipulationShell>
+  );
+
+  if (gameScreen) return playerView;
 
   return (
     <ManipulationShell
@@ -420,8 +842,8 @@ export default function SolutionRay({
               </button>
             )}
             <div className="min-w-0 flex-1 space-y-1.5">
-              <Bar v={pe ? pe.left : L.evaluate(lab, lab.kmin).left} color={pe ? (pe.ok ? '#F87171' : '#CBD5E1') : '#E2E8F0'} label={k(phone ? 'costLabel' : 'leftLabel')} data="left" />
-              <Bar v={pe ? pe.right : L.evaluate(lab, lab.kmin).right} color="#93C5FD" label={k(phone ? 'creditLabel' : 'rightLabel')} data="right" />
+              <Bar v={pe ? pe.left : L.evaluate(lab, lab.kmin).left} color={pe ? (pe.ok ? '#F87171' : '#CBD5E1') : '#E2E8F0'} label={sides?.left ?? k(phone ? 'costLabel' : 'leftLabel')} data="left" />
+              <Bar v={pe ? pe.right : L.evaluate(lab, lab.kmin).right} color="#93C5FD" label={sides?.right ?? k(phone ? 'creditLabel' : 'rightLabel')} data="right" />
               <p className="min-h-[1.5rem] text-sm" data-ray-live>
                 {pe
                   ? <MathText>{k('liveLine', { x: L.numTex(pe.x), calc: calcTex(pe) ? `$${calcTex(pe)}$ ،` : '', cmp: cmpTex(pe), verdict: k(pe.ok ? 'isTrue' : 'isFalse') })}</MathText>
@@ -450,110 +872,7 @@ export default function SolutionRay({
           )}
           {phone && <p className="text-xs text-slate-500">{k('phoneWhole')}</p>}
 
-          {/* ── étape 2 : le crochet ── */}
-          {withBracket && (
-            <section className="space-y-2 rounded-xl border-2 border-dashed border-red-200 bg-white/70 p-2" data-ray-bracket data-placed={String(!!lab.bracket)}>
-              <h4 className="text-sm font-extrabold text-red-900">{k('bracketTitle')}</h4>
-              {!L.hasContrast(lab) && <p className="text-sm text-slate-600">{k('needContrast')}</p>}
-              {bracketOpen && (
-                <>
-                  <p className="text-sm text-slate-700">{k('bracketLead')}</p>
-                  <div {...bStretch.trackProps} className="relative h-12 rounded-lg bg-red-50/70" dir="ltr" style={{ ...bStretch.trackProps.style }} data-ray-bracket-track>
-                    <div
-                      {...bStretch.handleProps({ label: k('bracketHandle'), valueText: bk == null ? k('bracketNotSet') : k('bracketValue', { x: xs(bk) }) })}
-                      className={`absolute top-0.5 flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-xl border-2 font-mono text-xl font-black text-red-700 outline-none focus-visible:ring-4 focus-visible:ring-blue-300 ${bStretch.dragging ? 'border-blue-500 bg-blue-50' : 'border-red-300 bg-white'}`}
-                      style={{ left: xOf(bk ?? lab.kmin), opacity: bk == null ? 0.6 : 1 }}
-                      data-ray-bracket-handle
-                    >
-                      {L.glyphOf(draft.side ?? 'left', draft.toward ?? true)}
-                    </div>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    <button type="button" className={`${btn} ${pick(draft.side === 'left')}`} aria-pressed={draft.side === 'left'} onClick={() => { setDraft((d) => ({ ...d, side: 'left' })); setVerdict(null); }} data-ray-side="left">{k('sideLeft')}</button>
-                    <button type="button" className={`${btn} ${pick(draft.side === 'right')}`} aria-pressed={draft.side === 'right'} onClick={() => { setDraft((d) => ({ ...d, side: 'right' })); setVerdict(null); }} data-ray-side="right">{k('sideRight')}</button>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    <button type="button" className={`${btn} ${pick(draft.toward === true)}`} aria-pressed={draft.toward === true} onClick={() => { setDraft((d) => ({ ...d, toward: true })); setVerdict(null); }} data-ray-toward="true">{k('toward')}</button>
-                    <button type="button" className={`${btn} ${pick(draft.toward === false)}`} aria-pressed={draft.toward === false} onClick={() => { setDraft((d) => ({ ...d, toward: false })); setVerdict(null); }} data-ray-toward="false">{k('away')}</button>
-                  </div>
-                  <button type="button" onClick={fix} className={`${btn} border-red-600 bg-red-600 text-white`} data-ray-fix>
-                    <Check className="h-5 w-5" aria-hidden="true" /> {k('fix')}
-                  </button>
-                </>
-              )}
-              {lab.bracket && (
-                <p className="text-sm font-bold text-red-900" data-ray-bracket-done>
-                  <MathText>{k('bracketDone', { x: boundTex, glyph: `\u2066${L.glyphOf(lab.bracket.side, lab.bracket.toward)}\u2069`, side: sideWord(lab.bracket.side) })}</MathText>
-                </p>
-              )}
-              <p className="min-h-[1.25rem] text-sm" aria-live="polite" data-ray-verdict={verdict?.key ?? ''}>
-                {verdict && verdict.tone === 'ko' && (
-                  <span className="text-rose-800">
-                    <MathText>{verdict.witness
-                      ? (verdict.key === 'glyph'
-                        ? k(verdict.witness.ok ? 'refuseGlyphToward' : 'refuseGlyphAway', { line: witnessLine(verdict.witness) })
-                        : k(verdict.witness.ok ? 'refuseOut' : 'refuseIn', { line: witnessLine(verdict.witness) }))
-                      : k(verdict.key)}</MathText>
-                  </span>
-                )}
-              </p>
-            </section>
-          )}
-
-          {/* ── étape 3 : transformer l'inéquation (متقدم) ── */}
-          {doTransform && lab.bracket && (
-            <section className="space-y-2 rounded-xl border-2 border-indigo-200 bg-white/80 p-2" data-ray-transform data-done={String(L.transformDone(lab))}>
-              <h4 className="text-sm font-extrabold text-indigo-900">{k('transformTitle')}</h4>
-              <ol className="space-y-1" dir="ltr" data-ray-chain>
-                {lab.chain.map((I, i) => (
-                  <li key={i} className="flex flex-wrap items-center gap-2 font-mono text-sm">
-                    {i > 0 && <span className="rounded-full bg-indigo-100 px-2 text-xs text-indigo-800"><MathText>{`$${L.cardTex(lab.steps[i - 1])}$`}</MathText></span>}
-                    <MathText>{`$${L.ineqTex(I)}$`}</MathText>
-                  </li>
-                ))}
-              </ol>
-              {!L.transformDone(lab) && (
-                <>
-                  <p className="text-sm text-slate-700">{k('transformLead')}</p>
-                  <div className="flex flex-wrap gap-2" data-ray-cards>
-                    {cards.map((c) => {
-                      const on = card && card.op === c.op && Lin.eq(card.k, c.k);
-                      return (
-                        <button key={`${c.op}:${L.numText(c.k)}`} type="button" className={`${btn} ${on ? 'border-indigo-600 bg-indigo-50 text-indigo-900' : 'border-slate-300 bg-white text-slate-800'}`}
-                          aria-pressed={!!on} aria-label={k('cardAria', { op: L.cardTex(c).replace('\\div', '÷').replace('\\times', '×').replace(/\{,\}/g, ',') })} onClick={() => { setCard(c); setStepMsg(null); }} data-ray-card={L.cardTex(c)}>
-                          <span dir="ltr"><MathText>{`$${L.cardTex(c)}$`}</MathText></span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                  {cands && !cands.refused && (
-                    <div className="space-y-1">
-                      <p className="text-sm font-bold text-slate-700">{k('chooseLine')}</p>
-                      <div className="flex flex-wrap gap-2" dir="ltr">
-                        {[cands.kept, cands.flipped].map((I) => (
-                          <button key={I.rel} type="button" className={`${btn} border-slate-300 bg-white text-slate-800`} onClick={() => choose(I.rel)} data-ray-choice={I.rel}>
-                            <MathText>{`$${L.ineqTex(I)}$`}</MathText>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </>
-              )}
-              <p className="min-h-[1.25rem] text-sm" aria-live="polite" data-ray-step={stepMsg?.tone ?? ''}>
-                {stepMsg?.tone === 'ok' && !L.transformDone(lab) && <span className="text-emerald-800">{k('stepOk')}</span>}
-                {L.transformDone(lab) && <span className="font-bold text-emerald-800"><MathText>{k('solvedNote', { ineq: L.ineqTex(cur), first: L.ineqTex(lab.ineq) })}</MathText></span>}
-                {stepMsg?.tone === 'ko' && stepMsg.witness && (
-                  <span className="text-rose-800">
-                    <MathText>{k('refuseStep', {
-                      red: sideWord(L.sideOf(lab.sol)), bound: boundTex, p: L.ineqTex(stepMsg.proposed), pside: sideWord(L.sideOf(L.rayOf(stepMsg.proposed))),
-                      line: witnessLine(stepMsg.witness),
-                    })}</MathText>
-                  </span>
-                )}
-              </p>
-            </section>
-          )}
+          {sectionsNode}
         </div>
       </ManipulationStage>
     </ManipulationShell>
@@ -732,5 +1051,146 @@ export const QUESTIONS = {
     options: discoveryOptionsOf(lab, k, mode),
     hints: [Cq(k, `rule.hint1.${mode}`), Cq(k, `rule.hint2.${mode}`)],
     explain: <RayFormal lab={lab} k={k} mode={mode} />,
+  }),
+};
+
+
+/* ══════════════ Lecteur de mission : les suites des manches (rollout 2026-11-11, conseil du 2026-11-11, verdict L3) ══════════════ */
+
+/**
+ * Les suites du lecteur, par nom de manche : chacune { id, reached(lab, ctx), qs } — l'id est le point d'étape de la manche (`{ checkpoint: id }`).
+ *   cost    M1 r1 : le calcul à sa dernière trace rouge, puis BÂTIR « ▢x + ▢ ▢ ▢ » (leurre : le signe voisin) ;
+ *   rule    M1 r2 : sa première trace rouge, BÂTIR, LA RÈGLE de la frontière (après deux cas : un rayon gauche, un rayon droit) ;
+ *   bracket M2 r1 : le même nombre dans les deux cas, LA RÈGLE du crochet (après deux cas qui ne diffèrent que par la borne) ;
+ *   pos     M2 r2 : la division par un coefficient POSITIF bâtie ; neg M2 r3 : le calcul, la division par un NÉGATIF bâtie, LA RÈGLE du sens.
+ */
+export const CHAINS_PLAYER = Object.freeze({
+  cost: [{ id: 'build', reached: (lab) => P.borderSeen(lab), qs: ['costFill', 'buildIneq'] }],
+  rule: [{ id: 'rule', reached: (lab) => P.borderSeen(lab), qs: ['edgeFill', 'buildIneq', 'ruleRegion'] }],
+  bracket: [{ id: 'rule', reached: (lab, ctx) => ctx.lastCase && !!lab.bracket, qs: ['boundFill', 'ruleBracket'] }],
+  pos: [{ id: 'build', reached: (lab, ctx) => ctx.divStage, qs: ['buildDiv'] }],
+  neg: [{ id: 'rule', reached: (lab, ctx) => ctx.divStage, qs: ['divFill', 'buildDiv', 'ruleDir'] }],
+  none: [],
+});
+
+/** Une liste qui tourne avec les nombres : la bonne pastille / le leurre ne tient jamais toujours la même place. */
+const spinList = (xs, seed) => { const s0 = ((seed % xs.length) + xs.length) % xs.length; return xs.map((_, i) => xs[(i + s0) % xs.length]); };
+const seedOf = (lab) => Math.abs(Math.round(lab.sol.bound.n * 7 + lab.ineq.L.a.n * 3 + lab.kmax));
+const Pq = (k, key, o) => <MathText>{k(`player.${key}`, o)}</MathText>;
+const mt = (x) => `$${x}$`;
+
+export const QUESTIONS_P = {
+  /* M1 r1 — « الكلفة عند آخر نقطة حمراء: ▢ » */
+  costFill: (lab, k) => {
+    const f = P.edgeFillParts(lab);
+    const o = { x: mt(f.edgeX) };
+    return {
+      id: 'costFill', kind: 'fill', prompt: Pq(k, 'costFill.prompt', o),
+      fields: [{ label: k('player.costFill.label'), expected: f.costExpected, options: spinList(f.costOptions, seedOf(lab)) }],
+      hints: [Pq(k, 'costFill.hint1'), Pq(k, 'costFill.hint2', o)], explain: Pq(k, 'costFill.explain', { ...o, v: mt(f.costExpected) }),
+    };
+  },
+  /* M1 r2 — « أوّل نقطة حمراء: ▢ » */
+  edgeFill: (lab, k) => {
+    const f = P.edgeFillParts(lab);
+    const o = { x: mt(f.edgeX), out: f.outX != null ? mt(f.outX) : '' };
+    return {
+      id: 'edgeFill', kind: 'fill', prompt: Pq(k, f.left ? 'edgeFill.promptLast' : 'edgeFill.promptFirst'),
+      fields: [{ label: k(f.left ? 'player.edgeFill.labelLast' : 'player.edgeFill.labelFirst'), expected: f.edgeExpected, options: spinList(f.edgeOptions, seedOf(lab)) }],
+      hints: [Pq(k, 'edgeFill.hint1'), Pq(k, 'edgeFill.hint2', o)], explain: Pq(k, 'edgeFill.explain', o),
+    };
+  },
+  /* M1 r1 / r2 — BÂTIR « ▢x + ▢ ▢ ▢ » ; UN leurre : le signe voisin (strict ↔ large), réfuté par SA trace */
+  buildIneq: (lab, k) => {
+    const bp = P.buildIneqParts(lab);
+    const g = P.edgeInfo(lab);
+    let w = null;
+    [g.edge, g.out].filter((kk) => kk != null).forEach((kk) => {
+      if (w) return;
+      const e = L.evaluate(lab, kk);
+      const okDecoy = Lin.compareWith(e.left, bp.decoyRel, e.right);
+      if (okDecoy !== e.ok) w = { e, okDecoy };
+    });
+    const o = w ? {
+      x: mt(L.numTex(w.e.x)), calc: calcOf(lab, w.e) ? `$${calcOf(lab, w.e)}$ ،` : '', cmp: mt(`${L.numTex(w.e.left)} ${L.relTex(bp.decoyRel)} ${L.numTex(w.e.right)}`),
+      verdict: k(w.okDecoy ? 'isTrue' : 'isFalse'), color: k(w.e.ok ? 'player.red' : 'player.grey'), xn: L.numTex(w.e.x),
+    } : {};
+    return {
+      id: 'buildIneq', kind: 'build', prompt: Pq(k, 'buildIneq.prompt'),
+      slots: [k('player.build.coef'), k('player.build.const'), k('player.build.sign'), k('player.build.rhs')],
+      ops: ['x +', '', ''], tiles: spinList(bp.tiles, seedOf(lab) + 1),
+      expected: bp.expected,
+      hints: [w ? Pq(k, 'buildIneq.refuse', o) : Pq(k, 'buildIneq.hint1'), Pq(k, 'buildIneq.hint2')],
+      explain: Pq(k, 'buildIneq.explain'),
+    };
+  },
+  ruleRegion: (lab, k) => {
+    const strictRed = L.strictRedTrace(lab);
+    const side = k(L.sideOf(lab.sol) === 'left' ? 'player.small' : 'player.large');
+    return {
+      id: 'ruleRegion', kind: 'choice', prompt: Pq(k, 'ruleRegion.prompt'),
+      options: [
+        { text: Pq(k, 'ruleRegion.opt2'), why: strictRed && Pq(k, 'ruleRegion.why2', { x: mt(L.numTex(strictRed.x)), cmp: mt(cmpOf(lab, strictRed)) }) },
+        { text: Pq(k, 'ruleRegion.opt1'), correct: true },
+        { text: Pq(k, 'ruleRegion.opt3'), why: Pq(k, 'ruleRegion.why3', { side }) },
+      ],
+      hints: [Pq(k, 'ruleRegion.hint1'), Pq(k, 'ruleRegion.hint2')],
+      explain: <RayFormal lab={lab} k={k} mode="region" />,
+    };
+  },
+  /* M2 r1 — « العدد 4 : في الأولى ▢ · في الثانية ▢ » */
+  boundFill: (lab, k, ctx) => {
+    const srcs = ctx.cases ?? [];
+    const rows = srcs.map((src) => { const lb = L.initLab({ ineq: src }); return L.evaluate(lb, L.boundK(lb)).ok; });
+    const yes = k('player.isSol'); const no = k('player.notSol');
+    return {
+      id: 'boundFill', kind: 'fill', prompt: Pq(k, 'boundFill.prompt', { x: mt(L.numTex(lab.sol.bound)) }),
+      fields: rows.map((ok, i) => ({ label: k(i === 0 ? 'player.boundFill.first' : 'player.boundFill.second'), expected: ok ? yes : no, options: i % 2 ? [no, yes] : [yes, no] })),
+      hints: [Pq(k, 'boundFill.hint1'), Pq(k, 'boundFill.hint2')], explain: Pq(k, 'boundFill.explain'),
+    };
+  },
+  ruleBracket: (lab, k) => ({
+    id: 'ruleBracket', kind: 'choice', prompt: Pq(k, 'ruleBracket.prompt'),
+    options: [
+      { text: Pq(k, 'ruleBracket.opt2'), why: Pq(k, 'ruleBracket.why2') },
+      { text: Pq(k, 'ruleBracket.opt1'), correct: true },
+      { text: Pq(k, 'ruleBracket.opt3'), why: Pq(k, 'ruleBracket.why3') },
+    ],
+    hints: [Pq(k, 'ruleBracket.hint1'), Pq(k, 'ruleBracket.hint2')],
+    explain: Pq(k, 'ruleBracket.explain'),
+  }),
+  /* M2 r3 — « (−2) ÷ (−2) = ▢ » */
+  divFill: (lab, k) => {
+    const f = P.divisionFillParts(lab);
+    const o = { n: mt(`(${f.dividend}) \\div (${f.divisor})`), d: mt(f.divisor) };
+    return {
+      id: 'divFill', kind: 'fill', prompt: Pq(k, 'divFill.prompt', o),
+      fields: [{ label: k('player.divFill.label'), expected: f.expected, options: spinList(f.options, seedOf(lab)) }],
+      hints: [Pq(k, 'divFill.hint1'), Pq(k, 'divFill.hint2', o)], explain: Pq(k, 'divFill.explain', { ...o, v: mt(f.expected) }),
+    };
+  },
+  /* M2 r2 / r3 — la division BÂTIE « x ▢ ▢ » (le dernier pas) ; UN leurre : le sens inversé / gardé à tort, réfuté par SES points */
+  buildDiv: (lab, k) => {
+    const d = P.divisionParts(lab);
+    const w = d.refusal.witness;
+    const o = w ? { who: k(w.fromTrace ? 'player.yourPoint' : 'player.theNumber'), x: mt(L.numTex(w.x)), line: lineOf(lab, w, k), what: k(w.ok ? 'player.excludes' : 'player.includes') } : {};
+    return {
+      id: 'buildDiv', kind: 'build', prompt: Pq(k, 'buildDiv.prompt', { d: mt(d.divisorText.startsWith('-') ? `(${d.divisorText})` : d.divisorText) }),
+      slots: [k('player.build.rel'), k('player.build.num')],
+      ops: [''], wrap: ['x', ''], tiles: spinList(d.tiles, seedOf(lab) + 2),
+      expected: d.expected,
+      hints: [w ? Pq(k, 'buildDiv.refuse', o) : Pq(k, 'buildDiv.hint1'), Pq(k, 'buildDiv.hint2')],
+      explain: Pq(k, d.flips ? 'buildDiv.explainFlip' : 'buildDiv.explainKeep'),
+    };
+  },
+  ruleDir: (lab, k) => ({
+    id: 'ruleDir', kind: 'choice', prompt: Pq(k, 'ruleDir.prompt'),
+    options: [
+      { text: Pq(k, 'ruleDir.opt2'), why: Pq(k, 'ruleDir.why2') },
+      { text: Pq(k, 'ruleDir.opt1'), correct: true },
+      { text: Pq(k, 'ruleDir.opt3'), why: Pq(k, 'ruleDir.why3') },
+    ],
+    hints: [Pq(k, 'ruleDir.hint1'), Pq(k, 'ruleDir.hint2')],
+    explain: Pq(k, 'ruleDir.explain'),
   }),
 };
