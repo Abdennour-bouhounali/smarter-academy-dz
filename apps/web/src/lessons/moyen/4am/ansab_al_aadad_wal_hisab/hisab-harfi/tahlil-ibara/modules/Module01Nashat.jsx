@@ -10,7 +10,7 @@ import { ACTIVITY } from '../content/textbook';
 import { M1_ROUNDS } from '../content/turf';
 import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
 import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
-import { useInMissionPlayer } from '../../../../../../common/mission/missionPlayerContext';
+import { useModulePlayer } from '../../../../../../common/mission/useModulePlayer';
 
 /**
  * Module 1 — نشاط 3 (p. 33) : « تحليل عبارة جبرية », ouvert sur le monde de
@@ -65,7 +65,7 @@ const q1b = ACTIVITY.numbers.q1b.map((it) => ({
 }));
 
 export default function Module01Nashat() {
-  const player = useInMissionPlayer();
+  const player = useModulePlayer(MODULE_CTX);
   // lecteur : les manches gagnées (étoiles gardées, annoncées par LabRounds au montage) ouvrent les étapes et remplissent leur trace
   const [won, setWon] = useState({});
   const [p1, setP1] = useState(false);

@@ -5,7 +5,7 @@ import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
 import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
-import { useInMissionPlayer } from '../../../../../../common/mission/missionPlayerContext';
+import { useModulePlayer } from '../../../../../../common/mission/useModulePlayer';
 import RayFigure from '../components/RayFigure';
 import GraphChoice from '../components/GraphChoice';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
@@ -29,7 +29,7 @@ const ADV = ACTIVITY_B.ineq;
 const BEG = 'x<4';
 
 export default function Module02HalMutarajiha() {
-  const player = useInMissionPlayer();
+  const player = useModulePlayer(MODULE_CTX);
   const [won, setWon] = useState({});
   const [log, setLog] = useState({ [BEG]: { traces: [], bracket: null, chain: [] }, [ADV]: { traces: [], bracket: null, chain: [] } });
   const [cps, setCps] = useState([]);

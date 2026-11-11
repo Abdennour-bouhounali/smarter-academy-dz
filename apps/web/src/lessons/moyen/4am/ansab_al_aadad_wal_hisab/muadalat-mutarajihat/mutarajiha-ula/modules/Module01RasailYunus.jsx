@@ -8,7 +8,7 @@ import { Manipulation } from '../../../../../../common/manipulations';
 import { TextbookBox } from '../../../../../../common/textbook';
 import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
 import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
-import { useInMissionPlayer } from '../../../../../../common/mission/missionPlayerContext';
+import { useModulePlayer } from '../../../../../../common/mission/useModulePlayer';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY } from '../content/textbook';
 import { M1_ROUNDS } from '../content/rays';
@@ -38,7 +38,7 @@ const isSolR = (n) => Lin.compareWith(Lin.linAt(READ, Lin.frac(n)), '>', Lin.fra
 const SOL = ['حلّ', 'ليس حلًّا'];
 
 export default function Module01RasailYunus() {
-  const player = useInMissionPlayer();
+  const player = useModulePlayer(MODULE_CTX);
   const [won, setWon] = useState({});
   const [tried, setTried] = useState([]);
   const [cps, setCps] = useState([]);

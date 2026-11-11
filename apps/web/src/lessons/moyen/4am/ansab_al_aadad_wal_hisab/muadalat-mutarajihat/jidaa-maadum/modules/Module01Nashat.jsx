@@ -10,7 +10,7 @@ import { ACTIVITY, ACTIVITY_A, NOTEBOOKS } from '../content/textbook';
 import { M1_ROUNDS } from '../content/pitch';
 import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
 import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
-import { useInMissionPlayer } from '../../../../../../common/mission/missionPlayerContext';
+import { useModulePlayer } from '../../../../../../common/mission/useModulePlayer';
 
 /**
  * Module 1 — « خاصية الجداء المعدوم », ouvert sur le monde de l'unité 3 : le terrain de football dont les deux CÔTÉS sont les deux FACTEURS
@@ -35,7 +35,7 @@ const LABEL = { [BEGINNER]: '2(x - 3)', [ADVANCED]: '(x - 1)(x + 4)' };
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
 export default function Module01Nashat() {
-  const player = useInMissionPlayer();
+  const player = useModulePlayer(MODULE_CTX);
   const [trials, setTrials] = useState({ [BEGINNER]: [], [ADVANCED]: [] });
   const [won, setWon] = useState({});
   const [q1a, setQ1a] = useState(false);

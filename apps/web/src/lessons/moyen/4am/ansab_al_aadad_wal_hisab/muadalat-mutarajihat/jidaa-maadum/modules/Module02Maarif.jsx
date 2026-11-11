@@ -11,7 +11,7 @@ import { M2_ROUNDS } from '../content/pitch';
 import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
 import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
 import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
-import { useInMissionPlayer } from '../../../../../../common/mission/missionPlayerContext';
+import { useModulePlayer } from '../../../../../../common/mission/useModulePlayer';
 
 /**
  * Module 2 — « معارف — معادلات جداء معدوم » :
@@ -30,7 +30,7 @@ const M = (s) => <MathText key={s}>{s}</MathText>;
 const EXAMPLE3 = { source: KNOWLEDGE.source, exercise: KNOWLEDGE.examples[2], solution: KNOWLEDGE.example3 };
 
 export default function Module02Maarif() {
-  const player = useInMissionPlayer();
+  const player = useModulePlayer(MODULE_CTX);
   const [won, setWon] = useState({});
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);

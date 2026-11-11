@@ -9,7 +9,7 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { METHOD, CHALLENGE, KHWARIZMI } from '../content/textbook';
 import { NOW_47_2 } from '../content/exercises';
 import ChallengeSquare from '../components/ChallengeSquare';
-import { useInMissionPlayer } from '../../../../../../common/mission/missionPlayerContext';
+import { useModulePlayer } from '../../../../../../common/mission/useModulePlayer';
 
 /**
  * Module 3 — « طرائق — نحلّل ثم نحلّ » : حل معادلة تؤول إلى معادلة جداء معدوم.
@@ -26,7 +26,7 @@ const M = (s) => <MathText key={s}>{s}</MathText>;
 const solutionOf = (m) => ({ source: m.source, exercise: m.exercise, solution: m.solution });
 
 export default function Module03Tarayiq() {
-  const player = useInMissionPlayer();
+  const player = useModulePlayer(MODULE_CTX);
   const [read, setRead] = useState(false);
   const [now, setNow] = useState({});
   const [q3, setQ3] = useState(false);
