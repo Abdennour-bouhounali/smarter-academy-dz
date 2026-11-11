@@ -116,5 +116,8 @@ describe('the mission of hall-jabri', () => {
     const equiv = (e) => Lin.isZero(Lin.sub(Lin.mul(e.a, base.b), Lin.mul(e.b, base.a))) && Lin.isZero(Lin.sub(Lin.mul(e.a, base.c), Lin.mul(e.c, base.a)));
     expect(eqs.map(equiv)).toEqual([true, false, false, false]);
     expect(e2.correct).toBe(0);
+    // the module writes the answer keys as literals (assessment registry): they must be the data's
+    expect(itqanSource).toMatch(new RegExp(`id: 'E1'[\\s\\S]*?correct: ${e1.correct}, cols`));
+    expect(itqanSource).toMatch(new RegExp(`id: 'E2'[\\s\\S]*?correct: ${e2.correct}, cols`));
   });
 });
