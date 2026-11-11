@@ -258,6 +258,11 @@ Sixth (2026-11-11, unit 3 mission rollout, council verdict L1.6): `nashr-tabsit`
 as a prerequisite lesson** (the 4AM item consolidates what that lesson taught; « راجع قبل أن تنطلق » was empty without it); `tabsit-hadhf-aqwas`
 (`3am.m5.r01`, one `requires` step further) is the lesson its « أستعدّ » skill « تبسيط عبارة وحذف الأقواس » revises. Its two free-text prerequisites
 that these lessons replace are removed; « أولويات العمليات… » stays.
+Seventh (2026-11-11, unit 4 mission rollout, council verdicts L1.8, L3.7, L4.6): `muadala-ula` ← `muadalat-darajat-ula` + `musawiyat-amaliyat` (3AM,
+the lessons that teach solving a first-degree equation and operating on both sides of an equality — `muadala-ula` is a recall lesson of `3am.m5.r06`),
+`nashr-tabsit` kept; `mutarajiha-ula` ← `mutabayinat-amaliyat` (3AM, operations on inequalities) + `muqarana-nisbiya` (2AM, comparing relative numbers),
+`muadala-ula` kept; `tarrid-mushkila` ← `muadalat-darajat-ula` (3AM, translating a situation into an equation) added before its three 4AM prerequisites.
+`jidaa-maadum` unchanged (`muadala-ula`, `tahlil-ibara`, verdict L2.9).
 
 **Database — imported, closed, ignored by Mastery V2.**
 

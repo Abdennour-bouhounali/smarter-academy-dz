@@ -1085,6 +1085,8 @@
         "تبسيط ونشر العبارات الجبرية"
       ],
       "prerequisiteLessonCodes": [
+        "muadalat-darajat-ula",
+        "musawiyat-amaliyat",
         "nashr-tabsit"
       ],
       "pointsToLearn": [
@@ -1192,7 +1194,9 @@
         "تعليم الأعداد وحصرها على مستقيم عددي مدرج"
       ],
       "prerequisiteLessonCodes": [
-        "muadala-ula"
+        "muadala-ula",
+        "mutabayinat-amaliyat",
+        "muqarana-nisbiya"
       ],
       "pointsToLearn": [
         "التمييز بين المتباينة والمتراجحة واختبار صحة متراجحة من أجل قيم معطاة للمجهول x",
@@ -1244,6 +1248,7 @@
         "قوانين المحيطات والمساحات وحساب التكاليف والنسب"
       ],
       "prerequisiteLessonCodes": [
+        "muadalat-darajat-ula",
         "muadala-ula",
         "jidaa-maadum",
         "mutarajiha-ula"
