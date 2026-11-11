@@ -34,11 +34,11 @@ export default function Module04Awazzif() {
       navLinks={getNavLinks(4)}
       moduleNumber={4}
       moduleTitle="أوظّف تعلّماتي"
-      moduleSubtitle="الطريقة، دوري الآن، التمارين 9–19 و 28 أ، أتعمّق 35 و 36"
+      moduleSubtitle="الطريقة، ثم تمارين في النشر والحساب الذهني، وتمارين للتعمّق"
       estimatedTime="15 دقيقة"
       brief={{
-        tag: 'طرائق ص 35 · دوري الآن ص 36 · أوظّف تعلّماتي ص 37–39 · أتعمّق ص 41', title: METHOD.title, tone: 'amber',
-        body: <p>نقرأ طريقة الكتاب سطرًا سطرًا، ثم تمارينه بأعداده نفسها. في كل سطر اختر النتيجة ثم اقرأ التصحيح: الخطأ هنا يُصحَّح ولا يُحتسب.</p>,
+        tag: 'طرائق · أوظّف تعلّماتي · أتعمّق', title: METHOD.title, tone: 'amber',
+        body: <p>نقرأ الطريقة سطرًا سطرًا، ثم نتدرّب على كل متطابقة. في كل سطر اختر النتيجة ثم اقرأ التصحيح: الخطأ هنا يُصحَّح ولا يُحتسب.</p>,
       }}
       steps={[
         {
@@ -67,40 +67,37 @@ export default function Module04Awazzif() {
             </div>
           ),
         },
-        { num: 2, title: 'دوري الآن 1', done: !!d.now,
+        { num: 2, title: 'تطبيق: مربّعان وجداء', done: !!d.now,
           content: <TextbookExercise exercise={EX['now-36-1']} requires={['tariqat-nashr', 'nashr-qawsayn', 'tabsit-hudud']} onAnswered={done('now')} /> },
-        { num: 3, title: 'تمرين 9 — مربع مجموع', done: !!d.e9,
+        { num: 3, title: 'مربع مجموع', done: !!d.e9,
           content: <TextbookExercise exercise={EX['ex-9']} requires={['tariqat-nashr', 'murabba-majmu']} onAnswered={done('e9')} /> },
-        { num: 4, title: 'تمرين 10 — مربع مجموع بمعامل', done: !!d.e10,
+        { num: 4, title: 'مربع مجموع بمعامل', done: !!d.e10,
           content: <TextbookExercise exercise={EX['ex-10']} requires={['tariqat-nashr', 'murabba-majmu', 'murabba-adad']} onAnswered={done('e10')} /> },
-        { num: 5, title: 'تمرين 11 — حساب ذهني', done: !!d.e11,
+        { num: 5, title: 'حساب ذهني: مربّعات', done: !!d.e11,
           content: <TextbookExercise exercise={EX['ex-11']} requires={['hisab-mutamaan', 'murabba-majmu', 'quwa-ashara']} onAnswered={done('e11')} /> },
-        { num: 6, title: 'تمرين 12 — أتمم المساواة', done: !!d.e12,
+        { num: 6, title: 'أتمم المساواة', done: !!d.e12,
           content: <TextbookExercise exercise={EX['ex-12']} requires={['murabba-majmu']} onAnswered={done('e12')} /> },
-        { num: 7, title: 'تمرين 13 — مربع فرق', done: !!d.e13,
+        { num: 7, title: 'مربع فرق', done: !!d.e13,
           content: <TextbookExercise exercise={EX['ex-13']} requires={['tariqat-nashr', 'murabba-farq']} onAnswered={done('e13')} /> },
-        { num: 8, title: 'تمرين 14 — مربع فرق بمعامل', done: !!d.e14,
+        { num: 8, title: 'مربع فرق بمعامل', done: !!d.e14,
           content: <TextbookExercise exercise={EX['ex-14']} requires={['tariqat-nashr', 'murabba-farq', 'murabba-adad']} onAnswered={done('e14')} /> },
-        { num: 9, title: 'تمرين 15 — مجموع مربعين', done: !!d.e15,
+        { num: 9, title: 'مجموع مربعين', done: !!d.e15,
           content: <TextbookExercise exercise={EX['ex-15']} requires={['tariqat-nashr', 'murabba-farq', 'tabsit-hudud']} onAnswered={done('e15')} /> },
-        { num: 10, title: 'تمرين 16 — مربعان وعامل', done: !!d.e16,
+        { num: 10, title: 'مربعان وعامل', done: !!d.e16,
           content: <TextbookExercise exercise={EX['ex-16']} requires={['tariqat-nashr', 'murabba-majmu', 'murabba-farq', 'tabsit-hudud']} onAnswered={done('e16')} /> },
-        { num: 11, title: 'تمرين 17 — جداء مجموع وفرق', done: !!d.e17,
+        { num: 11, title: 'جداء مجموع وفرق', done: !!d.e17,
           content: <TextbookExercise exercise={EX['ex-17']} requires={['tariqat-nashr', 'jidaa-majmu-farq']} onAnswered={done('e17')} /> },
-        { num: 12, title: 'تمرين 18 — جداء مجموع وفرق بمعامل', done: !!d.e18,
+        { num: 12, title: 'جداء مجموع وفرق بمعامل', done: !!d.e18,
           content: <TextbookExercise exercise={EX['ex-18']} requires={['tariqat-nashr', 'jidaa-majmu-farq', 'murabba-adad']} onAnswered={done('e18')} /> },
-        { num: 13, title: 'تمرين 19 — دون حساب', done: !!d.e19,
+        { num: 13, title: 'دون حساب', done: !!d.e19,
           content: <TextbookExercise exercise={EX['ex-19']} requires={['jidaa-majmu-farq', 'mutatabiqa']} onAnswered={done('e19')} /> },
-        { num: 14, title: 'تمرين 28 أ — جداءات ذهنيا', done: !!d.e28,
+        { num: 14, title: 'جداءات ذهنيًا', done: !!d.e28,
           content: <TextbookExercise exercise={EX['ex-28']} requires={['jidaa-majmu-farq', 'hisab-mutamaan']} onAnswered={done('e28')} /> },
-        { num: 15, title: 'تمرين 35 — أتعمّق', done: !!d.e35,
+        { num: 15, title: 'أتعمّق: عبارة تُبسَّط', done: !!d.e35,
           content: <TextbookExercise exercise={EX['ex-35']} requires={['murabba-majmu', 'nashr-qawsayn', 'mutatabiqa']} onAnswered={done('e35')} /> },
-        { num: 16, title: 'تمرين 36 — أتعمّق', subtitle: 'خمّن ثم برهن', done: !!d.e36,
+        { num: 16, title: 'أتعمّق: خمّن ثم برهن', subtitle: 'عدد مربّع وجداء جاريه', done: !!d.e36,
           content: (
-            <div className="space-y-2">
-              <TextbookExercise exercise={EX['ex-36']} requires={['murabba-majmu', 'murabba-farq', 'jidaa-majmu-farq', 'mutatabiqa']} onAnswered={done('e36')} />
-              <p className="text-xs text-slate-500"><MathText>{EX['ex-36'].correctionNote}</MathText></p>
-            </div>
+            <TextbookExercise exercise={EX['ex-36']} requires={['murabba-majmu', 'murabba-farq', 'jidaa-majmu-farq', 'mutatabiqa']} onAnswered={done('e36')} />
           ) },
       ]}
       footer={<KnowledgeSnapshot moduleNumber={4} variant="memo" />}

@@ -2852,6 +2852,21 @@ Since 2026-11-10 (unit 9, lesson 2) a `build` may also set `accept` (other filli
   every subset sum —, `factor`, `term` — partial merges and tiles —, `expansion`, `decoy`). Lead and mission strings of a round are rendered with
   `MathText` in the player (letters in `$…$`). Strings: `lesson.manipulation.json › pitchExpansion.player`, `pred`, `coach`, `cp.build`,
   `cp.build4`, `cp.corner`, `cp.player`.
+- **Seventeenth example, continued (lesson 2, 2026-11-11):** lesson `mutatabiqat-shahira`, `content/squares.js` (`M1_ROUNDS`, `LabRounds
+  labId="lab-square"`: `x+4` in AREAS with merging off (x 1–6 without 4, start 3 — the two strips show TWIN numbers, allowed by `areaCollisions`
+  because they are the same kind) → `x-5` in terms (x 6–11, start 9, side 4) → `2x-1` required → ⭐ `2x+5` → free; practice `x+2` (area, without
+  2), `x-2` (start 6), `2x+1`; `M2_ROUNDS`, `lab-sumdiff`: `x+4|x-4` (start 7) → ⭐ `3x+4|3x-4` → free), verdict L2.1–L2.7. Added to the same lab,
+  nothing of lesson 1 changed (`logic/pitchExpansionSquares.test.js`, `algebra/pitchExpansionSquaresPlayer.test.jsx`): chains `square` (at the
+  first verified x `stripFill` « كم شريطًا؟ / مساحة كل شريط » ; at discovery `identityBuild` + `rulePlayer`), `squareDiff` (`cornerFill` on the
+  round's numbers — 2 times, +25 — never the sentence « cut twice, added once »), `sumDiff` (`cancelFill`: +4x and −4x make 0), `coef`
+  (`coefBuild` in NUMBERS, decoy 2x² — the coefficient not squared), and their practice chains. `identityBuild` is in LETTERS (`identityParts`:
+  one decoy per kind — `ab`, `−b²`, `+b²`; `a²` preset; the other order of the two last terms accepted) and, while it is open, the field's
+  sides and the Descartes headers RELABEL `a` / `b` / `−b`. Signs live in the tiles (the hidden `ops` are empty). Predictions `claim`
+  (« مساحة الملعب x² − 25 ؟ », truth by `samePolynomial`, the whole field ringed), `twice` (the cross-hatched corner ringed, named by its value),
+  `noX`. A merge that CANCELS two terms leaves a visible « 0 » chip (L2.4: the merge is the cut). The coach on a square of a sum points at the
+  two SQUARES first (the round asks whether they suffice; the strips light up at the free refusal). `shownValues` also lists the questions'
+  options and the predicted claim at every x. Strings: `pitchExpansion.player.zeroChip`, `player.explanationIdentity`, `player.rule.sq*`,
+  `pred.claim/twice/noX`, `cp.strip/cornerFill/cancel/identity/coef`. Scene `stands-pitch` (`StandsPitchScene.jsx`, the corner never highlighted).
 - **Eighteenth example (2026-11-11, unit 3):** lesson `tahlil-ibara`, `content/turf.js` (`M1_ROUNDS`, `LabRounds labId="lab-turf-m1"`: rows
   `8x+6` by hand → rows `6x^2+2x` (the book's `6x^2+4x` replaced, verdict L3) → the square `x^2+6x+9`, required → ⭐ the square `x^2+8x+16` →
   free; practice `4x+2`, `2x^2+4x`, `x^2+2x+1`; `M2_ROUNDS`, `lab-turf-m2`: `x^2+25` then free), council of 2026-11-11, verdict L3. The lab

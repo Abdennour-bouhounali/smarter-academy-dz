@@ -31,8 +31,62 @@ export const LESSON_CONFIG = {
   unit: 'hisab-harfi',
   unitTitle: 'الحساب الحرفي',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (modèle du pilote qasim-adad-tabii, VALIDÉ par le propriétaire le 2026-11-08 ; rollout leçon par leçon,
+  // docs/reports/MISSION_ROLLOUT_PROGRESS.md — unité 3, leçon 2, 2026-11-11) — implique le regard « focus » ; l'enseignant et le mode classe ne
+  // voient aucun changement.
+  studentView: 'mission',
+  // LA MISSION : l'ouverture garde l'énoncé de la مسألة et avoue qu'on ne sait pas encore la résoudre ; les outils sont les connaissances de
+  // knowledge.jsx ; les points d'étape (conseil du 2026-11-11, verdict L2 et « added rulings ») RAPPROCHENT de la mission sans en résoudre aucune
+  // question : ni ses nombres (27, 729, 720, 171, 900, x = 30), ni sa méthode (un carré mental ancré sur 30 — d'où le point d'étape 2
+  // (x + 6)(x − 6) au lieu de 41 × 39), ni sa correction (le coin retranché deux fois) — content/mission.test.js et _unit/missionStrings.test.js.
+  // La scène : les gradins le long de deux côtés voisins du terrain carré (« stands-pitch », sur le kit commun de l'unité
+  // lessons/common/mission/pitchSceneKit.jsx), le coin commun jamais mis en valeur.
+  mission: {
+    scene: 'stands-pitch',
+    title: 'مدرّجات ملعب الحيّ: كم يبقى للّعب؟',
+    opening: {
+      text: 'ملعب مربّع ضلعه $x$ مترًا، يُقتطع منه على ضلعين متجاورين شريطان عرض كل منهما $3\\,m$ للمدرّجات. ما مساحة أرضية اللعب بدلالة $x$ ؟ وقال عامل: «تبقى $x^2 - 6x$» — هل هو محقّ؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'murabba-farq', icon: '⬛', label: 'مربّع فرق' },
+      { id: 'hisab-mutamaan', icon: '🧮', label: 'الحساب الذهني بمتطابقة' },
+      { id: 'tariqat-nashr', icon: '🧩', label: 'نشر عبارة بمتطابقة شهيرة' },
+    ],
+    climaxModule: 5,
+    checkpoints: [
+      {
+        id: 'cp-murabba', afterModule: 1,
+        prompt: '$(x + 8)^2 = \\ldots$',
+        options: ['$x^2 + 16x + 64$', '$x^2 + 64$', '$x^2 + 8x + 64$'],
+        correct: 0,
+        explain: 'مربّع مجموع: $x^2 + 2 \\times x \\times 8 + 8^2$ . من أجل $x = 1$ : $81$ ، أمّا $x^2 + 64$ فتعطي $65$ .',
+      },
+      {
+        id: 'cp-jidaa', afterModule: 2,
+        prompt: '$(x + 6)(x - 6) = \\ldots$',
+        options: ['$x^2 - 36$', '$x^2 + 36$', '$x^2 - 12x + 36$'],
+        correct: 0,
+        explain: 'جداء مجموع حدّين وفرقهما: $x^2 - 6^2 = x^2 - 36$ . المنطقتان المضافة والمقتطعة متساويتان فتتعادمان.',
+      },
+      {
+        id: 'cp-mutatabiqa', afterModule: 3,
+        prompt: 'المساواة $x^2 + 4 = 4x$ صحيحة من أجل $x = 2$ . هل هي متطابقة؟',
+        options: ['لا: من أجل $x = 1$ الطرفان $5$ و $4$', 'نعم: صحيحة من أجل $x = 2$', 'نعم: لأنّ فيها مربّعًا'],
+        correct: 0,
+        explain: 'المتطابقة صحيحة من أجل كل القيم: قيمة واحدة لا تكفي لإثباتها، وقيمة واحدة تكفي لنفيها.',
+      },
+      {
+        id: 'cp-naw', afterModule: 4,
+        prompt: 'قبل نشر $(4x - 7)^2$ : ما نوعها، وما الحدّان؟',
+        options: ['مربّع فرق؛ $a = 4x$ و $b = 7$', 'مربّع فرق؛ $a = 4$ و $b = 7$', 'جداء مجموع وفرق؛ $a = 4x$ و $b = 7$'],
+        correct: 0,
+        explain: 'العاملان متساويان، وبين حدّيهما $-$ : مربّع فرق، الحدّ الأول $4x$ كاملًا (بمعامله) والثاني $7$ .',
+      },
+    ],
+  },
   title: 'المتطابقات الشهيرة',
-  description: 'مربع مجموع، مربع فرق، وجداء مجموع حدين وفرقهما — نقرؤها على مساحات ملعب مربّع نمدّده ونقتطع منه، ونبرهنها بالنشر، ثم نوظّفها لنشر العبارات وللحساب الذهني دون وضع العملية (مثل 21² أو 105 × 95).',
+  description: 'مربع مجموع، مربع فرق، وجداء مجموع حدين وفرقهما — نقرؤها على مساحات ملعب مربّع نمدّده ونقتطع منه، ونبرهنها بالنشر، ثم نوظّفها لنشر العبارات وللحساب الذهني دون وضع العملية (مثل 41² أو 102 × 98).',
   level: 'moyen',
   grade: '4am',
   chapter: 'ansab_al_aadad_wal_hisab',
@@ -46,17 +100,17 @@ export const LESSON_CONFIG = {
     'نشر مربع مجموع: (a + b)² = a² + 2ab + b²',
     'نشر مربع فرق: (a − b)² = a² − 2ab + b²',
     'نشر جداء مجموع حدين وفرقهما: (a + b)(a − b) = a² − b²',
-    'الحساب الذهني المتمعّن فيه دون وضع العملية: 21² ، 19² ، 105 × 95',
+    'الحساب الذهني المتمعّن فيه دون وضع العملية: 41² ، 49² ، 102 × 98',
   ],
   teachingScope: {
     include: [
-      'تعريف المتطابقة والمتطابقات الشهيرة الثلاث، بأمثلة معارف 2',
-      'قراءة المتطابقات على المساحات (المربع MNPQ، المربع KLMN، جدول ديكارت)',
+      'تعريف المتطابقة والمتطابقات الشهيرة الثلاث، بأمثلة',
+      'قراءة المتطابقات على مساحات ملعب مربّع وعلى جدول ديكارت',
       'نشر وتبسيط عبارات فيها مربعات وجداءات شهيرة، بمعاملات عشرية وكسرية وجذرية',
       'الحساب المتمعّن فيه: مربع عدد، جداء عددين متناظرين حول عدد مدوّر، فرق مربعين',
     ],
     exclude: [
-      'التحليل باستعمال المتطابقات الشهيرة (الدرس 3)، ومنه التمرين 28 ب',
+      'التحليل باستعمال المتطابقات الشهيرة (الدرس 3)',
       'النشر بالخاصية التوزيعية وحدها دون متطابقة (الدرس 1)',
     ],
   },
@@ -71,6 +125,8 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début, sans verrou par محور.
+  knowledgeMapOpen: true,
   // Leçon 1 de l'unité (nashr-qawsayn : (a + b)(c + d) ; tabsit-hudud : termes
   // semblables) et années antérieures (murabba-adad : carré d'un relatif, d'un
   // décimal, d'un produit ; quwa-ashara : puissances de 10).
@@ -117,7 +173,7 @@ export const LESSON_CONFIG = {
       level: 'advanced',
       title: 'ملعب طوله 2x + 5 وعرضه 2x − 5',
       objective: 'مساحة ملعب طوله مجموع حدّين وعرضه فرقهما: المنطقتان المضافة والمقتطعة متساويتان فتتعادمان، ويبقى (a + b)(a − b) = a² − b² من أجل كل قيمة للحرف',
-      autonomy: 'الحد الأول 2x: على التلميذ أن يقرأ الضلع 2x حدًّا واحدًا مربّعه 4x² لا 2x²، وأن يجد بنفسه المنطقتين المتعاكستين 10x و −10x ويجمعهما حتى تتعادما — أعداد الكتاب نفسها (النشاط 2، 3 جـ)',
+      autonomy: 'الحد الأول 2x: على التلميذ أن يقرأ الضلع 2x حدًّا واحدًا مربّعه 4x² لا 2x²، وأن يجد بنفسه المنطقتين المتعاكستين 10x و −10x ويجمعهما حتى تتعادما',
       experience: { type: 'platform_adaptation', reason: 'multiple_representations', theme: 'football' },
       learningPointIds: ['4am_mutatabiqat-shahira_P3'],
       sourceElementIds: ['act-2c'],
@@ -129,22 +185,22 @@ export const LESSON_CONFIG = {
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
-      title: 'أستعدّ', desc: 'ثماني عبارات: صحيح أم خاطئ؟ نشر جداء قوسين، الحدود المتشابهة، مربع عدد، قوى العدد 10.',
+      title: 'أستعدّ', desc: 'عشر عبارات: صحيح أم خاطئ؟ نشر جداء قوسين وتبسيطه، ومربّع عدد نسبي أو جداء.',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 5, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'nashat-murabba', path: `${LESSON_BASE_PATH}/nashat-murabba`,
-      title: 'نشاط 2 — مربّع مجموع ومربّع فرق', desc: 'ملعب جواري يكبر: مدّد ضلعه، احسب مساحات مناطقه، ثم أكمل سلسلتي الكتاب واحسب 21² و 19² ذهنيا.',
+      title: 'مربّع مجموع ومربّع فرق', desc: 'ملعب مربّع يكبر: مدّد ضلعه، احسب مساحات مناطقه، اكتب القاعدة، ثم احسب مربّعات أعداد ذهنيًا.',
       stage: 'trigger', teachesLearningPointIds: ['4am_mutatabiqat-shahira_P1', '4am_mutatabiqat-shahira_P2', '4am_mutatabiqat-shahira_P4'],
       color: 'indigo', style: 'featured', estimatedMin: 13, difficulty: 2, actionText: 'أجرّب' },
     { id: '02', number: 2, slug: 'nashat-jidaa', path: `${LESSON_BASE_PATH}/nashat-jidaa`,
-      title: 'نشاط 2 — جداء مجموع حدين وفرقهما', desc: 'ملعب يطول ويضيق بالقدر نفسه: أي منطقتين تتعادمان؟ ثم 105 × 95 دون وضع العملية.',
+      title: 'جداء مجموع حدين وفرقهما', desc: 'ملعب يطول ويضيق بالقدر نفسه: أي منطقتين تتعادمان؟ ثم جداءات تُحسب دون وضع العملية.',
       stage: 'discovery', teachesLearningPointIds: ['4am_mutatabiqat-shahira_P3', '4am_mutatabiqat-shahira_P4'],
       color: 'rose', style: 'featured', estimatedMin: 8, difficulty: 2, actionText: 'أكتشف' },
     { id: '03', number: 3, slug: 'maarif', path: `${LESSON_BASE_PATH}/maarif`,
-      title: 'معارف — المتطابقات الشهيرة', desc: 'تعريف المتطابقة، المتطابقات الثلاث وأمثلة الكتاب.',
+      title: 'معارف — المتطابقات الشهيرة', desc: 'تعريف المتطابقة، والمتطابقات الثلاث بأمثلة.',
       stage: 'discovery', teachesLearningPointIds: ['4am_mutatabiqat-shahira_P1', '4am_mutatabiqat-shahira_P2', '4am_mutatabiqat-shahira_P3'],
       color: 'violet', style: 'featured', estimatedMin: 7, difficulty: 2, actionText: 'أتعلّم' },
     { id: '04', number: 4, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
-      title: 'أوظّف تعلّماتي', desc: 'الطريقة سطرًا سطرًا، دوري الآن، التمارين 9–19 و 28 أ، وأتعمّق 35 و 36.',
+      title: 'أوظّف تعلّماتي', desc: 'الطريقة سطرًا سطرًا، ثم تمارين في النشر والحساب الذهني، وتمارين للتعمّق.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_mutatabiqat-shahira_P1', '4am_mutatabiqat-shahira_P2', '4am_mutatabiqat-shahira_P3', '4am_mutatabiqat-shahira_P4'],
       color: 'amber', style: 'featured', estimatedMin: 15, difficulty: 3, actionText: 'أتدرّب' },
     // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui

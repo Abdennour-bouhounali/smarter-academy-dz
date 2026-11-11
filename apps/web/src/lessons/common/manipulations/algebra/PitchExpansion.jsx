@@ -93,6 +93,16 @@ import * as L from '../logic/pitchExpansion';
  *   - `choices` : des terrains (manche libre). Le journal « 📋 جدول تجاربك » et le verdict sont dans la colonne ; commandes figées pendant une
  *     prédiction ou une question (`aria-disabled`) ; toujours guidé ; pas d'étapes ni de fête ; `LabCoach` (`logic › coachOf`).
  */
+/*
+ * LEÇON 2 `mutatabiqat-shahira` (rollout 2026-11-11 ; conseil du 2026-11-11, verdict L2.1–L2.7) — AJOUTÉ, rien de la leçon 1 ne change :
+ *   - `chains` 'square' (au 1er x juste « stripFill » ; à la découverte « identityBuild » EN LETTRES puis la règle), 'squareDiff' (« cornerFill »
+ *     sur les nombres de la manche ; puis l'identité), 'sumDiff' (« cancelFill » ; puis l'identité), 'coef' (à la découverte « coefBuild » en
+ *     nombres) et leurs entraînements 'squareEasy' / 'squareDiffEasy' / 'sumDiffEasy' / 'coefEasy'. Pendant la suite de l'identité, les côtés du
+ *     terrain et les en-têtes du tableau se RÉ-ÉTIQUETTENT a / b (L2.6).
+ *   - `predict` kinds 'claim' (« مساحة الملعب x² − 25 ؟ » — la vérité : `samePolynomial`), 'twice' (le coin cross-hachuré), 'noX'.
+ *   - Une réunion qui ANNULE deux termes (+bx et −bx) laisse une pastille « 0 » visible (L2.4) : la coupe se voit.
+ *   - La règle du lecteur pour un carré de différence n'emploie jamais la phrase « قُطع مرّتين فيُضاف مرّة » (L2.3, `player.rule.sqDiffWhy2`).
+ */
 /** Lecteur : au plus PRED_MAX prédictions par manche. */
 const PRED_MAX = 2;
 /** Le temps pendant lequel un résultat de prédiction reste seul à l'écran avant la question de la manche. */
@@ -146,12 +156,14 @@ export default function PitchExpansion({
   const [said, setSaid] = useState(0);   // la clé de l'annonce (région vivante) : une par appui sur « تحقّق »
   const [doneIds, setDoneIds] = useState([]);
   const [exprSaid, setExprSaid] = useState(null);
+  // lecteur (leçon 2, L2.4) : les réunions qui ont ANNULÉ deux termes (+bx et −bx) — une pastille « 0 » reste visible pour chacune
+  const [zeros, setZeros] = useState([]);
   const freshLab = () => L.init({ expr, simplify: simp });
   // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — le terrain, les essais et les questions du labo
   if (scene.key !== sceneKey) {
     setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(freshLab()); setX(x0()); setLive(null); setNotice(null);
     setPreds({}); asked.current = new Set(); refusedSeen.current = 0; discoveredSent.current = false;
-    heardPred.current = new Set(); setShownPreds([]); setPredHold(false); setDoneIds([]);
+    heardPred.current = new Set(); setShownPreds([]); setPredHold(false); setDoneIds([]); setZeros([]);
   }
   // la manche (LabRounds) repart de zéro avec la scène : ses essais et prédictions d'avant ne comptent plus
   useEffect(() => { if (gameScreen && scene.inits > 0) state.report(onTrial, { tk: 'reset' }); }, [scene.inits]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -179,7 +191,7 @@ export default function PitchExpansion({
     resetKey: scene.inits,
     onRetry: () => {
       const fresh = freshLab();
-      labRef.current = fresh; setLab(fresh); setX(x0()); setLive(null); setNotice(null);
+      labRef.current = fresh; setLab(fresh); setX(x0()); setLive(null); setNotice(null); setZeros([]);
       if (gameScreen) {
         // lecteur : la tâche repart de zéro ; la manche oublie ce que le labo vient de défaire, le 1er refus redevient gratuit
         refusedSeen.current = 0; discoveredSent.current = false;
@@ -222,7 +234,7 @@ export default function PitchExpansion({
   const sayPredict = (says) => {
     const p = nextPred;
     if (!p || asked.current.has(p.key)) return;
-    const ok = says === L.predictTruth(labRef.current, p.kind);
+    const ok = says === L.predictTruth(labRef.current, p.kind, p);
     asked.current.add(p.key);
     playSfx('pop');
     setPreds((m) => ({ ...m, [p.key]: ok }));
@@ -299,6 +311,15 @@ export default function PitchExpansion({
   useEffect(() => { if (heard.current.x !== null && heard.current.x !== xx) tick(); heard.current.x = xx; }, [xx]); // eslint-disable-line react-hooks/exhaustive-deps
   const nudge = (d) => { if (lockedRef.current) return; if (d < 0 ? xx <= range.min : xx >= range.max) return; stretch.nudge(d); };
 
+  /* ── lecteur (leçon 2, L2.6) : pendant la suite de l'IDENTITÉ, les côtés s'appellent a et b ── */
+  const relabel = gameScreen && cp.open && !!playerPending?.qs.includes('identityBuild');
+  // a = le premier terme du binôme, b = la valeur absolue du second (`logic › binomialOf`), −b quand il est retranché (revue a11y 2026-11-11)
+  const sideName = (term) => {
+    const [t1] = lab.factors[0];
+    if (term.c === t1.c && term.p === t1.p) return 'a';
+    return term.c < 0 ? '−b' : 'b';
+  };
+
   /* ── le terrain ── */
   // lecteur : le terrain est toujours dessiné EN LARGEUR (3(x + 5) était une colonne étroite de 3 sur 14) — zones et côtés transposés ; la page
   // garde son dessin
@@ -312,7 +333,8 @@ export default function PitchExpansion({
   const leftSide = (z) => (flip ? z.j === 0 : z.i === 0);
   const topTerm = (z) => (flip ? lab.factors[1][z.j] : lab.factors[0][z.i]);
   const leftTerm = (z) => (flip ? lab.factors[0][z.i] : lab.factors[1][z.j]);
-  const unit = Math.min(34, (width - 56) / Math.max(1, geoMax.width), (gameScreen ? 170 : 300) / Math.max(1, geoMax.height));
+  const unit = Math.min(34, (width - 56) / Math.max(1, geoMax.width), (gameScreen ? (choices?.length ? 130 : 170) : 300) / Math.max(1, geoMax.height));
+  // (leçon 2, 2026-11-11) : la ورشة libre ajoute sa rangée de choix — le terrain y est plus bas (1024 × 768 : un écran, sans défilement)
   const PAD = 26;
   // lecteur : le labo est monté dans une copie cachée puis déplacé — des ids de motif UNIQUES (sinon la hachure, repère non coloré, disparaît)
   const pid = gameScreen ? uid.replace(/[^a-zA-Z0-9]/g, '') : '';
@@ -335,7 +357,13 @@ export default function PitchExpansion({
     onDrop: (src, zone) => {
       if (lockedRef.current) return;
       if (src.startsWith('z:')) { setLab((s) => L.collect(s, src.slice(2))); setKick((n) => n + 1); tick(); }
-      else if (src.startsWith('c:')) { setLab((s) => L.merge(s, src.slice(2), zone.slice(5))); playSfx('bell'); }
+      else if (src.startsWith('c:')) {
+        // (revue 2026-11-11) : l'état que le geste vient de poser (labRef), jamais l'instantané du rendu
+        const tr = labRef.current.tray;
+        const a = tr.find((c) => c.id === src.slice(2)); const b = tr.find((c) => c.id === zone.slice(5));
+        if (gameScreen && a && b && a.term.c + b.term.c === 0) setZeros((z) => [...z, `${a.id}+${b.id}`]);
+        setLab((s) => L.merge(s, src.slice(2), zone.slice(5))); playSfx('bell');
+      }
       setNotice(null);
     },
     onReject,
@@ -476,8 +504,14 @@ export default function PitchExpansion({
   const shownTrial = gameScreen && !live && lastTrial && lastTrial.sig === L.trayKey(lab) ? lastTrial : null;
   const ringKind = predictOpen ? nextPred.kind : null;
   const plainIds = gameScreen ? new Set(L.unhatchedIds(lab)) : new Set();
+  // leçon 2 : « twice » entoure le coin cross-hachuré, « noX » les deux zones en x, « claim » tout le terrain
+  const ringIds = ringKind === 'twice' ? new Set([L.restoredCell(lab)?.id].filter(Boolean))
+    : ringKind === 'noX' ? new Set(lab.cells.filter((c) => c.term.p === 1).map((c) => c.id))
+      : ringKind === 'unhatched' ? plainIds : new Set();
   const predRing = 'rounded-2xl ring-4 ring-amber-700 ring-offset-2';
-  const predPromptOf = (p) => k(`pred.${p.kind}`);
+  const predPromptOf = (p) => (p.kind === 'claim' ? <MathText>{k('pred.claim', { claim: `$${termsTex(L.parsePoly(p.claim))}$` })}</MathText>
+    : p.kind === 'twice' ? <MathText>{k('pred.twice', { v: `$${L.restoredCell(lab)?.term.c ?? ''}$` })}</MathText>
+      : p.kind === 'noX' ? <MathText>{k('pred.noX')}</MathText> : k(`pred.${p.kind}`));
   const predOptions = (p) => L.predictOptions(lab, p.kind).map((o) => ({ says: o, text: o === 'yes' ? k('pred.yes') : o === 'no' ? k('pred.no') : o }));
   const trayNode = !gameScreen ? null : predictOpen ? (
     <PredictTray attr="pe" key={nextPred.key} step={predQueue.indexOf(nextPred) + 1} of={predQueue.length}
@@ -583,7 +617,7 @@ export default function PitchExpansion({
           formal={<Formal lab={lab} k={k} letter={letter} />}
         />
       )}
-      explanation={<MathText>{k('explanation')}</MathText>}
+      explanation={<MathText>{k(gameScreen && L.isIdentityKind(lab) ? 'player.explanationIdentity' : 'explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-emerald-50/70 to-white" data-dragging={stretch.dragging || drag.dragging ? 'true' : undefined}>
         <div ref={boxRef} className={`relative ${gameScreen ? 'space-y-2' : 'space-y-3'}`} data-pitch-expansion data-kind={lab.kind} data-labels={gameScreen ? labels : undefined}>
@@ -660,7 +694,7 @@ export default function PitchExpansion({
           </div>
 
           {/* ── le terrain ── */}
-          <div className="overflow-hidden rounded-2xl border-2 border-emerald-200 bg-white p-1" dir="ltr">
+          <div className={`overflow-hidden rounded-2xl border-2 border-emerald-200 bg-white p-1 ${ringKind === 'claim' ? predRing : ''}`} dir="ltr" data-pred-ring={ringKind === 'claim' ? 'true' : undefined}>
             <div className="relative mx-auto" style={{ width: svgW, height: svgH, maxWidth: '100%' }} data-pitch-field data-x={xx}>
               <svg width={svgW} height={svgH} className="absolute inset-0" role="img" aria-label={k('ariaPitch', { product: productTex.replace(/\\/g, ''), x: xx, area: L.valueText(L.product(lab, xx)) })}>
                 <defs>
@@ -687,7 +721,7 @@ export default function PitchExpansion({
                   const taken = lab.collected.includes(z.id);
                   const on = glow.has(z.id);
                   // lecteur : la prédiction « les deux zones non hachurées » ENTOURE ces deux zones tant qu'elle est ouverte
-                  const ringed = ringKind === 'unhatched' && plainIds.has(z.id);
+                  const ringed = ringIds.has(z.id);
                   return (
                     <g key={z.id} data-pitch-zone={z.id} data-taken={String(taken)} data-missing={on ? 'true' : undefined} data-pred-ring={ringed ? 'true' : undefined}>
                       <rect x={PAD + z.x0 * unit} y={PAD + z.y0 * unit} width={z.w * unit} height={z.h * unit}
@@ -700,12 +734,12 @@ export default function PitchExpansion({
                 {/* les côtés : un segment par terme, étiqueté */}
                 {geo.zones.filter(topSide).map((z) => (
                   <text key={`c${z.id}`} x={PAD + (z.x0 + z.w / 2) * unit} y={PAD - 8} textAnchor="middle" fontSize={12} fontWeight="bold" fill={topTerm(z).c < 0 ? '#BE123C' : '#065F46'} fontFamily="ui-monospace, monospace">
-                    {L.cellTex({ term: topTerm(z) }, letter)}
+                    {relabel ? sideName(topTerm(z)) : L.cellTex({ term: topTerm(z) }, letter)}
                   </text>
                 ))}
                 {geo.zones.filter(leftSide).map((z) => (
                   <text key={`r${z.id}`} x={PAD - 14} y={PAD + (z.y0 + z.h / 2) * unit + 4} textAnchor="end" fontSize={12} fontWeight="bold" fill={leftTerm(z).c < 0 ? '#BE123C' : '#065F46'} fontFamily="ui-monospace, monospace">
-                    {L.cellTex({ term: leftTerm(z) }, letter)}
+                    {relabel ? sideName(leftTerm(z)) : L.cellTex({ term: leftTerm(z) }, letter)}
                   </text>
                 ))}
                 {/* décor : le ballon */}
@@ -743,13 +777,13 @@ export default function PitchExpansion({
               <thead>
                 <tr>
                   <th className="px-2 font-mono text-xs text-slate-500" aria-label={k('gridCorner')}>×</th>
-                  {lab.factors[0].map((term, i) => <th key={i} className="rounded-md bg-emerald-100 px-2 py-1 text-emerald-900"><MathText>{tex(term)}</MathText></th>)}
+                  {lab.factors[0].map((term, i) => <th key={i} className="rounded-md bg-emerald-100 px-2 py-1 text-emerald-900" data-side-name={relabel ? sideName(term) : undefined}>{relabel ? <bdi dir="ltr" className="font-mono">{sideName(term)}</bdi> : <MathText>{tex(term)}</MathText>}</th>)}
                 </tr>
               </thead>
               <tbody>
                 {lab.factors[1].map((row, j) => (
                   <tr key={j}>
-                    <th className="rounded-md bg-emerald-100 px-2 py-1 text-emerald-900"><MathText>{tex(row)}</MathText></th>
+                    <th className="rounded-md bg-emerald-100 px-2 py-1 text-emerald-900">{relabel ? <bdi dir="ltr" className="font-mono">{sideName(row)}</bdi> : <MathText>{tex(row)}</MathText>}</th>
                     {lab.factors[0].map((_, i) => {
                       const cell = lab.cells.find((c) => c.i === i && c.j === j);
                       const taken = lab.collected.includes(cell.id);
@@ -798,6 +832,13 @@ export default function PitchExpansion({
                         )}
                       </DraggableObject>
                     </DropZone>
+                  </React.Fragment>
+                ))}
+                {/* lecteur (L2.4) : deux termes opposés réunis — la pastille « 0 » reste, la coupe se voit */}
+                {gameScreen && zeros.map((zid) => (
+                  <React.Fragment key={zid}>
+                    <span className="font-mono text-slate-500" aria-hidden="true">+</span>
+                    <span className="inline-flex min-h-[44px] items-center rounded-lg border-2 border-dashed border-slate-400 bg-slate-50 px-3 font-mono font-black text-slate-700" data-tray-zero role="img" aria-label={k('player.zeroChip')}><bdi dir="ltr">0</bdi></span>
                   </React.Fragment>
                 ))}
               </div>
@@ -971,6 +1012,15 @@ export const CHAINS_PLAYER = Object.freeze({
   restored: [{ id: 'corner', reached: L.firstOk, qs: ['corner'] }, { id: 'result', reached: L.playerDiscovery, qs: ['result'] }],
   restoredEasy: [{ id: 'corner', reached: L.firstOk, qs: ['corner'] }],
   result: [{ id: 'result', reached: L.playerDiscovery, qs: ['result'] }],
+  // leçon 2 `mutatabiqat-shahira` (conseil L2.1–L2.7) : observer au 1er x juste, puis à la découverte BÂTIR l'identité en lettres et la règle
+  square: [{ id: 'strips', reached: L.firstOk, qs: ['stripFill'] }, { id: 'rule', reached: L.playerDiscovery, qs: ['identityBuild', 'rulePlayer'] }],
+  squareEasy: [{ id: 'strips', reached: L.firstOk, qs: ['stripFill'] }],
+  squareDiff: [{ id: 'cornerFill', reached: L.firstOk, qs: ['cornerFill'] }, { id: 'rule', reached: L.playerDiscovery, qs: ['identityBuild', 'rulePlayer'] }],
+  squareDiffEasy: [{ id: 'cornerFill', reached: L.firstOk, qs: ['cornerFill'] }],
+  sumDiff: [{ id: 'cancel', reached: L.firstOk, qs: ['cancelFill'] }, { id: 'rule', reached: L.playerDiscovery, qs: ['identityBuild', 'rulePlayer'] }],
+  sumDiffEasy: [{ id: 'cancel', reached: L.firstOk, qs: ['cancelFill'] }],
+  coef: [{ id: 'coef', reached: L.playerDiscovery, qs: ['coefBuild'] }],
+  coefEasy: [{ id: 'coef', reached: L.firstOk, qs: ['coefBuild'] }],
   none: [],
 });
 export const chainsOfPlayer = (mode) => CHAINS_PLAYER[mode] ?? [];
@@ -1063,11 +1113,88 @@ Object.assign(QUESTIONS, {
       id: 'rule', kind: 'choice', cols: 1, prompt: <MathText>{k(`${kk}Prompt`)}</MathText>,
       options: [
         { text: <MathText>{k(`player.rule.${kk}Right`)}</MathText>, correct: true },
-        { text: <MathText>{k(`${kk}Opt2`)}</MathText>, why: <MathText>{k(`${kk}Why2`)}</MathText> },
+        { text: <MathText>{k(`${kk}Opt2`)}</MathText>, why: <MathText>{k(kk === 'sqDiff' ? 'player.rule.sqDiffWhy2' : `${kk}Why2`)}</MathText> },
         { text: <MathText>{k('onlyOneX')}</MathText>, why: <MathText>{k('onlyOneXWhy', { xs: L.verifiedXs(lab).join(' ، ') })}</MathText> },
       ],
       hints: [Cq(k, 'rule.hint1', { xs: L.verifiedXs(lab).join(' ، ') }), Cq(k, 'player.ruleHint2')],
       explain: <Formal lab={lab} k={k} letter={letter} />,
     }, seedOf(lab) + 2);
+  },
+});
+
+/* ══════════════ Leçon 2 `mutatabiqat-shahira` : les questions des terrains carrés (rollout 2026-11-11, conseil L2.1–L2.7) ══════════════ */
+
+/** Une pastille ou une tuile écrite dans SA forme (« 4x », « +25 », « a^2 ») ; la comparaison lit la chaîne. */
+const renderMath = (v) => <MathText>{`$${v}$`}</MathText>;
+const fieldsOf = (parts, labels) => parts.map((f, i) => ({ label: labels[i], expected: f.expected, options: f.options, render: renderMath }));
+
+Object.assign(QUESTIONS, {
+  /* r1 (a + b)², après le 1er x juste : combien de bandes, et la bande en lettres */
+  stripFill: (lab, k, letter = 'x') => {
+    const parts = L.stripFillParts(lab);
+    const { a, b } = L.binomialOf(lab);
+    const o = { prod: $(L.productTex(lab, letter)), strip: $(tileOf({ c: a.c * b.c, p: a.p + b.p }, letter)), b: $(tileOf(b, letter)), a: $(tileOf(a, letter)) };
+    return {
+      id: 'stripFill', kind: 'fill', prompt: Cq(k, 'strip.prompt', o),
+      fields: fieldsOf(parts, [Cq(k, 'strip.count', o), Cq(k, 'strip.each', o)]),
+      hints: [Cq(k, 'strip.hint1', o), Cq(k, 'strip.hint2', o)], explain: Cq(k, 'strip.explain', o),
+    };
+  },
+  /* r2 (a − b)², après le 1er x juste : sur les nombres de la manche, combien de fois le coin a été coupé et ce qu'il vaut dans la somme */
+  cornerFill: (lab, k, letter = 'x') => {
+    const parts = L.cornerFillParts(lab);
+    const cell = L.restoredCell(lab);
+    const v = cell.term.c;
+    const { b } = L.binomialOf(lab);
+    const o = { v: $(String(v)), b: $(tileOf(b, letter)), calc: $(`(-${b.c}) \\times (-${b.c}) = +${v}`) };
+    return {
+      id: 'cornerFill', kind: 'fill', prompt: Cq(k, 'cornerFill.prompt', o),
+      fields: fieldsOf(parts, [Cq(k, 'cornerFill.times', o), Cq(k, 'cornerFill.sign', o)]),
+      hints: [Cq(k, 'cornerFill.hint1', o), Cq(k, 'cornerFill.hint2', o)], explain: Cq(k, 'cornerFill.explain', o),
+    };
+  },
+  /* module 2 (a + b)(a − b), après le 1er x juste : les deux bandes opposées réunies */
+  cancelFill: (lab, k, letter = 'x') => {
+    const parts = L.cancelFillParts(lab);
+    const strip = lab.cells.find((c) => c.term.p === 1 && c.term.c > 0).term;
+    const o = { plus: $(tileOf(strip, letter)), minus: $(tileOf({ c: -strip.c, p: 1 }, letter)) };
+    return {
+      id: 'cancelFill', kind: 'fill', prompt: Cq(k, 'cancel.prompt', o),
+      fields: fieldsOf(parts, [Cq(k, 'cancel.field', o)]),
+      hints: [Cq(k, 'cancel.hint1', o), Cq(k, 'cancel.hint2', o)], explain: Cq(k, 'cancel.explain', o),
+    };
+  },
+  /* à la découverte : l'identité EN LETTRES (L2.6), une tuile leurre (L2.2 / L2.3) ; les côtés du terrain s'appellent a et b pendant la question */
+  identityBuild: (lab, k, letter = 'x') => {
+    const parts = L.identityParts(lab);
+    const kk = KIND_KEY[lab.kind];
+    const all = [...parts.expected, parts.decoy];
+    const shift = seedOf(lab) % all.length;
+    const tiles = all.map((_, i) => all[(i + shift) % all.length]);
+    const { a, b } = L.binomialOf(lab);
+    const o = { lhs: $(parts.lhs), a: $(tileOf(a, letter)), b: $(tileOf(b, letter)), prod: $(L.productTex(lab, letter)), rule: $(k(`${kk}Rule`)) };
+    return {
+      id: 'identityBuild', kind: 'build', prompt: Cq(k, 'identity.prompt', o),
+      slots: parts.expected.map((_, i) => k('cp.identity.slot', { n: i + 1 })),
+      ops: parts.ops, wrap: [<MathText key="w">{`$${parts.lhs} =$`}</MathText>, null],
+      tiles, expected: parts.expected, accept: parts.accept, preset: parts.preset, render: renderMath,
+      hints: [Cq(k, `identity.${kk}Hint1`, o), Cq(k, 'identity.hint2', o)], explain: Cq(k, 'identity.explain', o),
+    };
+  },
+  /* r3 : le carré à coefficient, en NOMBRES ; le leurre est le coefficient non élevé au carré */
+  coefBuild: (lab, k, letter = 'x') => {
+    const c = L.coefParts(lab);
+    const all = [...c.expected, c.decoy];
+    const shift = (seedOf(lab) + 1) % all.length;
+    const tiles = all.map((_, i) => all[(i + shift) % all.length]);
+    const { a, b } = L.binomialOf(lab);
+    const o = { prod: $(L.productTex(lab, letter)), a: $(tileOf(a, letter)), b: $(tileOf(b, letter)), aa: $(tileOf(c.aa, letter)), eq2: $(`${L.productTex(lab, letter)} = ${termsTex(reducePoly(lab.cells.map((u) => u.term)), { letter })}`) };
+    return {
+      id: 'coefBuild', kind: 'build', prompt: Cq(k, 'coef.prompt', o),
+      slots: [k('cp.coef.slotA'), k('cp.coef.slotAB'), k('cp.coef.slotB')],
+      ops: c.ops, wrap: [<MathText key="w">{`$${L.productTex(lab, letter)} =$`}</MathText>, null],
+      tiles, expected: c.expected, render: renderMath,
+      hints: [Cq(k, 'coef.hint1', o), Cq(k, 'coef.hint2', o)], explain: Cq(k, 'coef.explain', o),
+    };
   },
 });

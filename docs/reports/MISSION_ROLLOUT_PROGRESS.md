@@ -57,6 +57,7 @@ after lesson 1. Folder `lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/`
 | # | Lesson (unit 3) | Labs converted | Status | Commit | Notes |
 |---|---|---|---|---|---|
 | 1 | `nashr-tabsit` | `pitch-expansion` (v2 treatment + its FIRST LabCoach, player only; `labels: 'area'`, collision-free ruler) | ✅ done 2026-11-11 | `feat(lessons): nashr-tabsit — mission prototype` | See « Unit 3, lesson 1 » below. |
+| 2 | `mutatabiqat-shahira` | `pitch-expansion` (lesson 2's square fields added: chains `square` / `squareDiff` / `sumDiff` / `coef`, identity build in letters, « 0 » chip; LabCoach player only) | ✅ built 2026-11-11 | `feat(lessons): mutatabiqat-shahira — mission prototype` | See « Unit 3, lesson 2 » below. |
 | 3 | `tahlil-ibara` | `turf-factoring` (v2 treatment + LabCoach, new; both modes `rows` and `square`) | ✅ built 2026-11-11 | `feat(lessons): tahlil-ibara — mission prototype` | See « Unit 3, lesson 3 » below. |
 
 ## Lab families — which have the v2 treatment
@@ -77,7 +78,7 @@ after lesson 1. Folder `lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/`
 | `parallel-level` | ✅ (2026-11-10, both modes `ladder` and `crossing`, with or without an imposed ratio) | `aksiya-talis` (unit 9) |
 | `segment-divider` | ✅ (2026-11-10, both modes `equal` and `ratio`; `sameUnitOnly`, 3 graduations per rail) | `inshaat-talis` (unit 9) |
 | `shadow-meet` | ✅ (2026-11-10, born in the player: tasks `meet`, `ratio`, `flag`; asks `tap` and `type`; reusable through `steps`) | `talis-hisab-atwal` (unit 9) |
-| `pitch-expansion` | ✅ (2026-11-11, `labels` 'area' / 'terms', chains `dist` / `double` / `restored` / `result` + practice chains; lesson 2's identities still to add) | `nashr-tabsit` (unit 3) |
+| `pitch-expansion` | ✅ (2026-11-11, `labels` 'area' / 'terms', chains `dist` / `double` / `restored` / `result` + practice chains; lesson 2: `square` / `squareDiff` / `sumDiff` / `coef` + practice chains, `identityBuild` in letters with the a / b relabel, predictions `claim` / `twice` / `noX`, the « 0 » chip) | `nashr-tabsit`, `mutatabiqat-shahira` (unit 3) |
 | `cone-cylinder` | ✅ (2026-11-10, a PLAYER VERSION `ConeCylinderPlayer.jsx` chosen by `ConeCylinder.jsx` in the player: one trial = one press, `n` explicit, `lockH` / `lockR`, no number / volume / point letter in a verdict; the page lab is unchanged) | `wadiya-idmajiya-talis` (unit 9, synthesis) |
 | `turf-factoring` | ✅ (2026-11-11, both modes `rows` and `square`; a trial = a NEW r or a NEW split, r = 1 is not one; the sweep hidden; `wrap` builds) | `tahlil-ibara` (unit 3) |
 | every other lab | ⏳ | — |
@@ -1209,6 +1210,84 @@ in `DropZone`, the blue focus ring and native `disabled` of `DraggableObject`, t
 
 **Open (for the owner)**: the page lab still has no coach (logged in `LAB_COACH_ROLLOUT.md`); « زينب » also appears as a data name in one practice
 JSON (`content/practice/4am/tafsir-bayani-jumla/level-5/…-002.json`) — not a peer sheet; the shared-primitive a11y items above.
+
+## Unit 3, lesson 2 — `mutatabiqat-shahira` « المتطابقات الشهيرة » (2026-11-11)
+
+Prompt: `UNIT3_HISAB_HARFI_MISSION_PROMPT.md`; council of 2026-11-11, verdict « Cross-lesson », « L2 » (L2.1–L2.7) and the added rulings — binding
+over the designer's report. Built after lesson 1, on the same lab and the unit's scene kit.
+
+**What was written**
+- `content/squares.js` (`M1_ROUNDS` labId `lab-square`: r1 `x+4` in AREAS, merging off (x 1–6 without 4, start 3; the two strips show TWIN numbers
+  — same kind, allowed by `areaCollisions`; the mission asks to carry the two squares alone first, the free refusal lights the strips; `stripFill`
+  then `identityBuild` + rule) → r2 `x-5` in terms (x 6–11, start 9 = side 4; predictions `claim` x² − 25 « لا » and `twice` « نعم »;
+  `cornerFill` on the round's numbers, then identity + rule) → r3 `2x-1` REQUIRED (`coefBuild` in numbers, decoy 2x²) → ⭐ `2x+5` → free (six
+  squares); practice `x+2` (area, without 2), `x-2` (start 6), `2x+1`, each `releases`; `M2_ROUNDS` labId `lab-sumdiff`: `x+4|x-4` (start 7,
+  prediction `noX` « لا », `cancelFill`, identity + rule) → ⭐ `3x+4|3x-4` → free) + `squares.test.js` (the role scan of `shownValues` — every
+  reachable x, subset sums, question options, the predicted claim —, the collision sweep, the letter identities true for any a, b and each decoy
+  false, every round PLAYED to ★★★).
+- `content/forbidden.js` (roles: NEVER 27, 729, 720, 711, 171, 900, 180, 874800, 153900, 1200; `x`/`side` 30; `factor` x ± 3; `term` ±6x, ±9;
+  `expansion` the climax forms and decoys; role-allowed 9 as an area, 30 as a zone area — and `TEXT` for prose, incl. the mental anchor 30),
+  `content/mission.test.js` (config, checkpoints recomputed, dry-run, peer, prep, memo BODIES, the map, the exercises (retuned rows recomputed),
+  every line of modules 0–4, literal pins), `content/prep.js` (10 statements: `nashr` → `nashr-tabsit`, `murabba` → `quwat-adad-nisbi` 3AM),
+  `content/peerSheet.js` « ورقة طارق » ((x + 7)² = x² + 49, at x = 13: 218 against 20² = 400; the strips 182).
+- Config: `studentView: 'mission'`, `knowledgeMapOpen`, mission « مدرّجات ملعب الحيّ: كم يبقى للّعب؟ » (scene `stands-pitch`, tools
+  `murabba-farq`, `hisab-mutamaan`, `tariqat-nashr`, `climaxModule: 5`, checkpoints (x + 8)², **(x + 6)(x − 6)** (replaces 41 × 39 — a mental
+  anchor is the climax's method), x² + 4 = 4x, the type of (4x − 7)²). Module titles / descriptions, `skills`, `teachingScope` without the book.
+- Modules: 0 = the ladder; 1 = `PlayerSwitch` + `LabRounds lab-square` (steps 1 and 3 wait for r1, 8 and 10 for r2; their trace from the WON
+  rounds; step 8 has a player question on the round's (x − 5)² that never says « cut twice, added once »); 2 = `LabRounds lab-sumdiff` (step 1
+  waits for it) and « ورقة طارق » as its last step (page too). Page-only trace lines come from `content/textbook.js › PAGE_LABS` (the page labs keep
+  their numbers for the teacher: x + 3, x − 2, (x + 3)(x − 3), (2x + 5)(2x − 5)).
+- Scene `lessons/common/mission/StandsPitchScene.jsx` on the unit kit (bench rows rising on two adjacent sides, the common corner never
+  highlighted), registered in `MissionScene.jsx`. `_unit/missionStrings.test.js`: the SHAHIRA signature + negative controls.
+
+**Added to shared code** (`pitch-expansion`, page and lesson 1 unchanged; new tests `logic/pitchExpansionSquares.test.js`,
+`algebra/pitchExpansionSquaresPlayer.test.jsx` — lesson 1's tests untouched): MANIPULATION_CONTRACT « Seventeenth example, continued ».
+Chains `square` / `squareDiff` / `sumDiff` / `coef` + practice chains; questions `stripFill`, `cornerFill`, `cancelFill` (`fill` with drawn chips),
+`identityBuild` (LETTERS, one decoy per kind, the field's sides and table headers relabel a / b / −b while it is open), `coefBuild` (numbers);
+predictions `claim` / `twice` / `noX`; the « 0 » chip of a cancelling merge; on a square of a SUM the coach points at the two squares first; the
+player explanation and the square-difference rule's « why » never use the corner sentence; `shownValues` lists the questions' options.
+
+**Content rewrites** — SHARED-deliberate (the teacher page gains too): every book question text, figure (MNPQ, KLMN, the rectangle) and the
+Descartes paragraph replaced by platform text (`content/textbook.js › PLATFORM`); module numbers: (6 + 4)², (2 + 0,5)², (x + 2)², (2x + 7)²,
+the Descartes table on (2x + 2)², 41², 62², (11 − 4)², (2,4 − 4)², (x − 7)², (4 − 3x)², 49², 38², (x − 5)(x + 5), (3x − 2)(3x + 2), 102 × 98,
+96² − 4²; module 3's three examples (3x + 4)², (5 − 2x)², (4x − 1)(4x + 1); module 4 step titles without « تمرين n », the printing-error note
+removed; exercises now-B (729x³ → 4x(4x + 1)² − x(x − 1)²), ex-11 (31² → 21², 1009² → 1008²), ex-12 ((x + 3)² → (x + 5)², 9x² + 6x + 1 →
+(4x + 1)², (x + 5)² → (x + 7)²), ex-14 ((2x − 3)² → (2x − 5)²), ex-15 ((x − 3)² → (x − 4)²), ex-35 ((x + 1)(x + 9) − (x + 3)² → (x + 1)(x + 4)
+− (x + 2)²), « سؤال التمرين السابق نفسه » restated; memo examples (x + 5)², quizzes (5x + 1)², (2x − 5)², x² = 16, (3x + 4)², the `101 \times 99`
+quiz's lost backslash (a TAB); predictPrompts on the rounds; the map's Descartes node and « 21² ≠ 400 + 1 ». PLAYER-only: the rounds, step texts
+that read a round, step 8's question, the rule's geometric option, the coach, the journal, the hidden sweep, the relabel, the « 0 » chip.
+Exercises feed no other bank (the practice bank and the compass index read `content/practice/`; checked).
+
+**Saved-answer keys.** The lesson was never in mission mode (saved answers are on only for `studentView: 'mission'`): kept 0, retired 0. New:
+the fingerprint keys of module questions (automatic, content-keyed — rewritten rows get new keys, none reused with another meaning), stars under
+`lab-square` and `lab-sumdiff`, `peer:m2-tariq`. « أستعدّ » keeps its ids `prep-1…10`.
+
+**Traps (each was met)**
+- `BuildAnswer` hides `ops` and `wrap` from screen readers: the prompt states the left side and the signs live IN the tiles (`-4x`, `+1`).
+- A TEXT gate on module SOURCE meets Tailwind (`text-slate-900`) and ids (`ex-9`): the regexes exclude a letter-hyphen before a number; the
+  repo's thousands separator `\,` must be matched too.
+- `(x − b)²` at the page default start (min + 2) always shows a side-3 field — the climax's picture: every start is set (9, 6).
+- A `9x(9x + 1)²` book row gave `729x³`: coefficients count; scan every row, not only the ones listed.
+
+**Review** (react, code, a11y — every finding verified): FIXED — the identity and coef prompts now state what is expanded; coef tiles carry their
+signs; `pred.twice` names its corner value; `sideName` from the binomial's first term; the zero chip's merge reads `labRef`; « 0 » first in its
+name, in `<bdi>`; prep item 6 checks its own decimals; the TEXT gate catches « -720 », « 874\,800 », « x + 3 », « 30\,m »; `teachingScope`
+without book figures. REJECTED / kept — the relabel lasts through the rule question (intended: the rule is in letters); zero chips render inside
+the tray guard (x² and −b² always stay); `*Parts` ignore `letter` (one letter, x, in this unit); a malformed `claim` throws (content is tested);
+shared `BuildAnswer` a11y (hidden ops/wrap, `disabled` empty slots) — logged for the primitives.
+
+**Open (for the owner)**: the page lab still has no coach (`LAB_COACH_ROLLOUT.md`); the book's طريقة (`METHOD`, with √3, √5) is still shown
+line by line in module 4; formulas with « = » inside an RTL line are rendered by the shared `MathText` — see the verification below.
+
+**Verification:** vitest `src/lessons` 692 files / 12509 tests green (lesson 1's `pitches.test.js`, `logic/pitchExpansion.test.js` and
+`algebra/pitchExpansionPlayer.test.jsx` unchanged); `check:lessons` exit 0, entry 241.4 KB; `lab-rollout-status --lesson` ✅ for lessons 1, 2, 3.
+Playwright at 1366 / 1024 / 1920: every round of both modules ★★★ (r1 with the free two-squares refusal, the a / b relabel seen, a wrong rule
+answer first; r2 with both predictions; the « 0 » chip in module 2), the free rounds, « إعادة », the practice round (x = 2 skipped) and back to r1
+(released, 1 star), a reload in the middle of module 1 (stars kept), home, « أستعدّ » (10 + review naming a lesson), « ورقة طارق » (wrong line,
+wrong fix, fix, restored after a reload), modules 0–7 unit by unit, the final test, the knowledge map (no climax number, no book), the teacher
+page (no player, no rounds): 0 `[data-fit-overflow]`, 0 page scroll, 0 KaTeX clip, 0 console error. Found by the walk and fixed: the free round
+overflowed at 1024 × 768 (its choice row) — the field is capped at 130 px when `choices` are shown. Formulas with « = » read in order
+everywhere (a² + 2ab + b², « 13 + 7 = 20 »): each sits in ONE `$…$` island.
 
 ## Unit 3, lesson 3 — `tahlil-ibara` « تحليل عبارة جبرية » (2026-11-11)
 

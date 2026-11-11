@@ -327,8 +327,9 @@ export function unhatchedIds(s) {
  *   'otherX'    — « l'égalité reste vraie pour une autre valeur ? » : le développement complet est le produit (toujours oui) ;
  *   'termsLeft' — « combien de termes après la réduction ? » : le nombre de termes du développement réduit.
  */
-export function predictTruth(s, kind) {
+export function predictTruth(s, kind, pred = {}) {
   const all = s.cells.map((c) => c.term);
+  if (kind === 'claim' || kind === 'twice' || kind === 'noX') return predictTruthSquare(s, kind, pred);
   if (kind === 'unhatched') {
     const ids = unhatchedIds(s);
     return samePolynomial(s.cells.filter((c) => ids.includes(c.id)).map((c) => c.term), all) ? 'yes' : 'no';
@@ -356,6 +357,9 @@ export function judgedPredictions(s, preds, all = false) {
     if (p.kind === 'unhatched') return s.trials.some((t) => t.sig === plain);
     if (p.kind === 'otherX') return verifiedXs(s).length >= 2;
     if (p.kind === 'termsLeft') return allCollected(s) && isSimplified(s);
+    // leçon 2 (mutatabiqat-shahira) : « مساحة الملعب … ؟ » et « قُطع مرّتين ؟ » au 1er x juste ; « يبقى حدّ فيه x ؟ » quand la somme est réduite
+    if (p.kind === 'claim' || p.kind === 'twice') return firstOk(s);
+    if (p.kind === 'noX') return allCollected(s) && isSimplified(s);
     return false;
   }).map((p) => p.key);
 }
@@ -372,7 +376,9 @@ export function coachOf(s, ctx = {}) {
   const x = ctx.x;
   const here = s.trials.find((t) => t.x === x);
   if (here && !here.ok && here.sig === trayKey(s) && here.missing.length) return { id: 'missing', target: `[data-pitch-zone="${here.missing[0]}"]`, gesture: 'drag' };
-  const plain = unhatchedIds(s);
+  // leçon 2 : un carré d'une SOMME n'a aucune zone hachurée — avant le premier refus, le guide montre les DEUX CARRÉS seulement (la manche
+  // demande « les deux carrés suffisent-ils ? » ; les deux bandes s'allument au refus)
+  const plain = s.kind === 'square-sum' && !s.trials.some((t) => !t.ok) ? s.cells.filter((c) => c.i === c.j).map((c) => c.id) : unhatchedIds(s);
   const todo = plain.filter((id) => !s.collected.includes(id));
   if (!s.collected.length) return { id: 'carry', target: `[data-pitch-zone="${todo[0] ?? s.cells[0].id}"]`, gesture: 'drag' };
   const refused = s.trials.some((t) => !t.ok);
@@ -453,5 +459,138 @@ export function shownValues(props) {
     wrongs.forEach((w) => push('decoy', evaluate(w, x)));
   });
   (props.choices ?? []).forEach((expr) => shownValues({ expr, span: props.span, labels: 'terms' }).forEach((v) => out.push(v)));
+  // leçon 2 : les options des questions de la manche (bandes, coin, annulation, construction à coefficient) et les affirmations prédites
+  squareShown(s, props, xs).forEach((v) => out.push(v));
+  return out;
+}
+
+/* ══════════════ LEÇON 2 `mutatabiqat-shahira` (rollout 2026-11-11 ; conseil du 2026-11-11, verdict L2.1–L2.7) ══════════════
+ * Les terrains CARRÉS (a ± b)² et le terrain (a + b)(a − b) — tout est ajouté, rien de la leçon 1 ne change : de nouvelles suites (`square`,
+ * `squareDiff`, `sumDiff`, `coef` et leurs entraînements), de nouvelles questions (`stripFill`, `cornerFill`, `cancelFill`, `identityBuild` en
+ * LETTRES a, b, `coefBuild` en nombres), trois prédictions (`claim`, `twice`, `noX`). Chaque vérité est CALCULÉE ici. */
+
+const TERM_POLY_RE = /^([+-]?)(\d*)(x(?:\^(\d+))?)?$/;
+/** « x^2-25 » → [{c:1,p:2},{c:-25,p:0}] (une affirmation prédite, écrite en texte). */
+export function parsePoly(src) {
+  const parts = String(src).replace(/\s+/g, '').replace(/−/g, '-').match(/[+-]?[^+-]+/g) ?? [];
+  return parts.map((part) => {
+    const m = part.match(TERM_POLY_RE);
+    if (!m || (m[2] === '' && !m[3])) throw new Error(`pitch-expansion: terme illisible « ${part} »`);
+    const c = (m[1] === '-' ? -1 : 1) * (m[2] === '' ? 1 : Number(m[2]));
+    return { c, p: m[3] ? Number(m[4] ?? 1) : 0 };
+  });
+}
+
+/** Le terrain est-il une identité remarquable (un carré de binôme, ou une somme par une différence) ? */
+export const isIdentityKind = (s) => s.kind === 'square-sum' || s.kind === 'square-diff' || s.kind === 'sum-diff';
+
+/** Le binôme du premier côté : a (son premier terme), b (la valeur absolue du second), et le signe. */
+export function binomialOf(s) {
+  const [t1, t2] = s.factors[0];
+  return { a: t1, b: { c: Math.abs(t2.c), p: t2.p }, minus: t2.c < 0 };
+}
+
+/** La zone RESTAURÉE (retranchée deux fois : (−b)(−b)) d'un carré de différence, ou null. */
+export const restoredCell = (s) => s.cells.find((c) => s.factors[0][c.i].c < 0 && s.factors[1][c.j].c < 0) ?? null;
+
+function predictTruthSquare(s, kind, pred) {
+  const all = s.cells.map((c) => c.term);
+  if (kind === 'claim') return samePolynomial(parsePoly(pred.claim), all) ? 'yes' : 'no';
+  if (kind === 'twice') return restoredCell(s) ? 'yes' : 'no';
+  return reduce(all).some((t) => t.p === 1) ? 'yes' : 'no';   // noX
+}
+
+const tx = (t) => termTex(t, { lead: true });
+/** Une option signée pour une pastille (« +25 », « -25 ») — la comparaison lit la chaîne. */
+const signed = (v) => (v > 0 ? `+${v}` : String(v));
+/** Une suite de trois pastilles dont la bonne réponse change de place avec les nombres (jamais toujours la même). */
+function spin(list, right, seed) {
+  const rest = list.filter((o) => o !== right);
+  const at = Math.abs(seed) % list.length;
+  return [...rest.slice(0, at), right, ...rest.slice(at)];
+}
+
+/**
+ * « ملعبك = المربّعان + ▢ شريط، مساحة كل منه ▢ » (r1, après le 1er x juste) : le NOMBRE de bandes (2 — deux, pas une ni quatre) et la bande en
+ * lettres, ab (pas 2ab, pas b²). `fields` pour LabCheckpoint › fill.
+ */
+export function stripFillParts(s) {
+  const { a, b } = binomialOf(s);
+  const ab = { c: Math.abs(a.c * b.c), p: a.p + b.p };
+  const twice = { c: 2 * ab.c, p: ab.p };
+  const bb = { c: b.c * b.c, p: 2 * b.p };
+  return [
+    { id: 'count', expected: '2', options: spin(['1', '2', '4'], '2', b.c) },
+    { id: 'each', expected: tx(ab), options: spin([tx(ab), tx(twice), tx(bb)], tx(ab), b.c + 1) },
+  ];
+}
+
+/**
+ * « المنطقة b²: قُطعت ▢ مرّة؛ في المجموع ▢ » (r2, après le 1er x juste) — sur les nombres de la manche (verdict L2.3 : jamais la phrase
+ * « قُطع مرّتين فيُضاف مرّة ») : 2 fois ; +b² (pas −b², pas 0).
+ */
+export function cornerFillParts(s) {
+  const cell = restoredCell(s);
+  const v = cell.term.c;
+  return [
+    { id: 'times', expected: '2', options: spin(['1', '2', '0'], '2', v) },
+    { id: 'sign', expected: signed(v), options: spin([signed(v), signed(-v), '0'], signed(v), v + 1) },
+  ];
+}
+
+/** « المنطقتان +bx و −bx معًا: ▢ » (module 2, après le 1er x juste) : 0 (pas 2bx, pas −2bx) — la fusion qui VIDE la pastille est la coupe. */
+export function cancelFillParts(s) {
+  const strip = s.cells.find((c) => c.term.p === 1 && c.term.c > 0).term;
+  const two = { c: 2 * strip.c, p: 1 };
+  return [{ id: 'cancel', expected: '0', options: spin(['0', tx(two), tx({ c: -two.c, p: 1 })], '0', strip.c) }];
+}
+
+/**
+ * BÂTIR l'identité EN LETTRES (verdict L2.6 : a, b — les côtés du terrain se ré-étiquettent a / b à l'écran pendant la question). UNE tuile leurre
+ * par nature (L2.2/L2.3) : carré d'une somme → ab (le double oublié) ; carré d'une différence → −b² (le signe de b²) ; somme × différence → +b².
+ * `expected` dans l'ordre du manuel ; `accept` : l'autre ordre des deux derniers termes, toujours juste.
+ */
+export function identityParts(s) {
+  if (s.kind === 'square-sum') return { lhs: '(a + b)^2', expected: ['a^2', '2ab', 'b^2'], accept: [['a^2', 'b^2', '2ab']], decoy: 'ab', ops: ['+', '+'], preset: ['a^2', null, null] };
+  if (s.kind === 'square-diff') return { lhs: '(a - b)^2', expected: ['a^2', '-2ab', '+b^2'], accept: [['a^2', '+b^2', '-2ab']], decoy: '-b^2', ops: ['', ''], preset: ['a^2', null, null] };
+  if (s.kind === 'sum-diff') return { lhs: '(a + b)(a - b)', expected: ['a^2', '-b^2'], accept: [], decoy: '+b^2', ops: [''], preset: [null, null] };
+  return null;
+}
+
+/**
+ * BÂTIR le développement d'un carré à COEFFICIENT, en nombres (r3, verdict L2.6 : la manche du coefficient) : (2x − 1)² = ▢ − ▢ + ▢ avec les
+ * tuiles a² = 4x², 2ab = 4x, b² = 1 et le leurre « coefficient non élevé au carré » (2x²).
+ */
+export function coefParts(s) {
+  const { a, b, minus } = binomialOf(s);
+  const aa = { c: a.c * a.c, p: 2 * a.p };
+  const ab2 = { c: 2 * a.c * b.c, p: a.p + b.p };
+  const bb = { c: b.c * b.c, p: 2 * b.p };
+  const decoy = { c: a.c, p: 2 * a.p };
+  // les SIGNES sont DANS les tuiles (« -4x », « +1 ») : un signe entre deux emplacements est aria-hidden (revue a11y 2026-11-11)
+  const sg = (t) => (t.c < 0 ? tx(t) : `+${tx(t)}`);
+  return { expected: [tx(aa), sg({ ...ab2, c: minus ? -ab2.c : ab2.c }), sg(bb)], decoy: tx(decoy), ops: ['', ''], aa, ab2, bb };
+}
+
+/** Les suites (et leurs entraînements) qui posent chaque question de la leçon 2 — lu par `shownValues` pour balayer leurs options. */
+const SQUARE_QS = {
+  square: ['strip', 'identity'], squareEasy: ['strip'], squareDiff: ['corner', 'identity'], squareDiffEasy: ['corner'],
+  coef: ['coef'], coefEasy: ['coef'], sumDiff: ['cancel', 'identity'], sumDiffEasy: ['cancel'],
+};
+
+/** Ce que les questions et les prédictions de la leçon 2 montrent, en plus du terrain (balayé par la règle « valeurs interdites par rôle »). */
+function squareShown(s, props, xs) {
+  const out = [];
+  const push = (role, v) => out.push(Object.freeze({ role, v: String(v) }));
+  const qs = SQUARE_QS[props.chains] ?? [];
+  if (qs.includes('strip')) stripFillParts(s).forEach((f) => f.options.forEach((o) => push(f.id === 'count' ? 'count' : 'term', o)));
+  if (qs.includes('corner')) cornerFillParts(s).forEach((f) => f.options.forEach((o) => push(f.id === 'times' ? 'count' : 'term', o)));
+  if (qs.includes('cancel')) cancelFillParts(s).forEach((f) => f.options.forEach((o) => push('term', o)));
+  if (qs.includes('coef')) { const c = coefParts(s); [...c.expected, c.decoy].forEach((o) => push('term', o)); }
+  (props.predict ?? []).filter((p) => p.kind === 'claim').forEach((p) => {
+    const claim = parsePoly(p.claim);
+    push('expansion', termsTex(claim));
+    xs.forEach((x) => push('decoy', evaluate(claim, x)));
+  });
   return out;
 }

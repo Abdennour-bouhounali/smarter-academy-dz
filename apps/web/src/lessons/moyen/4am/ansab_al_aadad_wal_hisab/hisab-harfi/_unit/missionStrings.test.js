@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { TEXT as TAHLIL } from '../tahlil-ibara/content/forbidden.js';
 import { TEXT as NASHR } from '../nashr-tabsit/content/forbidden.js';
+import { TEXT as SHAHIRA } from '../mutatabiqat-shahira/content/forbidden.js';
 
 /**
  * Unité 3 « الحساب الحرفي » — ce que l'élève LIT de la mission, de la carte des معارف et des données du manuel (modèle : l'unité 9,
@@ -38,6 +39,9 @@ const CLIMAX = {
   // nashr-tabsit (module 4, le couloir des spectateurs) : 1820, 1760, 1944, 124, 186000, 1500, 350, x = 30, les facteurs 2x + 10, x − 4,
   // 2x + 12, x − 3, les termes −8x, 10x, −40, −36, 12x, −6x et les développements de la مسألة — content/forbidden.js › TEXT (2026-11-11).
   'nashr-tabsit': NASHR,
+  // mutatabiqat-shahira (module 5, les gradins sur deux côtés) : 27, 729, 720, 711, 171, 900, 180, x = 30, le facteur x − 3, les termes ±6x et la
+  // constante ±9, les développements x² − 6x + 9, 6x − 9 et leurs leurres, l'ancre mentale 30 — content/forbidden.js › TEXT (2026-11-11).
+  'mutatabiqat-shahira': SHAHIRA,
 };
 const BOOK = [/الكتاب(?!ة)/, /تمرين\s*\d+\s*:/, /خطأً? مطبعي/];
 const lessonOf = (path) => path.split('/')[1];
@@ -57,6 +61,11 @@ describe('unit 3 — mission strings and knowledge maps', () => {
     const hitN = (s) => NASHR.some((re) => re.test(s));
     ['$1820$', '$(2x + 10)(x - 4)$', '$2x^2 + 2x - 40$', '$-8x + 10x$', '$x = 30$', '$2x^2 - 40$', '$4x + 4$', '186000 دج', '$- 6x$', '$x − 4$', '$2x + 10$', '$x - 3$', '$−8x$', '$2x^2 + 2x − 40$'].forEach((s) => expect(hitN(s), s).toBe(true));
     ['$3x^2 + 8x - 3$', '$6x - 12$', '$-6x^2$', '$-5x^2 - 10x - 5x$', '$x = 3$', '$(x + 4)(2x + 1)$', '$2x^2 + 7x + 3$', '$4x + 45$', '$16x$', '$3x - 4$', '$-2x + 10$', '$(2x - 3)(x - 1)$', '$x^2 - 3x$', '$2x - 3$'].forEach((s) => expect(hitN(s), s).toBe(false));
+  });
+  it('the mutatabiqat-shahira signature catches what it must (negative controls)', () => {
+    const hitS = (s) => SHAHIRA.some((re) => re.test(s));
+    ['$(x - 3)^2$', '$x^2 - 6x + 9$', '$6x - 9$', '$729$', '$(30 - 3)^2$', '$x = 30$', '$x^2 - 9$', '$x − 3$', '$900 - 180 + 9$', '171 m²', '$-6x$', '$(x + 3)(x - 3)$', '$-171$', '$x^2-180$', '$874\\,800$', '$1\\,200$', '$x + 3$', 'ضلعه $30\\,m$'].forEach((s) => expect(hitS(s), s).toBe(true));
+    ['$(x + 4)^2$', '$x^2 - 10x + 25$', '$16x$', '$0{,}6x$', '$9x^2 - 4$', 'ex-9', 'text-slate-900', '$2x - 3$', '$x^2 - 3x$', '$(41)^2$', '$1\\,016\\,064$', '$(x - 5)(x + 5)$'].forEach((s) => expect(hitS(s), s).toBe(false));
   });
   it('no checkpoint string holds a control character (a lost backslash)', () => {
     Object.entries(configs).forEach(([path, m]) => {

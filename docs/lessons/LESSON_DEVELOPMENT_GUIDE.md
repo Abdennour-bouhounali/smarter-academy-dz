@@ -1418,6 +1418,10 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
   last (« ▢(▢ + ▢) » = `ops: ['(', '+'], wrap: ['', ')']`; « (▢ + ▢)² » = `ops: ['+'], wrap: ['(', ')²']`). Choose the tiles so that NO other
   arrangement is also a true equality (`x(3x + 6)` from the tiles of `3x(x + 2)` would be equal and refused): the logic test tries every
   arrangement (`logic/turfFactoring.test.js`).
+- **A build a screen reader can answer (unit 3, `mutatabiqat-shahira`, a11y review of 2026-11-11).** `BuildAnswer` renders `ops` and `wrap`
+  `aria-hidden`: (1) the PROMPT states the left side (« أكمل $(a + b)^2$ بالحرفين », « انشر $(2x - 1)^2$ »), not only `wrap`; (2) a sign that
+  matters lives IN the tile (`-4x`, `+1`, `-2ab`, `+b^2`, `ops: ['', '']`), never only in a hidden op; (3) when the build is in LETTERS on a lab
+  drawn with numbers, the lab's sides relabel a / b on screen while the question is open (`pitch-expansion` `relabel`, verdict L2.6).
 - **The coach bubble must never cover the next control.** If the « look at what lit up » bubble opens above the refused pieces, the controls
   (− r = n +) go ABOVE the scene in the player (`[data-turf-topbar]`), as `segment-divider` did with its join row.
 
