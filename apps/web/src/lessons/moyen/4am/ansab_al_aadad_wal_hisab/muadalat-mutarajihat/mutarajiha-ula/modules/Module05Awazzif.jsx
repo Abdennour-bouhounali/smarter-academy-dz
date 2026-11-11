@@ -8,6 +8,7 @@ import GraphChoice from '../components/GraphChoice';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { QCM } from '../content/textbook';
 import { partsOf } from '../content/exercises';
+import { useModulePlayer } from '../../../../../../common/mission/useModulePlayer';
 
 /**
  * Module 5 — أوظّف تعلّماتي (p. 51) : exercices 21 → 29, 31 et 32 (30 et 33 sont des
@@ -17,6 +18,9 @@ import { partsOf } from '../content/exercises';
  * réponse juste par ligne). Les items 6, 8 et 9 sont l'إختبار أولي.
  * Une étape par exercice (ou paire) ; elle est faite quand chaque partie a reçu une
  * réponse (juste ou fausse). LP : P1, P2, P3.
+ *
+ * Lecteur de mission (« NO BACK-AND-FORTH », 2026-11-11) : une brique « تذكير » reste ENTIÈRE sur son écran (`data-paging-keep`) —
+ * ouverte en ses enfants, la moitié de ses dessins partait à côté de l'exercice 28 (zoom 0,6). La page et le mode classe : inchangés.
  */
 const Q5 = QCM[5];
 const Q7 = QCM[7];
@@ -26,6 +30,11 @@ const SOLVES = ['حلّ لها', 'ليس حلًّا لها'];
 export default function Module05Awazzif() {
   const [done, setDone] = useState({});
   const mark = (id) => () => setDone((d) => ({ ...d, [id]: true }));
+  const player = useModulePlayer(MODULE_CTX);
+  const rappel = (id) => {
+    const brick = <KnowledgeBrick id={id} variant="rappel" compact />;
+    return player ? <div data-paging-keep>{brick}</div> : brick;
+  };
   const all = (...ns) => ns.every((n) => partsOf(n).every((ex) => done[ex.id] && (!ex.graph || done[`${ex.id}-g`])));
   const render = (n, requires) => partsOf(n).map((ex) => (
     <div key={ex.id} className="space-y-2">
@@ -51,7 +60,7 @@ export default function Module05Awazzif() {
         { num: 2, title: 'من متباينة إلى أخرى', done: all('22', '23'),
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="qawaid-ittijah" variant="rappel" compact />
+              {rappel('qawaid-ittijah')}
               {render('22', ['qawaid-ittijah'])}
               {render('23', ['qawaid-ittijah'])}
             </div>
@@ -63,7 +72,7 @@ export default function Module05Awazzif() {
         { num: 5, title: 'حلّ كل متراجحة', done: all('26', '27'),
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tariqat-hal" variant="rappel" compact />
+              {rappel('tariqat-hal')}
               {render('26', ['tariqat-hal'])}
               {render('27', ['tariqat-hal'])}
             </div>
@@ -71,7 +80,7 @@ export default function Module05Awazzif() {
         { num: 6, title: 'حلّ ثم مثّل', done: all('28'),
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tamthil-bayani" variant="rappel" compact />
+              {rappel('tamthil-bayani')}
               {render('28', ['tariqat-hal'])}
             </div>
           ) },

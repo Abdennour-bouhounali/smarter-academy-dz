@@ -7,6 +7,7 @@ import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import RayFigure from '../components/RayFigure';
 import GraphChoice from '../components/GraphChoice';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
+import { useModulePlayer } from '../../../../../../common/mission/useModulePlayer';
 import { KNOWLEDGE_3, KNOWLEDGE_4 } from '../content/textbook';
 
 /**
@@ -22,14 +23,81 @@ import { KNOWLEDGE_3, KNOWLEDGE_4 } from '../content/textbook';
  * (mutarajiha-ula, tamthil-bayani) : l'élève écrit d'abord (predictPrompt de knowledge.jsx),
  * puis encadré et brique s'affichent, une seule « توقّعك ». L'exemple 1 de معارف 4 et son
  * dessin restent AVANT la prédiction : la prompt s'appuie sur eux.
+ *
+ * Lecteur de mission (« NO BACK-AND-FORTH », 2026-11-11) — l'étape 3 a sa version : chaque exemple, SON dessin et une question
+ * sur le dessin forment UN écran (`data-paging-keep`) — « 3/2 est-il solution ? », « 8 est-il solution ? » : l'élève vérifie la
+ * borne avant d'écrire la règle ; la brique tamthil-bayani porte elle-même « أتوقّع القاعدة » (son corps = la définition, les
+ * deux dessins et les deux ملاحظة du manuel : rien n'est perdu) et sa consigne redit ce que les deux dessins montrent. Les
+ * briques restent entières sur leur écran (`data-paging-keep`). La page et l'enseignant : inchangés.
  */
 const KEEP = ['يبقى', 'يتغيّر'];
+const SOLUTION = ['نعم، حلّ لها', 'لا، ليس حلًّا لها'];
+const PLAYER_PREDICT = 'في المثال 1 العدد $\\frac{3}{2}$ حلّ، والرمز عنده موجّه نحو الجزء الملوّن. في المثال 2 العدد 8 ليس حلًّا، والرمز عنده غير موجّه نحوه. متى نوجّه الرمز عند الحدّ نحو الجزء الملوّن، ومتى لا نوجّهه؟ اكتب القاعدة.';
+
+/** Lecteur : un exemple du manuel, son dessin et la question sur la borne — un seul écran. */
+function ExampleScreen({ text, figure, label, question }) {
+  return (
+    <div data-paging-keep className="grid grid-cols-[minmax(0,1fr)_minmax(0,17rem)] items-start gap-4">
+      <div className="space-y-3">
+        <TextbookBox kind="example" text={text} source={KNOWLEDGE_4.source} compact />
+        {question}
+      </div>
+      <RayFigure {...figure} label={label} />
+    </div>
+  );
+}
 
 export default function Module03Maarif() {
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
+  const player = useModulePlayer(MODULE_CTX);
+
+  const graphQuestion = (
+    <GraphChoice
+      prompt={<MathText>{'مثّل بيانيا حلول المتراجحة $2x \\geq 10$ .'}</MathText>}
+      graph={{
+        options: [
+          { from: 2, to: 8, at: 5, side: 'right', closed: false },
+          { from: 2, to: 8, at: 5, side: 'left', closed: true },
+          { from: 2, to: 8, at: 5, side: 'right', closed: true },
+        ],
+        correct: 2,
+        explain: '$2x \\geq 10$ تعطي $x \\geq 5$ : الجزء الملوّن على يمين 5، و 5 حلّ ($2 \\times 5 = 10$ و $10 \\geq 10$) فالرمز موجّه نحوه.',
+      }}
+      requires={['tamthil-bayani']}
+      onAnswered={() => setQ4(true)}
+    />
+  );
+  const LABEL1 = 'الجزء الملوّن بالأحمر على يسار واحد ونصف، والرمز موجّه نحوه';
+  const LABEL2 = 'الجزء الملوّن بالأحمر على يمين 8، والرمز غير موجّه نحوه';
+
+  const playerStep3 = (
+    <div className="space-y-3">
+      <div data-paging-keep><KnowledgeBrick id="tamthil-jadwal" variant="rappel" compact /></div>
+      <ExampleScreen text={KNOWLEDGE_4.example1} figure={KNOWLEDGE_4.figure1} label={LABEL1}
+        question={(
+          <TapQuestion
+            prompt={<MathText>{'في الرسم، الحدّ هو $\\frac{3}{2}$ . هل العدد $\\frac{3}{2}$ حلّ للمتراجحة $4x \\leq 6$ ؟'}</MathText>}
+            options={SOLUTION} correct={0} cols={2} requires={['hal-mutarajiha']}
+            explain={<MathText>{'$4 \\times \\frac{3}{2} = 6$ و $6 \\leq 6$ متباينة صحيحة: $\\frac{3}{2}$ حلّ — انظر إلى اتجاه الرمز عنده.'}</MathText>}
+          />
+        )} />
+      <ExampleScreen text={KNOWLEDGE_4.example2} figure={KNOWLEDGE_4.figure2} label={LABEL2}
+        question={(
+          <TapQuestion
+            prompt={<MathText>{'في الرسم، الحدّ هو 8 . هل العدد 8 حلّ للمتراجحة $-\\frac{1}{4}x + 1 < -1$ ؟'}</MathText>}
+            options={SOLUTION} correct={1} cols={2} requires={['hal-mutarajiha']}
+            explain={<MathText>{'$-\\frac{1}{4} \\times 8 + 1 = -1$ و $-1 < -1$ متباينة خاطئة: 8 ليس حلًّا — انظر إلى اتجاه الرمز عنده.'}</MathText>}
+          />
+        )} />
+      <div data-paging-keep>
+        <KnowledgeBrick id="tamthil-bayani" lead="القاعدة التي وجدتها حين وجّهت الرمز:" predictPrompt={PLAYER_PREDICT} />
+      </div>
+      {graphQuestion}
+    </div>
+  );
 
   return (
     <ContentModule
@@ -110,32 +178,19 @@ export default function Module03Maarif() {
         },
         {
           num: 3, title: 'التمثيل البياني لحلول متراجحة', subtitle: 'الرسم', done: q4,
-          content: (
+          content: player ? playerStep3 : (
             <div className="space-y-3">
               <KnowledgeBrick id="tamthil-jadwal" variant="rappel" compact />
               <TextbookBox kind="example" text={KNOWLEDGE_4.example1} source={KNOWLEDGE_4.source} compact />
-              <RayFigure {...KNOWLEDGE_4.figure1} label="الجزء الملوّن بالأحمر على يسار واحد ونصف، والرمز موجّه نحوه" />
+              <RayFigure {...KNOWLEDGE_4.figure1} label={LABEL1} />
               <PredictRule id="tamthil-bayani">
                 <TextbookBox kind="remark" text={KNOWLEDGE_4.note1} source={KNOWLEDGE_4.source} compact />
                 <TextbookBox kind="example" text={KNOWLEDGE_4.example2} source={KNOWLEDGE_4.source} compact />
-                <RayFigure {...KNOWLEDGE_4.figure2} label="الجزء الملوّن بالأحمر على يمين 8، والرمز غير موجّه نحوه" />
+                <RayFigure {...KNOWLEDGE_4.figure2} label={LABEL2} />
                 <TextbookBox kind="remark" text={KNOWLEDGE_4.note2} source={KNOWLEDGE_4.source} compact />
               </PredictRule>
               <KnowledgeBrick id="tamthil-bayani" lead="القاعدة التي وجدتها حين وجّهت الرمز:" />
-              <GraphChoice
-                prompt={<MathText>{'مثّل بيانيا حلول المتراجحة $2x \\geq 10$ .'}</MathText>}
-                graph={{
-                  options: [
-                    { from: 2, to: 8, at: 5, side: 'right', closed: false },
-                    { from: 2, to: 8, at: 5, side: 'left', closed: true },
-                    { from: 2, to: 8, at: 5, side: 'right', closed: true },
-                  ],
-                  correct: 2,
-                  explain: '$2x \\geq 10$ تعطي $x \\geq 5$ : الجزء الملوّن على يمين 5، و 5 حلّ ($2 \\times 5 = 10$ و $10 \\geq 10$) فالرمز موجّه نحوه.',
-                }}
-                requires={['tamthil-bayani']}
-                onAnswered={() => setQ4(true)}
-              />
+              {graphQuestion}
             </div>
           ),
         },

@@ -169,10 +169,17 @@ export const LESSON_KNOWLEDGE = {
         body: (
           <div className="space-y-2">
             <p><MathText>{KNOWLEDGE_4.definition}</MathText></p>
-            <RayFigure {...KNOWLEDGE_4.figure1} label="الجزء الملوّن بالأحمر على يسار واحد ونصف، والرمز موجّه نحوه" />
-            <p className="text-sm"><MathText>{KNOWLEDGE_4.note1}</MathText></p>
-            <RayFigure {...KNOWLEDGE_4.figure2} label="الجزء الملوّن بالأحمر على يمين 8، والرمز غير موجّه نحوه" />
-            <p className="text-sm"><MathText>{KNOWLEDGE_4.note2}</MathText></p>
+            {/* les deux dessins côte à côte : la brique tient en UN écran du lecteur (« NO BACK-AND-FORTH », 2026-11-11) */}
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="space-y-1">
+                <RayFigure {...KNOWLEDGE_4.figure1} label="الجزء الملوّن بالأحمر على يسار واحد ونصف، والرمز موجّه نحوه" />
+                <p className="text-sm"><MathText>{KNOWLEDGE_4.note1}</MathText></p>
+              </div>
+              <div className="space-y-1">
+                <RayFigure {...KNOWLEDGE_4.figure2} label="الجزء الملوّن بالأحمر على يمين 8، والرمز غير موجّه نحوه" />
+                <p className="text-sm"><MathText>{KNOWLEDGE_4.note2}</MathText></p>
+              </div>
+            </div>
           </div>
         ),
       },
