@@ -98,6 +98,44 @@ export const UNIT_MISSIONS = Object.freeze({
       text: 'عالم رياضيات أندلسي درس في تلمسان وعاش في المغرب العربي. كان يكتب حرف «جـ»، أوّلَ حرف من كلمة «جذر»، فوق العدد ليدلّ على جذره، قبل أن ينتشر الرمز √ الذي ستستعمله.',
     },
   },
+  // Unité 3 (2026-11-11) : ses trois leçons sont converties (e0045aad, b92e26f6, bc156126) ; la synthèse attend la décision du propriétaire
+  // sur la recette provisoire. Icônes = l'objet de la scène de chaque leçon (le terrain du quartier, les gradins, les rouleaux de gazon) et 🧩 la
+  // synthèse. Le défi est le تحدّ de l'unité (un triangle de côtés x + 1, x + 2, x + 3), RÉÉCRIT avec les nombres de la plateforme : x + 2, x + 4,
+  // x + 6 — les termes en x s'annulent encore (r = p + q), x² = 16 ; « x + 3 » est un nombre de la مسألة de la leçon 2, il n'est pas repris. Sans
+  // `numbers` : la mise en valeur découpe le texte par une RegExp non échappée (« + » y serait un quantificateur) — les côtés sont des formules
+  // `$…$` lues par MathLabel. La réponse (x = 4, les côtés 6, 8, 10) n'est jamais écrite ici.
+  'hisab-harfi': {
+    icons: {
+      'nashr-tabsit': '⚽',
+      'mutatabiqat-shahira': '🏟️',
+      'tahlil-ibara': '🌱',
+      'wadiya-idmajiya-harfi': '🧩',
+    },
+    short: {
+      'nashr-tabsit': 'نشر وتبسيط',
+      'mutatabiqat-shahira': 'المتطابقات الشهيرة',
+      'tahlil-ibara': 'تحليل عبارة',
+      'wadiya-idmajiya-harfi': 'أدمج تعلّماتي',
+    },
+    challenge: {
+      lead: 'ركن عشبيّ مثلّث الشكل في زاوية الملعب، أطوال أضلاعه بالمتر $x + 2$ و $x + 4$ و $x + 6$ . ما قيمة $x$ التي تجعل زاويته قائمة؟',
+      full: 'يريد عمّال البلدية أن يزرعوا العشب في ركن مثلّث الشكل عند زاوية ملعب الحيّ. قاسوا أضلاعه بالمتر فوجدوها $x + 2$ و $x + 4$ و $x + 6$ ، والضلع الأطول يقابل زاوية الملعب. لكي يلتصق الركن بخطَّي الملعب تمامًا، يجب أن تكون زاويته قائمة.',
+      question: 'ما قيمة العدد $x$ التي تجعل المثلث قائمًا؟ وما أطوال أضلاعه عندئذ؟',
+      numbers: [],
+      solvedAfter: 'mutatabiqat-shahira',
+    },
+    keys: [
+      { icon: '🧩', label: 'نشر جداء قوسين', after: 'nashr-tabsit' },
+      { icon: '🧹', label: 'تبسيط عبارة', after: 'nashr-tabsit' },
+      { icon: '⬛', label: 'مربّع مجموع ومربّع فرق', after: 'mutatabiqat-shahira' },
+      { icon: '✂️', label: 'جداء مجموع في فرق', after: 'mutatabiqat-shahira' },
+      { icon: '🔗', label: 'التحليل إلى جداء عوامل', after: 'tahlil-ibara' },
+    ],
+    history: {
+      title: 'الكرجي (نحو 953 – 1029)',
+      text: 'عالم رياضيات عاش في بغداد وألّف «الفخري في الجبر والمقابلة». عرف كيف ينشر مربّع مجموع ومكعّبه وما فوقهما بقاعدة تعطي أعداد كل نشر، دون أن يرسم أيّ شكل.',
+    },
+  },
   // Unité 9 (2026-11-10) : ses trois leçons ET sa synthèse sont converties (50e5f844, 76a4545b, 9f7fb170, puis la synthèse — le pilote du recette
   // « synthèse »). Icônes = l'objet de la scène de chaque leçon (le ciné-club, le mur repeint, la banderole du derby) et 🧩 la synthèse. Le défi est
   // le تحدّ du module 7 de la synthèse (la minaret du quartier), RÉÉCRIT : seulement les deux ombres (11,6 et 1,6) et la perche d'un mètre — ni la

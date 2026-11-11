@@ -58,6 +58,20 @@ describe('unit 9 « خاصية طالس » — the challenge never writes its an
   });
 });
 
+describe('unit 3 « الحساب الحرفي » — the challenge never writes its answer nor a lesson\'s climax', () => {
+  // (x + 6)² = (x + 2)² + (x + 4)² ⟺ x² = 16 : x = 4, sides 6, 8, 10 m. « x + 3 » / « x − 3 » belong to lesson 2's مسألة,
+  // 10x² + 15x to lesson 3's, 1820 and x = 30 to lesson 1's — none is on the page.
+  const text = JSON.stringify(UNIT_MISSIONS['hisab-harfi'].challenge);
+  it.each(['x = 4', 'x=4', '16', ' 6 ', ' 8 ', '10', 'x + 3', 'x - 3', 'x − 3', '15x', '1820', 'x = 30'])('« %s » is not on the unit page', (s) => {
+    expect(text.includes(s)).toBe(false);
+  });
+  it('the sides make a right triangle for exactly one positive x (the x terms cancel)', () => {
+    const roots = [];
+    for (let x = 1; x <= 50; x += 1) if ((x + 6) ** 2 === (x + 2) ** 2 + (x + 4) ** 2) roots.push(x);
+    expect(roots).toEqual([4]);
+  });
+});
+
 describe('unit state for a student', () => {
   const m = { keys: [{ after: 'a' }, { after: 'c' }] };
   it('the current lesson is the first open one not finished; keys follow finished lessons', () => {
