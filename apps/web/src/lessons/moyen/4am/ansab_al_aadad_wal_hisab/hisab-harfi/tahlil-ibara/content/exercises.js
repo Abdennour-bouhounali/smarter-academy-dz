@@ -11,6 +11,7 @@
  * de (a − b)(a + b), le coefficient non élevé au carré.
  */
 import { src } from '../../_unit/unitMeta.js';
+import { withContext } from '../../../../../../common/textbook/exerciseParts.js';
 
 export const LP = {
   P1: '4am_tahlil-ibara_P1',
@@ -312,7 +313,8 @@ export const EXERCISES = [
 ];
 
 /** Les entrées d'un exercice du manuel (module 4), par numéro : « 20 », « 26 »… */
-export const partsOf = (n) => EXERCISES.filter((ex) => ex.id === `ex-${n}` || ex.id.startsWith(`ex-${n}-`));
+// lecteur : les parties sans énoncé portent celui de la partie 1 (« pas d'aller-retour », common/textbook/exerciseParts.js)
+export const partsOf = (n) => withContext(EXERCISES.filter((ex) => ex.id === `ex-${n}` || ex.id.startsWith(`ex-${n}-`)));
 
 /** Accès par id. */
 export const EX = Object.fromEntries([...NOW_35_2, ...NOW_36_2, ...EXERCISES].map((ex) => [ex.id, ex]));
