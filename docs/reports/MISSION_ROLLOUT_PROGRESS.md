@@ -425,6 +425,16 @@ student crossed the screen between two clicks. `MissionHome` now puts its text c
 first visit's CTA is aligned right (x ≈ 938). Applies to every converted lesson (shared component). The player's bottom bar keeps the RTL convention
 — « واصل » on the left, « السابق » on the right (owner: tried and refused the same day).
 
+## Cross-lesson fix — the opening view: same width, same button place (2026-11-11, owner)
+
+Two complaints on the opening view (`MissionHome`, first visit and « شاهد البداية »): (1) « شاهد البداية » showed the opening NARROWER (957 px at 1366)
+than the screen « لا أعرف بعد… هيا نجمع الأدوات » opens (≈ 1089 px, the 1100 px reading column × the zoom): the compact home had already settled
+its zoom, and the taller opening only SHRANK to fit (`FitToArea › keepInPlace`). Now `MissionHome` asks `useFitRefit()` when the replay opens, so
+the screen re-settles at its own size — first visit and replay measure the same at 1024 / 1366 / 1920 (0 `data-fit-overflow`, 0 page scroll).
+(2) The CTA (« لا أعرف بعد… » / « أجرّب ») sat in its own row under the card; it now sits INSIDE the text column, full column width, 64 px high,
+exactly where the home's « ابدأ : … » / « واصل : … » button is (same grid, `md:grid-cols-[1.2fr_0.8fr]`; the section lost its `max-w-5xl`).
+Applies to every converted lesson (shared component). Probe: a Playwright script measuring `[data-mission-opening]` and `[data-mission-start]`.
+
 ## Cross-lesson fix — the guide and the « أستعدّ » card (2026-11-09, owner)
 
 Applies to every converted lesson (and, for the card, to every lesson's « أستعدّ » and « إختبار أولي »):

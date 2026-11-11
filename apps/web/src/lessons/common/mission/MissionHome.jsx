@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import MathLabel from '../components/MathLabel';
 import { mathToPlain } from '../../../utils/mathPlain';
 import { useMission } from './useMission';
+import { useFitRefit } from './missionPlayerContext';
 import { stationLabel, toolLit, toolProgress, sceneFill, trainingsDone, showStars, openingMinutes } from './missionModel';
 import MissionScene from './MissionScene';
 import MissionMap from './MissionMap';
@@ -24,6 +25,10 @@ export default function MissionHome({ config, basePath }) {
   const { mission, state, update, tools, stations, resume, stars, completedModules } = useMission(config);
   const [replay, setReplay] = useState(false);
   const [details, setDetails] = useState(false);
+  // « شاهد البداية » : l'accroche est plus HAUTE que l'accueil compact dont elle prend la place ; sans ré-ajustement elle héritait de sa taille
+  // posée et rétrécissait (957 px au lieu de la largeur des pages de la leçon — propriétaire, 2026-11-11). L'écran se re-pose à sa juste taille.
+  const refit = useFitRefit();
+  useEffect(() => { if (replay) refit?.(); }, [replay]); // eslint-disable-line react-hooks/exhaustive-deps
   // SYNTHÈSE (`mission.toolsOwned`) : les clés de l'unité sont possédées d'emblée — la scène est pleine, l'anneau compte les clés UTILISÉES
   const owned = mission.toolsOwned === true;
   const { lit } = toolProgress(tools);
@@ -36,8 +41,8 @@ export default function MissionHome({ config, basePath }) {
   if (!state.opened || replay) {
     const minutes = openingMinutes(config);
     return (
-      <section className="mx-auto flex max-w-5xl flex-col gap-5 py-1" data-mission-opening>
-        <div className="grid items-center gap-6 rounded-[2rem] border border-indigo-100 bg-gradient-to-br from-white via-indigo-50/60 to-amber-50/70 p-6 shadow-sm lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
+      <section className="space-y-4" data-mission-opening>
+        <div className="grid items-center gap-6 rounded-[2rem] border border-indigo-100 bg-gradient-to-br from-white via-indigo-50/60 to-amber-50/70 p-6 shadow-sm md:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
           <div className="min-w-0 space-y-4 text-start">
             <p className="text-sm font-black uppercase tracking-wide text-indigo-500">🎯 {t('mission.tag')}</p>
             <h1 className="font-space text-3xl font-extrabold text-slate-900">{mission.title}</h1>
@@ -52,6 +57,12 @@ export default function MissionHome({ config, basePath }) {
               <span className="rounded-full bg-white px-3 py-1 text-slate-700 ring-1 ring-slate-200">🧰 {t('mission.toolsCount', { count: tools.length })}</span>
               <span className="rounded-full bg-amber-100 px-3 py-1 text-amber-900">🏆 {t('mission.climax')}</span>
             </div>
+            {/* le bouton au MÊME endroit et de la MÊME taille que « ابدأ : … » de l'accueil (propriétaire, 2026-11-11) : dans la colonne du texte, pleine largeur */}
+            <button type="button" data-mission-start
+              onClick={() => { update({ opened: true }); setReplay(false); go(); }}
+              className="min-h-[64px] w-full rounded-2xl bg-indigo-600 px-6 text-xl font-black text-white shadow-[0_5px_0_0_#3730A3] hover:bg-indigo-700 active:translate-y-0.5">
+              {mission.opening.cta} <span aria-hidden="true">←</span>
+            </button>
           </div>
           <MissionScene scene={mission.scene} fill={owned ? 1 : 0} className="w-full drop-shadow-sm" label={mathToPlain(mission.opening.text)} />
         </div>
@@ -65,14 +76,6 @@ export default function MissionHome({ config, basePath }) {
           ))}
           <span aria-hidden="true" className="font-black text-slate-400">←</span>
           <span className="rounded-full bg-amber-100 px-3 py-1 text-sm font-black text-amber-900">🏆 {t('mission.climax')}</span>
-        </div>
-        {/* « ابدأ » à DROITE, sous le texte (propriétaire, 2026-11-09 : même place que « واصل » partout) */}
-        <div className="flex justify-start px-6">
-          <button type="button" data-mission-start
-            onClick={() => { update({ opened: true }); setReplay(false); go(); }}
-            className="min-h-[64px] rounded-2xl bg-indigo-600 px-10 text-xl font-black text-white shadow-[0_5px_0_0_#3730A3] hover:bg-indigo-700 active:translate-y-0.5">
-            {mission.opening.cta} <span aria-hidden="true">←</span>
-          </button>
         </div>
         {/* La PREMIÈRE vue dit aussi quoi réviser avant de partir (propriétaire, 2026-11-07) — en UNE ligne (2026-11-09) */}
         <ReviseFirst lessonId={config.id} title={config.title} basePath={basePath} variant="slim" />
