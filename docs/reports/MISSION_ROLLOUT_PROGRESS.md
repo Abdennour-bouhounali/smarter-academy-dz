@@ -20,7 +20,7 @@
 | 8 | `awwaliyan-fima-baynahuma` | `coprime-explorer` (v2 treatment, new) | ✅ done 2026-11-09 | `feat(lessons): awwaliyan-fima-baynahuma — mission prototype` | See « Lesson 8 » below. |
 | 9 | `wadiya-idmajiya-aadad` | — | ⏳ next in catalogue order | | |
 
-Catalogue order: `packages/core/curriculum/dz/lessons_4am_2026_2027.json`. Unit 2 is converted (five lessons; synthesis waiting); units 3–14 are not started. The full prompt for unit 2 « الحساب على الجذور » (every rule, check and review step of unit 1): `docs/reports/UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. The next prompt, unit 9 « خاصية طالس » (unit 2's recipe plus every review lesson of unit 2): `docs/reports/UNIT9_KHASSIYAT_TALIS_MISSION_PROMPT.md`. Still open in unit 1: its synthesis `wadiya-idmajiya-aadad` (no synthesis recipe yet — the prompt's §5).
+Catalogue order: `packages/core/curriculum/dz/lessons_4am_2026_2027.json`. Unit 2 is converted (five lessons; synthesis waiting); unit 9 is converted with its synthesis (the synthesis pilot); unit 3 (three lessons) and unit 4 « معادلات ومتراجحات » (four lessons, 2026-11-11, branch `integrate-unit4`) are converted, their syntheses waiting for the synthesis-recipe answer; units 5–8 and 10–14 are not started. The full prompt for unit 2 « الحساب على الجذور » (every rule, check and review step of unit 1): `docs/reports/UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. The next prompt, unit 9 « خاصية طالس » (unit 2's recipe plus every review lesson of unit 2): `docs/reports/UNIT9_KHASSIYAT_TALIS_MISSION_PROMPT.md`. Still open in unit 1: its synthesis `wadiya-idmajiya-aadad` (no synthesis recipe yet — the prompt's §5).
 
 ## Unit 2 « الحساب على الجذور » — the table
 
@@ -60,6 +60,24 @@ after lesson 1. Folder `lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/`
 | 2 | `mutatabiqat-shahira` | `pitch-expansion` (lesson 2's square fields added: chains `square` / `squareDiff` / `sumDiff` / `coef`, identity build in letters, « 0 » chip; LabCoach player only) | ✅ built 2026-11-11 | `feat(lessons): mutatabiqat-shahira — mission prototype` | See « Unit 3, lesson 2 » below. |
 | 3 | `tahlil-ibara` | `turf-factoring` (v2 treatment + LabCoach, new; both modes `rows` and `square`) | ✅ built 2026-11-11 | `feat(lessons): tahlil-ibara — mission prototype` | See « Unit 3, lesson 3 » below. |
 
+## Unit 4 « معادلات ومتراجحات » — the table
+
+Prompt for the whole unit: `UNIT4_MUADALAT_MUTARAJIHAT_MISSION_PROMPT.md`; the council of 2026-11-11 (4 designers, 5 advisors, 5 anonymous peer
+reviews, chairman) decided the unit's four labs at once (verdict « Cross-lesson » X1–X5, « L1 » … « L4 », the 15 gaps). Four builders IN PARALLEL,
+one worktree each, on a « commit 0 » of the integrator (`chore(lessons): unit 4 mission scaffolding`: the four scene stubs registered in
+`MissionScene.jsx`, empty `player` / `coach` / `predict` keys per lab in `lesson.manipulation.json`, `_unit/forbiddenShared.js` and the
+`_unit/missionStrings.test.js` skeleton reading `_unit/signatures/<lesson>.js`); merged L1 → L3 → L2 → L4 on `integrate-unit4`. Folder
+`lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/`. Names cast for the whole unit (X3, enforced by `_unit/missionStrings.test.js`):
+أيوب · خديجة · نسيم · كوثر · حاتم · بسّام · هدى · عماد · لقمان · شيماء.
+
+| # | Lesson (unit 4) | Labs converted | Status | Commit | Notes |
+|---|---|---|---|---|---|
+| 1 | `muadala-ula` | `equation-balance` (a PLAYER VERSION `EquationBalancePlayer.jsx` chosen by `EquationBalance.jsx` in the player + its FIRST LabCoach, player only; quantity chips 1–4) | ✅ built 2026-11-11 | `feat(lessons): muadala-ula — mission prototype` | See « Unit 4, lesson 1 » below. |
+| 2 | `jidaa-maadum` | `vanishing-pitch` (v2 treatment + its FIRST LabCoach, player only; the COVERED pitch as a required round; the « أو » text tile) | ✅ built 2026-11-11 | `feat(lessons): jidaa-maadum — mission prototype` | See « Unit 4, lesson 2 » below. |
+| 3 | `mutarajiha-ula` | `solution-ray` (v2 treatment + its FIRST LabCoach, player only; the verdict masked while dragging; two-case rounds; the division built with tiles) | ✅ built 2026-11-11 | `feat(lessons): mutarajiha-ula — mission prototype` | See « Unit 4, lesson 3 » below. |
+| 4 | `tarrid-mushkila` | `growth-race` (v2 treatment + its FIRST LabCoach, player only; the model check `tk:'model'`; `decor="board"`, KidFigure cast) | ✅ built 2026-11-11 | `feat(lessons): tarrid-mushkila — mission prototype` | See « Unit 4, lesson 4 » below. |
+| S | `wadiya-idmajiya-muadalat` | — | ⏳ waits for the owner's answer on the synthesis recipe | | Its lab props are frozen by its `lab.render.test.jsx` (verdict gap 6). |
+
 ## Lab families — which have the v2 treatment
 
 | Lab (`type`) | v2 treatment | First converted in |
@@ -81,6 +99,10 @@ after lesson 1. Folder `lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/`
 | `pitch-expansion` | ✅ (2026-11-11, `labels` 'area' / 'terms', chains `dist` / `double` / `restored` / `result` + practice chains; lesson 2: `square` / `squareDiff` / `sumDiff` / `coef` + practice chains, `identityBuild` in letters with the a / b relabel, predictions `claim` / `twice` / `noX`, the « 0 » chip) | `nashr-tabsit`, `mutatabiqat-shahira` (unit 3) |
 | `cone-cylinder` | ✅ (2026-11-10, a PLAYER VERSION `ConeCylinderPlayer.jsx` chosen by `ConeCylinder.jsx` in the player: one trial = one press, `n` explicit, `lockH` / `lockR`, no number / volume / point letter in a verdict; the page lab is unchanged) | `wadiya-idmajiya-talis` (unit 9, synthesis) |
 | `turf-factoring` | ✅ (2026-11-11, both modes `rows` and `square`; a trial = a NEW r or a NEW split, r = 1 is not one; the sweep hidden; `wrap` builds) | `tahlil-ibara` (unit 3) |
+| `equation-balance` | ✅ (2026-11-11, a PLAYER VERSION `EquationBalancePlayer.jsx`; a trial = a NEW equation written or a refused gesture; quantity chips 1–4; chains `r1` / `r2` / `r3` / `m2r1` / `m2r2`) | `muadala-ula` (unit 4) |
+| `vanishing-pitch` | ✅ (2026-11-11, a trial = a NEW pin or « لا قيم أخرى » while a zero is missing; `covered`, `freeRefusal`; chains `build` / `rule` / `count`; the « أو » text tile) | `jidaa-maadum` (unit 4) |
+| `solution-ray` | ✅ (2026-11-11, the verdict masked while dragging; `sequence` two-case rounds; `divide: 'coef'` built with tiles; `sides`, `start`) | `mutarajiha-ula` (unit 4) |
+| `growth-race` | ✅ (2026-11-11, a model check is `tk:'model'`, never a trial of x; one new x = one verdict; `decor="board"`, `cast` of KidFigure people; `freeFirstModel`) | `tarrid-mushkila` (unit 4) |
 | every other lab | ⏳ | — |
 
 ## Lesson 2 — `qawasim-adad-tabii` « قواسم عدد طبيعي » (2026-11-08)
@@ -356,6 +378,21 @@ old page. The student tour `student.unit` targets both pages; its two lines that
 `e2e/unit-mission-view.mjs` loops over every unit of `UNIT_MISSIONS` (three lessons done, « درسك الآن » = the fourth) — all checks pass for units 1
 and 2 at the five sizes, teacher view unchanged.
 
+**Unit 4 « معادلات ومتراجحات » (2026-11-11).** Its four lessons converted (the synthesis waits for the synthesis-recipe answer), its entry
+`'muadalat-mutarajihat'` is written in `unitMissions.js`:
+- stations = the object of each lesson's scene: ⚖️ معادلة من الدرجة الأولى, 📋 معادلات جداء معدوم, 📱 المتراجحات, 📏 ترييض مشكلة, then
+  🧩 أدمج تعلّماتي;
+- the challenge is the unit's تحدّ (two swimming-pool subscriptions, 75 a session or 560 + 5 a session — also the synthesis's 🏆) REWRITTEN by the
+  platform as a riding club: 90 دج a session, or 700 دج a year then 20 دج a session; « from how many sessions is the second cheaper? » (equal at
+  10, cheaper from 11 — never on the page); solvable after `mutarajiha-ula`. A test checks that no number of the synthesis (50x, 200 + 10x, 75,
+  560, 5x) and no lesson's مسألة signature (`_unit/signatures/*.js`) is in it;
+- five keys for four lessons: حل معادلة من الدرجة الأولى, معادلة جداء معدوم, then « المتراجحات » hands TWO (حل متراجحة, تمثيل الحلول على مستقيم
+  مدرّج), then ترييض مشكلة (the test's title now says « a unit of three or four lessons hands two keys in one lesson »);
+- history: الخوارزمي (c. 780 – 850) and « المختصر في حساب الجبر والمقابلة »: al-jabr moves a subtracted term to the other side, al-muqābala
+  removes what is equal on both sides — the balance of lesson 1 (the catalogue's aside, x² + 21 = 10x, is not reused).
+`e2e/unit-mission-view.mjs`: all checks pass for the five units at the five sizes; unit 4's captures looked at (1366, 1024 — no scroll, nothing
+cut, Arabic and the highlighted numbers correct).
+
 ## Cross-lesson fix — a figure and its question on ONE screen (2026-11-11, owner)
 
 The owner: « the student sees the figure on one screen, then must go to the next one to see the question, and come back to look at the figure ».
@@ -434,6 +471,17 @@ the screen re-settles at its own size — first visit and replay measure the sam
 (2) The CTA (« لا أعرف بعد… » / « أجرّب ») sat in its own row under the card; it now sits INSIDE the text column, full column width, 64 px high,
 exactly where the home's « ابدأ : … » / « واصل : … » button is (same grid, `md:grid-cols-[1.2fr_0.8fr]`; the section lost its `max-w-5xl`).
 Applies to every converted lesson (shared component). Probe: a Playwright script measuring `[data-mission-opening]` and `[data-mission-start]`.
+
+## Cross-lesson fix — « in the player » decided at module level (2026-11-11)
+
+Found by unit 4's lesson-1 builder: the player context (`InMissionPlayerContext`) is provided BELOW the module (`ContentModule › ModuleLayout ›
+MissionPlayer`), so `useInMissionPlayer()` called in a module BODY is always false — the player-only steps a module builds there showed their PAGE
+version in the player. `tahlil-ibara` (unit 3) shipped like that on 2026-11-11. The shared hook `lessons/common/mission/useModulePlayer.js ›
+useModulePlayer(MODULE_CTX)` decides at module level with the same rule as `ContentModule` (a lesson with `mission`, seen in mission view by the
+student, not free navigation, not Classroom Mode); it replaces the module-level `useInMissionPlayer()` in `tahlil-ibara` M1, `jidaa-maadum` M1–M3
+and `mutarajiha-ula` M1–M2 (commit `fix(player): decide « in the player » at module level with the same rule as ContentModule`). `muadala-ula`
+has its own `moduleContext.js › useStudentPlayer()` with the same rule. Rule (`LESSON_DEVELOPMENT_GUIDE.md`, the bullet « A module body never calls `useInMissionPlayer()` »): **a module body never calls
+`useInMissionPlayer()`** — it calls `useModulePlayer(MODULE_CTX)` or renders `PlayerSwitch`.
 
 ## Cross-lesson fix — the guide and the « أستعدّ » card (2026-11-09, owner)
 
@@ -1446,6 +1494,204 @@ summary of the field, the strip drag target under 24 px at small scales, `PRED_H
 
 **Verification:** see the final report of the session (vitest `src/lessons`, `check:lessons` exit 0 with the entry at 241.4 KB, rollout status ✅,
 Playwright at 1366 / 1024 / 1920: every round ★★★, 0 `data-fit-overflow`, 0 page scroll, 0 KaTeX clip, 0 console error).
+
+## Unit 4, lesson 1 — `muadala-ula` « حل معادلة من الدرجة الأولى بمجهول واحد » (2026-11-11)
+
+**Council verdict (2026-11-11, binding — « L1 » + Cross-lesson):** L1.1 a trial = a NEW equation written or a refused move, the first refusal free.
+L1.2 the beam says a FACT, the rule sentence and the lab title leave the player. L1.3 a quantity is a UI loop (the existing gesture applied n times
+on a draft), no change to `logic/equationBalance.js`. L1.4 `3x − 2 = 10` required. L1.5 the number programme ×2 +5 ×2 −7 = 4x + 3 (input 8 → 35,
+decoys `4x − 4` · `4x + 10` · `4x − 2`; « مرّات » instead of « أمثال »). L1.6 build the equation AFTER the step, one decoy. L1.7 « ورقة أيوب ».
+L1.9 / X1 the textbook test items E1 / E2 rewritten (`−4 + x = 6` → 10; `5x = 8x` → 0), ids, skills and LPs kept. Pupils خديجة and نسيم.
+
+**What was written**
+- `content/balances.js` (`M1_ROUNDS` labId `lab-balance-m1`: r1 `2x+3=11` → r2 `4x+3=−9` (9 balloons pull UP — prediction `bagHolds`) → r3
+  `3x−2=10` required → ⭐ → free; `M2_ROUNDS` labId `lab-balance-m2`: `4x+3=6x` → `4x+1=x+8` → ⭐ → free; each with an `easier` round) +
+  `balances.test.js` (every round PLAYED along both efficient paths).
+- `content/forbidden.js` (roles + `TEXT`, re-exported by `_unit/signatures/muadala-ula.js`), `content/mission.test.js`, `content/prep.js` (the
+  ladder, re-exported by `textbook.js › PREP_ITEMS`), `content/peerSheet.js` « ورقة أيوب » (`peer:m2-ayoub`).
+- Config: `studentView: 'mission'`, `knowledgeMapOpen`, mission « ميزان غرفة الملابس: ماذا في الكيس المغلق؟ » (scene `locker-balance`, tools
+  `muadala-tarafayn`, `hal-ax-b`, `tariqat-hal`, `climaxModule: 5`, checkpoints `cp-tarafayn` x + 8 = 11, `cp-hal` 8x = 4, `cp-tahaqquq` 3 in
+  3x − 5 = x + 1, `cp-nashr` 3(x − 1) = 9). Modules: 0 the ladder; 1 `PlayerSwitch` + `LabRounds lab-balance-m1`; 2 `LabRounds lab-balance-m2` and
+  « ورقة أيوب » last. « In the player? » is decided at module level by the lesson's own `moduleContext.js › useStudentPlayer()` (the same rule as
+  `useModulePlayer`, below).
+- Scene `lessons/common/mission/LockerBalanceScene.jsx` (registered in commit 0).
+
+**Added to shared code** (`equation-balance`, page byte-identical): a PLAYER VERSION `equations/EquationBalancePlayer.jsx`, chosen by
+`EquationBalance.jsx` in the player (the page body moved to `EquationBalancePage`, the drawing to `equationBalanceParts.jsx` — `layoutPan` /
+`beamGeometry` re-exported); pure logic `logic/equationBalancePlayer.js` (+ test): `isRefusal` / `REFUSALS`, `efficientPlan` / `playPlan`,
+`reducedForm`, `firstLineReached`, `bagReadReached`, `discoveryReached`, `lineChips` / `placedChips` / `lineBuild` (one decoy per round: 11, −6, 8,
+10x, 9), `readOptions`, `CHAIN_SPECS`, `predictOptions` / `predictTruth` / `judgedPredictions`, `coachOf`, `shownValues`. MANIPULATION_CONTRACT
+« Nineteenth example ». Strings `lesson.manipulation.json › equationBalance.player / coach / predict`.
+
+**Content rewrites** — SHARED-deliberate (the teacher page gains too): `textbook.js`, `exercises.js` (+ `exercises.test.js`), `knowledge.jsx`,
+`knowledgeGraph.js`, modules 0–4 and the final test's E1 / E2 on platform numbers (ids, skills, LPs kept). NOT rewritten: `levels.js` page presets
+keep the book numbers (the shared `levels.test` requires advanced = textbook; the page modules pass platform equations explicitly). PLAYER-only:
+the rounds, the chains, the predictions, the coach, the journal, the quantity chips.
+
+**Saved-answer keys.** Never in mission mode before: kept 0, retired 0. New: the module questions' fingerprint keys (automatic), stars under
+`lab-balance-m1` / `lab-balance-m2`, `peer:m2-ayoub`. No new key for round state (verdict gap 4: re-derived from the stars log).
+
+**Traps (each was met)**
+- A bubble over the tipped beam covered the next control at 1024 on either side: DROPPED — the side-column verdict states the fact.
+- « keep one group » divided by the OLD k after a quantity drop; a refused step of a multi-object drop must refuse the WHOLE drop.
+- With the teacher's checkpoints off, the lab never formalised (the chains ARE the round's goals in the player).
+
+**Review** (react, code, a11y — every finding verified): FIXED — « keep one group » with the old k; the lab never formalised with checkpoints off;
+`<bdi>` on counts; the hidden word on leftover bags; one choice announcement per gesture; tests reading data; the Arabic « و 2 كرتان »; from the
+walk: « الكفّة الكفّة », the coach over the next control, the opened-bags line, the aspect-ratio string, module-level player detection. NOT fixed:
+the held object is not exposed to assistive tech (shared `DraggableObject`); the intermediate climax pans (3x + 2, 5x − 4, −13) are caught only
+inside whole equations by the scan.
+
+**Verification:** Playwright walk at 1024 and 1920 — all 7 rounds ★★★; at 1366 all but the M2 ⭐; `no-back-and-forth` at 1366 / 1024 / 1920 LONE 0
+OVER 0; 0 overflow / page scroll / KaTeX clip / console error.
+
+**Open (for the owner):** one real student timed on this lesson first (verdict gap 5, non-blocking); the « الملعب الحرّ » tab label; the white
+drop-zone panels over the pans (page too).
+
+## Unit 4, lesson 2 — `jidaa-maadum` « معادلات جداء معدوم » (2026-11-11)
+
+**Council verdict (2026-11-11, binding — « L2 » + Cross-lesson):** L2.1 M1 r1 `2(x − 3)`, r2 `(x − 1)(x + 4)`, r3 REPLACED by `2x(x + 2)` (ruler
+[−3 ; 1], start 1). L2.2 no refusal required; the FIRST refused pin of M1 r1 and of the covered round is free. L2.3 the connector tiles « أو »
+(right) and « معًا » (decoy) — never « و »; button « لا قيم أخرى ». L2.4 the COVERED pitch `(2x − 3)(x + 1)` is a REQUIRED round (M2 r1), its
+`easier` the uncovered `(2x − 1)(x + 1)`; M1 ⭐ deleted. L2.5 the square `(x + 1)²` = M2 r2; module 3 has no lab in the player. L2.7 « ورقة كوثر ».
+L2.8 M3 challenge `x² + 10x = 39`, x stated positive. X1 test E2 → `(x − 5)(3x + 6) = 0`, E4 → `4x² − 25 = 0`. Notebooks of حاتم and بسّام.
+
+**What was written**
+- `content/pitch.js` (`M1_ROUNDS` labId `lab-vanish-m1`: r1 `2(x−3)`, r2 `(x−1)(x+4)`, r3 `2x(x+2)` on [−3 ; 1] start 1, then free; `M2_ROUNDS`
+  labId `lab-vanish-m2`: r1 covered `(2x−3)(x+1)` on a halves ruler start 2, r2 `(x+1)²`; easier rounds; 6 free choices) + `pitch.test.js` (the role
+  scan with a negative control, starts never on a zero, ★★★ with 0 refusals, easier rounds smaller, predictions differ).
+- `content/forbidden.js` (+ `SITUATION_REFUSAL`: nothing before the climax refuses a solution because of the situation), `content/mission.test.js`,
+  `content/prep.js`, `content/peerSheet.js` « ورقة كوثر » (`peer:m2-kawthar`), `_unit/signatures/jidaa-maadum.js`.
+- Config: mission « مسطرة المدرّب: متى يختفي الملعب؟ » (scene `pitch-planner`: the coach's board on an easel, a KidFigure girl in hijab and a boy),
+  tools `khassiya-jidaa-maadum`, `taarif-muadala-jidaa`, `hulul-muadala-jidaa`, `tariqat-jidaa-maadum`, `climaxModule: 5`, checkpoints `cp-ahad`
+  (−8) × b = 0, `cp-shakl`, `cp-farq` x² − 49 = 0 « 7 أو −7 », `cp-sifr` 7x(x − 2) = 0 « 0 أو 2 ». Modules: 0 the ladder; 1 and 2 `LabRounds`
+  behind `PlayerSwitch` (M1 a player-only step 6 on `2x(x + 2)`; M2 a player-only « لماذا للمربّع حلّ واحد؟ » and « ورقة كوثر » last); 3 no lab in
+  the player. No catalogue change (L2.9a).
+
+**Added to shared code:** the `vanishing-pitch` player treatment behind `useInMissionPlayer()` (`VanishingPitch.jsx`, page unchanged; MANIPULATION_CONTRACT
+« Twentieth example »); `logic/vanishingPitch.js` `init({ startX, range })` and `defaultV` honouring `startV` (unchanged without them); new
+`logic/vanishingPitchPlayer.js` (`isNewPin`, `pinVerdict`, `claimVerdict`, `playerReady`, `isCovered`, predictions, `buildConstParts`, `buildOrParts`,
+`buildSolParts`, `whichParts`, `restParts`, `coachOf`, `shownValues`). **`BuildAnswer` plain-text tile** `{ text: 'أو' }` (its own commit
+`feat(lessons): BuildAnswer — opt-in plain-text tile`, test `primitives/labCheckpointBuildText.test.jsx`; guide § LabCheckpoint).
+
+**Content rewrites** — SHARED-deliberate: `textbook.js`, `exercises.js` (`part: 'بأعداد المنصّة'`, `partsOf` uses `withContext`), `knowledge.jsx`,
+`knowledgeGraph.js`, the notebooks, the M3 challenge, the final test's E2 / E4 (ids, skills, LPs kept); resource codes (`pitch-3-x-5…`) kept with new
+titles. PLAYER-only: the rounds, the covered pitch, the « أو » builds, M1 step 6, M2's square question, the coach, the journal.
+
+**Saved-answer keys:** kept 0, retired 0 (never in mission mode). New: fingerprint keys of the module questions, stars under `lab-vanish-m1` /
+`lab-vanish-m2`, `peer:m2-kawthar`. The cover is re-derived from the journal on reload (gap 4).
+
+**Traps (each was met)**
+- Fast drags skipped ruler ticks (a zero passed under the finger unseen) — fixed.
+- The rule question had a 4th option « ضلع سالب »: dropped to fit 1024 × 768 (3 options). The covered pitch fits at 1024 × 768 (the verdict's
+  fallback was not needed).
+- The solutions formula was split in two math islands, and « أو x = » came out in the wrong order — ONE `$…$` island.
+
+**Review** (react, code, a11y): FIXED — the fast-drag ticks; a stale map subtitle; « تسع » in M0's description; bare digits beside a math island; the
+rule card overflowing at 1024; the split formula; « أو x = » order. NOT changed: re-pinning a judged x re-sends `onTrial` (deduped by the rounds
+model); controls not locked under the intro; the decorative ball mouse-only; advisory a11y items.
+
+**Verification:** vitest green; `lab-rollout-status --lesson` ✅; `no-back-and-forth` LONE 0 OVER 0 PAIR 2; walks M1 r1 at 1366 ★★★, M1 r2 at 1024,
+M1 r3 at 1920, the covered M2 r1 at 1024, M2 r2 at 1366 — 0 overflow / scroll / console error / clipped formula. NOT walked: home, « أستعدّ »,
+the peer sheet, the final test, the map, a reload; the teacher view by render tests only.
+
+## Unit 4, lesson 3 — `mutarajiha-ula` « المتراجحات من الدرجة الأولى بمجهول واحد وتمثيل حلولها بيانيًا » (2026-11-11)
+
+**Council verdict (2026-11-11, binding — « L3 » + Cross-lesson):** L3.1 (b′) NO phone before the climax (r1 a pen budget, r2 the reading challenge,
+both on the default decor). L3.2 the verdict MASKED while dragging (a render mask). L3.3 the division is the last step, BUILT with tiles; the
+direction is the discovery, refuted by the student's own red points. L3.5 positive first, the new r3 `−2x + 7 ≤ 5` so the twins are not mirrors.
+L3.6 the peer line `x ≥ −6` replaced. L3.8 no checkpoint divides by a negative. L3.9 five required rounds; M1 r3 demoted to ⭐ and step 3
+rewired to r2 (gap 12). Module 1 over whole numbers, module 2 over relative numbers (gap 8). X1 test E3 / E5 / E6 rewritten.
+
+**What was written**
+- `content/rays.js` (`M1_ROUNDS` labId `lab-ray-m1`: r1 pens `6x+20≤80`, r2 the reading challenge `15x+25>100` (predictions `isSol:3` لا,
+  `isSol:9` نعم), ⭐ `4x−5<11`, free; `M2_ROUNDS` labId `lab-ray-m2`: r1 `x<4` then `x≤4` (one round, two cases), r2 `2x+7≤9`, r3 `−2x+7≤5`, ⭐
+  `4x−3>6x+2`, free) + `rays.test.js`.
+- `content/forbidden.js`, `content/mission.test.js`, `content/prep.js` (`_unit/prepDiagnostic.test.js` reads `PREP_LADDER`), `content/peerSheet.js`
+  « ورقة لقمان » (`2x + 19 ≤ 1`, `peer:m2-luqman`), `_unit/signatures/mutarajiha-ula.js`. Pupils هدى, عماد.
+- Config: mission « رصيد رياض: كم رسالة على الأكثر؟ » (scene `phone-credit`: a phone whose credit gauge falls toward a floor line, envelopes, a house,
+  a KidFigure boy), 5 tools, `climaxModule: 6`, checkpoints `cp-hal`, `cp-ramz`, `cp-yabqa`, `cp-tariqa`, `cp-nafs` (none divides by a negative).
+  Modules 0–5 and 9 rewritten; modules 1 and 2 `LabRounds` behind `PlayerSwitch`, « ورقة لقمان » in module 2.
+- Catalogue (commit `feat(curriculum): unit 4 lessons list their earlier-year prerequisites`): + `mutabayinat-amaliyat` (3AM), `muqarana-nisbiya`
+  (2AM); LEARNING_NET « Seventh ».
+
+**Added to shared code:** the `solution-ray` player branch behind `useInMissionPlayer()` (`SolutionRay.jsx`, page JSX unchanged; MANIPULATION_CONTRACT
+« Twenty-first example »); `logic/solutionRay.js` gains only an optional `cardsFor(I, divide)` argument (its 16 tests untouched); new
+`logic/solutionRayPlayer.js` (+ test). Strings `solutionRay.player / coach / predict` + `titlePhone`, `missionPhone`, `bWhy3` (book names and
+numbers removed).
+
+**Content rewrites** — SHARED-deliberate: `knowledge.jsx`, `knowledgeGraph.js`, `textbook.js`, `exercises.js` (incl. ex-22 / ex-23 that had two TRUE
+distractors), modules 0–5 and 9, test items E3 (`−\dfrac15 x < 2`), E5 (the graph of x ≥ −5), E6 (the graph of x − 2 < −4) — ids and LPs kept.
+PLAYER-only: the rounds, the masked verdict, the two-case round, the tile division, the coach, the journal, the a11y layer below.
+
+**Saved-answer keys:** kept 0, retired 0. New: fingerprint keys, stars under `lab-ray-m1` / `lab-ray-m2`, `peer:m2-luqman`.
+
+**Deviation:** a wrong build is a QUESTION miss (it can open « جرّب أصغر »), not a counted trial. NOT done: module 1's slug / file still
+`rasail-yunus` / `Module01RasailYunus.jsx` (the name stays only in the URL; renaming changes routes).
+
+**Review** (react, code, a11y): FIXED — two true distractors in ex-22 / ex-23; the checkpoint test reads option texts; test titles; an
+`edgeFillParts` null guard; dead peer code; a11y in the player only — indigo focus rings, `aria-disabled` from state, the live region once per
+gesture, hollow grey traces + ●/○, labelled toggle groups, LTR-isolated numbers. REJECTED — focus rings on the PAGE (the page stays identical); a
+real `<caption>`.
+
+**Verification:** vitest unit / manipulations / mission 4551 tests green; walks at the 3 sizes, every required round + the M1 ⭐ ★★★, 0 overflow /
+scroll / page error. `no-back-and-forth` reached module 1 only (seeded progress does not unlock later modules — module 2 was walked with
+`sequentialUnlock` temporarily false).
+
+**Open (for the owner):** the PAGE strings `liveLine`, `legend`, `bracketDone` show maths / the bracket glyph in the wrong direction (the player
+avoids them); the coach bubble « ثبّت التمثيل » covers the « toward » buttons at 1024; the teacher view not walked; real-student timing.
+
+## Unit 4, lesson 4 — `tarrid-mushkila` « ترييض مشكلة » (2026-11-11)
+
+**Council verdict (2026-11-11, binding — « L4 » + Cross-lesson):** L4.1 (A) the r1 family carries the method. L4.2 (A′) the negative solution is met
+on a SUM of two brothers (11 + 13 → 18, x = −3), never on a factor, a father or a calendar year. L4.3 the `roundsModel.js` additive change, owned by
+this lesson. L4.4 (C′) the father is the shared `KidFigure`, 1.25 × the tallest child, `tunic`, teal, labelled « الأب » — no shared adult
+variant (X5); the page keeps `PersonFigure`. L4.5 « ورقة شيماء ». L4.8 one `decor="board"` prop (a height board instead of the cake) in the
+player only. Four required rounds.
+
+**What was written**
+- `content/race.js` (`M1_ROUNDS` labId `lab-race-m1`: r1 father 52, children 7 · 8 · 10 · 12 (x = 5); r2 26 and 2, × 4 (x = 6); r3 sisters
+  13 + 10 → 31 (x = 4); ⭐ 55 against 11 · 12 (x = 3); free; `M2_ROUNDS` labId `lab-race-m2`: brothers 11 + 13 → 18 (x = −3), required; easier
+  35 / 15 · 17, 55 / 26, 8 + 10 → 24, 12 + 15 → 25, each `releases`) + `race.test.js` (each round played to ★★★ in logic).
+- `content/forbidden.js`, `content/mission.test.js`, `content/prep.js` (10 items; `_unit/prepDiagnostic.test.js` reads `PREP_LADDER`),
+  `content/peerSheet.js` « ورقة شيماء » (`peer:m2-shaymaa`, the last step of M2), `_unit/signatures/tarrid-mushkila.js`.
+- Config: mission « جدار القامات: متى يلحق الأبناء بأبيهم؟ » (scene `family-heights`: an unnumbered height board, the father and three children as
+  KidFigure, pencil marks that rise with the tools), tools `tarrid-namdhaja`, `tarrid-tariqa`, `tarrid-mutarajiha`, `tahaqquq-waqi`,
+  `climaxModule: 4`, checkpoints `cp-muhit`, `cp-la-yatajawaz`, `cp-tahaqquq`. Modules 1 and 2 `LabRounds` behind `PlayerSwitch`; M3 ten exercises and
+  « دوري الآن » (a hexagon and a square, 6x ≥ 4(x + 5)) on platform numbers. Catalogue: + `muadalat-darajat-ula` (3AM).
+
+**Added to shared code:** **`roundsModel` `tk:'model'`** (its own commit `feat(lessons): roundsModel — a model-check event`): `onTrial { tk: 'model',
+ok, key?, free? }` logs `log.models` (the same key once), the goal **`{ modelOk: true }`**, a refused non-free model counts in `missesOf`,
+« إعادة » clears models, a retry only with `{ models: true }`; `roundsModel.test.js` UNTOUCHED, new `roundsModelModels.test.js`. The `growth-race`
+player behind `useInMissionPlayer()` (`GrowthRace.jsx`; page, teacher and synthesis tests unchanged; MANIPULATION_CONTRACT « Twenty-second
+example »); new `logic/growthRacePlayer.js` (`shownValues`, `structureOf`, predictions, chains, `buildSpec`, `pastSpec`, `coachOf`);
+`logic/growthRace.js` unchanged.
+
+**Content rewrites** — SHARED-deliberate (book independence): the method moved to the r1 family; M3's ten exercises, « دوري الآن », figures, memo
+cards, the map and the config on platform numbers (ids and كفاءات kept; ex-12 static, no longer answers 7); resource codes `growth-race-36-*` kept
+with new titles. Not applied as designed: M1 step 2 uses `stepTemplate` gap boxes on r2's numbers; « ± » not moved above the ruler. PLAYER-only:
+the rounds, the board decor, the KidFigure cast, the model checks, the coach, the journal.
+
+**Saved-answer keys:** kept 0, retired 0. New: fingerprint keys, stars under `lab-race-m1` / `lab-race-m2`, `peer:m2-shaymaa`; model checks are
+re-derived from the stars log (gap 4).
+
+**Review** (react, code, a11y): FIXED — the i18n hook scope (`t` → `tx`); the live verdict says « صحيح. » / « خطأ. » + the relation; free chips name
+their equation; the journal's x column `th scope="row"`; the scene transition now honours reduced motion. REJECTED — « resetKey changes the page
+mode » (the page already passed it). Not fixed (low): `text-xs` journal, `border-slate-300` chips.
+
+**Verification:** `lab-rollout-status --lesson` ✅; `no-back-and-forth` at 1366 LONE 0 OVER 0 PAIR 2; the first screens of M1 and M2 clean at the 3
+sizes. A browser walk did NOT play a round to ★★★ (stuck after the first card drag) — the round test plays each round to ★★★ in logic only.
+
+**Open (for the owner):** a full Playwright round walk; the long model-refusal list relies on the fit-zoom; Q2 (the cake on the growth-race PAGE —
+default unchanged) and Q3 (a shared adult KidFigure later — default: decide after the screenshots).
+
+## Unit 4 — what the integration verified, and the owner's questions (2026-11-11)
+
+On the integrated tree (`integrate-unit4`): vitest `src/lessons` 720 files / 12 776 tests green; the entry at 240.2 KB gzip (≤ 245);
+`lab-rollout-status` 140 / 140 lessons, 120 / 120 labs. Owner questions (verdict §6): **Q1** retrofit unit 3's textbook QCM test items like unit 4
+(default: no, not now); **Q2** the cake on the growth-race page (default: unchanged); **Q3** a shared adult in `KidFigure` (default: decide after
+the screenshots). The synthesis `wadiya-idmajiya-muadalat` is NOT converted (it waits for the synthesis-recipe answer). The unit page
+(`pages/unit/unitMissions.js › 'muadalat-mutarajihat'`) is written: the fifth unit on it.
 
 ## The synthesis recipe (PROVISIONAL until a real student has been timed on the pilot: ≤ 32 min for module 7, module 8 finished)
 

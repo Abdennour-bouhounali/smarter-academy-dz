@@ -2897,6 +2897,75 @@ Since 2026-11-10 (unit 9, lesson 2) a `build` may also set `accept` (other filli
   → « أغلق الملعب » → « انظر ماذا أضاء » on the corner → move a strip; closed → « أعد فتح الملعب »). `shownValues(props)` lists by role (`count`,
   `pair`, `tick`, `common`, `inner`, `perRow`, `eq`, `leftover`, `chip`, `tile`, `decoy-inner`, `decoy-eq`, `corner`, `extra`, `option`).
   Strings: `lesson.manipulation.json › turfFactoring.player`, `vp`, `coach`, `predict`, `rowWord`, `journal`, `col*`, `choicesLabel`.
+- **Nineteenth example (2026-11-11, unit 4):** lesson `muadala-ula`, `content/balances.js` (`M1_ROUNDS`, `LabRounds labId="lab-balance-m1"`:
+  `2x+3=11` by hand → `4x+3=-9` (balloons pull up) → `3x-2=10`, required → ⭐ → free; `M2_ROUNDS`, `lab-balance-m2`: `4x+3=6x` → `4x+1=x+8` → ⭐ →
+  free; each with an `easier`), council of 2026-11-11, verdict L1. The lab `equation-balance` gets a **PLAYER VERSION**
+  `equations/EquationBalancePlayer.jsx`, chosen by `EquationBalance.jsx` in the player; the page (`EquationBalancePage`, teacher, Classroom Mode)
+  is byte-identical, its drawing shared through `equationBalanceParts.jsx`; `logic/equationBalance.js` is untouched, the player logic is
+  `logic/equationBalancePlayer.js`. Props: `eq`, `lead`, `mission`, `onVerdict`, `chains` (`r1` · `r2` · `r3` · `m2r1` · `m2r2` · `none` —
+  `CHAIN_SPECS`: observe in one tap (`lineChips` / `placedChips`), BUILD « ▢ = ▢ » with ONE decoy per round (`lineBuild`: 11, −6, 8, 10x, 9),
+  read a bag (`readOptions`), the RULE), `predict` (≤ 2 keys asked before the first gesture — `bagHolds`, `parts`, `otherPanDo`, `bagsLeft`, `whole`; options and
+  truth from the logic, judged by the balance), `choices` (equations for the free round), `kinds` (the reserve: ball, balloon, bag), `handDone`
+  (quantity chips « 1 · 2 · 3 · 4 »: a drop applies the gesture n times on a DRAFT and is refused WHOLE if one step is; the page keeps one object
+  per drop), `coach`. **A trial** is a NEW equation written (a both-pans step or a split whose result was not already written in the round) or a
+  REFUSED gesture (`REFUSALS`: `tipped`, `moveAcross`, `bagsUneven`, `cutMixed`, `noBags`); the same refusal twice in the same state, « noneHere »
+  and « full » are not trials; the round's first refusal is `free`. `onVerdict { groups: line n°, exact: true }` / `{ groups: 0, exact: false, free? }`;
+  the discovery (a bag read AND the bags opened) once as `{ tk: 'discovered' }`. The beam states a FACT (« الكفّة اليمنى أثقل الآن »), never the
+  rule; the lab title is not shown; no bubble over the tipped beam (it covered the next control at 1024 — the side-column verdict states it).
+  Journal « 📋 جدول تجاربك », an always-mounted live region, controls `aria-disabled` during a prediction or a question, NO scroll (the scene is
+  bounded by the lab's width AND the player area's height). `LabCoach` (`coachOf`: `grab`, `beam`, `parts`, `keep`, `open`, `reserve`, `qty`;
+  anchors `[data-coach]`) — the lab's FIRST coach, player only. `shownValues(props)` lists by role for `content/forbidden.js`. Strings
+  `lesson.manipulation.json › equationBalance.player / coach / predict`. Scene `locker-balance`.
+- **Twentieth example (2026-11-11, unit 4):** lesson `jidaa-maadum`, `content/pitch.js` (`M1_ROUNDS`, `LabRounds labId="lab-vanish-m1"`: `2(x-3)`
+  → `(x-1)(x+4)` → `2x(x+2)` on [−3 ; 1] start 1 → free; `M2_ROUNDS`, `lab-vanish-m2`: the COVERED `(2x-3)(x+1)` on a halves ruler start 2,
+  required → the square `(x+1)^2`; easier rounds, 6 free choices), verdict L2. `vanishing-pitch` (`equations/VanishingPitch.jsx`) gets the v2
+  treatment behind `useInMissionPlayer()`; the page is unchanged (`logic/vanishingPitch.js › init({ startX, range })` and `defaultV`/`startV`
+  change nothing without them). New props: `startX`, `range` (they travel with the expression, so a free round changes pitch), `onVerdict`,
+  `chains` (`build`: on a constant side « which side · how much is the other · BUILD « ▢ = 0 ⇒ x = ▢ » », otherwise BUILD « x = ▢ أو x = ▢ »;
+  `rule`: which side · BUILD « ▢ = 0 ▢ ▢ = 0 » with the TEXT tile « أو » and the decoy « معًا » · the RULE; `count`: the square — which side · how
+  many solutions; `none`), `predict` (≤ 2 of `count`, `atZero`, `zeroB`, judged by the pitch — `judgedPredictions`), `choices` (`[{ expr, startX }]`),
+  **`covered`** (the pitch is MASKED — a tarp with « ? »; only an x already judged, pinned or refused, is shown, `isCovered`; the readouts show the
+  expressions, the values « ? »), `freeRefusal` (the round's FIRST refusal is free: M1 r1 and the covered round), `coachPin`, `coach`. **A trial** =
+  pinning a NEW x (`isNewPin` → `pinVerdict`) or « لا قيم أخرى » while a zero is missing (once per set of pins, `claimVerdict`); moving x, re-pinning
+  a judged x (its verdict re-announced), `notSwept` and the accepted claim are not trials; no refusal is required. Discovery (every zero pinned +
+  the claim accepted) once as `{ tk: 'discovered' }`. « جرّب كل الإمكانيات », hints and levels hidden; no celebration. Readouts and the two
+  buttons in a column BESIDE the pitch; the rule question has 3 options (fits 1024 × 768). Journal (x · A · B · area · the verdict WORD), live
+  region keyed per gesture, `aria-disabled` + guard, `LabCoach` (`coachOf`), the pitch ONE `data-paging-keep` block scaled by width and height.
+  Builds from `buildConstParts` / `buildOrParts` / `buildSolParts`, `whichParts`, `restParts`. Strings `vanishingPitch.player / coach / predict`.
+  Scene `pitch-planner`.
+- **Twenty-first example (2026-11-11, unit 4):** lesson `mutarajiha-ula`, `content/rays.js` (`M1_ROUNDS`, `LabRounds labId="lab-ray-m1"`: pens
+  `6x+20<=80` → reading `15x+25>100` → ⭐ `4x-5<11` → free, whole numbers; `M2_ROUNDS`, `lab-ray-m2`: `x<4` then `x<=4` in ONE round → `2x+7<=9`
+  → `-2x+7<=5` → ⭐ `4x-3>6x+2` → free, relative numbers), verdict L3. `solution-ray` (`equations/SolutionRay.jsx`) gets a player branch behind
+  `useInMissionPlayer()` (page JSX unchanged); `logic/solutionRay.js` only gains an optional `cardsFor(I, divide)` argument; the player logic is
+  `logic/solutionRayPlayer.js`. New props: `onVerdict`, `chains` (`cost`: `costFill` → BUILD the inequality; `rule`: `edgeFill` → `buildIneq`
+  → `ruleRegion`; `bracket`: on the last case `boundFill` → `ruleBracket`; `pos`: at the division stage `buildDiv`; `neg`: `divFill` → `buildDiv`
+  → `ruleDir`; `none`), `predict` (`isSol:<n>`, `redSide`), `choices`, `start` (the probe's opening point), **`sequence`** (two cases played in one
+  round, e.g. `x<4` then `x<=4`), `sides` (`{ left, right }` labels such as « الكلفة / الرصيد »), **`divide: 'coef'`** (the last step — dividing by
+  the coefficient — is BUILT with tiles, the number tile given, the DIRECTION the discovery; a wrong build is refuted with the student's OWN red
+  points and is a question miss, not a counted trial), `handDone`, `coach`. **The verdict is MASKED while the probe is dragged** (a render mask,
+  L3.2); each round starts on an explicit press. **A trial** (`solutionRayPlayer.js`): without a bracket a NEW graduation released; with one,
+  « ثبّت » on a NEW draft or a NEW line chosen for a step (probes are free — they are the student's evidence). Journal, live region once per gesture,
+  hollow grey traces + ●/○ (not colour alone), labelled toggle groups, LTR-isolated numbers, indigo focus rings — player only. `LabCoach`
+  (`coachOf`: `probe`, `again`, `bracket`, `side`, `toward`, `fix`, `card`, `line`; never « between a red and a grey point ») — the lab's FIRST
+  coach. `shownValues(props)` by role. Strings `solutionRay.player / coach / predict`. Scene `phone-credit` (no phone inside a round before the
+  climax: `context: 'phone'` is unused in the rounds).
+- **Twenty-second example (2026-11-11, unit 4):** lesson `tarrid-mushkila`, `content/race.js` (`M1_ROUNDS`, `LabRounds labId="lab-race-m1"`: a
+  father of 52 and children 7 · 8 · 10 · 12 → 26 and 2, × 4 → sisters 13 + 10 → 31 → ⭐ 55 against 11 · 12 → free; `M2_ROUNDS`, `lab-race-m2`:
+  brothers 11 + 13 → 18, x = −3, required; easier rounds each `releases`), verdict L4. `growth-race` (`equations/GrowthRace.jsx`) gets the player
+  behind `useInMissionPlayer()`; page, teacher and the synthesis's `lab.render.test.jsx` unchanged; `logic/growthRace.js` unchanged, the player
+  logic is `logic/growthRacePlayer.js`. New props: `onVerdict` (one NEW x = one verdict), `chains` (`CHAINS_PLAYER`: `sum4` build `slopeTap` ·
+  `buildEq`, race `whereTap`; `mult` build `buildEq`, race `whereTap` · `afterTap` · `ruleP`; `sum2`; `easy`; `past` race `trendTap` · `solveTap` ·
+  `buildPast` (« منذ ▢ سنوات: ▢ + ▢ = 18 », one decoy = the younger's age |x| years LATER, `pastSpec`) · `rulePast`; `none`), `predict`
+  (`cards`, `ahead`, `meets` — truth computed, judged by the gesture that settles it), `choices`, `startX`, **`cast`** (`{ adults, girls }`: people
+  drawn as the shared `KidFigure` — girls in hijab, the father 1.25 × the tallest child, `tunic`, teal, « الأب »; the page keeps `PersonFigure`),
+  **`decor="board"`** (a height board instead of the cake, player only), **`freeFirstModel`** (the first refused model is free), `coach`. **A model
+  check is NOT a trial of x**: « تحقّق » on the cards sends `onTrial { tk: 'model', ok, key, free? }` (`modelKey` = the sorted carried cards — the
+  same set checked twice is one event), the round's goal holds `{ modelOk: true }` (`rounds/roundsModel.js`, guide « A model check is not a
+  trial »). The model BUILD (`buildSpec`: « ▢ = ▢ + ▢ » or « ▢ + ▢ = ▢ ») has ONE decoy — « + x » once, or the target that « ages ». Questions and
+  predictions in the side column, journal, live region (« صحيح. » / « خطأ. » + the relation), sweep / stepper / celebration hidden. `LabCoach`
+  (`coachOf`: `carry`, `check`, `open`, `stretch`, `again`) — the lab's FIRST coach. `shownValues` by role (ages, values, totals, screens, the meet,
+  the first value, equations, the structure `three` / `factor3` that the climax owns). Strings `growthRace.player / coach / predict`. Scene
+  `family-heights`.
 - **Blocking:** `cp.blocking` stays true until the chain is finished; the lab hides its « next task » button meanwhile.
 - **Guided, never told first:** wrong try 1 → the chosen option's `why` (else hint 1); try 2 → hint 2 (sharper); try 3 →
   the answer AND its explanation (the student is never stuck forever). A wrong option stays struck and disabled.
