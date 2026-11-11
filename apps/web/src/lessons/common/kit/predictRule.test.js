@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { shouldPredict, readPredictions, savePrediction, PREDICTABLE_TYPES } from './predictRule';
+import { shouldPredict, readPredictions, savePrediction, PREDICTABLE_TYPES, ruleNoteOf } from './predictRule';
 
 const memory = () => { const m = new Map(); return { getItem: (k) => m.get(k) ?? null, setItem: (k, v) => m.set(k, v) }; };
 
@@ -36,5 +36,16 @@ describe('prediction storage', () => {
     const s = memory();
     s.setItem('smarter_predictions_l1', '{oops');
     expect(readPredictions(s, 'l1')).toEqual({});
+  });
+});
+
+describe('ruleNoteOf — la règle de l’élève devient une carte de « كرّاسي » (pilote 2026-11-07)', () => {
+  it('ses mots d’abord, la règle officielle ensuite, le tout échappé', () => {
+    const n = ruleNoteOf({ lessonId: 'qasim-adad-tabii', itemTitle: 'قاسم', itemRule: 'الباقي 0', text: 'إذا لم يبقَ أحد <b>\nفهو قاسم' });
+    expect(n.title).toBe('قاعدتي: قاسم');
+    expect(n.lessonCode).toBe('qasim-adad-tabii');
+    expect(n.noteType).toBe('note');
+    expect(n.content).toContain('&lt;b&gt;<br>');
+    expect(n.content.indexOf('كتبتُ')).toBeLessThan(n.content.indexOf('القاعدة'));
   });
 });

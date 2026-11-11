@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { Minus, Plus, CheckCircle2, ArrowLeft, ArrowRight, X as XIcon } from 'lucide-react';
@@ -18,6 +18,11 @@ import { useLabCheckpoint } from '../primitives/LabCheckpoint';
 import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
 import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
 import { playSfx } from '../../utils/playEffect';
+import { useLabCoach } from '../primitives/LabCoach';
+import PredictTray from '../primitives/PredictTray';
+import KidFigure from '../primitives/KidFigure';
+import { useInMissionPlayer } from '../../mission/missionPlayerContext';
+import * as P from '../logic/growthRacePlayer';
 
 /**
  * growth-race — LA COURSE DE DEUX GRANDEURS (unité 4 « معادلات ومتراجحات من الدرجة الأولى
@@ -122,11 +127,15 @@ export default function GrowthRace({
   left: left0 = '36+x', right: right0 = '4+x+6+x+8+x', theme = 'ages', domain = 'natural', goal = 'equal', maxX,
   context, startWith = 'build', title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false,
   onFinished, onTrial, onModel, onCheckpoint,
+  // ── LECTEUR DE MISSION (rollout 2026-11-11, unité 4 leçon 4) : voir l'en-tête « LECTEUR DE MISSION » ──
+  onVerdict, chains: chainsMode = 'none', predict: predictList = [], choices, startX, cast, decor, freeFirstModel = false, coach: coachOn = true,
 }) {
   const { t } = useTranslation('lesson');
+  const gameScreen = useInMissionPlayer();
   const k = useCallback((key, o) => t(`manipulation.growthRace.${key}`, o), [t]);
   const state = useManipulation({ type: 'growth-race', initialNumbers: { left: left0, right: right0 }, initialMode, initialLevel: level, withLevels, hintCount: 3 });
   const { left, right } = state.numbers;
+  const [maxOver, setMaxOver] = useState(null);   // lecteur : le bout de la règle de la course choisie dans la ورشة libre
 
   const [lab, setLab] = useState(() => L.init(left, right, { startWith }));
   const sceneKey = `${left}|${right}|${state.epoch}|${state.resetCount}`;
@@ -137,14 +146,33 @@ export default function GrowthRace({
   const [live, setLive] = useState(null);
   const [notice, setNotice] = useState(null);
   // « إعادة » (resetCount), un autre niveau ou d'autres nombres : TOUT recommence — le modèle, les essais et les questions du labo
-  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(L.init(left, right, { startWith })); setX(null); setLive(null); setNotice(null); }
+  // lecteur : les prédictions, les suites faites, les refus vus, l'annonce de chaque appui
+  const [preds, setPreds] = useState({});
+  const asked = useRef(new Set());
+  const [doneIds, setDoneIds] = useState([]);
+  const [missionBig, setMissionBig] = useState(false);
+  const refusedSeen = useRef(0);
+  const discoveredSent = useRef(false);
+  const heardPred = useRef(new Set());
+  const [shownPreds, setShownPreds] = useState([]);
+  const [predHold, setPredHold] = useState(false);
+  const holdTimer = useRef(null);
+  const [said, setSaid] = useState(0);
+  const [exprSaid, setExprSaid] = useState(null);
+  if (scene.key !== sceneKey) {
+    setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(L.init(left, right, { startWith })); setX(null); setLive(null); setNotice(null);
+    setPreds({}); asked.current = new Set(); refusedSeen.current = 0; discoveredSent.current = false; heardPred.current = new Set();
+    setShownPreds([]); setPredHold(false); setDoneIds([]);
+  }
+  // la manche (LabRounds) repart de zéro avec la scène : ses essais et prédictions d'avant ne comptent plus
+  useEffect(() => { if (gameScreen && scene.inits > 0) state.report(onTrial, { tk: 'reset' }); }, [scene.inits]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { model } = lab;
   // L'opération vient des expressions ; le thème qui la contredit cède (voir l'en-tête).
   const themeId = model.op === 'mul' ? 'pool' : 'ages';
   void theme; // déclaratif : 'ages' pour des âges, 'pool' pour des tarifs — l'opération décide
   const tw = useCallback((key, o) => t(`manipulation.growthRace.themes.${themeId}.${key}`, o), [t, themeId]);
-  const range = useMemo(() => L.xRange(model, maxX), [model, maxX]);
+  const range = useMemo(() => L.xRange(model, (gameScreen ? maxOver : null) ?? maxX), [model, maxX, maxOver, gameScreen]);
   const ans = useMemo(() => L.answer(model, goal), [model, goal]);
   const kind = L.discoveryKind(model, range);
   const sol = L.solution(model);
@@ -213,6 +241,7 @@ export default function GrowthRace({
   /* ── CONSTRUIRE : porter la carte ── */
   const drag = useDragInteraction({
     accepts: (src, zone) => {
+      if (gameScreen && lockedRef.current) return '';
       if (src !== 'tok' || !zone.startsWith('el:')) return '';
       const v = L.canCarry(lab, zone.slice(3));
       return v === true ? true : v;
@@ -221,10 +250,18 @@ export default function GrowthRace({
     onReject: (_s, zone, reason) => { if (reason) playSfx('over'); setNotice(reason ? { key: reason, id: zone?.slice?.(3) } : null); },
   });
   const verify = () => {
+    if (gameScreen && lockedRef.current) return;
     const next = L.check(lab);
     setLab(next);
     playSfx(next.verdict.ok ? 'flag' : 'over');
     if (next.verdict.ok) state.report(onModel, { tex: L.modelTex(model, next.carried) });
+    if (gameScreen) {
+      // lecteur : une vérification de MODÈLE est un événement à part (jamais un essai de x) ; le premier refus peut être gratuit
+      const free = !next.verdict.ok && freeFirstModel && refusedSeen.current === 0;
+      if (!next.verdict.ok) refusedSeen.current += 1;
+      state.report(onTrial, { tk: 'model', ok: next.verdict.ok, key: `${P.modelKey(next.carried)}${next.verdict.ok ? '+' : '-'}`, ...(free ? { free: true } : {}) });
+      setSaid((n) => n + 1);
+    }
   };
 
   /* ── COURIR : étirer x ── */
@@ -235,9 +272,12 @@ export default function GrowthRace({
   const toValue = useCallback((clientX, _y, rect) => range.min + (clientX - rect.left - EDGE) / mu, [range.min, mu]);
   const trialPayload = (v) => { const trial = L.trialAt(model, v); return { ...trial, leftText: L.valueText(trial.left), rightText: L.valueText(trial.right) }; };
   const commit = (v) => {
+    if (gameScreen && lockedRef.current) { setLive(null); return; }
     tick();
     if (L.trialAt(model, v).rel === '=') playSfx('bell');
+    const fresh = Number.isInteger(v) && v >= 0 && !labRef.current.trials.some((tr) => tr.x === v);
     setLive(null); setX(v);
+    if (gameScreen && fresh) state.report(onVerdict, { groups: v, exact: L.trialAt(model, v).rel === '=' });
     labRef.current = L.commitTrial(labRef.current, v);
     setLab((s) => L.commitTrial(s, v));
     const payload = trialPayload(v);
@@ -245,11 +285,12 @@ export default function GrowthRace({
     setNotice({ trial: payload });
   };
   // Un x PAR DÉFAUT (L.defaultX : ni rencontre ni réponse), jamais un essai : `lab.trials` ne le contient pas.
-  const dx = L.defaultX(model, range, goal);
-  const stretch = useStretchInteraction({ value: live ?? x ?? dx, range, toValue, onChange: setLive, onCommit: commit, direction: 'ltr' });
+  const dx = gameScreen && startX != null && startX >= range.min && startX <= range.max ? startX : L.defaultX(model, range, goal);
+  const stretch = useStretchInteraction({ value: live ?? x ?? dx, range, toValue, onChange: (v) => { if (gameScreen && lockedRef.current) return; setLive(v); }, onCommit: commit, direction: 'ltr' });
+  const nudge = (d) => { if (gameScreen && lockedRef.current) return; stretch.nudge(d); };
   const xx = Math.min(range.max, Math.max(range.min, live ?? x ?? dx));
   // Au repos, sans essai : la conséquence du x par défaut (la ligne ne prétend pas que l'élève l'a posé).
-  const shownTrial = notice?.trial ?? (x == null && live == null ? trialPayload(dx) : null);
+  const pageTrial = notice?.trial ?? (x == null && live == null ? trialPayload(dx) : null);
   const untried = () => Array.from({ length: range.max - range.min + 1 }, (_, i) => range.min + i).filter((v) => !labRef.current.trials.some((tr) => tr.x === v));
   const now = L.trialAt(model, xx);
   const labelStep = mu >= 18 ? 1 : mu >= 9 ? 2 : 5;
@@ -275,23 +316,72 @@ export default function GrowthRace({
   /* ── les questions pendant le labo : une suite par étape ── */
   const cpSettings = useLabCheckpointSettings('growth-race');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
   const raceChain = options ? RACE_CHAINS[kind === 'meet' ? (goal !== 'equal' && ans.toInfinity && ans.first != null ? 'first' : 'meet') : kind] ?? null : null;
-  const cpLive = cpOn && cpSettings.enabled;
-  const cpId = !cpLive ? null : racing ? (raceChain ? 'race' : null) : 'build';
+  // lecteur : les buts des manches SONT ses questions — l'interrupteur de l'enseignant ne les coupe pas
+  const cpLive = gameScreen ? true : cpOn && cpSettings.enabled;
+  const cpId = gameScreen ? null : !cpLive ? null : racing ? (raceChain ? 'race' : null) : 'build';
   const cpCtx = { ...raceCtx, options, formal };
+  // ── le lecteur : la suite du moment (CHAINS_PLAYER), posée quand ce qu'elle interroge est là ──
+  const pc = gameScreen ? P.chainsOfPlayer(chainsMode) : null;
+  const judged = gameScreen ? P.judgedPredictions(lab, predictList.filter((q) => q.key in preds), range) : [];
+  const pendingPreds = judged.filter((key) => !heardPred.current.has(key));
+  const holdChain = pendingPreds.length > 0 || predHold;
+  const pKind = !gameScreen || holdChain ? null : racing ? (pc.race.length && ready && !doneIds.includes('race') ? 'race' : null)
+    : (pc.build.length && lab.verdict?.ok && !doneIds.includes('build') ? 'build' : null);
+  const pNames = pKind ? pc[pKind] : null;
+  const buildBlocking = gameScreen && !racing && pc.build.length > 0 && !doneIds.includes('build');
   const cp = useLabCheckpoint({
-    id: cpId,
-    questions: !cpId ? null : racing ? (ready ? raceChain.map((q) => QUESTIONS[q](lab, k, cpCtx)) : null)
-      : (lab.verdict?.ok ? BUILD_CHAIN.map((q) => QUESTIONS[q](lab, k, cpCtx)) : null),
-    reached: racing ? ready : !!lab.verdict?.ok,
+    id: gameScreen ? pKind : cpId,
+    questions: gameScreen ? (pKind ? pNames.map((q) => { const qq = PQ[q](lab, k, cpCtx, t); return qq.kind === 'choice' ? { cols: 1, ...qq } : qq; }) : null)
+      : !cpId ? null : racing ? (ready ? raceChain.map((q) => QUESTIONS[q](lab, k, cpCtx)) : null)
+        : (lab.verdict?.ok ? BUILD_CHAIN.map((q) => QUESTIONS[q](lab, k, cpCtx)) : null),
+    reached: gameScreen ? !!pKind : racing ? ready : !!lab.verdict?.ok,
     resetKey: scene.inits,
     onRetry: () => {
       if (racing) { setLab((st) => ({ ...st, trials: [] })); setX(null); setLive(null); }
       else setLab((st) => ({ ...st, carried: [], verdict: null }));
       setNotice(null);
+      if (gameScreen) { refusedSeen.current = 0; discoveredSent.current = false; state.report(onTrial, { tk: 'retry', ...(racing ? {} : { models: true }) }); }
     },
-    onEvent: (ev) => state.report(onCheckpoint, ev),   // {tk:'checkpoint'|'checkpoint-done', id: 'build'|'race', …} — la TRACE que les étapes du module relisent
-    onDone: (id) => { if (id === 'race') { state.discover(); state.formalize(); } },
+    onEvent: (ev) => { state.report(onCheckpoint, ev); if (gameScreen) state.report(onTrial, ev); },   // {tk:'checkpoint'|'checkpoint-done', id: 'build'|'race', …} — la TRACE que les étapes du module relisent
+    onDone: (id) => {
+      if (gameScreen) setDoneIds((d) => (d.includes(id) ? d : [...d, id]));
+      if (id === 'race') { state.discover(); state.formalize(); }
+    },
   });
+  // lecteur : la découverte annoncée UNE fois par manche
+  useEffect(() => {
+    if (gameScreen && ready && !discoveredSent.current) { discoveredSent.current = true; state.report(onTrial, { tk: 'discovered' }); }
+  }, [ready, gameScreen]); // eslint-disable-line react-hooks/exhaustive-deps
+  /* ── lecteur : la PRÉDICTION, avant le geste qu'elle juge ── */
+  const predQueue = gameScreen ? predictList.slice(0, 2) : [];
+  const nextPred = predQueue.find((q) => !asked.current.has(q.key)) ?? null;
+  const predOk = nextPred && (nextPred.kind === 'cards' ? !racing && !lab.verdict && lab.carried.length === 0 : racing && lab.trials.length === 0);
+  const predictOpen = gameScreen && !cp.open && !missionBig && !!predOk;
+  const locked = gameScreen && (cp.open || predictOpen);
+  const lockedRef = useRef(false);
+  lockedRef.current = locked;
+  const sayPredict = (says) => {
+    const q = nextPred;
+    if (!q || asked.current.has(q.key)) return;
+    const ok = String(says) === String(P.predictTruth(model, q.kind, range));
+    asked.current.add(q.key);
+    playSfx('pop');
+    setPreds((m) => ({ ...m, [q.key]: ok }));
+    state.report(onTrial, { tk: 'predict', ok });
+  };
+  const pendingSig = pendingPreds.join('|');
+  useEffect(() => {
+    if (!pendingSig) return;
+    const keys = pendingSig.split('|');
+    keys.forEach((key) => heardPred.current.add(key));
+    setShownPreds(keys.map((key) => ({ key, ok: preds[key] })));
+    playSfx(keys.every((key) => preds[key]) ? 'correct' : 'pop');
+    setPredHold(true);
+    clearTimeout(holdTimer.current);
+    holdTimer.current = setTimeout(() => setPredHold(false), 1600);
+  }, [pendingSig]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => () => clearTimeout(holdTimer.current), []);
+  useEffect(() => { if (cp.open) setShownPreds([]); }, [cp.open]);
   const raceByCheckpoint = racing && !!cpId;
   useEffect(() => { if (ready && !raceByCheckpoint) state.discover(); }, [ready, raceByCheckpoint, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -302,6 +392,7 @@ export default function GrowthRace({
   const celebrated = useRef(null);
   if (celebrated.current == null || celebrated.current.inits !== scene.inits) celebrated.current = { n: startWith === 'race' ? 1 : 0, inits: scene.inits };   // « إعادة » : on refête
   useEffect(() => {
+    if (gameScreen) return;   // lecteur : pas d'étapes, pas de fête (les manches ont leur carte)
     if (nDone <= celebrated.current.n) return;
     celebrated.current.n = nDone;
     party.celebrate({ n: nDone, total: stepDone.length });
@@ -309,10 +400,23 @@ export default function GrowthRace({
   const heard = useRef(0);
   const tick = () => { const now = Date.now(); if (now - heard.current > 35) { playSfx('tooth'); heard.current = now; } };
 
+  /* ── lecteur : le guide (LabCoach) — le geste, jamais la réponse ── */
+  const coachDone = gameScreen && racing && lab.trials.length >= 2;
+  const coachRaw = gameScreen && coachOn && !locked && !cp.open && live == null ? P.coachOf(lab, { done: coachDone, blocking: buildBlocking }) : null;
+  // un objet STABLE par étape (son id et sa cible) : LabCoach ne se réabonne pas à chaque mouvement de la règle
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const coachStep = useMemo(() => coachRaw, [coachRaw?.id, coachRaw?.target]);
+  const coach = useLabCoach({
+    lab: 'growth-race', step: coachStep, text: coachStep ? t(`manipulation.growthRace.coach.${coachStep.id}`) : '',
+    labels: { hide: t('manipulation.common.coach.hide'), show: t('manipulation.common.coach.show'), ok: t('manipulation.common.coach.ok'), stop: t('manipulation.common.coach.stop') },
+  });
+  const hideEq = gameScreen && !racing && !!pc?.build.includes('buildEq') && !doneIds.includes('build');
+  const pk = (key, o) => t(`manipulation.growthRace.player.${key}`, o);
+
   /* ── la course : les colonnes ── */
   const tops = [L.trialAt(model, range.min), L.trialAt(model, range.max)].flatMap((tr) => [L.toNumber(tr.left), L.toNumber(tr.right)]);
   const vmax = Math.max(1, ...tops);
-  const CW = Math.min(width, 420); const CH = 230; const BASE = CH - 26; const TOP = 22;
+  const CW = Math.min(width, gameScreen ? 360 : 420); const CH = gameScreen ? 150 : 230; const BASE = CH - 26; const TOP = 22;
   const hOf = (v) => (L.toNumber(v) / vmax) * (BASE - TOP);
   const stack = (side) => {
     const parts = L.partsAt(model, side, xx);
@@ -334,6 +438,8 @@ export default function GrowthRace({
   const colW = Math.min(70, CW * 0.2);
 
   /* ── le monde dessiné ── */
+  const tallestKid = gameScreen ? Math.max(0, ...model.elements.filter((e) => e.kind === 'age' && !cast?.adults?.includes(e.id))
+    .map((e) => L.toNumber(L.partsAt(model, e.side, xx).find((p) => p.id === e.id).value))) : 0;
   const renderElement = (el) => {
     const carried = lab.carried.includes(el.id);
     const issue = issueOf(el.id);
@@ -341,7 +447,9 @@ export default function GrowthRace({
     const term = L.elementTex(model, el, carried);
     const figure = model.op === 'mul'
       ? (el.kind === 'fixed' ? <CardFigure color={colorOf(el.id)} /> : <TicketFigure color={colorOf(el.id)} />)
-      : <PersonFigure age={racing ? L.toNumber(nowValue) : L.toNumber(el.c)} color={colorOf(el.id)} adult={el.side === 'left' && L.toNumber(el.c) >= 18} />;
+      : gameScreen
+        ? <KidPerson age={racing ? L.toNumber(nowValue) : L.toNumber(el.c)} adult={!!cast?.adults?.includes(el.id)} girl={!!cast?.girls?.includes(el.id)} index={model.elements.findIndex((e) => e.id === el.id)} tallest={tallestKid} />
+        : <PersonFigure age={racing ? L.toNumber(nowValue) : L.toNumber(el.c)} color={colorOf(el.id)} adult={el.side === 'left' && L.toNumber(el.c) >= 18} />;
     const body = (
       <div className="flex flex-col items-center gap-1 px-1 py-1">
         <div style={{ width: 'clamp(46px, 18cqi, 96px)' }} aria-hidden="true">{figure}</div>
@@ -400,30 +508,94 @@ export default function GrowthRace({
         {!racing && (
           <div className="rounded-xl bg-slate-50 px-2 py-1 text-center" data-gr-expression={side}>
             <p className="text-[11px] font-bold text-slate-500">{k('expression', { title: side === 'left' ? titleL : titleR })}</p>
-            <p dir="ltr" className="font-mono text-base"><MathText>{`$${L.sideTex(model, side, lab.carried)}$`}</MathText></p>
+            <p dir="ltr" className="font-mono text-base">{hideEq ? <span aria-label={pk('unknownEq')}>?</span> : <MathText>{`$${L.sideTex(model, side, lab.carried)}$`}</MathText>}</p>
           </div>
         )}
       </div>
     );
   };
 
+  const choicesId = useId();
+  const predOpts = (q) => P.predictOptions(model, q.kind, q.pos ?? 0).map((o) => ({
+    says: String(o),
+    text: q.kind === 'cards' ? pk('cardsN', { count: o }) : q.kind === 'ahead' ? (o === 'left' ? titleL : o === 'right' ? titleR : pk('same')) : t(`manipulation.growthRace.predict.${o}`),
+  }));
+  const lastTrial = lab.trials.at(-1) ?? null;
+  const journal = lab.trials.slice(-6);
+  const playerRepresentation = gameScreen && !locked && (
+    <div className="space-y-2" data-gr-player-col>
+      <div data-gr-verdict-box>
+        {racing && lastTrial && !live ? (
+          <p key={`t${lastTrial.x}`} className={`rounded-xl border border-slate-200 bg-white px-3 py-2 text-center text-sm font-bold leading-snug ${lastTrial.rel === '=' ? 'text-emerald-800' : 'text-slate-800'}`} data-gr-verdict={lastTrial.rel === '=' ? 'ok' : 'ko'}>
+            <MathText>{`$${L.readoutTex(model, 'left', lastTrial.x).tex} \\;\\; ${REL_TEX[lastTrial.rel]} \\;\\; ${L.readoutTex(model, 'right', lastTrial.x).tex}$`}</MathText>
+          </p>
+        ) : (
+          <p className="rounded-xl border border-dashed border-slate-300 bg-white/70 px-3 py-2 text-center text-sm font-bold text-slate-600" data-gr-verdict="">{racing ? pk('waitingRace') : pk('waitingBuild')}</p>
+        )}
+        {shownPreds.map((pr) => (
+          <p key={pr.key} data-gr-predict-result={pr.ok ? 'ok' : 'wrong'}
+            className={`mt-2 rounded-2xl px-4 py-2 text-center text-lg font-black ${pr.ok ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>
+            {pr.ok ? t('manipulation.common.cp.predict.right') : t('manipulation.growthRace.predict.wrong')}
+          </p>
+        ))}
+      </div>
+      {racing && journal.length > 0 && !state.isFormal && (
+        <div data-gr-journal>
+          <p id={`${choicesId}-j`} className="text-sm font-black text-indigo-900"><span aria-hidden="true">📋 </span>{pk('journal')}</p>
+          <table className="mt-1 w-full table-fixed text-center text-xs" dir="ltr" aria-labelledby={`${choicesId}-j`}>
+            <thead>
+              <tr className="bg-slate-50">
+                <th scope="col" className="font-mono">x</th>
+                <th scope="col">{pk('colLeft')}</th>
+                <th scope="col"><span aria-hidden="true">?</span><span className="sr-only">{pk('colRel')}</span></th>
+                <th scope="col">{pk('colRight')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {journal.map((tr) => (
+                <tr key={tr.x} data-gr-row={tr.rel} data-trial-x={tr.x}>
+                  <th scope="row" className="border border-slate-200 font-mono"><bdi dir="ltr">{tr.x}</bdi></th>
+                  <td className="border border-slate-200 font-mono"><bdi dir="ltr">{L.valueText(tr.left)}</bdi></td>
+                  <td className="border border-slate-200 font-black"><span aria-hidden="true">{REL_TEX[tr.rel]}</span><span className="sr-only">{pk(`rel_${tr.rel === '<' ? 'lt' : tr.rel === '>' ? 'gt' : 'eq'}`)}</span></td>
+                  <td className="border border-slate-200 font-mono"><bdi dir="ltr">{L.valueText(tr.right)}</bdi></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+  const shownTrial = gameScreen && racing && lastTrial && !live ? { ...lastTrial, leftText: L.valueText(lastTrial.left), rightText: L.valueText(lastTrial.right) } : null;
+
   return (
     <ManipulationShell
       type="growth-race"
       title={bidi(title ?? k('title'))}
-      mission={shownMission}
-      lead={typeof lead === 'string' ? bidi(lead) : lead}
+      mission={gameScreen && typeof shownMission === 'string' ? <MathText>{shownMission}</MathText> : shownMission}
+      lead={typeof lead === 'string' ? (gameScreen ? <MathText>{lead}</MathText> : bidi(lead)) : lead}
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       headerAction={cpSettings.control}
-      guided={cpLive && (!racing || !!raceChain)}
+      guided={gameScreen || (cpLive && (!racing || !!raceChain))}
+      coach={gameScreen && coachOn ? coach : null}
+      hideRepresentation={(gameScreen && locked) || undefined}
+      onIntroChange={gameScreen ? setMissionBig : undefined}
+      sidePanel={gameScreen ? (predictOpen ? (
+        <div data-gr-tray>
+          <PredictTray attr="gr" key={nextPred.key} step={predQueue.indexOf(nextPred) + 1} of={predQueue.length}
+            title={t('manipulation.common.cp.predict.title')} prompt={t(`manipulation.growthRace.predict.${nextPred.kind}`)}
+            options={predOpts(nextPred)} onSay={sayPredict} />
+        </div>
+      ) : cp.open ? <div data-gr-tray>{cp.node}</div> : null) : null}
       hints={hints.map((h) => <MathText key={h}>{h}</MathText>)}
       controller={{
         autoStep: () => false,
         canAutoStep: () => false,
         // Seule la COURSE se balaie (chaque x est un essai) ; construire le modèle reste une suite de décisions.
-        autoComplete: {
+        // lecteur : aucun auto-balayage — chaque x est celui de la main
+        autoComplete: gameScreen ? undefined : {
           label: t('manipulation.autoComplete.tryAll'),
           ready: racing,
           remaining: racing ? untried().length : 0,
@@ -433,12 +605,12 @@ export default function GrowthRace({
           finish: () => { untried().forEach((v) => commit(v)); },
         },
       }}
-      representation={racing && shownTrial ? (
-        <EquationDisplay tone={shownTrial.rel === '=' ? 'ok' : 'neutral'}
-          tex={`${L.readoutTex(model, 'left', shownTrial.x).tex} \\;\\; ${REL_TEX[shownTrial.rel]} \\;\\; ${L.readoutTex(model, 'right', shownTrial.x).tex}`}
-          note={<MathText>{k('trialNotice', { x: shownTrial.x, left: shownTrial.leftText, right: shownTrial.rightText, rel: REL_TEX[shownTrial.rel] })}</MathText>} />
+      representation={gameScreen ? playerRepresentation : racing && pageTrial ? (
+        <EquationDisplay tone={pageTrial.rel === '=' ? 'ok' : 'neutral'}
+          tex={`${L.readoutTex(model, 'left', pageTrial.x).tex} \\;\\; ${REL_TEX[pageTrial.rel]} \\;\\; ${L.readoutTex(model, 'right', pageTrial.x).tex}`}
+          note={<MathText>{k('trialNotice', { x: pageTrial.x, left: pageTrial.leftText, right: pageTrial.rightText, rel: REL_TEX[pageTrial.rel] })}</MathText>} />
       ) : null}
-      discovery={options && (
+      discovery={!gameScreen && options && (
         <ManipulationDiscovery state={state} prompt={k('discoveryPrompt')} options={options} formal={formal} />
       )}
       explanation={<MathText>{k('explanation')}</MathText>}
@@ -446,18 +618,43 @@ export default function GrowthRace({
       <ManipulationStage className="bg-gradient-to-b from-sky-50/70 to-white" data-dragging={stretch.dragging || drag.dragging ? 'true' : undefined}>
         <div ref={boxRef} className="relative space-y-3" data-growth-race data-stage={lab.stage} data-op={model.op} data-theme={themeId}>
           {party.node}
-          {cp.node}
-          <LabStepper count={stepDone.length} current={Math.min(nDone, stepDone.length - 1)} done={stepDone} stepAttr="data-gr2-step" />
+          {/* lecteur : la région vivante TOUJOURS montée — la colonne se démonte quand une question s'ouvre */}
+          {gameScreen && (
+            <div role="status" aria-live="polite" className="sr-only" data-gr-verdict-live>
+              {lab.verdict && !racing && <span key={`m${said}`}>{lab.verdict.ok ? pk('modelOkSaid') : pk('modelKoSaid')}</span>}
+              {racing && shownTrial && <span key={`t${shownTrial.x}`}>{pk(shownTrial.rel === '=' ? 'trialSaidEq' : 'trialSaidNe', { x: shownTrial.x, left: shownTrial.leftText, right: shownTrial.rightText, rel: pk(`rel_${shownTrial.rel === '<' ? 'lt' : shownTrial.rel === '>' ? 'gt' : 'eq'}`) })}</span>}
+              {shownPreds.map((pr) => <span key={pr.key}> {pr.ok ? t('manipulation.common.cp.predict.right') : t('manipulation.growthRace.predict.wrong')}</span>)}
+              {exprSaid && <span key={exprSaid}> {pk('choiceNow')}</span>}
+            </div>
+          )}
+          {!gameScreen && cp.node}
+          {gameScreen && choices?.length > 0 && (
+            <div className="flex flex-wrap items-center justify-center gap-1.5" role="group" aria-labelledby={`${choicesId}-l`} data-gr-choices>
+              <span id={`${choicesId}-l`} className="text-sm font-bold text-slate-600">{pk('choicesLabel')}</span>
+              {choices.map((c, i) => {
+                const [cl, cr, cm] = c.split('|');
+                const on = cl === left && cr === right;
+                return (
+                  <button key={c} type="button" data-gr-choice={i} aria-pressed={on} aria-disabled={locked || undefined}
+                    onClick={() => { if (!lockedRef.current && !on) { state.setNumbers({ left: cl, right: cr }); setMaxOver(Number(cm)); setExprSaid(c); } }}
+                    className="min-h-[44px] rounded-xl border-2 border-slate-300 bg-white px-3 text-sm font-black text-slate-700 aria-pressed:border-indigo-600 aria-pressed:bg-indigo-50 aria-pressed:text-indigo-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2">
+                    {pk('choiceN', { n: i + 1 })}<span className="sr-only"> {cl.replace(/\+/g, ' + ')} = {cr.replace(/\+/g, ' + ')}</span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+          {!gameScreen && <LabStepper count={stepDone.length} current={Math.min(nDone, stepDone.length - 1)} done={stepDone} stepAttr="data-gr2-step" />}
           {/* ── les deux étapes, toujours lisibles ── */}
-          <ol className="flex flex-wrap gap-2 text-xs font-bold" aria-hidden="true">
+          {!gameScreen && <ol className="flex flex-wrap gap-2 text-xs font-bold" aria-hidden="true">
             <li className={`rounded-full px-3 py-1 ${!racing ? 'bg-indigo-600 text-white' : 'bg-indigo-100 text-indigo-700'}`}>{k('stageBuild')}</li>
             <li className={`rounded-full px-3 py-1 ${racing ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-500'}`}>{k('stageRace')}</li>
-          </ol>
+          </ol>}
           <p className="rounded-xl bg-white/80 px-3 py-2 text-sm font-bold text-slate-800" data-gr-question>{question}</p>
 
           {/* ── le monde : les deux membres, côte à côte dans le sens de l'équation ── */}
           <div className="relative pt-0">
-            <Decor themeId={themeId} />
+            {gameScreen && decor === 'board' ? <HeightBoard /> : <Decor themeId={themeId} />}
             <div dir="ltr" className="flex gap-2 flex-row" data-gr-scene>
               {renderSide('left')}
               <div className="flex items-center justify-center px-1 font-mono text-2xl font-black text-slate-500" aria-hidden="true">{racing ? REL_TEX[now.rel] : '?'}</div>
@@ -477,7 +674,7 @@ export default function GrowthRace({
                 <span className="text-xs text-slate-600">{k('reserveHint')}</span>
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                <button type="button" onClick={verify} data-gr-check
+                <button type="button" onClick={verify} data-gr-check aria-disabled={locked || undefined}
                   className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-indigo-600 px-4 font-bold text-white focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-300">
                   <CheckCircle2 className="h-5 w-5" aria-hidden="true" /> {k('check')}
                 </button>
@@ -486,9 +683,9 @@ export default function GrowthRace({
                 lab.verdict.ok ? (
                   <div className="space-y-2 rounded-2xl border-2 border-emerald-300 bg-emerald-50 p-3" data-gr-verdict="ok">
                     <p className="text-sm font-bold text-emerald-900">{k('modelOk')}</p>
-                    <p dir="ltr" className="font-mono text-base"><MathText>{`$${L.modelTex(model, lab.carried)}$`}</MathText></p>
-                    {!cp.blocking && <p className="text-sm text-slate-700">{k('nextCard')}</p>}
-                    <button type="button" disabled={cp.blocking} onClick={() => { setLab(L.openRace); setNotice(null); }} data-gr-open-race
+                    <p dir="ltr" className="font-mono text-base">{hideEq ? <span aria-label={pk('unknownEq')}>?</span> : <MathText>{`$${L.modelTex(model, lab.carried)}$`}</MathText>}</p>
+                    {!cp.blocking && !buildBlocking && <p className="text-sm text-slate-700">{k('nextCard')}</p>}
+                    <button type="button" disabled={cp.blocking || buildBlocking} onClick={() => { setLab(L.openRace); setNotice(null); }} data-gr-open-race
                       className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-emerald-600 px-4 font-bold text-white focus:outline-none focus-visible:ring-4 focus-visible:ring-emerald-300 disabled:opacity-40">
                       {k('openRace')} <ArrowLeft className="h-5 w-5" aria-hidden="true" />
                     </button>
@@ -530,6 +727,7 @@ export default function GrowthRace({
                 </svg>
                 <div
                   {...stretch.handleProps({ label: k('handle'), valueText: k('valueText', { x: xx }) })}
+                  aria-disabled={locked || undefined}
                   className={`absolute top-0 flex h-11 w-11 -translate-x-1/2 items-start justify-center rounded-xl border-2 outline-none focus-visible:ring-4 focus-visible:ring-blue-300 ${stretch.dragging ? 'border-blue-500 bg-blue-500/10' : 'border-slate-400 bg-white/60'}`}
                   style={{ left: xOf(xx), cursor: stretch.dragging ? 'grabbing' : 'grab' }}
                 >
@@ -537,10 +735,10 @@ export default function GrowthRace({
                 </div>
               </div>
               <div className="flex items-center justify-center gap-2">
-                <button type="button" onClick={() => stretch.nudge(-1)} aria-label={k('smaller')} disabled={xx <= range.min} data-gr-less
+                <button type="button" onClick={() => nudge(-1)} aria-label={k('smaller')} disabled={xx <= range.min} aria-disabled={locked || undefined} data-gr-less
                   className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"><Minus className="h-5 w-5" aria-hidden="true" /></button>
                 <p className="min-w-[6rem] text-center text-sm font-bold text-slate-700" dir="ltr">x = {xx}</p>
-                <button type="button" onClick={() => stretch.nudge(1)} aria-label={k('bigger')} disabled={xx >= range.max} data-gr-more
+                <button type="button" onClick={() => nudge(1)} aria-label={k('bigger')} disabled={xx >= range.max} aria-disabled={locked || undefined} data-gr-more
                   className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"><Plus className="h-5 w-5" aria-hidden="true" /></button>
               </div>
 
@@ -575,7 +773,7 @@ export default function GrowthRace({
               </div>
 
               {/* ── les essais : la preuve, dans l'ordre où l'élève les a faits ── */}
-              <div className="space-y-1">
+              {!gameScreen && <div className="space-y-1">
                 <p className="text-xs font-bold text-slate-600">{k('trialsTitle')}</p>
                 {lab.trials.length === 0 ? <p className="text-xs text-slate-500">{k('trialsEmpty')}</p> : (
                   <ul className="flex flex-wrap gap-1.5" dir="ltr" data-gr-trials>
@@ -587,7 +785,7 @@ export default function GrowthRace({
                     ))}
                   </ul>
                 )}
-              </div>
+              </div>}
             </>
           )}
           <p className="min-h-[1.25rem] text-sm" aria-live="polite" data-gr-notice>
@@ -910,3 +1108,115 @@ function slopeQuestion(lab, k, c, side) {
     prompt: Cq(k, `${key}.prompt`, o), hints: [Cq(k, `${key}.hint1`, o), Cq(k, `${key}.hint2`, o)], explain: Cq(k, `${key}.explain`, o),
   };
 }
+
+
+/* ══════════════ LECTEUR DE MISSION : les personnes, le décor, les questions de la manche ══════════════ */
+
+const KIDS = [['blue', 'brown'], ['green', 'black'], ['orange', 'chestnut'], ['violet', 'brown'], ['red', 'black']];
+
+/**
+ * Une personne du lecteur : TOUJOURS le personnage partagé `KidFigure` (une fille porte le hijab et la tunique). Sa taille suit son âge ;
+ * le père est dessiné 1,25 fois plus grand que le plus grand des enfants, en tunique, étiqueté « الأب » par le nom du dessous.
+ */
+function KidPerson({ age, adult, girl, index, tallest }) {
+  const kidH = (a) => Math.min(70, 30 + Math.max(0, a) * 1.45);
+  const h = adult ? Math.min(92, Math.max(kidH(tallest) * 1.25, kidH(age) + 6)) : kidH(age);
+  const [outfit, hair] = adult ? ['teal', 'black'] : KIDS[Math.max(0, index) % KIDS.length];
+  return (
+    <svg viewBox="0 0 60 100" width="100%" style={{ display: 'block' }} focusable="false" data-gr-kid={adult ? 'adult' : girl ? 'girl' : 'boy'}>
+      <KidFigure cx={30} top={98 - h} foot={98} outfit={girl ? 'pink' : outfit} hair={hair} hairStyle={girl ? 'hijab' : 'short'} scarf="rose" tunic={adult || girl ? true : undefined} />
+    </svg>
+  );
+}
+
+/** Le décor du lecteur : un mur et sa toise en bois, graduée sans aucun nombre (remplace le gâteau ; la page le garde). */
+function HeightBoard() {
+  return (
+    <svg aria-hidden="true" focusable="false" data-decor="board" viewBox="0 0 400 22" width="100%" height="22" preserveAspectRatio="none" className="mb-1 block">
+      <rect x="0" y="6" width="400" height="12" rx="3" fill="#D6A15F" stroke="#92602A" />
+      {Array.from({ length: 21 }, (_, i) => <line key={i} x1={10 + i * 19} x2={10 + i * 19} y1="6" y2={i % 5 === 0 ? 17 : 12} stroke="#6B4423" strokeWidth="1.5" />)}
+    </svg>
+  );
+}
+
+/* ── les questions de la manche (LabCheckpoint) : tout vient du modèle ; les mots, de i18n › growthRace.player.q ── */
+const M = (x) => <MathText>{x}</MathText>;
+const tex = (x) => `$${x}$`;
+const renderTile = (v) => <span className="pointer-events-none text-lg"><MathText>{tex(v)}</MathText></span>;
+const rot = (arr, n) => arr.map((_, i) => arr[(i + n) % arr.length]);
+const SIDE = (c) => ({ titleL: c.titleL, titleR: c.titleR });
+const chipRender = (v) => <span className="pointer-events-none"><bdi dir="ltr">{String(v).replace('-', '−')}</bdi></span>;
+
+export const PQ = {
+  slopeTap: (lab, k, c, tx) => {
+    const q = (key, o) => M(tx(`manipulation.growthRace.player.q.slopeTap.${key}`, o));
+    const a = L.toNumber(L.storyLin(lab.model, 'right').a);
+    const kids = lab.model.elements.filter((e) => e.side === 'right' && e.kind === 'age').length;
+    return {
+      id: 'slopeTap', kind: 'fill',
+      fields: [{ label: q('prompt', { title: c.titleR, count: kids }), options: P.slopeChoices(lab.model), expected: String(a), render: chipRender }],
+      hints: [q('hint1'), q('hint2', { count: kids })], explain: q('explain', { a, count: kids }),
+    };
+  },
+  buildEq: (lab, k, c, tx) => {
+    const spec = P.buildSpec(lab.model);
+    const q = (key, o) => M(tx(`manipulation.growthRace.player.q.buildEq.${key}`, o));
+    const target = spec.kind === 'eqSum2' ? spec.expected[2] : '';
+    return {
+      id: 'buildEq', kind: 'build', ops: spec.ops, expected: spec.expected, accept: spec.accept, tiles: rot(spec.tiles, L.toNumber(L.storyLin(lab.model, 'right').b) % spec.tiles.length), render: renderTile,
+      slots: [0, 1, 2].map((i) => tx(`manipulation.growthRace.player.q.buildEq.slot.${spec.kind}.${i}`)),
+      prompt: q(`prompt.${spec.kind}`, { ...SIDE(c), target }),
+      hints: [q(`hint1.${spec.kind}`), q('hint2')], explain: q(`explain.${spec.kind}`, { eq: tex(L.modelTex(lab.model, L.storyCarried(lab.model))) }),
+    };
+  },
+  whereTap: (lab, k, c, tx) => {
+    const s = L.toNumber(c.sol.x);
+    const xs = lab.trials.map((tr) => tr.x);
+    const before = Math.max(-1, ...xs.filter((v) => v < s)); const after = Math.min(Infinity, ...xs.filter((v) => v > s));
+    const opts = [before >= 0 ? before : s + 2, s, Number.isFinite(after) ? after : s + 1];
+    const q = (key, o) => M(tx(`manipulation.growthRace.player.q.whereTap.${key}`, o));
+    return {
+      id: 'whereTap', kind: 'fill',
+      fields: [{ label: q('prompt', SIDE(c)), options: rot(opts, s % 3), expected: String(s), render: chipRender }],
+      hints: [q('hint1'), q('hint2', { a: opts[0], b: opts[2] })], explain: q('explain', { x: s }),
+    };
+  },
+  afterTap: (lab, k, c) => QUESTIONS.after(lab, k, c),
+  trendTap: (lab, k, c) => QUESTIONS.trend(lab, k, c),
+  solveTap: (lab, k, c, tx) => {
+    const sol = L.toNumber(c.sol.x);
+    const q = (key, o) => M(tx(`manipulation.growthRace.player.q.solveTap.${key}`, o));
+    const eqTex = tex(L.solvingLines(lab.model).lines[0]);
+    const opts = [sol, -sol, L.toNumber(L.storyLin(lab.model, 'right').b)].filter((v, i, a) => a.indexOf(v) === i);
+    return {
+      id: 'solveTap', kind: 'fill',
+      fields: [{ label: q('prompt', { eq: eqTex }), options: rot(opts, 1), expected: String(sol), render: chipRender }],
+      hints: [q('hint1'), q('hint2', { eq: eqTex })], explain: q('explain', { x: sol }),
+    };
+  },
+  buildPast: (lab, k, c, tx) => {
+    const spec = P.pastSpec(lab.model);
+    const q = (key, o) => M(tx(`manipulation.growthRace.player.q.buildPast.${key}`, o));
+    return {
+      id: 'buildPast', kind: 'build', ops: [':', '+'], wrap: [null, `= ${spec.target}`], expected: spec.expected, accept: spec.accept, tiles: spec.tiles, render: renderTile,
+      slots: [0, 1, 2].map((i) => tx(`manipulation.growthRace.player.q.buildPast.slot.${i}`)),
+      prompt: q('prompt', { target: spec.target }),
+      hints: [q('hint1', { decoy: spec.decoy, n: spec.n }), q('hint2', { n: spec.n })], explain: q('explain', { n: spec.n, a: spec.ages[0], b: spec.ages[1], target: spec.target }),
+    };
+  },
+  ruleP: (lab, k, c, tx) => {
+    const q = (key, o) => M(tx(`manipulation.growthRace.player.q.rule.${key}`, o));
+    const bad = lab.trials.find((tr) => tr.rel !== '=') ?? L.trialAt(lab.model, c.range.max);
+    const a = L.toNumber(L.storyLin(lab.model, 'right').a);
+    const o = { x: bad.x, left: L.valueText(bad.left), right: L.valueText(bad.right), a };
+    const list = [{ text: q('meetRight'), correct: true }, { text: q('meetOnce'), why: q('meetOnceWhy', o) }, { text: q('meetAlways'), why: q('meetAlwaysWhy', o) }];
+    return { id: 'rule', kind: 'choice', prompt: q('prompt'), options: rot(list, 1), hints: [q('hint1'), q('hint2')], explain: q('explainMeet') };
+  },
+  rulePast: (lab, k, c, tx) => {
+    const q = (key, o) => M(tx(`manipulation.growthRace.player.q.rule.${key}`, o));
+    const spec = P.pastSpec(lab.model);
+    const o = { n: spec.n, a: spec.ages[0], b: spec.ages[1], target: spec.target };
+    const list = [{ text: q('pastRight'), correct: true }, { text: q('pastAlways'), why: q('pastAlwaysWhy', o) }, { text: q('pastWrong'), why: q('pastWrongWhy', o) }];
+    return { id: 'rule', kind: 'choice', prompt: q('promptPast'), options: rot(list, 2), hints: [q('hint1Past'), q('hint2Past')], explain: q('explainPast', o) };
+  },
+};

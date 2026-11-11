@@ -3,16 +3,21 @@
  * Unité 1 du manuel (4AM), activité 1 (p. 8), معارف 1 (p. 10), exercices 1, 2, 5 (p. 14),
  * puis trois « مسائل » de la plateforme (modules 4–6, pilote du 2026-10-05).
  * Source de vérité : docs/sources/4am/unit1/extraction.json.
+ * Le réseau (2026-11-07) : 4am.m1.r01 REQUIERT 1am.m3.r01 (`qisma-iqlidiya-baqi`, publiée) et ÉTEND 1am.m3.r02 (`qawaid-qabiliyat-qisma`, publiée).
+ *   Arêtes LP le long de ces deux liens : P1 ← 1am_qisma-iqlidiya-baqi_P1 (faire la division) + 1am_qawaid-qabiliyat-qisma_P4 (« يقبل القسمة » = reste nul),
+ *   P2 ← 1am_qisma-iqlidiya-baqi_P2 (a = b × q + r), P3 ← 1am_qawaid-qabiliyat-qisma_P4. Aucune arête vers 2AM `qisma-iqlidiya-hasr` : le réseau n'a pas de lien
+ *   2am.m1.r04 → 4am.m1.r01 (question au propriétaire). « راجع قبل أن تنطلق » et « راجع » après une erreur pointent déjà vers les deux leçons 1AM (réseau + `getLessonPath`).
+ *   Les deux leçons 1AM sont aussi ses `prerequisiteLessonCodes` : « المتطلبات السابقة » les montre en pastilles-liens (« · السنة الأولى »), à la place des deux notions en texte.
  *
  * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
  *   Entrée retenue : le TERRAIN (15 joueurs en 3 équipes, puis 16 : un joueur n'a pas d'équipe) — la main FIXE le nombre de groupes
  *   et le reste se voit debout sur le banc avant que le mot « قاسم » existe ; c'est le niveau مبتدئ du labo, ajout déclaré de la
  *   plateforme (`platform_designed_entry`). Rejeté : le نشاط 1 du manuel (420 livres, « 26 ou 28 ? ») comme entrée — un choix
- *   binaire dont la réponse se vérifie par deux restes, sans que l'idée devienne nécessaire ; il reste le niveau متقدم du MÊME labo
- *   (le rayon qu'on étire), posé juste après. Rejeté aussi : ouvrir sur la définition a = b × q (aucune raison pour la main).
- *   Ordre des idées : le 16e joueur et le reste (sur SES essais) → deux lectures d'une même division → pourquoi 28 vide le sol et pas
- *   26 → brique « قاسم بالباقي » APRÈS la réponse → ce que 28 est pour 420 → (module 2) 143 : 11 puis 13 vident le sol → définition
- *   par le reste → par le produit (13 aussi) → 120 = 6 × 20 → les quatre phrases (question d'abord, briques ensuite).
+ *   binaire dont la réponse se vérifie par deux restes, sans que l'idée devienne nécessaire ; son CONTRASTE vit sur le même terrain
+ *   (42 joueurs : 5 ou 6 équipes ?). Rejeté aussi : ouvrir sur la définition a = b × q (aucune raison pour la main).
+ *   Ordre des idées (lecteur de mission, manches content/teams.js) : 15 en 3 → le 16e joueur et le banc → 42 : 5 ou 6 équipes →
+ *   brique « قاسم بالباقي » APRÈS la réponse → (module 2) 48 en 6 PUIS en 8 vident le banc → définition par le reste → par le
+ *   produit (8 aussi) → 120 = 6 × 20 → les quatre phrases → « ورقة سلمى » (corriger l'erreur « حاصل طبيعي ⇒ تامّة »).
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -107,6 +112,8 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
+  // La carte TOUTE OUVERTE (propriétaire, 2026-11-08, PILOTE) : toutes les connaissances dès le début, sans verrou par محور.
+  knowledgeMapOpen: true,
   // Les acquis des années antérieures que « أستعدّ » (p. 7) diagnostique.
   priorKnowledge: ['qisma-iqlidiya', 'qawaid-qabiliyat-al-qisma'],
   resources: [
@@ -158,7 +165,7 @@ export const LESSON_CONFIG = {
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
       title: 'أستعدّ', desc: 'ست عبارات: صحيح أم خاطئ؟ القسمة الإقليدية وقواعد قابلية القسمة.',
-      stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
+      stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 8, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'al-maktaba', path: `${LESSON_BASE_PATH}/al-maktaba`,
       title: 'نشاط 1 — فرق متساوية', desc: 'كم فريقًا لا يترك أحدًا خارج الفرق؟ جرّب، ولاحظ الباقي.',
       stage: 'trigger', teachesLearningPointIds: ['4am_qasim-adad-tabii_P1'],

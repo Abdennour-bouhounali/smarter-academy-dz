@@ -2,13 +2,12 @@ import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import ReactDOM from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Printer, ArrowLeft, Compass, FileText, Expand, ChevronUp, ChevronDown, Columns2 } from 'lucide-react';
+import { X, Printer, Compass, FileText, Expand, ChevronUp, ChevronDown, Columns2 } from 'lucide-react';
 import { useLessonViewport } from './useLessonViewport';
 import { IS_RTL } from '../../../locale.js';
 import { useWorkspaceLayout } from '../../../context/WorkspaceLayoutContext';
-import { buildStructure, progressionByModule, HIGHLIGHT_CAT } from './knowledgeStructure';
+import { buildStructure, progressionByModule } from './knowledgeStructure';
 import ConceptVisual from './ConceptVisual';
-import AddToNotebookButton from '../../../features/practice/notebook/AddToNotebookButton';
 import { useLessonKnowledge } from './KnowledgeProvider';
 import { Link } from 'react-router-dom';
 import { getLessonById } from '@smarter-academy/core';
@@ -26,19 +25,17 @@ const ProgressiveKnowledgeMap = lazy(() => import('./progressive/ProgressiveKnow
 const LinearKnowledgeView = lazy(() => import('./progressive/LinearKnowledgeView'));
 
 /**
- * Le graphe que la carte affiche, ou null (carte par strates). La leçon le
- * demande par `knowledgeMapMode: 'progressive'` ; son KNOWLEDGE_GRAPH s'il
- * est valide, sinon le REPLI dérivé de ses items (graphFromKnowledge) — une
- * leçon en cours de migration n'affiche jamais une carte vide.
+ * Le graphe que la carte affiche — TOUJOURS la carte mentale interactive (propriétaire, 2026-11-08 : l'ancienne carte par
+ * strates — ses vues « navigation », détail d'item / de catégorie et sa fiche d'impression — est supprimée). Le KNOWLEDGE_GRAPH
+ * de la leçon s'il est valide, sinon le REPLI dérivé de ses items (graphFromKnowledge) : jamais une carte vide.
  */
 function useProgressiveGraph() {
   const { t } = useTranslation('lesson');
-  const { lessonId, graph, knowledge } = useLessonKnowledge();
-  const progressive = Boolean(lessonId) && getLoadedLessonConfig(lessonId)?.knowledgeMapMode === 'progressive';
+  const { graph, knowledge } = useLessonKnowledge();
   const sequenceLabel = t('map.progressive.fallbackSequence');
   return React.useMemo(
-    () => (progressive ? resolveGraph(graph, knowledge, { sequenceLabel }) : null),
-    [progressive, graph, knowledge, sequenceLabel],
+    () => resolveGraph(graph, knowledge, { sequenceLabel }),
+    [graph, knowledge, sequenceLabel],
   );
 }
 
@@ -198,120 +195,6 @@ const STRATUM_ACCENT = {
   green:  { rule: 'bg-emerald-400', label: 'text-emerald-700' },
 };
 
-/** Une connaissance = une LIGNE compacte, pas une carte. */
-function KnowledgeRow({ item, onSelect, dotClass }) {
-  const { t } = useTranslation('lesson');
-  return (
-    <button
-      onClick={() => onSelect(item)}
-      data-km-item={item.id}
-      data-km-new={item.isNew ? 'true' : undefined}
-      className="group w-full text-start flex items-baseline gap-2.5 py-1.5 px-2 -mx-2 rounded-lg hover:bg-slate-50 transition-colors"
-    >
-      <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${dotClass}`} aria-hidden="true" />
-      <span className="min-w-0 flex-1">
-        <span className="text-sm text-slate-800 font-medium group-hover:text-slate-950">{item.title}</span>
-        {item.summary && (
-          <span className="block text-xs text-slate-500 leading-snug truncate"><MathLabel><MathLabel>{item.summary}</MathLabel></MathLabel></span>
-        )}
-      </span>
-      {item.isNew && (
-        <>
-          <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-indigo-500" aria-hidden="true" />
-          <span className="sr-only">({t('map.new')})</span>
-        </>
-      )}
-    </button>
-  );
-}
-
-/** Bandeau « À retenir » — mise en avant transversale, en tête de la carte. */
-function HighlightBand({ items, onSelect }) {
-  const { t } = useTranslation('lesson');
-  if (items.length === 0) return null;
-  return (
-    <section className="rounded-xl border border-rose-200 bg-rose-50/50 px-3 py-2.5" data-km-highlight="true">
-      <div className="flex items-baseline gap-2 mb-1.5">
-        <span className="text-[10px] font-bold tracking-[0.14em] text-rose-700">{t('map.toRetain')}</span>
-        <span className="text-[10px] text-rose-400 font-mono">{items.length}</span>
-      </div>
-      <div className="flex flex-col divide-y divide-rose-100/70">
-        {items.map((item) => (
-          <KnowledgeRow key={item.id} item={item} onSelect={onSelect} dotClass="bg-rose-400" />
-        ))}
-      </div>
-    </section>
-  );
-}
-
-/**
- * Vue NAVIGATION — hiérarchie : strate → catégorie → connaissance.
- * Peu de conteneurs, beaucoup de typographie : un cahier structuré, pas un
- * tableau de bord.
- */
-function StructuredView({ items, onSelect, columns = 1 }) {
-  const { t } = useTranslation('lesson');
-  const { highlight, strata } = buildStructure(items);
-  const steps = progressionByModule(items);
-
-  return (
-    <div className="space-y-5" data-km-structured="true">
-      <HighlightBand items={highlight} onSelect={onSelect} />
-
-      <div
-        className={columns > 1 ? 'gap-x-8' : ''}
-        style={columns > 1 ? { columnCount: columns, columnGap: '2rem' } : undefined}
-      >
-        {strata.map((stratum) => {
-          const accent = STRATUM_ACCENT[stratum.accent] ?? STRATUM_ACCENT.blue;
-          return (
-            <section
-              key={stratum.id}
-              className="mb-5 break-inside-avoid"
-              data-km-stratum={stratum.id}
-              style={{ breakInside: 'avoid' }}
-            >
-              {/* Titre de strate : filet + libellé, aucun encadré */}
-              <div className="flex items-baseline gap-2 mb-2">
-                <span className={`h-3 w-1 rounded-full ${accent.rule}`} aria-hidden="true" />
-                <h3 className={`text-[11px] font-bold tracking-[0.14em] ${accent.label}`}>{t(stratum.labelKey)}</h3>
-                <span className="text-[10px] text-slate-400">{t(stratum.captionKey)}</span>
-                <span className="ms-auto text-[10px] font-mono text-slate-300">{stratum.count}</span>
-              </div>
-
-              <div className="ps-3 border-s border-slate-100 space-y-3">
-                {stratum.groups.map((g) => (
-                  <div key={g.category.id} data-km-group={g.category.id}>
-                    {/* Sous-titre de catégorie — seulement si la strate en compte plusieurs */}
-                    {stratum.groups.length > 1 && (
-                      <div className="text-[10px] font-semibold tracking-widest text-slate-400 mb-0.5">
-                        {t(g.category.labelKey)}
-                      </div>
-                    )}
-                    <div className="flex flex-col">
-                      {g.items.map((item) => (
-                        <KnowledgeRow
-                          key={item.id}
-                          item={item}
-                          onSelect={onSelect}
-                          dotClass={accent.rule}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-          );
-        })}
-      </div>
-
-      {/* Fil cumulatif — la carte s'enrichit module après module */}
-      {steps.length > 0 && <ProgressionStrip steps={steps} />}
-    </div>
-  );
-}
-
 /* ─────────────────────────────────────────────────────────────────────────
    FIL « بطاقتك » + SURCOUCHE DE MAÎTRISE (Mastery V2, phase 8c)
    La VISIBILITÉ des items reste pilotée par la complétion ; la maîtrise
@@ -403,284 +286,6 @@ function StripBase({ steps, overlay }) {
           </React.Fragment>
         );
       })}
-    </div>
-  );
-}
-
-function ItemDetailView({ item, onBack, catColor }) {
-  const { t } = useTranslation('lesson');
-  const { lessonId } = useLessonKnowledge();
-  const theme = CAT_THEME[catColor];
-  const category = CATEGORIES.find((c) => c.id === item.type);
-  return (
-    <motion.div
-      key="detail"
-      initial={{ x: 24, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      exit={{ x: 24, opacity: 0 }}
-      transition={{ duration: 0.18 }}
-      className="space-y-4"
-    >
-      {/* Back button */}
-      <button
-        onClick={onBack}
-        className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors"
-      >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        {t('map.backToMap')}
-      </button>
-
-      {/* Title badge */}
-      <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold ${theme.badge}`}>
-        <span>{item.title}</span>
-      </div>
-
-      {/* Summary */}
-      {item.summary && (
-        <p className="text-sm text-slate-600 leading-relaxed"><MathLabel><MathLabel>{item.summary}</MathLabel></MathLabel></p>
-      )}
-
-      {/* Visual */}
-      {item.visual && (
-        <div className="bg-white rounded-xl border border-slate-100 px-3 py-3">
-          <ConceptVisual size={item.visualSize} context="drawer">
-            {item.visual}
-          </ConceptVisual>
-        </div>
-      )}
-
-      {/* Body */}
-      {item.body}
-
-      {/* Vers le cahier — un geste explicite de l'élève, jamais une copie
-          automatique. La carte reste en lecture seule. */}
-      <div data-km-noprint="true">
-        <AddToNotebookButton item={item} lessonCode={lessonId} categoryLabel={category ? t(category.labelKey) : null} />
-      </div>
-
-      {/* Manipulation reference — future-ready */}
-      {item.manipulationRef && (
-        <div className="bg-indigo-50 rounded-xl border border-indigo-100 p-3">
-          <div className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest mb-1">
-            {t('map.discoveredWithIt')}
-          </div>
-          <div className="text-sm font-semibold text-indigo-900">{item.manipulationRef.title}</div>
-          {item.manipulationRef.href && (
-            <a
-              href={item.manipulationRef.href}
-              className="mt-2 inline-block text-xs text-indigo-600 underline hover:text-indigo-800"
-            >
-              {t('map.reviewManipulation')}
-            </a>
-          )}
-        </div>
-      )}
-    </motion.div>
-  );
-}
-
-function CategoryDetailView({ category, items, onBack }) {
-  const { t } = useTranslation('lesson');
-  const theme = CAT_THEME[category.color];
-  return (
-    <motion.div
-      key="cat-detail"
-      initial={{ x: 24, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      exit={{ x: 24, opacity: 0 }}
-      transition={{ duration: 0.18 }}
-      className="space-y-4 pb-4"
-    >
-      {/* Back button */}
-      <button
-        onClick={onBack}
-        className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors"
-      >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        {t('map.backToMap')}
-      </button>
-
-      {/* Category header */}
-      <div className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold ${theme.hdr} border`}>
-        <span aria-hidden="true">{category.emoji}</span>
-        <span className="font-mono tracking-wider">{t(category.labelKey)}</span>
-        <span className={`ms-auto text-xs px-2 py-0.5 rounded-full ${theme.badge}`}>{items.length}</span>
-      </div>
-
-      {/* CompleteCards for this category */}
-      <div className="space-y-4">
-        {items.map(item => (
-          <CompleteCard key={item.id} item={item} catColor={category.color} />
-        ))}
-      </div>
-    </motion.div>
-  );
-}
-
-function NavigationView({ items, selectedItem, onSelectItem, columns = 1 }) {
-  return (
-    <div data-km-navview="true">
-      <AnimatePresence mode="wait" initial={false}>
-        {selectedItem ? (
-          selectedItem.isCategory ? (
-            <CategoryDetailView
-              key="cat-detail"
-              category={selectedItem.category}
-              items={selectedItem.items}
-              onBack={() => onSelectItem(null)}
-            />
-          ) : (
-            <ItemDetailView
-              key="detail"
-              item={selectedItem}
-              catColor={CATEGORIES.find(c => c.id === selectedItem.type)?.color ?? 'blue'}
-              onBack={() => onSelectItem(null)}
-            />
-          )
-        ) : (
-          <motion.div
-            key="structure"
-            initial={{ x: -16, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -16, opacity: 0 }}
-            transition={{ duration: 0.15 }}
-          >
-            <StructuredView items={items} onSelect={onSelectItem} columns={columns} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────────────────
-   PRINT VIEW
-   Dedicated A4 revision document.
-   ───────────────────────────────────────────────────────────────────────── */
-
-const PRINT_PALETTE = {
-  blue:   { border: 'border-[#1687D9]', text: 'text-[#1687D9]', line: 'border-[#D9DEE8]' },
-  orange: { border: 'border-[#E94F9B]', text: 'text-[#E94F9B]', line: 'border-[#D9DEE8]' },
-  green:  { border: 'border-[#168F7A]', text: 'text-[#168F7A]', line: 'border-[#D9DEE8]' },
-  purple: { border: 'border-[#6D3FE7]', text: 'text-[#6D3FE7]', line: 'border-[#D9DEE8]' },
-  red:    { border: 'border-[#E94F9B]', text: 'text-[#172554]', line: 'border-[#D9DEE8]' },
-  indigo: { border: 'border-[#6D3FE7]', text: 'text-[#6D3FE7]', line: 'border-[#D9DEE8]' },
-};
-
-function PrintCard({ item, catColor }) {
-  const theme = PRINT_PALETTE[catColor] || PRINT_PALETTE.blue;
-  return (
-    <div className={`print-card mb-3 pb-3 border-b ${theme.line} last:border-b-0 last:pb-0`}>
-      <div className={`font-bold text-[9.5pt] mb-1.5 flex items-baseline gap-1.5 ${theme.text}`}>
-        <span className="text-[7pt]">●</span> {item.title}
-      </div>
-      {item.visual && (
-        <ConceptVisual size={item.visualSize} context="print">
-          {item.visual}
-        </ConceptVisual>
-      )}
-      <div className="text-[9pt] text-[#172033] leading-snug space-y-2 sa-print-body">
-        {item.body}
-      </div>
-    </div>
-  );
-}
-
-function PrintHero({ items }) {
-  const { t } = useTranslation('lesson');
-  if (!items || items.length === 0) return null;
-  return (
-    <div className="print-section mb-6 break-inside-avoid">
-      <div className="border border-[#E94F9B] bg-[#E94F9B]/[0.04] rounded-lg p-5">
-        <div className="inline-block px-3 py-1 bg-[#E94F9B] text-white text-[8pt] font-bold tracking-widest rounded-sm uppercase mb-4">
-          {t('map.starToRetain')}
-        </div>
-        <div className="space-y-4">
-          {items.map(item => (
-            <div key={item.id} className="print-card">
-              {item.visual && (
-                <ConceptVisual size={item.visualSize} context="print">
-                  {item.visual}
-                </ConceptVisual>
-              )}
-              <div className="text-[#172554] text-[10pt] font-medium sa-print-hero-body space-y-3">
-                {item.body}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-const PRINT_STRATUM = {
-  blue:   'border-[#1687D9] text-[#1687D9]',
-  orange: 'border-[#E94F9B] text-[#E94F9B]',
-  green:  'border-[#168F7A] text-[#168F7A]',
-};
-
-function PrintView({ items, printTitle, printSubject }) {
-  const { t } = useTranslation('lesson');
-  // Même hiérarchie qu'à l'écran (strate → catégorie → connaissance) : la
-  // feuille imprimée est la MÊME structure mathématique, pas une capture du tiroir.
-  const { highlight, strata } = buildStructure(items);
-
-  return (
-    <div className="font-sans text-[#172033] mx-auto w-full max-w-[210mm]">
-
-      {/* Header */}
-      <div className="flex justify-between items-end border-b border-[#DCE3EF] pb-2 mb-6">
-        <div>
-          <div className="text-[20pt] font-black text-[#172554] tracking-tight leading-none mb-1">
-            {printTitle || t('map.printTitleFallback')}
-          </div>
-          <div className="text-[10pt] font-bold text-[#6D3FE7] uppercase tracking-widest">
-            {t('map.myKnowledgeMap')}
-          </div>
-        </div>
-        <div className="text-end">
-          <div className="text-[9pt] font-bold text-[#172033]">SMARTER ACADEMY</div>
-          <div className="text-[8pt] text-[#667085]">{printSubject || t('map.printSubjectFallback')}</div>
-        </div>
-      </div>
-
-      {/* Hero: À Retenir */}
-      <PrintHero items={highlight} />
-
-      {/* Strates en deux colonnes A4 */}
-      <div className="columns-1 md:columns-2 gap-6">
-        {strata.map(stratum => (
-          <div key={stratum.id} className="print-section mb-6 break-inside-avoid">
-            <div className={`text-[11pt] font-bold uppercase tracking-widest mb-1 pb-1 border-b-2 ${PRINT_STRATUM[stratum.accent] ?? PRINT_STRATUM.blue}`}>
-              {t(stratum.labelKey)}
-              <span className="ms-2 text-[7.5pt] font-normal normal-case tracking-normal text-[#667085]">
-                {t(stratum.captionKey)}
-              </span>
-            </div>
-            {stratum.groups.map(g => (
-              <div key={g.category.id} className="mb-3">
-                {stratum.groups.length > 1 && (
-                  <div className="text-[8pt] font-bold uppercase tracking-widest text-[#667085] mt-2 mb-1">
-                    {t(g.category.labelKey)}
-                  </div>
-                )}
-                <div className="space-y-1">
-                  {g.items.map(item => (
-                    <PrintCard key={item.id} item={item} catColor={g.category.color} />
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-
-      {/* Footer */}
-      <div className="mt-8 pt-3 border-t border-[#DCE3EF] flex justify-between text-[7pt] text-[#667085] uppercase tracking-widest print-avoid-break-after">
-        <span>Smarter Academy</span>
-        <span>01</span>
-      </div>
     </div>
   );
 }
@@ -830,13 +435,6 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
   const { top: vpTop, left: vpLeft, right: vpRight, width: vpWidth, height: vpHeight,
           viewportWidth: vpOuter, ready: vpReady } = viewport;
 
-  // En mode plein sur large écran, la carte se lit en colonnes — sinon la
-  // hiérarchie s'étire en une bande étroite au milieu du vide.
-  // En mode colonne la largeur est celle que la coquille a réservée : les deux
-  // valeurs doivent être la MÊME, sinon la carte flotte dans sa gouttière ou
-  // la déborde.
-  const panelWidth = expanded ? vpWidth : isPrior ? maCarteWidth : width;
-  const contentColumns = expanded && panelWidth >= 1100 ? 3 : expanded && panelWidth >= 720 ? 2 : 1;
 
   // Les deux géométries, en valeurs NUMÉRIQUES pour que framer-motion puisse
   // interpoler entre elles (d'où `left` plutôt que `right` : une seule origine).
@@ -873,7 +471,18 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
     height: vpHeight,
   };
 
-  const geom = expanded ? expandedGeom : isPrior ? priorGeom : drawerGeom;
+  // Dans le LECTEUR DE MISSION (plein fenêtre, pilote) il n'y a ni barre latérale ni coquille visibles : le plein écran couvre
+  // TOUTE la fenêtre (propriétaire, 2026-11-08 : « la carte doit couvrir tout l'écran »), au lieu de s'arrêter au bord de la
+  // barre latérale cachée sous le lecteur.
+  const inPlayer = isOpen && typeof document !== 'undefined' && Boolean(document.querySelector('[data-mission-player]'));
+  const playerGeom = {
+    top: 0,
+    left: 0,
+    width: vpOuter || (typeof window !== 'undefined' ? window.innerWidth : 0),
+    height: typeof window !== 'undefined' ? window.innerHeight : vpHeight,
+  };
+  const geom = expanded ? (inPlayer ? playerGeom : expandedGeom) : isPrior ? priorGeom : drawerGeom;
+  const readZoom = expanded && geom.width ? Math.round(Math.min(1.5, Math.max(1.15, geom.width / 900)) * 100) / 100 : 1;
 
   // Items déjà réduits par la progression (KnowledgeProvider) ; le drapeau
   // `discovered` reste honoré pour un masquage ponctuel.
@@ -1178,26 +787,26 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
                   <button
                     onClick={() => handleModeChange('navigation')}
                     className={[
-                      'flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg text-xs font-bold transition-all truncate',
+                      `flex-1 flex items-center justify-center gap-1.5 px-2 rounded-lg font-bold transition-all truncate ${expanded ? 'py-2 text-base' : 'py-1.5 text-xs'}`,
                       mode === 'navigation'
                         ? 'bg-slate-900 text-white shadow-sm'
                         : 'text-slate-500 hover:bg-slate-100 hover:text-slate-800',
                     ].join(' ')}
                   >
                     <Compass className="w-3.5 h-3.5 shrink-0" />
-                    <span className="truncate">{progressiveGraph ? t('map.progressive.tabMap') : t('map.navigation')}</span>
+                    <span className="truncate">{t('map.progressive.tabMap')}</span>
                   </button>
                   <button
                     onClick={() => handleModeChange('complete')}
                     className={[
-                      'flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg text-xs font-bold transition-all truncate',
+                      `flex-1 flex items-center justify-center gap-1.5 px-2 rounded-lg font-bold transition-all truncate ${expanded ? 'py-2 text-base' : 'py-1.5 text-xs'}`,
                       mode === 'complete'
                         ? 'bg-slate-900 text-white shadow-sm'
                         : 'text-slate-500 hover:bg-slate-100 hover:text-slate-800',
                     ].join(' ')}
                   >
                     <FileText className="w-3.5 h-3.5 shrink-0" />
-                    <span className="truncate">{progressiveGraph ? t('map.progressive.tabDetails') : t('map.fullView')}</span>
+                    <span className="truncate">{t('map.progressive.tabDetails')}</span>
                   </button>
                 </div>
 
@@ -1211,14 +820,17 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
                   ].join(' ')}
                   data-km-scroll="true"
                 >
-                  <div className={expanded ? 'mx-auto w-full max-w-[1400px]' : ''}>
+                  {/* LISIBLE SANS SE PENCHER (propriétaire, 2026-11-08) : en plein écran, TOUT le contenu (nœuds, flèches, étiquettes,
+                      carte de contexte, lecture « المعارف مفصّلة ») grandit avec la largeur de l'écran — un seul facteur, comme le
+                      lecteur de mission : ×1,15 vers 1024 px, jusqu'à ×1,5 dès ~1366 px. La géométrie du graphe ne change pas. */}
+                  <div className={expanded ? 'mx-auto w-full max-w-[1400px]' : ''} style={readZoom !== 1 ? { zoom: readZoom } : undefined} data-km-read-zoom={readZoom}>
                   {visibleItems.length === 0 ? (
                     <div className="h-full flex flex-col items-center justify-center text-center gap-2 py-10" data-km-empty="true">
                       <span className="text-3xl" aria-hidden="true">🧭</span>
                       <p className="text-sm font-bold text-slate-800">{t('map.emptyMap')}</p>
                       <p className="text-xs text-slate-500 max-w-[26ch]">{t('map.emptyMapHint')}</p>
                     </div>
-                  ) : mode === 'navigation' && progressiveGraph ? (
+                  ) : mode === 'navigation' ? (
                     <Suspense fallback={null}>
                       <ProgressiveKnowledgeMap
                         graph={progressiveGraph}
@@ -1228,32 +840,19 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
                         footer={<ProgressionStrip steps={progressionByModule(visibleItems)} />}
                       />
                     </Suspense>
-                  ) : mode === 'navigation' ? (
-                    <NavigationView
-                      items={visibleItems}
-                      selectedItem={selectedItem}
-                      onSelectItem={setSelectedItem}
-                      columns={contentColumns}
-                    />
-                  ) : progressiveGraph ? (
+                  ) : (
                     <Suspense fallback={null}>
                       <LinearKnowledgeView graph={progressiveGraph} items={visibleItems} />
                     </Suspense>
-                  ) : (
-                    <CompleteView items={visibleItems} columns={Math.min(contentColumns, 2)} />
                   )}
                   </div>
                 </div>
 
                 {/* ── Print View ── */}
                 <div className="hidden sa-print-view w-full bg-white">
-                  {progressiveGraph ? (
-                    <Suspense fallback={null}>
-                      <LinearKnowledgeView graph={progressiveGraph} items={visibleItems} variant="print" printTitle={printTitle} printSubject={printSubject} />
-                    </Suspense>
-                  ) : (
-                    <PrintView items={visibleItems} printTitle={printTitle} printSubject={printSubject} />
-                  )}
+                  <Suspense fallback={null}>
+                    <LinearKnowledgeView graph={progressiveGraph} items={visibleItems} variant="print" printTitle={printTitle} printSubject={printSubject} />
+                  </Suspense>
                 </div>
               </>
             )}
@@ -1268,7 +867,7 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
    TRIGGER — self-contained, portals the panel to <body>
    ───────────────────────────────────────────────────────────────────────── */
 
-export function KnowledgeMapTrigger({ items = [], open: openProp, onOpenChange, printTitle, printSubject }) {
+export function KnowledgeMapTrigger({ items = [], open: openProp, onOpenChange, printTitle, printSubject, expandRequest = 0 }) {
   const { t } = useTranslation('lesson');
   const [openState, setOpenState] = useState(false);
   const controlled = typeof openProp === 'boolean';
@@ -1289,6 +888,9 @@ export function KnowledgeMapTrigger({ items = [], open: openProp, onOpenChange, 
     try { return localStorage.getItem('knowledgeMapExpanded') === 'true'; }
     catch { return false; }
   });
+  // une ouverture qui DEMANDE le plein écran (la barre de mission : la carte mentale a besoin de place) — sans écraser le
+  // choix enregistré de l'élève (knowledgeMapExpanded)
+  useEffect(() => { if (expandRequest) setExpanded(true); }, [expandRequest]);
   const handleExpandedChange = useCallback((next) => {
     setExpanded(next);
     try { localStorage.setItem('knowledgeMapExpanded', String(next)); } catch { /* noop */ }

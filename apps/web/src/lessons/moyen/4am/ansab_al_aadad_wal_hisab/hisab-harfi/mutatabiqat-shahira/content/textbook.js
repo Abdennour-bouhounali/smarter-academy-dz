@@ -142,3 +142,54 @@ export const LABS = {
   sumDiffBeginner: 'x+3|x-3',
   sumDiffAdvanced: '2x+5|2x-5',
 };
+
+/**
+ * LA PAGE (enseignant, mode classe) — les lignes de trace des étapes qui relisent les labos de la page (LABS), écrites ICI à partir de leurs
+ * nombres : la prose des modules ne contient aucun de ces terrains (rollout 2026-11-11, conseil X3 : le lecteur de l'élève lit ses MANCHES,
+ * content/squares.js ; la page garde ses labos pour l'enseignant — verdict « Edit classes »).
+ */
+const sq = (b) => (b < 0 ? `(x - ${-b})^2` : `(x + ${b})^2`);
+const SUM_B = 3; const DIFF_B = 2; const SD_B = 3;
+export const PAGE_LABS = {
+  squareSum: sq(SUM_B),
+  squareDiff: sq(-DIFF_B),
+  sumDiff: `(x + ${SD_B})(x - ${SD_B})`,
+  sumDiffAdvanced: '(2x + 5)(2x - 5)',
+  strip: `${SUM_B}x`,
+  diffStrip: `${DIFF_B}x`,
+  corner: `${DIFF_B * DIFF_B}`,
+  sumLine: (x) => `$x = ${x}$ : $${sq(SUM_B)} = ${(x + SUM_B) ** 2}$ و $${x * x} + ${SUM_B * x} + ${SUM_B * x} + ${SUM_B * SUM_B} = ${(x + SUM_B) ** 2}$`,
+  twoSquares: (x) => `$${x * x} + ${SUM_B * SUM_B} = ${x * x + SUM_B * SUM_B}$`,
+  diffLine: (x) => `$x = ${x}$ : $${sq(-DIFF_B)} = ${(x - DIFF_B) ** 2}$ و $${x * x} - ${DIFF_B * x} - ${DIFF_B * x} + ${DIFF_B * DIFF_B} = ${(x - DIFF_B) ** 2}$`,
+  sdLine: (x) => `$x = ${x}$ : $(x + ${SD_B})(x - ${SD_B}) = ${(x + SD_B) * (x - SD_B)}$ و $${x * x} - ${SD_B * x} + ${SD_B * x} - ${SD_B * SD_B} = ${x * x - SD_B * SD_B}$`,
+  sdAdvancedLine: (x) => `$x = ${x}$ : $(2x + 5)(2x - 5) = ${(2 * x + 5) * (2 * x - 5)}$ و $${4 * x * x} - ${10 * x} + ${10 * x} - 25 = ${4 * x * x - 25}$`,
+};
+
+/**
+ * LE CONTENU DE LA PLATEFORME qui remplace, pour l'élève, les figures, les questions et les exemples du manuel (indépendance du manuel —
+ * LESSON_DEVELOPMENT_GUIDE §4ter-bis ; rollout 2026-11-11, SHARED-deliberate : la page de l'enseignant y gagne aussi). Nombres de la plateforme.
+ */
+export const PLATFORM = {
+  source: addition('interaction_generation'),
+  figureSum: 'مربّع ضلعه $a + b$ يُقسَم إلى أربع مناطق: مربّع ضلعه $a$ ، ومربّع ضلعه $b$ ، ومستطيلان بُعدا كل منهما $a$ و $b$ .',
+  figureDiff: 'مربّع ضلعه $a$ ، يُقتطع منه شريطان عرض كل منهما $b$ ، فيبقى مربّع ضلعه $a - b$ ، وفي الركن مربّع صغير ضلعه $b$ .',
+  figureSumDiff: 'مربّع ضلعه $a + b$ يُقسَم إلى مستطيلين: الأول بُعداه $a + b$ و $a - b$ ، والثاني بُعداه $a + b$ و $2b$ .',
+  twoWays: 'احسب كل عدد بطريقتين: مرّة بحساب ما بين القوسين أوّلًا، ومرّة بنشر الجداء.',
+  areaTwoWays: 'عبّر عن مساحة المربّع الصغير ذي الضلع $a - b$ بطريقتين: بدلالة ضلعه، ثم بطرح الشريطين والركن من المربّع الكبير. أيّ مساواة صحيحة؟',
+  rectTwoWays: 'عبّر عن مساحة المستطيل الأول بطريقتين: بدلالة بُعديه، ثم بطرح المستطيل الثاني من المربّع. أيّ مساواة صحيحة؟',
+  chain: 'من أجل كل عددين $a$ و $b$ ، أكمل السلسلة ثم اكتب النتيجة مبسّطة:',
+  expand: 'انشر كل عبارة مستعملًا ما سبق:',
+  mental: 'احسب ذهنيًا، دون وضع العملية:',
+  // le tableau de Descartes, sur un exemple de la plateforme : (2x + 2)², côté x + x + 2
+  descartes: {
+    head: ['$x$', '$x$', '$2$'],
+    cells: [['$x^2$', '$x^2$', '$2x$'], ['$x^2$', '$x^2$', '$2x$'], ['$2x$', '$2x$', '$4$']],
+    result: '$(2x + 2)^2 = 4x^2 + 8x + 4$',
+    text: 'لاحظ الفيلسوف روني ديكارت أنّ مربّع عبارة فيها مجهول يُقرأ على مساحة مربّع: نكتب حدود الضلع في رأس الجدول، وفي كل خانة مساحة منطقة، ثم نجمع الخانات.',
+  },
+  examples: [
+    '$(3x + 4)^2 = (3x)^2 + 2 \\times 3x \\times 4 + 4^2 = 9x^2 + 24x + 16$',
+    '$(5 - 2x)^2 = 5^2 - 2 \\times 5 \\times 2x + (2x)^2 = 25 - 20x + 4x^2$',
+    '$(4x - 1)(4x + 1) = (4x)^2 - 1^2 = 16x^2 - 1$',
+  ],
+};

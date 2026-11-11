@@ -46,7 +46,7 @@ manipulations/
 ├── useManipulation.js          numbers · phase · hints · level · mode · epoch
 ├── useStepSequence.js          bounded step cursor
 ├── useDragInteraction.js       CARRY gesture: pointer drag + magnet + reject + edge auto-scroll + keyboard/tap
-├── useStretchInteraction.js    STRETCH gesture: a magnitude that follows the finger (slider semantics, −/+)
+├── useStretchInteraction.js    STRETCH gesture: a magnitude that follows the finger (slider semantics, −/+); zoom-safe (see « Screen pixels vs layer pixels »)
 ├── levels.js                   the TWO levels per type { beginner, advanced } + resolveManipulationLevels (§7)
 ├── logic/                      PURE interaction logic per type (unit-tested, no React)
 ├── themeWords.js               the Arabic words of a theme (lesson.manipulation.json) merged with a lesson's `context`
@@ -127,8 +127,8 @@ through `MathText`.
 | Type | The hand holds | Resistance | Discovery (contrast) | Lessons |
 |---|---|---|---|---|
 | `square-root-side` (`roots/SquareRootSide.jsx`) | the end of a square's side on a graduated ruler; the square grows on a unit grid beside the dashed target square | `refine`: « دقّق » (zoom the ruler ×10) opens only once the student has bracketed the side BY HAND at the current graduation; for 5 every graduation is too small or too big. `graduation`: a card « resists » after 3 graduations bracketed without a hit | `refine`: the side falls exactly (36 → 6) **or** the bracket reached 1/1000 with no hit (5) — the formal part names √5, shows `calculator`'s exact square (2,236067978² = 5,000000002…) and, with `figure="bc-square"`, the tilted square of area 9 − 4 × 1 = 5 on BC. `graduation`: one card exact **and** one resisting → « √a is rational ⇔ a is the square of a rational » | L1 (refine), L2 (graduation) |
-| `square-fold` (`roots/SquareFold.jsx`) | x on a number line; an arrow carries it to x² on the line of squares, whose negative half is hatched | pinning a solution for a < 0 is refused (« x² لا يكون سالبًا »); a wrong x is refused with its exact square; « لا حل » for a ≥ 0 is refused. For √3 the nearest graduation is accepted and **√3** (not 1,7) is pinned | a solved card with a > 0 (two pins), a = 0 (one) and a < 0 (« لا حل ») → the three cases of خاصية 2. Optional `table` fills the textbook's x ↦ x² table from the student's own positions | L3 |
-| `square-tiling` (`roots/SquareTiling.jsx`) | k, the number of square tiles per side of a square of area n | k² ∤ n: the tiling is dashed and refused with `n ÷ k²` read exactly (72 ÷ 25 = 2,88) | `product`: two valid tilings with k > 1 and one refusal → √(k² × b) = √(k²) × √b = k√b. `simplest`: the largest k and another valid k → the largest square dividing n gives the smallest b | L4 (product), L5 (simplest) |
+| `square-fold` (`roots/SquareFold.jsx`) | x on a number line; an arrow carries it to x² on the line of squares, whose negative half is hatched | pinning a solution for a < 0 is refused (« x² لا يكون سالبًا »); a wrong x is refused with its exact square; « لا حل » for a ≥ 0 is refused. For √3 the nearest graduation is accepted and **√3** (not 1,7) is pinned — in the mission player (`init({ exactOnly })`, 2026-11-10) the nearest graduation is REFUSED (« 1,7² = 2,89 ≠ 3 — لا تدريجة تعطي 3 بالضبط »), the exact mark √3 appears between the ticks and the student pins it | a solved card with a > 0 (two pins), a = 0 (one) and a < 0 (« لا حل ») → the three cases of خاصية 2. Optional `table` fills the textbook's x ↦ x² table from the student's own positions | L3 |
+| `square-tiling` (`roots/SquareTiling.jsx`) | k, the number of square tiles per side of a square of area n | k² ∤ n: the tiling is dashed and refused with `n ÷ k²` read exactly (72 ÷ 25 = 2,88) | `product`: two valid tilings with k > 1 and one refusal → √(k² × b) = √(k²) × √b = k√b. `simplest`: the largest k and another valid k → the largest square dividing n gives the smallest b. In the mission player (2026-11-10) a refusal is a large « ✗ مساحة البلاطة ليست عددًا طبيعيًا » with the quotient NOT reduced (« 98 ÷ 36 »), never a number of tiles | L4 (product), L5 (simplest) |
 
 Props: see the component headers (the design sheet of `MANIPULATION_DNA.md` §7 is filled in each).
 `square-root-side` and `square-tiling` report each validated trial through `onTrial` (via
@@ -1498,6 +1498,7 @@ reduced motion) and are measured one-screen (§8bis) on their glance block at th
 | `segment-divider` (`SegmentDivider.jsx`, glance `[data-sd-glance]`) | `equal`: the ray's angle, the compass opening (a stretch), each carry (one tap per mark), the mark joined to B, the set square slid along a ruler; `ratio`: the side and rank of a mark on each of the two parallel graduated lines (d₁)//(d₂) and the ruler's two ends | the angle locks at the first mark; a parallel off a mark is refused (« حافة الكوس لا تمر بأي علامة »); an opening changed mid-way cuts unequal bands measured exactly (75/23 ≈ 3,26); joining the 2nd mark gives 2 parts; 2 on A's line and 3 on B's gives MA/MB = 2/3; equal ranks on the same side put the ruler parallel to (AB) | one right construction + a failed one or a second with another angle / opening (the cut points depend on neither — swept in the tests); متقدم: the point inside [AB] AND the point outside (`thales.ratioPoint`) | `inshaat-talis` M1 (`tifo`: a stadium banner, 3 parts ; method-ratio-point 3 : 2) and M2 posed alone (`levels={false}`, دوري الآن 2 : 5) |
 | `shadow-stick` (`ShadowStick.jsx`, glance `[data-sh-glance]`) | the stick's foot (step 0,2 m), then a telescopic pole carried from the stick to the minaret whose TOP rides the sun ray (its height is never set by hand) | anywhere but the right place the stick's shadow ends before or after O — the two parallel rays drawn and the gap written in metres; the pole stays shut while O is not a common point | a missed tip then the match; the pole stopped on the way and at the foot, where it IS the minaret (h = stick × OP ÷ ℓ = 7,25 m); « the stick anywhere » refuted by the student's own trial | **no lesson since 2026-10-13** (was `wadiya-idmajiya-talis` M1, مبتدئ; replaced by `shadow-world`) |
 | `shadow-world` (`ShadowWorld.jsx`, glance `[data-sw-glance]`, 2026-10-13 — **a living world**, MANIPULATION_DNA §16) | the SUN (it pivots on the minaret's tip M; 12:30 → 16:00, Algiers on 13 October), a tape from any object's foot, the stick anywhere, a flag to BET on an object not yet installed, and the student's own rule `الظلّ = الطول [+ \| ×] n` | the tape pulled up the minaret falls back; the stick's shadow vanishes inside the minaret's; a rule is planted as violet flags on every known object, the gap to each real tip drawn, and it comes unstuck when the sun moves | a bet classified by model (additive, copy, equal, inverse; non-discriminating at 12:30); a × rule fitting every object, then REPAIRED at another hour; the conjecture written with the student's two rules; the height answer read by `judgeHeight`; companion مقران runs a BLOCKING tutor chain of 5 tapped questions, judged against the student's own numbers, retry-until-correct (DNA §16.5bis); panel `ShadowTutor.jsx`: progress + thread + ONE question/task card (DNA §16.5ter) | `talis-hisab-atwal` M1, BOTH levels (`SHADOW_WORLD.beginner` minaret 5 m, `.advanced` 6,5 m, 2026-10-13: the first lesson that presents the concept; the `thales-beam` pair left this lesson) and `wadiya-idmajiya-talis` M1, مبتدئ (`minaret`, `{ minaret: '7,25' }`: 11,6 m at 15:00, stick at 10 m ; pair 5 / 7,25) |
+| `shadow-meet` (`ShadowMeet.jsx`, glance `[data-sm-glance]`, 2026-11-10 — **the one-lane lab of the mission player**; `shadow-world` stays the page lab) | the foot B of a 1 m stick, dragged on the ground to the centimetre (finger, track, arrows ±1, Page ±10, four nudge buttons); between two steps the hour moves (a button) | the stick is IN THE SHADE of the object (no shadow of its own: its top is under the ray), IN THE SUN (its shadow overshoots) or exactly at the MEET — one ray through both tops; the three lengths OB, BA, OA are written on the ground only at the meet; the sun's rays are drawn parallel and SAID | a height (three chips, or the template « H = [ ] m ») or the length of a shadow to come (« AO = [ ] m », then the flag is planted) — exact, in whole centimetres | `logic/shadowMeet.js` (`stepOf`, `moveStick` with a magnet, `settle`, `answer`, `judge`, `nextStep`, `heightOptions`, `predictTruth`, `coachOf`, `shownValues`, `layout`) |
 | `cone-cylinder` (`ConeCylinder.jsx`, glance `[data-cc-glance]`) | the cylinder's h (a stretch on a ruler under the axis) and r (a stretch at its rim corner) in the cone's axial section; n ≤ 24 graduations chosen so every inscribed cylinder has hIdx + rIdx = n and h = r falls on a mark | a cylinder that would pierce the cone turns red while dragging and is refused on release with the permitted radius written; a rim short of the cone leaves a numbered gap | two inscribed cylinders of different lengths + a refusal or gap; « r + h constant », « r × h constant », « r = R » refuted by the student's own cylinders; goal h = r (the half-section a square), V = 91,125π ≈ 286,28 cm³ | `wadiya-idmajiya-talis` M1, متقدم (`cornet`, the situation H = 18, R = 6 ; مبتدئ pair 12/4) |
 
 **A workspace may pair two TYPES (unit 9).** The objective — not the instrument — is what both levels share (§7bis-levels):
@@ -2430,6 +2431,28 @@ overlay in the positioned glance). Because a lab used in several lessons shares 
 are learned once per type, not per lesson. The `coach` prop is therefore ON by default for adopting labs (`coach = true`; a lab not yet
 adopted simply lacks the wiring — tracked by the gate in `LAB_COACH_ROLLOUT.md`).
 
+**In the mission player (owner, 2026-11-09)** the SAME component takes the player's look — no per-lab restyle: `CoachOverlay` reads
+`useInMissionPlayer()` and renders a wider bubble (`BUBBLE_W_GAME` 336 px, `data-coach-look="game"`), larger black text, an amber gesture icon, an
+amber pulsing ring and a thick « فهمت » button (bottom shadow, like the prediction cards); outside the player nothing changes. Its switch is the
+pill « 💡 المرشد » (`toggleIcon`, string `manipulation.coachGuide`), on its own line under the goal line, AND in the side column's top bar
+while a question / prediction fills that column (`[data-side-panel-bar]`) — so EVERY lab of a converted lesson always shows it. The three
+labs that had no coach got one the same day: `pgcd-differences` (`logic/algorithms.js › differencesCoachOf`: cut → again → pgcd),
+`euclidean-algorithm` (`euclidCoachOf`: copy → more → carry → pgcd), `fraction-reduction` (`logic/fraction.js › coachOf`: divide → more →
+pgcd; it never says when to stop) — tested in `logic/algorithmsCoach.test.js`; and `coprime-explorer` (`logic/coprime.js › coachOf`: the wrapper → « + »
+for the kits, the middle zone → « تحقّق » for the lists, never a chip; `[data-manipulation-check]` marks the check button) on the rollout of 2026-11-09; and `square-root-side` (`logic/squareRootSide.js ›
+coachOf`: the handle `[data-root-handle]` → again → « دقّق » (refine) / another graduation → another card (graduation); never a value nor a direction; tested by
+FOLLOWING it to the end of both modes in `roots/squareRootPlayer.test.jsx`) on unit 2's rollout; a lab hides its step while a prediction or a question is open.
+
+**Screen pixels vs layer pixels (2026-11-09, owner bug report).** The mission player fits its content with the CSS `zoom` property
+(`mission/FitToArea.jsx` — enlarged up to ×1.3 on a big screen, reduced on a small one; Classroom Mode's frame zooms too). `getBoundingClientRect`
+and pointer `clientX/Y` are SCREEN pixels, while `left` / `top` / `width` set inside the zoomed content and every geometry a lab computes from
+`clientWidth` are LAYER pixels. Any code that turns one into the other divides by the element's scale `rect.width / el.offsetWidth`:
+`CoachOverlay` (the ring and bubble were drawn zoomed twice — too big and shifted) and `useStretchInteraction › readPointer` (the factor-pairs
+ruler picked 2 for a press on tick 6 at zoom 1.23). Drop zones are found with `elementFromPoint` and the drag ghost is portalled outside the
+zoom, so they need nothing. Checked in the browser: ring centred on its target (0 px) on the 11 converted labs at 1837×890, 1920×1080,
+1366×768 and 1024×768; ruler ticks 6, 10, 3 land on 6, 10, 3 at zoom 1.23 / 0.87 / 0.86. A new lab that positions something from a measured
+rectangle MUST follow the same rule. The ring carries `data-lab-coach-target` (its selector) so a test can compare it with its target.
+
 Goal: the student never wonders « how does this work? » or « what am I supposed to do now? ». `primitives/LabCoach.jsx`
 (`useLabCoach({ lab, step, text, labels })` → `{ toggle, overlay, visible }`) + pure `primitives/labCoach.js` (`placeBubble`, storage).
 Rules (the contract for any lab that adopts it):
@@ -2489,15 +2512,48 @@ type that renders the shell sits ABOVE these contexts. It reads `useInMissionPla
 - `TeamBuilder` sizes its pitch from the area height (2:3 kept, 150–360 px wide);
 - the player fits the rest by `zoom` (labs from 0.6 up to 1.3).
 
-**The mission in big (2026-11-04).** In the player, ENTERING a lab (its screen becomes visible, `IntersectionObserver`)
-opens a card over the lab (`data-manipulation-mission-intro`): the lead in 2xl, « مهمتك: … » in 4xl, and « هيا نبدأ »
-(`manipulation.missionGo`). It never runs on a timer. It closes with a shrink toward the side column (no motion with reduced
-motion), and LabCoach waits until it is closed. It replays when the level changes.
+**The mission in big (2026-11-04; reworked 2026-11-07 after a council: no more dark shade).** In the player, ENTERING a lab
+(its screen becomes visible, `IntersectionObserver`) shows the mission BIG in its own place, the side column
+(`data-manipulation-mission-intro`): the lead in large type, « مهمتك: … » in 2xl, and « هيا نبدأ » (`manipulation.missionGo`). The
+scene stays bright and LIVE — never blocked: a first touch on it makes the mission flash (`animate-pulse`), a second touch or
+« هيا نبدأ » makes it compact. It never runs on a timer; LabCoach waits until it is compact; it replays when the level changes. The
+lab can listen (`onIntroChange`): team-builder waits for it before posing its prediction (one thing to read at a time). The
+mission text must describe the REAL gesture of the round: team-builder says « اضغط «أنشئ الفرق» » (`missionButton`) when
+`handDone` opens the button from the start, never « اسحب كل لاعب ».
+
+**The slim side column, in the player (council + owner, 2026-11-07).** Once the mission is compact, the lab's side column holds
+only what the student needs now (`ManipulationShell`, `gameColumn = inPlayer && !immersed`):
+- ONE goal line: the round's context (`lead`, which carries its goal; else the mission), large and bold; a tap reopens the big
+  mission (`data-manipulation-goal`, `manipulation.missionReopen`). The title stays for screen readers only;
+- « ؟ »: the LabCoach toggle as an icon (`useLabCoach › toggleIcon`), next to the goal line;
+- the main action BIG and coloured (`ManipulationControls game`: « أنشئ الفرق » full width), « إعادة » small and apart;
+- NOT in the column in the player: the lab's own « الصوت » (the player's top bar has it — same preference, so the « sound switch
+  in every lab » rule holds through the top bar), the « مناولة » badge, and the empty « ستظهر هنا… » placeholder (the result
+  appears at its place on the first try). Teacher controls (`headerAction`) stay.
+- The guide's tip follows the round's real gesture: team-builder's `coachOf({ button: handDone })` points at « أنشئ الفرق »
+  in a button round, never at a player to drag.
+- A question or a prediction of the lab TAKES the side column (`ManipulationShell sidePanel`, wider: `min(34rem, 40%)`) while it
+  is open — never an extra column in the scene: the scene keeps its whole width, the screen stays at TWO columns, the controls
+  come back after. The side column is capped as a share of the width (`min(26rem, 30%)`, so a 1024 px screen keeps its pitches).
+  `RolesEquation` wraps instead of overflowing.
+- **The football lab's scene (council + owner, 2026-11-07, measured at 1848/1366/1024 px):** the teams on ONE row in the player
+  (two beyond 7 teams: `repeat(k, minmax(0,1fr))`), each pitch narrowing rather than wrapping — otherwise the lab's height
+  depended on the zoom and the screen settled small; the bench BELOW the pitches, full width, in GROUPS OF 5 side by side
+  (`data-bench-layout="groups-of-5"`: 42 players = 2 short lines, the remainder read at a glance). A bench beside the pitches
+  was tried and measured: it crushed the pitches (31 px at 1024). Pitch height budget: `PLAYER_SCENE_OVERHEAD_SIDE_BENCH` = 330.
+- **The free pitch (« الملعب الحرّ ») offers BOUNDED chips** (owner, 2026-11-07): module 1 — players 12–30, teams 2–6; module 2 —
+  players 24–48, teams 2–6. Never more than 6 teams on the player's screen (one row of readable pitches), never a bench beyond
+  ~2 short lines. The trials table shows the 3 most recent trials in the player, with « (آخر 3 من n تجارب) » when there are more.
+- The lab's RESULT (equality, roles, tip) is not squeezed into the column: in the player team-builder renders it IN the scene,
+  in the free space beside the teams (`data-tb-result`, the row shared 3:2 with the pitch), and passes `hideRepresentation` to
+  the shell. A lab whose scene leaves free width should do the same.
 
 **Questions over the lab, in the player (2026-11-04, owner).**
-- **Layout:** in the mission player, `LabCheckpoint`'s card is portalled to `<body>` and centred on the SCREEN. A fixed full-screen
-  shade (`bg-slate-950/75`, blur) covers everything, so the result written beside the lab cannot be read while answering.
-  Outside the player it stays over the lab as before.
+- **Layout (pilot, 2026-11-07, replaces the full-screen card of 2026-11-04):** in the mission player, `LabCheckpoint`'s card
+  renders IN FLOW (no portal, no shade) and the lab places it as a column beside its scene — the scene stays visible, it is the
+  evidence. A lab that does this must hide its written result while the questions on it are open (`ManipulationShell`
+  `hideRepresentation`). Outside the player it stays over the lab as before. New answer kinds `fill` (chips per blank) and
+  `build` (tiles into named slots), see `primitives/labCheckpoint.js`; full rules: guide §4septies « Questions during the lab, v2 ».
 - **NO LEAK, for every lab:** a question's confirmation (`explain`) says only ITS answer and never the answer of a LATER
   question of the same chain. Example: team-builder's « كم لاعبًا في كل فريق؟ » confirms « في كل فريق 5 لاعبين », not
   « 15 = 3 × 5 + 0 », which would give away « من بقي » and the equality question.
@@ -2505,14 +2561,36 @@ motion), and LabCoach waits until it is closed. It replays when the level change
   a = b × q + r with the word of the scene under each number (`<type>.roles`, e.g. لاعبًا · فرق · في كل فريق · خارج الفرق).
   The colours are those of `DivisionRoles`, and a zero remainder is green.
 
+**The second chance « لا بأس — جرّب أصغر » (council + owner, 2026-11-08, PILOT `qasim-adad-tabii`).** A round may carry
+`easier: { goal, props }`. `roundsModel.needsHelp(round, log)` is true when that round is not won and the lab shows AT LEAST 2
+misses (wrong predictions, questions missed on the first try or revealed — `missesOf`) or `maxTrials + 2` splits (5 by default).
+One miss is noise: a 3-option question is guessed one time in three. Then `LabRounds` shows a LIGHT card at the bottom of the
+pitch (no dark backdrop, nothing in the page moves, `data-round-help="offer"`): « لا بأس 💪 جرّب أوّلًا بلاعبين أقلّ، ثم عُد. » with
+« جرّب أصغر » / « أواصل هنا ». The practice round is the same gesture with numbers seen at a glance (`checkpoints: false`, badge
+« 🎯 جولة تدريب », `data-round-practice`), it earns NO star, is not on the track, and its events are NOT forwarded to the module
+(other numbers than the real round). Won, a card « أحسنت! الآن أنت جاهز. » + « عُد إلى الجولة n » restarts the real round fresh.
+A student who succeeds never sees any of it. Lesson data: `content/teams.js › practice(total, groups, choices, exact, lead)`.
+
 **Rounds and stars — `LabRounds` (2026-11-04, owner: « the rounds system instead of the levels, with the stars »).** In
 the mission player a lab is played as a PATH of rounds instead of the مبتدئ / متقدم switch the student had to choose:
 `lessons/common/manipulations/rounds/LabRounds.jsx`, with its logic in `roundsModel.js` (tested).
 
 - **Data:** `rounds: [{ id, title, props, goal, stars, optional?, free? }]`.
+- **Stars (pilot, 2026-11-07):** ★ won · ★ predictions right (`{ tk: 'predict', ok }` events; `stars.predict: false` on a round
+  that holds no prediction) · ★ trials ≤ `stars.maxTrials`. « Questions right on the first try » no longer earns a star.
   - `props` go to `<Manipulation>`, which is remounted for each round, so each round gets its own big mission card.
   - `goal` is a list of conditions measured from what the lab REPORTS: `{ checkpoint: 'first' | 'contrast' }` (the question
-    set over the lab finished), `{ exact: k }`, `{ allExact: [k…] }`.
+    set over the lab finished), `{ exact: k }`, `{ allExact: [k…] }`, `{ inexact: true }` (a split leaving someone out seen).
+    Added 2026-11-08 for `factor-pairs` (`groups` of a verdict = the number of books per row `d`): `{ checkpoint: 'rule' }`,
+    `{ anyExact: true }` (some perfect rectangle seen) and `{ allPairs: n }` (every rectangle of `n` books seen: for each pair
+    (s, n ÷ s) one of the two was tried and fell exact). Added for `common-divisors`: `{ above: g }` (a number of groups larger than g tried) —
+    `[{ exact: g }, { above: g }]` means « g is the greatest, and it was SEEN » (as `greatestGroupFound`).
+    Added 2026-11-09 for `square-root-side` (a verdict per release, `groups` = the graduation 1/g, `exact` = the side landed): `{ bracketed: g }`
+    (the side bracketed between two NEIGHBOUR ticks of graduation 1/g, seen) and `{ resists: true }` (a card bracketed at 3 graduations without
+    landing) — both fed by the lab's `onTrial { tk: 'bracket', card, scale, resisting }`, logged in `log.brackets`.
+    A lab that restarts its scene (« إعادة », other numbers) reports `onTrial { tk: 'reset' }`: `logEvent` empties the round's log, so verdicts,
+    predictions and brackets of before never count (first: `square-root-side`, 2026-11-09; the unit-1 labs do not report it yet).
+  - `easier` (PILOT, 2026-11-08): a smaller PRACTICE round `{ goal, props }` — see « The second chance » below.
   - `free` marks the free pitch: always open, no goal, never blocking (the « جرّب أعدادك » rule). `optional` marks a challenge.
 - **Stars (1–3):**
   - ★ the round is won;
@@ -2528,6 +2606,82 @@ the mission player a lab is played as a PATH of rounds instead of the مبتدئ
   success, so the lab's own celebration (`useStepCelebration`, 2.2 s) plays first and the two never overlap.
 - **Where it applies:** only inside the player (`PlayerSwitch player={…} page={…}`). The teacher keeps the levels.
 - **Example:** lesson `qasim-adad-tabii`, `content/teams.js` (`M1_ROUNDS`, `M2_ROUNDS`).
+- **Second example (2026-11-08):** lesson `qawasim-adad-tabii`, `content/books.js` (`M1_ROUNDS`: 24 → 60 → 48 → ⭐ 36 → free; `M2_ROUNDS`:
+  105 → ⭐ 84 → free), played by `LabRounds icon="📚"`. The v2 treatment of a lab other than `team-builder` is described in the
+  lesson guide § « Rollout recipe » (`FactorPairs`: props `onVerdict`, `handDone`, `chains`, `predict`, `nChoices`, `levels={false}`;
+  `PredictTray`; `CHAINS_PLAYER = { first: ['observe', 'build'], rule: ['turned', 'rule'] }`; rectangle cell cap `maxCell`).
+- **Third example (2026-11-08):** lesson `khawass-qawasim`, `content/walls.js` (`M1_ROUNDS`: 3 | 18, 12 → cases 2 and 3 as one `sequence` round → 9 | 900, 90 → ⭐ → free),
+  `LabRounds icon="🧱"`. `divisor-properties` player props: `onVerdict` (`groups` 1 = ألصق · 2 = انزع · 3 = قِس, +3 per case), `levels`, `handDone`, `chains`,
+  `predict`, `choices`, `sequence`; `CHAINS_PLAYER = { sum: ['sumObserve','sumWhole'], diff: ['diffObserve','diffWhole'], rem: ['remObserve','remBuild','rule'] }`.
+- **Fourth example (2026-11-08):** lesson `qasim-mushtarak-akbar`, `content/bouquets.js` (`M1_ROUNDS`: 12 and 18 by hand → 90 and 54 with predictions → the lists of
+  90 and 54 → ⭐ 60 and 45 → free; `M2_ROUNDS`: the lists of 28 and 42 → ⭐ → free), `LabRounds icon="💐"`. `common-divisors` player props: `onVerdict` (each k
+  tried once; in the lists the PGCD placed), `levels`, `handDone`, `chains` (`['groups', 'lists']`), `predict` (`PredictTray`, k ≥ 2, ≤ 2 per round), `choices`
+  (`{ a, b }` pairs); one stage per round; `CHAINS_PLAYER = { groupsOnly: ['observe','build','beyondFill','rule'], groups: ['observe','build','beyondFill'],
+  lists: ['listCommonFill','listWhy','rule'] }`; while a question is open the scene shows the distribution it speaks of (`cp.qid`).
+- **Fifth example (2026-11-09):** lesson `bahth-pgcd`, `content/ribbons.js` (`M1_ROUNDS` for `pgcd-differences`, `M3_ROUNDS` for `euclidean-algorithm`: by hand →
+  the activity with predictions → « the same way » → ⭐ → free). Both labs: `onVerdict` = the PGCD placed (`{ groups: v, exact }`, a refused box is a miss),
+  `levels`, `handDone`, `chains`, `predict` (at the START of a step), `choices`; `CHAINS_PLAYER = { cuts | divs: ['countFill','build','invariant'], pgcd:
+  ['stop','rule'] }`; the chain of steps is the journal in the lab's column.
+- **Sixth example (2026-11-09):** lesson `ikhtizal-kasr`, `content/recipes.js` (`M1_ROUNDS`: 12/18 by hand → 84/48 with predictions → ⭐ → free; `M2_ROUNDS`: 84/48
+  with the one-step questions → 60/36 → ⭐ 595/560 → free). `fraction-reduction` player props: `onVerdict` (path B; a refused path-B box or a premature claim is a
+  miss), `levels`, `chains`, `predict` (before the first division, at the start of path B), `choices` (`{ n, d }`); `CHAINS_PLAYER = { steps:
+  ['countFill','build','why'], pgcd: ['oneStep','rule'] }`.
+- **Seventh example (2026-11-09):** lesson `awwaliyan-fima-baynahuma`, `content/kits.js` (`M1_ROUNDS`, the kits: 8 and 9 by hand → 17 and 18 with predictions and
+  « جرّب كل الإمكانيات » → ⭐ 21 and 28 → free; `M2_ROUNDS`, the lists: 15 and 22 with questions → 35 and 48 with one prediction → ⭐ 51 and 85 → free).
+  `coprime-explorer` player props: `onVerdict` (kits: each number tried `{ groups: k, exact }`; lists: each « تحقّق » — conclusive `{ groups: 1 | the common
+  placed, exact: true }`, early `{ groups: 0, exact: false }`), `levels`, `handDone`, `chains`, `predict` (kits: before a NEW k ≥ 2, ≤ 2 per round; lists:
+  ONCE before the first chip, « هل هما أوليان فيما بينهما؟ »), `choices` (`{ a, b }`); `CHAINS_PLAYER = { groups: ['gWorkFill','gLeftBuild','rule'], lists:
+  ['lTestedFill','lCommon','rule'] }` — `gLeftBuild` builds what is LEFT (`n = k × q + r`, the first k ≥ 2 tried, naming the object that has a remainder;
+  `n = k × q` with `ops ['=','×']` when a k > 1 works), and the scene shows that k while the question is open (`buildFocus`). The trials journal is
+  `GroupTrials`, exported by `CommonDivisors.jsx`. A « coprime » round with no questions is won by « everything tried »: `[{ exact: 1 }, { above: min − 1 }]`
+  (a kit is added one at a time, so reaching min(a ; b) passes every k).
+- **Eighth example (2026-11-09, unit 2):** lesson `jidhr-tarbii`, `content/squares.js` (`M1_ROUNDS`: 16 by hand → 5 to 0,001 with two predictions → 2,25,
+  required → ⭐ 20 to 0,01 → free garden; `M2_ROUNDS`: 0,04 → ⭐ 1,69 → free), `LabRounds icon="🌷"`. `square-root-side` player props (BOTH modes, so lesson 2
+  `natiqa-ghayr-natiqa` is content only): `onVerdict` (each release `{ groups: scale, exact }`) and `onTrial { tk: 'bracket', … }` (goals `{ bracketed: g }`,
+  `{ resists: true }`), `levels`, `handDone`, `chains` (`['exact', 'never', 'grad']`), `predict` + `predictAt` (refine: the graduations where « هل سيقع طرف
+  الضلع بالضبط على تدريجة؟ » is asked before the first release, default `[1, 10]`; graduation: before a card's first release; ≤ 2 per round; the truth is
+  COMPUTED — `logic/squareRootSide.js › landsAt` / `landsSomewhere` — and the result is shown when the graduation or card has decided), `choices` (areas
+  `{ num, den }`, refine). `CHAINS_PLAYER` (council of 2026-11-09) = exact: `['exSideFill','exBuild']` then `['rule']` — read the side, BUILD
+  « area = side × side » (decoy: half the area, or its double when the half IS the side); never: `['nBetweenFill','nSquaresBuild']` then
+  `['nDecimalsFill','rule']` — the bracket in one tap, BUILD « 4 < 5 < 9 » (`ops ['<','<']`, decoy the product of the two neighbours, or their sum when the
+  product is the area), then COUNT the decimals of c² (2k, last digit never 0: the « never » is SEEN, not told); grad: `['gGradFill','gBuild']` then
+  `['gResist','rule']` (graduations written « 1/3 »). In the player the chain follows the TRUTH (`truthKeyOf`: will the side land on an offered graduation?),
+  so an exact area bracketed first (0,04 between 0 and 1) opens its « exact » chain when the side lands. While the bracket questions are open the scene
+  shows the LOWER square of the bracket; the journal « 📋 جدول تجاربك » (graduation · below · above) is the bracket table, shown in both modes in the player and
+  muted during a question. The ruler and the square re-measure on every render and the square takes the height left (`useMissionArea`, overhead 290 px).
+  In the player the « never » rule's explanation and the formal block are COMPACT (`discoveryParts({ compact })`: the last bracket and (√a)² = a on one line,
+  then the sentence) — the full list of brackets made the question column 580 px in a 555 px area at 1024×768.
+- **Ninth example (2026-11-09, unit 2):** lesson `natiqa-ghayr-natiqa`, `content/rulers.js` (`M1_ROUNDS`, GRADUATION mode: 16 and 2 by hand to 1/4 with
+  the `grad` chain → 7 and 0,25 to 1/6 with two predictions (« no » then « yes ») → 16/9 and 13 to 1/6, required (« yes » then « no ») → ⭐ 25/13 and 49/36
+  to 1/8 → free workshop of the activity's six areas to 1/12; goals `{ checkpoint: 'rule' }` then `{ anyExact } + { resists }`; `easier` rounds on rulers
+  to 1/3), `LabRounds icon="🧶"`. What graduation mode added to the lab: in the player `init({ truthful: true })` — `cardStatus` never says « resisting »
+  for a card whose side lands on an offered graduation (the ✗ and « لن يسقط على أي تدريجة » stay true; the page keeps its three-graduation rule); the
+  rule's explanation is COMPACT (the rule alone — the cards above carry their ✓ / ✗); the journal writes a fraction square plainly, « (5/4)² = 25/16 »
+  (`squareLine`, never raw TeX nor « 5/4² »).
+- **Tenth example (2026-11-10, unit 2):** lesson `muadalat-x-murabba`, `content/folds.js` (`M1_ROUNDS`: x² = 4, 0, −4 by hand at 1/2 with the table of
+  squares and the FULL chain → −9, 0,04, 1,44, 0 at 1/10 with two « كم حلًّا ؟ » predictions (0 then 2) and a tap question on the predicted cards →
+  3 and 2,25, required, « هل تقع تدريجة على حلّ ؟ » (no then yes) and one build after √3 → ⭐ 1,21, 7, −0,5, 0 → free line of six cards; goal
+  `{ solvedAll: n }` (+ `{ checkpoint: 'rule' }` in r1); `easier` rounds 1, 0, −1 (2, 1 for r3) on the unit line; `M2_ROUNDS`: 9, 5, −1 with the build,
+  then a free line), `LabRounds icon="📐"`. What the player added to `square-fold`: **the exact-only pin** — `init({ exactOnly: true })`: a graduation
+  next to √a is never accepted as a value (`pin` → verdict `nearTick` « $1{,}7^2 = 2{,}89 \neq 3$ — لا تدريجة تعطي 3 بالضبط »), the exact mark ±√a
+  appears between the ticks and the student pins it (`pinExact`, button « ثبّت √3 »); the FIRST nearest-tick try on each side of zero is the intended
+  discovery (`free: true`) and is not a trial; `chains` 'full' (one tap per card — the square, the relation, the number of solutions — then at the third
+  sign BUILD « x² = a ⇔ x = √a أو x = −√a », its decoy the nearest tick or half of a, and the rule, chain id `'rule'`), 'predicted', 'build', 'none';
+  `predict` with `predictCards` / `predictKind` ('count' 2 / 1 / 0, 'tick' yes / no); a refused arrow for a < 0 bounces off the hatched half; `radius`
+  shortens the line; a one-line round `mission`. Page and teacher unchanged.
+- **Eleventh example (2026-11-10, unit 2):** lesson `amaliyat-judhur`, `content/tilings.js` (`M1_ROUNDS`, mode `product`: 27 by hand with the FULL
+  chain — the tile area, the side among three, BUILD « √27 = 3 × √3 » (decoy 9), the rule « √(k²×b) = k×√b » → 32 (2√8 and 4√2) with the bridge
+  « √(4 × 8) = √4 × … » → 98, required, with the quotient « √2 = √(98 ÷ …) » → ⭐ 96 with the tile area → free chips 27, 32, 50, 75, 96, 98; goals
+  `{ exact: k }` on single-valid cards and `{ discovered: true }` on cards with two valid k > 1; two yes/no predictions « هل يعطي k = … بلاطًا مساحته
+  عدد طبيعي؟ » per round, one valid k and one refused k; practice round 8 after three refusals — `helpAfterRefusals: 3`), `LabRounds icon="🧱"`. What
+  the player added to `square-tiling` (both modes, so lesson 5 is content only): the FIRST refusal of a round is a free verdict (`free: true` — it
+  counts for the goals, never for the « few trials » star); the discovery is the lab's own `discoveryReady`, announced once (`{ tk: 'discovered' }`);
+  `chains` 'full' / 'bridge' / 'quotient' / 'area' / 'fullS' (simplest: the largest-k tile's area → BUILD « √n = k × √m » with a smaller-k decoy
+  pair → the rule) / 'none'; `predictKind` 'whole' (yes/no per k) or 'smallest' (« which k gives the smallest tile? », the k shown must include a
+  refused k above the largest valid one); the tally « ✓ … · ✗ … »; a refusal crossed out in the drawing and written « ✗ » in large with the quotient
+  unreduced; NO number of tiles anywhere (k, the tile area and the side only); `choices` for the free round. The content test scans
+  `logic › shownValues` — everything a screen can show, built by the same functions as the questions — against the climax's numbers. Page and teacher
+  unchanged.
 
 **`team-builder` options (2026-11-04):** `levels={false}` gives a worked example with no مبتدئ / متقدم selector (as for
 `divisor-explorer-books`). `handDone` opens « أنشئ الفرق » from the start: the student already shared BY HAND in an
@@ -2543,12 +2697,275 @@ until the rule, they sit OVER the lab, they stop the student from going to the n
 redo the same step to find the answer, and the answer is never given on the first attempt.
 
 **Files.** `primitives/labCheckpoint.js` (pure: `readNumber`, `isCorrect`, `submit`, `advance`, `feedbackOf`, `MAX_TRIES = 3`;
-tested in `labCheckpoint.test.js`) and `primitives/LabCheckpoint.jsx` (`useLabCheckpoint` + the card + the waiting band).
+tested in `labCheckpoint.test.js`) and `primitives/LabCheckpoint.jsx` (`useLabCheckpoint` + the card + the waiting band). `useLabCheckpoint` returns
+`{ blocking, open, done, node, qid }` — `qid` is the id of the question on screen (null when closed), so a lab can draw the scene that question speaks of.
+A `build` question may set `ops`, the signs between its slots (default `['=', '×', '+']`; `['=', '+']` for « grand = petit + reste »).
+Since 2026-11-10 (unit 9, lesson 2) a `build` may also set `accept` (other fillings that are ALL true — the equality written the other way,
+« AC′/AC = AB′/AB » for « AB′/AB = AC′/AC ») and `preset` (tiles already in their slots, e.g. a fixed left side, which the student can take back); a
+`fill` field may set `render(value)` to draw its chips in their own shape (a real fraction bar) — the compared value stays the string.
 
 **Behaviour.**
 - When the lab's step is reached (`reached`, e.g. `taskDone`), a card covers the lab (backdrop over the `relative` glance
   block, card centred and scrolled into view) with « سؤال i من n », the question (`choice` or `number` — a number answer is
   checked as an EXACT rational, `8/6 = 4/3`, Arabic digits accepted).
+- **Twelfth example (2026-11-10, unit 2):** lesson `tawzif-khawass-judhur`, `content/tilings.js` (`M1_ROUNDS`, mode `simplest`, content only on the
+  lab of the eleventh example — council option C): 75 by hand with the FULL chain `fullS` (the largest-k tile's area → BUILD « √75 = 5 × √3 » → the
+  rule « أكبر بلاط يصلح ← بلاطة لا تُقسَم من جديد ») → 32, the bridge from lesson 4 (`buildS`: BUILD only) → 80, required (`bestS`: the area only) →
+  ⭐ 72 (`buildS`) → free chips 27, 32, 54, 63, 75, 80, 96; practice 27. Each round asks « أيّ عدد من البلاطات على الضلع يعطي أصغر بلاطة تصلح؟ »
+  (`predictKind: 'smallest'`, three k including a refused k above the largest valid one, the right k moving) THEN a yes/no on one k
+  (`predictAlso: [k]`, new — truths alternate across rounds). `avoid` (new) hands the lesson's forbidden numbers to the area decoys
+  (`areaOptions(n, k, avoid)` takes the next candidates); `simplestShown(n, …)` (new, pure) lists everything a simplest screen can show WITH its
+  role, for the lesson's « forbidden values by role » test (`content/forbidden.js`).
+  After its review: `judgedPredictions` (a result is never lost behind the round's question — the lab holds it `PRED_HOLD_MS`); the shared
+  `PredictTray` focuses its question on mount, is named by it, numbers « 1 من 2 » (`step`, `of`) and lets a choice carry a spoken name (`aria`).
+- **Thirteenth example (2026-11-10, unit 9):** lesson `aksiya-talis`, `content/planks.js` (`M1_ROUNDS`: the ladder 3 / 6 by hand → the X-trestle
+  9 / 12 at the teacher's 1/3 → the FREE X-trestle 8 / 12, required → ⭐ 12 / 16 → free bar pairs; practice 2 / 4, 3 / 6 at 1/3, 3 / 6), `LabRounds
+  icon="⚖️"`; council of 2026-11-10, verdict L2. What the player added to `parallel-level`: **« ضع الميزان »** (`[data-pl-press]`) — the bubble is
+  HIDDEN while the ends move (a « ? » in the vial, a neutral plank), a trial is ONE press of the button (never a release), the same position pressed
+  again is not a trial; `onVerdict { groups, exact, free? }` (`logic › verdictOf`: ladder → the rung of B′; X-trestle → the figure 1 / 2 / 3, 0 for a
+  ratio the teacher refuses), the first refusal free, `{ tk: 'discovered' }` (`playerDiscovery`: two level planks of different ratios on the ladder;
+  figures 1, 2 and 3 on the X-trestle); `ratios` 'show' | 'hide' (round 1: the question asks them) | 'pick' (from round 2 the two chips AB′/AB and
+  AC′/AC are picked BEFORE the press is enabled — `logic › chipOptions`: the value, its inverse and, on the ladder, AB′/BB′; on the X-trestle the other
+  bar's length instead); `chains` — `ladder` (« lv »: the two ratios of the first level plank in one tap each; « rule »: BUILD « AB′/AB = AC′/AC »
+  with AB′/AB pre-placed (`preset`), AC′, AC and the decoy CC′, the swapped equality accepted (`accept`), then the rule), `ladderEasy`, `side`
+  (figures 1 and 2: what they share), `cross` (« beyond »: a level plank past A has POSITIVE ratios — chips r, −r, 1/r; « order »: which point lies
+  between the other two on each line, then the rule), `none`; `predict` [{ key, at: [bp, cp] }] « هل تتوسّط الفقاعة؟ », the truth from `converse`,
+  judged by the first trial of the same configuration (`classOf`) or all when the round's last chain is reached, held `PRED_HOLD_MS`; `choices`
+  [[AB, AC]…]; the chips, the side of A, the figure chips, the verdict and the journal « 📋 جدول تجاربك » in the side column (the scene keeps the
+  height of the mission area); `LabCoach` (`coachOf`: B′'s handle, C′'s handle, the chips, the button; the journal after two trials with no level
+  plank — never a notch). The logic minimum is 2 (`MIN_BAR`); an X-trestle WITHOUT an imposed ratio no longer marks every trial « condition »
+  (`kindOf`: figure / order / tilted). `shownValues(props)` lists, with a role, everything a round's screen can show (bars, every notch, every
+  drag-reachable ratio, chips and decoys, prediction positions, free pairs) for the lesson's forbidden-values test. Page and teacher unchanged.
+  Review of the same day (binding for the next labs): the verdict is announced by an ALWAYS-mounted `sr-only` live region in the stage
+  (`[data-pl-verdict-live]`, keyed per trial) because the side column unmounts while a question is open; the visible box is plain text with an
+  `aria-hidden` ✓ / ✗ (no glyph inside a translated string); the trial button is `aria-disabled`, never `disabled` (focus stays on it); the verdict
+  shown is the trial AT the revealed position (moving away and back shows it again), not `lab.last`.
+- **Fourteenth example (2026-11-10, unit 9):** lesson `inshaat-talis`, `content/banner.js` (`M1_ROUNDS`: an 8 cm banner in 3 parts by hand → 11 cm
+  in 5 parts AND the contrast → the point of ratio 2/3, required → ⭐ ratio 1/3 → free; practice 6 cm in 2, 6 cm in 3, ratio 1/2 with two marks;
+  `M2_ROUNDS`: the ratio 3/2 → free), `LabRounds icon="🧭"`; council of 2026-11-10, verdict L3. What the player added to `segment-divider`: a
+  trial stays what it is on the page — a FINISHED construction (equal) or a posed ruler (ratio) — and is reported as `onVerdict { groups, exact,
+  free? }` (`logic › verdictOf`: equal → the rank of the mark joined to B; ratio → 1 the point of [AB], 2 the point outside, 0 any other ratio),
+  the first refusal free, the same construction redone exactly (`repeatedTrial`) or a ruler posed again (`commitRuler` with `player`) not a trial,
+  `{ tk: 'discovered' }` at `discoveryReady`. **`sameUnitOnly`** (default true in the player; `init({ sameUnitOnly })`): a ruler posed on
+  graduations of two compass openings is REFUSED as `units` BEFORE any ratio is judged, explained in words (« وحدتان مختلفتان … »), and no ratio
+  is ever written for it (verdict, journal, `evidenceOf`, the rule's witness) — two openings give arbitrary ratios. **The cap**: `marks`
+  (3 in the rounds) bounds the graduations per rail, so with one unit the reachable ratios are 1/3, 1/2, 2/3, 1, 3/2, 2, 3. `length` defaults to 9
+  in the player (10 on the page), and every equal round passes its own. `init({ player })`: joining mark 1 is refused without counting
+  (`joinOne` — it was a dead end), a wrong construction shows its bands and openings only, never computed lengths (`vp.count`, `vp.unequal`), a
+  question's « أعِد التجربة » is a FULL reset. `chains` — `full` (equal, at the first right construction: « AP_n = ▢ × AP₁ » in one tap, BUILD
+  « AM_k/AB = AP_k/AP_n » with AM_k/AB pre-placed, AP_k, AP_n and the decoy P_kP_n, then the rule; ratio: « ranks » at the first right point — the
+  ranks of F and E in one tap, then BUILD « AF/BE = MA/MB » with the decoy AB — and « rule » at both points — AM/AB, then the rule), `build` (the
+  build alone), `none`; the equality written the other way is accepted (`accept`). `predict` is a list of KEYS (≤ 2): `joinWhich`, `parallels`
+  (equal), `opposite`, `same` (ratio); options and truth come from the logic (`predictOptions`, `predictTruth` — « same side » → before A when
+  p < q, AFTER B when p > q, computed by `thales.ratioPoint`), judged by the field (`judgedPredictions`), held `PRED_HOLD_MS`. `contrast`: the
+  round also wants a second construction (the coach keeps « إنشاء جديد » after the chain). `choices` [{ mode: 'equal', parts, length? } | { mode:
+  'ratio', p, q, marks? }] (the free round switches lab through `state.setNumbers`). The figure NAMES what the questions name: marks become P₁ … Pₙ
+  and cut points M₁ … once a construction is finished, the ruler ends are F and E. The verdict and the journal « 📋 جدول تجاربك » (a word for
+  EVERY verdict kind — `rowWord.*`: a `units` refusal is « وحدتان مختلفتان », not « wrong ») are in the side column; the announcement is an
+  always-mounted `sr-only` live region (`[data-sd-verdict-live]`, keyed per trial); the visible verdict is the trial of the CURRENT state
+  (`joinAtEnds`; the finished construction), not `lab.last`; every control is frozen during a prediction or a question (`aria-disabled` + a guard
+  in `act`, never `disabled`). `LabCoach` (`coachOf`: the dotted mark, the join row, the set-square, « إنشاء جديد »; in ratio mode a dotted mark
+  of (d₁), then — both lines graduated — the ruler arrows for F, for E, « a second point? » — never a count, a rank or a side). **A bubble must
+  never block the next gesture**: in the player « صِل B بالعلامة », the ruler arrows and « إنشاء جديد » sit in a bar ABOVE the scene
+  (`[data-sd-topbar]`; their bubble opens downwards, off the dotted mark to tap and off a finished construction's bands), and a step may be
+  `idle: true` — shown only after `COACH_IDLE_MS` (3,5 s) without a gesture (the lab holds it with `idleLab`); walk it WITHOUT pressing « فهمت ». `shownValues(props)` lists by role
+  (`length`, `count`, `opening`, `angle`, `rank`, `pair`, `ratio`, `t`, `decoy-ratio`, `decoy-t`) everything a round can show. Page and teacher
+  unchanged (`segmentDivider.render.test.jsx` green); one shared fix reaches the page too: the rule question's hints now speak of the lab's own
+  mode (`cp.ruleEqual.*` — in equal mode they spoke of the two points of the ratio mode).
+- **Fifteenth example (2026-11-10, unit 9):** lesson `talis-hisab-atwal`, `content/shadows.js` (`M1_ROUNDS`: a lamppost of 2,75 m at 14:00 by
+  hand → the water tower of 6,5 m at 14:00 THEN 16:00 → a pole of 3,75 m to install at 14:30, required → ⭐ a palm by ratio and a tower by meet at
+  15:30 → free; practice: a lamppost of 1,5 m, a pole of 2,25 m), `LabRounds icon="☀️"`; council of 2026-11-10, verdict L1 (L1.1 = C). **A NEW
+  lab, not a treatment**: `shadow-meet` (`geometry/ShadowMeet.jsx`, `logic/shadowMeet.js`) is played in the player only; the world `shadow-world`
+  stays the page and teacher lab, untouched (guide, « A player-only lab beside a page lab »). One lane: an object too tall to measure, the sun at
+  an hour FIXED by the round, a 1 m stick dragged to the centimetre (the 5 cm snap stays in `shadow-world`). Lengths are whole centimetres from
+  `shadowWorld.js`'s `K25` (OA = H × k, OB = 100 × k, the meet at BA = OA − OB); the physics is true — before the meet the stick is in the object's
+  shade and has NO shadow, after it its shadow overshoots — so the scene, not a text, says where the meet is. **A meet magnet** (10 screen px,
+  converted to cm by the scene's scale, the drag only — keyboard and nudges stay exact) and **a stick that never starts at the meet** (it starts
+  in the sun, past the shadow's end). No length is written during the drag. Round data: **`steps`** `[{ object, objectName?, height, hour, task?,
+  ask? }]` (or the one-step shorthand) — `task` `meet` (default) | `ratio` (the object's shadow is given) | `flag` (the height is known: where
+  will the shadow end?), `ask` `null` | `'tap'` / `{ kind: 'tap', decoys: ['segment' | 'additive' | 'shadow'] }` (three chips: the truth, BA ÷ OB,
+  the constant gap) | `'type'` (the platform's answer template « H = [ ] m », `templateFor` + `TemplateInput`); objects drawn: `lamp`, `tower`,
+  `palm`, `pole`, `minaret`. **A trial is an ANSWER** (`onVerdict { groups: the step, exact }`), never a move; the same wrong answer twice is not
+  a trial; the meet of a step that asks nothing is a `free` exact verdict; goals are `{ solvedAll: n }` + one checkpoint per chain. Since
+  2026-11-11 (council) round 1 uses `readFigure` (read → **figure**: the scene's décor fades and [AM], [BE], (OM), (OA) are drawn on the
+  objects, `Scene figure parallel`, toggle `[data-sm-morph]`; `parallelBuild` tiles + `parallelWhy` → ratio → rule) — guide, « from a scene to
+  a figure ». `chains`:
+  `read` (« read » at the meet: OB and OA picked among the three lengths, then BUILD « BE/AM = OB/OA » — BE/AM pre-placed, OB, OA and the decoy
+  BA, the swapped equality accepted; « rule » once the height is found: ONE sentence among three — no rule text box), `readEasy`, `same` (two
+  hours: what did not change — OB/OA), `flag` (« build »: the pole's ratio = the stick's; the INVERTED ratio is a tile — `LabCheckpoint`'s build
+  takes `render` to draw a tile as a real fraction), `none`. `predict` is a list of keys asked AT THE HINGE between two steps (`stickSame`,
+  `double`; truth computed by `predictTruth`, judged when the next step is met, held `PRED_HOLD_MS`). `choices` `{ heights, hours }` (free round).
+  The height question, the prediction and the chain TAKE the side column (`sidePanel` when the game layout is on, above the scene otherwise);
+  the verdict is derived from the lab's STATE (met, solved, the last answer of this step), announced by an always-mounted `sr-only` live region
+  (`[data-sm-verdict-live]`); ✓ / ✗ are `aria-hidden` glyphs with a hidden word; chips, « تحقّق » and the hour button use `aria-disabled` + a
+  guard. The stick's handle sits UNDER the ground line (a 44 px target, a 34 px button): at small scales the stick is shorter than the handle and
+  must stay visible. `LabCoach` (`coachOf`: the stick handle → under the chips / the template box → the next-step button; never a place, never a
+  number). `shownValues(props)` lists by role (`hour`, `length`, `height`, `decoy-height`, `ratio` — the ratio only when `chains: 'same'` writes
+  it) what a round can show. **No person is drawn in this lab**: a child beside the stick would cast a shadow longer than the stick's and the
+  picture would lie (the people are in the mission scene). To play it in another lesson: pass `steps`, `chains`, `predict?`, `lead`, `mission`
+  and, for a new object, `objectName`.
+- **Sixteenth example (2026-11-10, unit 9 — the FIRST synthesis):** lesson `wadiya-idmajiya-talis`, module 7 « وضعية الوحدة », `content/rounds.js`
+  (`M7_ROUNDS`, `LabRounds labId="m7-wadiya"`, councils S and C of 2026-11-10). **Two labs in one `LabRounds`**: round `zill` is `shadow-meet` (the
+  minaret 7,25 m at 15:00, `ask: null`, **`hideHeight`** — the meet alone; the height is the answer of module 7's step 2, so the scene, the
+  journal, the verdict and `shownValues` never write it — and the chain **`why`**: one sentence among three, no number); rounds `r1`, `r2`, ⭐ and
+  free are `cone-cylinder` in its **player version** `geometry/ConeCylinderPlayer.jsx` (`ConeCylinder.jsx`'s default export picks it when
+  `useInMissionPlayer()`; the page and teacher lab are unchanged). The player rules: **one trial = one press** on « أدخِل الأسطوانة » (h and r are
+  set freely, nothing is judged during the gesture, the cylinder stays blue); the verdict touches (green) / leaves a DRAWN gap / pierces (refused,
+  hatched, ✗ + a word); **no number, no volume and no point letter** in any verdict or on the drawing (only `H = …`, `R = …`, h, r); the same
+  (h ; r) pressed twice is not a trial (the verdict « جرّبتها من قبل » is shown and announced again); `freeFirstRefusal`; an **explicit `n`**
+  (`initPlayer` never calls `divisionsFor`: h = r must NOT be on the grid — it stays module 7's equation and the 🏆); **`lockH`** (h fixed: find r)
+  and **`lockR`** (a list: r fixed, find h — the reverse task; the next value comes at the next move, so the verdict of the press stays visible);
+  `start: { h, r }`. `onVerdict { groups: the h notch, exact, free? }`, goals `{ discovered }` (two touching cylinders of different h + a refusal
+  or a gap, `{ tk: 'discovered' }`), `{ exact: i }`, `{ allExact: [...] }`, `{ anyExact }`, checkpoints. `chains`: **`sec`** (at the first
+  cylinder that touches: r/R and (H − h)/H picked AS NUMBERS among three unreduced chips — the decoy h/H; `fill` with `render` = a real fraction
+  bar), **`r2`** (once the `build` cylinder AND another one touch: BUILD « r/R = □/□ » in numbers — r and R preset, tiles H − h, H and the decoy h —
+  then the rule IN WORDS, its decoys « $r + h$ ثابت » and « r/R = h/H » refuted by the student's own cylinders), `none`. `predict`: `part` (« at
+  the first notch, a fifth of H: is r a fifth of R? ») and `double` (h doubled from notch 1 to 2: r becomes less than / exactly / more than half),
+  asked at the start of the round, judged when those cylinders touch. `choices: { cones: [{ H, R, n }] }`. The journal « 📋 جدول تجاربك » (#, h, r,
+  the verdict word; r/R and (H − h)/H after `sec`), an always-mounted `sr-only` live region keyed per press, an `sr-only` scene description,
+  `aria-disabled` frozen controls, the r slider `aria-orientation="vertical"`, `LabCoach` (`coachOfPlayer`: h handle → r handle → the press
+  button; never a notch). `shownValuesPlayer(props)` lists by role (`cone-H`, `cone-R`, `h`, `r`, `OT`, `ratio`, `value`, `square`). Strings:
+  `lesson.manipulation.json › coneCylinderPlayer`. Two page fixes on the way: `discoveryOptionsOf` no longer says that two EQUAL products differ
+  (r × h is the same for h and H − h: `dWhyProdSame`), the r handle's pointer maths follows the track's displayed height.
+- **Seventeenth example (2026-11-11, unit 3):** lesson `nashr-tabsit`, `content/pitches.js` (`M1_ROUNDS`, `LabRounds labId="m1-pitch"`: `3|x+5`
+  in AREAS by hand → `3x-1|3+x` in AREAS → `x-2|2x-1` in terms, required → ⭐ `3x-2|2x-1` → free; practice `2|x+1`, `x-1|x+2`, `x-1|x-2`, each
+  `releases`; `M2_ROUNDS`, `m2-pitch`: the platform's `2x-3|x-1`, then free), council of 2026-11-11, verdict L1. The lab `pitch-expansion`
+  (`algebra/PitchExpansion.jsx`, `logic/pitchExpansion.js`) gets the v2 treatment in shared code; the page (lesson 2, the synthesis, the teacher,
+  Classroom Mode) is unchanged — every new prop defaults to today, frozen by `logic/pitchExpansion.test.js`. **`labels: 'area'`**: the zones, the
+  Descartes cells and the tray chips show the zone's AREA at the x on screen (a NUMBER; a removed zone negative, hatched and marked ✂, its name
+  « مقتطعة n »), the sides keep their letter terms, merging is off — so the BUILD that writes the letter terms is not a copy. One pure function,
+  `logic › zoneText(term, x, labels)`, serves the three places. **Area collisions**: `areaCollisions(expr, x)` = two zones of DIFFERENT degree with
+  the same area (27, 27, −3, −3 at x = 3 for (3x − 1)(3 + x)); `playerXs({ expr, span, labels })` removes them in area mode (an edge collision
+  shrinks the ruler, an inner one is skipped: the ruler snaps past it — at a tie under the finger it KEEPS the shown value, the keyboard and ±
+  jump in the step's direction, the release commits the shown value), `startXOf` (an explicit `start` if reachable). A logic test sweeps every
+  reachable x of every area-mode round. **A trial** is a press on « تحقّق »: `onVerdict { groups: x, exact }` (`verdictOf`), the same x with the
+  same tray (`trial.sig = trayKey`) is not a trial and re-announces its verdict, the round's first refusal is `free`; a merge refusal (`notLike`) is a
+  notice, never a verdict; an empty tray says « احمل منطقة… أوّلًا ». **The sweep « جرّب كل الإمكانيات » is hidden in the player** (verdict X1).
+  `chains`: `dist` (at the first verified x « area » + BUILD k(a + b) = ▢ + ▢ — one slot per zone named by its two sides « 3 × x », the decoy =
+  the term NOT multiplied — then at discovery the rule `rulePlayer`, whose right option gives the geometric reason « لأنّ الملعب يُقطع إلى المناطق
+  نفسها مهما كان x », `player.rule.*`), `double` (BUILD the four zones, decoy = the removed zone ADDED, negative tiles drawn in parentheses; the
+  rule), `restored` (`corner`: why the doubly hatched corner counts +; at discovery the page's `result`), `result`, `distEasy` / `doubleEasy` /
+  `restoredEasy`, `none`. In the player the teacher's checkpoint switch does not cut the chains (they ARE the round's goals). `predict`:
+  `unhatched` (« المنطقتان غير المخطّطتين وحدهما تكفيان؟ », judged by a check with exactly those zones), `otherX` (judged at the second x),
+  `termsLeft` (options n − 1, n, n + 1, judged when reduced); the object is ringed (amber-700) while the prediction is open. `choices`: exprs.
+  Journal « 📋 جدول تجاربك » (x · مساحة الملعب · مجموع المناطق · « صحيحة » / « ناقصة »), an always-mounted `sr-only` live region
+  (`[data-pe-verdict-live]`), ✓/✗ `aria-hidden`, « تحقّق » and ± with `aria-disabled` + a guard, zone names that say « مقتطعة » / « مقتطعة
+  مرّتين » / « لم تُحمل بعد », unique SVG pattern ids. `LabCoach` (`coachOf`: an unhatched zone → the next → « تحقّق » → after a refusal the
+  framed zone still to carry → a chip to merge → the ruler after one verified x). `shownValues(props)` lists by role (`x`, `side`, `area`, `sum` —
+  every subset sum —, `factor`, `term` — partial merges and tiles —, `expansion`, `decoy`). Lead and mission strings of a round are rendered with
+  `MathText` in the player (letters in `$…$`). Strings: `lesson.manipulation.json › pitchExpansion.player`, `pred`, `coach`, `cp.build`,
+  `cp.build4`, `cp.corner`, `cp.player`.
+- **Seventeenth example, continued (lesson 2, 2026-11-11):** lesson `mutatabiqat-shahira`, `content/squares.js` (`M1_ROUNDS`, `LabRounds
+  labId="lab-square"`: `x+4` in AREAS with merging off (x 1–6 without 4, start 3 — the two strips show TWIN numbers, allowed by `areaCollisions`
+  because they are the same kind) → `x-5` in terms (x 6–11, start 9, side 4) → `2x-1` required → ⭐ `2x+5` → free; practice `x+2` (area, without
+  2), `x-2` (start 6), `2x+1`; `M2_ROUNDS`, `lab-sumdiff`: `x+4|x-4` (start 7) → ⭐ `3x+4|3x-4` → free), verdict L2.1–L2.7. Added to the same lab,
+  nothing of lesson 1 changed (`logic/pitchExpansionSquares.test.js`, `algebra/pitchExpansionSquaresPlayer.test.jsx`): chains `square` (at the
+  first verified x `stripFill` « كم شريطًا؟ / مساحة كل شريط » ; at discovery `identityBuild` + `rulePlayer`), `squareDiff` (`cornerFill` on the
+  round's numbers — 2 times, +25 — never the sentence « cut twice, added once »), `sumDiff` (`cancelFill`: +4x and −4x make 0), `coef`
+  (`coefBuild` in NUMBERS, decoy 2x² — the coefficient not squared), and their practice chains. `identityBuild` is in LETTERS (`identityParts`:
+  one decoy per kind — `ab`, `−b²`, `+b²`; `a²` preset; the other order of the two last terms accepted) and, while it is open, the field's
+  sides and the Descartes headers RELABEL `a` / `b` / `−b`. Signs live in the tiles (the hidden `ops` are empty). Predictions `claim`
+  (« مساحة الملعب x² − 25 ؟ », truth by `samePolynomial`, the whole field ringed), `twice` (the cross-hatched corner ringed, named by its value),
+  `noX`. A merge that CANCELS two terms leaves a visible « 0 » chip (L2.4: the merge is the cut). The coach on a square of a sum points at the
+  two SQUARES first (the round asks whether they suffice; the strips light up at the free refusal). `shownValues` also lists the questions'
+  options and the predicted claim at every x. Strings: `pitchExpansion.player.zeroChip`, `player.explanationIdentity`, `player.rule.sq*`,
+  `pred.claim/twice/noX`, `cp.strip/cornerFill/cancel/identity/coef`. Scene `stands-pitch` (`StandsPitchScene.jsx`, the corner never highlighted).
+- **Eighteenth example (2026-11-11, unit 3):** lesson `tahlil-ibara`, `content/turf.js` (`M1_ROUNDS`, `LabRounds labId="lab-turf-m1"`: rows
+  `8x+6` by hand → rows `6x^2+2x` (the book's `6x^2+4x` replaced, verdict L3) → the square `x^2+6x+9`, required → ⭐ the square `x^2+8x+16` →
+  free; practice `4x+2`, `2x^2+4x`, `x^2+2x+1`; `M2_ROUNDS`, `lab-turf-m2`: `x^2+25` then free), council of 2026-11-11, verdict L3. The lab
+  `turf-factoring` (`algebra/TurfFactoring.jsx`, `logic/turfFactoring.js`) gets the v2 treatment in shared code, page and teacher unchanged.
+  **A trial** is a NEW r committed (rows) or a NEW split closed (square): `onVerdict { groups: r | strips on the right, exact }` (`verdictOf`),
+  r = 1 is NOT a trial (one row always holds everything), the same r / split twice re-announces its verdict but is not counted (a repeated refusal
+  never opens « جرّب أصغر »), the round's first refusal is `free`. **The sweep « جرّب كل الإمكانيات » and the hints are hidden in the player**
+  (verdict X1). **What the round asks, the lab does not print**: the height chip says « ? », the verdict has no equality, the corner reading is
+  hidden while a chain is open or to come (`hideAnswer`). `chains`: rows `build` (at the gcd: « في كل صفّ: ▢ » one tap — `rowFillParts` — then
+  BUILD « ka + kb = ▢(▢ + ▢) », the decoy = the LAST TERM NOT DIVIDED, `buildFactorParts`, the swapped bracket accepted), rows `full`
+  (« ارتفاع الملعب كاملًا = ▢ » with the chips g / x / gx — `heightFillParts` —, the BUILD, then the RULE whose right option gives the tiling
+  reason « لأنّ القطع تُرصّ صفوفًا دون أن يبقى شيء », `player.rOpt1`), square `full` (`corner` of the student's refused split, BUILD
+  « (▢ + ▢)² » with the decoy c — `buildSquareParts` —, the rule `player.sOpt1`), and for a square that never closes (`x^2 + c` without strips)
+  `outside` → `why` → the rule; `none`. Builds use `LabCheckpoint`'s new **`wrap: [before, after]`**. `predict`: rows `rowHeight` (1, g, x)
+  and `maxRows` (the biggest count, g, 1), square `sideStrips` (b/2, b, c) and `closes` (yes (x + √c)², no, yes if spread), the field ringed while
+  a prediction is open, judged by the terrain (`judgedPredictions`). `choices`: `[{ mode: 'rows', expr } | { mode: 'square', b, c }]` (the mode
+  travels with the numbers in the player). Rows mode draws and refuses NEGATIVE counts (hatched tiles; `9x^2-6x = 3x(3x - 2)`, proved by
+  `logic/turfFactoring.test.js`). **No scroll**: the field is ONE `data-paging-keep` block scaled by the scene's width AND the player area's height
+  (`rowsBox(lab, r)`, `squareBox(lab)`), the page's `overflow-x-auto` is gone in the player. The controls « − r = n + » sit ABOVE the ruler in the
+  player (`[data-turf-topbar]`; the coach bubble « انظر ماذا أضاء » over the refused pieces must not cover them). Journal « 📋 جدول تجاربك »
+  (rows: r and « يصلح » / « مرفوض: قطع خارج الملعب » — never « خطأ »; square: right, bottom, « أُغلق » / « مرفوض »), an always-mounted `sr-only`
+  live region keyed per gesture (`[data-turf-verdict-live]`), ✓/✗ `aria-hidden` with a hidden « صحيح. » / « مرفوض. », − / + / « أغلق الملعب » /
+  « أعد فتح الملعب » with `aria-disabled` + a guard, indigo focus rings, the close button white on emerald-700. `LabCoach` (`coachOf`: the handle →
+  after a FIRST refusal a neutral « انظر ماذا أضاء » on the pieces left outside → « جرّب عددًا آخر من الصفوف » (never « أكبر »); square: the stock
+  → « أغلق الملعب » → « انظر ماذا أضاء » on the corner → move a strip; closed → « أعد فتح الملعب »). `shownValues(props)` lists by role (`count`,
+  `pair`, `tick`, `common`, `inner`, `perRow`, `eq`, `leftover`, `chip`, `tile`, `decoy-inner`, `decoy-eq`, `corner`, `extra`, `option`).
+  Strings: `lesson.manipulation.json › turfFactoring.player`, `vp`, `coach`, `predict`, `rowWord`, `journal`, `col*`, `choicesLabel`.
+- **Nineteenth example (2026-11-11, unit 4):** lesson `muadala-ula`, `content/balances.js` (`M1_ROUNDS`, `LabRounds labId="lab-balance-m1"`:
+  `2x+3=11` by hand → `4x+3=-9` (balloons pull up) → `3x-2=10`, required → ⭐ → free; `M2_ROUNDS`, `lab-balance-m2`: `4x+3=6x` → `4x+1=x+8` → ⭐ →
+  free; each with an `easier`), council of 2026-11-11, verdict L1. The lab `equation-balance` gets a **PLAYER VERSION**
+  `equations/EquationBalancePlayer.jsx`, chosen by `EquationBalance.jsx` in the player; the page (`EquationBalancePage`, teacher, Classroom Mode)
+  is byte-identical, its drawing shared through `equationBalanceParts.jsx`; `logic/equationBalance.js` is untouched, the player logic is
+  `logic/equationBalancePlayer.js`. Props: `eq`, `lead`, `mission`, `onVerdict`, `chains` (`r1` · `r2` · `r3` · `m2r1` · `m2r2` · `none` —
+  `CHAIN_SPECS`: observe in one tap (`lineChips` / `placedChips`), BUILD « ▢ = ▢ » with ONE decoy per round (`lineBuild`: 11, −6, 8, 10x, 9),
+  read a bag (`readOptions`), the RULE), `predict` (≤ 2 keys asked before the first gesture — `bagHolds`, `parts`, `otherPanDo`, `bagsLeft`, `whole`; options and
+  truth from the logic, judged by the balance), `choices` (equations for the free round), `kinds` (the reserve: ball, balloon, bag), `handDone`
+  (quantity chips « 1 · 2 · 3 · 4 »: a drop applies the gesture n times on a DRAFT and is refused WHOLE if one step is; the page keeps one object
+  per drop), `coach`. **A trial** is a NEW equation written (a both-pans step or a split whose result was not already written in the round) or a
+  REFUSED gesture (`REFUSALS`: `tipped`, `moveAcross`, `bagsUneven`, `cutMixed`, `noBags`); the same refusal twice in the same state, « noneHere »
+  and « full » are not trials; the round's first refusal is `free`. `onVerdict { groups: line n°, exact: true }` / `{ groups: 0, exact: false, free? }`;
+  the discovery (a bag read AND the bags opened) once as `{ tk: 'discovered' }`. The beam states a FACT (« الكفّة اليمنى أثقل الآن »), never the
+  rule; the lab title is not shown; no bubble over the tipped beam (it covered the next control at 1024 — the side-column verdict states it).
+  Journal « 📋 جدول تجاربك », an always-mounted live region, controls `aria-disabled` during a prediction or a question, NO scroll (the scene is
+  bounded by the lab's width AND the player area's height). `LabCoach` (`coachOf`: `grab`, `beam`, `parts`, `keep`, `open`, `reserve`, `qty`;
+  anchors `[data-coach]`) — the lab's FIRST coach, player only. `shownValues(props)` lists by role for `content/forbidden.js`. Strings
+  `lesson.manipulation.json › equationBalance.player / coach / predict`. Scene `locker-balance`.
+- **Twentieth example (2026-11-11, unit 4):** lesson `jidaa-maadum`, `content/pitch.js` (`M1_ROUNDS`, `LabRounds labId="lab-vanish-m1"`: `2(x-3)`
+  → `(x-1)(x+4)` → `2x(x+2)` on [−3 ; 1] start 1 → free; `M2_ROUNDS`, `lab-vanish-m2`: the COVERED `(2x-3)(x+1)` on a halves ruler start 2,
+  required → the square `(x+1)^2`; easier rounds, 6 free choices), verdict L2. `vanishing-pitch` (`equations/VanishingPitch.jsx`) gets the v2
+  treatment behind `useInMissionPlayer()`; the page is unchanged (`logic/vanishingPitch.js › init({ startX, range })` and `defaultV`/`startV`
+  change nothing without them). New props: `startX`, `range` (they travel with the expression, so a free round changes pitch), `onVerdict`,
+  `chains` (`build`: on a constant side « which side · how much is the other · BUILD « ▢ = 0 ⇒ x = ▢ » », otherwise BUILD « x = ▢ أو x = ▢ »;
+  `rule`: which side · BUILD « ▢ = 0 ▢ ▢ = 0 » with the TEXT tile « أو » and the decoy « معًا » · the RULE; `count`: the square — which side · how
+  many solutions; `none`), `predict` (≤ 2 of `count`, `atZero`, `zeroB`, judged by the pitch — `judgedPredictions`), `choices` (`[{ expr, startX }]`),
+  **`covered`** (the pitch is MASKED — a tarp with « ? »; only an x already judged, pinned or refused, is shown, `isCovered`; the readouts show the
+  expressions, the values « ? »), `freeRefusal` (the round's FIRST refusal is free: M1 r1 and the covered round), `coachPin`, `coach`. **A trial** =
+  pinning a NEW x (`isNewPin` → `pinVerdict`) or « لا قيم أخرى » while a zero is missing (once per set of pins, `claimVerdict`); moving x, re-pinning
+  a judged x (its verdict re-announced), `notSwept` and the accepted claim are not trials; no refusal is required. Discovery (every zero pinned +
+  the claim accepted) once as `{ tk: 'discovered' }`. « جرّب كل الإمكانيات », hints and levels hidden; no celebration. Readouts and the two
+  buttons in a column BESIDE the pitch; the rule question has 3 options (fits 1024 × 768). Journal (x · A · B · area · the verdict WORD), live
+  region keyed per gesture, `aria-disabled` + guard, `LabCoach` (`coachOf`), the pitch ONE `data-paging-keep` block scaled by width and height.
+  Builds from `buildConstParts` / `buildOrParts` / `buildSolParts`, `whichParts`, `restParts`. Strings `vanishingPitch.player / coach / predict`.
+  Scene `pitch-planner`.
+- **Twenty-first example (2026-11-11, unit 4):** lesson `mutarajiha-ula`, `content/rays.js` (`M1_ROUNDS`, `LabRounds labId="lab-ray-m1"`: pens
+  `6x+20<=80` → reading `15x+25>100` → ⭐ `4x-5<11` → free, whole numbers; `M2_ROUNDS`, `lab-ray-m2`: `x<4` then `x<=4` in ONE round → `2x+7<=9`
+  → `-2x+7<=5` → ⭐ `4x-3>6x+2` → free, relative numbers), verdict L3. `solution-ray` (`equations/SolutionRay.jsx`) gets a player branch behind
+  `useInMissionPlayer()` (page JSX unchanged); `logic/solutionRay.js` only gains an optional `cardsFor(I, divide)` argument; the player logic is
+  `logic/solutionRayPlayer.js`. New props: `onVerdict`, `chains` (`cost`: `costFill` → BUILD the inequality; `rule`: `edgeFill` → `buildIneq`
+  → `ruleRegion`; `bracket`: on the last case `boundFill` → `ruleBracket`; `pos`: at the division stage `buildDiv`; `neg`: `divFill` → `buildDiv`
+  → `ruleDir`; `none`), `predict` (`isSol:<n>`, `redSide`), `choices`, `start` (the probe's opening point), **`sequence`** (two cases played in one
+  round, e.g. `x<4` then `x<=4`), `sides` (`{ left, right }` labels such as « الكلفة / الرصيد »), **`divide: 'coef'`** (the last step — dividing by
+  the coefficient — is BUILT with tiles, the number tile given, the DIRECTION the discovery; a wrong build is refuted with the student's OWN red
+  points and is a question miss, not a counted trial), `handDone`, `coach`. **The verdict is MASKED while the probe is dragged** (a render mask,
+  L3.2); each round starts on an explicit press. **A trial** (`solutionRayPlayer.js`): without a bracket a NEW graduation released; with one,
+  « ثبّت » on a NEW draft or a NEW line chosen for a step (probes are free — they are the student's evidence). Journal, live region once per gesture,
+  hollow grey traces + ●/○ (not colour alone), labelled toggle groups, LTR-isolated numbers, indigo focus rings — player only. `LabCoach`
+  (`coachOf`: `probe`, `again`, `bracket`, `side`, `toward`, `fix`, `card`, `line`; never « between a red and a grey point ») — the lab's FIRST
+  coach. `shownValues(props)` by role. Strings `solutionRay.player / coach / predict`. Scene `phone-credit` (no phone inside a round before the
+  climax: `context: 'phone'` is unused in the rounds).
+- **Twenty-second example (2026-11-11, unit 4):** lesson `tarrid-mushkila`, `content/race.js` (`M1_ROUNDS`, `LabRounds labId="lab-race-m1"`: a
+  father of 52 and children 7 · 8 · 10 · 12 → 26 and 2, × 4 → sisters 13 + 10 → 31 → ⭐ 55 against 11 · 12 → free; `M2_ROUNDS`, `lab-race-m2`:
+  brothers 11 + 13 → 18, x = −3, required; easier rounds each `releases`), verdict L4. `growth-race` (`equations/GrowthRace.jsx`) gets the player
+  behind `useInMissionPlayer()`; page, teacher and the synthesis's `lab.render.test.jsx` unchanged; `logic/growthRace.js` unchanged, the player
+  logic is `logic/growthRacePlayer.js`. New props: `onVerdict` (one NEW x = one verdict), `chains` (`CHAINS_PLAYER`: `sum4` build `slopeTap` ·
+  `buildEq`, race `whereTap`; `mult` build `buildEq`, race `whereTap` · `afterTap` · `ruleP`; `sum2`; `easy`; `past` race `trendTap` · `solveTap` ·
+  `buildPast` (« منذ ▢ سنوات: ▢ + ▢ = 18 », one decoy = the younger's age |x| years LATER, `pastSpec`) · `rulePast`; `none`), `predict`
+  (`cards`, `ahead`, `meets` — truth computed, judged by the gesture that settles it), `choices`, `startX`, **`cast`** (`{ adults, girls }`: people
+  drawn as the shared `KidFigure` — girls in hijab, the father 1.25 × the tallest child, `tunic`, teal, « الأب »; the page keeps `PersonFigure`),
+  **`decor="board"`** (a height board instead of the cake, player only), **`freeFirstModel`** (the first refused model is free), `coach`. **A model
+  check is NOT a trial of x**: « تحقّق » on the cards sends `onTrial { tk: 'model', ok, key, free? }` (`modelKey` = the sorted carried cards — the
+  same set checked twice is one event), the round's goal holds `{ modelOk: true }` (`rounds/roundsModel.js`, guide « A model check is not a
+  trial »). The model BUILD (`buildSpec`: « ▢ = ▢ + ▢ » or « ▢ + ▢ = ▢ ») has ONE decoy — « + x » once, or the target that « ages ». Questions and
+  predictions in the side column, journal, live region (« صحيح. » / « خطأ. » + the relation), sweep / stepper / celebration hidden. `LabCoach`
+  (`coachOf`: `carry`, `check`, `open`, `stretch`, `again`) — the lab's FIRST coach. `shownValues` by role (ages, values, totals, screens, the meet,
+  the first value, equations, the structure `three` / `factor3` that the climax owns). Strings `growthRace.player / coach / predict`. Scene
+  `family-heights`.
 - **Blocking:** `cp.blocking` stays true until the chain is finished; the lab hides its « next task » button meanwhile.
 - **Guided, never told first:** wrong try 1 → the chosen option's `why` (else hint 1); try 2 → hint 2 (sharper); try 3 →
   the answer AND its explanation (the student is never stuck forever). A wrong option stays struck and disabled.

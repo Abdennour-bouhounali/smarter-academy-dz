@@ -41,10 +41,16 @@ class CurriculumSqlCommandTest extends TestCase
         $this->assertStringContainsString("UPDATE `lessons` SET `publication_status` = 'archived'", $sql);
         $this->assertStringNotContainsString('DELETE ', $sql);
         $this->assertStringNotContainsString('DROP ', $sql);
-        // publication_status n'apparaît dans un ON DUPLICATE KEY UPDATE d'aucune table.
+        // Un module reçoit l'état de sa leçon (2026-11-11 : il n'a pas d'état propre).
+        $this->assertMatchesRegularExpression('/INSERT INTO `lesson_modules` .*l\.publication_status, NULL/', $sql);
+        // Un exercice naît publié sous une leçon publiée ; un draft y est publié.
+        $this->assertStringContainsString("IF(l.publication_status = 'published', 'published', 'draft')", $sql);
+        // publication_status n'est recopié tel quel (VALUES) que pour les modules.
         foreach (explode("\n", $sql) as $line) {
             if (str_contains($line, 'ON DUPLICATE KEY UPDATE')) {
-                $this->assertStringNotContainsString('`publication_status` = VALUES', $line);
+                if (! str_starts_with($line, 'INSERT INTO `lesson_modules`')) {
+                    $this->assertStringNotContainsString('`publication_status` = VALUES', $line);
+                }
                 // Le palier non plus : rejouer ce SQL ne réécrit jamais la
                 // décision de l'administrateur (lessons.tier).
                 $this->assertStringNotContainsString('`tier` = VALUES', $line);

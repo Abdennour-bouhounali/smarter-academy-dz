@@ -25,29 +25,29 @@ export default function Module03Awazzif() {
       navLinks={getNavLinks(3)}
       moduleNumber={3}
       moduleTitle="أوظّف تعلّماتي"
-      moduleSubtitle="تمارين الكتاب 17 و 18 و 19 و 21"
-      objectives={['أطبّق الإنشاءات على تمارين الكتاب', 'كم قطعة؟ أيّ علامة؟ أين تقع النقطة؟', 'أتعمّق: أربط الإنشاء بخاصية طالس وفيثاغورس']}
+      moduleSubtitle="وضع نقط على مستقيم، ثم تمرين للتعمّق"
+      objectives={['أطبّق الإنشاءات على تمارين متدرّجة', 'كم قطعة؟ أيّ علامة؟ أين تقع النقطة؟', 'أتعمّق: أربط الإنشاء بخاصية طالس وفيثاغورس']}
       estimatedTime="9 دقائق"
-      brief={{ tag: 'أوظّف تعلّماتي — الكتاب ص 111 و 113', title: 'تمارين الكتاب، بعباراته', tone: 'amber',
+      brief={{ tag: 'أوظّف تعلّماتي', title: 'تمارين للتطبيق والتعمّق', tone: 'amber',
         body: <p>الإنشاء يُنجز على الورق بالمسطرة غير المدرّجة والمدور؛ هنا نتحقّق من خطواته: كم قطعة، أي علامة، أين تقع النقطة. الخطأ هنا يُصحَّح ولا يُحتسب.</p> }}
       steps={[
-        { num: 1, title: 'تمرين 17 — ثلاثة أسباع', done: all('17'),
+        { num: 1, title: 'ثلاثة أسباع', done: all('17'),
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="taqsim-qitaa" variant="rappel" compact />
               {block('17', ['taqsim-qitaa', 'tabrir-taqsim'])}
             </div>
           ) },
-        { num: 2, title: 'تمرين 18 — نقطة خارج القطعة', done: all('18'),
+        { num: 2, title: 'نقطة خارج القطعة', done: all('18'),
           content: <div className="space-y-3">{block('18', ['tabrir-taqsim', 'nuqtatan'])}</div> },
-        { num: 3, title: 'تمرين 19 — نقطتان', done: all('19'),
+        { num: 3, title: 'نقطتان', done: all('19'),
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="nuqtatan" variant="rappel" compact />
               {block('19', ['nuqta-nisba', 'nuqtatan'])}
             </div>
           ) },
-        { num: 4, title: 'تمرين 21 — أتعمّق', done: all('21'),
+        { num: 4, title: 'أتعمّق', done: all('21'),
           content: <div className="space-y-3">{block('21', ['tabrir-taqsim', 'talis-aksiya', 'talis-nisab', 'fithaghuris'])}</div> },
       ]}
       footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}

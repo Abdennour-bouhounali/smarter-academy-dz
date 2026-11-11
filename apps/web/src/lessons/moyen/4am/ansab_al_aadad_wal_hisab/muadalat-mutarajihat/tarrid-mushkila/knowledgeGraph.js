@@ -33,14 +33,14 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'mithal', kind: 'example', lane: 'center', requires: 'tarrid-namdhaja',
-      title: 'الأب وأبناؤه الثلاثة', subtitle: '$x = 9$',
+      title: 'الأب وأبناؤه الأربعة', subtitle: '$x = 5$',
       context: { text: METHOD_MODELLING.solution[1], note: METHOD_MODELLING.solution[3] },
       reveals: ['khata', 'tariqa'],
     },
     {
       // ⛔ خطأ شائع — l'erreur que le laboratoire refuse (module 1, question 1).
       id: 'khata', kind: 'common_mistake', lane: 'end', requires: 'tarrid-namdhaja',
-      title: 'x مرة واحدة لثلاثة أبناء', subtitle: '$3x$ لا $x$',
+      title: 'x مرة واحدة لأربعة أبناء', subtitle: '$4x$ لا $x$',
       context: {
         parts: [
           { role: 'wrong', text: MISTAKE_ONE_X.wrong },
@@ -58,7 +58,7 @@ export const KNOWLEDGE_GRAPH = {
     {
       // 🔍 تحقّق — l'« التحقق » du manuel, p. 49.
       id: 'tahaqquq', kind: 'check', lane: 'start', requires: 'tarrid-tariqa',
-      title: 'التحقق في النص', subtitle: '$13 + 15 + 17 = 45$',
+      title: 'التحقق في النص', subtitle: '$12 + 13 + 15 + 17 = 57$',
       context: { text: METHOD_MODELLING.solution[3], note: STEPS.check },
       reveals: ['mutarajiha'],
     },
@@ -69,7 +69,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'murabba', kind: 'example', lane: 'center', requires: 'tarrid-mutarajiha',
-      title: 'المربع والمثلث', subtitle: '$4x \\geq 3(28 - x)$',
+      title: 'المسدّس والمربّع', subtitle: '$6x \\geq 4(x + 5)$',
       context: { text: NOW_49_2.text, note: now49.question.explain },
       reveals: ['waqi'],
     },
@@ -80,7 +80,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'marfud', kind: 'example', lane: 'start', requires: 'tahaqquq-waqi',
-      title: 'حلّ مرفوض', subtitle: '$x = 12$',
+      title: 'حلّ مرفوض', subtitle: '$x = 4$',
       context: { text: ex40.question.rows[2].correction, note: ex40.commonError },
       reveals: ['khulasa'],
     },

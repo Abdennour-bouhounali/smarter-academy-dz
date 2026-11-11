@@ -8,8 +8,8 @@
  * liste de tous les قواسم (درس 2) ni le PGCD (درس 4).
  *
  * La مسألة 1 est « مسألة الدرس » : son énoncé vit dans `LESSON_CONFIG.lessonProblem`
- * (montré dès le sommaire et rappelé au module 1, prolongement du rayon de 420
- * livres du niveau متقدم), et se résout ici.
+ * (l'ouverture de la mission et sa barre la rappellent tout au long de la leçon),
+ * et se résout ici.
  *
  * Chaque nombre est vérifié par calcul dans ./problems.test.js.
  */

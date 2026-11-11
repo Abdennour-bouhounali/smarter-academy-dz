@@ -454,7 +454,7 @@ export default function ModuleLayout({
             <div className="flex items-center gap-2" data-tour="lesson.progress">
               <span className="text-xs font-mono text-blue-600 font-bold">
                 {t('nav.module')}{' '}
-                <span dir="ltr">{modulePosition} / {totalModules}</span>
+                <span dir="ltr">{modulePosition}{'\u00A0/\u00A0'}{totalModules}</span>
               </span>
               <div
                 className="h-2 bg-slate-200 rounded-full overflow-hidden w-24"

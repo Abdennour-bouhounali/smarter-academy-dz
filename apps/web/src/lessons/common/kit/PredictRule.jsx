@@ -1,11 +1,27 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { scopedStorage as storage } from '../../../utils/storage';
 import { useLessonKnowledge } from '../knowledge';
 import { useLearningViewer } from '../../../features/learning/learningViewer';
 import MathTextArea, { writtenLength } from '../components/MathTextArea';
 import MathText from '../components/MathText';
-import { PREDICT_MIN_CHARS, readPredictions, savePrediction, shouldPredict } from './predictRule';
+import { PREDICT_MIN_CHARS, readPredictions, savePrediction, shouldPredict, ruleNoteOf } from './predictRule';
+import { AuthContext } from '../../../context/AuthContext';
+import { createNote } from '../../../services/practiceService';
+import { getLoadedLessonConfig } from '../../registry';
+
+/**
+ * PILOTE (2026-11-07, conseil + propriétaire) : la règle que l'élève écrit avec ses mots devient une carte de « كرّاسي »
+ * (« قاعدتي: … », ses mots puis la règle officielle pour comparer). Une note ordinaire : l'enseignant du قسم peut la lire
+ * (décision du 2026-09-24) — l'élève en est prévenu sous la zone d'écriture. Seulement : leçon pilote (studentView 'mission'),
+ * compte ÉLÈVE réel. Jamais une preuve de maîtrise.
+ */
+function useRuleToNotebook(lessonId) {
+  const viewer = useLearningViewer();
+  const auth = useContext(AuthContext);
+  const on = viewer?.role === 'student' && Boolean(auth?.token) && getLoadedLessonConfig(lessonId)?.studentView === 'mission';
+  return { on, token: auth?.token };
+}
 
 /**
  * « أتوقّع القاعدة » — avant qu'une règle soit montrée, l'élève l'écrit avec
@@ -25,8 +41,11 @@ import { PREDICT_MIN_CHARS, readPredictions, savePrediction, shouldPredict } fro
  * la feuille de style masque ce qui le SUIT dans le même conteneur (la question
  * d'application), pour qu'on ne réponde pas avant d'avoir vu la règle.
  */
-export function usePredictGate({ id, itemType, itemPredict, brickPredict, variant, ready = true }) {
-  const { lessonId, items, freeNavigation: mapFree } = useLessonKnowledge();
+export function usePredictGate({ id, itemType, itemPredict, brickPredict, variant, ready = true, itemTitle, itemRule }) {
+  // « connue » = ÉTABLIE par l'élève, jamais simplement visible sur une carte ouverte d'emblée (pilote 2026-11-08) :
+  // sinon « أتوقّع القاعدة » serait sautée pour toutes les règles de la leçon
+  const { lessonId, items: mapItems, learnedItems, freeNavigation: mapFree } = useLessonKnowledge();
+  const items = learnedItems ?? mapItems;
   const viewer = useLearningViewer();
   const freeNavigation = Boolean(viewer?.freeNavigation || mapFree);
   const [predictions, setPredictions] = useState(() => readPredictions(storage, lessonId));
@@ -39,15 +58,24 @@ export function usePredictGate({ id, itemType, itemPredict, brickPredict, varian
   // carte qu'APRÈS sa révélation, donc `known` ne la libère jamais trop tôt.
   const gated = ready && shouldPredict({ variant, itemType, itemPredict, brickPredict, freeNavigation, known, predicted: Boolean(saved) });
 
+  const notebook = useRuleToNotebook(lessonId);
   const reveal = useCallback((text) => {
-    if (id) setPredictions(savePrediction(storage, lessonId, id, text));
-  }, [id, lessonId]);
+    if (!id) return;
+    setPredictions(savePrediction(storage, lessonId, id, text));
+    if (notebook.on) {
+      // le titre et la règle viennent de l'appelant (la brique les a ; la liste des connaissances n'a que les règles déjà établies)
+      // — ne bloque jamais la règle : une note qui échoue (hors ligne) laisse la leçon continuer
+      createNote(notebook.token, ruleNoteOf({ lessonId, itemTitle, itemRule, text })).catch(() => {});
+    }
+  }, [id, lessonId, notebook.on, notebook.token, itemTitle, itemRule]);
 
   return { gated, saved, reveal };
 }
 
 export function PredictPanel({ prompt, onReveal, symbolsFrom, className = '', ...rest }) {
   const { t } = useTranslation('lesson');
+  const { lessonId } = useLessonKnowledge();
+  const notebook = useRuleToNotebook(lessonId);
   const [text, setText] = useState('');
   const ready = writtenLength(text) >= PREDICT_MIN_CHARS;
   return (
@@ -63,6 +91,7 @@ export function PredictPanel({ prompt, onReveal, symbolsFrom, className = '', ..
           {t('predict.reveal')}
         </button>
         <p className="text-xs text-slate-500">{ready ? t('predict.noGrade') : t('predict.needText')}</p>
+        {notebook.on && <p className="text-xs font-bold text-indigo-700" data-predict-notebook>📓 {t('predict.toNotebook')}</p>}
       </div>
     </section>
   );
@@ -93,6 +122,7 @@ export default function PredictRule({ id, type, prompt, predict, children }) {
   const item = id ? getItem(id) : null;
   const { gated, saved, reveal } = usePredictGate({
     id, itemType: item?.type ?? type ?? 'regles', itemPredict: item?.predict, brickPredict: predict, variant: 'new', ready: !id || Boolean(item) || Boolean(type),
+    itemTitle: item?.title, itemRule: item?.summary,
   });
   useEffect(() => { if (id && item && !gated) unlockItem(id); }, [id, item, gated, unlockItem]);
   // La palette : les symboles de CETTE règle (la boîte enveloppée, l'item).

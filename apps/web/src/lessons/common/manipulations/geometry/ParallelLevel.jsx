@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { ChevronUp, ChevronDown } from 'lucide-react';
@@ -15,6 +15,9 @@ import MathText from '../../components/MathText';
 import { useLabCheckpoint } from '../primitives/LabCheckpoint';
 import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
 import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
+import { useLabCoach } from '../primitives/LabCoach';
+import PredictTray from '../primitives/PredictTray';
+import { useInMissionPlayer, useMissionArea } from '../../mission/missionPlayerContext';
 import { playSfx } from '../../utils/playEffect';
 import { $, Mx, distinct, useTick, spreadAll } from './thalesCp';
 import * as L from '../logic/parallelLevel';
@@ -83,22 +86,86 @@ import * as L from '../logic/parallelLevel';
 const tf = (tex) => tex.replace(/\\dfrac/g, '\\tfrac');
 const TONE = { level: 'text-emerald-800', figure: 'text-emerald-800', tilted: 'text-rose-800', order: 'text-rose-800', condition: 'text-amber-800' };
 
+/*
+ * LECTEUR DE MISSION (rollout 2026-11-10, unité 9 leçon 2 `aksiya-talis` ; conseil du 2026-11-10, verdict L2.1–L2.7) : joué en MANCHES (LabRounds).
+ * Tout ce qui suit est gardé par `useInMissionPlayer()` ; hors lecteur (page, enseignant, mode classe) le labo est INCHANGÉ.
+ *   - « ضع الميزان » (L2.1) : la bulle est CACHÉE pendant que les extrémités bougent ; un ESSAI est UN appui sur le bouton (la position courante,
+ *     `L.commit(lab, null)`) — jamais un relâchement ; la même position deux fois n'est pas un nouvel essai. `onVerdict { groups, exact, free? }`
+ *     (`logic › verdictOf` : ladder → l'encoche de B′ ; tréteau → la figure 1 / 2 / 3, 0 pour un rapport refusé par le professeur) ; le PREMIER
+ *     refus de la manche est `free` (il fait partie de la découverte). La découverte (`logic › playerDiscovery`) est annoncée une fois (`{ tk: 'discovered' }`).
+ *   - `ratios` : 'show' (la ligne des deux rapports, comme la page), 'hide' (manche 1 : la question les demande), 'pick' (manches 2+ : les deux
+ *     PASTILLES AB′/AB et AC′/AC se choisissent AVANT que le bouton ne montre la bulle — `logic › chipOptions` ; au tréteau, pas de pastille AB′/BB′).
+ *   - `chains` : 'ladder' (« lv » à la 1re planche de niveau : les deux rapports d'un toucher ; « rule » à deux planches de rapports différents :
+ *     BÂTIR « AB′/AB = AC′/AC » — AB′/AB posé à gauche, AC′, AC et le leurre CC′ ; l'égalité dans l'autre sens est acceptée (`accept`) — puis la
+ *     règle), 'ladderEasy' (« lv » seul), 'side' (figures 1 et 2 : ce qu'elles partagent), 'cross' (« beyond » à la 1re planche au-delà de A : ses
+ *     rapports, longueurs POSITIVES ; « order » aux figures 1, 2 et 3 : quel point est entre les deux autres sur chaque droite, puis la règle), 'none'.
+ *   - `predict` : [{ key, at: [bp, cp] }] (≤ 2) « هل تتوسّط الفقاعة؟ » AVANT le premier geste ; la vérité CALCULÉE (converse) ; jugée par le premier
+ *     essai de la même configuration (`logic › classOf`), ou toutes quand la dernière suite de la manche est atteinte — chaque résultat montré et
+ *     entendu une fois, la question attend PRED_HOLD_MS.
+ *   - `choices` : des paires de barres (manche libre). Le journal « 📋 جدول تجاربك » et le verdict sont dans la colonne (représentation), muets
+ *     pendant une question ; commandes figées pendant une prédiction ou une question (`aria-disabled`) ; toujours guidé ; pas de fête ; `LabCoach`
+ *     (`logic › coachOf` : la poignée de B′, celle de C′, les pastilles, le bouton — jamais une encoche) ; `{ tk: 'reset' }` à chaque « إعادة ».
+ */
+/** Lecteur : au plus PRED_MAX prédictions par manche, jamais pendant une suite de questions. */
+const PRED_MAX = 2;
+/** Le temps pendant lequel un résultat de prédiction reste seul à l'écran avant la question de la manche. */
+export const PRED_HOLD_MS = 1600;
+const ringCls = 'focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2';
+/** « 1/3 » → une vraie fraction (pastilles, questions) ; « −1/4 » garde son signe. */
+export const fracNode = (s) => {
+  const m = String(s).match(/^(−|-)?(\d+)(?:\/(\d+))?$/);
+  if (!m) return s;
+  const tex = m[3] ? `\\tfrac{${m[2]}}{${m[3]}}` : m[2];
+  return <MathText>{`$${m[1] ? '-' : ''}${tex}$`}</MathText>;
+};
+
 export default function ParallelLevel({
   AB = 6, AC = 9, ratio, mode = 'ladder', theme = 'mural', title, lead, mission, level, levels: withLevels = true,
   initialMode = 'student', allowModeSwitch = false, checkpoints: cpOn = true, onTrial, onFinished,
+  coach: coachOn = true,
+  // ── LECTEUR DE MISSION (rollout 2026-11-10, traitement v2) ──
+  onVerdict, chains: chainsMode = 'none', predict: predictList = [], ratios: ratiosMode = 'show', choices,
 }) {
   const { t } = useTranslation('lesson');
+  const gameScreen = useInMissionPlayer();
+  const uid = useId();
+  const journalId = `${uid}-journal`;
   const k = useCallback((key, o) => t(`manipulation.parallelLevel.${key}`, o), [t]);
   const initialNumbers = ratio != null ? { AB, AC, ratio, mode } : { AB, AC, mode };
   const state = useManipulation({ type: 'parallel-level', initialNumbers, initialMode, initialLevel: level, withLevels, hintCount: 3 });
   const nums = state.numbers;
   const make = () => L.init({ AB: nums.AB, AC: nums.AC, ratio: nums.ratio, mode: nums.mode });
   const [lab, setLab] = useState(make);
+  // Miroir synchrone de `lab` : « ضع الميزان » lit la position que le relâchement (ou ▲ ▼) vient de poser, avant le rendu.
+  const labRef = useRef(lab);
+  labRef.current = lab;
   const sceneKey = `${nums.AB}|${nums.AC}|${nums.ratio ?? ''}|${nums.mode}|${state.epoch}`;
   const [scene, setScene] = useState({ key: sceneKey, inits: 0 });
   const [doneIds, setDoneIds] = useState([]);   // les étapes dont la suite de questions est finie
   const [tag, setTag] = useState(0);
-  if (scene.key !== sceneKey) { setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(make()); setDoneIds([]); }   // « إعادة » : tout repart
+  // lecteur : la position dont la bulle est MONTRÉE (« ضع الميزان »), les extrémités déjà bougées, les pastilles choisies, les prédictions
+  const [revealed, setRevealed] = useState(null);
+  const [moved, setMoved] = useState({ B: false, C: false });
+  const [picks, setPicks] = useState({ key: null, B: [], C: [] });
+  const [preds, setPreds] = useState({});
+  const asked = useRef(new Set());
+  const [missionBig, setMissionBig] = useState(false);
+  const refusedSeen = useRef(0);
+  const discoveredSent = useRef(false);
+  const heardPred = useRef(new Set());
+  const [shownPreds, setShownPreds] = useState([]);
+  const [predHold, setPredHold] = useState(false);
+  const holdTimer = useRef(null);
+  const [pairSaid, setPairSaid] = useState(null);
+  if (scene.key !== sceneKey) {
+    // « إعادة », un autre niveau ou d'autres barres : TOUT repart — les essais, les étapes, les questions, les prédictions
+    setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(make()); setDoneIds([]);
+    setRevealed(null); setMoved({ B: false, C: false }); setPicks({ key: null, B: [], C: [] });
+    setPreds({}); asked.current = new Set(); refusedSeen.current = 0; discoveredSent.current = false;
+    heardPred.current = new Set(); setShownPreds([]); setPredHold(false);
+  }
+  // la manche (LabRounds) repart de zéro avec la scène : ses essais et prédictions d'avant ne comptent plus
+  useEffect(() => { if (gameScreen && scene.inits > 0) state.report(onTrial, { tk: 'reset' }); }, [scene.inits]); // eslint-disable-line react-hooks/exhaustive-deps
   const crossing = lab.mode === 'crossing';
 
   const solvedAll = L.discoveryReady(lab);
@@ -109,27 +176,49 @@ export default function ParallelLevel({
   const cpEnabled = cpOn && cpSettings.enabled;
   const steps = ['one', 'two'];
   const stepOk = { one: L.stageOneReached(lab), two: L.stageTwoReached(lab) };
-  const pending = cpEnabled ? steps.find((g) => stepOk[g] && !doneIds.includes(g)) ?? null : null;
-  const chain = pending ? chainOf(pending, lab.mode) : null;
+  // ── le lecteur : les suites de la manche (CHAINS_PLAYER), chacune posée quand ce qu'elle interroge est là ──
+  const playerChains = gameScreen ? chainsOfPlayer(chainsMode) : [];
+  const lastChain = playerChains.at(-1);
+  const finalReached = !!lastChain && lastChain.reached(lab);
+  const judgedPreds = gameScreen ? L.judgedPredictions(lab, predictList.filter((p) => p.key in preds), finalReached) : [];
+  const pendingPreds = judgedPreds.filter((key) => !heardPred.current.has(key));
+  const holdChain = pendingPreds.length > 0 || predHold;
+  const playerPending = cpEnabled && !holdChain ? playerChains.find((c) => c.reached(lab) && !doneIds.includes(c.id)) ?? null : null;
+  const pagePending = !gameScreen && cpEnabled ? steps.find((g) => stepOk[g] && !doneIds.includes(g)) ?? null : null;
+  const pending = gameScreen ? playerPending?.id ?? null : pagePending;
+  const chain = gameScreen ? playerPending?.qs ?? null : pending ? chainOf(pending, lab.mode) : null;
   const cp = useLabCheckpoint({
     id: chain ? pending : null,
     questions: chain ? chain.map((q) => QUESTIONS[q](lab, pending, k)) : null,
     reached: !!pending,
     resetKey: scene.inits,
-    onRetry: () => { celebrated.current.delete(pending); setLab((s) => L.retryStage(s, pending)); },
+    onRetry: () => {
+      if (gameScreen) {
+        // lecteur : la tâche repart de zéro (toutes les planches) ; la manche oublie ce que le labo vient de défaire, le 1er refus redevient gratuit
+        const fresh = make();
+        labRef.current = fresh; setLab(fresh); setRevealed(null); setMoved({ B: false, C: false });
+        refusedSeen.current = 0; discoveredSent.current = false;
+        state.report(onTrial, { tk: 'retry' });
+        return;
+      }
+      celebrated.current.delete(pending); setLab((s) => L.retryStage(s, pending));
+    },
     onEvent: (ev) => state.report(onTrial, ev),
     onDone: (id) => {
       setDoneIds((d) => (d.includes(id) ? d : [...d, id]));
-      if (chainOf(id, lab.mode).includes('rule')) { state.discover(); state.formalize(); }
+      const hadRule = gameScreen ? (playerChains.find((c) => c.id === id)?.qs ?? []).includes('rule') : chainOf(id, lab.mode).includes('rule');
+      if (hadRule) { state.discover(); state.formalize(); }
     },
   });
-  const ready = solvedAll && !cpEnabled;
+  const ready = solvedAll && !cpEnabled && !gameScreen;
   const stepDone = steps.map((g) => !!stepOk[g] && (!cpEnabled || doneIds.includes(g)));
   const stepNow = stepDone[0] ? 1 : 0;
+  const showStepper = !gameScreen;
   const party = useStepCelebration();
   const celebrated = useRef(new Set());
   if (lab.trials.length === 0 && celebrated.current.size) celebrated.current = new Set();   // « إعادة » : on refête
   useEffect(() => {
+    if (!showStepper) return;   // lecteur : pas de fête quand l'étape est cachée
     stepDone.forEach((d, i) => {
       if (!d || celebrated.current.has(steps[i])) return;
       celebrated.current.add(steps[i]);
@@ -149,6 +238,39 @@ export default function ParallelLevel({
   }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
   const nTrials = lab.trials.length;
   useEffect(() => { if (nTrials > 0) state.report(onTrial, L.evidenceOf(lab)); }, [nTrials]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── lecteur : la PRÉDICTION, avant le premier geste ── */
+  const predQueue = gameScreen ? predictList.slice(0, PRED_MAX) : [];
+  const nextPred = predQueue.find((p) => !asked.current.has(p.key)) ?? null;
+  const predictOpen = gameScreen && cpEnabled && !cp.open && !missionBig && lab.trials.length === 0 && !moved.B && !moved.C && nextPred != null;
+  const locked = gameScreen && (cp.open || predictOpen);
+  const lockedRef = useRef(false);
+  lockedRef.current = locked;
+  const sayPredict = (says) => {
+    const p = nextPred;
+    const ok = says === L.predictTruth(labRef.current, p.at);
+    asked.current.add(p.key);
+    playSfx('pop');
+    setPreds((m) => ({ ...m, [p.key]: ok }));
+    state.report(onTrial, { tk: 'predict', ok });
+    if (!predQueue.some((x) => x.key !== p.key && !asked.current.has(x.key))) {
+      setTimeout(() => boxRef.current?.querySelector('[data-pl-handle="B"]')?.focus(), 60);
+    }
+  };
+  const pendingSig = pendingPreds.join('|');
+  useEffect(() => {
+    if (!pendingSig) return;
+    const keys = pendingSig.split('|');
+    keys.forEach((key) => heardPred.current.add(key));
+    setShownPreds(keys.map((key) => ({ key, ok: preds[key] })));
+    playSfx(keys.every((key) => preds[key]) ? 'correct' : 'pop');
+    setPredHold(true);
+    clearTimeout(holdTimer.current);
+    holdTimer.current = setTimeout(() => setPredHold(false), PRED_HOLD_MS);
+  }, [pendingSig]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => () => clearTimeout(holdTimer.current), []);
+  const quiet = gameScreen && cp.open;
+  useEffect(() => { if (cp.open) setShownPreds([]); }, [cp.open]);
 
   /* ── mesure : largeur de la scène, écran de leçon, ce que le bloc « glance » mesure en plus ── */
   const boxRef = useRef(null);
@@ -171,14 +293,26 @@ export default function ParallelLevel({
     if (glanceRef.current) ro.observe(glanceRef.current);
     return () => ro.disconnect();
   }, []);
+  // Dans le lecteur de mission le labo est monté dans une copie cachée puis déplacé : on re-mesure aussi à chaque rendu (même valeur = aucun rendu).
+  useLayoutEffect(() => {
+    if (!gameScreen) return;
+    const el = boxRef.current;
+    if (el) { const w = Math.max(150, Math.floor(el.clientWidth)); setWidth((cur) => (cur === w ? cur : w)); }
+  });
   const vp = useLessonViewport(true);
   const screenH = vp.ready && vp.height > 0 ? vp.height : 640;
   const narrow = width < 380;
   const sceneW = Math.min(width, 760);
-  const sceneH = Math.round(Math.max(150, Math.min(L.naturalHeight(lab, sceneW), screenH - overhead - 28, 560)));
+  // lecteur : la scène laisse la place aux manches, aux commandes, aux pastilles et aux figures dans la zone du lecteur (aucun défilement,
+  // pas de zoom de repli pour un tréteau haut)
+  const area = useMissionArea();
+  const playerRoom = gameScreen && area?.height > 0 ? Math.max(200, area.height - 215) : Infinity;
+  const sceneH = Math.round(Math.max(150, Math.min(L.naturalHeight(lab, sceneW), screenH - overhead - 28, 560, playerRoom)));
   sceneHRef.current = sceneH;
   const geo = L.geometry(lab, { width: sceneW, height: sceneH, pad: narrow ? 22 : 28 });
   const r = L.reading(lab);
+  const posKey = `${r.bp}|${r.cp}`;
+  const bubbleShown = !gameScreen || revealed === posKey;
 
   /* ── les deux gestes : une poignée par extrémité, la barre entière est la piste ── */
   const [live, setLive] = useState({ B: null, C: null });
@@ -186,17 +320,33 @@ export default function ParallelLevel({
     const box = sceneRef.current?.getBoundingClientRect();
     if (!box) return lab[end === 'B' ? 'sB' : 'sC'];
     const range = end === 'B' ? lab.rangeB : lab.rangeC;
-    return L.slotFromAbscissa(geo.abscissaAt(end, cx - box.left, cy - box.top), range);
+    // zoom du lecteur : les pixels de l'écran ramenés aux pixels du calque (rect.width / offsetWidth)
+    const z = gameScreen && sceneRef.current?.offsetWidth ? box.width / sceneRef.current.offsetWidth : 1;
+    return L.slotFromAbscissa(geo.abscissaAt(end, (cx - box.left) / (z || 1), (cy - box.top) / (z || 1)), range);
+  };
+  // page : chaque relâchement est un essai (inchangé) ; lecteur : un relâchement DÉPLACE seulement — l'essai est « ضع الميزان »
+  const onEndCommit = (end) => (v) => {
+    setLive((s) => ({ ...s, [end]: null }));
+    if (gameScreen) {
+      if (lockedRef.current) return;
+      labRef.current = L.move(labRef.current, end, v); setLab(labRef.current);
+      setMoved((m) => (m[end] ? m : { ...m, [end]: true }));
+      return;
+    }
+    setLab((s) => L.commit(s, end, v));
+  };
+  const onEndChange = (end) => (v) => {
+    if (lockedRef.current) return;
+    setLive((s) => ({ ...s, [end]: v })); tick();
+    labRef.current = L.move(labRef.current, end, v); setLab(labRef.current);
   };
   const stB = useStretchInteraction({
     value: lab.sB, range: lab.rangeB, toValue: toValueFor('B'), direction: geo.upward('B') > 0 ? 'ltr' : 'rtl',
-    onChange: (v) => { setLive((s) => ({ ...s, B: v })); tick(); setLab((s) => L.move(s, 'B', v)); },
-    onCommit: (v) => { setLive((s) => ({ ...s, B: null })); setLab((s) => L.commit(s, 'B', v)); },
+    onChange: onEndChange('B'), onCommit: onEndCommit('B'),
   });
   const stC = useStretchInteraction({
     value: lab.sC, range: lab.rangeC, toValue: toValueFor('C'), direction: geo.upward('C') > 0 ? 'ltr' : 'rtl',
-    onChange: (v) => { setLive((s) => ({ ...s, C: v })); tick(); setLab((s) => L.move(s, 'C', v)); },
-    onCommit: (v) => { setLive((s) => ({ ...s, C: null })); setLab((s) => L.commit(s, 'C', v)); },
+    onChange: onEndChange('C'), onCommit: onEndCommit('C'),
   });
   const ST = { B: stB, C: stC };
   const nameOf = { B: "B′", C: "C′" };
@@ -209,21 +359,88 @@ export default function ParallelLevel({
     return k('valueText', { name: nameOf[end], d: Math.abs(a), side: sideText(end) });
   };
 
+  /* ── lecteur : les PASTILLES des deux rapports (manches 2+), choisies avant la bulle ── */
+  const picking = gameScreen && ratiosMode === 'pick';
+  const chips = picking ? { B: L.chipOptions(lab, 'B'), C: L.chipOptions(lab, 'C') } : null;
+  const pickNow = picks.key === posKey ? picks : { key: posKey, B: [], C: [] };
+  const pickedRight = (end) => !!chips && pickNow[end].some((i) => chips[end][i]?.right);
+  const picksDone = !picking || (pickedRight('B') && pickedRight('C'));
+  const pick = (end, i) => {
+    if (lockedRef.current || pickedRight(end)) return;
+    const o = chips[end][i];
+    playSfx(o.right ? 'correct' : 'wrong');
+    setPicks((p) => {
+      const cur = p.key === posKey ? p : { key: posKey, B: [], C: [] };
+      return cur[end].includes(i) ? cur : { ...cur, [end]: [...cur[end], i] };
+    });
+  };
+
+  /* ── lecteur : « ضع الميزان » — UN essai ── */
+  const pressedHere = revealed === posKey;
+  // une position DÉJÀ essayée se remontre sans repasser par les pastilles (ses rapports ont été choisis la première fois)
+  const triedHere = lab.trials.some((x) => `${x.bp}|${x.cp}` === posKey);
+  const canPress = gameScreen && !locked && !pressedHere && (picksDone || triedHere);
+  const press = () => {
+    if (!gameScreen || lockedRef.current) return;
+    stB.flush(); stC.flush();
+    const prev = labRef.current;
+    const at = L.positions(prev);
+    const key = `${at.bp}|${at.cp}`;
+    // la même position qu'un essai DÉJÀ fait (même revenue après un détour) n'est pas un nouvel essai : la bulle se montre, rien n'est compté
+    const existing = prev.trials.find((x) => x.bp === at.bp && x.cp === at.cp);
+    if (revealed === key || (picking && !existing && !(picks.key === key && pickedRight('B') && pickedRight('C')))) return;
+    const next = existing ? Object.freeze({ ...prev, last: { kind: 'commit', trial: existing } }) : L.commit(prev, 'B', null);
+    labRef.current = next;
+    setLab(next);
+    setRevealed(key);
+    if (!existing) {
+      const v = L.verdictOf(next, next.trials.at(-1));
+      const free = !v.exact && refusedSeen.current === 0;
+      if (!v.exact) refusedSeen.current += 1;
+      state.report(onVerdict, { ...v, ...(free ? { free: true } : {}) });
+    } else {
+      playSfx(next.trials.at(-1)?.parallel ? 'flag' : 'over');
+    }
+    if (L.playerDiscovery(next) && !discoveredSent.current) { discoveredSent.current = true; state.report(onTrial, { tk: 'discovered' }); }
+  };
+
   /* ── le verdict de la dernière position validée ── */
-  const last = lab.last?.kind === 'commit' ? lab.last.trial : null;
+  // lecteur : le verdict est celui de l'essai DÉVOILÉ à la position courante — revenir sur la position pressée (▲ puis ▼) rend la bulle ET son
+  // verdict (revue 2026-11-10 : `lab.last` valait alors « move » et la colonne restait sur « اضغط ») ; la page garde le dernier essai
+  const last = gameScreen
+    ? (bubbleShown ? lab.trials.find((x) => `${x.bp}|${x.cp}` === revealed) ?? null : null)
+    : lab.last?.kind === 'commit' ? lab.last.trial : null;
+  const freeCross = crossing && !lab.target;
+  // lecteur : des verdicts COURTS, une formule au plus par phrase (la colonne est étroite) ; la page garde les siens
+  const verdictKey = (kind) => (!gameScreen ? `v_${kind}` : freeCross && (kind === 'figure' || kind === 'order') ? `vp_${kind}Free` : `vp_${kind}`);
+  // juste = planche de niveau ET (rapport imposé) condition respectée
+  const lastOk = Boolean(last?.parallel && last.kind !== 'condition');
   const verdict = last && (() => {
     const o = { b: tf(L.ratioTex(last.bp, lab.b)), c: tf(L.ratioTex(last.cp, lab.c)), n: last.figure === '3m' ? '3' : last.figure, target: lab.target ? tf(LIN.fracLatex(lab.target)) : '' };
-    return <MathText>{k(`v_${last.kind}`, o)}</MathText>;
+    return <MathText>{k(verdictKey(last.kind), o)}</MathText>;
   })();
 
   /* ── la découverte : des distracteurs réfutés par les positions de l'élève ── */
-  const discoveryOptions = useMemo(() => discoveryOptionsOf(lab, k), [lab, k]);
+  // la page seule montre la découverte : le lecteur ne la recalcule pas à chaque mouvement
+  const discoveryOptions = useMemo(() => (gameScreen ? null : discoveryOptionsOf(lab, k)), [gameScreen, lab, k]);
 
   const formal = formalOf(lab, k);
 
   const missionText = mission ?? <MathText>{k(crossing ? 'missionCrossing' : 'missionLadder', { target: lab.target ? LIN.fracLatex(lab.target) : '' })}</MathText>;
   const [rB, rC] = L.ratiosLine(lab);
   const made = L.figuresMade(lab);
+
+  /* ── lecteur : le guide (LabCoach) — jamais une encoche, jamais la réponse ── */
+  const coachRaw = gameScreen && coachOn && !locked && !cp.open
+    ? L.coachOf(lab, { moved, pressedHere, picking, picksDone, ratiosShown: ratiosMode !== 'hide', done: playerChains.length ? doneIds.includes(lastChain?.id) : L.playerDiscovery(lab) })
+    : null;
+  // un objet STABLE par étape (son id fixe la cible et le geste) : LabCoach ne se réabonne pas à chaque mouvement de la poignée
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const coachStep = useMemo(() => coachRaw, [coachRaw?.id]);
+  const coach = useLabCoach({
+    lab: 'parallel-level', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '',
+    labels: { hide: t('manipulation.common.coach.hide'), show: t('manipulation.common.coach.show'), ok: t('manipulation.common.coach.ok'), stop: t('manipulation.common.coach.stop') },
+  });
 
   /* ── les poignées : sur la barre, la barre est la piste ── */
   const track = (end) => {
@@ -237,10 +454,10 @@ export default function ParallelLevel({
     return (
       <div key={end} {...st.trackProps} data-pl-track={end}
         className="absolute"
-        style={{ ...st.trackProps.style, left: foot[0], top: foot[1] - 22, width: len, height: 44, transform: `rotate(${ang}deg)`, transformOrigin: '0 50%' }}>
+        style={{ ...st.trackProps.style, left: foot[0], top: foot[1] - 22, width: len, height: 44, transform: `rotate(${ang}deg)`, transformOrigin: '0 50%', ...(locked ? { pointerEvents: 'none' } : {}) }}>
         <div {...st.handleProps({ label: k('handle', { name: nameOf[end], bar: end === 'B' ? '(d)' : "(d′)" }), valueText: valueText(end) })}
-          data-pl-handle={end} data-slot={end === 'B' ? lab.sB : lab.sC}
-          className={`absolute flex h-11 w-11 items-center justify-center rounded-full border-[3px] bg-white/95 shadow outline-none focus-visible:ring-4 focus-visible:ring-indigo-400 ${live[end] != null ? 'border-indigo-600' : 'border-indigo-500'}`}
+          data-pl-handle={end} data-slot={end === 'B' ? lab.sB : lab.sC} aria-disabled={locked || undefined}
+          className={`absolute flex h-11 w-11 items-center justify-center rounded-full border-[3px] bg-white/95 shadow outline-none focus-visible:ring-4 ${gameScreen ? 'focus-visible:ring-indigo-600 focus-visible:ring-offset-2' : 'focus-visible:ring-indigo-400'} ${live[end] != null ? 'border-indigo-600' : 'border-indigo-500'}`}
           style={{ left: d - 22, top: 0, cursor: st.dragging ? 'grabbing' : 'grab' }}>
           <span dir="ltr" className="font-mono text-sm font-extrabold text-indigo-900" style={{ transform: `rotate(${-ang}deg)` }}>{nameOf[end]}</span>
         </div>
@@ -252,53 +469,75 @@ export default function ParallelLevel({
     <div className="flex items-center gap-1" dir="ltr">
       <span className="font-mono text-sm font-extrabold text-indigo-900">{nameOf[end]}</span>
       <button type="button" onClick={() => ST[end].nudge(1)} aria-label={k('up', { name: nameOf[end] })} data-pl-up={end}
-        disabled={(end === 'B' ? lab.sB : lab.sC) >= (end === 'B' ? lab.rangeB : lab.rangeC).max}
-        className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-indigo-300 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"><ChevronUp className="h-5 w-5" aria-hidden="true" /></button>
+        disabled={locked || (end === 'B' ? lab.sB : lab.sC) >= (end === 'B' ? lab.rangeB : lab.rangeC).max}
+        className={`inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-indigo-300 bg-white disabled:opacity-40 ${gameScreen ? ringCls : 'focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500'}`}><ChevronUp className="h-5 w-5" aria-hidden="true" /></button>
       <button type="button" onClick={() => ST[end].nudge(-1)} aria-label={k('down', { name: nameOf[end] })} data-pl-down={end}
-        disabled={(end === 'B' ? lab.sB : lab.sC) <= (end === 'B' ? lab.rangeB : lab.rangeC).min}
-        className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-indigo-300 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"><ChevronDown className="h-5 w-5" aria-hidden="true" /></button>
+        disabled={locked || (end === 'B' ? lab.sB : lab.sC) <= (end === 'B' ? lab.rangeB : lab.rangeC).min}
+        className={`inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-indigo-300 bg-white disabled:opacity-40 ${gameScreen ? ringCls : 'focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500'}`}><ChevronDown className="h-5 w-5" aria-hidden="true" /></button>
     </div>
   );
 
-  return (
-    <ManipulationShell
-      type="parallel-level"
-      title={title ?? k('title')}
-      mission={missionText}
-      lead={lead}
-      state={state}
-      allowModeSwitch={allowModeSwitch}
-      allowFreeLab={false}
-      headerAction={cpOn ? cpSettings.control : null}
-      guided={cpEnabled}
-      hints={(crossing ? ['hintC1', 'hintC2', 'hintC3'] : ['hintL1', 'hintL2', 'hintL3']).map((h) => <MathText key={h}>{k(h, { target: lab.target ? LIN.fracLatex(lab.target) : '' })}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
-      discovery={(
-        <ManipulationDiscovery state={state} prompt={<MathText>{k(crossing ? 'dPromptCross' : 'dPromptLadder')}</MathText>} options={discoveryOptions} formal={formal} />
-      )}
-      explanation={<MathText>{k(crossing ? 'explanationCross' : 'explanationLadder')}</MathText>}
-    >
-      <ManipulationStage className="bg-gradient-to-b from-amber-50/60 to-white" minHeight="min-h-[160px]">
-        <div ref={boxRef} className="space-y-2" data-parallel-level data-mode={lab.mode} data-world={theme}
-          data-solved={solvedAll ? 'true' : 'false'} data-bp={r.bp} data-cp={r.cp} data-scene-h={sceneH}>
-          <div className="relative space-y-2">
-          {party.node}
-          {cp.node}
-          <div ref={glanceRef} className="space-y-2" data-pl-glance>
-            <LabStepper count={steps.length} current={stepNow} done={stepDone} stepAttr="data-pl-step" />
-            <div ref={sceneRef} className="relative mx-auto" style={{ width: sceneW, height: sceneH }} data-pl-scene>
-              <Scene geo={geo} lab={lab} crossing={crossing} tag={tag} />
-              {track('B')}
-              {track('C')}
-            </div>
-            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5" data-pl-controls>
-              {arrows('B')}
-              {arrows('C')}
-              <Deco onSpray={() => setTag((n) => n + 1)} />
-            </div>
-            <div className={`flex flex-wrap items-center justify-center gap-x-3 gap-y-1 ${narrow ? 'text-xs' : 'text-sm'} font-bold text-slate-800`} data-pl-ratios>
-              <MathText>{rB}</MathText><span aria-hidden="true">،</span><MathText>{rC}</MathText>
-            </div>
+  // lecteur : la prédiction ou la question PREND la colonne du labo
+  const predPrompt = (p) => k('predict.prompt', {
+    db: Math.abs(p.at[0]), dc: Math.abs(p.at[1]),
+    sideB: p.at[0] > 0 ? k('sideBetweenB') : k('sideBeyond'), sideC: p.at[1] > 0 ? k('sideBetweenC') : k('sideBeyond'),
+  });
+  const trayNode = !gameScreen ? null : predictOpen ? (
+    <PredictTray attr="pl" key={nextPred.key} step={predQueue.indexOf(nextPred) + 1} of={predQueue.length}
+      title={t('manipulation.common.cp.predict.title')}
+      prompt={predPrompt(nextPred)}
+      options={[{ says: 'yes', text: k('predict.yes') }, { says: 'no', text: k('predict.no') }]}
+      onSay={sayPredict} />
+  ) : cp.open ? cp.node : null;
+
+  // le JOURNAL du lecteur : les dernières positions essayées (B′ · C′ · les deux rapports · ✓ / ✗) — en manche 1 les rapports n'y viennent
+  // qu'après la question qui les demande
+  const journal = lab.trials.slice(-4);
+  const journalRatios = ratiosMode !== 'hide' || doneIds.includes('lv');
+  const sideGlyph = (a) => (a > 0 ? null : <><span aria-hidden="true">↑</span><span className="sr-only"> {k('sideBeyond')}</span></>);
+  /* ── les rapports (page : la ligne ; lecteur : la ligne ou les PASTILLES), le côté de A et les figures — sous la scène sur la page, dans la
+     colonne du lecteur ── */
+  const ratioBlock = (
+    <>
+            {picking ? (
+              <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2" dir="ltr" data-pl-picks data-pl-ratios>
+                {['B', 'C'].map((end) => (
+                  <div key={end} role="group" aria-label={k(end === 'B' ? 'pickB' : 'pickC')} className="flex items-center gap-1.5" data-pl-pick={end}
+                    data-picked={pickedRight(end) ? 'right' : pickNow[end].length ? 'wrong' : 'none'}>
+                    <span className="text-base font-bold text-slate-800" aria-hidden="true"><MathText>{end === 'B' ? "$\\dfrac{AB'}{AB} =$" : "$\\dfrac{AC'}{AC} =$"}</MathText></span>
+                    {chips[end].map((o, i) => {
+                      const chosen = pickNow[end].includes(i);
+                      const st = chosen ? (o.right ? 'right' : 'wrong') : 'idle';
+                      return (
+                        <button key={i} type="button" onClick={() => pick(end, i)} disabled={locked || pickedRight(end) || st === 'wrong'} aria-pressed={chosen}
+                          data-pl-chip={`${end}:${i}`} data-state={st}
+                          className={`relative inline-flex h-12 min-w-[3.25rem] items-center justify-center rounded-xl border-2 px-2 text-lg font-black ${ringCls} ${st === 'right' ? 'border-emerald-700 bg-emerald-700 text-white' : st === 'wrong' ? 'border-rose-200 bg-rose-50 text-rose-800 line-through opacity-80' : 'border-indigo-200 bg-white text-indigo-950'}`}>
+                          <span className="pointer-events-none">{fracNode(o.text)}</span>
+                          {st !== 'idle' && <span className="sr-only">{k(st === 'right' ? 'cueRight' : 'cueWrong')}</span>}
+                        </button>
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
+            ) : (!gameScreen || ratiosMode === 'show') && (
+              <div className={`flex flex-wrap items-center justify-center gap-x-3 gap-y-1 ${narrow ? 'text-xs' : 'text-sm'} font-bold text-slate-800`} data-pl-ratios>
+                <MathText>{rB}</MathText><span aria-hidden="true">،</span><MathText>{rC}</MathText>
+              </div>
+            )}
+            {picking && (
+              <p role="status" className="min-h-[1.25rem] text-center text-xs font-bold text-rose-800" data-pl-pick-why>
+                {['B', 'C'].map((end) => {
+                  const wrong = pickNow[end].filter((i) => !chips[end][i].right);
+                  if (!wrong.length || pickedRight(end)) return null;
+                  return <span key={end} className="mx-1">{k(`pickWhy.${chips[end][wrong.at(-1)].why}`)}</span>;
+                })}
+              </p>
+            )}
+    </>
+  );
+  const sideBlock = (
+    <>
             {crossing && (
               <p className="text-center text-xs font-semibold text-slate-600" data-pl-side={r.sameOrder ? 'same' : 'opposite'}>
                 <bdi dir="ltr" className="font-mono">B′</bdi> {sideText('B')} ، <bdi dir="ltr" className="font-mono">C′</bdi> {sideText('C')}
@@ -311,20 +550,162 @@ export default function ParallelLevel({
                   return (
                     <li key={f} data-pl-figure={f} data-made={tr ? 'true' : 'false'} data-ok={tr ? String(tr.parallel) : undefined}
                       className={`rounded-full border px-2.5 py-0.5 text-xs font-bold ${!tr ? 'border-slate-200 bg-slate-50 text-slate-500' : tr.parallel ? 'border-emerald-300 bg-emerald-50 text-emerald-900' : 'border-rose-300 bg-rose-50 text-rose-800'}`}>
-                      {k('figureChip', { n: f })} {tr ? (tr.parallel ? '✓' : '✗') : '…'}
+                      {k('figureChip', { n: f })} {!gameScreen ? (tr ? (tr.parallel ? '✓' : '✗') : '…') : (
+                        <><span aria-hidden="true">{tr ? (tr.parallel ? '✓' : '✗') : '…'}</span>{tr && <span className="sr-only">{k(tr.parallel ? 'rowLevel' : 'rowTilted')}</span>}</>
+                      )}
                     </li>
                   );
                 })}
               </ul>
             )}
-            <p role="status" className={`min-h-[2.5rem] text-center ${narrow ? 'text-xs' : 'text-sm'} font-bold leading-snug ${last ? TONE[last.kind] : 'text-slate-500'}`}
-              data-pl-verdict={last?.kind ?? ''}>
-              {verdict ?? k('waiting')}
-            </p>
+    </>
+  );
+  const playerRepresentation = gameScreen && !quiet && (
+    <div className="space-y-2" data-pl-player-col>
+      {ratioBlock}
+      {sideBlock}
+      {/* le texte VISIBLE du verdict ; l'annonce passe par la région vivante toujours montée de la scène (`data-pl-verdict-live`) */}
+      <div data-pl-verdict-box>
+        {last && bubbleShown ? (
+          <p key={`v${lab.trials.length}:${revealed}`} className={`rounded-xl border border-slate-200 bg-white px-3 py-2 text-center text-sm font-bold leading-snug ${TONE[last.kind]}`} data-pl-verdict={last.kind}>
+            <span aria-hidden="true">{lastOk ? '✓ ' : '✗ '}</span>
+            {verdict}
+          </p>
+        ) : (
+          <p className="rounded-xl border border-dashed border-slate-300 bg-white/70 px-3 py-2 text-center text-sm font-bold text-slate-600" data-pl-verdict="">{k(picking && !picksDone ? 'waitingPick' : 'waitingPress')}</p>
+        )}
+        {shownPreds.map((pr) => (
+          <p key={pr.key} data-pl-predict-result={pr.ok ? 'ok' : 'wrong'} data-pl-predict-key={pr.key}
+            className={`mt-2 rounded-2xl px-4 py-2 text-center text-lg font-black ${pr.ok ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>
+            {pr.ok ? t('manipulation.common.cp.predict.right') : k('predict.wrong')}
+          </p>
+        ))}
+      </div>
+      {/* la règle trouvée (la découverte en clair) prend la place du journal : la colonne ne déborde pas */}
+      {journal.length > 0 && !state.isFormal && (
+        <div data-pl-journal>
+          <p id={journalId} className="text-sm font-black text-indigo-900"><span aria-hidden="true">📋 </span>{k('journal')}</p>
+          <table className="mt-1 w-full table-fixed text-center text-xs" dir="ltr" aria-labelledby={journalId}>
+            <thead>
+              <tr className="bg-slate-50">
+                <th scope="col" className="font-mono">B′</th><th scope="col" className="font-mono">C′</th>
+                {journalRatios && <th scope="col"><MathText>{"$\\tfrac{AB'}{AB}$"}</MathText></th>}
+                {journalRatios && <th scope="col"><MathText>{"$\\tfrac{AC'}{AC}$"}</MathText></th>}
+                <th scope="col"><span aria-hidden="true">⚖️</span><span className="sr-only">{k('colBubble')}</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              {journal.map((x, i) => {
+                const ok = x.parallel && x.kind !== 'condition';
+                return (
+                  <tr key={`${x.bp}|${x.cp}|${i}`} data-pl-row={x.kind}>
+                    <td className="border border-slate-200 font-mono"><bdi dir="ltr">{Math.abs(x.bp)}{sideGlyph(x.bp)}</bdi></td>
+                    <td className="border border-slate-200 font-mono"><bdi dir="ltr">{Math.abs(x.cp)}{sideGlyph(x.cp)}</bdi></td>
+                    {journalRatios && <td className="border border-slate-200">{fracNode(LIN.fracText(x.ratioB))}</td>}
+                    {journalRatios && <td className="border border-slate-200">{fracNode(LIN.fracText(x.ratioC))}</td>}
+                    <td className={`border border-slate-200 font-black ${ok ? 'text-emerald-800' : 'text-rose-800'}`}>
+                      <span aria-hidden="true">{ok ? '✓' : '✗'}</span><span className="sr-only">{k(ok ? 'rowLevel' : x.kind === 'condition' ? 'rowCondition' : 'rowTilted')}</span>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          {crossing && <p className="mt-1 text-xs text-slate-600">{k('journalBeyond')}</p>}
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <ManipulationShell
+      type="parallel-level"
+      title={title ?? k('title')}
+      mission={missionText}
+      lead={lead}
+      state={state}
+      coach={gameScreen && coachOn ? coach : null}
+      allowModeSwitch={allowModeSwitch}
+      allowFreeLab={false}
+      headerAction={cpOn ? cpSettings.control : null}
+      // lecteur : l'écran de jeu est toujours GUIDÉ (les manches et les questions guident)
+      guided={cpEnabled || gameScreen}
+      hideRepresentation={(gameScreen && locked) || undefined}
+      onIntroChange={gameScreen ? setMissionBig : undefined}
+      sidePanel={trayNode ? <div data-pl-tray>{trayNode}</div> : null}
+      representation={gameScreen ? playerRepresentation : undefined}
+      hints={(crossing ? ['hintC1', 'hintC2', 'hintC3'] : ['hintL1', 'hintL2', 'hintL3']).map((h) => <MathText key={h}>{k(h, { target: lab.target ? LIN.fracLatex(lab.target) : '' })}</MathText>)}
+      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      // lecteur : la règle est la DERNIÈRE question de la manche (son explication est la forme formelle) — pas de panneau de découverte en plus
+      // dans la colonne (il la faisait déborder)
+      discovery={gameScreen ? null : (
+        <ManipulationDiscovery state={state} prompt={<MathText>{k(crossing ? 'dPromptCross' : 'dPromptLadder')}</MathText>} options={discoveryOptions} formal={formal} />
+      )}
+      explanation={<MathText>{k(crossing ? 'explanationCross' : 'explanationLadder')}</MathText>}
+    >
+      <ManipulationStage className="bg-gradient-to-b from-amber-50/60 to-white" minHeight="min-h-[160px]">
+        <div ref={boxRef} className="space-y-2" data-parallel-level data-mode={lab.mode} data-world={theme}
+          data-solved={solvedAll ? 'true' : 'false'} data-bp={r.bp} data-cp={r.cp} data-scene-h={sceneH}
+          data-revealed={gameScreen ? (bubbleShown ? 'true' : 'false') : undefined}>
+          <div className="relative space-y-2">
+          {party.node}
+          {/* lecteur : la région vivante TOUJOURS montée (revue a11y 2026-11-10) — la colonne se démonte quand une question s'ouvre, l'annonce du
+              verdict ne doit pas partir avec elle ; une clé par essai */}
+          {gameScreen && (
+            <div role="status" aria-live="polite" className="sr-only" data-pl-verdict-live>
+              {last && bubbleShown && <span key={`v${lab.trials.length}:${revealed}`}>{k(lastOk ? 'cueRight' : 'cueWrong')} {verdict}</span>}
+              {shownPreds.map((pr) => <span key={pr.key}> {pr.ok ? t('manipulation.common.cp.predict.right') : k('predict.wrong')}</span>)}
+              {pairSaid && <span key={pairSaid}> {k('pairNow', { b: pairSaid.split('|')[0], c: pairSaid.split('|')[1] })}</span>}
+            </div>
+          )}
+          {!(gameScreen && cp.open) && cp.node}
+          <div ref={glanceRef} className="space-y-2" data-pl-glance>
+            {showStepper && <LabStepper count={steps.length} current={stepNow} done={stepDone} stepAttr="data-pl-step" />}
+            {gameScreen && choices?.length > 0 && (
+              <div className="flex flex-wrap items-center justify-center gap-1.5" role="group" aria-labelledby={`${uid}-choices`} data-pl-choices>
+                <span id={`${uid}-choices`} className="text-sm font-bold text-slate-600">{k('choicesLabel')}</span>
+                {choices.map(([b, c]) => {
+                  const on = b === nums.AB && c === nums.AC;
+                  return (
+                    <button key={`${b}-${c}`} type="button" data-pl-choice={`${b}-${c}`} disabled={locked} aria-pressed={on}
+                      onClick={() => { if (!lockedRef.current) { state.setNumbers({ ...state.numbers, AB: b, AC: c }); setPairSaid(`${b}|${c}`); } }}
+                      className={`min-h-[44px] rounded-xl border-2 px-3 text-sm font-black ${ringCls} ${on ? 'border-indigo-600 bg-indigo-50 text-indigo-900' : 'border-slate-300 bg-white text-slate-700'}`}>
+                      <bdi dir="ltr">{`${b} · ${c}`}</bdi><span className="sr-only"> {k('choiceAria', { b, c })}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+            <div ref={sceneRef} className="relative mx-auto" style={{ width: sceneW, height: sceneH }} data-pl-scene>
+              <Scene geo={geo} lab={lab} crossing={crossing} tag={tag} hidden={!bubbleShown} />
+              {track('B')}
+              {track('C')}
+            </div>
+            {/* lecteur : les commandes dans l'ordre du dessin (B à gauche, C à droite) — dir="ltr" (la page garde le sien) */}
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5" data-pl-controls dir={gameScreen ? 'ltr' : undefined}>
+              {arrows('B')}
+              {arrows('C')}
+              {gameScreen && (
+                <button type="button" onClick={press} aria-disabled={!canPress || undefined} data-pl-press
+                  // aria-disabled, pas disabled : le focus clavier reste sur le bouton après l'appui (`press` se garde lui-même)
+                  className={`inline-flex min-h-[48px] items-center gap-2 rounded-2xl border-2 px-5 text-base font-black shadow-[0_3px_0_0_#065F46] ${canPress ? 'border-emerald-700 bg-emerald-700 text-white' : 'border-slate-300 bg-slate-200 text-slate-600 shadow-none'} ${ringCls}`}>
+                  <span aria-hidden="true">⚖️</span> {k('press')}
+                </button>
+              )}
+              <Deco onSpray={() => setTag((n) => n + 1)} />
+            </div>
+            {/* lecteur : les rapports (ou les pastilles), le côté de A et les figures sont dans la COLONNE (la scène garde la hauteur) */}
+            {!gameScreen && <>{ratioBlock}{sideBlock}</>}
+            {!gameScreen && (
+              <p role="status" className={`min-h-[2.5rem] text-center ${narrow ? 'text-xs' : 'text-sm'} font-bold leading-snug ${last ? TONE[last.kind] : 'text-slate-500'}`}
+                data-pl-verdict={last?.kind ?? ''}>
+                {verdict ?? k('waiting')}
+              </p>
+            )}
           </div>
           </div>
 
-          {lab.trials.length > 0 && (
+          {!gameScreen && lab.trials.length > 0 && (
             <LabFold id="parallel-level.trials" title={k('trialsTitle')}>
               <ul className="space-y-0.5 text-xs" data-pl-trials={lab.trials.length}>
                 {lab.trials.map((x, i) => (
@@ -344,7 +725,8 @@ export default function ParallelLevel({
 /* ── la scène : le mur, le sol, les barres graduées, la planche et son niveau ── */
 const TAG_COLORS = ['#EC4899', '#8B5CF6', '#06B6D4', '#F59E0B'];
 
-function Scene({ geo, lab, crossing, tag }) {
+/** `hidden` (lecteur, « ضع الميزان ») : la bulle est cachée — le tube montre « ? » et la planche une couleur neutre, jusqu'à l'appui. */
+function Scene({ geo, lab, crossing, tag, hidden = false }) {
   const { A, B, C, topB, topC, Bp, Cp, deg, bubble, parallel, width, height } = geo;
   const reduce = useReducedMotion();
   const textProps = { direction: 'ltr', unicodeBidi: 'isolate' };
@@ -400,14 +782,18 @@ function Scene({ geo, lab, crossing, tag }) {
       {bar('C')}
       {/* la planche (B′C′) et son niveau à bulle */}
       <line x1={left[0] - ux * ext} y1={left[1] - uy * ext} x2={right[0] + ux * ext} y2={right[1] + uy * ext}
-        stroke={parallel ? '#B45309' : '#C2410C'} strokeWidth={8} strokeLinecap="round" data-pl-plank data-parallel={parallel ? 'true' : 'false'} />
-      <g transform={`translate(${mid[0]} ${mid[1] - 11}) rotate(${deg})`} data-pl-bubble data-offset={bubble.toFixed(2)}>
+        stroke={hidden ? '#A16207' : parallel ? '#B45309' : '#C2410C'} strokeWidth={8} strokeLinecap="round" data-pl-plank data-parallel={parallel ? 'true' : 'false'} />
+      <g transform={`translate(${mid[0]} ${mid[1] - 11}) rotate(${deg})`} data-pl-bubble data-offset={hidden ? '' : bubble.toFixed(2)}>
         <rect x={-vialW / 2 - 4} y={-8} width={vialW + 8} height={16} rx={4} fill="#1E293B" />
-        <rect x={-vialW / 2} y={-5} width={vialW} height={10} rx={5} fill={parallel ? '#BBF7D0' : '#FEF08A'} />
+        <rect x={-vialW / 2} y={-5} width={vialW} height={10} rx={5} fill={hidden ? '#CBD5E1' : parallel ? '#BBF7D0' : '#FEF08A'} />
         <line x1={-7} x2={-7} y1={-5} y2={5} stroke="#334155" strokeWidth={1.2} />
         <line x1={7} x2={7} y1={-5} y2={5} stroke="#334155" strokeWidth={1.2} />
-        <ellipse cx={bubble * (vialW / 2 - 7)} cy={0} rx={6} ry={3.6} fill="#FFFFFF" stroke="#64748B" strokeWidth={0.8}
-          style={{ transition: reduce ? 'none' : 'cx 220ms ease-out' }} />
+        {hidden ? (
+          <text x={0} y={4} textAnchor="middle" fontSize={11} fontWeight={900} fill="#334155" style={{ direction: 'ltr' }} data-pl-bubble-hidden>?</text>
+        ) : (
+          <ellipse cx={bubble * (vialW / 2 - 7)} cy={0} rx={6} ry={3.6} fill="#FFFFFF" stroke="#64748B" strokeWidth={0.8}
+            style={{ transition: reduce ? 'none' : 'cx 220ms ease-out' }} />
+        )}
       </g>
       {/* les points nommés (texte LTR) */}
       <circle cx={A[0]} cy={A[1]} r={4} fill="#0F172A" />
@@ -621,3 +1007,91 @@ const RAW_QUESTIONS = {
 };
 
 export const QUESTIONS = spreadAll(RAW_QUESTIONS, (lab) => lab.b + lab.c);
+
+/* ══════════════ Lecteur de mission : les suites des manches (rollout 2026-11-10, conseil L2.2–L2.4) ══════════════ */
+
+/**
+ * Les suites du lecteur, par mode : chacune { id, reached(lab), qs } — l'id est le point d'étape de la manche (`{ checkpoint: id }`), posé quand
+ * ce qu'il interroge est là, dans l'ordre de la liste. Voir l'en-tête « LECTEUR DE MISSION ».
+ */
+const firstLevel = (lab) => L.levelRatios(lab).length >= 1;
+export const CHAINS_PLAYER = Object.freeze({
+  ladder: [{ id: 'lv', reached: firstLevel, qs: ['lvFill'] }, { id: 'rule', reached: L.playerDiscovery, qs: ['ratioBuild', 'rule'] }],
+  ladderEasy: [{ id: 'lv', reached: firstLevel, qs: ['lvFill'] }],
+  side: [{ id: 'side', reached: L.stageOneReached, qs: ['crSide'] }],
+  cross: [{ id: 'beyond', reached: (lab) => L.figuresMade(lab).includes('1'), qs: ['beyondFill'] }, { id: 'order', reached: L.discoveryReady, qs: ['orderFill', 'rule'] }],
+  none: [],
+});
+export const chainsOfPlayer = (mode) => CHAINS_PLAYER[mode] ?? [];
+
+/** Une pastille de rapport à une place qui tourne avec les nombres (jamais toujours la première). */
+const spinList = (xs, seed) => { const s = ((seed % xs.length) + xs.length) % xs.length; return xs.map((_, i) => xs[(i + s) % xs.length]); };
+const ratioField = (lab, end, at, k) => {
+  const opts = L.chipOptions(lab, end, at);
+  return {
+    label: <MathText>{end === 'B' ? "$\\dfrac{AB'}{AB}$" : "$\\dfrac{AC'}{AC}$"}</MathText>,
+    expected: opts.find((o) => o.right).text, options: opts.map((o) => o.text), render: fracNode,
+  };
+};
+
+Object.assign(QUESTIONS, {
+  /* manche 1 — la première planche de niveau : ses deux rapports, d'un toucher (pastilles : la bonne, AB′/BB′, l'inverse) */
+  lvFill: (lab, step, k) => {
+    const tr = levelTrial(lab);
+    const at = { bp: tr.bp, cp: tr.cp };
+    const o = { bp: tr.bp, cp: tr.cp, b: lab.b, c: lab.c, rawB: $(fx(tr.bp, lab.b)), eq: $(`${fx(tr.bp, lab.b)} = ${fx(tr.cp, lab.c)} = ${LIN.fracLatex(tr.ratioB)}`) };
+    return {
+      id: 'lvFill', kind: 'fill', prompt: Mx(k, 'lvFill.prompt', o),
+      fields: [ratioField(lab, 'B', at, k), ratioField(lab, 'C', at, k)],
+      hints: [Mx(k, 'lvFill.hint1', o), Mx(k, 'lvFill.hint2', o)], explain: Mx(k, 'lvFill.explain', o),
+    };
+  },
+  /* manche 1 — BÂTIR « AB′/AB = AC′/AC » : AB′/AB déjà posé à gauche ; AC′, AC et le leurre CC′ ; l'autre sens accepté (conseil L2.3) */
+  ratioBuild: (lab, step, k) => {
+    const rest = spinList(["AC′", 'AC', "CC′"], lab.b + lab.c);
+    return {
+      id: 'ratioBuild', kind: 'build', prompt: Mx(k, 'ratioBuild.prompt'),
+      slots: [k('cp.ratioBuild.slotPart'), k('cp.ratioBuild.slotWhole'), k('cp.ratioBuild.slotPart'), k('cp.ratioBuild.slotWhole')],
+      ops: ['/', '=', '/'],
+      tiles: ["AB′", 'AB', ...rest], preset: ["AB′", 'AB', null, null],
+      expected: ["AB′", 'AB', "AC′", 'AC'], accept: [["AC′", 'AC', "AB′", 'AB']],
+      hints: [Mx(k, 'ratioBuild.hint1'), Mx(k, 'ratioBuild.hint2')], explain: Mx(k, 'ratioBuild.explain'),
+    };
+  },
+  /* manche 3 — une planche de niveau AU-DELÀ de A : ses rapports sont des rapports de LONGUEURS, positifs (pastilles : r, −r, l'inverse) */
+  beyondFill: (lab, step, k) => {
+    const tr = firstOf(lab, '1');
+    const field = (end) => {
+      const a = Math.abs(end === 'B' ? tr.bp : tr.cp); const n = end === 'B' ? lab.b : lab.c;
+      const right = LIN.frac(a, n);
+      const opts = spinList([LIN.fracText(right), `−${LIN.fracText(right)}`, LIN.fracText(LIN.frac(n, a))], a + n + (end === 'B' ? 0 : 2));
+      return { label: <MathText>{end === 'B' ? "$\\dfrac{AB'}{AB}$" : "$\\dfrac{AC'}{AC}$"}</MathText>, expected: LIN.fracText(right), options: opts, render: fracNode };
+    };
+    const o = {
+      db: Math.abs(tr.bp), dc: Math.abs(tr.cp), b: lab.b, c: lab.c, rawB: $(fx(Math.abs(tr.bp), lab.b)),
+      eq: $(`${fx(Math.abs(tr.bp), lab.b)} = ${fx(Math.abs(tr.cp), lab.c)} = ${LIN.fracLatex(LIN.frac(Math.abs(tr.bp), lab.b))}`),
+    };
+    return {
+      id: 'beyondFill', kind: 'fill', prompt: Mx(k, 'beyondFill.prompt', o), fields: [field('B'), field('C')],
+      hints: [Mx(k, 'beyondFill.hint1', o), Mx(k, 'beyondFill.hint2', o)], explain: Mx(k, 'beyondFill.explain', o),
+    };
+  },
+  /* manche 3 — la planche refusée aux rapports égaux : sur chaque droite, quel point est ENTRE les deux autres ? (l'ordre) */
+  orderFill: (lab, step, k) => {
+    const tr = firstOf(lab, '3') ?? firstOf(lab, '3m');
+    const midB = tr.bp > 0 ? "B′" : 'A';
+    const midC = tr.cp > 0 ? "C′" : 'A';
+    const o = {
+      db: Math.abs(tr.bp), dc: Math.abs(tr.cp),
+      sideB: tr.bp > 0 ? k('sideBetweenB') : k('sideBeyond'), sideC: tr.cp > 0 ? k('sideBetweenC') : k('sideBeyond'), midB, midC,
+    };
+    return {
+      id: 'orderFill', kind: 'fill', prompt: Mx(k, 'orderFill.prompt', o),
+      fields: [
+        { label: k('cp.orderFill.onD'), expected: midB, options: ['A', "B′", 'B'] },
+        { label: k('cp.orderFill.onD2'), expected: midC, options: ['A', "C′", 'C'] },
+      ],
+      hints: [Mx(k, 'orderFill.hint1', o), Mx(k, 'orderFill.hint2', o)], explain: Mx(k, 'orderFill.explain', o),
+    };
+  },
+});

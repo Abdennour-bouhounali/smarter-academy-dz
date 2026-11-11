@@ -75,7 +75,7 @@ export default function ChallengeReviewPage() {
                     {q.learningPoint?.title && <span className="font-inter text-xs text-indigo-600"><MathLabel>{q.learningPoint.title}</MathLabel></span>}
                     <span dir="ltr" className="ms-auto font-mono-jetbrains text-xs text-slate-500">{formatSeconds(q.responseTimeMs)} ث · +{q.score.total}</span>
                   </div>
-                  {q.content?.statement?.content && <div className="mt-3 rounded-2xl bg-slate-50 p-3"><ExerciseStatement content={q.content.statement.content} visual={q.content.statement.visual} figure={q.content.statement.figure} /></div>}
+                  {q.content?.statement?.content && <div className="mt-3 rounded-2xl bg-slate-50 p-3"><ExerciseStatement content={q.content.statement.content} visual={q.content.statement.visual} formulas={q.content.statement.formulas} table={q.content.statement.table} figure={q.content.statement.figure} /></div>}
                   <p className="mt-3 text-lg font-bold text-slate-900"><RichText>{question?.statement ?? ''}</RichText></p>
                   <dl className="mt-3 grid gap-2 sm:grid-cols-2">
                     <div className={`rounded-2xl p-3 ${q.isCorrect ? 'bg-emerald-50' : 'bg-rose-50'}`}>

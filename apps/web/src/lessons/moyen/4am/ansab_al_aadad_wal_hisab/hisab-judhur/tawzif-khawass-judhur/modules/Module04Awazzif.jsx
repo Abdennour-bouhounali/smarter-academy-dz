@@ -24,59 +24,59 @@ export default function Module04Awazzif() {
       navLinks={getNavLinks(4)}
       moduleNumber={4}
       moduleTitle="أوظّف تعلّماتي"
-      moduleSubtitle="تمارين الكتاب 18، 19، 22، 23، 24، 26، 27 و 31"
+      moduleSubtitle="أبسط كتابة، مقام ناطق، وتبسيط عبارات"
       estimatedTime="12 دقيقة"
       objectives={['هل أتقن كتابة جذر على أبسط شكل وإدخال معامل تحته؟', 'كيف أجعل مقام نسبة عددًا ناطقًا؟', 'كيف أبسّط عبارة فيها جذور؟']}
-      brief={{ tag: 'أوظّف تعلّماتي — الكتاب ص 27 و 29', title: 'تمارين الكتاب، بأعداده', tone: 'amber',
+      brief={{ tag: 'أوظّف تعلّماتي', title: 'تمارين للتدريب', tone: 'amber',
         body: <p>لكل عدد اختر الكتابة المطلوبة، ثم اقرأ التصحيح: الخطأ هنا يُصحَّح ولا يُحتسب.</p> }}
       steps={[
-        { num: 1, title: 'تمرين 18 — أبسط كتابة لجذر', done: all('18'),
+        { num: 1, title: 'أبسط كتابة لجذر', done: all('18'),
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="kitaba-a-jidhr-b" variant="rappel" compact />
               {partsOf('18').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['kitaba-a-jidhr-b']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 2, title: 'تمرين 19 — إدخال المعامل تحت الجذر', done: all('19'),
+        { num: 2, title: 'إدخال المعامل تحت الجذر', done: all('19'),
           content: (
             <div className="space-y-3">
               {partsOf('19').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['jidhr-a2b']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 3, title: 'تمرين 22 — نسبة مقامها عدد ناطق', done: all('22'),
+        { num: 3, title: 'نسبة مقامها عدد ناطق', done: all('22'),
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="naqt-maqam" variant="rappel" compact />
               {partsOf('22').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['naqt-maqam']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 4, title: 'تمرين 23 — نسبة بسطها مجموع', done: all('23'),
+        { num: 4, title: 'نسبة بسطها مجموع', done: all('23'),
           content: (
             <div className="space-y-3">
               {partsOf('23').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['naqt-maqam', 'tabsit-tawzii']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 5, title: 'تمرين 24 — تعيين العدد', done: all('24'),
+        { num: 5, title: 'تعيين العدد', done: all('24'),
           content: (
             <div className="space-y-3">
               {partsOf('24').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['naqt-maqam']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 6, title: 'تمرين 26 — تبسيط عبارة', done: all('26'),
+        { num: 6, title: 'تبسيط عبارة', done: all('26'),
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tabsit-tawzii" variant="rappel" compact />
               {partsOf('26').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['kitaba-a-jidhr-b', 'tabsit-tawzii']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 7, title: 'تمرين 27 — كتابة مبسطة لعددين', done: all('27'),
+        { num: 7, title: 'كتابة مبسطة لعددين', done: all('27'),
           content: (
             <div className="space-y-3">
               {partsOf('27').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['kitaba-a-jidhr-b', 'tabsit-tawzii']} onAnswered={mark(ex.id)} />)}
               <TextbookBox kind="remark" text={EX27_NOTE.text} source={EX27_NOTE.source} compact />
             </div>
           ) },
-        { num: 8, title: 'تمرين 31 (2) — مقلوب مجموع جذرين', done: all('31'),
+        { num: 8, title: 'مقلوب مجموع جذرين', done: all('31'),
           content: (
             <div className="space-y-3">
               {partsOf('31').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['mutatabiqat', 'naqt-maqam']} onAnswered={mark(ex.id)} />)}

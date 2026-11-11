@@ -107,6 +107,10 @@ describe('les six وضعيات تدريبية de « أدمج تعلّماتي »
     }
   });
 
+  it('the data to sort are PLAIN text — InfoSorter writes them as they are (a « $ » showed raw on screen, walk of 2026-11-10)', () => {
+    for (const p of PROBLEMS) for (const d of p.data ?? []) expect(d.text, `${p.id} ${d.id}`).not.toMatch(/\$|\\/);
+  });
+
   it('a problem that sorts its data has a useless datum, one of them a number', () => {
     for (const p of PROBLEMS.filter((q) => q.parts[0].steps.some((s) => s.kind === 'sort'))) {
       const useless = p.data.filter((d) => !d.useful);
@@ -125,9 +129,10 @@ describe('les six وضعيات تدريبية de « أدمج تعلّماتي »
       expect(validateGeoFigure(p.figure), p.id).toEqual([]);
       expect(figureQuality(p.figure), p.id).toEqual([]);
     }
-    // وضعية 1 : OB = 2, OA = 10, BE = 1,5, AM = 7,5 ; O, E, M alignés ; (BE) // (AM).
+    // وضعية 1 (renumérotée le 2026-11-10 : le bâton 1,5 m et son ombre 2 m sont ceux du défi 🏆) : OB = 1,8, OA = 11,7, BE = 1,2, AM = 7,8 ;
+    // O, E, M alignés ; (BE) // (AM).
     const a = PROBLEM['wadiya-1'].figure.points;
-    expect([dist(a.O, a.B), dist(a.O, a.A), dist(a.B, a.E), dist(a.A, a.M)]).toEqual([2, 10, 1.5, 7.5]);
+    expect([dist(a.O, a.B), dist(a.O, a.A), dist(a.B, a.E), dist(a.A, a.M)].map((x) => Number(x.toFixed(6)))).toEqual([1.8, 11.7, 1.2, 7.8]);
     expect(collinear(a, 'O', 'E', 'M') && parallel(a, ['B', 'E'], ['A', 'M'])).toBe(true);
     // وضعية 2 : AB = 10, AC = 6,5, BC = 10,5 (×10 cm) ; AM = 6, AN = 4 ; (MN) non parallèle à (BC).
     const b = PROBLEM['wadiya-2'].figure.points;
@@ -159,14 +164,16 @@ describe('les six وضعيات تدريبية de « أدمج تعلّماتي »
   });
 
   it('وضعية 1 — the numbers are computed, not typed', () => {
-    const AM = TH.heightFromShadow({ stick: '1,5', stickAt: 8, tip: 10 });
-    expect(same(AM, '7,5')).toBe(true);
-    expect(answers('wadiya-1', 0)).toEqual([5, 7.5]);
-    expect(same(LIN.div(F(10), F(2)), 5)).toBe(true);
-    const price = LIN.mul(AM, F(1200));
-    const s = fourth('1,5', 2, '1,8'); // 1,8 / s = 1,5 / 2 ⇒ s = 1,8 × 2 ÷ 1,5
+    // le bâton BE = 1,2 m planté à OB = 1,8 m de O, l'ombre du mât OA = 11,7 m (stickAt = OA − OB)
+    const AM = TH.heightFromShadow({ stick: '1,2', stickAt: '9,9', tip: '11,7' });
+    expect(same(AM, '7,8')).toBe(true);
+    const ratio = LIN.div(F('11,7'), F('1,8'));
+    expect(answers('wadiya-1', 0)).toEqual([LIN.toNumber(ratio), LIN.toNumber(AM)]);
+    expect(same(ratio, '6,5')).toBe(true);
+    const price = LIN.mul(AM, F(1000));
+    const s = fourth('1,2', '1,8', '1,7'); // 1,7 / s = 1,2 / 1,8 ⇒ s = 1,7 × 1,8 ÷ 1,2
     expect(answers('wadiya-1', 1)).toEqual([LIN.toNumber(price), LIN.toNumber(s)]);
-    expect(LIN.toNumber(s)).toBe(2.4);
+    expect(LIN.toNumber(s)).toBe(2.55);
   });
 
   it('وضعية 2 — the cross products differ (60×65 ≠ 100×40) then AN, MN and the price', () => {

@@ -20,7 +20,7 @@ export default function Module03AtaallamAlBurhana() {
     <ContentModule objectives={["كيف أبرهن أن عددًا يقسم مجموعًا؟", "ما الخطوات التي يتألّف منها البرهان؟"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(3)} moduleNumber={3}
       moduleTitle="أتعلّم البرهنة" moduleSubtitle={PROOF.question} estimatedTime="12 دقيقة"
-      brief={{ tag: 'طرائق — الكتاب ص 11', title: PROOF.title, tone: 'emerald', body: <p>التخمين صار خاصية. لكن لماذا هو صحيح دائمًا، مهما كانت الأعداد؟ الكتاب يبرهن.</p> }}
+      brief={{ tag: 'طرائق — الكتاب ص 11', title: PROOF.title, tone: 'emerald', body: <p>التخمين صار خاصية. لكن لماذا هو صحيح دائمًا، مهما كانت الأعداد؟ نبرهن.</p> }}
       steps={[
         { num: 1, title: 'قبل البرهان: ما المعطيات؟ ما المطلوب؟', done: q1,
           content: (

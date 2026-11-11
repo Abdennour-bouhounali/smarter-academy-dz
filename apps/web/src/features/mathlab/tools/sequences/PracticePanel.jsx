@@ -70,7 +70,7 @@ export default function PracticePanel({
       <header className="sa-ml-seq__practicehead">
         <h3 className="sa-ml-seq__cardtitle">{t('tools.sequences.practice.heading')}</h3>
         <span className="sa-ml-seq__score" dir="ltr" data-ml-seq-practice-score>
-          {`${practice.solved} / ${practice.seen}`}
+          {`${practice.solved}\u00A0/\u00A0${practice.seen}`}
         </span>
         <button
           type="button"

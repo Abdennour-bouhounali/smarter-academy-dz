@@ -369,6 +369,10 @@ The game's refuel station (`MADAR_GAME.md` §5) reuses this feature's selector a
   - `warmup` keeps never-worked skills **after** the learned ones instead of dropping them. Madar uses it when the learned pool is exhausted; the daily challenge never sets it.
 - In the `student` scope, `snapshot.lessonCodes` now restricts the lessons, as it already did in the classroom scope. The personal daily challenge never sets it, so its behaviour is unchanged.
 - `ChallengeQuestionPresenter` accepts a `DailyChallengeQuestion` or a `MadarRefuel`. There is still one boundary between the answer key and the client.
+- Since 2026-11-09 it also serves by reference (`publicRef(lesson, exercise, question)`, used by « بوصلتي », `YEAR_COMPASS.md` §9), and the public
+  question carries the WHOLE setup: `statement.{content, formulas, table, figure}` and the question's `lead`. Before that fix the
+  `formulas` (« A = … ») and `table` were dropped, so « إليك العدد A حيث: » arrived alone and was unanswerable (811 statements have
+  formulas, 361 a table). The web side renders them through `ExerciseStatement` (`EXERCISE_CONTRACT.md`).
 
 ## 17. Not built (Planned)
 

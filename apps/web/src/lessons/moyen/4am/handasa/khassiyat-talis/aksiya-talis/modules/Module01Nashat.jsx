@@ -9,6 +9,9 @@ import { SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, LAB } from '../content/textbook';
 import { FIG_ACT2, FIG_ACT2_STUDENTS } from '../content/figures';
+import { M1_ROUNDS } from '../content/planks';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
 
 /**
  * Module 1 — نشاط 2 (p. 105) « الخاصية العكسية لخاصية طالس », ouvert sur LE NIVEAU À BULLE (parallel-level).
@@ -26,6 +29,12 @@ import { FIG_ACT2, FIG_ACT2_STUDENTS } from '../content/figures';
  * AVANT de voir le texte, puis la question et la brique s'affichent.
  * La « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) ferme la dernière étape (les labs sont dans `intro`) : le même tréteau en X,
  * d'autres nombres, résolu au module 5.
+ *
+ * LECTEUR DE MISSION (rollout 2026-11-10, unité 9 leçon 2 ; conseil du 2026-11-10, verdict L2) : le labo se joue en MANCHES (content/planks.js ›
+ * M1_ROUNDS : l'échelle 3 / 6 à la main → le tréteau 9 / 12 au rapport 1/3 → le tréteau 8 / 12 libre, requis → défi ⭐ 12 / 16 → la ورشة libre)
+ * au lieu de مبتدئ / متقدم ; un essai est un appui sur « ضع الميزان ». L'étape 1 attend la manche 2 (les figures 1 et 2 au rapport 1/3), l'étape 2
+ * la manche 3 (la figure 3 refusée par la bulle). Ce que la ligne de trace dit vient des manches GAGNÉES (étoiles gardées, annoncées par LabRounds
+ * au montage) : un rechargement ne bloque ni ne vide jamais une étape. Hors lecteur : inchangé.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const FIG_NAME = { 1: 'الشكل 1', 2: 'الشكل 2', 3: 'الشكل 3', '3m': 'الشكل 3 (بالتبادل)' };
@@ -39,6 +48,18 @@ export default function Module01Nashat() {
   const [q4, setQ4] = useState(false);
 
   const onTrial = (tr) => { if (tr?.figure) setTrials((t) => [...t.filter((x) => x.figure !== tr.figure), tr]); };
+  // lecteur : les manches gagnées (étoiles gardées, annoncées par LabRounds au montage) ouvrent les étapes et remplissent leur trace
+  const [won, setWon] = useState({});
+  const evidencePlayer = (
+    <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={won.r2 || won.r3 ? 'true' : 'false'}>
+      <li className={won.r2 ? 'font-bold text-emerald-900' : 'text-slate-500'} data-evidence="r2" data-tried={won.r2 ? 'true' : 'false'}>
+        {won.r2 ? '✓ الجولة 2: بشرط الأستاذ (كل نسبة ثلث) وضعتَ اللوح أفقيًا بين A والأرض (الشكل 2) وفوق A (الشكل 1).' : 'الجولة 2: لم تضع بعد اللوح أفقيًا بشرط الأستاذ.'}
+      </li>
+      <li className={won.r3 ? 'font-bold text-rose-800' : 'text-slate-500'} data-evidence="r3" data-tried={won.r3 ? 'true' : 'false'}>
+        {won.r3 ? '✗ الجولة 3: لوح نسبتاه متساويتان وطرفاه في جهتين مختلفتين من A (الشكل 3): بقيت الفقاعة مائلة.' : 'الجولة 3: لم تجرّب بعد لوحًا طرفاه في جهتين مختلفتين من A.'}
+      </li>
+    </ul>
+  );
   const evidence = (
     <div className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={trials.length ? 'true' : 'false'}>
       {trials.length === 0 ? (
@@ -57,23 +78,33 @@ export default function Module01Nashat() {
       )}
     </div>
   );
-  const figures = (
-    <div className="grid gap-1 grid-cols-3" data-act2-figures>
+  const figureGrid = (cls) => (
+    <div className={`grid gap-1 grid-cols-3 ${cls}`} data-act2-figures data-paging-keep>
       {[1, 2, 3].map((n) => <GeoFigure key={n} {...FIG_ACT2_STUDENTS[n]} />)}
     </div>
   );
+  // les trois figures : UN bloc pour les pages du lecteur (`data-paging-keep`) et plus étroites dans le lecteur (rollout 2026-11-10 — découpées,
+  // elles laissaient une grille vide ; pleine largeur, la page dépassait l'écran de 1024 × 768)
+  const figures = <PlayerSwitch player={figureGrid('mx-auto max-w-sm')} page={figureGrid('')} />;
 
   return (
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
       moduleNumber={1}
-      moduleTitle="نشاط 2 — اللوح الأفقي والأشكال الثلاثة"
+      moduleTitle="اللوح الأفقي والأشكال الثلاثة"
       moduleSubtitle="متى يكون (B′C′) موازيا لـ (BC)؟"
       objectives={['ما الذي يجعل اللوح (B′C′) أفقيًا؟', 'ماذا يحدث لو وضعنا B′ و C′ في جهتين مختلفتين من A؟', 'كيف نكتب النص الكامل للخاصية؟']}
       estimatedTime="13 دقيقة"
       intro={
         // LE LABO OUVRE LE MODULE (§4quater) : ni carte du manuel, ni titre / lead de workspace ; le contexte est le `lead` de chaque labo.
+        // Lecteur : les MANCHES (content/planks.js) ; la page garde ses deux niveaux.
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="m1-planks" rounds={M1_ROUNDS} icon="⚖️" freeIcon="🏟️"
+              onTrial={onTrial} onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))} />
+          )}
+          page={(
         <ManipulationWorkspace
           defaultLevel="beginner"
           levels={{
@@ -98,9 +129,12 @@ export default function Module01Nashat() {
             ),
           }}
         />
+          )}
+        />
       }
       steps={[
         {
+          needsRound: { id: 'r2', label: 'الجولة 2', icon: '⚖️', won: Boolean(won.r2) },
           num: 1, title: 'أ) توافق الأشكال مع الشروط', subtitle: 'السؤال 1) أ', done: q1,
           content: (
             <div className="space-y-3">
@@ -136,12 +170,13 @@ export default function Module01Nashat() {
           ),
         },
         {
+          needsRound: { id: 'r3', label: 'الجولة 3', icon: '⚖️', won: Boolean(won.r3) },
           num: 2, title: 'ب) متوازيان أم لا؟', subtitle: 'السؤال 1) ب', done: q2,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[1]}</MathText></p>
               {figures}
-              {evidence}
+              <PlayerSwitch player={evidencePlayer} page={evidence} />
               <BatchChoiceQuestion
                 rows={[
                   { id: 'p1', label: 'الشكل 1', options: ['متوازيان', 'غير متوازيين'], correct: 0, correction: ACTIVITY.answer.b[1] },
@@ -174,7 +209,7 @@ export default function Module01Nashat() {
                   onAnswered={() => setQ3(true)}
                 />
               </PredictRule>
-              {q3 && <KnowledgeBrick id="aksiya-nashat" lead="النص كاملا، كما يسمّيه الكتاب:" />}
+              {q3 && <KnowledgeBrick id="aksiya-nashat" lead="ما وجدته على الحامل، نصًّا كاملًا:" />}
             </div>
           ),
         },

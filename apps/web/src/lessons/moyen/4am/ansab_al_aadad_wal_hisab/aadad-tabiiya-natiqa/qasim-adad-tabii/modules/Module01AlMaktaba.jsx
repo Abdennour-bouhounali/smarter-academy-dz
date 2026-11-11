@@ -7,8 +7,7 @@ import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { MoreToggle } from '../../../../../../common/components/StudentFocus';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { TEAM_EXPERIENCE } from '../content/textbook';
-import { TEAMS_ACTIVITY, M1_ROUNDS, TEAM_ROLES, eqTex } from '../content/teams';
-import IdeasOrganizer from '../../../../../../common/mission/IdeasOrganizer';
+import { TEAMS_ACTIVITY, M1_ROUNDS, eqTex } from '../content/teams';
 import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
 import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
 
@@ -39,10 +38,8 @@ export default function Module01AlMaktaba() {
   // Dans le lecteur de mission, le labo se joue en MANCHES (LabRounds) : la manche 2 (16 joueurs) ouvre l'étape 1, la manche 3
   // (42 joueurs) l'étape 2. Hors lecteur (enseignant), les deux niveaux et leurs questions comme avant.
   const [won, setWon] = useState({});
-  // « رتّب أفكارك » (lecteur) : l'étape est faite quand la manche est gagnée ET l'idée formulée à partir du tableau
-  const [org, setOrg] = useState({});
-  const q1 = (Boolean(won.r2) && Boolean(org.s1)) || teamEv.some((e) => e.tk === 'checkpoint-done' && e.id === 'contrast');
-  const q2 = (Boolean(won.r3) && Boolean(org.s2)) || advEv.some((e) => e.tk === 'checkpoint-done' && e.id === 'contrast');
+  const q1 = Boolean(won.r2) || teamEv.some((e) => e.tk === 'checkpoint-done' && e.id === 'contrast');
+  const q2 = Boolean(won.r3) || advEv.some((e) => e.tk === 'checkpoint-done' && e.id === 'contrast');
   const { total, candidates, choices } = TEAMS_ACTIVITY;
   const [notDivisor, divisor] = candidates;
   // Le contraste du niveau débutant : une répartition juste ET une avec reste.
@@ -113,14 +110,14 @@ export default function Module01AlMaktaba() {
       }
       steps={[
         {
-          num: 1, title: 'لماذا بقي لاعب بلا فريق عند 16 لاعبًا؟', subtitle: 'من تجربتك في الملعب', done: q1,
+          needsRound: { id: 'r2', label: 'الجولة 2' }, num: 1, title: 'لماذا بقي لاعب بلا فريق عند 16 لاعبًا؟', subtitle: 'من تجربتك في الملعب', done: q1,
           content: (
             <div className="space-y-3">
               {/* LES ESSAIS DE L'ÉLÈVE aux équipes (jamais ceux qu'il n'a pas faits). `data-team-tried`, pas `data-tried` :
                   l'e2e compte les essais du RAYON. */}
               {/* Regard « focus » : tant que rien n'est essayé, la liste vide se replie sous « تجاربي » (MoreToggle : en ligne hors focus). */}
               <PlayerSwitch
-                player={won.r2 ? (<IdeasOrganizer title="رتّب أفكارك: ماذا رأيت في الملعب؟" labels={TEAM_ROLES} rows={teamKeys.map((key) => { const [n, k] = key.split(':').map(Number); return { n, g: k, q: Math.floor(n / k), r: n % k }; })} question={{ prompt: 'متى يدخل كل اللاعبين الفرق، دون أن يبقى أحد خارجها؟', options: ['عندما يكون الباقي 0', 'عندما يكون عدد اللاعبين زوجيًا', 'عندما يكون عدد الفرق أكبر من 3'], correct: 0, explain: 'الباقي هو عدد من بقي خارج الفرق: عندما يكون 0 يدخل الجميع.' }} onAnswered={() => setOrg((o) => ({ ...o, s1: true }))} />) : (<p className="rounded-xl border-2 border-indigo-100 bg-indigo-50 px-4 py-3 text-lg font-bold text-indigo-900">العب الجولة 1 ثم الجولة 2 في المختبر.</p>)}
+                player={null}
                 page={(
                   <>
               <MoreToggle force={teamKeys.length === 0 ? undefined : false} label="تجاربي">
@@ -161,12 +158,12 @@ export default function Module01AlMaktaba() {
           ),
         },
         {
-          num: 2, title: `لماذا لا يبقى لاعب خارج الفرق مع ${divisor} فرق ويبقى مع ${notDivisor}؟`, subtitle: `من تجربتك: ${total} لاعبًا في ${notDivisor} فرق ثم في ${divisor}`, done: q2,
+          needsRound: { id: 'r3', label: 'الجولة 3' }, num: 2, title: `لماذا لا يبقى لاعب خارج الفرق مع ${divisor} فرق ويبقى مع ${notDivisor}؟`, subtitle: `من تجربتك: ${total} لاعبًا في ${notDivisor} فرق ثم في ${divisor}`, done: q2,
           content: (
             <div className="space-y-3">
               {/* LES PREUVES DE L'ÉLÈVE, pas celles de l'écran : ce qu'il a vu sur le terrain, et rien de ce qu'il n'a pas essayé. */}
               <PlayerSwitch
-                player={won.r3 ? (<IdeasOrganizer title="رتّب أفكارك: ماذا رأيت في الملعب؟" labels={TEAM_ROLES} rows={Object.keys(tried).map(Number).sort((x, y) => x - y).map((k) => ({ n: total, g: k, q: tried[k].quotient, r: tried[k].remainder }))} question={{ prompt: `لماذا يصلح ${divisor} فرق لـ ${total} لاعبًا ولا يصلح ${notDivisor}؟`, options: [`لأنّ باقي قسمة ${total} على ${divisor} هو 0`, `لأنّ ${divisor} أكبر من ${notDivisor}`, `لأنّ ${divisor} عدد زوجي`], correct: 0, explain: `مع ${divisor} فرق: ${total} = ${divisor} × ${total / divisor} + 0، فلا يبقى أحد. ومع ${notDivisor} فرق يبقى ${total % notDivisor} خارج الفرق.` }} onAnswered={() => setOrg((o) => ({ ...o, s2: true }))} />) : (<p className="rounded-xl border-2 border-indigo-100 bg-indigo-50 px-4 py-3 text-lg font-bold text-indigo-900">العب الجولة 3 في المختبر.</p>)}
+                player={null}
                 page={(
                   <>
               <MoreToggle force={candidates.some((c) => tried[c]) ? false : undefined} label="تجاربي">

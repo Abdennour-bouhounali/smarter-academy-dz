@@ -823,7 +823,7 @@ frontend holds it in `StudyContextContext` (one fetch, `refresh()`).
 
 | Surface | What it does |
 |---|---|
-| `StudentHome` banner (`ClassContextBanner`) | « أنت تدرس ضمن القسم X مع الأستاذ Y » |
+| `StudentHome` class chip (`CompassHomeSections`, since 2026-11-09 — the banner `ClassContextBanner` was removed with the old home) | « القسم X · الأستاذ Y » (`YEAR_COMPASS.md` §6bis) |
 | `/espace/qism` (« قسمي ») | join by code (LTR input) **only while independent** — in a class, the form is hidden and « يمكنك أن تكون في قسم واحد فقط… » says to leave first (`data-qism-one-class`); current class, leave (confirm: history preserved); shows « انضممت إلى القسم … » when arriving from the link (`location.state.joinedClassroom`) |
 | `/rejoindre/classe/:token` (public, `pages/JoinClassLink.jsx`) | preview → invalid / closed / member (→ قسمي) / in another class (« أنت في قسم آخر », → قسمي, no consent button) / consent + join, or consent → register / login → automatic join → قسمي. Built on `AuthShell plain` (one column, no brand panel) |
 | `/rejoindre/:token` | old invitation addresses → the same page, « رابط غير صالح » |

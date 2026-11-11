@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
-import { ContentModule, BatchChoiceQuestion, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, BatchChoiceQuestion, TapQuestion, KnowledgeBrick, PeerSheet } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { RESULTS } from '../content/textbook';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
 
 /**
  * Module 2 — معارف 4 « نتائج مباشرة » (p. 12) avec les quatre exemples du manuel (rétrofit 2026-10-15) : sans labo, il s'ouvre sur
  * la première question à essayer — PGCD de trois couples SANS listes — puis la règle (brique) et les exemples du manuel APRÈS la
  * réponse ; la règle « b divise a » est essayée (63 et 21) avant son rappel et sa boîte. LP : P2, P3.
+ * Rollout mission (2026-11-08) : l'étape 3 est « ورقة ياسين » (`PeerSheet`, content/peerSheet.js) — « le PGCD est le plus grand des deux
+ * nombres », corrigé par la règle « b divise a ». Pas de labo dans ce module : rien d'autre ne change.
  */
 export default function Module02NataijMubashira() {
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
+  const [q3, setQ3] = useState(false);
   return (
     <ContentModule objectives={["متى يكون PGCD معروفًا دون حصر القواسم؟", "ما النتائج المباشرة الأربع؟"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(2)} moduleNumber={2}
@@ -47,6 +51,8 @@ export default function Module02NataijMubashira() {
               {q2 && <TextbookBox kind="example" text="PGCD(40 ; 8) = 8 لأن 8 قاسم للعدد 40." source={RESULTS.source} compact />}
             </div>
           ) },
+        { num: 3, title: 'ورقة ياسين: أين الخطأ؟', subtitle: 'جد السطر الخاطئ وصحّحه', done: q3,
+          content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={() => setQ3(true)} /> },
       ]}
       footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />

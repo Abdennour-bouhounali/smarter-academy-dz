@@ -12,10 +12,10 @@ export default function Module04Awazzif() {
   const [done, setDone] = useState({});
   const list = [tryNow, ...EXERCISES];
   return (
-    <ContentModule objectives={["أستعمل الخاصيتين في حلّ مسائل", "أحلّ تمارين الكتاب 12 ← 16"]}
+    <ContentModule objectives={["أستعمل الخاصيتين في حلّ مسائل", "أحلّ تمارين متدرّجة بنفسي"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(4)} moduleNumber={4}
       moduleTitle="أوظّف تعلّماتي" moduleSubtitle="دوري الآن، ثم تمارين 12 ← 16" estimatedTime="12 دقيقة"
-      brief={{ tag: 'الكتاب ص 11 و 14', title: 'أطبّق الخاصيتين وأبرهن', tone: 'amber', body: <p>برهان قصير أولًا (دوري الآن)، ثم تمارين الكتاب بترتيبها.</p> }}
+      brief={{ tag: 'أوظّف تعلّماتي', title: 'أطبّق الخاصيتين وأبرهن', tone: 'amber', body: <p>برهان قصير أولًا (دوري الآن)، ثم تمارين من السهل إلى الصعب.</p> }}
       steps={list.map((ex, i) => ({
         num: i + 1, title: ex.id === 'now-11-2' ? 'دوري الآن — برهن أن n يقسم a − b' : `تمرين ${ex.source.number}`, done: !!done[ex.id],
         content: (

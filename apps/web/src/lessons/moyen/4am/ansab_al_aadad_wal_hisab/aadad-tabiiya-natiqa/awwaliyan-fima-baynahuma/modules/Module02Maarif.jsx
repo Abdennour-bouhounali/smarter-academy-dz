@@ -1,26 +1,45 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, KnowledgeBrick, PeerSheet } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { TextbookBox } from '../../../../../../common/textbook';
 import { Manipulation } from '../../../../../../common/manipulations';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { KNOWLEDGE } from '../content/textbook';
+import { M2_ROUNDS } from '../content/kits';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
 /**
  * Module 2 — معارف 5 (p. 12) : définition et exemple 22/15. LP : P1, P2.
  * Rétrofit 2026-10-15 : le labo (15 et 22 sur les listes) en tête SANS carte ; la première question porte sur ce que l'élève vient
  * de voir (qu'est-ce qui reste au milieu ?) ; la définition du manuel, son exemple et la brique viennent APRÈS la réponse ; la
  * brique de la méthode (preuve par PGCD) après la question qui la précède dans la tête de l'élève.
+ *
+ * LECTEUR DE MISSION (rollout 2026-11-09) : le labo se joue en MANCHES (content/kits.js › M2_ROUNDS : 15 et 22 avec ses questions → 35 et 48
+ * avec une prédiction → défi ⭐ 51 et 85 → listes libres), l'étape 1 attend la manche 1, l'étape 3 est « ورقة أنس » (`PeerSheet`). Hors lecteur :
+ * inchangé.
  */
 export default function Module02Maarif() {
   const [f, setF] = useState(false);
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
+  const [q3, setQ3] = useState(false);
+  // Dans le lecteur : la manche gagnée ouvre l'étape.
+  const [won, setWon] = useState({});
   return (
     <ContentModule objectives={["متى نقول إن عددين أوّليان فيما بينهما؟", "كيف أطبّق ذلك على 22 و 15؟"]} ctx={MODULE_CTX} navLinks={getNavLinks(2)} moduleNumber={2} moduleTitle="معارف — العددان الأوّليّان فيما بينهما" moduleSubtitle="ما الذي بقي في الوسط؟" estimatedTime="8 دقائق"
-      intro={<Manipulation type="coprime-explorer" a={22} b={15} onFinished={() => setF(true)} />}
+      intro={(
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="m2-lists" rounds={M2_ROUNDS} icon="📋" freeIcon="🔢"
+              onRoundWon={(id) => { setWon((w) => ({ ...w, [id]: true })); if (id === 'r1') setF(true); }} />
+          )}
+          page={<Manipulation type="coprime-explorer" a={22} b={15} onFinished={() => setF(true)} />}
+        />
+      )}
       steps={[
-        { num: 1, title: 'هل 15 عدد أولي؟', done: q1,
+        { needsRound: { id: 'r1', label: 'الجولة 1', icon: '📋', won: Boolean(won.r1) }, num: 1, title: 'هل 15 عدد أولي؟', done: q1,
           content: (
             <div className="space-y-3">
               <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>
@@ -49,6 +68,8 @@ export default function Module02Maarif() {
               {q2 && <KnowledgeBrick id="ithbat-awwaliyan" />}
             </div>
           ) },
+        { num: 3, title: 'ورقة أنس: أين الخطأ؟', subtitle: 'جد السطر الخاطئ وصحّحه', done: q3,
+          content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={() => setQ3(true)} /> },
       ]}
       footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />} />
   );

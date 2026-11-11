@@ -25,7 +25,7 @@ use App\Models\MadarRefuel;
 class ChallengeQuestionPresenter
 {
     /** Les seules clés d'une question que le client voit avant de répondre. */
-    private const PUBLIC_KEYS = ['id', 'statement', 'answerType', 'answerFormat', 'evaluationPolicy'];
+    private const PUBLIC_KEYS = ['id', 'lead', 'statement', 'answerType', 'answerFormat', 'evaluationPolicy'];
 
     public function __construct(private ExerciseRepository $exercises) {}
 
@@ -38,8 +38,20 @@ class ChallengeQuestionPresenter
     /** @return array<string, mixed>|null ce que l'élève voit pour répondre */
     public function public(DailyChallengeQuestion|MadarRefuel $q, string $lessonCode): ?array
     {
-        $exercise = $this->exercises->find($lessonCode, $q->exercise_code);
-        $question = $this->content($q, $lessonCode);
+        return $this->publicRef($lessonCode, $q->exercise_code, $q->question_id);
+    }
+
+    /**
+     * La même vue publique, par référence (leçon, exercice, question) — servie
+     * aussi par « بوصلتي » (Domain/Compass) : une seule frontière entre la clé
+     * de réponse et le client, quel que soit le parcours.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function publicRef(string $lessonCode, string $exerciseId, string $questionId): ?array
+    {
+        $exercise = $this->exercises->find($lessonCode, $exerciseId);
+        $question = $this->exercises->findQuestion($lessonCode, $exerciseId, $questionId);
         if ($exercise === null || $question === null) {
             return null;
         }
@@ -58,9 +70,13 @@ class ChallengeQuestionPresenter
         }
 
         return [
+            // TOUTE la mise en place de l'exercice : sans ses `formulas` (« A = … ») ni son
+            // `table`, « إليك العدد A حيث: » arrivait seul et la question était insoluble
+            // (corrigé le 2026-11-09 — défi, محطة التزوّد et بوصلتي).
             'statement' => [
                 'content' => $exercise['statement']['content'] ?? '',
-                'visual' => $exercise['statement']['visual'] ?? null,
+                'formulas' => $exercise['statement']['formulas'] ?? null,
+                'table' => $exercise['statement']['table'] ?? null,
                 'figure' => $exercise['statement']['figure'] ?? null,
             ],
             'question' => $public,

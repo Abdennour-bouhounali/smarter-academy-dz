@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PeerSheet } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { KNOWLEDGE, ICT_SQRT2 } from '../content/textbook';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
 
 /**
  * Module 2 — معارف 2 (p. 22) : les deux résultats et leurs deux exemples (portés
@@ -15,6 +16,9 @@ import { KNOWLEDGE, ICT_SQRT2 } from '../content/textbook';
  * nommé au module 1 (rappel) ; le 2e est NOMMÉ APRÈS la réponse de l'élève à « ناطق أم لا ? » (rétrofit 2026-10-15 :
  * il se résout avec le critère trouvé au module 1 ; la brique ne le donne plus d'avance), et la carte du haut
  * dit ce qu'est le module sans énoncer de fait. LP : P1, P2, P3.
+ *
+ * LECTEUR DE MISSION (rollout 2026-11-09, unité 2 leçon 2) : ce module n'a pas de labo ; sa dernière étape est « ورقة يونس » (`PeerSheet`,
+ * content/peerSheet.js : juger « مربّع عدد ناطق » sur le seul numérateur). Hors lecteur : la même étape, comme dans les autres leçons converties.
  */
 const M = (tex) => <MathText key={tex}>{tex}</MathText>;
 
@@ -22,6 +26,7 @@ export default function Module02Maarif() {
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
+  const [q4, setQ4] = useState(false);
 
   return (
     <ContentModule
@@ -33,8 +38,8 @@ export default function Module02Maarif() {
       estimatedTime="10 دقائق"
       objectives={['كيف أعرف إن كان جذر عدد ناطقًا؟', 'ماذا تعرض الحاسبة حين لا يكون ناطقًا؟']}
       brief={{
-        tag: 'معارف — الكتاب ص 22', title: KNOWLEDGE.title, tone: 'violet',
-        body: <p>نصوغ ما وجدناه على المسطرة في «معارف» الكتاب، ثم نرى ما تفعله الحاسبة بجذر من هذا النوع.</p>,
+        tag: 'معارف', title: KNOWLEDGE.title, tone: 'violet',
+        body: <p>نصوغ ما وجدناه على المسطرة، ثم نرى ما تفعله الحاسبة بجذر من هذا النوع.</p>,
         footer: <SourceTag source={KNOWLEDGE.source} />,
       }}
       steps={[
@@ -78,7 +83,7 @@ export default function Module02Maarif() {
                 )}
                 onAnswered={() => setQ2(true)}
               />
-              {q2 && <KnowledgeBrick id="ghayr-natiq" lead="وجذور الصنف الثاني؟ هذا ما طبّقته للتوّ، والكتاب يصوغه نتيجة ثانية:" />}
+              {q2 && <KnowledgeBrick id="ghayr-natiq" lead="وجذور الصنف الثاني؟ هذا ما طبّقته للتوّ، نصوغه نتيجة ثانية:" />}
             </div>
           ),
         },
@@ -108,6 +113,8 @@ export default function Module02Maarif() {
             </div>
           ),
         },
+        { num: 4, title: 'ورقة يونس: أين الخطأ؟', subtitle: 'جد السطر الخاطئ وصحّحه', done: q4,
+          content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={() => setQ4(true)} /> },
       ]}
       footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />

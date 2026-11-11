@@ -109,8 +109,9 @@ class AdminContentPublicationTest extends TestCase
             'last_activity_at' => now(),
         ]);
 
+        // Un module se masque avec sa leçon (2026-11-11 : pas d'état propre).
         $this->asAdmin()
-            ->patchJson("/api/v1/admin/content/module/{$this->module->id}/status", ['status' => LessonModule::PUB_HIDDEN])
+            ->patchJson("/api/v1/admin/content/lesson/{$this->lesson->id}/status", ['status' => Lesson::PUB_HIDDEN])
             ->assertStatus(200);
 
         $progress = StudentLessonProgress::where('user_id', $this->student->id)->first();
@@ -228,20 +229,22 @@ class AdminContentPublicationTest extends TestCase
         $this->assertSame($this->lesson->id, $log->after['cascadeFromLesson']);
     }
 
-    public function test_un_module_reste_modifiable_seul_apres_la_cascade(): void
+    /** Un module n'a pas d'état propre (2026-11-11) : le changer seul est refusé. */
+    public function test_un_module_ne_se_change_pas_seul(): void
     {
         $this->asAdmin()
             ->patchJson("/api/v1/admin/content/lesson/{$this->lesson->id}/status", ['status' => Lesson::PUB_HIDDEN])
             ->assertStatus(200);
         $this->asAdmin()
             ->patchJson("/api/v1/admin/content/module/{$this->module->id}/status", ['status' => LessonModule::PUB_DRAFT])
-            ->assertStatus(200);
+            ->assertStatus(422);
 
         $this->assertSame(Lesson::PUB_HIDDEN, $this->lesson->fresh()->publication_status);
-        $this->assertSame(LessonModule::PUB_DRAFT, $this->module->fresh()->publication_status);
+        $this->assertSame(LessonModule::PUB_HIDDEN, $this->module->fresh()->publication_status);
     }
 
-    public function test_publier_une_lecon_ne_publie_pas_un_module_casse(): void
+    /** Publier la leçon publie TOUS ses modules, même un module qui échoue aux contrôles. */
+    public function test_publier_une_lecon_publie_tous_ses_modules(): void
     {
         $this->lesson->update(['publication_status' => Lesson::PUB_HIDDEN]);
         $this->module->update(['publication_status' => LessonModule::PUB_HIDDEN]);
@@ -253,14 +256,14 @@ class AdminContentPublicationTest extends TestCase
             'publication_status' => LessonModule::PUB_HIDDEN, 'teaches_learning_point_codes' => ['6e_fractions_P1'],
         ]);
 
-        $response = $this->asAdmin()
+        $this->asAdmin()
             ->patchJson("/api/v1/admin/content/lesson/{$this->lesson->id}/status", ['status' => Lesson::PUB_PUBLISHED])
             ->assertStatus(200)
-            ->assertJsonPath('modules.applied', [$this->module->id])
-            ->assertJsonPath('modules.skipped.0.id', $broken->id);
+            ->assertJsonPath('modules.applied', [$this->module->id, $broken->id])
+            ->assertJsonPath('modules.skipped', []);
 
         $this->assertSame(LessonModule::PUB_PUBLISHED, $this->module->fresh()->publication_status);
-        $this->assertSame(LessonModule::PUB_HIDDEN, $broken->fresh()->publication_status);
+        $this->assertSame(LessonModule::PUB_PUBLISHED, $broken->fresh()->publication_status);
     }
 
     public function test_une_lecon_dont_aucun_module_n_est_publiable_reste_refusee(): void

@@ -5,6 +5,9 @@ import { Manipulation, ManipulationWorkspace } from '../../../../../../common/ma
 import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY } from '../content/textbook';
+import { M1_ROUNDS } from '../content/kits';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
 
 /**
  * Module 1 — l'ENTRÉE : 17 stylos et 18 cahiers à ranger en trousses identiques (plateforme, thème `school`), puis 22 et 35 sur les
@@ -16,6 +19,10 @@ import { ACTIVITY } from '../content/textbook';
  *   متقدم  — 22 et 35 (question ب), directement sur les listes, sans aucun guidage : l'élève bâtit la preuve lui-même.
  * Étape 1 : POURQUOI seule 1 trousse marche (sa propre expérience), puis la définition (brique + remarque du manuel) ; étape 2 :
  * le cas de مريم (27 et 36) — qu'est-ce qui suffit à la contredire ? — puis la brique de la méthode de réfutation.
+ *
+ * LECTEUR DE MISSION (rollout 2026-11-09) : le labo se joue en MANCHES (content/kits.js › M1_ROUNDS : 8 et 9 à la main avec ses questions →
+ * 17 et 18 avec prédictions et « جرّب كل الإمكانيات » → défi ⭐ 21 et 28 → table libre) au lieu de مبتدئ / متقدم ; les deux étapes attendent
+ * la manche 17 et 18 (`needsRound`). Hors lecteur : inchangé.
  */
 export default function Module01SabaataAsharWaThamaniyataAshar() {
   const [c1, setC1] = useState(false);
@@ -23,10 +30,19 @@ export default function Module01SabaataAsharWaThamaniyataAshar() {
   const [q2, setQ2] = useState(false);
   // les questions posées PAR-DESSUS le labo (LabCheckpoint) : l'étape 1 est faite quand la suite des trousses l'est
   const answered = (id) => trials.some((e) => e.tk === 'checkpoint-done' && e.id === id);
-  const q1 = answered('groups');
+  // Dans le lecteur : la manche gagnée (17 et 18, tout essayé) ouvre l'étape.
+  const [won, setWon] = useState({});
+  const q1 = answered('groups') || Boolean(won.r2);
+  const round = { id: 'r2', label: 'الجولة 2', icon: '🎒', won: Boolean(won.r2) };
   return (
     <ContentModule objectives={["هل تنجح حقائب متماثلة بـ 17 قلمًا و 18 كراسًا؟ كم حقيبة ممكنة؟", "كيف أتأكّد أن عددين لا يتقاسمان إلا الواحد؟", "هل مريم على صواب في 27 و 36؟"]} ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} moduleTitle="نشاط 7 — العددان الأوّليّان فيما بينهما" moduleSubtitle="جرّب الحقائب ثم فسّر ما وجدت" estimatedTime="12 دقيقة"
       intro={(
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="m1-kits" rounds={M1_ROUNDS} icon="🎒" freeIcon="✏️"
+              onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))} />
+          )}
+          page={(
         <ManipulationWorkspace
           levels={{
             beginner: () => (
@@ -39,9 +55,11 @@ export default function Module01SabaataAsharWaThamaniyataAshar() {
             ),
           }}
         />
+          )}
+        />
       )}
       steps={[
-        { num: 1, title: 'لماذا لم تنجح إلا حقيبة واحدة؟', subtitle: 'السؤال أ) من الكتاب', done: q1,
+        { needsRound: round, num: 1, title: 'لماذا لم تنجح إلا حقيبة واحدة؟', subtitle: 'السؤال أ)', done: q1,
           content: (
             <div className="space-y-3">
               <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>
@@ -57,7 +75,7 @@ export default function Module01SabaataAsharWaThamaniyataAshar() {
               )}
             </div>
           ) },
-        { num: 2, title: 'ب) 22 و 35 — جـ) مريم: «27 و 36 أوليان فيما بينهما»', subtitle: 'المستوى المتقدّم يحمل 22 و 35', done: q2,
+        { needsRound: round, num: 2, title: 'ب) 22 و 35 — جـ) مريم: «27 و 36 أوليان فيما بينهما»', subtitle: 'المستوى المتقدّم يحمل 22 و 35', done: q2,
           content: (
             <div className="space-y-3">
               {/* 22 et 35 vivent au niveau متقدم du workspace ci-dessus ; ici

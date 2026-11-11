@@ -16,6 +16,7 @@
  *   labo   : cp = useLabCheckpoint · step = LabStepper · party = useStepCelebration · sfx = playSfx · teacher = useLabCheckpointSettings
  *            · switch = `headerAction={… .control}` : l'interrupteur enseignant est bien monté dans l'en-tête (L2)
  *            · guided = `guided=` passé au shell (ni « جرّب › اكتشف › صِغ » ni « تلميح », L9)
+ *            Les labos d'une leçon : ceux de ses modules (`type="…"`) ET ceux de ses manches (content/*.js › `…_ROUNDS`, `type: '…'`).
  *   leçon  : cards = pieds de module <KnowledgeSnapshot moduleNumber> · memo = ceux en variant="memo" · items = connaissances de
  *            knowledge.jsx · withMemo = items avec `memo:` · withQuiz = items avec `quiz:` dans leur memo
  */
@@ -75,6 +76,16 @@ const rows = idx.map((l) => {
     for (const m of src.matchAll(/manipulations\/[a-zA-Z/]*\/([A-Z][A-Za-z0-9]+)'/g)) if (typeByComp[m[1]]) labs.add(typeByComp[m[1]]);
     cards += (src.match(/<KnowledgeSnapshot moduleNumber/g) || []).length;
     memoCards += (src.match(/<KnowledgeSnapshot moduleNumber=\{\d+\} variant="memo"/g) || []).length;
+  }
+  // les labos joués en MANCHES dans le lecteur de mission sont déclarés dans content/*.js (`type: '<labo>'`, les props d'une manche) — un labo
+  // du lecteur seul (`shadow-meet`, 2026-11-10) n'apparaît dans aucun module : il doit passer la même porte
+  const cdir = path.join(dir, 'content');
+  if (fs.existsSync(cdir)) {
+    for (const f of fs.readdirSync(cdir).filter((x) => /\.jsx?$/.test(x) && !/\.test\./.test(x))) {
+      const src = fs.readFileSync(path.join(cdir, f), 'utf8');
+      if (!/_ROUNDS\b/.test(src)) continue;
+      for (const m of src.matchAll(/type: '([a-z0-9-]+)'/g)) if (labState[m[1]]) labs.add(m[1]);
+    }
   }
   const kn = path.join(dir, 'knowledge.jsx');
   const ksrc = fs.existsSync(kn) ? fs.readFileSync(kn, 'utf8') : '';

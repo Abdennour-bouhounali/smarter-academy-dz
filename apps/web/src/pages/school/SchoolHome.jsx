@@ -78,7 +78,7 @@ export default function SchoolHome() {
         </div>
         {data.licence ? (
           <>
-            <p className="mt-2 font-space text-3xl font-bold text-slate-900" dir="ltr">{data.licence.current} / {data.licence.seats}</p>
+            <p className="mt-2 font-space text-3xl font-bold text-slate-900" dir="ltr">{data.licence.current}{'\u00A0/\u00A0'}{data.licence.seats}</p>
             <p className="mt-1 font-inter text-xs text-slate-500">
               {t('home.licenceHint')}
               {data.licence.endsAt && ` ${t('home.licenceEnds', { date: new Date(data.licence.endsAt).toLocaleDateString('ar-DZ', { dateStyle: 'medium', numberingSystem: 'latn' }) })}`}

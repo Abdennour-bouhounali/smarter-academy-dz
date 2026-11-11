@@ -22,22 +22,18 @@ use Illuminate\Support\Facades\DB;
  * LA RÈGLE CENTRALE — deux propriétaires, une table :
  *
  *   la SYNCHRO possède l'identité  → code, numéro, titre, étape, points enseignés
- *   l'ADMIN possède l'état         → publication_status
+ *   l'ADMIN possède l'état         → publication_status de la LEÇON et des exercices
  *
- * Une resynchro ne touche donc JAMAIS publication_status d'une ligne existante.
- * Sans cela, chaque déploiement rouvrirait silencieusement le module qu'un
- * administrateur venait de masquer parce qu'il était cassé — et personne ne
- * s'en apercevrait avant le prochain signalement d'élève.
+ * UN MODULE N'A PAS D'ÉTAT PROPRE (propriétaire, 2026-11-11) : sa colonne
+ * `publication_status` est la COPIE de celle de sa leçon, réécrite à chaque
+ * synchronisation (et par ContentService::changeStatus quand l'admin change
+ * la leçon). ContentAccess ne lit que l'état de la leçon.
  *
- * POLITIQUE DE PUBLICATION À LA DÉCOUVERTE : un contenu NOUVELLEMENT
- * découvert naît en `draft`, jamais publié. Le contenu déjà en base garde
- * l'état qu'il a — cette règle ne rétroagit pas.
- *
- * Pourquoi : sans elle, écrire une leçon et lancer la synchro la met en ligne
- * devant les élèves sans que personne ne l'ait relue. Publier doit rester un
- * GESTE, pas un effet de bord du déploiement. L'inverse (naître publié) ne se
- * remarque jamais — c'est exactement le genre d'accident qu'on ne découvre
- * qu'en lisant un signalement d'élève.
+ * DÉFAUT PUBLIÉ (propriétaire, 2026-11-11) : pousser en production publie.
+ * Un exercice NOUVEAU naît avec l'état de sa leçon si elle est publiée
+ * (`draft` sinon), et un exercice resté `draft` sous une leçon publiée est
+ * publié. Un exercice `hidden` / `archived` (geste de l'admin) est gardé :
+ * la resynchro ne rouvre jamais ce que l'admin a masqué.
  *
  * ET ON NE SUPPRIME PAS : un code disparu du contenu est marqué `retired_at`.
  * Même raison que pour les learning points — student_lesson_progress
@@ -123,13 +119,13 @@ class ContentRegistryImporter
 
                 $existing = LessonModule::where('lesson_id', $lesson->id)->where('code', $code)->first();
 
+                // Le module porte l'état de sa leçon (voir l'en-tête).
+                $identity['publication_status'] = $lesson->publication_status;
+
                 if (! $existing) {
                     LessonModule::create($identity + [
                         'lesson_id' => $lesson->id,
                         'code' => $code,
-                        // Brouillon : un module découvert n'est pas un module
-                        // relu (voir la politique en tête de classe).
-                        'publication_status' => LessonModule::PUB_DRAFT,
                     ]);
                     $summary['modules']['created'][] = $label;
 
@@ -141,8 +137,6 @@ class ContentRegistryImporter
                 $changed = $this->differs($existing, $identity);
 
                 if ($changed || $revived) {
-                    // Noter l'absence de publication_status ici : c'est tout
-                    // l'intérêt de cette classe.
                     $existing->fill($identity);
                     $existing->retired_at = null;
                     $existing->save();
@@ -260,15 +254,23 @@ class ContentRegistryImporter
                 ->where('exercise_code', $code)
                 ->first();
 
+            $lessonPublished = $lesson->publication_status === Lesson::PUB_PUBLISHED;
+
             if (! $existing) {
                 PracticeExercise::create($identity + [
                     'lesson_id' => $lesson->id,
                     'exercise_code' => $code,
-                    'publication_status' => PracticeExercise::PUB_DRAFT,
+                    'publication_status' => $lessonPublished ? PracticeExercise::PUB_PUBLISHED : PracticeExercise::PUB_DRAFT,
                 ]);
                 $summary['exercises']['created'][] = $label;
 
                 continue;
+            }
+
+            // Défaut publié : un `draft` sous une leçon publiée est publié ;
+            // `hidden` / `archived` (geste de l'admin) sont gardés.
+            if ($lessonPublished && $existing->publication_status === PracticeExercise::PUB_DRAFT) {
+                $identity['publication_status'] = PracticeExercise::PUB_PUBLISHED;
             }
 
             $revived = $existing->retired_at !== null;

@@ -235,3 +235,191 @@ describe('segment-divider — mode ratio (MA/MB = p/q, deux parallèles graduée
     expect(base.x1).toBeLessThan(300);
   });
 });
+
+/* ══════════════ Lecteur de mission (rollout 2026-11-10, unité 9 leçon 3 ; conseil du 2026-11-10, verdict L3.1–L3.7) ══════════════ */
+
+/** Gradue un rail avec une ouverture donnée. */
+const grad = (s, rail, n, open) => carryN(open == null ? s : L.setOpening(s, open), n, rail);
+const ruler = (s, a, b) => L.commitRuler(L.setEnd(L.setEnd(s, 'a', a), 'b', b));
+
+describe('segment-divider — the mission player options', () => {
+  it('the page is unchanged: no option → mixed units are still judged on their ratio, mark 1 still joins', () => {
+    let s = grad(grad(L.init({ mode: 'ratio', p: 2, q: 3 }), 'a-', 2, 15), 'b+', 3, 10);
+    s = ruler(s, -30, 30);
+    expect(s.joins.at(-1)).toMatchObject({ kind: 'units', mixed: true });      // the page's « right count, another unit » (its ratio is shown)
+    expect(L.evidenceOf(s).ratio).toBe('1');
+    expect(L.join(carryN(L.init({ parts: 3 }), 3), 0).joined).toBe(0);
+  });
+
+  it('`sameUnitOnly` (L3.1): a ruler on graduations of two openings is REFUSED as `units`, whatever its ratio — and carries no ratio', () => {
+    const base = L.init({ mode: 'ratio', p: 2, q: 3, marks: 3, sameUnitOnly: true, player: true });
+    // 2 × 12 mm on (d₁), 3 × 8 mm on (d₂): by luck the lengths are 24 / 24 → the page would say « other » ; here: units
+    let s = grad(grad(base, 'a-', 2, 12), 'b+', 3, 8);
+    s = ruler(s, -24, 24);
+    expect(s.joins.at(-1)).toMatchObject({ kind: 'units', ok: false, mixed: true });
+    expect(L.evidenceOf(s)).toMatchObject({ kind: 'units', ratio: null, t: null });
+    // 3 × 12 against 3 × 9 would give the ratio 4/3 — the climax's: never judged, never written
+    let c = grad(grad(base, 'a-', 3, 12), 'b+', 3, 9);
+    c = ruler(c, -36, 27);
+    expect(T(c.joins.at(-1).ratio)).toBe('4/3');
+    expect(c.joins.at(-1).kind).toBe('units');
+    expect(L.evidenceOf(c).ratio).toBeNull();
+    // a rail graduated with two openings is mixed too
+    let m = L.carry(L.setOpening(grad(base, 'a-', 1, 12), 9), 'a-');      // (d₁): 12 mm then 9 mm
+    m = grad(m, 'b+', 3, 9);
+    expect(ruler(m, -21, 27).joins.at(-1).kind).toBe('units');
+    // one opening everywhere: judged on the ranks
+    const ok = ruler(grad(grad(base, 'a-', 2, 9), 'b+', 3, 9), -18, 27);
+    expect(ok.joins.at(-1)).toMatchObject({ kind: 'inside', ok: true, mixed: false, rankA: 2, rankB: 3 });
+    expect(T(ok.joins.at(-1).t)).toBe('2/5');
+  });
+
+  it('the cap: `marks: 3` holds three graduations per rail and no more', () => {
+    const s = grad(L.init({ mode: 'ratio', p: 2, q: 3, marks: 3, sameUnitOnly: true }), 'a+', 4);
+    expect(s.rails['a+']).toHaveLength(3);
+    expect(s.last.kind).toBe('full');
+    expect(() => L.init({ mode: 'ratio', p: 4, q: 3, marks: 3 })).toThrow();     // the climax ratio cannot even be asked with the cap
+  });
+
+  it('with one unit and the cap 3, the reachable ratios are 1/3, 1/2, 2/3, 1, 3/2, 2, 3 — never 4/3 nor 3/4; t never 4/7 nor 3/7', () => {
+    const base = grad(grad(grad(grad(L.init({ mode: 'ratio', p: 2, q: 3, marks: 3, sameUnitOnly: true, player: true }), 'a-', 3, 10), 'a+', 3), 'b-', 3), 'b+', 3);
+    const ratios = new Set(); const ts = new Set();
+    for (const a of L.lineMarks(base, 'a')) for (const b of L.lineMarks(base, 'b')) {
+      const j = ruler(base, a, b).joins.at(-1);
+      if (j.parallel) continue;
+      expect(j.kind).not.toBe('units');
+      ratios.add(T(j.ratio)); ts.add(T(j.t).replace('-', ''));
+    }
+    expect([...ratios].sort()).toEqual(['1', '1/2', '1/3', '2', '2/3', '3', '3/2']);
+    ['4/3', '3/4'].forEach((x) => expect(ratios.has(x)).toBe(false));
+    ['4/7', '3/7', '4'].forEach((x) => expect(ts.has(x)).toBe(false));
+  });
+
+  it('player: joining mark 1 is refused and is not a trial; the same ruler twice is one trial', () => {
+    const s = carryN(L.init({ parts: 3, player: true }), 3);
+    const r = L.join(s, 0);
+    expect(r.joined).toBeNull();
+    expect(r.last.kind).toBe('joinOne');
+    expect(r.trials).toHaveLength(0);
+    let x = grad(grad(grad(L.init({ mode: 'ratio', p: 2, q: 3, marks: 3, sameUnitOnly: true, player: true }), 'a-', 2, 10), 'a+', 2), 'b+', 3);
+    x = ruler(x, -20, 30);
+    x = ruler(x, 20, 30);
+    expect(x.joins).toHaveLength(2);
+    x = ruler(x, -20, 30);                      // back on the first ruler: shown again, not appended
+    expect(x.joins).toHaveLength(2);
+    expect(x.last.join.kind).toBe('inside');
+    expect(L.joinAtEnds(x).kind).toBe('inside');
+    expect(L.verdictOf(x)).toEqual({ groups: 1, exact: true });
+  });
+
+  it('verdictOf: equal → the joined rank; ratio → 1 inside, 2 outside, 0 otherwise', () => {
+    let e = drawAll(L.join(carryN(L.init({ parts: 3, player: true, length: 8 }), 3), 1));
+    expect(L.verdictOf(e)).toEqual({ groups: 2, exact: false });
+    e = drawAll(L.join(carryN(L.fresh(e), 3), 2));
+    expect(L.verdictOf(e)).toEqual({ groups: 3, exact: true });
+    expect(L.lengthTex(e, e.trials.at(-1).parts[0])).toBe('\\dfrac{8}{3} \\approx 2{,}67');
+    let x = grad(grad(grad(L.init({ mode: 'ratio', p: 2, q: 3, marks: 3, sameUnitOnly: true, player: true }), 'a-', 2, 10), 'a+', 3), 'b+', 3);
+    expect(L.verdictOf(ruler(x, 20, 30))).toEqual({ groups: 2, exact: true });
+    expect(L.verdictOf(ruler(x, 30, 20))).toEqual({ groups: 0, exact: false });   // inverted
+    x = ruler(x, 30, 30);
+    expect(x.joins.at(-1).parallel).toBe(true);
+    expect(L.verdictOf(x)).toEqual({ groups: 0, exact: false });
+  });
+
+  it('a construction redone EXACTLY is not a new trial; redone with another opening it shows the same cut points', () => {
+    const one = (s, open) => drawAll(L.join(carryN(L.setOpening(L.fresh(s), open), 3), 2));
+    let s = one(L.init({ parts: 3, player: true }), 15);
+    expect(L.repeatedTrial(s)).toBe(false);
+    s = one(s, 15);
+    expect(L.repeatedTrial(s)).toBe(true);
+    expect(L.sameCutsAgain(s)).toBe(false);
+    expect(L.discoveryReady(s)).toBe(false);
+    s = one(s, 20);
+    expect(L.repeatedTrial(s)).toBe(false);
+    expect(L.sameCutsAgain(s)).toBe(true);
+    expect(L.discoveryReady(s)).toBe(true);
+    expect(L.cutsOf(s).map((c) => T(c.t))).toEqual(['1/3', '2/3']);
+  });
+
+  it('predictions: options, truths (« same side » → before A when p < q, AFTER B when p > q — L3.7), judged by the field', () => {
+    const e3 = L.init({ parts: 3 }); const e5 = L.init({ parts: 5 });
+    expect(L.predictOptions(e3, 'joinWhich')).toEqual([2, 3, 4]);
+    expect(L.predictOptions(e5, 'joinWhich')).toEqual([5, 6, 4]);
+    expect(L.predictOptions(e5, 'parallels')).toEqual([5, 6, 4]);
+    expect([L.predictTruth(e3, 'joinWhich'), L.predictTruth(e5, 'joinWhich'), L.predictTruth(e5, 'parallels')]).toEqual([3, 5, 4]);
+    // the right option never sits at the same place twice in a row: r1 2nd ; r2 1st then 3rd
+    const place = (lab, key) => L.predictOptions(lab, key).indexOf(L.predictTruth(lab, key));
+    expect([place(e3, 'joinWhich'), place(e5, 'joinWhich'), place(e5, 'parallels')]).toEqual([1, 0, 2]);
+    const r23 = L.init({ mode: 'ratio', p: 2, q: 3, marks: 3 }); const r32 = L.init({ mode: 'ratio', p: 3, q: 2, marks: 3 });
+    expect(L.predictTruth(r23, 'opposite')).toBe('between');
+    expect(L.predictTruth(r23, 'same')).toBe('before');
+    expect(L.predictTruth(r32, 'same')).toBe('after');
+    expect(L.predictTruth(L.init({ mode: 'ratio', p: 2, q: 1, marks: 3 }), 'same')).toBe('after');
+    expect([place(r23, 'opposite'), place(r23, 'same'), place(r32, 'same')]).toEqual([1, 2, 0]);
+    // the truth of « same » is what the lab then shows: the outside point's t is negative (before A) or > 1 (after B)
+    let x = grad(grad(L.init({ mode: 'ratio', p: 2, q: 3, marks: 3, sameUnitOnly: true, player: true }), 'a+', 2, 10), 'b+', 3);
+    x = ruler(x, 20, 30);
+    expect(LIN.cmp(x.joins.at(-1).t, LIN.frac(0)) < 0).toBe(true);
+    expect(L.judgedPredictions(x, ['opposite', 'same'])).toEqual(['same']);
+    expect(L.judgedPredictions(x, ['opposite', 'same'], true)).toEqual(['opposite', 'same']);
+    let y = grad(grad(L.init({ mode: 'ratio', p: 3, q: 2, marks: 3, sameUnitOnly: true, player: true }), 'a+', 3, 10), 'b+', 2);
+    y = ruler(y, 30, 20);
+    expect(T(y.joins.at(-1).t)).toBe('3');
+    expect(L.judgedPredictions(carryN(e3, 3), ['joinWhich'])).toEqual([]);
+  });
+
+  it('the coach shows the gesture, never the answer: no mark count, no rank, no side', () => {
+    const e = L.init({ parts: 3, player: true });
+    expect(L.coachOf(e)).toMatchObject({ id: 'carry', target: '[data-sd-ghost="ray"]' });
+    expect(L.coachOf(carryN(e, 1)).id).toBe('join');
+    expect(L.coachOf(carryN(e, 3)).id).toBe('join');
+    const j = L.join(carryN(e, 3), 2);
+    expect(L.coachOf(j).id).toBe('square');
+    expect(L.coachOf(drawAll(j)).id).toBe('fresh');
+    expect(L.coachOf(drawAll(j), { done: true })).toBeNull();
+    const r = L.init({ mode: 'ratio', p: 2, q: 3, marks: 3, sameUnitOnly: true, player: true });
+    expect(L.coachOf(r).id).toBe('carryA');
+    const a = grad(r, 'a-', 2, 10);
+    expect(L.coachOf(a)).toBeNull();                         // one line graduated: no bubble (it covered the next mark)
+    const ab = grad(grad(a, 'a+', 2), 'b+', 3);
+    expect(L.coachOf(ab).id).toBe('endA');
+    expect(L.coachOf(L.setEnd(ab, 'a', -20)).id).toBe('endB');
+    expect(L.coachOf(ruler(ab, -20, 30)).id).toBe('second');
+    expect(L.coachOf(ruler(ruler(ab, -20, 30), 20, 30))).toBeNull();
+    // the ruler steps wait for a pause (they would cover the next dotted mark); the equal steps never do
+    expect([L.coachOf(ab).idle, L.coachOf(ruler(ab, -20, 30)).idle, L.coachOf(e).idle, L.coachOf(j).idle]).toEqual([true, true, undefined, undefined]);
+    expect(L.COACH_IDLE_MS).toBeGreaterThanOrEqual(3000);
+    [e, carryN(e, 1), j, a, ab].forEach((s) => expect(JSON.stringify(L.coachOf(s))).not.toMatch(/\d(?!["\]])/));
+  });
+
+  it('shownValues lists every length, rank pair, ratio and t a round can show', () => {
+    const eq = L.shownValues({ mode: 'equal', parts: 3, length: 8 });
+    expect(eq.filter((x) => x.role === 'length').map((x) => x.v)).toEqual(['8', '8/3', '2,67']);
+    const ra = L.shownValues({ mode: 'ratio', p: 2, q: 3, marks: 3, chains: 'full' });
+    expect([...new Set(ra.filter((x) => x.role === 'ratio').map((x) => x.v))].sort()).toEqual(['1', '1/2', '1/3', '2', '2/3', '3', '3/2']);
+    expect(new Set(ra.filter((x) => x.role === 'rank').map((x) => x.v))).toEqual(new Set(['1', '2', '3']));
+    expect(ra.filter((x) => x.role === 'pair')).toHaveLength(9);
+    expect(ra.some((x) => x.role === 'decoy-t' && x.v === '3/5')).toBe(true);
+    expect(L.shownValues({ mode: 'ratio', p: 1, q: 3, marks: 3, chains: 'none' }).some((x) => x.role.startsWith('decoy'))).toBe(false);
+    const free = L.shownValues({ mode: 'equal', parts: 3, length: 12, choices: [{ mode: 'equal', parts: 5, length: 12 }, { mode: 'ratio', p: 3, q: 2, marks: 3 }] });
+    expect(free.some((x) => x.role === 'length' && x.v === '12/5')).toBe(true);
+    expect(free.some((x) => x.role === 'ratio' && x.v === '3/2')).toBe(true);
+  });
+});
+
+describe('segment-divider — review fixes (2026-11-10)', () => {
+  it('a ruler on the same positions and ranks but OTHER openings is judged again (8 + 12 lands where 10 + 10 did)', () => {
+    const base = L.init({ mode: 'ratio', p: 2, q: 3, marks: 3, sameUnitOnly: true, player: true });
+    let s = ruler(grad(grad(base, 'a-', 2, 10), 'b+', 3, 10), -20, 30);
+    expect(s.joins.at(-1).kind).toBe('inside');
+    s = L.fresh(s);
+    s = L.carry(L.setOpening(L.carry(L.setOpening(s, 8), 'a-'), 12), 'a-');     // (d₁): 8 then 12 → the 2nd mark at 20 again
+    s = grad(s, 'b+', 3, 10);
+    expect(L.joinAtEnds(L.setEnd(L.setEnd(s, 'a', -20), 'b', 30))).toBeNull();   // not the old « inside »
+    s = ruler(s, -20, 30);
+    expect(s.joins).toHaveLength(2);
+    expect(s.joins.at(-1)).toMatchObject({ kind: 'units', ok: false, mixed: true });
+    expect(L.joinAtEnds(s).kind).toBe('units');
+    expect(L.verdictOf(s)).toEqual({ groups: 0, exact: false });
+  });
+});

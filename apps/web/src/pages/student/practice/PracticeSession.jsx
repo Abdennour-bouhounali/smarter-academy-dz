@@ -918,7 +918,7 @@ export default function PracticeSession() {
           {totalQuestions > 1 && (
             <>
               {' · '}{t('practice.exerciseScore')}{' '}
-              <bdi dir="ltr" className="font-bold tabular-nums">{score.correct} / {score.total}</bdi>
+              <bdi dir="ltr" className="font-bold tabular-nums">{score.correct}{'\u00A0/\u00A0'}{score.total}</bdi>
             </>
           )}
         </p>
@@ -1119,7 +1119,7 @@ export default function PracticeSession() {
                   <ExerciseStatement
                     content={reviews[reviewIndex].exercise.statement?.content}
                     visual={reviews[reviewIndex].exercise.statement?.visual}
-                    figure={reviews[reviewIndex].exercise.statement?.figure}
+                    formulas={reviews[reviewIndex].exercise.statement?.formulas} table={reviews[reviewIndex].exercise.statement?.table} figure={reviews[reviewIndex].exercise.statement?.figure}
                   />
                 </section>
                 <QuestionHistory entries={reviews[reviewIndex].history} total={reviews[reviewIndex].history.length} />
@@ -1197,13 +1197,13 @@ export default function PracticeSession() {
           ) : (
             <>
             {/* ── les DONNÉES du problème : le contexte, pas la question. ───── */}
-            {(exercise.statement?.content || exercise.statement?.visual || exercise.statement?.figure || exercise.statement?.support) && (
+            {(exercise.statement?.content || exercise.statement?.formulas || exercise.statement?.table || exercise.statement?.visual || exercise.statement?.figure || exercise.statement?.support) && (
               <section aria-labelledby="practice-statement-label" className="rounded-xl bg-white/70 px-3.5 py-3 ring-1 ring-slate-200 sm:px-4">
                 <p id="practice-statement-label" className="mb-1 text-xs font-bold text-slate-600">{t('practice.statementLabel')}</p>
                 <ExerciseStatement
                   content={exercise.statement?.content}
                   visual={exercise.statement?.visual}
-                  figure={exercise.statement?.figure}
+                  formulas={exercise.statement?.formulas} table={exercise.statement?.table} figure={exercise.statement?.figure}
                   support={exercise.statement?.support}
                 />
               </section>

@@ -18,6 +18,8 @@ import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
 import { playSfx } from '../../utils/playEffect';
 import { $, Mx, distinct, useTick, spreadAll } from './thalesCp';
 import * as L from '../logic/coneCylinder';
+import { useInMissionPlayer } from '../../mission/missionPlayerContext';
+import ConeCylinderPlayer from './ConeCylinderPlayer';
 
 /**
  * cone-cylinder — LE CYLINDRE DANS LE CÔNE (unité 9 « خاصية طالس », « أدمج تعلّماتي » p. 112).
@@ -69,7 +71,16 @@ import * as L from '../logic/coneCylinder';
  * [data-cc-h-handle] / [data-cc-r-handle] (role=slider), [data-cc-h-less|more], [data-cc-r-less|more],
  * [data-cc-verdict=<kind>], [data-cc-volume], [data-cc-pierce], [data-lab-fold=cone-cylinder.trials], [data-deco].
  */
-export default function ConeCylinder({
+/**
+ * Le labo dans le LECTEUR DE MISSION (la synthèse de l'unité 9, 2026-11-10) est un autre composant, `ConeCylinderPlayer.jsx` : un essai = un appui,
+ * aucun nombre dans un verdict, aucun volume, aucune lettre de point, `n` explicite, verrous h / r. La page et l'enseignant gardent celui-ci.
+ */
+export default function ConeCylinder(props) {
+  const gameScreen = useInMissionPlayer();
+  return gameScreen ? <ConeCylinderPlayer {...props} /> : <ConeCylinderPage {...props} />;
+}
+
+function ConeCylinderPage({
   H: H0 = 18, R: R0 = 6, theme = 'cornet', title, lead, mission, level, levels: withLevels = true,
   initialMode = 'student', allowModeSwitch = false, checkpoints: cpOn = true, onTrial, onFinished,
 }) {
@@ -177,7 +188,8 @@ export default function ConeCylinder({
   });
   const rSt = useStretchInteraction({
     value: rI, range: { min: 1, max: lab.n - 1 }, direction: 'ltr', pageStep: 3,
-    toValue: (_cx, cy, rect) => (G.yAxis - (cy - rect.top)) / G.k / (Number(lab.rStep.n) / Number(lab.rStep.d)),
+    // la piste peut être affichée zoomée : sa hauteur affichée ramène le pointeur en pixels du dessin (comme h, revue 2026-11-10)
+    toValue: (_cx, cy, rect) => (G.yAxis - (cy - rect.top) * (G.height / (rect.height || G.height))) / G.k / (Number(lab.rStep.n) / Number(lab.rStep.d)),
     onChange: (v) => { tick(); setLiveR(v); },
     onCommit: (v) => { setLiveR(null); setLab((s) => L.setR(s, v)); },
   });
@@ -360,10 +372,16 @@ export function discoveryOptionsOf(lab, k) {
     const base = a && b ? { p: pair(a), q: pair(b) } : null;
     const sum = (x) => L.tex(LIN.add(x.h, x.r));
     const prod = (x) => L.tex(LIN.mul(x.h, x.r));
+    // r × h est le MÊME pour h et H − h (6 × 4 = 12 × 2 sur le cône 18/6) : la réfutation cite deux cylindres dont les produits DIFFÈRENT vraiment,
+    // et se tait sinon (revue du 2026-11-10 : elle affirmait « الجداءان مختلفان » sur deux produits égaux)
+    const c = a ? ins.find((x) => !LIN.eq(LIN.mul(x.h, x.r), LIN.mul(a.h, a.r))) : null;
+    const prodWhy = a && c
+      ? k('dWhyProd', { p: pair(a), q: pair(c), p1: prod(a), p2: prod(c) })
+      : base ? k('dWhyProdSame', { ...base, p1: prod(a) }) : k('dWhyNone');
     return [
       { text: <MathText>{k('dOptSum')}</MathText>, why: <MathText>{base ? k('dWhySum', { ...base, s1: sum(a), s2: sum(b) }) : k('dWhyNone')}</MathText> },
       { text: <MathText>{k('dOptRight', { H: L.tex(lab.H), R: L.tex(lab.R) })}</MathText>, correct: true },
-      { text: <MathText>{k('dOptProd')}</MathText>, why: <MathText>{base ? k('dWhyProd', { ...base, p1: prod(a), p2: prod(b) }) : k('dWhyNone')}</MathText> },
+      { text: <MathText>{k('dOptProd')}</MathText>, why: <MathText>{prodWhy}</MathText> },
       { text: <MathText>{k('dOptR')}</MathText>, why: <MathText>{k('dWhyR', { R: L.tex(lab.R) })}</MathText> },
     ];
 }

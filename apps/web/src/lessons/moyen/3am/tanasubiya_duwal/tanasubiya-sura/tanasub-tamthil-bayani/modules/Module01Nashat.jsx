@@ -67,7 +67,7 @@ export default function Module01Nashat() {
           content: (
             <div className="space-y-3" data-activity-evidence>
               <Evidence id="full" ok={answered('touch') && !!full}
-                done={<span>أجبتَ في المختبر: لمست المسطرة <Ltr>{full?.count} / {full?.total}</Ltr> نقط، ومنها <Ltr>O</Ltr> .</span>}
+                done={<span>أجبتَ في المختبر: لمست المسطرة <Ltr>{full?.count}{'\u00A0/\u00A0'}{full?.total}</Ltr> نقط، ومنها <Ltr>O</Ltr> .</span>}
                 todo="ضع المسطرة على O وعلى دبّوس في المحلّ الأول، ثم أجب عن الأسئلة التي تظهر فوق المختبر." />
               {answered('touch') && <KnowledgeBrick id="khassiya-tanasub" lead="ثمن ثابت للعلبة: أين تقع نقط الأثمان في المعلم؟" />}
             </div>
@@ -88,7 +88,7 @@ export default function Module01Nashat() {
           content: (
             <div className="space-y-3" data-activity-evidence>
               <Evidence id="bent" ok={answered('shape') && !!bent}
-                done={<span>أجبتَ في المختبر: لم تمسّ المسطرة إلا <Ltr>{bent?.count} / {bent?.total}</Ltr> نقط، فالنقط ليست على استقامة.</span>}
+                done={<span>أجبتَ في المختبر: لم تمسّ المسطرة إلا <Ltr>{bent?.count}{'\u00A0/\u00A0'}{bent?.total}</Ltr> نقط، فالنقط ليست على استقامة.</span>}
                 todo="في المحلّ الثالث جرّب أوضاعًا مختلفة للمسطرة، ثم أجب عن الأسئلة التي تظهر فوق المختبر." />
               {answered('shape') && <KnowledgeBrick id="ghayr-tanasubi" lead="نقط على مستقيم لا يمرّ بالمبدأ أو ليست على استقامة: هل هي وضعية تناسبية؟" />}
             </div>

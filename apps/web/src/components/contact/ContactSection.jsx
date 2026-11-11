@@ -269,7 +269,7 @@ export default function ContactSection() {
                         {t('contact.messageLabel')} <span className="text-red-500">*</span>
                       </label>
                       <span dir="ltr" className="font-inter text-xs text-slate-400 tabular-nums">
-                        {form.message.length} / {MESSAGE_MAX}
+                        {form.message.length}{'\u00A0/\u00A0'}{MESSAGE_MAX}
                       </span>
                     </div>
                     <textarea

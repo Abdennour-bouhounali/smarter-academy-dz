@@ -5,11 +5,11 @@ import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { KNOWLEDGE } from '../content/textbook';
+import { KNOWLEDGE, PLATFORM } from '../content/textbook';
 
 /**
  * Module 3 — معارف 2 (p. 34) : la définition d'une متطابقة, les trois
- * identités et les trois exemples du manuel. Les identités, établies aux
+ * identités et trois exemples (ceux de la PLATEFORME depuis le rollout du 2026-11-11 — indépendance du manuel, SHARED-deliberate). Les identités, établies aux
  * modules 1 et 2, reviennent en RAPPEL (`variant="rappel"`) ; la seule
  * connaissance NOUVELLE ici est la définition (« صحيحة من أجل كل القيم »),
  * posée par sa brique AVANT la question qui l'exige — et cette question se
@@ -37,8 +37,8 @@ export default function Module03Maarif() {
       moduleSubtitle="المتطابقة، والمتطابقات الثلاث"
       estimatedTime="7 دقائق"
       brief={{
-        tag: 'معارف — الكتاب ص 34', title: KNOWLEDGE.title, tone: 'violet',
-        body: <p>ثلاث خطوات: تسمية ما تحقّقت منه في الملعب، ثم الوقوف عند صيغه الثلاث بأمثلة الكتاب، ثم التعرّف على نوع كل عبارة قبل نشرها.</p>,
+        tag: 'معارف', title: KNOWLEDGE.title, tone: 'violet',
+        body: <p>ثلاث خطوات: تسمية ما تحقّقت منه في الملعب، ثم الوقوف عند صيغه الثلاث بأمثلة، ثم التعرّف على نوع كل عبارة قبل نشرها.</p>,
       }}
       steps={[
         {
@@ -62,7 +62,7 @@ export default function Module03Maarif() {
           ),
         },
         {
-          num: 2, title: 'المتطابقات الشهيرة الثلاث', subtitle: 'أمثلة الكتاب', done: !!d.ex,
+          num: 2, title: 'المتطابقات الشهيرة الثلاث', subtitle: 'ثلاثة أمثلة', done: !!d.ex,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-700"><MathText>{KNOWLEDGE.remarkable}</MathText></p>
@@ -72,15 +72,15 @@ export default function Module03Maarif() {
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">انشر مستعملًا المتطابقة المناسبة:</p>}
                 rows={[
-                  { id: 'k1', label: m('$(3x + 2)^2 =$'), options: ['$9x^2 + 4$', '$9x^2 + 12x + 4$', '$3x^2 + 12x + 4$'].map(m), correct: 1 },
-                  { id: 'k2', label: m('$(4 - 2x)^2 =$'), options: ['$16 - 16x + 4x^2$', '$16 - 8x + 4x^2$', '$16 - 4x^2$'].map(m), correct: 0 },
-                  { id: 'k3', label: m('$(5x - 1)(5x + 1) =$'), options: ['$5x^2 - 1$', '$25x^2 + 1$', '$25x^2 - 1$'].map(m), correct: 2 },
+                  { id: 'k1', label: m('$(3x + 4)^2 =$'), options: ['$9x^2 + 16$', '$9x^2 + 24x + 16$', '$3x^2 + 24x + 16$'].map(m), correct: 1 },
+                  { id: 'k2', label: m('$(5 - 2x)^2 =$'), options: ['$25 - 20x + 4x^2$', '$25 - 10x + 4x^2$', '$25 - 4x^2$'].map(m), correct: 0 },
+                  { id: 'k3', label: m('$(4x - 1)(4x + 1) =$'), options: ['$4x^2 - 1$', '$16x^2 + 1$', '$16x^2 - 1$'].map(m), correct: 2 },
                 ]}
                 requires={['murabba-majmu', 'murabba-farq', 'jidaa-majmu-farq']}
-                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>أمثلة الكتاب أدناه، بكل خطواتها.</Feedback>}
+                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>الأمثلة الثلاثة أدناه، بكل خطواتها.</Feedback>}
                 onAnswered={done('ex')}
               />
-              {d.ex && <TextbookBox kind="example" lines={KNOWLEDGE.examples} source={KNOWLEDGE.source} compact />}
+              {d.ex && <TextbookBox kind="example" lines={PLATFORM.examples} compact />}
             </div>
           ),
         },

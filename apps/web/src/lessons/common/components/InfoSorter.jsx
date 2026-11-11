@@ -4,6 +4,7 @@ import { CheckCircle2, XCircle } from 'lucide-react';
 import useDragInteraction from '../manipulations/useDragInteraction';
 import DraggableObject from '../manipulations/primitives/DraggableObject';
 import DragGhost from '../manipulations/primitives/DragGhost';
+import { playSfx } from '../utils/playEffect';
 
 /**
  * InfoSorter — tri des informations utiles / inutiles d'un énoncé.
@@ -164,7 +165,8 @@ export default function InfoSorter({ items, onSolved, solved, formative = false,
             type="button"
             onClick={() => {
               setChecked(true);
-              onCheck?.(allRight);
+              // le son de la vérification : celui du parent s'il en branche un (kit.react), sinon le nôtre — jamais deux fois
+              if (onCheck) onCheck(allRight); else playSfx(allRight ? 'correct' : 'wrong');
               if (allRight || formative) onSolved?.();
             }}
             className="px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-sm min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"

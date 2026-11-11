@@ -139,7 +139,7 @@ export default function CommercialPanel({ role, userId, planType, onChanged }) {
                 <Info label={t('commercial.studentCapacity')}>
                   <span data-capacity-meter>
                     {/* Le rapport « 12 / 40 » ne doit jamais se retourner. */}
-                    <Num>{data.capacity.current} / {data.capacity.limit ?? '∞'}</Num>
+                    <Num>{data.capacity.current}{'\u00A0/\u00A0'}{data.capacity.limit ?? '∞'}</Num>
                     {data.capacity.remaining != null ? <span className="text-slate-500"> — {t('commercial.seatsRemaining', { count: data.capacity.remaining })}</span> : null}
                     {data.capacity.overLimit ? <span className="ms-2 rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-800">{t('commercial.overLimit')}</span> : null}
                   </span>

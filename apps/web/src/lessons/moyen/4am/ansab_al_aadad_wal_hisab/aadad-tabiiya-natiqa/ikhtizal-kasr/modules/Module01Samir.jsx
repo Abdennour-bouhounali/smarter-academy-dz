@@ -5,6 +5,9 @@ import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
+import { M1_ROUNDS } from '../content/recipes';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
 import { ACTIVITY } from '../content/textbook';
 /**
  * Module 1 — l'ENTRÉE : la recette qu'on partage (fraction-reduction), puis le نشاط 8 (p. 9) de سمير posé APRÈS la réponse (rétrofit 2026-10-15 :
@@ -15,13 +18,19 @@ import { ACTIVITY } from '../content/textbook';
  * ingrédients en 4 parts identiques — et la fraction réduite est ce que
  * contient UNE part. Le chemin de سمير (÷4 puis ÷3) se voit en parts de
  * parts ; la division par le PGCD, en 12 parts d'un coup.
+ *
+ * LECTEUR DE MISSION (rollout 2026-11-09) : le labo se joue en MANCHES (content/recipes.js › M1_ROUNDS : 12/18 à la main avec ses questions →
+ * 84/48 avec prédictions → défi ⭐ → cuisine libre) au lieu de مبتدئ / متقدم ; les deux étapes attendent la manche 1 (`needsRound`). Hors lecteur :
+ * inchangé.
  */
 export default function Module01Samir() {
   const [labDone, setLabDone] = useState(false);
   const [trials, setTrials] = useState([]);
+  // Dans le lecteur : la manche gagnée ouvre l'étape.
+  const [won, setWon] = useState({});
   // les questions posées PAR-DESSUS le labo (LabCheckpoint) : les deux étapes en gardent la TRACE (`checkpoint-done`), puis posent les noms (briques)
   const answered = (id) => trials.some((e) => e.tk === 'checkpoint-done' && e.id === id);
-  const q1 = answered('steps');
+  const q1 = answered('steps') || Boolean(won.r1);
   const q2 = q1;
   const { n, d, path } = ACTIVITY.numbers;
   return (
@@ -30,6 +39,12 @@ export default function Module01Samir() {
         // Le labo EN TÊTE, sans carte ni titre (rétrofit 2026-10-15) : la recette (contexte) et la mission
         // (UNE question) sont ceux du labo. Le niveau par défaut sert la tâche du module :
         // la première étape attend que CETTE manipulation soit finie (`onFinished`), sans jamais bloquer.
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="m1-recipes" rounds={M1_ROUNDS} icon="🥣" freeIcon="🍞"
+              onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))} />
+          )}
+          page={(
         <ManipulationWorkspace
           defaultLevel="beginner"
           levels={{
@@ -42,9 +57,11 @@ export default function Module01Samir() {
             ),
           }}
         />
+          )}
+        />
       )}
       steps={[
-        { num: 1, title: 'أ) لماذا تبقى الوصفة هي نفسها؟', subtitle: 'أنهِ الاختزال في المناولة أولًا', done: q1,
+        { needsRound: { id: 'r1', label: 'الجولة 1', icon: '🥣', won: Boolean(won.r1) }, num: 1, title: 'أ) لماذا تبقى الوصفة هي نفسها؟', subtitle: 'أنهِ الاختزال في المناولة أولًا', done: q1,
           content: (
             <div className="space-y-3">
               <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={labDone ? 'true' : 'false'}>
@@ -55,14 +72,14 @@ export default function Module01Samir() {
               {q1 && <KnowledgeBrick id="ikhtizal" />}
               {q1 && (
                 <div className="space-y-1 text-center">
-                  <p className="text-sm text-slate-600">وهكذا فعل سمير في نشاط الكتاب:</p>
+                  <p className="text-sm text-slate-600">وهكذا فعل سمير:</p>
                   <p className="text-lg"><MathText>{ACTIVITY.samirPath}</MathText></p>
                   <SourceTag source={ACTIVITY.source} />
                 </div>
               )}
             </div>
           ) },
-        { num: 2, title: 'هل يمكن مواصلة اختزال 7/4؟ لماذا؟', done: q2,
+        { needsRound: { id: 'r1', label: 'الجولة 1', icon: '🥣', won: Boolean(won.r1) }, num: 2, title: 'هل يمكن مواصلة اختزال 7/4؟ لماذا؟', done: q2,
           content: (
             <div className="space-y-3">
               <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={q2 ? 'true' : 'false'}>

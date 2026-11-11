@@ -3,7 +3,7 @@
  * docs/architecture/KNOWLEDGE_MAP.md, Part A.
  *
  * Aucune mathématique n'est écrite ici : chaque texte vient de la leçon — le
- * manuel (content/textbook.js : نشاط 1 p. 32, معارف 1 p. 34, أستعدّ p. 31),
+ * manuel (content/textbook.js : معارف 1 p. 34 — la définition et les propriétés) et la PLATEFORME,
  * les exercices et leurs `commonError` (content/exercises.js), et les deux
  * phrases de la plateforme que le module 1 affiche (PLATFORM_NOTES). Les
  * développements des deux terrains sont CALCULÉS (core/polynomials) à partir
@@ -20,11 +20,11 @@
  *                                   │ وأيضًا
  *                              [جداء قوسين]
  *                                   │ مثال
- *                              [ملعب النشاط]
+ *                              [الملعب ذو الممرّ]
  *                    حالة خاصّة ┌───┘
  *                 [k(a ± b)]                                         محور 2
  *                     │ مثال
- *               [مثالا الكتاب]
+ *                 [مثالان]
  *                     │ نبسّط
  *               [تبسيط عبارة]
  *                     │ خطأ شائع
@@ -35,7 +35,7 @@
  *                  🎯 [الخلاصة]
  */
 import * as polynomials from '@smarter-academy/core/arithmetic/polynomials.js';
-import { ACTIVITY, KNOWLEDGE, PLATFORM_NOTES, PREP_ITEMS } from './content/textbook';
+import { ACTIVITY, KNOWLEDGE, PLATFORM_NOTES } from './content/textbook';
 import { EX } from './content/exercises';
 
 const { expand, termsTex, factorTex } = polynomials;
@@ -49,6 +49,9 @@ const pitchBig = `$${factorTex(adv1)}${factorTex(adv2)} = ${termsTex(expand(adv1
 const twoWays = `$${k} \\times (${a} + ${b}) = ${k * a} + ${k * b} = ${k * (a + b)}$`;
 const [propSum, propDiff, propDouble] = KNOWLEDGE.properties;
 const ex6 = EX['ex-6'];
+// Les exemples et les phrases des nœuds sont ceux de la PLATEFORME (indépendance du manuel, rollout 2026-11-11) : ni le texte des questions de
+// l'activité, ni les exemples du livre ; « مثالا الكتاب » est devenu « مثالان ».
+const EXAMPLES = ['$6(x - 2) = 6 \\times x - 6 \\times 2 = 6x - 12$', '$(2x + 1)(x + 3) = 2x^2 + 6x + x + 3 = 2x^2 + 7x + 3$'];
 
 export const KNOWLEDGE_GRAPH = {
   root: 'nashr',
@@ -67,22 +70,23 @@ export const KNOWLEDGE_GRAPH = {
     {
       // 🔍 تحقّق — la question 2 de l'activité et sa règle (PLATFORM_NOTES.classify).
       id: 'tamyiz', kind: 'check', lane: 'start', requires: 'nashr-taarif',
-      title: 'جداء أم مجموع؟', subtitle: '$x(3x + 1)$',
-      context: { text: PLATFORM_NOTES.classify, list: ['$x(3x + 1)$ ، $5x(1 - x)$ ، $(3x - 1)(3 + x)$', '$x + (3 - 2x)$ ، $x(x + 1) - 2 + (x + 1)$'] },
+      title: 'جداء أم مجموع؟', subtitle: '$x(2x + 5)$',
+      context: { text: PLATFORM_NOTES.classify, list: ['$x(2x + 5)$ ، $3x(2 - x)$ ، $(3x - 1)(3 + x)$', '$x + (4 - 3x)$ ، $x(x + 2) - 1 + (x + 2)$'] },
       reveals: [],
     },
     {
       // Le terrain du niveau مبتدئ : pour x = 9, c'est la question 1.
       id: 'mal3ab', kind: 'example', lane: 'end', requires: 'nashr-taarif',
       title: 'ملعب المتوسطة', subtitle: pitchSmall,
-      context: { text: ACTIVITY.questions[0], formula: twoWays, list: [pitchSmall] },
+      context: { text: 'نحسب $3 \\times (9 + 5)$ بطريقتين: جداء البعدين، أو مجموع مساحتي المنطقتين.', formula: twoWays, list: [pitchSmall] },
       reveals: ['tadhakkur'],
     },
     {
       // 📌 تذكّر — la distributivité de la 3AM, diagnostiquée par « أستعدّ » (items 3 et 4).
       id: 'tadhakkur', kind: 'prerequisite', lane: 'end', requires: 'nashr-taarif',
       title: 'الخاصية التوزيعية', subtitle: '$-2(a - 1) = -2a + 2$',
-      context: { text: PREP_ITEMS[0].text, list: [PREP_ITEMS[1].why] },
+      // la phrase citée vient du module 0 (le conseil de « أستعدّ ») : chaque aide cite la leçon mot pour mot (lessonGraphs.test.js)
+      context: { text: 'العدد الذي أمام القوسين يُضرب في كل حد بداخلهما، مع إشارته.', list: ['$-2(a - 1) = -2a + 2$', '$4(2 - b) = 8 - 4b$'] },
       reveals: ['qawsayn'],
     },
     {
@@ -92,8 +96,8 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'mal3ab-kabir', kind: 'example', lane: 'end', requires: 'nashr-qawsayn',
-      title: 'ملعب النشاط', subtitle: '$(3x - 1)(3 + x)$',
-      context: { text: ACTIVITY.questions[2], formula: pitchBig },
+      title: 'الملعب ذو الممرّ', subtitle: '$(3x - 1)(3 + x)$',
+      context: { text: 'ملعب بعداه $3x - 1$ و $3 + x$ : أربع مناطق، منها اثنتان مقتطعتان.', formula: pitchBig },
       reveals: ['tawziiya'],
     },
     {
@@ -103,8 +107,8 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'amthila', kind: 'example', lane: 'start', requires: 'tawziiya-nashr',
-      title: 'مثالا الكتاب', subtitle: '$5(x - 1) = 5x - 5$',
-      context: { list: [...KNOWLEDGE.examples], note: `${propSum} ، ${propDiff}` },
+      title: 'مثالان', subtitle: '$6(x - 2) = 6x - 12$',
+      context: { list: EXAMPLES, note: `${propSum} ، ${propDiff}` },
       reveals: ['tabsit'],
     },
     {
@@ -128,10 +132,10 @@ export const KNOWLEDGE_GRAPH = {
     {
       // ⛔ خطأ شائع — le premier élève de l'exercice 6.
       id: 'khata-qaws', kind: 'common_mistake', lane: 'center', requires: 'tabsit',
-      title: 'قوسان مسبوقان بإشارة ناقص', subtitle: '$-(4x^2 - 3x)$',
+      title: 'قوسان مسبوقان بإشارة ناقص', subtitle: '$-(2x^2 + 3x)$',
       context: {
         parts: [
-          { role: 'wrong', text: 'كتابة $-(4x^2 - 3x + 4x - 3) = -4x^2 - 3x + 4x - 3$ كما فعل التلميذ الأول في التمرين 6.' },
+          { role: 'wrong', text: 'كتابة $-(2x^2 + 3x + 2x + 3) = -2x^2 + 3x + 2x + 3$ : تغيير إشارة الحدّ الأول وحده.' },
           { role: 'why', text: ex6.commonError },
           { role: 'right', text: ex6.question.rows[2].correction },
         ],

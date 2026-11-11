@@ -71,7 +71,7 @@ export const KNOW2 = {
     'في الحالة $k > 1$ : k هو معامل التكبير والمثلث AB′C′ تكبير للمثلث ABC.',
   ],
   example: 'المثلثان AMN و ABC في وضعية طالس. لدينا $\\dfrac{AM}{AB} = \\dfrac{AN}{AC} = \\dfrac{MN}{BC} = \\dfrac{1}{3}$ ومنه $AM = \\dfrac{1}{3}AB$ و $AN = \\dfrac{1}{3}AC$ و $MN = \\dfrac{1}{3}BC$ . لدينا معامل التناسبية هو $\\dfrac{1}{3}$ إذن المثلث AMN هو تصغير للمثلث ABC.',
-  correction: 'صحّحت المنصّة خطأً مطبعيًا: الكتاب يكتب $\\dfrac{MN}{AC}$ في النسبة الثالثة، والصواب $\\dfrac{MN}{BC}$ (السطر نفسه يكتب $MN = \\dfrac{1}{3}BC$).',
+  correction: 'تنبيه: النسبة الثالثة هي $\\dfrac{MN}{BC}$ لا $\\dfrac{MN}{AC}$ ، فالضلع الموافق للضلع $[MN]$ هو $[BC]$ (ومنه $MN = \\dfrac{1}{3}BC$).',
 };
 
 /** طرائق (p. 107) — « حساب أطوال » : l'exercice résolu, la ligne CORRIGÉE (1/2 → 2/1). */
@@ -84,7 +84,7 @@ export const METHOD = {
     'نحتفظ بالمساواة المناسبة $\\dfrac{MA}{MD} = \\dfrac{AB}{DN}$',
     'أي $\\dfrac{2}{1} = \\dfrac{5}{DN}$ ومنه $DN = \\dfrac{5}{2} = 2{,}5$ .',
   ],
-  correction: 'صحّحت المنصّة خطأً مطبعيًا: الكتاب يكتب $\\dfrac{1}{2} = \\dfrac{5}{DN}$ ، والصواب $\\dfrac{2}{1} = \\dfrac{5}{DN}$ لأن $MA = 2$ و $MD = 3 - 2 = 1$ (النتيجة $DN = 2{,}5$ صحيحة).',
+  correction: 'تنبيه: نكتب $\\dfrac{2}{1} = \\dfrac{5}{DN}$ لا $\\dfrac{1}{2} = \\dfrac{5}{DN}$ ، لأن $MA = 2$ و $MD = 3 - 2 = 1$ .',
 };
 
 /**
@@ -138,7 +138,7 @@ export const PREP_REVISITED = [
     why: '$\\dfrac{CD}{CA} = \\dfrac{CE}{CB}$ أي $\\dfrac{6}{9} = \\dfrac{8}{CB}$ إذن $CB = 12$ و $BE = 12 - 8 = 4$ (الطول $AB = 7$ لا يُستعمل).', source: PREP_SRC(4) },
   { n: 5, text: 'في الشكل المقابل حيث (CE)//(DF) ينتج: أطوال المثلث ACE متناسبة مع أطوال المثلث ADF.', answer: true,
     why: 'C من (AD) و E من (AF) و $(CE) \\parallel (DF)$ : المثلثان ACE و ADF في وضعية طالس فأطوال أضلاعهما متناسبة.', source: PREP_SRC(5),
-    correction: 'صحّحت المنصّة خطأً مطبعيًا: الكتاب يكتب «المثلث ADE»، والصواب «المثلث ADF» (المثلث ADE ليس في وضعية طالس مع ACE).' },
+    correction: 'تنبيه: المثلث المقصود هو ADF ، فالمثلث ADE ليس في وضعية طالس مع المثلث ACE.' },
 ];
 
 /** Le monde مبتدئ du lab (plateforme) : la projection du quartier, AB = 4, AC = 5, BC = 3. */
@@ -156,7 +156,8 @@ export const SHADOW_WORLD = {
 
 /**
  * Ce que la plateforme ÉCRIT autour de « ساحة الحيّ » (module 1) : la situation, le passage de la Place à la figure,
- * l'égalité de Thalès qu'elle porte, un calcul sur les objets de la place (le lampadaire et la palmeraie à 14:00, k = 1,2).
+ * l'égalité de Thalès qu'elle porte, un calcul sur les objets de la place (le lampadaire de 2,75 m et le palmier à 14:00, k = 1,2 — depuis le
+ * 2026-11-10 : 3 m et 4,5 m étaient des nombres de la مسألة du module 5, content/forbidden.js).
  * Le manuel (نشاط 1) suit : ses figures générales A, B, C, B′, C′ disent la MÊME chose avec d'autres lettres.
  */
 export const SHADOW_STEPS = {
@@ -165,7 +166,11 @@ export const SHADOW_STEPS = {
   bridge: 'نمثّل ما رأيته في الساحة: $A$ قاعدة المئذنة و $M$ قمّتها، $B$ قاعدة العصا و $E$ قمّتها، و $O$ نهاية الظلّ المشتركة حين ينتهي ظلّا العصا والمئذنة معًا.',
   parallel: 'المئذنة والعصا شاقوليتان، أي عموديتان على الأرض $(OA)$ ، فهما متوازيتان: $(AM) \\parallel (BE)$ . وشعاع الشمس $(OM)$ يمرّ برأسيهما معًا: إنه القاطع الذي يربط المثلثين $OBE$ و $OAM$ .',
   equality: 'المثلثان $OBE$ و $OAM$ في وضعية طالس: لهما الرأس $O$ و $(BE) \\parallel (AM)$ ، إذن $\\dfrac{OB}{OA} = \\dfrac{OE}{OM} = \\dfrac{BE}{AM}$ . وهذا ما كتبتَه بقاعدتك في الساحة: النسبة بين الظلّ والطول واحدة لكل الأشياء الشاقولية في اللحظة نفسها.',
-  calc: 'الساعة 14:00 في ساحة الحيّ: عمود الإنارة طوله $3\\,\\mathrm{m}$ وظلّه $3{,}6\\,\\mathrm{m}$ ، وظلّ النخلة $5{,}4\\,\\mathrm{m}$ .',
-  calcLine: 'الشعاع نفسه يمرّ برأسي العمود والنخلة: $\\dfrac{5{,}4}{3{,}6} = \\dfrac{h}{3}$ ومنه $h = \\dfrac{5{,}4 \\times 3}{3{,}6} = 4{,}5\\,\\mathrm{m}$ . (أو: $\\dfrac{3{,}6}{3} = 1{,}2$ فالظلّ يساوي $1{,}2$ مرّة الطول، و $\\dfrac{5{,}4}{1{,}2} = 4{,}5$ .)',
-  answers: { palm: 4.5 },
+  calc: 'الساعة 14:00 في ساحة الحيّ: عمود الإنارة طوله $2{,}75\\,\\mathrm{m}$ وظلّه $3{,}3\\,\\mathrm{m}$ ، وظلّ النخلة $9{,}3\\,\\mathrm{m}$ .',
+  calcLine: 'أشعّة الشمس متوازية: النسبة بين الظلّ والطول واحدة للعمود وللنخلة. $\\dfrac{9{,}3}{3{,}3} = \\dfrac{h}{2{,}75}$ ومنه $h = \\dfrac{9{,}3 \\times 2{,}75}{3{,}3} = 7{,}75\\,\\mathrm{m}$ . (أو: $\\dfrac{3{,}3}{2{,}75} = 1{,}2$ فالظلّ يساوي $1{,}2$ مرّة الطول، و $\\dfrac{9{,}3}{1{,}2} = 7{,}75$ .)',
+  // les deux réponses fausses que le module reconnaît : multiplier au lieu de diviser, retrancher l'écart (ombre − hauteur du lampadaire)
+  wrong: { times: 11.16, minus: 8.75 },
+  answers: { palm: 7.75 },
+  // LECTEUR DE MISSION (2026-11-10) : l'élève y a joué le labo à un couloir (un lampadaire, un château d'eau) — pas la minaret du monde de la page
+  equalityPlayer: 'المثلثان $OBE$ و $OAM$ في وضعية طالس: لهما الرأس $O$ و $(BE) \\parallel (AM)$ ، إذن $\\dfrac{OB}{OA} = \\dfrac{OE}{OM} = \\dfrac{BE}{AM}$ . وهذا ما وجدته في الساحة: النسبة بين الظلّ والطول واحدة لكل الأشياء الشاقولية في اللحظة نفسها.',
 };

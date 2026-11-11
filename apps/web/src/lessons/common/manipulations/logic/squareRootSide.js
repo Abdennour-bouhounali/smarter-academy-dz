@@ -33,7 +33,7 @@ function ceilRoot({ num, den }) {
   return m;
 }
 
-export function init({ mode = 'refine', areas, maxScale = 1000 }) {
+export function init({ mode = 'refine', areas, maxScale = 1000, truthful = false }) {
   // Les aires gardent leur ÉCRITURE (0,25 reste 25/100, pas 1/4) : c'est ce
   // que l'élève lit sur la carte ; les comparaisons, elles, n'en dépendent pas.
   const cards = areas.map(({ num, den }) => { reduce({ num, den }); return { num, den }; });
@@ -42,6 +42,9 @@ export function init({ mode = 'refine', areas, maxScale = 1000 }) {
     cards,
     card: 0,
     maxScale,
+    // graduation, lecteur de mission (rollout 2026-11-09, leçon 2 ; conseil) : une carte dont le côté TOMBE sur une graduation offerte ne « résiste »
+    // jamais, même encadrée sur trois graduations qui ne sont pas la sienne (16/9 sur 1/1, 1/2, 1/4) — le ✗ et « لن يسقط على أي تدريجة » seraient faux.
+    truthful,
     scale: 1,
     // refine : la fenêtre de la règle, en unités de la graduation courante.
     window: { min: 0, max: ceilRoot(cards[0]) + 1 },
@@ -126,6 +129,7 @@ export function cardStatus(s, i) {
   const memo = s.memo[keyOf(s.cards[i])] ?? {};
   const cells = Object.values(memo);
   if (cells.some((c) => c.exact != null)) return 'exact';
+  if (s.truthful && landsSomewhere(s.cards[i], s.maxScale)) return 'open';
   if (cells.filter(tight).length >= RESIST_AFTER) return 'resisting';
   return 'open';
 }
@@ -221,3 +225,47 @@ export function rootTexIfRational(area) {
 /** Longueur à DESSINER (jamais à juger). */
 export const drawSide = (v, scale) => v / scale;
 export const drawRoot = ({ num, den }) => Math.sqrt(num / den);
+
+/* ── Lecteur de mission (rollout 2026-11-09, traitement v2) ─────────────── */
+
+/**
+ * La VÉRITÉ d'une prédiction « le côté tombera-t-il pile sur une graduation ? » — calculée, jamais lue sur l'écran.
+ *   landsAt(area, scale)          le côté √a tombe-t-il sur une graduation 1/scale ?  (√a = p/q rationnel et q divise scale)
+ *   landsSomewhere(area, maxScale) existe-t-il une graduation 1/g (g ≤ maxScale) où il tombe ?
+ */
+export function landsAt(area, scale) {
+  const r = rationalSqrt(area);
+  return Boolean(r) && scale % r.den === 0;
+}
+export function landsSomewhere(area, maxScale) {
+  const r = rationalSqrt(area);
+  return Boolean(r) && r.den <= maxScale;
+}
+
+/** Le nombre de chiffres après la virgule d'une écriture « 2,236 » (0 sans virgule). */
+export const decimalsOf = (text) => { const i = String(text).indexOf(','); return i < 0 ? 0 : String(text).length - i - 1; };
+
+/**
+ * LE GUIDE (LabCoach, MANIPULATION_CONTRACT §8quater — ajouté au rollout du 2026-11-09 : ce labo n'en avait pas). Ce qu'il montre MAINTENANT,
+ * jamais la réponse (ni la graduation où tomber, ni le sens où tirer) :
+ *   refine      le bout du côté à tirer (aucun essai à cette graduation) → encore le bout (pas encore encadré) → « دقّق » (encadré) ; rien à la fin ;
+ *   graduation  le bout → une autre graduation (la carte encadrée ici) → une autre carte (celle-ci tombée juste ou résistante) ; rien à la fin.
+ */
+export function coachOf(s) {
+  if (!s || discoveryReady(s)) return null;
+  const drag = { id: 'drag', target: '[data-root-handle]', gesture: 'drag' };
+  if (s.last == null) return drag;
+  if (s.mode === 'refine') {
+    if (canRefine(s)) return { id: 'refine', target: '[data-root-refine]', gesture: 'tap' };
+    return { id: 'again', target: '[data-root-handle]', gesture: 'drag' };
+  }
+  const st = cardStatus(s, s.card);
+  if (st !== 'open') {
+    return s.cards.some((_, i) => i !== s.card && cardStatus(s, i) === 'open') ? { id: 'card', target: '[data-root-cards]', gesture: 'tap' } : null;
+  }
+  if (tight(cell(s)) || cell(s).exact != null) return { id: 'grad', target: '[data-root-graduations]', gesture: 'tap' };
+  return { id: 'again', target: '[data-root-handle]', gesture: 'drag' };
+}
+
+/** Une case de la mémoire (carte, graduation) — exportée pour le lecteur (journal, questions). */
+export const cellOf = (s, card = s.card, scale = s.scale) => cell(s, card, scale);

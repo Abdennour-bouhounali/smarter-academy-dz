@@ -507,7 +507,7 @@ export default function SlopeStairs({
         <div className="min-w-0 flex-1 space-y-1">
           {fill.total > 0 && (
             <p className="text-xs font-bold text-emerald-900" data-ss-fill data-done={fill.done} data-total={fill.total}>
-              {k('fill')} <bdi dir="ltr">{`${fill.done} / ${fill.total}`}</bdi>
+              {k('fill')} <bdi dir="ltr">{`${fill.done}\u00A0/\u00A0${fill.total}`}</bdi>
             </p>
           )}
           <p role="status" className="min-h-[1.75rem] font-bold leading-snug text-[13px]" data-ss-verdict={lab.last?.kind ?? ''}>{verdict}</p>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
@@ -8,6 +8,10 @@ import { SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_B, TILING_BEGINNER } from '../content/textbook';
 import RootTable from '../components/RootTable';
+import { M1_ROUNDS, R1 } from '../content/tilings';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
+import { useSavedAnswer } from '../../../../../../common/answers/useSavedAnswer';
 
 /**
  * Module 1 — نشاط 4 (p. 21) : جداء جذرين تربيعيين، ثم حاصل قسمتهما.
@@ -31,8 +35,22 @@ import RootTable from '../components/RootTable';
  * La preuve (3 أ ب جـ) se fait par l'élévation au carré ; la propriété n'est
  * NOMMÉE (KnowledgeBrick) qu'après la conclusion de l'élève.
  * LP enseignés : P1, P2.
+ *
+ * LECTEUR DE MISSION (rollout 2026-11-10, unité 2 leçon 4 ; conseil du 2026-11-10) : le labo se joue en MANCHES (content/tilings.js › M1_ROUNDS :
+ * 27 à la main avec la suite complète → 32 (deux pavages justes, le pont √(4 × 8) = √4 × √8) → 98 (le quotient) → défi ⭐ 96 → atelier libre) au
+ * lieu de مبتدئ / متقدم ; l'étape 1 attend la manche 1, l'étape 6 (حاصل القسمة) la manche 3. Ce que le labo a fait (ses essais, ses questions
+ * finies, les manches gagnées) est GARDÉ (answers/useSavedAnswer, fusion seulement une fois la copie du serveur arrivée + étoiles) : un
+ * rechargement ne bloque jamais une étape. Hors lecteur : inchangé.
  */
 const cell = (tex) => <MathText key={tex}>{tex}</MathText>;
+/** L'aire du carré d'un pavage remonté par le labo (le lecteur ne la donne pas) : b × k² s'il est juste, sinon la fraction réduite × k². */
+const areaOf = (t) => (t?.k == null ? 'lab' : t.valid ? t.b * t.k * t.k : Math.round((t.frac.num * t.k * t.k) / t.frac.den));
+/** Les essais gardés, par carré PUIS par k (revue ECC 2026-11-10 : une fusion à un seul niveau écrasait les essais d'un autre carré). */
+const mergeTrials = (a = {}, b = {}) => {
+  const out = { ...a };
+  Object.entries(b).forEach(([sq, byK]) => { out[sq] = { ...(a[sq] ?? {}), ...byK }; });
+  return out;
+};
 const fb = ({ allRight }) => (
   <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أكملت الجدول بدون خطأ.' : 'اقرأ التصحيح تحت كل سطر: الجدول المكتمل أدناه.'}</Feedback>
 );
@@ -40,14 +58,32 @@ const fb = ({ allRight }) => (
 export default function Module01NashatJidaa() {
   // les questions posées PAR-DESSUS le labo (LabCheckpoint, 2026-10-28) : leur TRACE est l'événement `checkpoint-done`
   const [cpDone, setCpDone] = useState({});
-  const answered = (id) => !!cpDone[id];
   // Les essais de l'élève dans le labo (k validés par la main), pour la ligne de trace de l'étape 1.
   const [trials, setTrials] = useState({});
   const addTrial = (n, t) => {
-    if (t.tk) { if (t.tk === 'checkpoint-done') setCpDone((d) => ({ ...d, [`${n}:${t.id}`]: true, [t.id]: true })); return; }
-    setTrials((o) => ({ ...o, [n]: { ...(o[n] || {}), [t.k]: t } }));
+    if (t?.tk) { if (t.tk === 'checkpoint-done') setCpDone((d) => ({ ...d, [`${n}:${t.id}`]: true, [t.id]: true })); return; }
+    if (t?.k == null) return;
+    setTrials((o) => ({ ...o, [n]: { ...(o[n] || {}), [t.k]: { k: t.k, valid: t.valid, b: t.b } } }));
   };
-  const tried = Object.values(trials).flatMap((o) => Object.values(o));
+  // Dans le lecteur : les manches gagnées (étoiles gardées) ouvrent les étapes ; les essais et les questions finies du labo sont GARDÉS — une
+  // étape n'attend jamais des questions qu'un rechargement a effacées (revue ECC des leçons 1–3).
+  const [won, setWon] = useState({});
+  const memory = useSavedAnswer([], { key: 'lab-tilings', lessonId: MODULE_CTX.lessonId, moduleNumber: 1 });
+  const kept = memory.saved?.v ?? {};
+  const { save } = memory;
+  useEffect(() => {
+    // jamais avant que la copie du serveur soit arrivée (`ready`) : une fusion partielle, plus récente, l'écraserait (revue ECC 2026-11-10)
+    if (!memory.on || !memory.ready || (!Object.keys(cpDone).length && !Object.keys(trials).length)) return;
+    save({ cp: { ...(kept.cp ?? {}), ...cpDone }, trials: mergeTrials(kept.trials, trials) });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cpDone, trials, memory.ready]);
+  const cpSeen = { ...(kept.cp ?? {}), ...cpDone };
+  const answered = (id) => !!cpSeen[id] || (id === 'rule' && !!won.r1);
+  const allTrials = mergeTrials(kept.trials, trials);
+  // la ligne de l'étape 1 parle d'UN carré : celui de la manche 1 dans le lecteur (27), sinon ce que la page a pavé (36 / 144)
+  const tried = Object.values(allTrials[R1] ?? {}).length
+    ? Object.values(allTrials[R1])
+    : Object.entries(allTrials).filter(([key]) => key !== String(R1)).flatMap(([, o]) => Object.values(o));
   const refusedTry = tried.filter((t) => !t.valid).sort((x, y) => x.k - y.k)[0];
   const validTry = tried.filter((t) => t.valid && t.k > 1).sort((x, y) => x.k - y.k)[0];
   const [tableA, setTableA] = useState(false);
@@ -70,6 +106,13 @@ export default function Module01NashatJidaa() {
       intro={
         // LE LABO OUVRE LE MODULE (§4quater) : pas de carte du manuel, pas de titre / `lead` de workspace. `lead` des labos = le contexte seul ;
         // la question est celle du labo. Le niveau متقدم (144 = 4 × 36) est la première ligne du tableau du manuel.
+        // Lecteur : les MANCHES (content/tilings.js) ; la page garde ses deux niveaux.
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="m1-tilings" rounds={M1_ROUNDS} icon="🧱" freeIcon="🏫"
+              onTrial={(t) => addTrial(areaOf(t), t)} onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))} />
+          )}
+          page={(
         <ManipulationWorkspace
           defaultLevel="beginner"
           levels={{
@@ -92,15 +135,18 @@ export default function Module01NashatJidaa() {
                 level="advanced"
                 n={144}
                 mode="product"
-                lead="نشاط الكتاب: مربّع مساحته 144 = 4 × 36، وهو السطر الأول من الجدول."
+                lead="مربّع مساحته 144 = 4 × 36، وهو السطر الأول من الجدول."
                 onTrial={(t) => addTrial(144, t)}
               />
             ),
           }}
         />
+          )}
+        />
       }
       steps={[
         {
+          needsRound: { id: 'r1', label: 'الجولة 1', icon: '🧱', won: Boolean(won.r1) },
           num: 1, title: 'لماذا يُرفض بعض التبليط؟', subtitle: 'أسئلة المختبر عن تبليطاتك', done: answered('rule'),
           content: (
             <div className="space-y-3">
@@ -129,6 +175,7 @@ export default function Module01NashatJidaa() {
             <div className="space-y-3">
               <RootTable columns={ACTIVITY.columns} rows={ACTIVITY.rows} caption="الجدول قبل الإكمال" />
               <BatchChoiceQuestion
+                rowCols="auto"
                 intro={<p className="text-sm font-semibold text-slate-700">احسب العمودين الأخيرين في كل سطر من الجدول:</p>}
                 rows={[
                   { id: 'a1', label: <MathText>{'$\\sqrt{4} \\times \\sqrt{36}$'}</MathText>, options: ['$12$', '$72$', '$144$'].map(cell), correct: 0, correction: <MathText>{'$2 \\times 6 = 12$'}</MathText> },
@@ -216,17 +263,19 @@ export default function Module01NashatJidaa() {
                 onAnswered={() => setConcA(true)}
               />
               {concA && (
-                <KnowledgeBrick id="jidaa-jidhrayn" lead="برهنت تخمينك: هذه هي الخاصية 1 من الكتاب، وهي ما رأيته على ضلع المربّع المبلّط." />
+                <KnowledgeBrick id="jidaa-jidhrayn" lead="برهنت تخمينك: هذه هي الخاصية 1، وهي ما رأيته على ضلع المربّع المبلّط." />
               )}
             </div>
           ),
         },
         {
+          needsRound: { id: 'r3', label: 'الجولة 3', icon: '🧱', won: Boolean(won.r3) },
           num: 6, title: 'حاصل قسمة جذرين — 1) انقل وأكمل الجدول', subtitle: 'انظر جيّدًا إلى كل سطر، وإلى السطر الأخير خاصةً', done: tableB,
           content: (
             <div className="space-y-3">
               <RootTable columns={ACTIVITY_B.columns} rows={ACTIVITY_B.rows} noMeaning={ACTIVITY_B.noMeaning} caption="الجدول قبل الإكمال" />
               <BatchChoiceQuestion
+                rowCols="auto"
                 intro={<p className="text-sm font-semibold text-slate-700">احسب العمودين الأخيرين في كل سطر (الجذر التربيعي لعدد سالب لا معنى له):</p>}
                 rows={[
                   { id: 'a1', label: <MathText>{'$\\dfrac{\\sqrt{36}}{\\sqrt{4}}$'}</MathText>, options: ['$9$', '$3$', '$\\sqrt{32}$'].map(cell), correct: 1, correction: <MathText>{'$\\dfrac{6}{2} = 3$'}</MathText> },
@@ -294,7 +343,7 @@ export default function Module01NashatJidaa() {
                 onAnswered={() => setProofB(true)}
               />
               {proofB && (
-                <KnowledgeBrick id="qismat-jidhrayn" lead="هذا ما استنتجته في جـ): الخاصية 2 من الكتاب." />
+                <KnowledgeBrick id="qismat-jidhrayn" lead="هذا ما استنتجته في جـ): الخاصية 2." />
               )}
             </div>
           ),

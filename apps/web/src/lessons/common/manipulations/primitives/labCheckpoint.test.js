@@ -72,3 +72,44 @@ describe('labCheckpointSettings — la clé du labo pour le réglage de l’ense
     expect(labKeyFromPath('/courses/moyen/3am/x/y/z', '')).toBeNull();
   });
 });
+
+describe('fill / build — les réponses à cases du lecteur (pilote 2026-11-07)', () => {
+  const FILL = { id: 'observe', kind: 'fill', fields: [{ label: 'q', expected: 5, options: [4, 5, 6, 7] }, { label: 'r', expected: 0, options: [0, 1, 2, 3] }], hints: ['h1', 'h2'] };
+  const BUILD = { id: 'build', kind: 'build', slots: ['n', 'g', 'q', 'r'], tiles: [0, 5, 15, 3], expected: [15, 3, 5, 0], hints: ['h1', 'h2'] };
+  it('fill : juste seulement quand TOUTES les cases le sont', () => {
+    expect(C.isCorrect(FILL, [5, 0])).toBe(true);
+    expect(C.isCorrect(FILL, [5, 1])).toBe(false);
+  });
+  it('fill / build : une réponse incomplète n’est pas jugée (aucun essai consommé)', () => {
+    const p = C.fresh();
+    expect(C.submit(p, FILL, [5, null])).toBe(p);
+    expect(C.submit(p, BUILD, [15, 3, 5])).toBe(p);
+  });
+  it('build : l’égalité bâtie dans l’ordre des emplacements nommés', () => {
+    expect(C.isCorrect(BUILD, [15, 3, 5, 0])).toBe(true);
+    // 15 = 5 × 3 + 0 est vrai en calcul, mais 5 n'est pas « الفرق » : le sens de chaque nombre compte
+    expect(C.isCorrect(BUILD, [15, 5, 3, 0])).toBe(false);
+    const p = C.submit(C.fresh(), BUILD, [15, 5, 3, 0]);
+    expect(p.status).toBe('wrong');
+    expect(C.submit(p, BUILD, [15, 3, 5, 0]).status).toBe('right');
+  });
+});
+
+describe('build — `accept` : l’égalité écrite dans l’autre sens (unité 9, leçon 2, conseil L2.3)', () => {
+  const RATIO = {
+    id: 'ratioBuild', kind: 'build', slots: ['a', 'b', 'c', 'd'], tiles: ["AB′", 'AB', "AC′", 'AC', "CC′"],
+    expected: ["AB′", 'AB', "AC′", 'AC'], accept: [["AC′", 'AC', "AB′", 'AB']], preset: ["AB′", 'AB', null, null], hints: ['h1', 'h2'],
+  };
+  it('the written order and the swapped equality are both right; the decoy and an inverted side are not', () => {
+    expect(C.isCorrect(RATIO, ["AB′", 'AB', "AC′", 'AC'])).toBe(true);
+    expect(C.isCorrect(RATIO, ["AC′", 'AC', "AB′", 'AB'])).toBe(true);
+    expect(C.isCorrect(RATIO, ["AB′", 'AB', "AC′", "CC′"])).toBe(false);
+    expect(C.isCorrect(RATIO, ["AB′", 'AB', 'AC', "AC′"])).toBe(false);
+    expect(C.submit(C.fresh(), RATIO, ["AC′", 'AC', "AB′", 'AB']).status).toBe('right');
+  });
+  it('without `accept` nothing changes: only the written order', () => {
+    const plain = { ...RATIO, accept: undefined };
+    expect(C.isCorrect(plain, ["AC′", 'AC', "AB′", 'AB'])).toBe(false);
+    expect(C.isCorrect(plain, ["AB′", 'AB', "AC′", 'AC'])).toBe(true);
+  });
+});

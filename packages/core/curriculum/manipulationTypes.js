@@ -344,6 +344,15 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'في لحظة معيّنة أشعّة الشمس متوازية: الظلّ ÷ الطول هو العدد نفسه لكل الأشياء الشاقولية (وضعية طالس)، ويتغيّر هذا العدد مع الساعة ؛ ومنه طول المئذنة من ظلّها',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  'shadow-meet': {
+    // LES DEUX OMBRES QUI SE RENCONTRENT (2026-11-10, le labo À UN COULOIR du lecteur de mission — `shadow-world` reste celui de la page) :
+    // un objet trop haut pour être mesuré, le soleil à une heure fixée par la manche, un bâton de 1 m que l'élève fait glisser au centimètre
+    // jusqu'à ce que les deux ombres finissent au même point O — alors un seul rayon passe par les deux sommets et OB/OA = BE/AM. À l'ombre
+    // de l'objet le bâton n'a pas d'ombre, au soleil la sienne dépasse : la scène juge, pas un texte. Puis la hauteur est demandée (trois
+    // pastilles, ou le modèle de réponse « H = [ ] m ») ; l'heure avance et le rapport ne change pas ; un poteau à planter : où finira son ombre ?
+    shows: 'العصا والشيء شاقوليان فهما متوازيان، وأشعّة الشمس متوازية: حين ينتهي الظلّان في النقطة نفسها O يكون OB/OA = BE/AM ، ومنه ارتفاع ما لا نصل إليه',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   'cone-cylinder': {
     // LA COUPE AXIALE : un cône (hauteur H, rayon R) et le cylindre posé sur sa base ; l'élève tire le coin du
     // rectangle le long de la génératrice — le coin ne quitte pas le cône (sinon le cylindre le perce) — et lit r, h,

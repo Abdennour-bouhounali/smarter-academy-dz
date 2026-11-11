@@ -210,3 +210,26 @@ export function comparison(a, b) {
 }
 
 export { divmod };
+
+/* ── LabCoach (2026-11-09 : les deux labos de rubans n'avaient pas de guide) ─────────────────────────────────────────── */
+
+/**
+ * Le guide des DIFFÉRENCES : porter le petit ruban sur le grand tant que la chaîne n'est pas finie (`cut`, puis `again`), puis la case PGCD
+ * (`pgcd`). Il montre le geste, jamais le résultat (aucun nombre n'est désigné). `null` quand rien n'est à guider.
+ */
+export function differencesCoachOf(state) {
+  if (!isDifferencesFinished(state)) return { id: state.done === 0 ? 'cut' : 'again', target: '[data-drag-source="num:small"]', gesture: 'drag' };
+  if (!state.pgcdPlaced) return { id: 'pgcd', target: '[data-drop-zone="pgcd"]', gesture: 'drag' };
+  return null;
+}
+
+/**
+ * Le guide d'EUCLIDE : poser des copies (`copy`), essayer la copie de trop une fois le quotient atteint (`more`), porter le reste à la ligne
+ * suivante (`carry`), puis la case PGCD (`pgcd`). `null` quand rien n'est à guider.
+ */
+export function euclidCoachOf(state) {
+  if (isEuclidFinished(state)) return state.pgcdPlaced ? null : { id: 'pgcd', target: '[data-drop-zone="pgcd"]', gesture: 'drag' };
+  if (quotientReached(state) && state.overflowSeen) return { id: 'carry', target: '[data-drop-zone="carry"]', gesture: 'drag' };
+  if (quotientReached(state)) return { id: 'more', target: '[data-drag-source="copy"]', gesture: 'drag' };
+  return { id: 'copy', target: '[data-drag-source="copy"]', gesture: 'drag' };
+}

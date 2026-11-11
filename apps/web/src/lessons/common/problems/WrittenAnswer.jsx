@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSavedAnswer } from '../answers/useSavedAnswer';
+import SavedAnswerChip from '../answers/SavedAnswerChip';
 import { useTranslation } from 'react-i18next';
 import MathText from '../components/MathText';
 import MathTextArea, { writtenLength } from '../components/MathTextArea';
@@ -31,15 +33,34 @@ export default function WrittenAnswer({ prompt, lines, onDone }) {
   const written = writtenLength(text) >= MIN_WRITTEN_CHARS;
   const total = lines.length;
 
+  // ce que l'élève a écrit, gardé POUR LUI (pilote 2026-11-07) : enregistré à chaque ligne du modèle dévoilée, remis à l'écran
+  // à son retour — jamais comparé ni corrigé automatiquement
+  const memory = useSavedAnswer([prompt, lines]);
+  const [restoredAt, setRestoredAt] = useState(null);
+  const restored = useRef(false);
+  useEffect(() => {
+    const m = memory.saved;
+    if (restored.current || !m?.v || shown > 0 || text) return;
+    restored.current = true;
+    if (typeof m.v.text === 'string') setText(m.v.text);
+    const n = Math.max(0, Math.min(Number(m.v.shown) || 0, total));
+    setShown(n); setRestoredAt(m.at);
+    if (n === total && n > 0) onDone?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [memory.saved]);
+
   const reveal = () => {
     const next = Math.min(shown + 1, total);
     setShown(next);
+    setRestoredAt(null);
+    memory.save({ text, shown: next });
     if (next === total) onDone?.();
   };
 
   return (
     <div className="space-y-3" data-written-answer data-revealed={shown}>
       {prompt && <p className="text-sm font-semibold text-slate-700"><MathText>{prompt}</MathText></p>}
+      {restoredAt && <SavedAnswerChip at={restoredAt} />}
 
       {shown === 0 ? (
         <MathTextArea value={text} onChange={setText} rows={5} symbolsFrom={lines}

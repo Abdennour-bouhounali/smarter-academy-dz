@@ -37,7 +37,7 @@ carries the lessons learned per unit), one Laravel remap migration per unit
 
 **Rollout complete (2026-10-07): 60 / 60 regular lessons, 180 problems.** The 14 synthesis lessons have
 none (owner rule). Client map (`moduleLayoutMigrations.js`) and the 14 server migrations cover the same
-60 lessons (cross-checked). New modules are created `draft` by the importer: publish them after deploy.
+60 lessons (cross-checked). New modules take their lesson's state at import (since 2026-11-11): nothing to publish by hand.
 
 ---
 
@@ -306,8 +306,8 @@ Field reference:
    `node packages/core/curriculum/exportCurriculum.mjs`, then in `apps/api`:
    `php artisan migrate`, `php artisan smarter:import-curriculum`,
    `php artisan smarter:import-content-registry`.
-8. **Publish**: the importer creates new modules as **draft** — including the
-   renumbered evaluation. Publish them (admin), or students find them closed.
+8. **Publish**: nothing to do — since 2026-11-11 a module (the renumbered
+   evaluation included) takes its lesson's state at import.
 
 ## 8. Validation
 
@@ -365,7 +365,7 @@ Then **look at the screenshots** (desktop and phone) — RTL of every equality a
 | Correction line of the sorter unreadable | useful items joined by a space | joined with « ؛ » in `InfoSorter` |
 | A one-line solution never « finishes » | line-by-line reveal needs ≥ 2 lines | validator: `lines.length ≥ 2` |
 | Old « module 4 = test » shown as problem 1 done | progress stored by number | one-time layout migration, client + server |
-| Lesson unreachable for students after import | new modules created `draft` | publish after import |
+| Lesson unreachable for students after import | the lesson is `hidden` / `archived` | change the LESSON's state (modules follow) |
 | E2E saw everything unlocked | QA account had completed the module before | reset progress before the run |
 | A greyed (locked) sub-step showed the previous remainder (« باقي قسمة 91 على 29 ») or a demand's answer (« ماذا يمثّل $\frac{8}{15}$؟ ») | locked steps display their `prompt` from the start | keep the FIRST division's numbers, word later lines like the algorithm (« باقي قسمة القاسم السابق على الباقي الذي وجدته »); `docs/sources/4am/masail-rollout/audit-locked-leaks.mjs` (✗ fails: demand answers and division results; trivial re-uses only warn) |
 

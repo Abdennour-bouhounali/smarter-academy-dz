@@ -41,7 +41,11 @@ import NodeContextCard from './NodeContextCard';
 const FLOAT_PILL = 'pointer-events-auto min-h-[44px] inline-flex items-center gap-2 ps-3.5 pe-4 rounded-full border border-slate-200 bg-white/95 backdrop-blur text-xs font-bold text-slate-700 shadow-lg shadow-slate-900/10 hover:border-slate-400 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400';
 
 const SIDE_CONTEXT_MIN = 760;   // largeur à partir de laquelle le contexte se pose À CÔTÉ du graphe
-const SIDE_CONTEXT_W = 300;
+const SIDE_CONTEXT_W = 300;      // largeur MINIMALE du contexte
+const SIDE_CONTEXT_MAX = 560;    // … et maximale (une ligne de texte reste lisible)
+// Le graphe ne s'élargit plus au-delà de deux couloirs de 250 px (graphLayout.metrics) : ≈ 600 px lui suffisent. Tout ce qui
+// dépasse va au CONTEXTE plutôt qu'en marge vide entre lui et le graphe (propriétaire, 2026-11-08).
+const GRAPH_NATURAL_W = 600;
 const SIDE_GAP = 20;
 
 function readSession(key) {
@@ -100,6 +104,8 @@ export default function ProgressiveKnowledgeMap({ graph, items, selectedId, onSe
   const itemsById = useMemo(() => new Map(items.map((it) => [it.id, it])), [items]);
 
   const [explore, setExplore] = useState(() => restoreExplore(graph, readSession(storageKey)?.explore));
+  // la carte MENTALE interactive (« الاستكشاف ») reste la vue d'ouverture, même OUVERTE (pilote 2026-11-08 : le propriétaire veut
+  // la carte qui se découvre, pas la vue figée) ; ouverte, tous ses nœuds sont simplement découvrables, aucun n'est verrouillé
   const [view, setView] = useState(() => (readSession(storageKey)?.view === 'full' ? 'full' : 'explore'));
   // La chronologie de la DERNIÈRE action : qui a été cliqué, ce qui vient
   // d'apparaître. Seuls ces éléments s'animent ; le reste est déjà là.
@@ -113,7 +119,8 @@ export default function ProgressiveKnowledgeMap({ graph, items, selectedId, onSe
   // Les deux pastilles du haut, libellées, font ≈ 415 px.
   const roundReplay = width > 0 && width < 440;
   const side = width >= SIDE_CONTEXT_MIN;
-  const graphWidth = side ? width - SIDE_CONTEXT_W - SIDE_GAP : width;
+  const sideW = side ? Math.max(SIDE_CONTEXT_W, Math.min(SIDE_CONTEXT_MAX, width - GRAPH_NATURAL_W - SIDE_GAP)) : 0;
+  const graphWidth = side ? width - sideW - SIDE_GAP : width;
   const layout = useMemo(
     () => (graphWidth > 0 ? layoutGraph(graph, { width: graphWidth, rtl: IS_RTL }) : null),
     [graph, graphWidth],
@@ -463,7 +470,7 @@ export default function ProgressiveKnowledgeMap({ graph, items, selectedId, onSe
         )}
 
         {side && (
-          <aside className="flex-1 min-w-0 sticky top-0" style={{ maxWidth: SIDE_CONTEXT_W }} data-km-noprint="true">
+          <aside className="flex-1 min-w-0 sticky top-0" style={{ maxWidth: sideW }} data-km-noprint="true">
             <AnimatePresence mode="wait" initial={false}>
               {contextCard || (
                 <motion.div

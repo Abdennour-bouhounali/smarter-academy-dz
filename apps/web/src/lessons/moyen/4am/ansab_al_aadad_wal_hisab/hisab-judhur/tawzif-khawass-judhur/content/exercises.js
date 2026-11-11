@@ -12,6 +12,7 @@
  * l'erreur que la طريقة du manuel corrige.
  */
 import { src } from '../../_unit/unitMeta.js';
+import { withContext } from '../../../../../../common/textbook/exerciseParts.js';
 
 export const LP = {
   P1: '4am_tawzif-khawass-judhur_P1',
@@ -342,4 +343,5 @@ export const EXERCISES_4 = [
 export const EXERCISES = [...EXERCISES_1, ...EXERCISES_2, ...EXERCISES_3, ...EXERCISES_4];
 export const EX = Object.fromEntries(EXERCISES.map((e) => [e.id, e]));
 /** Les entrées d'un exercice du manuel, dans l'ordre (ex-18 → ex-18-1 … ex-18-7). */
-export const partsOf = (n) => EXERCISES.filter((e) => e.id === `ex-${n}` || e.id.startsWith(`ex-${n}-`));
+// lecteur : les parties sans énoncé portent celui de la partie 1 (« pas d'aller-retour », common/textbook/exerciseParts.js)
+export const partsOf = (n) => withContext(EXERCISES.filter((e) => e.id === `ex-${n}` || e.id.startsWith(`ex-${n}-`)));

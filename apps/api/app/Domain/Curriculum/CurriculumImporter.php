@@ -226,8 +226,11 @@ class CurriculumImporter
      *  - PUBLIER une leçon générée = la faire passer `coming_soon` → `available`
      *    dans lessons_<g>_*.json (LESSON_DEVELOPMENT_GUIDE « Publish a lesson ») :
      *    si elle est encore au `draft` que l'import lui a donné, elle devient
-     *    `published`. Une leçon déjà `available` mise en `draft` par
-     *    l'administrateur le reste.
+     *    `published`.
+     *  - DÉFAUT PUBLIÉ (propriétaire, 2026-11-11) : une leçon `available` encore
+     *    `draft` est publiée à CHAQUE synchronisation — pousser en production
+     *    publie, sans geste manuel. Pour RETENIR une leçon écrite, l'admin la
+     *    met `hidden` (ou `archived`) : ces deux états sont gardés.
      */
     private static function publicationOnUpdate(Lesson $lesson, string $status): array
     {
@@ -236,7 +239,7 @@ class CurriculumImporter
                 ? ['publication_status' => Lesson::PUB_DRAFT]
                 : [];
         }
-        if ($lesson->status !== 'available' && $lesson->publication_status === Lesson::PUB_DRAFT) {
+        if ($lesson->publication_status === Lesson::PUB_DRAFT) {
             return ['publication_status' => Lesson::PUB_PUBLISHED, 'published_at' => now()];
         }
 

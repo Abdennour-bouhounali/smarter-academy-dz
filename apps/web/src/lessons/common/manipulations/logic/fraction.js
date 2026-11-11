@@ -125,3 +125,15 @@ export function chainA(state) {
   for (const k of state.pathA) { const next = reduceByCommonDivisor(cur.n, cur.d, k); if (!next) break; chain.push(next); cur = next; }
   return chain;
 }
+
+/* ── LabCoach (2026-11-09 : le labo n'avait pas de guide) ──────────────────────────────────────────────────────────────── */
+
+/**
+ * Le guide de la RÉDUCTION : porter un nombre de la rangée sur la recette (`divide`), continuer ou s'arrêter (`more`, toujours sur la rangée :
+ * il ne dit jamais quand s'arrêter), puis la division unique du chemin ب (`pgcd`). `null` quand rien n'est à guider.
+ */
+export function coachOf(state) {
+  if (!pathAFinished(state)) return { id: state.pathA.length === 0 ? 'divide' : 'more', target: '[data-fr-rail]', gesture: 'drag' };
+  if (state.pathB === null) return { id: 'pgcd', target: '[data-drop-zone="pgcd"]', gesture: 'drag' };
+  return null;
+}

@@ -61,7 +61,7 @@ function Metric({ done, total, ratio, label, bar, testId }) {
   return (
     <div className="min-w-0 space-y-1 xl:border-t xl:border-slate-100 xl:pt-2" data-lp-metric={testId}>
       <p className="flex flex-col xl:flex-row xl:flex-wrap xl:items-baseline xl:gap-x-1.5">
-        <bdi dir="ltr" className="text-base font-bold tabular-nums text-slate-900 xl:text-lg">{done} / {total}</bdi>
+        <bdi dir="ltr" className="text-base font-bold tabular-nums text-slate-900 xl:text-lg">{done}{'\u00A0/\u00A0'}{total}</bdi>
         <span className="text-xs font-semibold leading-tight text-slate-600">{label}</span>
       </p>
       <span className="block h-1.5 overflow-hidden rounded-full bg-slate-100" aria-hidden="true">

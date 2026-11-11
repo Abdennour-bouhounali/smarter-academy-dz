@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, KnowledgeBrick, PeerSheet } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation } from '../../../../../../common/manipulations';
 import { TextbookBox, IntegerSetQuestion } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { KNOWLEDGE_3, KNOWLEDGE_4 } from '../content/textbook';
+import { M2_ROUNDS } from '../content/bouquets';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
 
 /**
  * Module 2 — معارف 3 (p. 10) et معارف 4 تعريف + ملاحظة (p. 12). LP : P1, P2, P4.
@@ -13,6 +17,10 @@ import { KNOWLEDGE_3, KNOWLEDGE_4 } from '../content/textbook';
  * la question qu'elle nomme, posée sur ce que l'élève a posé dans le labo (les communs, la case PGCD).
  * ORDRE : 1. les communs de 28 et 42 → la définition et l'exemple 12 / 18 ; 2. l'écriture du plus grand → briques « تعريف »
  * et « رمز » ; 3. les communs sont-ils les diviseurs du PGCD ? → brique de la remarque, puis la remarque du manuel.
+ *
+ * LECTEUR DE MISSION (rollout 2026-11-08) : le labo se joue en MANCHES (content/bouquets.js › M2_ROUNDS : les listes de 28 et 42 avec
+ * leurs questions → défi ⭐ 45 et 75 → القوائم الحرّة) ; les étapes 1 et 2 attendent la manche 1 (`needsRound`). L'étape 5 est « ورقة
+ * سلمى » (`PeerSheet`, content/peerSheet.js) : une liste de diviseurs incomplète donne un faux PGCD. Hors lecteur : le labo d'avant.
  */
 export default function Module02Maarif() {
   const [pgcd, setPgcd] = useState(null);
@@ -20,13 +28,23 @@ export default function Module02Maarif() {
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
+  const [q5, setQ5] = useState(false);
+  const [won, setWon] = useState({});
   return (
     <ContentModule objectives={["ما القاسم المشترك الأكبر لعددين؟", "كيف نكتبه برمز؟", "هل كل قاسم مشترك يقسم القاسم المشترك الأكبر؟"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(2)} moduleNumber={2}
-      moduleTitle="معارف — القواسم المشتركة والقاسم المشترك الأكبر" moduleSubtitle="التعريف، الرمز، وملاحظة الكتاب" estimatedTime="15 دقيقة"
-      intro={<Manipulation type="common-divisors" a={28} b={42} startWith="lists" title="مثال الكتاب: 28 و 42" lead="اكشف قواسم 28 وقواسم 42، ثم ضع القواسم المشتركة في الوسط، وأكبرها في خانة PGCD." onFinished={(g) => setPgcd(g ?? true)} />}
+      moduleTitle="معارف — القواسم المشتركة والقاسم المشترك الأكبر" moduleSubtitle="التعريف، الرمز، وملاحظة مهمّة" estimatedTime="15 دقيقة"
+      intro={(
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="m2-lists" rounds={M2_ROUNDS} icon="💐" freeIcon="🌷"
+              onRoundWon={(id) => { setWon((w) => ({ ...w, [id]: true })); if (id === 'r1') setPgcd(14); }} />
+          )}
+          page={<Manipulation type="common-divisors" a={28} b={42} startWith="lists" title="مثال: 28 و 42" lead="اكشف قواسم 28 وقواسم 42، ثم ضع القواسم المشتركة في الوسط، وأكبرها في خانة PGCD." onFinished={(g) => setPgcd(g ?? true)} />}
+        />
+      )}
       steps={[
-        { num: 1, title: 'ما القواسم المشتركة لـ 28 و 42؟', subtitle: 'كما وضعتها في وسط لوحتك', done: q1,
+        { needsRound: { id: 'r1', label: 'الجولة 1', icon: '💐', won: Boolean(won.r1) }, num: 1, title: 'ما القواسم المشتركة لـ 28 و 42؟', subtitle: 'كما وضعتها في وسط لوحتك', done: q1,
           content: (
             <div className="space-y-3">
               <IntegerSetQuestion prompt={<span>اكتب القواسم المشتركة للعددين <MathText>{'$28$'}</MathText> و <MathText>{'$42$'}</MathText>.</span>} expected={[1, 2, 7, 14]} requires={['qawasim-mushtaraka']}
@@ -39,7 +57,7 @@ export default function Module02Maarif() {
               )}
             </div>
           ) },
-        { num: 2, title: 'لماذا وضعتَ 14 وليس 7 في خانة الأكبر؟', subtitle: 'الخانة التي ملأتها في الوسط', done: q2,
+        { needsRound: { id: 'r1', label: 'الجولة 1', icon: '💐', won: Boolean(won.r1) }, num: 2, title: 'لماذا وضعتَ 14 وليس 7 في خانة الأكبر؟', subtitle: 'الخانة التي ملأتها في الوسط', done: q2,
           content: (
             <div className="space-y-3">
               <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>
@@ -80,6 +98,8 @@ export default function Module02Maarif() {
               )}
             </div>
           ) },
+        { num: 5, title: 'ورقة سلمى: أين الخطأ؟', subtitle: 'جد السطر الخاطئ وصحّحه', done: q5,
+          content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={() => setQ5(true)} /> },
       ]}
       footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}
     />

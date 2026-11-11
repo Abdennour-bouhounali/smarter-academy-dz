@@ -3,14 +3,20 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import MathLabel from '../components/MathLabel';
 import { stationLabel } from './missionModel';
+import { isPracticeActive, practiceHubPath } from '../../../features/practice/practiceCapability';
 
 /**
  * Le PARCOURS de la mission : une station par module, dans l'ordre, avec le verrou RÉEL (useMission → moduleGate).
  * Une station verrouillée se voit mais ne s'ouvre pas ; la mission (`climax`) est plus grande ; après elle, les
  * « مستويات إضافية ». `here` : le module où se trouve l'élève (ou la station de reprise sur l'accueil).
  */
-export default function MissionMap({ stations, basePath, here, onNavigate }) {
+export default function MissionMap({ stations, basePath, here, onNavigate, lessonId = null }) {
   const { t } = useTranslation('lesson');
+  // « التمارين » APRÈS « إختبار أولي » (propriétaire, 2026-11-08) : la dernière station du parcours n'est pas un module — c'est
+  // l'espace d'exercices de la leçon (/espace/pratique/<leçon>). Ouverte quand la dernière station est faite ; seulement si la
+  // pratique est active pour la leçon.
+  const last = stations[stations.length - 1];
+  const practice = lessonId && isPracticeActive(lessonId) ? { open: last?.status === 'mastered', to: practiceHubPath(lessonId) } : null;
   return (
     <ol className="flex items-start gap-1" data-mission-map>
       {stations.map((s, i) => {
@@ -31,7 +37,7 @@ export default function MissionMap({ stations, basePath, here, onNavigate }) {
         );
         const label = (
           <span className={`mt-1.5 line-clamp-3 text-center text-xs leading-snug ${locked ? 'text-slate-400' : 'font-bold text-slate-700'}`}>
-            <MathLabel>{stationLabel(s.title)}</MathLabel>
+            <MathLabel>{s.label ?? stationLabel(s.title)}</MathLabel>
           </span>
         );
         const status = done ? t('mission.done') : locked ? t('mission.locked') : isHere ? t('mission.here') : big ? t('mission.climax') : s.kind === 'bonus' ? t('mission.bonus') : '';
@@ -51,6 +57,27 @@ export default function MissionMap({ stations, basePath, here, onNavigate }) {
           </li>
         );
       })}
+      {practice && (
+        <li className="flex min-w-0 flex-1 items-start" data-mission-station="practice" data-station-status={practice.open ? 'open' : 'locked'} data-station-kind="practice">
+          <span className={`mt-6 h-1 w-full max-w-6 shrink rounded-full ${practice.open ? 'bg-emerald-400' : 'bg-slate-200'}`} aria-hidden="true" />
+          {(() => {
+            const dot = (
+              <span className={`flex h-12 w-12 items-center justify-center rounded-full border-2 text-xl font-black shadow-sm ${practice.open ? 'border-violet-700 bg-violet-600 text-white' : 'border-slate-200 bg-slate-100 text-slate-400'}`}>
+                {practice.open ? '📝' : '🔒'}
+              </span>
+            );
+            const label = <span className={`mt-1.5 text-center text-xs leading-snug ${practice.open ? 'font-bold text-slate-700' : 'text-slate-400'}`}>{t('mission.practiceStation')}</span>;
+            return practice.open ? (
+              <Link to={practice.to} onClick={onNavigate} title={t('mission.practiceStation')}
+                className="flex min-w-0 flex-1 flex-col items-center rounded-xl p-1 outline-none hover:bg-violet-50 focus-visible:ring-4 focus-visible:ring-violet-300">
+                {dot}{label}
+              </Link>
+            ) : (
+              <span className="flex min-w-0 flex-1 flex-col items-center" aria-disabled="true" title={t('mission.practiceLocked')}>{dot}{label}</span>
+            );
+          })()}
+        </li>
+      )}
     </ol>
   );
 }

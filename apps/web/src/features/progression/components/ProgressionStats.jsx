@@ -18,7 +18,7 @@ export default function ProgressionStats({ activity, agg, profileStatus, gradeLa
     ? '—'
     : agg.assessed === 0
       ? '0 / 0'
-      : <span dir="ltr">{agg.counts.mastered} / {agg.assessed}</span>;
+      : <span dir="ltr">{agg.counts.mastered}{'\u00A0/\u00A0'}{agg.assessed}</span>;
   const masteredHint = !ready
     ? (profileStatus === 'loading' ? t('progression.loadingAcquis') : t('progression.errorTitle'))
     : agg.assessed === 0

@@ -92,7 +92,7 @@ export function Pagination({ meta, onPage, labels = {} }) {
           <ChevronBack size={13} aria-hidden="true" />
           {text.previous}
         </button>
-        <span dir="ltr" className="px-2 font-inter text-xs text-slate-500">{page} / {last}</span>
+        <span dir="ltr" className="px-2 font-inter text-xs text-slate-500">{page}{'\u00A0/\u00A0'}{last}</span>
         <button
           type="button"
           onClick={() => onPage(page + 1)}

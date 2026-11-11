@@ -9,9 +9,8 @@ import { METHOD } from '../content/textbook';
 import { NOW_47_1 } from '../content/exercises';
 
 /**
- * Module 3 — طرائق p. 47 « حل معادلة من الدرجة الأولى بمجهول واحد » : les deux solutions
- * du livre révélées LIGNE À LIGNE (MethodSteps), puis la méthode posée en brique
- * (tariqat-hal), une vérification par substitution, et دوري الآن 1.
+ * Module 3 — « طرائق » : « حل معادلة من الدرجة الأولى بمجهول واحد » : deux solutions de la plateforme révélées LIGNE À LIGNE (MethodSteps), puis la
+ * méthode posée en brique (tariqat-hal), une vérification par substitution, et « دورك الآن » (rollout 2026-11-11 : plus aucun nombre ni mot du manuel).
  * LP : P2, P1.
  */
 export default function Module03Tarayiq() {
@@ -31,8 +30,8 @@ export default function Module03Tarayiq() {
       moduleSubtitle="المجاهيل في طرف، والمعاليم في الطرف الآخر"
       estimatedTime="9 دقائق"
       brief={{
-        tag: 'طرائق — الكتاب ص 47', title: METHOD.title, tone: 'emerald',
-        body: <p>تمرين محلول من الكتاب بمعادلتين. اقرأ كل سطر، وحاول توقّع السطر التالي قبل أن تكشفه: أيّ عملية ستُجرى على الطرفين؟</p>,
+        tag: 'طرائق', title: METHOD.title, tone: 'emerald',
+        body: <p>تمرينان محلولان. اقرأ كل سطر، وحاول توقّع السطر التالي قبل أن تكشفه: أيّ عملية ستُجرى على الطرفين؟</p>,
       }}
       steps={[
         {
@@ -58,18 +57,18 @@ export default function Module03Tarayiq() {
           num: 3, title: 'نتحقّق بالتعويض', done: q3,
           content: (
             <NumericQuestion
-              prompt={<MathText>{'من أجل $x = -4$ ، احسب الطرف الأيسر $2{,}5x + 4{,}6$ (ثم قارنه بالطرف الأيمن $1{,}3x - 0{,}2$).'}</MathText>}
-              expected={-5.4}
-              display="-5,4"
+              prompt={<MathText>{'من أجل $x = -3$ ، احسب الطرف الأيسر $2{,}4x + 1{,}5$ (ثم قارنه بالطرف الأيمن $1{,}2x - 2{,}1$).'}</MathText>}
+              expected={-5.7}
+              display="-5,7"
               parse={parseDec}
               requires={['tariqat-hal']}
-              explain={<MathText>{'$2{,}5 \\times (-4) + 4{,}6 = -10 + 4{,}6 = -5{,}4$ و $1{,}3 \\times (-4) - 0{,}2 = -5{,}2 - 0{,}2 = -5{,}4$ : الطرفان متساويان، فالعدد $-4$ حل للمعادلة.'}</MathText>}
+              explain={<MathText>{'$2{,}4 \\times (-3) + 1{,}5 = -7{,}2 + 1{,}5 = -5{,}7$ و $1{,}2 \\times (-3) - 2{,}1 = -3{,}6 - 2{,}1 = -5{,}7$ : الطرفان متساويان، فالعدد $-3$ حل للمعادلة.'}</MathText>}
               onAnswered={() => setQ3(true)}
             />
           ),
         },
         {
-          num: 4, title: 'دوري الآن (ص 47)', done: NOW_47_1.every((ex) => now[ex.id]),
+          num: 4, title: 'دورك الآن', done: NOW_47_1.every((ex) => now[ex.id]),
           content: (
             <div className="space-y-3">
               {NOW_47_1.map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['tariqat-hal']} onAnswered={mark(ex.id)} />)}

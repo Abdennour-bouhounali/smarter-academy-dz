@@ -26,6 +26,51 @@ export const LESSON_CONFIG = {
   unit: 'hisab-judhur',
   unitTitle: 'الحساب على الجذور',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (modèle du pilote qasim-adad-tabii, VALIDÉ par le propriétaire le 2026-11-08 ; rollout leçon par leçon,
+  // docs/reports/MISSION_ROLLOUT_PROGRESS.md — unité 2, leçon 1, 2026-11-09) — implique le regard « focus » ; l'enseignant et le mode classe ne voient
+  // aucun changement.
+  studentView: 'mission',
+  // LA MISSION : l'ouverture avoue qu'on ne sait pas encore la résoudre ; les outils sont les connaissances de knowledge.jsx ; les points d'étape
+  // RAPPROCHENT de la mission sans en résoudre aucune question (la مسألة du module 4 reste entière : ils parlent de 7, 11 et 20 — jamais des côtés
+  // 3 m et 5 m, de l'aire 34, de √34 ni de la lecture 5,83…) ; formatifs, jamais une preuve de maîtrise.
+  mission: {
+    scene: 'garden-bed',
+    title: 'حوض الأزهار على الوتر',
+    opening: {
+      text: 'في حديقة البلدية ركن على شكل مثلث قائم ضلعا زاويته القائمة 3 م و 5 م. يريد البستاني حوض أزهار مربّعًا مبنيًّا على الوتر، يغطّيه بعشب ثمن المتر المربّع منه 350 دج، ويحيطه بإطار من الحجارة يُباع بالمتر الكامل. حسب طول الوتر بالحاسبة فعرضت 5,830951895. كم يدفع ثمنًا للعشب بالضبط؟ وكم مترًا من الإطار يشتري؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'qima-mudbuta', icon: '🎯', label: 'القيمة المضبوطة' },
+      { id: 'jidhr-taarif', icon: '√', label: 'الجذر التربيعي' },
+      { id: 'murabba-jidhr', icon: '🔲', label: 'مربّع الجذر' },
+      { id: 'jidhr-murabba', icon: '🔁', label: 'جذر المربّع' },
+    ],
+    climaxModule: 4,
+    checkpoints: [
+      {
+        id: 'cp-mudbuta', afterModule: 1,
+        prompt: 'مربّع مساحته $7\\,cm^2$. ما القيمة المضبوطة لطول ضلعه؟',
+        options: ['$\\sqrt{7}\\,cm$', '$3{,}5\\,cm$', '$2{,}6457\\,cm$'],
+        correct: 0,
+        explain: 'الضلع هو العدد الموجب الذي مربّعه 7: $\\sqrt{7}$. أمّا 2,6457 فقيمة مقرّبة فقط، و 3,5 نصف 7.',
+      },
+      {
+        id: 'cp-murabba', afterModule: 2,
+        prompt: '$(\\sqrt{11})^2 = \\ldots$',
+        options: ['11', '121', '$\\sqrt{11}$'],
+        correct: 0,
+        explain: '$\\sqrt{11}$ هو العدد الموجب الذي مربّعه 11: إذن $(\\sqrt{11})^2 = 11$.',
+      },
+      {
+        id: 'cp-khitta', afterModule: 3,
+        prompt: '$\\sqrt{9^2} = \\ldots$',
+        options: ['9', '81', '3'],
+        correct: 0,
+        explain: '9 عدد موجب ومربّعه $9^2$: إذن $\\sqrt{9^2} = 9$، دون حساب $9^2 = 81$.',
+      },
+    ],
+  },
   title: 'الجذر التربيعي لعدد موجب',
   description: 'تعريف الجذر التربيعي لعدد موجب a بأنه العدد الموجب الذي مربعه a، واستعمال الرمز √a، وتطبيق الخاصيتين (√a)² = a و √(a²) = a.',
   level: 'moyen',
@@ -49,6 +94,8 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début, sans verrou par محور.
+  knowledgeMapOpen: true,
   // Les acquis que « أستعدّ » (p. 19, items 1, 2, 4, 10 + deux ajouts) diagnostique.
   priorKnowledge: ['murabba-adad', 'khassiyat-fithaghuras', 'alat-hasiba-jidhr'],
   // « مسألة الدرس » (content/problems.js › masala-1) : montrée sur la page de l'unité (LessonProblemCard, plus dans le module 1),
@@ -89,7 +136,7 @@ export const LESSON_CONFIG = {
     // un seul niveau (`levels={false}`) : c'est un exemple travaillé.
     {
       kind: 'manipulation', code: 'square-root-side-0-04', type: 'square-root-side', module: 2,
-      title: 'مثال الكتاب: مربّع مساحته 0,04',
+      title: 'مثال: مربّع مساحته 0,04',
       learningPointIds: ['4am_jidhr-tarbii_P1'],
       sourceElementIds: ['know-1'],
     },
@@ -111,7 +158,7 @@ export const LESSON_CONFIG = {
       stage: 'discovery', teachesLearningPointIds: ['4am_jidhr-tarbii_P1', '4am_jidhr-tarbii_P2', '4am_jidhr-tarbii_P3'],
       color: 'violet', style: 'featured', estimatedMin: 10, difficulty: 2, actionText: 'أكتشف' },
     { id: '03', number: 3, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
-      title: 'أوظّف تعلّماتي', desc: 'الطريقة ودوري الآن (ص 23)، ثم تمارين الكتاب 1 إلى 8 (ص 26).',
+      title: 'أوظّف تعلّماتي', desc: 'طريقة محلولة ودوري الآن، ثم ثمانية تمارين.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_jidhr-tarbii_P1', '4am_jidhr-tarbii_P2', '4am_jidhr-tarbii_P3'],
       color: 'amber', style: 'featured', estimatedMin: 14, difficulty: 2, actionText: 'أتدرّب' },
     // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui

@@ -124,13 +124,13 @@ class PublicationAccessMatrixTest extends TestCase
     // --------------------------------------------------------------- MODULE
 
     /**
-     * Le module a son propre état : masquer UN module ne ferme pas la leçon,
-     * et publier la leçon ne publie aucun module.
+     * Un module n'a pas d'état propre (propriétaire, 2026-11-11) : il est
+     * ouvert exactement quand sa LEÇON l'est. Sa colonne n'est qu'une copie.
      */
     #[DataProvider('publicationStates')]
     public function test_matrice_module(string $status, bool $accessible): void
     {
-        $this->module->update(['publication_status' => $status]);
+        $this->lesson->update(['publication_status' => $status]);
 
         $response = $this->asStudent()->putJson('/api/v1/lessons/qasim-mushtarak-akbar/progress', [
             'completedModules' => ['1'],
@@ -142,8 +142,8 @@ class PublicationAccessMatrixTest extends TestCase
         $this->assertSame($accessible ? 200 : 422, $response->status(), "module {$status}");
     }
 
-    /** Pas de cascade : leçon publiée + module brouillon = module fermé. */
-    public function test_publier_la_lecon_ne_publie_pas_ses_modules(): void
+    /** La colonne d'un module est ignorée : leçon publiée + colonne draft = ouvert. */
+    public function test_un_module_suit_sa_lecon_publiee(): void
     {
         $this->module->update(['publication_status' => LessonModule::PUB_DRAFT]);
         $this->lesson->update(['publication_status' => Lesson::PUB_PUBLISHED]);
@@ -153,7 +153,7 @@ class PublicationAccessMatrixTest extends TestCase
             'currentModule' => 1,
             'status' => 'in_progress',
             'lastActivityAt' => now()->toIso8601String(),
-        ])->assertStatus(422);
+        ])->assertStatus(200);
     }
 
     /**
@@ -232,7 +232,8 @@ class PublicationAccessMatrixTest extends TestCase
         $this->asStudent()->getJson('/api/v1/content/availability')
             ->assertStatus(200)
             ->assertJsonPath('closed.lessons', ['qasim-mushtarak-akbar'])
-            ->assertJsonPath('closed.modules.qasim-mushtarak-akbar', [1]);
+            // Les modules ferment avec leur leçon : aucune fermeture à part.
+            ->assertJsonPath('closed.modules', []);
     }
 
     public function test_rien_n_est_ferme_quand_tout_est_publie(): void

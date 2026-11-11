@@ -631,7 +631,7 @@ function ConversionScene({ view, toPx, settings, t }) {
       />
       {settings.labels && (
         <text className="sa-ml-ms__note" x={Math.min(a.x, b.x) + side / 2} y={Math.min(a.y, b.y) - 14} textAnchor="middle">
-          {shown < k ? `${formatValue(shown, 0)} / ${formatValue(k, 0)}` : formatValue(k, 0)}
+          {shown < k ? `${formatValue(shown, 0)}\u00A0/\u00A0${formatValue(k, 0)}` : formatValue(k, 0)}
         </text>
       )}
     </g>

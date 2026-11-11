@@ -58,3 +58,16 @@ export function savePrediction(storage, lessonId, itemId, text, now = Date.now()
   try { storage.setItem(keyOf(lessonId), JSON.stringify(all)); } catch { /* stockage plein : la règle s'affiche quand même */ }
   return all;
 }
+
+const esc = (x) => String(x ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+/**
+ * La carte « كرّاسي » d'une règle écrite par l'élève (pilote 2026-11-07) : son titre et son contenu (HTML simple du carnet) —
+ * ses mots d'abord, la règle officielle ensuite pour comparer. Pur, testé.
+ */
+export function ruleNoteOf({ lessonId, itemTitle, itemRule, text }) {
+  const title = `قاعدتي: ${itemTitle ?? ''}`.trim().slice(0, 160);
+  const mine = esc(text).replace(/\n/g, '<br>');
+  const official = itemRule ? `<p><strong>القاعدة:</strong> ${esc(itemRule)}</p>` : '';
+  return { title, content: `<p><strong>كتبتُ:</strong> ${mine}</p>${official}`, lessonCode: lessonId, noteType: 'note' };
+}

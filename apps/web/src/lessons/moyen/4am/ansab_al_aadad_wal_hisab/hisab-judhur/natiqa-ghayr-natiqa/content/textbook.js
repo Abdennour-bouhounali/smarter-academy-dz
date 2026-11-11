@@ -23,7 +23,7 @@ export const ACTIVITY = {
     'أ) إلى أي الصنفين ينتمي العدد $\\sqrt{169}$ ؟ برّر إجابتك.',
     'ب) ما هي معايير التصنيف السابق؟',
   ],
-  correctionNote: 'صحّحت المنصّة خطأً مطبعيًا في قائمة الكتاب لتوافق التصنيف.',
+  correctionNote: 'رُتّبت هذه القائمة لتوافق التصنيف.',
   // Les aires { num, den } du classement, pour la règle graduée. 0,25 s'écrit
   // 25/100 (le laboratoire réduit une aire : sa carte affiche 1/4).
   numbers: {

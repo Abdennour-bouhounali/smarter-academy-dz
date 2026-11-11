@@ -319,10 +319,9 @@ Trois invariants, tous dans `packages/core/lessonAccess.js` et couverts par
    est « client-side only, never persisted as evidence » : le sauter est un
    droit, donc il ne verrouille pas le module suivant.
 
-Rappel opérationnel : un module `draft` en base est rendu VERROUILLÉ quel que
-soit ce qui précède (`isModuleClosed`). Après un import, publier
-`lesson_modules` fait partie de la mise en ligne, au même titre que
-`practice_exercises`.
+Rappel opérationnel : depuis le 2026-11-11 un module n'a pas d'état propre —
+il est ouvert ou fermé avec sa leçon (`ContentAccess`), et l'import lui recopie
+l'état de la leçon. Il n'y a plus rien à publier à la main après un import.
 
 
 ---

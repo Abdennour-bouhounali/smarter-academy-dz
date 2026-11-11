@@ -25,7 +25,7 @@
  * (lessonGraphs.test.js) : le jidaa à côté de l'erreur du carré d'une
  * différence, jamais l'étiquette d'une longue arête posée sur un nœud.
  */
-import { ACTIVITY, DESCARTES, KNOWLEDGE, METHOD } from './content/textbook';
+import { KNOWLEDGE, METHOD, PLATFORM } from './content/textbook';
 import { EX } from './content/exercises';
 
 const { squareSum, squareDiff, sumDiff } = KNOWLEDGE;
@@ -42,10 +42,11 @@ export const KNOWLEDGE_GRAPH = {
       reveals: ['dikart', 'dhihni', 'farq'],
     },
     {
-      // Le tableau de Descartes (p. 31) : la lecture par aires de (2x + 1)², la grille du terrain.
+      // Le tableau de Descartes : la lecture par aires d'un carré, la grille du terrain — sur l'exemple de la PLATEFORME (2x + 2)² et ses mots
+      // (rollout 2026-11-11 : ni le paragraphe ni la figure du manuel dans la carte ouverte).
       id: 'dikart', kind: 'example', lane: 'start', requires: 'murabba-majmu',
-      title: 'جدول ديكارت', subtitle: DESCARTES.result,
-      context: { text: DESCARTES.text, note: ACTIVITY.text },
+      title: 'جدول ديكارت', subtitle: PLATFORM.descartes.result,
+      context: { text: PLATFORM.descartes.text, note: PLATFORM.figureSum },
       reveals: ['khata-majmu'],
     },
     {
@@ -67,9 +68,9 @@ export const KNOWLEDGE_GRAPH = {
       reveals: ['khata-dhihni'],
     },
     {
-      // ⛔ خطأ شائع — l'exercice 11 (commonError) : 31² ≠ 900 + 1.
+      // ⛔ خطأ شائع — l'exercice 11 (commonError) : 21² ≠ 400 + 1.
       id: 'khata-dhihni', kind: 'common_mistake', lane: 'end', requires: 'hisab-mutamaan',
-      title: 'تربيع الجزأين فقط', subtitle: '$31^2 \\neq 900 + 1$',
+      title: 'تربيع الجزأين فقط', subtitle: '$21^2 \\neq 400 + 1$',
       context: {
         parts: [
           { role: 'wrong', text: ex11.commonError },

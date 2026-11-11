@@ -43,4 +43,5 @@ export { default as PredictionChips } from './PredictionChips';
 export { default as KnowledgeBrick } from './KnowledgeBrick';
 // « أتوقّع القاعدة » : l'élève écrit la règle avant de la lire (KnowledgeBrick l'applique
 // d'office ; PredictRule enveloppe une règle qui n'est pas une brique).
+export { default as PeerSheet } from './PeerSheet';
 export { default as PredictRule, usePredictGate, PredictPanel, PredictionEcho } from './PredictRule';

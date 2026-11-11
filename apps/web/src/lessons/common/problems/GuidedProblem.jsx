@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSavedAnswer } from '../answers/useSavedAnswer';
 import { useTranslation } from 'react-i18next';
 import { parseDec } from '@smarter-academy/core';
 import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion } from '../kit';
@@ -8,13 +9,14 @@ import { SourceTag } from '../textbook';
 import WrittenAnswer from './WrittenAnswer';
 import ProblemSupport from './ProblemSupport';
 import ProblemSheet from './ProblemSheet';
+import ProblemAside, { asideIsWide } from './ProblemAside';
 import { problemTone } from './problemTone';
 import { MoreToggle, useStudentFocusFor } from '../components/StudentFocus';
 import { isMissionView } from '../mission/missionModel';
 import { useLearningViewer } from '../../../features/learning/learningViewer';
 import { useClassroomMode } from '../classroom/ClassroomContext';
 import { getLoadedLessonConfig } from '../../registry';
-import { initialProgress, completeSubstep, isPartDone, substepRole } from './guidedProblem';
+import { initialProgress, completeSubstep, isPartDone, substepRole, stepTemplate, stepGiven, resumePart, asideOf, foundOf } from './guidedProblem';
 
 /**
  * GuidedProblem — un module « مسألة » : un exercice COMPLET de type امتحان,
@@ -45,10 +47,38 @@ export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, es
   const classroom = useClassroomMode();
   const play = Boolean(getLoadedLessonConfig(ctx.lessonId)?.mission) && isMissionView(ctx.studentView, viewer, classroom);
   const [progress, setProgress] = useState(() => initialProgress(problem));
-  const done = (p, i) => setProgress((prev) => completeSubstep(prev, p, i));
+  // l'avancement de la مسألة gardé POUR L'ÉLÈVE (pilote 2026-11-07) : il revient à la sous-étape où il s'était arrêté
+  const memory = useSavedAnswer([], { key: `gp:${problem.id ?? problem.title}`, lessonId: ctx.lessonId, moduleNumber });
+  const touched = useRef(false);
+  // Une sous-étape qui se RESTAURE (sa propre réponse gardée, ses effets passent AVANT celui de la مسألة) n'est pas un geste de l'élève :
+  // elle ne doit ni bloquer la reprise ni écraser l'avancement gardé (vu le 2026-11-10, synthèse de l'unité 9 : après un rechargement la
+  // وضعية repartait de l'écran 0 et l'avancement gardé était remplacé par celui des seules questions restaurées).
+  const restoring = () => !restored.current && memory.saved?.v != null;
+  const done = (p, i) => { if (!restoring()) touched.current = true; setProgress((prev) => completeSubstep(prev, p, i)); };
   // Ce que l'élève a répondu à chaque sous-étape (affiché dans la liste des demandes).
   const [given, setGiven] = useState({});
+  const restored = useRef(false);
+  // REPRISE DANS la مسألة (`mission.resumeInside`, lecteur seulement) : une fois l'avancement gardé retrouvé, la première partie encore
+  // ouverte est dite à ContentModule, qui y saute UNE fois — l'élève ne repart pas de l'écran 0 d'une وضعية à moitié faite.
+  const resumeInside = play && getLoadedLessonConfig(ctx.lessonId)?.mission?.resumeInside === true;
+  const [resumeStep, setResumeStep] = useState(null);
+  useEffect(() => {
+    const m = memory.saved;
+    if (restored.current || !m?.v || touched.current) return;
+    restored.current = true;
+    if (Array.isArray(m.v.progress) && m.v.progress.length === progress.length) {
+      // le plus avancé des deux, partie par partie : l'avancement gardé ET ce que les questions restaurées viennent de refaire
+      const merged = m.v.progress.map((n, k) => Math.max(Number(n) || 0, progress[k] ?? 0));
+      setProgress(merged);
+      const part = resumeInside ? resumePart(merged, problem) : null;
+      if (part != null) setResumeStep(part + 1);
+    }
+    if (m.v.given && typeof m.v.given === 'object') setGiven((g) => ({ ...m.v.given, ...g }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [memory.saved]);
+  useEffect(() => { if (touched.current) memory.save({ progress, given }); }, [progress, given]); // eslint-disable-line react-hooks/exhaustive-deps
   const answer = (p, i, value) => {
+    if (!restoring()) touched.current = true;
     setGiven((g) => ({ ...g, [`${p}:${i}`]: value }));
     done(p, i);
   };
@@ -82,9 +112,11 @@ export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, es
             expected={step.expected} display={step.display ?? String(step.expected)}
             parse={parseDec}
             prefix={step.prefix} suffix={step.suffix}
+            // « الإجابة تُكتب في شكلها » : seule une étape qui DÉCLARE `shape` change (guidedProblem.js › stepTemplate)
+            template={stepTemplate(step) ?? undefined}
             explain={step.explain ? <MathText>{step.explain}</MathText> : undefined}
             requires={step.requires}
-            onAnswered={(_, n) => answer(p, i, `${n}${step.suffix ? ` ${step.suffix}` : ''}`)}
+            onAnswered={(_, n) => answer(p, i, stepGiven(step, n))}
           />
         );
       case 'batch':
@@ -165,7 +197,7 @@ export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, es
                   <MathText>{t('problem.askChip', { ask: asks[step.ask] })}</MathText>
                 </p>
               );
-              return { locked, el: (
+              return { locked, step, i, el: (
                 <li key={i} className={`space-y-2 ${locked ? 'rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 px-3 py-2 opacity-70' : ''}`}
                   data-problem-substep={substepRole(step)} data-substep-done={progress[p] > i ? 'true' : 'false'} data-substep-locked={locked ? 'true' : 'false'}>
                   <p className="flex items-center gap-2 text-xs font-extrabold text-slate-600">
@@ -188,7 +220,19 @@ export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, es
               <>
                 {play
                   // une liste d'un élément par sous-étape : du HTML valide, et autant de blocs que de sous-étapes
-                  ? items.filter((x) => !x.locked).map((x) => <ol key={x.el.key} className="list-none">{x.el}</ol>)
+                  // « pas d'aller-retour » (2026-11-11) : chaque sous-étape porte À CÔTÉ d'elle la figure et les données de l'énoncé
+                  // (ProblemAside) — l'énoncé n'est que sur le premier écran ; une rangée gardée entière (`data-paging-keep`)
+                  ? items.filter((x) => !x.locked).map((x) => {
+                    const aside = asideOf(problem, x.step);
+                    const found = x.step.kind === 'sort' ? [] : foundOf(problem, p, x.i, given);
+                    if (!aside && !found.length) return <ol key={x.el.key} className="list-none">{x.el}</ol>;
+                    return (
+                      <div key={x.el.key} className="flex items-start gap-4" data-paging-keep data-problem-aside-row>
+                        <div className={`${asideIsWide(aside, found) ? 'w-[48%] max-w-[34rem]' : 'w-[32%] min-w-[13rem] max-w-[20rem]'} shrink-0`}><ProblemAside aside={aside} found={found} /></div>
+                        <ol className="min-w-0 flex-1 list-none">{x.el}</ol>
+                      </div>
+                    );
+                  })
                   : (
                     <ol className="space-y-4">
                       {items.filter((x) => !focus || !x.locked).map((x) => x.el)}
@@ -260,6 +304,7 @@ export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, es
       }}
       steps={steps}
       footer={footer}
+      resumeStep={resumeStep}
     />
     </>
   );

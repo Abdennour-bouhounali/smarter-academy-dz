@@ -199,7 +199,7 @@ export default function SchoolMeeting() {
           <button type="button" onClick={() => go(-1)} disabled={index === 0} className="flex h-12 w-12 items-center justify-center rounded-full border border-slate-300 disabled:opacity-30" aria-label={t('meeting.previous')}>
             <ChevronRight size={22} aria-hidden="true" />
           </button>
-          <span className="text-lg text-slate-600" dir="ltr" data-meeting-position>{index + 1} / {slides.length}</span>
+          <span className="text-lg text-slate-600" dir="ltr" data-meeting-position>{index + 1}{'\u00A0/\u00A0'}{slides.length}</span>
           <button type="button" onClick={() => go(1)} disabled={index >= slides.length - 1} className="flex h-12 w-12 items-center justify-center rounded-full border border-slate-300 disabled:opacity-30" aria-label={t('meeting.next')}>
             <ChevronLeft size={22} aria-hidden="true" />
           </button>

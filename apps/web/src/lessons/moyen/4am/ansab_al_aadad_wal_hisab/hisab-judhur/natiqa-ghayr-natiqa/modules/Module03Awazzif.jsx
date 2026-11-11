@@ -25,28 +25,28 @@ export default function Module03Awazzif() {
       navLinks={getNavLinks(3)}
       moduleNumber={3}
       moduleTitle="أوظّف تعلّماتي"
-      moduleSubtitle="قيم مقرّبة ومدوّرات — تمارين الكتاب 9، 10، 25، 35 و 31"
+      moduleSubtitle="قيم مقرّبة بالنقصان وبالزيادة ومدوّرات"
       estimatedTime="11 دقيقة"
       objectives={['كيف أحصر جذرًا بين عددين عشريين متتاليين؟', 'متى أدوّر بالزيادة ومتى بالنقصان؟', 'هل يساوي عدد عشري جذرًا معيّنًا؟']}
-      brief={{ tag: 'أوظّف تعلّماتي — الكتاب ص 26 إلى 29', title: 'لعدد غير ناطق: قيم مقرّبة', tone: 'amber',
-        body: <p>تمارين الكتاب بأعدادها: قيم مقرّبة ومدوّرات لجذور تربيعية. الخطأ هنا يُصحَّح ولا يُحتسب.</p> }}
+      brief={{ tag: 'أوظّف تعلّماتي', title: 'لعدد غير ناطق: قيم مقرّبة', tone: 'amber',
+        body: <p>قيم مقرّبة ومدوّرات لجذور تربيعية. الخطأ هنا يُصحَّح ولا يُحتسب.</p> }}
       steps={[
-        { num: 1, title: 'تمرين 9 — قيم مقرّبة إلى الجزء من 10', done: d1,
+        { num: 1, title: 'قيم مقرّبة إلى الجزء من 10', done: d1,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="qima-muqarraba" lead="تذكير من السنوات السابقة، قبل أول تمرين يستعمله:" />
               <TextbookExercise exercise={EX['ex-9']} requires={['qima-muqarraba', 'jidhr-taarif']} onAnswered={() => setD1(true)} />
             </div>
           ) },
-        { num: 2, title: 'تمرين 10 — ضلع مربع مساحته 12', done: d2,
+        { num: 2, title: 'ضلع مربع مساحته 12', done: d2,
           content: <TextbookExercise exercise={EX['ex-10']} requires={['qima-muqarraba', 'jidhr-taarif']} onAnswered={() => setD2(true)} /> },
-        { num: 3, title: 'تمرين 25 — مساحة مثلث متقايس الأضلاع', done: d3,
+        { num: 3, title: 'مساحة مثلث متقايس الأضلاع', done: d3,
           content: <TextbookExercise exercise={EX['ex-25']} requires={['qima-muqarraba', 'jidhr-taarif']} onAnswered={() => setD3(true)} /> },
-        { num: 4, title: 'تمرين 35 (1) — الحصر بين عددين طبيعيين متتاليين', done: d4,
+        { num: 4, title: 'الحصر بين عددين طبيعيين متتاليين', done: d4,
           content: <TextbookExercise exercise={EX['ex-35-1']} requires={['jidhr-taarif', 'ghayr-natiq']} onAnswered={() => setD4(true)} /> },
-        { num: 5, title: 'تمرين 35 (2) — المدوّر إلى الجزء من 100', done: d5,
+        { num: 5, title: 'المدوّر إلى الجزء من 100', done: d5,
           content: <TextbookExercise exercise={EX['ex-35-2']} requires={['qima-muqarraba']} onAnswered={() => setD5(true)} /> },
-        { num: 6, title: 'تمرين 31 (1) — هل هذا العدد العشري يساوي الجذر؟', done: d6,
+        { num: 6, title: 'هل هذا العدد العشري يساوي الجذر؟', done: d6,
           content: <TextbookExercise exercise={EX['ex-31-1']} requires={['ghayr-natiq', 'qima-mudbuta']} onAnswered={() => setD6(true)} /> },
       ]}
       footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />}

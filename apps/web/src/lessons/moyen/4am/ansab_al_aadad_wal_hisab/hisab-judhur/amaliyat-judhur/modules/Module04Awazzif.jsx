@@ -42,25 +42,25 @@ export default function Module04Awazzif() {
       navLinks={getNavLinks(4)}
       moduleNumber={4}
       moduleTitle="أوظّف تعلّماتي"
-      moduleSubtitle="تمارين الكتاب 15، 16، 17، 20، 21 و 33"
+      moduleSubtitle="جداء جذرين وحاصل قسمتهما، ثم العدد الذهبي"
       estimatedTime="12 دقيقة"
-      objectives={['كيف أحسب جذر جداء أو جذر حاصل قسمة في تمارين الكتاب؟', 'كيف أستعمل الخاصيتين في تمرين العدد الذهبي؟']}
+      objectives={['كيف أحسب جذر جداء أو جذر حاصل قسمة؟', 'كيف أستعمل الخاصيتين في تمرين العدد الذهبي؟']}
       brief={{
-        tag: 'أوظّف تعلّماتي — الكتاب ص 26–27 · أتعمّق ص 29', title: 'جداء جذرين وحاصل قسمتهما في التمارين', tone: 'amber',
-        body: <p>نفس التمارين، بنفس الأعداد. في كل سطر اختر النتيجة، ثم اقرأ التصحيح: الخطأ هنا يُصحَّح ولا يُحتسب. وفي الأخير: كيف نرسم العدد الذهبي بالمسطرة والمدوّر.</p>,
+        tag: 'أوظّف تعلّماتي', title: 'جداء جذرين وحاصل قسمتهما في التمارين', tone: 'amber',
+        body: <p>في كل سطر اختر النتيجة، ثم اقرأ التصحيح: الخطأ هنا يُصحَّح ولا يُحتسب. وفي الأخير: كيف نرسم العدد الذهبي بالمسطرة والمدوّر.</p>,
       }}
       steps={[
-        { num: 1, title: 'تمرين 15 — جذر جداء', done: d15,
+        { num: 1, title: 'جذر جداء', done: d15,
           content: <div className="space-y-3"><KnowledgeBrick id="jidaa-jidhrayn" variant="rappel" compact /><TextbookExercise exercise={X['ex-15']} requires={['jidaa-jidhrayn']} onAnswered={() => setD15(true)} /></div> },
-        { num: 2, title: 'تمرين 16 — جذر جداء أعداد عشرية', done: d16,
+        { num: 2, title: 'جذر جداء أعداد عشرية', done: d16,
           content: <TextbookExercise exercise={X['ex-16']} requires={['jidaa-jidhrayn']} onAnswered={() => setD16(true)} /> },
-        { num: 3, title: 'تمرين 17 — جداء جذرين', done: d17,
+        { num: 3, title: 'جداء جذرين', done: d17,
           content: <TextbookExercise exercise={X['ex-17']} requires={['jidaa-jidhrayn', 'la-tawzi-jam']} onAnswered={() => setD17(true)} /> },
-        { num: 4, title: 'تمرين 20 — جذر حاصل قسمة', done: d20,
+        { num: 4, title: 'جذر حاصل قسمة', done: d20,
           content: <div className="space-y-3"><KnowledgeBrick id="qismat-jidhrayn" variant="rappel" compact /><TextbookExercise exercise={X['ex-20']} requires={['qismat-jidhrayn']} onAnswered={() => setD20(true)} /></div> },
-        { num: 5, title: 'تمرين 21 — حاصل قسمة جذرين', done: d21,
+        { num: 5, title: 'حاصل قسمة جذرين', done: d21,
           content: <TextbookExercise exercise={X['ex-21']} requires={['qismat-jidhrayn']} onAnswered={() => setD21(true)} /> },
-        { num: 6, title: 'تمرين 33 — العدد الذهبي', subtitle: 'أتعمّق', done: d33,
+        { num: 6, title: 'العدد الذهبي', subtitle: 'أتعمّق', done: d33,
           content: (
             <div className="space-y-3">
               <GoldenFigure />

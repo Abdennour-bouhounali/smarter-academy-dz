@@ -61,6 +61,93 @@ export const SUBSTEP_ROLES = {
   solution: ['written'],
 };
 
+/**
+ * « الإجابة تُكتب في شكلها » pour une sous-étape `numeric` (2026-11-10 ; EXERCISE_CONTRACT.md § « قوالب الإجابة ») : l'étape DÉCLARE la
+ * forme de sa saisie par des champs explicites — jamais déduits de `expected`. Une étape sans `shape` garde la case nue d'avant.
+ *
+ *   shape: 'quantity', unit: 'm'                  [ ] m — l'unité est imprimée (liste fermée STEP_UNITS, « دج » et non « DA »)
+ *   shape: 'form', subject: 'V', factor: '\\pi'    V = [ ]π — la forme est imprimée, l'élève tape le coefficient
+ *   shape: 'gap', subject: 'AM \\times AC'         AM × AC = [ ] ; avec « \ldots » dans `subject`, la case prend SA place
+ *   shape: 'decimal'                              [ ] — un nombre décimal (« . » devient « , »), sans unité : un rapport
+ *
+ * `subject` et `factor` sont du LaTeX SANS « $ ». Une étape qui porte `shape` ne porte ni `prefix` ni `suffix` (ils feraient doublon).
+ */
+export const STEP_SHAPES = ['quantity', 'form', 'gap', 'decimal'];
+export const STEP_UNITS = ['m', 'cm', 'mm', 'km', 'm²', 'cm²', 'mm²', 'km²', 'm³', 'cm³', 'L', 'cL', 'mL', 'g', 'kg', '°', 'km/h', 'دج'];
+const SHAPE_FIELDS = { quantity: ['unit'], form: ['subject', 'factor'], gap: ['subject'], decimal: [] };
+const STEP_GAP = '\\ldots';
+
+/** Accolades équilibrées (hors `\{ \}`) : une formule coupée au milieu d'un groupe ne se rend pas. */
+function balancedLatex(latex) {
+  let depth = 0;
+  for (let i = 0; i < latex.length; i += 1) {
+    if (latex[i] === '\\') { i += 1; continue; }
+    if (latex[i] === '{') depth += 1;
+    if (latex[i] === '}') depth -= 1;
+    if (depth < 0) return false;
+  }
+  return depth === 0;
+}
+const latexField = (v) => typeof v === 'string' && v.trim() !== '' && !v.includes('$') && balancedLatex(v);
+
+/** Les erreurs des champs de forme d'une sous-étape (tableau vide = conforme, ou pas de `shape`). */
+export function shapeErrors(step) {
+  const errors = [];
+  const stray = ['unit', 'subject', 'factor'].filter((f) => step?.[f] != null);
+  if (step?.shape == null) {
+    if (stray.length) errors.push(`'${stray.join("', '")}' need a 'shape'`);
+    return errors;
+  }
+  if (step.kind !== 'numeric') return ["'shape' belongs to a numeric step"];
+  if (!STEP_SHAPES.includes(step.shape)) return [`unknown shape '${step.shape}' (${STEP_SHAPES.join(' | ')})`];
+  const allowed = SHAPE_FIELDS[step.shape];
+  for (const f of stray) if (!allowed.includes(f)) errors.push(`'${f}' is not a field of shape '${step.shape}'`);
+  if (step.prefix != null || step.suffix != null) errors.push("a step with a 'shape' carries no 'prefix' / 'suffix' (the shape prints them)");
+  if (step.shape === 'quantity' && !STEP_UNITS.includes(step.unit)) errors.push(`shape 'quantity' needs a 'unit' among ${STEP_UNITS.join(', ')}`);
+  if (step.shape === 'form') {
+    if (!latexField(step.subject)) errors.push("shape 'form' needs a 'subject' (LaTeX without $, e.g. 'V')");
+    if (!latexField(step.factor)) errors.push("shape 'form' needs a 'factor' (LaTeX without $, e.g. '\\pi')");
+  }
+  if (step.shape === 'gap') {
+    if (!latexField(step.subject)) errors.push("shape 'gap' needs a 'subject' (LaTeX without $, e.g. 'AM \\times AC')");
+    else if (step.subject.includes(STEP_GAP)) {
+      const [pre, ...rest] = step.subject.split(STEP_GAP);
+      if (rest.length !== 1) errors.push("shape 'gap': 'subject' holds one « \\ldots » at most");
+      else if (!balancedLatex(pre) || !balancedLatex(rest[0])) errors.push("shape 'gap': « \\ldots » sits inside a { } group — the formula cannot be cut there");
+    }
+  }
+  return errors;
+}
+
+/**
+ * Le modèle de saisie d'une sous-étape (celui que lit TemplateInput), ou null : pas de `shape`, ou une forme invalide — la case nue.
+ * PURE, et ne lit JAMAIS `expected` : rien de la réponse ne passe dans la forme.
+ */
+export function stepTemplate(step) {
+  if (!step || step.shape == null || shapeErrors(step).length) return null;
+  switch (step.shape) {
+    case 'quantity': return { kind: 'quantity', unit: step.unit, signed: false };
+    case 'form': return { kind: 'form', subject: step.subject, pre: '', post: step.factor, letter: step.subject };
+    case 'gap': {
+      const [pre, post] = step.subject.includes(STEP_GAP) ? step.subject.split(STEP_GAP) : [`${step.subject} =`, ''];
+      return { kind: 'gap', before: '', pre, post, after: '', raised: false, signed: false };
+    }
+    default: return { kind: 'decimal', signed: false };
+  }
+}
+
+/** Ce que l'élève a répondu, tel qu'on le relit dans la liste des demandes : la valeur DANS sa forme (virgule décimale, unité, π…). */
+export function stepGiven(step, n) {
+  const tpl = stepTemplate(step);
+  if (!tpl) return `${n}${step.suffix ? ` ${step.suffix}` : ''}`;
+  const value = String(n).replace('.', ',');
+  const tex = value.replace(',', '{,}');
+  if (tpl.kind === 'quantity') return `${value} ${tpl.unit}`;
+  if (tpl.kind === 'form') return `$${tpl.subject} = ${tex}${tpl.post}$`;
+  if (tpl.kind === 'gap') return `$${tpl.pre} ${tex}${tpl.post}$`;
+  return value;
+}
+
 /** Le rôle affiché d'une sous-étape (par défaut, celui de son type). */
 export const substepRole = (step) => step.role ?? SUBSTEP_ROLES[step.kind]?.[0];
 
@@ -160,6 +247,7 @@ export function validateProblem(problem) {
         else if (!Number.isInteger(s.correct) || s.correct < 0 || s.correct >= s.options.length) at(`${w}: correct out of range`);
       }
       if (s.kind === 'numeric' && typeof s.expected !== 'number') at(`${w}: expected must be a number`);
+      for (const e of shapeErrors(s)) at(`${w}: ${e}`);
       if (s.kind === 'batch') {
         if (!Array.isArray(s.rows) || s.rows.length < 2) at(`${w}: batch needs ≥ 2 rows`);
         else s.rows.forEach((r, k) => {
@@ -192,3 +280,64 @@ export function completeSubstep(progress, partIdx, stepIdx) {
 }
 
 export const isPartDone = (progress, problem, partIdx) => (progress[partIdx] ?? 0) >= problem.parts[partIdx].steps.length;
+
+/**
+ * La partie où REPRENDRE une مسألة retrouvée (indice 0…), ou null : rien n'a encore été fait (on commence par l'énoncé).
+ * C'est la première partie pas finie ; si toutes le sont, la dernière (son écran mène à la suite).
+ */
+export function resumePart(progress, problem) {
+  if (!Array.isArray(progress) || !progress.some((n) => n > 0)) return null;
+  const open = problem.parts.findIndex((_, p) => !isPartDone(progress, problem, p));
+  return open === -1 ? problem.parts.length - 1 : open;
+}
+
+/**
+ * « Pas d'aller-retour » (propriétaire, 2026-11-11) — ce que montre, DANS LE LECTEUR, la colonne « المعطيات » posée à côté d'une sous-étape :
+ * l'énoncé n'est que sur le premier écran de la مسألة, et « احسب AM × AC » se lisait sur un écran sans aucun nombre ni figure.
+ * Rend null pour le tri des données (`sort` : c'est lui qui les extrait — les montrer donnerait la réponse) ; sinon
+ * { figure, table, data, statement } : la figure et le tableau de l'énoncé, les données UTILES (celles que l'élève vient de trier), et
+ * l'énoncé lui-même seulement quand la مسألة n'a pas de liste de données (ses nombres ne seraient nulle part ailleurs).
+ * Rien à montrer (ni figure, ni tableau, ni donnée, ni énoncé) → null.
+ */
+export function asideOf(problem, step) {
+  if (!problem || !step || step.kind === 'sort') return null;
+  const data = (problem.data ?? []).filter((d) => d.useful).map((d) => d.text);
+  const figure = problem.figure && (problem.figure.kind || Object.keys(problem.figure.points ?? {}).length) ? problem.figure : null;
+  const table = problem.table ?? null;
+  const statement = data.length ? null : (problem.statement || null);
+  if (!figure && !table && !data.length && !statement) return null;
+  return { figure, table, data, statement };
+}
+
+/**
+ * « Ce que j'ai trouvé » (« pas d'aller-retour », cas 4 : une question sur ce que l'élève a fait avant) : dans le lecteur, la ligne
+ * d'Euclide « باقي قسمة القاسم السابق على الباقي الذي وجدته » se lisait sur un écran sans les lignes précédentes. Rend, pour la
+ * sous-étape `i` de la partie `p`, les sous-étapes DÉJÀ répondues : celles de la même partie (leur consigne et leur résultat), précédées des
+ * résultats des parties précédentes (leurs demandes satisfaites). Le résultat montré est le BON (`display`/`expected`, l'option juste) —
+ * celui que la correction vient d'afficher : une ligne d'Euclide fausse ne se propage pas à la suivante. Jamais une sous-étape pas encore
+ * répondue ; ni le tri, ni la rédaction, ni une grille (`batch`) — rien d'une ligne à relire.
+ *   given : { 'p:i': valeur } (GuidedProblem › given)
+ */
+/** Le BON résultat d'une sous-étape à une réponse (numeric, choice), ou null. */
+export function rightAnswerOf(step) {
+  if (step?.kind === 'numeric') return step.display ?? (step.expected != null && typeof step.expected !== 'function' ? String(step.expected) : null);
+  if (step?.kind === 'choice') return step.options?.[step.correct] ?? null;
+  return null;
+}
+
+export function foundOf(problem, p, i, given = {}) {
+  const out = [];
+  const has = (k) => given[k] != null && given[k] !== '';
+  problem.parts.slice(0, p).forEach((part, q) => {
+    (part.asks ?? []).forEach((ask, k) => {
+      const j = part.steps.findIndex((st, jj) => st.ask === k && rightAnswerOf(st) != null && has(`${q}:${jj}`));
+      if (j >= 0) out.push({ label: ask, value: rightAnswerOf(part.steps[j]) });
+    });
+  });
+  problem.parts[p].steps.slice(0, i).forEach((st, j) => {
+    const value = rightAnswerOf(st);
+    if (value == null || !st.prompt || !has(`${p}:${j}`)) return;
+    out.push({ label: st.prompt, value });
+  });
+  return out;
+}

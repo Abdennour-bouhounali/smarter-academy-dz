@@ -8,6 +8,7 @@ import { AdminPage, AdminSection, useAdminLabels, Num, btnSecondary } from '../a
 import DataTable from '../../../components/admin/ui/DataTable';
 import { LoadingState, ErrorState, EmptyState } from '../../../components/admin/ui/states';
 import PublicationControl from '../../../components/admin/PublicationControl';
+import StatusBadge from '../../../components/admin/ui/StatusBadge';
 import ExerciseBankControl from '../../../components/admin/ExerciseBankControl';
 import TierControl from '../../../components/admin/TierControl';
 import { useAdminResource } from '../../../hooks/useAdminResource';
@@ -151,10 +152,8 @@ export default function AdminLessonDetail() {
                   key: 'publicationStatus',
                   label: t('lessons.columnPublication'),
                   render: (m) => (
-                    <PublicationControl
-                      type="module" id={m.id} status={m.publicationStatus}
-                      onChanged={(next) => patch('modules', m.id, { publicationStatus: next })} compact
-                    />
+                    // Un محور n'a pas d'état propre (2026-11-11) : il suit la leçon.
+                    <StatusBadge status={m.publicationStatus} />
                   ),
                 },
               ]}

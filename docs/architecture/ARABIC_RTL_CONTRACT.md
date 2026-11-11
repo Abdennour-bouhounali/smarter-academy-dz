@@ -425,7 +425,7 @@ the choke points: `MathText`'s plain segments; the knowledge provider (item
 options; `StepCard` / `MissionBrief` titles; `ModuleLayout` (module title,
 subtitle, breadcrumb, step list); `LessonIndex` (title, description, skills,
 module titles and descriptions, learning points, prerequisites, resources);
-and the catalogue surfaces (`LessonCard`, `LessonRow` — whose duration « 45 min » is an LTR island, else RTL prints « min 45 » —, `UnitPage`, `NextStepHero`, the
+and the catalogue surfaces (`LessonCard`, `LessonRow` — whose duration « 45 min » is an LTR island, else RTL prints « min 45 » —, `UnitPage`, the home (`CompassHomeSections`), the
 progression tree, practice hub/summary, the teacher's lesson memo, learning
 points and overview tabs). Lesson data stays clean: no invisible character is
 ever written into a lesson or the catalogue.
@@ -443,7 +443,7 @@ when a string carries a formula, the fallback meanwhile being `mathToPlain`. Whe
 each island becomes isolated Unicode (« x ⟼ ax + b », « (f(x₁) − f(x₂))/(x₁ − x₂) »). The kit does the same for a
 STRING prompt, batch-row label or option (`TapQuestion`, `BatchChoiceQuestion`, `ChoiceGrid`, `PredictionChips`).
 Applied in: `LessonIndex`, `ModuleLayout`, `LessonUI`, `KnowledgeBrick`, `KnowledgeSnapshot`, `KnowledgeMap`,
-`LinearKnowledgeView`, `UnitPage`, `UnitGroup`, `LessonCard`, `LessonRow`, `NextStepHero`, the progression tree, practice
+`LinearKnowledgeView`, `UnitPage`, `UnitGroup`, `LessonCard`, `LessonRow`, the home's `CompassHomeSections`, the progression tree, practice
 hub / summary, the teacher's memo, lessons, learning-points and overview tabs. **Never print a content string with
 `{bidi(x)}` in JSX** — write `<MathLabel>{x}</MathLabel>`. Guard: `apps/web/e2e/lesson-kit/math-raw-scan.mjs`
 (every visible text node outside `.katex`, every page of every 4AM lesson: 0 `$…$`, 0 `\command`, 0 `.katex-error`).
@@ -763,3 +763,11 @@ text. Classify each hit: notation and identifiers stay, prose gets translated.
 - [`LESSON_DESIGN_PLAYBOOK.md`](./LESSON_DESIGN_PLAYBOOK.md) §13bis/§13ter — the same rules in the lesson-authoring workflow.
 - [`MANIPULATION_CONTRACT.md`](./MANIPULATION_CONTRACT.md) §8 — RTL inside a manipulation.
 - [`CLASSROOM_MODE.md`](./CLASSROOM_MODE.md) §9 — RTL in presentation.
+
+## A counter « x / y » never breaks (owner, 2026-11-09)
+
+A browser breaks a line at a SPACE: « 6 / 10 » written with ordinary spaces showed « 6 / » on one line and « 10 » on the next. Around the « / » of
+any counter (score, question number, progress, seats, pages), the spaces are NON-BREAKING (` `): in JSX `{a}{' / '}{b}`, in a
+template string `${a} / ${b}`, in a translation `{{a}} / {{b}}`. Enforced over the WHOLE `apps/web/src` by
+`lessons/common/unbreakableCounters.test.js` (a template that is not a displayed counter — a CSS ratio, a developer message, a formula, an
+ARIA label — is listed there by name). `6/10` without spaces does not break and needs nothing.

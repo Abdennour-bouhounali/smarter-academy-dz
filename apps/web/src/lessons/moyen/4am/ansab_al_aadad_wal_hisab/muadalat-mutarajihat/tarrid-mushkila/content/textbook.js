@@ -1,24 +1,34 @@
 /**
- * Le contenu du MANUEL pour le درس 4 « ترييض مشكلة » — données pures (aucun JSX), au
- * mot près ; chaque bloc cite son élément de docs/sources/4am/unit4/extraction.json.
+ * Le contenu de la leçon 4 « ترييض مشكلة » — données pures (aucun JSX). Le manuel (طرائق p. 49) fixe les الكفاءات, pas le texte : depuis le
+ * rollout du 2026-11-11 (unité 4, conseil du 2026-11-11, verdict L4.7 / X1) la طريقة est écrite avec les nombres de la PLATEFORME — le père de
+ * 52 ans et ses quatre enfants de 7, 8, 10 et 12 ans, la manche 1 du lecteur (content/race.js) —, partout (élève ET enseignant). Chaque bloc
+ * garde son `src(...)` (la couverture des éléments du manuel) avec `part: 'بأعداد المنصّة'` : le professeur voit que le texte est réécrit.
  *
- * Le manuel n'a PAS d'activité (نشاط) pour ce sujet : sa seule matière est la طريقة
- * p. 49 (le père de 36 ans et ses trois enfants), دوري الآن 2 et les exercices. Son
- * « ACTIVITY » (lu par la مذكرة du professeur) est donc cette طريقة, que le module 1
- * ouvre par le laboratoire et que le module 2 lit ligne à ligne.
+ * Aucun nombre de la مسألة (content/forbidden.js, _unit/signatures/tarrid-mushkila.js) n'est écrit ici.
  */
 import { src, addition } from '../../_unit/unitMeta.js';
 
-/** طرائق p. 49 — « ترييض مشكلة » : l'exercice et sa solution (أ ب جـ التحقق). */
+const OWN = 'بأعداد المنصّة';
+const own = (id, page, section, number) => ({ ...src(id, page, section, number), part: OWN });
+
+/** La famille de la manche 1 : tout ce qui suit en est calculé. */
+export const FAMILY = { father: 52, children: [7, 8, 10, 12], years: 5 };
+const after = FAMILY.children.map((c) => c + FAMILY.years);                    // 12, 13, 15, 17
+const sumAfter = after.reduce((a, b) => a + b, 0);                              // 57
+const constant = FAMILY.children.reduce((a, b) => a + b, 0);                    // 37
+const kids = FAMILY.children.length;                                            // 4
+const kidsEq = FAMILY.children.map((c) => `(${c} + x)`).join(' + ');
+
+/** طرائق — « ترييض مشكلة » : l'exercice et sa solution (أ ب جـ التحقق), sur les nombres de la plateforme. */
 export const METHOD_MODELLING = {
-  source: src('method-modelling', 49, 'طرائق'),
+  source: own('method-modelling', 49, 'طرائق'),
   title: 'ترييض مشكلة',
-  exercise: 'تمرين: شخص عمره 36 سنة و أعمار أبنائه الثلاثة بالسنوات هي 4 ، 6 ، 8 على التوالي. بعد كم سنة يكون عمر الأب يساوي مجموع أعمار أبنائه الثلاثة؟',
+  exercise: `أب عمره ${FAMILY.father} سنة، وأعمار أبنائه الأربعة بالسنوات هي ${FAMILY.children.join(' ، ')}. بعد كم سنة يكون عمر الأب مساويًا مجموع أعمار أبنائه الأربعة؟`,
   solution: [
-    'أ) نسمي $x$ عدد السنوات التي يكون بعدها عمر الأب هو مجموع أعمار أبنائه الثلاثة.',
-    'ب) نُعبّر عن هذه الوضعية بالمعادلة $36 + x = (4 + x) + (6 + x) + (8 + x)$ .',
-    'جـ) نحل المعادلة التي وجدناها والتي تكتب على الشكل $36 + x = 3x + 18$ ومنه يكون $2x = 18$ أي $x = 9$ . بالتالي يكون عمر الأب مساويا مجموعَ أعمار أبنائه الثلاثة بعد 9 سنوات.',
-    'التحقق: بعد 9 سنوات يكون عمر الأب هو 45 سنة وأعمار الأبناء هي 13 ، 15 و 17 ولدينا $13 + 15 + 17 = 45$ .',
+    'أ) نسمي $x$ عدد السنوات التي يكون بعدها عمر الأب هو مجموع أعمار أبنائه الأربعة.',
+    `ب) نُعبّر عن هذه الوضعية بالمعادلة $${FAMILY.father} + x = ${kidsEq}$ .`,
+    `جـ) نحل المعادلة التي وجدناها والتي تكتب على الشكل $${FAMILY.father} + x = ${kids}x + ${constant}$ ومنه $${kids - 1}x = ${FAMILY.father - constant}$ أي $x = ${FAMILY.years}$ . بالتالي يكون عمر الأب مساويا مجموعَ أعمار أبنائه بعد ${FAMILY.years} سنوات.`,
+    `التحقق: بعد ${FAMILY.years} سنوات يكون عمر الأب هو ${FAMILY.father + FAMILY.years} سنة وأعمار الأبناء هي ${after.join(' ، ')} ولدينا $${after.join(' + ')} = ${sumAfter}$ .`,
   ],
 };
 
@@ -27,95 +37,60 @@ export const ACTIVITY = {
   source: METHOD_MODELLING.source,
   title: 'ترييض مشكلة',
   text: METHOD_MODELLING.exercise,
-  questions: [
-    'بعد كم سنة يكون عمر الأب يساوي مجموع أعمار أبنائه الثلاثة؟',
-  ],
+  questions: ['بعد كم سنة يكون عمر الأب يساوي مجموع أعمار أبنائه الأربعة؟'],
   closing: METHOD_MODELLING.solution[3],
-  numbers: { father: 36, children: [4, 6, 8], years: 9 },
+  numbers: { father: FAMILY.father, children: FAMILY.children, years: FAMILY.years },
 };
 
 /**
- * LA COURSE DES ÂGES — l'expérience de la PLATEFORME (le manuel n'a pas d'activité).
- * Sa mathématique est la طريقة p. 49 ; le niveau متقدم est l'exercice du manuel, le
- * niveau مبتدئ deux personnes seulement (« ضعف عمر الابن »). Déclarée, jamais cachée.
+ * LA COURSE DES ÂGES — l'expérience de la PLATEFORME. Page de l'enseignant : deux niveaux sur les nombres de la leçon (مبتدئ : deux personnes ;
+ * متقدم : le père et ses quatre enfants) ; module 2 : le passé (deux frères, solution négative). Le lecteur joue les MANCHES (content/race.js).
  */
 export const RACE = {
   source: addition('interaction_generation'),
-  beginner: { left: '30+x', right: '2(6+x)', solution: 18 },
-  advanced: { left: '36+x', right: '4+x+6+x+8+x', solution: 9 },
-  // Module 2 : « ثلاثة أضعاف » — la solution est négative (x = −3).
-  past: { left: '36+x', right: '3(14+x)', solution: -3 },
+  beginner: { left: '26+x', right: '4(2+x)', solution: 6 },
+  advanced: { left: `${FAMILY.father}+x`, right: FAMILY.children.map((c) => `${c}+x`).join('+'), solution: FAMILY.years },
+  past: { left: '11+x+13+x', right: '18', solution: -3 },
 };
 
-/**
- * Les ÉTAPES de la طريقة, nommées par les lettres du manuel (أ ب جـ التحقق) : ce que
- * la brique « tarrid-tariqa » pose et ce que la carte relie.
- */
+/** Les ÉTAPES de la طريقة (أ ب جـ التحقق). */
 export const STEPS = {
-  source: src('method-modelling', 49, 'طرائق'),
+  source: own('method-modelling', 49, 'طرائق'),
   name: 'أ) نسمي $x$ المجهول المناسب (هنا: عدد السنوات).',
   express: 'ب) نُعبّر عن الوضعية بمعادلة (أو متراجحة) بدلالة $x$ : كل كمية تتغيّر مع $x$ تُكتب بدلالة $x$.',
   solve: 'جـ) نحل المعادلة (أو المتراجحة) التي وجدناها.',
   check: 'التحقق: نعوّض الحل في نص المشكلة، ونتأكّد أنه يلائم الواقع.',
 };
 
-/**
- * La règle que le laboratoire a rendue physique : chaque personne vieillit de x —
- * le contenu de « ب) » (36 + x = (4 + x) + (6 + x) + (8 + x)).
- */
+/** La règle que le laboratoire a rendue physique : chaque personne vieillit de x. */
 export const MODEL_RULE = {
-  source: src('method-modelling', 49, 'طرائق'),
-  text: 'بعد $x$ سنة يكبر كل شخص بـ $x$ سنة: عمر الأب $36 + x$ ، وعمر كل ابن يزيد بـ $x$ ، فمجموع أعمار الأبناء الثلاثة $(4 + x) + (6 + x) + (8 + x) = 3x + 18$ .',
+  source: own('method-modelling', 49, 'طرائق'),
+  text: `بعد $x$ سنة يكبر كل شخص بـ $x$ سنة: عمر الأب $${FAMILY.father} + x$ ، وعمر كل ابن يزيد بـ $x$ ، فمجموع أعمار الأبناء الأربعة $${kidsEq} = ${kids}x + ${constant}$ .`,
 };
 
 /**
- * دوري الآن 2 (p. 49) : 4x ≥ 84 − 3x, puis le carré et le triangle équilatéral qui
- * se partagent une base de 28 cm (figure redessinée : components/Figures.jsx).
+ * Une ترييض qui donne une MÉTRAJIHA : le hexagone régulier et le carré (figure : components/Figures.jsx › HexSquareFigure). Côté du hexagone x,
+ * côté du carré x + 5 (cm) : 6x ≥ 4(x + 5) ⇔ x ≥ 10 ; à 10 les deux périmètres valent 60.
  */
 export const NOW_49_2 = {
-  source: src('now-49-2', 49, 'دوري الآن', 2),
-  text: '1) حل المتراجحة $4x \\geq 84 - 3x$ . 2) ما هو أقصر ضلع المربع بحيث يكون محيطه أكبر من أو يساوي محيط المثلث؟',
-  figure: 'مربع ضلعه $x$ ومثلث متقايس الأضلاع ملتصقان، طول قاعدتيهما معا 28cm.',
+  source: own('now-49-2', 49, 'دوري الآن', 2),
+  text: '1) حل المتراجحة $6x \\geq 4x + 20$ . 2) ما هو أقصر ضلع للمسدّس بحيث يكون محيطه أكبر من أو يساوي محيط المربع؟',
+  figure: 'مسدّس منتظم ضلعه $x$ ومربّع ضلعه $x + 5$ (بالسنتيمتر).',
 };
 
-/**
- * Ce que l'exercice d'inéquation ajoute à la طريقة : quand la question dit « أقصر »,
- * « أكبر من أو يساوي », on traduit par une MÉTRAJIHA et on choisit, parmi ses
- * solutions, celle qui répond (دوري الآن 2 : x ≥ 12 → le plus court côté est 12 cm).
- */
+/** Ce que l'exercice d'inéquation ajoute : « أقصر », « أكبر من أو يساوي » → une métrajiha, puis le plus petit ضلع parmi ses حلول. */
 export const INEQUALITY_RULE = {
-  source: src('now-49-2', 49, 'دوري الآن', 2),
-  text: 'عندما يطلب النص «أكبر من أو يساوي» أو «أقصر» نعبّر عن الوضعية بمتراجحة: محيط المربع $4x$ ومحيط المثلث $3(28 - x)$ ، فالمتراجحة $4x \\geq 3(28 - x)$ أي $x \\geq 12$ ، وأقصر ضلع هو 12cm.',
+  source: own('now-49-2', 49, 'دوري الآن', 2),
+  text: 'عندما يطلب النص «أكبر من أو يساوي» أو «أقصر» نعبّر عن الوضعية بمتراجحة: محيط المسدّس $6x$ ومحيط المربع $4(x + 5)$ ، فالمتراجحة $6x \\geq 4(x + 5)$ أي $2x \\geq 20$ ثم $x \\geq 10$ ، وأقصر ضلع هو 10cm.',
 };
 
-/**
- * « التأكد من ملاءمتها للواقع » (الكفاءة 2) : ce que les exercices du manuel
- * imposent — une longueur est positive (تمرين 30 : $0 < x < 12$), une solution négative
- * est refusée (تمرين 40 : $x = -7$ مرفوض), un nombre d'années « après » est positif.
- */
+/** « التأكد من ملاءمتها للواقع » : une longueur est positive, un nombre d'années « بعد » aussi, un nombre d'objets est naturel. */
 export const REALITY_RULE = {
-  source: src('ex-40', 53, 'أتعمّق', 40),
-  text: 'نتحقّق من أنّ الحل يلائم الواقع: طول ضلع أو عدد سنوات أو عدد حصص لا يكون سالبًا، وعدد أشياء يكون عددًا طبيعيًا. في التمرين 40 مثلًا للمعادلة حلّان 12 و $-7$ ، و $-7$ مرفوض لأنه طول.',
+  source: own('ex-40', 53, 'أتعمّق', 40),
+  text: 'نتحقّق من أنّ الحل يلائم الواقع: طول ضلع أو عدد سنوات أو عدد حصص لا يكون سالبًا، وعدد أشياء يكون عددًا طبيعيًا. حلّ مثل $x = -3$ لسؤال «بعد كم سنة؟» يعني أنّ ذلك حدث منذ 3 سنوات، فلا جواب في المستقبل.',
 };
 
-/** Exercice 13 : l'énoncé du manuel est elliptique — la lecture retenue, en une ligne. */
-export const EX13_NOTE = {
-  source: addition('interaction_generation'),
-  text: 'نقرأ النص هكذا: انقضى 75% من المدة المقررة $D$ ، ثم 4 سنوات، وبقيت 11 سنة: $0{,}75D + 4 + 11 = D$ .',
-};
-
-/** Exercice 40 : la figure du manuel porte « m » ; la version corrigée (extraction → ex-40.correction). */
-export const EX40_NOTE = {
-  source: addition('interaction_generation'),
-  text: 'صحّحت المنصّة خطأً مطبعيًا في شكل الكتاب: $BE = 3cm$ و $GD = 8cm$ .',
-};
-
-/**
- * « أستعدّ » — le manuel n'a AUCUN item pour ce sujet (ses items 1–11 p. 43 vont aux
- * leçons 1–3) : neuf affirmations de la PLATEFORME, dans la forme du manuel (« أصحيح أم
- * خاطئ؟ برّر إجابتك »), une ou deux par prérequis du propriétaire, les deux réponses
- * présentes. Aucune n'utilise les nombres du laboratoire (36, 4, 6, 8, 30, 14).
- */
+/** « أستعدّ » : les affirmations d'avant (la liste que lit le lecteur est content/prep.js › PREP_LADDER). */
 export const PREP_ITEMS = [
   { skill: 'muadala', text: 'حل المعادلة $5x - 7 = 3x + 9$ هو $x = 8$ .', answer: true, why: '$5x - 3x = 9 + 7$ أي $2x = 16$ ومنه $x = 8$ . تحقّق: $5 \\times 8 - 7 = 33$ و $3 \\times 8 + 9 = 33$ .', source: addition('prerequisite_diagnostic') },
   { skill: 'muadala', text: 'حل المعادلة $4x + 6 = 2$ هو $x = 2$ .', answer: false, why: '$4x = 2 - 6 = -4$ ومنه $x = -1$ . (العدد 2 يعطي $4 \\times 2 + 6 = 14$ .)', source: addition('prerequisite_diagnostic') },
@@ -128,13 +103,13 @@ export const PREP_ITEMS = [
   { skill: 'taklifa', text: '75% من 80 هو 60.', answer: true, why: '$0{,}75 \\times 80 = 60$ .', source: addition('prerequisite_diagnostic') },
 ];
 
-/**
- * L'erreur que le laboratoire a rendue physique (MISC-TARRID-MAJHUL-WAHID) : « + x » posé
- * une seule fois pour trois enfants. Le module 1 la corrige ; la carte la reprend.
- */
+/** L'erreur que le laboratoire a rendue physique (MISC-TARRID-MAJHUL-WAHID) : « + x » posé une seule fois pour plusieurs enfants. */
 export const MISTAKE_ONE_X = {
-  source: src('method-modelling', 49, 'طرائق'),
-  wrong: 'كتابة $36 + x = 4 + 6 + 8 + x$ : إضافة $x$ مرة واحدة لمجموع أعمار الأبناء.',
-  why: 'بعد $x$ سنة لا يكبر «المجموع» بل يكبر كل ابن بـ $x$ سنة: ثلاثة أبناء، ثلاث مرات $x$ .',
-  right: 'مجموع أعمار الأبناء بعد $x$ سنة هو $(4 + x) + (6 + x) + (8 + x) = 3x + 18$ .',
+  source: own('method-modelling', 49, 'طرائق'),
+  wrong: `كتابة $${FAMILY.father} + x = ${FAMILY.children.join(' + ')} + x$ : إضافة $x$ مرة واحدة لمجموع أعمار الأبناء.`,
+  why: `بعد $x$ سنة لا يكبر «المجموع» بل يكبر كل ابن بـ $x$ سنة: أربعة أبناء، أربع مرات $x$ .`,
+  right: `مجموع أعمار الأبناء بعد $x$ سنة هو $${kidsEq} = ${kids}x + ${constant}$ .`,
 };
+
+/** Le montage du module 1, étape 3 : les nombres du père et des enfants après FAMILY.years. */
+export const AFTER = { father: FAMILY.father + FAMILY.years, children: after, sum: sumAfter, constant, kids };

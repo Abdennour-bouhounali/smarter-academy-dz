@@ -1,40 +1,54 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { parseDec } from '@smarter-academy/core';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, NumericQuestion, KnowledgeBrick, PeerSheet } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
+import { stepTemplate } from '../../../../../../common/problems/guidedProblem';
+import * as SM from '../../../../../../common/manipulations/logic/shadowMeet';
+import * as CC from '../../../../../../common/manipulations/logic/coneCylinder';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { CHALLENGE, INTRO_THALES, SITUATION, REMARKS, LAB, LESSON_TITLES, analysisText } from '../content/textbook';
+import { M7_ROUNDS, ZILL, CONE_R1, CONE_R2, R2_REQUIRED } from '../content/rounds';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
 import { BASE } from '../../_unit/unitMeta';
 import { SECTION } from '../content/figures';
 import MinaretFigure from '../components/MinaretFigure';
 import ConeFigure from '../components/ConeFigure';
 
 /**
- * Module 7 — le تحدّ de la page d'unité (p. 103, DOUBLON DÉCLARÉ) puis la وضعية (p. 112) lue dans les TROIS étapes
- * du « تحليل الوضعية » du manuel (قراءة الوضعية وفهمها · تحليل الوضعية واختيار استراتيجية حل مناسبة · تنفيذ
- * استراتيجية الحل المختارة), comme les synthèses des unités 2 à 8.
+ * Module 7 — « وضعية الوحدة » : le تحدّ de la page d'unité (la minaret, DOUBLON DÉCLARÉ) puis la وضعية (le cylindre dans le cône), lue dans les
+ * trois phases de l'analyse (قراءة الوضعية وفهمها · تحليل الوضعية واختيار استراتيجية · تنفيذ الاستراتيجية).
  *
- * LE WORKSPACE (deux types, un objectif — MANIPULATION_CONTRACT §2undecies ; props dans content/textbook.js › LAB) :
- *   مبتدئ  shadow-world, le تحدّ dans « ساحة الحيّ » (2026-10-13) : le soleil tenu, les ombres mesurées, un pari, la loi
- *          ÉCRITE par l'élève puis réparée à une autre heure, la minaret trouvée ; le bâton planté à la lisière de
- *          l'ombre de la minaret donne la méthode du manuel (les deux ombres finissent en O) ;
- *   متقدم  cone-cylinder, la وضعية : h et r tenus par la main, le cône refuse le cylindre qui le perce ; deux
- *          cylindres inscrits ouvrent la relation, puis h = r (la demi-coupe carrée).
- * Ouvert sur مبتدئ (`defaultLevel` par défaut) : les deux premières étapes portent sur le تحدّ ; la وضعية est un
- * onglet plus loin, nommé par son titre. Les essais de l'élève (`onTrial`) sont listés au-dessus des questions
- * d'exécution (`[data-activity-evidence]`). Aucune étape n'attend un laboratoire (`onFinished`).
- * LP : P1 (le تحدّ, Thalès mobilisé), P2 (coupe axiale, équation, volume), P3 (stratégie, vérification).
+ * LA PAGE (l'enseignant, le mode classe) : le workspace d'avant — مبتدئ `shadow-world` (le تحدّ dans « ساحة الحيّ ») et متقدم `cone-cylinder`
+ * (cône 18 / 6) ; les essais de l'élève (`onTrial`) sont listés au-dessus des questions (`[data-activity-evidence]`).
+ *
+ * LE LECTEUR DE MISSION (la synthèse de l'unité 9, 2026-11-10 — décisions S et verdict C ; l'élève ne voit JAMAIS l'ancienne vue) : UN
+ * `LabRounds` (content/rounds.js) — la minaret à 15:00 (`shadow-meet`, la rencontre seule, sans la hauteur), deux cônes (25 / 15 à la main,
+ * 25 / 10 avec deux prédictions et une égalité NUMÉRIQUE), ⭐ 21 / 14 (r fixé) et le terrain libre — puis les étapes. Les étapes 1–2 attendent
+ * la manche `zill`, l'étape 7 attend `r2` et s'OUVRE sur l'égalité EN LETTRES « TC/SK = □/□ » (le labo n'en montre aucune), puis la substitution
+ * 18 / 6. Les panneaux de trace sont REBÂTIS depuis les manches gagnées (étoiles gardées : un rechargement ne vide rien), jamais de volume ; un
+ * cylindre refusé dans la séance appuie l'étape 10. Les liens qui quittent le lecteur (vers les leçons) n'y sont pas.
+ *
+ * Étapes (les deux vues) : 1 le تحدّ · 2 sa hauteur · 3 lire · 4 la coupe · 5 la stratégie · 6 « بالقلم » (l'écran du cahier : « اكتب في 3
+ * أسطر ») · 7 l'égalité (lettres puis 18 / 6) · 8 h = r · 9 le volume · 10 la vérification · 11 « ورقة هاجر » (un PLAN faux : Thalès sans
+ * justifier (TC) ∥ (SK)). Les deux réponses tapées s'écrivent dans leur forme (`stepTemplate`) : « [ ] m », « [ ] cm ».
+ * LP : P1 (le تحدّ), P2 (coupe, équation, volume), P3 (stratégie, vérification).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const TRUE_FALSE = ['صحيح', 'خاطئ'];
 const close = (target) => (n) => Number.isFinite(n) && Math.abs(n - target) < 1e-9;
+const sw = (player, page) => <PlayerSwitch player={player} page={page} />;
+// une étape `numeric` qui DÉCLARE sa forme (guidedProblem.js › stepTemplate, EXERCISE_CONTRACT « Typed steps ») : « [ ] m », « [ ] cm »
+const T_M = stepTemplate({ kind: 'numeric', shape: 'quantity', unit: 'm' });
+const T_CM = stepTemplate({ kind: 'numeric', shape: 'quantity', unit: 'cm' });
 
-/** Un geste jugé dans « ساحة الحيّ » (`onTrial` de shadow-world), en une ligne LTR. */
+/** Un geste jugé dans « ساحة الحيّ » (`onTrial` de shadow-world, la page), en une ligne LTR. */
 const OBJ = { minaret: 'المئذنة', stick: 'العصا', palm: 'النخلة', flag: 'السارية', lamp: 'العمود', farid: 'فريد' };
 function stickLine(e) {
   if (!e) return null;
@@ -45,7 +59,7 @@ function stickLine(e) {
   if (e.stage === 'answer') return `AM = ${e.h} m ${e.kind === 'right' ? '✓' : '✗'}`;
   return null;
 }
-/** Un essai du cylindre (`onTrial` de cone-cylinder). */
+/** Un essai du cylindre (`onTrial` de cone-cylinder, la page). */
 function coneLine(e) {
   if (!e) return null;
   if (e.pierce) return `h = ${e.h} ، r = ${e.r} ✗`;
@@ -67,49 +81,97 @@ function Evidence({ trials, line, title, empty, id }) {
   );
 }
 
-/** Le renvoi d'une partie de la وضعية vers le درس qui l'enseigne. */
+/** Le renvoi d'une partie de la وضعية vers le درس qui l'enseigne — la PAGE seulement (le lecteur ne se quitte pas par un lien). */
 const BackLink = ({ lesson, what }) => (
   <p className="text-xs text-slate-500" data-back-link={lesson}>{what} — <Link to={`${BASE}/${lesson}`} className="text-blue-700 underline">{LESSON_TITLES[lesson]}</Link></p>
 );
 
-/** Une étape du « تحليل الوضعية » du manuel, au mot près. */
+/** Une phase du « تحليل الوضعية ». */
 const Phase = ({ i }) => (
   <TextbookBox kind="remark" title={SITUATION.analysis[i].label} text={analysisText(SITUATION.analysis[i])} source={SITUATION.source} compact />
 );
+
+/* ── ce que les manches ont montré, REBÂTI depuis leur contenu (une manche gagnée l'a vu ; rien n'est perdu au rechargement) ── */
+const ZILL_STEP = SM.stepOf({ ...ZILL, task: 'meet' });
+const ZILL_MEET = SM.meetOf(ZILL_STEP);
+const cylinders = (cone, idxs) => {
+  const lab = CC.initPlayer(cone);
+  return idxs.map((i) => `h = ${CC.dec(CC.hOf(lab, i))} ، r = ${CC.dec(CC.rMaxAt(lab, i))}`);
+};
+const R2_LINES = cylinders(CONE_R2, R2_REQUIRED);
+const cone = (c) => `H = ${c.H} ، R = ${c.R}`;
+
+/** Une ligne de trace dans le lecteur : ✓ caché aux lecteurs d'écran (un mot le dit), jamais dans une chaîne. */
+function WonPanel({ id, won, lines, title, empty }) {
+  return (
+    <div className={`rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm ${won ? 'text-emerald-900' : 'text-slate-500'}`}
+      data-activity-evidence data-evidence={id} data-tried={won ? 'true' : 'false'}>
+      {won ? (
+        <>
+          <p className="font-bold">{title}</p>
+          <ul className="ms-4 list-disc">
+            {lines.map((s) => <li key={s}><bdi dir="ltr" className="font-mono">{s}</bdi> <span aria-hidden="true">✓</span><span className="sr-only"> تمّ.</span></li>)}
+          </ul>
+        </>
+      ) : <p>{empty}</p>}
+    </div>
+  );
+}
 
 export default function Module07AlWadiya() {
   const [stickTrials, setStickTrials] = useState([]);
   const [coneTrials, setConeTrials] = useState([]);
   const [q, setQ] = useState({});
+  // lecteur : les manches gagnées (étoiles gardées, annoncées par LabRounds au montage) et les cylindres essayés dans la séance
+  const [won, setWon] = useState({});
+  const [pressed, setPressed] = useState([]);
   const mark = (n) => () => setQ((s) => ({ ...s, [n]: true }));
   const keepStick = (e) => { if (!e?.tk) setStickTrials((list) => [...list, e]); };   // pas les événements `checkpoint` des questions du labo
   const keepCone = (e) => { if (!e?.tk) setConeTrials((list) => [...list, e]); };
+  const keepPress = (e) => { if (e?.stage === 'press') setPressed((list) => [...list, e].slice(-40)); };
+  const refused = pressed.filter((e) => e.verdict === 'pierce').at(-1);
+  const r1Lines = pressed.filter((e) => e.verdict === 'inscribed' && e.H === String(CONE_R1.H) && e.R === String(CONE_R1.R)).map((e) => `h = ${e.h} ، r = ${e.r}`);
 
   return (
     <ContentModule objectives={["كيف نعرف ارتفاع مئذنة دون أن نصعدها؟", "أيّ شكل مستوٍ يختصر أسطوانة داخل مخروط؟", "كيف نجد r ثم الحجم ونتحقّق من ملاءمة النتيجة؟"]}
-      ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="تحليل الوضعية النهائية للاختبار" moduleSubtitle="ارتفاع المئذنة بالظل، ثم أسطوانة داخل مخروط" estimatedTime="18 دقيقة"
+      ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="تحليل الوضعية النهائية للاختبار"
+      moduleSubtitle="ثم التحدّي 🏆 — ارتفاع المئذنة بالظل، ثم أسطوانة داخل مخروط" estimatedTime="≈ 30 دقيقة"
       intro={
-        // LE LABO OUVRE LE MODULE (rétrofit 2026-10-15) : plus de carte ni de titre / lead de workspace ; l'énoncé de la وضعية (ex-carte) ouvre l'étape 3.
-        <ManipulationWorkspace
-          levels={{
-            beginner: () => (
-              <Manipulation type="shadow-world" level="beginner" {...LAB.beginner} onTrial={keepStick} />
-            ),
-            advanced: () => (
-              <Manipulation type="cone-cylinder" level="advanced" {...LAB.advanced} onTrial={keepCone} />
-            ),
-          }}
+        // LE LABO OUVRE LE MODULE. Lecteur : les MANCHES (content/rounds.js) ; la page garde le workspace et ses deux niveaux.
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="m7-wadiya" rounds={M7_ROUNDS} icon="🍦" freeIcon="🧪"
+              onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))} onTrial={keepPress} />
+          )}
+          page={(
+            <ManipulationWorkspace
+              levels={{
+                beginner: () => (
+                  <Manipulation type="shadow-world" level="beginner" {...LAB.beginner} onTrial={keepStick} />
+                ),
+                advanced: () => (
+                  <Manipulation type="cone-cylinder" level="advanced" {...LAB.advanced} onTrial={keepCone} />
+                ),
+              }}
+            />
+          )}
         />
       }
       steps={[
-        { num: 1, title: 'تحدّ الوحدة: اشرح الطريقة', subtitle: 'كيف قاس فريد ومقران ارتفاع المئذنة؟', done: !!q[1],
+        { needsRound: { id: 'zill', label: 'جولة المئذنة', icon: '🕌', won: Boolean(won.zill) },
+          num: 1, title: 'تحدّ الوحدة: اشرح الطريقة', subtitle: 'كيف قاس فريد ومقران ارتفاع المئذنة؟', done: !!q[1],
           content: (
             <div className="space-y-3">
               <TextbookBox kind="exercise" title="تحدّ" text={CHALLENGE.text} source={CHALLENGE.source} compact>
                 <MinaretFigure {...CHALLENGE.numbers} />
               </TextbookBox>
-              <Evidence id="beginner" trials={stickTrials} line={stickLine} title="ما فعلته في ساحة الحيّ:"
-                empty="لم تبدأ بعد: في المستوى المبتدئ حرّك الشمس وقِس الظلال، ثم اغرس العصا وراقب أين ينتهي ظلّها." />
+              {sw(
+                <WonPanel id="zill" won={won.zill} title="ما فعلته في ساحة الحيّ:"
+                  lines={[`${SM.HOURS[ZILL_STEP.hour]} · AB = ${SM.m(ZILL_MEET.BA)} m · OA = ${SM.m(ZILL_MEET.OA)} m`]}
+                  empty="جولة المئذنة: لم تجعل بعد الظلّين ينتهيان معًا." />,
+                <Evidence id="beginner" trials={stickTrials} line={stickLine} title="ما فعلته في ساحة الحيّ:"
+                  empty="لم تبدأ بعد: في المستوى المبتدئ حرّك الشمس وقِس الظلال، ثم اغرس العصا وراقب أين ينتهي ظلّها." />,
+              )}
               <TapQuestion
                 prompt="لماذا غرس مقران العصا في هذا المكان بالذات؟"
                 options={[
@@ -123,31 +185,35 @@ export default function Module07AlWadiya() {
                 onAnswered={mark(1)} />
               {q[1] && (
                 <>
-                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la méthode de l’ombre est `hisab-atwal` (درس talis-hisab-atwal) appliquée à deux verticales ;
-                      la bonne option et l’explication de la question ci-dessus (REMARKS.zillMethod / zillWhy) viennent de l’énoncer. */}
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la méthode de l’ombre vient d’être énoncée par la question ci-dessus. */}
                   <KnowledgeBrick id="tariqat-zill" variant="rappel" />
                   <p className="text-xs text-slate-600" data-misconception-note="zill"><MathText>{`خطأ شائع: ${REMARKS.zillWrong} ${REMARKS.zillWrongWhy}`}</MathText></p>
                 </>
               )}
             </div>
           ) },
-        { num: 2, title: 'تحدّ الوحدة: ارتفاع المئذنة', subtitle: 'بالقياسات الثلاث على الأرض', done: !!q[2],
+        { needsRound: { id: 'zill', label: 'جولة المئذنة', icon: '🕌', won: Boolean(won.zill) },
+          num: 2, title: 'تحدّ الوحدة: ارتفاع المئذنة', subtitle: 'بالقياسات الثلاث على الأرض', done: !!q[2],
           content: (
             <div className="space-y-3">
-              <Evidence id="beginner-pole" trials={stickTrials} line={stickLine} title="ما فعلته في ساحة الحيّ:"
-                empty="جرّب على المستوى المبتدئ: قِس ظلّ المئذنة وظلّ العصا في الساعة نفسها." />
+              {sw(
+                null,
+                <Evidence id="beginner-pole" trials={stickTrials} line={stickLine} title="ما فعلته في ساحة الحيّ:"
+                  empty="جرّب على المستوى المبتدئ: قِس ظلّ المئذنة وظلّ العصا في الساعة نفسها." />,
+              )}
               <NumericQuestion
                 prompt="ما ارتفاع المئذنة (بالمتر)؟"
-                expected={close(7.25)} display="7,25" parse={parseDec}
+                template={T_M}
+                expected={close(7.25)} display="7,25 m" parse={parseDec}
                 requires={['tariqat-zill', 'rabi-mutanasib']}
                 explain={<MathText>{`${REMARKS.zillOB} ${REMARKS.zillEq}`}</MathText>}
                 explainFor={(n) => <MathText>{close(11.6)(n) ? `ارتفاع المئذنة ليس طول ظلّها. ${REMARKS.zillEq}` : close(10)(n) ? `10 هي المسافة بين المئذنة والعصا (AB) لا الارتفاع. ${REMARKS.zillOB} ${REMARKS.zillEq}` : `${REMARKS.zillOB} ${REMARKS.zillEq}`}</MathText>}
                 onAnswered={mark(2)} />
-              <BackLink lesson="talis-hisab-atwal" what="خاصية طالس وحساب طول مجهول" />
+              {sw(null, <BackLink lesson="talis-hisab-atwal" what="خاصية طالس وحساب طول مجهول" />)}
               {q[2] && <TextbookBox kind="remark" title={INTRO_THALES.title} text={INTRO_THALES.text} source={INTRO_THALES.source} compact />}
             </div>
           ) },
-        { num: 3, title: 'قراءة الوضعية وفهمها', subtitle: 'المرحلة 1 من الكتاب: ما المطلوب؟', done: !!q[3],
+        { num: 3, title: 'قراءة الوضعية وفهمها', subtitle: 'المرحلة 1: ما المطلوب؟', done: !!q[3],
           content: (
             <div className="space-y-3">
               <div className="space-y-2 rounded-xl border-2 border-amber-200 bg-amber-50 px-3 py-2 text-sm" data-situation="ustuwana-makhrut">
@@ -192,12 +258,12 @@ export default function Module07AlWadiya() {
               )}
             </div>
           ) },
-        { num: 5, title: 'تحليل الوضعية واختيار استراتيجية', subtitle: 'المرحلة 2 من الكتاب: أيّ خاصية؟', done: !!q[5],
+        { num: 5, title: 'تحليل الوضعية واختيار استراتيجية', subtitle: 'المرحلة 2: أيّ خاصية؟', done: !!q[5],
           content: (
             <div className="space-y-3">
               <Phase i={1} />
               <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700">في نصف المقطع المحوري (الشكل أعلاه)، احكم على كل عبارة.</p>}
+                intro={<p className="text-sm font-semibold text-slate-700">في نصف المقطع المحوري (المثلث OSK وفيه المستطيل SDCT)، احكم على كل عبارة.</p>}
                 rows={[
                   { id: 's1', label: '(TC) و (SK) متوازيان لأنّهما عموديان كلاهما على المحور (SO).', options: TRUE_FALSE, correct: 0, correction: <MathText>{REMARKS.tawazi}</MathText> },
                   { id: 's2', label: 'النقط O و T و S على استقامة، والنقط O و C و K على استقامة.', options: TRUE_FALSE, correct: 0, correction: 'T و S على المحور، و C على المولّد [OK].' },
@@ -207,48 +273,86 @@ export default function Module07AlWadiya() {
                 requires={['talis-mubashira', 'maqta-mihwari']}
                 feedback={({ allRight }) => <MathText>{allRight ? 'أحسنت: مستقيمان متوازيان يقطعان مستقيمين متقاطعين في O — وضعية طالس.' : 'المستقيمان (TC) و (SK) متوازيان، والضلع الذي رأسه O في المثلث الصغير هو $18 - h$ .'}</MathText>}
                 onAnswered={mark(5)} />
-              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la coupe axiale est un prérequis (`maqta-mihwari`, étape 4 : REMARKS.maqta) et la situation de Thalès
-                  (`talis-mubashira`) ; les corrections et le retour de la question ci-dessus viennent de la dire. */}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la coupe axiale et la situation de Thalès viennent d’être dites par la question ci-dessus. */}
               {q[5] && <KnowledgeBrick id="maqta-mihwari-talis" variant="rappel" />}
             </div>
           ) },
-        { num: 6, title: 'تنفيذ: مساواة طالس', subtitle: 'المرحلة 3 — على المخروط، ثم بالقلم', done: !!q[6],
+        // L'ÉCRAN DU CAHIER (décision du propriétaire et conseil C, 2026-11-10) : un vrai essai au crayon AVANT la correction pas à pas ;
+        // les étapes 7 à 10 sont la comparaison.
+        { num: 6, title: 'بالقلم: حلّك أنت', subtitle: 'اكتب الحلّ في كرّاسك ثم قارن', done: !!q[6],
+          content: (
+            <div className="space-y-4 rounded-2xl border-2 border-indigo-200 bg-indigo-50 px-5 py-4" data-notebook-screen>
+              <p className="text-xl font-black text-indigo-950"><span aria-hidden="true">📓 </span>اكتب الحلّ في كرّاسك ثم قارن.</p>
+              <p className="text-lg font-bold text-slate-800">اكتب في 3 أسطر: المثلثان، المساواة، المعادلة.</p>
+              <ol className="ms-6 list-decimal space-y-1 text-base text-slate-700">
+                <li>أيّ مثلثين في وضعية طالس، ولماذا؟</li>
+                <li>أيّ مساواة تكتب بينهما؟</li>
+                <li>أيّ معادلة في r تحصل عليها حين يكون <bdi dir="ltr">h = r</bdi> ؟</li>
+              </ol>
+              <p className="text-sm text-slate-600">الخطوات التالية تصحّح حلّك سطرًا سطرًا.</p>
+              {/* le bouton RESTE (aria-disabled après l'appui : le focus ne tombe pas sur la page) ; la région vivante est toujours montée */}
+              <button type="button" onClick={() => { if (!q[6]) mark(6)(); }} aria-disabled={q[6] || undefined} data-notebook-done
+                className={`min-h-[52px] rounded-2xl px-6 text-lg font-black focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2 ${q[6] ? 'bg-emerald-50 text-emerald-800 ring-1 ring-emerald-300' : 'bg-indigo-700 text-white shadow-[0_3px_0_0_#3730A3] hover:bg-indigo-800'}`}>
+                {q[6] ? <><span aria-hidden="true">✓ </span>كتبتُ حلّي</> : 'كتبتُ حلّي — أقارن الآن'}
+              </button>
+              <p className="font-bold text-emerald-800" role="status">{q[6] ? 'قارن الآن حلّك بالخطوات التالية.' : ''}</p>
+            </div>
+          ) },
+        { needsRound: { id: 'r2', label: 'جولة المخروط الثاني', icon: '🍦', won: Boolean(won.r2) },
+          num: 7, title: 'تنفيذ: مساواة طالس', subtitle: 'المرحلة 3 — بالحروف أوّلًا، ثم بأطوال الوضعية', done: !!q[7],
           content: (
             <div className="space-y-3">
               <Phase i={2} />
-              <Evidence id="advanced" trials={coneTrials} line={coneLine} title="أسطواناتك على المخروط (المستوى المتقدّم):"
-                empty="لم تجرّب أسطوانة بعد: في المستوى المتقدّم كبّر r (↕) حتى تلمس الأسطوانة المخروط، ثم غيّر h." />
+              {sw(
+                <WonPanel id="cones" won={won.r2} title="أسطواناتك التي لمست جدار المخروط:"
+                  lines={[
+                    // r1 : les cylindres de la séance (après un rechargement, r2 suffit — ses trois cylindres sont rebâtis de la manche)
+                    ...(won.r1 ? r1Lines.slice(-2).map((s) => `${cone(CONE_R1)} : ${s}`) : []),
+                    ...(won.r2 ? R2_LINES.map((s) => `${cone(CONE_R2)} : ${s}`) : []),
+                  ]}
+                  empty="جولة المخروط الثاني: لم تجد بعد الأسطوانات الثلاث." />,
+                <Evidence id="advanced" trials={coneTrials} line={coneLine} title="أسطواناتك على المخروط (المستوى المتقدّم):"
+                  empty="لم تجرّب أسطوانة بعد: في المستوى المتقدّم كبّر r (↕) حتى تلمس الأسطوانة المخروط، ثم غيّر h." />,
+              )}
               <TapQuestion
-                prompt="المساواة التي تعطيها خاصية طالس في المثلثين OTC و OSK:"
-                options={[
-                  REMARKS.otRight,
-                  '$\\dfrac{r}{6} = \\dfrac{h}{18}$',
-                  '$\\dfrac{6}{r} = \\dfrac{18 - h}{18}$',
-                  '$r + h = 18$',
-                ].map(M)}
-                correct={0} cols={2} requires={['maqta-mihwari-talis']}
-                explain={<MathText>{`${REMARKS.talisSection} ${REMARKS.otWhy} وقلب نسبة واحدة يعطي مساواة خاطئة، و $r + h$ ليس ثابتا.`}</MathText>}
-                onAnswered={mark(6)} />
-              <BackLink lesson="talis-hisab-atwal" what="كتابة النسب المتساوية في وضعية طالس" />
-              {q[6] && <p className="text-xs text-slate-600" data-misconception-note="ot"><MathText>{`خطأ شائع: ${REMARKS.otWrong} ${REMARKS.otWhy}`}</MathText></p>}
+                prompt={<MathText>{'في المثلثين $OTC$ و $OSK$ : أكمل $\\dfrac{TC}{SK} = \\dfrac{\\ldots}{\\ldots}$ بضلعين من الأضلاع $OT$ و $OS$ و $ST$ .'}</MathText>}
+                options={['$\\dfrac{TC}{SK} = \\dfrac{OT}{OS}$', '$\\dfrac{TC}{SK} = \\dfrac{ST}{OS}$', '$\\dfrac{TC}{SK} = \\dfrac{OS}{OT}$'].map(M)}
+                correct={0} cols={3} requires={['talis-mubashira']}
+                explain={<MathText>{'في كل نسبة: ضلع من المثلث الصغير $OTC$ على الضلع الموافق له في المثلث الكبير $OSK$ ، والضلعان على المحور يبدآن من الرأس $O$ : $OT$ و $OS$ . أمّا $ST$ فيبدأ من القاعدة، فليس ضلعًا رأسه $O$ .'}</MathText>}
+                onAnswered={mark('7a')} />
+              {q['7a'] && (
+                <TapQuestion
+                  prompt={<MathText>{'عوّض بأطوال الوضعية ( $OS = 18$ و $SK = 6$ و $TC = r$ ): المساواة تصبح'}</MathText>}
+                  options={[
+                    REMARKS.otRight,
+                    '$\\dfrac{r}{6} = \\dfrac{h}{18}$',
+                    '$\\dfrac{6}{r} = \\dfrac{18 - h}{18}$',
+                    '$r + h = 18$',
+                  ].map(M)}
+                  correct={0} cols={2} requires={['maqta-mihwari-talis']}
+                  explain={<MathText>{`${REMARKS.talisSection} ${REMARKS.otWhy} وقلب نسبة واحدة يعطي مساواة خاطئة، و $r + h$ ليس ثابتا.`}</MathText>}
+                  onAnswered={mark(7)} />
+              )}
+              {sw(null, <BackLink lesson="talis-hisab-atwal" what="كتابة النسب المتساوية في وضعية طالس" />)}
+              {q[7] && <p className="text-xs text-slate-600" data-misconception-note="ot"><MathText>{`خطأ شائع: ${REMARKS.otWrong} ${REMARKS.otWhy}`}</MathText></p>}
             </div>
           ) },
-        { num: 7, title: 'تنفيذ: الحالة h = r', subtitle: 'معادلة من الدرجة الأولى في r', done: !!q[7],
+        { num: 8, title: 'تنفيذ: الحالة h = r', subtitle: 'معادلة من الدرجة الأولى في r', done: !!q[8],
           content: (
             <div className="space-y-3">
               <NumericQuestion
                 prompt={<MathText>{'في الحالة $h = r$ ، ما قيمة r (بالسنتيمتر)؟'}</MathText>}
-                expected={close(4.5)} display="4,5" parse={parseDec}
+                template={T_CM}
+                expected={close(4.5)} display="4,5 cm" parse={parseDec}
                 requires={['maqta-mihwari-talis', 'muadala-ula']}
                 explain={<MathText>{`${REMARKS.muadala} ${REMARKS.halR}`}</MathText>}
                 explainFor={(n) => <MathText>{close(6)(n) ? `نصف قطر 6 هو نصف قطر قاعدة المخروط: أسطوانة به تخرق المخروط. ${REMARKS.muadala} ${REMARKS.halR}` : close(13.5)(n) ? `$13{,}5 = 18 - 4{,}5$ هو OT لا r. ${REMARKS.halR}` : `${REMARKS.muadala} ${REMARKS.halR}`}</MathText>}
-                onAnswered={mark(7)} />
-              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : remplacer h par r puis résoudre est l’équation du premier degré (`muadala-ula`, unité 4) dans l’égalité
-                  de l’étape 6 ; l’explication de la question ci-dessus (REMARKS.muadala / halR) vient de la faire. */}
-              {q[7] && <KnowledgeBrick id="muadala-bud" variant="rappel" />}
+                onAnswered={mark(8)} />
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : l’explication de la question ci-dessus vient de faire l’équation. */}
+              {q[8] && <KnowledgeBrick id="muadala-bud" variant="rappel" />}
             </div>
           ) },
-        { num: 8, title: 'تنفيذ: حجم الأسطوانة', subtitle: 'القيمة المضبوطة ثم المقرّبة', done: !!q[8],
+        { num: 9, title: 'تنفيذ: حجم الأسطوانة', subtitle: 'القيمة المضبوطة ثم المقرّبة', done: !!q[9],
           content: (
             <TapQuestion
               prompt={<MathText>{'حجم الأسطوانة في الحالة $h = r$ :'}</MathText>}
@@ -260,11 +364,19 @@ export default function Module07AlWadiya() {
               ].map(M)}
               correct={0} cols={1} requires={['hajm-ustuwana', 'muadala-bud']}
               explain={<MathText>{`${REMARKS.hajm} بدون π نحسب حجم شيء آخر، والقطر 9 يضاعف الحجم أربع مرات، و $\\pi \\times r \\times h$ ينسى تربيع r.`}</MathText>}
-              onAnswered={mark(8)} />
+              onAnswered={mark(9)} />
           ) },
-        { num: 9, title: 'التحقّق وتحرير الحل', subtitle: 'المرحلة 3 من الكتاب، آخرها: هل النتيجة ملائمة للواقع؟', done: !!q[9],
+        { num: 10, title: 'التحقّق وتحرير الحل', subtitle: 'المرحلة 3، آخرها: هل النتيجة ملائمة للواقع؟', done: !!q[10],
           content: (
             <div className="space-y-3">
+              {sw(
+                <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm text-slate-700" data-activity-evidence data-evidence="refused">
+                  {refused
+                    ? <>في المختبر رفض المخروط أسطوانتك <bdi dir="ltr" className="font-mono">{`h = ${refused.h} ، r = ${refused.r}`}</bdi> : كانت أعرض مما يسمح به جداره عند هذا الطول.</>
+                    : 'في المختبر رفض المخروط كلّ أسطوانة أعرض مما يسمح به جداره عند طولها.'}
+                </p>,
+                null,
+              )}
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">قبل أن نكتب الجواب، احكم على كل عبارة.</p>}
                 rows={[
@@ -274,21 +386,31 @@ export default function Module07AlWadiya() {
                 ]}
                 requires={['muadala-bud', 'hajm-ustuwana']}
                 feedback={({ allRight }) => <MathText>{allRight ? REMARKS.jumla : REMARKS.mulaama}</MathText>}
-                onAnswered={mark(9)} />
-              {q[9] && (
+                onAnswered={mark(10)} />
+              {q[10] && (
                 <>
-                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : le volume est `hajm-ustuwana` (prérequis, étape 8) ; la vérification vient d’être faite ligne par ligne
-                      dans la question ci-dessus (corrections v1–v3, REMARKS.mulaama). */}
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la vérification vient d’être faite ligne par ligne ci-dessus. */}
                   <KnowledgeBrick id="mulaamat-natija" variant="rappel" />
                   <p className="rounded-xl bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900"><MathText>{REMARKS.jumla}</MathText></p>
-                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la démarche remet en ordre les trois étapes du « تحليل الوضعية » que l’élève vient de lire
-                      (encadrés des étapes 3, 5 et 6). */}
                   <KnowledgeBrick id="tariqat-wadiya" variant="rappel" />
                 </>
               )}
             </div>
           ) },
+        // « ورقة هاجر » (conseil C, décision 5) : la DERNIÈRE étape — un PLAN faux d'une camarade : Thalès sans justifier (TC) ∥ (SK).
+        { num: 11, title: 'ورقة هاجر', subtitle: 'أين أخطأت هاجر في خطّتها؟', done: !!q[11],
+          content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={mark(11)} /> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={7} variant="memo" />} />
+      footer={(
+        <>
+          <KnowledgeSnapshot moduleNumber={7} variant="memo" />
+          {sw(
+            <p className="rounded-2xl border-2 border-amber-300 bg-amber-50 px-4 py-3 text-center text-base font-black text-amber-900" data-mission-pause>
+              <span aria-hidden="true">⏸️ </span>استرح قليلًا: التحدّي هو المحطّة التالية <span aria-hidden="true">🏆</span>
+            </p>,
+            null,
+          )}
+        </>
+      )} />
   );
 }

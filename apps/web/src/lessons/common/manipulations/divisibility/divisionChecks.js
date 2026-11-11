@@ -23,3 +23,15 @@ export function splitKey(key) {
   const [n, g] = String(key).split(':').map(Number);
   return { n, g, q: Math.floor(n / g), r: n % g };
 }
+
+/**
+ * Quatre PASTILLES de nombres consécutifs qui contiennent `value` (réponse « fill » d'un toucher, pilote 2026-11-07) — jamais
+ * sous `min`, et la bonne réponse n'est pas toujours à la même place (son rang suit `value % 4`). Déterministe.
+ */
+export function chipsAround(value, { min = 0, count = 4 } = {}) {
+  const start = Math.max(min, value - (value % count));
+  return Array.from({ length: count }, (_, i) => start + i);
+}
+
+/** L'ordre des TUILES de « n = g × q + r » à bâtir : mêlé (jamais l'ordre de l'égalité), déterministe. */
+export const buildTiles = ({ n, g, q, r }) => [r, n, q, g];

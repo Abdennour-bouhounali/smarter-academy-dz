@@ -38,8 +38,8 @@ export default function Module03Taraiq() {
       objectives={['أيّ نسبتين نقارن لنثبت التوازي؟', 'كيف نبرهن أنّ مستقيمين غير متوازيين؟', 'ما خطوات البرهان وبأيّ ترتيب نكتبها؟']}
       estimatedTime="9 دقائق"
       brief={{
-        tag: 'طرائق — الكتاب ص 109', title: METHOD.title, tone: 'emerald',
-        body: <p>تمرين محلول من الكتاب في سؤالين: قرّر أنت أولا، ثم اكشف الحل سطرا سطرا.</p>,
+        tag: 'طرائق', title: METHOD.title, tone: 'emerald',
+        body: <p>تمرين محلول في سؤالين: قرّر أنت أولا، ثم اكشف الحل سطرا سطرا.</p>,
       }}
       steps={[
         {
@@ -80,7 +80,7 @@ export default function Module03Taraiq() {
                   { id: 'c', label: 'الخلاصة', options: ['(BD) و (EF) غير متوازيين', '$(BD) \\parallel (EF)$'].map(M), correct: 0, correction: 'النسبتان مختلفتان: لو كانا متوازيين لتساوت النسبتان حسب خاصية طالس.' },
                 ]}
                 requires={['nisbatan-mukhtalifatan', 'tasawi-kasrayn']}
-                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: قارن بحل الكتاب.' : 'راجع التصحيح، ثم اقرأ حل الكتاب.'}</Feedback>}
+                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: قارن بالحل المحلول سطرا سطرا.' : 'راجع التصحيح، ثم اقرأ الحل سطرا سطرا.'}</Feedback>}
                 onAnswered={() => setQ2(true)}
               />
               {q2 && (

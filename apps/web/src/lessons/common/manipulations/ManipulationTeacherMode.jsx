@@ -6,10 +6,10 @@ import NumberInput from './primitives/NumberInput';
 
 const toNumber = (s) => Number(String(s).replace(/[٠-٩]/g, (ch) => String(ch.charCodeAt(0) - 0x0660)));
 
-export function Btn({ onClick, disabled, children, tone = 'slate', pressed, ariaLabel, title, small = false }) {
+export function Btn({ onClick, disabled, children, tone = 'slate', pressed, ariaLabel, title, small = false, ...data }) {
   return (
     <button
-      type="button" onClick={onClick} disabled={disabled} aria-pressed={pressed} aria-label={ariaLabel} title={title}
+      {...data} type="button" onClick={onClick} disabled={disabled} aria-pressed={pressed} aria-label={ariaLabel} title={title}
       className={`inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border-2 ${small ? 'px-2.5 py-1.5 text-xs' : 'px-3 py-2 text-sm'} font-bold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-40 ${
         tone === 'blue' ? 'border-blue-600 bg-blue-600 text-white hover:bg-blue-700'
           : tone === 'amber' ? 'border-amber-500 bg-amber-100 text-amber-900 hover:bg-amber-200'

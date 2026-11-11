@@ -11,6 +11,7 @@ import FractionQuestion from './FractionQuestion';
 import PairQuestion from './PairQuestion';
 import { ClassroomPresentation, ClassroomEntryButton, ClassroomFrame } from '../classroom';
 import { MoreToggle } from '../components/StudentFocus';
+import { useInMissionPlayer } from '../mission/missionPlayerContext';
 
 /**
  * Rend UN exercice du manuel à partir de sa donnée (content/exercises.js) :
@@ -38,8 +39,10 @@ import { MoreToggle } from '../components/StudentFocus';
  * module ou une leçon déjà présentés, la coquille est passe-plat et le bouton
  * n'apparaît pas : une seule session.
  */
-export default function TextbookExercise({ exercise, solved = false, onAnswered, requires }) {
+export default function TextbookExercise({ exercise, solved = false, onAnswered, requires, rowAside }) {
   const { t } = useTranslation('lesson');
+  // lecteur de mission : une longue liste (≥ 6 lignes) tient dans l'écran sur deux colonnes, jamais sous le zoom minimum (rollout 2026-11-09)
+  const inPlayer = useInMissionPlayer();
   const ex = exercise;
   const label = ex.source?.number != null ? t('textbook.exerciseN', { n: ex.source.number }) : t('textbook.exercise');
   const header = (
@@ -53,6 +56,10 @@ export default function TextbookExercise({ exercise, solved = false, onAnswered,
         <span className="ms-auto"><ClassroomEntryButton scope="exercise" title={label} tone="quiet" compact /></span>
       </div>
       {ex.statement && <p className="leading-relaxed text-slate-800 text-base"><MathText>{ex.statement}</MathText></p>}
+      {/* lecteur : une partie sans énoncé porte celui de la partie 1 (`context`, exerciseParts.js › withContext) — pas d'aller-retour */}
+      {!ex.statement && ex.context && inPlayer && (
+        <p className="rounded-lg bg-slate-50 px-2 py-1 text-sm leading-relaxed text-slate-700" data-exercise-context><MathText>{ex.context}</MathText></p>
+      )}
       {ex.figure && <StatementFigure {...ex.figure} />}
       {ex.items && (
         <ul className="ms-3 space-y-0.5 text-sm text-slate-700">
@@ -63,6 +70,12 @@ export default function TextbookExercise({ exercise, solved = false, onAnswered,
   );
 
   const q = ex.question ?? {};
+  // lecteur : la carte (énoncé, sous-questions, question) est UN écran — sauf une grille de lignes (`batch`, `trueFalse`) : ses lignes forment
+  // déjà un bloc, et le découpage range la figure qui la précède À CÔTÉ de l'énoncé et des lignes (`pairFigures`) ; gardée entière, la carte
+  // de « أربعة أشكال » (talis-hisab-atwal) descendait sous le zoom minimum
+  // (une grille qui porte un `context` ou des `items` reste entière : sans figure avant elle, l'énoncé partirait seul sur son écran)
+  const rowsGrid = ['batch', 'trueFalse'].includes(ex.interaction) && !ex.context && !ex.items;
+  const keepWhole = inPlayer && Boolean(ex.statement || ex.context || ex.items || ex.figure) && !rowsGrid;
   const explain = q.explain ? <MathText>{q.explain}</MathText> : undefined;
 
   let body = null;
@@ -113,7 +126,7 @@ export default function TextbookExercise({ exercise, solved = false, onAnswered,
         <BatchChoiceQuestion
           intro={q.prompt ? <p className="text-sm font-semibold text-slate-700"><MathText>{q.prompt}</MathText></p> : undefined}
           rows={q.rows.map((r, i) => ({ id: `b${i}`, label: <MathText>{r.label}</MathText>, options: r.options.map((o) => (typeof o === 'string' ? <MathText key={o}>{o}</MathText> : o)), correct: r.correct, correction: typeof r.correction === 'string' ? <MathText>{r.correction}</MathText> : r.correction }))}
-          requires={requires} solved={solved}
+          requires={requires} solved={solved} rowCols={inPlayer && q.rows.length >= 6 && !rowAside ? 2 : 1} rowAside={rowAside}
           feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? t('textbook.allRight') : t('textbook.seeCorrections')}{explain && (allRight ? <MoreToggle label={t('focus.why')}><> — {explain}</></MoreToggle> : <> — {explain}</>)}</Feedback>}
           onAnswered={(ok) => onAnswered?.(ok)} />
       );
@@ -128,9 +141,23 @@ export default function TextbookExercise({ exercise, solved = false, onAnswered,
   return (
     <ClassroomPresentation scope="exercise" title={label} entry="none">
       <ClassroomFrame maxWidth={1000}>
-        <div className="rounded-2xl border-2 border-sky-200 bg-white p-4 space-y-3" data-textbook-exercise={ex.id}>
-          {header}
-          {body}
+        {/* lecteur : « pas d'aller-retour » (2026-11-11) — l'énoncé, ses sous-questions (`items`) et la question restent sur UN écran
+            (`data-paging-keep`) ; le découpage posait « 1) … 2) … 3) اكتب الكسر 1005/315 » sur un écran et « 3) الشكل غير القابل
+            للاختزال: » seul sur le suivant. Trop haut : l'ajustement réduit l'écran (dernier recours). La page et le mode classe : inchangés. */}
+        <div className="rounded-2xl border-2 border-sky-200 bg-white p-4 space-y-3" data-textbook-exercise={ex.id}
+          data-paging-keep={keepWhole ? '' : undefined}>
+          {/* lecteur, énoncé AVEC figure : l'énoncé (et sa figure) à côté de la question, comme `pairFigures` les rangeait */}
+          {inPlayer && ex.figure ? (
+            <div className="flex items-start gap-4" data-textbook-side>
+              <div className="w-1/2 shrink-0 [&_svg]:max-h-[210px]">{header}</div>
+              <div className="min-w-0 flex-1">{body}</div>
+            </div>
+          ) : (
+            <>
+              {header}
+              {body}
+            </>
+          )}
           {/* Regard « focus » : le « خطأ شائع » n'est pas lu avant de répondre — il est à un geste. */}
           {ex.commonError && (
             <MoreToggle label={t('textbook.commonError')}>

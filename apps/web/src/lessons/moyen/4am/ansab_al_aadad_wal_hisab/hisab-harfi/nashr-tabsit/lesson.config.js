@@ -29,6 +29,52 @@ export const LESSON_CONFIG = {
   unit: 'hisab-harfi',
   unitTitle: 'الحساب الحرفي',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (modèle du pilote qasim-adad-tabii, VALIDÉ par le propriétaire le 2026-11-08 ; rollout leçon par leçon,
+  // docs/reports/MISSION_ROLLOUT_PROGRESS.md — unité 3, leçon 1, 2026-11-11) — implique le regard « focus » ; l'enseignant et le mode classe ne
+  // voient aucun changement.
+  studentView: 'mission',
+  // LA MISSION : l'ouverture avoue qu'on ne sait pas encore la résoudre ; les outils sont les connaissances de knowledge.jsx ; les points d'étape
+  // (conseil du 2026-11-11, verdict L1) RAPPROCHENT de la mission sans en résoudre aucune question : ni ses nombres (1820, 1760, 1944, 124,
+  // 186000, 1500, 350, x = 30), ni sa méthode (réduire deux termes croisés OPPOSÉS, lire l'écart à un grand x comme le terme oublié, soustraire
+  // deux développements, un prix), ni sa correction — content/mission.test.js et _unit/missionStrings.test.js. La scène : le terrain du quartier
+  // et les bancs le long du couloir coupé (« neighbourhood-pitch », sur le kit commun de l'unité lessons/common/mission/pitchSceneKit.jsx).
+  mission: {
+    scene: 'neighbourhood-pitch',
+    title: 'مقاعد الممرّ: كم عشبًا يحتاج ملعب الحيّ؟',
+    opening: {
+      text: 'يهيّئ متطوّعو الحيّ ملعبًا على أرض مستطيلة عرضها $x$ مترًا. يُقتطع من عرضها شريط عرضه 4 أمتار تُصفّ فيه مقاعد المتفرّجين، وطول الملعب يزيد بـ 10 أمتار على ضعف عرض الأرض. ما مساحة الملعب بدلالة $x$ ؟ وكم يكلّف العشب الذي يُضاف إن اتّسعت الأرض مترًا؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'nashr-qawsayn', icon: '🧩', label: 'نشر جداء قوسين' },
+      { id: 'tawziiya-nashr', icon: '✖️', label: 'ضرب عدد في مجموع أو فرق' },
+      { id: 'tabsit', icon: '🧹', label: 'تبسيط عبارة' },
+    ],
+    climaxModule: 4,
+    checkpoints: [
+      {
+        id: 'cp-ishara', afterModule: 1,
+        prompt: '$-3(x - 2) = \\ldots$',
+        options: ['$-3x + 6$', '$-3x - 6$', '$-3x - 2$'],
+        correct: 0,
+        explain: 'العدد $-3$ يُضرب في الحدّين: $(-3) \\times x = -3x$ و $(-3) \\times (-2) = 6$ .',
+      },
+      {
+        id: 'cp-qawsayn', afterModule: 2,
+        prompt: '$(x + 1)(x + 6) = \\ldots$',
+        options: ['$x^2 + 7x + 6$', '$x^2 + 6$', '$x^2 + 6x + 6$'],
+        correct: 0,
+        explain: 'أربع مناطق: $x^2$ ، $6x$ ، $x$ و $6$ ، ثم نجمع الحدّين المتشابهين $6x + x = 7x$ .',
+      },
+      {
+        id: 'cp-mutashabih', afterModule: 3,
+        prompt: '$2x^2 + 3x$ : هل نكتبه حدًّا واحدًا؟',
+        options: ['لا: $2x^2$ و $3x$ غير متشابهين', 'نعم: $5x^2$', 'نعم: $5x^3$'],
+        correct: 0,
+        explain: '$x^2$ مساحة مربّع و $x$ مساحة شريط: لا نجمع إلا الحدود التي لها قوة الحرف نفسها.',
+      },
+    ],
+  },
   title: 'نشر وتبسيط عبارة جبرية',
   description: 'كتابة عبارة جبرية مكتوبة على شكل جداء على شكل مجموع أو فرق بتطبيق الخاصية التوزيعية k(a + b) = ka + kb و k(a − b) = ka − kb والقاعدة العامة (a + b)(c + d) = ac + ad + bc + bd، ثم تبسيطها بحذف الأقواس وتجميع الحدود المتشابهة.',
   level: 'moyen',
@@ -59,6 +105,8 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début, sans verrou par محور.
+  knowledgeMapOpen: true,
   // Les acquis que « أستعدّ » (p. 31, items 3, 4, 7, 8 + six ajouts) diagnostique.
   priorKnowledge: ['khassiya-tawziiya', 'awlawiyat-hisab', 'jidaa-x-fi-x', 'hadhf-aqwas'],
   resources: [
@@ -80,7 +128,7 @@ export const LESSON_CONFIG = {
     {
       kind: 'manipulation', code: 'pitch-expansion-3x-1-3-x', type: 'pitch-expansion', module: 1,
       level: 'advanced',
-      title: 'نشاط 1 — ملعب بعداه 3x − 1 و 3 + x',
+      title: 'ملعب بعداه 3x − 1 و 3 + x',
       objective: 'النشر: مساحة الملعب (جداء بعديه) تساوي مجموع مساحات مناطقه، من أجل كل قيمة لـ x',
       autonomy: 'أربع مناطق منها اثنتان مقتطعتان (حدّ سالب): التلميذ يحسبها كلها بنفسه، يجمع الحدود المتشابهة ويُرفض جمع حدّين غير متشابهين، ثم يتحقّق من المساواة من أجل قيمتين لـ x على الأقل',
       experience: { type: 'platform_adaptation', reason: 'multiple_representations', theme: 'football' },
@@ -91,7 +139,7 @@ export const LESSON_CONFIG = {
     // un seul niveau (`levels={false}`) : c'est un exemple travaillé.
     {
       kind: 'manipulation', code: 'pitch-expansion-2x-1-x4', type: 'pitch-expansion', module: 2,
-      title: 'مثال الكتاب: ملعب بعداه 2x − 1 و x + 4',
+      title: 'ملعب بعداه 2x − 1 و x + 4',
       learningPointIds: ['4am_nashr-tabsit_P3', '4am_nashr-tabsit_P4'],
       sourceElementIds: ['know-1'],
     },
@@ -105,15 +153,15 @@ export const LESSON_CONFIG = {
       title: 'أستعدّ', desc: 'عشر عبارات: صحيح أم خاطئ؟ الخاصية التوزيعية، أولويات العمليات، x × x و x + x، حذف الأقواس.',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'nashat', path: `${LESSON_BASE_PATH}/nashat`,
-      title: 'نشاط 1 — نشر عبارة جبرية', desc: 'ملعب المتوسطة يكبر: احسب مساحته منطقةً منطقة، ثم أسئلة النشاط: بطريقتين، جداء أم مجموع، انشر وبسّط.',
+      title: 'ملعب يكبر: نشر عبارة جبرية', desc: 'ملعب يكبر: احسب مساحته منطقةً منطقة، ثم بطريقتين، جداء أم مجموع، انشر وبسّط.',
       stage: 'trigger', teachesLearningPointIds: ['4am_nashr-tabsit_P1', '4am_nashr-tabsit_P2', '4am_nashr-tabsit_P3', '4am_nashr-tabsit_P4'],
       color: 'indigo', style: 'featured', estimatedMin: 14, difficulty: 1, actionText: 'أجرّب' },
     { id: '02', number: 2, slug: 'maarif', path: `${LESSON_BASE_PATH}/maarif`,
-      title: 'معارف — النشر', desc: 'التعريف، الخاصيات الثلاث ومثالا الكتاب، ثم التبسيط بجمع الحدود المتشابهة.',
+      title: 'معارف — النشر', desc: 'التعريف، الخاصيات الثلاث وملعب آخر، ثم التبسيط بجمع الحدود المتشابهة، وورقة زميلة.',
       stage: 'discovery', teachesLearningPointIds: ['4am_nashr-tabsit_P1', '4am_nashr-tabsit_P2', '4am_nashr-tabsit_P3', '4am_nashr-tabsit_P4'],
       color: 'violet', style: 'featured', estimatedMin: 10, difficulty: 2, actionText: 'أكتشف' },
     { id: '03', number: 3, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
-      title: 'أوظّف تعلّماتي', desc: 'دوري الآن (ص 35)، ثم تمارين الكتاب 1 إلى 8 (ص 37).',
+      title: 'أوظّف تعلّماتي', desc: 'تسعة تمارين متدرّجة: انشر، بسّط، وتحقّق.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_nashr-tabsit_P2', '4am_nashr-tabsit_P3', '4am_nashr-tabsit_P4'],
       color: 'amber', style: 'featured', estimatedMin: 14, difficulty: 2, actionText: 'أتدرّب' },
     // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui

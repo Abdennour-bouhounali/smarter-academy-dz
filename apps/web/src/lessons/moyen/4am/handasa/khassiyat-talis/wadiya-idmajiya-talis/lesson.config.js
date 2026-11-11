@@ -34,6 +34,39 @@ export const LESSON_CONFIG = {
   unit: 'khassiyat-talis',
   unitTitle: 'خاصية طالس',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (la PREMIÈRE synthèse convertie, pilote du recette « synthèse », 2026-11-10 — décisions S et verdict C,
+  // docs/reports/MISSION_ROLLOUT_PROGRESS.md › « Unit 9, synthesis ») ; l'enseignant et le mode classe gardent la page (le module 7 garde son
+  // workspace). Les champs du moteur (`toolsOwned`, `usedIn`, `stationLabels`, `trainings`, `hideStars`, `durationMin`, `sittings`,
+  // `resumeInside`) : LESSON_DEVELOPMENT_GUIDE › « Synthesis in the mission player ».
+  studentView: 'mission',
+  // LA MISSION d'une synthèse : rien à gagner — les cinq clés de l'unité sont à l'élève DÈS le premier écran ; chaque وضعية تدريبية allume les clés
+  // qu'elle UTILISE. Pas de point d'étape ; « وضعية الوحدة » (module 7) puis « التحدّي 🏆 » (module 8, jamais retouché). L'ouverture n'a aucun
+  // chiffre (balayage par rôle : content/forbidden.js, content/mission.test.js). La scène : la place à l'heure de l'ombre (`shadow-square`).
+  mission: {
+    scene: 'shadow-square',
+    title: 'مهمّة الوحدة',
+    opening: {
+      text: 'كيف نعرف ارتفاع مئذنة دون أن نصعدها؟ وكيف نحسب حجم أسطوانة داخل مخروط حين يتساوى ارتفاعها ونصف قطرها؟ عندك كلّ المفاتيح — هل تعرف متى تستعمل كلًّا منها؟',
+      cta: 'أجرّب',
+    },
+    toolsOwned: true,
+    tools: [
+      { id: 'hisab-atwal', icon: '📏', label: 'حساب طول بخاصية طالس', usedIn: [1, 2, 4, 5, 6, 7] },
+      { id: 'muamil-tanasub', icon: '🔍', label: 'معامل التناسبية', usedIn: [6] },
+      { id: 'khassiya-aksiya', icon: '🪜', label: 'الخاصية العكسية: إثبات التوازي', usedIn: [5] },
+      { id: 'tariqa-adam-tawazi', icon: '⚖️', label: 'إثبات عدم التوازي', usedIn: [2] },
+      { id: 'taqsim-qitaa', icon: '✂️', label: 'تقسيم قطعة إلى قطع متقايسة', usedIn: [3] },
+    ],
+    checkpoints: [],
+    climaxModule: 8,
+    stationLabels: { 7: 'وضعية الوحدة', 8: 'التحدّي 🏆' },
+    trainings: [1, 2, 3, 4, 5, 6],
+    hideStars: true,
+    // la somme HONNÊTE des modules (6 + 39 + 30 + 7), en deux séances ; le catalogue (`estimatedDurationMin`) n'est pas touché
+    durationMin: 82,
+    sittings: 2,
+    resumeInside: true,
+  },
   title: 'أدمج تعلّماتي — ترييض وضعيات هندسية مركبة بتوظيف خاصية طالس',
   description: 'إدماج المعارف: ست وضعيات تدريبية (سارية العلم بظلّ عصا، عارضة رفّ والتوازي، قسمة ممرّ إلى حصص متساوية، شمعة داخل علبة مخروطية، عرض بحيرة، زربية مصغّرة) ثم تجنيد خاصية طالس وعكسيتها في وضعيات مركبة — ارتفاع مئذنة بطريقة الظل، أسطوانة داخل مخروط (مقطع محوري، معادلة، حجم)، عرض نهر — بتحليلها المنهجي (قراءة · تحليل · تنفيذ)، ثم وضعية الاختبار النهائي.',
   level: 'moyen',
@@ -57,10 +90,14 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : ses cartes et ses exemples n'ont AUCUN nombre de la وضعية de l'unité ni du
+  // défi (content/textbook.js › CARD, content/mission.test.js).
+  knowledgeMapOpen: true,
   // Ce que le تحدّ, la وضعية et le test final mobilisent, diagnostiqué par « أستعدّ » (affirmations
   // de la plateforme) : Thalès (درس 1) et sa réciproque (درس 2), le quatrième proportionnel, la coupe axiale d'un
   // cône, le volume d'un cylindre, une équation du premier degré, les médianes d'un triangle.
-  priorKnowledge: ['talis-mubashira', 'talis-aksiya', 'rabi-mutanasib', 'maqta-mihwari', 'hajm-ustuwana', 'muadala-ula', 'mutawassitat'],
+  // (2026-11-10 : « أستعدّ » diagnostique désormais les trois leçons de l'unité ; les médianes, qu'aucune étape n'emploie, sont retirées)
+  priorKnowledge: ['talis-mubashira', 'talis-aksiya', 'rabi-mutanasib', 'maqta-mihwari', 'hajm-ustuwana', 'muadala-ula'],
   resources: [
     { kind: 'situation', code: 'situation-ustuwana-makhrut', module: 7, title: 'وضعية: أسطوانة داخل مخروط', learningPointIds: ['4am_wadiya-idmajiya-talis_P2', '4am_wadiya-idmajiya-talis_P3'], sourceElementIds: ['situation'] },
     // Module 7 — مبتدئ : le تحدّ de la page d'unité (doublon déclaré), sur `shadow-world` (monde `minaret`, 2026-10-13).
@@ -68,7 +105,7 @@ export const LESSON_CONFIG = {
       kind: 'manipulation', code: 'shadow-world-midhana', type: 'shadow-world', module: 7, level: 'beginner',
       title: 'تحدّ الوحدة في ساحة الحيّ: الشمس والظلال وارتفاع المئذنة',
       objective: 'ترييض وضعية بمثلثين في وضعية طالس وحل معادلة لإيجاد طول غير مباشر',
-      autonomy: 'عالم كامل بدل سكّة واحدة: التلميذ يحرّك الشمس الحقيقية (الجزائر، 13 أكتوبر)، يقيس الظلال، يتوقّع ظلّ ما تنصبه البلدية، ويكتب قاعدته بنفسه فيختبرها العالم على كل الأشياء ويُسقطها حين تتحرّك الشمس؛ مقران يسأل ولا يُجيب. طريقة الكتاب (ظلّان ينتهيان معًا) تظهر حين يغرس العصا على حافة ظلّ المئذنة',
+      autonomy: 'عالم كامل بدل سكّة واحدة: التلميذ يحرّك الشمس الحقيقية (الجزائر، 13 أكتوبر)، يقيس الظلال، يتوقّع ظلّ ما تنصبه البلدية، ويكتب قاعدته بنفسه فيختبرها العالم على كل الأشياء ويُسقطها حين تتحرّك الشمس؛ مقران يسأل ولا يُجيب. طريقة الظلّين اللذين ينتهيان معًا تظهر حين يغرس العصا على حافة ظلّ المئذنة',
       experience: { type: 'textbook', reason: '', theme: 'minaret' },
       learningPointIds: ['4am_wadiya-idmajiya-talis_P1'],
       sourceElementIds: ['challenge'],
@@ -76,16 +113,16 @@ export const LESSON_CONFIG = {
     // Module 7 — متقدم : la وضعية du manuel sur `cone-cylinder` (monde `cornet`, décor seulement).
     {
       kind: 'manipulation', code: 'cone-cylinder-wadiya', type: 'cone-cylinder', module: 7, level: 'advanced',
-      title: 'وضعية الكتاب: أسطوانة داخل مخروط ارتفاعه 18 ونصف قطر قاعدته 6',
+      title: 'الوضعية: أسطوانة داخل مخروط ارتفاعه 18 ونصف قطر قاعدته 6',
       objective: 'ترييض وضعية بمثلثين في وضعية طالس وحل معادلة لإيجاد طول غير مباشر',
-      autonomy: 'وضعية الكتاب: بعدان تمسكهما اليد بدل بُعد واحد (طول الأسطوانة ونصف قطرها)، والمخروط يرفض كل أسطوانة تخرقه؛ لا مكان مقترح: التلميذ يبحث بنفسه عن الأسطوانات المحاطة، ثم عن الأسطوانة التي يتساوى فيها h و r، ويقرأ حجمها',
+      autonomy: 'بعدان تمسكهما اليد بدل بُعد واحد (طول الأسطوانة ونصف قطرها)، والمخروط يرفض كل أسطوانة تخرقه؛ لا مكان مقترح: التلميذ يبحث بنفسه عن الأسطوانات المحاطة، ثم عن الأسطوانة التي يتساوى فيها h و r، ويقرأ حجمها',
       experience: { type: 'textbook', reason: '', theme: 'cornet' },
       learningPointIds: ['4am_wadiya-idmajiya-talis_P2', '4am_wadiya-idmajiya-talis_P3'],
       sourceElementIds: ['situation'],
     },
     // Modules 1–6 — six وضعيات d'entraînement (content/problems.js), ajouts de la plateforme ; chacune mobilise les
     // leçons de l'unité (ombre, réciproque, partage d'un segment, cylindre dans un cône, papillon, coefficient k).
-    { kind: 'situation', code: 'wadiya-1', module: 1, title: 'وضعية 1 — ارتفاع سارية العلم بظلّ عصا طولها 1,5 م', learningPointIds: ['4am_wadiya-idmajiya-talis_P1'] },
+    { kind: 'situation', code: 'wadiya-1', module: 1, title: 'وضعية 1 — ارتفاع سارية العلم بظلّ عصا طولها 1,2 م', learningPointIds: ['4am_wadiya-idmajiya-talis_P1'] },
     { kind: 'situation', code: 'wadiya-2', module: 2, title: 'وضعية 2 — عارضة رفّ: هل هي موازية للأرض؟', learningPointIds: ['4am_wadiya-idmajiya-talis_P1'] },
     { kind: 'situation', code: 'wadiya-3', module: 3, title: 'وضعية 3 — قسمة ممرّ طوله 11 م إلى خمس حصص متساوية', learningPointIds: ['4am_wadiya-idmajiya-talis_P1'] },
     { kind: 'situation', code: 'wadiya-4', module: 4, title: 'وضعية 4 — شمعة أسطوانية داخل علبة مخروطية', learningPointIds: ['4am_wadiya-idmajiya-talis_P2', '4am_wadiya-idmajiya-talis_P3'] },
@@ -94,13 +131,13 @@ export const LESSON_CONFIG = {
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
-      title: 'أستعدّ', desc: 'سبع عبارات: صحيح أم خاطئ؟ خاصية طالس وعكسيتها، الرابع المتناسب، المقطع المحوري للمخروط، حجم الأسطوانة، معادلة، ومتوسطات المثلث.',
+      title: 'أستعدّ', desc: 'عشر عبارات: صحيح أم خاطئ؟ خاصية طالس وعكسيتها وتقسيم قطعة، من السهل إلى الأصعب.',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     // Les وضعيات d'entraînement (track: 'problem') : practice_lab, avant « تحليل الوضعية النهائية للاختبار » (module 7) et le test
     // (module 8, toujours ouvert). Elles comptent dans la complétion, jamais dans la maîtrise —
     // docs/lessons/MASAIL_GENERATION_GUIDE.md, §14 (synthèses).
     { id: '01', number: 1, slug: 'wadiya-1', path: `${LESSON_BASE_PATH}/wadiya-1`,
-      title: 'الوضعية التدريبية 1 — سارية العلم', desc: 'عصا طولها 1,5 م وظلّان ينتهيان معًا: ارتفاع السارية، ثمن الأضواء، وظلّ تلميذ.',
+      title: 'الوضعية التدريبية 1 — سارية العلم', desc: 'عصا طولها 1,2 م وظلّان ينتهيان معًا: ارتفاع السارية، ثمن الأضواء، وظلّ تلميذ.',
       stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_wadiya-idmajiya-talis_P1'],
       color: 'sky', style: 'featured', estimatedMin: 6, difficulty: 3, actionText: 'أحلّ الوضعية' },
     { id: '02', number: 2, slug: 'wadiya-2', path: `${LESSON_BASE_PATH}/wadiya-2`,
@@ -126,7 +163,7 @@ export const LESSON_CONFIG = {
     { id: '07', number: 7, slug: 'al-wadiya', path: `${LESSON_BASE_PATH}/al-wadiya`,
       title: 'تحليل الوضعية النهائية للاختبار', desc: 'تحدّ الوحدة (ارتفاع المئذنة بعصا وظلّين) ثم الوضعية: أسطوانة داخل مخروط، مقطعها المحوري، معادلة في r وحجمها، والتحقّق من ملاءمة النتيجة.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_wadiya-idmajiya-talis_P1', '4am_wadiya-idmajiya-talis_P2', '4am_wadiya-idmajiya-talis_P3'],
-      color: 'amber', style: 'featured', estimatedMin: 18, difficulty: 3, actionText: 'أقرأ الوضعية' },
+      color: 'amber', style: 'featured', estimatedMin: 30, difficulty: 3, actionText: 'أقرأ الوضعية' },
     { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
       title: 'وضعية الاختبار النهائي', desc: 'وضعية أخرى: أسطوانة داخل مخروط آخر، ومنارة أخرى بطريقة الظل.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 7, difficulty: 4, actionText: 'أحلّ' },

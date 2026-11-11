@@ -6,44 +6,46 @@ import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation } from '../../../../../../common/manipulations';
 import { TextbookBox } from '../../../../../../common/textbook';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
+import { useModulePlayer } from '../../../../../../common/mission/useModulePlayer';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY } from '../content/textbook';
+import { M1_ROUNDS } from '../content/rays';
 
 /**
- * Module 1 — نشاط 3, première partie (p. 45) : « المتراجحة وحلولها », les messages d'يونس.
+ * Module 1 — « أيّ الأعداد تصلح؟ » : المتراجحة وحلولها, sur le budget de هدى (6 دج le stylo, 20 دج la boîte, 80 دج) — nombres et personnage de la
+ * plateforme (rollout 2026-11-11, conseil du 2026-11-11, verdict X1 : le livre ne paraît plus).
  *
- * LE LABORATOIRE (solution-ray, contexte `phone`, sans crochet) est posé UNE fois sur les
- * nombres du livre : 2,5x + 100 ≤ 150, x entier (un nombre de messages). L'élève étire x,
- * la kalfa et le رصيد se comparent sous son doigt, chaque essai laisse une trace rouge
- * (la kalfa ne dépasse pas le رصيد) ou grise. Les graduations 16, 20 et 21 du livre sont
- * soulignées (orientation, jamais des réponses). L'atelier à deux niveaux du type est au
- * module 2 : ici, la question est « quels x conviennent ? ».
+ * PAGE : le labo solution-ray (sans crochet, x entier) posé UNE fois ; l'élève étire x, la kalfa et le رصيد se comparent sous son doigt, chaque
+ * essai laisse une trace rouge ou grise. AUCUNE étape n'attend `onFinished` : `onTrial` liste ses essais (`[data-activity-evidence]`). Le vocabulaire
+ * « متراجحة » et « حل » n'arrive qu'avec les briques (mutarajiha, hal-mutarajiha).
  *
- * AUCUNE étape n'attend `onFinished` : `onTrial` liste, au-dessus des questions, les essais
- * de l'élève (`[data-activity-evidence]`, DNA §9). Le vocabulaire « متراجحة » et « حل »
- * n'arrive qu'avec l'encadré du livre, posé en briques (mutarajiha, hal-mutarajiha).
- *
- * UNE PISTE (rétrofit 2026-10-15) : labo en tête SANS carte ; (1) POURQUOI 20 suffit et pas 21 ; (2) س 2 أ et ب : quelle متباينة, et deux
- * valeurs ; (3) la question sur 2,5×16+100 ≤ 150, PUIS la brique « متراجحة » ; (4) 2 et 21 testés, PUIS la brique « حل » et l'encadré. LP : P1.
- *
- * La « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) ferme la dernière étape : le même رصيد de téléphone
- * sur le même instrument, d'autres nombres (600 دج, 3 دج la رسالة, 200 دج au moins) et la
- * division par un négatif de l'atelier متقدم du module 2 — résolue au module 6.
+ * LECTEUR DE MISSION (rollout 2026-11-11, unité 4 leçon 3 ; verdict L3) : le labo se joue en MANCHES (content/rays.js › M1_ROUNDS : le budget des
+ * stylos → le défi de lecture → ⭐ en nombres relatifs → la droite libre) ; AUCUN téléphone avant la مسألة. Chaque étape attend sa manche et relit ce
+ * que l'élève A FAIT (étoiles gardées, annoncées par LabRounds au montage) : r1 → ses deux valeurs ; r2 → le nom « متراجحة » puis le test de
+ * 2, 5, 7 (ses points rouges à côté) puis le nom « حل ». NO BACK-AND-FORTH : l'inéquation que chaque question lit est répétée dans son énoncé.
+ * LP : P1.
  */
-const COST = Lin.linear('2,5x+100');
+const COST = Lin.linear('6x+20');
 const CREDIT = ACTIVITY.numbers.credit;
 const cost = (n) => Lin.linAt(COST, Lin.frac(n));
-const costText = (n) => (Lin.fracDecimal(cost(n), 2) ?? Lin.fracText(cost(n)));
-const costTex = (n) => costText(n).replace(',', '{,}');
 const fits = (n) => Lin.compareWith(cost(n), '<=', Lin.frac(CREDIT));
 const FITS_WISH = ['يوافق', 'لا يوافق'];
+// r2 (le défi de lecture) : 15x + 25 > 100
+const READ = Lin.linear('15x+25');
+const isSolR = (n) => Lin.compareWith(Lin.linAt(READ, Lin.frac(n)), '>', Lin.frac(100));
+const SOL = ['حلّ', 'ليس حلًّا'];
 
 export default function Module01RasailYunus() {
+  const player = useModulePlayer(MODULE_CTX);
+  const [won, setWon] = useState({});
   const [tried, setTried] = useState([]);
-  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : l'étape est faite quand leur suite est terminée
   const [cps, setCps] = useState([]);
   const onCheckpoint = (e) => setCps((l) => [...l, e]);
   const answered = cps.some((e) => e.tk === 'checkpoint-done');
+  const [q1b, setQ1b] = useState(false);
+  const [q1c, setQ1c] = useState(false);
   const [q2a, setQ2a] = useState(false);
   const [q2b, setQ2b] = useState(false);
   const [q2c, setQ2c] = useState(false);
@@ -58,147 +60,224 @@ export default function Module01RasailYunus() {
   const evidence = (
     <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>
       {tried.length === 0
-        ? <li className="text-slate-500" data-evidence="none" data-tried="false">لم تجرّب بعد: اسحب عدد الرسائل في المختبر أعلاه.</li>
+        ? <li className="text-slate-500" data-evidence="none" data-tried="false">لم تجرّب بعد: اسحب عدد الأقلام في المختبر أعلاه.</li>
         : tried.map(({ k, ok }) => (
           <li key={k} data-evidence={k} data-tried="true" className={ok ? 'text-red-900' : 'text-slate-600'}>
-            <MathText>{`$x = ${k}$ : $2{,}5 \\times ${k} + 100 = ${costTex(k)}$ ، ${ok ? `ولا يتجاوز ${CREDIT}DA ●` : `أي أكثر من ${CREDIT}DA ○`}`}</MathText>
+            <MathText>{`$x = ${k}$ : $6 \\times ${k} + 20 = ${Lin.fracText(cost(k))}$ ، ${ok ? `ولا يتجاوز ${CREDIT} دج ●` : `أي أكثر من ${CREDIT} دج ○`}`}</MathText>
           </li>
         ))}
     </ul>
   );
+  const wonLine = (id, yes, no) => (
+    <p className={`rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm ${won[id] ? 'font-bold text-emerald-900' : 'text-slate-500'}`}
+      data-activity-evidence data-evidence={id} data-tried={won[id] ? 'true' : 'false'}>
+      {won[id] ? <><span aria-hidden="true">✓ </span><MathText>{yes}</MathText></> : <MathText>{no}</MathText>}
+    </p>
+  );
+  const valueQs = (restate) => (
+    <>
+      <NumericQuestion
+        prompt={<MathText>{`${restate}قيمة لـ $x$ (عدد أقلام كامل) توافق رغبة هدى في $6x + 20 \\leq 80$ :`}</MathText>}
+        expected={(n) => Number.isInteger(n) && n >= 0 && fits(n)}
+        display="عدد طبيعي من 0 إلى 10"
+        requires={['muqarana-adad']}
+        explainFor={(n) => (Number.isInteger(n) && n >= 0
+          ? <MathText>{`$6 \\times ${n} + 20 = ${Lin.fracText(cost(n))}$ : ${fits(n) ? 'لا يتجاوز 80، القيمة توافق.' : 'يتجاوز 80، القيمة لا توافق.'}`}</MathText>
+          : <span>عدد الأقلام عدد طبيعي: 0، 1، 2، …</span>)}
+        onAnswered={() => setQ1b(true)}
+      />
+      <NumericQuestion
+        prompt={<MathText>{'وقيمة أخرى لـ $x$ لا توافقها في $6x + 20 \\leq 80$ :'}</MathText>}
+        expected={(n) => Number.isInteger(n) && n >= 0 && !fits(n)}
+        display="عدد طبيعي أكبر من 10"
+        requires={['muqarana-adad']}
+        explainFor={(n) => (Number.isInteger(n) && n >= 0
+          ? <MathText>{`$6 \\times ${n} + 20 = ${Lin.fracText(cost(n))}$ : ${fits(n) ? 'لا يتجاوز 80، فهذه القيمة توافق.' : 'يتجاوز 80، القيمة لا توافق.'}`}</MathText>
+          : <span>عدد الأقلام عدد طبيعي: 0، 1، 2، …</span>)}
+        onAnswered={() => setQ1c(true)}
+      />
+    </>
+  );
+
+  const playerSteps = [
+    {
+      needsRound: { id: 'r1', label: 'الجولة 1', icon: '🖍️', won: Boolean(won.r1) },
+      num: 1, title: 'ماذا لاحظت على مستقيمك؟', subtitle: 'من ميزانية الأقلام في الجولة 1', done: q1b && q1c,
+      content: (
+        <div className="space-y-3">
+          {wonLine('r1', 'الجولة 1: بنيتَ المتباينة $6x + 20 \\leq 80$ ولوّنتَ بالأحمر الأعداد التي توافقها.', 'الجولة 1: لم تجد بعد آخر عدد من الأقلام تبقى كلفته في حدود الرصيد.')}
+          {valueQs('في الجولة 1: ')}
+        </div>
+      ),
+    },
+    {
+      needsRound: { id: 'r2', label: 'الجولة 2', icon: '🖍️', won: Boolean(won.r2) },
+      num: 2, title: 'ما نوع هذه الكتابة؟', subtitle: 'من تحدّي القراءة في الجولة 2', done: q3,
+      content: (
+        <div className="space-y-3">
+          {wonLine('r2', 'الجولة 2: بنيتَ المتباينة $15x + 25 > 100$ ولوّنتَ بالأحمر الأيام التي يتجاوز فيها الهدف.', 'الجولة 2: لم تجد بعد أوّل يوم يتجاوز فيه الهدف.')}
+          <TapQuestion
+            prompt={<MathText>{'من أجل $x = 9$ في $15x + 25 > 100$ نكتب $15 \\times 9 + 25 > 100$ . ما نوع هذه الكتابة؟'}</MathText>}
+            options={[
+              <MathText key="a">{'كتابة فيها المجهول $x$ نفسه، تتغيّر صحّتها بتغيّر قيمته'}</MathText>,
+              <MathText key="b">{'متباينة عددية صحيحة: لا مجهول فيها'}</MathText>,
+              <MathText key="c">{'متباينة عددية خاطئة'}</MathText>,
+            ]}
+            correct={1}
+            cols={1}
+            explain={<MathText>{'بعد التعويض لم يبقَ مجهول: $15 \\times 9 + 25 = 160$ و $160 > 100$ متباينة صحيحة. أمّا $15x + 25 > 100$ فقد تكون صحيحة أو خاطئة حسب قيمة $x$ .'}</MathText>}
+            onAnswered={() => setQ3(true)}
+          />
+          {q3 && <KnowledgeBrick id="mutarajiha" lead="المتباينتان اللتان بنيتَهما في الجولتين فيهما المجهول x — لهما اسم:" />}
+        </div>
+      ),
+    },
+    {
+      needsRound: { id: 'r2', label: 'الجولة 2', icon: '🖍️', won: Boolean(won.r2) },
+      num: 3, title: 'هل العدد حلّ؟', subtitle: 'اختبر بالتعويض', done: q4,
+      content: (
+        <div className="space-y-3">
+          {wonLine('r2', 'الجولة 2: نقاطك الحمراء هي الأيام التي يتجاوز فيها الهدف 100 صفحة، ونقاطك الرمادية الأيام التي لا يتجاوزه فيها.', 'الجولة 2: لم تجد بعد نقاطك الحمراء والرمادية.')}
+          <BatchChoiceQuestion
+            intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'اختبر بالتعويض في $15x + 25 > 100$ : هل كل عدد حلّ؟'}</MathText></p>}
+            rows={[2, 5, 7].map((n) => ({
+              id: `s${n}`, label: <MathText>{`العدد ${n}`}</MathText>, options: SOL, correct: isSolR(n) ? 0 : 1,
+              correction: <MathText>{`$15 \\times ${n} + 25 = ${Lin.fracText(Lin.linAt(READ, Lin.frac(n)))}$ و $${Lin.fracText(Lin.linAt(READ, Lin.frac(n)))} > 100$ ${isSolR(n) ? 'متباينة صحيحة: العدد حلّ.' : 'متباينة خاطئة: العدد ليس حلًّا.'}`}</MathText>,
+            }))}
+            feedback={({ allRight }) => (
+              <Feedback tone={allRight ? 'ok' : 'ko'}>
+                <MathText>{allRight
+                  ? 'نعوّض $x$ بالعدد، فإن كانت المتباينة الناتجة صحيحة فالعدد حلّ — والحدّ نفسه قد لا يكون حلًّا.'
+                  : 'عوّض $x$ بالعدد واحسب: هل المتباينة العددية الناتجة صحيحة؟ انتبه إلى العدد 5 : $100 > 100$ .'}</MathText>
+              </Feedback>
+            )}
+            onAnswered={() => setQ4(true)}
+          />
+          {q4 && (
+            <>
+              <KnowledgeBrick id="hal-mutarajiha" lead="ونقاطك الحمراء لها اسم أيضًا:" />
+              <TextbookBox kind="definition" lines={ACTIVITY.box} source={ACTIVITY.source} compact />
+            </>
+          )}
+        </div>
+      ),
+    },
+  ];
+
+  const pageSteps = [
+    {
+      num: 1, title: 'لماذا 10 أقلام تكفي و 11 لا؟', subtitle: 'جرّب في المختبر، ثم أجب', done: answered,
+      content: (
+        <div className="space-y-3">
+          {evidence}
+          <p data-evidence="checkpoint" data-tried={answered ? 'true' : 'false'}
+            className={`rounded-xl border-2 px-3 py-2 text-sm ${answered ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+            {answered
+              ? 'أجبتَ في المختبر: عند 10 أقلام تبلغ الكلفة الرصيد تمامًا فهي كافية، وعند 11 تتجاوزه — ولذلك تنتهي النقاط الحمراء عند 10.'
+              : 'جرّب أعدادًا من الأقلام في المختبر حتى تظهر نقاط حمراء ورمادية، ثم أجب عن الأسئلة التي تظهر فوقه.'}
+          </p>
+        </div>
+      ),
+    },
+    {
+      num: 2, title: 'أيّ متباينة توافق رغبة هدى؟', subtitle: 'اختر ثم جرّب قيمتين', done: q2a && q1b && q1c,
+      content: (
+        <div className="space-y-3">
+          <TapQuestion
+            prompt={<MathText>{'تملك هدى 80 دج: علبة بـ 20 دج و 6 دج للقلم، وعدد الأقلام $x$ . أيّ متباينة توافق رغبتها في ألّا تتجاوز الكلفة ما معها؟'}</MathText>}
+            options={ACTIVITY.numbers.candidates.map((c) => <MathText key={c}>{`$${c.replace('<=', ' \\leq ')}$`}</MathText>)}
+            correct={2}
+            cols={1}
+            requires={['muqarana-adad']}
+            explain={<MathText>{'الكلفة $6x + 20$ يجب ألّا تتجاوز الرصيد 80: $6x + 20 \\leq 80$. في المتباينتين الأخريين بُدّل دور الأعداد.'}</MathText>}
+            onAnswered={() => setQ2a(true)}
+          />
+          {q2a && (<>{evidence}{valueQs('')}</>)}
+        </div>
+      ),
+    },
+    {
+      num: 3, title: 'متباينة بمجهول', subtitle: 'ما اسم هذه الكتابة؟', done: q3,
+      content: (
+        <div className="space-y-3">
+          <TapQuestion
+            prompt={<MathText>{'والكتابة $6 \\times 10 + 20 \\leq 80$ (حين عوّضت $x$ بالعدد 10)؟'}</MathText>}
+            options={[
+              <MathText key="a">{'كتابة فيها المجهول $x$ نفسه، تتغيّر صحّتها بتغيّر قيمته'}</MathText>,
+              <MathText key="b">{'متباينة عددية صحيحة: لا مجهول فيها'}</MathText>,
+              <MathText key="c">{'متباينة عددية خاطئة'}</MathText>,
+            ]}
+            correct={1}
+            cols={1}
+            explain={<MathText>{'بعد التعويض لم يبقَ مجهول: $6 \\times 10 + 20 = 80$ و $80 \\leq 80$ متباينة صحيحة. أمّا $6x + 20 \\leq 80$ فقد تكون صحيحة أو خاطئة حسب قيمة $x$ .'}</MathText>}
+            onAnswered={() => setQ3(true)}
+          />
+          {q3 && <KnowledgeBrick id="mutarajiha" lead="المتباينات الثلاث المعروضة فيها المجهول x — لها اسم:" />}
+        </div>
+      ),
+    },
+    {
+      num: 4, title: 'هل يوافق العدد رغبة هدى؟', subtitle: 'اختبار العددين 2 و 11', done: q4,
+      content: (
+        <div className="space-y-3">
+          <BatchChoiceQuestion
+            intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'نقاطك الحمراء في المختبر هي الأعداد التي توافق رغبة هدى. اختبر بالتعويض في $6x + 20 \\leq 80$ :'}</MathText></p>}
+            rows={ACTIVITY.numbers.tests.map((n) => ({
+              id: `s${n}`, label: <MathText>{`العدد ${n}`}</MathText>, options: FITS_WISH, correct: fits(n) ? 0 : 1,
+              correction: <MathText>{`$6 \\times ${n} + 20 = ${Lin.fracText(cost(n))}$ و $${Lin.fracText(cost(n))} \\leq 80$ ${fits(n) ? 'متباينة صحيحة: العدد يوافق.' : 'متباينة خاطئة: العدد لا يوافق.'}`}</MathText>,
+            }))}
+            feedback={({ allRight }) => (
+              <Feedback tone={allRight ? 'ok' : 'ko'}>
+                <MathText>{allRight
+                  ? 'نعوّض $x$ بالعدد، فإن كانت المتباينة الناتجة صحيحة فالعدد يوافق.'
+                  : 'عوّض $x$ بالعدد واحسب: هل المتباينة العددية الناتجة صحيحة؟'}</MathText>
+              </Feedback>
+            )}
+            onAnswered={() => setQ4(true)}
+          />
+          {q4 && (
+            <>
+              <KnowledgeBrick id="hal-mutarajiha" lead="ونقاطك الحمراء لها اسم أيضًا:" />
+              <TextbookBox kind="definition" lines={ACTIVITY.box} source={ACTIVITY.source} compact />
+            </>
+          )}
+        </div>
+      ),
+    },
+  ];
 
   return (
     <ContentModule
-      objectives={["هل يستطيع يونس أن يرسل 21 رسالة؟ و 20؟ و 16؟", "ماذا نسمّي كتابة فيها مجهول وإشارة ≤ ؟", "متى نقول إنّ عددًا حلّ لها؟"]}
+      objectives={['هل تستطيع هدى شراء 11 قلمًا؟ و 10؟ و 6؟', 'ماذا نسمّي كتابة فيها مجهول وإشارة ≤ ؟', 'متى نقول إنّ عددًا حلّ لها؟']}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
       moduleNumber={1}
-      moduleTitle="نشاط 3 — رسائل يونس"
+      moduleTitle="نشاط — أيّ الأعداد تصلح؟"
       moduleSubtitle="المتراجحة وحلولها"
       estimatedTime="9 دقائق"
       intro={(
-        <Manipulation
-          type="solution-ray"
-          ineq={ACTIVITY.ineq}
-          context="phone"
-          bracket={false}
-          levels={false}
-          marks={ACTIVITY.numbers.asked}
-          lead="كل رسالة تزيد الكلفة 2,5DA فوق الاقتطاع الجزافي: جرّب أعدادًا من الرسائل، منها 16 و 20 و 21."
-          onTrial={onTrial}
-          onCheckpoint={onCheckpoint}
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="lab-ray-m1" rounds={M1_ROUNDS} icon="🖍️" freeIcon="📏"
+              onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))} />
+          )}
+          page={(
+            <Manipulation
+              type="solution-ray"
+              ineq={ACTIVITY.ineq}
+              whole
+              sides={{ left: 'الكلفة', right: 'الرصيد' }}
+              bracket={false}
+              levels={false}
+              marks={ACTIVITY.numbers.asked}
+              lead="كل قلم يزيد الكلفة 6 دج فوق ثمن العلبة: جرّب أعدادًا من الأقلام الكاملة، منها 6 و 10 و 11."
+              onTrial={onTrial}
+              onCheckpoint={onCheckpoint}
+            />
+          )}
         />
       )}
-      steps={[
-        {
-          num: 1, title: 'لماذا 20 رسالة تكفي و 21 لا؟', subtitle: 'جرّب في المختبر، ثم أجب', done: answered,
-          content: (
-            <div className="space-y-3">
-              {evidence}
-              <p data-evidence="checkpoint" data-tried={answered ? 'true' : 'false'}
-                className={`rounded-xl border-2 px-3 py-2 text-sm ${answered ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
-                {answered
-                  ? 'أجبتَ في المختبر: عند 20 رسالة تبلغ الكلفة الرصيد تمامًا فهي كافية، وعند 21 تتجاوزه — ولذلك تنتهي النقاط الحمراء عند 20.'
-                  : 'جرّب أعدادًا من الرسائل في المختبر حتى تظهر نقاط حمراء ورمادية، ثم أجب عن الأسئلة التي تظهر فوقه.'}
-              </p>
-            </div>
-          ),
-        },
-        {
-          num: 2, title: 'أيّ متباينة توافق رغبة يونس؟', subtitle: 'السؤال 2', done: q2a && q2b && q2c,
-          content: (
-            <div className="space-y-3">
-              <TapQuestion
-                prompt={<MathText>{ACTIVITY.questions[1]}</MathText>}
-                options={[
-                  <MathText key="a">{'$150x + 100 \\leq 2{,}5$'}</MathText>,
-                  <MathText key="b">{'$150x - 100 \\leq 2{,}5$'}</MathText>,
-                  <MathText key="c">{'$2{,}5x + 100 \\leq 150$'}</MathText>,
-                ]}
-                correct={2}
-                cols={1}
-                requires={['muqarana-adad']}
-                explain={<MathText>{'الكلفة $2{,}5x + 100$ يجب ألّا تتجاوز الرصيد 150: $2{,}5x + 100 \\leq 150$. في المتباينتين الأخريين بُدّل دور 150 و $2{,}5$.'}</MathText>}
-                onAnswered={() => setQ2a(true)}
-              />
-              {q2a && (
-                <>
-                  <p className="text-sm font-semibold text-slate-700"><MathText>{ACTIVITY.questions[2]}</MathText></p>
-                  {evidence}
-                  <NumericQuestion
-                    prompt="قيمة لـ x توافق رغبة يونس:"
-                    expected={(n) => Number.isInteger(n) && n >= 0 && fits(n)}
-                    display="عدد طبيعي من 0 إلى 20"
-                    requires={['muqarana-adad']}
-                    explainFor={(n) => (Number.isInteger(n) && n >= 0
-                      ? <MathText>{`$2{,}5 \\times ${n} + 100 = ${costTex(n)}$ : ${fits(n) ? 'لا يتجاوز 150، القيمة توافق.' : 'يتجاوز 150، القيمة لا توافق.'}`}</MathText>
-                      : <span>عدد الرسائل عدد طبيعي: 0، 1، 2، …</span>)}
-                    onAnswered={() => setQ2b(true)}
-                  />
-                  <NumericQuestion
-                    prompt="قيمة أخرى لـ x لا توافقها:"
-                    expected={(n) => Number.isInteger(n) && n >= 0 && !fits(n)}
-                    display="عدد طبيعي أكبر من 20"
-                    requires={['muqarana-adad']}
-                    explainFor={(n) => (Number.isInteger(n) && n >= 0
-                      ? <MathText>{`$2{,}5 \\times ${n} + 100 = ${costTex(n)}$ : ${fits(n) ? 'لا يتجاوز 150، فهذه القيمة توافق رغبة يونس.' : 'يتجاوز 150، القيمة لا توافق.'}`}</MathText>
-                      : <span>عدد الرسائل عدد طبيعي: 0، 1، 2، …</span>)}
-                    onAnswered={() => setQ2c(true)}
-                  />
-                </>
-              )}
-            </div>
-          ),
-        },
-        {
-          num: 3, title: 'متباينة بمجهول', subtitle: 'ما يسمّيه الكتاب', done: q3,
-          content: (
-            <div className="space-y-3">
-              <TapQuestion
-                prompt={<MathText>{'والكتابة $2{,}5 \\times 16 + 100 \\leq 150$ (حين عوّضت $x$ بالعدد 16)؟'}</MathText>}
-                options={[
-                  <MathText key="a">{'كتابة فيها المجهول $x$ نفسه، تتغيّر صحّتها بتغيّر قيمته'}</MathText>,
-                  <MathText key="b">{'متباينة عددية صحيحة: لا مجهول فيها'}</MathText>,
-                  <MathText key="c">{'متباينة عددية خاطئة'}</MathText>,
-                ]}
-                correct={1}
-                cols={1}
-                explain={<MathText>{'بعد التعويض لم يبقَ مجهول: $2{,}5 \\times 16 + 100 = 140$ و $140 \\leq 150$ متباينة صحيحة. أمّا $2{,}5x + 100 \\leq 150$ فقد تكون صحيحة أو خاطئة حسب قيمة $x$.'}</MathText>}
-                onAnswered={() => setQ3(true)}
-              />
-              {q3 && <KnowledgeBrick id="mutarajiha" lead="المتباينات الثلاث في السؤال 2 فيها المجهول x — يسمّيها الكتاب:" />}
-            </div>
-          ),
-        },
-        {
-          num: 4, title: 'هل يوافق العدد رغبة يونس؟', subtitle: 'السؤال جـ — 2 و 21', done: q4,
-          content: (
-            <div className="space-y-3">
-              <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'نقاطك الحمراء في المختبر هي الأعداد التي توافق رغبة يونس. اختبر بالتعويض في $2{,}5x + 100 \\leq 150$ :'}</MathText></p>}
-                rows={ACTIVITY.numbers.tests.map((n) => ({
-                  id: `s${n}`, label: <MathText>{`العدد ${n}`}</MathText>, options: FITS_WISH, correct: fits(n) ? 0 : 1,
-                  correction: <MathText>{`$2{,}5 \\times ${n} + 100 = ${costTex(n)}$ و $${costTex(n)} \\leq 150$ ${fits(n) ? 'متباينة صحيحة: العدد يوافق.' : 'متباينة خاطئة: العدد لا يوافق.'}`}</MathText>,
-                }))}
-                feedback={({ allRight }) => (
-                  <Feedback tone={allRight ? 'ok' : 'ko'}>
-                    <MathText>{allRight
-                      ? 'نعوّض $x$ بالعدد، فإن كانت المتباينة الناتجة صحيحة فالعدد يوافق.'
-                      : 'عوّض $x$ بالعدد واحسب: هل المتباينة العددية الناتجة صحيحة؟'}</MathText>
-                  </Feedback>
-                )}
-                onAnswered={() => setQ4(true)}
-              />
-              {q4 && (
-                <>
-                  <KnowledgeBrick id="hal-mutarajiha" lead="ونقاطك الحمراء لها اسم أيضًا:" />
-                  <TextbookBox kind="definition" lines={ACTIVITY.box} source={ACTIVITY.source} compact />
-                </>
-              )}
-            </div>
-          ),
-        },
-      ]}
+      steps={player ? playerSteps : pageSteps}
       footer={<KnowledgeSnapshot moduleNumber={1} variant="memo" />}
     />
   );

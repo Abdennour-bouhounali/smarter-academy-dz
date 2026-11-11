@@ -1,6 +1,6 @@
 import React from 'react';
 import MathText from '../../../../../common/components/MathText';
-import { ACTIVITY, ACTIVITY_B, ACTIVITY_C, KNOWLEDGE, METHOD } from './content/textbook';
+import { KNOWLEDGE, METHOD, PLATFORM } from './content/textbook';
 
 // La carte progressive de la leçon (structure, relations, aides) — KNOWLEDGE_MAP.md, Part A.
 export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
@@ -11,15 +11,17 @@ export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
  * module et la carte rendent le même objet.
  *
  *   محور 1  murabba-majmu, hisab-mutamaan, murabba-farq — établies par
- *           l'activité 2 (1) et 2) : le terrain carré, les chaînes « انقل وأكمل »,
- *           le calcul mental 21², 53², 19², 37²)
+ *           le terrain carré, les chaînes « انقل وأكمل », le calcul mental 41², 62², 49², 38²
+ *           (nombres de la plateforme depuis le rollout du 2026-11-11 ; les exemples des cartes
+ *           sont ceux de content/textbook.js › PLATFORM — aucun ne montre la مسألة)
  *   محور 2  jidaa-majmu-farq — l'activité 2 (3)
  *   محور 3  mutatabiqa — la définition de معارف 2
  *   محور 4  tariqat-nashr — la طريقة p. 35
  *
  * Les `summary` restent du texte simple (carte, مذكرة) : les formules sont dans `body`.
  */
-const { squareSum, squareDiff, sumDiff, examples } = KNOWLEDGE;
+const { squareSum, squareDiff, sumDiff } = KNOWLEDGE;
+const { examples } = PLATFORM;
 
 /** `memo` — la FICHE DE MÉMOIRE (MemoCard) : ce qui CHANGE est en rouge (`R`). */
 const R = (x) => `\\textcolor{#e11d48}{${x}}`;
@@ -32,16 +34,16 @@ export const LESSON_KNOWLEDGE = {
         memo: {
           rule: `(a+b)^2=a^2+${R('2ab')}+b^2`,
           hook: 'مربّعان وضعف الجداء',
-          example: `(x+3)^2=x^2+${R('6x')}+9`,
+          example: `(x+5)^2=x^2+${R('10x')}+25`,
           trap: 'نسيان ضعف الجداء: مربّع المجموع ليس مجموع المربّعين',
           exam: 'أكتب المتطابقة ثم أعوّض الحدّين وأحسب كل حدّ',
           chip: `(a+b)^2`,
           quiz: [
             { q: '$(x+5)^2 =$', options: ['$x^2+10x+25$', '$x^2+25$', '$x^2+5x+25$'], correct: 0 },
-            { q: '$(3x+1)^2 =$', options: ['$3x^2+6x+1$', '$9x^2+6x+1$', '$9x^2+1$'], correct: 1 },
+            { q: '$(5x+1)^2 =$', options: ['$5x^2+10x+1$', '$25x^2+10x+1$', '$25x^2+1$'], correct: 1 },
           ],
         },
-        predictPrompt: 'على ملعبك $(x + 3)^2$ سحبت أربع مناطق: $x^2$ و $3x$ و $3x$ و $9$، وفي السلسلة ظهر $ab$ و $ba$. لو أعطيناك حدّين آخرين $a$ و $b$، كيف تكتب $(a + b)^2$ دون قوسين؟ اكتب القاعدة بكلماتك.',
+        predictPrompt: 'على ملعبك $(x + 4)^2$ حملتَ أربع مناطق: $x^2$ و $4x$ و $4x$ و $16$ ، ورأيت الشريطين متقايسين. لو أعطيناك حدّين آخرين $a$ و $b$ ، كيف تكتب $(a + b)^2$ دون قوسين؟ اكتب القاعدة بكلماتك.',
         summary: 'مربع مجموع حدّين يساوي مربع الأول زائد ضعف جداء الحدّين زائد مربع الثاني.',
         body: (
           <div className="space-y-2">
@@ -64,11 +66,11 @@ export const LESSON_KNOWLEDGE = {
             { q: '$52^2 =$', options: ['$2504$', '$2604$', '$2704$'], correct: 2 },
           ],
         },
-        predictPrompt: 'حسبت $21^2$ و $53^2$ دون وضع العملية. لو أعطيناك عددًا آخر مثل $102^2$ أو $31^2$، بأيّ خطوة تبدأ؟ وماذا تفعل بعدها لتحسبه ذهنيًا؟ اكتب الطريقة.',
+        predictPrompt: 'حسبت $41^2$ و $62^2$ دون وضع العملية. لو أعطيناك عددًا آخر مثل $102^2$ أو $71^2$ ، بأيّ خطوة تبدأ؟ وماذا تفعل بعدها لتحسبه ذهنيًا؟ اكتب الطريقة.',
         summary: 'نكتب العدد مجموعًا أو فرقًا لعدد مدوّر وعدد صغير، ثم نستعمل متطابقة شهيرة فنحسب دون وضع العملية.',
         body: (
           <div className="space-y-2">
-            <p><MathText>{ACTIVITY.questions[4]}</MathText></p>
+            <p>نكتب العدد مجموعًا أو فرقًا لعدد مدوّر وعدد صغير، ثم نحسب دون وضع العملية:</p>
             <p className="text-sm text-slate-600"><MathText>{'$21^2 = (20 + 1)^2 = 400 + 40 + 1 = 441$'}</MathText></p>
             <p className="text-sm text-slate-600"><MathText>{'$19^2 = (20 - 1)^2 = 400 - 40 + 1 = 361$'}</MathText></p>
           </div>
@@ -85,16 +87,15 @@ export const LESSON_KNOWLEDGE = {
           chip: `(a-b)^2`,
           quiz: [
             { q: '$(x-4)^2 =$', options: ['$x^2-16$', '$x^2-8x+16$', '$x^2-8x-16$'], correct: 1 },
-            { q: '$(2x-3)^2 =$', options: ['$4x^2-12x+9$', '$4x^2-6x+9$', '$4x^2-12x-9$'], correct: 0 },
+            { q: '$(2x-5)^2 =$', options: ['$4x^2-20x+25$', '$4x^2-10x+25$', '$4x^2-20x-25$'], correct: 0 },
           ],
         },
-        predictPrompt: 'على ملعبك $(x - 2)^2$ اقتُطع شريطان $2x$ وبقي الركن $4$ الذي اقتُطع مرّتين، وفي السلسلة وجدت $-ab - ba$ ثم $(-b) \\times (-b)$. كيف تكتب $(a - b)^2$ دون قوسين؟ اكتب القاعدة، وانتبه إلى إشارة كل حدّ.',
+        predictPrompt: 'على ملعبك $(x - 5)^2$ اقتُطع شريطان $-5x$ و $-5x$ وظهر الركن $+25$ ، وفي السلسلة وجدت $-ab - ba$ ثم $(-b) \\times (-b)$ . كيف تكتب $(a - b)^2$ دون قوسين؟ اكتب القاعدة، وانتبه إلى إشارة كل حدّ.',
         summary: 'مربع فرق حدّين يساوي مربع الأول ناقص ضعف جداء الحدّين زائد مربع الثاني.',
         body: (
           <div className="space-y-2">
             <p><MathText>{squareDiff.text}</MathText></p>
             <p className="text-sm text-slate-600"><MathText>{examples[1]}</MathText></p>
-            <p className="text-xs text-slate-500"><MathText>{ACTIVITY_B.closing}</MathText></p>
           </div>
         ),
       },
@@ -111,17 +112,16 @@ export const LESSON_KNOWLEDGE = {
           chip: `(a+b)(a-b)`,
           quiz: [
             { q: '$(x+6)(x-6) =$', options: ['$x^2+36$', '$x^2-12$', '$x^2-36$'], correct: 2 },
-            { q: '$101 	imes 99 =$', options: ['$10001$', '$9999$', '$10000$'], correct: 1 },
+            { q: '$101 \\times 99 =$', options: ['$10001$', '$9999$', '$10000$'], correct: 1 },
           ],
         },
-        predictPrompt: 'على الملعب $(2x + 5)(2x - 5)$ وضعت المنطقة $10x$ على المنطقة $-10x$، وفي البرهان اجتمع $-ab$ و $ba$. لو أعطيناك حدّين آخرين $a$ و $b$، كيف تكتب $(a + b)(a - b)$ دون قوسين؟ اكتب القاعدة بكلماتك.',
+        predictPrompt: 'على الملعب $(x + 4)(x - 4)$ وضعتَ المنطقة $4x$ على المنطقة $-4x$ فبقي $0$ ، وفي البرهان اجتمع $-ab$ و $ba$ . لو أعطيناك حدّين آخرين $a$ و $b$ ، كيف تكتب $(a + b)(a - b)$ دون قوسين؟ اكتب القاعدة بكلماتك.',
         summary: 'جداء مجموع حدّين في فرقهما يساوي مربع الأول ناقص مربع الثاني.',
         body: (
           <div className="space-y-2">
             <p><MathText>{sumDiff.text}</MathText></p>
             <p className="text-sm text-slate-600"><MathText>{examples[2]}</MathText></p>
-            <p className="text-sm text-slate-600"><MathText>{'$105 \\times 95 = (100 + 5)(100 - 5) = 10\\,000 - 25 = 9975$'}</MathText></p>
-            <p className="text-xs text-slate-500"><MathText>{ACTIVITY_C.closing}</MathText></p>
+            <p className="text-sm text-slate-600"><MathText>{'$102 \\times 98 = (100 + 2)(100 - 2) = 10\\,000 - 4 = 9996$'}</MathText></p>
           </div>
         ),
       },
@@ -132,16 +132,16 @@ export const LESSON_KNOWLEDGE = {
         memo: {
           rule: `A(x)=B(x)\\quad${R('\\forall x')}`,
           hook: 'صحيحة من أجل كل قيمة',
-          example: `(x+3)^2=${R('x^2+6x+9')}`,
+          example: `(x+5)^2=${R('x^2+10x+25')}`,
           trap: 'تجربة قيمة واحدة لا تكفي لإثبات متطابقة',
           exam: 'أنشر أو أتحقّق من أجل قيمتين على الأقل',
           chip: `A(x)\\equiv B(x)`,
           quiz: [
             { q: 'المساواة $(x+1)^2=x^2+2x+1$ صحيحة من أجل:', options: ['$x=0$ فقط', 'كل قيمة لـ $x$', '$x=1$ فقط'], correct: 1 },
-            { q: 'المساواة $x^2=9$ هي:', options: ['متطابقة لأنّها تصحّ من أجل $x=3$', 'متطابقة لأنّ فيها مربّعًا', 'ليست متطابقة: تصحّ من أجل $x=3$ و $x=-3$ فقط'], correct: 2 },
+            { q: 'المساواة $x^2=16$ هي:', options: ['متطابقة لأنّها تصحّ من أجل $x=4$', 'متطابقة لأنّ فيها مربّعًا', 'ليست متطابقة: تصحّ من أجل $x=4$ و $x=-4$ فقط'], correct: 2 },
           ],
         },
-        predictPrompt: 'على الملعب صحّت المساواة $(x + 3)^2 = x^2 + 6x + 9$ من أجل كل قيمة جرّبتها لـ $x$، أمّا المساواة $x^2 = 9$ فتصحّ من أجل $x = 3$ ولا تصحّ من أجل $x = 1$. ما الذي يميّز النوع الأول من المساواة؟ اكتب بكلماتك متى نسمّي مساواة فيها حروف «متطابقة».',
+        predictPrompt: 'على الملعب صحّت المساواة $(x + 4)^2 = x^2 + 8x + 16$ من أجل كل قيمة جرّبتها لـ $x$ ، أمّا المساواة $x^2 = 16$ فتصحّ من أجل $x = 4$ ولا تصحّ من أجل $x = 1$ . ما الذي يميّز النوع الأول من المساواة؟ اكتب بكلماتك متى نسمّي مساواة فيها حروف «متطابقة».',
         summary: KNOWLEDGE.identity,
         body: (
           <div className="space-y-2">
@@ -165,11 +165,11 @@ export const LESSON_KNOWLEDGE = {
           exam: 'أكتب الحدّين ثم المتطابقة ثم النتيجة مبسّطة',
           chip: `a=?,\\ b=?`,
           quiz: [
-            { q: '$(3x+2)^2 =$', options: ['$3x^2+12x+4$', '$9x^2+6x+4$', '$9x^2+12x+4$'], correct: 2 },
+            { q: '$(3x+4)^2 =$', options: ['$3x^2+24x+16$', '$9x^2+12x+16$', '$9x^2+24x+16$'], correct: 2 },
             { q: '$(x+4)(x-4) =$', options: ['$x^2-8$', '$x^2-16$', '$x^2+16$'], correct: 1 },
           ],
         },
-        predictPrompt: 'كشفت حلول الكتاب الثلاثة سطرًا سطرًا. لو أعطيناك عبارة أخرى مثل $(2x - 7)^2$ أو $(x + 4)(x - 4)$، بماذا تبدأ قبل أن تنشر؟ وماذا تفعل بعد ذلك؟ اكتب الطريقة في خطوات.',
+        predictPrompt: 'كشفت حلول الطريقة الثلاثة سطرًا سطرًا. لو أعطيناك عبارة أخرى مثل $(2x - 7)^2$ أو $(x + 4)(x - 4)$، بماذا تبدأ قبل أن تنشر؟ وماذا تفعل بعد ذلك؟ اكتب الطريقة في خطوات.',
         summary: METHOD.rule,
         body: (
           <div className="space-y-2">

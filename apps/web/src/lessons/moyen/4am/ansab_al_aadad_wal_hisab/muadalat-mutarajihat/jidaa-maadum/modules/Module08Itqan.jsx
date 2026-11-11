@@ -10,8 +10,8 @@ import { QCM } from '../content/textbook';
 
 /**
  * Module 8 — إختبار أولي (stage: evaluation) : LA SEULE SOURCE DE PREUVE de la leçon.
- * Cinq épreuves : les items 3 et 4 de « أؤكّد تعلّماتي » (p. 52 — destinations ›
- * qcm › duplicatedIn) et trois énoncés de la plateforme, un par point non couvert :
+ * Cinq épreuves : les items 3 et 4 de « أؤكّد تعلّماتي » (destinations ›
+ * qcm › duplicatedIn), RÉÉCRITS en nombres de la plateforme (verdict X1 : `id`, skill et learningPointIds inchangés) et trois énoncés de la plateforme, un par point non couvert :
  * reconnaître une معادلة جداء معدوم (P1), le facteur constant (P2), x² = 3x (P3).
  * Chaque épreuve évalue UN point d'apprentissage ; P1, P2, P3 sont couverts. Chaque
  * distracteur est faux.
@@ -49,7 +49,7 @@ export default function Module08Itqan() {
         {
           id: 'E2', skill: 'khassiya', requires: ['hulul-muadala-jidaa'],
           prompt: <Q source={QCM[3].source}><MathText>{QCM[3].text}</MathText></Q>,
-          options: [M('حلا واحدا هو 3'), M('حلا واحدا هو $-1$'), M('حلين هما 3 و $-1$')],
+          options: [M('حلًّا واحدًا هو $5$'), M('حلًّا واحدًا هو $-2$'), M('حلّين هما $5$ و $-2$')],
           correct: 2, cols: 1,
           explain: <MathText>{QCM[3].explain}</MathText>,
           assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_jidaa-maadum_P2'] },
@@ -65,7 +65,7 @@ export default function Module08Itqan() {
         {
           id: 'E4', skill: 'tahlil', requires: ['tariqat-jidaa-maadum'],
           prompt: <Q source={QCM[4].source}><MathText>{QCM[4].text}</MathText></Q>,
-          options: [M('حلين هما 1 و $-1$'), M('حلا واحدا هو 1'), M('حلا واحدا هو $-1$')],
+          options: [M('حلّين هما $\\dfrac{5}{2}$ و $-\\dfrac{5}{2}$'), M('حلًّا واحدًا هو $\\dfrac{5}{2}$'), M('حلّين هما $\\dfrac{5}{4}$ و $-\\dfrac{5}{4}$')],
           correct: 0, cols: 1,
           explain: <MathText>{QCM[4].explain}</MathText>,
           assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_jidaa-maadum_P3'] },

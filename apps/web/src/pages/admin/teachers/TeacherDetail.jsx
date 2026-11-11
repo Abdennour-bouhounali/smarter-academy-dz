@@ -121,7 +121,7 @@ export default function AdminTeacherDetail() {
             <section className="rounded-xl border border-slate-200 bg-white p-4" data-capacity-block>
               <h2 className="mb-3 font-space text-sm font-bold text-slate-900">{t('teachers.capacitySection')}</h2>
               <dl className="grid grid-cols-2 gap-3 font-inter text-sm lg:grid-cols-5">
-                <Info label={t('teachers.capacityUsed')}><Num>{data.capacity.current} / {data.capacity.limit ?? '∞'}</Num>{data.capacity.overLimit ? <span className="ms-2 rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-800">{t('teachers.overLimit')}</span> : null}</Info>
+                <Info label={t('teachers.capacityUsed')}><Num>{data.capacity.current}{'\u00A0/\u00A0'}{data.capacity.limit ?? '∞'}</Num>{data.capacity.overLimit ? <span className="ms-2 rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-800">{t('teachers.overLimit')}</span> : null}</Info>
                 <Info label={t('teachers.seatsRemaining')}><Num>{data.capacity.remaining ?? '∞'}</Num></Info>
                 <Info label={t('teachers.columnClassrooms')}><Num>{data.classrooms.filter((c) => c.status !== 'archived').length}</Num> <span className="text-slate-400">({t('common.unlimited')}{data.entitlements.classes.maximum != null ? `، ${t('teachers.technicalLimit', { value: data.entitlements.classes.maximum })}` : ''})</span></Info>
                 <Info label={t('teachers.seatsPurchased')}>{data.entitlements.plan?.studentSeatLimit != null ? <Num>{data.entitlements.plan.studentSeatLimit}</Num> : <span className="text-slate-400">{t('teachers.planAllocation')}</span>}</Info>
@@ -145,7 +145,7 @@ export default function AdminTeacherDetail() {
               columns={[
                 { key: 'label', label: t('teachers.columnEntitlement'), render: (r) => r.label },
                 { key: 'value', label: t('teachers.value'), render: (r) => (r.type === 'feature' ? (r.value ? t('common.yes') : t('common.no')) : r.type === 'list' ? (Array.isArray(r.value) && r.value.length ? r.value.join('، ') : t('common.all')) : r.value === null ? t('common.unlimited') : <Num>{String(r.value)}</Num>) },
-                { key: 'usage', label: t('teachers.usage'), render: (r) => (usageOf(r.key) === null ? t('common.dash') : <Num>{usageOf(r.key)} / {r.value === null ? '∞' : r.value}</Num>) },
+                { key: 'usage', label: t('teachers.usage'), render: (r) => (usageOf(r.key) === null ? t('common.dash') : <Num>{usageOf(r.key)}{'\u00A0/\u00A0'}{r.value === null ? '∞' : r.value}</Num>) },
                 { key: 'source', label: t('teachers.source'), render: (r) => <StatusBadge status={r.source === 'override' ? 'pending' : 'free'} label={SOURCE_LABELS[r.source] ?? r.source} /> },
               ]}
             />

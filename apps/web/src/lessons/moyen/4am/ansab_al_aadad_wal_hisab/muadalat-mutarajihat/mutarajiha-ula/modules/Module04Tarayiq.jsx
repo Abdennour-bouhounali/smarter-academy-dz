@@ -35,8 +35,8 @@ export default function Module04Tarayiq() {
       moduleSubtitle="نحلّ، ثم نمثّل بيانيا"
       estimatedTime="8 دقائق"
       brief={{
-        tag: 'طرائق — الكتاب ص 49', title: METHOD.title, tone: 'emerald',
-        body: <p>تمرين محلول من الكتاب بمتراجحتين. اقرأ كل سطر، وتوقّع السطر التالي — واتجاه المتراجحة فيه — قبل أن تكشفه.</p>,
+        tag: 'طرائق', title: METHOD.title, tone: 'emerald',
+        body: <p>حلّ مفصّل لمتراجحتين. اقرأ كل سطر، وتوقّع السطر التالي — واتجاه المتراجحة فيه — قبل أن تكشفه.</p>,
       }}
       steps={[
         {
@@ -45,7 +45,7 @@ export default function Module04Tarayiq() {
             <div className="space-y-3">
               <KnowledgeBrick id="qawaid-ittijah" variant="rappel" compact />
               <MethodSteps method={methodOf(METHOD.solutionA)} onAllRevealed={() => setReadA(true)} />
-              {readA && <RayFigure {...METHOD.figureA} label="الجزء الملوّن بالأحمر على يمين النصف، والرمز غير موجّه نحوه" />}
+              {readA && <RayFigure {...METHOD.figureA} label="الجزء الملوّن بالأحمر على يمين 2، والرمز غير موجّه نحوه" />}
             </div>
           ),
         },
@@ -54,10 +54,9 @@ export default function Module04Tarayiq() {
           content: (
             <div className="space-y-3">
               <MethodSteps method={methodOf(METHOD.solutionB)} onAllRevealed={() => setReadB(true)} />
-              <p className="text-xs text-slate-500" data-correction-note><MathText>{METHOD.correctionNote}</MathText></p>
               {readB && (
                 <>
-                  <RayFigure {...METHOD.figureB} label="الجزء الملوّن بالأحمر على يمين سالب ثمانية وعشرين على ثلاثة، والرمز موجّه نحوه" />
+                  <RayFigure {...METHOD.figureB} label="الجزء الملوّن بالأحمر على يسار 4، والرمز موجّه نحوه" />
                   <KnowledgeBrick id="tariqat-hal" lead="في المتراجحتين الخطوات نفسها:" />
                 </>
               )}
@@ -65,7 +64,7 @@ export default function Module04Tarayiq() {
           ),
         },
         {
-          num: 3, title: 'دوري الآن (ص 49)', subtitle: 'حلّ، ثم مثّل بيانيا', done: nowDone,
+          num: 3, title: 'دوري الآن', subtitle: 'حلّ، ثم مثّل بيانيا', done: nowDone,
           content: (
             <div className="space-y-4">
               {NOW_49_1.map((ex) => (

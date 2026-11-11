@@ -120,16 +120,17 @@ class ContentReviewerAccessTest extends TestCase
         $this->assertSame($sees, ContentAccess::isExerciseAvailable('qasim-mushtarak-akbar', 'ex-a', $user), "exercice {$state} pour {$kind}");
     }
 
-    public function test_un_module_masque_sous_une_lecon_publiee_suit_la_meme_regle(): void
+    /** Un module n'a pas d'état propre (2026-11-11) : sous une leçon publiée, il est ouvert. */
+    public function test_un_module_suit_sa_lecon_quel_que_soit_sa_colonne(): void
     {
-        $this->module->update(['publication_status' => LessonModule::PUB_HIDDEN]);
+        $this->module->update(['publication_status' => LessonModule::PUB_DRAFT]);
 
         $this->assertTrue(ContentAccess::isModuleAvailable('qasim-mushtarak-akbar', 1, $this->ambassador()));
-        $this->assertFalse(ContentAccess::isModuleAvailable('qasim-mushtarak-akbar', 1, User::factory()->create(['role' => User::ROLE_TEACHER])));
+        $this->assertTrue(ContentAccess::isModuleAvailable('qasim-mushtarak-akbar', 1, User::factory()->create(['role' => User::ROLE_TEACHER])));
 
-        $this->module->update(['publication_status' => LessonModule::PUB_DRAFT]);
-        $this->assertFalse(ContentAccess::isModuleAvailable('qasim-mushtarak-akbar', 1, $this->ambassador()));
-        $this->assertTrue(ContentAccess::isModuleAvailable('qasim-mushtarak-akbar', 1, User::factory()->create(['role' => User::ROLE_ADMIN])));
+        $this->lesson->update(['publication_status' => Lesson::PUB_HIDDEN]);
+        $this->assertTrue(ContentAccess::isModuleAvailable('qasim-mushtarak-akbar', 1, $this->ambassador()));
+        $this->assertFalse(ContentAccess::isModuleAvailable('qasim-mushtarak-akbar', 1, User::factory()->create(['role' => User::ROLE_TEACHER])));
     }
 
     public function test_un_ambassadeur_retire_redevient_un_enseignant_ordinaire(): void
@@ -154,7 +155,8 @@ class ContentReviewerAccessTest extends TestCase
             ->assertJsonPath('closed.lessons', [])
             ->assertJsonPath('closed.modules', [])
             ->assertJsonPath('closed.statuses.lessons.qasim-mushtarak-akbar', 'hidden')
-            ->assertJsonPath('closed.statuses.modules.qasim-mushtarak-akbar.1', 'draft');
+            // Un module n'a pas d'état propre (2026-11-11) : aucun état de module.
+            ->assertJsonPath('closed.statuses.modules', []);
     }
 
     public function test_l_inventaire_de_l_ambassadeur_ouvre_le_masque_et_ferme_le_brouillon(): void
@@ -165,7 +167,8 @@ class ContentReviewerAccessTest extends TestCase
         $this->actingAs($this->ambassador(), 'sanctum')->getJson('/api/v1/content/availability')
             ->assertOk()
             ->assertJsonPath('closed.lessons', [])
-            ->assertJsonPath('closed.modules.qasim-mushtarak-akbar', [1])
+            // Le module suit sa leçon masquée, que l'ambassadeur voit : rien de fermé.
+            ->assertJsonPath('closed.modules', [])
             ->assertJsonPath('closed.statuses.lessons.qasim-mushtarak-akbar', 'hidden')
             ->assertJsonMissingPath('closed.statuses.modules.qasim-mushtarak-akbar');
 

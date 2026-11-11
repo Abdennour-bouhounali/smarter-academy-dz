@@ -34,6 +34,7 @@ use App\Http\Controllers\ClassJoinLinkController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContentAvailabilityController;
 use App\Http\Controllers\CurriculumController;
+use App\Http\Controllers\CompassController;
 use App\Http\Controllers\DailyChallengeController;
 use App\Http\Controllers\DiagnosticController;
 use App\Http\Controllers\EmailVerificationController;
@@ -48,6 +49,7 @@ use App\Http\Controllers\LearningProfileController;
 use App\Http\Controllers\LegalController;
 use App\Http\Controllers\LessonFinalTestAttemptController;
 use App\Http\Controllers\LessonProgressController;
+use App\Http\Controllers\StudentLessonAnswersController;
 use App\Http\Controllers\MadarController;
 use App\Http\Controllers\MathLabDocumentController;
 use App\Http\Controllers\MathLabFileController;
@@ -250,6 +252,9 @@ Route::prefix('v1')->group(function () {
             Route::middleware('learner')->group(function () {
                 Route::post('/lessons/{lessonCode}/evidence', [LearningEvidenceController::class, 'store']);
                 Route::put('/lessons/{lessonCode}/progress', [LessonProgressController::class, 'upsert']);
+                // les réponses de l'élève pendant la leçon : à LUI seul (StudentLessonAnswersController, pilote 2026-11-07)
+                Route::get('/lessons/{lessonCode}/answers', [StudentLessonAnswersController::class, 'show']);
+                Route::put('/lessons/{lessonCode}/answers', [StudentLessonAnswersController::class, 'upsert']);
                 Route::put('/lessons/{lessonCode}/final-test-attempt', [LessonFinalTestAttemptController::class, 'store']);
                 Route::delete('/lessons/{lessonCode}/final-test-attempt', [LessonFinalTestAttemptController::class, 'destroy']);
 
@@ -263,6 +268,16 @@ Route::prefix('v1')->group(function () {
                 Route::post('/daily-challenge/attempts/{uuid}/answers', [DailyChallengeController::class, 'answer'])->whereUuid('uuid')->middleware('throttle:60,1');
                 Route::post('/daily-challenge/attempts/{uuid}/complete', [DailyChallengeController::class, 'complete'])->whereUuid('uuid');
                 Route::get('/daily-challenge/attempts/{uuid}/review', [DailyChallengeController::class, 'review'])->whereUuid('uuid');
+
+                // « بوصلتي » — la jauge de départ et sa خطّة (YEAR_COMPASS.md). Élève seulement :
+                // le serveur sert les questions SANS clé, corrige, et recalcule les bandes ;
+                // jamais une preuve de maîtrise.
+                Route::get('/compass', [CompassController::class, 'show']);
+                Route::put('/compass/pointer', [CompassController::class, 'pointer'])->middleware('throttle:30,1');
+                Route::post('/compass/sessions', [CompassController::class, 'start'])->middleware('throttle:10,1');
+                Route::post('/compass/sessions/{uuid}/questions', [CompassController::class, 'question'])->whereUuid('uuid')->middleware('throttle:60,1');
+                Route::post('/compass/sessions/{uuid}/answers', [CompassController::class, 'answer'])->whereUuid('uuid')->middleware('throttle:60,1');
+                Route::post('/compass/sessions/{uuid}/finish', [CompassController::class, 'finish'])->whereUuid('uuid')->middleware('throttle:10,1');
 
                 // « مختبر التفكير » — l'échelle des défis (THINKING_LAB.md). Élève seulement :
                 // le serveur juge, compte et ouvre la porte ; rien de la réponse avant elle.

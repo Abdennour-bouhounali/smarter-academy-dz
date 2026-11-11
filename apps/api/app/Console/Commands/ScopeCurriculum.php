@@ -96,6 +96,12 @@ class ScopeCurriculum extends Command
         // « مدار » : une question d'approvisionnement référence une leçon et un
         // point, et porte la réponse de l'élève. Donnée élève : elle bloque.
         'madar_refuels' => 'cascade',
+        // Les réponses de l'élève DANS la leçon (mission player, « قاعدتي ») :
+        // donnée élève privée. Elle bloque la commande.
+        'student_lesson_answers' => 'cascade',
+        // Le réglage d'un enseignant sur les labs d'une leçon : un réglage, pas
+        // une donnée élève — il meurt avec sa leçon, comme classroom_lessons.
+        'teacher_lab_settings' => 'cascade',
     ];
 
     /**
@@ -115,6 +121,7 @@ class ScopeCurriculum extends Command
         'learning_point_state_transitions',
         'daily_challenge_questions',
         'madar_refuels',
+        'student_lesson_answers',
     ];
 
     public function handle(): int
@@ -358,7 +365,7 @@ class ScopeCurriculum extends Command
             'student_lesson_progress', 'lesson_final_test_attempts',
             'practice_sessions', 'notebook_notes', 'student_reports',
             'assessment_items', 'classroom_interventions', 'daily_challenge_questions',
-            'madar_refuels',
+            'madar_refuels', 'student_lesson_answers', 'teacher_lab_settings',
         ];
 
         $counts = [];

@@ -82,7 +82,7 @@ export default function ExamLevelCards({ lessonCode, levels, recommendedLevel, o
                   <span className={`block h-full rounded-full ${done ? 'bg-emerald-500' : 'bg-[#1f5c4c]'}`} style={{ width: `${Math.round(ratio * 100)}%` }} />
                 </span>
                 <p className="text-xs font-semibold text-slate-600">
-                  <bdi dir="ltr" className="font-bold tabular-nums text-slate-800">{level.completedCount} / {level.exerciseCount}</bdi>{' '}{t('practice.lp.exercises')}
+                  <bdi dir="ltr" className="font-bold tabular-nums text-slate-800">{level.completedCount}{'\u00A0/\u00A0'}{level.exerciseCount}</bdi>{' '}{t('practice.lp.exercises')}
                 </p>
               </div>
             ) : (

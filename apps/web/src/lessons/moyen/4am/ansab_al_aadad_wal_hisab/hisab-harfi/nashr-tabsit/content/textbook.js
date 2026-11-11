@@ -28,7 +28,7 @@ export const ACTIVITY = {
     '2) ميّز بين العبارات التي تدلّ على مجموع والعبارات التي تدل على جداء فيما يلي: $x(3x + 1)$ ، $x + (3 - 2x)$ ، $5x(1 - x)$ ، $x(x + 1) - 2 + (x + 1)$ و $(3x - 1)(3 + x)$.',
     '3) انشر كل عبارة مما يلي وبسّطها: $x(3x + 1)$ ، $5x(1 - x)$ و $(3x - 1)(3 + x)$. اذكر في كل حالة الخاصية التي اعتمدت عليها.',
   ],
-  correctionNote: 'صحّحت المنصّة خطأً مطبعيًا في نص الكتاب: المكتوب $3x(9 + 5)$ يُقرأ $3 \\times (9 + 5)$، فالحرف x هنا علامة ضرب.',
+  // (la lecture CORRIGÉE de la question 1 — « 3x(9 + 5) » se lit 3 × (9 + 5) — n'est plus montrée : indépendance du manuel, 2026-11-11)
   // Les nombres du livre, lus par le module et par la carte (jamais retapés).
   numbers: {
     q1a: { k: 3, a: 9, b: 5 },

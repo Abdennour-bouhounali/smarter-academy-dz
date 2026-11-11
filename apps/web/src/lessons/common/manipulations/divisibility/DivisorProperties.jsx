@@ -19,6 +19,10 @@ import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
 import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
 import { playSfx } from '../../utils/playEffect';
 import { ordered } from './cpOrder';
+import PredictTray from '../primitives/PredictTray';
+import RolesEquation from '../primitives/RolesEquation';
+import { useInMissionPlayer } from '../../mission/missionPlayerContext';
+import { chipsAround, buildTiles } from './divisionChecks';
 import * as L from '../logic/divisorProperties';
 
 const NS = 'manipulation.props';
@@ -68,9 +72,25 @@ const targetOfZone = (zoneId) => ZONES.find((z) => `zone:${z.id}` === zoneId)?.t
 
 export default function DivisorProperties({
   n: n0, a: a0, b: b0, title, lead, mission, initialMode = 'student', allowModeSwitch = false, onFinished, onTrial, coach: coachOn = true, checkpoints: cpOn = true,
+  // ── LECTEUR DE MISSION (rollout 2026-11-08, traitement v2 du labo) ──
+  // chaque mur bâti remonte à la manche : onVerdict({ groups: 1 | 2 | 3 (ألصق · انزع · قِس), exact: true, target })
+  onVerdict,
+  // false : pas de sélecteur مبتدئ / متقدم (le lecteur joue en manches, LabRounds)
+  levels: withLevels = true,
+  // true : l'élève a DÉJÀ porté le mur à la main (manche 1) — chaque zone devient un BOUTON (le geste appris)
+  handDone = false,
+  // les murs dont on pose les questions ('sum', 'diff', 'rem') ; [] : aucune
+  chains: chainsOn = ['sum', 'diff', 'rem'],
+  // true : PRÉDIRE (« طوب كامل » ?) avant de bâtir chaque mur, dans la colonne (au lieu des boutons d'un niveau متقدم)
+  predict: predictOn = false,
+  // des triplets { n, a, b } à essayer (terrain libre)
+  choices,
+  // des triplets { n, a, b } joués l'un après l'autre DANS la même manche : quand les trois murs d'un cas sont bâtis, le cas suivant s'ouvre
+  sequence,
 }) {
   const { t } = useTranslation('lesson');
-  const state = useManipulation({ type: 'divisor-properties', initialNumbers: { n: n0, a: a0, b: b0 }, initialMode, hintCount: 3 });
+  const gameScreen = useInMissionPlayer();
+  const state = useManipulation({ type: 'divisor-properties', initialNumbers: { n: n0, a: a0, b: b0 }, initialMode, hintCount: 3, withLevels: withLevels !== false });
   const { n, a, b } = state.numbers;
   const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
   const [lab, setLab] = useState(() => L.init({ n: n0, a: a0, b: b0 }));
@@ -79,15 +99,22 @@ export default function DivisorProperties({
   // « إعادة », d'autres nombres ou un autre niveau : TOUT recommence — les murs, les questions du labo, la fête
   const sceneKey = `${n}|${a}|${b}|${state.epoch}|${state.resetCount}`;
   const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init({ n, a, b })); setReject(null); }
+  // lecteur : le mur qui attend sa PRÉDICTION, la dernière prédiction jugée, la prédiction mission en grand
+  // l'indice du cas courant dans `sequence` (déduit des nombres : « إعادة » le ramène seul au premier)
+  const seqIdx = sequence ? sequence.findIndex((c) => c.n === n && c.a === a && c.b === b) : -1;
+  const [predTarget, setPredTarget] = useState(null);
+  const [lastPred, setLastPred] = useState(null);
+  const [missionBig, setMissionBig] = useState(false);
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init({ n, a, b })); setReject(null); setPredTarget(null); setLastPred(null); }
   const [answered, setAnswered] = useState({ key: sceneKey, ids: [] });
   const answeredIds = answered.key === sceneKey ? answered.ids : [];
 
   // les questions pendant le labo : la suite du premier mur bâti dont les questions ne sont pas finies
   const cpSettings = useLabCheckpointSettings('divisor-properties');   // obligatoires pour tout élève ; l'enseignant seul peut les couper, pour SON compte
   const ruleByCheckpoint = cpOn && cpSettings.enabled;
-  const pending = ruleByCheckpoint ? lab.built.find((x) => !answeredIds.includes(x)) : null;
-  const chain = pending ? CHAINS[pending] : null;
+  const chainSet = gameScreen ? CHAINS_PLAYER : CHAINS;
+  const pending = ruleByCheckpoint ? lab.built.find((x) => !answeredIds.includes(x) && chainsOn.includes(x)) : null;
+  const chain = pending ? chainSet[pending] : null;
   const cp = useLabCheckpoint({
     id: chain ? pending : null,
     questions: chain ? chain.map((q) => QUESTIONS[q]({ n, a, b, lab }, k)) : null,
@@ -97,14 +124,16 @@ export default function DivisorProperties({
     onEvent: (ev) => state.report(onTrial, ev),
     onDone: (id) => {
       setAnswered((x) => ({ key: sceneKey, ids: [...(x.key === sceneKey ? x.ids : []), id] }));
-      if (CHAINS[id].includes('rule')) { state.discover(); state.formalize(); }
+      if (chainSet[id].includes('rule')) { state.discover(); state.formalize(); }
     },
   });
-  const stepDone = L.TARGETS.map((x) => lab.built.includes(x) && (!ruleByCheckpoint || answeredIds.includes(x)));
+  const stepDone = L.TARGETS.map((x) => lab.built.includes(x) && (!ruleByCheckpoint || answeredIds.includes(x) || !chainsOn.includes(x)));
   const party = useStepCelebration();
   const celebrated = useRef({ key: sceneKey, set: new Set() });
   if (celebrated.current.key !== sceneKey) celebrated.current = { key: sceneKey, set: new Set() };
   useEffect(() => {
+    // lecteur : sans étapier (manches sans questions) la fête « أنهيت كل المهام » ne doit pas couper une manche qui continue (la suite de cas)
+    if (gameScreen && (!ruleByCheckpoint || chainsOn.length === 0)) return;
     stepDone.forEach((d, i) => {
       if (!d || celebrated.current.set.has(i)) return;
       celebrated.current.set.add(i);
@@ -124,7 +153,43 @@ export default function DivisorProperties({
     }
   }, [lab.built.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // lecteur : chaque mur bâti est annoncé UNE fois à la manche (groups = 1 ألصق · 2 انزع · 3 قِس)
+  const reported = useRef({ key: sceneKey, set: new Set() });
+  if (reported.current.key !== sceneKey) reported.current = { key: sceneKey, set: new Set() };
+  useEffect(() => {
+    lab.built.forEach((tg) => {
+      if (reported.current.set.has(tg)) return;
+      reported.current.set.add(tg);
+      state.report(onVerdict, { groups: Math.max(seqIdx, 0) * L.TARGETS.length + L.TARGETS.indexOf(tg) + 1, exact: true, target: tg });
+    });
+  }, [lab.built.join()]); // eslint-disable-line react-hooks/exhaustive-deps
+  // la suite de cas : les trois murs bâtis (et leurs questions faites), le cas suivant s'ouvre après un court instant pour voir le dernier mur
+  useEffect(() => {
+    if (!sequence || seqIdx < 0 || seqIdx >= sequence.length - 1 || !L.discoveryReady(lab) || cp.open || predTarget) return undefined;
+    const id = setTimeout(() => state.setNumbers(sequence[seqIdx + 1]), 1600);
+    return () => clearTimeout(id);
+  }, [lab.built.join(), seqIdx, cp.open, predTarget]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const isAdvanced = state.level === 'advanced';
+  // lecteur : prédire avant de bâtir (gratuit, jugé par le mur, compte pour l'étoile) — jamais pendant une suite de questions
+  const predictGate = gameScreen && predictOn && ruleByCheckpoint;
+  const requestBuild = (target) => {
+    if (lab.built.includes(target)) return;
+    if (predictGate && !lab.predictions[target]) { setPredTarget(target); return; }
+    setLab((s) => L.build(s, target));
+  };
+  const sayPredict = (says) => {
+    const tg = predTarget;
+    const ok = says === L.outcome(lab, tg);
+    playSfx(ok ? 'correct' : 'pop');
+    setLastPred({ target: tg, ok });
+    state.report(onTrial, { tk: 'predict', ok });
+    setPredTarget(null);
+    setLab((s) => L.build(L.predict(s, tg, says), tg));
+  };
+  const hideAnswers = gameScreen && cp.open;
+  const predictOpen = gameScreen && !missionBig && predTarget != null && !cp.open;
+  const locked = gameScreen && (cp.open || predictOpen);
   const coachStep = coachOn && !cp.open ? L.coachOf(lab, { advanced: isAdvanced }) : null;
   const coachK = (key, o) => t(`manipulation.props.coach.${key}`, o);
   const coach = useLabCoach({
@@ -138,6 +203,7 @@ export default function DivisorProperties({
       if (sourceId === 'wall:b') {
         const target = targetOfZone(zoneId);
         if (!target) return;
+        if (gameScreen) { requestBuild(target); return; }
         setLab((s) => L.build(s, target));
       }
     },
@@ -146,6 +212,7 @@ export default function DivisorProperties({
         const target = targetOfZone(zoneId);
         // Un mur déjà bâti : geste sans effet (refus muet, pas une erreur).
         if (target && lab.built.includes(target)) return '';
+        if (gameScreen) return target ? true : 'wrongZone';
         return target ? L.canBuild(lab, target, { requirePrediction: isAdvanced }) : 'wrongZone';
       }
       return 'wrongZone';
@@ -154,7 +221,7 @@ export default function DivisorProperties({
   });
 
   // La découverte suit les trois murs bâtis — dans un effet, pas un updater.
-  const ready = L.discoveryReady(lab) && !ruleByCheckpoint;
+  const ready = L.discoveryReady(lab) && !ruleByCheckpoint && !gameScreen;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -165,6 +232,11 @@ export default function DivisorProperties({
   const dropLabel = (id) => t(`manipulation.props.drop${id[0].toUpperCase()}${id.slice(1)}`);
   const meas = measureLayout({ a, b, unit: n });
   const cm = (v) => `${v}`;
+  // lecteur : la prédiction ou la question PREND la colonne du labo (le chantier garde toute sa largeur)
+  const trayNode = !gameScreen ? null : predictOpen ? (
+    <PredictTray attr="dp" title={k('cp.predictTray.title')} prompt={k(`cp.predictTray.${predTarget}`, { n, a, b })}
+      options={[{ says: 'whole', text: k('predictWhole') }, { says: 'partial', text: k('predictPartial') }]} onSay={sayPredict} />
+  ) : cp.open ? cp.node : null;
 
   /** Le mur RÉSULTAT d'une zone, en segments de couleur, tous en briques de n. */
   const resultSegments = (target) => {
@@ -198,7 +270,7 @@ export default function DivisorProperties({
     <ManipulationShell
       type="divisor-properties"
       title={title ?? t('manipulation.props.title')}
-      mission={mission ?? t('manipulation.props.wallMission', { n, a, b })}
+      mission={mission ?? t(gameScreen && handDone ? 'manipulation.props.missionButton' : 'manipulation.props.wallMission', { n, a, b })}
       lead={lead}
       state={state}
       coach={coachOn ? coach : null}
@@ -206,7 +278,12 @@ export default function DivisorProperties({
       validate={(x) => (x.a % x.n !== 0 || x.b % x.n !== 0 ? t('manipulation.props.mustDivideBoth') : x.a < x.b ? t('manipulation.props.aBeforeB') : '')}
       allowModeSwitch={allowModeSwitch}
       headerAction={cpOn ? cpSettings.control : null}
-      guided={!!chain || ruleByCheckpoint}
+      // lecteur : l'écran de jeu est toujours GUIDÉ ; la question / la prédiction prend la colonne ; le résultat écrit ne donne jamais la réponse
+      guided={!!chain || ruleByCheckpoint || gameScreen}
+      hideRepresentation={hideAnswers || gameScreen}
+      onIntroChange={setMissionBig}
+      sidePanel={trayNode ? <div data-dp-tray>{trayNode}</div> : null}
+      allowFreeLab={!gameScreen}
       hints={[t('manipulation.props.hint1', { a, b }), t('manipulation.props.hint2'), t('manipulation.props.hint3', { n })]}
       // (réf. §6bis : MANUEL — trois opérations distinctes, rien ne se répète.)
       controller={{
@@ -219,7 +296,7 @@ export default function DivisorProperties({
         canAutoStep: () => lab.built.length < L.TARGETS.length,
         showSolution: () => { setLab((s) => L.TARGETS.reduce((acc, x) => L.build(acc, x), s)); state.discover(); state.formalize(); },
       }}
-      representation={lab.built.length > 0 && (
+      representation={!gameScreen && lab.built.length > 0 && (
         <div className="space-y-2">
           {lab.built.map((target) => {
             const r = L.blocks(lab, target);
@@ -245,12 +322,36 @@ export default function DivisorProperties({
       )}
       explanation={t('manipulation.props.explanation')}
     >
-      <div className="relative min-h-[600px]" data-dp-glance>
+      <div className={`relative ${gameScreen ? '' : 'min-h-[600px]'}`} data-dp-glance>
       {party.node}
-      {cp.node}
+      {!(gameScreen && cp.open) && cp.node}
       <ManipulationStage dragging={drag.dragging} className="bg-gradient-to-b from-orange-50/60 to-white">
         <div className="space-y-3" data-brick-site>
-          <LabStepper count={L.TARGETS.length} current={Math.max(0, stepDone.indexOf(false))} done={stepDone} stepAttr="data-dp-step" />
+          {!(gameScreen && (!ruleByCheckpoint || chainsOn.length === 0)) && <LabStepper count={L.TARGETS.length} current={Math.max(0, stepDone.indexOf(false))} done={stepDone} stepAttr="data-dp-step" />}
+          {gameScreen && lastPred && lab.built.includes(lastPred.target) && lab.built[lab.built.length - 1] === lastPred.target && !cp.open && (
+            <p role="status" data-dp-predict-result={lastPred.ok ? 'ok' : 'wrong'}
+              className={`rounded-2xl px-4 py-2 text-center text-lg font-black ${lastPred.ok ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>
+              {lastPred.ok ? k('cp.predictTray.right') : k('cp.predictTray.wrong')}
+            </p>
+          )}
+          {gameScreen && sequence?.length > 1 && seqIdx >= 0 && (
+            <p className="text-sm font-black text-indigo-900" data-dp-case>{k('cp.caseOf', { i: seqIdx + 1, m: sequence.length })}</p>
+          )}
+          {gameScreen && choices?.length > 0 && (
+            <div className="flex flex-wrap items-center gap-1.5" data-dp-choices>
+              <span className="text-xs font-bold text-slate-700">{k('cp.choicesLabel')}</span>
+              <div dir="ltr" className="flex flex-wrap gap-1.5" role="group" aria-label={k('cp.choicesLabel')}>
+                {choices.map((c) => (
+                  <button key={`${c.n}|${c.a}|${c.b}`} type="button" data-dp-choice={`${c.n}|${c.a}|${c.b}`} onClick={() => state.setNumbers({ n: c.n, a: c.a, b: c.b })}
+                    className={`min-h-[44px] rounded-xl border-2 px-3 font-mono text-sm font-extrabold ${c.n === n && c.a === a && c.b === b ? 'border-emerald-600 bg-emerald-600 text-white' : 'border-slate-300 bg-white text-slate-800'}`}>
+                    {c.n} | {c.a} , {c.b}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          <div className={gameScreen ? 'grid grid-cols-[minmax(0,1fr)_15rem] items-start gap-3' : 'space-y-3'}>
+          <div className={`space-y-3 ${locked ? 'pointer-events-none opacity-60' : ''}`} aria-disabled={locked || undefined} data-dp-controls={locked ? 'locked' : 'open'}>
           {/* ── LES DEUX MURS, bâtis en briques de n, à la même échelle ──── */}
           <div className="space-y-2 rounded-2xl border-2 border-slate-200 bg-white p-2">
             <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-slate-700">
@@ -258,11 +359,11 @@ export default function DivisorProperties({
               <span>{t('manipulation.props.brickOf', { n })}</span>
             </div>
             <div className="space-y-1">
-              <div className="text-[11px] font-bold text-slate-600">{t('manipulation.props.wallA')}: {eq(`${a} = ${n} × ${lab.q}`)}</div>
+              <div className="text-[11px] font-bold text-slate-600">{t('manipulation.props.wallA')}: {hideAnswers ? eq(`${a}`) : eq(`${a} = ${n} × ${lab.q}`)}</div>
               <BrickWall value={a} unit={n} scale={scale} tone="a" />
             </div>
             <div className="space-y-1">
-              <div className="text-[11px] font-bold text-slate-600">{t('manipulation.props.wallB')}: {eq(`${b} = ${n} × ${lab.qp}`)}</div>
+              <div className="text-[11px] font-bold text-slate-600">{t('manipulation.props.wallB')}: {hideAnswers ? eq(`${b}`) : eq(`${b} = ${n} × ${lab.qp}`)}</div>
               {/* LE MUR DE b : c'est LUI qu'on porte. Il reste à sa place
                   (l'objet de référence ne disparaît pas) et sa copie va
                   dans la zone choisie. */}
@@ -290,8 +391,14 @@ export default function DivisorProperties({
                   {built ? (
                     <div className="space-y-1">
                       <BrickWall unit={n} scale={scale} segments={resultSegments(z.target)} />
-                      <p className="text-xs font-bold text-emerald-800">{resultNote(z.target)}</p>
+                      {!hideAnswers && <p className="text-xs font-bold text-emerald-800">{resultNote(z.target)}</p>}
                     </div>
+                  ) : gameScreen && handDone ? (
+                    // le geste est appris : la zone devient un BOUTON
+                    <button type="button" data-dp-build={z.target} onClick={(e) => { e.stopPropagation(); requestBuild(z.target); }}
+                      className="min-h-[48px] w-full rounded-xl bg-indigo-600 px-4 text-base font-black text-white shadow-[0_3px_0_0_#3730A3] hover:bg-indigo-700 active:translate-y-0.5">
+                      {dropLabel(z.id)}
+                    </button>
                   ) : isAdvanced ? (
                     // LA PRÉDICTION : on s'engage AVANT de voir le mur.
                     <div className="flex flex-wrap items-center gap-1.5" data-prediction={lab.predictions[z.target] ?? ''}>
@@ -313,6 +420,9 @@ export default function DivisorProperties({
           </div>
 
           {reject && <p role="status" className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">{t(`manipulation.props.reject.${reject}`)}</p>}
+          </div>
+          {gameScreen && lab.built.length > 0 && !hideAnswers && <WallTrials lab={lab} n={n} k={k} />}
+          </div>
         </div>
       </ManipulationStage>
       </div>
@@ -330,6 +440,31 @@ export default function DivisorProperties({
 
 /* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
 
+/** Lecteur : les murs bâtis par l'élève, dans l'ordre (« جدول تجاربك ») : l'opération, la longueur, les briques entières. */
+const TRIAL_LABEL = { sum: 'a + b', diff: 'a − b', rem: 'r' };
+function WallTrials({ lab, n, k }) {
+  return (
+    <div className="overflow-hidden rounded-2xl border-2 border-indigo-100 bg-white" data-dp-trials>
+      <p className="bg-indigo-50 px-2 py-1 text-sm font-black text-indigo-900">📋 {k('cp.trials.title')}</p>
+      <table className="w-full text-center">
+        <thead className="text-[11px] font-black text-slate-500">
+          <tr><th className="px-1 py-0.5">{k('cp.trials.op')}</th><th className="px-1 py-0.5">{k('cp.trials.length')}</th><th className="px-1 py-0.5">{k('cp.trials.bricks', { n })}</th></tr>
+        </thead>
+        <tbody>
+          {lab.built.map((tg) => {
+            const r = L.blocks(lab, tg);
+            return (
+              <tr key={tg} data-dp-trial={tg} className="border-t border-indigo-50 bg-emerald-50 text-base font-black text-emerald-800">
+                <td className="px-1 py-0.5" dir="ltr">{TRIAL_LABEL[tg]}</td><td className="px-1 py-0.5">{r.value}</td><td className="px-1 py-0.5">{r.count} ✓</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 /** La suite de questions de chaque mur bâti : elle interroge ce que l'élève vient de FAIRE ; celle du reste finit par la RÈGLE. */
 export const CHAINS = Object.freeze({
   sum: ['sumCount', 'sumWhole'],
@@ -337,11 +472,64 @@ export const CHAINS = Object.freeze({
   rem: ['remPanels', 'remBricks', 'rule'],
 });
 
+/** Lecteur (rollout 2026-11-08) : observer d'un toucher (`fill`), puis — pour le reste — BÂTIR a = b × k + r ; la règle finit toujours. */
+export const CHAINS_PLAYER = Object.freeze({
+  sum: ['sumObserve', 'sumWhole'],
+  diff: ['diffObserve', 'diffWhole'],
+  rem: ['remObserve', 'remBuild', 'rule'],
+});
+
 const $ = (x) => `$${x}$`;
 const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
 
 /** Chaque question est construite sur LES nombres de l'élève (rien n'est écrit en dur) ; `k` : les textes de `props`. */
 const BUILD = {
+  // « طوب الجدار الأول ▢ · طوب الجدار الثاني ▢ » : ce que les DEUX murs collés montrent, d'un toucher
+  sumObserve: ({ n, a, b, lab }, k) => {
+    const o = { n, a, b, q: lab.q, qp: lab.qp, c: lab.q + lab.qp };
+    return {
+      id: 'sumObserve', kind: 'fill', prompt: Mx(k, 'sumObserve.prompt', o),
+      fields: [
+        { label: k('cp.sumObserve.first'), expected: lab.q, options: chipsAround(lab.q, { min: 1 }) },
+        { label: k('cp.sumObserve.second'), expected: lab.qp, options: chipsAround(lab.qp, { min: 1 }) },
+      ],
+      hints: [Mx(k, 'sumObserve.hint1'), Mx(k, 'sumObserve.hint2')], explain: Mx(k, 'sumObserve.explain', { ...o, calc: $(`${a}+${b}=${n}\\times(${lab.q}+${lab.qp})=${n}\\times${lab.q + lab.qp}`) }),
+    };
+  },
+  diffObserve: ({ n, a, b, lab }, k) => {
+    const c = lab.q - lab.qp;
+    const o = { n, a, b, c };
+    return {
+      id: 'diffObserve', kind: 'fill', prompt: Mx(k, 'diffObserve.prompt', o),
+      fields: [{ label: k('cp.diffObserve.left'), expected: c, options: chipsAround(c, { min: 0 }) }],
+      hints: [Mx(k, 'diffObserve.hint1'), Mx(k, 'diffObserve.hint2')], explain: Mx(k, 'diffObserve.explain', { ...o, calc: $(`${a}-${b}=${n}\\times(${lab.q}-${lab.qp})=${n}\\times${c}`) }),
+    };
+  },
+  remObserve: ({ n, a, b, lab }, k) => {
+    const c = lab.r / n;
+    const o = { n, a, b, panels: lab.k, r: lab.r, c };
+    return {
+      id: 'remObserve', kind: 'fill', prompt: Mx(k, 'remObserve.prompt', o),
+      fields: [
+        { label: k('cp.remObserve.panels'), expected: lab.k, options: chipsAround(lab.k, { min: 0 }) },
+        { label: k('cp.remObserve.bricks'), expected: c, options: chipsAround(c, { min: 0 }) },
+      ],
+      hints: [Mx(k, 'remObserve.hint1'), Mx(k, 'remObserve.hint2')], explain: Mx(k, 'remObserve.explain', o),
+    };
+  },
+  // l'égalité de la division BÂTIE : a = b × k + r (chaque emplacement porte son sens)
+  remBuild: ({ n, a, b, lab }, k) => ({
+    id: 'remBuild', kind: 'build', prompt: Mx(k, 'remBuild.prompt'),
+    slots: [k('cp.remBuild.slotA'), k('cp.remBuild.slotB'), k('cp.remBuild.slotK'), k('cp.remBuild.slotR')],
+    tiles: buildTiles({ n: a, g: b, q: lab.k, r: lab.r }), expected: [a, b, lab.k, lab.r],
+    hints: [Mx(k, 'remBuild.hint1'), Mx(k, 'remBuild.hint2')],
+    explain: (
+      <div className="space-y-2">
+        <RolesEquation n={a} g={b} q={lab.k} r={lab.r} labels={{ n: k('cp.roles.a'), g: k('cp.roles.b'), q: k('cp.roles.k'), r: k('cp.roles.r') }} />
+        <p>{k('cp.remBuild.explainRoles')}</p>
+      </div>
+    ),
+  }),
   sumCount: ({ n, a, b, lab }, k) => {
     const c = lab.q + lab.qp;
     return {

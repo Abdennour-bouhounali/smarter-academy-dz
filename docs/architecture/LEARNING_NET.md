@@ -241,8 +241,28 @@ An "every LP depends on every LP of the review lesson" rule would write hundreds
 the owner has not validated (D1). `RecommendationService` and the teacher map would then name prerequisites that do
 not exist yet. The precise LP→LP edges are written when a lesson is generated, on its final الكفاءات and only
 along a net link (§4.6). Until then cross-year navigation is lesson- and item-level: the « راجع » panel, the « راجع »
-after an error, and the prerequisite chips. The 4AM lessons' `prerequisiteLessonCodes` are unchanged (4AM only);
-their cross-year links come from the net at run time.
+after an error, and the prerequisite chips. The 4AM lessons' `prerequisiteLessonCodes` were left 4AM-only by phase 2;
+their cross-year links come from the net at run time. Since 2026-11-07 a 4AM lesson connected to its PUBLISHED earlier-year
+lessons also lists them there (first: `qasim-adad-tabii` ← `qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma`), so « المتطلبات السابقة »
+shows them as clickable chips with their year, and the free-text `prerequisites` they replace are removed (no duplicate chip). Second
+(2026-11-09, unit 2 mission rollout): `jidhr-tarbii` ← `quwat-adad-nisbi`, `khassiyat-fitaghuras` (3AM, the net's `requires` links of its items) — its
+« أستعدّ » review and « راجع قبل أن تنطلق » were empty without them. Third (2026-11-10, unit 9 mission rollout): `aksiya-talis` ← `talis-hisab-atwal` (4AM) + `amaliyat-natiqa` (3AM, the net's
+`3am.m1.r08 → 4am.m2.r01` link); its free-text « حساب واختبار تساوي نسبتين (كسرين) » removed (council of 2026-11-10: a `coming_soon` lesson is
+never a revise target). Fourth (the same day): `inshaat-talis` ← `talis-hisab-atwal` (already there) + `amaliyat-natiqa` (3AM, the same link — the
+lesson builds a point from a RATIO of lengths); its two free-text prerequisites stay (no lesson replaces « الإنشاءات الهندسية الأساسية »). Fifth (the
+same day): `talis-hisab-atwal` ← `amaliyat-natiqa` (3AM, the same link; it was `[]`, so « راجع قبل أن تنطلق » was empty); its two free-text
+prerequisites stay — « مستقيم المنتصفين » (3AM) is still `coming_soon`, so it is NOT a revise target (council of 2026-11-10). Its « أستعدّ »
+revises `tasawi-muqaranat-kasrayn` (3AM) and `rabi-mutanasib` (2AM), the published lessons that TEACH what its ten statements test.
+Sixth (2026-11-11, unit 3 mission rollout, council verdict L1.6): `nashr-tabsit` ← `nashr-jabri-3am` + `tabsit-hadhf-aqwas` (3AM). The net has NO
+`requires` link into `4am.m3.r02`: its only review link is `3am.m5.r02 → 4am.m3.r02` (`extends`, home `nashr-jabri-3am`). **An `extends` home counts
+as a prerequisite lesson** (the 4AM item consolidates what that lesson taught; « راجع قبل أن تنطلق » was empty without it); `tabsit-hadhf-aqwas`
+(`3am.m5.r01`, one `requires` step further) is the lesson its « أستعدّ » skill « تبسيط عبارة وحذف الأقواس » revises. Its two free-text prerequisites
+that these lessons replace are removed; « أولويات العمليات… » stays.
+Seventh (2026-11-11, unit 4 mission rollout, council verdicts L1.8, L3.7, L4.6): `muadala-ula` ← `muadalat-darajat-ula` + `musawiyat-amaliyat` (3AM,
+the lessons that teach solving a first-degree equation and operating on both sides of an equality — `muadala-ula` is a recall lesson of `3am.m5.r06`),
+`nashr-tabsit` kept; `mutarajiha-ula` ← `mutabayinat-amaliyat` (3AM, operations on inequalities) + `muqarana-nisbiya` (2AM, comparing relative numbers),
+`muadala-ula` kept; `tarrid-mushkila` ← `muadalat-darajat-ula` (3AM, translating a situation into an equation) added before its three 4AM prerequisites.
+`jidaa-maadum` unchanged (`muadala-ula`, `tahlil-ibara`, verdict L2.9).
 
 **Database — imported, closed, ignored by Mastery V2.**
 
@@ -310,6 +330,11 @@ These rules complete `LESSON_DEVELOPMENT_GUIDE.md` §14.2 for any year other tha
    « تذكّر — السنة الثانية » box gains its `getLessonPath` link in the same commit (`feat(lessons): connect …`). Where the net has
    no link (`wasf-silsila-hisab` → `tabsit-hadhf-aqwas`, `tawzi-darb-jam-tarh` → `nashr-jabri-3am` …) no edge is written; the
    link is an owner question. 4AM is reached only through these 3AM lessons (no `2am.m1` item links straight into 4AM).
+   First cross-year LP edges INTO a 4AM lesson (2026-11-07, `qasim-adad-tabii`, item `4am.m1.r01`): P1 ← `1am_qisma-iqlidiya-baqi_P1` +
+   `1am_qawaid-qabiliyat-qisma_P4`, P2 ← `1am_qisma-iqlidiya-baqi_P2`, P3 ← `1am_qawaid-qabiliyat-qisma_P4`, along `1am.m3.r01 → 4am.m1.r01`
+   (`requires`) and `1am.m3.r02 → 4am.m1.r01` (`extends`); both lessons are also in its `prerequisiteLessonCodes` (§3bis); the 2AM lesson
+   `qisma-iqlidiya-hasr` (2am.m1.r04) gets no edge — the net links it to 4am.m1.r03, not r01. `decomposition.test.js` accepts an
+   earlier-year LP only when its lesson is published, and an earlier-year prerequisite lesson from anywhere in the cycle.
    The unit's extraction is written whole; its elements destined to lessons not yet generated are « en attente » in
    `check:textbook` (`LESSON_DEVELOPMENT_GUIDE.md` § « Generating a 1AM–3AM unit LESSON BY LESSON »).
 

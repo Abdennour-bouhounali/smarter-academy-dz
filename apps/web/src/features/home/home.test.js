@@ -1,14 +1,12 @@
 import { describe, it, expect } from 'vitest';
 import { buildProgressionTree } from '../progression/buildProgressionTree';
-import { pickWorkNow } from '../progression/pickWorkNow';
-import { pickHomeNextStep } from './pickHomeNextStep';
 import { pickCurriculumContext, indexTreeByLesson, indexCurriculum } from './curriculumContext';
 
 /**
  * Un catalogue MINIMAL à la forme de coursesData.js et une activité à la
  * forme de getStudentActivity — la même fixture que progression.test.js.
- * Ces tests verrouillent la RÈGLE du héros et la tranche « أين أنت », pas
- * des intitulés.
+ * Ces tests verrouillent la tranche « أين أنت » et les index (repliés sous
+ * « المزيد » depuis l'accueil mené par بوصلتي, 2026-11-09), pas des intitulés.
  */
 function lp(code, n) {
   return { id: `4am_${code}_P${n}`, title: `نقطة ${code} ${n}`, order: n };
@@ -41,47 +39,6 @@ function mastery(lessonId, states) {
   }];
 }
 const getModulePath = (id, n) => `/courses/moyen/4am/ch/${id}/m${n}`;
-
-describe('pickHomeNextStep — la règle du héros', () => {
-  const resume = { progress: 40, course: a, resumePath: '/x' };
-
-  it('une leçon entamée passe avant tout, même une lacune de maîtrise', () => {
-    const step = pickHomeNextStep({ resume, workItems: [{ point: { state: 'gap' } }], profileStatus: 'ready', lessons: [entry(a)] });
-    expect(step.kind).toBe('continue');
-    expect(step.resume).toBe(resume);
-  });
-
-  it('une leçon proposée à 0 % est « la suivante », pas « à continuer »', () => {
-    expect(pickHomeNextStep({ resume: { ...resume, progress: 0 }, profileStatus: 'ready' }).kind).toBe('next');
-  });
-
-  it('sans reprise, on attend le profil avant de trancher', () => {
-    expect(pickHomeNextStep({ resume: null, workItems: [], profileStatus: 'loading', lessons: [entry(a)] }).kind).toBe('loading');
-  });
-
-  it('sans reprise et profil prêt : la lacune de maîtrise, si elle existe', () => {
-    const item = { point: { state: 'gap', title: 'p' } };
-    const step = pickHomeNextStep({ resume: null, workItems: [item], profileStatus: 'ready', lessons: [entry(a)] });
-    expect(step.kind).toBe('mastery');
-    expect(step.item).toBe(item);
-  });
-
-  it('sans reprise ni lacune : la première leçon non terminée de la classe', () => {
-    const lessons = [entry(a, { percent: 100 }), entry(b), entry(c)];
-    const step = pickHomeNextStep({ resume: null, workItems: [], profileStatus: 'ready', lessons });
-    expect(step.kind).toBe('start');
-    expect(step.entry.lesson.id).toBe('b');
-  });
-
-  it('le profil en erreur ne bloque pas : on retombe sur « commencer »', () => {
-    expect(pickHomeNextStep({ resume: null, workItems: [], profileStatus: 'error', lessons: [entry(a)] }).kind).toBe('start');
-  });
-
-  it('tout terminé → done ; aucune leçon → empty', () => {
-    expect(pickHomeNextStep({ resume: null, workItems: [], profileStatus: 'ready', lessons: [entry(a, { percent: 100 })] }).kind).toBe('done');
-    expect(pickHomeNextStep({ resume: null, workItems: [], profileStatus: 'ready', lessons: [] }).kind).toBe('empty');
-  });
-});
 
 describe('pickCurriculumContext — la tranche « أين أنت »', () => {
   it('un élève neuf voit le DÉBUT de son programme', () => {
@@ -137,22 +94,5 @@ describe('les index', () => {
     expect(idx.get('c').unit).toBeNull();
     expect(idx.get('c').field.title).toBe('ميدان الهندسة');
     expect(idx.get('c').grade.id).toBe('4am');
-  });
-});
-
-describe('le héros de maîtrise s’appuie sur pickWorkNow, sans réévaluer', () => {
-  it('une lacune réelle devient le héros quand rien n’est à reprendre', () => {
-    const tree = buildProgressionTree(courseLevels, { lessons: [entry(a, { percent: 100, last: 5 })] }, mastery('a', ['mastered', 'gap']), { gradeId: '4am', getModulePath });
-    const work = pickWorkNow(tree, { limit: 1 });
-    const step = pickHomeNextStep({ resume: null, workItems: work.items, profileStatus: 'ready', lessons: [entry(a, { percent: 100 })] });
-    expect(step.kind).toBe('mastery');
-    expect(step.item.point.state).toBe('gap');
-    expect(step.item.lesson.lesson.title).toBe('الدرس أ');
-  });
-
-  it('« non évalué » n’est jamais une lacune', () => {
-    const tree = buildProgressionTree(courseLevels, { lessons: [entry(a, { percent: 100, last: 5 })] }, mastery('a', ['unassessed', 'mastered']), { gradeId: '4am', getModulePath });
-    const step = pickHomeNextStep({ resume: null, workItems: pickWorkNow(tree).items, profileStatus: 'ready', lessons: [entry(a, { percent: 100 })] });
-    expect(step.kind).toBe('done');
   });
 });

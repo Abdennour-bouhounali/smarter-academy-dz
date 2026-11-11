@@ -6,6 +6,7 @@
  * Tous les distracteurs sont faux (calculés ; la confusion qu'ils portent est dite en commentaire).
  */
 import { src } from '../../_unit/unitMeta.js';
+import { withContext } from '../../../../../../common/textbook/exerciseParts.js';
 
 export const LP = {
   P1: '4am_talis-hisab-atwal_P1',
@@ -219,5 +220,6 @@ export const EXERCISES = [
   },
 ];
 
-export const partsOf = (n) => EXERCISES.filter((ex) => ex.id === `ex-${n}` || ex.id.startsWith(`ex-${n}-`));
+// lecteur : les parties sans énoncé portent celui de la partie 1 (« pas d'aller-retour », common/textbook/exerciseParts.js)
+export const partsOf = (n) => withContext(EXERCISES.filter((ex) => ex.id === `ex-${n}` || ex.id.startsWith(`ex-${n}-`)));
 export const EX = Object.fromEntries(EXERCISES.map((e) => [e.id, e]));

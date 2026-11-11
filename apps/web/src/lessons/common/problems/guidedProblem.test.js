@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { validateProblem, demandsOf, initialProgress, completeSubstep, isPartDone } from './guidedProblem';
+import { validateProblem, demandsOf, initialProgress, completeSubstep, isPartDone, asideOf, foundOf, rightAnswerOf } from './guidedProblem';
 
 const solution = { kind: 'solution', lines: ['a', 'b'] };
 const ok = {
@@ -103,5 +103,133 @@ describe('the statement support (figure / visual / table, 2026-10-06)', () => {
     const errs = validateProblem({ ...ok, visual: { range: { xMin: 0, xMax: 100, yMin: 0, yMax: 5 }, functionz: [] } });
     expect(errs.some((e) => e.includes('visual.functionz is not a CoordPlane prop'))).toBe(true);
     expect(errs.some((e) => e.includes('max 460'))).toBe(true);
+  });
+});
+
+// ── « الإجابة تُكتب في شكلها » pour les sous-étapes saisies (2026-11-10) ────────────────────────────────────────────────────────────────
+import { stepTemplate, stepGiven, shapeErrors, resumePart, STEP_UNITS } from './guidedProblem';
+
+const num = (extra) => ({ kind: 'numeric', role: 'answer', ask: 0, expected: 3, ...extra });
+const withStep = (step) => ({ ...ok, parts: [{ ...ok.parts[0], steps: [{ kind: 'sort' }, step, solution] }, ok.parts[1]] });
+
+describe('stepTemplate — a typed step declares the SHAPE of its answer', () => {
+  it('a step without shape has no template: the bare box of before', () => {
+    expect(stepTemplate(num())).toBeNull();
+    expect(stepTemplate(num({ suffix: 'm' }))).toBeNull();
+    expect(stepTemplate(undefined)).toBeNull();
+    expect(stepGiven(num({ suffix: 'm' }), 7.25)).toBe('7.25 m');
+    expect(stepGiven(num(), 5)).toBe('5');
+  });
+  it('quantity: the unit is printed (m, cm, cm³, دج)', () => {
+    for (const unit of ['m', 'cm', 'cm³', 'دج']) {
+      expect(STEP_UNITS).toContain(unit);
+      expect(stepTemplate(num({ shape: 'quantity', unit }))).toEqual({ kind: 'quantity', unit, signed: false });
+    }
+    expect(stepGiven(num({ shape: 'quantity', unit: 'm' }), 7.25)).toBe('7,25 m');
+  });
+  it('form: « V = [ ]π »', () => {
+    const step = num({ shape: 'form', subject: 'V', factor: '\\pi' });
+    expect(stepTemplate(step)).toMatchObject({ kind: 'form', subject: 'V', pre: '', post: '\\pi' });
+    expect(stepGiven(step, 81)).toBe('$V = 81\\pi$');
+  });
+  it('gap: « AM × AC = [ ] », or the box in place of « \\ldots »', () => {
+    const step = num({ shape: 'gap', subject: 'AM \\times AC' });
+    expect(stepTemplate(step)).toMatchObject({ kind: 'gap', pre: 'AM \\times AC =', post: '', before: '', after: '' });
+    expect(stepGiven(step, 3900)).toBe('$AM \\times AC = 3900$');
+    expect(stepTemplate(num({ shape: 'gap', subject: '\\dfrac{AM}{AB} = \\ldots' }))).toMatchObject({ kind: 'gap', pre: '\\dfrac{AM}{AB} = ', post: '' });
+    expect(stepTemplate(num({ shape: 'gap', subject: '2 \\times \\ldots = 13' }))).toMatchObject({ pre: '2 \\times ', post: ' = 13' });
+  });
+  it('decimal: a ratio, with the decimal comma', () => {
+    expect(stepTemplate(num({ shape: 'decimal' }))).toEqual({ kind: 'decimal', signed: false });
+    expect(stepGiven(num({ shape: 'decimal' }), 0.4)).toBe('0,4');
+  });
+  it('NEVER reads `expected`: two steps that differ only by the answer have the same template', () => {
+    const a = num({ shape: 'quantity', unit: 'cm', expected: 4.5 });
+    const b = num({ shape: 'quantity', unit: 'cm', expected: 9 });
+    expect(stepTemplate(a)).toEqual(stepTemplate(b));
+    expect(JSON.stringify(stepTemplate(num({ shape: 'form', subject: 'V', factor: '\\pi', expected: 405 })))).not.toContain('405');
+  });
+  it('an invalid shape gives no template (the bare box), never a broken formula', () => {
+    expect(stepTemplate(num({ shape: 'quantity', unit: 'DA' }))).toBeNull();
+    expect(stepTemplate(num({ shape: 'gap', subject: '\\dfrac{\\ldots}{5} = 2' }))).toBeNull();
+    expect(stepTemplate({ kind: 'choice', shape: 'decimal' })).toBeNull();
+  });
+});
+
+describe('validateProblem — the shape fields of a numeric step', () => {
+  it('accepts the four shapes', () => {
+    for (const s of [{ shape: 'quantity', unit: 'دج' }, { shape: 'form', subject: 'V', factor: '\\pi' }, { shape: 'gap', subject: 'AM \\times AC' }, { shape: 'decimal' }]) {
+      expect(validateProblem(withStep(num(s)))).toEqual([]);
+    }
+  });
+  it('rejects an unknown shape, a missing or unknown unit, a missing subject / factor, and a « $ » in the LaTeX', () => {
+    expect(validateProblem(withStep(num({ shape: 'money' }))).join()).toMatch(/unknown shape 'money'/);
+    expect(validateProblem(withStep(num({ shape: 'quantity' }))).join()).toMatch(/needs a 'unit'/);
+    expect(validateProblem(withStep(num({ shape: 'quantity', unit: 'DA' }))).join()).toMatch(/needs a 'unit'/);
+    expect(validateProblem(withStep(num({ shape: 'form', subject: 'V' }))).join()).toMatch(/needs a 'factor'/);
+    expect(validateProblem(withStep(num({ shape: 'gap' }))).join()).toMatch(/needs a 'subject'/);
+    expect(validateProblem(withStep(num({ shape: 'gap', subject: '$AM$' }))).join()).toMatch(/needs a 'subject'/);
+    expect(validateProblem(withStep(num({ shape: 'gap', subject: '\\ldots + \\ldots' }))).join()).toMatch(/one « \\ldots » at most/);
+    expect(validateProblem(withStep(num({ shape: 'gap', subject: '\\dfrac{\\ldots}{5}' }))).join()).toMatch(/inside a \{ \} group/);
+  });
+  it('rejects a field of another shape, a shape field without shape, a prefix / suffix beside a shape, and a shape on a non-numeric step', () => {
+    expect(validateProblem(withStep(num({ shape: 'decimal', unit: 'm' }))).join()).toMatch(/'unit' is not a field of shape 'decimal'/);
+    expect(validateProblem(withStep(num({ unit: 'm' }))).join()).toMatch(/'unit' need a 'shape'/);
+    expect(validateProblem(withStep(num({ shape: 'quantity', unit: 'm', suffix: 'm' }))).join()).toMatch(/no 'prefix' \/ 'suffix'/);
+    expect(shapeErrors({ kind: 'choice', shape: 'decimal' }).join()).toMatch(/belongs to a numeric step/);
+  });
+});
+
+describe('resumePart — where a restored مسألة is resumed', () => {
+  it('nothing done: no resume (the statement first)', () => {
+    expect(resumePart([0, 0], ok)).toBeNull();
+    expect(resumePart(undefined, ok)).toBeNull();
+  });
+  it('the first part not finished; the last one when all are', () => {
+    expect(resumePart([1, 0], ok)).toBe(0);
+    expect(resumePart([3, 0], ok)).toBe(1);
+    expect(resumePart([3, 1], ok)).toBe(1);
+    expect(resumePart([3, 2], ok)).toBe(1);
+  });
+});
+
+describe('asideOf — « pas d\'aller-retour » : la figure et les données à côté de chaque sous-étape (lecteur)', () => {
+  const fig = { points: { A: [0, 0], B: [1, 0] }, segments: [{ from: 'A', to: 'B' }] };
+  it('shows the figure and the USEFUL data beside a computing step, never beside the sort that extracts them', () => {
+    const p = { ...ok, figure: fig };
+    expect(asideOf(p, { kind: 'sort' })).toBeNull();
+    expect(asideOf(p, ok.parts[0].steps[1])).toEqual({ figure: fig, table: null, data: ['x'], statement: null });
+  });
+  it('falls back on the statement when the problem has no data list, and shows nothing when there is nothing to show', () => {
+    const { data, ...noData } = ok; // eslint-disable-line no-unused-vars
+    expect(asideOf(noData, solution)).toEqual({ figure: null, table: null, data: [], statement: 's' });
+    expect(asideOf({ ...noData, statement: '' }, solution)).toBeNull();
+  });
+  it('ignores a plane figure without points (a trace of the extraction, drawn elsewhere)', () => {
+    expect(asideOf({ ...ok, figure: { AD: 1 } }, solution).figure).toBeNull();
+  });
+});
+
+describe('foundOf — ce que l\'élève a déjà trouvé, à côté de la sous-étape suivante (lecteur)', () => {
+  const p = {
+    ...ok,
+    parts: [
+      { label: '1)', question: 'q1', asks: ['الطول'], steps: [{ kind: 'sort' }, { kind: 'numeric', role: 'compute', prompt: 'السطر الأول:', expected: 2 }, { kind: 'numeric', role: 'answer', ask: 0, prompt: 'الطول:', expected: 3 }, solution] },
+      { label: '2)', question: 'q2', asks: ['الثمن'], steps: [{ kind: 'numeric', role: 'compute', prompt: 'المجموع:', expected: 5 }, { kind: 'numeric', role: 'answer', ask: 0, prompt: 'الثمن:', expected: 6 }, solution] },
+    ],
+  };
+  it('lists the earlier answered sub-steps of the same part with their RIGHT result, never one not answered yet', () => {
+    expect(foundOf(p, 0, 1, {})).toEqual([]);
+    // l'élève a tapé 7 (faux) : la ligne suivante se fait avec le bon résultat, celui que la correction a montré
+    expect(foundOf(p, 0, 2, { '0:1': '7' })).toEqual([{ label: 'السطر الأول:', value: '2' }]);
+  });
+  it('puts the results of the earlier parts first (their demands), then the current part', () => {
+    const given = { '0:1': '2', '0:2': '3', '1:0': '5' };
+    expect(foundOf(p, 1, 1, given)).toEqual([{ label: 'الطول', value: '3' }, { label: 'المجموع:', value: '5' }]);
+  });
+  it('gives the right option of a choice, and nothing for a step without one answer (sort, solution, batch)', () => {
+    expect(rightAnswerOf({ kind: 'choice', options: ['a', 'b'], correct: 1 })).toBe('b');
+    expect(rightAnswerOf({ kind: 'numeric', expected: 0.4, display: '0,4' })).toBe('0,4');
+    expect(rightAnswerOf({ kind: 'batch', rows: [] })).toBeNull();
   });
 });

@@ -1,4 +1,5 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { FitRefitContext } from './missionPlayerContext';
 
 /** En dessous, le texte devient illisible : on accepte alors un défilement interne (dernier recours, rare). */
 export const MIN_FIT = 0.6;
@@ -35,6 +36,12 @@ export const SETTLE_MS = 700;
  *  3. sinon seulement → on RÉDUIT pour tenir (dernier recours), collé en haut.
  * Jamais d'agrandissement : un écran ne grandit qu'à son arrivée. Pur — testé seul.
  */
+/** Le contenu n'occupe plus que moins de 70 % de la hauteur à sa taille actuelle : il a beaucoup rétréci. Pur — testé seul. */
+export const SHRINK_REFIT = 0.7;
+export function shrunkALot({ natural, zoom, height }) {
+  return natural > 0 && height > 0 && natural * zoom < height * SHRINK_REFIT;
+}
+
 export function keepInPlace({ natural, zoom, pad, height, minFit = MIN_FIT }) {
   const h = natural * zoom;
   if (pad + h <= height + 1) return { zoom, pad };
@@ -74,6 +81,21 @@ export default function FitToArea({ height, grow = false, maxGrow = MAX_GROW, on
   const [pad, setPad] = useState(null);
   const padRef = useRef(null);
   const settled = useRef(false);
+  const settleTimer = useRef(null);
+  const measureRef = useRef(null);
+  // un ré-ajustement DEMANDÉ (useFitRefit) : l'écran redevient libre (ajusté, centré) puis se re-pose
+  const refit = useCallback(() => {
+    settled.current = false; padRef.current = null; setPad(null); history.current = [];
+    clearTimeout(settleTimer.current);
+    requestAnimationFrame(() => measureRef.current?.());
+    settleTimer.current = setTimeout(() => {
+      const o = outer.current; const i = inner.current;
+      if (!o || !i) return;
+      const p = Math.max(0, Math.round(i.getBoundingClientRect().top - o.getBoundingClientRect().top));
+      padRef.current = p; setPad(p); settled.current = true;
+    }, SETTLE_MS);
+  }, []);
+  useEffect(() => () => clearTimeout(settleTimer.current), []);
   // le glissement n'anime QUE les remontées d'un écran déjà posé — jamais le moment où il se pose (sinon chaque écran
   // apparaissait deux fois : son entrée, puis un saut vers le haut et une redescente ; propriétaire, 2026-11-04)
   const [glide, setGlide] = useState(false);
@@ -99,6 +121,18 @@ export default function FitToArea({ height, grow = false, maxGrow = MAX_GROW, on
     const measure = () => {
       // la hauteur NATURELLE : la mesure courante ramenée à zoom 1
       const natural = el.getBoundingClientRect().height / zoomRef.current;
+      // Un écran posé qui a beaucoup RÉTRÉCI (la mission en grand redevient compacte, un bloc s'en va) se ré-ajuste UNE fois :
+      // garder sa petite taille laisserait de grandes bandes vides (propriétaire, 2026-11-07). Les petits changements, eux, ne
+      // bougent toujours rien (keepInPlace).
+      if (settled.current && shrunkALot({ natural, zoom: zoomRef.current, height: outer.current?.clientHeight || height })) {
+        settled.current = false; padRef.current = null; setPad(null); history.current = [];
+        settleTimer.current = setTimeout(() => {
+          const o = outer.current; const i = inner.current;
+          if (!o || !i) return;
+          const p = Math.max(0, Math.round(i.getBoundingClientRect().top - o.getBoundingClientRect().top));
+          padRef.current = p; setPad(p); settled.current = true;
+        }, SETTLE_MS);
+      }
       if (settled.current) {
         // Écran posé : ce qui est déjà là ne change ni de place ni de taille, sauf s'il le faut pour tenir (keepInPlace).
         // la hauteur RÉELLEMENT offerte : la boîte de cette zone (la zone du lecteur a ses propres marges, `height` les inclut)
@@ -132,6 +166,7 @@ export default function FitToArea({ height, grow = false, maxGrow = MAX_GROW, on
       }
       setOverflow(natural * next > height + 2);
     };
+    measureRef.current = measure;
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
@@ -146,7 +181,7 @@ export default function FitToArea({ height, grow = false, maxGrow = MAX_GROW, on
       style={pad != null && !overflow ? { paddingTop: pad } : undefined}
       data-fit-zoom={zoom} data-fit-overflow={overflow ? 'true' : undefined} data-fit-settled={pad != null ? 'true' : undefined}>
       <div ref={inner} style={zoom !== 1 ? { zoom } : undefined}>
-        {children}
+        <FitRefitContext.Provider value={refit}>{children}</FitRefitContext.Provider>
       </div>
     </div>
   );

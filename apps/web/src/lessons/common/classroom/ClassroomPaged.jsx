@@ -46,11 +46,77 @@ export function isDecor(el) {
   return pos === 'absolute' || pos === 'fixed';
 }
 
+/**
+ * Un élément INSÉCABLE : on ne l'ouvre jamais en ses enfants. Un dessin (<svg>, une <figure>) ouvert pièce par pièce se
+ * répartissait sur plusieurs écrans — la figure de Thalès de l'unité 9 montrait le seul segment [AM] sur « صفحة 1 من 3 »
+ * (propriétaire, 2026-11-11) ; un écran gardé entier (`data-paging-keep`) non plus.
+ */
+export function isAtomic(el) {
+  if (el.hasAttribute?.('data-paging-keep')) return true;
+  if (el.namespaceURI && el.namespaceURI !== 'http://www.w3.org/1999/xhtml') return true;   // svg et tout son contenu, MathML
+  return /^(FIGURE|SVG|IMG|CANVAS|TABLE)$/i.test(el.tagName ?? '');
+}
+
+const FIGURE_SEL = '[data-geo-figure], figure, svg[role="img"]';
+const ANSWER_SEL = 'button, input, textarea, select, [role="radio"], [role="button"]';
+const LAB_SEL = '[data-manipulation], [data-lab-rounds]';
+/** Le texte d'un bloc HORS de ses figures. */
+const textOf = (el) => {
+  const clone = el.cloneNode(true);
+  clone.querySelectorAll(FIGURE_SEL).forEach((f) => f.remove());
+  return (clone.textContent ?? '').trim();
+};
+const isEl = (el) => Boolean(el && el.nodeType === 1);
+/** Un bloc qui MONTRE une ou plusieurs figures (seules, ou dans un énoncé) et ne demande rien. */
+export function holdsFigure(el) {
+  if (!isEl(el)) return false;
+  if (!el.matches?.(FIGURE_SEL) && !el.querySelector?.(FIGURE_SEL)) return false;
+  return !el.querySelector?.(ANSWER_SEL) && !el.querySelector?.(LAB_SEL);
+}
+/** Un bloc qui n'est QU'UNE figure (une figure, ou une enveloppe autour d'elle avec au plus une courte légende). */
+export function isFigureOnly(el) {
+  if (!holdsFigure(el)) return false;
+  return Boolean(el.matches?.(FIGURE_SEL)) || textOf(el).length <= 60;
+}
+/** Un bloc qui DEMANDE quelque chose (une question, ses options, sa case), sans figure à lui, et qui n'est pas un labo. */
+export function isQuestionBlock(el) {
+  return isEl(el) && Boolean(el.querySelector?.(ANSWER_SEL)) && !el.matches?.(FIGURE_SEL) && !el.querySelector?.(FIGURE_SEL) && !el.querySelector?.(LAB_SEL);
+}
+/** Une courte ligne ENTRE la figure et la question (une consigne, « اقرأ الشكل… ») : ni figure, ni question. */
+const isBridge = (el) => isEl(el) && !el.querySelector?.(ANSWER_SEL) && !el.matches?.(FIGURE_SEL) && !el.querySelector?.(FIGURE_SEL) && textOf(el).length <= 300;
+/**
+ * La FIGURE et la QUESTION qui la suit restent sur le même écran, côte à côte (propriétaire, 2026-11-11 : « l'élève voit le schéma sur un
+ * écran, puis doit passer au suivant pour la question, et revenir pour revoir le schéma »). Lecteur seulement (« un élément par écran ») :
+ * un bloc qui montre une figure (seule, plusieurs, ou dans un énoncé), au plus deux courtes lignes, puis une question → UN groupe.
+ * Rend { groups, paired } : `paired`, les indices des groupes ainsi formés (ClassroomPaged pose `data-paging-pair`, mission.css les range).
+ */
+export function pairFigures(blocks) {
+  const groups = [];
+  const paired = new Set();
+  for (let i = 0; i < blocks.length; i += 1) {
+    const g = blocks[i];
+    if (g.length === 1 && holdsFigure(g[0])) {
+      let j = i + 1;
+      const between = [];
+      while (j < blocks.length && between.length < 2 && blocks[j].length === 1 && isBridge(blocks[j][0])) { between.push(blocks[j][0]); j += 1; }
+      if (j < blocks.length && isQuestionBlock(blocks[j][0])) {
+        paired.add(groups.length);
+        groups.push([g[0], ...between, ...blocks[j]]);
+        i = j;
+        continue;
+      }
+    }
+    groups.push(g);
+  }
+  return { groups, paired };
+}
+
 function resolveBlocks(root, deep = false) {
   let host = root;
   for (let depth = 0; depth < (deep ? 6 : 2); depth += 1) {
     const kids = host.children;
-    if (kids.length === 1 && kids[0].tagName === 'DIV' && (deep || kids[0].children.length > 1)) host = kids[0];
+    // on ne descend jamais DANS un écran gardé entier (`data-paging-keep`) : il reste UN bloc
+    if (kids.length === 1 && kids[0].tagName === 'DIV' && !kids[0].hasAttribute('data-paging-keep') && (deep || kids[0].children.length > 1)) host = kids[0];
     else break;
   }
   return { host, blocks: Array.from(host.children) };
@@ -89,7 +155,9 @@ export default function ClassroomPaged({ active = true, page = 0, onPages, onRes
   }, []);
 
   const clear = useCallback(() => {
-    state.current.blocks.flat().forEach((el) => { el.removeAttribute(HIDDEN); el.removeAttribute('data-classroom-page-of'); });
+    state.current.blocks.flat().forEach((el) => { el.removeAttribute(HIDDEN); el.removeAttribute('data-classroom-page-of'); el.removeAttribute('data-paging-pair'); });
+    (state.current.paired ?? []).forEach((el) => el.removeAttribute('data-paging-pair'));
+    state.current.paired = [];
   }, []);
 
   const plan = useCallback(() => {
@@ -116,7 +184,9 @@ export default function ClassroomPaged({ active = true, page = 0, onPages, onRes
         // Un DÉCOR (fond dégradé `aria-hidden`, calque en position absolue) n'est jamais un élément : ouvert seul, il ferait
         // un écran VIDE — la carte d'ouverture d'un module s'ouvrait sur son seul fond (propriétaire, 2026-11-04, « l'ancienne
         // vue »). Il reste visible avec son parent.
-        const items = (el) => Array.from(el.children).filter((k) => !isDecor(k));
+        // `data-paging-keep` : un écran CONÇU pour tenir en un (la revue compacte de « أستعدّ ») ne s'ouvre jamais en ses enfants
+        // un dessin (svg, figure) n'est jamais ouvert : ses traits ne sont pas des éléments (isAtomic)
+        const items = (el) => (isAtomic(el) ? [] : Array.from(el.children).filter((k) => !isDecor(k)));
         const splittable = (el) => { let e = el; while (items(e).length === 1) [e] = items(e); return items(e).length > 1 ? e : null; };
         // `onePerPage` : une LISTE (≥ 2 enfants substantiels) s'ouvre même si elle tient — chaque élément aura sa page
         // une LISTE : ≥ 2 enfants substantiels — ou UN seul enfant substantiel qui en est une (le corps d'une carte « للتذكّر »
@@ -156,6 +226,28 @@ export default function ClassroomPaged({ active = true, page = 0, onPages, onRes
         flattened = true;
       }
     }
+    // lecteur : une figure et la question qui la suit, un seul écran, côte à côte
+    if (onePerPageRef.current) {
+      const { groups, paired } = pairFigures(blocks);
+      blocks = groups;
+      paired.forEach((gi) => {
+        const group = blocks[gi];
+        const fig = group[0];
+        // ce qui se range À CÔTÉ est un FRÈRE de la figure : la question ouverte plus bas dans l'arbre (la carte d'un تمرين) y monte
+        // jusqu'à son ancêtre frère de la figure — sinon la figure flotte dans un conteneur et la question dans un autre
+        const beside = [];
+        group.slice(1).forEach((el) => {
+          let e = el;
+          while (e && e.parentElement !== fig.parentElement) e = e.parentElement;
+          const at = e ?? el;
+          if (!beside.includes(at)) beside.push(at);
+        });
+        // une figure seule se pose étroite à côté ; un énoncé qui porte sa figure prend la moitié
+        fig.setAttribute('data-paging-pair', isFigureOnly(fig) ? 'figure' : 'statement');
+        beside.forEach((el, k) => el.setAttribute('data-paging-pair', k === beside.length - 1 ? 'question' : 'side'));
+        s.paired = [...(s.paired ?? []), fig, ...beside];
+      });
+    }
     s.blocks = blocks;
     const frame = root.closest('[data-classroom-frame]') || root;
     const hostBox = host.getBoundingClientRect();
@@ -171,6 +263,8 @@ export default function ClassroomPaged({ active = true, page = 0, onPages, onRes
       // un groupe qui commence par un EN-TÊTE (<header>, h1–h4) reste avec le bloc suivant : jamais un bandeau seul à l'écran
       const glue = blocks.map((g) => /^(HEADER|H[1-4])$/.test(g[0]?.tagName ?? '') && g.length === 1);
       s.pages = onePerPageRef.current ? planOnePerPage(heights, SMALL_BLOCK, glue) : planPages({ heights, budget, overhead, gap });
+      // les blocs PETITS au moment du plan (une enveloppe vide, une ligne) : surveillés — s'ils grandissent, ils prennent leur écran
+      s.small = new Set(heights.map((h, i) => (h < SMALL_BLOCK ? i : -1)).filter((i) => i >= 0));
     }
     apply(pageRef.current);
     onPagesRef.current?.(s.pages.length);
@@ -206,16 +300,38 @@ export default function ClassroomPaged({ active = true, page = 0, onPages, onRes
         return;
       }
       const known = new Set(s.blocks.flat());
+      // un nouvel élément peut arriver dans le CONTENEUR d'un bloc ouvert (pas seulement à la racine) : les cartes d'une étape qui
+      // s'affichent après la réponse sont ajoutées là où vivaient la question et son retour — elles restaient alors visibles sur
+      // l'écran courant, qui débordait et rétrécissait tout (propriétaire, 2026-11-07, « la pire vue »)
+      const containers = new Set(s.blocks.flat().map((el) => el.parentElement).filter(Boolean));
       const added = [];
       for (const r of records) {
-        if (r.target !== s.host) continue;
+        // …ou dans un ANCÊTRE du conteneur (le plan était descendu à travers des enveloppes à enfant unique ; les cartes arrivent
+        // un étage plus haut, à côté de l'enveloppe)
+        const aboveHost = r.target !== s.host && r.target.contains?.(s.host) && ref.current?.contains(r.target);
+        if (r.target !== s.host && !containers.has(r.target) && !aboveHost) continue;
         r.addedNodes.forEach((n) => { if (n.nodeType === 1 && !known.has(n)) added.push(n); });
       }
-      if (!added.length) return;
       const current = clampPage(pageRef.current, s.pages.length);
       const sc = geometry.current.scale || 1;
       let insertAt = current + 1;
       let addedPages = false;
+      // Un bloc arrivé PETIT (une enveloppe encore vide) a rejoint l'écran courant ; s'il GRANDIT ensuite (les cartes d'une étape
+      // s'y ajoutent un instant plus tard), il prend SON écran juste après — sinon l'écran courant déborde et tout rétrécit.
+      if (onePerPageRef.current && s.small?.size) {
+        for (const idx of [...s.small]) {
+          const el = s.blocks[idx]?.[0];
+          const page = s.pages[current] ?? [];
+          if (!el || !el.isConnected) { s.small.delete(idx); continue; }
+          if (page.includes(idx) && page.length > 1 && el.getBoundingClientRect().height / sc >= SMALL_BLOCK) {
+            s.pages[current] = page.filter((x) => x !== idx);
+            s.pages.splice(insertAt, 0, [idx]);
+            el.setAttribute(HIDDEN, ''); el.setAttribute('data-classroom-page-of', String(insertAt + 1));
+            insertAt += 1; addedPages = true; s.small.delete(idx);
+          }
+        }
+      }
+      if (!added.length) { if (addedPages) onPagesRef.current?.(s.pages.length); return; }
       for (const el of added) {
         s.blocks.push([el]);
         const idx = s.blocks.length - 1;
@@ -232,6 +348,8 @@ export default function ClassroomPaged({ active = true, page = 0, onPages, onRes
           (s.pages[current] ??= []).push(idx);
           el.removeAttribute(HIDDEN);
           el.setAttribute('data-classroom-page-of', String(current + 1));
+          // petit à l'arrivée : surveillé, il prendra son écran s'il grandit
+          (s.small ??= new Set()).add(idx);
         }
       }
       if (addedPages) onPagesRef.current?.(s.pages.length);

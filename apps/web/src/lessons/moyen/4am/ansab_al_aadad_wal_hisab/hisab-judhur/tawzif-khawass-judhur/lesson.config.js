@@ -29,6 +29,51 @@ export const LESSON_CONFIG = {
   unit: 'hisab-judhur',
   unitTitle: 'الحساب على الجذور',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (modèle du pilote qasim-adad-tabii, VALIDÉ par le propriétaire le 2026-11-08 ; rollout leçon par leçon,
+  // docs/reports/MISSION_ROLLOUT_PROGRESS.md — unité 2, leçon 5, 2026-11-10) — implique le regard « focus » ; l'enseignant et le mode classe ne voient
+  // aucun changement.
+  studentView: 'mission',
+  // LA MISSION : l'ouverture avoue qu'on ne sait pas encore la résoudre ; les outils sont les connaissances de knowledge.jsx ; les points d'étape
+  // (conseil du 2026-11-10) RAPPROCHENT de la mission sans en résoudre aucune question : ni ses nombres (200, √200, 10√2, 100, 50, 2√50, 5√8,
+  // 100√2, 120, 12 000, 12, 10, 25 pièces) ni sa méthode (« nombre de pièces = k × k, puis le prix ») ni la مسألة de la leçon 4 (180, 6√5) —
+  // content/mission.test.js. La scène : la cour de la leçon 4, repavée de dalles plus GRANDES (« courtyard-big »).
+  mission: {
+    scene: 'courtyard-big',
+    title: 'طاولة الفسيفساء: أصغر قطعة ممكنة',
+    opening: {
+      text: 'في ورشة بغرداية، يغطّي حِرفيّ سطح طاولة مربّعًا مساحته $200\\,dm^2$ بقطع فسيفساء مربّعة متماثلة، مساحة كل منها عدد طبيعي. يريد الزبون أن تكون القطع أصغر ما يمكن. ما أصغر قطعة؟ وكيف نكتب طول ضلع الطاولة؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'kitaba-a-jidhr-b', icon: '🧱', label: 'أبسط كتابة لجذر' },
+      { id: 'tabsit-tawzii', icon: '➕', label: 'جمع جذور متشابهة' },
+      { id: 'naqt-maqam', icon: '➗', label: 'مقام ناطق' },
+    ],
+    climaxModule: 6,
+    checkpoints: [
+      {
+        id: 'cp-abasat', afterModule: 1,
+        prompt: '$\\sqrt{45} = \\; ?$',
+        options: ['$3\\sqrt{5}$', '$\\sqrt{9} \\times 5$', '$5\\sqrt{3}$'],
+        correct: 0,
+        explain: 'أكبر مربّع يقسم 45 هو 9: $\\sqrt{45} = \\sqrt{3^2 \\times 5} = 3\\sqrt{5}$',
+      },
+      {
+        id: 'cp-jam', afterModule: 2,
+        prompt: '$2\\sqrt{3} + 5\\sqrt{3} = \\; ?$',
+        options: ['$7\\sqrt{3}$', '$7\\sqrt{6}$', '$7 + \\sqrt{3}$'],
+        correct: 0,
+        explain: 'بالخاصية التوزيعية: $2\\sqrt{3} + 5\\sqrt{3} = (2 + 5)\\sqrt{3} = 7\\sqrt{3}$',
+      },
+      {
+        id: 'cp-maqam', afterModule: 3,
+        prompt: '$\\dfrac{6}{\\sqrt{3}} = \\; ?$',
+        options: ['$2\\sqrt{3}$', '$6\\sqrt{3}$', '$\\dfrac{2\\sqrt{3}}{3}$'],
+        correct: 0,
+        explain: 'نضرب البسط والمقام في $\\sqrt{3}$ : $\\dfrac{6}{\\sqrt{3}} = \\dfrac{6\\sqrt{3}}{3} = 2\\sqrt{3}$',
+      },
+    ],
+  },
   title: 'توظيف خواص الجذور التربيعية',
   description: 'كتابة جذر على الشكل a√b حيث b أصغر ما يمكن، وتبسيط مجموع جذور بالخاصية التوزيعية، وكتابة نسبة مقامها عدد غير ناطق على شكل نسبة مقامها عدد ناطق.',
   level: 'moyen',
@@ -72,6 +117,8 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début, sans verrou par محور.
+  knowledgeMapOpen: true,
   // Les acquis que « أستعدّ » diagnostique : les leçons 1 et 4 de l'unité, et
   // les متطابقات (أستعدّ p. 19, items 7–9).
   priorKnowledge: ['jidaa-jidhrayn', 'jidhr-a2b', 'qismat-jidhrayn', 'mutatabiqat', 'jidhr-taarif'],
@@ -108,26 +155,26 @@ export const LESSON_CONFIG = {
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
-      title: 'أستعدّ', desc: 'تسع عبارات: المتطابقات الشهيرة من الكتاب، وجداء جذرين وحاصل قسمتهما. صحيح أم خاطئ؟',
+      title: 'أستعدّ', desc: 'عشر عبارات: النشر والخاصية التوزيعية، وجداء جذرين وحاصل قسمتهما. صحيح أم خاطئ؟',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'nashat', path: `${LESSON_BASE_PATH}/nashat`,
-      title: 'مربّع مبلّط — أبسط كتابة لجذر', desc: 'بلّط مربّعًا مساحته 288 بكل الطرق: أيّ بلاطة أصغر ما يمكن؟ ثم السؤال الأول من تمرين 1 في الكتاب.',
+      title: 'مربّع مبلّط — أبسط كتابة لجذر', desc: 'بلّط مربّعات بكل الطرق: أيّ بلاطة أصغر ما يمكن؟ ثم اكتب جذورًا على أبسط شكل.',
       stage: 'trigger', teachesLearningPointIds: ['4am_tawzif-khawass-judhur_P1'],
       color: 'indigo', style: 'featured', estimatedMin: 12, difficulty: 2, actionText: 'أبلّط' },
     { id: '02', number: 2, slug: 'tabsit', path: `${LESSON_BASE_PATH}/tabsit`,
-      title: 'طرائق — تبسيط عبارة تتضمن جذورًا', desc: 'تمرين 1 و 2 من طرائق الكتاب: تبسيط عبارة بالخاصية التوزيعية وحساب جداء جذور، ثم دوري الآن 1.',
+      title: 'طرائق — تبسيط عبارة تتضمن جذورًا', desc: 'تبسيط عبارة بالخاصية التوزيعية وحساب جداء جذور، ثم دوري الآن.',
       stage: 'discovery', teachesLearningPointIds: ['4am_tawzif-khawass-judhur_P1', '4am_tawzif-khawass-judhur_P2'],
       color: 'violet', style: 'featured', estimatedMin: 12, difficulty: 2, actionText: 'أكتشف' },
     { id: '03', number: 3, slug: 'nisba', path: `${LESSON_BASE_PATH}/nisba`,
-      title: 'طرائق — نسبة مقامها عدد غير ناطق', desc: 'طريقة الكتاب لجعل المقام عددًا ناطقًا، ثم دوري الآن 2.',
+      title: 'طرائق — نسبة مقامها عدد غير ناطق', desc: 'كيف نجعل المقام عددًا ناطقًا، ثم دوري الآن.',
       stage: 'discovery', teachesLearningPointIds: ['4am_tawzif-khawass-judhur_P3'],
       color: 'emerald', style: 'featured', estimatedMin: 10, difficulty: 2, actionText: 'أكتشف' },
     { id: '04', number: 4, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
-      title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 18، 19، 22، 23، 24، 26، 27 و 31 (2).',
+      title: 'أوظّف تعلّماتي', desc: 'تمارين: أبسط كتابة لجذر، مقام ناطق، وتبسيط عبارات.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_tawzif-khawass-judhur_P1', '4am_tawzif-khawass-judhur_P2', '4am_tawzif-khawass-judhur_P3'],
       color: 'amber', style: 'featured', estimatedMin: 12, difficulty: 3, actionText: 'أتدرّب' },
     { id: '05', number: 5, slug: 'atamaqq', path: `${LESSON_BASE_PATH}/atamaqq`,
-      title: 'أتعمّق', desc: 'نشر وتبسيط، المكعّب، المثلث القائم، ومسائل من امتحان شهادة التعليم المتوسط: تمارين 28، 29، 30، 32، 34، 36، 37، 38.',
+      title: 'أتعمّق', desc: 'نشر وتبسيط، المكعّب، المثلث القائم، ومسائل من امتحان شهادة التعليم المتوسط.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_tawzif-khawass-judhur_P2', '4am_tawzif-khawass-judhur_P3'],
       color: 'rose', style: 'featured', estimatedMin: 12, difficulty: 4, actionText: 'أتعمّق' },
     // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui

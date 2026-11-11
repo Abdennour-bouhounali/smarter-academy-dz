@@ -33,7 +33,7 @@ const Op = ({ children }) => <span className="pt-1 text-2xl font-bold text-slate
 
 export default function RolesEquation({ n, g, q, r, labels, className = '' }) {
   return (
-    <span className={`inline-flex items-start gap-3 rounded-2xl bg-white px-4 py-2 ${className}`} dir="ltr" data-roles-equation
+    <span className={`inline-flex max-w-full flex-wrap items-start justify-center gap-x-3 gap-y-2 rounded-2xl bg-white px-4 py-2 ${className}`} dir="ltr" data-roles-equation
       aria-label={`${n} ${labels.n} = ${g} ${labels.g} × ${q} ${labels.q} + ${r} ${labels.r}`}>
       <Term value={n} label={labels.n} tone={TONE.n} role="n" />
       <Op>=</Op>

@@ -1,23 +1,39 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, KnowledgeBrick, PeerSheet } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation } from '../../../../../../common/manipulations';
 import { TextbookBox, MethodSteps } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
+import { M2_ROUNDS } from '../content/recipes';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
 import { KNOWLEDGE, METHOD, ACTIVITY } from '../content/textbook';
-/** Module 2 (rétrofit 2026-10-15 : labo en tête sans carte ni titre ; définition et brique APRÈS leur question ; 1re étape = POURQUOI une seule division suffit) — معارف 6 (p. 12) + طريقة 595/560 (p. 13). Activité 8 ب/جـ : PGCD(84 ; 48) = 12 en une fois. LP : P2, P3. */
+/** Rollout mission (2026-11-09) : le labo se joue en MANCHES (content/recipes.js › M2_ROUNDS), l'étape 1 attend la manche 1, l'étape 5 est « ورقة رانية »
+ * (`PeerSheet`). Module 2 (rétrofit 2026-10-15 : labo en tête sans carte ni titre ; définition et brique APRÈS leur question ; 1re étape = POURQUOI une seule division suffit) — معارف 6 (p. 12) + طريقة 595/560 (p. 13). Activité 8 ب/جـ : PGCD(84 ; 48) = 12 en une fois. LP : P2, P3. */
 export default function Module02Maarif() {
   const [q0, setQ0] = useState(false);
   const [labDone, setLabDone] = useState(false);
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const [read, setRead] = useState(false);
+  const [q5, setQ5] = useState(false);
+  // Dans le lecteur : la manche gagnée ouvre l'étape.
+  const [won, setWon] = useState({});
   return (
     <ContentModule objectives={["متى يكون الكسر غير قابل للاختزال؟", "هل توجد قسمة واحدة تكفي لاختزال 84/48؟", "ما علاقة PGCD بالشكل غير القابل للاختزال؟"]} ctx={MODULE_CTX} navLinks={getNavLinks(2)} moduleNumber={2} moduleTitle="معارف — الكسور غير القابلة للاختزال" moduleSubtitle="التعريف، وطريقة PGCD" estimatedTime="14 دقيقة"
-      intro={<Manipulation type="fraction-reduction" n={ACTIVITY.numbers.n} d={ACTIVITY.numbers.d} path={[12]} onFinished={() => setLabDone(true)} />}
+      intro={(
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="m2-recipes" rounds={M2_ROUNDS} icon="🥣" freeIcon="🍞"
+              onRoundWon={(id) => { setWon((w) => ({ ...w, [id]: true })); if (id === 'r1') setLabDone(true); }} />
+          )}
+          page={<Manipulation type="fraction-reduction" n={ACTIVITY.numbers.n} d={ACTIVITY.numbers.d} path={[12]} onFinished={() => setLabDone(true)} />}
+        />
+      )}
       steps={[
-        { num: 1, title: 'لماذا تكفي قسمة واحدة؟', subtitle: 'ب) من تجربتك في الوصفة', done: q0,
+        { needsRound: { id: 'r1', label: 'الجولة 1', icon: '🥣', won: Boolean(won.r1) }, num: 1, title: 'لماذا تكفي قسمة واحدة؟', subtitle: 'ب) من تجربتك في الوصفة', done: q0,
           content: (
             <div className="space-y-3">
               <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={labDone ? 'true' : 'false'}>
@@ -49,8 +65,10 @@ export default function Module02Maarif() {
               {q2 && <KnowledgeBrick id="ikhtizal-bil-pgcd" lead="بدل عدة قسمات، قسمة واحدة على القاسم المشترك الأكبر." />}
             </div>
           ) },
-        { num: 4, title: 'طريقة الكتاب: 595/560', done: read,
+        { num: 4, title: 'الطريقة: 595/560', done: read,
           content: <div className="space-y-3"><MethodSteps method={METHOD} onAllRevealed={() => setRead(true)} />{read && <KnowledgeBrick id="tahaqquq-al-ikhtizal" compact />}</div> },
+        { num: 5, title: 'ورقة رانية: أين الخطأ؟', subtitle: 'جد السطر الخاطئ وصحّحه', done: q5,
+          content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={() => setQ5(true)} /> },
       ]}
       footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />} />
   );

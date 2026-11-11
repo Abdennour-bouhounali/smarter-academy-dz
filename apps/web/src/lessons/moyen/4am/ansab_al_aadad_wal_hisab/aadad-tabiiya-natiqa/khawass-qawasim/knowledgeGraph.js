@@ -148,7 +148,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'exBurhan', kind: 'example', lane: 'end', requires: 'ithbat-qasim',
-      title: 'برهان الكتاب', subtitle: '$a + b = n \\times k$',
+      title: 'البرهان', subtitle: '$a + b = n \\times k$',
       context: { text: PROOF.exercise, list: PROOF.solution.slice(4, 8) },
       reveals: ['khulasa'],
     },

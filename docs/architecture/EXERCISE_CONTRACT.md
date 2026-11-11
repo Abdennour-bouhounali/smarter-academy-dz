@@ -563,8 +563,10 @@ off as the textbook:
    named unknown). An item outside the unit's learning points (scientific
    notation, ex. 14 q2) is **not integrated** rather than tagged with a wrong
    learning point.
-6. **Going live:** imported exercises are born `draft` in `practice_exercises`;
-   publishing is an admin act. The server caches `active.json` and the
+6. **Going live:** an imported exercise is born `published` when its lesson is
+   published (`draft` otherwise), and a `draft` one under a published lesson is
+   published at the next sync (owner, 2026-11-11); `hidden` / `archived` stay
+   admin acts and are kept. The server caches `active.json` and the
    exercise index (`practice.cache_ttl`, 1 h): the deploy runs
    `cache:clear`; locally run `php artisan cache:clear` after adding files.
 
@@ -647,6 +649,7 @@ examinations live in `scripts/lib/examProvenance.mjs`, tested by `scripts/exam-p
 | | the original source + `adaptedFrom` | For adapted exercises. |
 | `statement.formulas[]` | LaTeX strings | Centred on one line under the setup sentence. |
 | `statement.table` | `{head, rows}` | Same shape as a مسألة table (`ProblemTable`). |
+| | | **Every screen that shows a statement passes `formulas` and `table`** to `features/practice/ExerciseStatement.jsx`, which renders them like the exam sheet (since 2026-11-09: the practice session, its review, the teacher's player, the daily challenge and its review, Madar refuel and « بوصلتي » had shown `content` alone). A statement whose data lives in `formulas` is unanswerable without them. |
 | `questions[].step` | « 01 »…« 06 » | Required, non-decreasing. |
 | `questions[].sub` | ا / ب / ج / د | Optional sub-item. |
 | `questions[].lead` | text | Optional. The step text that precedes its (ا)(ب). |
@@ -985,6 +988,95 @@ Owner's rules, implemented in the shared players, so they hold for every practic
   were already emptied and it did nothing), and the virtual keyboard has a « ✕ إغلاق » tab on its top edge
   (`features/mathlab/tools/functionGrapher/keyboardClose.js`, installed by `ensureMathLive()`), which closes like the
   built-in `[hide-keyboard]` key: command on the focused field, blur, hide — otherwise « auto » mode reopens it.
+
+### « قوالب الإجابة » — the answer is typed in its own shape (owner STANDARD, 2026-11-09)
+
+**Binding for every question of the platform** (practice, exam sheet, modules, tests, games, « بوصلتي »): a typed answer is
+never a bare box with the instructions in its placeholder. The input is drawn as the mathematics it completes, and the
+student types ONLY the unknown. Plan with one mock per kind: https://claude.ai/artifact/DLnrZSjqCARn5Xfyju4eZb.
+
+- **One pure rule** — `templateFor(question)` (`features/practice/answerTemplates/templateFor.js`) reads only what the client
+  always has (the question's statement, `answerFormat`, `evaluationPolicy`), never the expected answer. Kinds:
+
+  | kind | The input | Read from |
+  |---|---|---|
+  | `gap` | the box replaces « … » (`\ldots`, `\dots`, `…`, `\square`) INSIDE the formula; for « الأسّ $n$ » it replaces `^{n}`, raised | the question's statement |
+  | `form` | « A = ax + [b] »: the asked coefficient is a box, the form is printed | « يُكتب $A$ على الشكل $…$ : اكتب العدد $b$ فقط » |
+  | `fraction` | ± toggle, numerator box over denominator box, a real bar; empty denominator = an integer | « كسر », « a/b », `requiredForm` |
+  | `percent` | [ ] % | « مئوية », « % » |
+  | `quantity` | [ ] + the printed unit (دج, m, cm, °, L, km, kg, سا, د…) | « عدد بالدينار (دج) », « بالمتر »… |
+  | `solution` | x = [ ] | « قيمة $x$ » |
+  | `digit` | ten buttons 0–9 | « رقم واحد » |
+  | `natural` | digits only, thousands spaced while typing | « عدد طبيعي », « عدد العلب » |
+  | `signed` | ± toggle + box | « عدد نسبي / صحيح » |
+  | `decimal` | one box, « . » becomes « , » | everything else |
+
+  A gap inside a `{…}` group (e.g. `\dfrac{\ldots}{5}`) never cuts the formula: it falls back to the next kind.
+- **Rendering** — `answerTemplates/TemplateInput.jsx`: the fixed parts through `RichText` (KaTeX), LTR and isolated in the
+  Arabic page; the boxes are real inputs (`inputmode` numeric/decimal — the system's number pad is enough, a fraction has two boxes).
+- **Grading unchanged** — `templateValue(template, boxes)` produces the `{ value }` that `AnswerEvaluator` already reads
+  (« -5/6 », « 12500 », « -2,5 »). Nothing changes on the server; the answer key never reaches the client.
+- **Rollout** — applied to « جولة الانطلاق » (`CompassPage`, 2026-11-09; over its bank: 2 686 typed answers → gap 168,
+  form 190, fraction 914, natural 463, decimal 655, signed 153, quantity 124, percent 15, solution 3, digit 1).
+  *Planned:* practice session, exam sheet, daily challenge, Madar, modules; merging a step's sibling questions (a, b, c of one
+  form) into ONE template with several boxes (owner: yes); sets as chips, the inequality sign selector, vectors as columns,
+  proof starters; an explicit `answerTemplate` field for new exercises and a `check:answer-templates` coverage check.
+- Tests: `answerTemplates/templateFor.test.jsx`.
+
+#### Typed steps of a guided problem — the step `shape` fields (2026-11-10, PROVISIONAL with the synthesis pilot)
+
+A `numeric` step of a guided problem (`content/problems.js`, played by `GuidedProblem`) has no `answerFormat` to read. It DECLARES
+the shape of its input with explicit optional fields. The shape is never derived from `expected`.
+
+| Step fields | The input | Template kind |
+|---|---|---|
+| `shape: 'quantity'`, `unit: 'm'` | [ ] m — the unit is printed. `unit` is one of the closed list `STEP_UNITS` (m, cm, mm, km, m², cm², mm², km², m³, cm³, L, cL, mL, g, kg, °, km/h, دج); « DA » is refused. | `quantity` |
+| `shape: 'form'`, `subject: 'V'`, `factor: '\\pi'` | « V = [ ]π » — the student types the coefficient | `form` |
+| `shape: 'gap'`, `subject: 'AM \\times AC'` | « AM × AC = [ ] ». If `subject` holds one `\ldots`, the box takes its place instead. | `gap` |
+| `shape: 'decimal'` | one box, « . » becomes « , » — a ratio without unit | `decimal` |
+
+- `subject` and `factor` are LaTeX without « $ ».
+- **Only a step that carries `shape` changes.** A step without it keeps the bare box with its `prefix` / `suffix`.
+- A step with a `shape` carries no `prefix` / `suffix` (the shape prints them).
+- **One pure rule** — `stepTemplate(step)` in `lessons/common/problems/guidedProblem.js` returns the template that `TemplateInput`
+  reads, or `null` (no shape, or an invalid one: the bare box, never a broken formula).
+- **Validation** — `validateProblem` (run by `check:lessons`) refuses an unknown shape, a missing or unknown unit, a missing `subject` /
+  `factor`, a field of another shape, a shape field without `shape`, a `\ldots` inside a `{…}` group, and a shape on a non-numeric step.
+- **Rendering** — `NumericQuestion` takes an optional `template` prop: `TemplateInput` replaces the bare box. `parse`, `expected`, the
+  saved answer and the feedback are unchanged. `TemplateInput` gained two optional props: `onEnter` (Enter in a box validates) and
+  `ariaLabel` (the step's prompt names the value box).
+- The answer shown in the list of asks is written in its shape too (`stepGiven`: « 7,25 m », « V = 81π »).
+- Tests: `problems/guidedProblem.test.js`, `kit/numericTemplate.render.test.jsx`.
+
+### A formula never breaks across two lines (owner RULE, 2026-11-09)
+
+An inline formula is never split over two lines — above all when there is room around it. `index.css` sets
+`.katex { white-space: nowrap }` everywhere. When a formula does not fit, the CONTAINER grows (a wider card — the
+« بوصلتي » question card is `max-w-5xl`) or the formula's own row scrolls in its box (`TemplateInput` rows are
+`flex-nowrap overflow-x-auto`); the formula itself never wraps. A new screen that shows maths in a narrow column must
+check this at 768 px and 1366 px.
+
+### « لوحة الرموز » — the fixed math pad (2026-11-09, owner request + council)
+
+A `rational` answer that can be a FRACTION is written in a MathLive field with a FIXED pad beside it, on every surface that
+renders `QuestionRenderer` (« بوصلتي », the daily challenge, Madar refuel, classic practice, the exam sheet, the teacher player).
+
+- **When** — `needsMathPad(question)` (`features/practice/inputs/mathPad.js`), a pure rule on what the client always knows, even
+  without the answer key: `answerFormat` names a fraction, a rational or a relative number (« كسر », « ناطق », « نسبي », « a/b »,
+  « حاصل قسمة »), or `evaluationPolicy.requiredForm` is `irreducible`/`fraction`. A natural or decimal answer keeps the plain field.
+  Measured on 16 466 `rational` answers: ~4 441 expect a fraction, NONE a root (the grader reads rationals only).
+- **Keys** — `padKeys(question)`: the fraction key first and wide, digits, −, the decimal comma, ⌫, ← →. √ and the power key appear
+  ONLY when the format names them (« جذر », « على شكل قوة »); none does today.
+- **Not MathLive's keyboard** — the pad is page buttons (`inputs/MathPad.jsx`) writing into THE question's field: `pointerdown` is
+  cancelled so the field keeps its focus, insertion goes through MathLive commands, then an `input` event. With the pad,
+  `ExamMathField` gets `pad`: MathLive's floating keyboard stays closed (`policy: manual`, its toggle hidden) and, on a touch screen,
+  the system keyboard is suppressed (`inputmode="none"` on its textarea) so the two never fight.
+- **Where** — beside the field on the reading-end side from `lg` (left in RTL), under it on a portrait tablet; hidden once the question
+  is closed (an answered step). The pad lives inside the answer box, so no screen's layout (the no-scroll player included) changes.
+- **Size** — the field writes big (`math-field.sa-exam-mathfield.sa-pad-mathfield`, 1.9rem, index.css): owner, « the numbers are small ».
+- **Typing still works** — « 7/9 » on a physical keyboard becomes a fraction, as before. The answer sent is `{ value, latex }` (the
+  evaluator reads `value`), as on the exam sheet. Strings: `student.practice.mathPad.*`. Test: `inputs/mathPad.test.jsx`.
+- The ☰ menu of MathLive is hidden on every `.sa-exam-mathfield` (index.css), as this contract already required.
 
 ### One step split into several questions — the model answer waits (2026-10-07)
 

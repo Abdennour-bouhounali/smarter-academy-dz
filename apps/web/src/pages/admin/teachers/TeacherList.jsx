@@ -86,8 +86,8 @@ export default function AdminTeacherList() {
             { key: 'status', label: t('teachers.columnStatus'), render: (row) => <StatusBadge status={row.accountStatus} /> },
             { key: 'ambassador', label: t('teachers.ambassador.column'), render: (row) => <AmbassadorSwitch teacher={row} onChange={replaceRow} /> },
             { key: 'plan', label: t('teachers.columnPlan'), render: (row) => <span>{row.plan?.name ?? t('common.dash')}{row.plan?.source === 'subscription' ? '' : <span className="text-slate-400"> ({t('teachers.byDefault')})</span>}</span> },
-            { key: 'classes', label: t('teachers.columnClassrooms'), render: (row) => <Num>{row.usage?.classes?.current ?? 0} / {row.usage?.classes?.maximum ?? '∞'}</Num> },
-            { key: 'students', label: t('teachers.columnStudents'), render: (row) => <Num>{row.usage?.students?.current ?? 0} / {row.usage?.students?.maximum ?? '∞'}</Num> },
+            { key: 'classes', label: t('teachers.columnClassrooms'), render: (row) => <Num>{row.usage?.classes?.current ?? 0}{'\u00A0/\u00A0'}{row.usage?.classes?.maximum ?? '∞'}</Num> },
+            { key: 'students', label: t('teachers.columnStudents'), render: (row) => <Num>{row.usage?.students?.current ?? 0}{'\u00A0/\u00A0'}{row.usage?.students?.maximum ?? '∞'}</Num> },
             { key: 'requests', label: t('teachers.columnRequests'), render: (row) => (row.pendingRequestsCount > 0 ? <StatusBadge status="pending" label={t('teachers.pendingCount', { count: row.pendingRequestsCount })} /> : <span className="text-slate-400">{t('common.dash')}</span>) },
             { key: 'createdAt', label: t('teachers.columnRegistered'), render: (row) => formatDate(row.createdAt) },
           ]}

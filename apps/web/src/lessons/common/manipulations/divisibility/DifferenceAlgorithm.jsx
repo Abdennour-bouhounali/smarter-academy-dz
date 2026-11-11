@@ -19,6 +19,13 @@ import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
 import { playSfx } from '../../utils/playEffect';
 import { ordered } from './cpOrder';
 import * as L from '../logic/algorithms';
+import PredictTray from '../primitives/PredictTray';
+import { useLabCoach } from '../primitives/LabCoach';
+import { useInMissionPlayer } from '../../mission/missionPlayerContext';
+import { chipsAround } from './divisionChecks';
+
+/** Lecteur : une prédiction au début des PRED_MAX premières coupes de la manche. */
+const PRED_MAX = 2;
 
 const NS = 'manipulation.diff';
 
@@ -46,12 +53,22 @@ const { differenceStepTex, pgcdEqualityTex } = divisibility;
  *    La case refuse les autres fruits PAR LA DIVISIBILITÉ (« 56 لا يقسم
  *    252 »), jamais en énonçant la règle ; les fruits y sont proposés rangés
  *    par taille, pas dans l'ordre de la chaîne (2026-09-30).
+ *
+ * LECTEUR DE MISSION (rollout 2026-11-08, traitement v2) : joué en MANCHES (LabRounds). `onVerdict` remonte le PGCD posé ({ groups: v, exact })
+ * — une case refusée compte comme un essai raté ; `levels={false}` ; `predict` : au DÉBUT d'une coupe (les PRED_MAX premières), « كم سيبقى من
+ * الشريط الأكبر؟ » (`PredictTray`, trois longueurs) ; `chains` (`['cuts', 'pgcd']`) ; `CHAINS_PLAYER` = cuts : compter d'un toucher (`fill`) →
+ * BÂTIR « grand = petit + reste » (`build`, ops `=` `+`) → l'invariant ; pgcd : pourquoi s'arrêter → la règle ; la chaîne des coupes est le
+ * JOURNAL « 📋 جدول تجاربك » dans la colonne du labo ; `handDone` ouvre « أكمل الفروق » ; `choices` : des paires (a, b) à toucher. Contrôles
+ * figés pendant une prédiction ou une question ; toujours guidé ; pas de fête quand l'étape est cachée.
  */
 export default function DifferenceAlgorithm({
-  a: a0, b: b0, title, lead, mission, initialMode = 'student', allowModeSwitch = false, answerHiddenByDefault = false, showStepCount = true, onFinished, onTrial, checkpoints: cpOn = true,
+  a: a0, b: b0, title, lead, mission, initialMode = 'student', allowModeSwitch = false, answerHiddenByDefault = false, showStepCount = true, onFinished, onTrial, checkpoints: cpOn = true, coach: coachOn = true,
+  // ── LECTEUR DE MISSION (rollout 2026-11-08, traitement v2) ──
+  onVerdict, levels: withLevels = true, handDone = false, chains: chainsOn = ['cuts', 'pgcd'], predict: predictOn = true, choices,
 }) {
   const { t } = useTranslation('lesson');
-  const state = useManipulation({ type: 'pgcd-differences', initialNumbers: { a: a0, b: b0 }, initialMode, hintCount: 3, answerHiddenByDefault });
+  const gameScreen = useInMissionPlayer();
+  const state = useManipulation({ type: 'pgcd-differences', initialNumbers: { a: a0, b: b0 }, initialMode, hintCount: 3, answerHiddenByDefault, withLevels: withLevels !== false });
   const { a, b } = state.numbers;
   const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
   const [lab, setLab] = useState(() => L.initDifferences({ a: a0, b: b0 }));
@@ -60,7 +77,11 @@ export default function DifferenceAlgorithm({
   // « إعادة », d'autres nombres ou un autre niveau : TOUT recommence — la chaîne, les questions du labo, la fête
   const sceneKey = `${a}|${b}|${state.epoch}|${state.resetCount}`;
   const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.initDifferences({ a, b })); setReject(null); }
+  // lecteur : les coupes déjà prédites (index), la dernière prédiction jugée
+  const [predDone, setPredDone] = useState([]);
+  const [pred, setPred] = useState(null);
+  const [missionBig, setMissionBig] = useState(false);
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.initDifferences({ a, b })); setReject(null); setPredDone([]); setPred(null); }
   const [answered, setAnswered] = useState({ key: sceneKey, ids: [] });
   const answeredIds = answered.key === sceneKey ? answered.ids : [];
 
@@ -68,8 +89,9 @@ export default function DifferenceAlgorithm({
   const cpSettings = useLabCheckpointSettings('pgcd-differences');
   const ruleByCheckpoint = cpOn && cpSettings.enabled;
   const reachedOf = { cuts: L.isDifferencesFinished(lab), pgcd: lab.pgcdPlaced };
-  const pending = ruleByCheckpoint ? STEPS.find((id) => !answeredIds.includes(id)) : null;
-  const chain = pending && reachedOf[pending] ? CHAINS[pending] : null;
+  const pending = ruleByCheckpoint ? STEPS.find((id) => chainsOn.includes(id) && !answeredIds.includes(id)) : null;
+  // lecteur : compter d'un toucher puis BÂTIR la première coupe ; la page garde ses suites
+  const chain = pending && reachedOf[pending] ? (gameScreen ? CHAINS_PLAYER : CHAINS)[pending] : null;
   const cp = useLabCheckpoint({
     id: chain ? pending : null,
     questions: chain ? chain.map((q) => QUESTIONS[q]({ a, b, lab }, k)) : null,
@@ -82,7 +104,9 @@ export default function DifferenceAlgorithm({
       if (id === 'pgcd') { state.discover(); state.formalize(); }
     },
   });
-  const stepDone = STEPS.map((id) => reachedOf[id] && (!ruleByCheckpoint || answeredIds.includes(id)));
+  const stepDone = STEPS.map((id) => reachedOf[id] && (!ruleByCheckpoint || !chainsOn.includes(id) || answeredIds.includes(id)));
+  // lecteur : une manche sans questions (défi, terrain libre) ne montre pas d'étapes, et ne fête rien
+  const showStepper = !(gameScreen && (!ruleByCheckpoint || chainsOn.length === 0));
   const party = useStepCelebration();
   const celebrated = useRef({ key: sceneKey, set: new Set() });
   if (celebrated.current.key !== sceneKey) celebrated.current = { key: sceneKey, set: new Set() };
@@ -90,7 +114,7 @@ export default function DifferenceAlgorithm({
     stepDone.forEach((d, i) => {
       if (!d || celebrated.current.set.has(i)) return;
       celebrated.current.set.add(i);
-      party.celebrate({ n: i + 1, total: STEPS.length });
+      if (showStepper) party.celebrate({ n: i + 1, total: STEPS.length });
     });
   }, [stepDone.join()]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -115,15 +139,24 @@ export default function DifferenceAlgorithm({
       if (zoneId === 'pgcd') {
         const v = Number(sourceId.replace('diff:', ''));
         setLab((s) => ({ ...s, pgcdPlaced: v === s.gcd }));
-        if (!ruleByCheckpoint) state.discover();
+        state.report(onVerdict, { a, b, groups: v, exact: v === lab.gcd });
+        if (!ruleByCheckpoint && !gameScreen) state.discover();
       }
     },
     accepts: (sourceId, zoneId) => {
+      if (lockedRef.current) return '';
       if (zoneId === 'big') return L.canSubtract(lab, sourceId.replace('num:', ''), 'big');
       if (zoneId === 'pgcd') return L.canPlaceDifferencePgcd(lab, Number(sourceId.replace('diff:', '')));
       return 'invalid';
     },
-    onReject: (sourceId, _z, reason) => { playSfx('over'); setReject({ reason, v: Number(String(sourceId).replace('diff:', '')) }); },
+    onReject: (sourceId, zoneId, reason) => {
+      if (!reason) return;
+      playSfx('over');
+      const v = Number(String(sourceId).replace('diff:', ''));
+      // une case PGCD refusée est un essai raté de la manche
+      if (zoneId === 'pgcd') state.report(onVerdict, { a, b, groups: v, exact: false });
+      setReject({ reason, v });
+    },
   });
 
   useEffect(() => { if (state.isFormal) state.report(onFinished, lab.gcd); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -140,20 +173,48 @@ export default function DifferenceAlgorithm({
   const shown = lab.steps.slice(0, lab.done);
   const scale = Math.max(a, b);
   const nonZero = [...new Set(shown.filter((s) => s.diff !== 0).map((s) => s.diff))];
+  // lecteur : au DÉBUT d'une coupe (les PRED_MAX premières), prédire ce qui restera du grand ruban
+  const step = lab.steps[lab.done];
+  const predictOpen = gameScreen && predictOn && ruleByCheckpoint && !missionBig && !cp.open && !finished && !!step
+    && predDone.length < PRED_MAX && !predDone.includes(lab.done);
+  const locked = gameScreen && (cp.open || predictOpen);
+  const lockedRef = useRef(false);
+  lockedRef.current = locked;
+  const predOptions = step ? [...new Set([step.diff, step.small, step.big, step.big + step.small])].slice(0, 3).sort((x, y) => x - y) : [];
+  const sayPredict = (says) => {
+    const ok = Number(says) === step.diff;
+    playSfx(ok ? 'correct' : 'pop');
+    setPred({ at: lab.done, ok });
+    state.report(onTrial, { tk: 'predict', ok });
+    setPredDone((d) => [...d, lab.done]);
+  };
+  const trayNode = !gameScreen ? null : predictOpen ? (
+    <PredictTray attr="da" title={k('cp.predict.title')} prompt={k('cp.predict.prompt', { big: step.big, small: step.small })}
+      options={predOptions.map((v) => ({ says: String(v), text: k('cp.predict.option', { v }) }))} onSay={sayPredict} />
+  ) : cp.open ? cp.node : null;
+  // le GUIDE (LabCoach, 2026-11-09) : le geste du moment, jamais le résultat
+  const coachStep = coachOn && !locked ? L.differencesCoachOf(lab) : null;
+  const coach = useLabCoach({ lab: 'pgcd-differences', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '', labels: { hide: k('coach.hide'), show: k('coach.show'), ok: k('coach.ok'), stop: k('coach.stop') } });
   const heldLabel = drag.held === 'num:small' ? pair.small : drag.held?.startsWith('diff:') ? Number(drag.held.replace('diff:', '')) : null;
 
   return (
     <ManipulationShell
       type="pgcd-differences"
       title={title ?? t('manipulation.diff.title', { a, b })}
-      mission={mission ?? t('manipulation.diff.ribbonMission', { a, b })}
+      mission={mission ?? t(gameScreen && handDone ? 'manipulation.diff.missionButton' : 'manipulation.diff.ribbonMission', { a, b })}
       lead={lead}
       state={state}
       numberFields={[{ key: 'a', label: 'a' }, { key: 'b', label: 'b' }]}
       validate={validateNumbers}
       allowModeSwitch={allowModeSwitch}
       headerAction={cpOn ? cpSettings.control : null}
-      guided={!!chain || ruleByCheckpoint}
+      coach={coachOn ? coach : null}
+      // lecteur : l'écran de jeu est toujours GUIDÉ (les manches et les questions guident)
+      guided={!!chain || ruleByCheckpoint || gameScreen}
+      hideRepresentation={gameScreen || undefined}
+      onIntroChange={setMissionBig}
+      sidePanel={trayNode ? <div data-da-tray>{trayNode}</div> : null}
+      allowFreeLab={gameScreen ? false : undefined}
       hints={[t('manipulation.diff.hint1'), t('manipulation.diff.hint2'), t('manipulation.diff.hint3')]}
       controller={{
         autoStep: () => { if (L.isDifferencesFinished(lab)) return false; setLab(L.subtract); return true; },
@@ -164,7 +225,8 @@ export default function DifferenceAlgorithm({
         // « أكمل الفروق » (§6bis) : après UNE coupe faite à la main, les
         // suivantes ne sont plus que le même geste. La case PGCD reste vide :
         // reconnaître le dernier fruit non nul est la découverte.
-        autoComplete: {
+        // lecteur : « أكمل الفروق » est le BOUTON du geste appris — il s'ouvre après la manche à la main (handDone)
+        autoComplete: gameScreen && !handDone ? undefined : {
           label: t('manipulation.diff.autoComplete'),
           ready: lab.a === a && lab.b === b && !validateNumbers({ a, b }),
           manualDone: lab.done > 0,
@@ -212,10 +274,28 @@ export default function DifferenceAlgorithm({
     >
       <div className="relative min-h-[460px]" data-da-glance>
       {party.node}
-      {cp.node}
+      {!(gameScreen && cp.open) && cp.node}
       <ManipulationStage dragging={drag.dragging}>
-        <div className="space-y-3">
-          <LabStepper count={STEPS.length} current={Math.max(0, stepDone.indexOf(false))} done={stepDone} stepAttr="data-da-step" />
+        <div className={gameScreen ? 'grid grid-cols-[minmax(0,1fr)_15rem] gap-3' : ''}>
+        <div className="min-w-0 space-y-3">
+          {showStepper && <LabStepper count={STEPS.length} current={Math.max(0, stepDone.indexOf(false))} done={stepDone} stepAttr="data-da-step" />}
+          {gameScreen && choices?.length > 0 && (
+            <div className="flex flex-wrap items-center gap-1.5" data-da-choices>
+              <span className="text-sm font-bold text-slate-600">{k('choicesLabel')}</span>
+              {choices.map((c) => (
+                <button key={`${c.a}-${c.b}`} type="button" data-da-choice={`${c.a}-${c.b}`} disabled={locked} onClick={() => state.setNumbers({ a: c.a, b: c.b })}
+                  className={`min-h-[44px] rounded-xl border-2 px-3 text-base font-black ${c.a === a && c.b === b ? 'border-indigo-500 bg-indigo-50 text-indigo-900' : 'border-slate-200 bg-white text-slate-700 hover:border-indigo-300'}`}>
+                  <bdi dir="ltr">{c.a} · {c.b}</bdi>
+                </button>
+              ))}
+            </div>
+          )}
+          {gameScreen && pred && pred.at === lab.done - 1 && !cp.open && (
+            <p role="status" data-da-predict-result={pred.ok ? 'ok' : 'wrong'}
+              className={`rounded-2xl px-4 py-2 text-center text-lg font-black ${pred.ok ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>
+              {pred.ok ? k('cp.predict.right') : k('cp.predict.wrong')}
+            </p>
+          )}
           <p className="text-xs text-slate-500">{t('manipulation.dragHint')}</p>
 
           <div className="space-y-2" data-ribbons>
@@ -274,6 +354,23 @@ export default function DifferenceAlgorithm({
 
           {reject && <p role="status" className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">{t(`manipulation.diff.reject.${reject.reason}`, { v: reject.v, a, b })}</p>}
         </div>
+        {/* lecteur : la chaîne des coupes est le JOURNAL, dans la colonne du labo */}
+        {gameScreen && (
+          <div className="min-w-0" data-da-side>
+            {shown.length > 0 && (
+              <div className="overflow-hidden rounded-2xl border-2 border-indigo-100 bg-white" data-da-trials>
+                <p className="bg-indigo-50 px-2 py-1 text-sm font-black text-indigo-900">📋 {k('trials.title')}
+                  {shown.length > TRIALS_SHOWN && <span className="block text-xs font-bold text-indigo-500">{k('trials.lastOf', { n: TRIALS_SHOWN, total: shown.length })}</span>}</p>
+                <ol className="space-y-1 p-1.5">
+                  {shown.slice(-TRIALS_SHOWN).map((x, i) => (
+                    <li key={`${x.big}-${i}`} data-da-trial={x.diff}><EquationDisplay tex={differenceStepTex(x)} tone={x.diff === 0 ? 'result' : 'neutral'} size="sm" /></li>
+                  ))}
+                </ol>
+              </div>
+            )}
+          </div>
+        )}
+        </div>
       </ManipulationStage>
       </div>
       <DragGhost ghost={drag.ghost}>{heldLabel !== null && <NumberTile value={heldLabel} tone="divisor" />}</DragGhost>
@@ -290,6 +387,13 @@ export const CHAINS = Object.freeze({
   cuts: ['count', 'invariant'],
   pgcd: ['stop', 'rule'],
 });
+/** Lecteur (rollout 2026-11-08, traitement v2) : compter d'un toucher → BÂTIR la première coupe → l'invariant ; puis pourquoi s'arrêter → la règle. */
+export const CHAINS_PLAYER = Object.freeze({
+  cuts: ['countFill', 'build', 'invariant'],
+  pgcd: ['stop', 'rule'],
+});
+/** Le journal du lecteur montre les TRIALS_SHOWN dernières coupes. */
+const TRIALS_SHOWN = 6;
 
 const $ = (x) => `$${x}$`;
 const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
@@ -297,6 +401,28 @@ const lineOf = (s) => `${s.big} - ${s.small} = ${s.diff}`;
 
 /** Chaque question est construite sur LES nombres de l'élève (rien n'est écrit en dur) ; `k` : les textes de `diff`. */
 const BUILD = {
+  // combien de coupes, d'un toucher (le journal est à côté)
+  countFill: ({ a, b, lab }, k) => {
+    const n = lab.steps.length;
+    const last = lab.steps[n - 1];
+    return {
+      id: 'countFill', kind: 'fill', prompt: Mx(k, 'count.prompt', { a, b }),
+      fields: [{ label: k('cp.count.field'), expected: n, options: chipsAround(n, { min: 1 }) }],
+      hints: [Mx(k, 'count.hint1'), Mx(k, 'count.hint2', { first: $(lineOf(lab.steps[0])), last: $(lineOf(last)) })],
+      explain: Mx(k, 'count.explain', { n, last: $(lineOf(last)) }),
+    };
+  },
+  // la PREMIÈRE coupe bâtie : le grand ruban = le petit + ce qui reste (une tuile de trop : la somme)
+  build: ({ lab }, k) => {
+    const s0 = lab.steps[0];
+    const o = { big: s0.big, small: s0.small, diff: s0.diff, eq: $(`${s0.big} = ${s0.small} + ${s0.diff}`) };
+    return {
+      id: 'build', kind: 'build', ops: ['=', '+'], prompt: Mx(k, 'build.prompt', o),
+      slots: [k('cp.build.slotBig'), k('cp.build.slotSmall'), k('cp.build.slotDiff')],
+      tiles: [s0.diff, s0.big, s0.big + s0.small, s0.small], expected: [s0.big, s0.small, s0.diff],
+      hints: [Mx(k, 'build.hint1'), Mx(k, 'build.hint2', o)], explain: Mx(k, 'build.explain', o),
+    };
+  },
   count: ({ a, b, lab }, k) => {
     const n = lab.steps.length;
     const last = lab.steps[n - 1];

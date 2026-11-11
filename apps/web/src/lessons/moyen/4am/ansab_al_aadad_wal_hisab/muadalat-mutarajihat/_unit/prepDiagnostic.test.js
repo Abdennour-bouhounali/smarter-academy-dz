@@ -9,6 +9,8 @@ import { describe, it, expect } from 'vitest';
  */
 const configs = import.meta.glob('../*/lesson.config.js', { eager: true });
 const contents = import.meta.glob('../*/content/textbook.js', { eager: true });
+// une leçon convertie au lecteur de mission (rollout 2026-11-11) pose l'échelle de la plateforme, content/prep.js › PREP_LADDER
+const ladders = import.meta.glob('../*/content/prep.js', { eager: true });
 const modules = import.meta.glob('../*/modules/Module00Astaidd.jsx', { query: '?raw', import: 'default', eager: true });
 
 const lessonOf = (path) => path.split('/')[1];
@@ -28,7 +30,8 @@ describe('« أستعدّ » in every lesson of the unit', () => {
 
   it.each(LESSONS.map((l) => [l.id]))('%s: every item is sourced, typed and uses a declared skill', (id) => {
     const content = contents[`../${id}/content/textbook.js`];
-    const items = [...(content.PREP_ITEMS ?? []), ...(content.PREP_PLATFORM_ITEMS ?? [])];
+    const ladder = ladders[`../${id}/content/prep.js`]?.PREP_LADDER;
+    const items = ladder ?? [...(content.PREP_ITEMS ?? []), ...(content.PREP_PLATFORM_ITEMS ?? [])];
     const source = modules[`../${id}/modules/Module00Astaidd.jsx`];
     expect(items.length).toBeGreaterThanOrEqual(4);
     for (const it of items) {

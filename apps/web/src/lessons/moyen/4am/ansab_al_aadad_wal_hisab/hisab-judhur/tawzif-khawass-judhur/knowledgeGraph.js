@@ -16,7 +16,7 @@
  *
  *                   [b أصغر ما يمكن]              طريقة (m1)
  *                          │ مثال
- *                    [8، 18 و 50]
+ *                    [8، 18 و 98]
  *       يعتمد على ┌─────────┼─────────┐ الجذر نفسه
  *  📌 [√(a²b) = a√b]  خطأ شائع │
  *              ⛔ [مربّع ليس الأكبر]  [جمع جذور متشابهة]     طريقة (m2)
@@ -56,8 +56,8 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'ex8', kind: 'example', lane: 'end', requires: 'kitaba-a-jidhr-b',
-      title: '8، 18 و 50', subtitle: '$\\sqrt{50} = 5\\sqrt{2}$',
-      context: { text: METHOD_SIMPLIFY.solution[0] },
+      title: '8، 18 و 98', subtitle: '$\\sqrt{98} = 7\\sqrt{2}$',
+      context: { text: '$\\sqrt{8} = \\sqrt{2^2 \\times 2} = 2\\sqrt{2}$ ، $\\sqrt{18} = \\sqrt{3^2 \\times 2} = 3\\sqrt{2}$ و $\\sqrt{98} = \\sqrt{7^2 \\times 2} = 7\\sqrt{2}$ .' },
       reveals: ['tadhakkar', 'khata-asghar', 'tawzii'],
     },
     {
@@ -92,7 +92,7 @@ export const KNOWLEDGE_GRAPH = {
       context: {
         parts: [
           { role: 'wrong', text: ex38.commonError },
-          { role: 'why', text: 'الخاصية التوزيعية تجمع حدودًا لها نفس الجذر: $x\\sqrt{b} + y\\sqrt{b} = (x + y)\\sqrt{b}$. أما $\\sqrt{8} + \\sqrt{50}$ فلا يساوي $\\sqrt{58}$: $2\\sqrt{2} + 5\\sqrt{2} = 7\\sqrt{2} = \\sqrt{98}$.' },
+          { role: 'why', text: 'الخاصية التوزيعية تجمع حدودًا لها نفس الجذر: $x\\sqrt{b} + y\\sqrt{b} = (x + y)\\sqrt{b}$. أما $\\sqrt{8} + \\sqrt{18}$ فلا يساوي $\\sqrt{26}$: $2\\sqrt{2} + 3\\sqrt{2} = 5\\sqrt{2}$.' },
           { role: 'right', text: ex38.question.explain },
         ],
       },

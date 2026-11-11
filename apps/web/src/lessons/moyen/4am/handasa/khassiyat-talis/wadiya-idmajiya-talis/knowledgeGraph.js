@@ -22,7 +22,7 @@
  *                               │ نجمعها
  *                     [من النص إلى الجواب] → 🎯
  */
-import { SITUATION, REMARKS } from './content/textbook';
+import { SITUATION, REMARKS, CARD } from './content/textbook.js';
 
 export const KNOWLEDGE_GRAPH = {
   root: 'wadiya',
@@ -54,9 +54,9 @@ export const KNOWLEDGE_GRAPH = {
       title: 'h بدل الضلع OT', subtitle: 'الضلع من O',
       context: {
         parts: [
-          { role: 'wrong', text: REMARKS.otWrong },
-          { role: 'why', text: REMARKS.otWhy },
-          { role: 'right', text: REMARKS.otRight },
+          { role: 'wrong', text: CARD.otWrong },
+          { role: 'why', text: CARD.otWhy },
+          { role: 'right', text: CARD.otRight },
         ],
       },
       reveals: [],
@@ -69,9 +69,9 @@ export const KNOWLEDGE_GRAPH = {
       title: 'القطر بدل نصف القطر', subtitle: 'الحجم بنصف القطر',
       context: {
         parts: [
-          { role: 'wrong', text: REMARKS.qutrWrong },
-          { role: 'why', text: REMARKS.qutrWhy },
-          { role: 'right', text: REMARKS.qutrRight },
+          { role: 'wrong', text: CARD.qutrWrong },
+          { role: 'why', text: CARD.qutrWhy },
+          { role: 'right', text: CARD.qutrRight },
         ],
       },
       reveals: [],

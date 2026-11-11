@@ -35,7 +35,7 @@ export default function Module08Itqan() {
           assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_khawass-qawasim_P3'] } },
         { id: 'E5', skill: 'burhan', requires: ['ithbat-qasim'], prompt: <Q source={src('method-proof', 11, 'طرائق')}>لإثبات أن عددًا طبيعيًا <MathText>{'$d$'}</MathText> يقسم عددًا <MathText>{'$m$'}</MathText> يكفي ...</Q>,
           options: ['إيجاد عدد طبيعي k حيث m = d × k', 'التحقّق من أن m أكبر من d', 'إيجاد عدد طبيعي k حيث d = m × k', 'التحقّق من أن m + 1 يقبل القسمة على d'], correct: 0, cols: 1,
-          explain: <span>هذه هي جملة الطريقة في الكتاب: نفرض الشرط ونصل إلى <MathText>{'$m = d \\times k$'}</MathText>.</span>,
+          explain: <span>هذه هي جملة الطريقة: نفرض الشرط ونصل إلى <MathText>{'$m = d \\times k$'}</MathText>.</span>,
           assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_khawass-qawasim_P4'] } },
       ]}
       badges={[{ id: 'khawass', emoji: '🧩', label: 'أستعمل الخاصيتين', test: (m) => (m.jamaa ?? 0) + (m.baqi ?? 0) === 0 }, { id: 'burhan', emoji: '✍️', label: 'أعرف كيف أبرهن', test: (m) => (m.burhan ?? 0) === 0 }]}

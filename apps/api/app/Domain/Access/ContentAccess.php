@@ -4,7 +4,6 @@ namespace App\Domain\Access;
 
 use App\Domain\Classroom\StudyContextService;
 use App\Models\Lesson;
-use App\Models\LessonModule;
 use App\Models\PracticeExercise;
 use App\Models\User;
 use DomainException;
@@ -161,45 +160,18 @@ class ContentAccess
     /**
      * Le MODULE est-il ouvert ?
      *
-     * Chaque module porte son propre état. Changer l'état d'une LEÇON le
-     * recopie sur tous ses modules (ContentService::changeStatus, 2026-10-07),
-     * mais un module peut ensuite être changé seul — c'est ce qui permet de
-     * retirer UN module cassé sans fermer la leçon entière (spec §10).
+     * UN MODULE N'A PAS D'ÉTAT PROPRE (propriétaire, 2026-11-11) : il est
+     * ouvert exactement quand sa leçon l'est — état de publication, palier,
+     * classe active et masquage par l'enseignant compris. La colonne
+     * `lesson_modules.publication_status` n'est qu'une copie de celle de la
+     * leçon (ContentService::changeStatus, ContentRegistryImporter) et n'est
+     * pas lue ici.
      *
-     * @throws DomainException si le module est masqué, archivé ou en brouillon.
+     * @throws DomainException si la leçon du module est fermée à ce compte.
      */
     public static function assertModuleAvailable(string $lessonCode, int|string $moduleRef, ?User $user = null): void
     {
-        // La leçon d'abord : inutile de dire « module indisponible » quand
-        // c'est toute la leçon qui est fermée. C'est aussi ce qui fait porter
-        // le palier au module sans qu'il ait à le redemander — le module
-        // hérite du palier de sa leçon, il n'en a pas un à lui.
         self::assertLessonAvailable($lessonCode, $user);
-
-        $modules = LessonModule::whereHas('lesson', fn ($q) => $q->where('code', $lessonCode))
-            ->where(function ($q) use ($moduleRef) {
-                // Le client désigne un module par son NUMÉRO (la progression
-                // stocke des numéros) ou par son CODE ('00', '07'). Les deux
-                // sont acceptés parce que les deux circulent déjà.
-                $q->where('code', (string) $moduleRef);
-                if (is_numeric($moduleRef)) {
-                    $q->orWhere('number', (int) $moduleRef);
-                }
-            })
-            ->whereNull('retired_at')
-            ->get();
-
-        // Inconnu du registre : on laisse passer, même raison que pour la
-        // leçon — la base miroite le contenu, elle n'en est pas l'autorité.
-        if ($modules->isEmpty()) {
-            return;
-        }
-
-        if ($modules->contains(fn (LessonModule $module) => self::canSee($user, $module->publication_status))) {
-            return;
-        }
-
-        throw new DomainException('Ce module n\'est pas disponible pour le moment.');
     }
 
     /** Variante non levante, pour filtrer une liste. */
@@ -377,21 +349,10 @@ class ContentAccess
             }
         }
 
+        // Un module n'a pas d'état propre (2026-11-11) : il est fermé avec sa
+        // leçon, que `lessons` porte déjà. Les deux clés restent pour le client.
         $closedModules = [];
         $moduleStatuses = [];
-        $rows = LessonModule::query()
-            ->join('lessons', 'lessons.id', '=', 'lesson_modules.lesson_id')
-            ->where('lesson_modules.publication_status', '!=', LessonModule::PUB_PUBLISHED)
-            ->whereNull('lesson_modules.retired_at')
-            ->get(['lessons.code as lesson_code', 'lesson_modules.number', 'lesson_modules.publication_status']);
-
-        foreach ($rows as $row) {
-            if (! self::canSee($user, $row->publication_status)) {
-                $closedModules[$row->lesson_code][] = (int) $row->number;
-            } elseif ($withStatuses) {
-                $moduleStatuses[$row->lesson_code][(int) $row->number] = $row->publication_status;
-            }
-        }
 
         $premium = self::premiumLessonCodes();
 

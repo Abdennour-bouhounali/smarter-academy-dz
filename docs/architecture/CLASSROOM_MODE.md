@@ -274,6 +274,8 @@ Classroom Mode would unlock steps and modules, stop writing completion, and swit
 - a block taller than a page is OPENED into its children, up to 5 levels deep (the five exercises of a test, the
   cards of a memo);
 - its first child stays glued to the next when they fit together, so a heading is never alone on a page.
+- an element marked `data-paging-keep` (a screen designed to hold as one, e.g. the compact review of « أستعدّ ») is never walked
+  into nor opened: it stays ONE block.
 - a DECORATIVE child (`aria-hidden="true"`, or positioned absolute/fixed: a card's gradient background) is never an item:
   it is skipped when a block is opened and stays visible with its parent (`isDecor`). Before this rule (2026-11-04) a
   module's opening card could open on its empty background, an empty first screen.
@@ -286,6 +288,11 @@ With `onePerPage` (one item per screen):
 - a block that APPEARS after an answer (the next sub-step of a « مسألة ») and is substantial (≥ `SMALL_BLOCK`) gets its OWN
   screen, inserted just after the current one (hidden until « واصل »). Small added blocks join the current screen. Without this
   the current screen grows and `FitToArea` shrinks everything (owner, 2026-11-04).
+- new blocks are watched not only at the host but also in the CONTAINER of an opened block and in any ANCESTOR of the host inside
+  the unit (the plan may have walked down through single-child wrappers; content revealed after an answer arrives one level up).
+- a block that was SMALL when planned or added (an empty wrapper, one line) is watched: if it grows to ≥ `SMALL_BLOCK` while it
+  shares the current screen, it moves to its own screen right after (2026-11-07: a « معارف » step answered → its two knowledge
+  cards no longer crush the question to zoom 0.6).
 
 Blocks are GROUPS of elements, shown or hidden together. Without `deepBlocks` each group is one element, and the
 classroom plan is unchanged.

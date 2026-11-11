@@ -14,7 +14,7 @@ import { src, addition } from '../../_unit/unitMeta.js';
 export const ACTIVITY = {
   source: src('method-simplify', 25, 'طرائق'),
   title: 'توظيف خواص الجذور التربيعية',
-  text: 'تمرين 1: 1) أُكتب كلا من الأعداد $\\sqrt{8}$ ، $\\sqrt{18}$ و $\\sqrt{50}$ على الشكل $a\\sqrt{b}$ حيث $a$ و $b$ عددان طبيعيان و $b$ أصغر ما يمكن. 2) استنتج عبارة مبسطة للعدد A حيث $A = \\sqrt{8} - 3\\sqrt{18} + 2\\sqrt{50} - 7\\sqrt{2}$ .',
+  text: '1) أُكتب كلا من الأعداد $\\sqrt{8}$ ، $\\sqrt{18}$ و $\\sqrt{50}$ على الشكل $a\\sqrt{b}$ حيث $a$ و $b$ عددان طبيعيان و $b$ أصغر ما يمكن. 2) استنتج عبارة مبسطة للعدد A حيث $A = \\sqrt{8} - 3\\sqrt{18} + 2\\sqrt{50} - 7\\sqrt{2}$ .',
   questions: [
     '1) أُكتب كلا من الأعداد $\\sqrt{8}$ ، $\\sqrt{18}$ و $\\sqrt{50}$ على الشكل $a\\sqrt{b}$ حيث $a$ و $b$ عددان طبيعيان و $b$ أصغر ما يمكن.',
     '2) استنتج عبارة مبسطة للعدد A حيث $A = \\sqrt{8} - 3\\sqrt{18} + 2\\sqrt{50} - 7\\sqrt{2}$ .',
@@ -32,7 +32,7 @@ export const TILING = {
   source: addition('interaction_generation'),
   numbers: { beginner: 32, advanced: 288 },
   // Ce que le carré de 288 montre quand k = 12 : la dalle 2 ne se pave plus.
-  example: 'مربّع مساحته 288 مبلّط بـ $12 \\times 12$ بلاطة مساحة كل منها 2: $\\sqrt{288} = \\sqrt{12^2 \\times 2} = 12\\sqrt{2}$',
+  example: 'مربّع مساحته 32، على كل ضلع منه 4 بلاطات مساحة كل منها 2: $\\sqrt{32} = \\sqrt{4^2 \\times 2} = 4\\sqrt{2}$',
 };
 
 /** طرائق p. 25 — la solution du تمرين 1, ligne à ligne (MethodSteps). */
@@ -56,7 +56,7 @@ export const KNOWLEDGE = {
 /** طرائق p. 25 — تمرين 2. */
 export const METHOD_PRODUCT = {
   source: src('method-product', 25, 'طرائق'),
-  exercise: 'تمرين 2: احسب $A = \\sqrt{\\dfrac{50}{3}} \\times \\sqrt{2} \\times \\sqrt{12}$',
+  exercise: 'احسب $A = \\sqrt{\\dfrac{50}{3}} \\times \\sqrt{2} \\times \\sqrt{12}$',
   solution: [
     'لدينا $A = \\dfrac{\\sqrt{50}}{\\sqrt{3}} \\times \\sqrt{2} \\times \\sqrt{12} = \\dfrac{\\sqrt{50} \\times \\sqrt{2} \\times \\sqrt{12}}{\\sqrt{3}}$',
     'وبما أنّ $\\sqrt{50} \\times \\sqrt{2} = \\sqrt{50 \\times 2} = \\sqrt{100} = 10$ و $\\sqrt{12} = \\sqrt{4 \\times 3} = 2\\sqrt{3}$ فإنّ $A = \\dfrac{10 \\times 2 \\times \\sqrt{3}}{\\sqrt{3}} = 20$',
@@ -90,7 +90,7 @@ export const METHOD_RATIONALIZE = {
 export const NOW_30 = {
   source: src('now-30', 30, 'دوري الآن'),
   text: 'استعمل المجدول إكسال أو المجدول جيوجبرا لتقارن بين العددين: $2\\sqrt{a - 1}$ و $\\sqrt{a + \\sqrt{4a - 4}} + \\sqrt{a - \\sqrt{4a - 4}}$ إذا علمت أنّ $a \\geq 2$ .',
-  correctionNote: 'صحّحت المنصّة خطأً مطبعيًا في نص الكتاب.',
+  correctionNote: 'صيغ هذا التمرين بحيث يكون للعددين معنى من أجل كل عدد a أكبر من 2 أو يساويه.',
   // Ce que le tableur affiche : une ligne par valeur de a (calculs exacts).
   trials: [
     { a: 2, label: 'من أجل $a = 2$ : $\\sqrt{2 + \\sqrt{4}} + \\sqrt{2 - \\sqrt{4}} = $', options: ['$2$', '$\\sqrt{4}+\\sqrt{2}$', '$4$'], correct: 0, correction: '$\\sqrt{4} + \\sqrt{0} = 2 + 0 = 2$ ، و $2\\sqrt{2 - 1} = 2$' },
@@ -113,7 +113,7 @@ export const NOW_30 = {
 /** Exercice 27 : l'énoncé affiché est la version corrigée (extraction.json → ex-27.correction). */
 export const EX27_NOTE = {
   source: addition('interaction_generation'),
-  text: 'صحّحت المنصّة خطأً مطبعيًا في نص الكتاب: $a$ عدد صحيح و $b$ عدد طبيعي.',
+  text: 'انتبه: في هذا التمرين $a$ عدد صحيح و $b$ عدد طبيعي.',
 };
 
 /**

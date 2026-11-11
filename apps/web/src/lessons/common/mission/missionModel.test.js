@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  isMissionView, missionTools, pendingCheckpoint, missionStations, resumeStation, readMissionState, writeMissionState, missionKey, stationLabel, shouldWelcome,
+  isMissionView, missionTools, pendingCheckpoint, missionStations, resumeStation, readMissionState, writeMissionState, missionKey, stationLabel, shouldWelcome, checkpointOrder,
 } from './missionModel';
 import { describeLearningViewer } from '../../../features/learning/learningViewer';
 
@@ -85,5 +85,118 @@ describe('mission state — local, per lesson, never throws', () => {
     s.setItem(missionKey('l2'), '{broken');
     expect(readMissionState(s, 'l2')).toEqual({ opened: false, answered: {}, seen: {} });
     expect(readMissionState(null, 'l3')).toEqual({ opened: false, answered: {}, seen: {} });
+  });
+});
+
+describe('checkpointOrder — the right answer is not always first (ECC review 2026-11-10)', () => {
+  const configs = import.meta.glob('../../moyen/4am/**/lesson.config.js', { eager: true });
+  const cps = Object.values(configs).flatMap((m) => m.LESSON_CONFIG?.mission?.checkpoints ?? []);
+  it('a permutation, the same at every call (stable across reloads)', () => {
+    cps.forEach((cp) => {
+      const o = checkpointOrder(cp.id, cp.options.length);
+      expect([...o].sort()).toEqual(cp.options.map((_, i) => i));
+      expect(checkpointOrder(cp.id, cp.options.length)).toEqual(o);
+      expect(o.some((v, i) => v !== i), `${cp.id} never shown in its written order`).toBe(true);
+    });
+  });
+  it('across the converted lessons, the right answer is shown at more than one place, and not mostly first', () => {
+    expect(cps.length).toBeGreaterThanOrEqual(9);
+    const places = cps.map((cp) => checkpointOrder(cp.id, cp.options.length).indexOf(cp.correct));
+    expect(new Set(places).size).toBeGreaterThan(1);
+    expect(places.filter((p) => p === 0).length).toBeLessThan(cps.length / 2);
+  });
+});
+
+// ── LA SYNTHÈSE dans le lecteur (2026-11-10, provisoire) : des champs FACULTATIFS — sans eux, tout ce qui précède est inchangé ──────────
+import { toolLit, toolProgress, sceneFill, trainingsDone, showStars, openingMinutes } from './missionModel';
+
+const SYNTHESIS = {
+  toolsOwned: true,
+  climaxModule: 8,
+  checkpoints: [],
+  trainings: [1, 2, 3, 4, 5, 6],
+  hideStars: true,
+  stationLabels: { 7: 'وضعية الوحدة', 8: 'التحدّي 🏆' },
+  tools: [
+    { id: 'other-lesson-key', emoji: '📏', label: 'a', usedIn: [1, 2, 7] },
+    { id: 'another-key', emoji: '⚖️', label: 'b', usedIn: [2] },
+    { id: 'never-used', icon: '✂️', label: 'c' },
+  ],
+};
+
+describe('missionTools with toolsOwned — the unit keys are owned from the first screen', () => {
+  it('every tool is earned whatever the lesson knowledge holds, and never needs to exist in it', () => {
+    const tools = missionTools(SYNTHESIS, [], []);
+    expect(tools.map((t) => t.earned)).toEqual([true, true, true]);
+    expect(tools.map((t) => t.used)).toEqual([false, false, false]);
+    expect(tools.map((t) => t.icon)).toEqual(['📏', '⚖️', '✂️']);
+  });
+  it('a key is USED once one of its usedIn modules is completed (string or number ids)', () => {
+    expect(missionTools(SYNTHESIS, [], [0, 1]).map((t) => t.used)).toEqual([true, false, false]);
+    expect(missionTools(SYNTHESIS, [], ['00', '02']).map((t) => t.used)).toEqual([true, true, false]);
+    expect(missionTools(SYNTHESIS, [], undefined).map((t) => t.used)).toEqual([false, false, false]);
+  });
+  it('without the flag the output is exactly the old one (no `used`, earned from knowledge)', () => {
+    expect(missionTools(MISSION, ['qasim-baqi'], [1, 2, 3])).toEqual([
+      { id: 'qasim-baqi', icon: '🔑', label: 'a', earned: true },
+      { id: 'qasim-jidaa', icon: '🔑', label: 'b', earned: false },
+    ]);
+    expect(missionTools({ ...SYNTHESIS, toolsOwned: 'yes' }, [], [1]).every((t) => !('used' in t) && !t.earned)).toBe(true);
+  });
+  it('toolLit / toolProgress / sceneFill — lit = used for owned keys, earned otherwise; the scene is full when keys are owned', () => {
+    const owned = missionTools(SYNTHESIS, [], [2]);
+    expect(owned.map(toolLit)).toEqual([true, true, false]);
+    expect(toolProgress(owned)).toEqual({ lit: 2, total: 3 });
+    expect(sceneFill(SYNTHESIS, missionTools(SYNTHESIS, [], []))).toBe(1);
+    const classic = missionTools(MISSION, ['qasim-baqi']);
+    expect(toolProgress(classic)).toEqual({ lit: 1, total: 2 });
+    expect(sceneFill(MISSION, classic)).toBe(0.5);
+    expect(sceneFill(MISSION, [])).toBe(0);
+  });
+});
+
+describe('a mission with no checkpoint (`checkpoints: []`)', () => {
+  it('never asks one, at any module', () => {
+    [1, 2, 3, 4, 5, 6, 7, 8].forEach((n) => expect(pendingCheckpoint(SYNTHESIS, [0, 1, 2, 3, 4, 5, 6, 7], {}, n)).toBeNull());
+    expect(shouldWelcome({}, 3, pendingCheckpoint(SYNTHESIS, [0, 1, 2], {}, 3))).toBe(true);
+  });
+});
+
+describe('stationLabels and a climax on the LAST module', () => {
+  const config = { mission: SYNTHESIS, modules: [0, 1, 6, 7, 8].map((n) => ({ number: n, slug: `m${n}`, title: `محور ${n} — عنوان ${n}` })) };
+  it('the last module is the 🏆 station and nothing comes after it (no bonus station)', () => {
+    const stations = missionStations(config, () => 'locked');
+    expect(stations.map((s) => s.kind)).toEqual(['stage', 'stage', 'stage', 'stage', 'climax']);
+    expect(stations[stations.length - 1].number).toBe(8);
+  });
+  it('a station takes its label from mission.stationLabels, otherwise from its module title', () => {
+    const stations = missionStations(config, () => 'locked');
+    expect(stations.map((s) => s.label)).toEqual(['عنوان 0', 'عنوان 1', 'عنوان 6', 'وضعية الوحدة', 'التحدّي 🏆']);
+    expect(stations.map((s) => s.title)).toEqual(config.modules.map((m) => m.title));
+  });
+  it('without stationLabels every label is the old stationLabel(title)', () => {
+    const plain = { mission: MISSION, modules: [3, 4].map((n) => ({ number: n, slug: `m${n}`, title: `نشاط ${n} — شيء ${n}` })) };
+    expect(missionStations(plain, () => 'locked').map((s) => s.label)).toEqual(['شيء 3', 'شيء 4']);
+  });
+});
+
+describe('trainingsDone / showStars / openingMinutes', () => {
+  it('counts the completed training modules, or is null when the lesson declares none', () => {
+    expect(trainingsDone(SYNTHESIS, [])).toEqual({ done: 0, total: 6 });
+    expect(trainingsDone(SYNTHESIS, ['00', 1, '2', 7])).toEqual({ done: 2, total: 6 });
+    expect(trainingsDone(SYNTHESIS, [0, 1, 2, 3, 4, 5, 6, 7, 8])).toEqual({ done: 6, total: 6 });
+    expect(trainingsDone(MISSION, [1, 2])).toBeNull();
+    expect(trainingsDone({ trainings: [] }, [1])).toBeNull();
+  });
+  it('hideStars hides the ⭐ counter only while it reads 0 — the first lab star brings it back', () => {
+    expect(showStars(SYNTHESIS, 0)).toBe(false);
+    expect(showStars(SYNTHESIS, 1)).toBe(true);
+    expect(showStars(MISSION, 0)).toBe(true);
+    expect(showStars(undefined, 0)).toBe(true);
+  });
+  it('the opening shows mission.durationMin when given, the catalogue duration otherwise', () => {
+    expect(openingMinutes({ estimatedDurationMin: 31, mission: { durationMin: 70 } })).toBe(70);
+    expect(openingMinutes({ estimatedDurationMin: 31, mission: {} })).toBe(31);
+    expect(openingMinutes({ mission: {} })).toBeNull();
   });
 });

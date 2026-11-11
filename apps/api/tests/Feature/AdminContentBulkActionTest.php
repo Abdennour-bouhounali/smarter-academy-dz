@@ -200,17 +200,20 @@ class AdminContentBulkActionTest extends TestCase
         $this->assertSame(0, AdminActivityLog::count());
     }
 
-    public function test_un_lot_masque_des_modules_et_des_exercices(): void
+    public function test_un_lot_refuse_les_modules_et_publie_des_exercices(): void
     {
+        // Un module n'a pas d'état propre (2026-11-11) : chaque module est refusé.
+        $before = $this->moduleA->fresh()->publication_status;
         $this->asAdmin()
             ->postJson('/api/v1/admin/content/module/bulk-status', [
                 'ids' => [$this->moduleA->id, $this->moduleB->id],
                 'status' => Lesson::PUB_HIDDEN,
             ])
             ->assertStatus(200)
-            ->assertJsonCount(2, 'applied');
+            ->assertJsonCount(0, 'applied')
+            ->assertJsonCount(2, 'failed');
 
-        $this->assertSame(Lesson::PUB_HIDDEN, $this->moduleA->fresh()->publication_status);
+        $this->assertSame($before, $this->moduleA->fresh()->publication_status);
 
         $this->asAdmin()
             ->postJson('/api/v1/admin/content/exercise/bulk-status', [

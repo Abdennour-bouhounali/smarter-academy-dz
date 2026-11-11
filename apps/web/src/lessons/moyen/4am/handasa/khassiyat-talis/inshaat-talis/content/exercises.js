@@ -7,6 +7,7 @@
  * celles de l'extraction (`answerSource: computed`).
  */
 import { src } from '../../_unit/unitMeta.js';
+import { withContext } from '../../../../../../common/textbook/exerciseParts.js';
 import { LP } from './textbook.js';
 
 const S111 = (n, part) => ({ ...src(`ex-${n}`, 111, 'وضع نقط على مستقيم', n), ...(part ? { part } : {}) });
@@ -68,7 +69,7 @@ export const EXERCISES = [
         { label: 'النقطة P الخارجية تقع', options: ['بعد N', 'قبل M', 'في منتصف [MN]'], correct: 0,
           correction: 'PM أكبر من PN : P أقرب إلى N ، فهي بعد N (لأن $\\dfrac{11}{4} > 1$ ).' },
       ],
-      explain: 'كما في طرائق ص 109: من جهتين مختلفتين نحصل على النقطة الداخلية، ومن نفس الجهة على النقطة الخارجية.',
+      explain: 'كما في الطريقة: من جهتين مختلفتين نحصل على النقطة الداخلية، ومن نفس الجهة على النقطة الخارجية.',
     },
     method: 'موازيان مدرّجان بنفس الوحدة يشملان M و N : 11 وحدة من جهة و 7 من الجهة الأخرى تعطيان P بين M و N ؛ 11 و 7 من نفس الجهة تعطيان P خارج [MN] .',
     commonError: 'الاكتفاء بالنقطة الداخلية: النسبة $\\dfrac{11}{7}$ تتحقّق أيضًا في نقطة خارج [MN].',
@@ -134,4 +135,5 @@ export const EXERCISES = [
 ];
 
 /** Les parties d'un exercice (ex-21 en a quatre). */
-export const partsOf = (n) => EXERCISES.filter((e) => e.id === `ex-${n}` || e.id.startsWith(`ex-${n}-`));
+// lecteur : les parties sans énoncé portent celui de la partie 1 (« pas d'aller-retour », common/textbook/exerciseParts.js)
+export const partsOf = (n) => withContext(EXERCISES.filter((e) => e.id === `ex-${n}` || e.id.startsWith(`ex-${n}-`)));

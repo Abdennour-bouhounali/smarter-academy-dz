@@ -118,3 +118,21 @@ export function untriedGroups(groups) {
   for (let k = 1; k <= top; k += 1) if (groups.tried[k] === undefined) out.push(k);
   return out;
 }
+
+/**
+ * LE GUIDE (LabCoach, MANIPULATION_CONTRACT §8quater — ajouté au rollout du 2026-11-09 : ce labo n'en avait pas). Ce qu'il montre MAINTENANT :
+ *   trousses — l'emballage à tirer (aucune trousse posée), puis le « + » ; rien quand la preuve est faite ;
+ *   listes   — la zone du milieu, puis « تحقّق » quand la preuve est complète ; jamais un jeton (savoir lesquels confronter EST l'exercice).
+ */
+export function coachOf({ inGroups, groups, lab }) {
+  if (inGroups) {
+    if (groupsInsightReady(groups)) return null;
+    if (canChooseGroups(groups, (groups.k ?? 0) + 1) !== true) return null;
+    return groups.k === null
+      ? { id: 'add', target: '[data-group-row]', gesture: 'drag' }
+      : { id: 'more', target: '[data-group-add]', gesture: 'tap' };
+  }
+  if (lab.checked && listsConclusive(lab)) return null;
+  if (listsConclusive(lab)) return { id: 'check', target: '[data-manipulation-check]', gesture: 'tap' };
+  return { id: 'shared', target: '[data-drop-zone="shared"]', gesture: 'drag' };
+}

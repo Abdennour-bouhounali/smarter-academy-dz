@@ -112,6 +112,21 @@ const GraphNode = forwardRef(function GraphNode(
           transition={reduce ? { duration: 0 } : { duration: 1.2, repeat: Infinity, ease: 'easeOut', delay: delay + 0.45, repeatDelay: 0.35 }}
         />
       )}
+      {/* LE DOIGT (propriétaire, 2026-11-08) : sur la PREMIÈRE carte, tant que rien n'est découvert, une main 👆 monte et
+          descend AU-DESSUS de la carte en la pointant (👇, propriétaire : « depuis le haut de la carte ») — « touche ici pour voir l'explication » sans une phrase de plus. Elle part au premier toucher
+          (isStart devient faux) ; mouvement réduit : la main reste immobile. */}
+      {isRoot && isStart && state === 'available' && (
+        <motion.span
+          aria-hidden="true"
+          data-kg-start-finger="true"
+          className="pointer-events-none absolute bottom-full left-1/2 z-10 -ms-5 mb-1 select-none text-4xl leading-none drop-shadow-md"
+          initial={{ opacity: 0, y: -6 }}
+          animate={reduce ? { opacity: 1, y: 0 } : { opacity: 1, y: [-6, 6, -6] }}
+          transition={reduce ? { duration: 0 } : { opacity: { duration: 0.3, delay: delay + 0.5 }, y: { duration: 1.1, repeat: Infinity, ease: 'easeInOut', delay: delay + 0.5 } }}
+        >
+          👇
+        </motion.span>
+      )}
       {/* Halo des nœuds à découvrir : il dit « par ici » sans rien écrire. */}
       {state === 'available' && !selected && (
         <motion.span

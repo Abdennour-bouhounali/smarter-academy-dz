@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
@@ -6,6 +6,10 @@ import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY } from '../content/textbook';
+import { M1_ROUNDS } from '../content/folds';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
+import { useSavedAnswer } from '../../../../../../common/answers/useSavedAnswer';
 
 /**
  * Module 1 — نشاط 3 (p. 20) : « المعادلات من الشكل x² = a » (rétrofit 2026-10-15 : le labo en tête SANS carte, SANS titre ni
@@ -28,6 +32,11 @@ import { ACTIVITY } from '../content/textbook';
  * solutions et a, PUIS la brique `murabba-mutaakisayn`. Le « حل، إن أمكن » de la question 2 ب (cinq équations) est joué par le niveau
  * متقدم du labo (chaque épingle est jugée) : l'étape qui le re-posait est retirée. La خاصية 2 reste au module 2.
  * LP enseigné : P1.
+ *
+ * LECTEUR DE MISSION (rollout 2026-11-10, unité 2 leçon 3 ; conseil du 2026-11-10) : le labo se joue en MANCHES (content/folds.js › M1_ROUNDS :
+ * 4, 0, −4 à la main avec le tableau → −9, 0,04, 1,44, 0 avec deux prédictions → 3 et 2,25 (√3 épinglé exact) → défi ⭐ → droite libre) au lieu
+ * de مبتدئ / متقدم ; l'étape 1 attend la manche 1, l'étape 5 la manche 2 (la carte −9). Ce que le labo a fait (ses questions finies, la manche
+ * gagnée) est GARDÉ (answers/useSavedAnswer + étoiles) : un rechargement ne bloque jamais une étape. Hors lecteur : inchangé.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const NONE = 'لا تقبل أي حل';
@@ -41,7 +50,21 @@ export default function Module01Nashat() {
   const onFinished = () => setFinished(true);
   const [cpDone, setCpDone] = useState({});
   const onTrial = (e) => { if (e?.tk === 'checkpoint-done') setCpDone((d) => ({ ...d, [e.id]: true })); };
-  const mirrorDone = !!cpDone.c0 || !!q.m;
+  // Dans le lecteur : les manches gagnées (étoiles gardées) ouvrent les étapes ; les questions finies du labo sont GARDÉES (revue ECC des
+  // leçons 1–2 : une étape ne doit jamais attendre des questions qu'un rechargement a effacées).
+  const [won, setWon] = useState({});
+  const memory = useSavedAnswer([], { key: 'lab-folds', lessonId: MODULE_CTX.lessonId, moduleNumber: 1 });
+  const kept = memory.saved?.v ?? {};
+  const { save } = memory;
+  useEffect(() => {
+    // jamais avant que la copie du serveur soit arrivée (`ready`) : une fusion partielle, plus récente, l'écraserait (revue ECC 2026-11-10)
+    if (!memory.on || !memory.ready || (!Object.keys(cpDone).length && !finished)) return;
+    save({ cp: { ...(kept.cp ?? {}), ...cpDone }, finished: !!(kept.finished || finished) });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cpDone, finished, memory.ready]);
+  const cpSeen = { ...(kept.cp ?? {}), ...cpDone };
+  const labDone = finished || !!kept.finished || !!won.r1;
+  const mirrorDone = !!cpSeen.c0 || !!cpSeen.rule || !!won.r1 || !!q.m;
   const { table, equations } = ACTIVITY.numbers;
 
   return (
@@ -54,6 +77,12 @@ export default function Module01Nashat() {
       estimatedTime="14 دقيقة"
       objectives={['هل للمعادلة $x^2 = 9$ حلّ واحد أم أكثر؟', 'ماذا نلاحظ على مربّعي عددين متعاكسين؟', 'كم حلّا للمعادلة $x^2 = a$ حين تتغيّر إشارة $a$؟']}
       intro={
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="m1-folds" rounds={M1_ROUNDS} icon="📐" freeIcon="🎏"
+              onTrial={onTrial} onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))} />
+          )}
+          page={(
         <ManipulationWorkspace
           defaultLevel="beginner"
           levels={{
@@ -82,29 +111,32 @@ export default function Module01Nashat() {
             ),
           }}
         />
+          )}
+        />
       }
       steps={[
         {
-          num: 1, title: <MathText>{'لماذا يصل سهم $x = -3$ إلى الدائرة 9 كما يصل إليها سهم $x = 3$؟'}</MathText>, subtitle: 'من تجربتك في المختبر', done: mirrorDone,
+          needsRound: { id: 'r1', label: 'الجولة 1', icon: '📐', won: Boolean(won.r1) },
+          num: 1, title: 'لماذا يصل سهم عدد وسهم معاكسه إلى النقطة نفسها؟', subtitle: 'من تجربتك في المختبر', done: mirrorDone,
           content: (
             <div className="space-y-3">
               <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>
-                <li className={finished ? 'font-bold text-slate-800' : 'text-slate-500'} data-evidence="finished" data-tried={finished ? 'true' : 'false'}>
-                  {finished
+                <li className={labDone ? 'font-bold text-slate-800' : 'text-slate-500'} data-evidence="finished" data-tried={labDone ? 'true' : 'false'}>
+                  {labDone
                     ? 'أنهيتَ المختبر: ثبّتَّ الحلول وأجبتَ عن سؤال الاستنتاج.'
                     : 'لم تُنهِ المختبر بعد: ارجع إلى الأعلى وثبّت حلول البطاقات ليظهر سؤال الاستنتاج.'}
                 </li>
               </ul>
               <p className={`rounded-xl border-2 px-3 py-2 text-sm ${mirrorDone ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`} data-activity-evidence data-tried={mirrorDone ? 'true' : 'false'}>
                 {mirrorDone
-                  ? <span>أجبتَ في المختبر: العددان <MathText>{'$3$'}</MathText> و <MathText>{'$-3$'}</MathText> متعاكسان ولهما المربّع نفسه، فيصل سهماهما إلى الدائرة 9 نفسها.</span>
-                  : 'ثبّت حلّي معادلة موجبة في المختبر (مثل 9)، ثم أجب عن الأسئلة التي تظهر فوقه.'}
+                  ? <span>أجبتَ في المختبر: الحلّان اللذان ثبّتّهما عددان متعاكسان ولهما المربّع نفسه، فيصل سهماهما إلى الدائرة <MathText>{'$a$'}</MathText> نفسها.</span>
+                  : 'ثبّت حلّي معادلة موجبة في المختبر، ثم أجب عن الأسئلة التي تظهر فوقه.'}
               </p>
             </div>
           ),
         },
         {
-          num: 2, title: 'هل يصحّ ذلك على أعداد الجدول؟ أتمم الجدول', subtitle: 'في المستوى المبتدئ، زُر كل قيمة من الجدول بالعدد x', done: !!q.t,
+          num: 2, title: 'هل يصحّ ذلك على أعداد الجدول؟ أتمم الجدول', subtitle: 'زُر كل قيمة من الجدول بالعدد x في المختبر', done: !!q.t,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-700"><MathText>{ACTIVITY.questions[0]}</MathText></p>
@@ -166,6 +198,7 @@ export default function Module01Nashat() {
           ),
         },
         {
+          needsRound: { id: 'r2', label: 'الجولة 2', icon: '📐', won: Boolean(won.r2) },
           num: 5, title: <MathText>{'لماذا لا يصل أي سهم إلى $-9$؟'}</MathText>, subtitle: 'من تجربتك مع البطاقة x² = −9', done: !!q.h,
           content: (
             <TapQuestion
@@ -227,7 +260,7 @@ export default function Module01Nashat() {
               {q.c && (
                 <KnowledgeBrick
                   id="murabba-mutaakisayn"
-                  lead="ما رأيته بالسهمين وأثبتّه بالحرف b، يكتبه الكتاب هكذا:"
+                  lead="ما رأيته بالسهمين وأثبتّه بالحرف b، نكتبه هكذا:"
                 />
               )}
             </div>

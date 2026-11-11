@@ -11,6 +11,7 @@
  * de (a − b)(a + b), le coefficient non élevé au carré.
  */
 import { src } from '../../_unit/unitMeta.js';
+import { withContext } from '../../../../../../common/textbook/exerciseParts.js';
 
 export const LP = {
   P1: '4am_tahlil-ibara_P1',
@@ -70,7 +71,7 @@ export const EXERCISES = [
   {
     id: 'ex-20-1', source: E(20, 38, '1)'), learningPointId: LP.P2, difficulty: 'facile', statement: S20,
     interaction: 'choice',
-    question: C('1) $A = x^2 - 5x = $', ['$x(x - 5)$', '$x(x^2 - 5)$', '$5x(x - 1)$'], 0,
+    question: C('1) $A = x^2 - 5x = $', ['$x(x - 5)$', '$x(x^2 - 5)$', '$x(x + 5)$'], 0,
       '$x^2 - 5x = x \\times x - 5 \\times x = x(x - 5)$'),
     method: 'نكتب كل حدّ على شكل جداء يظهر فيه $x$، ثم نستخرجه.',
     commonError: 'ترك $x^2$ داخل القوس بعد استخراج $x$: $x(x^2 - 5) = x^3 - 5x$.',
@@ -263,7 +264,7 @@ export const EXERCISES = [
       '$\\dfrac{25}{9}x^2 = \\left(\\dfrac{5}{3}x\\right)^2$ ، $\\dfrac{9}{16} = \\left(\\dfrac{3}{4}\\right)^2$ و $2 \\times \\dfrac{5}{3}x \\times \\dfrac{3}{4} = \\dfrac{5}{2}x$ ، إذن $S = \\left(\\dfrac{5}{3}x - \\dfrac{3}{4}\\right)^2$'],
   ].map(([k, tex, options, correct, explain], i) => ({
     id: `ex-31-${k}`, source: E(31, 39, k), learningPointId: LP.P3, difficulty: 'difficile',
-    ...(i === 0 ? { statement: 'نفس سؤال التمرين السابق من أجل:', commonError: 'أخذ $b = \\dfrac{1}{4}$ نفسه بدل جذره $\\dfrac{1}{2}$.' } : {}),
+    ...(i === 0 ? { statement: 'حلّل إلى جداء عوامل كل عبارة مما يلي:', commonError: 'أخذ $b = \\dfrac{1}{4}$ نفسه بدل جذره $\\dfrac{1}{2}$.' } : {}),
     interaction: 'choice', question: C(`${tex.replace(/\$$/, ' = $')}`, options, correct, explain, 1),
   })),
   ...[
@@ -312,7 +313,8 @@ export const EXERCISES = [
 ];
 
 /** Les entrées d'un exercice du manuel (module 4), par numéro : « 20 », « 26 »… */
-export const partsOf = (n) => EXERCISES.filter((ex) => ex.id === `ex-${n}` || ex.id.startsWith(`ex-${n}-`));
+// lecteur : les parties sans énoncé portent celui de la partie 1 (« pas d'aller-retour », common/textbook/exerciseParts.js)
+export const partsOf = (n) => withContext(EXERCISES.filter((ex) => ex.id === `ex-${n}` || ex.id.startsWith(`ex-${n}-`)));
 
 /** Accès par id. */
 export const EX = Object.fromEntries([...NOW_35_2, ...NOW_36_2, ...EXERCISES].map((ex) => [ex.id, ex]));

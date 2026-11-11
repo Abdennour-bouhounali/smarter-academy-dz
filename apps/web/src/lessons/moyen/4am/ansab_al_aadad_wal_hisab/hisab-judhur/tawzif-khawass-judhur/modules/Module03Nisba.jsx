@@ -34,7 +34,7 @@ export default function Module03Nisba() {
       estimatedTime="10 دقائق"
       objectives={['كيف أتخلّص من الجذر في مقام نسبة؟', 'هل تتغيّر قيمة النسبة حين نغيّر كتابتها؟']}
       brief={{
-        tag: 'طرائق — الكتاب ص 25', title: METHOD_RATIONALIZE.title, tone: 'emerald',
+        tag: 'طريقة', title: METHOD_RATIONALIZE.title, tone: 'emerald',
         body: <p><MathText>{'في المقام عدد غير ناطق، مثل $\\sqrt{11}$. هل يمكن كتابة النسبة نفسها بمقام ناطق؟'}</MathText></p>,
       }}
       steps={[

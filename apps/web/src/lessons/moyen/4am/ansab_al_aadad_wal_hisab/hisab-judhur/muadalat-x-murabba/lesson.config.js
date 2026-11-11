@@ -28,6 +28,50 @@ export const LESSON_CONFIG = {
   unit: 'hisab-judhur',
   unitTitle: 'الحساب على الجذور',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (modèle du pilote qasim-adad-tabii, VALIDÉ par le propriétaire le 2026-11-08 ; rollout leçon par leçon,
+  // docs/reports/MISSION_ROLLOUT_PROGRESS.md — unité 2, leçon 3, 2026-11-10) — implique le regard « focus » ; l'enseignant et le mode classe ne voient
+  // aucun changement.
+  studentView: 'mission',
+  // LA MISSION : l'ouverture avoue qu'on ne sait pas encore la résoudre ; les outils sont les connaissances de knowledge.jsx ; les points d'étape
+  // (conseil du 2026-11-10) RAPPROCHENT de la mission sans en résoudre aucune question : ni ses nombres (64 et 8, 0,09 et 0,3, 11, √11 et 3,3,
+  // 36 et 6, les points 10 / 15 / 5, les 42 élèves) ni ses pièges (une solution oubliée, √a écrit en valeur approchée) — content/mission.test.js.
+  mission: {
+    scene: 'fold-strip',
+    title: 'بطاقات سلمى الخمس',
+    opening: {
+      text: 'في أسبوع العلوم بالمتوسطة، سحبت سلمى خمس بطاقات: $x^2 = 64$ ، $x^2 = 0{,}09$ ، $x^2 = 11$ ، $x^2 = 0$ ، $x^2 = -36$ ، وكتبت على ورقتها حلول كل بطاقة قبل التحقّق على المستقيم الذي ينطوي. كل حلّ صحيح يربح 10 نقاط، وكل «لا تقبل أي حل» صحيحة تربح 15 نقطة، وكل عدد خاطئ يُفقد 5 نقاط. هل أصابت في كل بطاقة؟ وكم نقطة تستحقّ ورقتها؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'murabba-mutaakisayn', icon: '🪞', label: 'عددان متعاكسان، مربّع واحد' },
+      { id: 'hulul-x2-a', icon: '🔢', label: 'عدد الحلول حسب إشارة a' },
+      { id: 'tariqat-hall-x2', icon: '🧭', label: 'طريقة حلّ المعادلة' },
+    ],
+    climaxModule: 4,
+    checkpoints: [
+      {
+        id: 'cp-adad', afterModule: 1,
+        prompt: 'كم حلًّا للمعادلة $x^2 = 49$ ، وكم حلًّا للمعادلة $x^2 = -49$ ؟',
+        options: ['حلّان، ولا حلّ', 'حلّان، وحلّان', 'حلّ واحد، ولا حلّ'],
+        correct: 0,
+        explain: '$7^2 = (-7)^2 = 49$: حلّان متعاكسان. أمّا $-49$ فسالب، ولا مربّع سالب: لا حلّ.',
+      },
+      {
+        id: 'cp-iltiqa', afterModule: 2,
+        prompt: 'كلّما صغر العدد الموجب $a$ اقترب حلّا $x^2 = a$ أحدهما من الآخر. أين يلتقيان؟',
+        options: ['عند 0، حين يصير $a = 0$', 'عند 1', 'لا يلتقيان أبدًا'],
+        correct: 0,
+        explain: 'الحلّان عددان متعاكسان، يقعان على جهتي 0 بالبعد نفسه. حين $a = 0$ يصيران عددًا واحدًا: $x^2 = 0$ حلّها الوحيد 0.',
+      },
+      {
+        id: 'cp-sahm', afterModule: 3,
+        prompt: '$x = -2{,}5$ : أين يصل سهمه على مستقيم المربّعات؟',
+        options: ['عند $6{,}25$', 'عند $-6{,}25$', 'في الجزء المخطّط، حيث الأعداد السالبة'],
+        correct: 0,
+        explain: '$(-2{,}5)^2 = (-2{,}5) \\times (-2{,}5) = 6{,}25$: مربّع عدد سالب موجب، ولا يدخل أيّ سهم الجزء المخطّط.',
+      },
+    ],
+  },
   title: 'حل المعادلة من الشكل x² = a',
   description: 'عددان متعاكسان لهما نفس المربع، ومربع أي عدد موجب: لذلك تقبل المعادلة x² = a حلين متعاكسين √a و −√a إذا كان a > 0، حلا واحدا هو 0 إذا كان a = 0، ولا تقبل أي حل إذا كان a < 0. ثم حل معادلات تؤول إلى هذا الشكل.',
   level: 'moyen',
@@ -68,6 +112,8 @@ export const LESSON_CONFIG = {
   },
   knowledgeMap: true,
   knowledgeMapMode: 'progressive',
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début, sans verrou par محور.
+  knowledgeMapOpen: true,
   // Ce que « أستعدّ » diagnostique : carré d'un nombre (et opposé), √ (leçon 1), équations du 1er degré.
   priorKnowledge: ['murabba-adad', 'jidhr-taarif', 'muadala-daraja-ula'],
   resources: [
@@ -91,7 +137,7 @@ export const LESSON_CONFIG = {
       level: 'advanced',
       title: 'المستقيم الذي ينطوي — x² = 25 ، 3 ، 0 ، 0,04 ، −9',
       objective: 'عدد حلول المعادلة x² = a يتعلّق بإشارة a: حلان متعاكسان √a و −√a، أو حل واحد 0، أو لا حل',
-      autonomy: 'خمس معادلات الكتاب دون جدول مساعد وبتدريجة 1/10: على التلميذ أن يجد بنفسه الحل الثاني لكل معادلة، وأن يقرّر متى لا يوجد حل، وأن يقترب من √3 التي لا تقع على أي تدريجة',
+      autonomy: 'خمس معادلات دون جدول مساعد وبتدريجة 1/10: على التلميذ أن يجد بنفسه الحل الثاني لكل معادلة، وأن يقرّر متى لا يوجد حل، وأن يقترب من √3 التي لا تقع على أي تدريجة',
       experience: { type: 'textbook', reason: '', theme: '' },
       learningPointIds: ['4am_muadalat-x-murabba_P1'],
       sourceElementIds: ['act-3'],
@@ -100,7 +146,7 @@ export const LESSON_CONFIG = {
     // un EXEMPLE TRAVAILLÉ, un seul niveau (`levels={false}`).
     {
       kind: 'manipulation', code: 'square-fold-know3', type: 'square-fold', module: 2,
-      title: 'أمثلة الكتاب: x² = 9 ، x² = 5 ، x² = −1',
+      title: 'ثلاثة أمثلة: x² = 9 ، x² = 5 ، x² = −1',
       learningPointIds: ['4am_muadalat-x-murabba_P1'],
       sourceElementIds: ['know-3'],
     },
@@ -112,7 +158,7 @@ export const LESSON_CONFIG = {
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
-      title: 'أستعدّ', desc: 'ست عبارات: صحيح أم خاطئ؟ مربع عدد ومعاكسه، الجذر التربيعي، المعادلات من الدرجة الأولى.',
+      title: 'أستعدّ', desc: 'عشر عبارات: صحيح أم خاطئ؟ مربّع عدد ومعاكسه، والجذر التربيعي.',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'nashat', path: `${LESSON_BASE_PATH}/nashat`,
       title: 'نشاط 3 — مراد وعمر: كم حلا للمعادلة؟', desc: 'حرّك x وتابع مربّعه: عددان متعاكسان لهما نفس المربع، ولا مربع سالب.',
@@ -123,7 +169,7 @@ export const LESSON_CONFIG = {
       stage: 'discovery', teachesLearningPointIds: ['4am_muadalat-x-murabba_P1'],
       color: 'violet', style: 'featured', estimatedMin: 12, difficulty: 2, actionText: 'أكتشف' },
     { id: '03', number: 3, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
-      title: 'أوظّف تعلّماتي — أحل معادلات', desc: 'الطريقة، دوري الآن والتمارين 11–14.',
+      title: 'أوظّف تعلّماتي — أحل معادلات', desc: 'الطريقة، ثم معادلات تؤول إلى الشكل x² = a.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_muadalat-x-murabba_P1', '4am_muadalat-x-murabba_P2'],
       color: 'amber', style: 'featured', estimatedMin: 13, difficulty: 3, actionText: 'أتدرّب' },
     // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
@@ -142,7 +188,7 @@ export const LESSON_CONFIG = {
       stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_muadalat-x-murabba_P1', '4am_muadalat-x-murabba_P2'],
       color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
     { id: '07', number: 7, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة من «أؤكّد تعلّماتي» تُقيّم الكفاءتين.',
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءتين.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 7, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

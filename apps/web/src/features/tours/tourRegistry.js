@@ -76,11 +76,12 @@ const LESSON_INDEX = {
 };
 // La page d'une وحدة : trouvée par son chemin.
 const UNIT_PATH = '/courses/:levelId/:gradeId/:chapterId/units/:unitId';
+// La page de l'élève d'une unité convertie (UnitMissionView, 2026-11-09) a d'autres éléments : chaque cible élève vise les DEUX pages.
 const UNIT = {
-  objectives: '[data-tour="unit.objectives"]',
-  challenge: '[data-unit-challenge]',
-  progress: '[data-tour="unit.progress"]',
-  lesson: '[data-unit-lesson]',
+  objectives: '[data-tour="unit.objectives"], [data-unit-chip="goals"]',
+  challenge: '[data-unit-challenge], [data-unit-challenge-card]',
+  progress: '[data-tour="unit.progress"], [data-unit-done]',
+  lesson: '[data-unit-lesson], [data-unit-path]',
   modules: '[data-lesson-modules]',
   actions: '[data-teacher-lesson-actions]',
 };

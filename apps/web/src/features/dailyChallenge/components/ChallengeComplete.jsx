@@ -55,7 +55,7 @@ export default function ChallengeComplete({ completion }) {
         <motion.dl {...step(1)} className="mx-auto mt-6 grid max-w-md grid-cols-2 gap-2">
           <div className="rounded-2xl bg-slate-50 p-3">
             <dt className="font-inter text-[11px] text-slate-500">✓</dt>
-            <dd className="font-space text-xl font-black text-slate-900" data-correct-of><span dir="ltr">{attempt.correctCount} / {attempt.questionCount}</span> {t('complete.correct')}</dd>
+            <dd className="font-space text-xl font-black text-slate-900" data-correct-of><span dir="ltr">{attempt.correctCount}{'\u00A0/\u00A0'}{attempt.questionCount}</span> {t('complete.correct')}</dd>
           </div>
           <div className="rounded-2xl bg-slate-50 p-3">
             <dt className="font-inter text-[11px] text-slate-500">⚡ {t('complete.averageTime')}</dt>

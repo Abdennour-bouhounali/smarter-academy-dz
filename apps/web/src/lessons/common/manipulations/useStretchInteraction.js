@@ -46,9 +46,16 @@ export default function useStretchInteraction({ value, range, toValue, onChange,
   const clamp = useCallback((v) => Math.min(range.max, Math.max(range.min, Math.round(v))), [range.min, range.max]);
 
   const readPointer = useCallback((e) => {
-    const rect = trackRef.current?.getBoundingClientRect();
+    const el = trackRef.current;
+    const rect = el?.getBoundingClientRect();
     if (!rect) return null;
-    return clamp(toValue(e.clientX, e.clientY, rect));
+    // L'ÉCHELLE (2026-11-09) : le lecteur de mission ajuste son contenu par `zoom` CSS (FitToArea) ; le pointeur et le rectangle sont en
+    // pixels d'ÉCRAN, la géométrie du type (`toValue`) en pixels de la PISTE. On ramène le pointeur et le rectangle à l'échelle de la piste,
+    // sinon la poignée ne restait pas sous le doigt dès que le zoom n'était pas 1.
+    const z = el.offsetWidth > 0 && rect.width > 0 ? rect.width / el.offsetWidth : 1;
+    if (!Number.isFinite(z) || Math.abs(z - 1) < 0.001) return clamp(toValue(e.clientX, e.clientY, rect));
+    const local = { left: rect.left, top: rect.top, right: rect.left + rect.width / z, bottom: rect.top + rect.height / z, width: rect.width / z, height: rect.height / z, x: rect.left, y: rect.top };
+    return clamp(toValue(rect.left + (e.clientX - rect.left) / z, rect.top + (e.clientY - rect.top) / z, local));
   }, [clamp, toValue]);
 
   const move = useCallback((v) => {
