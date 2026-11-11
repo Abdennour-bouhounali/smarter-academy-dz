@@ -3,24 +3,24 @@
  * docs/architecture/KNOWLEDGE_MAP.md, Part A.
  *
  * Aucune mathématique n'est écrite ici : chaque texte vient de la leçon — la balance et le
- * نشاط 1 (content/textbook.js › BALANCE_LINES), معارف 1, les طرائق p. 47, et les
+ * la balance (content/textbook.js › BALANCE_LINES), معارف, les طرائق, et les
  * `commonError` / `method` / corrections des exercices (content/exercises.js). Chaque nœud
  * est gardé par l'item de knowledge.jsx qui l'établit (`requires`).
  *
- *   core   trois items (notebook) + trois exemples (فاطمة، مثال الكتاب 9/2، المعاملات العشرية) ;
- *   guide  خطأ شائع (11 transporté sans changer de signe — تمرين 3), انتبه (تمرين 9 : aucune
- *          valeur ne vérifie l'égalité, 4 ≠ 1), خطأ شائع (b/a renversé — تمرين 1), تحقّق (la
+ *   core   trois items (notebook) + trois exemples (كيس البالونات، المثال، المعاملات العشرية) ;
+ *   guide  خطأ شائع (12 transporté sans changer de signe), انتبه (aucune
+ *          valeur ne vérifie l'égalité, 4 ≠ 1), خطأ شائع (b/a renversé), تحقّق (la
  *          substitution), خلاصة (la méthode et la propriété).
  * Rien de l'إختبار أولي (−2 + x = 5, 4x = 5x, 5x = −3, 6x − 4 = 2x + 8, 3(x − 2) = x + 4)
  * n'est montré ici.
  *
  *                  [العملية نفسها على الطرفين]            m1
  *                           │ مثال
- *                      [عدد فاطمة]
+ *                      [كيس البالونات]
  *          خطأ شائع ┌───────┴───────┐ يؤول إلى
  *   ⛔ [نقل دون تغيير الإشارة]    [المعادلة ax = b]       m2
  *                                   │ مثال
- *                              [مثال الكتاب]
+ *                              [مثال]
  *                 انتبه إلى ┌───────┴───────┐ خطأ شائع
  *        ⚠ [لا يحقّقها أي عدد]     ⛔ [b/a وليس a/b]
  *                                   │ طريقة
@@ -50,14 +50,14 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'fatima', kind: 'example', lane: 'center', requires: 'muadala-tarafayn',
-      title: 'عدد فاطمة', subtitle: '$x = -3$',
-      context: { text: BALANCE_LINES.fatima, note: BALANCE_LINES.verify },
+      title: 'كيس من البالونات', subtitle: '$x = -4$',
+      context: { text: BALANCE_LINES.example, note: BALANCE_LINES.verify },
       reveals: ['khata-naql', 'hal'],
     },
     {
-      // ⛔ خطأ شائع — le `commonError` de l'exercice 3 (x + 11 = 2 → 13).
+      // ⛔ خطأ شائع — le `commonError` de l'exercice 3 (x + 12 = 4 → 16).
       id: 'khata-naql', kind: 'common_mistake', lane: 'start', requires: 'muadala-tarafayn',
-      title: 'نقل حدّ دون تغيير إشارته', subtitle: '$x + 11 = 2$',
+      title: 'نقل حدّ دون تغيير إشارته', subtitle: '$x + 12 = 4$',
       context: {
         parts: [
           { role: 'wrong', text: ex3.commonError },
@@ -75,21 +75,21 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'ex92', kind: 'example', lane: 'center', requires: 'hal-ax-b',
-      title: 'مثال الكتاب', subtitle: '$x = \\dfrac{9}{2}$',
+      title: 'مثال', subtitle: '$x = \\dfrac{11}{4}$',
       context: { text: KNOWLEDGE.example },
       reveals: ['la-hal', 'khata-qisma'],
     },
     {
-      // ⚠ انتبه — تمرين 9 (الثانية) : 4 ≠ 1, aucune valeur ne convient.
+      // ⚠ انتبه — la deuxième équation des dénominateurs : 2 ≠ 5, aucune valeur ne convient.
       id: 'la-hal', kind: 'warning', lane: 'start', requires: 'hal-ax-b',
-      title: 'لا يحقّقها أي عدد', subtitle: '$4 \\neq 1$',
+      title: 'لا يحقّقها أي عدد', subtitle: '$2 \\neq 5$',
       context: { text: ex9.question.explain },
       reveals: [],
     },
     {
-      // ⛔ خطأ شائع — le `commonError` de l'exercice 1 (2x = 11 → 2/11).
+      // ⛔ خطأ شائع — le `commonError` de l'exercice 1 (3x = 14 → 3/14).
       id: 'khata-qisma', kind: 'common_mistake', lane: 'end', requires: 'hal-ax-b',
-      title: 'b على a وليس a على b', subtitle: '$2x = 11$',
+      title: 'b على a وليس a على b', subtitle: '$3x = 14$',
       context: {
         parts: [
           { role: 'wrong', text: ex1.commonError },
@@ -107,14 +107,14 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'exB', kind: 'example', lane: 'center', requires: 'tariqat-hal',
-      title: 'معاملات عشرية', subtitle: '$x = -4$',
+      title: 'معاملات عشرية', subtitle: '$x = -3$',
       context: { text: METHOD.b.solution[1], note: METHOD.b.solution[2] },
       reveals: ['tahaqquq'],
     },
     {
       // 🔍 تحقّق — la substitution, faite par la balance (les sacs ouverts) et au module 1.
       id: 'tahaqquq', kind: 'check', lane: 'end', requires: 'tariqat-hal',
-      title: 'نتحقّق بالتعويض', subtitle: '$x = -3$',
+      title: 'نتحقّق بالتعويض', subtitle: '$x = -4$',
       context: { text: BALANCE_LINES.verify },
       reveals: ['khulasa'],
     },

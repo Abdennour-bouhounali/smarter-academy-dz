@@ -1,22 +1,13 @@
 /**
  * الدرس 1 — حل معادلة من الدرجة الأولى بمجهول واحد
- * Unité 4 du manuel (4AM) : نشاط 1 (p. 44), معارف 1 (p. 46), طرائق p. 47 (حل معادلة من
- * الدرجة الأولى بمجهول واحد, دوري الآن 1), exercices 1 → 9 (p. 50), « أستعدّ » items 1–2
- * (p. 43), l'aparté du خوارزمي (p. 43, repris), QCM 1 et 2 (p. 52),
- * puis trois « مسائل » de la plateforme (modules 5–7).
- * Source de vérité : docs/sources/4am/unit4/extraction.json.
+ * Unité 4 (4AM). Depuis le rollout mission (2026-11-11, conseil du 2026-11-11, verdict X1/X2) la plateforme écrit TOUT avec ses propres nombres et ses
+ * propres mots : plus aucun nombre, énoncé ni renvoi du manuel n'est montré à l'élève ; les `id`, `skill`, `learningPointIds` et `src(...)` (traçabilité) sont gardés.
  *
- * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
- *   Entrée retenue (module 1) : la balance du vestiaire (equation-balance), niveau مبتدئ 3x + 2 = 11 — l'élève doit savoir ce que
- *   contient UN sac sans l'ouvrir, donc agir sur les DEUX plateaux (ajout déclaré de la plateforme, `platform_designed_entry`) ;
- *   le niveau متقدم 9x + 1 = −26 est la balance de فاطمة (نشاط 1, س 3), où poser une baudruche EST retrancher 1.
- *   Rejetée : le programme de calcul du نشاط 1 (« تحقّق أنّ 2 يعطي 19 », « بيّن أنّ النتيجة 9x + 1 ») comme ouverture : calcul de
- *   routine sans besoin d'équation. Il vient APRÈS la balance (étape 2) et explique d'où vient l'équation de la balance ; la
- *   vérification de فاطمة (appliquer le programme à −3) remplace « quel nombre a-t-elle choisi ? » que la balance posait déjà.
- *   Ordre des idées : agir sur la balance → POURQUOI les deux plateaux (la brique `muadala-tarafayn` APRÈS la réponse) → le
- *   programme et 9x + 1 → فاطمة : baudruche = −1, vérification → مصطفى (le contraste : la balance demanderait un septième de
- *   baudruche) → M2 : la balance de 4x − 3 = 2x + 6 ouvre, le livre ligne à ligne, puis la propriété en « أتوقّع القاعدة ».
- *   Modules 3–8 inchangés. Aucune destination du manuel n'a bougé.
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue (module 1) : la balance du vestiaire (equation-balance) — l'élève doit savoir ce que contient UN sac sans l'ouvrir, donc agir sur les
+ *   DEUX plateaux. Ordre des idées : agir sur la balance (manches 2x + 3 = 11, 4x + 3 = −9, 3x − 2 = 10) → d'où vient une équation (le programme de calcul,
+ *   (2x + 5) × 2 − 7 = 4x + 3) → خديجة (baudruche = −1) → la règle (« أتوقّع القاعدة ») → نسيم : 4x + 3 = 6x ouvre le module 2, où l'on lit ax = b puis b/a.
+ *   « مسألة الدرس » : des sacs dans LES DEUX plateaux, avec des baudruches, puis un prix (module 5).
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -28,6 +19,56 @@ export const LESSON_CONFIG = {
   unit: 'muadalat-mutarajihat',
   unitTitle: 'معادلات ومتراجحات من الدرجة الأولى بمجهول واحد',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (modèle du pilote qasim-adad-tabii, VALIDÉ le 2026-11-08 ; unité 4, leçon 1, 2026-11-11) — implique le regard « focus » ;
+  // l'enseignant et le mode classe ne voient aucun changement.
+  studentView: 'mission',
+  // LA MISSION : l'ouverture avoue qu'on ne sait pas encore la résoudre ; les outils sont les connaissances de knowledge.jsx ; les points d'étape RAPPROCHENT
+  // de la mission sans en résoudre aucune question : ni ses nombres (7 sacs, 26 balles, 70200…), ni sa réponse, ni sa correction — content/mission.test.js et
+  // _unit/missionStrings.test.js. La scène : le vestiaire et sa balance (« locker-balance »).
+  mission: {
+    scene: 'locker-balance',
+    title: 'ميزان غرفة الملابس: ماذا في الكيس المغلق؟',
+    opening: {
+      text: 'في غرفة ملابس الفريق ميزان بكفّتين، وهو متوازن. في كل كفّة أكياس مغلقة متماثلة، ومعها كرات في كفّة وبالونات تشدّ الكفّة الأخرى إلى الأعلى. لا أحد يفتح الأكياس… فكم كرة في الكيس الواحد؟ وكم دفع النادي ثمنًا للكرة الواحدة؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'muadala-tarafayn', icon: '⚖️', label: 'العملية نفسها على الطرفين' },
+      { id: 'hal-ax-b', icon: '✂️', label: 'كيس واحد وحده: القسمة على المعامل' },
+      { id: 'tariqat-hal', icon: '🧭', label: 'طريقة حل معادلة' },
+    ],
+    climaxModule: 5,
+    checkpoints: [
+      {
+        id: 'cp-tarafayn', afterModule: 1,
+        prompt: '$x + 8 = 11$ . نطرح 8 من الطرفين فنجد:',
+        options: ['$x = 3$', '$x = 19$', '$x = -3$'],
+        correct: 0,
+        explain: '$x + 8 - 8 = 11 - 8$ أي $x = 3$ . أمّا $19 = 11 + 8$ فيضيف بدل أن يطرح، و $-3 = 8 - 11$ يعكس الفرق.',
+      },
+      {
+        id: 'cp-hal', afterModule: 2,
+        prompt: '$8x = 4$ ، إذن $x =$',
+        options: ['$\\dfrac{1}{2}$', '$2$', '$-4$'],
+        correct: 0,
+        explain: '$x = \\dfrac{4}{8} = \\dfrac{1}{2}$ . أمّا 2 فهو حاصل القسمة مقلوبًا، و $-4 = 4 - 8$ طرح لا قسمة.',
+      },
+      {
+        id: 'cp-tahaqquq', afterModule: 3,
+        prompt: 'نتحقّق من أنّ 3 حلّ للمعادلة $3x - 5 = x + 1$ : قيمة كل طرف من أجل $x = 3$ هي',
+        options: ['$4$', '$9$', '$14$'],
+        correct: 0,
+        explain: '$3 \\times 3 - 5 = 4$ و $3 + 1 = 4$ . أمّا 9 فتنسى الحدّ $-5$ ، و 14 تجمعه.',
+      },
+      {
+        id: 'cp-nashr', afterModule: 4,
+        prompt: 'ننشر ثم نحلّ: $3(x - 1) = 9$ ، إذن $x =$',
+        options: ['$4$', '$\\dfrac{10}{3}$', '$2$'],
+        correct: 0,
+        explain: '$3x - 3 = 9$ ثم $3x = 12$ ثم $x = 4$ . أمّا $\\dfrac{10}{3}$ فتضرب الحدّ الأول وحده، و 2 تطرح 3 بدل أن تضيفه.',
+      },
+    ],
+  },
   title: 'حل معادلة من الدرجة الأولى بمجهول واحد',
   description: 'حل معادلة من الدرجة الأولى بمجهول واحد بإجراء العمليات نفسها على طرفيها: نقل المجاهيل إلى طرف والمعاليم إلى الطرف الآخر وتجميع الحدود المتشابهة حتى الشكل ax = b حيث a ≠ 0، ثم استخراج الحل الوحيد b/a والتحقق منه بالتعويض.',
   level: 'moyen',
@@ -47,10 +88,10 @@ export const LESSON_CONFIG = {
   ],
   teachingScope: {
     include: [
-      'برنامج الحساب ومعادلتا فاطمة ومصطفى (نشاط 1)',
-      'المعادلة ax = b حيث a ≠ 0 وحلها الوحيد b/a (معارف 1)',
-      'طريقة الكتاب ص 47: إضافة عدد أو طرحه من الطرفين، نقل المجاهيل والمعاليم، القسمة على المعامل',
-      'معادلات بمعاملات عشرية أو كسرية أو جذرية، وبعد النشر والتبسيط (تمارين 1 ← 9)',
+      'برنامج الحساب ومعادلتا خديجة ونسيم على الميزان',
+      'المعادلة ax = b حيث a ≠ 0 وحلها الوحيد b/a',
+      'طريقة الحل: إضافة عدد أو طرحه من الطرفين، نقل المجاهيل والمعاليم، القسمة على المعامل',
+      'معادلات بمعاملات عشرية أو كسرية أو جذرية، وبعد النشر والتبسيط',
       'التحقق من الحل بالتعويض في المعادلة الأولى',
     ],
     exclude: [
@@ -61,7 +102,7 @@ export const LESSON_CONFIG = {
     ],
   },
   // « مسألة الدرس » : montrée dès le sommaire et rappelée au module 1 (la balance du
-  // vestiaire du niveau متقدم, d'autres nombres, l'inconnue dans les deux plateaux),
+  // vestiaire, d'autres nombres, l'inconnue dans les deux plateaux),
   // résolue au module 5 (content/problems.js).
   lessonProblem: {
     module: 5,
@@ -72,17 +113,17 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
-  // Les acquis que « أستعدّ » diagnostique : tester une égalité par substitution (manuel,
-  // items 1–2), les opérations sur les deux membres d'une égalité, le نشر et le تبسيط
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début.
+  knowledgeMapOpen: true,
+  // Les acquis que « أستعدّ » diagnostique : tester une égalité par substitution, les opérations sur les deux membres d'une égalité, le نشر et le تبسيط
   // (leçon nashr-tabsit).
   priorKnowledge: ['taawid-musawat', 'amaliyat-tarafayn', 'nashr-tabsit'],
   resources: [
-    // Le module 1 ouvre sur la BALANCE du vestiaire (equation-balance). متقدم = le نشاط 1,
-    // س 3 (فاطمة : 9x + 1 = −26), ouvert par défaut ; مبتدئ = 3x + 2 = 11 (plateforme).
+    // Le module 1 ouvre sur la BALANCE du vestiaire (equation-balance). مبتدئ = 2x + 3 = 11, متقدم = 4x + 3 = −9 (plateforme).
     {
-      kind: 'manipulation', code: 'balance-3x-2-11', type: 'equation-balance', module: 1,
+      kind: 'manipulation', code: 'balance-2x-3-11', type: 'equation-balance', module: 1,
       level: 'beginner',
-      title: 'ميزان: 3 أكياس وكرتان مقابل 11 كرة',
+      title: 'ميزان: كيسان و 3 كرات مقابل 11 كرة',
       objective: 'حل معادلة من الدرجة الأولى بإجراء العملية نفسها على طرفيها حتى الشكل ax = b ثم x = b/a',
       autonomy: '',
       experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'football' },
@@ -90,19 +131,19 @@ export const LESSON_CONFIG = {
       sourceElementIds: ['act-1'],
     },
     {
-      kind: 'manipulation', code: 'balance-9x-1-m26', type: 'equation-balance', module: 1,
+      kind: 'manipulation', code: 'balance-4x-3-m9', type: 'equation-balance', module: 1,
       level: 'advanced',
-      title: 'ميزان فاطمة: 9 أكياس وكرة مقابل 26 بالونًا',
+      title: 'ميزان: 4 أكياس و 3 كرات مقابل 9 بالونات',
       objective: 'حل معادلة من الدرجة الأولى بإجراء العملية نفسها على طرفيها حتى الشكل ax = b ثم x = b/a',
       autonomy: 'لا توجد كرة في الكفّة اليمنى لتؤخذ: على التلميذ أن يكتشف وحده أنّ وضع بالون هو العملية نفسها (طرح 1)، وأنّ الكيس يحتوي على بالونات (حل سالب) — دون أي اقتراح للخطوات',
       experience: { type: 'platform_adaptation', reason: 'multiple_representations', theme: 'football' },
       learningPointIds: ['4am_muadala-ula_P2', '4am_muadala-ula_P1'],
       sourceElementIds: ['act-1'],
     },
-    // معارف 1 : l'exemple du livre 4x − 3 = 2x + 6, posé en laboratoire travaillé (un niveau).
+    // معارف : un exemple travaillé, posé en laboratoire (un niveau).
     {
-      kind: 'manipulation', code: 'balance-4x-3-2x-6', type: 'equation-balance', module: 2,
-      title: 'مثال الكتاب على الميزان: 4x − 3 = 2x + 6',
+      kind: 'manipulation', code: 'balance-4x-1-x-8', type: 'equation-balance', module: 2,
+      title: 'ميزان: 4 أكياس وكرة مقابل كيس و 8 كرات',
       learningPointIds: ['4am_muadala-ula_P1', '4am_muadala-ula_P2'],
       sourceElementIds: ['know-1'],
     },
@@ -114,22 +155,22 @@ export const LESSON_CONFIG = {
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
-      title: 'أستعدّ', desc: 'ست عبارات: اختبار مساواة بتعويض المجهول، العمليات على طرفي مساواة، والنشر والتبسيط. صحيح أم خاطئ؟',
+      title: 'أستعدّ', desc: 'عشر عبارات من السهل إلى الأصعب: العمليات على طرفي مساواة وهل العدد حلّ للمعادلة. صحيح أم خاطئ؟',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 5, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'nashat', path: `${LESSON_BASE_PATH}/nashat`,
-      title: 'نشاط 1 — برنامج حساب', desc: 'أبقِ ميزان غرفة الملابس متوازنًا حتى تعرف ما في كيس واحد، ثم برنامج الحساب وعددا فاطمة ومصطفى.',
+      title: 'أوازن الميزان', desc: 'أبقِ ميزان غرفة الملابس متوازنًا حتى تعرف ما في كيس واحد، ثم اكتشف من أين تأتي المعادلة.',
       stage: 'trigger', teachesLearningPointIds: ['4am_muadala-ula_P1', '4am_muadala-ula_P2'],
       color: 'indigo', style: 'featured', estimatedMin: 14, difficulty: 2, actionText: 'أوازن الميزان' },
     { id: '02', number: 2, slug: 'maarif', path: `${LESSON_BASE_PATH}/maarif`,
-      title: 'معارف — المعادلة ax = b', desc: 'الشكل ax = b حيث a ≠ 0 وحلّه الوحيد b/a، ومثال الكتاب 4x − 3 = 2x + 6 على الميزان.',
+      title: 'معارف — كيس واحد وحده', desc: 'أكياس في الكفّتين، وكيس لا يحوي عددًا صحيحًا: الشكل ax = b حيث a ≠ 0 وحلّه الوحيد b/a.',
       stage: 'discovery', teachesLearningPointIds: ['4am_muadala-ula_P1', '4am_muadala-ula_P2'],
       color: 'violet', style: 'featured', estimatedMin: 8, difficulty: 2, actionText: 'أكتشف' },
     { id: '03', number: 3, slug: 'tarayiq', path: `${LESSON_BASE_PATH}/tarayiq`,
-      title: 'طرائق — حل معادلة', desc: 'حلّا الكتاب ص 47 سطرًا سطرًا (2x − 5 = 8 ومعادلة بمعاملات عشرية)، ثم دوري الآن.',
+      title: 'طرائق — حل معادلة', desc: 'حلّان سطرًا سطرًا (معادلة بسيطة ومعادلة بمعاملات عشرية)، ثم دورك.',
       stage: 'formalization', teachesLearningPointIds: ['4am_muadala-ula_P2', '4am_muadala-ula_P1'],
       color: 'emerald', style: 'featured', estimatedMin: 9, difficulty: 3, actionText: 'أتعلّم الطريقة' },
     { id: '04', number: 4, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
-      title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 1 ← 9: من ax = b إلى معادلات تُنشر وتُبسَّط، ومعادلة لا يحقّقها أي عدد.',
+      title: 'أوظّف تعلّماتي', desc: 'تسعة تمارين متدرّجة: من ax = b إلى معادلات تُنشر وتُبسَّط، ومعادلة لا يحقّقها أي عدد.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_muadala-ula_P1', '4am_muadala-ula_P2'],
       color: 'amber', style: 'featured', estimatedMin: 10, difficulty: 3, actionText: 'أتدرّب' },
     // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
@@ -148,7 +189,7 @@ export const LESSON_CONFIG = {
       stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_muadala-ula_P2', '4am_muadala-ula_P1'],
       color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
     { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءتين، منها سؤالان من أؤكّد تعلّماتي.',
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءتين.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };
