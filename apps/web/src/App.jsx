@@ -29,7 +29,6 @@ const AdminLayout = lazy(() => import('./components/layout/AdminLayout'));
 const AdminDashboard = lazy(() => import('./pages/admin/Dashboard'));
 const AdminLessons = lazy(() => import('./pages/admin/content/Lessons'));
 const AdminLessonDetail = lazy(() => import('./pages/admin/content/LessonDetail'));
-const AdminModules = lazy(() => import('./pages/admin/content/Modules'));
 const AdminExercises = lazy(() => import('./pages/admin/content/Exercises'));
 const AdminReportList = lazy(() => import('./pages/admin/reports/ReportList'));
 const AdminReportDetail = lazy(() => import('./pages/admin/reports/ReportDetail'));
@@ -293,7 +292,6 @@ function AppRoutes() {
 
           <Route path="contenu/lecons" element={<AdminLessons />} />
           <Route path="contenu/lecons/:code" element={<AdminLessonDetail />} />
-          <Route path="contenu/modules" element={<AdminModules />} />
           <Route path="contenu/exercices" element={<AdminExercises />} />
 
           <Route path="signalements" element={<AdminReportList />} />

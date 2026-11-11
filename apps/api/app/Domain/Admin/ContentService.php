@@ -43,6 +43,12 @@ class ContentService
             ->withCount([
                 'modules as modules_count' => fn ($q) => $q->whereNull('retired_at'),
                 'practiceExercises as exercises_count' => fn ($q) => $q->whereNull('retired_at'),
+                // La page « التمارين » est organisée PAR LEÇON (2026-11-11) :
+                // l'état de sa banque se lit en un coup d'œil, par état.
+                'practiceExercises as exercises_published_count' => fn ($q) => $q->whereNull('retired_at')->where('publication_status', Lesson::PUB_PUBLISHED),
+                'practiceExercises as exercises_hidden_count' => fn ($q) => $q->whereNull('retired_at')->where('publication_status', Lesson::PUB_HIDDEN),
+                'practiceExercises as exercises_draft_count' => fn ($q) => $q->whereNull('retired_at')->where('publication_status', Lesson::PUB_DRAFT),
+                'practiceExercises as exercises_archived_count' => fn ($q) => $q->whereNull('retired_at')->where('publication_status', Lesson::PUB_ARCHIVED),
                 'reports as open_reports_count' => fn ($q) => $q->whereIn('status', [
                     StudentReport::STATUS_NEW,
                     StudentReport::STATUS_IN_REVIEW,
@@ -85,6 +91,11 @@ class ContentService
 
         if ($tier = ($filters['tier'] ?? null)) {
             $query->where('tier', $tier);
+        }
+
+        // La page « التمارين » ne liste que les leçons qui ONT des exercices.
+        if (! empty($filters['withExercises'])) {
+            $query->whereHas('practiceExercises', fn ($q) => $q->whereNull('retired_at'));
         }
 
         $sort = $filters['sort'] ?? 'title';
@@ -144,75 +155,7 @@ class ContentService
         return $lesson;
     }
 
-    /**
-     * TOUS les modules, toutes leçons confondues.
-     *
-     * La vue par leçon existait déjà (voir lesson()), mais elle oblige à
-     * savoir OÙ chercher. Un administrateur qui veut « tous les modules
-     * masqués » ou « toutes les manipulations de 5e » n'a pas ce point de
-     * départ — d'où cette liste transversale, filtrable par étape et par
-     * état.
-     */
-    public function modules(array $filters = []): LengthAwarePaginator
-    {
-        // Colonnes QUALIFIÉES partout : le tri par leçon joint `lessons`, qui
-        // porte exactement les mêmes noms (publication_status, title, code).
-        // Sans préfixe, MySQL refuse la requête pour ambiguïté — et seulement
-        // quand un filtre est posé, ce qui en fait un défaut discret.
-        $query = LessonModule::query()
-            ->with(['lesson:id,code,title,chapter_id', 'lesson.chapter:id,code,title,grade_id', 'lesson.chapter.grade:id,code'])
-            ->whereNull('lesson_modules.retired_at');
-
-        if ($search = ($filters['search'] ?? null)) {
-            $query->where(fn ($q) => $q
-                ->where('lesson_modules.title', 'like', "%{$search}%")
-                ->orWhere('lesson_modules.code', 'like', "%{$search}%")
-                ->orWhereHas('lesson', fn ($l) => $l
-                    ->where('code', 'like', "%{$search}%")
-                    ->orWhere('title', 'like', "%{$search}%")));
-        }
-
-        if ($grade = ($filters['grade'] ?? null)) {
-            $query->whereHas('lesson.chapter.grade', fn ($q) => $q->where('code', $grade));
-        }
-
-        // Voir lessons() : les classes dormantes ne sont listées que sur `scope=all`.
-        if (($filters['scope'] ?? null) !== 'all' && config('curriculum.enforce_active_grades', true)) {
-            $query->whereHas('lesson.chapter.grade', fn ($q) => $q->where('is_active', true));
-        }
-
-        if ($lesson = ($filters['lesson'] ?? null)) {
-            $query->whereHas('lesson', fn ($q) => $q->where('code', $lesson));
-        }
-
-        if ($stage = ($filters['stage'] ?? null)) {
-            $query->where('lesson_modules.stage', $stage);
-        }
-
-        if ($status = ($filters['status'] ?? null)) {
-            $query->where('lesson_modules.publication_status', $status);
-        }
-
-        $sort = $filters['sort'] ?? 'lesson';
-        $direction = ($filters['direction'] ?? 'asc') === 'desc' ? 'desc' : 'asc';
-
-        // Trier par leçon demande une jointure : l'ordre naturel d'une liste
-        // de modules est « leçon, puis numéro », pas « id ».
-        if ($sort === 'lesson') {
-            $query->join('lessons', 'lessons.id', '=', 'lesson_modules.lesson_id')
-                ->orderBy('lessons.code', $direction)
-                ->orderBy('lesson_modules.number')
-                ->select('lesson_modules.*');
-        } else {
-            $sortable = ['number', 'title', 'stage', 'publication_status', 'updated_at'];
-            $column = in_array($sort, $sortable, true) ? $sort : 'number';
-            $query->orderBy("lesson_modules.{$column}", $direction);
-        }
-
-        return $query->paginate(min((int) ($filters['perPage'] ?? 50), 100));
-    }
-
-    /** Tous les exercices, toutes leçons confondues. Jumeau de modules(). */
+    /** Tous les exercices, toutes leçons confondues. */
     public function exercises(array $filters = []): LengthAwarePaginator
     {
         $query = PracticeExercise::query()
@@ -273,7 +216,11 @@ class ContentService
      * dans la même transaction, avec une ligne de journal par module changé.
      * Changer un module seul est refusé — il suit sa leçon. `modules.skipped`
      * reste dans la réponse (toujours vide) pour la compatibilité du client.
-     * Les exercices ne suivent pas : ils gardent leur propre état.
+     *
+     * « Je publie la leçon, tout est publié » (propriétaire, 2026-11-11) : le
+     * même état est aussi donné à tous ses EXERCICES en registre, journalisés
+     * un par un (`exercises.applied` dans la réponse). Un exercice peut ensuite
+     * être masqué seul depuis la liste des تمارين.
      *
      * Ce que cette méthode ne fait PAS, volontairement : toucher aux données
      * d'apprentissage. Masquer un module ne supprime aucune progression,
@@ -311,6 +258,9 @@ class ContentService
         // La cascade, calculée AVANT la transaction : la vérification de la
         // leçon publiée en dépend (« au moins un module publié APRÈS »).
         $cascade = $type === 'lesson' ? $this->moduleCascade($model, $status) : null;
+        $exercises = $type === 'lesson'
+            ? $model->practiceExercises()->whereNull('retired_at')->where('publication_status', '!=', $status)->get()
+            : collect();
 
         // On ne publie que ce qui tient debout. Retirer reste toujours
         // possible : refuser de MASQUER un contenu cassé serait exactement
@@ -322,7 +272,7 @@ class ContentService
         // Le changement ET sa trace dans la MÊME transaction : un journal
         // qui affirme une publication qui n'a pas eu lieu est pire que pas de
         // journal du tout — c'est un audit qui ment.
-        DB::transaction(function () use ($admin, $model, $status, $type, $before, $cascade) {
+        DB::transaction(function () use ($admin, $model, $status, $type, $before, $cascade, $exercises) {
             $model->publication_status = $status;
 
             // Les horodatages n'existent que sur la leçon : c'est le seul
@@ -366,6 +316,21 @@ class ContentService
                     ['publication_status' => $status, 'cascadeFromLesson' => $model->id],
                 );
             }
+
+            foreach ($exercises as $exercise) {
+                $exerciseBefore = $exercise->publication_status;
+                $exercise->publication_status = $status;
+                $exercise->save();
+
+                $this->log->log(
+                    $admin,
+                    ActivityLogger::PUBLISH_EXERCISE,
+                    'exercise',
+                    $exercise->id,
+                    ['publication_status' => $exerciseBefore],
+                    ['publication_status' => $status, 'cascadeFromLesson' => $model->id],
+                );
+            }
         });
 
         $result = ['model' => $model, 'changed' => true];
@@ -375,6 +340,7 @@ class ContentService
                 'applied' => $cascade['apply']->pluck('id')->values()->all(),
                 'skipped' => $cascade['skipped'],
             ];
+            $result['exercises'] = ['applied' => $exercises->pluck('id')->values()->all()];
         }
 
         return $result;

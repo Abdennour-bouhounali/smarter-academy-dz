@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { pruneToVisible, toggleAllVisible, toggleId } from './bulkSelectionCore';
@@ -107,18 +107,29 @@ describe('« tout sélectionner »', () => {
 describe('le branchement des actions groupées', () => {
   // La liste des MODULES n'en fait plus partie (2026-11-11) : un module n'a
   // pas d'état propre, il suit sa leçon — voir le test dédié plus bas.
+  // La page « التمارين » n'en fait plus partie non plus (2026-11-11) : elle
+  // est organisée PAR LEÇON — voir le test dédié plus bas.
   const PAGES = {
     'src/pages/admin/content/Lessons.jsx': 'lesson',
-    'src/pages/admin/content/Exercises.jsx': 'exercise',
   };
 
-  it('la liste des modules n’a ni sélection, ni lot, ni geste d’état : elle affiche l’état de la leçon', () => {
-    const source = read('src/pages/admin/content/Modules.jsx');
-    expect(source).not.toContain('useBulkSelection');
-    expect(source).not.toContain('BulkActionBar');
+  it('la page « التمارين » change la banque d’une leçon d’un seul geste, pas exercice par exercice', () => {
+    const source = read('src/pages/admin/content/Exercises.jsx');
+    expect(source).toContain('fetchLessons');
+    expect(source).toContain('withExercises: 1');
+    expect(source).toContain('ExerciseBankControl');
     expect(source).not.toContain('PublicationControl');
-    expect(source).toContain('StatusBadge');
-    expect(read('src/pages/admin/content/LessonDetail.jsx')).not.toContain('type="module"');
+    expect(source).not.toContain('BulkActionBar');
+  });
+
+  it('il n’y a plus de page « المحاور » : un module suit sa leçon (2026-11-11)', () => {
+    expect(existsSync(resolve(webRoot, 'src/pages/admin/content/Modules.jsx'))).toBe(false);
+    expect(read('src/data/adminNavigation.js')).not.toContain('contenu/modules');
+    expect(read('src/App.jsx')).not.toContain('contenu/modules');
+    expect(read('src/services/admin/contentService.js')).not.toContain('/admin/content/modules');
+    const detail = read('src/pages/admin/content/LessonDetail.jsx');
+    expect(detail).not.toContain('type="module"');
+    expect(detail).not.toContain('m.publicationStatus');
   });
 
   it('les listes de contenu portent la sélection et la barre d’actions', () => {
@@ -146,9 +157,6 @@ describe('le branchement des actions groupées', () => {
    */
   it('le palier en lot n’est proposé que là où il existe à l’unité', () => {
     expect(read('src/pages/admin/content/Lessons.jsx')).toContain('withTier: true');
-    expect(read('src/pages/admin/content/Exercises.jsx')).toContain('withTier: true');
-    // « Hériter de la leçon » n'a de sens que pour un exercice.
-    expect(read('src/pages/admin/content/Exercises.jsx')).toContain('withTierInherit: true');
     expect(read('src/pages/admin/content/Lessons.jsx')).not.toContain('withTierInherit');
   });
 
@@ -206,7 +214,8 @@ describe('le branchement des actions groupées', () => {
       expect(read(page), page).toContain('PublicationControl');
     }
     expect(read('src/pages/admin/content/Lessons.jsx')).toContain('TierControl');
-    expect(read('src/pages/admin/content/Exercises.jsx')).toContain('TierControl');
+    // Le palier d'UN exercice se règle sur la fiche de sa leçon.
+    expect(read('src/pages/admin/content/LessonDetail.jsx')).toContain('TierControl');
   });
 
   /**
@@ -297,7 +306,6 @@ describe('le nom compte du contenu', () => {
   it('les pages ne recopient plus le nom a la main', () => {
     for (const page of [
       'src/pages/admin/content/Lessons.jsx',
-      'src/pages/admin/content/Exercises.jsx',
     ]) {
       expect(read(page), page).toContain('CONTENT_NOUNS.');
       expect(read(page), page).not.toContain('nounPlural');

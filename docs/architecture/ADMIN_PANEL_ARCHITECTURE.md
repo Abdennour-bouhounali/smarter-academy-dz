@@ -1316,16 +1316,30 @@ l'est — `ContentAccess::assertModuleAvailable` ne lit que la leçon, et
 La colonne `lesson_modules.publication_status` reste, comme COPIE de l'état de
 la leçon : changer l'état d'une LEÇON (geste unitaire ou lot) le recopie sur
 TOUS ses modules en registre, dans la même transaction, avec une ligne
-`module.status_changed` par module changé (`after.cascadeFromLesson`). Changer
-un module seul est refusé (`PATCH …/module/{id}/status` → 422) ; les pages
-admin « المحاور » et la fiche leçon montrent l'état du module en lecture seule.
-La réponse de `PATCH …/lesson/{id}/status` porte toujours `modules: {applied,
-skipped}` (`skipped` est vide). Publier une leçon reste refusé (422) si elle a
-des modules en registre et qu'AUCUN ne passe les contrôles structurels. Les
-**exercices** ne suivent pas : ils gardent leur propre état.
+`module.status_changed` par module changé (`after.cascadeFromLesson`). Aucune
+route n'accepte plus le type `module` pour l'état (`PATCH …/module/{id}/status`
+et `POST …/module/bulk-status` → 404). Il n'y a plus de page admin
+« المحاور » (`/admin/contenu/modules` et `GET /admin/content/modules` supprimés) ;
+la fiche leçon liste ses modules sans colonne d'état.
 
-**Banque d'exercices d'une leçon (2026-10-07)** : les exercices ne suivent
-PAS l'état de la leçon, mais ils ont leur propre geste groupé —
+**« Je publie la leçon, tout est publié » (2026-11-11, décision propriétaire)** :
+le même geste donne aussi l'état de la leçon à tous ses **exercices** en
+registre, avec une ligne `exercise.status_changed` par exercice
+(`after.cascadeFromLesson`). La réponse de `PATCH …/lesson/{id}/status` porte
+`modules: {applied, skipped}` (`skipped` est vide) et `exercises: {applied}`.
+Un exercice peut ensuite être masqué SEUL (liste « التمارين » ou fiche leçon).
+Publier une leçon reste refusé (422) si elle a des modules en registre et
+qu'AUCUN ne passe les contrôles structurels.
+
+**La page « التمارين » est organisée PAR LEÇON (2026-11-11, décision
+propriétaire)** : on ne publie pas un exercice à la fois. Chaque ligne est une
+leçon qui a des exercices (`GET /admin/content/lessons?withExercises=1`), avec
+sa banque résumée par état (`exerciseStatusCounts`) et UN geste qui change
+toute la banque (`ExerciseBankControl`, ci-dessous). Masquer ou régler le
+palier d'UN exercice se fait sur la fiche de la leçon.
+
+**Banque d'exercices d'une leçon (2026-10-07)** : en plus de la cascade
+ci-dessus, les exercices ont leur propre geste groupé —
 `PATCH /api/v1/admin/content/lesson/{id}/exercises-status` `{status}` donne
 cet état à tous les exercices en registre (non retirés) de la leçon. C'est
 `bulkChangeStatus('exercise', …)` sur la liste de la leçon : même validation,
