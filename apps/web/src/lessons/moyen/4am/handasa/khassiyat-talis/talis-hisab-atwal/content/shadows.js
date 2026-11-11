@@ -7,9 +7,10 @@
  * Un ESSAI est une RÉPONSE (une hauteur, un drapeau) — jamais un mouvement du bâton ; la même réponse deux fois ne compte pas.
  *
  * MODULE 1 (`M1_ROUNDS`, labId `m1-shadows`)
- *   r1  le lampadaire de 2,75 m à 14:00, à la main : la rencontre (OA 3,3 · OB 1,2 · BA 2,1) ; la suite « read » (lire OB et OA parmi les trois
- *       longueurs, BÂTIR « BE/AM = OB/OA » — le leurre BA, la قطعة) ; la hauteur en trois pastilles (2,75 · 1,75 la قطعة · 3,1 l'écart) ; la
- *       suite « rule » : choisir la phrase parmi trois. Pas de prédiction.
+ *   r1  le lampadaire de 2,75 m à 14:00, à la main : la rencontre (OA 3,3 · OB 1,2 · BA 2,1) ; les suites `readFigure` (conseil du 2026-11-11) :
+ *       « read » (lire OB et OA parmi les trois longueurs, SUR LA PLACE), « figure » (la place DEVIENT la figure : désigner (AM) ∥ (BE) parmi
+ *       quatre droites, puis pourquoi — deux perpendiculaires à (OA)), « ratio » (BÂTIR « BE/AM = OB/OA » — le leurre BA, la قطعة) : l'hypothèse
+ *       avant la conclusion ; la hauteur en trois pastilles (2,75 · 1,75 la قطعة · 3,1 l'écart) ; « rule » : la phrase parmi trois. Pas de prédiction.
  *   r2  le château d'eau de 6,5 m à 14:00 (7,8 · 1,2 · 6,6 ; pastilles 6,5 · 5,5 · 7,6) puis, UNE heure à l'écran à la fois, à 16:00
  *       (14,82 · 2,28 · 12,54 — observé, pas calculé). Entre les deux, deux prédictions : « l'ombre du bâton reste-t-elle la même ? » → non ;
  *       « celle du château d'eau : moins / exactement / plus du double ? » → moins (× 1,9). La suite « same » : ce qui n'a pas changé — OB/OA = 2/13.
@@ -52,9 +53,9 @@ const easyPole = {
 };
 
 export const M1_ROUNDS = [
-  { id: 'r1', title: 'عمود الإنارة', goal: [{ solvedAll: 1 }, { checkpoint: 'read' }, { checkpoint: 'rule' }], stars: { maxTrials: 2, predict: false },
-    easier: easyLamp, helpAfterRefusals: 2,
-    props: props({ ...R1, chains: 'read', lead: 'ساحة الحيّ بعد الظهر، الساعة 14:00. عمود الإنارة أعلى من أن تقيسه، ومعك عصا طولها 1 m.', mission: 'حرّك العصا حتى ينتهي ظلّها حيث ينتهي ظلّ العمود بالضبط، ثم جد ارتفاع العمود.' }) },
+  { id: 'r1', title: 'عمود الإنارة', goal: [{ solvedAll: 1 }, { checkpoint: 'read' }, { checkpoint: 'figure' }, { checkpoint: 'ratio' }, { checkpoint: 'rule' }],
+    stars: { maxTrials: 2, predict: false }, easier: easyLamp, helpAfterRefusals: 2,
+    props: props({ ...R1, chains: 'readFigure', lead: 'ساحة الحيّ بعد الظهر، الساعة 14:00. عمود الإنارة أعلى من أن تقيسه، ومعك عصا طولها 1 m.', mission: 'حرّك العصا حتى ينتهي ظلّها حيث ينتهي ظلّ العمود بالضبط، ثم جد ارتفاع العمود.' }) },
   { id: 'r2', title: 'خزّان الماء', goal: [{ solvedAll: 2 }, { checkpoint: 'same' }], stars: { maxTrials: 2 },
     props: props({ ...R2, chains: 'same', predict: PREDICT.r2, lead: 'خزّان الماء في طرف الساحة: لا أحد يستطيع قياسه. الساعة 14:00، وبعدها تتحرّك الشمس.', mission: 'اجعل الظلّين ينتهيان معًا وجد ارتفاع الخزّان. ثم حرّك الشمس وأعد: ما الذي يبقى كما هو؟' }) },
   { id: 'r3', title: 'سارية جديدة', goal: [{ solvedAll: 1 }, { checkpoint: 'build' }], stars: { maxTrials: 2, predict: false },

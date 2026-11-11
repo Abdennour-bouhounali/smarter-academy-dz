@@ -46,6 +46,17 @@ export function isDecor(el) {
   return pos === 'absolute' || pos === 'fixed';
 }
 
+/**
+ * Un élément INSÉCABLE : on ne l'ouvre jamais en ses enfants. Un dessin (<svg>, une <figure>) ouvert pièce par pièce se
+ * répartissait sur plusieurs écrans — la figure de Thalès de l'unité 9 montrait le seul segment [AM] sur « صفحة 1 من 3 »
+ * (propriétaire, 2026-11-11) ; un écran gardé entier (`data-paging-keep`) non plus.
+ */
+export function isAtomic(el) {
+  if (el.hasAttribute?.('data-paging-keep')) return true;
+  if (el.namespaceURI && el.namespaceURI !== 'http://www.w3.org/1999/xhtml') return true;   // svg et tout son contenu, MathML
+  return /^(FIGURE|SVG|IMG|CANVAS|TABLE)$/i.test(el.tagName ?? '');
+}
+
 function resolveBlocks(root, deep = false) {
   let host = root;
   for (let depth = 0; depth < (deep ? 6 : 2); depth += 1) {
@@ -118,7 +129,8 @@ export default function ClassroomPaged({ active = true, page = 0, onPages, onRes
         // un écran VIDE — la carte d'ouverture d'un module s'ouvrait sur son seul fond (propriétaire, 2026-11-04, « l'ancienne
         // vue »). Il reste visible avec son parent.
         // `data-paging-keep` : un écran CONÇU pour tenir en un (la revue compacte de « أستعدّ ») ne s'ouvre jamais en ses enfants
-        const items = (el) => (el.hasAttribute?.('data-paging-keep') ? [] : Array.from(el.children).filter((k) => !isDecor(k)));
+        // un dessin (svg, figure) n'est jamais ouvert : ses traits ne sont pas des éléments (isAtomic)
+        const items = (el) => (isAtomic(el) ? [] : Array.from(el.children).filter((k) => !isDecor(k)));
         const splittable = (el) => { let e = el; while (items(e).length === 1) [e] = items(e); return items(e).length > 1 ? e : null; };
         // `onePerPage` : une LISTE (≥ 2 enfants substantiels) s'ouvre même si elle tient — chaque élément aura sa page
         // une LISTE : ≥ 2 enfants substantiels — ou UN seul enfant substantiel qui en est une (le corps d'une carte « للتذكّر »

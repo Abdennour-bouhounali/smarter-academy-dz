@@ -32,6 +32,19 @@ export const FIG_ACT1_CASE2 = {
   maxWidth: 300,
 };
 
+/* ── Lecteur, module 1, étape 1 (conseil du 2026-11-11) : la configuration de la place RECONNUE ailleurs — tournée, les parallèles PENCHÉES,
+ * d'autres lettres, ni sol ni angle droit : « elles sont debout » ne peut plus être la raison. K joue le rôle de O. Les chevrons sont donnés
+ * (l'énoncé dit (LP) ∥ (NQ)) : ce qu'on reconnaît ici, c'est le sommet commun et les deux triangles. */
+const N9 = at(160, 6); const Q9 = at(250, 4);
+export const FIG_TRANSFER = {
+  points: { K: [0, 0], N: N9, Q: Q9, L: times(N9, 0.45), P: times(Q9, 0.45) },
+  segments: [['K', 'N'], ['K', 'Q'], { from: 'L', to: 'P', arrows: 1, tone: 'amber' }, { from: 'N', to: 'Q', arrows: 1 }],
+  polygons: [{ points: ['K', 'L', 'P'], tone: 'amber' }],
+  labels: { K: 'e' },
+  ariaLabel: 'شكل مائل: النقطة K يخرج منها مستقيمان؛ L و N على الأول، P و Q على الثاني، و (LP) يوازي (NQ)',
+  maxWidth: 210,
+};
+
 /* ── نشاط 1 (ساحة الحيّ) : la minaret et le bâton, leurs ombres, le rayon — les deux triangles en situation de Thalès ──
  * A pied de la minaret, M sa cime ; B pied du bâton, E sa cime ; O la fin commune des deux ombres. Rien n'est chiffré :
  * les hauteurs de la figure (5 et 1) et les ombres (8 et 1,6) respectent k = 1,6 pour que (AM) // (BE) et le rayon soit droit. */

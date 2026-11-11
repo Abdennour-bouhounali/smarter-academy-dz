@@ -2786,7 +2786,10 @@ Since 2026-11-10 (unit 9, lesson 2) a `build` may also set `accept` (other filli
   will the shadow end?), `ask` `null` | `'tap'` / `{ kind: 'tap', decoys: ['segment' | 'additive' | 'shadow'] }` (three chips: the truth, BA ÷ OB,
   the constant gap) | `'type'` (the platform's answer template « H = [ ] m », `templateFor` + `TemplateInput`); objects drawn: `lamp`, `tower`,
   `palm`, `pole`, `minaret`. **A trial is an ANSWER** (`onVerdict { groups: the step, exact }`), never a move; the same wrong answer twice is not
-  a trial; the meet of a step that asks nothing is a `free` exact verdict; goals are `{ solvedAll: n }` + one checkpoint per chain. `chains`:
+  a trial; the meet of a step that asks nothing is a `free` exact verdict; goals are `{ solvedAll: n }` + one checkpoint per chain. Since
+  2026-11-11 (council) round 1 uses `readFigure` (read → **figure**: the scene's décor fades and [AM], [BE], (OM), (OA) are drawn on the
+  objects, `Scene figure parallel`, toggle `[data-sm-morph]`; `parallelBuild` tiles + `parallelWhy` → ratio → rule) — guide, « from a scene to
+  a figure ». `chains`:
   `read` (« read » at the meet: OB and OA picked among the three lengths, then BUILD « BE/AM = OB/OA » — BE/AM pre-placed, OB, OA and the decoy
   BA, the swapped equality accepted; « rule » once the height is found: ONE sentence among three — no rule text box), `readEasy`, `same` (two
   hours: what did not change — OB/OA), `flag` (« build »: the pole's ratio = the stick's; the INVERTED ratio is a tile — `LabCheckpoint`'s build

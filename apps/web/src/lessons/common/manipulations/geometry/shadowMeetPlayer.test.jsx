@@ -3,7 +3,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import i18n from '../../../../i18n';
 import strings from '../../../../i18n/locales/ar/lesson.manipulation.json';
-import ShadowMeet, { CHAINS, QUESTIONS, chainsOf, ratioNode } from './ShadowMeet';
+import ShadowMeet, { CHAINS, QUESTIONS, chainsOf, ratioNode, Scene } from './ShadowMeet';
 import { InMissionPlayerContext } from '../../mission/missionPlayerContext';
 import * as L from '../logic/shadowMeet';
 import { isCorrect } from '../primitives/labCheckpoint';
@@ -231,3 +231,51 @@ describe('shadow-meet — hideHeight and the « why » chain (the synthesis roun
     expect(renderToString(<span>{q.options.find((o) => o.correct).text}</span>)).toContain(k('cp.whyMeet.right', { obj: 'المئذنة' }).slice(0, 12));
   });
 });
+
+describe('shadow-meet — the square becomes the figure (council of 2026-11-11, round 1 of talis-hisab-atwal)', () => {
+  const lab = meet(L.init(R1));
+  const step = L.cur(lab);
+  const geo = L.layout(lab, { width: 560, height: 280, pad: 12, sky: 26, ground: 84 });
+  const scene = (figure, parallel) => renderToString(<Scene geo={geo} lab={lab} step={step} side={L.sideOf(lab)} met solved={false} reduce unknown="؟" figure={figure} parallel={parallel} />);
+
+  it('readFigure: read the lengths ON THE SQUARE, then the figure (parallels + why), then the equality (hypothesis before conclusion), then the rule', () => {
+    expect(chainsOf('readFigure').map((c) => c.id)).toEqual(['read', 'figure', 'ratio', 'rule']);
+    expect(CHAINS.readFigure.find((c) => c.id === 'figure').qs).toEqual(['parallelBuild', 'parallelWhy']);
+    expect(chainsOf('read').map((c) => c.id)).toEqual(['read', 'rule']);   // the other users of « read » are unchanged
+  });
+
+  it('parallelBuild: four named lines as tiles, (AM) ∥ (BE) in either order; the lines that meet at O are refused', () => {
+    const q = QUESTIONS.parallelBuild(lab, k, OBJ);
+    expect([...q.tiles].sort()).toEqual(['(AM)', '(BE)', '(OA)', '(OM)']);
+    expect(isCorrect(q, ['(AM)', '(BE)'])).toBe(true);
+    expect(isCorrect(q, ['(BE)', '(AM)'])).toBe(true);
+    expect(isCorrect(q, ['(OM)', '(OA)'])).toBe(false);
+    expect(isCorrect(q, ['(AM)', '(OA)'])).toBe(false);
+    expect(text(q)).not.toMatch(rawKey);
+  });
+
+  it('parallelWhy: the reason holds without ground or sun (two perpendiculars to one line); no option says « vertical » or « upright »', () => {
+    const q = QUESTIONS.parallelWhy(lab, k, OBJ);
+    expect(q.options.filter((o) => o.correct)).toHaveLength(1);
+    const html = text(q);
+    expect(html).not.toMatch(rawKey);
+    expect(html).not.toMatch(/شاقولي|واقف|الأرض/);
+    expect(renderToString(<div>{q.options.find((o) => o.correct).text}</div>)).toContain('عمودي');
+  });
+
+  it('the scene: the figure layer is off on the square; on, it draws [AM], [BE], (OM), (OA) and the right angles — the chevrons only once the student named the parallels', () => {
+    expect(scene(false, false)).toContain('data-sm-geo="off"');
+    const on = scene(true, false);
+    expect(on).toContain('data-sm-geo="on"');
+    ['AM', 'BE', 'OM', 'OA'].forEach((n) => expect(on).toContain(`data-sm-geo-line="${n}"`));
+    expect((on.match(/data-sm-geo-right/g) ?? []).length).toBe(2);
+    expect(on).not.toContain('data-sm-geo-parallel');
+    expect((scene(true, true).match(/data-sm-geo-parallel/g) ?? []).length).toBe(2);
+  });
+
+  it('the morph toggle strings exist', () => {
+    expect(k('morph.toScene')).not.toMatch(rawKey);
+    expect(k('morph.toFigure')).not.toMatch(rawKey);
+  });
+});
+

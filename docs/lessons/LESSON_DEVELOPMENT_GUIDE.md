@@ -1095,6 +1095,19 @@ already there »). `FitToArea` takes a `screenKey` (module path + unit + page) f
   The page and the teacher keep the full list of corrections;
 - `data-paging-keep` marks a screen DESIGNED to hold as one: the player's paging neither walks into it nor opens it into its
   children (`ClassroomPaged`); if it is too tall, the size fitting handles it (last resort);
+- **a drawing is never split** (owner's screenshot, 2026-11-11): the pager's « one element per screen » used to open an `<svg>` into its
+  strokes — unit 9's Thales figure showed the lone segment [AM] on « صفحة 1 من 3 ». `ClassroomPaged › isAtomic` now treats `<svg>` and
+  everything in it, `<figure>`, `<img>`, `<canvas>`, `<table>` and `data-paging-keep` as ONE element (tested in `classroomDecor.test.js`). A
+  question asked ON a figure goes in one `data-paging-keep` row with it (figure beside the question), or the pager puts them on two screens;
+- **from a scene to a figure — show it in the lab, check it outside** (council of 2026-11-11, unit 9 lesson 1; PROVISIONAL until a real student
+  is timed; decide unit by unit, only where the lab has a real scene — vectors and solids already work on the figure). The change of picture
+  happens INSIDE the lab, on the drawing the student's hand placed: the décor fades, the named lines are drawn on the objects, then the lab's
+  column asks which lines are parallel (tiles of the four named lines) and WHY with a reason that holds without ground or « upright » (two
+  perpendiculars to one line); the parallel marks appear only after the right pair (they would give it away), and a « أرني الساحة / أرني
+  الشكل » toggle lets the student look back (`shadow-meet › chains: 'readFigure'`, `Scene figure parallel`). The hypothesis comes BEFORE the
+  equality it supports (read → figure → ratio → rule). The module step after the round then checks the TRANSFER on a figure that does not
+  look like the lab (rotated, tilted parallels, other letters, bare-letter options: « which point plays the role of O? ») — never the same
+  figure, never options that describe the answer;
 - **sounds when answering** (owner, 2026-11-07; silent until the student turns « الصوت » on, `playSfx`): a TEST that corrects nothing
   before its result (« أستعدّ », the final test `BossFinal`) plays a NEUTRAL « pop » per answer and the « step » chime when the result
   comes; a right/wrong sound there would give the answer away. `InfoSorter` plays correct / wrong at « تحقّق » unless its parent passes

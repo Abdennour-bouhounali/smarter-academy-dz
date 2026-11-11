@@ -122,7 +122,7 @@ describe('the shadow rounds of talis-hisab-atwal', () => {
   it('five rounds: r1 → r2 → r3 (required) → ⭐ → free ; practice rounds for r1 and r3 only', () => {
     expect(M1_ROUNDS.map((r) => r.id)).toEqual(['r1', 'r2', 'r3', 'challenge', 'free']);
     expect(M1_ROUNDS.map((r) => r.props.type)).toEqual(Array(5).fill('shadow-meet'));
-    expect(M1_ROUNDS.map((r) => r.props.chains)).toEqual(['read', 'same', 'flag', 'none', 'none']);
+    expect(M1_ROUNDS.map((r) => r.props.chains)).toEqual(['readFigure', 'same', 'flag', 'none', 'none']);
     expect(M1_ROUNDS.map((r) => Boolean(r.easier))).toEqual([true, false, true, false, false]);
     expect(M1_ROUNDS[3].optional).toBe(true);
     expect(M1_ROUNDS[4].free).toBe(true);

@@ -871,6 +871,22 @@ gzip; `lab-rollout-status` ✅ for the three lessons. Playwright at 1366×768, 1
 the peer sheet (found, fixed, restored after a reload), the final test (6 questions + review), the knowledge map (no climax number, no « الكتاب »),
 the teacher view (the old `shadow-world` with its two levels, no player element), module 1's rounds by hand to ★★★.
 
+**Council of 2026-11-11 (owner: « move this question into the lab? ») — applied the same day.**
+- **The empty figure was a pager bug, not a design flaw:** in the player « one element per screen » opened the step's `<svg>` into its
+  strokes (only [AM] showed, « صفحة 1 من 3 »). Fixed for EVERY lesson in `ClassroomPaged › isAtomic` (svg, figure, img, canvas, table,
+  `data-paging-keep` are never opened); a Playwright scan of unit 9's modules found 0 split drawings afterwards.
+- **Round 1 turns the square into the figure** (`chains: 'readFigure'`, goal `read` + `figure` + `ratio` + `rule`): read OB / OA on the square →
+  the décor fades and [AM], [BE], (OM), (OA) with the right angles at A and B are drawn on the objects → « which two lines are parallel? »
+  (tiles; (OM) and (OA) refused) → the chevrons appear → « why? » (both perpendicular to (OA); decoys: both cut (OM), both start on (OA)) →
+  the equality is built (the hypothesis now comes before the conclusion) → the height → the rule. A toggle « أرني الساحة / أرني الشكل ».
+  Played by hand at 1366 and 1024: ★★★, 0 overflow, 0 scroll, 0 console error.
+- **Module 1 step 1 (player) checks the transfer:** `FIG_TRANSFER` — K, L, N, P, Q, rotated, parallels tilted, no ground — « which point plays
+  the role of O? » with bare letters (N, K, L, Q), figure and question on ONE screen (`data-paging-keep`). Its saved answer has a new key (the
+  prompt changed); the old one is simply not shown. The unused player strings `bridgePlayer` / `parallelPlayer` were removed. Page and teacher:
+  unchanged (`shadow-world`, `FIG_SHADOW`, the old question).
+- Not done: tapping the lines ON the drawing (tiles are used); the reverse morph (« dress the figure back »); the other unit-9 lessons have no
+  scene-to-figure gap (their labs are already figures).
+
 ## Unit 9, lesson 2 — `aksiya-talis` « الخاصية العكسية لخاصية طالس وإثبات التوازي » (2026-11-10)
 
 **Council verdict (2026-11-10, binding — `L2`):** L2.1 = B, an explicit « ضع الميزان » button: the bubble is HIDDEN while the ends move and a trial is

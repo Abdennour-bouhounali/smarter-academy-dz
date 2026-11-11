@@ -172,7 +172,5 @@ export const SHADOW_STEPS = {
   wrong: { times: 11.16, minus: 8.75 },
   answers: { palm: 7.75 },
   // LECTEUR DE MISSION (2026-11-10) : l'élève y a joué le labo à un couloir (un lampadaire, un château d'eau) — pas la minaret du monde de la page
-  bridgePlayer: 'نمثّل ما رأيته في الساحة: $A$ قاعدة الشيء المرتفع و $M$ قمّته، $B$ قاعدة العصا و $E$ قمّتها، و $O$ نهاية الظلّ المشتركة حين ينتهي الظلّان معًا.',
-  parallelPlayer: 'العصا والشيء المرتفع شاقوليان، أي عموديان على الأرض $(OA)$ ، فهما متوازيان: $(AM) \\parallel (BE)$ . وشعاع الشمس $(OM)$ يمرّ برأسيهما معًا: إنه القاطع الذي يربط المثلثين $OBE$ و $OAM$ .',
   equalityPlayer: 'المثلثان $OBE$ و $OAM$ في وضعية طالس: لهما الرأس $O$ و $(BE) \\parallel (AM)$ ، إذن $\\dfrac{OB}{OA} = \\dfrac{OE}{OM} = \\dfrac{BE}{AM}$ . وهذا ما وجدته في الساحة: النسبة بين الظلّ والطول واحدة لكل الأشياء الشاقولية في اللحظة نفسها.',
 };

@@ -8,7 +8,7 @@ import { Manipulation, ManipulationWorkspace } from '../../../../../../common/ma
 import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, SHADOW_WORLD, SHADOW_STEPS } from '../content/textbook';
-import { FIG_ACT1_CASE1, FIG_ACT1_CASE2, FIG_SHADOW } from '../content/figures';
+import { FIG_ACT1_CASE1, FIG_ACT1_CASE2, FIG_SHADOW, FIG_TRANSFER } from '../content/figures';
 import { M1_ROUNDS } from '../content/shadows';
 import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
 import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
@@ -36,6 +36,8 @@ import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
  * dit vient des manches GAGNÉES (étoiles gardées, annoncées par LabRounds au montage) : un rechargement ne bloque ni ne vide jamais une étape.
  * Les phrases qui parlaient de la minaret et de « ta règle » parlent ici de « الشيء المرتفع » et de ce que l'élève a TROUVÉ. Aucun texte d'élève
  * ne renvoie au manuel. Hors lecteur (l'enseignant, le mode classe) : le monde `shadow-world` et ses textes, inchangés.
+ * Conseil du 2026-11-11 : la manche 1 CHANGE LA PLACE EN FIGURE dans le labo (chaînes `readFigure` : les parallèles et pourquoi) ; l'étape 1 du
+ * lecteur vérifie le TRANSFERT sur une figure qui ne ressemble pas au labo (`FIG_TRANSFER`, « quel point joue le rôle de O ? »).
  */
 const OBJ = { minaret: 'المئذنة', stick: 'العصا', palm: 'النخلة', flag: 'السارية', lamp: 'العمود', farid: 'فريد' };
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -126,28 +128,45 @@ export default function Module01Nashat() {
       steps={[
         {
           needsRound: { id: 'r1', label: 'الجولة 1', icon: '☀️', won: Boolean(won.r1) },
-          num: 1, title: 'من الساحة إلى الشكل الهندسي', subtitle: 'ما المتوازي؟', done: q0,
-          content: (
-            <div className="space-y-3">
-              <PlayerSwitch
-                player={wonLine('r1', 'الجولة 1: جعلتَ ظلّ العصا ينتهي مع ظلّ عمود الإنارة، وحسبتَ ارتفاعه من الأطوال على الأرض.', 'الجولة 1: لم تجعل بعد الظلّين ينتهيان معًا.')}
-                page={evidence}
-              />
-              <p className="text-sm text-slate-800">{sw(<MathText>{SHADOW_STEPS.bridgePlayer}</MathText>, <MathText>{SHADOW_STEPS.bridge}</MathText>)}</p>
-              {sw(<GeoFigure {...FIG_SHADOW} ariaLabel={FIG_SHADOW_PLAYER_ARIA} />, <GeoFigure {...FIG_SHADOW} />)}
-              <TapQuestion
-                prompt={<MathText>{'أيّ مستقيمين متوازيان في الشكل، ولماذا؟'}</MathText>}
-                options={[
-                  M('$(AM)$ و $(BE)$ : كلاهما شاقولي، أي عمودي على الأرض $(OA)$'),
-                  M('$(OM)$ و $(BE)$ : كلاهما يمرّ بقمّة'),
-                  <PlayerSwitch key="touch" player={M('$(AM)$ و $(OA)$ : كلاهما يمسّ العمود')} page={M('$(AM)$ و $(OA)$ : كلاهما يمسّ المئذنة')} />,
-                ]}
-                correct={0}
-                cols={1}
-                explain={sw(<MathText>{SHADOW_STEPS.parallelPlayer}</MathText>, <MathText>{SHADOW_STEPS.parallel}</MathText>)}
+          num: 1, title: 'من الساحة إلى الشكل الهندسي', subtitle: sw('أين O؟', 'ما المتوازي؟'), done: q0,
+          // Lecteur (conseil du 2026-11-11) : le passage de la place à la figure se fait DANS le labo (la manche 1 change la scène en figure et
+          // demande les parallèles et pourquoi) ; l'étape vérifie le TRANSFERT — la même configuration tournée, penchée, d'autres lettres.
+          content: sw(
+            <div className="space-y-3" data-step-transfer>
+              {wonLine('r1', 'الجولة 1: رأيتَ الساحة تصير شكلًا، ووجدتَ المستقيمين المتوازيين.', 'الجولة 1: لم تُنهِ الجولة بعد.')}
+              <p className="text-sm text-slate-800"><MathText>{'الشكل نفسه الذي رأيته في الساحة، لكن مُدارًا ومائلًا وبحروف أخرى: $(LP) \\parallel (NQ)$ .'}</MathText></p>
+              {/* la question se lit SUR la figure : les deux restent sur le même écran du lecteur (`data-paging-keep`) */}
+              <div className="grid items-center gap-4 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]" data-paging-keep>
+                <GeoFigure {...FIG_TRANSFER} />
+                <TapQuestion
+                prompt={<MathText>{'أيّ نقطة تلعب هنا دور $O$ ، نهاية الظلّين في الساحة؟'}</MathText>}
+                // des lettres seules : une option décrite (« là où les sécantes se coupent ») donnerait la réponse
+                options={['$N$', '$K$', '$L$', '$Q$'].map(M)}
+                correct={1}
+                cols={2}
+                explain={<MathText>{'$K$ مثل $O$ : منها يخرج المستقيمان $(KN)$ و $(KQ)$ اللذان يقطعان المتوازيين $(LP)$ و $(NQ)$ ، كما يخرج الشعاع والأرض من $O$ . المثلثان هنا $KLP$ و $KNQ$ ، مثل $OBE$ و $OAM$ .'}</MathText>}
                 onAnswered={() => setQ0(true)}
               />
-            </div>
+              </div>
+            </div>,
+            // la page et l'enseignant : inchangés (le monde shadow-world, la figure de la place, la question des parallèles)
+              <div className="space-y-3">
+                {evidence}
+                <p className="text-sm text-slate-800"><MathText>{SHADOW_STEPS.bridge}</MathText></p>
+                <GeoFigure {...FIG_SHADOW} />
+                <TapQuestion
+                  prompt={<MathText>{'أيّ مستقيمين متوازيان في الشكل، ولماذا؟'}</MathText>}
+                  options={[
+                    M('$(AM)$ و $(BE)$ : كلاهما شاقولي، أي عمودي على الأرض $(OA)$'),
+                    M('$(OM)$ و $(BE)$ : كلاهما يمرّ بقمّة'),
+                    M('$(AM)$ و $(OA)$ : كلاهما يمسّ المئذنة'),
+                  ]}
+                  correct={0}
+                  cols={1}
+                  explain={<MathText>{SHADOW_STEPS.parallel}</MathText>}
+                  onAnswered={() => setQ0(true)}
+                />
+              </div>,
           ),
         },
         {

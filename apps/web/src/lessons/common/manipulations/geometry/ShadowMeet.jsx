@@ -133,12 +133,17 @@ export default function ShadowMeet({
   const [missionBig, setMissionBig] = useState(false);
   const [draft, setDraft] = useState(null);         // la valeur tapée dans le modèle de réponse (texte), ou null
   const [said, setSaid] = useState(null);           // la dernière annonce hors verdict (heure, objet, choix)
+  // LA SCÈNE DEVIENT FIGURE (conseil du 2026-11-11) : `parallelShown` — les chevrons de parallélisme, posés APRÈS que l'élève a désigné les
+  // deux droites (jamais avant : ils donneraient la réponse) ; `asScene` — l'élève a demandé à revoir la place (bascule « الساحة / الشكل »)
+  const [parallelShown, setParallelShown] = useState(false);
+  const [asScene, setAsScene] = useState(false);
   if (scene.key !== sceneKey) {
     // « إعادة », d'autres nombres : TOUT repart — les étapes, les réponses, les questions, les prédictions
     const fresh = make();
     labRef.current = fresh;
     setScene({ key: sceneKey, inits: scene.inits + 1 }); setLab(fresh); setDoneIds([]);
     setPreds({}); asked.current = new Set(); heardPred.current = new Set(); setShownPreds([]); setPredHold(false); setDraft(null);
+    setParallelShown(false); setAsScene(false);
   }
   // la manche (LabRounds) repart de zéro avec la scène
   useEffect(() => { if (gameScreen && scene.inits > 0) state.report(onTrial, { tk: 'reset' }); }, [scene.inits]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -171,12 +176,21 @@ export default function ShadowMeet({
       const fresh = make();
       labRef.current = fresh; setLab(fresh); setDraft(null);
       celebrated.current = new Set();
+      setParallelShown(false); setAsScene(false);
       state.report(onTrial, { tk: 'retry' });
     },
-    onEvent: (ev) => state.report(onTrial, ev),
+    onEvent: (ev) => {
+      if (ev?.tk === 'checkpoint' && ev.q === 'parallelBuild' && (ev.ok || ev.revealed)) setParallelShown(true);
+      state.report(onTrial, ev);
+    },
     onDone: (id) => setDoneIds((d) => (d.includes(id) ? d : [...d, id])),
   });
   const chainsDone = chainList.every((c) => doneIds.includes(c.id));
+  // la figure : dès que la suite « figure » est atteinte (la rencontre de l'étape 1), et tant que l'élève ne revient pas à la place
+  const figureChain = chainList.find((c) => c.id === 'figure');
+  // (la suite « read » d'abord : l'élève lit les longueurs SUR LA PLACE, puis la place se change en figure)
+  const figureReached = Boolean(figureChain && lab.at === 0 && (pendingChain?.id === 'figure' || doneIds.includes('figure')));
+  const asFigure = figureReached && !asScene;
   const finished = all && (!cpEnabled || chainsDone);
   useEffect(() => {
     if (!finished) return;
@@ -559,7 +573,15 @@ export default function ShadowMeet({
                 <p className="rounded-full bg-sky-100 px-3 py-1 text-sm font-black text-sky-900" data-sm-hour={hourNow}><span aria-hidden="true">🕑 </span>{k('hour')} <Num>{hourNow}</Num></p>
               </div>
               <div className="relative mx-auto" style={{ width: sceneW, height: sceneH }} data-sm-scene>
-                <Scene geo={geo} lab={lab} step={step} side={side} met={met} solved={solved && !hideHeight} reduce={reduce} unknown={k('unknown')} />
+                <Scene geo={geo} lab={lab} step={step} side={side} met={met} solved={solved && !hideHeight} reduce={reduce} unknown={k('unknown')}
+                  figure={asFigure} parallel={parallelShown} />
+                {figureReached && (
+                  // la bascule : revoir la place, puis revenir à la figure — jamais une question de plus
+                  <button type="button" onClick={() => setAsScene((v) => !v)} aria-pressed={!asScene} data-sm-morph={asFigure ? 'figure' : 'scene'}
+                    className={`absolute end-2 top-2 inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border-2 border-indigo-300 bg-white/95 px-3 text-sm font-black text-indigo-900 shadow ${ringCls}`}>
+                    <span aria-hidden="true">{asFigure ? '🏙️' : '📐'}</span>{k(asFigure ? 'morph.toScene' : 'morph.toFigure')}
+                  </button>
+                )}
                 {/* la piste : toute la largeur du sol ; la poignée au pied du bâton */}
                 <div {...st.trackProps} data-sm-track className="absolute inset-x-0"
                   style={{ ...st.trackProps.style, top: geo.groundY - 30, height: 78, ...(freeze ? { pointerEvents: 'none', cursor: 'default' } : {}) }}>
@@ -697,7 +719,7 @@ function Dim({ x1, x2, y, text, name, tone = '#334155' }) {
   );
 }
 
-function Scene({ geo, lab, step, side, met, solved, reduce, unknown }) {
+export function Scene({ geo, lab, step, side, met, solved, reduce, unknown, figure = false, parallel = false }) {
   const { width, height, groundY: gy, x, y, scale } = geo;
   const flag = step.task === 'flag';
   const A = x(0); const Mtop = y(step.H);
@@ -722,6 +744,9 @@ function Scene({ geo, lab, step, side, met, solved, reduce, unknown }) {
   const stickPx = L.STICK * scale;
   const bands = Math.max(2, Math.round(stickPx / 12));
   const trans = reduce ? 'none' : 'opacity 240ms ease-out';
+  // LA PLACE DEVIENT FIGURE : le décor s'efface (il reste deviné), les droites nommées se posent sur les objets que la main a placés
+  const morph = reduce ? 'none' : 'opacity 700ms ease-in-out';
+  const decor = { opacity: figure ? 0.16 : 1, transition: morph };
   const flagX = lab.flag != null ? x(lab.flag) : null;
   // sous la ligne de terre : les lettres des points (et la poignée du bâton), puis deux rangées de cotes
   const ROW1 = gy + 52; const ROW2 = gy + 71;
@@ -730,6 +755,7 @@ function Scene({ geo, lab, step, side, met, solved, reduce, unknown }) {
       {/* le ciel et le sol */}
       <rect x={0} y={0} width={width} height={gy} fill="#E0F2FE" />
       <rect x={0} y={gy} width={width} height={height - gy} fill="#E7E5E4" />
+      <g style={decor}>
       <g data-deco="town" opacity={0.5}>
         {[0.62, 0.72, 0.84, 0.93].map((f, i) => {
           const bw = width * 0.07; const bh = [26, 40, 30, 22][i];
@@ -762,6 +788,24 @@ function Scene({ geo, lab, step, side, met, solved, reduce, unknown }) {
         {Array.from({ length: bands }, (_, i) => (
           <rect key={i} x={B - 3} y={gy - stickPx + (i * stickPx) / bands} width={6} height={stickPx / bands} fill={i % 2 ? '#F8FAFC' : '#DC2626'} stroke="#7F1D1D" strokeWidth={0.6} />
         ))}
+      </g>
+      </g>
+      {/* le fond pâlit : la figure se lit sur du blanc */}
+      <rect x={0} y={0} width={width} height={height} fill="#FFFFFF" style={{ opacity: figure ? 0.72 : 0, transition: morph }} />
+      {/* LA FIGURE : [AM], [BE], la droite (OM) — le rayon —, la droite (OA) — le sol ; les chevrons seulement quand l'élève a désigné les parallèles */}
+      <g data-sm-geo={figure ? 'on' : 'off'} style={{ opacity: figure ? 1 : 0, transition: morph }} aria-hidden="true">
+        <line x1={A} y1={gy} x2={O} y2={gy} stroke="#334155" strokeWidth={2.6} data-sm-geo-line="OA" />
+        <line x1={sx} y1={sy} x2={O} y2={gy} stroke="#B45309" strokeWidth={2.4} data-sm-geo-line="OM" />
+        <line x1={A} y1={gy} x2={A} y2={Mtop} stroke="#0F172A" strokeWidth={3.2} data-sm-geo-line="AM" />
+        <line x1={B} y1={gy} x2={B} y2={Etop} stroke="#4338CA" strokeWidth={3.2} data-sm-geo-line="BE" />
+        {[[A, Mtop], [B, Etop]].map(([px, top]) => <circle key={`${px}`} cx={px} cy={top} r={3.5} fill={INK} />)}
+        <circle cx={A} cy={gy} r={3.5} fill={INK} />
+        {/* les angles droits en A et en B : la RAISON du parallélisme se voit sur la figure */}
+        {[A, B].map((px) => <polyline key={`ra${px}`} points={`${px},${gy - 10} ${px + 10},${gy - 10} ${px + 10},${gy}`} fill="none" stroke="#E11D48" strokeWidth={1.6} data-sm-geo-right />)}
+        {parallel && [[A, Mtop, '#0F172A'], [B, Etop, '#4338CA']].map(([px, top, c]) => {
+          const my = (gy + top) / 2;
+          return <polyline key={`ch${px}`} points={`${px - 6},${my + 5} ${px},${my - 3} ${px + 6},${my + 5}`} fill="none" stroke={c} strokeWidth={2.4} data-sm-geo-parallel />;
+        })}
       </g>
       {/* le drapeau du pronostic */}
       {flagX != null && (
@@ -810,12 +854,22 @@ function Scene({ geo, lab, step, side, met, solved, reduce, unknown }) {
  *            posé à gauche ; OB, OA et le leurre BA — la قطعة) ; « rule » quand la hauteur est trouvée : choisir la phrase parmi trois.
  *   readEasy « read » seul, sans le bâti.
  *   same     quand toutes les étapes sont résolues (deux heures) : ce qui n'a pas changé — le rapport OB/OA.
+ *   readFigure (talis-hisab-atwal, manche 1 — conseil du 2026-11-11) : « read » (lire OB et OA SUR LA PLACE) ; puis la place DEVIENT FIGURE
+ *            (`figure`) : désigner les deux droites parallèles parmi (AM), (BE), (OM), (OA) — les chevrons se posent ensuite — et dire POURQUOI
+ *            (deux droites perpendiculaires à la même droite (OA), une raison qui vaut sans sol) ; puis « ratio » (bâtir l'égalité) — l'hypothèse
+ *            AVANT la conclusion — et « rule » quand la hauteur est trouvée.
  *   flag     quand le drapeau est juste : le rapport du poteau = celui du bâton (le leurre : le rapport INVERSÉ, une tuile).
  */
 const metFirst = (lab) => L.isMet(lab, 0);
 export const CHAINS = Object.freeze({
   read: [{ id: 'read', reached: metFirst, qs: ['segFill', 'ratioBuild'] }, { id: 'rule', reached: (lab) => L.isSolved(lab, 0), qs: ['rulePick'] }],
   readEasy: [{ id: 'read', reached: metFirst, qs: ['segFill'] }],
+  readFigure: [
+    { id: 'read', reached: metFirst, qs: ['segFill'] },
+    { id: 'figure', reached: metFirst, qs: ['parallelBuild', 'parallelWhy'] },
+    { id: 'ratio', reached: metFirst, qs: ['ratioBuild'] },
+    { id: 'rule', reached: (lab) => L.isSolved(lab, 0), qs: ['rulePick'] },
+  ],
   same: [{ id: 'same', reached: (lab) => lab.steps.length > 1 && L.allSolved(lab), qs: ['sameWhat'] }],
   flag: [{ id: 'build', reached: (lab) => L.cur(lab).task === 'flag' && L.isSolved(lab), qs: ['flagBuild'] }],
   // la synthèse (2026-11-10) : la rencontre seule, puis POURQUOI ici — une phrase parmi trois, sans nombre
@@ -855,6 +909,24 @@ const RAW_QUESTIONS = {
       hints: [Mx(k, 'ratioBuild.hint1', o), Mx(k, 'ratioBuild.hint2', o)], explain: Mx(k, 'ratioBuild.explain', o),
     };
   },
+  /* la place est devenue figure : les deux droites parallèles, en tuiles (les quatre droites nommées du dessin ; l'ordre est libre) */
+  parallelBuild: (lab, k) => ({
+    id: 'parallelBuild', kind: 'build', prompt: Mx(k, 'parallelBuild.prompt', {}),
+    slots: [k('cp.parallelBuild.slot'), k('cp.parallelBuild.slot')], ops: ['∥'],
+    tiles: spinList(['(AM)', '(BE)', '(OM)', '(OA)'], seedOf(lab)), preset: [null, null],
+    expected: ['(AM)', '(BE)'], accept: [['(BE)', '(AM)']],
+    hints: [Mx(k, 'parallelBuild.hint1', {}), Mx(k, 'parallelBuild.hint2', {})], explain: Mx(k, 'parallelBuild.explain', {}),
+  }),
+  /* POURQUOI elles sont parallèles : une raison de géométrie, vraie sans sol ni « debout » (deux faux amis vrais mais qui ne prouvent rien) */
+  parallelWhy: (lab, k) => ({
+    id: 'parallelWhy', kind: 'choice', prompt: Mx(k, 'parallelWhy.prompt', {}),
+    options: [
+      { text: Mx(k, 'parallelWhy.right', {}), correct: true },
+      { text: Mx(k, 'parallelWhy.cut', {}), why: Mx(k, 'parallelWhy.whyCut', {}) },
+      { text: Mx(k, 'parallelWhy.meet', {}), why: Mx(k, 'parallelWhy.whyMeet', {}) },
+    ],
+    hints: [Mx(k, 'parallelWhy.hint1', {}), Mx(k, 'parallelWhy.hint2', {})], explain: Mx(k, 'parallelWhy.explain', {}),
+  }),
   /* la règle : une phrase parmi trois (la bonne, la قطعة BA, un rapport inversé) */
   rulePick: (lab, k, obj) => {
     const s = lab.steps[0];
