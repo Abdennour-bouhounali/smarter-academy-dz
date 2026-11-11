@@ -94,10 +94,14 @@ class MoyenComingSoonImportTest extends TestCase
     public function test_the_admin_keeps_authority_over_a_published_lesson_and_a_hidden_draft(): void
     {
         (new CurriculumImporter)->import($this->export('available'));
-        // L'administrateur remet une leçon écrite en brouillon : l'import ne la rouvre pas.
+        // Pousser en production publie (2026-11-11) : une leçon écrite restée
+        // en brouillon est publiée ; l'administrateur la RETIENT en la masquant.
         Lesson::where('code', 'quwa-asas-nisbi')->update(['publication_status' => Lesson::PUB_DRAFT]);
         (new CurriculumImporter)->import($this->export('available'));
-        $this->assertSame(Lesson::PUB_DRAFT, Lesson::where('code', 'quwa-asas-nisbi')->value('publication_status'));
+        $this->assertSame(Lesson::PUB_PUBLISHED, Lesson::where('code', 'quwa-asas-nisbi')->value('publication_status'));
+        Lesson::where('code', 'quwa-asas-nisbi')->update(['publication_status' => Lesson::PUB_HIDDEN]);
+        (new CurriculumImporter)->import($this->export('available'));
+        $this->assertSame(Lesson::PUB_HIDDEN, Lesson::where('code', 'quwa-asas-nisbi')->value('publication_status'));
 
         // Une leçon redevenue coming_soon ne peut pas rester published ; hidden est gardé.
         Lesson::where('code', 'quwa-asas-nisbi')->update(['publication_status' => Lesson::PUB_PUBLISHED]);
