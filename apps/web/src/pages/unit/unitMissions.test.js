@@ -30,7 +30,7 @@ describe.each(Object.entries(UNIT_MISSIONS))('unit mission content « %s »', (u
   it('the stations follow the catalogue order (lessons, then the synthesis) — the path and the e2e read this order', () => {
     expect(Object.keys(m.icons)).toEqual(ids);
   });
-  it('five keys, in the order of the lessons (a unit of three lessons hands two keys in one lesson)', () => {
+  it('five keys, in the order of the lessons (a unit of three or four lessons hands two keys in one lesson)', () => {
     expect(m.keys).toHaveLength(5);
     const at = m.keys.map((k) => ids.indexOf(k.after));
     expect([...at].sort((a, b) => a - b)).toEqual(at);
@@ -69,6 +69,28 @@ describe('unit 3 « الحساب الحرفي » — the challenge never writes 
     const roots = [];
     for (let x = 1; x <= 50; x += 1) if ((x + 6) ** 2 === (x + 2) ** 2 + (x + 4) ** 2) roots.push(x);
     expect(roots).toEqual([4]);
+  });
+});
+
+describe('unit 4 « المعادلات والمتراجحات » — the challenge never writes its answer nor a climax of the unit', () => {
+  // 90x > 700 + 20x ⟺ 70x > 700 ⟺ x > 10 : equal at 10 sessions (900 دج), cheaper from 11. The unit's تحدّ (75 / 560 + 5x) is the synthesis's
+  // 🏆 and its module 7 is 50x / 200 + 10x — neither is on the page; no lesson's مسألة signature either (`_unit/signatures/*.js`).
+  const text = JSON.stringify(UNIT_MISSIONS['muadalat-mutarajihat'].challenge);
+  it.each(['11', '10 ', 'x > 10', '900', '70x', '75', '560', '5x', '50x', '200', '10x', 'المسبح'])('« %s » is not on the unit page', (s) => {
+    expect(text.includes(s)).toBe(false);
+  });
+  it('the second formula is cheaper from exactly 11 sessions on, equal at 10', () => {
+    const cheaper = [];
+    for (let x = 0; x <= 40; x += 1) if (700 + 20 * x < 90 * x) cheaper.push(x);
+    expect(cheaper[0]).toBe(11);
+    expect(700 + 20 * 10).toBe(90 * 10);
+  });
+  it('no line of the challenge shows a lesson\'s مسألة signature', async () => {
+    const sigs = Object.values(import.meta.glob('../../lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/_unit/signatures/*.js', { eager: true }))
+      .flatMap((m) => m.TEXT ?? []);
+    expect(sigs.length).toBeGreaterThan(10);
+    const c = UNIT_MISSIONS['muadalat-mutarajihat'].challenge;
+    [c.lead, c.full, c.question].forEach((line) => sigs.forEach((re) => expect(re.test(line), `${re} — ${line}`).toBe(false)));
   });
 });
 

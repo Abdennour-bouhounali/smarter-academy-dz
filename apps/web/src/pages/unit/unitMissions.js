@@ -136,6 +136,47 @@ export const UNIT_MISSIONS = Object.freeze({
       text: 'عالم رياضيات عاش في بغداد وألّف «الفخري في الجبر والمقابلة». عرف كيف ينشر مربّع مجموع ومكعّبه وما فوقهما بقاعدة تعطي أعداد كل نشر، دون أن يرسم أيّ شكل.',
     },
   },
+  // Unité 4 (2026-11-11) : ses quatre leçons sont converties (eccbbeb7, 15c7b67c, c18239c0, 754fb0c1) ; la synthèse attend la réponse du
+  // propriétaire sur la recette provisoire. Icônes = l'objet de la scène de chaque leçon (la balance du vestiaire, le tableau de l'entraîneur, le
+  // téléphone et son crédit, la toise de la famille) et 🧩 la synthèse. Le défi est le تحدّ de l'unité (deux formules d'abonnement à la piscine :
+  // 75 par séance, ou 560 + 5 par séance — c'est aussi le 🏆 de la synthèse, jamais repris), RÉÉCRIT : un club d'équitation, 90 دج la séance ou
+  // 700 دج + 20 دج la séance. Aucun nombre d'une مسألة de leçon ni de la synthèse (signatures `muadalat-mutarajihat/_unit/signatures/*.js`,
+  // la piscine 50x / 200 + 10x / 75x / 560 + 5x) ; la réponse (égalité à 10 séances, mieux à partir de 11) n'est jamais écrite ici.
+  // Cinq clés pour quatre leçons : « المتراجحات » en donne deux (résoudre, représenter sur une droite graduée).
+  'muadalat-mutarajihat': {
+    icons: {
+      'muadala-ula': '⚖️',
+      'jidaa-maadum': '📋',
+      'mutarajiha-ula': '📱',
+      'tarrid-mushkila': '📏',
+      'wadiya-idmajiya-muadalat': '🧩',
+    },
+    short: {
+      'muadala-ula': 'معادلة من الدرجة الأولى',
+      'jidaa-maadum': 'معادلات جداء معدوم',
+      'mutarajiha-ula': 'المتراجحات',
+      'tarrid-mushkila': 'ترييض مشكلة',
+      'wadiya-idmajiya-muadalat': 'أدمج تعلّماتي',
+    },
+    challenge: {
+      lead: 'نادي الفروسية يقترح صيغتين: 90 دج للحصة الواحدة، أو اشتراك سنوي بـ 700 دج ثم 20 دج للحصة. ابتداءً من كم حصة تصبح الصيغة الثانية أقلّ كلفة؟',
+      full: 'يريد وليد أن يتعلّم ركوب الخيل في نادي الفروسية بمدينته. يقترح النادي على التلاميذ صيغتين: في الأولى يدفع 90 دج عن كل حصة، وفي الثانية يدفع اشتراكًا سنويًّا قدره 700 دج ثم 20 دج فقط عن كل حصة. لم يقرّر وليد بعدُ كم حصة سيحضر هذا العام.',
+      question: 'ابتداءً من أيّ عدد من الحصص تصبح الصيغة الثانية أقلّ كلفة من الأولى؟ اكتب المتراجحة التي تجيب عن السؤال، ثم حلّها.',
+      numbers: [700, 90, 20],
+      solvedAfter: 'mutarajiha-ula',
+    },
+    keys: [
+      { icon: '⚖️', label: 'حل معادلة من الدرجة الأولى', after: 'muadala-ula' },
+      { icon: '0️⃣', label: 'معادلة جداء معدوم', after: 'jidaa-maadum' },
+      { icon: '↔️', label: 'حل متراجحة', after: 'mutarajiha-ula' },
+      { icon: '📍', label: 'تمثيل الحلول على مستقيم مدرّج', after: 'mutarajiha-ula' },
+      { icon: '🧭', label: 'ترييض مشكلة', after: 'tarrid-mushkila' },
+    ],
+    history: {
+      title: 'الخوارزمي (نحو 780 – 850)',
+      text: 'عالم رياضيات وفلك عاش في بغداد وألّف «المختصر في حساب الجبر والمقابلة». «الجبر» أن تنقل حدًّا مطروحًا إلى الطرف الآخر فيصير مضافًا، و«المقابلة» أن تحذف من الطرفين ما تساوى فيهما — كما تفعل بكفّتي الميزان.',
+    },
+  },
   // Unité 9 (2026-11-10) : ses trois leçons ET sa synthèse sont converties (50e5f844, 76a4545b, 9f7fb170, puis la synthèse — le pilote du recette
   // « synthèse »). Icônes = l'objet de la scène de chaque leçon (le ciné-club, le mur repeint, la banderole du derby) et 🧩 la synthèse. Le défi est
   // le تحدّ du module 7 de la synthèse (la minaret du quartier), RÉÉCRIT : seulement les deux ombres (11,6 et 1,6) et la perche d'un mètre — ni la
