@@ -76,6 +76,9 @@ for (const w of WIDTHS) {
         await page.waitForTimeout(1200);
         for (let i = 0; i < 60; i += 1) {
           for (let d = 0; d < 3 && await page.locator('[data-mission-dialog]').count(); d += 1) { await page.keyboard.press('Escape'); await page.waitForTimeout(250); }
+          // la « محطة المهمة » (MissionCheckpoint) ne se ferme pas par Échap : « لاحقًا » — sans ce clic le module entier n'était pas lu
+          const later = page.locator('[data-mission-checkpoint-later]:visible').first();
+          if (await later.count()) { await later.click(); await page.waitForTimeout(300); }
           const r = await page.evaluate(() => {
             const shown = (e) => e.offsetParent && e.getBoundingClientRect().width > 40 && e.getBoundingClientRect().height > 40;
             const root = document.querySelector('[data-classroom-paged]');

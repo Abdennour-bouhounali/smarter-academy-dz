@@ -7,6 +7,7 @@
  * celles de l'extraction (`answerSource: computed`).
  */
 import { src } from '../../_unit/unitMeta.js';
+import { withContext } from '../../../../../../common/textbook/exerciseParts.js';
 import { LP } from './textbook.js';
 
 const S111 = (n, part) => ({ ...src(`ex-${n}`, 111, 'وضع نقط على مستقيم', n), ...(part ? { part } : {}) });
@@ -134,4 +135,5 @@ export const EXERCISES = [
 ];
 
 /** Les parties d'un exercice (ex-21 en a quatre). */
-export const partsOf = (n) => EXERCISES.filter((e) => e.id === `ex-${n}` || e.id.startsWith(`ex-${n}-`));
+// lecteur : les parties sans énoncé portent celui de la partie 1 (« pas d'aller-retour », common/textbook/exerciseParts.js)
+export const partsOf = (n) => withContext(EXERCISES.filter((e) => e.id === `ex-${n}` || e.id.startsWith(`ex-${n}-`)));

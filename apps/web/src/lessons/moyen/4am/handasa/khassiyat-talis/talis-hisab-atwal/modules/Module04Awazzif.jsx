@@ -63,10 +63,12 @@ export default function Module04Awazzif() {
               « فيثاغورس ثم طالس (1) » à 1024 et 1366) ; la page garde la figure au-dessus */}
           <PlayerSwitch
             player={first.figure === 'ex3' ? (
-              <>
+              // les quatre figures AU-DESSUS de la carte, UN écran (`data-paging-keep`, « pas d'aller-retour », 2026-11-11) : séparées,
+              // `pairFigures` les posait à côté de la carte et ses quatre lignes de choix débordaient la colonne étroite (OVER, zoom 0,6)
+              <div className="space-y-1 [&_svg]:max-h-[70px]" data-paging-keep>
                 {FIGURES.ex3Row}
                 <TextbookExercise exercise={{ ...ex, figure: undefined, statement: ex.statement ?? first.statement }} requires={requires} onAnswered={mark(ex.id)} />
-              </>
+              </div>
             ) : (
               <div className="flex items-start gap-4" data-ex-side data-paging-keep>
                 {first.figure && <div className="w-[36%] shrink-0">{FIGURES[first.figure]}</div>}

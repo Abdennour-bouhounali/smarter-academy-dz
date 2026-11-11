@@ -9,13 +9,14 @@ import { SourceTag } from '../textbook';
 import WrittenAnswer from './WrittenAnswer';
 import ProblemSupport from './ProblemSupport';
 import ProblemSheet from './ProblemSheet';
+import ProblemAside, { asideIsWide } from './ProblemAside';
 import { problemTone } from './problemTone';
 import { MoreToggle, useStudentFocusFor } from '../components/StudentFocus';
 import { isMissionView } from '../mission/missionModel';
 import { useLearningViewer } from '../../../features/learning/learningViewer';
 import { useClassroomMode } from '../classroom/ClassroomContext';
 import { getLoadedLessonConfig } from '../../registry';
-import { initialProgress, completeSubstep, isPartDone, substepRole, stepTemplate, stepGiven, resumePart } from './guidedProblem';
+import { initialProgress, completeSubstep, isPartDone, substepRole, stepTemplate, stepGiven, resumePart, asideOf, foundOf } from './guidedProblem';
 
 /**
  * GuidedProblem — un module « مسألة » : un exercice COMPLET de type امتحان,
@@ -196,7 +197,7 @@ export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, es
                   <MathText>{t('problem.askChip', { ask: asks[step.ask] })}</MathText>
                 </p>
               );
-              return { locked, el: (
+              return { locked, step, i, el: (
                 <li key={i} className={`space-y-2 ${locked ? 'rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 px-3 py-2 opacity-70' : ''}`}
                   data-problem-substep={substepRole(step)} data-substep-done={progress[p] > i ? 'true' : 'false'} data-substep-locked={locked ? 'true' : 'false'}>
                   <p className="flex items-center gap-2 text-xs font-extrabold text-slate-600">
@@ -219,7 +220,19 @@ export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, es
               <>
                 {play
                   // une liste d'un élément par sous-étape : du HTML valide, et autant de blocs que de sous-étapes
-                  ? items.filter((x) => !x.locked).map((x) => <ol key={x.el.key} className="list-none">{x.el}</ol>)
+                  // « pas d'aller-retour » (2026-11-11) : chaque sous-étape porte À CÔTÉ d'elle la figure et les données de l'énoncé
+                  // (ProblemAside) — l'énoncé n'est que sur le premier écran ; une rangée gardée entière (`data-paging-keep`)
+                  ? items.filter((x) => !x.locked).map((x) => {
+                    const aside = asideOf(problem, x.step);
+                    const found = x.step.kind === 'sort' ? [] : foundOf(problem, p, x.i, given);
+                    if (!aside && !found.length) return <ol key={x.el.key} className="list-none">{x.el}</ol>;
+                    return (
+                      <div key={x.el.key} className="flex items-start gap-4" data-paging-keep data-problem-aside-row>
+                        <div className={`${asideIsWide(aside, found) ? 'w-[48%] max-w-[34rem]' : 'w-[32%] min-w-[13rem] max-w-[20rem]'} shrink-0`}><ProblemAside aside={aside} found={found} /></div>
+                        <ol className="min-w-0 flex-1 list-none">{x.el}</ol>
+                      </div>
+                    );
+                  })
                   : (
                     <ol className="space-y-4">
                       {items.filter((x) => !focus || !x.locked).map((x) => x.el)}

@@ -7,7 +7,8 @@ import { Feedback } from '../../../../../../common/components/LessonUI';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { KNOWLEDGE3, KNOW1_REMARK1 } from '../content/textbook';
-import { FIG_KNOW3_BETWEEN, FIG_KNOW3_BEYOND, FIG_KNOW3_EXAMPLE, FIG_KNOW1_REMARK1 } from '../content/figures';
+import { FIG_KNOW3_BETWEEN, FIG_KNOW3_BEYOND, FIG_KNOW3_EXAMPLE, FIG_KNOW1_REMARK1, FIG_KNOW3_REMARK } from '../content/figures';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
 import { addition } from '../../_unit/unitMeta';
 import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
 
@@ -35,6 +36,17 @@ export default function Module02Maarif() {
   const [q4, setQ4] = useState(false);
   const [q5, setQ5] = useState(false);
 
+  // la question de la remarque (étape 2) — la même sur la page et dans le lecteur (sa clé d'enregistrement ne change pas)
+  const remarkQuestion = (
+    <TapQuestion
+      prompt={<MathText>{"في شكل الملاحظة $\\dfrac{AB'}{AB} = \\dfrac{AC'}{AC} = \\dfrac{1}{2}$ . لماذا لا يوازي (B′C′) المستقيم (BC)؟"}</MathText>}
+      options={['لأن النقط A، B، B′ و A، C، C′ ليست مرتبة بنفس الترتيب', 'لأن النسبتين مختلفتان', 'لأن C′ منتصف [AC]']}
+      correct={0}
+      cols={1}
+      explain={<MathText>{"النسبتان متساويتان (كلتاهما $\\dfrac{1}{2}$)، لكن B′ من الجهة الأخرى للنقطة A بينما C′ بين A و C. أن تكون C′ منتصفا لا يمنع التوازي (في مستقيم المنتصفين مثلا)."}</MathText>}
+      onAnswered={() => setQ2(true)}
+    />
+  );
   return (
     <ContentModule
       ctx={MODULE_CTX}
@@ -54,10 +66,17 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-700">{KNOWLEDGE3.figuresText}</p>
-              <div className="grid gap-2 grid-cols-2" data-know3-figures>
-                <GeoFigure {...FIG_KNOW3_BETWEEN} />
-                <GeoFigure {...FIG_KNOW3_BEYOND} />
-              </div>
+              {/* lecteur : les DEUX situations sur un écran (`data-paging-keep`) — le découpage en donnait une par écran (« pas d'aller-retour »,
+                  2026-11-11) ; `pairFigures` pose ensuite la paire à côté des données et de la question */}
+              <PlayerSwitch
+                player={<div className="grid gap-2 grid-cols-2" data-know3-figures data-paging-keep><GeoFigure {...FIG_KNOW3_BETWEEN} /><GeoFigure {...FIG_KNOW3_BEYOND} /></div>}
+                page={(
+                  <div className="grid gap-2 grid-cols-2" data-know3-figures>
+                    <GeoFigure {...FIG_KNOW3_BETWEEN} />
+                    <GeoFigure {...FIG_KNOW3_BEYOND} />
+                  </div>
+                )}
+              />
               <p className="text-sm font-semibold text-slate-800">
                 <MathText>{'(d) و (d′) متقاطعان في A. $AB = 5$ و $AB\' = 2$ و $AC = 7{,}5$ و $AC\' = 3$ ، و B′ بين A و B و C′ بين A و C.'}</MathText> <SourceTag source={PLATFORM} />
               </p>
@@ -78,13 +97,16 @@ export default function Module02Maarif() {
           num: 2, title: 'نسبتان متساويتان: هل يكفي؟', subtitle: 'ملاحظة', done: q2,
           content: (
             <div className="space-y-3">
-              <TapQuestion
-                prompt={<MathText>{"في شكل الملاحظة $\\dfrac{AB'}{AB} = \\dfrac{AC'}{AC} = \\dfrac{1}{2}$ . لماذا لا يوازي (B′C′) المستقيم (BC)؟"}</MathText>}
-                options={['لأن النقط A، B، B′ و A، C، C′ ليست مرتبة بنفس الترتيب', 'لأن النسبتين مختلفتان', 'لأن C′ منتصف [AC]']}
-                correct={0}
-                cols={1}
-                explain={<MathText>{"النسبتان متساويتان (كلتاهما $\\dfrac{1}{2}$)، لكن B′ من الجهة الأخرى للنقطة A بينما C′ بين A و C. أن تكون C′ منتصفا لا يمنع التوازي (في مستقيم المنتصفين مثلا)."}</MathText>}
-                onAnswered={() => setQ2(true)}
+              {/* lecteur : « في شكل الملاحظة » — ce dessin n'était nulle part avant la question (il est dans la carte qui s'ouvre APRÈS) :
+                  il est dessiné À CÔTÉ de la question (« pas d'aller-retour », 2026-11-11) */}
+              <PlayerSwitch
+                player={(
+                  <div className="flex items-start gap-4" data-paging-keep>
+                    <div className="w-[38%] shrink-0"><GeoFigure {...FIG_KNOW3_REMARK} /></div>
+                    <div className="min-w-0 flex-1">{remarkQuestion}</div>
+                  </div>
+                )}
+                page={remarkQuestion}
               />
               {q2 && <KnowledgeBrick id="shart-tartib" lead="الشرط الثاني ليس زينة:" />}
             </div>

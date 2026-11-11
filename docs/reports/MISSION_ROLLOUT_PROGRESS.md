@@ -368,7 +368,46 @@ batch at 1024; the batch label no longer reserves 14rem beside a figure). Classr
 The owner then made it a BINDING rule for every lesson, « NO BACK-AND-FORTH » (guide §4septies): what a question asks the student to look
 at is on its screen. The scan is now `apps/web/e2e/no-back-and-forth.mjs`; it presses « واصل » only, so the screens that appear after an
 answer (a later sub-question without its figure, data on the previous screen) are found by a walk that answers — the prompt for the lessons
-already converted: `docs/reports/NO_BACK_AND_FORTH_PROMPT.md` (not run yet).
+already converted: `docs/reports/NO_BACK_AND_FORTH_PROMPT.md` — **run on 2026-11-11**, results below.
+
+**The scan read only part of each lesson until 2026-11-11.** The « محطة المهمة » checkpoint that opens a module does not close with Escape, so
+the scan stopped on it and never read most modules (`talis-hisab-atwal` modules 2–5, for example). `no-back-and-forth.mjs` now presses
+« لاحقًا ». The numbers above (13 PAIR, 0 OVER) were taken with that gap.
+
+**Shared fixes (every converted lesson, player only; tested in `guidedProblem.test.js`, `exerciseParts.test.js`):**
+- every « مسألة » sub-step (60 problems in 20 lessons) carries « المعطيات » (figure, table, useful data, or the statement) and « النتائج السابقة »
+  (the right results of the sub-steps already answered) beside it: `ProblemAside`, `asideOf`, `foundOf` (guide, « A « مسألة » in the player »).
+  Before, « الجداء AM × AC », « طول ظلّ النخلة SH » and the Euclid lines « باقي قسمة القاسم السابق على الباقي الذي وجدته » were asked on screens
+  showing no number, figure or earlier line;
+- a `TextbookExercise` card (statement / items / figure) is ONE screen; the parts of an exercise get the first part's statement (`withContext`
+  in the `partsOf` of `tawzif-khawass-judhur`, `tahlil-ibara`, `inshaat-talis`, `talis-hisab-atwal`).
+
+**Walk.** A script answered every sub-step (the data sort by drag, wrong numbers then the shown correction, choices, the written solution and
+its model lines) on `awwaliyan-fima-baynahuma` module 4 at 1366 and 1024, and on `wadiya-idmajiya-talis` module 1 at 1366 (the sort, five sub-steps,
+the written solution, part 2): every sub-step showed its data and the earlier results, and no screen overflowed. Every other screen was read
+with all modules open (a completed lesson opens all of a module's sub-steps), each screen's text scanned for « الشكل / السابق / الجدول / وجدته »
+and part labels, and the captures were looked at.
+
+Per unit (scan of 2026-11-11, `no-back-and-forth.mjs`, 1366 and 1024):
+- **Unit 9 « خاصية طالس »** — LONE 4 (2 screens × 2 widths, both kept, below) · OVER 0 · PAIR 68. Fixed: `inshaat-talis` m2 step 2 (« في الشكل
+  السابق »: the method figure on another screen; now beside the question, and BE = 2 repeated in its line), m3 ex 21 parts 2–4 (no statement;
+  now `context`); `aksiya-talis` m2 step 2 (« في شكل الملاحظة »: that figure was only in the card opened AFTER the answer; now beside the
+  question — **the page still lacks it**, left for the owner), m2 step 1 (the two situations split on two screens; now one, paired with the
+  question); `talis-hisab-atwal` m2 step 3 (the remark read its values on a figure alone on the previous screen; now beside it), m2 step 1 (the
+  three situations, one per screen; now one reading screen), m4 « أربعة أشكال » (OVER at zoom 0.6, never scanned before: the four figures above
+  the card, one screen — fits at the 0.6 floor, the lowest zoom of the unit; splitting it per figure is the next improvement); the « مسألة »
+  modules of all four lessons (shared fix). `wadiya-idmajiya-talis` modules 2–4 were not walked (locked behind module 1 in a seeded session; they
+  are « مسائل » on the same shared `GuidedProblem` as module 1, which was walked).
+- **Unit 2 « الحساب على الجذور »** — LONE 0 · OVER 0. Fixed: the « مسألة » modules (shared); `tawzif-khawass-judhur` parts get their statement
+  (`withContext`).
+- **Unit 3 « الحساب الحرفي »** — LONE 0 · OVER 0. Fixed: `tahlil-ibara` m4 ex 20 (« 2) B = » without the expressions), ex 21 part 2 (the
+  classmate's work on the previous screen) — `withContext`; the « مسألة » modules (shared).
+- **Unit 1 « الأعداد الطبيعية والأعداد الناطقة »** — LONE 0 · OVER 0. Fixed: `ikhtizal-kasr` m3–m4 ex 34, 35, 36, 37, 38, 40 (« 3) الشكل غير القابل
+  للاختزال: » alone, its fraction in the items on the previous screen) and `khawass-qawasim` m4 (« 3) الأعداد التي يمكن أن تكون قواسم مشتركة ») —
+  the kept card; the Euclid lines of every « مسألة » (`foundOf`).
+
+Saved-answer keys: unchanged — no prompt or option was reworded (`inshaat-talis` and `aksiya-talis` reuse the same question element on the
+page and in the player; only the line ABOVE the question in `inshaat-talis` m2 step 2 changed, in the player).
 
 ## Cross-lesson fix — the main button on the right (2026-11-09, owner)
 
@@ -901,6 +940,9 @@ the teacher view (the old `shadow-world` with its two levels, no player element)
 - Not done: tapping the lines ON the drawing (tiles are used); the reverse morph (« dress the figure back »); the other unit-9 lessons have no
   scene-to-figure gap (their labs are already figures).
 
+**No back-and-forth (2026-11-11) — a reading screen kept:** module 2 step 1 « الخاصية في ثلاث وضعيات » shows the three situations of the
+property side by side and asks nothing; the step's question has its OWN figure beside it on the next screen (nothing to look back at).
+
 ## Unit 9, lesson 2 — `aksiya-talis` « الخاصية العكسية لخاصية طالس وإثبات التوازي » (2026-11-10)
 
 **Council verdict (2026-11-10, binding — `L2`):** L2.1 = B, an explicit « ضع الميزان » button: the bubble is HIDDEN while the ends move and a trial is
@@ -991,6 +1033,9 @@ the review: press → away → back shows the verdict, focus kept on « ضع ا�
 
 **Open:** lesson 1 and the synthesis of the unit; the unit page entry (after the three lessons). (`inshaat-talis` joined the unit scan with its
 conversion — see below.)
+
+**No back-and-forth (2026-11-11) — a reading screen kept:** module 1 step 1 opens on the situation (text + its general figure); the question's
+own three figures sit beside it on the next screen (kept since the first scan).
 
 ## Unit 9, lesson 3 — `inshaat-talis` « إنشاءات هندسية وتطبيقات خاصية طالس (تقسيم قطعة مستقيم) » (2026-11-10)
 

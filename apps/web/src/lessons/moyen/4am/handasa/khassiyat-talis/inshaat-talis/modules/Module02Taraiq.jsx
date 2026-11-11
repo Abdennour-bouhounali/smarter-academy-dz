@@ -49,6 +49,18 @@ export default function Module02Taraiq() {
   // lecteur : la manche gagnée (étoiles gardées, annoncée par LabRounds au montage) ouvre l'étape 3 et remplit sa trace
   const [won, setWon] = useState({});
 
+  // la question de l'étape 2 (« والنقطة K؟ ») — la même pour la page et le lecteur (sa clé d'enregistrement ne change pas)
+  const step2Question = (
+    <TapQuestion
+      prompt={<MathText>{'المثلثان NAK و NBE في وضعية طالس، إذن $\\dfrac{NA}{NB} =$'}</MathText>}
+      options={['$\\dfrac{3}{2}$', '$\\dfrac{2}{3}$', '$\\dfrac{3}{5}$'].map(M)}
+      correct={0}
+      cols={3}
+      requires={['nuqta-nisba', 'talis-nisab']}
+      explain={<MathText>{'$(AK) // (BE)$ : $\\dfrac{NA}{NB} = \\dfrac{AK}{BE} = \\dfrac{3}{2}$ ، النسبة نفسها، لكن N خارج [AB] (بعد B لأن NA أكبر من NB). ($\\dfrac{2}{3}$ مقلوبة، و $\\dfrac{3}{5}$ هي $\\dfrac{AM}{AB}$ للنقطة الداخلية.)'}</MathText>}
+      onAnswered={() => setQ2(true)}
+    />
+  );
   return (
     <ContentModule
       ctx={MODULE_CTX}
@@ -98,15 +110,24 @@ export default function Module02Taraiq() {
           num: 2, title: 'والنقطة K؟', subtitle: 'نقطة ثانية خارج [AB]', done: q2,
           content: (
             <div className="space-y-3">
-              <p className="text-sm text-slate-800"><MathText>{'في الشكل السابق، K على (d₁) من جهة E و $AK = 3$ . المستقيم (EK) يقطع المستقيم (AB) في نقطة N خارج [AB].'}</MathText></p>
-              <TapQuestion
-                prompt={<MathText>{'المثلثان NAK و NBE في وضعية طالس، إذن $\\dfrac{NA}{NB} =$'}</MathText>}
-                options={['$\\dfrac{3}{2}$', '$\\dfrac{2}{3}$', '$\\dfrac{3}{5}$'].map(M)}
-                correct={0}
-                cols={3}
-                requires={['nuqta-nisba', 'talis-nisab']}
-                explain={<MathText>{'$(AK) // (BE)$ : $\\dfrac{NA}{NB} = \\dfrac{AK}{BE} = \\dfrac{3}{2}$ ، النسبة نفسها، لكن N خارج [AB] (بعد B لأن NA أكبر من NB). ($\\dfrac{2}{3}$ مقلوبة، و $\\dfrac{3}{5}$ هي $\\dfrac{AM}{AB}$ للنقطة الداخلية.)'}</MathText>}
-                onAnswered={() => setQ2(true)}
+              {/* lecteur : « pas d'aller-retour » (2026-11-11) — « في الشكل السابق » renvoyait à la figure de l'étape 1, sur un autre écran : la
+                  figure est redessinée À CÔTÉ de la question (données GeoFigure), et BE = 2, lu dans les lignes de la méthode, est rappelé */}
+              <PlayerSwitch
+                player={(
+                  <div className="flex items-start gap-4" data-paging-keep>
+                    <div className="w-[40%] shrink-0"><GeoFigure {...METHOD_RATIO.figure} maxWidth={300} /></div>
+                    <div className="min-w-0 flex-1 space-y-3">
+                      <p className="text-sm text-slate-800"><MathText>{'في الشكل، K على (d₁) من جهة E و $AK = 3$ ، و $BE = 2$ . المستقيم (EK) يقطع المستقيم (AB) في نقطة N خارج [AB].'}</MathText></p>
+                      {step2Question}
+                    </div>
+                  </div>
+                )}
+                page={(
+                  <>
+                    <p className="text-sm text-slate-800"><MathText>{'في الشكل السابق، K على (d₁) من جهة E و $AK = 3$ . المستقيم (EK) يقطع المستقيم (AB) في نقطة N خارج [AB].'}</MathText></p>
+                    {step2Question}
+                  </>
+                )}
               />
               {q2 && <KnowledgeBrick id="nuqtatan" lead="النسبة نفسها في نقطتين:" />}
             </div>

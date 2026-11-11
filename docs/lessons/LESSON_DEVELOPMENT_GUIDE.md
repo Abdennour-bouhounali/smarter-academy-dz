@@ -1109,6 +1109,19 @@ already there »). `FitToArea` takes a `screenKey` (module path + unit + page) f
      numbers repeated in the question's prompt in one short line;
   4. *a question about what the student did before* (a lab round, an earlier answer): its result line on the question's screen (the `wonLine`
      pattern of `talis-hisab-atwal`).
+  Two of these are SHARED and automatic (2026-11-11): a « مسألة » sub-step carries « المعطيات » and « ما وجدته » beside it (« A « مسألة » in the
+  player » below), and a `TextbookExercise` card that has a statement, a `context`, `items` or a figure is ONE screen in the player
+  (`data-paging-keep`; with a figure, the statement and its figure — at most 210 px high — sit beside the question, `[data-textbook-side]`)
+  — the pager used to put « 1) … 2) … 3) اكتب الكسر 1005/315 » on one screen and « 3) الشكل غير القابل للاختزال: » alone on the next. Exception:
+  a grid of rows (`batch`, `trueFalse`) without `context`/`items` is not kept whole (its rows are already one block, and `pairFigures` puts
+  the figure before it beside the statement and the rows; kept whole, « أربعة أشكال » fell under the minimum zoom). The PARTS of an exercise
+  (`ex-21-1`, `ex-21-2`…) are separate exercises and only the first has the statement: a lesson's `partsOf` wraps its parts in
+  `withContext` (`common/textbook/exerciseParts.js`, imported by path), which gives each later part `context` = the first part's statement,
+  shown on its card in the player only (`[data-exercise-context]`). A lesson only writes cases 2–4 by hand when its question is NOT one of
+  these (its own JSX): a figure drawn again beside the question with `PlayerSwitch` (`inshaat-talis` m2 step 2, `aksiya-talis` m2 step 2,
+  `talis-hisab-atwal` m2 step 3), a row of figures kept as one reading screen (`talis-hisab-atwal` m2 step 1, `aksiya-talis` m2 step 1).
+  The scan presses « لاحقًا » on the « محطة المهمة » checkpoint (it does not close with Escape: before 2026-11-11 the scan stopped there and
+  never read most modules).
   Player only (`PlayerSwitch` / `useInMissionPlayer()`); the page and the teacher are unchanged. Check: `node apps/web/e2e/no-back-and-forth.mjs
   <lesson ids>` (every screen at 1366 and 1024: `LONE` = a figure with nothing to answer, `OVER` = overflow or scroll, `PAIR` captures to look
   at) AND a walk that ANSWERS each question (the scan presses « واصل » only: sub-questions that appear after an answer are seen by hand).
@@ -1168,7 +1181,16 @@ later updates and new lessons; roll it out lesson by lesson (`docs/reports/MISSI
   the part's question box then keeps only « المطلوب » (and is not rendered when a part has none: no empty screen);
 - a « 📜 نصّ المسألة » button sits at the top of EVERY screen of the problem (`problems/ProblemSheet.jsx`, portalled outside
   the zoomed area): it opens the whole problem (statement, support, all questions) in a wide two-column `MissionDialog`
-  (`wide`), which fits without scrolling at 1366×768 and 1024×768.
+  (`wide`), which fits without scrolling at 1366×768 and 1024×768;
+- **every sub-step carries its data beside it** (« NO BACK-AND-FORTH », 2026-11-11): the statement is on the problem's first screen only,
+  and « الجداء AM × AC » or « طول ظلّ النخلة SH » were asked on screens with no number and no figure. Each opened sub-step except the sort
+  is one `data-paging-keep` row (`[data-problem-aside-row]`): on the right, `ProblemAside` — « المعطيات » = the statement's figure (at
+  most 240 × 190 px), its table, the USEFUL data the student has just sorted (`problem.data`), or the statement itself in small print when
+  the problem has no data list (`asideOf`, `guidedProblem.js`); then « النتائج السابقة » = the sub-steps ALREADY answered, each with its RIGHT
+  result (`rightAnswerOf`: `display`/`expected`, the right option — the one the correction has just shown, so a wrong remainder never
+  propagates): the results of the earlier parts (their demands), then the earlier sub-steps of this part (`foundOf`) — the next line of
+  Euclid's algorithm (« باقي قسمة القاسم السابق على الباقي الذي وجدته ») is computed beside the lines before it. Nothing to write in a lesson; the sort
+  sub-step has no column (showing the useful data would give it away). Tested in `guidedProblem.test.js`.
 
 **The lab's mission in big:** entering a lab opens its mission card (`MANIPULATION_CONTRACT.md` « The mission in big »).
 

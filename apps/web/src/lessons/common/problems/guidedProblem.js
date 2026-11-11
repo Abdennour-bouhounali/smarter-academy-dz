@@ -290,3 +290,54 @@ export function resumePart(progress, problem) {
   const open = problem.parts.findIndex((_, p) => !isPartDone(progress, problem, p));
   return open === -1 ? problem.parts.length - 1 : open;
 }
+
+/**
+ * « Pas d'aller-retour » (propriétaire, 2026-11-11) — ce que montre, DANS LE LECTEUR, la colonne « المعطيات » posée à côté d'une sous-étape :
+ * l'énoncé n'est que sur le premier écran de la مسألة, et « احسب AM × AC » se lisait sur un écran sans aucun nombre ni figure.
+ * Rend null pour le tri des données (`sort` : c'est lui qui les extrait — les montrer donnerait la réponse) ; sinon
+ * { figure, table, data, statement } : la figure et le tableau de l'énoncé, les données UTILES (celles que l'élève vient de trier), et
+ * l'énoncé lui-même seulement quand la مسألة n'a pas de liste de données (ses nombres ne seraient nulle part ailleurs).
+ * Rien à montrer (ni figure, ni tableau, ni donnée, ni énoncé) → null.
+ */
+export function asideOf(problem, step) {
+  if (!problem || !step || step.kind === 'sort') return null;
+  const data = (problem.data ?? []).filter((d) => d.useful).map((d) => d.text);
+  const figure = problem.figure && (problem.figure.kind || Object.keys(problem.figure.points ?? {}).length) ? problem.figure : null;
+  const table = problem.table ?? null;
+  const statement = data.length ? null : (problem.statement || null);
+  if (!figure && !table && !data.length && !statement) return null;
+  return { figure, table, data, statement };
+}
+
+/**
+ * « Ce que j'ai trouvé » (« pas d'aller-retour », cas 4 : une question sur ce que l'élève a fait avant) : dans le lecteur, la ligne
+ * d'Euclide « باقي قسمة القاسم السابق على الباقي الذي وجدته » se lisait sur un écran sans les lignes précédentes. Rend, pour la
+ * sous-étape `i` de la partie `p`, les sous-étapes DÉJÀ répondues : celles de la même partie (leur consigne et leur résultat), précédées des
+ * résultats des parties précédentes (leurs demandes satisfaites). Le résultat montré est le BON (`display`/`expected`, l'option juste) —
+ * celui que la correction vient d'afficher : une ligne d'Euclide fausse ne se propage pas à la suivante. Jamais une sous-étape pas encore
+ * répondue ; ni le tri, ni la rédaction, ni une grille (`batch`) — rien d'une ligne à relire.
+ *   given : { 'p:i': valeur } (GuidedProblem › given)
+ */
+/** Le BON résultat d'une sous-étape à une réponse (numeric, choice), ou null. */
+export function rightAnswerOf(step) {
+  if (step?.kind === 'numeric') return step.display ?? (step.expected != null && typeof step.expected !== 'function' ? String(step.expected) : null);
+  if (step?.kind === 'choice') return step.options?.[step.correct] ?? null;
+  return null;
+}
+
+export function foundOf(problem, p, i, given = {}) {
+  const out = [];
+  const has = (k) => given[k] != null && given[k] !== '';
+  problem.parts.slice(0, p).forEach((part, q) => {
+    (part.asks ?? []).forEach((ask, k) => {
+      const j = part.steps.findIndex((st, jj) => st.ask === k && rightAnswerOf(st) != null && has(`${q}:${jj}`));
+      if (j >= 0) out.push({ label: ask, value: rightAnswerOf(part.steps[j]) });
+    });
+  });
+  problem.parts[p].steps.slice(0, i).forEach((st, j) => {
+    const value = rightAnswerOf(st);
+    if (value == null || !st.prompt || !has(`${p}:${j}`)) return;
+    out.push({ label: st.prompt, value });
+  });
+  return out;
+}

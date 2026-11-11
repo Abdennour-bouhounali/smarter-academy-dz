@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { validateProblem, demandsOf, initialProgress, completeSubstep, isPartDone } from './guidedProblem';
+import { validateProblem, demandsOf, initialProgress, completeSubstep, isPartDone, asideOf, foundOf, rightAnswerOf } from './guidedProblem';
 
 const solution = { kind: 'solution', lines: ['a', 'b'] };
 const ok = {
@@ -190,5 +190,46 @@ describe('resumePart — where a restored مسألة is resumed', () => {
     expect(resumePart([3, 0], ok)).toBe(1);
     expect(resumePart([3, 1], ok)).toBe(1);
     expect(resumePart([3, 2], ok)).toBe(1);
+  });
+});
+
+describe('asideOf — « pas d\'aller-retour » : la figure et les données à côté de chaque sous-étape (lecteur)', () => {
+  const fig = { points: { A: [0, 0], B: [1, 0] }, segments: [{ from: 'A', to: 'B' }] };
+  it('shows the figure and the USEFUL data beside a computing step, never beside the sort that extracts them', () => {
+    const p = { ...ok, figure: fig };
+    expect(asideOf(p, { kind: 'sort' })).toBeNull();
+    expect(asideOf(p, ok.parts[0].steps[1])).toEqual({ figure: fig, table: null, data: ['x'], statement: null });
+  });
+  it('falls back on the statement when the problem has no data list, and shows nothing when there is nothing to show', () => {
+    const { data, ...noData } = ok; // eslint-disable-line no-unused-vars
+    expect(asideOf(noData, solution)).toEqual({ figure: null, table: null, data: [], statement: 's' });
+    expect(asideOf({ ...noData, statement: '' }, solution)).toBeNull();
+  });
+  it('ignores a plane figure without points (a trace of the extraction, drawn elsewhere)', () => {
+    expect(asideOf({ ...ok, figure: { AD: 1 } }, solution).figure).toBeNull();
+  });
+});
+
+describe('foundOf — ce que l\'élève a déjà trouvé, à côté de la sous-étape suivante (lecteur)', () => {
+  const p = {
+    ...ok,
+    parts: [
+      { label: '1)', question: 'q1', asks: ['الطول'], steps: [{ kind: 'sort' }, { kind: 'numeric', role: 'compute', prompt: 'السطر الأول:', expected: 2 }, { kind: 'numeric', role: 'answer', ask: 0, prompt: 'الطول:', expected: 3 }, solution] },
+      { label: '2)', question: 'q2', asks: ['الثمن'], steps: [{ kind: 'numeric', role: 'compute', prompt: 'المجموع:', expected: 5 }, { kind: 'numeric', role: 'answer', ask: 0, prompt: 'الثمن:', expected: 6 }, solution] },
+    ],
+  };
+  it('lists the earlier answered sub-steps of the same part with their RIGHT result, never one not answered yet', () => {
+    expect(foundOf(p, 0, 1, {})).toEqual([]);
+    // l'élève a tapé 7 (faux) : la ligne suivante se fait avec le bon résultat, celui que la correction a montré
+    expect(foundOf(p, 0, 2, { '0:1': '7' })).toEqual([{ label: 'السطر الأول:', value: '2' }]);
+  });
+  it('puts the results of the earlier parts first (their demands), then the current part', () => {
+    const given = { '0:1': '2', '0:2': '3', '1:0': '5' };
+    expect(foundOf(p, 1, 1, given)).toEqual([{ label: 'الطول', value: '3' }, { label: 'المجموع:', value: '5' }]);
+  });
+  it('gives the right option of a choice, and nothing for a step without one answer (sort, solution, batch)', () => {
+    expect(rightAnswerOf({ kind: 'choice', options: ['a', 'b'], correct: 1 })).toBe('b');
+    expect(rightAnswerOf({ kind: 'numeric', expected: 0.4, display: '0,4' })).toBe('0,4');
+    expect(rightAnswerOf({ kind: 'batch', rows: [] })).toBeNull();
   });
 });
