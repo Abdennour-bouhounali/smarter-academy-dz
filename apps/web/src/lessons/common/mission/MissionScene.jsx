@@ -22,6 +22,9 @@ import LockerBalanceScene from './LockerBalanceScene';
 import PitchPlannerScene from './PitchPlannerScene';
 import PhoneCreditScene from './PhoneCreditScene';
 import FamilyHeightsScene from './FamilyHeightsScene';
+import CivilRegistryScene from './CivilRegistryScene';
+import KioskCardsScene from './KioskCardsScene';
+import MuseumDeskScene from './MuseumDeskScene';
 
 /**
  * LA SCÈNE d'une mission (rollout 2026-11-08) : chaque leçon dessine la sienne, choisie par `mission.scene` dans sa config
@@ -66,6 +69,10 @@ const SCENES = {
   'pitch-planner': PitchPlannerScene,
   'phone-credit': PhoneCreditScene,
   'family-heights': FamilyHeightsScene,
+  // unité 5 (« commit 0 » du 2026-11-11) : trois emplacements, chacun remplacé par le constructeur de sa leçon (un fichier par scène)
+  'civil-registry': CivilRegistryScene,
+  'kiosk-cards': KioskCardsScene,
+  'museum-desk': MuseumDeskScene,
 };
 
 function CourtyardBigScene(props) {

@@ -78,6 +78,32 @@ one worktree each, on a « commit 0 » of the integrator (`chore(lessons): unit 
 | 4 | `tarrid-mushkila` | `growth-race` (v2 treatment + its FIRST LabCoach, player only; the model check `tk:'model'`; `decor="board"`, KidFigure cast) | ✅ built 2026-11-11 | `feat(lessons): tarrid-mushkila — mission prototype` | See « Unit 4, lesson 4 » below. |
 | S | `wadiya-idmajiya-muadalat` | — | ⏳ waits for the owner's answer on the synthesis recipe | | Its lab props are frozen by its `lab.render.test.jsx` (verdict gap 6). |
 
+## Unit 5 « جمل معادلتين » — the table
+
+Prompt for the whole unit: `UNIT5_JUMAL_MUADALATAYN_MISSION_PROMPT.md`; the council of 2026-11-11 (3 designers, 5 advisors, 5 anonymous peer
+reviews, chairman) decided the unit's three labs at once. Its BINDING decisions, in short:
+- **Cast (X1, `_unit/missionStrings.test.js`):** peers صهيب (L1, `m2-suhayb`) · أسامة (L2, `m2-usama`) · وئام (L3, `m2-wiam`); إكرام and إسحاق (L2
+  module 1 only); ملاك reserved for the unit page; the climax names (الطاهر, ياسين, أنيس) nowhere else; stories in rounds are nameless.
+- **Collision rule (X3–X4, `_unit/unitCollisions.test.js`):** K1 no system twice in the unit (canonical form) · K2 headline pairs (required, ⭐,
+  checkpoint, peer) all distinct as ORDERED pairs · K3 no easier / free / prep solution equals a headline pair · a forward ban against the climax
+  lists of the lessons at or after a lesson, the synthesis (`SYNTH`) and the unit page's reserved challenge (23 boxes, 5 kg / 2 kg, 82 kg →
+  (12 ; 11)). Each lesson's `_unit/signatures/<lesson>.js` exports `TEXT` / `UNIT` / `SYSTEMS` (contract in its `README.md`); until it does, the
+  test reads the lesson's row of the verdict's registry. Seven systems were replaced to obey it.
+- **Rule P (X11, L2):** before module 4 nothing the lesson WRITES shows a minus before a bracket; every required round has a « plus path ».
+- **Code shape (X7):** each lab gets `systems/<Lab>Player.jsx` + `logic/<lab>Player.js`; the lab file becomes a ≤ 10-line dispatcher; the page
+  component, its logic and render tests are untouched; the synthesis's `story-modeller` render is frozen (`wadiya-idmajiya-jumal/lab.snapshot.test.jsx`).
+- **The three labs:** `pair-scoreboard` (gauges masked while dragging, the covered round required, the swap met once by the hand), `elimination-cards`
+  (riddle cards on a plain strip, the HOOK moved after the climax, `build-sub` / `build-add`), `story-modeller` (two required M1 rounds — count +
+  money, money + money with a silent useless chip —, the refused story `p1` in module 2, the `BuildAnswer` wide text slot). One adult (L3's scene).
+- Commit 0 also adds `_unit/abuKamil.js` (the verified history line) and makes `_unit/prepDiagnostic.test.js` `PREP_LADDER`-tolerant.
+
+| # | Lesson (unit 5) | Labs converted | Status | Commit | Notes |
+|---|---|---|---|---|---|
+| 1 | `mafhum-jumla` | `pair-scoreboard` | ⏳ | | Scene `civil-registry`. |
+| 2 | `hall-jabri` | `elimination-cards` | ⏳ | | Scene `kiosk-cards`. |
+| 3 | `mushkilat-jumla` | `story-modeller` | ⏳ | | Scene `museum-desk`; critical path. |
+| S | `wadiya-idmajiya-jumal` | — | ⏳ waits for the owner's answer on the synthesis recipe | | Its lab render is frozen by `lab.render.test.jsx` and `lab.snapshot.test.jsx`. |
+
 ## Lab families — which have the v2 treatment
 
 | Lab (`type`) | v2 treatment | First converted in |
