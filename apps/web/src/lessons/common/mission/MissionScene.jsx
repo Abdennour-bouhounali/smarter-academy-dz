@@ -18,6 +18,10 @@ import ShadowSquareScene from './ShadowSquareScene';
 import NeighbourhoodPitchScene from './NeighbourhoodPitchScene';
 import TurfRollsScene from './TurfRollsScene';
 import StandsPitchScene from './StandsPitchScene';
+import LockerBalanceScene from './LockerBalanceScene';
+import PitchPlannerScene from './PitchPlannerScene';
+import PhoneCreditScene from './PhoneCreditScene';
+import FamilyHeightsScene from './FamilyHeightsScene';
 
 /**
  * LA SCÈNE d'une mission (rollout 2026-11-08) : chaque leçon dessine la sienne, choisie par `mission.scene` dans sa config
@@ -57,6 +61,11 @@ const SCENES = {
   // unité 3, leçon 2 mutatabiqat-shahira (conseil du 2026-11-11) : les gradins le long de deux côtés voisins du terrain carré, le coin commun
   // JAMAIS mis en valeur — primitives communes de l'unité dans pitchSceneKit.jsx, une scène mince par leçon
   'stands-pitch': StandsPitchScene,
+  // unité 4 (« commit 0 » du 2026-11-11) : quatre emplacements, chacun remplacé par le constructeur de sa leçon (un fichier par scène)
+  'locker-balance': LockerBalanceScene,
+  'pitch-planner': PitchPlannerScene,
+  'phone-credit': PhoneCreditScene,
+  'family-heights': FamilyHeightsScene,
 };
 
 function CourtyardBigScene(props) {
