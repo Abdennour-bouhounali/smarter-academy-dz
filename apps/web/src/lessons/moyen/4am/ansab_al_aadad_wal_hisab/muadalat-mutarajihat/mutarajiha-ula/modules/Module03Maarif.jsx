@@ -122,7 +122,9 @@ export default function Module03Maarif() {
               <PredictRule id="mutarajiha-ula">
                 <TextbookBox kind="definition" lines={[...KNOWLEDGE_3.definition, KNOWLEDGE_3.firstDegree]} source={KNOWLEDGE_3.source} compact />
               </PredictRule>
-              <KnowledgeBrick id="mutarajiha-ula" lead="التعريف، كما جرّبته بمتراجحتي النشاط:" />
+              {/* Its body opens on « المتراجحة بمجهول x هي متباينة… »: it also establishes `mutarajiha`, whose own brick sits in
+                  module 1, whose dynamic steps the knowledge audit cannot read (W_UNPARSEABLE_STEPS) — test item E1 requires it. */}
+              <KnowledgeBrick id="mutarajiha-ula" establishes={['mutarajiha-ula', 'mutarajiha']} lead="التعريف، كما جرّبته بمتراجحتي النشاط:" />
               <TextbookBox kind="example" text={KNOWLEDGE_3.example1} source={KNOWLEDGE_3.source} compact />
               <TapQuestion
                 prompt={<MathText>{'هل العدد 0 حلّ للمتراجحة $5x > -4$ ؟'}</MathText>}
