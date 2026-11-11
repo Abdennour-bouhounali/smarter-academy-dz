@@ -97,17 +97,12 @@ export default function Module02Maarif() {
           num: 2, title: 'نسبتان متساويتان: هل يكفي؟', subtitle: 'ملاحظة', done: q2,
           content: (
             <div className="space-y-3">
-              {/* lecteur : « في شكل الملاحظة » — ce dessin n'était nulle part avant la question (il est dans la carte qui s'ouvre APRÈS) :
-                  il est dessiné À CÔTÉ de la question (« pas d'aller-retour », 2026-11-11) */}
-              <PlayerSwitch
-                player={(
-                  <div className="flex items-start gap-4" data-paging-keep>
-                    <div className="w-[38%] shrink-0"><GeoFigure {...FIG_KNOW3_REMARK} /></div>
-                    <div className="min-w-0 flex-1">{remarkQuestion}</div>
-                  </div>
-                )}
-                page={remarkQuestion}
-              />
+              {/* « في شكل الملاحظة » — ce dessin n'était nulle part avant la question (il est dans la carte qui s'ouvre APRÈS) :
+                  il est dessiné À CÔTÉ de la question, dans le lecteur ET sur la page (« pas d'aller-retour », 2026-11-11) */}
+              <div className="flex items-start gap-4" data-paging-keep data-remark-figure>
+                <div className="w-[38%] shrink-0"><GeoFigure {...FIG_KNOW3_REMARK} /></div>
+                <div className="min-w-0 flex-1">{remarkQuestion}</div>
+              </div>
               {q2 && <KnowledgeBrick id="shart-tartib" lead="الشرط الثاني ليس زينة:" />}
             </div>
           ),

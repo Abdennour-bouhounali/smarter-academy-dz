@@ -59,7 +59,7 @@ export default function Module03KhwarizmiyatIqlidus() {
         />
       )}
       steps={[
-        { needsRound: { id: 'r1', label: 'الجولة 1', icon: '➗', won: Boolean(won.r1) }, num: 1, title: 'لماذا نكمل بالباقي بدل الشريط الأكبر؟', subtitle: 'السؤال 2) من الكتاب', done: q1,
+        { needsRound: { id: 'r1', label: 'الجولة 1', icon: '➗', won: Boolean(won.r1) }, num: 1, title: 'لماذا نكمل بالباقي بدل الشريط الأكبر؟', subtitle: 'السؤال 2)', done: q1,
           content: (
             <div className="space-y-3">
               <PlayerSwitch
@@ -78,7 +78,7 @@ export default function Module03KhwarizmiyatIqlidus() {
               {q1 && <KnowledgeBrick id="khwarizmiyat-iqlidus" />}
             </div>
           ) },
-        { num: 2, title: 'طريقة الكتاب: 836 و 1938', done: read,
+        { num: 2, title: 'الطريقة: 836 و 1938', done: read,
           content: <MethodSteps method={METHOD_EUCLID} onAllRevealed={() => setRead(true)} /> },
         { needsRound: { id: 'r3', label: 'الجولة 3', icon: '➗', won: Boolean(won.r3) }, num: 3, title: '5) عيّن بطريقة مماثلة PGCD(3356 ; 1528)', done: e2 || Boolean(won.r3),
           content: (

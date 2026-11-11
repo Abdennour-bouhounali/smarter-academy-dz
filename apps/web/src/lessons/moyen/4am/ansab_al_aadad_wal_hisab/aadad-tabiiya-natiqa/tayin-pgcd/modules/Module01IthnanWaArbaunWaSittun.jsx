@@ -64,7 +64,7 @@ export default function Module01IthnanWaArbaunWaSittun() {
             advanced: () => (
               // Les LISTES directement (`startWith="lists"`) : ici l'objet mathématique EST la liste de diviseurs (§7bis-levels).
               <Manipulation type="common-divisors" a={a} b={b} theme="school" startWith="lists"
-                lead="نشاط الكتاب: العددان 42 و 60 مباشرةً على قائمتَي قواسمهما."
+                lead="العددان 42 و 60 مباشرةً على قائمتَي قواسمهما."
                 onFinished={() => setLabDone(true)} />
             ),
           }}
@@ -80,7 +80,7 @@ export default function Module01IthnanWaArbaunWaSittun() {
               explain={<span>يلزم أن يقسم عدد الحقائب الأقلام والكراريس معًا: <MathText>{'$8 = 3 \\times 2 + 2$'}</MathText> فيبقى قلمان.</span>}
               onAnswered={() => setQ0(true)} />
           ) },
-        { needsRound: { id: 'r3', label: 'الجولة 3', icon: '🎒', won: Boolean(won.r3) }, num: 2, title: 'ماذا نسمّي أكبر قاسم مشترك لـ 42 و 60؟', subtitle: 'جملة الكتاب', done: q1,
+        { needsRound: { id: 'r3', label: 'الجولة 3', icon: '🎒', won: Boolean(won.r3) }, num: 2, title: 'ماذا نسمّي أكبر قاسم مشترك لـ 42 و 60؟', subtitle: 'الاسم الرياضي', done: q1,
           content: (
             <div className="space-y-3">
               <PlayerSwitch

@@ -104,7 +104,7 @@ export default function Module01Baqat() {
                 explain={<span>9 يقسم 90 ويقسم 54 في آن واحد؛ لذلك لا تبقى أية زهرة.</span>} onAnswered={() => setQ2(true)} />
             </div>
           ) },
-        { needsRound: { id: 'r3', label: 'الجولة 3', icon: '💐', won: Boolean(won.r3) }, num: 3, title: 'كم زهرة من كل لون في الباقة الواحدة عند أكبر عدد من الباقات؟', subtitle: 'ب) من الكتاب', done: q3,
+        { needsRound: { id: 'r3', label: 'الجولة 3', icon: '💐', won: Boolean(won.r3) }, num: 3, title: 'كم زهرة من كل لون في الباقة الواحدة عند أكبر عدد من الباقات؟', subtitle: 'السؤال ب)', done: q3,
           content: (
             <div className="space-y-3">
               <PlayerSwitch

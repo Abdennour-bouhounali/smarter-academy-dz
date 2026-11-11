@@ -60,7 +60,7 @@ export default function Module01AlFuruq() {
         />
       )}
       steps={[
-        { needsRound: { id: 'r1', label: 'الجولة 1', icon: '✂️', won: Boolean(won.r1) }, num: 1, title: 'لماذا لا يتغيّر القاسم المشترك الأكبر بعد كل قصّة؟', subtitle: 'السؤال 1) من الكتاب', done: q1,
+        { needsRound: { id: 'r1', label: 'الجولة 1', icon: '✂️', won: Boolean(won.r1) }, num: 1, title: 'لماذا لا يتغيّر القاسم المشترك الأكبر بعد كل قصّة؟', subtitle: 'السؤال 1)', done: q1,
           content: (
             <div className="space-y-3">
               <PlayerSwitch

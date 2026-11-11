@@ -141,11 +141,11 @@ export const LESSON_CONFIG = {
     { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — المشتلة: أيّ بذور الطماطم أفضل؟', learningPointIds: ['4am_ikhtizal-kasr_P2', '4am_ikhtizal-kasr_P3'] },
   ],
   modules: [
-    { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`, title: 'أستعدّ', desc: 'ست عبارات: أربع من الكتاب عن الأعداد الناطقة واثنتان عن PGCD. صحيح أم خاطئ؟',
+    { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`, title: 'أستعدّ', desc: 'ست عبارات: أربع عن الأعداد الناطقة واثنتان عن PGCD. صحيح أم خاطئ؟',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'samir', path: `${LESSON_BASE_PATH}/samir`, title: 'نشاط 8 — كيف اختزل سمير 84/48؟', desc: '÷4 ثم ÷3 … لماذا لا يمكن مواصلة اختزال 7/4؟',
       stage: 'trigger', teachesLearningPointIds: ['4am_ikhtizal-kasr_P1', '4am_ikhtizal-kasr_P2'], color: 'indigo', style: 'featured', estimatedMin: 12, difficulty: 1, actionText: 'أختزل' },
-    { id: '02', number: 2, slug: 'maarif', path: `${LESSON_BASE_PATH}/maarif`, title: 'معارف — الكسور غير القابلة للاختزال، وطريقة PGCD', desc: 'التعريف، ملاحظة الكتاب، 15/22 و 28/42، ثم 595/560 بإقليدس.',
+    { id: '02', number: 2, slug: 'maarif', path: `${LESSON_BASE_PATH}/maarif`, title: 'معارف — الكسور غير القابلة للاختزال، وطريقة PGCD', desc: 'التعريف، ملاحظة مهمّة، 15/22 و 28/42، ثم 595/560 بإقليدس.',
       stage: 'discovery', teachesLearningPointIds: ['4am_ikhtizal-kasr_P2', '4am_ikhtizal-kasr_P3'], color: 'violet', style: 'featured', estimatedMin: 14, difficulty: 2, actionText: 'أكتشف' },
     { id: '03', number: 3, slug: 'awazzif-1', path: `${LESSON_BASE_PATH}/awazzif-1`, title: 'أوظّف تعلّماتي (1)', desc: '188/252، دوري الآن 915/372، وتمارين 28، 34، 35، 36.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_ikhtizal-kasr_P3'], color: 'amber', style: 'featured', estimatedMin: 13, difficulty: 2, actionText: 'أتدرّب' },

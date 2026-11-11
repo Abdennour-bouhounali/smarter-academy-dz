@@ -392,12 +392,13 @@ Per unit (scan of 2026-11-11, `no-back-and-forth.mjs`, 1366 and 1024):
 - **Unit 9 « خاصية طالس »** — LONE 4 (2 screens × 2 widths, both kept, below) · OVER 0 · PAIR 68. Fixed: `inshaat-talis` m2 step 2 (« في الشكل
   السابق »: the method figure on another screen; now beside the question, and BE = 2 repeated in its line), m3 ex 21 parts 2–4 (no statement;
   now `context`); `aksiya-talis` m2 step 2 (« في شكل الملاحظة »: that figure was only in the card opened AFTER the answer; now beside the
-  question — **the page still lacks it**, left for the owner), m2 step 1 (the two situations split on two screens; now one, paired with the
+  question, on the page too since the follow-up of the same day), m2 step 1 (the two situations split on two screens; now one, paired with the
   question); `talis-hisab-atwal` m2 step 3 (the remark read its values on a figure alone on the previous screen; now beside it), m2 step 1 (the
-  three situations, one per screen; now one reading screen), m4 « أربعة أشكال » (OVER at zoom 0.6, never scanned before: the four figures above
-  the card, one screen — fits at the 0.6 floor, the lowest zoom of the unit; splitting it per figure is the next improvement); the « مسألة »
-  modules of all four lessons (shared fix). `wadiya-idmajiya-talis` modules 2–4 were not walked (locked behind module 1 in a seeded session; they
-  are « مسائل » on the same shared `GuidedProblem` as module 1, which was walked).
+  three situations, one per screen; now one reading screen), m4 « أربعة أشكال » (OVER at zoom 0.6, never scanned before; follow-up of the same day: ONE screen per figure — each row
+  « الشكل (k) » carries its own drawing beside it, `rowAside` of `BatchChoiceQuestion` / `TextbookExercise`, zoom ≥ 0.95 at both widths, the grid's
+  saved-answer key unchanged); the « مسألة » modules of all four lessons (shared fix). `wadiya-idmajiya-talis` modules 1–4 were then walked in ONE
+  session at 1366, each module answered to its end and « المحطة التالية » pressed (that press records the completion that opens the next situation;
+  a seeded session cannot open them): every sub-step of « عارضة الرف », « توزيع الممرّ » and « هدية عيد الأمّ » showed its data and earlier results.
 - **Unit 2 « الحساب على الجذور »** — LONE 0 · OVER 0. Fixed: the « مسألة » modules (shared); `tawzif-khawass-judhur` parts get their statement
   (`withContext`).
 - **Unit 3 « الحساب الحرفي »** — LONE 0 · OVER 0. Fixed: `tahlil-ibara` m4 ex 20 (« 2) B = » without the expressions), ex 21 part 2 (the
@@ -406,7 +407,15 @@ Per unit (scan of 2026-11-11, `no-back-and-forth.mjs`, 1366 and 1024):
   للاختزال: » alone, its fraction in the items on the previous screen) and `khawass-qawasim` m4 (« 3) الأعداد التي يمكن أن تكون قواسم مشتركة ») —
   the kept card; the Euclid lines of every « مسألة » (`foundOf`).
 
-Saved-answer keys: unchanged — no prompt or option was reworded (`inshaat-talis` and `aksiya-talis` reuse the same question element on the
+**Book references (follow-up, 2026-11-11, owner « fix them all »).** `MissionBrief` strips « الكتاب ص … » / « ص 12 » from every brief tag on
+screen (`common/textbook/bookRef.js › withoutBookRef`, tested; a tag that was only a reference disappears) — every lesson, not only the converted
+ones. The student-visible references in the converted lessons were reworded (step titles « طريقة الكتاب: … » → « الطريقة: … », subtitles « السؤال
+1) من الكتاب » → « السؤال 1) », objectives « أحلّ تمارين الكتاب 3 ← 11 », module `desc`, labs' titles and leads, knowledge-map titles and notes,
+an `explain`, two `predictPrompt`) in `qasim-adad-tabii`, `qawasim-adad-tabii`, `khawass-qawasim`, `qasim-mushtarak-akbar`, `tayin-pgcd`,
+`bahth-pgcd`, `ikhtizal-kasr`, `awwaliyan-fima-baynahuma` and `jidhr-tarbii`. Teacher-only fields (`teachingScope`, `autonomy`, comments) keep
+their sources. Unconverted 1AM–3AM lessons still carry such words outside brief tags (titles, bodies): they are cleaned when their lesson is touched (guide §4ter-bis).
+
+Saved-answer keys: unchanged — no prompt or option was reworded (a prediction is saved by its knowledge item id, not by its prompt) (`inshaat-talis` and `aksiya-talis` reuse the same question element on the
 page and in the player; only the line ABOVE the question in `inshaat-talis` m2 step 2 changed, in the player).
 
 ## Cross-lesson fix — the main button on the right (2026-11-09, owner)

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, XCircle, Lightbulb, Info, Timer as TimerIcon, Volume2, VolumeX, Flame, BookOpen } from 'lucide-react';
 import { useLessonChrome } from '../hooks/useLessonChrome';
 import MathLabel from './MathLabel';
+import { withoutBookRef } from '../textbook/bookRef';
 
 /**
  * Briques d'interface partagées par les leçons Smarter Academy.
@@ -263,8 +264,10 @@ const BRIEF_TONES = {
  * d'accent, une bordure fine et un lavis discret — la hiérarchie vient de la
  * typographie, pas de la saturation.
  */
-export function MissionBrief({ tag, title, headline, children, footer, visual, emoji, tone = 'slate' }) {
+export function MissionBrief({ tag: rawTag, title, headline, children, footer, visual, emoji, tone = 'slate' }) {
   const T = BRIEF_TONES[tone] ?? BRIEF_TONES.slate;
+  // jamais de renvoi au manuel à l'écran (« الكتاب ص 55 ») — indépendance vis-à-vis du livre, textbook/bookRef.js
+  const tag = withoutBookRef(rawTag);
   const hasVisual = Boolean(visual);
 
   return (

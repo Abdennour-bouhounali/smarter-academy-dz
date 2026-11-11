@@ -137,10 +137,10 @@ export const LESSON_CONFIG = {
       title: 'نشاط 7 — 17 و 18، 22 و 35، ومريم', desc: 'لماذا PGCD(17 ; 18) = 1؟ هل مريم على صواب بشأن 27 و 36؟',
       stage: 'trigger', teachesLearningPointIds: ['4am_awwaliyan-fima-baynahuma_P1', '4am_awwaliyan-fima-baynahuma_P3'], color: 'indigo', style: 'featured', estimatedMin: 12, difficulty: 1, actionText: 'أتوقّع وأكشف' },
     { id: '02', number: 2, slug: 'maarif', path: `${LESSON_BASE_PATH}/maarif`,
-      title: 'معارف — التعريف', desc: 'أوليان فيما بينهما يعني PGCD(a ; b) = 1. مثال الكتاب: 22 و 15.',
+      title: 'معارف — التعريف', desc: 'أوليان فيما بينهما يعني PGCD(a ; b) = 1. مثال: 22 و 15.',
       stage: 'discovery', teachesLearningPointIds: ['4am_awwaliyan-fima-baynahuma_P1', '4am_awwaliyan-fima-baynahuma_P2'], color: 'violet', style: 'featured', estimatedMin: 8, difficulty: 2, actionText: 'أكتشف' },
     { id: '03', number: 3, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
-      title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 23 ← 27 و 39.',
+      title: 'أوظّف تعلّماتي', desc: 'تمارين متدرّجة.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_awwaliyan-fima-baynahuma_P2', '4am_awwaliyan-fima-baynahuma_P3'], color: 'amber', style: 'featured', estimatedMin: 13, difficulty: 2, actionText: 'أتدرّب' },
     // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
     // reste toujours ouvert. Elles comptent dans la complétion, jamais dans

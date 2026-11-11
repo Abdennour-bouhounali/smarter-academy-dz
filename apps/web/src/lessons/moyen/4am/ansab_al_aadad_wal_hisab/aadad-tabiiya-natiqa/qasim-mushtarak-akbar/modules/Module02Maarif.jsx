@@ -33,14 +33,14 @@ export default function Module02Maarif() {
   return (
     <ContentModule objectives={["ما القاسم المشترك الأكبر لعددين؟", "كيف نكتبه برمز؟", "هل كل قاسم مشترك يقسم القاسم المشترك الأكبر؟"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(2)} moduleNumber={2}
-      moduleTitle="معارف — القواسم المشتركة والقاسم المشترك الأكبر" moduleSubtitle="التعريف، الرمز، وملاحظة الكتاب" estimatedTime="15 دقيقة"
+      moduleTitle="معارف — القواسم المشتركة والقاسم المشترك الأكبر" moduleSubtitle="التعريف، الرمز، وملاحظة مهمّة" estimatedTime="15 دقيقة"
       intro={(
         <PlayerSwitch
           player={(
             <LabRounds lessonId={MODULE_CTX.lessonId} labId="m2-lists" rounds={M2_ROUNDS} icon="💐" freeIcon="🌷"
               onRoundWon={(id) => { setWon((w) => ({ ...w, [id]: true })); if (id === 'r1') setPgcd(14); }} />
           )}
-          page={<Manipulation type="common-divisors" a={28} b={42} startWith="lists" title="مثال الكتاب: 28 و 42" lead="اكشف قواسم 28 وقواسم 42، ثم ضع القواسم المشتركة في الوسط، وأكبرها في خانة PGCD." onFinished={(g) => setPgcd(g ?? true)} />}
+          page={<Manipulation type="common-divisors" a={28} b={42} startWith="lists" title="مثال: 28 و 42" lead="اكشف قواسم 28 وقواسم 42، ثم ضع القواسم المشتركة في الوسط، وأكبرها في خانة PGCD." onFinished={(g) => setPgcd(g ?? true)} />}
         />
       )}
       steps={[

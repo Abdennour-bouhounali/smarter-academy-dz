@@ -120,7 +120,7 @@ export const LESSON_CONFIG = {
       autonomy: 'أعداد الكتاب: أكبر عدد من الباقات يُبحث عنه دون اقتراح، ثم قائمتان طويلتان يقارن بينهما التلميذ',
       experience: { type: 'textbook', reason: '', theme: 'garden' },
       learningPointIds: ['4am_qasim-mushtarak-akbar_P1', '4am_qasim-mushtarak-akbar_P2', '4am_qasim-mushtarak-akbar_P3'], sourceElementIds: ['act-4'] },
-    { kind: 'manipulation', code: 'common-divisors-28-42', type: 'common-divisors', module: 2, title: 'مثال الكتاب: 28 و 42',
+    { kind: 'manipulation', code: 'common-divisors-28-42', type: 'common-divisors', module: 2, title: 'مثال: 28 و 42',
       learningPointIds: ['4am_qasim-mushtarak-akbar_P2', '4am_qasim-mushtarak-akbar_P4'], sourceElementIds: ['know-4-def'] },
     // Modules 4–6 — les « مسائل » : exercices complets de type امتحان, ajouts
     // de la plateforme (content/problems.js), sans aucune preuve de maîtrise.
@@ -137,7 +137,7 @@ export const LESSON_CONFIG = {
       stage: 'trigger', teachesLearningPointIds: ['4am_qasim-mushtarak-akbar_P1', '4am_qasim-mushtarak-akbar_P3'],
       color: 'indigo', style: 'featured', estimatedMin: 12, difficulty: 1, actionText: 'أشكّل الباقات' },
     { id: '02', number: 2, slug: 'maarif', path: `${LESSON_BASE_PATH}/maarif`,
-      title: 'معارف — القواسم المشتركة والقاسم المشترك الأكبر', desc: 'التعريفان، الرمز PGCD (a ; b)، وملاحظة الكتاب مع 28 و 42.',
+      title: 'معارف — القواسم المشتركة والقاسم المشترك الأكبر', desc: 'التعريفان، الرمز PGCD (a ; b)، وملاحظة مهمّة مع 28 و 42.',
       stage: 'discovery', teachesLearningPointIds: ['4am_qasim-mushtarak-akbar_P1', '4am_qasim-mushtarak-akbar_P2', '4am_qasim-mushtarak-akbar_P4'],
       color: 'violet', style: 'featured', estimatedMin: 15, difficulty: 2, actionText: 'أكتشف' },
     { id: '03', number: 3, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,

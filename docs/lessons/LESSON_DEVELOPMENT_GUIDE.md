@@ -835,6 +835,8 @@ The student never needs the textbook and is never sent to it. **Read the textboo
 
 - **Never** write a student-visible string that points to the book: « الكتاب ص 55 », « اقرأ ما يقوله الكتاب », « نشاط الكتاب », « تمارين من الكتاب »,
   « أرغفة الكتاب », « استحضر مكتسباتي — ص 52 ». Module `brief` tags are the platform's own words (« معارف », « أستعدّ », « أتمرّن »).
+  Safety net (2026-11-11): `MissionBrief` strips any « الكتاب ص … » / « ص N » left in a tag (`common/textbook/bookRef.js › withoutBookRef`) — it
+  does not excuse writing one, and it does not touch titles, subtitles, objectives, `desc` or bodies: those are reworded by hand.
 - **Never** copy the book's boxes (تعريف · خاصية · ملاحظة · مثال · طريقة) or exercises to the student verbatim. Re-write each definition, remark and
   example in the platform's own sentences, with the platform's own contexts and numbers (same mathematical content, same notation, same
   rigour — different words). The extraction stays the REFERENCE of WHAT is taught (الكفاءات, notations, expected answers), never of HOW it is said.
@@ -1114,12 +1116,15 @@ already there »). `FitToArea` takes a `screenKey` (module path + unit + page) f
   (`data-paging-keep`; with a figure, the statement and its figure — at most 210 px high — sit beside the question, `[data-textbook-side]`)
   — the pager used to put « 1) … 2) … 3) اكتب الكسر 1005/315 » on one screen and « 3) الشكل غير القابل للاختزال: » alone on the next. Exception:
   a grid of rows (`batch`, `trueFalse`) without `context`/`items` is not kept whole (its rows are already one block, and `pairFigures` puts
-  the figure before it beside the statement and the rows; kept whole, « أربعة أشكال » fell under the minimum zoom). The PARTS of an exercise
+  the figure before it beside the statement and the rows; kept whole, « أربعة أشكال » fell under the minimum zoom). When EACH row speaks of its own
+  figure (« الشكل (1) … الشكل (4) »), pass `rowAside={(k) => <GeoFigure … />}` to `TextbookExercise` (→ `BatchChoiceQuestion`): each row and its
+  figure are ONE screen (`data-batch-row-aside`, `data-paging-keep`) — one screen per figure, and the grid's saved-answer key is unchanged
+  (`talis-hisab-atwal` m4 ex 3). The PARTS of an exercise
   (`ex-21-1`, `ex-21-2`…) are separate exercises and only the first has the statement: a lesson's `partsOf` wraps its parts in
   `withContext` (`common/textbook/exerciseParts.js`, imported by path), which gives each later part `context` = the first part's statement,
   shown on its card in the player only (`[data-exercise-context]`). A lesson only writes cases 2–4 by hand when its question is NOT one of
-  these (its own JSX): a figure drawn again beside the question with `PlayerSwitch` (`inshaat-talis` m2 step 2, `aksiya-talis` m2 step 2,
-  `talis-hisab-atwal` m2 step 3), a row of figures kept as one reading screen (`talis-hisab-atwal` m2 step 1, `aksiya-talis` m2 step 1).
+  these (its own JSX): a figure drawn again beside the question with `PlayerSwitch` (`inshaat-talis` m2 step 2, `talis-hisab-atwal` m2 step 3;
+  when the PAGE lacks the figure too, the same row on both — `aksiya-talis` m2 step 2), a row of figures kept as one reading screen (`talis-hisab-atwal` m2 step 1, `aksiya-talis` m2 step 1).
   The scan presses « لاحقًا » on the « محطة المهمة » checkpoint (it does not close with Escape: before 2026-11-11 the scan stopped there and
   never read most modules).
   Player only (`PlayerSwitch` / `useInMissionPlayer()`); the page and the teacher are unchanged. Check: `node apps/web/e2e/no-back-and-forth.mjs

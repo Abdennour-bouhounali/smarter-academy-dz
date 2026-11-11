@@ -20,7 +20,7 @@ export default function Module02Khassiyatan() {
   const [q4, setQ4] = useState(false);
   return (
     <ContentModule objectives={["لماذا تعطي طريقة الفروق النتيجة الصحيحة؟", "ما الذي يبقى ثابتًا حين نطرح؟", "كيف تصير عدّة طرحات قسمة واحدة؟"]} ctx={MODULE_CTX} navLinks={getNavLinks(2)} moduleNumber={2} moduleTitle="معارف — خاصيتان، وطريقة الفروق" moduleSubtitle="لماذا تعطي الطريقة النتيجة الصحيحة؟" estimatedTime="14 دقيقة"
-      brief={{ tag: 'معارف ص 12 — طرائق ص 13', title: 'خاصيتان', tone: 'violet', body: <p>ما فعلته في النشاط يستند إلى خاصيتين يصوغهما الكتاب. الأولى تبرّر الفروق المتتابعة، والثانية ستبرّر خوارزمية إقليدس.</p> }}
+      brief={{ tag: 'معارف — طرائق', title: 'خاصيتان', tone: 'violet', body: <p>ما فعلته في النشاط يستند إلى خاصيتين نصوغهما الآن. الأولى تبرّر الفروق المتتابعة، والثانية ستبرّر خوارزمية إقليدس.</p> }}
       steps={[
         { num: 1, title: 'لماذا توقّفت سلسلة الورشة عند 7 و 7؟', done: q1,
           content: (
@@ -36,7 +36,7 @@ export default function Module02Khassiyatan() {
               )}
             </div>
           ) },
-        { num: 2, title: 'طريقة الكتاب: 117 و 91، سطرًا سطرًا', done: read,
+        { num: 2, title: 'الطريقة: 117 و 91، سطرًا سطرًا', done: read,
           content: <div className="space-y-3"><KnowledgeBrick id="khwarizmiyat-al-furuq" variant="rappel" compact /><MethodSteps method={METHOD_DIFF} onAllRevealed={() => setRead(true)} /></div> },
         { num: 3, title: 'الخاصية الثانية: طرحات كثيرة في عملية واحدة', done: q2,
           content: (

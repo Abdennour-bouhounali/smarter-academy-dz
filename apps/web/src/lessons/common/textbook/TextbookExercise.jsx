@@ -39,7 +39,7 @@ import { useInMissionPlayer } from '../mission/missionPlayerContext';
  * module ou une leçon déjà présentés, la coquille est passe-plat et le bouton
  * n'apparaît pas : une seule session.
  */
-export default function TextbookExercise({ exercise, solved = false, onAnswered, requires }) {
+export default function TextbookExercise({ exercise, solved = false, onAnswered, requires, rowAside }) {
   const { t } = useTranslation('lesson');
   // lecteur de mission : une longue liste (≥ 6 lignes) tient dans l'écran sur deux colonnes, jamais sous le zoom minimum (rollout 2026-11-09)
   const inPlayer = useInMissionPlayer();
@@ -126,7 +126,7 @@ export default function TextbookExercise({ exercise, solved = false, onAnswered,
         <BatchChoiceQuestion
           intro={q.prompt ? <p className="text-sm font-semibold text-slate-700"><MathText>{q.prompt}</MathText></p> : undefined}
           rows={q.rows.map((r, i) => ({ id: `b${i}`, label: <MathText>{r.label}</MathText>, options: r.options.map((o) => (typeof o === 'string' ? <MathText key={o}>{o}</MathText> : o)), correct: r.correct, correction: typeof r.correction === 'string' ? <MathText>{r.correction}</MathText> : r.correction }))}
-          requires={requires} solved={solved} rowCols={inPlayer && q.rows.length >= 6 ? 2 : 1}
+          requires={requires} solved={solved} rowCols={inPlayer && q.rows.length >= 6 && !rowAside ? 2 : 1} rowAside={rowAside}
           feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? t('textbook.allRight') : t('textbook.seeCorrections')}{explain && (allRight ? <MoreToggle label={t('focus.why')}><> — {explain}</></MoreToggle> : <> — {explain}</>)}</Feedback>}
           onAnswered={(ok) => onAnswered?.(ok)} />
       );

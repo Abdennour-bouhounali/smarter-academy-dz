@@ -72,7 +72,7 @@ export default function Module01Samir() {
               {q1 && <KnowledgeBrick id="ikhtizal" />}
               {q1 && (
                 <div className="space-y-1 text-center">
-                  <p className="text-sm text-slate-600">وهكذا فعل سمير في نشاط الكتاب:</p>
+                  <p className="text-sm text-slate-600">وهكذا فعل سمير:</p>
                   <p className="text-lg"><MathText>{ACTIVITY.samirPath}</MathText></p>
                   <SourceTag source={ACTIVITY.source} />
                 </div>

@@ -137,7 +137,7 @@ export const LESSON_CONFIG = {
       title: 'معارف — نتائج مباشرة', desc: 'PGCD(a ; a)، PGCD(a ; 0)، PGCD(a ; b) عندما يكون b قاسمًا لـ a، والتبديل.',
       stage: 'discovery', teachesLearningPointIds: ['4am_tayin-pgcd_P2', '4am_tayin-pgcd_P3'], color: 'violet', style: 'featured', estimatedMin: 10, difficulty: 2, actionText: 'أكتشف' },
     { id: '03', number: 3, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
-      title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 17، 18 و 22.',
+      title: 'أوظّف تعلّماتي', desc: 'ثلاثة تمارين متنوّعة.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_tayin-pgcd_P1', '4am_tayin-pgcd_P3'], color: 'amber', style: 'featured', estimatedMin: 12, difficulty: 2, actionText: 'أتدرّب' },
     // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
     // reste toujours ouvert. Elles comptent dans la complétion, jamais dans

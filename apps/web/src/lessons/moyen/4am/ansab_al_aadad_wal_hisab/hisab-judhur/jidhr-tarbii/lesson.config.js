@@ -136,7 +136,7 @@ export const LESSON_CONFIG = {
     // un seul niveau (`levels={false}`) : c'est un exemple travaillé.
     {
       kind: 'manipulation', code: 'square-root-side-0-04', type: 'square-root-side', module: 2,
-      title: 'مثال الكتاب: مربّع مساحته 0,04',
+      title: 'مثال: مربّع مساحته 0,04',
       learningPointIds: ['4am_jidhr-tarbii_P1'],
       sourceElementIds: ['know-1'],
     },

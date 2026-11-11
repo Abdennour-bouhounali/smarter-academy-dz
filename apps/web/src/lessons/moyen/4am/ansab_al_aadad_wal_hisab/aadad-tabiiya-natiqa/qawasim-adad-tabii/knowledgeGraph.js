@@ -96,7 +96,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'tariqa', kind: 'method', lane: 'center', requires: 'tariqa-qawasim', notebook: true,
-      title: 'طريقة الكتاب', subtitle: '$d^2 \\leq a$',
+      title: 'الطريقة المنظّمة', subtitle: '$d^2 \\leq a$',
       context: { text: METHOD.rule[0] },
       reveals: ['ex105', 'qawaid'],
     },

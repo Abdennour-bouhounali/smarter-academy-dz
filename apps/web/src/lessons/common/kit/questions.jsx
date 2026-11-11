@@ -132,6 +132,8 @@ export function BatchChoiceQuestion({
   onAnswered,     // (allRight) => void — inconditionnel
   rowCols: rowColsProp = 1, // 2 : les lignes sur deux colonnes (lecteur de mission, une longue liste tient dans l'écran — rollout 2026-11-09) ;
                   // 'auto' : 2 dans le lecteur pour 6 lignes ou plus, 1 ailleurs (un module ne voit pas le contexte du lecteur — 2026-11-10)
+  rowAside,       // (index) => ReactNode — posé À CÔTÉ de SA ligne, ligne et aside sur UN écran (`data-paging-keep`) : la figure dont parle la
+                  // ligne (« pas d'aller-retour », 2026-11-11 — « أربعة أشكال »). La clé d'enregistrement ne change pas.
 }) {
   const inPlayer = useInMissionPlayer();
   const rowCols = rowColsProp === 'auto' ? (inPlayer && rows.length >= 6 ? 2 : 1) : rowColsProp;
@@ -158,11 +160,12 @@ export function BatchChoiceQuestion({
       {restoredAt && <SavedAnswerChip at={restoredAt} />}
       {/* deux colonnes : UN écran dessiné pour tenir ensemble — la pagination du lecteur ne l'ouvre pas ligne par ligne (`data-paging-keep`) */}
       <div className={rowCols === 2 ? 'grid grid-cols-1 gap-3 lg:grid-cols-2' : 'space-y-3'} data-batch-cols={rowCols} data-paging-keep={rowCols === 2 ? '' : undefined}>
-        {rows.map((r) => {
+        {rows.map((r, ri) => {
           const pick = picks[r.id];
           const rowRight = checked && pick === r.correct;
           const rowWrong = checked && pick !== undefined && pick !== r.correct;
-          return (
+          const aside = rowAside?.(ri);
+          const row = (
             <div
               key={r.id}
               className={`rounded-2xl border-2 p-3.5 flex flex-wrap gap-3 flex-row items-center ${
@@ -223,6 +226,13 @@ export function BatchChoiceQuestion({
                 // en colonne et se superposait à eux (propriétaire, 2026-11-07)
                 <span className="basis-full text-sm font-mono text-rose-600">{r.correction}</span>
               )}
+            </div>
+          );
+          if (!aside) return row;
+          return (
+            <div key={r.id} className="flex items-center gap-4" data-paging-keep data-batch-row-aside>
+              <div className="w-[34%] shrink-0">{aside}</div>
+              <div className="min-w-0 flex-1">{row}</div>
             </div>
           );
         })}

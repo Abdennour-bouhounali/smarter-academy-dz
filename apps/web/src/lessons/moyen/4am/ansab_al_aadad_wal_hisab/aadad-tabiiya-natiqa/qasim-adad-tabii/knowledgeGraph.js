@@ -71,7 +71,7 @@ export const KNOWLEDGE_GRAPH = {
       title: 'قاسم عدد طبيعي', subtitle: '$b$ قاسم للعدد $a$',
       // Le cadre commun aux deux définitions du manuel, puis la phrase du
       // brief du module 2 (Module02Maarif) qui annonce les deux lectures.
-      context: { text: '$a$ و $b$ عددان طبيعيان حيث $b \\neq 0$.', note: 'الكتاب يعطي لهذه الفكرة تعريفين.' },
+      context: { text: '$a$ و $b$ عددان طبيعيان حيث $b \\neq 0$.', note: 'لهذه الفكرة تعريفان.' },
       reveals: ['baqi'],
     },
     {

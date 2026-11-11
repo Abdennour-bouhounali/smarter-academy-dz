@@ -22,7 +22,7 @@ export default function Module02Khassiyatan() {
     <ContentModule objectives={["ماذا خمّنت من الحالات الثلاث؟", "متى تصير الملاحظة خاصية؟"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(2)} moduleNumber={2}
       moduleTitle="معارف — خاصيتان" moduleSubtitle="من التخمين إلى الخاصية" estimatedTime="12 دقيقة"
-      brief={{ tag: 'معارف — الكتاب ص 10', title: 'خواص قواسم عدد طبيعي', tone: 'violet', body: <p>ما لاحظته في الحالات الثلاث يصوغه الكتاب في خاصيتين، مع مثال لكل واحدة.</p> }}
+      brief={{ tag: 'معارف — الكتاب ص 10', title: 'خواص قواسم عدد طبيعي', tone: 'violet', body: <p>ما لاحظته في الحالات الثلاث نصوغه في خاصيتين، مع مثال لكل واحدة.</p> }}
       steps={[
         { num: 1, title: 'خاصية 1 — المجموع والفرق', done: q1,
           content: (

@@ -58,7 +58,7 @@ export const LESSON_KNOWLEDGE = {
         },
         predictPrompt: 'في مستطيلات الكتب لـ 105 ظهرت الجداءات نفسها مقلوبةً بعد حدّ معيّن، فلم يعد يظهر قاسم جديد. لو طُلب منك تعيين كل قواسم عدد آخر $a$، على أيّ الأعداد تُجري القسمة ومتى تتوقّف؟ وماذا تستنتج كلّما كان الباقي معدومًا؟ اكتب الطريقة بخطواتها.',
         summary: 'نختبر الأعداد التي مربعها ≤ a؛ كل باقٍ معدوم يعطي قاسمين.',
-        body: <div className="space-y-2">{METHOD.rule.map((r) => <p key={r}><MathText>{r}</MathText></p>)}<p className="text-sm text-slate-600">مثال الكتاب: 105 محصور بين <MathText>{'$10^2$'}</MathText> و <MathText>{'$11^2$'}</MathText>، فنختبر من 1 إلى 10.</p></div> },
+        body: <div className="space-y-2">{METHOD.rule.map((r) => <p key={r}><MathText>{r}</MathText></p>)}<p className="text-sm text-slate-600">مثال: 105 محصور بين <MathText>{'$10^2$'}</MathText> و <MathText>{'$11^2$'}</MathText>، فنختبر من 1 إلى 10.</p></div> },
       { id: 'qawaid-qisma', type: 'memoriser', title: 'قواعد قابلية القسمة تُسرّع الاختبار',
         memo: {
           rule: `3\\mid a\\iff 3\\mid${R('s(a)')}\\quad5\\mid a\\iff u(a)\\in\\{0\\,,5\\}`,

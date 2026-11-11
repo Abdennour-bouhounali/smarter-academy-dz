@@ -87,7 +87,7 @@ export default function Module01ThalathHalat() {
               {q1 && <KnowledgeBrick id="qasim-mushtarak-rappel" variant="rappel" compact />}
             </div>
           ) },
-        { needsRound: { id: 'r2', label: 'الجولة 2', icon: '🧱', won: Boolean(won.r2) }, num: 2, title: 'الحالتان 2 و 3 من الكتاب', subtitle: 'هل يصحّ ما لاحظته مع أعداد أخرى؟', done: c2done,
+        { needsRound: { id: 'r2', label: 'الجولة 2', icon: '🧱', won: Boolean(won.r2) }, num: 2, title: 'الحالتان 2 و 3', subtitle: 'هل يصحّ ما لاحظته مع أعداد أخرى؟', done: c2done,
           content: (
             <div className="space-y-3">
               {/* le lecteur joue les deux cas dans la manche 2 ; la page de l'enseignant garde ses deux labos */}

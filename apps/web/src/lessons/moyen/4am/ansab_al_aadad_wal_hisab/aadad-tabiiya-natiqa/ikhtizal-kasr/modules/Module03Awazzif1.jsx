@@ -10,7 +10,7 @@ export default function Module03Awazzif1() {
   const [done, setDone] = useState({});
   return (
     <ContentModule objectives={["أكتب كسرًا على شكله غير القابل للاختزال", "أستعمل PGCD لاختزال في خطوة واحدة"]} ctx={MODULE_CTX} navLinks={getNavLinks(3)} moduleNumber={3} moduleTitle="أوظّف تعلّماتي (1)" moduleSubtitle="اكتب على الشكل غير القابل للاختزال" estimatedTime="13 دقيقة"
-      brief={{ tag: 'الكتاب ص 9، 13 و 15', title: 'أختزل بـ PGCD', tone: 'amber', body: <p>اكتب كل كسر على الشكل a/b. القيمة الصحيحة غير المختزلة تُعدّ ناقصة، لا خاطئة.</p> }}
+      brief={{ tag: 'أوظّف تعلّماتي', title: 'أختزل بـ PGCD', tone: 'amber', body: <p>اكتب كل كسر على الشكل a/b. القيمة الصحيحة غير المختزلة تُعدّ ناقصة، لا خاطئة.</p> }}
       steps={EXERCISES_1.map((ex, i) => ({ num: i + 1, title: title(ex), done: !!done[ex.id],
         content: <div className="space-y-3">{i === 0 && <KnowledgeBrick id="ikhtizal-bil-pgcd" variant="rappel" compact />}<TextbookExercise exercise={ex} requires={['ikhtizal-bil-pgcd']} onAnswered={() => setDone((d) => ({ ...d, [ex.id]: true }))} /></div> }))}
       footer={<KnowledgeSnapshot moduleNumber={3} variant="memo" />} />

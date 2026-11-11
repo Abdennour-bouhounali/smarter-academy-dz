@@ -28,8 +28,6 @@ const FIGURES = {
   ex1: <GeoFigure {...FIG_EX1} />,
   ex2: <GeoFigure {...FIG_EX2} />,
   ex3: <div className="grid grid-cols-2 gap-2">{FIG_EX3.map((f) => <GeoFigure key={f.caption} {...f} />)}</div>,
-  // lecteur : les quatre figures sur UNE ligne au-dessus de l'exercice (à côté, la colonne étroite empilait les trois choix de chaque ligne)
-  ex3Row: <div className="grid grid-cols-4 gap-2" data-paging-keep>{FIG_EX3.map((f) => <GeoFigure key={f.caption} {...f} maxWidth={150} />)}</div>,
   ex4: <GeoFigure {...FIG_EX4} />,
   ex5: <GeoFigure {...FIG_EX5} />,
   ex8: <GeoFigure {...FIG_EX8} />,
@@ -63,12 +61,10 @@ export default function Module04Awazzif() {
               « فيثاغورس ثم طالس (1) » à 1024 et 1366) ; la page garde la figure au-dessus */}
           <PlayerSwitch
             player={first.figure === 'ex3' ? (
-              // les quatre figures AU-DESSUS de la carte, UN écran (`data-paging-keep`, « pas d'aller-retour », 2026-11-11) : séparées,
-              // `pairFigures` les posait à côté de la carte et ses quatre lignes de choix débordaient la colonne étroite (OVER, zoom 0,6)
-              <div className="space-y-1 [&_svg]:max-h-[70px]" data-paging-keep>
-                {FIGURES.ex3Row}
-                <TextbookExercise exercise={{ ...ex, figure: undefined, statement: ex.statement ?? first.statement }} requires={requires} onAnswered={mark(ex.id)} />
-              </div>
+              // UN écran par figure (« pas d'aller-retour », 2026-11-11) : chaque ligne « الشكل (k) » porte SON dessin à côté d'elle (`rowAside`) ;
+              // les quatre ensemble tenaient seulement au zoom minimum 0,6. La clé d'enregistrement de la grille ne change pas.
+              <TextbookExercise exercise={{ ...ex, figure: undefined, statement: ex.statement ?? first.statement }} requires={requires} onAnswered={mark(ex.id)}
+                rowAside={(k) => <div className="[&_svg]:max-h-[260px]"><GeoFigure {...FIG_EX3[k]} maxWidth={320} /></div>} />
             ) : (
               <div className="flex items-start gap-4" data-ex-side data-paging-keep>
                 {first.figure && <div className="w-[36%] shrink-0">{FIGURES[first.figure]}</div>}

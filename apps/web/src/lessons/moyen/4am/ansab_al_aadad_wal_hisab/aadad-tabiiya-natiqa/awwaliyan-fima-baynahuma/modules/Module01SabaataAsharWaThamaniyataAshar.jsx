@@ -59,7 +59,7 @@ export default function Module01SabaataAsharWaThamaniyataAshar() {
         />
       )}
       steps={[
-        { needsRound: round, num: 1, title: 'لماذا لم تنجح إلا حقيبة واحدة؟', subtitle: 'السؤال أ) من الكتاب', done: q1,
+        { needsRound: round, num: 1, title: 'لماذا لم تنجح إلا حقيبة واحدة؟', subtitle: 'السؤال أ)', done: q1,
           content: (
             <div className="space-y-3">
               <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>

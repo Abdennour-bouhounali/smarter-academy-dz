@@ -141,11 +141,11 @@ export const LESSON_CONFIG = {
       stage: 'trigger', teachesLearningPointIds: ['4am_qawasim-adad-tabii_P1', '4am_qawasim-adad-tabii_P2'],
       color: 'indigo', style: 'featured', estimatedMin: 12, difficulty: 1, actionText: 'أكتب الجداءات' },
     { id: '02', number: 2, slug: 'tariqa-105', path: `${LESSON_BASE_PATH}/tariqa-105`,
-      title: 'طريقة — قواسم العدد 105', desc: 'إلى أي عدد نختبر؟ طريقة الكتاب مع 48 ثم 17 ثم 105.',
+      title: 'طريقة — قواسم العدد 105', desc: 'إلى أي عدد نختبر؟ الطريقة المنظّمة مع 48 ثم 17 ثم 105.',
       stage: 'discovery', teachesLearningPointIds: ['4am_qawasim-adad-tabii_P3', '4am_qawasim-adad-tabii_P4'],
       color: 'violet', style: 'featured', estimatedMin: 14, difficulty: 2, actionText: 'أكتشف الطريقة' },
     { id: '03', number: 3, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
-      title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 3، 4، 6، 7، 8، 9 و11.',
+      title: 'أوظّف تعلّماتي', desc: 'سبعة تمارين من السهل إلى الصعب.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_qawasim-adad-tabii_P2', '4am_qawasim-adad-tabii_P4'],
       color: 'amber', style: 'featured', estimatedMin: 15, difficulty: 2, actionText: 'أتدرّب' },
     // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui

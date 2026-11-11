@@ -65,7 +65,7 @@ export default function Module02Maarif() {
               {q2 && <KnowledgeBrick id="ikhtizal-bil-pgcd" lead="بدل عدة قسمات، قسمة واحدة على القاسم المشترك الأكبر." />}
             </div>
           ) },
-        { num: 4, title: 'طريقة الكتاب: 595/560', done: read,
+        { num: 4, title: 'الطريقة: 595/560', done: read,
           content: <div className="space-y-3"><MethodSteps method={METHOD} onAllRevealed={() => setRead(true)} />{read && <KnowledgeBrick id="tahaqquq-al-ikhtizal" compact />}</div> },
         { num: 5, title: 'ورقة رانية: أين الخطأ؟', subtitle: 'جد السطر الخاطئ وصحّحه', done: q5,
           content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={() => setQ5(true)} /> },

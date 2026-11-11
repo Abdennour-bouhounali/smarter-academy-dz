@@ -170,7 +170,7 @@ export const LESSON_CONFIG = {
       title: 'نشاط 6 أ — الفروق المتتابعة', desc: '252 و 140: اطرح، وعوّض، وأعد — إلى أن يصير الفرق معدومًا.',
       stage: 'trigger', teachesLearningPointIds: ['4am_bahth-pgcd_P1', '4am_bahth-pgcd_P2'], color: 'indigo', style: 'featured', estimatedMin: 14, difficulty: 2, actionText: 'أطرح وأعيد' },
     { id: '02', number: 2, slug: 'khassiyatan', path: `${LESSON_BASE_PATH}/khassiyatan`,
-      title: 'معارف — خاصيتان، وطريقة الفروق', desc: 'PGCD(a ; b) = PGCD(b ; a − b) و PGCD(a ; b) = PGCD(b ; r)، ثم مثال الكتاب 117 و 91.',
+      title: 'معارف — خاصيتان، وطريقة الفروق', desc: 'PGCD(a ; b) = PGCD(b ; a − b) و PGCD(a ; b) = PGCD(b ; r)، ثم مثال 117 و 91.',
       stage: 'discovery', teachesLearningPointIds: ['4am_bahth-pgcd_P1', '4am_bahth-pgcd_P2', '4am_bahth-pgcd_P3'], color: 'violet', style: 'featured', estimatedMin: 14, difficulty: 2, actionText: 'أبرّر' },
     { id: '03', number: 3, slug: 'khwarizmiyat-iqlidus', path: `${LESSON_BASE_PATH}/khwarizmiyat-iqlidus`,
       title: 'نشاط 6 ب — خوارزمية إقليدس', desc: '765 و 135: ثمان خطوات بالفروق، ثلاث قسمات بإقليدس. ثم 836 و 1938.',
