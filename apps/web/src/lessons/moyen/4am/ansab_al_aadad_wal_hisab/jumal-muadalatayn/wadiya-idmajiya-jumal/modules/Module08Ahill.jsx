@@ -39,10 +39,10 @@ const O3 = [
 ];
 const O4 = ['$(25 ; 50)$', '$(50 ; 25)$', '$(35 ; 40)$', '$(37{,}5 ; 37{,}5)$'];
 const O5 = [
-  'سعر علبة العصير 25 DA وسعر قطعة الحلوى 50 DA، لأنّ $150 \\times 25 + 150 \\times 50 = 11250$ و $24 \\times 25 + 30 \\times 50 = 2100$',
-  'سعر علبة العصير 25 DA؛ أمّا سعر قطعة الحلوى فلا يمكن حسابه',
-  'سعر علبة العصير 50 DA وسعر قطعة الحلوى 25 DA',
-  'ثمن علبة وقطعة معا 75 DA، ولا يمكن معرفة كل سعر وحده',
+  'سعر علبة العصير 25 دج وسعر قطعة الحلوى 50 دج، لأنّ $150 \\times 25 + 150 \\times 50 = 11250$ و $24 \\times 25 + 30 \\times 50 = 2100$',
+  'سعر علبة العصير 25 دج؛ أمّا سعر قطعة الحلوى فلا يمكن حسابه',
+  'سعر علبة العصير 50 دج وسعر قطعة الحلوى 25 دج',
+  'ثمن علبة وقطعة معا 75 دج، ولا يمكن معرفة كل سعر وحده',
 ];
 const label = (list) => (i) => <MathText>{list[i]}</MathText>;
 const opts = (list) => list.map((o) => <MathText key={o}>{o}</MathText>);
@@ -63,7 +63,7 @@ export default function Module08Ahill() {
           assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_wadiya-idmajiya-jumal_P2'] } },
         { id: 'E2', skill: 'tarjama', requires: ['tarjamat-maalumat'], prompt: <Q>المرحلة 2 — جملة المعادلتين التي تترجم المعطيات هي:</Q>,
           options: opts(O2), optionLabel: label(O2), correct: 0, cols: 2,
-          explain: <MathText>{'150 علبة و 150 قطعة بـ 11 250 DA: $150x + 150y = 11250$ ؛ وما بقي، 24 علبة و 30 قطعة، بـ 2 100 DA: $24x + 30y = 2100$.'}</MathText>,
+          explain: <MathText>{'150 علبة و 150 قطعة بـ 11250 دج: $150x + 150y = 11250$ ؛ وما بقي، 24 علبة و 30 قطعة، بـ 2100 دج: $24x + 30y = 2100$.'}</MathText>,
           assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_wadiya-idmajiya-jumal_P2'] } },
         { id: 'E3', skill: 'tariqa', requires: ['ikhtiyar-tariqa'], prompt: <Q>المرحلة 3 — نقسم طرفي المعادلة الأولى على 150 لنبسّطها. تصبح الجملة:</Q>,
           options: opts(O3), optionLabel: label(O3), correct: 0, cols: 2,
@@ -80,6 +80,6 @@ export default function Module08Ahill() {
       ]}
       badges={[{ id: 'idmaj', emoji: '🎉', label: 'أدمجت تعلّماتي', test: (m) => (m.tarjama ?? 0) + (m.tariqa ?? 0) + (m.tahaqquq ?? 0) === 0 }]}
       synthese={<KnowledgeSnapshot complete variant="complete" />}
-      completion={{ masterTitle: 'أنهيت الوحدة 5', title: 'جمل معادلتين من الدرجة الأولى بمجهولين', message: 'سعر علبة العصير 25 DA وسعر قطعة الحلوى 50 DA. اخترت المجهولين، ترجمت المعلومتين بجملة معادلتين، بسّطت واخترت طريقة الحل، ثم تحققت في النص — ما تعلّمته في دروس الوحدة الثلاثة.', verbs: ['أترجم', 'أبسّط', 'أحلّ', 'أتحقق'], masterBadgeLabel: 'الوحدة 5' }} />
+      completion={{ masterTitle: 'أنهيت الوحدة 5', title: 'جمل معادلتين من الدرجة الأولى بمجهولين', message: 'سعر علبة العصير 25 دج وسعر قطعة الحلوى 50 دج. اخترت المجهولين، ترجمت المعلومتين بجملة معادلتين، بسّطت واخترت طريقة الحل، ثم تحققت في النص — ما تعلّمته في دروس الوحدة الثلاثة.', verbs: ['أترجم', 'أبسّط', 'أحلّ', 'أتحقق'], masterBadgeLabel: 'الوحدة 5' }} />
   );
 }
