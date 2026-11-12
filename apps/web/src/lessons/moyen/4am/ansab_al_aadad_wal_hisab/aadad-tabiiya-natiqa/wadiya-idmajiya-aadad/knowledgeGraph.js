@@ -6,46 +6,44 @@
  * Une leçon à part, traitée à part :
  *   — elle n'introduit AUCUNE connaissance (knowledge.jsx : deux rappels, au module 7) ;
  *     la carte ne lui en invente pas : elle montre la DÉMARCHE (قراءة → تحليل
- *     واستراتيجية → تنفيذ) de la situation des tabliers et ce qu'elle mobilise ;
- *   — la SOLUTION (13 écoles) n'y figure pas. Tout nœud est gardé par un item du
- *     module 7, alors que le module 8 (« وضعية الاختبار النهائي ») est l'évaluation ; et
- *     le module 7 le dit lui-même : « هنا فهمنا واختطّينا الاستراتيجية فقط ».
- *   — les six وضعيات d'entraînement (modules 1 à 6) ne sont pas dans la carte : elles
- *     s'entraînent sur d'autres nombres, la carte reste celle de la situation du test.
+ *     واستراتيجية → تنفيذ) d'une situation « deux sortes d'objets, le plus grand nombre de groupes » et ce qu'elle mobilise ;
+ *   — dans le LECTEUR DE MISSION la carte est OUVERTE dès le premier écran (`knowledgeMapOpen`, 2026-11-12) : elle parle donc EN LETTRES
+ *     (a objets d'une sorte, b d'une autre, g groupes) — ni les nombres de la وضعية des tabliers (le module 7), ni sa solution (le défi 🏆,
+ *     module 8) : content/forbidden.js, content/mission.test.js (le balayage a d'abord échoué ici : le nœud racine montrait la وضعية entière) ;
+ *   — les six وضعيات d'entraînement (modules 1 à 6) ne sont pas dans la carte : elles s'entraînent sur d'autres nombres.
  *
- * Sources : content/textbook.js (SITUATION : énoncé, données, analyse — un ajout de
- * la plateforme), la question 3 du module 7 et sa remarque, le distracteur de E1/E2.
- *
- *                     [كم مدرسة؟]                          مفهوم
+ *                     [كم مجموعة؟]                         مفهوم
  *                         نفهمها │
  *                     [قراءة الوضعية]                      فكرة أساسية
  *              تذكّر ┌──────┴──────┐ نختار استراتيجية
  *   📌 [القاسم المشترك الأكبر]   [خوارزمية إقليدس]          طريقة
  *          خطأ شائع │                │ نطبّقها
- *       ⛔ [مجموع أم قاسم؟]      [الخطوة الأولى]           مثال
+ *       ⛔ [مجموع أم قاسم؟]      [آخر باقٍ غير معدوم]       مثال
  *                    └──────┬─────────┘ نستخلص
  *                    🎯 [ثلاث مراحل]
  */
-import { SITUATION } from './content/textbook';
-
-const useful = SITUATION.data.filter((d) => d.useful);
-const [fahm, istratijiya, tanfidh] = SITUATION.analysis;
-// Module 7, remarque finale : la carte s'arrête là où le module 1 s'arrête.
-const NOT_SOLVED_HERE = 'الحلّ نفسه في «وضعية الاختبار النهائي»: هنا فهمنا واختطّينا الاستراتيجية فقط.';
+/** Les trois étapes de l'analyse, EN LETTRES (la démarche de toute وضعية « أكبر عدد من المجموعات »). */
+const STEPS = [
+  { label: 'قراءة الوضعية وفهمها', text: 'نوزّع a شيئًا من نوع و b شيئًا من نوع آخر بالتساوي على مجموعات: كل مجموعة تأخذ العدد نفسه من كل نوع، لا يبقى شيء، وعدد المجموعات أكبر ما يمكن.' },
+  { label: 'تحليل الوضعية واختيار استراتيجية حل مناسبة', text: 'عدد المجموعات يقسم a ويقسم b: هو قاسم مشترك لهما، والأكبر هو PGCD(a ; b). حين يكون العددان كبيرين نعيّنه بخوارزمية إقليدس.' },
+  { label: 'تنفيذ استراتيجية الحل', text: '• نقسم الأكبر على الأصغر، ثم القاسم على الباقي، إلى أن يصير الباقي معدومًا؛ آخر باقٍ غير معدوم هو g = PGCD(a ; b). • كل مجموعة تأخذ a ÷ g من النوع الأوّل و b ÷ g من النوع الثاني.' },
+];
+const [fahm, istratijiya, tanfidh] = STEPS;
+const NOT_SOLVED_HERE = 'في وضعية الوحدة نفهم ونختار الاستراتيجية؛ والحلّ نفسه هو التحدّي.';
 
 export const KNOWLEDGE_GRAPH = {
   root: 'wadiya',
   nodes: [
     {
       id: 'wadiya', kind: 'concept', lane: 'center', requires: 'pgcd-taarif',
-      title: 'كم مدرسة؟', subtitle: 'المآزر المدرسية',
-      context: { text: SITUATION.text },
+      title: 'كم مجموعة؟', subtitle: 'توزيع نوعين بالتساوي',
+      context: { text: 'لدينا a شيئًا من نوع و b شيئًا من نوع آخر، ونريد توزيعها كلّها بالتساوي على أكبر عدد ممكن من المجموعات.' },
       reveals: ['fahm'],
     },
     {
       id: 'fahm', kind: 'idea', lane: 'center', requires: 'pgcd-taarif',
       title: 'قراءة الوضعية', subtitle: 'توزيع بالتساوي دون باقٍ',
-      context: { text: fahm.text, list: useful.map((d) => d.text) },
+      context: { text: fahm.text, list: ['عدد الأشياء من النوع الأوّل: a', 'عدد الأشياء من النوع الثاني: b', 'أكبر عدد ممكن من المجموعات', 'العدد نفسه من كل نوع في كل مجموعة'] },
       reveals: ['qasim', 'iqlidus'],
     },
     {
@@ -55,13 +53,13 @@ export const KNOWLEDGE_GRAPH = {
       reveals: ['khata'],
     },
     {
-      // ⛔ خطأ شائع — la question 3 du module 7 : le distracteur « مجموع / فرق ».
+      // ⛔ خطأ شائع — la question de la condition du module 7 et « ورقة نسيبة » : le total au lieu de chaque sorte.
       id: 'khata', kind: 'common_mistake', lane: 'start', requires: 'pgcd-taarif',
-      title: 'مجموع أم قاسم؟', subtitle: 'عدد المدارس يقسم العددين',
+      title: 'مجموع أم قاسم؟', subtitle: 'عدد المجموعات يقسم العددين',
       context: {
         parts: [
-          { role: 'wrong', text: 'نجمع عدد المآزر الورديّة والزرقاء، أو نطرح أحدهما من الآخر، ونعتبر الناتج عدد المدارس.' },
-          { role: 'why', text: 'لا يبقى أيّ مئزر: الباقي معدوم في كل قسمة، فعدد المدارس قاسم للعددين، لا مجموعهما ولا فرقهما.' },
+          { role: 'wrong', text: 'نبحث عن قاسم لمجموع العددين a + b، أو نأخذ الفرق a − b، ونعتبر الناتج عدد المجموعات.' },
+          { role: 'why', text: 'لا يبقى أيّ شيء من كل نوع: الباقي معدوم في القسمتين، فعدد المجموعات قاسم لـ a ولـ b معًا، لا قاسم لمجموعهما ولا فرقهما.' },
           { role: 'right', text: fahm.text },
         ],
       },
@@ -76,7 +74,6 @@ export const KNOWLEDGE_GRAPH = {
     {
       id: 'buwar', kind: 'example', lane: 'end', requires: 'khwarizmiyat-iqlidus',
       title: 'آخر باقٍ غير معدوم', subtitle: 'هو القاسم المشترك الأكبر',
-      // La remarque du module 7 : on s'arrête avant le calcul.
       context: {
         text: 'نقسم الأكبر على الأصغر، ثم الأصغر على الباقي، إلى أن يصير الباقي معدومًا: آخر باقٍ غير معدوم هو القاسم المشترك الأكبر.',
         note: NOT_SOLVED_HERE,
@@ -87,7 +84,7 @@ export const KNOWLEDGE_GRAPH = {
       // 🎯 خلاصة — les trois étapes de l'analyse, nommées par la leçon.
       id: 'khulasa', kind: 'takeaway', lane: 'center', requires: 'khwarizmiyat-iqlidus',
       title: 'ثلاث مراحل', subtitle: 'نقرأ · نحلّل · ننفّذ',
-      context: { list: SITUATION.analysis.map((a) => a.label) },
+      context: { list: STEPS.map((a) => a.label) },
       reveals: [],
     },
   ],

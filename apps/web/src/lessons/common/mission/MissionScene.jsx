@@ -26,6 +26,7 @@ import CivilRegistryScene from './CivilRegistryScene';
 import KioskCardsScene from './KioskCardsScene';
 import MuseumDeskScene from './MuseumDeskScene';
 import PartyTableScene from './PartyTableScene';
+import ApronStoreScene from './ApronStoreScene';
 
 /**
  * LA SCÈNE d'une mission (rollout 2026-11-08) : chaque leçon dessine la sienne, choisie par `mission.scene` dans sa config
@@ -76,6 +77,8 @@ const SCENES = {
   'museum-desk': MuseumDeskScene,
   // unité 5, la synthèse wadiya-idmajiya-jumal (2026-11-12) : la table du goûter de l'école — rangées ÉGALES de jus et de gâteaux, un plateau de restes
   'party-table': PartyTableScene,
+  // unité 1, la synthèse wadiya-idmajiya-aadad (2026-11-12) : le magasin de la commune — deux piles de tabliers, des caisses d'école identiques
+  'apron-store': ApronStoreScene,
 };
 
 function CourtyardBigScene(props) {

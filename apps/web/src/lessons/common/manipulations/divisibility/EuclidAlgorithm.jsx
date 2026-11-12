@@ -69,6 +69,9 @@ export default function EuclidAlgorithm({
   a: a0, b: b0, title, lead, mission, compareWith, initialMode = 'student', allowModeSwitch = false, answerHiddenByDefault = false, onFinished, onTrial, checkpoints: cpOn = true, coach: coachOn = true,
   // ── LECTEUR DE MISSION (rollout 2026-11-08, traitement v2) ──
   onVerdict, levels: withLevels = true, handDone = false, chains: chainsOn = ['divs', 'pgcd'], predict: predictOn = true, choices,
+  // ── SYNTHÈSE (unité 1, 2026-11-12, additif) : `share` = les mots de la part { all, groups, each } — la chaîne pgcd du lecteur finit alors sur
+  // la construction NUMÉRIQUE a = PGCD × part (CHAINS_SHARE) ; absent, rien ne change ──
+  share = null,
 }) {
   const { t } = useTranslation('lesson');
   const gameScreen = useInMissionPlayer();
@@ -95,10 +98,10 @@ export default function EuclidAlgorithm({
   const reachedOf = { divs: L.isEuclidFinished(lab), pgcd: lab.pgcdPlaced };
   const pending = ruleByCheckpoint ? STEPS.find((id) => chainsOn.includes(id) && !answeredIds.includes(id)) : null;
   // lecteur : compter d'un toucher puis BÂTIR la première division ; la page garde ses suites
-  const chain = pending && reachedOf[pending] ? (gameScreen ? CHAINS_PLAYER : CHAINS)[pending] : null;
+  const chain = pending && reachedOf[pending] ? (gameScreen ? (share ? CHAINS_SHARE : CHAINS_PLAYER) : CHAINS)[pending] : null;
   const cp = useLabCheckpoint({
     id: chain ? pending : null,
-    questions: chain ? chain.map((q) => QUESTIONS[q]({ a, b, lab }, k)) : null,
+    questions: chain ? chain.map((q) => QUESTIONS[q]({ a, b, lab, share }, k)) : null,
     reached: true,
     resetKey: sceneKey,
     onRetry: () => setLab((s) => (pending === 'divs' ? L.initEuclid({ a, b }) : { ...s, pgcdPlaced: false })),
@@ -430,6 +433,14 @@ export const CHAINS_PLAYER = Object.freeze({
   divs: ['countFill', 'build', 'invariant'],
   pgcd: ['stop', 'rule'],
 });
+/**
+ * Lecteur, SYNTHÈSE (unité 1, 2026-11-12, additif — prop `share`) : après la règle, la PART — le PGCD est le plus grand nombre de parts égales,
+ * et l'élève BÂTIT a = PGCD × part (une tuile de trop : la part de l'autre nombre). La manche finit sur une égalité numérique.
+ */
+export const CHAINS_SHARE = Object.freeze({
+  divs: CHAINS_PLAYER.divs,
+  pgcd: ['stop', 'rule', 'share'],
+});
 
 const $ = (x) => `$${x}$`;
 const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
@@ -530,6 +541,18 @@ const BUILD = {
       options: [{ text: <MathText>{k('opt1')}</MathText>, correct: true }, wrong2, wrong3],
       hints: [Mx(k, 'rule.hint1'), Mx(k, 'rule.hint2', { g })],
       explain: <MathText>{k('cp.rule.explain', { a, b, g })}</MathText>,
+    };
+  },
+  // SYNTHÈSE (prop `share`) : la part BÂTIE — a = PGCD × part ; les emplacements portent les mots de la leçon, la tuile de trop est la part de b
+  share: ({ a, b, lab, share: w }, k) => {
+    const g = lab.gcd;
+    const words = { all: w?.all ?? k('cp.share.slotAll'), groups: w?.groups ?? k('cp.share.slotGroups'), each: w?.each ?? k('cp.share.slotEach') };
+    const o = { a: $(a), b: $(b), g: $(g), q: $(a / g), ...words, eq: $(`${a} = ${g} \\times ${a / g}`) };
+    return {
+      id: 'share', kind: 'build', prompt: Mx(k, 'share.prompt', o),
+      slots: [words.all, words.groups, words.each],
+      tiles: [a / g, b / g, a, g], expected: [a, g, a / g], ops: ['=', '×'],
+      hints: [Mx(k, 'share.hint1', o), Mx(k, 'share.hint2', o)], explain: Mx(k, 'share.explain', o),
     };
   },
 };
