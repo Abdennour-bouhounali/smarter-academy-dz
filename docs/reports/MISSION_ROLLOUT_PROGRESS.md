@@ -20,7 +20,7 @@
 | 8 | `awwaliyan-fima-baynahuma` | `coprime-explorer` (v2 treatment, new) | ✅ done 2026-11-09 | `feat(lessons): awwaliyan-fima-baynahuma — mission prototype` | See « Lesson 8 » below. |
 | 9 | `wadiya-idmajiya-aadad` | `common-divisors` + `euclidean-algorithm` (player rounds; Euclid gains the additive `share` chain) | ✅ done 2026-11-12 | `feat(lessons): wadiya-idmajiya-aadad — mission prototype (synthesis)` | The THIRD synthesis in the player; see « Unit 1, synthesis » below. |
 
-Catalogue order: `packages/core/curriculum/dz/lessons_4am_2026_2027.json`. Unit 2 is converted (five lessons; synthesis waiting); unit 9 is converted with its synthesis (the synthesis pilot); unit 3 (three lessons) and unit 4 « معادلات ومتراجحات » (four lessons, 2026-11-11, branch `integrate-unit4`) are converted, their syntheses waiting for the synthesis-recipe answer; unit 5 « جمل معادلتين » (three lessons, 2026-11-12, branch `integrate-unit5`) is converted WITH its synthesis (the provisional recipe) (owner decision 2026-11-12); on the same day the owner said « go ahead » for units 1–4's syntheses — unit 1's is converted, units 2–4's follow one by one; units 6–8 and 10–14 are not started. The full prompt for unit 2 « الحساب على الجذور » (every rule, check and review step of unit 1): `docs/reports/UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. The next prompt, unit 9 « خاصية طالس » (unit 2's recipe plus every review lesson of unit 2): `docs/reports/UNIT9_KHASSIYAT_TALIS_MISSION_PROMPT.md`. Unit 1's synthesis `wadiya-idmajiya-aadad` is converted (2026-11-12, owner go-ahead for units 1–4).
+Catalogue order: `packages/core/curriculum/dz/lessons_4am_2026_2027.json`. Unit 2 is converted with its synthesis (2026-11-12); unit 9 is converted with its synthesis (the synthesis pilot); unit 3 (three lessons) and unit 4 « معادلات ومتراجحات » (four lessons, 2026-11-11, branch `integrate-unit4`) are converted, their syntheses waiting for the synthesis-recipe answer; unit 5 « جمل معادلتين » (three lessons, 2026-11-12, branch `integrate-unit5`) is converted WITH its synthesis (the provisional recipe) (owner decision 2026-11-12); on the same day the owner said « go ahead » for units 1–4's syntheses — units 1 and 2's are converted, units 3–4's follow one by one; units 6–8 and 10–14 are not started. The full prompt for unit 2 « الحساب على الجذور » (every rule, check and review step of unit 1): `docs/reports/UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. The next prompt, unit 9 « خاصية طالس » (unit 2's recipe plus every review lesson of unit 2): `docs/reports/UNIT9_KHASSIYAT_TALIS_MISSION_PROMPT.md`. Unit 1's synthesis `wadiya-idmajiya-aadad` is converted (2026-11-12, owner go-ahead for units 1–4).
 
 ## Unit 2 « الحساب على الجذور » — the table
 
@@ -33,7 +33,7 @@ Prompt for the whole unit: `UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. Folder `lesso
 | 3 | `muadalat-x-murabba` | `square-fold` (v2 treatment + LabCoach, new; exact-only pin in the player) | ✅ done 2026-11-10 | `feat(lessons): muadalat-x-murabba — mission prototype` | See « Unit 2, lesson 3 » below. |
 | 4 | `amaliyat-judhur` | `square-tiling` (v2 treatment + LabCoach, new; both modes `product` and `simplest`) | ✅ done 2026-11-10 | `feat(lessons): amaliyat-judhur — mission prototype` | See « Unit 2, lesson 4 » below. |
 | 5 | `tawzif-khawass-judhur` | `square-tiling` (`simplest`: content, plus `predictAlso`, `avoid`, the chains `buildS` / `bestS`) | ✅ done 2026-11-10 | `feat(lessons): tawzif-khawass-judhur — mission prototype` | See « Unit 2, lesson 5 » below. |
-| S | `wadiya-idmajiya-judhur` | — | ⏳ council first (prompt §5) | | |
+| S | `wadiya-idmajiya-judhur` | `square-fold` + `square-tiling` (player rounds, existing chains `build` and `fullS`; no shared code change) | ✅ done 2026-11-12 | `feat(lessons): wadiya-idmajiya-judhur — mission prototype (synthesis)` | The FOURTH synthesis in the player; see « Unit 2, synthesis » below. |
 
 ## Unit 9 « خاصية طالس » — the table
 
@@ -2060,6 +2060,90 @@ on a real student.
 PGCD is the number of groups, a ÷ PGCD each ») needs ONE additive chain on the lab that computes (Euclid `share`) and the round on small numbers
 reuses the lesson lab's own BUILD (a = k × q); a COLLISION test by deep walk of the unit lessons' exported `{ a, b }` pairs replaces unit 5's
 signature files for a unit that has none.
+
+## Unit 2, synthesis — `wadiya-idmajiya-judhur` « أدمج تعلّماتي » (2026-11-12) — the FOURTH synthesis in the player
+
+**Decisions (binding):** owner go-ahead 2026-11-12 for the syntheses of units 1–4 (the provisional recipe), owner rules of the same day
+(« دج », no thousands space, no book pointer). As in units 5 and 1, module 7's unit situation IS the 🏆's situation (the carpet: 24 m², the
+length double the width): module 7 ANALYSES it (data, the model 2ℓ² = 24, the positive solution, simplest form, rounding at the end) and never
+solves it.
+
+**What was written**
+- Config: `studentView: 'mission'`, `knowledgeMapOpen`, scene `rug-market` (`mission/RugMarketScene.jsx`: a rug twice as long as wide on a market
+  floor, a measuring tape along its width, a girl in hijab and a boy, no number nor letter), an opening without a digit nor the carpet word,
+  `cta: 'أجرّب'`, `toolsOwned` = five keys, one per lesson (`jidhr-taarif` — jidhr-tarbii; `qima-muqarraba` — natiqa-ghayr-natiqa; `hulul-x2-a` —
+  muadalat-x-murabba; `jidaa-jidhrayn` — amaliyat-judhur; `kitaba-a-jidhr-b` — tawzif-khawass-judhur) with `usedIn`, `checkpoints: []`,
+  `climaxModule: 8`, `stationLabels`, `trainings`, `hideStars`, `durationMin: 90` (6 + 44 + 28 + 12), `sittings: 2`, `resumeInside`; two
+  `manipulation` resources for module 7 (same objective). Module 7's `estimatedMin` 12 → 28.
+- **Role scan FIRST** (`content/forbidden.js` + `content/mission.test.js`). It FAILED first (log `synth/rolescan-judhur-first-fail.log`) on
+  training 3 (a decoy 2√3 = √12), training 4 (pieces 12 / 27 / 48 → 2√3 and 4√3, the 🏆's width and length!), the memo card `tadhkir-x2-a`
+  (x² = 12 ⇔ ±2√3 — the 🏆's answer, open from the first screen) and `tariqat-wadiya` (√48 = 4√3), the open knowledge map (root = the whole
+  carpet text, 24 m², 12000), « DA » in the data, module 7's « الكتاب ص 28 » brief and SourceTag, and the config. Two levels: `ANSWER_TEXT`
+  (√12, 2√3, 4√3, √48, ℓ² = 12, 3,46…, 6,93…, 346, 347, 692, 693 — nowhere before the 🏆, module 7's own source included); `SITUATION_TEXT`
+  (the carpet words, وادي سوف, 12000, 24 m², 2ℓ² = 24 — nowhere before module 7). Rounds scanned by role (`card`, `solution`, `tile`, `near`,
+  `n`, `area`, `decoy`, `root`, `form`, `k`, `kk`) through values recomputed with the labs' own logic (`squareFold.init` + `eqBuildOf`,
+  `squareTiling.simplestShown` with the round's `avoid`). A COLLISION rule: no card, area, practice or free choice of module 7 is a number of a
+  unit lesson's rounds (deep walk of `folds.js`, `tilings.js`, `squares.js`, `rulers.js`, round settings skipped) — it caught 14 (a `maxTrials`,
+  hence the settings skip) and steered the free chips away from 90 (lesson 4's climax list).
+- Training 4 renumbered: 20 / 45 / 80 dm² (2√5 + 3√5 + 4√5 = 9√5 ≈ 20,1 < 21 dm, (9√5)² = 405 < 441); training 3's decoy 2√3 → 2√9. Memo cards:
+  S = 7 × 3 = 21, x² = 28 ⇔ ±2√7, √52 = 2√13. The open map speaks in LETTERS (`content/textbook.js › METHOD_LETTERS`: a rectangle of area S, length
+  2ℓ, 2ℓ² = S, ℓ² = S/2). « DA » → « دج » in the data (also module 8's option E1 and brief, the only module-8 change); the « خطأ مطبعي في الكتاب »
+  note and the « صورة الكتاب » caption are gone from what the student sees.
+- 27 typed training steps carry `shape` (`gap` with a `subject` holding `\ldots` — « 180 = … × 5 », « √5 ≈ … », « 9√5 ≈ … dm » since dm is not a
+  `STEP_UNITS` unit; `quantity` m; one `form` « 10√2 / 2 = [ ]√2 »); counts and points stay bare / word suffix.
+- « أستعدّ »: `content/prep.js`, 10 statements, jidhr → muadala → kitaba in cycle (« راجع » jidhr-tarbii, muadalat-x-murabba,
+  tawzif-khawass-judhur), levels 1·1·1·2·2·2·2·3·3·3, the first three true, truths recomputed in `prep.test.js`. The six old items stay in
+  `textbook.js`.
+- Module 7 (`Module07AlWadiya.jsx`), `LabRounds labId="m7-wadiya"` (`content/rounds.js`) on the SIBLING « a flower bed 80 m², length double the
+  width → x² = 40 → √40 = 2√10 » (it keeps the 🏆's trap: 2 × 632 = 1264 ≠ 1265 cm): **r1 « حوض الأزهار »** `square-fold` card x² = 40 (scale 2,
+  radius 7), prediction « كم حلًّا ؟ » (2), the nearest tick 13/2 refused (« لا تدريجة تعطي 40 بالضبط »), the exact marks ±√40 pinned, chain
+  `build` → « x² = 40 ⇔ x = √40 أو x = −√40 » (decoy 13/2); practice x² = 14 at graduation 1; **r2 « بلاط الحوض »** `square-tiling` simplest n = 40,
+  predictions smallest among [4, 2, 3] (→ 2) and « k = 3 ؟ » (no), chain `fullS` → the tile area 10 → the NUMERICAL build « √40 = 2 × √10 » → the
+  rule; practice 28 (2√7); a free workshop (28, 40, 56, 60). Steps (both views): 1 the statement + sorting the data (one screen) · 2 which
+  solution (needs r1; r1's two solutions beside the question) · 3 exact simplest form, then round at the end (needs r2; the r2 build beside it; the
+  trap shown on the SIBLING: 632 / 1265 / 1264 سم) · 4 the notebook screen « اكتب في 3 أسطر » · 5 the model « 2ℓ² = 24 » (first pen step, the
+  facts on the same screen) · 6 the method in the letter S (batch: ℓ² = S/2, not two widths, √(S/2) in a√b form, never double the rounded
+  width) · 7 « ورقة رقيّة » (`content/peerSheet.js`: a PLAN, no number; the error = « the length is double the width, so double the ROUNDED
+  width »). A pause line before the 🏆. The old brief (« الكتاب ص 28 »), the MethodSteps « كما في الكتاب » and the SourceTag are gone; the teacher
+  page gets a two-level workspace (fold x² = 40, tiling 40). Module 8 untouched except « 12000 دج ».
+- `_unit/missionStrings.test.js`: the synthesis' `CLIMAX` signature (√12, 2√3 / 4√3, √48, 346 / 693 / 692, 12000, the carpet word) — additive.
+
+**Added to shared code:** none in the labs (the existing player chains `build` and `fullS` carry the synthesis phenomenon). Scene `rug-market`
+registered in `MissionScene.jsx` (import + one entry).
+
+**Saved-answer keys:** none new; round state from the stars log (`m7-wadiya`).
+
+**Traps:** the lab's intro card (« هيا نبدأ ») must be closed before the first gesture; the coach bubble covers the − button and the verdict
+line of `square-fold` on its « again » step until « فهمت » (existing lab behaviour); a deep walk of the lessons' round files counts their
+SETTINGS (`maxTrials: 14`) as card numbers — skip `stars`, `goal`, `radius`, `scale`, `predict*`; a centimetre value glued to « cm » inside
+Arabic text scrambles (« 632cm، ») — write « 632 سم »; `dm` is not a `STEP_UNITS` unit, so a dm quantity is a `gap` with « \ldots\ dm ».
+
+**Review (`ecc:react-reviewer`, `ecc:code-reviewer`, `ecc:a11y-architect`):** no HIGH / CRITICAL. FIXED — holes in the text scan (`2\sqrt3`,
+`2 \times \sqrt{3}`, `2\cdot\sqrt 3`, `2 × √3`, `\sqrt{ 12 }`, dot decimals 3.46 / 6.93, `24\,m^2`, `24 \text{m}^2`, « مساحتها 24 » — each with a
+negative control); the role scan now catches 3,4641 / 6,928 by prefix; the WonPanel says « تمّ » once in its title instead of after every line;
+the scene's seam coordinate written plainly. Also fixed after `audit:knowledge:gate` (5 E): step 2 requires `hulul-x2-a` (prior) — the brick
+`tadhkir-x2-a` comes after it; step 3 requires `kitaba-a-jidhr-b` + `qima-muqarraba`; step 5 shows the `masahat-mustatil` brick BEFORE its
+question (it also establishes it for module 8). REJECTED — `teachingScope` and the module-7 situation resource title carry the carpet word
+(teacher-facing metadata / module 7 itself, as in unit 1); per-line source scan misses values built from constants (`R1_LINES` come from `BED`,
+covered by the round tests); notebook button label kept as in unit 1 (shared pattern).
+
+**Open (for the owner):** the 🏆's key computation is already SOLVED in two unit lessons: `amaliyat-judhur` (content/problems.js, the big tile
+« √12 = 2√3 dm ») and `tawzif-khawass-judhur` (content/problems.js, « √12 = 2√3 » in the strip and A = √(50/3) × √2 × √12; exercises « √12 = 4√3
+خطأ ») and lesson 2 rounds √12 ≈ 3,46 → 3,5 (`natiqa-ghayr-natiqa` exercises / Module07Itqan). The carpet situation itself (24 m², L = 2ℓ) is in
+no lesson. Not my files: a cross-lesson decision. The catalogue duration (30 min) differs from the modules' total (validator warning, as for the
+other syntheses). Module 7's ≈ 28 min estimate is not timed on a real student.
+
+**Recipe lessons:** when the unit's labs already own the synthesis gesture (x² = a → keep the positive root; √n → k√b), module 7 needs NO lab
+change: two rounds on ONE sibling number (here 40) chain the two labs into the 🏆's method; choose the sibling so that it keeps the 🏆's trap
+(here the early rounding: 2 × round(√40) ≠ round(2√40)) and show that trap only in a step's explanation, never as a round.
+
+**Verification:** vitest `src/lessons` + `src/pages` 764 files / 13 455 tests green (before the review fixes; the unit folder re-run after them:
+30 files / 211 tests green); `check:lessons` every part exit 0 (activation-drift after the export; entry 241.4 KB gzip; the knowledge gate first
+failed on 5 E of this lesson — fixed); `lab-rollout-status --lesson wadiya-idmajiya-judhur` ✅; `no-back-and-forth` LONE 0 · OVER 0 · PAIR 0 at
+1366 / 1024 / 1920 (`sequentialUnlock` restored); walk of module 7 at 1024 / 1366 / 1920×1080: r1 ★★★, r2 ★★★, every step screen 0 overflow,
+0 scroll, 0 wrapped formula; trainings walk at 1024: 20 of 27 shaped steps entered in their shape (gap / form), 0 issues (the walk script stops at
+the written-solution reveal of trainings 1–3). Module 7's required path, automated ≈ 85 s (rounds ≈ 22 s); student estimate ≈ 28 min (rounds ≈ 9,
+steps ≈ 19), not timed.
 
 ## The synthesis recipe (PROVISIONAL until a real student has been timed on the pilot: ≤ 32 min for module 7, module 8 finished)
 
