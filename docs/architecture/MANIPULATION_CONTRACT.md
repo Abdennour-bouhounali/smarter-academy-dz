@@ -2966,6 +2966,63 @@ Since 2026-11-10 (unit 9, lesson 2) a `build` may also set `accept` (other filli
   (`coachOf`: `carry`, `check`, `open`, `stretch`, `again`) — the lab's FIRST coach. `shownValues` by role (ages, values, totals, screens, the meet,
   the first value, equations, the structure `three` / `factor3` that the climax owns). Strings `growthRace.player / coach / predict`. Scene
   `family-heights`.
+- **Twenty-third example (2026-11-12, unit 5):** lesson `mafhum-jumla`, `content/pairs.js` (`M1_ROUNDS`, `LabRounds labId="lab-pair-m1"`:
+  `x+y=7|3x+y=17` values → `x+y=9|50x+20y=300` values, three gauge-1 pairs, the swap → `x+y=13|3x+y=29` COVERED, required → ⭐ `x-y=4|x+2y=1` →
+  free; `M2_ROUNDS`, `lab-pair-m2` (owner OQ1, module 2 has no other lab): `x+y=6|50x+50y=280` (never together) → `x+y=6|50x+50y=300` (always
+  together); easier rounds each `releases`), verdict L1. `pair-scoreboard` gets a **PLAYER VERSION** `systems/PairScoreboardPlayer.jsx` behind a
+  4-line dispatcher (`PairScoreboard.jsx` default export: `useInMissionPlayer()` → player | `PairScoreboardPage`, the page JSX untouched;
+  `MatchCard`, `Coin`, `ValueBar`, `Deco` exported for the player); pure logic `logic/pairScoreboardPlayer.js`. Props: `system`, `start` (explicit,
+  never a trial), `readings` (`values` | `lines`), `covered`, `free` (`gauge1x3` — the first three gauge-1 pairs —, or the first refusal / the
+  pairs a goal requires), `discover` (`contrast` · `many` · `covered` · `gauge1x3`), `chains` (`CHAIN_SPECS`: `season` « which gauge » + BUILD
+  « 17 = 3 × 5 + 2 » (decoy 15); `coins` BUILD « 50x + 20y = 300 » (decoy 330) + the rule, after the swap; `covered` read 29 · 13 · 24, then
+  « why refused » only if a full-season claim was refused; `never` / `always` one tap; `none`), `predict` (`manyFirst` asked at the start,
+  `swapSol` AT the accepted claim — `predictWhen`), `counter` (« n من 3 »), `swap`, `nouns`, `choices` + `choiceSpec`, `coach`, `onVerdict`,
+  `onTrial`. **The gauges are MASKED while dragging** (and while a keyboard value is unsettled — `data-masked`, « player.masked »): a commit is
+  the only way to read them (verdict L1.2, the `solution-ray` precedent). **A trial** = a NEW committed pair; a refused claim counts once per
+  pair; in the covered round only claims count, the first refusal is free. The world is drawn as a STRIP (`stripGrid`: 1–4 rows, the largest
+  cell that fits the width and the mission area's height). **A ruler's value is read on the track's rect at gesture time; a ruler never takes a
+  fixed width from its container** (the track is `flex-1 min-w-0`, measured by `ResizeObserver`). Journal « جدول تجاربك » (العددان · (1) · (2) ·
+  الحكم: تجربة / قبول / رفض / قلب; « مغطّاة » until claimed). `LabCoach` (`coachOf`: `handleX` → `handleY` → `gauge1` after the first trial →
+  `claim` / `swap`, `reveal` in the covered round; bubbles above — below they covered the next ruler) — the lab's FIRST coach, player only.
+  `shownValues(props)` by role. Strings `pairScoreboard.player / coach / predict` (player nouns say « دج »). Scene `civil-registry`.
+- **Twenty-fourth example (2026-11-12, unit 5):** lesson `hall-jabri`, `content/cards.js` (`M1_ROUNDS`, `LabRounds labId="lab-cards-m1"`:
+  `x+y=8|x-y=2` one method → `2x+y=11|3x-y=4` both methods → `2x+3y=14|x-y=2` both methods, required → ⭐ `4x+3y=5|3x-2y=8` → free; easier rounds
+  one method, no question, each `releases`), verdict L2. `<Manipulation type="elimination-cards" system="2x+y=11|3x-y=4" methods={2} chains="r2"
+  predict={['vanish','samePair']} levels={false} />` renders in the player `systems/EliminationCardsPlayer.jsx`, chosen by a 4-line dispatcher
+  (`EliminationCards.jsx` → player | `EliminationCardsPage`, page unchanged, `Tile` exported); `logic/eliminationCards.js` untouched, the player
+  logic is `logic/eliminationCardsPlayer.js`. Props: `system`, `methods` (1 | 2: the round's discovery `{ tk: 'discovered' }` when that many
+  methods gave the SAME pair), `chains` (`r1` · `r2` · `r3` · `none`), `predict` (`vanish`, `multiplier` before the first gesture; `samePair` when
+  the first method is done), `choices` (free round), `coach`, `onVerdict`, `onTrial`. **A trial** (`trialOf`) = a substitution, a stack or a value
+  carried back that writes a NEW line (per method), or a counted refusal (`REFUSALS`: `sameCard`, `wrongUnknown`, `noCancel`, `both`); the
+  first counted refusal is free; isolating, × k, « السطر التالي » and UI guards are not trials. Chains (`CHAIN_SPECS`): `build` (r1) or
+  `build-sub` / `build-add` (r2, r3) at the one-unknown stage — BUILD « ▢ = ▢ » whose decoy is chosen by the student's PATH (`buildSpec`:
+  `signLost`, `oneSide`, `noBracket`, `transposition`), so the error the lesson forbids before its climax (rule P, verdict X11) is never offered on
+  that path; `pair` with the pair MASKED until answered; `rule` (r2) / `choose` (r3) after both methods; `see` (r1 only, `seeSpec`). Layout: the
+  two cards STACKED one per row (side by side the x tiles of (1) covered the value of (2) at 1024), a drawer, the current line in a `FitLine`;
+  journal « 📋 جدول تجاربك » (# · method · line · result word); an always-mounted `role="status"`; the cards grid `role="group"`; controls
+  `aria-disabled` + guard while a prediction or a question is open; no stepper, no celebration, no kiosk decor. `LabCoach` (`coachOf`: `start`,
+  `carry`, `scale` on the refused card, `next`, `other`; NO bubble at the value-carrying stage — it covered the chip) — the lab's FIRST coach,
+  player only. `shownValues` by role. Strings `eliminationCards.player / coach / predict`. Scene `kiosk-cards`.
+- **Twenty-fifth example (2026-11-12, unit 5):** lesson `mushkilat-jumla`, `content/stories.js` (`M1_ROUNDS`, `LabRounds labId="lab-story-m1"`:
+  r1 `x+y=12|70x+20y=440` count + money, by hand → r2 `2x+y=230|x+2y=190` money + money with a silent useless chip → ⭐ → free; `M2_ROUNDS`,
+  `lab-story-m2`: p1 `x+y=15|1100x+700y=17700` → (18 ; −3), the story REFUSES → free (a fractional story among them); easier rounds each
+  `releases`), verdict L3. `story-modeller` gets a **PLAYER VERSION** `systems/StoryModellerPlayer.jsx` behind a 4-line dispatcher
+  (`StoryModeller.jsx` → player | `StoryModellerPage`; the page and the synthesis's frozen render tests untouched); pure logic
+  `logic/storyModellerPlayer.js`. Player-only props: `chains` (`CHAIN_SPECS`: `first` solveTyped · buildCheck (« 70 × ▢ + 20 × ▢ = ▢ », decoy the
+  COUNT) · answerWhy; `second` solveTyped · verifySwap · buildAnswer (the answer sentence on the wide text slot, decoy the letter) · rule;
+  `easyFirst`, `easySecond`; `impossible` naturalTap · refuseTap · ruleNatural; `impossibleEasy`; `none` — one checkpoint id per moment of
+  `MOMENTS`: `typed`, `replayOk`, `answerOpen`, `answered`, `refused`), `predict` (`[{ key: 'dearer' | 'which', pos }]`), `items`
+  (`{ x: { glyph, color }, y }` drawn as TRAYS of objects — pencil, notebook, pen, ruler, eraser, book, ball, … (`Glyph`); a value that does not
+  count draws an empty dashed tray « ✗ لا يُعدّ »; a money + money story draws price tags), `onesPlaced`, `chips[].useless` (refusal reason
+  `unused`), `countNoun`, `freeFirstModel`, `choices` (`[{ id, label, props }]` — each story a fresh lab). Events: `onTrial { tk: 'model', ok, key,
+  free? }` per new translation (an incomplete one is told, not counted — the `roundsModel` model check of the Twenty-second example), `onVerdict
+  { groups: 0, exact }` per new replay (exact = both facts hold, so an impossible story's refusal is exact), `{ tk: 'discovered' }` (the right
+  answer sentence or the refusal), `reset`, `retry`, `predict`, checkpoint events. The story card stays on screen at EVERY stage
+  (`[data-sm-story]`); verdict, « المرحلة n من 5 » and the journal in the side column; an always-mounted live region; a number inside an Arabic
+  verdict is isolated with U+2066 … U+2069 (« -3 » never reads « 3- »). `LabCoach` (`coachOf`, by stage: `letter` / `toModel`, `chip` / `check` /
+  `toSolve`, `method` / `half` / `next`, `gate` / `replay`; bubbles below the chips) — the lab's FIRST coach, player only. The props are general
+  (any two-fact system, count or money facts, named or not) so the unit's synthesis can reuse the player. `shownValues` by role. Strings
+  `storyModeller.player / coach / predict`. Scene `museum-desk`.
 - **Blocking:** `cp.blocking` stays true until the chain is finished; the lab hides its « next task » button meanwhile.
 - **Guided, never told first:** wrong try 1 → the chosen option's `why` (else hint 1); try 2 → hint 2 (sharper); try 3 →
   the answer AND its explanation (the student is never stuck forever). A wrong option stays struck and disabled.
