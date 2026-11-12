@@ -3,6 +3,8 @@
  * Contrat : docs/architecture/KNOWLEDGE_MAP.md, Part A (A.15, cas de l'intégration) ;
  * modèle : aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/knowledgeGraph.js.
  *
+ *   — EN LETTRES (2026-11-12, la synthèse dans le lecteur de mission : la carte est ouverte dès le premier écran) : ni la زربية, ni
+ *     ses nombres — un rectangle d'aire S, long du double de sa largeur ℓ (content/textbook.js › METHOD_LETTERS) ;
  *   — aucune connaissance nouvelle : deux rappels (aire du rectangle, les deux
  *     solutions de x² = a) et la DÉMARCHE de la situation ;
  *   — la SOLUTION (ℓ = 2√3 m ≈ 346 cm, L = 4√3 m ≈ 693 cm) n'y figure pas :
@@ -12,7 +14,7 @@
  *   — les six وضعيات d'entraînement (modules 1 à 6) ne sont pas dans la carte : d'autres nombres, la carte reste
  *     celle de la situation évaluée (module 8).
  *
- *                      [ما بُعدا الزربية؟]                  مفهوم
+ *                      [ما بُعدا المستطيل؟]                  مفهوم
  *                           نفهمها │
  *                       [قراءة الوضعية]                    فكرة أساسية
  *                  تذكّر ┌──────┴──────┐ يعتمد على
@@ -24,24 +26,21 @@
  *                  └──────┬───────────────┘ نستخلص
  *                     🎯 [ثلاث مراحل]
  */
-import { SITUATION, REMARKS } from './content/textbook';
-
-const useful = SITUATION.data.filter((d) => d.useful);
-const [fahm, istratijiya, tanfidh] = SITUATION.analysis;
+import { SITUATION, REMARKS, METHOD_LETTERS } from './content/textbook';
 
 export const KNOWLEDGE_GRAPH = {
   root: 'wadiya',
   nodes: [
     {
       id: 'wadiya', kind: 'concept', lane: 'center', requires: 'masahat-mustatil',
-      title: 'ما بُعدا الزربية؟', subtitle: SITUATION.caption,
-      context: { text: SITUATION.text },
+      title: 'ما بُعدا المستطيل؟', subtitle: 'طوله ضعف عرضه',
+      context: { text: METHOD_LETTERS.question },
       reveals: ['fahm'],
     },
     {
       id: 'fahm', kind: 'idea', lane: 'center', requires: 'masahat-mustatil',
       title: 'قراءة الوضعية', subtitle: 'المعطيات المفيدة',
-      context: { text: fahm.text, list: useful.map((d) => d.text) },
+      context: { text: METHOD_LETTERS.read, list: METHOD_LETTERS.useful },
       reveals: ['masaha', 'hall'],
     },
     {
@@ -53,7 +52,7 @@ export const KNOWLEDGE_GRAPH = {
     {
       // ⛔ خطأ شائع — module 7, question 3 : le distracteur « 2ℓ² = 12000 » et sa correction.
       id: 'mushawwish', kind: 'common_mistake', lane: 'start', requires: 'masahat-mustatil',
-      title: 'معطى مشوِّش', subtitle: 'سعر الزربية',
+      title: 'معطى مشوِّش', subtitle: 'الثمن بالدينار',
       context: {
         parts: [
           { role: 'wrong', text: REMARKS.sirWrong },
@@ -72,7 +71,7 @@ export const KNOWLEDGE_GRAPH = {
     {
       id: 'tariqa', kind: 'method', lane: 'end', requires: 'tariqat-wadiya', notebook: true,
       title: 'من المساحة إلى البعدين', subtitle: 'نحلّ ثم ندوّر',
-      context: { text: istratijiya.text, note: tanfidh.text },
+      context: { text: METHOD_LETTERS.strategy, note: METHOD_LETTERS.execute },
       reveals: ['tadwir'],
     },
     {

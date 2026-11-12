@@ -27,6 +27,7 @@ import KioskCardsScene from './KioskCardsScene';
 import MuseumDeskScene from './MuseumDeskScene';
 import PartyTableScene from './PartyTableScene';
 import ApronStoreScene from './ApronStoreScene';
+import RugMarketScene from './RugMarketScene';
 
 /**
  * LA SCÈNE d'une mission (rollout 2026-11-08) : chaque leçon dessine la sienne, choisie par `mission.scene` dans sa config
@@ -79,6 +80,8 @@ const SCENES = {
   'party-table': PartyTableScene,
   // unité 1, la synthèse wadiya-idmajiya-aadad (2026-11-12) : le magasin de la commune — deux piles de tabliers, des caisses d'école identiques
   'apron-store': ApronStoreScene,
+  // unité 2, la synthèse wadiya-idmajiya-judhur (2026-11-12) : le marché des tapis — un tapis deux fois plus long que large, un ruban à mesurer
+  'rug-market': RugMarketScene,
 };
 
 function CourtyardBigScene(props) {
