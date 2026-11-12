@@ -51,10 +51,19 @@ export default function Module03Awazzif() {
         { num: 3, title: 'زوايا وخاصية طالس', done: all('19', '21'),
           content: (
             <div className="space-y-3">
-              <IsoscelesBisectorFigure />
-              {partsOf('19').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['khutuwat-hall', 'hall-jumla']} onAnswered={mark(ex.id)} />)}
-              <ThalesTrapezoidFigure />
-              {partsOf('21').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['khutuwat-hall', 'muhit-misaha']} onAnswered={mark(ex.id)} />)}
+              {/* la figure À CÔTÉ de son exercice, un seul bloc paginé : la question et ce qu'elle regarde sur le même écran */}
+              <div className="flex items-start gap-3" data-paging-keep>
+                <div className="w-52 shrink-0"><IsoscelesBisectorFigure /></div>
+                <div className="min-w-0 flex-1 space-y-3">
+                  {partsOf('19').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['khutuwat-hall', 'hall-jumla']} onAnswered={mark(ex.id)} />)}
+                </div>
+              </div>
+              <div className="flex items-start gap-3" data-paging-keep>
+                <div className="w-52 shrink-0"><ThalesTrapezoidFigure /></div>
+                <div className="min-w-0 flex-1 space-y-3">
+                  {partsOf('21').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['khutuwat-hall', 'muhit-misaha']} onAnswered={mark(ex.id)} />)}
+                </div>
+              </div>
             </div>
           ) },
         { num: 4, title: 'من الحياة اليومية', done: all('20', '26', '27', '28'),

@@ -40,6 +40,8 @@ const ring = 'focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-
 const btn = `inline-flex min-h-[44px] items-center gap-2 rounded-xl px-3 text-sm font-bold ${ring}`;
 const $ = (x) => `$${x}$`;
 const spin = (xs, seed) => { const s0 = ((seed % xs.length) + xs.length) % xs.length; return xs.map((_, i) => xs[(i + s0) % xs.length]); };
+/** Un nombre isolé de gauche à droite dans une phrase arabe (U+2066 … U+2069) : « -3 » ne devient jamais « 3- ». */
+const iso = (v) => `\u2066${v}\u2069`;
 const countWords = (u, n) => (Math.abs(n) >= 3 && Math.abs(n) <= 10 ? u?.few : u?.many) ?? u?.short ?? '';
 
 /* ══════════════ Les questions du lecteur (LabCheckpoint) ══════════════ */
@@ -263,10 +265,11 @@ function PlayerCore({
   const pendingPreds = judged.filter((key) => !heardPred.current.has(key));
   const holdChain = pendingPreds.length > 0 || predHold;
   const pending = cpLive && !holdChain ? P.pendingSpec(chainsMode, lb, ui, doneIds) : null;
-  const seed = model.chips.reduce((a, c) => a + Math.round(Math.abs(L.toNumber(c.value))), 0) + (pending?.id?.length ?? 0);
+  // la place des bonnes réponses varie d'une histoire à l'autre ; elle ne bouge JAMAIS sous le doigt quand une question s'ouvre (revue 2026-11-12)
+  const seed = model.chips.reduce((a, c) => a + Math.round(Math.abs(L.toNumber(c.value))), 0);
   const cp = useLabCheckpoint({
     id: pending?.id ?? null,
-    questions: pending ? pending.qs.map((q) => QUESTIONS[q]({ k, model, def, lab: lb, plan, sv, seed })) : null,
+    questions: pending ? pending.qs.map((q) => QUESTIONS[q]({ k, model, def, lab: lb, plan, sv, seed: seed + pending.id.length })) : null,
     reached: !!pending,
     resetKey: scene.inits,
     onRetry: () => {
@@ -285,7 +288,8 @@ function PlayerCore({
   useEffect(() => {
     if (P.discovered(lb) && !discoveredSent.current) {
       discoveredSent.current = true; state.report(onTrial, { tk: 'discovered' });
-      if (!cpLive) { state.discover(); state.formalize(); }
+      // sans suite à poser (questions coupées, ou une manche sans questions : ⭐, libre), la découverte du labo suffit
+      if (!cpLive || !spec.specs.length) { state.discover(); state.formalize(); }
     }
   }, [lb]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, { system: system0 }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -370,6 +374,9 @@ function PlayerCore({
   /* ── actions ── */
   const act = (fn) => () => { if (lockedRef.current) return; touch(); fn(); };
   const verifyModel = act(() => {
+    // une case vide n'est pas une traduction : on le DIT, sans compter un essai de modèle (ni un raté)
+    const empty = [1, 2].find((row) => !L.rowComplete(lb, row));
+    if (empty) { playSfx('over'); setGesture((g) => g + 1); setSaid({ key: 'raw', text: k('reason_incomplete', { n: empty }), refusal: true }); return; }
     const next = P.checkPlayerModel(lb, model, useless);
     if (next === lb) return;
     const key = P.modelKey(lb);
@@ -388,9 +395,10 @@ function PlayerCore({
     }
   });
   const doReplay = act(() => {
-    if (!L.gatesDone(lb) || !plan) return;
+    if (!plan) return;
+    if (!L.gatesDone(lb)) { playSfx('over'); setGesture((g) => g + 1); setSaid({ key: 'raw', text: k('player.gatesFirst'), refusal: true }); return; }
     const next = L.replay(lb, model, plan.values);
-    const key = P.trialKey(lb);
+    const key = P.trialKey(lb, plan.values);
     setLab(next); setGesture((g) => g + 1);
     const r = next.replay;
     playSfx(r.ok ? 'bell' : 'over');
@@ -406,9 +414,9 @@ function PlayerCore({
   /* ── le verdict de la colonne : DÉRIVÉ de l'état (jamais d'un événement passé) ── */
   const replayWhy = (r) => {
     const f = r.facts.findIndex((x) => !x.ok);
-    if (f >= 0) return k('factKo', { quote: quote(f + 1), c: L.numberText(r.facts[f].c), lhs: L.numberText(r.facts[f].lhs) });
+    if (f >= 0) return k('factKo', { quote: quote(f + 1), c: iso(L.numberText(r.facts[f].c)), lhs: iso(L.numberText(r.facts[f].lhs)) });
     const id = r.natural.bad[0];
-    return k('naturalKo', { noun: nounOf(id), v: L.numberText(r.values[id]) });
+    return k('naturalKo', { noun: nounOf(id), v: iso(L.numberText(r.values[id])) });
   };
   const verdictOf = () => {
     if (said?.key === 'raw') return { text: said.text, refusal: true };
@@ -462,7 +470,7 @@ function PlayerCore({
               {journal.slice(-5).map((row, i) => (
                 <tr key={`${i}-${row.kind}`} data-sm-journal-row={row.kind}>
                   <th scope="row" className="border border-slate-200 font-normal">
-                    {row.kind === 'model' ? k('player.rowModel') : <>{k('player.rowReplay')} <bdi dir="ltr" className="font-mono">({row.values.join(' ; ')})</bdi></>}
+                    {row.kind === 'model' ? k('player.rowModel') : <>{k('player.rowReplay')} <MathText>{$(`(${row.values.join(' ; ')})`)}</MathText></>}
                   </th>
                   <td className="border border-slate-200 font-bold">
                     <span aria-hidden="true">{(row.kind === 'model' ? row.ok : row.word === 'ok') ? '✓ ' : '✗ '}</span>
@@ -559,7 +567,7 @@ function PlayerCore({
                 <span className="text-xs font-bold text-amber-900">{k('lettersTitle')}</span>
                 <div className="flex gap-1.5" role="group" aria-label={k('lettersTitle')} data-coach="letters">
                   {ids.map((letter, i) => (
-                    <DraggableObject key={letter} drag={drag} id={`unk:${letter}`} label={k('letterLabel', { letter })}
+                    <DraggableObject key={letter} drag={drag} id={`unk:${letter}`} label={k('player.letterLabel', { letter })}
                       className={`min-h-[44px] min-w-[48px] rounded-xl border-2 bg-white px-2 font-mono text-xl font-black shadow-sm ${ring}`}
                       style={{ borderColor: LETTER_COLORS[i], color: LETTER_COLORS[i], opacity: unknownOfLetter(letter) ? 0.55 : 1 }}>
                       <span dir="ltr">{letter}</span>
@@ -662,7 +670,7 @@ function PlayerCore({
                   {model.chips.map((c) => {
                     const m = chipMeta(c.key);
                     return (
-                      <DraggableObject key={c.key} drag={drag} id={`chip:${c.key}`} label={k('chipLabel', m)}
+                      <DraggableObject key={c.key} drag={drag} id={`chip:${c.key}`} label={k('player.chipLabel', m)}
                         className={`flex min-h-[44px] min-w-0 flex-col items-center justify-center rounded-xl border-2 border-amber-500 bg-white px-1.5 py-0.5 shadow-sm ${ring}`}>
                         <span dir="ltr" className="font-mono text-lg font-extrabold leading-tight text-amber-900">{m.v}</span>
                         <span className="line-clamp-1 max-w-[7.5rem] text-[11px] leading-tight text-slate-600">{m.label}</span>
@@ -804,7 +812,7 @@ function PlayerCore({
                   const right = i === (answer?.correct ?? 0);
                   const tone = picked ? (right ? 'border-emerald-600 bg-emerald-50' : 'border-amber-500 bg-amber-50') : 'border-slate-300 bg-white';
                   return (
-                    <button key={o} type="button" aria-pressed={picked} data-sm-option={i} {...frozen}
+                    <button key={i} type="button" aria-pressed={picked} data-sm-option={i} {...frozen}
                       onClick={act(() => setLab((s) => L.chooseAnswer(s, i, answer?.correct ?? 0)))}
                       className={`min-h-[44px] rounded-xl border-2 px-3 py-1.5 text-start text-sm font-bold text-slate-800 ${ring} ${tone}`}>
                       {picked && <span aria-hidden="true">{right ? '✓ ' : '✗ '}</span>}{bidi(o)}

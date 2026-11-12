@@ -65,6 +65,8 @@ describe('storyModellerPlayer — trials, the refusal, the moments', () => {
     const right = L.replay(L.gate(L.gate(lab, 'x', 'gate:x'), 'y', 'gate:y'), m, plan.values);
     const swapped = L.replay(L.gate(L.gate(lab, 'y', 'gate:x'), 'x', 'gate:y'), m, plan.values);
     expect(P.trialKey(right)).not.toBe(P.trialKey(swapped));
+    // the same gates with other values (a new translation) are another trial
+    expect(P.trialKey(right, plan.values)).not.toBe(P.trialKey(right, { x: plan.values.y, y: plan.values.x }));
     expect(P.trialExact(right.replay)).toBe(true);
     expect(P.refused(right)).toBe(true);
     expect(P.discovered(right)).toBe(true);

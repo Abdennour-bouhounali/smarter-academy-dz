@@ -38,7 +38,7 @@ export function retryPlayerStage(lab, model, { onesPlaced = false } = {}) {
 }
 
 /** L'empreinte d'une traduction (les jetons posés + les lettres) : la même traduction vérifiée deux fois = un seul événement `model`. */
-export const modelKey = (lab) => `${lab.naming[Object.keys(lab.naming)[0]]}|${[1, 2].map((r) => L.SLOTS.map((s) => lab.slots[r][s] ?? '_').join(',')).join('/')}`;
+export const modelKey = (lab) => `${Object.entries(lab.naming).map(([k, v]) => `${k}:${v}`).join(',')}|${[1, 2].map((r) => L.SLOTS.map((s) => lab.slots[r][s] ?? '_').join(',')).join('/')}`;
 
 /** Les clés des jetons « muets » (un nombre de l'histoire qu'aucune information ne relie aux inconnues — verdict L3.4). */
 export const uselessKeys = (chips) => (chips ?? []).map((c, i) => (c.useless ? `c${i}` : null)).filter(Boolean);
@@ -63,8 +63,11 @@ export function checkPlayerModel(lab, model, useless = []) {
 
 /* ── les essais ─────────────────────────────────────────────────────────────────────────────── */
 
-/** L'empreinte d'une histoire rejouée : quelle lettre (donc quelle valeur) sur quelle porte. */
-export const trialKey = (lab) => Object.entries(lab.gates).map(([k, v]) => `${k}:${v}`).join('|');
+/**
+ * L'empreinte d'une histoire rejouée : quelle VALEUR sur quelle porte (`values` = les valeurs des lettres ; sans elles, les lettres) — une autre
+ * traduction (retour à la traduction) donne d'autres valeurs : c'est un autre essai (revue 2026-11-12).
+ */
+export const trialKey = (lab, values) => Object.entries(lab.gates).map(([k, v]) => `${k}:${v}${values && v != null ? `=${L.fracText(values[v])}` : ''}`).join('|');
 /** Les deux informations se vérifient-elles avec les valeurs posées ? (le verdict d'un essai, histoire possible ou non) */
 export const trialExact = (replay) => Boolean(replay) && replay.facts.every((f) => f.ok);
 /** L'histoire REFUSE : les deux informations se vérifient, mais une valeur ne se compte pas (négative ou fractionnaire). */
@@ -191,7 +194,7 @@ export function coachOf(lab, ui = {}) {
   if (lab.stage === 'model') {
     const full = L.rowComplete(lab, 1) && L.rowComplete(lab, 2);
     if (lab.verdict?.ok) return { id: 'toSolve', target: '[data-coach="open"]', gesture: 'tap' };
-    return full ? { id: 'check', target: '[data-coach="check"]', gesture: 'tap', prefer: 'above' } : { id: 'chip', target: '[data-coach="chips"]', gesture: 'drag', prefer: 'above' };
+    return full ? { id: 'check', target: '[data-coach="check"]', gesture: 'tap', prefer: 'above' } : { id: 'chip', target: '[data-coach="chips"]', gesture: 'drag', prefer: 'below' };
   }
   if (lab.stage === 'solve') {
     if (!lab.method) return { id: 'method', target: '[data-coach="method"]', gesture: 'tap', prefer: 'below' };

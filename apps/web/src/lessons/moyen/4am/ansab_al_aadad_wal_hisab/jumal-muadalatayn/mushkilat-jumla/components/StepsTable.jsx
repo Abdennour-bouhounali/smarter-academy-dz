@@ -11,19 +11,17 @@ import { ACTIVITY, STEPS_TABLE } from '../content/textbook';
 export default function StepsTable() {
   const [c0, c1, c2] = ACTIVITY.tableColumns;
   return (
-    <div className="space-y-1.5" data-steps-table data-paging-keep>
-      <div className="grid grid-cols-[13rem_8rem_1fr] gap-2 px-2 text-xs font-extrabold text-indigo-900" aria-hidden="true">
-        <span>{c0}</span><span>{c1}</span><span>{c2}</span>
+    <div className="space-y-1.5" role="table" aria-label={c0} data-steps-table data-paging-keep>
+      <div role="row" className="grid grid-cols-[13rem_8rem_1fr] gap-2 px-2 text-xs font-extrabold text-indigo-900">
+        <span role="columnheader">{c0}</span><span role="columnheader">{c1}</span><span role="columnheader">{c2}</span>
       </div>
-      <ol className="space-y-1">
-        {STEPS_TABLE.map((row) => (
-          <li key={row.task} className="grid grid-cols-[13rem_8rem_1fr] items-center gap-2 rounded-xl border border-indigo-200 bg-white px-3 py-1.5 text-sm" data-steps-row>
-            <span className="font-bold text-indigo-900"><MathText>{row.stage}</MathText></span>
-            <span className="text-slate-700">{bidi(row.task)}</span>
-            <span className="font-bold text-slate-900"><MathText>{row.done}</MathText></span>
-          </li>
-        ))}
-      </ol>
+      {STEPS_TABLE.map((row) => (
+        <div key={row.task} role="row" className="grid grid-cols-[13rem_8rem_1fr] items-center gap-2 rounded-xl border border-indigo-200 bg-white px-3 py-1.5 text-sm" data-steps-row>
+          <span role="rowheader" className="font-bold text-indigo-900"><MathText>{row.stage}</MathText></span>
+          <span role="cell" className="text-slate-700">{bidi(row.task)}</span>
+          <span role="cell" className="font-bold text-slate-900"><MathText>{row.done}</MathText></span>
+        </div>
+      ))}
     </div>
   );
 }
