@@ -18,9 +18,9 @@
 | 6 | `bahth-pgcd` | `pgcd-differences`, `euclidean-algorithm` (v2 treatment, new) | ✅ done 2026-11-09 | `feat(lessons): bahth-pgcd — mission prototype` | Also the BEM exam-sheet prototype lesson (practice untouched). See « Lesson 6 » below. |
 | 7 | `ikhtizal-kasr` | `fraction-reduction` (v2 treatment, new) | ✅ done 2026-11-09 | `feat(lessons): ikhtizal-kasr — mission prototype` | See « Lesson 7 » below. |
 | 8 | `awwaliyan-fima-baynahuma` | `coprime-explorer` (v2 treatment, new) | ✅ done 2026-11-09 | `feat(lessons): awwaliyan-fima-baynahuma — mission prototype` | See « Lesson 8 » below. |
-| 9 | `wadiya-idmajiya-aadad` | — | ⏳ next in catalogue order | | |
+| 9 | `wadiya-idmajiya-aadad` | `common-divisors` + `euclidean-algorithm` (player rounds; Euclid gains the additive `share` chain) | ✅ done 2026-11-12 | `feat(lessons): wadiya-idmajiya-aadad — mission prototype (synthesis)` | The THIRD synthesis in the player; see « Unit 1, synthesis » below. |
 
-Catalogue order: `packages/core/curriculum/dz/lessons_4am_2026_2027.json`. Unit 2 is converted (five lessons; synthesis waiting); unit 9 is converted with its synthesis (the synthesis pilot); unit 3 (three lessons) and unit 4 « معادلات ومتراجحات » (four lessons, 2026-11-11, branch `integrate-unit4`) are converted, their syntheses waiting for the synthesis-recipe answer; unit 5 « جمل معادلتين » (three lessons, 2026-11-12, branch `integrate-unit5`) is converted WITH its synthesis (the provisional recipe) (owner decision 2026-11-12 — units 1–4's syntheses still wait); units 6–8 and 10–14 are not started. The full prompt for unit 2 « الحساب على الجذور » (every rule, check and review step of unit 1): `docs/reports/UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. The next prompt, unit 9 « خاصية طالس » (unit 2's recipe plus every review lesson of unit 2): `docs/reports/UNIT9_KHASSIYAT_TALIS_MISSION_PROMPT.md`. Still open in unit 1: its synthesis `wadiya-idmajiya-aadad` (no synthesis recipe yet — the prompt's §5).
+Catalogue order: `packages/core/curriculum/dz/lessons_4am_2026_2027.json`. Unit 2 is converted (five lessons; synthesis waiting); unit 9 is converted with its synthesis (the synthesis pilot); unit 3 (three lessons) and unit 4 « معادلات ومتراجحات » (four lessons, 2026-11-11, branch `integrate-unit4`) are converted, their syntheses waiting for the synthesis-recipe answer; unit 5 « جمل معادلتين » (three lessons, 2026-11-12, branch `integrate-unit5`) is converted WITH its synthesis (the provisional recipe) (owner decision 2026-11-12); on the same day the owner said « go ahead » for units 1–4's syntheses — unit 1's is converted, units 2–4's follow one by one; units 6–8 and 10–14 are not started. The full prompt for unit 2 « الحساب على الجذور » (every rule, check and review step of unit 1): `docs/reports/UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. The next prompt, unit 9 « خاصية طالس » (unit 2's recipe plus every review lesson of unit 2): `docs/reports/UNIT9_KHASSIYAT_TALIS_MISSION_PROMPT.md`. Unit 1's synthesis `wadiya-idmajiya-aadad` is converted (2026-11-12, owner go-ahead for units 1–4).
 
 ## Unit 2 « الحساب على الجذور » — the table
 
@@ -1990,6 +1990,76 @@ and « DA » is not « دج »; module 7's estimate (≈ 28 min: 10–11 for the
 **Recipe lessons:** when the unit situation IS the 🏆's situation, split the signature in two (the answer: never before the 🏆; the situation: never
 before module 7) and scan module 7's own source for the answer. A synthesis may need a new chain for its own phenomenon (here « equal counts →
 k × (sum) »): additive in the lab's player logic, never a page change.
+
+## Unit 1, synthesis — `wadiya-idmajiya-aadad` « أدمج تعلّماتي » (2026-11-12) — the THIRD synthesis in the player
+
+**Decisions (binding):** owner go-ahead 2026-11-12 for the syntheses of units 1–4 (the provisional recipe), owner rules of the same day
+(« دج », no thousands space, no book pointer). As in unit 5, module 7's unit situation IS the 🏆's situation (the aprons, 936 / 845): module 7
+ANALYSES it (data, condition, strategy, the model PGCD(936 ; 845), each school's share in the letter g) and never solves it.
+
+**What was written**
+- Config: `studentView: 'mission'`, `knowledgeMapOpen`, scene `apron-store` (`mission/ApronStoreScene.jsx`: two stacks of folded aprons, identical
+  school crates with one pink and one blue row, a girl in hijab and a boy, no number), an opening without a digit nor the situation, `cta: 'أجرّب'`,
+  `toolsOwned` = five keys (`qawasim-mushtaraka`, `pgcd-taarif` — qasim-mushtarak-akbar; `pgcd-baqi`, `khwarizmiyat-iqlidus` — bahth-pgcd;
+  `jidaa-aamilayn` — qawasim-adad-tabii) with `usedIn`, `checkpoints: []`, `climaxModule: 8`, `stationLabels`, `trainings`, `hideStars`,
+  `durationMin: 87` (6 + 41 + 28 + 12), `sittings: 2`, `resumeInside`; two `manipulation` resources for module 7 (same objective, as the validator wants).
+- **Role scan FIRST** (`content/forbidden.js` + `content/mission.test.js`). It FAILED first on the open knowledge map (the root node showed the whole
+  situation, 936 / 845, and the useful-data list), on a memo card pair (28 / 42 = a lesson-4 pair), on module 7's brief « الكتاب ص 7 » and on the config.
+  Two levels: `ANSWER_TEXT` (13, 72, 65, 91, 26, the 🏆's Euclid lines — nowhere before the 🏆, module 7's own source included);
+  `SITUATION_TEXT` (936, 845, 1781, the apron words — nowhere before module 7). Rounds scanned by role through values recomputed with core
+  (`euclidSteps`, the groups 1 … g + 1, remainders, shares, prediction chips). A COLLISION rule: no round, free, ladder or memo pair is a pair
+  exported by the unit's eight lessons' `content/*.js` (deep walk of `{ a, b }`) — it caught 12 / 9, 24 / 40 and 30 / 45 on the first run.
+- The open map speaks in LETTERS (a, b, g) — `content/textbook.js › METHOD_LETTERS`, imported by `knowledgeGraph.js` (a content file, so the
+  graph test's « grounded aid » rule still holds). Memo cards: fresh numbers (PGCD(40 ; 56) = 8, PGCD(63 ; 42) = 21, PGCD(75 ; 30) = PGCD(30 ; 15) = 15).
+- 43 typed training steps carry `shape`: every Euclid remainder is typed in its line (`gap`, « 3090 = 1854 × 1 + [ ] »), every PGCD in
+  « PGCD(612 ; 174) = [ ] » (`gap`), lengths `quantity` m / cm, money `quantity` دج; counts keep their word suffix or stay bare.
+- « أستعدّ »: `content/prep.js`, 10 statements, qawasim → pgcd → iqlidus in cycle (« راجع » qasim-mushtarak-akbar, tayin-pgcd, bahth-pgcd),
+  levels 1·1·1·2·2·2·2·3·3·3, the first three true, truths recomputed in `prep.test.js`. The six old items stay in `textbook.js`.
+- Module 7 (`Module07TahlilWadiya.jsx`), `LabRounds labId="m7-wadiya"` (`content/rounds.js`): **r1 « لوازم المدارس »** `common-divisors` groups
+  by hand, 42 pens / 35 notebooks on schools (`theme: 'school'` + `context` words مدرسة / مدارس) → 7 schools, chain observe (7, 6, 5) → BUILD
+  42 = 7 × 6 → beyond (8 schools: 2 pens left) → rule; **r2 « المخزن الكبير »** `euclidean-algorithm` 816 / 697 with predictions, `handDone`,
+  chains `['pgcd']` + `share` → remainders 119, 102, 17, 0 → stop → rule → the NUMERICAL build 816 = 17 × 48 (decoy 41, the other share);
+  practice rounds that release: 15 / 6 (groups) and 57 / 38 (Euclid); a free Euclid store (816/697, 57/38, 408/153, 98/70). Steps (both views):
+  1 the situation + sorting the data (one screen) · 2 the condition (needs r1; r1's trace, the facts and the question on ONE screen) · 3 the
+  strategy (needs r2; the r2 chain beside the question) · 4 the notebook screen « اكتب في 3 أسطر » · 5 the model « أكبر عدد ممكن من المدارس =
+  PGCD(936 ; 845) » (first pen step, facts on the same screen) · 6 each school's share and the stop rule, in the letter g (batch) · 7 « ورقة نسيبة »
+  (`content/peerSheet.js`: a PLAN, no number; the error = « the same number of aprons per school, so the number of schools divides the TOTAL »).
+  A pause line before the 🏆. The old brief (« الكتاب ص 7 ») and the MethodSteps « كما في الكتاب » are gone; the teacher page gets a two-level
+  workspace (groups 42 / 35, Euclid 816 / 697). Module 8 untouched (no « DA », no spaced thousands, no visible book pointer — tested).
+
+**Added to shared code (additive):** `euclidean-algorithm` prop `share` = `{ all, groups, each }` → `CHAINS_SHARE` (player only: pgcd chain
+`stop · rule · share`), `QUESTIONS.share` (BUILD a = PGCD × part, `ops ['=', '×']`, tiles [a/g, b/g, a, g]), strings `manipulation.euclid.cp.share.*`.
+Absent `share`, nothing changes (bahth-pgcd's tests green). Scene `apron-store` registered in `MissionScene.jsx`.
+
+**Saved-answer keys:** none new; round state from the stars log (`m7-wadiya`).
+
+**Traps:** a module `brief` comes BEFORE the lab in the player (its own first screen) — a synthesis module 7 drops it and shows the statement in
+step 1; a won-round trace panel (`WonPanel`) outside the question's `data-paging-keep` falls on its own screen (back-and-forth) — put it INSIDE;
+« و845 » (a conjunction glued to a number) reads « 845و » — module 7 shows the text with a space; a prompt « … $= \ldots$ » renders the gap on the
+wrong side in RTL — say it in words (« … يساوي: »); `check:activation-drift` in a fresh worktree needs `node packages/core/curriculum/exportCurriculum.mjs`;
+the validator wants both levels of a module's two `manipulation` resources to state the SAME objective.
+
+**Review (`ecc:react-reviewer`, `ecc:code-reviewer`, `ecc:a11y-architect`):** FIXED — the scan's `num()` excluded « { » before a number, so
+`\frac{936}{845}` / `\text{13}` passed (negative controls added); the description, stations 0–6 and key labels are now scanned before module 7 (the
+description said « المآزر » → neutral wording); the Facts list has an `aria-label`; WonPanel keys by index; the `share` tiles are distinct. REJECTED —
+an order-free « 816 = 48 × 17 » (the slots are labelled whole / groups / each, the same strict build as lesson 4's a = k × q); explicit names for
+BuildAnswer slots (shared `LabCheckpoint`, every build question — for the owner).
+
+**Verification:** vitest `src/lessons` + `src/pages` (762 files, 13 426 tests; one graph-grounding failure fixed, then the unit, progressive map,
+divisibility and mission folders re-run green: 50 files / 3 356 tests); `check:lessons` every part exit 0 (activation-drift after the export; entry
+241.4 KB gzip); `lab-rollout-status --lesson wadiya-idmajiya-aadad` ✅; `no-back-and-forth` LONE 0 · OVER 0 · PAIR 0 at 1366 / 1024 / 1920; walk of
+module 7 at 1024 / 1366 / 1920×1080 (r1 ★★★, r2 won, 13 step screens, 0 overflow, 0 scroll, 0 wrapped formula); trainings walk at 1024: 48 of 57
+typed steps entered in their shape, 0 issues. Module 7's required path, automated: ≈ 40 s (rounds 22 s) — a student estimate ≈ 28 min, not timed.
+
+**Open (for the owner):** lesson 6 `bahth-pgcd` still holds the 🏆's situation and its full solution (resource `challenge-936-845`, an exercise
+explaining 936 = 845 × 1 + 91 … → 13) — the challenge is not new to a student who did lesson 6 (not my file: a cross-lesson decision); the mission
+bar wraps to two rows at 1024 once the ⭐ counter appears beside five keys (shared UI, also on the pilot?); module 7's ≈ 28 min estimate is not timed
+on a real student.
+
+**Recipe lessons:** when the 🏆 IS module 7's situation and the unit's labs are generic (common-divisors, Euclid), the synthesis phenomenon (« the
+PGCD is the number of groups, a ÷ PGCD each ») needs ONE additive chain on the lab that computes (Euclid `share`) and the round on small numbers
+reuses the lesson lab's own BUILD (a = k × q); a COLLISION test by deep walk of the unit lessons' exported `{ a, b }` pairs replaces unit 5's
+signature files for a unit that has none.
 
 ## The synthesis recipe (PROVISIONAL until a real student has been timed on the pilot: ≤ 32 min for module 7, module 8 finished)
 
