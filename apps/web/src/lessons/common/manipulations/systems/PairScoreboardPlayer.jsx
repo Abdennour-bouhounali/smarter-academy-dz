@@ -272,9 +272,11 @@ export default function PairScoreboardPlayer({
   const EDGE = 22;
   const tw = Math.max(160, width - 2 * 48 - 16);
   const rx = lb.range.x; const ry = lb.range.y;
-  const muOf = (r) => (tw - 2 * EDGE) / Math.max(1, r.max - r.min);
-  const toValueX = useCallback((cx, _y, rect) => rx.min + (cx - rect.left - EDGE) / muOf(rx), [rx.min, rx.max, tw]); // eslint-disable-line react-hooks/exhaustive-deps
-  const toValueY = useCallback((cx, _y, rect) => ry.min + (cx - rect.left - EDGE) / muOf(ry), [ry.min, ry.max, tw]); // eslint-disable-line react-hooks/exhaustive-deps
+  // la valeur sous le doigt se lit sur la piste TELLE QU'ELLE EST au moment du geste (`rect`), jamais sur une largeur mesurée plus tôt :
+  // la colonne de côté change de largeur avec son contenu (la mission en grand, une question) et la piste avec elle (marche 2026-11-12)
+  const muOf = (r, width) => (width - 2 * EDGE) / Math.max(1, r.max - r.min);
+  const toValueX = useCallback((cx, _y, rect) => rx.min + (cx - rect.left - EDGE) / muOf(rx, rect.width), [rx.min, rx.max]); // eslint-disable-line react-hooks/exhaustive-deps
+  const toValueY = useCallback((cx, _y, rect) => ry.min + (cx - rect.left - EDGE) / muOf(ry, rect.width), [ry.min, ry.max]); // eslint-disable-line react-hooks/exhaustive-deps
   const sx = useStretchInteraction({
     value: liveX ?? lb.x, range: rx, toValue: toValueX,
     onChange: (v) => { if (!lockedRef.current) { setLiveX(v); tooth(); } },
