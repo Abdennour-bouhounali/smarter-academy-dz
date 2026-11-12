@@ -61,19 +61,20 @@ const GEQ = '(\\\\geq|\\\\ge|≥|>=)';
 export const ANSWER_TEXT = [
   /(?<![0-9])70\s*x/, /(?<![0-9])70\s*(\\times|×|\\cdot)\s*x/,
   /x\s*>\s*8(?![0-9,.])/, /(?<![0-9])8\s*<\s*x/, new RegExp(`x\\s*${GEQ}\\s*9(?![0-9])`), /x\s*=\s*8(?![0-9,.])/,
-  /(?<![0-9])9\s*حص/, /(?<![0-9])8\s*حص/, /(?<![0-9])تسع\s*حص/, /ثماني\s*حص/,
+  /(?<![0-9])9\s*(\\[,;]|\\text\{\s*)*\s*حص/, /(?<![0-9])8\s*(\\[,;]|\\text\{\s*)*\s*حص/, /تسع[ةه]?\s*حص/, /ثمان(ي|ية)?\s*حص/, /الحص[ةّ]+\s*التاسعة/, /ستمائة|ستّمائة/,
+  /x\s*(\\gt)\s*8(?![0-9])/, /8\s*(\\lt)\s*x/, new RegExp(`x\\s*(\\\\geqslant|⩾)\\s*9(?![0-9])`),
   num('600'), num('675'), num('605'), /560\s*(\\div|÷|\/)\s*70/, /\\d?frac\{560\}\{70\}/,
 ];
 /** 2. La situation elle-même : jamais AVANT le module 7. */
 export const SITUATION_TEXT = [
   ...ANSWER_TEXT,
-  /مسبح|المسبح|سباحة|السباحة/, num('560'), /(?<![0-9])75\s*x/, /(?<![0-9.,])75\s*(دج|دينار)/, /(?<![0-9])75\s*(\\times|×)/,
+  /مسبح|المسبح|سباحة|السباحة/, /خمسة\s*و\s*سبعون/, num('560'), /(?<![0-9])75\s*x/, /(?<![0-9.,])75\s*(دج|دينار)/, /(?<![0-9])75\s*(\\times|×)/,
   /5\s*x\s*\+\s*560/,
 ];
 
 /** Les violations d'un texte — vide s'il est propre. `before7` : l'écran vient avant le module 7 (la situation elle-même y est interdite). */
 // les chiffres arabes-indiens (٠–٩) sont ramenés aux chiffres occidentaux avant le balayage
-const western = (s) => String(s).replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660)).replace(/−/g, '-');
+const western = (s) => String(s).replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660)).replace(/[۰-۹]/g, (d) => String(d.charCodeAt(0) - 0x06F0)).replace(/−/g, '-');
 export const textViolations = (s, label = '', { before7 = true } = {}) => (before7 ? SITUATION_TEXT : ANSWER_TEXT)
   .filter((re) => re.test(western(s))).map((re) => `${label}: ${re}`);
 

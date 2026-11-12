@@ -56,7 +56,7 @@ describe('the synthesis — role scan of every screen before its time', () => {
   });
   it('the role scan catches what it must (negative controls)', () => {
     ['$70x$', '70 x', '$70 \\times x$', '$560 < 70x$', '$x > 8$', 'x>8', '$8 < x$', '$x \\geq 9$', 'x ≥ 9', '$x = 8$', '9 حصص', '8 حصص', 'تسع حصص', '600', '\\text{600}', '675', '605', '$560 \\div 70$', '$\\dfrac{560}{70}$', '٦٠٠',
-      'المسبح', 'السباحة', '560', '$75x$', '75 دج', '75 دينارًا', '$75 \\times 10$', '$5x + 560$']
+      'تسعة حصص', 'ثمانية حصص', 'الحصة التاسعة', 'ستمائة دج', '$9 \\text{ حصص}$', '$x \\geqslant 9$', '$x \\gt 8$', '$8 \\lt x$', '۶۰۰', 'خمسة وسبعون دج', 'المسبح', 'السباحة', '560', '$75x$', '75 دج', '75 دينارًا', '$75 \\times 10$', '$5x + 560$']
       .forEach((s) => expect(textViolations(s).length, s).toBeGreaterThan(0));
     ['$60x$', '$300 + 10x$', '$x > 6$', '$x > 80$', '5600', '$60{,}0$', '1600', '6000', '$x = 7$', '$750$', '75%', 'ممرّ', 'حصّة', '$x > 5$', '$7{,}5$', '$x \\geq 90$', '$45x$']
       .forEach((s) => expect(textViolations(s), s).toEqual([]));
@@ -98,6 +98,14 @@ describe('module 7 « وضعية الوحدة » — the rounds', () => {
     expect(sv).toMatchObject({ expected: ['30', '5', '150'], decoy: '45' });
     expect(sv.d * sv.n).toBe(sv.f);
     expect(P.firstSpec(G.parseModel(R1.left, R1.right))).toMatchObject({ n: 6, first: 7 });
+  });
+  it('every tile set and chip set of every round is made of DISTINCT values (review 2026-11-12)', () => {
+    [R1, R2, R1_EASY, R2_EASY, CARD].forEach((p) => {
+      const m = G.parseModel(p.left, p.right);
+      expect(new Set(P.ineqSpec(m).tiles).size, p.left).toBe(4);
+      expect(new Set(P.savingSpec(m).tiles).size, p.left).toBe(4);
+      expect(new Set(P.firstSpec(m).options).size, p.left).toBe(3);
+    });
   });
   it('every practice round is smaller than its round', () => {
     expect(P.poolOf(G.parseModel(R1_EASY.left, R1_EASY.right)).f).toBeLessThan(P.poolOf(G.parseModel(R1.left, R1.right)).f);

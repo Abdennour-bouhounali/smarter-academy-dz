@@ -644,7 +644,7 @@ export default function GrowthRace({
                   <button key={c} type="button" data-gr-choice={i} aria-pressed={on} aria-disabled={locked || undefined}
                     onClick={() => { if (!lockedRef.current && !on) { state.setNumbers({ left: cl, right: cr }); setMaxOver(Number(cm)); setExprSaid(c); } }}
                     className="min-h-[44px] rounded-xl border-2 border-slate-300 bg-white px-3 text-sm font-black text-slate-700 aria-pressed:border-indigo-600 aria-pressed:bg-indigo-50 aria-pressed:text-indigo-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2">
-                    {pk(model.op === 'mul' ? 'pool.choiceN' : 'choiceN', { n: i + 1 })}<span className="sr-only"> {cl.replace(/\+/g, ' + ')} {model.op === 'mul' ? pk('pool.versus') : '='} {cr.replace(/\+/g, ' + ')}</span>
+                    {pk(model.op === 'mul' ? 'pool.choiceN' : 'choiceN', { n: i + 1 })}<span className="sr-only"> <bdi dir="ltr">{cl.replace(/\+/g, ' + ')}</bdi> {model.op === 'mul' ? pk('pool.versus') : '='} <bdi dir="ltr">{cr.replace(/\+/g, ' + ')}</bdi></span>
                   </button>
                 );
               })}
@@ -1234,7 +1234,8 @@ export const PQ = {
     const s = L.toNumber(c.sol.x);
     const xs = lab.trials.map((tr) => tr.x);
     const before = Math.max(-1, ...xs.filter((v) => v < s)); const after = Math.min(Infinity, ...xs.filter((v) => v > s));
-    const opts = [before >= 0 ? before : s + 2, s, Number.isFinite(after) ? after : s + 1];
+    // trois jetons DISTINCTS ≥ 0 (revue 2026-11-12 : sans essai avant la rencontre, « s + 2 » pouvait doubler l'essai d'après)
+    const opts = [...new Set([before >= 0 ? before : null, s, Number.isFinite(after) ? after : null, s + 1, s + 2, s - 1].filter((v) => v != null && v >= 0))].slice(0, 3);
     const e = L.trialAt(lab.model, s);
     const q = (key, o) => M(tx(`manipulation.growthRace.player.pool.wherePool.${key}`, o));
     return {
@@ -1250,7 +1251,7 @@ export const PQ = {
     const o = { ...SIDE(c), n: spec.n, first: spec.first, eq: spec.equal, l: at(spec.first).l, r: at(spec.first).r };
     return {
       id: 'firstPool', kind: 'fill',
-      fields: [{ label: q('prompt', SIDE(c)), options: rot(spec.options, 1), expected: String(spec.first), render: chipRender }],
+      fields: [{ label: q('prompt', SIDE(c)), options: rot(spec.options, spec.n % 3), expected: String(spec.first), render: chipRender }],
       hints: [q('hint1', o), q('hint2', o)], explain: q('explain', o),
     };
   },

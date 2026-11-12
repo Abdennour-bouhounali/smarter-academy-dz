@@ -79,7 +79,8 @@ function flattenRoutes(element, out = []) {
 // la synthèse de l'unité 4 est passée au format à 9 modules (2b1e7342, 2026-10-13) sans ses six « وضعيات
 // تدريبية ». Une dette de CONTENU, à générer — pas à masquer : ce test échoue dès qu'elle est réglée (retirer
 // l'entrée) et pour toute autre leçon.
-const KNOWN_UNMOUNTED_MODULES = { 'wadiya-idmajiya-muadalat': [1, 2, 3, 4, 5, 6] };
+// Réglée le 2026-11-12 (la synthèse de l'unité 4 dans le lecteur de mission : Module01…06 recréés) — l'entrée est retirée.
+const KNOWN_UNMOUNTED_MODULES = {};
 
 describe('registry — every indexed lesson loads with its own routes', () => {
   const lessons = getBuiltLessons();
