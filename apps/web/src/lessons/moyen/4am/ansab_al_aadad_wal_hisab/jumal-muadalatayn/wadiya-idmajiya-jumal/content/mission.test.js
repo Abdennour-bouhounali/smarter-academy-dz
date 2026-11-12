@@ -44,9 +44,9 @@ describe('the synthesis — role scan of every screen before its time', () => {
   });
   it('the role scan catches what it must (negative controls)', () => {
     ['$150x + 150y = 11250$', '$24x + 30y = 2100$', '$x + y = 75$', '$y = 75 - x$', '$6x = 150$', '$(25 ; 50)$', 'سعر علبة العصير 25 دج',
-      'سعر قطعة الحلوى 50 دج', '11 250 DA', '2 100 DA', 'بقيت 24 علبة عصير', '$37{,}5$']
+      'سعر قطعة الحلوى 50 دج', '11 250 DA', '2 100 DA', 'بقيت 24 علبة عصير', '$37{,}5$', '$11{,}250$', '$11\\,250$', '$x = 25$', '$y = 50$', '$150 = 6x$', '$30 \\times 75 = 2250$']
       .forEach((s) => expect(textViolations(s).length, s).toBeGreaterThan(0));
-    ['$x + y = 55$', '$10x + 10y = 550$', '$(35 ; 20)$', 'ثمن العلم 50 دج', '$x + y = 750$', '$2150$', '$y = 175 - x$']
+    ['$x + y = 55$', '$10x + 10y = 550$', '$(35 ; 20)$', 'ثمن العلم 50 دج', '$x + y = 750$', '$x + y = 50$', '$3y = 50$', '$x = 50 - 10$', '$2150$', '$y = 175 - x$']
       .forEach((s) => expect(textViolations(s), s).toEqual([]));
     // module 7 may show the situation, never its solution
     expect(textViolations('$x + y = 75$', 'm7', { before7: false })).toEqual([]);

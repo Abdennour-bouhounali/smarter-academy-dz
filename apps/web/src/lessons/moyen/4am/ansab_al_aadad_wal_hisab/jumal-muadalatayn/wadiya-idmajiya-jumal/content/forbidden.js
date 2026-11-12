@@ -43,12 +43,16 @@ export function violations(shown, label = '') {
 
 /* ── Les mêmes signatures pour un TEXTE (un énoncé, une carte, la carte des معارف, l'ouverture, « أستعدّ », la feuille de camarade) ── */
 const num = (n) => new RegExp(`(^|[^0-9,{}.])${n}(?![0-9]|\\{?,\\}?[0-9])`);
-const spaced = (a, b) => new RegExp(`(^|[^0-9,{}.])${a}[\\s\\u202F\\u00A0]?${b}(?![0-9])`);
+// a thousands separator: a space (thin / no-break too), a comma, LaTeX « \\, » or « {,} » (revue 2026-11-12)
+const spaced = (a, b) => new RegExp(`(^|[^0-9,{}.])${a}(?:[\\s\\u202F\\u00A0,]|\\\\,|\\{,\\})?${b}(?![0-9])`);
 
 /** 1. Le défi RÉSOLU : jamais avant le 🏆 (le module 7 compris). */
 export const ANSWER_TEXT = [
   /\(\s*\$?\s*(25\s*;\s*50|50\s*;\s*25|35\s*;\s*40)\s*\$?\s*\)/,
-  /(^|[^0-9])6\s*x\s*=\s*150/, /2\s?250\s*-\s*6\s*x/, /24\s*x\s*\+\s*30\s*\(\s*75/,
+  /(^|[^0-9])6\s*x\s*=\s*150/, /150\s*=\s*6\s*x/, /2\s?250\s*-\s*6\s*x/, /24\s*x\s*\+\s*30\s*\(\s*75/, num('2250'), spaced('2', '250'),
+  // the bare answer « x = 25 », « y = 50 »
+  // (not the end of a sum « x + y = 50 », nor « 3y = 50 »)
+  /(?<![0-9a-z]|[+\-−]\s*)[xy]\s*=\s*(25|50)(?![0-9]|\{?,\}?[0-9]|\s*[-−+×*/\\])/,
   num('1950'), num('2040'), num('3750'), num('7500'), /37\{?,\}?5/,
   spaced('1', '950'), spaced('2', '040'),
   // un prix TROUVÉ du défi : la brique de jus à 25, la part de gâteau à 50 (pas un prix donné d'une autre histoire)

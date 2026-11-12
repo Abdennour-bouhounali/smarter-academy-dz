@@ -14,7 +14,6 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { SITUATION, REMARKS, LAB } from '../content/textbook';
 import { M7_ROUNDS, TRIP, PARTY } from '../content/rounds';
 import { PEER_SHEET, PEER_KID } from '../content/peerPlan';
-import { PartyScene } from '../components/JumalFigures';
 
 /**
  * Module 7 — « وضعية الوحدة » : la وضعية du حفل البلدية, ANALYSÉE dans les trois phases (قراءة · تحليل واختيار استراتيجية · تنفيذ) — et
@@ -45,7 +44,6 @@ const modelOf = (p) => SL.parseModel({ system: p.system, unknowns: p.unknowns, f
 const PARTY_MODEL = modelOf(PARTY);
 const PARTY_SUM = SP.sumBuild(PARTY_MODEL, { x: PARTY_MODEL.sol.x, y: PARTY_MODEL.sol.y });
 const PARTY_SUM_TEX = `${PARTY_SUM.k} \\times (${PARTY_SUM.expected[0]} + ${PARTY_SUM.expected[1]}) = ${PARTY_SUM.expected[2]}`;
-const PARTY_SYSTEM_TEX = SL.systemLatex(PARTY_MODEL.target, PARTY_MODEL.ids);
 const TRIP_MODEL = modelOf(TRIP);
 
 /** La جملة rendue par le laboratoire de la PAGE (`onModel`), quelle que soit sa forme. */
@@ -138,8 +136,9 @@ export default function Module07AlWadiya() {
           num: 1, title: 'قراءة الوضعية وفهمها', subtitle: 'المعطيات والمطلوب', done: !!q[1],
           content: (
             <div className="space-y-3">
+              {/* la situation et la question sur UN écran (aucun aller-retour) : un seul bloc pour la pagination du lecteur */}
+              <div className="space-y-3" data-paging-keep>
               <div className="space-y-2 rounded-xl border-2 border-amber-200 bg-amber-50 px-3 py-2 text-sm text-slate-800" data-situation>
-                <div className="h-24 overflow-hidden rounded-lg" data-paging-keep><PartyScene /></div>
                 <p>{SITUATION.intro}</p>
                 <ul className="ms-4 list-disc space-y-1">
                   <li>{said(SITUATION.fact1)}</li>
@@ -158,6 +157,7 @@ export default function Module07AlWadiya() {
                 correct={0} cols={1} requires={['tarjama-jumla']}
                 explain={<span>السؤال «ما هو سعر علبة عصير وسعر قطعة حلوى؟» يطلب سعرين نجهلهما. أمّا أعداد العلب والقطع والمبلغان فمعطيات معلومة في النص.</span>}
                 onAnswered={mark(1)} />
+              </div>
               {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : choisir les inconnues vient d'être dit par l'explication ci-dessus. */}
               {q[1] && <KnowledgeBrick id="tahdid-majahil" variant="rappel" />}
             </div>
@@ -178,7 +178,7 @@ export default function Module07AlWadiya() {
                   'نجمع المعادلتين طرفًا بطرف مباشرة، فيختفي مجهول',
                   'لا شيء: العددان المتساويان لا يغيّران الحساب',
                 ].map(M)}
-                correct={0} cols={1} requires={['tarjamat-maalumat', 'ikhtiyar-tariqa']}
+                correct={0} cols={1} requires={['tarjama-jumla', 'tawid']}
                 explain={<MathText>{`حين يتساوى العددان يكون المبلغ هذا العدد مرّةً مجموعَ السعرين — في حفل المدرسة: $${PARTY_SUM_TEX}$ . نقسم على العدد فنجد مجموع السعرين، فتصير المعادلة بمعاملين يساويان 1 ونعوّض بسهولة. أمّا الجمع المباشر فلا يحذف مجهولًا هنا: المعاملات ليست متعاكسة.`}</MathText>}
                 onAnswered={mark(2)} />
             </div>
@@ -194,7 +194,7 @@ export default function Module07AlWadiya() {
                 <li>أيّ معادلتين تترجمان معلومتي الحفل؟</li>
                 <li>أيّ معادلة تبسّطها، وبماذا تقسمها؟</li>
               </ol>
-              <p className="text-sm text-slate-600">الخطوات التالية تصحّح أسطرك سطرًا سطرًا. حلّ الجملة ينتظرك في التحدّي 🏆.</p>
+              <p className="text-sm text-slate-600">الخطوات التالية تصحّح أسطرك سطرًا سطرًا. حلّ الجملة ينتظرك في التحدّي <span aria-hidden="true">🏆</span>.</p>
               {/* le bouton RESTE (aria-disabled après l'appui : le focus ne tombe pas sur la page) ; la région vivante est toujours montée */}
               <button type="button" onClick={() => { if (!q[3]) mark(3)(); }} aria-disabled={q[3] || undefined} data-notebook-done
                 className={`min-h-[52px] rounded-2xl px-6 text-lg font-black focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2 ${q[3] ? 'bg-emerald-50 text-emerald-800 ring-1 ring-emerald-300' : 'bg-indigo-700 text-white shadow-[0_3px_0_0_#3730A3] hover:bg-indigo-800'}`}>
@@ -207,12 +207,10 @@ export default function Module07AlWadiya() {
           num: 4, title: 'ترييض الوضعية: الجملة', subtitle: 'كل معلومة عن مبلغ معادلة', done: !!q[4],
           content: (
             <div className="space-y-3">
+              {sw(null, <Evidence model={big.model} empty="لم تتحقّق بعد من جملة على طاولة الحفل: سمِّ المجهولين، ضع الأعداد في خانات المعادلتين ثم اضغط «تحقّق»." />)}
+              {/* les deux informations et la question qui les juge sur UN écran (aucun aller-retour) */}
+              <div className="space-y-3" data-paging-keep>
               <Facts />
-              {sw(
-                <WonPanel id="party-model" won={won.r2} title="الجملة التي بنيتها في حفل المدرسة:" lines={[PARTY_SYSTEM_TEX]}
-                  empty="جولة حفل المدرسة: لم تترجم بعد القصة بجملة." />,
-                <Evidence model={big.model} empty="لم تتحقّق بعد من جملة على طاولة الحفل: سمِّ المجهولين، ضع الأعداد في خانات المعادلتين ثم اضغط «تحقّق»." />,
-              )}
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">هل تترجم كل معادلة المعلومة المذكورة؟</p>}
                 rows={[
@@ -224,6 +222,7 @@ export default function Module07AlWadiya() {
                 requires={['tahdid-majahil', 'tarjama-jumla']}
                 feedback={({ allRight }) => <MathText>{allRight ? 'أحسنت: كل معلومة عن مبلغ تعطي معادلة، وكل عدد يُضرب في سعر الشيء الذي يعدّه.' : 'كل عدد يُضرب في سعر الشيء الذي يعدّه، والمبلغ هو المذكور في المعلومة نفسها.'}</MathText>}
                 onAnswered={mark(4)} />
+              </div>
               {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : une information → une équation vient d'être dit par le retour ci-dessus. */}
               {q[4] && <KnowledgeBrick id="tarjamat-maalumat" variant="rappel" />}
             </div>

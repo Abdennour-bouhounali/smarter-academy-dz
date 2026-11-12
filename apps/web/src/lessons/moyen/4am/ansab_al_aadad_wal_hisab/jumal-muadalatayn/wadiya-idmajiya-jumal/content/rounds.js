@@ -16,8 +16,8 @@ const base = (extra) => ({ type: 'story-modeller', theme: 'party', levels: false
 
 const PRICES = {
   unknowns: [
-    { id: 'x', noun: 'سعر علبة العصير', short: 'علبة العصير' },
-    { id: 'y', noun: 'سعر قطعة الحلوى', short: 'قطعة الحلوى' },
+    { id: 'x', noun: 'سعر علبة العصير', short: 'العلبة' },
+    { id: 'y', noun: 'سعر قطعة الحلوى', short: 'القطعة' },
   ],
   items: { x: { glyph: 'juice', color: '#EA580C' }, y: { glyph: 'cake', color: '#DB2777' } },
 };
