@@ -6,7 +6,7 @@
  *   — aucune connaissance nouvelle : la DÉMARCHE du manuel (choisir les inconnues,
  *     traduire chaque information, choisir la méthode, vérifier dans le texte) ;
  *   — la SOLUTION du حفل (25 DA et 50 DA) n'y figure pas : c'est la réponse de
- *     l'évaluation (A.10 règle 14). Les exemples sont ceux de la رحلة القسم (30 et 50 DA) ;
+ *     l'évaluation (A.10 règle 14). Depuis le 2026-11-12, la carte est OUVERTE dès le premier écran : la situation et les erreurs en LETTRES ;
  *   — les deux erreurs sont celles que le module 7 corrige (une quantité multipliée
  *     par le prix de l'AUTRE objet ; s'arrêter après une seule inconnue), avec leur « لماذا؟ » ;
  *
@@ -24,15 +24,16 @@
  *                                           │ نستخلص
  *                                    🎯 [ثلاث مراحل]
  */
-import { SITUATION, REMARKS } from './content/textbook';
+import { SITUATION, SITUATION_LETTERS, REMARKS } from './content/textbook';
 
 export const KNOWLEDGE_GRAPH = {
   root: 'wadiya',
   nodes: [
     {
       id: 'wadiya', kind: 'concept', lane: 'center', requires: 'tahdid-majahil',
-      title: 'ما سعر العلبة وسعر القطعة؟', subtitle: SITUATION.caption,
-      context: { text: SITUATION.text },
+      title: 'ما سعر العلبة وسعر القطعة؟', subtitle: 'وضعية الوحدة',
+      // la وضعية en LETTRES : la carte est ouverte dès le premier écran (balayage par rôle, content/mission.test.js — 2026-11-12)
+      context: { text: SITUATION_LETTERS },
       reveals: ['majahil'],
     },
     { id: 'majahil', kind: 'method', lane: 'center', requires: 'tahdid-majahil', notebook: true, title: 'اختيار المجهولين', subtitle: 'المطلوب في السؤال', reveals: ['tarjama'] },

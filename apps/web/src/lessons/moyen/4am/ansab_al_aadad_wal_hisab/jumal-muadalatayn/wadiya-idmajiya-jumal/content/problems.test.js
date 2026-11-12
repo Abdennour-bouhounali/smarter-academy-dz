@@ -55,7 +55,7 @@ const ENV = {
   'wadiya-1': [{ x: 24, y: 16 }, null],
   'wadiya-2': [{ x: 20, y: 4 }, { x: -8, y: 32 }],
   'wadiya-3': [{ x: 8, y: 6 }, null],
-  'wadiya-4': [{ x: 30, y: 50 }, null],
+  'wadiya-4': [{ x: 30, y: 60 }, null],
   'wadiya-5': [{ x: 40, y: 30 }, null],
   'wadiya-6': [{ x: 40, y: 10 }, { x: 3000, y: 1800 }],
 };
@@ -200,19 +200,20 @@ describe('les six وضعيات d\'entraînement de أدمج تعلّماتي (wa
     expect(solve([3, 4, 50], [4, 3, 48])).not.toEqual({ x, y });
   });
 
-  it('وضعية 4 — flags: 30 and 50 DA, 10% off (0.9), then 27 and 45 DA and a 990 DA order', () => {
-    const before = 387 / 0.9;
-    expect(near(before, 430)).toBe(true);
-    const { x, y } = solve([4, 3, 270], [6, 5, Math.round(before)]);
-    expect([x, y]).toEqual([30, 50]);
-    expect(expectedOf('wadiya-4', 0)).toEqual([430, 2 * 430, y, x]);
-    expect(near(0.9 * (6 * x + 5 * y), 387)).toBe(true);
+  // renumbered on 2026-11-12 (the synthesis's role scan: the large flag cost 50 دج, a price FOUND by the challenge — the cake piece)
+  it('وضعية 4 — flags: 30 and 60 دج, 10% off (0.9), then 27 and 54 دج and a 1080 دج order', () => {
+    const before = 432 / 0.9;
+    expect(near(before, 480)).toBe(true);
+    const { x, y } = solve([4, 3, 300], [6, 5, Math.round(before)]);
+    expect([x, y]).toEqual([30, 60]);
+    expect(expectedOf('wadiya-4', 0)).toEqual([480, 2 * 480, y, x]);
+    expect(near(0.9 * (6 * x + 5 * y), 432)).toBe(true);
     // ×3 and ×2 give equal coefficients of x
-    expect([3 * 4, 2 * 6, 3 * 270, 2 * 430, 2 * 430 - 3 * 270]).toEqual([12, 12, 810, 860, 50]);
+    expect([3 * 4, 2 * 6, 3 * 300, 2 * 480, 2 * 480 - 3 * 300]).toEqual([12, 12, 900, 960, 60]);
     const [small, big] = [x * 0.9, y * 0.9];
-    expect([small, big]).toEqual([27, 45]);
+    expect([small, big]).toEqual([27, 54]);
     expect(expectedOf('wadiya-4', 1)).toEqual([small, big, 20 * small, 20 * small + 10 * big]);
-    expect(20 * small + 10 * big).toBe(990);
+    expect(20 * small + 10 * big).toBe(1080);
   });
 
   it('وضعية 5 — the garden: perimeter 140 m, length = width + 10: 40 m × 30 m; fence 49000 DA, 300 bags', () => {
@@ -242,7 +243,7 @@ describe('les six وضعيات d\'entraînement de أدمج تعلّماتي (wa
     has('wadiya-1', 40, 5, 8, 248);
     has('wadiya-2', 24, 52, 60);
     has('wadiya-3', 4, 3, 50, 48, 6000, 1500, 800);
-    has('wadiya-4', 4, 3, 270, 6, 5, 387, '10%');
+    has('wadiya-4', 4, 3, 300, 6, 5, 432, '10%');
     has('wadiya-5', 140, 10, 350, 4);
     has('wadiya-6', 4800, 50, 5, 7, 600);
   });

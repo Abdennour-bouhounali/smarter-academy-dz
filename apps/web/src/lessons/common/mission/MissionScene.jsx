@@ -25,6 +25,7 @@ import FamilyHeightsScene from './FamilyHeightsScene';
 import CivilRegistryScene from './CivilRegistryScene';
 import KioskCardsScene from './KioskCardsScene';
 import MuseumDeskScene from './MuseumDeskScene';
+import PartyTableScene from './PartyTableScene';
 
 /**
  * LA SCÈNE d'une mission (rollout 2026-11-08) : chaque leçon dessine la sienne, choisie par `mission.scene` dans sa config
@@ -73,6 +74,8 @@ const SCENES = {
   'civil-registry': CivilRegistryScene,
   'kiosk-cards': KioskCardsScene,
   'museum-desk': MuseumDeskScene,
+  // unité 5, la synthèse wadiya-idmajiya-jumal (2026-11-12) : la table du goûter de l'école — rangées ÉGALES de jus et de gâteaux, un plateau de restes
+  'party-table': PartyTableScene,
 };
 
 function CourtyardBigScene(props) {

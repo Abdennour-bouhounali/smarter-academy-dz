@@ -1,4 +1,5 @@
 import * as L from './storyModeller.js';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
 
 /**
  * story-modeller — LA LOGIQUE PURE DU LECTEUR DE MISSION (rollout 2026-11-12, unité 5 leçon 3 `mushkilat-jumla` ; conseil du 2026-11-11, verdict
@@ -110,6 +111,11 @@ export const CHAIN_SPECS = Object.freeze({
   impossible: { specs: [{ id: 'naturalTap', at: 'refused', qs: ['naturalTap'] }, { id: 'refuseTap', at: 'refused', qs: ['refuseTap'] }, { id: 'ruleNatural', at: 'refused', qs: ['ruleNatural'] }] },
   impossibleEasy: { specs: [{ id: 'ruleNatural', at: 'refused', qs: ['ruleNatural'] }] },
   none: { specs: [] },
+  // la synthèse de l'unité 5 `wadiya-idmajiya-jumal` (2026-11-12, AJOUTÉ) — deux informations d'ARGENT, la première aux deux quantités ÉGALES :
+  //   synthTrip  (« رحلة القسم », à la main)  solveTyped · verifySwap (l'échange PASSE l'information aux quantités égales) · buildAnswer
+  //   synthParty (« حفل المدرسة » et son entraînement)  buildSum : BÂTIR « k × (▢ + ▢) = ▢ » une fois la réponse choisie (leurre : S ÷ k)
+  synthTrip: { answerBuild: true, specs: [{ id: 'solveTyped', at: 'typed', qs: ['solveTyped'] }, { id: 'verifySwap', at: 'replayOk', qs: ['verifySwap'] }, { id: 'buildAnswer', at: 'answerOpen', qs: ['buildAnswer'] }] },
+  synthParty: { specs: [{ id: 'buildSum', at: 'answered', qs: ['buildSum'] }] },
 });
 export const chainsOf = (mode) => CHAIN_SPECS[mode] ?? CHAIN_SPECS.none;
 /** La manche fait-elle TAPER la première inconnue ? */
@@ -137,6 +143,34 @@ export function checkBuild(model, values) {
   const expected = [t(values[u0]), t(values[u1]), t(e.c)];
   const decoy = t(model.target[cr - 1].c);
   return { a: t(e.a), b: t(e.b), expected, decoy, tiles: [...expected, decoy], distinct: new Set([...expected, decoy]).size === 4 };
+}
+
+/**
+ * Le rang de l'information d'ARGENT dont les deux quantités sont ÉGALES et plus grandes que 1 (« 120 علبة عصير و 120 قطعة حلوى بـ 8400 دج » —
+ * la synthèse de l'unité 5), 0 s'il n'y en a pas. Une information qui COMPTE (x + y = n) n'en est jamais une.
+ */
+export function equalRow(model) {
+  const i = model.facts.findIndex((f, r) => {
+    const e = model.target[r];
+    return f.kind === 'money' && e && LIN.eq(e.a, e.b) && LIN.cmp(e.a, 1) > 0;
+  });
+  return i + 1;
+}
+
+/**
+ * BÂTIR l'information aux quantités égales avec les valeurs de l'élève (synthèse de l'unité 5, 2026-11-12) : « k × (▢ + ▢) = ▢ » — les deux
+ * prix dans l'ordre des inconnues de l'histoire, puis le montant ; un SEUL leurre : S ÷ k, la somme des deux prix prise pour le montant (le
+ * facteur k oublié). `null` sans information aux quantités égales.
+ */
+export function sumBuild(model, values) {
+  const r = equalRow(model);
+  if (!r) return null;
+  const e = model.target[r - 1];
+  const [u0, u1] = model.ids;
+  const t = (v) => L.numberText(v);
+  const expected = [t(values[u0]), t(values[u1]), t(e.c)];
+  const decoy = t(LIN.div(e.c, e.a));
+  return { row: r, k: t(e.a), sum: decoy, expected, decoy, tiles: [...expected, decoy], distinct: new Set([...expected, decoy]).size === 4 };
 }
 
 /** Les valeurs des deux inconnues de l'HISTOIRE (dans l'ordre `model.ids`), quelle que soit la façon dont l'élève les a nommées. */
@@ -261,5 +295,8 @@ function shownOne(p) {
   });
   const cb = checkBuild(model, v);
   if (cb) { cb.tiles.forEach((tl) => out.push(Rl('tile', tl))); out.push(Rl('decoy', cb.decoy)); }
+  // la construction « k × (▢ + ▢) = ▢ » (synthèse de l'unité 5) — seulement quand la manche la pose
+  const sb = chainsOf(p.chains).specs.some((s) => s.id === 'buildSum') ? sumBuild(model, v) : null;
+  if (sb) { sb.tiles.forEach((tl) => out.push(Rl('tile', tl))); out.push(Rl('decoy', sb.decoy), Rl('sum', sb.sum)); }
   return out;
 }
