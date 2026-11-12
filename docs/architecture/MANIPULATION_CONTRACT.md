@@ -3023,6 +3023,11 @@ Since 2026-11-10 (unit 9, lesson 2) a `build` may also set `accept` (other filli
   `toSolve`, `method` / `half` / `next`, `gate` / `replay`; bubbles below the chips) — the lab's FIRST coach, player only. The props are general
   (any two-fact system, count or money facts, named or not) so the unit's synthesis can reuse the player. `shownValues` by role. Strings
   `storyModeller.player / coach / predict`. Scene `museum-desk`.
+  **Reused by the unit's synthesis** (`wadiya-idmajiya-jumal`, 2026-11-12, `LabRounds labId="m7-wadiya"`): two additive chains, `synthTrip`
+  (typed `2x = 70`, `verifySwap` — the swapped pair passes the equal-count fact and fails the other — and the answer built) and `synthParty`
+  (equal counts → the NUMERICAL build `QUESTIONS.buildSum` « k × (▢ + ▢) = ▢ », helpers `equalRow` / `sumBuild`), glyphs `juice` / `cake`;
+  `shownValues` lists the build tiles only for a round that asks `buildSum`. Lesson 3's rounds and the page are unchanged
+  (`logic/storyModellerPlayer.synth.test.js`). The page string `formalTitle` no longer names the book (owner OQ5).
 - **Blocking:** `cp.blocking` stays true until the chain is finished; the lab hides its « next task » button meanwhile.
 - **Guided, never told first:** wrong try 1 → the chosen option's `why` (else hint 1); try 2 → hint 2 (sharper); try 3 →
   the answer AND its explanation (the student is never stuck forever). A wrong option stays struck and disabled.
