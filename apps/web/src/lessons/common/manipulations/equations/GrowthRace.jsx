@@ -225,10 +225,14 @@ export default function GrowthRace({
   }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── mesure ── */
+  // Le nœud mesuré est suivi par une ref-FONCTION (2026-11-12, la synthèse de l'unité) : dans le lecteur, l'ouverture d'une question ou d'une
+  // prédiction recompose la coquille et REMONTE ce nœud — l'observateur d'avant regardait un nœud détaché et la règle restait à 260 px.
   const boxRef = useRef(null);
+  const [boxNode, setBoxNode] = useState(null);
+  const setBox = useCallback((el) => { boxRef.current = el; setBoxNode(el); }, []);
   const [width, setWidth] = useState(320);
   useLayoutEffect(() => {
-    const el = boxRef.current;
+    const el = boxNode;
     if (!el) return undefined;
     const measure = () => setWidth(Math.max(260, Math.floor(el.clientWidth)));
     measure();
@@ -236,7 +240,7 @@ export default function GrowthRace({
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     return () => ro.disconnect();
-  }, []);
+  }, [boxNode]);
 
   /* ── CONSTRUIRE : porter la carte ── */
   const drag = useDragInteraction({
@@ -417,7 +421,8 @@ export default function GrowthRace({
   /* ── la course : les colonnes ── */
   const tops = [L.trialAt(model, range.min), L.trialAt(model, range.max)].flatMap((tr) => [L.toNumber(tr.left), L.toNumber(tr.right)]);
   const vmax = Math.max(1, ...tops);
-  const CW = Math.min(width, gameScreen ? 360 : 420); const CH = gameScreen ? 150 : 230; const BASE = CH - 26; const TOP = 22;
+  // lecteur, deux TARIFS (la synthèse de l'unité, 2026-11-12) : les tickets s'alignent sous chaque tarif — des colonnes plus basses tiennent à 1024 × 768
+  const CW = Math.min(width, gameScreen ? 360 : 420); const CH = gameScreen ? (model.op === 'mul' ? 96 : 150) : 230; const BASE = CH - 26; const TOP = 22;
   const hOf = (v) => (L.toNumber(v) / vmax) * (BASE - TOP);
   const stack = (side) => {
     const parts = L.partsAt(model, side, xx);
@@ -617,7 +622,7 @@ export default function GrowthRace({
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-sky-50/70 to-white" data-dragging={stretch.dragging || drag.dragging ? 'true' : undefined}>
-        <div ref={boxRef} className="relative space-y-3" data-growth-race data-stage={lab.stage} data-op={model.op} data-theme={themeId}>
+        <div ref={setBox} className="relative space-y-3" data-growth-race data-stage={lab.stage} data-op={model.op} data-theme={themeId}>
           {party.node}
           {/* lecteur : la région vivante TOUJOURS montée — la colonne se démonte quand une question s'ouvre */}
           {gameScreen && (
