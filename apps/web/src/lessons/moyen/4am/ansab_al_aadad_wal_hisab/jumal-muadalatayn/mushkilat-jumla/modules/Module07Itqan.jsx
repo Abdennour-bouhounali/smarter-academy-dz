@@ -42,8 +42,12 @@ export default function Module07Itqan() {
           // متتامتان : x + y = 90 ; x − y = 24 → (57 ; 33). (B) y − x = 24 : la différence retournée → (33 ; 57) ; (C) les deux nombres échangés de place
           id: 'E1', skill: 'tarjama', requires: ['jumla-tarjama'],
           prompt: <Q source={QCM7.source}><MathText>{QCM7.text}</MathText></Q>,
-          options: QCM7.options.map((o) => M(o)),
-          correct: QCM7.correct, cols: 1,
+          options: [
+            M('$\\begin{cases} x + y = 90 \\\\ x - y = 24 \\end{cases}$'),
+            M('$\\begin{cases} x + y = 90 \\\\ y - x = 24 \\end{cases}$'),
+            M('$\\begin{cases} x - y = 90 \\\\ x + y = 24 \\end{cases}$'),
+          ],
+          correct: 0, cols: 1,
           explain: <MathText>{'زاويتان متتامتان مجموع قيسيهما $90°$ : $x + y = 90$ ، و«يزيد $x$ عن $y$ بـ $24°$» تعني $x - y = 24$ (ومنه $x = 57°$ و $y = 33°$). أمّا $y - x = 24$ فتجعل $y$ هو الأكبر.'}</MathText>,
           assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_mushkilat-jumla_P1'] },
         },
