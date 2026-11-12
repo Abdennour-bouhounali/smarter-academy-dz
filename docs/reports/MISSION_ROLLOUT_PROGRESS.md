@@ -20,7 +20,7 @@
 | 8 | `awwaliyan-fima-baynahuma` | `coprime-explorer` (v2 treatment, new) | ✅ done 2026-11-09 | `feat(lessons): awwaliyan-fima-baynahuma — mission prototype` | See « Lesson 8 » below. |
 | 9 | `wadiya-idmajiya-aadad` | — | ⏳ next in catalogue order | | |
 
-Catalogue order: `packages/core/curriculum/dz/lessons_4am_2026_2027.json`. Unit 2 is converted (five lessons; synthesis waiting); unit 9 is converted with its synthesis (the synthesis pilot); unit 3 (three lessons) and unit 4 « معادلات ومتراجحات » (four lessons, 2026-11-11, branch `integrate-unit4`) are converted, their syntheses waiting for the synthesis-recipe answer; unit 5 « جمل معادلتين » (three lessons, 2026-11-12, branch `integrate-unit5`) is converted and its synthesis is being converted with the provisional recipe (owner decision 2026-11-12 — units 1–4's syntheses still wait); units 6–8 and 10–14 are not started. The full prompt for unit 2 « الحساب على الجذور » (every rule, check and review step of unit 1): `docs/reports/UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. The next prompt, unit 9 « خاصية طالس » (unit 2's recipe plus every review lesson of unit 2): `docs/reports/UNIT9_KHASSIYAT_TALIS_MISSION_PROMPT.md`. Still open in unit 1: its synthesis `wadiya-idmajiya-aadad` (no synthesis recipe yet — the prompt's §5).
+Catalogue order: `packages/core/curriculum/dz/lessons_4am_2026_2027.json`. Unit 2 is converted (five lessons; synthesis waiting); unit 9 is converted with its synthesis (the synthesis pilot); unit 3 (three lessons) and unit 4 « معادلات ومتراجحات » (four lessons, 2026-11-11, branch `integrate-unit4`) are converted, their syntheses waiting for the synthesis-recipe answer; unit 5 « جمل معادلتين » (three lessons, 2026-11-12, branch `integrate-unit5`) is converted WITH its synthesis (the provisional recipe) (owner decision 2026-11-12 — units 1–4's syntheses still wait); units 6–8 and 10–14 are not started. The full prompt for unit 2 « الحساب على الجذور » (every rule, check and review step of unit 1): `docs/reports/UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. The next prompt, unit 9 « خاصية طالس » (unit 2's recipe plus every review lesson of unit 2): `docs/reports/UNIT9_KHASSIYAT_TALIS_MISSION_PROMPT.md`. Still open in unit 1: its synthesis `wadiya-idmajiya-aadad` (no synthesis recipe yet — the prompt's §5).
 
 ## Unit 2 « الحساب على الجذور » — the table
 
@@ -102,7 +102,7 @@ reviews, chairman) decided the unit's three labs at once. Its BINDING decisions,
 | 1 | `mafhum-jumla` | `pair-scoreboard` (a PLAYER VERSION `systems/PairScoreboardPlayer.jsx` behind a 4-line dispatcher + its FIRST LabCoach, player only; gauges masked while dragging; the covered round required; module 2's special-case rounds `lab-pair-m2`, owner OQ1) | ✅ built 2026-11-12 | `feat(lessons): mafhum-jumla — mission prototype` | Scene `civil-registry`. See « Unit 5, lesson 1 » below. |
 | 2 | `hall-jabri` | `elimination-cards` (a PLAYER VERSION `systems/EliminationCardsPlayer.jsx` behind a 4-line dispatcher + its FIRST LabCoach, player only; a trial = a gesture that WRITES a new line or a counted refusal; BUILD decoy by the student's PATH, rule P) | ✅ built 2026-11-12 | `feat(lessons): hall-jabri — mission prototype` | Scene `kiosk-cards`. See « Unit 5, lesson 2 » below. |
 | 3 | `mushkilat-jumla` | `story-modeller` (a PLAYER VERSION `systems/StoryModellerPlayer.jsx` behind a 4-line dispatcher + its FIRST LabCoach, player only; five stages, objects drawn in trays, the refused story `p1`) | ✅ built 2026-11-12 | `feat(lessons): mushkilat-jumla — mission prototype` | Scene `museum-desk`. See « Unit 5, lesson 3 » below. |
-| S | `wadiya-idmajiya-jumal` | — | 🔧 being converted (owner decision 2026-11-12, provisional synthesis recipe) | | Its lab render is frozen by `lab.render.test.jsx` and `lab.snapshot.test.jsx`; the page string « جدول الكتاب » of `story-modeller` is rewritten with it (OQ5). |
+| S | `wadiya-idmajiya-jumal` | `story-modeller` (player rounds, chains `synthTrip` / `synthParty`) | ✅ built 2026-11-12 (owner decision OQ4, provisional synthesis recipe) | `feat(lessons): wadiya-idmajiya-jumal — mission prototype (synthesis)` | Scene `party-table`; see « Unit 5, synthesis » below. Its lab render is frozen by `lab.render.test.jsx` and `lab.snapshot.test.jsx`; the page string « جدول الكتاب » of `story-modeller` is rewritten with it (OQ5). |
 
 ## Lab families — which have the v2 treatment
 
@@ -422,7 +422,7 @@ and 2 at the five sizes, teacher view unchanged.
 `e2e/unit-mission-view.mjs`: all checks pass for the five units at the five sizes; unit 4's captures looked at (1366, 1024 — no scroll, nothing
 cut, Arabic and the highlighted numbers correct).
 
-**Unit 5 « جمل معادلتين » (2026-11-12).** Its three lessons converted (the synthesis is being converted, owner decision 2026-11-12), its entry
+**Unit 5 « جمل معادلتين » (2026-11-12).** Its three lessons and its synthesis converted (owner decision 2026-11-12), its entry
 `'jumal-muadalatayn'` is written in `unitMissions.js` (commit `feat(unit): unit 5 « جمل معادلتين » on the one-screen unit page`):
 - stations = the object of each lesson's scene: 🏛️ مفهوم جملة معادلتين, 🏷️ الحل الجبري, 🎟️ حل مشكلات, then 🧩 أدمج تعلّماتي;
 - the challenge is the unit's تحدّ REWRITTEN with the numbers the council reserved for this page (verdict X2, `_unit/forbiddenShared.js ›
@@ -1932,6 +1932,64 @@ Owner decisions (2026-11-12): **OQ1** module-2 special-case rounds `lab-pair-m2`
 `wadiya-idmajiya-jumal` is converted NOW with the provisional synthesis recipe (units 1–4's syntheses still wait); **OQ5** the `story-modeller`
 page string « جدول الكتاب » is rewritten with the synthesis. Accepted deviation: `hall-jabri`'s kiosk HOOK at the END of module 5. The unit page
 (`pages/unit/unitMissions.js › 'jumal-muadalatayn'`) is written: the sixth unit on it.
+
+## Unit 5, synthesis — `wadiya-idmajiya-jumal` « أدمج تعلّماتي » (2026-11-12) — the SECOND synthesis in the player
+
+**Decisions (binding):** owner OQ4 (convert this synthesis with the provisional recipe; units 1–4's syntheses untouched) and OQ5 (the shared
+`story-modeller` string `formalTitle` « … جدول الكتاب » rewritten: « مراحل حلّ مشكلة بجملة معادلتين — خمس خطوات », its own commit; the synthesis
+snapshot did not change, the string shows only after the discovery). The recipe was applied as written. What differs from the pilot: module 7's
+unit situation IS the 🏆's own situation (« حفل البلدية »): module 7 ANALYSES it (unknowns, system, simplification by 150, method) and never
+solves it.
+
+**What was written**
+- Config: `studentView: 'mission'`, `knowledgeMapOpen`, scene `party-table` (`mission/PartyTableScene.jsx`: equal rows of juice and cake, a
+  leftovers tray, blank price tags, a girl in hijab and a boy, no number), an opening without a digit, `cta: 'أجرّب'`, `toolsOwned` = five keys of
+  the three lessons (`hall-jumla`; `tariqat-tawid`, `tariqat-jam`; `jumla-tarjama`, `tahaqquq-nas`) with `usedIn`, `checkpoints: []`,
+  `climaxModule: 8`, `stationLabels`, `trainings`, `hideStars`, `durationMin: 79` (6 + 39 + 28 + 6), `sittings: 2`, `resumeInside`.
+- **Role scan FIRST** (`content/forbidden.js` + `content/mission.test.js`), and it FAILED first on training 4 (a flag at 50 دج = the cake price the
+  🏆 finds), the memo cards and the open map. Two levels: `ANSWER_TEXT` (the 🏆 solved — (25 ; 50), 6x = 150, 2250 − 6x, 1950, 2040, 37,5, a juice
+  at 25 / a cake at 50) nowhere before the 🏆, module 7's own source included; `SITUATION_TEXT` (11250, 2100, 150x, 24x + 30y, x + y = 75,
+  « حفل البلدية ») nowhere before module 7. Rounds scanned by role through `shownValues`.
+- Training 4 renumbered (flags 30 / 60 دج, orders 300 and 432 دج, a 1080 دج order); training 6's « ياسين » (a unit climax name) → « إسماعيل »;
+  29 typed training steps carry `shape`; memo cards and map in letters, one fresh example (→ (60 ; 20)).
+- « أستعدّ »: `content/prep.js`, 10 statements over the unit's three lessons in cycle, the first three true, truths recomputed by its test.
+- Module 7 (`Module07AlWadiya.jsx`), `LabRounds labId="m7-wadiya"` (`content/rounds.js`): **r1 « رحلة القسم »** 10x + 10y = 550 | 5x + 3y = 235 →
+  (35 ; 20), by hand, chain `synthTrip` (typed 2x = 70, `verifySwap`: the swapped pair passes the equal-count fact and fails the other, the answer
+  BUILT); **r2 « حفل المدرسة »** 120x + 120y = 8400 | 9x + 14y = 780 → (40 ; 30), chain `synthParty` ending on the NUMERICAL build
+  « 120 × (40 + 30) = 8400 » (decoy 70); practice rounds that release: 4x + 4y = 240 | 3x + 2y = 160 → (40 ; 20) and 20x + 20y = 900 | 3x + 5y = 165
+  → (30 ; 15); a free lab. Steps: read + unknowns (needs r1) → strategy « equal counts → divide » (needs r2) → the notebook screen → the حفل's system
+  (first pen step, its two facts on the same screen) → simplification by 150 → verification in words → « ورقة عائشة » (`content/peerSheet.js`, a
+  PLAN with no number; the error: « the pair satisfies the simplified equation, so it solves the system »). A pause line before the 🏆. Module 8
+  untouched. The four round systems are in the unit's `SYNTH` (`_unit/forbiddenShared.js`), so no lesson of the unit may show them; عائشة
+  (`m7-aisha`) is in the unit's cast (`_unit/missionStrings.test.js`).
+
+**Added to shared code (additive):** the story-modeller player gains `CHAIN_SPECS.synthTrip` / `synthParty`, `equalRow`, `sumBuild`,
+`QUESTIONS.buildSum` (`k × (▢ + ▢) = ▢`), glyphs `juice` and `cake`, strings `storyModeller.player.q.buildSum.*`; `shownValues` lists the build
+tiles only for a round that asks `buildSum`; test `logic/storyModellerPlayer.synth.test.js`. Lesson 3's tests unchanged and green.
+
+**Saved-answer keys:** none new; round state from the stars log.
+
+**Traps:** a two-word `short` overflowed the wide text slot of `buildAnswer` at 1024 (one word: « العلبة », « القطعة »); a paged step whose
+question asks about a statement keeps statement + question in ONE `data-paging-keep` block, the post-answer brick OUTSIDE it; the coach bubble
+« تحقّق من ترجمتك » sits over the second slot row of a six-chip money story; the peer file was first `peerPlan.js` to dodge the unit's cast test —
+the integrator renamed it `peerSheet.js` and registered the name, so the platform-wide peer-name checks see it.
+
+**Review:** FIXED — holes in the role scan (comma and `\,` thousands, x = 25 / y = 50, 150 = 6x, 2250; each with a negative control, the scan
+narrowed so `x + y = 50` is not flagged); the 🏆 glyph in the notebook text `aria-hidden`. REJECTED — seeding `won` from stored stars (the pilot's
+pattern; the walk shows the steps unlock after a reload); the 🏆 in the module subtitle (a string prop, as the pilot).
+
+**Verification:** on the integrated tree (`integrate-unit5`, merge b0418e07 + the cast / SYNTH follow-ups e32dd4f9, bb8904c5): vitest
+`src/lessons` + `src/pages` 760 files / 13 399 tests green; `check:lessons` exit 0 (entry 241.4 KB gzip); `lab-rollout-status` ✅ for the four
+lessons of the unit. Builder: `no-back-and-forth` on every module LONE 0 · OVER 0 · PAIR 0 at 1366 / 1024 / 1920; walk at 1024 × 768 — r1 and r2
+★★★ (a free model refusal in r2), stars kept after a reload, 19 step screens with 0 overflow and 0 wrapped formula; 28 of the 38 typed training
+steps entered (every kind: gap, quantity, word suffix).
+
+**Open (for the owner):** module 8 (untouched by rule) still prints « 11 250 DA » / « 2 100 DA »: the grouped thousands are reversed by the bidi
+and « DA » is not « دج »; module 7's estimate (≈ 28 min: 10–11 for the rounds, ≈ 17 for the steps) is not timed on a real student.
+
+**Recipe lessons:** when the unit situation IS the 🏆's situation, split the signature in two (the answer: never before the 🏆; the situation: never
+before module 7) and scan module 7's own source for the answer. A synthesis may need a new chain for its own phenomenon (here « equal counts →
+k × (sum) »): additive in the lab's player logic, never a page change.
 
 ## The synthesis recipe (PROVISIONAL until a real student has been timed on the pilot: ≤ 32 min for module 7, module 8 finished)
 
