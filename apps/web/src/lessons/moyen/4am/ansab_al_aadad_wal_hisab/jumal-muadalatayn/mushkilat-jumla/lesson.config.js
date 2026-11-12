@@ -1,23 +1,12 @@
 /**
- * الدرس 3 — حل مشكلات بتوظيف جمل معادلتين من الدرجة الأولى بمجهولين
- * Unité 5 du manuel (4AM) : نشاط 3 p. 57 (le musée et le tableau des cinq étapes), le تحدّ et
- * أبو كامل (p. 55, dupliqués en module 2), exercices 14–21 (p. 61) et 24–28 (p. 63, أتعمّق),
- * أؤكّد تعلّماتي item 7 (p. 62, test final). Le manuel n'a pas d'item « أستعدّ » pour ce sujet :
- * module 0 fait d'affirmations de la plateforme.
- * puis trois « مسائل » de la plateforme (modules 4–6).
- * Source de vérité : docs/sources/4am/unit5/extraction.json.
+ * الدرس 3 — حل مشكلات بتوظيف جمل معادلتين من الدرجة الأولى بمجهولين (unité 5, 4AM). Le manuel fixe les الكفاءات (نشاط 3, le تحدّ, أبو كامل,
+ * exercices 14–21 et 24–28, item 7 de « أؤكّد تعلّماتي ») ; le parcours, les histoires et les nombres sont ceux de la PLATEFORME.
  *
- * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
- *   Entrée retenue : le DERBY du labo `story-modeller` (thème `stadium`, niveau مبتدئ : 20 billets, 300 / 150 DA, 4800 DA, inconnues
- *   déjà nommées) — la main traverse les cinq étapes sans la charge de nommer, et c'est le LABO qui REFUSE « 300x + 150y = 20 »
- *   (un prix compté comme une personne) : la règle de traduction se voit avant de se lire. Rejetée : le musée du manuel comme
- *   entrée unique (« quelles sont les inconnues ? » se répond de mémoire) ; il reste le niveau متقدم du MÊME labo, où l'élève nomme
- *   lui-même les inconnues et remplit la colonne « حل » du tableau (`StepsTable`).
- *   Ordre des idées (module 1, une étape par ligne du tableau, chacune un POURQUOI sur les nombres du niveau joué) : pourquoi ces
- *   inconnues et pas les prix → pourquoi le labo refuse la mauvaise équation (brique « jumla-tarjama » APRÈS) → pourquoi x seul ne
- *   répond pas → pourquoi vérifier les DEUX informations (brique « khutuwat-hall » et tableau APRÈS). Module 2 : les cinq étapes sur
- *   le تحدّ, une solution qui ne répond pas à l'histoire (brique « tahaqquq-nas » APRÈS), أبو كامل (la lecture retenue APRÈS).
- *   Modules 0, 3–7 : non touchés (pas de labo ; le module 3 garde sa carte qui dit ce qu'est le module).
+ * LECTEUR DE MISSION (rollout 2026-11-12 ; conseil du 2026-11-11, verdict L3.1–L3.16, X1–X11) : la مسألة « متحف الولاية » (module 4) est le
+ * seul endroit où des PERSONNES entrent à deux prix ; avant elle, le labo `story-modeller` compte des OBJETS (content/stories.js) et aucun écran ne
+ * montre sa signature (content/forbidden.js, _unit/signatures/mushkilat-jumla.js). Module 1 : « نادي الرسم » à la main (la ligne tapée), « مكتبة
+ * الحيّ » argent + argent avec un nombre muet, le défi ⭐ ; module 2 : « دفتر التعاونية », la jumla a une solution que l'histoire REFUSE ; puis la
+ * حصّالة grandie, un problème « على طريقة أبي كامل » et « ورقة وئام ».
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -28,6 +17,45 @@ export const LESSON_CONFIG = {
   kind: 'lesson',
   unit: 'jumal-muadalatayn',
   unitTitle: 'جمل معادلتين من الدرجة الأولى بمجهولين',
+  studentView: 'mission',
+  knowledgeMapOpen: true,
+  mission: {
+    scene: 'museum-desk',
+    title: 'شبّاك متحف الولاية: كم بالغًا وكم صغيرًا؟',
+    opening: {
+      text: 'يعرف مدير المتحف كم زائرًا دخل اليوم وكم دينارًا جمع الشبّاك، لكنه لا يعرف كم بالغًا وكم صغيرًا بينهم. كيف نجد العددين من معلومتين فقط؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'jumla-tarjama', icon: '🧩', label: 'من القصة إلى الجملة' },
+      { id: 'khutuwat-hall', icon: '🪜', label: 'خمس مراحل للحل' },
+      { id: 'tahaqquq-nas', icon: '✅', label: 'القصة تقبل الجواب أو ترفضه' },
+    ],
+    climaxModule: 4,
+    checkpoints: [
+      {
+        id: 'cp-ajal', afterModule: 1,
+        prompt: 'في موقف الدرّاجات درّاجات بعجلتين ودرّاجات بثلاث عجلات. نسمّي $x$ عدد الدرّاجات بعجلتين و $y$ عدد الدرّاجات بثلاث عجلات. المعلومة «عدد العجلات 54» تُكتب:',
+        options: ['$2x + 3y = 54$', '$x + y = 54$', '$x + 3y = 54$'],
+        correct: 0,
+        explain: 'كل درّاجة تُحسب بعدد عجلاتها: $2x + 3y = 54$ . مثلًا 12 درّاجة بعجلتين و 10 بثلاث عجلات: $24 + 30 = 54$ عجلة. أمّا $x + y$ فيعدّ الدرّاجات لا العجلات.',
+      },
+      {
+        id: 'cp-jawab', afterModule: 2,
+        prompt: 'كم حافلة صغيرة وكم حافلة كبيرة استأجرت المدرسة؟ نسمّي $x$ عدد الحافلات الصغيرة و $y$ عدد الكبيرة، ووجدنا $x = 6$ و $y = 9$ . أيّ جملة تجيب عن سؤال القصة؟',
+        options: ['استأجرت المدرسة 6 حافلات صغيرة و 9 حافلات كبيرة.', '$(6 ; 9)$', 'استأجرت المدرسة 15 حافلة.'],
+        correct: 0,
+        explain: 'الجواب جملة تذكر العددين، كلّ بما يمثّله. الثنائية وحدها لا تقول أيّ عدد للصغيرة، و 15 حافلة لا تجيب عن «كم من كل نوع».',
+      },
+      {
+        id: 'cp-muhit', afterModule: 3,
+        prompt: 'مستطيل محيطه 46 سم، نسمّي $x$ طوله و $y$ عرضه. معلومة المحيط تُكتب:',
+        options: ['$2(x + y) = 46$', '$x + y = 46$', '$xy = 46$'],
+        correct: 0,
+        explain: 'المحيط مجموع الأضلاع الأربعة: $2(x + y) = 46$ ، أي $x + y = 23$ نصف المحيط. أمّا $xy$ فهي المساحة.',
+      },
+    ],
+  },
   sequentialUnlock: true,
   title: 'حل مشكلات بتوظيف جمل معادلتين من الدرجة الأولى بمجهولين',
   description: 'ترييض وضعيات من الحياة اليومية ومسائل هندسية وعددية بجملة معادلتين: اختيار المجهولين المناسبين x و y، ترجمة معطيات النص إلى جملة معادلتين، حلها بطريقة جبرية مناسبة، ثم التحقق من النتائج وتفسيرها والإجابة عن سؤال المشكلة.',
@@ -48,10 +76,10 @@ export const LESSON_CONFIG = {
   ],
   teachingScope: {
     include: [
-      'نشاط 3 ص 57: المتحف وجدول مراحل الحل الخمس',
-      'التحدّي ص 55 (القطع النقدية) ومسألة أبي كامل ص 55 بالمراحل الخمس',
-      'التحقق في نص المشكلة: عدد الأشخاص أو القطع عدد طبيعي',
-      'تمارين أوظّف تعلّماتي 14 ← 21 وأتعمّق 24 ← 28',
+      'من القصة إلى الجملة: مراحل الحل الخمس على قصص تعدّ أشياء أو تجمع أثمانًا',
+      'حصّالة القسم ومسألة على طريقة أبي كامل بالمراحل الخمس',
+      'التحقق في نص المشكلة: ما يُعدّ يكون عددًا طبيعيًا، وقصة قد ترفض حلّ الجملة',
+      'عشرة تمارين من المنصّة: أعداد ونسب، محيطات ومساحات، زوايا وطالس، ومن الحياة اليومية',
     ],
     exclude: [
       'تقنيات طريقتي التعويض والجمع (الدرس 2)',
@@ -62,8 +90,8 @@ export const LESSON_CONFIG = {
   lessonProblem: {
     module: 4,
     title: 'متحف الولاية: 180 زائرًا و 33000 دج',
-    statement: 'يقترح متحف الولاية، الذي يعرّف التلاميذ بتراث الوطن، تذكرتين يوم الجمعة: 250 دج للبالغين و 100 دج للصغار. يوم الجمعة الماضي استقبل المتحف 180 زائرًا، وبلغت مداخيله 33000 دج. يضمّ المتحف 12 قاعة عرض، ويُفتح على الساعة 9 صباحًا. يريد المدير أن يعرف عدد البالغين وعدد الصغار الذين زاروا المتحف ذلك اليوم.',
-    illustration: { kind: 'tags', cards: [{ title: 'تذكرة البالغ', icon: 'ticket', lines: [{ label: 'الثمن', value: 250, unit: 'دج' }] }, { title: 'تذكرة الصغير', icon: 'ticket', lines: [{ label: 'الثمن', value: 100, unit: 'دج' }] }, { title: 'يوم الجمعة', icon: 'person', lines: [{ label: 'الزوّار', value: 180 }, { label: 'المداخيل', value: 33000, unit: 'دج' }] }], ariaLabel: 'بطاقات متحف الولاية: تذكرة البالغ 250 دج وتذكرة الصغير 100 دج، و 180 زائرًا ومداخيل 33000 دج' },
+    statement: 'يقترح متحف الولاية، الذي يعرّف التلاميذ بتراث الوطن، تذكرتين يوم الأحد: 250 دج للبالغين و 100 دج للصغار. يوم الأحد الماضي استقبل المتحف 180 زائرًا، وبلغت مداخيله 33000 دج. يضمّ المتحف 12 قاعة عرض، ويُفتح على الساعة 9 صباحًا. يريد المدير أن يعرف عدد البالغين وعدد الصغار الذين زاروا المتحف ذلك اليوم.',
+    illustration: { kind: 'tags', cards: [{ title: 'تذكرة البالغ', icon: 'ticket', lines: [{ label: 'الثمن', value: 250, unit: 'دج' }] }, { title: 'تذكرة الصغير', icon: 'ticket', lines: [{ label: 'الثمن', value: 100, unit: 'دج' }] }, { title: 'يوم الأحد', icon: 'person', lines: [{ label: 'الزوّار', value: 180 }, { label: 'المداخيل', value: 33000, unit: 'دج' }] }], ariaLabel: 'بطاقات متحف الولاية: تذكرة البالغ 250 دج وتذكرة الصغير 100 دج، و 180 زائرًا ومداخيل 33000 دج' },
   },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
@@ -73,25 +101,25 @@ export const LESSON_CONFIG = {
   // résoudre une jumla (leçon 2).
   priorKnowledge: ['tarjama-ibara', 'muhit-misaha', 'nisba-mia', 'tahaqquq-thunaiya', 'hall-jumla'],
   resources: [
-    // Module 1 : نشاط 3. مبتدئ : un derby (plateforme), inconnues déjà nommées, petits nombres ;
-    // متقدم : le musée du manuel — l'élève choisit lui-même les inconnues et chaque nombre.
+    // Module 1 : la page (enseignant, mode classe) — مبتدئ « نادي الرسم », متقدم « معرض الكتب » (histoires de la plateforme, verdict L3.10).
+    // Les codes sont gardés (preuves déjà enregistrées), les titres sont ceux de la plateforme.
     {
       kind: 'manipulation', code: 'story-modeller-derby-20', type: 'story-modeller', module: 1,
       level: 'beginner',
-      title: 'تذاكر الديربي: 20 تذكرة و 4800 DA',
+      title: 'نادي الرسم: 12 قلمًا و 440 دج',
       objective: 'حل مشكلة بجملة معادلتين: نختار المجهولين، نترجم كل معلومة بمعادلة، نحل الجملة، نتحقق في القصة نفسها، ثم نجيب',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'stadium' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'museum' },
       learningPointIds: ['4am_mushkilat-jumla_P1', '4am_mushkilat-jumla_P2'],
       sourceElementIds: ['act-3'],
     },
     {
       kind: 'manipulation', code: 'story-modeller-museum-140', type: 'story-modeller', module: 1,
       level: 'advanced',
-      title: 'نشاط 3: المتحف — 140 زائرا و 30300 DA',
+      title: 'معرض الكتب: 26 كتابًا و 2820 دج',
       objective: 'حل مشكلة بجملة معادلتين: نختار المجهولين، نترجم كل معلومة بمعادلة، نحل الجملة، نتحقق في القصة نفسها، ثم نجيب',
       autonomy: 'التلميذ يختار المجهولين بنفسه بين ما تذكره القصة (الأعداد المعطاة ترفض الحرف)، ويقرّر وحده أيّ عدد يذهب إلى أيّ خانة في كل معادلة، ثم يختار طريقة الحل ويعيد القصة بالعددين',
-      experience: { type: 'textbook', reason: '', theme: 'museum' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'museum' },
       learningPointIds: ['4am_mushkilat-jumla_P1', '4am_mushkilat-jumla_P2'],
       sourceElementIds: ['act-3'],
     },
@@ -102,18 +130,18 @@ export const LESSON_CONFIG = {
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
-      title: 'أستعدّ', desc: 'تسع عبارات: ترجمة جملة، المحيطات والمساحات، النسب المئوية، التحقق من ثنائية وحل جملة. صحيح أم خاطئ؟',
+      title: 'أستعدّ', desc: 'عشر عبارات: التحقق من ثنائية وحل جملة، وترجمة جملة إلى عبارة أو معادلة. صحيح أم خاطئ؟',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'mathaf', path: `${LESSON_BASE_PATH}/mathaf`,
-      title: 'نشاط 3 — زوار المتحف', desc: 'من القصة إلى الجملة بيدك: اختر المجهولين، احمل أعداد القصة إلى المعادلتين، حلّ، ثم أعد القصة بالعددين. جدول الكتاب ص 57.',
+      title: 'من القصة إلى الجملة', desc: 'من القصة إلى الجملة بيدك: اختر المجهولين، احمل أعداد القصة إلى المعادلتين، حلّ، ثم أعد القصة بالعددين.',
       stage: 'trigger', teachesLearningPointIds: ['4am_mushkilat-jumla_P1', '4am_mushkilat-jumla_P2'],
-      color: 'indigo', style: 'featured', estimatedMin: 15, difficulty: 2, actionText: 'أترجم القصة' },
+      color: 'indigo', style: 'featured', estimatedMin: 14, difficulty: 2, actionText: 'أترجم القصة' },
     { id: '02', number: 2, slug: 'marahil', path: `${LESSON_BASE_PATH}/marahil`,
-      title: 'المراحل الخمس — التحدّي وأبو كامل', desc: 'نطبّق المراحل الخمس على قطع القسم النقدية وعلى مسألة أبي كامل، ثم نرى حلا لا يجيب عن القصة.',
+      title: 'المراحل الخمس — دفتر وحصّالة', desc: 'دفتر تقبل جملته حلًّا وترفضه القصة، ثم حصّالة القسم ومسألة على طريقة أبي كامل بالمراحل الخمس.',
       stage: 'discovery', teachesLearningPointIds: ['4am_mushkilat-jumla_P1', '4am_mushkilat-jumla_P2'],
-      color: 'violet', style: 'featured', estimatedMin: 12, difficulty: 3, actionText: 'أطبّق المراحل' },
+      color: 'violet', style: 'featured', estimatedMin: 13, difficulty: 3, actionText: 'أطبّق المراحل' },
     { id: '03', number: 3, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
-      title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 14 ← 21 وأتعمّق 24 ← 28: أعداد ونسب، حقول ومستطيلات، زوايا وطالس، مزرعة وأعمار وأوزان وعلامات.',
+      title: 'أوظّف تعلّماتي', desc: 'عشرة تمارين: أعداد ونسب، حقول ومستطيلات، زوايا وطالس، مزرعة وأعمار وأوزان وعلامات.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_mushkilat-jumla_P1', '4am_mushkilat-jumla_P2'],
       color: 'amber', style: 'featured', estimatedMin: 18, difficulty: 3, actionText: 'أتدرّب' },
     { id: '04', number: 4, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
