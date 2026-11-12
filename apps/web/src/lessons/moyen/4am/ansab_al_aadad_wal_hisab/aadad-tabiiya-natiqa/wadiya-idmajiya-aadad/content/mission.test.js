@@ -12,6 +12,7 @@ import { chipsAround } from '../../../../../../common/manipulations/divisibility
 import { QUESTIONS as EUCLID_Q, CHAINS_SHARE } from '../../../../../../common/manipulations/divisibility/EuclidAlgorithm.jsx';
 import { emptyLog, logEvent, roundWon, starsFor, easierProps } from '../../../../../../common/manipulations/rounds/roundsModel.js';
 import module7Src from '../modules/Module07TahlilWadiya.jsx?raw';
+import module8Src from '../modules/Module08Ahill.jsx?raw';
 
 const knowledgeOf = import.meta.glob('../../*/knowledge.jsx', { eager: true });
 const lessonContent = import.meta.glob(['../../*/content/*.js', '!../../*/content/*.test.js', '!../../wadiya-idmajiya-aadad/**'], { eager: true });
@@ -30,6 +31,10 @@ const found = (p) => p.parts.flatMap((part) => part.steps).filter((s) => s.kind 
 describe('the synthesis — role scan of every screen before its time', () => {
   it('the six trainings never show the challenge (module 8) nor the unit situation (module 7)', () => {
     PROBLEMS.forEach((p) => expect(textViolations(json(p), p.id)).toEqual([]));
+  });
+  it('money is « دج », never « DA », and no number carries a thousands space (owner, 2026-11-12) — trainings, memo cards, map, module 8', () => {
+    const texts = [json(PROBLEMS), json(Object.values(LESSON_KNOWLEDGE.modules).flat().map(cardText)), json(KNOWLEDGE_GRAPH), module8Src];
+    texts.forEach((t) => { expect(t).not.toMatch(/\bDA\b/); expect(t).not.toMatch(/(?<![0-9.,])[0-9]{1,3} [0-9]{3}(?![0-9])/); });
   });
   it('no training FINDS a number of the challenge (13 schools, 72 or 65 each, a remainder 91 or 26)', () => {
     PROBLEMS.forEach((p) => found(p).forEach((v) => expect([13, 72, 65, 91, 26], `${p.id}: ${v}`).not.toContain(v)));
