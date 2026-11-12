@@ -551,7 +551,8 @@ const BUILD = {
     return {
       id: 'share', kind: 'build', prompt: Mx(k, 'share.prompt', o),
       slots: [words.all, words.groups, words.each],
-      tiles: [a / g, b / g, a, g], expected: [a, g, a / g], ops: ['=', '×'],
+      // les tuiles sont DISTINCTES (une valeur répétée rendrait l'identité d'une tuile ambiguë — revue 2026-11-12)
+      tiles: [...new Set([a / g, b / g, a, g])], expected: [a, g, a / g], ops: ['=', '×'],
       hints: [Mx(k, 'share.hint1', o), Mx(k, 'share.hint2', o)], explain: Mx(k, 'share.explain', o),
     };
   },

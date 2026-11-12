@@ -48,7 +48,7 @@ export const LESSON_CONFIG = {
     resumeInside: true,
   },
   title: 'أدمج تعلّماتي — الأعداد الطبيعيّة والأعداد النّاطقة',
-  description: 'وضعية إدماجية (توزيع المآزر المدرسية بالتساوي على أكبر عدد من المدارس) تُعبّئ القواسم المشتركة والقاسم المشترك الأكبر وخوارزمية إقليدس، تسبقها ست وضعيات تدريبية.',
+  description: 'وضعية إدماجية (توزيع لوازم من نوعين بالتساوي على أكبر عدد من المدارس) تُعبّئ القواسم المشتركة والقاسم المشترك الأكبر وخوارزمية إقليدس، تسبقها ست وضعيات تدريبية.',
   level: 'moyen',
   grade: '4am',
   chapter: 'ansab_al_aadad_wal_hisab',
@@ -83,7 +83,7 @@ export const LESSON_CONFIG = {
     {
       kind: 'manipulation', code: 'euclidean-algorithm-makhzan', type: 'euclidean-algorithm', module: 7, level: 'advanced',
       title: 'المخزن الكبير: 816 و 697',
-      objective: 'تعيين أكبر عدد من المدارس بخوارزمية إقليدس حين يكون العددان كبيرين، ثم كتابة ما تأخذه كل مدرسة',
+      objective: 'توزيع نوعين من الأشياء بالتساوي على أكبر عدد من المدارس: عدد المدارس قاسم مشترك للعددين، والأكبر هو PGCD، وكل مدرسة تأخذ ناتج القسمة عليه',
       autonomy: 'عددان كبيران لا تُضاف فيهما المدارس واحدة واحدة: التلميذ يختار الخوارزمية ويتوقّف عند آخر باقٍ غير معدوم',
       experience: { type: 'platform_context', reason: 'larger_numbers_for_autonomy', theme: 'workshop' },
       learningPointIds: ['4am_wadiya-idmajiya-aadad_P1'],

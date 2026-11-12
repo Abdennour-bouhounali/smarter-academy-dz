@@ -47,7 +47,7 @@ describe('the synthesis — role scan of every screen before its time', () => {
     KNOWLEDGE_GRAPH.nodes.forEach((node) => expect(textViolations(json(node), node.id)).toEqual([]));
   });
   it('the role scan catches what it must (negative controls)', () => {
-    ['936 مئزرًا', '$936 = 845 \\times 1 + 91$', 'PGCD$(936 ; 845) = 13$', '13 مدرسة', '72 مئزرًا ورديًا', 'الباقي 26', '$936 - 845 = 91$', 'المآزر']
+    ['936 مئزرًا', '$936 = 845 \\times 1 + 91$', 'PGCD$(936 ; 845) = 13$', '13 مدرسة', '72 مئزرًا ورديًا', 'الباقي 26', '$936 - 845 = 91$', 'المآزر', '$\\frac{936}{845}$', '$\\dfrac{72}{65}$', '\\text{13}']
       .forEach((s) => expect(textViolations(s).length, s).toBeGreaterThan(0));
     ['133 زهرة', '1.30 م', '2026', '$x = 1{,}3$', '$PGCD(84 ; 36) = 12$', 'الكراريس', '613', '7 باقات']
       .forEach((s) => expect(textViolations(s), s).toEqual([]));
@@ -199,6 +199,11 @@ describe('the synthesis — config, peer sheet, ladder', () => {
   it('the opening holds no digit and no signature; no student-visible config line sends to the textbook or says « DA »', () => {
     expect(mission.opening.text).not.toMatch(/\d/);
     expect(textViolations(`${mission.title} ${mission.opening.text}`)).toEqual([]);
+    // what the home and the map show BEFORE module 7: the lesson description, the stations 0–6, the keys
+    [LESSON_CONFIG.description, ...mission.tools.map((t) => t.label), ...LESSON_CONFIG.modules.filter((m) => m.number < 7).map((m) => `${m.title} ${m.desc}`)]
+      .forEach((s) => expect(textViolations(s, 'before7'), s).toEqual([]));
+    // module 7's station shows no answer
+    LESSON_CONFIG.modules.filter((m) => m.number === 7).forEach((m) => expect(textViolations(`${m.title} ${m.desc}`, 'm7', { before7: false })).toEqual([]));
     const visible = [LESSON_CONFIG.description, mission.title, mission.opening.text, ...mission.tools.map((t) => t.label),
       ...LESSON_CONFIG.modules.map((m) => `${m.title} ${m.desc}`), ...LESSON_CONFIG.resources.map((r) => `${r.title} ${r.objective ?? ''}`)];
     visible.forEach((s) => { expect(/الكتاب(?!ة)/.test(s), s).toBe(false); expect(/نشاط\s*\d|تمرين\s*\d|ص\s*\d/.test(s), s).toBe(false); expect(/\bDA\b/.test(s), s).toBe(false); });

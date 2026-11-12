@@ -42,7 +42,8 @@ export function violations(shown, label = '') {
 
 /* ── Les mêmes signatures pour un TEXTE (un énoncé, une carte, la carte des معارف, l'ouverture, « أستعدّ », la feuille de camarade) ── */
 // un nombre ENTIER isolé (ni dans 133, ni dans 1,3 ou 2.13, ni dans « 13{,}5 »)
-const num = (n) => new RegExp(`(^|[^0-9,{}.])${n}(?![0-9]|\\{?,\\}?[0-9]|\\.[0-9])`);
+// (revue 2026-11-12 : « { » n'est PAS exclu avant le nombre — \frac{936}{845}, \text{13} sont attrapés ; seule la partie décimale « 1{,}3 » l'est)
+const num = (n) => new RegExp(`(?<![0-9.,]|\\{,\\})${n}(?![0-9]|\\{?,\\}?[0-9]|\\.[0-9])`);
 
 /** 1. Le défi RÉSOLU : jamais avant le 🏆 (le module 7 compris). */
 export const ANSWER_TEXT = [

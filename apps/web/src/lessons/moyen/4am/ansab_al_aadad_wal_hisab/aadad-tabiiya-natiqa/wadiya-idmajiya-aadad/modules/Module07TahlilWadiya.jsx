@@ -47,6 +47,12 @@ const R2_LINES = [
   `${STORE.a} = ${G2} \\times ${STORE.a / G2}`,
 ];
 
+/**
+ * L'énoncé tel que le module 7 l'affiche : « و845 » (la conjonction collée au nombre) se lit « 845و » dans une phrase arabe (bidi) — une espace
+ * l'en sépare. Le module 8 (jamais retouché) garde son texte.
+ */
+const SAID_TEXT = SITUATION.text.replace(/و(\d)/g, 'و $1');
+
 /** Une ligne de trace dans le lecteur : ✓ caché aux lecteurs d'écran (un mot le dit), jamais dans une chaîne. */
 function WonPanel({ id, won, lines, title, empty }) {
   return (
@@ -56,7 +62,7 @@ function WonPanel({ id, won, lines, title, empty }) {
         <>
           <p className="font-bold">{title}</p>
           <ul className="ms-4 list-disc">
-            {lines.map((s) => <li key={s}><MathText>{`$${s}$`}</MathText> <span aria-hidden="true">✓</span><span className="sr-only"> تمّ.</span></li>)}
+            {lines.map((s, i) => <li key={i}><MathText>{`$${s}$`}</MathText> <span aria-hidden="true">✓</span><span className="sr-only"> تمّ.</span></li>)}
           </ul>
         </>
       ) : <p>{empty}</p>}
@@ -66,7 +72,7 @@ function WonPanel({ id, won, lines, title, empty }) {
 
 /** Les données utiles de la وضعية, RAPPELÉES sur l'écran de la question qui s'en sert (aucun aller-retour). */
 const Facts = () => (
-  <ul className="ms-4 list-disc space-y-1 rounded-xl border-2 border-amber-200 bg-amber-50 px-3 py-2 text-sm text-slate-800" data-situation-facts>
+  <ul aria-label="معطيات الوضعية" className="ms-4 list-disc space-y-1 rounded-xl border-2 border-amber-200 bg-amber-50 px-3 py-2 text-sm text-slate-800" data-situation-facts>
     {SITUATION.data.filter((d) => d.useful).map((d) => <li key={d.id}>{d.text}</li>)}
   </ul>
 );
@@ -83,7 +89,6 @@ export default function Module07TahlilWadiya() {
     <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="تحليل الوضعية النهائية للاختبار"
       moduleSubtitle="ثم التحدّي 🏆 — المآزر المدرسية: كم مدرسة؟" estimatedTime="≈ 28 دقيقة"
       objectives={['ماذا يعني «توزيع بالتساوي دون أن يبقى شيء» بالنسبة إلى عدد المدارس؟', 'أيّ حساب يعطي أكبر عدد من المدارس حين يكون العددان كبيرين؟', 'كيف نعرف ما تأخذه كل مدرسة من كل لون؟']}
-      brief={{ tag: 'أدمج تعلّماتي — وضعية الوحدة', title: SITUATION.title, tone: 'amber', body: <p>{SITUATION.text}</p>, footer: <SourceTag source={SITUATION.source} /> }}
       intro={(
         // LE LABO OUVRE LE MODULE. Lecteur : les MANCHES (content/rounds.js) ; la page garde un workspace à deux niveaux.
         <PlayerSwitch
@@ -111,7 +116,10 @@ export default function Module07TahlilWadiya() {
         { num: 1, title: 'قراءة الوضعية وفهمها', subtitle: 'ما المعطيات المفيدة؟', done: !!q[1],
           content: (
             <div className="space-y-3" data-paging-keep>
-              <p className="rounded-xl border-2 border-amber-200 bg-amber-50 px-3 py-2 text-sm text-slate-800" data-situation>{SITUATION.text}</p>
+              <div className="space-y-1 rounded-xl border-2 border-amber-200 bg-amber-50 px-3 py-2 text-sm text-slate-800" data-situation>
+                <p>{SAID_TEXT}</p>
+                <SourceTag source={SITUATION.source} />
+              </div>
               <p className="text-sm font-semibold text-slate-700">اسحب كل معطى إلى «مفيد» أو «غير مفيد» للبحث عن عدد المدارس.</p>
               <InfoSorter items={SITUATION.data} formative onSolved={mark(1)} />
             </div>
@@ -120,13 +128,13 @@ export default function Module07TahlilWadiya() {
           num: 2, title: 'تحليل الوضعية: الشرط', subtitle: 'ماذا يقسم عدد المدارس؟', done: !!q[2],
           content: (
             <div className="space-y-3">
-              {sw(
-                <WonPanel id="supply" won={won.r1} title="ما وجدته في لوازم المدارس:" lines={R1_LINES}
-                  empty="جولة لوازم المدارس: لم تجد بعد أكبر عدد من المدارس." />,
-                null,
-              )}
-              {/* les données et la question sur UN écran (aucun aller-retour) */}
+              {/* ce que la manche a montré, les données et la question sur UN écran (aucun aller-retour) */}
               <div className="space-y-3" data-paging-keep>
+                {sw(
+                  <WonPanel id="supply" won={won.r1} title="ما وجدته في لوازم المدارس:" lines={R1_LINES}
+                    empty="جولة لوازم المدارس: لم تجد بعد أكبر عدد من المدارس." />,
+                  null,
+                )}
                 <Facts />
                 <TapQuestion prompt="«توزيع بالتساوي دون أن يبقى أيّ مئزر»: ماذا يعني هذا الشرط بالنسبة إلى عدد المدارس؟"
                   options={['عدد المدارس يقسم عدد المآزر الورديّة ويقسم عدد المآزر الزرقاء', 'عدد المدارس يقسم مجموع المآزر فقط', 'عدد المدارس مضاعف لعدد المآزر', 'عدد المدارس يساوي الفرق بين عددي المآزر']}
@@ -141,6 +149,8 @@ export default function Module07TahlilWadiya() {
           num: 3, title: 'اختيار الاستراتيجية', subtitle: 'عددان كبيران', done: !!q[3],
           content: (
             <div className="space-y-3">
+              {/* la chaîne de la manche et la question sur UN écran (aucun aller-retour) */}
+              <div className="space-y-3" data-paging-keep>
               {sw(
                 <WonPanel id="store" won={won.r2} title="سلسلتك في المخزن الكبير:" lines={R2_LINES}
                   empty="جولة المخزن الكبير: لم تضع بعد PGCD في خانته." />,
@@ -155,6 +165,7 @@ export default function Module07TahlilWadiya() {
                 correct={0} cols={1} requires={['khwarizmiyat-iqlidus', 'pgcd-baqi']}
                 explain={<span>تجربة المدارس واحدة واحدة صحيحة لكنّها تطول مع عددين كبيرين؛ والباقي الأوّل خطوة من الخوارزمية لا نتيجتها. خوارزمية إقليدس تصل في بضع قسمات — كما في المخزن الكبير.</span>}
                 onAnswered={mark(3)} />
+              </div>
               {q[3] && <KnowledgeBrick id="khwarizmiyat-iqlidus" variant="rappel" compact />}
             </div>
           ) },
@@ -184,7 +195,7 @@ export default function Module07TahlilWadiya() {
             <div className="space-y-3" data-paging-keep>
               <Facts />
               <TapQuestion
-                prompt={<MathText>{'أكمل: أكبر عدد ممكن من المدارس $= \\ldots$'}</MathText>}
+                prompt="أكبر عدد ممكن من المدارس يساوي:"
                 options={['$\\mathrm{PGCD}(936\\ ;\\ 845)$', '$936 - 845$', '$936 + 845$', '$936 \\div 845$'].map(M)}
                 correct={0} cols={2} requires={['pgcd-taarif']}
                 explain={<MathText>{'عدد المدارس قاسم مشترك للعددين $936$ و $845$ ، وأكبر قاسم مشترك لهما هو $\\mathrm{PGCD}(936\\ ;\\ 845)$ . أمّا الفرق فخطوة من خوارزمية الفروق، والمجموع لا يضمن أن يتوزّع كل لون وحده.'}</MathText>}
