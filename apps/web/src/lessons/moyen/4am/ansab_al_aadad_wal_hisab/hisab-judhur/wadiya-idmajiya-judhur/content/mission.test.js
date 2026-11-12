@@ -48,7 +48,8 @@ describe('the synthesis — role scan of every screen before its time', () => {
   });
   it('the role scan catches what it must (negative controls)', () => {
     ['$\\sqrt{12}$', '√12', '$2\\sqrt{3}$', '2√3', '$4\\sqrt{3}$', '$\\sqrt{48}$', '$\\ell^2 = 12$', 'x² = 12', '3,46', '$3{,}4641$', '6,93', '$6{,}928$', '346 cm', '\\text{693}', '692',
-      'الزربية', 'زرابي', 'وادي سوف', '12000 دج', '$24m^2$', '24 م²', '$2\\ell^2 = 24$']
+      'الزربية', 'زرابي', 'وادي سوف', '12000 دج', '$24m^2$', '24 م²', '$2\\ell^2 = 24$',
+      '$2\\sqrt3$', '$2 \\times \\sqrt{3}$', '$4\\cdot\\sqrt 3$', '2 × √3', '$\\sqrt{ 12 }$', '3.46', '6.93', '$24\\,m^2$', '$24 \\text{m}^2$', 'مساحتها 24']
       .forEach((s) => expect(textViolations(s).length, s).toBeGreaterThan(0));
     ['$12\\sqrt{3}$', '$\\sqrt{120}$', '$24\\sqrt{5}$', '$9\\sqrt{3}$', '$x^2 = 120$', '1346', '$13{,}46$', '2026', 'مساحة المفرش 12', '$\\sqrt{3} \\approx 1{,}732$', '$x^2 = 40$']
       .forEach((s) => expect(textViolations(s), s).toEqual([]));
@@ -56,7 +57,7 @@ describe('the synthesis — role scan of every screen before its time', () => {
     expect(textViolations('$2\\ell^2 = 24$', 'm7', { before7: false })).toEqual([]);
     expect(textViolations('زربية مساحتها $24m^2$', 'm7', { before7: false })).toEqual([]);
     expect(textViolations('$\\ell = 2\\sqrt{3}$', 'm7', { before7: false }).length).toBeGreaterThan(0);
-    expect(violations([{ role: 'form', v: '2√3' }, { role: 'area', v: '3' }, { role: 'card', v: '12' }, { role: 'root', v: '√6' }, { role: 'k', v: '24' }])).toHaveLength(5);
+    expect(violations([{ role: 'form', v: '2√3' }, { role: 'area', v: '3' }, { role: 'card', v: '12' }, { role: 'root', v: '√6' }, { role: 'k', v: '24' }, { role: 'near', v: '3,4641' }, { role: 'near', v: '6,928' }])).toHaveLength(7);
     expect(violations([{ role: 'form', v: '2√10' }, { role: 'area', v: '10' }, { role: 'card', v: '40' }, { role: 'k', v: '3' }, { role: 'kk', v: '36' }])).toEqual([]);
   });
 });

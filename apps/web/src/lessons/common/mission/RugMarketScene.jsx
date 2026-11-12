@@ -37,7 +37,7 @@ export default function RugMarketScene({ fill = 1, label, className = '', scene 
         <polygon points={rug} fill="#991B1B" stroke="#451A03" strokeWidth="2" />
         {/* la bordure, et la jointure à peine marquée des deux carrés égaux */}
         <polygon points={[P(0.03, 0.12), P(0.97, 0.12), P(0.97, 0.88), P(0.03, 0.88)].join(' ')} fill="none" stroke="#FCD34D" strokeWidth="1.5" strokeDasharray="4 3" />
-        <line x1={x0 + s + 0.5 * skew * 0.24} y1={y0 + 0.12 * depth} x2={x0 + s + 0.88 * skew} y2={y0 + 0.88 * depth} stroke="#FDE68A" strokeWidth="1" strokeDasharray="2 4" opacity="0.6" />
+        <line x1={x0 + s + 0.12 * skew} y1={y0 + 0.12 * depth} x2={x0 + s + 0.88 * skew} y2={y0 + 0.88 * depth} stroke="#FDE68A" strokeWidth="1" strokeDasharray="2 4" opacity="0.6" />
         {DIAMONDS.map((i) => {
           const cx = x0 + (0.2 + i * 0.2) * 2 * s + 0.5 * skew;
           const cy = y0 + 0.5 * depth;

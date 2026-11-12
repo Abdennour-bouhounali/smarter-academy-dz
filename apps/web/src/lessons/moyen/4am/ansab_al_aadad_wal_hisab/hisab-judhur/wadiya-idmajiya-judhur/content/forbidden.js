@@ -28,7 +28,7 @@ export function violations(shown, label = '') {
   shown.forEach((x) => {
     const v = String(x.v).replace(/\s+/g, '').replace('−', '-');
     const bare = v.replace(/^-/, '');
-    if (NEVER.includes(bare)) bad.push(`${label}: ${x.v} (${x.role})`);
+    if (NEVER.includes(bare) || /^(3,46|6,9[23])/.test(bare)) bad.push(`${label}: ${x.v} (${x.role})`);
     else if (AREA_ROLES.includes(x.role) && ['6', '3'].includes(bare)) bad.push(`${label}: ${x.v} (${x.role})`);
     else if (SIDE_ROLES.includes(x.role) && ['√3', '√6'].includes(bare)) bad.push(`${label}: ${x.v} (${x.role})`);
   });
@@ -42,23 +42,24 @@ export const AVOID = [...NEVER, '6', '3'];
 // un nombre ENTIER isolé (ni dans 1346, ni dans 3,46 ou 34{,}6) — « { » avant le nombre n'est PAS exclu (\text{346} est attrapé)
 const num = (n) => new RegExp(`(?<![0-9.,]|\\{,\\})${n}(?![0-9]|\\{?,\\}?[0-9]|\\.[0-9])`);
 // « 2√3 » / « 2\sqrt{3} » sans chiffre avant (12√3 n'est pas 2√3)
-const coefRoot = (k, b) => new RegExp(`(?<![0-9.,{}])${k}\\s*(\\\\sqrt\\{${b}\\}|√\\s*${b}(?![0-9]))`);
+// (revue 2026-11-12 : aussi « 2\sqrt3 », « 2 \times \sqrt{3} », « 2\cdot\sqrt 3 », « 2 × √3 »)
+const coefRoot = (k, b) => new RegExp(`(?<![0-9.,{}])${k}\\s*(\\\\(times|cdot)|×|\\*)?\\s*(\\\\sqrt\\s*\\{?\\s*${b}\\s*\\}?(?![0-9])|√\\s*${b}(?![0-9]))`);
 
 /** 1. Le défi RÉSOLU : jamais avant le 🏆 (le module 7 compris). */
 export const ANSWER_TEXT = [
-  /\\sqrt\{12\}/, /√\s*12(?![0-9])/, /\\sqrt\{48\}/, /√\s*48(?![0-9])/,
+  /\\sqrt\s*\{?\s*12\s*\}?(?![0-9])/, /√\s*12(?![0-9])/, /\\sqrt\s*\{?\s*48\s*\}?(?![0-9])/, /√\s*48(?![0-9])/,
   coefRoot(2, 3), coefRoot(4, 3),
   // ℓ² = 12 / x² = 12, écrit en LaTeX ou en texte
   /\^\{?2\}?\s*=\s*12(?![0-9{,])/, /²\s*=\s*12(?![0-9,])/,
   // les valeurs approchées et arrondies de la زربية
-  /(?<![0-9])3(\{,\}|,)46/, /(?<![0-9])6(\{,\}|,)9[23]/, num('346'), num('347'), num('693'), num('692'),
+  /(?<![0-9])3(\{,\}|,|\.)46/, /(?<![0-9])6(\{,\}|,|\.)9[23]/, num('346'), num('347'), num('693'), num('692'),
 ];
 /** 2. La situation elle-même : jamais AVANT le module 7. */
 export const SITUATION_TEXT = [
   ...ANSWER_TEXT,
   /زرب|زراب/, /وادي سوف/, num('12000'), /12\s000/,
   // l'aire de la زربية et son équation
-  /(?<![0-9.,{])24\s*(\$?\s*m\^\{?2|m²|م²|مترًا مربّعًا|مترا مربعا|متر مربع)/, /\\ell\^2\s*=\s*24(?![0-9])/, /ℓ²\s*=\s*24(?![0-9])/,
+  /(?<![0-9.,{])24\s*(\$?\s*(\\[,; ]|\\text\{?\s*)?\s*m\}?\^\{?2|m²|م²|مترًا مربّعًا|مترا مربعا|متر مربع)/, /مساحتها\s*\$?24(?![0-9])/, /\\ell\^2\s*=\s*24(?![0-9])/, /ℓ²\s*=\s*24(?![0-9])/,
 ];
 
 /** Les violations d'un texte — vide s'il est propre. `before7` : l'écran vient avant le module 7 (la situation elle-même y est interdite). */

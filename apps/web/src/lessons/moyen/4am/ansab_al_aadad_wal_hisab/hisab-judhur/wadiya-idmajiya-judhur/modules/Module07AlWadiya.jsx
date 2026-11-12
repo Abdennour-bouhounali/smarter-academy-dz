@@ -51,9 +51,9 @@ function WonPanel({ id, won, lines, title, empty }) {
       data-activity-evidence data-evidence={id} data-tried={won ? 'true' : 'false'}>
       {won ? (
         <>
-          <p className="font-bold">{title}</p>
+          <p className="font-bold"><span className="sr-only">تمّ — </span>{title}</p>
           <ul className="ms-4 list-disc">
-            {lines.map((s, i) => <li key={i}><MathText>{`$${s}$`}</MathText> <span aria-hidden="true">✓</span><span className="sr-only"> تمّ.</span></li>)}
+            {lines.map((s, i) => <li key={i}><MathText>{`$${s}$`}</MathText> <span aria-hidden="true">✓</span></li>)}
           </ul>
         </>
       ) : <p>{empty}</p>}
@@ -127,7 +127,7 @@ export default function Module07AlWadiya() {
                 <TapQuestion
                   prompt={<span>في الزربية أيضًا يصير مربّع العرض <MathText>{'$\\ell$'}</MathText> عددًا موجبًا ليس مربّعًا تامًّا. أيّ قيمة نأخذ للعرض؟</span>}
                   options={['الحلّ الموجب وحده، لأنّ العرض طول', 'الحلّين معًا: للزربية عرضان', 'الحلّ السالب، لأنّه الأصغر', 'لا شيء: المعادلة لا تقبل أيّ حلّ لأنّ العدد ليس مربّعًا تامًّا']}
-                  correct={0} cols={1} requires={['tadhkir-x2-a', 'jidhr-taarif']}
+                  correct={0} cols={1} requires={['hulul-x2-a', 'jidhr-taarif']}
                   explain={<span>{REMARKS.mujab} وعدد موجب ليس مربّعًا تامًّا له جذر تربيعي أيضًا، لكنّه عدد غير ناطق — كما في حوض الأزهار، حيث لا تقع أيّ تدريجة على الحلّ.</span>}
                   onAnswered={mark(2)} />
               </div>
@@ -147,7 +147,7 @@ export default function Module07AlWadiya() {
                 )}
                 <TapQuestion prompt="الوضعية تطلب البعدين مدوّرين إلى 1cm. ما الترتيب الصحيح؟"
                   options={[REMARKS.tadwirRight, REMARKS.tadwirWrong, 'لا ندوّر: ما تعرضه الحاسبة هو القيمة المضبوطة للعرض.', 'ندوّر المساحة إلى أقرب مربّع تامّ قبل حلّ المعادلة.']}
-                  correct={0} cols={1} requires={['tariqat-wadiya', 'kitaba-a-jidhr-b']}
+                  correct={0} cols={1} requires={['kitaba-a-jidhr-b', 'qima-muqarraba']}
                   explain={<span>{REMARKS.tadwirWhy} في حوض الأزهار مثلًا: العرض المضبوط مدوّرًا {W_CM} سم، والطول المضبوط مدوّرًا {L_CM} سم — أمّا ضعف العرض المدوّر فيعطي {2 * W_CM} سم.</span>}
                   onAnswered={mark(3)} />
               </div>
@@ -179,6 +179,7 @@ export default function Module07AlWadiya() {
           content: (
             <div className="space-y-3" data-paging-keep>
               <Facts />
+              <KnowledgeBrick id="masahat-mustatil" variant="rappel" compact />
               <TapQuestion
                 prompt={<span>ليكن <MathText>{'$\\ell$'}</MathText> عرض الزربية و <MathText>{'$L = 2\\ell$'}</MathText> طولها (بالمتر). أيّ معادلة تترجم مساحة الزربية؟</span>}
                 options={['$2\\ell^2 = 24$', '$3\\ell = 24$', '$4\\ell^2 = 24$', '$2\\ell^2 = 12000$'].map(M)}
