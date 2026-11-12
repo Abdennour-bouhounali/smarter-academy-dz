@@ -31,7 +31,7 @@ const chainsOf = (text) => [...text.matchAll(/\$([^$]+)\$/g)]
 
 const POINTS = [2, 3, 7, 11, 13];
 /** x pour lesquels une ÉQUATION écrite (ou une valeur donnée « x = 40 ») est vraie, par مسألة. */
-const ROOTS = { 'wadiya-1': [], 'wadiya-2': [5, -12], 'wadiya-3': [40], 'wadiya-4': [5, -3, 8], 'wadiya-5': [2, 50], 'wadiya-6': [90] };
+const ROOTS = { 'wadiya-1': [], 'wadiya-2': [5, -12], 'wadiya-3': [40], 'wadiya-4': [8, -4, 9], 'wadiya-5': [2, 50], 'wadiya-6': [90] };
 
 /** La seule égalité FAUSSE assumée : l'erreur de ياسمين (وضعية 5), que la مسألة réfute. */
 const FALSE_CLAIMS = new Set(['(2x - 3)^2 = 4x^2 - 9']);
@@ -190,19 +190,19 @@ describe('les six وضعيات d\'entraînement de أدمج تعلّماتي (wa
     expect(43 * 37).toBe(40 ** 2 - 9);
   });
 
-  it('وضعية 4 — the flag mast: (x + 8)² = x² + (x + 7)², x = 5, the 5-12-13 triangle', () => {
+  it('وضعية 4 — the flag mast: (x + 9)² = x² + (x + 7)², x = 8, the 8-15-17 triangle (renumbered 2026-11-12: 5-12-13 showed 144)', () => {
     for (const x of POINTS) {
-      expect((x + 8) ** 2).toBe(x ** 2 + 16 * x + 64);
+      expect((x + 9) ** 2).toBe(x ** 2 + 18 * x + 81);
       expect(x ** 2 + (x + 7) ** 2).toBe(2 * x ** 2 + 14 * x + 49);
-      // moving everything to one side: right − left = x² − 2x − 15 = (x − 5)(x + 3)
-      expect(x ** 2 + (x + 7) ** 2 - (x + 8) ** 2).toBe(x ** 2 - 2 * x - 15);
-      expect(x ** 2 - 2 * x - 15).toBe((x - 5) * (x + 3));
+      // moving everything to one side: right − left = x² − 4x − 32 = (x − 8)(x + 4)
+      expect(x ** 2 + (x + 7) ** 2 - (x + 9) ** 2).toBe(x ** 2 - 4 * x - 32);
+      expect(x ** 2 - 4 * x - 32).toBe((x - 8) * (x + 4));
     }
-    expect(expectedOf('wadiya-4', 0)).toEqual([8 ** 2, 7 ** 2]);
-    expect(expectedOf('wadiya-4', 1)).toEqual([8 ** 2 - 2 * 8 - 15, 5]);
-    expect((5 + 8) ** 2).toBe(5 ** 2 + (5 + 7) ** 2); // x = 5 solves the Pythagorean equality
-    expect((-3 + 8) ** 2 === (-3) ** 2 + (-3 + 7) ** 2).toBe(true); // −3 too (algebra), but a distance is positive
-    expect(expectedOf('wadiya-4', 2)).toEqual([5 + 7, 5 + 8, 13 * 450]);
+    expect(expectedOf('wadiya-4', 0)).toEqual([9 ** 2, 7 ** 2]);
+    expect(expectedOf('wadiya-4', 1)).toEqual([9 ** 2 - 4 * 9 - 32, 8]);
+    expect((8 + 9) ** 2).toBe(8 ** 2 + (8 + 7) ** 2); // x = 8 solves the Pythagorean equality
+    expect((-4 + 9) ** 2 === (-4) ** 2 + (-4 + 7) ** 2).toBe(true); // −4 too (algebra), but a distance is positive
+    expect(expectedOf('wadiya-4', 2)).toEqual([8 + 7, 8 + 9, 17 * 450]);
   });
 
   it('وضعية 5 — (2x − 3)² is not 4x² − 9', () => {
@@ -218,11 +218,11 @@ describe('les six وضعيات d\'entraînement de أدمج تعلّماتي (wa
     expect(97 * 103).toBe(wrong(50));
   });
 
-  it('وضعية 6 — Samir (x + 5)² − 25 and Layla x(x + 10) agree for every x', () => {
-    for (const x of [0, 1, 2, 3, 7, 11, 90, 1000]) expect((x + 5) ** 2 - 25).toBe(x * (x + 10));
-    expect(expectedOf('wadiya-6', 0)).toEqual([10]);
-    expect(expectedOf('wadiya-6', 2)).toEqual([90 + 10, 90 * 100, 95 ** 2, 95 ** 2 - 25]);
-    expect(95 ** 2 - 25).toBe(90 * 100);
+  it('وضعية 6 — Samir (x + 6)² − 36 and Layla x(x + 12) agree for every x (renumbered 2026-11-12: x(x + 10) is the 🏆\'s reduced form)', () => {
+    for (const x of [0, 1, 2, 3, 7, 11, 90, 1000]) expect((x + 6) ** 2 - 36).toBe(x * (x + 12));
+    expect(expectedOf('wadiya-6', 0)).toEqual([12]);
+    expect(expectedOf('wadiya-6', 2)).toEqual([90 + 12, 90 * 102, 96 ** 2, 96 ** 2 - 36]);
+    expect(96 ** 2 - 36).toBe(90 * 102);
   });
 
   it('the statements keep the numbers of their situation', () => {
@@ -232,6 +232,6 @@ describe('les six وضعيات d\'entraînement de أدمج تعلّماتي (wa
     has('wadiya-3', 1800, 40);
     has('wadiya-4', 450);
     has('wadiya-5', 3);
-    has('wadiya-6', 5, 10, 25);
+    has('wadiya-6', 6, 12, 36);
   });
 });

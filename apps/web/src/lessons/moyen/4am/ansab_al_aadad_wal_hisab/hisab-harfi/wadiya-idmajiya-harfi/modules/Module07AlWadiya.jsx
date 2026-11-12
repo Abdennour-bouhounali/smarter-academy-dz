@@ -1,194 +1,224 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PeerSheet } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
+import InfoSorter from '../../../../../../common/components/InfoSorter';
 import { Manipulation } from '../../../../../../common/manipulations';
-import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
+import { useModulePlayer } from '../../../../../../common/mission/useModulePlayer';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { SITUATION, CHALLENGE, REMARKS } from '../content/textbook';
-import { RightTriangle } from '../components/HarfiFigures';
+import { M7_SITUATION, REMARKS } from '../content/textbook';
+import { M7_ROUNDS, R1, FOUNTAIN } from '../content/rounds';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
 
 /**
- * Module 7 — la وضعية (p. 40) : le bassin carré de côté 10 m et le ruban de
- * largeur x tout autour, lus dans les TROIS étapes du « تحليل الوضعية » du
- * manuel, avec le تحدّ de la page d'unité (p. 31) en accroche, résolu en
- * dernière étape.
+ * Module 7 — « وضعية الوحدة » : la وضعية du bassin et du ruban (le défi 🏆 du module 8), ANALYSÉE dans les trois phases (قراءة · تحليل واختيار
+ * استراتيجية · تنفيذ) — et jamais résolue : sa solution (4x² + 40x, x² + 10x − 11, (x − 1)(x + 11), x = 1 m, 144) n'apparaît sur aucun écran
+ * avant le 🏆, ce module compris (content/forbidden.js › ANSWER_TEXT, content/mission.test.js). L'« مساعدة » du manuel (sa forme développée est
+ * une réponse du défi) n'est montrée qu'au module 8.
  *
- * LE LABORATOIRE (pitch-expansion, un seul niveau — `levels={false}`) :
- * `expr="x+10+x"` est le carré de côté x + 10 + x, découpé en 9 zones : le
- * centre 10 × 10 est le bassin, les 8 autres sont le ruban (4 bandes 10 × x,
- * 4 coins x × x). L'élève ÉTIRE x et vérifie ; chacun de ses essais
- * (`onTrial` : x et l'aire du grand carré) est listé au-dessus des questions
- * (`[data-activity-evidence]`) avec l'aire du ruban = grand carré − 100 :
- * c'est là qu'il VOIT pour quel x le ruban vaut 44.
+ * LA PAGE (l'enseignant, le mode classe) : le terrain FRÈRE « x+7+x » (la نافورة de côté 7 et son ممرّ), un seul niveau ; aucune manche.
  *
- * Rétrofit 2026-10-15 (§4quater) : ni carte du manuel ni titre de labo au-dessus du labo (le contexte est son `lead`, la question sa `mission`) ;
- * l'étape 1 demande ce que l'élève a VU en tirant x (le labo posait déjà « quel x ? »), puis l'encadré du manuel.
- * Les étapes : ce qui est cherché (étape 1 du manuel), le côté du grand carré
- * (brique `namdhaja`), l'aire du ruban de deux façons (« هناك طرق متعددة »),
- * sa forme développée (brique `masaha-tariqatan` APRÈS la réponse), le x des
- * essais, l'égalité « = 44 » et l'« مساعدة » du manuel (briques
- * `musaada-jadaa`, `tariqat-wadiya`), puis le تحدّ. La résolution complète
- * (racines, rejet de −11) est le module 8 (évaluation). LP : P2, P1, P3.
+ * LE LECTEUR DE MISSION (la synthèse de l'unité 3, 2026-11-12 — recette PROVISOIRE de la synthèse, point 5 ; l'élève ne voit JAMAIS l'ancienne
+ * vue) : UN `LabRounds` (content/rounds.js) — r1 « ممرّ النافورة » en aires, à la main (la construction NUMÉRIQUE « terrain − نافورة = 4 × شريط +
+ * 4 × ركن » à son x), r2 « الممرّ بالحرف x » en termes (la construction « (2x + 7)² − 7² = 4x² + 28x ») — puis les étapes. L'étape 2 attend r1,
+ * l'étape 3 attend r2 (`needsRound`, module-level : `useModulePlayer`). Les panneaux de trace sont REBÂTIS depuis les nombres du frère (x = 2 pour
+ * la mesure) : un rechargement ne vide rien (les étoiles sont gardées).
+ *
+ * Étapes (les deux vues) : 1 lire et trier les données · 2 comment mesurer le ruban (après r1) · 3 la stratégie (après r2) · 4 « بالقلم » (l'écran
+ * du cahier : « اكتب في 3 أسطر ») · 5 le MODÈLE « (10 + 2x)² − 10² = 44 » (première étape au crayon ; les données RAPPELÉES sur l'écran — aucun
+ * aller-retour) · 6 la démarche en lettres (a, S) · 7 « ورقة مالك » (un PLAN faux : l'aire du ruban = périmètre du bassin × largeur). Le pied de
+ * page ajoute, dans le lecteur, une ligne de pause avant le 🏆. Plus de « الكتاب » ni de SourceTag ; le تحدّ du triangle quitte le module.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
-const EQUAL = ['يساويه', 'لا يساويه'];
+const TRUE_FALSE = ['صحيح', 'خاطئ'];
+const sw = (player, page) => <PlayerSwitch player={player} page={page} />;
+
+/* ── ce que les manches ont montré, REBÂTI depuis les nombres du frère (la mesure à x = 2) ── */
+const A = FOUNTAIN;
+const X = 2;
+const OUT = (A + 2 * X) ** 2;
+const R1_LINES = [`${OUT} - ${A * A} = ${OUT - A * A}`, `4 \\times ${A * X} + 4 \\times ${X * X} = ${OUT - A * A}`];
+const R2_LINES = [`(2x + ${A})^2 - ${A}^2 = 4x^2 + ${4 * A}x`];
+
+/** Une ligne de trace dans le lecteur : ✓ caché aux lecteurs d'écran (« تمّ » le dit une fois, dans le titre). */
+function WonPanel({ id, won, lines, title, empty }) {
+  return (
+    <div className={`rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm ${won ? 'text-emerald-900' : 'text-slate-500'}`}
+      data-activity-evidence data-evidence={id} data-tried={won ? 'true' : 'false'}>
+      {won ? (
+        <>
+          <p className="font-bold"><span className="sr-only">تمّ — </span>{title}</p>
+          <ul className="ms-4 list-disc">
+            {lines.map((s, i) => <li key={i}><MathText>{`$${s}$`}</MathText> <span aria-hidden="true">✓</span></li>)}
+          </ul>
+        </>
+      ) : <p>{empty}</p>}
+    </div>
+  );
+}
+
+/** Les données utiles de la وضعية, RAPPELÉES sur l'écran de la question qui s'en sert (aucun aller-retour). */
+const Facts = () => (
+  <ul aria-label="معطيات الوضعية" className="ms-4 list-disc space-y-1 rounded-xl border-2 border-amber-200 bg-amber-50 px-3 py-2 text-sm text-slate-800" data-situation-facts>
+    {M7_SITUATION.data.filter((d) => d.useful).map((d) => <li key={d.id}><MathText>{d.text}</MathText></li>)}
+  </ul>
+);
 
 export default function Module07AlWadiya() {
-  // Les essais de l'élève dans le laboratoire : { [x]: aire du grand carré }.
-  const [trials, setTrials] = useState({});
-  const [q1, setQ1] = useState(false);
-  const [q2, setQ2] = useState(false);
-  const [q3, setQ3] = useState(false);
-  const [q4, setQ4] = useState(false);
-  const [q5, setQ5] = useState(false);
-  const [q6, setQ6] = useState(false);
-  const [c1, setC1] = useState(false);
-  const [c2, setC2] = useState(false);
-  const onTrial = ({ x, product }) => setTrials((t) => ({ ...t, [x]: product }));
-  const tried = Object.keys(trials).map(Number).sort((a, b) => a - b);
-
-  const evidence = (
-    <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>
-      {tried.length === 0 ? (
-        <li className="text-slate-500" data-tried="false">لم تتحقّق بعد من أي قيمة لـ <MathText>{'$x$'}</MathText> في الملعب: اسحب المقبض ثم اضغط «تحقّق».</li>
-      ) : tried.map((x) => (
-        <li key={x} data-evidence={x} data-tried="true" className={trials[x] - 100 === 44 ? 'font-bold text-emerald-800' : 'text-slate-800'}>
-          <MathText>{`$x = ${x}$ : ضلع المربع الخارجي $${10 + 2 * x}$ ومساحته $${trials[x]}$ ، فمساحة الشريط $${trials[x]} - 100 = ${trials[x] - 100}$`}</MathText>
-        </li>
-      ))}
-    </ul>
-  );
+  const inPlayer = useModulePlayer(MODULE_CTX);
+  const [q, setQ] = useState({});
+  // lecteur : les manches gagnées (étoiles gardées, annoncées par LabRounds au montage)
+  const [won, setWon] = useState({});
+  const mark = (n) => () => setQ((s) => ({ ...s, [n]: true }));
+  const round = (id, label) => (inPlayer ? { needsRound: { id, label, icon: '⛲', won: Boolean(won[id]) } } : {});
 
   return (
-    <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} objectives={["كيف نعبّر عن ضلع المربع الذي يضمّ الحوض والشريط؟", "بأيّ طرق نكتب مساحة الشريط؟", "ما عرض الشريط الذي تكون مساحته 44 مترًا مربّعًا؟", "متى يكون المثلث ABC قائمًا في A؟"]} moduleTitle="الوضعية وتحليلها" moduleSubtitle="الحوض والشريط: ما عرض الشريط؟" estimatedTime="14 دقيقة"
-      intro={
-        <Manipulation
-          type="pitch-expansion"
-          expr="x+10+x"
-          levels={false}
-          mission="المنطقة المركزية 10 × 10 هي الحوض، والمناطق الثماني حولها هي الشريط. اسحب عرض الشريط x، احسب المناطق، ثم تحقّق: من أجل أيّ قيمة لـ x تكون مساحة الشريط 44؟"
-          lead="يهيّئ سكّان الحيّ حديقة عامة فيها حوض مربّع ضلعه 10 م، ويحيط به من كل الجهات شريط للراجلين عرضه x."
-          onTrial={onTrial}
+    <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="الوضعية وتحليلها"
+      moduleSubtitle="ثم التحدّي 🏆 — الحوض والشريط: ما عرض الشريط؟" estimatedTime="≈ 28 دقيقة"
+      objectives={['ما المعطيات التي يحتاجها حساب عرض الشريط، وما الذي لا نحتاجه؟', 'كيف نعبّر عن مساحة الشريط بدلالة x؟', 'أيّ مساواة تترجم الوضعية، وأيّ قيمة نحتفظ بها؟']}
+      intro={(
+        // LE LABO OUVRE LE MODULE. Lecteur : les MANCHES (content/rounds.js) ; la page garde le terrain frère, un seul niveau.
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="m7-wadiya" rounds={M7_ROUNDS} icon="⛲" freeIcon="🧮"
+              onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))} />
+          )}
+          page={(
+            <Manipulation type="pitch-expansion" expr={R1.expr} levels={false} lead={M7_ROUNDS[0].props.lead}
+              mission="احمل المناطق التسع ثم تحقّق: كم مساحة الممرّ حول النافورة؟" />
+          )}
         />
-      }
+      )}
       steps={[
-        { num: 1, title: 'قراءة الوضعية وفهمها', subtitle: 'المرحلة 1 من الكتاب', done: q1,
+        { num: 1, title: 'قراءة الوضعية وفهمها', subtitle: 'ما المعطيات المفيدة؟', done: !!q[1],
           content: (
-            <div className="space-y-3">
-              <TapQuestion
-                prompt="حين سحبت x في الملعب، ما الذي بقي ثابتًا وما الذي تغيّر؟"
-                options={['الحوض 10 × 10 ثابت، أمّا الشريط وضلع المربع الخارجي فيتغيّران مع x', 'مساحة الحوض تكبر مع x', 'كل المناطق التسع تتغيّر مع x', 'محيط الحوض يتغيّر مع x']}
-                correct={0} cols={1} requires={['masahat-ashkal']}
-                explain="مساحة الحوض وضلعه معلومان (ضلعه 10m) ولا يتغيّران. المجهول هو عرض الشريط x، والمعلومة التي توظَّف هي مساحة الشريط."
-                onAnswered={() => setQ1(true)} />
-              {q1 && <TextbookBox kind="remark" title={SITUATION.analysis[0].label} text={SITUATION.analysis[0].text} source={SITUATION.source} compact />}
+            <div className="space-y-3" data-paging-keep>
+              <div className="rounded-xl border-2 border-amber-200 bg-amber-50 px-3 py-2 text-sm text-slate-800" data-situation>
+                <p><MathText>{M7_SITUATION.text}</MathText></p>
+              </div>
+              <p className="text-sm font-semibold text-slate-700">اسحب كل معطى إلى «مفيد» أو «غير مفيد» لإيجاد عرض الشريط.</p>
+              <InfoSorter items={M7_SITUATION.data} formative onSolved={mark(1)} />
             </div>
           ) },
-        { num: 2, title: 'ضلع المربع الخارجي', subtitle: 'نمذجة: كل طول بدلالة x', done: q2,
+        { ...round('r1', 'ممرّ النافورة'),
+          num: 2, title: 'تحليل الوضعية: مساحة الشريط', subtitle: 'طريقتان', done: !!q[2],
           content: (
             <div className="space-y-3">
-              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : nommer l’inconnue et exprimer une longueur en fonction d’elle est la
-                  modélisation littérale déjà acquise (3AM, situations des leçons de l’unité) ; la brique guide la question qui suit. */}
-              <KnowledgeBrick id="namdhaja" variant="rappel" lead="لنمذجة الوضعية نعبّر عن الأطوال بدلالة المجهول:" />
-              <TapQuestion
-                prompt={<span>الحوض مع الشريط يشكّلان مربعًا كبيرًا. طول ضلعه بدلالة <MathText>{'$x$'}</MathText> هو ...</span>}
-                options={['$10 + 2x$', '$10 + x$', '$10x$', '$2(10 + 2x)$'].map(M)}
-                correct={0} cols={2} requires={['namdhaja', 'masahat-ashkal']}
-                explain={<span><MathText>{REMARKS.dilRight}</MathText> {REMARKS.dilWhy}</span>}
-                onAnswered={() => setQ2(true)} />
+              {/* ce que la manche a montré et la question sur UN écran (aucun aller-retour) */}
+              <div className="space-y-3" data-paging-keep>
+                {sw(
+                  <WonPanel id="ring" won={won.r1} title={<>مساحة ممرّ النافورة بطريقتين، من أجل <MathText>{`$x = ${X}$`}</MathText> :</>} lines={R1_LINES}
+                    empty="جولة ممرّ النافورة: لم تقس بعد مساحة الممرّ." />,
+                  null,
+                )}
+                <TapQuestion
+                  prompt="الشريط يحيط بالحوض كما يحيط الممرّ بالنافورة. كيف نحسب مساحة الشريط؟"
+                  options={['مساحة المربّع الكبير (الحوض مع الشريط) ناقص مساحة الحوض', 'مساحة المربّع الكبير وحدها', 'مساحة الحوض ناقص مساحة المربّع الكبير', 'أربعة أشرطة على أضلاع الحوض فقط، دون الأركان']}
+                  correct={0} cols={1} requires={['masahat-ashkal']}
+                  explain={<span><MathText>{REMARKS.twoWays}</MathText> في ممرّ النافورة: <MathText>{`$${R1_LINES[0]}$`}</MathText> و <MathText>{`$${R1_LINES[1]}$`}</MathText> .</span>}
+                  onAnswered={mark(2)} />
+              </div>
+              {q[2] && <KnowledgeBrick id="masaha-tariqatan" variant="rappel" compact />}
             </div>
           ) },
-        { num: 3, title: 'ما مساحة الشريط؟', subtitle: 'المرحلة 2 من الكتاب — تحقّق من أجل قيمتين لـ x في الملعب', done: q3,
+        { ...round('r2', 'الممرّ بالحرف x'),
+          num: 3, title: 'اختيار الاستراتيجية', subtitle: 'من الشكل إلى المساواة', done: !!q[3],
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="remark" title={SITUATION.analysis[1].label} text={SITUATION.analysis[1].text} source={SITUATION.source} compact />
-              {evidence}
+              {/* la construction de la manche et la question sur UN écran (aucun aller-retour) */}
+              <div className="space-y-3" data-paging-keep>
+                {sw(
+                  <WonPanel id="ringExpr" won={won.r2} title="مساحة ممرّ النافورة بدلالة x، كما بنيتها:" lines={R2_LINES}
+                    empty="جولة الممرّ بالحرف x: لم تبنِ بعد مساحة الممرّ بدلالة x." />,
+                  null,
+                )}
+                <TapQuestion prompt="ما الاستراتيجية المناسبة لإيجاد عرض الشريط؟"
+                  options={[
+                    'أعبّر عن ضلع المربّع الكبير بدلالة x، ثم عن مساحة الشريط، ثم أكتب المساواة مع المساحة المعطاة وأحلّها',
+                    'أكتب مباشرة أنّ مربّع عرض الشريط يساوي المساحة المعطاة',
+                    'أجرّب قيمة واحدة لـ x؛ فإن لم تعطِ المساحة المعطاة فلا حلّ للوضعية',
+                    'أطرح مساحة الحوض من المساحة المعطاة، فيكون الناتج عرض الشريط',
+                  ]}
+                  correct={0} cols={1} requires={['nashr-jadaa', 'mutatabiqat']}
+                  explain={<span>كما في ممرّ النافورة: الضلع بدلالة <MathText>{'$x$'}</MathText> ، ثم المساحة (المربّع الكبير ناقص الحوض)، ثم المساواة. مربّع العرض وحده لا يمثّل الشريط، وقيمة واحدة لا تكفي للحكم، وطرح مساحتين يعطي مساحة لا طولًا.</span>}
+                  onAnswered={mark(3)} />
+              </div>
+              {q[3] && <KnowledgeBrick id="namdhaja" variant="rappel" />}
+            </div>
+          ) },
+        // L'ÉCRAN DU CAHIER (recette de la synthèse, point 5) : un vrai essai au crayon AVANT la correction pas à pas ; les étapes 5 et 6 sont la comparaison.
+        { num: 4, title: 'بالقلم: خطّتك أنت', subtitle: 'اكتب في كرّاسك ثم قارن', done: !!q[4],
+          content: (
+            <div className="space-y-4 rounded-2xl border-2 border-indigo-200 bg-indigo-50 px-5 py-4" data-notebook-screen>
+              <p className="text-xl font-black text-indigo-950"><span aria-hidden="true">📓 </span>اكتب في كرّاسك ثم قارن.</p>
+              <p className="text-lg font-bold text-slate-800">اكتب في 3 أسطر: ضلع المربّع الكبير، مساحة الشريط، والمساواة التي تترجم الوضعية.</p>
+              <ol className="ms-6 list-decimal space-y-1 text-base text-slate-700">
+                <li>ضلع المربّع الكبير بدلالة <MathText>{'$x$'}</MathText> : ماذا تكتب؟</li>
+                <li>مساحة الشريط: أيّ مساحتين تطرح؟</li>
+                <li>أيّ مساواة تكتب، وماذا تفعل بقيمتي <MathText>{'$x$'}</MathText> اللتين تجدهما؟</li>
+              </ol>
+              <p className="text-sm text-slate-600">الخطوات التالية تصحّح أسطرك سطرًا سطرًا. الحساب نفسه ينتظرك في التحدّي <span aria-hidden="true">🏆</span>.</p>
+              {/* le bouton RESTE (aria-disabled après l'appui : le focus ne tombe pas sur la page) ; la région vivante est toujours montée */}
+              <button type="button" onClick={() => { if (!q[4]) mark(4)(); }} aria-disabled={q[4] || undefined} data-notebook-done
+                className={`min-h-[52px] rounded-2xl px-6 text-lg font-black focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2 ${q[4] ? 'bg-emerald-50 text-emerald-800 ring-1 ring-emerald-300' : 'bg-indigo-700 text-white shadow-[0_3px_0_0_#3730A3] hover:bg-indigo-800'}`}>
+                {q[4] ? <><span aria-hidden="true">✓ </span>كتبتُ أسطري</> : 'كتبتُ أسطري — أقارن الآن'}
+              </button>
+              <p className="font-bold text-emerald-800" role="status">{q[4] ? 'قارن الآن أسطرك بالخطوات التالية.' : ''}</p>
+            </div>
+          ) },
+        // LE MODÈLE, première étape au crayon : « (10 + 2x)² − 10² = 44 » — les données sur le même écran.
+        { num: 5, title: 'ترييض الوضعية', subtitle: 'المساواة بدلالة x', done: !!q[5],
+          content: (
+            <div className="space-y-3" data-paging-keep>
+              <Facts />
+              <TapQuestion
+                prompt={<span>ليكن <MathText>{'$x$'}</MathText> عرض الشريط بالمتر. أيّ مساواة تترجم: «مساحة الشريط 44 مترًا مربّعًا»؟</span>}
+                options={['$(10 + 2x)^2 - 10^2 = 44$', '$(10 + x)^2 - 10^2 = 44$', '$(10 + 2x)^2 = 44$', '$4 \\times 10x = 44$'].map(M)}
+                correct={0} cols={2} requires={['namdhaja', 'masaha-tariqatan']}
+                explain={<span>على كل ضلع: شريط، ثم الحوض، ثم شريط، أي <MathText>{'$x + 10 + x = 10 + 2x$'}</MathText> ؛ ومساحة الشريط هي المربّع الكبير ناقص الحوض. <MathText>{'$10 + x$'}</MathText> يضع الشريط على جهة واحدة، و <MathText>{'$(10 + 2x)^2$'}</MathText> وحده يضمّ الحوض، و <MathText>{'$4 \\times 10x$'}</MathText> ينسى الأركان الأربعة.</span>}
+                onAnswered={mark(5)} />
+            </div>
+          ) },
+        { num: 6, title: 'تنفيذ الاستراتيجية', subtitle: 'بالحرفين a و S قبل الحساب', done: !!q[6],
+          content: (
+            <div className="space-y-3">
+              <KnowledgeBrick id="musaada-jadaa" variant="rappel" compact />
               <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700">قارن كل كتابة بمساحة الشريط (يمكنك التحقق بإحدى قيمك أعلاه):</p>}
+                intro={<MathText>{'نسمّي $a$ ضلع الحوض و $S$ مساحة الشريط المعطاة. احكم على كل عبارة.'}</MathText>}
                 rows={[
-                  { id: 'w1', label: <span>المربع الخارجي ناقص الحوض: <MathText>{'$(10 + 2x)^2 - 10^2$'}</MathText></span>, options: EQUAL, correct: 0, correction: <MathText>{'المناطق التسع ناقص المنطقة المركزية: تبقى المناطق الثماني.'}</MathText> },
-                  { id: 'w2', label: <span>أربعة مستطيلات وأربعة أركان: <MathText>{'$4 \\times 10x + 4 \\times x^2$'}</MathText></span>, options: EQUAL, correct: 0, correction: <MathText>{'أربع مناطق بعداها 10 و $x$ ، وأربعة أركان مربعة ضلعها $x$.'}</MathText> },
-                  { id: 'w3', label: <MathText>{'$(10 + x)^2 - 10^2$'}</MathText>, options: EQUAL, correct: 1, correction: <MathText>{REMARKS.dilWhy}</MathText> },
-                  { id: 'w4', label: <MathText>{'$4 \\times 10x$'}</MathText>, options: EQUAL, correct: 1, correction: <MathText>{'نسينا الأركان الأربعة: مساحة كل منها $x^2$.'}</MathText> },
+                  { id: 'p1', label: <MathText>{'ننشر $(a + 2x)^2 - a^2$ فنحصل على $4x^2 + 4ax$ .'}</MathText>, options: TRUE_FALSE, correct: 0, correction: <MathText>{'$(a + 2x)^2 = a^2 + 4ax + 4x^2$ ، ثم نطرح $a^2$ : تبقى الأركان $4x^2$ والأشرطة $4ax$ .'}</MathText> },
+                  { id: 'p2', label: <MathText>{'المساواة $4x^2 + 4ax = S$ تكافئ $x^2 + ax = \\dfrac{S}{4}$ .'}</MathText>, options: TRUE_FALSE, correct: 0, correction: <MathText>{REMARKS.divide}</MathText> },
+                  { id: 'p3', label: 'إذا أُعطي الشكل المحلّل، يكون الجداء معدومًا إذا كان أحد عامليه معدومًا.', options: TRUE_FALSE, correct: 0, correction: <MathText>{REMARKS.help}</MathText> },
+                  { id: 'p4', label: 'القيمتان اللتان تعدمان الجداء هما عرضان ممكنان للشريط.', options: TRUE_FALSE, correct: 1, correction: <MathText>{REMARKS.mujab}</MathText> },
                 ]}
-                requires={['namdhaja', 'masahat-ashkal']}
-                feedback={({ allRight }) => <MathText>{allRight ? REMARKS.twoWays : `الكتابتان الأوليان صحيحتان. ${REMARKS.twoWays}`}</MathText>}
-                onAnswered={() => setQ3(true)} />
-            </div>
-          ) },
-        { num: 4, title: 'النشر المبسّط لمساحة الشريط', done: q4,
-          content: (
-            <div className="space-y-3">
-              <TapQuestion
-                prompt={<span>ننشر ونبسّط <MathText>{'$(10 + 2x)^2 - 10^2$'}</MathText> . مساحة الشريط هي ...</span>}
-                options={['$4x^2 + 40x$', '$4x^2$', '$4x^2 + 20x$', '$40x$'].map(M)}
-                correct={0} cols={2} requires={['mutatabiqat', 'nashr-jadaa']}
-                explain={<span><MathText>{'$(10 + 2x)^2 - 10^2 = 100 + 40x + 4x^2 - 100 = 4x^2 + 40x$'}</MathText> ، ونجد النتيجة نفسها بالطريقة الثانية: <MathText>{'$40x + 4x^2$'}</MathText>. {REMARKS.murabbaWhy}</span>}
-                onAnswered={() => setQ4(true)} />
-              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : les deux façons viennent d’être dites par la correction de la question 3
-                  (REMARKS.twoWays) et l’explication de la question 4. */}
-              {q4 && <KnowledgeBrick id="masaha-tariqatan" variant="rappel" />}
-            </div>
-          ) },
-        { num: 5, title: 'ماذا يقول الملعب؟', subtitle: 'من محاولاتك', done: q5,
-          content: (
-            <div className="space-y-3">
-              {evidence}
-              <NumericQuestion
-                prompt={<span>جرّب قيمًا لـ <MathText>{'$x$'}</MathText> في الملعب. من أجل أيّ قيمة طبيعية لـ <MathText>{'$x$'}</MathText> تكون مساحة الشريط 44؟</span>}
-                expected={1}
-                requires={['masaha-tariqatan']}
-                explain={<MathText>{'من أجل $x = 1$ : ضلع المربع الخارجي 12 ومساحته 144، فمساحة الشريط $144 - 100 = 44$. وبالعبارة: $4 \\times 1^2 + 40 \\times 1 = 44$.'}</MathText>}
-                explainFor={(n) => (n > 0 && n < 50
-                  ? <MathText>{`من أجل $x = ${n}$ مساحة الشريط $4 \\times ${n}^2 + 40 \\times ${n} = ${4 * n * n + 40 * n}$ ، لا 44. جرّب قيمة أصغر.`}</MathText>
-                  : <MathText>{'عرض الشريط طول، فهو عدد موجب: جرّب $x = 1$ ، $x = 2$ ...'}</MathText>)}
-                onAnswered={() => setQ5(true)} />
-            </div>
-          ) },
-        { num: 6, title: 'المساواة ومساعدة الكتاب', subtitle: 'المرحلة 3 من الكتاب', done: q6,
-          content: (
-            <div className="space-y-3">
-              <TextbookBox kind="remark" title={SITUATION.analysis[2].label} text={SITUATION.analysis[2].text} source={SITUATION.source} compact />
-              <TapQuestion
-                prompt="المعلومة «مساحة هذا الشريط 44 مترًا مربّعًا» تُكتب بالمساواة ..."
-                options={['$4x^2 + 40x = 44$', '$(10 + 2x)^2 = 44$', '$4x^2 + 40x + 100 = 44$', '$4x^2 + 40x = 100$'].map(M)}
-                correct={0} cols={2} requires={['masaha-tariqatan']}
-                explain={<span><MathText>{'$(10 + 2x)^2$'}</MathText> مساحة المربع الخارجي كلّه (الحوض معه)، و 100 مساحة الحوض. <MathText>{REMARKS.equation}</MathText> <MathText>{'$4x^2 + 40x - 44 = 0$ ، وبالقسمة على 4: $x^2 + 10x - 11 = 0$.'}</MathText></span>}
-                onAnswered={() => setQ6(true)} />
-              {q6 && (
+                requires={['musaada-jadaa', 'masaha-tariqatan']}
+                feedback={({ allRight }) => <span>{allRight ? 'أحسنت: ننشر ونطرح الحوض، نقسم على 4، نستعمل الشكل المحلّل المعطى، ثم نحتفظ بالقيمة الموجبة ونتحقّق منها.' : 'مساحة الشريط: المربّع الكبير ناقص الحوض؛ نقسم على 4، ومن القيمتين اللتين تعدمان الجداء نحتفظ بالموجبة وحدها.'}</span>}
+                onAnswered={mark(6)} />
+              {q[6] && (
                 <>
-                  <KnowledgeBrick id="musaada-jadaa" />
-                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la démarche ne fait que remettre en ordre les trois étapes du
-                      « تحليل الوضعية » que l’élève vient de lire (encadrés des étapes 1, 3 et 6) et la vérification par substitution. */}
                   <KnowledgeBrick id="tariqat-wadiya" variant="rappel" />
                   <TextbookBox kind="remark" text={REMARKS.notSolvedHere} compact />
                 </>
               )}
             </div>
           ) },
-        { num: 7, title: 'التحدّي: متى يكون المثلث قائمًا في A؟', subtitle: 'تحدّ ص 31', done: c1 && c2,
-          content: (
-            <div className="space-y-3">
-              <p className="text-sm text-slate-800"><MathText>{CHALLENGE.text}</MathText> <SourceTag source={CHALLENGE.source} /></p>
-              <RightTriangle right="A" top="B" side="C" legTop="x + 1" legSide="x + 2" hyp="x + 3" caption="الشكل المقابل في الكتاب (نرسمه قائمًا في A، وهو ما نبحث عنه)" label="مثلث ABC حيث AB = x + 1 و AC = x + 2 و BC = x + 3" />
-              <TapQuestion
-                prompt={<span>المثلث ABC قائم في A يعني (خاصية فيثاغورس، والوتر هو <MathText>{'$BC$'}</MathText>):</span>}
-                options={['$(x + 3)^2 = (x + 1)^2 + (x + 2)^2$', '$(x + 1)^2 = (x + 2)^2 + (x + 3)^2$', '$x + 3 = (x + 1) + (x + 2)$', '$(x + 3)^2 = (2x + 3)^2$'].map(M)}
-                correct={0} cols={1} requires={['khassiyat-fithaghuras', 'namdhaja']}
-                explain={<MathText>{'الوتر يقابل الزاوية القائمة A، فهو $BC = x + 3$ : $BC^2 = AB^2 + AC^2$. نجمع المربعات، لا الأطوال.'}</MathText>}
-                onAnswered={() => setC1(true)} />
-              {c1 && (
-                <TapQuestion
-                  prompt={<span>ننشر بمتطابقة مربع مجموع: <MathText>{'$x^2 + 6x + 9 = 2x^2 + 6x + 5$'}</MathText> ، أي <MathText>{'$x^2 = 4$'}</MathText>. قيمة العدد <MathText>{'$x$'}</MathText> التي من أجلها يكون المثلث قائمًا في A هي ...</span>}
-                  options={['$x = 2$', '$x = 2$ أو $x = -2$', '$x = 4$', '$x = 16$'].map(M)}
-                  correct={0} cols={2} requires={['mutatabiqat', 'tariqat-wadiya']}
-                  explain={<MathText>{'من أجل $x = 2$ : الأضلاع 3 و 4 و 5، و $3^2 + 4^2 = 9 + 16 = 25 = 5^2$. أما $x = -2$ فيعطي $AB = -1$ : الطول موجب، فنرفضه — كما نرفض القيمة السالبة لعرض الشريط.'}</MathText>}
-                  onAnswered={() => setC2(true)} />
-              )}
-            </div>
-          ) },
+        // « ورقة مالك » (recette de la synthèse, point 5) : la DERNIÈRE étape — un PLAN faux d'un camarade, une erreur de JUSTIFICATION.
+        { num: 7, title: 'ورقة مالك', subtitle: 'أين أخطأ مالك في خطّته؟', done: !!q[7],
+          content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={mark(7)} /> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={7} variant="memo" />} />
+      footer={(
+        <>
+          <KnowledgeSnapshot moduleNumber={7} variant="memo" />
+          {sw(
+            <p className="rounded-2xl border-2 border-amber-300 bg-amber-50 px-4 py-3 text-center text-base font-black text-amber-900" data-mission-pause>
+              <span aria-hidden="true">⏸️ </span>استرح قليلًا: التحدّي هو المحطّة التالية <span aria-hidden="true">🏆</span>
+            </p>,
+            null,
+          )}
+        </>
+      )} />
   );
 }

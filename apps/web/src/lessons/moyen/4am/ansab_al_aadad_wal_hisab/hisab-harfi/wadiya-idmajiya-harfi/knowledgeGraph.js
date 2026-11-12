@@ -3,41 +3,40 @@
  * Contrat : docs/architecture/KNOWLEDGE_MAP.md, Part A (A.15, cas de l'intégration) ;
  * modèle : hisab-judhur/wadiya-idmajiya-judhur/knowledgeGraph.js.
  *
- *   — aucune connaissance nouvelle : la DÉMARCHE (modéliser, deux façons
- *     d'écrire l'aire du ruban, l'« مساعدة » du manuel, choisir la forme) ;
- *   — la SOLUTION (x = 1, la racine −11 rejetée) n'y figure pas : c'est la
- *     réponse de l'évaluation (A.10 règle 14) ;
- *   — les deux erreurs sont celles que le module 7 corrige (le ruban compté
- *     d'un seul côté, le carré d'une somme sans 2ab), avec leur « لماذا؟ » ;
+ *   — aucune connaissance nouvelle : la DÉMARCHE (modéliser, deux façons d'écrire l'aire du ممرّ, la forme factorisée DONNÉE, choisir la forme) ;
+ *   — la synthèse dans le lecteur de mission (2026-11-12) : la carte est TOUTE OUVERTE dès le premier écran (`knowledgeMapOpen`), donc AVANT le
+ *     module 7 — elle parle EN LETTRES (une نافورة carrée de côté a, un ممرّ de largeur x, d'aire S : content/textbook.js › METHOD_LETTERS) et
+ *     ne montre ni le bassin, ni le ruban, ni leurs nombres, ni la solution du défi 🏆 (content/forbidden.js, content/mission.test.js) ;
+ *   — les deux erreurs sont celles que le module 7 corrige (le ممرّ compté d'un seul côté, le carré d'une somme sans 2ab), avec leur « لماذا؟ ».
  *
- *                     [ما عرض الشريط؟]                         مفهوم
+ *                     [ما عرض الممرّ؟]                          مفهوم
  *                          نفهمها │
  *                    [نمذجة بدلالة x]                          طريقة
  *              خطأ شائع ┌────────┴────────┐ نحسب بها
- *        ⛔ [الشريط من جهة واحدة]   [مساحة الشريط]              علاقة
+ *        ⛔ [الممرّ من جهة واحدة]   [مساحة الممرّ]               علاقة
  *                     خطأ شائع ┌────────┴────────┐ المساواة
- *              ⛔ [مربع مجموع بلا 2ab]      [مساعدة الكتاب]      علاقة
+ *              ⛔ [مربّع مجموع بلا 2ab]   [الشكل المحلّل المعطى]   علاقة
  *                                              │ نطبّقها
  *                                    [من الشكل إلى المعادلة]    طريقة
  *                                              │ نستخلص
  *                                       🎯 [ثلاث مراحل]
  */
-import { SITUATION, REMARKS } from './content/textbook';
+import { REMARKS, METHOD_LETTERS } from './content/textbook';
 
 export const KNOWLEDGE_GRAPH = {
   root: 'wadiya',
   nodes: [
     {
       id: 'wadiya', kind: 'concept', lane: 'center', requires: 'namdhaja',
-      title: 'ما عرض الشريط؟', subtitle: SITUATION.caption,
-      context: { text: SITUATION.text, note: SITUATION.help },
+      title: 'ما عرض الممرّ؟', subtitle: 'نافورة وممرّ حولها',
+      context: { text: METHOD_LETTERS.question, note: METHOD_LETTERS.read },
       reveals: ['namdhaja'],
     },
     { id: 'namdhaja', kind: 'method', lane: 'center', requires: 'namdhaja', notebook: true, title: 'نمذجة بدلالة x', reveals: ['dil', 'masaha'] },
     {
-      // ⛔ خطأ شائع — module 7, question 2 : le distracteur « 10 + x » et sa correction.
+      // ⛔ خطأ شائع — le côté extérieur a + x (le ممرّ d'un seul côté) et sa correction.
       id: 'dil', kind: 'common_mistake', lane: 'start', requires: 'namdhaja',
-      title: 'الشريط من جهة واحدة', subtitle: 'ضلع المربع الخارجي',
+      title: 'الممرّ من جهة واحدة', subtitle: 'ضلع المربّع الخارجي',
       context: {
         parts: [
           { role: 'wrong', text: REMARKS.dilWrong },
@@ -47,11 +46,11 @@ export const KNOWLEDGE_GRAPH = {
       },
       reveals: [],
     },
-    { id: 'masaha', kind: 'relationship', lane: 'end', requires: 'masaha-tariqatan', notebook: true, title: 'مساحة الشريط', subtitle: 'طرق متعددة', reveals: ['murabba', 'musaada'] },
+    { id: 'masaha', kind: 'relationship', lane: 'end', requires: 'masaha-tariqatan', notebook: true, title: 'مساحة الممرّ', subtitle: 'طريقتان', reveals: ['murabba', 'musaada'] },
     {
-      // ⛔ خطأ شائع — module 7, question 4 : le distracteur « 4x² » ((a + b)² = a² + b²).
+      // ⛔ خطأ شائع — (a + b)² = a² + b² : les quatre bandes oubliées.
       id: 'murabba', kind: 'common_mistake', lane: 'start', requires: 'masaha-tariqatan',
-      title: 'مربع مجموع بلا 2ab', subtitle: 'المستطيلات المنسية',
+      title: 'مربّع مجموع بلا 2ab', subtitle: 'المستطيلات المنسية',
       context: {
         parts: [
           { role: 'wrong', text: REMARKS.murabbaWrong },
@@ -61,13 +60,17 @@ export const KNOWLEDGE_GRAPH = {
       },
       reveals: [],
     },
-    { id: 'musaada', kind: 'relationship', lane: 'end', requires: 'musaada-jadaa', notebook: true, title: 'مساعدة الكتاب', subtitle: 'جداء أحد عامليه معدوم', reveals: ['tariqa'] },
-    { id: 'tariqa', kind: 'method', lane: 'end', requires: 'tariqat-wadiya', notebook: true, title: 'من الشكل إلى المعادلة', reveals: ['khulasa'] },
+    { id: 'musaada', kind: 'relationship', lane: 'end', requires: 'musaada-jadaa', notebook: true, title: 'الشكل المحلّل المعطى', subtitle: 'جداء أحد عامليه معدوم', reveals: ['tariqa'] },
     {
-      // 🎯 خلاصة — les trois étapes de l'analyse du manuel, nommées par lui.
+      id: 'tariqa', kind: 'method', lane: 'end', requires: 'tariqat-wadiya', notebook: true, title: 'من الشكل إلى المعادلة',
+      context: { text: METHOD_LETTERS.strategy, note: METHOD_LETTERS.execute },
+      reveals: ['khulasa'],
+    },
+    {
+      // 🎯 خلاصة — les trois étapes de l'analyse d'une وضعية.
       id: 'khulasa', kind: 'takeaway', lane: 'center', requires: 'tariqat-wadiya',
       title: 'ثلاث مراحل', subtitle: 'نقرأ · نحلّل · ننفّذ',
-      context: { list: SITUATION.analysis.map((a) => a.label) },
+      context: { list: METHOD_LETTERS.steps },
       reveals: [],
     },
   ],
