@@ -2,7 +2,8 @@ import { describe, it, expect } from 'vitest';
 import * as P from '../../../../../../common/manipulations/logic/pairScoreboardPlayer.js';
 import * as L from '../../../../../../common/manipulations/logic/pairScoreboard.js';
 import { emptyLog, logEvent, starsFor, roundWon, needsHelp } from '../../../../../../common/manipulations/rounds/roundsModel.js';
-import { M1_ROUNDS, SYS, FREE, PREDICT } from './pairs.js';
+import * as LS from '@smarter-academy/core/arithmetic/linearSystem.js';
+import { M1_ROUNDS, M2_ROUNDS, SYS, SYS_M2, FREE, PREDICT } from './pairs.js';
 import { violations } from './forbidden.js';
 
 /**
@@ -14,6 +15,7 @@ const set = (which, v) => ({ kind: 'set', which, v });
 const CLAIM = { kind: 'claim' };
 const SWAP = { kind: 'swap' };
 const byId = Object.fromEntries(M1_ROUNDS.map((r) => [r.id, r]));
+const byM2 = Object.fromEntries(M2_ROUNDS.map((r) => [r.id, r]));
 const roundOf = (p) => ({ covered: !!p.covered, free: p.free ?? null });
 
 /** Joue la manche : chaque verdict et chaque événement (découverte, prédictions, suite répondue juste du premier coup) dans le journal. */
@@ -140,6 +142,32 @@ describe('mafhum-jumla — the rounds of module 1 (verdict §4)', () => {
   });
   it('every round screen (rounds, easier rounds, free choices) is clean by role', () => {
     ALL.forEach(([id, props]) => expect(violations(P.shownValues(props), id)).toEqual([]));
+  });
+  it('module 2 (owner decision OQ1): m2a has NO solution, m2b infinitely many; gauge 2 reads 300 on every gauge-1 pair', () => {
+    const a = P.initRound(byM2.m2a.props); const b = P.initRound(byM2.m2b.props);
+    expect(LS.classify(a.sys).kind).toBe('none');
+    expect(LS.classify(b.sys).kind).toBe('infinite');
+    expect([SYS_M2.none, SYS_M2.infinite]).toEqual([byM2.m2a.props.system, byM2.m2b.props.system]);
+    [a, b].forEach((lab) => {
+      expect(L.okPair(lab, 0, 0).some(Boolean)).toBe(false);
+      const ones = P.eq1Pairs(lab);
+      expect(ones.length).toBeGreaterThanOrEqual(3);
+      ones.forEach((pr) => expect(P.gaugeValue(lab, 1, pr.x, pr.y).have).toBe(300));
+    });
+    expect(P.eq1Pairs(a).some((pr) => L.okPair(a, pr.x, pr.y)[1])).toBe(false);
+    expect(P.eq1Pairs(b).every((pr) => L.okPair(b, pr.x, pr.y)[1])).toBe(true);
+    expect([P.parallelFacts(a).kind, P.parallelFacts(b).kind]).toEqual(['none', 'infinite']);
+  });
+  it('module 2: both rounds played — three gauge-1 pairs (free), one tap — ★★★ with 1 counted trial', () => {
+    M2_ROUNDS.forEach((r) => {
+      const res = playRound(r, r.props, [set('x', 6), SWAP, set('x', 3), set('y', 3)]);
+      expect(res.won, r.id).toBe(true);
+      expect(res.stars, r.id).toBe(3);
+      expect(res.log.verdicts.filter((v) => !v.free), r.id).toHaveLength(1);
+    });
+  });
+  it('module 2 rounds are clean by role', () => {
+    M2_ROUNDS.forEach((r) => expect(violations(P.shownValues(r.props), r.id)).toEqual([]));
   });
   it('the role scan fires (negative control)', () => {
     expect(violations(P.shownValues({ system: 'x+y=42|x-3y=-6', chains: 'none' }), 'ctl').length).toBeGreaterThan(0);

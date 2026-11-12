@@ -8,7 +8,7 @@
  *     manche 2 (`callback: true`) ;
  *   - SHOWN : les textes d'avant la مسألة (manches, points d'étape, « أستعدّ », feuille) — jamais une lecture de jauge.
  */
-import { M1_ROUNDS, FREE, SYS } from '../../mafhum-jumla/content/pairs.js';
+import { M1_ROUNDS, M2_ROUNDS, FREE, SYS } from '../../mafhum-jumla/content/pairs.js';
 import { CP_SYSTEMS } from '../../mafhum-jumla/content/checkpoints.js';
 import { PEER_SYSTEM, PEER_SHEET } from '../../mafhum-jumla/content/peerSheet.js';
 import { MODULE_SYSTEMS } from '../../mafhum-jumla/content/textbook.js';
@@ -25,6 +25,8 @@ export const SYSTEMS = [
   { id: 'r2', tier: 'required', system: byId.r2.props.system },
   { id: 'r3', tier: 'required', system: byId.r3.props.system },
   { id: 'star', tier: 'star', system: byId.challenge.props.system },
+  // module 2 (décision du propriétaire OQ1) : deux manches REQUISES sans solution unique — solutionOf les classe « none » / « infinite »
+  ...M2_ROUNDS.map((r) => ({ id: r.id, tier: 'required', system: r.props.system })),
   { id: 'r1e', tier: 'easier', system: byId.r1.easier.props.system },
   { id: 'r2e', tier: 'easier', system: byId.r2.easier.props.system },
   { id: 'r3e', tier: 'easier', system: byId.r3.easier.props.system },
@@ -37,7 +39,7 @@ export const SYSTEMS = [
 
 const cpText = (cp) => [cp.prompt, ...cp.options, cp.explain].join(' ');
 export const SHOWN = [
-  ...M1_ROUNDS.flatMap((r) => [r, r.easier].filter(Boolean).flatMap((x) => [x.props.lead, x.props.mission])),
+  ...[...M1_ROUNDS, ...M2_ROUNDS].flatMap((r) => [r, r.easier].filter(Boolean).flatMap((x) => [x.props.lead, x.props.mission])),
   ...LESSON_CONFIG.mission.checkpoints.map(cpText),
   ...PREP_LADDER.map((it) => `${it.text} ${it.why}`),
   PEER_SHEET.task, ...PEER_SHEET.lines, ...PEER_SHEET.fixes.map((f) => `${f.text} ${f.why ?? ''}`), ...Object.values(PEER_SHEET.fixedLines),

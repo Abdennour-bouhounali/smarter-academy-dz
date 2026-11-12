@@ -115,7 +115,19 @@ export const claimAt = (lab, x, y) => lab.claimed.find((c) => c.x === x && c.y =
 export function discovered(lab, mode) {
   if (mode === 'covered') return lab.solved != null;
   if (mode === 'many') return lab.solved != null && gauge1Pairs(lab).length >= GAUGE1_GOAL && swapSeen(lab);
+  // les cas particuliers (module 2, décision du propriétaire OQ1) : trois ثنائيات de la jauge (1) vues suffisent — la jauge (2) les juge TOUTES
+  // pareil (jamais allumée avec la (1) : aucune solution ; toujours : une infinité)
+  if (mode === 'gauge1x3') return gauge1Pairs(lab).length >= GAUGE1_GOAL;
   return L.discoveryReady(lab);
+}
+
+/**
+ * Les faits d'une jumla « parallèle » d'un monde « count » où p = q (« قطع من فئة واحدة ») : N objets de valeur p valent TOUJOURS p·N ;
+ * la jauge (2) vaut `full` sur chaque ثنائية de la jauge (1) — égal à V (une infinité de solutions) ou non (aucune).
+ */
+export function parallelFacts(lab) {
+  const { N, p, q, V } = lab.shape;
+  return { N, p, q, V, full: p * N, same: p === q, kind: p === q ? (p * N === V ? 'infinite' : 'none') : 'other' };
 }
 
 /* ── les suites de questions ────────────────────────────────────────────────────────── */
@@ -127,6 +139,8 @@ export const CHAIN_SPECS = Object.freeze({
   season: [{ id: 'season', reached: (lab) => discovered(lab, 'contrast'), qs: ['halfWhich', 'buildLine'] }],
   coins: [{ id: 'coins', reached: (lab) => discovered(lab, 'many'), qs: ['buildEq2', 'rule'] }],
   covered: [{ id: 'covered', reached: (lab) => discovered(lab, 'covered'), qs: ['readCovered', 'coveredWhy'] }],
+  never: [{ id: 'never', reached: (lab) => discovered(lab, 'gauge1x3'), qs: ['whyNever'] }],
+  always: [{ id: 'always', reached: (lab) => discovered(lab, 'gauge1x3'), qs: ['whyAlways'] }],
   none: [],
 });
 export const chainsOf = (name) => CHAIN_SPECS[name] ?? [];
@@ -207,8 +221,8 @@ export const judgedPredictions = (lab, keys) => keys.filter((key) => predictJudg
  */
 export function coachOf(lab, ctx = {}) {
   if (ctx.done) return null;
-  if (!ctx.movedX) return { id: 'handleX', target: '[data-coach="handle-x"]', gesture: 'drag', prefer: 'below' };
-  if (!ctx.movedY) return { id: 'handleY', target: '[data-coach="handle-y"]', gesture: 'drag', prefer: 'below' };
+  if (!ctx.movedX) return { id: 'handleX', target: '[data-coach="handle-x"]', gesture: 'drag', prefer: 'above' };
+  if (!ctx.movedY) return { id: 'handleY', target: '[data-coach="handle-y"]', gesture: 'drag', prefer: 'above' };
   if (ctx.covered) return lab.claimed.length === 0 ? { id: 'reveal', target: '[data-coach="claim"]', gesture: 'tap', prefer: 'above' } : null;
   if (lab.trials.length === 1) return { id: 'gauge1', target: '[data-coach="gauge-1"]', gesture: 'tap', prefer: 'above' };
   if (lab.solved && ctx.swap && !swapSeen(lab)) return { id: 'swap', target: '[data-coach="swap"]', gesture: 'tap', prefer: 'above' };
@@ -284,6 +298,11 @@ function shownOne(props) {
       if (q === 'buildEq2' && sh.kind === 'count') { const b = buildEq2(solved); b.tiles.forEach((t) => out.push(Rl('tile', t))); out.push(Rl('decoy', b.decoy)); }
       if (q === 'readCovered' && sh.kind === 'count') { const r = readCovered(solved); out.push(Rl('chip', r.right), ...r.wrong.map((w) => Rl('chip', w.v))); }
     }));
+  }
+  // une jumla parallèle (module 2) : la valeur que la jauge (2) lit sur TOUTE ثنائية de la jauge (1), et quelques-unes de ces ثنائيات
+  if (sh.kind === 'count' && sh.p === sh.q) {
+    out.push(Rl('reading', parallelFacts(lab0).full));
+    eq1Pairs(lab0).forEach((pr) => out.push(Rl('solution', L.pairText(pr.x, pr.y))));
   }
   return out;
 }

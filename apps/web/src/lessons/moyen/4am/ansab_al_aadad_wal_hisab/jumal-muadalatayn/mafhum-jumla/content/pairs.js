@@ -81,3 +81,27 @@ export const M1_ROUNDS = [
       lead: 'اللوحة الحرّة: اختر الجملة التي تريد.',
       mission: 'اعثر على الثنائية التي تُضيء اللوحتين معًا.' }) },
 ];
+
+/**
+ * MODULE 2 — LES CAS PARTICULIERS, joués (décision du propriétaire OQ1, 2026-11-12 : « اللوحة العنيدة », proposition E du conseil ; labId
+ * `lab-pair-m2`, lecteur seulement). Un sac de 6 pièces, TOUTES de 50 دج (anciennes x, nouvelles y) : la jauge (2) lit 300 دج sur CHAQUE ثنائية
+ * de la jauge (1).
+ *   m2a  x + y = 6 ∣ 50x + 50y = 280 : les deux jauges ne s'allument JAMAIS ensemble (aucune solution). Suite « never ».
+ *   m2b  x + y = 6 ∣ 50x + 50y = 300 : elles s'allument TOUJOURS ensemble (une infinité de solutions). Suite « always ».
+ * Trois ثنائيات de la jauge (1) gratuites (`gauge1x3`), puis UNE question d'un toucher. L'étape de classification du module 2 relit les deux sacs.
+ */
+export const SYS_M2 = { none: 'x+y=6|50x+50y=280', infinite: 'x+y=6|50x+50y=300' };
+const BAG = {
+  theme: 'coins', ranges: R(0, 8), start: Z, discover: 'gauge1x3', readings: 'values', free: 'gauge1x3',
+  nouns: { x: 'عدد القطع القديمة', y: 'عدد القطع الجديدة' },
+};
+export const M2_ROUNDS = [
+  { id: 'm2a', title: 'اللوحة العنيدة', goal: [{ discovered: true }, { checkpoint: 'never' }], stars: { maxTrials: 3, predict: false },
+    props: props({ ...BAG, system: SYS_M2.none, chains: 'never',
+      lead: 'كيس فيه 6 قطع نقدية، كلّها من فئة 50 دج: بعضها قديم وبعضها جديد. يقول صاحبه إنّ المبلغ 280 دج.',
+      mission: 'جد ثلاث ثنائيات تعطي 6 قطع، واقرأ اللوحة (2) في كل مرّة: هل تُضيء اللوحتان معًا؟' }) },
+  { id: 'm2b', title: 'لوحتان لا تختلفان', goal: [{ discovered: true }, { checkpoint: 'always' }], stars: { maxTrials: 3, predict: false },
+    props: props({ ...BAG, system: SYS_M2.infinite, chains: 'always',
+      lead: 'كيس آخر فيه 6 قطع من فئة 50 دج، قديمة وجديدة، ومبلغه 300 دج.',
+      mission: 'جد ثلاث ثنائيات تعطي 6 قطع، واقرأ اللوحة (2) في كل مرّة: هل تُضيء اللوحتان معًا؟' }) },
+];

@@ -4,7 +4,10 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { TextbookBox } from '../../../../../../common/textbook';
-import { MODULE_CTX, getNavLinks } from '../moduleContext';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
+import { MODULE_CTX, getNavLinks, useStudentPlayer } from '../moduleContext';
+import { M2_ROUNDS } from '../content/pairs';
 import { KNOWLEDGE, CASES_LINES } from '../content/textbook';
 import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
 
@@ -17,11 +20,33 @@ import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
  *   4. les deux cas particuliers (2x + y = 3 ∣ 6x + 3y = 9 ; x − y = 1 ∣ 3x − 3y = 5) côte à côte, la brique halat-khassa, puis trois jumal à classer ;
  *   5. « ورقة صهيب » (content/peerSheet.js) : le signe perdu en substituant une valeur négative.
  * Chaque question porte sa jumla DANS son énoncé (aucun aller-retour). LP : P1, P2, P3, P4.
+ * LECTEUR — décision du propriétaire OQ1 (2026-11-12, remplace le « non » par défaut du verdict) : le module s'ouvre sur DEUX manches courtes du
+ * tableau (`lab-pair-m2`, content/pairs.js › M2_ROUNDS) — un sac de pièces de 50 دج dont la jauge (2) ne s'allume JAMAIS avec la (1), puis un
+ * sac où elle s'allume TOUJOURS ; l'étape 4 (les cas particuliers) relit les deux sacs de l'élève, À CÔTÉ de sa prédiction. La page (enseignant)
+ * est inchangée (pas de labo).
  */
 const Opt = (s) => <MathText key={s}>{s}</MathText>;
 const CASES = ['لها حل وحيد', 'ليس لها حلول', 'لها عدد غير منته من الحلول'];
 
+/** Les deux sacs du module, relus par l'étape des cas particuliers (lecteur). */
+function Bags({ won }) {
+  const bag = (id, tone, title, line, wait) => (
+    <div className={`rounded-xl border-2 p-3 text-sm ${won[id] ? tone : 'border-slate-200 bg-white text-slate-500'}`} data-evidence={id} data-tried={won[id] ? 'true' : 'false'}>
+      <p className="mb-1 font-bold">{won[id] && <span aria-hidden="true">✓ </span>}{title}</p>
+      <p><MathText>{won[id] ? line : wait}</MathText></p>
+    </div>
+  );
+  return (
+    <div className="grid grid-cols-2 gap-2" data-activity-evidence data-paging-keep>
+      {bag('m2a', 'border-rose-200 bg-rose-50/60 text-rose-950', 'الكيس الأول: 280 دج', '$\\begin{cases} x + y = 6 \\\\ 50x + 50y = 280 \\end{cases}$ : لم تُضئ اللوحتان معًا ولو مرّة — كل 6 قطع تعطي 300 دج.', 'لم تلعب هذا الكيس بعد.')}
+      {bag('m2b', 'border-sky-200 bg-sky-50/60 text-sky-950', 'الكيس الثاني: 300 دج', '$\\begin{cases} x + y = 6 \\\\ 50x + 50y = 300 \\end{cases}$ : أضاءت اللوحتان معًا مع كل ثنائية تعطي 6 قطع.', 'لم تلعب هذا الكيس بعد.')}
+    </div>
+  );
+}
+
 export default function Module02Maarif() {
+  const player = useStudentPlayer();
+  const [won, setWon] = useState({});
   const [q1a, setQ1a] = useState(false);
   const [q1b, setQ1b] = useState(false);
   const [q2, setQ2] = useState(false);
@@ -38,7 +63,17 @@ export default function Module02Maarif() {
       moduleSubtitle="جملة معادلتين، حلّها، الترتيب، والحالات الخاصة"
       objectives={['ما شكل جملة معادلتين؟ وما معنى حلّها؟', 'هل يهمّ ترتيب العددين في الثنائية؟', 'متى لا يكون للجملة حل وحيد؟']}
       estimatedTime="12 دقيقة"
-      brief={{
+      intro={
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="lab-pair-m2" rounds={M2_ROUNDS} icon="🪙" freeIcon="🧮"
+              onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))} />
+          )}
+          page={null}
+        />
+      }
+      // lecteur : le labo OUVRE le module, rien au-dessus (§4quater) — la carte « معارف » reste sur la page
+      brief={player ? undefined : {
         tag: 'معارف', title: KNOWLEDGE.system.title, tone: 'violet',
         body: <p><MathText>{'على لوحة الشرطين كتبنا شرطين على عددين، ووجدنا ثنائية تقبلها اللوحتان معًا. هنا نسمّي هذا الشكل، ونعرّف حلّه، ونرى حالتين خاصتين.'}</MathText></p>,
       }}
@@ -114,9 +149,11 @@ export default function Module02Maarif() {
           ),
         },
         {
+          ...(player ? { needsRound: { id: 'm2b', label: 'الكيس الثاني', icon: '🪙', won: Boolean(won.m2b) } } : {}),
           num: 4, title: 'حالات خاصة', subtitle: 'جملتان تُبسَّطان', done: q4,
           content: (
             <div className="space-y-3">
+              {player && <Bags won={won} />}
               {/* L'encadré et les calculs écrits concluent déjà (« لا حلول » / « عدد غير منته ») : enveloppés, l'élève simplifie et prédit d'abord
                   (predictPrompt de halat-khassa). Les deux cas CÔTE À CÔTE, jamais empilés. */}
               <PredictRule id="halat-khassa">

@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import * as LS from '@smarter-academy/core/arithmetic/linearSystem.js';
 import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 import { LESSON_CONFIG } from '../lesson.config';
-import { M1_ROUNDS } from './pairs';
+import { M1_ROUNDS, M2_ROUNDS } from './pairs';
 import { PEER_SHEET } from './peerSheet';
 import { PREP_LADDER } from './prep';
 import { TEXT, violations } from './forbidden';
@@ -27,7 +27,7 @@ const itqanSource = Object.values(import.meta.glob(['../modules/Module07*.jsx'],
  */
 const { mission } = LESSON_CONFIG;
 const cpText = (cp) => [cp.prompt, ...cp.options, cp.explain].join(' ');
-const each = (fn) => M1_ROUNDS.forEach((r) => [r, r.easier].filter(Boolean).forEach((x) => fn(x, r)));
+const each = (fn) => [...M1_ROUNDS, ...M2_ROUNDS].forEach((r) => [r, r.easier].filter(Boolean).forEach((x) => fn(x, r)));
 const flat = (o) => (typeof o === 'string' ? [o] : Array.isArray(o) ? o.flatMap(flat) : o && typeof o === 'object' ? Object.values(o).flatMap(flat) : []);
 const scan = (label, s) => TEXT.forEach((re) => expect(re.test(String(s)), `${label}: ${re} — ${String(s).slice(0, 90)}`).toBe(false));
 const BOOK = [/الكتاب(?!ة)/, /تمرين\s*\d+/, /خطأً? مطبعي/, /نشاط\s*\d/, /ص\s*\d{2}\b/, /معارف\s*\d/];

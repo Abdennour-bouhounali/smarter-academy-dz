@@ -115,6 +115,33 @@ export const QUESTIONS = {
       hints: [Pq(k, 'readCovered.hint1', o), Pq(k, 'readCovered.hint2', o)], explain: Pq(k, 'readCovered.explain', o),
     };
   },
+  /* LES CAS PARTICULIERS (module 2, décision du propriétaire OQ1) : pourquoi les deux jauges ne s'allument JAMAIS / TOUJOURS ensemble */
+  whyNever: (lab, k) => {
+    const f = P.parallelFacts(lab);
+    const o = { ...f, n: P.gauge1Pairs(lab).length };
+    return {
+      id: 'whyNever', kind: 'choice', prompt: Pq(k, 'whyNever.prompt', o),
+      options: spin([
+        { text: Pq(k, 'whyNever.right', o), correct: true },
+        { text: Pq(k, 'whyNever.notYet'), why: Pq(k, 'whyNever.whyNotYet', o) },
+        { text: Pq(k, 'whyNever.broken'), why: Pq(k, 'whyNever.whyBroken', o) },
+      ], seedOf(lab)),
+      hints: [Pq(k, 'whyNever.hint1', o), Pq(k, 'whyNever.hint2', o)], explain: Pq(k, 'whyNever.explain', o),
+    };
+  },
+  whyAlways: (lab, k) => {
+    const f = P.parallelFacts(lab);
+    const o = { ...f, n: P.gauge1Pairs(lab).length, more: f.N + 1, moreV: f.p * (f.N + 1) };
+    return {
+      id: 'whyAlways', kind: 'choice', prompt: Pq(k, 'whyAlways.prompt', o),
+      options: spin([
+        { text: Pq(k, 'whyAlways.right', o), correct: true },
+        { text: Pq(k, 'whyAlways.first'), why: Pq(k, 'whyAlways.whyFirst', o) },
+        { text: Pq(k, 'whyAlways.any', o), why: Pq(k, 'whyAlways.whyAny', o) },
+      ], seedOf(lab) + 1),
+      hints: [Pq(k, 'whyAlways.hint1', o), Pq(k, 'whyAlways.hint2', o)], explain: Pq(k, 'whyAlways.explain', o),
+    };
+  },
   /* POURQUOI un refus à saison pleine (r3) — seulement quand la manche en a un */
   coveredWhy: (lab, k) => {
     const c = P.fullRefused(lab);
@@ -134,7 +161,7 @@ export const QUESTIONS = {
 export default function PairScoreboardPlayer({
   system: system0 = 'x+y=7|3x+y=17', theme, ranges, start, title, lead, mission, level, checkpoints: cpOn = true, onFinished, onTrial,
   coach: coachOn = true, onVerdict, chains: chainsMode = 'none', discover = 'contrast', covered = false, readings = 'lines', free = null,
-  predict: predictList = [], counter = false, swap: swapOn = true, choices, choiceSpec,
+  predict: predictList = [], counter = false, swap: swapOn = true, choices, choiceSpec, nouns,
 }) {
   const { t } = useTranslation('lesson');
   const uid = useId();
@@ -270,7 +297,6 @@ export default function PairScoreboardPlayer({
     }
   });
   const EDGE = 22;
-  const tw = Math.max(160, width - 2 * 48 - 16);
   const rx = lb.range.x; const ry = lb.range.y;
   // la valeur sous le doigt se lit sur la piste TELLE QU'ELLE EST au moment du geste (`rect`), jamais sur une largeur mesurée plus tôt :
   // la colonne de côté change de largeur avec son contenu (la mission en grand, une question) et la piste avec elle (marche 2026-11-12)
@@ -413,7 +439,8 @@ export default function PairScoreboardPlayer({
   const count = hasWorld ? Math.max(sh.N, (X ?? 0) + (Y ?? 0)) : 0;
   const grid = hasWorld ? P.stripGrid({ count, width: width - 16, maxHeight: stripMax }) : null;
   const frozen = locked ? { 'aria-disabled': true } : {};
-  const noun = (v) => w(v === 'x' ? 'x' : 'y');
+  // les noms des deux nombres, du LECTEUR (« دج », jamais « DA » : les mots des mondes de la page restent ceux de la page)
+  const noun = (v) => nouns?.[v] ?? k(`player.noun.${hasWorld ? W : 'abstract'}.${v}`, sh.kind === 'count' ? sh : {});
 
   return (
     <ManipulationShell
@@ -489,7 +516,7 @@ export default function PairScoreboardPlayer({
               const v = which === 'x' ? X : Y;
               return (
                 <div key={which} data-coach={`handle-${which}`}>
-                  <PlayerRuler which={which} stretch={st} range={r} value={v} width={tw} edge={EDGE} locked={locked}
+                  <PlayerRuler which={which} stretch={st} range={r} value={v} edge={EDGE} locked={locked}
                     handleLabel={k('handle', { name: which, noun: noun(which) })} less={k('less', { name: which })} more={k('more', { name: which })} />
                 </div>
               );
@@ -568,7 +595,21 @@ function zoomOf(el) {
 }
 
 /* ── une règle graduée, une poignée (le lecteur : aria-disabled et garde, anneau indigo) ── */
-function PlayerRuler({ which, stretch, range, value, width, edge, handleLabel, less, more, locked }) {
+function PlayerRuler({ which, stretch, range, value, edge, handleLabel, less, more, locked }) {
+  // la piste PREND la place qui reste (flex-1, min-w-0) et se MESURE elle-même : une largeur fixe calculée depuis la scène débordait
+  // sur la colonne de côté quand celle-ci changeait (marche 2026-11-12)
+  const [width, setWidth] = useState(320);
+  const trackRef = stretch.trackProps.ref;
+  useLayoutEffect(() => {
+    const el = trackRef.current;
+    if (!el) return undefined;
+    const read = () => { const w0 = Math.max(120, Math.floor(el.clientWidth)); setWidth((cur) => (cur === w0 ? cur : w0)); };
+    read();
+    if (typeof ResizeObserver === 'undefined') return undefined;
+    const ro = new ResizeObserver(read);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [trackRef]);
   const steps = Math.max(1, range.max - range.min);
   const mu = (width - 2 * edge) / steps;
   const px = (v) => edge + (v - range.min) * mu;
@@ -577,10 +618,10 @@ function PlayerRuler({ which, stretch, range, value, width, edge, handleLabel, l
   const atMin = value <= range.min; const atMax = value >= range.max;
   const nudge = (d) => { if (locked || (d < 0 && atMin) || (d > 0 && atMax)) return; stretch.nudge(d); };
   return (
-    <div dir="ltr" className="flex items-center gap-2" data-pair-ruler={which}>
+    <div dir="ltr" className="flex min-w-0 items-center gap-2" data-pair-ruler={which}>
       <button type="button" onClick={() => nudge(-1)} aria-label={less} aria-disabled={locked || atMin || undefined} data-pair-less={which}
         className={`inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border-2 border-slate-300 bg-white aria-disabled:opacity-40 focus:outline-none ${ringP}`}><Minus className="h-5 w-5" aria-hidden="true" /></button>
-      <div {...stretch.trackProps} className="relative shrink-0" style={{ ...stretch.trackProps.style, height: 48, width, ...(locked ? { pointerEvents: 'none' } : {}) }}>
+      <div {...stretch.trackProps} className="relative min-w-0 flex-1" style={{ ...stretch.trackProps.style, height: 48, ...(locked ? { pointerEvents: 'none' } : {}) }}>
         <svg width={width} height={48} className="absolute inset-0" aria-hidden="true" focusable="false">
           <rect x={edge - 4} y={24} width={steps * mu + 8} height={5} rx={2} fill={color} opacity={0.85} />
           {grads.map((u) => (
