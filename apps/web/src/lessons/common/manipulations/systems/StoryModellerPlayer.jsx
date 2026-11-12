@@ -26,7 +26,7 @@ import * as P from '../logic/storyModellerPlayer';
  *   - Un ESSAI est une histoire REJOUÉE avec une affectation NOUVELLE (`onVerdict { groups: 0, exact }`) ; la traduction vérifiée est un événement
  *     de MODÈLE (`onTrial { tk: 'model', ok, key, free? }`, `freeFirstModel` : le premier refus gratuit). La découverte (la bonne phrase, ou
  *     l'histoire qui REFUSE) est annoncée une fois (`{ tk: 'discovered' }`) ; « إعادة » → `{ tk: 'reset' }`, « أعِد التجربة » → `{ tk: 'retry' }`.
- *   - `chains` : first · second · easyFirst · easySecond · impossible · impossibleEasy · none (`logic › CHAIN_SPECS`) ; `solveTyped` fait TAPER la
+ *   - `chains` : first · second · easyFirst · easySecond · impossible · impossibleEasy · synthTrip · synthParty (la synthèse de l'unité 5) · none (`logic › CHAIN_SPECS`) ; `solveTyped` fait TAPER la
  *     première inconnue avant que sa ligne ne paraisse ; une manche « impossible » finit sur le REFUS (pas d'étape « الإجابة »).
  *   - `predict` : [{ key: 'dearer' | 'which', pos }] posées AVANT le premier geste ; vérité calculée, jugée par le geste qui la tranche.
  *   - `items` : le dessin des portes (des OBJETS comptés : crayons, livres, maillots… jamais des personnes) ; une valeur qui ne se compte pas
@@ -84,6 +84,19 @@ export const QUESTIONS = {
       slots: ['', ''], wrap: [k('player.q.buildAnswer.wrapStart'), k('player.q.buildAnswer.wrapEnd', o)], ops: [k('player.q.buildAnswer.op', o)],
       tiles: spin([{ text: un(u0).short }, { text: un(u1).short }, u0], seed), expected: [un(u0).short, un(u1).short],
       hints: [Pq(k, 'buildAnswer.hint1', o), Pq(k, 'buildAnswer.hint2', o)], explain: Pq(k, 'buildAnswer.explain', o),
+    };
+  },
+  /* BÂTIR l'information aux quantités ÉGALES : « k × (▢ + ▢) = ▢ », leurre : S ÷ k (synthèse de l'unité 5, 2026-11-12) */
+  buildSum: ({ k, model, def, sv, seed }) => {
+    const b = P.sumBuild(model, sv);
+    const [u0, u1] = model.ids;
+    const short = (id) => def.unknowns.find((u) => u.id === id)?.short ?? id;
+    const o = { quote: def.facts[b.row - 1].quote, k: b.k, s0: short(u0), s1: short(u1), sum: b.sum, eq: `${b.k} \\times (${b.expected[0]} + ${b.expected[1]}) = ${b.expected[2]}` };
+    return {
+      id: 'buildSum', kind: 'build', prompt: Pq(k, 'buildSum.prompt', o),
+      slots: [short(u0), short(u1), k('player.q.buildSum.slotTotal')], wrap: [`${b.k} × (`, ''], ops: ['+', ') ='],
+      tiles: spin(b.tiles, seed), expected: b.expected,
+      hints: [Pq(k, 'buildSum.hint1', o), Pq(k, 'buildSum.hint2', o)], explain: Pq(k, 'buildSum.explain', o),
     };
   },
   /* les questions de la page, sur les valeurs de l'élève (mots de `cp.*`) */
@@ -280,7 +293,7 @@ function PlayerCore({
     onEvent: (ev) => state.report(onTrial, ev),
     onDone: (id) => {
       setDoneIds((d) => (d.includes(id) ? d : [...d, id]));
-      if (['rule', 'ruleNatural'].includes(id)) { state.discover(); state.formalize(); }
+      if (['rule', 'ruleNatural', 'buildSum'].includes(id)) { state.discover(); state.formalize(); }
     },
   });
   const blockedAt = (at) => cpLive && P.momentBlocked(chainsMode, lb, ui, doneIds, at);
@@ -892,7 +905,7 @@ function Tray({ item, value, count, notCountable, index }) {
   );
 }
 
-/** Un objet en 24 × 24 (dessiné, jamais une image) : crayon, cahier, stylo, règle, gomme, livre, ballon, ballon de volley, maillot, lait, yaourt. */
+/** Un objet en 24 × 24 (dessiné, jamais une image) : crayon, cahier, stylo, règle, gomme, livre, ballon, ballon de volley, maillot, lait, yaourt, brique de jus, part de gâteau. */
 export function Glyph({ kind, color = '#2563EB' }) {
   switch (kind) {
     case 'pencil': return <g><rect x="3" y="9" width="15" height="6" rx="1" fill={color} /><path d="M18 9 L23 12 L18 15 Z" fill="#FCD9B6" /><path d="M21.5 11.2 L23 12 L21.5 12.8 Z" fill="#334155" /><rect x="1" y="9" width="2.5" height="6" fill="#F472B6" /></g>;
@@ -906,6 +919,9 @@ export function Glyph({ kind, color = '#2563EB' }) {
     case 'shirtLong': return <g><path d="M8 3 L12 5 L16 3 L23 9 L20 12 L18 10 L18 22 L6 22 L6 10 L4 12 L1 9 Z" fill={color} /><path d="M1 9 L4 12 L2 21 L-1 20 Z" fill={color} transform="translate(1 0)" /><path d="M23 9 L20 12 L22 21 L25 20 Z" fill={color} transform="translate(-1 0)" /></g>;
     case 'shirtShort': return <g><path d="M8 3 L12 5 L16 3 L22 8 L19 12 L18 11 L18 22 L6 22 L6 11 L5 12 L2 8 Z" fill={color} /></g>;
     case 'milk': return <g><path d="M8 2 H16 V6 L19 10 V22 H5 V10 L8 6 Z" fill="#fff" stroke={color} strokeWidth="1.5" /><rect x="6.5" y="13" width="11" height="5" fill={color} /></g>;
+    // la synthèse de l'unité 5 (2026-11-12) : une brique de jus avec sa paille, une part de gâteau
+    case 'juice': return <g><rect x="6" y="5" width="12" height="17" rx="1.5" fill={color} /><rect x="6" y="5" width="12" height="4" fill="#fff" fillOpacity="0.45" /><circle cx="12" cy="15" r="3" fill="#FDE68A" /><path d="M15 5 L17 1" stroke="#0EA5E9" strokeWidth="1.5" /></g>;
+    case 'cake': return <g><path d="M3 20 L21 20 L19 9 L5 9 Z" fill={color} /><rect x="4" y="7" width="16" height="3.5" rx="1.7" fill="#fff" fillOpacity="0.75" /><circle cx="12" cy="5" r="2.2" fill="#DC2626" /></g>;
     case 'yogurt': return <g><path d="M5 6 H19 L17 22 H7 Z" fill={color} /><rect x="4" y="3" width="16" height="3" rx="1" fill="#fff" stroke={color} strokeWidth="1" /></g>;
     default: return <circle cx="12" cy="12" r="9" fill={color} />;
   }
