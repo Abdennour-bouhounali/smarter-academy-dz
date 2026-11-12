@@ -63,7 +63,7 @@ function WonPanel({ id, won, lines, title, empty }) {
 /** Les données utiles de la وضعية, RAPPELÉES sur l'écran de la question qui s'en sert (aucun aller-retour). */
 const Facts = () => (
   <ul aria-label="معطيات الوضعية" className="ms-4 list-disc space-y-1 rounded-xl border-2 border-amber-200 bg-amber-50 px-3 py-2 text-sm text-slate-800" data-situation-facts>
-    {M7_SITUATION.data.filter((d) => d.useful).map((d) => <li key={d.id}><MathText>{d.text}</MathText></li>)}
+    {M7_SITUATION.data.filter((d) => d.useful).map((d) => <li key={d.id}>{d.text}</li>)}
   </ul>
 );
 
@@ -87,7 +87,8 @@ export default function Module07AlWadiya() {
               onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))} />
           )}
           page={(
-            <Manipulation type="pitch-expansion" expr={R1.expr} levels={false} lead={M7_ROUNDS[0].props.lead}
+            <Manipulation type="pitch-expansion" expr={R1.expr} levels={false}
+              lead={`ساحة مربّعة: المنطقة الوسطى نافورة مربّعة ضلعها ${FOUNTAIN}، والمناطق الثماني حولها ممرّ عرضه x من كل الجهات.`}
               mission="احمل المناطق التسع ثم تحقّق: كم مساحة الممرّ حول النافورة؟" />
           )}
         />
@@ -110,7 +111,7 @@ export default function Module07AlWadiya() {
               {/* ce que la manche a montré et la question sur UN écran (aucun aller-retour) */}
               <div className="space-y-3" data-paging-keep>
                 {sw(
-                  <WonPanel id="ring" won={won.r1} title={<>مساحة ممرّ النافورة بطريقتين، من أجل <MathText>{`$x = ${X}$`}</MathText> :</>} lines={R1_LINES}
+                  <WonPanel id="ring" won={won.r1} title={<>مثال من ممرّ النافورة، من أجل <MathText>{`$x = ${X}$`}</MathText> — مساحته بطريقتين:</>} lines={R1_LINES}
                     empty="جولة ممرّ النافورة: لم تقس بعد مساحة الممرّ." />,
                   null,
                 )}
@@ -185,7 +186,6 @@ export default function Module07AlWadiya() {
         { num: 6, title: 'تنفيذ الاستراتيجية', subtitle: 'بالحرفين a و S قبل الحساب', done: !!q[6],
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="musaada-jadaa" variant="rappel" compact />
               <BatchChoiceQuestion
                 intro={<MathText>{'نسمّي $a$ ضلع الحوض و $S$ مساحة الشريط المعطاة. احكم على كل عبارة.'}</MathText>}
                 rows={[
@@ -194,11 +194,12 @@ export default function Module07AlWadiya() {
                   { id: 'p3', label: 'إذا أُعطي الشكل المحلّل، يكون الجداء معدومًا إذا كان أحد عامليه معدومًا.', options: TRUE_FALSE, correct: 0, correction: <MathText>{REMARKS.help}</MathText> },
                   { id: 'p4', label: 'القيمتان اللتان تعدمان الجداء هما عرضان ممكنان للشريط.', options: TRUE_FALSE, correct: 1, correction: <MathText>{REMARKS.mujab}</MathText> },
                 ]}
-                requires={['musaada-jadaa', 'masaha-tariqatan']}
+                requires={['masaha-tariqatan', 'mutatabiqat']}
                 feedback={({ allRight }) => <span>{allRight ? 'أحسنت: ننشر ونطرح الحوض، نقسم على 4، نستعمل الشكل المحلّل المعطى، ثم نحتفظ بالقيمة الموجبة ونتحقّق منها.' : 'مساحة الشريط: المربّع الكبير ناقص الحوض؛ نقسم على 4، ومن القيمتين اللتين تعدمان الجداء نحتفظ بالموجبة وحدها.'}</span>}
                 onAnswered={mark(6)} />
               {q[6] && (
                 <>
+                  <KnowledgeBrick id="musaada-jadaa" variant="rappel" compact />
                   <KnowledgeBrick id="tariqat-wadiya" variant="rappel" />
                   <TextbookBox kind="remark" text={REMARKS.notSolvedHere} compact />
                 </>

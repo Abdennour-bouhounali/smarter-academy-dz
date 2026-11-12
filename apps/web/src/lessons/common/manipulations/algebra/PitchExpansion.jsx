@@ -333,7 +333,8 @@ export default function PitchExpansion({
   const leftSide = (z) => (flip ? z.j === 0 : z.i === 0);
   const topTerm = (z) => (flip ? lab.factors[1][z.j] : lab.factors[0][z.i]);
   const leftTerm = (z) => (flip ? lab.factors[0][z.i] : lab.factors[1][z.j]);
-  const unit = Math.min(34, (width - 56) / Math.max(1, geoMax.width), (gameScreen ? (choices?.length ? 130 : 170) : 300) / Math.max(1, geoMax.height));
+  // (synthèse de l'unité 3, 2026-11-12) : le terrain « x+a+x » a un tableau de Descartes 3 × 3 — le terrain y est aussi plus bas
+  const unit = Math.min(34, (width - 56) / Math.max(1, geoMax.width), (gameScreen ? ((choices?.length || String(chainsMode).startsWith('ring')) ? 130 : 170) : 300) / Math.max(1, geoMax.height));
   // (leçon 2, 2026-11-11) : la ورشة libre ajoute sa rangée de choix — le terrain y est plus bas (1024 × 768 : un écran, sans défilement)
   const PAD = 26;
   // lecteur : le labo est monté dans une copie cachée puis déplacé — des ids de motif UNIQUES (sinon la hachure, repère non coloré, disparaît)
@@ -1208,9 +1209,12 @@ Object.assign(QUESTIONS, {
 /* ══════════════ La synthèse de l'unité 3 `wadiya-idmajiya-harfi` : le ممرّ autour de la نافورة (lecteur, 2026-11-12) ══════════════ */
 
 Object.assign(QUESTIONS, {
-  /* en AIRES, au x de l'élève : la mesure du ممرّ de deux façons, en nombres — « terrain − نافورة = 4 × شريط + 4 × ركن » */
+  /* en AIRES, au x de l'élève : la mesure du ممرّ de deux façons, en nombres — « terrain − نافورة = 4 × شريط + 4 × ركن » — au x que le terrain
+     MONTRE (le dernier vérifié juste, `lastX`), jamais un x d'avant : la question et le terrain disent les mêmes nombres */
   ringBuild: (lab, k) => {
-    const x = L.verifiedXs(lab)[0];
+    const ok = L.verifiedXs(lab);
+    // garde : la suite n'est atteinte qu'après un x juste ; sans x juste, le x montré (jamais NaN)
+    const x = ok.includes(lab.lastX) ? lab.lastX : (ok.at(-1) ?? lab.lastX ?? 1);
     const p = L.ringBuildParts(lab, x);
     const all = [...p.expected, p.decoy];
     const shift = (seedOf(lab) + x) % all.length;

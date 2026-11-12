@@ -58,6 +58,9 @@ describe('pitch-expansion — the path around a fountain (unit-3 synthesis)', ()
     const html = text(q);
     expect(html).not.toMatch(rawKey);
     expect(html).toContain('72');
+    // the x the field SHOWS: the last check (2 then 3 → the question speaks of x = 3, never of the x before)
+    const later = QUESTIONS.ringBuild(run('x+7+x', [2, 3], { simplify: false }), k);
+    expect(later.expected).toEqual(['169', '49', '21', '9']);
   });
 
   it('ringExpr: « (2x + 7)² − 7² = 4x² + 28x », decoys +49 and +14x, the expected answer is correct', () => {

@@ -190,7 +190,8 @@ export function verify(s, x) {
   const p = product(s, x); const sum = traySum(s, x);
   // `sig` (lecteur, 2026-11-11) : la somme portée au moment de l'essai — le même x avec la même somme n'est pas un nouvel essai
   const trial = { x, ok: allCollected(s) && p === sum, product: p, sum, missing: missing(s), sig: trayKey(s) };
-  return { ...s, trials: [...s.trials.filter((t) => t.x !== x), trial].sort((u, v) => u.x - v.x) };
+  // `lastX` (synthèse de l'unité 3, 2026-11-12) : le x du DERNIER essai — celui que le terrain montre (les essais sont triés par x)
+  return { ...s, trials: [...s.trials.filter((t) => t.x !== x), trial].sort((u, v) => u.x - v.x), lastX: x };
 }
 
 /** Les valeurs de x où l'égalité a été vérifiée juste (somme complète). */

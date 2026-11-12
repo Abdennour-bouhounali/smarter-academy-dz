@@ -40,7 +40,7 @@ export default function FountainPlazaScene({ fill = 1, label, className = '', sc
         <polygon points={quad(0, 0, 1, 1)} fill="#D6D3D1" stroke="#57534E" strokeWidth="2" />
         {/* les quatre coins à peine marqués : les lignes qui prolongent les bords de la نافورة */}
         {[w, 1 - w].map((t) => (
-          <g key={t} stroke="#A8A29E" strokeWidth="1" strokeDasharray="3 4">
+          <g key={t} stroke="#78716C" strokeWidth="1" strokeDasharray="3 4">
             <line x1={x0 + t * side} y1={y0} x2={x0 + t * side + skew} y2={y0 + depth} />
             <polyline points={`${P(0, t)} ${P(1, t)}`} fill="none" />
           </g>

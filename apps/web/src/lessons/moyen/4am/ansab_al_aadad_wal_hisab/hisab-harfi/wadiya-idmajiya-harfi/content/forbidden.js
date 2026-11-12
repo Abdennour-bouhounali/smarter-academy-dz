@@ -53,24 +53,26 @@ const MINUS = '[-−]';
 
 /** 1. Le défi RÉSOLU : jamais avant le 🏆 (le module 7 compris). */
 export const ANSWER_TEXT = [
-  /4x(\^\{?2\}?|²)\s*\+\s*40\s*x/, /40\s*x\s*\+\s*4x(\^|²)/,
+  /4\s*x(\^\{?2\}?|²)\s*\+\s*40\s*x/, /40\s*x\s*\+\s*4\s*x(\^|²)/,
   new RegExp(`x(\\^\\{?2\\}?|²)\\s*\\+\\s*10\\s*x\\s*(${MINUS}\\s*11(?![0-9])|=\\s*11(?![0-9]))`),
   new RegExp(`\\(\\s*x\\s*${MINUS}\\s*1\\s*\\)\\s*\\(\\s*x\\s*\\+\\s*11\\s*\\)`), /(?<![0-9a-z^])x\s*\+\s*11(?![0-9])/,
   new RegExp(`(?<![0-9a-z^])${MINUS}\\s*11(?![0-9])`), num('144'),
-  /x\s*\(\s*x\s*\+\s*10\s*\)/, /\(\s*x\s*\+\s*5\s*\)(\^\{?2\}?|²)\s*=\s*36/,
+  /x\s*\(\s*x\s*\+\s*10\s*\)/, /\(\s*x\s*\+\s*10\s*\)\s*x/, /(?<![0-9])12\s*(\^\{?2\}?|²)/, /\(\s*x\s*\+\s*5\s*\)(\^\{?2\}?|²)\s*=\s*36/,
   /x\s*=\s*1\s*(\\,|\\;|\s)*(\\text\{?\s*)?(m|م)(?![a-z])/, /متر(ًا)?\s+واحد/,
 ];
 /** 2. La situation elle-même : jamais AVANT le module 7. */
 export const SITUATION_TEXT = [
   ...ANSWER_TEXT,
   /حوض|أحواض/, /شريط|أشرطة/, num('44'),
-  /(?<![0-9])10\s*\+\s*2\s*x/, /(?<![0-9a-z^+−-]\s?)(?<![0-9a-z^])2\s*x\s*\+\s*10(?![0-9x^])/, /x\s*\+\s*10\s*\+\s*x/,
+  /(?<![0-9])10\s*\+\s*2\s*(\\times|\\cdot|×|\*)?\s*x/, /(?<![0-9a-z^+−-]\s?)(?<![0-9a-z^])2\s*x\s*\+\s*10(?![0-9x^])/, /x\s*\+\s*10\s*\+\s*x/,
   /(?<![0-9])10\s*(\^\{?2\}?|²)/, /ضلعه\s*\$?10(?![0-9])/,
 ];
 
 /** Les violations d'un texte — vide s'il est propre. `before7` : l'écran vient avant le module 7 (la situation elle-même y est interdite). */
+// les chiffres arabes-indiens (٠–٩) sont ramenés aux chiffres occidentaux avant le balayage (revue 2026-11-12)
+const western = (s) => String(s).replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660));
 export const textViolations = (s, label = '', { before7 = true } = {}) => (before7 ? SITUATION_TEXT : ANSWER_TEXT)
-  .filter((re) => re.test(String(s))).map((re) => `${label}: ${re}`);
+  .filter((re) => re.test(western(s))).map((re) => `${label}: ${re}`);
 
 /** Les lignes d'un source sans ses commentaires ni ses métadonnées de source. */
 export const visibleLines = (src) => src
