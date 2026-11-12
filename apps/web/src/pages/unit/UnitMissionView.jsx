@@ -195,7 +195,9 @@ function LessonWindow({ lesson, n, total, icon, status, unmet, onOpenLesson, ava
             <h4 className="text-sm font-black text-slate-700" title={t('unit.mission.needsNote')}>{t('unit.mission.needs')}</h4>
             <ul className="flex flex-wrap gap-1">
               <PrerequisiteLessonChips lessonId={lesson.id} />
-              {(lesson.prerequisites ?? []).map((txt) => <li key={txt} className="rounded-full border border-teal-200 bg-teal-50 px-2.5 py-0.5 text-[13px] font-bold text-teal-900"><Bidi text={txt} /></li>)}
+              {/* the catalogue's free-text prerequisites only when the lesson names no prerequisite LESSON: the chips say the same skills as links
+                  (LEARNING_NET.md « Sixth » removed such text for unit 3), and both together made the window scroll at 1366 / 1024 (units 4, 5) */}
+              {((lesson.prerequisiteLessonCodes ?? []).length ? [] : (lesson.prerequisites ?? [])).map((txt) => <li key={txt} className="rounded-full border border-teal-200 bg-teal-50 px-2.5 py-0.5 text-[13px] font-bold text-teal-900"><Bidi text={txt} /></li>)}
             </ul>
             <p className="text-xs font-semibold text-slate-500">{t('unit.mission.needsNote')}</p>
           </div>
