@@ -103,7 +103,9 @@ describe('unit 5 — the cast (verdict X1)', () => {
     const ours = Object.values(unitPeers).map((m) => m.PEER_KID?.name).filter(Boolean);
     ours.forEach((n) => expect(names.filter((x) => x === n), n).toHaveLength(1));
     // and the cast is free TODAY outside this unit
-    const outside = Object.entries(peers).filter(([p]) => !p.includes('/jumal-muadalatayn/')).map(([, m]) => m.PEER_KID?.name);
+    // Vite keys this unit's own sheets `../<lesson>/content/peerSheet.js` in BOTH globs (never with `/jumal-muadalatayn/`),
+    // so « outside » is every sheet that is not one of `unitPeers`.
+    const outside = Object.entries(peers).filter(([p]) => !(p in unitPeers) && !p.includes('/jumal-muadalatayn/')).map(([, m]) => m.PEER_KID?.name);
     Object.values(PEERS).forEach(({ name }) => expect(outside, name).not.toContain(name));
   });
   it('before the climax, a lesson names only its own cast: no reserved name, no climax name, no name of another lesson or unit', () => {
