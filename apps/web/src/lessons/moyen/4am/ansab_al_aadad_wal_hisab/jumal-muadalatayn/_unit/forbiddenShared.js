@@ -72,9 +72,13 @@ export const pairKey = (p) => (Array.isArray(p) ? `(${p[0]} ; ${p[1]})` : String
  * LA SIGNATURE DE LA SYNTHÈSE `wadiya-idmajiya-jumal` (verdict X4) : aucune leçon de l'unité ne montre, avant sa مسألة, l'une de ces jumal, l'un de
  * ces couples ou l'un de ces totaux (la synthèse vient APRÈS les trois leçons).
  */
+// The synthesis's module-7 rounds (converted 2026-11-12, `wadiya-idmajiya-jumal/content/rounds.js`) join its signature: r1 « رحلة القسم »,
+// r2 « حفل المدرسة » and their two practice rounds — no lesson of the unit may show them before the synthesis (forward ban). The old
+// « رحلة » (30 ; 50) stays: the teacher page still shows it.
 export const SYNTH = Object.freeze({
-  systems: ['10x + 10y = 800 | 2x + 3y = 210', '150x + 150y = 11250 | 24x + 30y = 2100'],
-  pairs: ['(25 ; 50)', '(30 ; 50)'],
+  systems: ['10x + 10y = 800 | 2x + 3y = 210', '150x + 150y = 11250 | 24x + 30y = 2100',
+    '10x + 10y = 550 | 5x + 3y = 235', '120x + 120y = 8400 | 9x + 14y = 780', '4x + 4y = 240 | 3x + 2y = 160', '20x + 20y = 900 | 3x + 5y = 165'],
+  pairs: ['(25 ; 50)', '(30 ; 50)', '(35 ; 20)', '(40 ; 30)', '(40 ; 20)', '(30 ; 15)'],
   never: [248, 11250, 2100, 800],
 });
 

@@ -5,7 +5,7 @@ import { LESSON_KNOWLEDGE } from '../knowledge.jsx';
 import { KNOWLEDGE_GRAPH } from '../knowledgeGraph.js';
 import { LESSON_CONFIG } from '../lesson.config.js';
 import { M7_ROUNDS, TRIP, TRIP_EASY, PARTY, PARTY_EASY, FREE } from './rounds.js';
-import { PEER_SHEET, PEER_KID } from './peerPlan.js';
+import { PEER_SHEET, PEER_KID } from './peerSheet.js';
 import { PREP_LADDER, PREP_SYSTEMS } from './prep.js';
 import { canonSystem, solutionOf } from '../../_unit/forbiddenShared.js';
 import * as L from '../../../../../../common/manipulations/logic/storyModeller.js';
@@ -238,7 +238,7 @@ describe('the synthesis — config, peer sheet, ladder', () => {
     expect(PEER_KID.figure.hairStyle).toBe('hijab');
     const names = Object.values(peerSheets).map((m) => m.PEER_KID?.name).filter(Boolean);
     expect(names.length).toBeGreaterThan(15);
-    expect(names).not.toContain(PEER_KID.name);
+    expect(names.filter((n) => n === PEER_KID.name)).toHaveLength(1);   // her own sheet only (this file is `content/peerSheet.js`)
     ['صهيب', 'أسامة', 'وئام', 'إكرام', 'إسحاق', 'ملاك', 'الطاهر', 'ياسين', 'أنيس'].forEach((n) => expect(PEER_KID.name).not.toBe(n));
   });
   it('« أستعدّ » never shows the signatures', () => {

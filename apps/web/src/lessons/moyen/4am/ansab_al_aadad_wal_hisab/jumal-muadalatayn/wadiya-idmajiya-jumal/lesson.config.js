@@ -11,7 +11,7 @@
  *
  * Dans le LECTEUR DE MISSION (2026-11-12, recette PROVISOIRE de la synthèse — docs/reports/MISSION_ROLLOUT_PROGRESS.md › « Unit 5, synthesis ») :
  * « أستعدّ » = l'échelle de dix affirmations (content/prep.js) ; le module 7 joue ses deux ressources `story-modeller` en MANCHES sur des nombres
- * FRÈRES du حفل (content/rounds.js), puis l'ANALYSE du حفل au crayon et « ورقة عائشة » (content/peerPlan.js) ; le module 8 n'est PAS retouché.
+ * FRÈRES du حفل (content/rounds.js), puis l'ANALYSE du حفل au crayon et « ورقة عائشة » (content/peerSheet.js) ; le module 8 n'est PAS retouché.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */

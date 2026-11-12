@@ -13,7 +13,7 @@ import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { SITUATION, REMARKS, LAB } from '../content/textbook';
 import { M7_ROUNDS, TRIP, PARTY } from '../content/rounds';
-import { PEER_SHEET, PEER_KID } from '../content/peerPlan';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
 
 /**
  * Module 7 — « وضعية الوحدة » : la وضعية du حفل البلدية, ANALYSÉE dans les trois phases (قراءة · تحليل واختيار استراتيجية · تنفيذ) — et
