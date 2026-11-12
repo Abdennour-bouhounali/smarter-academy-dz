@@ -20,7 +20,7 @@
 | 8 | `awwaliyan-fima-baynahuma` | `coprime-explorer` (v2 treatment, new) | ✅ done 2026-11-09 | `feat(lessons): awwaliyan-fima-baynahuma — mission prototype` | See « Lesson 8 » below. |
 | 9 | `wadiya-idmajiya-aadad` | `common-divisors` + `euclidean-algorithm` (player rounds; Euclid gains the additive `share` chain) | ✅ done 2026-11-12 | `feat(lessons): wadiya-idmajiya-aadad — mission prototype (synthesis)` | The THIRD synthesis in the player; see « Unit 1, synthesis » below. |
 
-Catalogue order: `packages/core/curriculum/dz/lessons_4am_2026_2027.json`. Unit 2 is converted with its synthesis (2026-11-12); unit 9 is converted with its synthesis (the synthesis pilot); unit 3 (three lessons) and unit 4 « معادلات ومتراجحات » (four lessons, 2026-11-11, branch `integrate-unit4`) are converted, their syntheses waiting for the synthesis-recipe answer; unit 5 « جمل معادلتين » (three lessons, 2026-11-12, branch `integrate-unit5`) is converted WITH its synthesis (the provisional recipe) (owner decision 2026-11-12); on the same day the owner said « go ahead » for units 1–4's syntheses — units 1 and 2's are converted, units 3–4's follow one by one; units 6–8 and 10–14 are not started. The full prompt for unit 2 « الحساب على الجذور » (every rule, check and review step of unit 1): `docs/reports/UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. The next prompt, unit 9 « خاصية طالس » (unit 2's recipe plus every review lesson of unit 2): `docs/reports/UNIT9_KHASSIYAT_TALIS_MISSION_PROMPT.md`. Unit 1's synthesis `wadiya-idmajiya-aadad` is converted (2026-11-12, owner go-ahead for units 1–4).
+Catalogue order: `packages/core/curriculum/dz/lessons_4am_2026_2027.json`. Unit 2 is converted with its synthesis (2026-11-12); unit 9 is converted with its synthesis (the synthesis pilot); unit 3 (three lessons) and unit 4 « معادلات ومتراجحات » (four lessons, 2026-11-11, branch `integrate-unit4`) are converted, their syntheses waiting for the synthesis-recipe answer; unit 5 « جمل معادلتين » (three lessons, 2026-11-12, branch `integrate-unit5`) is converted WITH its synthesis (the provisional recipe) (owner decision 2026-11-12); on the same day the owner said « go ahead » for units 1–4's syntheses — units 1, 2 and 3's are converted, unit 4's follows; units 6–8 and 10–14 are not started. The full prompt for unit 2 « الحساب على الجذور » (every rule, check and review step of unit 1): `docs/reports/UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`. The next prompt, unit 9 « خاصية طالس » (unit 2's recipe plus every review lesson of unit 2): `docs/reports/UNIT9_KHASSIYAT_TALIS_MISSION_PROMPT.md`. Unit 1's synthesis `wadiya-idmajiya-aadad` is converted (2026-11-12, owner go-ahead for units 1–4).
 
 ## Unit 2 « الحساب على الجذور » — the table
 
@@ -59,6 +59,7 @@ after lesson 1. Folder `lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/`
 | 1 | `nashr-tabsit` | `pitch-expansion` (v2 treatment + its FIRST LabCoach, player only; `labels: 'area'`, collision-free ruler) | ✅ done 2026-11-11 | `feat(lessons): nashr-tabsit — mission prototype` | See « Unit 3, lesson 1 » below. |
 | 2 | `mutatabiqat-shahira` | `pitch-expansion` (lesson 2's square fields added: chains `square` / `squareDiff` / `sumDiff` / `coef`, identity build in letters, « 0 » chip; LabCoach player only) | ✅ built 2026-11-11 | `feat(lessons): mutatabiqat-shahira — mission prototype` | See « Unit 3, lesson 2 » below. |
 | 3 | `tahlil-ibara` | `turf-factoring` (v2 treatment + LabCoach, new; both modes `rows` and `square`) | ✅ built 2026-11-11 | `feat(lessons): tahlil-ibara — mission prototype` | See « Unit 3, lesson 3 » below. |
+| S | `wadiya-idmajiya-harfi` | `pitch-expansion` (player rounds on the fountain path « x+7+x »; additive chains `ring` / `ringTerms`) | ✅ done 2026-11-12 | `feat(lessons): wadiya-idmajiya-harfi — mission prototype (synthesis)` | The FIFTH synthesis in the player; see « Unit 3, synthesis » below. |
 
 ## Unit 4 « معادلات ومتراجحات » — the table
 
@@ -2144,6 +2145,87 @@ failed on 5 E of this lesson — fixed); `lab-rollout-status --lesson wadiya-idm
 0 scroll, 0 wrapped formula; trainings walk at 1024: 20 of 27 shaped steps entered in their shape (gap / form), 0 issues (the walk script stops at
 the written-solution reveal of trainings 1–3). Module 7's required path, automated ≈ 85 s (rounds ≈ 22 s); student estimate ≈ 28 min (rounds ≈ 9,
 steps ≈ 19), not timed.
+
+## Unit 3, synthesis — `wadiya-idmajiya-harfi` « أدمج تعلّماتي » (2026-11-12) — the FIFTH synthesis in the player
+
+**Decisions (binding):** owner go-ahead 2026-11-12 for the syntheses of units 1–4 (provisional recipe), owner rules of the same day (« دج », no
+thousands space, no book pointer). As in units 5, 1 and 2, module 7's situation IS the 🏆's (the basin 10 m, a band of width x, band area 44 m²):
+module 7 ANALYSES it (data, « big square − basin », strategy, the model (10 + 2x)² − 10² = 44, the method in the letters a / S) and never solves it.
+The book's « مساعدة » (x² + 10x − 11 = (x − 1)(x + 11)) is an answer-level line: shown in module 8 only. The book's تحدّ (the right triangle
+x + 1, x + 2, x + 3) left module 7 (kept as source data in `content/textbook.js › CHALLENGE`).
+
+**What was written**
+- Config: `studentView: 'mission'`, `knowledgeMapOpen`, scene `fountain-plaza` (`mission/FountainPlazaScene.jsx` on `pitchSceneKit › PitchBackdrop`:
+  a square fountain in a paved path of equal width, a girl in hijab and a boy, no number nor letter), an opening without a digit, `cta: 'أجرّب'`,
+  `toolsOwned` = five keys (`nashr-qawsayn`, `tabsit` — nashr-tabsit; `murabba-majmu`, `hisab-mutamaan` — mutatabiqat-shahira; `tahlil-mutatabiqat`
+  — tahlil-ibara) with `usedIn`, `checkpoints: []`, `climaxModule: 8`, `stationLabels`, `trainings`, `hideStars`, `durationMin: 76`
+  (6 + 36 + 28 + 6), `sittings: 2`, `resumeInside`. Module 7 `estimatedMin` 14 → 28; one `manipulation` resource (`pitch-expansion-mamarr`).
+- **Role scan FIRST** (`content/forbidden.js` + `content/mission.test.js`; first-fail log `synth/rolescan-harfi-first-fail.log`). It FAILED first on
+  training 4 (the 5-12-13 triangle: 144 = 12², the 🏆's outer area), the memo cards (basin 10 + 2x, حوض / شريط), the open map (root = the whole
+  situation AND the « مساعدة » (x − 1)(x + 11), −11), the description (« 44m² ») and module 7 (−11, x = 1). Also training 6 held x² + 10x = x(x + 10),
+  the 🏆's reduced form. Two levels: `ANSWER_TEXT` (4x² + 40x, x² + 10x − 11 / = 11, (x − 1)(x + 11), x + 11, −11, 144, x(x + 10), (x + 5)² = 36,
+  « x = 1 m », « متر واحد ») nowhere before the 🏆, module 7 included; `SITUATION_TEXT` (حوض, شريط, 44, 10 + 2x, x + 10 + x, 10², « ضلعه 10 »)
+  nowhere before module 7. Rounds scanned by role through `logic/pitchExpansion › shownValues` (+ the new `ringShown` roles `pitch`, `ring`,
+  `center`, `tile`); the partial tray sums (`sum`) and the `result`-chain decoy values (`decoy`) are not a 🏆 role and are skipped (documented).
+  A COLLISION rule: no module-7 field equals or expands like a field of the unit lessons' rounds (deep walk of `pitches.js`, `squares.js`,
+  `turf.js` for `expr`) — it caught x+1+x = (2x + 1)² (mutatabiqat-shahira) on the first run.
+- Training 4 renumbered to the 8-15-17 triangle ((x + 9)² = x² + (x + 7)², x² − 4x − 32 = (x − 8)(x + 4), x = 8, 7650 دج); training 6 to +6 / +12 /
+  −36 (x(x + 12), 9180); a decoy x² + 12x + 144 → x² + 24x. Memo cards and map in LETTERS (a fountain of side a, a path of width x, area S —
+  `content/textbook.js › METHOD_LETTERS`, REMARKS rewritten in letters, « أشرطة » → « مستطيلات ») with fresh numbers (a = 13; (x − 2)(x + 15)).
+- 33 typed training steps carry `shape` (`gap` « k = … », « 102 − 98 = … », `quantity` m / m² / دج); counts keep their word suffix.
+- « أستعدّ »: `content/prep.js`, 10 statements, nashr → mutatabiqa → tahlil in cycle (« راجع » nashr-tabsit, mutatabiqat-shahira, tahlil-ibara),
+  levels 1·1·1·2·2·2·2·3·3·3, the first three true, truths recomputed (identities at six points) in `prep.test.js`. The seven old items stay in
+  `textbook.js`.
+- Module 7 (`Module07AlWadiya.jsx`), `LabRounds labId="m7-wadiya"` (`content/rounds.js`) on the SIBLING « a fountain of side 7, a path of width x »
+  (field `x+7+x` squared; an odd side is never 10 nor 12, no area 100 / 144, no ring 44): **r1 « ممرّ النافورة »** in AREAS by hand (x 1–4; carry
+  the nine zones, check two x) → chain `ring`: the NUMERICAL build at the x the field shows « 169 − 49 = 4 × 21 + 4 × 9 » (x = 3; decoy 7, the side
+  taken for the area); **r2 « الممرّ بالحرف x »** in TERMS (carry, merge to 4x² + 28x + 49, two x) → chain `ringTerms`: the build « (2x + 7)² − 7² =
+  4x² + 28x » (decoys +49 the fountain kept, +14x the path on one side). Practice rounds on the fountain 3 (`ringEasy` / `ringTermsEasy`) that release;
+  a free plaza (x+7+x, x+3+x, x+9+x). Steps (both views): 1 the statement + sorting the data (one screen) · 2 « how to measure the band » (needs r1;
+  the r1 trace beside the question) · 3 the strategy (needs r2) · 4 the notebook screen « اكتب في 3 أسطر » · 5 the model « (10 + 2x)² − 10² = 44 »
+  (first pen step, facts on the same screen) · 6 the method in the letters a / S (batch: expand and remove the basin, divide by 4, a product is zero
+  when a factor is, keep the positive value) · 7 « ورقة مالك » (`content/peerSheet.js`: a PLAN, no number; the error = « the band goes round the
+  basin, so its area is the basin's perimeter × the width » — the four corners forgotten). A pause line before the 🏆. Page: the sibling field, one level.
+  Module 8 untouched (no « DA », no spaced thousands; its SourceTag is muted for students).
+- `_unit/missionStrings.test.js`: the synthesis' `ANSWER_TEXT` joins `CLIMAX` (a synthesis has no `exercises.js`: the file count is 4 × n − 1).
+
+**Added to shared code (additive):** `logic/pitchExpansion.js` — `ringOf`, `ringBuildParts`, `ringExprParts`, `ringShown` (called by
+`shownValues`), `verify` also stores `lastX`; `algebra/PitchExpansion.jsx` — chains `ring` / `ringEasy` / `ringTerms` / `ringTermsEasy`,
+`QUESTIONS.ringBuild` / `ringExpr`, the player field capped at 130 px for a ring field (its 3 × 3 Descartes table; at 1024 × 768 with the ⭐
+counter the lab overflowed); strings `manipulation.pitchExpansion.cp.ring.*` / `cp.ringExpr.*`; test `algebra/pitchExpansionRingPlayer.test.jsx`.
+No other lesson plays a ring field in the player; lessons 1–2 tests unchanged and green. Scene `fountain-plaza` registered in `MissionScene.jsx`.
+
+**Saved-answer keys:** none new; round state from the stars log (`m7-wadiya`), `peer:m7-malik`.
+
+**Traps:** the build question must read the x the field SHOWS (`lastX`), not the first verified x (the field showed x = 3, the question x = 2);
+a Playwright `innerText` / `textContent` on an absent locator waits 30 s (give every probe a timeout); KaTeX annotations carry `\displaystyle`;
+a page `lead` is plain text (`$7$` shows raw on the teacher page); « والكتابتان » trips the unit's /الكتاب(?!ة)/ book check; the word « شريط »
+is both the 🏆's band and the lab's strip — the scan targets it only before module 7.
+
+**Recipe lessons:** when the unit's lab already draws the 🏆's figure (here the « x+a+x » field the book page used), a sibling field with an ODD
+centre keeps every 🏆 number out by parity; the synthesis phenomenon (band = big square − basin = 4 strips + 4 corners) needs one additive chain
+per mode (areas → numerical build; terms → the expression build).
+
+**Review (`ecc:code-reviewer`, `ecc:react-reviewer`, `ecc:a11y-architect`):** no CRITICAL / HIGH. FIXED — scan holes (`4 x^2 + 40x`, `(x + 10)x`,
+`12^2` / `12²`, `10 + 2 \times x`, Arabic-Indic digits normalised before the scan; negative controls added); the build reads the x the field
+shows, never NaN; the field-height cap gated on the ring chains; the `musaada-jadaa` brick moved AFTER the batch (it answered rows p3 / p4); the
+r1 trace panel says « مثال » (its numbers are the x = 2 example, not the student's own x); the page lead interpolates `FOUNTAIN`; slot labels
+name AREAS (« مساحة شريط واحد »); the `ringExpr` prompt states its left-hand side in words; slot names without bare Latin; the scene's corner
+dashes darker. REJECTED — signs inside the build tiles (« +28x »; the same pattern as lesson 2's `coefBuild`); `sum` / `decoy` roles skipped
+(partial tray sums are not a 🏆 role; documented in `forbidden.js`).
+
+**Verification:** vitest `src/lessons` + `src/pages` 767 files / 13 489 tests green; `check:lessons` every part exit 0 (activation-drift after the
+export; entry 241.4 KB gzip; one warning: modules total vs catalogue duration, as for the other syntheses); `lab-rollout-status --lesson
+wadiya-idmajiya-harfi` ✅; `no-back-and-forth` LONE 0 · OVER 0 · PAIR 0 at 1366 / 1024 / 1920 (`sequentialUnlock` restored); walk of module 7 at
+1024 / 1366 / 1920×1080: r1 ★★★, r2 won, 17 step screens, 0 overflow, 0 page scroll, 0 wrapped formula (the first 1024 walk found an overflow
+of r2's 3 × 3 field once the ⭐ counter wraps the mission bar — fixed by the field cap); trainings walk at 1024: 17 of 33 shaped steps entered in
+their shape (the script stops at the written-solution reveal of trainings 1–4), 0 issues. Module 7 automated: rounds ≈ 27 s, steps ≈ 22 s;
+student estimate ≈ 28 min (rounds ≈ 9, steps ≈ 19), not timed.
+
+**Open (for the owner):** lesson 2 `mutatabiqat-shahira` module 6 « المسبح البلدي » is the 🏆's situation structure and its key calculation (a
+path of width x around a square pool of 20 m, S = (20 + 2x)² − 400 = 4x² + 80x, evaluated at x = 1) — not the 🏆's numbers nor its equation;
+not my file. The mission bar wraps to two rows at 1024 once the ⭐ counter appears (shared UI, already reported by unit 1). Module 7's student
+estimate (≈ 28 min) is not timed on a real student.
 
 ## The synthesis recipe (PROVISIONAL until a real student has been timed on the pilot: ≤ 32 min for module 7, module 8 finished)
 
