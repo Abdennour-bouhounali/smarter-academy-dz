@@ -225,10 +225,14 @@ export default function GrowthRace({
   }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── mesure ── */
+  // Le nœud mesuré est suivi par une ref-FONCTION (2026-11-12, la synthèse de l'unité) : dans le lecteur, l'ouverture d'une question ou d'une
+  // prédiction recompose la coquille et REMONTE ce nœud — l'observateur d'avant regardait un nœud détaché et la règle restait à 260 px.
   const boxRef = useRef(null);
+  const [boxNode, setBoxNode] = useState(null);
+  const setBox = useCallback((el) => { boxRef.current = el; setBoxNode(el); }, []);
   const [width, setWidth] = useState(320);
   useLayoutEffect(() => {
-    const el = boxRef.current;
+    const el = boxNode;
     if (!el) return undefined;
     const measure = () => setWidth(Math.max(260, Math.floor(el.clientWidth)));
     measure();
@@ -236,7 +240,7 @@ export default function GrowthRace({
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     return () => ro.disconnect();
-  }, []);
+  }, [boxNode]);
 
   /* ── CONSTRUIRE : porter la carte ── */
   const drag = useDragInteraction({
@@ -407,16 +411,18 @@ export default function GrowthRace({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const coachStep = useMemo(() => coachRaw, [coachRaw?.id, coachRaw?.target]);
   const coach = useLabCoach({
-    lab: 'growth-race', step: coachStep, text: coachStep ? t(`manipulation.growthRace.coach.${coachStep.id}`) : '',
+    // deux TARIFS (la synthèse de l'unité, 2026-11-12) : les mots du geste parlent de séances et de prix, jamais de « qui grandit »
+    lab: 'growth-race', step: coachStep, text: coachStep ? t(`manipulation.growthRace.coach.${model.op === 'mul' ? 'pool.' : ''}${coachStep.id}`) : '',
     labels: { hide: t('manipulation.common.coach.hide'), show: t('manipulation.common.coach.show'), ok: t('manipulation.common.coach.ok'), stop: t('manipulation.common.coach.stop') },
   });
-  const hideEq = gameScreen && !racing && !!pc?.build.includes('buildEq') && !doneIds.includes('build');
+  const hideEq = gameScreen && !racing && !!(pc?.build.includes('buildEq') || pc?.build.includes('ineqBuild')) && !doneIds.includes('build');
   const pk = (key, o) => t(`manipulation.growthRace.player.${key}`, o);
 
   /* ── la course : les colonnes ── */
   const tops = [L.trialAt(model, range.min), L.trialAt(model, range.max)].flatMap((tr) => [L.toNumber(tr.left), L.toNumber(tr.right)]);
   const vmax = Math.max(1, ...tops);
-  const CW = Math.min(width, gameScreen ? 360 : 420); const CH = gameScreen ? 150 : 230; const BASE = CH - 26; const TOP = 22;
+  // lecteur, deux TARIFS (la synthèse de l'unité, 2026-11-12) : les tickets s'alignent sous chaque tarif — des colonnes plus basses tiennent à 1024 × 768
+  const CW = Math.min(width, gameScreen ? 360 : 420); const CH = gameScreen ? (model.op === 'mul' ? 96 : 150) : 230; const BASE = CH - 26; const TOP = 22;
   const hOf = (v) => (L.toNumber(v) / vmax) * (BASE - TOP);
   const stack = (side) => {
     const parts = L.partsAt(model, side, xx);
@@ -616,7 +622,7 @@ export default function GrowthRace({
       explanation={<MathText>{k('explanation')}</MathText>}
     >
       <ManipulationStage className="bg-gradient-to-b from-sky-50/70 to-white" data-dragging={stretch.dragging || drag.dragging ? 'true' : undefined}>
-        <div ref={boxRef} className="relative space-y-3" data-growth-race data-stage={lab.stage} data-op={model.op} data-theme={themeId}>
+        <div ref={setBox} className="relative space-y-3" data-growth-race data-stage={lab.stage} data-op={model.op} data-theme={themeId}>
           {party.node}
           {/* lecteur : la région vivante TOUJOURS montée — la colonne se démonte quand une question s'ouvre */}
           {gameScreen && (
@@ -630,7 +636,7 @@ export default function GrowthRace({
           {!gameScreen && cp.node}
           {gameScreen && choices?.length > 0 && (
             <div className="flex flex-wrap items-center justify-center gap-1.5" role="group" aria-labelledby={`${choicesId}-l`} data-gr-choices>
-              <span id={`${choicesId}-l`} className="text-sm font-bold text-slate-600">{pk('choicesLabel')}</span>
+              <span id={`${choicesId}-l`} className="text-sm font-bold text-slate-600">{pk(model.op === 'mul' ? 'pool.choicesLabel' : 'choicesLabel')}</span>
               {choices.map((c, i) => {
                 const [cl, cr, cm] = c.split('|');
                 const on = cl === left && cr === right;
@@ -638,7 +644,7 @@ export default function GrowthRace({
                   <button key={c} type="button" data-gr-choice={i} aria-pressed={on} aria-disabled={locked || undefined}
                     onClick={() => { if (!lockedRef.current && !on) { state.setNumbers({ left: cl, right: cr }); setMaxOver(Number(cm)); setExprSaid(c); } }}
                     className="min-h-[44px] rounded-xl border-2 border-slate-300 bg-white px-3 text-sm font-black text-slate-700 aria-pressed:border-indigo-600 aria-pressed:bg-indigo-50 aria-pressed:text-indigo-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2">
-                    {pk('choiceN', { n: i + 1 })}<span className="sr-only"> {cl.replace(/\+/g, ' + ')} = {cr.replace(/\+/g, ' + ')}</span>
+                    {pk(model.op === 'mul' ? 'pool.choiceN' : 'choiceN', { n: i + 1 })}<span className="sr-only"> <bdi dir="ltr">{cl.replace(/\+/g, ' + ')}</bdi> {model.op === 'mul' ? pk('pool.versus') : '='} <bdi dir="ltr">{cr.replace(/\+/g, ' + ')}</bdi></span>
                   </button>
                 );
               })}
@@ -1211,6 +1217,53 @@ export const PQ = {
     const o = { x: bad.x, left: L.valueText(bad.left), right: L.valueText(bad.right), a };
     const list = [{ text: q('meetRight'), correct: true }, { text: q('meetOnce'), why: q('meetOnceWhy', o) }, { text: q('meetAlways'), why: q('meetAlwaysWhy', o) }];
     return { id: 'rule', kind: 'choice', prompt: q('prompt'), options: rot(list, 1), hints: [q('hint1'), q('hint2')], explain: q('explainMeet') };
+  },
+  // ── la synthèse de l'unité 4 (wadiya-idmajiya-muadalat, 2026-11-12, ADDITIF) : deux TARIFS « ax » contre « f + bx » ──
+  ineqBuild: (lab, k, c, tx) => {
+    const spec = P.ineqSpec(lab.model);
+    const q = (key, o) => M(tx(`manipulation.growthRace.player.pool.ineqBuild.${key}`, o));
+    return {
+      id: 'ineqBuild', kind: 'build', ops: spec.ops, expected: spec.expected, accept: spec.accept, tiles: spec.tiles, render: renderTile,
+      slots: [0, 1, 2].map((i) => tx(`manipulation.growthRace.player.pool.ineqBuild.slot.${i}`)),
+      prompt: q('prompt', SIDE(c)),
+      hints: [q('hint1', { decoy: tex(spec.decoy) }), q('hint2', SIDE(c))],
+      explain: q('explain', { ...SIDE(c), ineq: tex(`${spec.expected[0]} + ${spec.expected[1]} < ${spec.expected[2]}`) }),
+    };
+  },
+  wherePool: (lab, k, c, tx) => {
+    const s = L.toNumber(c.sol.x);
+    const xs = lab.trials.map((tr) => tr.x);
+    const before = Math.max(-1, ...xs.filter((v) => v < s)); const after = Math.min(Infinity, ...xs.filter((v) => v > s));
+    // trois jetons DISTINCTS ≥ 0 (revue 2026-11-12 : sans essai avant la rencontre, « s + 2 » pouvait doubler l'essai d'après)
+    const opts = [...new Set([before >= 0 ? before : null, s, Number.isFinite(after) ? after : null, s + 1, s + 2, s - 1].filter((v) => v != null && v >= 0))].slice(0, 3);
+    const e = L.trialAt(lab.model, s);
+    const q = (key, o) => M(tx(`manipulation.growthRace.player.pool.wherePool.${key}`, o));
+    return {
+      id: 'wherePool', kind: 'fill',
+      fields: [{ label: q('prompt', SIDE(c)), options: rot(opts, s % 3), expected: String(s), render: chipRender }],
+      hints: [q('hint1'), q('hint2', { a: opts[0], b: opts[2] })], explain: q('explain', { x: s, v: L.valueText(e.left) }),
+    };
+  },
+  firstPool: (lab, k, c, tx) => {
+    const spec = P.firstSpec(lab.model);
+    const q = (key, o) => M(tx(`manipulation.growthRace.player.pool.firstPool.${key}`, o));
+    const at = (x) => { const tr = L.trialAt(lab.model, x); return { l: L.valueText(tr.left), r: L.valueText(tr.right) }; };
+    const o = { ...SIDE(c), n: spec.n, first: spec.first, eq: spec.equal, l: at(spec.first).l, r: at(spec.first).r };
+    return {
+      id: 'firstPool', kind: 'fill',
+      fields: [{ label: q('prompt', SIDE(c)), options: rot(spec.options, spec.n % 3), expected: String(spec.first), render: chipRender }],
+      hints: [q('hint1', o), q('hint2', o)], explain: q('explain', o),
+    };
+  },
+  savingBuild: (lab, k, c, tx) => {
+    const spec = P.savingSpec(lab.model);
+    const q = (key, o) => M(tx(`manipulation.growthRace.player.pool.savingBuild.${key}`, o));
+    const o = { a: spec.a, b: spec.b, f: spec.f, d: spec.d, n: spec.n };
+    return {
+      id: 'savingBuild', kind: 'build', ops: spec.ops, expected: spec.expected, accept: spec.accept, tiles: spec.tiles, render: renderTile,
+      slots: [0, 1, 2].map((i) => tx(`manipulation.growthRace.player.pool.savingBuild.slot.${i}`)),
+      prompt: q('prompt', o), hints: [q('hint1', o), q('hint2', o)], explain: q('explain', o),
+    };
   },
   rulePast: (lab, k, c, tx) => {
     const q = (key, o) => M(tx(`manipulation.growthRace.player.q.rule.${key}`, o));

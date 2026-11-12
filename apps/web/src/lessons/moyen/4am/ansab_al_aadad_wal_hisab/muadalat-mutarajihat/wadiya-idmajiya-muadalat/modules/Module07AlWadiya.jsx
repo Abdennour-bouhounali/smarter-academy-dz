@@ -1,218 +1,252 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PeerSheet } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
+import InfoSorter from '../../../../../../common/components/InfoSorter';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
-import { bidi } from '../../../../../../../utils/bidi';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
+import { useModulePlayer } from '../../../../../../common/mission/useModulePlayer';
+import { TextbookBox } from '../../../../../../common/textbook';
+import * as G from '../../../../../../common/manipulations/logic/growthRace';
+import { poolOf } from '../../../../../../common/manipulations/logic/growthRacePlayer';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { SITUATION, WARMUP, REMARKS, LAB } from '../content/textbook';
+import { M7_SITUATION, REMARKS } from '../content/textbook';
+import { M7_ROUNDS, R1, R2, LAB, LEAD } from '../content/rounds';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
 import { PoolScene } from '../components/MuadalatFigures';
 
 /**
- * Module 7 — la وضعية (p. 52) : le مسبح البلدي et ses deux formules
- * d'abonnement, lus dans les TROIS étapes du « تحليل الوضعية » du manuel
- * (قراءة الوضعية وفهمها · تحليل الوضعية واختيار استراتيجية حل مناسبة · تنفيذ
- * استراتيجية الحل), comme la synthèse de l'unité 3.
+ * Module 7 — « وضعية الوحدة » : la وضعية du مسبح (le défi 🏆 du module 8), ANALYSÉE dans les trois phases (قراءة · تحليل واختيار استراتيجية ·
+ * تنفيذ) — et jamais résolue : sa solution (70x, x > 8, 9 séances, 600 دج à l'égalité, 675 / 605) n'apparaît sur aucun écran avant le 🏆, ce
+ * module compris (content/forbidden.js › ANSWER_TEXT, content/mission.test.js).
  *
- * LE LABORATOIRE (growth-race, RÉUTILISÉ de « ترييض مشكلة », deux niveaux dans
- * un ManipulationWorkspace, ouvert sur مبتدئ par défaut depuis 2026-10-09 : c'est la situation du manuel) :
- *   متقدم  75x contre 560 + 5x (`goal="greater"` : la formule 1 dépasse la 2) —
- *          l'élève porte « × x » sur ce qui se paie à chaque séance (le ticket),
- *          jamais sur l'abonnement (refusé : MISC-WADIYA-TARJAMA), puis étire
- *          le nombre de séances ; les coûts se rejoignent à 8 et se croisent.
- *   مبتدئ  la tarification de la plateforme 50x contre 200 + 10x (croisement à 5) ;
- *          elle sert l'étape « تفسير النتائج », pour que la réponse du manuel
- *          (9 séances) reste celle de « أحلّ الوضعية ».
- * Les essais de l'élève (`onTrial`) sont listés au-dessus des questions
- * (`[data-activity-evidence]`) ; le modèle qu'il a vérifié (`onModel`) aussi.
+ * LA PAGE (l'enseignant, le mode classe) : les deux tarifs FRÈRES des manches, deux niveaux d'un ManipulationWorkspace (props : content/rounds.js
+ * › LAB, figées par lab.render.test.jsx) ; aucune manche.
  *
- * RÉTROFIT 2026-10-15 : plus de carte au-dessus du labo ; l'énoncé du manuel (avec la scène PoolScene) est lu à l'étape 1 (« قراءة
- * الوضعية »), le contexte du labo متقدم est son `lead`.
+ * LE LECTEUR DE MISSION (la synthèse de l'unité 4, 2026-11-12 — recette PROVISOIRE de la synthèse, point 5 ; l'élève ne voit JAMAIS l'ancienne
+ * vue) : UN `LabRounds` (content/rounds.js) — r1 « قاعة الرياضة » (bâtir l'inéquation, l'égalité, la première séance meilleure), r2 « نادي
+ * الرماية » (la première séance meilleure, la construction NUMÉRIQUE « 30 × 5 = 150 ») — puis les étapes. L'étape 2 attend r1, l'étape 3
+ * attend r2 (`needsRound`, module-level : `useModulePlayer`). Les panneaux de trace sont REBÂTIS depuis les tarifs des manches (logique du labo) :
+ * un rechargement ne vide rien (les étoiles sont gardées).
  *
- * Les étapes : ce qui est cherché (étape 1 du manuel), la traduction de chaque
- * formule (brique `tarjama-sigha` APRÈS la réponse), l'essai (étape 2 —
- * `tajrib`), l'inéquation qui départage (`mutarajiha-mufadala`), puis
- * l'interprétation sur le niveau مبتدئ (étape 3 — `tafsir-natija`,
- * `tariqat-wadiya`). La résolution du مسبح est le module 8 (évaluation). LP : P2, P1.
+ * Étapes (les deux vues) : 1 lire et trier les données · 2 ce que « ابتداءً من » demande (après r1) · 3 la stratégie (après r2) · 4 « بالقلم »
+ * (l'écran du cahier : « اكتب في 3 أسطر ») · 5 le MODÈLE « 560 + 5x < 75x » (première étape au crayon ; les données RAPPELÉES sur l'écran —
+ * aucun aller-retour) · 6 la démarche en lettres (a, b, f) · 7 « ورقة زكريا » (un PLAN faux : la borne prise pour la réponse). Le pied de page
+ * ajoute, dans le lecteur, une ligne de pause avant le 🏆. Plus de « الكتاب » ni de SourceTag.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
-const FITS = ['يترجمها', 'لا يترجمها'];
+const TRUE_FALSE = ['صحيح', 'خاطئ'];
+const sw = (player, page) => <PlayerSwitch player={player} page={page} />;
+const plain = (s) => s.replace(/\$/g, '').replace(/\s+/g, ' ').replace(/ ([؛،.])/g, '$1');
 
-/** Les essais de l'élève sur un niveau du laboratoire (le dernier x validé fait foi). */
-function Evidence({ trials, level, titles, empty }) {
-  const list = Object.values(trials).sort((u, v) => u.x - v.x);
+/* ── ce que les manches ont montré, REBÂTI depuis leurs tarifs par la logique du labo ── */
+const race = (p) => {
+  const model = G.parseModel(p.left, p.right);
+  const { a, b, f } = poolOf(model);
+  const n = G.toNumber(G.solution(model).x);
+  return { a, b, f, n, eq: a * n, nx: n + 1 };
+};
+const T1 = race(R1);
+const T2 = race(R2);
+const R1_LINES = [
+  `${T1.a} \\times ${T1.n} = ${T1.f} + ${T1.b} \\times ${T1.n} = ${T1.eq}`,
+  `${T1.f} + ${T1.b} \\times ${T1.nx} = ${T1.f + T1.b * T1.nx} < ${T1.a * T1.nx} = ${T1.a} \\times ${T1.nx}`,
+];
+const R2_LINES = [
+  `(${T2.a} - ${T2.b}) \\times ${T2.n} = ${T2.f}`,
+  `${T2.f} + ${T2.b} \\times ${T2.nx} = ${T2.f + T2.b * T2.nx} < ${T2.a * T2.nx} = ${T2.a} \\times ${T2.nx}`,
+];
+
+/** Une ligne de trace dans le lecteur : ✓ caché aux lecteurs d'écran (« تمّ » le dit une fois, dans le titre). */
+function WonPanel({ id, won, lines, title, empty }) {
   return (
-    <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence={level}>
-      {list.length === 0 && <li className="text-slate-500" data-tried="false">{empty}</li>}
-      {list.map((tr) => (
-        <li key={tr.x} data-tried="true" data-rel={tr.rel} className={tr.rel === '>' ? 'font-bold text-emerald-800' : tr.rel === '=' ? 'font-bold text-amber-800' : 'text-slate-800'}>
-          <MathText>{`$x = ${tr.x}$ : ${titles[0]} $${tr.leftText}$ دج ، ${titles[1]} $${tr.rightText}$ دج ($${tr.leftText} ${tr.rel} ${tr.rightText}$)`}</MathText>
-        </li>
-      ))}
-    </ul>
+    <div className={`rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm ${won ? 'text-emerald-900' : 'text-slate-500'}`}
+      data-activity-evidence data-evidence={id} data-tried={won ? 'true' : 'false'}>
+      {won ? (
+        <>
+          <p className="font-bold"><span className="sr-only">تمّ — </span>{title}</p>
+          <ul className="ms-4 list-disc">
+            {lines.map((s, i) => <li key={i}><MathText>{`$${s}$`}</MathText> <span aria-hidden="true">✓</span></li>)}
+          </ul>
+        </>
+      ) : <p>{empty}</p>}
+    </div>
   );
 }
 
+/** Les données utiles de la وضعية, RAPPELÉES sur l'écran de la question qui s'en sert (aucun aller-retour). */
+const Facts = () => (
+  <ul aria-label="معطيات الوضعية" className="ms-4 list-disc space-y-1 rounded-xl border-2 border-amber-200 bg-amber-50 px-3 py-2 text-sm text-slate-800" data-situation-facts>
+    {M7_SITUATION.data.filter((d) => d.useful).map((d) => <li key={d.id}>{d.text}</li>)}
+  </ul>
+);
+
 export default function Module07AlWadiya() {
-  const [big, setBig] = useState({});
-  const [small, setSmall] = useState({});
-  const [model, setModel] = useState(null);
-  const [q1, setQ1] = useState(false);
-  const [q2, setQ2] = useState(false);
-  const [q3, setQ3] = useState(false);
-  const [q4, setQ4] = useState(false);
-  // les questions posées PAR-DESSUS le labo (LabCheckpoint) : l'étape 5 est faite quand la suite « race » du niveau مبتدئ est terminée
-  const [cps, setCps] = useState([]);
-  const onCheckpoint = (lvl) => (e) => setCps((l) => [...l, { ...e, lvl }]);
-  const q5 = cps.some((e) => e.tk === 'checkpoint-done' && e.id === 'race' && e.lvl === 'small');
-  const keep = (set) => (trial) => { if (trial) set((t) => ({ ...t, [trial.x]: trial })); };
-  const { perSession1: p1, yearly: fixed, perSession2: p2 } = SITUATION.numbers;
+  const inPlayer = useModulePlayer(MODULE_CTX);
+  const [q, setQ] = useState({});
+  // lecteur : les manches gagnées (étoiles gardées, annoncées par LabRounds au montage)
+  const [won, setWon] = useState({});
+  const mark = (n) => () => setQ((s) => ({ ...s, [n]: true }));
+  const round = (id, label) => (inPlayer ? { needsRound: { id, label, icon: '🎟️', won: Boolean(won[id]) } } : {});
 
   return (
-    <ContentModule objectives={["ما المطلوب بالضبط في وضعية المسبح؟", "كيف أترجم كل صيغة اشتراك بعبارة حرفية؟", "ماذا أكتب لأعرف الصيغة الأفضل، وكيف أفسّر النتيجة؟"]} ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="تحليل الوضعية النهائية للاختبار" moduleSubtitle="المسبح البلدي: أيّ صيغة اشتراك أفضل؟" estimatedTime="16 دقيقة"
-      intro={
-        <ManipulationWorkspace
-          defaultLevel="beginner"
-          levels={{
-            beginner: () => (
-              <Manipulation
-                type="growth-race"
-                level="beginner"
-                {...LAB.beginner}
-                title={bidi('مسبح الحيّ: 50x أم 200 + 10x؟')}
-                lead={WARMUP.text}
-                onTrial={keep(setSmall)}
-                onCheckpoint={onCheckpoint('small')}
-              />
-            ),
-            advanced: () => (
-              <Manipulation
-                type="growth-race"
-                level="advanced"
-                {...LAB.advanced}
-                title={bidi('المسبح البلدي: 75x أم 560 + 5x؟')}
-                lead="في المسبح البلدي: 75 دينارًا للحصة، أو 560 دينارًا سنويًا و 5 دنانير للحصة. ضع البطاقة «× x» على كل مبلغ يُدفع في كل حصة، ثم مدّد عدد الحصص: متى يصبح ثمن الصيغة الأولى أكبر من ثمن الثانية؟"
-                onTrial={keep(setBig)}
-                onModel={({ tex }) => setModel(tex)}
-              />
-            ),
-          }}
+    <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="الوضعية وتحليلها"
+      moduleSubtitle="ثم التحدّي 🏆 — أيّ صيغة اشتراك أفضل؟" estimatedTime="≈ 28 دقيقة"
+      objectives={['ما الذي تطلبه «ابتداءً من أيّ عدد للحصص»، ولماذا لا يكفي عدد التساوي؟', 'كيف أترجم كل صيغة بعبارة بدلالة عدد الحصص؟', 'أيّ متراجحة تقارن بين الصيغتين، وكيف أختار الجواب من حلولها؟']}
+      intro={(
+        // LE LABO OUVRE LE MODULE. Lecteur : les MANCHES (content/rounds.js) ; la page garde deux niveaux sur les mêmes tarifs frères.
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="m7-wadiya" rounds={M7_ROUNDS} icon="🎟️" freeIcon="🏷️"
+              onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))} />
+          )}
+          page={(
+            <ManipulationWorkspace
+              defaultLevel="beginner"
+              levels={{
+                beginner: () => <Manipulation type="growth-race" level="beginner" {...LAB.beginner} title="قاعة الرياضة" lead={plain(LEAD.r1)} />,
+                advanced: () => <Manipulation type="growth-race" level="advanced" {...LAB.advanced} title="نادي الرماية" lead={plain(LEAD.r2)} />,
+              }}
+            />
+          )}
         />
-      }
+      )}
       steps={[
-        { num: 1, title: 'قراءة الوضعية وفهمها', subtitle: 'المرحلة 1 من الكتاب', done: q1,
+        { num: 1, title: 'قراءة الوضعية وفهمها', subtitle: 'ما المعطيات المفيدة؟', done: !!q[1],
           content: (
-            <div className="space-y-3">
-              {/* La وضعية du manuel (p. 52) : lue ICI, après l'action du labo (rétrofit 2026-10-15 — le labo est le premier bloc du module). */}
-              <div className="space-y-2 rounded-xl border-2 border-amber-200 bg-amber-50 p-3 text-sm" data-situation-statement>
-                <PoolScene />
-                <p>{SITUATION.intro}</p>
-                <ul className="ms-4 list-disc space-y-1">
-                  <li>{SITUATION.formula1}</li>
-                  <li>{SITUATION.formula2}</li>
-                </ul>
-                <p className="font-semibold">{SITUATION.question}</p>
-                <p className="text-xs text-slate-500">{SITUATION.figure}</p>
-                <SourceTag source={SITUATION.source} />
+            <div className="space-y-3" data-paging-keep>
+              <div className="space-y-2 rounded-xl border-2 border-amber-200 bg-amber-50 px-3 py-2 text-sm text-slate-800" data-situation>
+                <div className="mx-auto h-20 w-36"><PoolScene /></div>
+                <p><MathText>{M7_SITUATION.text}</MathText></p>
               </div>
-              <TapQuestion
-                prompt="ما المطلوب في الوضعية؟"
-                options={['أصغر عدد من الحصص تكون ابتداءً منه الصيغة الثانية أقل تكلفة', 'عدد الحصص الذي تتساوى فيه تكلفتا الصيغتين', 'ثمن حصة واحدة في كل صيغة', 'الصيغة الأرخص إذا سبحنا حصة واحدة']}
-                correct={0} cols={1} requires={['tarrid-tarjama']}
-                explain="«أفضل» تعني «أقل تكلفة»، و«ابتداءً من أي عدد» تطلب أول عدد للحصص تصبح عنده الصيغة الثانية أرخص — وتبقى كذلك بعده. ثمن الحصة معلوم في النص."
-                onAnswered={() => setQ1(true)} />
-              {q1 && <TextbookBox kind="remark" title={SITUATION.analysis[0].label} text={SITUATION.analysis[0].text} source={SITUATION.source} compact />}
+              <p className="text-sm font-semibold text-slate-700">اسحب كل معطى إلى «مفيد» أو «غير مفيد» لمعرفة الصيغة الأفضل.</p>
+              <InfoSorter items={M7_SITUATION.data} formative onSolved={mark(1)} />
             </div>
           ) },
-        { num: 2, title: 'ترجمة كل صيغة بعبارة حرفية', subtitle: 'نسمّي x عدد الحصص', done: q2,
+        { ...round('r1', 'قاعة الرياضة'),
+          num: 2, title: 'ما المطلوب بالضبط؟', subtitle: 'التساوي أم «ابتداءً من»؟', done: !!q[2],
           content: (
             <div className="space-y-3">
-              <p className="rounded-lg bg-slate-50 px-2 py-1 text-sm text-slate-700" data-activity-evidence="model">
-                {model
-                  ? <>النموذج الذي بنيته في المسبح (المستوى المتقدّم): <MathText>{`$${model}$`}</MathText></>
-                  : 'لم تتحقّق بعد من نموذج في المسبح: ضع البطاقة «× x» ثم اضغط «تحقّق من النموذج».'}
-              </p>
-              <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700">تكلفة <MathText>{'$x$'}</MathText> حصة: هل تترجم كل عبارة الصيغة المذكورة؟</p>}
-                rows={[
-                  { id: 'f1a', label: <span>الصيغة الأولى: <MathText>{'$75x$'}</MathText></span>, options: FITS, correct: 0, correction: <MathText>{`75 دينارًا في كل حصة، و $x$ حصة: $${p1} \\times x = ${p1}x$.`}</MathText> },
-                  { id: 'f1b', label: <span>الصيغة الأولى: <MathText>{'$75 + x$'}</MathText></span>, options: FITS, correct: 1, correction: <MathText>{'المبلغ يتكرّر في كل حصة: نضرب في $x$ ولا نضيف $x$.'}</MathText> },
-                  { id: 'f2a', label: <span>الصيغة الثانية: <MathText>{'$560 + 5x$'}</MathText></span>, options: FITS, correct: 0, correction: <MathText>{REMARKS.tarjamaRight}</MathText> },
-                  { id: 'f2b', label: <span>الصيغة الثانية: <MathText>{'$(560 + 5)x$'}</MathText></span>, options: FITS, correct: 1, correction: <MathText>{REMARKS.tarjamaWhy}</MathText> },
-                  { id: 'f2c', label: <span>الصيغة الثانية: <MathText>{'$560x + 5$'}</MathText></span>, options: FITS, correct: 1, correction: <MathText>{`العكس: الاشتراك ${fixed} دينار مرّة واحدة، و ${p2} دنانير في كل حصة.`}</MathText> },
-                ]}
-                requires={['tarrid-tarjama']}
-                feedback={({ allRight }) => <MathText>{allRight ? REMARKS.tarjamaRight : `${REMARKS.tarjamaWhy} ${REMARKS.tarjamaRight}`}</MathText>}
-                onAnswered={() => setQ2(true)} />
-              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la traduction est celle de ترييض مشكلة (درس 4, tarrid-namdhaja) et la correction de la
-                  question ci-dessus (REMARKS.tarjamaWhy / tarjamaRight) vient de la dire. */}
-              {q2 && <KnowledgeBrick id="tarjama-sigha" variant="rappel" />}
+              {/* ce que la manche a montré et la question sur UN écran (aucun aller-retour) */}
+              <div className="space-y-3" data-paging-keep>
+                {sw(
+                  <WonPanel id="first" won={won.r1} title="في قاعة الرياضة، كما وجدتَ على المسطرة:" lines={R1_LINES}
+                    empty="جولة قاعة الرياضة: لم تبحث بعد عن الحصّة التي تصبح فيها الصيغة الثانية أفضل." />,
+                  null,
+                )}
+                <TapQuestion
+                  prompt="السؤال: «ابتداءً من أيّ عدد للحصص تكون الصيغة الثانية أفضل؟». عمّ نبحث؟"
+                  options={['عن أصغر عدد طبيعي للحصص تكون عنده تكلفة الثانية أقلّ تمامًا من تكلفة الأولى', 'عن عدد الحصص الذي تتساوى عنده التكلفتان', 'عن الصيغة الأرخص إذا سبحنا حصّة واحدة', 'عن ثمن حصّة واحدة في كل صيغة']}
+                  correct={0} cols={1} requires={['tarrid-tarjama']}
+                  explain={<span>كما في قاعة الرياضة: عند <MathText>{`$${T1.n}$`}</MathText> حصص تتساوى التكلفتان فلا تكون أيّ صيغة أفضل، وابتداءً من <MathText>{`$${T1.nx}$`}</MathText> حصص تصبح الثانية أرخص. «أفضل» تعني أرخص تمامًا، و«ابتداءً من» تطلب أوّل عدد بعد التساوي.</span>}
+                  onAnswered={mark(2)} />
+              </div>
+              {q[2] && <KnowledgeBrick id="tafsir-natija" variant="rappel" compact />}
             </div>
           ) },
-        { num: 3, title: 'التجريب', subtitle: 'المرحلة 2 من الكتاب — جرّب في السباق', done: q3,
+        { ...round('r2', 'نادي الرماية'),
+          num: 3, title: 'اختيار الاستراتيجية', subtitle: 'من الترجمة إلى المتراجحة', done: !!q[3],
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="remark" title={SITUATION.analysis[1].label} text={SITUATION.analysis[1].text} source={SITUATION.source} compact />
-              <p className="text-sm font-semibold text-slate-700">محاولاتك في المسبح البلدي (المستوى المتقدّم):</p>
-              <Evidence trials={big} level="advanced" titles={['الصيغة الأولى', 'الصيغة الثانية']} empty="لم تجرّب بعد أي عدد للحصص في السباق: ابنِ النموذج، افتح السباق ومدّد x." />
-              <NumericQuestion
-                prompt={<span>جرّب بالحساب: من أجل <MathText>{'$x = 10$'}</MathText> حصص، كم دينارًا ندفع بالصيغة الثانية؟</span>}
-                expected={fixed + p2 * 10}
-                requires={['tarjama-sigha']}
-                explain={<MathText>{`$${fixed} + ${p2} \\times 10 = ${fixed + p2 * 10}$ دينارًا، وبالصيغة الأولى $${p1} \\times 10 = ${p1 * 10}$ دينارًا: من أجل 10 حصص الصيغة الثانية أرخص.`}</MathText>}
-                explainFor={(n) => (n === (fixed + p2) * 10
-                  ? <MathText>{`ضربت الاشتراك أيضًا في 10. ${REMARKS.tarjamaWhy}`}</MathText>
-                  : n === p1 * 10 ? <MathText>{'هذا ثمن الصيغة الأولى: $75 \\times 10$.'}</MathText> : undefined)}
-                onAnswered={() => setQ3(true)} />
-              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : l’encadré du manuel de cette étape nomme l’essai, et l’explication de la question vient
-                  de le faire (les deux coûts pour 10 séances) — une stratégie connue depuis le cycle moyen. */}
-              {q3 && <KnowledgeBrick id="tajrib" variant="rappel" />}
-            </div>
-          ) },
-        { num: 4, title: 'كتابة متراجحة مناسبة', subtitle: 'المقارنة بين الصيغتين', done: q4,
-          content: (
-            <div className="space-y-3">
-              <Evidence trials={big} level="advanced" titles={['الصيغة الأولى', 'الصيغة الثانية']} empty="لم تجرّب بعد أي عدد للحصص في السباق." />
-              <TapQuestion
-                prompt="«الصيغة الثانية أفضل» تُترجم بالمتراجحة:"
-                options={['$560 + 5x < 75x$', '$560 + 5x > 75x$', '$560 + 5x = 75x$', '$560x + 5 < 75x$'].map(M)}
-                correct={0} cols={2} requires={['tarjama-sigha', 'tajrib', 'hall-mutarajiha']}
-                explain={<span><MathText>{REMARKS.mufadala}</MathText> المساواة تصف لحظة تساوي التكلفتين فقط، و <MathText>{'$560x + 5$'}</MathText> يجعل الاشتراك يُدفع في كل حصة.</span>}
-                onAnswered={() => setQ4(true)} />
-              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : traduire une comparaison par une inéquation est tarrid-mutarajiha (درس 4), et
-                  l’explication de la question ci-dessus (REMARKS.mufadala) vient de l’énoncer. */}
-              {q4 && <KnowledgeBrick id="mutarajiha-mufadala" variant="rappel" />}
-            </div>
-          ) },
-        { num: 5, title: 'تفسير النتائج', subtitle: 'المرحلة 3 من الكتاب — على مسبح الحيّ', done: q5,
-          content: (
-            <div className="space-y-3">
-              <TextbookBox kind="remark" title={SITUATION.analysis[2].label} text={SITUATION.analysis[2].text} source={SITUATION.source} compact />
-              <p className="rounded-lg bg-amber-50 px-2 py-1 text-sm">{WARMUP.text} <SourceTag source={WARMUP.source} /></p>
-              <p className="text-sm font-semibold text-slate-700">محاولاتك في مسبح الحيّ (المستوى المبتدئ):</p>
-              <Evidence trials={small} level="beginner" titles={['الصيغة (أ)', 'الصيغة (ب)']} empty="لم تجرّب بعد مسبح الحيّ: افتح المستوى المبتدئ ومدّد x." />
-              <p className="text-sm text-slate-800"><MathText>{'«الصيغة (ب) أفضل» تعني $200 + 10x < 50x$ ، وحلّها $x > 5$.'}</MathText></p>
-              <p data-evidence="checkpoint" data-tried={q5 ? 'true' : 'false'}
-                className={`rounded-xl border-2 px-3 py-2 text-sm ${q5 ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
-                {q5
-                  ? 'أجبتَ في المسبح: عند 5 حصص تتساوى الصيغتان فلا تكون (ب) أفضل، وابتداءً من 6 حصص تصير (ب) أفضل.'
-                  : 'في المستوى المبتدئ ابنِ النموذج وافتح السباق وجرّب حول لحظة التساوي، ثم أجب عن الأسئلة التي تظهر فوق المسبح.'}
-              </p>
-              {q5 && (
+              {/* la construction de la manche et la question sur UN écran (aucun aller-retour) */}
+              <div className="space-y-3" data-paging-keep>
+                {sw(
+                  <WonPanel id="saving" won={won.r2} title="في نادي الرماية، كما بنيتَ:" lines={R2_LINES}
+                    empty="جولة نادي الرماية: لم تبنِ بعد ما توفّره الصيغة الثانية." />,
+                  null,
+                )}
+                <TapQuestion prompt="ما الاستراتيجية المناسبة لمعرفة ابتداءً من كم حصّة تكون الصيغة الثانية أفضل؟"
+                  options={[
+                    'أترجم كل صيغة بعبارة بدلالة x، أكتب المتراجحة «تكلفة الثانية أقلّ من تكلفة الأولى» وأحلّها، ثم أختار أصغر عدد طبيعي يحقّقها',
+                    'أكتب معادلة التساوي بين الصيغتين وأعطي حلّها جوابًا',
+                    'أجرّب عددًا واحدًا من الحصص؛ إن كانت الثانية أغلى فهي أغلى دائمًا',
+                    'أقارن ثمن حصّة واحدة فقط: الأرخص للحصّة هي الأفضل دائمًا',
+                  ]}
+                  correct={0} cols={1} requires={['tarrid-tarjama', 'hall-mutarajiha']}
+                  explain={<span>في نادي الرماية: كل حصّة توفّر <MathText>{`$${T2.a} - ${T2.b} = ${T2.a - T2.b}$`}</MathText> دج، فيُسترجع الاشتراك بعد <MathText>{`$${T2.n}$`}</MathText> حصص، ثم تصبح الثانية أفضل. التجريب يرشد، والمتراجحة تعطي كل الأعداد، ثم نختار أصغرها الطبيعي. معادلة التساوي وحدها لا تكفي، وعدد واحد لا يكفي للحكم، وثمن الحصّة وحده ينسى الاشتراك.</span>}
+                  onAnswered={mark(3)} />
+              </div>
+              {q[3] && (
                 <>
-                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : garder les solutions qui conviennent (nombre naturel) est tahaqquq-waqi (درس 4), et
-                      l’explication de la question ci-dessus (REMARKS.tasawiWhy / tasawiRight) vient de le dire. */}
-                  <KnowledgeBrick id="tafsir-natija" variant="rappel" />
-                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la démarche ne fait que remettre en ordre les trois étapes du « تحليل الوضعية » que
-                      l’élève vient de lire (encadrés des étapes 1, 3 et 5) — et tarrid-tariqa (درس 4). */}
+                  <KnowledgeBrick id="tajrib" variant="rappel" compact />
+                  <KnowledgeBrick id="mutarajiha-mufadala" variant="rappel" />
+                </>
+              )}
+            </div>
+          ) },
+        // L'ÉCRAN DU CAHIER (recette de la synthèse, point 5) : un vrai essai au crayon AVANT la correction pas à pas ; les étapes 5 et 6 sont la comparaison.
+        { num: 4, title: 'بالقلم: خطّتك أنت', subtitle: 'اكتب في كرّاسك ثم قارن', done: !!q[4],
+          content: (
+            <div className="space-y-4 rounded-2xl border-2 border-indigo-200 bg-indigo-50 px-5 py-4" data-notebook-screen>
+              <p className="text-xl font-black text-indigo-950"><span aria-hidden="true">📓 </span>اكتب في كرّاسك ثم قارن.</p>
+              <p className="text-lg font-bold text-slate-800">اكتب في 3 أسطر: عبارة كل صيغة بدلالة x، المتراجحة التي تترجم «الثانية أفضل»، وكيف تختار الجواب.</p>
+              <ol className="ms-6 list-decimal space-y-1 text-base text-slate-700">
+                <li>تكلفة كل صيغة من أجل <MathText>{'$x$'}</MathText> حصّة: ماذا تكتب؟</li>
+                <li>«الصيغة الثانية أفضل»: أيّ متراجحة تكتب؟</li>
+                <li>من حلول المتراجحة، أيّ عدد للحصص تختار، ولماذا ليس عدد التساوي؟</li>
+              </ol>
+              <p className="text-sm text-slate-600">الخطوات التالية تصحّح أسطرك سطرًا سطرًا. الحساب نفسه ينتظرك في التحدّي <span aria-hidden="true">🏆</span>.</p>
+              {/* le bouton RESTE (aria-disabled après l'appui : le focus ne tombe pas sur la page) ; la région vivante est toujours montée */}
+              <button type="button" onClick={() => { if (!q[4]) mark(4)(); }} aria-disabled={q[4] || undefined} data-notebook-done
+                className={`min-h-[52px] rounded-2xl px-6 text-lg font-black focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2 ${q[4] ? 'bg-emerald-50 text-emerald-800 ring-1 ring-emerald-300' : 'bg-indigo-700 text-white shadow-[0_3px_0_0_#3730A3] hover:bg-indigo-800'}`}>
+                {q[4] ? <><span aria-hidden="true">✓ </span>كتبتُ أسطري</> : 'كتبتُ أسطري — أقارن الآن'}
+              </button>
+              <p className="font-bold text-emerald-800" role="status">{q[4] ? 'قارن الآن أسطرك بالخطوات التالية.' : ''}</p>
+            </div>
+          ) },
+        // LE MODÈLE, première étape au crayon : « 560 + 5x < 75x » — les données sur le même écran.
+        { num: 5, title: 'ترييض الوضعية', subtitle: 'المتراجحة بدلالة x', done: !!q[5],
+          content: (
+            <div className="space-y-3">
+              <div className="space-y-3" data-paging-keep>
+                <Facts />
+                <TapQuestion
+                  prompt={<span>ليكن <MathText>{'$x$'}</MathText> عدد الحصص. أيّ متراجحة تترجم: «الصيغة الثانية أفضل»؟</span>}
+                  options={['$560 + 5x < 75x$', '$560 + 5x > 75x$', '$560 + 5x = 75x$', '$(560 + 5)x < 75x$'].map(M)}
+                  correct={0} cols={2} requires={['tarrid-tarjama', 'hall-mutarajiha']}
+                  explain={<span>تكلفة الأولى <MathText>{'$75x$'}</MathText> ، وتكلفة الثانية <MathText>{'$560 + 5x$'}</MathText> لأنّ الاشتراك يُدفع مرّة واحدة؛ و«أفضل» تعني أقلّ تكلفة. المساواة تصف لحظة التساوي فقط، و <MathText>{'$(560 + 5)x$'}</MathText> يدفع الاشتراك في كل حصّة.</span>}
+                  onAnswered={mark(5)} />
+              </div>
+              {q[5] && <KnowledgeBrick id="tarjama-sigha" variant="rappel" compact />}
+            </div>
+          ) },
+        { num: 6, title: 'تنفيذ الاستراتيجية', subtitle: 'بالحروف a و b و f قبل الحساب', done: !!q[6],
+          content: (
+            <div className="space-y-3">
+              <BatchChoiceQuestion
+                intro={<MathText>{'نسمّي $a$ ثمن الحصّة في الصيغة الأولى، و $f$ الاشتراك و $b$ ثمن الحصّة في الثانية، حيث $a > b$ . احكم على كل عبارة.'}</MathText>}
+                rows={[
+                  { id: 'p1', label: <MathText>{'المتراجحة $f + bx < ax$ تكافئ $f < (a - b)x$ .'}</MathText>, options: TRUE_FALSE, correct: 0, correction: <MathText>{'نطرح $bx$ من الطرفين: $f < ax - bx$ ، أي $f < (a - b)x$ .'}</MathText> },
+                  { id: 'p2', label: <MathText>{'نقسم الطرفين على $a - b$ ، وهو عدد موجب، فلا يتغيّر اتجاه المتراجحة.'}</MathText>, options: TRUE_FALSE, correct: 0, correction: <MathText>{'بما أنّ $a > b$ فإنّ $a - b > 0$ : القسمة على عدد موجب تحافظ على الاتجاه، فنجد $x > \\dfrac{f}{a - b}$ .'}</MathText> },
+                  { id: 'p3', label: <MathText>{'عند $x = \\dfrac{f}{a - b}$ تصبح الصيغة الثانية أفضل لأوّل مرّة.'}</MathText>, options: TRUE_FALSE, correct: 1, correction: <MathText>{`${REMARKS.istirjaa} عنده تتساوى التكلفتان فقط.`}</MathText> },
+                  { id: 'p4', label: <MathText>{'إذا كان $\\dfrac{f}{a - b}$ عددًا طبيعيًا، فالجواب هو العدد الطبيعي الذي يليه.'}</MathText>, options: TRUE_FALSE, correct: 0, correction: <MathText>{REMARKS.tasawiRight}</MathText> },
+                ]}
+                requires={['tarjama-sigha', 'mutarajiha-mufadala', 'tafsir-natija']}
+                feedback={({ allRight }) => <span>{allRight ? 'أحسنت: نترجم، نكتب المتراجحة، نقسم على عدد موجب، ثم نختار أصغر عدد طبيعي بعد عدد التساوي.' : 'عند عدد التساوي تتساوى التكلفتان فقط؛ الجواب أصغر عدد طبيعي يحقّق المتراجحة القطعية.'}</span>}
+                onAnswered={mark(6)} />
+              {q[6] && (
+                <>
                   <KnowledgeBrick id="tariqat-wadiya" variant="rappel" />
                   <TextbookBox kind="remark" text={REMARKS.notSolvedHere} compact />
                 </>
               )}
             </div>
           ) },
+        // « ورقة زكريا » (recette de la synthèse, point 5) : la DERNIÈRE étape — un PLAN faux d'un camarade, une erreur de JUSTIFICATION.
+        { num: 7, title: 'ورقة زكريا', subtitle: 'أين أخطأ زكريا في خطّته؟', done: !!q[7],
+          content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={mark(7)} /> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={7} variant="memo" />} />
+      footer={(
+        <>
+          <KnowledgeSnapshot moduleNumber={7} variant="memo" />
+          {sw(
+            <p className="rounded-2xl border-2 border-amber-300 bg-amber-50 px-4 py-3 text-center text-base font-black text-amber-900" data-mission-pause>
+              <span aria-hidden="true">⏸️ </span>استرح قليلًا: التحدّي هو المحطّة التالية <span aria-hidden="true">🏆</span>
+            </p>,
+            null,
+          )}
+        </>
+      )} />
   );
 }
