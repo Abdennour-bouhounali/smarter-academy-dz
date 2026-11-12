@@ -119,7 +119,7 @@ describe('hall-jabri — the rounds of module 1 (lab-cards-m1)', () => {
   it('the role scan fires (negative control: the climax cards)', () => {
     expect(violations(P.shownValues({ system: '3x+y=115|4x-3y=45', chains: 'r2' })).length).toBeGreaterThan(0);
   });
-  it('a BUILD decoy is never a number already printed on the cards of its screen', () => {
+  it('a right-side BUILD decoy is never a card\'s printed value (its constant term)', () => {
     M1_ROUNDS.filter((r) => ['r1', 'r2', 'r3'].includes(r.props.chains)).forEach((r) => {
       const src = r.props.system;
       const roads = [...P.subPaths(src).map((p) => P.playSubstitution(src, p))];

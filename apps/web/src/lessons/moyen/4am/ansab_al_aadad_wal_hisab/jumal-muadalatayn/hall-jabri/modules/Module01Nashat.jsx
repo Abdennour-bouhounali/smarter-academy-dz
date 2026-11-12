@@ -168,7 +168,7 @@ export default function Module01Nashat() {
       num: 2, title: 'إكرام وإسحاق', subtitle: 'طريقتان على الجملة نفسها', done: q3,
       content: (
         <div className="space-y-3">
-          {wonLine('r2', 'الجولة 2: وصلتَ إلى $(3 ; 5)$ بطريقتين.', 'الجولة 2: لم تجرّب الطريقتين بعد.')}
+          {wonLine('r2', 'الجولة 2: وصلتَ إلى العددين نفسيهما بطريقتين.', 'الجولة 2: لم تجرّب الطريقتين بعد.')}
           {sheets}
           {explainSheets}
           {q3 && <KnowledgeBrick id="takhallus-majhul" lead="ما فعلته إكرام وما فعله إسحاق، وما فعلته بالبطاقتين:" />}

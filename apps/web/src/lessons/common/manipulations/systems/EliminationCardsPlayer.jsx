@@ -165,6 +165,7 @@ export default function EliminationCardsPlayer({
   const asked = useRef(new Set());
   const heardPred = useRef(new Set());
   const holdTimer = useRef(null);
+  const focusTimer = useRef(null);
   const wipe = () => { written.current = new Set(); refusalKeys.current = new Set(); refusedCount.current = 0; discoveredSent.current = false; };
   // « إعادة » ou une autre jumla : TOUT recommence — les cartes, les essais, les prédictions et les questions
   let lb = lab;
@@ -228,7 +229,9 @@ export default function EliminationCardsPlayer({
     playSfx('pop');
     setPreds((m) => ({ ...m, [key]: ok }));
     state.report(onTrial, { tk: 'predict', ok });
-    setTimeout(() => boxRef.current?.querySelector('[data-coach="tray"] [role="button"], [data-coach="other"]')?.focus?.(), 60);
+    // le focus revient au labo : le bouton « l'autre méthode » s'il est là, sinon la poignée de la carte (1) (revue a11y 2026-11-12)
+    clearTimeout(focusTimer.current);
+    focusTimer.current = setTimeout(() => boxRef.current?.querySelector('[data-ec-other], [data-drag-source="card:1"]')?.focus?.(), 60);
   };
   const pendingSig = pendingPreds.join('|');
   useEffect(() => {
@@ -241,7 +244,7 @@ export default function EliminationCardsPlayer({
     clearTimeout(holdTimer.current);
     holdTimer.current = setTimeout(() => setPredHold(false), PRED_HOLD_MS);
   }, [pendingSig]); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => () => clearTimeout(holdTimer.current), []);
+  useEffect(() => () => { clearTimeout(holdTimer.current); clearTimeout(focusTimer.current); }, []);
   useEffect(() => { if (cp.open) setShownPreds([]); }, [cp.open]);
 
   /* ── un ESSAI : une ligne nouvelle, ou un refus compté ── */
@@ -492,7 +495,7 @@ export default function EliminationCardsPlayer({
           <table className="mt-1 w-full table-fixed text-center text-xs" aria-labelledby={journalId}>
             <thead>
               <tr className="bg-slate-50">
-                <th scope="col" className="w-6">#</th><th scope="col" className="w-14">{k('player.colMethod')}</th>
+                <th scope="col" className="w-6"><span aria-hidden="true">#</span><span className="sr-only">{k('player.colN')}</span></th><th scope="col" className="w-14">{k('player.colMethod')}</th>
                 <th scope="col">{k('player.colWrote')}</th><th scope="col" className="w-24">{k('player.colResult')}</th>
               </tr>
             </thead>
@@ -595,7 +598,7 @@ export default function EliminationCardsPlayer({
               ligne et ne déborde jamais sur sa voisine (walk 2026-11-12 : côte à côte, à 1024 × 768, la poignée de (1) couvrait la valeur de (2)) */}
           {lb.stage === 'cards' && (
             <>
-              <div className={`grid grid-cols-1 gap-1.5 ${predictOpen ? 'rounded-xl ring-4 ring-amber-300 ring-offset-2' : ''}`} data-paging-keep
+              <div role="group" className={`grid grid-cols-1 gap-1.5 ${predictOpen ? 'rounded-xl ring-4 ring-amber-300 ring-offset-2' : ''}`} data-paging-keep
                 aria-label={k('ariaCards', { eq1: plainEq(lb.sys[0]), eq2: plainEq(lb.sys[1]) })}>
                 {E.CARDS.map((n) => cardView(n))}
               </div>
@@ -604,7 +607,7 @@ export default function EliminationCardsPlayer({
                   <span className="text-xs font-bold text-indigo-900">{k('tray')}</span>
                   {lb.expr ? (
                     <span data-coach="expr" className="inline-flex">
-                      <DraggableObject drag={drag} id={`expr:${lb.expr.from}`} label={k('player.exprChip', { expr: exprText, n: lb.expr.from })}
+                      <DraggableObject drag={drag} id={`expr:${lb.expr.from}`} label={k('player.exprChip', { expr: exprText.replace(/\\dfrac\{(\d+)\}\{(\d+)\}/g, '$1/$2').replace(/\{,\}/g, ','), n: lb.expr.from })}
                         className={`inline-flex min-h-[44px] items-center rounded-xl border-2 border-indigo-600 bg-white px-2 text-base font-bold text-indigo-950 focus-visible:ring-2 ${ringP}`}>
                         <bdi dir="ltr" className="pointer-events-none"><MathText>{$(exprText)}</MathText></bdi>
                       </DraggableObject>

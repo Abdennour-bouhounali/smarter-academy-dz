@@ -206,6 +206,7 @@ export function predictOptions(src, key) {
   if (key === 'samePair') return [{ says: 'yes' }, { says: 'no' }];
   if (key === 'multiplier') {
     const k = yMultiplier(src);
+    if (k == null) return [];
     return [k, -k, k - 1].map((n) => ({ says: String(n), n }));
   }
   return [];

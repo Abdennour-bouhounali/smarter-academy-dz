@@ -27,7 +27,8 @@ const climax = `${cases[1].trim()} | ${cases[2].trim()}`;
 const sol = solutionOf(climax);
 export const UNIT = {
   systems: [climax],
-  pairs: [sol.key, `(${sol.key.slice(1, -1).split(' ; ').reverse().join(' ; ')})`, '(35 ; 10)', '(20 ; 55)'],
+  // la solution et sa permutée, calculées ; les deux couples de la partie 2 (ياسين, et l'autre couple qui ne vérifie que (1)) et leurs permutés
+  pairs: [sol.key, `(${sol.key.slice(1, -1).split(' ; ').reverse().join(' ; ')})`, '(35 ; 10)', '(10 ; 35)', '(20 ; 55)', '(55 ; 20)'],
   never: [115, 390, 345],
 };
 

@@ -51,7 +51,7 @@ describe('the mission of hall-jabri', () => {
   });
   it('the checkpoints tell the truth, recomputed exactly from their own system (shown in the prompt)', () => {
     const sysOf = (cp) => LS.system(...cp.system.split('|'));
-    const texOf = (s) => s.split('|').map((e) => e.replace(/([+\-=])/g, ' $1 ').replace(/\s+/g, ' ').trim().replace(/-/g, '-'));
+    const texOf = (s) => s.split('|').map((e) => e.replace(/([+\-=])/g, ' $1 ').replace(/\s+/g, ' ').trim());
     mission.checkpoints.forEach((cp) => texOf(cp.system).forEach((e) => expect(cp.prompt, cp.id).toContain(e)));
     // cp-thunaiya: only (4 ; 3) satisfies both equations
     const th = mission.checkpoints.find((c) => c.id === 'cp-thunaiya');
