@@ -88,11 +88,14 @@ export function act(lab, action, round = {}) {
     if (lab.x == null || lab.y == null) return { lab: L.claim(lab), verdicts };
     const k = keyOf(lab.x, lab.y);
     const wasTrial = lab.trials.some((t) => t.x === lab.x && t.y === lab.y);
+    // la ثنائية de DÉPART n'est jamais un essai, pas plus par une réponse que par un geste (revue 2026-11-12)
+    const atStart = !!lab.start && lab.x === lab.start.x && lab.y === lab.start.y;
     const wasClaimed = lab.claimed.some((c) => keyOf(c.x, c.y) === k);
     const next0 = L.claim(lab);
     const ok = next0.last.ok;
     const accepted = next0.last.kind === 'accepted';
-    const next = wasClaimed ? next0 : { ...next0, claimed: [...lab.claimed, { x: lab.x, y: lab.y, ok, accepted }] };
+    const trials = atStart && !wasTrial && !round.covered ? next0.trials.filter((t) => !(t.x === lab.x && t.y === lab.y)) : next0.trials;
+    const next = { ...next0, trials, ...(wasClaimed ? {} : { claimed: [...lab.claimed, { x: lab.x, y: lab.y, ok, accepted }] }) };
     if (round.covered) {
       if (!wasClaimed) {
         const free = !accepted && round.free === 'firstRefusal' && !lab.claimed.some((c) => !c.accepted);
@@ -100,7 +103,7 @@ export function act(lab, action, round = {}) {
       }
       return { lab: next, verdicts };
     }
-    if (!wasTrial) verdicts.push(trialVerdict(lab, next.trials[next.trials.length - 1], round, next.trials.length));
+    if (!wasTrial && !atStart) verdicts.push(trialVerdict(lab, next.trials[next.trials.length - 1], round, next.trials.length));
     if (!accepted && !wasClaimed) verdicts.push({ groups: next.trials.length, exact: false });
     return { lab: next, verdicts };
   }

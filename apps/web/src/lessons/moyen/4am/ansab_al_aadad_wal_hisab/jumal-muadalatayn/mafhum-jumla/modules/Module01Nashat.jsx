@@ -146,8 +146,8 @@ export default function Module01Nashat() {
             {mine.slice(-10).map((tr) => (
               <li key={tr.pair} data-evidence-trial={tr.pair} className="rounded-lg border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs font-bold text-slate-800">
                 <bdi dir="ltr" className="font-mono">{tr.pair}</bdi>{' '}
-                (1) <span className={tr.ok1 ? 'text-emerald-700' : 'text-rose-700'}>{tr.ok1 ? '✓' : '✗'}</span>{' '}
-                (2) <span className={tr.ok2 ? 'text-emerald-700' : 'text-rose-700'}>{tr.ok2 ? '✓' : '✗'}</span>
+                (1) <span aria-hidden="true" className={tr.ok1 ? 'text-emerald-700' : 'text-rose-700'}>{tr.ok1 ? '✓' : '✗'}</span><span className="sr-only">{tr.ok1 ? 'محقّقة' : 'غير محقّقة'}</span>{' '}
+                (2) <span aria-hidden="true" className={tr.ok2 ? 'text-emerald-700' : 'text-rose-700'}>{tr.ok2 ? '✓' : '✗'}</span><span className="sr-only">{tr.ok2 ? 'محقّقة' : 'غير محقّقة'}</span>
               </li>
             ))}
           </ul>

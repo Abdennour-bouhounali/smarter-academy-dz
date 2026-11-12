@@ -217,12 +217,13 @@ export default function PairScoreboardPlayer({
     reached: !!pendingSpec,
     resetKey: scene.inits,
     onRetry: () => {
+      focusHandle();
       const fresh = make();
       labRef.current = fresh; setLab(fresh); setLiveX(null); setLiveY(null); setSaid(null); discoveredSent.current = false;
       state.report(onTrial, { tk: 'retry' });
     },
     onEvent: (ev) => state.report(onTrial, ev),
-    onDone: (id) => { setDoneIds((d) => (d.includes(id) ? d : [...d, id])); if (id === specs[specs.length - 1]?.id) { state.discover(); state.formalize(); } },
+    onDone: (id) => { focusHandle(); setDoneIds((d) => (d.includes(id) ? d : [...d, id])); if (id === specs[specs.length - 1]?.id) { state.discover(); state.formalize(); } },
   });
   useEffect(() => {
     if (P.discovered(lb, discover) && !discoveredSent.current) {
@@ -234,7 +235,9 @@ export default function PairScoreboardPlayer({
 
   /* ── la prédiction : « start » avant le premier geste, « accepted » à la réponse acceptée ; commandes figées pendant elle et une question ── */
   const untouched = lb.trials.length === 0 && lb.claimed.length === 0 && !moved.x && !moved.y;
-  const askable = (key) => (P.predictWhen(key) === 'start' ? untouched : !!lb.solved && !P.swapSeen(lb));
+  // « لو قلبتها » n'a de sens que pour une ثنائية aux deux nombres différents (sinon elle ne serait jamais jugée — revue 2026-11-12)
+  const askable = (key) => (P.predictWhen(key) === 'start' ? untouched : !!lb.solved && lb.solved.x !== lb.solved.y && !P.swapSeen(lb));
+  const focusHandle = () => setTimeout(() => boxRef.current?.querySelector('[data-pair-handle="x"]')?.focus?.(), 60);
   const nextPred = predKeys.find((key) => !asked.current.has(key) && askable(key)) ?? null;
   const predictOpen = cpLive && !cp.open && !missionBig && nextPred != null;
   const locked = cp.open || predictOpen;
@@ -533,11 +536,11 @@ export default function PairScoreboardPlayer({
                 const rd = L.readingTex(lb, i, lb.x, lb.y);
                 return (
                   <section key={i} data-gauge={i + 1} data-ok={show ? String(ok) : ''} data-masked={!readable ? 'true' : undefined} data-covered-gauge={hidden ? 'true' : undefined}
-                    data-coach={`gauge-${i + 1}`} aria-label={w(i === 0 ? 'g1' : 'g2')}
+                    data-coach={`gauge-${i + 1}`} role="group" aria-labelledby={`${uid}-g${i + 1}`}
                     className={`min-w-0 rounded-xl border-2 px-2 py-1.5 ${!show ? 'border-slate-200 bg-slate-50' : ok ? 'border-emerald-400 bg-emerald-50' : 'border-rose-300 bg-rose-50'}`}>
                     <div className="flex items-start justify-between gap-1">
-                      <h4 className="text-xs font-extrabold leading-tight text-slate-800">{w(i === 0 ? 'g1' : 'g2')}</h4>
-                      <span aria-hidden="true" className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-black text-white ${!show ? 'bg-slate-400' : ok ? 'bg-emerald-700' : 'bg-rose-700'}`}>
+                      <h4 id={`${uid}-g${i + 1}`} className="text-xs font-extrabold leading-tight text-slate-800">{w(i === 0 ? 'g1' : 'g2')}</h4>
+                      <span aria-hidden="true" className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-black text-white ${!show ? 'bg-slate-600' : ok ? 'bg-emerald-700' : 'bg-rose-700'}`}>
                         {hidden ? <Lock className="h-3.5 w-3.5" /> : !show ? '…' : ok ? '✓' : '✗'}
                       </span>
                     </div>
@@ -567,7 +570,8 @@ export default function PairScoreboardPlayer({
 
             {/* ── les deux nombres, les renverser, répondre ── */}
             <div className="flex flex-wrap items-center gap-2" data-pair-card>
-              <p dir="ltr" className="rounded-xl border-2 border-slate-300 bg-white px-2 py-1 font-mono text-lg font-extrabold text-slate-900" aria-label={k('player.pairAria', { pair: L.pairText(X, Y) })}>
+              <span className="sr-only">{k('player.pairAria', { pair: L.pairText(X, Y) })}</span>
+              <p dir="ltr" aria-hidden="true" className="rounded-xl border-2 border-slate-300 bg-white px-2 py-1 font-mono text-lg font-extrabold text-slate-900">
                 (<span className="text-blue-700" data-pair-value-x>{X}</span> ; <span className="text-violet-700" data-pair-value-y>{Y}</span>)
               </p>
               {swapOn && (
@@ -632,7 +636,7 @@ function PlayerRuler({ which, stretch, range, value, edge, handleLabel, less, mo
           ))}
         </svg>
         <div
-          {...stretch.handleProps({ label: handleLabel, valueText: String(value) })}
+          {...stretch.handleProps({ label: handleLabel, valueText: `${which} = ${String(value).replace('-', '−')}` })}
           {...(locked ? { 'aria-disabled': true } : {})}
           data-pair-handle={which}
           className={`absolute top-0 flex h-11 min-w-[44px] -translate-x-1/2 items-start justify-center rounded-xl border-2 outline-none ${ringP} ${stretch.dragging ? 'border-blue-500 bg-blue-500/10' : 'border-slate-400 bg-white/70'}`}

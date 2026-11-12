@@ -11,7 +11,8 @@
  *   - `eq` / `system` / `tile` / `decoy` : jamais une des équations de la مسألة ;
  *   - `total` (le N d'un monde « count ») : jamais 42, 32 ni 10 ;
  *   - `solution` / `swap` / `start` (une ثنائية montrée) : jamais un couple de la مسألة ;
- *   - `reading` (une valeur de jauge) : jamais −6, −78, 28, 24 ;
+ *   - `reading` (une valeur de jauge AU DÉPART, à la solution, à la renversée — les seuls points qu'un écran DÉSIGNE ; une valeur que la main
+ *     traverse en glissant, 24 en (8 ; 0) par exemple, n'a pas de rôle — revue 2026-11-12) : jamais −6, −78, 28, 24 ;
  *   - `chip` : jamais −6, −78, 28 — le 24 du verdict L1.6 (« 24 = 3 × 8 », les victoires seules de la manche 3) est une pastille, PAS la
  *     vérification « 30 ≠ 24 » de la مسألة : le verdict (contraignant) l'emporte ici sur la liste de rôles du dessin.
  * LA CORRECTION INTERDITE (étroite, verdict Q6 / L1.6) : les points d'étape, « أستعدّ » et la ورقة زميل ne posent jamais la ثنائية renversée, les

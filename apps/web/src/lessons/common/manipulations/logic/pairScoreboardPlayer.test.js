@@ -54,6 +54,28 @@ describe('pair-scoreboard player — the start, trials and free verdicts', () =>
   });
 });
 
+describe('pair-scoreboard player — review 2026-11-12', () => {
+  it('a claim on the untouched start pair is not a trial: one refused verdict, the start stays out of the trials', () => {
+    const lab = P.initRound({ system: 'x+y=7|3x+y=17', theme: 'football', ranges: R(0, 9), start: { x: 0, y: 0 } });
+    const r = play(lab, [CLAIM], { free: 'firstHalf' });
+    expect(r.verdicts).toEqual([{ groups: 0, exact: false }]);
+    expect(r.lab.trials).toEqual([]);
+  });
+  it('gauge1x3 (module 2, owner OQ1): discovered after three gauge-1 pairs; a refused claim there is a counted verdict', () => {
+    const lab = P.initRound({ system: 'x+y=6|50x+50y=280', theme: 'coins', ranges: R(0, 8), start: { x: 0, y: 0 } });
+    const two = play(lab, [set('x', 6), SWAP], { free: 'gauge1x3' });
+    expect(P.discovered(two.lab, 'gauge1x3')).toBe(false);
+    const three = play(two.lab, [set('x', 3), set('y', 3), CLAIM], { free: 'gauge1x3' });
+    expect(P.discovered(three.lab, 'gauge1x3')).toBe(true);
+    expect(three.verdicts.map((v) => [v.exact, !!v.free])).toEqual([[false, false], [false, true], [false, false]]);
+  });
+  it('swapSol is judged by a swap visited BEFORE the acceptance too', () => {
+    const lab = P.initRound({ system: 'x+y=9|50x+20y=300', theme: 'coins', ranges: R(0, 11), start: { x: 0, y: 0 } });
+    const r = play(lab, [set('x', 5), set('y', 4), set('x', 4), set('y', 5), CLAIM], {});
+    expect(P.predictJudged(r.lab, 'swapSol')).toBe(true);
+  });
+});
+
 describe('pair-scoreboard player — chains, builds, predictions, coach, grid', () => {
   const solved = (system, theme, sol, ranges) => ({ ...P.initRound({ system, theme, ranges, start: { x: 0, y: 0 } }), solved: sol });
   it('the builds are computed on the round: r1 17 = 3 × 5 + 2 (decoy 15), r2 50x + 20y = 300 (decoy 330), r3 chips 29 · 13 · 24', () => {

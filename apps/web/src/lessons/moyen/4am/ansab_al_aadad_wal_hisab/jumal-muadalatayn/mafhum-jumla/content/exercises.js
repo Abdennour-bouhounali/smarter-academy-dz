@@ -39,9 +39,9 @@ export const EXERCISES = [
   },
   // cinq équations, cinq ثنائيات
   {
+    // en DEUX parties (une écran chacune, jamais réduit sous 0,9 — no-back-and-forth 2026-11-12) : chaque partie rappelle ses équations ET la liste
     id: 'ex-2', source: E(2), learningPointId: LP.P3, difficulty: 'moyen',
-    statement: 'أرفق بكل معادلة الثنائية أو الثنائيات (إن وُجدت) التي هي حلول لها:',
-    items: ['المعادلات: أ) $2x + y = 3$ ب) $x + 4y = 1$ جـ) $x - y = 3$ د) $3x + 2y = 0$ هـ) $4x - y = 1$', 'الثنائيات: $(1 ; 1)$ ، $(2 ; -1)$ ، $\\left(0 ; \\dfrac{1}{2}\\right)$ ، $(2 ; -3)$ ، $\\left(\\dfrac{1}{4} ; 0\\right)$'],
+    statement: 'أرفق بكل معادلة الثنائية أو الثنائيات (إن وُجدت) التي هي حلول لها، من بين الثنائيات: $(1 ; 1)$ ، $(2 ; -1)$ ، $\\left(0 ; \\dfrac{1}{2}\\right)$ ، $(2 ; -3)$ ، $\\left(\\dfrac{1}{4} ; 0\\right)$',
     interaction: 'batch',
     check: {
       pairs: [[1, 1], [2, -1], ['0', '1/2'], [2, -3], ['1/4', '0']],
@@ -49,8 +49,6 @@ export const EXERCISES = [
         { eq: '2x+y=3', options: [[[1, 1], [2, -1]], [[2, -1]], []], correct: 0 },
         { eq: 'x+4y=1', options: [[['1/4', '0']], [], [['0', '1/2']]], correct: 1 },
         { eq: 'x-y=3', options: [[[2, -1]], [[2, -1], [2, -3]], [[1, 1]]], correct: 0 },
-        { eq: '3x+2y=0', options: [[[1, 1]], [[2, -3], [2, -1]], [[2, -3]]], correct: 2 },
-        { eq: '4x-y=1', options: [[['1/4', '0'], ['0', '1/2']], [['1/4', '0']], [[2, -3]]], correct: 1 },
       ],
     },
     question: {
@@ -59,13 +57,31 @@ export const EXERCISES = [
         { label: 'أ) $2x + y = 3$', options: ['$(1 ; 1)$ و $(2 ; -1)$', '$(2 ; -1)$ فقط', 'لا شيء من الثنائيات'], correct: 0, correction: '$2 \\times 1 + 1 = 3$ و $2 \\times 2 + (-1) = 3$ : ثنائيتان.' },
         { label: 'ب) $x + 4y = 1$', options: ['$\\left(\\dfrac{1}{4} ; 0\\right)$ فقط', 'لا شيء من الثنائيات', '$\\left(0 ; \\dfrac{1}{2}\\right)$ فقط'], correct: 1, correction: 'لا تحقّقها أي ثنائية: مثلًا $\\left(\\dfrac{1}{4} ; 0\\right)$ تعطي $\\dfrac{1}{4}$ و $\\left(0 ; \\dfrac{1}{2}\\right)$ تعطي $2$ .' },
         { label: 'جـ) $x - y = 3$', options: ['$(2 ; -1)$ فقط', '$(2 ; -1)$ و $(2 ; -3)$', '$(1 ; 1)$ فقط'], correct: 0, correction: '$2 - (-1) = 3$ ؛ أمّا $(2 ; -3)$ فتعطي $5$ و $(1 ; 1)$ تعطي $0$ .' },
-        { label: 'د) $3x + 2y = 0$', options: ['$(1 ; 1)$ فقط', '$(2 ; -3)$ و $(2 ; -1)$', '$(2 ; -3)$ فقط'], correct: 2, correction: '$3 \\times 2 + 2 \\times (-3) = 0$ ؛ أمّا $(2 ; -1)$ فتعطي $4$ و $(1 ; 1)$ تعطي $5$ .' },
-        { label: 'هـ) $4x - y = 1$', options: ['$\\left(\\dfrac{1}{4} ; 0\\right)$ و $\\left(0 ; \\dfrac{1}{2}\\right)$', '$\\left(\\dfrac{1}{4} ; 0\\right)$ فقط', '$(2 ; -3)$ فقط'], correct: 1, correction: '$4 \\times \\dfrac{1}{4} - 0 = 1$ ؛ أمّا $\\left(0 ; \\dfrac{1}{2}\\right)$ فتعطي $-\\dfrac{1}{2}$ و $(2 ; -3)$ تعطي $11$ .' },
       ],
       explain: 'قد تقبل المعادلة الواحدة أكثر من ثنائية (المعادلة أ)، وقد لا تقبل أيًّا من الثنائيات المقترحة (المعادلة ب).',
     },
     method: 'نعوّض كل ثنائية في كل معادلة، ونحتفظ بالثنائيات التي تحقّق المساواة.',
     commonError: 'الظنّ أنّ لكل معادلة ثنائية واحدة: المعادلة أ) تقبل ثنائيتين، والمعادلة ب) لا تقبل أيًّا منها.',
+  },
+  {
+    id: 'ex-2-b', source: E(2, 'د، هـ'), learningPointId: LP.P3, difficulty: 'moyen',
+    statement: 'المعادلتان د) و هـ)، والثنائيات نفسها: $(1 ; 1)$ ، $(2 ; -1)$ ، $\\left(0 ; \\dfrac{1}{2}\\right)$ ، $(2 ; -3)$ ، $\\left(\\dfrac{1}{4} ; 0\\right)$',
+    interaction: 'batch',
+    check: {
+      pairs: [[1, 1], [2, -1], ['0', '1/2'], [2, -3], ['1/4', '0']],
+      rows: [
+        { eq: '3x+2y=0', options: [[[1, 1]], [[2, -3], [2, -1]], [[2, -3]]], correct: 2 },
+        { eq: '4x-y=1', options: [[['1/4', '0'], ['0', '1/2']], [['1/4', '0']], [[2, -3]]], correct: 1 },
+      ],
+    },
+    question: {
+      prompt: 'لكل معادلة، اختر الثنائيات التي هي حلول لها:',
+      rows: [
+        { label: 'د) $3x + 2y = 0$', options: ['$(1 ; 1)$ فقط', '$(2 ; -3)$ و $(2 ; -1)$', '$(2 ; -3)$ فقط'], correct: 2, correction: '$3 \\times 2 + 2 \\times (-3) = 0$ ؛ أمّا $(2 ; -1)$ فتعطي $4$ و $(1 ; 1)$ تعطي $5$ .' },
+        { label: 'هـ) $4x - y = 1$', options: ['$\\left(\\dfrac{1}{4} ; 0\\right)$ و $\\left(0 ; \\dfrac{1}{2}\\right)$', '$\\left(\\dfrac{1}{4} ; 0\\right)$ فقط', '$(2 ; -3)$ فقط'], correct: 1, correction: '$4 \\times \\dfrac{1}{4} - 0 = 1$ ؛ أمّا $\\left(0 ; \\dfrac{1}{2}\\right)$ فتعطي $-\\dfrac{1}{2}$ و $(2 ; -3)$ تعطي $11$ .' },
+      ],
+      explain: 'نعوّض كل ثنائية في المعادلة، ونحتفظ بالتي تحقّق المساواة.',
+    },
   },
   // deux solutions différentes de chaque équation, puis deux systèmes « de tête »
   {

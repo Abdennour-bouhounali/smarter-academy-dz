@@ -14,13 +14,13 @@ describe('mafhum-jumla — the exercises of module 3 (platform numbers)', () => 
     ex.check.pairs.forEach((p, i) => expect(ex.question.rows[i].correct, String(p)).toBe(holds(ex.check.eq, p) ? 0 : 1));
   });
   it('ex-2 and ex-3-1: in every row exactly ONE option is the right set of pairs, every distractor holds a pair that fails', () => {
-    ['ex-2', 'ex-3-1'].forEach((id) => {
+    ['ex-2', 'ex-2-b', 'ex-3-1'].forEach((id) => {
       const ex = EX[id];
       ex.check.rows.forEach((row, r) => {
         expect(ex.question.rows[r].correct, `${id} row ${r}`).toBe(row.correct);
         expect(ex.question.rows[r].options).toHaveLength(row.options.length);
         const right = row.options.map((set) => {
-          if (id === 'ex-2') {
+          if (id.startsWith('ex-2')) {
             const sols = ex.check.pairs.filter((p) => holds(row.eq, p)).map(String).sort();
             return JSON.stringify(set.map(String).sort()) === JSON.stringify(sols);
           }
@@ -48,7 +48,7 @@ describe('mafhum-jumla — the exercises of module 3 (platform numbers)', () => 
     expect(EX['ex-4-a'].check.system.map((e) => holds(e, [1, 2]))).toEqual([true, false]);
   });
   it('the ids and LPs of the book are kept; no exercise shows the climax signature or names the book', () => {
-    expect(EXERCISES.map((e) => e.id)).toEqual(['ex-1', 'ex-2', 'ex-3-1', 'ex-3-2a', 'ex-3-2b', 'ex-4-a', 'ex-4-b']);
+    expect(EXERCISES.map((e) => e.id)).toEqual(['ex-1', 'ex-2', 'ex-2-b', 'ex-3-1', 'ex-3-2a', 'ex-3-2b', 'ex-4-a', 'ex-4-b']);
     const text = JSON.stringify(EXERCISES.map(({ source, ...rest }) => rest));
     TEXT.forEach((re) => expect(re.test(text), String(re)).toBe(false));
     expect(/الكتاب(?!ة)|تمرين\s*\d/.test(text)).toBe(false);
