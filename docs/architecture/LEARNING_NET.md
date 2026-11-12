@@ -266,8 +266,10 @@ the lessons that teach solving a first-degree equation and operating on both sid
 Eighth (2026-11-11, unit 5 mission rollout, council verdict X6): `mafhum-jumla` ← `muadalat-darajat-ula` (3AM, solving a first-degree equation) +
 `qimat-ibara-harfiya` (3AM, the value of an expression with letters — testing a pair is substituting two values), `muadala-ula` kept;
 `hall-jabri` ← `musawiyat-amaliyat` (3AM, operating on both sides of an equality) + `qimat-ibara-harfiya`, its three 4AM prerequisites kept — the
-two skills its « أستعدّ » diagnoses; NOT `muadalat-darajat-ula` (`muadala-ula` already requires it). `mushkilat-jumla` unchanged. No `requires` link
-was added to the net: « راجع قبل أن تنطلق » reads the catalogue's `prerequisiteLessonCodes` (`mission/ReviseFirst.jsx`).
+two skills its « أستعدّ » diagnoses; NOT `muadalat-darajat-ula` (`muadala-ula` already requires it). `mushkilat-jumla` unchanged. « راجع قبل
+أن تنطلق » reads the catalogue's `prerequisiteLessonCodes` (`mission/ReviseFirst.jsx`); the net ALSO gained two `requires` links (owner, 2026-11-12:
+the first lesson of a unit must lead the student back to the earlier year by every path): `3am.m5.r03` (the value of an expression with letters) →
+`4am.m5.r01` and `3am.m5.r05` (operations on both sides of an equality) → `4am.m5.r01`, beside the existing `3am.m5.r06` → `4am.m5.r01`.
 
 **Database — imported, closed, ignored by Mastery V2.**
 
