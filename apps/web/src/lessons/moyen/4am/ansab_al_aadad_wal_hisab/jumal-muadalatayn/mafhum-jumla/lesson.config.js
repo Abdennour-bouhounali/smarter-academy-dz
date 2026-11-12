@@ -160,7 +160,7 @@ export const LESSON_CONFIG = {
     { id: '02', number: 2, slug: 'maarif', path: `${LESSON_BASE_PATH}/maarif`,
       title: 'معارف — الجملة وحلّها', desc: 'تعريف جملة معادلتين ومعاملاتها، حل الجملة والترتيب في الثنائية، والحالتان الخاصتان.',
       stage: 'discovery', teachesLearningPointIds: ['4am_mafhum-jumla_P1', '4am_mafhum-jumla_P2', '4am_mafhum-jumla_P3', '4am_mafhum-jumla_P4'],
-      color: 'violet', style: 'featured', estimatedMin: 12, difficulty: 2, actionText: 'أكتشف' },
+      color: 'violet', style: 'featured', estimatedMin: 16, difficulty: 2, actionText: 'أكتشف' },
     { id: '03', number: 3, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
       title: 'أوظّف تعلّماتي', desc: 'ثنائيات تحقق معادلة، حلول كثيرة لمعادلة واحدة، ثنائية تحقق جملة، ومن نصّ إلى معادلة.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_mafhum-jumla_P3', '4am_mafhum-jumla_P2'],

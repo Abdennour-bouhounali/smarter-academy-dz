@@ -62,7 +62,7 @@ export default function Module02Maarif() {
       moduleTitle="معارف — الجملة وحلّها"
       moduleSubtitle="جملة معادلتين، حلّها، الترتيب، والحالات الخاصة"
       objectives={['ما شكل جملة معادلتين؟ وما معنى حلّها؟', 'هل يهمّ ترتيب العددين في الثنائية؟', 'متى لا يكون للجملة حل وحيد؟']}
-      estimatedTime="12 دقيقة"
+      estimatedTime="16 دقيقة"
       intro={
         <PlayerSwitch
           player={(
