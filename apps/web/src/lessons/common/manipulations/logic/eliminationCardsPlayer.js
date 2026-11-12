@@ -255,7 +255,9 @@ export function coachOf(lab, ctx = {}) {
     return null;
   }
   if (lab.stage === 'one') return ctx.buildDone ? { id: 'next', target: '[data-coach="next"]', gesture: 'tap', prefer: 'above' } : null;
-  if (lab.stage === 'back') return { id: 'back', target: '[data-coach="value"]', gesture: 'drag', prefer: 'above', noFlip: true };
+  // valeur à porter : AUCUNE bulle — au-dessus elle couvrait la pastille de la valeur, au-dessous les deux cibles (walk 2026-11-12, 1024 px) ;
+  // la colonne dit le fait et la phrase « احمل القيمة إلى إحدى البطاقتين » est écrite au-dessus de la pastille
+  if (lab.stage === 'back') return null;
   if (lab.stage === 'done' && ctx.otherReady) return { id: 'other', target: '[data-coach="other"]', gesture: 'tap', prefer: 'above' };
   return null;
 }

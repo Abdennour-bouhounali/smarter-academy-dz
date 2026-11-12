@@ -14,6 +14,7 @@ import { useLabCheckpoint } from '../primitives/LabCheckpoint';
 import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
 import { useLabCoach } from '../primitives/LabCoach';
 import MathText from '../../components/MathText';
+import FitLine from '../../components/FitLine';
 import { bidi } from '../../../../utils/bidi';
 import { playSfx } from '../../utils/playEffect';
 import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
@@ -500,7 +501,7 @@ export default function EliminationCardsPlayer({
                 <tr key={firstRow + i} data-ec-row={firstRow + i} data-ec-row-result={r.result}>
                   <th scope="row" className="border border-slate-200 font-normal"><bdi dir="ltr">{firstRow + i + 1}</bdi></th>
                   <td className="border border-slate-200">{methodWord(r.method)}</td>
-                  <td className="border border-slate-200 font-bold">{r.tex ? <bdi dir="ltr" className="block overflow-hidden"><MathText>{$(r.tex)}</MathText></bdi> : '—'}</td>
+                  <td className="border border-slate-200 font-bold">{r.tex ? <FitLine dir="ltr"><MathText>{$(r.tex)}</MathText></FitLine> : '—'}</td>
                   <td className={`border border-slate-200 ${['one', 'other'].includes(r.result) ? 'text-emerald-800' : 'text-rose-800'}`}>{k(`player.result.${r.result}`)}</td>
                 </tr>
               ))}
@@ -586,13 +587,15 @@ export default function EliminationCardsPlayer({
           {last && (
             <div className="flex flex-wrap items-center gap-2 rounded-xl border-2 border-slate-200 bg-white px-2 py-1" data-ec-current>
               <span className="text-xs text-slate-600"><MathText>{k(`line_${last.key}`, { n: last.n, v: last.v ? $(last.v) : '', k: last.k })}</MathText></span>
-              <bdi dir="ltr" className="font-bold text-slate-900"><MathText>{$(last.tex)}</MathText></bdi>
+              <FitLine dir="ltr" className="min-w-0 flex-1 font-bold text-slate-900"><MathText>{$(last.tex)}</MathText></FitLine>
             </div>
           )}
 
+          {/* les deux cartes l'une SOUS l'autre, chacune sur toute la largeur : une carte multipliée (jusqu'à 8 tuiles) ne passe jamais à la
+              ligne et ne déborde jamais sur sa voisine (walk 2026-11-12 : côte à côte, à 1024 × 768, la poignée de (1) couvrait la valeur de (2)) */}
           {lb.stage === 'cards' && (
             <>
-              <div className={`grid grid-cols-2 gap-1.5 ${predictOpen ? 'rounded-xl ring-4 ring-amber-300 ring-offset-2' : ''}`} data-paging-keep
+              <div className={`grid grid-cols-1 gap-1.5 ${predictOpen ? 'rounded-xl ring-4 ring-amber-300 ring-offset-2' : ''}`} data-paging-keep
                 aria-label={k('ariaCards', { eq1: plainEq(lb.sys[0]), eq2: plainEq(lb.sys[1]) })}>
                 {E.CARDS.map((n) => cardView(n))}
               </div>
