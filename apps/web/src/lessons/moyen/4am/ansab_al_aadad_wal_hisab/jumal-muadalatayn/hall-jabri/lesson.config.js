@@ -27,6 +27,51 @@ export const LESSON_CONFIG = {
   unit: 'jumal-muadalatayn',
   unitTitle: 'جمل معادلتين من الدرجة الأولى بمجهولين',
   sequentialUnlock: true,
+  studentView: 'mission',
+  // LA MISSION (rollout 2026-11-12, unité 5 leçon 2 ; conseil du 2026-11-11, verdict L2 + X1–X11) : l'ouverture avoue qu'on ne sait pas encore trouver
+  // deux prix à la fois ; les outils sont les connaissances de knowledge.jsx ; les points d'étape RAPPROCHENT de la mission sans en résoudre aucune
+  // question : ni ses nombres (115, 45, 390…), ni sa réponse, ni sa méthode (une substitution sur un coefficient négatif), ni sa correction — et aucun
+  // moins devant une parenthèse (règle P). `system` : la jumla d'un point d'étape (données, lues par la signature de la leçon, jamais affichées).
+  // La scène : le kiosque du quartier et ses deux cartes blanches (« kiosk-cards »).
+  mission: {
+    scene: 'kiosk-cards',
+    title: 'كشك الحي: ثمنان على بطاقتين',
+    opening: {
+      text: 'غيّر عمّي الطاهر أسعار كشكه قرب المتوسطة، وكتبها لغزًا على بطاقتين: الأولى تجمع قطع كرنتيكة وقارورة قازوز، والثانية تقارن ثمن قطع الكرنتيكة بثمن قارورات القازوز. كل بطاقة وحدها تقبل أثمانًا كثيرة… فكيف نجد الثمنين معًا دون أن نجرّب كل الأعداد؟',
+      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
+    },
+    tools: [
+      { id: 'takhallus-majhul', icon: '🫥', label: 'مجهول يختفي' },
+      { id: 'hall-thunaiya', icon: '🔗', label: 'الحل ثنائية' },
+      { id: 'tariqat-tawid', icon: '🔁', label: 'طريقة التعويض' },
+      { id: 'tariqat-jam', icon: '➕', label: 'طريقة الجمع' },
+      { id: 'ikhtiyar-tariqa', icon: '🧭', label: 'اختيار الطريقة' },
+    ],
+    climaxModule: 4,
+    checkpoints: [
+      {
+        id: 'cp-thunaiya', afterModule: 1, system: 'x+y=7|x-y=1',
+        prompt: 'أيّ ثنائية حلّ للجملة $\\begin{cases} x + y = 7 \\\\ x - y = 1 \\end{cases}$ ؟',
+        options: ['$(4 ; 3)$', '$(3 ; 4)$', '$(5 ; 2)$'],
+        correct: 0,
+        explain: '$4 + 3 = 7$ و $4 - 3 = 1$ : المعادلتان محقّقتان. أمّا $(3 ; 4)$ فترتيبها مقلوب: $3 - 4$ لا يساوي 1 ، و $(5 ; 2)$ تحقّق المعادلة الأولى وحدها.',
+      },
+      {
+        id: 'cp-jam', afterModule: 2, system: 'x+2y=9|3x-4y=17',
+        prompt: 'لنتخلّص من $y$ في الجملة $\\begin{cases} x + 2y = 9 \\\\ 3x - 4y = 17 \\end{cases}$ نضرب طرفي المعادلة الأولى في:',
+        options: ['$2$', '$-2$', '$4$'],
+        correct: 0,
+        explain: 'بالعدد 2: $2x + 4y = 18$ ، ومع $3x - 4y = 17$ يصير $5x = 35$ أي $x = 7$ ثم $y = 1$ . بالعدد $-2$ يصير المعاملان $-4y$ و $-4y$ : متساويين لا متعاكسين؛ وبالعدد 4 لا يختفي شيء.',
+      },
+      {
+        id: 'cp-ikhtiyar', afterModule: 3, system: '5x+2y=11|3x-2y=13',
+        prompt: 'أسرع طريقة لحل الجملة $\\begin{cases} 5x + 2y = 11 \\\\ 3x - 2y = 13 \\end{cases}$ :',
+        options: ['الجمع مباشرة، لأنّ معاملي $y$ متعاكسان', 'التعويض، لأنّ معامل $x$ يساوي 1', 'الجمع بعد ضرب الأولى في $-1$'],
+        correct: 0,
+        explain: 'بالجمع مباشرة $8x = 24$ ، ومنه $x = 3$ ثم $y = -2$ . لا يوجد معامل يساوي 1 هنا، والضرب في $-1$ يجعل معاملي $y$ متساويين.',
+      },
+    ],
+  },
   title: 'حل جملة معادلتين من الدرجة الأولى بمجهولين جبرياً (طريقتا التعويض والجمع)',
   description: 'حل جملة معادلتين جبريا: بطريقة التعويض (التعبير عن أحد المجهولين بدلالة الآخر ثم التعويض في المعادلة الأخرى) وبطريقة الجمع (ضرب طرفي معادلة أو كلتيهما في معامل مناسب ليصير معاملا أحد المجهولين متعاكسين ثم الجمع طرفا لطرف)، للحصول على معادلة من الدرجة الأولى بمجهول واحد، واختيار الطريقة الأنسب بحسب معاملات الجملة.',
   level: 'moyen',
@@ -47,9 +92,9 @@ export const LESSON_CONFIG = {
   ],
   teachingScope: {
     include: [
-      'جملة النشاط 2 وعمل التلميذين (التعويض والجمع)، وجملة السؤال جـ 2',
-      'التمرين المحلول ص 59 بطريقتيه، وإطار «طريقة»، ودوري الآن',
-      'جمل بمعاملات صحيحة أو عشرية أو كسرية، وجمل تُبسَّط قبل الحل (تمارين 5 ← 13، 22، 23)',
+      'بطاقتان ومجهول يختفي: عمل إكرام (التعويض) وعمل إسحاق (الجمع) على الجملة نفسها، ثم جملة ثانية بالطريقتين',
+      'جملتان محلولتان سطرًا سطرًا، كل واحدة بطريقة، وإطار «طريقة»، ثم دوري',
+      'جمل بمعاملات صحيحة أو عشرية أو كسرية، وجمل تُبسَّط قبل الحل',
       'التحقق من الثنائية في المعادلتين',
       'اختيار الطريقة الأنسب بالنظر إلى المعاملات',
     ],
@@ -71,17 +116,19 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début.
+  knowledgeMapOpen: true,
   // Les acquis que « أستعدّ » diagnostique : transposer un terme (items 9 du manuel), remplacer
   // une inconnue par une valeur (item 10), multiplier les deux membres d'une égalité, résoudre
   // une équation du premier degré à une inconnue (leçon muadala-ula).
   priorKnowledge: ['naql-hudud', 'taawid-qima', 'darb-tarafayn', 'hal-muadala-ula'],
   resources: [
-    // Le module 1 ouvre sur les CARTES DU KIOSQUE (elimination-cards). متقدم = la jumla du نشاط 2
-    // (2x + y = 7 ; 3x − 2y = 4,2), ouverte par défaut ; مبتدئ = x + y = 10 ; x − y = 2 (plateforme).
+    // Le module 1 ouvre sur deux CARTES (elimination-cards) ; la page : مبتدئ = x + y = 10 ; x − y = 2, متقدم = la jumla de l'activité
+    // x + 2y = 15 ; 3x − y = 3 (plateforme, rollout 2026-11-12 ; les codes de ressource sont gardés). Le lecteur joue les manches de content/cards.js.
     {
       kind: 'manipulation', code: 'cards-x-y-10-2', type: 'elimination-cards', module: 1,
       level: 'beginner',
-      title: 'بطاقتا الكشك: x + y = 10 و x − y = 2',
+      title: 'بطاقتان: x + y = 10 و x − y = 2',
       objective: 'حل جملة معادلتين بالتخلّص من أحد المجهولين — بالتعويض أو بالجمع — ثم إيجاد المجهول الآخر: الحل ثنائية (x ; y)',
       autonomy: '',
       experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'snack' },
@@ -91,9 +138,9 @@ export const LESSON_CONFIG = {
     {
       kind: 'manipulation', code: 'cards-act2-7-42', type: 'elimination-cards', module: 1,
       level: 'advanced',
-      title: 'جملة النشاط 2: 2x + y = 7 و 3x − 2y = 4,2',
+      title: 'بطاقتان تحتاجان إلى قرار',
       objective: 'حل جملة معادلتين بالتخلّص من أحد المجهولين — بالتعويض أو بالجمع — ثم إيجاد المجهول الآخر: الحل ثنائية (x ; y)',
-      autonomy: 'لا مجهولان متعاكسان جاهزان: على التلميذ أن يقرّر وحده أيّ مجهول يعزل ومن أيّ بطاقة (التلميذ 1)، أو بأيّ معامل يضرب أيّ بطاقة (التلميذ 2)، مع معاملات عشرية — دون اقتراح للخطوات، والطريقتان مطلوبتان',
+      autonomy: 'لا مجهولان متعاكسان جاهزان: على التلميذ أن يقرّر وحده أيّ مجهول يعزل ومن أيّ بطاقة، أو بأيّ عدد يضرب أيّ بطاقة — دون اقتراح للخطوات، والطريقتان مطلوبتان',
       experience: { type: 'platform_adaptation', reason: 'multiple_representations', theme: 'snack' },
       learningPointIds: ['4am_hall-jabri_P1', '4am_hall-jabri_P2', '4am_hall-jabri_P3'],
       sourceElementIds: ['act-2'],
@@ -106,18 +153,18 @@ export const LESSON_CONFIG = {
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
-      title: 'أستعدّ', desc: 'ثماني عبارات: نقل حدّ، تعويض مجهول بقيمة، ضرب طرفي مساواة، حل معادلة بمجهول واحد. صحيح أم خاطئ؟',
+      title: 'أستعدّ', desc: 'عشر عبارات: نقل حدّ وضرب الطرفين، وتعويض قيمتين في عبارة. صحيح أم خاطئ؟',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'nashat', path: `${LESSON_BASE_PATH}/nashat`,
-      title: 'نشاط 2 — تلميذان وطريقتان', desc: 'بطاقتا كشك الحي: اجعل مجهولًا يختفي بالتعويض ثم بالجمع، ثم اشرح عمل التلميذين واستنتج حل الجملة.',
+      title: 'بطاقتان ومجهول يختفي', desc: 'بطاقتان عن عددين مخفيّين: اجعل مجهولًا يختفي، ثم جد العددين معًا، بطريقتين.',
       stage: 'trigger', teachesLearningPointIds: ['4am_hall-jabri_P1', '4am_hall-jabri_P2'],
       color: 'indigo', style: 'featured', estimatedMin: 16, difficulty: 2, actionText: 'أجرّب البطاقتين' },
     { id: '02', number: 2, slug: 'tarayiq', path: `${LESSON_BASE_PATH}/tarayiq`,
-      title: 'طرائق — التعويض أو الجمع', desc: 'التمرين المحلول ص 59 سطرًا سطرًا، إطار «طريقة»، كيف نختار الطريقة الأنسب، ثم دوري الآن.',
+      title: 'طرائق — التعويض أو الجمع', desc: 'جملتان محلولتان سطرًا سطرًا، الطريقتان، كيف نختار، ثم دوري.',
       stage: 'discovery', teachesLearningPointIds: ['4am_hall-jabri_P1', '4am_hall-jabri_P2', '4am_hall-jabri_P3'],
       color: 'emerald', style: 'featured', estimatedMin: 12, difficulty: 3, actionText: 'أتعلّم الطريقتين' },
     { id: '03', number: 3, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
-      title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 5 ← 13 و 22، 23: بالتعويض، بالجمع، ثم بطريقة من اختيارك.',
+      title: 'أوظّف تعلّماتي', desc: 'جمل بالتعويض، ثم بالجمع، ثم بطريقة من اختيارك.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_hall-jabri_P1', '4am_hall-jabri_P2', '4am_hall-jabri_P3'],
       color: 'amber', style: 'featured', estimatedMin: 14, difficulty: 3, actionText: 'أتدرّب' },
     // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
@@ -128,7 +175,7 @@ export const LESSON_CONFIG = {
       stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_hall-jabri_P1'],
       color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
     { id: '05', number: 5, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
-      title: 'مسألة 2 — مقهى الساحة', desc: 'فاتورتان: ثمن كأس الشاي وفنجان القهوة بالجمع، وخطأ النادل في الإشارة.',
+      title: 'مسألة 2 — مقهى الساحة', desc: 'فاتورتان: ثمن كأس الشاي وفنجان القهوة بالجمع، وخطأ النادل في الإشارة؛ ثم لغز بطاقتي الكشك القديمتين.',
       stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_hall-jabri_P2'],
       color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
     { id: '06', number: 6, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
@@ -136,7 +183,7 @@ export const LESSON_CONFIG = {
       stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_hall-jabri_P1', '4am_hall-jabri_P2', '4am_hall-jabri_P3'],
       color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
     { id: '07', number: 7, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث، منها سؤالان من أؤكّد تعلّماتي.',
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

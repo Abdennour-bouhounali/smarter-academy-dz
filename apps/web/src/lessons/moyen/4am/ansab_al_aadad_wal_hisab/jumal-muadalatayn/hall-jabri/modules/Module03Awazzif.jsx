@@ -23,64 +23,64 @@ export default function Module03Awazzif() {
       navLinks={getNavLinks(3)}
       moduleNumber={3}
       moduleTitle="أوظّف تعلّماتي"
-      moduleSubtitle="تمارين الكتاب 5 ← 13 و 22، 23"
+      moduleSubtitle="بالتعويض، بالجمع، ثم بطريقة من اختيارك"
       objectives={['أحلّ جملة بالتعويض ثم بالجمع.', 'أيّ طريقة أختار لكل جملة؟', 'ماذا أفعل حين لا يكون الحل عددًا صحيحًا؟']}
       estimatedTime="14 دقيقة"
-      brief={{ tag: 'أوظّف تعلّماتي — الكتاب ص 60، 61، 63', title: 'تمارين الكتاب، بعباراته', tone: 'amber',
-        body: <p>لكل جملة اكتب الثنائية في الخانتين، بالترتيب الذي يطلبه الكتاب (عدد صحيح، كسر مثل 3/2، أو عدد عشري مثل 2,5)، ثم اقرأ التصحيح: الخطأ هنا يُصحَّح ولا يُحتسب.</p> }}
+      brief={{ tag: 'أوظّف تعلّماتي', title: 'جمل لأحلّها', tone: 'amber',
+        body: <p>لكل جملة اكتب الثنائية في الخانتين، بالترتيب الذي يطلبه السؤال (عدد صحيح، كسر مثل 3/2، أو عدد عشري مثل 2,5)، ثم اقرأ التصحيح: الخطأ هنا يُصحَّح ولا يُحتسب.</p> }}
       steps={[
-        { num: 1, title: 'تمرين 5 — بالتعويض', done: all('5'),
+        { num: 1, title: 'بالتعويض', done: all('5'),
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tariqat-tawid" variant="rappel" compact />
               {partsOf('5').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['tariqat-tawid']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 2, title: 'تمرين 6 — كسور وحروف أخرى', done: all('6'),
+        { num: 2, title: 'كسور وحروف أخرى', done: all('6'),
           content: (
             <div className="space-y-3">
               {partsOf('6').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['tariqat-tawid', 'hall-thunaiya']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 3, title: 'تمرين 7 — بالجمع والتعويض', done: all('7'),
+        { num: 3, title: 'بالجمع والتعويض', done: all('7'),
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tariqat-jam" variant="rappel" compact />
               {partsOf('7').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['tariqat-jam']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 4, title: 'تمرين 8 — معاملان للضرب', done: all('8'),
+        { num: 4, title: 'معاملان للضرب', done: all('8'),
           content: (
             <div className="space-y-3">
               {partsOf('8').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['tariqat-jam', 'hall-thunaiya']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 5, title: 'تمرين 9 — طريقة من اختيارك', done: all('9'),
+        { num: 5, title: 'طريقة من اختيارك', done: all('9'),
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="ikhtiyar-tariqa" variant="rappel" compact />
               {partsOf('9').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['ikhtiyar-tariqa']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 6, title: 'تمرين 10 — مجهول معطى بدلالة الآخر', done: all('10'),
+        { num: 6, title: 'مجهول معطى بدلالة الآخر', done: all('10'),
           content: (
             <div className="space-y-3">
               {partsOf('10').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['ikhtiyar-tariqa', 'tariqat-tawid']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 7, title: 'تمرين 11 — باختيار طريقة مناسبة', done: all('11'),
+        { num: 7, title: 'باختيار طريقة مناسبة', done: all('11'),
           content: (
             <div className="space-y-3">
               {partsOf('11').map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['ikhtiyar-tariqa']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 8, title: 'تمرينا 12 و 13 — نبسّط أولًا', done: all('12') && all('13'),
+        { num: 8, title: 'نبسّط أولًا', done: all('12') && all('13'),
           content: (
             <div className="space-y-3">
               {[...partsOf('12'), ...partsOf('13')].map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['ikhtiyar-tariqa']} onAnswered={mark(ex.id)} />)}
             </div>
           ) },
-        { num: 9, title: 'أتعمّق — تمرينا 22 و 23', done: all('22') && all('23'),
+        { num: 9, title: 'أتعمّق', done: all('22') && all('23'),
           content: (
             <div className="space-y-3">
               {[...partsOf('22'), ...partsOf('23')].map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['ikhtiyar-tariqa', 'hall-thunaiya']} onAnswered={mark(ex.id)} />)}

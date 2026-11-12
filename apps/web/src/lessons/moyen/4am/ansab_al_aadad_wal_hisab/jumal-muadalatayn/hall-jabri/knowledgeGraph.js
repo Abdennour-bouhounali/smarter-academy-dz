@@ -41,13 +41,13 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'talamidh', kind: 'example', lane: 'center', requires: 'takhallus-majhul',
-      title: 'التلميذان', subtitle: '$x = 2{,}6$',
+      title: 'إكرام وإسحاق', subtitle: '$x = 3$',
       context: { list: [ACTIVITY.students[1][0], ACTIVITY.students[2][0], ACTIVITY.students[2][1]] },
       reveals: ['thunaiya'],
     },
     {
       id: 'thunaiya', kind: 'retain', lane: 'center', requires: 'hall-thunaiya', notebook: true,
-      title: 'الحل ثنائية لا عدد واحد', subtitle: '$(2{,}6 ; 1{,}8)$',
+      title: 'الحل ثنائية لا عدد واحد', subtitle: '$(3 ; 6)$',
       context: { text: IDEAS.thunaiya },
       reveals: ['tawid', 'jam'],
     },
@@ -59,14 +59,14 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'mithal1', kind: 'example', lane: 'start', requires: 'tariqat-tawid',
-      title: 'الجملة (1) بالتعويض', subtitle: '$x = -\\dfrac{1}{2}$',
+      title: 'المثال الأوّل بالتعويض', subtitle: '$y = -3$',
       context: { text: METHOD.one.solution[1], note: METHOD.one.solution[2] },
       reveals: ['khata-nafs'],
     },
     {
-      // ⛔ خطأ شائع — le `commonError` de l'exercice 5 (x + 3y = 10 → 10 = 10).
+      // ⛔ خطأ شائع — le `commonError` de l'exercice 5 (x + 2y = 9 → 9 = 9).
       id: 'khata-nafs', kind: 'common_mistake', lane: 'start', requires: 'tariqat-tawid',
-      title: 'التعويض في المعادلة نفسها', subtitle: '$10 = 10$',
+      title: 'التعويض في المعادلة نفسها', subtitle: '$9 = 9$',
       context: {
         parts: [
           { role: 'wrong', text: ex5.commonError },
@@ -85,7 +85,7 @@ export const KNOWLEDGE_GRAPH = {
     {
       // ⛔ خطأ شائع — le `commonError` de l'exercice 7 (un seul membre multiplié).
       id: 'khata-taraf', kind: 'common_mistake', lane: 'end', requires: 'tariqat-jam',
-      title: 'ضرب طرف واحد', subtitle: '$-2x + 6y = 4$',
+      title: 'ضرب طرف واحد', subtitle: '$-3x + 6y = 3$',
       context: {
         parts: [
           { role: 'wrong', text: ex7.commonError },
@@ -97,7 +97,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'mithal2', kind: 'example', lane: 'end', requires: 'tariqat-jam',
-      title: 'الجملة (2) بالجمع', subtitle: '$y = 3$',
+      title: 'المثال الثاني بالجمع', subtitle: '$y = 3$',
       context: { text: METHOD.two.solution[1], note: METHOD.two.solution[2] },
       reveals: ['khata-taraf', 'ikhtiyar'],
     },
