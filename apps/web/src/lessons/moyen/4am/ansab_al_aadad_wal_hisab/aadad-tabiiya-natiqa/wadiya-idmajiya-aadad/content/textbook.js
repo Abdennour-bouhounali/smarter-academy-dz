@@ -42,3 +42,14 @@ export const SITUATION = {
     { label: 'تنفيذ استراتيجية الحل', text: '• نطبّق الخوارزمية المختارة على العددين إلى أن يصير الباقي معدومًا؛ آخر باقٍ غير معدوم هو القاسم المشترك الأكبر. • نقسم كل عدد من المآزر على النتيجة لنعرف ما تتحصل عليه كل مدرسة من كل لون.' },
   ],
 };
+
+/**
+ * LA DÉMARCHE EN LETTRES (la synthèse dans le lecteur de mission, 2026-11-12) : les trois phases de l'analyse pour toute وضعية « a objets d'une
+ * sorte, b d'une autre, le plus grand nombre de groupes » — ce que la carte des معارف, OUVERTE dès le premier écran, peut montrer sans la وضعية
+ * ni sa solution (knowledgeGraph.js ; content/mission.test.js).
+ */
+export const METHOD_LETTERS = [
+  { label: 'قراءة الوضعية وفهمها', text: 'نوزّع a شيئًا من نوع و b شيئًا من نوع آخر بالتساوي على مجموعات: كل مجموعة تأخذ العدد نفسه من كل نوع، لا يبقى شيء، وعدد المجموعات أكبر ما يمكن.' },
+  { label: 'تحليل الوضعية واختيار استراتيجية حل مناسبة', text: 'عدد المجموعات يقسم a ويقسم b: هو قاسم مشترك لهما، والأكبر هو PGCD(a ; b). حين يكون العددان كبيرين نعيّنه بخوارزمية إقليدس.' },
+  { label: 'تنفيذ استراتيجية الحل', text: '• نقسم الأكبر على الأصغر، ثم القاسم على الباقي، إلى أن يصير الباقي معدومًا؛ آخر باقٍ غير معدوم هو g = PGCD(a ; b). • كل مجموعة تأخذ a ÷ g من النوع الأوّل و b ÷ g من النوع الثاني.' },
+];
