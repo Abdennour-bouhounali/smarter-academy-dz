@@ -44,7 +44,7 @@ describe('the mission of mushkilat-jumla', () => {
 
   it('the opening has no digit and no day (verdict L3.2); the checkpoints never show the signature, a swap, a rounding nor people at two prices', () => {
     expect(/\d/.test(mission.opening.text)).toBe(false);
-    expect(/الجمعة|السبت|يوم/.test(mission.opening.text.replace('اليوم', ''))).toBe(false);
+    expect(/الأحد|السبت|يوم/.test(mission.opening.text.replace('اليوم', ''))).toBe(false);
     mission.checkpoints.forEach((cp) => {
       const s = cpText(cp);
       expect(showsAny(TEXT, s), cp.id).toBe(false);
