@@ -148,7 +148,7 @@ export default function Module07AlWadiya() {
                 <TapQuestion prompt="الوضعية تطلب البعدين مدوّرين إلى 1cm. ما الترتيب الصحيح؟"
                   options={[REMARKS.tadwirRight, REMARKS.tadwirWrong, 'لا ندوّر: ما تعرضه الحاسبة هو القيمة المضبوطة للعرض.', 'ندوّر المساحة إلى أقرب مربّع تامّ قبل حلّ المعادلة.']}
                   correct={0} cols={1} requires={['tariqat-wadiya', 'kitaba-a-jidhr-b']}
-                  explain={<span>{REMARKS.tadwirWhy} في حوض الأزهار مثلًا: العرض المضبوط مدوّرًا {W_CM}cm، والطول المضبوط مدوّرًا {L_CM}cm — أمّا ضعف العرض المدوّر فيعطي {2 * W_CM}cm.</span>}
+                  explain={<span>{REMARKS.tadwirWhy} في حوض الأزهار مثلًا: العرض المضبوط مدوّرًا {W_CM} سم، والطول المضبوط مدوّرًا {L_CM} سم — أمّا ضعف العرض المدوّر فيعطي {2 * W_CM} سم.</span>}
                   onAnswered={mark(3)} />
               </div>
               {q[3] && <KnowledgeBrick id="tariqat-wadiya" variant="rappel" />}
