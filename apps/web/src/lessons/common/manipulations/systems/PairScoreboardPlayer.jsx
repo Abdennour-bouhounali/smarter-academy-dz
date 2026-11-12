@@ -446,7 +446,7 @@ export default function PairScoreboardPlayer({
     <ManipulationShell
       type="pair-scoreboard"
       title={title ?? k('player.title')}
-      mission={mission ? <MathText>{mission}</MathText> : w('mission')}
+      mission={<MathText>{mission ?? k('player.mission')}</MathText>}
       lead={typeof lead === 'string' ? <MathText>{lead}</MathText> : lead}
       state={state}
       coach={coachOn ? coach : null}

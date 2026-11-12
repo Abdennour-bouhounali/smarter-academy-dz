@@ -121,5 +121,10 @@ describe('the mission of mafhum-jumla', () => {
     expect(truth3.filter(Boolean)).toHaveLength(1);
     expect(truth3.indexOf(true)).toBe(TEST_ITEMS.E3.correct);
     expect(itqanSource).not.toMatch(/الكتاب|SourceTag|QCM/);
+    // the module writes `correct` as a LITERAL (the assessment registry exports it) — it must be the data's
+    ['E1', 'E2', 'E3', 'E4'].forEach((id) => {
+      const m = new RegExp(`id: '${id}'[\\s\\S]*?correct: (\\d)`).exec(itqanSource);
+      expect(Number(m[1]), id).toBe(TEST_ITEMS[id].correct);
+    });
   });
 });
