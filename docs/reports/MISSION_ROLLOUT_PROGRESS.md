@@ -1809,7 +1809,8 @@ round state (discovery, cover and predictions re-derived from the stars log).
 
 **Verification:** vitest `src/lessons` green; `lab-rollout-status --lesson mafhum-jumla` ✅; `no-back-and-forth` LONE 0 · OVER 0 at 1024, 1366,
 1920; browser walk at 1024 × 768: r1, r2, r3, ⭐, m2a, m2b all ★★★, no scroll, no overflow, 0 console error; r3 three refusals → « جرّب أصغر » →
-easier won → r3 released 1★; a reload keeps the stars.
+easier won → r3 released 1★; a reload keeps the stars. Walks at 1366 × 768 and 1920 × 1080 (builder's final report): r1, r2, r3, ⭐ ★★★ at
+both, m2a and m2b ★★★ at 1366; no scroll, no overflow, 0 console error.
 
 **Open (for the owner):** `estimatedMin` M1 17, M2 16 (12 + ≈ 4 for the OQ1 rounds; total 80) not yet timed on a real student.
 
