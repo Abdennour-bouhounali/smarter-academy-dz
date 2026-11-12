@@ -190,7 +190,8 @@ export function verify(s, x) {
   const p = product(s, x); const sum = traySum(s, x);
   // `sig` (lecteur, 2026-11-11) : la somme portée au moment de l'essai — le même x avec la même somme n'est pas un nouvel essai
   const trial = { x, ok: allCollected(s) && p === sum, product: p, sum, missing: missing(s), sig: trayKey(s) };
-  return { ...s, trials: [...s.trials.filter((t) => t.x !== x), trial].sort((u, v) => u.x - v.x) };
+  // `lastX` (synthèse de l'unité 3, 2026-11-12) : le x du DERNIER essai — celui que le terrain montre (les essais sont triés par x)
+  return { ...s, trials: [...s.trials.filter((t) => t.x !== x), trial].sort((u, v) => u.x - v.x), lastX: x };
 }
 
 /** Les valeurs de x où l'égalité a été vérifiée juste (somme complète). */
@@ -461,6 +462,8 @@ export function shownValues(props) {
   (props.choices ?? []).forEach((expr) => shownValues({ expr, span: props.span, labels: 'terms' }).forEach((v) => out.push(v)));
   // leçon 2 : les options des questions de la manche (bandes, coin, annulation, construction à coefficient) et les affirmations prédites
   squareShown(s, props, xs).forEach((v) => out.push(v));
+  // la synthèse de l'unité 3 : les tuiles des constructions du ممرّ (suites 'ring' / 'ringTerms')
+  ringShown(s, props, xs).forEach((v) => out.push(v));
   return out;
 }
 
@@ -592,5 +595,64 @@ function squareShown(s, props, xs) {
     push('expansion', termsTex(claim));
     xs.forEach((x) => push('decoy', evaluate(claim, x)));
   });
+  return out;
+}
+
+/* ══════════════ LA SYNTHÈSE de l'unité 3 `wadiya-idmajiya-harfi` (lecteur de mission, 2026-11-12) — LE ممرّ AUTOUR D'UN CARRÉ ══════════════
+ * Un terrain « x+a+x » (un côté fait de trois segments : un ممرّ de largeur x, le carré central de côté a, le ممرّ) au carré : la zone centrale
+ * a × a est une نافورة, les huit autres le ممرّ. Tout est AJOUTÉ, rien des leçons 1–2 ne change : deux suites du lecteur ('ring' en aires,
+ * 'ringTerms' en termes, et leurs entraînements) et leurs constructions, chacune CALCULÉE ici. */
+
+/** Le côté central a d'un terrain « x+a+x » au carré (même facteur deux fois, x · constante positive · x), sinon null. */
+export function ringOf(s) {
+  const [f1, f2] = s.factors;
+  if (!sameFactor(f1, f2) || f1.length !== 3) return null;
+  const [l, c, r] = f1;
+  if (l.p !== 1 || l.c !== 1 || r.p !== 1 || r.c !== 1 || c.p !== 0 || c.c <= 0) return null;
+  return c.c;
+}
+
+/**
+ * BÂTIR la mesure du ممرّ, EN NOMBRES, au x de l'élève : « ▢ − ▢ = 4 × ▢ + 4 × ▢ » — le terrain entier, la نافورة, un شريط (a × x), un ركن
+ * (x × x). UNE tuile leurre : le côté a de la نافورة (son aire confondue avec son côté) ; si elle est déjà une tuile, (a + x)² (le ممرّ d'un seul
+ * côté), sinon a + 2x.
+ */
+export function ringBuildParts(s, x) {
+  const a = ringOf(s);
+  const outer = (a + 2 * x) ** 2; const center = a * a; const strip = a * x; const corner = x * x;
+  const expected = [outer, center, strip, corner].map(String);
+  const decoy = [a, (a + x) ** 2, a + 2 * x, 2 * strip].map(String).find((v) => !expected.includes(v));
+  return { a, x, expected, decoy, outer, center, strip, corner, ring: outer - center };
+}
+
+/**
+ * BÂTIR l'aire du ممرّ en TERMES : « (2x + a)² − a² = ▢ ▢ » — 4x² et +4ax ; deux tuiles leurres : +a² (la نافورة gardée) et +2ax (le ممرّ d'un
+ * seul côté : (a + x)² − a² = x² + 2ax). Les signes sont DANS les tuiles (« +28x »).
+ */
+export function ringExprParts(s) {
+  const a = ringOf(s);
+  const sq = termTex({ c: 4, p: 2 }); const lin = `+${termTex({ c: 4 * a, p: 1 })}`;
+  return { a, lhs: `(2x + ${a})^2 - ${a}^2`, expected: [sq, lin], decoys: [`+${a * a}`, `+${termTex({ c: 2 * a, p: 1 })}`] };
+}
+
+/** Ce que les constructions du ممرّ montrent, en plus du terrain (balayé par la règle « valeurs interdites par rôle »). */
+function ringShown(s, props, xs) {
+  const out = [];
+  const push = (role, v) => out.push(Object.freeze({ role, v: String(v) }));
+  if (!ringOf(s)) return out;
+  if (props.chains === 'ring' || props.chains === 'ringEasy') {
+    xs.forEach((x) => {
+      const p = ringBuildParts(s, x);
+      [...p.expected, p.decoy].forEach((v) => push('tile', v));
+      push('pitch', p.outer); push('center', p.center); push('ring', p.ring);
+    });
+  }
+  if (props.chains === 'ringTerms' || props.chains === 'ringTermsEasy') {
+    const p = ringExprParts(s);
+    [...p.expected, ...p.decoys].forEach((v) => push('term', v));
+    push('factor', `2x+${p.a}`);
+    push('expansion', `${p.expected[0]}${p.expected[1]}`);
+    p.decoys.forEach((d) => push('expansion', `${p.expected[0]}${p.expected[1]}${d}`));
+  }
   return out;
 }

@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { TEXT as TAHLIL } from '../tahlil-ibara/content/forbidden.js';
 import { TEXT as NASHR } from '../nashr-tabsit/content/forbidden.js';
 import { TEXT as SHAHIRA } from '../mutatabiqat-shahira/content/forbidden.js';
+import { ANSWER_TEXT as SYNTH } from '../wadiya-idmajiya-harfi/content/forbidden.js';
 
 /**
  * Unité 3 « الحساب الحرفي » — ce que l'élève LIT de la mission, de la carte des معارف et des données du manuel (modèle : l'unité 9,
@@ -42,6 +43,9 @@ const CLIMAX = {
   // mutatabiqat-shahira (module 5, les gradins sur deux côtés) : 27, 729, 720, 711, 171, 900, 180, x = 30, le facteur x − 3, les termes ±6x et la
   // constante ±9, les développements x² − 6x + 9, 6x − 9 et leurs leurres, l'ancre mentale 30 — content/forbidden.js › TEXT (2026-11-11).
   'mutatabiqat-shahira': SHAHIRA,
+  // la synthèse wadiya-idmajiya-harfi (2026-11-12, lecteur de mission) : le défi 🏆 RÉSOLU (4x² + 40x, x² + 10x − 11, (x − 1)(x + 11), −11,
+  // 144, x = 1 m) — content/forbidden.js › ANSWER_TEXT ; une synthèse n'a pas de content/exercises.js (trois fichiers lus, non quatre)
+  'wadiya-idmajiya-harfi': SYNTH,
 };
 const BOOK = [/الكتاب(?!ة)/, /تمرين\s*\d+\s*:/, /خطأً? مطبعي/];
 const lessonOf = (path) => path.split('/')[1];
@@ -50,7 +54,7 @@ const hit = (s) => TAHLIL.some((re) => re.test(s));
 describe('unit 3 — mission strings and knowledge maps', () => {
   it('found the lessons and the peer sheets', () => {
     expect(Object.keys(configs).length).toBeGreaterThanOrEqual(4);
-    expect(Object.keys(raw).filter((path) => CLIMAX[lessonOf(path)]).length).toBe(4 * Object.keys(CLIMAX).length);
+    expect(Object.keys(raw).filter((path) => CLIMAX[lessonOf(path)]).length).toBe(4 * Object.keys(CLIMAX).length - 1);
     expect(Object.keys(peers).length).toBeGreaterThanOrEqual(10);
   });
   it('the signature regexes catch what they must (negative controls)', () => {
