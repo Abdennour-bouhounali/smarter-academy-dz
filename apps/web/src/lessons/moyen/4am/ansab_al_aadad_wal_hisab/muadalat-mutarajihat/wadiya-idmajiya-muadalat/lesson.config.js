@@ -19,8 +19,41 @@ export const LESSON_CONFIG = {
   unit: 'muadalat-mutarajihat',
   unitTitle: 'معادلات ومتراجحات من الدرجة الأولى بمجهول واحد',
   sequentialUnlock: true,
+  // Regard de l'élève : 'mission' (la synthèse de l'unité 4, 2026-11-12 — le propriétaire : « go ahead » pour les synthèses des unités 1–4, recette
+  // PROVISOIRE de la synthèse, pilote `wadiya-idmajiya-talis` ; docs/reports/MISSION_ROLLOUT_PROGRESS.md › « The synthesis recipe ») ; l'enseignant
+  // et le mode classe gardent la page. Champs du moteur : LESSON_DEVELOPMENT_GUIDE › « Synthesis in the mission player ».
+  studentView: 'mission',
+  // LA MISSION d'une synthèse : rien à gagner — les clés des leçons de l'unité sont à l'élève DÈS le premier écran ; chaque وضعية تدريبية allume
+  // les clés qu'elle UTILISE. Pas de point d'étape ; « وضعية الوحدة » (module 7) puis « التحدّي 🏆 » (module 8). L'ouverture n'a aucun chiffre ni
+  // la وضعية (balayage par rôle : content/forbidden.js, content/mission.test.js). La scène : le guichet du club (`club-counter`).
+  mission: {
+    scene: 'club-counter',
+    title: 'مهمّة الوحدة',
+    opening: {
+      text: 'عند باب النادي لوحتان: ثمن لكل حصّة، أو اشتراك يُدفع مرّة واحدة ثم ثمن أصغر لكل حصّة. أيّهما أفضل لك؟ مفاتيح الوحدة كلّها معك.',
+      cta: 'أجرّب',
+    },
+    toolsOwned: true,
+    tools: [
+      // les ids sont des connaissances des leçons de l'unité ; `usedIn` : les modules qui s'en servent
+      { id: 'hal-ax-b', icon: '✂️', label: 'حلّ معادلة من الدرجة الأولى', usedIn: [3, 4] },
+      { id: 'khassiya-jidaa-maadum', icon: '🎯', label: 'خاصية الجداء المعدوم', usedIn: [2] },
+      { id: 'qawaid-ittijah', icon: '🔄', label: 'قواعد اتجاه المتراجحة', usedIn: [1, 2, 4, 5, 6, 7] },
+      { id: 'tarrid-mutarajiha', icon: '📏', label: 'مشكلة تترجمها متراجحة', usedIn: [1, 3, 7] },
+      { id: 'tahaqquq-waqi', icon: '✅', label: 'حلّ يلائم الواقع', usedIn: [1, 5, 7] },
+    ],
+    checkpoints: [],
+    climaxModule: 8,
+    stationLabels: { 7: 'وضعية الوحدة', 8: 'التحدّي 🏆' },
+    trainings: [1, 2, 3, 4, 5, 6],
+    hideStars: true,
+    // la somme HONNÊTE des modules (6 + 38 + 28 + 6), en deux séances ; le catalogue (`estimatedDurationMin`) n'est pas touché
+    durationMin: 78,
+    sittings: 2,
+    resumeInside: true,
+  },
   title: 'أدمج تعلّماتي — المعادلات والمتراجحات',
-  description: 'ست وضعيات تدريبية (مكتبة، ورقة نادي الرياضيات، حصّالتان، حديقة، رحلة، سجّادتان) تعبّئ المعادلات والجداء المعدوم والمتراجحات وتمثيل حلولها وترييض النص، ثم وضعية المسبح البلدي: صيغتان للاشتراك (75 دينارًا للحصة، أو 560 دينارًا سنويًا و 5 دنانير للحصة) نترجمهما بعبارتين حرفيتين ونقارنهما بمتراجحة، تحليلها ثم اختبار الوضعية النهائية.',
+  description: 'ست وضعيات تدريبية (مكتبة، ورقة نادي الرياضيات، حصّالتان، حديقة، رحلة، سجّادتان) تعبّئ المعادلات والجداء المعدوم والمتراجحات وتمثيل حلولها وترييض النص، ثم وضعية الوحدة وتحليلها، ثم التحدّي.',
   level: 'moyen',
   grade: '4am',
   chapter: 'ansab_al_aadad_wal_hisab',
@@ -43,6 +76,9 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
+  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : elle parle EN LETTRES — aucun nombre de la وضعية ni du défi
+  // (knowledgeGraph.js, content/mission.test.js).
+  knowledgeMapOpen: true,
   // Ce que la situation mobilise, diagnostiqué par « أستعدّ » (affirmations de la
   // plateforme : les items du manuel sont ceux des leçons 1–3) : résoudre une équation (درس 1), le produit
   // nul (درس 2), résoudre une inéquation (درس 3) et la représenter (درس 3), traduire un texte (درس 4),
@@ -56,33 +92,32 @@ export const LESSON_CONFIG = {
     { kind: 'situation', code: 'wadiya-3', module: 3, title: 'وضعية 3 — حصّالتا سمير وياسين: 1200 + 150x و 800 + 250x', learningPointIds: ['4am_wadiya-idmajiya-muadalat_P2', '4am_wadiya-idmajiya-muadalat_P1'] },
     { kind: 'situation', code: 'wadiya-4', module: 4, title: 'وضعية 4 — حديقة يوم الشجرة: محيط 4x + 16', learningPointIds: ['4am_wadiya-idmajiya-muadalat_P2', '4am_wadiya-idmajiya-muadalat_P1'] },
     { kind: 'situation', code: 'wadiya-5', module: 5, title: 'وضعية 5 — رحلة النادي: شرطان على عدد المشاركين', learningPointIds: ['4am_wadiya-idmajiya-muadalat_P2', '4am_wadiya-idmajiya-muadalat_P1'] },
-    { kind: 'situation', code: 'wadiya-6', module: 6, title: 'وضعية 6 — سجّادتا المصلّى: (x + 4)² و x(x + 10)', learningPointIds: ['4am_wadiya-idmajiya-muadalat_P1'] },
+    { kind: 'situation', code: 'wadiya-6', module: 6, title: 'وضعية 6 — سجّادتا المصلّى: (x + 2)² و x(x + 6)', learningPointIds: ['4am_wadiya-idmajiya-muadalat_P1'] },
     { kind: 'situation', code: 'situation-masbah-baladi', module: 7, title: 'وضعية: المسبح البلدي', learningPointIds: ['4am_wadiya-idmajiya-muadalat_P2', '4am_wadiya-idmajiya-muadalat_P1'], sourceElementIds: ['situation'] },
-    // Module 7 — la course des deux formules (growth-race, réutilisé de « ترييض مشكلة ») :
-    // l'élève CONSTRUIT chaque formule en portant « × x » sur ce qui se paie à chaque séance,
-    // puis ÉTIRE x (le nombre de séances) et voit les deux coûts se rejoindre puis se dépasser.
+    // Module 7 — le labo de l'unité (growth-race) sur deux tarifs FRÈRES (content/rounds.js) : l'élève CONSTRUIT chaque formule en portant « × x »
+    // sur ce qui se paie à chaque séance, puis ÉTIRE x. Lecteur : deux manches ; page : les deux mêmes tarifs, deux niveaux.
     {
-      kind: 'manipulation', code: 'growth-race-masbah-hayy', type: 'growth-race', module: 7, level: 'beginner',
-      title: 'مسبح الحيّ: 50x أم 200 + 10x؟',
-      objective: 'المفاضلة بين صيغتين: نترجم كل صيغة بعبارة حرفية بدلالة عدد الحصص x، ونبحث عن الأعداد x التي تجعل إحداهما أقل تكلفة',
+      kind: 'manipulation', code: 'growth-race-qaat-riyada', type: 'growth-race', module: 7, level: 'beginner',
+      title: 'قاعة الرياضة: 60x أم 300 + 10x؟',
+      objective: 'المفاضلة بين صيغتين: نترجم كل صيغة بعبارة حرفية بدلالة عدد الحصص x، ونبحث عن أصغر عدد x تجعل فيه الثانية أقلّ تكلفة',
       autonomy: '',
       experience: { type: 'platform_adaptation', reason: 'smaller_numbers_for_first_contact', theme: 'pool' },
       learningPointIds: ['4am_wadiya-idmajiya-muadalat_P2'],
       sourceElementIds: ['situation'],
     },
     {
-      kind: 'manipulation', code: 'growth-race-masbah-baladi', type: 'growth-race', module: 7, level: 'advanced',
-      title: 'المسبح البلدي: 75x أم 560 + 5x؟',
-      objective: 'المفاضلة بين صيغتين: نترجم كل صيغة بعبارة حرفية بدلالة عدد الحصص x، ونبحث عن الأعداد x التي تجعل إحداهما أقل تكلفة',
-      autonomy: 'أرقام الكتاب كما هي: لا يلتقي الثمنان إلا بعد ثماني حصص، فيختار التلميذ بنفسه مدى التجريب ويقرّر متى تكفي محاولاته قبل لحظة التساوي وبعدها',
-      experience: { type: 'textbook', reason: '', theme: 'pool' },
+      kind: 'manipulation', code: 'growth-race-nadi-rimaya', type: 'growth-race', module: 7, level: 'advanced',
+      title: 'نادي الرماية: 45x أم 150 + 15x؟',
+      objective: 'المفاضلة بين صيغتين: نترجم كل صيغة بعبارة حرفية بدلالة عدد الحصص x، ونبحث عن أصغر عدد x تجعل فيه الثانية أقلّ تكلفة',
+      autonomy: 'ما توفّره الصيغة الثانية في كل حصّة يسترجع الاشتراك عند لحظة التساوي: يبني التلميذ هذه المساواة بالأعداد، ثم يقرّر أيّ عدد هو الجواب',
+      experience: { type: 'platform_adaptation', reason: 'multiple_representations', theme: 'pool' },
       learningPointIds: ['4am_wadiya-idmajiya-muadalat_P2', '4am_wadiya-idmajiya-muadalat_P1'],
       sourceElementIds: ['situation'],
     },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
-      title: 'أستعدّ', desc: 'سبع عبارات: صحيح أم خاطئ؟ المعادلة، الجداء المعدوم، المتراجحة وتمثيل حلولها، الترجمة، والتحليل.',
+      title: 'أستعدّ', desc: 'عشر عبارات: صحيح أم خاطئ؟ المعادلة، الجداء المعدوم، المتراجحة والترييض — من السهل إلى الأصعب.',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     // Les وضعيات d'entraînement (track: 'problem') : practice_lab, avant la situation du مسبح (module 7)
     // et le test (module 8, toujours ouvert). Elles comptent dans la complétion, jamais dans la maîtrise —
@@ -112,9 +147,9 @@ export const LESSON_CONFIG = {
       stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_wadiya-idmajiya-muadalat_P1', '4am_wadiya-idmajiya-muadalat_P2'],
       color: 'rose', style: 'featured', estimatedMin: 6, difficulty: 3, actionText: 'أحلّ الوضعية' },
     { id: '07', number: 7, slug: 'al-wadiya', path: `${LESSON_BASE_PATH}/al-wadiya`,
-      title: 'تحليل الوضعية النهائية للاختبار', desc: 'المسبح البلدي: ابنِ عبارتي الصيغتين، مدّد عدد الحصص في السباق، واكتب المتراجحة التي تقارن بينهما — دون حلّ الوضعية بعد.',
+      title: 'الوضعية وتحليلها', desc: 'جولتان (قاعة الرياضة ثم نادي الرماية)، ثم وضعية الوحدة: المعطيات، المطلوب، المتراجحة، وورقة زكريا — دون حلّها بعد.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_wadiya-idmajiya-muadalat_P2', '4am_wadiya-idmajiya-muadalat_P1'],
-      color: 'amber', style: 'featured', estimatedMin: 16, difficulty: 3, actionText: 'أحلّل الوضعية' },
+      color: 'amber', style: 'featured', estimatedMin: 28, difficulty: 3, actionText: 'أحلّل الوضعية' },
     { id: '08', number: 8, slug: 'ahill', path: `${LESSON_BASE_PATH}/ahill`,
       title: 'وضعية الاختبار النهائي', desc: 'خمس مراحل تُقيَّم: عبارتا الصيغتين، المتراجحة، حلها، لحظة التساوي، ثم الصيغة الأفضل.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 4, actionText: 'أحلّ' },

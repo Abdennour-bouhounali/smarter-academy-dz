@@ -407,10 +407,11 @@ export default function GrowthRace({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const coachStep = useMemo(() => coachRaw, [coachRaw?.id, coachRaw?.target]);
   const coach = useLabCoach({
-    lab: 'growth-race', step: coachStep, text: coachStep ? t(`manipulation.growthRace.coach.${coachStep.id}`) : '',
+    // deux TARIFS (la synthèse de l'unité, 2026-11-12) : les mots du geste parlent de séances et de prix, jamais de « qui grandit »
+    lab: 'growth-race', step: coachStep, text: coachStep ? t(`manipulation.growthRace.coach.${model.op === 'mul' ? 'pool.' : ''}${coachStep.id}`) : '',
     labels: { hide: t('manipulation.common.coach.hide'), show: t('manipulation.common.coach.show'), ok: t('manipulation.common.coach.ok'), stop: t('manipulation.common.coach.stop') },
   });
-  const hideEq = gameScreen && !racing && !!pc?.build.includes('buildEq') && !doneIds.includes('build');
+  const hideEq = gameScreen && !racing && !!(pc?.build.includes('buildEq') || pc?.build.includes('ineqBuild')) && !doneIds.includes('build');
   const pk = (key, o) => t(`manipulation.growthRace.player.${key}`, o);
 
   /* ── la course : les colonnes ── */
@@ -630,7 +631,7 @@ export default function GrowthRace({
           {!gameScreen && cp.node}
           {gameScreen && choices?.length > 0 && (
             <div className="flex flex-wrap items-center justify-center gap-1.5" role="group" aria-labelledby={`${choicesId}-l`} data-gr-choices>
-              <span id={`${choicesId}-l`} className="text-sm font-bold text-slate-600">{pk('choicesLabel')}</span>
+              <span id={`${choicesId}-l`} className="text-sm font-bold text-slate-600">{pk(model.op === 'mul' ? 'pool.choicesLabel' : 'choicesLabel')}</span>
               {choices.map((c, i) => {
                 const [cl, cr, cm] = c.split('|');
                 const on = cl === left && cr === right;
@@ -638,7 +639,7 @@ export default function GrowthRace({
                   <button key={c} type="button" data-gr-choice={i} aria-pressed={on} aria-disabled={locked || undefined}
                     onClick={() => { if (!lockedRef.current && !on) { state.setNumbers({ left: cl, right: cr }); setMaxOver(Number(cm)); setExprSaid(c); } }}
                     className="min-h-[44px] rounded-xl border-2 border-slate-300 bg-white px-3 text-sm font-black text-slate-700 aria-pressed:border-indigo-600 aria-pressed:bg-indigo-50 aria-pressed:text-indigo-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2">
-                    {pk('choiceN', { n: i + 1 })}<span className="sr-only"> {cl.replace(/\+/g, ' + ')} = {cr.replace(/\+/g, ' + ')}</span>
+                    {pk(model.op === 'mul' ? 'pool.choiceN' : 'choiceN', { n: i + 1 })}<span className="sr-only"> {cl.replace(/\+/g, ' + ')} {model.op === 'mul' ? pk('pool.versus') : '='} {cr.replace(/\+/g, ' + ')}</span>
                   </button>
                 );
               })}
@@ -1211,6 +1212,52 @@ export const PQ = {
     const o = { x: bad.x, left: L.valueText(bad.left), right: L.valueText(bad.right), a };
     const list = [{ text: q('meetRight'), correct: true }, { text: q('meetOnce'), why: q('meetOnceWhy', o) }, { text: q('meetAlways'), why: q('meetAlwaysWhy', o) }];
     return { id: 'rule', kind: 'choice', prompt: q('prompt'), options: rot(list, 1), hints: [q('hint1'), q('hint2')], explain: q('explainMeet') };
+  },
+  // ── la synthèse de l'unité 4 (wadiya-idmajiya-muadalat, 2026-11-12, ADDITIF) : deux TARIFS « ax » contre « f + bx » ──
+  ineqBuild: (lab, k, c, tx) => {
+    const spec = P.ineqSpec(lab.model);
+    const q = (key, o) => M(tx(`manipulation.growthRace.player.pool.ineqBuild.${key}`, o));
+    return {
+      id: 'ineqBuild', kind: 'build', ops: spec.ops, expected: spec.expected, accept: spec.accept, tiles: spec.tiles, render: renderTile,
+      slots: [0, 1, 2].map((i) => tx(`manipulation.growthRace.player.pool.ineqBuild.slot.${i}`)),
+      prompt: q('prompt', SIDE(c)),
+      hints: [q('hint1', { decoy: tex(spec.decoy) }), q('hint2', SIDE(c))],
+      explain: q('explain', { ...SIDE(c), ineq: tex(`${spec.expected[0]} + ${spec.expected[1]} < ${spec.expected[2]}`) }),
+    };
+  },
+  wherePool: (lab, k, c, tx) => {
+    const s = L.toNumber(c.sol.x);
+    const xs = lab.trials.map((tr) => tr.x);
+    const before = Math.max(-1, ...xs.filter((v) => v < s)); const after = Math.min(Infinity, ...xs.filter((v) => v > s));
+    const opts = [before >= 0 ? before : s + 2, s, Number.isFinite(after) ? after : s + 1];
+    const e = L.trialAt(lab.model, s);
+    const q = (key, o) => M(tx(`manipulation.growthRace.player.pool.wherePool.${key}`, o));
+    return {
+      id: 'wherePool', kind: 'fill',
+      fields: [{ label: q('prompt', SIDE(c)), options: rot(opts, s % 3), expected: String(s), render: chipRender }],
+      hints: [q('hint1'), q('hint2', { a: opts[0], b: opts[2] })], explain: q('explain', { x: s, v: L.valueText(e.left) }),
+    };
+  },
+  firstPool: (lab, k, c, tx) => {
+    const spec = P.firstSpec(lab.model);
+    const q = (key, o) => M(tx(`manipulation.growthRace.player.pool.firstPool.${key}`, o));
+    const at = (x) => { const tr = L.trialAt(lab.model, x); return { l: L.valueText(tr.left), r: L.valueText(tr.right) }; };
+    const o = { ...SIDE(c), n: spec.n, first: spec.first, eq: spec.equal, l: at(spec.first).l, r: at(spec.first).r };
+    return {
+      id: 'firstPool', kind: 'fill',
+      fields: [{ label: q('prompt', SIDE(c)), options: rot(spec.options, 1), expected: String(spec.first), render: chipRender }],
+      hints: [q('hint1', o), q('hint2', o)], explain: q('explain', o),
+    };
+  },
+  savingBuild: (lab, k, c, tx) => {
+    const spec = P.savingSpec(lab.model);
+    const q = (key, o) => M(tx(`manipulation.growthRace.player.pool.savingBuild.${key}`, o));
+    const o = { a: spec.a, b: spec.b, f: spec.f, d: spec.d, n: spec.n };
+    return {
+      id: 'savingBuild', kind: 'build', ops: spec.ops, expected: spec.expected, accept: spec.accept, tiles: spec.tiles, render: renderTile,
+      slots: [0, 1, 2].map((i) => tx(`manipulation.growthRace.player.pool.savingBuild.slot.${i}`)),
+      prompt: q('prompt', o), hints: [q('hint1', o), q('hint2', o)], explain: q('explain', o),
+    };
   },
   rulePast: (lab, k, c, tx) => {
     const q = (key, o) => M(tx(`manipulation.growthRace.player.q.rule.${key}`, o));

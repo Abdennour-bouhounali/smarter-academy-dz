@@ -29,6 +29,7 @@ import PartyTableScene from './PartyTableScene';
 import ApronStoreScene from './ApronStoreScene';
 import RugMarketScene from './RugMarketScene';
 import FountainPlazaScene from './FountainPlazaScene';
+import ClubCounterScene from './ClubCounterScene';
 
 /**
  * LA SCÈNE d'une mission (rollout 2026-11-08) : chaque leçon dessine la sienne, choisie par `mission.scene` dans sa config
@@ -85,6 +86,8 @@ const SCENES = {
   'rug-market': RugMarketScene,
   // unité 3, la synthèse wadiya-idmajiya-harfi (2026-11-12) : la place à la fontaine — une نافورة carrée et son ممرّ dallé de même largeur tout autour
   'fountain-plaza': FountainPlazaScene,
+  // unité 4, la synthèse wadiya-idmajiya-muadalat (2026-11-12) : le guichet du club — deux panneaux de prix aux étiquettes vides, tickets et abonnement
+  'club-counter': ClubCounterScene,
 };
 
 function CourtyardBigScene(props) {

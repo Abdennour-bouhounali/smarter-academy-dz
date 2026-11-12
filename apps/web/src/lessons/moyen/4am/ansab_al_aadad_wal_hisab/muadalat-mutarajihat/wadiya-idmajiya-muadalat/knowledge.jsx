@@ -1,6 +1,6 @@
 import React from 'react';
 import MathText from '../../../../../common/components/MathText';
-import { REMARKS, SITUATION } from './content/textbook';
+import { REMARKS, METHOD_LETTERS } from './content/textbook';
 
 // La carte progressive de la leçon (structure, relations, aides) — KNOWLEDGE_MAP.md, Part A.
 export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
@@ -13,7 +13,8 @@ export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
  *   mutarajiha-mufadala  module 7 — « meilleure » = « coûte moins » : l'inéquation qui départage
  *   tafsir-natija        module 7 — interpréter : x naturel, la valeur d'égalité n'est pas la réponse
  *   tariqat-wadiya       module 7 — la démarche complète en trois étapes
- * La SOLUTION du مسبح (9 séances, égalité à 8) n'est dans aucun item : c'est la réponse de l'évaluation.
+ * La وضعية du défi n'est dans aucun item, ni ses nombres (la synthèse dans le lecteur de mission, 2026-11-12 : la carte et les cartes de mémoire
+ * sont ouvertes dès le premier écran) — elles parlent EN LETTRES (a, b, f) et sur des nombres frais (content/forbidden.js, content/mission.test.js).
  */
 /** `memo` — la FICHE DE MÉMOIRE (MemoCard) : ce qui CHANGE est en rouge (`R`). */
 const R = (x) => `\\textcolor{#e11d48}{${x}}`;
@@ -25,13 +26,13 @@ export const LESSON_KNOWLEDGE = {
         memo: {
           rule: `p\\times x\\ +\\ ${R('f')}`,
           hook: 'ما يتكرّر نضربه والثابت نضيفه',
-          example: `560+5x`,
+          example: `120+8x`,
           trap: 'ضرب الاشتراك في عدد الحصص',
           exam: 'أسمّي x عدد الحصص ثم أترجم كل صيغة',
           chip: `px+f`,
           quiz: [
-            { q: 'ترجمة «560 دج مرّة واحدة و 5 دج في كل حصة»:', options: ['$560x+5$', '$560+5x$', '$(560+5)x$'], correct: 1 },
-            { q: 'ثمن $x$ حصة بـ 75 دج للحصة:', options: ['$75+x$', '$75x$', '$\\dfrac{x}{75}$'], correct: 1 },
+            { q: 'ترجمة «240 دج مرّة واحدة و 6 دج في كل حصة»:', options: ['$240x+6$', '$240+6x$', '$(240+6)x$'], correct: 1 },
+            { q: 'ثمن $x$ حصة بـ 35 دج للحصة:', options: ['$35+x$', '$35x$', '$\\dfrac{x}{35}$'], correct: 1 },
           ],
         },
         body: (
@@ -46,13 +47,13 @@ export const LESSON_KNOWLEDGE = {
         memo: {
           rule: `\\begin{aligned}x&=1,2,3,\\ldots\\\\A(x)&\\ ?\\ B(x)\\end{aligned}`,
           hook: 'جرّب عدة أعداد ثم قارن',
-          example: `75\\times10=750`,
+          example: `35\\times10=350`,
           trap: 'التجريب بعدد واحد فقط',
           exam: 'أنظّم جدولًا لقيم x وتكلفتي الصيغتين',
           chip: `A(x)\\ ?\\ B(x)`,
           quiz: [
-            { q: 'من أجل $x=10$ الصيغة $560+5x$ تساوي:', options: ['$565$', '$610$', '$5650$'], correct: 1 },
-            { q: 'من أجل $x=10$ الصيغة $75x$ تساوي:', options: ['$85$', '$750$', '$7{,}5$'], correct: 1 },
+            { q: 'من أجل $x=10$ الصيغة $240+6x$ تساوي:', options: ['$246$', '$300$', '$2460$'], correct: 1 },
+            { q: 'من أجل $x=10$ الصيغة $35x$ تساوي:', options: ['$45$', '$350$', '$3{,}5$'], correct: 1 },
           ],
         },
         body: <p><MathText>{REMARKS.tajrib}</MathText></p> },
@@ -110,7 +111,7 @@ export const LESSON_KNOWLEDGE = {
         },
         body: (
           <ol className="list-decimal ms-5 space-y-1">
-            {SITUATION.analysis.map((a) => <li key={a.label}><strong>{a.label}</strong>: <MathText>{a.text}</MathText></li>)}
+            {[METHOD_LETTERS.read, METHOD_LETTERS.strategy, METHOD_LETTERS.execute].map((text, i) => <li key={METHOD_LETTERS.steps[i]}><strong>{METHOD_LETTERS.steps[i]}</strong>: <MathText>{text}</MathText></li>)}
           </ol>
         ) },
     ],
