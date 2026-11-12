@@ -57,7 +57,7 @@ export const LESSON_KNOWLEDGE = {
         body: (
           <div className="space-y-1">
             <p><MathText>{REMARKS.twoWays}</MathText></p>
-            <p><MathText>{'$(a + 2x)^2 - a^2$ أو $4 \\times ax + 4 \\times x^2$'}</MathText> — والكتابتان لهما النشر المبسّط نفسه.</p>
+            <p><MathText>{'$(a + 2x)^2 - a^2$ أو $4 \\times ax + 4 \\times x^2$'}</MathText> — والعبارتان لهما النشر المبسّط نفسه.</p>
           </div>
         ) },
       { id: 'musaada-jadaa', type: 'regles', title: 'الشكل المحلّل المعطى',
