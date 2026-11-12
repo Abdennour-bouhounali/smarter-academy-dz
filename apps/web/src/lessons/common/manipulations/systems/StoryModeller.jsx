@@ -19,6 +19,8 @@ import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
 import { playSfx } from '../../utils/playEffect';
 import { bidi } from '../../../../utils/bidi';
 import * as L from '../logic/storyModeller';
+import { useInMissionPlayer } from '../../mission/missionPlayerContext';
+import StoryModellerPlayer from './StoryModellerPlayer';
 
 /**
  * story-modeller — DE L'HISTOIRE À LA JUMLA (unité 5 « جمل معادلتين من الدرجة الأولى بمجهولين »,
@@ -139,7 +141,17 @@ import * as L from '../logic/storyModeller';
 
 const LETTER_COLORS = ['#2563EB', '#E11D48'];
 
-export default function StoryModeller({
+/**
+ * LECTEUR DE MISSION (rollout 2026-11-12, unité 5 leçon 3 `mushkilat-jumla` ; verdict X7) : dans le lecteur le labo est `StoryModellerPlayer`
+ * (manches, questions sur ce que l'élève FAIT, prédictions, guide, aucune barre de défilement) ; partout ailleurs (page, enseignant, mode classe,
+ * la synthèse `wadiya-idmajiya-jumal`) c'est la page ci-dessous, INCHANGÉE.
+ */
+export default function StoryModeller(props) {
+  const inPlayer = useInMissionPlayer();
+  return inPlayer ? <StoryModellerPlayer {...props} /> : <StoryModellerPage {...props} />;
+}
+
+function StoryModellerPage({
   system: system0, theme = 'museum', unknowns, named = false, facts, chips, story, answer, startWith = 'model',
   title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false,
   onModel, onSolved, onTrial, onCheckpoint, onFinished,

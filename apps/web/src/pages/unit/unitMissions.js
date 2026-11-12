@@ -15,6 +15,8 @@
  * unitMissions.test.js vérifie que chaque leçon a son icône et son libellé, que chaque `after` est une leçon de l'unité, que les nombres
  * sont dans le texte, et qu'aucune ligne ne renvoie au manuel.
  */
+import { ABU_KAMIL } from '../../lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/_unit/abuKamil.js';
+
 export const UNIT_MISSIONS = Object.freeze({
   'aadad-tabiiya-natiqa': {
     icons: {
@@ -175,6 +177,44 @@ export const UNIT_MISSIONS = Object.freeze({
     history: {
       title: 'الخوارزمي (نحو 780 – 850)',
       text: 'عالم رياضيات وفلك عاش في بغداد وألّف «المختصر في حساب الجبر والمقابلة». «الجبر» أن تنقل حدًّا مطروحًا إلى الطرف الآخر فيصير مضافًا، و«المقابلة» أن تحذف من الطرفين ما تساوى فيهما — كما تفعل بكفّتي الميزان.',
+    },
+  },
+  // Unité 5 (2026-11-12) : ses trois leçons sont converties (merges 34091dd3, 2002c3c8, f9c88b25 sur integrate-unit5) ; la synthèse suit
+  // (décision du propriétaire du 2026-11-12). Icônes = l'objet de la scène de chaque leçon (le guichet de l'état civil, les étiquettes de prix
+  // du kiosque, le guichet du musée) et 🧩 la synthèse. Le défi est le تحدّ de l'unité (les pièces de la classe), RÉÉCRIT avec les nombres RÉSERVÉS
+  // par le conseil (verdict X2) : 23 caisses de dattes de 5 kg et de 2 kg, 82 kg en tout — présenté par ملاك, le seul prénom réservé à cette page.
+  // La réponse (12 ; 11), 3x = 36, n'est jamais écrite ici. L'aparté est la ligne vérifiée de `_unit/abuKamil.js` (un seul propriétaire, X9).
+  // Cinq clés pour trois leçons : les leçons 1 et 2 en donnent deux chacune.
+  'jumal-muadalatayn': {
+    icons: {
+      'mafhum-jumla': '🏛️',
+      'hall-jabri': '🏷️',
+      'mushkilat-jumla': '🎟️',
+      'wadiya-idmajiya-jumal': '🧩',
+    },
+    short: {
+      'mafhum-jumla': 'مفهوم جملة معادلتين',
+      'hall-jabri': 'الحل الجبري',
+      'mushkilat-jumla': 'حل مشكلات',
+      'wadiya-idmajiya-jumal': 'أدمج تعلّماتي',
+    },
+    challenge: {
+      lead: 'عبّأت تعاونية فلاحية 23 صندوقًا من التمر، بعضها يزن 5 كغ والباقي 2 كغ ، فكان وزنها كلّها 82 كغ . كم صندوقًا من كل نوع؟',
+      full: 'تساعد ملاك أباها في تعاونية فلاحية بعد جني التمر. عبّأوا 23 صندوقًا: صناديق كبيرة يزن كلّ منها 5 كغ وصناديق صغيرة يزن كلّ منها 2 كغ ، ووزنوا الحمولة كلّها فكانت 82 كغ . نسيت ملاك أن تعدّ الصناديق الكبيرة.',
+      question: 'كم صندوقًا كبيرًا وكم صندوقًا صغيرًا عبّأت التعاونية؟ سمِّ المجهولين، واكتب الجملة، ثم حلّها وتحقّق.',
+      numbers: [23, 82],
+      solvedAfter: 'hall-jabri',
+    },
+    keys: [
+      { icon: '🧷', label: 'جملة معادلتين وحلّها', after: 'mafhum-jumla' },
+      { icon: '🔎', label: 'اختبار ثنائية', after: 'mafhum-jumla' },
+      { icon: '🔁', label: 'طريقة التعويض', after: 'hall-jabri' },
+      { icon: '➕', label: 'طريقة الجمع', after: 'hall-jabri' },
+      { icon: '🧭', label: 'ترجمة مشكلة بجملة', after: 'mushkilat-jumla' },
+    ],
+    history: {
+      title: `أبو كامل (${ABU_KAMIL.dates})`,
+      text: ABU_KAMIL.line,
     },
   },
   // Unité 9 (2026-11-10) : ses trois leçons ET sa synthèse sont converties (50e5f844, 76a4545b, 9f7fb170, puis la synthèse — le pilote du recette

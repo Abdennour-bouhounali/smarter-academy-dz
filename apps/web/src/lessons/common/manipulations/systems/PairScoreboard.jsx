@@ -17,6 +17,8 @@ import { playSfx } from '../../utils/playEffect';
 import MathText from '../../components/MathText';
 import * as L from '../logic/pairScoreboard';
 import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
+import { useInMissionPlayer } from '../../mission/missionPlayerContext';
+import PairScoreboardPlayer from './PairScoreboardPlayer';
 
 /**
  * pair-scoreboard — LE TABLEAU DES DEUX CONDITIONS (unité 5 « جمل معادلتين من الدرجة الأولى
@@ -105,7 +107,17 @@ import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
  * [data-pair-verdict=<kind>], [data-pair-refused], [data-pair-world], [data-pair-cell=x|y|empty],
  * [data-pair-overflow], [data-pair-value], [data-pair-after], [data-deco], [data-pair-formal].
  */
-export default function PairScoreboard({
+/**
+ * LECTEUR DE MISSION (rollout 2026-11-12, unité 5 leçon 1 `mafhum-jumla` ; conseil du 2026-11-11, verdict L1 et X7) : dans le lecteur le labo est
+ * `PairScoreboardPlayer` (manches, jauges lues au relâchement, manche couverte, questions sur ce que l'élève FAIT, prédictions, guide) ; partout
+ * ailleurs (page, enseignant, mode classe) c'est la page ci-dessous, INCHANGÉE. Les dessins sont exportés d'ici, pas déplacés.
+ */
+export default function PairScoreboard(props) {
+  const inPlayer = useInMissionPlayer();
+  return inPlayer ? <PairScoreboardPlayer {...props} /> : <PairScoreboardPage {...props} />;
+}
+
+function PairScoreboardPage({
   system: system0 = 'x+y=32|2(x-5)=y-3', theme, ranges, title, lead, mission, level, levels: withLevels = true,
   checkpoints: cpOn = true, initialMode = 'student', allowModeSwitch = false, onTrial, onCheckpoint, onSolved, onFinished,
 }) {
@@ -645,7 +657,7 @@ function World({ lab, X, Y, w, k, grid, legendRef }) {
 }
 
 /** La grandeur de l'équation (2) d'un monde « count » (points, dinars), dans la jauge (2). */
-function ValueBar({ lab, X, Y }) {
+export function ValueBar({ lab, X, Y }) {
   const b = L.valueBar(lab.shape, X, Y);
   const W0 = 200;
   const sc = (v) => (v / b.top) * (W0 - 8);
@@ -678,7 +690,7 @@ function AfterBars({ lab, X, Y }) {
 }
 
 /* ── les objets dessinés (SVG paramétré, jamais une image) ── */
-function MatchCard({ kind }) {
+export function MatchCard({ kind }) {
   const win = kind === 'x';
   return (
     <svg viewBox="0 0 24 24" width="100%" height="100%" aria-hidden="true" focusable="false">
@@ -695,7 +707,7 @@ function MatchCard({ kind }) {
   );
 }
 
-function Coin({ kind, shape }) {
+export function Coin({ kind, shape }) {
   const big = kind === 'x';
   const v = big ? shape.p : shape.q;
   return (
@@ -734,7 +746,7 @@ function Person({ kind }) {
  * flotte. Service : les aiguilles de l'horloge tournent. Cagnotte : la pièce tourne.
  * `aria-hidden`, hors du clavier, immobile sous `prefers-reduced-motion`.
  */
-function Deco({ world }) {
+export function Deco({ world }) {
   const reduce = useReducedMotion();
   const [taps, setTaps] = useState(0);
   const tap = () => { if (!reduce) setTaps((n) => n + 1); };

@@ -17,6 +17,8 @@ import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
 import { playSfx } from '../../utils/playEffect';
 import MathText from '../../components/MathText';
 import { bidi } from '../../../../utils/bidi';
+import { useInMissionPlayer } from '../../mission/missionPlayerContext';
+import EliminationCardsPlayer from './EliminationCardsPlayer';
 import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 import * as E from '../logic/eliminationCards';
 
@@ -112,7 +114,7 @@ const TONE = {
 };
 
 /** Une tuile x / y : pleine pour +1, pointillée rose pour −1. */
-function Tile({ v, negative, label, crossed = false }) {
+export function Tile({ v, negative, label, crossed = false }) {
   return (
     <span data-eq-tile={v} data-negative={negative ? 'true' : undefined}
       className={`relative inline-flex items-center justify-center rounded-md border-2 font-mono font-extrabold leading-none ${negative ? 'border-dashed border-rose-500 bg-rose-50 text-rose-700' : TONE[v].on} ${crossed ? 'opacity-50' : ''}`}
@@ -167,7 +169,16 @@ function KioskDeco() {
   );
 }
 
-export default function EliminationCards({
+/**
+ * LECTEUR DE MISSION (rollout 2026-11-12, unité 5 leçon 2 `hall-jabri` ; conseil du 2026-11-11, verdict X7) : dans le lecteur le labo est
+ * `EliminationCardsPlayer` (manches, questions, prédictions, guide) ; la page (enseignant, mode classe) reste `EliminationCardsPage`, inchangée.
+ */
+export default function EliminationCards(props) {
+  const inPlayer = useInMissionPlayer();
+  return inPlayer ? <EliminationCardsPlayer {...props} /> : <EliminationCardsPage {...props} />;
+}
+
+function EliminationCardsPage({
   system: sys0 = 'x+y=10|x-y=2', title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onFinished, onTrial, onCheckpoint,
 }) {

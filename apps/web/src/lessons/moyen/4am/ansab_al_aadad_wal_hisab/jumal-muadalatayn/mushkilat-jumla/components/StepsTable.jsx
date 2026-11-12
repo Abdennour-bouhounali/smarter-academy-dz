@@ -1,49 +1,27 @@
 import React from 'react';
 import MathText from '../../../../../../common/components/MathText';
 import { bidi } from '../../../../../../../utils/bidi';
-import { ACTIVITY } from '../content/textbook';
+import { ACTIVITY, STEPS_TABLE } from '../content/textbook';
 
 /**
- * Le TABLEAU du manuel (نشاط 3, p. 57) : « مراحل (خطوات) الحل · المهمات · حل ». La troisième colonne
- * n'est jamais pré-remplie : elle reçoit ce que l'élève a fait LUI-MÊME dans le laboratoire (niveau
- * متقدم) — ses inconnues, sa jumla vérifiée, sa ثنائية, son histoire rejouée, sa réponse
- * (`[data-activity-evidence]`, MANIPULATION_DNA §9 : les preuves de l'élève, pas une réponse donnée).
- *
- * Sur un téléphone, chaque ligne devient une carte (étape, mission, travail) : pas de tableau à
- * trois colonnes à 320 px.
- *
- *   evidence = { unknowns?: [{ letter, noun }], equations?: [tex, tex], system?: tex, pair?: tex,
- *                checked?: [tex, tex], answer?: string }
+ * Le tableau des CINQ étapes (« مراحل الحل », plateforme — rollout 2026-11-12, design L3 §4) : chaque étape, ce qu'on y fait, et ce qu'elle a
+ * donné dans « نادي الرسم », la manche 1 que l'élève vient de jouer au labo. Aucune référence au manuel. Une formule ne se coupe jamais
+ * (`whitespace-nowrap` dans la cellule, la ligne passe sous l'étape quand la colonne est étroite).
  */
-export default function StepsTable({ evidence, emptyText }) {
-  const e = evidence ?? {};
-  const cells = [
-    e.unknowns ? e.unknowns.map((u) => `$${u.letter}$ : ${u.noun}`).join(' ، ') : null,
-    e.equations ? `$${e.equations[0]}$` : null,
-    e.equations ? `$${e.equations[1]}$` : null,
-    e.system ? `$${e.system}$` : null,
-    e.pair ? `$${e.pair}$` : null,
-    e.checked ? e.checked.map((tx) => `$${tx}$`).join(' ؛ ') : null,
-    e.answer ?? null,
-  ];
+export default function StepsTable() {
   const [c0, c1, c2] = ACTIVITY.tableColumns;
   return (
-    <div className="space-y-1.5" data-activity-evidence data-steps-table>
-      <div className="grid-cols-[10rem_1fr_1fr] gap-2 px-2 text-xs font-extrabold text-rose-900 grid" aria-hidden="true">
-        <span>{c0}</span><span>{c1}</span><span>{c2}</span>
+    <div className="space-y-1.5" role="table" aria-label={c0} data-steps-table data-paging-keep>
+      <div role="row" className="grid grid-cols-[13rem_8rem_1fr] gap-2 px-2 text-xs font-extrabold text-indigo-900">
+        <span role="columnheader">{c0}</span><span role="columnheader">{c1}</span><span role="columnheader">{c2}</span>
       </div>
-      <ol className="space-y-1.5">
-        {ACTIVITY.table.map((row, i) => (
-          <li key={row.task} className="grid rounded-xl border border-rose-200 bg-white px-3 py-2 text-sm grid-cols-[10rem_1fr_1fr] gap-2"
-            data-evidence={`row-${i + 1}`} data-tried={cells[i] ? 'true' : 'false'}>
-            <span className="font-bold text-rose-900">{row.stage}</span>
-            <span className="text-slate-700">{bidi(row.task)}</span>
-            <span className={cells[i] ? 'font-bold text-slate-900' : 'text-xs text-slate-400'}>
-              {cells[i] ? <MathText>{cells[i]}</MathText> : emptyText}
-            </span>
-          </li>
-        ))}
-      </ol>
+      {STEPS_TABLE.map((row) => (
+        <div key={row.task} role="row" className="grid grid-cols-[13rem_8rem_1fr] items-center gap-2 rounded-xl border border-indigo-200 bg-white px-3 py-1.5 text-sm" data-steps-row>
+          <span role="rowheader" className="font-bold text-indigo-900"><MathText>{row.stage}</MathText></span>
+          <span role="cell" className="text-slate-700">{bidi(row.task)}</span>
+          <span role="cell" className="font-bold text-slate-900"><MathText>{row.done}</MathText></span>
+        </div>
+      ))}
     </div>
   );
 }

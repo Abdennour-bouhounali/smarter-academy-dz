@@ -26,7 +26,7 @@ const lessonOf = (path) => path.split('/')[1];
 const CLIMAX = Object.fromEntries(Object.entries(sigFiles).map(([p, m]) => [p.replace(/^.*\/(.+)\.js$/, '$1'), m.TEXT ?? []]));
 
 /* ── La distribution de l'unité (verdict X1) ── */
-const PEERS = { 'mafhum-jumla': { name: 'صهيب', id: 'm2-suhayb' }, 'hall-jabri': { name: 'أسامة', id: 'm2-usama' }, 'mushkilat-jumla': { name: 'وئام', id: 'm2-wiam' } };
+const PEERS = { 'mafhum-jumla': { name: 'صهيب', id: 'm2-suhayb' }, 'hall-jabri': { name: 'أسامة', id: 'm2-usama' }, 'mushkilat-jumla': { name: 'وئام', id: 'm2-wiam' }, 'wadiya-idmajiya-jumal': { name: 'عائشة', id: 'm7-aisha' } };
 const PUPILS = { 'hall-jabri': ['إكرام', 'إسحاق'] };            // module 1 de hall-jabri seulement (auteurs des cartes-devinettes)
 const RESERVED = ['ملاك'];                                       // la page d'unité seulement
 const CLIMAX_NAMES = ['الطاهر', 'ياسين', 'أنيس'];                  // la مسألة de hall-jabri, nulle part ailleurs

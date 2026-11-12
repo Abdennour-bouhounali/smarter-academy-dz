@@ -139,7 +139,7 @@ describe('unit 5 — the collision rule (K1–K3 and the forward ban)', () => {
     expect(solutionOf('2x+3y=3|4x-3y=3').key).toBe('(1 ; 1/3)');
     expect(solutionOf('x-2y=1|3x-6y=3').key).toBe('infinite');
     expect(solutionOf(UNIT_PAGE.systems[0]).key).toBe('(12 ; 11)');
-    SYNTH.systems.forEach((s, i) => expect(solutionOf(s).key).toBe(['(30 ; 50)', '(25 ; 50)'][i]));
+    SYNTH.systems.forEach((s, i) => expect(solutionOf(s).key).toBe(['(30 ; 50)', '(25 ; 50)', '(35 ; 20)', '(40 ; 30)', '(40 ; 20)', '(30 ; 15)'][i]));
   });
 });
 
