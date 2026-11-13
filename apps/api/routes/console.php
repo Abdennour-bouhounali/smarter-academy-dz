@@ -19,3 +19,15 @@ Artisan::command('inspire', function () {
 // (PARENT_SPACE.md §5). La commande est idempotente.
 \Illuminate\Support\Facades\Schedule::command('smarter:family:weekly-reports')
     ->weeklyOn(0, '08:00')->timezone('Africa/Algiers')->withoutOverlapping();
+
+/*
+| Clés VAPID des notifications de commandes de livres (BOOKS_STORE.md §6quater). À lancer UNE
+| fois ; copier les trois lignes dans le .env du serveur (le déploiement ne le livre jamais).
+| Changer de clés désabonne tous les appareils : chacun devra réactiver ses notifications.
+*/
+Artisan::command('books:vapid-keys', function () {
+    $keys = \Minishlink\WebPush\VAPID::createVapidKeys();
+    $this->line('VAPID_PUBLIC_KEY='.$keys['publicKey']);
+    $this->line('VAPID_PRIVATE_KEY='.$keys['privateKey']);
+    $this->line('VAPID_SUBJECT=mailto:contact@smarter-academy.com');
+})->purpose('Generate the Web Push (VAPID) key pair for book-order notifications');

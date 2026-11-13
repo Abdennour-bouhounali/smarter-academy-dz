@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Domain\Books\BookPresenter;
+use App\Domain\Books\OrderPush;
 use App\Domain\Books\Wilayas;
 use App\Models\Book;
 use App\Models\BookMessage;
@@ -77,6 +78,11 @@ class BookStoreController extends Controller
         ]);
 
         BookOrderEvent::create(['book_order_id' => $order->id, 'type' => 'created', 'to_value' => BookOrder::PENDING]);
+
+        // Notification « طلب جديد » aux appareils de la librairie — APRÈS la réponse : le client
+        // n'attend jamais l'envoi, et une panne d'envoi ne touche pas sa commande.
+        $orderId = $order->id;
+        dispatch(fn () => app(OrderPush::class)->newOrder($orderId))->afterResponse();
 
         return response()->json([
             'success' => true,

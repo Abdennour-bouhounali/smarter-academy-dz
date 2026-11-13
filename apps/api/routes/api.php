@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AdminBookController;
 use App\Http\Controllers\Admin\AdminBookManagerController;
 use App\Http\Controllers\Admin\AdminBookMessageController;
 use App\Http\Controllers\Admin\AdminBookOrderController;
+use App\Http\Controllers\Admin\AdminPushController;
 use App\Http\Controllers\Admin\AdminClassroomController;
 use App\Http\Controllers\Admin\AdminContentController;
 use App\Http\Controllers\Admin\AdminDailyChallengeController;
@@ -709,6 +710,11 @@ Route::prefix('v1')->group(function () {
         Route::put('/books/{id}', [AdminBookController::class, 'update'])->whereNumber('id');
         Route::get('/book-orders', [AdminBookOrderController::class, 'index']);
         Route::get('/book-orders/stats', [AdminBookOrderController::class, 'stats']);
+        // Notifications « طلب جديد » sur l'appareil du compte connecté (BOOKS_STORE.md §6quater).
+        Route::get('/book-orders/push', [AdminPushController::class, 'show']);
+        Route::post('/book-orders/push/subscriptions', [AdminPushController::class, 'subscribe']);
+        Route::delete('/book-orders/push/subscriptions', [AdminPushController::class, 'unsubscribe']);
+        Route::post('/book-orders/push/test', [AdminPushController::class, 'test']);
         Route::get('/book-orders/{id}', [AdminBookOrderController::class, 'show'])->whereNumber('id');
         Route::patch('/book-orders/{id}', [AdminBookOrderController::class, 'update'])->whereNumber('id');
         Route::patch('/book-orders/{id}/status', [AdminBookOrderController::class, 'updateStatus'])->whereNumber('id');
