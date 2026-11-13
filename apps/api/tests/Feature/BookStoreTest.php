@@ -57,6 +57,16 @@ class BookStoreTest extends TestCase
         $this->assertSame(2800, $order->fresh()->total(), 'changer le prix ne réécrit pas une commande reçue');
     }
 
+    public function test_une_commande_sans_adresse_est_acceptee(): void
+    {
+        $this->book();
+        $payload = $this->orderPayload();
+        unset($payload['address']);
+
+        $this->postJson('/api/v1/books/smart-protocol/orders', $payload)->assertCreated();
+        $this->assertNull(BookOrder::firstOrFail()->address);
+    }
+
     public function test_la_commande_refuse_un_telephone_ou_une_wilaya_invalides_et_un_livre_brouillon(): void
     {
         $this->book();

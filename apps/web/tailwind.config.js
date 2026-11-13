@@ -78,11 +78,20 @@ export default {
         'pulse-slow': 'pulse 4s ease-in-out infinite',
         'spin-slow': 'spin 20s linear infinite',
         'count-up': 'countUp 2s ease-out forwards',
+        // Bouton de commande d'un livre : 3 battements quand le formulaire devient
+        // valide, puis repos (WCAG 2.2.2 — rien qui bouge plus de 5 s) ; jamais sous
+        // prefers-reduced-motion (utilisé avec `motion-safe:`).
+        'cta-ready': 'ctaReady 1.2s ease-out 3',
       },
       keyframes: {
         float: {
           '0%, 100%': { transform: 'translateY(0px)' },
           '50%': { transform: 'translateY(-12px)' },
+        },
+        ctaReady: {
+          '0%': { transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(37, 99, 235, 0.55)' },
+          '35%': { transform: 'scale(1.03)' },
+          '100%': { transform: 'scale(1)', boxShadow: '0 0 0 16px rgba(37, 99, 235, 0)' },
         },
         countUp: {
           from: { opacity: '0', transform: 'translateY(10px)' },

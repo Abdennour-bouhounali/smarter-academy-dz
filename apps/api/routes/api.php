@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminAccountController;
 use App\Http\Controllers\Admin\AdminActivationCodeController;
 use App\Http\Controllers\Admin\AdminActivityLogController;
 use App\Http\Controllers\Admin\AdminBookController;
+use App\Http\Controllers\Admin\AdminBookManagerController;
 use App\Http\Controllers\Admin\AdminBookMessageController;
 use App\Http\Controllers\Admin\AdminBookOrderController;
 use App\Http\Controllers\Admin\AdminClassroomController;
@@ -696,6 +697,34 @@ Route::prefix('v1')->group(function () {
             Route::delete('/reports/{id}', [SchoolReportController::class, 'destroy'])->whereNumber('id');
         });
 
+    // La LIBRAIRIE : l'administrateur ET le gestionnaire « مسيّر المكتبة »
+    // (porte `books`, BOOKS_STORE.md §6ter). Le gestionnaire n'atteint RIEN
+    // d'autre sous /admin (AdminAuthorizationTest balaie toutes les routes).
+    Route::middleware(['auth:sanctum', 'account.active', 'can:books'])->prefix('admin')->group(function () {
+        // La librairie : fiches livres, commandes (états, livraison,
+        // paiements en lignes), messages reçus.
+        Route::get('/books', [AdminBookController::class, 'index']);
+        Route::post('/books', [AdminBookController::class, 'store']);
+        Route::get('/books/{id}', [AdminBookController::class, 'show'])->whereNumber('id');
+        Route::put('/books/{id}', [AdminBookController::class, 'update'])->whereNumber('id');
+        Route::get('/book-orders', [AdminBookOrderController::class, 'index']);
+        Route::get('/book-orders/stats', [AdminBookOrderController::class, 'stats']);
+        Route::get('/book-orders/{id}', [AdminBookOrderController::class, 'show'])->whereNumber('id');
+        Route::patch('/book-orders/{id}', [AdminBookOrderController::class, 'update'])->whereNumber('id');
+        Route::patch('/book-orders/{id}/status', [AdminBookOrderController::class, 'updateStatus'])->whereNumber('id');
+        Route::post('/book-orders/{id}/payments', [AdminBookOrderController::class, 'addPayment'])->whereNumber('id');
+        Route::delete('/book-orders/{id}', [AdminBookOrderController::class, 'destroy'])->whereNumber('id');
+        Route::delete('/book-order-payments/{id}', [AdminBookOrderController::class, 'removePayment'])->whereNumber('id');
+        Route::get('/book-messages', [AdminBookMessageController::class, 'index']);
+        Route::patch('/book-messages/{id}', [AdminBookMessageController::class, 'update'])->whereNumber('id');
+
+        // « حسابي » : son propre profil, son adresse, son mot de passe.
+        Route::get('/account', [AdminAccountController::class, 'show']);
+        Route::patch('/account/profile', [AdminAccountController::class, 'updateProfile']);
+        Route::patch('/account/email', [AdminAccountController::class, 'updateEmail']);
+        Route::patch('/account/password', [AdminAccountController::class, 'updatePassword']);
+    });
+
     // Protected routes — admin only
     Route::middleware(['auth:sanctum', 'account.active', 'can:admin'])->group(function () {
         Route::get('/contact', [ContactController::class, 'index']);
@@ -703,22 +732,12 @@ Route::prefix('v1')->group(function () {
         Route::prefix('admin')->group(function () {
             Route::get('/dashboard', [AdminDashboardController::class, 'index']);
 
-            // La librairie : fiches livres, commandes (états, livraison,
-            // paiements en lignes), messages reçus.
-            Route::get('/books', [AdminBookController::class, 'index']);
-            Route::post('/books', [AdminBookController::class, 'store']);
-            Route::get('/books/{id}', [AdminBookController::class, 'show'])->whereNumber('id');
-            Route::put('/books/{id}', [AdminBookController::class, 'update'])->whereNumber('id');
-            Route::get('/book-orders', [AdminBookOrderController::class, 'index']);
-            Route::get('/book-orders/stats', [AdminBookOrderController::class, 'stats']);
-            Route::get('/book-orders/{id}', [AdminBookOrderController::class, 'show'])->whereNumber('id');
-            Route::patch('/book-orders/{id}', [AdminBookOrderController::class, 'update'])->whereNumber('id');
-            Route::patch('/book-orders/{id}/status', [AdminBookOrderController::class, 'updateStatus'])->whereNumber('id');
-            Route::post('/book-orders/{id}/payments', [AdminBookOrderController::class, 'addPayment'])->whereNumber('id');
-            Route::delete('/book-orders/{id}', [AdminBookOrderController::class, 'destroy'])->whereNumber('id');
-            Route::delete('/book-order-payments/{id}', [AdminBookOrderController::class, 'removePayment'])->whereNumber('id');
-            Route::get('/book-messages', [AdminBookMessageController::class, 'index']);
-            Route::patch('/book-messages/{id}', [AdminBookMessageController::class, 'update'])->whereNumber('id');
+            // Les gestionnaires de la librairie (« مسيّرو المكتبة ») : créés,
+            // suspendus et réinitialisés par l'administrateur SEUL.
+            Route::get('/book-managers', [AdminBookManagerController::class, 'index']);
+            Route::post('/book-managers', [AdminBookManagerController::class, 'store']);
+            Route::patch('/book-managers/{id}/status', [AdminBookManagerController::class, 'updateStatus'])->whereNumber('id');
+            Route::post('/book-managers/{id}/password', [AdminBookManagerController::class, 'resetPassword'])->whereNumber('id');
 
             Route::get('/analytics/platform', [AdminDashboardController::class, 'platform']);
             Route::get('/analytics/learning', [AdminDashboardController::class, 'learning']);
@@ -891,10 +910,6 @@ Route::prefix('v1')->group(function () {
             Route::get('/daily-challenge/config', [AdminDailyChallengeController::class, 'show']);
             Route::put('/daily-challenge/config', [AdminDailyChallengeController::class, 'update']);
 
-            Route::get('/account', [AdminAccountController::class, 'show']);
-            Route::patch('/account/profile', [AdminAccountController::class, 'updateProfile']);
-            Route::patch('/account/email', [AdminAccountController::class, 'updateEmail']);
-            Route::patch('/account/password', [AdminAccountController::class, 'updatePassword']);
 
             Route::get('/activity-log', [AdminActivityLogController::class, 'index']);
 

@@ -23,7 +23,7 @@ contact) est porté ; son backend est remplacé par l'API Laravel.
 | Table | Rôle |
 |---|---|
 | `books` | un livre : `slug`, titre, prix (DA, entier), `status` (`draft` \| `published`), `content` JSON (badge, stats, steps, highlights, faq), `gallery` JSON |
-| `book_orders` | une commande : client, wilaya/commune/adresse, `quantity`, `unit_price` **figé**, `delivery_fee` **NULLABLE** (fixé plus tard), `status` |
+| `book_orders` | une commande : client, wilaya/commune, adresse **facultative** (`NULL` depuis le 2026-11-13, migration `2026_11_13_000001`), `quantity`, `unit_price` **figé**, `delivery_fee` **NULLABLE** (fixé plus tard), `status` |
 | `book_order_payments` | un encaissement = UNE ligne (`payment` ou `refund`, montant, méthode, date) |
 | `book_order_events` | l'historique d'une commande (création, états, livraison, paiements) |
 | `book_messages` | la boîte de réception des formulaires de contact des pages livres |
@@ -50,14 +50,18 @@ Public (`BookStoreController`) : `GET /books`, `GET /books/{slug}`,
 avec les autres routes publiques et la navigation l'épuiserait. Un livre en brouillon répond 404.
 Les deux POST ont un **pot de miel** (champ caché `website`) : rempli → faux
 succès, rien d'enregistré. Le téléphone est validé (format algérien) et la
-wilaya doit appartenir à `App\Domain\Books\Wilayas`.
+wilaya doit appartenir à `App\Domain\Books\Wilayas`. L'adresse n'est plus
+demandée par le formulaire (`address` : `nullable`) ; la commune reste une chaîne
+libre côté serveur (le client la choisit dans la liste officielle).
 
-Admin (`can:admin`, `/admin/…`) : `books` (liste, création, mise à jour),
+Admin (`can:books` — l'administrateur ET le gestionnaire `book_manager`, §6ter — `/admin/…`) : `books` (liste, création, mise à jour),
 `book-orders` (liste filtrable `status|bookId|wilaya|paymentStatus|search`,
 `stats`, fiche, `PATCH` livraison/note, `PATCH …/status`, `POST …/payments`,
 `DELETE`), `book-order-payments/{id}` (DELETE), `book-messages` (liste, PATCH
 état/note). Gestes journalisés (`ActivityLogger::BOOK_*`). Les formes JSON
 sont dans `Domain/Books/BookPresenter.php` (camelCase).
+Le même groupe `can:books` porte « حسابي » (`/admin/account*`). Les gestionnaires eux-mêmes
+(`/admin/book-managers`, §6ter) restent `can:admin`.
 
 ## 4. Frontend
 
@@ -91,8 +95,68 @@ sont dans `Domain/Books/BookPresenter.php` (camelCase).
   appel de confirmation, 58 wilayas) — résumé et auteur APRÈS (`order-last`), pour que l'achat
   tienne au-dessus du pli. `StickyOrderBar` (< lg) : prix + « اطلب نسختك » collés en bas dès que
   le bouton du haut sort de la vue, effacés quand le formulaire est à l'écran. Étapes SMART en
-  cartes compactes, galerie en carrousel glissé au pouce, espacements resserrés. Formulaire :
-  courriel et note repliés (« + بريد إلكتروني أو ملاحظة »), `autocomplete` adresse.
+  cartes compactes, galerie en carrousel glissé au pouce, espacements resserrés.
+- **Page d'atterrissage des publicités Facebook (2026-11-13)** — l'ordre de la page suit les
+  questions du visiteur venu d'une pub (téléphone, quelques secondes pour décider) :
+  - premier écran (`BookHero`) : livre en GRAND (190 px sur téléphone), badge, **`content.hook`**
+    (le PROBLÈME du visiteur, avant le nom du produit ; le titre reste le `h1`), titre, prix,
+    **UN seul bouton** « اطلب نسختك / الدفع عند الاستلام » (« اطرح سؤالًا » retiré du premier
+    écran), trois garanties (sur téléphone : UNE ligne de mots courts, `S.detail.trustShort`).
+    **Peu de texte** (owner, 2026-11-13) : avec une accroche, le titre est `sr-only` sur
+    téléphone (la couverture le montre), et `hookSub` REMPLACE le sous-titre et le résumé (qui
+    le répétaient) à toutes les tailles ; l'auteur reste dès `md`. Mesuré : le bouton est
+    au-dessus du pli à 390×700 (540 px), 1024×768 et 1366×768 (665 px) ;
+  - puis : pages INTÉRIEURES (galerie réordonnée, agrandies au toucher — « صفحات حقيقية ») →
+    « ماذا ستجد داخل الكتاب؟ » (`stats`) → **« هل هذا الكتاب لك؟ »** (`content.forWho.yes / no`,
+    dire aussi pour qui ce n'est PAS) → **« من كتب هذا الكتاب؟ »** (`content.authorBio` : photo ronde
+    `author.webp` — recadrée avec la tour Eiffel, migration `2026_11_13_000003` + seeder — et trois
+    lignes de références fournies par l'auteur ; jamais de titre inventé) → points forts → étapes SMART terminées par un bouton →
+    commande → FAQ → réseaux → contact **replié** (ouvert d'office sur `#contact`) ;
+  - clés `hook`, `hookSub`, `forWho` facultatives (une fiche sans elles garde l'ancien premier
+    écran), éditables dans « الكتب » ; posées pour `smart-protocol` par la migration
+    `2026_11_13_000002` (qui corrige aussi la réponse « كيف أدفع؟ ») et par `BookSeeder` ;
+  - jamais d'urgence ou de preuve inventée (compteurs, « stock limité », avis) : la preuve
+    sociale attend de VRAIS avis du propriétaire.
+- **Meta Pixel (2026-11-13)** — `features/books/metaPixel.js`, ID `29440028942323985`. Chargé
+  UNIQUEMENT par `BookDetailPage` / `OrderForm` (lot paresseux de la fiche) : jamais dans l'espace
+  élève, l'espace parent ni l'administration (promesse « jardin clos » faite aux parents,
+  `PARENT_SPACE.md`) ; ne pas l'importer ailleurs. Événements : `PageView` + `ViewContent` (arrivée
+  sur la fiche), `InitiateCheckout` (premier champ touché, une fois), `Lead` (commande envoyée —
+  pas `Purchase` : la vente n'est définitive qu'après l'appel et la livraison), valeur en `DZD`.
+  AUCUNE donnée personnelle envoyée (ni nom, ni téléphone, ni commune). Rien n'est envoyé depuis
+  `localhost`, sauf avec `?pixel=1` (test). La politique de confidentialité (§4) le dit.
+  En développement, React.StrictMode rejoue les effets : `PageView` y apparaît deux fois, pas en
+  production.
+- **Formulaire de commande (refonte du 2026-11-13, après un relevé de 7 pages COD algériennes
+  + 2 internationales et un conseil à 5 voix)** — `OrderForm.jsx` :
+  - champs : nom → téléphone → wilaya → commune → nombre de copies ; courriel et note repliés
+    (« + بريد إلكتروني أو ملاحظة ») ; **plus d'adresse** (« العنوان الدقيق نطلبه منك عند الاتصال ») ;
+  - **wilaya** : `SearchSelect.jsx`, numérotée (« 16 الجزائر », arabe seul affiché), cherchée par
+    numéro (16, ١٦), par nom (avec/sans « ال », variantes d'écriture) ou en latin ; un nom de
+    **commune** la trouve aussi (« بوسعادة » → 28 المسيلة) et remplit les deux champs — un client
+    d'une wilaya créée en 2025 retrouve ainsi la sienne ;
+  - **commune** : inactive tant qu'aucune wilaya n'est choisie, puis la liste arabe cherchable de
+    CETTE wilaya — `data/dzCommunes.json` (1541 communes / 58 wilayas, chargé en lot séparé,
+    ≈ 18 Ko gzip), régénéré par `scripts/build-dz-communes.mjs` depuis le découpage officiel ;
+    recherche tolérante `dzSearch.js` (réutilise `normalizeSearchText`) ;
+  - `SearchSelect` : plein écran rendu dans `<body>` sous 640 px (la barre du site ne le couvre
+    pas), menu sous le champ au-delà ; ↑ ↓ Entrée Échap ; le « retour » d'Android FERME la liste
+    (entrée d'historique sur la même URL) — une liste qui s'ouvre attend le `history.back()` de
+    la précédente ;
+  - téléphone : gabarit « xx xx xx xx xx » (jamais un vrai numéro), `type=tel`, chiffres
+    arabo-hindis / +213 / 00213 ramenés à « 0XXXXXXXXX » (`orderValidation.js`, même règle que
+    `BookStoreController::PHONE`) ;
+  - nombre de copies : − / + ET saisie directe (chiffres arabes ou latins), borné à 1–10 ;
+  - erreurs : message arabe sous CHAQUE champ (au départ du champ, puis à l'envoi, focus sur le
+    premier) ; un 422 du serveur revient sous le champ concerné (`error.fields`) ;
+  - brouillon gardé en `sessionStorage` (rechargement, navigateur intégré de WhatsApp), effacé
+    après une commande ;
+  - récapitulatif (prix, livraison « تُحدَّد لاحقًا », **total sans livraison**) juste AU-DESSUS du
+    bouton « أرسل الطلب / الدفع عند الاستلام » ;
+  - **le bouton bat 3 fois (≈ 3,6 s, `animate-cta-ready`) quand le formulaire DEVIENT complet**,
+    jamais sur un formulaire vide ni sous `prefers-reduced-motion` (`motion-safe:`) : le
+    « clignotement » demandé par le propriétaire, conforme WCAG 2.2.2 ;
+  - garanties : « التوصيل إلى كل ولايات الوطن » (et non « 58 ») ; « تدفع نقدًا عند استلام الكتاب ».
 - **Aucun saut de mise en page** : squelettes à la forme des cartes / de la présentation pendant le
   chargement ; l'image de présentation est dans une boîte de hauteur fixe (`h-[420px] lg:h-[540px]`,
   `fetchpriority="high"`). CLS de la fiche mesuré 0,44 avant ce changement.
@@ -105,7 +169,16 @@ n'écrase jamais une fiche existante ; aussi appelé par `DatabaseSeeder`).
 ## 6. Non implémenté / à venir
 
 - Frais de livraison par wilaya et transporteur (« set later » par le
-  propriétaire) : aujourd'hui saisis à la main, commande par commande.
+  propriétaire) : aujourd'hui saisis à la main, commande par commande. Le conseil du
+  2026-11-13 juge que c'est la PREMIÈRE fuite d'une vente à la livraison (refus à l'appel ou
+  à la porte) : afficher une fourchette honnête dès la wilaya choisie, et le choix
+  domicile / bureau (stop-desk) — en attente des tarifs et du transporteur du propriétaire.
+- Les 69 wilayas du découpage de 2025 : la liste (`Wilayas.php`, `dzCommunes.json`) reste à
+  58 tant que le rattachement officiel des communes aux 11 nouvelles wilayas n'est pas
+  vérifié ; la recherche par commune couvre le cas en attendant.
+- Mesure complète de l'entonnoir (vue → début → envoi → confirmée → livrée) : le Pixel couvre les
+  trois premières étapes ; « confirmée » et « livrée » restent dans l'admin des commandes. API de
+  conversions (côté serveur) non faite.
 - Paiement en ligne : volontairement absent.
 - Stock, export CSV des commandes, notification (e-mail/WhatsApp) à la
   réception d'une commande.
@@ -153,8 +226,34 @@ sa carte 1200×630 dans `public/og/` (`python3 scripts/og-book-card.py <couvertu
 Limite : titre/description de partage sont figés au build — les modifier dans
 l'admin ne change pas l'aperçu avant un nouveau build.
 
+## 6ter. Le gestionnaire de la librairie « مسيّر المكتبة » (2026-11-13)
+
+Un rôle de plus dans la colonne libre `users.role` : **`book_manager`** (`User::ROLE_BOOK_MANAGER`).
+Il vend les livres et ne fait RIEN d'autre sur la plateforme.
+
+- **Création : par l'administrateur seul**, jamais par une inscription. Page « مسيّرو المكتبة »
+  `/admin/livres/gestionnaires` (section « الكتب », visible de l'administrateur seul) :
+  nom, prénom, adresse → un compte `book_manager` à l'adresse vérifiée et un mot de passe
+  généré, **montré une fois** (copier puis remettre). Une adresse qui a déjà un compte est
+  refusée (`reason: email_taken`) — on ne transforme pas un élève ou un enseignant. La même page
+  suspend / réactive (suspendre ferme ses sessions) et réédite le mot de passe (sessions fermées).
+  API `can:admin` : `GET|POST /admin/book-managers`, `PATCH …/{id}/status` (`active|suspended`),
+  `POST …/{id}/password` (`AdminBookManagerController`). Journal : `book_manager.*`, jamais le mot de passe.
+- **Ce qu'il ouvre : la porte `books`** (`Gate::define('books')` = admin ou book_manager) —
+  `books`, `book-orders`, `book-order-payments`, `book-messages` et son propre compte
+  `/admin/account*`. Toute autre route `/admin/*` lui répond 403 (`AdminAuthorizationTest`
+  balaie toutes les routes).
+- **Frontend :** il se connecte par la page de connexion normale et atterrit sur
+  `/admin/livres/commandes`. Le panneau est le même (`AdminLayout`) ; la barre latérale ne
+  montre que « الكتب » (الطلبات · الكتب · الرسائل) et « حسابي » (`adminNavSectionsFor(role)` ;
+  `roles` sur une section / un lien, absent = administrateur seul). Toute autre adresse
+  `/admin/*` le ramène aux commandes (`components/auth/AdminOnlyOutlet.jsx`).
+
 ## 7. Tests
 
 `apps/api/tests/Feature/BookStoreTest.php` (vitrine, prix figé, validation,
 pot de miel, états, livraison, paiements, statistiques, interdiction élève) ;
-le balayage `AdminAuthorizationTest` couvre les routes `/admin/book*`.
+le balayage `AdminAuthorizationTest` couvre les routes `/admin/book*` et prouve que le
+gestionnaire `book_manager` n'ouvre QUE la librairie et son compte ; `BookManagerTest`
+(création, adresse prise, suspension, mot de passe réédité) ; côté web
+`services/admin/adminServices.test.js` (porte `/admin`, navigation filtrée par rôle).

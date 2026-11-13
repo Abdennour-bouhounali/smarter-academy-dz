@@ -114,7 +114,8 @@
     "books": "الكتب",
     "booksOrders": "الطلبات",
     "booksCatalog": "الكتب",
-    "booksMessages": "الرسائل"
+    "booksMessages": "الرسائل",
+    "booksManagers": "مسيّرو المكتبة"
   },
   "dashboard": {
     "metaTitle": "لوحة التحكم — الإدارة",

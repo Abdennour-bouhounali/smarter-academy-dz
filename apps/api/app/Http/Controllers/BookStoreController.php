@@ -55,7 +55,8 @@ class BookStoreController extends Controller
             'email' => 'nullable|email|max:190',
             'wilaya' => ['required', 'string', Rule::in(Wilayas::labels())],
             'commune' => 'required|string|min:2|max:120',
-            'address' => 'required|string|min:5|max:500',
+            // L'adresse n'est plus demandée (2026-11-13) : wilaya + commune, précisées à l'appel.
+            'address' => 'nullable|string|max:500',
             'customerNote' => 'nullable|string|max:500',
             'quantity' => 'required|integer|min:1|max:10',
         ]);
@@ -68,7 +69,7 @@ class BookStoreController extends Controller
             'email' => $data['email'] ?? null,
             'wilaya' => $data['wilaya'],
             'commune' => $data['commune'],
-            'address' => $data['address'],
+            'address' => $data['address'] ?? null,
             'customer_note' => $data['customerNote'] ?? null,
             'quantity' => $data['quantity'],
             'unit_price' => $book->price,

@@ -169,7 +169,8 @@ export default function AdminBookOrderDetail() {
             {o.email && <a href={`mailto:${o.email}`} dir="ltr" className="block font-inter text-sm text-blue-700 hover:underline">{o.email}</a>}
             <dl className="mt-4 space-y-2 font-inter text-sm">
               <div><dt className="text-xs text-slate-500">{A.columns.wilaya}</dt><dd>{o.wilaya} — {o.commune}</dd></div>
-              <div><dt className="text-xs text-slate-500">{A.address}</dt><dd>{o.address}</dd></div>
+              {/* Plus demandée depuis le 2026-11-13 : seules les commandes plus anciennes en ont une. */}
+              {o.address && <div><dt className="text-xs text-slate-500">{A.address}</dt><dd>{o.address}</dd></div>}
               {o.customerNote && <div><dt className="text-xs text-slate-500">{A.customerNote}</dt><dd>{o.customerNote}</dd></div>}
             </dl>
           </AdminCard>

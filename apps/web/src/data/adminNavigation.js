@@ -1,6 +1,6 @@
 import {
   LayoutDashboard, BarChart3, BookOpen, Flag, Users, KeyRound, Package,
-  UserCog, ScrollText, Library, ShoppingBag, MessageSquare, GraduationCap, School, Building2, BadgeCheck, Inbox, CreditCard, SlidersHorizontal, Flame,
+  UserCog, ScrollText, Library, ShoppingBag, MessageSquare, UserCheck, GraduationCap, School, Building2, BadgeCheck, Inbox, CreditCard, SlidersHorizontal, Flame,
 } from 'lucide-react';
 
 /**
@@ -18,7 +18,13 @@ import {
  *
  * `end: true` sur un chemin qui est le préfixe d'un autre, sinon NavLink
  * l'allume en même temps que ses enfants.
+ *
+ * `roles` (section ou lien) : qui la voit. Absent = l'administrateur seul.
+ * Le gestionnaire de la librairie (`book_manager`, BOOKS_STORE.md §6ter) ne voit
+ * que « الكتب » et son compte — la vraie porte reste serveur (`can:books`).
  */
+const BOOKS_ROLES = ['admin', 'book_manager'];
+
 export const adminNavSections = [
   {
     labelKey: null,
@@ -107,18 +113,22 @@ export const adminNavSections = [
     // livraison, encaissements, messages. docs/architecture/BOOKS_STORE.md.
     labelKey: 'nav.books',
     icon: Library,
+    roles: BOOKS_ROLES,
     links: [
-      { labelKey: 'nav.booksOrders', path: '/admin/livres/commandes', icon: ShoppingBag },
-      { labelKey: 'nav.booksCatalog', path: '/admin/livres', icon: Library, end: true },
-      { labelKey: 'nav.booksMessages', path: '/admin/livres/messages', icon: MessageSquare },
+      { labelKey: 'nav.booksOrders', path: '/admin/livres/commandes', icon: ShoppingBag, roles: BOOKS_ROLES },
+      { labelKey: 'nav.booksCatalog', path: '/admin/livres', icon: Library, end: true, roles: BOOKS_ROLES },
+      { labelKey: 'nav.booksMessages', path: '/admin/livres/messages', icon: MessageSquare, roles: BOOKS_ROLES },
+      // « مسيّرو المكتبة » : l'administrateur seul les crée.
+      { labelKey: 'nav.booksManagers', path: '/admin/livres/gestionnaires', icon: UserCheck },
     ],
   },
   {
     labelKey: 'nav.account',
     icon: UserCog,
+    roles: BOOKS_ROLES,
     links: [
-      { labelKey: 'nav.accountProfile', path: '/admin/compte', icon: UserCog, end: true },
-      { labelKey: 'nav.accountSecurity', path: '/admin/compte/securite', icon: UserCog },
+      { labelKey: 'nav.accountProfile', path: '/admin/compte', icon: UserCog, end: true, roles: BOOKS_ROLES },
+      { labelKey: 'nav.accountSecurity', path: '/admin/compte/securite', icon: UserCog, roles: BOOKS_ROLES },
     ],
   },
   {
@@ -134,3 +144,16 @@ export const adminNavSections = [
 
 /** Tous les liens à plat — utile pour dériver un titre de page depuis l'URL. */
 export const adminNavLinks = adminNavSections.flatMap((section) => section.links);
+
+const visibleTo = (item, role) => (item.roles ?? ['admin']).includes(role);
+
+/** Les sections que voit un rôle : l'administrateur tout, le gestionnaire de la librairie « الكتب » et son compte. */
+export function adminNavSectionsFor(role) {
+  return adminNavSections
+    .filter((section) => visibleTo(section, role))
+    .map((section) => ({ ...section, links: section.links.filter((link) => visibleTo(link, role)) }))
+    .filter((section) => section.links.length > 0);
+}
+
+/** Où atterrit le gestionnaire de la librairie. */
+export const BOOK_MANAGER_HOME = '/admin/livres/commandes';

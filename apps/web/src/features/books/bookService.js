@@ -11,7 +11,12 @@ function problem(data, fallback) {
 
 async function publicCall(path, options, fallback) {
   const { ok, status, data } = await apiRequest(path, options);
-  if (!ok) throw new ApiError(problem(data, fallback), classifyStatus(status), status);
+  if (!ok) {
+    const error = new ApiError(problem(data, fallback), classifyStatus(status), status);
+    // Les champs refusés (422) : le formulaire affiche SON message arabe sous chacun.
+    error.fields = data?.errors ? Object.keys(data.errors) : [];
+    throw error;
+  }
   return data;
 }
 
@@ -44,4 +49,9 @@ export const addBookOrderPayment = (token, id, body) => call(`/admin/book-orders
 export const removeBookOrderPayment = (token, paymentId) => call(`/admin/book-order-payments/${paymentId}`, send('DELETE', token), 'Suppression impossible.');
 export const deleteBookOrder = (token, id) => call(`/admin/book-orders/${id}`, send('DELETE', token), 'Suppression impossible.');
 export const fetchBookMessages = (token, filters) => call(`/admin/book-messages${query(filters)}`, get(token), 'Impossible de charger les messages.');
+// « مسيّرو المكتبة » : l'administrateur seul (BOOKS_STORE.md §6ter).
+export const fetchBookManagers = (token) => call('/admin/book-managers', get(token), 'Impossible de charger les gestionnaires.');
+export const createBookManager = (token, body) => call('/admin/book-managers', send('POST', token, body), 'Création impossible.');
+export const setBookManagerStatus = (token, id, status) => call(`/admin/book-managers/${id}/status`, send('PATCH', token, { status }), 'Changement impossible.');
+export const resetBookManagerPassword = (token, id) => call(`/admin/book-managers/${id}/password`, send('POST', token), 'Réinitialisation impossible.');
 export const updateBookMessage = (token, id, body) => call(`/admin/book-messages/${id}`, send('PATCH', token, body), 'Mise à jour impossible.');

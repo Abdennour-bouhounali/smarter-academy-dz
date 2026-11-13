@@ -17,19 +17,44 @@ class BookSeeder extends Seeder
             'summary' => 'الكتاب لا يعطيك حلولًا جاهزة لتحفظها، بل يدرّبك على طريقة تفكير من خمس مراحل: حلّل، ترجم، حدّد الهدف، اربط المعطيات، ثم تحقّق.',
             'price' => 1400,
             'cover_image' => '/images/books/smart-protocol/front-cover.webp',
+            // Pages intérieures d'abord : la couverture est déjà dans le premier écran.
             'gallery' => [
-                '/images/books/smart-protocol/front-cover.webp',
-                '/images/books/smart-protocol/book-3d.webp',
                 '/images/books/smart-protocol/prtocole.webp',
                 '/images/books/smart-protocol/tranlation_section.webp',
                 '/images/books/smart-protocol/solving-techniques.webp',
                 '/images/books/smart-protocol/bac_2016_exercice.webp',
+                '/images/books/smart-protocol/front-cover.webp',
+                '/images/books/smart-protocol/book-3d.webp',
                 '/images/books/smart-protocol/back-cover.webp',
             ],
             'content' => [
                 // Image principale de la page (maquette 3D : scripts/book-mockup.py).
                 'heroImage' => '/images/books/smart-protocol/book-3d.webp',
                 'badge' => 'للبكالوريا — جميع الشعب العلمية والتقنية',
+                // Premier écran : le problème du visiteur avant le nom du produit (BOOKS_STORE.md §4).
+                'hook' => 'تفهم الدرس وتحفظ القوانين… لكنك لا تعرف من أين تبدأ حلّ التمرين؟',
+                'hookSub' => 'بروتوكول SMART يدرّبك على طريقة تفكير من 5 مراحل تطبّقها على أي تمرين في البكالوريا.',
+                'authorBio' => [
+                    'name' => 'أ. عبد النور',
+                    'photo' => '/images/books/smart-protocol/author.webp',
+                    'lines' => [
+                        'أستاذ دعم مدرسي في الرياضيات، خبرة أكثر من 5 سنوات (معهد عمي سعيد ومؤسسة الرضوان الخاصة).',
+                        'مهندس دولة في الإلكترونيك، متخرج من المدرسة الوطنية متعددة التقنيات بالجزائر العاصمة.',
+                        'ماستر 2 ذكاء اصطناعي ومعالجة البيانات، جامعة Paul Sabatier Toulouse 3 بفرنسا.',
+                    ],
+                ],
+                'forWho' => [
+                    'yes' => [
+                        'تفهم الدروس وتحفظ القوانين، لكنك تتوقف أمام التمرين ولا تعرف من أين تبدأ.',
+                        'تحضّر للبكالوريا في شعبة علمية أو تقنية.',
+                        'تريد طريقة تفكير ثابتة تطبّقها على كل تمرين، بدل حفظ حلول جاهزة.',
+                        'أستاذ يبحث عن إطار منهجي يطبّقه مع تلاميذه في القسم.',
+                    ],
+                    'no' => [
+                        'تبحث عن ملخّص للدروس أو عن حلول جاهزة للحفظ.',
+                        'تريد كتاب تمارين مكرّرة دون منهجية.',
+                    ],
+                ],
                 'stats' => [
                     ['number' => '+30', 'title' => 'تمرين تدريبي', 'description' => 'من الترجمة إلى التفكير الاستراتيجي'],
                     ['number' => '293', 'title' => 'سؤال تحليل ذكي', 'description' => 'لتعلم كيف تقرأ التمرين قبل الحل'],
@@ -58,7 +83,7 @@ class BookSeeder extends Seeder
                     ['question' => 'هل أحتاج لأن أكون ممتازًا في الرياضيات؟', 'answer' => 'الكتاب مصمم للطلاب الذين يفهمون الدروس ويحفظون القوانين لكنهم يعجزون عن الانطلاق في الحل.'],
                     ['question' => 'لأي مستوى تعليمي هو موجّه؟', 'answer' => 'لطلاب البكالوريا — جميع الشعب التي تدرس الرياضيات.'],
                     ['question' => 'هل يمكن للأساتذة استخدامه؟', 'answer' => 'نعم. بروتوكول SMART إطار منهجي قابل للتدريس والتطبيق داخل القسم.'],
-                    ['question' => 'كيف أدفع؟', 'answer' => 'لا يوجد دفع إلكتروني: تُرسل طلبك ثم نتصل بك لتأكيد الطلب وتحديد التوصيل، وتدفع عند الاستلام أو وفق ما نتفق عليه.'],
+                    ['question' => 'كيف أدفع؟', 'answer' => 'لا يوجد أي دفع إلكتروني: ترسل طلبك، نتصل بك لتأكيد الطلب وإخبارك بتكلفة التوصيل، ثم تدفع نقدًا عند استلام الكتاب.'],
                 ],
             ],
             'status' => Book::STATUS_PUBLISHED,

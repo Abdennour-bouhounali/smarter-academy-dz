@@ -121,7 +121,10 @@ NUMBERED challenges outside the curriculum: the band, primary → university, is
 
 Since 2026-10-17 the platform has a **printed-books store** (`/books`, `/books/:slug`, admin « الكتب » at `/admin/livres/*`): orders WITHOUT online
 payment, delivery fee set later by the admin, payments recorded as lines; the first book is « بروتوكول SMART » (`BookSeeder`, slug
-`smart-protocol`). Contract: `docs/architecture/BOOKS_STORE.md`.
+`smart-protocol`). Since 2026-11-13 a **book manager** (« مسيّر المكتبة », role `book_manager`) is created ONLY by the platform admin
+in « مسيّرو المكتبة » `/admin/livres/gestionnaires` (one-time password); he opens only the orders, books and book messages (+ his
+account) — gate `can:books`, sidebar filtered by `roles`, every other `/admin/*` is 403 / redirected (`BOOKS_STORE.md` §6ter).
+Contract: `docs/architecture/BOOKS_STORE.md`.
 
 Since 2026-10-26 a **school is a first-class object** with its **director** (« فضاء الإدارة », `/idara`, role `school_admin`,
 created ONLY by the platform admin in « المؤسسات » `/admin/etablissements` with a one-time password). Owner decisions: the school buys a
