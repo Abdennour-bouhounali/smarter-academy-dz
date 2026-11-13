@@ -64,8 +64,8 @@ it('la mathématique que le module suppose', () => {
   expect(LAB.beginner.named).toBe(true);
 
   // la phrase juste porte la solution, les autres non (ordre inversé, prix égaux)
-  expect(LAB.advanced.answer.options[LAB.advanced.answer.correct]).toMatch(/العصير 25 DA.*الحلوى 50 DA/);
-  expect(LAB.beginner.answer.options[LAB.beginner.answer.correct]).toMatch(/العصير 30 DA.*الحلوى 50 DA/);
+  expect(LAB.advanced.answer.options[LAB.advanced.answer.correct]).toMatch(/العصير 25 دج.*الحلوى 50 دج/);
+  expect(LAB.beginner.answer.options[LAB.beginner.answer.correct]).toMatch(/العصير 30 دج.*الحلوى 50 دج/);
   const [s1, s2] = LAB.beginner.system.split('|');
   const sys = linearSystem.system(s1, s2);
   expect(linearSystem.isSolution(sys, 50, 30)).toBe(false);

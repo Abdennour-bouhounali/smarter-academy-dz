@@ -1,6 +1,7 @@
 import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
 import {
   parseModel, xRange, storyLin, storyCarried, partsAt, trialAt, solution, answer, modelTex, solvingLines, discoveryReady, grows, elementTex,
+  inequalityLines,
   toNumber as nz,
 } from './growthRace';
 
@@ -28,7 +29,7 @@ export function structureOf(model) {
  * chaque total à chaque x de la règle (`value`/`total`/`readout`), les âges simultanés d'un écran (`screen`), la solution, le total de la
  * rencontre (`meet`), la première valeur entière d'une inéquation (`first`), les équations écrites (`eq`), la structure.
  */
-export function shownValues({ left, right, maxX, goal = 'equal' }) {
+export function shownValues({ left, right, maxX, goal = 'equal', chains }) {
   const model = parseModel(left, right);
   const range = xRange(model, maxX);
   const out = [];
@@ -55,6 +56,16 @@ export function shownValues({ left, right, maxX, goal = 'equal' }) {
   push('eq', bare(modelTex(model, storyCarried(model))));
   solvingLines(model).lines.forEach((l) => push('eq', bare(l)));
   push('structure', structureOf(model));
+  // la synthèse de l'unité (2026-11-12, ADDITIF) : deux TARIFS — leurs rôles, l'inéquation de la manche et les tuiles des questions du lecteur
+  const pool = poolOf(model);
+  if (pool) {
+    push('rate', pool.a); push('rate', pool.b); push('fixed', pool.f); push('saving', pool.a - pool.b);
+    if (goal !== 'equal' && ans.rel) L_INEQ(model, ans.rel).forEach((l) => push('eq', bare(l)));
+    const qs = chainsOfPlayer(chains);
+    if (qs.build.includes('ineqBuild')) ineqSpec(model).tiles.forEach((v) => push('tile', v));
+    if (qs.race.includes('savingBuild')) { const sp = savingSpec(model); if (sp) sp.tiles.forEach((v) => push('tile', v)); }
+    if (qs.race.includes('firstPool')) { const fp = firstSpec(model); if (fp) fp.options.forEach((v) => push('chip', v)); }
+  }
   return out;
 }
 
@@ -101,6 +112,12 @@ export const CHAINS_PLAYER = Object.freeze({
   easy: { build: ['buildEq'], race: [] },
   past: { build: [], race: ['trendTap', 'solveTap', 'buildPast', 'rulePast'] },
   none: { build: [], race: [] },
+  // la synthèse de l'unité 4 (wadiya-idmajiya-muadalat, 2026-11-12, ADDITIF) : deux TARIFS (« × x ») — bâtir l'inéquation « f + bx < ax »,
+  // l'égalité n'est PAS la réponse (« ابتداءً من » = le premier entier au-delà), et ce qu'une séance économise rembourse l'abonnement
+  pool: { build: ['ineqBuild'], race: ['wherePool', 'firstPool'] },
+  poolEasy: { build: ['ineqBuild'], race: ['firstPool'] },
+  poolSaving: { build: [], race: ['firstPool', 'savingBuild'] },
+  poolSavingEasy: { build: [], race: ['savingBuild'] },
 });
 export const chainsOfPlayer = (mode) => CHAINS_PLAYER[mode] ?? CHAINS_PLAYER.none;
 
@@ -159,3 +176,45 @@ export function coachOf(lab, ui = {}) {
 
 /** La clé d'un jeu de cartes (même jeu vérifié deux fois = un seul événement `model`). */
 export const modelKey = (carried) => [...carried].sort().join('|');
+
+/* ── la synthèse de l'unité 4 (2026-11-12, ADDITIF) : deux TARIFS « ax » contre « f + bx » ── */
+const L_INEQ = (model, rel) => inequalityLines(model, rel).lines;
+
+/** Les deux tarifs d'une course « ax » contre « f + bx » (a > b > 0, f > 0) — sinon null (une course d'âges, un autre tarif). */
+export function poolOf(model) {
+  if (model.op !== 'mul') return null;
+  const Ls = model.elements.filter((e) => e.side === 'left'); const Rs = model.elements.filter((e) => e.side === 'right');
+  const rateL = Ls.length === 1 && Ls[0].kind === 'rate' ? nz(Ls[0].c) : null;
+  const rateR = Rs.find((e) => e.kind === 'rate'); const fixR = Rs.find((e) => e.kind === 'fixed');
+  if (rateL == null || Rs.length !== 2 || !rateR || !fixR) return null;
+  const a = rateL; const b = nz(rateR.c); const f = nz(fixR.c);
+  return a > b && b > 0 && f > 0 ? { a, b, f } : null;
+}
+
+/** BÂTIR l'inéquation « la formule 2 est meilleure » : « f + bx < ax » — leurre : l'abonnement payé à chaque séance (« fx »). */
+export function ineqSpec(model) {
+  const p = poolOf(model);
+  if (!p) return null;
+  const f = String(p.f); const bx = `${p.b}x`; const ax = `${p.a}x`; const decoy = `${p.f}x`;
+  return { ops: ['+', '<'], expected: [f, bx, ax], accept: [[bx, f, ax]], tiles: [bx, decoy, ax, f], decoy };
+}
+
+/** La première séance où la formule 2 est MEILLEURE : jetons [égalité, première, avant] — le piège est l'égalité. */
+export function firstSpec(model) {
+  const p = poolOf(model); const s = solution(model);
+  if (!p || s.kind !== 'natural') return null;
+  const n = nz(s.x);
+  return { n, first: n + 1, options: [n, n + 1, Math.max(0, n - 1)], equal: nz(linAt(storyLin(model, 'left'), s.x)) };
+}
+
+/**
+ * La construction NUMÉRIQUE de la synthèse : « (a − b) × n = f » — chaque séance, la formule 2 économise a − b ; après n séances l'économie
+ * rembourse l'abonnement (l'égalité). Leurre : le prix a pris pour l'économie.
+ */
+export function savingSpec(model) {
+  const p = poolOf(model); const s = solution(model);
+  if (!p || s.kind !== 'natural') return null;
+  const n = nz(s.x); const d = p.a - p.b;
+  const tiles = [String(p.a), String(p.f), String(d), String(n)];
+  return { a: p.a, b: p.b, f: p.f, d, n, ops: ['×', '='], expected: [String(d), String(n), String(p.f)], accept: [[String(n), String(d), String(p.f)]], tiles, decoy: String(p.a) };
+}

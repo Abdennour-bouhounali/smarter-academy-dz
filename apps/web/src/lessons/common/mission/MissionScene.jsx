@@ -22,6 +22,14 @@ import LockerBalanceScene from './LockerBalanceScene';
 import PitchPlannerScene from './PitchPlannerScene';
 import PhoneCreditScene from './PhoneCreditScene';
 import FamilyHeightsScene from './FamilyHeightsScene';
+import CivilRegistryScene from './CivilRegistryScene';
+import KioskCardsScene from './KioskCardsScene';
+import MuseumDeskScene from './MuseumDeskScene';
+import PartyTableScene from './PartyTableScene';
+import ApronStoreScene from './ApronStoreScene';
+import RugMarketScene from './RugMarketScene';
+import FountainPlazaScene from './FountainPlazaScene';
+import ClubCounterScene from './ClubCounterScene';
 
 /**
  * LA SCÈNE d'une mission (rollout 2026-11-08) : chaque leçon dessine la sienne, choisie par `mission.scene` dans sa config
@@ -66,6 +74,20 @@ const SCENES = {
   'pitch-planner': PitchPlannerScene,
   'phone-credit': PhoneCreditScene,
   'family-heights': FamilyHeightsScene,
+  // unité 5 (« commit 0 » du 2026-11-11) : trois emplacements, chacun remplacé par le constructeur de sa leçon (un fichier par scène)
+  'civil-registry': CivilRegistryScene,
+  'kiosk-cards': KioskCardsScene,
+  'museum-desk': MuseumDeskScene,
+  // unité 5, la synthèse wadiya-idmajiya-jumal (2026-11-12) : la table du goûter de l'école — rangées ÉGALES de jus et de gâteaux, un plateau de restes
+  'party-table': PartyTableScene,
+  // unité 1, la synthèse wadiya-idmajiya-aadad (2026-11-12) : le magasin de la commune — deux piles de tabliers, des caisses d'école identiques
+  'apron-store': ApronStoreScene,
+  // unité 2, la synthèse wadiya-idmajiya-judhur (2026-11-12) : le marché des tapis — un tapis deux fois plus long que large, un ruban à mesurer
+  'rug-market': RugMarketScene,
+  // unité 3, la synthèse wadiya-idmajiya-harfi (2026-11-12) : la place à la fontaine — une نافورة carrée et son ممرّ dallé de même largeur tout autour
+  'fountain-plaza': FountainPlazaScene,
+  // unité 4, la synthèse wadiya-idmajiya-muadalat (2026-11-12) : le guichet du club — deux panneaux de prix aux étiquettes vides, tickets et abonnement
+  'club-counter': ClubCounterScene,
 };
 
 function CourtyardBigScene(props) {

@@ -149,6 +149,9 @@ class AppServiceProvider extends ServiceProvider
         // première couche ; la nomination active (SchoolAccess::schoolOf) la
         // deuxième (SCHOOL_ADMIN_SPACE.md §2).
         Gate::define('school', fn (User $user) => $user->role === User::ROLE_SCHOOL_ADMIN);
+        // La LIBRAIRIE : l'administrateur ET le gestionnaire « مسيّر المكتبة »
+        // (BOOKS_STORE.md §6ter). Seules les routes livres et « حسابي » la portent.
+        Gate::define('books', fn (User $user) => in_array($user->role, [User::ROLE_ADMIN, User::ROLE_BOOK_MANAGER], true));
         Gate::policy(Classroom::class, ClassroomPolicy::class);
 
         /**

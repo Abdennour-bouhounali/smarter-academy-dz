@@ -42,6 +42,7 @@ function landingFor(user) {
   if (user?.role === 'parent') return '/wali';
   if (user?.role === 'school_admin') return '/idara';
   if (user?.role === 'admin') return '/admin';
+  if (user?.role === 'book_manager') return '/admin/livres/commandes';
   // Arrivé par le lien d'une classe (et consentant) : on y retourne, et la
   // page du lien rejoint seule. Voir features/classJoin/pendingClassJoin.js.
   return postAuthPath(user, user?.grade ? '/espace' : '/espace/bienvenue');

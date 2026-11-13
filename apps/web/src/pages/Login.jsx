@@ -20,6 +20,8 @@ import ClassJoinNotice from '../components/auth/ClassJoinNotice';
  */
 function postLoginPath(user) {
   if (user.role === 'admin') return '/admin';
+  // « مسيّر المكتبة » (BOOKS_STORE.md §6ter) : le panneau, réduit à la librairie.
+  if (user.role === 'book_manager') return '/admin/livres/commandes';
   if (user.role === 'student') {
     // Venu du lien d'une classe : retour sur le lien, qui rejoint seul
     // (pendingClassJoin.js — jamais une URL lue dans la requête).

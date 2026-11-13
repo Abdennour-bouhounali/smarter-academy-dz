@@ -17,7 +17,8 @@ use Laravel\Sanctum\HasApiTokens;
  * 'teacher' ("Enseignant", added without any migration — exactly the additive
  * path this note used to promise), since 2026-10-22, 'parent' (« وليّ
  * الأمر », the family account — docs/architecture/PARENT_SPACE.md) and, since
- * 2026-10-26, 'school_admin' (« المدير » — docs/architecture/SCHOOL_ADMIN_SPACE.md).
+ * 2026-10-26, 'school_admin' (« المدير » — docs/architecture/SCHOOL_ADMIN_SPACE.md) and, since
+ * 2026-11-13, 'book_manager' (« مسيّر المكتبة » — docs/architecture/BOOKS_STORE.md §6ter).
  */
 #[Hidden(['password', 'remember_token', 'pending_class_join_token'])]
 class User extends Authenticatable implements HasLocalePreference
@@ -105,6 +106,15 @@ class User extends Authenticatable implements HasLocalePreference
     public const ROLE_SCHOOL_ADMIN = 'school_admin';
 
     /**
+     * Le GESTIONNAIRE DE LA LIBRAIRIE (« مسيّر المكتبة », 2026-11-13). Créé par
+     * l'administrateur seulement (AdminBookManagerController), jamais par une
+     * inscription. Il n'ouvre QUE les commandes, les fiches livres et les
+     * messages des livres, plus son propre compte (porte `books`) — aucune
+     * autre route d'administration (BOOKS_STORE.md §6ter).
+     */
+    public const ROLE_BOOK_MANAGER = 'book_manager';
+
+    /**
      * Les rôles qu'une inscription publique peut choisir. Jamais admin.
      *
      * `parent` n'y est PLUS depuis le 2026-10-23 (propriétaire) : deux comptes
@@ -159,6 +169,11 @@ class User extends Authenticatable implements HasLocalePreference
     public function isSchoolAdmin(): bool
     {
         return $this->role === self::ROLE_SCHOOL_ADMIN;
+    }
+
+    public function isBookManager(): bool
+    {
+        return $this->role === self::ROLE_BOOK_MANAGER;
     }
 
     /**

@@ -21,10 +21,10 @@ const O1 = ['$560 + 5x$', '$(560 + 5)x$', '$560x + 5$', '$560 + 75x$'];
 const O2 = ['$560 + 5x < 75x$', '$560 + 5x > 75x$', '$560 + 5x = 75x$', '$560x + 5 < 75x$'];
 const O3 = ['$x > 8$', '$x < 8$', '$x > \\dfrac{1}{8}$', '$x > 7$'];
 const O4 = [
-  'تتساوى الصيغتان: $75 \\times 8 = 560 + 5 \\times 8 = 600$ دينار',
+  'تتساوى الصيغتان: $75 \\times 8 = 560 + 5 \\times 8 = 600$ دج',
   'الصيغة الثانية أفضل، لأنّ $560 + 5 \\times 8 = 600$',
-  'الصيغة الأولى أفضل بـ 40 دينارًا',
-  'تتساوى الصيغتان في 560 دينارًا',
+  'الصيغة الأولى أفضل بـ 40 دج',
+  'تتساوى الصيغتان في 560 دج',
 ];
 const O5 = [
   'ابتداءً من 9 حصص: هو أصغر عدد طبيعي يحقّق $x > 8$',
@@ -45,9 +45,9 @@ export default function Module08Ahill() {
         tafsir: { label: 'تفسير النتيجة واختيار الأفضل', module: 7 },
       }}
       epreuves={[
-        { id: 'E1', skill: 'tarjama', requires: ['tarjama-sigha'], prompt: <Q>المرحلة 1 — نسمّي <MathText>{'$x$'}</MathText> عدد الحصص. تكلفة <MathText>{'$x$'}</MathText> حصة بالصيغة الثانية (بالدينار) هي ...</Q>,
+        { id: 'E1', skill: 'tarjama', requires: ['tarjama-sigha'], prompt: <Q>المرحلة 1 — نسمّي <MathText>{'$x$'}</MathText> عدد الحصص. تكلفة <MathText>{'$x$'}</MathText> حصة بالصيغة الثانية (بـ دج) هي ...</Q>,
           options: opts(O1), optionLabel: label(O1), correct: 0, cols: 2,
-          explain: <MathText>{'الاشتراك السنوي 560 دينارًا يُدفع مرّة واحدة، و 5 دنانير في كل حصة: $560 + 5x$.'}</MathText>,
+          explain: <MathText>{'الاشتراك السنوي 560 دج يُدفع مرّة واحدة، و 5 دج في كل حصة: $560 + 5x$.'}</MathText>,
           assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_wadiya-idmajiya-muadalat_P2'] } },
         { id: 'E2', skill: 'mutarajiha', requires: ['mutarajiha-mufadala'], prompt: <Q>المرحلة 2 — «التسعيرة الثانية أفضل» تُترجم بالمتراجحة ...</Q>,
           options: opts(O2), optionLabel: label(O2), correct: 0, cols: 2,

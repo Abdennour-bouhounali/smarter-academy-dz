@@ -58,6 +58,8 @@ export default function Register() {
 
     if (user.role === 'admin') {
       navigate('/admin');
+    } else if (user.role === 'book_manager') {
+      navigate('/admin/livres/commandes');
     } else if (user.role === 'student') {
       navigate(postAuthPath(user, user.emailVerified === false ? '/verification-email' : '/espace'));
     } else if (user.role === 'teacher') {

@@ -1,26 +1,23 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PeerSheet } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
-import { MethodSteps, TextbookBox, TextbookExercise, SourceTag } from '../../../../../../common/textbook';
+import { MethodSteps, TextbookBox, TextbookExercise } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { METHOD, METHOD_BOX, CHOICE } from '../content/textbook';
 import { NOW_59 } from '../content/exercises';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
 
 /**
- * Module 2 — طرائق p. 59 « حل جملة معادلتين من الدرجة الأولى بمجهولين » (FORMALIZE) :
- *   1. la jumla (1) résolue par التعويض, LIGNE À LIGNE (MethodSteps) → brique tariqat-tawid,
- *      et le contre-exemple « dans la même équation » (2 = 2) ;
- *   2. la jumla (2) par الجمع والتعويض, ligne à ligne → brique tariqat-jam, puis l'encadré
- *      « طريقة » du manuel ;
- *   3. CHOISIR la méthode d'après les coefficients (P3) → brique ikhtiyar-tariqa : chaque
- *      distracteur affirme un fait FAUX sur la jumla (un coefficient 1 qui n'existe pas, des
- *      coefficients « opposés » qui ne le sont pas) ;
- *   4. دوري الآن : les deux jumal du manuel, « مبيّنا طريقة الحل المستعملة ».
- * Rétrofit 2026-10-15 (§4quater) : module SANS labo — il ouvre sur la lecture ligne à ligne ; les briques (tariqat-tawid,
- * tariqat-jam, ikhtiyar-tariqa) et l'encadré « طريقة » viennent APRÈS la réponse (plus de `requires` sur ces questions).
- * LP : P1, P2, P3.
+ * Module 2 — « طرائق » (FORMALIZE), sans labo (verdict L2.3) :
+ *   1. un exemple résolu par التعويض, LIGNE À LIGNE (MethodSteps) → brique tariqat-tawid, et le contre-exemple « dans la même équation » (8 = 8) ;
+ *   2. un exemple résolu par الجمع, ligne à ligne → brique tariqat-jam, puis l'encadré « طريقة » (mots de la plateforme) ;
+ *   3. CHOISIR la méthode d'après les coefficients (P3) → brique ikhtiyar-tariqa : chaque distracteur affirme un fait FAUX sur la jumla ;
+ *   4. « دوري » : deux jumal, chacune posée avec sa question ;
+ *   5. « ورقة أسامة » (verdict X1 / L2.8) : avant d'additionner, un seul membre multiplié.
+ * Exemples et « دوري » sur des jumal de la PLATEFORME (rollout 2026-11-12 : indépendance du manuel ; règle P : aucun moins devant une parenthèse).
+ * Chaque question partage son écran avec ce qu'elle interroge (MethodSteps puis la question ; chaque ligne de choix redonne sa jumla). LP : P1, P2, P3.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const solutionOf = (m) => ({ source: m.source, exercise: m.exercise, solution: m.solution });
@@ -32,6 +29,7 @@ export default function Module02Tarayiq() {
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
   const [now, setNow] = useState({});
+  const [peer, setPeer] = useState(false);
   const mark = (id) => () => setNow((d) => ({ ...d, [id]: true }));
 
   return (
@@ -41,17 +39,16 @@ export default function Module02Tarayiq() {
       moduleNumber={2}
       moduleTitle="طرائق — التعويض أو الجمع"
       moduleSubtitle="حل جملة معادلتين من الدرجة الأولى بمجهولين"
-      objectives={['كيف يُحَلّ تمرين الكتاب سطرًا سطرًا؟', 'متى يكون الجمع أسرع من التعويض؟', 'كيف نختار الطريقة بالنظر إلى المعاملات؟']}
+      objectives={['كيف تُحَلّ جملة بالتعويض سطرًا سطرًا؟', 'متى يكون الجمع أسرع من التعويض؟', 'كيف نختار الطريقة بالنظر إلى المعاملات؟']}
       estimatedTime="12 دقيقة"
       brief={{
-        tag: 'طرائق — الكتاب ص 59', title: METHOD.title, tone: 'emerald',
+        tag: 'طرائق', title: METHOD.title, tone: 'emerald',
         body: (
           <div className="space-y-2">
             <p><MathText>{METHOD.exercise}</MathText></p>
-            <p className="text-sm text-slate-600">تمرين محلول من الكتاب: الجملة (1) بالتعويض، والجملة (2) بالجمع. اقرأ كل سطر، وحاول توقّع السطر التالي قبل أن تكشفه — هي الحركات نفسها التي قمت بها على البطاقتين.</p>
+            <p className="text-sm text-slate-600">مثالان محلولان: الجملة (1) بالتعويض، والجملة (2) بالجمع. اقرأ كل سطر، وحاول توقّع السطر التالي قبل أن تكشفه — هي الحركات نفسها التي قمت بها على البطاقتين.</p>
           </div>
         ),
-        footer: <SourceTag source={METHOD.source} />,
       }}
       steps={[
         {
@@ -59,20 +56,20 @@ export default function Module02Tarayiq() {
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="takhallus-majhul" variant="rappel" compact />
-              <MethodSteps method={solutionOf(METHOD.one)} onAllRevealed={() => setRead1(true)} />
-              {read1 && (
-                <>
+              <div className="space-y-3" data-paging-keep>
+                <MethodSteps method={solutionOf(METHOD.one)} onAllRevealed={() => setRead1(true)} />
+                {read1 && (
                   <TapQuestion
-                    prompt={<MathText>{'لو عوّضنا $y$ بالعبارة $x - 2$ في المعادلة $x - y = 2$ نفسها التي أخذناها منها، لوجدنا:'}</MathText>}
-                    options={[M('$x - (x - 2) = 2$ ، أي $2 = 2$ : مساواة صحيحة دائمًا لا تحدّد $x$'), M('$x = 2$'), M('$y = -2$')]}
+                    prompt={<MathText>{'لو عوّضنا $x$ بالعبارة $8 + 2y$ في المعادلة $x - 2y = 8$ نفسها التي أخذناها منها، لوجدنا:'}</MathText>}
+                    options={[M('$(8 + 2y) - 2y = 8$ ، أي $8 = 8$ : مساواة صحيحة دائمًا لا تحدّد $y$'), M('$y = 8$'), M('$x = 8$')]}
                     correct={0}
                     cols={1}
-                    explain={<MathText>{'$x - x + 2 = 2$ : يختفي $x$ ويبقى $2 = 2$ . لهذا نعوّض في المعادلة الأخرى $3x + y = -4$ .'}</MathText>}
+                    explain={<MathText>{'يختفي $y$ ويبقى $8 = 8$ . لهذا نعوّض في المعادلة الأخرى $4x + y = 5$ .'}</MathText>}
                     onAnswered={() => setQ1(true)}
                   />
-                  {q1 && <KnowledgeBrick id="tariqat-tawid" lead="ما فعله الكتاب في الجملة (1):" />}
-                </>
-              )}
+                )}
+              </div>
+              {q1 && <KnowledgeBrick id="tariqat-tawid" lead="ما فعلناه في الجملة (1):" />}
             </div>
           ),
         },
@@ -80,21 +77,21 @@ export default function Module02Tarayiq() {
           num: 2, title: 'الجملة (2) بالجمع', subtitle: 'الحلّ سطرًا سطرًا', done: read2 && q2,
           content: (
             <div className="space-y-3">
-              <MethodSteps method={solutionOf(METHOD.two)} onAllRevealed={() => setRead2(true)} />
-              {read2 && (
-                <>
+              <div className="space-y-3" data-paging-keep>
+                <MethodSteps method={solutionOf(METHOD.two)} onAllRevealed={() => setRead2(true)} />
+                {read2 && (
                   <TapQuestion
-                    prompt={<MathText>{'في الجملة (2) جمعنا المعادلتين مباشرة دون ضرب في معامل، لأنّ:'}</MathText>}
-                    options={[M('معاملي $x$ متعاكسان: $4x$ و $-4x$'), M('معاملي $y$ متعاكسان'), M('الطرفين الثانيين موجبان')]}
+                    prompt={<MathText>{'في الجملة (2) جمعنا المعادلتين مباشرة دون ضرب في عدد، لأنّ:'}</MathText>}
+                    options={[M('معاملي $x$ متعاكسان: $3x$ و $-3x$'), M('معاملي $y$ متعاكسان'), M('الطرفين الثانيين موجبان')]}
                     correct={0}
                     cols={1}
-                    explain={<MathText>{'$4x + (-4x) = 0$ : يختفي $x$ ويبقى $2y + 3y = 9 + 6$ أي $5y = 15$ . أمّا $2y$ و $3y$ فليسا متعاكسين، وإشارة الطرفين الثانيين لا تُلغي شيئًا.'}</MathText>}
+                    explain={<MathText>{'$3x + (-3x) = 0$ : يختفي $x$ ويبقى $2y + 5y = 11 + 10$ أي $7y = 21$ . أمّا $2y$ و $5y$ فليسا متعاكسين، وإشارة الطرفين الثانيين لا تُلغي شيئًا.'}</MathText>}
                     onAnswered={() => setQ2(true)}
                   />
-                  {q2 && <KnowledgeBrick id="tariqat-jam" lead="ما فعله الكتاب في الجملة (2):" />}
-                  {q2 && <TextbookBox kind="method" title={METHOD_BOX.title} lines={[METHOD_BOX.text, ...METHOD_BOX.items]} source={METHOD_BOX.source} />}
-                </>
-              )}
+                )}
+              </div>
+              {q2 && <KnowledgeBrick id="tariqat-jam" lead="ما فعلناه في الجملة (2):" />}
+              {q2 && <TextbookBox kind="method" title={METHOD_BOX.title} lines={[METHOD_BOX.text, ...METHOD_BOX.items]} source={METHOD_BOX.source} />}
             </div>
           ),
         },
@@ -104,17 +101,9 @@ export default function Module02Tarayiq() {
             <div className="space-y-3">
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">لكل جملة، اختر الطريقة الأنسب مع سببها الصحيح:</p>}
-                rows={[
-                  { id: 'k1', label: M('$\\begin{cases} y = 3x - 1 \\\\ 2x + 5y = 12 \\end{cases}$'),
-                    options: [M('التعويض، لأنّ $y$ معبّر عنه بدلالة $x$ في المعادلة الأولى'), M('الجمع، لأنّ معاملي $y$ متعاكسان'), M('الجمع، لأنّ معاملي $x$ متعاكسان')],
-                    correct: 0, correction: M('العبارة $3x - 1$ جاهزة: $2x + 5(3x - 1) = 12$ أي $17x = 17$ ، ومنه $x = 1$ و $y = 2$ .') },
-                  { id: 'k2', label: M('$\\begin{cases} 5x + 3y = 7 \\\\ 2x - 3y = 7 \\end{cases}$'),
-                    options: [M('التعويض، لأنّ معامل $x$ يساوي 1'), M('الجمع، لأنّ معاملي $y$ متعاكسان'), M('الجمع، لأنّ معاملي $x$ متعاكسان')],
-                    correct: 1, correction: M('$3y$ و $-3y$ متعاكسان: بالجمع $7x = 14$ ، ومنه $x = 2$ ثم $y = -1$ .') },
-                  { id: 'k3', label: M('$\\begin{cases} 4x + 3y = 10 \\\\ 6x - 5y = 34 \\end{cases}$'),
-                    options: [M('التعويض، لأنّ معامل $y$ يساوي 1'), M('الجمع مباشرة، لأنّ معاملي $x$ متعاكسان'), M('الجمع بعد الضرب في معاملين مناسبين، لأنه لا يوجد معامل يساوي 1 أو $-1$')],
-                    correct: 2, correction: M('نضرب الأولى في 3 والثانية في $-2$ : $12x + 9y = 30$ و $-12x + 10y = -68$ ؛ بالجمع $19y = -38$ ، ومنه $y = -2$ ثم $x = 4$ .') },
-                ]}
+                rows={CHOICE.rows.map((row) => ({
+                  id: row.id, label: M(`$${row.tex}$`), options: row.options.map((o) => M(o)), correct: row.correct, correction: M(row.correction),
+                }))}
                 feedback={({ allRight }) => (
                   <Feedback tone={allRight ? 'ok' : 'ko'}>
                     <MathText>{allRight ? CHOICE.rule : 'اقرأ المعاملات قبل أن تختار: هل يوجد معامل يساوي $1$ أو $-1$ ؟ هل يوجد معاملان متعاكسان؟'}</MathText>
@@ -127,12 +116,16 @@ export default function Module02Tarayiq() {
           ),
         },
         {
-          num: 4, title: 'دوري الآن (ص 59)', done: NOW_59.every((ex) => now[ex.id]),
+          num: 4, title: 'دوري', done: NOW_59.every((ex) => now[ex.id]),
           content: (
             <div className="space-y-3">
               {NOW_59.map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={['tariqat-tawid', 'tariqat-jam', 'ikhtiyar-tariqa']} onAnswered={mark(ex.id)} />)}
             </div>
           ),
+        },
+        {
+          num: 5, title: 'ورقة زميل', subtitle: 'جد الخطأ وصحّحه', done: peer,
+          content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={() => setPeer(true)} />,
         },
       ]}
       footer={<KnowledgeSnapshot moduleNumber={2} variant="memo" />}

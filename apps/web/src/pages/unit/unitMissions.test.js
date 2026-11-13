@@ -94,6 +94,31 @@ describe('unit 4 « المعادلات والمتراجحات » — the challen
   });
 });
 
+describe('unit 5 « جمل معادلتين » — the challenge never writes its answer nor a climax of the unit', () => {
+  // x + y = 23 ; 5x + 2y = 82 → 3x = 36 → (12 ; 11): the numbers RESERVED by the council (verdict X2), used by no lesson
+  // (`_unit/unitCollisions.test.js`). The book's تحدّ (the class coins) stays in the lessons, never on this page.
+  const text = JSON.stringify(UNIT_MISSIONS['jumal-muadalatayn'].challenge);
+  it.each(['12', '11', '36', '3x', 'قطعة', 'دج'])('« %s » is not on the unit page', (s) => {
+    expect(text.includes(s)).toBe(false);
+  });
+  it('the system has exactly the solution (12 ; 11) in whole boxes', () => {
+    const sols = [];
+    for (let x = 0; x <= 23; x += 1) if (5 * x + 2 * (23 - x) === 82) sols.push([x, 23 - x]);
+    expect(sols).toEqual([[12, 11]]);
+  });
+  it('no line of the challenge shows a lesson\'s مسألة signature', () => {
+    const sigs = Object.values(import.meta.glob('../../lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/_unit/signatures/*.js', { eager: true }))
+      .flatMap((m) => m.TEXT ?? []);
+    expect(sigs.length).toBeGreaterThan(10);
+    const c = UNIT_MISSIONS['jumal-muadalatayn'].challenge;
+    [c.lead, c.full, c.question].forEach((line) => sigs.forEach((re) => expect(re.test(line), `${re} — ${line}`).toBe(false)));
+  });
+  it('the history line is the verified one of `_unit/abuKamil.js`', async () => {
+    const { ABU_KAMIL } = await import('../../lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/_unit/abuKamil.js');
+    expect(UNIT_MISSIONS['jumal-muadalatayn'].history.text).toBe(ABU_KAMIL.line);
+  });
+});
+
 describe('unit state for a student', () => {
   const m = { keys: [{ after: 'a' }, { after: 'c' }] };
   it('the current lesson is the first open one not finished; keys follow finished lessons', () => {

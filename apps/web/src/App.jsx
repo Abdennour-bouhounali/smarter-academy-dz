@@ -56,6 +56,7 @@ const AdminBookOrders = lazy(() => import('./pages/admin/books/BookOrders'));
 const AdminBookOrderDetail = lazy(() => import('./pages/admin/books/BookOrderDetail'));
 const AdminBookCatalog = lazy(() => import('./pages/admin/books/BookCatalog'));
 const AdminBookMessages = lazy(() => import('./pages/admin/books/BookMessages'));
+const AdminBookManagers = lazy(() => import('./pages/admin/books/BookManagers'));
 // Les ENSEIGNANTS, leurs CLASSES et les OFFRES — le modèle commercial
 // configuré depuis le panneau, sans déploiement ni paiement en ligne.
 const AdminTeacherList = lazy(() => import('./pages/admin/teachers/TeacherList'));
@@ -166,6 +167,7 @@ const AdminDailyChallenge = lazy(() => import('./pages/admin/dailyChallenge/Dail
 const MathLabHome = lazy(() => import('./pages/student/MathLab'));
 const MathLabToolPage = lazy(() => import('./pages/student/MathLab').then((m) => ({ default: m.MathLabToolPage })));
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import AdminOnlyOutlet from './components/auth/AdminOnlyOutlet';
 import { prefetchBooksForLocation } from './features/books/bookCache';
 import RequireAccount from './components/auth/RequireAccount';
 import RequireLargeScreen from './components/auth/RequireLargeScreen';
@@ -280,56 +282,64 @@ function AppRoutes() {
       {/* Le panneau d'administration. `allowedRoles` est explicite ici :
           c'était le défaut de ProtectedRoute, mais l'écrire rend la porte
           lisible sur place. La vraie protection reste serveur — chaque
-          /api/v1/admin/* est derrière can:admin (voir AdminAuthorizationTest). */}
-      <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']} />}>
+          /api/v1/admin/* est derrière can:admin, sauf la librairie et « حسابي »
+          derrière can:books, que le gestionnaire « مسيّر المكتبة » ouvre aussi
+          (voir AdminAuthorizationTest). */}
+      <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin', 'book_manager']} />}>
         <Route element={<AdminLayout />}>
-          <Route index element={<AdminDashboard />} />
+          {/* L'administrateur SEUL. Le gestionnaire de la librairie (book_manager)
+              est ramené aux commandes (AdminOnlyOutlet, BOOKS_STORE.md §6ter). */}
+          <Route element={<AdminOnlyOutlet />}>
+            <Route index element={<AdminDashboard />} />
 
-          <Route path="analytics/plateforme" element={<PlatformAnalytics />} />
-          <Route path="analytics/apprentissage" element={<LearningAnalytics />} />
-          <Route path="analytics/contenu" element={<ContentAnalytics />} />
-          <Route path="analytics/points" element={<LearningPointAnalytics />} />
+            <Route path="analytics/plateforme" element={<PlatformAnalytics />} />
+            <Route path="analytics/apprentissage" element={<LearningAnalytics />} />
+            <Route path="analytics/contenu" element={<ContentAnalytics />} />
+            <Route path="analytics/points" element={<LearningPointAnalytics />} />
 
-          <Route path="contenu/lecons" element={<AdminLessons />} />
-          <Route path="contenu/lecons/:code" element={<AdminLessonDetail />} />
-          <Route path="contenu/exercices" element={<AdminExercises />} />
+            <Route path="contenu/lecons" element={<AdminLessons />} />
+            <Route path="contenu/lecons/:code" element={<AdminLessonDetail />} />
+            <Route path="contenu/exercices" element={<AdminExercises />} />
 
-          <Route path="signalements" element={<AdminReportList />} />
-          <Route path="signalements/:id" element={<AdminReportDetail />} />
+            <Route path="signalements" element={<AdminReportList />} />
+            <Route path="signalements/:id" element={<AdminReportDetail />} />
 
-          <Route path="eleves" element={<AdminStudentList />} />
-          <Route path="eleves/:id" element={<AdminStudentDetail />} />
+            <Route path="eleves" element={<AdminStudentList />} />
+            <Route path="eleves/:id" element={<AdminStudentDetail />} />
 
-          {/* Les codes d'activation remplacent les abonnements Stripe :
-              c'est par eux que l'accès payant est accordé (master spec
-              §17). Les écrans Subscriptions.jsx/Payments restent sur le
-              disque, démontés. */}
-          <Route path="codes-activation" element={<AdminActivationCodes />} />
-          <Route path="codes-activation/lots" element={<AdminActivationBatches />} />
-          <Route path="codes-activation/:id" element={<AdminActivationCodeDetail />} />
+            {/* Les codes d'activation remplacent les abonnements Stripe :
+                c'est par eux que l'accès payant est accordé (master spec
+                §17). Les écrans Subscriptions.jsx/Payments restent sur le
+                disque, démontés. */}
+            <Route path="codes-activation" element={<AdminActivationCodes />} />
+            <Route path="codes-activation/lots" element={<AdminActivationBatches />} />
+            <Route path="codes-activation/:id" element={<AdminActivationCodeDetail />} />
 
-          {/* Les enseignants, leurs classes, les offres et les demandes :
-              la surface de contrôle du modèle commercial — activation
-              MANUELLE, jamais un paiement en ligne. */}
-          <Route path="enseignants" element={<AdminTeacherList />} />
-          <Route path="enseignants/:id" element={<AdminTeacherDetail />} />
-          <Route path="classes" element={<AdminClassroomList />} />
-          <Route path="classes/:id" element={<AdminClassroomDetail />} />
-          <Route path="etablissements" element={<AdminSchoolList />} />
-          <Route path="etablissements/:id" element={<AdminSchoolDetail />} />
-          <Route path="offres" element={<AdminPlanList />} />
-          <Route path="offres/demandes" element={<AdminSubscriptionRequests />} />
-          <Route path="offres/abonnements" element={<AdminSubscriptions />} />
-          <Route path="offres/acces" element={<AdminAccessLimits />} />
-          <Route path="offres/defi-quotidien" element={<AdminDailyChallenge />} />
-          <Route path="offres/:id" element={<AdminPlanEditor />} />
+            {/* Les enseignants, leurs classes, les offres et les demandes :
+                la surface de contrôle du modèle commercial — activation
+                MANUELLE, jamais un paiement en ligne. */}
+            <Route path="enseignants" element={<AdminTeacherList />} />
+            <Route path="enseignants/:id" element={<AdminTeacherDetail />} />
+            <Route path="classes" element={<AdminClassroomList />} />
+            <Route path="classes/:id" element={<AdminClassroomDetail />} />
+            <Route path="etablissements" element={<AdminSchoolList />} />
+            <Route path="etablissements/:id" element={<AdminSchoolDetail />} />
+            <Route path="offres" element={<AdminPlanList />} />
+            <Route path="offres/demandes" element={<AdminSubscriptionRequests />} />
+            <Route path="offres/abonnements" element={<AdminSubscriptions />} />
+            <Route path="offres/acces" element={<AdminAccessLimits />} />
+            <Route path="offres/defi-quotidien" element={<AdminDailyChallenge />} />
+            <Route path="offres/:id" element={<AdminPlanEditor />} />
 
+            <Route path="systeme/journal" element={<AdminActivityLog />} />
+            <Route path="systeme/coherence" element={<AdminRegistryHealth />} />
+            <Route path="systeme/messages" element={<AdminContactMessages />} />
+            <Route path="livres/gestionnaires" element={<AdminBookManagers />} />
+          </Route>
+
+          {/* La librairie et « حسابي » : l'administrateur ET le gestionnaire (can:books). */}
           <Route path="compte" element={<AdminProfile />} />
           <Route path="compte/securite" element={<AdminSecurity />} />
-
-          <Route path="systeme/journal" element={<AdminActivityLog />} />
-          <Route path="systeme/coherence" element={<AdminRegistryHealth />} />
-          <Route path="systeme/messages" element={<AdminContactMessages />} />
           <Route path="livres" element={<AdminBookCatalog />} />
           <Route path="livres/commandes" element={<AdminBookOrders />} />
           <Route path="livres/commandes/:id" element={<AdminBookOrderDetail />} />

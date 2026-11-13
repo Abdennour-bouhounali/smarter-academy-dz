@@ -333,7 +333,8 @@ export default function PitchExpansion({
   const leftSide = (z) => (flip ? z.j === 0 : z.i === 0);
   const topTerm = (z) => (flip ? lab.factors[1][z.j] : lab.factors[0][z.i]);
   const leftTerm = (z) => (flip ? lab.factors[0][z.i] : lab.factors[1][z.j]);
-  const unit = Math.min(34, (width - 56) / Math.max(1, geoMax.width), (gameScreen ? (choices?.length ? 130 : 170) : 300) / Math.max(1, geoMax.height));
+  // (synthèse de l'unité 3, 2026-11-12) : le terrain « x+a+x » a un tableau de Descartes 3 × 3 — le terrain y est aussi plus bas
+  const unit = Math.min(34, (width - 56) / Math.max(1, geoMax.width), (gameScreen ? ((choices?.length || String(chainsMode).startsWith('ring')) ? 130 : 170) : 300) / Math.max(1, geoMax.height));
   // (leçon 2, 2026-11-11) : la ورشة libre ajoute sa rangée de choix — le terrain y est plus bas (1024 × 768 : un écran, sans défilement)
   const PAD = 26;
   // lecteur : le labo est monté dans une copie cachée puis déplacé — des ids de motif UNIQUES (sinon la hachure, repère non coloré, disparaît)
@@ -1021,6 +1022,12 @@ export const CHAINS_PLAYER = Object.freeze({
   sumDiffEasy: [{ id: 'cancel', reached: L.firstOk, qs: ['cancelFill'] }],
   coef: [{ id: 'coef', reached: L.playerDiscovery, qs: ['coefBuild'] }],
   coefEasy: [{ id: 'coef', reached: L.firstOk, qs: ['coefBuild'] }],
+  // la synthèse de l'unité 3 `wadiya-idmajiya-harfi` (2026-11-12) : un terrain « x+a+x » — le ممرّ autour de la نافورة centrale. En aires, à la
+  // découverte (deux x), BÂTIR sa mesure en nombres ; en termes, à la découverte, BÂTIR son aire « (2x + a)² − a² = 4x² + 4ax »
+  ring: [{ id: 'ring', reached: L.playerDiscovery, qs: ['ringBuild'] }],
+  ringEasy: [{ id: 'ring', reached: L.firstOk, qs: ['ringBuild'] }],
+  ringTerms: [{ id: 'ringExpr', reached: L.playerDiscovery, qs: ['ringExpr'] }],
+  ringTermsEasy: [{ id: 'ringExpr', reached: L.firstOk, qs: ['ringExpr'] }],
   none: [],
 });
 export const chainsOfPlayer = (mode) => CHAINS_PLAYER[mode] ?? [];
@@ -1195,6 +1202,48 @@ Object.assign(QUESTIONS, {
       ops: c.ops, wrap: [<MathText key="w">{`$${L.productTex(lab, letter)} =$`}</MathText>, null],
       tiles, expected: c.expected, render: renderMath,
       hints: [Cq(k, 'coef.hint1', o), Cq(k, 'coef.hint2', o)], explain: Cq(k, 'coef.explain', o),
+    };
+  },
+});
+
+/* ══════════════ La synthèse de l'unité 3 `wadiya-idmajiya-harfi` : le ممرّ autour de la نافورة (lecteur, 2026-11-12) ══════════════ */
+
+Object.assign(QUESTIONS, {
+  /* en AIRES, au x de l'élève : la mesure du ممرّ de deux façons, en nombres — « terrain − نافورة = 4 × شريط + 4 × ركن » — au x que le terrain
+     MONTRE (le dernier vérifié juste, `lastX`), jamais un x d'avant : la question et le terrain disent les mêmes nombres */
+  ringBuild: (lab, k) => {
+    const ok = L.verifiedXs(lab);
+    // garde : la suite n'est atteinte qu'après un x juste ; sans x juste, le x montré (jamais NaN)
+    const x = ok.includes(lab.lastX) ? lab.lastX : (ok.at(-1) ?? lab.lastX ?? 1);
+    const p = L.ringBuildParts(lab, x);
+    const all = [...p.expected, p.decoy];
+    const shift = (seedOf(lab) + x) % all.length;
+    const tiles = all.map((_, i) => all[(i + shift) % all.length]);
+    const o = {
+      eq: $(`x=${x}`), a: $(String(p.a)), side: $(String(p.a + 2 * x)), ring: $(String(p.ring)),
+      calc1: $(`${p.outer} - ${p.center} = ${p.ring}`), calc2: $(`4 \\times ${p.strip} + 4 \\times ${p.corner} = ${p.ring}`),
+    };
+    return {
+      id: 'ringBuild', kind: 'build', prompt: Cq(k, 'ring.prompt', o),
+      slots: [k('cp.ring.slotPitch'), k('cp.ring.slotCenter'), k('cp.ring.slotStrip'), k('cp.ring.slotCorner')],
+      ops: ['−', '= 4 ×', '+ 4 ×'],
+      tiles, expected: p.expected, render: renderMath,
+      hints: [Cq(k, 'ring.hint1', o), Cq(k, 'ring.hint2', o)], explain: Cq(k, 'ring.explain', o),
+    };
+  },
+  /* en TERMES : l'aire du ممرّ « (2x + a)² − a² = 4x² + 4ax » ; leurres +a² (la نافورة gardée) et +2ax (le ممرّ d'un seul côté) */
+  ringExpr: (lab, k) => {
+    const p = L.ringExprParts(lab);
+    const all = [...p.expected, ...p.decoys];
+    const shift = (seedOf(lab) + 1) % all.length;
+    const tiles = all.map((_, i) => all[(i + shift) % all.length]);
+    const o = { lhs: $(p.lhs), side: $(`x + ${p.a} + x`), side2: $(`2x + ${p.a}`), aa: $(String(p.a * p.a)), eq2: $(`${p.lhs} = ${p.expected[0]} ${p.expected[1].replace('+', '+ ')}`) };
+    return {
+      id: 'ringExpr', kind: 'build', prompt: Cq(k, 'ringExpr.prompt', o),
+      slots: [k('cp.ringExpr.slotSq'), k('cp.ringExpr.slotX')],
+      ops: [''], wrap: [<MathText key="w">{`$${p.lhs} =$`}</MathText>, null],
+      tiles, expected: p.expected, render: renderMath,
+      hints: [Cq(k, 'ringExpr.hint1', o), Cq(k, 'ringExpr.hint2', o)], explain: Cq(k, 'ringExpr.explain', o),
     };
   },
 });

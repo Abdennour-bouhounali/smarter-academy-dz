@@ -236,6 +236,13 @@ class ActivityLogger
 
     public const BOOK_ORDER_DELETED = 'book_order.deleted';
 
+    /** Les gestionnaires de la librairie : jamais le mot de passe dans le journal. */
+    public const BOOK_MANAGER_CREATED = 'book_manager.created';
+
+    public const BOOK_MANAGER_STATUS = 'book_manager.status_changed';
+
+    public const BOOK_MANAGER_PASSWORD_RESET = 'book_manager.password_reset';
+
     /**
      * Clés dont la valeur n'est jamais journalisée, quelle que soit la façon
      * dont l'appelant les nomme. Défense en profondeur : l'appelant est déjà

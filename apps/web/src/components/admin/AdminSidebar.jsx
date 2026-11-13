@@ -4,7 +4,7 @@ import { LogOut, ExternalLink, Menu, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { PanelStartClose, PanelStartOpen } from '../common/DirectionalIcons';
 import { AuthContext } from '../../context/AuthContext';
-import { adminNavSections } from '../../data/adminNavigation';
+import { adminNavSectionsFor } from '../../data/adminNavigation';
 import { getDisplayName, getInitials } from '../../utils/userDisplay';
 import { ADMIN_GRADIENT } from '../../pages/admin/adminUi';
 
@@ -96,7 +96,7 @@ export default function AdminSidebar({ collapsed, onToggle }) {
       </button>
 
       <nav className="flex-1 overflow-y-auto px-3 py-5">
-        {adminNavSections.map((section, index) => (
+        {adminNavSectionsFor(user?.role).map((section, index) => (
           <div key={section.labelKey ?? `section-${index}`} className="mb-4 last:mb-0">
             {section.labelKey && !collapsed && (
               <p className="px-3 pb-1.5 font-inter text-xs font-semibold uppercase tracking-wider text-slate-400">
@@ -203,6 +203,7 @@ export function AdminMobileBar() {
   const { t: tNav } = useTranslation('nav');
   const [open, setOpen] = useState(false);
   const { pathname, search } = useLocation();
+  const { user } = useContext(AuthContext);
 
   const isActive = (link) => {
     if (link.matchQuery) return pathname === link.path.split('?')[0] && search.includes(link.matchQuery);
@@ -233,7 +234,7 @@ export function AdminMobileBar() {
 
       {open && (
         <nav className="fixed inset-x-0 top-14 bottom-0 z-40 overflow-y-auto bg-white px-4 py-4">
-          {adminNavSections.map((section, index) => (
+          {adminNavSectionsFor(user?.role).map((section, index) => (
             <div key={section.labelKey ?? `m-${index}`} className="mb-4 last:mb-0">
               {section.labelKey && (
                 <p className="px-2 pb-1.5 font-inter text-xs font-semibold uppercase tracking-wider text-slate-400">

@@ -245,24 +245,24 @@ describe('les six وضعيات d\'entraînement de أدمج تعلّماتي (wa
     for (const n of [4500, 100, 300, 7000]) expect(PROBLEM['wadiya-5'].statement).toContain(String(n));
   });
 
-  it('وضعية 6 — carpets: A = (x + 4)², B = x(x + 10), B − A = 2x − 16', () => {
-    const A = (x) => (x + 4) ** 2;
-    const B = (x) => x * (x + 10);
+  it('وضعية 6 — carpets: A = (x + 2)², B = x(x + 6), B − A = 2x − 4 (renumbered 2026-11-12: x > 8 was the 🏆\'s answer)', () => {
+    const A = (x) => (x + 2) ** 2;
+    const B = (x) => x * (x + 6);
     for (const x of [0, 1, 3, 8, 10, 25]) {
-      expect(A(x)).toBe(x ** 2 + 8 * x + 16);
-      expect(B(x)).toBe(x ** 2 + 10 * x);
-      expect(B(x) - A(x)).toBe(2 * x - 16);
+      expect(A(x)).toBe(x ** 2 + 4 * x + 4);
+      expect(B(x)).toBe(x ** 2 + 6 * x);
+      expect(B(x) - A(x)).toBe(2 * x - 4);
     }
-    expect(numericsOf('wadiya-6', 0)).toEqual([10]);
-    expect(numericsOf('wadiya-6', 1)).toEqual([16, 16, 8]);
-    expect(A(8)).toBe(B(8));
-    expect(A(8)).toBe(144);
-    for (const x of [1, 5, 8]) expect(B(x) > A(x)).toBe(false);
-    for (const x of [8.5, 9, 10, 30]) expect(B(x) > A(x)).toBe(true);
+    expect(numericsOf('wadiya-6', 0)).toEqual([6]);
+    expect(numericsOf('wadiya-6', 1)).toEqual([4, 4, 2]);
+    expect(A(2)).toBe(B(2));
+    expect(A(2)).toBe(16);
+    for (const x of [0, 1, 2]) expect(B(x) > A(x)).toBe(false);
+    for (const x of [2.5, 3, 10, 30]) expect(B(x) > A(x)).toBe(true);
     expect(numericsOf('wadiya-6', 2)).toEqual([A(10), B(10)]);
-    expect([A(10), B(10), B(10) - A(10)]).toEqual([196, 200, 4]);
-    // the distractors of A are not (x + 4)²
-    for (const f of [(x) => x ** 2 + 16, (x) => x ** 2 + 4 * x + 16, (x) => x ** 2 + 8 * x + 8]) expect([1, 2, 3].some((x) => f(x) !== A(x))).toBe(true);
+    expect([A(10), B(10), B(10) - A(10)]).toEqual([144, 160, 16]);
+    // the distractors of A are not (x + 2)²
+    for (const f of [(x) => x ** 2 + 4, (x) => x ** 2 + 2 * x + 4, (x) => x ** 2 + 4 * x + 2]) expect([1, 2, 3].some((x) => f(x) !== A(x))).toBe(true);
   });
 
   it('the statements keep their numbers', () => {
@@ -272,6 +272,6 @@ describe('les six وضعيات d\'entraînement de أدمج تعلّماتي (wa
     has('wadiya-3', 1200, 150, 800, 250, 4500);
     has('wadiya-4', 8);
     has('wadiya-5', 4500, 100, 300, 7000);
-    has('wadiya-6', 4, 10);
+    has('wadiya-6', 2, 6);
   });
 });

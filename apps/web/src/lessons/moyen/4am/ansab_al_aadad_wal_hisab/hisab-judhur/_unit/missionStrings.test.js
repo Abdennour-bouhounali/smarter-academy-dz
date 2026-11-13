@@ -28,6 +28,8 @@ const CLIMAX = {
   'muadalat-x-murabba': [/\\sqrt\{11\}/, /(^|[^0-9])3\{,\}3(?![0-9])/, /0\{?,\}?09/, /x\^2\s*=\s*64/, /x\^2\s*=\s*-\s*36/],
   'amaliyat-judhur': [/\\sqrt\{180\}/, /6\s*\\sqrt\{5\}/, /3\s*\\sqrt\{5\}/, /(^|[^0-9])(180|192)([^0-9]|$)/],
   'tawzif-khawass-judhur': [/\\sqrt\{200\}/, /\\sqrt\{50\}/, /10\s*\\sqrt\{2\}/, /2\s*\\sqrt\{50\}/, /5\s*\\sqrt\{8\}/, /100\s*\\sqrt\{2\}/, /(^|[^0-9,{}])(200|120|12000)([^0-9,{}]|$)/],
+  // la synthèse (2026-11-12, lecteur de mission) : la زربية du 🏆 — sa largeur et sa longueur, exactes et arrondies, et son prix (content/forbidden.js)
+  'wadiya-idmajiya-judhur': [/\\sqrt\{12\}/, /(^|[^0-9])[24]\s*\\sqrt\{3\}/, /\\sqrt\{48\}/, /(^|[^0-9])(346|693|692)([^0-9]|$)/, /12000/, /زرب/],
 };
 const BOOK = [/الكتاب(?!ة)/, /تمرين\s*\d+\s*:/, /خطأً? مطبعي/];
 const lessonOf = (path) => path.split('/')[1];

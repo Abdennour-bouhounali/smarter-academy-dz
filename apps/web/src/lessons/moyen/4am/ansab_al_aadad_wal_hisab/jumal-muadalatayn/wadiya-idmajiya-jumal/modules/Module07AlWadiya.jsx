@@ -1,47 +1,52 @@
 import React, { useState } from 'react';
 import * as linearSystem from '@smarter-academy/core/arithmetic/linearSystem.js';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PeerSheet } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { TextbookBox, SourceTag, PairQuestion } from '../../../../../../common/textbook';
+import LabRounds from '../../../../../../common/manipulations/rounds/LabRounds';
+import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
+import { useModulePlayer } from '../../../../../../common/mission/useModulePlayer';
+import * as SL from '../../../../../../common/manipulations/logic/storyModeller';
+import * as SP from '../../../../../../common/manipulations/logic/storyModellerPlayer';
+import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { SITUATION, WARMUP, REMARKS, LAB } from '../content/textbook';
-import { PartyScene } from '../components/JumalFigures';
+import { SITUATION, REMARKS, LAB } from '../content/textbook';
+import { M7_ROUNDS, TRIP, PARTY } from '../content/rounds';
+import { PEER_SHEET, PEER_KID } from '../content/peerSheet';
 
 /**
- * Module 7 — la وضعية (p. 62) : le حفل البلدية, lu dans les TROIS étapes du
- * « تحليل الوضعية » du manuel (قراءة الوضعية وفهمها · تحليل الوضعية واختيار
- * استراتيجية حل مناسبة · تنفيذ استراتيجية الحل المختارة), comme les synthèses
- * des unités 2 à 4.
+ * Module 7 — « وضعية الوحدة » : la وضعية du حفل البلدية, ANALYSÉE dans les trois phases (قراءة · تحليل واختيار استراتيجية · تنفيذ) — et
+ * jamais résolue : la résoudre est le défi 🏆 (module 8, jamais retouché ; sa solution n'apparaît sur aucun écran avant lui, ce module compris :
+ * content/forbidden.js › ANSWER_TEXT, content/mission.test.js).
  *
- * LE LABORATOIRE (story-modeller, RÉUTILISÉ de « حل مشكلات بتوظيف جمل معادلتين »,
- * deux niveaux dans un ManipulationWorkspace, ouvert sur مبتدئ par défaut depuis 2026-10-09 : c'est la
- * situation du manuel), sur la table du goûter (`theme="party"`) :
- *   متقدم  le حفل : 150 علبة و 150 قطعة pour 11 250 DA, puis 24 et 30 qui restent
- *          pour 2 100 DA — DEUX informations d'argent, aucune n'est un « nombre de
- *          personnes » ; les inconnues ne sont pas nommées (`named={false}`).
- *   مبتدئ  la رحلة القسم de la plateforme (10 + 10 pour 800 DA ; 2 et 3 pour 210 DA,
- *          prix 30 et 50 DA), inconnues pré-placées ; elle sert les étapes 4 et 5
- *          (حل · تحقق), pour que la réponse du manuel (25 DA et 50 DA) reste celle
- *          de « أحلّ الوضعية ».
- * Le modèle vérifié (`onModel`) et la ثنائية trouvée (`onSolved`) par l'élève sont
- * montrés au-dessus des questions (`[data-activity-evidence]`).
+ * LA PAGE (l'enseignant, le mode classe) : le workspace d'avant, `story-modeller` à deux niveaux (مبتدئ « رحلة القسم » du manuel transposée,
+ * متقدم le حفل) ; ce que l'élève construit (`onModel`) est montré au-dessus de la question de traduction (`[data-activity-evidence]`).
  *
- * Les étapes : ce qui est cherché et les inconnues (brique `tahdid-majahil`), la
- * traduction de chaque information (`tarjamat-maalumat`), le choix de la méthode
- * (`ikhtiyar-tariqa`), puis la résolution et la vérification sur la رحلة القسم
- * (`tahaqquq-tafsir`, `tariqat-wadiya`). La résolution du حفل est le module 8
- * (évaluation). LP : P2, P1.
+ * LE LECTEUR DE MISSION (la synthèse de l'unité 5, 2026-11-12 — recette PROVISOIRE de la synthèse, point 5 ; l'élève ne voit JAMAIS l'ancienne
+ * vue) : UN `LabRounds` (content/rounds.js) — r1 « رحلة القسم » à la main (10 + 10 pour 550 دج), r2 « حفل المدرسة » (120 + 120 pour 8400 دج,
+ * les inconnues à nommer) qui finit sur la construction NUMÉRIQUE « 120 × (40 + 30) = 8400 » — puis les étapes. L'étape 1 attend r1, les étapes
+ * 2 et 4 attendent r2 (`needsRound`, module-level : `useModulePlayer`). Les panneaux de trace sont REBÂTIS depuis le contenu des manches gagnées
+ * (étoiles gardées : un rechargement ne vide rien).
  *
- * Retouche minimale 2026-10-15 (§4quater, synthèse au format fixe) : le labo OUVRE le module — la carte du haut est supprimée (la situation
- * se lit dans l'étape 1), le workspace n'a plus ni titre ni `lead`, les labos plus de titre ; les cases « تحليل الوضعية » 2 et 3 du manuel
- * (qui disent la stratégie) viennent APRÈS la réponse de leur étape.
+ * Étapes (les deux vues) : 1 lire et choisir les inconnues · 2 la stratégie (les quantités égales : diviser) · 3 « بالقلم » (l'écran du cahier :
+ * « اكتب في 3 أسطر ») · 4 la JUMLA du حفل (le modèle, première étape au crayon ; les deux informations RAPPELÉES sur l'écran — aucun aller-retour)
+ * · 5 la simplification et la méthode · 6 la vérification, en mots · 7 « ورقة عائشة » (un PLAN faux : la vérification sur la seule équation
+ * simplifiée). Le pied de page ajoute, dans le lecteur, une ligne de pause avant le 🏆. LP : P2 (inconnues, jumla, méthode), P1 (vérification).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const FITS = ['يترجمها', 'لا يترجمها'];
+const TRUE_FALSE = ['صحيح', 'خاطئ'];
+const sw = (player, page) => <PlayerSwitch player={player} page={page} />;
 
-/** La جملة rendue par le laboratoire (`onModel`), quelle que soit sa forme. */
+/* ── ce que les manches ont montré, REBÂTI depuis leur contenu (une manche gagnée l'a vu ; rien n'est perdu au rechargement) ── */
+const modelOf = (p) => SL.parseModel({ system: p.system, unknowns: p.unknowns, facts: p.facts, chips: p.chips });
+const PARTY_MODEL = modelOf(PARTY);
+const PARTY_SUM = SP.sumBuild(PARTY_MODEL, { x: PARTY_MODEL.sol.x, y: PARTY_MODEL.sol.y });
+const PARTY_SUM_TEX = `${PARTY_SUM.k} \\times (${PARTY_SUM.expected[0]} + ${PARTY_SUM.expected[1]}) = ${PARTY_SUM.expected[2]}`;
+const TRIP_MODEL = modelOf(TRIP);
+
+/** La جملة rendue par le laboratoire de la PAGE (`onModel`), quelle que soit sa forme. */
 function modelTex(sys) {
   if (!sys) return null;
   if (typeof sys === 'string') return sys;
@@ -52,71 +57,92 @@ function modelTex(sys) {
   return null;
 }
 
-/** Une valeur de la ثنائية (`onSolved`) : fraction { n, d }, nombre ou chaîne. */
-const valueText = (v) => (v && typeof v === 'object' && 'n' in v && 'd' in v ? (Number(v.d) === 1 ? String(v.n) : `${v.n}/${v.d}`) : String(v));
-
-function Evidence({ model, pair, level, empty }) {
+/** La page : la جملة que l'élève a vérifiée sur la table du حفل (niveau متقدم). */
+function Evidence({ model, empty }) {
   const tex = modelTex(model);
   return (
-    <div className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence={level}>
-      {!tex && !pair && <p className="text-slate-500" data-tried="false">{empty}</p>}
-      {tex && <p data-tried="true">الجملة التي بنيتها: <MathText>{`$${tex}$`}</MathText></p>}
-      {pair && <p data-tried="true" className="font-bold text-emerald-800">الثنائية التي وجدتها: <bdi dir="ltr">({valueText(pair.x)} ; {valueText(pair.y)})</bdi></p>}
+    <div className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence="advanced">
+      {tex ? <p data-tried="true">الجملة التي بنيتها: <MathText>{`$${tex}$`}</MathText></p> : <p className="text-slate-500" data-tried="false">{empty}</p>}
     </div>
   );
 }
 
+/** Une ligne de trace dans le lecteur : ✓ caché aux lecteurs d'écran (un mot le dit), jamais dans une chaîne. */
+function WonPanel({ id, won, lines, title, empty }) {
+  return (
+    <div className={`rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm ${won ? 'text-emerald-900' : 'text-slate-500'}`}
+      data-activity-evidence data-evidence={id} data-tried={won ? 'true' : 'false'}>
+      {won ? (
+        <>
+          <p className="font-bold">{title}</p>
+          <ul className="ms-4 list-disc">
+            {lines.map((s) => <li key={s}><MathText>{`$${s}$`}</MathText> <span aria-hidden="true">✓</span><span className="sr-only"> تمّ.</span></li>)}
+          </ul>
+        </>
+      ) : <p>{empty}</p>}
+    </div>
+  );
+}
+
+/**
+ * Une phrase de la وضعية telle que le module 7 l'affiche : les prix en « دج » (jamais « DA ») et les milliers SANS espace — « 11 250 » au milieu
+ * d'une phrase arabe se lit « 250 11 » (bidi). Le module 8 (jamais retouché) garde son texte.
+ */
+const said = (s) => s.replace(/(\d+) (\d{3})(?!\d)/g, '$1$2').replace(/\s?DA\b/g, ' دج');
+/** Les deux informations du حفل, RAPPELÉES sur l'écran de la question qui les traduit (aucun aller-retour). */
+const Facts = () => (
+  <ul className="ms-4 list-disc space-y-1 rounded-xl border-2 border-amber-200 bg-amber-50 px-3 py-2 text-sm text-slate-800" data-situation-facts>
+    <li>{said(SITUATION.fact1)}</li>
+    <li>{said(SITUATION.fact2)}</li>
+  </ul>
+);
+
 export default function Module07AlWadiya() {
-  const [big, setBig] = useState({ model: null, pair: null });
-  const [small, setSmall] = useState({ model: null, pair: null });
-  const [q1, setQ1] = useState(false);
-  const [q2, setQ2] = useState(false);
-  const [q3, setQ3] = useState(false);
-  const [q4, setQ4] = useState(false);
-  const [q5, setQ5] = useState(false);
-  const keepModel = (set) => (sys) => set((s) => ({ ...s, model: sys }));
-  const keepPair = (set) => (p) => { if (p) set((s) => ({ ...s, pair: { x: p.x, y: p.y } })); };
-  const { bought, paid, juiceLeft, cakesLeft, leftCost } = SITUATION.numbers;
+  const inPlayer = useModulePlayer(MODULE_CTX);
+  const [big, setBig] = useState({ model: null });
+  const [q, setQ] = useState({});
+  // lecteur : les manches gagnées (étoiles gardées, annoncées par LabRounds au montage)
+  const [won, setWon] = useState({});
+  const mark = (n) => () => setQ((s) => ({ ...s, [n]: true }));
+  const round = (id, label) => (inPlayer ? { needsRound: { id, label, icon: '🧃', won: Boolean(won[id]) } } : {});
 
   return (
-    <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="الوضعية وتحليلها" moduleSubtitle="حفل البلدية: ما سعر علبة العصير وسعر قطعة الحلوى؟" estimatedTime="16 دقيقة"
-      objectives={["ما المجهولان في وضعية حفل البلدية؟ وكيف نختارهما؟", "كيف نترجم كل معلومة عن مبلغ بمعادلة؟", "أيّ طريقة تحلّ الجملة بأقل حساب؟ وكيف نتحقق من الجواب؟"]}
-      intro={
-        <ManipulationWorkspace
-          defaultLevel="beginner"
-          levels={{
-            beginner: () => (
-              <Manipulation
-                type="story-modeller"
-                level="beginner"
-                {...LAB.beginner}
-                onModel={keepModel(setSmall)}
-                onSolved={keepPair(setSmall)}
-              />
-            ),
-            advanced: () => (
-              <Manipulation
-                type="story-modeller"
-                level="advanced"
-                {...LAB.advanced}
-                onModel={keepModel(setBig)}
-                onSolved={keepPair(setBig)}
-              />
-            ),
-          }}
+    <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="الوضعية وتحليلها"
+      moduleSubtitle="ثم التحدّي 🏆 — حفل البلدية: ما سعر علبة العصير وسعر قطعة الحلوى؟" estimatedTime="≈ 28 دقيقة"
+      objectives={['ما المجهولان في وضعية حفل البلدية؟ وكيف نختارهما؟', 'ماذا نفعل حين يتساوى عددان في معلومة واحدة؟', 'كيف نترجم كل معلومة بمعادلة، ونتحقّق قبل أن نجيب؟']}
+      intro={(
+        // LE LABO OUVRE LE MODULE. Lecteur : les MANCHES (content/rounds.js) ; la page garde le workspace et ses deux niveaux.
+        <PlayerSwitch
+          player={(
+            <LabRounds lessonId={MODULE_CTX.lessonId} labId="m7-wadiya" rounds={M7_ROUNDS} icon="🧃" freeIcon="🍰"
+              onRoundWon={(id) => setWon((w) => ({ ...w, [id]: true }))} />
+          )}
+          page={(
+            <ManipulationWorkspace
+              defaultLevel="beginner"
+              levels={{
+                beginner: () => <Manipulation type="story-modeller" level="beginner" {...LAB.beginner} />,
+                advanced: () => (
+                  <Manipulation type="story-modeller" level="advanced" {...LAB.advanced}
+                    onModel={(sys) => setBig({ model: sys })} />
+                ),
+              }}
+            />
+          )}
         />
-      }
+      )}
       steps={[
-        { num: 1, title: 'قراءة الوضعية وفهمها', subtitle: 'المرحلة 1 من الكتاب: المعطيات والمطلوب', done: q1,
+        { ...round('r1', 'رحلة القسم'),
+          num: 1, title: 'قراءة الوضعية وفهمها', subtitle: 'المعطيات والمطلوب', done: !!q[1],
           content: (
             <div className="space-y-3">
-              {/* La situation (p. 62) était la carte du haut : le labo ouvre le module, la situation se lit ici, dans la 1re étape (« قراءة الوضعية »). */}
+              {/* la situation et la question sur UN écran (aucun aller-retour) : un seul bloc pour la pagination du lecteur */}
+              <div className="space-y-3" data-paging-keep>
               <div className="space-y-2 rounded-xl border-2 border-amber-200 bg-amber-50 px-3 py-2 text-sm text-slate-800" data-situation>
-                <PartyScene />
                 <p>{SITUATION.intro}</p>
                 <ul className="ms-4 list-disc space-y-1">
-                  <li>{SITUATION.fact1}</li>
-                  <li>{SITUATION.fact2}</li>
+                  <li>{said(SITUATION.fact1)}</li>
+                  <li>{said(SITUATION.fact2)}</li>
                 </ul>
                 <p className="font-semibold">{SITUATION.question}</p>
                 <SourceTag source={SITUATION.source} />
@@ -127,44 +153,81 @@ export default function Module07AlWadiya() {
                   'سعر علبة عصير وسعر قطعة حلوى: نسمّيهما $x$ و $y$',
                   'عدد علب العصير وعدد قطع الحلوى: نسمّيهما $x$ و $y$',
                   'المبلغ الذي دفعته البلدية وثمن ما بقي: نسمّيهما $x$ و $y$',
-                  'عدد العلب والقطع التي استُهلكت في الحفل: نسمّيهما $x$ و $y$',
                 ].map(M)}
                 correct={0} cols={1} requires={['tarjama-jumla']}
-                explain={<span>السؤال «ما هو سعر علبة عصير وسعر قطعة حلوى؟» يطلب سعرين نجهلهما. أمّا الأعداد (<bdi dir="ltr">{bought}</bdi> و <bdi dir="ltr">{juiceLeft}</bdi> و <bdi dir="ltr">{cakesLeft}</bdi>) والمبلغان فمعطيات معلومة في النص.</span>}
-                onAnswered={() => setQ1(true)} />
-              {q1 && (
-                <>
-                  <TextbookBox kind="remark" title={SITUATION.analysis[0].label} text={SITUATION.analysis[0].text} source={SITUATION.source} compact />
-                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : choisir les inconnues est l’étape 1 de khutuwat-hall / jumla-tarjama (درس 3), et
-                      l’explication de la question ci-dessus vient de nommer les deux prix. */}
-                  <KnowledgeBrick id="tahdid-majahil" variant="rappel" />
-                </>
-              )}
+                explain={<span>السؤال «ما هو سعر علبة عصير وسعر قطعة حلوى؟» يطلب سعرين نجهلهما. أمّا أعداد العلب والقطع والمبلغان فمعطيات معلومة في النص.</span>}
+                onAnswered={mark(1)} />
+              </div>
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : choisir les inconnues vient d'être dit par l'explication ci-dessus. */}
+              {q[1] && <KnowledgeBrick id="tahdid-majahil" variant="rappel" />}
             </div>
           ) },
-        { num: 2, title: 'ترييض الوضعية: كيف نترجم كل معلومة؟', subtitle: 'جرّب على طاولة الحفل', done: q2,
+        { ...round('r2', 'حفل المدرسة'),
+          num: 2, title: 'تحليل الوضعية واختيار استراتيجية', subtitle: 'عددان متساويان في معلومة واحدة', done: !!q[2],
           content: (
             <div className="space-y-3">
-              <p className="text-sm font-semibold text-slate-700">ما بنيته على طاولة الحفل (المستوى المتقدّم):</p>
-              <Evidence model={big.model} level="advanced" empty="لم تتحقّق بعد من جملة على طاولة الحفل: سمِّ المجهولين، ضع الأعداد في خانات المعادلتين ثم اضغط «تحقّق»." />
+              {sw(
+                <WonPanel id="party" won={won.r2} title="السطر الذي بنيته في حفل المدرسة:" lines={[PARTY_SUM_TEX]}
+                  empty="جولة حفل المدرسة: لم تبنِ بعد سطر المعلومة الأولى." />,
+                null,
+              )}
+              <TapQuestion
+                prompt="في المعلومة الأولى للحفل اشترت البلدية العدد نفسه من علب العصير ومن قطع الحلوى. ماذا يسمح لنا ذلك قبل الحل؟"
+                options={[
+                  'نقسم طرفي معادلتها على هذا العدد، فنجد مجموع السعرين',
+                  'نجمع المعادلتين طرفًا بطرف مباشرة، فيختفي مجهول',
+                  'لا شيء: العددان المتساويان لا يغيّران الحساب',
+                ].map(M)}
+                correct={0} cols={1} requires={['tarjama-jumla', 'tawid']}
+                explain={<MathText>{`حين يتساوى العددان يكون المبلغ هذا العدد مرّةً مجموعَ السعرين — في حفل المدرسة: $${PARTY_SUM_TEX}$ . نقسم على العدد فنجد مجموع السعرين، فتصير المعادلة بمعاملين يساويان 1 ونعوّض بسهولة. أمّا الجمع المباشر فلا يحذف مجهولًا هنا: المعاملات ليست متعاكسة.`}</MathText>}
+                onAnswered={mark(2)} />
+            </div>
+          ) },
+        // L'ÉCRAN DU CAHIER (recette de la synthèse, point 5) : un vrai essai au crayon AVANT la correction pas à pas ; les étapes 4 à 6 sont la comparaison.
+        { num: 3, title: 'بالقلم: حلّك أنت', subtitle: 'اكتب في كرّاسك ثم قارن', done: !!q[3],
+          content: (
+            <div className="space-y-4 rounded-2xl border-2 border-indigo-200 bg-indigo-50 px-5 py-4" data-notebook-screen>
+              <p className="text-xl font-black text-indigo-950"><span aria-hidden="true">📓 </span>اكتب في كرّاسك ثم قارن.</p>
+              <p className="text-lg font-bold text-slate-800">اكتب في 3 أسطر: المجهولان، الجملة، الجملة بعد التبسيط.</p>
+              <ol className="ms-6 list-decimal space-y-1 text-base text-slate-700">
+                <li>ماذا يمثّل كل من الحرفين؟</li>
+                <li>أيّ معادلتين تترجمان معلومتي الحفل؟</li>
+                <li>أيّ معادلة تبسّطها، وبماذا تقسمها؟</li>
+              </ol>
+              <p className="text-sm text-slate-600">الخطوات التالية تصحّح أسطرك سطرًا سطرًا. حلّ الجملة ينتظرك في التحدّي <span aria-hidden="true">🏆</span>.</p>
+              {/* le bouton RESTE (aria-disabled après l'appui : le focus ne tombe pas sur la page) ; la région vivante est toujours montée */}
+              <button type="button" onClick={() => { if (!q[3]) mark(3)(); }} aria-disabled={q[3] || undefined} data-notebook-done
+                className={`min-h-[52px] rounded-2xl px-6 text-lg font-black focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2 ${q[3] ? 'bg-emerald-50 text-emerald-800 ring-1 ring-emerald-300' : 'bg-indigo-700 text-white shadow-[0_3px_0_0_#3730A3] hover:bg-indigo-800'}`}>
+                {q[3] ? <><span aria-hidden="true">✓ </span>كتبتُ أسطري</> : 'كتبتُ أسطري — أقارن الآن'}
+              </button>
+              <p className="font-bold text-emerald-800" role="status">{q[3] ? 'قارن الآن أسطرك بالخطوات التالية.' : ''}</p>
+            </div>
+          ) },
+        { ...round('r2', 'حفل المدرسة'),
+          num: 4, title: 'ترييض الوضعية: الجملة', subtitle: 'كل معلومة عن مبلغ معادلة', done: !!q[4],
+          content: (
+            <div className="space-y-3">
+              {sw(null, <Evidence model={big.model} empty="لم تتحقّق بعد من جملة على طاولة الحفل: سمِّ المجهولين، ضع الأعداد في خانات المعادلتين ثم اضغط «تحقّق»." />)}
+              {/* les deux informations et la question qui les juge sur UN écran (aucun aller-retour) */}
+              <div className="space-y-3" data-paging-keep>
+              <Facts />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">هل تترجم كل معادلة المعلومة المذكورة؟</p>}
                 rows={[
-                  { id: 'm1a', label: <span>المعلومة الأولى: <MathText>{'$150x + 150y = 11250$'}</MathText></span>, options: FITS, correct: 0, correction: <MathText>{`150 علبة ثمنها $150x$ و 150 قطعة ثمنها $150y$ ، والمجموع ${paid} DA.`}</MathText> },
-                  { id: 'm1b', label: <span>المعلومة الأولى: <MathText>{'$x + y = 11250$'}</MathText></span>, options: FITS, correct: 1, correction: <MathText>{'المبلغ 11 250 DA ثمن 150 علبة و 150 قطعة، لا ثمن علبة واحدة وقطعة واحدة.'}</MathText> },
-                  { id: 'm2a', label: <span>المعلومة الثانية: <MathText>{'$24x + 30y = 2100$'}</MathText></span>, options: FITS, correct: 0, correction: <MathText>{`${juiceLeft} علبة ثمنها $${juiceLeft}x$ و ${cakesLeft} قطعة ثمنها $${cakesLeft}y$ ، ومعا ${leftCost} DA.`}</MathText> },
+                  { id: 'm1a', label: <span>المعلومة الأولى: <MathText>{'$150x + 150y = 11250$'}</MathText></span>, options: FITS, correct: 0, correction: <MathText>{'150 علبة ثمنها $150x$ و 150 قطعة ثمنها $150y$ ، والمجموع 11250 دج.'}</MathText> },
+                  { id: 'm1b', label: <span>المعلومة الأولى: <MathText>{'$x + y = 11250$'}</MathText></span>, options: FITS, correct: 1, correction: <MathText>{'المبلغ ثمن 150 علبة و 150 قطعة، لا ثمن علبة واحدة وقطعة واحدة.'}</MathText> },
+                  { id: 'm2a', label: <span>المعلومة الثانية: <MathText>{'$24x + 30y = 2100$'}</MathText></span>, options: FITS, correct: 0, correction: <MathText>{'24 علبة ثمنها $24x$ و 30 قطعة ثمنها $30y$ ، ومعًا 2100 دج.'}</MathText> },
                   { id: 'm2b', label: <span>المعلومة الثانية: <MathText>{'$30x + 24y = 2100$'}</MathText></span>, options: FITS, correct: 1, correction: <MathText>{'العدد 24 يعدّ علب العصير: يُضرب في سعر العلبة $x$ ، لا في سعر القطعة.'}</MathText> },
-                  { id: 'm2c', label: <span>المعلومة الثانية: <MathText>{'$24x + 30y = 9150$'}</MathText></span>, options: FITS, correct: 1, correction: <MathText>{'$11250 - 2100 = 9150$ ثمن ما استُهلك؛ أمّا ما بقي (24 علبة و 30 قطعة) فثمنه 2 100 DA.'}</MathText> },
                 ]}
                 requires={['tahdid-majahil', 'tarjama-jumla']}
                 feedback={({ allRight }) => <MathText>{allRight ? 'أحسنت: كل معلومة عن مبلغ تعطي معادلة، وكل عدد يُضرب في سعر الشيء الذي يعدّه.' : 'كل عدد يُضرب في سعر الشيء الذي يعدّه، والمبلغ هو المذكور في المعلومة نفسها.'}</MathText>}
-                onAnswered={() => setQ2(true)} />
-              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : une information → une équation est jumla-tarjama (درس 3), et le retour de la question
-                  ci-dessus vient de le dire (« كل معلومة عن مبلغ تعطي معادلة … »). */}
-              {q2 && <KnowledgeBrick id="tarjamat-maalumat" variant="rappel" />}
+                onAnswered={mark(4)} />
+              </div>
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : une information → une équation vient d'être dit par le retour ci-dessus. */}
+              {q[4] && <KnowledgeBrick id="tarjamat-maalumat" variant="rappel" />}
             </div>
           ) },
-        { num: 3, title: 'اختيار استراتيجية حل مناسبة', subtitle: 'المرحلة 2 من الكتاب', done: q3,
+        { num: 5, title: 'التبسيط والطريقة', subtitle: 'قبل الحل', done: !!q[5],
           content: (
             <div className="space-y-3">
               <TapQuestion
@@ -172,65 +235,52 @@ export default function Module07AlWadiya() {
                 options={[
                   'نقسم طرفي المعادلة الأولى على 150 فنحصل على $x + y = 75$ ، ثم نعوّض $y = 75 - x$ في المعادلة الثانية',
                   'نجمع المعادلتين طرفا بطرف مباشرة فيختفي $y$',
-                  'نعبّر عن $y$ بدلالة $x$ من المعادلة الأولى، ثم نعوّضه في المعادلة الأولى نفسها',
                   'نقسم المعادلة الأولى على 150 فنحصل على $x + y = 11250$',
                 ].map(M)}
                 correct={0} cols={1} requires={['tarjamat-maalumat', 'tawid', 'jam']}
-                explain={<MathText>{'$11250 \\div 150 = 75$ : المعادلة الأولى تكافئ $x + y = 75$ ، ومعامل $y$ فيها 1 فالتعويض سهل. الجمع المباشر يعطي $174x + 180y = 13350$ ولا يختفي شيء؛ والتعويض في المعادلة نفسها يعطي مساواة صحيحة دائما؛ والقسمة تشمل الطرفين معا.'}</MathText>}
-                onAnswered={() => setQ3(true)} />
-              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : le choix de méthode est ikhtiyar-tariqa de الحل الجبري (درس 2), et l’explication de la
-                  question ci-dessus vient de simplifier puis de choisir la substitution (التعويض). */}
-              {q3 && (
-                <>
-                  <TextbookBox kind="remark" title={SITUATION.analysis[1].label} text={SITUATION.analysis[1].text} source={SITUATION.source} compact />
-                  <KnowledgeBrick id="ikhtiyar-tariqa" variant="rappel" />
-                </>
-              )}
+                explain={<MathText>{'$11250 \\div 150 = 75$ : المعادلة الأولى تكافئ $x + y = 75$ ، ومعامل $y$ فيها 1 فالتعويض سهل. الجمع المباشر يعطي $174x + 180y = 13350$ ولا يختفي شيء؛ والقسمة تشمل الطرفين معًا.'}</MathText>}
+                onAnswered={mark(5)} />
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : simplifier puis choisir la substitution vient d'être dit par l'explication ci-dessus. */}
+              {q[5] && <KnowledgeBrick id="ikhtiyar-tariqa" variant="rappel" />}
             </div>
           ) },
-        { num: 4, title: 'تنفيذ استراتيجية الحل', subtitle: 'المرحلة 3 من الكتاب — على رحلة القسم', done: q4,
+        { num: 6, title: 'التحقق وتحرير الإجابة', subtitle: 'نعود إلى النص', done: !!q[6],
           content: (
             <div className="space-y-3">
-              <p className="rounded-lg bg-amber-50 px-2 py-1 text-sm">{WARMUP.text} <SourceTag source={WARMUP.source} /></p>
-              <p className="text-sm font-semibold text-slate-700">ما وجدته في رحلة القسم (المستوى المبتدئ):</p>
-              <Evidence model={small.model} pair={small.pair} level="beginner" empty="لم تحلّ بعد رحلة القسم: افتح المستوى المبتدئ، ضع الأعداد في الخانات ثم اختر طريقة الحل." />
-              <PairQuestion
-                prompt={<span>حل الجملة <MathText>{WARMUP.system}</MathText> <MathText>{'($x$ سعر علبة العصير و $y$ سعر قطعة الحلوى، بالدينار).'}</MathText></span>}
-                expected={{ x: '30', y: '50' }}
-                requires={['ikhtiyar-tariqa', 'tawid']}
-                explain={<MathText>{'نقسم الأولى على 10: $x + y = 80$ ، فـ $y = 80 - x$. نعوّض في الثانية: $2x + 3(80 - x) = 210$ أي $240 - x = 210$ ، $x = 30$ ، ثم $y = 80 - 30 = 50$.'}</MathText>}
-                onAnswered={() => setQ4(true)} />
-              {q4 && <TextbookBox kind="remark" title={SITUATION.analysis[2].label} text={SITUATION.analysis[2].text} source={SITUATION.source} compact />}
-            </div>
-          ) },
-        { num: 5, title: 'التحقق وتحرير الإجابة', subtitle: 'نعود إلى النص', done: q5,
-          content: (
-            <div className="space-y-3">
-              <TapQuestion
-                prompt="أيّ إجابة لرحلة القسم صحيحة ومتحقَّق منها؟"
-                options={[
-                  'نتحقق في النص: $10 \\times 30 + 10 \\times 50 = 800$ و $2 \\times 30 + 3 \\times 50 = 210$ ؛ سعر علبة العصير 30 DA وسعر قطعة الحلوى 50 DA',
-                  REMARKS.nisfWrong,
-                  'سعر علبة العصير 50 DA وسعر قطعة الحلوى 30 DA، لأنّ $50 + 30 = 80$',
-                  'يكفي التحقق من المعادلة الأولى: $30 + 50 = 80$ ، فالجواب صحيح',
-                ].map(M)}
-                correct={0} cols={1} requires={['ikhtiyar-tariqa', 'tahaqquq-wadiya']}
-                explain={<span><MathText>{REMARKS.nisfWhy}</MathText> <MathText>{'والثنائية $(50 ; 30)$ تعطي $2 \\times 50 + 3 \\times 30 = 190$ لا 210: الترتيب مهم، والتحقق يشمل المعلومتين معا.'}</MathText></span>}
-                onAnswered={() => setQ5(true)} />
-              {q5 && (
+              <BatchChoiceQuestion
+                intro={<p className="text-sm font-semibold text-slate-700">قبل أن نكتب الجواب، احكم على كل عبارة.</p>}
+                rows={[
+                  { id: 'v1', label: 'نتحقّق من الثنائية في المعلومتين معًا، في نص الوضعية نفسه.', options: TRUE_FALSE, correct: 0, correction: 'حلّ الجملة يحقّق المعلومتين في آن واحد.' },
+                  { id: 'v2', label: <MathText>{'ثنائية تحقّق $x + y = 75$ وحدها هي حلّ الجملة.'}</MathText>, options: TRUE_FALSE, correct: 1, correction: <MathText>{'ثنائيات كثيرة مجموعها 75 : حلّ الجملة يحقّق المعادلة الثانية أيضًا.'}</MathText> },
+                  { id: 'v3', label: 'حين يتساوى العددان في المعلومة الأولى، تحقّقها الثنائية المبدّلة أيضًا: المعلومة الثانية هي التي تفصل بينهما.', options: TRUE_FALSE, correct: 0, correction: <MathText>{`في رحلة القسم: $(${SL.fracText(TRIP_MODEL.sol.y)} ; ${SL.fracText(TRIP_MODEL.sol.x)})$ تحقّق المعلومة الأولى وترفضها الثانية.`}</MathText> },
+                ]}
+                requires={['ikhtiyar-tariqa', 'tahaqquq-wadiya']}
+                feedback={({ allRight }) => <MathText>{allRight ? 'أحسنت: نتحقّق في المعلومتين معًا، ثم نكتب الجواب بجملة تذكر السعرين ووحدتهما.' : REMARKS.nisfWhy}</MathText>}
+                onAnswered={mark(6)} />
+              {q[6] && (
                 <>
-                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : vérifier dans le texte et répondre par une phrase est tahaqquq-nas (درس 3), redit par
-                      l’explication de la question ci-dessus. */}
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : vérifier dans le texte vient d'être jugé ligne par ligne ci-dessus. */}
                   <KnowledgeBrick id="tahaqquq-tafsir" variant="rappel" />
-                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la démarche remet en ordre les trois étapes du « تحليل الوضعية » que l’élève vient de
-                      lire — et khutuwat-hall (درس 3). */}
                   <KnowledgeBrick id="tariqat-wadiya" variant="rappel" />
                   <TextbookBox kind="remark" text={REMARKS.notSolvedHere} compact />
                 </>
               )}
             </div>
           ) },
+        // « ورقة عائشة » (recette de la synthèse, point 5) : la DERNIÈRE étape — un PLAN faux d'une camarade, une erreur de JUSTIFICATION.
+        { num: 7, title: 'ورقة عائشة', subtitle: 'أين أخطأت عائشة في خطّتها؟', done: !!q[7],
+          content: <PeerSheet sheet={PEER_SHEET} kid={PEER_KID} onDone={mark(7)} /> },
       ]}
-      footer={<KnowledgeSnapshot moduleNumber={7} variant="memo" />} />
+      footer={(
+        <>
+          <KnowledgeSnapshot moduleNumber={7} variant="memo" />
+          {sw(
+            <p className="rounded-2xl border-2 border-amber-300 bg-amber-50 px-4 py-3 text-center text-base font-black text-amber-900" data-mission-pause>
+              <span aria-hidden="true">⏸️ </span>استرح قليلًا: التحدّي هو المحطّة التالية <span aria-hidden="true">🏆</span>
+            </p>,
+            null,
+          )}
+        </>
+      )} />
   );
 }

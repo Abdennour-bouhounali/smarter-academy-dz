@@ -5,9 +5,9 @@
  *
  *   — aucune connaissance nouvelle : la DÉMARCHE du manuel (traduire chaque
  *     formule, essayer, écrire l'inéquation qui départage, interpréter) ;
- *   — la SOLUTION du مسبح (9 séances, égalité à 8 séances) n'y figure pas :
- *     c'est la réponse de l'évaluation (A.10 règle 14). L'interprétation est
- *     montrée sur la tarification du niveau مبتدئ (x > 5 → 6 séances) ;
+ *   — la carte est OUVERTE dès le premier écran (lecteur de mission, 2026-11-12) : ni la وضعية du défi
+ *     ni ses nombres — la question et la démarche EN LETTRES (content/textbook.js › METHOD_LETTERS) ;
+ *     l'interprétation est montrée sur l'exemple 50x contre 200 + 10x (x > 5 → 6 séances) ;
  *   — les deux erreurs sont celles que le module 7 corrige (l'abonnement payé à
  *     chaque séance, la valeur d'égalité prise pour la réponse), avec leur « لماذا؟ ».
  *
@@ -25,15 +25,15 @@
  *                                         │ نستخلص
  *                                   🎯 [ثلاث مراحل]
  */
-import { SITUATION, REMARKS } from './content/textbook';
+import { METHOD_LETTERS, REMARKS } from './content/textbook';
 
 export const KNOWLEDGE_GRAPH = {
   root: 'wadiya',
   nodes: [
     {
       id: 'wadiya', kind: 'concept', lane: 'center', requires: 'tarjama-sigha',
-      title: 'أيّ صيغة أفضل؟', subtitle: SITUATION.caption,
-      context: { text: SITUATION.text },
+      title: 'أيّ صيغة أفضل؟', subtitle: 'صيغتان للاشتراك',
+      context: { text: METHOD_LETTERS.question },
       reveals: ['tarjama'],
     },
     { id: 'tarjama', kind: 'method', lane: 'center', requires: 'tarjama-sigha', notebook: true, title: 'ترجمة صيغة تسعير', reveals: ['thabit', 'tajrib'] },
@@ -71,7 +71,7 @@ export const KNOWLEDGE_GRAPH = {
       // 🎯 خلاصة — les trois étapes de l'analyse du manuel, nommées par lui.
       id: 'khulasa', kind: 'takeaway', lane: 'center', requires: 'tariqat-wadiya',
       title: 'ثلاث مراحل', subtitle: 'نقرأ · نحلّل · ننفّذ',
-      context: { list: SITUATION.analysis.map((a) => a.label) },
+      context: { list: METHOD_LETTERS.steps },
       reveals: [],
     },
   ],

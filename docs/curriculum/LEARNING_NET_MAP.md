@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **140** leçons publiées · **130** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **356** liens (315 requires, 31 extends, 10 consolidates) · **140** leçons publiées · **130** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -281,12 +281,13 @@ flowchart LR
   n_4am_m3_r04 --> n_4am_m3_r05
   n_3am_m5_r06 ==>|يمدّد| n_4am_m3_r05
   n_3am_m5_r06 --> n_4am_m5_r01
+  n_3am_m5_r05 --> n_4am_m5_r01
   n_4am_m5_r01 --> n_4am_m5_r02
   n_4am_m3_r05 --> n_4am_m5_r02
   n_4am_m5_r01 --> n_4am_m5_r11
 ```
 
-Prérequis venus d’autres fils : `1am.m5.r10`, `1am.m5.r08`, `2am.m4.r06`, `3am.m1.r01`, `3am.m5.r01`, `4am.m3.r02`, `2am.m4.r03`, `4am.m5.r08`.
+Prérequis venus d’autres fils : `1am.m5.r10`, `1am.m5.r08`, `2am.m4.r06`, `3am.m1.r01`, `3am.m5.r01`, `4am.m3.r02`, `2am.m4.r03`, `3am.m5.r03`, `4am.m5.r08`.
 
 ### التناسبية والدوال — `proportionality-functions`
 
@@ -1105,7 +1106,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 
 | item | المورد المعرفي (نص البرنامج) | leçon d’accueil | repart de |
 |---|---|---|---|
-| `4am.m5.r01` | حلّ جملة معادلتين من الدرجة الأولى بمجهولين جبريا. | `mafhum-jumla` | `3am.m5.r06` |
+| `4am.m5.r01` | حلّ جملة معادلتين من الدرجة الأولى بمجهولين جبريا. | `mafhum-jumla` | `3am.m5.r06`، `3am.m5.r03`، `3am.m5.r05` |
 | `4am.m5.r02` | حلّ مشكلات بتوظيف جملة معادلتين من الدرجة الأولى بمجهولين. | `mushkilat-jumla` | `4am.m5.r01`، `4am.m3.r05` |
 | `4am.m5.r03` | الدالة الخطية: (معرفة الترميز x ↦ ax ؛ تعيين صورة عدد بدالة خطية ؛ تعيين عدد صورته بدالة خطية معلومة ؛ تعيين دالة خطية انطلاقا من عدد غير معدوم وصورته) | `tanasub-muamil` | `3am.m7.r01`، `2am.m6.r03` |
 | `4am.m5.r04` | تمثيل دالة خطية بيانيا. | `tamthil-bayani-khatti` | `4am.m5.r03`، `3am.m7.r01` |

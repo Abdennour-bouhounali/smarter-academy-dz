@@ -76,6 +76,31 @@ class AdminAuthorizationTest extends TestCase
         }
     }
 
+    /**
+     * « مسيّر المكتبة » (BOOKS_STORE.md §6ter) : les commandes, les livres, les
+     * messages des livres et son propre compte — et RIEN d'autre sous /admin,
+     * pas même la gestion des gestionnaires.
+     */
+    public function test_le_gestionnaire_de_la_librairie_n_ouvre_que_les_livres(): void
+    {
+        $manager = User::factory()->create(['role' => User::ROLE_BOOK_MANAGER, 'email_verified_at' => now()]);
+        $token = $manager->createToken('books-token')->plainTextToken;
+
+        $open = 0;
+        foreach ($this->adminRoutes() as [$method, $uri]) {
+            $allowed = (bool) preg_match('#^/api/v1/admin/(books|book-orders|book-order-payments|book-messages|account)(/|$)#', $uri);
+            $response = $this->withHeader('Authorization', "Bearer {$token}")->json($method, $uri);
+
+            if ($allowed) {
+                $open++;
+                $this->assertNotSame(403, $response->status(), "{$method} {$uri} devrait être ouvert au gestionnaire");
+            } else {
+                $this->assertSame(403, $response->status(), "{$method} {$uri} devrait répondre 403 au gestionnaire, a répondu {$response->status()}");
+            }
+        }
+        $this->assertGreaterThan(10, $open, 'les routes de la librairie doivent être couvertes');
+    }
+
     public function test_un_admin_passe_la_porte(): void
     {
         $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);

@@ -46,19 +46,49 @@ export const CHALLENGE = {
 };
 
 /**
- * Les corrections du module 7 — importées aussi par la carte (knowledgeGraph.js) :
- * une aide de la carte cite la leçon mot pour mot. Toute égalité dans `$…$`.
+ * Le module 7 « وضعية الوحدة » dans le lecteur de mission (2026-11-12) : la وضعية en mots de la plateforme (le texte du manuel reste dans
+ * `SITUATION.text`, lu par le module 8 — jamais retouché), SANS l'« مساعدة » (sa forme développée x² + 10x − 11 est une réponse du défi 🏆),
+ * et ses données à trier (InfoSorter). Nombres et unités séparés par une espace (« 10 أمتار ») : collés à une lettre, ils se brouillent en RTL.
+ */
+export const M7_SITUATION = {
+  text: 'يتعاون سكّان الحيّ على تهيئة حديقة عامة يرتادها الجميع. في وسطها حوض مربّع الشكل طول ضلعه 10 أمتار، ونريد أن نحيطه من كل الجهات بشريط منتظم للراجلين عرضه $x$ مترًا. ما قيمة $x$ حتى تكون مساحة الشريط 44 مترًا مربّعًا؟',
+  data: [
+    { id: 'hawd', text: 'الحوض مربّع طول ضلعه 10 أمتار', useful: true },
+    { id: 'shrit', text: 'الشريط يحيط بالحوض من كل الجهات، وعرضه x', useful: true },
+    { id: 'masaha', text: 'مساحة الشريط 44 مترًا مربّعًا', useful: true },
+    { id: 'taawun', text: 'سكّان الحيّ يتعاونون على تهيئة الحديقة', useful: false },
+    { id: 'jamia', text: 'الحديقة يرتادها الجميع', useful: false },
+    { id: 'rajilin', text: 'الشريط مخصّص للراجلين', useful: false },
+  ],
+};
+
+/**
+ * Les corrections des questions du module 7 et de la carte des معارف — EN LETTRES (la synthèse dans le lecteur, 2026-11-12) : la carte et les
+ * cartes de mémoire sont ouvertes dès le premier écran, donc AVANT le module 7 — elles ne montrent ni le bassin ni le ruban ni leurs nombres
+ * (content/forbidden.js › SITUATION_TEXT). Elles parlent d'une NAPPE d'eau carrée de côté a (une نافورة) entourée d'un ممرّ de largeur x.
+ * Importées par la carte (knowledgeGraph.js) : une aide de la carte cite la leçon mot pour mot. Toute égalité dans `$…$`.
  */
 export const REMARKS = {
-  dilWrong: 'ضلع المربع الخارجي هو $10 + x$ : نضيف عرض الشريط مرّة واحدة.',
-  dilWhy: 'الشريط يحيط بالحوض من كل الجهات: على الضلع الواحد يوجد شريط من اليسار وشريط من اليمين.',
-  dilRight: 'ضلع المربع الخارجي هو $x + 10 + x = 10 + 2x$.',
-  murabbaWrong: 'نكتب $(10 + 2x)^2 = 100 + 4x^2$ ، فتصبح مساحة الشريط $4x^2$ فقط.',
-  murabbaWhy: 'مربع مجموع ليس مجموع المربعين: ينقص الحد المضاعف، وهو في الشكل المستطيلات الأربعة التي بعداها 10 و $x$.',
-  murabbaRight: 'مربع مجموع: $(10 + 2x)^2 = 100 + 40x + 4x^2$.',
-  twoWays: 'طريقتان من «الطرق المتعددة»: مساحة المربع الخارجي ناقص مساحة الحوض، أو أربعة مستطيلات بعداها 10 و $x$ وأربعة أركان مربعة ضلعها $x$.',
-  equation: 'نكتب المساواة «مساحة الشريط = 44»، ثم نقسم طرفيها على 4 لنصل إلى العبارة التي يعطيها الكتاب في المساعدة.',
-  help: 'إذا كان أحد عاملي جداء معدومًا فإنّ الجداء معدوم: هذا ما يجعل الشكل المحلّل مفيدًا لحل المعادلة.',
-  check: 'نتحقق من كل قيمة بالتعويض في مساحة الشريط، ونرفض القيمة السالبة لأنّ العرض طول.',
-  notSolvedHere: 'الحل الكامل في «أحلّ الوضعية»: هنا نمذجنا الوضعية واخترنا الاستراتيجية.',
+  dilWrong: 'ضلع المربّع الخارجي هو $a + x$ : نضيف عرض الممرّ مرّة واحدة.',
+  dilWhy: 'الممرّ يحيط بالنافورة من كل الجهات: على الضلع الواحد ممرّ من جهة وممرّ من الجهة المقابلة.',
+  dilRight: 'ضلع المربّع الخارجي هو $x + a + x = a + 2x$.',
+  murabbaWrong: 'نكتب $(a + 2x)^2 = a^2 + 4x^2$ ، فتصبح مساحة الممرّ $4x^2$ فقط.',
+  murabbaWhy: 'مربّع مجموع ليس مجموع المربّعين: ينقص الحدّ المضاعف، وهو في الشكل المستطيلات الأربعة التي بعداها $a$ و $x$.',
+  murabbaRight: 'مربّع مجموع: $(a + 2x)^2 = a^2 + 4ax + 4x^2$.',
+  twoWays: 'طريقتان لمساحة الممرّ: مساحة المربّع الخارجي ناقص مساحة النافورة، أو أربعة مستطيلات بعداها $a$ و $x$ وأربعة أركان مربّعة ضلعها $x$.',
+  perimeterWhy: 'محيط النافورة في عرض الممرّ يعطي المستطيلات الأربعة فقط: تنقص الأركان الأربعة، مساحة كل منها $x^2$.',
+  divide: 'نكتب المساواة «مساحة الممرّ = $S$»، ثم نقسم طرفيها على 4: $x^2 + ax = \\dfrac{S}{4}$ .',
+  help: 'إذا كان أحد عاملي جداء معدومًا فإنّ الجداء معدوم: هذا ما يجعل الشكل المحلّل المعطى مفيدًا لحلّ المعادلة.',
+  check: 'نتحقّق من كل قيمة بالتعويض في مساحة الممرّ، ونرفض القيمة السالبة لأنّ العرض طول.',
+  mujab: 'العرض طول، فهو عدد موجب: من القيمتين اللتين تعدمان الجداء نحتفظ بالموجبة وحدها.',
+  notSolvedHere: 'الحلّ نفسه في «التحدّي 🏆»: هنا فهمنا الوضعية واخترنا الاستراتيجية فقط.',
+};
+
+/** La démarche EN LETTRES (la carte des معارف ouverte dès le premier écran) — aucun nombre du défi ni de la وضعية. */
+export const METHOD_LETTERS = {
+  question: 'نافورة مربّعة ضلعها $a$ يحيط بها ممرّ عرضه $x$ مساحته $S$ معلومة: ما عرض الممرّ؟',
+  read: 'المطلوب عرض الممرّ $x$ : نعرف ضلع النافورة $a$ ونعرف مساحة الممرّ $S$ .',
+  strategy: 'نعبّر عن ضلع المربّع الخارجي بدلالة $x$ ، ثم عن مساحة الممرّ: المربّع الخارجي ناقص النافورة.',
+  execute: 'نكتب المساواة «مساحة الممرّ = $S$» ونبسّطها، نستعمل الشكل المحلّل المعطى، ثم نحتفظ بالقيمة الموجبة ونتحقّق منها.',
+  steps: ['قراءة الوضعية وفهمها', 'تحليل الوضعية واختيار استراتيجية حلّ مناسبة', 'تنفيذ استراتيجية الحلّ'],
 };

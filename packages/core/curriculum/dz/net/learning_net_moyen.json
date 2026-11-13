@@ -1881,6 +1881,16 @@
       "type": "requires"
     },
     {
+      "from": "3am.m5.r03",
+      "to": "4am.m5.r01",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m5.r05",
+      "to": "4am.m5.r01",
+      "type": "requires"
+    },
+    {
       "from": "4am.m5.r01",
       "to": "4am.m5.r02",
       "type": "requires"

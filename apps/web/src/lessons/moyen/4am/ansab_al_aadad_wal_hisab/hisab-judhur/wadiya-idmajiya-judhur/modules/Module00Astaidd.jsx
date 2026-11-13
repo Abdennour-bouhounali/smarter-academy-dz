@@ -2,13 +2,13 @@ import React from 'react';
 import { PrerequisiteDiagnostic } from '../../../../../../common/kit';
 import { prepQuestion } from '../../_unit/prepDiagnostic';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { PREP_ITEMS } from '../content/textbook';
+import { PREP_LADDER } from '../content/prep';
 
 /**
- * Module 0 — أستعدّ. Six affirmations de la plateforme (« عبارة إضافية من المنصّة »)
- * sur ce que la situation mobilise : la racine carrée (leçon 1), les solutions
- * de x² = a (leçon 3), l'écriture a√b (leçon 5). Aucune n'emploie les nombres
- * de la زربية. Diagnostic JAMAIS bloquant ; `id` et `requires` littéraux (audit).
+ * Module 0 — أستعدّ : DIX affirmations de la plateforme (content/prep.js › PREP_LADDER), de très facile à plus difficile, bâties sur les leçons
+ * de l'unité (la synthèse dans le lecteur de mission, 2026-11-12 — recette de la synthèse, point 3) : الجذر التربيعي (à réviser : jidhr-tarbii),
+ * المعادلة x² = a (muadalat-x-murabba), أبسط كتابة لجذر (tawzif-khawass-judhur), en cycle. Les six affirmations d'avant restent dans
+ * content/textbook.js (PREP_ITEMS) comme source. Diagnostic JAMAIS bloquant, aucune `assessment`. `id` et `requires` restent littéraux (audit).
  */
 export default function Module00Astaidd() {
   return (
@@ -16,29 +16,34 @@ export default function Module00Astaidd() {
       ctx={MODULE_CTX}
       navLinks={getNavLinks(0)}
       moduleTitle="🎯 أستعدّ"
-      moduleSubtitle="أصحيح أم خاطئ؟ برّر إجابتك. تشخيص قصير لا يمنعك من متابعة الدرس."
+      moduleSubtitle="أصحيح أم خاطئ؟ برّر إجابتك. تشخيص قصير لا يمنعك من المتابعة."
       estimatedTime="6 دقائق"
       brief={{
-        tag: 'أستعدّ — قبل الوضعية', title: 'ست عبارات قبل الوضعية الإدماجية', tone: 'teal',
-        body: <p>الوضعية تعبّئ الجذر التربيعي، وحل معادلة من الشكل «مربع يساوي عددًا»، والكتابة على أبسط شكل. تحقّق منها قبل أن تبدأ؛ النتيجة لا تمنعك من المتابعة.</p>,
+        tag: 'أستعدّ', title: 'عشر عبارات من دروس الوحدة', tone: 'teal',
+        body: <p>من السهل جدًّا إلى الأصعب، على دروس الوحدة. ليست اختبارًا: الغاية أن تعرف أنت ما ينبغي أن تراجعه قبل الوضعيات.</p>,
       }}
       skills={{
-        jidhr: { label: 'الجذر التربيعي لعدد موجب', emoji: '√' },
-        muadala: { label: 'حلول معادلة: مربّع يساوي عددًا', emoji: '±' },
-        kitaba: { label: 'أبسط كتابة لجذر تربيعي', emoji: '🧩' },
+        // `lesson` : la leçon à réviser quand cette كفاءة est fragile (carte « راجع » prioritaire de la revue)
+        jidhr: { label: 'الجذر التربيعي لعدد موجب', emoji: '√', lesson: 'jidhr-tarbii' },
+        muadala: { label: 'حلول معادلة: مربّع يساوي عددًا', emoji: '±', lesson: 'muadalat-x-murabba' },
+        kitaba: { label: 'أبسط كتابة لجذر تربيعي', emoji: '🧱', lesson: 'tawzif-khawass-judhur' },
       }}
       levels={{
-        fragile: { emoji: '🌱', title: 'مكتسباتك لا تزال هشّة.', body: 'لا بأس: تحليل الوضعية يمرّ بثلاث مراحل كما في الكتاب.', advice: 'راجع الدرس 1 (الجذر التربيعي) والدرس 3 (المعادلة من الشكل مربع يساوي عددًا).', cta: 'أبدأ الوضعية على كل حال', tone: 'from-emerald-500 to-teal-500' },
-        progres: { emoji: '👍', title: 'مكتسباتك في الطريق الصحيح.', body: 'بعض التردّدات ستُصحَّح أثناء الوضعية.', advice: 'انتبه: الجذر التربيعي عدد موجب دائمًا، والمعادلة قد تقبل حلين.', cta: 'أقرأ الوضعية', tone: 'from-teal-500 to-cyan-500' },
-        pret: { emoji: '🚀', title: 'أنت جاهز!', body: 'الأدوات التي تحتاجها الوضعية متحكَّم فيها.', advice: 'حاول حلّ الوضعية دون مساعدة.', cta: 'أنا جاهز!', tone: 'from-cyan-500 to-blue-500' },
+        fragile: { emoji: '🌱', title: 'مكتسباتك لا تزال هشّة.', body: 'لا بأس: الوضعيات التدريبية تمرّ بك خطوة خطوة.', advice: 'راجع الدرس الذي تقترحه عليك الصفحة قبل أن تبدأ.', cta: 'أبدأ على كل حال', tone: 'from-emerald-500 to-teal-500' },
+        progres: { emoji: '👍', title: 'مكتسباتك في الطريق الصحيح.', body: 'بعض التردّدات ستُصحَّح أثناء الوضعيات.', advice: 'انتبه: الجذر التربيعي عدد موجب دائمًا، والمعادلة قد تقبل حلّين.', cta: 'أبدأ الوضعيات', tone: 'from-teal-500 to-cyan-500' },
+        pret: { emoji: '🚀', title: 'أنت جاهز!', body: 'مفاتيح الوحدة معك.', advice: 'قبل أن تحسب، اسأل: أيّ معادلة تترجم ما أعرفه، وأيّ حلّ يناسب الوضعية؟', cta: 'أنا جاهز!', tone: 'from-cyan-500 to-blue-500' },
       }}
       questions={[
-        { ...prepQuestion(PREP_ITEMS[0]), id: 'prep-1', requires: ['jidhr-taarif'] },
-        { ...prepQuestion(PREP_ITEMS[1]), id: 'prep-2', requires: ['jidhr-taarif'] },
-        { ...prepQuestion(PREP_ITEMS[2]), id: 'prep-3', requires: ['hulul-x2-a'] },
-        { ...prepQuestion(PREP_ITEMS[3]), id: 'prep-4', requires: ['hulul-x2-a'] },
-        { ...prepQuestion(PREP_ITEMS[4]), id: 'prep-5', requires: ['kitaba-a-jidhr-b'] },
-        { ...prepQuestion(PREP_ITEMS[5]), id: 'prep-6', requires: ['kitaba-a-jidhr-b'] },
+        { ...prepQuestion(PREP_LADDER[0]), id: 'prep-1', requires: ['jidhr-taarif'] },
+        { ...prepQuestion(PREP_LADDER[1]), id: 'prep-2', requires: ['hulul-x2-a'] },
+        { ...prepQuestion(PREP_LADDER[2]), id: 'prep-3', requires: ['jidaa-jidhrayn'] },
+        { ...prepQuestion(PREP_LADDER[3]), id: 'prep-4', requires: ['jidhr-taarif'] },
+        { ...prepQuestion(PREP_LADDER[4]), id: 'prep-5', requires: ['hulul-x2-a'] },
+        { ...prepQuestion(PREP_LADDER[5]), id: 'prep-6', requires: ['kitaba-a-jidhr-b'] },
+        { ...prepQuestion(PREP_LADDER[6]), id: 'prep-7', requires: ['jidhr-taarif'] },
+        { ...prepQuestion(PREP_LADDER[7]), id: 'prep-8', requires: ['hulul-x2-a'] },
+        { ...prepQuestion(PREP_LADDER[8]), id: 'prep-9', requires: ['kitaba-a-jidhr-b'] },
+        { ...prepQuestion(PREP_LADDER[9]), id: 'prep-10', requires: ['jidhr-taarif'] },
       ]}
     />
   );

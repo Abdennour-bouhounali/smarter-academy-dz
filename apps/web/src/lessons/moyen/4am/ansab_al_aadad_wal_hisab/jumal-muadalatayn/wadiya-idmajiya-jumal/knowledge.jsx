@@ -1,6 +1,6 @@
 import React from 'react';
 import MathText from '../../../../../common/components/MathText';
-import { REMARKS, SITUATION, WARMUP } from './content/textbook';
+import { REMARKS, SITUATION, SYSTEM_LETTERS } from './content/textbook';
 
 // La carte progressive de la leçon (structure, relations, aides) — KNOWLEDGE_MAP.md, Part A.
 export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
@@ -16,8 +16,9 @@ const R = (x) => `\\textcolor{#e11d48}{${x}}`;
  *   ikhtiyar-tariqa    module 7 — simplifier, puis la méthode la plus efficace (التعويض / الجمع)
  *   tahaqquq-tafsir    module 7 — vérifier dans le TEXTE et rédiger la réponse avec son unité
  *   tariqat-wadiya     module 7 — la démarche complète en trois étapes (les mots du manuel)
- * Les exemples chiffrés sont ceux de la رحلة القسم (niveau مبتدئ) ; la SOLUTION du حفل
- * (25 DA et 50 DA) n'est dans aucun item : c'est la réponse de l'évaluation.
+ * Les cartes sont OUVERTES dès le premier écran dans le lecteur (`knowledgeMapOpen`) : la méthode en LETTRES et un petit exemple propre aux
+ * cartes (8 علب و 8 قطع بـ 640 دج ; 3 علب و 4 قطع بـ 260 دج → (60 ; 20)) — jamais un nombre du حفل (module 7, le défi 🏆) ni d'une manche
+ * du module 7 (balayage : content/mission.test.js, 2026-11-12).
  */
 export const LESSON_KNOWLEDGE = {
   modules: {
@@ -31,8 +32,8 @@ export const LESSON_KNOWLEDGE = {
           exam: 'اكتب بالكلمات ما يمثّله كل حرف',
           chip: `x\\,,\\,y\\ :\\ ${R('?')}`,
           quiz: [
-            { q: 'في الوضعية: «ما سعر علبة العصير وسعر قطعة الحلوى؟» المجهولان هما:', options: ['السعران', 'عدد العلب وعدد القطع', 'المبلغان 11250 و 2100'], correct: 0 },
-            { q: 'لا نجعل مجهولًا:', options: ['عددًا معلومًا في النص مثل $150$', 'ما يسأل عنه السؤال', 'سعرًا مجهولًا'], correct: 0 },
+            { q: 'في الوضعية: «ما سعر علبة العصير وسعر قطعة الحلوى؟» المجهولان هما:', options: ['السعران', 'عدد العلب وعدد القطع', 'المبلغان المدفوعان'], correct: 0 },
+            { q: 'لا نجعل مجهولًا:', options: ['عددًا معلومًا في النص، كعدد العلب', 'ما يسأل عنه السؤال', 'سعرًا مجهولًا'], correct: 0 },
           ],
         },
         body: (
@@ -45,13 +46,13 @@ export const LESSON_KNOWLEDGE = {
         memo: {
           rule: `${R('n_1')}x+${R('n_2')}y=${R('S')}`,
           hook: 'عدد في سعره ثم نجمع',
-          example: `150x+150y=11250`,
+          example: `3x+4y=${R('S')}`,
           trap: 'جمع الأعداد دون ضربها في الأسعار',
           exam: 'اكتب معادلة لكل معلومة عن مبلغ',
           chip: `${R('n')}\\times${R('p')}`,
           quiz: [
-            { q: 'اشترت البلدية 150 علبة عصير سعر الواحدة $x$ و 150 قطعة حلوى سعر الواحدة $y$ بمبلغ 11250 DA . المعادلة:', options: ['$150x + 150y = 11250$', '$x + y = 11250$', '$150 + 150 = 11250$'], correct: 0 },
-            { q: 'بقيت 24 علبة و 30 قطعة وثمنها معًا 2100 DA :', options: ['$24x + 30y = 2100$', '$24y + 30x = 2100$', '$54x = 2100$'], correct: 0 },
+            { q: 'اشترى النادي 8 علب عصير سعر الواحدة $x$ و 8 قطع حلوى سعر الواحدة $y$ بمبلغ 640 دج. المعادلة:', options: ['$8x + 8y = 640$', '$x + y = 640$', '$8 + 8 = 640$'], correct: 0 },
+            { q: 'بقيت 3 علب و 4 قطع وثمنها معًا 260 دج:', options: ['$3x + 4y = 260$', '$3y + 4x = 260$', '$7x = 260$'], correct: 0 },
           ],
         },
         body: (
@@ -59,19 +60,19 @@ export const LESSON_KNOWLEDGE = {
             <li>نأخذ كل معلومة من النص على حدة: هنا معلومتان، كلتاهما عن مبلغ مدفوع.</li>
             <li>كل عدد يُضرب في سعر الشيء الذي يعدّه، ثم نجمع ونساوي بالمبلغ.</li>
             <li><MathText>{REMARKS.tarjamaRight}</MathText></li>
-            <li>المعلومتان معا تعطيان جملة معادلتين: <MathText>{WARMUP.system}</MathText></li>
+            <li>المعلومتان معا تعطيان جملة معادلتين: <MathText>{SYSTEM_LETTERS}</MathText></li>
           </ol>
         ) },
       { id: 'ikhtiyar-tariqa', type: 'methodes', title: 'اختيار طريقة الحل الأنجع', summary: 'نبسّط المعادلة إن أمكن، ثم نعوّض إذا كان معامل أحد المجهولين 1، ونجمع إذا كان المعاملان متعاكسين أو يصيران كذلك.',
         memo: {
           rule: `\\begin{aligned}a=1&\\Rightarrow ${R('x=c-by')}\\\\a'=-a&\\Rightarrow ${R('E_1+E_2')}\\end{aligned}`,
           hook: 'بسّط ثم عوّض أو اجمع',
-          example: `x+y=75\\Rightarrow ${R('x=75-y')}`,
+          example: `x+y=80\\Rightarrow ${R('x=80-y')}`,
           trap: 'التعويض دون تبسيط المعادلة أولًا',
           exam: 'اذكر الطريقة المختارة وسبب اختيارها',
           chip: `E_1${R('+')}E_2`,
           quiz: [
-            { q: 'في الجملة $x + y = 75$ ، $24x + 30y = 2100$ الطريقة الأنسب:', options: ['التعويض: $x = 75 - y$', 'الجمع مباشرة دون أيّ تحضير', 'التخمين'], correct: 0 },
+            { q: 'في الجملة $x + y = 80$ ، $3x + 4y = 260$ الطريقة الأنسب:', options: ['التعويض: $x = 80 - y$', 'الجمع مباشرة دون أيّ تحضير', 'التخمين'], correct: 0 },
             { q: 'لنحذف مجهولًا بجمع $E_1$ و $E_2$ يجب أن يكون معاملا هذا المجهول:', options: ['متعاكسين', 'متساويين دائمًا', 'مساويين لـ 1 فقط'], correct: 0 },
           ],
         },
@@ -85,13 +86,13 @@ export const LESSON_KNOWLEDGE = {
         memo: {
           rule: `(${R('x_0')}\\,;\\,${R('y_0')})\\ \\to\\ E_1,E_2`,
           hook: 'تحقّق ثم اكتب جملة بالوحدة',
-          example: `24\\times25+30\\times50=${R('2100')}`,
+          example: `3\\times60+4\\times20=${R('260')}`,
           trap: 'نسيان وحدة النقود في الجواب',
           exam: 'اكتب الجواب بجملة تذكر السعرين ووحدتهما',
           chip: `(x_0\\,;\\,y_0)\\to${R('\\checkmark')}`,
           quiz: [
-            { q: 'نتحقق من $(25 ; 50)$ في المعلومة الثانية: $24 \\times 25 + 30 \\times 50 =$', options: ['$2100$', '$1500$', '$600$'], correct: 0 },
-            { q: 'الجواب المكتوب جيدًا:', options: ['سعر علبة العصير 25 دينارًا وسعر قطعة الحلوى 50 دينارًا', '(25 ; 50)', '25 و 50'], correct: 0 },
+            { q: 'نتحقق من $(60 ; 20)$ في المعلومة $3x + 4y = 260$ : $3 \\times 60 + 4 \\times 20 =$', options: ['$260$', '$180$', '$80$'], correct: 0 },
+            { q: 'الجواب المكتوب جيدًا:', options: ['سعر علبة العصير 60 دينارًا وسعر قطعة الحلوى 20 دينارًا', '(60 ; 20)', '60 و 20'], correct: 0 },
           ],
         },
         body: (
@@ -104,7 +105,7 @@ export const LESSON_KNOWLEDGE = {
         memo: {
           rule: `${R('x,y')}\\to E_1,E_2\\to(x_0\\,;\\,y_0)`,
           hook: 'اقرأ · سمِّ · اكتب · حلّ · تحقّق',
-          example: `(25\\,;\\,50)`,
+          example: `(${R('x_0')}\\,;\\,${R('y_0')})`,
           trap: 'الانطلاق في الحساب قبل قراءة المطلوب',
           exam: 'اذكر المعطيات والمطلوب قبل أي حساب',
           chip: `${R('x,y')}\\to${R('(x_0\\,;\\,y_0)')}`,

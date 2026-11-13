@@ -124,7 +124,7 @@ describe('les six وضعيات d\'entraînement de أدمج تعلّماتي (wa
       expect(p.source.type, p.id).toBe('platform_addition');
     });
     expect(new Set(PROBLEMS.map((p) => p.tone)).size).toBe(6);
-    for (const p of PROBLEMS) expect(JSON.stringify(p), p.id).not.toMatch(/زربية|12000|346|693/);
+    for (const p of PROBLEMS) expect(JSON.stringify(p), p.id).not.toMatch(/زربية|12000|346|693|sqrt\{12\}|sqrt\{48\}/);
     for (const p of PROBLEMS) expect(p.statement, p.id).not.toMatch(/24\s*m\^?2|24m/);
   });
 
@@ -236,22 +236,23 @@ describe('les six وضعيات d\'entraînement de أدمج تعلّماتي (wa
     expect(3 * Math.SQRT2 * 2 * Math.SQRT2).toBeCloseTo(12, 9);
   });
 
-  it('وضعية 4 — the 12 / 27 / 48 dm² squares: 2√3 + 3√3 + 4√3 = 9√3 ≈ 15,6 < 16', () => {
-    const sides = [12, 27, 48].map(squareFree);
-    expect(sides).toEqual([{ a: 2, b: 3 }, { a: 3, b: 3 }, { a: 4, b: 3 }]); // all multiples of √3
+  it('وضعية 4 — the 20 / 45 / 80 dm² squares: 2√5 + 3√5 + 4√5 = 9√5 ≈ 20,1 < 21 (renumbered 2026-11-12: never 2√3 / 4√3, the 🏆\'s answers)', () => {
+    const sides = [20, 45, 80].map(squareFree);
+    expect(sides).toEqual([{ a: 2, b: 5 }, { a: 3, b: 5 }, { a: 4, b: 5 }]); // all multiples of √5
     expect(expectedOf('wadiya-4', 0)).toEqual([16]);
-    const total = [12, 27, 48].reduce((t, n) => t + Math.sqrt(n), 0);
-    expect(total).toBeCloseTo(9 * Math.sqrt(3), 9);
+    const total = [20, 45, 80].reduce((t, n) => t + Math.sqrt(n), 0);
+    expect(total).toBeCloseTo(9 * Math.sqrt(5), 9);
     expect(2 + 3 + 4).toBe(9);
-    expect(expectedOf('wadiya-4', 1)).toEqual([9, round(Math.sqrt(3), 3), round(total, 1)]);
-    expect(round(9 * 1.732, 3)).toBe(15.588);
-    expect(expectedOf('wadiya-4', 2)).toEqual([(9 * Math.sqrt(3)) ** 2, 16 ** 2].map((x) => Math.round(x)));
-    expect(81 * 3).toBeLessThan(256); // 9√3 < 16: the ribbon is too short
-    expect(total).toBeLessThan(16);
-    expect(Math.sqrt(12 + 27 + 48)).not.toBeCloseTo(total, 3); // the sqrt-of-sum distractor
+    expect(expectedOf('wadiya-4', 1)).toEqual([9, round(Math.sqrt(5), 3), round(total, 1)]);
+    expect(round(9 * 2.236, 3)).toBe(20.124);
+    expect(round(9 * 2.236, 1)).toBe(round(total, 1)); // rounding √5 first does not change the tenth here
+    expect(expectedOf('wadiya-4', 2)).toEqual([(9 * Math.sqrt(5)) ** 2, 21 ** 2].map((x) => Math.round(x)));
+    expect(81 * 5).toBeLessThan(441); // 9√5 < 21: the ribbon is too short
+    expect(total).toBeLessThan(21);
+    expect(Math.sqrt(20 + 45 + 80)).not.toBeCloseTo(total, 3); // the sqrt-of-sum distractor
     // the batch rows hold the right option
     const rows = steps('wadiya-4', 0).find((s) => s.kind === 'batch').rows;
-    expect(rows.map((r) => r.options[r.correct])).toEqual(['$2\\sqrt{3}$', '$3\\sqrt{3}$', '$4\\sqrt{3}$']);
+    expect(rows.map((r) => r.options[r.correct])).toEqual(['$2\\sqrt{5}$', '$3\\sqrt{5}$', '$4\\sqrt{5}$']);
   });
 
   it('وضعية 5 — the kite of diagonal 10 dm: c² = 50, c = 5√2 = 10/√2, frame 20√2 ≈ 28,28', () => {
@@ -294,7 +295,7 @@ describe('les six وضعيات d\'entraînement de أدمج تعلّماتي (wa
     has('wadiya-1', 180);
     has('wadiya-2', 5, 2, '4{,}5');
     has('wadiya-3', 18, 8);
-    has('wadiya-4', 12, 27, 48, 16);
+    has('wadiya-4', 20, 45, 80, 21);
     has('wadiya-5', 10);
     has('wadiya-6', '2{,}5');
   });

@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { query } from './adminClient';
 import { REPORT_CATEGORIES } from '../reportService';
-import { adminNavSections, adminNavLinks } from '../../data/adminNavigation';
+import { adminNavSections, adminNavLinks, adminNavSectionsFor } from '../../data/adminNavigation';
 import adminCatalogue from '../../i18n/locales/ar/admin.json';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -148,7 +148,20 @@ describe('chaque lien de la barre latérale mène quelque part', () => {
 describe('la porte du panneau d’administration', () => {
   it('protège /admin par un rôle explicite', () => {
     const app = read('src/App.jsx');
-    expect(app).toMatch(/path="\/admin" element=\{<ProtectedRoute allowedRoles=\{\['admin'\]\} \/>\}/);
+    expect(app).toMatch(/path="\/admin" element=\{<ProtectedRoute allowedRoles=\{\['admin', 'book_manager'\]\} \/>\}/);
+    // Le gestionnaire de la librairie partage le panneau : tout ce qui n'est
+    // pas la librairie ni « حسابي » est derrière AdminOnlyOutlet.
+    expect(app).toMatch(/<Route element=\{<AdminOnlyOutlet \/>\}>/);
+  });
+
+  it('le gestionnaire de la librairie ne voit que « الكتب » et son compte', () => {
+    const sections = adminNavSectionsFor('book_manager');
+    expect(sections.map((s) => s.labelKey)).toEqual(['nav.books', 'nav.account']);
+    const paths = sections.flatMap((s) => s.links.map((l) => l.path));
+    expect(paths).toEqual(['/admin/livres/commandes', '/admin/livres', '/admin/livres/messages', '/admin/compte', '/admin/compte/securite']);
+    // L'administrateur, lui, voit tout — y compris « مسيّرو المكتبة ».
+    expect(adminNavSectionsFor('admin').flatMap((s) => s.links)).toHaveLength(adminNavLinks.length);
+    expect(adminNavSectionsFor('student')).toEqual([]);
   });
 
   it('n’expose aucune route /admin en dehors de cette porte', () => {

@@ -12,9 +12,13 @@ const TRUST_ICONS = [ShieldCheck, PhoneCall, Truck];
  * aucun hook, aucun contexte, aucun routeur (le lien « كل الكتب » est un
  * composant passé en prop — `Link` dans l'application, `<a>` au build).
  *
- * Pensé d'abord pour le TÉLÉPHONE (le lien arrive par WhatsApp) : sur petit
- * écran l'image vient en premier mais compacte, puis titre, prix, bouton pleine
- * largeur et trois garanties — tout l'essentiel tient au-dessus du pli.
+ * Pensé d'abord pour le TÉLÉPHONE (le lien arrive par WhatsApp et par les
+ * publicités Facebook — 2026-11-13) : le visiteur décide en quelques secondes, donc
+ * le premier écran répond, dans l'ordre, à ses questions : « c'est quoi ? » (le
+ * livre, en GRAND), « c'est pour moi ? » (`content.hook` : SON problème, avant le
+ * nom du produit), « combien et comment ? » (prix + UN seul bouton qui dit « الدفع
+ * عند الاستلام ») et « puis-je faire confiance ? » (trois garanties vérifiées).
+ * `hookSub`, le résumé et l'auteur passent après (`order-last`) sur téléphone.
  */
 export default function BookHero({ book, LinkComponent = 'a' }) {
   const c = book.content ?? {};
@@ -29,26 +33,43 @@ export default function BookHero({ book, LinkComponent = 'a' }) {
         <div className="flex flex-col items-start">
           <LinkComponent {...backProps} className="hidden font-inter text-sm font-semibold text-blue-700 hover:underline sm:inline">{S.detail.back}</LinkComponent>
           {c.badge && <p className="inline-block rounded-full border border-blue-200 bg-white px-3 py-1 text-xs font-semibold text-blue-700 sm:mt-4 sm:px-4 sm:py-1.5">{c.badge}</p>}
-          <h1 className="mt-2 font-space text-2xl font-bold leading-snug text-slate-900 sm:mt-3 sm:text-4xl sm:leading-tight lg:text-5xl">{book.title}</h1>
-          {book.subtitle && <p className="order-last mt-4 font-inter text-lg text-slate-600 sm:order-none sm:mt-3 sm:text-xl">{book.subtitle}</p>}
-          {book.summary && <p className="order-last mt-5 font-inter text-base leading-loose text-slate-600 md:order-none sm:text-lg">{book.summary}</p>}
-          {book.author && <p className="order-last mt-3 font-inter text-sm text-slate-500 md:order-none sm:mt-4">{book.author}</p>}
+          {/* Le problème du visiteur d'abord, le nom du produit ensuite (h1 : le titre reste le titre de la page). */}
+          {c.hook && <p className="mt-2 font-space text-[1.4rem] font-bold leading-snug text-slate-900 sm:mt-3 sm:text-4xl sm:leading-tight lg:text-[2.6rem]">{c.hook}</p>}
+          {/* Avec une accroche, le titre est caché sur téléphone (la couverture le montre déjà ;
+              il reste le h1 pour les moteurs et les lecteurs d'écran) — owner : « trop de texte ». */}
+          <h1 className={c.hook
+            ? 'sr-only sm:not-sr-only sm:mt-3 sm:font-space sm:text-xl sm:font-bold sm:leading-snug sm:text-blue-700'
+            : 'mt-2 font-space text-2xl font-bold leading-snug text-slate-900 sm:mt-3 sm:text-4xl sm:leading-tight lg:text-5xl'}
+          >
+            {book.title}
+          </h1>
+          {c.hookSub && <p className="order-last mt-4 font-inter text-base leading-relaxed text-slate-700 md:order-none sm:mt-3 sm:text-lg">{c.hookSub}</p>}
+          {/* Avec `hookSub`, UNE phrase dit ce qu'est le livre : sous-titre et résumé — qui la
+              répètent — ne s'affichent plus (owner : « trop de texte » ; sur ordinateur ils
+              poussaient le bouton sous le pli). Sans accroche, l'ancien ordre reste. */}
+          {book.subtitle && !c.hookSub && <p className="order-last mt-4 font-inter text-lg text-slate-600 sm:order-none sm:mt-3 sm:text-xl">{book.subtitle}</p>}
+          {book.summary && !c.hookSub && <p className="order-last mt-5 font-inter text-base leading-loose text-slate-600 md:order-none sm:text-lg">{book.summary}</p>}
+          {book.author && <p className={`order-last mt-3 font-inter text-sm text-slate-500 md:order-none sm:mt-4 ${c.hookSub ? 'hidden md:block' : ''}`}>{book.author}</p>}
 
           <div className="mt-3 flex items-baseline gap-2 sm:mt-8">
             <span dir="ltr" className="font-space text-3xl font-bold text-blue-700 sm:text-4xl">{formatDa(book.price)}</span>
             <span className="font-inter text-sm text-slate-500">{S.detail.perCopy}</span>
           </div>
-          <div className="mt-3 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
-            <a id="book-hero-cta" href="#order" className="rounded-2xl bg-blue-600 px-8 py-3.5 text-center font-space text-lg font-bold text-white shadow-lg shadow-blue-600/25 transition hover:bg-blue-700">{S.detail.orderCta}</a>
-            <a href="#contact" className="rounded-2xl border border-slate-300 bg-white px-6 py-3.5 text-center font-space text-base font-semibold text-slate-700 hover:bg-slate-50">{S.detail.contactCta}</a>
-          </div>
-          <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
+          {/* UN seul bouton : un deuxième (« اطرح سؤالًا ») partageait l'attention au moment
+              qui compte ; le contact reste en bas de page. Le bouton dit comment on paie. */}
+          <a id="book-hero-cta" href="#order" className="mt-3 flex w-full flex-col items-center rounded-2xl bg-blue-600 px-8 py-3 text-center text-white shadow-lg shadow-blue-600/25 transition hover:bg-blue-700 sm:w-auto">
+            <span className="font-space text-lg font-bold leading-tight">{S.detail.orderCta}</span>
+            <span className="font-inter text-xs font-semibold text-blue-100">{S.order.submitCod}</span>
+          </a>
+          {/* Téléphone : les garanties en UNE ligne de mots courts ; phrases complètes dès sm. */}
+          <ul className="mt-3 flex w-full justify-between gap-2 sm:mt-4 sm:w-auto sm:flex-wrap sm:justify-start sm:gap-x-4 sm:gap-y-2">
             {S.detail.trust.map((label, i) => {
               const Icon = TRUST_ICONS[i] ?? ShieldCheck;
               return (
-                <li key={label} className="inline-flex items-center gap-1.5 font-inter text-sm font-medium text-slate-600">
-                  <Icon size={16} className="flex-none text-emerald-600" aria-hidden="true" />
-                  {label}
+                <li key={label} className="inline-flex items-center gap-1 font-inter text-xs font-medium text-slate-600 sm:gap-1.5 sm:text-sm">
+                  <Icon size={15} className="flex-none text-emerald-600" aria-hidden="true" />
+                  <span className="sm:hidden">{S.detail.trustShort[i]}</span>
+                  <span className="hidden sm:inline">{label}</span>
                 </li>
               );
             })}
@@ -56,7 +77,7 @@ export default function BookHero({ book, LinkComponent = 'a' }) {
         </div>
         {/* Hauteur RÉSERVÉE avant l'arrivée de l'image (aucun saut de mise en page) ;
             compacte et EN PREMIER sur téléphone, à côté du texte dès `md`. */}
-        <div className="order-first flex h-[140px] items-center justify-center sm:h-[320px] md:order-none md:h-[420px] lg:h-[540px]">
+        <div className="order-first flex h-[190px] items-center justify-center sm:h-[320px] md:order-none md:h-[420px] lg:h-[540px]">
           {image && (
             <img
               src={image}
