@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Domain\Books\BookPresenter;
-use App\Domain\Books\OrderPush;
 use App\Domain\Books\Wilayas;
+use App\Domain\Push\AdminPush;
 use App\Models\Book;
 use App\Models\BookMessage;
 use App\Models\BookOrder;
@@ -81,8 +81,7 @@ class BookStoreController extends Controller
 
         // Notification « طلب جديد » aux appareils de la librairie — APRÈS la réponse : le client
         // n'attend jamais l'envoi, et une panne d'envoi ne touche pas sa commande.
-        $orderId = $order->id;
-        dispatch(fn () => app(OrderPush::class)->newOrder($orderId))->afterResponse();
+        AdminPush::later('book_order', $order->id);
 
         return response()->json([
             'success' => true,
@@ -111,7 +110,7 @@ class BookStoreController extends Controller
             'bookSlug' => 'nullable|string|max:80',
         ]);
 
-        BookMessage::create([
+        $bookMessage = BookMessage::create([
             'book_id' => isset($data['bookSlug']) ? Book::where('slug', $data['bookSlug'])->value('id') : null,
             'full_name' => $data['fullName'],
             'email' => $data['email'],
@@ -123,6 +122,7 @@ class BookStoreController extends Controller
             'subject' => $data['subject'],
             'message' => $data['message'],
         ]);
+        AdminPush::later('book_message', $bookMessage->id);
 
         return response()->json(['success' => true], 201);
     }

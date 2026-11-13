@@ -88,7 +88,7 @@ class AdminAuthorizationTest extends TestCase
 
         $open = 0;
         foreach ($this->adminRoutes() as [$method, $uri]) {
-            $allowed = (bool) preg_match('#^/api/v1/admin/(books|book-orders|book-order-payments|book-messages|account)(/|$)#', $uri);
+            $allowed = (bool) preg_match('#^/api/v1/admin/(books|book-orders|book-order-payments|book-messages|account|push)(/|$)#', $uri);
             $response = $this->withHeader('Authorization', "Bearer {$token}")->json($method, $uri);
 
             if ($allowed) {

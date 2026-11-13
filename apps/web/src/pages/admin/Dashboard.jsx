@@ -12,6 +12,7 @@ import { useAdminResource } from '../../hooks/useAdminResource';
 import { fetchDashboard } from '../../services/admin/dashboardService';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import { AdminPage, AdminSection, AdminCard, Loading, ErrorBox, Num, formatDate } from './adminUi';
+import AdminNotifications from './notifications/AdminNotifications';
 
 /**
  * La phrase d'une alerte, écrite ICI et non par le serveur.
@@ -73,6 +74,8 @@ export default function AdminDashboard() {
       title={t('dashboard.title')}
       subtitle={t('dashboard.subtitle')}
     >
+      {/* Notifications sur le téléphone : inscriptions, messages, بلاغات, commandes… (BOOKS_STORE.md §6quater). */}
+      <AdminNotifications />
       {loading && <Loading label={t('dashboard.loading')} />}
       {error && <ErrorBox message={error} onRetry={reload} />}
 
@@ -138,7 +141,9 @@ export default function AdminDashboard() {
             )}
           </AdminSection>
 
-          <section className="grid gap-5 lg:grid-cols-2">
+          {/* `[&>*]:min-w-0` : une cellule de grille ne rétrécit pas sous son contenu par défaut —
+              un titre long (tronqué) élargissait la page de 21 px sur téléphone et la décalait. */}
+          <section className="grid gap-5 lg:grid-cols-2 [&>*]:min-w-0">
             <RecentCard title={t('dashboard.recentReports')} empty={t('dashboard.recentReportsEmpty')}>
               {data.recent.reports.map((report) => (
                 <li key={report.id} className="flex items-center justify-between gap-3 py-2">

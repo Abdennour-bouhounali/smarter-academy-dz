@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { PackageSearch } from 'lucide-react';
 import { AdminPage, formatDate, Num } from '../adminUi';
@@ -11,7 +11,8 @@ import { useDebounced } from '../../../hooks/useDebounced';
 import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
 import { fetchAdminBooks, fetchBookOrders, fetchBookOrderStats } from '../../../features/books/bookService';
 import { S, formatDa } from '../../../features/books/strings';
-import OrderNotifications from './OrderNotifications';
+import AdminNotifications from '../notifications/AdminNotifications';
+import { AuthContext } from '../../../context/AuthContext';
 
 const A = S.admin;
 const options = (map) => Object.entries(map).map(([value, label]) => ({ value, label }));
@@ -47,6 +48,7 @@ function Stat({ label, value, tone = 'text-slate-900' }) {
 /** « طلبات الكتب » : la liste et les chiffres du business des livres. */
 export default function AdminBookOrders() {
   useDocumentMeta(A.ordersTitle);
+  const { user } = useContext(AuthContext);
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState();
   const [paymentStatus, setPaymentStatus] = useState();
@@ -67,7 +69,8 @@ export default function AdminBookOrders() {
 
   return (
     <AdminPage eyebrow={A.eyebrow} title={A.ordersTitle} subtitle={A.ordersSubtitle}>
-      <OrderNotifications />
+      {/* Le gestionnaire de la librairie atterrit ici : ses notifications y sont. L'administrateur les a sur l'accueil. */}
+      {user?.role === 'book_manager' && <AdminNotifications />}
       {stats && (
         <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
           <Stat label={A.stats.total} value={stats.totalOrders} />

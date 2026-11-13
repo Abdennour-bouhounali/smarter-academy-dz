@@ -3,6 +3,7 @@
 namespace App\Domain\Plans;
 
 use App\Domain\Admin\ActivityLogger;
+use App\Domain\Push\AdminPush;
 use App\Models\Plan;
 use App\Models\PlanVersion;
 use App\Models\SubscriptionRequest;
@@ -73,6 +74,7 @@ class SubscriptionRequestService
                 'student_seats' => $request->requested_student_seats,
                 'calculated_total_cents' => $request->calculated_total_cents,
             ]);
+            AdminPush::later('subscription_request', $request->id);
 
             return $request;
         });
