@@ -28,6 +28,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // Web Push : l'envoi réel ; les tests le remplacent (BOOKS_STORE.md §6quater).
+        $this->app->bind(\App\Domain\Push\PushSender::class, \App\Domain\Push\WebPushSender::class);
+
         /**
          * SINGLETON, et c'est la condition de sa mémorisation par requête.
          *

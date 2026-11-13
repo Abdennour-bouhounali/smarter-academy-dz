@@ -252,6 +252,42 @@ Il vend les livres et ne fait RIEN d'autre sur la plateforme.
   `roles` sur une section / un lien, absent = administrateur seul). Toute autre adresse
   `/admin/*` le ramène aux commandes (`components/auth/AdminOnlyOutlet.jsx`).
 
+## 6quater. Notifications « طلب جديد » sur le téléphone (Web Push, 2026-11-13)
+
+Chaque nouvelle commande de livre envoie une notification aux appareils des comptes de la
+librairie (administrateurs et « مسيّرو المكتبة » **actifs**) qui l'ont activée — même site fermé.
+
+- **Activer** : page « طلبات الكتب » (`/admin/livres/commandes`), panneau « إشعارات الطلبات الجديدة »
+  (`pages/admin/books/OrderNotifications.jsx`) → permission du navigateur → enregistrement du
+  service worker `public/sw.js` → abonnement Web Push envoyé au serveur. Boutons « أرسل إشعارًا
+  تجريبيًا » et « إيقاف على هذا الجهاز ». Le même panneau propose « أضف إلى الشاشة الرئيسية »
+  (événement `beforeinstallprompt` de Chrome, sinon la marche à suivre).
+- **`public/sw.js` n'a AUCUN gestionnaire `fetch`** : il ne met rien en cache, il ne fait
+  qu'afficher les notifications et ouvrir la commande au toucher. Il n'est enregistré qu'au clic
+  d'un compte de la librairie — jamais chez un élève. Pas de raccourci « الطلبات » dans le
+  manifeste : il serait montré à tout visiteur qui installe le site.
+- **Écran verrouillé** : titre « طلب جديد · BK-… », corps « الولاية · عدد النسخ · المبلغ »
+  (`OrderPush::payloadFor`) — **jamais** le nom ni le téléphone du client. Toucher → la fiche de la
+  commande.
+- **Serveur** : table `push_subscriptions` (un appareil = une ligne, `endpoint_hash` unique ; un
+  appareil repris par un autre compte change de main), `App\Domain\Books\OrderPush`, envoi
+  `App\Domain\Push\WebPushSender` (paquet `minishlink/web-push`, chiffrement `aes128gcm`,
+  signature VAPID) derrière l'interface `PushSender` (remplacée en test). L'envoi part **après la
+  réponse** au client (`dispatch(...)->afterResponse()`) : une panne ne touche jamais une commande ;
+  un appareil expiré (404/410) est supprimé. API (porte `books`) : `GET /admin/book-orders/push`,
+  `POST|DELETE /admin/book-orders/push/subscriptions`, `POST /admin/book-orders/push/test`
+  (`AdminPushController` ; chaque compte ne gère que SES appareils).
+- **Clés VAPID** : `php artisan books:vapid-keys` → trois lignes `VAPID_PUBLIC_KEY`,
+  `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` à poser dans le `.env` du SERVEUR (le déploiement ne livre
+  jamais le `.env`), puis vider le cache de configuration. Sans clés, la fonction est désactivée
+  (le panneau le dit, les commandes passent). Changer de clés désabonne tous les appareils.
+- **Appareils** : Android + Chrome (site ouvert ou installé) ; iPhone : iOS 16.4+, seulement depuis
+  le site AJOUTÉ à l'écran d'accueil (le panneau l'explique).
+- Tests : `BookOrderPushTest` (abonnement sans doublon, destinataires actifs seulement, texte sans
+  donnée personnelle, désabonnement, nettoyage des expirés, sans clés). Vérifié le 2026-11-13 : un
+  vrai envoi chiffré et signé reçu par un récepteur local (201). L'envoi réel jusqu'à un téléphone
+  ne se teste pas en navigateur automatisé (pas de service de notification).
+
 ## 7. Tests
 
 `apps/api/tests/Feature/BookStoreTest.php` (vitrine, prix figé, validation,

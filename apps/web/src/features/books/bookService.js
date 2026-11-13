@@ -42,6 +42,11 @@ export const fetchAdminBooks = (token) => call('/admin/books', get(token), 'Impo
 export const saveAdminBook = (token, id, body) => call(id ? `/admin/books/${id}` : '/admin/books', send(id ? 'PUT' : 'POST', token, body), 'Enregistrement impossible.');
 export const fetchBookOrders = (token, filters) => call(`/admin/book-orders${query(filters)}`, get(token), 'Impossible de charger les commandes.');
 export const fetchBookOrderStats = (token, filters) => call(`/admin/book-orders/stats${query(filters)}`, get(token), 'Impossible de charger les statistiques.');
+// Notifications « طلب جديد » sur l'appareil du compte connecté (BOOKS_STORE.md §6quater).
+export const fetchOrderPush = (token) => call('/admin/book-orders/push', get(token), 'Impossible de lire les notifications.');
+export const saveOrderPushSubscription = (token, sub) => call('/admin/book-orders/push/subscriptions', send('POST', token, sub), 'Activation impossible.');
+export const removeOrderPushSubscription = (token, endpoint) => call('/admin/book-orders/push/subscriptions', send('DELETE', token, { endpoint }), 'Désactivation impossible.');
+export const testOrderPush = (token) => call('/admin/book-orders/push/test', send('POST', token, {}), 'Envoi du test impossible.');
 export const fetchBookOrder = (token, id) => call(`/admin/book-orders/${id}`, get(token), 'Commande introuvable.');
 export const updateBookOrder = (token, id, body) => call(`/admin/book-orders/${id}`, send('PATCH', token, body), 'Mise à jour impossible.');
 export const updateBookOrderStatus = (token, id, status) => call(`/admin/book-orders/${id}/status`, send('PATCH', token, { status }), 'Changement d’état impossible.');

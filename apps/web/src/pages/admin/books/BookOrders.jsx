@@ -11,6 +11,7 @@ import { useDebounced } from '../../../hooks/useDebounced';
 import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
 import { fetchAdminBooks, fetchBookOrders, fetchBookOrderStats } from '../../../features/books/bookService';
 import { S, formatDa } from '../../../features/books/strings';
+import OrderNotifications from './OrderNotifications';
 
 const A = S.admin;
 const options = (map) => Object.entries(map).map(([value, label]) => ({ value, label }));
@@ -66,6 +67,7 @@ export default function AdminBookOrders() {
 
   return (
     <AdminPage eyebrow={A.eyebrow} title={A.ordersTitle} subtitle={A.ordersSubtitle}>
+      <OrderNotifications />
       {stats && (
         <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
           <Stat label={A.stats.total} value={stats.totalOrders} />
