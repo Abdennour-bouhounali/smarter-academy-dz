@@ -127,6 +127,9 @@ Le même groupe `can:books` porte « حسابي » (`/admin/account*`). Les gest
   `localhost`, sauf avec `?pixel=1` (test). La politique de confidentialité (§4) le dit.
   En développement, React.StrictMode rejoue les effets : `PageView` y apparaît deux fois, pas en
   production.
+  Domaine vérifié chez Meta par `<meta name="facebook-domain-verification">` dans `apps/web/index.html`
+  (HTML statique : le robot de Meta n'exécute pas React ; reprise par les pages de partage du build).
+  Vérifié en production le 2026-11-13 : `PageView` et `ViewContent` reçus par le Pixel.
 - **Formulaire de commande (refonte du 2026-11-13, après un relevé de 7 pages COD algériennes
   + 2 internationales et un conseil à 5 voix)** — `OrderForm.jsx` :
   - champs : nom → téléphone → wilaya → commune → nombre de copies ; courriel et note repliés
