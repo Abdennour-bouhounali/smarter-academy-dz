@@ -2,6 +2,7 @@
 
 namespace App\Domain\Identity;
 
+use App\Domain\Push\AdminPush;
 use App\Models\User;
 use App\Models\UserIdentity;
 use Illuminate\Support\Facades\DB;
@@ -170,6 +171,11 @@ final class GoogleAccountLinker
             $user->forceFill(['email_verified_at' => now()])->save();
 
             $this->attachIdentity($user, $identity);
+
+            // Notification au tableau de bord (AdminPush) : un élève ou un enseignant vient de s'inscrire.
+            if (in_array($user->role, [User::ROLE_STUDENT, User::ROLE_TEACHER], true)) {
+                AdminPush::later($user->role === User::ROLE_TEACHER ? 'new_teacher' : 'new_student', $user->id);
+            }
 
             return $user;
         });

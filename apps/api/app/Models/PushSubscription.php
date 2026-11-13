@@ -11,7 +11,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class PushSubscription extends Model
 {
-    protected $fillable = ['user_id', 'endpoint', 'endpoint_hash', 'public_key', 'auth_token', 'user_agent'];
+    protected $fillable = ['user_id', 'endpoint', 'endpoint_hash', 'public_key', 'auth_token', 'user_agent', 'topics'];
+
+    protected $casts = ['topics' => 'array'];
 
     protected $hidden = ['public_key', 'auth_token'];
 

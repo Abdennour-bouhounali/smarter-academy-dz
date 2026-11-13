@@ -710,11 +710,14 @@ Route::prefix('v1')->group(function () {
         Route::put('/books/{id}', [AdminBookController::class, 'update'])->whereNumber('id');
         Route::get('/book-orders', [AdminBookOrderController::class, 'index']);
         Route::get('/book-orders/stats', [AdminBookOrderController::class, 'stats']);
-        // Notifications « طلب جديد » sur l'appareil du compte connecté (BOOKS_STORE.md §6quater).
-        Route::get('/book-orders/push', [AdminPushController::class, 'show']);
-        Route::post('/book-orders/push/subscriptions', [AdminPushController::class, 'subscribe']);
-        Route::delete('/book-orders/push/subscriptions', [AdminPushController::class, 'unsubscribe']);
-        Route::post('/book-orders/push/test', [AdminPushController::class, 'test']);
+        // Notifications du tableau de bord sur l'appareil du compte connecté (BOOKS_STORE.md
+        // §6quater) : l'administrateur choisit parmi tous les sujets, le gestionnaire parmi ceux
+        // de la librairie (AdminPush::TOPICS).
+        Route::get('/push', [AdminPushController::class, 'show']);
+        Route::post('/push/subscriptions', [AdminPushController::class, 'subscribe']);
+        Route::patch('/push/subscriptions', [AdminPushController::class, 'updateTopics']);
+        Route::delete('/push/subscriptions', [AdminPushController::class, 'unsubscribe']);
+        Route::post('/push/test', [AdminPushController::class, 'test']);
         Route::get('/book-orders/{id}', [AdminBookOrderController::class, 'show'])->whereNumber('id');
         Route::patch('/book-orders/{id}', [AdminBookOrderController::class, 'update'])->whereNumber('id');
         Route::patch('/book-orders/{id}/status', [AdminBookOrderController::class, 'updateStatus'])->whereNumber('id');

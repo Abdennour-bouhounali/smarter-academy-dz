@@ -252,41 +252,51 @@ Il vend les livres et ne fait RIEN d'autre sur la plateforme.
   `roles` sur une section / un lien, absent = administrateur seul). Toute autre adresse
   `/admin/*` le ramène aux commandes (`components/auth/AdminOnlyOutlet.jsx`).
 
-## 6quater. Notifications « طلب جديد » sur le téléphone (Web Push, 2026-11-13)
+## 6quater. Notifications du tableau de bord sur le téléphone (Web Push, 2026-11-13)
 
-Chaque nouvelle commande de livre envoie une notification aux appareils des comptes de la
-librairie (administrateurs et « مسيّرو المكتبة » **actifs**) qui l'ont activée — même site fermé.
+Chaque événement de la plateforme envoie une notification aux appareils des comptes du tableau
+de bord qui l'ont activée — même site fermé. Un événement = un **sujet** (`App\Domain\Push\AdminPush::TOPICS`) :
 
-- **Activer** : page « طلبات الكتب » (`/admin/livres/commandes`), panneau « إشعارات الطلبات الجديدة »
-  (`pages/admin/books/OrderNotifications.jsx`) → permission du navigateur → enregistrement du
-  service worker `public/sw.js` → abonnement Web Push envoyé au serveur. Boutons « أرسل إشعارًا
-  تجريبيًا » et « إيقاف على هذا الجهاز ». Le même panneau propose « أضف إلى الشاشة الرئيسية »
-  (événement `beforeinstallprompt` de Chrome, sinon la marche à suivre).
-- **`public/sw.js` n'a AUCUN gestionnaire `fetch`** : il ne met rien en cache, il ne fait
-  qu'afficher les notifications et ouvrir la commande au toucher. Il n'est enregistré qu'au clic
-  d'un compte de la librairie — jamais chez un élève. Pas de raccourci « الطلبات » dans le
-  manifeste : il serait montré à tout visiteur qui installe le site.
-- **Écran verrouillé** : titre « طلب جديد · BK-… », corps « الولاية · عدد النسخ · المبلغ »
-  (`OrderPush::payloadFor`) — **jamais** le nom ni le téléphone du client. Toucher → la fiche de la
-  commande.
-- **Serveur** : table `push_subscriptions` (un appareil = une ligne, `endpoint_hash` unique ; un
-  appareil repris par un autre compte change de main), `App\Domain\Books\OrderPush`, envoi
-  `App\Domain\Push\WebPushSender` (paquet `minishlink/web-push`, chiffrement `aes128gcm`,
-  signature VAPID) derrière l'interface `PushSender` (remplacée en test). L'envoi part **après la
-  réponse** au client (`dispatch(...)->afterResponse()`) : une panne ne touche jamais une commande ;
-  un appareil expiré (404/410) est supprimé. API (porte `books`) : `GET /admin/book-orders/push`,
-  `POST|DELETE /admin/book-orders/push/subscriptions`, `POST /admin/book-orders/push/test`
-  (`AdminPushController` ; chaque compte ne gère que SES appareils).
-- **Clés VAPID** : `php artisan books:vapid-keys` → trois lignes `VAPID_PUBLIC_KEY`,
-  `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` à poser dans le `.env` du SERVEUR (le déploiement ne livre
-  jamais le `.env`), puis vider le cache de configuration. Sans clés, la fonction est désactivée
-  (le panneau le dit, les commandes passent). Changer de clés désabonne tous les appareils.
-- **Appareils** : Android + Chrome (site ouvert ou installé) ; iPhone : iOS 16.4+, seulement depuis
-  le site AJOUTÉ à l'écran d'accueil (le panneau l'explique).
-- Tests : `BookOrderPushTest` (abonnement sans doublon, destinataires actifs seulement, texte sans
-  donnée personnelle, désabonnement, nettoyage des expirés, sans clés). Vérifié le 2026-11-13 : un
-  vrai envoi chiffré et signé reçu par un récepteur local (201). L'envoi réel jusqu'à un téléphone
-  ne se teste pas en navigateur automatisé (pas de service de notification).
+| Sujet | Déclencheur | Public | Écran verrouillé | Ouvre |
+|---|---|---|---|---|
+| `book_order` | `BookStoreController::order` | admin + « مسيّر المكتبة » | « طلب جديد · BK-… » — wilaya · copies · montant | la commande |
+| `book_message` | `BookStoreController::message` | admin + « مسيّر المكتبة » | le sujet du message | `/admin/livres/messages` |
+| `new_student` / `new_teacher` | `AuthController::register`, `GoogleAccountLinker` (inscription Google) | admin | « تلميذ جديد » / « أستاذ جديد » + nombre d'inscriptions du jour (Alger) | la fiche |
+| `contact_message` | `ContactController::store` | admin | « رسالة جديدة » | `/admin/systeme/messages` |
+| `student_report` (بلاغ) | `ReportService::create` | admin | la catégorie (« خطأ رياضي »…) · code de leçon | le signalement |
+| `subscription_request` | `SubscriptionRequestService` | admin | l'offre · sièges | `/admin/offres/demandes` |
+
+- Les comptes créés PAR l'administration (classes d'une école, gestionnaires) ne notifient pas.
+- Les inscriptions portent le MÊME `tag` : une seule notification, remplacée et recomptée — une
+  vague d'inscriptions ne remplit pas l'écran.
+- **Écran verrouillé** : jamais le nom, le téléphone, l'adresse ou le texte d'un message (des
+  élèves mineurs y figurent) — vérifié par `AdminPushTest`.
+- **Envoi après la réponse** (`AdminPush::later()` → `dispatch(...)->afterResponse()`) : une
+  inscription, une commande ou un signalement ne dépend jamais de l'envoi ; une panne est absorbée
+  et journalisée ; un appareil expiré (404/410) est supprimé.
+- **Choix par appareil** : `push_subscriptions.topics` (JSON, `NULL` = tous les sujets du rôle).
+  Le panneau « الإشعارات على هاتفك » (`pages/admin/notifications/AdminNotifications.jsx`) montre une
+  case par sujet du rôle ; l'administrateur l'a sur l'accueil du tableau de bord, le gestionnaire
+  sur « طلبات الكتب ». Il propose aussi « أرسل إشعارًا تجريبيًا », « إيقاف على هذا الجهاز » et
+  « أضف إلى الشاشة الرئيسية » (`beforeinstallprompt`, sinon la marche à suivre).
+- **`public/sw.js` n'a AUCUN gestionnaire `fetch`** : rien en cache ; il affiche la notification
+  et ouvre sa page au toucher. Il n'est enregistré qu'au clic d'un compte du tableau de bord —
+  jamais chez un élève. Pas de raccourci dans le manifeste (visible de tout visiteur).
+- **API** (porte `books`, chaque compte ne gère que SES appareils et seulement les sujets de son
+  rôle — 422 sinon) : `GET /admin/push[?endpoint=]`, `POST|PATCH|DELETE /admin/push/subscriptions`,
+  `POST /admin/push/test` (`AdminPushController`). `AdminAuthorizationTest` ouvre `push` au
+  gestionnaire.
+- **Envoi** : `WebPushSender` (paquet `minishlink/web-push`, `aes128gcm`, VAPID) derrière
+  l'interface `PushSender` (remplacée en test).
+- **Clés VAPID** : `php artisan books:vapid-keys` → `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`,
+  `VAPID_SUBJECT` dans le `.env` du SERVEUR (le déploiement ne le livre jamais). Sans clés, la
+  fonction est désactivée (le panneau le dit). Changer de clés désabonne tous les appareils.
+- **Appareils** : Android + Chrome ; iPhone : iOS 16.4+, depuis le site AJOUTÉ à l'écran d'accueil.
+- **Tableau de bord sur téléphone** : la grille des cartes « récentes » (`Dashboard.jsx`) a
+  `[&>*]:min-w-0` — sans cela, un titre long élargissait la page de 21 px (décalage RTL invisible).
+- Tests : `AdminPushTest` (publics par sujet, choix par appareil, 422 pour un sujet hors rôle,
+  textes sans donnée personnelle, comptes suspendus exclus, désabonnement, expirés, sans clés).
+  Vérifié le 2026-11-13 : un vrai envoi chiffré et signé reçu par un récepteur local (201).
 
 ## 7. Tests
 

@@ -1,7 +1,8 @@
 /*
- * Service worker de Smarter Academy — UNIQUEMENT les notifications « طلب جديد » de la
- * librairie (BOOKS_STORE.md §6quater). Il n'est enregistré que sur l'appareil d'un compte de
- * la librairie qui active les notifications (page « طلبات الكتب »), jamais chez un élève.
+ * Service worker de Smarter Academy — UNIQUEMENT les notifications du tableau de bord
+ * (commandes, inscriptions, messages, بلاغات… — BOOKS_STORE.md §6quater). Il n'est enregistré
+ * que sur l'appareil d'un administrateur ou d'un « مسيّر المكتبة » qui active les notifications,
+ * jamais chez un élève.
  *
  * Volontairement SANS gestionnaire `fetch` : il ne met rien en cache et ne touche à aucune
  * page (le site reste servi exactement comme sans lui).
@@ -22,14 +23,14 @@ self.addEventListener('push', (event) => {
     lang: 'ar',
     icon: '/icon-192.png',
     badge: '/icon-192.png',
-    data: { url: data.url || '/admin/livres/commandes' },
+    data: { url: data.url || '/admin' },
   }));
 });
 
 // Toucher la notification ouvre la commande (dans un onglet déjà ouvert du site si possible).
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  const url = new URL((event.notification.data && event.notification.data.url) || '/admin/livres/commandes', self.location.origin).href;
+  const url = new URL((event.notification.data && event.notification.data.url) || '/admin', self.location.origin).href;
   event.waitUntil((async () => {
     const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
     for (const client of windows) {

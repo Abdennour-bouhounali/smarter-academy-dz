@@ -2,6 +2,7 @@
 
 namespace App\Domain\Admin;
 
+use App\Domain\Push\AdminPush;
 use App\Models\Lesson;
 use App\Models\LessonModule;
 use App\Models\QuestionAttempt;
@@ -74,6 +75,9 @@ class ReportService
                 throw $e;
             }
         }
+
+        // « بلاغ جديد » sur le téléphone de l'administrateur (AdminPush), après la réponse.
+        AdminPush::later('student_report', $report->id);
 
         return $report;
     }

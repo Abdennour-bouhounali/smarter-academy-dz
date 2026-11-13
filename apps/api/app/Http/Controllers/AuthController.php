@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Domain\Classroom\PendingClassJoin;
 use App\Domain\Identity\LegalConsent;
 use App\Domain\Identity\PersonName;
+use App\Domain\Push\AdminPush;
 use App\Models\User;
 use App\Notifications\VerifyEmailAddress;
 use Illuminate\Http\Request;
@@ -76,6 +77,11 @@ class AuthController extends Controller
             'role' => $validated['accountType'] ?? User::ROLE_STUDENT,
             ...LegalConsent::current()->attributes(),
         ]);
+
+        // Notification au tableau de bord (AdminPush) : un élève ou un enseignant vient de s'inscrire.
+        if (in_array($user->role, [User::ROLE_STUDENT, User::ROLE_TEACHER], true)) {
+            AdminPush::later($user->role === User::ROLE_TEACHER ? 'new_teacher' : 'new_student', $user->id);
+        }
 
         if (! empty($validated['classJoinLink'])) {
             app(PendingClassJoin::class)->remember($user, $validated['classJoinLink'], (bool) ($validated['classJoinConsent'] ?? false));
