@@ -46,7 +46,7 @@ const errors = []; let n = 0;
 const expect = (cond, msg) => { if (!cond) { console.log('FAIL', msg); process.exitCode = 1; throw new Error(msg); } console.log('ok  ', msg); };
 
 async function student(id, seed = {}) {
-  const ctx = await browser.newContext({ viewport: { width: SIZE[0], height: SIZE[1] } });
+  const ctx = await browser.newContext({ viewport: { width: SIZE[0], height: SIZE[1] }, ...(process.env.E2E_TOUCH === '1' ? { hasTouch: true, isMobile: true } : {}) });
   await ctx.addInitScript(([uid, entries]) => {
     window.__paperFast = true; // the paper gate's few seconds of « pick up your pen » are skipped by the walk
     localStorage.setItem('token', 'qa-fake-token');

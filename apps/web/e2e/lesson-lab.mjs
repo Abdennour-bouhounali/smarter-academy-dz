@@ -11,9 +11,9 @@ const BASE = `${process.env.E2E_BASE || 'http://localhost:5173'}/courses/moyen/4
 const OUT = process.argv[2] || `${tmpdir()}/lesson-lab`;
 const SIZE = (process.env.E2E_SIZE || '1366x768').split('x').map(Number);
 mkdirSync(OUT, { recursive: true });
-const expect = (cond, msg) => { if (!cond) { console.log('FAIL', msg); process.exitCode = 1; throw new Error(msg); } console.log('ok  ', msg); };
+const expect = (cond, msg) => { if (!cond) { console.log('FAIL', msg); process.exitCode = 1; if (process.env.E2E_SOFT !== '1') throw new Error(msg); return; } console.log('ok  ', msg); };
 const browser = await chromium.launch({ args: ['--no-sandbox', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
-const ctx = await browser.newContext({ viewport: { width: SIZE[0], height: SIZE[1] } });
+const ctx = await browser.newContext({ viewport: { width: SIZE[0], height: SIZE[1] }, ...(process.env.E2E_TOUCH === '1' ? { hasTouch: true, isMobile: true } : {}) });
 await ctx.addInitScript(() => {
   localStorage.setItem('token', 'qa-fake-token');
   localStorage.setItem('u_9402_smarter_mission_bahth-pgcd', JSON.stringify({ opened: true, seen: {}, answered: {} })); // the returning home (the first view is the opening scene)
@@ -41,7 +41,7 @@ const shot = async (name) => {
     if (document.documentElement.scrollHeight > window.innerHeight + 1 && !root.classList.contains('ll-root--inline') === false) out.push('the page scrolls');
     return out;
   });
-  if (bad.length) { console.log('FAIL at «', name, '»:', [...new Set(bad)].join(' | ')); process.exitCode = 1; throw new Error(`layout at ${name}`); }
+  if (bad.length) { console.log('FAIL at «', name, '»:', [...new Set(bad)].join(' | ')); process.exitCode = 1; if (process.env.E2E_SOFT !== '1') throw new Error(`layout at ${name}`); }
   n += 1; await page.screenshot({ path: `${OUT}/${String(n).padStart(2, '0')}-${name}.png` });
 };
 const px = (sel) => page.evaluate((s) => { const el = document.querySelector(s); const z = Number(document.querySelector('.ll-fit').style.zoom || 1); return el ? Math.round(parseFloat(getComputedStyle(el).fontSize) * z) : 0; }, sel);

@@ -61,3 +61,6 @@
 @keyframes rf-shake { 25% { transform: translateX(5px); } 75% { transform: translateX(-5px); } }
 @media (prefers-reduced-motion: reduce) { .rf-root *, .rf-root *::before { animation-duration: .01s !important; transition-duration: .01s !important; } }
 .rf-inmirror { font-style: normal; font-size: .85rem; }
+
+/* a phone held sideways: the two columns of the forge keep a readable text and scroll, each inside its frame */
+@media (max-height: 500px) { .rf-log ul, .rf-panel { overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; } .rf-panel { justify-content: flex-start; } }

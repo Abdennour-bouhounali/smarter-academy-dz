@@ -48,7 +48,7 @@ const expect = (cond, msg) => { if (!cond) { console.log('FAIL', msg); process.e
 
 /** A student session; `seed` = localStorage entries written before the app starts. */
 async function student(id, seed = {}) {
-  const ctx = await browser.newContext({ viewport: { width: SIZE[0], height: SIZE[1] } });
+  const ctx = await browser.newContext({ viewport: { width: SIZE[0], height: SIZE[1] }, ...(process.env.E2E_TOUCH === '1' ? { hasTouch: true, isMobile: true } : {}) });
   await ctx.addInitScript(([uid, entries]) => {
     window.__paperFast = true; // the paper gate's few seconds of « pick up your pen » are skipped by the walk
     localStorage.setItem('token', 'qa-fake-token');

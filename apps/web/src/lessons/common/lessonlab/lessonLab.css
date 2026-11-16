@@ -145,3 +145,14 @@
 .ll-root--narrow .ll-paper { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: .6rem; } .ll-root--narrow .ll-think { font-size: .98rem; line-height: 1.55; padding: .6rem .7rem; gap: .25rem; } .ll-root--narrow .ll-sheet { padding: .7rem .5rem; }
 .ll-root--narrow .ll-zone { padding: .5rem; } .ll-root--narrow .ll-dchip { min-width: 2.6rem; height: 2.5rem; font-size: 1.15rem; }
 .ll-root--narrow .ll-wheel b { width: 3.5rem; height: 3.7rem; font-size: 2.4rem; } .ll-root--narrow .ll-wheel button { width: 3.5rem; } .ll-root--narrow .ll-lamp i { width: 3.3rem; height: 3.3rem; font-size: 1.6rem; } .ll-root--narrow .ll-lamp strong { font-size: 1.1rem; }
+
+/* a phone held sideways (no zoom there): what is taller than the screen scrolls inside its panel */
+@media (max-height: 500px) { .ll-fit > * { min-height: 0; overflow-y: auto; overscroll-behavior: contain; } }
+/* a phone held sideways: THE INSTRUMENT GETS THE ROOM. The quests go beside the instrument's rail (first column, under the
+   tools) instead of a third row, and the head is one thin line — the drawing was a stamp in the middle of the screen. */
+@media (max-height: 500px) {
+  .ll-fit { grid-template-columns: 12.5rem minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); gap: .45rem; padding: .45rem .6rem; }
+  .ll-fit > .ll-quests { grid-column: 1 / -1; min-height: 0; padding: .25rem .7rem; gap: .6rem; overflow-x: auto; overflow-y: hidden; }
+  .ll-quests ul { display: flex; gap: 1rem; } .ll-quests li { flex: none; font-size: .88rem; white-space: nowrap; } .ll-quests h4 { font-size: .95rem; }
+  .ll-bench { gap: .3rem; }
+}

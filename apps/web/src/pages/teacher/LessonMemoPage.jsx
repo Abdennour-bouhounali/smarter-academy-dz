@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ClipboardList, GraduationCap, NotebookPen, Printer, BookOpen } from 'lucide-react';
@@ -10,7 +10,9 @@ import { ArrowBack } from '../../components/common/DirectionalIcons';
 import { Loading, ErrorBox } from './teacherUi';
 import { buildLessonMemo } from '../../features/teacher/lessonMemo/buildLessonMemo';
 import { loadLessonMemoSources } from '../../features/teacher/lessonMemo/loadLessonMemoSources';
-import { CLASSROOM_START_STATE, TEACHER_COURSES_PATH } from '../../features/teacher/lessonMemo/memoRoutes';
+import { classDoor, TEACHER_COURSES_PATH } from '../../features/teacher/lessonMemo/memoRoutes';
+import { hasClassBoard } from '../../features/classSession/boardLessons';
+import { BOARD_MEMOS, hasBoardMemo } from '../../features/classSession/lessonMemos';
 import {
   MemoOverview, MemoObjectives, MemoStart, MemoTimeline, MemoExamples, MemoErrors,
   MemoDifferentiation, MemoTrace, MemoEvaluation, MemoNext,
@@ -42,6 +44,17 @@ export default function LessonMemoPage() {
     </Suspense>
   );
 }
+
+const BoardMemo = lazy(() => import('../../features/classSession/BoardMemo'));
+
+/** The parts of the memo in the order of a teacher's hour: before it, during it, after it — then his own notes. */
+const MEMO_GROUPS = [
+  { id: 'before', label: 'قبل الحصّة', keys: ['overview', 'objectives', 'start'] },
+  { id: 'during', label: 'أثناء الحصّة', keys: ['timeline', 'examples', 'errors', 'differentiation'] },
+  { id: 'after', label: 'بعد الحصّة', keys: ['trace', 'evaluation', 'next'] },
+  { id: 'mine', label: 'لي', keys: ['notes'] },
+];
+const MEMO_L = { all: 'المذكّرة كاملة', allPhases: 'كلّ المراحل', prev: 'السابق', next: 'التالي' };
 
 /** Les ancres de la barre : seulement les sections que la leçon remplit. */
 function sectionsOf(memo) {
@@ -107,6 +120,20 @@ function LessonMemo() {
     else navigate(TEACHER_COURSES_PATH);
   };
 
+  // ONE part of the memo on screen at a time; `#memo-<part>` and `#memo-phase-<n>` (the links of the page) choose it.
+  // The part he was reading comes back after a reload or a return from the lesson (kept for the browser tab, per lesson).
+  const partKey = `smarter_memo_part_${lessonId}`;
+  const [view, setViewRaw] = useState(() => { try { return sessionStorage.getItem(partKey) || 'overview'; } catch { return 'overview'; } }); const [phase, setPhase] = useState(null);
+  const setView = (key) => { setViewRaw(key); try { sessionStorage.setItem(partKey, key); } catch { /* storage closed: the memo opens on its first part */ } };
+  const go = (key) => { if (!key) return; setView(key); if (key === 'timeline' && phase === null && memo?.phases?.[0]) setPhase(memo.phases[0].number); window.scrollTo({ top: 0 }); };
+  useEffect(() => {
+    const read = () => { const h = window.location.hash.replace('#memo-', ''); if (!window.location.hash.startsWith('#memo-')) return; const m = /^phase-(\d+)$/.exec(h); if (m) { setView('timeline'); setPhase(Number(m[1])); } else if (h) setView(h); };
+    read(); window.addEventListener('hashchange', read); return () => window.removeEventListener('hashchange', read);
+  }, []);
+
+  // A lesson that has its board has a WRITTEN memo (lessonMemos.js), on its own page; the others keep the derived one below.
+  if (available && hasBoardMemo(lessonId)) return <Suspense fallback={null}><BoardMemo lessonId={lessonId} memo={BOARD_MEMOS[lessonId]} /></Suspense>;
+
   if (!available) {
     return (
       <div className="sa-page py-10">
@@ -141,38 +168,59 @@ function LessonMemo() {
           <Link to={lesson.path} className="hidden min-h-[44px] shrink-0 items-center gap-1.5 rounded-xl border-2 border-slate-200 bg-white px-3 text-sm font-bold text-slate-700 hover:border-slate-300 md:inline-flex">
             <BookOpen className="h-4 w-4" aria-hidden="true" /> <span className="hidden xl:inline">{t('openLesson')}</span>
           </Link>
-          <Link to={lesson.path} state={CLASSROOM_START_STATE} aria-label={t('classroomAria')} className="inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-xl border-2 border-indigo-700 bg-indigo-600 px-3 text-sm font-extrabold text-white hover:bg-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2" data-memo-classroom>
-            <GraduationCap className="h-4 w-4" aria-hidden="true" /> <span className="hidden sm:inline">{t('classroom')}</span>
+          <Link to={classDoor(lesson.id, lesson.path).to} state={classDoor(lesson.id, lesson.path).state} aria-label={t(hasClassBoard(lesson.id) ? 'sessionAria' : 'classroomAria')} data-memo-door={hasClassBoard(lesson.id) ? 'session' : 'classroom'}className="inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-xl border-2 border-indigo-700 bg-indigo-600 px-3 text-sm font-extrabold text-white hover:bg-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2" data-memo-classroom>
+            <GraduationCap className="h-4 w-4" aria-hidden="true" /> <span className="hidden sm:inline">{t(hasClassBoard(lesson.id) ? 'session' : 'classroom')}</span>
           </Link>
         </div>
-        {memo && (
-          <nav aria-label={t('nav.label')} className="mt-2 flex gap-1.5 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {sectionsOf(memo).map((key) => (
-              <a key={key} href={`#memo-${key}`} className="shrink-0 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-bold text-slate-600 hover:border-teal-300 hover:text-teal-800">{t(`nav.${key}`)}</a>
-            ))}
-          </nav>
-        )}
       </div>
 
       {error && <ErrorBox message={t('loadError')} onRetry={() => setAttempt((n) => n + 1)} />}
       {!memo && !error && <Loading label={t('loading')} />}
 
-      {memo && (
-        <div className="space-y-5">
-          <MemoOverview header={memo.header} />
-          <MemoObjectives objectives={memo.objectives} prerequisites={memo.prerequisites} />
-          <MemoStart start={memo.start} />
-          <MemoTimeline phases={memo.phases} />
-          <MemoExamples examples={memo.examples} />
-          <MemoErrors errors={memo.errors} />
-          <MemoDifferentiation differentiation={memo.differentiation} />
-          <MemoTrace trace={memo.trace} />
-          <MemoEvaluation evaluation={memo.evaluation} />
-          <MemoNext next={memo.next} />
-          <MemoNotes lessonId={lessonId} />
-          <p className="px-2 pb-6 text-center text-xs text-slate-400">{t('derivedNote')}</p>
-        </div>
-      )}
+      {memo && (() => {
+        const keys = sectionsOf(memo); const all = view === 'all'; const at = keys.indexOf(view); const pane = (key) => ({ hidden: !all && view !== key, 'data-memo-pane': key });
+        return (
+          <div className="sa-memo-work" data-memo-view={view}>
+            {/* The memo is read ONE part at a time (owner, 2026-11-18: « too heavy… tired from scrolling »): the rail says
+                where each thing is, in the order of a teacher's hour; the page shows only what he asked for. */}
+            <nav className="sa-memo-rail sa-memo-no-print" aria-label={t('nav.label')} data-memo-rail>
+              {MEMO_GROUPS.map((g) => { const mine = g.keys.filter((k) => keys.includes(k)); return mine.length === 0 ? null : (
+                <div key={g.id}><p>{g.label}</p>{mine.map((k) => <button key={k} type="button" className={view === k ? 'is-on' : ''} onClick={() => go(k)} aria-current={view === k ? 'page' : undefined} data-memo-go={k}>{t(`nav.${k}`)}</button>)}</div>
+              ); })}
+              <button type="button" className={`sa-memo-rail__all ${all ? 'is-on' : ''}`} onClick={() => go('all')} data-memo-go="all">{MEMO_L.all}</button>
+            </nav>
+            <div className="sa-memo-stage space-y-5">
+              {/* the hour, one phase at a time: the frieze of the timeline is its own tab bar */}
+              {!all && view === 'timeline' && memo.phases.length > 1 && (
+                <div className="sa-memo-phases sa-memo-no-print" data-memo-phase-tabs>
+                  {memo.phases.map((p) => <button key={p.number} type="button" className={phase === p.number ? 'is-on' : ''} onClick={() => setPhase(p.number)} data-memo-phase-tab={p.number}><b>{p.index}</b>{p.minutes != null ? ` · ${p.minutes}′` : ''}</button>)}
+                  <button type="button" className={phase === null ? 'is-on' : ''} onClick={() => setPhase(null)} data-memo-phase-tab="all">{MEMO_L.allPhases}</button>
+                  {phase !== null && <style>{`@media screen { [data-memo-timeline] > li:not([data-memo-phase="${phase}"]) { display: none; } }`}</style>}
+                </div>
+              )}
+              <div {...pane('overview')}><MemoOverview header={memo.header} /></div>
+              <div {...pane('objectives')}><MemoObjectives objectives={memo.objectives} prerequisites={memo.prerequisites} /></div>
+              <div {...pane('start')}><MemoStart start={memo.start} /></div>
+              <div {...pane('timeline')}><MemoTimeline phases={memo.phases} /></div>
+              <div {...pane('examples')}><MemoExamples examples={memo.examples} /></div>
+              <div {...pane('errors')}><MemoErrors errors={memo.errors} /></div>
+              <div {...pane('differentiation')}><MemoDifferentiation differentiation={memo.differentiation} /></div>
+              <div {...pane('trace')}><MemoTrace trace={memo.trace} /></div>
+              <div {...pane('evaluation')}><MemoEvaluation evaluation={memo.evaluation} /></div>
+              <div {...pane('next')}><MemoNext next={memo.next} /></div>
+              <div {...pane('notes')}><MemoNotes lessonId={lessonId} /></div>
+              {!all && (
+                <div className="sa-memo-step sa-memo-no-print">
+                  <button type="button" onClick={() => go(keys[at - 1])} disabled={at <= 0} data-memo-prev>{MEMO_L.prev}{at > 0 ? `: ${t(`nav.${keys[at - 1]}`)}` : ''}</button>
+                  <span>{at + 1}{'\u00a0/\u00a0'}{keys.length}</span>
+                  <button type="button" className="is-main" onClick={() => go(keys[at + 1])} disabled={at < 0 || at >= keys.length - 1} data-memo-next>{at < keys.length - 1 ? `${MEMO_L.next}: ${t(`nav.${keys[at + 1]}`)}` : MEMO_L.next}</button>
+                </div>
+              )}
+              <p className="px-2 pb-6 text-center text-xs text-slate-400">{t('derivedNote')}</p>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }

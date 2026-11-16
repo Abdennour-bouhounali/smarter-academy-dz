@@ -1,7 +1,7 @@
 import React, { Suspense, lazy, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Lock, Compass } from 'lucide-react';
+import { ArrowRight, Lock, Compass } from 'lucide-react';
 import { useProgress } from '../hooks/useProgress';
 import { lockedReasonData, getLessonById, getUnitById } from '@smarter-academy/core';
 import PremiumLessonLocked from './PremiumLessonLocked';
@@ -34,6 +34,9 @@ import { isMissionView } from '../mission/missionModel';
 // LE MONDE DE JEU (essai du 2026-11-15, leçon `qasim-adad-tabii`) : un morceau paresseux, jamais dans le paquet d'entrée (three.js).
 // « مختبري » : le laboratoire de la leçon (ses instruments + ceux des leçons PRÉCÉDENTES de toutes les années) — `?lab=1`.
 const LessonLab = lazy(() => import('../lessonlab/LessonLab'));
+const TeacherLessonPanel = lazy(() => import('../../../features/classSession/TeacherLessonPanel'));
+const LessonToolsBar = lazy(() => import('../../../features/classSession/LessonToolsBar'));
+import { hasClassBoard } from '../../../features/classSession/boardLessons';
 const GAME_WORLDS = { 'divisor-isles': lazy(() => import('../gameworld/divisorIsles/DivisorIsles')) };
 import { mathToPlain } from '../../../utils/mathPlain';
 import { hasLab } from '../lessonlab/registry';
@@ -377,15 +380,22 @@ export default function LessonIndex({ config, basePath }) {
   }
 
   // Le monde de jeu remplace l'accueil de mission pour l'ÉLÈVE seulement ; `?view=classic` rouvre le lecteur de mission.
-  const GameWorld = missionOn && searchParams.get('view') !== 'classic' ? GAME_WORLDS[config.gameWorld] : null;
+  // « جرّب كتلميذ » : l'enseignant ouvre le monde de l'élève en APERÇU (`?apercu=eleve`) — rien n'est enregistré ni envoyé (CLASS_SESSION.md §2).
+  const teacherCard = viewer.isTeacher && !presenting && Boolean(config.classSession || GAME_WORLDS[config.gameWorld]);
+  // The TEACHER of a lesson that has its board (owner, 2026-11-18: « no need for these any more »): his page is the title and
+  // his card « للأستاذ » — the old sections of the lesson home (progress, الكفاءات / المتطلبات / المناولات, مسألة الدرس,
+  // مسار المحاور) are not shown to him. Students and the other lessons are untouched; the module routes still exist.
+  const teacherBoard = teacherCard && hasClassBoard(config.id);
+  const previewAsStudent = viewer.freeNavigation && !presenting && searchParams.get('apercu') === 'eleve' && Boolean(GAME_WORLDS[config.gameWorld]);
+  const GameWorld = (missionOn || previewAsStudent) && searchParams.get('view') !== 'classic' ? GAME_WORLDS[config.gameWorld] : null;
   if (GameWorld) {
     return (
       <Suspense fallback={null}>
         <GameWorld
           config={config} basePath={basePath} classicHref={`${basePath}?view=classic`}
-          exitTo={catalogueHref({ level: config.level, grade: config.grade, chapter: config.chapter })}
-          onModule={(n) => markModuleCompleted(String(n))}
-          completedModules={completedModules}
+          exitTo={previewAsStudent ? basePath : catalogueHref({ level: config.level, grade: config.grade, chapter: config.chapter })}
+          onModule={(n) => { if (!previewAsStudent) markModuleCompleted(String(n)); }}
+          completedModules={completedModules} preview={previewAsStudent}
           mastery={Object.keys(masteryStatusById ?? {}).length ? masteryStatusById : null}
         />
       </Suspense>
@@ -452,6 +462,11 @@ export default function LessonIndex({ config, basePath }) {
             rangée de chrome de la page, et l'élève y trouve le bouton sans
             avoir à dérouler jusqu'en bas. `gap-3` + `flex-wrap` pour qu'il
             passe sous le fil sur un téléphone plutôt que de le comprimer. */}
+        {teacherBoard ? (
+          /* L'ENSEIGNANT d'une leçon qui a son tableau : une seule ligne calme — où il est (ميدان › وحدة), le retour à
+             ses leçons, et le signalement en lien discret. Même palette que sa fiche (blanc, encre sombre). */
+          <div data-teacher-topline><Suspense fallback={null}><LessonToolsBar lessonId={config.id} active="lesson" /></Suspense></div>
+        ) : (
         <div className="flex flex-wrap items-center justify-between gap-3">
           {/* `flex-1` : le fil d'Ariane prend la place restante, ce qui
               maintient le bouton collé à droite MÊME quand la rangée passe à
@@ -474,15 +489,17 @@ export default function LessonIndex({ config, basePath }) {
             context={{ lessonCode: config.id, grade: config.grade, step: 'sommaire' }}
           />
         </div>
+        )}
 
         {/* HERO CARD */}
-        <section className="bg-white rounded-3xl border border-slate-200 shadow-sm space-y-6 p-8">
+        <section className="bg-white rounded-3xl border border-slate-200 shadow-sm space-y-6 p-4 md:p-8">
           <div className="flex flex-row items-center justify-between gap-6">
 
-            <div className="space-y-3" data-tour="lesson-index.hero">
-              {!focus && lessonChip}
+            <div className={teacherBoard ? 'w-full min-w-0 space-y-4' : 'space-y-3'} data-tour="lesson-index.hero">
+              {!focus && !teacherBoard && lessonChip}
+              {teacherBoard && <p className="flex flex-wrap items-center gap-2 text-xs font-extrabold text-slate-500" data-teacher-meta><span className="rounded-full bg-slate-100 px-3 py-1">{t(`index.level_${config.level}`)} · {config.grade}</span><span className="rounded-full bg-slate-100 px-3 py-1"><span dir="ltr">{totalModules}</span> {t('index.modulesLabel', { count: totalModules })}</span><span className="rounded-full bg-slate-100 px-3 py-1">~{t('index.durationMin', { count: config.estimatedDurationMin })}</span></p>}
 
-              <h1 className="font-space font-extrabold text-slate-900 leading-tight text-4xl">
+              <h1 className="font-space font-extrabold text-slate-900 leading-tight text-2xl md:text-4xl">
                 <MathLabel>{config.title}</MathLabel>
               </h1>
               {/* Relecteur seulement (admin, سفير) : l'état de publication. */}
@@ -492,12 +509,27 @@ export default function LessonIndex({ config, basePath }) {
                   🎓 وضع القسم présente la leçon au projecteur (présentateur
                   seulement : canPresentClassroom) ; 🧪 المختبر ouvre un
                   instrument SUR la leçon, pour tout le monde. */}
-              <div className="flex flex-wrap items-center gap-2" data-tour="lesson-index.tools">
-                <ClassroomEntryButton scope="lesson" title={config.title} />
-                <MathLabEntryButton scope={config.level} />
-              </div>
+              {/* Une leçon qui a SON tableau (boardLessons.js) n'a plus de « وضع القسم » : TOUS les outils de
+                  l'enseignant vivent dans sa fiche « للأستاذ » — un seul endroit (le مختبر général reste dans la barre latérale).
+                  Les autres leçons gardent la rangée. */}
+              {teacherBoard ? (
+                <div data-tour="lesson-index.tools">
+                  <Suspense fallback={null}><TeacherLessonPanel config={config} basePath={basePath} hasWorld={Boolean(GAME_WORLDS[config.gameWorld])} /></Suspense>
+                </div>
+              ) : (
+                <>
+                  <div className="flex flex-wrap items-center gap-2" data-tour="lesson-index.tools">
+                    <ClassroomEntryButton scope="lesson" title={config.title} />
+                    <MathLabEntryButton scope={config.level} />
+                  </div>
+                  {/* L'ENSEIGNANT d'une leçon pilote : sa fiche d'une page, « جرّب كتلميذ », « حصّة القسم » (CLASS_SESSION.md). */}
+                  {teacherCard && (
+                    <Suspense fallback={null}><TeacherLessonPanel config={config} basePath={basePath} hasWorld={Boolean(GAME_WORLDS[config.gameWorld])} /></Suspense>
+                  )}
+                </>
+              )}
 
-              {!focus && skillsList}
+              {!focus && !teacherBoard && skillsList}
               {focus && resumeModule && (
                 <Link to={`${basePath}/${resumeModule.slug}`} data-focus-resume
                   className="inline-flex min-h-[52px] items-center gap-2 rounded-2xl bg-indigo-600 px-6 text-lg font-extrabold text-white shadow-[0_4px_0_0_#3730A3] hover:bg-indigo-700">
@@ -507,7 +539,7 @@ export default function LessonIndex({ config, basePath }) {
             </div>
 
             {/* PROGRESS WIDGET */}
-            <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3 text-center shrink-0 w-56" data-tour="lesson-index.progress">
+            {!teacherBoard && <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3 text-center shrink-0 w-56" data-tour="lesson-index.progress">
               <div className="text-xs font-mono text-slate-500 font-bold uppercase">{t('index.yourProgress')}</div>
 
               <div className={`text-3xl font-space font-extrabold ${isPathComplete ? 'text-emerald-600' : 'text-blue-600'}`}>
@@ -533,14 +565,14 @@ export default function LessonIndex({ config, basePath }) {
                   {t('index.pathCompleted')}
                 </div>
               )}
-            </div>
+            </div>}
           </div>
         </section>
 
         {/* ── Ce que le درس enseigne (phase 8) : points d'apprentissage et leur
             maîtrise (profil serveur), prérequis PÉDAGOGIQUES (jamais bloquants),
             manipulations et méthodes déclarées dans lesson.config.js ── */}
-        {catalogueLesson && (
+        {catalogueLesson && !teacherBoard && (
           <MoreToggle label={t('focus.details')} className="rounded-2xl border border-slate-200 bg-white px-3 py-1">
           {focus && <div className="space-y-3 px-2 pb-3">{lessonChip}{skillsList}</div>}
           <section className="grid gap-4 grid-cols-2" data-lesson-structure>
@@ -620,15 +652,15 @@ export default function LessonIndex({ config, basePath }) {
 
         {/* « مسألة الدرس » (config.lessonProblem) : lue avant d'apprendre,
             résolue pas à pas dans son module « مسألة ». */}
-        {config.lessonProblem && (() => {
+        {config.lessonProblem && !teacherBoard && (() => {
           const target = config.modules.find((m) => m.number === config.lessonProblem.module);
           return <LessonProblemCard problem={config.lessonProblem} to={target ? `${basePath}/${target.slug}` : undefined} moduleTitle={target?.title} />;
         })()}
 
-        {isPracticeActive(config.id) && <PracticeEntryCard lessonId={config.id} />}
+        {isPracticeActive(config.id) && !teacherBoard && <PracticeEntryCard lessonId={config.id} />}
 
         {/* MODULES ROADMAP */}
-        <section className="space-y-4" data-tour="lesson-index.modules">
+        {!teacherBoard && <section className="space-y-4" data-tour="lesson-index.modules">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-xl font-space font-bold text-slate-900">{t('index.modulesPath')}</h2>
             {/* Regard « focus » : les descriptions des محاور ne sont pas supprimées, elles s'affichent sur demande. */}
@@ -874,11 +906,14 @@ export default function LessonIndex({ config, basePath }) {
               return null;
             })()))}
           </div>
-        </section>
+        </section>}
 
         {/* Le sommaire de la leçon n'utilise pas ModuleLayout : sans cette
             entrée, ce serait la seule page de leçon d'où l'on ne pourrait
             rien signaler. */}
+        {/* L'enseignant d'une leçon qui a son tableau : l'en-tête commun ne porte aucun bouton d'outil — le signalement
+            est en bas de la page d'accueil de la leçon (owner, 2026-11-18). */}
+        {teacherBoard && <div className="flex justify-center pt-2" data-teacher-report><ReportButton source="lesson" variant="prominent" context={{ lessonCode: config.id, grade: config.grade, step: 'sommaire' }} /></div>}
       </main>
 
       <footer className="border-t border-slate-200 bg-white py-8 text-center text-xs text-slate-500 mt-12">

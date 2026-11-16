@@ -86,6 +86,7 @@ export default function ClassroomPresentation({
   routeScope,
   lessonNavigation = null,
   className = '',
+  retired = false,
   children,
 }) {
   const parent = useContext(ClassroomContext);
@@ -102,6 +103,7 @@ export default function ClassroomPresentation({
     <ClassroomSession
       scope={scope} title={title} onPrevious={onPrevious} onNext={onNext} previousLabel={previousLabel} nextLabel={nextLabel}
       toolbarSlot={toolbarSlot} presenter={presenter} entry={entry} routeScope={routeScope} lessonNavigation={lessonNavigation} className={className}
+      retired={retired || Boolean(parent?.retired)}
     >
       {children}
     </ClassroomSession>
@@ -110,11 +112,13 @@ export default function ClassroomPresentation({
 
 function ClassroomSession({
   scope: scopeProp, title: titleProp, onPrevious, onNext, previousLabel, nextLabel, toolbarSlot,
-  presenter, entry, routeScope, lessonNavigation, className, children,
+  presenter, entry, routeScope, lessonNavigation, className, retired = false, children,
 }) {
   const { t } = useTranslation('lesson');
   const auth = useContext(AuthContext);
-  const canPresent = typeof presenter === 'boolean' ? presenter : canPresentClassroom(auth?.user);
+  // `retired`: a lesson whose class has its own board (« حصّة القسم », features/classSession/boardLessons.js) has no
+  // « وضع القسم » any more — nobody presents here, and the labs and tests nested in its pages inherit it.
+  const canPresent = retired ? false : typeof presenter === 'boolean' ? presenter : canPresentClassroom(auth?.user);
 
   const rootRef = useRef(null);
   const contentRef = useRef(null);
@@ -374,6 +378,7 @@ function ClassroomSession({
     isNativeFullscreen: isNative,
     isNested: false,
     canPresent,
+    retired,
     scope,
     title,
     scale,
@@ -387,7 +392,7 @@ function ClassroomSession({
     takeArrival,
     refit,
     portalTarget,
-  }), [active, isNative, canPresent, scope, title, scale, userScale, area, enterClassroomMode, exitClassroomMode, toggleClassroomMode, registerStage, lessonNav, takeArrival, refit, portalTarget]);
+  }), [active, isNative, canPresent, retired, scope, title, scale, userScale, area, enterClassroomMode, exitClassroomMode, toggleClassroomMode, registerStage, lessonNav, takeArrival, refit, portalTarget]);
 
   const inRouter = useInRouterContext();
 

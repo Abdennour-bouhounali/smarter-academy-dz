@@ -16,8 +16,10 @@ const BASE = process.env.QA_BASE || 'http://localhost:5173';
 const API = process.env.QA_API || 'http://localhost:8000/api/v1';
 const TEACHER = { email: process.env.QA_TEACHER_EMAIL || 'qa-prof@smarter.dz', password: process.env.QA_PASSWORD || 'QaPass2026!' };
 const STUDENT = { email: process.env.QA_STUDENT_EMAIL || 'qa-eleve@smarter.dz', password: process.env.QA_PASSWORD || 'QaPass2026!' };
-const LESSON = 'qasim-adad-tabii';
-const LESSON_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/qasim-adad-tabii';
+// NOT the pilot lesson: `qasim-adad-tabii` has its own board, so its teacher page has neither the old sections nor
+// « وضع القسم » (features/classSession/boardLessons.js). This walk needs a lesson that still has both.
+const LESSON = 'qawasim-adad-tabii';
+const LESSON_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/qawasim-adad-tabii';
 const OUT = process.argv[2] || '/tmp/teacher-learning-shots';
 mkdirSync(OUT, { recursive: true });
 
@@ -117,7 +119,7 @@ await page.screenshot({ path: `${OUT}/teacher-module-3-parts.png`, fullPage: tru
 await page.goto(`${BASE}${LESSON_PATH}/itqan`, { waitUntil: 'networkidle' });
 await page.waitForTimeout(500);
 record('dernier module en accès direct', (await page.getByText('المحور مقفل').count()) === 0);
-await page.goto(`${BASE}${LESSON_PATH}/maarif`, { waitUntil: 'networkidle' });
+await page.goto(`${BASE}${LESSON_PATH}/tariqa-105`, { waitUntil: 'networkidle' });
 await page.waitForTimeout(500);
 record('retour en arrière au module 2, ouvert', (await page.getByText('المحور مقفل').count()) === 0);
 
@@ -207,7 +209,7 @@ await s.page.goto(`${BASE}${LESSON_PATH}/awazzif`, { waitUntil: 'networkidle' })
 await s.page.waitForTimeout(800);
 record('élève : le module 3 en accès direct reste FERMÉ', (await s.page.getByText('المحور مقفل').count()) >= 1);
 await s.page.goto(`${BASE}${LESSON_PATH}`, { waitUntil: 'networkidle' });
-await s.page.goto(`${BASE}${LESSON_PATH}/al-maktaba`, { waitUntil: 'networkidle' });
+await s.page.goto(`${BASE}${LESSON_PATH}/al-adad-60`, { waitUntil: 'networkidle' });
 await s.page.waitForTimeout(4000);
 record('élève : la progression s’écrit toujours (PUT …/progress)', studentWrites.length >= 1, `${studentWrites.length} écriture(s)`);
 

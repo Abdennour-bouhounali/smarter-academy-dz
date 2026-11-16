@@ -120,17 +120,27 @@ function rulesExample(rand, level, { k: asked } = {}) {
 
 export const FAMILIES = {
   '1am.m3.r01': {
-    item: '1am.m3.r01', lesson: 'qisma-iqlidiya-baqi', name: 'القسمة الإقليدية', icon: '➗', labTool: 'paper',
+    item: '1am.m3.r01', lesson: 'qisma-iqlidiya-baqi', name: 'القسمة الإقليدية', icon: '➗', labTool: 'paper', mistakes: ['rest-too-big', 'swapped', 'rest-negative'],
     forms: { 1: ['write', 'place'], 2: ['write', 'sort'] },
     make: (rand, level, form, { first = false } = {}) => (form === 'place' ? divisionPlace(rand) : form === 'sort' ? divisionSort(rand) : divisionWrite(rand, level, first)),
     example: divisionExample,
+    // the rules a teacher revises with his class before the lesson, one per screen (« حصّة القسم », CLASS_SESSION.md §5bis)
+    rules: [
+      { id: 'division', title: 'القسمة الإقليدية', text: 'قسمة عدد طبيعي $a$ على عدد طبيعي غير معدوم $b$ تعطي حاصلًا $q$ وباقيًا $r$، حيث: $a = b \\times q + r$', example: '$47 = 6 \\times 7 + 5$: الحاصل 7 والباقي 5.', check: { a: 47, b: 6, q: 7, r: 5 } },
+      { id: 'rest', title: 'الباقي أصغر من المقسوم عليه', text: 'في القسمة الإقليدية، الباقي $r$ دائمًا أصغر من المقسوم عليه $b$: $r < b$', example: 'في $38 = 5 \\times 7 + 3$: الباقي 3 أصغر من 5.', check: { a: 38, b: 5, q: 7, r: 3 } },
+    ],
     memo: ['القسمة الإقليدية للعدد $a$ على $b$ تعطي حاصلًا $q$ وباقيًا $r$: $a = b \\times q + r$.', 'الباقي $r$ دائمًا أصغر من المقسوم عليه $b$.', 'مثال: $47 = 6 \\times 7 + 5$، و $5 < 6$.'],
   },
   '1am.m3.r02': {
-    item: '1am.m3.r02', lesson: 'qawaid-qabiliyat-qisma', name: 'قواعد قابلية القسمة', icon: '💡', labTool: 'rules',
+    item: '1am.m3.r02', lesson: 'qawaid-qabiliyat-qisma', name: 'قواعد قابلية القسمة', icon: '💡', labTool: 'rules', mistakes: ['last-digit', 'three-for-nine', 'even-for-four'],
     forms: { 1: ['two', 'five'], 2: ['three', 'nine', 'four'] },
     make: (rand, level, form, { first = false } = {}) => rulesSort(rand, { two: 2, five: 5, three: 3, nine: 9, four: 4 }[form], first),
     example: rulesExample,
+    rules: [
+      { id: 'two-five', title: 'قابلية القسمة على 2 وعلى 5', text: 'يقبل عدد القسمة على 2 إذا كان آخر رقمه 0 أو 2 أو 4 أو 6 أو 8، ويقبل القسمة على 5 إذا كان آخر رقمه 0 أو 5.', example: 'العدد 135 يقبل القسمة على 5، ولا يقبل القسمة على 2.', check: { n: 135, yes: [5], no: [2] } },
+      { id: 'three-nine', title: 'قابلية القسمة على 3 وعلى 9', text: 'يقبل عدد القسمة على 3 (أو على 9) إذا كان مجموع أرقامه من مضاعفات 3 (أو من مضاعفات 9).', example: '$1 + 3 + 8 = 12$: العدد 138 يقبل القسمة على 3، ولا يقبل القسمة على 9.', check: { n: 138, yes: [3], no: [9], sum: 12 } },
+      { id: 'four', title: 'قابلية القسمة على 4', text: 'يقبل عدد القسمة على 4 إذا كان العدد المكوَّن من رقميه الأخيرين من مضاعفات 4.', example: 'العدد 316 يقبل القسمة على 4، لأنّ $16 = 4 \\times 4$.', check: { n: 316, yes: [4], no: [] } },
+    ],
     memo: ['على 2: آخر رقم 0 أو 2 أو 4 أو 6 أو 8. على 5: آخر رقم 0 أو 5.', 'على 3 (أو 9): مجموع الأرقام من مضاعفات 3 (أو 9).', 'على 4: العدد المكوَّن من آخر رقمين من مضاعفات 4.', 'مثال: $138$ → $1 + 3 + 8 = 12$، و 12 من مضاعفات 3: إذن 138 يقبل القسمة على 3.'],
   },
 };

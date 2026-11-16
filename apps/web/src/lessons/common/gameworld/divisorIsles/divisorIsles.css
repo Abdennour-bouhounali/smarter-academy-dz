@@ -586,3 +586,25 @@
 .di-btn--lab { border-color: #34d399 !important; background: rgba(52,211,153,.18) !important; }
 .di-btn--kit { border-color: #fbbf24 !important; background: rgba(251,191,36,.16) !important; }
 .di-tablet__mine { display: grid; gap: .15rem; margin: .2rem 0 .6rem; padding: .55rem .8rem; border-radius: .9rem; background: rgba(13,148,136,.13); border: 1.5px dashed #0f766e; } .di-tablet__mine small { font-size: .82rem; font-weight: 800; color: #0f766e; } .di-tablet__mine p { margin: 0 !important; font-weight: 800; } .di-tablet__words { font-weight: 700 !important; font-style: italic; }
+.di-preview { position: absolute; top: .6rem; left: 50%; transform: translateX(-50%); z-index: 60; display: flex; align-items: center; gap: .8rem; padding: .35rem 1rem; border-radius: 99px; background: #fde68a; color: #422006; font: 800 .95rem 'Cairo', sans-serif; box-shadow: 0 6px 20px rgba(0,0,0,.35); white-space: nowrap; } .di-preview a { color: #1e3a8a; text-decoration: underline; font-weight: 900; }
+
+/* a phone held sideways: a page too tall to stay readable scrolls inside its box (Fit.jsx) */
+.di-fitbox[data-di-fit-scroll] { overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+/* a phone held sideways: the teacher's preview notice is a small pill under the corner buttons — in the middle of the top it
+   covered the stars counter and the buttons of the pages (owner's screenshots, 2026-11-16) */
+@media (max-height: 500px) { .di-preview { top: 3.7rem; left: .8rem; transform: none; padding: .15rem .7rem; font-size: .85rem; } .di-preview span { display: none; } }
+/* a phone held sideways: THE MIDDLE OF THE SCREEN IS THE WORLD. The equation, the verdict and the robot's sentence covered
+   the bridge the student had just built (owner, 2026-11-16: « the messages hide it, impossible to go through »): the
+   equation and the verdict go to the corner under the island's name, the sentence to the bottom between the stick and the
+   buttons — the robot and the bridge stay in sight. */
+@media (max-height: 500px) {
+  .di-center { top: 3.7rem; left: auto; right: .8rem; transform: none; align-items: flex-end; width: min(42vw, 21rem); gap: .3rem; }
+  .di-eq { padding: .3rem .8rem; font-size: 1.25rem; border-radius: .9rem; }
+  .di-objective { padding: .3rem .8rem; font-size: .92rem; border-radius: .9rem; }
+  .di-verdict { align-items: flex-end; gap: .25rem; }
+  .di-verdict p { padding: .25rem .8rem; white-space: normal; text-align: start; border-radius: .9rem; }
+  .di-verdict__pred { font-size: .95rem; } .di-verdict__bridge, .di-toast { font-size: .88rem; }
+  .di-toast { padding: .25rem .8rem; }
+  .di-say { bottom: .6rem; left: 9.5rem; transform: none; max-width: min(42vw, 24rem); padding: .4rem .8rem .4rem .6rem; font-size: .92rem; line-height: 1.45; border-radius: 1rem; }
+}
+@media (max-height: 500px) { .di-wprompt__in { font-size: .9rem; padding: .3rem .8rem; } }

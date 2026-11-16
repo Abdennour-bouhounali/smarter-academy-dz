@@ -8,6 +8,7 @@ use App\Domain\Plans\EntitlementKeys;
 use App\Domain\Plans\PlanEntitlementResolver;
 use App\Domain\Practice\NotebookPresenter;
 use App\Domain\Practice\NotebookService;
+use App\Domain\Practice\Support\AnswerEvaluator;
 use App\Domain\Progress\Engine\MasteryState;
 use App\Domain\Progress\Explain\MasteryExplainer;
 use App\Domain\Progress\Support\Freshness;
@@ -110,6 +111,63 @@ class ClassroomLearningPointService
         }
 
         return ['students' => $students, 'lessons' => array_values($lessons)];
+    }
+
+    /**
+     * LE SUIVI D'UNE LEÇON, élève par élève (« متابعة القسم », CLASS_SESSION.md §2bis) : pour chaque membre ACTIF de la
+     * classe, son état sur chaque كفاءة de la leçon et ce qu'il a fait de chaque exercice — questions traitées, justes
+     * (dernier essai), justes du premier coup. Lecture seule ; des faits, jamais une moyenne ni un classement.
+     * Même offre que le détail par élève (PROGRESS_STUDENT) ; la leçon doit être dans le périmètre de la classe.
+     *
+     * @return array{lesson: array, learningPoints: list<array>, students: list<array>}
+     */
+    public function lessonTracking(Classroom $classroom, string $lessonCode): array
+    {
+        $this->assertFeature($classroom->teacher, EntitlementKeys::PROGRESS_STUDENT);
+        $lesson = $this->effectiveLesson($this->progress->effectiveLessonIds($classroom), $lessonCode);
+
+        $members = ClassroomMembership::where('classroom_id', $classroom->id)->active()
+            ->with('student:'.ClassroomAccess::IDENTITY_COLUMNS)->get();
+        $ids = $members->pluck('student_id')->map(fn ($id) => (int) $id)->all();
+        $points = LearningPoint::where('lesson_id', $lesson->id)->whereNull('retired_at')->orderBy('order')->get(['id', 'code', 'title', 'order']);
+        $codes = $points->pluck('code', 'id');
+        $states = StudentLearningPointProgress::whereIn('learning_point_id', $points->pluck('id'))->whereIn('user_id', $ids)
+            ->get(['user_id', 'learning_point_id', 'status'])->groupBy('user_id');
+        $attempts = DB::table('question_attempts as qa')
+            ->join('exercise_attempts as ea', 'ea.id', '=', 'qa.exercise_attempt_id')
+            ->join('practice_sessions as ps', 'ps.id', '=', 'ea.practice_session_id')
+            ->where('ps.lesson_id', $lesson->id)->whereIn('qa.user_id', $ids)->whereNotNull('qa.submitted_at')
+            ->get(['qa.user_id', 'ea.exercise_id', 'qa.question_id', 'qa.outcome', 'qa.attempt_number', 'qa.submitted_at'])
+            ->groupBy('user_id');
+        $right = fn ($a) => $a !== null && $a->outcome && AnswerEvaluator::isSuccessOutcome($a->outcome);
+
+        $students = $members->map(function (ClassroomMembership $m) use ($states, $codes, $attempts, $right) {
+            $mine = $attempts->get($m->student_id, collect());
+            $exercises = $mine->groupBy('exercise_id')->map(function ($rows, $exerciseId) use ($right) {
+                $byQuestion = $rows->sortBy('attempt_number')->groupBy('question_id');
+
+                return [
+                    'exerciseId' => (string) $exerciseId,
+                    'answered' => $byQuestion->count(),
+                    'correct' => $byQuestion->filter(fn ($q) => $right($q->last()))->count(),
+                    'firstTry' => $byQuestion->filter(fn ($q) => $right($q->first()))->count(),
+                    'lastAnsweredAt' => (string) $rows->max('submitted_at'),
+                ];
+            })->values()->all();
+
+            return ClassroomAccess::identity($m->student, (int) $m->student_id) + [
+                'points' => (object) $states->get($m->student_id, collect())
+                    ->mapWithKeys(fn ($s) => [(string) $codes[$s->learning_point_id] => $s->status])->all(),
+                'exercises' => $exercises,
+                'lastActivityAt' => $mine->isEmpty() ? null : (string) $mine->max('submitted_at'),
+            ];
+        })->values()->all();
+
+        return [
+            'lesson' => ['code' => $lesson->code, 'title' => $lesson->title],
+            'learningPoints' => $points->map(fn ($p) => ['code' => $p->code, 'title' => $p->title, 'order' => (int) $p->order])->values()->all(),
+            'students' => $students,
+        ];
     }
 
     /**

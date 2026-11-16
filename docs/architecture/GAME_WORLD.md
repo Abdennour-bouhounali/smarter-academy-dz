@@ -395,3 +395,57 @@ between the camera and the robot ducks down, and a sign too close to the lens hi
   student, nor on a real tablet or a real GPU**: speed, the touch stick and the sound were not judged by a human ear or hand.
 - Strings live in `strings.js`, not in the i18n namespace; the lab kit (`LabCoach`, rounds, memo card) is not used.
 - The save is local to the browser: another device starts from the first island.
+
+## On a phone (TRIAL, owner 2026-11-16 — pilot lesson only)
+
+**What opens.** Lessons are closed on phones (`RequireLargeScreen`). For a lesson listed in
+`components/auth/phoneLessons.js › PHONE_LESSONS` a phone opens exactly (owner: « allow only the pages that are designed
+for mobile; for the others display the message »):
+
+- the lesson's HOME — the student's game world, the teacher's card;
+- for the teacher, **« المذكّرة الكاملة » and « ملفّ الدرس »** (to read and to note, anywhere) and « جرّب الدرس كتلميذ ».
+
+Everything else keeps the message « محتوى الدروس يظهر فقط في شاشة الحاسوب »: a module page, the classic player
+(`?view=classic`), « حصّة القسم », the bank, the tracking, the knowledge card. **On the teacher's card and in the common
+header those tools are shown closed — a dashed line and the badge « على الحاسوب » — never a link that leads to the
+message** (`Door › closed`, `PHONE_TOOL_IDS`). A lesson enters the list when these pages have been looked at on a phone.
+
+**The teacher's pages on a phone.**
+
+- **The card** (upright): the lesson's name, the tools on one line that slides, the open doors first.
+- **The memo** (`memo.css`, print untouched): one column, no zoom, its parts on ONE line that slides — the part in use is
+  brought into sight — and every grid a list. Upright the step bar « السابق / التالي » stays at the thumb; sideways it is
+  not pinned and the header is one line without the closed tools.
+- **The lesson file is opened SIDEWAYS** (owner): a whiteboard needs the width. Upright, a touch phone shows « أدِر هاتفك »
+  under the header; sideways the whiteboard is the whole screen — over the teacher space's bars (`data-workspace-bar`),
+  without the common header; its own arrow goes back to the lesson. A laptop always opens the file, however narrow its
+  window: the turn screen asks for a touch screen.
+- **« أدِر هاتفك » is ONE component**, `components/common/TurnPhone.jsx` (`cover`: the whole screen for the game, the
+  place of the page for the lesson file). Never write a second one.
+- **Checking a phone with Playwright**: never judge a sideways phone on a full-page screenshot — the capture makes the
+  page taller than 500 px and switches the phone rules off. Capture the visible screen.
+
+**The rules of a phone held sideways** (`gameworld/engine/phoneScreen.js`; `SHORT_SCREEN` = at most 500 px high):
+
+1. **One scale.** Every size of the game is in `rem`; the root font size becomes `COMPACT_ROOT_PX` (13) while the game
+   is mounted. 11 was tried first and was too small on the owner's phone: « font size must be always readable ».
+2. **Never two scales.** A page that zooms itself to the window (launch kit, « مختبري ») does NOT zoom on a short screen
+   (`isShortScreen()`): the two scales together gave 6 px text.
+3. **Readable beats unscrolled.** `Fit` never scales below `PHONE_FLOOR` (0.9); the box scrolls inside itself
+   (`data-di-fit-scroll`), like the forge's two columns, the launch kit's stage and the lab's panels. The page itself and
+   the sideways direction never scroll. This is the ONE exception to « nothing scrolls »; tablets and laptops are unchanged.
+4. **The middle of the screen is the world.** The equation and the verdict go to the corner under the island's name, the
+   robot's sentence to the bottom between the stick and the buttons: in the middle they covered the bridge the student
+   had just built. The teacher's preview notice is a small pill under the corner buttons.
+5. **The instrument gets the room** in « مختبري »: its quests are one line that slides.
+6. The page's background is the game's night colour: a phone shows it beside its camera cut-out.
+
+**Upright**: « أدِر هاتفك » (`TurnPhone`) covers the game until the phone is turned. The teacher's card is responsive
+upright: the lesson's name, then the tools on one line that slides.
+
+**Walks.** Every game walk takes `E2E_TOUCH=1 E2E_SIZE=800x370`; `launch-kit.mjs` and `lesson-lab.mjs` also take
+`E2E_SOFT=1` (a failed check is printed and the walk goes on, to look at every screen). State on 2026-11-16, Chromium
+emulation: the world walk passes 61 checks and stops at island H, where the quiz did not open — the same walk passes on a
+laptop, so either the walk's steering or the game under touch is at fault: NOT established. The practice and exam walks
+were not re-run after the scale changed to 13. Not walked on a phone: « إختبار أولي » and the classic player (closed
+there). The instrument's own labels in « مختبري » are still small.

@@ -46,6 +46,7 @@ export const CLASSROOM_INACTIVE = Object.freeze({
   isNativeFullscreen: false,
   isNested: false,
   canPresent: false,
+  retired: false,
   scope: null,
   title: '',
   scale: 1,

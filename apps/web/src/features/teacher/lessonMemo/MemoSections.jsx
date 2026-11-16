@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import MathText from '../../../lessons/common/components/MathText';
 import { ArrowForward } from '../../../components/common/DirectionalIcons';
-import { CLASSROOM_START_STATE } from './memoRoutes';
+import { CLASSROOM_START_STATE, canPresentPath } from './memoRoutes';
 import { bidi } from '../../../utils/bidi';
 import MathLabel from '../../../lessons/common/components/MathLabel';
 import { mathToPlain } from '../../../utils/mathPlain';
@@ -192,7 +192,7 @@ export function MemoStart({ start }) {
               ))}
             </ul>
           </div>
-          {phase?.path && (
+          {canPresentPath(phase?.path) && (
             <Link to={phase.path} state={CLASSROOM_START_STATE} className="inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-xl border-2 border-indigo-700 bg-indigo-600 px-4 text-sm font-extrabold text-white hover:bg-indigo-700 sa-memo-no-print">
               <GraduationCap className="h-5 w-5" aria-hidden="true" /> {t('start.present')}
             </Link>
@@ -288,7 +288,7 @@ export function MemoTimeline({ phases }) {
                       </span>
                     )}
                     {end != null && <span className="text-[11px] font-semibold text-slate-400">{t('timeline.at', { from: p.startsAt, to: end })}</span>}
-                    {p.path && (
+                    {canPresentPath(p.path) && (
                       <Link to={p.path} state={CLASSROOM_START_STATE} aria-label={t('timeline.presentAria', { n: p.number })} className="inline-flex min-h-[40px] items-center gap-1.5 rounded-xl border-2 border-indigo-200 bg-white px-3 text-xs font-extrabold text-indigo-800 hover:border-indigo-400 hover:bg-indigo-50 sa-memo-no-print">
                         <GraduationCap className="h-4 w-4" aria-hidden="true" /> {t('timeline.present')}
                       </Link>
@@ -504,7 +504,7 @@ export function MemoEvaluation({ evaluation }) {
                 <h3 className="text-sm font-extrabold text-slate-800">🎯 {t('evaluation.test')}</h3>
                 <p className="text-sm text-slate-600">{t('evaluation.testLead', { title: phase.title, minutes: phase.minutes ?? '–' })}{phase.desc ? ` — ${mathToPlain(phase.desc)}` : ''}</p>
               </div>
-              {phase.path && (
+              {canPresentPath(phase.path) && (
                 <Link to={phase.path} state={CLASSROOM_START_STATE} className="inline-flex min-h-[40px] items-center gap-1.5 rounded-xl border-2 border-indigo-700 bg-indigo-600 px-3 text-xs font-extrabold text-white hover:bg-indigo-700 sa-memo-no-print">
                   <GraduationCap className="h-4 w-4" aria-hidden="true" /> {t('timeline.present')}
                 </Link>

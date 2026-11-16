@@ -108,6 +108,28 @@ has « جرّب » quests; nothing scrolls; no learning evidence; its own sounds
 A new instrument = an entry in `registry.js › TOOLS` tagged with the lesson that introduces it; after adding or re-ordering a lesson run
 `npm run generate:lab-order`. It is distinct from the Math Lab `/espace/atelier` (`MATH_LAB.md`), which is untouched.
 
+Since 2026-11-18 the TEACHER has **« حصّة القسم », the class session** (steps 1–2 of 4, NOT validated; pilot lesson only; contract
+`docs/architecture/CLASS_SESSION.md`): on the lesson page a teacher's card (« جرّب الدرس كتلميذ » = the student's world in preview, nothing
+recorded) and `/enseignant/hissa/:lessonId` — the seating map of the class (the turn follows the seats; one team per row or the teacher's own
+teams, any number, named after scholars), the lesson's test (a DEFAULT kept in `content/class-tests/`, every answer re-computed by a test;
+the teacher's own copy and his own questions, under his responsibility; reset), the test on the board with ONE mouse (the student's name
+on top; by place, « أختار أنا » or « اختر لي »; a sentence with his name for a right answer AND for a miss), the result and a podium of
+teams. **A class test never changes a student's progress** (never `learning_evidence`); the screens are light and calm, an adult's.
+The same day the hour became a script of four moments (start test → « مراجعة القواعد » → « الدرس على السبّورة » → end test; `CLASS_SESSION.md`
+§5bis–§5ter, NOT validated): the rules the lesson will use come back one per screen and **the teacher picks the reader himself, or reads**
+(rule cards = `rules` of the launch-kit families); the lesson on the board is DATA (`features/classSession/lessonScripts.js › SCRIPTS`) —
+the class experiments with bridges, writes ITS rule, the board attacks it, and only a rule that survived gets its name (the game's own
+tablets); board tools on every board screen, in ONE dock: class window, pen, red pointer, curtain, timer, « مختبري ». It sends nothing.
+**A lesson that has its board (`features/classSession/boardLessons.js › BOARD_LESSONS`, today the pilot only — owner: « no need for the older
+version ») has no « وضع القسم » any more, and its TEACHER's lesson page is the title and his card « للأستاذ »** (`TeacherLessonPanel`: in class ·
+prepare · my tools · follow · what to know; calm palette — white, dark ink, no gradient). The card opens: « متابعة القسم » (each student on the
+lesson: states per الكفاءة, exercises right / first try; order = who needs the teacher first, never a ranking; `GET …/lesson-tracking/{lesson}`),
+« ملفّ الدرس » (ONE work file per teacher and lesson = the Math Lab's whiteboard on its OWN full-screen page `/enseignant/milaff/:lessonId`, exit → the lesson; `teacher_lesson_files` links the lesson to the document), the teacher's exercise bank (read with the key, show
+on the class's board, print a sheet on white paper — `TeacherBankGate`) and « بطاقة المعارف » on the board (a quick revision with the class,
+with the links to the earlier lessons). « متابعة القسم » is its own screen (not part of « مسار الحصّة ») and opens a window on the exact exercise a student did, try by try;
+« بطاقة المعارف » is a display (no class, no student named). The five tool pages of a lesson (memo, lesson file, bank, tracking `/enseignant/mutabaa/:id`, knowledge card `/enseignant/bitaqa/:id`) share ONE frame `LessonToolPage` = the same header (tabs on the right, lesson name on the left, no tool button in it) inside the teacher's space; « ملء الشاشة » is the computer's real full screen, a tool of the dock. The lesson file never appears among the lab's works. « مذكّرة الدرس » (every lesson) is read ONE part at a time — a rail in the order of the hour, one phase at a time, the whole memo on demand and in print (§2quater). A lesson that has its board has a WRITTEN memo (`lessonMemos.js`: one page for the desk, success criteria, several DRAWN opening situations, anticipated answers with two kinds of questions, exit ticket) instead of the derived one. The teacher's shell has a plain background (no coloured halos). Other lessons keep the old mode until
+they get a script. Contract: `CLASS_SESSION.md` §2–§2ter, §5quater–§5quinquies; open points: §8bis.
+
 Since 2026-11-17 the pilot lesson `qasim-adad-tabii` tries **« عُدّة الانطلاق », the launch of a lesson** (phase 1 of 4, NOT validated;
 `lessons/common/launchkit/`, contract `docs/architecture/LAUNCH_KIT.md`, plan `docs/reports/LAUNCH_KIT_PLAN_2026-11-17.md`): before the
 lesson, a game of five minutes at most charges 2–4 « tools », one per earlier الكفاءة the lesson needs (taken from the learning net). The
@@ -220,6 +242,11 @@ shared with the student too, on the link page as well. The parent pages are phon
   `kitabat-adad-tabii`, validated; applies to every new lesson; existing lessons: `docs/reports/LESSON_METHOD_RETROFIT.md`).
 - **Supported screens: tablet and laptop only (owner, 2026-10-15)** — widths ≥ 768 px (768×1024, 1024×768, 1280×800, 1366×768, 1920×1080). Phones are NOT supported: do not design, tune or test for phone widths (320–430 px); older mentions of them below are superseded.
   **Enforced (owner, 2026-10-27):** lessons and exercises are behind `components/auth/RequireLargeScreen.jsx`; a phone sees « محتوى الدروس يظهر فقط في شاشة الحاسوب … » instead (guide, « Supported screens »).
+  **Exception (owner, 2026-11-16, TRIAL on the pilot): the HOME of a lesson listed in `components/auth/phoneLessons.js › PHONE_LESSONS`**
+  (today `qasim-adad-tabii`) opens on a phone — the student's game world, played with the phone SIDEWAYS, the teacher's card, his memo and his lesson file. Every
+  other page of the lesson keeps the message and is shown CLOSED with « على الحاسوب » on the card and in the header (owner: « only the pages designed for mobile »). Rules — one scale by the root font size,
+  never two scales, a box scrolls instead of shrinking below a readable text, the middle of the screen stays the world:
+  `GAME_WORLD.md` § « On a phone ». Walks: `E2E_TOUCH=1 E2E_SIZE=800x370`.
   **Exception (owner, 2026-10-17): the printed-books pages `/books` and `/books/:slug`** are opened from WhatsApp on phones —
   they are designed and tested mobile-first for conversion too (`docs/architecture/BOOKS_STORE.md` §4).
   **Exception (owner, 2026-10-23): the parent pages — the link page `/w/:token`, `/wali/*` and the guide `/himaya`** — are opened

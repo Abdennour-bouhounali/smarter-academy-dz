@@ -71,7 +71,7 @@ const AdminSubscriptions = lazy(() => import('./pages/admin/subscriptions/Subscr
 // L'ESPACE ENSEIGNANT (« فضاء الأستاذ ») : arabe, RTL, sa propre coquille.
 const TeacherLayout = lazy(() => import('./components/layout/TeacherLayout'));
 const TeacherHome = lazy(() => import('./pages/teacher/TeacherHome'));
-const TeacherPracticePlayer = lazy(() => import('./pages/teacher/practice/TeacherPracticePlayer'));
+const TeacherBankGate = lazy(() => import('./pages/teacher/practice/TeacherBankGate'));
 const TeacherClassGroupList = lazy(() => import('./pages/teacher/ClassGroupList'));
 const TeacherClassGroupCreate = lazy(() => import('./pages/teacher/ClassGroupCreate'));
 const TeacherClassGroupDetail = lazy(() => import('./pages/teacher/ClassGroupDetail'));
@@ -159,6 +159,10 @@ const TeacherThinkingListPage = lazy(() => import('./pages/teacher/thinking/Teac
 const TeacherThinkingChallengePage = lazy(() => import('./pages/teacher/thinking/TeacherThinkingChallengePage'));
 const GamesHub = lazy(() => import('./pages/student/madar/GamesHub'));
 const TeacherMadarDisplay = lazy(() => import('./pages/teacher/MadarDisplayPage'));
+const TeacherClassSession = lazy(() => import('./pages/teacher/ClassSessionPage'));
+const TeacherLessonFile = lazy(() => import('./pages/teacher/LessonFilePage'));
+const TeacherLessonTracking = lazy(() => import('./pages/teacher/LessonToolPages').then((m) => ({ default: m.LessonTrackingPage })));
+const TeacherLessonCard = lazy(() => import('./pages/teacher/LessonToolPages').then((m) => ({ default: m.LessonCardPage })));
 const TeacherGamesPage = lazy(() => import('./pages/teacher/TeacherGamesPage'));
 const AdminDailyChallenge = lazy(() => import('./pages/admin/dailyChallenge/DailyChallengeConfig'));
 // Le مختبر الرياضيات (Math Lab) : les instruments LIBRES de l'élève, hors de
@@ -431,6 +435,9 @@ function AppRoutes() {
             enseignant — c'est ce que la classe voit au tableau. */}
         <Route path="classes/:id/defi/affichage" element={<TeacherChallengeDisplay />} />
         <Route path="classes/:id/madar/affichage" element={<TeacherMadarDisplay />} />
+        {/* « حصّة القسم » : la séance en classe d'une leçon (plan de la classe, test, podium) — plein écran, au tableau (CLASS_SESSION.md). */}
+        {/* tablette et ordinateur seulement : la séance de classe se projette */}
+        <Route element={<RequireLargeScreen />}><Route path="hissa/:lessonId" element={<TeacherClassSession />} /></Route>
         {/* « نافس أستاذك » : l'enseignant joue dans UNE de ses classes — la même
             salle et les mêmes jeux que l'élève, plein écran, hors coquille. */}
         <Route path="classes/:classId/jeux" element={<GamesHub />} />
@@ -468,15 +475,23 @@ function AppRoutes() {
               Enseignant seulement — la porte est ce ProtectedRoute ;
               les notes « كرّاسي » qu'elle affiche sont servies par le
               serveur au seul propriétaire. */}
-          <Route path="cours/:lessonId/memoire" element={<TeacherLessonMemo />} />
+          <Route element={<RequireLargeScreen />}><Route path="cours/:lessonId/memoire" element={<TeacherLessonMemo />} /></Route>
           {/* La pratique de la leçon, côté ENSEIGNANT : on y entre PAR LA
               LEÇON, et le Hub est la MÊME page que celle de l'élève
               (PracticeHub, mode enseignant : aucun suivi). Le lecteur
               vérifie localement et montre les réponses de SES élèves ;
               le serveur garde les écritures derrière `learner`. */}
           <Route element={<RequireLargeScreen />}>
-          <Route path="pratique/:lessonCode" element={<PracticeHub />} />
-          <Route path="pratique/:lessonCode/:level/:exerciseId" element={<TeacherPracticePlayer />} />
+          {/* TeacherBankGate : une leçon qui a son tableau (« حصّة القسم ») a le بنك de l'enseignant et montre
+              un exercice sur le tableau de la classe ; les autres gardent le Hub et le lecteur d'avant. */}
+          {/* « ملفّ الدرس » : le fichier de travail de l'enseignant sur UNE leçon — DANS son espace (la navigation reste),
+              hors du مختبر ; seul le plein écran de la سبّورة la recouvre. */}
+          <Route path="milaff/:lessonId" element={<TeacherLessonFile />} />
+          {/* « متابعة القسم » et « بطاقة المعارف » d'une leçon : dans l'espace enseignant, sous l'en-tête commun des outils */}
+          <Route path="mutabaa/:lessonId" element={<TeacherLessonTracking />} />
+          <Route path="bitaqa/:lessonId" element={<TeacherLessonCard />} />
+          <Route path="pratique/:lessonCode" element={<TeacherBankGate />} />
+          <Route path="pratique/:lessonCode/:level/:exerciseId" element={<TeacherBankGate player />} />
           </Route>
           <Route path="atelier" element={<MathLabHome />} />
           <Route path="atelier/:toolSlug" element={<MathLabToolPage />} />

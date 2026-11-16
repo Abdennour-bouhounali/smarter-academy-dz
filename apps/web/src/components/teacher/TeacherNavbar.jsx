@@ -122,7 +122,7 @@ export default function TeacherNavbar() {
         </div>
       </aside>
 
-      <header className="lg:hidden fixed top-0 left-0 right-0 h-14 bg-white border-b border-slate-200 z-40 flex items-center justify-between px-4">
+      <header data-workspace-bar="top" className="lg:hidden fixed top-0 left-0 right-0 h-14 bg-white border-b border-slate-200 z-40 flex items-center justify-between px-4">
         <div className="flex items-center gap-2 min-w-0">
           <img src="/brand/mark-color.svg" width="200" height="200" decoding="async" alt="Smarter Academy" className="h-8 w-8 flex-shrink-0" />
           <span className="font-mono-jetbrains text-[10px] text-teal-700 font-semibold tracking-wider uppercase whitespace-nowrap">{t('teacherSpace')}</span>
@@ -138,7 +138,7 @@ export default function TeacherNavbar() {
       {/* La barre basse mobile ne tient pas huit onglets lisibles : elle
           garde les destinations marquées `mobile` (data/teacherNavigation) ;
           l'offre et le profil restent dans la barre latérale et l'en-tête. */}
-      <nav data-tour="workspace.nav" className="lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-slate-200 z-40 flex items-stretch" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+      <nav data-workspace-bar="bottom" data-tour="workspace.nav" className="lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-slate-200 z-40 flex items-stretch" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
         {teacherNavLinks.filter((link) => link.mobile !== false).map((link) => (
           <NavLink
             key={link.path}

@@ -1173,6 +1173,23 @@ usesWorkspaceShell   StudentLayout  MainLayout     TeacherLayout  MainLayout
   above the exercise).
 
 
+### « حصّة القسم » — the class session (2026-11-18, steps 1–2, not validated)
+
+A teacher runs a lesson's test on the board with his class — the seating map, the editable test, the student's name on top,
+the podium of teams — from `/enseignant/hissa/:lessonId` (full screen, outside the teacher shell, like the challenge and
+مدار displays). It follows the three locks of every teacher route and writes four tables of its own
+(`class_seatings`, `class_tests`, `class_sessions`, `class_session_answers`), **never** `learning_evidence`. The whole
+contract is `docs/architecture/CLASS_SESSION.md`; this document only points to it.
+
+The same day the class session got its own during-the-lesson screens — the rules revised after the start test and « الدرس
+على السبّورة » (the class experiments, writes its rule, the board attacks it, then the name), with a pen, a curtain and a
+timer (`CLASS_SESSION.md` §5bis–§5ter; pilot lesson only, not validated). **Classroom Mode described in this document is
+unchanged for every lesson that has no board script**: it still presents the modules of a lesson page. **A lesson listed
+in `features/classSession/boardLessons.js` (today `qasim-adad-tabii` only) no longer has Classroom Mode at all** — its
+shell is mounted with `retired`, every entry button disappears (lesson page, modules, nested labs and tests), and the
+catalogue card and the مذكرة open « حصّة القسم » (`CLASS_SESSION.md` §2). The teacher's practice for such a lesson is the
+new bank and the class's board, not the shared hub and the old player (`TeacherBankGate`, `CLASS_SESSION.md` §5quater).
+
 ## 9. The admin control surface (French)
 
 Navigation: **Enseignants** (Tous / Demandes), **Classes**, **Offres** (Offres /

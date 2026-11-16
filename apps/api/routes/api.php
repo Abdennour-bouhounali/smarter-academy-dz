@@ -79,6 +79,7 @@ use App\Http\Controllers\Teacher\TeacherClassroomInsightController;
 use App\Http\Controllers\Teacher\TeacherClassroomInterventionController;
 use App\Http\Controllers\Teacher\TeacherClassroomLearningPointController;
 use App\Http\Controllers\Teacher\TeacherClassroomLessonController;
+use App\Http\Controllers\Teacher\TeacherClassSessionController;
 use App\Http\Controllers\Teacher\TeacherClassroomMadarController;
 use App\Http\Controllers\Teacher\TeacherClassroomNotebookController;
 use App\Http\Controllers\Teacher\TeacherClassroomStudentController;
@@ -625,6 +626,8 @@ Route::prefix('v1')->group(function () {
             // l'état canonique, en lecture seule, cadrée sur les leçons
             // effectives de la classe. `?lesson=` est obligatoire sur l'index.
             Route::get('/classrooms/{id}/learning-points', [TeacherClassroomLearningPointController::class, 'index'])->whereNumber('id');
+            // « متابعة القسم » d'une leçon : état de chaque élève sur chaque كفاءة + ses exercices (lecture seule)
+            Route::get('/classrooms/{id}/lesson-tracking/{lessonCode}', [TeacherClassroomLearningPointController::class, 'lessonTracking'])->whereNumber('id');
             Route::get('/classrooms/{id}/learning-points/{code}', [TeacherClassroomLearningPointController::class, 'show'])->whereNumber('id');
             Route::get('/classrooms/{id}/students/{studentId}/learning-points/{code}/explanation', [TeacherClassroomLearningPointController::class, 'explanation'])
                 ->whereNumber('id')->whereNumber('studentId');
@@ -663,6 +666,18 @@ Route::prefix('v1')->group(function () {
             Route::post('/classrooms/{id}/madar/play/runs/{uuid}/revive', [TeacherMadarPlayController::class, 'revive'])->whereNumber('id')->whereUuid('uuid')->middleware('throttle:60,1');
             Route::post('/classrooms/{id}/madar/play/runs/{uuid}/finish', [TeacherMadarPlayController::class, 'finish'])->whereNumber('id')->whereUuid('uuid')->middleware('throttle:60,1');
             Route::patch('/classrooms/{id}/madar/play/ship', [TeacherMadarPlayController::class, 'ship'])->whereNumber('id')->middleware('throttle:30,1');
+
+            // « حصّة القسم » : le plan de la classe, le test d'une leçon (défaut + copie), les séances terminées (CLASS_SESSION.md).
+            Route::get('/classrooms/{id}/seating', [TeacherClassSessionController::class, 'seating'])->whereNumber('id');
+            Route::put('/classrooms/{id}/seating', [TeacherClassSessionController::class, 'updateSeating'])->whereNumber('id')->middleware('throttle:60,1');
+            Route::get('/classrooms/{id}/class-sessions', [TeacherClassSessionController::class, 'sessions'])->whereNumber('id');
+            Route::post('/classrooms/{id}/class-sessions', [TeacherClassSessionController::class, 'storeSession'])->whereNumber('id')->middleware('throttle:60,1');
+            Route::get('/class-tests/{lessonCode}', [TeacherClassSessionController::class, 'test']);
+            Route::put('/class-tests/{lessonCode}', [TeacherClassSessionController::class, 'updateTest'])->middleware('throttle:60,1');
+            Route::delete('/class-tests/{lessonCode}', [TeacherClassSessionController::class, 'resetTest'])->middleware('throttle:30,1');
+            // « ملفّ الدرس » : la leçon → le document de la سبّورة (مختبر) de l'enseignant — un seul, à lui
+            Route::get('/lesson-files/{lessonCode}', [TeacherClassSessionController::class, 'lessonFile']);
+            Route::put('/lesson-files/{lessonCode}', [TeacherClassSessionController::class, 'saveLessonFile'])->middleware('throttle:120,1');
         });
 
     // « فضاء الإدارة » — le directeur d'un établissement (SCHOOL_ADMIN_SPACE.md).

@@ -41,10 +41,14 @@ async function noScroll(page, where) {
     return { bad, small };
   });
   for (const x of res.small) shrunk.set(x, where);
+  // on a phone a box may scroll INSIDE itself (GAME_WORLD.md « On a phone »): the page itself, and sideways, never
+  if (TOUCH) res.bad = res.bad.filter((b) => !b.startsWith('scrolls: ') && !b.startsWith('cut: ') && !b.startsWith('leaves the screen'));
   if (res.bad.length) { console.log('FAIL no scrolling at «', where, '»:', res.bad.join(' | ')); process.exitCode = 1; throw new Error(`scroll at ${where}`); }
 }
 const browser = await chromium.launch({ args: ['--no-sandbox', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
-const ctx = await browser.newContext({ viewport: { width: SIZE[0], height: SIZE[1] }, deviceScaleFactor: 1 });
+// E2E_TOUCH=1: a phone (touch screen, coarse pointer) — with E2E_SIZE=844x390 (sideways) or 390x844 (upright)
+const TOUCH = process.env.E2E_TOUCH === '1';
+const ctx = await browser.newContext({ viewport: { width: SIZE[0], height: SIZE[1] }, deviceScaleFactor: 1, ...(TOUCH ? { hasTouch: true, isMobile: true } : {}) });
 await ctx.addInitScript((user) => {
   window.__paperFast = true; // the paper gate's few seconds of « pick up your pen » are skipped by the walk
   window.__forgeFast = true; // the mirror of the rule forge builds its bridges at once
@@ -114,7 +118,7 @@ await take(3); await shot('holding-3');
 await toAltar(0); await page.waitForTimeout(900); await shot('at-altar');
 {
   const w = await page.evaluate(() => { const el = document.querySelector('[data-di-wprompt]'); if (!el) return null; const r = el.getBoundingClientRect(); const g = window.__world; return { text: el.textContent, vis: getComputedStyle(el).visibility, cx: r.left + r.width / 2, bottom: r.bottom, beacon: g.segs[0].altar.userData.beacon.visible }; });
-  expect(w && w.vis === 'visible' && w.text.includes('E') && w.text.includes('ابنِ الجسر'), 'near the platform a floating « اضغط E — ابنِ الجسر » shows in the world');
+  expect(w && w.vis === 'visible' && w.text.includes(TOUCH ? 'اضغط هنا' : 'E') && w.text.includes('ابنِ الجسر'), 'near the platform a floating « اضغط E — ابنِ الجسر » shows in the world');
   expect(w.cx > 200 && w.cx < SIZE[0] - 200 && w.bottom > 150 && w.bottom < SIZE[1] - 150, 'the floating prompt sits over the scene, not at the bottom edge');
   expect(w.beacon, 'the platform is lit by its beacon while a mould is in hand');
 }

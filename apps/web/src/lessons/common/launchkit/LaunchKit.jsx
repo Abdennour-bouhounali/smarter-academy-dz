@@ -10,6 +10,7 @@
  * One component for every lesson: it needs only the lesson's code. Nothing scrolls (designed 1280 × 720 / 1000 × 740, zoomed).
  */
 import React, { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { isShortScreen } from '../gameworld/engine/phoneScreen';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { X, Volume2, VolumeX, Rocket, Wrench, RotateCcw, BookOpen, FlaskConical, StickyNote, Check, HelpCircle, BatteryCharging } from 'lucide-react';
@@ -95,7 +96,7 @@ export default function LaunchKit({ lessonCode, lessonTitle, onDone, onClose, in
   const run = useRef({ started: 0, used: {}, exampleSeen: false, recheck: false, shownAt: 0 }); const audio = useRef(null); const timers = useRef([]);
   const later = (fn, ms) => { timers.current.push(setTimeout(fn, ms)); };
 
-  useEffect(() => { const fit = () => { const w = window.innerWidth; const h = window.innerHeight; const tight = w / h < 1.55; setNarrow(tight); setZ(Math.max(0.55, Math.min(1.9, tight ? Math.min(w / 1000, h / 740) : Math.min(w / 1280, h / 720)))); }; fit(); window.addEventListener('resize', fit); return () => window.removeEventListener('resize', fit); }, []);
+  useEffect(() => { const fit = () => { if (isShortScreen()) { setNarrow(false); setZ(1); return; } /* a phone sideways: the game's own scale is enough, a second zoom made the text unreadable */ const w = window.innerWidth; const h = window.innerHeight; const tight = w / h < 1.55; setNarrow(tight); setZ(Math.max(0.55, Math.min(1.9, tight ? Math.min(w / 1000, h / 740) : Math.min(w / 1280, h / 720)))); }; fit(); window.addEventListener('resize', fit); return () => window.removeEventListener('resize', fit); }, []);
   useEffect(() => () => { timers.current.forEach(clearTimeout); audio.current?.dispose(); }, []);
   useEffect(() => { if (phase !== 'play') return undefined; const t = setInterval(() => setNow((Date.now() - run.current.started) / 1000), 1000); return () => clearInterval(t); }, [phase]);
   useEffect(() => { const a = audio.current; if (!a) return; if (sound && phase === 'play') a.startBed(); else a.stopBed(); }, [sound, phase]);

@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import TeacherNavbar from '../teacher/TeacherNavbar';
-import BackgroundLayer from '../common/BackgroundLayer';
 import ScrollToTop from '../common/ScrollToTop';
 import { AuthContext } from '../../context/AuthContext';
 import { useWorkspaceLayout } from '../../context/WorkspaceLayoutContext';
@@ -43,7 +42,7 @@ export default function TeacherLayout() {
     <PageTourProvider>
     <div className="relative min-h-screen bg-[#FAFAFA]">
       <ScrollToTop />
-      <BackgroundLayer />
+      {/* Pas de halos colorés dans l'espace ENSEIGNANT (propriétaire, 2026-11-18 : « not professional ») : un fond uni. */}
       <TeacherNavbar />
       <main
         className="sa-workspace-main relative z-10 pt-14 pb-20 lg:pt-0 lg:pb-0 min-h-screen"

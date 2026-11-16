@@ -159,8 +159,17 @@ describe('aucun suivi — garanties de structure', () => {
 
   it('les routes : le Hub partagé et le lecteur, dans l’espace enseignant ; plus de banque séparée', () => {
     const app = read('src/App.jsx');
-    expect(app.split('path="pratique/:lessonCode" element={<PracticeHub />}').length - 1).toBe(2);
-    expect(app).toContain('path="pratique/:lessonCode/:level/:exerciseId" element={<TeacherPracticePlayer />}');
+    // L'élève garde le Hub. L'enseignant passe par UNE porte (TeacherBankGate, 2026-11-18) : une leçon qui a son tableau
+    // (« حصّة القسم ») a le بنك de l'enseignant et montre un exercice sur le tableau de la classe ; toutes les autres
+    // gardent le Hub partagé et le lecteur — la porte les monte tels quels.
+    expect(app.split('path="pratique/:lessonCode" element={<PracticeHub />}').length - 1).toBe(1);
+    expect(app).toContain('path="pratique/:lessonCode" element={<TeacherBankGate />}');
+    expect(app).toContain('path="pratique/:lessonCode/:level/:exerciseId" element={<TeacherBankGate player />}');
+    const gate = read('src/pages/teacher/practice/TeacherBankGate.jsx');
+    expect(gate).toContain('hasClassBoard(lessonCode)');
+    expect(gate).toMatch(/player \? <TeacherPracticePlayer \/> : <PracticeHub \/>/);
+    expect(gate).toContain('<TeacherExerciseBank lessonCode={lessonCode} />');
+    expect(gate).toContain('exerciseBoardPath(lessonCode, level, exerciseId)');
     expect(app).not.toContain('TeacherPracticeBank');
     expect(app).not.toContain('TeacherPracticeLesson');
     expect(read('src/data/teacherNavigation.js')).not.toContain('/enseignant/pratique');

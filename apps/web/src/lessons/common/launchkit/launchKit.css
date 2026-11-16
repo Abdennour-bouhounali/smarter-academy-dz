@@ -133,3 +133,6 @@
 @media (prefers-reduced-motion: reduce) { .lk-root *, .lk-root *::before { animation-duration: .01s !important; transition-duration: .01s !important; } }
 .lk-root--narrow .lk-box__door strong { font-size: 1.05rem; white-space: nowrap; } .lk-root--narrow .lk-hand__tip { font-size: .9rem; }
 .lk-root--narrow .lk-capsteps li { font-size: .82rem; padding: .15rem .5rem .15rem .25rem; } .lk-root--narrow .lk-caplist { font-size: 1.18rem; }
+
+/* a phone held sideways (no zoom there): what is taller than the screen scrolls inside the stage */
+@media (max-height: 500px) { .lk-root { touch-action: pan-y; } .lk-fit > * { min-height: 0; overflow-y: auto; overscroll-behavior: contain; } .lk-fit { grid-template-columns: 13rem minmax(0, 1fr); gap: .6rem; padding: .6rem .7rem; } }

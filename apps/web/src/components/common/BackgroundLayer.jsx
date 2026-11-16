@@ -5,7 +5,7 @@ export default function BackgroundLayer() {
   const yBg = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
 
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }}>
+    <div data-background-layer style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }}>{/* `data-background-layer` : une règle d'impression le retire du papier (teacherBank.css) */}
       {/* Dot grid */}
       <motion.div
         style={{

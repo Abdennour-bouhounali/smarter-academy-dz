@@ -1,7 +1,8 @@
 import { useSyncExternalStore } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Monitor } from 'lucide-react';
+import { isPhoneLessonPath } from './phoneLessons';
 
 /**
  * LA PORTE DES ÉCRANS : les leçons (sommaire, modules) et les exercices ne
@@ -46,6 +47,12 @@ export function LargeScreenOnlyNotice() {
   );
 }
 
+/**
+ * Exception (owner, 2026-11-16): the HOME of a lesson listed in `phoneLessons.js` opens on a phone — the student's game
+ * world, the teacher's card. Every other page of the lesson keeps the message.
+ */
 export default function RequireLargeScreen() {
-  return useIsPhoneScreen() ? <LargeScreenOnlyNotice /> : <Outlet />;
+  const phone = useIsPhoneScreen();
+  const { pathname, search } = useLocation();
+  return phone && !isPhoneLessonPath(pathname, search) ? <LargeScreenOnlyNotice /> : <Outlet />;
 }

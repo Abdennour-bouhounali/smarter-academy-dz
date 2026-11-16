@@ -16,6 +16,8 @@ import { AuthContext } from '../../../../context/AuthContext';
 import { payloadOf } from './evidence';
 import { sendGameEvidence, flushGameEvidence, newAttemptId } from './evidenceSend';
 import { DivisorIslesGame } from './Game';
+import { usePhoneScreen } from '../engine/phoneScreen';
+import TurnPhone from '../../../../components/common/TurnPhone';
 import { STATUES, MAX_STARS } from './logic';
 import { T, planks, waveSay, explain } from './strings';
 import { PRACTICE_NODES, EXAM, levelId, nodeOpen, levelOpen, nextLevel, practiceStars, isDepot, MAX_PRACTICE_STARS } from './practice';
@@ -51,7 +53,8 @@ function keysFromModules(done = []) {
   return has(1) ? ['qasim-baqi'] : [];
 }
 
-export default function DivisorIsles({ config, basePath, exitTo, classicHref, onModule, completedModules, mastery = null }) {
+export default function DivisorIsles({ config, basePath, exitTo, classicHref, onModule, completedModules, mastery = null, preview = false }) {
+  const previewRef = useRef(preview); previewRef.current = preview; // a teacher looking at what the student sees: nothing is sent
   const canvas = useRef(null);
   const root = useRef(null);
   const [game, setGame] = useState(null);
@@ -71,7 +74,7 @@ export default function DivisorIsles({ config, basePath, exitTo, classicHref, on
         save: readSave(config.id), sound, unlockedKeys: keysFromModules(completedModules),
         onSave: (data) => { try { storage.setItem(saveKey(config.id), JSON.stringify(data)); } catch { /* storage full or blocked */ } },
         onModule: (n) => onModuleRef.current?.(n),
-        onEvidence: (context, ev) => { const payload = payloadOf(config.id, context, ev, newAttemptId()); if (import.meta.env.DEV) (window.__evidence ??= []).push(payload); sendGameEvidence(tokenRef.current, config.id, payload); },
+        onEvidence: (context, ev) => { if (previewRef.current) return; const payload = payloadOf(config.id, context, ev, newAttemptId()); if (import.meta.env.DEV) (window.__evidence ??= []).push(payload); sendGameEvidence(tokenRef.current, config.id, payload); },
       });
     } catch (e) { console.error('[gameworld]', e); setFailed(true); return undefined; }
     if (import.meta.env.DEV) { window.__world = g; window.__cases = { answerOf }; }
@@ -101,6 +104,7 @@ export default function DivisorIsles({ config, basePath, exitTo, classicHref, on
 
   return createPortal(
     <div className="di-root" dir="rtl" ref={root} data-gameworld="divisor-isles">
+      {preview && <div className="di-preview" data-di-preview><span>معاينة الأستاذ: ما يراه التلميذ. لا شيء يُسجَّل.</span><a href={exitTo}>خروج من المعاينة</a></div>}
       <canvas ref={canvas} className="di-canvas" />
       {!game && <div className="di-loading">{T.loading}</div>}
       {game && <Shell game={game} rootRef={root} exitTo={exitTo} classicHref={classicHref} basePath={basePath} config={config} onRestart={restart} mastery={mastery} />}
@@ -113,6 +117,7 @@ function Shell({ game, rootRef, exitTo, classicHref, basePath, config, onRestart
   const s = useSyncExternalStore(game.subscribe, game.getState);
   const [full, setFull] = useState(false);
   const coarse = useMemo(() => window.matchMedia?.('(pointer: coarse)').matches, []);
+  const { upright } = usePhoneScreen();
   useEffect(() => {
     const on = () => setFull(Boolean(document.fullscreenElement));
     document.addEventListener('fullscreenchange', on);
@@ -129,6 +134,7 @@ function Shell({ game, rootRef, exitTo, classicHref, basePath, config, onRestart
 
   return (
     <>
+      {upright && <TurnPhone title={T.turn.title} body={T.turn.body} data-di-turn />}
       {/* top bar */}
       <header className="di-top">
         <div className="di-top__side">

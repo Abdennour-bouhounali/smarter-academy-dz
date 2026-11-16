@@ -11,6 +11,7 @@
  * (`inline`: it is already inside a full-screen root) and by any lesson page (`?lab=1`, portal to the body).
  */
 import React, { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { isShortScreen } from '../gameworld/engine/phoneScreen';
 import { createPortal } from 'react-dom';
 import { X, Dices, Minus, Plus, Check, Volume2, VolumeX, ChevronRight, ChevronLeft } from 'lucide-react';
 import { scopedStorage } from '../../../utils/storage';
@@ -91,7 +92,7 @@ export default function LessonLab({ lessonCode, lessonTitle, onClose, inline = f
   const tool = toolById(toolId);
 
   // two designs, so the text never gets small: 1280 × 720 for a wide screen (laptop), 1000 × 740 for a 4:3 one (tablet)
-  useEffect(() => { const fit = () => { const w = window.innerWidth; const h = window.innerHeight; const tight = w / h < 1.55; setNarrow(tight); setZ(Math.max(0.55, Math.min(1.9, tight ? Math.min(w / 1000, h / 740) : Math.min(w / 1280, h / 720)))); }; fit(); window.addEventListener('resize', fit); return () => window.removeEventListener('resize', fit); }, []);
+  useEffect(() => { const fit = () => { if (isShortScreen()) { setNarrow(false); setZ(1); return; } /* a phone sideways: the game's own scale is enough, a second zoom made the text unreadable */ const w = window.innerWidth; const h = window.innerHeight; const tight = w / h < 1.55; setNarrow(tight); setZ(Math.max(0.55, Math.min(1.9, tight ? Math.min(w / 1000, h / 740) : Math.min(w / 1280, h / 720)))); }; fit(); window.addEventListener('resize', fit); return () => window.removeEventListener('resize', fit); }, []);
   useEffect(() => { try { scopedStorage.setItem(KEY, JSON.stringify({ a: nums.a, b: nums.b, picked, done, sound })); } catch { /* the lab works without storage */ } }, [nums, picked, done, sound]);
   useEffect(() => () => { own.current?.dispose(); }, []);
   useEffect(() => { const esc = (e) => { if (e.key === 'Escape') { if (cabinetOpen) { setCabinetOpen(false); playRef.current?.('shut'); } else onClose?.(); } }; window.addEventListener('keydown', esc); return () => window.removeEventListener('keydown', esc); }, [cabinetOpen, onClose]);
