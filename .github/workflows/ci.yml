@@ -57,6 +57,9 @@ jobs:
       - name: Format of the lesson v2 areas (Prettier)
         run: npm run check:format
 
+      - name: No dead file in apps/web/src
+        run: npm run check:unreached
+
       - name: Lesson index is fresh
         run: npm run check:lesson-index && npm run check:routes
 

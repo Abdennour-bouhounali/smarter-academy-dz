@@ -229,6 +229,12 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
   2,229 lines to about 6,300 — its real size. After it: web tests, the seven laptop walks and the phone world walk give
   the same results as before. ESLint and the unused-export tool are still to add. A new area enters the two scripts when
   its code is written or rebuilt; the rest of the tree is formatted lesson by lesson, never in one sweep.
+- **Phase 0 step 3 — dead files DONE**: 49 files deleted (22 shared: the two unused geometry libraries and `useLabState`
+  with their tests, eleven unused lab primitives, six unused components; 27 unused files inside 4AM lessons). After it:
+  17,959 web tests, the build, `check:lessons`, the route and index checks pass. `npm run check:unreached` (in CI) now
+  FAILS on any file the app does not reach; its `KEPT` list names the 11 exceptions with their reason — the five billing
+  files (decision D4) and six test helpers. Still not covered: unused exports inside a live file, `apps/api`,
+  `packages/core`.
 - **Tests at the commit**: web 18,067 and core 1,577 pass. API: 1,464 of 1,473 pass, 6 fail — `MathLabFileFlowTest` (the
   lock query; it fails the same way without this work's change) and five of `DbBackupCommandTest` (a command this work
   never touched; cause not investigated).
