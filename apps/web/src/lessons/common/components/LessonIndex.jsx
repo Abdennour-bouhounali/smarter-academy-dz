@@ -206,7 +206,8 @@ export default function LessonIndex({ config, basePath }) {
   useClassroomStage({ title: config.title, onPrevious: overviewPrevious, onNext: overviewNext, slot: overviewSlot, priority: 1 }, presenting);
   // « جولة تعريفية » du sommaire de leçon — l'URL change d'une leçon à
   // l'autre, la page se déclare. Jamais en وضع القسم (docs/architecture/PAGE_TOURS.md).
-  useDeclarePageTour('lesson-index', !presenting);
+  // …ni sur une leçon qui a son tableau : sa page n'a plus les sections que cette visite décrit (LESSON_V2_MASTER_PLAN §4bis B9).
+  useDeclarePageTour('lesson-index', !presenting && !hasClassBoard(config.id));
 
   const totalModules = config.modules.length;
   const completedCount = completedModules.length;

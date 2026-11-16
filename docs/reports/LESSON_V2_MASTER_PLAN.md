@@ -214,6 +214,20 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
 | C5 | **The learning net**: weights for 3AM; the catalogue's false prerequisites that still await the owner |
 | C6 | **Production**: two migrations and about 80 changed files are not committed; the content publishing pipeline must carry packs and class tests |
 
+## 4ter-0. State of the « today » items (2026-11-16)
+
+- **C6 — DONE.** The work is committed on `dev` (`402e8087` code, `ab22f63f` plans). Not pushed, not merged: the owner
+  tests over Wi-Fi first.
+- **C4 — DECIDED** (owner accepted the advice, 2026-11-16): the exam-sheet practice, the answer templates and « دج » are
+  part of the v2 definition of done (section 6); their separate rollouts stop.
+- **B6 — DECIDED** (same): steps 3–4 of the class session are NOT part of « done »; they are built on the pilot after
+  unit 1.
+- **B9 — first half DONE**: the old tour of the lesson page is no longer declared on a lesson that has its board. Its
+  rewrite waits for the navigation rebuild.
+- **Tests at the commit**: web 18,067 and core 1,577 pass. API: 1,464 of 1,473 pass, 6 fail — `MathLabFileFlowTest` (the
+  lock query; it fails the same way without this work's change) and five of `DbBackupCommandTest` (a command this work
+  never touched; cause not investigated).
+
 ## 4ter. When each item of 4bis is done
 
 | When | Items | Why then |
@@ -250,7 +264,8 @@ shows that plainly; the owner decides later whether they follow.
 
 1. Read the unit's sources and the learning net for the lesson; design the world mechanic to
    `MANIPULATION_DNA.md` (the student's hand controls the mathematical variable).
-2. Build the pack: every part S1–S9 and T1–T4 of §1. Every rule is forged. Content is the platform's own
+2. Build the pack: every part S1–S9 and T1–T4 of §1. Every rule is forged. The practice is the BEM exam sheet, every
+   typed answer has its template, money is « دج » (decision C4: these three rollouts live here now). Content is the platform's own
    (independence from the book), respects Islam, money in « دج », people only as `KidFigure`, nothing scrolls,
    a formula never wraps, counters use the no-break space.
 3. Delete what the lesson replaced (§5, first row).
