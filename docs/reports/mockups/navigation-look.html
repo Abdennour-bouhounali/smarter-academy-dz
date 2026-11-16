@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Navigation — proposed look (mock-up, not the product)</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  /* THE TOKENS: every colour of the navigation and of its pages. Nothing else is allowed in them. */
+  :root {
+    --ink: #0b1b3f;        /* text, the active door of the teacher */
+    --muted: #5b6785;      /* second-level text */
+    --line: #e3e8f2;       /* borders */
+    --page: #f6f8fc;       /* behind the cards */
+    --surface: #ffffff;
+    --accent: #3b5bdb;     /* the brand blue: the student's active door, links */
+    --accent-soft: #eaefff;
+    --now: #f59e0b;        /* the next step, this week */
+    --now-soft: #fff5db;
+    --done: #12a36b;       /* finished */
+    --done-soft: #e3f7ee;
+    --alert: #d6455d;      /* needs you */
+    --alert-soft: #fde8ec;
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #eef1f7; color: var(--ink); font-family: 'Cairo', system-ui, sans-serif; line-height: 1.6; }
+  main { max-width: 1180px; margin: 0 auto; padding: 28px 16px 60px; }
+  h1 { font-size: 28px; font-weight: 900; margin: 0 0 4px; }
+  h2 { font-size: 20px; font-weight: 900; margin: 40px 0 6px; }
+  .note { color: var(--muted); font-weight: 700; margin: 0 0 16px; max-width: 70ch; }
+  .row { display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-start; }
+  .cap { font-size: 13px; font-weight: 800; color: var(--muted); margin: 8px 0 0; text-align: center; }
+
+  /* palette */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .sw { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; font-size: 13px; font-weight: 800; }
+  .sw i { display: block; height: 46px; } .sw span { display: block; padding: 6px 10px 0; } .sw small { display: block; padding: 0 10px 8px; color: var(--muted); font-weight: 700; direction: ltr; text-align: right; }
+
+  /* a phone */
+  .phone { width: 300px; height: 610px; background: var(--page); border: 8px solid #101728; border-radius: 34px; overflow: hidden; display: flex; flex-direction: column; flex: none; }
+  .screen { flex: 1; overflow: hidden; padding: 14px 14px 0; display: flex; flex-direction: column; gap: 10px; }
+  .hello { font-size: 13px; font-weight: 800; color: var(--muted); margin: 2px 2px 0; }
+  .title { font-size: 19px; font-weight: 900; margin: 0 2px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; }
+  .next { background: var(--ink); color: #fff; border: 0; padding: 14px; }
+  .next small { display: block; font-size: 12px; font-weight: 800; color: #b9c4e4; }
+  .next strong { display: block; font-size: 18px; font-weight: 900; margin: 2px 0 8px; }
+  .bar { height: 6px; border-radius: 99px; background: rgba(255,255,255,.18); overflow: hidden; } .bar b { display: block; height: 100%; width: 38%; background: var(--now); border-radius: 99px; }
+  .go { margin-top: 12px; display: flex; align-items: center; justify-content: center; min-height: 46px; border-radius: 12px; background: var(--now); color: #2a1c02; font-size: 16px; font-weight: 900; }
+  .label { font-size: 12px; font-weight: 800; color: var(--muted); margin: 4px 2px -4px; }
+  .lesson { display: flex; align-items: center; gap: 10px; min-height: 46px; padding: 0 2px; border-bottom: 1px solid var(--line); font-size: 14px; font-weight: 800; }
+  .lesson:last-child { border-bottom: 0; }
+  .dot { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 900; }
+  .dot.done { background: var(--done-soft); color: var(--done); } .dot.now { background: var(--now); color: #2a1c02; } .dot.wait { border: 2px solid var(--line); }
+  .lesson em { margin-inline-start: auto; font-style: normal; font-size: 11px; font-weight: 800; color: #8a5a00; background: var(--now-soft); padding: 2px 8px; border-radius: 99px; white-space: nowrap; }
+  .lesson.is-wait { color: var(--muted); }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } .pair .card { text-align: center; padding: 10px; } .pair b { display: block; font-size: 20px; font-weight: 900; } .pair span { font-size: 12px; font-weight: 800; color: var(--muted); }
+
+  /* the bottom bar: four doors */
+  .tabs { display: grid; grid-template-columns: repeat(4, 1fr); background: var(--surface); border-top: 1px solid var(--line); padding: 6px 6px 10px; gap: 4px; }
+  .tab { display: grid; justify-items: center; gap: 1px; min-height: 52px; align-content: center; border-radius: 14px; font-size: 12px; font-weight: 800; color: var(--muted); position: relative; }
+  .tab svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .student .tab.on { background: var(--accent-soft); color: var(--accent); }
+  .teacher .tab.on { background: var(--ink); color: #fff; }
+  .badge { position: absolute; top: 4px; inset-inline-start: 56%; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 99px; background: var(--alert); color: #fff; font-size: 11px; font-weight: 900; display: grid; place-items: center; }
+
+  /* the year map */
+  .terms { display: flex; gap: 6px; } .terms span { flex: 1; text-align: center; min-height: 38px; display: grid; place-items: center; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); font-size: 13px; font-weight: 800; color: var(--muted); }
+  .student .terms .on { background: var(--accent); border-color: var(--accent); color: #fff; } .teacher .terms .on { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .unit { display: flex; justify-content: space-between; align-items: baseline; font-size: 14px; font-weight: 900; margin-bottom: 2px; } .unit small { font-size: 12px; font-weight: 800; color: var(--muted); }
+  .search { min-height: 40px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); display: flex; align-items: center; padding: 0 12px; font-size: 13px; font-weight: 700; color: var(--muted); }
+
+  /* the lesson bar */
+  .lbar { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 6px 8px; font-size: 12px; font-weight: 800; }
+  .lbar .where { flex: 1; min-width: 0; } .lbar .where small { display: block; color: var(--muted); font-size: 11px; } .lbar .where b { display: block; font-size: 14px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lbar .nav { flex: none; min-width: 40px; min-height: 40px; display: grid; place-items: center; border-radius: 10px; border: 1px solid var(--line); font-size: 16px; }
+  .world { flex: 1; border-radius: var(--radius); background: #0b1a3a; color: #9fd8ff; display: grid; place-items: center; font-size: 13px; font-weight: 800; text-align: center; padding: 12px; }
+
+  /* the teacher's class card */
+  .klass h3 { margin: 0 0 6px; font-size: 16px; font-weight: 900; display: flex; justify-content: space-between; } .klass h3 small { font-size: 12px; font-weight: 800; color: var(--muted); }
+  .klass p { margin: 0; font-size: 13px; font-weight: 800; color: var(--muted); } .klass p b { display: block; color: var(--ink); font-size: 15px; font-weight: 900; }
+  .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0 8px; } .btns span { min-height: 42px; display: grid; place-items: center; border-radius: 12px; font-size: 14px; font-weight: 900; border: 1.5px solid var(--ink); }
+  .btns .main { background: var(--ink); color: #fff; }
+  .calls { display: flex; gap: 6px; flex-wrap: wrap; } .calls span { font-size: 12px; font-weight: 800; padding: 3px 9px; border-radius: 99px; } .calls .a { background: var(--alert-soft); color: #9b2238; } .calls .n { background: var(--now-soft); color: #8a5a00; }
+
+  /* the laptop */
+  .laptop { flex: 1 1 520px; min-width: 300px; height: 420px; background: var(--page); border: 8px solid #101728; border-radius: 16px; overflow: hidden; display: flex; }
+  .rail { flex: none; width: 84px; background: var(--surface); border-inline-end: 1px solid var(--line); display: flex; flex-direction: column; gap: 6px; padding: 12px 8px; }
+  .rail .logo { width: 34px; height: 34px; border-radius: 50%; border: 4px solid var(--accent); border-top-color: transparent; margin: 0 auto 10px; }
+  .rail .tab { min-height: 58px; } .rail .me { margin-top: auto; width: 38px; height: 38px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; font-weight: 900; align-self: center; }
+  .desk { flex: 1; padding: 18px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; align-content: start; }
+  .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; } .rules .card b { display: block; font-weight: 900; } .rules .card span { font-size: 14px; font-weight: 700; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>الملاحة — المظهر المقترح</h1>
+  <p class="note" dir="ltr" style="text-align:left">Mock-up for the owner's decision (docs/reports/NAVIGATION_REBUILD_PLAN.md). Static drawing: nothing here is the product, the lessons and numbers are examples.</p>
+
+  <h2>1 · الألوان: تسعة، لا غير</h2>
+  <p class="note">اليوم تستعمل القوائم والصفحات 12 عائلة لونية و13 تدرّجًا. المقترح: حبر واحد، لون واحد للعلامة، وثلاثة ألوان لها معنى ثابت.</p>
+  <div class="swatches">
+    <div class="sw"><i style="background:var(--ink)"></i><span>الحبر</span><small>#0B1B3F · text, teacher's active door</small></div>
+    <div class="sw"><i style="background:var(--accent)"></i><span>لون العلامة</span><small>#3B5BDB · student's active door, links</small></div>
+    <div class="sw"><i style="background:var(--now)"></i><span>الآن</span><small>#F59E0B · next step, this week</small></div>
+    <div class="sw"><i style="background:var(--done)"></i><span>أُنجز</span><small>#12A36B · finished</small></div>
+    <div class="sw"><i style="background:var(--alert)"></i><span>يحتاجك</span><small>#D6455D · needs you</small></div>
+    <div class="sw"><i style="background:var(--muted)"></i><span>نصّ ثانوي</span><small>#5B6785</small></div>
+    <div class="sw"><i style="background:var(--line)"></i><span>الخطوط</span><small>#E3E8F2</small></div>
+    <div class="sw"><i style="background:var(--page)"></i><span>خلفية الصفحة</span><small>#F6F8FC</small></div>
+    <div class="sw"><i style="background:var(--surface);border-bottom:1px solid var(--line)"></i><span>السطح</span><small>#FFFFFF</small></div>
+  </div>
+
+  <h2>2 · التلميذ على الهاتف</h2>
+  <p class="note">أربعة أبواب. اللون الممتلئ الوحيد في الصفحة هو الخطوة التالية.</p>
+  <div class="row student">
+    <div><div class="phone">
+      <div class="screen">
+        <p class="hello">صباح الخير</p><p class="title">ياسين، خطوتك التالية</p>
+        <div class="card next"><small>الأعداد الطبيعية · الدرس 3 من 9</small><strong>خواص القواسم</strong><div class="bar"><b></b></div><div class="go">هيّا ←</div></div>
+        <p class="label">هذا الأسبوع</p>
+        <div class="card" style="padding:4px 12px">
+          <div class="lesson"><span class="dot done">✓</span>قواسم عدد طبيعي</div>
+          <div class="lesson"><span class="dot now">▶</span>خواص القواسم<em>الآن</em></div>
+          <div class="lesson is-wait"><span class="dot wait"></span>القاسم المشترك الأكبر</div>
+        </div>
+        <div class="pair"><div class="card"><b>🔥 3</b><span>تحدّي اليوم</span></div><div class="card"><b>★ 12</b><span>نجوم الأسبوع</span></div></div>
+      </div>
+      <div class="tabs">
+        <div class="tab on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>اليوم</div>
+        <div class="tab"><svg viewBox="0 0 24 24"><path d="M4 5h7v15H4zM13 5h7v15h-7z"/></svg>دروسي</div>
+        <div class="tab"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="9" rx="4"/><path d="M8 11v3M6.5 12.5h3M16 12.5h.01"/></svg>أتدرّب</div>
+        <div class="tab"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>أنا</div>
+      </div>
+    </div><p class="cap">اليوم</p></div>
+
+    <div><div class="phone">
+      <div class="screen">
+        <p class="title">دروسي · الرابعة متوسط</p>
+        <div class="search">🔍 ابحث عن درس</div>
+        <div class="terms"><span class="on">الفصل 1</span><span>الفصل 2</span><span>الفصل 3</span></div>
+        <div class="card" style="padding:10px 12px 2px">
+          <div class="unit">الأعداد الطبيعية والناطقة<small>2 / 9</small></div>
+          <div class="lesson"><span class="dot done">✓</span>التعرّف على قاسم</div>
+          <div class="lesson"><span class="dot done">✓</span>قواسم عدد طبيعي</div>
+          <div class="lesson"><span class="dot now">▶</span>خواص القواسم<em>هذا الأسبوع</em></div>
+          <div class="lesson is-wait"><span class="dot wait"></span>القاسم المشترك الأكبر</div>
+        </div>
+        <div class="card" style="padding:10px 12px"><div class="unit" style="margin:0">الحساب على الجذور<small>0 / 6</small></div></div>
+        <div class="card" style="padding:10px 12px"><div class="unit" style="margin:0">خاصية طالس<small>0 / 4</small></div></div>
+      </div>
+      <div class="tabs">
+        <div class="tab"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>اليوم</div>
+        <div class="tab on"><svg viewBox="0 0 24 24"><path d="M4 5h7v15H4zM13 5h7v15h-7z"/></svg>دروسي</div>
+        <div class="tab"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="9" rx="4"/><path d="M8 11v3M6.5 12.5h3M16 12.5h.01"/></svg>أتدرّب</div>
+        <div class="tab"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>أنا</div>
+      </div>
+    </div><p class="cap">دروسي: خريطة السنة</p></div>
+
+    <div><div class="phone">
+      <div class="screen" style="padding-bottom:14px">
+        <div class="lbar"><span class="nav">›</span><span class="where"><small>الأعداد الطبيعية · 3 / 9</small><b>خواص القواسم</b></span><span class="nav">‹</span></div>
+        <div class="world">الدرس نفسه<br>(عالم اللعبة يحتفظ بألوانه)</div>
+      </div>
+    </div><p class="cap">داخل الدرس: شريط الدرس</p></div>
+  </div>
+
+  <h2>3 · الأستاذ على الهاتف</h2>
+  <p class="note">الهيكل نفسه، بالحبر بدل الأزرق: أبيض، حبر داكن، بلا تدرّج. اللون يظهر فقط حيث يحتاجه شيء.</p>
+  <div class="row teacher">
+    <div><div class="phone">
+      <div class="screen">
+        <p class="hello">الأسبوع 8 · الفصل 1</p><p class="title">هذا الأسبوع</p>
+        <div class="card klass"><h3>الرابعة 2 <small>32 تلميذًا</small></h3><p>درس الأسبوع<b>خواص القواسم</b></p>
+          <div class="btns"><span class="main">حصّة القسم</span><span>بطاقة الدرس</span></div>
+          <div class="calls"><span class="a">5 تلاميذ يحتاجونك</span><span class="n">3 إجابات للتصحيح</span></div></div>
+        <div class="card klass"><h3>الرابعة 3 <small>29 تلميذًا</small></h3><p>درس الأسبوع<b>قواسم عدد طبيعي</b></p>
+          <div class="btns"><span class="main">حصّة القسم</span><span>بطاقة الدرس</span></div>
+          <div class="calls"><span class="n">1 إجابة للتصحيح</span></div></div>
+      </div>
+      <div class="tabs">
+        <div class="tab on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>اليوم</div>
+        <div class="tab"><svg viewBox="0 0 24 24"><path d="M4 5h7v15H4zM13 5h7v15h-7z"/></svg>دروسي</div>
+        <div class="tab"><svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="3.5"/><path d="M2.5 20c.8-3.5 3-5 6.5-5s5.700 1.500 6.500 5M16 6.500a3 3 0 0 1 0 5.500M18.500 15c1.700.700 2.700 2.200 3 5"/></svg>أقسامي<i class="badge">4</i></div>
+        <div class="tab"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6L4.500 19a1.500 1.500 0 0 0 1.300 2h12.400a1.500 1.500 0 0 0 1.300-2L14 9V3"/></svg>أدواتي</div>
+      </div>
+    </div><p class="cap">اليوم: أسبوعه قسمًا قسمًا</p></div>
+
+    <div style="flex:1 1 520px;min-width:300px"><div class="laptop teacher" style="width:100%">
+      <div class="rail">
+        <div class="logo"></div>
+        <div class="tab on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>اليوم</div>
+        <div class="tab"><svg viewBox="0 0 24 24"><path d="M4 5h7v15H4zM13 5h7v15h-7z"/></svg>دروسي</div>
+        <div class="tab"><svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="3.5"/><path d="M2.500 20c.800-3.500 3-5 6.500-5s5.700 1.500 6.500 5"/></svg>أقسامي<i class="badge">4</i></div>
+        <div class="tab"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6L4.500 19a1.500 1.500 0 0 0 1.300 2h12.400a1.500 1.500 0 0 0 1.300-2L14 9V3"/></svg>أدواتي</div>
+        <div class="me">ب</div>
+      </div>
+      <div class="desk">
+        <div class="card klass"><h3>الرابعة 2 <small>32 تلميذًا</small></h3><p>درس الأسبوع<b>خواص القواسم</b></p><div class="btns"><span class="main">حصّة القسم</span><span>بطاقة الدرس</span></div><div class="calls"><span class="a">5 تلاميذ يحتاجونك</span><span class="n">3 إجابات للتصحيح</span></div></div>
+        <div class="card klass"><h3>الرابعة 3 <small>29 تلميذًا</small></h3><p>درس الأسبوع<b>قواسم عدد طبيعي</b></p><div class="btns"><span class="main">حصّة القسم</span><span>بطاقة الدرس</span></div><div class="calls"><span class="n">1 إجابة للتصحيح</span></div></div>
+      </div>
+    </div><p class="cap">الحاسوب: شريط رفيع بالأبواب الأربعة نفسها، والحساب تحت الصورة</p></div>
+  </div>
+
+  <h2>4 · القواعد</h2>
+  <div class="rules">
+    <div class="card"><b>اللون معنى، لا زينة</b><span>العنبري = الآن. الأخضر = أُنجز. الأحمر = يحتاجك. لا يُستعمل أيّ منها لغير ذلك.</span></div>
+    <div class="card"><b>لون ممتلئ واحد في الصفحة</b><span>الخطوة التالية عند التلميذ، الزرّ الأوّل عند الأستاذ. الباقي أبيض وخطوط.</span></div>
+    <div class="card"><b>الحالة ليست لونًا فقط</b><span>✓ و▶ و○ مع اللون دائمًا، لمن لا يميّز الألوان.</span></div>
+    <div class="card"><b>لا تدرّج ولا هالات</b><span>في القوائم والصفحات. عالم اللعبة داخل الدرس يحتفظ بألوانه.</span></div>
+    <div class="card"><b>إصبع قبل الفأرة</b><span>كلّ ما يُضغط 44 بكسل على الأقل؛ النصّ 14 على الأقل في الهاتف.</span></div>
+    <div class="card"><b>شكلان فقط</b><span>بطاقة بزوايا 16، وحبّة مستديرة. ظلّ واحد خفيف أو لا ظلّ.</span></div>
+  </div>
+</main>
+</body>
+</html>
