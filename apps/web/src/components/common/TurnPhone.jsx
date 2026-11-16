@@ -9,7 +9,17 @@ export default function TurnPhone({ title, body, cover = true, ...rest }) {
   return (
     <div className={`sa-turn ${cover ? 'sa-turn--cover' : ''}`} role="alert" dir="rtl" {...rest}>
       <svg viewBox="0 0 120 120" aria-hidden="true">
-        <rect x="42" y="18" width="36" height="64" rx="7" fill="none" stroke="currentColor" strokeWidth="4" opacity=".35" />
+        <rect
+          x="42"
+          y="18"
+          width="36"
+          height="64"
+          rx="7"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="4"
+          opacity=".35"
+        />
         <rect x="28" y="62" width="64" height="36" rx="7" fill="none" stroke="currentColor" strokeWidth="4" />
         <path d="M88 30 a26 26 0 0 1 14 24" fill="none" stroke="#fbbf24" strokeWidth="4" strokeLinecap="round" />
         <path d="M102 54 l-7 -5 M102 54 l4 -8" fill="none" stroke="#fbbf24" strokeWidth="4" strokeLinecap="round" />

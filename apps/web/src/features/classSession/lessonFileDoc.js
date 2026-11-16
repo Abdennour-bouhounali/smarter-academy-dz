@@ -19,17 +19,38 @@ export const lessonFileTitle = (lessonTitle) => `ملفّ الدرس — ${lesso
 const opening = new Map();
 /** One opening at a time per lesson: two calls made together (a double tap, a page mounted twice) share ONE document. */
 export function lessonFileDocumentId(token, lessonCode, lessonTitle, api) {
-  if (!opening.has(lessonCode)) opening.set(lessonCode, resolveDocumentId(token, lessonCode, lessonTitle, api).finally(() => opening.delete(lessonCode)));
+  if (!opening.has(lessonCode))
+    opening.set(
+      lessonCode,
+      resolveDocumentId(token, lessonCode, lessonTitle, api).finally(() => opening.delete(lessonCode)),
+    );
   return opening.get(lessonCode);
 }
-async function resolveDocumentId(token, lessonCode, lessonTitle, api = { fetchLessonFile, saveLessonFile, fetchMathLabDocument, createMathLabDocument }) {
+async function resolveDocumentId(
+  token,
+  lessonCode,
+  lessonTitle,
+  api = { fetchLessonFile, saveLessonFile, fetchMathLabDocument, createMathLabDocument },
+) {
   const file = await api.fetchLessonFile(token, lessonCode);
   let id = file?.documentId ?? null;
-  if (id != null) { try { await api.fetchMathLabDocument(token, id); } catch { id = null; } }
+  if (id != null) {
+    try {
+      await api.fetchMathLabDocument(token, id);
+    } catch {
+      id = null;
+    }
+  }
   if (id == null) {
     const fresh = newMathLabDocument(whiteboardTool, { title: lessonFileTitle(lessonTitle) });
-    const { document } = await api.createMathLabDocument(token, { tool: fresh.tool, title: fresh.title, schemaVersion: fresh.schemaVersion, data: fresh.data });
-    id = document.id; await api.saveLessonFile(token, lessonCode, { documentId: id });
+    const { document } = await api.createMathLabDocument(token, {
+      tool: fresh.tool,
+      title: fresh.title,
+      schemaVersion: fresh.schemaVersion,
+      data: fresh.data,
+    });
+    id = document.id;
+    await api.saveLessonFile(token, lessonCode, { documentId: id });
   }
   return id;
 }

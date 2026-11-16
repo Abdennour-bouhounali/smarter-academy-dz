@@ -29,24 +29,81 @@ import { LessonToolPage } from '../../features/classSession/LessonToolsBar';
 import './lessonFile.css';
 
 const Whiteboard = lazy(whiteboardTool.load);
-const L = { turn: 'أدِر هاتفك', turnSay: 'ملفّ الدرس سبّورة: تُفتح والهاتف بالعرض.', title: 'ملفّ الدرس', loading: 'جارٍ فتح ملفّ الدرس…', failed: 'تعذّر فتح ملفّ الدرس. تحقّق من الاتّصال ثمّ أعد المحاولة.', back: 'عودة إلى الدرس' };
+const L = {
+  turn: 'أدِر هاتفك',
+  turnSay: 'ملفّ الدرس سبّورة: تُفتح والهاتف بالعرض.',
+  title: 'ملفّ الدرس',
+  loading: 'جارٍ فتح ملفّ الدرس…',
+  failed: 'تعذّر فتح ملفّ الدرس. تحقّق من الاتّصال ثمّ أعد المحاولة.',
+  back: 'عودة إلى الدرس',
+};
 
 function FileBoard({ documentId, lessonPath, title }) {
   const { token } = useContext(AuthContext);
-  const model = useMathLabDocument(whiteboardTool, documentId, { launch: null, defaultTitle: title, requestedScope: null });
+  const model = useMathLabDocument(whiteboardTool, documentId, {
+    launch: null,
+    defaultTitle: title,
+    requestedScope: null,
+  });
   const capabilities = useMemo(() => toolCapabilities(whiteboardTool, model.scope), [model.scope]);
-  const [toolApi, setToolApi] = useState(null); const [filesOpen, setFilesOpen] = useState(false); const [notice, setNotice] = useState(null);
-  const attachments = useMathLabAttachments({ documentId: model.document?.id ?? documentId, initialFiles: model.files, initialQuota: model.quota, loadKey: model.loadKey, ensurePersisted: model.ensurePersisted });
+  const [toolApi, setToolApi] = useState(null);
+  const [filesOpen, setFilesOpen] = useState(false);
+  const [notice, setNotice] = useState(null);
+  const attachments = useMathLabAttachments({
+    documentId: model.document?.id ?? documentId,
+    initialFiles: model.files,
+    initialQuota: model.quota,
+    loadKey: model.loadKey,
+    ensurePersisted: model.ensurePersisted,
+  });
   const loadBlob = useCallback((file) => fetchMathLabFileBlob(token, file.id), [token]);
   const toolAttachments = useMemo(() => ({ files: attachments.files, loadBlob }), [attachments.files, loadBlob]);
   return (
-    <MathLabShell tool={whiteboardTool} scope={model.scope} labHome={lessonPath} title={model.title} onTitleChange={model.updateTitle} saveState={model.saveState} isPersisted={model.isPersisted} onSave={model.saveNow}
-      toolApi={toolApi} attachments={attachments} filesOpen={filesOpen} onToggleFiles={() => setFilesOpen((o) => !o)} notice={notice} onNoticeDismiss={() => setNotice(null)}>
-      {model.status === 'loading' && <p className="lf-wait" aria-busy="true">{L.loading}</p>}
-      {model.status === 'error' && <p className="lf-wait" role="alert">{L.failed} <Link to={lessonPath}>{L.back}</Link></p>}
+    <MathLabShell
+      tool={whiteboardTool}
+      scope={model.scope}
+      labHome={lessonPath}
+      title={model.title}
+      onTitleChange={model.updateTitle}
+      saveState={model.saveState}
+      isPersisted={model.isPersisted}
+      onSave={model.saveNow}
+      toolApi={toolApi}
+      attachments={attachments}
+      filesOpen={filesOpen}
+      onToggleFiles={() => setFilesOpen((o) => !o)}
+      notice={notice}
+      onNoticeDismiss={() => setNotice(null)}
+    >
+      {model.status === 'loading' && (
+        <p className="lf-wait" aria-busy="true">
+          {L.loading}
+        </p>
+      )}
+      {model.status === 'error' && (
+        <p className="lf-wait" role="alert">
+          {L.failed} <Link to={lessonPath}>{L.back}</Link>
+        </p>
+      )}
       {model.status === 'ready' && (
-        <Suspense fallback={<p className="lf-wait" aria-busy="true">{L.loading}</p>}>
-          <Whiteboard key={model.loadKey} initialData={model.document.data} title={model.title} onChange={model.updateData} onReady={setToolApi} scope={model.scope} capabilities={capabilities} attachments={toolAttachments} onNotice={setNotice} />
+        <Suspense
+          fallback={
+            <p className="lf-wait" aria-busy="true">
+              {L.loading}
+            </p>
+          }
+        >
+          <Whiteboard
+            key={model.loadKey}
+            initialData={model.document.data}
+            title={model.title}
+            onChange={model.updateData}
+            onReady={setToolApi}
+            scope={model.scope}
+            capabilities={capabilities}
+            attachments={toolAttachments}
+            onNotice={setNotice}
+          />
         </Suspense>
       )}
     </MathLabShell>
@@ -54,17 +111,44 @@ function FileBoard({ documentId, lessonPath, title }) {
 }
 
 export default function LessonFilePage() {
-  const { lessonId } = useParams(); const { token } = useContext(AuthContext);
-  const lesson = getLessonById(lessonId); const lessonPath = getLessonPath(lessonId) ?? '/enseignant/cours'; const title = lessonFileTitle(lesson?.title ?? lessonId);
+  const { lessonId } = useParams();
+  const { token } = useContext(AuthContext);
+  const lesson = getLessonById(lessonId);
+  const lessonPath = getLessonPath(lessonId) ?? '/enseignant/cours';
+  const title = lessonFileTitle(lesson?.title ?? lessonId);
   useDocumentMeta(title);
   // a whiteboard needs the width: a phone held upright is asked to turn (owner, 2026-11-16: « must be opened on landscape »)
   // …a PHONE only (a touch screen): a laptop always opens the file, however narrow its window is
   const upright = useMediaQuery(`${UPRIGHT_PHONE} and (pointer: coarse)`);
-  const [documentId, setDocumentId] = useState(null); const [failed, setFailed] = useState(false);
-  useEffect(() => { if (!token) return undefined; let off = false; lessonFileDocumentId(token, lessonId, lesson?.title ?? lessonId).then((id) => !off && setDocumentId(id)).catch(() => !off && setFailed(true)); return () => { off = true; }; }, [token, lessonId]); // eslint-disable-line react-hooks/exhaustive-deps
+  const [documentId, setDocumentId] = useState(null);
+  const [failed, setFailed] = useState(false);
+  useEffect(() => {
+    if (!token) return undefined;
+    let off = false;
+    lessonFileDocumentId(token, lessonId, lesson?.title ?? lessonId)
+      .then((id) => !off && setDocumentId(id))
+      .catch(() => !off && setFailed(true));
+    return () => {
+      off = true;
+    };
+  }, [token, lessonId]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
-    <LessonToolPage lessonId={lessonId} active="file"><div className="lf-stage" dir="rtl" data-lesson-file={lessonId} data-lf-document={documentId ?? ''}>
-      {upright ? <TurnPhone cover={false} title={L.turn} body={L.turnSay} data-lf-turn /> : failed ? <p className="lf-wait" role="alert">{L.failed} <Link to={lessonPath}>{L.back}</Link></p> : documentId == null ? <p className="lf-wait" aria-busy="true">{L.loading}</p> : <FileBoard documentId={documentId} lessonPath={lessonPath} title={title} />}
-    </div></LessonToolPage>
+    <LessonToolPage lessonId={lessonId} active="file">
+      <div className="lf-stage" dir="rtl" data-lesson-file={lessonId} data-lf-document={documentId ?? ''}>
+        {upright ? (
+          <TurnPhone cover={false} title={L.turn} body={L.turnSay} data-lf-turn />
+        ) : failed ? (
+          <p className="lf-wait" role="alert">
+            {L.failed} <Link to={lessonPath}>{L.back}</Link>
+          </p>
+        ) : documentId == null ? (
+          <p className="lf-wait" aria-busy="true">
+            {L.loading}
+          </p>
+        ) : (
+          <FileBoard documentId={documentId} lessonPath={lessonPath} title={title} />
+        )}
+      </div>
+    </LessonToolPage>
   );
 }

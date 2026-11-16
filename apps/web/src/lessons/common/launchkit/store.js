@@ -5,7 +5,19 @@
 import { scopedStorage } from '../../../utils/storage';
 
 export const KEY = 'smarter_launch_kit';
-export const loadKit = () => { try { return JSON.parse(scopedStorage.getItem(KEY) ?? 'null') ?? {}; } catch { return {}; } };
-export const saveKit = (store) => { try { scopedStorage.setItem(KEY, JSON.stringify(store)); } catch { /* the launch works without storage */ } };
+export const loadKit = () => {
+  try {
+    return JSON.parse(scopedStorage.getItem(KEY) ?? 'null') ?? {};
+  } catch {
+    return {};
+  }
+};
+export const saveKit = (store) => {
+  try {
+    scopedStorage.setItem(KEY, JSON.stringify(store));
+  } catch {
+    /* the launch works without storage */
+  }
+};
 /** Has this student already played the launch of this lesson? (then « ابدأ » goes straight to the lesson) */
 export const launchDone = (lessonCode) => Boolean(loadKit().lessons?.[lessonCode]);

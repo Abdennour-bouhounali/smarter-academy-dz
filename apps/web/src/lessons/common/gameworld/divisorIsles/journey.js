@@ -12,7 +12,13 @@ export const KEYS = ['qasim-baqi', 'qasim-jidaa', 'siyagh-mutakafia', 'wahid-wa-
 export const emptyExam = () => ({ best: {}, fails: {}, weak: {}, sittings: 0 });
 
 /** The exam space opens once the student has PLAYED: the first run of each of the four keys is passed. */
-export const examOpen = (keys, practice) => KEYS.every((k) => keys.includes(k)) && nodeOpen(PRACTICE_NODES.findIndex((n) => n.id === EXAM), keys, practice);
+export const examOpen = (keys, practice) =>
+  KEYS.every((k) => keys.includes(k)) &&
+  nodeOpen(
+    PRACTICE_NODES.findIndex((n) => n.id === EXAM),
+    keys,
+    practice,
+  );
 export const examLevelOpen = (exam, n) => n === 1 || (exam.best?.[n - 1]?.stars ?? 0) > 0;
 export const examLevelsPassed = (exam) => LEVELS.filter((l) => (exam.best?.[l.n]?.stars ?? 0) > 0).length;
 export const nextExamLevel = (exam) => LEVELS.find((l) => !((exam.best?.[l.n]?.stars ?? 0) > 0))?.n ?? null;
@@ -23,28 +29,69 @@ export const nextExamLevel = (exam) => LEVELS.find((l) => !((exam.best?.[l.n]?.s
  *   otherwise the kinds of exercise to work on: the NEXT sheet of this level puts them first, with other numbers.
  */
 export function applySitting(exam, level, mark, total, weak) {
-  const stars = sittingStars(mark, total); const passed = mark >= total * PASS; const before = exam.best?.[level] ?? { stars: 0, mark: 0 };
+  const stars = sittingStars(mark, total);
+  const passed = mark >= total * PASS;
+  const before = exam.best?.[level] ?? { stars: 0, mark: 0 };
   const next = {
-    ...exam, sittings: (exam.sittings ?? 0) + 1,
-    best: passed ? { ...exam.best, [level]: { stars: Math.max(before.stars, stars), mark: Math.max(before.mark, mark), total } } : { ...exam.best },
+    ...exam,
+    sittings: (exam.sittings ?? 0) + 1,
+    best: passed
+      ? { ...exam.best, [level]: { stars: Math.max(before.stars, stars), mark: Math.max(before.mark, mark), total } }
+      : { ...exam.best },
     fails: { ...exam.fails, [level]: passed ? 0 : (exam.fails?.[level] ?? 0) + 1 },
     weak: { ...exam.weak, [level]: passed ? [] : weak },
   };
-  return { exam: next, result: { level, mark, total, stars, passed, promoted: passed && before.stars === 0, newBest: passed && stars > before.stars, weak: passed ? [] : weak, fails: next.fails[level], nextLevel: passed && level < LEVELS.length ? level + 1 : null, finished: passed && level === LEVELS.length } };
+  return {
+    exam: next,
+    result: {
+      level,
+      mark,
+      total,
+      stars,
+      passed,
+      promoted: passed && before.stars === 0,
+      newBest: passed && stars > before.stars,
+      weak: passed ? [] : weak,
+      fails: next.fails[level],
+      nextLevel: passed && level < LEVELS.length ? level + 1 : null,
+      finished: passed && level === LEVELS.length,
+    },
+  };
 }
 
 /** What « تقدّمي » shows: the road (five stations) and, per key, everything the student did with it. */
-export function lessonProgress({ stage = 0, finished = false, keys = [], openKeys = [], practice = {}, know = {}, exam = emptyExam(), tally = {} }) {
+export function lessonProgress({
+  stage = 0,
+  finished = false,
+  keys = [],
+  openKeys = [],
+  practice = {},
+  know = {},
+  exam = emptyExam(),
+  tally = {},
+}) {
   const has = (k) => openKeys.includes(k) || keys.includes(k);
   const rows = KEYS.map((key, i) => {
-    const node = PRACTICE_NODES[i]; const stars = node.levels.reduce((t, _, l) => t + (practice[levelId(i, l)]?.stars ?? 0), 0); const t = tally[key] ?? { ok: 0, n: 0 };
-    return { key, earned: has(key), game: { stars, max: node.levels.length * 3 }, sealed: (know.sealed ?? []).includes(key), exam: { ok: t.ok, n: t.n, rate: t.n ? t.ok / t.n : null } };
+    const node = PRACTICE_NODES[i];
+    const stars = node.levels.reduce((t, _, l) => t + (practice[levelId(i, l)]?.stars ?? 0), 0);
+    const t = tally[key] ?? { ok: 0, n: 0 };
+    return {
+      key,
+      earned: has(key),
+      game: { stars, max: node.levels.length * 3 },
+      sealed: (know.sealed ?? []).includes(key),
+      exam: { ok: t.ok, n: t.n, rate: t.n ? t.ok / t.n : null },
+    };
   });
   const passed = examLevelsPassed(exam);
   const road = [
     { id: 'story', done: finished ? 1 : Math.min(1, stage / 8), label: `${Math.min(stage, 8)} / 8` },
     { id: 'keys', done: rows.filter((r) => r.earned).length / 4, label: `${rows.filter((r) => r.earned).length} / 4` },
-    { id: 'game', done: practiceStars(practice) / MAX_PRACTICE_STARS, label: `${practiceStars(practice)}\u00a0/\u00a0${MAX_PRACTICE_STARS}` },
+    {
+      id: 'game',
+      done: practiceStars(practice) / MAX_PRACTICE_STARS,
+      label: `${practiceStars(practice)}\u00a0/\u00a0${MAX_PRACTICE_STARS}`,
+    },
     { id: 'exam', done: passed / LEVELS.length, label: `${passed}\u00a0/\u00a0${LEVELS.length}` },
     { id: 'know', done: (know.read ?? []).length / 13, label: `${(know.read ?? []).length} / 13` },
   ];
@@ -58,9 +105,18 @@ export function lessonProgress({ stage = 0, finished = false, keys = [], openKey
 export function nextStep(state) {
   const { stage = 0, finished = false, openKeys = [], practice = {}, exam = emptyExam(), tally = {} } = state;
   if (!finished && stage < 8 && openKeys.length < 4) return { do: 'story' };
-  if (!examOpen(openKeys, practice)) { const n = nextLevel(openKeys, practice); return n ? { do: 'game', node: n.node, level: n.level } : { do: 'story' }; }
+  if (!examOpen(openKeys, practice)) {
+    const n = nextLevel(openKeys, practice);
+    return n ? { do: 'game', node: n.node, level: n.level } : { do: 'story' };
+  }
   const lvl = nextExamLevel(exam);
-  if (lvl === null) { const n = nextLevel(openKeys, practice); return n ? { do: 'game', node: n.node, level: n.level } : { do: 'done' }; }
-  if ((exam.fails?.[lvl] ?? 0) >= 2) { const worst = KEYS.map((k) => ({ k, r: tally[k]?.n ? tally[k].ok / tally[k].n : 1 })).sort((x, y) => x.r - y.r)[0]; return { do: 'train', key: worst.k, level: lvl }; }
+  if (lvl === null) {
+    const n = nextLevel(openKeys, practice);
+    return n ? { do: 'game', node: n.node, level: n.level } : { do: 'done' };
+  }
+  if ((exam.fails?.[lvl] ?? 0) >= 2) {
+    const worst = KEYS.map((k) => ({ k, r: tally[k]?.n ? tally[k].ok / tally[k].n : 1 })).sort((x, y) => x.r - y.r)[0];
+    return { do: 'train', key: worst.k, level: lvl };
+  }
   return { do: 'exam', level: lvl };
 }

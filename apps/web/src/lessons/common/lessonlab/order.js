@@ -6,7 +6,12 @@
 import ORDER from './lessonOrder.generated.json';
 
 export const GRADES = ['1am', '2am', '3am', '4am'];
-export const GRADE_NAMES = { '1am': 'الأولى متوسط', '2am': 'الثانية متوسط', '3am': 'الثالثة متوسط', '4am': 'الرابعة متوسط' };
+export const GRADE_NAMES = {
+  '1am': 'الأولى متوسط',
+  '2am': 'الثانية متوسط',
+  '3am': 'الثالثة متوسط',
+  '4am': 'الرابعة متوسط',
+};
 
 const RANK = new Map();
 GRADES.forEach((g, gi) => (ORDER[g] ?? []).forEach((code, i) => RANK.set(code, { grade: g, rank: gi * 1000 + i })));
@@ -15,5 +20,9 @@ GRADES.forEach((g, gi) => (ORDER[g] ?? []).forEach((code, i) => RANK.set(code, {
 export const placeOf = (code) => RANK.get(code) ?? null;
 export const gradeOf = (code) => RANK.get(code)?.grade ?? null;
 /** Is lesson `x` the lesson `of` itself or one studied before it? Unknown lessons are never « before ». */
-export const isReached = (x, of) => { const a = RANK.get(x); const b = RANK.get(of); return Boolean(a && b) && a.rank <= b.rank; };
+export const isReached = (x, of) => {
+  const a = RANK.get(x);
+  const b = RANK.get(of);
+  return Boolean(a && b) && a.rank <= b.rank;
+};
 export const compareLessons = (x, y) => (RANK.get(x)?.rank ?? Infinity) - (RANK.get(y)?.rank ?? Infinity);

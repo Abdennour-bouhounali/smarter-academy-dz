@@ -21,7 +21,8 @@ const read = (file) => JSON.parse(fs.readFileSync(path.join(DATA, file), 'utf8')
 const termOfWeek = Object.fromEntries(read('calendar/school_2026_2027.json').weeks.map((w) => [w.id, w.term]));
 const catalogue = new Map();
 for (const grade of ['1am', '2am', '3am', '4am']) {
-  for (const lesson of read(`lessons_${grade}_2026_2027.json`).lessons) catalogue.set(lesson.code, { ...lesson, grade });
+  for (const lesson of read(`lessons_${grade}_2026_2027.json`).lessons)
+    catalogue.set(lesson.code, { ...lesson, grade });
 }
 
 function row(code, n, extra = '') {
@@ -43,7 +44,10 @@ const totals = [];
 for (const grade of GRADES) {
   const progression = read(`calendar/progression_${grade}_2026_2027.json`);
   for (const term of [1, 2, 3]) {
-    const main = progression.weeks.filter((w) => termOfWeek[w.week] === term).flatMap((w) => w.lessons).filter((c) => !seen.has(c));
+    const main = progression.weeks
+      .filter((w) => termOfWeek[w.week] === term)
+      .flatMap((w) => w.lessons)
+      .filter((c) => !seen.has(c));
     main.forEach((c) => seen.add(c));
     const prerequisites = [];
     for (const code of main) {
@@ -56,17 +60,38 @@ for (const grade of GRADES) {
     }
     const order = { core: 0, unclassified: 1, support: 2 };
     prerequisites.sort((a, b) => order[a.weight] - order[b.weight]);
-    lines.push(`## ${grade.toUpperCase()} — الفصل ${term}`, '', `### The term's lessons (${main.length})`, '', '| # | code | lesson | grade | work | |', '|---|---|---|---|---|---|');
+    lines.push(
+      `## ${grade.toUpperCase()} — الفصل ${term}`,
+      '',
+      `### The term's lessons (${main.length})`,
+      '',
+      '| # | code | lesson | grade | work | |',
+      '|---|---|---|---|---|---|',
+    );
     main.forEach((code) => lines.push(row(code, ++n)));
-    lines.push('', `### Their prerequisites (${prerequisites.length})`, '', '| # | code | lesson | grade | work | link |', '|---|---|---|---|---|---|');
+    lines.push(
+      '',
+      `### Their prerequisites (${prerequisites.length})`,
+      '',
+      '| # | code | lesson | grade | work | link |',
+      '|---|---|---|---|---|---|',
+    );
     prerequisites.forEach((p) => lines.push(row(p.code, ++n, `${p.weight} ← \`${p.neededBy}\``)));
     lines.push('');
     totals.push(`${grade.toUpperCase()} T${term}: ${main.length} + ${prerequisites.length}`);
   }
   const unscheduled = (progression.unscheduled ?? []).map((u) => u.code).filter((c) => !seen.has(c));
   if (unscheduled.length) {
-    lines.push(`## ${grade.toUpperCase()} — not in the school progression (${unscheduled.length})`, '', '| # | code | lesson | grade | work | |', '|---|---|---|---|---|---|');
-    unscheduled.forEach((code) => { seen.add(code); lines.push(row(code, ++n)); });
+    lines.push(
+      `## ${grade.toUpperCase()} — not in the school progression (${unscheduled.length})`,
+      '',
+      '| # | code | lesson | grade | work | |',
+      '|---|---|---|---|---|---|',
+    );
+    unscheduled.forEach((code) => {
+      seen.add(code);
+      lines.push(row(code, ++n));
+    });
     lines.push('');
   }
 }
@@ -75,9 +100,14 @@ lines.splice(5, 0, `**${n} lessons** — ${rebuilt} to rebuild, ${n - rebuilt} n
 const text = `${lines.join('\n')}\n`;
 
 if (process.argv.includes('--check')) {
-  if (!fs.existsSync(OUT) || fs.readFileSync(OUT, 'utf8') !== text) { console.error('V2_ROLLOUT_ORDER.md is out of date: run node scripts/v2-rollout-order.mjs'); process.exit(1); }
+  if (!fs.existsSync(OUT) || fs.readFileSync(OUT, 'utf8') !== text) {
+    console.error('V2_ROLLOUT_ORDER.md is out of date: run node scripts/v2-rollout-order.mjs');
+    process.exit(1);
+  }
   console.log('V2_ROLLOUT_ORDER.md is up to date.');
 } else {
   fs.writeFileSync(OUT, text);
-  console.log(`${path.relative(ROOT, OUT)}: ${n} lessons (${rebuilt} to rebuild, ${n - rebuilt} new). ${totals.join(' · ')}`);
+  console.log(
+    `${path.relative(ROOT, OUT)}: ${n} lessons (${rebuilt} to rebuild, ${n - rebuilt} new). ${totals.join(' · ')}`,
+  );
 }

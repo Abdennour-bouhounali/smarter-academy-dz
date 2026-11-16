@@ -16,7 +16,22 @@
 import React, { lazy, Suspense, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { lessonFilePagePath } from './lessonFileDoc';
-import { AlertTriangle, ArrowLeft, Brain, ChevronLeft, ClipboardList, Eye, FileText, FlaskConical, Layers, Monitor, NotebookPen, Presentation, Target, Users } from 'lucide-react';
+import {
+  AlertTriangle,
+  ArrowLeft,
+  Brain,
+  ChevronLeft,
+  ClipboardList,
+  Eye,
+  FileText,
+  FlaskConical,
+  Layers,
+  Monitor,
+  NotebookPen,
+  Presentation,
+  Target,
+  Users,
+} from 'lucide-react';
 import { useIsPhoneScreen } from '../../components/auth/RequireLargeScreen';
 import { toolsForLesson } from '@smarter-academy/core/curriculum/dz/net/learningNet.js';
 import MathLabel from '../../lessons/common/components/MathLabel';
@@ -33,24 +48,57 @@ const LessonLab = lazy(() => import('../../lessons/common/lessonlab/LessonLab'))
 
 const plural = (n, one, two, few, many) => (n === 1 ? one : n === 2 ? two : n <= 10 ? `${n} ${few}` : `${n} ${many}`);
 const L = {
-  title: 'للأستاذ', inClass: 'في القسم', session: 'حصّة القسم', sessionLead: 'الحصّة كلّها على السبّورة، بأسماء تلاميذك. لا شيء فيها يغيّر تقدّم أيّ تلميذ.', open: 'افتح حصّة القسم',
+  title: 'للأستاذ',
+  inClass: 'في القسم',
+  session: 'حصّة القسم',
+  sessionLead: 'الحصّة كلّها على السبّورة، بأسماء تلاميذك. لا شيء فيها يغيّر تقدّم أيّ تلميذ.',
+  open: 'افتح حصّة القسم',
   sessionOnly: 'اختبار على السبّورة بالأسماء، مخطّط المقاعد، ومنصّة التتويج.',
   moments: {
     start: { name: 'اختبار البداية', say: () => 'أين القسم قبل الدرس؟ كلّ تلميذ باسمه.' },
-    revise: { name: 'مراجعة القواعد', say: ({ rules }) => (rules ? `${plural(rules, 'قاعدة واحدة', 'قاعدتان', 'قواعد', 'قاعدة')} سنحتاجها، يقرأها تلميذ تختاره.` : 'القواعد التي سنحتاجها، يقرأها تلميذ تختاره.') },
+    revise: {
+      name: 'مراجعة القواعد',
+      say: ({ rules }) =>
+        rules
+          ? `${plural(rules, 'قاعدة واحدة', 'قاعدتان', 'قواعد', 'قاعدة')} سنحتاجها، يقرأها تلميذ تختاره.`
+          : 'القواعد التي سنحتاجها، يقرأها تلميذ تختاره.',
+    },
     lesson: { name: 'الدرس على السبّورة', say: ({ stations }) => `${stations} محطّة: القسم يجرّب، يستنتج، ثمّ يسمّي.` },
     end: { name: 'اختبار النهاية', say: () => 'ماذا غيّرت الحصّة؟ قبلها وبعدها.' },
   },
-  prepare: 'أحضّر', preview: 'جرّب الدرس كتلميذ', previewSay: 'اللعبة والاختبار كما يراها تلميذك، دون تسجيل أيّ شيء.', memo: 'المذكّرة الكاملة', memoSay: 'المراحل، الأسئلة، الأخطاء المتوقَّعة وملاحظاتك.',
-  tools: 'أدواتي', lab: 'مختبر الدرس', labSay: 'أدوات هذا الدرس وما قبله، لتشرح بها أمام القسم.', bank: 'بنك التمارين', bankSay: (n) => `${plural(n, 'تمرين واحد', 'تمرينان', 'تمارين', 'تمرينًا')} بحلولها: اعرضها على السبّورة أو اطبع ورقة للقسم.`,
-  follow: 'أتابع', track: 'متابعة القسم', trackSay: 'كلّ تلميذ في هذا الدرس: كفاءاته، تمارينه، ما أصاب وما يُعاد.', file: 'ملفّ الدرس', fileSay: 'ملفّ عملك على هذا الدرس: اكتب، ارسم، أضف صورًا. ملفّ واحد لا يقرؤه غيرك.',
-  map: 'بطاقة المعارف', mapSay: 'معارف الدرس على السبّورة: مراجعة سريعة مع القسم كلّه، وروابط الدروس السابقة.',
-  know: 'قبل أن تبدأ', learns: 'ما يتعلّمه تلاميذك', stands: 'ما يقوم عليه الدرس', core: 'أساسي', support: 'مساعد', year: (g) => `السنة ${GRADE_NAMES[g]}`, mistakes: 'أخطاء شائعة عند التلاميذ',
+  prepare: 'أحضّر',
+  preview: 'جرّب الدرس كتلميذ',
+  previewSay: 'اللعبة والاختبار كما يراها تلميذك، دون تسجيل أيّ شيء.',
+  memo: 'المذكّرة الكاملة',
+  memoSay: 'المراحل، الأسئلة، الأخطاء المتوقَّعة وملاحظاتك.',
+  tools: 'أدواتي',
+  lab: 'مختبر الدرس',
+  labSay: 'أدوات هذا الدرس وما قبله، لتشرح بها أمام القسم.',
+  bank: 'بنك التمارين',
+  bankSay: (n) =>
+    `${plural(n, 'تمرين واحد', 'تمرينان', 'تمارين', 'تمرينًا')} بحلولها: اعرضها على السبّورة أو اطبع ورقة للقسم.`,
+  follow: 'أتابع',
+  track: 'متابعة القسم',
+  trackSay: 'كلّ تلميذ في هذا الدرس: كفاءاته، تمارينه، ما أصاب وما يُعاد.',
+  file: 'ملفّ الدرس',
+  fileSay: 'ملفّ عملك على هذا الدرس: اكتب، ارسم، أضف صورًا. ملفّ واحد لا يقرؤه غيرك.',
+  map: 'بطاقة المعارف',
+  mapSay: 'معارف الدرس على السبّورة: مراجعة سريعة مع القسم كلّه، وروابط الدروس السابقة.',
+  know: 'قبل أن تبدأ',
+  learns: 'ما يتعلّمه تلاميذك',
+  stands: 'ما يقوم عليه الدرس',
+  core: 'أساسي',
+  support: 'مساعد',
+  year: (g) => `السنة ${GRADE_NAMES[g]}`,
+  mistakes: 'أخطاء شائعة عند التلاميذ',
 };
 
 /** On a phone, what opens only on a tablet or a laptop says so and is not a link (owner, 2026-11-16). */
 const LaptopBadge = () => (
-  <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-extrabold text-slate-500" data-teacher-laptop-only>
+  <span
+    className="inline-flex shrink-0 items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-extrabold text-slate-500"
+    data-teacher-laptop-only
+  >
     <Monitor size={13} aria-hidden="true" /> على الحاسوب
   </span>
 );
@@ -62,8 +110,14 @@ const LaptopBadge = () => (
 function Door({ icon: Icon, title, say, to, onClick, closed = false, ...rest }) {
   if (closed) {
     return (
-      <div className="flex w-full items-center gap-3 rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-3" aria-disabled="true" {...rest}>
-        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white text-slate-400"><Icon size={20} aria-hidden="true" /></span>
+      <div
+        className="flex w-full items-center gap-3 rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-3"
+        aria-disabled="true"
+        {...rest}
+      >
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white text-slate-400">
+          <Icon size={20} aria-hidden="true" />
+        </span>
         <strong className="min-w-0 flex-1 text-start text-[15px] font-extrabold text-slate-500">{title}</strong>
         <LaptopBadge />
       </div>
@@ -71,48 +125,117 @@ function Door({ icon: Icon, title, say, to, onClick, closed = false, ...rest }) 
   }
   const body = (
     <>
-      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-slate-100 text-slate-700 transition-colors group-hover:bg-slate-900 group-hover:text-white"><Icon size={22} aria-hidden="true" /></span>
-      <span className="min-w-0 flex-1 text-start"><strong className="block text-[15px] font-extrabold text-slate-900">{title}</strong><span className="block text-[13px] font-semibold leading-6 text-slate-500">{say}</span></span>
-      <ChevronLeft size={18} className="shrink-0 text-slate-300 transition-transform group-hover:-translate-x-0.5 group-hover:text-slate-900" aria-hidden="true" />
+      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-slate-100 text-slate-700 transition-colors group-hover:bg-slate-900 group-hover:text-white">
+        <Icon size={22} aria-hidden="true" />
+      </span>
+      <span className="min-w-0 flex-1 text-start">
+        <strong className="block text-[15px] font-extrabold text-slate-900">{title}</strong>
+        <span className="block text-[13px] font-semibold leading-6 text-slate-500">{say}</span>
+      </span>
+      <ChevronLeft
+        size={18}
+        className="shrink-0 text-slate-300 transition-transform group-hover:-translate-x-0.5 group-hover:text-slate-900"
+        aria-hidden="true"
+      />
     </>
   );
-  const cls = 'group flex w-full items-center gap-3 rounded-2xl border border-slate-200 bg-white p-3 transition-colors hover:border-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500';
-  return to ? <Link to={to} className={cls} {...rest}>{body}</Link> : <button type="button" onClick={onClick} className={cls} {...rest}>{body}</button>;
+  const cls =
+    'group flex w-full items-center gap-3 rounded-2xl border border-slate-200 bg-white p-3 transition-colors hover:border-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500';
+  return to ? (
+    <Link to={to} className={cls} {...rest}>
+      {body}
+    </Link>
+  ) : (
+    <button type="button" onClick={onClick} className={cls} {...rest}>
+      {body}
+    </button>
+  );
 }
-const Block = ({ label, children, ...rest }) => <div className="space-y-2" {...rest}><h3 className="text-xs font-extrabold tracking-wide text-slate-400">{label}</h3>{children}</div>;
+const Block = ({ label, children, ...rest }) => (
+  <div className="space-y-2" {...rest}>
+    <h3 className="text-xs font-extrabold tracking-wide text-slate-400">{label}</h3>
+    {children}
+  </div>
+);
 const Fact = ({ icon: Icon, title, children, ...rest }) => (
-  <div className="rounded-2xl border border-slate-200 bg-white p-3.5" {...rest}><h4 className="flex items-center gap-1.5 text-sm font-extrabold text-slate-900"><Icon size={16} className="text-slate-400" aria-hidden="true" /> {title}</h4>{children}</div>
+  <div className="rounded-2xl border border-slate-200 bg-white p-3.5" {...rest}>
+    <h4 className="flex items-center gap-1.5 text-sm font-extrabold text-slate-900">
+      <Icon size={16} className="text-slate-400" aria-hidden="true" /> {title}
+    </h4>
+    {children}
+  </div>
 );
 
 export default function TeacherLessonPanel({ config, basePath, hasWorld, extraTools = null }) {
   const [lab, setLab] = useState(false);
   // a phone opens what was designed for it: the student's world, the memo, the lesson file (components/auth/phoneLessons.js)
   const phone = useIsPhoneScreen();
-  const tools = toolsForLesson(config.id, { max: 6 }); const board = hasClassBoard(config.id); const labHere = hasLab(config.id);
-  const mistakes = [...new Set(tools.filter((t) => t.weight !== 'support').flatMap((t) => FAMILIES[t.id]?.mistakes ?? []))].map((id) => MISTAKES[id]?.replace(/^انتبه:\s*/, '')).filter(Boolean).slice(0, 4);
+  const tools = toolsForLesson(config.id, { max: 6 });
+  const board = hasClassBoard(config.id);
+  const labHere = hasLab(config.id);
+  const mistakes = [
+    ...new Set(tools.filter((t) => t.weight !== 'support').flatMap((t) => FAMILIES[t.id]?.mistakes ?? [])),
+  ]
+    .map((id) => MISTAKES[id]?.replace(/^انتبه:\s*/, ''))
+    .filter(Boolean)
+    .slice(0, 4);
   const facts = { rules: reviewCards(tools, FAMILIES).length, stations: SCRIPTS[config.id]?.steps.length ?? 0 };
   const exercises = Object.values(levelCounts(config.id)).reduce((s, n) => s + n, 0);
   return (
-    <section className="w-full space-y-5 text-start" dir="rtl" data-teacher-lesson-panel={config.id} data-teacher-board={board}>
+    <section
+      className="w-full space-y-5 text-start"
+      dir="rtl"
+      data-teacher-lesson-panel={config.id}
+      data-teacher-board={board}
+    >
       {/* ── in class: the one thing a teacher comes for ── */}
-      {config.classSession && phone && <Door icon={Presentation} title={L.session} closed data-teacher-session-closed />}
+      {config.classSession && phone && (
+        <Door icon={Presentation} title={L.session} closed data-teacher-session-closed />
+      )}
       {config.classSession && !phone && (
         <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5" data-teacher-group="class">
           <div className="flex flex-wrap items-center gap-4">
-            <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-slate-900 text-white"><Presentation size={28} aria-hidden="true" /></span>
-            <div className="min-w-0 flex-1"><p className="text-xs font-extrabold text-slate-500">{L.title} · {L.inClass}</p><h2 className="text-2xl font-black leading-snug text-slate-900">{L.session}</h2><p className="text-sm font-semibold leading-6 text-slate-600">{board ? L.sessionLead : L.sessionOnly}</p></div>
-            <Link to={classSessionPath(config.id)} data-teacher-session className="inline-flex min-h-[52px] shrink-0 items-center gap-2 rounded-2xl bg-slate-900 px-6 text-base font-black text-white transition-colors hover:bg-slate-700 focus:outline-none focus-visible:ring-4 focus-visible:ring-slate-300">{L.open} <ArrowLeft size={20} aria-hidden="true" /></Link>
+            <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-slate-900 text-white">
+              <Presentation size={28} aria-hidden="true" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-extrabold text-slate-500">
+                {L.title} · {L.inClass}
+              </p>
+              <h2 className="text-2xl font-black leading-snug text-slate-900">{L.session}</h2>
+              <p className="text-sm font-semibold leading-6 text-slate-600">{board ? L.sessionLead : L.sessionOnly}</p>
+            </div>
+            <Link
+              to={classSessionPath(config.id)}
+              data-teacher-session
+              className="inline-flex min-h-[52px] shrink-0 items-center gap-2 rounded-2xl bg-slate-900 px-6 text-base font-black text-white transition-colors hover:bg-slate-700 focus:outline-none focus-visible:ring-4 focus-visible:ring-slate-300"
+            >
+              {L.open} <ArrowLeft size={20} aria-hidden="true" />
+            </Link>
           </div>
           {/* the hour as the set-up screen shows it: four moments, each opened directly */}
           {board && (
-            <ol className="mt-4 grid grid-cols-2 gap-2.5 lg:grid-cols-4" data-teacher-moments>{MOMENTS.map((m, k) => (
-              <li key={m}>
-                <Link to={classSessionPath(config.id, m)} data-teacher-moment={m} className="group flex h-full flex-col gap-1 rounded-2xl border border-slate-200 bg-white p-3 transition-colors hover:border-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500">
-                  <span className="flex items-center gap-2"><b className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-slate-900 text-sm font-black text-white">{k + 1}</b><strong className="text-[15px] font-extrabold text-slate-900">{L.moments[m].name}</strong></span>
-                  <span className="text-[13px] font-semibold leading-6 text-slate-500">{L.moments[m].say(facts)}</span>
-                </Link>
-              </li>
-            ))}</ol>
+            <ol className="mt-4 grid grid-cols-2 gap-2.5 lg:grid-cols-4" data-teacher-moments>
+              {MOMENTS.map((m, k) => (
+                <li key={m}>
+                  <Link
+                    to={classSessionPath(config.id, m)}
+                    data-teacher-moment={m}
+                    className="group flex h-full flex-col gap-1 rounded-2xl border border-slate-200 bg-white p-3 transition-colors hover:border-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
+                  >
+                    <span className="flex items-center gap-2">
+                      <b className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-slate-900 text-sm font-black text-white">
+                        {k + 1}
+                      </b>
+                      <strong className="text-[15px] font-extrabold text-slate-900">{L.moments[m].name}</strong>
+                    </span>
+                    <span className="text-[13px] font-semibold leading-6 text-slate-500">
+                      {L.moments[m].say(facts)}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ol>
           )}
         </div>
       )}
@@ -120,49 +243,141 @@ export default function TeacherLessonPanel({ config, basePath, hasWorld, extraTo
       {/* ── prepare · my tools ── */}
       <div className="grid gap-4 md:grid-cols-2">
         <Block label={config.classSession ? L.prepare : `${L.title} · ${L.prepare}`} data-teacher-group="prepare">
-          {hasWorld && <Door icon={Eye} title={L.preview} say={L.previewSay} to={`${basePath}?apercu=eleve`} data-teacher-preview />}
-          <Door icon={FileText} title={L.memo} say={L.memoSay} to={`/enseignant/cours/${config.id}/memoire`} data-teacher-memo />
-          {board && <Door icon={NotebookPen} title={L.file} say={L.fileSay} to={lessonFilePagePath(config.id)} data-teacher-file />}
+          {hasWorld && (
+            <Door
+              icon={Eye}
+              title={L.preview}
+              say={L.previewSay}
+              to={`${basePath}?apercu=eleve`}
+              data-teacher-preview
+            />
+          )}
+          <Door
+            icon={FileText}
+            title={L.memo}
+            say={L.memoSay}
+            to={`/enseignant/cours/${config.id}/memoire`}
+            data-teacher-memo
+          />
+          {board && (
+            <Door
+              icon={NotebookPen}
+              title={L.file}
+              say={L.fileSay}
+              to={lessonFilePagePath(config.id)}
+              data-teacher-file
+            />
+          )}
         </Block>
         {(labHere || exercises > 0 || extraTools) && (
           <Block label={L.tools} data-teacher-group="tools">
-            {labHere && <Door icon={FlaskConical} title={L.lab} say={L.labSay} onClick={() => setLab(true)} closed={phone} data-teacher-lab />}
-            {exercises > 0 && <Door icon={ClipboardList} title={L.bank} say={L.bankSay(exercises)} to={teacherBankPath(config.id)} closed={phone} data-teacher-bank />}
-            {board && <Door icon={Brain} title={L.map} say={L.mapSay} to={classCardPath(config.id)} closed={phone} data-teacher-map />}
+            {labHere && (
+              <Door
+                icon={FlaskConical}
+                title={L.lab}
+                say={L.labSay}
+                onClick={() => setLab(true)}
+                closed={phone}
+                data-teacher-lab
+              />
+            )}
+            {exercises > 0 && (
+              <Door
+                icon={ClipboardList}
+                title={L.bank}
+                say={L.bankSay(exercises)}
+                to={teacherBankPath(config.id)}
+                closed={phone}
+                data-teacher-bank
+              />
+            )}
+            {board && (
+              <Door
+                icon={Brain}
+                title={L.map}
+                say={L.mapSay}
+                to={classCardPath(config.id)}
+                closed={phone}
+                data-teacher-map
+              />
+            )}
             {extraTools}
           </Block>
         )}
       </div>
 
       {/* ── follow: the class on this lesson, student by student ── */}
-      {board && <Block label={L.follow} data-teacher-group="follow"><Door icon={Users} title={L.track} say={L.trackSay} to={classTrackingPath(config.id)} closed={phone} data-teacher-track /></Block>}
+      {board && (
+        <Block label={L.follow} data-teacher-group="follow">
+          <Door
+            icon={Users}
+            title={L.track}
+            say={L.trackSay}
+            to={classTrackingPath(config.id)}
+            closed={phone}
+            data-teacher-track
+          />
+        </Block>
+      )}
 
       {/* ── what to know before the hour ── */}
       <Block label={L.know} data-teacher-group="know">
         <div className="grid gap-3 lg:grid-cols-3">
           {config.skills?.length > 0 && (
             <Fact icon={Target} title={L.learns} data-teacher-learns>
-              <ul className="mt-1.5 space-y-1 text-[14px] font-semibold leading-6 text-slate-700">{config.skills.map((s) => <li key={s} className="flex gap-1.5"><span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400" /><span><MathLabel>{s}</MathLabel></span></li>)}</ul>
+              <ul className="mt-1.5 space-y-1 text-[14px] font-semibold leading-6 text-slate-700">
+                {config.skills.map((s) => (
+                  <li key={s} className="flex gap-1.5">
+                    <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400" />
+                    <span>
+                      <MathLabel>{s}</MathLabel>
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </Fact>
           )}
           {tools.length > 0 && (
             <Fact icon={Layers} title={L.stands}>
-              <ul className="mt-1.5 space-y-1.5" data-teacher-stands>{tools.map((t) => (
-                <li key={t.id} className="text-[14px] font-bold leading-6 text-slate-800" data-teacher-tool={t.id} data-weight={t.weight ?? ''}>
-                  <span className={`me-1.5 rounded-full px-2 py-0.5 text-[11px] font-extrabold ${t.weight === 'support' ? 'bg-slate-100 text-slate-600' : 'bg-emerald-50 text-emerald-800 ring-1 ring-emerald-200'}`}>{t.weight === 'support' ? L.support : L.core}</span>
-                  <MathLabel>{t.lesson?.titleAr ?? t.textAr}</MathLabel> <span className="whitespace-nowrap text-xs font-bold text-slate-500">· {L.year(t.grade)}</span>
-                </li>
-              ))}</ul>
+              <ul className="mt-1.5 space-y-1.5" data-teacher-stands>
+                {tools.map((t) => (
+                  <li
+                    key={t.id}
+                    className="text-[14px] font-bold leading-6 text-slate-800"
+                    data-teacher-tool={t.id}
+                    data-weight={t.weight ?? ''}
+                  >
+                    <span
+                      className={`me-1.5 rounded-full px-2 py-0.5 text-[11px] font-extrabold ${t.weight === 'support' ? 'bg-slate-100 text-slate-600' : 'bg-emerald-50 text-emerald-800 ring-1 ring-emerald-200'}`}
+                    >
+                      {t.weight === 'support' ? L.support : L.core}
+                    </span>
+                    <MathLabel>{t.lesson?.titleAr ?? t.textAr}</MathLabel>{' '}
+                    <span className="whitespace-nowrap text-xs font-bold text-slate-500">· {L.year(t.grade)}</span>
+                  </li>
+                ))}
+              </ul>
             </Fact>
           )}
           {mistakes.length > 0 && (
             <Fact icon={AlertTriangle} title={L.mistakes}>
-              <ul className="mt-1.5 space-y-1 text-[14px] font-semibold leading-6 text-slate-700" data-teacher-mistakes>{mistakes.map((m) => <li key={m} className="flex gap-1.5"><span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400" /><span>{m}</span></li>)}</ul>
+              <ul className="mt-1.5 space-y-1 text-[14px] font-semibold leading-6 text-slate-700" data-teacher-mistakes>
+                {mistakes.map((m) => (
+                  <li key={m} className="flex gap-1.5">
+                    <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400" />
+                    <span>{m}</span>
+                  </li>
+                ))}
+              </ul>
             </Fact>
           )}
         </div>
       </Block>
-      {lab && <Suspense fallback={null}><LessonLab lessonCode={config.id} lessonTitle={config.title} onClose={() => setLab(false)} /></Suspense>}
+      {lab && (
+        <Suspense fallback={null}>
+          <LessonLab lessonCode={config.id} lessonTitle={config.title} onClose={() => setLab(false)} />
+        </Suspense>
+      )}
     </section>
   );
 }

@@ -34,7 +34,12 @@ export const lessonTools = (lessonId) => [
  * (owner, 2026-11-18). A tool never adds a button to the header: its own actions live in its own page.
  */
 export function LessonToolPage({ lessonId, active, children, ...rest }) {
-  return <div className="ltp" data-lesson-tool-page={active} {...rest}><LessonToolsBar lessonId={lessonId} active={active} /><div className="ltp__body">{children}</div></div>;
+  return (
+    <div className="ltp" data-lesson-tool-page={active} {...rest}>
+      <LessonToolsBar lessonId={lessonId} active={active} />
+      <div className="ltp__body">{children}</div>
+    </div>
+  );
 }
 
 export default function LessonToolsBar({ lessonId, active }) {
@@ -42,13 +47,32 @@ export default function LessonToolsBar({ lessonId, active }) {
   const phone = useIsPhoneScreen();
   return (
     <header className="ltb" dir="rtl" data-lesson-tools={lessonId} data-lesson-tools-active={active}>
-      <p className="ltb__title"><small>أدوات الدرس</small><strong><MathLabel>{lesson?.title ?? lessonId}</MathLabel></strong></p>
-      <nav className="ltb__tabs" aria-label="أدوات الدرس">{lessonTools(lessonId).map(({ id, label, icon: Icon, to, main }) => (
-        // on a phone, a tool designed for a larger screen is shown but opens nothing (components/auth/phoneLessons.js)
-        phone && !PHONE_TOOL_IDS.includes(id)
-          ? <span key={id} className="is-off" aria-disabled="true" title="على الحاسوب" data-lesson-tool-off={id}><Icon size={17} aria-hidden="true" /> {label}</span>
-          : <Link key={id} to={to} className={`${active === id ? 'is-on' : ''} ${main ? 'is-main' : ''}`} aria-current={active === id ? 'page' : undefined} data-lesson-tool={id}><Icon size={17} aria-hidden="true" /> {label}</Link>
-      ))}</nav>
+      <p className="ltb__title">
+        <small>أدوات الدرس</small>
+        <strong>
+          <MathLabel>{lesson?.title ?? lessonId}</MathLabel>
+        </strong>
+      </p>
+      <nav className="ltb__tabs" aria-label="أدوات الدرس">
+        {lessonTools(lessonId).map(({ id, label, icon: Icon, to, main }) =>
+          // on a phone, a tool designed for a larger screen is shown but opens nothing (components/auth/phoneLessons.js)
+          phone && !PHONE_TOOL_IDS.includes(id) ? (
+            <span key={id} className="is-off" aria-disabled="true" title="على الحاسوب" data-lesson-tool-off={id}>
+              <Icon size={17} aria-hidden="true" /> {label}
+            </span>
+          ) : (
+            <Link
+              key={id}
+              to={to}
+              className={`${active === id ? 'is-on' : ''} ${main ? 'is-main' : ''}`}
+              aria-current={active === id ? 'page' : undefined}
+              data-lesson-tool={id}
+            >
+              <Icon size={17} aria-hidden="true" /> {label}
+            </Link>
+          ),
+        )}
+      </nav>
     </header>
   );
 }

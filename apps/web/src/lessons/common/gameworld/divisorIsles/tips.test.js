@@ -4,7 +4,10 @@ import { divisionTip, productTip, ruleTip } from './tips';
 /** Every equality written between dollar signs in a tip is re-computed: a tip never writes something false. */
 function verify(tip) {
   for (const m of tip.matchAll(/\$([^$]+)\$/g)) {
-    const sides = m[1].replaceAll('\\times', '*').split('=').map((x) => x.trim());
+    const sides = m[1]
+      .replaceAll('\\times', '*')
+      .split('=')
+      .map((x) => x.trim());
     if (sides.length < 2) continue;
     // eslint-disable-next-line no-new-func
     const values = sides.map((expr) => Function(`"use strict"; return (${expr});`)());
@@ -33,15 +36,25 @@ describe('حيلة — the calculation shortcuts', () => {
 
   it('never writes a false equality, and states the true remainder', () => {
     let given = 0;
-    for (let b = 2; b <= 40; b += 1) for (let a = b; a <= 1000; a += 7) {
-      const t = divisionTip(a, b);
-      if (!t) continue;
-      given += 1; verify(t);
-      expect(t).not.toMatch(/undefined|NaN/);
-      if (t.includes('الباقي')) expect(t.endsWith(`الباقي ${a % b}.`) || t.endsWith(`= ${a % b}$.`), `${a} ÷ ${b}: ${t}`).toBe(true);
-    }
+    for (let b = 2; b <= 40; b += 1)
+      for (let a = b; a <= 1000; a += 7) {
+        const t = divisionTip(a, b);
+        if (!t) continue;
+        given += 1;
+        verify(t);
+        expect(t).not.toMatch(/undefined|NaN/);
+        if (t.includes('الباقي'))
+          expect(t.endsWith(`الباقي ${a % b}.`) || t.endsWith(`= ${a % b}$.`), `${a} ÷ ${b}: ${t}`).toBe(true);
+      }
     expect(given).toBeGreaterThan(1000);
-    for (let x = 11; x <= 99; x += 1) for (const y of [36, 150, 180, 1850, 4500]) { const t = productTip(x, y); if (t) { verify(t); expect(t).toContain(String(x * y)); } }
+    for (let x = 11; x <= 99; x += 1)
+      for (const y of [36, 150, 180, 1850, 4500]) {
+        const t = productTip(x, y);
+        if (t) {
+          verify(t);
+          expect(t).toContain(String(x * y));
+        }
+      }
   });
 
   it('stays silent when no shortcut is clearly simpler', () => {
@@ -62,7 +75,9 @@ describe('حيلة — the calculation shortcuts', () => {
   });
 
   it('writes the product of an invoice the way it is done in the head', () => {
-    expect(productTip(21, 1850)).toBe('أفكّك 21 إلى 20 + 1: $20 \\times 1850 + 1 \\times 1850 = 37000 + 1850 = 38850$.');
+    expect(productTip(21, 1850)).toBe(
+      'أفكّك 21 إلى 20 + 1: $20 \\times 1850 + 1 \\times 1850 = 37000 + 1850 = 38850$.',
+    );
     expect(productTip(19, 150)).toBe('$19 \\times 150 = 20 \\times 150 - 1 \\times 150 = 3000 - 150 = 2850$.');
   });
 });

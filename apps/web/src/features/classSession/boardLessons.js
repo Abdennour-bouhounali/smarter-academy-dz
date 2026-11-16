@@ -17,7 +17,8 @@ export const hasClassBoard = (lessonId) => BOARD_LESSONS.includes(lessonId);
 export const MOMENTS = Object.freeze(['start', 'revise', 'lesson', 'end']);
 
 /** The class session of a lesson; `moment` opens it directly on one moment of the hour. */
-export const classSessionPath = (lessonId, moment = null) => `/enseignant/hissa/${encodeURIComponent(lessonId)}${moment && MOMENTS.includes(moment) ? `?moment=${moment}` : ''}`;
+export const classSessionPath = (lessonId, moment = null) =>
+  `/enseignant/hissa/${encodeURIComponent(lessonId)}${moment && MOMENTS.includes(moment) ? `?moment=${moment}` : ''}`;
 
 /** « متابعة القسم »: the class on this lesson, student by student — a tab of the set-up screen of the class session. */
 export const classTrackingPath = (lessonId) => `/enseignant/mutabaa/${encodeURIComponent(lessonId)}`;
@@ -28,4 +29,5 @@ export const classCardPath = (lessonId) => `/enseignant/bitaqa/${encodeURICompon
 export const classCardFullPath = (lessonId) => `/enseignant/hissa/${encodeURIComponent(lessonId)}?carte=1`;
 
 /** Is this lesson path (the lesson page or one of its modules) the path of a lesson that has its board? */
-export const boardLessonOfPath = (path) => (typeof path === 'string' ? BOARD_LESSONS.find((id) => path.split(/[/?#]/).includes(id)) ?? null : null);
+export const boardLessonOfPath = (path) =>
+  typeof path === 'string' ? (BOARD_LESSONS.find((id) => path.split(/[/?#]/).includes(id)) ?? null) : null;

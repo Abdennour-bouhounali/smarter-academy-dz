@@ -4,20 +4,37 @@ import { longDivision, twin, paperRows, quotientSoFar, thinking, conclusion, MET
 describe('وضع الورقة — the division as it is written on paper', () => {
   it('poses 756 ÷ 36 in two steps: 75 then 36', () => {
     const d = longDivision(756, 36);
-    expect(d.steps).toEqual([{ part: 75, digit: 2, product: 72, rest: 3, col: 1, next: 6 }, { part: 36, digit: 1, product: 36, rest: 0, col: 2, next: null }]);
+    expect(d.steps).toEqual([
+      { part: 75, digit: 2, product: 72, rest: 3, col: 1, next: 6 },
+      { part: 36, digit: 1, product: 36, rest: 0, col: 2, next: null },
+    ]);
     expect([d.q, d.r]).toEqual([21, 0]);
-    expect(paperRows(d, 1)).toEqual([{ kind: 'minus', text: '72', end: 1 }, { kind: 'rest', text: '3', end: 1, last: false }]);
-    expect(paperRows(d, 2)).toEqual([{ kind: 'minus', text: '72', end: 1 }, { kind: 'rest', text: '36', end: 2, last: false }, { kind: 'minus', text: '36', end: 2 }, { kind: 'rest', text: '0', end: 2, last: true }]);
-    expect(quotientSoFar(d, 1)).toBe('2'); expect(quotientSoFar(d, 2)).toBe('21');
+    expect(paperRows(d, 1)).toEqual([
+      { kind: 'minus', text: '72', end: 1 },
+      { kind: 'rest', text: '3', end: 1, last: false },
+    ]);
+    expect(paperRows(d, 2)).toEqual([
+      { kind: 'minus', text: '72', end: 1 },
+      { kind: 'rest', text: '36', end: 2, last: false },
+      { kind: 'minus', text: '36', end: 2 },
+      { kind: 'rest', text: '0', end: 2, last: true },
+    ]);
+    expect(quotientSoFar(d, 1)).toBe('2');
+    expect(quotientSoFar(d, 2)).toBe('21');
   });
 
   it('writes the quotient digit by digit for every division, zeros included', () => {
-    for (let a = 1; a <= 1200; a += 7) for (let b = 2; b <= 40; b += 3) {
-      const d = longDivision(a, b);
-      expect(Number(quotientSoFar(d, d.steps.length)), `${a} ÷ ${b}`).toBe(Math.floor(a / b));
-      expect(d.steps.at(-1).rest).toBe(a % b);
-      for (const s of d.steps) { expect(s.rest).toBeLessThan(b); expect(s.digit).toBeLessThanOrEqual(9); expect(s.product + s.rest).toBe(s.part); }
-    }
+    for (let a = 1; a <= 1200; a += 7)
+      for (let b = 2; b <= 40; b += 3) {
+        const d = longDivision(a, b);
+        expect(Number(quotientSoFar(d, d.steps.length)), `${a} ÷ ${b}`).toBe(Math.floor(a / b));
+        expect(d.steps.at(-1).rest).toBe(a % b);
+        for (const s of d.steps) {
+          expect(s.rest).toBeLessThan(b);
+          expect(s.digit).toBeLessThanOrEqual(9);
+          expect(s.product + s.rest).toBe(s.part);
+        }
+      }
     const z = longDivision(612, 6); // 6 → 1, then 1 < 6: a 0 in the quotient, then 12 → 2
     expect(z.steps.map((s) => s.digit)).toEqual([1, 0, 2]);
     expect(thinking(z, 1).join(' ')).toContain('أكتب 0');
@@ -37,9 +54,18 @@ describe('وضع الورقة — the division as it is written on paper', () =>
   });
 
   it('builds a twin of the same nature that never shows the student his own numbers', () => {
-    for (const [a, b] of [[756, 32], [756, 36], [96, 6], [143, 11], [360, 19], [185, 30], [420, 28]]) {
+    for (const [a, b] of [
+      [756, 32],
+      [756, 36],
+      [96, 6],
+      [143, 11],
+      [360, 19],
+      [185, 30],
+      [420, 28],
+    ]) {
       const t = twin(a, b);
-      expect(t.a).not.toBe(a); expect(t.b).not.toBe(b);
+      expect(t.a).not.toBe(a);
+      expect(t.b).not.toBe(b);
       expect(t.a % t.b === 0).toBe(a % b === 0);
       expect(Math.floor(t.a / t.b)).not.toBe(Math.floor(a / b));
       expect(t.b).toBeGreaterThan(1);

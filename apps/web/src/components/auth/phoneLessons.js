@@ -14,7 +14,8 @@ const TEACHER_PHONE_TOOLS = [/^\/enseignant\/cours\/([^/]+)\/memoire\/?$/, /^\/e
 /** Is this address a page of a phone-ready lesson that was designed for a phone? */
 export function isPhoneLessonPath(pathname, search = '') {
   const path = String(pathname ?? '');
-  if (TEACHER_PHONE_TOOLS.some((tool) => PHONE_LESSONS.includes(decodeURIComponent(path.match(tool)?.[1] ?? '')))) return true;
+  if (TEACHER_PHONE_TOOLS.some((tool) => PHONE_LESSONS.includes(decodeURIComponent(path.match(tool)?.[1] ?? ''))))
+    return true;
   const parts = path.split('/').filter(Boolean);
   const home = parts[0] === 'courses' && PHONE_LESSONS.includes(parts[parts.length - 1]);
   const classic = new URLSearchParams(search).get('view') === 'classic';

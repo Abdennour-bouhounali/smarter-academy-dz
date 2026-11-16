@@ -54,6 +54,9 @@ jobs:
         run: node scripts/analyze-entry-bundle.mjs --dist apps/web/dist --budget 245
 
       # L'index des leçons (lessons/lessonIndex.generated.json) suit leurs lesson.config.js.
+      - name: Format of the lesson v2 areas (Prettier)
+        run: npm run check:format
+
       - name: Lesson index is fresh
         run: npm run check:lesson-index && npm run check:routes
 

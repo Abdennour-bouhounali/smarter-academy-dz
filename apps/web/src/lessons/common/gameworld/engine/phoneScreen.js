@@ -25,7 +25,11 @@ function useMedia(query) {
     list?.addEventListener?.('change', onChange);
     return () => list?.removeEventListener?.('change', onChange);
   };
-  return useSyncExternalStore(subscribe, () => Boolean(window.matchMedia?.(query).matches), () => false);
+  return useSyncExternalStore(
+    subscribe,
+    () => Boolean(window.matchMedia?.(query).matches),
+    () => false,
+  );
 }
 
 /** Scales the game on a short screen for as long as the calling component is mounted. Returns { short, upright }. */

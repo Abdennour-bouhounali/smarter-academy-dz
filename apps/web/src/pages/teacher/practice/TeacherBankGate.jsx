@@ -16,6 +16,13 @@ const TeacherExerciseBank = lazy(() => import('./TeacherExerciseBank'));
 
 export default function TeacherBankGate({ player = false }) {
   const { lessonCode, level, exerciseId } = useParams();
-  if (hasClassBoard(lessonCode)) return player ? <Navigate to={exerciseBoardPath(lessonCode, level, exerciseId)} replace /> : <Suspense fallback={null}><TeacherExerciseBank lessonCode={lessonCode} /></Suspense>;
+  if (hasClassBoard(lessonCode))
+    return player ? (
+      <Navigate to={exerciseBoardPath(lessonCode, level, exerciseId)} replace />
+    ) : (
+      <Suspense fallback={null}>
+        <TeacherExerciseBank lessonCode={lessonCode} />
+      </Suspense>
+    );
   return <Suspense fallback={null}>{player ? <TeacherPracticePlayer /> : <PracticeHub />}</Suspense>;
 }

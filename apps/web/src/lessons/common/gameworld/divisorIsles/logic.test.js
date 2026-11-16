@@ -1,25 +1,38 @@
 import { describe, it, expect } from 'vitest';
-import { divide, predictOptions, bridgeStars, SEGMENTS, ISLANDS, DASH_WAVES, buildLayout, checkDivision, STATUES, isDivisor } from './logic';
+import {
+  divide,
+  predictOptions,
+  bridgeStars,
+  SEGMENTS,
+  ISLANDS,
+  DASH_WAVES,
+  buildLayout,
+  checkDivision,
+  STATUES,
+  isDivisor,
+} from './logic';
 
 describe('أرخبيل القواسم — logic', () => {
   it('divides: a = b × q + r with r < b', () => {
-    for (const a of [7, 15, 16, 42, 48, 120, 756]) for (let b = 1; b <= 40; b += 1) {
-      const { q, r } = divide(a, b);
-      expect(b * q + r).toBe(a);
-      expect(r).toBeLessThan(b);
-    }
+    for (const a of [7, 15, 16, 42, 48, 120, 756])
+      for (let b = 1; b <= 40; b += 1) {
+        const { q, r } = divide(a, b);
+        expect(b * q + r).toBe(a);
+        expect(r).toBeLessThan(b);
+      }
     expect(divide(756, 32)).toEqual({ q: 23, r: 20 });
     expect(divide(756, 36)).toEqual({ q: 21, r: 0 });
     expect(divide(7, 9)).toEqual({ q: 0, r: 7 });
   });
 
   it('always offers the true remainder, and at most b values for a small mould', () => {
-    for (const seg of SEGMENTS.filter((s) => s.a)) for (let b = 1; b <= 40; b += 1) {
-      const opts = predictOptions(seg.a, b);
-      expect(opts).toContain(divide(seg.a, b).r);
-      expect(new Set(opts).size).toBe(opts.length);
-      if (b <= 9 && b <= seg.a) expect(opts).toHaveLength(b);
-    }
+    for (const seg of SEGMENTS.filter((s) => s.a))
+      for (let b = 1; b <= 40; b += 1) {
+        const opts = predictOptions(seg.a, b);
+        expect(opts).toContain(divide(seg.a, b).r);
+        expect(new Set(opts).size).toBe(opts.length);
+        if (b <= 9 && b <= seg.a) expect(opts).toHaveLength(b);
+      }
   });
 
   it('every bridge has a mould that holds, and the lesson contrasts are there', () => {
@@ -50,10 +63,11 @@ describe('أرخبيل القواسم — logic', () => {
     const { islands, segs } = buildLayout();
     expect(islands).toHaveLength(ISLANDS.length);
     expect(segs).toHaveLength(ISLANDS.length - 1);
-    for (let i = 0; i < islands.length; i += 1) for (let j = i + 1; j < islands.length; j += 1) {
-      const d = Math.hypot(islands[i].x - islands[j].x, islands[i].z - islands[j].z);
-      expect(d).toBeGreaterThan(islands[i].R + islands[j].R + 4);
-    }
+    for (let i = 0; i < islands.length; i += 1)
+      for (let j = i + 1; j < islands.length; j += 1) {
+        const d = Math.hypot(islands[i].x - islands[j].x, islands[i].z - islands[j].z);
+        expect(d).toBeGreaterThan(islands[i].R + islands[j].R + 4);
+      }
     for (const s of segs) expect(Math.hypot(s.ex - s.sx, s.ez - s.sz)).toBeCloseTo(s.len, 6);
   });
 

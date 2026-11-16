@@ -33,13 +33,19 @@ export function LargeScreenOnlyNotice() {
   const { t } = useTranslation('common');
   return (
     <div dir="rtl" className="min-h-[70vh] flex items-center justify-center px-5 py-10 bg-slate-50">
-      <div role="alert" className="max-w-sm w-full rounded-2xl bg-white border border-slate-200 shadow-sm p-6 text-center">
+      <div
+        role="alert"
+        className="max-w-sm w-full rounded-2xl bg-white border border-slate-200 shadow-sm p-6 text-center"
+      >
         <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-blue-600">
           <Monitor aria-hidden="true" className="h-7 w-7" />
         </div>
         <h1 className="text-lg font-bold text-slate-900 leading-relaxed">{t('largeScreenOnlyTitle')}</h1>
         <p className="mt-2 text-slate-600 leading-relaxed">{t('largeScreenOnlyBody')}</p>
-        <Link to="/espace" className="mt-5 inline-block rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white">
+        <Link
+          to="/espace"
+          className="mt-5 inline-block rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white"
+        >
           {t('largeScreenOnlyBack')}
         </Link>
       </div>

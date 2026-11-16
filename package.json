@@ -38,7 +38,9 @@
     "check:year-calendar": "node scripts/check-year-calendar.mjs",
     "generate:compass-index": "node scripts/generate-compass-index.mjs",
     "check:compass-index": "node scripts/generate-compass-index.mjs --check",
-    "check:explorer-levels": "node scripts/games/build-explorer-levels.mjs --check"
+    "check:explorer-levels": "node scripts/games/build-explorer-levels.mjs --check",
+    "format:v2": "prettier --write --log-level warn apps/web/src/features/classSession apps/web/src/lessons/common/gameworld apps/web/src/lessons/common/launchkit apps/web/src/lessons/common/lessonlab apps/web/src/pages/teacher/ClassSessionPage.jsx apps/web/src/pages/teacher/LessonFilePage.jsx apps/web/src/pages/teacher/LessonToolPages.jsx apps/web/src/pages/teacher/practice/TeacherBankGate.jsx apps/web/src/pages/teacher/practice/TeacherExerciseBank.jsx apps/web/src/components/auth/phoneLessons.js apps/web/src/components/auth/RequireLargeScreen.jsx apps/web/src/components/common/TurnPhone.jsx scripts/v2-rollout-order.mjs",
+    "check:format": "prettier --check apps/web/src/features/classSession apps/web/src/lessons/common/gameworld apps/web/src/lessons/common/launchkit apps/web/src/lessons/common/lessonlab apps/web/src/pages/teacher/ClassSessionPage.jsx apps/web/src/pages/teacher/LessonFilePage.jsx apps/web/src/pages/teacher/LessonToolPages.jsx apps/web/src/pages/teacher/practice/TeacherBankGate.jsx apps/web/src/pages/teacher/practice/TeacherExerciseBank.jsx apps/web/src/components/auth/phoneLessons.js apps/web/src/components/auth/RequireLargeScreen.jsx apps/web/src/components/common/TurnPhone.jsx scripts/v2-rollout-order.mjs"
   },
   "devDependencies": {
     "@babel/parser": "^7.29.0",
@@ -50,6 +52,7 @@
     "concurrently": "^10.0.4",
     "playwright": "^1.62.1",
     "postcss": "^8.4.38",
+    "prettier": "3.3.3",
     "tailwindcss": "^3.4.6",
     "vite": "^5.3.4",
     "vitest": "^4.1.10"

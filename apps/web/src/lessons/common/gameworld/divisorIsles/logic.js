@@ -21,7 +21,10 @@ export function predictOptions(a, b) {
   if (b <= 9) return Array.from({ length: b }, (_, i) => i);
   const { r } = divide(a, b);
   const set = new Set([0, r, (r + Math.floor(b / 2)) % b, b - 1, (r + 3) % b, 1]);
-  return [...set].sort((x, y) => x - y).slice(0, 6).includes(r)
+  return [...set]
+    .sort((x, y) => x - y)
+    .slice(0, 6)
+    .includes(r)
     ? [...set].sort((x, y) => x - y).slice(0, 6)
     : [...new Set([0, r, b - 1, 1, 2])].sort((x, y) => x - y);
 }
@@ -75,25 +78,33 @@ export const DASH = { first: 44, gap: 34, lanes: [-2.5, 0, 2.5], hearts: 3 };
 /** World geometry of the chain: island centres and each segment's start, end, unit direction and right vector. */
 export function buildLayout(islands = ISLANDS, segments = SEGMENTS) {
   const out = { islands: [], segs: [] };
-  let h = 0; let cx = 0; let cz = 0;
+  let h = 0;
+  let cx = 0;
+  let cz = 0;
   islands.forEach((isl, i) => {
     out.islands.push({ ...isl, x: cx, z: cz, index: i });
     const seg = segments[i];
     if (!seg) return;
     h += isl.turn;
-    const dx = Math.sin(h); const dz = -Math.cos(h);
-    const sx = cx + dx * (isl.R - 0.5); const sz = cz + dz * (isl.R - 0.5);
-    const ex = sx + dx * seg.len; const ez = sz + dz * seg.len;
+    const dx = Math.sin(h);
+    const dz = -Math.cos(h);
+    const sx = cx + dx * (isl.R - 0.5);
+    const sz = cz + dz * (isl.R - 0.5);
+    const ex = sx + dx * seg.len;
+    const ez = sz + dz * seg.len;
     out.segs.push({ ...seg, index: i, sx, sz, ex, ez, dx, dz, rx: -dz, rz: dx, cell: seg.a ? seg.len / seg.a : 0 });
     const next = islands[i + 1];
-    cx = ex + dx * (next.R - 0.5); cz = ez + dz * (next.R - 0.5);
+    cx = ex + dx * (next.R - 0.5);
+    cz = ez + dz * (next.R - 0.5);
   });
   return out;
 }
 
 /** The statues of island F: four sentences about ONE fact (120 = 6 × 20). `smallFirst` = the divisor is written first. */
 export const STATUES = {
-  small: 6, big: 120, q: 20,
+  small: 6,
+  big: 120,
+  q: 20,
   sentences: [
     { id: 'qasim', before: '', mid: 'قاسم للعدد', smallFirst: true },
     { id: 'yaqsim', before: '', mid: 'يقسم', smallFirst: true },

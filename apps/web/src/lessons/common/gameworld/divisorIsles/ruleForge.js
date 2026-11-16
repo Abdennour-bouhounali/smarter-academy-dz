@@ -17,18 +17,35 @@
 import { divide } from './logic';
 
 export const QUANTITIES = [
-  { id: 'r', label: 'باقي قسمة طول الهوّة على طول اللوح', short: (a, b) => `باقي قسمة ${a} على ${b}`, of: (a, b) => a % b },
-  { id: 'q', label: 'حاصل قسمة طول الهوّة على طول اللوح', short: (a, b) => `حاصل قسمة ${a} على ${b}`, of: (a, b) => Math.floor(a / b) },
+  {
+    id: 'r',
+    label: 'باقي قسمة طول الهوّة على طول اللوح',
+    short: (a, b) => `باقي قسمة ${a} على ${b}`,
+    of: (a, b) => a % b,
+  },
+  {
+    id: 'q',
+    label: 'حاصل قسمة طول الهوّة على طول اللوح',
+    short: (a, b) => `حاصل قسمة ${a} على ${b}`,
+    of: (a, b) => Math.floor(a / b),
+  },
   { id: 'b', label: 'طول اللوح', short: () => 'طول اللوح', of: (a, b) => b },
   { id: 'a', label: 'طول الهوّة', short: () => 'طول الهوّة', of: (a) => a },
 ];
 export const CONDITIONS = [
   { id: 'zero', label: 'يساوي 0', yes: 'يساوي 0', no: 'لا يساوي 0', test: (v) => v === 0 },
   { id: 'even', label: 'عدد زوجي', yes: 'عدد زوجي', no: 'عدد فردي', test: (v) => v % 2 === 0 },
-  { id: 'lessB', label: 'أصغر من طول اللوح', yes: 'أصغر من طول اللوح', no: 'ليس أصغر من طول اللوح', test: (v, a, b) => v < b },
+  {
+    id: 'lessB',
+    label: 'أصغر من طول اللوح',
+    yes: 'أصغر من طول اللوح',
+    no: 'ليس أصغر من طول اللوح',
+    test: (v, a, b) => v < b,
+  },
   { id: 'gt1', label: 'أكبر من 1', yes: 'أكبر من 1', no: 'ليس أكبر من 1', test: (v) => v > 1 },
 ];
-const Q = Object.fromEntries(QUANTITIES.map((x) => [x.id, x])); const C = Object.fromEntries(CONDITIONS.map((x) => [x.id, x]));
+const Q = Object.fromEntries(QUANTITIES.map((x) => [x.id, x]));
+const C = Object.fromEntries(CONDITIONS.map((x) => [x.id, x]));
 
 /** Does the bridge really hold? The plank must fit at least once, and nothing may be left. */
 export const holds = (a, b) => b >= 1 && b <= a && a % b === 0;
@@ -39,12 +56,17 @@ export const isTheRule = (rule) => rule?.q === 'r' && rule?.c === 'zero';
 export const ruleText = (rule) => `يثبت الجسر عندما: ${Q[rule.q].label} ${C[rule.c].label}.`;
 /** His rule applied to one bridge, in words: « باقي قسمة 18 على 4 هو 2، و 2 لا يساوي 0: قاعدتك تقول إنّ الجسر ينهار ». */
 export function explain(rule, a, b) {
-  const v = Q[rule.q].of(a, b); const yes = ruleSays(rule, a, b);
+  const v = Q[rule.q].of(a, b);
+  const yes = ruleSays(rule, a, b);
   return `${Q[rule.q].short(a, b)} هو ${v}، و ${v} ${yes ? C[rule.c].yes : C[rule.c].no}: قاعدتك تقول إنّ الجسر ${yes ? 'يثبت' : 'ينهار'}.`;
 }
-export const outcome = (a, b) => { const { q, r } = divide(a, b); return { a, b, q, r, held: holds(a, b) }; };
+export const outcome = (a, b) => {
+  const { q, r } = divide(a, b);
+  return { a, b, q, r, held: holds(a, b) };
+};
 export const sameCase = (x, y) => x.a === y.a && x.b === y.b;
-export const EVIDENCE_MAX = 8; export const OWN_MAX = 5;
+export const EVIDENCE_MAX = 8;
+export const OWN_MAX = 5;
 
 /**
  * The evidence: one line per different bridge, oldest first — the student's OWN crossing first (its last five bridges are
@@ -52,18 +74,28 @@ export const EVIDENCE_MAX = 8; export const OWN_MAX = 5;
  */
 export function evidence(log) {
   const out = [];
-  for (const row of log) { const i = out.findIndex((x) => sameCase(x, row)); const was = i >= 0 ? out.splice(i, 1)[0] : null; out.push({ ...outcome(row.a, row.b), mirror: Boolean(row.mirror) && (was ? was.mirror : true) }); }
+  for (const row of log) {
+    const i = out.findIndex((x) => sameCase(x, row));
+    const was = i >= 0 ? out.splice(i, 1)[0] : null;
+    out.push({ ...outcome(row.a, row.b), mirror: Boolean(row.mirror) && (was ? was.mirror : true) });
+  }
   const own = out.filter((x) => !x.mirror).slice(-OWN_MAX);
   return [...own, ...out.filter((x) => x.mirror).slice(-(EVIDENCE_MAX - own.length))];
 }
 
 /** The rule run on the evidence, in order: each row agrees or not; `bad` = the first row that contradicts it (or −1). */
 export function runOnEvidence(rule, rows) {
-  const marks = rows.map((row) => ({ ...row, says: ruleSays(rule, row.a, row.b) })).map((row) => ({ ...row, agrees: row.says === row.held }));
+  const marks = rows
+    .map((row) => ({ ...row, says: ruleSays(rule, row.a, row.b) }))
+    .map((row) => ({ ...row, agrees: row.says === row.held }));
   return { marks, bad: marks.findIndex((m) => !m.agrees) };
 }
 
-const SMALL = (() => { const out = []; for (let a = 8; a <= 30; a += 1) for (let b = 2; b <= 9; b += 1) if (b < a) out.push({ a, b }); return out; })();
+const SMALL = (() => {
+  const out = [];
+  for (let a = 8; a <= 30; a += 1) for (let b = 2; b <= 9; b += 1) if (b < a) out.push({ a, b });
+  return out;
+})();
 const fresh = (rows) => (c) => !rows.some((row) => sameCase(row, c));
 
 /**
@@ -79,13 +111,16 @@ export function attacks(rule, rows) {
     return best ? [outcome(best.a, best.b)] : [];
   }
   const evenFall = free.find((c) => c.a % 2 === 0 && c.b % 2 === 0 && c.b >= 4 && !holds(c.a, c.b) && c.a >= 14);
-  const oddHold = free.find((c) => c.b % 2 === 1 && c.b >= 3 && holds(c.a, c.b) && c.a / c.b >= 3 && c.a >= 15 && c.a !== evenFall?.a);
+  const oddHold = free.find(
+    (c) => c.b % 2 === 1 && c.b >= 3 && holds(c.a, c.b) && c.a / c.b >= 3 && c.a >= 15 && c.a !== evenFall?.a,
+  );
   return [evenFall, oddHold].filter(Boolean).map((c) => outcome(c.a, c.b));
 }
 
 /** The predictions: bridges he has not built, which alternate — an easy one that holds, a trap that crumbles, an odd plank… */
 export function predictCases(rows, rand = Math.random) {
-  const free = SMALL.filter(fresh(rows)); const pick = (list) => list[Math.floor(rand() * list.length)];
+  const free = SMALL.filter(fresh(rows));
+  const pick = (list) => list[Math.floor(rand() * list.length)];
   const kinds = [
     (c) => holds(c.a, c.b) && c.b <= 5 && c.a <= 20,
     (c) => !holds(c.a, c.b) && c.a % 2 === 0 && c.b % 2 === 0,
@@ -95,12 +130,19 @@ export function predictCases(rows, rand = Math.random) {
     (c) => !holds(c.a, c.b) && c.b % 2 === 1,
   ];
   const out = [];
-  for (const kind of kinds) { const c = pick(free.filter((x) => kind(x) && !out.some((y) => sameCase(x, y) || y.a === x.a))); if (c) out.push(outcome(c.a, c.b)); }
+  for (const kind of kinds) {
+    const c = pick(free.filter((x) => kind(x) && !out.some((y) => sameCase(x, y) || y.a === x.a)));
+    if (c) out.push(outcome(c.a, c.b));
+  }
   return out;
 }
 export const PREDICT_NEED = 3;
 /** How many right predictions end the list: three in a row and the rule is in his head. */
-export const streak = (results) => { let n = 0; for (let i = results.length - 1; i >= 0 && results[i]; i -= 1) n += 1; return n; };
+export const streak = (results) => {
+  let n = 0;
+  for (let i = results.length - 1; i >= 0 && results[i]; i -= 1) n += 1;
+  return n;
+};
 
 /**
  * The help of the robot — it NEVER gives the rule. Three nudges, in this order:
@@ -110,10 +152,22 @@ export const streak = (results) => { let n = 0; for (let i = results.length - 1;
  */
 export function nudge(n, rows) {
   if (n === 1) {
-    for (const x of rows) { const y = rows.find((z) => z.a === x.a && z.held !== x.held); if (y) return { kind: 'compare', cases: x.held ? [x, y] : [y, x] }; }
+    for (const x of rows) {
+      const y = rows.find((z) => z.a === x.a && z.held !== x.held);
+      if (y) return { kind: 'compare', cases: x.held ? [x, y] : [y, x] };
+    }
   }
-  if (n <= 2) { const b = [4, 3, 5].find((k) => !rows.some((row) => row.b === k && (row.a === k * 3 || row.a === k * 3 + 1))) ?? 4; return { kind: 'experiment', cases: [outcome(b * 3, b), outcome(b * 3 + 1, b)] }; }
-  return { kind: 'choice', rules: [{ q: 'r', c: 'lessB' }, { q: 'r', c: 'zero' }] };
+  if (n <= 2) {
+    const b = [4, 3, 5].find((k) => !rows.some((row) => row.b === k && (row.a === k * 3 || row.a === k * 3 + 1))) ?? 4;
+    return { kind: 'experiment', cases: [outcome(b * 3, b), outcome(b * 3 + 1, b)] };
+  }
+  return {
+    kind: 'choice',
+    rules: [
+      { q: 'r', c: 'lessB' },
+      { q: 'r', c: 'zero' },
+    ],
+  };
 }
 
 /** How the rule was found — what a teacher wants to know: alone, with a nudge of the robot, or guided to a choice of two. */
@@ -121,7 +175,15 @@ export const discoveryLevel = (nudges) => (nudges === 0 ? 'alone' : nudges < 3 ?
 
 /** The last step: a gap too long to count. Half the time it holds. */
 export function useCase(rand = Math.random) {
-  const list = [[96, 8], [91, 7], [108, 9], [100, 7], [110, 9], [94, 8]]; const [a, b] = list[Math.floor(rand() * list.length)];
+  const list = [
+    [96, 8],
+    [91, 7],
+    [108, 9],
+    [100, 7],
+    [110, 9],
+    [94, 8],
+  ];
+  const [a, b] = list[Math.floor(rand() * list.length)];
   return outcome(a, b);
 }
 /** Is the division he wrote for the last step THE Euclidean division? */

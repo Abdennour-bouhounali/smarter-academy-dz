@@ -235,6 +235,9 @@ shared with the student too, on the link page as well. The parent pages are phon
   adding a lesson or changing its modules — never touch `App.jsx`), lab strings live in
   `i18n/locales/ar/lesson.manipulation.json`, unit maths are imported by path, not from the core barrel
   (`BUNDLE_BOUNDARIES.md` §3–§4, since 2026-10-14).
+- **Formatted code** (since 2026-11-16): the areas listed in `package.json › format:v2` (the pilot's game world, launch kit, « مختبري »,
+  class session and teacher tools) are kept in Prettier style, 120 columns — run `npm run format:v2` after editing them; `npm run check:format`
+  runs in CI. One statement per line, one component per block: never a whole component on one line. A new or rebuilt area is added to both scripts.
 - **The textbook is the REFERENCE of the الكفاءات, not the script of the lesson** (owner, 2026-10-14): the entry point,
   examples, contexts and order of ideas are designed by the platform (the book's activity is one candidate, often posed
   later as an application), and every module is ONE track — the action (lab) at the top with nothing above it, then
