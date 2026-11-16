@@ -2906,6 +2906,52 @@ generated lesson would inherit if it follows 14.2:
 - `docs/reports/QUESTION_ANSWER_AUDIT_2026-09-24.md` « Flagged » items that are
   wording choices (true-fact distractors in bahth M01, « فقط » in khawass E1…).
 
+## « مختبري » — the lab of the lesson (2026-11-16, not validated by the owner)
+
+Every lesson that has reached at least one instrument shows a door « 🧪 مختبري » (game-world title screen, mission home, or
+beside the lesson chip; `?lab=1`). It is ONE lab for the whole cycle (`lessons/common/lessonlab/`): the instruments of the
+lesson, and in « خزانتي » those of every lesson BEFORE it — never of a later one. Contract: `docs/architecture/LESSON_LAB.md`.
+
+What it asks of lesson work:
+
+- **You do nothing to get the door**: `LessonIndex` and `MissionHome` mount it from `hasLab(lesson)`.
+- **After adding or re-ordering a lesson** in a catalogue file, run `npm run generate:lab-order` (a unit test fails otherwise).
+- **When your lesson has a manipulation worth keeping at hand afterwards**, give it an instrument in the lab: an entry in
+  `lessonlab/registry.js › TOOLS` tagged with YOUR lesson's code and exact title, a component in `lessonlab/tools/`, its maths
+  and « جرّب » quests in `lessonlab/logic.js` with tests (`LESSON_LAB.md` §3). It is a small free-numbers instrument, not a
+  copy of the lesson's lab: one gesture on one mathematical variable, no steps, no questions.
+- **An instrument is never silent** (2026-11-17): it plays the lab's own palette (`lessonlab/sound.js`) — the number under
+  the hand has a note, « nothing is left » is the one chime `fit`, « something is left » is two soft low notes and never a
+  buzzer. The gesture's sound goes in the handler (`play('tick', n)`), the answer's sound through `useChime` so that nothing
+  sounds before the student touches the instrument (`LESSON_LAB.md` § « The sounds »; a unit test fails for an unknown name
+  or a silent instrument).
+- The lab writes no learning evidence and unlocks nothing.
+
+## « مصهر القاعدة » — the student forges the rule (2026-11-18, pilot game world only, not validated)
+
+Where a lesson reaches its rule, the pilot's game world no longer tells it. The student predicts cases he has not tried, writes
+his rule with tiles, and the game tests it on HIS OWN trials, then attacks it with a case chosen to break it; a rule that
+survives is his, he may say it in his words, and only then it gets its name (`gameworld/divisorIsles/RuleForge.jsx`,
+`docs/architecture/GAME_WORLD.md` §2sexies). What is fixed for whoever extends it to another rule:
+
+- **inside the game of the lesson** — never a separate lab, never a box to write in before the rule has been tested;
+- **a rule is data the game can evaluate** (pieces → a predicate), so that it can be tested and attacked: write the false
+  rules students really hold, and prove by a test that every one of them is contradicted;
+- **the verdict is what the world does** (a bridge holds or crumbles), never « wrong »; the help never gives the rule;
+- **keep how it was found** (rules tried, nudges, level): it is what a teacher will want to read.
+
+## « عُدّة الانطلاق » — the launch of a lesson (phase 1, 2026-11-17, pilot lesson only, not validated)
+
+A five-minute game before a lesson that measures the earlier الكفاءات it needs (`lessons/common/launchkit/`, contract
+`docs/architecture/LAUNCH_KIT.md`). **It changes nothing for lesson work today**: only `qasim-adad-tabii` opens it, and
+« أستعدّ » stays the rule everywhere else until the owner validates it. What is already fixed, for whoever extends it:
+
+- the tools of a lesson are its direct prerequisites in the learning net — never a list typed in the lesson;
+- a prerequisite enters the game through a **question family** (`families.js`): generated questions on two levels and several
+  forms (write / sort / place), wrong answers that NAME a mistake, a worked example, a revision card, and tests that re-compute
+  every generated question;
+- never the right answer during a station, never one answer to judge a tool, no speed score, no ranking.
+
 ## Opening the Math Lab from a lesson (integration point only)
 
 The Math Lab (مختبر الرياضيات, `/espace/atelier`) is a standalone workspace,

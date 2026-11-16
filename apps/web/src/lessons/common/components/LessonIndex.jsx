@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Lock, Compass } from 'lucide-react';
 import { useProgress } from '../hooks/useProgress';
 import { lockedReasonData, getLessonById, getUnitById } from '@smarter-academy/core';
@@ -30,7 +30,13 @@ import { StudentFocusProvider, MoreToggle, isStudentFocus } from './StudentFocus
 import MissionHome from '../mission/MissionHome';
 import MissionPlayer from '../mission/MissionPlayer';
 import { isMissionView } from '../mission/missionModel';
+
+// LE MONDE DE JEU (essai du 2026-11-15, leçon `qasim-adad-tabii`) : un morceau paresseux, jamais dans le paquet d'entrée (three.js).
+// « مختبري » : le laboratoire de la leçon (ses instruments + ceux des leçons PRÉCÉDENTES de toutes les années) — `?lab=1`.
+const LessonLab = lazy(() => import('../lessonlab/LessonLab'));
+const GAME_WORLDS = { 'divisor-isles': lazy(() => import('../gameworld/divisorIsles/DivisorIsles')) };
 import { mathToPlain } from '../../../utils/mathPlain';
+import { hasLab } from '../lessonlab/registry';
 import { useCatalogueHref } from '../../../components/student/catalogueLink';
 import { useDeclarePageTour } from '../../../features/tours/PageTourProvider';
 import { prefetchLessonStringsWhenIdle } from '../lessonRuntimeLoader';
@@ -152,7 +158,14 @@ export default function LessonIndex({ config, basePath }) {
   const masteryStatusById = useMemo(() => masteryStatusByIdFromProfile(profile), [profile]);
   const { t } = useTranslation('lesson');
   const catalogueHref = useCatalogueHref();
-  const { completedModules, isModuleCompleted, currentModule } = useProgress(config.id);
+  const { completedModules, isModuleCompleted, currentModule, markModuleCompleted } = useProgress(config.id);
+  const [searchParams, setSearchParams] = useSearchParams();
+  // « مختبري » (2026-11-16) : ouvert par `?lab=1` sur n'importe quelle leçon qui a au moins un instrument atteint.
+  const labAvailable = hasLab(config.id);
+  const setLab = (on) => setSearchParams((p) => { const n = new URLSearchParams(p); if (on) n.set('lab', '1'); else n.delete('lab'); return n; }, { replace: !on });
+  const labLayer = labAvailable && searchParams.get('lab') === '1'
+    ? <Suspense fallback={null}><LessonLab lessonCode={config.id} lessonTitle={mathToPlain(config.title)} onClose={() => setLab(false)} /></Suspense>
+    : null;
   const { isModuleClosed, isLessonClosed, isLessonLocked, isLessonHiddenByClass, lessonStatus, moduleStatus } = useContentAvailability();
   // QUI lit : l'enseignant voit chaque module ouvert (le verrou séquentiel
   // est un guide pour l'élève) ; un module retiré reste fermé pour tous.
@@ -363,12 +376,29 @@ export default function LessonIndex({ config, basePath }) {
     );
   }
 
+  // Le monde de jeu remplace l'accueil de mission pour l'ÉLÈVE seulement ; `?view=classic` rouvre le lecteur de mission.
+  const GameWorld = missionOn && searchParams.get('view') !== 'classic' ? GAME_WORLDS[config.gameWorld] : null;
+  if (GameWorld) {
+    return (
+      <Suspense fallback={null}>
+        <GameWorld
+          config={config} basePath={basePath} classicHref={`${basePath}?view=classic`}
+          exitTo={catalogueHref({ level: config.level, grade: config.grade, chapter: config.chapter })}
+          onModule={(n) => markModuleCompleted(String(n))}
+          completedModules={completedModules}
+          mastery={Object.keys(masteryStatusById ?? {}).length ? masteryStatusById : null}
+        />
+      </Suspense>
+    );
+  }
+
   if (missionOn) {
     return (
       <StudentFocusProvider studentView={config.studentView}>
         <MissionPlayer exitTo={catalogueHref({ level: config.level, grade: config.grade, chapter: config.chapter })} exitLabel={t('mission.exitToLessons')}>
-          <MissionHome config={config} basePath={basePath} />
+          <MissionHome config={config} basePath={basePath} onLab={labAvailable ? () => setLab(true) : null} />
         </MissionPlayer>
+        {labLayer}
       </StudentFocusProvider>
     );
   }
@@ -378,8 +408,17 @@ export default function LessonIndex({ config, basePath }) {
 
   // La ligne « مجال • محاور • مدة » : en tête hors focus, dans « تفاصيل الدرس » en focus.
   const lessonChip = (
-    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 font-mono text-xs font-semibold">
-      {config.emoji} {config.chapterTitle ?? config.chapter} • <span dir="ltr">{totalModules}</span> {t('index.modulesLabel', { count: totalModules })} • ~{t('index.durationMin', { count: config.estimatedDurationMin })}
+    <div className="flex flex-wrap items-center gap-2">
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 font-mono text-xs font-semibold">
+        {config.emoji} {config.chapterTitle ?? config.chapter} • <span dir="ltr">{totalModules}</span> {t('index.modulesLabel', { count: totalModules })} • ~{t('index.durationMin', { count: config.estimatedDurationMin })}
+      </div>
+      {/* « مختبري » : pour l'élève seulement, hors Mode Classe */}
+      {labAvailable && !viewer.freeNavigation && !presenting && (
+        <button type="button" onClick={() => setLab(true)} data-lesson-lab-open
+          className="inline-flex min-h-[36px] items-center gap-1.5 rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 text-sm font-black text-emerald-800 hover:border-emerald-500">
+          🧪 {t('mission.lab')}
+        </button>
+      )}
     </div>
   );
 
@@ -845,6 +884,7 @@ export default function LessonIndex({ config, basePath }) {
       <footer className="border-t border-slate-200 bg-white py-8 text-center text-xs text-slate-500 mt-12">
         <p>© {new Date().getFullYear()} Abdennour BOUHOUNALI — {t('common:footerRole')}</p>
       </footer>
+      {labLayer}
     </div>
     </StudentFocusProvider>
   );

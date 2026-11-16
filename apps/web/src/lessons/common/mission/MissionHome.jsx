@@ -18,7 +18,7 @@ import { isPracticeActive, practiceHubPath } from '../../../features/practice/pr
  * bibliothèque qui se remplit avec les outils, la carte, et UN bouton « واصل ». L'élève n'a JAMAIS accès à l'ancienne page du
  * درس (propriétaire, 2026-11-04) : ses détails s'ouvrent ici (« تفاصيل الدرس »), ses تمارين sont ici aussi.
  */
-export default function MissionHome({ config, basePath }) {
+export default function MissionHome({ config, basePath, onLab = null }) {
   const { t } = useTranslation('lesson');
   const navigate = useNavigate();
   const { mission, state, update, tools, stations, resume, stars, completedModules } = useMission(config);
@@ -137,6 +137,12 @@ export default function MissionHome({ config, basePath }) {
       {/* « راجع » et les deux liens discrets sur UNE ligne : l'accueil reste court, le lecteur l'agrandit */}
       <div className="flex flex-wrap items-center gap-4 text-sm font-bold" data-mission-home-foot>
         <ReviseFirst lessonId={config.id} title={config.title} basePath={basePath} variant="slim" className="min-w-0 flex-1" />
+        {/* « مختبري » : les instruments de la leçon et ceux des leçons précédentes (lessons/common/lessonlab) */}
+        {onLab && (
+          <button type="button" onClick={onLab} className="min-h-[44px] rounded-full border-2 border-emerald-300 bg-emerald-50 px-4 text-base font-black text-emerald-800 hover:border-emerald-500" data-mission-lab>
+            🧪 {t('mission.lab')}
+          </button>
+        )}
         <button type="button" onClick={openReplay} className="min-h-[44px] rounded-lg px-2 text-indigo-600 hover:bg-indigo-50" data-mission-replay>
           {t('mission.replay')}
         </button>

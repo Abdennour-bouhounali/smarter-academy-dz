@@ -1,0 +1,65 @@
+/**
+ * « مدرّب الامتحان » — the exam coach of the exercise bank (PILOT on the lessons of content/practice/exam-coach.json; owner, 2026-11-15).
+ * The bank keeps its exam sheet; the coach makes it FEEL like the exam (a hall to enter, silence, pen and paper) and gives the
+ * student the choice of how he is helped after a mistake:
+ *   guide   « أرشدني فقط »      the answer is NEVER shown: a question to re-read, the rule, the trap — then he tries again himself;
+ *   explain « اشرح لي الحلّ »    the solution is shown, but as a lesson: what is asked, which rule, each line and why, the trap.
+ * In both modes a mistake goes to the paper notebook (« دفتر أخطائي »).
+ * PURE logic here (which lessons, the steps of an explanation, the notebook entry); the screens are ExamCoach.jsx.
+ */
+import COACH_LESSONS from '../../../../../../content/practice/exam-coach.json';
+
+export const isCoachLesson = (lessonCode) => COACH_LESSONS.includes(lessonCode);
+export const MODES = ['guide', 'explain'];
+export const modeKey = 'smarter_exam_coach_mode';
+
+/** The lesson's own knowledge sheets, by learning point: the rule reminded is the lesson's, never retyped here. */
+const KNOWLEDGE = {
+  'qasim-adad-tabii': {
+    load: () => import('../../../lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/knowledge'),
+    items: { P1: 'qasim-baqi', P2: 'qasim-jidaa', P3: 'siyagh-mutakafia', P4: 'wahid-wa-nafsuh' },
+  },
+};
+export const primaryPoint = (question) => question?.learningPoints?.find((lp) => lp.role === 'primary')?.code ?? question?.learningPoints?.[0]?.code ?? null;
+
+/** The rule behind a question: { title, rule (LaTeX), hook, example (LaTeX), trap, exam } — or null when the lesson has none. */
+export async function loadRule(lessonCode, learningPointCode) {
+  const src = KNOWLEDGE[lessonCode]; const id = src?.items[String(learningPointCode ?? '').split('_').pop()];
+  if (!id) return null;
+  const mod = await src.load();
+  const item = Object.values(mod.LESSON_KNOWLEDGE.modules).flat().find((it) => it.id === id);
+  return item ? { id, title: item.title, ...item.memo } : null;
+}
+
+const text = (q) => [q?.lead, q?.statement].filter(Boolean).join(' ');
+
+/**
+ * EXPLAIN mode: the solution told as a teacher would — one step at a time.
+ * asked → rule → each written line → the result → the trap → the exam tip → « now write it yourself ».
+ */
+export function explainSteps(question, rule) {
+  const steps = [{ kind: 'asked', text: text(question) }];
+  if (rule) steps.push({ kind: 'rule', title: rule.title, rule: rule.rule, hook: rule.hook });
+  (question?.solution?.lines ?? []).forEach((line, i) => steps.push({ kind: 'line', n: i + 1, text: line }));
+  if (question?.solution?.result) steps.push({ kind: 'result', text: question.solution.result });
+  if (rule?.trap) steps.push({ kind: 'trap', text: rule.trap });
+  if (rule?.exam) steps.push({ kind: 'exam', text: rule.exam });
+  steps.push({ kind: 'write' });
+  return steps;
+}
+
+/** GUIDE mode: three nudges, in order, none of which contains the answer (never a solution line, never the result). */
+export function guideSteps(question, rule) {
+  const steps = [{ kind: 'reread', text: text(question) }];
+  if (rule) steps.push({ kind: 'rule', title: rule.title, rule: rule.rule, hook: rule.hook });
+  if (rule?.trap) steps.push({ kind: 'trap', text: rule.trap });
+  return steps;
+}
+
+/** What the student copies into his paper notebook after a mistake. The answer is in it only in explain mode. */
+export function notebookEntry(question, rule, mode, why = '') {
+  const lines = [{ label: 'السؤال', text: text(question) }, { label: 'خطئي', text: why, own: true }];
+  if (rule) lines.push({ label: 'لأتذكّر', text: rule.hook, rule: rule.rule });
+  if (mode === 'explain' && question?.solution?.result) lines.push({ label: 'الصواب', text: question.solution.result, result: true });
+  return lines;
+}

@@ -64,6 +64,28 @@ Since 2026-11-03 the pilot lesson `qasim-adad-tabii` tries the **student « focu
   `data-paging-pair`); the other cases are written into the lesson (guide §4septies « NO BACK-AND-FORTH »). Check: `e2e/no-back-and-forth.mjs`
   + a walk that answers; the lessons converted before the rule: `docs/reports/NO_BACK_AND_FORTH_PROMPT.md`.
 
+Since 2026-11-15 the same lesson `qasim-adad-tabii` carries a **TRIAL game world** (owner's free experiment, NOT validated, NOT a rollout rule):
+its student enters « أرخبيل القواسم », a three.js world where a bridge of light holds only when planks of one length fill the gap exactly
+(`gameWorld: 'divisor-isles'` in its config; code `lessons/common/gameworld/`; the mission player stays at `?view=classic`).
+The same day it got, reachable from the title screen for revision without replaying the story: the full-page **« خريطة المعارف »**
+(the lesson's own 13-node mind map and memo sheets, imported, never retyped; « تدرّب » opens ON the card and alternates a game
+format with the real exam format), the **practice space** (16 levels: runs of the gate dash — mental arithmetic only, numbers
+inside the multiplication tables — generated questions, a mistake stops on a guidance card) and the real-world game **« تعاونية الواحة »** (a packing depot: the
+world packs what the student decides and shows what is left). The exam cases are played in three worlds, each story carrying a value (the depot; fair sharing between friends; a tiler who
+cuts no tile and wastes none), and a calculation shortcut « حيلة » follows a right answer when a clean one exists. Since the same day its exam-format first tries count toward الكفاءات (the server re-computes each verdict:
+`POST /lessons/{code}/game-evidence`), and its exercise bank tries the **exam coach** « مدرّب الامتحان » (pilot list
+`content/practice/exam-coach.json`: an exam hall, a paper notebook for mistakes, and two modes — guide without the answer, or the
+solution explained step by step; `EXERCISE_CONTRACT.md`). Since 2026-11-16 the title screen also opens a PROTOTYPE exam sitting « الامتحان الأبيض » (reading time, a silent sitting with no
+verdict, then the copy handed back with red marks; `GAME_WORLD.md` §2quater). Since the same day the practice hub has TWO spaces — « فضاء اللعب » then
+« فضاء الامتحان », a ladder of five generated exam levels (80 % to climb, the next sheet adapted to what was missed; the game is felt
+BETWEEN two levels, never inside a sitting) — and the title screen opens « تقدّمي » (the lesson's road, an honest exam readiness, ONE next
+step; `GAME_WORLD.md` §2quinquies). Written work is done in **« وضع الورقة »** (paper mode: the music
+stops, the answer boxes wait for « كتبتُ على ورقتي », a model sheet poses the division step by step). Since 2026-11-18 its first rule is no
+longer TOLD: on island D the student forges it in **« مصهر القاعدة »** (`RuleForge.jsx`, `ruleForge.js`) — he predicts bridges he has not built,
+writes his rule with two tiles, and the island's mirror tests it on HIS OWN crossing, then attacks it with a new gap; a rule that survives
+becomes his key and only then gets its name. The verdict is always a bridge that holds or crumbles, never « wrong »; the robot helps
+without giving the rule (`GAME_WORLD.md` §2sexies; the three other tablets are still told). Contract: `docs/architecture/GAME_WORLD.md`.
+
 Since 2026-11-09 **« بوصلتي » (the year compass)** is being built (owner plan approved; contract `docs/architecture/YEAR_COMPASS.md`):
 a start check « جولة الانطلاق » scoped by the date and the class position (2 steps back in the net), a report « خريطة نقاطي »
 (positive bands, never evidence) and a plan « خطّتي ». P0 is done: ONE school calendar for the four grades and each grade's
@@ -79,6 +101,23 @@ the bands, the year strip; the rest folded under « المزيد »). Every stat
 the « بوصلتي » check first, rollout planned), and **a formula never breaks across two lines** (`.katex{white-space:nowrap}`;
 widen the card instead). Contract: `EXERCISE_CONTRACT.md` § « قوالب الإجابة » and § « A formula never breaks ».
 
+Since 2026-11-16 every lesson has a door to **« مختبري », the lab of the lesson** (NOT validated; `lessons/common/lessonlab/`, contract
+`docs/architecture/LESSON_LAB.md`): ONE lab for the cycle that shows the instruments of the lesson and, in « خزانتي », those of every lesson
+BEFORE it of every grade — never of a later lesson. Two shared numbers follow the student from one instrument to the next; each instrument
+has « جرّب » quests; nothing scrolls; no learning evidence; its own sounds (`sound.js`: a number has a note, one chime for « nothing is left », never a buzzer). Eight instruments exist (division and divisors: 4AM unit 1 + two of 1AM).
+A new instrument = an entry in `registry.js › TOOLS` tagged with the lesson that introduces it; after adding or re-ordering a lesson run
+`npm run generate:lab-order`. It is distinct from the Math Lab `/espace/atelier` (`MATH_LAB.md`), which is untouched.
+
+Since 2026-11-17 the pilot lesson `qasim-adad-tabii` tries **« عُدّة الانطلاق », the launch of a lesson** (phase 1 of 4, NOT validated;
+`lessons/common/launchkit/`, contract `docs/architecture/LAUNCH_KIT.md`, plan `docs/reports/LAUNCH_KIT_PLAN_2026-11-17.md`): before the
+lesson, a game of five minutes at most charges 2–4 « tools », one per earlier الكفاءة the lesson needs (taken from the learning net). The
+answer is a gesture (write / drag a card into a box / place a flag); ✓ or « سنعود إليه », never the answer; a tool is never judged on one
+answer (the band machine of « بوصلتي »); a quick workshop repairs the weakest tool on the spot; the kit names ONE lesson to revise.
+The gate (owner, 2026-11-17): « the door opens by doing » — a CORE tool left at « نبدأ منها » asks for ONE short capsule (card, worked example,
+instrument, two questions), then the student goes in whatever he answers; for class and independent students alike. A prerequisite enters
+through a generated question family (`families.js`, two exist). Browser only for now: no evidence, no teacher view — « أستعدّ » stays the rule
+in every other lesson.
+
 Since 2026-10-13 the **learning net « شبكة الكفاءات »** covers the WHOLE cycle moyen (1AM–4AM): the official
 programme of the four years as data (224 items transcribed from `docs/Math-Moyenne-programme/`, stable ids
 `<g>am.m<مقطع>.r<nn>`), typed links between items (`requires` / `extends` with its added value / `consolidates` —
@@ -86,6 +125,11 @@ the no-duplication rule), the PLANNED 1AM–3AM lessons (codes, units, items —
 `programmeItems` (`packages/core/curriculum/dz/net/`, contract `docs/architecture/LEARNING_NET.md`, generated map
 `docs/curriculum/LEARNING_NET_MAP.md`). Every « أستعدّ » shows « راجع قبل أن تنطلق » from the net. The resolver is
 imported by path or by `import()`, never from the core barrel.
+Since 2026-11-17 a link of the net carries a **weight**: `core` (a student cannot pass the exercises of the new الكفاءة while failing
+the old one) or `support` (it helps or serves a proof; `weightNote` says why). All links into 4AM are classified (`WEIGHTED_GRADES`;
+review table `docs/curriculum/LEARNING_NET_WEIGHTS_4AM.md`, generated); `toolsForLesson(code)` gives a lesson's prerequisites core first.
+A test forbids the lessons' own prerequisites (`prerequisiteLessonCodes`, `pointPrerequisites`) to contradict the net, except a closed
+list of known gaps (`LEARNING_NET.md` §2.2bis, §7bis, §8bis). After editing a link: `npm run generate:learning-net`.
 
 Since 2026-10-14 (rollout phase 2) **1AM, 2AM and 3AM are active grades**. Their 196 lessons (39 units, 523 draft
 الكفاءات) are catalogue entries `coming_soon` in `dz/{lessons,units,programme}_<g>_2026_2027.json`:

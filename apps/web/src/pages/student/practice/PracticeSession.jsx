@@ -44,6 +44,8 @@ import Medal from '../../../features/practice/medals/Medal';
 import MedalTray from '../../../features/practice/medals/MedalTray';
 import MedalCelebration from '../../../features/practice/medals/MedalCelebration';
 import { playMedal } from '../../../features/practice/medals/medalSound';
+import { isCoachLesson } from '../../../features/practice/exam/examCoach';
+import { useExamCoach, ExamHall, CoachStrip, CoachAfter } from '../../../features/practice/exam/ExamCoach';
 import { medalFor, medalReason, tally } from '../../../features/practice/exam/medals';
 import { useEffectsPreference } from '../../../lessons/common/hooks/useEffectsPreference';
 import WorkArea, { MIN_WORK_CHARS, workLength, ZoneNumber } from '../../../features/practice/exam/WorkArea';
@@ -288,6 +290,9 @@ export default function PracticeSession() {
   const question = exercise?.questions?.[questionIndex] ?? null;
   // Une clé par question d'UN exercice (l'id de question « q1 » se répète d'un exercice à l'autre).
   const questionKey = `${exercise?.id ?? ''}:${question?.id ?? questionIndex}`;
+  // « مدرّب الامتحان » (pilot lessons, features/practice/exam/ExamCoach.jsx): the hall, the two modes, the paper notebook.
+  // Declared here, before any early return (rules of hooks).
+  const coach = useExamCoach(lessonCode, Boolean(exercise) && isExamExercise(exercise));
 
   // Le titre de l'exercice, AUGMENTÉ du numéro de question :
   //   « تمرين 2 — القسمة على 6 »  →  « تمرين 2 — السؤال 1 : القسمة على 6 »
@@ -437,7 +442,7 @@ export default function PracticeSession() {
         const medal = data?.recorded === false ? null : medalFor(facts);
         if (medal) {
           setAward({ id: Date.now(), medal, reason: medalReason(facts) });
-          playMedal(medal, soundOn);
+          playMedal(medal, soundOn && !isCoachLesson(lessonCode)); // « مدرّب الامتحان »: an exam is silent
           setLessonMedals((prev) => {
             const total = { ...(prev?.total ?? { gold: 0, silver: 0, bronze: 0, points: 0 }) };
             total[medal] += 1;
@@ -747,6 +752,7 @@ export default function PracticeSession() {
       data-answer-size={isExam ? size : undefined}
       style={isExam ? { '--answer-ch': answerChars(question) } : undefined}
     >
+      {coach.on && <CoachStrip coach={coach} />}
       {/* « مراحل الحساب » au-dessus de la ligne de réponse, sur toute la largeur. */}
       {isExam && question.work && (
         <div className="w-full basis-full">
@@ -865,7 +871,11 @@ export default function PracticeSession() {
     {/* Le corrigé type se MÉRITE (propriétaire, 2026-10-06) : seulement après
         une vraie tentative. Une saisie illisible (`syntax_error`) ou vide
         n'ouvre rien. */}
-    {answered && !isSelfCheck && !isInertOutcome(evaluation.outcome) && question.solution && (!isExam || solutionReady(exercise.questions, questionIndex, questionIndex)) && <SolutionPanel solution={question.solution} onReveal={() => setSolutionSeenFor(questionKey)} />}
+    {/* Feuille coachée : le corrigé replié laisse la place au coach — « أرشدني » ne montre JAMAIS la réponse, « اشرح لي » la raconte pas à pas. */}
+    {coach.on && answered && !isSelfCheck && !isInertOutcome(evaluation.outcome) && !selfPending && !reviewPending && (
+      <CoachAfter key={`coach-${questionKey}-${coach.mode}`} coach={coach} lessonCode={lessonCode} question={question} isCorrect={evaluation.isCorrect} why={question.feedback?.incorrect ?? ''} onReveal={() => setSolutionSeenFor(questionKey)} />
+    )}
+    {!coach.on && answered && !isSelfCheck && !isInertOutcome(evaluation.outcome) && question.solution && (!isExam || solutionReady(exercise.questions, questionIndex, questionIndex)) && <SolutionPanel solution={question.solution} onReveal={() => setSolutionSeenFor(questionKey)} />}
 
     {/* La correction de l'enseignant : son avis attendu sur une réponse déjà
         jugée, ou son verdict et son commentaire arrivés. */}
@@ -878,7 +888,8 @@ export default function PracticeSession() {
         réponse est enregistrée et verrouillée, le corrigé type est visible :
         pas de « أعد المحاولة ». */}
     {/* Corrigé type ouvert : la réponse est sous les yeux — la retaper ne prouverait rien. */}
-    {answered && !evaluation.isCorrect && !isSelfCheck && !isExam && solutionSeenFor !== questionKey && (
+    {/* « أرشدني فقط » : la réponse n'a pas été montrée — l'élève réessaie lui-même, même sur une feuille d'examen. */}
+    {answered && !evaluation.isCorrect && !isSelfCheck && (!isExam || (coach.on && coach.mode === 'guide')) && solutionSeenFor !== questionKey && (
       <button type="button" disabled={busy} onClick={retry} className={SECONDARY_BUTTON} data-retry>
         <RotateCcw className="h-4 w-4" aria-hidden="true" />
         {t('practice.retry')}
@@ -1174,6 +1185,8 @@ export default function PracticeSession() {
                   </button>
                 </nav>
               </div>
+              {/* « قاعة الامتحان » : la porte de la feuille — avant la première étape (leçons pilotes du coach). */}
+              {coach.on && !coach.entered && <ExamHall coach={coach} title={exercise.metadata?.title ?? ''} />}
               <ExamSheet
               ref={cardRef}
               exercise={exercise}

@@ -1,0 +1,343 @@
+{
+ "_": "Shared by apps/web (evidence.test.js) and apps/api (GameEvidenceTest): the two verifiers must give the same verdict on every case.",
+ "cases": [
+  {
+   "claim": {
+    "kind": "division",
+    "a": 143,
+    "b": 11,
+    "q": 13,
+    "r": 0,
+    "fits": true
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "division",
+    "a": 143,
+    "b": 11,
+    "q": 13,
+    "r": 0,
+    "fits": false
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "division",
+    "a": 143,
+    "b": 11,
+    "q": 12,
+    "r": 11,
+    "fits": false
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "division",
+    "a": 756,
+    "b": 32,
+    "q": 23,
+    "r": 20,
+    "fits": false
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "division",
+    "a": 756,
+    "b": 32,
+    "q": 23,
+    "r": 20,
+    "fits": true
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "division",
+    "a": 756,
+    "b": 32,
+    "q": 22,
+    "r": 52,
+    "fits": false
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "division",
+    "a": 756,
+    "b": 36,
+    "q": 21,
+    "r": 0,
+    "fits": true
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "division",
+    "a": 756,
+    "b": 36,
+    "q": 20,
+    "r": 0,
+    "fits": true
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "division",
+    "a": 10,
+    "b": 0,
+    "q": 0,
+    "r": 10,
+    "fits": false
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "division",
+    "a": 10,
+    "b": 3,
+    "q": -1,
+    "r": 13,
+    "fits": false
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "product",
+    "a": 120,
+    "b": 6,
+    "q": 20,
+    "other": 20
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "product",
+    "a": 120,
+    "b": 6,
+    "q": 20,
+    "other": 10
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "product",
+    "a": 120,
+    "b": 6,
+    "q": 20,
+    "other": 6
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "product",
+    "a": 120,
+    "b": 6,
+    "q": 20,
+    "other": 7
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "product",
+    "a": 120,
+    "b": 6,
+    "q": 19,
+    "other": 20
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "product",
+    "a": 36,
+    "b": 6,
+    "q": 6,
+    "other": 6
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "product",
+    "a": 120,
+    "b": 6,
+    "q": 20,
+    "other": 0
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "phrase",
+    "a": 120,
+    "b": 6,
+    "first": 6,
+    "phrase": "qasim"
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "phrase",
+    "a": 120,
+    "b": 6,
+    "first": 6,
+    "phrase": "yaqsim"
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "phrase",
+    "a": 120,
+    "b": 6,
+    "first": 6,
+    "phrase": "mudaaf"
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "phrase",
+    "a": 120,
+    "b": 6,
+    "first": 120,
+    "phrase": "mudaaf"
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "phrase",
+    "a": 120,
+    "b": 6,
+    "first": 120,
+    "phrase": "yaqbal"
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "phrase",
+    "a": 120,
+    "b": 6,
+    "first": 120,
+    "phrase": "qasim"
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "phrase",
+    "a": 120,
+    "b": 6,
+    "first": 6,
+    "phrase": "other"
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "sure",
+    "a": 97,
+    "x": 1,
+    "y": 97
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "sure",
+    "a": 97,
+    "x": 97,
+    "y": 1
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "sure",
+    "a": 97,
+    "x": 1,
+    "y": 7
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "sure",
+    "a": 97,
+    "x": 97,
+    "y": 97
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "containers",
+    "a": 185,
+    "b": 30,
+    "count": 7
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "containers",
+    "a": 185,
+    "b": 30,
+    "count": 6
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "containers",
+    "a": 180,
+    "b": 30,
+    "count": 6
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "containers",
+    "a": 180,
+    "b": 30,
+    "count": 7
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "containers",
+    "a": 44,
+    "b": 8,
+    "count": 6
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "unknown",
+    "a": 1
+   },
+   "ok": false
+  }
+ ]
+}

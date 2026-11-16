@@ -253,6 +253,8 @@ Route::prefix('v1')->group(function () {
             // leçon, tous les modules ouverts, sans jamais y écrire une ligne.
             Route::middleware('learner')->group(function () {
                 Route::post('/lessons/{lessonCode}/evidence', [LearningEvidenceController::class, 'store']);
+                // le monde de jeu d'une leçon : le serveur RECALCULE le verdict (GameEvidenceController, 2026-11-15)
+                Route::post('/lessons/{lessonCode}/game-evidence', [\App\Http\Controllers\GameEvidenceController::class, 'store']);
                 Route::put('/lessons/{lessonCode}/progress', [LessonProgressController::class, 'upsert']);
                 // les réponses de l'élève pendant la leçon : à LUI seul (StudentLessonAnswersController, pilote 2026-11-07)
                 Route::get('/lessons/{lessonCode}/answers', [StudentLessonAnswersController::class, 'show']);
