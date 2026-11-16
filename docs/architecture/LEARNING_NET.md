@@ -33,7 +33,7 @@ The net solves four problems with one structure:
 | Layer | File | Holds | Edited when |
 |---|---|---|---|
 | Official programme | `packages/core/curriculum/dz/net/official_programme_moyen.json` | 4 grades × 7 مقاطع (`segments`), **224 items**, verbatim, with the source page | a transcription error is found (never to "improve" wording) |
-| The net | `packages/core/curriculum/dz/net/learning_net_moyen.json` | 17 `threads`, **353 `links`** between items | a link is added, corrected or removed |
+| The net | `packages/core/curriculum/dz/net/learning_net_moyen.json` | 17 `threads`, **369 `links`** between items (2026-11-17), those into 4AM carrying a **weight** (§2.2bis) | a link is added, corrected or removed |
 | The lessons, four years | `packages/core/curriculum/dz/{lessons,units,programme}_<grade>_2026_2027.json` | every lesson and unit of 1AM–4AM, each lesson's `programmeItems`. 4AM: 74 lessons, all `available`. 1AM–3AM: **196 lessons** (157 + 39 syntheses) in **39 units**, all `coming_soon` until generated | a lesson is generated (published), added or re-scoped; a decomposition changes |
 
 Until 2026-10-14 the 1AM–3AM lessons lived in the net as `plannedUnits` / `plannedLessons`. Phase 2 moved them,
@@ -80,8 +80,10 @@ lazy: the lesson runtime (`kit/ReviewLinks.jsx`, static import) or a dynamic `im
 | `extends` | same notion further up the spiral: `to` **starts from** `from` and teaches only the added value | `addedValueAr` | the no-rebuild rule (§4), review links |
 | `consolidates` | the programme repeats `from`: `to` recalls and consolidates it (الإرساء), **never rebuilds it** | `noteAr` | the no-rebuild rule, review links |
 
-Counts on 2026-10-13: 312 `requires`, 31 `extends`, 10 `consolidates`. Links are **direct**: an item lists the
-step just below it, never the whole staircase.
+Counts on 2026-11-17: 328 `requires`, 31 `extends`, 10 `consolidates` (312 / 31 / 10 on 2026-10-13). Links are meant to be
+**direct**: an item lists the step just below it, never the whole staircase. This is a writing rule, not a tested one: 36
+links join two items that another path already joins (audit of 2026-11-17). Most are true direct needs (the Euclidean division
+is needed by « قاسم » itself, not only through the divisibility rules), so no automatic rule removes them.
 
 Invariants, from `learningNet.test.js`:
 
@@ -156,6 +158,35 @@ All lessons live in `lessons_<grade>_*.json`. The resolver reports `status: 'ava
 - **Home lesson** of an item: the first lesson in curriculum order (grade, then `order`) that declares it, synthesis
   excluded. A struggling student is sent there.
 
+### 2.2bis The weight of a link — core / support (2026-11-17)
+
+Owner, 2026-11-16: the tracking must tell a problem in a prerequisite from a problem in the new idea, and a strong result on
+a الكفاءة that **leans heavily** on others must update them. All links weighing the same, neither is possible. Since 2026-11-17 a
+link may carry a weight, whatever its type:
+
+```json
+{ "from": "3am.m4.r03", "to": "4am.m1.r06", "type": "requires", "weight": "support",
+  "weightNote": "Pythagoras is the situation that calls for the square root; its definition does not need it." }
+```
+
+| `weight` | The test | What it allows |
+|---|---|---|
+| `core` | a student **cannot pass the exercises of `to` while failing `from`** | `from` is measured first by a launch; it can be NAMED as the cause of a difficulty on `to`; a success on `to` lets `from` be deduced « يبدو ثابتًا » |
+| `support` | `from` helps, explains or serves a proof, but `to` can be passed without it — `weightNote` (English, one sentence) says why | measured after the core ones; never named as a cause; **nothing is deduced through it** |
+
+- **Classified year by year.** `WEIGHTED_GRADES` (`['4am']` today) lists the grades whose incoming links are ALL classified —
+  the links into their items, and into the items of another year that their lessons teach (the recall lesson `muadala-ula`
+  → `3am.m5.r06`). On 2026-11-17: **122 links classified, 85 core and 37 support**; the 1AM–3AM links are classified when
+  their lessons get a launch. An unclassified link counts as core in `toolsForLesson` (a grade not yet classified loses no tool).
+- **Every الكفاءة of a classified grade keeps at least one core prerequisite** (tested): otherwise nothing could be named as a
+  cause.
+- **The owner reviews the weights** in the generated table `docs/curriculum/LEARNING_NET_WEIGHTS_4AM.md` (one block per lesson,
+  in the order of the book); a correction is an edit of the JSON, then `npm run generate:learning-net`.
+- **13 links were added with the weights** — needs the lessons state and the net did not: solving an inequality needs solving
+  a first-degree equation (`3am.m5.r06 → 4am.m3.r04`, core); twelve supports (the identities after the expansion, the linear
+  and affine functions after the equation, the affine function from two points after the system, the trigonometric ratios
+  after Thales, the sections and the enlargement after Thales and the sphere…).
+
 ## 3. Navigation — what the resolver gives
 
 | Function | Returns | Used by |
@@ -165,6 +196,9 @@ All lessons live in `lessons_<grade>_*.json`. The resolver reports `status: 'ava
 | `noRebuildForLesson(code)` | For each item that `extends`/`consolidates` an earlier one: the base, its home lesson and the added value | Lesson generation (§4) |
 | `earlierYearReviewFor({ learningPointCode, lessonCode })` | The review links of the learning point's lesson (or of `lessonCode` when the code is not a known LP), keeping only items from an **earlier year** | « راجع » after a wrong answer (`features/learning/EarlierYearReview.jsx`) |
 | `lessonCodeOfLearningPoint(lpCode)` | `{grade}_{lesson}_P{n}` → `lesson`, or `null` | the above |
+| `toolsForLesson(code, { max = 4 })` | The prerequisites a launch measures, in the order it measures them: core first, then support; at equal weight the nearest year first, then programme order. Flat: `[{ id, grade, segment, textAr, via, weight, lesson }]` | « عُدّة الانطلاق » (`launchkit/engine.js › planTools`), the review table |
+| `corePrerequisitesOf(itemId)`, `coreDependentsOf(itemId)` | One step along the core links, down and up | Planned: the automatic update and the diagnosis (`LAUNCH_KIT_PLAN_2026-11-17.md`, phase 3) |
+| `weightOf(link)`, `WEIGHTS`, `WEIGHTED_GRADES` | The weight of a link (`null` when not classified) | — |
 | `homeLessonOf(itemId)`, `lessonsOf(itemId)`, `linksInto`, `linksFrom`, `itemRank`, `getItem`, `getLesson`, `UNITS` | Primitives | — |
 
 **« راجع قبل أن تنطلق » (live since 2026-10-13).** `PrerequisiteDiagnostic`'s result screen renders
@@ -398,15 +432,17 @@ link must follow the textbook order of the LESSONS that own its two items; when 
   `addedValueAr`/`noteAr`, a second base, and a lesson-order contradiction.
 - **Re-scope a lesson:** edit `programmeItems` (published or planned). The coverage tests require every item to
   keep a home lesson, and every 4AM item a published one.
-- **Always regenerate the map and the queue:** `npm run generate:learning-net`. `npm run check:learning-net`, part
-  of `check:lessons`, fails while `LEARNING_NET_MAP.md`, `learning-net-map.html`, `GENERATION_QUEUE.md` or
-  `generation-queue.json` is stale.
+- **Weigh a link:** set `weight` (`core` / `support`) and, for a support, `weightNote`. A link INTO a classified grade must
+  have one (tested). Ask the one question of §2.2bis; when unsure, it is support.
+- **Always regenerate the map, the weights table and the queue:** `npm run generate:learning-net`. `npm run
+  check:learning-net`, part of `check:lessons`, fails while `LEARNING_NET_MAP.md`, `learning-net-map.html`,
+  `LEARNING_NET_WEIGHTS_4AM.md`, `GENERATION_QUEUE.md` or `generation-queue.json` is stale.
 
 ## 6. Validation
 
 | Gate | What it checks |
 |---|---|
-| `packages/core/curriculum/dz/net/learningNet.test.js` (19 tests) | items (format, uniqueness, official numbering), links (existence, direction, acyclicity, `extends`/`consolidates` fields, one base), threads (partition), lessons (every item homed, 4AM fully covered by published lessons, closed recall list, unique codes, every unit of every grade ends with its synthesis, no planned layer left in the net, lesson order), resolver behaviour (review links, earlier-year review after an error) |
+| `packages/core/curriculum/dz/net/learningNet.test.js` (25 tests; since 2026-11-17 also: every link into a classified grade has a weight and a support says why, every الكفاءة of such a grade has a core prerequisite, the order of a lesson's tools, and **the catalogue does not contradict the net** — §8bis) | items (format, uniqueness, official numbering), links (existence, direction, acyclicity, `extends`/`consolidates` fields, one base), threads (partition), lessons (every item homed, 4AM fully covered by published lessons, closed recall list, unique codes, every unit of every grade ends with its synthesis, no planned layer left in the net, lesson order), resolver behaviour (review links, earlier-year review after an error) |
 | `packages/core/curriculum/coursesData.test.js` | the five grades; `lessonCount` counts published lessons; 1AM–3AM lessons all `coming_soon` with no routable path; their 524 LP ids; prerequisites exist and precede |
 | `apps/api/tests/Feature/MoyenComingSoonImportTest.php` | coming_soon imported `draft` with its LPs; cross-year lesson prerequisite; publishing opens without touching the tier; admin authority kept; no recommendation to a draft prerequisite |
 | `npm run check:learning-net` (in `check:lessons`) | the generated maps and the generation queue are up to date; the queue also fails if a planned lesson is missing from it |
@@ -427,7 +463,60 @@ link must follow the textbook order of the LESSONS that own its two items; when 
 - **Review links show planned lessons as text, not as hidden.** Telling a 4AM student "revise فيثاغورس, 3AM" is
   useful even before that lesson exists.
 
+## 7bis. Three prerequisite graphs, one authority each (2026-11-17)
+
+The catalogue holds three descriptions of « what needs what ». They are not three opinions: each has its grain and its job,
+and a test forbids them to contradict each other.
+
+| Grain | Where | Authority for | Read by |
+|---|---|---|---|
+| الكفاءة of the programme (224 items) | the net, `learning_net_moyen.json` | **dependencies across the four years**, and the weights | « أستعدّ » review links, « بوصلتي », « عُدّة الانطلاق », the generation queue |
+| lesson | `prerequisiteLessonCodes` in `lessons_<g>_*.json` | the order in which lessons open; the database's lesson prerequisites | curriculum sync, recommendations |
+| learning point (`<g>_<lesson>_P<n>`) | `pointPrerequisites` in the same files | the fine steps INSIDE a lesson and between neighbouring lessons | Mastery V2 (`learning_point_prerequisites`), the teacher's insights |
+
+**The rule that holds them together (tested):** when a lesson declares that it needs another lesson — at the lesson grain or
+through a learning point — the net must say so too: an item of the needed lesson is an ancestor of an item of the lesson, or
+the two share an item. 390 pairs are checked. The pairs the net does not explain are a **closed list with a reason each**
+(`learningNet.test.js › KNOWN`, seven pairs on 2026-11-17): a new gap fails the test, a solved one must leave the list.
+
 ## 8. Open items
+
+### 8bis. Known gaps between the catalogue and the net (audit of 2026-11-17)
+
+Eleven lesson pairs were unexplained by the net after the 13 links added that day. **Four were false prerequisites and were
+corrected the same day (owner: « yes »)**; seven remain, a closed list in the test.
+
+**Corrected — the book's sequence.** The 4AM catalogue had chained four lessons to the one before them, with no mathematical
+need. These chips are shown to students (« راجع », `PrerequisiteLessonChips`) and imported as lesson prerequisites: a student
+weak on the sphere was sent to the regular polygons. Each was replaced by the lessons of the lesson's CORE prerequisites in
+the net (the established pattern for a cross-year prerequisite: a chip, never a lock; text only while the lesson is unpublished):
+
+| Lesson | Was | Now |
+|---|---|---|
+| `insihab-shuaa` | `tarrid-muthallathiya` | `suwar-ashkal-insihab` (3AM) |
+| `murakkibata-shuaa` | `barahin-ashia` | `insihab-shuaa`, `talim-nuqta-mustawi` (2AM) |
+| `kura-julla` | `mudalaat-muntazama` (and the edge `P1 ← 4am_mudalaat-muntazama_P1`, removed) | `daira-mustalahat` (1AM) |
+| `zawiya-muhitiya` | `khawas-dawaran` | `daira-mustalahat`, `mudallaat-zawiya` (1AM) |
+
+The local database was synced (`smarter:import-curriculum`: 4 lesson prerequisites, 1 learning-point prerequisite); production
+gets it at the next sync.
+
+**Remaining — seven pairs:**
+
+| Pairs | Kind | What it means |
+|---|---|---|
+| `mafhum-dawaran ← insihab-shuaa`, `zawiya-muhitiya ← mafhum-dawaran` | an analogy | a transformation after another, the angle at the centre and the angle of a rotation: context, not a need |
+| `tahlil-ibara ← mutatabiqat-shahira`, `tarrid-taalufi ← mafhum-taalufiya`, `tarrid-taalufi ← tamthil-bayani-taalufi` | **grain** | one programme item is taught by lessons on BOTH sides of another lesson (`4am.m3.r02` covers expanding, before the identities, and factoring, after; `4am.m5.r12–r13` cover the linear and the affine problem lessons). The item grain cannot say it; the learning-point grain does |
+| `muadala-ula ← nashr-tabsit` | the recall lesson | it carries a 3AM item; a 4AM → 3AM link would go back in time |
+| `muqarana-kasrayn ← jam-tarh-kusur` (2AM) | a contradiction | the lesson says comparing needs adding, the net says adding needs comparing (`2am.m1.r08 → 2am.m1.r09`): to settle when 2AM is classified |
+
+What the grain gaps teach: **65 items are taught by more than one lesson (one by six) and 69 lessons teach more than one
+item.** A level measured on an item cannot always be pinned on one lesson; the home lesson (the first that teaches it) is
+where a student is sent. This is why the picture of a الكفاءة planned for « عُدّة الانطلاق » keeps the learning-point level,
+measured by the exercises, as its first source, and uses the item grain for the years where the student has no exercise yet.
+
+### 8ter. Other open items
+
 
 - **Not verified.** The transcription has not been re-read against the PDFs by a second reader (`verified: false`).
 - **1AM–3AM decomposition and الكفاءات are drafts** (`decisionStatus: "draft"`) until the owner validates them.

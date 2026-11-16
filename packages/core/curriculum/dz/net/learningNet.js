@@ -135,8 +135,11 @@ const describeLesson = (lesson) =>
  * que la leçon enseigne elle-même, et ceux dont la leçon d'accueil est cette
  * leçon. Groupé par leçon d'accueil, du plus ancien au plus récent.
  *
+ * Chaque item porte le POIDS du lien (`weight` : 'core' | 'support' | null si le lien
+ * n'est pas encore classé — voir WEIGHTED_GRADES).
+ *
  * @returns {Array<{ lesson: {code, grade, titleAr, status} | null,
- *                   items: Array<{id, grade, segment, textAr, via}> }>}
+ *                   items: Array<{id, grade, segment, textAr, via, weight}> }>}
  */
 export function reviewLinksForLesson(code) {
   const lesson = lessonByCode.get(code);
@@ -145,10 +148,12 @@ export function reviewLinksForLesson(code) {
   const found = new Map();
   for (const itemId of lesson.programmeItems) {
     for (const link of linksInto(itemId)) {
-      if (own.has(link.from) || found.has(link.from)) continue;
+      if (own.has(link.from)) continue;
+      // un item atteint par deux liens garde le plus fort : « core » l'emporte
+      if (found.has(link.from)) { if (link.weight === 'core') found.get(link.from).weight = 'core'; continue; }
       const home = homeLessonOf(link.from);
       if (home?.code === code) continue;
-      found.set(link.from, { ...describeItem(link.from), via: link.type, home });
+      found.set(link.from, { ...describeItem(link.from), via: link.type, weight: link.weight ?? null, home });
     }
   }
   const groups = new Map();
@@ -160,6 +165,44 @@ export function reviewLinksForLesson(code) {
   }
   return [...groups.values()];
 }
+
+/**
+ * LE POIDS D'UN LIEN (2026-11-17, propriétaire : « ce qui dépend LOURDEMENT d'autre chose »).
+ *   core     on ne peut pas réussir les exercices de « to » en échouant sur « from » ;
+ *   support  « from » aide, éclaire ou sert une preuve, mais « to » se réussit sans lui (le lien dit pourquoi : `weightNote`).
+ * Le poids vaut pour les trois types de lien. Il décide : quels prérequis un lancement mesure d'abord, lequel peut être
+ * NOMMÉ comme cause d'une difficulté, et ce qu'une réussite sur « to » permet de DÉDUIRE (jamais à travers un lien support).
+ * Les liens sont classés année par année : `WEIGHTED_GRADES` liste les années dont TOUS les liens entrants sont classés —
+ * ceux de ses items, et ceux des items d'une autre année que ses leçons enseignent (leçon de rappel) (testé).
+ */
+export const WEIGHTS = ['core', 'support'];
+export const WEIGHTED_GRADES = ['4am'];
+export const weightOf = (link) => link.weight ?? null;
+
+/** Les prérequis DIRECTS d'un item par un lien « core » (un pas ; jamais la fermeture). */
+export function corePrerequisitesOf(itemId) {
+  return LINKS.filter((k) => k.to === itemId && k.weight === 'core').map((k) => k.from);
+}
+
+/** Les items que celui-ci porte DIRECTEMENT par un lien « core » : ce qu'une faiblesse ici met en danger. */
+export function coreDependentsOf(itemId) {
+  return LINKS.filter((k) => k.from === itemId && k.weight === 'core').map((k) => k.to);
+}
+
+/**
+ * Les OUTILS d'une leçon — les prérequis qu'un lancement (« عُدّة الانطلاق ») mesure, dans l'ordre où il les mesure :
+ * les « core » d'abord, puis les « support » ; à poids égal l'année la plus récente d'abord (le pas juste en dessous),
+ * puis l'ordre du programme. Au plus `max` (4 : cinq minutes). Un lien non classé compte comme « core » en attendant
+ * (une année non classée ne perd aucun outil).
+ *
+ * @returns {Array<{ id, grade, segment, textAr, via, weight, lesson: {code, grade, titleAr, status} | null }>}
+ */
+export function toolsForLesson(code, { max = 4 } = {}) {
+  const flat = reviewLinksForLesson(code).flatMap((group) => group.items.map((item) => ({ ...item, lesson: group.lesson })));
+  const heavy = (t) => (t.weight === 'support' ? 1 : 0);
+  return flat.sort((a, b) => heavy(a) - heavy(b) || itemRankGrade(b.id) - itemRankGrade(a.id) || itemRank(a.id) - itemRank(b.id)).slice(0, max);
+}
+const itemRankGrade = (id) => GRADE_ORDER[itemById.get(id).grade];
 
 /**
  * Où ce que la leçon enseigne SERT plus tard (liens sortants vers d'autres

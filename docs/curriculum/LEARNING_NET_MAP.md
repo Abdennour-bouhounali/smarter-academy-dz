@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **356** liens (315 requires, 31 extends, 10 consolidates) · **140** leçons publiées · **130** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **369** liens (328 requires, 31 extends, 10 consolidates) · **140** leçons publiées · **130** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -245,6 +245,7 @@ flowchart LR
   n_1am_m5_r08 ==>|يمدّد| n_3am_m5_r03
   n_3am_m5_r02 --> n_4am_m3_r01
   n_3am_m5_r02 ==>|يمدّد| n_4am_m3_r02
+  n_4am_m3_r02 --> n_4am_m3_r01
 ```
 
 Prérequis venus d’autres fils : `1am.m2.r08`, `2am.m1.r03`, `3am.m1.r08`, `3am.m1.r01`.
@@ -285,6 +286,7 @@ flowchart LR
   n_4am_m5_r01 --> n_4am_m5_r02
   n_4am_m3_r05 --> n_4am_m5_r02
   n_4am_m5_r01 --> n_4am_m5_r11
+  n_3am_m5_r06 --> n_4am_m3_r04
 ```
 
 Prérequis venus d’autres fils : `1am.m5.r10`, `1am.m5.r08`, `2am.m4.r06`, `3am.m1.r01`, `3am.m5.r01`, `4am.m3.r02`, `2am.m4.r03`, `3am.m5.r03`, `4am.m5.r08`.
@@ -366,9 +368,10 @@ flowchart LR
   n_4am_m5_r05 --> n_4am_m5_r13
   n_4am_m5_r03 --> n_4am_m5_r14
   n_3am_m7_r06 ==>|يمدّد| n_4am_m5_r14
+  n_4am_m5_r14 --> n_4am_m5_r12
 ```
 
-Prérequis venus d’autres fils : `1am.m1.r05`, `1am.m5.r01`, `1am.m5.r03`, `2am.m4.r04`, `3am.m5.r03`, `3am.m7.r04`.
+Prérequis venus d’autres fils : `1am.m1.r05`, `1am.m5.r01`, `1am.m5.r03`, `2am.m4.r04`, `3am.m5.r03`, `3am.m7.r04`, `3am.m5.r06`, `4am.m5.r01`, `4am.m1.r05`, `4am.m3.r05`.
 
 ### المقادير ووحداتها — `measures-units`
 
@@ -692,7 +695,7 @@ flowchart LR
   n_4am_m2_r02 --> n_4am_m2_r06
 ```
 
-Prérequis venus d’autres fils : `3am.m2.r03`, `2am.m6.r03`, `2am.m2.r01`, `3am.m4.r03`, `4am.m1.r07`.
+Prérequis venus d’autres fils : `3am.m2.r03`, `2am.m6.r03`, `2am.m2.r01`, `3am.m4.r03`, `4am.m1.r07`, `4am.m2.r01`.
 
 ### المجسّمات والهندسة في الفضاء — `solids`
 
@@ -766,6 +769,8 @@ flowchart LR
   n_2am_m7_r01 --> n_4am_m6_r09
   n_1am_m7_r01 --> n_4am_m6_r09
   n_3am_m6_r08 --> n_4am_m6_r10
+  n_4am_m6_r09 --> n_4am_m6_r10
+  n_4am_m6_r08 --> n_4am_m6_r10
 ```
 
 Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1am.m2.r10`, `1am.m2.r08`, `2am.m3.r06`, `2am.m3.r08`, `3am.m4.r03`, `4am.m2.r01`, `1am.m6.r07`.
@@ -1074,7 +1079,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | item | المورد المعرفي (نص البرنامج) | leçon d’accueil | repart de |
 |---|---|---|---|
 | `4am.m2.r01` | معرفة خاصية طالس واستعمالها في: (حساب أطوال ؛ إنجاز براهين ؛ إنشاءات هندسية بسيطة) | `talis-hisab-atwal` | `3am.m1.r08`، يمدّد `3am.m2.r03` |
-| `4am.m2.r02` | تعريف جيب وظل زاوية حادة في مثلث قائم. | `nisab-muthallathiya` | يمدّد `3am.m4.r07` |
+| `4am.m2.r02` | تعريف جيب وظل زاوية حادة في مثلث قائم. | `nisab-muthallathiya` | يمدّد `3am.m4.r07`، `4am.m2.r01` |
 | `4am.m2.r03` | استعمال الحاسبة لتعيين قيمة مقرّبة أو القيمة المضبوطة لكل من جيب وظل زاوية أو لتعيين قيس زاوية بمعرفة الجيب أو الظل. | `hasiba-muthallathiya` | `4am.m2.r02`، يمدّد `3am.m4.r08` |
 | `4am.m2.r04` | حساب زوايا وأطوال بتوظيف الجيب أو جيب التمام أو الظل. | `tarrid-muthallathiya` | `4am.m2.r03`، يمدّد `3am.m4.r09` |
 | `4am.m2.r05` | إنشاء زاوية هندسيا (بالمسطرة غير المدرّجة والمدور) بمعرفة القيمة المضبوطة لإحدى نسبها المثلثية. | `alaqat-muthallathiya` | `4am.m2.r02`، `2am.m2.r01` |
@@ -1084,10 +1089,10 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 
 | item | المورد المعرفي (نص البرنامج) | leçon d’accueil | repart de |
 |---|---|---|---|
-| `4am.m3.r01` | معرفة المتطابقات الشهيرة وتوظيفها في الحساب المتمعّن فيه وفي النشر والتحليل. | `mutatabiqat-shahira` | `3am.m5.r02` |
+| `4am.m3.r01` | معرفة المتطابقات الشهيرة وتوظيفها في الحساب المتمعّن فيه وفي النشر والتحليل. | `mutatabiqat-shahira` | `3am.m5.r02`، `4am.m3.r02` |
 | `4am.m3.r02` | نشر أو تحليل عبارات جبرية بسيطة. | `nashr-tabsit` | يمدّد `3am.m5.r02` |
 | `4am.m3.r03` | حل معادلة يؤول حلّها إلى حل «معادلة جداء معدوم». | `jidaa-maadum` | `4am.m3.r02`، `3am.m5.r06` |
-| `4am.m3.r04` | حلّ متراجحة من الدرجة الأولى بمجهول واحد وتمثيل مجموعة حلولها على مستقيم مدرّج. | `mutarajiha-ula` | `3am.m5.r05`، `2am.m4.r03` |
+| `4am.m3.r04` | حلّ متراجحة من الدرجة الأولى بمجهول واحد وتمثيل مجموعة حلولها على مستقيم مدرّج. | `mutarajiha-ula` | `3am.m5.r05`، `2am.m4.r03`، `3am.m5.r06` |
 | `4am.m3.r05` | حلّ مشكلات بتوظيف معادلات أو متراجحات من الدرجة الأولى بمجهول واحد. | `tarrid-mushkila` | `4am.m3.r03`، `4am.m3.r04`، يمدّد `3am.m5.r06` |
 
 #### المقطع 4 — الأشعة والانسحاب والمعالم (`4am.m4`, 4 أسابيع)
@@ -1106,18 +1111,18 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 
 | item | المورد المعرفي (نص البرنامج) | leçon d’accueil | repart de |
 |---|---|---|---|
-| `4am.m5.r01` | حلّ جملة معادلتين من الدرجة الأولى بمجهولين جبريا. | `mafhum-jumla` | `3am.m5.r06`، `3am.m5.r03`، `3am.m5.r05` |
+| `4am.m5.r01` | حلّ جملة معادلتين من الدرجة الأولى بمجهولين جبريا. | `mafhum-jumla` | `3am.m5.r06`، `3am.m5.r03`، `3am.m5.r05`، `4am.m3.r02` |
 | `4am.m5.r02` | حلّ مشكلات بتوظيف جملة معادلتين من الدرجة الأولى بمجهولين. | `mushkilat-jumla` | `4am.m5.r01`، `4am.m3.r05` |
-| `4am.m5.r03` | الدالة الخطية: (معرفة الترميز x ↦ ax ؛ تعيين صورة عدد بدالة خطية ؛ تعيين عدد صورته بدالة خطية معلومة ؛ تعيين دالة خطية انطلاقا من عدد غير معدوم وصورته) | `tanasub-muamil` | `3am.m7.r01`، `2am.m6.r03` |
+| `4am.m5.r03` | الدالة الخطية: (معرفة الترميز x ↦ ax ؛ تعيين صورة عدد بدالة خطية ؛ تعيين عدد صورته بدالة خطية معلومة ؛ تعيين دالة خطية انطلاقا من عدد غير معدوم وصورته) | `tanasub-muamil` | `3am.m7.r01`، `2am.m6.r03`، `3am.m5.r06`، `4am.m1.r05` |
 | `4am.m5.r04` | تمثيل دالة خطية بيانيا. | `tamthil-bayani-khatti` | `4am.m5.r03`، `3am.m7.r01` |
 | `4am.m5.r05` | قراءة التمثيل البياني لدالة خطية. | `tamthil-bayani-khatti` | `4am.m5.r04` |
 | `4am.m5.r06` | حساب معامل الدالة الخطية انطلاقا من تمثيلها البياني. | `tamthil-bayani-khatti` | `4am.m5.r05` |
-| `4am.m5.r07` | الدالة التآلفية: (معرفة الترميز x ↦ ax + b ؛ تعيين صورة عدد بدالة تآلفية ؛ تعيين عدد صورته بدالة تآلفية معلومة ؛ تعيين دالة تآلفية انطلاقا من عددين وصورتيهما) | `mafhum-taalufiya` | `4am.m5.r03`، `3am.m5.r03` |
+| `4am.m5.r07` | الدالة التآلفية: (معرفة الترميز x ↦ ax + b ؛ تعيين صورة عدد بدالة تآلفية ؛ تعيين عدد صورته بدالة تآلفية معلومة ؛ تعيين دالة تآلفية انطلاقا من عددين وصورتيهما) | `mafhum-taalufiya` | `4am.m5.r03`، `3am.m5.r03`، `3am.m5.r06`، `4am.m5.r01` |
 | `4am.m5.r08` | تمثيل دالة تآلفية بيانيا. | `tamthil-bayani-taalufi` | `4am.m5.r07`، `4am.m5.r04` |
 | `4am.m5.r09` | قراءة التمثيل البياني لدالة تآلفية. | `tamthil-bayani-taalufi` | `4am.m5.r08`، `4am.m5.r05` |
 | `4am.m5.r10` | تعيين المعاملين a و b انطلاقا من التمثيل البياني لدالة تآلفية. | `tamthil-bayani-taalufi` | `4am.m5.r09`، `4am.m5.r06` |
 | `4am.m5.r11` | تفسير حلّ جملة معادلتين من الدرجة الأولى بمجهولين بيانيا. | `tafsir-bayani-jumla` | `4am.m5.r01`، `4am.m5.r08` |
-| `4am.m5.r12` | تمثيل وقراءة وترجمة وضعية يتدخّل فيها مقدار معطى بدلالة مقدار آخر. | `tarrid-khatti` | `4am.m5.r05`، `3am.m7.r01` |
+| `4am.m5.r12` | تمثيل وقراءة وترجمة وضعية يتدخّل فيها مقدار معطى بدلالة مقدار آخر. | `tarrid-khatti` | `4am.m5.r05`، `3am.m7.r01`، `4am.m3.r05`، `4am.m5.r14` |
 | `4am.m5.r13` | إنجاز تمثيل بياني لوضعية يتدخّل فيها مقداران أحدهما معطى بدلالة الآخر وقراءته وتفسيره. | `tarrid-khatti` | `4am.m5.r12`، `4am.m5.r05` |
 | `4am.m5.r14` | حلّ مشكلات تتدخّل فيها النسبة المئوية أو المقادير المركّبة. | `tatbiqat-tanasub` | `4am.m5.r03`، `3am.m7.r04`، يمدّد `3am.m7.r06` |
 
@@ -1133,8 +1138,8 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | `4am.m6.r06` | التعرّف على الكرة والجلّة. | `kura-julla` | `1am.m2.r05`، `2am.m7.r04` |
 | `4am.m6.r07` | تمثيل الكرة. | `kura-julla` | `4am.m6.r06`، `1am.m7.r02` |
 | `4am.m6.r08` | حساب مساحة الكرة وحجم الجلّة. | `misaha-hajm-kura` | `4am.m6.r06`، `2am.m3.r08` |
-| `4am.m6.r09` | معرفة واستعمال المقاطع المستوية للمجسّمات المألوفة. | `maqati-mustawiya` | `4am.m6.r06`، `3am.m6.r04`، `2am.m7.r01`، `1am.m7.r01`، `3am.m4.r03` |
-| `4am.m6.r10` | معرفة الآثار على مساحة وحجم مجسّم عند تكبير أو تصغير أبعاد هذا المجسّم. | `takbir-tasghir` | `4am.m2.r01`، `3am.m6.r08`، يمدّد `1am.m6.r07` |
+| `4am.m6.r09` | معرفة واستعمال المقاطع المستوية للمجسّمات المألوفة. | `maqati-mustawiya` | `4am.m6.r06`، `3am.m6.r04`، `2am.m7.r01`، `1am.m7.r01`، `3am.m4.r03`، `4am.m2.r01` |
+| `4am.m6.r10` | معرفة الآثار على مساحة وحجم مجسّم عند تكبير أو تصغير أبعاد هذا المجسّم. | `takbir-tasghir` | `4am.m2.r01`، `3am.m6.r08`، يمدّد `1am.m6.r07`، `4am.m6.r09`، `4am.m6.r08` |
 
 #### المقطع 7 — الإحصاء (`4am.m7`, 3 أسابيع)
 
