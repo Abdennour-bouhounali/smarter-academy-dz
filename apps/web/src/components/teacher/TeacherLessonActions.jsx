@@ -26,7 +26,7 @@ export function LessonModuleChips({ lessonId }) {
             className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 py-0.5 pe-2.5 ps-0.5 text-xs text-slate-700"
             data-module-chip={m.number}
           >
-            <span dir="ltr" className="inline-flex h-5 min-w-[1.25rem] shrink-0 items-center justify-center rounded-full bg-teal-600 px-1 font-mono text-[11px] font-bold text-white">{m.number}</span>
+            <span dir="ltr" className="inline-flex h-5 min-w-[1.25rem] shrink-0 items-center justify-center rounded-full bg-nav-accent px-1 font-mono text-[11px] font-bold text-white">{m.number}</span>
             <span className="truncate">{m.title}</span>
           </li>
         ))}
@@ -58,7 +58,7 @@ export function TeacherLessonActions({ lesson }) {
         state={{ from: `${pathname}${search}` }}
         aria-label={t('lessonCard.memoAria', { title: lesson.title })}
         title={t('lessonCard.memoHint')}
-        className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border-2 border-teal-600 bg-white px-4 py-2 text-sm font-extrabold text-teal-800 hover:bg-teal-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
+        className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border-2 border-nav-accent bg-white px-4 py-2 text-sm font-extrabold text-nav-accent hover:bg-nav-page focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent focus-visible:ring-offset-2"
         data-lesson-memo-link={lesson.id}
       >
         <ClipboardList className="h-5 w-5" aria-hidden="true" /> {t('lessonCard.memo')}
@@ -70,7 +70,7 @@ export function TeacherLessonActions({ lesson }) {
         aria-label={t(door.session ? 'lessonCard.sessionAria' : 'lessonCard.classroomAria', { title: lesson.title })}
         title={t(door.session ? 'lessonCard.sessionHint' : 'lessonCard.classroomHint')}
         data-lesson-door={door.session ? 'session' : 'classroom'}
-        className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border-2 border-indigo-700 bg-indigo-600 px-4 py-2 text-sm font-extrabold text-white hover:bg-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+        className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border-2 border-nav-accent bg-nav-accent px-4 py-2 text-sm font-extrabold text-white hover:bg-[#3350c4] focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent focus-visible:ring-offset-2"
         data-lesson-classroom-link={lesson.id}
       >
         <GraduationCap className="h-5 w-5" aria-hidden="true" /> {t(door.session ? 'lessonCard.session' : 'lessonCard.classroom')}

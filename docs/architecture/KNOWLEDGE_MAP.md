@@ -542,6 +542,8 @@ the logo row (`top-4 -end-4`), with a 44 px hit area (`after:-inset-1.5`), shado
 accent on hover/focus (blue student, teal teacher), a chevron naming the action's direction
 (`DirectionalIcons`), `aria-expanded`, and an honest disabled state.
 
+> **Superseded on 2026-11-16:** the sidebar no longer folds. Both workspaces have a fixed 80 px rail (`components/common/WorkspaceNav.jsx`, `RAIL_WIDTH`) and `SidebarToggle` is deleted; the knowledge map's column sits beside the rail. See `docs/reports/NAVIGATION_REBUILD_PLAN.md` §0.
+
 **The teacher shell is the same workspace.** `TeacherLayout`'s `<main>` carries
 `.sa-workspace-main`, `--sa-sidebar-w`, `--sa-gutter-w` and `data-workspace-prior` like
 `StudentLayout`, and `TeacherNavbar` folds to icons (`w-20`) like `StudentNavbar`. Before

@@ -212,8 +212,8 @@ export const PAGE_TOURS = [
     path: '/enseignant',
     steps: [
       { id: 'welcome' },
-      { id: 'usage', target: '[data-tour="teacher-home.usage"]' },
-      { id: 'newClass', target: '[data-tour="teacher-home.classes"] [data-new-class]' },
+      { id: 'week', target: '[data-tour="teacher-home.week"]' },
+      { id: 'newClass', target: '[data-new-class]' },
       { id: 'classes', target: '[data-tour="teacher-home.classes"]' },
       { id: 'nav', target: NAV },
       { id: 'replay', target: REPLAY },

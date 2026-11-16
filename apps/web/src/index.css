@@ -441,6 +441,24 @@ svg [role="slider"]:focus-visible {
   }
 }
 
+/* THE RAIL of the student's and the teacher's space (`data-rail` on their <main>) appears at 768 px, tablet upright —
+   not at 1024 like the admin's and the school's sidebars: between the two widths these two shells reserve the rail and
+   have no bottom bar. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .sa-workspace-main[data-rail] {
+    padding-left: var(--sa-sidebar-w, 0px);
+  }
+
+  [dir="rtl"] .sa-workspace-main[data-rail] {
+    padding-left: var(--sa-gutter-w, 0px);
+    padding-right: var(--sa-sidebar-w, 0px);
+  }
+
+  body:has(.sa-workspace-main[data-rail]) {
+    --sa-bottom-nav: 0px;
+  }
+}
+
 /* Pendant un redimensionnement à la poignée, la gouttière doit suivre le
    pointeur À L'IMAGE PRÈS : une transition de 300ms ferait traîner le contenu
    derrière la carte. On la coupe le temps du geste (le panneau pose le
@@ -867,4 +885,11 @@ math-field.sa-exam-mathfield.sa-pad-mathfield::part(virtual-keyboard-toggle) { d
 /* Une règle du manuel enveloppée (PredictRule) puis SA brique : une seule « توقّعك ». */
 [data-predict-revealed] ~ [data-knowledge-brick] [data-predict-own] {
   display: none;
+}
+
+/* Between 768 and 1023 px the student's and the teacher's shells have the rail and no top bar: the plain surface is full height. */
+@media (min-width: 768px) {
+  .sa-workspace-main[data-rail] .sa-surface-plain {
+    min-height: 100dvh;
+  }
 }

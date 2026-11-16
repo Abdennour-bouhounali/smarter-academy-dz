@@ -65,10 +65,10 @@ export default function StudentResponsesPanel({ lessonCode, exerciseId, question
     <section className="rounded-2xl bg-white p-3.5 ring-1 ring-slate-200" aria-labelledby="student-responses-title" data-student-responses>
       <header className="mb-2 flex items-center justify-between gap-2">
         <h2 id="student-responses-title" className="flex items-center gap-1.5 text-sm font-bold text-slate-900">
-          <Users className="h-4 w-4 text-indigo-600" aria-hidden="true" /> {t('practice.responses.title')}
+          <Users className="h-4 w-4 text-nav-accent" aria-hidden="true" /> {t('practice.responses.title')}
         </h2>
         {data && (
-          <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-bold text-indigo-800" data-responses-count={data.total}>
+          <span className="rounded-full bg-nav-accent-soft px-2.5 py-0.5 text-xs font-bold text-nav-accent" data-responses-count={data.total}>
             {t('practice.responses.count', { count: data.total })}
           </span>
         )}

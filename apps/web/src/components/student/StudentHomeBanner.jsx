@@ -56,7 +56,7 @@ export default function StudentHomeBanner() {
 
           <Link
             to={continueCourse ? continueCourse.resumePath : gradeCatalogueLink}
-            className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-space font-bold text-sm text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm whitespace-nowrap"
+            className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-space font-bold text-sm text-white bg-nav-accent hover:bg-[#3350c4] transition-colors shadow-sm whitespace-nowrap"
           >
             {continueCourse ? <Play size={16} /> : null}
             {continueCourse ? t('studentBanner.continue') : grade ? t('studentBanner.seeMyCourses') : t('studentBanner.chooseMyGrade')}

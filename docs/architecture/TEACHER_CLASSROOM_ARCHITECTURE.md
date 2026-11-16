@@ -861,6 +861,8 @@ for the lesson instead of covering it (`KNOWLEDGE_MAP.md` « The column »).
 One side effect, intended: teacher pages get the student pages' 16 px top
 padding on desktop (`.sa-workspace-main .sa-page`):
 
+> **Superseded on 2026-11-16:** the sidebar no longer folds. Both workspaces have a fixed 80 px rail (`components/common/WorkspaceNav.jsx`, `RAIL_WIDTH`) and `SidebarToggle` is deleted; the knowledge map's column sits beside the rail. See `docs/reports/NAVIGATION_REBUILD_PLAN.md` §0.
+
 ```text
 /enseignant                      TeacherHome          usage tiles (UsageMeter, N / M in dir="ltr"), classes, next steps
 /enseignant/classes              ClassGroupList       « قسم جديد » opens ClassGroupForm in a centred Modal, on the page

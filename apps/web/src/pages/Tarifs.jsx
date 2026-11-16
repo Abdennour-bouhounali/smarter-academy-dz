@@ -113,7 +113,7 @@ export default function Tarifs() {
               </>
             ) : (
               <>
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-mono-jetbrains font-semibold uppercase tracking-wider mb-5">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-nav-accent-soft border border-blue-200 text-nav-accent text-xs font-mono-jetbrains font-semibold uppercase tracking-wider mb-5">
                   <Tag size={14} />
                   Tarifs
                 </div>
@@ -227,15 +227,15 @@ export default function Tarifs() {
             {isPremium ? (
               <>
                 Une question sur ta facturation ou ton accès ?{' '}
-                <Link to="/faq" className="text-blue-600 font-semibold hover:underline">Consulte la FAQ</Link>{' '}
-                ou <Link to="/contact" className="text-blue-600 font-semibold hover:underline">contacte-nous</Link>.
+                <Link to="/faq" className="text-nav-accent font-semibold hover:underline">Consulte la FAQ</Link>{' '}
+                ou <Link to="/contact" className="text-nav-accent font-semibold hover:underline">contacte-nous</Link>.
               </>
             ) : (
               <>
                 Le compte gratuit donne accès à 2 leçons complètes par niveau — la meilleure façon de
                 juger si Smarter Academy te convient avant de t'abonner. Des questions ?{' '}
-                <Link to="/faq" className="text-blue-600 font-semibold hover:underline">Consulte la FAQ</Link>{' '}
-                ou <Link to="/contact" className="text-blue-600 font-semibold hover:underline">contacte-nous</Link>.
+                <Link to="/faq" className="text-nav-accent font-semibold hover:underline">Consulte la FAQ</Link>{' '}
+                ou <Link to="/contact" className="text-nav-accent font-semibold hover:underline">contacte-nous</Link>.
               </>
             )}
           </p>

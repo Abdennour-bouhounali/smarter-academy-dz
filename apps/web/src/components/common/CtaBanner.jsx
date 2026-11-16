@@ -55,7 +55,7 @@ export default function CtaBanner({
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-space font-bold text-slate-900 bg-white hover:bg-slate-100 shadow-xl transition-all duration-300 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600"
               >
                 {resolvedPrimaryLabel}
-                <ArrowForward size={16} className="text-blue-600" />
+                <ArrowForward size={16} className="text-nav-accent" />
               </Link>
               {secondaryLabel && secondaryTo && (
                 <Link

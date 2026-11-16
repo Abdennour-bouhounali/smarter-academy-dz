@@ -27,7 +27,7 @@ export default function ReportTabs({ tab, onChange }) {
           aria-selected={tab === id}
           onClick={() => onChange(id)}
           className={`flex min-h-[44px] items-center justify-center gap-2 rounded-lg px-4 font-inter text-sm font-semibold transition ${
-            tab === id ? 'bg-white text-indigo-700 shadow-sm ring-1 ring-slate-200' : 'text-slate-600 hover:text-slate-900'
+            tab === id ? 'bg-white text-nav-accent shadow-sm ring-1 ring-slate-200' : 'text-slate-600 hover:text-slate-900'
           }`}
         >
           <Icon size={16} aria-hidden="true" />

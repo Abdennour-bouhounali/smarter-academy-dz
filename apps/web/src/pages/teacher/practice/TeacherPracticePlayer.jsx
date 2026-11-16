@@ -37,7 +37,7 @@ import MISCONCEPTIONS from '../../../../../../content/practice/misconceptions.js
 const { feedbackFor, isInertOutcome } = practice;
 
 // Les MÊMES boutons que le lecteur de l'élève (PracticeSession).
-const PRIMARY_BUTTON = 'inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 text-base font-bold text-white shadow-sm transition-colors hover:bg-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none motion-reduce:transition-none';
+const PRIMARY_BUTTON = 'inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl bg-nav-accent px-6 py-3 text-base font-bold text-white shadow-sm transition-colors hover:bg-[#3350c4] focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none motion-reduce:transition-none';
 // Tertiaire : texte + icône, sans fond — « السؤال السابق »، « التمرين السابق ».
 const TERTIARY_BUTTON = 'inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-lg px-3 text-sm font-bold text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 motion-reduce:transition-none';
 // Feuille d'examen : le petit « تحقّق » discret, comme côté élève.
@@ -129,7 +129,7 @@ export default function TeacherPracticePlayer() {
     return (
       <div className="sa-surface-plain sa-page sa-page--flush space-y-4 py-6 sm:py-8">
         <p className="rounded-xl border border-slate-200 bg-white p-6 text-center text-sm text-slate-500">{t('practice.notFound')}</p>
-        <Link to={hubPath} className="text-sm font-bold text-indigo-700 hover:underline">{ts('practice.backToLevels')}</Link>
+        <Link to={hubPath} className="text-sm font-bold text-nav-accent hover:underline">{ts('practice.backToLevels')}</Link>
       </div>
     );
   }
@@ -310,7 +310,7 @@ export default function TeacherPracticePlayer() {
                 type="button"
                 onClick={() => setShowExpected(true)}
                 disabled={!triedForReal}
-                className="inline-flex min-h-[40px] items-center gap-1.5 text-sm font-bold text-indigo-700 hover:underline disabled:cursor-not-allowed disabled:text-slate-400 disabled:no-underline"
+                className="inline-flex min-h-[40px] items-center gap-1.5 text-sm font-bold text-nav-accent hover:underline disabled:cursor-not-allowed disabled:text-slate-400 disabled:no-underline"
                 data-show-expected
               >
                 <Eye className="h-4 w-4" aria-hidden="true" /> {t('practice.showExpected')}
@@ -369,7 +369,7 @@ export default function TeacherPracticePlayer() {
       <ClassroomHidden><nav className="flex flex-wrap items-center justify-between gap-3" aria-label={ts('nav.breadcrumb', { ns: 'lesson' })}>
         <Link
           to={hubPath}
-          className="inline-flex min-h-[44px] items-center gap-2 whitespace-nowrap rounded-lg px-1 text-sm font-bold text-slate-700 hover:text-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+          className="inline-flex min-h-[44px] items-center gap-2 whitespace-nowrap rounded-lg px-1 text-sm font-bold text-slate-700 hover:text-nav-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
         >
           <ArrowBack className="h-4 w-4" aria-hidden="true" /> {ts('practice.backToLevels')}
         </Link>
@@ -401,7 +401,7 @@ export default function TeacherPracticePlayer() {
         <div className="min-w-0 space-y-3">
           <ClassroomHidden><header className="space-y-1" data-exercise-header>
             <p className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm font-semibold text-slate-600" data-exercise-level>
-              <span className="inline-flex items-center gap-1.5 font-bold text-indigo-700">
+              <span className="inline-flex items-center gap-1.5 font-bold text-nav-accent">
                 <BarChart3 className="h-4 w-4" aria-hidden="true" />
                 {ts('practice.levelLabel', { level })}{levelName ? ` · ${levelName}` : ''}
               </span>
@@ -467,7 +467,7 @@ export default function TeacherPracticePlayer() {
                 key={`${exerciseId}:${question.id}`}
                 aria-labelledby="teacher-question-heading"
                 data-current-question={index + 1}
-                className="relative overflow-hidden rounded-2xl border-s-4 border-indigo-600 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.06),0_10px_28px_-16px_rgba(15,23,42,0.22)] ring-1 ring-slate-200"
+                className="relative overflow-hidden rounded-2xl border-s-4 border-nav-accent bg-white shadow-[0_1px_2px_rgba(15,23,42,0.06),0_10px_28px_-16px_rgba(15,23,42,0.22)] ring-1 ring-slate-200"
               >
                 <header className="border-b border-indigo-100 bg-indigo-50/50 px-4 py-2.5 sm:px-5">
                   <SessionProgress

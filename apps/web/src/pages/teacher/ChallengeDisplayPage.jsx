@@ -82,7 +82,7 @@ function ChallengeDisplay() {
         <nav className="relative mt-5 flex flex-wrap gap-2" aria-label={t('display.title')}>
           {views.map((v, i) => (
             <button key={v} type="button" onClick={() => setView(v)} aria-pressed={current === v}
-              className={`min-h-[44px] rounded-full px-4 font-inter text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 ${current === v ? 'bg-indigo-600 text-white' : 'bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-100'}`}>
+              className={`min-h-[44px] rounded-full px-4 font-inter text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 ${current === v ? 'bg-nav-accent text-white' : 'bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-100'}`}>
               <span className="mx-1.5 font-mono-jetbrains text-xs opacity-60" dir="ltr">{i + 1}</span>{t(`display.views.${v}`)}
             </button>
           ))}

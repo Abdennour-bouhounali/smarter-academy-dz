@@ -2,99 +2,118 @@ import { forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Clock, Lock, Crown, EyeOff } from 'lucide-react';
+import { Crown } from 'lucide-react';
 import { ArrowForward } from '../common/DirectionalIcons';
 import { useLessonTileState } from './useLessonTileState';
+import { StatusDot, ProgressLine, minutesOf, tileKind } from './lessonTileParts';
 import MathLabel from '../../lessons/common/components/MathLabel';
 import PublicationBadge from '../content/PublicationBadge';
 
 /**
- * The single lesson-tile renderer shared by the public /courses catalogue
- * and the student area (Mes cours, Explorer) — one place for the
- * available/premium-locked/coming-soon visual states instead of three
- * near-identical inline copies drifting apart.
+ * THE LESSON CARD — the one tile of the catalogue (public /courses, « دروسي », « استكشاف », the teacher's lessons).
  *
- * The access tier comes ONLY from the server (`GET /content/availability`,
- * via ContentAvailabilityContext). The bundled catalogue carries no `tier`:
- * `lessons.tier` in the database is the single source of truth and the
- * administrator decides it. The card never computes free/premium itself.
+ * Four lines at most (owner, 2026-11-16: « small content »): where it sits (optional `eyebrow`), its NAME, ONE status
+ * line (what a tap does now, and how long the lesson is), and a thin progress line. No emoji, no paragraph: the
+ * description is the tooltip, and is read on the lesson's own page.
  *
- * Wrapped in forwardRef: callers render this directly inside
- * <AnimatePresence>, which attaches a ref to measure exit animations —
- * a plain function component can't accept that ref.
+ * The state comes from `useLessonTileState(lesson)`, shared with `LessonRow`:
+ *   open    → a link; « ابدأ » / « متابعة · 40 % » / « تمّ »;
+ *   locked  → paid AND outside this student's right: a link to the card-code page;
+ *   hidden  → closed by the teacher for this class: said in his words, no commercial lock;
+ *   soon    → not published or not written yet: named, never linked.
+ * The paid tier (`isPremiumLesson`) and the lock come ONLY from the server; the Premium mark stays on a paid lesson
+ * the student CAN open, so that paid content never reads as free.
+ *
+ * `forwardRef`: callers render it inside <AnimatePresence>, which needs the ref.
  */
+const MOTION = {
+  layout: true,
+  initial: { opacity: 0, scale: 0.97 },
+  animate: { opacity: 1, scale: 1 },
+  exit: { opacity: 0, scale: 0.97 },
+  transition: { duration: 0.2 },
+};
+const SHELL =
+  'group relative flex h-full min-h-[7.5rem] flex-col justify-between gap-3 overflow-hidden rounded-2xl border p-4';
+
 const LessonCard = forwardRef(function LessonCard({ lesson, onClick, eyebrow = null }, ref) {
   const { t } = useTranslation('common');
-  // Le catalogue vient du bundle ; la PUBLICATION vient du serveur. Une leçon
-  // retirée par l'administration retombe donc dans l'état « bientôt
-  // disponible » déjà géré plus bas — l'élève voit un message qu'il connaît,
-  // pas une carte cliquable qui le mènera à un refus.
-  // Publication, palier, droit d'accès, masquage par l'enseignant et
-  // progression : lus par `useLessonTileState`, partagé avec `LessonRow`.
-  //
-  // Une leçon retirée par l'administration retombe dans l'état « bientôt
-  // disponible » ; masquée par l'enseignant, elle le dit avec ses mots, sans
-  // cadenas commercial ni « bientôt ». Le palier ET le droit d'accès viennent
-  // du SERVEUR, jamais du bundle (lessons.tier est la seule source de vérité) :
-  //
-  //   premium → la leçon est payante (badge), que l'élève y ait accès ou non ;
-  //   locked  → payante ET hors du droit de CET élève (cadenas).
-  //
-  // Tant que la réponse n'est pas arrivée, les deux listes sont vides :
-  // politique d'ouverture identique au reste du contexte — et le serveur
-  // refuse de toute façon chaque écriture sur une leçon verrouillée.
   const { state, isPremiumLesson, progressPercent, publication } = useLessonTileState(lesson);
-  // Le contexte facultatif au-dessus du titre (« الوحدة 3 » dans la vue
-  // « كل الدروس »), là où la carte n'est plus rangée sous son unité.
-  const eyebrowLine = eyebrow
-    ? <div className="mb-1 text-[11px] font-semibold text-indigo-600">{eyebrow}</div>
-    : null;
+  const kind = tileKind(state, progressPercent);
+  const minutes = minutesOf(lesson.duration);
+  const muted = state === 'soon' || state === 'hidden';
+
+  const action = {
+    done: t('lessonDone'),
+    now: `${t('lessonContinue')} · ${progressPercent}%`,
+    start: t('lessonStart'),
+    locked: t('lockedCta', { ns: 'access' }),
+    hidden: t('hiddenByTeacherBadge', { ns: 'access' }),
+    soon: t('lessonComingSoonFooter'),
+  }[kind];
+
+  const body = (
+    <>
+      <div>
+        <div className="mb-1 flex min-h-[1.25rem] items-center justify-between gap-2">
+          <span className="min-w-0 truncate font-inter text-xs font-semibold text-nav-muted">{eyebrow}</span>
+          {isPremiumLesson && state !== 'hidden' && (
+            <span
+              className="sa-premium-badge flex-shrink-0"
+              title={state === 'locked' ? undefined : t('premiumHasAccess')}
+            >
+              <Crown size={10} aria-hidden="true" />
+              {t('premiumBadge')}
+            </span>
+          )}
+        </div>
+        <h4
+          className={`line-clamp-2 font-space text-base font-bold leading-snug ${muted ? 'text-nav-muted' : 'text-nav-ink'}`}
+        >
+          <MathLabel>{lesson.title}</MathLabel>
+        </h4>
+        {state === 'open' && <PublicationBadge status={publication} className="mt-1.5" />}
+      </div>
+      <div className="flex items-center gap-2 font-inter text-sm font-bold">
+        <StatusDot kind={kind} />
+        <span className={kind === 'done' ? 'text-nav-done' : muted ? 'text-nav-muted' : 'text-nav-ink'}>{action}</span>
+        {minutes != null && kind === 'start' && (
+          <span className="font-semibold text-nav-muted">· {t('lessonMinutes', { n: minutes })}</span>
+        )}
+        {!muted && (
+          <ArrowForward
+            size={16}
+            className="ms-auto text-nav-muted transition-transform group-hover:-translate-x-1 group-hover:text-nav-ink ltr:group-hover:translate-x-1"
+          />
+        )}
+      </div>
+      {state === 'open' && <ProgressLine percent={progressPercent} />}
+    </>
+  );
 
   if (state === 'hidden') {
     return (
-      <motion.div ref={ref} layout initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.2 }} className="bg-teal-50/40 rounded-2xl border border-teal-200/60 p-5 flex flex-col justify-between h-full" data-hidden-by-teacher={lesson.id}>
-        <div>
-          <div className="flex items-start justify-between gap-3 mb-4">
-            <span className="text-3xl grayscale opacity-60">{lesson.icon}</span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-teal-100 text-teal-800 font-mono-jetbrains text-[10px] font-semibold">
-              <EyeOff size={10} />
-              {t('hiddenByTeacherBadge', { ns: 'access' })}
-            </span>
-          </div>
-          {eyebrowLine}
-          <h4 className="font-space font-bold text-slate-700 text-lg mb-2"><MathLabel>{lesson.title}</MathLabel></h4>
-          <p className="font-inter text-slate-500 text-sm leading-relaxed line-clamp-2 mb-4">{t('hiddenByTeacherHint', { ns: 'access' })}</p>
-        </div>
-        <div className="pt-4 border-t border-teal-100 flex items-center justify-between text-xs font-mono-jetbrains text-slate-400 mt-auto">
-          <span className="flex items-center gap-1"><Clock size={14} /> <span dir="ltr">{lesson.duration}</span></span>
-        </div>
+      <motion.div
+        ref={ref}
+        {...MOTION}
+        className={`${SHELL} border-dashed border-nav-line bg-nav-page`}
+        title={t('hiddenByTeacherHint', { ns: 'access' })}
+        data-hidden-by-teacher={lesson.id}
+      >
+        {body}
       </motion.div>
     );
   }
 
   if (state === 'locked') {
     return (
-      <motion.div ref={ref} layout initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.2 }} className="h-full">
+      <motion.div ref={ref} {...MOTION} className="h-full">
         <Link
           to="/espace/activation"
-          className="sa-premium-card-locked group relative rounded-2xl border p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between h-full overflow-hidden"
+          className={`${SHELL} border-nav-line bg-white transition-shadow hover:shadow-md`}
+          title={lesson.description}
         >
-          <div>
-            <div className="flex items-start justify-between gap-3 mb-4">
-              <span className="text-3xl opacity-80 group-hover:scale-110 transition-transform origin-bottom-left">{lesson.icon}</span>
-              <span className="sa-premium-badge">
-                <Lock size={10} />
-                {t('premiumBadge')}
-              </span>
-            </div>
-            {eyebrowLine}
-          <h4 className="font-space font-bold text-slate-800 text-lg mb-2"><MathLabel>{lesson.title}</MathLabel></h4>
-            <p className="font-inter text-slate-500 text-sm leading-relaxed line-clamp-3 mb-4"><MathLabel>{lesson.description}</MathLabel></p>
-          </div>
-          <div className="pt-4 border-t border-violet-100 flex items-center justify-between mt-auto">
-            <span className="flex items-center gap-1 text-xs font-mono-jetbrains text-slate-500"><Clock size={14} /> <span dir="ltr">{lesson.duration}</span></span>
-            <span className="font-bold text-sm group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-transform flex items-center gap-1 text-violet-700">{t('lockedCta', { ns: 'access' })} <ArrowForward size={14} /></span>
-          </div>
+          {body}
         </Link>
       </motion.div>
     );
@@ -102,113 +121,22 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick, eyebrow = n
 
   if (state === 'open') {
     return (
-      <motion.div ref={ref} layout initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.2 }} className="h-full">
+      <motion.div ref={ref} {...MOTION} className="h-full">
         <Link
           to={lesson.path}
           onClick={onClick}
-          // Une leçon premium À LAQUELLE L'ÉLÈVE A ACCÈS reste une carte
-          // OUVERTE : même fond blanc, même « Commencer », même clic. Seule
-          // la bordure change, et c'est exactement l'intention — reconnaître
-          // le contenu payant sans le faire passer pour verrouillé.
-          className={`group relative bg-white rounded-2xl border p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between h-full overflow-hidden ${
-            isPremiumLesson
-              ? 'sa-premium-card'
-              : 'border-slate-200 hover:border-blue-300'
-          }`}
+          title={lesson.description}
+          className={`${SHELL} bg-white transition-shadow hover:shadow-md border-nav-line hover:border-nav-accent`}
         >
-          <div>
-            <div className="flex items-start justify-between gap-3 mb-4">
-              <span className="text-3xl group-hover:scale-110 transition-transform origin-bottom-left">{lesson.icon}</span>
-              {/* Le palier reste affiché quand l'élève A l'accès : « c'est du
-                  contenu premium, et mon compte y a droit » est une
-                  information utile, et masquer le badge dès que l'accès est
-                  ouvert ferait passer du payant pour du gratuit le jour où
-                  l'abonnement s'arrête. La progression, quand elle existe,
-                  prend la place — le badge passe alors sous le titre. */}
-              {isPremiumLesson && progressPercent === 0 ? (
-                <span className="sa-premium-badge" title={t('premiumHasAccess')}>
-                  <Crown size={10} />
-                  {t('premiumBadge')}
-                </span>
-              ) : progressPercent > 0 ? (
-                <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full font-mono-jetbrains text-[10px] font-bold ${progressPercent >= 100 ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'}`}>
-                  {progressPercent >= 100 ? '✓ ' : ''}{progressPercent}%
-                </span>
-              ) : lesson.isNew ? (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-mono-jetbrains text-[10px] font-bold">NOUVEAU</span>
-              ) : null}
-            </div>
-            {/* Une leçon d'EXTENSION n'est pas au programme officiel du niveau
-                (elle vient d'`extension_objects`, pas d'`official_objects`) :
-                l'élève doit le savoir avant de la commencer, et rien ne doit la
-                présenter comme officielle. */}
-            {/* Le relecteur (admin, سفير) voit le non-publié : la pastille
-                dit son état. Rien pour un contenu publié. */}
-            <PublicationBadge status={publication} className="mb-2" />
-            {eyebrowLine}
-            <div className="flex items-start justify-between gap-3">
-              {lesson.origin === 'extension' && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 mb-3 rounded-full bg-violet-50 border border-violet-200 text-violet-700 font-mono-jetbrains text-[10px] font-bold" title={t('bonusChapter')}>
-                  HORS PROGRAMME
-                </span>
-              )}
-            </div>
-            {/* La pastille dit le PALIER du contenu, pas le droit de l'élève.
-                Elle était verte et disait « Gratuit » sur TOUTE carte ouverte
-                — y compris sur une leçon payante ouverte par un abonnement.
-                Un abonné lisait donc « Gratuit » sur ce qu'il venait de payer,
-                et n'aurait rien compris à sa disparition à l'échéance. */}
-            <div className="flex items-center gap-2 mb-2">
-              <h4 className={`font-space font-bold text-slate-900 text-lg transition-colors ${
-                isPremiumLesson ? 'group-hover:text-violet-700' : 'group-hover:text-blue-600'
-              }`}><MathLabel>{lesson.title}</MathLabel></h4>
-              {isPremiumLesson ? (
-                <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-violet-500" title={t('premiumBadge')} />
-              ) : (
-                <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-emerald-500" title={t('freeBadge', { ns: 'access' })} />
-              )}
-            </div>
-            <p className="font-inter text-slate-500 text-sm leading-relaxed line-clamp-3 mb-4"><MathLabel>{lesson.description}</MathLabel></p>
-          </div>
-          <div className="pt-4 border-t border-slate-100 flex items-center justify-between mt-auto">
-            <span className="flex items-center gap-1 text-xs font-mono-jetbrains text-slate-500"><Clock size={14} /> <span dir="ltr">{lesson.duration}</span></span>
-            {/* La PROGRESSION prime sur le palier : « terminé » et « en cours »
-                sont ce que l'élève vient chercher, le palier n'est qu'une
-                étiquette. L'accent premium ne colore donc que le départ. */}
-            <span className={`font-bold text-sm group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-transform flex items-center gap-1 ${
-              progressPercent >= 100 ? 'text-emerald-600' : progressPercent > 0 ? 'text-blue-600' : isPremiumLesson ? 'text-violet-700' : 'text-blue-600'
-            }`}>
-              {progressPercent >= 100 ? t('lessonDone') : progressPercent > 0 ? t('lessonContinue') : t('lessonStart')} <ArrowForward size={14} />
-            </span>
-          </div>
-          {progressPercent > 0 && (
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-slate-100">
-              <div className={`h-full ${progressPercent >= 100 ? 'bg-emerald-500' : 'bg-blue-500'}`} style={{ width: `${progressPercent}%` }} />
-            </div>
-          )}
+          {body}
         </Link>
       </motion.div>
     );
   }
 
   return (
-    <motion.div ref={ref} layout initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.2 }} className="bg-slate-50/50 rounded-2xl border border-slate-200/50 p-5 flex flex-col justify-between opacity-75 h-full">
-      <div>
-        <div className="flex items-start justify-between gap-3 mb-4">
-          <span className="text-3xl grayscale opacity-50">{lesson.icon}</span>
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-200/50 text-slate-500 font-mono-jetbrains text-[10px] font-semibold">
-            <Lock size={10} />
-            {t('lessonComingSoonBadge')}
-          </span>
-        </div>
-        {eyebrowLine}
-          <h4 className="font-space font-bold text-slate-700 text-lg mb-2"><MathLabel>{lesson.title}</MathLabel></h4>
-        <p className="font-inter text-slate-400 text-sm leading-relaxed line-clamp-2 mb-4"><MathLabel>{lesson.description}</MathLabel></p>
-      </div>
-      <div className="pt-4 border-t border-slate-200/50 flex items-center justify-between text-xs font-mono-jetbrains text-slate-400 mt-auto">
-        <span className="flex items-center gap-1"><Clock size={14} /> <span dir="ltr">{lesson.duration}</span></span>
-        <span className="font-medium">{t('lessonComingSoonFooter')}</span>
-      </div>
+    <motion.div ref={ref} {...MOTION} className={`${SHELL} border-dashed border-nav-line bg-nav-page`}>
+      {body}
     </motion.div>
   );
 });

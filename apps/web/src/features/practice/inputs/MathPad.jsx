@@ -51,9 +51,9 @@ export default function MathPad({ keys, getField, disabled = false }) {
   };
 
   const tone = (key) => {
-    if (key.id === 'frac') return 'col-span-4 bg-indigo-600 text-white hover:bg-indigo-700 shadow-[0_3px_0_#3730a3]';
+    if (key.id === 'frac') return 'col-span-4 bg-nav-accent text-white hover:bg-[#3350c4] shadow-[0_3px_0_#3730a3]';
     if (key.kind === 'digit') return 'bg-white text-slate-900 ring-1 ring-slate-200 hover:bg-slate-50';
-    if (key.kind === 'symbol') return 'bg-indigo-50 text-indigo-900 ring-1 ring-indigo-200 hover:bg-indigo-100';
+    if (key.kind === 'symbol') return 'bg-nav-accent-soft text-indigo-900 ring-1 ring-indigo-200 hover:bg-indigo-100';
     return 'bg-slate-100 text-slate-700 ring-1 ring-slate-200 hover:bg-slate-200';
   };
 

@@ -74,7 +74,7 @@ export default function ParentLinkCard() {
   return (
     <section className="glass-card mb-5 p-6 sm:p-7" data-parent-link-card>
       <h2 className="flex items-center gap-2 font-space text-lg font-bold text-slate-900">
-        <Users size={18} className="text-indigo-600" aria-hidden="true" />
+        <Users size={18} className="text-nav-accent" aria-hidden="true" />
         {t('parentLink.title')}
       </h2>
       <p className="mt-1 font-inter text-sm text-slate-600">{t('parentLink.intro')}</p>
@@ -103,7 +103,7 @@ export default function ParentLinkCard() {
             </ul>
           </div>
           <button type="button" disabled={busy} onClick={() => run(() => createParentLink(token))}
-            className={`${btn} bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50 sm:col-span-2`} data-parent-link-create>
+            className={`${btn} bg-nav-accent text-white hover:bg-[#3350c4] disabled:opacity-50 sm:col-span-2`} data-parent-link-create>
             <Link2 size={16} aria-hidden="true" /> {t('parentLink.consent')}
           </button>
         </div>
@@ -121,10 +121,10 @@ export default function ParentLinkCard() {
             </div>
             <p dir="ltr" className="select-all truncate rounded-lg bg-white px-3 py-2 text-start font-mono text-xs text-slate-700">{link.url}</p>
             <div className="flex flex-wrap gap-2">
-              <button type="button" onClick={share} className={`${btn} bg-indigo-600 text-white hover:bg-indigo-700`}>
+              <button type="button" onClick={share} className={`${btn} bg-nav-accent text-white hover:bg-[#3350c4]`}>
                 <Share2 size={16} aria-hidden="true" /> {t('parentLink.share')}
               </button>
-              <button type="button" onClick={copy} className={`${btn} border border-indigo-200 bg-white text-indigo-700 hover:bg-indigo-50`}>
+              <button type="button" onClick={copy} className={`${btn} border border-indigo-200 bg-white text-nav-accent hover:bg-nav-accent-soft`}>
                 <Copy size={16} aria-hidden="true" /> {copied ? t('parentLink.copied') : t('parentLink.copy')}
               </button>
             </div>
@@ -141,7 +141,7 @@ export default function ParentLinkCard() {
             {!confirming ? (
               <div className="flex flex-wrap gap-x-4 gap-y-1">
                 <button type="button" disabled={busy} onClick={() => run(() => createParentLink(token))}
-                  className="inline-flex min-h-[44px] items-center gap-1.5 font-inter text-xs font-semibold text-indigo-700 hover:underline" title={t('parentLink.renewHint')}>
+                  className="inline-flex min-h-[44px] items-center gap-1.5 font-inter text-xs font-semibold text-nav-accent hover:underline" title={t('parentLink.renewHint')}>
                   <RefreshCw size={13} aria-hidden="true" /> {t('parentLink.renew')}
                 </button>
                 <button type="button" onClick={() => setConfirming(true)} className="min-h-[44px] font-inter text-xs font-semibold text-red-600 hover:underline">
@@ -163,7 +163,7 @@ export default function ParentLinkCard() {
         </div>
       )}
 
-      <Link to="/espace/profil/wali" className="mt-4 inline-flex items-center gap-1.5 font-inter text-sm font-semibold text-indigo-700 hover:underline">
+      <Link to="/espace/profil/wali" className="mt-4 inline-flex items-center gap-1.5 font-inter text-sm font-semibold text-nav-accent hover:underline">
         <Eye size={15} aria-hidden="true" />
         {t('student.seeWhatTheySee')}
       </Link>

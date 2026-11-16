@@ -177,7 +177,7 @@ export default function CommandPalette() {
                               onClick={() => executeCommand(cmd)}
                               className={`w-full flex items-center gap-3 px-4 py-2.5 text-start transition-all duration-100 ${
                                 selected === idx
-                                  ? 'bg-blue-50 text-blue-700'
+                                  ? 'bg-nav-accent-soft text-nav-accent'
                                   : 'text-slate-700 hover:bg-slate-50'
                               }`}
                             >

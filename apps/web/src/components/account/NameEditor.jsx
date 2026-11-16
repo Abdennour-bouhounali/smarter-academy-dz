@@ -24,7 +24,7 @@ export default function NameEditor({ tone = 'blue' }) {
 
   const accent = tone === 'teal'
     ? { text: 'text-teal-700', button: 'bg-teal-700 hover:bg-teal-800', icon: 'text-teal-600' }
-    : { text: 'text-blue-600', button: 'bg-blue-600 hover:bg-blue-700', icon: 'text-blue-500' };
+    : { text: 'text-nav-accent', button: 'bg-nav-accent hover:bg-[#3350c4]', icon: 'text-blue-500' };
 
   const startEditing = () => {
     setNames({ firstName: user?.firstName || '', lastName: user?.lastName || '' });

@@ -34,7 +34,7 @@ export default function ClassGroupList() {
       {loading && <Loading />}
       {error && <ErrorBox message={error} onRetry={reload} />}
       {data && (data.classrooms.length === 0 ? (
-        <div className="glass-card p-10 text-center">
+        <div className="rounded-2xl border border-nav-line bg-white p-10 text-center">
           <Users size={28} className="mx-auto mb-3 text-slate-300" />
           <p className="font-space font-bold text-slate-800">{t('home.noClassesTitle')}</p>
           <p className="mt-1 font-inter text-sm text-slate-500">{t('home.noClassesBody')}</p>

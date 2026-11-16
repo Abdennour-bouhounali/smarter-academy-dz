@@ -72,7 +72,7 @@ export default function CompleteName() {
     }
   };
 
-  const gradient = isTeacher ? 'linear-gradient(135deg, #0F766E, #14B8A6)' : 'linear-gradient(135deg, #3B82F6, #8B5CF6)';
+  const gradient = isTeacher ? 'linear-gradient(135deg, #0F766E, #14B8A6)' : '#3B5BDB';
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
@@ -88,7 +88,7 @@ export default function CompleteName() {
         <div className="w-14 h-14 mx-auto rounded-2xl flex items-center justify-center text-white mb-4" style={{ background: gradient }}>
           <UserRound size={26} />
         </div>
-        <p className={`text-xs font-semibold tracking-wide mb-2 ${isTeacher ? 'text-teal-700' : 'text-blue-600'}`}>
+        <p className={`text-xs font-semibold tracking-wide mb-2 ${isTeacher ? 'text-teal-700' : 'text-nav-accent'}`}>
           {t('name.stepEyebrow')}
         </p>
         <h1 className="font-space font-bold text-2xl sm:text-3xl text-slate-900">{t('name.stepTitle')}</h1>

@@ -1245,7 +1245,17 @@
       "challengeHint": "فكّر في طريقة الآن. بعد درس «{{title}}» تملك ما يكفي لحلّه.",
       "reviewLead": "تحتاج هذه الوحدة إلى ما يلي، راجعه إن نسيته:",
       "windowLabel": "تفاصيل"
-    }
+    },
+    "details": "التفاصيل",
+    "minutes": "{{n}} د",
+    "done": "تمّ",
+    "open": "افتح الدرس",
+    "about": "عن هذه الوحدة",
+    "pointsCount_one": "كفاءة واحدة",
+    "pointsCount_two": "كفاءتان",
+    "pointsCount_few": "{{count}} كفاءات",
+    "pointsCount_many": "{{count}} كفاءة",
+    "pointsCount_other": "{{count}} كفاءة"
   },
   "qism": {
     "metaTitle": "قسمي",

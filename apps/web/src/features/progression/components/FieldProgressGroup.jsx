@@ -60,9 +60,9 @@ export default function FieldProgressGroup({ field, defaultOpen = false, profile
           aria-expanded={open}
           aria-controls={panelId}
           aria-label={open ? t('progression.curriculum.collapseField') : t('progression.curriculum.expandField')}
-          className="w-full text-start p-4 sm:p-5 flex items-start gap-3 sm:gap-4 min-h-[64px] hover:bg-slate-50/70 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500"
+          className="w-full text-start p-4 sm:p-5 flex items-start gap-3 sm:gap-4 min-h-[64px] hover:bg-slate-50/70 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-nav-accent"
         >
-          <span className="inline-flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-slate-900 text-white font-space font-black text-lg" aria-hidden="true">
+          <span className="inline-flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-nav-accent text-white font-space font-black text-lg" aria-hidden="true">
             {field.number}
           </span>
           <span className="flex-1 min-w-0">

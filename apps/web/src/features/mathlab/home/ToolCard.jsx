@@ -37,7 +37,7 @@ export default function ToolCard({ tool, locked = false, scope = null, variant =
       aria-label={locked ? `${t(tool.labelKey)} — ${ta('feature.lockedLabel')}` : undefined}
     >
       <span className="flex items-start justify-between gap-2">
-        <span className={`inline-flex items-center justify-center rounded-xl bg-blue-50 text-blue-600 ${wide ? 'h-14 w-14' : 'h-12 w-12'}`}>
+        <span className={`inline-flex items-center justify-center rounded-xl bg-nav-accent-soft text-nav-accent ${wide ? 'h-14 w-14' : 'h-12 w-12'}`}>
           <Icon size={wide ? 28 : 24} aria-hidden="true" />
         </span>
         {locked && (
@@ -57,7 +57,7 @@ export default function ToolCard({ tool, locked = false, scope = null, variant =
         </span>
         <span className="block font-inter text-sm text-slate-500 mt-1">{t(descriptionKey)}</span>
       </span>
-      <span className={`inline-flex items-center gap-1.5 font-mono-jetbrains text-xs font-bold text-blue-600 group-hover:text-blue-700 ${wide ? 'sm:flex-none' : 'mt-auto'}`}>
+      <span className={`inline-flex items-center gap-1.5 font-mono-jetbrains text-xs font-bold text-nav-accent group-hover:text-nav-accent ${wide ? 'sm:flex-none' : 'mt-auto'}`}>
         {t(tool.newLabelKey)}
         <ArrowForward size={14} aria-hidden="true" />
       </span>

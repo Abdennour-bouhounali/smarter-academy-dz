@@ -26,11 +26,6 @@ export function describeMeter(meter) {
   };
 }
 
-/** L'offre est-elle celle par défaut (le gratuit automatique) ? */
-export function isDefaultPlan(plan) {
-  return !plan || plan.source === 'default' || !plan.subscriptionId;
-}
-
 /** Les fonctionnalités actives, en liste de clés, pour l'affichage. */
 export function activeFeatures(features = {}) {
   return Object.entries(features).filter(([, on]) => on === true).map(([key]) => key);

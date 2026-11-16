@@ -66,7 +66,7 @@ export default function ChallengeHistoryPage() {
                         <span dir="ltr" className="font-mono-jetbrains text-sm text-emerald-700">✓ {t('history.correct', { correct: d.correctCount, total: d.questionCount })}</span>
                         <span dir="ltr" className="hidden font-mono-jetbrains text-sm text-slate-500 sm:inline">⚡ {formatSeconds(d.averageResponseTimeMs)} ث</span>
                         {d.status !== 'completed' && <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600">{t(`history.${d.status}`)}</span>}
-                        {d.status !== 'in_progress' && <span className="ms-auto font-inter text-sm font-semibold text-indigo-600">{t('history.open')}</span>}
+                        {d.status !== 'in_progress' && <span className="ms-auto font-inter text-sm font-semibold text-nav-accent">{t('history.open')}</span>}
                       </>
                     ) : (
                       <span className="font-inter text-sm text-slate-500" data-missed>✕ {t('history.missed')}</span>
@@ -76,7 +76,7 @@ export default function ChallengeHistoryPage() {
                 return (
                   <li key={d.date}>
                     {played && d.status !== 'in_progress'
-                      ? <Link to={`/espace/defi/${d.id}`} className="block hover:bg-slate-50 focus:outline-none focus-visible:bg-indigo-50">{row}</Link>
+                      ? <Link to={`/espace/defi/${d.id}`} className="block hover:bg-slate-50 focus:outline-none focus-visible:bg-nav-accent-soft">{row}</Link>
                       : row}
                   </li>
                 );

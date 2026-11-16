@@ -128,7 +128,7 @@ export default function MasteryExplanationDrawer({ code, title, open, onClose })
                 ref={closeRef}
                 type="button"
                 onClick={onClose}
-                className="shrink-0 w-10 h-10 rounded-xl border-2 border-slate-200 hover:border-slate-400 flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                className="shrink-0 w-10 h-10 rounded-xl border-2 border-slate-200 hover:border-slate-400 flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent"
                 aria-label={t('mastery.explain.close')}
               >
                 <X className="w-4 h-4" aria-hidden="true" />

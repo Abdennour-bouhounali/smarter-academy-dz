@@ -86,7 +86,7 @@ export default function ChallengeComplete({ completion }) {
       {competition?.showTop3 && <Insights insights={insights} />}
 
       <div className="flex flex-col items-stretch gap-2 sm:flex-row sm:justify-center">
-        <Link to={`/espace/defi/${attempt.id}`} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-6 font-space font-black text-white hover:bg-indigo-700 focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-300" data-review-link>
+        <Link to={`/espace/defi/${attempt.id}`} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-2xl bg-nav-accent px-6 font-space font-black text-white hover:bg-[#3350c4] focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-300" data-review-link>
           <RotateCcw size={18} aria-hidden="true" /> {mistakes ? t('complete.reviewMistakes') : t('complete.review')}
         </Link>
         <Link to="/espace/progression" className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-2xl bg-white px-6 font-space font-bold text-slate-800 ring-1 ring-slate-200 hover:bg-slate-50 focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-300">
@@ -116,9 +116,9 @@ function Insights({ insights }) {
         <p className="mt-1 font-inter text-sm text-slate-700"><span className="font-semibold text-amber-700">{t('complete.slowCorrect')}: </span>{slowCorrect.map((p, i) => <span key={p.code ?? i}>{i > 0 && ' · '}<MathLabel>{p.title}</MathLabel></span>)}</p>
       )}
       {suggestion?.lessonCode && (
-        <div className="mt-4 flex flex-wrap items-center gap-3 rounded-2xl bg-indigo-50 p-3">
+        <div className="mt-4 flex flex-wrap items-center gap-3 rounded-2xl bg-nav-accent-soft p-3">
           <p className="min-w-0 flex-1 font-inter text-sm text-indigo-900">{t('complete.suggestion', { title: suggestion.learningPointTitle })}</p>
-          <Link to={`/espace/pratique/${suggestion.lessonCode}`} className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-indigo-600 px-4 font-inter text-sm font-bold text-white hover:bg-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400" data-practice-suggestion>
+          <Link to={`/espace/pratique/${suggestion.lessonCode}`} className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-nav-accent px-4 font-inter text-sm font-bold text-white hover:bg-[#3350c4] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400" data-practice-suggestion>
             <Dumbbell size={16} aria-hidden="true" /> {t('complete.practiceNow')}
           </Link>
         </div>

@@ -27,7 +27,7 @@ function Mail() {
     <a
       href={`mailto:${EMAIL}`}
       dir="ltr"
-      className="text-blue-600 hover:text-blue-700 underline underline-offset-2"
+      className="text-nav-accent hover:text-nav-accent underline underline-offset-2"
     >
       {EMAIL}
     </a>

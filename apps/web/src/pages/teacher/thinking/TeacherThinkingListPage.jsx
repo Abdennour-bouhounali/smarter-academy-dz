@@ -47,7 +47,7 @@ export default function TeacherThinkingListPage() {
           <div className="flex flex-wrap items-center gap-2">
             {['all', ...BANDS].map((b) => (
               <button key={b} type="button" onClick={() => setBand(b)} aria-pressed={band === b}
-                className={`rounded-full px-3 py-1.5 font-inter text-xs font-bold ring-1 transition ${band === b ? 'bg-teal-700 text-white ring-teal-700' : 'bg-white text-slate-600 ring-slate-200 hover:ring-slate-300'}`}>
+                className={`rounded-full px-3 py-1.5 font-inter text-xs font-bold ring-1 transition ${band === b ? 'bg-nav-accent text-white ring-nav-accent' : 'bg-white text-slate-600 ring-slate-200 hover:ring-slate-300'}`}>
                 {b === 'all' ? t('teacher.filterAll') : t(`teacher.band.${b}`)}
               </button>
             ))}
@@ -68,7 +68,7 @@ export default function TeacherThinkingListPage() {
                 {shown.map((c) => (
                   <tr key={c.id} className="border-t border-slate-100 hover:bg-slate-50" data-teacher-challenge={c.number}>
                     <td className="px-4 py-2.5">
-                      <Link to={`/enseignant/tafkir/${c.id}`} className="inline-flex items-center gap-1.5 font-space text-base font-black text-teal-800 hover:underline" dir="ltr">
+                      <Link to={`/enseignant/tafkir/${c.id}`} className="inline-flex items-center gap-1.5 font-space text-base font-black text-nav-accent hover:underline" dir="ltr">
                         {c.summit && <Mountain size={14} aria-label={t('summit')} />}{c.number}
                       </Link>
                     </td>

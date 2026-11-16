@@ -80,7 +80,7 @@ export default function ParentCardsDialog({ open, onClose, classGroup, students 
     >
       {!cards && (
         <div className="space-y-4">
-          <p className="rounded-xl border border-indigo-200 bg-indigo-50 p-3 text-indigo-950">{t('cards.intro')}</p>
+          <p className="rounded-xl border border-indigo-200 bg-nav-accent-soft p-3 text-indigo-950">{t('cards.intro')}</p>
           <label className="flex items-center gap-2 font-semibold text-slate-800">
             <input type="checkbox" className="h-4 w-4" checked={allChecked}
               onChange={() => setSelected(allChecked ? new Set() : new Set(students.map((s) => s.id)))} />

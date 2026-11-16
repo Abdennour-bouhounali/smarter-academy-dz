@@ -58,7 +58,7 @@ export default function ChallengeReviewPage() {
             </div>
             <p dir="ltr" className="font-space text-3xl font-black text-slate-900">{data.attempt.score.total}</p>
           </header>
-          <p className="rounded-2xl bg-indigo-50 p-3 font-inter text-sm text-indigo-900">{t('review.notReplayable')}</p>
+          <p className="rounded-2xl bg-nav-accent-soft p-3 font-inter text-sm text-indigo-900">{t('review.notReplayable')}</p>
 
           <ol className="space-y-3">
             {data.questions.map((q) => {
@@ -72,7 +72,7 @@ export default function ChallengeReviewPage() {
                       {q.isCorrect ? <Check size={16} aria-label={t('session.state.correct')} /> : <X size={16} aria-label={t('session.state.wrong')} />}
                     </span>
                     <span className="font-space font-bold text-slate-900">{q.position}</span>
-                    {q.learningPoint?.title && <span className="font-inter text-xs text-indigo-600"><MathLabel>{q.learningPoint.title}</MathLabel></span>}
+                    {q.learningPoint?.title && <span className="font-inter text-xs text-nav-accent"><MathLabel>{q.learningPoint.title}</MathLabel></span>}
                     <span dir="ltr" className="ms-auto font-mono-jetbrains text-xs text-slate-500">{formatSeconds(q.responseTimeMs)} ث · +{q.score.total}</span>
                   </div>
                   {q.content?.statement?.content && <div className="mt-3 rounded-2xl bg-slate-50 p-3"><ExerciseStatement content={q.content.statement.content} visual={q.content.statement.visual} formulas={q.content.statement.formulas} table={q.content.statement.table} figure={q.content.statement.figure} /></div>}
@@ -91,7 +91,7 @@ export default function ChallengeReviewPage() {
                   </dl>
                   {q.reveal?.explanation && <p className="mt-2 text-sm text-slate-600"><RichText>{q.reveal.explanation}</RichText></p>}
                   {!q.isCorrect && q.lesson?.code && (
-                    <Link to={`/espace/pratique/${q.lesson.code}`} className="mt-3 inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-indigo-600 px-4 text-sm font-bold text-white hover:bg-indigo-700">
+                    <Link to={`/espace/pratique/${q.lesson.code}`} className="mt-3 inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-nav-accent px-4 text-sm font-bold text-white hover:bg-[#3350c4]">
                       <Dumbbell size={16} aria-hidden="true" /> {t('review.practice')}
                     </Link>
                   )}

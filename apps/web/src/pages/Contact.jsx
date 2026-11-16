@@ -20,7 +20,7 @@ export default function ContactPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold tracking-wide mb-5">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-nav-accent-soft border border-blue-200 text-nav-accent text-xs font-semibold tracking-wide mb-5">
               <MessageSquare size={14} className="text-blue-500" />
               {t('contact.eyebrow')}
             </div>

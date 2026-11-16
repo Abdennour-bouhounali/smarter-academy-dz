@@ -12,7 +12,7 @@ function Stepper({ label, value, onChange, min, max, disabled }) {
           type="button"
           disabled={disabled || value <= min}
           onClick={() => onChange(value - 1)}
-          className="w-11 h-11 rounded-xl border-2 border-slate-200 text-slate-600 font-bold text-xl hover:border-blue-400 hover:bg-blue-50 active:scale-95 transition-all disabled:opacity-40 disabled:pointer-events-none focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          className="w-11 h-11 rounded-xl border-2 border-slate-200 text-slate-600 font-bold text-xl hover:border-blue-400 hover:bg-nav-accent-soft active:scale-95 transition-all disabled:opacity-40 disabled:pointer-events-none focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent"
           aria-label={t('diagnostic.questions.decrease', { label })}
         >
           −
@@ -24,7 +24,7 @@ function Stepper({ label, value, onChange, min, max, disabled }) {
           type="button"
           disabled={disabled || value >= max}
           onClick={() => onChange(value + 1)}
-          className="w-11 h-11 rounded-xl border-2 border-slate-200 text-slate-600 font-bold text-xl hover:border-blue-400 hover:bg-blue-50 active:scale-95 transition-all disabled:opacity-40 disabled:pointer-events-none focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          className="w-11 h-11 rounded-xl border-2 border-slate-200 text-slate-600 font-bold text-xl hover:border-blue-400 hover:bg-nav-accent-soft active:scale-95 transition-all disabled:opacity-40 disabled:pointer-events-none focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent"
           aria-label={t('diagnostic.questions.increase', { label })}
         >
           +

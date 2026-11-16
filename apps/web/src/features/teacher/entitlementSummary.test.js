@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { describeMeter, isDefaultPlan, activeFeatures } from './entitlementSummary';
+import { describeMeter, activeFeatures } from './entitlementSummary';
 
 describe('describeMeter', () => {
   it('lit une jauge bornée', () => {
@@ -17,12 +17,7 @@ describe('describeMeter', () => {
   });
 });
 
-describe('isDefaultPlan / activeFeatures', () => {
-  it('l’offre par défaut est celle sans abonnement', () => {
-    expect(isDefaultPlan({ source: 'default', subscriptionId: null })).toBe(true);
-    expect(isDefaultPlan({ source: 'subscription', subscriptionId: 4 })).toBe(false);
-    expect(isDefaultPlan(null)).toBe(true);
-  });
+describe('activeFeatures', () => {
   it('ne garde que les fonctionnalités vraies', () => {
     expect(activeFeatures({ 'progress.class': true, 'analytics.advanced': false })).toEqual(['progress.class']);
   });

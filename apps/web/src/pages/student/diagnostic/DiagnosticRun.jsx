@@ -83,7 +83,7 @@ export default function DiagnosticRun() {
   if (loading && !question) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600" />
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-nav-accent" />
       </div>
     );
   }
@@ -112,7 +112,7 @@ export default function DiagnosticRun() {
         <Link
           to="/espace"
           aria-label={t('diagnostic.exitAria')}
-          className="w-9 h-9 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          className="w-9 h-9 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent"
         >
           <X size={18} />
         </Link>
@@ -153,8 +153,8 @@ export default function DiagnosticRun() {
                         type="button"
                         onClick={handleContinue}
                         autoFocus
-                        className="flex items-center gap-2 px-6 py-3 rounded-xl font-space font-bold text-white shadow-md transition-all hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                        style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
+                        className="flex items-center gap-2 px-6 py-3 rounded-xl font-space font-bold text-white shadow-md transition-all hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent focus-visible:ring-offset-2"
+                        style={{ background: '#3B5BDB' }}
                       >
                         {pending?.completed ? t('diagnostic.seeMyProfile') : t('diagnostic.continue')}
                         <ArrowForward size={16} />

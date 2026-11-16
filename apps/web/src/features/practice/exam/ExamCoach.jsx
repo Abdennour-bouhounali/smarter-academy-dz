@@ -127,7 +127,7 @@ function Notebook({ question, rule, mode, why }) {
   );
 }
 
-const STEP_TONE = { rule: 'border-indigo-300 bg-indigo-50', trap: 'border-rose-300 bg-rose-50', exam: 'border-emerald-300 bg-emerald-50', result: 'border-slate-800 bg-white', write: 'border-amber-500 bg-amber-50' };
+const STEP_TONE = { rule: 'border-indigo-300 bg-nav-accent-soft', trap: 'border-rose-300 bg-rose-50', exam: 'border-emerald-300 bg-emerald-50', result: 'border-slate-800 bg-white', write: 'border-amber-500 bg-amber-50' };
 function Step({ step }) {
   const label = typeof L.kinds[step.kind] === 'function' ? L.kinds[step.kind](step.n) : L.kinds[step.kind];
   const Icon = step.kind === 'trap' ? AlertTriangle : step.kind === 'exam' ? Target : null;

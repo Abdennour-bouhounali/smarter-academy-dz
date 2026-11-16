@@ -21,7 +21,7 @@ export default function DiagnosticProgress({ askedCount, complete = false }) {
       <div className="h-1.5 rounded-full bg-slate-100 overflow-hidden">
         <motion.div
           className="h-full rounded-full"
-          style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
+          style={{ background: '#3B5BDB' }}
           animate={{ width: `${progress * 100}%` }}
           transition={{ duration: 0.4, ease: 'easeOut' }}
         />

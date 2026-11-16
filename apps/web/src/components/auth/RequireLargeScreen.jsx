@@ -37,14 +37,14 @@ export function LargeScreenOnlyNotice() {
         role="alert"
         className="max-w-sm w-full rounded-2xl bg-white border border-slate-200 shadow-sm p-6 text-center"
       >
-        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-nav-accent-soft text-nav-accent">
           <Monitor aria-hidden="true" className="h-7 w-7" />
         </div>
         <h1 className="text-lg font-bold text-slate-900 leading-relaxed">{t('largeScreenOnlyTitle')}</h1>
         <p className="mt-2 text-slate-600 leading-relaxed">{t('largeScreenOnlyBody')}</p>
         <Link
           to="/espace"
-          className="mt-5 inline-block rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white"
+          className="mt-5 inline-block rounded-xl bg-nav-accent px-5 py-2.5 text-sm font-semibold text-white"
         >
           {t('largeScreenOnlyBack')}
         </Link>

@@ -15,7 +15,7 @@ import { templateValue } from './templateFor';
  * Facultatifs (2026-11-10, les étapes saisies des leçons — NumericQuestion `template`) : `onEnter()` — Entrée dans une case valide ;
  * `ariaLabel` — le nom accessible de la case de valeur (la consigne de l'étape) à la place du libellé générique du modèle.
  */
-const BOX = 'rounded-xl border-2 border-indigo-300 bg-white px-2 py-1 text-center text-2xl font-black text-slate-900 outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 disabled:bg-slate-50';
+const BOX = 'rounded-xl border-2 border-indigo-300 bg-white px-2 py-1 text-center text-2xl font-black text-slate-900 outline-none focus:border-nav-accent focus:ring-4 focus:ring-indigo-100 disabled:bg-slate-50';
 const MATH = 'text-2xl text-blue-950';
 
 const spaceThousands = (digits) => digits.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
@@ -65,7 +65,7 @@ export default function TemplateInput({ template, question, onChange, disabled =
       aria-pressed={boxes.negative}
       aria-label={t('practice.template.sign')}
       onClick={() => update({ negative: !boxes.negative })}
-      className="h-11 w-11 shrink-0 rounded-xl border-2 border-indigo-300 bg-indigo-50 text-2xl font-black text-indigo-900 disabled:opacity-50"
+      className="h-11 w-11 shrink-0 rounded-xl border-2 border-indigo-300 bg-nav-accent-soft text-2xl font-black text-indigo-900 disabled:opacity-50"
       data-template-sign
     >
       {boxes.negative ? '−' : '+'}
@@ -125,7 +125,7 @@ export default function TemplateInput({ template, question, onChange, disabled =
               aria-checked={boxes.value === d}
               disabled={disabled}
               onClick={() => update({ value: d })}
-              className={`h-14 w-14 rounded-xl border-2 text-2xl font-black ${boxes.value === d ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-indigo-300 bg-white text-slate-900'}`}
+              className={`h-14 w-14 rounded-xl border-2 text-2xl font-black ${boxes.value === d ? 'border-nav-accent bg-nav-accent text-white' : 'border-indigo-300 bg-white text-slate-900'}`}
             >
               {d}
             </button>

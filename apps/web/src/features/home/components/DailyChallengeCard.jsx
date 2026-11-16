@@ -53,7 +53,7 @@ export default function DailyChallengeCard() {
               : today.reason === 'rest_day' ? t('challengeCard.restDay') : ''}
         </span>
       </span>
-      {cta && <span className="relative hidden items-center gap-1 rounded-xl bg-indigo-600 px-4 py-2 font-space text-sm font-black text-white sm:inline-flex">
+      {cta && <span className="relative hidden items-center gap-1 rounded-xl bg-nav-accent px-4 py-2 font-space text-sm font-black text-white sm:inline-flex">
         {cta} <ArrowForward size={14} aria-hidden="true" />
       </span>}
     </Link>

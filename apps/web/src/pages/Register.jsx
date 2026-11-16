@@ -134,7 +134,7 @@ export default function Register() {
           active ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200' : 'text-slate-500 hover:text-slate-700'
         }`}
       >
-        <Icon size={17} className={active ? (type === 'teacher' ? 'text-teal-600' : 'text-blue-600') : ''} aria-hidden="true" />
+        <Icon size={17} className={active ? (type === 'teacher' ? 'text-teal-600' : 'text-nav-accent') : ''} aria-hidden="true" />
         {label}
       </button>
     );
@@ -148,7 +148,7 @@ export default function Register() {
       footer={(
         <>
           {t('alreadyHaveAccount')}{' '}
-          <Link to="/login" className={`font-semibold ${isTeacher ? 'text-teal-700 hover:text-teal-800' : 'text-blue-600 hover:text-blue-700'}`}>
+          <Link to="/login" className={`font-semibold ${isTeacher ? 'text-teal-700 hover:text-teal-800' : 'text-nav-accent hover:text-nav-accent'}`}>
             {t('loginLink')}
           </Link>
         </>

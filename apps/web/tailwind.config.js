@@ -70,7 +70,24 @@ export default {
           blue: '#3B82F6',
           purple: '#8B5CF6',
           cyan: '#06B6D4',
-        }
+        },
+        /* THE NINE COLOURS of the navigation and of its pages (NAVIGATION_REBUILD_PLAN.md §6bis). Colour is meaning:
+           `now` = the next step, `done` = finished, `alert` = needs you. No other colour, no gradient, in the menus.
+           `ink` is for TEXT only; every filled or outlined shape (button, lit door, avatar) is `accent`, the brand blue. */
+        nav: {
+          ink: '#0B1B3F',
+          accent: '#3B5BDB',
+          'accent-soft': '#EAEFFF',
+          now: '#F59E0B',
+          'now-soft': '#FFF5DB',
+          done: '#12A36B',
+          'done-soft': '#E3F7EE',
+          alert: '#D6455D',
+          'alert-soft': '#FDE8EC',
+          muted: '#5B6785',
+          line: '#E3E8F2',
+          page: '#F6F8FC',
+        },
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',

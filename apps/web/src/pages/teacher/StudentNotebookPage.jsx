@@ -70,7 +70,7 @@ export default function StudentNotebookPage() {
     >
       {/* L'enseignant lit le carnet de quelqu'un : on le dit, on ne le
           laisse pas le déduire de l'absence de boutons. */}
-      <p className="mb-4 flex items-start gap-2 rounded-xl border border-blue-200 bg-blue-50 p-3 text-sm text-blue-800">
+      <p className="mb-4 flex items-start gap-2 rounded-xl border border-blue-200 bg-nav-accent-soft p-3 text-sm text-nav-accent">
         <Eye size={16} className="mt-0.5 shrink-0" aria-hidden="true" />
         <span>{t('notebook.readOnlyNotice')}</span>
       </p>
@@ -84,7 +84,7 @@ export default function StudentNotebookPage() {
             aria-pressed={view === key}
             className={`min-h-11 rounded-full border px-4 text-sm font-bold transition-colors ${
               view === key
-                ? 'border-blue-600 bg-blue-600 text-white'
+                ? 'border-nav-accent bg-nav-accent text-white'
                 : 'border-slate-200 bg-white text-slate-600 hover:border-blue-300'
             }`}
           >
@@ -98,7 +98,7 @@ export default function StudentNotebookPage() {
       {error && <ErrorBox message={error} onRetry={reload} />}
 
       {data && data.notes.length === 0 && (
-        <p className="glass-card p-6 text-center text-sm text-slate-500">{t('notebook.empty')}</p>
+        <p className="rounded-2xl border border-nav-line bg-white p-6 text-center text-sm text-slate-500">{t('notebook.empty')}</p>
       )}
 
       {data && data.notes.length > 0 && (
@@ -127,7 +127,7 @@ function NoteCard({ note }) {
   const type = NOTE_TYPES.find((candidate) => candidate.id === typeOf(note)) ?? NOTE_TYPES[0];
 
   return (
-    <li className="glass-card p-4" data-teacher-note={note.id}>
+    <li className="rounded-2xl border border-nav-line bg-white p-4" data-teacher-note={note.id}>
       <div className="mb-2 flex flex-wrap items-center gap-2 text-xs">
         {/* La MÊME pastille que dans le cahier de l'élève (.sa-ns-type et
             ses sept teintes, notebookSpace.css) : un type d'erreur ne doit

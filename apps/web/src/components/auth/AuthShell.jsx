@@ -13,11 +13,11 @@ import { BadgeCheck, Check, Plus } from 'lucide-react';
  */
 export const AUTH_TONES = {
   student: {
-    gradient: 'linear-gradient(135deg, #3B82F6, #8B5CF6)',
-    ring: 'focus:border-blue-500 focus:ring-blue-500/15',
-    link: 'text-blue-600 hover:text-blue-700',
+    gradient: '#3B5BDB',
+    ring: 'focus:border-nav-accent focus:ring-nav-accent/15',
+    link: 'text-nav-accent hover:text-nav-accent',
     wash: 'from-blue-50 via-white to-violet-50',
-    dot: 'bg-blue-100 text-blue-600',
+    dot: 'bg-blue-100 text-nav-accent',
     stroke: ['#3B82F6', '#8B5CF6'],
   },
   teacher: {
@@ -40,7 +40,7 @@ export function AuthSubmit({ tone = 'student', loading, children }) {
     <button
       type="submit"
       disabled={loading}
-      className="flex h-12 w-full items-center justify-center rounded-xl text-[15px] font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:-translate-y-0.5 hover:shadow-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/30 disabled:translate-y-0 disabled:opacity-70"
+      className="flex h-12 w-full items-center justify-center rounded-xl text-[15px] font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:-translate-y-0.5 hover:shadow-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-nav-accent/30 disabled:translate-y-0 disabled:opacity-70"
       style={{ background: AUTH_TONES[tone].gradient }}
     >
       {children}

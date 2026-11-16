@@ -13,7 +13,7 @@ export default function ExamPanelButton({ label, onOpen }) {
     <button
       type="button"
       onClick={onOpen}
-      className="inline-flex min-h-[44px] items-center gap-1.5 rounded-lg px-3 text-sm font-bold text-slate-700 hover:bg-white hover:text-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+      className="inline-flex min-h-[44px] items-center gap-1.5 rounded-lg px-3 text-sm font-bold text-slate-700 hover:bg-white hover:text-nav-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
       data-exam-panel-open
     >
       <PanelsTopLeft className="h-4 w-4" aria-hidden="true" />

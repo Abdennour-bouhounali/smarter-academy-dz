@@ -50,7 +50,7 @@ export default function TeacherSchoolJoin() {
       {preview && (
         <section className={`${card} space-y-4`}>
           <h1 className="flex items-center gap-2 font-space text-xl font-bold text-slate-900">
-            <Building2 size={22} className="text-indigo-600" aria-hidden="true" />{t('teacher.join.title', { school: preview.name })}
+            <Building2 size={22} className="text-nav-accent" aria-hidden="true" />{t('teacher.join.title', { school: preview.name })}
           </h1>
 
           {preview.alreadyMember && <p className="rounded-xl bg-emerald-50 p-3 font-inter text-sm text-emerald-800">{t('teacher.join.already')}</p>}

@@ -80,7 +80,7 @@ export function SelfMarkChoice({ onSelfMark, mark = null, busy = false }) {
       disabled={busy || mark !== null}
       aria-pressed={mark === id}
       className={`inline-flex min-h-[48px] items-center gap-2 rounded-xl border-2 px-4 py-2.5 text-start text-base font-bold transition-colors ${
-        mark === id ? 'border-indigo-500 bg-indigo-50 text-slate-900' : 'border-slate-200 bg-white text-slate-700 hover:border-slate-400'
+        mark === id ? 'border-nav-accent bg-nav-accent-soft text-slate-900' : 'border-slate-200 bg-white text-slate-700 hover:border-slate-400'
       } disabled:cursor-default ${mark !== null && mark !== id ? 'opacity-50' : ''}`}
       data-self-mark={id}
     >

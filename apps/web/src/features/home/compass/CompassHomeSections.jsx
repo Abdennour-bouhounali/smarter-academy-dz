@@ -64,7 +64,7 @@ export default function CompassHomeSections({ compass, gradeId, today, resume, v
 }
 
 function Chip({ tone, icon: Icon, children }) {
-  const cls = tone === 'exam' ? 'bg-rose-50 text-rose-800' : tone === 'class' ? 'bg-indigo-50 text-indigo-900' : 'bg-slate-100 text-slate-700';
+  const cls = tone === 'exam' ? 'bg-rose-50 text-rose-800' : tone === 'class' ? 'bg-nav-accent-soft text-indigo-900' : 'bg-slate-100 text-slate-700';
   return (
     <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-bold ${cls}`}>
       <Icon size={16} aria-hidden="true" />{children}
@@ -72,8 +72,8 @@ function Chip({ tone, icon: Icon, children }) {
   );
 }
 
-const HERO = 'flex flex-wrap items-center gap-6 rounded-3xl bg-white p-6 shadow-xl shadow-indigo-100 ring-2 ring-indigo-500 sm:p-8';
-const BIG_BTN = 'inline-flex min-h-[56px] items-center gap-2 rounded-2xl bg-indigo-600 px-8 text-xl font-black text-white shadow-[0_4px_0_#3730a3] hover:bg-indigo-700 focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-300';
+const HERO = 'flex flex-wrap items-center gap-6 rounded-3xl bg-white p-6 shadow-xl shadow-indigo-100 ring-2 ring-nav-accent sm:p-8';
+const BIG_BTN = 'inline-flex min-h-[56px] items-center gap-2 rounded-2xl bg-nav-accent px-8 text-xl font-black text-white shadow-[0_4px_0_#3730a3] hover:bg-[#3350c4] focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-300';
 
 /* ── أ · jamais fait : une carte, un bouton ─────────────────────────── */
 function NewHero({ resume }) {
@@ -82,7 +82,7 @@ function NewHero({ resume }) {
     <>
       <section className={HERO} data-compass-hero="new">
         <div className="min-w-0 flex-[1_1_380px] space-y-3">
-          <p className="text-sm font-black text-indigo-700">{t('compassHome.eyebrow')}</p>
+          <p className="text-sm font-black text-nav-accent">{t('compassHome.eyebrow')}</p>
           <h2 className="text-3xl font-black text-slate-900 sm:text-4xl">{t('compassHome.new.title')}</h2>
           <p className="max-w-xl text-lg leading-relaxed text-slate-700">{t('compassHome.new.body')}</p>
           <div className="flex flex-wrap gap-2 text-sm font-semibold text-slate-700">
@@ -96,7 +96,7 @@ function NewHero({ resume }) {
         <Compass aria-hidden="true" className="hidden h-44 w-44 shrink-0 text-indigo-300 md:block" strokeWidth={1.2} />
       </section>
       {resume && (
-        <Link to={resume.resumePath} className="inline-block font-bold text-indigo-700 hover:underline" data-compass-or-lesson>
+        <Link to={resume.resumePath} className="inline-block font-bold text-nav-accent hover:underline" data-compass-or-lesson>
           {t('compassHome.new.orLesson', { title: resume.course.title })}
         </Link>
       )}
@@ -112,15 +112,15 @@ function ActiveHero({ active }) {
   const inRound = answers.slice((round - 1) * 12);
   return (
     <section className={HERO} data-compass-hero="active">
-      <span className="grid h-20 w-20 shrink-0 place-items-center rounded-3xl bg-indigo-50 text-indigo-700"><Compass size={44} aria-hidden="true" /></span>
+      <span className="grid h-20 w-20 shrink-0 place-items-center rounded-3xl bg-nav-accent-soft text-nav-accent"><Compass size={44} aria-hidden="true" /></span>
       <div className="min-w-0 flex-[1_1_320px] space-y-2">
-        <p className="text-sm font-black text-indigo-700">{t('compassHome.active.eyebrow', { round })}</p>
+        <p className="text-sm font-black text-nav-accent">{t('compassHome.active.eyebrow', { round })}</p>
         <h2 className="text-3xl font-black text-slate-900">{t('compassHome.active.title')}</h2>
         <p className="text-lg text-slate-700">{t('compassHome.active.body', { count: answers.length })}</p>
         <div className="flex flex-wrap gap-1.5" role="img" aria-label={t('compassHome.active.progressAria', { count: answers.length })}>
           {Array.from({ length: 12 }, (_, i) => {
             const a = inRound[i];
-            const tone = !a ? (i === inRound.length ? 'bg-indigo-600' : 'bg-slate-200') : a.correct ? 'bg-emerald-500' : 'bg-slate-400';
+            const tone = !a ? (i === inRound.length ? 'bg-nav-accent' : 'bg-slate-200') : a.correct ? 'bg-emerald-500' : 'bg-slate-400';
             return <span key={i} className={`h-[18px] w-[18px] rounded-full ${tone}`} />;
           })}
         </div>
@@ -150,7 +150,7 @@ function DoneSections({ compass, year, visits }) {
         <section className="flex min-w-0 flex-col gap-3 rounded-3xl bg-white p-5 ring-1 ring-slate-200" aria-labelledby="compass-week-h" data-compass-week>
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 id="compass-week-h" className="text-lg font-black text-slate-900">{t('compassHome.week.title')}</h2>
-            <Link to="/espace/bawsala" className="text-sm font-black text-indigo-700">{t('compassHome.week.full')}</Link>
+            <Link to="/espace/bawsala" className="text-sm font-black text-nav-accent">{t('compassHome.week.full')}</Link>
           </div>
           <div className="flex items-center gap-3 text-sm font-black text-slate-900">
             <span className="h-2.5 flex-1 overflow-hidden rounded-full bg-slate-100">
@@ -186,7 +186,7 @@ function DoneSections({ compass, year, visits }) {
               <p className="text-xs">{t(`compassHome.grades.${report.priority.grade}`)}</p>
             </div>
           ) : <p className="rounded-2xl bg-emerald-50 px-4 py-2.5 font-bold text-emerald-900">{t('compassHome.map.none')}</p>}
-          <Link to="/espace/bawsala" className="text-sm font-black text-indigo-700">{t('compassHome.map.open')}</Link>
+          <Link to="/espace/bawsala" className="text-sm font-black text-nav-accent">{t('compassHome.map.open')}</Link>
         </section>
       </div>
     </>
@@ -219,7 +219,7 @@ function TodayHero({ task, done, total }) {
         {prepare ? <Target size={44} aria-hidden="true" /> : <RotateCcw size={44} aria-hidden="true" />}
       </span>
       <div className="min-w-0 flex-[1_1_320px] space-y-1">
-        <p className="text-sm font-black text-indigo-700">{t('compassHome.today.eyebrow', { done, total })}</p>
+        <p className="text-sm font-black text-nav-accent">{t('compassHome.today.eyebrow', { done, total })}</p>
         <h2 className="text-3xl font-black text-slate-900"><MathLabel>{taskTitle(t, task)}</MathLabel></h2>
         <p className="text-lg text-slate-700">
           {prepare ? t('compassHome.today.prepareMeta') : t('compassHome.today.reviseMeta', { grade: t(`compassHome.grades.${task.item.grade}`) })}
@@ -242,12 +242,12 @@ function WeekRow({ task, isToday }) {
     <>
       <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${tile}`}>{icon}</span>
       <span className={`min-w-0 flex-1 font-bold text-slate-900 ${task.done ? 'line-through' : ''}`}><MathLabel>{taskTitle(t, task)}</MathLabel></span>
-      <span className={`shrink-0 text-xs font-black ${isToday ? 'text-indigo-700' : 'text-slate-500'}`}>
+      <span className={`shrink-0 text-xs font-black ${isToday ? 'text-nav-accent' : 'text-slate-500'}`}>
         {task.done ? t('compassHome.week.done') : isToday ? t('compassHome.week.today') : t('compassHome.week.next')}
       </span>
     </>
   );
-  const cls = `flex items-center gap-3 rounded-2xl px-3 py-2 ${isToday ? 'ring-2 ring-indigo-500' : 'ring-1 ring-slate-200'} ${task.done ? 'opacity-60' : ''}`;
+  const cls = `flex items-center gap-3 rounded-2xl px-3 py-2 ${isToday ? 'ring-2 ring-nav-accent' : 'ring-1 ring-slate-200'} ${task.done ? 'opacity-60' : ''}`;
   return (
     <li data-week-task={task.done ? 'done' : isToday ? 'today' : 'next'}>
       {path ? <Link to={path} className={`${cls} hover:bg-slate-50`}>{body}</Link> : <div className={cls}>{body}</div>}
@@ -269,21 +269,21 @@ function LessonCard({ resume }) {
   const percent = Math.round(resume.progress ?? 0);
   return (
     <Link to={resume.resumePath} className="flex h-full min-w-0 items-center gap-4 rounded-3xl bg-white p-4 ring-1 ring-slate-200 transition hover:-translate-y-0.5 sm:p-5" data-compass-lesson>
-      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-indigo-50 text-indigo-700"><BookOpen size={24} aria-hidden="true" /></span>
+      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-nav-accent-soft text-nav-accent"><BookOpen size={24} aria-hidden="true" /></span>
       <span className="min-w-0 flex-1">
         <span className="block font-black text-slate-900">
           <MathLabel>{percent > 0 ? t('compassHome.lesson.continue', { title: resume.course.title }) : t('compassHome.lesson.next', { title: resume.course.title })}</MathLabel>
         </span>
         <span className="block text-sm text-slate-600">{t('compassHome.lesson.progress', { percent })}</span>
-        <span className="mt-1.5 block h-1.5 overflow-hidden rounded-full bg-slate-100"><span className="block h-full bg-indigo-600" style={{ width: `${percent}%` }} /></span>
+        <span className="mt-1.5 block h-1.5 overflow-hidden rounded-full bg-slate-100"><span className="block h-full bg-nav-accent" style={{ width: `${percent}%` }} /></span>
       </span>
-      <span className="shrink-0 rounded-xl border border-slate-200 px-4 py-2 text-sm font-black text-indigo-700">{t('compassHome.lesson.cta')}</span>
+      <span className="shrink-0 rounded-xl border border-slate-200 px-4 py-2 text-sm font-black text-nav-accent">{t('compassHome.lesson.cta')}</span>
     </Link>
   );
 }
 
 const STRIP_TONE = {
-  taught: 'bg-indigo-600', now: 'bg-indigo-600 outline outline-[3px] outline-offset-1 outline-amber-500', coming: 'bg-indigo-100',
+  taught: 'bg-nav-accent', now: 'bg-nav-accent outline outline-[3px] outline-offset-1 outline-amber-500', coming: 'bg-indigo-100',
   devoir: 'bg-orange-300', exam: 'bg-red-400', break: 'bg-slate-200', eval: 'bg-sky-200', bem: 'bg-violet-300',
 };
 
@@ -333,12 +333,12 @@ function RetakeNotice({ nextRetakeAt }) {
   const { t } = useTranslation('student');
   if (nextRetakeAt) {
     const date = new Date(nextRetakeAt).toLocaleDateString('ar-DZ', { day: 'numeric', month: 'long' });
-    return <p className="rounded-2xl bg-indigo-50 px-4 py-3 font-bold text-indigo-950" data-compass-retake="later">{t('compassHome.retake.later', { date })}</p>;
+    return <p className="rounded-2xl bg-nav-accent-soft px-4 py-3 font-bold text-indigo-950" data-compass-retake="later">{t('compassHome.retake.later', { date })}</p>;
   }
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-indigo-50 px-4 py-3 font-bold text-indigo-950" data-compass-retake="now">
+    <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-nav-accent-soft px-4 py-3 font-bold text-indigo-950" data-compass-retake="now">
       <span>{t('compassHome.retake.now')}</span>
-      <Link to="/espace/bawsala" className="font-black text-indigo-700">{t('compassHome.retake.cta')}</Link>
+      <Link to="/espace/bawsala" className="font-black text-nav-accent">{t('compassHome.retake.cta')}</Link>
     </div>
   );
 }

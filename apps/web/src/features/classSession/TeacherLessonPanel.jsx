@@ -125,7 +125,7 @@ function Door({ icon: Icon, title, say, to, onClick, closed = false, ...rest }) 
   }
   const body = (
     <>
-      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-slate-100 text-slate-700 transition-colors group-hover:bg-slate-900 group-hover:text-white">
+      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-nav-accent-soft text-nav-accent transition-colors group-hover:bg-nav-accent group-hover:text-white">
         <Icon size={22} aria-hidden="true" />
       </span>
       <span className="min-w-0 flex-1 text-start">
@@ -134,13 +134,13 @@ function Door({ icon: Icon, title, say, to, onClick, closed = false, ...rest }) 
       </span>
       <ChevronLeft
         size={18}
-        className="shrink-0 text-slate-300 transition-transform group-hover:-translate-x-0.5 group-hover:text-slate-900"
+        className="shrink-0 text-slate-300 transition-transform group-hover:-translate-x-0.5 group-hover:text-nav-accent"
         aria-hidden="true"
       />
     </>
   );
   const cls =
-    'group flex w-full items-center gap-3 rounded-2xl border border-slate-200 bg-white p-3 transition-colors hover:border-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500';
+    'group flex w-full items-center gap-3 rounded-2xl border border-slate-200 bg-white p-3 transition-colors hover:border-nav-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent';
   return to ? (
     <Link to={to} className={cls} {...rest}>
       {body}
@@ -195,7 +195,7 @@ export default function TeacherLessonPanel({ config, basePath, hasWorld, extraTo
       {config.classSession && !phone && (
         <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5" data-teacher-group="class">
           <div className="flex flex-wrap items-center gap-4">
-            <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-slate-900 text-white">
+            <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-nav-accent text-white">
               <Presentation size={28} aria-hidden="true" />
             </span>
             <div className="min-w-0 flex-1">
@@ -208,7 +208,7 @@ export default function TeacherLessonPanel({ config, basePath, hasWorld, extraTo
             <Link
               to={classSessionPath(config.id)}
               data-teacher-session
-              className="inline-flex min-h-[52px] shrink-0 items-center gap-2 rounded-2xl bg-slate-900 px-6 text-base font-black text-white transition-colors hover:bg-slate-700 focus:outline-none focus-visible:ring-4 focus-visible:ring-slate-300"
+              className="inline-flex min-h-[52px] shrink-0 items-center gap-2 rounded-2xl bg-nav-accent px-6 text-base font-black text-white transition-colors hover:bg-[#3350c4] focus:outline-none focus-visible:ring-4 focus-visible:ring-nav-accent-soft"
             >
               {L.open} <ArrowLeft size={20} aria-hidden="true" />
             </Link>
@@ -221,10 +221,10 @@ export default function TeacherLessonPanel({ config, basePath, hasWorld, extraTo
                   <Link
                     to={classSessionPath(config.id, m)}
                     data-teacher-moment={m}
-                    className="group flex h-full flex-col gap-1 rounded-2xl border border-slate-200 bg-white p-3 transition-colors hover:border-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
+                    className="group flex h-full flex-col gap-1 rounded-2xl border border-slate-200 bg-white p-3 transition-colors hover:border-nav-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent"
                   >
                     <span className="flex items-center gap-2">
-                      <b className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-slate-900 text-sm font-black text-white">
+                      <b className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-nav-accent text-sm font-black text-white">
                         {k + 1}
                       </b>
                       <strong className="text-[15px] font-extrabold text-slate-900">{L.moments[m].name}</strong>

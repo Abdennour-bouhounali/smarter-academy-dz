@@ -11,8 +11,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowRight, Check, ChevronDown, Clock, Eye, EyeOff, ListChecks, Presentation, Printer, X } from 'lucide-react';
-import { getLessonById, getLessonPath } from '@smarter-academy/core';
+import { Check, ChevronDown, Clock, Eye, EyeOff, ListChecks, Presentation, Printer, X } from 'lucide-react';
+import { getLessonById } from '@smarter-academy/core';
 import { exerciseIdsFor, loadExercise, levelCounts } from '../../../features/practice/practiceContent';
 import ExerciseStatement from '../../../features/practice/ExerciseStatement';
 import RichText from '../../../features/practice/RichText';
@@ -189,7 +189,7 @@ export default function TeacherExerciseBank({ lessonCode }) {
                   setOpen(null);
                 }}
                 data-tb-level={n}
-                className={`inline-flex min-h-[48px] items-center gap-2 rounded-2xl border px-4 text-sm font-extrabold transition-colors ${level === n ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-200 bg-white text-slate-700 hover:border-slate-900'}`}
+                className={`inline-flex min-h-[48px] items-center gap-2 rounded-2xl border px-4 text-sm font-extrabold transition-colors ${level === n ? 'border-nav-accent bg-nav-accent text-white' : 'border-slate-200 bg-white text-slate-700 hover:border-nav-accent'}`}
               >
                 <b
                   className={`grid h-6 w-6 place-items-center rounded-full text-xs ${level === n ? 'bg-white text-slate-900' : 'bg-slate-100 text-slate-700'}`}
@@ -277,7 +277,7 @@ export default function TeacherExerciseBank({ lessonCode }) {
                     <Link
                       to={exerciseBoardPath(lessonCode, level, ex.id)}
                       data-tb-board
-                      className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl bg-slate-900 px-4 text-sm font-extrabold text-white hover:bg-slate-700"
+                      className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl bg-nav-accent px-4 text-sm font-extrabold text-white hover:bg-[#3350c4]"
                     >
                       <Presentation size={18} aria-hidden="true" /> {L.board}
                     </Link>
@@ -332,7 +332,7 @@ export default function TeacherExerciseBank({ lessonCode }) {
                 <button
                   type="button"
                   onClick={() => window.print()}
-                  className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-slate-900 px-5 text-sm font-extrabold text-white hover:bg-slate-700"
+                  className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-nav-accent px-5 text-sm font-extrabold text-white hover:bg-[#3350c4]"
                   data-tb-print
                 >
                   <Printer size={18} aria-hidden="true" /> {L.print}

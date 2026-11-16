@@ -182,7 +182,7 @@ export default function AuthGoogle() {
               <div className="mt-6 space-y-3">
                 <Link
                   to="/login"
-                  className="flex w-full justify-center rounded-xl border border-transparent bg-blue-600 py-3 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
+                  className="flex w-full justify-center rounded-xl border border-transparent bg-nav-accent py-3 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#3350c4]"
                 >
                   {t('backToLogin')}
                 </Link>
@@ -210,7 +210,7 @@ export default function AuthGoogle() {
                       onClick={() => setAccountType('student')}
                       aria-pressed={accountType === 'student'}
                       disabled={loading}
-                      className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors ${accountType === 'student' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}
+                      className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors ${accountType === 'student' ? 'bg-nav-accent text-white' : 'text-slate-600 hover:bg-slate-50'}`}
                     >
                       {t('accountTypeStudent')}
                     </button>
@@ -292,7 +292,7 @@ export default function AuthGoogle() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex w-full justify-center rounded-xl border border-transparent bg-blue-600 py-3 px-4 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-70"
+                  className="flex w-full justify-center rounded-xl border border-transparent bg-nav-accent py-3 px-4 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#3350c4] focus:outline-none focus:ring-2 focus:ring-nav-accent focus:ring-offset-2 disabled:opacity-70"
                 >
                   {loading ? t('creatingAccount') : t('createMyAccount')}
                 </button>
@@ -307,7 +307,7 @@ export default function AuthGoogle() {
           {/* ── Connexion en cours ─────────────────────────────────── */}
           {!erreur && !errorMsg && etape === 'connecte' && (
             <div className="py-6 text-center">
-              <div className="mx-auto h-10 w-10 animate-spin rounded-full border-b-2 border-blue-600" />
+              <div className="mx-auto h-10 w-10 animate-spin rounded-full border-b-2 border-nav-accent" />
               <p className="mt-4 text-sm text-slate-600">{t('connecting')}</p>
             </div>
           )}
@@ -318,7 +318,7 @@ export default function AuthGoogle() {
               <p className="text-sm text-slate-600">{t('pageNotDirect')}</p>
               <Link
                 to="/login"
-                className="mt-4 inline-flex justify-center rounded-xl border border-transparent bg-blue-600 py-3 px-5 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
+                className="mt-4 inline-flex justify-center rounded-xl border border-transparent bg-nav-accent py-3 px-5 text-sm font-medium text-white shadow-sm hover:bg-[#3350c4]"
               >
                 {t('goToLogin')}
               </Link>

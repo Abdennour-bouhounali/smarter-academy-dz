@@ -40,7 +40,6 @@
   "topicsCount_few": "{{count}} مواضيع",
   "topicsCount_many": "{{count}} موضوعًا",
   "topicsCount_other": "{{count}} موضوع",
-  "lessonComingSoonBadge": "قريبًا",
   "lessonComingSoonFooter": "قيد الإعداد",
   "lessonsCount_zero": "لا دروس",
   "lessonsCount_one": "درس واحد",
@@ -145,7 +144,6 @@
   "lessonDone": "تمّ",
   "premiumBadge": "مدفوع",
   "premiumHasAccess": "محتوى مدفوع — حسابك له حقّ الوصول إليه",
-  "bonusChapter": "ميدان أضافته Smarter Academy — لا يرد في البرنامج الرسمي لهذه السنة",
   "apiErrors": {
     "settings": "تعذّر حفظ الإعداد، حاول مرة أخرى.",
     "generic": "حدث خطأ. أعد المحاولة.",
@@ -201,5 +199,6 @@
   },
   "largeScreenOnlyTitle": "محتوى الدروس يظهر فقط في شاشة الحاسوب",
   "largeScreenOnlyBody": "رجاء افتح المنصة في الحاسوب لاستفادة قصوى",
-  "largeScreenOnlyBack": "العودة إلى فضائي"
+  "largeScreenOnlyBack": "العودة إلى فضائي",
+  "lessonMinutes": "{{n}} د"
 }

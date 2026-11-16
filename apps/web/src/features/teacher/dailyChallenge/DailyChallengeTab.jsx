@@ -2,7 +2,8 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../../../context/AuthContext';
 import { fetchClassChallengeResults, fetchClassChallengeSettings } from '../../../services/teacher/dailyChallengeService';
-import { Loading, ErrorBox } from '../../../pages/teacher/teacherUi';
+import { Settings2 } from 'lucide-react';
+import { Loading, ErrorBox, Fold } from '../../../pages/teacher/teacherUi';
 import ClassChallengeResults from './ClassChallengeResults';
 import ClassChallengeSettings from './ClassChallengeSettings';
 
@@ -39,14 +40,14 @@ export default function DailyChallengeTab({ classGroup, onOpenPoint }) {
   if (!results || !settings) return <Loading />;
 
   return (
-    <div className="space-y-5" data-daily-challenge-tab>
-      <p className="font-inter text-sm text-slate-600">{t('teacher.intro')}</p>
-      {/* minmax(0,1fr) + min-w-0 : le tableau des élèves défile dans sa carte au
-          lieu d'élargir la page (débordement constaté à 390 px). */}
-      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_22rem]">
-        <div className="min-w-0"><ClassChallengeResults classGroupId={classGroup.id} data={results} onOpenPoint={onOpenPoint} onDate={setDate} /></div>
-        <div className="min-w-0"><ClassChallengeSettings classGroupId={classGroup.id} initial={settings.settings} options={settings.options} onSaved={() => load()} /></div>
+    <div className="space-y-4" data-daily-challenge-tab>
+      {/* The RESULTS are the page; the settings are set once and stay one tap away (they were a 4,000 px column). */}
+      <div className="min-w-0" title={t('teacher.intro')}>
+        <ClassChallengeResults classGroupId={classGroup.id} data={results} onOpenPoint={onOpenPoint} onDate={setDate} />
       </div>
+      <Fold name="challenge-settings" icon={Settings2} title={t('teacher.settings.title')} hint={settings.settings.enabled ? t('teacher.settings.enabled') : undefined}>
+        <ClassChallengeSettings classGroupId={classGroup.id} initial={settings.settings} options={settings.options} onSaved={() => load()} />
+      </Fold>
     </div>
   );
 }

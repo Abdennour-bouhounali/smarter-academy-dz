@@ -64,7 +64,7 @@ const { evaluateAnswer, feedbackFor, isSuccessOutcome, isInertOutcome } = practi
 // qui l'hérite prend `1rem × échelle` et devient minuscule.
 // (Pas `ValidateButton` de LessonUI : petit, en chasse fixe, sans `type` —
 // il sert les 132 leçons et n'est pas modifié ici.)
-const PRIMARY_BUTTON = 'inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 text-base font-bold text-white shadow-sm transition-colors hover:bg-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none motion-reduce:transition-none';
+const PRIMARY_BUTTON = 'inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl bg-nav-accent px-6 py-3 text-base font-bold text-white shadow-sm transition-colors hover:bg-[#3350c4] focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none motion-reduce:transition-none';
 
 // Secondaire : contour, jamais plein — « أعِد المحاولة », « السؤال التالي »
 // tant qu'aucune réponse n'est vérifiée.
@@ -710,7 +710,7 @@ export default function PracticeSession() {
   const isSelfCheck = question.answerType === 'selfCheck';
   const size = answerSize(question);
   // Feuille d'examen : l'action principale prend le vert sombre de la maquette.
-  const examTone = (cls) => (isExam ? cls.replace('bg-indigo-600', 'bg-[#1f5c4c]').replace('hover:bg-indigo-700', 'hover:bg-[#174a3d]').replace('focus-visible:ring-indigo-500', 'focus-visible:ring-emerald-600') : cls);
+  const examTone = (cls) => (isExam ? cls.replace('bg-nav-accent', 'bg-[#1f5c4c]').replace('hover:bg-[#3350c4]', 'hover:bg-[#174a3d]').replace('focus-visible:ring-nav-accent', 'focus-visible:ring-emerald-600') : cls);
   // Ce que l'étape attend : la note de l'élève (`self` — démonstration, ou
   // copie en photo seulement) ou l'ENSEIGNANT (`review`, « تصحيح الأستاذ » :
   // l'élève continue sans attendre ; ni verdict, ni corrigé, ni médaille).
@@ -920,10 +920,10 @@ export default function PracticeSession() {
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ type: 'spring', stiffness: 320, damping: 24 }}
-        className="flex items-center gap-3 rounded-xl bg-indigo-50 px-3.5 py-2.5 ring-1 ring-indigo-100"
+        className="flex items-center gap-3 rounded-xl bg-nav-accent-soft px-3.5 py-2.5 ring-1 ring-indigo-100"
         data-exercise-done
       >
-        <CheckCircle2 className="h-6 w-6 shrink-0 text-indigo-600" aria-hidden="true" />
+        <CheckCircle2 className="h-6 w-6 shrink-0 text-nav-accent" aria-hidden="true" />
         <p className="text-sm text-indigo-950">
           <span className="font-bold">{t('practice.exerciseDone')}</span>
           {totalQuestions > 1 && (
@@ -1010,7 +1010,7 @@ export default function PracticeSession() {
         <span className="inline-flex min-w-0 flex-wrap items-center gap-3">
           <Link
             to={`/espace/pratique/${lessonCode}`}
-            className="inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-xl border border-indigo-200 bg-white px-4 text-sm font-bold text-indigo-700 shadow-sm hover:border-indigo-400 hover:bg-indigo-50 whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+            className="inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-xl border border-indigo-200 bg-white px-4 text-sm font-bold text-nav-accent shadow-sm hover:border-indigo-400 hover:bg-nav-accent-soft whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
             data-practice-back
           >
             <ArrowBack className="w-4 h-4" aria-hidden="true" />
@@ -1024,7 +1024,7 @@ export default function PracticeSession() {
           {/* Feuille d'examen : le niveau courant vit ici, à côté du cours,
               en pastille — plus de ligne orpheline au-dessus de la barre de progression. */}
           {isExam && (
-            <span className="inline-flex min-h-[36px] items-center gap-1.5 rounded-full bg-indigo-50 px-3.5 text-sm font-bold text-indigo-700 ring-1 ring-indigo-100 whitespace-nowrap" data-exercise-level>
+            <span className="inline-flex min-h-[36px] items-center gap-1.5 rounded-full bg-nav-accent-soft px-3.5 text-sm font-bold text-nav-accent ring-1 ring-indigo-100 whitespace-nowrap" data-exercise-level>
               <BarChart3 className="h-4 w-4" aria-hidden="true" />
               {t('practice.levelLabel', { level: session.level })}{levelName ? ` · ${levelName}` : ''}
             </span>
@@ -1085,7 +1085,7 @@ export default function PracticeSession() {
       {/* ── 2 — QUEL exercice : niveau (surtitre), titre (h1), méta. ────── */}
       <ClassroomHidden><header className={isExam ? 'flex flex-wrap items-baseline gap-x-3 gap-y-0.5' : 'space-y-2'} data-exercise-header>
         {!isExam && <p className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm font-semibold text-slate-600" data-exercise-level>
-          <span className="inline-flex items-center gap-1.5 font-bold text-indigo-700">
+          <span className="inline-flex items-center gap-1.5 font-bold text-nav-accent">
             <BarChart3 className="h-4 w-4" aria-hidden="true" />
             {t('practice.levelLabel', { level: session.level })}{levelName ? ` · ${levelName}` : ''}
           </span>
@@ -1236,7 +1236,7 @@ export default function PracticeSession() {
               aria-labelledby="practice-question-heading"
               aria-current="step"
               data-current-question={questionIndex + 1}
-              className="relative scroll-mt-20 overflow-hidden rounded-2xl border-s-4 border-indigo-600 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.06),0_10px_28px_-16px_rgba(15,23,42,0.22)] ring-1 ring-slate-200 lg:scroll-mt-6"
+              className="relative scroll-mt-20 overflow-hidden rounded-2xl border-s-4 border-nav-accent bg-white shadow-[0_1px_2px_rgba(15,23,42,0.06),0_10px_28px_-16px_rgba(15,23,42,0.22)] ring-1 ring-slate-200 lg:scroll-mt-6"
             >
               {/* « السؤال n من N » (N = les questions de CET exercice) et
                   « التمرين n من N » : la position, une seule fois, ici. */}

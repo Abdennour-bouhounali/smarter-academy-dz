@@ -176,7 +176,7 @@ function PreviousQuestionCard({ entry, total }) {
             onClick={() => setOpen((o) => !o)}
             aria-expanded={open}
             aria-controls={panelId}
-            className="mt-0.5 inline-flex min-h-[36px] items-center gap-1 rounded-md text-sm font-bold text-indigo-700 hover:text-indigo-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+            className="mt-0.5 inline-flex min-h-[36px] items-center gap-1 rounded-md text-sm font-bold text-nav-accent hover:text-indigo-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
           >
             {open ? t('practice.history.hideExplanation') : t('practice.history.showExplanation')}
             <ChevronDown aria-hidden="true" className={`h-4 w-4 transition-transform motion-reduce:transition-none ${open ? 'rotate-180' : ''}`} />

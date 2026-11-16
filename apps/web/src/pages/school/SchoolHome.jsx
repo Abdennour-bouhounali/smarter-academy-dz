@@ -50,7 +50,7 @@ export default function SchoolHome() {
   return (
     <div className="space-y-8">
       <header className="flex items-start gap-4">
-        <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-indigo-600 text-white">
+        <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-nav-accent text-white">
           <School size={28} aria-hidden="true" />
         </div>
         <div>

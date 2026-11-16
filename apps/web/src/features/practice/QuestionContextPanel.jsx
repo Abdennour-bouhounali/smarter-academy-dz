@@ -78,7 +78,7 @@ export default function QuestionContextPanel({ questions, questionIndex, history
             if (i === questionIndex) {
               return (
                 <li key={q.id} aria-current="step" className="flex items-start gap-2.5 rounded-xl bg-indigo-50/70 px-2.5 py-2 ring-2 ring-indigo-400" data-context-item={n} data-context-state="current">
-                  <span aria-hidden="true" className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full border-[5px] border-indigo-600 bg-white" />
+                  <span aria-hidden="true" className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full border-[5px] border-nav-accent bg-white" />
                   <span className="space-y-0.5">
                     <span className="block text-sm font-bold text-indigo-900">
                       {t('practice.questionNumber', { n })} <span className="font-normal">{t('practice.context.current')}</span>

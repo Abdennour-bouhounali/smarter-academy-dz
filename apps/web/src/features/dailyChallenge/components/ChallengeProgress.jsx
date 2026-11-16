@@ -6,7 +6,7 @@ const STYLE = {
   correct: 'bg-gradient-to-br from-amber-300 to-orange-500 text-slate-950 border-transparent',
   partial: 'bg-sky-100 text-sky-800 border-sky-300',
   wrong: 'bg-rose-50 text-rose-600 border-rose-300',
-  current: 'bg-indigo-600 text-white border-indigo-600 shadow-[0_0_0_4px_rgba(79,70,229,0.15)]',
+  current: 'bg-nav-accent text-white border-nav-accent shadow-[0_0_0_4px_rgba(79,70,229,0.15)]',
   pending: 'bg-white text-slate-500 border-slate-300',
 };
 

@@ -198,7 +198,7 @@ export default function Abonnement() {
               type="button"
               onClick={handlePortal}
               disabled={busy !== null}
-              className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:opacity-60"
+              className="inline-flex items-center gap-2 rounded-xl bg-nav-accent px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#3350c4] disabled:opacity-60"
             >
               {busy === 'portal' ? <RefreshCw className="h-4 w-4 animate-spin" aria-hidden="true" /> : <ExternalLink className="h-4 w-4" aria-hidden="true" />}
               Gérer mon moyen de paiement
@@ -210,7 +210,7 @@ export default function Abonnement() {
               type="button"
               onClick={() => mutate('resume', resumeSubscription)}
               disabled={busy !== null}
-              className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500 disabled:opacity-60"
+              className="inline-flex items-center gap-2 rounded-xl bg-nav-accent px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500 disabled:opacity-60"
             >
               {busy === 'resume' && <RefreshCw className="h-4 w-4 animate-spin" aria-hidden="true" />}
               Continuer mon abonnement
@@ -231,7 +231,7 @@ export default function Abonnement() {
           {!subscription && !billing?.adminOverrideActive && (
             <Link
               to="/tarifs"
-              className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500"
+              className="inline-flex items-center gap-2 rounded-xl bg-nav-accent px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500"
             >
               Découvrir les offres
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -335,7 +335,7 @@ function StatusHeadline({ accessActive, adminOverride, subscription, cancelSched
 const TONES = {
   emerald: 'bg-emerald-50 text-emerald-900 border-emerald-200',
   amber: 'bg-amber-50 text-amber-900 border-amber-200',
-  indigo: 'bg-indigo-50 text-indigo-900 border-indigo-200',
+  indigo: 'bg-nav-accent-soft text-indigo-900 border-indigo-200',
   slate: 'bg-slate-50 text-slate-800 border-slate-200',
 };
 

@@ -173,7 +173,7 @@ export default function NotebookSpace() {
           <StatTile icon={NotebookPen} value={counts.all} label={s('statNotes')} accent="bg-violet-100 text-violet-700" />
           <StatTile icon={RotateCcw} value={counts.review} label={s('statReview')} accent="bg-amber-100 text-amber-700" />
           <StatTile icon={CircleX} value={counts.errors} label={s('statErrors')} accent="bg-rose-100 text-rose-700" />
-          <StatTile icon={CircleHelp} value={counts.questions} label={s('statQuestions')} accent="bg-blue-100 text-blue-700" />
+          <StatTile icon={CircleHelp} value={counts.questions} label={s('statQuestions')} accent="bg-blue-100 text-nav-accent" />
         </div>
       )}
 

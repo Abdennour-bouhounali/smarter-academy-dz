@@ -319,8 +319,8 @@ try {
     await p.goto(`${BASE}/enseignant/classes`, { waitUntil: 'networkidle' });
     const link = p.locator('a:has-text("الفوج أ")').first();
     await link.click();
-    await p.waitForSelector('[data-tab="dailyChallenge"]', { timeout: 20000 });
-    await p.click('[data-tab="dailyChallenge"]');
+    await p.waitForSelector('[data-tab-group="activities"]', { timeout: 20000 });
+    await p.click('[data-tab-group="activities"]');
     await p.waitForSelector('[data-challenge-results]', { timeout: 20000 });
     record('enseignant : onglet « التحدّي اليومي » (résultats + réglages)', await p.locator('[data-challenge-settings]').count() === 1);
     record('enseignant : tuiles de participation', await p.locator('[data-tile="participation"]').count() === 1);

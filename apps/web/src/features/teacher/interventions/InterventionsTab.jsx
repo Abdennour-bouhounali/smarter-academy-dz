@@ -24,15 +24,11 @@ export default function InterventionsTab({ classGroup, onOpenPoint }) {
 
   return (
     <div className="space-y-4" data-interventions-tab>
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h2 className="font-space text-lg font-bold text-slate-900">{t('interventions.title')}</h2>
-          <p className="text-xs text-slate-500">{t('interventions.subtitle')}</p>
-        </div>
-        <div role="tablist" className="flex gap-1.5">
+      <div className="flex flex-wrap items-center justify-between gap-3" title={t('interventions.subtitle')}>
+        <div role="tablist" className="flex flex-wrap gap-2">
           {FILTERS.map((f) => (
             <button key={f} type="button" role="tab" aria-selected={filter === f} onClick={() => setFilter(f)}
-              className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${filter === f ? 'bg-teal-700 text-white' : 'border border-slate-200 bg-white text-slate-600'}`}>
+              className={`min-h-[40px] rounded-full border px-3.5 font-inter text-sm font-bold ${filter === f ? 'border-transparent bg-nav-accent-soft text-nav-accent' : 'border-nav-line bg-white text-nav-muted hover:text-nav-ink'}`}>
               {t(`interventions.filters.${f}`)}
             </button>
           ))}
@@ -42,7 +38,7 @@ export default function InterventionsTab({ classGroup, onOpenPoint }) {
       {loading && <Loading />}
       {error && <ErrorBox message={error} onRetry={reload} />}
       {data && !loading && (data.interventions.length === 0 ? (
-        <div className="glass-card p-8 text-center">
+        <div className="rounded-2xl border border-nav-line bg-white p-8 text-center">
           <p className="text-sm font-semibold text-slate-700">{t('interventions.empty')}</p>
           <p className="mt-1 text-xs text-slate-500">{t('interventions.emptyHint')}</p>
         </div>
@@ -84,7 +80,7 @@ export function InterventionCard({ classGroup, intervention, onChanged, onOpenPo
   };
 
   return (
-    <li className="glass-card p-4" data-intervention={iv.id} data-intervention-status={iv.status}>
+    <li className="rounded-2xl border border-nav-line bg-white p-4" data-intervention={iv.id} data-intervention-status={iv.status}>
       <div className="flex flex-wrap items-start gap-3">
         <div className="min-w-0 flex-1 space-y-1">
           <p className="flex flex-wrap items-center gap-2">
@@ -96,14 +92,14 @@ export function InterventionCard({ classGroup, intervention, onChanged, onOpenPo
           {iv.learningPoint && (
             <p className="text-xs text-slate-700">
               {onOpenPoint
-                ? <button type="button" className="font-semibold text-teal-800 hover:underline" onClick={() => onOpenPoint(iv.learningPoint.code)}>{iv.learningPoint.title}</button>
+                ? <button type="button" className="font-semibold text-nav-accent hover:underline" onClick={() => onOpenPoint(iv.learningPoint.code)}>{iv.learningPoint.title}</button>
                 : <span className="font-semibold">{iv.learningPoint.title}</span>}
               {iv.lesson?.title && <span className="text-slate-400"> · {iv.lesson.title}</span>}
             </p>
           )}
           <p className="flex flex-wrap gap-1.5 text-[11px]">
             {iv.students.map((s) => (
-              <Link key={s.id} to={`/enseignant/classes/${classGroup.id}/eleves/${s.id}`} className="rounded-full bg-slate-50 px-2 py-0.5 text-slate-700 hover:bg-teal-50">{studentName(s, unnamed)}</Link>
+              <Link key={s.id} to={`/enseignant/classes/${classGroup.id}/eleves/${s.id}`} className="rounded-full bg-slate-50 px-2 py-0.5 text-slate-700 hover:bg-nav-page">{studentName(s, unnamed)}</Link>
             ))}
           </p>
           {iv.note && <p className="whitespace-pre-line rounded-lg bg-slate-50 p-2 text-xs text-slate-700">{iv.note}</p>}
@@ -124,7 +120,7 @@ export function InterventionCard({ classGroup, intervention, onChanged, onOpenPo
         {iv.outcome ? (
           <>
             <InterventionOutcome outcome={iv.outcome} detailed={open && Boolean(detail)} />
-            <button type="button" onClick={expand} className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-teal-800 hover:underline" data-intervention-expand>
+            <button type="button" onClick={expand} className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-nav-accent hover:underline" data-intervention-expand>
               {open ? <><ChevronUp size={13} /> {t('interventions.hideDetails')}</> : <><ChevronDown size={13} /> {t('interventions.details')}</>}
             </button>
           </>

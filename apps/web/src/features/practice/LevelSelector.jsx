@@ -51,8 +51,8 @@ export default function LevelSelector({ levels, recommendedLevel, onSelect, busy
             className={`relative z-[1] grid h-9 w-9 shrink-0 place-items-center rounded-full text-sm font-bold ring-4 ring-slate-50 ${
               !level.unlocked ? 'bg-slate-100 text-slate-400'
                 : done ? 'bg-emerald-600 text-white'
-                  : recommended ? 'bg-indigo-600 text-white'
-                    : 'bg-white text-indigo-700 ring-offset-0 border-2 border-indigo-300'
+                  : recommended ? 'bg-nav-accent text-white'
+                    : 'bg-white text-nav-accent ring-offset-0 border-2 border-indigo-300'
             }`}
           >
             {!level.unlocked ? <Lock className="h-4 w-4" /> : done ? <Check className="h-4 w-4" strokeWidth={3} /> : level.level}
@@ -101,7 +101,7 @@ export default function LevelSelector({ levels, recommendedLevel, onSelect, busy
               disabled={busyLevel != null}
               data-practice-level={level.level}
               className={`group flex w-full min-h-[64px] items-center gap-3 rounded-xl px-2 py-2.5 text-start transition-colors disabled:opacity-70 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 motion-reduce:transition-none ${
-                recommended ? 'bg-white ring-2 ring-indigo-300 shadow-sm hover:ring-indigo-500' : 'hover:bg-white hover:ring-1 hover:ring-slate-200'
+                recommended ? 'bg-white ring-2 ring-indigo-300 shadow-sm hover:ring-nav-accent' : 'hover:bg-white hover:ring-1 hover:ring-slate-200'
               }`}
             >
               {node}
@@ -110,7 +110,7 @@ export default function LevelSelector({ levels, recommendedLevel, onSelect, busy
                   <span className="text-base font-bold text-slate-900">{label}</span>
                   {name && <span className="text-sm font-semibold text-slate-600">· {name}</span>}
                   {recommended && (
-                    <span className="rounded-md bg-indigo-600 px-2 py-0.5 text-xs font-bold text-white">{t('practice.levelRecommended')}</span>
+                    <span className="rounded-md bg-nav-accent px-2 py-0.5 text-xs font-bold text-white">{t('practice.levelRecommended')}</span>
                   )}
                   {done && !recommended && (
                     <span className="rounded-md bg-emerald-50 px-2 py-0.5 text-xs font-bold text-emerald-800">{t('practice.levelDone')}</span>
@@ -119,7 +119,7 @@ export default function LevelSelector({ levels, recommendedLevel, onSelect, busy
                 {progress}
               </span>
               <span className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-bold ${
-                recommended ? 'bg-indigo-600 text-white group-hover:bg-indigo-700' : 'text-indigo-700 group-hover:bg-indigo-50'
+                recommended ? 'bg-nav-accent text-white group-hover:bg-[#3350c4]' : 'text-nav-accent group-hover:bg-nav-accent-soft'
               }`}
               >
                 {busyLevel === level.level ? t('practice.levelOpening') : done ? t('practice.levelAgain') : t('practice.levelStart')}

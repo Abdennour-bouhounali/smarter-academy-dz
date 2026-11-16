@@ -68,7 +68,7 @@ export default function ParentChildReport() {
 
   return (
     <div className="space-y-5">
-      <Link to="/wali" className="inline-flex min-h-[44px] items-center gap-1 font-inter text-sm text-slate-600 hover:text-indigo-700">
+      <Link to="/wali" className="inline-flex min-h-[44px] items-center gap-1 font-inter text-sm text-slate-600 hover:text-nav-accent">
         <ChevronBack size={16} aria-hidden="true" />
         {t('report.back')}
       </Link>

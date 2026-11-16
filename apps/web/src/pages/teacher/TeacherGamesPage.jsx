@@ -41,7 +41,7 @@ export default function TeacherGamesPage() {
       {error && <ErrorBox message={error} />}
       {!classes && !error && <Loading />}
       {classes?.length === 0 && (
-        <div className="glass-card p-8 text-center">
+        <div className="rounded-2xl border border-nav-line bg-white p-8 text-center">
           <Users size={28} className="mx-auto text-slate-400" aria-hidden="true" />
           <p className="mt-2 font-inter text-sm text-slate-600">{t('teacher.space.noClass')}</p>
           <Link to="/enseignant/classes/nouveau" className={`${btnPrimary} mt-4 inline-flex`}>{t('teacher.space.createClass')}</Link>
@@ -49,13 +49,13 @@ export default function TeacherGamesPage() {
       )}
       {classes?.length > 0 && (
         <div className="space-y-5" data-teacher-games>
-          <div className="glass-card flex flex-wrap items-center gap-2 p-3" role="tablist" aria-label={t('teacher.space.classLabel')}>
-            <Gamepad2 size={18} className="text-teal-700" aria-hidden="true" />
+          <div className="rounded-2xl border border-nav-line bg-white flex flex-wrap items-center gap-2 p-3" role="tablist" aria-label={t('teacher.space.classLabel')}>
+            <Gamepad2 size={18} className="text-nav-accent" aria-hidden="true" />
             <span className="font-inter text-sm font-semibold text-slate-700">{t('teacher.space.classLabel')}</span>
             {classes.map((c) => (
               <button key={c.id} type="button" role="tab" aria-selected={c.id === selectedId}
                 onClick={() => setParams({ classe: String(c.id) }, { replace: true })}
-                className={`rounded-lg px-3 py-1.5 font-inter text-sm font-semibold ${c.id === selectedId ? 'bg-teal-700 text-white' : 'border border-slate-200 bg-white text-slate-600 hover:bg-slate-50'}`}
+                className={`rounded-lg px-3 py-1.5 font-inter text-sm font-semibold ${c.id === selectedId ? 'bg-nav-accent text-white' : 'border border-slate-200 bg-white text-slate-600 hover:bg-slate-50'}`}
                 data-class={c.id}>
                 {c.name}
               </button>

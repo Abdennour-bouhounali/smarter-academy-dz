@@ -262,7 +262,7 @@ function ReviewCard({ item, exercise, imageLoader, onAnnotate, onDecided }) {
             rows={2}
             dir="auto"
             placeholder={t('reviews.commentPlaceholder')}
-            className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm focus:border-teal-600 focus:outline-none focus:ring-1 focus:ring-teal-600"
+            className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm focus:border-nav-accent focus:outline-none focus:ring-1 focus:ring-nav-accent"
             data-review-comment-input
           />
         </label>

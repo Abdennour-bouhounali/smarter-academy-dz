@@ -35,7 +35,7 @@ export default function ChoiceInput({ question, value, onChange, disabled }) {
               disabled={disabled}
               aria-pressed={on}
               className={`flex items-baseline text-start px-4 py-3 rounded-xl border-2 min-h-[48px] transition-colors ${
-                on ? 'border-indigo-500 bg-indigo-50 text-slate-900' : 'border-slate-200 bg-white text-slate-700 hover:border-slate-400'
+                on ? 'border-nav-accent bg-nav-accent-soft text-slate-900' : 'border-slate-200 bg-white text-slate-700 hover:border-slate-400'
               } ${disabled ? 'opacity-70 cursor-default' : ''}`}
             >
               {/* Pas de lettre latine affichée (A, B…) : dans une phrase arabe

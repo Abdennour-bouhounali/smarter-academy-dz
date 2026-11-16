@@ -35,9 +35,9 @@ export default function DeviceGuide() {
 
   return (
     <div className="space-y-6" data-device-guide>
-      <div className="rounded-2xl border border-indigo-200 bg-indigo-50 p-4 sm:p-5">
+      <div className="rounded-2xl border border-indigo-200 bg-nav-accent-soft p-4 sm:p-5">
         <p className="flex items-start gap-3 font-inter text-sm leading-relaxed text-indigo-950">
-          <ShieldCheck size={22} className="mt-0.5 flex-shrink-0 text-indigo-600" aria-hidden="true" />
+          <ShieldCheck size={22} className="mt-0.5 flex-shrink-0 text-nav-accent" aria-hidden="true" />
           {t('guide.intro')}
         </p>
       </div>
@@ -58,10 +58,10 @@ export default function DeviceGuide() {
         {DEVICES.map(({ id, icon: Icon, steps }) => (
           <section key={id} className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5" data-guide-device={id}>
             <h2 className="flex items-center gap-2 font-space text-lg font-bold text-slate-900">
-              <Icon size={20} className="text-indigo-600" aria-hidden="true" />
+              <Icon size={20} className="text-nav-accent" aria-hidden="true" />
               {t(`guide.${id}.title`)}
             </h2>
-            <p className="mb-3 font-inter text-xs font-semibold text-indigo-700">{t(`guide.${id}.tool`)}</p>
+            <p className="mb-3 font-inter text-xs font-semibold text-nav-accent">{t(`guide.${id}.tool`)}</p>
             <ol className="list-decimal space-y-2 ps-5 font-inter text-sm leading-relaxed text-slate-700">
               {steps.map((s) => <li key={s}>{t(`guide.${id}.${s}`)}</li>)}
             </ol>

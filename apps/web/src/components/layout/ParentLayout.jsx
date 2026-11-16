@@ -49,7 +49,7 @@ export default function ParentLayout() {
         <div className="mx-auto flex h-14 max-w-5xl items-center gap-2 px-3 sm:h-16 sm:gap-4 sm:px-6">
           <Link to="/wali" className="flex flex-shrink-0 items-center gap-2 sm:gap-3">
             <img src="/brand/mark-color.svg" width="200" height="200" decoding="async" alt="Smarter Academy" className="h-8 w-8 sm:h-9 sm:w-9" />
-            <span className="hidden font-space text-sm font-bold text-indigo-700 sm:inline">{t('nav.spaceName')}</span>
+            <span className="hidden font-space text-sm font-bold text-nav-accent sm:inline">{t('nav.spaceName')}</span>
           </Link>
           <nav className="flex min-w-0 flex-1 items-center gap-1" aria-label={t('nav.spaceName')}>
             {LINKS.map(({ to, end, icon: Icon, key }) => (
@@ -59,7 +59,7 @@ export default function ParentLayout() {
                 end={end}
                 className={({ isActive }) =>
                   `flex min-h-[44px] items-center gap-1.5 whitespace-nowrap rounded-xl px-2.5 font-inter text-[13px] font-medium sm:gap-2 sm:px-3 sm:text-sm ${
-                    isActive ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-100'
+                    isActive ? 'bg-nav-accent text-white' : 'text-slate-600 hover:bg-slate-100'
                   }`
                 }
               >

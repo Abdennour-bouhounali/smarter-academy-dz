@@ -86,6 +86,25 @@ writes his rule with two tiles, and the island's mirror tests it on HIS OWN cros
 becomes his key and only then gets its name. The verdict is always a bridge that holds or crumbles, never « wrong »; the robot helps
 without giving the rule (`GAME_WORLD.md` §2sexies; the three other tablets are still told). Contract: `docs/architecture/GAME_WORLD.md`.
 
+Since 2026-11-16 the **navigation of both workspaces is FOUR DOORS** (owner; plan and state `docs/reports/NAVIGATION_REBUILD_PLAN.md` §0):
+- student « اليوم · دروسي · أتدرّب · أنا », teacher « اليوم · دروسي · أقسامي · أدواتي » + the account menu under his picture. The doors are
+  DATA (`data/studentNavigation.js`, `data/teacherNavigation.js`); ONE menu renders them (`components/common/WorkspaceNav.jsx`); the pages
+  behind a door show as one line (`DoorTabs`). A new page is added to a door's `pages`, never to a menu component.
+- Three widths, one skeleton: under 768 px a top bar and a bottom bar; from 768 px (tablet upright included) an 80 px rail that does not fold.
+- **Colours are the `nav-*` tokens of `tailwind.config.js`** (no raw colour class, no gradient, in the menus, the teacher's pages, the lesson /
+  unit cards and the unit page): `nav-accent` (the brand blue) for every button, lit door and link — **owner: blue, never black, for shapes**;
+  `nav-ink` for text only; `nav-now` amber = the next step, `nav-done` green = finished, `nav-alert` = needs you.
+  Since the same day this blue is general in `pages/`, `components/` and `features/` (no indigo, teal or dark-slate button); the lesson
+  engine and its labs, the game worlds, the class board, the marketing pages and the admin space keep their own colours.
+- **A card is four lines at most** (owner: « small content »): place, name, ONE status line, a thin progress line — `LessonCard`, `LessonRow`,
+  `UnitGroup` on `components/student/lessonTileParts.jsx`. The unit page is a short header and one line per lesson, the rest folded.
+- The teacher's home is « اليوم »: each class with the lessons of the week from the school calendar (`features/teacher/today/weekLessons.js`).
+- The class page `/enseignant/classes/:id` has FIVE sections (نظرة عامة · التلاميذ · التعلّم · الأنشطة · الإعدادات; `SECTIONS` in
+  `pages/teacher/ClassGroupDetail.jsx`, the address keeps `?tab=`); a new page of a class joins a section, never the tab bar. Its overview is
+  one screen and never repeats the map of الكفاءات (plan §5quater).
+  Settings and long lists of a teacher page go in a `Fold` (`pages/teacher/teacherUi.jsx`), never in a second always-open column.
+- Not built yet: the year map, the lesson bar with previous / next, the student's home in the tokens.
+
 Since 2026-11-09 **« بوصلتي » (the year compass)** is being built (owner plan approved; contract `docs/architecture/YEAR_COMPASS.md`):
 a start check « جولة الانطلاق » scoped by the date and the class position (2 steps back in the net), a report « خريطة نقاطي »
 (positive bands, never evidence) and a plan « خطّتي ». P0 is done: ONE school calendar for the four grades and each grade's

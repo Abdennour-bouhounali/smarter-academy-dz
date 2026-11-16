@@ -39,7 +39,7 @@ export default function AnswerField({
       className={`${width} ${grow ? 'w-full flex-1' : ''} max-w-full rounded-xl border-2 px-3 py-2.5 font-mono text-xl tabular-nums min-h-[52px] transition-colors focus:outline-none focus:ring-2 focus:ring-blue-200 ${
         align === 'start' ? 'text-start' : 'text-center'
       } ${
-        disabled ? 'border-slate-200 bg-slate-50 text-slate-500' : 'border-slate-300 bg-white text-slate-800 focus:border-blue-500'
+        disabled ? 'border-slate-200 bg-slate-50 text-slate-500' : 'border-slate-300 bg-white text-slate-800 focus:border-nav-accent'
       }`}
     />
   );

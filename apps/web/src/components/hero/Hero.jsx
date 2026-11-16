@@ -12,9 +12,9 @@ import { ArrowForward } from '../common/DirectionalIcons';
 const MafsGraph = lazy(() => import('./MafsGraph'));
 
 const floatingIcons = [
-  { Icon: Calculator, color: 'text-blue-500', bg: 'bg-blue-50', position: 'top-[15%] left-[10%]', delay: 0 },
+  { Icon: Calculator, color: 'text-blue-500', bg: 'bg-nav-accent-soft', position: 'top-[15%] left-[10%]', delay: 0 },
   { Icon: Lightbulb, color: 'text-purple-500', bg: 'bg-purple-50', position: 'top-[20%] right-[12%]', delay: 0.2 },
-  { Icon: BrainCircuit, color: 'text-indigo-500', bg: 'bg-indigo-50', position: 'bottom-[30%] left-[15%]', delay: 0.4 },
+  { Icon: BrainCircuit, color: 'text-indigo-500', bg: 'bg-nav-accent-soft', position: 'bottom-[30%] left-[15%]', delay: 0.4 },
   { Icon: PenTool, color: 'text-emerald-500', bg: 'bg-emerald-50', position: 'bottom-[25%] right-[15%]', delay: 0.6 },
 ];
 
@@ -56,7 +56,7 @@ export default function Hero() {
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-sm font-medium mb-8 shadow-sm"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-nav-accent-soft border border-blue-200 text-nav-accent text-sm font-medium mb-8 shadow-sm"
             >
               <Sparkles size={15} />
               {t('hero.eyebrow')}
@@ -191,9 +191,9 @@ export default function Hero() {
               <div className="grid grid-cols-2 gap-3 mx-5 sm:mx-7 mb-5">
 
                 {/* Pente a */}
-                <div className="bg-blue-50 border border-blue-100 rounded-2xl p-3 sm:p-4 flex flex-col items-center gap-2">
+                <div className="bg-nav-accent-soft border border-blue-100 rounded-2xl p-3 sm:p-4 flex flex-col items-center gap-2">
                   <div className="text-center leading-tight">
-                    <span className="block text-[11px] sm:text-xs font-bold text-blue-700 uppercase tracking-widest">{t('hero.slope')}</span>
+                    <span className="block text-[11px] sm:text-xs font-bold text-nav-accent uppercase tracking-widest">{t('hero.slope')}</span>
                     <span className="font-mono text-blue-400 text-[10px]">{t('hero.slopeCoefficient')}</span>
                   </div>
                   {/* `dir="ltr"` : « − valeur + » est une commande NUMÉRIQUE.
@@ -204,15 +204,15 @@ export default function Hero() {
                     <button
                       onClick={() => setA(Math.max(-5, a - 1))}
                       aria-label={t('hero.decreaseA')}
-                      className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-xl bg-white border border-blue-200 hover:bg-blue-500 hover:text-white hover:border-blue-500 font-mono text-blue-700 text-xl font-bold transition-all duration-150 shadow-sm active:scale-95 select-none"
+                      className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-xl bg-white border border-blue-200 hover:bg-blue-500 hover:text-white hover:border-nav-accent font-mono text-nav-accent text-xl font-bold transition-all duration-150 shadow-sm active:scale-95 select-none"
                     >
                       −
                     </button>
-                    <span className="w-8 text-center font-mono font-black text-blue-700 text-2xl tabular-nums select-none">{a}</span>
+                    <span className="w-8 text-center font-mono font-black text-nav-accent text-2xl tabular-nums select-none">{a}</span>
                     <button
                       onClick={() => setA(Math.min(5, a + 1))}
                       aria-label={t('hero.increaseA')}
-                      className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-xl bg-white border border-blue-200 hover:bg-blue-500 hover:text-white hover:border-blue-500 font-mono text-blue-700 text-xl font-bold transition-all duration-150 shadow-sm active:scale-95 select-none"
+                      className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-xl bg-white border border-blue-200 hover:bg-blue-500 hover:text-white hover:border-nav-accent font-mono text-nav-accent text-xl font-bold transition-all duration-150 shadow-sm active:scale-95 select-none"
                     >
                       +
                     </button>

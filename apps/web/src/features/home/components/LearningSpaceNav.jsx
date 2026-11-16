@@ -19,7 +19,7 @@ const SPACES = [
     icon: BookOpen,
     titleKey: 'home.spaceCourses',
     hintKey: 'home.spaceCoursesHint',
-    tile: 'bg-blue-50 text-blue-600',
+    tile: 'bg-nav-accent-soft text-nav-accent',
     hover: 'hover:border-blue-300',
     arrow: 'group-hover:text-blue-500',
   },
@@ -53,7 +53,7 @@ export default function LearningSpaceNav() {
           <li key={s.to}>
             <Link
               to={s.to}
-              className={`group flex sm:flex-col items-center sm:items-start gap-4 sm:gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 min-h-[64px] transition-all hover:shadow-md hover:shadow-slate-200/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${s.hover}`}
+              className={`group flex sm:flex-col items-center sm:items-start gap-4 sm:gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 min-h-[64px] transition-all hover:shadow-md hover:shadow-slate-200/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent ${s.hover}`}
             >
               <span className={`inline-flex h-11 w-11 items-center justify-center rounded-xl flex-shrink-0 ${s.tile}`} aria-hidden="true">
                 <s.icon size={20} />

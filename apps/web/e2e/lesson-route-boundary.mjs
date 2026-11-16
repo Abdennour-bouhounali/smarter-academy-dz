@@ -126,7 +126,7 @@ const studentToken = await loginToken(STUDENT);
   await closeTour(page);
   const chips = await page.locator('[data-lesson-modules="qasim-adad-tabii"] [data-module-chip]').count();
   check(chips === 8, `page d'unité : 8 puces de محاور pour qasim-adad-tabii (${chips})`);
-  const resources = await page.locator('[data-unit-lesson="qasim-adad-tabii"] li.bg-violet-100').count();
+  const resources = await page.locator('[data-unit-lesson="qasim-adad-tabii"] li[data-unit-resource="manipulation"]').count();
   check(resources > 0, `page d'unité : manipulations de la leçon affichées (${resources})`);
   await page.screenshot({ path: `${OUT}/teacher-unit.png`, fullPage: true });
 

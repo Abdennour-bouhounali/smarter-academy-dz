@@ -43,7 +43,7 @@ export default function PersonNameFields({
 }) {
   const { t } = useTranslation('auth');
   const [touched, setTouched] = useState({});
-  const focus = tone === 'teal' ? 'focus:border-teal-600 focus:ring-teal-500/15' : 'focus:border-blue-500 focus:ring-blue-500/15';
+  const focus = tone === 'teal' ? 'focus:border-teal-600 focus:ring-teal-500/15' : 'focus:border-nav-accent focus:ring-nav-accent/15';
 
   const field = (key, autoComplete, label, placeholder, focusFirst) => {
     const id = `${idPrefix}-${key}`;

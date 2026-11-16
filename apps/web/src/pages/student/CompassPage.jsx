@@ -100,7 +100,7 @@ export default function CompassPage() {
     return (
       <div className="sa-page py-16 text-center" role="alert">
         <p className="font-bold text-slate-900">{t('error.title')}</p>
-        <button type="button" onClick={load} className="mt-4 min-h-[44px] rounded-xl bg-indigo-600 px-5 font-bold text-white">{t('error.retry')}</button>
+        <button type="button" onClick={load} className="mt-4 min-h-[44px] rounded-xl bg-nav-accent px-5 font-bold text-white">{t('error.retry')}</button>
       </div>
     );
   }
@@ -109,7 +109,7 @@ export default function CompassPage() {
       <div className="sa-page py-16 text-center" data-compass-disabled>
         <p className="text-2xl font-black text-slate-900">{t('disabled.title')}</p>
         <p className="mt-2 text-slate-600">{t('disabled.body')}</p>
-        <Link to="/espace" className="mt-6 inline-block font-bold text-indigo-700">{t('disabled.back')}</Link>
+        <Link to="/espace" className="mt-6 inline-block font-bold text-nav-accent">{t('disabled.back')}</Link>
       </div>
     );
   }
@@ -141,7 +141,7 @@ function Intro({ onStart, year, grade, today }) {
     <div className="sa-page py-10">
       <section className="mx-auto flex max-w-5xl items-center gap-10 rounded-3xl bg-white p-8 shadow-xl shadow-indigo-100 ring-2 ring-indigo-200 sm:p-10" data-compass-intro>
         <div className="flex-1 space-y-4">
-          <span className="inline-block rounded-full bg-indigo-50 px-4 py-1 text-sm font-bold text-indigo-800">{t('intro.eyebrow')}</span>
+          <span className="inline-block rounded-full bg-nav-accent-soft px-4 py-1 text-sm font-bold text-nav-accent">{t('intro.eyebrow')}</span>
           <h1 className="text-3xl font-black text-slate-900 sm:text-4xl">{t('intro.title')}</h1>
           <p className="max-w-xl text-lg leading-relaxed text-slate-700">{t('intro.body')}</p>
           <div className="flex flex-wrap gap-2 text-sm font-semibold text-slate-700">
@@ -149,7 +149,7 @@ function Intro({ onStart, year, grade, today }) {
             <span className="rounded-full bg-slate-100 px-3 py-1">{t('intro.saved')}</span>
             {m && <MilestoneChip m={m} />}
           </div>
-          <button type="button" onClick={onStart} className="min-h-[56px] rounded-2xl bg-indigo-600 px-8 text-xl font-black text-white shadow-[0_4px_0_#3730a3] hover:bg-indigo-700 focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-300" data-compass-start>
+          <button type="button" onClick={onStart} className="min-h-[56px] rounded-2xl bg-nav-accent px-8 text-xl font-black text-white shadow-[0_4px_0_#3730a3] hover:bg-[#3350c4] focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-300" data-compass-start>
             {t('intro.start')}
           </button>
         </div>
@@ -219,7 +219,7 @@ function PointerStep({ year, profile, today, classroomName, error, onConfirm, on
             const on = c.code === picked;
             return (
               <button key={c.code} type="button" role="radio" aria-checked={on} onClick={() => setPicked(c.code)}
-                className={`flex w-40 flex-col items-center gap-2 rounded-2xl p-3 text-center transition focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-300 ${on ? 'bg-indigo-50 ring-2 ring-indigo-500' : 'hover:bg-slate-50'}`}>
+                className={`flex w-40 flex-col items-center gap-2 rounded-2xl p-3 text-center transition focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-300 ${on ? 'bg-nav-accent-soft ring-2 ring-nav-accent' : 'hover:bg-slate-50'}`}>
                 <span className={`grid h-12 w-12 place-items-center rounded-full ${i <= pickedAt ? 'bg-indigo-500 text-white' : 'border-2 border-slate-300 bg-white'}`}>
                   {i <= pickedAt && <Check size={22} aria-hidden="true" />}
                 </span>
@@ -231,7 +231,7 @@ function PointerStep({ year, profile, today, classroomName, error, onConfirm, on
         </div>
         {error && <p role="alert" className="rounded-xl bg-rose-50 px-4 py-2 text-rose-800">{error}</p>}
         <button type="button" disabled={!picked || busy} onClick={() => go({ mode: 'lesson', lesson: picked })}
-          className="min-h-[56px] rounded-2xl bg-indigo-600 px-10 text-xl font-black text-white shadow-[0_4px_0_#3730a3] disabled:opacity-50" data-compass-confirm>
+          className="min-h-[56px] rounded-2xl bg-nav-accent px-10 text-xl font-black text-white shadow-[0_4px_0_#3730a3] disabled:opacity-50" data-compass-confirm>
           {t('pointer.confirm')}
         </button>
         <button type="button" disabled={busy} onClick={() => go({ mode: 'not_following' })} className="text-base text-slate-600 underline">
@@ -332,12 +332,12 @@ function Player({ state, setState, token, sound, onFinished, onStop, onShowRepor
           <BandCounts counts={r.counts} withUnseen={false} />
           <p className="text-slate-700">{t('round.more')}</p>
           <div className="flex flex-wrap justify-center gap-3">
-            <button type="button" onClick={() => setRoundAck(view.roundIndex)} className="min-h-[52px] rounded-2xl bg-indigo-600 px-8 text-lg font-black text-white" data-compass-continue>
+            <button type="button" onClick={() => setRoundAck(view.roundIndex)} className="min-h-[52px] rounded-2xl bg-nav-accent px-8 text-lg font-black text-white" data-compass-continue>
               {t('round.continue', { n: view.roundIndex + 1 })}
             </button>
             <button type="button" onClick={onStop} className="min-h-[52px] rounded-2xl border border-slate-300 bg-white px-6 font-bold text-slate-800">{t('round.stop')}</button>
           </div>
-          <button type="button" onClick={onShowReport} className="font-bold text-indigo-700 underline">{t('round.seeReport')}</button>
+          <button type="button" onClick={onShowReport} className="font-bold text-nav-accent underline">{t('round.seeReport')}</button>
         </div>
       </FullWindow>
     );
@@ -380,7 +380,7 @@ function Player({ state, setState, token, sound, onFinished, onStop, onShowRepor
                 <button type="button" onClick={undo} className="min-h-[48px] rounded-xl border border-slate-300 bg-slate-50 px-5 font-bold text-slate-800" data-compass-undo>{t('play.undo')}</button>
               ) : (
                 <button type="button" onClick={commit} disabled={Boolean(signal) || busy || !(canSubmit(q, value) || unsure)}
-                  className="min-h-[52px] rounded-2xl bg-indigo-600 px-8 text-lg font-black text-white disabled:opacity-40" data-compass-check>
+                  className="min-h-[52px] rounded-2xl bg-nav-accent px-8 text-lg font-black text-white disabled:opacity-40" data-compass-check>
                   {busy ? t('play.sending') : t('play.check')}
                 </button>
               )}
@@ -456,17 +456,17 @@ function Report({ state, year, grade, today, live, onContinue, onRetake }) {
     <div className="sa-page py-8" data-compass-report>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-sm font-bold text-indigo-800">{t('report.eyebrow')}</p>
+          <p className="text-sm font-bold text-nav-accent">{t('report.eyebrow')}</p>
           <h1 className="text-3xl font-black text-slate-900">{t('report.title')}</h1>
           <p className="text-slate-600">{t('report.subtitle', { count: measured })}</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {m && <MilestoneChip m={m} />}
           {live
-            ? <button type="button" onClick={onContinue} className="min-h-[48px] rounded-2xl bg-indigo-600 px-6 font-black text-white">{t('report.backToCheck')}</button>
+            ? <button type="button" onClick={onContinue} className="min-h-[48px] rounded-2xl bg-nav-accent px-6 font-black text-white">{t('report.backToCheck')}</button>
             : retakeDate
               ? <span className="text-sm text-slate-600">{t('report.nextRetake', { date: retakeDate })}</span>
-              : <button type="button" onClick={onRetake} className="min-h-[48px] rounded-2xl border border-indigo-300 bg-white px-5 font-bold text-indigo-800">{t('report.retake')}</button>}
+              : <button type="button" onClick={onRetake} className="min-h-[48px] rounded-2xl border border-indigo-300 bg-white px-5 font-bold text-nav-accent">{t('report.retake')}</button>}
         </div>
       </div>
 
@@ -488,7 +488,7 @@ function Report({ state, year, grade, today, live, onContinue, onRetake }) {
               {report.also.map((l) => <ItemRow key={l.id} line={l} />)}
             </div>
           )}
-          <button type="button" aria-expanded={open} onClick={() => setOpen((o) => !o)} className="flex items-center gap-1 font-bold text-indigo-700" data-compass-fold>
+          <button type="button" aria-expanded={open} onClick={() => setOpen((o) => !o)} className="flex items-center gap-1 font-bold text-nav-accent" data-compass-fold>
             {open ? t('report.hideAll') : t('report.all', { count: report.all.length })}
             <ChevronDown size={18} aria-hidden="true" className={open ? 'rotate-180' : ''} />
           </button>
@@ -553,7 +553,7 @@ function WeekTask({ task }) {
           <p className="text-lg font-bold text-slate-900">{t('week.prepare', { title: task.lesson.titleAr })}</p>
           <p className="text-sm text-slate-600">{t('week.prepareHint')}</p>
         </div>
-        {path && <Link to={path} className="min-h-[44px] rounded-xl bg-indigo-600 px-5 py-2.5 font-black text-white">{t('week.open')}</Link>}
+        {path && <Link to={path} className="min-h-[44px] rounded-xl bg-nav-accent px-5 py-2.5 font-black text-white">{t('week.open')}</Link>}
       </div>
     );
   }
@@ -565,7 +565,7 @@ function WeekTask({ task }) {
         <p className="text-lg font-bold text-slate-900">{t('week.revise', { title: task.item.homeLesson?.titleAr ?? task.item.textAr })}</p>
         <p className="text-sm text-slate-600">{t(`report.grade.${task.item.grade}`)}</p>
       </div>
-      {path ? <Link to={path} className="min-h-[44px] rounded-xl bg-indigo-600 px-5 py-2.5 font-black text-white">{t('week.open')}</Link>
+      {path ? <Link to={path} className="min-h-[44px] rounded-xl bg-nav-accent px-5 py-2.5 font-black text-white">{t('week.open')}</Link>
         : <span className="text-sm text-slate-600">{t('report.soon')}</span>}
     </div>
   );

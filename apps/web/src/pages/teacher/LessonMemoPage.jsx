@@ -141,7 +141,7 @@ function LessonMemo() {
           <ClipboardList className="mx-auto mb-3 h-8 w-8 text-slate-300" aria-hidden="true" />
           <h1 className="font-space text-xl font-bold text-slate-800">{t('notFoundTitle')}</h1>
           <p className="mt-2 text-sm text-slate-500">{t('notFoundBody')}</p>
-          <Link to={TEACHER_COURSES_PATH} className="mt-5 inline-flex min-h-[44px] items-center rounded-xl bg-teal-700 px-4 text-sm font-bold text-white hover:bg-teal-800">{t('backToCourses')}</Link>
+          <Link to={TEACHER_COURSES_PATH} className="mt-5 inline-flex min-h-[44px] items-center rounded-xl bg-nav-accent px-4 text-sm font-bold text-white hover:bg-[#3350c4]">{t('backToCourses')}</Link>
         </div>
       </div>
     );
@@ -150,13 +150,13 @@ function LessonMemo() {
   return (
     <div className="sa-surface-plain sa-page sa-page--flush sa-memo py-4 sm:py-6" data-lesson-memo={lessonId}>
       {/* La barre collante : retour, où l'on est, et les deux gestes de la séance. */}
-      <div className="sa-memo-toolbar sticky top-14 z-30 -mx-4 mb-5 border-b border-slate-200 bg-[#FAFAFA]/95 px-4 py-2 backdrop-blur lg:top-0 sm:mx-0 sm:rounded-b-2xl" data-memo-toolbar>
+      <div className="sa-memo-toolbar sticky top-14 z-30 -mx-4 mb-5 border-b border-slate-200 bg-[#FAFAFA]/95 px-4 py-2 backdrop-blur md:top-0 sm:mx-0 sm:rounded-b-2xl" data-memo-toolbar>
         <div className="flex items-center gap-2">
-          <button type="button" onClick={goBack} aria-label={t('backAria')} className="inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-xl border-2 border-slate-200 bg-white px-3 text-sm font-bold text-slate-700 hover:border-slate-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500" data-memo-back>
+          <button type="button" onClick={goBack} aria-label={t('backAria')} className="inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-xl border-2 border-slate-200 bg-white px-3 text-sm font-bold text-slate-700 hover:border-slate-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent" data-memo-back>
             <ArrowBack className="h-4 w-4" aria-hidden="true" /> <span className="hidden sm:inline">{t('back')}</span>
           </button>
           <div className="min-w-0 flex-1">
-            <p className="text-[11px] font-extrabold text-teal-700">{t('title')}</p>
+            <p className="text-[11px] font-extrabold text-nav-accent">{t('title')}</p>
             <p className="truncate text-sm font-bold text-slate-900"><MathLabel>{lesson.title}</MathLabel></p>
           </div>
           <a href="#memo-notes" className="inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-xl border-2 border-amber-200 bg-amber-50 px-3 text-sm font-bold text-amber-900 hover:border-amber-300" title={t('notes.title')}>
@@ -168,7 +168,7 @@ function LessonMemo() {
           <Link to={lesson.path} className="hidden min-h-[44px] shrink-0 items-center gap-1.5 rounded-xl border-2 border-slate-200 bg-white px-3 text-sm font-bold text-slate-700 hover:border-slate-300 md:inline-flex">
             <BookOpen className="h-4 w-4" aria-hidden="true" /> <span className="hidden xl:inline">{t('openLesson')}</span>
           </Link>
-          <Link to={classDoor(lesson.id, lesson.path).to} state={classDoor(lesson.id, lesson.path).state} aria-label={t(hasClassBoard(lesson.id) ? 'sessionAria' : 'classroomAria')} data-memo-door={hasClassBoard(lesson.id) ? 'session' : 'classroom'}className="inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-xl border-2 border-indigo-700 bg-indigo-600 px-3 text-sm font-extrabold text-white hover:bg-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2" data-memo-classroom>
+          <Link to={classDoor(lesson.id, lesson.path).to} state={classDoor(lesson.id, lesson.path).state} aria-label={t(hasClassBoard(lesson.id) ? 'sessionAria' : 'classroomAria')} data-memo-door={hasClassBoard(lesson.id) ? 'session' : 'classroom'}className="inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-xl border-2 border-nav-accent bg-nav-accent px-3 text-sm font-extrabold text-white hover:bg-[#3350c4] focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent focus-visible:ring-offset-2" data-memo-classroom>
             <GraduationCap className="h-4 w-4" aria-hidden="true" /> <span className="hidden sm:inline">{t(hasClassBoard(lesson.id) ? 'session' : 'classroom')}</span>
           </Link>
         </div>

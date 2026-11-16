@@ -111,7 +111,7 @@ export default function ThinkingChallengePage() {
         {fatal && (
           <div className="mx-auto mt-10 max-w-md space-y-3 text-center">
             <p role="alert" className="rounded-2xl bg-slate-100 px-4 py-3 font-inter text-sm text-slate-700">{fatal}</p>
-            <Link to="/espace/tafkir" className="font-inter text-sm font-bold text-indigo-700 hover:underline">{t('after.backToLadder')}</Link>
+            <Link to="/espace/tafkir" className="font-inter text-sm font-bold text-nav-accent hover:underline">{t('after.backToLadder')}</Link>
           </div>
         )}
         {!challenge && !fatal && <Loader2 className="mx-auto mt-16 animate-spin text-indigo-500" size={28} aria-label="…" />}

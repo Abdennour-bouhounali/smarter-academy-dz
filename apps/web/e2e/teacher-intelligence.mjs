@@ -112,6 +112,7 @@ await page.waitForSelector('[data-intervention-form]', { state: 'detached', time
 record('le geste s’enregistre depuis le point', true);
 
 // MESURER.
+await page.locator('[data-tab-group="learning"]').click(); // five sections since 2026-11-16: « التدخّلات » is a page of « التعلّم »
 await page.locator('[data-tab="interventions"]').click();
 await page.waitForSelector('[data-intervention]', { timeout: 20000 });
 const cards = await page.locator('[data-intervention]').count();

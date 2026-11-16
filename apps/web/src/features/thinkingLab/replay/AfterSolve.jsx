@@ -160,7 +160,7 @@ export default function AfterSolve({ replay }) {
             )}
           </div>
 
-          <Link to="/espace/tafkir" className="inline-flex items-center gap-2 font-inter text-sm font-bold text-indigo-700 hover:underline">
+          <Link to="/espace/tafkir" className="inline-flex items-center gap-2 font-inter text-sm font-bold text-nav-accent hover:underline">
             <ArrowRight size={16} aria-hidden="true" /> {t('after.backToLadder')}
           </Link>
         </div>

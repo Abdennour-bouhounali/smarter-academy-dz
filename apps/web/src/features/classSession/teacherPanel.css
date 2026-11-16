@@ -74,17 +74,17 @@ body:has([data-teacher-lesson-panel][data-teacher-board='true']) [data-nb-trigge
   text-decoration: none;
 }
 .ltb__tabs a:hover {
-  border-color: #0f172a;
-  color: #0f172a;
+  border-color: #3b5bdb;
+  color: #3b5bdb;
 }
 .ltb__tabs a.is-on {
-  background: #0f172a;
-  border-color: #0f172a;
+  background: #3b5bdb;
+  border-color: #3b5bdb;
   color: #fff;
 }
 .ltb__tabs a.is-main:not(.is-on) {
-  border-color: #0f172a;
-  color: #0f172a;
+  border-color: #3b5bdb;
+  color: #3b5bdb;
 }
 .ltb__actions {
   display: inline-flex;
@@ -106,7 +106,7 @@ body:has([data-teacher-lesson-panel][data-teacher-board='true']) [data-nb-trigge
   cursor: pointer;
 }
 .ltb__actions button:hover {
-  border-color: #0f172a;
+  border-color: #3b5bdb;
 }
 @media print {
   .ltb {
@@ -161,12 +161,12 @@ body:has([data-teacher-lesson-panel][data-teacher-board='true']) [data-nb-trigge
   white-space: nowrap;
 }
 .ltp__btn:hover {
-  border-color: #0f172a;
+  border-color: #3b5bdb;
 }
 .ltp__btn.is-on {
-  background: #0f172a;
+  background: #3b5bdb;
   color: #fff;
-  border-color: #0f172a;
+  border-color: #3b5bdb;
 }
 /* a board screen of the class session shown INSIDE the teacher's space (the tracking, the knowledge card) */
 .cs-root.cs-embed {

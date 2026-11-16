@@ -42,16 +42,16 @@ export default function FAQSection() {
               <button
                 onClick={() => toggle(i)}
                 aria-expanded={openIndex === i}
-                className="w-full p-6 text-start flex items-center justify-between gap-4 font-space font-bold text-slate-800 text-base sm:text-lg hover:text-blue-600 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset rounded-t-[20px]"
+                className="w-full p-6 text-start flex items-center justify-between gap-4 font-space font-bold text-slate-800 text-base sm:text-lg hover:text-nav-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent focus-visible:ring-inset rounded-t-[20px]"
               >
                 <span className="flex items-center gap-3">
-                  <HelpCircle size={20} className={`flex-shrink-0 transition-colors ${openIndex === i ? 'text-blue-600' : 'text-blue-500'}`} />
+                  <HelpCircle size={20} className={`flex-shrink-0 transition-colors ${openIndex === i ? 'text-nav-accent' : 'text-blue-500'}`} />
                   {t(`faq.items.${id}.q`)}
                 </span>
                 <ChevronDown
                   size={20}
                   className={`text-slate-400 transition-transform duration-300 flex-shrink-0 ${
-                    openIndex === i ? 'rotate-180 text-blue-600' : ''
+                    openIndex === i ? 'rotate-180 text-nav-accent' : ''
                   }`}
                 />
               </button>

@@ -78,7 +78,7 @@ export function ConfidenceBar({ confidence, className = '' }) {
       aria-label={t('learningPoints.confidence')}
       title={t('learningPoints.confidence')}
     >
-      {percent !== null && <span className="block h-full rounded-full bg-teal-600" style={{ width: `${percent}%` }} />}
+      {percent !== null && <span className="block h-full rounded-full bg-nav-accent" style={{ width: `${percent}%` }} />}
     </span>
   );
 }

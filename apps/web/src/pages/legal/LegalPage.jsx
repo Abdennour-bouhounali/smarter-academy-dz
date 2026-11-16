@@ -80,7 +80,7 @@ export function LegalList({ children }) {
  */
 export function LegalCallout({ tone = 'blue', title, children }) {
   const tones = {
-    blue: 'bg-blue-50 border-blue-200',
+    blue: 'bg-nav-accent-soft border-blue-200',
     amber: 'bg-amber-50 border-amber-200',
     slate: 'bg-slate-50 border-slate-200',
   };
@@ -205,7 +205,7 @@ export default function LegalPage({ eyebrow, title, intro, updatedAt, children }
             <Link
               key={l.to}
               to={l.to}
-              className="font-inter text-base text-slate-500 hover:text-blue-600 transition-colors"
+              className="font-inter text-base text-slate-500 hover:text-nav-accent transition-colors"
             >
               {t(l.labelKey)}
             </Link>

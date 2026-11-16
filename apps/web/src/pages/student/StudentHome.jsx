@@ -180,7 +180,7 @@ export default function StudentHome() {
             <div className="text-center" data-home-explore>
               <Link
                 to="/espace/explorer"
-                className="inline-flex min-h-[44px] items-center gap-2 rounded-xl px-4 text-sm font-semibold text-slate-600 transition-colors hover:bg-white/80 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                className="inline-flex min-h-[44px] items-center gap-2 rounded-xl px-4 text-sm font-semibold text-slate-600 transition-colors hover:bg-white/80 hover:text-nav-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent"
               >
                 <Compass size={15} aria-hidden="true" /> {t('home.exploreOtherGrades')} <ArrowForward size={14} aria-hidden="true" />
               </Link>

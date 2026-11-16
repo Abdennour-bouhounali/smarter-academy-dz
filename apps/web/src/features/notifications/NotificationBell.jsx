@@ -133,7 +133,7 @@ export default function NotificationBell({ className = '', align = 'start', dire
           <div className="mb-1 flex items-center justify-between gap-2 px-2 py-1">
             <p className="text-sm font-bold text-slate-900">{t('notifications.title')}</p>
             {data.unread > 0 && (
-              <button type="button" onClick={readAll} className="text-xs font-semibold text-indigo-700 hover:underline">{t('notifications.markAll')}</button>
+              <button type="button" onClick={readAll} className="text-xs font-semibold text-nav-accent hover:underline">{t('notifications.markAll')}</button>
             )}
           </div>
           {data.notifications.length === 0 && <p className="px-2 py-3 text-sm text-slate-500">{t('notifications.empty')}</p>}

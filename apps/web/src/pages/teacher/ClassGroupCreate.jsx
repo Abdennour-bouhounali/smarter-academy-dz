@@ -16,7 +16,7 @@ export default function ClassGroupCreate() {
 
   return (
     <TeacherPage eyebrow={t('classes.title')} title={t('classes.createTitle')} subtitle={t('classes.createSubtitle')}>
-      <div className="glass-card p-5 sm:p-6 max-w-xl">
+      <div className="rounded-2xl border border-nav-line bg-white p-5 sm:p-6 max-w-xl">
         <ClassGroupForm
           onCreated={(classroom) => navigate(`/enseignant/classes/${classroom.id}`, { replace: true })}
           onCancel={() => navigate(-1)}

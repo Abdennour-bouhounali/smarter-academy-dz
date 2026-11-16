@@ -17,11 +17,8 @@
   "activation": "تفعيل الوصول",
   "myCourses": "دروسي",
   "dailyChallenge": "التحدّي اليومي",
-  "dailyChallengeShort": "التحدّي",
   "madar": "فضاء الألعاب",
-  "madarShort": "الألعاب",
   "thinkingLab": "مختبر التفكير",
-  "thinkingLabShort": "التفكير",
   "explore": "استكشاف",
   "admin": "الإدارة",
   "adminSpace": "لوحة الإدارة",
@@ -32,12 +29,8 @@
   "closeMenu": "إغلاق القائمة",
   "sidebarExpand": "فتح الشريط الجانبي",
   "sidebarCollapse": "طيّ الشريط الجانبي",
-  "sidebarLockedByMap": "الشريط الجانبي مطوي بسبب «بطاقتي»",
-  "sidebarLockedByMapHint": "الشاشة ضيّقة: فتح الشريط بجانب «بطاقتي» يضيّق الدرس كثيرًا — أغلق البطاقة أو كبّر النافذة",
-  "studentSpace": "فضاء التلميذ",
   "mathLab": "المختبر",
   "teacherSpace": "فضاء الأستاذ",
-  "teacherHome": "الرئيسية",
   "myClasses": "أقسامي",
   "myPlan": "عرضي",
   "mySchool": "مؤسستي",
@@ -66,5 +59,17 @@
     "pendingReviews_many": "{{count}} إجابةً في انتظار التصحيح",
     "pendingReviews_other": "{{count}} إجابة في انتظار التصحيح"
   },
-  "tourReplay": "جولة في الصفحة"
+  "tourReplay": "جولة في الصفحة",
+  "doors": {
+    "today": "اليوم",
+    "lessons": "دروسي",
+    "train": "أتدرّب",
+    "me": "أنا",
+    "classes": "أقسامي",
+    "tools": "أدواتي",
+    "account": "حسابي"
+  },
+  "accountMenu": "الحساب",
+  "fullAccess": "وصول كامل",
+  "doorPages": "صفحات هذا الباب"
 }

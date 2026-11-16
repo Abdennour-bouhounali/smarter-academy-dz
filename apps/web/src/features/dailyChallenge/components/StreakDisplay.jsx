@@ -5,7 +5,7 @@ import { STREAK_DAY_SYMBOL } from '../challengeModel';
 const DAY_STYLE = {
   completed: 'bg-amber-400 text-slate-950 border-amber-300',
   missed: 'bg-rose-50 text-rose-600 border-rose-300 border-dashed',
-  today: 'bg-white text-indigo-700 border-indigo-500 ring-2 ring-amber-300',
+  today: 'bg-white text-nav-accent border-nav-accent ring-2 ring-amber-300',
   rest: 'bg-slate-100 text-slate-500 border-transparent',
   none: 'bg-white text-slate-500 border-slate-200',
 };

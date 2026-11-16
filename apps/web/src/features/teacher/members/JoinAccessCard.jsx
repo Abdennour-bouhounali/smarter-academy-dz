@@ -30,7 +30,7 @@ export default function JoinAccessCard({ classGroup, onRotateLink, onRotateCode 
   const url = classGroup.joinLinkToken ? joinLinkUrl(window.location.origin, classGroup.joinLinkToken) : '';
 
   return (
-    <section className="glass-card p-4 sm:p-5 space-y-4" data-join-access aria-label={t('classes.joinAccessLabel')}>
+    <section className="rounded-2xl border border-nav-line bg-white p-4 sm:p-5 space-y-4" data-join-access aria-label={t('classes.joinAccessLabel')}>
       {!open && (
         <p role="status" className="flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900" data-join-closed>
           <Lock size={14} className="mt-0.5 shrink-0" aria-hidden="true" />
@@ -45,7 +45,7 @@ export default function JoinAccessCard({ classGroup, onRotateLink, onRotateCode 
       <div className="flex flex-wrap items-center gap-3" data-join-code-card>
         <div className="min-w-0">
           <p className="flex items-center gap-1.5 font-inter text-xs font-semibold text-slate-500"><KeyRound size={13} aria-hidden="true" /> {t('classes.joinCode')}</p>
-          <p dir="ltr" className="font-mono-jetbrains text-2xl font-black tracking-[0.35em] text-teal-800 text-start" data-join-code>{classGroup.joinCodeEnabled ? classGroup.joinCode : '······'}</p>
+          <p dir="ltr" className="font-mono-jetbrains text-2xl font-black tracking-[0.35em] text-nav-accent text-start" data-join-code>{classGroup.joinCodeEnabled ? classGroup.joinCode : '······'}</p>
           <p className="text-[11px] text-slate-400">{classGroup.joinCodeEnabled ? t('classes.joinCodeHint') : t('classes.joinCodeDisabled')}</p>
         </div>
         <div className="ms-auto flex flex-wrap gap-2">
@@ -64,8 +64,8 @@ function JoinLinkBlock({ url, open, onRotate }) {
   return (
     <div className="space-y-2" data-join-link-block>
       <div className="flex flex-wrap items-center gap-2">
-        <p className="flex items-center gap-1.5 font-inter text-sm font-bold text-slate-900"><Link2 size={15} className="text-teal-700" aria-hidden="true" /> {t('classes.joinLink')}</p>
-        <span className="rounded-full bg-teal-50 px-2 py-0.5 text-[11px] font-semibold text-teal-800">{t('classes.joinLinkRecommended')}</span>
+        <p className="flex items-center gap-1.5 font-inter text-sm font-bold text-slate-900"><Link2 size={15} className="text-nav-accent" aria-hidden="true" /> {t('classes.joinLink')}</p>
+        <span className="rounded-full bg-nav-page px-2 py-0.5 text-[11px] font-semibold text-nav-accent">{t('classes.joinLinkRecommended')}</span>
       </div>
       <p className="text-xs text-slate-500">{t('classes.joinLinkHint')}</p>
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
@@ -78,7 +78,7 @@ function JoinLinkBlock({ url, open, onRotate }) {
           onFocus={(e) => e.target.select()}
           aria-label={t('classes.joinLink')}
           data-join-link
-          className={`min-w-0 w-full flex-1 truncate rounded-xl border px-3 py-2.5 font-mono-jetbrains text-[13px] focus:border-teal-600 focus:outline-none focus:ring-1 focus:ring-teal-600 ${open ? 'border-slate-300 bg-white text-slate-800' : 'border-slate-200 bg-slate-50 text-slate-400'}`}
+          className={`min-w-0 w-full flex-1 truncate rounded-xl border px-3 py-2.5 font-mono-jetbrains text-[13px] focus:border-nav-accent focus:outline-none focus:ring-1 focus:ring-nav-accent ${open ? 'border-slate-300 bg-white text-slate-800' : 'border-slate-200 bg-slate-50 text-slate-400'}`}
         />
         <div className="flex gap-2">
           <CopyButton value={url} label={t('classes.copyLink')} copiedLabel={t('classes.linkCopied')} className={`${btnPrimary} flex-1 justify-center sm:flex-none min-h-[44px]`} fallbackRef={inputRef} dataAttr="data-copy-link" />

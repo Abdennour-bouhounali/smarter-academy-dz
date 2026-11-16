@@ -339,6 +339,68 @@ Rules of the order:
 
 ## 9. Prompt for the next session
 
-> Read `docs/reports/LESSON_V2_MASTER_PLAN.md` and `docs/curriculum/V2_ROLLOUT_ORDER.md`. Ask me the decisions D1–D7 of
-> §3 in one question, then start Phase 0 (§4) at step 1. Work step by step, commit after each step when I say so, and
-> report the measured time and line count after lesson 2.
+Updated 2026-11-16, after the navigation, the cards, the unit page and the class page were rebuilt
+(`NAVIGATION_REBUILD_PLAN.md` §0). Paste it as the first message of a new session.
+
+```text
+We start Phase 0 of the lesson v2 rollout, then the lessons, one by one.
+
+READ FIRST, in this order, before touching anything:
+1. CLAUDE.md
+2. docs/reports/LESSON_V2_MASTER_PLAN.md — all of it; §4 (Phase 0), §4bis (A1–A6, B1–B9, C1–C6),
+   §4ter-0 (what is already done), §5 (what gets retired), §6 (definition of done, who writes what), §7 (order)
+3. docs/curriculum/V2_ROLLOUT_ORDER.md — the work order (174 lessons: 118 rebuild, 56 new)
+4. docs/reports/NAVIGATION_REBUILD_PLAN.md §0, §5ter, §5quater — what the workspace looks like now
+5. docs/architecture/GAME_WORLD.md, LAUNCH_KIT.md, LESSON_LAB.md, CLASS_SESSION.md — the pilot's contracts
+6. the pilot's code: apps/web/src/lessons/common/gameworld/, launchkit/, lessonlab/,
+   apps/web/src/features/classSession/, and the lesson `qasim-adad-tabii`
+
+STEP 0 — the repository. Run `git status` and `git log -5`. If the working tree is not clean, show me what
+is there and ask before committing. Never push and never merge to main without my word (main deploys to
+production).
+
+STEP 1 — decisions. Ask me the open decisions D3–D7 of the master plan §3 in ONE question, each with your
+recommendation. Do not ask again what is marked decided.
+
+STEP 2 — Phase 0, in the order of the plan §4. What remains (§4ter-0 says what is done):
+- the linter and a CI check for unused exports, unused imports and unused strings (web, api, core); a name
+  used after a spread `...name` IS used;
+- free room in the entry bundle (it is at about 242 of 245 KB);
+- extract the lesson kit out of `gameworld/divisorIsles/` so a lesson is DATA plus ONE world mechanic;
+- one `lesson.pack.js` per lesson and its generated index;
+- remove the pilot's id from the shared files that name it;
+- finish the pilot: its three rules that are still told, not forged;
+- A1–A6: the generic server verdict, the journey saved on the server, validators for v2, progress and
+  reports reading v2, the progress-migration rule, one pack-driven walk in CI;
+- `lesson-v2-status.mjs` (a lesson is done when it prints ✅) and `docs/architecture/LESSON_V2.md`;
+- cut the root CLAUDE.md down to what a new session must know.
+One step at a time. After each step: run its checks, update its docs, tell me what you measured, and wait
+for my « commit ».
+
+STEP 3 — the gate. Rebuild lesson 2, `qawasim-adad-tabii`, with the kit only. Report the real time it
+took, the lines written by hand, and what still had to be copied from the pilot. STOP there: I validate
+lesson 2 on the laptop and on the phone before lesson 3.
+
+STEP 4 — the lessons. Follow V2_ROLLOUT_ORDER.md line by line: the 4AM lessons of الفصل الأول, then
+their core and support prerequisites, then الفصل الثاني, الفصل الثالث, then 3AM the same way. An existing
+lesson is rebuilt completely, without being held back by its old code or old docs; a missing one is
+generated from scratch. One game world per unit, unless a lesson needs its own.
+For each lesson: meet the definition of done of §6, publish it in the local database (nothing stays
+draft), run `lesson-v2-status.mjs --lesson <id>`, delete what the rebuild makes useless in the same
+change, then commit `feat(lessons): <id>` and go to the next one.
+
+RULES THAT HOLD THROUGHOUT:
+- Show me your limit: a lesson that merely works is not done.
+- The textbook is the reference of the الكفاءات, never the script; never send a student to the book.
+- Drawn in code, never a generated image; people only through KidFigure; respect Islam in every string.
+- Shapes in the brand blue (`nav-accent`), dark navy for text only; small content; fold, never delete.
+- Laptop first, then tablet, then phone; a formula never breaks; an answer is typed in its own shape;
+  money is « دج ».
+- At most 2 agents at once and ONE heavy check at a time (check:lessons, build, e2e), or the editor crashes.
+- Every task ends with the docs updated and a « Documentation Sync » section.
+- Report honestly: what failed, what you did not check, what you are unsure of. Never « all green »
+  on something you did not run.
+```
+
+Before pasting it: the working tree must be committed (today's navigation, cards, class page and clean-up are
+uncommitted at the time of writing), or STEP 0 will stop on it.
