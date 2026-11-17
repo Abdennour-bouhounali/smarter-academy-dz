@@ -295,8 +295,15 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
      (the unit's page), `pages/Methode.jsx` (marketing captures), other lessons' prerequisites. STILL COUPLED, for step 4:
      the pilot's content imports the world's `logic.js` / `strings.js`, and `features/classSession/lessonScripts.js`
      imports the world's `ruleForge.js`.
-  4. [ ] Finish the pilot: forge its three rules that are still told; generalise `ruleForge.js` / `RuleForge.jsx`
-     into the kit on those four examples.
+  4. [x] The pilot is finished: its FOUR rules are forged, and the forge is in the kit — DONE 2026-11-17. `kit/forge.js`
+     (the frame: a forge is a description — tiles, what a rule says of a case, evidence, predictions, attacks, nudges, a
+     last step typed in its own shape) and `kit/RuleForge.jsx` (the screen); the world gives what a case is and how it is
+     drawn (`divisorIsles/ruleForge.js`, `forgeParts.jsx`); the lesson gives its forges (`world/forges.js`). The three
+     new ones: the plank's table (island E), which number is written first in each of the four sentences (the
+     guardians), the two planks that hold over every gap (the stone of island H). In each, sixteen rules can be written
+     and exactly one holds; every false rule is refuted in front of the student (`forges.test.js`, 29 tests). The story
+     walk crosses the four forges (104 checks, laptop and phone); the forge has a phone layout (no zoom of its own).
+     NOT done: the class board still forges only the first rule with the class.
   5. [ ] A1–A6 (§4bis), with B1 (one shared engine chunk, a loading screen).
   6. [ ] `apps/web/scripts/lesson-v2-status.mjs` and `docs/architecture/LESSON_V2.md`; mark D6 in the four contracts.
   7. [ ] Cut the root `CLAUDE.md`.

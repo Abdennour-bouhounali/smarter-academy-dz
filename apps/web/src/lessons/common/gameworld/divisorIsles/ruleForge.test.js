@@ -11,15 +11,17 @@ import {
   runOnEvidence,
   attacks,
   predictCases,
-  streak,
   nudge,
-  discoveryLevel,
-  keyCase,
-  keyRight,
-  complete,
+  longCase,
+  checkDivision,
+  remainderForge,
   outcome,
 } from './ruleForge';
+import { complete, streak, discoveryLevel } from '../kit/forge';
 
+/** Every rule that can be written with the tiles of a forge (the product of its slots' options). */
+const allRules = (forge) =>
+  forge.slots.reduce((rules, s) => rules.flatMap((rule) => s.options.map((o) => ({ ...rule, [s.id]: o.id }))), [{}]);
 const rng = (seed) => {
   let s = seed;
   return () => {
@@ -27,6 +29,7 @@ const rng = (seed) => {
     return (s - 1) / 2147483646;
   };
 };
+const FORGE = remainderForge('a-key');
 const RULES = QUANTITIES.flatMap((q) => CONDITIONS.map((c) => ({ q: q.id, c: c.id })));
 const THE = { q: 'r', c: 'zero' };
 /** A crossing as the story gives it: 15 with 3, 16 with 3 (one cell left), 16 with 4, 42 with 4 (two left), 42 with 6. */
@@ -50,9 +53,11 @@ describe('مصهر القاعدة — the rule forge', () => {
     expect(isTheRule(THE)).toBe(true);
     expect(RULES.filter(isTheRule)).toHaveLength(1);
     expect(ruleText(THE)).toBe('يثبت الجسر عندما: باقي قسمة طول الهوّة على طول اللوح يساوي 0.');
-    expect(complete({ q: 'r' })).toBe(false);
-    expect(complete(null)).toBe(false);
-    expect(complete(THE)).toBe(true);
+    expect(complete(FORGE, { q: 'r' })).toBe(false);
+    expect(complete(FORGE, null)).toBe(false);
+    expect(complete(FORGE, THE)).toBe(true);
+    expect(allRules(FORGE)).toHaveLength(16); // the law of the world, as a forge of the kit: the same sixteen rules
+    expect(allRules(FORGE).filter(FORGE.isTheRule)).toEqual([THE]);
   });
 
   it('keeps the student’s crossing as evidence — his own bridges are never pushed out by those of the mirror', () => {
@@ -178,12 +183,13 @@ describe('مصهر القاعدة — the rule forge', () => {
   it('ends on a gap too long to count, decided by the rule', () => {
     const seen = new Set();
     for (let seed = 1; seed <= 60; seed += 1) {
-      const c = keyCase(rng(seed * 104729));
+      const c = longCase(rng(seed * 104729));
       seen.add(c.held);
       expect(c.a).toBeGreaterThan(90);
-      expect(keyRight(c, c.q, String(c.r), c.held)).toBe(true);
-      expect(keyRight(c, c.q, c.r, !c.held)).toBe(false);
-      expect(keyRight(c, c.q - 1, c.r + c.b, c.held)).toBe(false);
+      expect(checkDivision(c, { q: String(c.q), r: String(c.r) }, c.held)).toBe('ok');
+      expect(checkDivision(c, { q: c.q, r: c.r }, !c.held)).toBe('verdict');
+      expect(checkDivision(c, { q: c.q - 1, r: c.r + c.b }, c.held)).toBe('big');
+      expect(checkDivision(c, { q: c.q + 1, r: c.r }, c.held)).toBe('sum');
     }
     expect(seen.size).toBe(2);
   });

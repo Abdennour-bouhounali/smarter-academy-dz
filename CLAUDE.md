@@ -80,11 +80,12 @@ verdict, then the copy handed back with red marks; `GAME_WORLD.md` §2quater). S
 « فضاء الامتحان », a ladder of five generated exam levels (80 % to climb, the next sheet adapted to what was missed; the game is felt
 BETWEEN two levels, never inside a sitting) — and the title screen opens « تقدّمي » (the lesson's road, an honest exam readiness, ONE next
 step; `GAME_WORLD.md` §2quinquies). Written work is done in **« وضع الورقة »** (paper mode: the music
-stops, the answer boxes wait for « كتبتُ على ورقتي », a model sheet poses the division step by step). Since 2026-11-18 its first rule is no
-longer TOLD: on island D the student forges it in **« مصهر القاعدة »** (`RuleForge.jsx`, `ruleForge.js`) — he predicts bridges he has not built,
-writes his rule with two tiles, and the island's mirror tests it on HIS OWN crossing, then attacks it with a new gap; a rule that survives
-becomes his key and only then gets its name. The verdict is always a bridge that holds or crumbles, never « wrong »; the robot helps
-without giving the rule (`GAME_WORLD.md` §2sexies; the three other tablets are still told). Contract: `docs/architecture/GAME_WORLD.md`.
+stops, the answer boxes wait for « كتبتُ على ورقتي », a model sheet poses the division step by step). Since 2026-11-18 a rule is no
+longer TOLD: the student forges it in **« مصهر القاعدة »** (frame `kit/forge.js`, screen `kit/RuleForge.jsx`; a lesson's forges are data,
+`world/forges.js`) — he predicts cases he has not seen, writes his rule with tiles, and the island's mirror tests it on HIS OWN evidence,
+then attacks it with a new case; a rule that survives becomes his key and only then gets its name. The verdict is always a bridge that holds
+or crumbles, never « wrong »; the robot helps without giving the rule. Since 2026-11-17 of the rollout ALL FOUR rules of the pilot are forged
+(`GAME_WORLD.md` §2sexies « The four forges », binding for the next lessons: exactly one rule holds, every other is refuted in front of him). Contract: `docs/architecture/GAME_WORLD.md`.
 
 Since 2026-11-16 the **navigation of both workspaces is FOUR DOORS** (owner; plan and state `docs/reports/NAVIGATION_REBUILD_PLAN.md` §0):
 - student « اليوم · دروسي · أتدرّب · أنا », teacher « اليوم · دروسي · أقسامي · أدواتي » + the account menu under his picture. The doors are

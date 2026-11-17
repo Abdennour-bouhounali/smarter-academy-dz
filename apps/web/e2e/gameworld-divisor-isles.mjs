@@ -161,15 +161,48 @@ expect((await st()).stars.s42 === 3, 'bridge 42 holds with 3 stars');
 await cross(2); await page.waitForTimeout(500);
 let s = await st();
 expect(s.stage === 3 && s.overlay === 'forge', 'island D opens the RULE FORGE: the rule is not told, the student forges it');
+// ── the forges: what every one of them shares ──
+const fg = () => page.evaluate(() => window.__forge);
+/** The last step: writes the answer in its boxes (and the verdict, when the forge asks one), then « تحقّق ». */
+const fillUse = async (vals, verdict = null) => {
+  for (const [name, v] of Object.entries(vals)) await page.fill(`[data-rf-use="${name}"]`, String(v));
+  if (verdict !== null) await page.click(`[data-rf-use-verdict="${verdict ? 'yes' : 'no'}"]`);
+  await page.click('[data-rf-use-check]'); await page.waitForSelector('[data-rf-use-fb]');
+};
+/** Right predictions until the forge lets him write his rule. */
+const toBuild = async () => {
+  for (let i = 0; i < 12 && (await fg()).phase === 'predict'; i += 1) {
+    const f = await fg();
+    if (f.show.stage === 'ask') { await page.click(`[data-rf-guess="${f.show.c.held ? 'yes' : 'no'}"]`); await page.waitForSelector('[data-rf-predicted]'); }
+    await page.click('[data-rf-next]'); await page.waitForTimeout(80);
+  }
+  await page.waitForSelector('[data-rf="build"]');
+};
+/** From « اكتب قاعدتك »: the right tiles, the mirror's test, its attacks, the seal, the last step — up to the tablet. */
+const finishForge = async ({ tiles, last }) => {
+  for (const t of tiles) await page.click(`[data-rf-tile="${t}"]`);
+  await page.click('[data-rf-test]'); await page.waitForSelector('[data-rf-agreed]');
+  await page.click('[data-rf-dare]'); await page.waitForSelector('[data-rf="attack"]');
+  for (let i = 0; i < 4; i += 1) {
+    const a = (await fg()).atk; const c = a.list[a.i];
+    await page.click(`[data-rf-say="${c.held ? 'yes' : 'no'}"]`); await page.click('[data-rf-fire]'); await page.waitForSelector('[data-rf-survived]');
+    await page.click('[data-rf-attack-next]');
+    if (a.i + 1 >= a.list.length) break;
+    await page.waitForSelector('[data-rf-say]'); await page.waitForTimeout(80);
+  }
+  await page.waitForSelector('[data-rf-sealed]');
+  await page.click('[data-rf-seal]'); await page.waitForSelector('[data-rf="use"]'); await page.waitForTimeout(80);
+  await last((await fg()).use.c);
+  await page.waitForSelector('[data-di-my-rule]');
+};
 // ── « مصهر القاعدة »: predict → write his rule with two tiles → the mirror tests it on HIS crossing → attacks it → seals it ──
 {
-  const fg = () => page.evaluate(() => window.__forge);
   const rowsOf = () => page.locator('[data-rf-row]').evaluateAll((els) => els.map((e) => e.dataset.rfRow));
   const crossing = await rowsOf();
   expect(['15:3', '42:5', '42:6'].every((r) => crossing.includes(r)) && await page.locator('[data-rf-row].is-fell').count() >= 1, `the evidence of the forge is his OWN crossing — the bridges that held and those that crumbled (${crossing.join(' ')})`);
   await shot('forge-predict');
   // 1. predictions on bridges he has not built: a miss, then three right in a row
-  const guess = async (right) => { const c = (await fg()).show.c; await page.click(`[data-rf-guess="${c.held === right ? 'holds' : 'falls'}"]`); await page.waitForSelector('[data-rf-predicted]'); return c; };
+  const guess = async (right) => { const c = (await fg()).show.c; await page.click(`[data-rf-guess="${c.held === right ? 'yes' : 'no'}"]`); await page.waitForSelector('[data-rf-predicted]'); return c; };
   let c = await guess(false);
   expect(await page.getAttribute('[data-rf-predicted]', 'data-rf-predicted') === 'miss' && !(await page.textContent('.rf-panel')).includes('خطأ') && (await page.textContent('[data-rf-eq]')).includes(String(c.a)), 'a missed prediction is said without « wrong »; the mirror builds the bridge and writes its division');
   expect(await page.getAttribute(`[data-rf-row="${c.a}:${c.b}"]`, 'data-rf-own') === '0', 'a bridge the mirror built joins the evidence, marked as the mirror’s');
@@ -179,12 +212,12 @@ expect(s.stage === 3 && s.overlay === 'forge', 'island D opens the RULE FORGE: t
   await shot('forge-predicted');
   await page.click('[data-rf-next]'); await page.waitForSelector('[data-rf="build"]');
   // 2. a false rule (« the plank is an even number ») is refuted by one of HIS bridges, not by the platform
-  expect(await page.locator('[data-rf-q]').count() === 4 && await page.locator('[data-rf-c]').count() === 4 && await page.locator('[data-rf-test]').isDisabled(), 'the rule is written with two tiles — what I read, how it must be; nothing can be tested before both are chosen');
-  await page.click('[data-rf-q="b"]'); await page.click('[data-rf-c="even"]'); await shot('forge-build');
+  expect(await page.locator('[data-rf-tile^="q:"]').count() === 4 && await page.locator('[data-rf-tile^="c:"]').count() === 4 && await page.locator('[data-rf-test]').isDisabled(), 'the rule is written with two tiles — what I read, how it must be; nothing can be tested before both are chosen');
+  await page.click('[data-rf-tile="q:b"]'); await page.click('[data-rf-tile="c:even"]'); await shot('forge-build');
   await page.click('[data-rf-test]'); await page.waitForSelector('[data-rf-refuted]');
   expect(await page.getAttribute('[data-rf-refuted]', 'data-rf-refuted') === '15:3' && await page.getAttribute('[data-rf-row="15:3"]', 'data-rf-mark') === 'refute' && await page.getAttribute('[data-rf-row="15:3"]', 'data-rf-own') === '1' && (await page.textContent('[data-rf-refuted]')).includes('لكنّك رأيته'), 'the mirror runs it on his crossing and stops on the first bridge that contradicts it — his very first bridge: 15 with the plank 3 held, and 3 is odd');
   {
-    const out = await page.evaluate(() => { const box = document.querySelector('.rf-log').getBoundingClientRect(); const stage = document.querySelector('.rf-panel').getBoundingClientRect(); return [...document.querySelectorAll('[data-rf-row], .rf-panel > *')].filter((el) => { const r = el.getBoundingClientRect(); const lim = el.matches('[data-rf-row]') ? box : stage; return r.bottom > lim.bottom + 1 || r.top < lim.top - 1; }).map((el) => el.dataset.rfRow ?? el.className); });
+    const out = await page.evaluate(() => { const box = document.querySelector('.rf-log').getBoundingClientRect(); const stage = document.querySelector('.rf-panel').getBoundingClientRect(); return [...document.querySelectorAll('[data-rf-row], .rf-panel > *')].filter((el) => { const r = el.getBoundingClientRect(); const lim = el.matches('[data-rf-row]') ? box : stage; const frame = el.matches('[data-rf-row]') ? el.closest('ul') : el.parentElement; if (/(auto|scroll)/.test(getComputedStyle(frame).overflowY)) return false; /* on a phone the list and the panel slide inside themselves */ return r.bottom > lim.bottom + 1 || r.top < lim.top - 1; }).map((el) => el.dataset.rfRow ?? el.className); });
     expect(out.length === 0, `every line of the evidence and of the panel stays inside its frame, also while the rule is being tested (${out.join(' | ') || 'none out'})`);
   }
   await shot('forge-refuted');
@@ -194,25 +227,25 @@ expect(s.stage === 3 && s.overlay === 'forge', 'island D opens the RULE FORGE: t
   expect(await page.getAttribute('[data-rf-nudge]', 'data-rf-nudge') === 'compare' && await page.locator('[data-rf-row].is-compare').count() === 2 && !(await page.textContent('[data-rf-nudge]')).includes('يساوي 0'), 'the robot points at two of his bridges over the same gap — and does not say the rule');
   await shot('forge-nudge');
   // 3. the right rule agrees with every bridge, then survives two attacks
-  await page.click('[data-rf-q="r"]'); await page.click('[data-rf-c="zero"]'); await page.click('[data-rf-test]'); await page.waitForSelector('[data-rf-agreed]');
+  await page.click('[data-rf-tile="q:r"]'); await page.click('[data-rf-tile="c:zero"]'); await page.click('[data-rf-test]'); await page.waitForSelector('[data-rf-agreed]');
   expect(await page.locator('[data-rf-row][data-rf-mark="agree"]').count() === (await rowsOf()).length, 'every bridge of the evidence agrees with it');
   await page.click('[data-rf-dare]'); await page.waitForSelector('[data-rf="attack"]');
   const first = (await fg()).atk.list;
   expect(first.length === 2 && first[0].held === false && first[0].a % 2 === 0 && first[0].b % 2 === 0 && first[1].held === true, 'the mirror attacks with a NEW gap: two even numbers that crumble, then an odd plank that holds');
-  await page.click('[data-rf-say="holds"]'); // not what his rule says of this bridge
-  expect((await page.textContent('.rf-panel')).includes('قاعدتك تقول غير ذلك') && await page.getAttribute('[data-rf-rule-says]', 'data-rf-rule-says') === 'falls', 'he must say what HIS rule predicts; a slip is answered by the rule applied to the bridge, in words');
+  await page.click('[data-rf-say="yes"]'); // not what his rule says of this bridge
+  expect((await page.textContent('.rf-panel')).includes('قاعدتك تقول غير ذلك') && await page.getAttribute('[data-rf-rule-says]', 'data-rf-rule-says') === 'no', 'he must say what HIS rule predicts; a slip is answered by the rule applied to the bridge, in words');
   await shot('forge-attack');
   await page.click('[data-rf-fire]'); await page.waitForSelector('[data-rf-survived]'); await shot('forge-survived');
-  await page.click('[data-rf-attack-next]'); await page.click('[data-rf-say="holds"]'); await page.click('[data-rf-fire]'); await page.waitForSelector('[data-rf-survived]');
+  await page.click('[data-rf-attack-next]'); await page.click('[data-rf-say="yes"]'); await page.click('[data-rf-fire]'); await page.waitForSelector('[data-rf-survived]');
   await page.click('[data-rf-attack-next]'); await page.waitForSelector('[data-rf-sealed]');
   // 4. the key: his words, then one gap too long to count
   await page.fill('[data-rf-words]', 'الجسر يثبت إذا لم يبقَ شيء'); await shot('forge-seal');
   await page.click('[data-rf-seal]'); await page.waitForSelector('[data-rf="use"]');
   const u = (await fg()).use.c;
-  await page.fill('[data-rf-use-q]', String(u.q - 1)); await page.fill('[data-rf-use-r]', String(u.r + u.b)); await page.click(`[data-rf-use-verdict="${u.held ? 'holds' : 'falls'}"]`); await page.click('[data-rf-use-check]');
+  await fillUse({ q: u.q - 1, r: u.r + u.b }, u.held);
   expect(await page.getAttribute('[data-rf-use-fb]', 'data-rf-use-fb') === 'big', 'the last gap is too long to count: a remainder bigger than the plank is refused with its reason, never the answer');
   await shot('forge-use');
-  await page.fill('[data-rf-use-q]', String(u.q)); await page.fill('[data-rf-use-r]', String(u.r)); await page.click('[data-rf-use-check]');
+  await fillUse({ q: u.q, r: u.r });
   await page.waitForSelector('[data-di-my-rule]'); await shot('tablet-1');
   const rec = await page.evaluate(() => window.__world.getState().rules['qasim-baqi']);
   expect(rec.rule.q === 'r' && rec.rule.c === 'zero' && rec.tries === 2 && rec.nudges === 1 && rec.level === 'nudged' && rec.predictions.asked === 4 && rec.predictions.right === 3, 'the game keeps HOW the rule was found: two rules tried, one nudge of the robot, three predictions right out of four');
@@ -229,7 +262,29 @@ await ff(10); await page.waitForTimeout(400); await shot('after-storm');
 s = await st(); expect(s.phase === 'play' && s.held == null && !s.stars.s48, 'the storm took the bridge and the mould');
 await take(8); await forge(3); await ff(12);
 expect((await st()).stars.s48 === 3, 'bridge 48 holds with mould 8');
-await cross(3); await page.waitForTimeout(500); await shot('tablet-2');
+await cross(3); await page.waitForTimeout(500);
+s = await st(); expect(s.stage === 4 && s.overlay === 'forge' && (await fg()).key === 'qasim-jidaa', 'island E opens the SECOND forge: the product rule is not told either');
+{
+  await shot('forge2-predict');
+  const c = (await fg()).show.c; await page.click(`[data-rf-guess="${c.held ? 'yes' : 'no'}"]`); await page.waitForSelector('[data-rf-predicted]');
+  expect(!(await page.textContent('[data-rf-eq]')).includes('+') && (await page.textContent('.rf-panel')).includes('جدول'), 'the mirror of this island writes a PRODUCT of the plank’s table — no division, no remainder');
+  await shot('forge2-predicted');
+  await toBuild();
+  // the additive idea (« the gap = the plank + a number ») says that every bridge holds: one of HIS bridges that fell refutes it
+  await page.click('[data-rf-tile="q:a"]'); await page.click('[data-rf-tile="c:plus"]'); await page.click('[data-rf-test]'); await page.waitForSelector('[data-rf-refuted]');
+  const bad = await page.getAttribute('[data-rf-refuted]', 'data-rf-refuted');
+  expect(await page.getAttribute(`[data-rf-row="${bad}"]`, 'data-rf-mark') === 'refute' && (await page.locator(`[data-rf-row="${bad}"].is-fell`).count()) === 1 && (await page.textContent('.rf-panel')).includes('+'), `a false rule of this forge is refuted by a bridge of his that fell (${bad}), with his rule applied to it in words`);
+  await shot('forge2-refuted');
+  await page.click('[data-rf-fix]'); await page.waitForSelector('[data-rf="build"]');
+  await finishForge({ tiles: ['q:a', 'c:times'], last: async (u) => {
+    await fillUse({ k: u.q - 1, p: u.b * (u.q - 1) }, u.held);
+    expect(await page.getAttribute('[data-rf-use-fb]', 'data-rf-use-fb') === 'far', 'the last step is a product typed in its shape: one that stops a plank too early is refused with its reason');
+    await shot('forge2-use');
+    await fillUse({ k: u.q, p: u.b * u.q });
+  } });
+  await shot('tablet-2');
+  expect((await page.textContent('[data-di-my-rule]')).includes('يساوي طول اللوح × عددًا طبيعيًّا') && (await page.evaluate(() => window.__world.getState().rules['qasim-jidaa'].tries)) === 2, 'tablet 2 names the product rule AFTER his own; the game kept that he tried two rules');
+}
 expect((await st()).overlay === 'tablet', 'tablet 2 on island E'); await page.click('[data-di-tablet]'); await ff(0.3);
 if (UNTIL <= 4) { await browser.close(); process.exit(); }
 
@@ -248,7 +303,29 @@ await tp(ring[0], ring[1]); await ff(0.2); await act(); await page.waitForTimeou
 expect((await st()).overlay === 'statues', 'the guardians puzzle opens');
 await page.click('[data-di-check]'); await page.waitForTimeout(300); await shot('statues-wrong');
 for (const id of ['qasim', 'yaqsim', 'yaqbal', 'mudaaf']) await page.click(`[data-di-sentence="${id}"]`);
-await page.click('[data-di-check]'); await page.waitForTimeout(500); await shot('tablet-3');
+await page.click('[data-di-check]'); await page.waitForTimeout(500);
+s = await st(); expect(s.overlay === 'forge' && (await fg()).key === 'siyagh-mutakafia', 'the four sentences are right: the guardians’ mirror opens — now he must say WHY');
+{
+  const c = (await fg()).show.c;
+  expect(await page.locator('[data-rf-row]').count() === 4 && (await page.textContent('[data-rf-log]')).includes('6 قاسم للعدد 120') && (await page.textContent('[data-rf-sentence]')).includes(c.text), 'the evidence is the guardians’ four sentences, and a case is a SENTENCE written above the bridge it means');
+  await shot('forge3-predict');
+  await toBuild();
+  expect(await page.locator('[data-rf-tile]').count() === 8, 'one tile per phrasing: is the number written first the plank or the gap?');
+  for (const f of ['qasim', 'yaqsim', 'yaqbal', 'mudaaf']) await page.click(`[data-rf-tile="${f}:plank"]`);
+  await shot('forge3-build');
+  await page.click('[data-rf-test]'); await page.waitForSelector('[data-rf-refuted]');
+  expect(/^(yaqbal|mudaaf):120:6$/.test(await page.getAttribute('[data-rf-refuted]', 'data-rf-refuted')) && (await page.textContent('[data-rf-refuted]')).includes('الحرّاس قبلوها'), 'a reading that puts the plank first everywhere is refuted by a sentence the guardians accepted');
+  await shot('forge3-refuted');
+  await page.click('[data-rf-fix]'); await page.waitForSelector('[data-rf="build"]');
+  await finishForge({ tiles: ['qasim:plank', 'yaqsim:plank', 'yaqbal:gap', 'mudaaf:gap'], last: async (u) => {
+    const right = { 'qasim.x': u.b, 'qasim.y': u.a, 'yaqsim.x': u.b, 'yaqsim.y': u.a, 'yaqbal.x': u.a, 'yaqbal.y': u.b, 'mudaaf.x': u.a, 'mudaaf.y': u.b };
+    await fillUse({ ...right, 'mudaaf.x': u.b, 'mudaaf.y': u.a });
+    expect(await page.getAttribute('[data-rf-use-fb]', 'data-rf-use-fb') === 'order', 'the last step: one fact written in the four sentences — a sentence the wrong way round is refused, never corrected for him');
+    await shot('forge3-use');
+    await fillUse(right);
+  } });
+  await shot('tablet-3');
+}
 expect((await st()).overlay === 'tablet', 'tablet 3'); await page.click('[data-di-tablet]'); await ff(1.5);
 
 // ── the gate dash: always the right lane ──
@@ -303,9 +380,25 @@ await ff(0.3); await page.waitForTimeout(700); await shot('at-stone');
 expect((await st()).prompt === 'اقرأ اللوح', 'at the stone the prompt is « اقرأ اللوح »');
 await act(); expect((await st()).overlay === 'quiz', 'E at the stone reopens the question');
 await page.click('[data-di-option="1"]'); await page.click('[data-di-option="7"]'); await page.click('[data-di-check]'); await page.waitForTimeout(300);
-await page.click('[data-di-option="1"]'); await page.click('[data-di-option="100"]'); await page.click('[data-di-check]'); await page.waitForTimeout(300); await shot('big-wrong');
-expect((await page.evaluate(() => document.querySelector('[data-di-marks]')?.textContent ?? '')).includes('143 = 100'), 'wrong answer {1, 100} on 143 shows the division by 100');
-await page.click('[data-di-option="100"]'); await page.click('[data-di-option="143"]'); await page.click('[data-di-check]'); await page.waitForTimeout(500); await shot('tablet-4');
+s = await st(); expect(s.overlay === 'forge' && (await fg()).key === 'wahid-wa-nafsuh', 'the gap of 7 understood, the stone shows its mirror: the last key is forged, not told');
+{
+  await shot('forge4-predict');
+  await toBuild();
+  // « a plank of 2 always holds »: the mirror builds the planks of HIS rule over the gaps he crossed — an odd one refutes it
+  await page.click('[data-rf-tile="short:two"]'); await page.click('[data-rf-tile="long:self"]'); await shot('forge4-build');
+  await page.click('[data-rf-test]'); await page.waitForSelector('[data-rf-refuted]');
+  const bad = await page.getAttribute('[data-rf-refuted]', 'data-rf-refuted');
+  expect(bad.endsWith(':2') && Number(bad.split(':')[0]) % 2 === 1 && (await page.textContent('[data-rf-refuted]')).includes('انهار أمامك'), `a rule about EVERY gap is run on his own gaps: the plank 2 crumbles over an odd one (${bad})`);
+  await shot('forge4-refuted');
+  await page.click('[data-rf-fix]'); await page.waitForSelector('[data-rf="build"]');
+  await finishForge({ tiles: ['short:one', 'long:self'], last: async (u) => {
+    await fillUse({ x: 1, y: 100 });
+    expect(await page.getAttribute('[data-rf-use-fb]', 'data-rf-use-fb') === 'one' && u.a > 100, 'the last step: a gap never seen, two planks to write without any calculation — one right, the other refused without being named');
+    await shot('forge4-use');
+    await fillUse({ x: 1, y: u.a });
+  } });
+  await shot('tablet-4');
+}
 expect((await st()).overlay === 'tablet', 'tablet 4'); await page.click('[data-di-tablet]'); await ff(0.5);
 expect((await st()).keys.length === 4, 'four keys earned');
 if (UNTIL <= 7) { await browser.close(); process.exit(); }

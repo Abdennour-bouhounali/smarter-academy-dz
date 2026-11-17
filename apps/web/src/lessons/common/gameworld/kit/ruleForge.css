@@ -658,14 +658,213 @@
 }
 
 /* a phone held sideways: the two columns of the forge keep a readable text and scroll, each inside its frame */
+
+/* ───────── a forge with four slots (one per phrasing): four narrow columns, two tiles each ───────── */
+.rf-tiles[data-rf-slots='4'] {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6rem;
+}
+.rf-tiles[data-rf-slots='4'] h4 {
+  font-size: 0.9rem;
+  text-align: center;
+  white-space: nowrap;
+}
+.rf-rule[data-rf-slots='4'] {
+  font-size: 1.05rem;
+  gap: 0.4rem 0.5rem;
+}
+.rf-rule[data-rf-slots='4'] b {
+  padding: 0.05rem 0.6rem;
+}
+
+/* ───────── a case that is a SENTENCE: written above the bridge it means, and in its line of evidence ───────── */
+.rf-sentence {
+  font-size: 1.7rem;
+  font-weight: 900;
+  color: #fff;
+  text-align: center;
+  line-height: 1.5;
+}
+.rf-bridge.has-sentence {
+  max-height: 62%;
+}
+.rf-log li > .rf-line--sentence {
+  flex-wrap: wrap;
+  font-size: 0.86rem;
+}
+
+/* ───────── the last step written on several lines (one sentence per line) ───────── */
+.rf-uselines {
+  display: grid;
+  gap: 0.35rem 1.6rem;
+  justify-items: center;
+}
+.rf-uselines[data-rf-lines='4'] {
+  grid-template-columns: 1fr 1fr;
+}
+.rf-uselines:not([data-rf-lines='1']) .rf-use {
+  align-items: center;
+  font-size: 1.25rem;
+  line-height: 2.4rem;
+  gap: 0.5rem;
+}
+.rf-uselines:not([data-rf-lines='1']) .rf-use input {
+  height: 2.4rem;
+  font-size: 1.25rem;
+}
+.rf-uselines[data-rf-lines='1'] .rf-use[dir='rtl'] {
+  align-items: center;
+  font-size: 1.5rem;
+}
+.rf-sentence--alone {
+  font-size: 2.3rem;
+}
+.rf-sentence__hint {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #9fd8ff;
+  text-align: center;
+}
+
+/* ───────── A PHONE HELD SIDEWAYS (2026-11-17) ─────────
+   One scale: the root font (13 px). The forge does not zoom itself there (RuleForge › isShortScreen): it is laid out for a
+   low, wide screen — a narrow list, a low mirror — and the list and the panel slide INSIDE themselves. 12 px is the floor. */
 @media (max-height: 500px) {
+  .rf-fit {
+    grid-template-columns: 13.5rem minmax(0, 1fr);
+    gap: 0.4rem;
+    padding: 0.35rem 0.6rem 0.45rem;
+  }
+  .rf-head {
+    gap: 0.5rem;
+  }
+  .rf-brand {
+    gap: 0.4rem;
+  }
+  .rf-brand i {
+    font-size: 1.3rem;
+  }
+  .rf-brand h2 {
+    font-size: 1.05rem;
+  }
+  .rf-brand p {
+    display: none;
+  }
+  .rf-steps li {
+    padding: 0.1rem 0.55rem 0.1rem 0.2rem;
+    font-size: 0.92rem;
+  }
+  .rf-btn {
+    min-height: 2.5rem;
+    padding: 0 0.9rem;
+    font-size: 1rem;
+  }
+  .rf-btn--bot {
+    min-height: 2.1rem;
+  }
+  .rf-log {
+    padding: 0.4rem 0.4rem;
+    gap: 0.25rem;
+    border-radius: 0.9rem;
+  }
+  .rf-log h3 {
+    font-size: 0.95rem;
+  }
+  .rf-log li {
+    padding: 0.2rem 0.4rem;
+  }
+  .rf-log li > div,
+  .rf-log li > .rf-line--sentence {
+    font-size: 0.92rem;
+    flex-wrap: wrap;
+    gap: 0 0.3rem;
+  }
   .rf-log ul,
   .rf-panel {
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
   }
+  .rf-main {
+    grid-template-rows: 8.2rem minmax(0, 1fr);
+    gap: 0.4rem;
+  }
+  .rf-mirror {
+    padding: 0.25rem 0.6rem;
+    gap: 0.1rem;
+    border-radius: 1rem;
+  }
+  .rf-bridge {
+    max-height: 5.2rem;
+  }
+  .rf-bridge.has-sentence {
+    max-height: 4.2rem;
+  }
+  .rf-eq {
+    font-size: 1.05rem;
+  }
+  .rf-sentence {
+    font-size: 1.15rem;
+    line-height: 1.3;
+  }
+  .rf-sentence--alone {
+    font-size: 1.6rem;
+  }
+  .rf-rule {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    gap: 0.3rem 0.4rem;
+  }
+  .rf-rule[data-rf-slots='4'] {
+    font-size: 0.92rem;
+  }
+  .rf-rule b {
+    padding: 0 0.5rem;
+  }
   .rf-panel {
     justify-content: flex-start;
+    gap: 0.4rem;
+    padding: 0.5rem 0.7rem;
+    border-radius: 1rem;
+  }
+  .rf-q {
+    font-size: 1.12rem;
+    line-height: 1.5;
+  }
+  .rf-note {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .rf-fb {
+    font-size: 1.05rem;
+    line-height: 1.5;
+  }
+  .rf-tiles {
+    gap: 0.5rem;
+  }
+  .rf-tiles h4,
+  .rf-tiles[data-rf-slots='4'] h4 {
+    font-size: 0.92rem;
+  }
+  .rf-tile {
+    min-height: 2.3rem;
+    padding: 0.1rem 0.6rem;
+    font-size: 0.95rem;
+  }
+  .rf-use {
+    font-size: 1.5rem;
+    line-height: 2.4rem;
+  }
+  .rf-use input {
+    height: 2.4rem;
+    font-size: 1.4rem;
+  }
+  .rf-uselines:not([data-rf-lines='1']) .rf-use {
+    font-size: 1rem;
+    line-height: 2.1rem;
+  }
+  .rf-uselines:not([data-rf-lines='1']) .rf-use input {
+    height: 2.1rem;
+    font-size: 1rem;
   }
 }

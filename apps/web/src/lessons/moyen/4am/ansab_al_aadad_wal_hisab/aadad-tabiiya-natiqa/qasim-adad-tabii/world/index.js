@@ -5,6 +5,7 @@
  */
 import { T } from '../../../../../../common/gameworld/divisorIsles/strings';
 import { evidence, trainerEvidence } from './evidence';
+import { FORGES } from './forges';
 import { KEYS, journey } from './journey';
 import { KNOWLEDGE } from './knowledge';
 import { ladder, PRACTICE_MAP } from './practice';
@@ -23,6 +24,8 @@ export const lesson = {
     if (has(2)) return [...KEYS];
     return has(1) ? [KEYS[0]] : [];
   },
+  /** The forge of each rule: what the student predicts, the tiles of his rule, how the mirror tests and attacks it. */
+  forges: FORGES,
   ladder,
   /** The practice hub: { root, positions, edges }. */
   practiceMap: PRACTICE_MAP,

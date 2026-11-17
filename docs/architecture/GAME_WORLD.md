@@ -29,11 +29,11 @@ The robot's chest screen shows the last remainder.
 | 15, then 16 | mould 3 fills 15; the same mould leaves 1 cell on 16; moulds 2, 4, 5 to try | P1 |
 | 42 | moulds 4, 5, 6, 7 — 4 is even and fails, 7 is odd and holds | P1 |
 | island D | **« مصهر القاعدة »** (since 2026-11-18, §2sexies): the student forges the rule himself in the mirror of the island — only then tablet 🔑 « القاسم بالباقي » gives it its name | P1 |
-| 48 | mould 6 lays 8 planks; a storm takes the bridge; among 5, 7, 8, 9 one fills 48 « without any division » → tablet 🗝️ « القاسم بالجداء » | P2 |
+| 48 | mould 6 lays 8 planks; a storm takes the bridge; among 5, 7, 8, 9 one fills 48 « without any division »; on the next island the SECOND forge (the plank's table) → tablet 🗝️ « القاسم بالجداء » | P2 |
 | 120 | moulds 6, 9, 20 | P1, P2 |
-| the four guardians | one fact (120 = 6 × 20), four sentences to put the right way round → tablet 🗣️ | P3 |
+| the four guardians | one fact (120 = 6 × 20), four sentences to put the right way round; then the guardians' mirror, the THIRD forge (which number is written first) → tablet 🗣️ | P3 |
 | gate dash | eight sentences in the four phrasings, three gates, one right | P3 |
-| 7 | nothing on the pedestals fills it; the workshop makes any length 1–9; then « which two moulds always fit 143? » → tablet ⭐ | P4 |
+| 7 | nothing on the pedestals fills it; the workshop makes any length 1–9; then the stone's mirror, the FOURTH forge (two planks that hold over every gap) → tablet ⭐ | P4 |
 | 756 | the lesson's problem: the student CHOOSES between moulds 32 and 36, types the Euclidean division of the one chosen, sees it built (32 leaves 20 cells; 36 holds with 21 planks), then pays 21 × 1850 | P1, P2 |
 
 **Two results, never mixed** (owner's report, 2026-11-15): after a forge the screen gives the student's PREDICTION its own verdict
@@ -280,14 +280,15 @@ Nothing in the game world scrolls — not the page, not a card, not a panel — 
 3. **Checked at every screenshot of the three walks** (`noScroll` in `e2e/gameworld-*.mjs`): nothing can scroll, no fitted box cuts
    its content, no panel leaves the screen, the page is not taller than the window.
 
-## 2sexies. « مصهر القاعدة » — the rule forge of island « المرايا » (2026-11-18, NOT validated)
+## 2sexies. « مصهر القاعدة » — the rule forge (2026-11-18; all four rules since 2026-11-17 of the rollout; NOT validated)
 
 Owner, 2026-11-18: the method says the student discovers, touches, observes « until concluding the maths rule » — « how are we
 giving him the chance to do that? »; the earlier answer (a space where he writes the rule after the manipulation) cannot tell
 him whether his rule is right, and « it must be integrated in the game of the lesson, inside, not as a separate lab or game ».
 
 On island D the game used to ask one multiple-choice question, then a tablet TOLD the rule. Now **the student defends his rule,
-and the island's mirror judges it with bridges** (`RuleForge.jsx`, logic `ruleForge.js`, overlay `{ type: 'forge' }`):
+and the island's mirror judges it with bridges** (screen `kit/RuleForge.jsx`, frame `kit/forge.js`, overlay
+`{ type: 'forge', key }`). The table below is the FIRST forge; the three others follow the same six steps (« The four forges »):
 
 | Step | What happens | Never |
 |---|---|---|
@@ -312,11 +313,46 @@ and the island's mirror judges it with bridges** (`RuleForge.jsx`, logic `ruleFo
   does not see it yet.
 - **It cannot be skipped**: a forge left unfinished opens again at the next « واصل » (`Game.start`). The 3D world is not drawn
   behind it.
-- Only the FIRST of the four tablets is forged (island D). The three others are still told.
-- Check: `ruleForge.test.js` (8 tests: exactly one of the sixteen rules agrees with every bridge; every false rule is
-  contradicted by the story's crossing or by an attack; the evidence, the predictions, the nudges). The story walk
-  `gameworld-divisor-isles.mjs` crosses island D through the forge: a missed prediction, three right, a false rule refuted by
-  his first bridge, a nudge, the right rule, two attacks, his words, the long gap, the tablet with his rule.
+- Check: `divisorIsles/ruleForge.test.js` (the law of the world: exactly one of the sixteen rules agrees with every bridge;
+  the evidence, the predictions, the nudges) and the lesson's `world/forges.test.js` (29 tests — for EACH of the four
+  forges: sixteen rules can be written and one holds; every false rule is contradicted by the evidence or by an attack; the
+  right rule survives two attacks; the predictions alternate; every sentence is worded; the last step refuses any wrong
+  box). The story walk `gameworld-divisor-isles.mjs` (104 checks) crosses the four forges: in each a false rule is refuted
+  in front of him, the right one is attacked, the last step is typed wrong then right, and the tablet shows HIS rule.
+
+### The four forges of the pilot — no rule of the lesson is told
+
+| Key | Where | The tiles (a rule = one per slot) | A false rule students hold | Its evidence | The last step, typed in its own shape |
+|---|---|---|---|---|---|
+| 🔑 `qasim-baqi` | island « المرايا » | what I read × how it must be (4 × 4) | « the plank is even » | his own crossing | the Euclidean division of a gap of about 100 cells, then « holds / crumbles » |
+| 🗝️ `qasim-jidaa` | island E, after the storm | what I read × how it must be (4 × 4): « the gap = the plank × a natural number » | « the gap = the plank + a number » (true of every bridge) | his own crossing; the mirror writes a PRODUCT, never a remainder | `b × [k] = [p]`: the biggest product of the plank's table that does not pass the gap, then the verdict |
+| 🗣️ `siyagh-mutakafia` | the guardians, once the four sentences are right | one slot per phrasing (4 × 2): is the number written first the plank or the gap? | « the plank is always written first » | the guardians' four sentences; a case is a SENTENCE — asked alone, then the mirror builds the bridge it means | one fact (`96 = 8 × 12`) written in the four sentences, eight boxes |
+| ⭐ `wahid-wa-nafsuh` | the stone of island H, once the gap of 7 is understood | the shortest plank that always holds × the longest (4 × 4) | « a plank of 2 always holds », « twice the gap » (a multiple, not a divisor) | the mirror builds the two planks of HIS rule over the gaps he crossed | a gap never seen (143, 187…): the two planks that surely hold, no calculation |
+
+**How a forge is made** (binding for the next lessons):
+
+- **The kit runs it, the lesson describes it.** `kit/forge.js` documents the description: `key`, `slots` (the tiles),
+  `says(rule, case)`, `isTheRule`, `ruleText`, `explain`, `caseId`, `evidence(rows)`, optional `tests(rule, rows)` (a rule
+  that builds its own cases — the fourth forge), `predictCases`, `attacks`, `nudge`, `use` (`make`, `lines` of tokens with
+  `slot()`, optional `verdict`, `check` → `'ok'` or a key of `text.use`), `logs`, `text`. A case always carries `held`:
+  what the world really does with it. The lesson's forges are `world/forges.js` → `lesson.forges[key]`.
+- **The world says what a case is and draws it.** Here a case is a bridge: `divisorIsles/ruleForge.js` (`outcome`,
+  `holds`, `evidence`, the pool `SMALL`, `attackOn`, `casesOfKinds`, `nudgeWith`, the shared wording `BRIDGE_TEXT`, and
+  the law of the world as a forge, `remainderForge(key)`) and `divisorIsles/forgeParts.jsx` (`FORGE_PARTS`: the bridge in
+  the mirror, the line of evidence, the beats of a build). The class board still reads the remainder tiles from there.
+- **The story opens it and goes on after it.** `Game.openForge(key)`; `sealRule(key, record)` opens the tablet, then
+  `afterKey[key]` runs what the story does next; `pendingForge()` reopens a forge left unfinished. A forge cannot be
+  closed.
+- **Exactly ONE rule holds, and every other rule is refuted in front of the student.** Write the test first
+  (`forges.test.js` is the model): every rule the tiles allow is run on the story's crossing and attacked.
+- **A sentence is never shown with its answer.** A case that is a sentence is asked alone; its bridge is built after the
+  answer (`forgeParts › Mirror`).
+- **Formulas go through `MathText`.** An equality inside a sentence of a forge is written `$…$`; the screen renders the
+  question, the attack, the last step and the rule applied to a case with it.
+- **On a phone** the forge does not zoom itself (one scale): it has a compact layout in `kit/ruleForge.css`, and its list
+  and its panel slide inside themselves.
+- NOT done: the class board (`LessonBoard`) forges only the first rule with the class; the three others are still asked
+  and proved there. How a rule was found is kept in the browser only.
 
 ## 3. Files
 
@@ -353,6 +389,7 @@ state line under the tables):
 | `KnowledgePage.jsx` | the full-page « خريطة المعارف » | `knowledge`: `{ graph, modules, positions }` |
 | `LessonWorld.jsx` | **the shell**: the canvas, the top bar, the controls, the overlay switch; it mounts `<LessonProvider>` and creates the world's game | `world` (below) and the pack |
 | `Title.jsx`, `PracticeHub.jsx`, `Tablet.jsx`, `Result.jsx`, `End.jsx` | the title screen, the practice hub (the lesson's mind map as a level select), a rule tablet, the result of a level, the end | `ladder`, `journey`, `rules`, `keys`, `text`, `practiceMap` |
+| `forge.js`, `RuleForge.jsx`, `ruleForge.css` | « مصهر القاعدة »: the frame of a rule forge (pure) and its screen — predict, write the rule with tiles, the mirror tests and attacks it, seal, use (§2sexies) | `forges` (one description per key) and the world's `parts` |
 | `parts.jsx` | a formula, the toast, the robot's bubble, the touch stick, a card over the world, three stars, a box for a number | — |
 | `styles/` | eleven style sheets, one per screen (`world`, `practice`, `knowledge`, `cases`, `trainer`, `paper`, `steps`, `knowledgeJourney`, `fit`, `spaces`, `phone`), imported by `styles/index.js` **in the order of the cascade** — `fit.css` and `phone.css` override the others, so a new sheet takes its place in that list and is never imported from a screen. Classes `di-…` | — |
 | `WorldRuntime.js` | **the world runtime**: the three.js scene, the loop, the robot and its movement, the camera, the sky, the things to use, the gems, the state React reads, the hub, the knowledge page's state, the exam ladder, the paper mode, the evidence tally, the save | the pack as `lesson`; a WORLD extends it (below) |
@@ -364,6 +401,7 @@ state line under the tables):
 | `practice.js` | the kinds of wave of the lesson, `isRight`, the five nodes and sixteen levels; exports the bound `ladder` and `PRACTICE_MAP` (where each node sits on the hub, its links) |
 | `trainer.js` | the kinds of question, the plan of each card, `check` (hint, then correction), `solution`, `answerLabel`, `PHRASES` |
 | `sitting.js` | the four exercises by tier, the five levels, `mark`, `model`, `scheme`, `evidenceOf` |
+| `forges.js` | the four forges of the lesson, one per key (§2sexies) |
 | `journey.js` | the four keys, bound to the ladder and the levels |
 | `evidence.js` | the الكفاءة of each key, the claims, `verify` (the same rule as the server) |
 | `knowledge.js` | the lesson's graph and memo sheets (imported from the lesson, never retyped) and where each card sits on the map |
@@ -379,7 +417,7 @@ state line under the tables):
 | `DivisorIsles.jsx` | what THIS world adds to the shell: the equation and the verdict of a forge, the HUD of a run and of a case, its own overlays (prediction, stone, statues, workshop, last bridge, guidance); it defines `WORLD` and renders `<LessonWorld world={WORLD} lesson={…}>` — the ONE place of the world that names the lesson |
 | `cases.js` (+ test) | PURE: the orders of « تعاونية الواحة », their steps, `judge` and its explanations |
 | `Depot.js`, `Worlds.js` | the 3D worlds of the cases: the depot, the friends' table, the tiler's site; `runSim` shows what was decided |
-| `ruleForge.js` (+ test), `RuleForge.jsx`, `ruleForge.css` | « مصهر القاعدة »: the rule the student forges and defends on island D (§2sexies) |
+| `ruleForge.js` (+ test), `forgeParts.jsx` | the rule forge IN THIS WORLD: a bridge as a case, the evidence of a crossing, the law of the world as a forge (`remainderForge`), and how a case is drawn (§2sexies) |
 | `strings.js` | every Arabic sentence, the sentence of a practice wave (`waveSay`) and the guidance after a mistake (`explain`) |
 | `../engine/builders.js`, `robot.js`, `audio.js`, `input.js` | reusable: low-poly builders, the robot, synthesised sound, keyboard + touch input |
 | `../../lessonlab/` | « مختبري », the lab of every lesson — its own contract: `LESSON_LAB.md` |
@@ -411,9 +449,8 @@ eleven screens. What is NOT extracted, and why:
 - **the gate dash and the real-world cases** are generic ideas still written INSIDE the pilot's world — `Game.js` (they
   use its rail and its three case scenes) and, on screen, `DashHud`, `DepotHud`, `Guide`, `CaseGuide` in
   `DivisorIsles.jsx`: another world would have to write them again;
-- **`cases.js`, `ruleForge.js` / `RuleForge.jsx` and `strings.js`** still mix kit and lesson (the forge is generalised
-  when the pilot's three other rules are forged, plan §4 step 7); the lesson's content still reads `logic.js` and
-  `strings.js` of the world;
+- **`cases.js` and `strings.js`** still mix kit and lesson; the lesson's content still reads `logic.js`, `strings.js`
+  and `ruleForge.js` of the world (the forge itself is in the kit since 2026-11-17: §2sexies);
 - **the CSS** is split by SCREEN (`kit/styles/`, 2026-11-17), not yet by OWNER: `styles/cases.css` and parts of
   `styles/world.css` (the dash, the question stone, the store of the last bridge) are the pilot's world, and every
   class is still named `di-…`. Moving them to the world would change the cascade (the later sheets override them):
@@ -537,7 +574,7 @@ message** (`Door › closed`, `PHONE_TOOL_IDS`). A lesson enters the list when t
 2. **Never two scales.** A page that zooms itself to the window (launch kit, « مختبري ») does NOT zoom on a short screen
    (`isShortScreen()`): the two scales together gave 6 px text.
 3. **Readable beats unscrolled.** `Fit` never scales below `PHONE_FLOOR` (0.9); the box scrolls inside itself
-   (`data-di-fit-scroll`), like the forge's two columns, the launch kit's stage and the lab's panels. The page itself and
+   (`data-di-fit-scroll`), like the forge's list and panel (which no longer zooms itself on a phone), the launch kit's stage and the lab's panels. The page itself and
    the sideways direction never scroll. This is the ONE exception to « nothing scrolls »; tablets and laptops are unchanged.
 4. **The middle of the screen is the world.** The equation and the verdict go to the corner under the island's name, the
    robot's sentence to the bottom between the stick and the buttons: in the middle they covered the bridge the student

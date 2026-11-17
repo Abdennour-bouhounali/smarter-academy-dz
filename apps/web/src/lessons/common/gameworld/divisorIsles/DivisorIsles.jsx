@@ -13,7 +13,8 @@ import { T, planks, waveSay, explain } from './strings';
 
 import { answerOf, simUnit } from './cases';
 import { divisionTip, ruleTip } from '../kit/tips';
-import RuleForge from './RuleForge';
+import RuleForge from '../kit/RuleForge';
+import { FORGE_PARTS } from './forgeParts';
 
 import Fit, { stepRoom } from '../kit/Fit';
 import { PaperGate, PaperModel, PT } from '../kit/Paper';
@@ -863,7 +864,16 @@ const WORLD = {
       case 'quiz':
         return <Quiz key={o.id} o={o} game={game} />;
       case 'forge':
-        return <RuleForge key={o.key} game={game} log={o.log} onSeal={(record) => game.sealRule(o.key, record)} />;
+        return (
+          <RuleForge
+            key={o.key}
+            forge={game.lesson.forges[o.key]}
+            parts={FORGE_PARTS}
+            game={game}
+            log={o.log}
+            onSeal={(record) => game.sealRule(o.key, record)}
+          />
+        );
       case 'statues':
         return <Statues game={game} />;
       case 'workshop':

@@ -84,7 +84,9 @@ Rules:
   lesson.config.js     modules, الكفاءات, mission (the frozen lesson contract, LESSON_DEVELOPMENT_GUIDE §14)
   lesson.pack.js       the pack (§1)
   knowledge.jsx        the knowledge sheets and the mind map
-  world/               what the game world is played with — index.js exports `lesson` (GAME_WORLD.md §3)
+  world/               what the game world is played with — index.js exports `lesson`: its keys and their tablets, its
+                       FORGES (one per key: no rule is told — GAME_WORLD.md §2sexies), the practice ladder, the trainer,
+                       the exam sittings, the journey, the evidence, the knowledge page, its sentences (GAME_WORLD.md §3)
   board/script.js      « الدرس على السبّورة » (CLASS_SESSION.md §5ter)
   board/memo.js        the written memo (CLASS_SESSION.md §2quater)
   modules/, content/   the modules a v2 lesson still shows through the classic player (decision D3 retires them per lesson)

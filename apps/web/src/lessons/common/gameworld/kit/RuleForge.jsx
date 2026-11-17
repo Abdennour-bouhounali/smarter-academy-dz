@@ -1,91 +1,52 @@
 /**
- * « مصهر القاعدة » — the rule forge of island « المرايا » (2026-11-18; logic: ruleForge.js; contract GAME_WORLD.md §2sexies).
- * The student does not receive the rule on a tablet: he predicts, writes HIS rule with two tiles, and the MIRROR of the
- * island tests it — first on the bridges of his own crossing, then on a new gap chosen to break it. A rule that survives
- * becomes his key. The verdict is always a bridge that holds or crumbles in front of him, never « wrong ».
+ * « مصهر القاعدة » — the SCREEN of a rule forge (frame: forge.js; contract GAME_WORLD.md §2sexies). It names no lesson and
+ * no world: the lesson gives the `forge` (its tiles, what a rule says of a case, the evidence, the attacks, the wording)
+ * and the world gives the `parts` — how one of ITS cases is drawn:
+ *   Mirror({ c, stage, fast })   the case in the mirror; `stage`: ask | build | done
+ *   Line({ c })                  the case as one line of the evidence
+ *   beats(c)                     how many strokes the mirror needs to build it (the sound and the wait follow)
+ * The student does not receive the rule on a tablet: he predicts, writes HIS rule with tiles, and the MIRROR tests it —
+ * first on his own evidence, then on a new case chosen to break it. A rule that survives becomes his key. The verdict is
+ * always what the world does in front of him, never « wrong ».
  * One screen, nothing scrolls (designed 1280 × 720, zoomed to the window).
  */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Check, Hammer, Sparkles, Bot } from 'lucide-react';
 import MathText from '../../components/MathText';
+import { isShortScreen } from '../engine/phoneScreen';
 import {
-  QUANTITIES,
-  CONDITIONS,
-  evidence,
-  runOnEvidence,
-  attacks,
-  predictCases,
-  streak,
   PREDICT_NEED,
-  nudge,
-  discoveryLevel,
-  keyCase,
-  keyRight,
-  ruleSays,
-  ruleText,
-  explain,
-  isTheRule,
-  complete,
-  sameCase,
   EVIDENCE_MAX,
-} from './ruleForge';
+  complete,
+  emptyRule,
+  optionOf,
+  ruleKey,
+  runOn,
+  testsOf,
+  streak,
+  sealRecord,
+} from './forge';
 import './ruleForge.css';
 
+/** The words of the forge itself — the same in every lesson. What speaks of a case is the forge's own `text`. */
 const L = {
-  title: 'مرآة جزيرة المرايا',
-  sub: 'اصنع مفتاحك: قاعدة تصمد أمام المرآة.',
   steps: { predict: 'تنبّأ', build: 'اكتب قاعدتك', test: 'المرآة تختبرها', seal: 'اختم مفتاحك' },
-  log: 'سجلّ عبورك',
-  cells: (a) => `${a} خانة`,
-  plank: (b) => `لوح ${b}`,
-  held: 'ثبت',
-  fell: (r) => (r === 1 ? 'انهار: بقيت خانة' : r === 2 ? 'انهار: بقيت خانتان' : `انهار: بقيت ${r} خانات`),
-  ask: (a, b) => `هوّة من ${a} خانة، ولوح طوله ${b}. هل يثبت الجسر؟`,
-  holds: 'يثبت',
-  falls: 'ينهار',
   right: 'توقّعك صحيح!',
   miss: 'توقّعك لم يصب هذه المرّة.',
-  factHeld: 'لم تبقَ أيّ خانة: الجسر ثبت.',
-  factFell: (r) =>
-    r === 1 ? 'بقيت خانة واحدة: الجسر انهار.' : r === 2 ? 'بقيت خانتان: الجسر انهار.' : `بقيت ${r} خانات: الجسر انهار.`,
-  next: 'جسر آخر',
   toBuild: 'أكتب قاعدتي',
   inHead: 'ثلاثة توقّعات صحيحة متتالية: القاعدة في رأسك. اكتبها الآن.',
   timeToWrite: 'حان وقت كتابة قاعدتك: المرآة ستختبرها.',
-  frame: 'يثبت الجسر عندما:',
-  look: 'ماذا أقرأ؟',
-  must: 'كيف يجب أن يكون؟',
   test: 'اختبر قاعدتي',
-  buildLead: 'اختر بطاقتين. المرآة لا تصدّق أحدًا: ستجرّب قاعدتك على جسورك.',
-  testing: 'المرآة تمرّ على جسورك واحدًا واحدًا…',
-  says: (yes) => `قاعدتك: ${yes ? 'يثبت' : 'ينهار'}`,
-  refuted: (m) =>
-    `قاعدتك تقول إنّ جسر ${m.a} باللوح ${m.b} ${m.says ? 'يثبت' : 'ينهار'} — لكنّك رأيته ${m.held ? 'يثبت' : 'ينهار'}.`,
   fix: 'أصلح قاعدتي',
-  agreed: 'قاعدتك توافق كلّ الجسور التي رأيتَها. الآن المرآة تتحدّاها بجسر جديد.',
   dare: 'ليكن!',
-  attack: (a, b) => `المرآة تتحدّى قاعدتك: هوّة من ${a} خانة، ولوح طوله ${b}. ماذا تقول قاعدتك؟`,
   notThat: 'قاعدتك تقول غير ذلك.',
-  build: 'ابنِ الجسر',
-  survived: 'صمدت قاعدتك: الجسر فعل ما قالته.',
-  broken: (yes) => `قاعدتك انكسرت هنا: قالت « ${yes ? 'يثبت' : 'ينهار'} »، والجسر ${yes ? 'انهار' : 'ثبت'}.`,
   another: 'تحدٍّ آخر',
   toSeal: 'قاعدتي صمدت!',
   sealed: 'قاعدتك صمدت أمام المرآة: صارت مفتاحك.',
   words: 'قلها بكلماتك (اختياري)',
-  wordsHint: 'مثال: الجسر يثبت إذا…',
   sealIt: 'أختم مفتاحي',
-  tryKey: (a, b) => `جرّب مفتاحك حيث لا تستطيع العدّ: هوّة من ${a} خانة، ولوح طوله ${b}. المرآة لا تبني هذه المرّة.`,
-  quotient: 'حاصل القسمة',
-  rest: 'الباقي',
   check: 'تحقّق',
-  useSum: 'المساواة غير صحيحة: احسب الجداء ثمّ أضف الباقي.',
-  useBig: 'الباقي يجب أن يكون أصغر من طول اللوح.',
-  useVerdict: 'القسمة صحيحة. انظر إلى الباقي: ماذا تقول قاعدتك؟',
-  useOk: 'مفتاحك يعمل حتّى حيث لا تعدّ!',
   help: 'ساعدني يا زيرو',
-  compare: (a) => `قارن هذين الجسرين: الهوّة نفسها (${a}). ماذا بقي في كلّ مرّة؟`,
-  experiment: 'انظر جيّدًا: اللوح نفسه، هوّة ثمّ التي بعدها. ماذا بقي في كلّ مرّة؟',
   choice: 'إحدى هاتين القاعدتين تصمد أمام المرآة. اختبرهما:',
   ruleA: 'القاعدة الأولى',
   ruleB: 'القاعدة الثانية',
@@ -93,107 +54,26 @@ const L = {
 const FAST = () => import.meta.env.DEV && typeof window !== 'undefined' && window.__forgeFast;
 const PHASES = ['predict', 'build', 'test', 'seal'];
 const stepOf = (phase) => (phase === 'attack' ? 'test' : phase === 'use' ? 'seal' : phase);
+const digits = (v, w) => v.replace(/[^0-9]/g, '').slice(0, w);
 
-/** A bridge in the mirror: `a` cells, planks of `b`, what is left in amber. `stage`: ask (the gap and one plank) | build | done. */
-function MirrorBridge({ c, stage }) {
-  const W = 720;
-  const cell = Math.min(34, W / c.a);
-  const x0 = (W - cell * c.a) / 2;
-  const built = stage !== 'ask';
-  const done = stage === 'done';
-  return (
-    <svg
-      viewBox={`0 0 ${W} 150`}
-      className={`rf-bridge is-${stage} ${done ? (c.held ? 'is-held' : 'is-fell') : ''}`}
-      data-rf-bridge={`${c.a}:${c.b}`}
-      data-rf-stage={stage}
-    >
-      <rect x={x0 - 26} y="74" width="26" height="46" rx="6" className="rf-bank" />
-      <rect x={x0 + cell * c.a} y="74" width="26" height="46" rx="6" className="rf-bank" />
-      {Array.from({ length: c.a }, (_, i) => (
-        <rect
-          key={i}
-          x={x0 + i * cell + 1}
-          y="80"
-          width={Math.max(1, cell - 2)}
-          height="22"
-          rx="3"
-          className={`rf-cell ${built && i >= c.q * c.b ? 'is-left' : ''}`}
-        />
-      ))}
-      {!built && (
-        <g>
-          <rect x={x0} y="30" width={cell * c.b - 2} height="24" rx="6" className="rf-plank rf-plank--sample" />
-          <text x={x0 + (cell * c.b) / 2} y="22" textAnchor="middle" className="rf-cap">
-            لوح {c.b}
-          </text>
-        </g>
-      )}
-      {built &&
-        Array.from({ length: c.q }, (_, k) => (
-          <rect
-            key={k}
-            x={x0 + k * c.b * cell + 1.5}
-            y="78"
-            width={cell * c.b - 3}
-            height="26"
-            rx="6"
-            className={`rf-plank ${k % 2 ? 'is-alt' : ''}`}
-            style={{ animationDelay: `${k * (FAST() ? 8 : 110)}ms` }}
-          />
-        ))}
-      <text x={W / 2} y="142" textAnchor="middle" className="rf-cap rf-cap--a">
-        {c.a} خانة
-      </text>
-    </svg>
-  );
-}
-
-const Mini = ({ c }) => {
-  const W = 150;
-  const cell = W / c.a;
-  return (
-    <svg viewBox={`0 0 ${W} 14`} className="rf-mini" aria-hidden="true">
-      {Array.from({ length: c.q }, (_, k) => (
-        <rect
-          key={k}
-          x={k * c.b * cell + 0.5}
-          y="1"
-          width={Math.max(1, cell * c.b - 1)}
-          height="12"
-          rx="2.5"
-          className={c.held ? 'is-held' : ''}
-        />
-      ))}
-      {c.r > 0 && (
-        <rect
-          x={c.q * c.b * cell + 0.5}
-          y="1"
-          width={Math.max(1, cell * c.r - 1)}
-          height="12"
-          rx="2.5"
-          className="is-left"
-        />
-      )}
-    </svg>
-  );
-};
-
-export default function RuleForge({ game, log, onSeal }) {
-  const [rows, setRows] = useState(() => evidence(log));
-  const cases = useMemo(() => predictCases(evidence(log)), []); // eslint-disable-line react-hooks/exhaustive-deps
+export default function RuleForge({ forge, parts, game, log, onSeal }) {
+  const { Mirror, Line } = parts;
+  const T = forge.text;
+  const idOf = forge.caseId;
+  const [rows, setRows] = useState(() => forge.evidence(log));
+  const cases = useMemo(() => forge.predictCases(forge.evidence(log)), []); // eslint-disable-line react-hooks/exhaustive-deps
   const [phase, setPhase] = useState('predict');
   const [pi, setPi] = useState(0);
   const [results, setResults] = useState([]);
   const [show, setShow] = useState(() => ({ c: cases[0], stage: 'ask', guess: null }));
-  const [rule, setRule] = useState({ q: null, c: null });
+  const [rule, setRule] = useState(() => emptyRule(forge));
   const [tries, setTries] = useState(0);
   const [run, setRun] = useState(null); // test: { marks, bad, upto }
   const [atk, setAtk] = useState(null); // attack: { list, i, said }
   const [nudges, setNudges] = useState(0);
   const [help, setHelp] = useState(null);
   const [words, setWords] = useState('');
-  const [use, setUse] = useState(null);
+  const [use, setUse] = useState(null); // the last step: { c, vals, verdict, fb }
   const [z, setZ] = useState(1);
   const timers = useRef([]);
   const later = (fn, ms) => {
@@ -202,24 +82,33 @@ export default function RuleForge({ game, log, onSeal }) {
   const play = (name, p) => game.audio.play(name, p);
 
   useEffect(() => {
-    const fit = () => setZ(Math.max(0.62, Math.min(1.9, Math.min(window.innerWidth / 1280, window.innerHeight / 720))));
+    // a phone held sideways has ONE scale, its root font (GAME_WORLD.md « On a phone »): the forge does not zoom there —
+    // it has its own compact layout, and its list and its panel slide inside themselves
+    const fit = () =>
+      setZ(
+        isShortScreen()
+          ? 1
+          : Math.max(0.62, Math.min(1.9, Math.min(window.innerWidth / 1280, window.innerHeight / 720))),
+      );
     fit();
     window.addEventListener('resize', fit);
     return () => window.removeEventListener('resize', fit);
   }, []);
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
   useEffect(() => {
-    if (import.meta.env.DEV) window.__forge = { phase, show, rule, rows, atk, run, use, cases, nudges, help };
+    if (import.meta.env.DEV)
+      window.__forge = { key: forge.key, phase, show, rule, rows, atk, run, use, cases, nudges, help };
   });
 
   const remember = (c) => {
-    game.logMirror?.(c.a, c.b);
-    setRows((old) => evidence([...old, { ...c, mirror: true }]));
+    if (forge.logs) game.logMirror?.(c);
+    setRows((old) => forge.evidence([...old, { ...c, mirror: true }]));
   };
-  /** The mirror builds the bridge plank by plank, then it holds or crumbles; `then` runs when it is over. */
+  /** The mirror builds the case stroke by stroke, then the world gives its verdict; `then` runs when it is over. */
   const buildIt = (c, extra, then) => {
+    const beats = parts.beats?.(c) ?? 0;
     setShow({ c, stage: 'build', ...extra });
-    for (let k = 0; k < c.q; k += 1) later(() => play('plank', k), k * 110);
+    for (let k = 0; k < beats; k += 1) later(() => play('plank', k), k * 110);
     later(
       () => {
         setShow({ c, stage: 'done', ...extra });
@@ -227,7 +116,7 @@ export default function RuleForge({ game, log, onSeal }) {
         remember(c);
         then?.();
       },
-      c.q * 110 + 520,
+      beats * 110 + 520,
     );
   };
 
@@ -249,13 +138,13 @@ export default function RuleForge({ game, log, onSeal }) {
   };
 
   // ── 2. build, 3. test ──
-  const pickTile = (k, id) => {
+  const pickTile = (slotId, id) => {
     play('pick');
     setHelp((h) => (h?.kind === 'choice' ? h : null));
-    setRule((r) => ({ ...r, [k]: id }));
+    setRule((r) => ({ ...r, [slotId]: id }));
   };
   const startTest = () => {
-    const res = runOnEvidence(rule, rows);
+    const res = runOn(forge, rule, testsOf(forge, rule, rows));
     setTries((n) => n + 1);
     setHelp(null);
     setRun({ ...res, upto: 0 });
@@ -279,9 +168,9 @@ export default function RuleForge({ game, log, onSeal }) {
 
   // ── 4. attack ──
   const startAttack = () => {
-    const list = attacks(rule, rows);
+    const list = forge.attacks(rule, rows);
     if (!list.length) {
-      if (isTheRule(rule)) setPhase('seal');
+      if (forge.isTheRule(rule)) setPhase('seal');
       else backToBuild();
       return;
     }
@@ -309,38 +198,29 @@ export default function RuleForge({ game, log, onSeal }) {
   // ── 5. seal, 6. use ──
   const toUse = () => {
     play('ui');
-    setUse({ c: keyCase(), q: '', r: '', verdict: null, fb: null });
+    setUse({ c: forge.use.make(), vals: {}, verdict: null, fb: null });
     setPhase('use');
   };
+  const useLines = use ? forge.use.lines(use.c) : [];
+  const useSlots = useLines.flatMap((line) => line.tokens.filter((t) => typeof t === 'object'));
+  const useFilled =
+    use && useSlots.every((t) => (use.vals[t.slot] ?? '') !== '') && (!forge.use.verdict || use.verdict !== null);
   const checkUse = () => {
-    const { c, q, r, verdict } = use;
-    if (keyRight(c, q, r, verdict)) {
+    const fb = forge.use.check(use.c, use.vals, use.verdict);
+    if (fb === 'ok') {
       play('success');
-      setUse({ ...use, fb: 'ok' });
-      later(
-        () =>
-          onSeal({
-            rule,
-            text: ruleText(rule),
-            words: words.trim(),
-            tries,
-            nudges,
-            level: discoveryLevel(nudges),
-            predictions: { asked: results.length, right: results.filter(Boolean).length },
-            at: Date.now(),
-          }),
-        1100,
-      );
+      setUse({ ...use, fb });
+      later(() => onSeal(sealRecord(forge, { rule, words, tries, nudges, results })), 1100);
       return;
     }
     play('ui');
-    setUse({ ...use, fb: c.b * Number(q) + Number(r) !== c.a ? 'sum' : Number(r) >= c.b ? 'big' : 'verdict' });
+    setUse({ ...use, fb });
   };
 
   // ── the robot: never the rule ──
   const askHelp = () => {
     const n = Math.min(3, nudges + 1);
-    const h = nudge(n, rows);
+    const h = forge.nudge(n, rows);
     setNudges(n);
     play('crystal');
     if (h.kind !== 'experiment') {
@@ -357,20 +237,31 @@ export default function RuleForge({ game, log, onSeal }) {
   const bad = run && run.bad >= 0 && run.upto > run.bad ? run.marks[run.bad] : null;
   const allAgree = run && run.bad < 0 && run.upto >= run.marks.length;
   const a = atk ? atk.list[atk.i] : null;
-  const says = a ? ruleSays(rule, a.a, a.b) : null;
+  const says = a ? forge.says(rule, a) : null;
   const brokeIt = a && done && says !== a.held;
-  const markOf = (row) => (phase === 'test' && run ? run.marks.slice(0, run.upto).find((m) => sameCase(m, row)) : null);
+  const testing = phase === 'test' && run;
+  // the lines on the left: his evidence — or, while a rule that builds its own cases is tested, those cases
+  const lines = testing && forge.tests ? run.marks : rows.slice(-EVIDENCE_MAX);
+  const markOf = (row) => (testing ? run.marks.slice(0, run.upto).find((m) => idOf(m) === idOf(row)) : null);
   const inMirror = phase === 'predict' || phase === 'attack' || (phase === 'build' && help?.kind === 'experiment');
+  const eq = done && c ? T.eq?.(c) : null;
 
   return (
-    <div className="rf-root" dir="rtl" data-rf={phase} data-rf-tries={tries} data-rf-nudges={nudges}>
+    <div
+      className="rf-root"
+      dir="rtl"
+      data-rf={phase}
+      data-rf-key={forge.key}
+      data-rf-tries={tries}
+      data-rf-nudges={nudges}
+    >
       <div className="rf-fit" style={{ zoom: z }}>
         <header className="rf-head">
           <div className="rf-brand">
             <i>🪞</i>
             <div>
-              <h2>{L.title}</h2>
-              <p>{L.sub}</p>
+              <h2>{T.title}</h2>
+              <p>{T.sub}</p>
             </div>
           </div>
           <ol className="rf-steps">
@@ -400,36 +291,26 @@ export default function RuleForge({ game, log, onSeal }) {
         </header>
 
         <aside className="rf-log" data-rf-log>
-          <h3>📖 {L.log}</h3>
+          <h3>📖 {T.log}</h3>
           <ul>
-            {rows.slice(-EVIDENCE_MAX).map((row) => {
+            {lines.map((row) => {
               const m = markOf(row);
-              const cmp = help?.kind === 'compare' && help.cases.some((x) => sameCase(x, row));
+              const cmp = help?.kind === 'compare' && help.cases.some((x) => idOf(x) === idOf(row));
               return (
                 <li
-                  key={`${row.a}-${row.b}`}
+                  key={idOf(row)}
                   className={`${row.held ? 'is-held' : 'is-fell'} ${m ? (m.agrees ? 'is-agree' : 'is-refute') : ''} ${cmp ? 'is-compare' : ''}`}
-                  data-rf-row={`${row.a}:${row.b}`}
+                  data-rf-row={idOf(row)}
                   data-rf-own={row.mirror ? '0' : '1'}
                   data-rf-mark={m ? (m.agrees ? 'agree' : 'refute') : ''}
                 >
-                  <div>
-                    {row.mirror && (
-                      <i className="rf-inmirror" title={L.title}>
-                        🪞
-                      </i>
-                    )}
-                    <strong dir="ltr">{row.a}</strong> <span>{L.plank(row.b)}</span>
-                    <em>{row.held ? L.held : L.fell(row.r)}</em>
-                  </div>
-                  <div className="rf-line2">
-                    <Mini c={row} />
+                  <Line c={row}>
                     {m && (
                       <small className="rf-says">
-                        {m.agrees ? '✓' : '✗'} {L.says(m.says)}
+                        {m.agrees ? '✓' : '✗'} {T.says(m.says)}
                       </small>
                     )}
-                  </div>
+                  </Line>
                 </li>
               );
             })}
@@ -440,23 +321,25 @@ export default function RuleForge({ game, log, onSeal }) {
           <section className={`rf-mirror ${inMirror ? '' : 'is-rule'}`} data-rf-mirror>
             {inMirror && c && (
               <>
-                <MirrorBridge c={c} stage={show.stage} />
-                {done && (
+                <Mirror c={c} stage={show.stage} fast={FAST()} />
+                {eq && (
                   <p className="rf-eq" dir="ltr" data-rf-eq>
-                    <MathText>{`$${c.a} = ${c.b} \\times ${c.q} + \\textcolor{${c.held ? '#34d399' : '#fbbf24'}}{${c.r}}$`}</MathText>
+                    <MathText>{eq}</MathText>
                   </p>
                 )}
               </>
             )}
             {!inMirror && (
-              <div className="rf-rule" data-rf-rule={`${rule.q ?? ''}:${rule.c ?? ''}`}>
-                <span>{L.frame}</span>
-                <b className={rule.q ? '' : 'is-empty'}>
-                  {rule.q ? QUANTITIES.find((x) => x.id === rule.q).label : '……'}
-                </b>
-                <b className={rule.c ? '' : 'is-empty'}>
-                  {rule.c ? CONDITIONS.find((x) => x.id === rule.c).label : '……'}
-                </b>
+              <div className="rf-rule" data-rf-rule={ruleKey(forge, rule)} data-rf-slots={forge.slots.length}>
+                <span>{T.frame}</span>
+                {forge.slots.map((s) => {
+                  const o = optionOf(forge, s.id, rule[s.id]);
+                  return (
+                    <b key={s.id} className={o ? '' : 'is-empty'}>
+                      {o ? (forge.chip?.(s, o) ?? o.label) : '……'}
+                    </b>
+                  );
+                })}
                 {(phase === 'seal' || phase === 'use') && <i className="rf-keymark">🔑</i>}
               </div>
             )}
@@ -465,24 +348,26 @@ export default function RuleForge({ game, log, onSeal }) {
           <section className="rf-panel" data-rf-panel={phase}>
             {phase === 'predict' && c && (
               <>
-                <p className="rf-q">{L.ask(c.a, c.b)}</p>
+                <p className="rf-q">
+                  <MathText>{T.ask(c)}</MathText>
+                </p>
                 {show.stage === 'ask' && (
                   <div className="rf-row">
                     <button
                       type="button"
                       className="rf-btn rf-btn--hold"
                       onClick={() => predict(true)}
-                      data-rf-guess="holds"
+                      data-rf-guess="yes"
                     >
-                      {L.holds}
+                      {T.yes}
                     </button>
                     <button
                       type="button"
                       className="rf-btn rf-btn--fall"
                       onClick={() => predict(false)}
-                      data-rf-guess="falls"
+                      data-rf-guess="no"
                     >
-                      {L.falls}
+                      {T.no}
                     </button>
                   </div>
                 )}
@@ -492,8 +377,7 @@ export default function RuleForge({ game, log, onSeal }) {
                       className={`rf-fb ${show.guess === c.held ? 'is-right' : ''}`}
                       data-rf-predicted={show.guess === c.held ? 'right' : 'miss'}
                     >
-                      {show.guess === c.held ? `✓ ${L.right}` : L.miss}{' '}
-                      <span>{c.held ? L.factHeld : L.factFell(c.r)}</span>
+                      {show.guess === c.held ? `✓ ${L.right}` : L.miss} <span>{T.fact(c)}</span>
                     </p>
                     {(inHead || lastCase) && <p className="rf-note">{inHead ? L.inHead : L.timeToWrite}</p>}
                     <button type="button" className="rf-btn rf-btn--main" onClick={nextPredict} autoFocus data-rf-next>
@@ -502,7 +386,7 @@ export default function RuleForge({ game, log, onSeal }) {
                           <Hammer size={18} /> {L.toBuild}
                         </>
                       ) : (
-                        L.next
+                        T.next
                       )}
                     </button>
                   </>
@@ -521,22 +405,22 @@ export default function RuleForge({ game, log, onSeal }) {
                   <p className="rf-bubble" data-rf-nudge={help.kind}>
                     <Bot size={18} />{' '}
                     {help.kind === 'compare'
-                      ? L.compare(help.cases[0].a)
+                      ? T.compare(help.cases)
                       : help.kind === 'experiment'
-                        ? L.experiment
+                        ? T.experiment
                         : L.choice}
                     {help.kind === 'choice' && (
                       <span className="rf-row">
                         {help.rules.map((r, i) => (
                           <button
-                            key={r.c}
+                            key={ruleKey(forge, r)}
                             type="button"
                             className="rf-btn"
                             onClick={() => {
                               play('pick');
                               setRule(r);
                             }}
-                            data-rf-choice={`${r.q}:${r.c}`}
+                            data-rf-choice={ruleKey(forge, r)}
                           >
                             {i === 0 ? L.ruleA : L.ruleB}
                           </button>
@@ -545,45 +429,32 @@ export default function RuleForge({ game, log, onSeal }) {
                     )}
                   </p>
                 ) : (
-                  <p className="rf-note">{L.buildLead}</p>
+                  <p className="rf-note">{T.buildLead}</p>
                 )}
-                <div className="rf-tiles">
-                  <div>
-                    <h4>{L.look}</h4>
-                    {QUANTITIES.map((x) => (
-                      <button
-                        key={x.id}
-                        type="button"
-                        className={`rf-tile ${rule.q === x.id ? 'is-on' : ''}`}
-                        onClick={() => pickTile('q', x.id)}
-                        aria-pressed={rule.q === x.id}
-                        data-rf-q={x.id}
-                      >
-                        {x.label}
-                      </button>
-                    ))}
-                  </div>
-                  <div>
-                    <h4>{L.must}</h4>
-                    {CONDITIONS.map((x) => (
-                      <button
-                        key={x.id}
-                        type="button"
-                        className={`rf-tile ${rule.c === x.id ? 'is-on' : ''}`}
-                        onClick={() => pickTile('c', x.id)}
-                        aria-pressed={rule.c === x.id}
-                        data-rf-c={x.id}
-                      >
-                        {x.label}
-                      </button>
-                    ))}
-                  </div>
+                <div className="rf-tiles" data-rf-slots={forge.slots.length}>
+                  {forge.slots.map((s) => (
+                    <div key={s.id}>
+                      <h4>{s.label}</h4>
+                      {s.options.map((o) => (
+                        <button
+                          key={o.id}
+                          type="button"
+                          className={`rf-tile ${rule[s.id] === o.id ? 'is-on' : ''}`}
+                          onClick={() => pickTile(s.id, o.id)}
+                          aria-pressed={rule[s.id] === o.id}
+                          data-rf-tile={`${s.id}:${o.id}`}
+                        >
+                          {o.label}
+                        </button>
+                      ))}
+                    </div>
+                  ))}
                 </div>
                 <button
                   type="button"
                   className="rf-btn rf-btn--main"
                   onClick={startTest}
-                  disabled={!complete(rule) || help?.running}
+                  disabled={!complete(forge, rule) || help?.running}
                   data-rf-test
                 >
                   <Sparkles size={18} /> {L.test}
@@ -593,13 +464,15 @@ export default function RuleForge({ game, log, onSeal }) {
 
             {phase === 'test' && (
               <>
-                {!bad && !allAgree && <p className="rf-note">{L.testing}</p>}
+                {!bad && !allAgree && <p className="rf-note">{T.testing}</p>}
                 {bad && (
                   <>
-                    <p className="rf-fb is-broken" data-rf-refuted={`${bad.a}:${bad.b}`}>
-                      {L.refuted(bad)}
+                    <p className="rf-fb is-broken" data-rf-refuted={idOf(bad)}>
+                      {T.refuted(bad)}
                     </p>
-                    <p className="rf-note">{explain(rule, bad.a, bad.b)}</p>
+                    <p className="rf-note">
+                      <MathText>{forge.explain(rule, bad)}</MathText>
+                    </p>
                     <button type="button" className="rf-btn rf-btn--main" onClick={backToBuild} autoFocus data-rf-fix>
                       <Hammer size={18} /> {L.fix}
                     </button>
@@ -608,7 +481,7 @@ export default function RuleForge({ game, log, onSeal }) {
                 {allAgree && (
                   <>
                     <p className="rf-fb is-right" data-rf-agreed>
-                      {L.agreed}
+                      {T.agreed}
                     </p>
                     <button type="button" className="rf-btn rf-btn--main" onClick={startAttack} autoFocus data-rf-dare>
                       {L.dare}
@@ -620,43 +493,45 @@ export default function RuleForge({ game, log, onSeal }) {
 
             {phase === 'attack' && a && (
               <>
-                <p className="rf-q">{L.attack(a.a, a.b)}</p>
+                <p className="rf-q">
+                  <MathText>{T.attack(a)}</MathText>
+                </p>
                 {show.stage === 'ask' && atk.said === null && (
                   <div className="rf-row">
                     <button
                       type="button"
                       className="rf-btn rf-btn--hold"
                       onClick={() => sayRule(true)}
-                      data-rf-say="holds"
+                      data-rf-say="yes"
                     >
-                      {L.holds}
+                      {T.yes}
                     </button>
                     <button
                       type="button"
                       className="rf-btn rf-btn--fall"
                       onClick={() => sayRule(false)}
-                      data-rf-say="falls"
+                      data-rf-say="no"
                     >
-                      {L.falls}
+                      {T.no}
                     </button>
                   </div>
                 )}
                 {show.stage === 'ask' && atk.said !== null && (
                   <>
-                    <p className="rf-note" data-rf-rule-says={says ? 'holds' : 'falls'}>
+                    <p className="rf-note" data-rf-rule-says={says ? 'yes' : 'no'}>
                       {atk.said !== says && <b>{L.notThat} </b>}
-                      {explain(rule, a.a, a.b)}
+                      <MathText>{forge.explain(rule, a)}</MathText>
                     </p>
                     <button type="button" className="rf-btn rf-btn--main" onClick={fireAttack} autoFocus data-rf-fire>
-                      <Hammer size={18} /> {L.build}
+                      <Hammer size={18} /> {T.fire}
                     </button>
                   </>
                 )}
-                {building && <p className="rf-note">{L.says(says)}</p>}
+                {building && <p className="rf-note">{T.says(says)}</p>}
                 {done && !brokeIt && (
                   <>
                     <p className="rf-fb is-right" data-rf-survived>
-                      {L.survived}
+                      {T.survived}
                     </p>
                     <button
                       type="button"
@@ -671,8 +546,8 @@ export default function RuleForge({ game, log, onSeal }) {
                 )}
                 {done && brokeIt && (
                   <>
-                    <p className="rf-fb is-broken" data-rf-broken={`${a.a}:${a.b}`}>
-                      {L.broken(says)}
+                    <p className="rf-fb is-broken" data-rf-broken={idOf(a)}>
+                      {T.broken(says)}
                     </p>
                     <button type="button" className="rf-btn rf-btn--main" onClick={backToBuild} autoFocus data-rf-fix>
                       <Hammer size={18} /> {L.fix}
@@ -692,7 +567,7 @@ export default function RuleForge({ game, log, onSeal }) {
                   <input
                     value={words}
                     onChange={(e) => setWords(e.target.value.slice(0, 140))}
-                    placeholder={L.wordsHint}
+                    placeholder={T.wordsHint}
                     data-rf-words
                   />
                 </label>
@@ -704,62 +579,66 @@ export default function RuleForge({ game, log, onSeal }) {
 
             {phase === 'use' && use && (
               <>
-                <p className="rf-q">{L.tryKey(use.c.a, use.c.b)}</p>
-                <div className="rf-use" dir="ltr">
-                  <b>{use.c.a}</b>
-                  <b>=</b>
-                  <b>{use.c.b}</b>
-                  <b>×</b>
-                  <label>
-                    <input
-                      inputMode="numeric"
-                      value={use.q}
-                      onChange={(e) =>
-                        setUse({ ...use, q: e.target.value.replace(/[^0-9]/g, '').slice(0, 3), fb: null })
-                      }
-                      aria-label={L.quotient}
-                      data-rf-use-q
-                    />
-                    <small>{L.quotient}</small>
-                  </label>
-                  <b>+</b>
-                  <label>
-                    <input
-                      inputMode="numeric"
-                      value={use.r}
-                      onChange={(e) =>
-                        setUse({ ...use, r: e.target.value.replace(/[^0-9]/g, '').slice(0, 2), fb: null })
-                      }
-                      aria-label={L.rest}
-                      data-rf-use-r
-                    />
-                    <small>{L.rest}</small>
-                  </label>
+                <p className="rf-q">
+                  <MathText>{T.tryKey(use.c)}</MathText>
+                </p>
+                <div className="rf-uselines" data-rf-lines={useLines.length}>
+                  {useLines.map((line, i) => (
+                    <div key={i} className="rf-use" dir={line.dir ?? 'ltr'}>
+                      {line.tokens.map((t, k) =>
+                        typeof t === 'object' ? (
+                          <label key={k}>
+                            <input
+                              inputMode="numeric"
+                              style={{ width: `${(t.w ?? 3) * 0.7 + 0.9}em` }}
+                              value={use.vals[t.slot] ?? ''}
+                              onChange={(e) =>
+                                setUse({
+                                  ...use,
+                                  vals: { ...use.vals, [t.slot]: digits(e.target.value, t.w ?? 3) },
+                                  fb: null,
+                                })
+                              }
+                              aria-label={t.label}
+                              data-rf-use={t.slot}
+                            />
+                            {useLines.length === 1 && <small>{t.label}</small>}
+                          </label>
+                        ) : (
+                          <b key={k}>{t}</b>
+                        ),
+                      )}
+                    </div>
+                  ))}
                 </div>
                 <div className="rf-row">
-                  <button
-                    type="button"
-                    className={`rf-btn rf-btn--hold ${use.verdict === true ? 'is-on' : ''}`}
-                    onClick={() => setUse({ ...use, verdict: true, fb: null })}
-                    aria-pressed={use.verdict === true}
-                    data-rf-use-verdict="holds"
-                  >
-                    {L.holds}
-                  </button>
-                  <button
-                    type="button"
-                    className={`rf-btn rf-btn--fall ${use.verdict === false ? 'is-on' : ''}`}
-                    onClick={() => setUse({ ...use, verdict: false, fb: null })}
-                    aria-pressed={use.verdict === false}
-                    data-rf-use-verdict="falls"
-                  >
-                    {L.falls}
-                  </button>
+                  {forge.use.verdict && (
+                    <>
+                      <button
+                        type="button"
+                        className={`rf-btn rf-btn--hold ${use.verdict === true ? 'is-on' : ''}`}
+                        onClick={() => setUse({ ...use, verdict: true, fb: null })}
+                        aria-pressed={use.verdict === true}
+                        data-rf-use-verdict="yes"
+                      >
+                        {T.yes}
+                      </button>
+                      <button
+                        type="button"
+                        className={`rf-btn rf-btn--fall ${use.verdict === false ? 'is-on' : ''}`}
+                        onClick={() => setUse({ ...use, verdict: false, fb: null })}
+                        aria-pressed={use.verdict === false}
+                        data-rf-use-verdict="no"
+                      >
+                        {T.no}
+                      </button>
+                    </>
+                  )}
                   <button
                     type="button"
                     className="rf-btn rf-btn--main"
                     onClick={checkUse}
-                    disabled={use.q === '' || use.r === '' || use.verdict === null || use.fb === 'ok'}
+                    disabled={!useFilled || use.fb === 'ok'}
                     data-rf-use-check
                   >
                     {L.check}
@@ -767,13 +646,7 @@ export default function RuleForge({ game, log, onSeal }) {
                 </div>
                 {use.fb && (
                   <p className={`rf-fb ${use.fb === 'ok' ? 'is-right' : ''}`} data-rf-use-fb={use.fb}>
-                    {use.fb === 'ok'
-                      ? `✓ ${L.useOk}`
-                      : use.fb === 'sum'
-                        ? L.useSum
-                        : use.fb === 'big'
-                          ? L.useBig
-                          : L.useVerdict}
+                    {use.fb === 'ok' ? `✓ ${T.useOk}` : T.use[use.fb]}
                   </p>
                 )}
               </>

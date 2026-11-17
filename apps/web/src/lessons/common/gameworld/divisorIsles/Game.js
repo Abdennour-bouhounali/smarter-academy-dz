@@ -179,9 +179,12 @@ export class DivisorIslesGame extends WorldRuntime {
   }
   onStart() {
     if (this.state.stage === 0 && !this.segs[0].complete) this.say(T.say.hello, 10);
-    // a forge left unfinished (the page was closed on island « المرايا ») opens again: the key cannot be skipped
-    if (this.state.stage === 3 && !this.state.keys.includes('qasim-baqi'))
-      this.wait(0.9).then(() => !this.dead && this.state.phase === 'play' && !this.state.overlay && this.openForge());
+    // a forge left unfinished (the page was closed in front of a mirror) opens again: a key cannot be skipped
+    const pending = this.pendingForge();
+    if (pending)
+      this.wait(0.9).then(
+        () => !this.dead && this.state.phase === 'play' && !this.state.overlay && this.openForge(pending),
+      );
   }
   onGround() {
     const h = this.hero;
@@ -1070,17 +1073,11 @@ export class DivisorIslesGame extends WorldRuntime {
     if (this.state.held != null && k !== 1) this.take(null);
     this.refreshObjective();
     this.save();
-    const openTablet = (key) => {
-      this.audio.play('key');
-      this.set({ phase: 'dialog', overlay: { type: 'tablet', key } });
-    };
     if (k === 1) this.say(T.say.carry3, 7);
     if (k === 2) this.say(T.say.c42, 8);
-    if (k === 3) this.openForge(); // the rule is not told: the student forges it in the mirror of the island (RuleForge)
-    if (k === 4) {
-      openTablet('qasim-jidaa');
-      this.queue.push(() => this.say(T.say.e120, 7));
-    }
+    // no rule is told: the student forges each of them in the mirror of an island (kit/RuleForge, the lesson's forges)
+    if (k === 3) this.openForge('qasim-baqi');
+    if (k === 4) this.openForge('qasim-jidaa');
     if (k === 5) this.say(T.say.f, 9);
     if (k === 6) {
       this.onModule('3');
@@ -1096,7 +1093,9 @@ export class DivisorIslesGame extends WorldRuntime {
 
   openStone() {
     if (this.flags.key4 || this.state.phase !== 'play') return;
-    this.set({ phase: 'dialog', overlay: { type: 'quiz', id: this.flags.seven ? 'big' : 'seven', closable: true } });
+    // once the gap of 7 is understood, the stone shows its mirror: the last key is forged there
+    if (this.flags.seven) this.openForge('wahid-wa-nafsuh');
+    else this.set({ phase: 'dialog', overlay: { type: 'quiz', id: 'seven', closable: true } });
   }
 
   /** Called by the HUD with the chosen values; returns { ok, feedback }. */
@@ -1111,31 +1110,16 @@ export class DivisorIslesGame extends WorldRuntime {
       return { ok: false, marks, missing: spec.answer.filter((v) => !picked.includes(v)).length };
     }
     this.audio.play('success');
-    if (id === 'rule') {
-      this.set({ overlay: null });
-      const next = this.queue.shift();
-      next?.();
-    }
     if (id === 'seven') {
       this.flags.seven = true;
-      this.set({ overlay: { type: 'quiz', id: 'big', closable: true } });
-    }
-    if (id === 'big') {
-      this.audio.play('key');
-      this.set({ overlay: { type: 'tablet', key: 'wahid-wa-nafsuh' } });
-      this.queue.push(() => {
-        this.flags.key4 = true;
-        this.onModule('2');
-        this.refreshObjective();
-        this.say(T.say.boss, 9);
-        this.save();
-      });
+      this.save();
+      this.openForge('wahid-wa-nafsuh');
     }
     return { ok: true };
   }
 
-  // ───────────────────────────── the rule forge (island « المرايا ») ─────────────────────────────
-  /** Every bridge fired is a line of evidence: the forge tests the student's rule on HIS crossing (the last twelve are kept). */
+  // ───────────────────────────── the rule forges (the mirrors of the islands) ─────────────────────────────
+  /** Every bridge fired is a line of evidence: a forge tests the student's rule on HIS crossing (the last sixteen are kept). */
   logBridge(a, b, mirror = false) {
     const was = this.log.find((x) => x.a === a && x.b === b);
     this.log = [
@@ -1144,8 +1128,8 @@ export class DivisorIslesGame extends WorldRuntime {
     ].slice(-16);
   }
   /** A bridge the mirror of the forge built in front of him: evidence too, marked as the mirror's. */
-  logMirror(a, b) {
-    this.logBridge(a, b, true);
+  logMirror(c) {
+    this.logBridge(c.a, c.b, true);
     this.save();
   }
   /** The evidence a save from before the forge still gives: the bridges that are standing, with the mould that holds them. */
@@ -1155,21 +1139,47 @@ export class DivisorIslesGame extends WorldRuntime {
       .filter((seg, i) => i < 3 && seg.kind === 'bridge' && seg.complete)
       .map((seg) => ({ a: seg.a, b: { s15: 3, s16: 4, s42: 6 }[seg.id] }));
   }
-  openForge() {
+  /** The forge of a key of the lesson (`lesson.forges[key]`), in the mirror of the island where the story needs it. */
+  openForge(key) {
     this.audio.play('crystal');
-    this.set({ phase: 'dialog', overlay: { type: 'forge', key: 'qasim-baqi', log: this.crossing() }, prompt: null });
+    this.set({ phase: 'dialog', overlay: { type: 'forge', key, log: this.crossing() }, prompt: null });
   }
-  /** The rule survived the mirror: it is kept as HIS rule, and the tablet then gives it its name. */
+  /** The forge the story is waiting for, when the page was closed in front of its mirror (the last one waits at its stone). */
+  pendingForge() {
+    const missing = (key) => !this.state.keys.includes(key);
+    if (this.state.stage === 3 && missing('qasim-baqi')) return 'qasim-baqi';
+    if (this.state.stage === 4 && missing('qasim-jidaa')) return 'qasim-jidaa';
+    if (this.flags.statues && missing('siyagh-mutakafia')) return 'siyagh-mutakafia';
+    return null;
+  }
+  /** The rule survived the mirror: it is kept as HIS rule, the tablet then gives it its name, and the story goes on. */
   sealRule(key, record) {
     this.rules = { ...this.rules, [key]: record };
     this.audio.play('key');
     this.set({ rules: this.rules, overlay: { type: 'tablet', key } });
-    this.queue.push(() => {
-      this.onModule('1');
-      this.say(T.say.d48, 7);
-    });
+    this.queue.push(() => this.afterKey[key]?.());
     this.save();
   }
+  /** What the story does once the tablet of a key is closed. */
+  afterKey = {
+    'qasim-baqi': () => {
+      this.onModule('1');
+      this.say(T.say.d48, 7);
+    },
+    'qasim-jidaa': () => this.say(T.say.e120, 7),
+    'siyagh-mutakafia': () => {
+      this.refreshObjective();
+      this.say(T.say.boardReady, 7);
+      this.save();
+    },
+    'wahid-wa-nafsuh': () => {
+      this.flags.key4 = true;
+      this.onModule('2');
+      this.refreshObjective();
+      this.say(T.say.boss, 9);
+      this.save();
+    },
+  };
 
   closeTablet() {
     const key = this.state.overlay?.key;
@@ -1209,12 +1219,9 @@ export class DivisorIslesGame extends WorldRuntime {
         }, i * 260),
       );
       this.audio.play('success');
-      this.set({ overlay: { type: 'tablet', key: 'siyagh-mutakafia' } });
-      this.queue.push(() => {
-        this.refreshObjective();
-        this.say(T.say.boardReady, 7);
-        this.save();
-      });
+      this.save();
+      // the four sentences are right: the guardians' mirror now asks him WHY — which number comes first, in each phrasing
+      this.openForge('siyagh-mutakafia');
     } else this.audio.play('fail');
     return res;
   }
