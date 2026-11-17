@@ -31,11 +31,12 @@ import RulesReview from '../../features/classSession/RulesReview';
 import ExerciseBoard from '../../features/classSession/ExerciseBoard';
 import ClassTracking from '../../features/classSession/ClassTracking';
 import KnowledgeBoard from '../../features/classSession/KnowledgeBoard';
-import { KNOWLEDGE_LOADERS, cardsOf, earlierLessons } from '../../features/classSession/knowledgeCards';
+import { hasKnowledgeCards, loadKnowledgeCards, earlierLessons } from '../../features/classSession/knowledgeCards';
 import { parseRef } from '../../features/classSession/exerciseBank';
 import { teacherBankPath } from '../../features/practice/teacherBank';
 import LessonBoard, { EMPTY_MEMO } from '../../features/classSession/LessonBoard';
-import { reviewCards, SCRIPTS } from '../../features/classSession/lessonScripts';
+import { reviewCards } from '../../features/classSession/lessonScripts';
+import { usePackPart } from '../../lessons/lessonPack';
 import '../../features/classSession/classSession.css';
 
 const L = {
@@ -108,8 +109,15 @@ const itemLabel = (item) => (item ? (homeLessonOf(item)?.titleAr ?? getItem(item
  * seating map and the test, then runs the test on the board; the result is saved without touching anyone's progress.
  * Full screen, outside the teacher shell; designed 1280 × 720 and zoomed to the window; nothing scrolls on the board.
  */
+/** The page waits for the lesson's board script (its pack, a few milliseconds): the hour is planned around it. */
 export default function ClassSessionPage() {
   const { lessonId } = useParams();
+  const script = usePackPart(lessonId, 'script');
+  if (script === undefined) return null;
+  return <ClassSession key={lessonId} lessonId={lessonId} script={script} />;
+}
+
+function ClassSession({ lessonId, script }) {
   const [params, setParams] = useSearchParams();
   const navigate = useNavigate();
   const { token } = useContext(AuthContext);
@@ -152,7 +160,6 @@ export default function ClassSessionPage() {
     () => (hasLab(lessonId) ? { code: lessonId, title: lesson?.title ?? '' } : null),
     [lessonId, lesson?.title],
   );
-  const script = SCRIPTS[lessonId] ?? null;
   const memoKey = `${classId}:${lessonId}`;
   const [memo, setMemoRaw] = useState(EMPTY_MEMO);
   const [lastStart, setLastStart] = useState(null);
@@ -329,15 +336,13 @@ export default function ClassSessionPage() {
   const [kcards, setKcards] = useState(null);
   const klinks = useMemo(() => earlierLessons(lessonId), [lessonId]);
   const openCards = () => {
-    const load = KNOWLEDGE_LOADERS[lessonId];
-    if (!load) return;
+    if (!hasKnowledgeCards(lessonId)) return;
     if (kcards) {
       setView('card');
       return;
     }
-    load()
-      .then((m) => {
-        const c = cardsOf(m.LESSON_KNOWLEDGE);
+    loadKnowledgeCards(lessonId)
+      .then((c) => {
         if (c.length) {
           setKcards(c);
           setView('card');
@@ -640,7 +645,7 @@ export default function ClassSessionPage() {
                         </button>
                       </li>
                     </ol>
-                    {KNOWLEDGE_LOADERS[lessonId] && (
+                    {hasKnowledgeCards(lessonId) && (
                       <button
                         type="button"
                         className="cs-link"

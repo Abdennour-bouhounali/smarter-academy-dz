@@ -66,15 +66,15 @@ Since 2026-11-03 the pilot lesson `qasim-adad-tabii` tries the **student « focu
 
 Since 2026-11-15 the same lesson `qasim-adad-tabii` carries a **TRIAL game world** (owner's free experiment, NOT validated, NOT a rollout rule):
 its student enters « أرخبيل القواسم », a three.js world where a bridge of light holds only when planks of one length fill the gap exactly
-(`gameWorld: 'divisor-isles'` in its config; code `lessons/common/gameworld/`; the mission player stays at `?view=classic`).
+(`world: { id: 'divisor-isles' }` in its pack `lesson.pack.js`; code `lessons/common/gameworld/`; the mission player stays at `?view=classic`).
 The same day it got, reachable from the title screen for revision without replaying the story: the full-page **« خريطة المعارف »**
 (the lesson's own 13-node mind map and memo sheets, imported, never retyped; « تدرّب » opens ON the card and alternates a game
 format with the real exam format), the **practice space** (16 levels: runs of the gate dash — mental arithmetic only, numbers
 inside the multiplication tables — generated questions, a mistake stops on a guidance card) and the real-world game **« تعاونية الواحة »** (a packing depot: the
 world packs what the student decides and shows what is left). The exam cases are played in three worlds, each story carrying a value (the depot; fair sharing between friends; a tiler who
 cuts no tile and wastes none), and a calculation shortcut « حيلة » follows a right answer when a clean one exists. Since the same day its exam-format first tries count toward الكفاءات (the server re-computes each verdict:
-`POST /lessons/{code}/game-evidence`), and its exercise bank tries the **exam coach** « مدرّب الامتحان » (pilot list
-`content/practice/exam-coach.json`: an exam hall, a paper notebook for mistakes, and two modes — guide without the answer, or the
+`POST /lessons/{code}/game-evidence`), and its exercise bank tries the **exam coach** « مدرّب الامتحان » (pilot: the lessons whose
+pack has `coach`: an exam hall, a paper notebook for mistakes, and two modes — guide without the answer, or the
 solution explained step by step; `EXERCISE_CONTRACT.md`). Since 2026-11-16 the title screen also opens a PROTOTYPE exam sitting « الامتحان الأبيض » (reading time, a silent sitting with no
 verdict, then the copy handed back with red marks; `GAME_WORLD.md` §2quater). Since the same day the practice hub has TWO spaces — « فضاء اللعب » then
 « فضاء الامتحان », a ladder of five generated exam levels (80 % to climb, the next sheet adapted to what was missed; the game is felt
@@ -136,10 +136,10 @@ on top; by place, « أختار أنا » or « اختر لي »; a sentence wit
 teams. **A class test never changes a student's progress** (never `learning_evidence`); the screens are light and calm, an adult's.
 The same day the hour became a script of four moments (start test → « مراجعة القواعد » → « الدرس على السبّورة » → end test; `CLASS_SESSION.md`
 §5bis–§5ter, NOT validated): the rules the lesson will use come back one per screen and **the teacher picks the reader himself, or reads**
-(rule cards = `rules` of the launch-kit families); the lesson on the board is DATA (`features/classSession/lessonScripts.js › SCRIPTS`) —
+(rule cards = `rules` of the launch-kit families); the lesson on the board is DATA (the lesson's own `board/script.js`, named in its pack) —
 the class experiments with bridges, writes ITS rule, the board attacks it, and only a rule that survived gets its name (the game's own
 tablets); board tools on every board screen, in ONE dock: class window, pen, red pointer, curtain, timer, « مختبري ». It sends nothing.
-**A lesson that has its board (`features/classSession/boardLessons.js › BOARD_LESSONS`, today the pilot only — owner: « no need for the older
+**A lesson that has its board (`board` in its pack — `boardLessons.js › BOARD_LESSONS` is generated from the packs; today the pilot only — owner: « no need for the older
 version ») has no « وضع القسم » any more, and its TEACHER's lesson page is the title and his card « للأستاذ »** (`TeacherLessonPanel`: in class ·
 prepare · my tools · follow · what to know; calm palette — white, dark ink, no gradient). The card opens: « متابعة القسم » (each student on the
 lesson: states per الكفاءة, exercises right / first try; order = who needs the teacher first, never a ranking; `GET …/lesson-tracking/{lesson}`),
@@ -254,6 +254,11 @@ shared with the student too, on the link page as well. The parent pages are phon
   adding a lesson or changing its modules — never touch `App.jsx`), lab strings live in
   `i18n/locales/ar/lesson.manipulation.json`, unit maths are imported by path, not from the core barrel
   (`BUNDLE_BOUNDARIES.md` §3–§4, since 2026-10-14).
+- **A lesson's pack** (since 2026-11-17): what a lesson gives the platform beyond its modules — it opens on a phone, its game
+  world and content, its knowledge sheets, the exam coach, its board script and memo — is declared in ITS `lesson.pack.js`, never
+  in a list elsewhere. After writing or changing a pack run `npm run generate:lesson-index` (its flags live in the generated lesson
+  index); shared code reads a part with `lessons/lessonPack.js › loadPackPart` / `usePackPart`, never by the lesson's path.
+  Contract: `docs/architecture/LESSON_V2.md`.
 - **No dead file** (since 2026-11-16): `npm run check:unreached` (CI) fails when a file of `apps/web/src` is reached by nothing from
   `main.jsx`. Delete what a change makes useless in the SAME change; a file kept on purpose is named in the script's `KEPT` with its reason.
 - **Lint and « nothing unused »** (since 2026-11-17, CI): `npm run lint` (ESLint, whole tree: unused imports and variables, undefined
@@ -271,7 +276,7 @@ shared with the student too, on the link page as well. The parent pages are phon
   `kitabat-adad-tabii`, validated; applies to every new lesson; existing lessons: `docs/reports/LESSON_METHOD_RETROFIT.md`).
 - **Supported screens: tablet and laptop only (owner, 2026-10-15)** — widths ≥ 768 px (768×1024, 1024×768, 1280×800, 1366×768, 1920×1080). Phones are NOT supported: do not design, tune or test for phone widths (320–430 px); older mentions of them below are superseded.
   **Enforced (owner, 2026-10-27):** lessons and exercises are behind `components/auth/RequireLargeScreen.jsx`; a phone sees « محتوى الدروس يظهر فقط في شاشة الحاسوب … » instead (guide, « Supported screens »).
-  **Exception (owner, 2026-11-16, TRIAL on the pilot): the HOME of a lesson listed in `components/auth/phoneLessons.js › PHONE_LESSONS`**
+  **Exception (owner, 2026-11-16, TRIAL on the pilot): the HOME of a lesson whose pack says `phone: true` (`components/auth/phoneLessons.js › PHONE_LESSONS`, generated from the packs)**
   (today `qasim-adad-tabii`) opens on a phone — the student's game world, played with the phone SIDEWAYS, the teacher's card, his memo and his lesson file. Every
   other page of the lesson keeps the message and is shown CLOSED with « على الحاسوب » on the card and in the header (owner: « only the pages designed for mobile »). Rules — one scale by the root font size,
   never two scales, a box scrolls instead of shrinking below a readable text, the middle of the screen stays the world:

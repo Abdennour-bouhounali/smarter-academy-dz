@@ -31,13 +31,15 @@ import MissionHome from '../mission/MissionHome';
 import MissionPlayer from '../mission/MissionPlayer';
 import { isMissionView } from '../mission/missionModel';
 
-// LE MONDE DE JEU (essai du 2026-11-15, leçon `qasim-adad-tabii`) : un morceau paresseux, jamais dans le paquet d'entrée (three.js).
+// LE MONDE DE JEU : la leçon nomme son monde dans SON paquet (`lesson.pack.js › world`, LESSON_V2.md) ; un morceau paresseux, jamais
+// dans le paquet d'entrée (three.js).
 // « مختبري » : le laboratoire de la leçon (ses instruments + ceux des leçons PRÉCÉDENTES de toutes les années) — `?lab=1`.
 const LessonLab = lazy(() => import('../lessonlab/LessonLab'));
 const TeacherLessonPanel = lazy(() => import('../../../features/classSession/TeacherLessonPanel'));
 const LessonToolsBar = lazy(() => import('../../../features/classSession/LessonToolsBar'));
 import { hasClassBoard } from '../../../features/classSession/boardLessons';
-const GAME_WORLDS = { 'divisor-isles': lazy(() => import('../gameworld/divisorIsles/DivisorIsles')) };
+const LessonGameWorld = lazy(() => import('../gameworld/LessonGameWorld'));
+import { lessonPackFlags } from '../../registry';
 import { mathToPlain } from '../../../utils/mathPlain';
 import { hasLab } from '../lessonlab/registry';
 import { useCatalogueHref } from '../../../components/student/catalogueLink';
@@ -382,18 +384,19 @@ export default function LessonIndex({ config, basePath }) {
 
   // Le monde de jeu remplace l'accueil de mission pour l'ÉLÈVE seulement ; `?view=classic` rouvre le lecteur de mission.
   // « جرّب كتلميذ » : l'enseignant ouvre le monde de l'élève en APERÇU (`?apercu=eleve`) — rien n'est enregistré ni envoyé (CLASS_SESSION.md §2).
-  const teacherCard = viewer.isTeacher && !presenting && Boolean(config.classSession || GAME_WORLDS[config.gameWorld]);
+  const pack = lessonPackFlags(config.id);
+  const teacherCard = viewer.isTeacher && !presenting && Boolean(pack.board || pack.world);
   // The TEACHER of a lesson that has its board (owner, 2026-11-18: « no need for these any more »): his page is the title and
   // his card « للأستاذ » — the old sections of the lesson home (progress, الكفاءات / المتطلبات / المناولات, مسألة الدرس,
   // مسار المحاور) are not shown to him. Students and the other lessons are untouched; the module routes still exist.
   const teacherBoard = teacherCard && hasClassBoard(config.id);
-  const previewAsStudent = viewer.freeNavigation && !presenting && searchParams.get('apercu') === 'eleve' && Boolean(GAME_WORLDS[config.gameWorld]);
-  const GameWorld = (missionOn || previewAsStudent) && searchParams.get('view') !== 'classic' ? GAME_WORLDS[config.gameWorld] : null;
-  if (GameWorld) {
+  const previewAsStudent = viewer.freeNavigation && !presenting && searchParams.get('apercu') === 'eleve' && Boolean(pack.world);
+  const worldId = (missionOn || previewAsStudent) && searchParams.get('view') !== 'classic' ? (pack.world ?? null) : null;
+  if (worldId) {
     return (
       <Suspense fallback={null}>
-        <GameWorld
-          config={config} basePath={basePath} classicHref={`${basePath}?view=classic`}
+        <LessonGameWorld
+          worldId={worldId} config={config} basePath={basePath} classicHref={`${basePath}?view=classic`}
           exitTo={previewAsStudent ? basePath : catalogueHref({ level: config.level, grade: config.grade, chapter: config.chapter })}
           onModule={(n) => { if (!previewAsStudent) markModuleCompleted(String(n)); }}
           completedModules={completedModules} preview={previewAsStudent}
@@ -515,7 +518,7 @@ export default function LessonIndex({ config, basePath }) {
                   Les autres leçons gardent la rangée. */}
               {teacherBoard ? (
                 <div data-tour="lesson-index.tools">
-                  <Suspense fallback={null}><TeacherLessonPanel config={config} basePath={basePath} hasWorld={Boolean(GAME_WORLDS[config.gameWorld])} /></Suspense>
+                  <Suspense fallback={null}><TeacherLessonPanel config={config} basePath={basePath} hasWorld={Boolean(pack.world)} /></Suspense>
                 </div>
               ) : (
                 <>
@@ -525,7 +528,7 @@ export default function LessonIndex({ config, basePath }) {
                   </div>
                   {/* L'ENSEIGNANT d'une leçon pilote : sa fiche d'une page, « جرّب كتلميذ », « حصّة القسم » (CLASS_SESSION.md). */}
                   {teacherCard && (
-                    <Suspense fallback={null}><TeacherLessonPanel config={config} basePath={basePath} hasWorld={Boolean(GAME_WORLDS[config.gameWorld])} /></Suspense>
+                    <Suspense fallback={null}><TeacherLessonPanel config={config} basePath={basePath} hasWorld={Boolean(pack.world)} /></Suspense>
                   )}
                 </>
               )}

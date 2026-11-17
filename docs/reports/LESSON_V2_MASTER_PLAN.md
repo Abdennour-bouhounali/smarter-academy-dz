@@ -278,9 +278,16 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
      SCREEN (`kit/styles/`, imported in the order of the cascade); the split BY OWNER (kit / the pilot's world) is not
      done — it would reorder rules the later sheets override, and waits for a second world. NOT checked: a real phone,
      a real tablet (the owner tests over Wi-Fi before any merge).
-  2. [ ] One `lesson.pack.js` per lesson and its generated index (the nine central lists of §2.2 become one); the
-     pilot's pack is `…/qasim-adad-tabii/world/index.js` today; `DivisorIsles.jsx` and `LessonIndex.jsx › GAME_WORLDS`
-     still name the pilot.
+  2. [x] One `lesson.pack.js` per lesson and its generated index — DONE 2026-11-17. The pilot's pack names its phone
+     flag, its world and content, its knowledge, the exam coach's sheets, its board script and memo (moved into its
+     folder: `board/script.js`, `board/memo.js`); `generate-lesson-index.mjs` writes the flags into the lesson index;
+     `registry.js` (`lessonPackFlags`, `lessonsWithPack`, `loadLessonPack`) and `lessons/lessonPack.js` (`loadPackPart`,
+     `usePackPart`) are the only readers. GONE: `PHONE_LESSONS`, `BOARD_LESSONS` as typed lists, `SCRIPTS`,
+     `BOARD_MEMOS`, `KNOWLEDGE_LOADERS`, the exam coach's table, `content/practice/exam-coach.json`, `GAME_WORLDS`, the
+     `gameWorld` / `classSession` keys of the config, the world's import of its one lesson (`LessonGameWorld.jsx` hands
+     the content to the world). NOT in the pack, with the reason (`LESSON_V2.md` §1): the lab's `TOOLS`, the launch
+     kit's `families.js`, `exam-style.json`, `content/class-tests/`, `unitMissions.js` — so of the nine lists of §2.2,
+     five became the pack and four stay where they are.
   3. [ ] Remove the pilot's id from the 8 shared files (§2.2).
   4. [ ] Finish the pilot: forge its three rules that are still told; generalise `ruleForge.js` / `RuleForge.jsx`
      into the kit on those four examples.

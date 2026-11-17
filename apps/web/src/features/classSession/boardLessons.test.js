@@ -1,19 +1,20 @@
 import { describe, it, expect } from 'vitest';
 import { BOARD_LESSONS, hasClassBoard, classSessionPath, boardLessonOfPath, MOMENTS } from './boardLessons';
-import { SCRIPTS } from './lessonScripts';
+import { lessonPackFlags } from '../../lessons/registry';
 import { classDoor, canPresentPath, CLASSROOM_START_STATE } from '../teacher/lessonMemo/memoRoutes';
 import { hasLab } from '../../lessons/common/lessonlab/registry';
 import { LESSON_CONFIG } from '../../lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/lesson.config';
 
 describe('حصّة القسم — the lessons that have their own board (and no « وضع القسم » any more)', () => {
-  it('is exactly the list of the lessons that have a script: a lesson joins the day its script is written', () => {
-    expect([...BOARD_LESSONS].sort()).toEqual(Object.keys(SCRIPTS).sort());
+  it('is exactly the list of the lessons whose pack has a board: a lesson joins the day its script is written', () => {
+    expect(BOARD_LESSONS).toContain('qasim-adad-tabii');
+    for (const id of BOARD_LESSONS) expect(lessonPackFlags(id).board, id).toBe(true);
     expect(hasClassBoard('qasim-adad-tabii')).toBe(true);
     expect(hasClassBoard('qawasim-adad-tabii')).toBe(false);
     expect(hasClassBoard(undefined)).toBe(false);
     const config = LESSON_CONFIG;
     expect(config.id).toBe('qasim-adad-tabii');
-    expect(config.classSession).toBe(true);
+    expect(config.classSession ?? config.gameWorld).toBeUndefined(); // the lesson says it in its pack, not in its config
     expect(hasLab(config.id)).toBe(true);
   });
 

@@ -6,13 +6,13 @@
  */
 import { getLessonPath } from '@smarter-academy/core';
 import { reviewLinksForLesson } from '@smarter-academy/core/curriculum/dz/net/learningNet.js';
+import { hasPackPart, loadPackPart } from '../../lessons/lessonPack';
 
-/** Where the knowledge of a lesson lives. A lesson joins when its board is written (same list as its script). */
-export const KNOWLEDGE_LOADERS = {
-  'qasim-adad-tabii': () =>
-    import('../../lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/knowledge.jsx'),
-};
-export const hasKnowledgeCards = (lessonCode) => Boolean(KNOWLEDGE_LOADERS[lessonCode]);
+/** Has the lesson knowledge sheets to show? It says so in its own pack (`lesson.pack.js › knowledge`). */
+export const hasKnowledgeCards = (lessonCode) => hasPackPart(lessonCode, 'knowledge');
+/** The cards of a lesson, ready for the board — an empty list when it has none. */
+export const loadKnowledgeCards = (lessonCode) =>
+  loadPackPart(lessonCode, 'knowledge').then((knowledge) => (knowledge ? cardsOf(knowledge) : []));
 
 const math = (m) => (m ? `$${m}$` : null);
 

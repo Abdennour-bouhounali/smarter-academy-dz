@@ -17,7 +17,7 @@ import ClassTracking from '../../features/classSession/ClassTracking';
 import { BoardLessonContext } from '../../features/classSession/board';
 import { hasLab } from '../../lessons/common/lessonlab/registry';
 import KnowledgeBoard from '../../features/classSession/KnowledgeBoard';
-import { KNOWLEDGE_LOADERS, cardsOf, earlierLessons } from '../../features/classSession/knowledgeCards';
+import { loadKnowledgeCards, earlierLessons } from '../../features/classSession/knowledgeCards';
 import '../../features/classSession/classSession.css';
 
 const L = {
@@ -115,13 +115,8 @@ export function LessonCardPage() {
     };
   }, []);
   useEffect(() => {
-    const load = KNOWLEDGE_LOADERS[lessonId];
-    if (!load) {
-      setCards([]);
-      return;
-    }
-    load()
-      .then((m) => setCards(cardsOf(m.LESSON_KNOWLEDGE)))
+    loadKnowledgeCards(lessonId)
+      .then(setCards)
       .catch(() => setCards([]));
   }, [lessonId]);
   return (

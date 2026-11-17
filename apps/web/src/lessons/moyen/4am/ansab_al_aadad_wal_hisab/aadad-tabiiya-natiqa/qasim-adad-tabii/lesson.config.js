@@ -32,12 +32,8 @@ export const LESSON_CONFIG = {
   // Regard de l'élève : 'mission' (pilote 2026-11-04, lessons/common/mission/) implique le regard « focus » (2026-11-03) et
   // fait de la leçon un parcours vers la مسألة du درس. L'enseignant et le mode classe ne voient aucun changement.
   studentView: 'mission',
-  // LE MONDE DE JEU (essai du 2026-11-15) : l'élève entre dans « أرخبيل القواسم » (lessons/common/gameworld/divisorIsles/) à la place de
-  // l'accueil de mission ; le lecteur de mission reste ouvert par `?view=classic` et pour les modules (إختبار أولي). Retirer la clé annule l'essai.
-  gameWorld: 'divisor-isles',
-  // « حصّة القسم » (essai côté ENSEIGNANT, 2026-11-18, CLASS_SESSION.md) : la page de la leçon montre à l'enseignant sa fiche, « جرّب
-  // كتلميذ » et la séance en classe (test par défaut : content/class-tests/4am/qasim-adad-tabii.json).
-  classSession: true,
+  // LE MONDE DE JEU « أرخبيل القواسم », la séance en classe « حصّة القسم », le téléphone, « مدرّب الامتحان » : la leçon les déclare
+  // dans SON paquet, `lesson.pack.js` (docs/architecture/LESSON_V2.md) — plus aucune clé ici, plus aucune liste ailleurs.
   // LA MISSION (LESSON_DEVELOPMENT_GUIDE « Le mode mission ») : l'ouverture avoue qu'on ne sait pas encore la résoudre ;
   // les outils sont les connaissances de knowledge.jsx ; les points d'étape RAPPROCHENT de la mission sans en résoudre
   // aucune question (la مسألة 1 du module 4 reste entière) ; formatifs, jamais une preuve de maîtrise.

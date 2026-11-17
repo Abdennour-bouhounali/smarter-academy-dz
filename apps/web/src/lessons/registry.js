@@ -189,3 +189,34 @@ export function loadLessonRoutesFactory(lessonId) {
     return load ? load() : null;
   });
 }
+
+// ── The lesson's PACK (docs/architecture/LESSON_V2.md) ─────────────────────
+
+const NO_PACK = Object.freeze({});
+
+/**
+ * What a lesson gives the platform beyond its modules, as FLAGS — answered at once, nothing loaded:
+ * `{ phone?: true, world?: '<world id>', knowledge?: true, coach?: true, board?: true }`.
+ * They are generated from the lesson's own `lesson.pack.js`; no list elsewhere names a lesson.
+ * @returns {object} the flags, an empty object for a lesson without a pack.
+ */
+export function lessonPackFlags(lessonId) {
+  return entryById.get(lessonId)?.pack ?? NO_PACK;
+}
+
+/** @returns {string[]} the ids of the lessons whose pack has this flag (« phone », « board »…). */
+export function lessonsWithPack(flag) {
+  return [...entryById.values()].filter((e) => e.pack?.[flag]).map((e) => e.id);
+}
+
+/**
+ * @returns {Promise<object|null>} the lesson's LESSON_PACK (its content still behind
+ *          each `() => import()`), or null when the lesson has none.
+ */
+export function loadLessonPack(lessonId) {
+  if (!entryById.get(lessonId)?.pack) return Promise.resolve(null);
+  return loadLessonLoaders().then(({ PACK_LOADERS, findLessonLoader }) => {
+    const load = findLessonLoader(PACK_LOADERS, lessonId, 'lesson.pack.js');
+    return load ? load() : null;
+  });
+}

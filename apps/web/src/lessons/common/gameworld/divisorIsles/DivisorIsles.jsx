@@ -21,9 +21,7 @@ import { twin } from '../kit/longDivision';
 import LessonWorld from '../kit/LessonWorld';
 import { M, Card, Num } from '../kit/parts';
 import { KT, TX } from '../kit/text';
-// The ONE lesson this world plays today, named here and nowhere else in the world: the generated index of packs
-// (plan §4, step 5) will hand a lesson to its world instead.
-import { lesson as LESSON } from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world';
+import { useLesson } from '../kit/LessonContext';
 
 function Equation({ eq, unit = planks }) {
   const { a, b, q, r, live } = eq;
@@ -300,7 +298,8 @@ function Guide({ o, game }) {
  */
 function DepotHud({ d, eq, game, paused }) {
   const step = d.step;
-  const W = LESSON.text.worlds[d.world] ?? LESSON.text.worlds.depot;
+  const lesson = useLesson();
+  const W = lesson.text.worlds[d.world] ?? lesson.text.worlds.depot;
   const [picked, setPicked] = useState([]);
   const [vals, setVals] = useState({});
   const [model, setModel] = useState(null);
@@ -440,7 +439,7 @@ function DepotHud({ d, eq, game, paused }) {
               )}
               <p className="di-step__prompt">
                 {step && d.steps > 1 && <small>{TX.depot.step(d.stepIndex + 1, d.steps)}</small>}
-                {!step ? W.done : d.busy ? LESSON.text.busy : step.prompt}
+                {!step ? W.done : d.busy ? lesson.text.busy : step.prompt}
               </p>
               {!d.busy && step && (
                 <div className="di-step__row">
@@ -881,6 +880,7 @@ const WORLD = {
   },
 };
 
-export default function DivisorIsles(props) {
-  return <LessonWorld world={WORLD} lesson={LESSON} {...props} />;
+/** The world names no lesson: `LessonGameWorld` hands it the content of the lesson being played (its pack). */
+export default function DivisorIsles({ lesson, ...props }) {
+  return <LessonWorld world={WORLD} lesson={lesson} {...props} />;
 }

@@ -19,7 +19,7 @@ and counts, one decision per screen, readable from the last row, nothing to lear
 
 ## 2. On the lesson page: the teacher's card
 
-`TeacherLessonPanel.jsx`, shown to a teacher on a lesson whose config has `classSession: true` or a game world. It is the
+`TeacherLessonPanel.jsx`, shown to a teacher on a lesson whose pack has a `board` or a `world` (`lesson.pack.js`, `LESSON_V2.md` §1). It is the
 teacher's ONE place on the page, in the order of his work (owner, 2026-11-18: « organize the thing and the tools of the
 teacher », then « the UI/UX needs absolutely to be enhanced », « update the colors too »):
 
@@ -59,8 +59,8 @@ something (« أساسي », a right answer).
 
 ### A lesson that has its board has no « وضع القسم » and no old lesson home for its teacher
 
-`features/classSession/boardLessons.js › BOARD_LESSONS` lists the lessons that have a board script (a test keeps it equal to
-the keys of `lessonScripts.js › SCRIPTS`). Owner, 2026-11-18: « no need for the older version → delete it », scope **the
+`features/classSession/boardLessons.js › BOARD_LESSONS` is the lessons that have a board script — read from the generated
+lesson index: the lessons whose pack has `board` (`LESSON_V2.md` §1), never a list typed by hand. Owner, 2026-11-18: « no need for the older version → delete it », scope **the
 pilot lesson only** — the other lessons keep everything until each gets its script. For a listed lesson:
 
 - the old « وضع القسم » is retired: `LessonClassroomShell` passes `retired` to `ClassroomPresentation`, so no entry button
@@ -73,7 +73,8 @@ pilot lesson only** — the other lessons keep everything until each gets its sc
   floating « بطاقتي » and « كرّاسي » buttons are hidden — both are doors of the card. Students are untouched and the
   module routes still exist.
 
-To retire the old mode on another lesson: write its script, add its id to `BOARD_LESSONS`.
+To retire the old mode on another lesson: write its script and its memo in its folder (`board/script.js`,
+`board/memo.js`), name them in its pack (`board: { script, memo }`), run `npm run generate:lesson-index`.
 
 **« جرّب الدرس كتلميذ »** (`?apercu=eleve`): the teacher opens the student's own world — the game, the launch, the rule
 forge — under a banner « معاينة الأستاذ: ما يراه التلميذ. لا شيء يُسجَّل. ». In preview no module is marked done and no game
@@ -139,8 +140,8 @@ The memo of EVERY lesson (the page is shared) was one column of eleven sections 
 
 **A lesson that has its board has a WRITTEN memo** (owner, same day: « the content must be updated: research what a good
 one is », « in وضعية الانطلاق propose different ones, including the one of the class session, with SVG images », « the
-UI/UX also, specially the top »). `features/classSession/lessonMemos.js › BOARD_MEMOS` (a test keeps it equal to
-`BOARD_LESSONS`), page `BoardMemo.jsx`, drawings `MemoFigures.jsx`. Its model is what good lesson plans share (the
+UI/UX also, specially the top »). The memo is the lesson's own file `board/memo.js` (`export const MEMO`, named in its pack — a lesson that has a board
+has both a script and a memo; the model's parts are `features/classSession/lessonMemos.js`), page `BoardMemo.jsx`, drawings `MemoFigures.jsx`. Its model is what good lesson plans share (the
 « 5 practices » of orchestrating discussions, launch–explore–summarize, the Algerian وضعية الانطلاق → بناء التعلّمات →
 الاستثمار): a goal with OBSERVABLE success criteria; several opening situations; the hour as « حصّة القسم » runs it;
 the students' likely answers and misconceptions ANTICIPATED, each with a question to check and a question to push
@@ -157,7 +158,7 @@ extension; and **« الحصّة في صفحة »**, the one page for the desk.
 - **On paper the whole memo is two A4 pages at most** (owner): a dense print layout in `memo.css` (the stage drawn at
   61 %, the four opening situations in one row, lists in columns, its own title). The walk prints the real PDF and counts
   its pages — a longer memo must be shortened, not allowed a third page.
-- To write the memo of another lesson that gets its board: add its entry to `BOARD_MEMOS` with the same parts.
+- To write the memo of another lesson that gets its board: write its `board/memo.js` with the same parts.
 
 ## 3. The seating map (`SessionSetup.jsx › SeatingMap`, `session.js`)
 
@@ -238,7 +239,8 @@ test leads to ② by one button (« مراجعة القواعد »), the last ru
 The platform's method moved to the board, for one mouse and a whole class: **the class ACTS first, CONCLUDES itself, and
 only a rule that survived gets its NAME.** The teacher is never told what to say and is never locked.
 
-**The script is data** — `lessonScripts.js › SCRIPTS[lessonCode] = { title, steps }`. A lesson without a script has no
+**The script is data** — the lesson's own `board/script.js` (`export const SCRIPT = { title, steps }`, named in its
+pack; the page loads it with `usePackPart(lessonId, 'script')`). A lesson without a script has no
 moment ③. Each step has `id`, `kind`, `chapter` (« نكتشف », « نستنتج », « نسمّي », « نكتب ») and `cue` — ONE oral question
 shown in the footer for the teacher. Kinds, each drawn by one component of `LessonBoard.jsx`:
 
@@ -271,7 +273,7 @@ Rules of this screen:
   computed, never typed.
 - Nothing scrolls; nothing leaves its card; the oral question is never cut; a formula never breaks (checked by the walk).
 
-**To give another lesson its board**: write its `SCRIPTS` entry with the existing kinds; a lesson whose manipulation is
+**To give another lesson its board**: write its `board/script.js` with the existing kinds; a lesson whose manipulation is
 not a bridge needs its own `bridges`/`forge`-like kinds (a new component per kind in `LessonBoard.jsx`, its pure logic
 tested in `lessonScripts.test.js`). Do not copy the pilot's numbers.
 
@@ -308,7 +310,7 @@ the teacher asks, an example, the trap, what to do in the exam. **It is a displa
 name (owner: « it is just used for displaying in the class… keep only the tools »), so it opens at once, with the dock
 without « القسم ». The cards are
 the lesson's OWN knowledge (`LESSON_KNOWLEDGE › memo`, the source the student's « بطاقتي » reads — imported, never
-retyped; `KNOWLEDGE_LOADERS` holds the lessons that have a board). On every card, for the teacher: **the earlier lessons
+retyped; a lesson has cards when its pack names its `knowledge`). On every card, for the teacher: **the earlier lessons
 this الكفاءة is connected with** (the learning net, core first, « يحتاج إلى » / « يوسّع »), each with its direct link when
 it is published (`earlierLessons`). Whatever is opened stays on the board (`Fit`). Nothing is recorded.
 

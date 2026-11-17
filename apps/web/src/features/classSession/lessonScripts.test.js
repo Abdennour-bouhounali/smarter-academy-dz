@@ -2,13 +2,12 @@ import { describe, it, expect } from 'vitest';
 import { toolsForLesson } from '@smarter-academy/core/curriculum/dz/net/learningNet.js';
 import { FAMILIES } from '../../lessons/common/launchkit/families';
 import { T } from '../../lessons/common/gameworld/divisorIsles/strings';
+import { SCRIPT } from '../../lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/board/script';
 import {
   reviewCards,
   classLog,
   readyToConclude,
   missingEvidence,
-  SCRIPTS,
-  hasScript,
   FORMS,
   fills,
   askRight,
@@ -81,11 +80,9 @@ describe('حصّة القسم — the rules revised before the lesson', () => {
 });
 
 describe('حصّة القسم — the script of the lesson', () => {
-  const script = SCRIPTS['qasim-adad-tabii'];
+  const script = SCRIPT;
 
   it('follows the method: the class experiments and concludes BEFORE a rule is named — for each of the four rules', () => {
-    expect(hasScript('qasim-adad-tabii')).toBe(true);
-    expect(hasScript('other')).toBe(false);
     const kinds = script.steps.map((s) => s.kind);
     expect(kinds[0]).toBe('situation');
     expect(kinds.at(-1)).toBe('trace');

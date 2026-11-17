@@ -12,7 +12,8 @@ import { buildLessonMemo } from '../../features/teacher/lessonMemo/buildLessonMe
 import { loadLessonMemoSources } from '../../features/teacher/lessonMemo/loadLessonMemoSources';
 import { classDoor, TEACHER_COURSES_PATH } from '../../features/teacher/lessonMemo/memoRoutes';
 import { hasClassBoard } from '../../features/classSession/boardLessons';
-import { BOARD_MEMOS, hasBoardMemo } from '../../features/classSession/lessonMemos';
+import { hasBoardMemo } from '../../features/classSession/lessonMemos';
+import { usePackPart } from '../../lessons/lessonPack';
 import {
   MemoOverview, MemoObjectives, MemoStart, MemoTimeline, MemoExamples, MemoErrors,
   MemoDifferentiation, MemoTrace, MemoEvaluation, MemoNext,
@@ -88,6 +89,7 @@ function LessonMemo() {
   const available = !!lesson && isLessonBuilt(lessonId) && lesson.status === 'available' && !isLessonClosed(lessonId);
   useDocumentMeta(t('metaTitle', { title: lesson?.title ?? '' }), t('subtitle'));
 
+  const boardMemo = usePackPart(lessonId, 'memo'); // the WRITTEN memo of a lesson that has its board, from its pack
   const [sources, setSources] = useState(null);
   const [config, setConfig] = useState(null);
   const [error, setError] = useState(false);
@@ -132,7 +134,7 @@ function LessonMemo() {
   }, []);
 
   // A lesson that has its board has a WRITTEN memo (lessonMemos.js), on its own page; the others keep the derived one below.
-  if (available && hasBoardMemo(lessonId)) return <Suspense fallback={null}><BoardMemo lessonId={lessonId} memo={BOARD_MEMOS[lessonId]} /></Suspense>;
+  if (available && hasBoardMemo(lessonId)) return boardMemo ? <Suspense fallback={null}><BoardMemo lessonId={lessonId} memo={boardMemo} /></Suspense> : null;
 
   if (!available) {
     return (

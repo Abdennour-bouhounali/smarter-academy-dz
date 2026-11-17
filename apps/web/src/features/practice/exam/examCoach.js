@@ -1,5 +1,5 @@
 /**
- * « مدرّب الامتحان » — the exam coach of the exercise bank (PILOT on the lessons of content/practice/exam-coach.json; owner, 2026-11-15).
+ * « مدرّب الامتحان » — the exam coach of the exercise bank (PILOT on the lessons whose pack has `coach`; owner, 2026-11-15).
  * The bank keeps its exam sheet; the coach makes it FEEL like the exam (a hall to enter, silence, pen and paper) and gives the
  * student the choice of how he is helped after a mistake:
  *   guide   « أرشدني فقط »      the answer is NEVER shown: a question to re-read, the rule, the trap — then he tries again himself;
@@ -7,27 +7,22 @@
  * In both modes a mistake goes to the paper notebook (« دفتر أخطائي »).
  * PURE logic here (which lessons, the steps of an explanation, the notebook entry); the screens are ExamCoach.jsx.
  */
-import COACH_LESSONS from '../../../../../../content/practice/exam-coach.json';
+import { hasPackPart, loadPackPart } from '../../../lessons/lessonPack';
 
-export const isCoachLesson = (lessonCode) => COACH_LESSONS.includes(lessonCode);
+/** A lesson has the coach when ITS pack says which knowledge sheet stands behind each الكفاءة (`lesson.pack.js › coach`). */
+export const isCoachLesson = (lessonCode) => hasPackPart(lessonCode, 'coach');
 export const MODES = ['guide', 'explain'];
 export const modeKey = 'smarter_exam_coach_mode';
 
-/** The lesson's own knowledge sheets, by learning point: the rule reminded is the lesson's, never retyped here. */
-const KNOWLEDGE = {
-  'qasim-adad-tabii': {
-    load: () => import('../../../lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/knowledge'),
-    items: { P1: 'qasim-baqi', P2: 'qasim-jidaa', P3: 'siyagh-mutakafia', P4: 'wahid-wa-nafsuh' },
-  },
-};
 export const primaryPoint = (question) => question?.learningPoints?.find((lp) => lp.role === 'primary')?.code ?? question?.learningPoints?.[0]?.code ?? null;
 
 /** The rule behind a question: { title, rule (LaTeX), hook, example (LaTeX), trap, exam } — or null when the lesson has none. */
 export async function loadRule(lessonCode, learningPointCode) {
-  const src = KNOWLEDGE[lessonCode]; const id = src?.items[String(learningPointCode ?? '').split('_').pop()];
+  // the lesson's own knowledge sheets: the rule reminded is the lesson's, never retyped here
+  const id = (await loadPackPart(lessonCode, 'coach'))?.[String(learningPointCode ?? '').split('_').pop()];
   if (!id) return null;
-  const mod = await src.load();
-  const item = Object.values(mod.LESSON_KNOWLEDGE.modules).flat().find((it) => it.id === id);
+  const knowledge = await loadPackPart(lessonCode, 'knowledge');
+  const item = Object.values(knowledge.modules).flat().find((it) => it.id === id);
   return item ? { id, title: item.title, ...item.memo } : null;
 }
 

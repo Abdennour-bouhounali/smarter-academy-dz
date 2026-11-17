@@ -42,7 +42,8 @@ import { levelCounts } from '../practice/practiceCounts';
 import { teacherBankPath } from '../practice/teacherBank';
 import { classCardPath, classSessionPath, classTrackingPath, hasClassBoard, MOMENTS } from './boardLessons';
 import './teacherPanel.css';
-import { SCRIPTS, reviewCards } from './lessonScripts';
+import { reviewCards } from './lessonScripts';
+import { usePackPart } from '../../lessons/lessonPack';
 
 const LessonLab = lazy(() => import('../../lessons/common/lessonlab/LessonLab'));
 
@@ -53,7 +54,6 @@ const L = {
   session: 'حصّة القسم',
   sessionLead: 'الحصّة كلّها على السبّورة، بأسماء تلاميذك. لا شيء فيها يغيّر تقدّم أيّ تلميذ.',
   open: 'افتح حصّة القسم',
-  sessionOnly: 'اختبار على السبّورة بالأسماء، مخطّط المقاعد، ومنصّة التتويج.',
   moments: {
     start: { name: 'اختبار البداية', say: () => 'أين القسم قبل الدرس؟ كلّ تلميذ باسمه.' },
     revise: {
@@ -63,7 +63,10 @@ const L = {
           ? `${plural(rules, 'قاعدة واحدة', 'قاعدتان', 'قواعد', 'قاعدة')} سنحتاجها، يقرأها تلميذ تختاره.`
           : 'القواعد التي سنحتاجها، يقرأها تلميذ تختاره.',
     },
-    lesson: { name: 'الدرس على السبّورة', say: ({ stations }) => `${stations} محطّة: القسم يجرّب، يستنتج، ثمّ يسمّي.` },
+    lesson: {
+      name: 'الدرس على السبّورة',
+      say: ({ stations }) => `${stations ? `${stations} محطّة: ` : ''}القسم يجرّب، يستنتج، ثمّ يسمّي.`,
+    },
     end: { name: 'اختبار النهاية', say: () => 'ماذا غيّرت الحصّة؟ قبلها وبعدها.' },
   },
   prepare: 'أحضّر',
@@ -179,7 +182,8 @@ export default function TeacherLessonPanel({ config, basePath, hasWorld, extraTo
     .map((id) => MISTAKES[id]?.replace(/^انتبه:\s*/, ''))
     .filter(Boolean)
     .slice(0, 4);
-  const facts = { rules: reviewCards(tools, FAMILIES).length, stations: SCRIPTS[config.id]?.steps.length ?? 0 };
+  const script = usePackPart(config.id, 'script'); // the lesson's board script, from its pack: its count arrives a moment later
+  const facts = { rules: reviewCards(tools, FAMILIES).length, stations: script?.steps.length ?? 0 };
   const exercises = Object.values(levelCounts(config.id)).reduce((s, n) => s + n, 0);
   return (
     <section
@@ -189,10 +193,8 @@ export default function TeacherLessonPanel({ config, basePath, hasWorld, extraTo
       data-teacher-board={board}
     >
       {/* ── in class: the one thing a teacher comes for ── */}
-      {config.classSession && phone && (
-        <Door icon={Presentation} title={L.session} closed data-teacher-session-closed />
-      )}
-      {config.classSession && !phone && (
+      {board && phone && <Door icon={Presentation} title={L.session} closed data-teacher-session-closed />}
+      {board && !phone && (
         <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5" data-teacher-group="class">
           <div className="flex flex-wrap items-center gap-4">
             <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-nav-accent text-white">
@@ -203,7 +205,7 @@ export default function TeacherLessonPanel({ config, basePath, hasWorld, extraTo
                 {L.title} · {L.inClass}
               </p>
               <h2 className="text-2xl font-black leading-snug text-slate-900">{L.session}</h2>
-              <p className="text-sm font-semibold leading-6 text-slate-600">{board ? L.sessionLead : L.sessionOnly}</p>
+              <p className="text-sm font-semibold leading-6 text-slate-600">{L.sessionLead}</p>
             </div>
             <Link
               to={classSessionPath(config.id)}
@@ -214,35 +216,31 @@ export default function TeacherLessonPanel({ config, basePath, hasWorld, extraTo
             </Link>
           </div>
           {/* the hour as the set-up screen shows it: four moments, each opened directly */}
-          {board && (
-            <ol className="mt-4 grid grid-cols-2 gap-2.5 lg:grid-cols-4" data-teacher-moments>
-              {MOMENTS.map((m, k) => (
-                <li key={m}>
-                  <Link
-                    to={classSessionPath(config.id, m)}
-                    data-teacher-moment={m}
-                    className="group flex h-full flex-col gap-1 rounded-2xl border border-slate-200 bg-white p-3 transition-colors hover:border-nav-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent"
-                  >
-                    <span className="flex items-center gap-2">
-                      <b className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-nav-accent text-sm font-black text-white">
-                        {k + 1}
-                      </b>
-                      <strong className="text-[15px] font-extrabold text-slate-900">{L.moments[m].name}</strong>
-                    </span>
-                    <span className="text-[13px] font-semibold leading-6 text-slate-500">
-                      {L.moments[m].say(facts)}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ol>
-          )}
+          <ol className="mt-4 grid grid-cols-2 gap-2.5 lg:grid-cols-4" data-teacher-moments>
+            {MOMENTS.map((m, k) => (
+              <li key={m}>
+                <Link
+                  to={classSessionPath(config.id, m)}
+                  data-teacher-moment={m}
+                  className="group flex h-full flex-col gap-1 rounded-2xl border border-slate-200 bg-white p-3 transition-colors hover:border-nav-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent"
+                >
+                  <span className="flex items-center gap-2">
+                    <b className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-nav-accent text-sm font-black text-white">
+                      {k + 1}
+                    </b>
+                    <strong className="text-[15px] font-extrabold text-slate-900">{L.moments[m].name}</strong>
+                  </span>
+                  <span className="text-[13px] font-semibold leading-6 text-slate-500">{L.moments[m].say(facts)}</span>
+                </Link>
+              </li>
+            ))}
+          </ol>
         </div>
       )}
 
       {/* ── prepare · my tools ── */}
       <div className="grid gap-4 md:grid-cols-2">
-        <Block label={config.classSession ? L.prepare : `${L.title} · ${L.prepare}`} data-teacher-group="prepare">
+        <Block label={board ? L.prepare : `${L.title} · ${L.prepare}`} data-teacher-group="prepare">
           {hasWorld && (
             <Door
               icon={Eye}

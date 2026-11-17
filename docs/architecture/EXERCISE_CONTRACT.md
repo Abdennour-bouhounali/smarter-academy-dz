@@ -1500,7 +1500,8 @@ the server's overview row).
 
 ## « مدرّب الامتحان » — the exam coach of an exam sheet (PILOT, 2026-11-15)
 
-**Status: pilot on the lessons listed in `content/practice/exam-coach.json` (today: `qasim-adad-tabii`). Not a rollout rule.**
+**Status: pilot on the lessons whose pack has `coach` (`lesson.pack.js`, `LESSON_V2.md` §1 — today: `qasim-adad-tabii`; the
+list `content/practice/exam-coach.json` was deleted on 2026-11-17). Not a rollout rule.**
 The sheet, its steps, its timer and the server's grading are unchanged; the coach changes what surrounds them
 (`features/practice/exam/examCoach.js`, `ExamCoach.jsx`, four small edits in `PracticeSession.jsx`):
 

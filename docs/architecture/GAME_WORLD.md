@@ -9,9 +9,11 @@ what the code does today, so the trial can be judged, extended or removed. Nothi
 A student who opens the lesson enters **« أرخبيل القواسم »**: a chain of nine floating islands in a three.js scene, played in a
 full window with a small hovering robot, « زيرو ». The teacher and Classroom Mode see no change.
 
-- Switch: `gameWorld: 'divisor-isles'` in the lesson's `LESSON_CONFIG`, beside `studentView: 'mission'`. Removing the key ends the trial.
+- Switch: `world: { id: 'divisor-isles', content }` in the lesson's PACK (`lesson.pack.js`, `LESSON_V2.md` §1), beside
+  `studentView: 'mission'` in its config. Removing the key ends the trial.
 - Mount: `LessonIndex.jsx` renders the world instead of `MissionHome` when the mission view is on (student, not Classroom Mode).
-  The chunk is lazy (`GAME_WORLDS` map) — three.js never enters the entry bundle.
+  `gameworld/LessonGameWorld.jsx` loads the WORLD (its `WORLDS` map: one entry per world, never per lesson) and the
+  lesson's content (its pack) together, lazily — three.js never enters the entry bundle. A world names no lesson.
 - **The mission player is not deleted.** `?view=classic` on the lesson URL opens it (a link on the title screen), and the module
   routes (`/astaidd`, `/itqan`, …) still play there. A device without WebGL gets a message and that link.
 
@@ -419,7 +421,8 @@ eleven screens. What is NOT extracted, and why:
 - **the world's story** is written for THIS lesson (which island does what): a second lesson in the same world will
   show what must become data (plan §9, step 3: the gate);
 - **the title screen still links to the classic mission player** (`classicHref`): decision D3 retires it per lesson.
-A lesson's content will be gathered in ONE `lesson.pack.js` (plan §4 step 5): today it is `world/index.js`.
+A lesson declares its content in ONE `lesson.pack.js` (`LESSON_V2.md` §1, 2026-11-17); what its world is played with is
+`world/index.js`, named there (`world.content`). The world receives it as the `lesson` prop.
 
 **The shape of an exam answer is DATA.** The kit draws what the lesson describes, and never knows its mathematics:
 - a sitting question is `sentence` (words around ONE `{ choice: [{ value, text }] }`) or `tokens` (signs around boxes

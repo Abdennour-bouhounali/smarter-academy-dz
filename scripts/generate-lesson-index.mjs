@@ -11,6 +11,9 @@
  * le premier téléchargement de chaque visiteur. Ce fichier ne garde que ce que ces questions exigent — rien
  * d'arabe, rien de pédagogique — et la configuration complète se charge avec la leçon (registry.loadLessonConfig).
  *
+ * Depuis le 2026-11-17 la ligne d'une leçon porte aussi les DRAPEAUX de son paquet (`lesson.pack.js`, LESSON_V2.md) :
+ * `pack: { phone?, world?, knowledge?, coach?, board? }` — voir `packFlags` plus bas.
+ *
  * Source : chaque `lesson.config.js` sous apps/web/src/lessons/<niveau>/<classe>/… (modules de données sans
  * import, lisibles par Node). Seules les classes ACTIVES (activeGrades.js) sont indexées.
  */
@@ -53,7 +56,38 @@ for (const file of walk(LESSONS)) {
     if (m.path !== `${path}/${m.slug}`) problems.push(`${rel} : module ${m.number} — path « ${m.path} » ≠ « ${path}/${m.slug} »`);
     return [Number(m.number), m.slug];
   });
-  lessons.push({ id: c.id, level: c.level, grade: c.grade, chapter: c.chapter, modules });
+  const pack = await packFlags(dirname(file), c.id, rel);
+  lessons.push({ id: c.id, level: c.level, grade: c.grade, chapter: c.chapter, modules, ...(pack ? { pack } : {}) });
+}
+
+/**
+ * THE PACK of a lesson (`lesson.pack.js` beside its config; docs/architecture/LESSON_V2.md): the ONE place where a lesson
+ * says what it gives the platform beyond its modules. The index keeps only its FLAGS — what the entry bundle may ask
+ * without loading anything (« does it open on a phone? has it a board? which world? »); the content stays behind the
+ * pack's own `() => import()`. A pack is a data module without a static import, so Node reads it here.
+ */
+async function packFlags(dir, lessonId, rel) {
+  const file = join(dir, 'lesson.pack.js');
+  if (!existsSync(file)) return null;
+  const where = rel.replace('lesson.config.js', 'lesson.pack.js');
+  const { LESSON_PACK: p } = await import(pathToFileURL(file).href);
+  if (!p) { problems.push(`${where} : no LESSON_PACK export`); return null; }
+  if (p.id !== lessonId) problems.push(`${where} : id « ${p.id} » ≠ the lesson « ${lessonId} »`);
+  const KNOWN = ['id', 'phone', 'world', 'knowledge', 'coach', 'board'];
+  for (const k of Object.keys(p)) if (!KNOWN.includes(k)) problems.push(`${where} : unknown key « ${k} » (known: ${KNOWN.join(', ')})`);
+  const fn = (v) => typeof v === 'function';
+  if (p.world && !(typeof p.world.id === 'string' && fn(p.world.content))) problems.push(`${where} : world = { id, content: () => import() }`);
+  if (p.knowledge && !fn(p.knowledge)) problems.push(`${where} : knowledge = () => import()`);
+  if (p.coach && !(p.knowledge && Object.values(p.coach).every((v) => typeof v === 'string'))) problems.push(`${where} : coach = { <الكفاءة>: <knowledge item id> } and needs « knowledge »`);
+  if (p.board && !(fn(p.board.script) && fn(p.board.memo))) problems.push(`${where} : board = { script: () => import(), memo: () => import() }`);
+  if (p.phone != null && typeof p.phone !== 'boolean') problems.push(`${where} : phone = true | false`);
+  const flags = {};
+  if (p.phone) flags.phone = true;
+  if (p.world) flags.world = p.world.id;
+  if (p.knowledge) flags.knowledge = true;
+  if (p.coach) flags.coach = true;
+  if (p.board) flags.board = true;
+  return flags;
 }
 
 if (problems.length) {

@@ -1,12 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import { KNOWLEDGE_LOADERS, hasKnowledgeCards, cardsOf, earlierLessons } from './knowledgeCards';
+import { hasKnowledgeCards, loadKnowledgeCards, cardsOf, earlierLessons } from './knowledgeCards';
 import { BOARD_LESSONS } from './boardLessons';
 
 describe('بطاقة المعارف — the knowledge card of a lesson on the board', () => {
   it('exists for every lesson that has its board, from the lesson’s own knowledge', async () => {
-    expect(Object.keys(KNOWLEDGE_LOADERS).sort()).toEqual([...BOARD_LESSONS].sort());
+    for (const id of BOARD_LESSONS) expect(hasKnowledgeCards(id), id).toBe(true);
+    expect(await loadKnowledgeCards('other')).toEqual([]);
     expect(hasKnowledgeCards('other')).toBe(false);
-    const cards = cardsOf((await KNOWLEDGE_LOADERS['qasim-adad-tabii']()).LESSON_KNOWLEDGE);
+    const cards = await loadKnowledgeCards('qasim-adad-tabii');
     expect(cards.length).toBeGreaterThanOrEqual(4);
     expect(cards[0]).toMatchObject({ id: 'qasim-baqi', module: 1, hook: 'الباقي معدوم يعني قاسم' });
     for (const c of cards) {

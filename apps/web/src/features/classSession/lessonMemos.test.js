@@ -1,13 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import { BOARD_MEMOS, hasBoardMemo, MEMO_PARTS, partKeys, openingFacts } from './lessonMemos';
+import { hasBoardMemo, MEMO_PARTS, partKeys, openingFacts } from './lessonMemos';
+import { MEMO as memo } from '../../lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/board/memo';
 import { BOARD_LESSONS, MOMENTS } from './boardLessons';
 
-const memo = BOARD_MEMOS['qasim-adad-tabii'];
 const holds = (c) => c.b * c.q + c.r === c.a && c.r < c.b;
 
 describe('مذكّرة الدرس — the written memo of a lesson that has its board', () => {
   it('exists for the lessons that have a board, with every part a good lesson plan has', () => {
-    expect(Object.keys(BOARD_MEMOS).sort()).toEqual([...BOARD_LESSONS].sort());
+    for (const id of BOARD_LESSONS) expect(hasBoardMemo(id), id).toBe(true); // the memo is written with the script: one flag of the pack
     expect(hasBoardMemo('other')).toBe(false);
     expect(partKeys()).toEqual([
       'glance',

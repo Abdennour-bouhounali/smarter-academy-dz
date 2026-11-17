@@ -2,9 +2,7 @@
  "exports": [
   "apps/web/src/data/adminNavigation.js#adminNavLinks",
   "apps/web/src/features/classSession/exerciseBank.js#hasKey",
-  "apps/web/src/features/classSession/knowledgeCards.js#hasKnowledgeCards",
   "apps/web/src/features/classSession/lessonScripts.js#fills",
-  "apps/web/src/features/classSession/lessonScripts.js#hasScript",
   "apps/web/src/features/classSession/lessonScripts.js#railOf",
   "apps/web/src/features/classSession/session.js#MODES",
   "apps/web/src/features/family/format.js#displayCode",

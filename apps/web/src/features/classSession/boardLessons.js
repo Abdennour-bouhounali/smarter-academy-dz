@@ -4,12 +4,15 @@
  * Owner, 2026-11-18: for such a lesson « no need for the older version » — the old « وضع القسم » (Classroom Mode of the
  * lesson page) no longer exists there: no entry button on the lesson page nor on its modules, no « عرض » of a lab or a
  * test inside it, and every door that used to open it (the teacher's catalogue card, the مذكرة) opens « حصّة القسم ».
- * The other lessons keep « وضع القسم » until each gets its script; a lesson joins this list the day its script is written
- * (`lessonScripts.js › SCRIPTS` — a test keeps the two in step).
+ * The other lessons keep « وضع القسم » until each gets its script. A lesson has its board the day its script and its
+ * memo are written and named in ITS pack (`lesson.pack.js › board`, LESSON_V2.md): this list is read from the generated
+ * lesson index, never typed here.
  *
- * Deliberately tiny and without imports: the lesson runtime and the teacher's catalogue read it.
+ * Deliberately tiny: the lesson runtime and the teacher's catalogue read it.
  */
-export const BOARD_LESSONS = Object.freeze(['qasim-adad-tabii']);
+import { lessonsWithPack } from '../../lessons/registry';
+
+export const BOARD_LESSONS = Object.freeze(lessonsWithPack('board'));
 
 export const hasClassBoard = (lessonId) => BOARD_LESSONS.includes(lessonId);
 

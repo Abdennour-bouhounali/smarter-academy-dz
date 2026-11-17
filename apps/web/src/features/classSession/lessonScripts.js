@@ -4,7 +4,8 @@
  *
  * The hour, as a script:
  *   revise   after the start test, the rules the lesson will USE, one per screen (`reviewCards`) — a student reads, or the teacher;
- *   lesson   the lesson itself, as a sequence of STEPS the class goes through together on the board (`SCRIPTS`):
+ *   lesson   the lesson itself, as a sequence of STEPS the class goes through together on the board — the lesson's own
+ *            script, in its folder (`board/script.js`, named in its `lesson.pack.js`):
  *            a situation → the class EXPERIMENTS (bridges it predicts and builds) → it writes ITS rule and the board tests
  *            it on the class's own bridges → the rule gets its name → the next rule … → what goes in the copybook.
  * The method is the platform's, moved to the board: the class acts first, concludes itself, and only then the name.
@@ -77,134 +78,6 @@ export function missingEvidence(log) {
  *               student's world and for the board), read aloud by a student or by the teacher;
  *   trace       what goes in the copybook.
  */
-export const SCRIPTS = {
-  'qasim-adad-tabii': {
-    title: 'التعرّف على قاسم لعدد طبيعي',
-    steps: [
-      {
-        id: 'situation',
-        kind: 'situation',
-        chapter: 'نكتشف',
-        title: 'جسر بين جزيرتين',
-        text: 'بين جزيرتين هوّة من 15 خانة. نريد أن نعبرها بجسر من ألواح لها الطول نفسه، دون أن تبقى خانة فارغة.',
-        question: 'بأيّ ألواح يثبت الجسر؟ وبأيّها ينهار؟',
-        bridge: { a: 15, b: 4 },
-        cue: 'قبل أيّ بناء: من يتوقّع ما سيحدث باللوح 4؟ ولماذا؟',
-      },
-      {
-        id: 'bridges',
-        kind: 'bridges',
-        chapter: 'نكتشف',
-        title: 'نجرّب',
-        lead: 'القسم يختار هوّة ولوحًا، يتوقّع، ثمّ نبني.',
-        suggest: [
-          { a: 15, b: 3 },
-          { a: 15, b: 4 },
-          { a: 16, b: 4 },
-          { a: 16, b: 3 },
-          { a: 42, b: 4 },
-          { a: 42, b: 6 },
-          { a: 42, b: 7 },
-        ],
-        cue: 'بعد كلّ جسر: كم لوحًا وضعنا؟ كم خانة بقيت؟',
-      },
-      {
-        id: 'forge',
-        kind: 'forge',
-        chapter: 'نستنتج',
-        title: 'قاعدة القسم',
-        lead: 'متى يثبت الجسر؟ القسم يكتب قاعدته، والسبّورة تختبرها على جسوره.',
-        cue: 'انظروا إلى الجسور التي ثبتت: ما الذي يجمعها؟',
-      },
-      {
-        id: 'name-1',
-        kind: 'name',
-        chapter: 'نسمّي',
-        tablet: 'qasim-baqi',
-        forged: true,
-        recall: ['باقي', 'قاسم'],
-        cue: 'من يعطي مثالًا آخر: عدد وقاسم له؟',
-      },
-      {
-        id: 'product',
-        kind: 'ask',
-        chapter: 'نكتشف',
-        title: 'دون أيّ قسمة',
-        text: 'ثبت الجسر باللوح 6 فوق هوّة من 48 خانة: $48 = 6 \\times 8$.',
-        question: 'دون أيّ قسمة: أيّ لوح آخر يثبت بالتأكيد؟',
-        a: 48,
-        options: [5, 7, 8, 9],
-        answer: [8],
-        after: 'في $48 = 6 \\times 8$ العددان 6 و 8 يملآن الهوّة: 8 ألواح طولها 6، أو 6 ألواح طولها 8.',
-        cue: 'كيف عرفتم دون أن تقسموا؟',
-      },
-      {
-        id: 'name-2',
-        kind: 'name',
-        chapter: 'نسمّي',
-        tablet: 'qasim-jidaa',
-        recall: ['جداء', 'قاسم'],
-        cue: 'اكتبوا 36 على شكل جداء: أيّ قاسمين نقرأ؟',
-      },
-      {
-        id: 'sentences',
-        kind: 'statements',
-        chapter: 'نكتشف',
-        title: 'أربع جمل',
-        text: 'نعلم أنّ $120 = 6 \\times 20$.',
-        question: 'صحيح أم خطأ؟',
-        a: 120,
-        b: 6,
-        items: [
-          { form: 'b_divides_a', text: '6 قاسم للعدد 120' },
-          { form: 'a_divides_b', text: '120 قاسم للعدد 6' },
-          { form: 'a_multiple_of_b', text: '120 مضاعف للعدد 6' },
-          { form: 'b_multiple_of_a', text: '6 مضاعف للعدد 120' },
-          { form: 'a_divisible_by_b', text: '120 يقبل القسمة على 6' },
-        ],
-        cue: 'أيّ جمل تقول الشيء نفسه؟',
-      },
-      {
-        id: 'name-3',
-        kind: 'name',
-        chapter: 'نسمّي',
-        tablet: 'siyagh-mutakafia',
-        recall: ['قاسم', 'يقسم', 'يقبل القسمة', 'مضاعف'],
-        cue: 'قولوا الجمل الأربع للعددين 7 و 35.',
-      },
-      {
-        id: 'always',
-        kind: 'ask',
-        chapter: 'نكتشف',
-        title: 'الهوّة العنيدة',
-        text: 'هوّة من 143 خانة. لا نريد أن نقسم.',
-        question: 'أيّ لوحين يثبتان دائمًا، مهما كان طول الهوّة؟',
-        a: 143,
-        options: [1, 2, 10, 143],
-        answer: [1, 143],
-        after: 'لوح من خانة واحدة يملأ كلّ هوّة، ولوح بطول الهوّة كلّها يملؤها وحده: $143 = 1 \\times 143$.',
-        cue: 'وهل يصحّ ذلك لهوّة من 2026 خانة؟',
-      },
-      {
-        id: 'name-4',
-        kind: 'name',
-        chapter: 'نسمّي',
-        tablet: 'wahid-wa-nafsuh',
-        recall: ['لكلّ عدد طبيعي', 'لنفسه'],
-        cue: 'هل للعدد 13 قواسم أخرى غير 1 و 13؟',
-      },
-      {
-        id: 'trace',
-        kind: 'trace',
-        chapter: 'نكتب',
-        title: 'على الكرّاس',
-        tablets: ['qasim-baqi', 'qasim-jidaa', 'siyagh-mutakafia', 'wahid-wa-nafsuh'],
-        cue: 'بعد النقل: من يذكّرنا بالمفاتيح الأربعة دون أن ينظر إلى السبّورة؟',
-      },
-    ],
-  },
-};
-export const hasScript = (lessonId) => Boolean(SCRIPTS[lessonId]);
 
 /** The truth of a sentence about a (the bigger) and b: the same forms as the default tests. */
 export const FORMS = {
