@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { ArrowForward } from '../common/DirectionalIcons';
 
@@ -14,7 +14,7 @@ export default function FreePremiumTeaser() {
 
   return (
     <section className="px-4 py-14">
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -41,7 +41,7 @@ export default function FreePremiumTeaser() {
           {t('freePremium.cta')}
           <ArrowForward size={15} />
         </Link>
-      </motion.div>
+      </m.div>
     </section>
   );
 }

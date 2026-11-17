@@ -24,7 +24,11 @@ const VerificationEmail = lazy(() => import('./pages/VerificationEmail'));
 const AuthGoogle = lazy(() => import('./pages/AuthGoogle'));
 const Confidentialite = lazy(() => import('./pages/legal/Confidentialite'));
 const CGU = lazy(() => import('./pages/legal/CGU'));
-const AdminLayout = lazy(() => import('./components/layout/AdminLayout'));
+// Le cadre et SES TEXTES partent ensemble : `admin` est un namespace à la demande (BUNDLE_BOUNDARIES.md §3).
+const AdminLayout = lazy(() => {
+  preloadNamespace('admin');
+  return import('./components/layout/AdminLayout');
+});
 const AdminDashboard = lazy(() => import('./pages/admin/Dashboard'));
 const AdminLessons = lazy(() => import('./pages/admin/content/Lessons'));
 const AdminLessonDetail = lazy(() => import('./pages/admin/content/LessonDetail'));
@@ -68,7 +72,10 @@ const AdminAccessLimits = lazy(() => import('./pages/admin/access/AccessLimits')
 const AdminSubscriptionRequests = lazy(() => import('./pages/admin/requests/SubscriptionRequests'));
 const AdminSubscriptions = lazy(() => import('./pages/admin/subscriptions/Subscriptions').then((m) => ({ default: m.AdminSubscriptions })));
 // L'ESPACE ENSEIGNANT (« فضاء الأستاذ ») : arabe, RTL, sa propre coquille.
-const TeacherLayout = lazy(() => import('./components/layout/TeacherLayout'));
+const TeacherLayout = lazy(() => {
+  preloadNamespace('teacher');
+  return import('./components/layout/TeacherLayout');
+});
 const TeacherHome = lazy(() => import('./pages/teacher/TeacherHome'));
 const TeacherBankGate = lazy(() => import('./pages/teacher/practice/TeacherBankGate'));
 const TeacherClassGroupList = lazy(() => import('./pages/teacher/ClassGroupList'));
@@ -210,6 +217,7 @@ import { StudyContextProvider } from './context/StudyContextContext';
 import { useLessonProgressSync } from './hooks/useLessonProgressSync';
 import { useLessonRoutes } from './lessons/lessonRouteBoundary';
 import { loadLessonManipulationStrings } from './i18n/lessonManipulationStrings';
+import { preloadNamespace } from './i18n/index.js';
 import StudyTimeTracker from './features/studyTime/StudyTimeTracker';
 
 // ---- PREMIÈRE SPÉCIALITÉ ----

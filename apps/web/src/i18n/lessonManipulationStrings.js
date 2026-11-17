@@ -11,7 +11,7 @@
 //     routes d'une leçon ne sont montées qu'une fois ces textes arrivés ;
 //   - le runtime de leçon (lessons/common/lessonRuntimeLoader.js), par sûreté ;
 //   - la surface de QA (App.jsx, RtlLessonFixture) ;
-//   - les tests (src/test/setupLessonStrings.js).
+//   - les tests (src/test/setupOnDemandStrings.js).
 // Seul du code de leçon lit ces clés (aucune page, aucun outil du مختبر).
 // Voir docs/architecture/BUNDLE_BOUNDARIES.md (§3, « lesson.manipulation »).
 import i18n from './index.js';

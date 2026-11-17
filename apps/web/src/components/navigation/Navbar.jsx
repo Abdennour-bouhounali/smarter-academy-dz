@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Menu, X, LogOut, ShieldCheck, LayoutDashboard, MailCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { ArrowForward } from '../common/DirectionalIcons';
@@ -148,7 +148,7 @@ export default function Navbar() {
 
   return (
     <>
-      <motion.nav
+      <m.nav
         // `app-header` est l'ANCRE du viewport de leçon : useLessonViewport le
         // mesure pour poser le haut du tiroir « Ma carte », et un
         // ResizeObserver le suit (la barre change de hauteur au défilement).
@@ -230,12 +230,12 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-      </motion.nav>
+      </m.nav>
 
       {/* Mobile Drawer */}
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -244,7 +244,7 @@ export default function Navbar() {
           >
             <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col gap-1">
               {navLinks.map((link, i) => (
-                <motion.div
+                <m.div
                   key={link.path}
                   // Enters from the reading-start side; `x` is physical, so the sign
                   // follows the platform direction (src/locale.js).
@@ -265,13 +265,13 @@ export default function Navbar() {
                   >
                     {t(link.labelKey)}
                   </NavLink>
-                </motion.div>
+                </m.div>
               ))}
               <div className="mt-2 pt-3 border-t border-slate-100">
                 <AuthCluster compact onNavigate={() => setMobileOpen(false)} />
               </div>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

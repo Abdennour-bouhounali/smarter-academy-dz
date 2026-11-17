@@ -1,5 +1,6 @@
 import { Suspense, lazy, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
+import { preloadNamespace } from '../../i18n/index.js';
 import { describeLearningViewer } from '../../features/learning/learningViewer';
 import StudentLayout from './StudentLayout';
 import MainLayout from './MainLayout';
@@ -8,7 +9,11 @@ import MainLayout from './MainLayout';
 // est importé statiquement par App.jsx, et un import statique ici remettait
 // l'espace enseignant dans le lot d'entrée de chaque élève et visiteur.
 // Voir docs/architecture/BUNDLE_BOUNDARIES.md.
-const TeacherLayout = lazy(() => import('./TeacherLayout'));
+// Ses textes (`teacher`, à la demande) partent avec lui, pas après lui.
+const TeacherLayout = lazy(() => {
+  preloadNamespace('teacher');
+  return import('./TeacherLayout');
+});
 
 /** Élève ou enseignant : une barre latérale et un en-tête mobile, pas de Navbar visiteur. */
 export function usesWorkspaceShell(user) {

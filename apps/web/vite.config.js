@@ -136,7 +136,7 @@ export default defineConfig({
   // Vitest : les textes des manipulations (`lesson:manipulation.*`) sont chargés
   // à la demande en production ; les tests les enregistrent d'emblée.
   test: {
-    setupFiles: ['./src/test/setupLessonStrings.js'],
+    setupFiles: ['./src/test/setupOnDemandStrings.js'],
   },
   css: {
     postcssOptions: {

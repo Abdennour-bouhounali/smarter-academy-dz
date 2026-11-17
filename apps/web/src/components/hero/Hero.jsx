@@ -1,6 +1,6 @@
 import { useState, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { ArrowDown, Calculator, PenTool, BrainCircuit, Sparkles, Lightbulb } from 'lucide-react';
 import { ArrowForward } from '../common/DirectionalIcons';
@@ -38,14 +38,14 @@ export default function Hero() {
 
       {/* Floating Math Icons */}
       {floatingIcons.map((item, index) => (
-        <motion.div
+        <m.div
           key={index}
           className={`absolute hidden md:flex w-16 h-16 rounded-2xl ${item.bg} border border-white/50 shadow-xl items-center justify-center ${item.position} backdrop-blur-sm z-0`}
           animate={{ y: [0, -15, 0], rotate: [0, 5, -5, 0] }}
           transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: item.delay }}
         >
           <item.Icon className={`w-8 h-8 ${item.color}`} />
-        </motion.div>
+        </m.div>
       ))}
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
@@ -53,16 +53,16 @@ export default function Hero() {
 
           {/* ── Top Section: Text & CTAs ─────────────────────────── */}
           <div className="flex flex-col items-center">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-nav-accent-soft border border-blue-200 text-nav-accent text-sm font-medium mb-8 shadow-sm"
             >
               <Sparkles size={15} />
               {t('hero.eyebrow')}
-            </motion.div>
+            </m.div>
 
-            <motion.h1
+            <m.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
@@ -70,9 +70,9 @@ export default function Hero() {
             >
               {t('hero.titleLine1')}<br className="hidden sm:block" />{' '}
               <span className="gradient-text">{t('hero.titleLine2')}</span>
-            </motion.h1>
+            </m.h1>
 
-            <motion.p
+            <m.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
@@ -82,9 +82,9 @@ export default function Hero() {
               <span>{t('hero.pillarDiscover')}</span><span className="text-blue-300">→</span>
               <span>{t('hero.pillarUnderstand')}</span><span className="text-blue-300">→</span>
               <span className="text-slate-800">{t('hero.pillarMaster')}</span>
-            </motion.p>
+            </m.p>
 
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
@@ -104,11 +104,11 @@ export default function Hero() {
               >
                 {t('hero.ctaSecondary')}
               </Link>
-            </motion.div>
+            </m.div>
           </div>
 
           {/* ── Touch Math Widget ─────────────────────────────────── */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
@@ -264,13 +264,13 @@ export default function Hero() {
               </div>
 
             </div>
-          </motion.div>
+          </m.div>
 
         </div>
       </div>
 
       {/* Scroll down hint */}
-      <motion.button
+      <m.button
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 1 }}
@@ -278,13 +278,13 @@ export default function Hero() {
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-400 hover:text-slate-600 transition-colors"
       >
         <span className="text-xs font-mono-jetbrains">{t('hero.discoverPlatform')}</span>
-        <motion.div
+        <m.div
           animate={{ y: [0, 5, 0] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
         >
           <ArrowDown size={16} />
-        </motion.div>
-      </motion.button>
+        </m.div>
+      </m.button>
     </section>
   );
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Search, ArrowUp, ArrowDown, CornerDownLeft, X, Sparkles, LogIn, Compass, GraduationCap, HelpCircle, Mail, Users } from 'lucide-react';
 
@@ -117,7 +117,7 @@ export default function CommandPalette() {
         {open && (
           <>
             {/* Overlay */}
-            <motion.div
+            <m.div
               key="overlay"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -127,13 +127,15 @@ export default function CommandPalette() {
             />
 
             {/* Modal */}
-            <motion.div
+            <m.div
               key="modal"
-              initial={{ opacity: 0, scale: 0.95, y: -20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: -20 }}
+              // Le centrage est porté par `x` : l'animation écrit `transform`, et une classe `-translate-x-1/2`
+              // y serait écrasée (la boîte partait du milieu de l'écran au lieu d'y être centrée).
+              initial={{ opacity: 0, scale: 0.95, x: '-50%', y: -20 }}
+              animate={{ opacity: 1, scale: 1, x: '-50%', y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, x: '-50%', y: -20 }}
               transition={{ duration: 0.2, ease: 'easeOut' }}
-              className="fixed top-[15%] left-1/2 -translate-x-1/2 z-50 w-full max-w-lg px-4"
+              className="fixed top-[15%] left-1/2 z-50 w-full max-w-lg px-4"
             >
               <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
                 {/* Search input */}
@@ -222,7 +224,7 @@ export default function CommandPalette() {
                   </span>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </>
         )}
       </AnimatePresence>

@@ -34,11 +34,12 @@ import { teacherOverview, teacherBankPath } from '../../../features/practice/tea
  * lecteur enseignant, rien n'est écrit sur le serveur.
  */
 export default function PracticeHub() {
-  const { t } = useTranslation('student');
+  const { isTeacher, workspaceBase } = useLearningViewer();
+  // `teacher` est à la demande : seul l'enseignant le déclare, donc seul lui le télécharge.
+  const { t } = useTranslation(isTeacher ? ['student', 'teacher'] : 'student');
   const { lessonCode } = useParams();
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { isTeacher, workspaceBase } = useLearningViewer();
   const coursesPath = `${workspaceBase ?? '/espace'}/cours`;
 
   const [overview, setOverview] = useState(null);

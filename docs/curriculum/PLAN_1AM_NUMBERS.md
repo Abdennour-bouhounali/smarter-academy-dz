@@ -532,7 +532,7 @@ Do, in order:
    the 2AM model synthesis has one — copy what it does.
 4. Gates: the lab's logic + render tests, content.test.js (independent arithmetic), the unit's prepDiagnostic test,
    `node apps/web/scripts/lab-rollout-status.mjs --lesson <CODE>` prints ✅, `cd apps/web && npx vitest run src/lessons/common/knowledge`,
-   `npm test`, `npm run check:lessons` (exit 0; entry budget 245 KB gzip — never raise it; no eager module imports catalogue
+   `npm test`, `npm run check:lessons` (exit 0; entry budget 212 KB gzip — never raise it; no eager module imports catalogue
    names), `NODE_OPTIONS=--max-old-space-size=8192 npm run build`; browser check of every module on port <PORT> at 768×1024,
    1024×768, 1280×800 and 1366×768 (tablet and laptop only, NO phone); lab screenshots of the initial and mid-activity states at
    those sizes, VIEWED and iterated; a lesson-kit e2e apps/web/e2e/lesson-kit/1am-<CODE>.mjs (local API on 127.0.0.1:8000).
@@ -629,6 +629,6 @@ card; open points for the owner.
 
 Published and pushed on `dev`: entries 1–4 (`adad-ashri-mustaqim-mudarraj`, `adad-nisbiya-siyaqat`, `talim-mustaqim-mudarraj`, `bahth-adad-naqisa`), entry 5 `talim-fi-mustawi`, and **entry 6 `tatbiq-qaida-harfiya`** with their successor connections (`talim-mustaqim-mudarraj-2`, `hall-mushkil-muadala`, `talim-nuqta-mustawi`, `ikhtibar-musawat-mutabayina`, `qimat-ibara-harfiya`).
 **Resume at card 7 `wadiya-idmajiya-adad-nisbiya` (synthesis U5, needs all of unit 5 — published) and card 8 `intaj-ibara-harfiya` (U6, `1am.m5.r09`, needs r08 — published).** Tips from the runs: build with
-`NODE_OPTIONS=--max-old-space-size=8192 npx vite build` then `node scripts/analyze-entry-bundle.mjs --dist apps/web/dist --budget 245`
+`NODE_OPTIONS=--max-old-space-size=8192 npx vite build` then `node scripts/analyze-entry-bundle.mjs --dist apps/web/dist --budget 212`
 (the `check:entry-budget` script OOMs on its own 4 GB build); `buildLessonMemo.test.js` can time out under load and passes alone.
 Open owner points: a `halfline`/`numberline` statement-figure kind is still missing; confirm the 2AM LP edges chosen for `hall-mushkil-muadala` (note 4), `talim-nuqta-mustawi` (note 5) and `ikhtibar-musawat-mutabayina` (note 6).

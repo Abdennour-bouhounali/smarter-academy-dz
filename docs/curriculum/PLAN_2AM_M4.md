@@ -97,7 +97,7 @@ Do, in order:
    `platform_addition` + `reason: term_exam_modelled` + `modelledOn` / `adapted` / `platform_addition`.
 4. Gates: the lab's logic + render tests, content.test.js (independent arithmetic), the unit's prepDiagnostic test,
    `node apps/web/scripts/lab-rollout-status.mjs --lesson <CODE>` prints ✅, `npm test`, `npm run check:lessons` (entry budget
-   245 KB gzip — never raise it; no eager module imports catalogue names), `NODE_OPTIONS=--max-old-space-size=8192 npm run build`;
+   212 KB gzip — never raise it; no eager module imports catalogue names), `NODE_OPTIONS=--max-old-space-size=8192 npm run build`;
    browser check of every module on port <PORT> at 768×1024, 1024×768, 1280×800 and 1366×768 (tablet and laptop only, no phone);
    lab screenshots of the initial and mid-activity states at those sizes, reviewed with your eyes and iterated; a lesson-kit e2e
    apps/web/e2e/lesson-kit/2am-<UNIT>-<CODE>.mjs.

@@ -73,8 +73,8 @@ describe('le panneau d’administration est arabe', () => {
 
   it('le catalogue arabe du panneau existe et est monté', () => {
     const i18n = readFileSync(resolve(src, 'i18n/index.js'), 'utf8');
-    expect(i18n).toMatch(/from '\.\/locales\/ar\/admin\.json'/);
-    expect(i18n).toMatch(/ns: \[[^\]]*'admin'/);
+    // À la demande depuis 2026-11-17 : il arrive avec le cadre du panneau, pas avec l'application.
+    expect(i18n).toMatch(/admin: \(\) => import\('\.\/locales\/ar\/admin\.json'\)/);
 
     const catalogue = JSON.parse(readFileSync(resolve(src, 'i18n/locales/ar/admin.json'), 'utf8'));
     // Les sections que tout écran consomme.

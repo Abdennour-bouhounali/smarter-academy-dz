@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Mail } from 'lucide-react';
 import { ArrowForward } from '../common/DirectionalIcons';
 import { useTranslation } from 'react-i18next';
@@ -14,7 +14,7 @@ export default function Footer() {
         {/* Top row */}
         <div className="flex flex-col md:flex-row justify-between items-start gap-10 mb-12">
           {/* Brand */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -34,10 +34,10 @@ export default function Footer() {
               <Mail size={13} className="text-blue-400 flex-shrink-0 mt-0.5" />
               <a href="mailto:abdennour.bouhounali@gmail.com" className="hover:text-white transition-colors break-words">abdennour.bouhounali@gmail.com</a>
             </p>
-          </motion.div>
+          </m.div>
 
           {/* Navigation */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -56,10 +56,10 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </m.div>
 
           {/* CTA column */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -78,7 +78,7 @@ export default function Footer() {
               {tm('footer.startFree')}
               <ArrowForward size={14} />
             </Link>
-          </motion.div>
+          </m.div>
         </div>
 
         {/* Divider */}

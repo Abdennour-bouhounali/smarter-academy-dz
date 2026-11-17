@@ -25,7 +25,7 @@
     "check:lesson-index": "node scripts/generate-lesson-index.mjs --check",
     "generate:lesson-index": "node scripts/generate-lesson-index.mjs",
     "generate:lab-order": "node apps/web/scripts/generate-lab-order.mjs",
-    "check:entry-budget": "node scripts/analyze-entry-bundle.mjs --budget 245",
+    "check:entry-budget": "node scripts/analyze-entry-bundle.mjs --budget 212",
     "check:non-blocking": "node scripts/check-non-blocking.mjs",
     "check:dormant-isolation": "node scripts/check-dormant-isolation.mjs",
     "audit:collisions": "node scripts/audit-svg-collisions.mjs",

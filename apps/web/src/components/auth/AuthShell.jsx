@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { BadgeCheck, Check, Plus } from 'lucide-react';
 
@@ -164,7 +164,7 @@ export default function AuthShell({ tone = 'student', audience = tone, title, su
       <div className="pointer-events-none absolute top-[-10%] left-[-10%] h-[40%] w-[40%] rounded-full bg-blue-400/15 blur-3xl" />
       <div className="pointer-events-none absolute bottom-[-10%] right-[-10%] h-[40%] w-[40%] rounded-full bg-teal-400/15 blur-3xl" />
 
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         className={`relative z-10 mx-auto grid w-full overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-2xl shadow-slate-200/60 ${plain ? 'max-w-4xl' : 'max-w-6xl lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]'}`}
@@ -182,7 +182,7 @@ export default function AuthShell({ tone = 'student', audience = tone, title, su
           </div>
         </section>
         {!plain && <BrandPanel tone={tone} audience={audience} />}
-      </motion.div>
+      </m.div>
     </div>
   );
 }

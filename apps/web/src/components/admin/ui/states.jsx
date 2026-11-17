@@ -16,10 +16,10 @@ import { Loader2, AlertTriangle, Inbox, BarChart3 } from 'lucide-react';
  */
 
 export function LoadingState({ label, rows = 0 }) {
-  const { t } = useTranslation('admin');
+  const { t } = useTranslation('common');
   // `label` peut arriver `undefined` d'un appelant qui ne le connaît pas :
   // on garde alors le défaut plutôt qu'un attribut vide.
-  label = label ?? t('common.loading');
+  label = label ?? t('ui.loading');
   // Des squelettes quand on sait combien de lignes arrivent : la page ne
   // saute pas au moment où les données remplacent le vide.
   if (rows > 0) {
@@ -41,8 +41,8 @@ export function LoadingState({ label, rows = 0 }) {
 }
 
 export function ErrorState({ message, onRetry, retryLabel }) {
-  const { t } = useTranslation('admin');
-  const retry = retryLabel ?? t('common.retry');
+  const { t } = useTranslation('common');
+  const retry = retryLabel ?? t('ui.retry');
 
   return (
     // `rose` et non `red` : c'est le jeton d'erreur du système (celui de
@@ -51,7 +51,7 @@ export function ErrorState({ message, onRetry, retryLabel }) {
     // panneau.
     <div className="rounded-xl border border-rose-200 bg-rose-50 p-6 text-center" role="alert">
       <AlertTriangle size={22} className="mx-auto mb-2 text-rose-600" />
-      <p className="font-inter text-sm text-rose-800">{message || t('common.error')}</p>
+      <p className="font-inter text-sm text-rose-800">{message || t('ui.error')}</p>
       {onRetry && (
         <button
           type="button"
@@ -84,15 +84,15 @@ export function EmptyState({ title, hint, icon: Icon = Inbox, action }) {
  * croire à une plateforme déserte ; cet état dit la vérité.
  */
 export function MetricUnavailable({ label, reason = 'no_tracking', compact = false }) {
-  const { t } = useTranslation('admin');
+  const { t } = useTranslation('common');
   const text = reason === 'no_data'
-    ? t('common.noDataYet')
-    : t('common.notMeasured');
+    ? t('ui.noDataYet')
+    : t('ui.notMeasured');
 
   if (compact) {
     return (
-      <span className="font-inter text-xs text-slate-400 italic" title={t('common.notMeasuredHint')}>
-        {t('common.dash')}
+      <span className="font-inter text-xs text-slate-400 italic" title={t('ui.notMeasuredHint')}>
+        {t('ui.dash')}
       </span>
     );
   }
@@ -106,7 +106,7 @@ export function MetricUnavailable({ label, reason = 'no_tracking', compact = fal
       </p>
       {reason === 'no_tracking' && (
         <p className="mt-1 font-inter text-xs text-slate-400">
-          {t('common.notTracked')}
+          {t('ui.notTracked')}
         </p>
       )}
     </div>

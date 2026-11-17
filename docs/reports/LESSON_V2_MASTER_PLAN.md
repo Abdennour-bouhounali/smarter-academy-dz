@@ -195,7 +195,7 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
 |---|---|---|
 | B1 | **Weight on a phone network.** three.js is 555 KB and the pilot's world 293 KB before compression, per lesson. One shared engine chunk, a loading screen with progress, and a measured budget per lesson | `dist/assets` |
 | B2 | **Text lives in the code.** 66 files of the pilot's areas hold Arabic sentences inline, while the platform's rule is the i18n files. Choose one rule for a pack (my advice: the lesson's own strings in its pack, the kit's strings in i18n) | count of files with Arabic literals |
-| B3 | **The entry bundle is full**: 242.7 KB of 245. The navigation rebuild and the tokens need room first | `check:entry-budget` |
+| B3 | **The entry bundle is full**: 242.7 KB of 245. The navigation rebuild and the tokens need room first. **DONE 2026-11-17: 199.2 KB, budget 212** (§4ter-0) | `check:entry-budget` |
 | B4 | **The launch kit has 2 question families** and no server side (phase 1 of 4). Every lesson needs a family per core prerequisite: about one new family per lesson | `launchkit/families.js` |
 | B5 | **« مختبري » has 8 instruments, all on division.** Each unit needs its own; the labs of the 112 old lessons are the material | `lessonlab/registry.js` |
 | B6 | **The class session is at step 2 of 4**: group formats and what the student sees at home are not built. Decide whether they enter the definition of done | `CLASS_SESSION.md` §8bis |
@@ -231,6 +231,10 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
   were found; lint is at 0, and 553 lines wait in a baseline that may only shrink (494 exports that only a test
   imports, 59 i18n keys to look at). The linter also found LaTeX that reached students broken (`'\;'` shown as « ; »):
   fixed. What a person must still look at: `docs/reports/LINT_FIRST_RUN_2026-11-17.md`.
+- **B3 — DONE (2026-11-17)**: the entry bundle went from 240.8 to **199.2 KB gzip** and its budget from 245 to **212**.
+  The strings of the admin panel and of the teacher space now load with their own space (−30.5 KB), and the shell
+  animates with the light half of framer-motion (−11.1 KB). Two tests hold it (`i18n/onDemandNamespaces.test.js`,
+  `entryGraph.test.js`). Contract and measures: `docs/architecture/BUNDLE_BOUNDARIES.md` §3, §4 rules 5 and 10, §5.
 - **D4 — DONE**: the five billing files are deleted.
 - **Phase 0 step 2 — formatter DONE**: Prettier (`.prettierrc.json`, 120 columns) with `npm run format:v2`
   and `npm run check:format` (in CI). The pilot's areas are formatted: 109 files; `features/classSession/` went from
@@ -339,7 +343,7 @@ Rules of the order:
   never the mechanic.
 - **Two experiences side by side** for months: converted lessons in v2, the rest in mission or classic. The unit page
   and the catalogue must not promise v2 where it is not built.
-- **Bundle.** Entry is 242.5 KB of a 245 KB budget. Every kit module stays behind the lesson's lazy boundary.
+- **Bundle.** Entry is 199.2 KB of a 212 KB budget (since 2026-11-17; it was 242.5 of 245). Every kit module stays behind the lesson's lazy boundary.
 - **No real student has been timed** on the pilot's full path. One timed session before lesson 5 is worth more than any
   review.
 
@@ -371,9 +375,6 @@ STEP 1 — decisions. Ask me the open decisions D3–D7 of the master plan §3 i
 recommendation. Do not ask again what is marked decided.
 
 STEP 2 — Phase 0, in the order of the plan §4. What remains (§4ter-0 says what is done):
-- the linter and a CI check for unused exports, unused imports and unused strings (web, api, core); a name
-  used after a spread `...name` IS used;
-- free room in the entry bundle (it is at about 242 of 245 KB);
 - extract the lesson kit out of `gameworld/divisorIsles/` so a lesson is DATA plus ONE world mechanic;
 - one `lesson.pack.js` per lesson and its generated index;
 - remove the pilot's id from the shared files that name it;

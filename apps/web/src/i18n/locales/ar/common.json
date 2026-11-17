@@ -193,5 +193,29 @@
   "largeScreenOnlyTitle": "محتوى الدروس يظهر فقط في شاشة الحاسوب",
   "largeScreenOnlyBody": "رجاء افتح المنصة في الحاسوب لاستفادة قصوى",
   "largeScreenOnlyBack": "العودة إلى فضائي",
-  "lessonMinutes": "{{n}} د"
+  "lessonMinutes": "{{n}} د",
+  "ui": {
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "busy": "جارٍ التنفيذ…",
+    "searchLabel": "بحث",
+    "search": "البحث…",
+    "all": "الكل",
+    "rangeOf": "{{from}}–{{to}} من {{total}}",
+    "previous": "السابق",
+    "next": "التالي",
+    "loading": "جارٍ التحميل…",
+    "retry": "إعادة المحاولة",
+    "error": "حدث خطأ أثناء تحميل البيانات.",
+    "noDataYet": "لا توجد بيانات بعد",
+    "notMeasured": "قياس غير متاح",
+    "notMeasuredHint": "هذا القياس غير مجمّع بعد.",
+    "dash": "—",
+    "notTracked": "لا يوجد تتبّع يغذّي هذا القياس بعد.",
+    "emptyTitle": "لا توجد نتائج",
+    "emptyHint": "لا يوجد ما يطابق هذه التصفية.",
+    "unselectAllPage": "إلغاء التحديد في هذه الصفحة",
+    "selectAllPage": "تحديد الكل في هذه الصفحة ({{count}})",
+    "selectRow": "تحديد {{title}}"
+  }
 }

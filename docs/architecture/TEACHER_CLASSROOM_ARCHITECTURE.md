@@ -922,6 +922,10 @@ label props so no French default reaches a teacher screen;
 `pages/teacherContract.test.js` scans `pages/teacher/**` for French defaults
 and for any billing import.
 
+Since 2026-11-17 the `teacher` namespace is loaded **on demand, together with `TeacherLayout`** (`BUNDLE_BOUNDARIES.md`
+§3). A component outside `pages/teacher/`, `features/teacher/` and `components/teacher/` that needs one of its strings
+reads it in its own component, mounted for a teacher only, and is named in `i18n/onDemandNamespaces.test.js`.
+
 Teachers may present in Classroom Mode: `'teacher'` is in
 `CLASSROOM_PRESENTER_ROLES` (`packages/core/auth.js`).
 
