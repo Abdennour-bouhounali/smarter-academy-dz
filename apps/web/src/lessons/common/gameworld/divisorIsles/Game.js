@@ -33,8 +33,8 @@ import {
   makeHoverboard,
   makeLighthouse,
 } from '../engine/builders';
-import { divide, predictOptions, bridgeStars, buildLayout, DASH_WAVES, DASH, checkDivision, STATUES } from './logic';
-import { T, waveSay, waveHint } from './strings';
+import { divide, predictOptions, bridgeStars, buildLayout, DASH, checkDivision } from './logic';
+import { T as WORLD_TEXT, waveSay, waveHint } from './strings';
 import { gatePoints, PRACTICE_HEARTS, MAX_WAVES } from '../kit/ladder';
 import { makeMission, judge, facts, answerParts, WORLD_OF, ORDER_PAY, MISTAKE_COST, CASE_HEARTS } from './cases';
 import { Depot } from './Depot';
@@ -59,10 +59,24 @@ const SKIES = [
   [0x0b1038, 0x2a3a7a, 0x9fb8ff, 1.1, 0.8, 1],
 ];
 
+/** The world's words with the story's over them, key by key (a story changes only what it tells differently). */
+function withStory(base, over) {
+  if (!over) return base;
+  const out = { ...base };
+  for (const [k, v] of Object.entries(over))
+    out[k] = v && typeof v === 'object' && !Array.isArray(v) && typeof base[k] === 'object' ? withStory(base[k], v) : v;
+  return out;
+}
+
 export class DivisorIslesGame extends WorldRuntime {
   // ───────────────────────────── what this world gives the runtime (kit/WorldRuntime.js › hooks) ─────────────────────────────
   initWorld(sv) {
-    this.layout = buildLayout();
+    // THE STORY is the lesson's: its islands and gaps, what each island holds (`feature`), what a segment is (`boss`,
+    // `storm`, `workshop`), its words, and what happens on the way (`onArrive`, `afterKey`, `onHold`…). This file is the
+    // mechanic that plays it.
+    this.story = this.lesson.story;
+    this.T = withStory(WORLD_TEXT, this.story.text);
+    this.layout = buildLayout(this.story.islands, this.story.segments);
     this.isl = this.layout.islands;
     this.segs = this.layout.segs.map((s) => ({
       ...s,
@@ -71,6 +85,9 @@ export class DivisorIslesGame extends WorldRuntime {
       complete: false,
       stat: { firstPrediction: null, falls: 0, fails: 0 },
     }));
+    this.rail = this.segs.find((seg) => seg.kind === 'rail');
+    this.bossSeg = this.segs.find((seg) => seg.boss) ?? null;
+    this.stoneAt = this.isl.findIndex((isl) => isl.feature === 'stone');
     // the student's crossing as evidence for the rule forge (every bridge fired)
     this.log = [...(sv?.log ?? [])];
   }
@@ -155,7 +172,7 @@ export class DivisorIslesGame extends WorldRuntime {
         look.copy(this.depot.camLook);
         k = 2.4;
       } else if (this.dash) {
-        const rail = this.segs[5];
+        const rail = this.rail;
         const off = this.dash.v * 0.7;
         want.set(h.pos.x - rail.dx * 7.5 - rail.rx * off, 4.6, h.pos.z - rail.dz * 7.5 - rail.rz * off);
         look.set(h.pos.x + rail.dx * 9 - rail.rx * off, 1.6, h.pos.z + rail.dz * 9 - rail.rz * off);
@@ -178,7 +195,7 @@ export class DivisorIslesGame extends WorldRuntime {
     return page === 'forge' || super.pausesWorld(page);
   }
   onStart() {
-    if (this.state.stage === 0 && !this.segs[0].complete) this.say(T.say.hello, 10);
+    if (this.state.stage === 0 && !this.segs[0].complete) this.say(this.T.say.hello, 10);
     // a forge left unfinished (the page was closed in front of a mirror) opens again: a key cannot be skipped
     const pending = this.pendingForge();
     if (pending)
@@ -200,7 +217,7 @@ export class DivisorIslesGame extends WorldRuntime {
   onFall() {
     const seg = this.segs[this.state.stage];
     if (seg && !seg.complete) seg.stat.falls += 1;
-    this.say(T.say.fall[this.state.falls % T.say.fall.length], 4);
+    this.say(this.T.say.fall[this.state.falls % this.T.say.fall.length], 4);
   }
   stepPhase(ph, dt) {
     if (ph !== 'dash' || !this.dash) return false;
@@ -246,7 +263,7 @@ export class DivisorIslesGame extends WorldRuntime {
         if (next) u.beacon.userData.animate(this.time, dt, this.activeIt === seg.altarIt);
       }
     if (this.stoneBeacon) {
-      const on = ph === 'play' && this.state.stage === 7 && !this.flags.key4;
+      const on = ph === 'play' && this.state.stage === this.stoneAt && !this.flags.key4;
       this.stoneBeacon.visible = on;
       if (on) this.stoneBeacon.userData.animate(this.time, dt, this.activeIt === this.stoneIt);
     }
@@ -256,7 +273,7 @@ export class DivisorIslesGame extends WorldRuntime {
       this.anvil.userData.spark.visible = Boolean(this.flags.anvil);
     }
     if (this.statueRing) this.statueRing.visible = !this.flags.statues;
-    if (this.board && !this.dash && !this.segs[5].complete)
+    if (this.board && !this.dash && !this.rail.complete)
       this.board.position.y = 0.35 + Math.sin(this.time * 2.4) * 0.07;
     if (this.lit) this.lighthouse.userData.beams.rotation.y += dt * 0.5;
     if (this.depot) this.depot.update(this.time);
@@ -338,8 +355,9 @@ export class DivisorIslesGame extends WorldRuntime {
       );
       this.placePedestals(isl, i, seg.moulds, local, reserved);
     }
-    if (i === 5) this.buildGuardians(isl, local, reserved);
-    if (i === 6) {
+    if (isl.feature === 'guardians') this.buildGuardians(isl, local, reserved);
+    if (this.segs[i] === this.rail) this.buildBoard(isl, i, local);
+    if (isl.feature === 'anvil') {
       const p = local(-5.2, -2.7);
       const anvil = makeAnvil();
       anvil.position.set(p.x, 0, p.z);
@@ -350,13 +368,13 @@ export class DivisorIslesGame extends WorldRuntime {
       this.addInteract(
         isl.x + p.x,
         isl.z + p.z,
-        () => (this.flags.anvil ? T.prompt.anvil : T.prompt.anvilLocked),
+        () => (this.flags.anvil ? this.T.prompt.anvil : this.T.prompt.anvilLocked),
         () => this.actAnvil(),
         2.6,
       );
     }
-    if (i === 7) {
-      // the question stone of the last harbour
+    if (isl.feature === 'stone') {
+      // the question stone of the island
       const p = local(-1.5, -3.6);
       const stone = new THREE.Group();
       const slab = new THREE.Mesh(new THREE.BoxGeometry(1.7, 2.3, 0.4), std(0x8d8d95));
@@ -374,7 +392,7 @@ export class DivisorIslesGame extends WorldRuntime {
       this.stoneIt = this.addInteract(
         isl.x + p.x,
         isl.z + p.z,
-        () => (this.state.stage === 7 && !this.flags.key4 ? T.prompt.stone : null),
+        () => (this.state.stage === this.stoneAt && !this.flags.key4 ? this.T.prompt.stone : null),
         () => this.openStone(),
         2.8,
         3.6,
@@ -474,7 +492,7 @@ export class DivisorIslesGame extends WorldRuntime {
       this.addInteract(
         rec.x,
         rec.z,
-        () => (rec.dead || this.state.held === b ? null : T.prompt.take(b)),
+        () => (rec.dead || this.state.held === b ? null : this.T.prompt.take(b)),
         () => {
           if (!rec.dead) this.take(b);
         },
@@ -508,22 +526,26 @@ export class DivisorIslesGame extends WorldRuntime {
     this.addInteract(
       isl.x + c.x,
       isl.z + c.z,
-      () => (!this.flags.statues ? T.prompt.statues : null),
+      () => (!this.flags.statues ? this.T.prompt.statues : null),
       () => this.openStatues(),
       2.4,
     );
+  }
+
+  /** The board of light waits where the rail starts. */
+  buildBoard(isl, i, local) {
     const b = local(isl.R - 2.4, 0);
     const board = makeHoverboard();
     board.position.set(isl.x + b.x, 0.35, isl.z + b.z);
     this.scene.add(board);
-    const out = this.exitDir(5);
+    const out = this.exitDir(i);
     board.rotation.y = Math.atan2(out.dx, out.dz);
     this.board = board;
     this.boardHome = board.position.clone();
     this.addInteract(
       isl.x + b.x,
       isl.z + b.z,
-      () => (this.segs[5].complete ? null : T.prompt.board),
+      () => (this.rail.complete ? null : this.T.prompt.board),
       () => this.actBoard(),
       2.2,
     );
@@ -633,7 +655,7 @@ export class DivisorIslesGame extends WorldRuntime {
       ln.quaternion.copy(q);
       g.add(ln);
     }
-    seg.gates = DASH_WAVES.map((w, k) => {
+    seg.gates = this.story.dashWaves.map((w, k) => {
       const u = DASH.first + k * DASH.gap;
       const arches = DASH.lanes.map((v) => {
         const a = new THREE.Group();
@@ -676,14 +698,13 @@ export class DivisorIslesGame extends WorldRuntime {
     this.segs.forEach((seg, i) => {
       if (i >= stage) return;
       if (seg.kind === 'bridge') {
-        const b = { s15: 3, s16: 4, s42: 6, s48: 8, s120: 6, s7: 7, s756: 36 }[seg.id];
-        this.layPlanksInstant(seg, b);
+        this.layPlanksInstant(seg, seg.holdsWith);
       }
       this.markComplete(seg, true);
     });
     if (this.flags.storm) this.swapStormPedestals();
-    if (this.flags.statues) this.statues.forEach((s) => s.userData.lit(true));
-    if (this.segs[5].complete) this.board.position.copy(this.segPoint(this.segs[5], this.segs[5].len - 3, 0, 0.35));
+    if (this.flags.statues) this.statues?.forEach((s) => s.userData.lit(true));
+    if (this.rail.complete) this.board.position.copy(this.segPoint(this.rail, this.rail.len - 3, 0, 0.35));
     if (this.state.finished) this.lightUp(true);
     this.skyNow = SKIES[Math.min(this.state.finished ? 8 : stage, 8)].slice();
     this.refreshObjective();
@@ -701,15 +722,15 @@ export class DivisorIslesGame extends WorldRuntime {
     this.set({ held: b });
     if (b != null && this.state.stage === 0 && !this.segs[0].complete && !this.toldAltar) {
       this.toldAltar = true;
-      this.say(T.say.goAltar, 9);
+      this.say(this.T.say.goAltar, 9);
     }
   }
 
   altarPrompt(seg) {
     // the store of the last bridge opens only once the island's question is answered: never a prompt that does nothing
-    if (seg.boss) return !this.flags.key4 || (seg.complete && this.flags.bossPaid) ? null : T.prompt.boss;
-    if (this.state.held == null) return seg.complete ? null : T.prompt.needMould;
-    return T.prompt.forge(this.state.held);
+    if (seg.boss) return !this.flags.key4 || (seg.complete && this.flags.bossPaid) ? null : this.T.prompt.boss;
+    if (this.state.held == null) return seg.complete ? null : this.T.prompt.needMould;
+    return this.T.prompt.forge(this.state.held);
   }
 
   actAltar(seg) {
@@ -720,7 +741,7 @@ export class DivisorIslesGame extends WorldRuntime {
       return;
     }
     if (this.state.held == null) {
-      this.say(seg.complete ? T.say.done : T.prompt.needMould, 3);
+      this.say(seg.complete ? this.T.say.done : this.T.prompt.needMould, 3);
       return;
     }
     const b = this.state.held;
@@ -947,7 +968,7 @@ export class DivisorIslesGame extends WorldRuntime {
       this.robot.cheer();
       for (let k = 0; k <= 8; k += 1)
         this.particles.burst(this.segPoint(seg, (seg.len * k) / 8, 0, 0.4), 0x8dffb0, 10, 3, 3, 1.1);
-      if (seg.id === 's48' && !this.flags.storm && b === 6) {
+      if (seg.storm && !this.flags.storm && b === seg.storm.after) {
         await this.storm(seg);
         return;
       }
@@ -980,7 +1001,7 @@ export class DivisorIslesGame extends WorldRuntime {
     this.cine = null;
     if (seg.boss) {
       this.set({ phase: 'dialog', overlay: this.bossOverlay('cost', { b, q }) });
-      this.say(T.say.bossOk, 7);
+      this.say(this.T.say.bossOk, 7);
       return;
     }
     if (!this.state.stars[seg.id]) {
@@ -992,29 +1013,27 @@ export class DivisorIslesGame extends WorldRuntime {
       for (let k = 0; k < stars; k += 1) setTimeout(() => this.audio.play('star', k), 200 + k * 220);
     }
     this.set({ phase: 'play' });
-    if (seg.id === 's15') this.say(T.say.first);
-    else if (seg.id === 's48') this.say(T.say.stormOk, 7);
-    else this.say(T.say.ok(b, q));
+    if (!this.story.onHold?.(this, seg, b, q)) this.say(this.T.say.ok(b, q));
     this.save();
   }
 
   afterFail(seg, b, q, r, right = null) {
     if (seg.boss) {
       this.flags.bossTried = { ...(this.flags.bossTried ?? {}), [b]: r };
-      this.say(T.say.bossFail(b, r), 8);
+      this.say(this.T.say.bossFail(b, r), 8);
       this.set({ phase: 'dialog', overlay: this.bossOverlay('choose') });
       this.save();
       return;
     }
-    if (q === 0) this.say(T.say.tooLong(b, seg.a), 7);
-    else if (right === true) this.say(T.say.gapRight(r), 8);
-    else if (seg.stat.fails === 1) this.say(T.say.gap(r), 7);
-    else this.say(T.say.gapShort(r), 5);
-    if (seg.id === 's7' && seg.stat.fails >= 2 && !this.flags.anvil) {
+    if (q === 0) this.say(this.T.say.tooLong(b, seg.a), 7);
+    else if (right === true) this.say(this.T.say.gapRight(r), 8);
+    else if (seg.stat.fails === 1) this.say(this.T.say.gap(r), 7);
+    else this.say(this.T.say.gapShort(r), 5);
+    if (seg.workshop && seg.stat.fails >= 2 && !this.flags.anvil) {
       this.flags.anvil = true;
       this.audio.play('key');
       this.particles.burst(this.anvil.getWorldPosition(new THREE.Vector3()).setY(1.5), 0xff9d3c, 40, 4, 4, 1.2);
-      setTimeout(() => !this.dead && this.say(T.say.anvilOpen, 9), 2600);
+      setTimeout(() => !this.dead && this.say(this.T.say.anvilOpen, 9), 2600);
       this.save();
     }
   }
@@ -1022,7 +1041,7 @@ export class DivisorIslesGame extends WorldRuntime {
   /** Island « المرايا »: the bridge of 48 held with 6 (8 planks); a gust takes it away and leaves moulds 5, 7, 8, 9. */
   async storm(seg) {
     await this.wait(2.0);
-    this.say(T.say.storm, 8);
+    this.say(this.T.say.storm, 8);
     this.shake = 0.6;
     await this.crumble(seg, true);
     this.flags.storm = true;
@@ -1030,14 +1049,14 @@ export class DivisorIslesGame extends WorldRuntime {
     this.swapStormPedestals();
     this.robot.setChest('•');
     this.cine = null;
-    this.set({ phase: 'play', pinned: '48 = 6 \\times 8', equation: null, verdict: null });
+    this.set({ phase: 'play', pinned: seg.storm.pinned, equation: null, verdict: null });
     this.refreshObjective();
-    setTimeout(() => !this.dead && this.say(T.say.stormHint, 8), 4200);
+    setTimeout(() => !this.dead && this.say(this.T.say.stormHint, 8), 4200);
     this.save();
   }
 
   swapStormPedestals() {
-    const i = 3;
+    const i = this.segs.findIndex((seg) => seg.storm);
     const isl = this.isl[i];
     const out = this.exitDir(i);
     const local = (u, v) => ({ x: out.dx * u + out.rx * v, z: out.dz * u + out.rz * v });
@@ -1045,23 +1064,24 @@ export class DivisorIslesGame extends WorldRuntime {
       const k = this.colliders.indexOf(p.col);
       if (k >= 0) this.colliders.splice(k, 1);
     });
-    this.placePedestals(isl, i, this.segs[i].mouldsAfterStorm, local, null);
-    if (!this.segs[i].complete && this.state.stage === 3) this.state = { ...this.state, pinned: '48 = 6 \\times 8' };
+    this.placePedestals(isl, i, this.segs[i].storm.moulds, local, null);
+    if (!this.segs[i].complete && this.state.stage === i)
+      this.state = { ...this.state, pinned: this.segs[i].storm.pinned };
   }
 
   // ───────────────────────────── scripted moments ─────────────────────────────
   refreshObjective() {
     const i = this.state.stage;
     const seg = this.segs[i];
-    let o = T.objective.end;
+    let o = this.T.objective.end;
     if (seg) {
-      if (i === 7 && !this.flags.key4) o = T.objective.stone;
-      else if (seg.boss) o = seg.complete && this.flags.bossPaid ? T.objective.bossCross : T.objective.bossGo;
-      else if (seg.complete) o = T.objective.cross;
-      else if (seg.kind === 'rail') o = this.flags.statues ? T.objective.board : T.objective.statues;
-      else if (seg.id === 's48' && this.flags.storm) o = T.objective.storm;
-      else if (seg.id === 's7') o = T.objective.stubborn;
-      else o = T.objective.bridge(seg.a);
+      const told = this.story.objective?.(this, seg, i);
+      if (told) o = told;
+      else if (i === this.stoneAt && !this.flags.key4) o = this.T.objective.stone;
+      else if (seg.boss) o = seg.complete && this.flags.bossPaid ? this.T.objective.bossCross : this.T.objective.bossGo;
+      else if (seg.complete) o = this.T.objective.cross;
+      else if (seg.kind === 'rail') o = this.boardReady() ? this.T.objective.board : this.T.objective.statues;
+      else o = this.T.objective.bridge(seg.a);
     }
     if (this.state.objective !== o) this.set({ objective: o });
   }
@@ -1070,37 +1090,25 @@ export class DivisorIslesGame extends WorldRuntime {
     this.set({ stage: k, islandName: this.isl[k].name, equation: null, pinned: null, verdict: null });
     this.robot.setChest('•');
     this.audio.mood = Math.min(1, k / 8);
-    if (this.state.held != null && k !== 1) this.take(null);
+    if (this.state.held != null && !this.isl[k].keepMould) this.take(null);
     this.refreshObjective();
     this.save();
-    if (k === 1) this.say(T.say.carry3, 7);
-    if (k === 2) this.say(T.say.c42, 8);
-    // no rule is told: the student forges each of them in the mirror of an island (kit/RuleForge, the lesson's forges)
-    if (k === 3) this.openForge('qasim-baqi');
-    if (k === 4) this.openForge('qasim-jidaa');
-    if (k === 5) this.say(T.say.f, 9);
-    if (k === 6) {
-      this.onModule('3');
-      this.say(T.say.g7, 7);
-    }
-    if (k === 7) {
-      this.say(T.say.h, 6);
-      // on the GAME's clock, not the wall's: the world may be paused behind a page, or fast-forwarded by a walk
-      this.wait(1.5).then(() => !this.dead && this.state.phase === 'play' && this.openStone());
-    }
-    if (k === 8) this.finale();
+    // what the story does on this island: a sentence, a forge (no rule is told), a module marked, the stone…
+    this.story.onArrive?.(this, k);
+    if (k === this.isl.length - 1) this.finale();
   }
 
   openStone() {
     if (this.flags.key4 || this.state.phase !== 'play') return;
-    // once the gap of 7 is understood, the stone shows its mirror: the last key is forged there
-    if (this.flags.seven) this.openForge('wahid-wa-nafsuh');
-    else this.set({ phase: 'dialog', overlay: { type: 'quiz', id: 'seven', closable: true } });
+    // the story says what the stone shows now: its question, or the mirror where the last key is forged
+    const next = this.story.onStone(this);
+    if (next.forge) this.openForge(next.forge);
+    else this.set({ phase: 'dialog', overlay: { type: 'quiz', id: next.quiz, closable: true } });
   }
 
   /** Called by the HUD with the chosen values; returns { ok, feedback }. */
   answerQuiz(id, picked) {
-    const spec = T.quiz[id];
+    const spec = this.T.quiz[id];
     const ok = picked.length === spec.answer.length && spec.answer.every((v) => picked.includes(v));
     if (!ok) {
       this.audio.play('fail');
@@ -1110,11 +1118,7 @@ export class DivisorIslesGame extends WorldRuntime {
       return { ok: false, marks, missing: spec.answer.filter((v) => !picked.includes(v)).length };
     }
     this.audio.play('success');
-    if (id === 'seven') {
-      this.flags.seven = true;
-      this.save();
-      this.openForge('wahid-wa-nafsuh');
-    }
+    this.story.onQuiz?.(this, id);
     return { ok: true };
   }
 
@@ -1146,40 +1150,16 @@ export class DivisorIslesGame extends WorldRuntime {
   }
   /** The forge the story is waiting for, when the page was closed in front of its mirror (the last one waits at its stone). */
   pendingForge() {
-    const missing = (key) => !this.state.keys.includes(key);
-    if (this.state.stage === 3 && missing('qasim-baqi')) return 'qasim-baqi';
-    if (this.state.stage === 4 && missing('qasim-jidaa')) return 'qasim-jidaa';
-    if (this.flags.statues && missing('siyagh-mutakafia')) return 'siyagh-mutakafia';
-    return null;
+    return this.story.pendingForge?.(this) ?? null;
   }
   /** The rule survived the mirror: it is kept as HIS rule, the tablet then gives it its name, and the story goes on. */
   sealRule(key, record) {
     this.rules = { ...this.rules, [key]: record };
     this.audio.play('key');
     this.set({ rules: this.rules, overlay: { type: 'tablet', key } });
-    this.queue.push(() => this.afterKey[key]?.());
+    this.queue.push(() => this.story.afterKey?.[key]?.(this));
     this.save();
   }
-  /** What the story does once the tablet of a key is closed. */
-  afterKey = {
-    'qasim-baqi': () => {
-      this.onModule('1');
-      this.say(T.say.d48, 7);
-    },
-    'qasim-jidaa': () => this.say(T.say.e120, 7),
-    'siyagh-mutakafia': () => {
-      this.refreshObjective();
-      this.say(T.say.boardReady, 7);
-      this.save();
-    },
-    'wahid-wa-nafsuh': () => {
-      this.flags.key4 = true;
-      this.onModule('2');
-      this.refreshObjective();
-      this.say(T.say.boss, 9);
-      this.save();
-    },
-  };
 
   closeTablet() {
     const key = this.state.overlay?.key;
@@ -1194,7 +1174,7 @@ export class DivisorIslesGame extends WorldRuntime {
 
   quizBack() {
     this.set({ overlay: null, phase: 'play' });
-    this.say(T.say.stoneWaits, 7);
+    this.say(this.T.say.stoneWaits, 7);
     this.input.clear();
   }
 
@@ -1207,7 +1187,7 @@ export class DivisorIslesGame extends WorldRuntime {
 
   /** `order[i]` = true when sentence i is written divisor first (6 … 120). Returns the per-sentence verdicts. */
   submitStatues(order) {
-    const res = STATUES.sentences.map((s, i) => order[i] === s.smallFirst);
+    const res = this.story.statues.sentences.map((s, i) => order[i] === s.smallFirst);
     if (res.every(Boolean)) {
       this.flags.statues = true;
       this.statues.forEach((s, i) =>
@@ -1220,8 +1200,8 @@ export class DivisorIslesGame extends WorldRuntime {
       );
       this.audio.play('success');
       this.save();
-      // the four sentences are right: the guardians' mirror now asks him WHY — which number comes first, in each phrasing
-      this.openForge('siyagh-mutakafia');
+      // the four sentences are right: the story goes on (a mirror that asks him WHY, a tablet…)
+      this.story.onStatues?.(this);
     } else this.audio.play('fail');
     return res;
   }
@@ -1229,17 +1209,18 @@ export class DivisorIslesGame extends WorldRuntime {
   actAnvil() {
     if (this.state.phase !== 'play') return;
     if (!this.flags.anvil) {
-      this.say(T.prompt.anvilLocked, 3);
+      this.say(this.T.prompt.anvilLocked, 3);
       return;
     }
     this.audio.play('ui');
-    this.set({ phase: 'dialog', overlay: { type: 'workshop', a: 7, ...this.segs[6].workshop } });
+    const seg = this.segs.find((x) => x.workshop);
+    this.set({ phase: 'dialog', overlay: { type: 'workshop', a: seg.a, ...seg.workshop } });
   }
 
   craft(b) {
     this.set({ overlay: null, phase: 'play' });
     this.take(b);
-    this.say(T.say.crafted(b), 4);
+    this.say(this.T.say.crafted(b), 4);
     this.input.clear();
   }
 
@@ -1250,11 +1231,13 @@ export class DivisorIslesGame extends WorldRuntime {
   }
 
   openBoss() {
-    const seg = this.segs[7];
+    const seg = this.bossSeg;
     this.audio.play('ui');
     this.set({
       phase: 'dialog',
-      overlay: seg.complete ? this.bossOverlay('cost', { b: 36, q: 21 }) : this.bossOverlay('choose'),
+      overlay: seg.complete
+        ? this.bossOverlay('cost', { b: seg.holdsWith, q: seg.a / seg.holdsWith })
+        : this.bossOverlay('choose'),
     });
   }
 
@@ -1267,33 +1250,33 @@ export class DivisorIslesGame extends WorldRuntime {
   }
 
   bossDivision(b, q, r) {
-    const status = checkDivision(756, b, q, r);
+    const status = checkDivision(this.bossSeg.a, b, q, r);
     if (status !== 'ok') {
       this.flags.bossWrong = (this.flags.bossWrong ?? 0) + 1;
       this.audio.play('fail');
       return status;
     }
-    this.forge(this.segs[7], b, null);
+    this.forge(this.bossSeg, b, null);
     return 'ok';
   }
 
   bossCost(n) {
-    if (n !== 21 * 1850) {
+    if (n !== (this.bossSeg.a / this.bossSeg.holdsWith) * this.bossSeg.boss.price) {
       this.flags.bossWrong = (this.flags.bossWrong ?? 0) + 1;
       this.audio.play('fail');
       return false;
     }
     this.flags.bossPaid = true;
     this.audio.play('key');
-    const seg = this.segs[7];
+    const seg = this.bossSeg;
     const stars = Math.max(1, 3 - (this.flags.bossWrong ?? 0));
     this.set({
       overlay: null,
       phase: 'play',
       stars: { ...this.state.stars, [seg.id]: Math.max(stars, this.state.stars[seg.id] ?? 0) },
     });
-    this.onModule('4');
-    this.say(T.say.pay, 6);
+    this.story.onBossPaid?.(this);
+    this.say(this.T.say.pay, 6);
     this.refreshObjective();
     this.save();
     this.input.clear();
@@ -1303,23 +1286,27 @@ export class DivisorIslesGame extends WorldRuntime {
   // ───────────────────────────── the gate dash (story) and the practice runs ─────────────────────────────
   actBoard() {
     if (this.state.phase !== 'play') return;
-    if (!this.flags.statues) {
-      this.say(T.say.statuesFirst, 4);
+    if (!this.boardReady()) {
+      this.say(this.T.say.statuesFirst, 4);
       return;
     }
     this.startDash(0);
   }
+  /** The board of light moves once the island's guardians are awake — at once on an island that has none. */
+  boardReady() {
+    return !this.statues || Boolean(this.flags.statues);
+  }
 
   /** The story's eight waves, in the run format: { say, gates, good }. */
   storyWaves() {
-    return DASH_WAVES.map((w) => {
+    return this.story.dashWaves.map((w) => {
       const gates = w.gates.slice().sort(() => Math.random() - 0.5);
       return { say: w.say, gates, good: gates.findIndex(w.test) };
     });
   }
 
   dressGate(k) {
-    const g = this.segs[5].gates[k];
+    const g = this.rail.gates[k];
     const w = this.dash?.waves[k];
     g.arches.forEach((ar, lane) => {
       ar.group.visible = Boolean(w);
@@ -1347,7 +1334,7 @@ export class DivisorIslesGame extends WorldRuntime {
       mistakes: 0,
       ...d,
     };
-    this.segs[5].gates.forEach((_, k) => this.dressGate(k));
+    this.rail.gates.forEach((_, k) => this.dressGate(k));
     this.input.clear();
     if (this.state.held != null) this.take(null);
     this.audio.fast = true;
@@ -1357,11 +1344,11 @@ export class DivisorIslesGame extends WorldRuntime {
 
   startDash(restarts) {
     this.beginRun({ mode: 'story', waves: this.storyWaves(), hearts: DASH.hearts, restarts });
-    this.say(restarts ? T.say.dashAgain : T.say.dashGo, 5);
+    this.say(restarts ? this.T.say.dashAgain : this.T.say.dashGo, 5);
   }
 
   showWave() {
-    const seg = this.segs[5];
+    const seg = this.rail;
     const d = this.dash;
     seg.gates.forEach((g, k) =>
       g.arches.forEach((ar) => {
@@ -1388,7 +1375,7 @@ export class DivisorIslesGame extends WorldRuntime {
   }
 
   updateDash(dt) {
-    const seg = this.segs[5];
+    const seg = this.rail;
     const d = this.dash;
     const practice = d.mode === 'practice';
     let move = 0;
@@ -1456,7 +1443,7 @@ export class DivisorIslesGame extends WorldRuntime {
         this.audio.play('hit');
         this.particles.burst(p.clone().setY(1.2), 0xff6b81, 30, 5, 2, 0.8);
         if (!practice) {
-          this.say(T.say.dashHit, 3);
+          this.say(this.T.say.dashHit, 3);
           if (d.hearts <= 0) {
             this.startDash(d.restarts + 1);
             return;
@@ -1489,7 +1476,7 @@ export class DivisorIslesGame extends WorldRuntime {
   }
 
   async finishDash() {
-    const seg = this.segs[5];
+    const seg = this.rail;
     const d = this.dash;
     this.dash = null;
     this.audio.fast = false;
@@ -1569,7 +1556,7 @@ export class DivisorIslesGame extends WorldRuntime {
       h.grounded = true;
       if (r.held != null && this.state.held == null) this.take(r.held);
     }
-    const rail = this.segs[5];
+    const rail = this.rail;
     if (rail.complete) this.board.position.copy(this.segPoint(rail, rail.len - 3, 0, 0.35));
     else this.board.position.copy(this.boardHome);
     this.board.rotation.z = 0;
@@ -1926,7 +1913,7 @@ export class DivisorIslesGame extends WorldRuntime {
       this.audio.play('finale');
       this.robot.cheer();
       this.particles.burst(this.lighthouseWorld.clone().setY(13), 0xfff1a8, 120, 9, 5, 2);
-      this.say(T.say.end, 8);
+      this.say(this.T.say.end, 8);
     }
     await this.wait(again ? 0.5 : 4.2);
     if (this.dead) return;

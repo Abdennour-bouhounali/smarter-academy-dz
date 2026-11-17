@@ -41,7 +41,7 @@ describe('أرخبيل القواسم — logic', () => {
     expect(fits(by.s15, by.s15.moulds)).toEqual([3]);
     expect(fits(by.s16, [3, ...by.s16.moulds])).toEqual([2, 4]); // the carried 3 fails first
     expect(fits(by.s42, by.s42.moulds)).toEqual([6, 7]); // 4 is even and fails: the « even » idea dies here
-    expect(fits(by.s48, by.s48.mouldsAfterStorm)).toEqual([8]); // 48 = 6 × 8: the quotient is the only one
+    expect(fits(by.s48, by.s48.storm.moulds)).toEqual([8]); // 48 = 6 × 8: the quotient is the only one
     expect(fits(by.s120, by.s120.moulds)).toEqual([6, 20]);
     expect(fits(by.s7, by.s7.moulds)).toEqual([]); // nothing on the pedestals: 1 and 7 come from the workshop
     expect([1, 2, 3, 4, 5, 6, 7, 8, 9].filter((b) => isDivisor(7, b))).toEqual([1, 7]);

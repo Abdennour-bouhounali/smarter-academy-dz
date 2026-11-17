@@ -37,29 +37,50 @@ export function bridgeStars({ firstPrediction, falls }) {
 /** The islands (name, radius, palette) and the segments between them. `turn` = heading change (radians) when leaving the island. */
 export const ISLANDS = [
   { id: 'A', name: 'مرسى البداية', R: 8, theme: 'meadow', turn: 0 },
-  { id: 'B', name: 'جزيرة الرياح', R: 8, theme: 'meadow', turn: 0.38 },
+  { id: 'B', name: 'جزيرة الرياح', R: 8, theme: 'meadow', turn: 0.38, keepMould: true },
   { id: 'C', name: 'جزيرة الاختيار', R: 9, theme: 'pine', turn: -0.55 },
   { id: 'D', name: 'جزيرة المرايا', R: 9, theme: 'crystal', turn: 0.42 },
   { id: 'E', name: 'جزيرة الجداء', R: 9, theme: 'crystal', turn: -0.3 },
-  { id: 'F', name: 'جزيرة الحرّاس', R: 10.5, theme: 'stone', turn: 0.2 },
-  { id: 'G', name: 'الجزيرة العنيدة', R: 9, theme: 'autumn', turn: -0.42 },
-  { id: 'H', name: 'المرفأ الأخير', R: 8.5, theme: 'autumn', turn: 0.3 },
+  { id: 'F', name: 'جزيرة الحرّاس', R: 10.5, theme: 'stone', turn: 0.2, feature: 'guardians' },
+  { id: 'G', name: 'الجزيرة العنيدة', R: 9, theme: 'autumn', turn: -0.42, feature: 'anvil' },
+  { id: 'H', name: 'المرفأ الأخير', R: 8.5, theme: 'autumn', turn: 0.3, feature: 'stone' },
   { id: 'I', name: 'منارة المكتبة', R: 12, theme: 'snow', turn: 0 },
 ];
 
 /**
  * The eight segments. `a` = length of the gap in cells, `len` = its length in world units, `moulds` = plank lengths on the
- * island's pedestals, `predict` = the student announces the remainder before the forge.
+ * island's pedestals, `predict` = the student announces the remainder before the forge, `holdsWith` = the plank a
+ * restored bridge is rebuilt with. A segment may be the `boss` (the store of the last bridge), have a `workshop` (any
+ * length can be made) or a `storm` (after it holds with `after`, the wind takes it and leaves other `moulds`).
+ * An island may `keepMould` on arrival and hold a `feature`: 'guardians', 'anvil' or 'stone'.
  */
 export const SEGMENTS = [
-  { id: 's15', kind: 'bridge', a: 15, len: 10.5, moulds: [3], predict: false },
-  { id: 's16', kind: 'bridge', a: 16, len: 11.2, moulds: [2, 4, 5], predict: true },
-  { id: 's42', kind: 'bridge', a: 42, len: 16.8, moulds: [4, 5, 6, 7], predict: true },
-  { id: 's48', kind: 'bridge', a: 48, len: 18.2, moulds: [6], mouldsAfterStorm: [5, 7, 8, 9], predict: true },
-  { id: 's120', kind: 'bridge', a: 120, len: 24, moulds: [6, 9, 20], predict: true },
+  { id: 's15', kind: 'bridge', a: 15, len: 10.5, moulds: [3], predict: false, holdsWith: 3 },
+  { id: 's16', kind: 'bridge', a: 16, len: 11.2, moulds: [2, 4, 5], predict: true, holdsWith: 4 },
+  { id: 's42', kind: 'bridge', a: 42, len: 16.8, moulds: [4, 5, 6, 7], predict: true, holdsWith: 6 },
+  {
+    id: 's48',
+    kind: 'bridge',
+    a: 48,
+    len: 18.2,
+    moulds: [6],
+    predict: true,
+    holdsWith: 8,
+    storm: { after: 6, moulds: [5, 7, 8, 9], pinned: '48 = 6 \\times 8' },
+  },
+  { id: 's120', kind: 'bridge', a: 120, len: 24, moulds: [6, 9, 20], predict: true, holdsWith: 6 },
   { id: 'dash', kind: 'rail', len: 300 },
-  { id: 's7', kind: 'bridge', a: 7, len: 8.4, moulds: [2, 3, 4, 5, 6], predict: true, workshop: { min: 1, max: 9 } },
-  { id: 's756', kind: 'bridge', a: 756, len: 30, moulds: [], boss: { options: [32, 36], price: 1850 } },
+  {
+    id: 's7',
+    kind: 'bridge',
+    a: 7,
+    len: 8.4,
+    moulds: [2, 3, 4, 5, 6],
+    predict: true,
+    holdsWith: 7,
+    workshop: { min: 1, max: 9 },
+  },
+  { id: 's756', kind: 'bridge', a: 756, len: 30, moulds: [], holdsWith: 36, boss: { options: [32, 36], price: 1850 } },
 ];
 
 /** The gate dash: one sentence, three gates, exactly one right. `kind` names which of the four phrasings is used. */
@@ -121,5 +142,3 @@ export function checkDivision(a, b, q, r) {
   if (r >= b) return 'big';
   return 'ok';
 }
-
-export const MAX_STARS = SEGMENTS.length * 3;

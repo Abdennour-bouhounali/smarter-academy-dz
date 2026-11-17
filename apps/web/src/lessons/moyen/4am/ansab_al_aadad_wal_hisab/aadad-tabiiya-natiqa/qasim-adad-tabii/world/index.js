@@ -10,6 +10,7 @@ import { KEYS, journey } from './journey';
 import { KNOWLEDGE } from './knowledge';
 import { ladder, PRACTICE_MAP } from './practice';
 import { sittings } from './sitting';
+import { STORY } from './story';
 import { TEXT } from './text';
 import { trainer } from './trainer';
 
@@ -24,6 +25,8 @@ export const lesson = {
     if (has(2)) return [...KEYS];
     return has(1) ? [KEYS[0]] : [];
   },
+  /** The story the world plays: its islands and gaps, and what happens on the way. */
+  story: STORY,
   /** The forge of each rule: what the student predicts, the tiles of his rule, how the mirror tests and attacks it. */
   forges: FORGES,
   ladder,

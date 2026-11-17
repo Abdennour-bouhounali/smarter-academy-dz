@@ -460,8 +460,14 @@ eleven screens. What is NOT extracted, and why:
   `styles/world.css` (the dash, the question stone, the store of the last bridge) are the pilot's world, and every
   class is still named `di-…`. Moving them to the world would change the cascade (the later sheets override them):
   it is done when a second world exists to prove what is shared;
-- **the world's story** is written for THIS lesson (which island does what): a second lesson in the same world will
-  show what must become data (plan §9, step 3: the gate);
+- **the story is the lesson's since 2026-11-17** (`lesson.story`, the pilot's `world/story.js`): its islands and gaps
+  (an island may `keepMould` and hold a `feature`: `guardians`, `anvil`, `stone`; a segment may be the `boss`, have a
+  `workshop` or a `storm`, and names the plank it `holdsWith`), the guardians' fact, the waves of the dash, its own
+  words (`text`, laid over the world's) and what happens on the way — `onArrive`, `afterKey`, `pendingForge`, `onHold`,
+  `objective`, `onStatues`, `onStone`, `onQuiz`, `onBossPaid`: functions that receive the game and use its commands.
+  `Game.js` names no island by its number and no key any more. STILL the pilot's inside the world: its story DATA
+  (`logic.js › ISLANDS, SEGMENTS, DASH_WAVES, STATUES`) and its story WORDS (`strings.js`: the robot's sentences, the
+  stone's question, the store, the tablets) — a second lesson gives its own and overrides them;
 - **the title screen still links to the classic mission player** (`classicHref`): decision D3 retires it per lesson.
 A lesson declares its content in ONE `lesson.pack.js` (`LESSON_V2.md` §1, 2026-11-17); what its world is played with is
 `world/index.js`, named there (`world.content`). The world receives it as the `lesson` prop.

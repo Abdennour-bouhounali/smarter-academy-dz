@@ -4,11 +4,10 @@
  * forge, the statues, the workshop, the store of the last bridge, the guidance after a mistake).
  * The title screen, the top bar, the hub, the tablets, the result and the end are the kit's.
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { X, ArrowLeft, ArrowRight, Star, Heart, Lightbulb, Flame, Truck, Coins } from 'lucide-react';
 import MathText from '../../components/MathText';
 import { DivisorIslesGame } from './Game';
-import { STATUES, MAX_STARS } from './logic';
 import { T, planks, waveSay, explain } from './strings';
 
 import { answerOf, simUnit } from './cases';
@@ -151,6 +150,7 @@ function Predict({ o, game }) {
 }
 
 function Quiz({ o, game }) {
+  const T = game.T;
   const spec = T.quiz[o.id];
   const [picked, setPicked] = useState([]);
   const [fb, setFb] = useState(null);
@@ -567,6 +567,8 @@ function CaseGuide({ o, game }) {
 }
 
 function Statues({ game }) {
+  const T = game.T;
+  const STATUES = game.story.statues;
   // every sentence starts written the wrong way round
   const [order, setOrder] = useState(() => STATUES.sentences.map((x) => !x.smallFirst));
   const [res, setRes] = useState(null);
@@ -620,6 +622,7 @@ function Statues({ game }) {
 }
 
 function Workshop({ o, game }) {
+  const T = game.T;
   const [b, setB] = useState(1 + Math.floor((o.max - o.min) / 2));
   return (
     <Card>
@@ -656,6 +659,7 @@ function Workshop({ o, game }) {
  * watch the world build it, pay. A mould already tried shows what it left.
  */
 function Boss({ o, game }) {
+  const T = game.T;
   const [q, setQ] = useState('');
   const [r, setR] = useState('');
   const [cost, setCost] = useState('');
@@ -836,14 +840,6 @@ function Hud({ s }) {
 const WORLD = {
   id: 'divisor-isles',
   Game: DivisorIslesGame,
-  stages: 9,
-  maxStars: MAX_STARS,
-  text: {
-    title: T.title,
-    subtitle: T.subtitle,
-    turn: T.turn.body,
-    end: { title: T.end.title, text: T.end.text, stay: T.end.stay },
-  },
   devHandles: { __cases: { answerOf } },
   playing: (s) => (s.phase === 'play' || s.phase === 'forge' || s.phase === 'dialog') && !s.dash && !s.depot,
   busy: (s) => Boolean(s.dash || s.depot),
@@ -891,6 +887,23 @@ const WORLD = {
 };
 
 /** The world names no lesson: `LessonGameWorld` hands it the content of the lesson being played (its pack). */
+/** What the shell needs to know of the STORY being played: how many islands, how many stars, its title and its end. */
+function worldOf(lesson) {
+  const { islands, segments, text = {} } = lesson.story;
+  return {
+    ...WORLD,
+    stages: islands.length,
+    maxStars: segments.length * 3,
+    text: {
+      title: text.title ?? T.title,
+      subtitle: text.subtitle ?? T.subtitle,
+      turn: T.turn.body,
+      end: { ...T.end, ...text.end },
+    },
+  };
+}
+
 export default function DivisorIsles({ lesson, ...props }) {
-  return <LessonWorld world={WORLD} lesson={lesson} {...props} />;
+  const world = useMemo(() => worldOf(lesson), [lesson]);
+  return <LessonWorld world={world} lesson={lesson} {...props} />;
 }
