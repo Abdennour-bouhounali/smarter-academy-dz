@@ -1,5 +1,5 @@
 /**
- * « أرخبيل القواسم » — PURE logic of the game world of lesson `qasim-adad-tabii` (no three.js, no React).
+ * « أرخبيل القواسم » — PURE logic of the game world (no three.js, no React). It names no lesson: the content comes from the pack.
  * The world is a chain of floating islands; a bridge of length `a` holds only when planks of ONE length `b` fill it exactly:
  * a = b × q + r, and the bridge holds ⇔ r = 0 ⇔ b is a divisor of a. Everything the scene shows is computed here.
  */

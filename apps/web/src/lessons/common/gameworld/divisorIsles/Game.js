@@ -1,5 +1,5 @@
 /**
- * « أرخبيل القواسم » — the game world of lesson `qasim-adad-tabii` (student only).
+ * « أرخبيل القواسم » — a game world (student only), played with the content of the lesson that names it in its pack.
  *
  * A chain of floating islands. Between two islands a gap of `a` cells; the student carries a mould of length `b` and fires
  * planks of that length: the scene lays q planks and shows the r cells left (a = b × q + r). The bridge HOLDS only when r = 0,

@@ -1,5 +1,5 @@
 /**
- * LE FIL DE MISSION (pilote 2026-11-04, leçon qasim-adad-tabii) — LESSON_DEVELOPMENT_GUIDE « Le mode mission ».
+ * LE FIL DE MISSION (pilote 2026-11-04) — LESSON_DEVELOPMENT_GUIDE « Le mode mission ».
  * Logique PURE, sans React : qui voit la mission, quels outils sont gagnés, quel point d'étape attend, l'état local.
  *
  * Une leçon l'active par `studentView: 'mission'` et décrit sa mission dans `LESSON_CONFIG.mission` :

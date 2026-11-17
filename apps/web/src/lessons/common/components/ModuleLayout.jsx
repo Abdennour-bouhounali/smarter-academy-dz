@@ -28,7 +28,7 @@ import { useDeclarePageTour } from '../../../features/tours/PageTourProvider';
  * ModuleLayout — shared layout wrapper for every lesson module.
  *
  * Props:
- *   coursePath    — base URL of the lesson (e.g. /courses/moyen/4am/ansab_al_aadad_wal_hisab/qasim-adad-tabii)
+ *   coursePath    — base URL of the lesson (e.g. /courses/moyen/4am/<chapter>/<lesson>)
  *   courseTitle   — lesson title for breadcrumb
  *   unitTitle     — الوحدة, the textbook unit (a GROUP OF LESSONS) shown first
  *                   in the breadcrumb « الوحدة / الدرس / المحور »

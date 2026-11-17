@@ -288,7 +288,13 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
      the content to the world). NOT in the pack, with the reason (`LESSON_V2.md` §1): the lab's `TOOLS`, the launch
      kit's `families.js`, `exam-style.json`, `content/class-tests/`, `unitMissions.js` — so of the nine lists of §2.2,
      five became the pack and four stay where they are.
-  3. [ ] Remove the pilot's id from the 8 shared files (§2.2).
+  3. [x] The pilot's id is out of the shared files — DONE 2026-11-17. After step 2 the eight files of §2.2 named it only
+     in comments (reworded); `lessons/lessonPack.test.js` now FAILS when a file of `lessons/common`, `features`,
+     `components`, `services`, `utils`, `hooks` or `contexts` names a lesson that has a pack (one exception, with its
+     reason: the instrument tags of `lessonlab/registry.js`). Still naming it, by design: `pages/unit/unitMissions.js`
+     (the unit's page), `pages/Methode.jsx` (marketing captures), other lessons' prerequisites. STILL COUPLED, for step 4:
+     the pilot's content imports the world's `logic.js` / `strings.js`, and `features/classSession/lessonScripts.js`
+     imports the world's `ruleForge.js`.
   4. [ ] Finish the pilot: forge its three rules that are still told; generalise `ruleForge.js` / `RuleForge.jsx`
      into the kit on those four examples.
   5. [ ] A1–A6 (§4bis), with B1 (one shared engine chunk, a loading screen).

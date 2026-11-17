@@ -15,7 +15,7 @@ import NodeContextCard from './NodeContextCard';
 
 /**
  * CARTE PROGRESSIVE — la carte de connaissances de toutes les leçons
- * (référence : qasim-adad-tabii). docs/architecture/KNOWLEDGE_MAP.md, Part A
+ * (référence : la leçon pilote). docs/architecture/KNOWLEDGE_MAP.md, Part A
  * et « Progressive map — implementation ».
  *
  * Remplace, pour la leçon qui la déclare, le CORPS de l'onglet « تصفّح » de

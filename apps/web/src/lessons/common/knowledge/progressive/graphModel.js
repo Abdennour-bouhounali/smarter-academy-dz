@@ -1,7 +1,7 @@
 /**
  * Carte PROGRESSIVE — le modèle pur (aucun React, aucun stockage, aucun DOM).
  * La carte de toutes les leçons depuis la migration du 2026-09-29 (référence :
- * qasim-adad-tabii) — docs/architecture/KNOWLEDGE_MAP.md, Part A.
+ * la leçon pilote) — docs/architecture/KNOWLEDGE_MAP.md, Part A.
  *
  * Un graphe de leçon (`KNOWLEDGE_GRAPH`, fourni par la leçon) :
  *

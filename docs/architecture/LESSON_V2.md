@@ -59,8 +59,10 @@ Rules:
 - **A page asks for ONE part**: `lessons/lessonPack.js › loadPackPart(lessonId, part)` or, in a component,
   `usePackPart(lessonId, part)` — `undefined` while it loads, `null` when the lesson has none. Parts: `world`,
   `knowledge`, `coach`, `script`, `memo`. Never import a lesson's file by its path from shared code.
-- **Tests**: `lessons/lessonPack.test.js` loads every pack of the index and every part it names; a lesson's own tests
-  import its files directly.
+- **Tests**: `lessons/lessonPack.test.js` loads every pack of the index and every part it names, and FAILS when shared
+  code (`lessons/common`, `features`, `components`, `services`, `utils`, `hooks`, `contexts`) names a lesson that has a
+  pack — the one exception is the instrument tags of `lessonlab/registry.js`. A lesson's own tests import its files
+  directly.
 
 **To give a lesson a pack**: write `lesson.pack.js` beside `lesson.config.js` with the keys it really has, run
 `npm run generate:lesson-index`, run the tests. Nothing else is edited.

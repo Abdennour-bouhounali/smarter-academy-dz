@@ -1,4 +1,6 @@
 import { describe, it, expect } from 'vitest';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { lessonPackFlags, lessonsWithPack, loadLessonPack, getBuiltLessons } from './registry';
 import { hasPackPart, loadPackPart } from './lessonPack';
 
@@ -47,5 +49,36 @@ describe('the pack of a lesson — the ONE place where it says what it gives the
         .map((it) => it.id);
       for (const [point, item] of Object.entries(coach)) expect(items, `${id} ${point}`).toContain(item);
     }
+  });
+
+  it('shared code names no lesson that has a pack — a lesson is reached through its pack, never by its id', () => {
+    const SRC = fileURLToPath(new URL('..', import.meta.url));
+    const SHARED = ['lessons/common', 'features', 'components', 'services', 'utils', 'hooks', 'contexts'];
+    // an instrument of « مختبري » is tagged with the lesson that introduces it: shared CODE that belongs to a lesson
+    const ALLOWED = ['lessons/common/lessonlab/registry.js'];
+    const files = [];
+    const walk = (dir) => {
+      for (const name of readdirSync(dir)) {
+        const path = `${dir}/${name}`;
+        if (statSync(path).isDirectory()) walk(path);
+        else if (/\.(js|jsx)$/.test(name) && !/\.test\./.test(name)) files.push(path);
+      }
+    };
+    for (const dir of SHARED) {
+      try {
+        walk(`${SRC}${dir}`);
+      } catch {
+        /* a folder that does not exist in this tree */
+      }
+    }
+    expect(files.length).toBeGreaterThan(500);
+    const named = [];
+    for (const file of files) {
+      const rel = file.slice(SRC.length);
+      if (ALLOWED.includes(rel)) continue;
+      const text = readFileSync(file, 'utf8');
+      for (const id of WITH_PACK) if (text.includes(id)) named.push(`${rel} names ${id}`);
+    }
+    expect(named).toEqual([]);
   });
 });

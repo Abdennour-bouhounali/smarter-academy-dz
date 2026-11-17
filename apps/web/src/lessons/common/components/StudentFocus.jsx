@@ -5,7 +5,7 @@ import { useClassroomMode } from '../classroom/ClassroomContext';
 import { InMissionPlayerContext } from '../mission/missionPlayerContext';
 
 /**
- * LE REGARD « FOCUS » DE L'ÉLÈVE (pilote 2026-11-03, leçon qasim-adad-tabii) — LESSON_DEVELOPMENT_GUIDE
+ * LE REGARD « FOCUS » DE L'ÉLÈVE (pilote 2026-11-03) — LESSON_DEVELOPMENT_GUIDE
  * « عرض التلميذ المركّز ». Une génération qui lit peu : l'écran montre ce dont l'élève a besoin MAINTENANT, le reste
  * est à un geste (« المزيد »). Activé par leçon (`LESSON_CONFIG.studentView: 'focus'`), jamais pour l'enseignant
  * (lecteur libre) ni en mode classe : leur vue ne change pas.
