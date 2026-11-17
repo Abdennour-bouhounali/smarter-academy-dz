@@ -70,3 +70,30 @@ export function judgeClaim(b, lens, values, from = 0) {
 }
 /** The cell of a long gap on the chart: the gap made of its last two digits. */
 export const cellOf = (n) => n % 100;
+
+// ───────────────────────── turn: the planks of a bridge, stacked into a wall and read the other way ─────────────────────────
+/**
+ * The cells of a bridge (gap a, planks of d) as a wall: one ROW per plank (`r`), `d` columns; the cells no plank covers
+ * make a last, shorter row (`rest`). `heights[c]` = the cells of column c: the planks the wall gives when it is read the
+ * other way — equal only when the bridge holds.
+ */
+export function wall(a, d) {
+  const e = Math.floor(a / d);
+  const rest = a % d;
+  const cells = [];
+  for (let r = 0; r < e; r += 1) for (let c = 0; c < d; c += 1) cells.push({ r, c, rest: false });
+  for (let c = 0; c < rest; c += 1) cells.push({ r: e, c, rest: true });
+  const heights = Array.from({ length: d }, (_, c) => e + (c < rest ? 1 : 0));
+  return { a, d, e, rest, rows: e + (rest ? 1 : 0), cells, heights, even: rest === 0 };
+}
+
+// ───────────────────────── cut: how many planks — a whole number, or a piece to saw ─────────────────────────
+/** Planks of b laid on a gap of a: the whole ones, and the cells of the piece that would have to be sawn from one more. */
+export const pieceOf = (a, b) => ({ whole: Math.floor(a / b), piece: a % b, exact: a % b === 0 });
+/** The exact quotient a ÷ b as a formula: a natural number, or a decimal (comma) — cut after two places with « … ». */
+export function quotientTex(a, b) {
+  const v = a / b;
+  if (Number.isInteger(v)) return String(v);
+  const two = Math.floor(v * 100) / 100;
+  return `${String(two).replace('.', '{,}')}${Math.abs(two - v) > 1e-9 ? '\\dots' : ''}`;
+}

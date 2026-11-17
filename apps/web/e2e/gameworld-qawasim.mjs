@@ -75,13 +75,6 @@ page.on('pageerror', (e) => { errors.push(e.message); console.log('pageerror', e
 page.on('console', (m) => { if (m.type() === 'error' && !/favicon|fonts|ERR_|Failed to load resource/.test(m.text())) console.log('console.error', m.text().slice(0, 300)); });
 
 let n = 0;
-/** The sentence under a prediction: its formula is DRAWN — never a dollar sign or a backslash command to read (owner, 2026-11-17). */
-let factsWithFormula = 0;
-const factDrawn = async () => {
-  const f = await page.evaluate(() => { const el = document.querySelector('[data-rf-predicted]'); const c = el.cloneNode(true); const drawn = c.querySelectorAll('.katex').length; c.querySelectorAll('.katex').forEach((k) => k.remove()); return { text: c.textContent, drawn }; });
-  factsWithFormula += f.drawn ? 1 : 0;
-  if (/\$|\\[a-z]+/.test(f.text)) { console.log('FAIL raw formula under a prediction: « ' + f.text + ' »'); process.exitCode = 1; if (process.env.E2E_SOFT !== '1') throw new Error('raw formula'); }
-};
 const shot = async (name) => { n += 1; const f = `${OUT}/${String(n).padStart(2, '0')}-${name}.png`; await noScroll(page, name); await page.screenshot({ path: f }); console.log('shot', f); };
 /** Fast-forwards the world by `sec` seconds of game time (promises of the tweens resolve between steps). */
 const ff = (sec) => page.evaluate(async (s) => { const g = window.__world; for (let t = 0; t < s; t += 0.04) { g.step(0.04); await null; await null; } }, sec);
@@ -123,15 +116,6 @@ const fillUse = async (vals, verdict = null) => {
   for (const [name, v] of Object.entries(vals)) await page.fill(`[data-rf-use="${name}"]`, String(v));
   if (verdict !== null) await page.click(`[data-rf-use-verdict="${verdict ? 'yes' : 'no'}"]`);
   await page.click('[data-rf-use-check]'); await page.waitForSelector('[data-rf-use-fb]');
-};
-/** Right predictions until the forge lets him write his rule. */
-const toBuild = async () => {
-  for (let i = 0; i < 12 && (await fg()).phase === 'predict'; i += 1) {
-    const f = await fg();
-    if (f.show.stage === 'ask') { await page.click(`[data-rf-guess="${f.show.c.held ? 'yes' : 'no'}"]`); await page.waitForSelector('[data-rf-predicted]'); await factDrawn(); }
-    await page.click('[data-rf-next]'); await page.waitForTimeout(80);
-  }
-  await page.waitForSelector('[data-rf="build"]');
 };
 /** From « اكتب قاعدتك »: the right tiles, the mirror's test, its attacks, the seal, the last step — up to the tablet. */
 const finishForge = async ({ tiles, last }) => {
@@ -204,14 +188,40 @@ await take(5); await forge(2); await ff(8);
 expect((await st()).stars.g40 >= 1, 'bridge 40 holds with planks of 5');
 await cross(2); await page.waitForTimeout(500);
 
-// ── forge 1 🧱: a bridge that holds gives a second one ──
-s = await st(); expect(s.stage === 3 && s.overlay === 'forge' && (await fg()).key === 'jidaa-aamilayn', 'island D opens the first forge of the lesson');
+// ── forge 1 🧱: one bridge gives a second one — FOUND on the wall, then written ──
+s = await st(); expect(s.stage === 3 && s.overlay === 'forge' && (await fg()).key === 'jidaa-aamilayn' && (await fg()).phase === 'inquiry', 'island D opens the first forge on an INVESTIGATION: the wall');
 {
-  await shot('forge1-predict');
-  const c = (await fg()).show.c; await page.click(`[data-rf-guess="${c.held ? 'yes' : 'no'}"]`); await page.waitForSelector('[data-rf-predicted]'); await factDrawn();
-  expect((await page.textContent('.rf-panel')).includes('ثبت بـ'), 'a prediction of this forge starts from a bridge that held and asks about a second plank');
-  await shot('forge1-predicted');
-  await toBuild();
+  const lead = () => page.textContent('.iq-lead');
+  expect((await iq()).kind === 'turn' && (await iq()).a === 24 && (await iq()).d === 3 && await page.locator('[data-rf-tile]').count() === 0, 'no tile, no prediction: it starts from HIS first bridge — 24 with planks of 3');
+  await inquiryFits('inquiry1-start');
+  for (let i = 0; i < 8; i += 1) await page.click('[data-iq-lift]');
+  expect((await iq()).stage === 'cut', 'he lifts the eight planks one by one: a wall of 24 cells, none added, none lost');
+  await inquiryFits('inquiry1-wall');
+  for (let i = 0; i < 3; i += 1) await page.click('[data-iq-lay]');
+  expect((await iq()).stage === 'seen' && (await lead()).includes('3 ألواح طولها 8'), 'he takes the wall down column by column: the same cells are 3 planks of 8 — the second bridge he built');
+  await inquiryFits('inquiry1-turned');
+  await page.click('[data-iq-next]');
+  // he says what the columns will give BEFORE the wall is turned
+  expect((await iq()).stage === 'predict' && (await iq()).a === 40 && await page.locator('[data-iq-turn]').count() === 0, 'a second bridge (40 with planks of 5): the wall is not turned before he has said what its columns will give');
+  await page.click('[data-iq-say="len:5"]'); await page.click('[data-iq-say="count:8"]');
+  await inquiryFits('inquiry1-predict');
+  await page.click('[data-iq-turn]'); await page.waitForSelector('[data-iq-next]');
+  expect((await lead()).includes('5 ألواح طولها 8') && (await lead()).includes('كنتَ توقّعت 8 ألواح طولها 5'), 'he said « the same bridge again »: the wall answers with what it gave, beside what he had said — never « wrong »');
+  await page.click('[data-iq-next]');
+  expect((await iq()).rest === 4 && await page.locator('.iq-brick.is-rest').count() === 4, 'a bridge that FELL (40 with planks of 6): its four cells left are part of the wall');
+  await page.click('[data-iq-say="equal:yes"]'); await page.click('[data-iq-turn]'); await page.waitForSelector('[data-iq-next]');
+  expect((await lead()).includes('غير متساوية'), 'its wall is ragged: the columns are not equal — no plank comes out of a bridge that fell');
+  await inquiryFits('inquiry1-ragged');
+  await page.click('[data-iq-next]');
+  await page.click('[data-iq-say="len:6"]'); await page.click('[data-iq-say="count:6"]'); await page.click('[data-iq-turn]'); await page.waitForSelector('[data-iq-next]');
+  expect((await lead()).includes('مربّع') && (await lead()).includes('كما توقّعت'), 'a square wall (36 with planks of 6) gives the plank itself');
+  await page.click('[data-iq-next]');
+  expect((await iq()).a === 42 && await page.locator('.iq-brick').count() === 0, 'the last bridge is NOT drawn (42 with 6 planks of 7): he answers without the wall');
+  await page.click('[data-iq-say="len:6"]'); await page.click('[data-iq-say="count:7"]'); await page.click('[data-iq-turn]'); await page.waitForSelector('[data-iq-next]');
+  expect((await lead()).includes('كما توقّعت') && await page.locator('[data-iq-found] li').count() === 4, 'the wall then shows it; the four equalities he found stay on screen');
+  await inquiryFits('inquiry1-blind');
+  await page.click('[data-iq-next]'); await page.waitForSelector('[data-rf="build"]');
+  expect(await page.locator('[data-rf-row][data-rf-own="1"]').count() === 5, 'only now he WRITES his rule — the mirror will test it on the five bridges HE turned');
   // « the second bridge has as many planks as the first »: the mirror builds it from HIS bridges — it holds, with another count
   await page.click('[data-rf-tile="p:count"]'); await page.click('[data-rf-tile="n:same"]'); await shot('forge1-build');
   await page.click('[data-rf-test]'); await page.waitForSelector('[data-rf-refuted]');
@@ -246,13 +256,37 @@ await forge(3); await ff(14);
 expect((await st()).stars.g31 >= 1, 'only the plank of 1 fills 31 among those he could make');
 await cross(3); await page.waitForTimeout(500);
 
-// ── forge 2 🔑: the exact quotient is a natural number ──
-s = await st(); expect(s.stage === 4 && s.overlay === 'forge' && (await fg()).key === 'qasim-rappel', 'island E opens the second forge');
+// ── forge 2 🔑: a whole number of planks — FOUND with the saw, then written ──
+s = await st(); expect(s.stage === 4 && s.overlay === 'forge' && (await fg()).key === 'qasim-rappel' && (await fg()).phase === 'inquiry', 'island E opens the second forge on an INVESTIGATION: the saw');
 {
-  const c = (await fg()).show.c; await page.click(`[data-rf-guess="${c.held ? 'yes' : 'no'}"]`); await page.waitForSelector('[data-rf-predicted]'); await factDrawn();
-  expect((await page.textContent('[data-rf-eq]')).includes('÷'), 'the mirror of this island writes the exact QUOTIENT');
-  await shot('forge2-predicted');
-  await toBuild();
+  const lead = () => page.textContent('.iq-lead');
+  const slideTo = async (part) => { const r = await page.locator('[data-iq-slider]').boundingBox(); await page.mouse.click(r.x + 3 + (r.width - 6) * part, r.y + r.height / 2); await page.waitForTimeout(60); return (await iq()).b; };
+  expect((await iq()).kind === 'cut' && (await iq()).a === 31 && (await iq()).b === 4 && await page.locator('.iq-piece').count() === 1, 'it starts on the gap no mould filled (31): seven planks of 4, and a piece that would have to be sawn');
+  await inquiryFits('inquiry2-start');
+  const mid = await slideTo(0.45);
+  expect(mid > 4 && mid < 31 && Number(await page.getAttribute('[data-iq-plank]', 'data-iq-plank')) === mid && (await iq()).tried.includes(mid), `his hand slides the length of the plank (${mid}): the planks are laid again at once, and the length joins his table`);
+  expect(await slideTo(1) === 31 && await page.locator('.iq-piece').count() === 0 && await page.locator('.iq-plank').count() === 1, 'at the end of the slider: one plank of 31, no piece');
+  expect(await slideTo(0) === 1 && await page.locator('.iq-plank').count() === 31, 'at its start: 31 planks of 1, no piece');
+  for (let i = 0; i < 3; i += 1) await page.click('[data-iq-step="1"]');
+  expect((await iq()).b === 4 && await page.locator('[data-iq-enough]').count() === 1, 'the two small buttons move the length one cell at a time; after six lengths he may say he has an answer');
+  await inquiryFits('inquiry2-free');
+  await page.click('[data-iq-enough]');
+  await page.click('[data-iq-count="1"]');
+  expect((await fact()).includes('1 و 31'), 'he says ONE length fills 31 without a cut: the saw answers with what HE found — 1 and 31');
+  await inquiryFits('inquiry2-count');
+  await page.click('[data-iq-count="2"]');
+  // then he judges from the quotient alone, before the saw shows the planks
+  expect((await iq()).stage === 'ask' && (await iq()).a === 36 && (await iq()).b === 8 && await page.locator('.iq-plank').count() === 0 && (await lead()).includes('36'), 'a plank of 8 over 36: only the quotient is given — the planks are not laid before he answers');
+  await inquiryFits('inquiry2-ask');
+  await page.click('[data-iq-say="yes"]');
+  expect((await lead()).includes('قطعة') && (await lead()).includes('لم يكن هذا توقّعك') && await page.locator('.iq-piece').count() === 1, 'he said « no cut »: the saw lays four planks and the piece — his prediction is put beside the fact');
+  await inquiryFits('inquiry2-shown');
+  await page.click('[data-iq-next]'); await page.click('[data-iq-say="yes"]');
+  expect((await lead()).includes('كما توقّعت') && await page.locator('.iq-piece').count() === 0, 'a plank of 9 over 36: four whole planks, as he said');
+  await page.click('[data-iq-next]'); await page.click('[data-iq-say="no"]'); await page.click('[data-iq-next]'); await page.click('[data-iq-say="yes"]');
+  expect((await iq()).a === 52 && await page.locator('.iq-plank').count() === 13, 'the last one (52 with planks of 4): thirteen whole planks');
+  await page.click('[data-iq-next]'); await page.waitForSelector('[data-rf="build"]');
+  expect(await page.locator('[data-rf-row][data-rf-own="1"]').count() === 8, 'only now he WRITES his rule — the mirror will test it on the lengths he tried and the four he judged');
   await page.click('[data-rf-tile="q:diff"]'); await page.click('[data-rf-tile="c:natural"]'); await page.click('[data-rf-test]'); await page.waitForSelector('[data-rf-refuted]');
   await shot('forge2-refuted');
   await page.click('[data-rf-fix]'); await page.waitForSelector('[data-rf="build"]');
@@ -471,5 +505,5 @@ await ff(6); await page.waitForTimeout(600); await shot('end');
 s = await st(); expect(s.overlay === 'end', 'the lighthouse is lit and the end screen shows: the story is played to its end');
 expect(errors.length === 0, 'no page error');
 console.log('ok   nothing scrolls at any screenshot of the walk');
-expect(factsWithFormula > 0, 'the sentences under the predictions were read: ' + factsWithFormula + ' carried a formula, all DRAWN — none showed a dollar sign or a backslash');
+// (no prediction is asked in this lesson any more: every forge opens on an investigation; a raw formula on ANY screenshot fails noScroll)
 await browser.close();

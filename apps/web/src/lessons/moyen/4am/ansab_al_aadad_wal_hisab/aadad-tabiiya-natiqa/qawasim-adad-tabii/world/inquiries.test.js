@@ -7,8 +7,11 @@ import {
   LENSES,
   chartCells,
   cellOf,
+  wall,
+  pieceOf,
+  quotientTex,
 } from '../../../../../../common/gameworld/divisorIsles/inquiry';
-import { STOP_INQUIRY, RULES_INQUIRY } from './inquiries';
+import { STOP_INQUIRY, RULES_INQUIRY, TURN_INQUIRY, CUT_INQUIRY } from './inquiries';
 import { FORGES } from './forges';
 import { STORY } from './story';
 
@@ -138,5 +141,96 @@ describe('the two investigations of « قواسم عدد طبيعي » — each 
     said(T.foundLine(5, T.lens.units, [0, 5]));
     said(T.foundCell(4));
     expect(T.claim(0, 0)).toBe('');
+  });
+
+  it('EVERY key of the lesson opens on an investigation of its own kind — no rule is found in the same mirror twice', () => {
+    const kinds = Object.values(FORGES).map((F) => F.inquiry?.kind);
+    expect(kinds).toEqual(['turn', 'cut', 'pairs', 'chart']);
+    for (const F of Object.values(FORGES)) expect(typeof F.fromInquiry).toBe('function');
+  });
+
+  it('TURN starts from HIS first bridge, then a bridge that held, one that fell, a square one and one he does not see', () => {
+    const first = STORY.segments[0];
+    const [r0, ...rest] = TURN_INQUIRY.rounds;
+    expect([r0.a, r0.d, r0.mode]).toEqual([first.a, first.holdsWith, 'hands']);
+    const walls = TURN_INQUIRY.rounds.map((r) => wall(r.a, r.d));
+    expect(walls.filter((w) => !w.even)).toHaveLength(1);
+    expect(walls.some((w) => w.even && w.d === w.e)).toBe(true);
+    expect(rest.at(-1).mode).toBe('blind');
+    expect(walls.at(-1).even && walls.at(-1).d !== walls.at(-1).e).toBe(true);
+    for (const w of walls) {
+      expect(w.rows).toBeLessThanOrEqual(8); // the wall fits its frame
+      expect(Math.max(w.d, w.e)).toBeLessThanOrEqual(12); // what he predicts is on the chips
+    }
+    const T = TURN_INQUIRY.text;
+    const lines = [];
+    for (const w of walls) {
+      lines.push(T.wallLabel(w), T.under(w, false), T.under(w, true), T.lift(w), T.cut(w), T.askBlind(w));
+      lines.push(w.even ? T.askPair(w) : T.askEqual(w));
+      if (w.even) {
+        lines.push(
+          T.seen(w, null, true),
+          T.seen(w, { len: w.e, count: w.d }, true),
+          T.seen(w, { len: 5, count: 8 }, false),
+        );
+        lines.push(T.foundLine(w));
+      } else lines.push(T.seenRagged(w, { equal: false }, true), T.seenRagged(w, { equal: true }, false));
+    }
+    for (const line of lines) {
+      said(line);
+      // the rule (« a plank as long as the COUNT of the first bridge ») is never written: he writes it
+      expect(line, line).not.toMatch(/عدد ألواح الجسر الأوّل|طول اللوح الأوّل/);
+    }
+    const F = FORGES['jidaa-aamilayn'];
+    const { rows, rule } = F.fromInquiry({ bridges: walls.map((w) => ({ a: w.a, d: w.d })) });
+    expect(rule).toBeUndefined();
+    expect(rows.map((c) => [c.a, c.b, c.held])).toEqual(walls.map((w) => [w.a, w.d, w.even]));
+    // the right rule keeps its promise on every bridge of his that held; « the same count » does not
+    for (const c of F.tests({ p: 'count', n: 'first' }, rows)) expect(c.held).toBe(true);
+    expect(F.tests({ p: 'count', n: 'same' }, rows).some((c) => !c.held)).toBe(true);
+  });
+
+  it('CUT starts on the gap no mould filled; only two lengths need no cut; the four judged planks are of both kinds', () => {
+    const stubborn = STORY.segments.find((x) => x.workshop);
+    const { free, asks, text: T } = CUT_INQUIRY;
+    expect(free.a).toBe(stubborn.a);
+    const exact = Array.from({ length: free.a }, (_, i) => i + 1).filter((b) => free.a % b === 0);
+    expect(exact).toHaveLength(free.exact);
+    expect(pieceOf(free.a, free.start).exact).toBe(false); // it opens on a piece to saw
+    expect(asks.filter((x) => x.a % x.b === 0)).toHaveLength(2);
+    expect(asks.filter((x) => x.a % x.b !== 0)).toHaveLength(2);
+    expect(asks[0].a % asks[0].b).not.toBe(0); // the first judged plank needs a cut: « yes » is not a habit
+    const lines = [
+      T.enough,
+      T.countAsk(free.a),
+      T.countMiss(1, [], free.a),
+      T.countMiss(1, [31, 1], free.a),
+      T.lengthIs(4),
+    ];
+    lines.push(
+      T.free(free.a, false),
+      T.free(free.a, true),
+      T.sawLabel(31, 4),
+      T.laid(7, 3),
+      T.laid(4, 0),
+      T.piece(3, 4),
+    );
+    for (const b of [1, 2, 4, 7, 31]) lines.push(T.fact(free.a, b, quotientTex(free.a, b), pieceOf(free.a, b)));
+    for (const x of asks) {
+      const p = pieceOf(x.a, x.b);
+      lines.push(T.ask(x.a, x.b, quotientTex(x.a, x.b)), T.shown(x.a, x.b, p, true), T.shown(x.a, x.b, p, false));
+    }
+    for (const line of lines) {
+      said(line);
+      // the rule (« the exact quotient is a natural number ») is never written: he writes it
+      expect(line, line).not.toMatch(/عدد طبيعي|بلا فاصلة|الحاصل/);
+    }
+    expect(T.countMiss(1, [31, 1], 31)).toContain('1 و 31');
+    const F = FORGES['qasim-rappel'];
+    const { rows, rule } = F.fromInquiry({ a: free.a, tried: [4, 14, 31, 1, 2, 3], asks });
+    expect(rule).toBeUndefined();
+    expect(rows).toHaveLength(8);
+    for (const c of rows) expect(F.says({ q: 'exact', c: 'natural' }, c)).toBe(c.held);
+    expect(rows.some((c) => c.held) && rows.some((c) => !c.held)).toBe(true);
   });
 });

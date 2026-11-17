@@ -372,6 +372,12 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
        is the last step of the forge. New: `divisorIsles/inquiry.js`, `Inquiry.jsx`, `inquiry.css`, the lesson's
        `world/inquiries.js`; `RuleForge` phase « استكشف ». Walk: 124 checks, both experiments played through their
        screens. **Not validated by the owner yet — and no student has played it.**
+       Then, on « not only this one … all the steps of rule discovery », the first two keys too: 🧱 « جداء عاملين »
+       — the WALL (his first bridge lifted plank by plank and taken down by columns, then predicted: a bridge that
+       held, one that fell, a square one, one he does not see); 🔑 « عدد طبيعي من الألواح » — the SAW (his hand
+       slides the plank's length over the gap 31, the cut piece and the quotient live; then four planks judged from
+       the quotient alone). Four keys, four kinds (`InquiryMoves.jsx`); no prediction of the old mirror is asked in
+       this lesson any more; no help ends on a choice of two rules. Walk: 154 checks.
      - NOT in lesson 2 by choice, to be said in the report: no real-world case world (S5); ten dash levels instead.
      - The walk is assembled from the pilot walk's helpers (copied, not shared): a shared helper module is owed.
 - **D4 — DONE**: the five billing files are deleted.

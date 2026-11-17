@@ -13,6 +13,8 @@
  *           What he claimed and the chart accepted IS his rule: the mirror attacks it at once.
  * No sentence here states a rule: each one says what the strip or the chart has just done.
  */
+import { planks } from '../../../../../../common/gameworld/divisorIsles/strings';
+
 const math = (s) => `$${s.replaceAll('×', '\\times')}$`;
 const lo = (t) => Math.floor(t.partner);
 
@@ -126,5 +128,104 @@ export const RULES_INQUIRY = {
     foundCell: (b) => `اللوح ${b}: خانة الرقمين الأخيرين`,
     sealed: 'خمسة ألواح، وخمس قراءات وجدتَها بنفسك. المرآة ستتحدّاها الآن بهوّات لم ترها.',
     done: 'إلى المرآة',
+  },
+};
+
+/**
+ *   TURN    « one bridge gives a second one » — his first bridge (24 with planks of 3) is lifted plank by plank into a
+ *           wall and taken down column by column: the same cells give 3 planks of 8, the second bridge he built. Then he
+ *           says what the columns will give BEFORE the wall is turned: a bridge that held, one that fell (a ragged
+ *           wall), a square wall, and a bridge he does not see.
+ */
+export const TURN_INQUIRY = {
+  kind: 'turn',
+  rounds: [
+    { a: 24, d: 3, mode: 'hands' },
+    { a: 40, d: 5, mode: 'predict' },
+    { a: 40, d: 6, mode: 'predict' },
+    { a: 36, d: 6, mode: 'predict' },
+    { a: 42, d: 7, mode: 'blind' },
+  ],
+  text: {
+    wallLabel: (w) => `جدار الجسر: هوّة ${w.a}، ألواح طولها ${w.d}`,
+    under: (w, turned) =>
+      turned
+        ? w.even
+          ? `${planks(w.d)} طولها ${w.e}`
+          : 'أعمدة غير متساوية'
+        : `${planks(w.e)} طولها ${w.d}${w.rest ? ` — وبقيت ${w.rest} خانات` : ''}`,
+    lift: (w) =>
+      `جسرك الأوّل ثبت: ${planks(w.e)} طولها ${w.d} فوق هوّة ${w.a}. ارفع ألواحه واحدًا واحدًا، وضعها فوق بعضها.`,
+    cut: (w) => `جدار من ${w.a} خانة: لا خانة زادت ولا نقصت. أنزله الآن عمودًا عمودًا فوق الهوّة نفسها.`,
+    askPair: (w) => `جسر ثبت: ${planks(w.e)} طولها ${w.d} فوق هوّة ${w.a}. قبل أن تقلب جداره: ماذا ستعطي أعمدته؟`,
+    askEqual: (w) =>
+      `هذا الجسر انهار: ${planks(w.e)} طولها ${w.d} فوق هوّة ${w.a}، وبقيت ${w.rest} خانات. لو رفعتَ كلّ خاناته جدارًا: هل تكون أعمدته متساوية؟`,
+    askBlind: (w) => `جسر لا تراه: ثبت فوق هوّة ${w.a} بـ ${planks(w.e)} طولها ${w.d}. دون جدار: ماذا ستعطي أعمدته؟`,
+    seen: (w, guess, right) =>
+      `${
+        w.d === w.e
+          ? `${math(`${w.a} = ${w.d} × ${w.d}`)}: جدار مربّع — أعمدته هي ألواحه نفسها.`
+          : `${math(`${w.a} = ${w.d} × ${w.e} = ${w.e} × ${w.d}`)}: الخانات نفسها، ${planks(w.d)} طولها ${w.e} — والجسر ثابت.`
+      }${guess ? (right ? ' كما توقّعت!' : ` كنتَ توقّعت ${planks(guess.count)} طولها ${guess.len}.`) : ''}`,
+    seenRagged: (w, guess, right) =>
+      `أعمدة الجدار غير متساوية (${w.e + 1} خانات، ثمّ ${w.e}): لا تصلح ألواحًا لجسر واحد.${right ? ' كما توقّعت!' : ' كنتَ توقّعت أعمدة متساوية.'}`,
+    len: 'طول اللوح الجديد',
+    count: 'عدد الألواح',
+    yes: 'نعم، متساوية',
+    no: 'لا، غير متساوية',
+    liftBtn: 'ارفع لوحًا',
+    layBtn: 'أنزل عمودًا',
+    turn: 'اقلب الجدار',
+    next: 'جسر آخر',
+    done: 'أكتب قاعدتي',
+    foundLine: (f) => math(f.d === f.e ? `${f.a} = ${f.d} × ${f.e}` : `${f.a} = ${f.d} × ${f.e} = ${f.e} × ${f.d}`),
+  },
+};
+
+/**
+ *   CUT     « a whole number of planks » — the gap no mould filled (31): his hand slides the length of the plank, the
+ *           planks are laid again at once with the piece that would have to be sawn, and the count is written as the
+ *           quotient. He says how many lengths need no cut; then he judges four planks from the quotient ALONE, before
+ *           the saw shows them.
+ */
+const div = (a, b, q) => `$${a} \\div ${b} = ${q}$`;
+export const CUT_INQUIRY = {
+  kind: 'cut',
+  free: { a: 31, start: 4, need: 6, exact: 2 },
+  asks: [
+    { a: 36, b: 8 },
+    { a: 36, b: 9 },
+    { a: 45, b: 6 },
+    { a: 52, b: 4 },
+  ],
+  text: {
+    sawLabel: (a, b) => `هوّة ${a}، ألواح طولها ${b}`,
+    cols: { plank: 'اللوح', count: 'عدد الألواح' },
+    length: 'طول اللوح',
+    shorter: 'أقصر بخانة',
+    longer: 'أطول بخانة',
+    lengthIs: (b) => `طول اللوح: ${b}`,
+    laid: (whole, piece) => (piece ? `${planks(whole)} + قطعة` : planks(whole)),
+    piece: (r, b) => `${r} من ${b}`,
+    free: (a, enough) =>
+      enough
+        ? `واصل التجريب إن شئت. هل وجدتَ كلّ الأطوال التي تملأ الهوّة ${a} دون أيّ قطع؟`
+        : `هوّة ${a} لم يملأها أيّ قالب. الورشة تصنع كلّ الأطوال: حرّك المنزلق، غيّر طول اللوح، وراقب آخر لوح.`,
+    enough: 'عندي جواب',
+    fact: (a, b, q, p) =>
+      `${div(a, b, q)} — ${planks(p.whole)} ${p.whole > 1 ? 'كاملة' : 'كامل'}${p.exact ? '، ولا قطعة.' : '، ثمّ قطعة من لوح.'}`,
+    countAsk: (a) => `كم طولًا مختلفًا يملأ الهوّة ${a} تمامًا، دون أيّ قطع؟`,
+    countMiss: (k, found) =>
+      found.length
+        ? `حتى الآن وجدتَ بلا قطع: ${[...found].sort((x, y) => x - y).join(' و ')}. هل جرّبتَ المنزلق من أوّله إلى آخره؟`
+        : 'لم تجد بعد أيّ طول بلا قطع: جرّب أقصر لوح، وأطول لوح.',
+    ask: (a, b, q) =>
+      `هوّة ${a} ولوح طوله ${b}. الآلة الحاسبة تقول: ${div(a, b, q)}. دون أن تبني: هل يملأ اللوح الهوّة بلا قطع؟`,
+    yes: 'نعم، بلا قطع',
+    no: 'لا، تلزم قطعة',
+    shown: (a, b, p, right) =>
+      `${p.exact ? `${planks(p.whole)} كاملة تملأ ${a}: لا قطعة.` : `${planks(p.whole)} كاملة، ثمّ قطعة: ${p.piece} خانات من لوح طوله ${b}.`}${right ? ' كما توقّعت!' : ' لم يكن هذا توقّعك.'}`,
+    next: 'هوّة أخرى',
+    done: 'أكتب قاعدتي',
   },
 };

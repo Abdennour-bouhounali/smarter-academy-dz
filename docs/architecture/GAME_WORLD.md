@@ -404,10 +404,16 @@ made for it.** The forge then opens on that experiment:
   the student cannot answer yet OPENS the search — it is never asked as a quiz before the rule exists — and comes back as
   the last step of the forge (`use`).
 
-The two kinds of `divisorIsles/` (logic `inquiry.js`, screen `Inquiry.jsx`, styles `inquiry.css`):
+**Every key of `qawasim-adad-tabii` opens on an experiment — four keys, four kinds** (owner, the same day: « not only
+this one … all the steps of rule discovery »); a test of the lesson fails if two of its keys share a kind.
+
+The four kinds of `divisorIsles/` (logic `inquiry.js`; screens `Inquiry.jsx` — strip and chart — and `InquiryMoves.jsx`
+— wall and saw; styles `inquiry.css`):
 
 | Kind | The rule it finds | What the student does |
 |---|---|---|
+| `turn` | a bridge that holds gives a second one (a = d × e, read both ways) | lifts the planks of HIS first bridge one by one into a WALL (one row per plank), then takes the wall down column by column: the same cells are the second bridge. Then he says what the columns will give BEFORE the wall is turned: a bridge that held, a bridge that fell (its wall is ragged — unequal columns, no plank), a square wall (the plank itself), and a bridge that is not drawn. Then he writes his rule with the tiles. |
+| `cut` | the plank fills the gap when the count of planks is a natural number | on the gap no mould filled, his hand SLIDES the length of the plank: the planks are laid again at once, with the piece that would have to be sawn, and the count written as the quotient; the lengths he tried make a table. He says how many lengths need no cut (answered with the ones HE found). Then he judges planks from the quotient ALONE, before the saw lays them. Then he writes his rule with the tiles. |
 | `pairs` | where the search for all the planks of a gap stops | tries the planks of ONE gap in order; a plank and its partner (gap ÷ plank, whole or not) walk toward each other on a strip and CROSS; past the crossing every partner is a plank already tried. First gap: after the crossing, « can a new plank still appear? » — on « maybe » the world tries every plank up to the gap in front of him. Next gaps: he says the last plank BEFORE trying; the squares join the table from the second gap; on the last gap only the planks and their squares are shown before any trial. Then he writes his rule with the tiles. |
 | `chart` | what to read in a number instead of dividing | tests ONE plank on the gaps of a chart (a row per tens digit, a column per units digit), one after the other, then lets the world finish; chooses a LENS (units digit, tens digit, sum of the digits) and the values he claims: the chart shows the dark cells his claim takes in and counts the lit cells it leaves out; a claim that holds is tried on the next hundred. A plank no lens separates (4) has its own road: the next hundreds light the SAME cells, then he places long gaps on the one chart — he reads their last two digits by doing it. |
 

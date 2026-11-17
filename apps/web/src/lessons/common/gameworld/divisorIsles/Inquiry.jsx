@@ -10,6 +10,7 @@
 import { useEffect, useRef, useState } from 'react';
 import MathText from '../../components/MathText';
 import { tryPlank, lastNeeded, missedBy, LENSES, chartCells, holds, judgeClaim, cellOf } from './inquiry';
+import { Turn, Cut } from './InquiryMoves';
 import './inquiry.css';
 
 const FAST = () => import.meta.env.DEV && typeof window !== 'undefined' && window.__forgeFast;
@@ -592,9 +593,6 @@ function Chart({ spec, play, onDone }) {
 
 export default function Inquiry({ spec, game, onDone }) {
   const play = (name) => game?.audio?.play(name);
-  return spec.kind === 'pairs' ? (
-    <Pairs spec={spec} play={play} onDone={onDone} />
-  ) : (
-    <Chart spec={spec} play={play} onDone={onDone} />
-  );
+  const Kind = { pairs: Pairs, chart: Chart, turn: Turn, cut: Cut }[spec.kind];
+  return <Kind spec={spec} play={play} onDone={onDone} />;
 }

@@ -24,7 +24,7 @@ import {
   pickWith,
 } from '../../../../../../common/gameworld/divisorIsles/ruleForge';
 import { lastNeeded } from '../../../../../../common/gameworld/divisorIsles/inquiry';
-import { STOP_INQUIRY, RULES_INQUIRY } from './inquiries';
+import { STOP_INQUIRY, RULES_INQUIRY, TURN_INQUIRY, CUT_INQUIRY } from './inquiries';
 
 /** An equality inside an Arabic sentence: a formula — the screen renders it with MathText, left to right. */
 const math = (s) => ['$', s.replaceAll('×', '\\times').replaceAll('÷', '\\div'), '$'].join('');
@@ -78,6 +78,9 @@ const willHold = (first, L) => ({ ...outcome(first.a, L), from: { d: first.b, e:
 const pairForge = {
   key: 'jidaa-aamilayn',
   logs: true,
+  /** He finds it on the wall first (inquiries.js); the mirror then tests the rule he writes on the bridges HE turned. */
+  inquiry: TURN_INQUIRY,
+  fromInquiry: (result) => ({ rows: result.bridges.map((f) => outcome(f.a, f.d)) }),
   slots: [
     { id: 'p', label: 'يثبت أيضًا فوق الهوّة نفسها', options: PARTNERS.map(({ id, label }) => ({ id, label })) },
     { id: 'n', label: 'وعدد ألواحه', options: COUNTS.map(({ id, label }) => ({ id, label })) },
@@ -145,14 +148,9 @@ const pairForge = {
       [28, 4],
     ].find(([gap]) => !rows.some((row) => row.a === gap)) ?? [20, 4];
     const first = outcome(a, d);
+    // never a choice between two written rules: at the third help, a square bridge — the plank that is its own partner
     if (n <= 2) return { kind: 'experiment', cases: [first, outcome(a, first.q)] };
-    return {
-      kind: 'choice',
-      rules: [
-        { p: 'count', n: 'same' },
-        { p: 'count', n: 'first' },
-      ],
-    };
+    return { kind: 'experiment', cases: [outcome(25, 5), outcome(16, 4)] };
   },
   use: {
     make: (rand = Math.random) => {
@@ -288,6 +286,11 @@ const isQuotientRule = (rule) => rule?.q === 'exact' && rule?.c === 'natural';
 const quotientForge = {
   key: 'qasim-rappel',
   logs: true,
+  /** He finds it with the saw first (inquiries.js); the mirror then tests his rule on the lengths HE tried and judged. */
+  inquiry: CUT_INQUIRY,
+  fromInquiry: (result) => ({
+    rows: [...result.tried.slice(-4).map((b) => outcome(result.a, b)), ...result.asks.map((x) => outcome(x.a, x.b))],
+  }),
   slots: [
     { id: 'q', label: 'ماذا أحسب؟', options: Q_QUANTITIES.map(({ id, label }) => ({ id, label })) },
     { id: 'c', label: 'كيف يجب أن يكون؟', options: Q_CONDITIONS.map(({ id, label }) => ({ id, label })) },
@@ -324,11 +327,14 @@ const quotientForge = {
         free.find((c) => holds(c.a, c.b) && c.b >= 7 && c.a / c.b === 3),
       ],
     ),
-  nudge: (n, rows) =>
-    nudgeWith(n, rows, [
+  nudge(n, rows) {
+    const h = nudgeWith(n, rows, [
       { q: 'diff', c: 'natural' },
       { q: 'exact', c: 'natural' },
-    ]),
+    ]);
+    // never a choice between two written rules: a third pair of bridges — the same plank, a gap one cell longer
+    return h.kind === 'choice' ? { kind: 'experiment', cases: [outcome(28, 7), outcome(29, 7)] } : h;
+  },
   use: {
     make: (rand = Math.random) => ({ a: pickWith(rand)([98, 91, 85, 119, 115, 95]), held: true }),
     lines: (c) => [{ dir: 'ltr', tokens: [String(c.a), '=', slot('x', 'لوح أوّل', 3), '×', slot('y', 'لوح ثانٍ', 3)] }],

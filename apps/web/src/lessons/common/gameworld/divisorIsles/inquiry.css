@@ -442,3 +442,138 @@
     padding: 0.05rem 0.6rem;
   }
 }
+
+/* ── turn: the wall — and cut: the saw ── */
+.iq--turn {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  gap: 0.5rem;
+}
+.iq--cut {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto auto auto;
+  gap: 0.4rem;
+}
+.iq-wall,
+.iq-saw {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+.iq-wall text,
+.iq-saw text {
+  font-family: inherit;
+  font-weight: 800;
+  text-anchor: middle;
+}
+.iq-gapcell {
+  fill: rgba(255, 255, 255, 0.05);
+  stroke: rgba(159, 216, 255, 0.35);
+  stroke-width: 1;
+}
+.iq-brick {
+  stroke: rgba(6, 32, 63, 0.55);
+  stroke-width: 1;
+  transition:
+    x 0.45s,
+    y 0.45s,
+    width 0.45s,
+    height 0.45s;
+}
+.iq-brick.is-a {
+  fill: #2f7df6;
+}
+.iq-brick.is-b {
+  fill: #7dfcff;
+}
+.iq-brick.is-rest {
+  fill: #fbbf24;
+}
+.iq-brick.is-mine {
+  cursor: pointer;
+  stroke: #fff;
+  stroke-width: 2.5;
+}
+.iq-wall__say {
+  font-size: 19px;
+  fill: #cfe9ff;
+}
+.iq-asks {
+  display: grid;
+  gap: 0.4rem;
+}
+.iq-ask {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+}
+.iq-ask > span {
+  min-width: 9.5rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+.iq-chip--s {
+  min-width: 2.3rem;
+  height: 2.3rem;
+  font-size: 1.05rem;
+}
+.iq-plank {
+  fill: #2f7df6;
+  stroke: #7dfcff;
+  stroke-width: 2;
+}
+.iq-piece {
+  fill: rgba(251, 191, 36, 0.3);
+  stroke: #fbbf24;
+  stroke-width: 2.5;
+  stroke-dasharray: 7 5;
+}
+.iq-saw__piece {
+  font-size: 18px;
+  fill: #fbbf24;
+}
+.iq-saw__count {
+  font-size: 22px;
+  fill: #e8f6ff;
+}
+.iq-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+}
+.iq-slide input {
+  flex: 0 1 34rem;
+  min-width: 0;
+  height: 2.6rem;
+  accent-color: #7dfcff;
+  cursor: pointer;
+}
+.iq-slide strong {
+  min-width: 8.5rem;
+  font-size: 1.2rem;
+  font-weight: 900;
+}
+@media (max-height: 500px) {
+  .iq--turn,
+  .iq--cut {
+    gap: 0.2rem;
+  }
+  .iq-ask > span {
+    min-width: 8rem;
+    font-size: 0.95rem;
+  }
+  .iq-chip--s {
+    min-width: 2.35rem;
+    height: 2.35rem;
+    font-size: 1rem;
+  }
+  .iq-slide strong {
+    font-size: 1.05rem;
+    min-width: 7rem;
+  }
+  .iq-slide input {
+    height: 2.4rem;
+  }
+}

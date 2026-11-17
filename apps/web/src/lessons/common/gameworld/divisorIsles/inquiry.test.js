@@ -1,5 +1,17 @@
 import { describe, it, expect } from 'vitest';
-import { tryPlank, lastNeeded, missedBy, LENSES, chartCells, judgeClaim, cellOf, holds } from './inquiry';
+import {
+  tryPlank,
+  lastNeeded,
+  missedBy,
+  LENSES,
+  chartCells,
+  judgeClaim,
+  cellOf,
+  holds,
+  wall,
+  pieceOf,
+  quotientTex,
+} from './inquiry';
 
 /** The divisors of a number, counted apart. */
 const divisors = (a) => Array.from({ length: a }, (_, i) => i + 1).filter((d) => a % d === 0);
@@ -66,5 +78,36 @@ describe('the investigation of a rule — chart: a lens, the values claimed, and
     expect(judgeClaim(5, 'units', [0, 5, 6]).intruders).toHaveLength(10);
     expect(judgeClaim(5, 'units', []).ok).toBe(false);
     expect(judgeClaim(5, 'units', [0, 5]).ok).toBe(true);
+  });
+});
+
+describe('the investigation of a rule — turn: a bridge as a wall, and cut: a whole number of planks or a piece', () => {
+  it('a wall keeps every cell of the gap; its columns are equal exactly when the bridge holds', () => {
+    for (let a = 2; a <= 60; a += 1)
+      for (let d = 1; d <= a; d += 1) {
+        const w = wall(a, d);
+        expect(w.cells).toHaveLength(a);
+        expect(w.heights.reduce((s, h) => s + h, 0)).toBe(a);
+        expect(new Set(w.heights).size === 1, `${a} / ${d}`).toBe(a % d === 0);
+        expect(w.even).toBe(a % d === 0);
+        // read the other way, a wall that holds is d planks of e
+        if (w.even) expect(w.heights).toEqual(Array(d).fill(a / d));
+        expect(w.rows).toBe(Math.ceil(a / d));
+      }
+    expect(wall(40, 6)).toMatchObject({ e: 6, rest: 4, rows: 7, heights: [7, 7, 7, 7, 6, 6] });
+  });
+
+  it('the saw: whole planks and the piece make the gap; the quotient is written as a number of planks', () => {
+    for (let a = 1; a <= 60; a += 1)
+      for (let b = 1; b <= a; b += 1) {
+        const p = pieceOf(a, b);
+        expect(p.whole * b + p.piece).toBe(a);
+        expect(p.piece).toBeLessThan(b);
+        expect(p.exact).toBe(a % b === 0);
+        expect(/^\d+$/.test(quotientTex(a, b)), `${a} ÷ ${b}`).toBe(p.exact);
+      }
+    expect(quotientTex(31, 4)).toBe('7{,}75');
+    expect(quotientTex(31, 7)).toBe('4{,}42\\dots');
+    expect(quotientTex(36, 9)).toBe('4');
   });
 });
