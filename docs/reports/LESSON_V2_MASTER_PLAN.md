@@ -265,6 +265,38 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
   lines, was 1,911) keeps its own overlays and defines `WORLD`. NOT extracted, on purpose, and recorded in
   `GAME_WORLD.md` §3: the gate dash and the real-world cases (inside the pilot's world), the rule forge (step 7), the
   CSS split (done with the screen-size repair), the world's story as data (the gate on lesson 2 decides).
+- **OWNER'S STANDING ORDER (2026-11-17, his words):** « go on, do not stop until i get the lesson 2 ready to use after
+  all possible test in all devices ». So: every remaining step of Phase 0 and lesson 2 are done WITHOUT waiting for
+  « commit »; each step is committed on `dev` when its checks pass; nothing is pushed; lesson 2 is tested at laptop,
+  tablet and phone sizes. The order of what is left is the list just below.
+- **WHAT IS LEFT, in order (kept up to date — the first unticked line is the next thing to do):**
+  1. [~] Screen-size repair of the pilot on the kit's screens. DONE (commit `818a3c5b`): the knowledge page at
+     1024×768 and 1840×900 (world paused behind opaque pages; map cards keep their width; legend in the free corner;
+     whole map scaled while training), the teacher's tool header at 1024×768, the story on a phone (92 checks at
+     800×370: two delays moved to the game's clock; `?view=classic` is the closed message there). LEFT, all on a phone
+     held sideways (`E2E_TOUCH=1 E2E_SIZE=800x370`), each needs a real phone layout or a check that follows the
+     documented phone rules (`GAME_WORLD.md` « On a phone »: root font 13 px, `Fit` never below 0.9 and scrolls INSIDE
+     its box, readable beats unscrolled):
+     - `gameworld-practice`: the practice hub does not fit (map on top, the levels panel pushed below) — it needs two
+       columns and compact nodes under `@media (max-height: 500px)` in `kit/world.css`;
+     - `gameworld-field`: « depot-special » — the step panel scrolls / is cut (114 in 90);
+     - `gameworld-sitting`: the walk asks ≥ 17 px for the statement, the phone shows 15 px (root 13): decide the
+       phone threshold, look at the sheet on a phone;
+     - `launch-kit`: « bag » — the bag scrolls and a tool and the robot stand outside it;
+     - `lesson-lab`: quests at 11 px (too small: the rule is « always readable »), tools at 13 px.
+     Then: split `kit/world.css` (shell / kit screens / the pilot's overlays), re-run the eight walks at 1366×768,
+     1024×768, 1840×900 and the six student walks on a phone, update `GAME_WORLD.md` §6.
+  2. [ ] One `lesson.pack.js` per lesson and its generated index (the nine central lists of §2.2 become one); the
+     pilot's pack is `…/qasim-adad-tabii/world/index.js` today; `DivisorIsles.jsx` and `LessonIndex.jsx › GAME_WORLDS`
+     still name the pilot.
+  3. [ ] Remove the pilot's id from the 8 shared files (§2.2).
+  4. [ ] Finish the pilot: forge its three rules that are still told; generalise `ruleForge.js` / `RuleForge.jsx`
+     into the kit on those four examples.
+  5. [ ] A1–A6 (§4bis), with B1 (one shared engine chunk, a loading screen).
+  6. [ ] `apps/web/scripts/lesson-v2-status.mjs` and `docs/architecture/LESSON_V2.md`; mark D6 in the four contracts.
+  7. [ ] Cut the root `CLAUDE.md`.
+  8. [ ] THE GATE — lesson 2 `qawasim-adad-tabii`, rebuilt with the kit only, tested on every device; report the real
+     time, the lines written by hand and what still had to be copied from the pilot.
 - **D4 — DONE**: the five billing files are deleted.
 - **Phase 0 step 2 — formatter DONE**: Prettier (`.prettierrc.json`, 120 columns) with `npm run format:v2`
   and `npm run check:format` (in CI). The pilot's areas are formatted: 109 files; `features/classSession/` went from
