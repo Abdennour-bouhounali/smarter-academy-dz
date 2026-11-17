@@ -147,6 +147,7 @@ export default function DivisorIsles({
     try {
       const sound = storage.getItem('smarter_world_sound') !== '0';
       g = new DivisorIslesGame(canvas.current, {
+        lesson: LESSON,
         save: readSave(config.id),
         sound,
         unlockedKeys: keysFromModules(completedModules),

@@ -5,8 +5,10 @@
  * planks of that length: the scene lays q planks and shows the r cells left (a = b × q + r). The bridge HOLDS only when r = 0,
  * otherwise it crumbles — so « b is a divisor of a » is something the student sees happen before any word names it.
  *
- * This file owns the three.js scene, the loop and the game state; React (DivisorIsles.jsx) only draws the HUD and overlays
- * from `state` (subscribe / getState) and calls the public methods. All maths comes from ./logic.js.
+ * This file is the MECHANIC: the islands, the gaps, the moulds, the forge, the storm, the statues, the last bridge, the gate
+ * dash and the real-world cases. The scene, the loop, the robot, the camera, the hub and the save are the kit's
+ * (`kit/WorldRuntime.js`), which it extends and feeds through its hooks. The lesson's content comes as `this.lesson`.
+ * React (DivisorIsles.jsx) only draws the HUD and overlays from `state` and calls the public methods.
  */
 import * as THREE from 'three';
 import {
@@ -19,8 +21,6 @@ import {
   makeRock,
   makeFlower,
   makeBigCrystal,
-  makeGem,
-  makeCloud,
   mouldColor,
   makePedestal,
   makeMould,
@@ -32,48 +32,19 @@ import {
   makeStatue,
   makeHoverboard,
   makeLighthouse,
-  makeSky,
-  Particles,
-  disposeScene,
 } from '../engine/builders';
-import { makeRobot } from '../engine/robot';
-import { GameAudio } from '../engine/audio';
-import { GameInput } from '../engine/input';
 import { divide, predictOptions, bridgeStars, buildLayout, DASH_WAVES, DASH, checkDivision, STATUES } from './logic';
 import { T, waveSay, waveHint } from './strings';
-import {
-  makeRun,
-  makeWave,
-  levelOpen,
-  nextLevel,
-  levelId,
-  isDepot,
-  PRACTICE_NODES,
-} from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/practice';
 import { gatePoints, PRACTICE_HEARTS, MAX_WAVES } from '../kit/ladder';
 import { makeMission, judge, facts, answerParts, WORLD_OF, ORDER_PAY, MISTAKE_COST, CASE_HEARTS } from './cases';
 import { Depot } from './Depot';
-import {
-  caseEvidence,
-  verify,
-} from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/evidence';
-import {
-  applySitting,
-  examOpen,
-} from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/journey';
-import { examLevelOpen, emptyExam } from '../kit/journey';
+import { WorldRuntime, easeOut, damp } from '../kit/WorldRuntime';
 import { ShareScene, TileScene } from './Worlds';
 
 /** The 3D worlds of the real cases, built the first time they are played. */
 const WORLDS = { depot: Depot, share: ShareScene, tiling: TileScene };
 
-const SPEED = 6.2;
-const JUMP = 7.4;
-const GRAVITY = 21;
 const BRIDGE_HALF = 1.15;
-const ease = (t) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2);
-const easeOut = (t) => 1 - (1 - t) ** 3;
-const damp = (k, dt) => 1 - Math.exp(-k * dt);
 
 /** Sky palettes along the journey: morning → noon → gold → dusk → night. [top, bottom, sun colour, sun intensity, ambient, night] */
 const SKIES = [
@@ -88,35 +59,9 @@ const SKIES = [
   [0x0b1038, 0x2a3a7a, 0x9fb8ff, 1.1, 0.8, 1],
 ];
 
-export class DivisorIslesGame {
-  constructor(
-    canvas,
-    {
-      save = null,
-      onSave = () => {},
-      onModule = () => {},
-      onEvidence = () => {},
-      sound = true,
-      unlockedKeys = [],
-    } = {},
-  ) {
-    this.canvas = canvas;
-    this.onSave = onSave;
-    this.onModule = onModule;
-    this.onEvidence = onEvidence;
-    this.listeners = new Set();
-    this.occluders = [];
-    this.signs = [];
-    this.tweens = [];
-    this.interactables = [];
-    this.colliders = [];
-    this.gems = [];
-    this.queue = [];
-    this.dead = false;
-    this.time = 0;
-    this.shake = 0;
-    this.sayId = 0;
-    this.toastId = 0;
+export class DivisorIslesGame extends WorldRuntime {
+  // ───────────────────────────── what this world gives the runtime (kit/WorldRuntime.js › hooks) ─────────────────────────────
+  initWorld(sv) {
     this.layout = buildLayout();
     this.isl = this.layout.islands;
     this.segs = this.layout.segs.map((s) => ({
@@ -126,186 +71,30 @@ export class DivisorIslesGame {
       complete: false,
       stat: { firstPrediction: null, falls: 0, fails: 0 },
     }));
-    const sv = save && save.v === 1 ? save : null;
-    this.flags = { ...(sv?.flags ?? {}) };
-    this.startedAt = Date.now() - (sv?.elapsed ?? 0);
-    // the practice game: what is passed, and every key ever earned (on this device, or known from the lesson's progress)
-    this.practice = { ...(sv?.practice ?? {}) };
-    this.keysEver = new Set([...(sv?.keysEver ?? []), ...(sv?.keys ?? []), ...unlockedKeys]);
-    // « خريطة المعارف »: the cards read and the rules sealed by their memory test
-    // « فضاء الامتحان »: the ladder of sittings; and, per key, the first tries done as in an exam (right / all)
-    this.exam = { ...emptyExam(), ...(sv?.exam ?? {}) };
-    this.tally = { ...(sv?.tally ?? {}) };
-    // the student's crossing as evidence for the rule forge (every bridge fired), and the rules he forged himself
+    // the student's crossing as evidence for the rule forge (every bridge fired)
     this.log = [...(sv?.log ?? [])];
-    this.rules = { ...(sv?.rules ?? {}) };
-    this.know = {
-      read: [...(sv?.know?.read ?? [])],
-      sealed: [...(sv?.know?.sealed ?? [])],
-      trained: { ...(sv?.know?.trained ?? {}) },
-      found: [...(sv?.know?.found ?? [])],
-    };
-    this.state = {
-      phase: 'title',
-      stage: sv?.stage ?? 0,
+  }
+  worldState(sv) {
+    return {
       held: null,
-      prompt: null,
-      overlay: null,
       equation: null,
       pinned: null,
       stars: { ...(sv?.stars ?? {}) },
-      gems: sv?.gems?.length ?? 0,
-      keys: [...(sv?.keys ?? [])],
-      falls: sv?.falls ?? 0,
-      say: null,
-      toast: null,
       verdict: null,
       objective: '',
       dash: null,
-      sound,
       hasSave: Boolean(sv && (sv.stage > 0 || Object.keys(sv.stars ?? {}).length)),
       islandName: this.isl[sv?.stage ?? 0].name,
-      finished: Boolean(sv?.finished),
-      practice: this.practice,
-      openKeys: [...this.keysEver],
-      know: this.know,
       depot: null,
-      paper: false,
-      exam: this.exam,
-      tally: this.tally,
-      rules: this.rules,
     };
-    this.takenGems = new Set(sv?.gems ?? []);
-    this.audio = new GameAudio();
-    this.audio.enabled = sound;
-    this.input = new GameInput();
-    this.build();
-    this.restore();
-    this.loop = this.loop.bind(this);
-    this.last = performance.now();
-    this.raf = requestAnimationFrame(this.loop);
   }
-
-  // ───────────────────────────── store ─────────────────────────────
-  subscribe = (fn) => {
-    this.listeners.add(fn);
-    return () => this.listeners.delete(fn);
-  };
-  getState = () => this.state;
-  set(patch) {
-    this.state = { ...this.state, ...patch };
-    this.listeners.forEach((fn) => fn());
+  worldSave() {
+    return { stars: this.state.stars, log: this.log };
   }
-  say(text, hold = 6) {
-    this.sayId += 1;
-    this.set({ say: { text, id: this.sayId, hold } });
+  worldCentre() {
+    return this.isl[Math.floor(this.isl.length / 2)];
   }
-  toast(text, tone = 'good') {
-    this.toastId += 1;
-    this.set({ toast: { text, tone, id: this.toastId } });
-  }
-
-  save() {
-    this.onSave({
-      v: 1,
-      stage: this.state.stage,
-      stars: this.state.stars,
-      gems: [...this.takenGems],
-      keys: this.state.keys,
-      falls: this.state.falls,
-      flags: this.flags,
-      elapsed: Date.now() - this.startedAt,
-      finished: this.state.finished,
-      practice: this.practice,
-      keysEver: [...this.keysEver],
-      know: this.know,
-      exam: this.exam,
-      tally: this.tally,
-      log: this.log,
-      rules: this.rules,
-    });
-  }
-
-  // ───────────────────────────── helpers ─────────────────────────────
-  segPoint(seg, u, v = 0, y = 0) {
-    return new THREE.Vector3(seg.sx + seg.dx * u + seg.rx * v, y, seg.sz + seg.dz * u + seg.rz * v);
-  }
-  tween(d, fn, e = ease) {
-    return new Promise((res) => {
-      this.tweens.push({ t: 0, d: Math.max(0.0001, d), fn, e, res });
-    });
-  }
-  wait(d) {
-    return this.tween(d, () => {});
-  }
-  exitDir(i) {
-    const s = this.segs[Math.min(i, this.segs.length - 1)];
-    return { dx: s.dx, dz: s.dz, rx: s.rx, rz: s.rz };
-  }
-  entryDir(i) {
-    const s = this.segs[Math.max(0, i - 1)];
-    return { dx: s.dx, dz: s.dz, rx: s.rx, rz: s.rz };
-  }
-  spawnOf(i) {
-    const isl = this.isl[i];
-    if (i === 0) return new THREE.Vector3(isl.x, 0, isl.z + 3.2);
-    const d = this.entryDir(i);
-    return new THREE.Vector3(isl.x - d.dx * (isl.R - 2.6), 0, isl.z - d.dz * (isl.R - 2.6));
-  }
-
-  // ───────────────────────────── build ─────────────────────────────
-  build() {
-    const r = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, powerPreference: 'high-performance' });
-    r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    r.outputColorSpace = THREE.SRGBColorSpace;
-    r.toneMapping = THREE.ACESFilmicToneMapping;
-    r.toneMappingExposure = 1.05;
-    r.shadowMap.enabled = true;
-    r.shadowMap.type = THREE.PCFSoftShadowMap;
-    this.renderer = r;
-    this.scene = new THREE.Scene();
-    this.scene.fog = new THREE.Fog(0xcfeeff, 70, 300);
-    this.camera = new THREE.PerspectiveCamera(55, 1, 0.1, 1200);
-    this.camPos = new THREE.Vector3(0, 9, 14);
-    this.camLook = new THREE.Vector3();
-    this.camDir = new THREE.Vector2(0, -1);
-    this.camera.position.copy(this.camPos);
-
-    this.sky = makeSky();
-    this.scene.add(this.sky);
-    this.hemi = new THREE.HemisphereLight(0xdff3ff, 0x6a7a55, 1.0);
-    this.scene.add(this.hemi);
-    this.sun = new THREE.DirectionalLight(0xfff4dc, 2.5);
-    this.sun.castShadow = true;
-    this.sun.shadow.mapSize.set(2048, 2048);
-    const sc = this.sun.shadow.camera;
-    sc.left = -26;
-    sc.right = 26;
-    sc.top = 26;
-    sc.bottom = -26;
-    sc.near = 1;
-    sc.far = 120;
-    this.sun.shadow.bias = -0.0006;
-    this.sun.shadow.normalBias = 0.04;
-    this.scene.add(this.sun);
-    this.scene.add(this.sun.target);
-    this.skyNow = SKIES[0].slice();
-
-    this.particles = new Particles(600);
-    this.scene.add(this.particles.points);
-
-    // clouds: a sea far below and a few drifting high
-    this.clouds = [];
-    const cr = seeded(77);
-    const mid = this.isl[Math.floor(this.isl.length / 2)];
-    for (let i = 0; i < 70; i += 1) {
-      const c = makeCloud(cr, 1.6 + cr() * 2.2);
-      const high = i % 9 === 0;
-      c.position.set(mid.x + (cr() - 0.5) * 700, high ? 26 + cr() * 22 : -16 - cr() * 26, mid.z + (cr() - 0.5) * 760);
-      c.userData.v = 0.4 + cr() * 0.9;
-      this.scene.add(c);
-      this.clouds.push(c);
-    }
+  buildWorld(cr) {
     // far islets, only scenery
     for (let i = 0; i < 16; i += 1) {
       const isl = this.isl[Math.floor(cr() * this.isl.length)];
@@ -328,23 +117,170 @@ export class DivisorIslesGame {
 
     this.isl.forEach((isl, i) => this.buildIsland(isl, i));
     this.segs.forEach((seg) => (seg.kind === 'rail' ? this.buildRail(seg) : this.buildBridge(seg)));
-
-    this.robot = makeRobot();
-    this.scene.add(this.robot.group);
-    this.hero = {
-      pos: this.spawnOf(this.state.stage),
-      vel: new THREE.Vector3(),
-      yaw: Math.PI,
-      grounded: true,
-      island: this.state.stage,
-      dead: false,
-    };
     this.heldMesh = null;
-
-    this.ro = new ResizeObserver(() => this.resize());
-    this.ro.observe(this.canvas.parentElement);
-    this.resize();
   }
+  spawnPoint() {
+    return this.spawnOf(this.state.stage);
+  }
+  /** The sky follows the journey; the depot of the practice game works in daylight, whatever the hour of the story. */
+  skyTarget() {
+    return this.caseRun ? SKIES[1] : SKIES[Math.min(this.state.finished ? 8 : this.state.stage, 8)];
+  }
+  heading() {
+    const seg = this.segs[Math.min(this.state.stage, this.segs.length - 1)];
+    return Math.atan2(seg.dx, seg.dz);
+  }
+  cameraShot(ph) {
+    const h = this.hero;
+    const want = new THREE.Vector3();
+    const look = new THREE.Vector3();
+    let k = 4.5;
+    if (ph === 'title' && !this.dash && !this.caseRun) {
+      const a = this.time * 0.12 + 0.6;
+      const c = this.isl[this.state.stage];
+      want.set(c.x + Math.sin(a) * 19, 8.5, c.z + Math.cos(a) * 19);
+      look.set(c.x, 1.2, c.z);
+      k = 2;
+    } else if (ph === 'end') {
+      const a = this.time * 0.16;
+      const c = this.lighthouseWorld;
+      want.set(c.x + Math.sin(a) * 30, 15, c.z + Math.cos(a) * 30);
+      look.set(c.x, 8, c.z);
+      k = 1.2;
+    } else {
+      const cine = super.cameraShot(ph);
+      if (cine) return cine;
+      if (this.caseRun) {
+        want.copy(this.depot.camPos);
+        look.copy(this.depot.camLook);
+        k = 2.4;
+      } else if (this.dash) {
+        const rail = this.segs[5];
+        const off = this.dash.v * 0.7;
+        want.set(h.pos.x - rail.dx * 7.5 - rail.rx * off, 4.6, h.pos.z - rail.dz * 7.5 - rail.rz * off);
+        look.set(h.pos.x + rail.dx * 9 - rail.rx * off, 1.6, h.pos.z + rail.dz * 9 - rail.rz * off);
+        k = 8;
+      } else return null;
+    }
+    return { pos: want, look, k };
+  }
+  followsHero(ph) {
+    return super.followsHero(ph) && !this.dash && !this.caseRun;
+  }
+  fov() {
+    return this.dash ? 60 : this.caseRun ? 50 : 55;
+  }
+  busy() {
+    return Boolean(this.dash || this.caseRun);
+  }
+  /** The rule forge is a full-screen page too. */
+  pausesWorld(page) {
+    return page === 'forge' || super.pausesWorld(page);
+  }
+  onStart() {
+    if (this.state.stage === 0 && !this.segs[0].complete) this.say(T.say.hello, 10);
+    // a forge left unfinished (the page was closed on island « المرايا ») opens again: the key cannot be skipped
+    if (this.state.stage === 3 && !this.state.keys.includes('qasim-baqi'))
+      setTimeout(() => !this.dead && this.state.phase === 'play' && !this.state.overlay && this.openForge(), 900);
+  }
+  onGround() {
+    const h = this.hero;
+    const i = this.isl.findIndex((isl) => Math.hypot(h.pos.x - isl.x, h.pos.z - isl.z) <= isl.R - 0.12);
+    if (i >= 0) {
+      h.island = i;
+      if (i === this.state.stage + 1 && this.segs[this.state.stage]?.complete) this.arrive(i);
+    }
+  }
+  respawnPoint() {
+    return this.isl[this.hero.island].spawn;
+  }
+  onFall() {
+    const seg = this.segs[this.state.stage];
+    if (seg && !seg.complete) seg.stat.falls += 1;
+    this.say(T.say.fall[this.state.falls % T.say.fall.length], 4);
+  }
+  stepPhase(ph, dt) {
+    if (ph !== 'dash' || !this.dash) return false;
+    this.updateDash(dt);
+    return true;
+  }
+  lanesLive(ph) {
+    return ph === 'dash';
+  }
+  robotPose(ph) {
+    const eq = this.state.equation;
+    return {
+      lift: this.dash ? 0.15 : 0,
+      speed: this.dash ? 4 : null,
+      sad: Boolean(ph === 'forge' && eq && !eq.live && eq.r > 0 && this.state.verdict?.right !== true),
+    };
+  }
+  stepWorld(dt, ph) {
+    const h = this.hero;
+    if (this.heldMesh) {
+      this.heldMesh.position.set(h.pos.x, h.pos.y + 2.75 + Math.sin(this.time * 2.5) * 0.08, h.pos.z);
+      this.heldMesh.userData.box.rotation.y += dt * 1.2;
+    }
+    for (const isl of this.isl)
+      for (const p of isl.pedestals) {
+        const m = p.group.userData.mould;
+        m.position.y = 1.75 + Math.sin(this.time * 2 + p.b) * 0.1;
+        m.userData.box.rotation.y += dt * 0.8;
+      }
+    for (const seg of this.segs)
+      if (seg.altar) {
+        const u = seg.altar.userData;
+        u.prism.rotation.y += dt * 1.5;
+        u.prism.position.y = 1.55 + Math.sin(this.time * 2.2) * 0.12;
+        // the beacon: this platform is the next step (a mould is in hand, or the last bridge is open)
+        const next =
+          ph === 'play' &&
+          seg.index === this.state.stage &&
+          (seg.boss
+            ? Boolean(this.flags.key4) && !(seg.complete && this.flags.bossPaid)
+            : !seg.complete && this.state.held != null);
+        u.beacon.visible = next;
+        if (next) u.beacon.userData.animate(this.time, dt, this.activeIt === seg.altarIt);
+      }
+    if (this.stoneBeacon) {
+      const on = ph === 'play' && this.state.stage === 7 && !this.flags.key4;
+      this.stoneBeacon.visible = on;
+      if (on) this.stoneBeacon.userData.animate(this.time, dt, this.activeIt === this.stoneIt);
+    }
+    if (this.gapPulse) this.gapPulse.material.opacity = 0.35 + Math.abs(Math.sin(this.time * 7)) * 0.45;
+    if (this.anvil) {
+      this.anvil.userData.spark.rotation.y += dt * 2;
+      this.anvil.userData.spark.visible = Boolean(this.flags.anvil);
+    }
+    if (this.statueRing) this.statueRing.visible = !this.flags.statues;
+    if (this.board && !this.dash && !this.segs[5].complete)
+      this.board.position.y = 0.35 + Math.sin(this.time * 2.4) * 0.07;
+    if (this.lit) this.lighthouse.userData.beams.rotation.y += dt * 0.5;
+    if (this.depot) this.depot.update(this.time);
+  }
+
+  // ───────────────────────────── store ─────────────────────────────
+
+  // ───────────────────────────── helpers ─────────────────────────────
+  segPoint(seg, u, v = 0, y = 0) {
+    return new THREE.Vector3(seg.sx + seg.dx * u + seg.rx * v, y, seg.sz + seg.dz * u + seg.rz * v);
+  }
+  exitDir(i) {
+    const s = this.segs[Math.min(i, this.segs.length - 1)];
+    return { dx: s.dx, dz: s.dz, rx: s.rx, rz: s.rz };
+  }
+  entryDir(i) {
+    const s = this.segs[Math.max(0, i - 1)];
+    return { dx: s.dx, dz: s.dz, rx: s.rx, rz: s.rz };
+  }
+  spawnOf(i) {
+    const isl = this.isl[i];
+    if (i === 0) return new THREE.Vector3(isl.x, 0, isl.z + 3.2);
+    const d = this.entryDir(i);
+    return new THREE.Vector3(isl.x - d.dx * (isl.R - 2.6), 0, isl.z - d.dz * (isl.R - 2.6));
+  }
+
+  // ───────────────────────────── build ─────────────────────────────
 
   nearAnySegment(x, z, margin) {
     return this.layout.segs.some((s) => {
@@ -352,23 +288,6 @@ export class DivisorIslesGame {
       const v = (x - s.sx) * s.rx + (z - s.sz) * s.rz;
       return u > -margin && u < s.len + margin && Math.abs(v) < margin;
     });
-  }
-
-  resize() {
-    const p = this.canvas.parentElement;
-    if (!p) return;
-    const w = Math.max(2, p.clientWidth);
-    const h = Math.max(2, p.clientHeight);
-    this.renderer.setSize(w, h, false);
-    this.camera.aspect = w / h;
-    this.camera.updateProjectionMatrix();
-  }
-
-  /** `y` = height of the floating prompt above the thing (the HUD anchors « E » there). */
-  addInteract(x, z, prompt, act, r = 2.3, y = 3.1) {
-    const it = { x, z, r, prompt, act, y };
-    this.interactables.push(it);
-    return it;
   }
 
   buildIsland(isl, i) {
@@ -607,14 +526,6 @@ export class DivisorIslesGame {
     );
   }
 
-  addGem(id, x, y, z) {
-    if (this.takenGems.has(id)) return;
-    const m = makeGem();
-    m.position.set(x, y, z);
-    this.scene.add(m);
-    this.gems.push({ id, mesh: m, y });
-  }
-
   buildBridge(seg) {
     const g = new THREE.Group();
     this.scene.add(g);
@@ -823,11 +734,6 @@ export class DivisorIslesGame {
     const o = this.state.overlay;
     if (o?.type !== 'predict') return;
     this.forge(this.segs[o.seg], o.b, value);
-  }
-
-  closeOverlay() {
-    if (this.state.phase === 'dialog') this.set({ overlay: null, phase: 'play' });
-    this.input.clear();
   }
 
   plankMesh(seg, b, k) {
@@ -1555,7 +1461,7 @@ export class DivisorIslesGame {
           // GUIDED: the run stops on the mistake, says why with the true division, and a question of the same kind comes back
           let again = false;
           if (d.waves.length < MAX_WAVES) {
-            d.waves.push(makeWave(Math.random, d.node, d.level, w));
+            d.waves.push(this.lesson.ladder.makeWave(Math.random, d.node, d.level, w));
             this.dressGate(d.waves.length - 1);
             again = true;
           }
@@ -1606,127 +1512,10 @@ export class DivisorIslesGame {
   }
 
   // ───────────────────────────── « خريطة المعرفة » and the practice game ─────────────────────────────
-  /** The map opens from the title screen or from the world; it remembers where to return. */
-  openMap(sel = null, space = null) {
-    this.openHub({ type: 'map', sel, space });
-  }
-  /** « تقدّمي »: the student's progress in this lesson. « مختبري »: the lab of the lesson. */
-  openProgress() {
-    this.openHub({ type: 'progress' });
-  }
-  openLab() {
-    this.openHub({ type: 'lab' });
-  }
-  /** « عُدّة الانطلاق »: the launch of the lesson (`lessons/common/launchkit`). `then: 'start'` enters the world when it ends. */
-  openLaunch(thenStart = false) {
-    this.openHub({ type: 'launch', then: thenStart ? 'start' : null });
-  }
-  launched(then) {
-    this.closeMap();
-    if (then === 'start') this.start();
-  }
 
-  /** « خريطة المعارف »: the full page of every rule, example and common mistake of the lesson. */
-  openKnow(sel = null) {
-    this.openHub({ type: 'know', sel });
-  }
-  /** « الامتحان الأبيض »: the exam sitting (ExamSitting.jsx) — open once the four keys are owned. */
-  openSitting(level = 1) {
-    if (!examOpen([...this.keysEver], this.practice) || !examLevelOpen(this.exam, level)) return;
-    this.openHub({ type: 'sitting', level, weak: this.exam.weak?.[level] ?? [], n: (this.exam.sittings ?? 0) + 1 });
-  }
-
-  /** « خروج » from a sitting, confirmed: nothing was marked or sent, the ladder has not moved — back to it. */
-  quitSitting() {
-    if (this.state.overlay?.type === 'sitting') this.openMap(null, 'exam');
-  }
-
-  /** A sitting was handed in and its copy read: the ladder moves, and the GAME comes back for the moment between two levels. */
-  finishSitting(level, mark, total, weak) {
-    const { exam, result } = applySitting(this.exam, level, mark, total, weak);
-    this.exam = exam;
-    this.save();
-    if (result.passed) {
-      this.audio.play('finale');
-      for (let k = 0; k < result.stars; k += 1) setTimeout(() => this.audio.play('star', k + 1), 500 + k * 260);
-    } else this.audio.play('ui');
-    this.set({ exam, overlay: { type: 'promotion', result } });
-  }
-
-  openHub(overlay) {
-    if (this.dash || this.caseRun) return;
-    const ph = this.state.phase;
-    if (!this.mapFrom) this.mapFrom = ph === 'title' ? 'title' : 'play';
-    this.audio.play('ui');
-    this.set({ overlay, phase: this.mapFrom === 'title' ? 'title' : 'dialog', prompt: null });
-  }
-
-  /**
-   * « وضع الورقة »: a screen that asks for written work (`source`) turns it on — the music stops, as in an exam — and off when
-   * it leaves. Several screens may ask at once; the music comes back when none does.
-   */
-  paperMode(source, on) {
-    if (!this.paperSources) this.paperSources = new Set();
-    const was = this.paperSources.size > 0;
-    if (on) this.paperSources.add(source);
-    else this.paperSources.delete(source);
-    const now = this.paperSources.size > 0;
-    if (was === now) return;
-    this.audio.setMusic(!now);
-    if (now) this.audio.play('paper');
-    this.set({ paper: now });
-  }
-
-  /** An answer that counts toward الكفاءات (evidence.js decides which): handed to the shell, which sends it to the server. */
-  evidence(context, ev) {
-    if (!ev) return;
-    const t = this.tally[ev.key] ?? { ok: 0, n: 0 };
-    this.tally = { ...this.tally, [ev.key]: { ok: t.ok + (verify(ev.claim) ? 1 : 0), n: t.n + 1 } };
-    this.set({ tally: this.tally });
-    this.save();
-    this.onEvidence(context, ev);
-  }
   /** A help was opened during the current step of a case (the rule, a model sheet): its answer is no longer evidence. */
   markHelped() {
     if (this.caseRun) this.caseRun.helped = true;
-  }
-
-  /** A card of the knowledge page was opened / a rule passed its memory test. */
-  markRead(id) {
-    if (this.know.read.includes(id)) return;
-    this.know = { ...this.know, read: [...this.know.read, id] };
-    this.set({ know: this.know });
-    this.save();
-  }
-  /** DISCOVERY MODE of the knowledge page: these cards are now revealed (a card reveals the ones that follow it). */
-  discover(ids) {
-    const add = ids.filter((id) => !this.know.found.includes(id));
-    if (!add.length) return;
-    this.know = { ...this.know, found: [...this.know.found, ...add] };
-    this.audio.play('crystal');
-    this.set({ know: this.know });
-    this.save();
-  }
-  resetDiscovery(rootId) {
-    this.know = { ...this.know, found: [rootId] };
-    this.set({ know: this.know });
-    this.save();
-  }
-
-  /** A training session on a card of the knowledge page ended with `stars` (the best is kept). */
-  trained(id, stars) {
-    if ((this.know.trained[id] ?? 0) >= stars) return;
-    this.know = { ...this.know, trained: { ...this.know.trained, [id]: stars } };
-    if (stars) this.audio.play('success');
-    this.set({ know: this.know });
-    this.save();
-  }
-  seal(id) {
-    if (this.know.sealed.includes(id)) return;
-    this.know = { ...this.know, sealed: [...this.know.sealed, id] };
-    this.audio.play('key');
-    this.set({ know: this.know });
-    this.save();
   }
 
   closeMap() {
@@ -1740,20 +1529,20 @@ export class DivisorIslesGame {
   /** Plays level `level` (0-based) of node `node` of the map: a run of the gate dash, wherever the robot is in the story. */
   startPractice(node, level) {
     const keys = [...this.keysEver];
-    if (this.dash || this.caseRun || !levelOpen(node, level, keys, this.practice)) return false;
+    if (this.dash || this.caseRun || !this.lesson.ladder.levelOpen(node, level, keys, this.practice)) return false;
     this.audio.unlock();
     this.audio.startMusic();
     if (!this.mapFrom) this.mapFrom = this.state.phase === 'title' ? 'title' : 'play';
     if (!this.ret)
       this.ret = { pos: this.hero.pos.clone(), yaw: this.hero.yaw, island: this.hero.island, held: this.state.held };
-    if (isDepot(node, level)) return this.startCase(node, level);
+    if (this.lesson.ladder.isCase(node, level)) return this.startCase(node, level);
     this.beginRun({
       mode: 'practice',
       node,
       level,
-      waves: makeRun(Math.random, node, level),
+      waves: this.lesson.ladder.makeRun(Math.random, node, level),
       hearts: PRACTICE_HEARTS,
-      speed: PRACTICE_NODES[node].levels[level].speed,
+      speed: this.lesson.ladder.nodes[node].levels[level].speed,
     });
     return true;
   }
@@ -1788,7 +1577,7 @@ export class DivisorIslesGame {
 
   endPractice(win) {
     const d = this.dash;
-    const id = levelId(d.node, d.level);
+    const id = this.lesson.ladder.levelId(d.node, d.level);
     const before = this.practice[id] ?? { stars: 0, best: 0 };
     const stars = win ? Math.max(1, d.hearts) : 0;
     if (win) {
@@ -1799,7 +1588,7 @@ export class DivisorIslesGame {
       this.audio.play(stars === 3 ? 'finale' : 'success');
     } else this.audio.play('fail');
     this.leaveRail();
-    const next = win ? nextLevel([...this.keysEver], this.practice) : null;
+    const next = win ? this.lesson.ladder.nextLevel([...this.keysEver], this.practice) : null;
     this.set({
       phase: this.mapFrom === 'title' ? 'title' : 'dialog',
       dash: null,
@@ -1868,7 +1657,7 @@ export class DivisorIslesGame {
   // ───────────────────────────── « تعاونية الواحة »: the real-world practice game ─────────────────────────────
   /** A day at the depot: the orders of the level's mission, solved step by step; the depot packs what the student decides. */
   startCase(node, level) {
-    const { mission } = PRACTICE_NODES[node].levels[level];
+    const { mission } = this.lesson.ladder.nodes[node].levels[level];
     const world = WORLD_OF[mission];
     if (!this.worlds) this.worlds = {};
     this.depot = this.worlds[world] ?? (this.worlds[world] = new WORLDS[world](this));
@@ -1940,7 +1729,10 @@ export class DivisorIslesGame {
     const res = judge(o, c.si, value);
     // every answer is kept, right or wrong: the student can go back and read any earlier step of the day
     let rec = c.log.find((x) => x.oi === c.oi && x.si === c.si);
-    this.evidence('case', caseEvidence(o, c.si, value, { firstTry: !rec, helped: Boolean(c.helped) }));
+    this.evidence(
+      'case',
+      this.lesson.evidence.caseEvidence(o, c.si, value, { firstTry: !rec, helped: Boolean(c.helped) }),
+    );
     if (!rec) {
       rec = {
         oi: c.oi,
@@ -2064,7 +1856,7 @@ export class DivisorIslesGame {
 
   endCase(win, why = null) {
     const c = this.caseRun;
-    const id = levelId(c.node, c.level);
+    const id = this.lesson.ladder.levelId(c.node, c.level);
     const before = this.practice[id] ?? { stars: 0, best: 0 };
     const stars = win ? Math.max(1, c.hearts) : 0;
     if (win) {
@@ -2076,7 +1868,7 @@ export class DivisorIslesGame {
     } else this.audio.play('fail');
     const key = c.orders[Math.min(c.oi, c.orders.length - 1)].key;
     this.leaveDepot();
-    const next = win ? nextLevel([...this.keysEver], this.practice) : null;
+    const next = win ? this.lesson.ladder.nextLevel([...this.keysEver], this.practice) : null;
     this.set({
       phase: this.mapFrom === 'title' ? 'title' : 'dialog',
       practice: this.practice,
@@ -2134,27 +1926,6 @@ export class DivisorIslesGame {
   }
 
   // ───────────────────────────── public: shell commands ─────────────────────────────
-  start() {
-    this.audio.unlock();
-    this.audio.startMusic();
-    this.set({ phase: 'play' });
-    if (this.state.stage === 0 && !this.segs[0].complete) this.say(T.say.hello, 10);
-    // a forge left unfinished (the page was closed on island « المرايا ») opens again: the key cannot be skipped
-    if (this.state.stage === 3 && !this.state.keys.includes('qasim-baqi'))
-      setTimeout(() => !this.dead && this.state.phase === 'play' && !this.state.overlay && this.openForge(), 900);
-  }
-
-  roam() {
-    this.set({ overlay: null, phase: 'play' });
-    this.input.clear();
-  }
-  setSound(on) {
-    this.audio.setEnabled(on);
-    this.set({ sound: on });
-  }
-  openBag() {
-    if (this.state.phase === 'play' || this.state.phase === 'title') this.openMap();
-  }
 
   // ───────────────────────────── loop ─────────────────────────────
   walkable(x, z) {
@@ -2166,384 +1937,6 @@ export class DivisorIslesGame {
       if (Math.abs(v) <= BRIDGE_HALF && u >= -0.7 && u <= seg.builtLen) return true;
     }
     return false;
-  }
-
-  updateHero(dt) {
-    const h = this.hero;
-    const ax = this.input.axis();
-    const f = this.camDir;
-    const rx = -f.y;
-    const rz = f.x;
-    const mx = f.x * ax.y + rx * ax.x;
-    const mz = f.y * ax.y + rz * ax.x;
-    const k = damp(h.grounded ? 12 : 4, dt);
-    h.vel.x += (mx * SPEED - h.vel.x) * k;
-    h.vel.z += (mz * SPEED - h.vel.z) * k;
-    if (h.grounded && this.input.take('jump')) {
-      h.vel.y = JUMP;
-      h.grounded = false;
-      this.audio.play('jump');
-    }
-    if (!h.grounded) h.vel.y -= GRAVITY * dt;
-    h.pos.x += h.vel.x * dt;
-    h.pos.z += h.vel.z * dt;
-    h.pos.y += h.vel.y * dt;
-    if (h.pos.y > -0.4)
-      for (const c of this.colliders) {
-        const dx = h.pos.x - c.x;
-        const dz = h.pos.z - c.z;
-        const d = Math.hypot(dx, dz);
-        const min = c.r + 0.42;
-        if (d < min && d > 0.0001) {
-          h.pos.x = c.x + (dx / d) * min;
-          h.pos.z = c.z + (dz / d) * min;
-        }
-      }
-    const on = this.walkable(h.pos.x, h.pos.z);
-    if (h.grounded && !on) {
-      h.grounded = false;
-      this.audio.play('fall');
-    }
-    if (!h.grounded && h.pos.y <= 0 && h.vel.y <= 0 && on && h.pos.y > -0.45) {
-      h.pos.y = 0;
-      h.vel.y = 0;
-      h.grounded = true;
-    }
-    if (h.pos.y < -20) this.respawn();
-    const sp = Math.hypot(h.vel.x, h.vel.z);
-    if (sp > 0.4) {
-      const target = Math.atan2(h.vel.x, h.vel.z);
-      let dy = target - h.yaw;
-      dy = Math.atan2(Math.sin(dy), Math.cos(dy));
-      h.yaw += dy * damp(12, dt);
-    }
-    if (h.grounded) {
-      const i = this.isl.findIndex((isl) => Math.hypot(h.pos.x - isl.x, h.pos.z - isl.z) <= isl.R - 0.12);
-      if (i >= 0) {
-        h.island = i;
-        if (i === this.state.stage + 1 && this.segs[this.state.stage]?.complete) this.arrive(i);
-      }
-    }
-  }
-
-  respawn() {
-    const h = this.hero;
-    const seg = this.segs[this.state.stage];
-    if (seg && !seg.complete) seg.stat.falls += 1;
-    h.pos.copy(this.isl[h.island].spawn).setY(6);
-    h.vel.set(0, 0, 0);
-    h.grounded = false;
-    this.set({ falls: this.state.falls + 1 });
-    this.say(T.say.fall[this.state.falls % T.say.fall.length], 4);
-    this.particles.burst(h.pos.clone(), 0xffffff, 30, 3, 1, 0.8);
-  }
-
-  updateInteract() {
-    const h = this.hero;
-    let best = null;
-    let bd = 1e9;
-    let label = null;
-    if (h.grounded)
-      for (const it of this.interactables) {
-        const d = Math.hypot(h.pos.x - it.x, h.pos.z - it.z);
-        if (d < it.r && d < bd) {
-          const p = it.prompt();
-          if (p) {
-            best = it;
-            bd = d;
-            label = p;
-          }
-        }
-      }
-    this.activeIt = best;
-    if (label !== this.state.prompt) this.set({ prompt: label });
-    if (this.input.take('act') && best) best.act();
-  }
-
-  updateGems(dt) {
-    const h = this.hero;
-    for (const g of this.gems) {
-      if (g.taken) continue;
-      g.mesh.rotation.y += dt * 2.2;
-      g.mesh.position.y = g.y + Math.sin(this.time * 2 + g.mesh.position.x) * 0.15;
-      if (
-        Math.hypot(h.pos.x - g.mesh.position.x, h.pos.z - g.mesh.position.z) < 0.95 &&
-        Math.abs(h.pos.y + 0.9 - g.mesh.position.y) < 0.85
-      ) {
-        g.taken = true;
-        this.scene.remove(g.mesh);
-        this.takenGems.add(g.id);
-        this.audio.play('crystal');
-        this.particles.burst(g.mesh.position, 0x5ff2ff, 16, 3, 2, 0.7);
-        this.set({ gems: this.takenGems.size });
-      }
-    }
-  }
-
-  updateCamera(dt) {
-    const h = this.hero;
-    const ph = this.state.phase;
-    const seg = this.segs[Math.min(this.state.stage, this.segs.length - 1)];
-    const cur = Math.atan2(this.camDir.x, this.camDir.y);
-    const tgt = Math.atan2(seg.dx, seg.dz);
-    let dy = tgt - cur;
-    dy = Math.atan2(Math.sin(dy), Math.cos(dy));
-    const ny = cur + dy * damp(1.6, dt);
-    this.camDir.set(Math.sin(ny), Math.cos(ny));
-    const want = new THREE.Vector3();
-    const look = new THREE.Vector3();
-    let k = 4.5;
-    if (ph === 'title' && !this.dash && !this.caseRun) {
-      const a = this.time * 0.12 + 0.6;
-      const c = this.isl[this.state.stage];
-      want.set(c.x + Math.sin(a) * 19, 8.5, c.z + Math.cos(a) * 19);
-      look.set(c.x, 1.2, c.z);
-      k = 2;
-    } else if (ph === 'end') {
-      const a = this.time * 0.16;
-      const c = this.lighthouseWorld;
-      want.set(c.x + Math.sin(a) * 30, 15, c.z + Math.cos(a) * 30);
-      look.set(c.x, 8, c.z);
-      k = 1.2;
-    } else if (this.cine) {
-      want.copy(this.cine.pos);
-      look.copy(this.cine.look);
-      k = 2.6;
-    } else if (this.caseRun) {
-      want.copy(this.depot.camPos);
-      look.copy(this.depot.camLook);
-      k = 2.4;
-    } else if (this.dash) {
-      const rail = this.segs[5];
-      const off = this.dash.v * 0.7;
-      want.set(h.pos.x - rail.dx * 7.5 - rail.rx * off, 4.6, h.pos.z - rail.dz * 7.5 - rail.rz * off);
-      look.set(h.pos.x + rail.dx * 9 - rail.rx * off, 1.6, h.pos.z + rail.dz * 9 - rail.rz * off);
-      k = 8;
-    } else {
-      want.set(h.pos.x - this.camDir.x * 10.5, Math.max(0, h.pos.y) + 7.6, h.pos.z - this.camDir.y * 10.5);
-      look.set(h.pos.x + this.camDir.x * 2.5, Math.max(-2, h.pos.y) + 1.2, h.pos.z + this.camDir.y * 2.5);
-    }
-    this.camPos.lerp(want, damp(k, dt));
-    this.camLook.lerp(look, damp(k * 1.3, dt));
-    // a tree standing between the camera and the robot ducks down; a sign too close to the lens hides
-    const follow = (ph === 'play' || ph === 'dialog') && !this.dash && !this.caseRun;
-    const cx = this.camPos.x;
-    const cz = this.camPos.z;
-    const hx = h.pos.x - cx;
-    const hz = h.pos.z - cz;
-    const l2 = hx * hx + hz * hz || 1;
-    for (const o of this.occluders) {
-      let target = 1;
-      if (follow && !this.cine) {
-        const t = ((o.x - cx) * hx + (o.z - cz) * hz) / l2;
-        if (t > 0.02 && t < 0.93 && Math.hypot(o.x - (cx + hx * t), o.z - (cz + hz * t)) < 2.7) target = 0.14;
-      }
-      if (Math.abs(o.s - target) > 0.005) {
-        o.s += (target - o.s) * damp(9, dt);
-        o.obj.scale.setScalar(o.s);
-      }
-    }
-    for (const sg of this.signs) sg.obj.visible = !follow || Math.hypot(sg.x - cx, sg.z - cz) > 7.5;
-    this.camera.position.copy(this.camPos);
-    if (this.shake > 0) {
-      this.shake = Math.max(0, this.shake - dt);
-      this.camera.position.x += (Math.random() - 0.5) * this.shake * 0.8;
-      this.camera.position.y += (Math.random() - 0.5) * this.shake * 0.8;
-    }
-    this.camera.lookAt(this.camLook);
-    const fovT = this.dash ? 60 : this.caseRun ? 50 : 55;
-    if (Math.abs(this.camera.fov - fovT) > 0.1) {
-      this.camera.fov += (fovT - this.camera.fov) * damp(3, dt);
-      this.camera.updateProjectionMatrix();
-    }
-  }
-
-  updateSky(dt) {
-    // the depot of the practice game works in daylight, whatever the hour of the story
-    const tgt = this.caseRun ? SKIES[1] : SKIES[Math.min(this.state.finished ? 8 : this.state.stage, 8)];
-    const k = damp(0.5, dt);
-    const cA = new THREE.Color();
-    const cB = new THREE.Color();
-    for (let i = 0; i < 3; i += 1) {
-      cA.set(this.skyNow[i]);
-      cB.set(tgt[i]);
-      cA.lerp(cB, k);
-      this.skyNow[i] = cA.getHex();
-    }
-    for (let i = 3; i < 6; i += 1) this.skyNow[i] += (tgt[i] - this.skyNow[i]) * k;
-    const u = this.sky.material.uniforms;
-    u.top.value.set(this.skyNow[0]);
-    u.bottom.value.set(this.skyNow[1]);
-    u.night.value = this.skyNow[5];
-    this.scene.fog.color.set(this.skyNow[1]).lerp(cA.set(this.skyNow[0]), 0.25);
-    this.sun.color.set(this.skyNow[2]);
-    this.sun.intensity = this.skyNow[3];
-    this.hemi.intensity = this.skyNow[4];
-    this.hemi.color.set(this.skyNow[1]).lerp(cB.set(0xffffff), 0.55);
-    this.sky.position.copy(this.camera.position);
-    const h = this.hero.pos;
-    this.sun.position.set(h.x + 22, 38, h.z + 16);
-    this.sun.target.position.set(h.x, 0, h.z);
-  }
-
-  loop(now) {
-    if (this.dead) return;
-    this.raf = requestAnimationFrame(this.loop);
-    const raw = Math.max(0, (now - this.last) / 1000);
-    this.last = now;
-    // a full-screen page hides the world (« مختبري », the exam sheet): nothing is simulated or drawn behind it — the frames
-    // belong to the page (a tablet draws the lab's drags, not an island nobody sees)
-    const page = this.state.overlay?.type;
-    if (page === 'lab' || page === 'sitting' || page === 'launch' || page === 'forge') return;
-    const dt = Math.min(0.05, raw);
-    this.adaptQuality(raw);
-    this.step(dt);
-    this.renderer.render(this.scene, this.camera);
-    this.placePrompt();
-  }
-
-  /** Anchors the HUD's « E » bubble (an element handed over by the shell) above the thing the robot can use now. */
-  placePrompt() {
-    const el = this.promptEl;
-    if (!el) return;
-    const it = this.state.phase === 'play' ? this.activeIt : null;
-    if (!it || !this.state.prompt) {
-      el.style.visibility = 'hidden';
-      return;
-    }
-    const v = this.tmpV ?? (this.tmpV = new THREE.Vector3());
-    v.set(it.x, it.y, it.z).project(this.camera);
-    const w = this.canvas.clientWidth;
-    const hgt = this.canvas.clientHeight;
-    const x = Math.max(150, Math.min(w - 150, (v.x * 0.5 + 0.5) * w));
-    const y = Math.max(150, Math.min(hgt - 150, (-v.y * 0.5 + 0.5) * hgt));
-    el.style.visibility = v.z < 1 ? 'visible' : 'hidden';
-    el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -100%)`;
-  }
-
-  /** A slow machine first loses the retina resolution, then the shadows — the game stays playable on a school laptop. */
-  adaptQuality(raw) {
-    if (this.quality === 0 || raw > 0.5) return;
-    this.frameAvg = this.frameAvg == null ? raw : this.frameAvg * 0.95 + raw * 0.05;
-    this.frameCount = (this.frameCount ?? 0) + 1;
-    if (this.frameCount < 90 || this.frameAvg < 0.03) return;
-    this.quality = (this.quality ?? 2) - 1;
-    this.frameCount = 0;
-    this.frameAvg = null;
-    if (this.quality === 1) {
-      this.renderer.setPixelRatio(1);
-      this.resize();
-    } else {
-      this.renderer.shadowMap.enabled = false;
-      this.sun.castShadow = false;
-      this.scene.traverse((o) => {
-        if (o.material) o.material.needsUpdate = true;
-      });
-    }
-  }
-
-  /** One simulation step (also used by the tests to fast-forward the world). */
-  step(dt) {
-    this.time += dt;
-    for (let i = this.tweens.length - 1; i >= 0; i -= 1) {
-      const tw = this.tweens[i];
-      tw.t += dt;
-      const p = Math.min(1, tw.t / tw.d);
-      tw.fn(tw.e(p));
-      if (p >= 1) {
-        this.tweens.splice(i, 1);
-        tw.res();
-      }
-    }
-    const ph = this.state.phase;
-    const h = this.hero;
-    if (ph === 'play') {
-      this.updateHero(dt);
-      this.updateInteract();
-    } else if (ph === 'dash' && this.dash) this.updateDash(dt);
-    else {
-      h.vel.x *= 0.8;
-      h.vel.z *= 0.8;
-    }
-    if (ph !== 'play') {
-      this.input.take('act');
-      this.input.take('jump');
-      if (ph !== 'dash') {
-        this.input.take('left');
-        this.input.take('right');
-      }
-    }
-    this.updateGems(dt);
-    this.robot.group.position.copy(h.pos);
-    if (this.dash) this.robot.group.position.y += 0.15;
-    this.robot.group.rotation.y = h.yaw;
-    const eq = this.state.equation;
-    this.robot.update(dt, {
-      speed: this.dash ? 4 : Math.hypot(h.vel.x, h.vel.z),
-      vy: h.vel.y,
-      air: !h.grounded,
-      sad: Boolean(ph === 'forge' && eq && !eq.live && eq.r > 0 && this.state.verdict?.right !== true),
-    });
-    if (this.heldMesh) {
-      this.heldMesh.position.set(h.pos.x, h.pos.y + 2.75 + Math.sin(this.time * 2.5) * 0.08, h.pos.z);
-      this.heldMesh.userData.box.rotation.y += dt * 1.2;
-    }
-    for (const isl of this.isl)
-      for (const p of isl.pedestals) {
-        const m = p.group.userData.mould;
-        m.position.y = 1.75 + Math.sin(this.time * 2 + p.b) * 0.1;
-        m.userData.box.rotation.y += dt * 0.8;
-      }
-    for (const seg of this.segs)
-      if (seg.altar) {
-        const u = seg.altar.userData;
-        u.prism.rotation.y += dt * 1.5;
-        u.prism.position.y = 1.55 + Math.sin(this.time * 2.2) * 0.12;
-        // the beacon: this platform is the next step (a mould is in hand, or the last bridge is open)
-        const next =
-          ph === 'play' &&
-          seg.index === this.state.stage &&
-          (seg.boss
-            ? Boolean(this.flags.key4) && !(seg.complete && this.flags.bossPaid)
-            : !seg.complete && this.state.held != null);
-        u.beacon.visible = next;
-        if (next) u.beacon.userData.animate(this.time, dt, this.activeIt === seg.altarIt);
-      }
-    if (this.stoneBeacon) {
-      const on = ph === 'play' && this.state.stage === 7 && !this.flags.key4;
-      this.stoneBeacon.visible = on;
-      if (on) this.stoneBeacon.userData.animate(this.time, dt, this.activeIt === this.stoneIt);
-    }
-    if (this.gapPulse) this.gapPulse.material.opacity = 0.35 + Math.abs(Math.sin(this.time * 7)) * 0.45;
-    if (this.anvil) {
-      this.anvil.userData.spark.rotation.y += dt * 2;
-      this.anvil.userData.spark.visible = Boolean(this.flags.anvil);
-    }
-    if (this.statueRing) this.statueRing.visible = !this.flags.statues;
-    if (this.board && !this.dash && !this.segs[5].complete)
-      this.board.position.y = 0.35 + Math.sin(this.time * 2.4) * 0.07;
-    if (this.lit) this.lighthouse.userData.beams.rotation.y += dt * 0.5;
-    for (const c of this.clouds) {
-      if (c.userData.v) {
-        c.position.x += c.userData.v * dt;
-        if (c.position.x > h.pos.x + 380) c.position.x -= 760;
-      } else c.position.y += Math.sin(this.time * 0.4 + c.userData.bob) * 0.004;
-    }
-    if (this.depot) this.depot.update(this.time);
-    this.particles.update(dt);
-    this.updateCamera(dt);
-    this.updateSky(dt);
-  }
-
-  dispose() {
-    this.dead = true;
-    cancelAnimationFrame(this.raf);
-    this.ro?.disconnect();
-    this.input.dispose();
-    this.audio.dispose();
-    disposeScene(this.scene);
-    this.renderer.dispose();
-    this.listeners.clear();
   }
 }
 

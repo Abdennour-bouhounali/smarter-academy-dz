@@ -255,6 +255,10 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
   with `Game.js` and is done with sub-step 3. The same day the other screen sizes were measured (owner's request):
   failures at 1024×768, 1840×900 and on a phone, ALL present before the extraction (`GAME_WORLD.md` §6); owner's
   decision: they are repaired on the kit's screens right after this step, before lesson 2.
+- **Phase 0 step 4 — sub-step 3, part 1 (2026-11-17): `Game.js` is split.** `kit/WorldRuntime.js` (the scene, the loop,
+  the robot, the camera, the sky, the hub, the knowledge and exam state, the save) is a class a WORLD extends through a
+  closed list of hooks (`GAME_WORLD.md` §3); the pilot's world keeps the mechanic and no longer imports the lesson: it
+  reads `this.lesson`. Still inside the world: the gate dash and the real-world cases. Part 2 is the shell.
 - **D4 — DONE**: the five billing files are deleted.
 - **Phase 0 step 2 — formatter DONE**: Prettier (`.prettierrc.json`, 120 columns) with `npm run format:v2`
   and `npm run check:format` (in CI). The pilot's areas are formatted: 109 files; `features/classSession/` went from

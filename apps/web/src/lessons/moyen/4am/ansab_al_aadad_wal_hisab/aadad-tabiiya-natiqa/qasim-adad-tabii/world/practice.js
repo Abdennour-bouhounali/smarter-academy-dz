@@ -240,7 +240,6 @@ export const PRACTICE_NODES = [
 ];
 /** The ladder of this lesson: its levels, bound to its nodes and its generators. */
 export const ladder = createLadder({ nodes: PRACTICE_NODES, generators: G, isRight });
-export const { levelId, MAX_PRACTICE_STARS, waveOf, makeWave, makeRun, nodeOpen, levelOpen, nextLevel, practiceStars } =
-  ladder;
+export const { levelId, MAX_PRACTICE_STARS, waveOf, nodeOpen, levelOpen, nextLevel, practiceStars } = ladder;
 /** Is this level the real-world game (« تعاونية الواحة » and its two other worlds) rather than a run of the gate dash? */
 export const isDepot = ladder.isCase;

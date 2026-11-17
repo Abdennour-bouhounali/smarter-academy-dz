@@ -349,6 +349,7 @@ state line under the tables):
 | `ExamSitting.jsx`, `examSitting.css` | the screen of « الامتحان الأبيض » (§2quater) | `sittings` (with `mark`, `model`, `scheme`, `evidenceOf`), `rules` |
 | `Trainer.jsx` | the screen of « تدرّب »: it draws a tap, a true / false, or a FORM the lesson describes | `trainer` |
 | `KnowledgePage.jsx` | the full-page « خريطة المعارف » | `knowledge`: `{ graph, modules, positions }` |
+| `WorldRuntime.js` | **the world runtime**: the three.js scene, the loop, the robot and its movement, the camera, the sky, the things to use, the gems, the state React reads, the hub, the knowledge page's state, the exam ladder, the paper mode, the evidence tally, the save | the pack as `lesson`; a WORLD extends it (below) |
 
 **The pilot's content** (`…/qasim-adad-tabii/world/`, each with its test)
 
@@ -368,7 +369,7 @@ state line under the tables):
 | File | Role |
 |---|---|
 | `logic.js` (+ test) | PURE: Euclidean division, prediction options, stars, the islands and segments data, dash waves, world layout |
-| `Game.js` | the three.js scene, the loop, the robot controller, forge / storm / dash / last bridge, the state store |
+| `Game.js` | **the mechanic** — `DivisorIslesGame extends WorldRuntime`: islands, gaps, moulds, forge, storm, statues, last bridge, the gate dash and the real-world cases; it reads the lesson as `this.lesson` and imports no lesson |
 | `DivisorIsles.jsx`, `divisorIsles.css` | React shell: HUD and overlays, read from the game's state; it mounts `<LessonProvider>` with the pilot's pack (the ONE place of the world that names the lesson) |
 | `cases.js` (+ test) | PURE: the orders of « تعاونية الواحة », their steps, `judge` and its explanations |
 | `Depot.js`, `Worlds.js` | the 3D worlds of the cases: the depot, the friends' table, the tiler's site; `runSim` shows what was decided |
@@ -377,14 +378,35 @@ state line under the tables):
 | `../engine/builders.js`, `robot.js`, `audio.js`, `input.js` | reusable: low-poly builders, the robot, synthesised sound, keyboard + touch input |
 | `../../lessonlab/` | « مختبري », the lab of every lesson — its own contract: `LESSON_LAB.md` |
 
-**State of the extraction (2026-11-17).** Done: the pure logic (the six frames) and six screens — the two spaces and
-« تقدّمي », the paper mode, the exam sitting, « تدرّب », the knowledge page — which read the lesson through
-`useLesson()`. Not done yet: the SHELL (`DivisorIsles.jsx`: title screen, HUD, practice hub, result and end screens) and
-`Game.js` are still one piece for the runtime and the mechanic — they share the overlay protocol and are split together;
-`cases.js`, `ruleForge.js` / `RuleForge.jsx` and `strings.js` still mix kit and lesson (the forge is generalised when
-the pilot's three other rules are forged, plan §4 step 7); the lesson's content still reads `logic.js` and `strings.js`
-of the world; the CSS is still one file `divisorIsles.css` for kit screens and world overlays. A lesson's content will
-be gathered in ONE `lesson.pack.js` (plan §4 step 5): today it is `world/index.js`.
+**A world is a class that extends the runtime.** `kit/WorldRuntime.js` reaches a world ONLY through these hooks; a
+new world implements them and nothing else of the runtime:
+
+| Hook | What the world answers |
+|---|---|
+| `initWorld(save)`, `worldState(save)`, `worldSave()` | its own fields, its keys of the state React reads, its part of the save |
+| `worldCentre()`, `buildWorld(rand)`, `spawnPoint()`, `restore()` | where the sea of clouds is centred, the scene, where the robot starts, the world as the save left it |
+| `walkable(x, z)`, `onGround()`, `respawnPoint()`, `onFall()` | is there ground here, what standing there triggers (an arrival), where a fall brings back and what it says |
+| `onStart()` | the story begins or resumes |
+| `stepPhase(phase, dt)`, `lanesLive(phase)`, `stepWorld(dt, phase)`, `robotPose(phase)` | a phase of its own (a run on a rail), its animations, how the robot holds itself |
+| `heading()`, `cameraShot(phase)`, `followsHero(phase)`, `fov()`, `skyTarget()` | the camera when it does not follow the robot, and the sky |
+| `busy()`, `pausesWorld(page)` | may the hub open now; does this full-screen page hide the world |
+
+The runtime gives a world: `this.scene`, `this.hero`, `this.robot`, `this.input`, `this.audio`, `this.particles`,
+`tween` / `wait`, `addInteract`, `addGem`, `set` / `say` / `toast`, `this.cine` (a cinematic shot), `this.shake`,
+`this.flags`, `save()`, and the lesson's data as `this.lesson`.
+
+**State of the extraction (2026-11-17).** Done: the pure logic (the six frames), six screens (the two spaces and
+« تقدّمي », the paper mode, the exam sitting, « تدرّب », the knowledge page) and the world runtime. Not done yet:
+- the SHELL (`DivisorIsles.jsx`: title screen, HUD, practice hub, result and end screens) is still one file with the
+  world's own overlays;
+- the gate dash and the real-world cases are generic ideas still written INSIDE the pilot's world (`Game.js`: they use
+  its rail and its three case scenes): another world would have to write them again;
+- `cases.js`, `ruleForge.js` / `RuleForge.jsx` and `strings.js` still mix kit and lesson (the forge is generalised when
+  the pilot's three other rules are forged, plan §4 step 7); the lesson's content still reads `logic.js` and
+  `strings.js` of the world; the CSS is still one file `divisorIsles.css` for kit screens and world overlays;
+- the world's story is written for THIS lesson (which island does what): a second lesson in the same world will show
+  what must become data (plan §9, step 3: the gate).
+A lesson's content will be gathered in ONE `lesson.pack.js` (plan §4 step 5): today it is `world/index.js`.
 
 **The shape of an exam answer is DATA.** The kit draws what the lesson describes, and never knows its mathematics:
 - a sitting question is `sentence` (words around ONE `{ choice: [{ value, text }] }`) or `tokens` (signs around boxes
