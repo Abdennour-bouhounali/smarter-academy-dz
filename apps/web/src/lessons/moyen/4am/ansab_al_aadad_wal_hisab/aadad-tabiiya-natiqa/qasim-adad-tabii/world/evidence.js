@@ -1,15 +1,14 @@
 /**
  * The EVIDENCE of lesson `qasim-adad-tabii` — PURE. Which answers count (written format, first try, no help) and what is
- * sent is the kit's rule (`gameworld/kit/evidence.js`). Here: the الكفاءة each key proves, the CLAIM each kind of answer
- * makes about a Euclidean division, and `verify` — the verdict of a claim from its numbers alone, the same rule the
- * server applies (it never trusts the browser's verdict).
+ * sent is the kit's rule (`gameworld/kit/evidence.js`). Here: the الكفاءة each key proves and the CLAIM each kind of answer
+ * makes about a Euclidean division. The verdict of a claim is the kit's (`kit/claims.js`, the same rule as the server's).
  */
 import { counts, createEvidence } from '../../../../../../common/gameworld/kit/evidence';
 
 /** The الكفاءة each key proves (the codes of the lesson's `learningPoints`). */
 const POINTS = { 'qasim-baqi': 'P1', 'qasim-jidaa': 'P2', 'siyagh-mutakafia': 'P3', 'wahid-wa-nafsuh': 'P4' };
 /** The evidence of this lesson: the kit's rule, with what a case answer claims and how a claim is verified. */
-export const evidence = { ...createEvidence({ grade: '4am', points: POINTS }), caseEvidence, verify };
+export const evidence = { ...createEvidence({ grade: '4am', points: POINTS }), caseEvidence };
 
 /** The calculation steps of the real cases that prove a learning point (an invoice or a sum proves arithmetic, not the lesson). */
 const STEP_KEY = {
@@ -59,42 +58,4 @@ export function caseEvidence(order, stepIndex, value, ctx) {
   if (step.id === 'trucks' || step.id === 'boxes') return { key, claim: { kind: 'containers', a, b, count: n('x') } };
   if (step.id === 'capacity') return { key, claim: { kind: 'product', a, b: n('x'), q: b, other: b } };
   return { key, claim: { kind: 'division', a, b, q: n('q'), r: n('r') ?? 0, fits: (n('r') ?? 0) === 0 } };
-}
-
-/**
- * The verdict of a claim, from its numbers alone — the SAME rule the server applies (one shared fixture, evidence.test.js).
- */
-export function verify(claim) {
-  const int = (x) => Number.isInteger(x) && x >= 0;
-  const c = claim;
-  switch (c.kind) {
-    case 'division':
-      return int(c.q) && int(c.r) && c.b > 0 && c.b * c.q + c.r === c.a && c.r < c.b && c.fits === (c.r === 0);
-    case 'product':
-      return (
-        int(c.q) &&
-        int(c.b) &&
-        c.b > 0 &&
-        c.b * c.q === c.a &&
-        int(c.other) &&
-        c.other > 0 &&
-        c.a % c.other === 0 &&
-        (c.other !== c.b || c.b === c.q)
-      );
-    case 'phrase': {
-      const small = Math.min(c.a, c.b);
-      const divisorFirst = c.first === small;
-      return ['qasim', 'yaqsim'].includes(c.phrase)
-        ? divisorFirst
-        : ['mudaaf', 'yaqbal'].includes(c.phrase)
-          ? !divisorFirst
-          : false;
-    }
-    case 'sure':
-      return new Set([c.x, c.y]).size === 2 && [c.x, c.y].includes(1) && [c.x, c.y].includes(c.a);
-    case 'containers':
-      return int(c.count) && c.b > 0 && c.count === Math.ceil(c.a / c.b);
-    default:
-      return false;
-  }
 }

@@ -368,7 +368,7 @@ export function scheme(q) {
   }
 }
 
-/** The claim the server re-computes (evidence.js › verify), or null (a sum of money proves arithmetic, not the lesson). */
+/** The claim the server re-computes (kit/claims.js › verifyClaim), or null (a sum of money proves arithmetic, not the lesson). */
 export function evidenceOf(q, v) {
   if (!q.key || !answered(q, v)) return null;
   const n = (k) => Number(v[k]);

@@ -6,8 +6,10 @@
  * (`claim`): the browser's own verdict is never trusted.
  *
  * The lesson gives (`createEvidence`): its grade and, per key (rule), the code of the الكفاءة it proves. It keeps for
- * itself WHAT a claim is and how it is verified: that is its mathematics (and the server's own copy of the rule).
+ * itself WHICH claim each of its answers makes; how a claim is verified is the kit's (`claims.js`), the same rule as the
+ * server's.
  */
+import { verifyClaim } from './claims';
 
 /** Does this answer count? ctx = { firstTry, helped } — helped: a model sheet or the rule was opened before it. */
 export const counts = (ctx) => Boolean(ctx?.firstTry) && !ctx.helped;
@@ -22,5 +24,5 @@ export function createEvidence({ grade, points }) {
     return learningPoint ? { attemptId, learningPoint, context, claim: ev.claim } : null;
   }
 
-  return { learningPointOf, payloadOf };
+  return { learningPointOf, payloadOf, verify: verifyClaim };
 }

@@ -1,6 +1,8 @@
 # « عُدّة الانطلاق » — the launch of a lesson
 
-> **Status: phase 1 built on 2026-11-17 on the pilot lesson `qasim-adad-tabii` — NOT validated by the owner, no real student has
+> **BINDING for the lesson v2 rollout (owner decision D6, 2026-11-17): every v2 lesson follows this contract — `LESSON_V2.md` says how a lesson plugs into it.** What has not changed: it was built on the pilot lesson and no real student has used it yet.
+>
+> **Status: phase 1 built on 2026-11-17 on the pilot lesson `qasim-adad-tabii`; no real student has
 > played it.** Owner's idea (2026-11-16/17): before a lesson, a game of five minutes at most, fun, that tests the earlier
 > الكفاءات the lesson needs, gives a score with the lessons to revise, and feeds the picture of the student's learning that the
 > student and the teacher read. Build plan and the phases not built yet: `docs/reports/LAUNCH_KIT_PLAN_2026-11-17.md`.

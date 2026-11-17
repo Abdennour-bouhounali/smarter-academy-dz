@@ -1,8 +1,10 @@
-# GAME_WORLD — the lesson played as a 3D game world (trial, 2026-11-15)
+# GAME_WORLD — the lesson played as a 3D game world (first built 2026-11-15)
 
-**Status: TRIAL on ONE lesson (`qasim-adad-tabii`), student view only. Not validated by the owner, not a rollout rule.**
-The owner asked for a free experiment « without limiting it with the docs or what is already built »: this document describes
-what the code does today, so the trial can be judged, extended or removed. Nothing here binds another lesson.
+**BINDING for the lesson v2 rollout (owner decision D6, 2026-11-17): every v2 lesson follows this contract — `LESSON_V2.md` says how a lesson plugs into it.** What has not changed: it was built on the pilot lesson and no real student has used it yet.
+
+**Where it started:** a TRIAL on ONE lesson (`qasim-adad-tabii`), student view only — a free experiment the owner asked
+for « without limiting it with the docs or what is already built ». Sections still marked « NOT validated » describe parts
+he has not judged one by one; they are binding all the same, as built.
 
 ## 1. What it is
 
@@ -389,9 +391,12 @@ state line under the tables):
 | `KnowledgePage.jsx` | the full-page « خريطة المعارف » | `knowledge`: `{ graph, modules, positions }` |
 | `LessonWorld.jsx` | **the shell**: the canvas, the top bar, the controls, the overlay switch; it mounts `<LessonProvider>` and creates the world's game | `world` (below) and the pack |
 | `Title.jsx`, `PracticeHub.jsx`, `Tablet.jsx`, `Result.jsx`, `End.jsx` | the title screen, the practice hub (the lesson's mind map as a level select), a rule tablet, the result of a level, the end | `ladder`, `journey`, `rules`, `keys`, `text`, `practiceMap` |
+| `claims.js` (+ test) | the kinds of claim a game answer can make and `verifyClaim` — the browser's copy of the server's `ClaimVerifier` (one fixture) | — |
 | `forge.js`, `RuleForge.jsx`, `ruleForge.css` | « مصهر القاعدة »: the frame of a rule forge (pure) and its screen — predict, write the rule with tiles, the mirror tests and attacks it, seal, use (§2sexies) | `forges` (one description per key) and the world's `parts` |
 | `parts.jsx` | a formula, the toast, the robot's bubble, the touch stick, a card over the world, three stars, a box for a number | — |
 | `styles/` | eleven style sheets, one per screen (`world`, `practice`, `knowledge`, `cases`, `trainer`, `paper`, `steps`, `knowledgeJourney`, `fit`, `spaces`, `phone`), imported by `styles/index.js` **in the order of the cascade** — `fit.css` and `phone.css` override the others, so a new sheet takes its place in that list and is never imported from a screen. Classes `di-…` | — |
+| `saveSync.js` (+ test) | the browser's copy of the save (`readSave`, `writeSave`) and its copy on the server: `pullSave` before the world mounts, `schedulePush` after a save (`LESSON_V2.md` §1ter) | — |
+| `../LessonGameWorld.jsx`, `../lessonGameWorld.css` | the LOADER of a lesson's world: the world chunk, the lesson's content and the server's save arrive together behind a loading screen; its `WORLDS` map lists the worlds (one entry per world) | the pack's `world` |
 | `WorldRuntime.js` | **the world runtime**: the three.js scene, the loop, the robot and its movement, the camera, the sky, the things to use, the gems, the state React reads, the hub, the knowledge page's state, the exam ladder, the paper mode, the evidence tally, the save | the pack as `lesson`; a WORLD extends it (below) |
 
 **The pilot's content** (`…/qasim-adad-tabii/world/`, each with its test)
@@ -403,7 +408,7 @@ state line under the tables):
 | `sitting.js` | the four exercises by tier, the five levels, `mark`, `model`, `scheme`, `evidenceOf` |
 | `forges.js` | the four forges of the lesson, one per key (§2sexies) |
 | `journey.js` | the four keys, bound to the ladder and the levels |
-| `evidence.js` | the الكفاءة of each key, the claims, `verify` (the same rule as the server) |
+| `evidence.js` | the الكفاءة of each key and the CLAIM each kind of answer makes (their verdict is the kit's `claims.js`) |
 | `knowledge.js` | the lesson's graph and memo sheets (imported from the lesson, never retyped) and where each card sits on the map |
 | `text.js` | the names of its levels and of its real-world worlds |
 | `index.js` | **the pack**: `lesson = { keys, keysFromModules, rules, ladder, practiceMap, sittings, trainer, journey, evidence, cards, knowledge, text }` |
@@ -477,10 +482,13 @@ Everything is drawn in code (no model, no image, no sound file); Arabic in the s
 
 ## 4. State, progress and « الكفاءات »
 
-- The game saves in the browser only (`scopedStorage`, key `smarter_world_<lessonId>`): stage, stars, gems, keys, flags, the
+- The game saves in the browser (`scopedStorage`, key `smarter_world_<lessonId>`, never waiting for the network): stage, stars, gems, keys, flags, the
   practice (`practice`, `keysEver`), the knowledge page (`know: { read, sealed, trained, found }`), the exam ladder
   (`exam: { best, fails, weak, sittings }`), per key the first tries done as in an exam (`tally: { ok, n }`), the bridges fired
-  (`log`, the evidence of the rule forge) and the rules the student forged (`rules`, §2sexies). Not synced.
+  (`log`, the evidence of the rule forge) and the rules the student forged (`rules`, §2sexies).
+- **The journey follows the student from one device to the next** (2026-11-17, `kit/saveSync.js`; `LESSON_V2.md` §1ter): a
+  copy of the save is kept on the server in his private answers store; the newest whole save wins. The world opens on
+  a loading screen (`LessonGameWorld.jsx`) that brings the server's copy when it is newer, then mounts.
 - It marks lesson modules complete through `useProgress.markModuleCompleted`: module 1 after tablet 1 (that is, after the rule forge), module 2 after tablet 4,
   module 3 after the dash, module 4 after the last bridge. Modules 0, 5, 6 and 7 are not played in the world.
 
@@ -495,7 +503,8 @@ Until that day the game wrote no learning evidence; it now does, on strict terms
   (its verdict cannot be re-computed from numbers).
 - **The server is the judge**: the browser sends a CLAIM — the numbers of the question and what the student wrote — to
   `POST /lessons/{code}/game-evidence` (`GameEvidenceController`); `ClaimVerifier` re-computes the verdict and ignores any flag
-  from the browser. The JS `verify()` and the PHP verifier share ONE fixture (`apps/api/tests/Fixtures/game-claims.json`).
+  from the browser. The JS `verifyClaim()` (`kit/claims.js`) and the PHP verifier share ONE fixture (`apps/api/tests/Fixtures/game-claims.json`);
+  a claim kind belongs to no lesson, and adding one is the same three edits on both sides (`LESSON_V2.md` §1bis).
 - **The learning point**: each question carries its key; the four keys map onto the lesson's P1–P4 (`learningPointOf`).
 - **The weight**: a practice evidence judged by the server, difficulty 2 (trainer) or 3 (case). The same division asked twice is
   the same item (`ClaimVerifier::itemId`). A game alone never declares a point mastered: `mastery.require_assessment` still asks
@@ -525,7 +534,7 @@ between the camera and the robot ducks down, and a sign too close to the lens hi
 - Verified in headless Chromium (software rendering) at 1366×768, and the first stage at 1024×768. **Not yet played by a real
   student, nor on a real tablet or a real GPU**: speed, the touch stick and the sound were not judged by a human ear or hand.
 - Strings live in `strings.js`, not in the i18n namespace; the lab kit (`LabCoach`, rounds, memo card) is not used.
-- The save is local to the browser: another device starts from the first island.
+- Two devices played at the same time do not merge: the newest whole save wins (the device's clock).
 - **Other screen sizes (2026-11-17, Chromium emulation — not a real tablet, not a real phone).** The pilot's eight walks
   pass at 1366×768, 1024×768 and 1840×900 (92 + 30 + 102 + 45 + 56 + 47 + 59 + 102 checks each), and the six student
   walks pass on a phone held sideways (touch, 800×370: 92 + 30 + 102 + 45 + 55 + 33). What was repaired to get there:

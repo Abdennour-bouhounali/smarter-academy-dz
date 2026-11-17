@@ -1,5 +1,5 @@
 {
- "_": "Shared by apps/web (evidence.test.js) and apps/api (GameEvidenceTest): the two verifiers must give the same verdict on every case.",
+ "_": "Shared by apps/web (gameworld/kit/claims.test.js) and apps/api (ClaimVerifierTest, GameEvidenceTest): the two verifiers must give the same verdict on every case.",
  "cases": [
   {
    "claim": {
@@ -331,6 +331,303 @@
     "count": 6
    },
    "ok": true
+  },
+  {
+   "claim": {
+    "kind": "pair",
+    "a": 60,
+    "b": 4,
+    "e": 15
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "pair",
+    "a": 96,
+    "b": 96,
+    "e": 1
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "pair",
+    "a": 60,
+    "b": 4,
+    "e": 14
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "pair",
+    "a": 60,
+    "b": 0,
+    "e": 60
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "pair",
+    "a": 17,
+    "b": 2,
+    "e": 8
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "divisors",
+    "a": 24,
+    "b": 8,
+    "list": [
+     1,
+     2,
+     3,
+     4,
+     6,
+     8,
+     12,
+     24
+    ]
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "divisors",
+    "a": 24,
+    "b": 8,
+    "list": [
+     24,
+     1,
+     12,
+     2,
+     8,
+     3,
+     6,
+     4
+    ]
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "divisors",
+    "a": 17,
+    "b": 2,
+    "list": [
+     1,
+     17
+    ]
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "divisors",
+    "a": 36,
+    "b": 9,
+    "list": [
+     1,
+     2,
+     3,
+     4,
+     6,
+     9,
+     12,
+     18,
+     36
+    ]
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "divisors",
+    "a": 24,
+    "b": 7,
+    "list": [
+     1,
+     2,
+     3,
+     4,
+     6,
+     12,
+     24
+    ]
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "divisors",
+    "a": 24,
+    "b": 9,
+    "list": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     8,
+     12,
+     24
+    ]
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "divisors",
+    "a": 36,
+    "b": 10,
+    "list": [
+     1,
+     2,
+     3,
+     4,
+     6,
+     6,
+     9,
+     12,
+     18,
+     36
+    ]
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "divisors",
+    "a": 24,
+    "b": 7,
+    "list": [
+     1,
+     2,
+     3,
+     4,
+     6,
+     8,
+     12,
+     24
+    ]
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "divisors",
+    "a": 0,
+    "b": 0,
+    "list": []
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "stop",
+    "a": 105,
+    "b": 10
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "stop",
+    "a": 36,
+    "b": 6
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "stop",
+    "a": 96,
+    "b": 9
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "stop",
+    "a": 105,
+    "b": 52
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "stop",
+    "a": 105,
+    "b": 9
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "stop",
+    "a": 36,
+    "b": 7
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "divisible",
+    "a": 105,
+    "b": 3,
+    "fits": true
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "divisible",
+    "a": 105,
+    "b": 9,
+    "fits": false
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "divisible",
+    "a": 2340,
+    "b": 4,
+    "fits": true
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "divisible",
+    "a": 105,
+    "b": 9,
+    "fits": true
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "divisible",
+    "a": 2340,
+    "b": 4,
+    "fits": false
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "divisible",
+    "a": 105,
+    "b": 0,
+    "fits": false
+   },
+   "ok": false
   },
   {
    "claim": {

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { rng } from '../../../../../../common/gameworld/kit/random';
-import { verify } from './evidence';
+import { verifyClaim as verify } from '../../../../../../common/gameworld/kit/claims';
 import { PHRASES } from './trainer';
 import { sittings, mark, model, scheme, evidenceOf, LEVELS } from './sitting';
 import {

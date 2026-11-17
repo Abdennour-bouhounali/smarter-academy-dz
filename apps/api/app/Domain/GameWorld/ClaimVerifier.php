@@ -11,12 +11,17 @@ namespace App\Domain\GameWorld;
  * écrit — et le serveur RECALCULE le verdict. La parole du navigateur n'est
  * jamais crue (frontière de confiance, LEARNING_ARCHITECTURE.md).
  *
- * Même règle que `verify()` de apps/web/.../gameworld/divisorIsles/evidence.js :
+ * Même règle que `verifyClaim()` de apps/web/src/lessons/common/gameworld/kit/claims.js :
  * une seule fixture pour les deux (tests/Fixtures/game-claims.json).
+ *
+ * Un GENRE d'affirmation n'appartient à aucune leçon : c'est un énoncé sur des entiers naturels, que toute leçon peut
+ * employer. POUR EN AJOUTER UN : l'écrire ICI (`KINDS` et `verify`) et dans `kit/claims.js`, puis ajouter à la fixture des
+ * lignes vraies et des lignes fausses. `claims.test.js` (web) échoue si les deux listes diffèrent ou si un genre n'a pas
+ * ses deux verdicts ; `ClaimVerifierTest` rejoue la fixture ici.
  */
 final class ClaimVerifier
 {
-    public const KINDS = ['division', 'product', 'phrase', 'sure', 'containers'];
+    public const KINDS = ['division', 'product', 'phrase', 'sure', 'containers', 'pair', 'divisors', 'stop', 'divisible'];
 
     /** Les nombres admis : des entiers naturels de taille scolaire. */
     public const MAX = 1000000;
@@ -67,6 +72,55 @@ final class ClaimVerifier
                 }
 
                 return $count === intdiv($a + $b - 1, $b);
+            case 'pair':
+                // a = b × e : un produit de deux facteurs — les deux sont des diviseurs
+                [$a, $b, $e] = [$n('a'), $n('b'), $n('e')];
+                if ($a === null || $b === null || $e === null || $b === 0 || $e === 0) {
+                    return false;
+                }
+
+                return $b * $e === $a;
+            case 'divisors':
+                // TOUS les diviseurs de a, chacun une fois (l'ordre n'importe pas) ; b = leur nombre annoncé
+                [$a, $b] = [$n('a'), $n('b')];
+                $list = $c['list'] ?? null;
+                if ($a === null || $a === 0 || $b === null || ! is_array($list) || count($list) > 400) {
+                    return false;
+                }
+                foreach ($list as $d) {
+                    if (! is_int($d) || $d < 1) {
+                        return false;
+                    }
+                }
+                $all = [];
+                for ($d = 1; $d * $d <= $a; $d++) {
+                    if ($a % $d === 0) {
+                        $all[] = $d;
+                        $all[] = intdiv($a, $d);
+                    }
+                }
+                $all = array_values(array_unique($all));
+                sort($all);
+                $mine = array_values($list);
+                sort($mine);
+
+                return $mine === $all && $b === count($all);
+            case 'stop':
+                // jusqu'où tester : le plus grand b dont le carré ne dépasse pas a
+                [$a, $b] = [$n('a'), $n('b')];
+                if ($a === null || $b === null) {
+                    return false;
+                }
+
+                return $b * $b <= $a && $a < ($b + 1) * ($b + 1);
+            case 'divisible':
+                // « a est divisible par b » dit juste (une règle de divisibilité, sans poser la division)
+                [$a, $b] = [$n('a'), $n('b')];
+                if ($a === null || $b === null || $b === 0 || ! is_bool($c['fits'] ?? null)) {
+                    return false;
+                }
+
+                return $c['fits'] === ($a % $b === 0);
             default:
                 return false;
         }

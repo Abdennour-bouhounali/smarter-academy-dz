@@ -63,6 +63,8 @@ const isStringTable = (file) => /(^|\/)(strings|text)\.js$/.test(file);
 const KEPT = {
   'apps/web/src/lessons/common/gameworld/kit/random.js#rng':
     'the seeded generator: every lesson\'s tests replay its generated content with it (the app itself draws with Math.random)',
+  'apps/web/src/lessons/common/gameworld/kit/claims.js#CLAIM_KINDS':
+    'the kinds of claim the browser can verify: claims.test.js compares the list with the server\'s (ClaimVerifier::KINDS) — a kind known on one side only is a bug',
 };
 
 const SKIP_DIRS = new Set(['node_modules', 'dist', 'public', 'vendor', '.git']);

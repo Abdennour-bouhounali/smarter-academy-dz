@@ -28,6 +28,7 @@ import { X, Volume2, VolumeX, Maximize2, Minimize2, ArrowUp, Star, Gem } from 'l
 import { useLesson } from './LessonContext';
 import { KT } from './text';
 import { scopedStorage as storage } from '../../../../utils/storage';
+import { readSave, writeSave, schedulePush, flushPush } from './saveSync';
 import { AuthContext } from '../../../../context/AuthContext';
 import { sendGameEvidence, flushGameEvidence, newAttemptId } from './evidenceSend';
 import { usePhoneScreen } from '../engine/phoneScreen';
@@ -46,16 +47,6 @@ import Result from './Result';
 import End from './End';
 import './examSitting.css';
 import './styles';
-
-const saveKey = (id) => `smarter_world_${id}`;
-
-const readSave = (id) => {
-  try {
-    return JSON.parse(storage.getItem(saveKey(id)) || 'null');
-  } catch {
-    return null;
-  }
-};
 
 const hasWebGL = () => {
   try {
@@ -102,6 +93,15 @@ export default function LessonWorld({
     window.addEventListener('online', flush);
     return () => window.removeEventListener('online', flush);
   }, []);
+  // what is waiting to be saved on the server goes when the page is hidden (a phone put down) and when the world closes
+  useEffect(() => {
+    const push = () => document.visibilityState === 'hidden' && flushPush(tokenRef.current, config.id);
+    document.addEventListener('visibilitychange', push);
+    return () => {
+      document.removeEventListener('visibilitychange', push);
+      flushPush(tokenRef.current, config.id);
+    };
+  }, [config.id]);
 
   useEffect(() => {
     if (failed || !canvas.current) return undefined;
@@ -114,11 +114,9 @@ export default function LessonWorld({
         sound,
         unlockedKeys: lesson.keysFromModules?.(completedModules) ?? [],
         onSave: (data) => {
-          try {
-            storage.setItem(saveKey(config.id), JSON.stringify(data));
-          } catch {
-            /* storage full or blocked */
-          }
+          writeSave(config.id, data);
+          // his journey follows him to his other devices (saveSync.js) — never from a teacher's preview
+          if (!previewRef.current) schedulePush(tokenRef.current, config.id);
         },
         onModule: (n) => onModuleRef.current?.(n),
         onEvidence: (context, ev) => {
@@ -154,20 +152,14 @@ export default function LessonWorld({
 
   // « من البداية » restarts the STORY only: what the practice earned (levels, keys ever owned) stays
   const restart = () => {
-    try {
-      const old = readSave(config.id);
-      storage.setItem(
-        saveKey(config.id),
-        JSON.stringify({
-          v: 1,
-          stage: 0,
-          practice: old?.practice ?? {},
-          keysEver: [...new Set([...(old?.keysEver ?? []), ...(old?.keys ?? [])])],
-        }),
-      );
-    } catch {
-      /* noop */
-    }
+    const old = readSave(config.id);
+    writeSave(config.id, {
+      v: 1,
+      stage: 0,
+      practice: old?.practice ?? {},
+      keysEver: [...new Set([...(old?.keysEver ?? []), ...(old?.keys ?? [])])],
+    });
+    if (!previewRef.current) schedulePush(tokenRef.current, config.id);
     setRun((n) => n + 1);
   };
 

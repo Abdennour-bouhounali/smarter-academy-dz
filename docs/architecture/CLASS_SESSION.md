@@ -2,7 +2,9 @@
 
 > **Status: steps 1 and 2 built on 2026-11-18 on the pilot lesson `qasim-adad-tabii`; the same day the owner asked for the
 > rules revised after the start test and for the during-the-lesson mode « rebuilt entirely » — both built (§5bis, §5ter).
-> NOT validated by the owner, no real class has used it.** The steps not built are listed in §9.
+> No real class has used it.** The steps not built are listed in §9.
+>
+> **BINDING for the lesson v2 rollout (owner decision D6, 2026-11-17): every v2 lesson follows this contract — `LESSON_V2.md` says how a lesson plugs into it.** What has not changed: it was built on the pilot lesson and no real class has used it yet.
 > The older « وضع القسم » (Classroom Mode of a lesson page, `TEACHER_CLASSROOM_ARCHITECTURE.md`) is untouched: the lesson
 > on the board described here is a separate screen of the class session, on the pilot lesson only.
 > Code: `apps/web/src/features/classSession/`, `apps/web/src/pages/teacher/ClassSessionPage.jsx`,

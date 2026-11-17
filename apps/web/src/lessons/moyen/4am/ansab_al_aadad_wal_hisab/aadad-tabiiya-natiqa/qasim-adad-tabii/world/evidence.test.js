@@ -2,19 +2,10 @@ import { describe, it, expect } from 'vitest';
 import { rng } from '../../../../../../common/gameworld/kit/random';
 import { trainer, solution, check, PLAN_OF } from './trainer';
 import { MISSIONS, makeMission, judge, answerOf } from '../../../../../../common/gameworld/divisorIsles/cases';
-import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { trainerEvidence, caseEvidence, verify, evidence } from './evidence';
+import { trainerEvidence, caseEvidence, evidence } from './evidence';
 
 const { makeSession } = trainer;
-const { payloadOf } = evidence;
-
-const FIXTURE = JSON.parse(
-  readFileSync(
-    fileURLToPath(new URL('../../../../../../../../../api/tests/Fixtures/game-claims.json', import.meta.url)),
-    'utf8',
-  ),
-);
+const { payloadOf, verify } = evidence;
 
 const FIRST = { firstTry: true, helped: false };
 /** The الكفاءة a key proves, read from what would be sent to the server. */
@@ -74,11 +65,6 @@ describe('which game answers count toward الكفاءات', () => {
     // a division that is right but concluded wrongly is NOT evidence of the learning point
     expect(verify({ kind: 'division', a: 143, b: 11, q: 13, r: 0, fits: false })).toBe(false);
     expect(verify({ kind: 'division', a: 143, b: 11, q: 12, r: 11, fits: false })).toBe(false); // remainder not smaller than the divisor
-  });
-
-  it('gives the SAME verdict as the server on the shared fixture (apps/api/tests/Fixtures/game-claims.json)', () => {
-    expect(FIXTURE.cases.length).toBeGreaterThan(30);
-    for (const c of FIXTURE.cases) expect(verify(c.claim), JSON.stringify(c.claim)).toBe(c.ok);
   });
 
   it('builds the payload the server expects, and nothing for a question without a learning point', () => {

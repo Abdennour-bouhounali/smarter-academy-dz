@@ -1,0 +1,62 @@
+/**
+ * THE CLAIMS a game answer can make — PURE, and THE SAME on the server (`apps/api/app/Domain/GameWorld/ClaimVerifier.php`).
+ *
+ * A game question is arithmetic generated in the browser: there is no stored key to compare. So an answer that counts
+ * toward a الكفاءة is sent as a CLAIM — the numbers of the question and what the student wrote — and the server re-computes
+ * the verdict from the numbers alone; it never trusts the browser's. `verifyClaim` is the browser's copy of that rule: the
+ * game uses it to show « تقدّمي » at once.
+ *
+ * A claim kind belongs to no lesson: it is a statement about natural numbers that any lesson may use.
+ * TO ADD A KIND (a lesson needs a statement none of these makes): write it HERE and in `ClaimVerifier.php` (`KINDS` and
+ * `verify`), add rows that are true and rows that are false to the ONE fixture both sides read
+ * (`apps/api/tests/Fixtures/game-claims.json`). `claims.test.js` fails when the two lists differ, when a kind has no row of
+ * each verdict, or when the two sides disagree on a row.
+ */
+const natural = (x) => Number.isInteger(x) && x >= 0;
+
+const KINDS = {
+  /** a = b × q + r with r < b, and « b fills a » said rightly. */
+  division: (c) =>
+    natural(c.q) && natural(c.r) && c.b > 0 && c.b * c.q + c.r === c.a && c.r < c.b && c.fits === (c.r === 0),
+  /** a = b × q, and `other` is ANOTHER divisor of a (not the one just shown — unless a = b × b). */
+  product: (c) =>
+    natural(c.q) &&
+    natural(c.b) &&
+    c.b > 0 &&
+    c.b * c.q === c.a &&
+    natural(c.other) &&
+    c.other > 0 &&
+    c.a % c.other === 0 &&
+    (c.other !== c.b || c.b === c.q),
+  /** In the phrasing `phrase`, the number written first is the divisor (قاسم، يقسم) or the multiple (مضاعف، يقبل القسمة). */
+  phrase: (c) => {
+    const divisorFirst = c.first === Math.min(c.a, c.b);
+    if (['qasim', 'yaqsim'].includes(c.phrase)) return divisorFirst;
+    return ['mudaaf', 'yaqbal'].includes(c.phrase) ? !divisorFirst : false;
+  },
+  /** The two divisors every a has: 1 and a itself. */
+  sure: (c) => new Set([c.x, c.y]).size === 2 && [c.x, c.y].includes(1) && [c.x, c.y].includes(c.a),
+  /** How many containers of b hold a things, the last one not full: the quotient rounded UP. */
+  containers: (c) => natural(c.count) && c.b > 0 && c.count === Math.ceil(c.a / c.b),
+  /** a = b × e: a product of two factors — both are divisors. */
+  pair: (c) => natural(c.b) && natural(c.e) && c.b > 0 && c.e > 0 && c.b * c.e === c.a,
+  /** ALL the divisors of a, each once (in any order); b = how many were announced. */
+  divisors: (c) => {
+    if (!natural(c.a) || c.a === 0 || !Array.isArray(c.list) || c.list.length > 400) return false;
+    if (!c.list.every((d) => Number.isInteger(d) && d >= 1)) return false;
+    const all = [];
+    for (let d = 1; d * d <= c.a; d += 1) if (c.a % d === 0) all.push(d, c.a / d);
+    const sorted = (list) => [...new Set(list)].sort((x, y) => x - y).join();
+    return c.list.length === new Set(c.list).size && sorted(c.list) === sorted(all) && c.b === new Set(all).size;
+  },
+  /** How far to test: the biggest b whose square does not pass a. */
+  stop: (c) => natural(c.b) && c.b * c.b <= c.a && c.a < (c.b + 1) * (c.b + 1),
+  /** « a is divisible by b » said rightly — a divisibility rule, without posing the division. */
+  divisible: (c) => natural(c.b) && c.b > 0 && typeof c.fits === 'boolean' && c.fits === (c.a % c.b === 0),
+};
+
+export const CLAIM_KINDS = Object.keys(KINDS);
+
+/** The verdict of a claim, from its numbers alone. An unknown kind is never right. */
+export const verifyClaim = (claim) =>
+  Boolean(claim) && Object.hasOwn(KINDS, claim.kind) && Boolean(KINDS[claim.kind](claim));

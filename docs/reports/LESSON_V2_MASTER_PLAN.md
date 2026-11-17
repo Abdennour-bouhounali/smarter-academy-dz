@@ -304,9 +304,27 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
      and exactly one holds; every false rule is refuted in front of the student (`forges.test.js`, 29 tests). The story
      walk crosses the four forges (104 checks, laptop and phone); the forge has a phone layout (no zoom of its own).
      NOT done: the class board still forges only the first rule with the class.
-  5. [ ] A1–A6 (§4bis), with B1 (one shared engine chunk, a loading screen).
-  6. [ ] `apps/web/scripts/lesson-v2-status.mjs` and `docs/architecture/LESSON_V2.md`; mark D6 in the four contracts.
-  7. [ ] Cut the root `CLAUDE.md`.
+  5. [~] A1–A6 with B1 — what was done on 2026-11-17 and what was NOT:
+     - A1 DONE: a claim kind belongs to no lesson. `kit/claims.js` is the browser's copy of `ClaimVerifier.php`; one
+       fixture; `claims.test.js` fails when the two lists differ. Adding a kind = the same three edits on both sides
+       (`LESSON_V2.md` §1bis). The controller was already lesson-independent.
+     - A2 DONE: the journey follows the student between devices (`kit/saveSync.js`, his private answers store, no new
+       table; `LESSON_V2.md` §1ter). NOT synced: the launch kit's own store (`launchkit/store.js`).
+     - B1 DONE in part: three.js already is ONE shared chunk (135 KB gzip, measured); the world now opens on a
+       loading screen with progress and a retry. NOT done: a measured budget per lesson (step 6).
+     - A4 — no change needed: a v2 lesson keeps its modules and marks them from the world; every report reads them as
+       before (`LESSON_V2.md` §1ter). NOT traced page by page.
+     - A5 — a rule is WRITTEN (taken from the pilot, never decided by the owner): nothing earned is taken, the keys
+       his progress proves are his, the story starts at the first island (`LESSON_V2.md` §1ter).
+     - A3 — in step 6 (the contract and the status script).
+     - A6 NOT done: no walk runs in CI; one walk driven by a lesson's pack is written with lesson 2 (step 8).
+  6. [x] `apps/web/scripts/lesson-v2-status.mjs` (`npm run status:lesson-v2`), `docs/architecture/LESSON_V2.md` (the
+     pack, the server's side, the journey, the folder, the definition of done, the retirement ledger), D6 marked at the
+     top of the four contracts — DONE 2026-11-17. The pilot prints ✅ (15 parts); lesson 2 prints 12 parts missing.
+     NOT in the script: a weight budget per lesson; the content checks do not read `world/` and `board/` yet (B8).
+  7. [x] The root `CLAUDE.md` is cut from 479 lines (56.7 KB) to 298 (19.5 KB): a map of what binds every task, with
+     the documentation rule and the images rules kept word for word — DONE 2026-11-17. The file as it was is kept
+     whole: `docs/reports/CLAUDE_MD_BEFORE_CUT_2026-11-17.md`.
   8. [ ] THE GATE — lesson 2 `qawasim-adad-tabii`, rebuilt with the kit only, tested on every device; report the real
      time, the lines written by hand and what still had to be copied from the pilot.
 - **D4 — DONE**: the five billing files are deleted.

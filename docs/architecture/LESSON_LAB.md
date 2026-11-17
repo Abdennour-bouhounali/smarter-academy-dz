@@ -1,6 +1,8 @@
 # LESSON_LAB — « مختبري », the lab of a lesson (2026-11-16)
 
-**Status: built and wired on `dev` (uncommitted), NOT yet validated by the owner.** First eight instruments; the registry is
+**BINDING for the lesson v2 rollout (owner decision D6, 2026-11-17): every v2 lesson follows this contract — `LESSON_V2.md` says how a lesson plugs into it.** What has not changed: it was built on the pilot lesson and no real student has used it yet.
+
+**Status: built and wired on `dev`.** First eight instruments; the registry is
 open. Code: `apps/web/src/lessons/common/lessonlab/`. It is a different thing from the Math Lab « مختبر الرياضيات »
 (`/espace/atelier`, `MATH_LAB.md`), which stays untouched: that one is a general workspace with documents; this one belongs to
 the LESSON the student is in and shows only what he has already studied.

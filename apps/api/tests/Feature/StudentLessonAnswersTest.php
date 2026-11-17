@@ -57,6 +57,35 @@ class StudentLessonAnswersTest extends TestCase
             ->assertJsonPath('answers.m1:q1.v', 2)->assertJsonPath('answers.m1:q2.v', 1);
     }
 
+    /**
+     * Le monde de jeu y garde le PARCOURS de l'élève, coupé en morceaux (apps/web …/gameworld/kit/saveSync.js) :
+     * `world:n` = leur nombre, `world:0`… = des tranches de base64 de 3 600 caractères, toutes à la même heure.
+     */
+    public function test_a_game_world_save_cut_into_pieces_comes_back_intact(): void
+    {
+        [, $token] = $this->account('student');
+        $save = base64_encode(json_encode(['v' => 1, 'stage' => 7, 'words' => 'إذا لم يبقَ شيء', 'log' => range(1, 2500)]));
+        $pieces = str_split($save, 3600);
+        $this->assertGreaterThan(1, count($pieces));
+        $answers = ['world:n' => ['v' => count($pieces), 'at' => 500]];
+        foreach ($pieces as $i => $piece) {
+            $answers["world:{$i}"] = ['v' => $piece, 'at' => 500];
+        }
+        $this->saveAnswers($token, $answers)->assertOk();
+
+        $back = $this->withHeader('Authorization', "Bearer {$token}")->getJson('/api/v1/lessons/fractions-1/answers')->assertOk()->json('answers');
+        $this->assertSame(count($pieces), $back['world:n']['v']);
+        $joined = '';
+        foreach (array_keys($pieces) as $i) {
+            $this->assertSame(500, $back["world:{$i}"]['at']);
+            $joined .= $back["world:{$i}"]['v'];
+        }
+        $this->assertSame($save, $joined);
+        // un appareil en retard (heure plus ancienne) ne remplace aucun morceau
+        $this->saveAnswers($token, ['world:n' => ['v' => 1, 'at' => 400], 'world:0' => ['v' => 'old', 'at' => 400]])
+            ->assertJsonPath('answers.world:n.v', count($pieces))->assertJsonPath('answers.world:0.v', $pieces[0]);
+    }
+
     public function test_answers_are_private_to_the_student(): void
     {
         [, $token] = $this->account('student');

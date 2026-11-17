@@ -23,10 +23,42 @@ const FORMS = {
   a_multiple_of_b: { text: (a, b) => `${a} مضاعف للعدد ${b}`, holds: (a, b) => a % b === 0 },
   b_multiple_of_a: { text: (a, b) => `${b} مضاعف للعدد ${a}`, holds: (a, b) => b % a === 0 },
 };
+/** What an equality a = b × q lets us conclude, in the three ways students say it — one is right. */
+const FACTOR_FORMS = {
+  both: { text: (a, b, q) => `${b} و ${q} قاسمان للعدد ${a}`, holds: true },
+  onlyFirst: { text: (a, b) => `${b} قاسم للعدد ${a} فقط`, holds: false },
+  reversed: { text: (a, b, q) => `${a} قاسم للعددين ${b} و ${q}`, holds: false },
+};
+const divisorsOf = (a) => Array.from({ length: a }, (_, i) => i + 1).filter((d) => a % d === 0);
+/** The last number to try when listing the divisors of a: the biggest one whose square does not pass a. */
+const lastToTry = (a) => Math.floor(Math.sqrt(a));
 /** The truth of each option of a choice (or the value of a number / a true-false), from the `check` alone. */
 function truth(q) {
   const c = q.check;
   switch (c.type) {
+    case 'partner':
+      expect(c.a % c.b, `${q.id}: ${c.b} must divide ${c.a}`).toBe(0);
+      return c.a / c.b;
+    case 'divisorCount':
+      return divisorsOf(c.a).length;
+    case 'stopAt':
+      return lastToTry(c.a);
+    case 'stopClaim':
+      return c.upTo === lastToTry(c.a);
+    case 'divisorSet':
+      return q.options.map((o) => {
+        const mine = String(o)
+          .split('،')
+          .map((x) => Number(x.trim()));
+        return mine.join() === divisorsOf(c.a).join();
+      });
+    case 'twoDivisors':
+      expect(c.a % c.b, `${q.id}: ${c.b} must divide ${c.a}`).toBe(0);
+      return q.options.map((o, i) => {
+        const f = FACTOR_FORMS[c.forms[i]];
+        expect(o, `${q.id}: the option is written as its form says`).toBe(f.text(c.a, c.b, c.a / c.b));
+        return f.holds;
+      });
     case 'remainder':
       return c.a % c.b;
     case 'quotient':
@@ -65,8 +97,9 @@ function truth(q) {
 }
 
 describe('حصّة القسم — the default tests', () => {
-  it('there is a default test for the pilot lesson', () => {
+  it('there is a default test for every lesson that has its board', () => {
     expect(files.map((f) => f.name)).toContain('4am/qasim-adad-tabii.json');
+    expect(files.map((f) => f.name)).toContain('4am/qawasim-adad-tabii.json');
   });
 
   for (const { name, data } of files) {
