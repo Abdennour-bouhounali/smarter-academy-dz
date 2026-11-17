@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { rng } from '../../../../../../common/gameworld/kit/random';
 import { verify } from './evidence';
 import { PHRASES } from './trainer';
-import { sittings, mark, totalMark, model, scheme, evidenceOf, LEVELS, weakKinds } from './sitting';
+import { sittings, mark, model, scheme, evidenceOf, LEVELS } from './sitting';
 import {
   allQuestions,
   answered,
@@ -13,7 +13,7 @@ import {
   touched,
 } from '../../../../../../common/gameworld/kit/sitting';
 
-const { makeSubject } = sittings;
+const { makeSubject, totalMark, weakKinds } = sittings;
 
 /** The full-mark answer of a question. */
 const right = (q) => {

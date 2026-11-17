@@ -19,4 +19,3 @@ export const journey = createJourney({
   stages: SEGMENTS.length,
   cards: KNOWLEDGE_CARDS,
 });
-export const { examOpen } = journey;

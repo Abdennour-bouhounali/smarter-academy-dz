@@ -7,7 +7,7 @@ import { T } from '../../../../../../common/gameworld/divisorIsles/strings';
 import { evidence, trainerEvidence } from './evidence';
 import { KEYS, journey } from './journey';
 import { KNOWLEDGE } from './knowledge';
-import { ladder } from './practice';
+import { ladder, PRACTICE_MAP } from './practice';
 import { sittings } from './sitting';
 import { TEXT } from './text';
 import { trainer } from './trainer';
@@ -17,7 +17,15 @@ export const lesson = {
   keys: KEYS,
   /** The tablet of each rule: { icon, title, lines, list?, math, notes }. */
   rules: Object.fromEntries(KEYS.map((key) => [key, T.tablets[key]])),
+  /** The keys the lesson's own progress proves: module 1 is marked on tablet 1, module 2 on tablet 4 (the last one). */
+  keysFromModules(done = []) {
+    const has = (n) => done.some((m) => Number(m) === n);
+    if (has(2)) return [...KEYS];
+    return has(1) ? [KEYS[0]] : [];
+  },
   ladder,
+  /** The practice hub: { root, positions, edges }. */
+  practiceMap: PRACTICE_MAP,
   sittings,
   /** « تدرّب »: its questions, how they are judged, and which of their answers are evidence. */
   trainer: { ...trainer, evidenceOf: trainerEvidence },

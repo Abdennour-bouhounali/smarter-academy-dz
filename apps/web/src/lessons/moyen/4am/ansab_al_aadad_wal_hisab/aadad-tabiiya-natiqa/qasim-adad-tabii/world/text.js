@@ -37,6 +37,12 @@ export const TEXT = {
       done: 'عمل متقن!',
     },
   },
+  /** The summary node of the practice hub. */
+  summary: {
+    icon: '🏆',
+    title: 'تحدّي الامتحان',
+    text: 'أسئلة من المفاتيح الأربعة معًا، بإيقاع أسرع: مراجعة ما قبل الامتحان.',
+  },
   /** While a world shows what was decided. */
   busy: 'المستودع يوضّب…',
 };

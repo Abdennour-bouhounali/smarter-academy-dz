@@ -4,9 +4,10 @@ import { trainer, solution, check, PLAN_OF } from './trainer';
 import { MISSIONS, makeMission, judge, answerOf } from '../../../../../../common/gameworld/divisorIsles/cases';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { trainerEvidence, caseEvidence, verify, payloadOf } from './evidence';
+import { trainerEvidence, caseEvidence, verify, evidence } from './evidence';
 
 const { makeSession } = trainer;
+const { payloadOf } = evidence;
 
 const FIXTURE = JSON.parse(
   readFileSync(

@@ -259,6 +259,12 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
   the robot, the camera, the sky, the hub, the knowledge and exam state, the save) is a class a WORLD extends through a
   closed list of hooks (`GAME_WORLD.md` §3); the pilot's world keeps the mechanic and no longer imports the lesson: it
   reads `this.lesson`. Still inside the world: the gate dash and the real-world cases. Part 2 is the shell.
+- **Phase 0 step 4 — sub-step 3, part 2 (2026-11-17): the shell is split. Step 4 is DONE for what can be done before
+  lesson 2.** `kit/LessonWorld.jsx` is the shell every world shares (canvas, top bar, controls, overlay switch) with
+  the title screen, the practice hub, the rule tablet, the result and the end; the pilot's `DivisorIsles.jsx` (887
+  lines, was 1,911) keeps its own overlays and defines `WORLD`. NOT extracted, on purpose, and recorded in
+  `GAME_WORLD.md` §3: the gate dash and the real-world cases (inside the pilot's world), the rule forge (step 7), the
+  CSS split (done with the screen-size repair), the world's story as data (the gate on lesson 2 decides).
 - **D4 — DONE**: the five billing files are deleted.
 - **Phase 0 step 2 — formatter DONE**: Prettier (`.prettierrc.json`, 120 columns) with `npm run format:v2`
   and `npm run check:format` (in CI). The pilot's areas are formatted: 109 files; `features/classSession/` went from

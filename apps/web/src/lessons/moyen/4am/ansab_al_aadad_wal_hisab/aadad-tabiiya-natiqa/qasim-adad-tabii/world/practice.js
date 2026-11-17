@@ -240,6 +240,30 @@ export const PRACTICE_NODES = [
 ];
 /** The ladder of this lesson: its levels, bound to its nodes and its generators. */
 export const ladder = createLadder({ nodes: PRACTICE_NODES, generators: G, isRight });
-export const { levelId, MAX_PRACTICE_STARS, waveOf, nodeOpen, levelOpen, nextLevel, practiceStars } = ladder;
-/** Is this level the real-world game (« تعاونية الواحة » and its two other worlds) rather than a run of the gate dash? */
-export const isDepot = ladder.isCase;
+export const { waveOf } = ladder;
+
+/**
+ * The practice hub draws the ladder as the lesson's mind map: where each node sits (percent of the map box; RTL: the
+ * « start » lane is on the right), the idea at its root, and the links [from, to, label, dashed?].
+ */
+export const PRACTICE_MAP = {
+  root: 'قاسم عدد طبيعي',
+  positions: {
+    root: [50, 9],
+    [K.baqi]: [77, 34],
+    [K.jidaa]: [23, 34],
+    [K.siyagh]: [50, 57],
+    [K.wahid]: [75, 84],
+    [EXAM]: [25, 84],
+  },
+  edges: [
+    ['root', K.baqi, 'معناه'],
+    ['root', K.jidaa, 'معناه'],
+    [K.baqi, K.jidaa, 'نفس الفكرة', true],
+    [K.baqi, K.siyagh, 'نقول أيضًا'],
+    [K.jidaa, K.siyagh, null],
+    [K.siyagh, K.wahid, 'حالتان خاصّتان'],
+    [K.siyagh, EXAM, 'نستخلص'],
+    [K.wahid, EXAM, null, true],
+  ],
+};

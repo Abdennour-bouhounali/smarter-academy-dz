@@ -397,4 +397,3 @@ export const sittings = createSittings({
   scheme,
   evidenceOf,
 });
-export const { weakKinds, totalMark } = sittings;

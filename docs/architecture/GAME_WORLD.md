@@ -342,27 +342,31 @@ state line under the tables):
 | `tips.js` (+ test) | « حيلة »: the calculation shortcuts, given only when one clearly helps | — |
 | `longDivision.js` (+ test) | the long division as it is written and said on paper, its twin (used by `Paper.jsx` and by « مختبري ») | — |
 | `LessonContext.jsx` | `<LessonProvider lesson={…}>` and `useLesson()`: the ONE way a screen of the kit reaches the lesson | the pack (below) |
-| `text.js` | `TX`: the chrome of the kit's screens (spaces, « تقدّمي », a case, the knowledge page). No sentence of a lesson | — |
+| `text.js` | `TX` (spaces, « تقدّمي », a case, the knowledge page) and `KT` (the shell: title screen, HUD, hub, a run, a tablet, the end): the kit's chrome. No sentence of a lesson or of a world | — |
 | `Fit.jsx` | the box of every panel: it never scrolls, it fits (§2ter) | — |
 | `Paper.jsx` | the paper mode: the gate, the sign, the long-division model sheet | — |
 | `Spaces.jsx` | `ExamLadder`, `Promotion`, `ProgressPage` (« تقدّمي ») | `journey`, `sittings`, `rules`, `cards`, `evidence` |
 | `ExamSitting.jsx`, `examSitting.css` | the screen of « الامتحان الأبيض » (§2quater) | `sittings` (with `mark`, `model`, `scheme`, `evidenceOf`), `rules` |
 | `Trainer.jsx` | the screen of « تدرّب »: it draws a tap, a true / false, or a FORM the lesson describes | `trainer` |
 | `KnowledgePage.jsx` | the full-page « خريطة المعارف » | `knowledge`: `{ graph, modules, positions }` |
+| `LessonWorld.jsx` | **the shell**: the canvas, the top bar, the controls, the overlay switch; it mounts `<LessonProvider>` and creates the world's game | `world` (below) and the pack |
+| `Title.jsx`, `PracticeHub.jsx`, `Tablet.jsx`, `Result.jsx`, `End.jsx` | the title screen, the practice hub (the lesson's mind map as a level select), a rule tablet, the result of a level, the end | `ladder`, `journey`, `rules`, `keys`, `text`, `practiceMap` |
+| `parts.jsx` | a formula, the toast, the robot's bubble, the touch stick, a card over the world, three stars, a box for a number | — |
+| `world.css` | the styles of the shell AND, until it is split, of the pilot's own overlays (classes `di-…`) | — |
 | `WorldRuntime.js` | **the world runtime**: the three.js scene, the loop, the robot and its movement, the camera, the sky, the things to use, the gems, the state React reads, the hub, the knowledge page's state, the exam ladder, the paper mode, the evidence tally, the save | the pack as `lesson`; a WORLD extends it (below) |
 
 **The pilot's content** (`…/qasim-adad-tabii/world/`, each with its test)
 
 | File | What it holds |
 |---|---|
-| `practice.js` | the kinds of wave of the lesson, `isRight`, the five nodes and sixteen levels; exports the bound `ladder` |
+| `practice.js` | the kinds of wave of the lesson, `isRight`, the five nodes and sixteen levels; exports the bound `ladder` and `PRACTICE_MAP` (where each node sits on the hub, its links) |
 | `trainer.js` | the kinds of question, the plan of each card, `check` (hint, then correction), `solution`, `answerLabel`, `PHRASES` |
 | `sitting.js` | the four exercises by tier, the five levels, `mark`, `model`, `scheme`, `evidenceOf` |
 | `journey.js` | the four keys, bound to the ladder and the levels |
 | `evidence.js` | the الكفاءة of each key, the claims, `verify` (the same rule as the server) |
 | `knowledge.js` | the lesson's graph and memo sheets (imported from the lesson, never retyped) and where each card sits on the map |
 | `text.js` | the names of its levels and of its real-world worlds |
-| `index.js` | **the pack**: `lesson = { keys, rules, ladder, sittings, trainer, journey, evidence, cards, knowledge, text }` |
+| `index.js` | **the pack**: `lesson = { keys, keysFromModules, rules, ladder, practiceMap, sittings, trainer, journey, evidence, cards, knowledge, text }` |
 
 **The world** (`gameworld/divisorIsles/`)
 
@@ -370,7 +374,7 @@ state line under the tables):
 |---|---|
 | `logic.js` (+ test) | PURE: Euclidean division, prediction options, stars, the islands and segments data, dash waves, world layout |
 | `Game.js` | **the mechanic** — `DivisorIslesGame extends WorldRuntime`: islands, gaps, moulds, forge, storm, statues, last bridge, the gate dash and the real-world cases; it reads the lesson as `this.lesson` and imports no lesson |
-| `DivisorIsles.jsx`, `divisorIsles.css` | React shell: HUD and overlays, read from the game's state; it mounts `<LessonProvider>` with the pilot's pack (the ONE place of the world that names the lesson) |
+| `DivisorIsles.jsx` | what THIS world adds to the shell: the equation and the verdict of a forge, the HUD of a run and of a case, its own overlays (prediction, stone, statues, workshop, last bridge, guidance); it defines `WORLD` and renders `<LessonWorld world={WORLD} lesson={…}>` — the ONE place of the world that names the lesson |
 | `cases.js` (+ test) | PURE: the orders of « تعاونية الواحة », their steps, `judge` and its explanations |
 | `Depot.js`, `Worlds.js` | the 3D worlds of the cases: the depot, the friends' table, the tiler's site; `runSim` shows what was decided |
 | `ruleForge.js` (+ test), `RuleForge.jsx`, `ruleForge.css` | « مصهر القاعدة »: the rule the student forges and defends on island D (§2sexies) |
@@ -395,17 +399,24 @@ The runtime gives a world: `this.scene`, `this.hero`, `this.robot`, `this.input`
 `tween` / `wait`, `addInteract`, `addGem`, `set` / `say` / `toast`, `this.cine` (a cinematic shot), `this.shake`,
 `this.flags`, `save()`, and the lesson's data as `this.lesson`.
 
-**State of the extraction (2026-11-17).** Done: the pure logic (the six frames), six screens (the two spaces and
-« تقدّمي », the paper mode, the exam sitting, « تدرّب », the knowledge page) and the world runtime. Not done yet:
-- the SHELL (`DivisorIsles.jsx`: title screen, HUD, practice hub, result and end screens) is still one file with the
-  world's own overlays;
-- the gate dash and the real-world cases are generic ideas still written INSIDE the pilot's world (`Game.js`: they use
-  its rail and its three case scenes): another world would have to write them again;
-- `cases.js`, `ruleForge.js` / `RuleForge.jsx` and `strings.js` still mix kit and lesson (the forge is generalised when
-  the pilot's three other rules are forged, plan §4 step 7); the lesson's content still reads `logic.js` and
-  `strings.js` of the world; the CSS is still one file `divisorIsles.css` for kit screens and world overlays;
-- the world's story is written for THIS lesson (which island does what): a second lesson in the same world will show
-  what must become data (plan §9, step 3: the gate).
+**What a world gives the shell** (`kit/LessonWorld.jsx` lists every field): `id`, `Game`, `stages`, `maxStars`, `text`
+(its title, its story, its end), `Hud` (the middle of the screen while playing), `Under` / `Over` (its layers below
+and above the kit's overlays), `overlay(o, s, game)` and `guide(o, s, game)` (its own overlays by `o.type`), and five
+small answers about the state: `playing`, `busy`, `quiet`, `paperOn`, `held`.
+
+**State of the extraction (2026-11-17).** Done: the pure logic (the six frames), the world runtime, the shell and
+eleven screens. What is NOT extracted, and why:
+- **the gate dash and the real-world cases** are generic ideas still written INSIDE the pilot's world — `Game.js` (they
+  use its rail and its three case scenes) and, on screen, `DashHud`, `DepotHud`, `Guide`, `CaseGuide` in
+  `DivisorIsles.jsx`: another world would have to write them again;
+- **`cases.js`, `ruleForge.js` / `RuleForge.jsx` and `strings.js`** still mix kit and lesson (the forge is generalised
+  when the pilot's three other rules are forged, plan §4 step 7); the lesson's content still reads `logic.js` and
+  `strings.js` of the world;
+- **the CSS** is one file, `kit/world.css`, for the shell and for the pilot's overlays, and its classes are still
+  named `di-…`: it is split during the screen-size repair, which touches the same rules;
+- **the world's story** is written for THIS lesson (which island does what): a second lesson in the same world will
+  show what must become data (plan §9, step 3: the gate);
+- **the title screen still links to the classic mission player** (`classicHref`): decision D3 retires it per lesson.
 A lesson's content will be gathered in ONE `lesson.pack.js` (plan §4 step 5): today it is `world/index.js`.
 
 **The shape of an exam answer is DATA.** The kit draws what the lesson describes, and never knows its mathematics:

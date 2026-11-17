@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { ladder, levelId } from './practice';
+import { ladder } from './practice';
 import { KEYS, journey } from './journey';
 import { emptyExam, examLevelOpen } from '../../../../../../common/gameworld/kit/journey';
 
-const { LEVEL_ORDER } = ladder;
+const { LEVEL_ORDER, levelId } = ladder;
 const { examOpen, nextExamLevel, applySitting, lessonProgress, nextStep } = journey;
 const four = Object.fromEntries([0, 1, 2, 3].map((i) => [levelId(i, 0), { stars: 2, best: 600 }]));
 

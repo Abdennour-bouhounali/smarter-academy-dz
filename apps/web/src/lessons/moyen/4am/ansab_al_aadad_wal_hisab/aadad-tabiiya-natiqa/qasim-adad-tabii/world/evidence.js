@@ -10,7 +10,6 @@ import { counts, createEvidence } from '../../../../../../common/gameworld/kit/e
 const POINTS = { 'qasim-baqi': 'P1', 'qasim-jidaa': 'P2', 'siyagh-mutakafia': 'P3', 'wahid-wa-nafsuh': 'P4' };
 /** The evidence of this lesson: the kit's rule, with what a case answer claims and how a claim is verified. */
 export const evidence = { ...createEvidence({ grade: '4am', points: POINTS }), caseEvidence, verify };
-export const { payloadOf } = evidence;
 
 /** The calculation steps of the real cases that prove a learning point (an invoice or a sum proves arithmetic, not the lesson). */
 const STEP_KEY = {
