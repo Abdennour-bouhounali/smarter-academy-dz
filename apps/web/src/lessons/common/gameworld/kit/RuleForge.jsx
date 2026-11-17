@@ -14,6 +14,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Check, Hammer, Sparkles, Bot } from 'lucide-react';
 import MathText from '../../components/MathText';
 import { isShortScreen } from '../engine/phoneScreen';
+import { ExitLink, SoundToggle } from './parts';
 import {
   PREDICT_NEED,
   EVIDENCE_MAX,
@@ -289,24 +290,27 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
               return (
                 <li key={p} className={i === at ? 'is-now' : i < at ? 'is-done' : ''}>
                   <b>{i < at ? '✓' : i + 1}</b>
-                  {L.steps[p]}
+                  <span>{L.steps[p]}</span>
                 </li>
               );
             })}
           </ol>
-          {phase === 'build' ? (
-            <button
-              type="button"
-              className="rf-btn rf-btn--bot"
-              onClick={askHelp}
-              disabled={nudges >= 3 || help?.running}
-              data-rf-help
-            >
-              <Bot size={19} /> {L.help}
-            </button>
-          ) : (
-            <span className="rf-head__pad" />
-          )}
+          {/* the forge covers the top bar: its sound button and its ✕ are drawn again here — he can always leave */}
+          <div className="rf-head__end">
+            {phase === 'build' && (
+              <button
+                type="button"
+                className="rf-btn rf-btn--bot"
+                onClick={askHelp}
+                disabled={nudges >= 3 || help?.running}
+                data-rf-help
+              >
+                <Bot size={19} /> {L.help}
+              </button>
+            )}
+            <SoundToggle game={game} />
+            <ExitLink />
+          </div>
         </header>
 
         {phase === 'inquiry' && <parts.Inquiry spec={inquiry} game={game} onDone={afterInquiry} />}

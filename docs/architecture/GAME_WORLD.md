@@ -286,7 +286,13 @@ walks of the game world seed the launch as already played.
 3. **The student can always leave.** The veil of a dialog covers the top bar and its ✕. `kit/parts.jsx › Card` draws the
    same ✕ again over the veil, at the same corner (`ExitTo` context given by `LessonWorld`; `data-di-exit`), and every
    step of the store has « إغلاق » (the payment step had no way out; the store opens again where it was).
-   **Checked** in lesson 2's walk: the ✕ is over the dialog and a click reaches it; the payment step closes and reopens.
+   **A full screen that covers the top bar draws its two buttons again** (owner, 2026-11-17: « add also the quit button
+   and the sound on off in these kind of views »): the rule forge shows, at the end of its header and in every phase,
+   the sound button and the ✕ — `kit/parts.jsx › SoundToggle` and `ExitLink`, the SAME components the top bar and the
+   dialogs use (one button, one stored choice `smarter_world_sound`). A new full screen of a world does the same.
+   **Checked** in lesson 2's walk: the ✕ is over the dialog and a click reaches it; the payment step closes and reopens;
+   in the forge (while he writes his rule, and on the chart) the ✕ and the sound button are on screen, uncovered, beside
+   the steps, and the sound is turned off and on from there.
 
 ## 2ter. No scrolling anywhere (owner rule; restated 2026-11-15: « the student must never scroll »)
 
@@ -415,7 +421,19 @@ The four kinds of `divisorIsles/` (logic `inquiry.js`; screens `Inquiry.jsx` —
 | `turn` | a bridge that holds gives a second one (a = d × e, read both ways) | lifts the planks of HIS first bridge one by one into a WALL (one row per plank), then takes the wall down column by column: the same cells are the second bridge. Then he says what the columns will give BEFORE the wall is turned: a bridge that held, a bridge that fell (its wall is ragged — unequal columns, no plank), a square wall (the plank itself), and a bridge that is not drawn. Then he writes his rule with the tiles. |
 | `cut` | the plank fills the gap when the count of planks is a natural number | on the gap no mould filled, his hand SLIDES the length of the plank: the planks are laid again at once, with the piece that would have to be sawn, and the count written as the quotient; the lengths he tried make a table. He says how many lengths need no cut (answered with the ones HE found). Then he judges planks from the quotient ALONE, before the saw lays them. Then he writes his rule with the tiles. |
 | `pairs` | where the search for all the planks of a gap stops | tries the planks of ONE gap in order; a plank and its partner (gap ÷ plank, whole or not) walk toward each other on a strip and CROSS; past the crossing every partner is a plank already tried. First gap: after the crossing, « can a new plank still appear? » — on « maybe » the world tries every plank up to the gap in front of him. Next gaps: he says the last plank BEFORE trying; the squares join the table from the second gap; on the last gap only the planks and their squares are shown before any trial. Then he writes his rule with the tiles. |
-| `chart` | what to read in a number instead of dividing | tests ONE plank on the gaps of a chart (a row per tens digit, a column per units digit), one after the other, then lets the world finish; chooses a LENS (units digit, tens digit, sum of the digits) and the values he claims: the chart shows the dark cells his claim takes in and counts the lit cells it leaves out; a claim that holds is tried on the next hundred. A plank no lens separates (4) has its own road: the next hundreds light the SAME cells, then he places long gaps on the one chart — he reads their last two digits by doing it. |
+| `chart` | what to read in a number instead of dividing | tests ONE plank on the gaps of a chart (a row per tens digit, a column per units digit), one after the other, then lets the world finish; chooses a LENS (units digit, tens digit, sum of the digits) and the values he claims: the chart shows the cells that are not green his claim takes in and counts the green cells it leaves out; a claim that holds is tried on the next hundred. A plank no lens separates (4) has its own road: the next hundreds turn the SAME cells green, then he places long gaps on the one chart — he reads their last two digits by doing it. |
+
+**An experiment opens on its QUESTION and its GOAL, and each try shows its calculation** (owner, 2026-11-17: « the
+student must be given the goal … each one we see the rest of the division: x = c × 2 + d, and if d = 0 the cell becomes
+green »). On the chart, while he tests, three lines in the owner's words: the question (`text.lead(b)` — « ما هي الهوّات
+التي يمكن تشكيل جسر لها باستخدام لوح طوله 5؟ »), the goal in its own frame (`text.goal(b)` — « الهدف: معرفة تلك الهوّات
+فقط من شكلها، دون تقسيم طولها في كلّ مرّة على العدد 5. ») and what to do now (`text.how`). They say WHAT is looked for, never what the
+reading is (a test of the lesson forbids the words of the readings in them). Every gap he tries writes ITS division
+`n = q × b + r` (the last four stay, the newest large; the newest only on a phone) with « الباقي r » beside it; the cell turns
+**green** exactly when r = 0 — green means « rest 0 » everywhere on the chart, and a cell his lens takes in is outlined
+in cyan. A new kind opens the same way: the question, then the goal, in one sentence each, on screen while he acts.
+His CLAIM is laid as a sentence (owner, the same day): the three lenses in a column on the left, the word `text.equals`
+in the middle, then the values in columns read downwards (five to a column, three on a phone).
 
 **What the world does alone is HEARD** (owner, 2026-11-17: « add sound effect when completing the numbers here »): while
 the chart is filled by the world (« أكمل الجدول », then the next hundreds) each step plays `sweep` (a count that climbs),

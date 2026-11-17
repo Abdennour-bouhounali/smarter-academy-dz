@@ -241,11 +241,97 @@
 .iq-panel .iq-actions {
   margin-top: auto;
 }
+/* the mission of the chart, and the division of each gap he tries (n = q × b + r): the newest is the large one */
+.iq-goal {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 0.9rem;
+  border: 1.5px solid rgba(125, 252, 255, 0.4);
+  background: rgba(125, 252, 255, 0.09);
+  font-size: 1.08rem;
+  font-weight: 800;
+  line-height: 1.55;
+}
+.rf-root .iq-goal {
+  color: #e8f6ff;
+}
+.iq-how {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.55;
+}
+.rf-root .iq-how {
+  color: #cfe9ff;
+}
+.iq-divs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  min-height: 0;
+  margin: auto 0;
+  padding: 0;
+  list-style: none;
+}
+.iq-div {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  white-space: nowrap;
+  font-size: 1.05rem;
+  opacity: 0.55;
+}
+.iq-div:first-child {
+  font-size: 1.9rem;
+  opacity: 1;
+}
+.iq-div__rest {
+  padding: 0.05rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(251, 191, 36, 0.14);
+  font-size: 1rem;
+  font-weight: 800;
+}
+.rf-root .iq-div__rest {
+  color: #fbbf24;
+}
+.iq-div.is-zero .iq-div__rest {
+  background: rgba(34, 197, 94, 0.22);
+}
+.rf-root .iq-div.is-zero .iq-div__rest {
+  color: #8dffb0;
+}
+/* HIS CLAIM, laid as a sentence (owner, 2026-11-17): the three lenses in a column on the left, « يساوي », then the values
+   in columns that are read downwards (five to a column; three on a phone) */
+.iq-claim {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+  min-height: 0;
+}
 .iq-lenses {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
+  align-items: stretch;
   gap: 0.5rem;
+}
+.iq-equals {
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+.rf-root .iq-equals {
+  color: #7dfcff;
+}
+.iq--chart .iq-values {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(var(--iq-rows, 5), auto);
+  justify-content: start;
+  gap: 0.4rem;
 }
 .iq-lens {
   min-height: 2.8rem;
@@ -318,10 +404,11 @@
 .iq-cell.is-dark {
   background: rgba(2, 8, 28, 0.6);
 }
+/* a gap whose division by the plank leaves 0: GREEN (owner, 2026-11-17 — « if d = 0 the cell becomes green ») */
 .iq-cell.is-lit {
-  background: #2f7df6;
-  border-color: #7dfcff;
-  box-shadow: 0 0 10px rgba(47, 125, 246, 0.7);
+  background: #16a34a;
+  border-color: #8dffb0;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.7);
 }
 .rf-root .iq-cell.is-lit {
   color: #fff;
@@ -331,7 +418,7 @@
   outline-offset: -4px;
 }
 .iq-cell.is-claimed {
-  outline: 3px solid #8dffb0;
+  outline: 3px solid #7dfcff;
   outline-offset: 1px;
 }
 .iq-cell.is-intruder {
@@ -426,6 +513,46 @@
     min-height: 2.5rem;
     padding: 0 0.7rem;
     font-size: 0.98rem;
+  }
+  .iq-goal {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.98rem;
+    line-height: 1.4;
+  }
+  .iq-how {
+    font-size: 0.98rem;
+    line-height: 1.4;
+  }
+  .iq-claim {
+    gap: 0.6rem;
+  }
+  .iq-lenses {
+    gap: 0.3rem;
+  }
+  .iq-equals {
+    font-size: 1.05rem;
+  }
+  .iq--chart .iq-values {
+    --iq-rows: 3;
+    gap: 0.3rem;
+  }
+  .iq--chart .iq-chip {
+    min-width: 2.35rem;
+    height: 2.35rem;
+    padding: 0 0.3rem;
+  }
+  .iq-div {
+    font-size: 0.98rem;
+  }
+  .iq-div:first-child {
+    font-size: 1.35rem;
+  }
+  /* the phone keeps the newest division only: with four readings found, a second line would cover the buttons */
+  .iq-div:nth-child(n + 2) {
+    display: none;
+  }
+  .iq-divs {
+    margin: 0.1rem 0;
   }
   .iq-board__title {
     display: none;

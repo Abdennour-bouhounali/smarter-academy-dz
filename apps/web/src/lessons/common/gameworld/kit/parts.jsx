@@ -2,10 +2,12 @@
  * The small pieces every screen of a game world shares: a formula, the toast, the robot's bubble, the touch stick, a
  * card over the world, three stars, a box for a number. They name no lesson and no world.
  */
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Link } from 'react-router-dom';
-import { Star, X } from 'lucide-react';
+import { Star, X, Volume2, VolumeX } from 'lucide-react';
+import { scopedStorage as storage } from '../../../../utils/storage';
 import MathText from '../../components/MathText';
+import { KT } from './text';
 import Fit, { cardRoom } from './Fit';
 
 export const M = ({ children }) => (
@@ -91,19 +93,54 @@ export function Stick({ game }) {
 /** Where « leave the game » goes: given by the shell, so that a dialog can draw the same ✕ as the top bar. */
 export const ExitTo = createContext(null);
 
+/** The ✕ that leaves the game, for every screen that covers the top bar: a dialog, the rule forge. */
+export function ExitLink({ className = '' }) {
+  const exit = useContext(ExitTo);
+  if (!exit) return null;
+  return (
+    <Link to={exit.to} className={`di-icon ${className}`} aria-label={exit.label} title={exit.label} data-di-exit>
+      <X size={20} />
+    </Link>
+  );
+}
+
+/**
+ * The sound of the world, on or off: ONE button, in the top bar and in every screen that covers it (the rule forge).
+ * The choice is kept for the next visit.
+ */
+export function SoundToggle({ game }) {
+  const on = useSyncExternalStore(game.subscribe, () => game.getState().sound);
+  const toggle = () => {
+    game.setSound(!on);
+    try {
+      storage.setItem('smarter_world_sound', on ? '0' : '1');
+    } catch {
+      /* noop */
+    }
+  };
+  return (
+    <button
+      type="button"
+      className="di-icon"
+      onClick={toggle}
+      aria-label={KT.hud.sound}
+      aria-pressed={on}
+      title={KT.hud.sound}
+      data-di-sound={on ? 'on' : 'off'}
+    >
+      {on ? <Volume2 size={19} /> : <VolumeX size={19} />}
+    </button>
+  );
+}
+
 /**
  * A dialog of the world. THE STUDENT CAN ALWAYS LEAVE (owner, 2026-11-17): the veil of a dialog covers the top bar and
  * its ✕, so the dialog draws that ✕ again, at the same place, over the veil.
  */
 export function Card({ children, tone = '', wide = false }) {
-  const exit = useContext(ExitTo);
   return (
     <div className="di-veil">
-      {exit && (
-        <Link to={exit.to} className="di-icon di-veil__exit" aria-label={exit.label} title={exit.label} data-di-exit>
-          <X size={20} />
-        </Link>
-      )}
+      <ExitLink className="di-veil__exit" />
       <div className={`di-card ${tone} ${wide ? 'di-card--wide' : ''}`} role="dialog" aria-modal="true">
         <Fit avail={cardRoom}>{children}</Fit>
       </div>

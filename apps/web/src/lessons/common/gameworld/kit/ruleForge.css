@@ -111,8 +111,12 @@
 .rf-steps li.is-done b {
   background: rgba(52, 211, 153, 0.3);
 }
-.rf-head__pad {
-  width: 11rem;
+.rf-head__end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  min-width: 11rem;
 }
 .rf-btn {
   display: inline-flex;
@@ -764,6 +768,27 @@
   }
   .rf-btn--bot {
     min-height: 2.1rem;
+  }
+  /* the header keeps ONE row with the help button, the sound button and the ✕ in it: a step that is done shows its ✓
+     only, and the title never wraps */
+  .rf-brand h2 {
+    white-space: nowrap;
+  }
+  .rf-steps li.is-done {
+    padding: 0.1rem 0.2rem;
+  }
+  .rf-steps li.is-done span {
+    display: none;
+  }
+  /* the sound button and the ✕ keep a finger's size without making the header taller than its steps */
+  .rf-head__end {
+    gap: 0.35rem;
+    min-width: 0;
+  }
+  .rf-head__end .di-icon {
+    width: 2.4rem;
+    height: 2.4rem;
+    margin-block: -0.25rem;
   }
   .rf-log {
     padding: 0.4rem 0.4rem;

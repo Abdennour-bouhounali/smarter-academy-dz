@@ -9,7 +9,18 @@
  */
 import { useEffect, useRef, useState } from 'react';
 import MathText from '../../components/MathText';
-import { tryPlank, lastNeeded, missedBy, LENSES, chartCells, holds, lightsIn, judgeClaim, cellOf } from './inquiry';
+import {
+  tryPlank,
+  lastNeeded,
+  missedBy,
+  LENSES,
+  chartCells,
+  holds,
+  lightsIn,
+  judgeClaim,
+  cellOf,
+  pieceOf,
+} from './inquiry';
 import { Turn, Cut } from './InquiryMoves';
 import './inquiry.css';
 
@@ -272,6 +283,13 @@ function Pairs({ spec, play, onDone }) {
 
 // ───────────────────────── chart: test gaps one after the other, then choose what to LOOK AT ─────────────────────────
 const two = (n) => String(n % 100).padStart(2, '0');
+/** The division of a gap by the plank, as it is written: n = q × b + r — the rest green when it is 0, gold otherwise. */
+const divisionTex = (n, b) => {
+  const { whole, piece } = pieceOf(n, b);
+  return `${n} = ${whole} \\times ${b} + \\textcolor{${piece ? '#fbbf24' : '#8dffb0'}}{${piece}}`;
+};
+/** How many of the last divisions stay on screen (the newest is the large one). */
+const DIVISIONS = 4;
 
 function Chart({ spec, play, onDone }) {
   const T = spec.text;
@@ -382,6 +400,11 @@ function Chart({ spec, play, onDone }) {
   }, [stage, from]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const confirmed = stage === 'confirm' && full;
+  // while he tests by hand, the division of each gap is WRITTEN: the last ones stay, the newest first
+  const byHand = stage === 'test' || (stage === 'hundreds' && from === 100);
+  const divisions = byHand
+    ? Array.from({ length: Math.max(0, Math.min(DIVISIONS, upto - first)) }, (_, i) => upto - 1 - i)
+    : [];
   const lensLabel = lens ? T.lens[lens] : '';
   const claimed = (n) => Boolean(lens) && values.includes(LENSES[lens].of(n));
   const label = (n) => (stage === 'where' ? two(n) : n);
@@ -401,7 +424,7 @@ function Chart({ spec, play, onDone }) {
               {stage === 'sealed'
                 ? T.sealed
                 : stage === 'test'
-                  ? T.lead(p.b, pi, taps >= p.manual)
+                  ? T.lead(p.b)
                   : stage === 'lens'
                     ? lens
                       ? T.valuesAsk(p.b, lensLabel)
@@ -421,36 +444,66 @@ function Chart({ spec, play, onDone }) {
           </p>
         </div>
 
+        {stage === 'test' && (
+          <>
+            <p className="iq-goal" data-iq-goal>
+              <span aria-hidden="true">🎯</span>
+              {T.goal(p.b)}
+            </p>
+            <p className="iq-how" data-iq-how>
+              {T.how(p.b, taps >= p.manual)}
+            </p>
+          </>
+        )}
+        {divisions.length > 0 && (
+          <ol className="iq-divs" data-iq-divs>
+            {divisions.map((n) => (
+              <li key={n} className={`iq-div ${holds(n, p.b) ? 'is-zero' : ''}`} data-iq-div={n} data-iq-rest={n % p.b}>
+                <MathText>{`$${divisionTex(n, p.b)}$`}</MathText>
+                <span className="iq-div__rest">{T.rest(n % p.b)}</span>
+              </li>
+            ))}
+          </ol>
+        )}
+
         {stage === 'lens' && (
           <>
-            <div className="iq-lenses" data-iq-lenses>
-              {p.lenses.map((id) => (
-                <button
-                  key={id}
-                  type="button"
-                  className={`iq-lens ${lens === id ? 'is-on' : ''} ${failed.includes(id) ? 'is-failed' : ''}`}
-                  onClick={() => chooseLens(id)}
-                  data-iq-lens={id}
-                >
-                  🔍 {T.lens[id]}
-                </button>
-              ))}
-            </div>
-            {lens && (
-              <div className="iq-values" dir="ltr" data-iq-values>
-                {LENSES[lens].values(from).map((v) => (
+            {/* his claim, laid as it is read: the lenses in a column, « يساوي », the values in columns (owner, 2026-11-17) */}
+            <div className="iq-claim" data-iq-claim>
+              <div className="iq-lenses" data-iq-lenses>
+                {p.lenses.map((id) => (
                   <button
-                    key={v}
+                    key={id}
                     type="button"
-                    className={`iq-chip ${values.includes(v) ? 'is-on' : ''}`}
-                    onClick={() => toggle(v)}
-                    data-iq-value={v}
+                    className={`iq-lens ${lens === id ? 'is-on' : ''} ${failed.includes(id) ? 'is-failed' : ''}`}
+                    onClick={() => chooseLens(id)}
+                    data-iq-lens={id}
                   >
-                    {v}
+                    🔍 {T.lens[id]}
                   </button>
                 ))}
               </div>
-            )}
+              {lens && (
+                <>
+                  <span className="iq-equals" data-iq-equals>
+                    {T.equals}
+                  </span>
+                  <div className="iq-values" dir="ltr" data-iq-values>
+                    {LENSES[lens].values(from).map((v) => (
+                      <button
+                        key={v}
+                        type="button"
+                        className={`iq-chip ${values.includes(v) ? 'is-on' : ''}`}
+                        onClick={() => toggle(v)}
+                        data-iq-value={v}
+                      >
+                        {v}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
             {lens && values.length > 0 && (
               <p className={`iq-fact ${judge.ok ? 'is-ok' : ''}`} data-iq-fact data-iq-ok={judge.ok ? '1' : '0'}>
                 {judge.ok ? T.claimOk(p.b) : T.claim(judge.orphans.length, judge.intruders.length)}

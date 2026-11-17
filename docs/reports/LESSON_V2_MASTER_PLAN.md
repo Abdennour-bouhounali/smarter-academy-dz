@@ -378,6 +378,13 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
        slides the plank's length over the gap 31, the cut piece and the quotient live; then four planks judged from
        the quotient alone). Four keys, four kinds (`InquiryMoves.jsx`); no prediction of the old mirror is asked in
        this lesson any more; no help ends on a choice of two rules. Walk: 154 checks.
+       Then four corrections of the owner on the chart, the same day: the chart that fills by itself is HEARD (a
+       count, the cells that light, a chime — `engine/audio.js › sweep, spark`); it opens on its QUESTION and its GOAL
+       in his words (« ما هي الهوّات التي يمكن تشكيل جسر لها باستخدام لوح طوله 5؟ » — « الهدف: معرفة تلك الهوّات فقط من
+       شكلها، دون تقسيم طولها في كلّ مرّة »); his claim is laid as a sentence (the lenses in a column, « يساوي », the
+       values read downwards); every gap tried writes its division `n = q × b + r` and its cell turns GREEN when
+       the rest is 0; the forge, which covers the top bar, shows the sound button and the ✕ in every phase
+       (`kit/parts.jsx › SoundToggle, ExitLink`).
      - NOT in lesson 2 by choice, to be said in the report: no real-world case world (S5); ten dash levels instead.
      - The walk is assembled from the pilot walk's helpers (copied, not shared): a shared helper module is owed.
 - **D4 — DONE**: the five billing files are deleted.

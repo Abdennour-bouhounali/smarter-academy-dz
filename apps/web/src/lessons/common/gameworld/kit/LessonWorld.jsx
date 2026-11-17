@@ -24,7 +24,7 @@
 import { Suspense, lazy, useContext, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
-import { X, Volume2, VolumeX, Maximize2, Minimize2, ArrowUp, Star, Gem } from 'lucide-react';
+import { X, Maximize2, Minimize2, ArrowUp, Star, Gem } from 'lucide-react';
 import { useLesson } from './LessonContext';
 import { KT } from './text';
 import { scopedStorage as storage } from '../../../../utils/storage';
@@ -39,7 +39,7 @@ import ExamSitting from './ExamSitting';
 import { Promotion, ProgressPage } from './Spaces';
 import { PaperChip } from './Paper';
 import { LessonProvider } from './LessonContext';
-import { Toast, Say, Stick, ExitTo } from './parts';
+import { Toast, Say, Stick, ExitTo, SoundToggle } from './parts';
 import { Tablet } from './Tablet';
 import Title from './Title';
 import PracticeHub from './PracticeHub';
@@ -221,15 +221,6 @@ function Shell({ world, game, rootRef, exitTo, classicHref, basePath, config, on
     if (document.fullscreenElement) document.exitFullscreen?.();
     else rootRef.current?.requestFullscreen?.().catch(() => {});
   };
-  const toggleSound = () => {
-    const on = !s.sound;
-    game.setSound(on);
-    try {
-      storage.setItem('smarter_world_sound', on ? '1' : '0');
-    } catch {
-      /* noop */
-    }
-  };
   const stars = Object.values(s.stars).reduce((a, b) => a + b, 0);
   const o = s.overlay;
   // PAPER MODE: a world says when the student is doing written work on the screen — the music stops for it
@@ -292,15 +283,7 @@ function Shell({ world, game, rootRef, exitTo, classicHref, basePath, config, on
               </button>
             </>
           )}
-          <button
-            type="button"
-            className="di-icon"
-            onClick={toggleSound}
-            aria-label={KT.hud.sound}
-            title={KT.hud.sound}
-          >
-            {s.sound ? <Volume2 size={19} /> : <VolumeX size={19} />}
-          </button>
+          <SoundToggle game={game} />
           <button type="button" className="di-icon" onClick={toggleFull} aria-label={KT.hud.full} title={KT.hud.full}>
             {full ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
           </button>

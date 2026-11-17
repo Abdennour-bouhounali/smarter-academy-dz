@@ -118,10 +118,15 @@ describe('the two investigations of « قواسم عدد طبيعي » — each 
 
   it('RULES: every sentence can be said, and none names a reading before he finds it', () => {
     const T = RULES_INQUIRY.text;
-    const lines = [T.fill, T.look, T.noLens, T.nextHundred, T.toWhere, T.sealed, T.done];
+    const lines = [T.fill, T.look, T.noLens, T.nextHundred, T.toWhere, T.sealed, T.done, T.equals];
     lines.push(T.claim(3, 0), T.claim(0, 2), T.claim(1, 1));
     for (const p of RULES_INQUIRY.planks) {
-      lines.push(T.lead(p.b, 0, false), T.lead(p.b, 1, false), T.lead(p.b, 1, true));
+      // the question and the goal are said before he tests: WHAT is looked for (no division each time) — never the reading
+      expect(T.lead(p.b)).toContain(`لوح طوله ${p.b}`);
+      expect(T.goal(p.b)).toMatch(/^الهدف: .*من شكلها.*دون تقسيم/);
+      expect(T.goal(p.b)).toContain(`العدد ${p.b}`);
+      expect(T.how(p.b, false)).toMatch(/الباقي 0 .*خضراء/);
+      lines.push(T.lead(p.b), T.goal(p.b), T.how(p.b, false), T.how(p.b, true), T.rest(0), T.rest(p.b - 1));
       lines.push(T.lensAsk(p.b), T.board(p.b, 0), T.board(p.b, 100));
     }
     for (const line of lines) {

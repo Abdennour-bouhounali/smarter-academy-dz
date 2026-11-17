@@ -140,13 +140,23 @@ const attackToTablet = async (last) => {
 };
 
 const iq = () => page.evaluate(() => window.__inquiry);
+/** The forge covers the top bar: its OWN ✕ (leave the game) and sound button are on screen, uncovered, and its header keeps one row. */
+const forgeTools = async (where) => {
+  const t = await page.evaluate(() => {
+    const seen = (sel) => { const el = document.querySelector(sel); if (!el) return false; const r = el.getBoundingClientRect(); const top = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2); return r.width > 0 && r.left >= 0 && r.right <= window.innerWidth + 1 && r.top >= 0 && (el === top || el.contains(top)); };
+    const head = document.querySelector('.rf-head'); const kids = [...head.children].map((k) => k.getBoundingClientRect());
+    const apart = kids.every((a, i) => kids.every((b, j) => i >= j || a.right <= b.left + 1 || b.right <= a.left + 1));
+    return { exit: seen('.rf-root [data-di-exit]'), sound: seen('.rf-root [data-di-sound]'), help: !document.querySelector('[data-rf-help]') || seen('[data-rf-help]'), href: document.querySelector('.rf-root [data-di-exit]')?.getAttribute('href'), apart, titleOneLine: (() => { const h = document.querySelector('.rf-brand h2'); return h.getBoundingClientRect().height < 1.9 * parseFloat(getComputedStyle(h).fontSize) * (parseFloat(document.querySelector('.rf-fit').style.zoom) || 1); })(), inScreen: head.getBoundingClientRect().right <= window.innerWidth + 1 && kids.every((k) => k.left >= -1 && k.right <= window.innerWidth + 1) };
+  });
+  expect(t.exit && t.sound && t.help && Boolean(t.href) && t.apart && t.titleOneLine && t.inScreen, `${where}: the forge shows the ✕ that leaves the game and the sound button, uncovered, beside its steps (${JSON.stringify(t)})`);
+};
 /** An investigation screen: nothing of it leaves its frame, no button is covered, no text is under 12 px — then the screenshot. */
 const inquiryFits = async (name) => {
   await page.waitForTimeout(250);
   const bad = await page.evaluate(() => {
     const out = []; const frame = document.querySelector('.iq'); const box = frame.getBoundingClientRect();
     const zoom = parseFloat(document.querySelector('.rf-fit').style.zoom) || 1;
-    for (const el of frame.querySelectorAll('button, .iq-lead p, .iq-fact, .iq-strip, .iq-table, .iq-chart, .iq-found li')) {
+    for (const el of frame.querySelectorAll('button, .iq-lead p, .iq-goal, .iq-how, .iq-div, .iq-equals, .iq-fact, .iq-strip, .iq-table, .iq-chart, .iq-found li')) {
       const r = el.getBoundingClientRect(); if (!r.width) continue;
       if (r.left < box.left - 1 || r.right > box.right + 1 || r.top < box.top - 1 || r.bottom > box.bottom + 1) out.push(String(el.className).split(' ')[0] + ' leaves the frame');
       if (el.tagName === 'BUTTON') { const top = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2); if (top && !el.contains(top) && !top.contains(el)) out.push('covered: « ' + el.textContent.trim().slice(0, 18) + ' »'); }
@@ -224,6 +234,7 @@ s = await st(); expect(s.stage === 3 && s.overlay === 'forge' && (await fg()).ke
   expect(await page.locator('[data-rf-row][data-rf-own="1"]').count() === 5, 'only now he WRITES his rule — the mirror will test it on the five bridges HE turned');
   // « the second bridge has as many planks as the first »: the mirror builds it from HIS bridges — it holds, with another count
   await page.click('[data-rf-tile="p:count"]'); await page.click('[data-rf-tile="n:same"]'); await shot('forge1-build');
+  await forgeTools('forge 1, writing his rule (the help button is there too)');
   await page.click('[data-rf-test]'); await page.waitForSelector('[data-rf-refuted]');
   expect((await page.textContent('[data-rf-refuted]')).includes('لكن بـ'), 'a promise of the right plank with the wrong count is refuted by the bridge itself: it holds, but with another number of planks');
   await shot('forge1-refuted');
@@ -388,10 +399,24 @@ s = await st(); expect(s.stage === 7 && s.overlay === 'forge' && (await fg()).ke
 // ── forge 4 ⚡: what to read instead of dividing — FOUND on the chart, plank by plank ──
 {
   expect(await page.locator('[data-rf-tile]').count() === 0 && (await iq()).b === 5, 'no tile: he starts with ONE plank (5), on the gaps 5, 6, 7…');
+  await forgeTools('forge 4, the chart');
+  await page.click('.rf-root [data-di-sound]');
+  expect(await page.getAttribute('.rf-root [data-di-sound]', 'data-di-sound') === 'off' && await page.evaluate(() => window.__world.getState().sound === false && window.__world.audio.enabled === false), 'the sound is turned OFF from inside the forge');
+  await page.click('.rf-root [data-di-sound]');
+  expect(await page.evaluate(() => window.__world.getState().sound === true && window.__world.audio.enabled === true), '…and on again');
   /** One plank whose reading is a lens: tested by hand, the chart filled, a lens that fails, the lens that separates, the next hundred. */
   const lensPlank = async (b, wrong, lens, values) => {
     let taps = 0;
-    while (await page.locator('[data-iq-fill]').count() === 0) { await page.click('[data-iq-test]'); taps += 1; }
+    const goal = await page.textContent('[data-iq-goal]');
+    expect((await page.textContent('.iq-lead')).includes(`لوح طوله ${b}`) && goal.includes('الهدف') && goal.includes('دون تقسيم') && goal.includes(`العدد ${b}`) && (await page.textContent('[data-iq-how]')).includes('الباقي 0') && await page.locator('[data-iq-div]').count() === 0, `plank ${b}: the chart opens on its QUESTION (which gaps take a bridge of planks of ${b}?) and its GOAL (to know them without dividing each time)`);
+    while (await page.locator('[data-iq-fill]').count() === 0) {
+      const n = Number(await page.getAttribute('[data-iq-test]', 'data-iq-test'));
+      await page.click('[data-iq-test]'); taps += 1;
+      const d = await page.evaluate((k) => { const li = document.querySelector('[data-iq-div]'); const cell = document.querySelector(`[data-iq-cell="${k}"]`); return { n: Number(li.dataset.iqDiv), rest: Number(li.dataset.iqRest), tex: li.querySelector('annotation')?.textContent ?? '', green: getComputedStyle(cell).backgroundColor === 'rgb(22, 163, 74)' }; }, n);
+      if (!(d.n === n && d.rest === n % b && d.tex.includes(` ${n} = ${Math.floor(n / b)} \\times ${b} + `) && d.green === (n % b === 0)))
+        expect(false, `plank ${b}, gap ${n}: its division is written (${d.tex}), rest ${d.rest}, cell green: ${d.green}`);
+    }
+    expect(true, `plank ${b}: every gap he tries shows ITS division « n = q × ${b} + r », and its cell turns green exactly when the rest is 0`);
     const litByHand = await page.locator('.iq-cell.is-lit').count();
     expect((await iq()).b === b && taps >= 6 && litByHand >= 2, `plank ${b}: ${taps} gaps tested by hand, one after the other (${litByHand} lit) before the world may finish the chart`);
     if (b === 5) await inquiryFits('inquiry4-test');
@@ -407,7 +432,15 @@ s = await st(); expect(s.stage === 7 && s.overlay === 'forge' && (await fg()).ke
     await page.click(`[data-iq-lens="${lens}"]`);
     for (const v of values) await page.click(`[data-iq-value="${v}"]`);
     expect(await page.getAttribute('[data-iq-fact]', 'data-iq-ok') === '1' && await page.locator('.iq-cell.is-intruder').count() === 0 && await page.locator('.iq-cell.is-lit:not(.is-claimed)').count() === 0, `plank ${b}: HIS claim holds every lit cell and no dark one`);
-    if (b === 5 || b === 9) await inquiryFits(`inquiry4-claim-${b}`);
+    if (b === 5 || b === 9) {
+      const lay = await page.evaluate(() => {
+        const r = (s) => document.querySelector(s).getBoundingClientRect();
+        const L = [...document.querySelectorAll('[data-iq-lens]')].map((e) => e.getBoundingClientRect()); const V = [...document.querySelectorAll('[data-iq-value]')].map((e) => e.getBoundingClientRect());
+        return { stacked: L.every((x, i) => i === 0 || (x.top >= L[i - 1].bottom - 1 && Math.abs(x.left - L[0].left) < 2)), order: r('[data-iq-lenses]').right <= r('[data-iq-equals]').left + 1 && r('[data-iq-equals]').right <= r('[data-iq-values]').left + 1, down: V[1].top >= V[0].bottom - 1 && Math.abs(V[1].left - V[0].left) < 2, word: document.querySelector('[data-iq-equals]').textContent.trim() };
+      });
+      expect(lay.stacked && lay.order && lay.down && lay.word === 'يساوي', `plank ${b}: his claim is laid as asked — the three lenses in a column on the left, « يساوي », then the values read downwards (${JSON.stringify(lay)})`);
+      await inquiryFits(`inquiry4-claim-${b}`);
+    }
     await page.evaluate(() => { window.__heard = []; });
     await page.click('[data-iq-seal]'); await page.waitForSelector('[data-iq-next]');
     heard = await page.evaluate(() => window.__heard);
@@ -423,6 +456,8 @@ s = await st(); expect(s.stage === 7 && s.overlay === 'forge' && (await fg()).ke
   await lensPlank(3, ['units', 3], 'sum', [3, 6, 9, 12, 15, 18]);
   // plank 4: no lens separates — its own road
   while (await page.locator('[data-iq-fill]').count() === 0) await page.click('[data-iq-test]');
+  // the fullest test screen of the chart: four readings found, the question, the goal, a division, two buttons
+  await inquiryFits('inquiry4-four-test');
   await page.click('[data-iq-fill]'); await page.waitForSelector('[data-iq-look]'); await page.click('[data-iq-look]');
   await page.click('[data-iq-lens="units"]'); await page.click('[data-iq-value="2"]');
   expect(await page.locator('[data-iq-nolens]').count() === 0, 'plank 4: one lens that fails is not enough to give up');
@@ -440,10 +475,10 @@ s = await st(); expect(s.stage === 7 && s.overlay === 'forge' && (await fg()).ke
   await page.click('[data-iq-cell="61"]');
   expect((await fact()).includes('61'), 'a cell that is not its own is answered with what that cell is');
   await page.click('[data-iq-cell="16"]');
-  expect((await page.textContent('.iq-lead')).includes('مضيئة'), '316 is read on cell 16: lit — plank 4 holds');
+  expect((await page.textContent('.iq-lead')).includes('خضراء — '), '316 is read on cell 16: lit — plank 4 holds');
   await inquiryFits('inquiry4-four-where');
   await page.click('[data-iq-next]'); await page.click('[data-iq-cell="22"]');
-  expect((await page.textContent('.iq-lead')).includes('منطفئة'), '522 is read on cell 22: dark — plank 4 falls');
+  expect((await page.textContent('.iq-lead')).includes('ليست خضراء'), '522 is read on cell 22: dark — plank 4 falls');
   await page.click('[data-iq-next]'); await page.click('[data-iq-cell="8"]'); await page.click('[data-iq-next]');
   expect((await iq()).stage === 'sealed' && await page.locator('[data-iq-found] li').count() === 5, 'five planks, five readings — all found by him, all on screen');
   await inquiryFits('inquiry4-sealed');
