@@ -2,8 +2,9 @@
  * The small pieces every screen of a game world shares: a formula, the toast, the robot's bubble, the touch stick, a
  * card over the world, three stars, a box for a number. They name no lesson and no world.
  */
-import { useEffect, useRef, useState } from 'react';
-import { Star } from 'lucide-react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Star, X } from 'lucide-react';
 import MathText from '../../components/MathText';
 import Fit, { cardRoom } from './Fit';
 
@@ -87,9 +88,22 @@ export function Stick({ game }) {
   );
 }
 
+/** Where « leave the game » goes: given by the shell, so that a dialog can draw the same ✕ as the top bar. */
+export const ExitTo = createContext(null);
+
+/**
+ * A dialog of the world. THE STUDENT CAN ALWAYS LEAVE (owner, 2026-11-17): the veil of a dialog covers the top bar and
+ * its ✕, so the dialog draws that ✕ again, at the same place, over the veil.
+ */
 export function Card({ children, tone = '', wide = false }) {
+  const exit = useContext(ExitTo);
   return (
     <div className="di-veil">
+      {exit && (
+        <Link to={exit.to} className="di-icon di-veil__exit" aria-label={exit.label} title={exit.label} data-di-exit>
+          <X size={20} />
+        </Link>
+      )}
       <div className={`di-card ${tone} ${wide ? 'di-card--wide' : ''}`} role="dialog" aria-modal="true">
         <Fit avail={cardRoom}>{children}</Fit>
       </div>

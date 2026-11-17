@@ -660,6 +660,8 @@ function Workshop({ o, game }) {
  */
 function Boss({ o, game }) {
   const T = game.T;
+  // the gap, the two moulds and the price are THE LESSON'S (its story): nothing of them is written in this screen
+  const { a, boss } = game.bossSeg;
   const [q, setQ] = useState('');
   const [r, setR] = useState('');
   const [cost, setCost] = useState('');
@@ -701,7 +703,7 @@ function Boss({ o, game }) {
         <>
           <h2>{T.boss.choose}</h2>
           <div className="di-moulds" dir="ltr">
-            {[32, 36].map((b) => {
+            {boss.options.map((b) => {
               const left = o.tried?.[b];
               return (
                 <button
@@ -732,9 +734,9 @@ function Boss({ o, game }) {
           {o.view === 'divide' ? (
             <>
               <h2>{T.boss.divide(o.b)}</h2>
-              <PaperGate tip={PT.tipDivision} onModel={() => setModel(twin(756, o.b))}>
+              <PaperGate tip={PT.tipDivision} onModel={() => setModel(twin(a, o.b))}>
                 <div className="di-template" dir="ltr">
-                  <span>756</span>
+                  <span data-di-boss-a>{a}</span>
                   <span>=</span>
                   <span>{o.b}</span>
                   <span>×</span>
@@ -776,7 +778,7 @@ function Boss({ o, game }) {
                 <div className="di-template" dir="ltr">
                   <span>{o.q}</span>
                   <span>×</span>
-                  <span>1850</span>
+                  <span data-di-boss-price>{boss.price}</span>
                   <span>=</span>
                   <Num
                     value={cost}
@@ -789,6 +791,7 @@ function Boss({ o, game }) {
                     aria-label="المبلغ"
                     data-di-cost
                   />
+                  {T.boss.unit && <span dir="rtl">{T.boss.unit}</span>}
                 </div>
               </PaperGate>
             </>
@@ -808,6 +811,9 @@ function Boss({ o, game }) {
                 {T.boss.change}
               </button>
             )}
+            <button type="button" className="di-link" onClick={() => game.closeOverlay()} data-di-boss-close>
+              {T.boss.close}
+            </button>
           </div>
         </form>
       )}

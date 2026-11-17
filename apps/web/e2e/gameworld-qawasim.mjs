@@ -22,6 +22,8 @@ async function noScroll(page, where) {
   await page.waitForTimeout(250);
   const measure = () => page.evaluate(() => {
     const bad = []; const small = [];
+    // a formula is DRAWN: no dollar sign, no backslash command may be read on screen (text outside the rendered formulas)
+    { const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT); for (let t = w.nextNode(); t; t = w.nextNode()) { const p = t.parentElement; if (!p || p.closest('.katex, script, style')) continue; if (/\$|\\(times|div|frac|dfrac|le|ge|ne|sqrt|cdot)\b/.test(t.nodeValue) && p.getClientRects().length) bad.push('raw formula on screen: « ' + t.nodeValue.trim().slice(0, 60) + ' »'); } }
     const name = (el) => `${el.tagName.toLowerCase()}.${String(el.className).split(' ').slice(0, 2).join('.')}`;
     for (const el of document.querySelectorAll('.di-root *')) {
       const cs = getComputedStyle(el);
@@ -73,6 +75,13 @@ page.on('pageerror', (e) => { errors.push(e.message); console.log('pageerror', e
 page.on('console', (m) => { if (m.type() === 'error' && !/favicon|fonts|ERR_|Failed to load resource/.test(m.text())) console.log('console.error', m.text().slice(0, 300)); });
 
 let n = 0;
+/** The sentence under a prediction: its formula is DRAWN — never a dollar sign or a backslash command to read (owner, 2026-11-17). */
+let factsWithFormula = 0;
+const factDrawn = async () => {
+  const f = await page.evaluate(() => { const el = document.querySelector('[data-rf-predicted]'); const c = el.cloneNode(true); const drawn = c.querySelectorAll('.katex').length; c.querySelectorAll('.katex').forEach((k) => k.remove()); return { text: c.textContent, drawn }; });
+  factsWithFormula += f.drawn ? 1 : 0;
+  if (/\$|\\[a-z]+/.test(f.text)) { console.log('FAIL raw formula under a prediction: « ' + f.text + ' »'); process.exitCode = 1; if (process.env.E2E_SOFT !== '1') throw new Error('raw formula'); }
+};
 const shot = async (name) => { n += 1; const f = `${OUT}/${String(n).padStart(2, '0')}-${name}.png`; await noScroll(page, name); await page.screenshot({ path: f }); console.log('shot', f); };
 /** Fast-forwards the world by `sec` seconds of game time (promises of the tweens resolve between steps). */
 const ff = (sec) => page.evaluate(async (s) => { const g = window.__world; for (let t = 0; t < s; t += 0.04) { g.step(0.04); await null; await null; } }, sec);
@@ -119,7 +128,7 @@ const fillUse = async (vals, verdict = null) => {
 const toBuild = async () => {
   for (let i = 0; i < 12 && (await fg()).phase === 'predict'; i += 1) {
     const f = await fg();
-    if (f.show.stage === 'ask') { await page.click(`[data-rf-guess="${f.show.c.held ? 'yes' : 'no'}"]`); await page.waitForSelector('[data-rf-predicted]'); }
+    if (f.show.stage === 'ask') { await page.click(`[data-rf-guess="${f.show.c.held ? 'yes' : 'no'}"]`); await page.waitForSelector('[data-rf-predicted]'); await factDrawn(); }
     await page.click('[data-rf-next]'); await page.waitForTimeout(80);
   }
   await page.waitForSelector('[data-rf="build"]');
@@ -173,7 +182,7 @@ await cross(2); await page.waitForTimeout(500);
 s = await st(); expect(s.stage === 3 && s.overlay === 'forge' && (await fg()).key === 'jidaa-aamilayn', 'island D opens the first forge of the lesson');
 {
   await shot('forge1-predict');
-  const c = (await fg()).show.c; await page.click(`[data-rf-guess="${c.held ? 'yes' : 'no'}"]`); await page.waitForSelector('[data-rf-predicted]');
+  const c = (await fg()).show.c; await page.click(`[data-rf-guess="${c.held ? 'yes' : 'no'}"]`); await page.waitForSelector('[data-rf-predicted]'); await factDrawn();
   expect((await page.textContent('.rf-panel')).includes('ثبت بـ'), 'a prediction of this forge starts from a bridge that held and asks about a second plank');
   await shot('forge1-predicted');
   await toBuild();
@@ -214,7 +223,7 @@ await cross(3); await page.waitForTimeout(500);
 // ── forge 2 🔑: the exact quotient is a natural number ──
 s = await st(); expect(s.stage === 4 && s.overlay === 'forge' && (await fg()).key === 'qasim-rappel', 'island E opens the second forge');
 {
-  const c = (await fg()).show.c; await page.click(`[data-rf-guess="${c.held ? 'yes' : 'no'}"]`); await page.waitForSelector('[data-rf-predicted]');
+  const c = (await fg()).show.c; await page.click(`[data-rf-guess="${c.held ? 'yes' : 'no'}"]`); await page.waitForSelector('[data-rf-predicted]'); await factDrawn();
   expect((await page.textContent('[data-rf-eq]')).includes('÷'), 'the mirror of this island writes the exact QUOTIENT');
   await shot('forge2-predicted');
   await toBuild();
@@ -314,6 +323,50 @@ expect((await st()).keys.length === 4, 'four keys earned, all forged');
 await toAltar(7); await page.waitForTimeout(600); await act(); await page.waitForTimeout(400);
 s = await st(); expect(s.overlay === 'boss' && (await page.textContent('[data-di-boss-mission]')).includes('96'), 'the store opens on the lesson’s problem: 96 books');
 await shot('boss');
+// THE STORE IS PLAYED THROUGH ITS SCREEN (owner, 2026-11-17: it showed the pilot's 756, 32 / 36 and 1850 in this lesson, and
+// its payment step had no way out). Every number on screen is read and compared with the lesson's own.
+expect((await page.locator('[data-di-mould]').evaluateAll((els) => els.map((e) => e.dataset.diMould))).join() === '20,12', 'the store offers the lesson’s two shelves — 20 and 12 — and no other');
+expect(await page.locator('.di-veil [data-di-exit]').count() === 1 && await page.locator('.di-veil [data-di-exit]').isVisible(), 'the ✕ that leaves the game is drawn OVER the dialog: the student can always quit');
+{ const hit = await page.evaluate(() => { const r = document.querySelector('.di-veil [data-di-exit]').getBoundingClientRect(); const el = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2); return Boolean(el?.closest('[data-di-exit]')); }); expect(hit, 'and nothing covers it: a click reaches it'); }
+await page.click('[data-di-mould="20"]'); await page.waitForTimeout(300); await page.click('[data-di-pgate-go]');
+expect((await page.textContent('[data-di-boss-a]')).trim() === '96', 'the division to write starts with the gap of THIS lesson: 96 = 20 × ▢ + ▢');
+await page.click('[data-di-check]'); await page.waitForTimeout(200);
+expect((await page.textContent('[data-di-boss-error]')).includes('عدد الرفوف'), 'an empty division is refused, in the words of this lesson (shelves)');
+await page.fill('[data-di-q]', '5'); await page.fill('[data-di-r]', '0'); await page.click('[data-di-check]'); await page.waitForTimeout(300);
+expect((await page.textContent('[data-di-boss-error]')).includes('100') && (await page.textContent('[data-di-boss-error]')).includes('(96)'), '5 shelves of 20: « 100 cells, longer than the gap (96) »');
+await page.fill('[data-di-q]', '3'); await page.fill('[data-di-r]', '36'); await page.click('[data-di-check]'); await page.waitForTimeout(300);
+expect((await page.textContent('[data-di-boss-error]')).includes('أصغر من 20'), 'remainder 36: « room for another shelf »');
+await shot('boss-divide');
+await page.fill('[data-di-q]', '4'); await page.fill('[data-di-r]', '16'); await page.click('[data-di-check]');
+await ff(15); await page.waitForTimeout(400);
+s = await page.evaluate(() => window.__world.getState().overlay);
+expect(s?.type === 'boss' && s.view === 'choose' && s.tried[20] === 16, 'shelf 20 leaves 16 cells: the store shows it tried and lets him choose again');
+await shot('boss-tried');
+await page.click('[data-di-mould="12"]'); await page.waitForTimeout(300); await page.click('[data-di-pgate-go]');
+await page.fill('[data-di-q]', '8'); await page.fill('[data-di-r]', '0'); await page.click('[data-di-check]');
+await ff(12); await page.waitForTimeout(300);
+s = await page.evaluate(() => window.__world.getState().overlay);
+expect(s?.type === 'boss' && s.view === 'cost' && s.q === 8, 'the bridge of 96 holds with 8 shelves of 12: the store asks their price');
+await page.click('[data-di-pgate-go]');
+{ const asked = await page.textContent('.di-card h2'); const price = (await page.textContent('[data-di-boss-price]')).trim();
+  expect(price === '1400' && asked.includes('1400') && asked.includes('8 رفوف'), `the price in the sentence and the price in the equation are the SAME number (1400; equation shows ${price})`); }
+expect((await page.textContent('.di-template')).includes('دج'), 'the amount is typed in its own shape: its unit « دج » is printed');
+await shot('boss-cost');
+await page.fill('[data-di-cost]', '4200'); await page.click('[data-di-check]'); await page.waitForTimeout(300);
+expect((await page.textContent('[data-di-boss-error]')).includes('4200') && (await page.textContent('[data-di-boss-error]')).includes('الرفّ'), 'a wrong price is refused with a sentence, in the words of this lesson');
+// the way out of the payment step: « إغلاق » returns to the world, the store opens again where it was
+await page.click('[data-di-boss-close]'); await ff(0.3);
+expect((await st()).overlay == null && await page.evaluate(() => window.__world.getState().phase) === 'play', 'the payment step can be CLOSED: back in the world, nothing lost');
+await act(); await page.waitForTimeout(400);
+s = await page.evaluate(() => window.__world.getState().overlay);
+expect(s?.type === 'boss' && s.view === 'cost' && s.q === 8, 'the store opens again on the price of the 8 shelves');
+if (await page.locator('[data-di-pgate-go]').count()) await page.click('[data-di-pgate-go]');
+await page.fill('[data-di-cost]', '11200'); await page.click('[data-di-check]'); await ff(0.5);
+expect((await st()).overlay == null && (await page.evaluate(() => window.__world.getState().objective)).includes('اعبر إلى المنارة'), 'paid 11200 دج (8 × 1400): the objective says to cross to the lighthouse');
+await cross(7); await ff(3); await page.waitForTimeout(500); await shot('finale');
+await ff(6); await page.waitForTimeout(600); await shot('end');
+s = await st(); expect(s.overlay === 'end', 'the lighthouse is lit and the end screen shows: the story is played to its end');
 expect(errors.length === 0, 'no page error');
 console.log('ok   nothing scrolls at any screenshot of the walk');
+expect(factsWithFormula > 0, 'the sentences under the predictions were read: ' + factsWithFormula + ' carried a formula, all DRAWN — none showed a dollar sign or a backslash');
 await browser.close();

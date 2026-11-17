@@ -25,6 +25,10 @@ const bridge = (id, a, len, moulds, holdsWith, extra = {}) => ({
   ...extra,
 });
 
+/** The last bridge — ONE place for its numbers: the segment and every sentence of the store read them from here. */
+const BOSS = { a: 96, options: [20, 12], holdsWith: 12, price: 1400 };
+const shelves = (q) => (q === 1 ? 'رفّ واحد' : q === 2 ? 'رفّان' : q <= 10 ? q + ' رفوف' : q + ' رفًّا');
+
 const ISLANDS = [
   { id: 'A', name: 'مرسى الأزواج', R: 8, theme: 'meadow', turn: 0 },
   { id: 'B', name: 'جزيرة الشريك', R: 8, theme: 'meadow', turn: 0.38 },
@@ -44,7 +48,15 @@ const SEGMENTS = [
   bridge('g36', 36, 15.5, [4, 6, 9], 6),
   { id: 'dash', kind: 'rail', len: 300 },
   bridge('g60', 60, 19, [7, 8, 10], 10),
-  { id: 'g96', kind: 'bridge', a: 96, len: 26, moulds: [], holdsWith: 12, boss: { options: [20, 12], price: 1400 } },
+  {
+    id: 'g96',
+    kind: 'bridge',
+    a: BOSS.a,
+    len: 26,
+    moulds: [],
+    holdsWith: BOSS.holdsWith,
+    boss: { options: BOSS.options, price: BOSS.price },
+  },
 ];
 /** The gate dash: one sentence, three gates, exactly one right. */
 const DASH_WAVES = [
@@ -153,14 +165,20 @@ const TEXT = {
       'المهمّة: 96 كتابًا تُعرض في رفوف مملوءة تمامًا. اختر الرفّ الذي يملأ 96 خانة، ابنِ الجسر، ثمّ ادفع ثمن رفوفه.',
     choose: 'أيّ الرفّين يملأ 96 خانة تمامًا؟ احسب في كرّاسك، ثمّ اختر.',
     mould: (b) => `رفوف تتّسع لـ ${b} كتابًا`,
-    price: 'ثمن الرفّ الواحد: 1400 دج',
-    divide: (b) => `الرفّ ${b}: كم رفًّا يدخل في 96 خانة؟ وكم خانة تبقى؟`,
+    steps: ['اختر رفًّا واحسب', 'ابنِ الجسر', 'ادفع الثمن'],
+    price: `ثمن الرفّ الواحد: ${BOSS.price} دج`,
+    divide: (b) => `الرفّ ${b}: كم رفًّا يدخل في ${BOSS.a} خانة؟ وكم خانة تبقى؟`,
     qLabel: 'عدد الرفوف',
+    change: 'أغيّر الرفّ',
+    unit: 'دج',
     costAsk: (b, q) =>
-      `الجسر ثابت: ${q} رفوف تتّسع كلّ واحدة لـ ${b} كتابًا. ثمن الرفّ الواحد 1400 دج. كم تدفع للمخزن؟`,
+      `الجسر ثابت: ${shelves(q)} تتّسع كلّ واحدة لـ ${b} كتابًا. ثمن الرفّ الواحد ${BOSS.price} دج. كم تدفع للمخزن؟`,
     err: {
-      long: (b, q) => `${q} رفوف من ${b} تساوي ${b * q} خانة: أطول من الهوّة (96)!`,
-      sum: (b, q, r) => `تحقّق: $${b} \\times ${q} + ${r} = ${b * q + r}$، والهوّة 96 خانة.`,
+      nan: 'اكتب العددين معًا: عدد الرفوف، والخانات الباقية.',
+      long: (b, q) => `${shelves(q)} من ${b} تساوي ${b * q} خانة: أطول من الهوّة (${BOSS.a})!`,
+      sum: (b, q, r) => `تحقّق: $${b} \\times ${q} + ${r} = ${b * q + r}$، والهوّة ${BOSS.a} خانة.`,
+      big: (b, r) => `بقيت ${r} خانة: ما زال هناك مكان لرفّ آخر يتّسع لـ ${b}. الباقي يجب أن يكون أصغر من ${b}.`,
+      cost: (n) => `${n} دج ليس الثمن الصحيح. احسب: عدد الرفوف × ثمن الرفّ الواحد.`,
     },
   },
   end: { text: 'أعدتَ بناء كلّ الجسور وصنعتَ مفاتيح المعرفة الأربعة بنفسك.' },

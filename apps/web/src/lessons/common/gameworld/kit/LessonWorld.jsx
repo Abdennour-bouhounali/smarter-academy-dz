@@ -39,7 +39,7 @@ import ExamSitting from './ExamSitting';
 import { Promotion, ProgressPage } from './Spaces';
 import { PaperChip } from './Paper';
 import { LessonProvider } from './LessonContext';
-import { Toast, Say, Stick } from './parts';
+import { Toast, Say, Stick, ExitTo } from './parts';
 import { Tablet } from './Tablet';
 import Title from './Title';
 import PracticeHub from './PracticeHub';
@@ -186,17 +186,19 @@ export default function LessonWorld({
       {!game && <div className="di-loading">{KT.loading}</div>}
       {game && (
         <LessonProvider lesson={lesson}>
-          <Shell
-            world={world}
-            game={game}
-            rootRef={root}
-            exitTo={exitTo}
-            classicHref={classicHref}
-            basePath={basePath}
-            config={config}
-            onRestart={restart}
-            mastery={mastery}
-          />
+          <ExitTo.Provider value={{ to: exitTo, label: KT.hud.exit }}>
+            <Shell
+              world={world}
+              game={game}
+              rootRef={root}
+              exitTo={exitTo}
+              classicHref={classicHref}
+              basePath={basePath}
+              config={config}
+              onRestart={restart}
+              mastery={mastery}
+            />
+          </ExitTo.Provider>
         </LessonProvider>
       )}
     </div>,

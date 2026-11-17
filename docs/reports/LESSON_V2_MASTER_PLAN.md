@@ -335,14 +335,31 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
      - DONE since: unit tests for `world/practice`, `trainer`, `sitting`, `journey`, `evidence` (44 tests with the
        forges': every wave has one right gate; every trainer question accepts its solution and refuses a wrong
        answer; a full-mark paper earns every point; every claim sent is re-computed true) — commit `f4040bd0`;
-       `status:lesson-v2` prints 13 of 15 parts (missing: the launch-kit family, the board).
+       `status:lesson-v2` printed 13 of 15 parts (missing: the launch-kit family, the board) — 14 of 15 since the
+       family below (missing: the board).
      - **NOT DONE — lesson 2 is not finished:** (1) the trainer, the sittings and the practice hub of lesson 2 were
        NEVER opened in a browser (unit-tested only); (2) the practice hub, « تدرّب », an exam sitting and
        « تقدّمي » walked for lesson 2; (3) `board/script.js`, `board/memo.js` and `board` in the pack — the teacher
-       still gets the OLD lesson page; (4) a launch-kit family for `4am.m1.r01` — lesson 2 has no « عُدّة الانطلاق »
-       check of lesson 1's الكفاءة, and its world walk seeds the launch as already played; (5) screenshots of every
+       still gets the OLD lesson page; ~~(4) a launch-kit family for `4am.m1.r01`~~ **DONE 2026-11-17** (the owner
+       opened lesson 2 and saw an EMPTY kit, 0 / 0): family « قاسم عدد طبيعي » in `launchkit/families.js` (an equality
+       with one box, numbers to sort, SENTENCES to sort — a new kind of card; worked example answering the named
+       mistake), walk `e2e/launch-kit-qawasim.mjs` (30 checks, four sizes), and the sort gesture now fits a phone
+       above its buttons (it lay under them, on the pilot too); (5) screenshots of every
        screen looked at (only the forges were); (6) the old modules are still there (`?view=classic`, « إختبار أولي »);
        (7) the gate's report: real time, lines written by hand, what was copied from the pilot.
+     - **Found by the owner playing lesson 2 (2026-11-17), fixed the same day — and what they say about my checks:**
+       (a) raw LaTeX under a prediction of the third forge (`$5 \times 5 = 25$`): the kit printed `T.fact` as plain
+       text; (b) the store of the last bridge showed the PILOT's numbers inside lesson 2 (756 in the equation, mould
+       32 offered, 1850 in the price) — a dead end: the price could never be right; (c) no way out of the store's
+       payment step, and the ✕ of the top bar lay under every dialog. **My earlier line « lesson 2's world plays end
+       to end (52 checks) » was FALSE for the store**: that walk stopped at the store's door and never played it.
+       Now: `GAME_WORLD.md` §2ter-0 (three rules, each with its check); the walk plays the store through its screen
+       to the end screen (69 checks at 1366×768, 1024×768, 1840×900 and on a phone); the four world walks fail on
+       any raw formula on screen; a unit test keeps the pilot's numbers out of the world's screen. Also found by the
+       whole web suite, which had not been re-run since lesson 2 got `phone: true`: a phone could open the teacher's
+       memo address of lesson 2, which has no board yet — `phoneLessons.js` now asks for `board` too.
+       **Still true: every screen of lesson 2 must be PLAYED through its screen by a walk before the gate** — the
+       practice hub, « تدرّب », a sitting and « تقدّمي » are still unit-tested only.
      - NOT in lesson 2 by choice, to be said in the report: no real-world case world (S5); ten dash levels instead.
      - The walk is assembled from the pilot walk's helpers (copied, not shared): a shared helper module is owed.
 - **D4 — DONE**: the five billing files are deleted.

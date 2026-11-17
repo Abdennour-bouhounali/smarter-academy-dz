@@ -4,7 +4,7 @@ import { PHONE_LESSONS, isPhoneLessonPath } from './phoneLessons';
 const HOME = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/qasim-adad-tabii';
 
 describe('the pages a phone may open', () => {
-  it('opens the home of the pilot lesson, for the student and for the teacher\'s preview', () => {
+  it("opens the home of the pilot lesson, for the student and for the teacher's preview", () => {
     expect(PHONE_LESSONS).toContain('qasim-adad-tabii');
     expect(isPhoneLessonPath(HOME)).toBe(true);
     expect(isPhoneLessonPath(`${HOME}/`)).toBe(true);
@@ -26,7 +26,7 @@ describe('the pages a phone may open', () => {
   });
 
   it('keeps every other lesson, and every page that is not a lesson, closed', () => {
-    expect(isPhoneLessonPath('/courses/moyen/4am/ansab_al_aadad_wal_hisab/qawasim-adad-tabii')).toBe(false);
+    expect(isPhoneLessonPath('/courses/moyen/4am/ansab_al_aadad_wal_hisab/khawass-qawasim')).toBe(false);
     expect(isPhoneLessonPath('/espace/pratique/qasim-adad-tabii')).toBe(false);
     expect(isPhoneLessonPath(undefined)).toBe(false);
   });

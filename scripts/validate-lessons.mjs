@@ -617,6 +617,9 @@ if (existsSync(liveRoot)) {
         const optionsNode = propOf(path.node, 'options');
         const count = optionCount(optionsNode);
         if (count === null) return;
+        // a question with SEVERAL right answers declares them as a set — `answer: [values]` (a world's stone) — not as
+        // one index; whether that set is the true one is the lesson's own test (its journey.test.js), not a static check
+        if (propOf(path.node, 'answer')?.type === 'ArrayExpression') return;
         const isQuestion = propOf(path.node, 'assessment') !== undefined
           || propOf(path.node, 'prompt') !== undefined || propOf(path.node, 'explain') !== undefined;
         checkKey(`${rel}:${path.node.loc?.start.line}`, count, keyOf(propOf(path.node, 'correct')), isQuestion);

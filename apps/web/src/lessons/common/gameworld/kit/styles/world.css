@@ -543,6 +543,13 @@
   z-index: 10;
   animation: di-fade 0.25s;
 }
+/* the ✕ of the top bar, drawn again over a dialog's veil: same corner, same size */
+.di-veil__exit {
+  position: absolute;
+  top: 0.9rem;
+  inset-inline-start: 1rem;
+  z-index: 1;
+}
 .di-card {
   width: min(100%, 30rem);
   max-height: calc(100vh - 2.4rem);

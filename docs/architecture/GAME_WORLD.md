@@ -267,6 +267,27 @@ Afterwards « واصل » goes straight in (`launchkit/store.js › launchDone`)
 (`data-di-launch-open`). The 3D world is neither simulated nor drawn behind it (as behind « مختبري » and the exam sheet). The
 walks of the game world seed the launch as already played.
 
+## 2ter-0. Three rules a world's screens never break (owner, 2026-11-17 — each one was a defect he found on lesson 2)
+
+1. **A formula is DRAWN, never read.** Every sentence a lesson gives a world, a forge or the kit goes through `MathText`:
+   a lesson's string may carry `$…$` anywhere, and a screen that prints it as plain text shows « `$5 \times 5 = 25$` ».
+   The defect was the sentence under a prediction (`RuleForge.jsx`, `T.fact`). **Checked**: `noScroll` of the four world
+   walks fails on any dollar sign or backslash command readable on screen (« raw formula on screen »), and the walk of
+   lesson 2 reads the sentence under EVERY prediction.
+2. **A world's screen writes no number and no word of a story.** The store of the last bridge printed the pilot's gap
+   (756), its two moulds (32, 36) and its price (1850) inside lesson 2: the equation showed a wrong number, the mould 32
+   was offered, and the price to pay could never be right — a dead end. `Boss` now reads `game.bossSeg`
+   (`{ a, boss: { options, price } }`) and the lesson's `text.boss` (`steps`, `change`, `unit`, `err.*` — a lesson that
+   speaks of shelves overrides every sentence that says planks or moulds). A lesson keeps the numbers of its last bridge
+   in ONE constant that its segment and its sentences both read. **Checked**: the lesson's `journey.test.js` (its store
+   says its own numbers, in its own words; the world's screen contains none of the pilot's) and its walk, which PLAYS the
+   store through the screen and compares each number shown with the story's. A walk that drives the game by its commands
+   proves nothing about what the student reads: lesson 2's first walk stopped at the store's door and saw none of this.
+3. **The student can always leave.** The veil of a dialog covers the top bar and its ✕. `kit/parts.jsx › Card` draws the
+   same ✕ again over the veil, at the same corner (`ExitTo` context given by `LessonWorld`; `data-di-exit`), and every
+   step of the store has « إغلاق » (the payment step had no way out; the store opens again where it was).
+   **Checked** in lesson 2's walk: the ✕ is over the dialog and a click reaches it; the payment step closes and reopens.
+
 ## 2ter. No scrolling anywhere (owner rule; restated 2026-11-15: « the student must never scroll »)
 
 Nothing in the game world scrolls — not the page, not a card, not a panel — and nothing is cut.

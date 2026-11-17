@@ -12,12 +12,16 @@ import { lessonsWithPack } from '../../lessons/registry';
 export const PHONE_LESSONS = lessonsWithPack('phone');
 
 /** The teacher's tools of a lesson that a phone may open (owner, 2026-11-16): the memo and the lesson file — to read and to note. */
+/** …of a lesson whose TEACHER side exists (`board` in its pack): a lesson may open its world on a phone before its board is written. */
+const TEACHER_PHONE_LESSONS = PHONE_LESSONS.filter((id) => lessonsWithPack('board').includes(id));
 const TEACHER_PHONE_TOOLS = [/^\/enseignant\/cours\/([^/]+)\/memoire\/?$/, /^\/enseignant\/milaff\/([^/]+)\/?$/];
 
 /** Is this address a page of a phone-ready lesson that was designed for a phone? */
 export function isPhoneLessonPath(pathname, search = '') {
   const path = String(pathname ?? '');
-  if (TEACHER_PHONE_TOOLS.some((tool) => PHONE_LESSONS.includes(decodeURIComponent(path.match(tool)?.[1] ?? ''))))
+  if (
+    TEACHER_PHONE_TOOLS.some((tool) => TEACHER_PHONE_LESSONS.includes(decodeURIComponent(path.match(tool)?.[1] ?? '')))
+  )
     return true;
   const parts = path.split('/').filter(Boolean);
   const home = parts[0] === 'courses' && PHONE_LESSONS.includes(parts[parts.length - 1]);

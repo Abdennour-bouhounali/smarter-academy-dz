@@ -377,7 +377,10 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
                       className={`rf-fb ${show.guess === c.held ? 'is-right' : ''}`}
                       data-rf-predicted={show.guess === c.held ? 'right' : 'miss'}
                     >
-                      {show.guess === c.held ? `✓ ${L.right}` : L.miss} <span>{T.fact(c)}</span>
+                      {show.guess === c.held ? `✓ ${L.right}` : L.miss}{' '}
+                      <span>
+                        <MathText>{T.fact(c)}</MathText>
+                      </span>
                     </p>
                     {(inHead || lastCase) && <p className="rf-note">{inHead ? L.inHead : L.timeToWrite}</p>}
                     <button type="button" className="rf-btn rf-btn--main" onClick={nextPredict} autoFocus data-rf-next>
