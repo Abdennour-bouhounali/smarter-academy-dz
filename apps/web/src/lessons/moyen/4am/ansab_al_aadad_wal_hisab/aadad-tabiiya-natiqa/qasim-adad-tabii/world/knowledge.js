@@ -12,12 +12,12 @@ const POSITIONS = {
   tadhakkar: [82, 37],
   ex120: [17, 37],
   ex143: [74, 53],
-  'khata-amil': [18, 56],
-  tahaqqaq: [83, 71],
+  'khata-amil': [17, 54],
+  tahaqqaq: [84, 66],
   siyagh: [48, 50],
-  'khata-ittijah': [64, 75],
-  wahid: [33, 71],
-  intabih: [18, 81],
+  'khata-ittijah': [63, 80],
+  wahid: [34, 73],
+  intabih: [16, 87],
   khulasa: [48, 92],
 };
 

@@ -359,7 +359,9 @@ await page.waitForTimeout(800); await shot('title-resume');
 await page.goto(`${LESSON}?view=classic`, { waitUntil: 'networkidle' });
 await page.waitForTimeout(1500);
 expect(await page.locator('[data-gameworld]').count() === 0, '?view=classic shows no game world');
-expect((await page.textContent('body')).includes('756'), '?view=classic shows the mission of the lesson');
+// on a phone the classic player is CLOSED (components/auth/phoneLessons.js): the message « open it on a computer », nothing of the lesson behind it
+if (TOUCH) expect(await page.locator('[role="alert"]').count() === 1 && !(await page.textContent('body')).includes('756'), '?view=classic on a phone: the message « على الحاسوب », and nothing of the mission behind it');
+else expect((await page.textContent('body')).includes('756'), '?view=classic shows the mission of the lesson');
 await shot('classic');
 
 // ── a TEACHER never sees the world ──

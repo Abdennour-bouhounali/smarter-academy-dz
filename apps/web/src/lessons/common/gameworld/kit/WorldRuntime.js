@@ -149,8 +149,9 @@ export class WorldRuntime {
   busy() {
     return false;
   }
+  /** The kit's full-screen pages are opaque: the world behind them is neither simulated nor drawn. */
   pausesWorld(page) {
-    return page === 'lab' || page === 'sitting' || page === 'launch';
+    return page === 'lab' || page === 'sitting' || page === 'launch' || page === 'know' || page === 'progress';
   }
 
   // ───────────────────────────── store ─────────────────────────────
@@ -639,8 +640,9 @@ export class WorldRuntime {
     this.raf = requestAnimationFrame(this.loop);
     const raw = Math.max(0, (now - this.last) / 1000);
     this.last = now;
-    // a full-screen page hides the world (« مختبري », the exam sheet): nothing is simulated or drawn behind it — the frames
-    // belong to the page (a tablet draws the lab's drags, not an island nobody sees)
+    // a full-screen page hides the world (« مختبري », the exam sheet, « خريطة المعارف », « تقدّمي »): nothing is simulated or
+    // drawn behind it — the frames belong to the page (a tablet draws the lab's drags and fits a card's text, not an island
+    // nobody sees)
     if (this.pausesWorld(this.state.overlay?.type)) return;
     const dt = Math.min(0.05, raw);
     this.adaptQuality(raw);

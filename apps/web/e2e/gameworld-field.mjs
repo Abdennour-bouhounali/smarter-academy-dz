@@ -234,7 +234,9 @@ expect(await a.page.locator('[data-di-journey]').count() === 1 && await a.page.l
 {
   const m = await a.page.evaluate(() => { const px = (sel) => { const el = document.querySelector(sel); return el ? parseFloat(getComputedStyle(el).fontSize) * Number(document.querySelector('[data-di-fit]').dataset.diFit) : 0; }; const c = document.querySelector('[data-di-jcard]').getBoundingClientRect(); return { title: px('[data-di-jcard] h3'), text: px('[data-di-jcard] .di-ctx p'), next: px('.di-nextcard strong'), trail: px('[data-di-trail-card]'), share: c.width / window.innerWidth, fit: document.querySelector('[data-di-fit]').dataset.diFit }; });
   console.log('    sizes on screen (px):', JSON.stringify(m));
-  expect(m.title >= 34 && m.text >= 22 && m.next >= 20 && m.trail >= 15, 'its text is big on screen: title ≥ 34 px, explanation ≥ 22 px, the next card ≥ 20 px');
+  // a window up to 1100 px wide (a tablet held sideways) gets the page's own narrower sizes: still large, one step down
+  const min = SIZE[0] <= 1100 ? { title: 27, text: 19, next: 17, trail: 13 } : { title: 34, text: 22, next: 20, trail: 15 };
+  expect(m.title >= min.title && m.text >= min.text && m.next >= min.next && m.trail >= min.trail, `its text is big on screen: title ≥ ${min.title} px, explanation ≥ ${min.text} px, the next card ≥ ${min.next} px`);
   expect(m.share > 0.5, 'the card takes more than half of the screen');
 }
 expect((await a.page.textContent('[data-di-jcard]')).includes('قاسم عدد طبيعي') && await a.page.locator('[data-di-jcard] [data-di-tab="train"]').count() === 1, 'the explanation and the training of the card are on the card');

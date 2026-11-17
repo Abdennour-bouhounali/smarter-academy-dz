@@ -175,71 +175,73 @@ export default function KnowledgePage({ s, game, sel }) {
         ) : (
           <div className={`di-page__body ${tab !== 'card' && open ? 'is-training' : ''}`}>
             <div className="di-kmap" dir="ltr" data-di-kmap="full">
-              <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              <div className="di-kmap__in">
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                  {EDGES.map((e) => (
+                    <line
+                      key={`${e.from}-${e.to}`}
+                      x1={POS[e.from][0]}
+                      y1={POS[e.from][1]}
+                      x2={POS[e.to][0]}
+                      y2={POS[e.to][1]}
+                      className={`${isOpen(byId(e.from)) && isOpen(byId(e.to)) ? 'is-lit' : ''} ${e.lateral ? 'is-dashed' : ''}`}
+                      vectorEffect="non-scaling-stroke"
+                    />
+                  ))}
+                </svg>
                 {EDGES.map((e) => (
-                  <line
+                  <span
                     key={`${e.from}-${e.to}`}
-                    x1={POS[e.from][0]}
-                    y1={POS[e.from][1]}
-                    x2={POS[e.to][0]}
-                    y2={POS[e.to][1]}
-                    className={`${isOpen(byId(e.from)) && isOpen(byId(e.to)) ? 'is-lit' : ''} ${e.lateral ? 'is-dashed' : ''}`}
-                    vectorEffect="non-scaling-stroke"
-                  />
-                ))}
-              </svg>
-              {EDGES.map((e) => (
-                <span
-                  key={`${e.from}-${e.to}`}
-                  className="di-kmap__edge"
-                  dir="rtl"
-                  style={{
-                    left: `${(POS[e.from][0] + POS[e.to][0]) / 2}%`,
-                    top: `${(POS[e.from][1] + POS[e.to][1]) / 2}%`,
-                  }}
-                >
-                  {e.label}
-                </span>
-              ))}
-              {NODES.map((n) => {
-                const o = isOpen(n);
-                const [icon, label, family] = kindOf(n);
-                const gold = n.notebook && sealed.includes(n.requires);
-                return (
-                  <button
-                    key={n.id}
-                    type="button"
+                    className="di-kmap__edge"
                     dir="rtl"
-                    onClick={() => setId(n.id)}
-                    data-di-knode={n.id}
-                    data-open={o}
-                    data-read={read.includes(n.id)}
-                    className={`di-knode di-knode--${family} ${o ? '' : 'is-locked'} ${n.id === id ? 'is-sel' : ''} ${read.includes(n.id) ? 'is-read' : ''} ${gold ? 'is-gold' : ''}`}
-                    style={{ left: `${POS[n.id][0]}%`, top: `${POS[n.id][1]}%` }}
+                    style={{
+                      left: `${(POS[e.from][0] + POS[e.to][0]) / 2}%`,
+                      top: `${(POS[e.from][1] + POS[e.to][1]) / 2}%`,
+                    }}
                   >
-                    <span className="di-knode__icon">{o ? icon : <Lock size={15} />}</span>
-                    <span className="di-knode__text">
-                      <small>{o ? label : TX.know.lockedTitle}</small>
-                      <strong>{o ? n.title : '؟ ؟ ؟'}</strong>
-                    </span>
-                    {o && read.includes(n.id) && (
-                      <i className="di-knode__tick">{gold ? <Award size={13} /> : <Check size={13} />}</i>
-                    )}
-                    {o && trained[n.id] > 0 && (
-                      <i className="di-knode__stars" dir="ltr">
-                        {'★'.repeat(trained[n.id])}
-                      </i>
-                    )}
-                  </button>
-                );
-              })}
-              <div className="di-kmap__legend" dir="rtl">
-                {Object.entries(TX.know.legend).map(([k, v]) => (
-                  <span key={k} className={`is-${k}`}>
-                    <i />
-                    {v}
+                    {e.label}
                   </span>
                 ))}
+                {NODES.map((n) => {
+                  const o = isOpen(n);
+                  const [icon, label, family] = kindOf(n);
+                  const gold = n.notebook && sealed.includes(n.requires);
+                  return (
+                    <button
+                      key={n.id}
+                      type="button"
+                      dir="rtl"
+                      onClick={() => setId(n.id)}
+                      data-di-knode={n.id}
+                      data-open={o}
+                      data-read={read.includes(n.id)}
+                      className={`di-knode di-knode--${family} ${o ? '' : 'is-locked'} ${n.id === id ? 'is-sel' : ''} ${read.includes(n.id) ? 'is-read' : ''} ${gold ? 'is-gold' : ''}`}
+                      style={{ left: `${POS[n.id][0]}%`, top: `${POS[n.id][1]}%` }}
+                    >
+                      <span className="di-knode__icon">{o ? icon : <Lock size={15} />}</span>
+                      <span className="di-knode__text">
+                        <small>{o ? label : TX.know.lockedTitle}</small>
+                        <strong>{o ? n.title : '؟ ؟ ؟'}</strong>
+                      </span>
+                      {o && read.includes(n.id) && (
+                        <i className="di-knode__tick">{gold ? <Award size={13} /> : <Check size={13} />}</i>
+                      )}
+                      {o && trained[n.id] > 0 && (
+                        <i className="di-knode__stars" dir="ltr">
+                          {'★'.repeat(trained[n.id])}
+                        </i>
+                      )}
+                    </button>
+                  );
+                })}
+                <div className="di-kmap__legend" dir="rtl">
+                  {Object.entries(TX.know.legend).map(([k, v]) => (
+                    <span key={k} className={`is-${k}`}>
+                      <i />
+                      {v}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
             <aside className={`di-kpanel di-kpanel--${kindOf(node)[2]}`} data-di-kpanel={id}>

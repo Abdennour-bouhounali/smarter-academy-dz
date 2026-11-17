@@ -236,6 +236,21 @@ body:has([data-card-stage='full']) .ltb,
 body:has([data-card-stage='full']) .ltp__tool {
   visibility: hidden;
 }
+/* A TABLET HELD SIDEWAYS (768–1100 px): the seven tabs lose their icon — the words stay at their size — so the lesson's
+   name keeps its place beside them on ONE row (at 1024 px it fell under the tabs) */
+@media (min-width: 768px) and (max-width: 1100px) {
+  .ltb .ltb__tabs {
+    gap: 0.22rem;
+  }
+  .ltb .ltb__tabs a svg,
+  .ltb .ltb__tabs span.is-off svg {
+    display: none;
+  }
+  .ltb .ltb__title {
+    flex-basis: 6rem;
+    min-width: 6rem;
+  }
+}
 /* ON A PHONE (the home of a phone-ready lesson, owner 2026-11-16): the lesson's name first, then the tools on ONE line
    that slides sideways — three wrapped rows of tabs pushed the card off the first screen */
 @media (max-width: 767px), (max-height: 500px) and (pointer: coarse) {

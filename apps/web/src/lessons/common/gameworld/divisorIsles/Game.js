@@ -181,7 +181,7 @@ export class DivisorIslesGame extends WorldRuntime {
     if (this.state.stage === 0 && !this.segs[0].complete) this.say(T.say.hello, 10);
     // a forge left unfinished (the page was closed on island « المرايا ») opens again: the key cannot be skipped
     if (this.state.stage === 3 && !this.state.keys.includes('qasim-baqi'))
-      setTimeout(() => !this.dead && this.state.phase === 'play' && !this.state.overlay && this.openForge(), 900);
+      this.wait(0.9).then(() => !this.dead && this.state.phase === 'play' && !this.state.overlay && this.openForge());
   }
   onGround() {
     const h = this.hero;
@@ -1088,7 +1088,8 @@ export class DivisorIslesGame extends WorldRuntime {
     }
     if (k === 7) {
       this.say(T.say.h, 6);
-      setTimeout(() => !this.dead && this.state.phase === 'play' && this.openStone(), 1500);
+      // on the GAME's clock, not the wall's: the world may be paused behind a page, or fast-forwarded by a walk
+      this.wait(1.5).then(() => !this.dead && this.state.phase === 'play' && this.openStone());
     }
     if (k === 8) this.finale();
   }

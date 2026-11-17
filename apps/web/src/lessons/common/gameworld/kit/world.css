@@ -1850,7 +1850,12 @@
   border: 1px solid rgba(255, 255, 255, 0.13);
   overflow: hidden;
 }
-.di-kmap > svg {
+/* everything the map draws sits in ONE layer, so the whole map can be scaled at once (see « is-training ») */
+.di-kmap__in {
+  position: absolute;
+  inset: 0;
+}
+.di-kmap__in > svg {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -1886,6 +1891,9 @@
   display: flex;
   align-items: center;
   gap: 0.45rem;
+  /* its own width, whatever room is left to its right: a card placed at 83 % was squeezed to the 17 % that remained and
+     its name was cut */
+  width: max-content;
   max-width: 12.5rem;
   padding: 0.32rem 0.7rem 0.32rem 0.45rem;
   border-radius: 999px;
@@ -1973,12 +1981,15 @@
   background: #fbbf24;
   color: #3b2a06;
 }
+/* the legend stands in the one corner no card uses (top, left), one family per line: at the bottom it ran over the
+   last cards as soon as the map got narrower (the panel widens for « تدرّب ») */
 .di-kmap__legend {
   position: absolute;
-  bottom: 0.5rem;
-  inset-inline-start: 0.8rem;
+  top: 0.6rem;
+  left: 0.8rem;
   display: flex;
-  gap: 0.8rem;
+  flex-direction: column;
+  gap: 0.22rem;
   font-size: 0.72rem;
   font-weight: 700;
   color: #cbd5e1;
@@ -2433,6 +2444,14 @@
 /* ───────── « تدرّب » on a card of the knowledge page: the game look and the exam look ───────── */
 .di-page__body.is-training {
   grid-template-columns: 1.15fr 1fr;
+}
+/* while training the panel widens and the map keeps 1.15 of 2.15 instead of 1.75 of 2.75: the WHOLE map is drawn at
+   that ratio (0.84), so no card is squeezed or runs into its neighbour. Below 1101 px the cards have their own smaller
+   shape and need no scale. */
+@media (min-width: 1101px) {
+  .di-page__body.is-training .di-kmap__in {
+    zoom: 0.84;
+  }
 }
 .di-knode__stars {
   position: absolute;
