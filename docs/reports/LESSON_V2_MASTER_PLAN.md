@@ -332,9 +332,12 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
        (800×370, touch); the pilot's story walk still gives 104. `status:lesson-v2` prints 12 of 15 parts.
        Two defects were seen on screenshots and fixed (the five-slot forge overflowed; a case whose truth is not
        « the bridge holds » was labelled « ثبت »): `forgeParts.jsx › fits, tag`, `kit/ruleForge.css` five slots.
-     - **NOT DONE — lesson 2 is not finished:** (1) tests for `world/practice`, `trainer`, `sitting`, `journey`,
-       `evidence` (only `forges.test.js` and the pack test cover its content: the trainer, the sittings and the
-       practice hub of lesson 2 were NEVER opened in a browser); (2) the practice hub, « تدرّب », an exam sitting and
+     - DONE since: unit tests for `world/practice`, `trainer`, `sitting`, `journey`, `evidence` (44 tests with the
+       forges': every wave has one right gate; every trainer question accepts its solution and refuses a wrong
+       answer; a full-mark paper earns every point; every claim sent is re-computed true) — commit `f4040bd0`;
+       `status:lesson-v2` prints 13 of 15 parts (missing: the launch-kit family, the board).
+     - **NOT DONE — lesson 2 is not finished:** (1) the trainer, the sittings and the practice hub of lesson 2 were
+       NEVER opened in a browser (unit-tested only); (2) the practice hub, « تدرّب », an exam sitting and
        « تقدّمي » walked for lesson 2; (3) `board/script.js`, `board/memo.js` and `board` in the pack — the teacher
        still gets the OLD lesson page; (4) a launch-kit family for `4am.m1.r01` — lesson 2 has no « عُدّة الانطلاق »
        check of lesson 1's الكفاءة, and its world walk seeds the launch as already played; (5) screenshots of every
