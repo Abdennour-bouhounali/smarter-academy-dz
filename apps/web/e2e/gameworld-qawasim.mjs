@@ -395,7 +395,12 @@ s = await st(); expect(s.stage === 7 && s.overlay === 'forge' && (await fg()).ke
     const litByHand = await page.locator('.iq-cell.is-lit').count();
     expect((await iq()).b === b && taps >= 6 && litByHand >= 2, `plank ${b}: ${taps} gaps tested by hand, one after the other (${litByHand} lit) before the world may finish the chart`);
     if (b === 5) await inquiryFits('inquiry4-test');
-    await page.click('[data-iq-fill]'); await page.waitForSelector('[data-iq-look]'); await page.click('[data-iq-look]');
+    // the chart is heard while the world fills it: what the game's sound is asked for, recorded here (a walk has no ear)
+    await page.evaluate(() => { const a = window.__world.audio; window.__heard = []; if (!a.__spied) { const real = a.play.bind(a); a.play = (name, p) => { window.__heard.push(name); real(name, p); }; a.__spied = true; } });
+    await page.click('[data-iq-fill]'); await page.waitForSelector('[data-iq-look]');
+    let heard = await page.evaluate(() => window.__heard);
+    expect(heard.includes('sweep') && heard.includes('spark') && heard.at(-1) === 'gate', `plank ${b}: the chart that fills is heard — a count, the cells that light, and a chime when it is full (${[...new Set(heard)].join(', ')})`);
+    await page.click('[data-iq-look]');
     await page.click(`[data-iq-lens="${wrong[0]}"]`); await page.click(`[data-iq-value="${wrong[1]}"]`);
     expect(await page.getAttribute('[data-iq-fact]', 'data-iq-ok') === '0' && await page.locator('.iq-cell.is-intruder').count() > 0, `plank ${b}: a lens that does not separate takes dark cells in — the chart shows them, nobody says « wrong »`);
     if (b === 5) await inquiryFits('inquiry4-wrong-lens');
@@ -403,7 +408,10 @@ s = await st(); expect(s.stage === 7 && s.overlay === 'forge' && (await fg()).ke
     for (const v of values) await page.click(`[data-iq-value="${v}"]`);
     expect(await page.getAttribute('[data-iq-fact]', 'data-iq-ok') === '1' && await page.locator('.iq-cell.is-intruder').count() === 0 && await page.locator('.iq-cell.is-lit:not(.is-claimed)').count() === 0, `plank ${b}: HIS claim holds every lit cell and no dark one`);
     if (b === 5 || b === 9) await inquiryFits(`inquiry4-claim-${b}`);
+    await page.evaluate(() => { window.__heard = []; });
     await page.click('[data-iq-seal]'); await page.waitForSelector('[data-iq-next]');
+    heard = await page.evaluate(() => window.__heard);
+    expect(heard.includes('sweep') && heard.at(-1) === 'gate', `plank ${b}: the next hundred, tested by the world, is heard too`);
     expect((await iq()).from === 100 && (await page.textContent('.iq-lead')).includes('صمدت') && await page.locator('.iq-cell.is-lit:not(.is-claimed)').count() === 0 && await page.locator('.iq-cell.is-claimed.is-dark').count() === 0, `plank ${b}: his reading is tried on the next hundred (100–199) and holds`);
     if (b === 3) await inquiryFits('inquiry4-confirm-3');
     await page.click('[data-iq-next]');

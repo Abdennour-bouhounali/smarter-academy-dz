@@ -9,7 +9,7 @@
  */
 import { useEffect, useRef, useState } from 'react';
 import MathText from '../../components/MathText';
-import { tryPlank, lastNeeded, missedBy, LENSES, chartCells, holds, judgeClaim, cellOf } from './inquiry';
+import { tryPlank, lastNeeded, missedBy, LENSES, chartCells, holds, lightsIn, judgeClaim, cellOf } from './inquiry';
 import { Turn, Cut } from './InquiryMoves';
 import './inquiry.css';
 
@@ -306,13 +306,20 @@ function Chart({ spec, play, onDone }) {
   };
   const fill = (then) => {
     let n = Math.max(upto, first);
+    let tick = 0;
     clearInterval(timer.current);
     timer.current = setInterval(
       () => {
+        const was = n;
         n = Math.min(from + 100, n + (FAST() ? 100 : 4));
+        // the chart is HEARD while it fills: a tick that climbs, a ring each time a cell lights, a chime when it is full
+        play('sweep', tick);
+        if (lightsIn(p.b, was, n)) play('spark', tick);
+        tick += 1;
         setUpto(n);
         if (n >= from + 100) {
           clearInterval(timer.current);
+          play('gate');
           then?.();
         }
       },
@@ -592,7 +599,7 @@ function Chart({ spec, play, onDone }) {
 }
 
 export default function Inquiry({ spec, game, onDone }) {
-  const play = (name) => game?.audio?.play(name);
+  const play = (name, p) => game?.audio?.play(name, p);
   const Kind = { pairs: Pairs, chart: Chart, turn: Turn, cut: Cut }[spec.kind];
   return <Kind spec={spec} play={play} onDone={onDone} />;
 }

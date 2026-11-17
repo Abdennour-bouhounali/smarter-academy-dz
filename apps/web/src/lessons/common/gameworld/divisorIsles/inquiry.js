@@ -52,6 +52,8 @@ export const LENSES = {
 /** The hundred gaps of a chart: 1…99 on the first one (0 is no gap), then 100…199, 200…299. */
 export const chartCells = (from = 0) => Array.from({ length: 100 }, (_, i) => from + i).filter((n) => n > 0);
 export const holds = (n, b) => n % b === 0;
+/** How many gaps from `lo` up to (not counting) `hi` the plank fills: what the chart lights, and rings, while it is filled. */
+export const lightsIn = (b, lo, hi) => Math.max(0, Math.ceil(hi / b) - Math.ceil(Math.max(lo, 1) / b));
 
 /**
  * A claim « the plank holds when this lens shows one of these values », put in front of the chart:

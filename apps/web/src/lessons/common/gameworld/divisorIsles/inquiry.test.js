@@ -8,6 +8,7 @@ import {
   judgeClaim,
   cellOf,
   holds,
+  lightsIn,
   wall,
   pieceOf,
   quotientTex,
@@ -70,6 +71,18 @@ describe('the investigation of a rule — chart: a lens, the values claimed, and
     }
     // …but every hundred lights the same cells: the cell of a long gap decides
     for (let n = 100; n < 1000; n += 1) expect(holds(n, 4)).toBe(holds(cellOf(n) || 100, 4));
+  });
+
+  it('counts the cells that light in a stretch of the chart — what rings while the chart is filled', () => {
+    for (const b of [2, 3, 4, 5, 9])
+      for (const from of [0, 100, 200])
+        for (let lo = from; lo < from + 100; lo += 1)
+          for (const hi of [lo, lo + 1, Math.min(lo + 4, from + 100), from + 100]) {
+            const lit = chartCells(from).filter((n) => n >= lo && n < hi && holds(n, b)).length;
+            expect(lightsIn(b, lo, hi), `${b}: ${lo}…${hi}`).toBe(lit);
+          }
+    expect(lightsIn(9, 10, 14)).toBe(0); // a silent step: no gap of 10…13 is filled by 9
+    expect(lightsIn(5, 0, 100)).toBe(19);
   });
 
   it('counts what a claim leaves out and what it takes in', () => {

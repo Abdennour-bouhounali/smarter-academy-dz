@@ -417,6 +417,12 @@ The four kinds of `divisorIsles/` (logic `inquiry.js`; screens `Inquiry.jsx` —
 | `pairs` | where the search for all the planks of a gap stops | tries the planks of ONE gap in order; a plank and its partner (gap ÷ plank, whole or not) walk toward each other on a strip and CROSS; past the crossing every partner is a plank already tried. First gap: after the crossing, « can a new plank still appear? » — on « maybe » the world tries every plank up to the gap in front of him. Next gaps: he says the last plank BEFORE trying; the squares join the table from the second gap; on the last gap only the planks and their squares are shown before any trial. Then he writes his rule with the tiles. |
 | `chart` | what to read in a number instead of dividing | tests ONE plank on the gaps of a chart (a row per tens digit, a column per units digit), one after the other, then lets the world finish; chooses a LENS (units digit, tens digit, sum of the digits) and the values he claims: the chart shows the dark cells his claim takes in and counts the lit cells it leaves out; a claim that holds is tried on the next hundred. A plank no lens separates (4) has its own road: the next hundreds light the SAME cells, then he places long gaps on the one chart — he reads their last two digits by doing it. |
 
+**What the world does alone is HEARD** (owner, 2026-11-17: « add sound effect when completing the numbers here »): while
+the chart is filled by the world (« أكمل الجدول », then the next hundreds) each step plays `sweep` (a count that climbs),
+`spark` when a cell lights in that step (`inquiry.js › lightsIn` — a plank's own rhythm, a fact, never a verdict) and
+`gate` when the chart is full. The sounds are synthesised in `engine/audio.js` (`play(name, p)`, no sound file). An
+animation of a new kind that the student only watches gets its sound the same way.
+
 **To add a kind**: its pure logic in the world's `inquiry.js` (tested apart: the experiment is true for every number it
 may show), its screen in `Inquiry.jsx`, its words in the lesson. **To use one**: the lesson's `world/inquiries.js` and
 `inquiry` + `fromInquiry` on its forge (`qawasim-adad-tabii` is the reference). Before writing a forge, ask what the

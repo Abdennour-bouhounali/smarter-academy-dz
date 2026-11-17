@@ -4,6 +4,8 @@
  */
 const NOTE = (semi) => 220 * 2 ** (semi / 12);
 const PENTA = [0, 2, 4, 7, 9, 12, 14, 16, 19, 21];
+/** A count that is heard: one step of the scale every two steps of the count, from `base` semitones up. */
+const CLIMB = (p, base) => NOTE(PENTA[(p >> 1) % PENTA.length] + 12 * Math.floor((p >> 1) / PENTA.length) + base);
 
 export class GameAudio {
   constructor() {
@@ -146,6 +148,13 @@ export class GameAudio {
         break;
       case 'paper':
         this.noise({ d: 0.35, g: 0.18, from: 5000, to: 1800 });
+        break;
+      // a chart that fills by itself: `sweep` is one step of the count (it climbs with p), `spark` a cell that lights in it
+      case 'sweep':
+        this.tone({ f: CLIMB(p, 12), d: 0.07, type: 'sine', g: 0.12 });
+        break;
+      case 'spark':
+        this.tone({ f: CLIMB(p, 24), t: 0.02, d: 0.16, type: 'triangle', g: 0.16 });
         break;
       case 'lane':
         this.tone({ f: 500, d: 0.07, type: 'sine', g: 0.15, slide: 1.4 });
