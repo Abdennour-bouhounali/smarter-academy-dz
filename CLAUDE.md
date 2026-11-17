@@ -118,10 +118,17 @@ onboarding `LabCoach`, the questions over the lab after each step, one screen, a
 - **Shapes are the brand blue (`nav-accent`), never black; dark ink is for text only.** No raw colour class and no
   gradient in the menus, the teacher's pages, the lesson and unit cards. **A card is four lines at most.**
 
-**Working limits**
+**Who does what, and working limits** (owner, 2026-11-17)
 
-- **At most 2 agents at once and ONE heavy check at a time** (`check:lessons`, a build, a walk) — the editor crashes
-  otherwise. Never edit source while a walk runs (hot reload contaminates it).
+- **Fable orchestrates, Opus codes.** The main session (Fable) designs, briefs the agents, reviews what they return, runs
+  the walks and reports. The code is written by agents on `opus` — except **the 3D** (the world runtime and its scenes)
+  and **a task judged complicated**, which Fable codes itself.
+- **No fixed cap on the number of agents** (the old cap of 2 was for VS Code, which was killed when memory ran out; the
+  work now runs in the terminal). Agents that write code at the same time touch files that do not overlap, or each
+  works in its own worktree.
+- **ONE heavy check at a time** (`check:lessons`, a build, a walk, the whole suite) until two at once have been tried in
+  the terminal: every crash measured before came from heavy runs overlapping, on a machine of 13 GB. Never edit source
+  while a walk runs (hot reload contaminates it).
 - **Report honestly**: what failed, what was not checked, what you are unsure of. Never « all green » on something that
   was not run.
 

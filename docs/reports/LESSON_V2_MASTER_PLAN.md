@@ -457,7 +457,9 @@ shows that plainly; the owner decides later whether they follow.
 7. Docs updated in the same task; progress line added to `docs/reports/LESSON_V2_PROGRESS.md`.
 8. Commit `feat(lessons): <id> — v2`. Push only when the owner asks.
 
-Working limits: at most 2 agents at once and one heavy check at a time.
+Who does what (owner, 2026-11-17): Fable orchestrates and codes only the 3D and a task judged complicated; the rest of
+the code is written by agents on `opus`. No fixed cap on the number of agents; one heavy check at a time until two at
+once have been tried in the terminal (root `CLAUDE.md` « Who does what, and working limits »).
 
 **Who writes what** (recommendation, 2026-11-16; the owner asked whether an orchestrator model with a second model as
 coder is safe). Phase 0 and, for every lesson, the design — the world mechanic, the forge, the board script — are done by
@@ -563,7 +565,9 @@ RULES THAT HOLD THROUGHOUT:
 - Shapes in the brand blue (`nav-accent`), dark navy for text only; small content; fold, never delete.
 - Laptop first, then tablet, then phone; a formula never breaks; an answer is typed in its own shape;
   money is « دج ».
-- At most 2 agents at once and ONE heavy check at a time (check:lessons, build, e2e), or the editor crashes.
+- Fable orchestrates; the code is written by agents on `opus`, except the 3D and a task judged complicated (owner,
+  2026-11-17 — it replaces « at most 2 agents at once »). ONE heavy check at a time (check:lessons, build, e2e) until two
+  at once have been tried in the terminal.
 - Every task ends with the docs updated and a « Documentation Sync » section.
 - Report honestly: what failed, what you did not check, what you are unsure of. Never « all green »
   on something you did not run.
