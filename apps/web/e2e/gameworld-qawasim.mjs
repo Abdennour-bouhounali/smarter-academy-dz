@@ -438,7 +438,7 @@ s = await st(); expect(s.stage === 7 && s.overlay === 'forge' && (await fg()).ke
         const L = [...document.querySelectorAll('[data-iq-lens]')].map((e) => e.getBoundingClientRect()); const V = [...document.querySelectorAll('[data-iq-value]')].map((e) => e.getBoundingClientRect());
         return { stacked: L.every((x, i) => i === 0 || (x.top >= L[i - 1].bottom - 1 && Math.abs(x.left - L[0].left) < 2)), order: r('[data-iq-lenses]').right <= r('[data-iq-equals]').left + 1 && r('[data-iq-equals]').right <= r('[data-iq-values]').left + 1, down: V[1].top >= V[0].bottom - 1 && Math.abs(V[1].left - V[0].left) < 2, word: document.querySelector('[data-iq-equals]').textContent.trim() };
       });
-      expect(lay.stacked && lay.order && lay.down && lay.word === 'يساوي', `plank ${b}: his claim is laid as asked — the three lenses in a column on the left, « يساوي », then the values read downwards (${JSON.stringify(lay)})`);
+      expect(lay.stacked && lay.order && lay.down && lay.word === (b === 5 ? 'يساوي' : 'يقبل القسمة على'), `plank ${b}: his claim is laid as asked — the three lenses in a column on the left, « ${b === 5 ? 'يساوي' : 'يقبل القسمة على'} », then the ${b === 5 ? 'values' : 'numbers'} read downwards (${JSON.stringify(lay)})`);
       await inquiryFits(`inquiry4-claim-${b}`);
     }
     await page.evaluate(() => { window.__heard = []; });
@@ -452,8 +452,10 @@ s = await st(); expect(s.stage === 7 && s.overlay === 'forge' && (await fg()).ke
   await lensPlank(5, ['tens', 1], 'units', [0, 5]);
   expect((await page.textContent('[data-iq-found]')).includes('0 أو 5'), 'what he found for plank 5 is written in HIS words of the chart, and stays on screen');
   await lensPlank(2, ['sum', 4], 'units', [0, 2, 4, 6, 8]);
-  await lensPlank(9, ['units', 9], 'sum', [9, 18]);
-  await lensPlank(3, ['units', 3], 'sum', [3, 6, 9, 12, 15, 18]);
+  // 9 and 3 are said « lens · يقبل القسمة على · a number »: ONE number is pressed, not a list of values
+  await lensPlank(9, ['units', 9], 'sum', [9]);
+  expect((await page.textContent('[data-iq-found]')).includes('مجموع الأرقام يقبل القسمة على 9'), 'what he found for plank 9 is kept as he said it: the sum of the digits is divisible by 9');
+  await lensPlank(3, ['units', 3], 'sum', [3]);
   // plank 4: no lens separates — its own road
   while (await page.locator('[data-iq-fill]').count() === 0) await page.click('[data-iq-test]');
   // the fullest test screen of the chart: four readings found, the question, the goal, a division, two buttons

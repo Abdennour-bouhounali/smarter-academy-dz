@@ -381,10 +381,12 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
        Then four corrections of the owner on the chart, the same day: the chart that fills by itself is HEARD (a
        count, the cells that light, a chime — `engine/audio.js › sweep, spark`); it opens on its QUESTION and its GOAL
        in his words (« ما هي الهوّات التي يمكن تشكيل جسر لها باستخدام لوح طوله 5؟ » — « الهدف: معرفة تلك الهوّات فقط من
-       شكلها، دون تقسيم طولها في كلّ مرّة »); his claim is laid as a sentence (the lenses in a column, « يساوي », the
+       شكلها، دون تقسيم طولها في كلّ مرّة »); his claim is laid as a sentence (the lenses in a column, the link — « يساوي » for
+       5 and 2, « يقبل القسمة على » and ONE number for 9, 3 and 4 — then the
        values read downwards); every gap tried writes its division `n = q × b + r` and its cell turns GREEN when
        the rest is 0; the forge, which covers the top bar, shows the sound button and the ✕ in every phase
-       (`kit/parts.jsx › SoundToggle, ExitLink`).
+       (`kit/parts.jsx › SoundToggle, ExitLink`). Walk: 178 checks at the four sizes; lesson 1's walk (same forge
+       header) 104 at 1366×768 and on the phone. **Not validated by the owner yet.**
      - NOT in lesson 2 by choice, to be said in the report: no real-world case world (S5); ten dash levels instead.
      - The walk is assembled from the pilot walk's helpers (copied, not shared): a shared helper module is owed.
 - **D4 — DONE**: the five billing files are deleted.

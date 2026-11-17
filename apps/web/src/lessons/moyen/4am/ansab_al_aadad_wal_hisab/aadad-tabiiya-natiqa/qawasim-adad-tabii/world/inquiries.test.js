@@ -4,6 +4,7 @@ import {
   lastNeeded,
   missedBy,
   judgeClaim,
+  claimValues,
   LENSES,
   chartCells,
   cellOf,
@@ -96,6 +97,33 @@ describe('the two investigations of « قواسم عدد طبيعي » — each 
     }
   });
 
+  it('RULES: 5 and 2 say « يساوي »; the others say « يقبل القسمة على » — and exactly ONE lens with ONE number holds', () => {
+    const T = RULES_INQUIRY.text;
+    expect(RULES_INQUIRY.planks.map((p) => p.link ?? 'equals')).toEqual([
+      'equals',
+      'equals',
+      'divides',
+      'divides',
+      'divides',
+    ]);
+    expect(T.link).toEqual({ equals: 'يساوي', divides: 'يقبل القسمة على' });
+    for (const p of RULES_INQUIRY.planks.filter((q) => q.link === 'divides')) {
+      const holding = [];
+      for (const lens of p.lenses)
+        for (const k of RULES_INQUIRY.divisors) {
+          const first = judgeClaim(p.b, lens, claimValues('divides', lens, [k], 0), 0);
+          if (first.ok) holding.push(`${lens}/${k}`);
+          // a plank with its own road (4): every claim he can make takes a cell that is not green in
+          if (p.where) expect(first.intruders.length, `${p.b} ${lens} ${k}`).toBeGreaterThan(0);
+        }
+      expect(holding, `plank ${p.b}`).toEqual(p.where ? [] : [`sum/${p.b}`]);
+      // what holds on the first chart holds on the next hundred, said the same way
+      if (!p.where) expect(judgeClaim(p.b, 'sum', claimValues('divides', 'sum', [p.b], 100), 100).ok).toBe(true);
+      said(T.valuesAsk(p.b, T.lens.sum, 'divides'));
+      expect(T.foundLine(p.b, T.lens.sum, [p.b], 'divides')).toContain(`يقبل القسمة على ${p.b}`);
+    }
+  });
+
   it('RULES: what he claimed IS his rule — the mirror attacks it at once, and the key is used on the stone’s own gap', () => {
     const F = FORGES['qawaid-qisma'];
     const readings = [
@@ -118,7 +146,7 @@ describe('the two investigations of « قواسم عدد طبيعي » — each 
 
   it('RULES: every sentence can be said, and none names a reading before he finds it', () => {
     const T = RULES_INQUIRY.text;
-    const lines = [T.fill, T.look, T.noLens, T.nextHundred, T.toWhere, T.sealed, T.done, T.equals];
+    const lines = [T.fill, T.look, T.noLens, T.nextHundred, T.toWhere, T.sealed, T.done, T.link.equals, T.link.divides];
     lines.push(T.claim(3, 0), T.claim(0, 2), T.claim(1, 1));
     for (const p of RULES_INQUIRY.planks) {
       // the question and the goal are said before he tests: WHAT is looked for (no division each time) — never the reading

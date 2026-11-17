@@ -18,6 +18,7 @@ import {
   holds,
   lightsIn,
   judgeClaim,
+  claimValues,
   cellOf,
   pieceOf,
 } from './inquiry';
@@ -312,9 +313,12 @@ function Chart({ spec, play, onDone }) {
   const first = from === 0 ? p.b : from;
   const full = upto >= from + 100;
   const tested = (n) => n < upto;
-  const judge = lens ? judgeClaim(p.b, lens, values, from) : null;
+  // how this plank's claim is said: « lens · يساوي · values » or « lens · يقبل القسمة على · a number »
+  const link = p.link ?? 'equals';
+  const taken = lens ? claimValues(link, lens, values, from) : [];
+  const judge = lens ? judgeClaim(p.b, lens, taken, from) : null;
   const where = stage === 'where' ? p.where[wi] : null;
-  expose({ kind: 'chart', pi, b: p.b, from, stage, upto, taps, lens, values, judge, full, where, found });
+  expose({ kind: 'chart', pi, b: p.b, from, stage, upto, taps, lens, link, values, judge, full, where, found });
 
   const testNext = () => {
     const n = Math.max(upto, first);
@@ -350,8 +354,10 @@ function Chart({ spec, play, onDone }) {
     setValues([]);
   };
   const toggle = (v) => {
-    const list = values.includes(v) ? values.filter((x) => x !== v) : [...values, v].sort((x, y) => x - y);
-    const j = judgeClaim(p.b, lens, list, from);
+    const off = values.filter((x) => x !== v);
+    // « divisible by » names ONE number; « equals » gathers values
+    const list = values.includes(v) ? off : link === 'divides' ? [v] : [...values, v].sort((x, y) => x - y);
+    const j = judgeClaim(p.b, lens, claimValues(link, lens, list, from), from);
     play(j.intruders.length ? 'fail' : 'pick');
     if (j.intruders.length && !failed.includes(lens)) setFailed([...failed, lens]);
     setValues(list);
@@ -406,7 +412,7 @@ function Chart({ spec, play, onDone }) {
     ? Array.from({ length: Math.max(0, Math.min(DIVISIONS, upto - first)) }, (_, i) => upto - 1 - i)
     : [];
   const lensLabel = lens ? T.lens[lens] : '';
-  const claimed = (n) => Boolean(lens) && values.includes(LENSES[lens].of(n));
+  const claimed = (n) => Boolean(lens) && taken.includes(LENSES[lens].of(n));
   const label = (n) => (stage === 'where' ? two(n) : n);
   // while he looks for the cell of a long gap, the chart is the pattern every hundred shares, read by its last two digits
   const lit = (n) => (stage === 'where' ? holds(n, p.b) : tested(n) && holds(n, p.b));
@@ -427,7 +433,7 @@ function Chart({ spec, play, onDone }) {
                   ? T.lead(p.b)
                   : stage === 'lens'
                     ? lens
-                      ? T.valuesAsk(p.b, lensLabel)
+                      ? T.valuesAsk(p.b, lensLabel, link)
                       : T.lensAsk(p.b)
                     : stage === 'confirm'
                       ? confirmed
@@ -486,10 +492,10 @@ function Chart({ spec, play, onDone }) {
               {lens && (
                 <>
                   <span className="iq-equals" data-iq-equals>
-                    {T.equals}
+                    {T.link[link]}
                   </span>
                   <div className="iq-values" dir="ltr" data-iq-values>
-                    {LENSES[lens].values(from).map((v) => (
+                    {(link === 'divides' ? spec.divisors : LENSES[lens].values(from)).map((v) => (
                       <button
                         key={v}
                         type="button"
@@ -562,7 +568,7 @@ function Chart({ spec, play, onDone }) {
             <button
               type="button"
               className="rf-btn rf-btn--main"
-              onClick={() => nextPlank({ b: p.b, lens, values, line: T.foundLine(p.b, lensLabel, values) })}
+              onClick={() => nextPlank({ b: p.b, lens, values, link, line: T.foundLine(p.b, lensLabel, values, link) })}
               data-iq-next
             >
               {pi + 1 >= spec.planks.length ? T.last : T.next}
@@ -629,7 +635,7 @@ function Chart({ spec, play, onDone }) {
             const c = claimed(n) && stage === 'lens';
             const cls = lit(n) ? 'is-lit' : dark(n) ? 'is-dark' : '';
             const mark = c ? (holds(n, p.b) ? 'is-claimed' : 'is-intruder') : '';
-            const kept = stage === 'confirm' && full && Boolean(lens) && values.includes(LENSES[lens].of(n));
+            const kept = stage === 'confirm' && full && claimed(n);
             const ghost = stage === 'hundreds' && n % 100 > 0 && holds(n % 100, p.b);
             const hit = stage === 'where' && whereSaid?.n === n ? (whereSaid.ok ? 'is-hit' : 'is-miss') : '';
             return (

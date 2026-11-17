@@ -79,10 +79,13 @@ export const RULES_INQUIRY = {
   planks: [
     { b: 5, manual: 8, lenses: ['tens', 'units', 'sum'] },
     { b: 2, manual: 6, lenses: ['tens', 'units', 'sum'] },
-    { b: 9, manual: 10, lenses: ['units', 'tens', 'sum'] },
-    { b: 3, manual: 8, lenses: ['units', 'tens', 'sum'] },
-    { b: 4, manual: 9, lenses: ['units', 'tens', 'sum'], where: [316, 522, 708] },
+    // the claim of 5 and of 2 is said « lens · يساوي · values »; the others « lens · يقبل القسمة على · a number » (owner)
+    { b: 9, manual: 10, lenses: ['units', 'tens', 'sum'], link: 'divides' },
+    { b: 3, manual: 8, lenses: ['units', 'tens', 'sum'], link: 'divides' },
+    { b: 4, manual: 9, lenses: ['units', 'tens', 'sum'], link: 'divides', where: [316, 522, 708] },
   ],
+  /** the numbers offered after « يقبل القسمة على » */
+  divisors: [2, 3, 4, 5, 6, 7, 8, 9],
   text: {
     lens: { units: 'رقم الآحاد', tens: 'رقم العشرات', sum: 'مجموع الأرقام' },
     board: (b, from) => `اللوح ${b} · الهوّات من ${from || 1} إلى ${from + 99}`,
@@ -92,8 +95,8 @@ export const RULES_INQUIRY = {
     /** THE QUESTION of the chart and its GOAL, in the owner's words (2026-11-17), on screen while he tests. */
     lead: (b) => `ما هي الهوّات التي يمكن تشكيل جسر لها باستخدام لوح طوله ${b}؟`,
     goal: (b) => `الهدف: معرفة تلك الهوّات فقط من شكلها، دون تقسيم طولها في كلّ مرّة على العدد ${b}.`,
-    /** between the lens he chose and the values he claims: « رقم الآحاد · يساوي · 0 أو 5 » */
-    equals: 'يساوي',
+    /** between the lens he chose and what he claims: « رقم الآحاد · يساوي · 0 أو 5 », « مجموع الأرقام · يقبل القسمة على · 9 » */
+    link: { equals: 'يساوي', divides: 'يقبل القسمة على' },
     /** what to do now, under the goal */
     how: (b, enough) =>
       enough
@@ -103,7 +106,10 @@ export const RULES_INQUIRY = {
     rest: (r) => `الباقي ${r}`,
     lensAsk: (b) =>
       `الخانات الخضراء هوّات يثبت فيها اللوح ${b}. ماذا يكفي أن تنظر إليه في العدد لتعرفها دون قسمة؟ اختر عدسة.`,
-    valuesAsk: (b, lens) => `عدستك: ${lens}. اضغط كلّ قيمة يثبت معها اللوح ${b} — واللوحة تجيبك.`,
+    valuesAsk: (b, lens, link) =>
+      link === 'divides'
+        ? `عدستك: ${lens}. على أيّ عدد يقبل القسمة عندما يثبت اللوح ${b}؟ اضغط عددًا — واللوحة تجيبك.`
+        : `عدستك: ${lens}. اضغط كلّ قيمة يثبت معها اللوح ${b} — واللوحة تجيبك.`,
     claim: (orphans, intruders) =>
       [
         intruders ? `${intruders} خانة غير خضراء دخلت في اختيارك` : null,
@@ -130,7 +136,10 @@ export const RULES_INQUIRY = {
     nextWhere: 'هوّة أخرى',
     next: 'لوح آخر',
     last: 'قراءاتي الخمس',
-    foundLine: (b, lens, values) => `اللوح ${b}: ${lens} ${values.join(' أو ')}`,
+    foundLine: (b, lens, values, link) =>
+      link === 'divides'
+        ? `اللوح ${b}: ${lens} يقبل القسمة على ${values.join(' أو ')}`
+        : `اللوح ${b}: ${lens} ${values.join(' أو ')}`,
     foundCell: (b) => `اللوح ${b}: خانة الرقمين الأخيرين`,
     sealed: 'خمسة ألواح، وخمس قراءات وجدتَها بنفسك. المرآة ستتحدّاها الآن بهوّات لم ترها.',
     done: 'إلى المرآة',

@@ -70,6 +70,13 @@ export function judgeClaim(b, lens, values, from = 0) {
   }
   return { intruders, orphans, ok: values.length > 0 && intruders.length === 0 && orphans.length === 0 };
 }
+/**
+ * What a claim takes in, as values of its lens. A plank says its claim in one of two ways (its `link`):
+ *   equals   the lens shows one of the values he pressed              « رقم الآحاد · يساوي · 0 أو 5 »
+ *   divides  the lens shows a number divisible by the one he pressed  « مجموع الأرقام · يقبل القسمة على · 9 »
+ */
+export const claimValues = (link, lens, picked, from = 0) =>
+  link === 'divides' ? LENSES[lens].values(from).filter((v) => picked.some((k) => v % k === 0)) : picked;
 /** The cell of a long gap on the chart: the gap made of its last two digits. */
 export const cellOf = (n) => n % 100;
 
