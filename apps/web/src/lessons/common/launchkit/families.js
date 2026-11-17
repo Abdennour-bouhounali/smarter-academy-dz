@@ -11,7 +11,10 @@
  * A family also carries its repair (`example`: a worked example in steps) and its revision card (`memo`).
  *
  * Adding a family = one entry in FAMILIES keyed by the item id of the net, with tests in launchkit.test.js (every generated
- * question is re-computed there). Phase 1 (2026-11-17): the two prerequisites of « التعرّف على قاسم لعدد طبيعي ».
+ * question is re-computed there). Phase 1 (2026-11-17): the two prerequisites of « التعرّف على قاسم لعدد طبيعي », then
+ * « التعرّف على قاسم » itself, which the next lesson stands on.
+ * A sort card is a number or an equality (`text`), or a SENTENCE in Arabic (`say: true`, drawn right-to-left, smaller).
+ * A card the student must ACCEPT may name the mistake of refusing it (`miss`), as a `trap` names the mistake of accepting.
  */
 const int = (rand, lo, hi) => lo + Math.floor(rand() * (hi - lo + 1));
 const pick = (rand, list) => list[Math.floor(rand() * list.length)];
@@ -43,6 +46,11 @@ export const MISTAKES = {
   'last-digit': 'انتبه: في قاعدتي 3 و 9 نجمع الأرقام، ولا ننظر إلى آخر رقم.',
   'three-for-nine': 'انتبه: مجموع الأرقام يجب أن يكون في جدول 9، لا في جدول 3 فقط.',
   'even-for-four': 'انتبه: العدد الزوجي لا يقبل دائمًا القسمة على 4 — انظر إلى العدد المكوَّن من آخر رقمين.',
+  'product-false': 'انتبه: تحقّق من المساواة — احسب الجداء.',
+  'rest-not-zero': 'انتبه: العدد قاسم عندما يكون باقي القسمة 0 — تحقّق بالقسمة.',
+  'multiple-for-divisor': 'انتبه: لا تخلط بين القاسم والمضاعف — قاسم العدد لا يتجاوزه.',
+  'sentence-reversed': 'انتبه: ترتيب العددين مهمّ — نقول « 6 قاسم للعدد 42 » و « 42 مضاعف للعدد 6 ».',
+  'one-and-itself': 'انتبه: العدد 1 والعدد نفسه قاسمان دائمًا.',
 };
 
 // ───────────────────────── 1am.m3.r01 — القسمة الإقليدية ─────────────────────────
@@ -239,7 +247,230 @@ function rulesExample(rand, level, { k: asked } = {}) {
   };
 }
 
+// ───────────────────────── 4am.m1.r01 — التعرّف على قاسم لعدد طبيعي ─────────────────────────
+/** « a = b × ▢ »: the equality that SHOWS b is a divisor of a (no remainder to write: the box of the remainder is gone). */
+function divisorWrite(rand, level, first) {
+  const [b, q] =
+    level === 1
+      ? first
+        ? [int(rand, 2, 5), int(rand, 3, 5)]
+        : [int(rand, 3, 9), int(rand, 3, 9)]
+      : [int(rand, 11, 19), int(rand, 4, 9)];
+  const a = b * q;
+  return {
+    gesture: 'write',
+    a,
+    b,
+    prompt: `العدد ${b} قاسم للعدد ${a}. أكمل المساواة التي تبيّن ذلك.`,
+    tokens: [String(a), '=', String(b), '×', S('q', 'حاصل القسمة', String(q).length)],
+  };
+}
+
+const PICK_FROM = { first: [12, 18, 20, 24], 1: [24, 28, 30, 36, 40, 42, 48], 2: [54, 56, 60, 63, 72, 84, 90, 96] };
+const PICK_SHAPES = {
+  1: [
+    ['yes', 'near', 'multiple'],
+    ['yes', 'near', 'yes'],
+    ['yes', 'near', 'near'],
+  ],
+  // level 2 always shows 1 or the number itself: the two divisors a student forgets
+  2: [
+    ['yes', 'near', 'edge'],
+    ['edge', 'multiple', 'near'],
+    ['yes', 'multiple', 'edge'],
+  ],
+};
+
+/** Three numbers: is each one a divisor of `of`? A multiple of it (the usual confusion) is one of the traps. */
+function divisorPick(rand, level, first) {
+  const of = pick(rand, PICK_FROM[level === 1 && first ? 'first' : level]);
+  const top = level === 1 ? 9 : 16;
+  const range = [];
+  for (let n = 2; n <= top; n += 1) range.push(n);
+  const draw = {
+    yes: () =>
+      pick(
+        rand,
+        range.filter((n) => of % n === 0),
+      ),
+    near: () =>
+      pick(
+        rand,
+        range.filter((n) => of % n !== 0),
+      ),
+    multiple: () => of * pick(rand, [2, 3]),
+    edge: () => pick(rand, [1, of]),
+  };
+  const used = new Set();
+  const cards = [];
+  for (const kind of shuffle(rand, pick(rand, PICK_SHAPES[level]))) {
+    let n = null;
+    for (let i = 0; i < 40 && (n === null || used.has(n)); i += 1) n = draw[kind]();
+    used.add(n);
+    const yes = of % n === 0;
+    cards.push({
+      id: `c${cards.length + 1}`,
+      text: String(n),
+      n,
+      bin: yes ? 'yes' : 'no',
+      trap: yes ? null : n > of ? 'multiple-for-divisor' : 'rest-not-zero',
+      miss: yes && (n === 1 || n === of) ? 'one-and-itself' : null,
+    });
+  }
+  return {
+    gesture: 'sort',
+    of,
+    prompt: `هل كلّ عدد قاسم للعدد ${of}؟ أرسله إلى صندوقه.`,
+    bins: [
+      { id: 'yes', label: `قاسم للعدد ${of}` },
+      { id: 'no', label: `ليس قاسمًا للعدد ${of}` },
+    ],
+    cards,
+  };
+}
+
+/** The three ways of saying it; a card is { x, y, verb } and is TRUE when `SENTENCES[verb].holds(x, y)`. */
+const SENTENCES = {
+  divisor: { say: (x, y) => `${x} قاسم للعدد ${y}`, holds: (x, y) => y % x === 0 },
+  multiple: { say: (x, y) => `${x} مضاعف للعدد ${y}`, holds: (x, y) => x % y === 0 },
+  divisible: { say: (x, y) => `${x} يقبل القسمة على ${y}`, holds: (x, y) => x % y === 0 },
+};
+const VERBS = Object.keys(SENTENCES);
+
+/** Three sentences, each on its own two numbers: true, turned round (the two numbers swapped), or with a remainder. */
+function divisorSentences(rand) {
+  const make = (kind, id) => {
+    const b = int(rand, 6, 12);
+    const a = b * int(rand, 4, 9);
+    const big = kind === 'rest' ? a + int(rand, 1, b - 1) : a;
+    const verb = pick(rand, VERBS);
+    // said the right way round, the small number comes first only with « قاسم »
+    const straight = verb === 'divisor' ? [b, big] : [big, b];
+    const [x, y] = kind === 'reversed' ? [straight[1], straight[0]] : straight;
+    return {
+      id,
+      text: SENTENCES[verb].say(x, y),
+      say: true,
+      x,
+      y,
+      verb,
+      bin: kind === 'true' ? 'yes' : 'no',
+      trap: kind === 'reversed' ? 'sentence-reversed' : kind === 'rest' ? 'rest-not-zero' : null,
+    };
+  };
+  const kinds = shuffle(
+    rand,
+    pick(rand, [
+      ['true', 'reversed', 'rest'],
+      ['true', 'reversed', 'true'],
+      ['true', 'rest', 'reversed'],
+    ]),
+  );
+  const cards = [];
+  for (const kind of kinds) {
+    let c = make(kind, `c${cards.length + 1}`);
+    for (let i = 0; i < 20 && cards.some((o) => o.text === c.text); i += 1) c = make(kind, c.id);
+    cards.push(c);
+  }
+  return {
+    gesture: 'sort',
+    prompt: 'هل كلّ جملة صحيحة؟ أرسلها إلى صندوقها.',
+    bins: [
+      { id: 'yes', label: 'صحيحة' },
+      { id: 'no', label: 'خاطئة' },
+    ],
+    cards,
+  };
+}
+
+/**
+ * The worked example answers the mistake the student showed: the order of the two numbers or a multiple taken for a
+ * divisor, 1 and the number itself refused, or — by default — the division and its remainder.
+ */
+function divisorExample(rand, level, { mistake = null } = {}) {
+  const b = level === 1 ? int(rand, 4, 9) : int(rand, 11, 15);
+  const q = int(rand, 4, 9);
+  if (mistake === 'sentence-reversed' || mistake === 'multiple-for-divisor') {
+    const a = b * q;
+    return {
+      title: `هل ${a} قاسم للعدد ${b}؟`,
+      steps: [
+        `أكتب المساواة: $${a} = ${b} \\times ${q}$.`,
+        `العدد ${b} هو الذي يقسم ${a}: إذن ${b} قاسم للعدد ${a}، و ${a} مضاعف للعدد ${b}.`,
+        `العدد ${a} أكبر من ${b}: إذن ${a} ليس قاسمًا للعدد ${b}.`,
+      ],
+    };
+  }
+  if (mistake === 'one-and-itself') {
+    const a = b * q;
+    return {
+      title: `هل 1 و ${a} قاسمان للعدد ${a}؟`,
+      steps: [
+        `أكتب المساواة: $${a} = 1 \\times ${a}$.`,
+        `الباقي 0 في قسمة ${a} على 1، وفي قسمة ${a} على ${a}.`,
+        `إذن 1 و ${a} قاسمان للعدد ${a}: لكلّ عدد غير معدوم هذان القاسمان.`,
+      ],
+    };
+  }
+  const r = rand() < 0.5 ? 0 : int(rand, 1, b - 1);
+  const a = b * q + r;
+  return {
+    title: `هل ${b} قاسم للعدد ${a}؟`,
+    steps: [
+      `أقسم ${a} على ${b}: $${a} = ${b} \\times ${q}${r ? ` + ${r}` : ''}$.`,
+      r ? `الباقي ${r}، وهو ليس 0.` : 'الباقي 0.',
+      r ? `إذن ${b} ليس قاسمًا للعدد ${a}.` : `إذن ${b} قاسم للعدد ${a}، و ${a} مضاعف للعدد ${b}.`,
+    ],
+  };
+}
+
 export const FAMILIES = {
+  '4am.m1.r01': {
+    item: '4am.m1.r01',
+    // no `lesson` here: the home lesson of a tool is read from the learning net (`toolsForLesson`), and shared code names
+    // no lesson that has a pack (lessonPack.test.js)
+    name: 'قاسم عدد طبيعي',
+    icon: '🔑',
+    labTool: 'rows',
+    mistakes: ['rest-not-zero', 'multiple-for-divisor', 'sentence-reversed'],
+    forms: { 1: ['write', 'pick'], 2: ['sentences', 'pick'] },
+    make: (rand, level, form, { first = false } = {}) =>
+      form === 'pick'
+        ? divisorPick(rand, level, first)
+        : form === 'sentences'
+          ? divisorSentences(rand)
+          : divisorWrite(rand, level, first),
+    example: divisorExample,
+    rules: [
+      {
+        id: 'divisor',
+        title: 'قاسم عدد طبيعي',
+        text: 'العدد $b$ قاسم للعدد $a$ عندما يكون باقي القسمة الإقليدية للعدد $a$ على $b$ معدومًا: $a = b \\times k$',
+        example: '$42 = 6 \\times 7$: العدد 6 قاسم للعدد 42.',
+        check: { a: 42, b: 6, q: 7, r: 0 },
+      },
+      {
+        id: 'sentences',
+        title: 'جمل مختلفة، معنى واحد',
+        text: '« $b$ قاسم للعدد $a$ » و « $a$ مضاعف للعدد $b$ » و « $a$ يقبل القسمة على $b$ » تعني الشيء نفسه.',
+        example: '6 قاسم للعدد 54، و 54 مضاعف للعدد 6، و 54 يقبل القسمة على 6.',
+        check: { a: 54, b: 6, q: 9, r: 0 },
+      },
+      {
+        id: 'always',
+        title: '1 والعدد نفسه',
+        text: 'العدد 1 قاسم لكلّ عدد طبيعي، وكلّ عدد طبيعي غير معدوم قاسم لنفسه: $a = 1 \\times a$',
+        example: '$17 = 1 \\times 17$: العددان 1 و 17 قاسمان للعدد 17.',
+        check: { a: 17, b: 1, q: 17, r: 0 },
+      },
+    ],
+    memo: [
+      'العدد $b$ قاسم للعدد $a$ عندما يكون باقي قسمة $a$ على $b$ هو 0: $a = b \\times k$.',
+      '« $b$ قاسم للعدد $a$ » و « $a$ مضاعف للعدد $b$ » و « $a$ يقبل القسمة على $b$ »: المعنى نفسه.',
+      'العدد 1 والعدد نفسه قاسمان دائمًا.',
+      'مثال: $42 = 6 \\times 7$، إذن 6 قاسم للعدد 42؛ و $44 = 6 \\times 7 + 2$، إذن 6 ليس قاسمًا للعدد 44.',
+    ],
+  },
   '1am.m3.r01': {
     item: '1am.m3.r01',
     lesson: 'qisma-iqlidiya-baqi',
@@ -349,6 +580,11 @@ export function grade(q, answer) {
     const tq = Math.floor(q.a / q.b);
     const tr = q.a % q.b;
     const aq = num(answer?.q);
+    // an equality with no box for the remainder (« a = b × ▢ »): only the factor is judged
+    if (q.tokens && !q.tokens.some((t) => t.slot === 'r'))
+      return aq === tq && tr === 0
+        ? { correct: true, mistake: null }
+        : { correct: false, mistake: Number.isFinite(aq) ? 'product-false' : null };
     const ar = num(answer?.r);
     if (aq === tq && ar === tr) return { correct: true, mistake: null };
     if (aq === tr && ar === tq && tq !== tr) return { correct: false, mistake: 'swapped' };
@@ -362,6 +598,7 @@ export function grade(q, answer) {
       correct: false,
       mistake:
         wrong.find((c) => c.trap && c.bin === 'no')?.trap ??
+        wrong.find((c) => c.miss)?.miss ??
         (q.k === 3 || q.k === 9 ? (wrong.some((c) => c.bin === 'yes') ? 'last-digit' : null) : null),
     };
   }

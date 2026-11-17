@@ -310,7 +310,7 @@ export default function LaunchKit({ lessonCode, lessonTitle, onDone, onClose, in
         item: step.item,
         level: step.level,
         mistake: missed?.mistake ?? null,
-        ex: f.example(Math.random, step.level, { k: missed?.k ?? undefined }),
+        ex: f.example(Math.random, step.level, { k: missed?.k ?? undefined, mistake: missed?.mistake ?? null }),
         shown: 1,
       });
       return;
@@ -391,7 +391,7 @@ export default function LaunchKit({ lessonCode, lessonTitle, onDone, onClose, in
       item: t.item,
       step: 0,
       mistake: missed?.mistake ?? null,
-      ex: FAMILIES[t.item].example(Math.random, 1, { k: missed?.k ?? undefined }),
+      ex: FAMILIES[t.item].example(Math.random, 1, { k: missed?.k ?? undefined, mistake: missed?.mistake ?? null }),
       shown: 1,
     });
     setFocus(null);

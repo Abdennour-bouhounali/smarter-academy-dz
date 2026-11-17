@@ -24,23 +24,23 @@ const rng = (seed) => {
     return (s - 1) / 2147483646;
   };
 };
+/** Is a sort card to be accepted? Computed here from the card's own numbers — never read from its `bin`. */
+const accepts = (q, c) => {
+  if (c.say) return c.verb === 'divisor' ? Number.isInteger(c.y / c.x) : Number.isInteger(c.x / c.y); // « x قاسم لـ y » / « x مضاعف لـ y », « x يقبل القسمة على y »
+  if (q.of) return Number.isInteger(q.of / c.n);
+  const m = c.text.match(/^\$(\d+) = (\d+) \\times (\d+) ([+-]) (\d+)\$$/);
+  if (!m) return c.n % q.k === 0;
+  const [a, b, k, sign, r] = [Number(m[1]), Number(m[2]), Number(m[3]), m[4], Number(m[5])];
+  return sign === '+' && b * k + r === a && r < b;
+};
 /** The full-mark answer of a question, computed here — never read from the question. */
 const right = (q) =>
   q.gesture === 'write'
     ? { q: String(Math.floor(q.a / q.b)), r: String(q.a % q.b) }
     : q.gesture === 'place'
       ? { x: q.b * Math.floor(q.a / q.b), moved: true }
-      : Object.fromEntries(
-          q.cards.map((c) => [
-            c.id,
-            (() => {
-              const m = c.text.match(/^\$(\d+) = (\d+) \\times (\d+) ([+-]) (\d+)\$$/);
-              if (!m) return c.n % q.k === 0 ? 'yes' : 'no';
-              const [a, b, k, sign, r] = [Number(m[1]), Number(m[2]), Number(m[3]), m[4], Number(m[5])];
-              return sign === '+' && b * k + r === a && r < b ? 'yes' : 'no';
-            })(),
-          ]),
-        );
+      : Object.fromEntries(q.cards.map((c) => [c.id, accepts(q, c) ? 'yes' : 'no']));
+const withRest = (q) => q.tokens.some((t) => t.slot === 'r');
 const each = (fn) => {
   for (const f of Object.values(FAMILIES))
     for (const level of [1, 2])
@@ -60,7 +60,7 @@ describe('عُدّة الانطلاق — the question families', () => {
         `id: '${f.labTool}'`,
       );
     }
-    expect(familyFor('4am.m1.r01')).toBe(null);
+    expect(familyFor('4am.m1.r02')).toBe(null);
   });
 
   it('every generated question is true: the answer computed apart is graded right, and it can be handed in', () => {
@@ -83,7 +83,8 @@ describe('عُدّة الانطلاق — the question families', () => {
       if (q.gesture === 'write' && level === 1) {
         expect(q.b).toBeLessThanOrEqual(9);
         expect(Math.floor(q.a / q.b)).toBeLessThanOrEqual(9);
-        expect(q.a % q.b).toBeGreaterThan(0);
+        if (withRest(q)) expect(q.a % q.b).toBeGreaterThan(0);
+        else expect(q.a % q.b).toBe(0);
       }
       if (q.gesture === 'write' && level === 1 && seed % 5 === 0) expect(q.a).toBeLessThanOrEqual(29); // the very first question of a launch: a near-certain win
       if (q.gesture === 'write' && level === 2) {
@@ -141,6 +142,66 @@ describe('عُدّة الانطلاق — the question families', () => {
           expect(e.steps.join(' ')).not.toMatch(/undefined|NaN/);
         }
       }
+  });
+
+  it('« التعرّف على قاسم »: its questions, its traps and its worked example say the truth', () => {
+    const item = '4am.m1.r01';
+    const seen = new Set();
+    for (let seed = 1; seed <= 300; seed += 1) {
+      const w = makeQuestion(rng(seed), item, seed % 2 ? 1 : 2, 'write');
+      expect(w.tokens.filter((t) => typeof t === 'object').map((t) => t.slot)).toEqual(['q']); // no box for a remainder
+      expect(grade(w, { q: String(w.a / w.b) })).toEqual({ correct: true, mistake: null }); // what the student really hands in
+      expect(grade(w, { q: String(w.a / w.b + 1) })).toEqual({ correct: false, mistake: 'product-false' });
+      for (const level of [1, 2]) {
+        const p = makeQuestion(rng(seed * 13), item, level, 'pick', { first: seed % 5 === 0 });
+        expect(p.prompt).toContain(String(p.of));
+        for (const c of p.cards) {
+          if (c.n > p.of) expect(c.trap).toBe('multiple-for-divisor');
+          else if (!accepts(p, c)) expect(c.trap).toBe('rest-not-zero');
+          else expect(c.trap).toBe(null);
+          if (c.miss) seen.add(c.n === 1 ? 'one' : 'itself');
+        }
+        if (level === 2) {
+          const edge = p.cards.find((c) => c.miss);
+          expect(edge, 'level 2 shows 1 or the number itself').toBeTruthy();
+          expect(grade(p, { ...right(p), [edge.id]: 'no' })).toEqual({ correct: false, mistake: 'one-and-itself' });
+        }
+      }
+      const s = makeQuestion(rng(seed * 31), item, 2, 'sentences');
+      for (const c of s.cards) {
+        expect(c.text).toContain(String(c.x));
+        expect(c.text).toContain(String(c.y));
+        expect(c.text).toContain({ divisor: 'قاسم', multiple: 'مضاعف', divisible: 'يقبل القسمة' }[c.verb]);
+        expect(c.bin, c.text).toBe(accepts(s, c) ? 'yes' : 'no');
+        if (c.trap === 'sentence-reversed') expect(c.verb === 'divisor' ? c.x > c.y : c.x < c.y, c.text).toBe(true);
+        if (c.trap) seen.add(c.trap);
+      }
+      for (const level of [1, 2]) {
+        const e = FAMILIES[item].example(rng(seed), level);
+        const [b, a] = e.title.match(/\d+/g).map(Number);
+        expect(e.steps.at(-1)).toContain(a % b === 0 ? `${b} قاسم للعدد ${a}` : `${b} ليس قاسمًا للعدد ${a}`);
+        const m = e.steps[0].match(/\$(\d+) = (\d+) \\times (\d+)(?: \+ (\d+))?\$/);
+        expect(Number(m[2]) * Number(m[3]) + Number(m[4] ?? 0)).toBe(Number(m[1]));
+        expect(Number(m[4] ?? 0)).toBeLessThan(b);
+      }
+    }
+    expect([...seen].sort()).toEqual(['itself', 'one', 'rest-not-zero', 'sentence-reversed']);
+    // the worked example answers the mistake shown: three steps, a true equality, the conclusion that mistake needs
+    for (let seed = 1; seed <= 60; seed += 1)
+      for (const mistake of ['sentence-reversed', 'multiple-for-divisor', 'one-and-itself']) {
+        const e = FAMILIES[item].example(rng(seed), 1 + (seed % 2), { mistake });
+        const m = e.steps[0].match(/\$(\d+) = (\d+) \\times (\d+)\$/);
+        expect(Number(m[2]) * Number(m[3]), mistake).toBe(Number(m[1]));
+        expect(e.steps).toHaveLength(3);
+        expect(e.steps.at(-1)).toContain(mistake === 'one-and-itself' ? 'قاسمان' : `${m[1]} ليس قاسمًا للعدد ${m[2]}`);
+        expect(`${e.title} ${e.steps.join(' ')}`).not.toMatch(/undefined|NaN/);
+      }
+    for (const m of FAMILIES[item].mistakes) expect(MISTAKES[m], m).toBeTruthy();
+  });
+
+  it('takes the tool of « قواسم عدد طبيعي » from the learning net: the الكفاءة of the lesson before it', () => {
+    const tools = planTools(toolsForLesson('qawasim-adad-tabii'), (id) => Boolean(familyFor(id)));
+    expect(tools.map((t) => [t.item, t.lesson.code, t.weight])).toEqual([['4am.m1.r01', 'qasim-adad-tabii', 'core']]);
   });
 
   it('changes the form of the question inside a launch', () => {

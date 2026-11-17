@@ -103,13 +103,18 @@ export function Write({ q, value, onChange, locked, play }) {
   );
 }
 
-const CardText = ({ text }) =>
-  text.startsWith('$') ? (
+/** A card shows a number or an equality (left-to-right), or a sentence in Arabic (`say`: right-to-left, smaller). */
+const CardText = ({ card }) =>
+  card.say ? (
+    <span dir="rtl" className="lk-say">
+      {card.text}
+    </span>
+  ) : card.text.startsWith('$') ? (
     <span dir="ltr">
-      <MathText>{text}</MathText>
+      <MathText>{card.text}</MathText>
     </span>
   ) : (
-    <span dir="ltr">{text}</span>
+    <span dir="ltr">{card.text}</span>
   );
 
 export function Sort({ q, value, onChange, locked, play }) {
@@ -190,7 +195,7 @@ export function Sort({ q, value, onChange, locked, play }) {
               title="أعد البطاقة"
               data-lk-placed={c.id}
             >
-              <CardText text={c.text} />
+              <CardText card={c} />
             </button>
           ))}
       </div>
@@ -220,7 +225,7 @@ export function Sort({ q, value, onChange, locked, play }) {
             }}
             data-lk-card={next.id}
           >
-            <CardText text={next.text} />
+            <CardText card={next} />
           </div>
         ) : (
           <div className="lk-card lk-card--none">{locked ? '' : 'كلّ البطاقات في صناديقها. اضغط بطاقة لتعيدها.'}</div>

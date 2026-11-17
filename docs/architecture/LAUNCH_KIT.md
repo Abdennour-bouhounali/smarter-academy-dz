@@ -88,27 +88,41 @@ with nothing right; a score can be guessed; a wall sends a child away).
 One entry in `FAMILIES`, keyed by the item id of the net:
 
 ```js
-'1am.m3.r01': { item, lesson, name, icon, labTool, forms: { 1: [...], 2: [...] }, make(rand, level, form, { first }), example(rand, level, { k }), memo: [...] }
+'1am.m3.r01': { item, lesson, name, icon, labTool, forms: { 1: [...], 2: [...] }, make(rand, level, form, { first }), example(rand, level, { k, mistake }), rules: [...], memo: [...] }
 ```
+
+- **The worked example answers the mistake shown** when the family can (`mistake` = the name `grade` gave: the kit passes
+  it to `example`; « قاسم عدد طبيعي » has one example for the order of the two numbers, one for 1 and the number itself,
+  and the division with its remainder by default). An example that talks about something else than the sentence above it
+  teaches nothing.
 
 - **It generates** its questions on two levels (1 very easy, 2 harder), in several forms; a retake never shows the same numbers.
   The very first question of a launch is a near-certain win (`first`).
 - **A question is plain data**; `grade(q, answer)` says right or not and NAMES the mistake when the answer shows one
   (`MISTAKES`: « الباقي دائمًا أصغر من المقسوم عليه », « في قاعدتي 3 و 9 نجمع الأرقام »…). A sort card that is a trap carries the
-  mistake it catches. The workshop opens on that sentence.
+  mistake it catches (`trap`); a card the student must ACCEPT may name the mistake of refusing it (`miss`: 1 and the number
+  itself are divisors). The workshop opens on that sentence.
+- **The shapes a family may use, without touching the gestures**: *write* with or without a box for the remainder
+  (« 47 = 6 × ▢ + ▢ », « 42 = 6 × ▢ » — with no `r` slot only the factor is judged); a *sort* card that is a number, an
+  equality (`text` starting with `$`), or a SENTENCE in Arabic (`say: true`: drawn right-to-left, smaller, two lines at
+  most — the walk fails on three).
 - **Tests are part of the family** (`launchkit.test.js`): every generated question is re-computed apart and graded right, the
   numbers of each level stay in their range, every trap names a known mistake, the worked example is true.
 
-Families on 2026-11-17 (the two prerequisites of the pilot lesson):
+Families on 2026-11-17 (the two prerequisites of the pilot lesson, then the pilot's own الكفاءة, which lesson 2 stands on):
 
 | Item | Tool | Level 1 | Level 2 | Instrument |
 |---|---|---|---|---|
 | `1am.m3.r01` | القسمة الإقليدية | write « 47 = 6 × ▢ + ▢ »; place the greatest multiple not beyond the number | write with a two-digit divisor; sort three equalities (is it THE Euclidean division?) | `paper` |
 | `1am.m3.r02` | قواعد قابلية القسمة | sort by 2, by 5 | sort by 3, by 9, by 4 — with numbers chosen to trap the wrong rule | `rules` |
+| `4am.m1.r01` | قاسم عدد طبيعي | write « 42 = 6 × ▢ » (the equality that shows a divisor); sort three numbers: divisor of 36 or not — a multiple of it is a trap | sort three sentences « صحيحة / خاطئة » (« قاسم », « مضاعف », « يقبل القسمة »: true, turned round, or with a remainder); sort numbers where 1 or the number itself appears | `rows` |
+
+**A lesson with no family for its tools opens an EMPTY kit** (« عُدّتك جاهزة », 0 / 0 — seen by the owner on lesson 2,
+2026-11-17): a family per core tool is part of a lesson's definition of done (`status:lesson-v2`, part S1).
 
 ## 5. Where it opens (phase 1)
 
-Only the pilot lesson: in its game world, the FIRST « ابدأ المغامرة » plays the launch, then the world starts
+The lessons that have a game world (the pilot and « قواسم عدد طبيعي »): in the world, the FIRST « ابدأ المغامرة » plays the launch, then the world starts
 (`DivisorIsles.jsx › onBegin`, overlay `{ type: 'launch', then: 'start' }`, `Game.js › openLaunch / launched`); afterwards
 « واصل » goes straight in, and « 🎒 عُدّتي » on the title screen opens the kit again (`data-di-launch-open`). The 3D world is
 not drawn behind it. Other lessons keep « أستعدّ » unchanged until the owner validates this.
@@ -124,19 +138,24 @@ Phase 1 is a prototype to judge the feel. **Not built** (plan, phases 2–4):
 - the gate (§3bis) lives in the browser like the rest: a teacher does not see who needed a capsule;
 - no picture of a الكفاءة with its sources (measured / deduced), no window of earlier الكفاءات, no automatic update from a
   later success, no « prerequisite or new idea? » diagnosis, no class grid;
-- only two families: every other lesson has no launch.
+- three families: a lesson whose tools have none has no launch.
 
 ## 7. Check
 
-- Unit: `npx vitest run src/lessons/common/launchkit` in `apps/web` (17 tests: families true and in range, named mistakes,
+- Unit: `npx vitest run src/lessons/common/launchkit` in `apps/web` (19 tests: families true and in range, named mistakes,
   the engine — never one answer, the workshop, the caps, the fresh tools, the gate and its capsule, the honesty star — and
   the sounds).
 - Walk: `node apps/web/e2e/launch-kit.mjs [outDir]` (dev server up; also `E2E_SIZE=1024x768` and `1840x900`): 56 checks — the
   first « ابدأ », the three gestures with real taps and drags, the two verdicts, the workshop, the kit, the lab opened on the
   instrument, a tool re-checked, the take-off, « played once », a student who misses everything: the gate, the four steps of
   the capsule, the door open after two missed answers, then the earlier lesson and the return. At every screenshot nothing scrolls and nothing leaves its panel; the walk also listens to the sounds played.
+- Walk of lesson 2's launch: `node apps/web/e2e/launch-kit-qawasim.mjs [outDir]` — 30 checks, three students (one who
+  knows: two answers and take-off; one who slips on the sentences: the workshop; one who misses everything: the capsule on
+  the instrument `rows`, then the door open). It adds to the layout rules: a sentence stays in its card on two lines at
+  most, a placed card stays in its box, the boxes never lie under the buttons of the question.
 - The older game-world walks seed the launch as already played (`u_<id>_smarter_launch_kit`).
 - **On a phone held sideways** (`E2E_TOUCH=1 E2E_SIZE=800x370`: 55 checks; rules in `GAME_WORLD.md` « On a phone »): the bag
   is compact, a capsule's body slides inside itself, and « الدرس كاملًا » of an earlier lesson is a link only when that
   lesson opens on a phone (`PHONE_LESSONS`) — otherwise the line « الدرس كاملًا: على الحاسوب », never a link to the closed
-  message.
+  message. **Sorting fits above « تمّ »** (2026-11-17): on a short screen the card, its boxes and the placed cards are
+  shorter and the boxes wider — the card kept its laptop height and, with the boxes, lay under the two buttons.

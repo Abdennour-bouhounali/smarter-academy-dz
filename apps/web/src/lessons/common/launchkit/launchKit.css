@@ -654,6 +654,22 @@
 .lk-root .lk-card * {
   color: #1b1f4b;
 }
+/* a card that is a SENTENCE: Arabic words need less size than a number, and may take two lines — never three */
+.lk-say {
+  display: block;
+}
+.lk-card .lk-say {
+  font-size: 1.5rem;
+  line-height: 1.5;
+  text-wrap: balance;
+}
+.lk-chip .lk-say {
+  font-size: 1.05rem;
+  line-height: 1.4;
+}
+.lk-chip:has(.lk-say) {
+  padding: 0.3rem 0.6rem;
+}
 .lk-card--none {
   background: transparent;
   box-shadow: none;
@@ -1274,5 +1290,58 @@
   }
   .lk-capbody.lk-example ol {
     flex: none;
+  }
+  /* SORTING FITS above « تمّ »: the card, its boxes and what they hold are shorter and the boxes wider. The card kept its
+     laptop height and, with its boxes, lay under the two buttons of the question. */
+  .lk-question {
+    gap: 0.4rem;
+  }
+  .lk-prompt {
+    line-height: 1.45;
+  }
+  .lk-sort {
+    grid-template-columns: minmax(0, 1fr) 11.5rem minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+  .lk-hand {
+    gap: 0.3rem;
+  }
+  .lk-card {
+    min-height: 4.4rem;
+    padding: 0.4rem 0.5rem;
+    font-size: 1.8rem;
+  }
+  .lk-card .lk-say {
+    font-size: 1.2rem;
+    line-height: 1.4;
+  }
+  .lk-card--none {
+    font-size: 0.92rem;
+    line-height: 1.4;
+  }
+  .lk-hand__tip {
+    font-size: 0.9rem;
+  }
+  .lk-box__door {
+    padding: 0.3rem 0.4rem;
+  }
+  .lk-box__door strong {
+    font-size: 1rem;
+    line-height: 1.35;
+  }
+  .lk-box__in {
+    gap: 0.25rem;
+    padding: 0.3rem;
+  }
+  .lk-chip {
+    padding: 0.05rem 0.7rem;
+    font-size: 1.1rem;
+  }
+  .lk-chip .lk-say {
+    font-size: 0.95rem;
+    line-height: 1.3;
+  }
+  .lk-chip:has(.lk-say) {
+    padding: 0.15rem 0.45rem;
   }
 }
