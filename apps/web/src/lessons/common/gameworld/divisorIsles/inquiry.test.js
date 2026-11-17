@@ -6,7 +6,7 @@ import {
   LENSES,
   chartCells,
   judgeClaim,
-  cellOf,
+  claimValues,
   holds,
   lightsIn,
   wall,
@@ -43,6 +43,8 @@ describe('the investigation of a rule — chart: a lens, the values claimed, and
   const right = (b, lens, from) =>
     LENSES[lens].values(from).filter((v) => chartCells(from).some((n) => LENSES[lens].of(n) === v && holds(n, b)));
   const separates = (b, lens, from = 0) => judgeClaim(b, lens, right(b, lens, from), from).ok;
+  /** the lenses that read ONE thing of the digits (the fourth, `last2`, reads the number two digits write) */
+  const DIGIT_LENSES = ['units', 'tens', 'sum'];
 
   it('has 99 gaps on the first chart and 100 on the next ones', () => {
     expect(chartCells(0)).toHaveLength(99);
@@ -53,8 +55,7 @@ describe('the investigation of a rule — chart: a lens, the values claimed, and
   it('exactly ONE lens separates the chart for 2, 5, 3 and 9 — and it still does on the next hundred, with the same values', () => {
     const one = { 2: 'units', 5: 'units', 3: 'sum', 9: 'sum' };
     for (const [b, lens] of Object.entries(one)) {
-      for (const other of Object.keys(LENSES))
-        expect(separates(Number(b), other), `${b} ${other}`).toBe(other === lens);
+      for (const other of DIGIT_LENSES) expect(separates(Number(b), other), `${b} ${other}`).toBe(other === lens);
       const values = right(Number(b), lens, 0);
       expect(judgeClaim(Number(b), lens, values, 100).ok, `${b} on 100–199`).toBe(true);
     }
@@ -63,14 +64,32 @@ describe('the investigation of a rule — chart: a lens, the values claimed, and
     expect(right(3, 'sum', 0)).toEqual([3, 6, 9, 12, 15, 18]);
   });
 
-  it('no lens separates the chart for 4, and every value of every lens takes a dark cell in', () => {
-    for (const lens of Object.keys(LENSES)) {
+  it('no ONE digit and no sum separates the chart for 4 — the number its last two digits write does, on every hundred', () => {
+    for (const lens of DIGIT_LENSES) {
       expect(separates(4, lens)).toBe(false);
       for (const v of LENSES[lens].values(0))
         expect(judgeClaim(4, lens, [v]).intruders.length, `${lens} ${v}`).toBeGreaterThan(0);
     }
-    // …but every hundred lights the same cells: the cell of a long gap decides
-    for (let n = 100; n < 1000; n += 1) expect(holds(n, 4)).toBe(holds(cellOf(n) || 100, 4));
+    expect(LENSES.last2.of(316)).toBe(16);
+    expect(LENSES.last2.of(7)).toBe(7);
+    for (const from of [0, 100, 200, 900]) {
+      // « the number of the tens and the units is divisible by 4 » takes every gap the plank fills, and no other
+      expect(judgeClaim(4, 'last2', claimValues('divides', 'last2', [4], from), from).ok, `from ${from}`).toBe(true);
+      expect(judgeClaim(4, 'last2', claimValues('divides', 'last2', [2], from), from).intruders.length).toBeGreaterThan(
+        0,
+      );
+      expect(judgeClaim(4, 'last2', claimValues('divides', 'last2', [8], from), from).orphans.length).toBeGreaterThan(
+        0,
+      );
+    }
+  });
+
+  it('a claim is said in one of two ways: the values of the lens, or ONE number the lens is divisible by', () => {
+    expect(claimValues('equals', 'units', [0, 5])).toEqual([0, 5]);
+    expect(claimValues('divides', 'sum', [9], 0)).toEqual([9, 18]);
+    expect(claimValues('divides', 'sum', [9], 100)).toEqual([9, 18]);
+    expect(claimValues('divides', 'sum', [3], 0)).toEqual([3, 6, 9, 12, 15, 18]);
+    expect(claimValues('divides', 'sum', [], 0)).toEqual([]);
   });
 
   it('counts the cells that light in a stretch of the chart — what rings while the chart is filled', () => {

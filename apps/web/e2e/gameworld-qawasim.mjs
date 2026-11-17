@@ -420,6 +420,8 @@ s = await st(); expect(s.stage === 7 && s.overlay === 'forge' && (await fg()).ke
     const litByHand = await page.locator('.iq-cell.is-lit').count();
     expect((await iq()).b === b && taps >= 6 && litByHand >= 2, `plank ${b}: ${taps} gaps tested by hand, one after the other (${litByHand} lit) before the world may finish the chart`);
     if (b === 5) await inquiryFits('inquiry4-test');
+    // the fullest test screen of the chart: four readings found, the question, the goal, a division, two buttons
+    if (b === 4) await inquiryFits('inquiry4-four-test');
     // the chart is heard while the world fills it: what the game's sound is asked for, recorded here (a walk has no ear)
     await page.evaluate(() => { const a = window.__world.audio; window.__heard = []; if (!a.__spied) { const real = a.play.bind(a); a.play = (name, p) => { window.__heard.push(name); real(name, p); }; a.__spied = true; } });
     await page.click('[data-iq-fill]'); await page.waitForSelector('[data-iq-look]');
@@ -432,13 +434,13 @@ s = await st(); expect(s.stage === 7 && s.overlay === 'forge' && (await fg()).ke
     await page.click(`[data-iq-lens="${lens}"]`);
     for (const v of values) await page.click(`[data-iq-value="${v}"]`);
     expect(await page.getAttribute('[data-iq-fact]', 'data-iq-ok') === '1' && await page.locator('.iq-cell.is-intruder').count() === 0 && await page.locator('.iq-cell.is-lit:not(.is-claimed)').count() === 0, `plank ${b}: HIS claim holds every lit cell and no dark one`);
-    if (b === 5 || b === 9) {
+    if (b === 5 || b === 9 || b === 4) {
       const lay = await page.evaluate(() => {
         const r = (s) => document.querySelector(s).getBoundingClientRect();
         const L = [...document.querySelectorAll('[data-iq-lens]')].map((e) => e.getBoundingClientRect()); const V = [...document.querySelectorAll('[data-iq-value]')].map((e) => e.getBoundingClientRect());
-        return { stacked: L.every((x, i) => i === 0 || (x.top >= L[i - 1].bottom - 1 && Math.abs(x.left - L[0].left) < 2)), order: r('[data-iq-lenses]').right <= r('[data-iq-equals]').left + 1 && r('[data-iq-equals]').right <= r('[data-iq-values]').left + 1, down: V[1].top >= V[0].bottom - 1 && Math.abs(V[1].left - V[0].left) < 2, word: document.querySelector('[data-iq-equals]').textContent.trim() };
+        return { stacked: L.every((x, i) => i === 0 || (x.top >= L[i - 1].bottom - 1 && Math.abs(x.left - L[0].left) < 2)), order: r('[data-iq-values]').right <= r('[data-iq-equals]').left + 1 && r('[data-iq-equals]').right <= r('[data-iq-lenses]').left + 1, down: V[1].top >= V[0].bottom - 1 && Math.abs(V[1].left - V[0].left) < 2, word: document.querySelector('[data-iq-equals]').textContent.trim() };
       });
-      expect(lay.stacked && lay.order && lay.down && lay.word === (b === 5 ? 'يساوي' : 'يقبل القسمة على'), `plank ${b}: his claim is laid as asked — the three lenses in a column on the left, « ${b === 5 ? 'يساوي' : 'يقبل القسمة على'} », then the ${b === 5 ? 'values' : 'numbers'} read downwards (${JSON.stringify(lay)})`);
+      expect(lay.stacked && lay.order && lay.down && lay.word === (b === 5 ? 'يساوي' : 'يقبل القسمة على'), `plank ${b}: his claim is laid as asked — right to left: the three lenses in a column on the RIGHT, « ${b === 5 ? 'يساوي' : 'يقبل القسمة على'} », then the ${b === 5 ? 'values' : 'numbers'} on the LEFT, read downwards (${JSON.stringify(lay)})`);
       await inquiryFits(`inquiry4-claim-${b}`);
     }
     await page.evaluate(() => { window.__heard = []; });
@@ -456,32 +458,9 @@ s = await st(); expect(s.stage === 7 && s.overlay === 'forge' && (await fg()).ke
   await lensPlank(9, ['units', 9], 'sum', [9]);
   expect((await page.textContent('[data-iq-found]')).includes('مجموع الأرقام يقبل القسمة على 9'), 'what he found for plank 9 is kept as he said it: the sum of the digits is divisible by 9');
   await lensPlank(3, ['units', 3], 'sum', [3]);
-  // plank 4: no lens separates — its own road
-  while (await page.locator('[data-iq-fill]').count() === 0) await page.click('[data-iq-test]');
-  // the fullest test screen of the chart: four readings found, the question, the goal, a division, two buttons
-  await inquiryFits('inquiry4-four-test');
-  await page.click('[data-iq-fill]'); await page.waitForSelector('[data-iq-look]'); await page.click('[data-iq-look]');
-  await page.click('[data-iq-lens="units"]'); await page.click('[data-iq-value="2"]');
-  expect(await page.locator('[data-iq-nolens]').count() === 0, 'plank 4: one lens that fails is not enough to give up');
-  await page.click('[data-iq-lens="sum"]'); await page.click('[data-iq-value="4"]');
-  expect(await page.locator('[data-iq-nolens]').count() === 1 && await page.locator('[data-iq-seal]').count() === 0, 'two lenses took dark cells in: HE may now say that no lens separates this chart');
-  await inquiryFits('inquiry4-four-no-lens');
-  await page.click('[data-iq-nolens]');
-  while (await page.locator('[data-iq-fill]').count() === 0) await page.click('[data-iq-test]');
-  await page.click('[data-iq-fill]'); await page.waitForSelector('[data-iq-next]');
-  expect(await page.locator('.iq-cell.is-ghost').count() === 24 && await page.locator('.iq-cell.is-ghost.is-dark').count() === 0 && await page.locator('.iq-cell.is-lit:not(.is-ghost)').count() === 1, 'the next hundred lights the SAME cells as the first chart (their frames are still drawn) — plus 100 itself');
-  await inquiryFits('inquiry4-four-hundreds');
-  await page.click('[data-iq-next]'); await page.waitForFunction(() => window.__inquiry.from === 200 && window.__inquiry.full);
-  await page.click('[data-iq-next]');
-  expect((await iq()).stage === 'where' && (await iq()).where === 316, 'then a long gap (316): which cell of the one chart tells about it?');
-  await page.click('[data-iq-cell="61"]');
-  expect((await fact()).includes('61'), 'a cell that is not its own is answered with what that cell is');
-  await page.click('[data-iq-cell="16"]');
-  expect((await page.textContent('.iq-lead')).includes('خضراء — '), '316 is read on cell 16: lit — plank 4 holds');
-  await inquiryFits('inquiry4-four-where');
-  await page.click('[data-iq-next]'); await page.click('[data-iq-cell="22"]');
-  expect((await page.textContent('.iq-lead')).includes('ليست خضراء'), '522 is read on cell 22: dark — plank 4 falls');
-  await page.click('[data-iq-next]'); await page.click('[data-iq-cell="8"]'); await page.click('[data-iq-next]');
+  // plank 4: no single digit and no sum separates its chart — its lens is the number the tens and the units write
+  await lensPlank(4, ['sum', 4], 'last2', [4]);
+  expect((await page.textContent('[data-iq-found]')).includes('العدد المكوّن من الآحاد والعشرات يقبل القسمة على 4') && await page.locator('[data-iq-nolens]').count() === 0, 'plank 4 is read on the number its tens and units write, divisible by 4 — the old side road is gone');
   expect((await iq()).stage === 'sealed' && await page.locator('[data-iq-found] li').count() === 5, 'five planks, five readings — all found by him, all on screen');
   await inquiryFits('inquiry4-sealed');
   await page.click('[data-iq-done]'); await page.waitForSelector('[data-rf="attack"]');

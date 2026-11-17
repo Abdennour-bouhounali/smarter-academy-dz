@@ -48,6 +48,11 @@ export const LENSES = {
     of: (n) => digitsOf(n).reduce((s, x) => s + x, 0),
     values: (from) => Array.from({ length: 18 + (from ? 1 : 0) }, (_, i) => i + 1),
   },
+  // the number written by the tens digit and the units digit: 16 for 316 (on the first chart it is the gap itself)
+  last2: {
+    of: (n) => n % 100,
+    values: (from) => Array.from({ length: from ? 100 : 99 }, (_, i) => i + (from ? 0 : 1)),
+  },
 };
 /** The hundred gaps of a chart: 1…99 on the first one (0 is no gap), then 100…199, 200…299. */
 export const chartCells = (from = 0) => Array.from({ length: 100 }, (_, i) => from + i).filter((n) => n > 0);
@@ -77,8 +82,6 @@ export function judgeClaim(b, lens, values, from = 0) {
  */
 export const claimValues = (link, lens, picked, from = 0) =>
   link === 'divides' ? LENSES[lens].values(from).filter((v) => picked.some((k) => v % k === 0)) : picked;
-/** The cell of a long gap on the chart: the gap made of its last two digits. */
-export const cellOf = (n) => n % 100;
 
 // ───────────────────────── turn: the planks of a bridge, stacked into a wall and read the other way ─────────────────────────
 /**

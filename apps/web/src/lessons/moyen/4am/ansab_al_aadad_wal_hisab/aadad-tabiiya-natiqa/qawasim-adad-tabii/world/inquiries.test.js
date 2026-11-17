@@ -6,8 +6,6 @@ import {
   judgeClaim,
   claimValues,
   LENSES,
-  chartCells,
-  cellOf,
   wall,
   pieceOf,
   quotientTex,
@@ -69,7 +67,7 @@ describe('the two investigations of « قواسم عدد طبيعي » — each 
     }
   });
 
-  it('RULES: each plank has its lens among those offered, its hand tests show the pattern, plank 4 has its own road', () => {
+  it('RULES: each plank has its lens among those offered, its hand tests show the pattern', () => {
     const one = {
       5: ['units', [0, 5]],
       2: ['units', [0, 2, 4, 6, 8]],
@@ -82,13 +80,7 @@ describe('the two investigations of « قواسم عدد طبيعي » — each 
       // tested by hand from b: at least two lit cells before the world may finish the chart
       const lit = Array.from({ length: p.manual }, (_, i) => p.b + i).filter((n) => n % p.b === 0);
       expect(lit.length, `plank ${p.b}`).toBeGreaterThanOrEqual(2);
-      if (p.where) {
-        expect(p.lenses.some((id) => judgeClaim(p.b, id, LENSES[id].values(0)).ok)).toBe(false);
-        expect(p.where.map((n) => n % p.b === 0)).toContain(true);
-        expect(p.where.map((n) => n % p.b === 0)).toContain(false);
-        for (const n of p.where) expect(chartCells(0).concat(0)).toContain(cellOf(n));
-        continue;
-      }
+      if (!one[p.b]) continue;
       const [lens, values] = one[p.b];
       expect(p.lenses).toContain(lens);
       expect(p.lenses[0], 'the lens that works is never the first one offered').not.toBe(lens);
@@ -113,14 +105,18 @@ describe('the two investigations of « قواسم عدد طبيعي » — each 
         for (const k of RULES_INQUIRY.divisors) {
           const first = judgeClaim(p.b, lens, claimValues('divides', lens, [k], 0), 0);
           if (first.ok) holding.push(`${lens}/${k}`);
-          // a plank with its own road (4): every claim he can make takes a cell that is not green in
-          if (p.where) expect(first.intruders.length, `${p.b} ${lens} ${k}`).toBeGreaterThan(0);
         }
-      expect(holding, `plank ${p.b}`).toEqual(p.where ? [] : [`sum/${p.b}`]);
+      // 9 and 3 are read on the sum of the digits; 4 on the number its tens and units write
+      const lens = p.b === 4 ? 'last2' : 'sum';
+      expect(holding, `plank ${p.b}`).toEqual([`${lens}/${p.b}`]);
+      expect(p.lenses[0], 'the lens that works is never the first one offered').not.toBe(lens);
       // what holds on the first chart holds on the next hundred, said the same way
-      if (!p.where) expect(judgeClaim(p.b, 'sum', claimValues('divides', 'sum', [p.b], 100), 100).ok).toBe(true);
-      said(T.valuesAsk(p.b, T.lens.sum, 'divides'));
-      expect(T.foundLine(p.b, T.lens.sum, [p.b], 'divides')).toContain(`يقبل القسمة على ${p.b}`);
+      for (const from of [100, 200])
+        expect(judgeClaim(p.b, lens, claimValues('divides', lens, [p.b], from), from).ok, `${p.b} from ${from}`).toBe(
+          true,
+        );
+      said(T.valuesAsk(p.b, T.lens[lens], 'divides'));
+      expect(T.foundLine(p.b, T.lens[lens], [p.b], 'divides')).toContain(`يقبل القسمة على ${p.b}`);
     }
   });
 
@@ -131,7 +127,7 @@ describe('the two investigations of « قواسم عدد طبيعي » — each 
       { b: 2, lens: 'units', values: [0, 2, 4, 6, 8] },
       { b: 9, lens: 'sum', values: [9, 18] },
       { b: 3, lens: 'sum', values: [3, 6, 9, 12, 15, 18] },
-      { b: 4, lens: 'last2', values: [] },
+      { b: 4, lens: 'last2', values: [4] },
     ];
     const { rule, rows } = F.fromInquiry({ readings });
     expect(F.isTheRule(rule)).toBe(true);
@@ -146,7 +142,7 @@ describe('the two investigations of « قواسم عدد طبيعي » — each 
 
   it('RULES: every sentence can be said, and none names a reading before he finds it', () => {
     const T = RULES_INQUIRY.text;
-    const lines = [T.fill, T.look, T.noLens, T.nextHundred, T.toWhere, T.sealed, T.done, T.link.equals, T.link.divides];
+    const lines = [T.fill, T.look, T.sealed, T.done, T.link.equals, T.link.divides];
     lines.push(T.claim(3, 0), T.claim(0, 2), T.claim(1, 1));
     for (const p of RULES_INQUIRY.planks) {
       // the question and the goal are said before he tests: WHAT is looked for (no division each time) — never the reading
@@ -164,15 +160,7 @@ describe('the two investigations of « قواسم عدد طبيعي » — each 
     said(T.valuesAsk(5, T.lens.units));
     said(T.confirming(5, 100));
     said(T.confirmed(5, 100));
-    said(T.hundreds(4, 100));
-    said(T.hundreds(4, 200));
-    said(T.same(4, 100));
-    said(T.where(316, 4));
-    said(T.whereMiss(316, 61));
-    said(T.whereOk(316, 16, true, 4));
-    said(T.whereOk(522, 22, false, 4));
     said(T.foundLine(5, T.lens.units, [0, 5]));
-    said(T.foundCell(4));
     expect(T.claim(0, 0)).toBe('');
   });
 

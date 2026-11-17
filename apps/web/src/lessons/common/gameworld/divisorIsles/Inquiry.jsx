@@ -4,7 +4,7 @@
  * written here and none is told: what answers him is the strip or the chart.
  *
  *   <Inquiry spec={forge.inquiry} game={game} onDone={() => …} />
- *   spec = { kind: 'pairs', gaps: [36, 40, 30], text } | { kind: 'chart', planks: [{ b, manual, lenses, where? }], text }
+ *   spec = { kind: 'pairs', gaps: [36, 40, 30], text } | { kind: 'chart', planks: [{ b, manual, lenses, link? }], divisors, text }
  * `text` is the LESSON's wording (this file names no lesson and writes none of its numbers).
  */
 import { useEffect, useRef, useState } from 'react';
@@ -19,7 +19,6 @@ import {
   lightsIn,
   judgeClaim,
   claimValues,
-  cellOf,
   pieceOf,
 } from './inquiry';
 import { Turn, Cut } from './InquiryMoves';
@@ -283,7 +282,6 @@ function Pairs({ spec, play, onDone }) {
 }
 
 // ───────────────────────── chart: test gaps one after the other, then choose what to LOOK AT ─────────────────────────
-const two = (n) => String(n % 100).padStart(2, '0');
 /** The division of a gap by the plank, as it is written: n = q × b + r — the rest green when it is 0, gold otherwise. */
 const divisionTex = (n, b) => {
   const { whole, piece } = pieceOf(n, b);
@@ -299,12 +297,10 @@ function Chart({ spec, play, onDone }) {
   const [from, setFrom] = useState(0);
   const [upto, setUpto] = useState(0); // gaps tested so far on this chart: every gap below `upto`
   const [taps, setTaps] = useState(0);
-  const [stage, setStage] = useState('test'); // test | lens | confirm | hundreds | where | sealed
+  const [stage, setStage] = useState('test'); // test | lens | confirm | sealed
   const [lens, setLens] = useState(null);
   const [values, setValues] = useState([]);
   const [failed, setFailed] = useState([]); // lenses that took a dark cell in
-  const [wi, setWi] = useState(0);
-  const [whereSaid, setWhereSaid] = useState(null);
   const [found, setFound] = useState([]);
   const timer = useRef(null);
   useEffect(() => () => clearInterval(timer.current), []);
@@ -317,8 +313,7 @@ function Chart({ spec, play, onDone }) {
   const link = p.link ?? 'equals';
   const taken = lens ? claimValues(link, lens, values, from) : [];
   const judge = lens ? judgeClaim(p.b, lens, taken, from) : null;
-  const where = stage === 'where' ? p.where[wi] : null;
-  expose({ kind: 'chart', pi, b: p.b, from, stage, upto, taps, lens, link, values, judge, full, where, found });
+  expose({ kind: 'chart', pi, b: p.b, from, stage, upto, taps, lens, link, values, judge, full, found });
 
   const testNext = () => {
     const n = Math.max(upto, first);
@@ -384,39 +379,27 @@ function Chart({ spec, play, onDone }) {
     setLens(null);
     setValues([]);
     setFailed([]);
-    setWi(0);
-    setWhereSaid(null);
     setStage('test');
     turnTo(0);
   };
   const tapCell = (n) => {
-    if (stage === 'test' || stage === 'hundreds') {
-      if (n === Math.max(upto, first)) testNext();
-      return;
-    }
-    if (stage !== 'where' || whereSaid?.ok) return;
-    const ok = n === cellOf(where);
-    play(ok ? 'key' : 'fail');
-    setWhereSaid({ n, ok });
+    if (stage === 'test' && n === Math.max(upto, first)) testNext();
   };
   // the next hundred is tested by the world as soon as it is on screen: the student watches it light up
   useEffect(() => {
     if (stage === 'confirm' && upto === from && from > 0) fill();
-    if (stage === 'hundreds' && from >= 200 && upto === from) fill();
   }, [stage, from]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const confirmed = stage === 'confirm' && full;
   // while he tests by hand, the division of each gap is WRITTEN: the last ones stay, the newest first
-  const byHand = stage === 'test' || (stage === 'hundreds' && from === 100);
-  const divisions = byHand
-    ? Array.from({ length: Math.max(0, Math.min(DIVISIONS, upto - first)) }, (_, i) => upto - 1 - i)
-    : [];
+  const divisions =
+    stage === 'test'
+      ? Array.from({ length: Math.max(0, Math.min(DIVISIONS, upto - first)) }, (_, i) => upto - 1 - i)
+      : [];
   const lensLabel = lens ? T.lens[lens] : '';
   const claimed = (n) => Boolean(lens) && taken.includes(LENSES[lens].of(n));
-  const label = (n) => (stage === 'where' ? two(n) : n);
-  // while he looks for the cell of a long gap, the chart is the pattern every hundred shares, read by its last two digits
-  const lit = (n) => (stage === 'where' ? holds(n, p.b) : tested(n) && holds(n, p.b));
-  const dark = (n) => (stage === 'where' ? !holds(n, p.b) : tested(n) && !holds(n, p.b));
+  const lit = (n) => tested(n) && holds(n, p.b);
+  const dark = (n) => tested(n) && !holds(n, p.b);
 
   return (
     <section className="iq iq--chart" data-iq="chart" data-iq-stage={stage} data-iq-plank={p.b} data-iq-from={from}>
@@ -435,17 +418,9 @@ function Chart({ spec, play, onDone }) {
                     ? lens
                       ? T.valuesAsk(p.b, lensLabel, link)
                       : T.lensAsk(p.b)
-                    : stage === 'confirm'
-                      ? confirmed
-                        ? T.confirmed(p.b, from)
-                        : T.confirming(p.b, from)
-                      : stage === 'hundreds'
-                        ? full
-                          ? T.same(p.b, from)
-                          : T.hundreds(p.b, from)
-                        : whereSaid?.ok
-                          ? T.whereOk(where, cellOf(where), holds(where, p.b), p.b)
-                          : T.where(where, p.b)}
+                    : confirmed
+                      ? T.confirmed(p.b, from)
+                      : T.confirming(p.b, from)}
             </MathText>
           </p>
         </div>
@@ -517,14 +492,9 @@ function Chart({ spec, play, onDone }) {
             )}
           </>
         )}
-        {stage === 'where' && whereSaid && !whereSaid.ok && (
-          <p className="iq-fact" data-iq-fact>
-            {T.whereMiss(where, whereSaid.n)}
-          </p>
-        )}
 
         <div className="iq-actions">
-          {(stage === 'test' || (stage === 'hundreds' && from === 100)) && !full && (
+          {stage === 'test' && !full && (
             <button
               type="button"
               className="rf-btn rf-btn--main"
@@ -534,7 +504,7 @@ function Chart({ spec, play, onDone }) {
               {T.testBtn(Math.max(upto, first))}
             </button>
           )}
-          {(stage === 'test' || (stage === 'hundreds' && from === 100)) && !full && taps >= (from ? 4 : p.manual) && (
+          {stage === 'test' && !full && taps >= p.manual && (
             <button type="button" className="rf-btn" onClick={() => fill()} data-iq-fill>
               {T.fill}
             </button>
@@ -549,21 +519,6 @@ function Chart({ spec, play, onDone }) {
               {T.seal(p.b)}
             </button>
           )}
-          {stage === 'lens' && p.where && failed.length >= 2 && (
-            <button
-              type="button"
-              className="rf-btn rf-btn--main"
-              onClick={() => {
-                setLens(null);
-                setValues([]);
-                setStage('hundreds');
-                turnTo(100);
-              }}
-              data-iq-nolens
-            >
-              {T.noLens}
-            </button>
-          )}
           {confirmed && (
             <button
               type="button"
@@ -572,38 +527,6 @@ function Chart({ spec, play, onDone }) {
               data-iq-next
             >
               {pi + 1 >= spec.planks.length ? T.last : T.next}
-            </button>
-          )}
-          {stage === 'hundreds' && full && (
-            <button
-              type="button"
-              className="rf-btn rf-btn--main"
-              onClick={() => {
-                if (from < 200) turnTo(200);
-                else {
-                  // the ONE chart every hundred shares: its cells are read by the last two digits
-                  turnTo(0);
-                  setStage('where');
-                }
-              }}
-              data-iq-next
-            >
-              {from < 200 ? T.nextHundred : T.toWhere}
-            </button>
-          )}
-          {stage === 'where' && whereSaid?.ok && (
-            <button
-              type="button"
-              className="rf-btn rf-btn--main"
-              onClick={() => {
-                if (wi + 1 < p.where.length) {
-                  setWi(wi + 1);
-                  setWhereSaid(null);
-                } else nextPlank({ b: p.b, lens: 'last2', values: [], line: T.foundCell(p.b) });
-              }}
-              data-iq-next
-            >
-              {wi + 1 < p.where.length ? T.nextWhere : pi + 1 >= spec.planks.length ? T.last : T.next}
             </button>
           )}
           {stage === 'sealed' && (
@@ -629,25 +552,23 @@ function Chart({ spec, play, onDone }) {
 
       <div className="iq-board">
         <p className="iq-board__title">{T.board(p.b, from)}</p>
-        <div className={`iq-chart ${stage === 'where' ? 'is-where' : ''}`} dir="ltr" data-iq-chart>
+        <div className="iq-chart" dir="ltr" data-iq-chart>
           {from === 0 && <span className="iq-cell iq-cell--none" />}
           {cells.map((n) => {
             const c = claimed(n) && stage === 'lens';
             const cls = lit(n) ? 'is-lit' : dark(n) ? 'is-dark' : '';
             const mark = c ? (holds(n, p.b) ? 'is-claimed' : 'is-intruder') : '';
             const kept = stage === 'confirm' && full && claimed(n);
-            const ghost = stage === 'hundreds' && n % 100 > 0 && holds(n % 100, p.b);
-            const hit = stage === 'where' && whereSaid?.n === n ? (whereSaid.ok ? 'is-hit' : 'is-miss') : '';
             return (
               <button
                 key={n}
                 type="button"
-                className={`iq-cell ${cls} ${mark} ${kept ? 'is-claimed' : ''} ${ghost ? 'is-ghost' : ''} ${hit} ${n === Math.max(upto, first) && !full && stage !== 'confirm' && !(stage === 'hundreds' && from >= 200) ? 'is-next' : ''}`}
+                className={`iq-cell ${cls} ${mark} ${kept ? 'is-claimed' : ''} ${n === Math.max(upto, first) && !full && stage === 'test' ? 'is-next' : ''}`}
                 onClick={() => tapCell(n)}
                 data-iq-cell={n}
                 data-iq-lit={lit(n) ? '1' : dark(n) ? '0' : ''}
               >
-                {label(n)}
+                {n}
               </button>
             );
           })}

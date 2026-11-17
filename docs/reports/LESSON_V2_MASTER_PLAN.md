@@ -386,7 +386,11 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
        values read downwards); every gap tried writes its division `n = q × b + r` and its cell turns GREEN when
        the rest is 0; the forge, which covers the top bar, shows the sound button and the ✕ in every phase
        (`kit/parts.jsx › SoundToggle, ExitLink`). Walk: 178 checks at the four sizes; lesson 1's walk (same forge
-       header) 104 at 1366×768 and on the phone. **Not validated by the owner yet.**
+       header) 104 at 1366×768 and on the phone. Then two more: the claim reads right to left (the lenses on the
+       right, the numbers on the left), and plank 4 is read with a lens of its own, « العدد المكوّن من الآحاد
+       والعشرات » — its former side road (« the same cells light in every hundred », long gaps placed on the chart)
+       is REMOVED: with that lens « no lens separates » would be false. Walk: 179 checks at the four sizes.
+       **Not validated by the owner yet.**
      - NOT in lesson 2 by choice, to be said in the report: no real-world case world (S5); ten dash levels instead.
      - The walk is assembled from the pilot walk's helpers (copied, not shared): a shared helper module is owed.
 - **D4 — DONE**: the five billing files are deleted.

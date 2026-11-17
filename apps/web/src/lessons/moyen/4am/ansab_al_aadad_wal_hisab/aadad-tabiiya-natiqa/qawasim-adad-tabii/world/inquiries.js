@@ -8,8 +8,9 @@
  *           partner is a plank he tried. Then two gaps where he says the last plank BEFORE trying — the last one with only
  *           the squares in front of him. He then writes his rule from what he saw.
  *   RULES   « what to read instead of dividing? » — the stone asks about a gap too long to build. He tests ONE plank on
- *           the gaps 5, 6, 7… of a chart, chooses a LENS (what he looks at in the number) and the values he claims: the
- *           chart answers. Plank 4 has its own road: no lens separates it, but every hundred lights the same cells.
+ *           the gaps 5, 6, 7… of a chart, chooses a LENS (what he looks at in the number) and what he claims of it: its
+ *           values (« يساوي », planks 5 and 2) or ONE number it is divisible by (« يقبل القسمة على », planks 9, 3, 4).
+ *           The chart answers. Plank 4 has a lens of its own: the number written by the tens and the units (owner).
  *           What he claimed and the chart accepted IS his rule: the mirror attacks it at once.
  * No sentence here states a rule: each one says what the strip or the chart has just done.
  */
@@ -70,8 +71,6 @@ export const STOP_INQUIRY = {
   },
 };
 
-const two = (n) => String(n % 100).padStart(2, '0');
-
 export const RULES_INQUIRY = {
   kind: 'chart',
   /** what he claimed and the chart accepted is his rule: no tile is offered after it */
@@ -82,12 +81,18 @@ export const RULES_INQUIRY = {
     // the claim of 5 and of 2 is said « lens · يساوي · values »; the others « lens · يقبل القسمة على · a number » (owner)
     { b: 9, manual: 10, lenses: ['units', 'tens', 'sum'], link: 'divides' },
     { b: 3, manual: 8, lenses: ['units', 'tens', 'sum'], link: 'divides' },
-    { b: 4, manual: 9, lenses: ['units', 'tens', 'sum'], link: 'divides', where: [316, 522, 708] },
+    // 4: no single digit and no sum separates its chart — its lens is the number the tens and the units write (owner)
+    { b: 4, manual: 9, lenses: ['units', 'sum', 'last2'], link: 'divides' },
   ],
   /** the numbers offered after « يقبل القسمة على » */
   divisors: [2, 3, 4, 5, 6, 7, 8, 9],
   text: {
-    lens: { units: 'رقم الآحاد', tens: 'رقم العشرات', sum: 'مجموع الأرقام' },
+    lens: {
+      units: 'رقم الآحاد',
+      tens: 'رقم العشرات',
+      sum: 'مجموع الأرقام',
+      last2: 'العدد المكوّن من الآحاد والعشرات',
+    },
     board: (b, from) => `اللوح ${b} · الهوّات من ${from || 1} إلى ${from + 99}`,
     testBtn: (n) => `جرّب الهوّة ${n}`,
     fill: 'أكمل اللوحة',
@@ -121,26 +126,12 @@ export const RULES_INQUIRY = {
     seal: (b) => `هذه قراءتي للّوح ${b}`,
     confirming: (b, from) => `هل تصمد قراءتك بعد المئة الأولى؟ العالم يجرّب اللوح ${b} من ${from} إلى ${from + 99}…`,
     confirmed: (b, from) => `صمدت: من ${from} إلى ${from + 99}، قراءتك أحاطت بكلّ الخانات الخضراء، وبها وحدها.`,
-    noLens: 'لا عدسة تفصل هذه اللوحة',
-    hundreds: (b, from) =>
-      from === 100
-        ? `لا رقم واحد يكفي للّوح ${b}. لننظر إلى المئة التالية: جرّب من 100. الإطارات المتقطّعة خانات اللوحة الأولى.`
-        : `والمئة التي بعدها، من ${from} إلى ${from + 99}…`,
-    same: (b, from) => `من ${from} إلى ${from + 99}: الخانات نفسها تخضرّ.`,
-    nextHundred: 'المئة التالية',
-    toWhere: 'جرّب هوّة طويلة',
-    where: (n, b) => `هوّة من ${n} خانة ولوح ${b}. لوحة واحدة تكفي لكلّ المئات: اضغط الخانة التي تخبرك عن ${n}.`,
-    whereMiss: (n, tapped) => `هذه خانة الهوّات التي تنتهي بـ ${two(tapped)}. أين تقع ${n} في مئتها؟`,
-    whereOk: (n, cell, ok, b) =>
-      `${n} تقع في الخانة ${two(cell)}: ${ok ? `خضراء — اللوح ${b} يثبت` : `ليست خضراء — اللوح ${b} لا يثبت`}.`,
-    nextWhere: 'هوّة أخرى',
     next: 'لوح آخر',
     last: 'قراءاتي الخمس',
     foundLine: (b, lens, values, link) =>
       link === 'divides'
         ? `اللوح ${b}: ${lens} يقبل القسمة على ${values.join(' أو ')}`
         : `اللوح ${b}: ${lens} ${values.join(' أو ')}`,
-    foundCell: (b) => `اللوح ${b}: خانة الرقمين الأخيرين`,
     sealed: 'خمسة ألواح، وخمس قراءات وجدتَها بنفسك. المرآة ستتحدّاها الآن بهوّات لم ترها.',
     done: 'إلى المرآة',
   },
