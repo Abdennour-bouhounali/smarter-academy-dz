@@ -32,6 +32,8 @@ import { toolsForLesson } from '@smarter-academy/core/curriculum/dz/net/learning
 import MathText from '../components/MathText';
 import { GRADE_NAMES } from '../lessonlab/order';
 import { setReturnTo } from '../mission/returnToLesson';
+import { useIsPhoneScreen } from '../../../components/auth/RequireLargeScreen';
+import { PHONE_LESSONS } from '../../../components/auth/phoneLessons';
 import { FAMILIES, MISTAKES, familyFor, makeQuestion, pickForm, complete, grade } from './families';
 import {
   planTools,
@@ -95,6 +97,8 @@ const L = {
   recheck: 'أعد فحص الأداة',
   lesson: 'الدرس كاملًا',
   soon: 'الدرس قريبًا',
+  // a phone opens only the lessons designed for it: the earlier lesson is named, and where to read it whole
+  onComputer: 'الدرس كاملًا: على الحاسوب',
   go: 'انطلق إلى الدرس',
   capsule: 'كبسولة',
   gateTitle: 'قبل الانطلاق: كبسولة قصيرة.',
@@ -192,6 +196,7 @@ function ToolSlot({ t, active }) {
 
 export default function LaunchKit({ lessonCode, lessonTitle, onDone, onClose, inline = false }) {
   const navigate = useNavigate();
+  const phone = useIsPhoneScreen();
   const store0 = useRef(loadKit()).current;
   const tools = useMemo(
     () => planTools(toolsForLesson(lessonCode), (id) => Boolean(familyFor(id)), store0.items ?? {}),
@@ -873,7 +878,11 @@ export default function LaunchKit({ lessonCode, lessonTitle, onDone, onClose, in
                     <button type="button" className="lk-btn" onClick={() => recheck(shown.item)} data-lk-recheck>
                       <RotateCcw size={17} /> {L.recheck}
                     </button>
-                    {shown.lesson.status === 'available' && getLessonPath(shown.lesson.code) ? (
+                    {phone && !PHONE_LESSONS.includes(shown.lesson.code) ? (
+                      <span className="lk-soon" data-lk-lesson-computer>
+                        {L.onComputer}
+                      </span>
+                    ) : shown.lesson.status === 'available' && getLessonPath(shown.lesson.code) ? (
                       <button type="button" className="lk-btn" onClick={() => openLesson(shown)} data-lk-lesson>
                         <BookOpen size={17} /> {L.lesson}
                       </button>

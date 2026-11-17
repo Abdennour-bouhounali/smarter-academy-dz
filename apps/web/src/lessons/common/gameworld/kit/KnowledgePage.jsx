@@ -261,7 +261,7 @@ export default function KnowledgePage({ s, game, sel }) {
 function Journey({ node, found, isOpen, setId, onFull, game, ...body }) {
   const { NODES, byId, edgeLabel } = useKnowledge();
   const { open, id } = body;
-  // on a phone the trail is ONE line that slides (world.css): the card being read is brought into sight
+  // on a phone the trail is ONE line that slides (styles/phone.css): the card being read is brought into sight
   const trail = useRef(null);
   useEffect(() => {
     const line = trail.current;

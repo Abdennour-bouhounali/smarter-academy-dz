@@ -36,8 +36,8 @@ const shot = async (name) => {
   await page.waitForTimeout(350);
   const bad = await page.evaluate(() => {
     const out = [];
-    for (const el of document.querySelectorAll('.di-root *')) { const cs = getComputedStyle(el); if (/(auto|scroll)/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 2) out.push(`scrolls: ${el.className}`); }
-    for (const box of document.querySelectorAll('.xs-root [data-di-fitbox]')) { const o = box.getBoundingClientRect(); const i = box.firstElementChild.getBoundingClientRect(); if (o.height > 0 && i.height > o.height + 3) out.push(`cut: ${box.className}`); if (Number(box.dataset.diFitz) < 0.8) out.push(`shrunk ×${box.dataset.diFitz}: ${box.className}`); }
+    for (const el of document.querySelectorAll('.di-root *')) { const cs = getComputedStyle(el); if (/(auto|scroll)/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 2 && !el.hasAttribute('data-di-fit-scroll')) out.push(`scrolls: ${el.className}`); } // on a phone held sideways a Fit box slides INSIDE itself and marks itself (GAME_WORLD.md « On a phone », rule 3)
+    for (const box of document.querySelectorAll('.xs-root [data-di-fitbox]')) { const o = box.getBoundingClientRect(); const i = box.firstElementChild.getBoundingClientRect(); if (o.height > 0 && i.height > o.height + 3 && !box.hasAttribute('data-di-fit-scroll')) out.push(`cut: ${box.className}`); if (Number(box.dataset.diFitz) < 0.8) out.push(`shrunk ×${box.dataset.diFitz}: ${box.className}`); }
     for (const el of document.querySelectorAll('.xs-head, .xs-paper, .xs-sheet, .xs-foot')) { const r = el.getBoundingClientRect(); if (r.height > 0 && (r.top < -2 || r.bottom > window.innerHeight + 2 || r.left < -2 || r.right > window.innerWidth + 2)) out.push(`leaves the screen: ${el.className}`); }
     if (document.documentElement.scrollHeight > window.innerHeight + 1) out.push('the page scrolls');
     return out;
@@ -61,7 +61,9 @@ expect(await page.evaluate(() => window.__world.getState().paper === true && win
 await page.locator('.xs-word').nth(3).click();
 expect(await page.locator('.xs-word.is-marked').count() === 1, 'a tap underlines a word of the subject in pencil');
 console.log('    text on screen (px): statement', await px('.xs-statement'), '· question', await px('.xs-ex ol'), '· title', await px('.xs-head h2'));
-expect(await px('.xs-statement') >= 17, 'the subject is comfortable to read');
+// a phone held sideways has ONE scale, its root font at 13 px (GAME_WORLD.md « On a phone », rule 1): the sheet's 1.15rem is 15 px there
+const PHONE = process.env.E2E_TOUCH === '1' && SIZE[1] <= 500;
+expect(await px('.xs-statement') >= (PHONE ? 14 : 17), 'the subject is comfortable to read');
 await shot('read');
 await page.click('[data-xs-start]'); await page.waitForSelector('[data-xs="sit"]');
 

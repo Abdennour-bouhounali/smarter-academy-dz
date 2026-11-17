@@ -35,16 +35,17 @@ async function student(id, fast = false) {
 /** Nothing scrolls, nothing leaves the screen or its panel — checked at every screenshot. */
 const shot = async (name) => {
   await page.waitForTimeout(350);
-  const bad = await page.evaluate(() => {
+  const bad = await page.evaluate((phone) => {
     const out = []; const root = document.querySelector('.lk-root'); if (!root) return ['no launch on screen'];
-    for (const el of root.querySelectorAll('*')) { const cs = getComputedStyle(el); if (/(auto|scroll)/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 2) out.push(`scrolls: ${el.className}`); }
+    for (const el of root.querySelectorAll('*')) { const cs = getComputedStyle(el); if (/(auto|scroll)/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 2 && !(phone && (el.classList.contains('lk-stage') || el.classList.contains('lk-capbody')))) out.push(`scrolls: ${el.className}`); } // on a phone held sideways the STAGE and a capsule's body slide inside themselves (GAME_WORLD.md « On a phone », rule 3); the bag never does
     const stage = root.querySelector('.lk-stage').getBoundingClientRect(); const bag = root.querySelector('.lk-bag').getBoundingClientRect();
     for (const el of root.querySelectorAll('.lk-head, .lk-bag, .lk-stage, .lk-memo')) { const r = el.getBoundingClientRect(); if (r.top < -1 || r.bottom > window.innerHeight + 1 || r.left < -1 || r.right > window.innerWidth + 1) out.push(`leaves the screen: ${el.className}`); }
-    for (const el of root.querySelectorAll('.lk-stage button, .lk-prompt, .lk-equation, .lk-card, .lk-box, .lk-example li, .lk-kcard, .lk-revise, .lk-score, .lk-result h3, .lk-intro > *')) { const r = el.getBoundingClientRect(); if (r.height > 0 && (r.top < stage.top - 1 || r.bottom > stage.bottom + 1 || r.left < stage.left - 1 || r.right > stage.right + 1)) out.push(`out of the stage: ${el.className} « ${el.textContent.slice(0, 24)} »`); }
+    if (!phone)
+      for (const el of root.querySelectorAll('.lk-stage button, .lk-prompt, .lk-equation, .lk-card, .lk-box, .lk-example li, .lk-kcard, .lk-revise, .lk-score, .lk-result h3, .lk-intro > *')) { const r = el.getBoundingClientRect(); if (r.height > 0 && (r.top < stage.top - 1 || r.bottom > stage.bottom + 1 || r.left < stage.left - 1 || r.right > stage.right + 1)) out.push(`out of the stage: ${el.className} « ${el.textContent.slice(0, 24)} »`); }
     for (const el of root.querySelectorAll('.lk-tool, .lk-robot')) { const r = el.getBoundingClientRect(); if (r.top < bag.top - 1 || r.bottom > bag.bottom + 1) out.push(`out of the bag: ${el.className?.baseVal ?? el.className}`); }
-    for (const el of root.querySelectorAll('.lk-prompt, .lk-example ol, .lk-revise > div, .lk-kit')) if (el.scrollWidth > el.clientWidth + 3 || el.scrollHeight > el.clientHeight + 3) out.push(`overflows: ${el.className}`);
+    for (const el of root.querySelectorAll('.lk-prompt, .lk-example ol, .lk-revise > div, .lk-kit')) if (el.scrollWidth > el.clientWidth + 3 || (!phone && el.scrollHeight > el.clientHeight + 3)) out.push(`overflows: ${el.className}`); // on a phone what is taller than the stage slides with it; nothing may be wider
     return out;
-  });
+  }, process.env.E2E_TOUCH === '1' && SIZE[1] <= 500);
   if (bad.length) { console.log('FAIL at «', name, '»:', [...new Set(bad)].join(' | ')); process.exitCode = 1; if (process.env.E2E_SOFT !== '1') throw new Error(`layout at ${name}`); }
   n += 1; await page.screenshot({ path: `${OUT}/${String(n).padStart(2, '0')}-${name}.png` });
 };
@@ -94,7 +95,7 @@ let q = (await cur()).q;
 expect(q.item === A && q.level === 1 && q.gesture === 'write' && q.a <= 29 && q.b <= 5, `the first question is a very easy one, answered by WRITING (${q.a} ÷ ${q.b})`);
 expect(await page.locator('[data-lk-done]').isDisabled(), '« تمّ » waits for a complete answer');
 console.log('    text on screen (px): prompt', await px('.lk-prompt'), '· equation', await px('.lk-equation'), '· key', await px('.lk-keys button'));
-expect(await px('.lk-prompt') >= 19, 'the question is comfortable to read');
+expect(await px('.lk-prompt') >= (process.env.E2E_TOUCH === '1' && SIZE[1] <= 500 ? 15 : 19), 'the question is comfortable to read');
 await page.keyboard.press('7'); await page.keyboard.press('Backspace');
 expect((await page.textContent('[data-lk-slot="q"] span')).trim() === '', 'the keyboard of a laptop writes and erases too');
 await fill(false); await shot('write');
@@ -238,10 +239,18 @@ await shot('capsule-end');
 await page.click(`[data-lk-kcard="${B}"]`);
 expect(await page.getAttribute('[data-lk-revise]', 'data-lk-revise') === B && (await page.textContent('[data-lk-revise]')).includes('وأيضًا'), 'a tap on the other weak tool shows ITS lesson under « وأيضًا »');
 await page.click(`[data-lk-kcard="${A}"]`);
-await page.click('[data-lk-lesson]'); await page.waitForURL(/qisma-iqlidiya-baqi/); await page.waitForSelector('[data-return-to-lesson]');
-expect((await page.textContent('[data-return-to-lesson]')).includes('التعرّف على قاسم لعدد طبيعي'), '« الدرس كاملًا » opens the earlier lesson of 1AM, with ONE button to come back');
-await page.click('[data-return-to-lesson-go]'); await page.waitForURL(/qasim-adad-tabii/); await page.waitForSelector('[data-di-start]');
-{ const k = await kit(9502); expect(k.lessons['qasim-adad-tabii'].last.percent === 0 && k.items[A].band === 'start', 'back in the lesson: the result was kept'); }
+const PHONE = process.env.E2E_TOUCH === '1' && SIZE[1] <= 500;
+if (PHONE) {
+  // a phone opens only the lessons designed for it: the earlier lesson is not a dead end, it is named with where to read it whole
+  expect(await page.locator('[data-lk-lesson]').count() === 0 && (await page.textContent('[data-lk-lesson-computer]')).includes('الحاسوب'), 'on a phone « الدرس كاملًا » is not a link to a closed page: it says « على الحاسوب »');
+  await page.click('[data-lk-close]'); if (await page.locator('[data-lk-quit-yes]').count()) await page.click('[data-lk-quit-yes]');
+  await page.waitForSelector('[data-di-start]');
+} else {
+  await page.click('[data-lk-lesson]'); await page.waitForURL(/qisma-iqlidiya-baqi/); await page.waitForSelector('[data-return-to-lesson]');
+  expect((await page.textContent('[data-return-to-lesson]')).includes('التعرّف على قاسم لعدد طبيعي'), '« الدرس كاملًا » opens the earlier lesson of 1AM, with ONE button to come back');
+  await page.click('[data-return-to-lesson-go]'); await page.waitForURL(/qasim-adad-tabii/); await page.waitForSelector('[data-di-start]');
+  { const k = await kit(9502); expect(k.lessons['qasim-adad-tabii'].last.percent === 0 && k.items[A].band === 'start', 'back in the lesson: the result was kept'); }
+}
 await page.click('[data-di-launch-open]'); await page.waitForSelector('[data-lk-start]');
 expect((await page.locator('[data-lk-tool]').evaluateAll((els) => els.map((e) => e.dataset.lkBand))).join() === 'waiting,waiting' && !(await page.textContent('[data-lk-intro]')).includes('مشحونة من قبل'), '« عُدّتي » lets him charge again: a tool that is not « ثابتة » is asked again');
 

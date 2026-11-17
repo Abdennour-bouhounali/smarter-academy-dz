@@ -352,7 +352,7 @@ state line under the tables):
 | `LessonWorld.jsx` | **the shell**: the canvas, the top bar, the controls, the overlay switch; it mounts `<LessonProvider>` and creates the world's game | `world` (below) and the pack |
 | `Title.jsx`, `PracticeHub.jsx`, `Tablet.jsx`, `Result.jsx`, `End.jsx` | the title screen, the practice hub (the lesson's mind map as a level select), a rule tablet, the result of a level, the end | `ladder`, `journey`, `rules`, `keys`, `text`, `practiceMap` |
 | `parts.jsx` | a formula, the toast, the robot's bubble, the touch stick, a card over the world, three stars, a box for a number | — |
-| `world.css` | the styles of the shell AND, until it is split, of the pilot's own overlays (classes `di-…`) | — |
+| `styles/` | eleven style sheets, one per screen (`world`, `practice`, `knowledge`, `cases`, `trainer`, `paper`, `steps`, `knowledgeJourney`, `fit`, `spaces`, `phone`), imported by `styles/index.js` **in the order of the cascade** — `fit.css` and `phone.css` override the others, so a new sheet takes its place in that list and is never imported from a screen. Classes `di-…` | — |
 | `WorldRuntime.js` | **the world runtime**: the three.js scene, the loop, the robot and its movement, the camera, the sky, the things to use, the gems, the state React reads, the hub, the knowledge page's state, the exam ladder, the paper mode, the evidence tally, the save | the pack as `lesson`; a WORLD extends it (below) |
 
 **The pilot's content** (`…/qasim-adad-tabii/world/`, each with its test)
@@ -412,8 +412,10 @@ eleven screens. What is NOT extracted, and why:
 - **`cases.js`, `ruleForge.js` / `RuleForge.jsx` and `strings.js`** still mix kit and lesson (the forge is generalised
   when the pilot's three other rules are forged, plan §4 step 7); the lesson's content still reads `logic.js` and
   `strings.js` of the world;
-- **the CSS** is one file, `kit/world.css`, for the shell and for the pilot's overlays, and its classes are still
-  named `di-…`: it is split during the screen-size repair, which touches the same rules;
+- **the CSS** is split by SCREEN (`kit/styles/`, 2026-11-17), not yet by OWNER: `styles/cases.css` and parts of
+  `styles/world.css` (the dash, the question stone, the store of the last bridge) are the pilot's world, and every
+  class is still named `di-…`. Moving them to the world would change the cascade (the later sheets override them):
+  it is done when a second world exists to prove what is shared;
 - **the world's story** is written for THIS lesson (which island does what): a second lesson in the same world will
   show what must become data (plan §9, step 3: the gate);
 - **the title screen still links to the classic mission player** (`classicHref`): decision D3 retires it per lesson.
@@ -484,22 +486,17 @@ between the camera and the robot ducks down, and a sign too close to the lens hi
   student, nor on a real tablet or a real GPU**: speed, the touch stick and the sound were not judged by a human ear or hand.
 - Strings live in `strings.js`, not in the i18n namespace; the lab kit (`LabCoach`, rounds, memo card) is not used.
 - The save is local to the browser: another device starts from the first island.
-- **Other screen sizes, measured on 2026-11-17** (all eight walks of the pilot, Chromium emulation; every failure below
-  is the SAME on the commit before the kit extraction — none comes from it):
-  - 1024×768: six walks pass. `gameworld-field` fails on the knowledge journey (« its text is big on screen: title ≥ 34 px,
-    explanation ≥ 22 px »: the card's text is smaller than the walk demands at this size) and `class-session` fails on
-    « the header of the lesson's tools is IDENTICAL on the five tool pages » after 24 checks.
-  - 1840×900: seven walks pass. `gameworld-field` fails INTERMITTENTLY at the end of the knowledge journey (a card cut:
-    261–278 px of content in a 233 px box; 3 failures in 9 runs, before and after) — the last card on screen depends on
-    the walk's own clicks, and one card does not fit.
-  - phone sideways (touch, 800×370): none of the six student walks passes — story 61 checks then island H (also at
-    844×390), practice « the map fits the window », field « no scrolling at depot-special », sitting « the subject is
-    comfortable to read », launch kit « bag scrolls », « مختبري » « the text is comfortable to read ». See « On a phone ».
-  Not fixed: these are layout defects of the screens, to be repaired on the kit's screens once they are extracted
-  (plan §4ter-0).
-- **Seen on the knowledge page at 1366×768 (2026-11-17, identical before the extraction):** with the side panel on
-  « تدرّب », the card « نحسب الباقي » is cut by the right edge of the map and the legend overlaps the last cards. Same
-  repair pass.
+- **Other screen sizes (2026-11-17, Chromium emulation — not a real tablet, not a real phone).** The pilot's eight walks
+  pass at 1366×768, 1024×768 and 1840×900 (92 + 30 + 102 + 45 + 56 + 47 + 59 + 102 checks each), and the six student
+  walks pass on a phone held sideways (touch, 800×370: 92 + 30 + 102 + 45 + 55 + 33). What was repaired to get there:
+  - the knowledge page at 1024×768 and 1840×900: the world is no longer drawn behind an opaque page
+    (`WorldRuntime › pausesWorld`), a card of the map keeps its width, the legend sits in the free corner, the whole map
+    is scaled while the side panel is on « تدرّب »;
+  - the header of the teacher's tools at 1024×768 (tab icons hidden between 768 and 1100 px);
+  - on a phone: see « On a phone » below.
+  The phone walks check the PHONE rules, not the laptop ones: text floors are lower (root font 13 px), and the boxes
+  named there may slide inside themselves. **Still not judged by a human on a real device**: touch comfort, the stick,
+  the sound, a notch, a browser bar that hides and shows.
 
 ## On a phone (TRIAL, owner 2026-11-16 — pilot lesson only)
 
@@ -548,9 +545,29 @@ message** (`Door › closed`, `PHONE_TOOL_IDS`). A lesson enters the list when t
 **Upright**: « أدِر هاتفك » (`TurnPhone`) covers the game until the phone is turned. The teacher's card is responsive
 upright: the lesson's name, then the tools on one line that slides.
 
+**What each screen does on a phone held sideways** (2026-11-17; `kit/styles/phone.css`, the phone blocks of
+`launchKit.css` and `lessonLab.css`):
+
+- **the practice hub**: two columns — the map, compact, beside the levels;
+- **a card over the world** (a case's step, a result, a tablet): it uses the width; when it is still too tall at the
+  smallest readable scale, the box INSIDE the card slides (`Fit › data-di-fit-scroll`) — the card never cuts a line;
+- **« خريطة المعارف »**: the trail of the journey is ONE line that slides sideways (`data-di-slides`, the only box that
+  does), the card being read is brought into sight;
+  on the full map, the steps of « تدرّب » stand aside;
+- **« تقدّمي »**: the road is a thin strip, the gauge is small, one line per row;
+- **« الامتحان الأبيض »**: the statement is 14 px at least (17 on a laptop); the sheet slides inside its box;
+- **« عُدّة الانطلاق »**: the bag is compact (no sub-lines), a capsule's body slides inside itself; « الدرس كاملًا » of an
+  earlier lesson is a link ONLY when that lesson opens on a phone — otherwise the line « الدرس كاملًا: على الحاسوب »
+  (`data-lk-lesson-computer`), never a link to the closed message;
+- **« مختبري »**: 12 px is the floor of a label, the quests are one line that slides, the instrument's drawing
+  (`.ll-draw`) slides inside itself; the lab of a lesson that does not open on a phone is closed with it.
+
 **Walks.** Every game walk takes `E2E_TOUCH=1 E2E_SIZE=800x370`; `launch-kit.mjs` and `lesson-lab.mjs` also take
-`E2E_SOFT=1` (a failed check is printed and the walk goes on, to look at every screen). State on 2026-11-16, Chromium
-emulation: the world walk passes 61 checks and stops at island H, where the quiz did not open — the same walk passes on a
-laptop, so either the walk's steering or the game under touch is at fault: NOT established. The practice and exam walks
-were not re-run after the scale changed to 13. Not walked on a phone: « إختبار أولي » and the classic player (closed
-there). The instrument's own labels in « مختبري » are still small.
+`E2E_SOFT=1` (a failed check is printed and the walk goes on, to look at every screen). A walk knows it is on a phone
+(`PHONE` = touch and at most 500 px high) and then checks the phone rules: the floors above, the boxes that may slide
+inside, and — where the laptop walk goes to a page a phone closes (`?view=classic`, another lesson) — the closed
+message instead. State on 2026-11-17, Chromium emulation: the six student walks pass (story 92 checks, practice 30,
+cases and knowledge page 102, exam sitting 45, launch kit 55, « مختبري » 33). The story used to stop at island H: two
+of the game's delays ran on the real clock while the walk fast-forwards the game's clock — they are on the game's clock
+now (`this.wait`). Not walked on a phone: « إختبار أولي » and the classic player (closed there), the teacher's class
+session (closed there).

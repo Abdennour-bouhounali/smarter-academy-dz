@@ -153,3 +153,7 @@ Everything is inside the lazy lesson boundary: `LessonIndex` imports only `regis
   speaker are still to be judged by the owner.
 - The old « 🧪 المختبر » button of the Math Lab (`MathLabEntryButton`) is still on lesson pages; whether « مختبري » replaces it
   is the owner's decision.
+- **On a phone held sideways** (`E2E_TOUCH=1 E2E_SIZE=800x370`: 33 checks; rules in `GAME_WORLD.md` « On a phone »): 12 px
+  is the floor of a label, the quests are one line that slides, the instrument's drawing (`.ll-draw`) slides inside
+  itself. The lab opens there only with a lesson that opens on a phone: the walk checks that another lesson's lab is
+  closed with its lesson. The instruments were looked at on screenshots, not held in a hand.

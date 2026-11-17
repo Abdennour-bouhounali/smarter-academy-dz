@@ -45,7 +45,7 @@ import PracticeHub from './PracticeHub';
 import Result from './Result';
 import End from './End';
 import './examSitting.css';
-import './world.css';
+import './styles';
 
 const saveKey = (id) => `smarter_world_${id}`;
 

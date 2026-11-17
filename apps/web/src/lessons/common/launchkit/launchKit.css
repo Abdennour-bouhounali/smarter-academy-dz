@@ -1239,4 +1239,40 @@
     gap: 0.6rem;
     padding: 0.6rem 0.7rem;
   }
+  /* THE BAG FITS: a tool is its emblem, its name and its charge — where it comes from and the word of its level are
+     read on a wider screen; the robot is small. With four tools the last one and the robot used to be out of sight. */
+  .lk-bag {
+    gap: 0.35rem;
+    padding: 0.45rem 0.5rem 0.3rem;
+  }
+  .lk-bag h3 {
+    font-size: 1rem;
+  }
+  .lk-tool {
+    gap: 0.15rem 0.45rem;
+    padding: 0.3rem 0.5rem;
+  }
+  .lk-tool > i {
+    font-size: 1.3rem;
+  }
+  .lk-tool strong {
+    font-size: 0.95rem;
+    line-height: 1.2;
+  }
+  .lk-tool small,
+  .lk-tool em {
+    display: none;
+  }
+  .lk-robot {
+    width: 4.4rem;
+  }
+  /* A CAPSULE: its card or its worked example slides INSIDE its own box. Taller than the stage, its last lines lay over
+     « التالي » and took the taps meant for it — the student could not go on. */
+  .lk-capbody {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .lk-capbody.lk-example ol {
+    flex: none;
+  }
 }

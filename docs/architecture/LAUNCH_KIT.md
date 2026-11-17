@@ -134,3 +134,7 @@ Phase 1 is a prototype to judge the feel. **Not built** (plan, phases 2–4):
   instrument, a tool re-checked, the take-off, « played once », a student who misses everything: the gate, the four steps of
   the capsule, the door open after two missed answers, then the earlier lesson and the return. At every screenshot nothing scrolls and nothing leaves its panel; the walk also listens to the sounds played.
 - The older game-world walks seed the launch as already played (`u_<id>_smarter_launch_kit`).
+- **On a phone held sideways** (`E2E_TOUCH=1 E2E_SIZE=800x370`: 55 checks; rules in `GAME_WORLD.md` « On a phone »): the bag
+  is compact, a capsule's body slides inside itself, and « الدرس كاملًا » of an earlier lesson is a link only when that
+  lesson opens on a phone (`PHONE_LESSONS`) — otherwise the line « الدرس كاملًا: على الحاسوب », never a link to the closed
+  message.

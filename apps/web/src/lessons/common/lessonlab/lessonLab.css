@@ -1276,8 +1276,107 @@
   }
   .ll-quests li {
     flex: none;
-    font-size: 0.88rem;
+    font-size: 0.95rem;
     white-space: nowrap;
+  }
+  /* THE RAIL FITS: three instruments and « خزانتي » in the height of a phone — the cabinet's button was cut and the
+     rail slid. A tile is one tight line; the cabinet says its name only. */
+  .ll-rail {
+    gap: 0.3rem;
+    padding: 0.4rem 0.5rem;
+  }
+  .ll-rail h4 {
+    font-size: 0.92rem;
+  }
+  .ll-tile {
+    min-height: 0;
+    gap: 0.4rem;
+    padding: 0.22rem 0.5rem;
+  }
+  .ll-tile i {
+    font-size: 1.25rem;
+  }
+  .ll-tile strong {
+    font-size: 0.95rem;
+    line-height: 1.2;
+  }
+  .ll-cabinet-btn {
+    gap: 0.4rem;
+    padding: 0.25rem 0.5rem;
+  }
+  .ll-cabinet-btn strong {
+    font-size: 0.95rem;
+  }
+  .ll-cabinet-btn small {
+    display: none;
+  }
+  /* AN INSTRUMENT TALLER THAN ITS TABLE slides INSIDE the table, above the reading line: the sheet of a long division
+     and the lamps of the divisibility rules ran UNDER that line, with their last rows and their buttons */
+  .ll-draw {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    align-items: flex-start;
+  }
+  /* « خزانتي »: its title is one line and its shelves are tighter — the second shelf was cut at the bottom */
+  .ll-cabinet {
+    gap: 0.35rem;
+    padding: 0.5rem 0.8rem;
+  }
+  .ll-cabinet h3 {
+    font-size: 1.15rem;
+  }
+  .ll-cabinet header p {
+    display: none;
+  }
+  .ll-cabinet__list {
+    gap: 0.35rem;
+  }
+  .ll-cabinet__list li {
+    gap: 0.5rem;
+    padding: 0.3rem 0.6rem;
+  }
+  /* « آلة الجمل الأربع »: the four sentences and the machine stand ABOVE the reading line — at their desk size the
+     last two sentences and « اقلب العددين » were under it, and the button could not be tapped */
+  .ll-reading {
+    height: auto;
+    min-height: 2.6rem;
+    padding: 0.2rem 0.8rem;
+    gap: 0.6rem;
+  }
+  .ll-sent {
+    grid-template-columns: 12.5rem minmax(0, 1fr);
+    gap: 0.6rem;
+    padding: 0.3rem 0.5rem;
+  }
+  .ll-sent__machine {
+    gap: 0.35rem;
+    padding: 0.4rem;
+  }
+  .ll-sent__nums {
+    gap: 0.45rem;
+  }
+  .ll-sent__nums b {
+    min-width: 3.6rem;
+    height: 2.9rem;
+    font-size: 1.6rem;
+  }
+  .ll-sent__nums span {
+    font-size: 0.92rem;
+  }
+  .ll-sent__cards {
+    gap: 0.4rem;
+  }
+  .ll-sent__card {
+    min-height: 3.6rem;
+    gap: 0.45rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 1.05rem;
+    line-height: 1.3;
+  }
+  .ll-sent__card i {
+    width: 1.6rem;
+    height: 1.6rem;
+    font-size: 0.95rem;
   }
   .ll-quests h4 {
     font-size: 0.95rem;

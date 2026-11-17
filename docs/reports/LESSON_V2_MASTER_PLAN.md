@@ -270,22 +270,14 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
   « commit »; each step is committed on `dev` when its checks pass; nothing is pushed; lesson 2 is tested at laptop,
   tablet and phone sizes. The order of what is left is the list just below.
 - **WHAT IS LEFT, in order (kept up to date — the first unticked line is the next thing to do):**
-  1. [~] Screen-size repair of the pilot on the kit's screens. DONE (commit `818a3c5b`): the knowledge page at
-     1024×768 and 1840×900 (world paused behind opaque pages; map cards keep their width; legend in the free corner;
-     whole map scaled while training), the teacher's tool header at 1024×768, the story on a phone (92 checks at
-     800×370: two delays moved to the game's clock; `?view=classic` is the closed message there). LEFT, all on a phone
-     held sideways (`E2E_TOUCH=1 E2E_SIZE=800x370`), each needs a real phone layout or a check that follows the
-     documented phone rules (`GAME_WORLD.md` « On a phone »: root font 13 px, `Fit` never below 0.9 and scrolls INSIDE
-     its box, readable beats unscrolled):
-     - `gameworld-practice`: the practice hub does not fit (map on top, the levels panel pushed below) — it needs two
-       columns and compact nodes under `@media (max-height: 500px)` in `kit/world.css`;
-     - `gameworld-field`: « depot-special » — the step panel scrolls / is cut (114 in 90);
-     - `gameworld-sitting`: the walk asks ≥ 17 px for the statement, the phone shows 15 px (root 13): decide the
-       phone threshold, look at the sheet on a phone;
-     - `launch-kit`: « bag » — the bag scrolls and a tool and the robot stand outside it;
-     - `lesson-lab`: quests at 11 px (too small: the rule is « always readable »), tools at 13 px.
-     Then: split `kit/world.css` (shell / kit screens / the pilot's overlays), re-run the eight walks at 1366×768,
-     1024×768, 1840×900 and the six student walks on a phone, update `GAME_WORLD.md` §6.
+  1. [x] Screen-size repair of the pilot on the kit's screens — DONE 2026-11-17 (commits `818a3c5b`, `6052d9cc` and
+     the one after). Measured, Chromium emulation: the eight walks pass at 1366×768, 1024×768 and 1840×900 (533 checks
+     each) and the six student walks pass on a phone held sideways (`E2E_TOUCH=1 E2E_SIZE=800x370`: 357 checks); web
+     tests 17,942; lint, format, dead-file, unused and `check:lessons` pass; entry bundle 197.7 KB. What changed and the
+     phone rules of each screen: `GAME_WORLD.md` §6 and « On a phone ». `kit/world.css` is split into eleven sheets BY
+     SCREEN (`kit/styles/`, imported in the order of the cascade); the split BY OWNER (kit / the pilot's world) is not
+     done — it would reorder rules the later sheets override, and waits for a second world. NOT checked: a real phone,
+     a real tablet (the owner tests over Wi-Fi before any merge).
   2. [ ] One `lesson.pack.js` per lesson and its generated index (the nine central lists of §2.2 become one); the
      pilot's pack is `…/qasim-adad-tabii/world/index.js` today; `DivisorIsles.jsx` and `LessonIndex.jsx › GAME_WORLDS`
      still name the pilot.

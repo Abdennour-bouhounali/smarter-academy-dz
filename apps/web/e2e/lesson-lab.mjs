@@ -30,17 +30,17 @@ let n = 0;
 /** Nothing scrolls, nothing leaves the screen, no text is tiny — checked at every screenshot. */
 const shot = async (name) => {
   await page.waitForTimeout(450);
-  const bad = await page.evaluate(() => {
+  const bad = await page.evaluate((phone) => {
     const out = []; const root = document.querySelector('.ll-root'); if (!root) return ['no lab on screen'];
-    for (const el of root.querySelectorAll('*')) { const cs = getComputedStyle(el); if (/(auto|scroll)/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 2) out.push(`scrolls: ${el.className}`); }
-    for (const el of root.querySelectorAll('.ll-head, .ll-rail, .ll-bench, .ll-quests, .ll-cabinet, .ll-reading, .ll-tile, .ll-cabinet-btn, .ll-quests li, .ll-sent__card, .ll-zone, .ll-sheet, .ll-think, .ll-lamp, .ll-toolhead')) { const r = el.getBoundingClientRect(); if (r.height > 0 && (r.top < -1 || r.bottom > window.innerHeight + 1 || r.left < -1 || r.right > window.innerWidth + 1)) out.push(`leaves the screen: ${el.className}`); }
+    for (const el of root.querySelectorAll('*')) { const cs = getComputedStyle(el); if (/(auto|scroll)/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 2 && !(phone && el.classList.contains('ll-draw'))) out.push(`scrolls: ${el.className}`); } // on a phone an instrument taller than its table slides INSIDE the table (GAME_WORLD.md « On a phone », rule 3)
+    for (const el of root.querySelectorAll('.ll-head, .ll-rail, .ll-bench, .ll-quests, .ll-cabinet, .ll-reading, .ll-tile, .ll-cabinet-btn, .ll-quests li, .ll-sent__card, .ll-zone, .ll-sheet, .ll-think, .ll-lamp, .ll-toolhead')) { const r = el.getBoundingClientRect(); if (r.height > 0 && (r.top < -1 || r.bottom > window.innerHeight + 1 || r.left < -1 || r.right > window.innerWidth + 1) && !(phone && el.closest('.ll-quests') && el.matches('li')) && !(phone && el.closest('.ll-draw') && r.left >= -1 && r.right <= window.innerWidth + 1)) out.push(`leaves the screen: ${el.className}`); } // a quest of the sliding line may wait beyond the edge on a phone
     const stage = root.querySelector('.ll-stage').getBoundingClientRect();
-    for (const el of root.querySelectorAll('.ll-draw > *, .ll-reading')) { const r = el.getBoundingClientRect(); if (r.bottom > stage.bottom + 2 || r.top < stage.top - 2) out.push(`out of the stage: ${el.className?.baseVal ?? el.className} (${Math.round(r.bottom - stage.bottom)}px)`); }
+    for (const el of root.querySelectorAll('.ll-draw > *, .ll-reading')) { const r = el.getBoundingClientRect(); if ((r.bottom > stage.bottom + 2 || r.top < stage.top - 2) && !(phone && el.parentElement.classList.contains('ll-draw'))) out.push(`out of the stage: ${el.className?.baseVal ?? el.className} (${Math.round(r.bottom - stage.bottom)}px)`); }
     for (const t of root.querySelectorAll('.ll-draw svg text')) { const r = t.getBoundingClientRect(); if (r.width > 0 && (r.left < stage.left - 1 || r.right > stage.right + 1 || r.top < stage.top - 1 || r.bottom > stage.bottom + 1)) out.push(`clipped label: ${t.textContent}`); }
-    for (const el of root.querySelectorAll('.ll-quests, .ll-reading__text, .ll-sent__cards, .ll-think, .ll-cabinet__list')) if (el.scrollHeight > el.clientHeight + 3 || el.scrollWidth > el.clientWidth + 3) out.push(`overflows: ${el.className}`);
+    for (const el of root.querySelectorAll('.ll-quests, .ll-reading__text, .ll-sent__cards, .ll-think, .ll-cabinet__list')) if (el.scrollHeight > el.clientHeight + 3 || (el.scrollWidth > el.clientWidth + 3 && !(phone && el.classList.contains('ll-quests')))) out.push(`overflows: ${el.className}`); // on a phone the quests are ONE line that slides (GAME_WORLD.md « On a phone », rule 5)
     if (document.documentElement.scrollHeight > window.innerHeight + 1 && !root.classList.contains('ll-root--inline') === false) out.push('the page scrolls');
     return out;
-  });
+  }, process.env.E2E_TOUCH === '1' && SIZE[1] <= 500);
   if (bad.length) { console.log('FAIL at «', name, '»:', [...new Set(bad)].join(' | ')); process.exitCode = 1; if (process.env.E2E_SOFT !== '1') throw new Error(`layout at ${name}`); }
   n += 1; await page.screenshot({ path: `${OUT}/${String(n).padStart(2, '0')}-${name}.png` });
 };
@@ -64,7 +64,9 @@ await page.waitForSelector('[data-di-lab-open]'); await page.click('[data-di-lab
 expect((await page.locator('.ll-rail [data-ll-tool]').evaluateAll((els) => els.map((e) => e.dataset.llTool))).join() === 'rows,jumps,sentences', 'the bench shows the three instruments of THIS lesson');
 expect(await page.locator('[data-ll-cabinet-open]').count() === 1 && (await page.textContent('[data-ll-cabinet-open]')).includes('(2)'), '« خزانتي » holds the two instruments of the earlier lessons');
 console.log('    text on screen (px): tool', await px('.ll-tile strong'), '· quest', await px('.ll-quests li'), '· reading', await px('.ll-reading__text'), '· hint', await px('.ll-toolhead p'));
-expect(await px('.ll-quests li') >= 15 && await px('.ll-tile strong') >= 16, 'the text is comfortable to read');
+// a phone held sideways has ONE scale, its root font at 13 px (GAME_WORLD.md « On a phone », rule 1): 12 px is the floor for a label there
+const PHONE = process.env.E2E_TOUCH === '1' && SIZE[1] <= 500;
+expect(await px('.ll-quests li') >= (PHONE ? 12 : 15) && await px('.ll-tile strong') >= (PHONE ? 12 : 16), 'the text is comfortable to read');
 // صفوف القسمة: 42 counters in rows of 5 → 8 rows and 2 left
 expect(await page.getAttribute('[data-ll-rows]', 'data-q') === '8' && await page.getAttribute('[data-ll-rows]', 'data-r') === '2' && await page.locator('.ll-counter').count() === 42, 'صفوف القسمة: 42 counters in rows of 5 — 8 rows, 2 left over');
 expect(await quest('zero') === '0', 'no « جرّب » is ticked before the student does anything');
@@ -130,6 +132,16 @@ await page.click('[data-ll-down="2"]'); await page.waitForTimeout(250);
 { const s6 = await since(); expect(s6.includes('click') && s6.includes('lamps'), 'back to 756: the lit lamps ring, one soft note each'); }
 await page.click('[data-ll-close]');
 expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data-di-lab-open]').count() === 1, 'closing the lab returns to the lesson');
+
+// ══ on a phone the walk ends here: only the lessons designed for it open (`PHONE_LESSONS`); another lesson's lab is closed with it ══
+if (PHONE) {
+  await page.goto(`${BASE}/bahth-pgcd?lab=1`, { waitUntil: 'networkidle' });
+  await page.waitForSelector('[role="alert"]');
+  expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data-mission-lab]').count() === 0 && (await page.textContent('[role="alert"]')).includes('الحاسوب'), 'on a phone a lesson that is not designed for it is closed with its lab: the message names the computer, no lab opens behind it');
+  expect(errors.length === 0, 'no page error');
+  await browser.close();
+  process.exit(process.exitCode ?? 0);
+}
 
 // ══ 2. another lesson — the PGCD: its own instrument, and the cabinet of everything before it ══
 await page.goto(`${BASE}/bahth-pgcd`, { waitUntil: 'networkidle' }); heard = 0;
