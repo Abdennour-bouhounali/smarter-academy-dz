@@ -5,7 +5,7 @@ const PER_SHELF = 12;
 const SHELVES = [76, 124, 172, 220];
 
 /**
- * Le mur de la bibliothèque de la mission « 96 كتابًا » (leçon qawasim-adad-tabii, rollout 2026-11-08) — dessiné en code
+ * Le mur de la bibliothèque de la mission « 96 كتابًا » (leçon « قواسم عدد طبيعي », rollout 2026-11-08) — dessiné en code
  * (CLAUDE.md : aucune image générée dans les leçons). La bibliothécaire est `KidFigure` (fille en hijab et tunique longue).
  * `fill` ∈ [0, 1] : la part du mur déjà garnie — elle SUIT les outils gagnés ; le chariot de cartons s'efface d'autant.
  * Les rangées dessinées sont celles d'un mur ordinaire : la scène ne donne aucun nombre de la مسألة (ni le nombre de rangées

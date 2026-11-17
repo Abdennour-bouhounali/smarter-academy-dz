@@ -259,7 +259,7 @@ export default function SquareRootSide({
     return () => ro.disconnect();
   }, []);
   // Dans le lecteur de mission le labo est monté dans une copie cachée puis déplacé : le ResizeObserver ne ré-annonce pas toujours la vraie
-  // largeur (piège du rollout, leçon qawasim-adad-tabii). On re-mesure donc aussi à chaque rendu (même valeur = aucun nouveau rendu).
+  // largeur (piège du rollout de la leçon « قواسم عدد طبيعي »). On re-mesure donc aussi à chaque rendu (même valeur = aucun nouveau rendu).
   useLayoutEffect(() => {
     const el = boxRef.current;
     if (el) { const w = Math.max(240, Math.floor(el.clientWidth)); setWidth((cur) => (cur === w ? cur : w)); }

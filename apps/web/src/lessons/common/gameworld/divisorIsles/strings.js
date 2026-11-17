@@ -39,6 +39,10 @@ export function waveSay(w) {
       return `أكبر قاسم للعدد ${w.a}`;
     case 'smallest':
       return `أصغر قاسم للعدد ${w.a}`;
+    case 'lastTry':
+      return `آخر عدد نجرّبه لتعيين قواسم ${w.a}`;
+    case 'countOf':
+      return `عدد قواسم ${w.a}`;
     default:
       return w.say ?? '';
   }
@@ -113,6 +117,24 @@ export function explain(w, n) {
         wrong: n === 0 ? zero : w.a % n === 0 ? `${n} قاسم للعدد ${w.a} فعلًا، لكنّه ليس الأصغر.` : notDivisor(w.a, n),
         right: `أصغر قاسم لأيّ عدد هو 1: $${w.a} = 1 \\times ${w.a}$.`,
       };
+    case 'lastTry': {
+      const d = Math.floor(Math.sqrt(w.a));
+      return {
+        wrong:
+          n * n > w.a
+            ? `$${n} \\times ${n} = ${n * n}$ يتجاوز ${w.a}: بعد هذا الحدّ تعود الجداءات نفسها مقلوبة.`
+            : `ما زال بعد ${n} عدد مربّعه لا يتجاوز ${w.a}: $${n + 1} \\times ${n + 1} = ${(n + 1) * (n + 1)}$.`,
+        right: `$${d} \\times ${d} = ${d * d}$ لا يتجاوز ${w.a}، و $${d + 1} \\times ${d + 1} = ${(d + 1) * (d + 1)}$ يتجاوزه: نتوقّف عند ${d}.`,
+      };
+    }
+    case 'countOf': {
+      const ds = [];
+      for (let d = 1; d <= w.a; d += 1) if (w.a % d === 0) ds.push(d);
+      return {
+        wrong: `عُدّها زوجًا زوجًا: كلّ جداء يساوي ${w.a} يعطي قاسمين.`,
+        right: `قواسم ${w.a} هي: ${ds.join(' ، ')} — عددها ${ds.length}.`,
+      };
+    }
     default:
       return { wrong: '', right: '' };
   }
