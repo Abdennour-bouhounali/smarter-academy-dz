@@ -1,0 +1,600 @@
+/**
+ * THE INVESTIGATION of a rule forge, in this world (logic: `inquiry.js`; it is the first phase of `kit/RuleForge.jsx` when
+ * the forge declares `inquiry`). The student ACTS on gaps and planks until he has seen what the rule will name; no rule is
+ * written here and none is told: what answers him is the strip or the chart.
+ *
+ *   <Inquiry spec={forge.inquiry} game={game} onDone={() => …} />
+ *   spec = { kind: 'pairs', gaps: [36, 40, 30], text } | { kind: 'chart', planks: [{ b, manual, lenses, where? }], text }
+ * `text` is the LESSON's wording (this file names no lesson and writes none of its numbers).
+ */
+import { useEffect, useRef, useState } from 'react';
+import MathText from '../../components/MathText';
+import { tryPlank, lastNeeded, missedBy, LENSES, chartCells, holds, judgeClaim, cellOf } from './inquiry';
+import './inquiry.css';
+
+const FAST = () => import.meta.env.DEV && typeof window !== 'undefined' && window.__forgeFast;
+const expose = (state) => {
+  if (import.meta.env.DEV) window.__inquiry = state;
+};
+
+// ───────────────────────── pairs: a plank and its partner walk toward each other ─────────────────────────
+const SW = 1000;
+const SX0 = 44;
+const SX1 = 956;
+
+function Pairs({ spec, play, onDone }) {
+  const T = spec.text;
+  const [gi, setGi] = useState(0);
+  const a = spec.gaps[gi];
+  const m = lastNeeded(a);
+  const end = m + 2; // two planks past the crossing: enough to see the partner fall behind
+  const [tries, setTries] = useState([]);
+  const [stage, setStage] = useState('try'); // guess | try | ask | swept | pick | found
+  const [guess, setGuess] = useState(null);
+  const [said, setSaid] = useState(null); // the last tap of the pick: { k, kind }
+  const [swept, setSwept] = useState(0);
+  const [found, setFound] = useState([]);
+  const timer = useRef(null);
+  useEffect(() => () => clearInterval(timer.current), []);
+  expose({ kind: 'pairs', gi, a, m, stage, tries: tries.length, guess, found });
+
+  const x = (n) => SX0 + (n / a) * (SX1 - SX0);
+  const last = tries.at(-1) ?? null;
+  const d = tries.length + 1;
+  const squares = gi >= 1; // the squares join the table from the second gap: first the crossing is SEEN, then measured
+  const shown = stage === 'guess' && gi >= 2 ? Array.from({ length: end }, (_, i) => tryPlank(a, i + 1)) : tries;
+
+  const tryNext = () => {
+    const t = tryPlank(a, d);
+    play(t.whole ? (t.crossed ? 'ui' : 'key') : 'fail');
+    const list = [...tries, t];
+    setTries(list);
+    if (list.length >= end) setStage(gi === 0 ? 'ask' : 'pick');
+  };
+  const sweep = () => {
+    setStage('swept');
+    let k = end;
+    timer.current = setInterval(
+      () => {
+        k += 1;
+        setSwept(k - end);
+        if (k >= a) clearInterval(timer.current);
+      },
+      FAST() ? 4 : 70,
+    );
+  };
+  const pick = (k) => {
+    if (stage === 'guess') {
+      play('pick');
+      setGuess(k);
+      setStage('try');
+      return;
+    }
+    if (k === m) {
+      play('key');
+      setSaid({ k, kind: 'ok' });
+      setFound([...found, { a, m, guess }]);
+      setStage('found');
+      return;
+    }
+    play('fail');
+    setSaid({ k, kind: k > m ? 'late' : 'early' });
+  };
+  const next = () => {
+    if (gi + 1 >= spec.gaps.length) {
+      onDone({ gaps: found });
+      return;
+    }
+    setGi(gi + 1);
+    setTries([]);
+    setGuess(null);
+    setSaid(null);
+    setSwept(0);
+    setStage('guess');
+  };
+
+  const picking = stage === 'guess' || stage === 'pick';
+  const chips = Array.from({ length: Math.min(a, end + 3) }, (_, i) => i + 1);
+  const partnerText = (t) => (t.whole ? String(t.q) : T.between(Math.floor(t.partner), Math.floor(t.partner) + 1));
+
+  return (
+    <section className="iq iq--pairs" data-iq="pairs" data-iq-stage={stage} data-iq-gap={a}>
+      <div className="iq-lead">
+        <span className="iq-count">
+          {gi + 1} / {spec.gaps.length}
+        </span>
+        <p>
+          <MathText>
+            {stage === 'guess'
+              ? T.guess(a, gi)
+              : stage === 'pick'
+                ? T.pick(a)
+                : stage === 'ask' || stage === 'swept'
+                  ? T.ask(a, end)
+                  : stage === 'found'
+                    ? T.pickOk(a, m, guess)
+                    : T.lead(a, gi)}
+          </MathText>
+        </p>
+      </div>
+
+      <svg className="iq-strip" viewBox={`0 0 ${SW} 204`} role="img" aria-label={T.stripLabel(a)}>
+        {/* what was tried so far: every plank up to the last one */}
+        {last && <rect className="iq-zone" x={x(0.5)} y="96" width={x(last.d + 0.5) - x(0.5)} height="34" rx="8" />}
+        <line className="iq-axis" x1={x(1)} y1="113" x2={x(a)} y2="113" />
+        {Array.from({ length: a }, (_, i) => i + 1).map((n) => (
+          <line key={n} className="iq-tick" x1={x(n)} y1="107" x2={x(n)} y2="119" />
+        ))}
+        {/* a bridge that holds joins the plank and its partner */}
+        {tries
+          .filter((t) => t.whole && !t.crossed)
+          .map((t) => {
+            const [xa, xb] = [x(t.d), x(t.q)];
+            const h = Math.min(86, 16 + (xb - xa) * 0.16);
+            return (
+              <g key={t.d} className="iq-pair">
+                {t.q !== t.d && <path pathLength="1" d={`M ${xa} 100 Q ${(xa + xb) / 2} ${100 - h * 2} ${xb} 100`} />}
+                <circle cx={xa} cy="113" r="9" />
+                <circle cx={xb} cy="113" r="9" className="is-partner" />
+                <text x={xa} y="146">
+                  {t.d}
+                </text>
+                {t.q !== t.d && (
+                  <text x={xb} y="146" className="is-partner">
+                    {t.q}
+                  </text>
+                )}
+              </g>
+            );
+          })}
+        {tries
+          .filter((t) => !t.whole)
+          .map((t) => (
+            <text key={t.d} x={x(t.d)} y="146" className="iq-fell">
+              {t.d}
+            </text>
+          ))}
+        {/* the plank being tried, and where its partner stands — whole or not */}
+        {last && stage !== 'guess' && (
+          <g className={`iq-walk ${last.crossed ? 'is-crossed' : ''}`} data-iq-crossed={last.crossed ? '1' : '0'}>
+            <path className="iq-walk__plank" d={`M ${x(last.d)} 156 l -11 18 h 22 z`} />
+            <path className="iq-walk__partner" d={`M ${x(last.partner)} 102 l -11 -20 h 22 z`} />
+            <text x={x(last.d)} y="196">
+              {T.plank(last.d)}
+            </text>
+            <text x={x(last.partner)} y="72" className="is-partner">
+              {T.partner}
+            </text>
+          </g>
+        )}
+        {guess != null && stage !== 'guess' && (
+          <g className="iq-guess">
+            <line x1={x(guess)} y1="86" x2={x(guess)} y2="136" />
+          </g>
+        )}
+      </svg>
+
+      <div className="iq-table" dir="ltr" data-iq-table>
+        <div className="iq-table__head" dir="rtl">
+          <span>{T.cols.plank}</span>
+          <span>{T.cols.partner}</span>
+          {squares && <span>{T.cols.square}</span>}
+        </div>
+        {shown.map((t) => (
+          <div
+            key={t.d}
+            className={`iq-try ${stage === 'guess' ? 'is-ahead' : t.whole ? (t.crossed ? 'is-known' : 'is-new') : 'is-fell'} ${t.crossed && stage !== 'guess' ? 'is-crossed' : ''}`}
+            data-iq-tried={t.d}
+          >
+            <b>{t.d}</b>
+            <span dir="rtl">{stage === 'guess' ? '؟' : partnerText(t)}</span>
+            {squares && <em>{t.square}</em>}
+          </div>
+        ))}
+      </div>
+
+      <p className="iq-fact" data-iq-fact>
+        <MathText>
+          {said && stage === 'pick'
+            ? said.kind === 'late'
+              ? T.pickLate(a, said.k, tryPlank(a, said.k))
+              : T.pickEarly(a, said.k, missedBy(a, said.k))
+            : stage === 'swept'
+              ? T.swept(swept, a, swept >= a - end)
+              : last && stage !== 'guess' && stage !== 'found'
+                ? last.whole
+                  ? last.crossed
+                    ? T.known(a, last)
+                    : T.held(a, last)
+                  : last.crossed
+                    ? T.fellBehind(a, last)
+                    : T.fell(a, last)
+                : ' '}
+        </MathText>
+      </p>
+
+      <div className="iq-actions">
+        {stage === 'try' && (
+          <button type="button" className="rf-btn rf-btn--main" onClick={tryNext} data-iq-try={d}>
+            {T.tryBtn(d)}
+          </button>
+        )}
+        {stage === 'ask' && (
+          <>
+            <button type="button" className="rf-btn" onClick={sweep} data-iq-ask="yes">
+              {T.askYes}
+            </button>
+            <button type="button" className="rf-btn" onClick={() => setStage('pick')} data-iq-ask="no">
+              {T.askNo}
+            </button>
+          </>
+        )}
+        {stage === 'swept' && swept >= a - end && (
+          <button type="button" className="rf-btn rf-btn--main" onClick={() => setStage('pick')} data-iq-swept>
+            {T.afterSweep}
+          </button>
+        )}
+        {picking && (
+          <div className="iq-chips" dir="ltr">
+            {chips.map((k) => (
+              <button
+                key={k}
+                type="button"
+                className={`iq-chip ${said?.k === k && stage === 'pick' ? 'is-said' : ''}`}
+                onClick={() => pick(k)}
+                data-iq-pick={k}
+              >
+                {k}
+              </button>
+            ))}
+          </div>
+        )}
+        {stage === 'found' && (
+          <button type="button" className="rf-btn rf-btn--main" onClick={next} data-iq-next>
+            {gi + 1 >= spec.gaps.length ? T.done : T.next}
+          </button>
+        )}
+      </div>
+
+      {found.length > 0 && (
+        <ul className="iq-found" data-iq-found>
+          {found.map((f) => (
+            <li key={f.a}>
+              <MathText>{T.foundLine(f.a, f.m)}</MathText>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
+
+// ───────────────────────── chart: test gaps one after the other, then choose what to LOOK AT ─────────────────────────
+const two = (n) => String(n % 100).padStart(2, '0');
+
+function Chart({ spec, play, onDone }) {
+  const T = spec.text;
+  const [pi, setPi] = useState(0);
+  const p = spec.planks[pi];
+  const [from, setFrom] = useState(0);
+  const [upto, setUpto] = useState(0); // gaps tested so far on this chart: every gap below `upto`
+  const [taps, setTaps] = useState(0);
+  const [stage, setStage] = useState('test'); // test | lens | confirm | hundreds | where | sealed
+  const [lens, setLens] = useState(null);
+  const [values, setValues] = useState([]);
+  const [failed, setFailed] = useState([]); // lenses that took a dark cell in
+  const [wi, setWi] = useState(0);
+  const [whereSaid, setWhereSaid] = useState(null);
+  const [found, setFound] = useState([]);
+  const timer = useRef(null);
+  useEffect(() => () => clearInterval(timer.current), []);
+
+  const cells = chartCells(from);
+  const first = from === 0 ? p.b : from;
+  const full = upto >= from + 100;
+  const tested = (n) => n < upto;
+  const judge = lens ? judgeClaim(p.b, lens, values, from) : null;
+  const where = stage === 'where' ? p.where[wi] : null;
+  expose({ kind: 'chart', pi, b: p.b, from, stage, upto, taps, lens, values, judge, full, where, found });
+
+  const testNext = () => {
+    const n = Math.max(upto, first);
+    play(holds(n, p.b) ? 'key' : 'pick');
+    setUpto(n + 1);
+    setTaps(taps + 1);
+  };
+  const fill = (then) => {
+    let n = Math.max(upto, first);
+    clearInterval(timer.current);
+    timer.current = setInterval(
+      () => {
+        n = Math.min(from + 100, n + (FAST() ? 100 : 4));
+        setUpto(n);
+        if (n >= from + 100) {
+          clearInterval(timer.current);
+          then?.();
+        }
+      },
+      FAST() ? 5 : 45,
+    );
+  };
+  const chooseLens = (id) => {
+    play('ui');
+    setLens(id);
+    setValues([]);
+  };
+  const toggle = (v) => {
+    const list = values.includes(v) ? values.filter((x) => x !== v) : [...values, v].sort((x, y) => x - y);
+    const j = judgeClaim(p.b, lens, list, from);
+    play(j.intruders.length ? 'fail' : 'pick');
+    if (j.intruders.length && !failed.includes(lens)) setFailed([...failed, lens]);
+    setValues(list);
+  };
+  const turnTo = (start, then) => {
+    setFrom(start);
+    setUpto(start);
+    setTaps(0);
+    then?.();
+  };
+  const seal = () => {
+    play('key');
+    setStage('confirm');
+    turnTo(100);
+  };
+  const nextPlank = (entry) => {
+    const list = [...found, entry];
+    setFound(list);
+    if (pi + 1 >= spec.planks.length) {
+      setStage('sealed');
+      return;
+    }
+    setPi(pi + 1);
+    setLens(null);
+    setValues([]);
+    setFailed([]);
+    setWi(0);
+    setWhereSaid(null);
+    setStage('test');
+    turnTo(0);
+  };
+  const tapCell = (n) => {
+    if (stage === 'test' || stage === 'hundreds') {
+      if (n === Math.max(upto, first)) testNext();
+      return;
+    }
+    if (stage !== 'where' || whereSaid?.ok) return;
+    const ok = n === cellOf(where);
+    play(ok ? 'key' : 'fail');
+    setWhereSaid({ n, ok });
+  };
+  // the next hundred is tested by the world as soon as it is on screen: the student watches it light up
+  useEffect(() => {
+    if (stage === 'confirm' && upto === from && from > 0) fill();
+    if (stage === 'hundreds' && from >= 200 && upto === from) fill();
+  }, [stage, from]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const confirmed = stage === 'confirm' && full;
+  const lensLabel = lens ? T.lens[lens] : '';
+  const claimed = (n) => Boolean(lens) && values.includes(LENSES[lens].of(n));
+  const label = (n) => (stage === 'where' ? two(n) : n);
+  // while he looks for the cell of a long gap, the chart is the pattern every hundred shares, read by its last two digits
+  const lit = (n) => (stage === 'where' ? holds(n, p.b) : tested(n) && holds(n, p.b));
+  const dark = (n) => (stage === 'where' ? !holds(n, p.b) : tested(n) && !holds(n, p.b));
+
+  return (
+    <section className="iq iq--chart" data-iq="chart" data-iq-stage={stage} data-iq-plank={p.b} data-iq-from={from}>
+      <div className="iq-panel">
+        <div className="iq-lead">
+          <span className="iq-count">
+            {Math.min(pi + 1, spec.planks.length)} / {spec.planks.length}
+          </span>
+          <p>
+            <MathText>
+              {stage === 'sealed'
+                ? T.sealed
+                : stage === 'test'
+                  ? T.lead(p.b, pi, taps >= p.manual)
+                  : stage === 'lens'
+                    ? lens
+                      ? T.valuesAsk(p.b, lensLabel)
+                      : T.lensAsk(p.b)
+                    : stage === 'confirm'
+                      ? confirmed
+                        ? T.confirmed(p.b, from)
+                        : T.confirming(p.b, from)
+                      : stage === 'hundreds'
+                        ? full
+                          ? T.same(p.b, from)
+                          : T.hundreds(p.b, from)
+                        : whereSaid?.ok
+                          ? T.whereOk(where, cellOf(where), holds(where, p.b), p.b)
+                          : T.where(where, p.b)}
+            </MathText>
+          </p>
+        </div>
+
+        {stage === 'lens' && (
+          <>
+            <div className="iq-lenses" data-iq-lenses>
+              {p.lenses.map((id) => (
+                <button
+                  key={id}
+                  type="button"
+                  className={`iq-lens ${lens === id ? 'is-on' : ''} ${failed.includes(id) ? 'is-failed' : ''}`}
+                  onClick={() => chooseLens(id)}
+                  data-iq-lens={id}
+                >
+                  🔍 {T.lens[id]}
+                </button>
+              ))}
+            </div>
+            {lens && (
+              <div className="iq-values" dir="ltr" data-iq-values>
+                {LENSES[lens].values(from).map((v) => (
+                  <button
+                    key={v}
+                    type="button"
+                    className={`iq-chip ${values.includes(v) ? 'is-on' : ''}`}
+                    onClick={() => toggle(v)}
+                    data-iq-value={v}
+                  >
+                    {v}
+                  </button>
+                ))}
+              </div>
+            )}
+            {lens && values.length > 0 && (
+              <p className={`iq-fact ${judge.ok ? 'is-ok' : ''}`} data-iq-fact data-iq-ok={judge.ok ? '1' : '0'}>
+                {judge.ok ? T.claimOk(p.b) : T.claim(judge.orphans.length, judge.intruders.length)}
+              </p>
+            )}
+          </>
+        )}
+        {stage === 'where' && whereSaid && !whereSaid.ok && (
+          <p className="iq-fact" data-iq-fact>
+            {T.whereMiss(where, whereSaid.n)}
+          </p>
+        )}
+
+        <div className="iq-actions">
+          {(stage === 'test' || (stage === 'hundreds' && from === 100)) && !full && (
+            <button
+              type="button"
+              className="rf-btn rf-btn--main"
+              onClick={testNext}
+              data-iq-test={Math.max(upto, first)}
+            >
+              {T.testBtn(Math.max(upto, first))}
+            </button>
+          )}
+          {(stage === 'test' || (stage === 'hundreds' && from === 100)) && !full && taps >= (from ? 4 : p.manual) && (
+            <button type="button" className="rf-btn" onClick={() => fill()} data-iq-fill>
+              {T.fill}
+            </button>
+          )}
+          {stage === 'test' && full && (
+            <button type="button" className="rf-btn rf-btn--main" onClick={() => setStage('lens')} data-iq-look>
+              {T.look}
+            </button>
+          )}
+          {stage === 'lens' && judge?.ok && (
+            <button type="button" className="rf-btn rf-btn--main" onClick={seal} data-iq-seal>
+              {T.seal(p.b)}
+            </button>
+          )}
+          {stage === 'lens' && p.where && failed.length >= 2 && (
+            <button
+              type="button"
+              className="rf-btn rf-btn--main"
+              onClick={() => {
+                setLens(null);
+                setValues([]);
+                setStage('hundreds');
+                turnTo(100);
+              }}
+              data-iq-nolens
+            >
+              {T.noLens}
+            </button>
+          )}
+          {confirmed && (
+            <button
+              type="button"
+              className="rf-btn rf-btn--main"
+              onClick={() => nextPlank({ b: p.b, lens, values, line: T.foundLine(p.b, lensLabel, values) })}
+              data-iq-next
+            >
+              {pi + 1 >= spec.planks.length ? T.last : T.next}
+            </button>
+          )}
+          {stage === 'hundreds' && full && (
+            <button
+              type="button"
+              className="rf-btn rf-btn--main"
+              onClick={() => {
+                if (from < 200) turnTo(200);
+                else {
+                  // the ONE chart every hundred shares: its cells are read by the last two digits
+                  turnTo(0);
+                  setStage('where');
+                }
+              }}
+              data-iq-next
+            >
+              {from < 200 ? T.nextHundred : T.toWhere}
+            </button>
+          )}
+          {stage === 'where' && whereSaid?.ok && (
+            <button
+              type="button"
+              className="rf-btn rf-btn--main"
+              onClick={() => {
+                if (wi + 1 < p.where.length) {
+                  setWi(wi + 1);
+                  setWhereSaid(null);
+                } else nextPlank({ b: p.b, lens: 'last2', values: [], line: T.foundCell(p.b) });
+              }}
+              data-iq-next
+            >
+              {wi + 1 < p.where.length ? T.nextWhere : pi + 1 >= spec.planks.length ? T.last : T.next}
+            </button>
+          )}
+          {stage === 'sealed' && (
+            <button
+              type="button"
+              className="rf-btn rf-btn--main"
+              onClick={() => onDone({ readings: found })}
+              data-iq-done
+            >
+              {T.done}
+            </button>
+          )}
+        </div>
+
+        {found.length > 0 && (
+          <ul className="iq-found" data-iq-found>
+            {found.map((f) => (
+              <li key={f.b}>{f.line}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <div className="iq-board">
+        <p className="iq-board__title">{T.board(p.b, from)}</p>
+        <div className={`iq-chart ${stage === 'where' ? 'is-where' : ''}`} dir="ltr" data-iq-chart>
+          {from === 0 && <span className="iq-cell iq-cell--none" />}
+          {cells.map((n) => {
+            const c = claimed(n) && stage === 'lens';
+            const cls = lit(n) ? 'is-lit' : dark(n) ? 'is-dark' : '';
+            const mark = c ? (holds(n, p.b) ? 'is-claimed' : 'is-intruder') : '';
+            const kept = stage === 'confirm' && full && Boolean(lens) && values.includes(LENSES[lens].of(n));
+            const ghost = stage === 'hundreds' && n % 100 > 0 && holds(n % 100, p.b);
+            const hit = stage === 'where' && whereSaid?.n === n ? (whereSaid.ok ? 'is-hit' : 'is-miss') : '';
+            return (
+              <button
+                key={n}
+                type="button"
+                className={`iq-cell ${cls} ${mark} ${kept ? 'is-claimed' : ''} ${ghost ? 'is-ghost' : ''} ${hit} ${n === Math.max(upto, first) && !full && stage !== 'confirm' && !(stage === 'hundreds' && from >= 200) ? 'is-next' : ''}`}
+                onClick={() => tapCell(n)}
+                data-iq-cell={n}
+                data-iq-lit={lit(n) ? '1' : dark(n) ? '0' : ''}
+              >
+                {label(n)}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default function Inquiry({ spec, game, onDone }) {
+  const play = (name) => game?.audio?.play(name);
+  return spec.kind === 'pairs' ? (
+    <Pairs spec={spec} play={play} onDone={onDone} />
+  ) : (
+    <Chart spec={spec} play={play} onDone={onDone} />
+  );
+}

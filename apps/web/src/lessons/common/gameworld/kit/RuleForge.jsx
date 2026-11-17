@@ -30,7 +30,7 @@ import './ruleForge.css';
 
 /** The words of the forge itself — the same in every lesson. What speaks of a case is the forge's own `text`. */
 const L = {
-  steps: { predict: 'تنبّأ', build: 'اكتب قاعدتك', test: 'المرآة تختبرها', seal: 'اختم مفتاحك' },
+  steps: { inquiry: 'استكشف', predict: 'تنبّأ', build: 'اكتب قاعدتك', test: 'المرآة تختبرها', seal: 'اختم مفتاحك' },
   right: 'توقّعك صحيح!',
   miss: 'توقّعك لم يصب هذه المرّة.',
   toBuild: 'أكتب قاعدتي',
@@ -62,7 +62,12 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
   const idOf = forge.caseId;
   const [rows, setRows] = useState(() => forge.evidence(log));
   const cases = useMemo(() => forge.predictCases(forge.evidence(log)), []); // eslint-disable-line react-hooks/exhaustive-deps
-  const [phase, setPhase] = useState('predict');
+  // a forge that declares an investigation opens on it: the student acts BEFORE any prediction is asked or tile offered
+  const inquiry = forge.inquiry && parts.Inquiry ? forge.inquiry : null;
+  // …and the investigation takes the place of the predictions; when it also WRITES the rule (`inquiry.writes`: what the
+  // student claimed and the world accepted is his rule), no tile is offered either: the mirror attacks that rule at once
+  const phases = inquiry ? ['inquiry', ...(inquiry.writes ? [] : ['build']), 'test', 'seal'] : PHASES;
+  const [phase, setPhase] = useState(inquiry ? 'inquiry' : 'predict');
   const [pi, setPi] = useState(0);
   const [results, setResults] = useState([]);
   const [show, setShow] = useState(() => ({ c: cases[0], stage: 'ask', guess: null }));
@@ -167,10 +172,11 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
   };
 
   // ── 4. attack ──
-  const startAttack = () => {
-    const list = forge.attacks(rule, rows);
+  const startAttack = () => attackWith(rule, rows);
+  const attackWith = (r, rs) => {
+    const list = forge.attacks(r, rs);
     if (!list.length) {
-      if (forge.isTheRule(rule)) setPhase('seal');
+      if (forge.isTheRule(r)) setPhase('seal');
       else backToBuild();
       return;
     }
@@ -193,6 +199,19 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
       play('key');
       setPhase('seal');
     }
+  };
+
+  // ── 0. the investigation is over: what he did becomes his evidence — and, when it wrote the rule, his rule ──
+  const afterInquiry = (result) => {
+    const out = forge.fromInquiry?.(result) ?? {};
+    if (out.rows) setRows(out.rows);
+    if (out.rule) {
+      setRule(out.rule);
+      attackWith(out.rule, out.rows ?? rows);
+      return;
+    }
+    play('ui');
+    setPhase('build');
   };
 
   // ── 5. seal, 6. use ──
@@ -265,8 +284,8 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
             </div>
           </div>
           <ol className="rf-steps">
-            {PHASES.map((p, i) => {
-              const at = PHASES.indexOf(stepOf(phase));
+            {phases.map((p, i) => {
+              const at = phases.indexOf(stepOf(phase));
               return (
                 <li key={p} className={i === at ? 'is-now' : i < at ? 'is-done' : ''}>
                   <b>{i < at ? '✓' : i + 1}</b>
@@ -290,7 +309,9 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
           )}
         </header>
 
-        <aside className="rf-log" data-rf-log>
+        {phase === 'inquiry' && <parts.Inquiry spec={inquiry} game={game} onDone={afterInquiry} />}
+
+        <aside className="rf-log" data-rf-log hidden={phase === 'inquiry'}>
           <h3>📖 {T.log}</h3>
           <ul>
             {lines.map((row) => {
@@ -317,7 +338,7 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
           </ul>
         </aside>
 
-        <main className="rf-main">
+        <main className="rf-main" hidden={phase === 'inquiry'}>
           <section className={`rf-mirror ${inMirror ? '' : 'is-rule'}`} data-rf-mirror>
             {inMirror && c && (
               <>

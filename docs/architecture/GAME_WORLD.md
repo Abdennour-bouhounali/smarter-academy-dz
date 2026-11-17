@@ -377,6 +377,49 @@ and the island's mirror judges it with bridges** (screen `kit/RuleForge.jsx`, fr
 - NOT done: the class board (`LessonBoard`) forges only the first rule with the class; the three others are still asked
   and proved there. How a rule was found is kept in the browser only.
 
+### « استكشف » — a rule found by an experiment of ITS OWN nature (owner, 2026-11-17)
+
+> « it is stacked to the same analogy used on the lesson 1 but each rule has its own nature and way of discovery, the
+> student get lost at some point and he suddenly get told the rule » — then: « by experiencing, touching, step by step:
+> the student is never told the rule, he gets the rule himself ».
+
+The mirror with its tiles (predict → write → test) fits a rule that is ONE condition on a case the student has built
+(the remainder, the product). It does not fit every rule: asked in the same mirror, « where does the search stop? » and
+« what to read instead of dividing? » were abstract questions, and their help ended on a choice between two written
+rules — the rule was told. **A rule whose nature is a search, a pattern or a procedure is FOUND FIRST, by an experiment
+made for it.** The forge then opens on that experiment:
+
+- **`forge.inquiry`** (the lesson's data: its numbers and its words) and **`parts.Inquiry`** (the world's screen) make
+  the first phase of `RuleForge` — « استكشف ». No prediction is asked and no tile is offered before it is over.
+- **`forge.fromInquiry(result)`** says what the experiment gives the mirror: `rows` — the evidence is what HE did in it —
+  and, when the experiment itself wrote the rule (`inquiry.writes`), `rule`: what he claimed and the world accepted IS his
+  rule, the tiles are skipped and the mirror ATTACKS it at once. The steps shown are then « استكشف → المرآة تختبرها →
+  اختم »; otherwise « استكشف → اكتب قاعدتك → المرآة تختبرها → اختم ». The predictions are not asked again: the experiment
+  held them.
+- **The help of such a forge never narrows to a choice of two rules**: its third help is one more pair of cases to look at.
+- **An experiment says facts, never the rule**: every sentence tells what the strip or the chart has just done (a test
+  of the lesson forbids the words of the rule in them); a miss is answered by a fact (« its partner 4 was tried before
+  it »), never by « wrong »; the student predicts before the world shows; what he found stays on screen in his words.
+- **It starts from what he has just done**: the gap of the island he crossed, the question the stone asked. A question
+  the student cannot answer yet OPENS the search — it is never asked as a quiz before the rule exists — and comes back as
+  the last step of the forge (`use`).
+
+The two kinds of `divisorIsles/` (logic `inquiry.js`, screen `Inquiry.jsx`, styles `inquiry.css`):
+
+| Kind | The rule it finds | What the student does |
+|---|---|---|
+| `pairs` | where the search for all the planks of a gap stops | tries the planks of ONE gap in order; a plank and its partner (gap ÷ plank, whole or not) walk toward each other on a strip and CROSS; past the crossing every partner is a plank already tried. First gap: after the crossing, « can a new plank still appear? » — on « maybe » the world tries every plank up to the gap in front of him. Next gaps: he says the last plank BEFORE trying; the squares join the table from the second gap; on the last gap only the planks and their squares are shown before any trial. Then he writes his rule with the tiles. |
+| `chart` | what to read in a number instead of dividing | tests ONE plank on the gaps of a chart (a row per tens digit, a column per units digit), one after the other, then lets the world finish; chooses a LENS (units digit, tens digit, sum of the digits) and the values he claims: the chart shows the dark cells his claim takes in and counts the lit cells it leaves out; a claim that holds is tried on the next hundred. A plank no lens separates (4) has its own road: the next hundreds light the SAME cells, then he places long gaps on the one chart — he reads their last two digits by doing it. |
+
+**To add a kind**: its pure logic in the world's `inquiry.js` (tested apart: the experiment is true for every number it
+may show), its screen in `Inquiry.jsx`, its words in the lesson. **To use one**: the lesson's `world/inquiries.js` and
+`inquiry` + `fromInquiry` on its forge (`qawasim-adad-tabii` is the reference). Before writing a forge, ask what the
+NATURE of its rule is: one condition on a case → the mirror alone; anything else → an experiment first.
+
+**Checked**: `divisorIsles/inquiry.test.js`, the lesson's `world/inquiries.test.js`, and the lesson's walk, which plays
+both experiments through their screens (a wrong pick, a wrong lens, the right claim, the next hundred) and, at each
+screenshot, that nothing leaves the frame, no button is covered, nothing scrolls and no text is under 12 px.
+
 ## 3. Files
 
 Since 2026-11-17 the code is in THREE places (Phase 0 of the lesson v2 rollout, kit extraction — in progress, see the

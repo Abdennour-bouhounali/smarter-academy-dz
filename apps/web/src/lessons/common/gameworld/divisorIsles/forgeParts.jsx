@@ -4,6 +4,8 @@
  * In some forges the truth of a case (`held`) is not « the bridge holds » — a promise kept, a plank that had to be tried:
  * the case then says whether the bridge itself holds in `fits`, and what its line shows in `tag`.
  */
+import Inquiry from './Inquiry';
+
 const WHICH = 'أيّ جسر تعنيه؟ المرآة ستبنيه بعد جوابك.';
 /** Does the BRIDGE of the case hold? (its own `fits`, or the truth of the case when they are the same thing) */
 const fitsOf = (c) => c.fits ?? c.held;
@@ -156,4 +158,4 @@ function Line({ c, children }) {
   );
 }
 
-export const FORGE_PARTS = { Mirror, Line, beats: (c) => c.q };
+export const FORGE_PARTS = { Mirror, Line, Inquiry, beats: (c) => c.q };

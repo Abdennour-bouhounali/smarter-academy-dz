@@ -1,0 +1,130 @@
+/**
+ * THE TWO INVESTIGATIONS of lesson « قواسم عدد طبيعي » — its numbers and its words (the screens and their logic are the
+ * world's: `divisorIsles/Inquiry.jsx`, `inquiry.js`). Each of the lesson's two hard rules is FOUND by an experiment of its
+ * own nature (owner, 2026-11-17: « the student never told the rule, he gets the rule himself »), never by the same mirror:
+ *
+ *   STOP    « where does the search stop? » — he tries the planks of ONE gap in order, starting with the gap of the island
+ *           he has just crossed (36). A plank and its partner walk toward each other and cross; past the crossing every
+ *           partner is a plank he tried. Then two gaps where he says the last plank BEFORE trying — the last one with only
+ *           the squares in front of him. He then writes his rule from what he saw.
+ *   RULES   « what to read instead of dividing? » — the stone asks about a gap too long to build. He tests ONE plank on
+ *           the gaps 5, 6, 7… of a chart, chooses a LENS (what he looks at in the number) and the values he claims: the
+ *           chart answers. Plank 4 has its own road: no lens separates it, but every hundred lights the same cells.
+ *           What he claimed and the chart accepted IS his rule: the mirror attacks it at once.
+ * No sentence here states a rule: each one says what the strip or the chart has just done.
+ */
+const math = (s) => `$${s.replaceAll('×', '\\times')}$`;
+const lo = (t) => Math.floor(t.partner);
+
+export const STOP_INQUIRY = {
+  kind: 'pairs',
+  gaps: [36, 30, 60],
+  text: {
+    stripLabel: (a) => `شريط الألواح من 1 إلى ${a}`,
+    cols: { plank: 'اللوح', partner: 'شريكه', square: 'مربّعه' },
+    plank: (d) => `اللوح ${d}`,
+    partner: 'شريكه',
+    between: (x, y) => `بين ${x} و ${y}`,
+    tryBtn: (d) => `جرّب اللوح ${d}`,
+    lead: (a, gi) =>
+      gi === 0
+        ? `عبرتَ هوّة ${a}. نريد الآن كلّ ألواحها: جرّبها واحدًا واحدًا، من اللوح 1، وراقب اللوح وشريكه على الشريط.`
+        : `هوّة ${a}: جرّب الألواح بالترتيب، وراقب أين يقف الشريك.`,
+    guess: (a, gi) =>
+      gi === 1
+        ? `هوّة جديدة: ${a} خانة. قبل أن تجرّب: ما آخر لوح ستحتاج إلى تجريبه لتجد كلّ ألواحها؟`
+        : `هوّة ${a}. هذه المرّة الجدول أمامك قبل أيّ تجربة. ما آخر لوح ستحتاج إلى تجريبه؟`,
+    held: (a, t) =>
+      t.q === t.d
+        ? `${math(`${a} = ${t.d} × ${t.d}`)}: ثبت — اللوح ${t.d} شريك نفسه!`
+        : `${math(`${a} = ${t.d} × ${t.q}`)}: ثبت — وشريكه ${t.q} لوح آخر يملأ الهوّة.`,
+    fell: (a, t) => `اللوح ${t.d} لا يملأ ${a}. لو ثبت لوقف شريكه بين ${lo(t)} و ${lo(t) + 1}: أمامه.`,
+    fellBehind: (a, t) =>
+      `اللوح ${t.d} لا يملأ ${a}. انظر أين كان سيقف شريكه: بين ${lo(t)} و ${lo(t) + 1} — خلفه، بين ألواح جرّبتَها.`,
+    known: (a, t) =>
+      `${math(`${a} = ${t.d} × ${t.q}`)}: ثبت… لكنّ شريكه ${t.q} خلفه. هذا جسر اللوح ${t.q} مقلوبًا: عندك من قبل.`,
+    ask: (a, n) => `جرّبتَ ${n} ألواح. لو واصلتَ حتى اللوح ${a}: هل يمكن أن يظهر لوح لا تعرفه؟`,
+    askYes: 'ربّما — نواصل لنرى',
+    askNo: 'لا — مستحيل',
+    swept: (n, a, over) =>
+      over
+        ? `${n} تجربة أخرى، حتى اللوح ${a}: ولا لوح جديد. كلّ ما ثبت كان شريكًا تعرفه.`
+        : `العالم يواصل التجريب… ${n}`,
+    afterSweep: 'رأيتُ',
+    pick: (a) => `انتهت التجارب. ما آخر لوح كان تجريبه لازمًا للهوّة ${a}؟`,
+    pickLate: (a, k, t) =>
+      t.whole
+        ? `اللوح ${k}: شريكه ${t.q} جرّبتَه قبله — كنتَ ستعرفه دون تجريبه.`
+        : `اللوح ${k}: لو ثبت لوقف شريكه خلفه، بين ألواح جرّبتَها كلّها. لم يكن تجريبه لازمًا.`,
+    pickEarly: (a, k, missed) =>
+      missed
+        ? `لو توقّفتَ عند اللوح ${k} لضاع منك ${missed === 1 ? 'لوح' : missed === 2 ? 'لوحان' : `${missed} ألواح`} من ألواح الهوّة ${a}.`
+        : `لو توقّفتَ عند اللوح ${k}: اللوح ${k + 1} شريكه ليس خلفه — لا شيء ممّا جرّبتَ يخبرك عنه.`,
+    pickOk: (a, m, guess) =>
+      `اللوح ${m} آخر لوح لازم للهوّة ${a}.${guess == null ? '' : guess === m ? ' توقّعك كان صحيحًا!' : ` كنتَ توقّعتَ ${guess}.`}`,
+    foundLine: (a, m) => `الهوّة ${a} ← آخر لوح لازم: ${m}`,
+    next: 'هوّة أخرى',
+    done: 'أكتب قاعدتي',
+  },
+};
+
+const two = (n) => String(n % 100).padStart(2, '0');
+
+export const RULES_INQUIRY = {
+  kind: 'chart',
+  /** what he claimed and the chart accepted is his rule: no tile is offered after it */
+  writes: true,
+  planks: [
+    { b: 5, manual: 8, lenses: ['tens', 'units', 'sum'] },
+    { b: 2, manual: 6, lenses: ['tens', 'units', 'sum'] },
+    { b: 9, manual: 10, lenses: ['units', 'tens', 'sum'] },
+    { b: 3, manual: 8, lenses: ['units', 'tens', 'sum'] },
+    { b: 4, manual: 9, lenses: ['units', 'tens', 'sum'], where: [316, 522, 708] },
+  ],
+  text: {
+    lens: { units: 'رقم الآحاد', tens: 'رقم العشرات', sum: 'مجموع الأرقام' },
+    board: (b, from) => `اللوح ${b} · الهوّات من ${from || 1} إلى ${from + 99}`,
+    testBtn: (n) => `جرّب الهوّة ${n}`,
+    fill: 'أكمل اللوحة',
+    look: 'ماذا ألاحظ؟',
+    lead: (b, pi, enough) =>
+      enough
+        ? `واصل التجريب، أو دع العالم يكمل اللوحة للّوح ${b}.`
+        : pi === 0
+          ? `الحجر يسأل عن هوّة لا تُبنى ولا تُقسم. لنبدأ بلوح واحد: اللوح ${b}. جرّبه على الهوّات واحدة واحدة، من ${b}.`
+          : `لوح آخر: اللوح ${b}. جرّبه على الهوّات واحدة واحدة، من ${b}.`,
+    lensAsk: (b) =>
+      `الخانات المضيئة هوّات يثبت فيها اللوح ${b}. ماذا يكفي أن تنظر إليه في العدد لتعرفها دون قسمة؟ اختر عدسة.`,
+    valuesAsk: (b, lens) => `عدستك: ${lens}. اضغط كلّ قيمة يثبت معها اللوح ${b} — واللوحة تجيبك.`,
+    claim: (orphans, intruders) =>
+      [
+        intruders ? `${intruders} خانة منطفئة دخلت في اختيارك` : null,
+        orphans ? `${orphans} خانة مضيئة بقيت خارجه` : null,
+      ]
+        .filter(Boolean)
+        .join(' · '),
+    claimOk: () => 'كلّ الخانات المضيئة داخل اختيارك، ولا خانة منطفئة معها.',
+    seal: (b) => `هذه قراءتي للّوح ${b}`,
+    confirming: (b, from) => `هل تصمد قراءتك بعد المئة الأولى؟ العالم يجرّب اللوح ${b} من ${from} إلى ${from + 99}…`,
+    confirmed: (b, from) => `صمدت: من ${from} إلى ${from + 99}، قراءتك أحاطت بكلّ الخانات المضيئة، وبها وحدها.`,
+    noLens: 'لا عدسة تفصل هذه اللوحة',
+    hundreds: (b, from) =>
+      from === 100
+        ? `لا رقم واحد يكفي للّوح ${b}. لننظر إلى المئة التالية: جرّب من 100. الإطارات المتقطّعة خانات اللوحة الأولى.`
+        : `والمئة التي بعدها، من ${from} إلى ${from + 99}…`,
+    same: (b, from) => `من ${from} إلى ${from + 99}: الخانات نفسها تضيء.`,
+    nextHundred: 'المئة التالية',
+    toWhere: 'جرّب هوّة طويلة',
+    where: (n, b) => `هوّة من ${n} خانة ولوح ${b}. لوحة واحدة تكفي لكلّ المئات: اضغط الخانة التي تخبرك عن ${n}.`,
+    whereMiss: (n, tapped) => `هذه خانة الهوّات التي تنتهي بـ ${two(tapped)}. أين تقع ${n} في مئتها؟`,
+    whereOk: (n, cell, ok, b) =>
+      `${n} تقع في الخانة ${two(cell)}: ${ok ? `مضيئة — اللوح ${b} يثبت` : `منطفئة — اللوح ${b} لا يثبت`}.`,
+    nextWhere: 'هوّة أخرى',
+    next: 'لوح آخر',
+    last: 'قراءاتي الخمس',
+    foundLine: (b, lens, values) => `اللوح ${b}: ${lens} ${values.join(' أو ')}`,
+    foundCell: (b) => `اللوح ${b}: خانة الرقمين الأخيرين`,
+    sealed: 'خمسة ألواح، وخمس قراءات وجدتَها بنفسك. المرآة ستتحدّاها الآن بهوّات لم ترها.',
+    done: 'إلى المرآة',
+  },
+};

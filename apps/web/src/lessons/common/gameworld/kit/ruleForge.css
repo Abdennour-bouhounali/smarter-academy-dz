@@ -40,6 +40,9 @@
   padding: 0.9rem 1.1rem 1rem;
 }
 
+.rf-fit > [hidden] {
+  display: none;
+}
 .rf-head {
   grid-column: 1 / -1;
   display: flex;

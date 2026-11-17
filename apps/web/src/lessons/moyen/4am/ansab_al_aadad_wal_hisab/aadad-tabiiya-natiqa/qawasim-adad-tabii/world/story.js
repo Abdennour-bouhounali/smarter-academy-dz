@@ -240,7 +240,9 @@ export const STORY = {
     return true;
   },
   /** What the stone of the last harbour shows: its question about a gap nobody can build, then the mirror of the last key. */
-  onStone: (game) => (game.flags.rules ? { forge: 'qawaid-qisma' } : { quiz: 'rules' }),
+  // the stone's question cannot be answered yet: it OPENS the search (the forge, whose last step is that very question);
+  // once the key is his, the stone asks it again as a quiz
+  onStone: (game) => (game.flags.key4 ? { quiz: 'rules' } : { forge: 'qawaid-qisma' }),
   onQuiz(game, id) {
     if (id !== 'rules') return;
     game.flags.rules = true;

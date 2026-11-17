@@ -1,0 +1,142 @@
+import { describe, it, expect } from 'vitest';
+import {
+  tryPlank,
+  lastNeeded,
+  missedBy,
+  judgeClaim,
+  LENSES,
+  chartCells,
+  cellOf,
+} from '../../../../../../common/gameworld/divisorIsles/inquiry';
+import { STOP_INQUIRY, RULES_INQUIRY } from './inquiries';
+import { FORGES } from './forges';
+import { STORY } from './story';
+
+const said = (x) => expect(String(x)).not.toMatch(/undefined|NaN|\[object/);
+
+describe('the two investigations of « قواسم عدد طبيعي » — each rule found by an experiment of its own', () => {
+  it('STOP starts on the gap of the island just crossed, and its three gaps do not stop at the same plank', () => {
+    const before = STORY.segments[STORY.segments.findIndex((s) => s.kind !== 'bridge') - 1];
+    expect(STOP_INQUIRY.gaps[0]).toBe(before.a);
+    const stops = STOP_INQUIRY.gaps.map(lastNeeded);
+    expect(new Set(stops).size).toBeGreaterThanOrEqual(3); // 6, 5, 7: the answer is never « the same as last time »
+    // one gap whose last needed plank holds, one where it falls: « the last plank that held » is not the rule
+    expect(STOP_INQUIRY.gaps.some((a) => a % lastNeeded(a) === 0)).toBe(true);
+    expect(STOP_INQUIRY.gaps.some((a) => a % lastNeeded(a) !== 0)).toBe(true);
+  });
+
+  it('STOP: every sentence says what the strip did, and none states the rule', () => {
+    const T = STOP_INQUIRY.text;
+    const lines = [];
+    STOP_INQUIRY.gaps.forEach((a, gi) => {
+      const m = lastNeeded(a);
+      lines.push(T.lead(a, gi), T.guess(a, gi), T.pick(a), T.ask(a, m + 2), T.pickOk(a, m, m), T.pickOk(a, m, m + 1));
+      lines.push(T.foundLine(a, m), T.swept(3, a, false), T.swept(a - m - 2, a, true), T.stripLabel(a));
+      for (let d = 1; d <= m + 2; d += 1) {
+        const t = tryPlank(a, d);
+        lines.push(
+          t.whole ? (t.crossed ? T.known(a, t) : T.held(a, t)) : t.crossed ? T.fellBehind(a, t) : T.fell(a, t),
+        );
+      }
+      for (let k = 1; k <= m + 5; k += 1)
+        if (k !== m) lines.push(k > m ? T.pickLate(a, k, tryPlank(a, k)) : T.pickEarly(a, k, missedBy(a, k)));
+    });
+    for (const line of lines) {
+      said(line);
+      // the rule itself (« its square does not pass the gap ») is never written: he writes it
+      expect(line, line).not.toMatch(/مربّع|جذر|يتجاوز/);
+    }
+    expect(T.pickEarly(30, 4, missedBy(30, 4))).toContain('لوحان');
+  });
+
+  it('STOP hands the mirror the planks HE tried, around the crossing — both kinds, and the right rule agrees with all', () => {
+    const F = FORGES['tariqa-qawasim'];
+    const { rows, rule } = F.fromInquiry({
+      gaps: STOP_INQUIRY.gaps.map((a) => ({ a, m: lastNeeded(a), guess: null })),
+    });
+    expect(rule).toBeUndefined(); // he still has to WRITE it
+    expect(rows).toHaveLength(8);
+    expect(rows.some((c) => c.held && c.fits) && rows.some((c) => c.held && !c.fits)).toBe(true);
+    expect(rows.some((c) => !c.held && c.fits) && rows.some((c) => !c.held && !c.fits)).toBe(true);
+    for (const c of rows) {
+      expect(STOP_INQUIRY.gaps.slice(0, 2)).toContain(c.a);
+      expect(c.held).toBe(c.b <= lastNeeded(c.a));
+      expect(F.says({ q: 'sq', c: 'leA' }, c)).toBe(c.held);
+    }
+  });
+
+  it('RULES: each plank has its lens among those offered, its hand tests show the pattern, plank 4 has its own road', () => {
+    const one = {
+      5: ['units', [0, 5]],
+      2: ['units', [0, 2, 4, 6, 8]],
+      9: ['sum', [9, 18]],
+      3: ['sum', [3, 6, 9, 12, 15, 18]],
+    };
+    expect(RULES_INQUIRY.planks.map((p) => p.b)).toEqual([5, 2, 9, 3, 4]);
+    for (const p of RULES_INQUIRY.planks) {
+      expect(p.lenses.every((id) => LENSES[id])).toBe(true);
+      // tested by hand from b: at least two lit cells before the world may finish the chart
+      const lit = Array.from({ length: p.manual }, (_, i) => p.b + i).filter((n) => n % p.b === 0);
+      expect(lit.length, `plank ${p.b}`).toBeGreaterThanOrEqual(2);
+      if (p.where) {
+        expect(p.lenses.some((id) => judgeClaim(p.b, id, LENSES[id].values(0)).ok)).toBe(false);
+        expect(p.where.map((n) => n % p.b === 0)).toContain(true);
+        expect(p.where.map((n) => n % p.b === 0)).toContain(false);
+        for (const n of p.where) expect(chartCells(0).concat(0)).toContain(cellOf(n));
+        continue;
+      }
+      const [lens, values] = one[p.b];
+      expect(p.lenses).toContain(lens);
+      expect(p.lenses[0], 'the lens that works is never the first one offered').not.toBe(lens);
+      expect(judgeClaim(p.b, lens, values).ok).toBe(true);
+      expect(judgeClaim(p.b, lens, values, 100).ok).toBe(true);
+    }
+  });
+
+  it('RULES: what he claimed IS his rule — the mirror attacks it at once, and the key is used on the stone’s own gap', () => {
+    const F = FORGES['qawaid-qisma'];
+    const readings = [
+      { b: 5, lens: 'units', values: [0, 5] },
+      { b: 2, lens: 'units', values: [0, 2, 4, 6, 8] },
+      { b: 9, lens: 'sum', values: [9, 18] },
+      { b: 3, lens: 'sum', values: [3, 6, 9, 12, 15, 18] },
+      { b: 4, lens: 'last2', values: [] },
+    ];
+    const { rule, rows } = F.fromInquiry({ readings });
+    expect(F.isTheRule(rule)).toBe(true);
+    expect(RULES_INQUIRY.writes).toBe(true);
+    for (const c of rows) expect(F.says(rule, c)).toBe(c.held);
+    const attacks = F.attacks(rule, rows);
+    expect(attacks.length).toBeGreaterThanOrEqual(2);
+    for (const c of attacks) expect(c.a).toBeGreaterThanOrEqual(100); // gaps he has not seen: three digits
+    expect(F.use.make().a).toBe(STORY.text.quiz.rules.a);
+    expect(F.use.check({ a: 252 }, { s: '9', l: '52', n: '4' })).toBe('ok');
+  });
+
+  it('RULES: every sentence can be said, and none names a reading before he finds it', () => {
+    const T = RULES_INQUIRY.text;
+    const lines = [T.fill, T.look, T.noLens, T.nextHundred, T.toWhere, T.sealed, T.done];
+    lines.push(T.claim(3, 0), T.claim(0, 2), T.claim(1, 1));
+    for (const p of RULES_INQUIRY.planks) {
+      lines.push(T.lead(p.b, 0, false), T.lead(p.b, 1, false), T.lead(p.b, 1, true));
+      lines.push(T.lensAsk(p.b), T.board(p.b, 0), T.board(p.b, 100));
+    }
+    for (const line of lines) {
+      said(line);
+      expect(line, line).not.toMatch(/الآحاد|مجموع|الأخير/);
+    }
+    said(T.valuesAsk(5, T.lens.units));
+    said(T.confirming(5, 100));
+    said(T.confirmed(5, 100));
+    said(T.hundreds(4, 100));
+    said(T.hundreds(4, 200));
+    said(T.same(4, 100));
+    said(T.where(316, 4));
+    said(T.whereMiss(316, 61));
+    said(T.whereOk(316, 16, true, 4));
+    said(T.whereOk(522, 22, false, 4));
+    said(T.foundLine(5, T.lens.units, [0, 5]));
+    said(T.foundCell(4));
+    expect(T.claim(0, 0)).toBe('');
+  });
+});

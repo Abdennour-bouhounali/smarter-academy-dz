@@ -360,6 +360,18 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
        memo address of lesson 2, which has no board yet — `phoneLessons.js` now asks for `board` too.
        **Still true: every screen of lesson 2 must be PLAYED through its screen by a walk before the gate** — the
        practice hub, « تدرّب », a sitting and « تقدّمي » are still unit-tested only.
+     - **The two hard keys of lesson 2 were REBUILT the same day, on the owner's word** (« each rule has its own
+       nature and way of discovery … he suddenly get told the rule », then « free to rebuild this part even with 100%
+       different concept … the student never told the rule, he gets the rule himself »). Both forges were the pilot's
+       mirror with other tiles; their help ended on a choice of two written rules. Now each opens on an EXPERIMENT of
+       its own (`GAME_WORLD.md` « استكشف »): 🔍 « أين نتوقّف » — planks tried in order on the gap he has just crossed
+       (36), a plank and its partner crossing on a strip, then 30 and 60 predicted before trying; ⚡ « قواعد القسمة » —
+       a chart of gaps, one plank at a time (5, 2, 9, 3), a LENS he chooses and the values he claims, the next hundred
+       as the attack; plank 4 by « the same cells light in every hundred ». What he claims on the chart IS his rule:
+       no tile after it. The stone's question (252) is no longer asked before he can answer: it opens the search and
+       is the last step of the forge. New: `divisorIsles/inquiry.js`, `Inquiry.jsx`, `inquiry.css`, the lesson's
+       `world/inquiries.js`; `RuleForge` phase « استكشف ». Walk: 124 checks, both experiments played through their
+       screens. **Not validated by the owner yet — and no student has played it.**
      - NOT in lesson 2 by choice, to be said in the report: no real-world case world (S5); ten dash levels instead.
      - The walk is assembled from the pilot walk's helpers (copied, not shared): a shared helper module is owed.
 - **D4 — DONE**: the five billing files are deleted.

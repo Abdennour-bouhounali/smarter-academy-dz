@@ -133,11 +133,15 @@ describe('the four forges of the lesson — no rule is told', () => {
 
       it('the robot helps without ever giving the rule', () => {
         const kinds = [1, 2, 3].map((n) => F.nudge(n, rows));
-        expect(kinds[2].kind).toBe('choice');
-        expect(kinds[2].rules).toHaveLength(2);
-        expect(kinds[2].rules.filter(F.isTheRule)).toHaveLength(1);
-        expect(F.isTheRule(kinds[2].rules[0])).toBe(false); // the first of the two is the false one
-        for (const h of kinds.slice(0, 2)) {
+        // a rule found by an investigation is never narrowed to a choice of two written rules: the third help is one more
+        // pair of bridges to look at
+        if (!F.inquiry) {
+          expect(kinds[2].kind).toBe('choice');
+          expect(kinds[2].rules).toHaveLength(2);
+          expect(kinds[2].rules.filter(F.isTheRule)).toHaveLength(1);
+          expect(F.isTheRule(kinds[2].rules[0])).toBe(false); // the first of the two is the false one
+        }
+        for (const h of F.inquiry ? kinds : kinds.slice(0, 2)) {
           expect(['compare', 'experiment']).toContain(h.kind);
           expect(h.cases).toHaveLength(2);
           clean(h.kind === 'compare' ? F.text.compare(h.cases) : F.text.experiment);

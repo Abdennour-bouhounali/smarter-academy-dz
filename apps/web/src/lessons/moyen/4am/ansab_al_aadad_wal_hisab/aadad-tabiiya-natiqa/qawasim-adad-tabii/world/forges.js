@@ -23,6 +23,8 @@ import {
   outcome,
   pickWith,
 } from '../../../../../../common/gameworld/divisorIsles/ruleForge';
+import { lastNeeded } from '../../../../../../common/gameworld/divisorIsles/inquiry';
+import { STOP_INQUIRY, RULES_INQUIRY } from './inquiries';
 
 /** An equality inside an Arabic sentence: a formula — the screen renders it with MathText, left to right. */
 const math = (s) => ['$', s.replaceAll('×', '\\times').replaceAll('÷', '\\div'), '$'].join('');
@@ -398,8 +400,20 @@ const isStopRule = (rule) => rule?.q === 'sq' && rule?.c === 'leA';
 /** Every (gap, plank) a mirror can draw, as a « must it be tried? » case. */
 const TRIES = SMALL.map((c) => tryCase(c.a, c.b));
 
+/** What he tried in the investigation, read again as « had it to be tried? »: around the crossing of its first two gaps. */
+const triedAround = (a) => {
+  const m = lastNeeded(a);
+  const back = [];
+  for (let d = m + 1; d <= a && back.length < 1; d += 1) if (a % d === 0) back.push(d);
+  const picked = [...new Set([m - 1, m, m + 1, ...back, m + 2])].filter((d) => d >= 1).slice(0, 4);
+  return picked.sort((x, y) => x - y).map((d) => tryCase(a, d));
+};
+
 const stopForge = {
   key: 'tariqa-qawasim',
+  /** He finds it on the strip first (inquiries.js); the mirror then tests the rule he writes on the planks HE tried. */
+  inquiry: STOP_INQUIRY,
+  fromInquiry: (result) => ({ rows: result.gaps.slice(0, 2).flatMap((g) => triedAround(g.a)) }),
   slots: [
     { id: 'q', label: 'ماذا أحسب للّوح؟', options: S_QUANTITIES.map(({ id, label }) => ({ id, label })) },
     { id: 'c', label: 'أجرّبه فقط إذا كان هذا', options: S_CONDITIONS.map(({ id, label }) => ({ id, label })) },
@@ -465,13 +479,8 @@ const stopForge = {
       }
     }
     if (n <= 2) return { kind: 'experiment', cases: [tryCase(16, 4), tryCase(16, 8)] };
-    return {
-      kind: 'choice',
-      rules: [
-        { q: 'len', c: 'leHalf' },
-        { q: 'sq', c: 'leA' },
-      ],
-    };
+    // never a choice between two written rules: one more pair of bridges to look at — the plank at the crossing, the one after
+    return { kind: 'experiment', cases: [tryCase(30, 5), tryCase(30, 6)] };
   },
   use: {
     make: (rand = Math.random) => ({ a: pickWith(rand)([96, 110, 150, 200, 75, 130]), held: true }),
@@ -558,13 +567,24 @@ const slotOf = (b) => `b${b}`;
 const readingOf = (rule, b) => READINGS[rule[slotOf(b)]];
 const rulesSays = (rule, c) => readingOf(rule, c.b).of(c.a) % c.b === 0;
 const isRulesRule = (rule) => RULE_PLANKS.every((b) => rule?.[slotOf(b)] === RIGHT[b]);
-const allRead = (reading) => Object.fromEntries(RULE_PLANKS.map((b) => [slotOf(b), reading(b)]));
 /** Gaps of three digits a mirror can still draw: their digits are what the rule reads. */
 const RULE_CASES = Array.from({ length: 27 }, (_, i) => 100 + i).flatMap((a) => RULE_PLANKS.map((b) => outcome(a, b)));
+
+/** The gaps of the chart he tested by hand, as bridges: the lines of his evidence. */
+const CHART_ROWS = [outcome(10, 5), outcome(12, 5), outcome(18, 9), outcome(9, 3), outcome(10, 3), outcome(12, 4)];
 
 const rulesForge = {
   key: 'qawaid-qisma',
   logs: true,
+  /**
+   * He finds each reading on the chart (inquiries.js): what he claimed and the chart accepted IS his rule — one reading per
+   * plank — and the mirror attacks it at once, on gaps of three digits. The tiles are only reached if a reading breaks.
+   */
+  inquiry: RULES_INQUIRY,
+  fromInquiry: (result) => ({
+    rule: Object.fromEntries(result.readings.map((r) => [slotOf(r.b), r.lens])),
+    rows: CHART_ROWS,
+  }),
   slots: RULE_PLANKS.map((b) => ({
     id: slotOf(b),
     label: `اللوح ${b}`,
@@ -624,10 +644,11 @@ const rulesForge = {
   nudge(n) {
     if (n === 1) return { kind: 'experiment', cases: [outcome(102, 3), outcome(103, 3)] };
     if (n === 2) return { kind: 'experiment', cases: [outcome(112, 4), outcome(114, 4)] };
-    return { kind: 'choice', rules: [allRead(() => 'units'), allRead((b) => RIGHT[b])] };
+    return { kind: 'experiment', cases: [outcome(117, 9), outcome(119, 9)] };
   },
   use: {
-    make: (rand = Math.random) => ({ a: pickWith(rand)([2340, 1305, 4212, 1530, 2716]), held: true }),
+    // the gap the stone asked about: the key is used on the question that opened the search
+    make: () => ({ a: 252, held: true }),
     lines: () => [
       { dir: 'rtl', tokens: ['مجموع أرقامها', slot('s', 'مجموع الأرقام', 2)] },
       {
@@ -653,7 +674,7 @@ const rulesForge = {
     buildLead: 'لكلّ لوح بطاقة: ماذا تقرأ في طول الهوّة لتعرف، دون قسمة، هل يثبت؟',
     testing: 'المرآة تقرأ هوّاتك بقاعدتك…',
     experiment: 'انظر جيّدًا: اللوح نفسه، هوّتان متقاربتان. ماذا تغيّر في أرقام الهوّة؟',
-    tryKey: (c) => `هوّة من ${c.a} خانة: لا تُبنى ولا تُقسم. اقرأها بقاعدتك.`,
+    tryKey: (c) => `الحجر ينتظر جوابك: هوّة من ${c.a} خانة، لا تُبنى ولا تُقسم. اقرأها بقاعدتك.`,
     use: {
       sum: 'أعد جمع أرقام طول الهوّة.',
       last: 'انظر إلى الرقمين الأخيرين فقط: أيّ عدد يكوّنان؟',

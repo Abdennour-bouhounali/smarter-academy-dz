@@ -36,6 +36,10 @@ Every lesson is being rebuilt like the pilot `qasim-adad-tabii` — FROM SCRATCH
 - **No rule is told**: each key of a lesson is FORGED by the student (predict → write his rule with tiles → the mirror
   tests it on his own evidence → attacks it → seal → use → only then its name). Exactly one rule holds; every other is
   refuted in front of him. The verdict is what the world does, never « wrong ».
+- **Each rule has its own nature and its own way of discovery** (owner, 2026-11-17): the same mirror is not asked for every
+  rule. A rule that is a search, a pattern or a procedure is FOUND FIRST by an experiment made for it (`forge.inquiry` —
+  « استكشف »: he tries, predicts, claims, and the world answers with facts), starting from what he has just done; a help
+  never narrows to a choice between written rules. `GAME_WORLD.md` « استكشف »; reference: `qawasim-adad-tabii`.
 - A lesson is done when `npm run status:lesson-v2 -- --lesson <id>` prints ✅ AND its tests, its walks at 1366×768,
   1024×768, 1840×900 and on a phone held sideways pass AND its screenshots were looked at with the eyes.
 - Contracts: `LESSON_V2.md` (the pack, the folder, the definition of done), `GAME_WORLD.md` (the kit, a world, the
