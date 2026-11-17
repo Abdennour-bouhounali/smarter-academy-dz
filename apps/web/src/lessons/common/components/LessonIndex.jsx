@@ -1,7 +1,7 @@
-import React, { Suspense, lazy, useEffect, useMemo, useState } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ArrowRight, Lock, Compass } from 'lucide-react';
+import { Lock, Compass } from 'lucide-react';
 import { useProgress } from '../hooks/useProgress';
 import { lockedReasonData, getLessonById, getUnitById } from '@smarter-academy/core';
 import PremiumLessonLocked from './PremiumLessonLocked';

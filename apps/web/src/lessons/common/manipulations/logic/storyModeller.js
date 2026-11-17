@@ -78,7 +78,7 @@ export function parseModel({ system, unknowns, facts, chips }) {
   });
 }
 
-export const chipValue = (model, key) => model.chips.find((c) => c.key === key)?.value ?? null;
+const chipValue = (model, key) => model.chips.find((c) => c.key === key)?.value ?? null;
 
 /** La jumla CIBLE relue dans les lettres de l'élève (il a pu nommer à l'envers). */
 export function targetInLetters(model, naming) {
@@ -160,7 +160,7 @@ export function openModel(lab) {
 /* ── 2) ترجمة المشكلة ───────────────────────────────────────────────────────────────────────── */
 
 export const slotId = (row, slot) => `slot:${row}:${slot}`;
-export function parseSlot(zone) {
+function parseSlot(zone) {
   const m = /^slot:([12]):([abc])$/.exec(zone ?? '');
   return m ? { row: Number(m[1]), slot: m[2] } : null;
 }
@@ -179,12 +179,6 @@ export function fill(lab, chipKey, zone) {
   return { ...lab, slots: { ...lab.slots, [s.row]: { ...lab.slots[s.row], [s.slot]: chipKey } }, verdict: null };
 }
 
-export function clearSlot(lab, zone) {
-  const s = parseSlot(zone);
-  if (!s || lab.stage !== 'model') return lab;
-  return { ...lab, slots: { ...lab.slots, [s.row]: { ...lab.slots[s.row], [s.slot]: null } }, verdict: null };
-}
-
 export const rowComplete = (lab, row) => SLOTS.every((s) => lab.slots[row][s] != null);
 
 /** L'équation que l'élève a construite (dans SES lettres), ou null si une case est vide. */
@@ -194,7 +188,7 @@ export function studentEq(lab, model, row) {
   return eqn(v('a'), v('b'), v('c'));
 }
 
-export const equivalent = (e1, e2) => classify([e1, e2]).kind === 'infinite';
+const equivalent = (e1, e2) => classify([e1, e2]).kind === 'infinite';
 
 /** Les places (dans les lettres de l'élève) où la jumla cible porte la valeur `v`. */
 function rolesOf(T, v) {
@@ -278,7 +272,7 @@ const isMinusOne = (p) => eq(p, -1);
 const wrap = (p) => (cmp(p, 0) < 0 ? `(${fracLatex(p)})` : fracLatex(p));
 
 /** « 140 - x », « 7 - 2x », « 3x + 1 », « -\dfrac{1}{2}x » : k·u + m à la façon du manuel. */
-export function affTex(k, m, u) {
+function affTex(k, m, u) {
   const body = (c) => (isOne(c) ? u : `${fracLatex(c)}${u}`);
   if (isZero(k)) return fracLatex(m);
   const absK = cmp(k, 0) < 0 ? neg(k) : k;
@@ -546,7 +540,7 @@ export function numberText(p) {
 }
 
 export const systemLatex = LS.systemLatex;
-export { fracLatex, fracText, toNumber, eqLatex, pairLatex };
+export { fracLatex, fracText, toNumber, eqLatex };
 
 /**
  * Les histoires INTÉGRÉES (les deux niveaux de `levels.js` et la fête de la synthèse) : la jumla de

@@ -22,7 +22,7 @@ import { applyOperation, classify, solve, isSolvedForm, equationToLatex, isInequ
 import { suggestOperations } from './operationHints.js';
 import { operationLatex, solutionSet } from './equationDisplay.js';
 
-export const MAX_WALKTHROUGH_STEPS = 8;
+const MAX_WALKTHROUGH_STEPS = 8;
 
 /** Plus d'inconnue écrite : `3 = 5`, `0 < 2`. */
 export function hasNoUnknown(equation) {

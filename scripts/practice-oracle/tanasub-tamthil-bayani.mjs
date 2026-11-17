@@ -64,7 +64,6 @@ const K = (l, n, qq) => `ex-3am-tanasub-tamthil-bayani-l${l}-${String(n).padStar
 const X = (l, n, nm) => rr(pt(l, n, nm)[0]);
 const Y = (l, n, nm) => rr(pt(l, n, nm)[1]);
 const CF = (l, n, nm) => rr(coef(l, n, nm));
-const ysAt = (l, n, nm, x) => pt(l, n, nm)[1].div(pt(l, n, nm)[0]).mul(x);
 
 /** deux offres : (D₁) par O ; (D₂) par R(0,c) : a, b, c, abscisse d'intersection lus dans la figure */
 function offer(l, n) {
@@ -207,10 +206,10 @@ export const ORACLE = {
 
   /* ── niveau 4 ── */
   ...offerEntries(4, 1, 20), ...offerEntries(4, 2, 3), ...offerEntries(4, 3, 8),
-  [K(4, 4, 'q1')]: (() => { const f = Fx(4, 4); const g = [0, 1].filter((i) => throughO(lineOf(4, 4, i))); if (g.length !== 1 || g[0] !== 0) throw new Error('S₁ seul'); return byRe(4, 4, 'q1', /^المحل الأول/); })(),
+  [K(4, 4, 'q1')]: (() => { const g = [0, 1].filter((i) => throughO(lineOf(4, 4, i))); if (g.length !== 1 || g[0] !== 0) throw new Error('S₁ seul'); return byRe(4, 4, 'q1', /^المحل الأول/); })(),
   [K(4, 4, 'q2')]: verdict(4, 4, 'q2', throughO([pt(4, 4, 'B'), pt(4, 4, 'C'), pt(4, 4, 'S₃')])),
   [K(4, 4, 'q3')]: (() => { need(4, 4, 12); const [r, s] = lineOf(4, 4, 1); return rr(lineY(r, s, 12).mul(5)); })(),
-  [K(4, 4, 'q4')]: (() => { need(4, 4, '2{,}5'); const [o, p] = lineOf(4, 4, 0); const [r, s] = lineOf(4, 4, 1); const a = p[1].div(p[0]); const b = s[1].sub(r[1]).div(s[0]); return rr(r[1].div(a.sub(b))); })(),
+  [K(4, 4, 'q4')]: (() => { need(4, 4, '2{,}5'); const [, p] = lineOf(4, 4, 0); const [r, s] = lineOf(4, 4, 1); const a = p[1].div(p[0]); const b = s[1].sub(r[1]).div(s[0]); return rr(r[1].div(a.sub(b))); })(),
   [K(4, 4, 'q5')]: (() => { need(4, 4, 14); const [, p] = lineOf(4, 4, 0); const [, s] = lineOf(4, 4, 1); const cost = [p[1].mul(5), s[1].mul(5), pt(4, 4, 'S₃')[1].mul(5)].map((v) => v.mul(14).div(14)); // à x = 14 (extrémité des trois bornes)
     const best = cost.indexOf(cost.reduce((m, v) => (v.sub(m).n < 0n ? v : m)));
     return byRe(4, 4, 'q5', new RegExp(`^المحل ${['الأول', 'الثاني', 'الثالث'][best]}`)); })(),

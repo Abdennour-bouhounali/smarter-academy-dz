@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 import ProblemIllustration from './ProblemIllustration';
 import { validateIllustration, ILLUSTRATION_KINDS } from './problemIllustration';

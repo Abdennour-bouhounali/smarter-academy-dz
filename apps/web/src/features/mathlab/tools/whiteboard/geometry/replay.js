@@ -9,7 +9,7 @@
 import { UNITS_PER_CM, angleOf, dist, sub } from './geoMath.js';
 import { RULER_LENGTHS_CM } from './instruments.js';
 
-export const STEP_MS = Object.freeze({
+const STEP_MS = Object.freeze({
   point: 500, segment: 1300, line: 1300, ray: 1300, arc: 1700, circle: 2000, measure: 350,
 });
 

@@ -15,9 +15,6 @@
 //  - audit(bank) relit les fichiers : clé, options, signatures, الكفاءة (toujours P1 de la synthèse), counted, nombres imprimés dans l'énoncé, corrigé, et le texte (aucun renvoi au manuel,
 //    aucun terme interdit, aucune lettre latine, aucune unité latine ni aucun nombre signé hors de $…$) ; la provenance (2 term_exam lus, 48 feuilles modelled) est contrôlée par scripts/exam-provenance.test.mjs et validate-exercises.
 // Les questions selfCheck (« أثبت ») n'ont pas de clé et ne figurent pas ici.
-import { readFileSync, readdirSync } from 'node:fs';
-import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { R, C, P as PT } from './helpers.mjs';
 
 const SC = 100n;
@@ -37,7 +34,6 @@ const txt = (v) => {
   if (f) s += `.${String(f).padStart(2, '0').replace(/0$/, '')}`;
   return (neg ? '-' : '') + s;
 };
-const NUM = /\d+(?:\.\d+)?/;
 
 /* ── l'évaluateur de chaînes : réduction des groupes les plus internes ── */
 const normSigns = (str) => { let s = str.replace(/\s+/g, ''); while (/[+-][+-]/.test(s)) s = s.replace(/\+\+/g, '+').replace(/--/g, '+').replace(/\+-/g, '-').replace(/-\+/g, '-'); return s; };
@@ -383,7 +379,6 @@ const errorMatches = (s, id, o) => {
 /* ── relecture du texte ── */
 const numsOf = (c) => (c.replace(/\{,\}/g, '.').match(/\d+(?:\.\d+)?/g) ?? []);
 const stripMath = (t) => t.replace(/\$[^$]*\$/g, ' ');
-const islands = (t) => [...t.matchAll(/\$([^$]*)\$/g)].map((m) => m[1]);
 const optionValue = (s, content) => {
   const c = content.replace(/\$/g, '').trim();
   switch (s.kind) {
@@ -415,7 +410,6 @@ const shown = (s) => {
     default: return [];
   }
 };
-const MODE_OF = (s) => s.mode;
 const choiceIndex = (s) => {
   const hits = s.opts.map((o, k) => (isTrue(s, o) ? k : -1)).filter((k) => k >= 0);
   if (hits.length !== 1) throw new Error(`${s.key} : ${hits.length} options justes`);

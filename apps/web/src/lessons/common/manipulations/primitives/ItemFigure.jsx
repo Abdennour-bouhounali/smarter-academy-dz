@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * UN OBJET DÉNOMBRABLE — dessiné, jamais un rond ni un emoji.
@@ -23,8 +22,6 @@ import React from 'react';
  *
  * Aucun texte arabe ici : les mots viennent de `itemThemes.js` + lesson.json.
  */
-
-export const ITEM_KINDS = Object.freeze(['flower', 'ball', 'shirt', 'pen', 'notebook', 'spoon', 'cup']);
 
 const MUTED = { fill: '#CBD5E1', dark: '#94A3B8', light: '#F1F5F9' };
 

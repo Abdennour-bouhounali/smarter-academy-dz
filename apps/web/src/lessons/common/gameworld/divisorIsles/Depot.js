@@ -17,7 +17,7 @@ THEMES.oasis = {
   trunk: 0x8a6239,
   flower: [0xffffff, 0xffd27a],
 };
-export const DEPOT_AT = { x: -340, z: 280 };
+const DEPOT_AT = { x: -340, z: 280 };
 const PAD = { w: 14.5, d: 8.2, z: 0.4 };
 const easeOut = (t) => 1 - (1 - t) ** 3;
 

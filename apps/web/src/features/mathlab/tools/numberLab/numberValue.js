@@ -23,13 +23,9 @@
 import {
   makeFrac, simplify, isSimplified, simplifyFactor, fracToNumber, fracToDecimal,
   fracToLatex, fracToText, toMixed, compareFrac, comparisonSign, parseNumberInput,
-  decimalToFrac,
 } from './fraction.js';
 import { fracToPercent } from './proportion.js';
 import { roundTo } from './numberTheory.js';
-
-/** Les représentations que §46 énumère. `visual` est le dessin (barre, grille). */
-export const REPRESENTATIONS = Object.freeze(['fraction', 'decimal', 'percent', 'mixed', 'line', 'visual']);
 
 /**
  * Toutes les écritures d'une même valeur (§47).
@@ -106,21 +102,6 @@ export function formatPercent(percent, decimals = 4) {
  */
 export function valueFromInput(raw) {
   return parseNumberInput(raw);
-}
-
-/** Depuis un décimal : `0,75` → `75/100` (littéral) — §13 veut les deux formes. */
-export function valueFromDecimal(value) {
-  const parsed = decimalToFrac(value);
-
-  return parsed ? parsed.literal : null;
-}
-
-/** Depuis un pourcentage : `35` → `35/100`. */
-export function valueFromPercent(percent) {
-  if (!Number.isFinite(percent)) return null;
-  const parsed = decimalToFrac(percent / 100);
-
-  return parsed ? parsed.literal : null;
 }
 
 /* ── §7, §43, §44, §45 : la droite graduée ─────────────────────────────── */

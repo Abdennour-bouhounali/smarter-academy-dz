@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * La figure du تحدّ (x² + 10x = 39, côté 5) dessinée en SVG : le carré ABCD découpé en le carré

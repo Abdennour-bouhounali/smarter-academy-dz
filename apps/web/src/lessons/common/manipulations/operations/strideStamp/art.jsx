@@ -1,4 +1,3 @@
-import React from 'react';
 import KidFigure from '../../primitives/KidFigure';
 import { STRIDES } from '../../logic/strideStamp';
 import * as G from '@smarter-academy/core/arithmetic/graduatedLine.js';
@@ -11,10 +10,10 @@ import * as G from '@smarter-academy/core/arithmetic/graduatedLine.js';
 export const W = 760;
 export const H = 300;
 export const LY = 214;           // la ligne graduée (le milieu de la route)
-export const OX = 290;           // l'origine O (station de bus)
-export const OX_ORIGIN = 110;    // le tick 0 d'une droite à origine cachée (tâche `origin`)
-export const U_ORIGIN = 54;      // l'écart de deux ticks de la tâche `origin`
-export const U_FREE = 54;        // l'unité de la droite libre
+const OX = 290;           // l'origine O (station de bus)
+const OX_ORIGIN = 110;    // le tick 0 d'une droite à origine cachée (tâche `origin`)
+const U_ORIGIN = 54;      // l'écart de deux ticks de la tâche `origin`
+const U_FREE = 54;        // l'unité de la droite libre
 
 export const COL = {
   sky: '#E0F2FE', skyDark: '#BAE6FD', grass: '#BBF7D0', grassDark: '#86EFAC', road: '#A8A29E', roadDark: '#78716C', ink: '#0F172A',

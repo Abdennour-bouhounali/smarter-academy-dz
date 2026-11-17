@@ -28,9 +28,7 @@
 import * as TH from '@smarter-academy/core/arithmetic/thales.js';
 import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
 
-export const MODES = Object.freeze(['ladder', 'crossing']);
-/** Les figures de نشاط 2 : 1 (B′, C′ de l'autre côté de A), 2 (entre A et les pieds), 3 et son miroir. */
-export const FIGURES = Object.freeze(['1', '2', '3', '3m']);
+const MODES = Object.freeze(['ladder', 'crossing']);
 
 /** Le plus petit montant : 2 (l'échelle 2 / 4 de la manche d'entraînement du lecteur, conseil du 2026-11-10, L2.6 — une seule encoche sur AB). */
 export const MIN_BAR = 2;
@@ -47,7 +45,7 @@ export const slotOf = (a) => {
   return a > 0 ? -a : -a - 1;
 };
 /** Le nombre d'encoches au-delà de A (mode crossing) : ⌈2n/3⌉ — assez pour le tiers et la figure 1. */
-export const upCount = (n, mode) => (mode === 'crossing' ? Math.ceil((2 * n) / 3) : 0);
+const upCount = (n, mode) => (mode === 'crossing' ? Math.ceil((2 * n) / 3) : 0);
 
 /** La plage d'encoches d'une barre de longueur n : du pied (exclu) jusqu'au bout au-delà de A. */
 export function slotRange(n, mode) {
@@ -96,7 +94,7 @@ export function reading(lab, at = positions(lab)) {
 }
 
 /** La figure de نشاط 2 d'une position (signes des abscisses). */
-export function figureOf(bp, cp) {
+function figureOf(bp, cp) {
   if (bp > 0 && cp > 0) return '2';
   if (bp < 0 && cp < 0) return '1';
   return bp > 0 ? '3' : '3m';
@@ -115,7 +113,7 @@ export function move(lab, end, slot) {
  * 2026-11-10) : deux rapports différents donnent une planche penchée (`tilted`), pas « شرط الأستاذ » — il n'y a pas de professeur
  * (bogue corrigé : `condition` valait null et chaque essai était marqué `condition`).
  */
-export function kindOf(lab, r) {
+function kindOf(lab, r) {
   if (lab.mode === 'ladder') return r.parallel ? 'level' : 'tilted';
   if (lab.target) {
     if (!r.condition) return 'condition';
@@ -210,7 +208,7 @@ export function ratiosLine(lab, at = positions(lab)) {
 /* ── géométrie (flottants : le DESSIN seulement ; le verdict reste celui de converse) ─────────── */
 
 /** La hauteur de A au-dessus du sol (unités du modèle) : une échelle lisible, un X presque carré. */
-export const apexHeight = (b, c, mode) => (mode === 'crossing' ? 0.8 : 0.9) * Math.min(b, c);
+const apexHeight = (b, c, mode) => (mode === 'crossing' ? 0.8 : 0.9) * Math.min(b, c);
 
 /**
  * Le dessin : A en haut, B et C au sol (y = 0, y vers le HAUT dans le modèle), puis mis à l'échelle dans
@@ -219,7 +217,7 @@ export const apexHeight = (b, c, mode) => (mode === 'crossing' ? 0.8 : 0.9) * Ma
  * parallèle, sinon au moins `MIN_BUBBLE` (une planche presque de niveau ne trompe pas l'œil).
  */
 export const MIN_BUBBLE = 0.35;
-export const FULL_TILT_DEG = 14;
+const FULL_TILT_DEG = 14;
 
 /** Les points du modèle (unités, y vers le haut) et leur boîte. */
 function model(lab) {

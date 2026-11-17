@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../../lessons/common/kit';
 import { Feedback } from '../../lessons/common/components/LessonUI';
 import { KnowledgeSnapshot } from '../../lessons/common/knowledge';

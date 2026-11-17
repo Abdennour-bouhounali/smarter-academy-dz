@@ -99,15 +99,12 @@ export function makePoly(terms) {
   return out.sort((a, b) => compareMonos(a.mono, b.mono));
 }
 
-export const ZERO_POLY = Object.freeze([]);
-
 export function constantPoly(value) { return makePoly([{ coef: value, mono: {} }]); }
 export function variablePoly(name) { return makePoly([{ coef: R.ONE, mono: { [name]: 1 } }]); }
 
 export function addPoly(p, q) { return makePoly([...p, ...q]); }
-export function negPoly(p) { return p.map((term) => ({ coef: R.negate(term.coef), mono: term.mono })); }
+function negPoly(p) { return p.map((term) => ({ coef: R.negate(term.coef), mono: term.mono })); }
 export function subPoly(p, q) { return addPoly(p, negPoly(q)); }
-export function scalePoly(p, k) { return makePoly(p.map((term) => ({ coef: R.multiply(term.coef, k), mono: term.mono }))); }
 
 export function mulPoly(p, q) {
   if (p.length * q.length > MAX_TERMS * 4) throw new AlgebraError('tooManyTerms');
@@ -126,9 +123,7 @@ export function powPoly(p, exponent) {
   return acc;
 }
 
-export function isZeroPoly(p) { return p.length === 0; }
 export function isConstantPoly(p) { return p.every((term) => monoDegree(term.mono) === 0); }
-export function constantValue(p) { return p.find((term) => monoDegree(term.mono) === 0)?.coef ?? R.ZERO; }
 export function polyDegree(p) { return p.reduce((max, term) => Math.max(max, monoDegree(term.mono)), 0); }
 
 export function polyVariables(p) {
@@ -191,7 +186,7 @@ export function divideCoefficients(numerator, denominator) {
   return { quotient: trimCoefficients(quotient), remainder };
 }
 
-export function isZeroCoefficients(coefs) { return coefs.every((c) => R.isZero(c)); }
+function isZeroCoefficients(coefs) { return coefs.every((c) => R.isZero(c)); }
 
 /** PGCD de deux polynômes à une lettre, UNITAIRE (Euclide sur les rationnels). */
 export function gcdCoefficients(a, b) {
@@ -297,7 +292,7 @@ export function contentOf(coefs) {
 // ── L'écriture ────────────────────────────────────────────────────────────
 
 /** `x^{2}y` — la partie littérale seule. */
-export function monoLatex(mono) {
+function monoLatex(mono) {
   return Object.keys(mono).sort().map((name) => (mono[name] === 1 ? name : `${name}^{${mono[name]}}`)).join('');
 }
 
@@ -340,11 +335,6 @@ export function polyLatex(p, colorOf = null) {
   if (p.length === 0) return '0';
 
   return joinPieces(p.map((term) => termPiece(term, colorOf ? colorOf(monoKey(term.mono)) : undefined)));
-}
-
-/** Le même, en texte simple (lecteur d'écran, résumé) : `x² − x − 6`. */
-export function polyText(p) {
-  return latexToText(polyLatex(p));
 }
 
 const SUPERSCRIPTS = { 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴', 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹' };

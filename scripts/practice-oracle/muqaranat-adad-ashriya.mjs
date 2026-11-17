@@ -62,26 +62,12 @@ const decText = (x) => {
 const dec = (expr) => R(decText(val(expr)));
 const intOf = (expr) => { const x = val(expr); if (x.d !== 1n) throw new Error(`${expr} = ${x.n}/${x.d} n'est pas entier`); return R(`${x.n}`); };
 const numer = (x, D) => intOf(`(${x})*${D}`);
-const denOf = (x, N) => { const q = qdiv(Q(B(N)), val(x)); if (q.d !== 1n) throw new Error(`denOf ${x}`); return R(`${q.n}`); };
 const floorQ = (x) => { const q = x.n / x.d; return x.n % x.d !== 0n && x.n < 0n ? q - 1n : q; };
 const digitAt = (x, p) => {
   const scaled = qmul(val(x), Q(10n ** B(p < 0 ? -p : 0), 10n ** B(p > 0 ? p : 0)));
   const f = floorQ(scaled); return R(`${((f % 10n) + 10n) % 10n}`);
 };
-const count = (x, u) => R(`${floorQ(qmul(val(x), Q(10n ** B(u))))}`);
 const places = (s) => R(`${(String(s).split(',')[1] ?? '').length}`);
-const pow10 = (p) => R(decText(p >= 0 ? Q(10n ** B(p)) : Q(1n, 10n ** B(-p))));
-const remOf = (a, b) => R(`${B(a) % B(b)}`);
-/** La virgule qui met le chiffre c au rang 10^-u : on la place nous-mêmes dans la chaîne de chiffres, puis on relit la valeur. */
-const placed = (digits, c, u) => {
-  const idx = [...digits].map((ch, i) => (ch === String(c) ? i : -1)).filter((i) => i >= 0);
-  if (idx.length !== 1) throw new Error('chiffre non unique');
-  const cut = idx[0] - u + 1;
-  const text = `${digits.slice(0, cut)},${digits.slice(cut)}`;
-  // contrôle : le chiffre c est bien au rang u après la virgule
-  if (text.split(',')[1][u - 1] !== String(c)) throw new Error('placed');
-  return R(text);
-};
 const eq = (a, b) => qcmp(val(a), val(b)) === 0;
 const lt = (a, b) => qcmp(val(a), val(b)) < 0;
 const gt = (a, b) => qcmp(val(a), val(b)) > 0;

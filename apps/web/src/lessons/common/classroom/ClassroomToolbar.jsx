@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Presentation, Minimize2, Minus, Plus, Flashlight } from 'lucide-react';
 import { ChevronBack, ChevronForward, ChevronsBack, ChevronsForward } from '../../../components/common/DirectionalIcons';

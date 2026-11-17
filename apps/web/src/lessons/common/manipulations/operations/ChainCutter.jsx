@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CheckCircle2, Hand, Sparkles, ChevronLeft, FlaskConical, Scissors, Pin, Undo2, Paperclip, Link2 } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -8,7 +8,7 @@ import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
 import { useManipulation } from '../useManipulation';
-import { LabCard, StageFrame, PromptCard, VerdictBanner } from '../primitives/LabKit';
+import { LabCard, PromptCard, VerdictBanner } from '../primitives/LabKit';
 import KidFigure from '../primitives/KidFigure';
 import { useLabCoach } from '../primitives/LabCoach';
 import { useLabCheckpoint } from '../primitives/LabCheckpoint';
@@ -207,7 +207,6 @@ function Board({ lab, setLab, k, width, hMax, mood }) {
   // opérateurs éligibles (dans la cellule en focus) et leur numéro RELATIF
   const eligible = [];
   if (allowed) { let rel = -1; for (let i = focus.lo; i <= focus.hi; i += 1) if (tokens[i].t === 'op') { rel += 1; eligible.push({ tok: i, rel }); } }
-  const relOfTok = (tok) => eligible.find((e) => e.tok === tok)?.rel;
   const selTok = lab.sel != null ? eligible.find((e) => e.rel === lab.sel)?.tok : undefined;
   const bite = lab.flash && !lab.flash.ok && lab.flash.reason === 'staple' ? eligible.find((e) => e.rel === lab.flash.at)?.tok : undefined;
   const [drag, setDrag] = useState(null);
@@ -349,7 +348,6 @@ function Lab({ lab, setLab, k, width, screenH, lead, cp, report }) {
 }
 
 function CutWorld({ lab, setLab, k, width, hMax, mood }) {
-  const task = L.taskOf(lab);
   const done = L.taskDone(lab);
   const focus = L.focusCell(lab);
   const keys = L.cellKeys(lab).filter((key) => lab.cells[key].cut);
@@ -418,7 +416,7 @@ function CutWorld({ lab, setLab, k, width, hMax, mood }) {
 
 /* ══════════════ Le collage (متقدم) ══════════════ */
 
-function GlueWorld({ lab, setLab, k, mood, width }) {
+function GlueWorld({ lab, setLab, k, mood }) {
   const done = L.taskDone(lab);
   const pickIdx = (id) => lab.pick.indexOf(id);
   const evalText = (t) => { try { return C.numText(C.evaluateB(t)); } catch { return ''; } };

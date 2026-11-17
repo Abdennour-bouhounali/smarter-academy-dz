@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../../common/components/MathText';
 
 /**
@@ -6,7 +5,7 @@ import MathText from '../../../../../../common/components/MathText';
  * MANIPULATION_DNA §9 : les options ne portent pas l'évidence, ses propres essais si). Une ligne par essai ; les formules
  * et les nombres sont des îlots LTR (MathText), jamais la réponse de la question posée dessous.
  */
-export function evidenceLine(e) {
+function evidenceLine(e) {
   if (!e) return null;
   if (e.mode === 'parallelogram') {
     if (e.side === 'target') return `$\\theta = ${e.theta}^{\\circ}$ : وصل السبّاح إلى B`;

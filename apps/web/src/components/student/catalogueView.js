@@ -18,8 +18,8 @@ import { storage } from '../../utils/storage';
  * `storage` (non préfixé par utilisateur, comme les filtres de /courses) et
  * une valeur absente ou illisible retombe sur le défaut.
  */
-export const CATALOGUE_GROUPS = ['units', 'chapters', 'all'];
-export const CATALOGUE_LAYOUTS = ['grid', 'rows'];
+const CATALOGUE_GROUPS = ['units', 'chapters', 'all'];
+const CATALOGUE_LAYOUTS = ['grid', 'rows'];
 export const DEFAULT_CATALOGUE_VIEW = Object.freeze({ group: 'units', layout: 'grid' });
 export const CATALOGUE_VIEW_STORAGE_KEY = 'sa.catalogue.view';
 

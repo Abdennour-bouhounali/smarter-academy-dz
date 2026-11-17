@@ -2,7 +2,7 @@ import * as AF from '@smarter-academy/core/arithmetic/affine.js';
 import * as LS from '@smarter-academy/core/arithmetic/linearSystem.js';
 import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 import {
-  planeGeometry, ticks, indexRange, indexOf, valueAt, numText, numTex, approxTex, approxText, subdivide, toNum,
+  planeGeometry, ticks, indexRange, indexOf, valueAt, numText, numTex, subdivide, toNum,
 } from './originLine';
 
 /**
@@ -27,16 +27,15 @@ import {
  * Un ESSAI est un geste VALIDÉ (relâchement, Entrée, bouton, pause du clavier).
  */
 
-const { frac, parseNumber, eq, cmp, isZero, toNumber, sub, mul, div, add } = Lin;
+const { frac, parseNumber, eq, cmp, isZero, toNumber, mul, div, add } = Lin;
 const F = (v) => (typeof v === 'object' && v !== null ? v : Number.isInteger(v) ? frac(v) : parseNumber(String(v)));
 
 export const THEMES = Object.freeze(['coins', 'laser']);
-export const STAGES = Object.freeze(['build', 'probe', 'cases']);
 
 /* ── lecture des props ──────────────────────────────────────────────────── */
 
 /** « x+y=43|100x+200y=5000 » → { src: [s1, s2], eqs: [e1, e2] } (linearSystem.eq2). */
-export function parseSystem(raw) {
+function parseSystem(raw) {
   const src = String(raw ?? '').split('|').map((s) => s.trim()).filter(Boolean);
   if (src.length !== 2) throw new Error(`line-crossing : il faut deux équations « e1|e2 » (reçu « ${raw} »)`);
   const eqs = src.map((s) => LS.eq2(s));
@@ -44,7 +43,7 @@ export function parseSystem(raw) {
 }
 
 /** La droite y = mx + p d'une équation (b ≠ 0) ; une équation sans y est un contenu invalide ici. */
-export function lineOf(e) {
+function lineOf(e) {
   const g = AF.lineFromEquation(e);
   if (!g) throw new Error('line-crossing : une équation sans y (droite verticale) n’est pas une fonction affine');
   return g;
@@ -58,7 +57,7 @@ export function lineOf(e) {
  * oubliée (y = c − ax quand b ≠ ±1), les deux signes. Quatre cartes au plus, distinctes ; l'ordre est
  * fixé par l'équation (jamais la juste toujours en tête).
  */
-export function candidatesFor(e) {
+function candidatesFor(e) {
   const g = lineOf(e);
   const neg = (v) => mul(v, -1);
   const pool = [
@@ -94,7 +93,7 @@ export function witnessFor(e, cand) {
 /* ── la fenêtre ─────────────────────────────────────────────────────────── */
 
 /** Une fenêtre qui contient O, les deux points (0 ; p), les points (x ; 0) et le point d'intersection. */
-export function defaultWindow(lines) {
+function defaultWindow(lines) {
   const xs = [0]; const ys = [0];
   for (const g of lines) {
     ys.push(toNumber(g.b));
@@ -168,7 +167,7 @@ export function choose(s, i, k) {
 }
 
 /** La seconde droite en vigueur : celle de l'équation (2), ou la droite tenue à l'étape des cas. */
-export const secondLine = (s) => (s.stage === 'cases' ? s.held : s.lines[1]);
+const secondLine = (s) => (s.stage === 'cases' ? s.held : s.lines[1]);
 
 /** Les deux lampes en (x ; y). */
 export function lampsAt(s, x, y) {
@@ -282,7 +281,7 @@ export function untriedSlopes(s) {
 
 /* ── dessin (pixels — ne décide RIEN) ──────────────────────────────────── */
 
-export { planeGeometry, ticks, indexRange, indexOf, valueAt, numText, numTex, approxTex, approxText, toNum };
+export { planeGeometry, ticks, indexRange, indexOf, valueAt, numText, numTex, toNum };
 
 /** Le tronçon visible de y = m·x + p dans la fenêtre : [[x1, y1], [x2, y2]] (flottants) ou null. */
 export function segmentOf(g, win) {
@@ -346,9 +345,6 @@ export const approxNum = (p) => toNumber(F(p)).toFixed(1).replace('.', ',').repl
 
 /* accès exacts pour la vue */
 export const same = (p, q) => eq(F(p), F(q));
-export const isZeroF = (p) => isZero(F(p));
 export const fracOf = F;
 export const lineAt = (g, x) => AF.imageOf(g, F(x));
-export const kindOfLine = (g) => AF.direction(g);
 export const intersectOf = (f, g) => AF.intersect(f, g);
-export { sub as subF };

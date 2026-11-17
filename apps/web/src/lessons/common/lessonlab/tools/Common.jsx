@@ -2,7 +2,7 @@
  * « القواسم المشتركة » — the divisors of two numbers sorted in three trays: those of the first only, those of both, those of
  * the second only. The greatest of the middle tray wears the crown. Tap a divisor: the two equalities that prove it appear.
  */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Tool, M } from '../kit';
 import { divisorsOf, divide } from '../logic';
 

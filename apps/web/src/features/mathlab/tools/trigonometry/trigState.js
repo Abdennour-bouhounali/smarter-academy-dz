@@ -52,13 +52,13 @@ export const MIN_RADIUS = 0.5;
 export const MAX_RADIUS = 5;
 
 /** Les côtés d'un triangle : assez grands pour être lus, assez petits pour tenir. */
-export const MIN_SIDE = 0.5;
-export const MAX_SIDE = 100;
+const MIN_SIDE = 0.5;
+const MAX_SIDE = 100;
 
 export const MODES = Object.freeze(['circle', 'triangle']);
 export const UNITS = Object.freeze(['deg', 'rad']);
-export const VALUE_MODES = Object.freeze(['exact', 'decimal']);
-export const RATIOS = Object.freeze(['sin', 'cos', 'tan']);
+const VALUE_MODES = Object.freeze(['exact', 'decimal']);
+const RATIOS = Object.freeze(['sin', 'cos', 'tan']);
 export const TRIANGLE_GIVENS = Object.freeze([
   'angle-hyp', 'angle-opp', 'angle-adj', 'opp-adj', 'opp-hyp', 'adj-hyp',
 ]);

@@ -25,8 +25,6 @@ export const classTrackingPath = (lessonId) => `/enseignant/mutabaa/${encodeURIC
 
 /** « بطاقة المعارف » of the lesson on the board of the class: a quick revision with the whole class. */
 export const classCardPath = (lessonId) => `/enseignant/bitaqa/${encodeURIComponent(lessonId)}`;
-/** The same card FULL SCREEN, for the projector (a view of the class session). */
-export const classCardFullPath = (lessonId) => `/enseignant/hissa/${encodeURIComponent(lessonId)}?carte=1`;
 
 /** Is this lesson path (the lesson page or one of its modules) the path of a lesson that has its board? */
 export const boardLessonOfPath = (path) =>

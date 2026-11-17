@@ -1,4 +1,3 @@
-import React from 'react';
 import { sign } from '@smarter-academy/core/arithmetic/powers.js';
 import * as L from '../../logic/marbleRun';
 

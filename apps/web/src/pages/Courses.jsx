@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useMemo } from 'react';
+import { useState, useContext, useEffect, useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +16,6 @@ import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 export default function CoursesPage() {
   const { t } = useTranslation('common');
-  const { t: ts } = useTranslation('student');
   useDocumentMeta(t('catalogueMetaTitle'), t('catalogueMetaDescription'));
 
   const [searchParams, setSearchParams] = useSearchParams();

@@ -156,7 +156,7 @@ if (!ONLY || ONLY === 'a') {
   check(await placed() === 3, 'labo (clavier) : trois punaises posées');
   // pointeur : lever la quatrième à son prix (70) en glissant
   const pb = await vis(page, '[data-pr-pin="3"] circle').boundingBox();
-  const plane = await vis(page, '[data-pr-plane]').boundingBox();
+  await vis(page, '[data-pr-plane]').boundingBox();
   await page.mouse.move(pb.x + pb.width / 2, pb.y + pb.height / 2); await page.mouse.down();
   await page.mouse.move(pb.x + pb.width / 2, pb.y - 200, { steps: 10 }); await page.mouse.up(); await page.waitForTimeout(250);
   const v4 = await vis(page, '[data-pr-pin="3"]').getAttribute('data-placed');

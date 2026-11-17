@@ -6,8 +6,8 @@
  * field is wrong, in Arabic, before the round-trip. Keep MIN/MAX/PATTERN in
  * step with the PHP class.
  */
-export const NAME_MIN = 2;
-export const NAME_MAX = 50;
+const NAME_MIN = 2;
+const NAME_MAX = 50;
 
 // An ARABIC letter (letter AND Arabic script — so ٠-٩ and Arabic punctuation
 // are out), then Arabic letters, harakat (\p{M}), tatweel (U+0640), or a
@@ -56,7 +56,7 @@ export function personNameErrors({ firstName, lastName }) {
  * (a Latin letter, a digit, too long). `required`/`tooShort` wait for the
  * field to be left — nobody should be scolded after their first letter.
  */
-export const LIVE_ERRORS = new Set(['notArabic', 'invalid', 'tooLong']);
+const LIVE_ERRORS = new Set(['notArabic', 'invalid', 'tooLong']);
 
 /** The error to display for a field right now (see PersonNameFields). */
 export function liveNameError(value, { touched = false } = {}) {

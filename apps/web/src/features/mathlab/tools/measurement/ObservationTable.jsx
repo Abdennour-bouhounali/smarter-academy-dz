@@ -20,7 +20,7 @@ import { formatValue } from '../functionGrapher/grapherFormat.js';
  * mathématiques (§30). L'en-tête, lui, suit la direction de la page.
  */
 export default function ObservationTable({
-  investigation, observations, measures, onRecord, onRemove, onClear, testResults, duplicateWarning,
+  investigation, observations, onRecord, onRemove, onClear, testResults, duplicateWarning,
 }) {
   const { t } = useTranslation('mathlab');
   const columns = tableColumns(investigation);

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { RotateCcw, Lightbulb, BookOpen, CheckCircle2 } from 'lucide-react';
 import { Btn } from './ManipulationTeacherMode';

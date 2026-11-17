@@ -66,7 +66,7 @@ export const RAIL_WIDTH = 80;
 export const MA_CARTE_MIN_WIDTH = 360;
 export const MA_CARTE_MAX_WIDTH = 480;
 export const MA_CARTE_MAX_WIDE = 560;
-export const MA_CARTE_SHARE = 0.4;
+const MA_CARTE_SHARE = 0.4;
 
 /** Largeur en dessous de laquelle une leçon n'est plus confortable. */
 export const MIN_CONTENT_WIDTH = 560;
@@ -86,7 +86,7 @@ export function columnWidthFor(viewportWidth, sidebarWidth = RAIL_WIDTH) {
  * le point de rupture `lg` de Tailwind, celui-là même où la barre latérale
  * élève apparaît — un seul seuil pour toute la coquille.
  */
-export const PRIOR_MIN_WIDTH = 1024;
+const PRIOR_MIN_WIDTH = 1024;
 
 const STORAGE_KEY = 'knowledgeMapPrior';
 

@@ -309,7 +309,7 @@ function shuffle(random, list) {
  * On accepte au centième — assez pour absorber une saisie, trop peu pour
  * valider une confusion.
  */
-export const ANSWER_TOLERANCE = 0.01;
+const ANSWER_TOLERANCE = 0.01;
 
 /**
  * LIRE un nombre saisi : `−2`, `1,5`, `٣`, `۴`, `٢٫٥`, `-3/2`. Rend `NaN`

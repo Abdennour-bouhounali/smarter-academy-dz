@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * « الشكل المقابل » de la وضعية (p. 112) : le cône de révolution couché (base à gauche, sommet à droite) et le

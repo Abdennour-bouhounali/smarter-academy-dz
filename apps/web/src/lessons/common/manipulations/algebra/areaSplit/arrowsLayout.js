@@ -8,8 +8,8 @@ import * as E from '@smarter-academy/core/arithmetic/expansion.js';
  */
 export const CHIP_H = 44;
 export const ARC_H = 78;
-export const MIN_SCALE = 0.55;
-export const MAX_SCALE = 1.32;
+const MIN_SCALE = 0.55;
+const MAX_SCALE = 1.32;
 
 const minus = (s) => s.replace(/-/g, '−');
 /** Le texte d'une puce : le terme AVEC son signe (« −3 »), et un « + 1 » / « − 3 » détaché pour un terme qui suit un autre. */

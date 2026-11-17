@@ -4,7 +4,7 @@ import NumberLineStage from './NumberLineStage.jsx';
 import ValueInput from './ValueInput.jsx';
 import { LabPanel } from '../../shared/LabKit.jsx';
 import {
-  fracToNumber, fracToText, compareFrac, comparisonSign, simplify, fracToDecimal,
+  fracToNumber, fracToText, simplify, fracToDecimal,
 } from './fraction.js';
 import { fracToPercent } from './proportion.js';
 import { snapToFraction, compareValues, decimalTextOf, formatNumber, formatPercent } from './numberValue.js';

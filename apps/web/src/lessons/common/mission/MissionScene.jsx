@@ -1,4 +1,3 @@
-import React from 'react';
 import LibraryScene from './LibraryScene';
 import LibraryWallScene from './LibraryWallScene';
 import ConstructionWallScene from './ConstructionWallScene';

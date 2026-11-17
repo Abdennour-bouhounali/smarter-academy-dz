@@ -13,10 +13,10 @@ const KEY = 'smarter_effects_enabled';
  * Defaults to OFF — sound/vibration must be an opt-in, never a surprise on
  * first visit.
  */
-export const EFFECTS_EVENT = 'sa:effects';
+const EFFECTS_EVENT = 'sa:effects';
 
 /** Écrit la préférence ET prévient tous les interrupteurs ouverts (page, labo, défi) : ils disent toujours la même chose (2026-10-28). */
-export function setEffectsEnabled(next) {
+function setEffectsEnabled(next) {
   storage.setItem(KEY, next ? '1' : '0');
   if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent(EFFECTS_EVENT, { detail: !!next }));
 }

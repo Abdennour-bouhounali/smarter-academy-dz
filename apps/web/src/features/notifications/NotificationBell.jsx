@@ -9,7 +9,7 @@ import { fetchNotifications, markAllNotificationsRead, markNotificationRead } fr
  * Plusieurs cloches peuvent être montées (barre latérale + en-tête mobile) :
  * après un « lu », chacune se relit sur cet événement.
  */
-export const NOTIFICATIONS_CHANGED = 'sa:notifications-changed';
+const NOTIFICATIONS_CHANGED = 'sa:notifications-changed';
 
 /**
  * UNE requête pour toutes les cloches montées. La barre latérale et l'en-tête
@@ -31,7 +31,7 @@ function loadNotifications(token, { force = false } = {}) {
 }
 
 /** Où mène une notification (null : rien à ouvrir). */
-export function notificationTarget(notification) {
+function notificationTarget(notification) {
   if (notification?.type === 'answer_reviewed' && notification.data?.reviewId) {
     return `/espace/tashih/${encodeURIComponent(notification.data.reviewId)}`;
   }

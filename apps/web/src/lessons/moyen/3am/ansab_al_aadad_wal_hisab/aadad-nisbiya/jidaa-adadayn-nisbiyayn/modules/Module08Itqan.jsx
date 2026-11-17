@@ -1,4 +1,3 @@
-import React from 'react';
 import { BossFinal } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
@@ -6,7 +5,6 @@ import { SourceTag } from '../../../../../../common/textbook';
 import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { SELF } from '../content/exercises';
-import { addition } from '../../_unit/unitMeta.js';
 
 /**
  * Module 8 — إختبار أولي (stage: evaluation) : LA SEULE SOURCE DE PREUVE. Cinq épreuves, une الكفاءة principale chacune, réécrites à
@@ -14,7 +12,6 @@ import { addition } from '../../_unit/unitMeta.js';
  * épreuves restent LITTÉRALES ici (l'audit les lit) ; `FINAL` (content/exercises.js) porte les mêmes données, recalculées en BigInt par
  * ../content/content.test.js qui vérifie aussi que le source de ce module contient chaque option.
  */
-const PLATFORM = addition('final_test_item');
 const Q = ({ children, source }) => <span>{children} <SourceTag source={source} /></span>;
 
 export default function Module08Itqan() {

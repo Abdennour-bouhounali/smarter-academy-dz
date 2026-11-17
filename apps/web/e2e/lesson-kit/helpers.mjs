@@ -48,12 +48,12 @@ export function watchErrors(page, bucket) {
 // Seeds lesson progress ONCE per context: addInitScript re-runs on every navigation
 // (including reload), so guard it — otherwise a reload would wipe live progress.
 export const lessonKey = (lessonId) => `u_anon_smarter_lesson_${lessonId}`;
-export async function seed(page, completedModules, key = STORE_KEY) {
+export async function seed(page, completedModules, key) {
   await page.addInitScript(
     ([k, m]) => { if (!localStorage.getItem(k)) localStorage.setItem(k, JSON.stringify({ completedModules: m, completedExercises: [] })); },
     [key, completedModules]
   );
 }
-export async function getProgress(page, key = STORE_KEY) { return page.evaluate((k) => JSON.parse(localStorage.getItem(k) || 'null'), key); }
+export async function getProgress(page, key) { return page.evaluate((k) => JSON.parse(localStorage.getItem(k) || 'null'), key); }
 export async function getXp(page) { return page.evaluate((k) => parseInt(localStorage.getItem(k) || '0', 10), XP_KEY); }
 export async function noHorizontalScroll(page) { return page.evaluate(() => document.scrollingElement.scrollWidth <= window.innerWidth + 1); }

@@ -48,7 +48,6 @@ export const D = (x) => {
   }
   throw new Error(`${x.n}/${x.d} n'est pas un décimal`);
 };
-const isDec = (x) => { try { D(x); return true; } catch { return false; } };
 
 /* ── formes affines a·x + b (a ≠ 0 seulement si la lettre x est libre) ── */
 class Af {
@@ -484,7 +483,6 @@ export function audit(bank) {
     if (want.length) { const vs = want.map((w) => w.split('|')[0]); if (new Set([...vs, j.answer.value]).size !== vs.length + 1) P('deux signatures (ou une signature et la clé) ont la même valeur'); }
 
     /* lecture du texte : chaque $…$ est lisible, sans intermédiaire négatif ; les égalités du corrigé sont vraies */
-    const env = S.x === undefined ? {} : { x: dq(S.x) };
     const checkIsland = (raw, where, ctx) => {
       const asc0 = fromTex(raw);
       if (/\\/.test(asc0)) { P(`${where} : LaTeX hors lecteur « ${raw} »`); return null; }

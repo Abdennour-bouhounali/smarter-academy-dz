@@ -3,9 +3,9 @@ import { LabPanel } from '../../shared/LabKit.jsx';
 import { AlertCircle } from 'lucide-react';
 import {
   formatDegrees, formatRadians, formatRatio, formatSign, formatLength,
-  quadrantKey, UNDEFINED_MARK,
+  quadrantKey,
 } from './trigFormat.js';
-import { quadrantSigns, normalizeDegrees } from './trigMath.js';
+import { quadrantSigns } from './trigMath.js';
 
 /**
  * L'INSPECTEUR (§31) — ce que l'élève LIT pendant qu'il manipule.
@@ -27,7 +27,7 @@ export default function TrigInspector({
   // Le مخبر (scope.js) : au collège, ni radians, ni point du cercle, ni quadrant.
   const show = { radians: true, point: true, quadrant: true, signTable: true, ...(readings ?? {}) };
   const { t } = useTranslation('mathlab');
-  const { degrees, normalized, sin, cos, tan, point, signs, identity, quadrant, axis } = state;
+  const { degrees, normalized, sin, cos, tan, signs, identity, quadrant, axis } = state;
 
   const sinReading = formatRatio(degrees, 'sin', sin, valueMode);
   const cosReading = formatRatio(degrees, 'cos', cos, valueMode);
@@ -243,4 +243,3 @@ export default function TrigInspector({
   );
 }
 
-export { UNDEFINED_MARK, normalizeDegrees };

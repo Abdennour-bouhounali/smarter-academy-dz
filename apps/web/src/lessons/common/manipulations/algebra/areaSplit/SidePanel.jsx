@@ -1,4 +1,3 @@
-import React from 'react';
 import { ChevronLeft, Check, FlaskConical } from 'lucide-react';
 import * as E from '@smarter-academy/core/arithmetic/expansion.js';
 import LabFold from '../../primitives/LabFold';

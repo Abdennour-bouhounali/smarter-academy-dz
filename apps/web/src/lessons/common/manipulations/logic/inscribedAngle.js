@@ -23,15 +23,14 @@
 import * as R from '@smarter-academy/core/arithmetic/rotation.js';
 import * as linear from '@smarter-academy/core/arithmetic/linear.js';
 
-export const MODES = Object.freeze(['striker', 'act4']);
-export const STAGES = Object.freeze(['mezian', 'houaria', 'interior']);
+const STAGES = Object.freeze(['mezian', 'houaria', 'interior']);
 /** Tolérance de l'aimant du cercle (fraction du rayon) et pas de la distance hors du cercle. */
-export const SNAP = 0.07;
-export const RHO_STEP = 0.05;
-export const RHO_MIN = 0.25;
+const SNAP = 0.07;
+const RHO_STEP = 0.05;
+const RHO_MIN = 0.25;
 export const RHO_MAX = 1.45;
 /** Deux positions sont « différentes » si leurs directions diffèrent d'au moins tant de degrés. */
-export const DISTINCT = 15;
+const DISTINCT = 15;
 /** Un sommet à moins de tant de degrés d'un poteau n'a plus d'angle lisible : il est repoussé. */
 export const POST_GAP = 6;
 
@@ -120,7 +119,7 @@ export const moveTo = (s, pos) => Object.freeze({ ...s, pos: legal(s, pos.t, pos
  *   'major'               sur le grand arc : l'angle inscrit qui intercepte l'arc AB ;
  *   'diameter' | 'notDiameter'  à l'étape de مزيان.
  */
-export function verdictOf(s, m) {
+function verdictOf(s, m) {
   if (m.position !== 'on') {
     if (s.stage === 'interior' && m.position === 'inside') return 'interior';
     return m.position;
@@ -130,7 +129,7 @@ export function verdictOf(s, m) {
   return 'major';
 }
 /** Les verdicts qui REFUSENT la position (l'élève voit pourquoi ; l'essai est gardé comme contraste). */
-export const REFUSED = Object.freeze(['inside', 'outside', 'notDiameter']);
+const REFUSED = Object.freeze(['inside', 'outside', 'notDiameter']);
 
 /** Valider la position `pos` (relâchement, pause au clavier, bouton) : un essai jugé, retenu dans la mémoire du lab. */
 export function place(s, pos = s.pos) {
@@ -157,7 +156,7 @@ export function betVerdict(s, value) {
   if (Math.abs(value - s.inscribed) < 1e-9) return 'half';
   return 'other';
 }
-export const BET_REFUSED = Object.freeze(['empty', 'impossible', 'double']);
+const BET_REFUSED = Object.freeze(['empty', 'impossible', 'double']);
 export const canBet = (s) => s.mode === 'striker' && !s.trials.some((t) => t.position === 'on');
 export function bet(s, value) {
   if (!canBet(s)) return s;
@@ -173,7 +172,7 @@ export const hasBet = (s) => s.mode !== 'striker' || (s.bet != null && !s.bet.re
  * (les deux égalités du manuel sont écrites avec SES nombres) : 'double' (\widehat{AOB} = 2\widehat{ADB}) juste ;
  * 'half' (= ½ \widehat{ADB}, l'erreur MISC-MUHITIYA-DIF) et 'equal' réfutés par les nombres.
  */
-export const RELATIONS = Object.freeze(['double', 'half', 'equal']);
+const RELATIONS = Object.freeze(['double', 'half', 'equal']);
 export const mezianReady = (s) => s.trials.some((t) => t.stage === 'mezian' && t.kind === 'diameter');
 export function pickRelation(s, choice) {
   if (!mezianReady(s) || !RELATIONS.includes(choice)) return s;
@@ -191,7 +190,7 @@ export function distinctMajor(s, stage = s.mode === 'act4' ? 'houaria' : null) {
   return out;
 }
 /** Un contraste a-t-il été vu : le sommet hors du cercle, ou sur l'autre arc ? */
-export const contrastSeen = (s) => s.trials.some((t) => t.position !== 'on' || t.kind === 'minor');
+const contrastSeen = (s) => s.trials.some((t) => t.position !== 'on' || t.kind === 'minor');
 
 /** L'étape est-elle accomplie (la carte « التالي » s'ouvre) ? */
 export function stageDone(s, stage = s.stage) {

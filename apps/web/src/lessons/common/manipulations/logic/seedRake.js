@@ -25,13 +25,12 @@
 import { rat, ratText } from '@smarter-academy/core/arithmetic/powers.js';
 import { sumWith, zoneEnds, smallestCommonMultiple, isCommonMultiple, valueOf, toRaw, cellsOf } from '@smarter-academy/core/arithmetic/fractions3.js';
 
-export const WORLDS = Object.freeze(['bed']);
 export const MIN_N = 2;
 export const MAX_N = 60;
 export const START_N = 5;
-export const FREE_ZONES = 3;
-export const FREE_MAX_DEN = 12;
-export const FREE_MAX_TOTAL = 2;
+const FREE_ZONES = 3;
+const FREE_MAX_DEN = 12;
+const FREE_MAX_TOTAL = 2;
 
 export const PRESETS = Object.freeze({
   beginner: { tasks: [
@@ -60,7 +59,7 @@ const toNum = (b) => (b == null ? null : Number(b));
 export const valueText = frText;
 
 /** Une fraction écrite par l'élève « n » et « d » (textes) → `{ n, d }` BigInt ou null. d ≥ 1. */
-export function parseFrac(nText, dText) {
+function parseFrac(nText, dText) {
   const n = latin(nText).trim(); const d = latin(dText).trim();
   if (!/^\d{1,3}$/.test(n) || !/^\d{1,3}$/.test(d)) return null;
   if (BigInt(d) === 0n) return null;
@@ -110,7 +109,7 @@ export const discoveryReady = (s) => !s.free && s.world === 'bed' && !s.tasks.so
 /** Le râteau est-il libre ? Bloqué en `predict` (on écrit N) ; en `plant` il reste libre même une fois la tâche finie (l'étoile « أوسع مسافة؟ » ouvre la chasse après deux espacements). */
 export const canRake = (s) => s.free || taskOf(s).kind === 'plant';
 export const canPlant = (s) => s.free || taskOf(s).kind === 'plant';
-export const isPredict = (s) => !s.free && taskOf(s).kind === 'predict';
+const isPredict = (s) => !s.free && taskOf(s).kind === 'predict';
 const recOf = (s, t = taskOf(s)) => s.record[t.id] ?? { works: [], refused: [] };
 
 /** Le résultat exact d'un planting à l'espacement N pour la tâche courante. */

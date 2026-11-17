@@ -24,12 +24,11 @@ export function eqn(left, right, x) {
   return Object.freeze({ L: Lin.linear(left), R: Lin.linear(right), x: num(x) });
 }
 
-export const sideValue = (P, x) => Lin.linAt(P, x);
 /** Les deux valeurs que prennent les membres pour le x caché. */
 export const values = (e) => ({ left: Lin.linAt(e.L, e.x), right: Lin.linAt(e.R, e.x) });
 /** L'égalité est-elle vraie pour le x caché ? */
 export const holds = (e) => Lin.eq(Lin.linAt(e.L, e.x), Lin.linAt(e.R, e.x));
-export const sameLin = (P, Q) => Lin.eq(P.a, Q.a) && Lin.eq(P.b, Q.b);
+const sameLin = (P, Q) => Lin.eq(P.a, Q.a) && Lin.eq(P.b, Q.b);
 export const sameEq = (e, f) => sameLin(e.L, f.L) && sameLin(e.R, f.R);
 
 const onSide = (P, op, k) => {
@@ -183,7 +182,7 @@ export function shapeOf(e) {
 /** « x = n » (ou « n = x ») : le coefficient vaut exactement 1. */
 export const isSolved = (e) => { const s = shapeOf(e); return !!s && Lin.eq(s.a, 1); };
 /** Le texte LaTeX d'un terme seul (« -3x », « 5 ») et d'un membre ajouté d'un terme (« 3x + 2 - x »). */
-export const termTex = (kind, v) => (kind === 'x' ? Lin.linLatex(Lin.lin(v, 0)) : Lin.linLatex(Lin.lin(0, v)));
+const termTex = (kind, v) => (kind === 'x' ? Lin.linLatex(Lin.lin(v, 0)) : Lin.linLatex(Lin.lin(0, v)));
 export function withTermTex(P, kind, v) {
   const neg = Lin.cmp(v, 0) < 0;
   const abs = neg ? Lin.neg(v) : v;

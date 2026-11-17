@@ -136,7 +136,7 @@ const coef = (expr, which) => R(quad(expr)[which].toString());
 const factor = (expr, p, r, which) => {
   const P = q(p); const Rr = q(r);
   const f = (t) => P.mul(q(t)).add(Rr);
-  const { a, b, c } = quad(expr);
+  const { a, c } = quad(expr);
   const m = a.div(P); const n = c.div(Rr);
   for (const t of [0, 1, -1, 3, 7]) if (!f(t).mul(m.mul(q(t)).add(n)).sub(evaluate(expr, t)).isZero()) throw new Error(`mutarajiha-ula oracle factor : ${expr}`);
   return R((which === 'm' ? m : n).toString());

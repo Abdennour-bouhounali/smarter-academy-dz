@@ -18,7 +18,7 @@ import * as C from '@smarter-academy/core/arithmetic/chainOps.js';
 
 export const NAMES = Object.freeze(['مجموع', 'فرق', 'جداء', 'حاصل قسمة']);
 export const OPS = Object.freeze(['+', '−', '×', '÷']);
-export const FREE_LIMITS = Object.freeze({ maxChars: 20 });
+const FREE_LIMITS = Object.freeze({ maxChars: 20 });
 /** Les poches : leurs étiquettes selon l'opération de la coupe. */
 export const POCKETS = Object.freeze({ '+': ['term1', 'term2'], '−': ['term1', 'term2'], '×': ['factor1', 'factor2'], '÷': ['dividend', 'divisor'] });
 
@@ -43,7 +43,7 @@ export const PRESETS = Object.freeze({
   alone: { tasks: [{ id: 'm1', kind: 'cut', text: '(20 − 8) ÷ (1 + 2)', depth: 'full' }] },
 });
 
-export function buildTask(raw, i = 0) {
+function buildTask(raw, i = 0) {
   const kind = raw.kind ?? 'cut';
   if (kind === 'glue') {
     const value = C.evaluateB(raw.target);
@@ -87,7 +87,6 @@ export function cellKeys(s) {
 }
 const needsWork = (s, k) => { const c = s.cells[k]; return !isNumberCell(c) && (!c.cut || !c.named); };
 const pending = (s) => cellKeys(s).filter((k) => needsWork(s, k) && (taskOf(s).depth === 'full' || k === ''));
-export const isComplete = (s) => pending(s).length === 0;
 
 export function selectOp(s, i) {
   if (!cutAllowed(s)) return s;
@@ -225,7 +224,7 @@ export function freeRead(input) {
   return { ok: true, text, name: C.chainName(text), sentence: C.describe(text), value: C.numText(C.evaluateB(text)), ops: node.tokens.filter((x) => x.t === 'op').map((x) => x.o), rootAt: C.analyse(text).root.opIndex };
 }
 /** Toute valeur intermédiaire ≥ 0 (les agrafes) ; la division par 0 est refusée. */
-export function nonNegative(text) {
+function nonNegative(text) {
   try { return C.staplesOf(text).every((x) => { const [n, d] = [x.value.n, x.value.d]; return Number(n) >= 0 && Number(d) > 0; }); } catch { return false; }
 }
 

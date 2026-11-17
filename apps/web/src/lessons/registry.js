@@ -178,12 +178,6 @@ export function loadLessonConfig(lessonId) {
   return pendingConfigs.get(lessonId);
 }
 
-/** Loads several configs at once; resolves to a Map id → config (built lessons only). */
-export async function loadLessonConfigs(lessonIds) {
-  const configs = await Promise.all(lessonIds.map((id) => loadLessonConfig(id)));
-  return new Map(configs.filter(Boolean).map((c) => [c.id, c]));
-}
-
 /**
  * @returns {Promise<Function|null>} the default export of the lesson's
  *          routes.jsx (its route factory), or null when it isn't built.

@@ -1,11 +1,10 @@
-import React from 'react';
 
 /**
  * Les essais de l'élève au clinomètre (`onTrial`), listés AU-DESSUS d'une question ([data-activity-evidence],
  * MANIPULATION_DNA §9 : l'orientation n'est pas une réponse — les options ne portent pas l'évidence, ses propres
  * essais si). Une ligne par essai, en écriture LTR (nombres, unités, symboles), jamais la réponse de la question.
  */
-export function evidenceLine(e) {
+function evidenceLine(e) {
   if (!e) return null;
   switch (e.stage) {
     case 'miss': return `d = ${e.d} m ، α = ${e.alpha}° ✗`;

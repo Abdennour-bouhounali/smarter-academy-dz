@@ -1,4 +1,3 @@
-import React from 'react';
 import ProblemTable from './ProblemTable';
 import StatementFigure from '../components/StatementFigure';
 import CoordPlane from '../components/CoordPlane';

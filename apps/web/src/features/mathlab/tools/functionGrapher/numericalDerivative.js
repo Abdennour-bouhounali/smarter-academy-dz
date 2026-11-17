@@ -27,7 +27,7 @@ import { isContinuous } from './functionSampler.js';
 const finite = Number.isFinite;
 
 /** Le pas relatif de la différence centrée. */
-export const DERIVATIVE_STEP = 1e-4;
+const DERIVATIVE_STEP = 1e-4;
 /** Au-delà de cet écart RELATIF entre pentes gauche et droite (qui ne se résorbe pas), c'est un angle. */
 const CORNER_TOLERANCE = 1e-3;
 

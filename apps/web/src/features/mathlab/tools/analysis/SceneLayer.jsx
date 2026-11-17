@@ -211,7 +211,7 @@ function RiseRun({ riseRun, toPixel }) {
 }
 
 /** L'aire sous la courbe : un remplissage, positif et négatif distingués (§21). */
-function AreaFill({ paths, toPixel, view, color = COLORS.area }) {
+function AreaFill({ paths, toPixel, color = COLORS.area }) {
   return (
     <g data-ml-area>
       {paths.map((piece, index) => {
@@ -240,7 +240,7 @@ function AreaFill({ paths, toPixel, view, color = COLORS.area }) {
  * Un rectangle dont la hauteur n'est pas définie n'est pas dessiné : il n'est
  * pas non plus dessiné « à zéro », ce qui mentirait sur l'aire.
  */
-function RiemannRectangles({ rectangles, toPixel, view }) {
+function RiemannRectangles({ rectangles, toPixel }) {
   if (!Array.isArray(rectangles) || rectangles.length === 0) return null;
   // Au-delà de ~400 rectangles le trait de contour mange le dessin : on le
   // retire, la masse des barres suffit à montrer la convergence.

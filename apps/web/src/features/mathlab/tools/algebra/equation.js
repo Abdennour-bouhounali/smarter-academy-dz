@@ -25,7 +25,7 @@ import { parseExpression } from '../functionGrapher/expressionParser.js';
 import * as R from './rational.js';
 import { toLinearForm, formToLatex, addForms, subtractForms, scaleForm, isConstant } from './linearForm.js';
 
-export const RELATIONS = Object.freeze(['=', '<', '>', '<=', '>=']);
+const RELATIONS = Object.freeze(['=', '<', '>', '<=', '>=']);
 
 /** Le symbole tel qu'il s'écrit en LaTeX et se lit à l'écran. */
 export const RELATION_LATEX = Object.freeze({ '=': '=', '<': '<', '>': '>', '<=': '\\leq', '>=': '\\geq' });

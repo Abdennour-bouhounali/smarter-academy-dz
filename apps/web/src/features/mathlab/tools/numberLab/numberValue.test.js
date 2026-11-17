@@ -1,8 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   representationsOf, valueToX, xToValue, viewBounds, ticksFor, tickStepFor,
-  snapValue, snapToFraction, compareValues, absoluteValue, frameValues,
-  decimalTextOf, formatNumber, valueFromInput,
+  snapValue, snapToFraction, compareValues, absoluteValue, frameValues, formatNumber, valueFromInput,
 } from './numberValue.js';
 import { makeFrac } from './fraction.js';
 

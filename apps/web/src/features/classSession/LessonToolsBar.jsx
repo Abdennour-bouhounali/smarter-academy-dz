@@ -5,7 +5,6 @@
  * that are shown to the class (« حصّة القسم », « متابعة القسم », « بطاقة المعارف ») open full screen; the others stay
  * inside the teacher's space, with its navigation — hidden only when a tool itself goes full screen.
  */
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { useIsPhoneScreen } from '../../components/auth/RequireLargeScreen';
 import { PHONE_TOOL_IDS } from '../../components/auth/phoneLessons';

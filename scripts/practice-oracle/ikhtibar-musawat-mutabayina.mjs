@@ -462,7 +462,6 @@ function texToAscii(t) {
   }
   return s.replace(/\s+/g, '');
 }
-const numbersIn = (t) => new Set(islands(t).flatMap((i) => texToAscii(i).match(/\d+(?:\.\d+)?/g) ?? []).map((n) => D(dq(n))));
 const relIslands = (t) => islands(t).map(texToAscii).filter((a) => RELS.some((r) => a.includes(r)));
 const relShown = (rel, text) => relIslands(text).some((a) => { try { return sameRel(a, rel); } catch { return false; } });
 const exprShown = (e, text) => islands(text).some((i) => { try { return sameFnMulti(texToAscii(i), e); } catch { return false; } });

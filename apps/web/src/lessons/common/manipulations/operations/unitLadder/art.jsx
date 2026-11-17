@@ -1,4 +1,3 @@
-import React from 'react';
 import * as L from '../../logic/unitLadder';
 import * as T from '@smarter-academy/core/arithmetic/tenPowers.js';
 
@@ -10,7 +9,7 @@ import * as T from '@smarter-academy/core/arithmetic/tenPowers.js';
 export const COL = 36;
 export const PAD = 20;
 export const H = 184;
-export const Y_PLAQUE = 6;
+const Y_PLAQUE = 6;
 export const Y_RULER = 76;
 export const Y_BAND = 130;
 export const Y_TOTAL = 154;
@@ -33,7 +32,6 @@ export const CSS = `
 const SUP = { '-': '⁻', 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴', 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹' };
 /** 10³ · 10⁻² · 10⁰ en caractères en exposant (plaques de la table de longueur). */
 export const tenSup = (n) => `10${String(n).split('').map((c) => SUP[c]).join('')}`;
-export const BRASS = '#B45309';
 
 /** La règle : bois de l'établi, barre de laiton, une colonne par rang (frontières gravées), un trait plus fort à chaque frontière de plaque. */
 export function Ruler({ mode, hot }) {

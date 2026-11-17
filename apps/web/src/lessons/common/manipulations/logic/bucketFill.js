@@ -22,7 +22,7 @@
 import * as space from '@smarter-academy/core/arithmetic/space.js';
 import * as LN from '@smarter-academy/core/arithmetic/linear.js';
 
-export const PHASES = Object.freeze(['level', 'apex', 'volume']);
+const PHASES = Object.freeze(['level', 'apex', 'volume']);
 /** L'ordre d'affichage des cartes (jamais la bonne en premier). */
 export const CARD_IDS = Object.freeze(['avg', 'k', 'k3', 'cyl']);
 
@@ -43,7 +43,7 @@ export function facts({ r, R, H, depth }) {
 export const surfaceRadiusAt = ({ r, R, H }, d) => LN.add(LN.frac(r), LN.div(LN.mul(LN.sub(LN.frac(R), LN.frac(r)), LN.frac(d)), LN.frac(H)));
 
 /** Le niveau de départ de l'eau : jamais celui de la وضعية, jamais vide. */
-export const levelStart = ({ H, depth }) => {
+const levelStart = ({ H, depth }) => {
   const s = Math.max(1, Math.round(H * 0.4));
   return s === depth ? s + 1 : s;
 };

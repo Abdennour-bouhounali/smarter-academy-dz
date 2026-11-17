@@ -61,7 +61,6 @@ const outH = (v) => {
   return `${neg ? '-' : ''}${i}${fs}`;
 };
 const sumH = (list) => list.reduce((t, x) => t + h100(x), 0n);
-const mulH = (x, k) => h100(x) * BigInt(k); // décimal × entier → centièmes
 const labelsOf = (L, n) => figOf(L, n).segments.map((s) => s.label);
 
 /* ── QCM ─────────────────────────────────────────────────────────────────── */

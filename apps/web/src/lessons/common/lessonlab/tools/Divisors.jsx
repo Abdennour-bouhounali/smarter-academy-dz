@@ -2,7 +2,7 @@
  * « قوس القواسم » — every number from 1 to a on a line. The student's hand holds the LENS: each number it passes over is
  * tested; a divisor rises with its partner and an arc joins them. Sweep the whole line and the rainbow of divisors is complete.
  */
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { VW, VH, useDrag, useChime, Tool, M } from '../kit';
 import { divisorsOf, divisorPairs, divide } from '../logic';
 

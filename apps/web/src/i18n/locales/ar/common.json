@@ -1,7 +1,6 @@
 {
   "appName": "Smarter Academy",
   "loading": "جارٍ التحميل...",
-  "loadingApp": "جارٍ تحميل Smarter Academy...",
   "or": "أو",
   "save": "حفظ",
   "cancel": "إلغاء",
@@ -18,9 +17,6 @@
   "filter": "تصفية",
   "seeAll": "عرض الكل",
   "errorGeneric": "حدث خطأ. يرجى المحاولة مرة أخرى.",
-  "errorNetwork": "تعذّر الاتصال بالخادم. تحقق من اتصالك بالإنترنت.",
-  "emptyStateDefault": "لا توجد بيانات لعرضها.",
-  "requiredField": "هذا الحقل إلزامي.",
   "coursesComingSoon": "الدروس قادمة قريبًا",
   "coursesComingSoonBody": "نحضّر حاليًا محتوى السنة الرابعة متوسط والسنة الثالثة ثانوي وفق البرنامج الرسمي الجزائري.",
   "chooseGradeSubtitle": "اختر سنتك الدراسية، ونُعدّ لك مسارك على مقاسها.",
@@ -88,7 +84,6 @@
       "unsupported": "الصورة يجب أن تكون PNG أو JPEG أو WebP.",
       "dropHint": "أو اسحب صورة إلى هنا، أو الصقها بـ ⁦Ctrl+V⁩."
     },
-    "errorSend": "تعذّر إرسال الإبلاغ في الوقت الحالي.",
     "categories": {
       "math_error": {
         "label": "خطأ رياضي",
@@ -155,7 +150,6 @@
     "gradeUpdate": "تعذّر تغيير سنتك الدراسية.",
     "profileUpdate": "تعذّر حفظ اسمك ولقبك.",
     "sendEmail": "تعذّر إرسال البريد الإلكتروني.",
-    "legalVersions": "تعذّر تحميل الوثائق القانونية.",
     "google": "لم يكتمل الاتصال عبر Google.",
     "progressSave": "تعذّر حفظ تقدّمك.",
     "progressLoad": "تعذّر تحميل تقدّمك.",
@@ -169,7 +163,6 @@
     "testSave": "تعذّر حفظ نتيجة الاختبار.",
     "testReset": "تعذّر إعادة ضبط الاختبار.",
     "availability": "تعذّر التحقّق من توفّر المحتوى.",
-    "exercisesLoad": "تعذّر تحميل التمارين.",
     "diagnosticStart": "تعذّر بدء التشخيص.",
     "diagnosticLoad": "تعذّر تحميل التشخيص.",
     "diagnosticAnswer": "تعذّر حفظ إجابتك.",

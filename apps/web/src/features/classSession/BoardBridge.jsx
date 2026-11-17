@@ -8,7 +8,6 @@
  *   stage 'build'  the planks are being laid (`buildMs` says how long);
  *   stage 'done'   it holds, or it crumbles.
  */
-import React from 'react';
 import KidFigure from '../../lessons/common/manipulations/primitives/KidFigure';
 import { kidLook } from '../../lessons/common/manipulations/primitives/kidFigure';
 import { cellsOf } from './lessonScripts';

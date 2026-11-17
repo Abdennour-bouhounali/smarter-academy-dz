@@ -19,12 +19,6 @@ const ENTRY = path.join(SRC, 'main.jsx');
 
 /** Files kept on purpose although the app does not reach them. Each line says why. */
 const KEPT = {
-  // Online payment: pages without a route, kept until the owner decides (plan, decision D4).
-  'pages/Abonnement.jsx': 'billing — decision D4',
-  'pages/AbonnementRetour.jsx': 'billing — decision D4',
-  'pages/Tarifs.jsx': 'billing — decision D4',
-  'components/pricing/PricingCard.jsx': 'billing — decision D4',
-  'services/billingService.js': 'billing — decision D4',
   // Helpers of the games' simulation tests: imported by `sim.test.js` files only.
   'features/madar/defense/bound.js': 'test helper',
   'features/madar/engine/bound.js': 'test helper',

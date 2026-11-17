@@ -124,7 +124,7 @@ export function frame(s) {
   };
 }
 /** Le nœud entier le plus proche, borné au cadre. */
-export function snapNode(s, x, y) {
+function snapNode(s, x, y) {
   const f = frame(s);
   return { x: Math.min(Math.floor(f.xMax), Math.max(Math.ceil(f.xMin), Math.round(x))), y: Math.min(Math.floor(f.yMax), Math.max(Math.ceil(f.yMin), Math.round(y))) };
 }

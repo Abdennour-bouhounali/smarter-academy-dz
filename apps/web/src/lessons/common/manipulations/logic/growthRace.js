@@ -82,7 +82,7 @@ function elementsOf(terms, src) {
  * « 4+x+6+x+8+x » → { groups: [{ k: 1, elements: [age 4, age 6, age 8] }] } ;
  * « 2(6+x) » → { groups: [{ k: 2, elements: [age 6] }] }.
  */
-export function parseSide(src) {
+function parseSide(src) {
   const s = clean(src);
   if (!s) throw new Error('growth-race: expression vide');
   const groups = []; let loose = [];
@@ -132,7 +132,7 @@ function elementLin(model, el, carried) {
 }
 
 /** Le membre `side` construit avec l'ensemble `carried` (ids) — { a, b } exact. */
-export function sideLin(model, side, carried) {
+function sideLin(model, side, carried) {
   const set = new Set(carried);
   let total = lin(0, 0); let i = 0;
   for (const g of model.sides[side].groups) {
@@ -345,7 +345,7 @@ export function answer(model, goal = 'equal') {
 }
 
 /** Le bout de la règle : assez loin pour voir la rencontre ET le dépassement. */
-export function defaultMax(model) {
+function defaultMax(model) {
   const sol = solution(model);
   if (sol.kind === 'natural' || sol.kind === 'fraction') {
     const s = Math.ceil(toNumber(sol.x));
@@ -459,7 +459,7 @@ export function valueText(p) {
   return d ?? fracText(p);
 }
 
-export { add, mul, toNumber, fracLatex };
+export { add, mul, toNumber };
 
 /**
  * Le x PAR DÉFAUT de la course (jamais un essai, jamais écrit dans `lab.trials`) :

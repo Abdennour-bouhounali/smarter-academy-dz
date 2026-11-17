@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * LES PRIMITIVES DES SCÈNES DE L'UNITÉ 3 « الحساب الحرفي » (rollout 2026-11-11 ; conseil du 2026-11-11, « Cross-lesson › Scenes ») — dessinées
@@ -110,21 +109,6 @@ export function BenchRow({ x, y, w, count = 5, color = '#0EA5E9' }) {
       {Array.from({ length: count }, (_, i) => (
         <Bench key={i} x={x + (i + 0.5) * (w / count) - bw / 2} y={y} w={bw} color={i % 2 ? color : '#F59E0B'} />
       ))}
-    </g>
-  );
-}
-
-/** Une tribune en gradins (quatre marches) posée dans un angle du terrain ; `corner` dit vers où montent les marches. */
-export function CornerStand({ x, y, w, h, corner = 'tl', color = '#7C3AED' }) {
-  const steps = 4;
-  const flipX = corner === 'tr' || corner === 'br';
-  const flipY = corner === 'bl' || corner === 'br';
-  return (
-    <g data-corner-stand={corner} transform={`translate(${x + (flipX ? w : 0)} ${y + (flipY ? h : 0)}) scale(${flipX ? -1 : 1} ${flipY ? -1 : 1})`}>
-      {Array.from({ length: steps }, (_, i) => {
-        const s = (steps - i) / steps;
-        return <rect key={i} x={0} y={0} width={w * s} height={h * s} fill={i % 2 ? color : '#A78BFA'} stroke="#2E1065" strokeWidth="0.8" />;
-      })}
     </g>
   );
 }

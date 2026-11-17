@@ -99,21 +99,6 @@ const glance = async (page, size, level, tag) => {
   check(m.over <= 1, `${level} ${tag} ${size.name}: pas de défilement horizontal (${m.over}px)`);
 };
 const state = (page, sel, attr) => page.locator(sel).first().getAttribute(attr);
-/** Glisse la poignée à `frac` (0 … 1) de la règle, relâche. */
-async function dragTo(page, frac) {
-  const knob = page.locator('[data-fg-knob]');
-  const kb = await knob.boundingBox();
-  const ruler = await page.locator('[data-fg-ruler]').boundingBox();
-  const svg = await page.locator('[data-fg-svg]').boundingBox();
-  const cx = kb.x + kb.width / 2; const cy = kb.y + kb.height / 2;
-  // la piste va de tx0 à tx1 : ~ 30 px à l'intérieur de la bande sensible
-  const x0 = ruler.x + 32; const x1 = ruler.x + ruler.width - 32;
-  void svg;
-  await page.mouse.move(cx, cy); await page.mouse.down();
-  await page.mouse.move(x0 + (x1 - x0) * frac, cy, { steps: 10 });
-  await page.mouse.up();
-  await page.waitForTimeout(200);
-}
 
 async function finishAll(page, level) {
   const next = async () => { await page.locator('[data-fg-next]').click(); await page.waitForTimeout(150); };

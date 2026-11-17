@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import ArcTape from '../../../../../common/components/ArcTape';
 import { KNOWLEDGE, METHOD, TAPES } from './content/textbook';

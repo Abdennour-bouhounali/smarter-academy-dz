@@ -5,7 +5,7 @@ import { botInput } from '../explorer/bot';
 import { buzz } from '../engine/audio';
 
 /** La hauteur réservée en bas aux commandes tactiles (px), quand elles sont affichées. */
-export const TOUCH_RESERVE = 150;
+const TOUCH_RESERVE = 150;
 
 /**
  * Le canevas de « المستكشف » : la boucle, le clavier, le rendu. Les commandes

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Ban } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -534,7 +534,7 @@ export function ruleOptions(lab, k, advanced) {
   return opt([k(`discovery.${key}.right`), k(`discovery.${key}.wrongA`), k(`discovery.${key}.wrongB`)], 0, [null, k(`discovery.${key}.whyA`), k(`discovery.${key}.whyB`)], advanced ? 2 : 1);
 }
 
-export function Formal({ lab, k, advanced }) {
+export function Formal({ k, advanced }) {
   if (advanced) {
     return (
       <div className="space-y-2 text-sm font-bold text-emerald-950" data-dg-formal="plane">

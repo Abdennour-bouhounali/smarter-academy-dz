@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { KNOWLEDGE_3, KNOWLEDGE_4 } from './content/textbook';
 

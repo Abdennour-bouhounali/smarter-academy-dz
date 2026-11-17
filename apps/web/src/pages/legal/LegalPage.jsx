@@ -47,15 +47,6 @@ export function LegalSection({ id, number, title, children }) {
   );
 }
 
-/** Un sous-titre à l'intérieur d'une section. */
-export function LegalSubheading({ children }) {
-  return (
-    <h3 className="font-space font-semibold text-base sm:text-lg text-slate-800 mt-6 mb-2">
-      {children}
-    </h3>
-  );
-}
-
 /** Un paragraphe de corps de texte. */
 export function LegalParagraph({ children }) {
   return (
@@ -69,74 +60,6 @@ export function LegalList({ children }) {
     <ul className="font-inter text-slate-600 text-base leading-relaxed space-y-2 ps-5 list-disc marker:text-blue-400">
       {children}
     </ul>
-  );
-}
-
-/**
- * Un encadré d'insistance — pour les clauses qu'un lecteur pressé ne doit pas
- * manquer (renonciation au droit de rétractation, absence d'automatisme,
- * consentement parental). Le fond coloré n'a pas de valeur juridique : il
- * signale simplement que la clause engage.
- */
-export function LegalCallout({ tone = 'blue', title, children }) {
-  const tones = {
-    blue: 'bg-nav-accent-soft border-blue-200',
-    amber: 'bg-amber-50 border-amber-200',
-    slate: 'bg-slate-50 border-slate-200',
-  };
-  return (
-    <div className={`rounded-2xl border px-5 py-4 ${tones[tone] ?? tones.slate}`}>
-      {title && (
-        <p className="font-space font-semibold text-slate-900 text-base mb-1.5">{title}</p>
-      )}
-      <div className="font-inter text-slate-700 text-base leading-relaxed space-y-2">
-        {children}
-      </div>
-    </div>
-  );
-}
-
-/**
- * Un tableau. Toujours enveloppé dans un conteneur qui défile
- * horizontalement : à 400 px de large, un tableau à trois colonnes déborde,
- * et un document légal illisible sur téléphone n'est pas opposable
- * sereinement.
- */
-export function LegalTable({ headers, rows }) {
-  return (
-    <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-      <table className="w-full min-w-[34rem] border-collapse text-start">
-        <thead>
-          <tr className="border-b-2 border-slate-200">
-            {headers.map((h) => (
-              <th
-                key={h}
-                scope="col"
-                className="font-space font-semibold text-slate-900 text-sm py-3 pe-4 align-bottom"
-              >
-                {h}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, i) => (
-            <tr key={i} className="border-b border-slate-100 align-top">
-              {row.map((cell, j) => (
-                <td
-                  key={j}
-                  className={`py-3 pe-4 font-inter text-base leading-relaxed ${
-                    j === 0 ? 'text-slate-800 font-medium' : 'text-slate-600'
-                  }`}
-                >
-                  {cell}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
   );
 }
 

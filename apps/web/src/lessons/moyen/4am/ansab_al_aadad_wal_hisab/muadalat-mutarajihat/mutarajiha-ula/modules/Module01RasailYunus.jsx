@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
@@ -47,8 +47,6 @@ export default function Module01RasailYunus() {
   const [q1b, setQ1b] = useState(false);
   const [q1c, setQ1c] = useState(false);
   const [q2a, setQ2a] = useState(false);
-  const [q2b, setQ2b] = useState(false);
-  const [q2c, setQ2c] = useState(false);
   const [q3, setQ3] = useState(false);
   const [q4, setQ4] = useState(false);
 

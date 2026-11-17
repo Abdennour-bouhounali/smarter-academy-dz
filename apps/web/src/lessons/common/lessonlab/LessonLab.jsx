@@ -10,7 +10,7 @@
  * Nothing scrolls: the page is designed at 1280 × 720 and zoomed to the window. Used by the game world of a lesson
  * (`inline`: it is already inside a full-screen root) and by any lesson page (`?lab=1`, portal to the body).
  */
-import React, { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { isShortScreen } from '../gameworld/engine/phoneScreen';
 import { createPortal } from 'react-dom';
 import { X, Dices, Minus, Plus, Check, Volume2, VolumeX, ChevronRight, ChevronLeft } from 'lucide-react';

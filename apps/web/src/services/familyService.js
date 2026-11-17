@@ -18,11 +18,6 @@ export const updateChild = (token, studentId, weeklyEmail) =>
   call(`/parent/children/${encodeURIComponent(studentId)}`, send('PATCH', token, { weeklyEmail }), KEY);
 export const unlinkChild = (token, studentId) => call(`/parent/children/${encodeURIComponent(studentId)}`, send('DELETE', token), KEY);
 
-// Côté ÉLÈVE.
-export const fetchMyParents = (token) => call('/student/parents', get(token), KEY);
-export const issueParentCode = (token) => call('/student/parents/code', send('POST', token, { consent: true }), KEY);
-export const cancelParentCode = (token) => call('/student/parents/code', send('DELETE', token), KEY);
-export const revokeParent = (token, linkId) => call(`/student/parents/${encodeURIComponent(linkId)}`, send('DELETE', token), KEY);
 export const fetchMyReport = (token, week = 0) => call(`/student/parents/report?week=${week}`, get(token), KEY);
 
 // « التقدّم بالتفصيل » — la même forme pour le parent et pour l'élève.

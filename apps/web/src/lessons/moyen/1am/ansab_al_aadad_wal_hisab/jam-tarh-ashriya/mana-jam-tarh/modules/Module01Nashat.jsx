@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
@@ -27,7 +27,6 @@ import { ACTIVITY, ACT, CHECKUP, GUIDE } from '../content/textbook';
  * Déploiement du prototype (2026-10-28) : « pourquoi طرحنا رغم تزيد / زادت ? » est posée PAR-DESSUS le labo (`StoryBars › chainsOf` :
  * la taille, qui est le tout, le piège, la règle) ; l'étape 1 en garde la TRACE (`checkpoint-done` de `item-2` ou `item-all`).
  */
-const M = (s) => <MathText key={s}>{s}</MathText>;
 const VERDICT = { true: '✓', false: '✗' };
 // « 24,5 − 11,5 » (le calcul tel que le labo l'écrit) → un îlot KaTeX.
 const tex = (calc) => `$${String(calc ?? '').replace(/−/g, '-').replace(/,/g, '{,}')}$`;

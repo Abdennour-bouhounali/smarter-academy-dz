@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
@@ -22,7 +22,6 @@ import { ACTIVITY_6 } from '../content/textbook';
  * RETROFIT 2026-10-15 : module sans labo — le brief ne nomme plus la notion (« مقادير مركّبة ») avant qu'elle ne soit trouvée.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
-const YN = ['نعم', 'لا'];
 
 export default function Module02MaqadirMurakkaba() {
   const [q1a, setQ1a] = useState(false);

@@ -14,11 +14,11 @@ import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 
 export const TOOLS = Object.freeze(['comb', 'nail']);
 export const RANGE = Object.freeze({ comb: [-6, 6], nail: [-3, 3] });
-export const FREE_LIMIT = 5;
+const FREE_LIMIT = 5;
 export const BEAM = 10;
 
 /** Les tâches par défaut de chaque niveau (la leçon peut passer les siennes). Nombres exacts écrits en texte. */
-export const PRESETS = Object.freeze({
+const PRESETS = Object.freeze({
   beginner: {
     step: '1',
     tasks: [
@@ -74,7 +74,6 @@ export const taskDone = (s, i = s.ti) => !!s.done[i];
 export const discoveryReady = (s) => s.tasks.every((_, i) => !!s.done[i]) && s.negTried;
 export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 1;
 export const isIdentity = (s) => Lin.eq(s.v, identity(s.tool));
-export const rangeOf = (tool) => RANGE[tool];
 
 /** La paire de départ (a, b) : de la tâche, ou celle de l'élève en libre. `null` pour une bande. */
 export function startPair(s) {
@@ -132,7 +131,7 @@ export const reached = goalReached;
 /* ── Gestes ──────────────────────────────────────────────────────────────────────────────────── */
 
 /** Arrondit au pas (1 ou 1/2), borne à la portée de l'outil. */
-export function snap(s, raw, tool = s.tool) {
+function snap(s, raw, tool = s.tool) {
   const x = typeof raw === 'number' ? raw : Lin.toNumber(raw);
   const m = Math.max(1, Math.round(1 / Lin.toNumber(s.step)));
   const [lo, hi] = RANGE[tool];
@@ -217,7 +216,7 @@ export const toGuided = (s) => (s.free ? { ...s, free: null, stages: [], tool: '
 /* ── Lecture ─────────────────────────────────────────────────────────────────────────────────── */
 
 export const trialEvidence = (tr) => ({ ...tr });
-export const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => !t.free && t.task === i);
+const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => !t.free && t.task === i);
 
 /**
  * Le prochain geste utile — jamais la réponse : `tool` (choisir une des deux cartes), `drag` (le nœud), `tie` (déposer), `tryNeg` (une fois, le

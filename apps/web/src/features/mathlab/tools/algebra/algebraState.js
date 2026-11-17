@@ -42,10 +42,10 @@ export const SYSTEM_METHODS = Object.freeze(['substitution', 'elimination', 'gra
 
 /** La متراجحة d'ouverture de sa section : un coefficient négatif, pour que le sens se retourne. */
 export const DEFAULT_INEQUALITY_SOURCE = '-2x + 3 < 9';
-export const DEFAULT_SIMPLIFY_SOURCE = '(x + 2)(x - 3)';
-export const DEFAULT_FACTOR_SOURCE = 'x^2 + 5x + 6';
+const DEFAULT_SIMPLIFY_SOURCE = '(x + 2)(x - 3)';
+const DEFAULT_FACTOR_SOURCE = 'x^2 + 5x + 6';
 /** La factorisation d'ouverture de مخبر المتوسط (scope.js). */
-export const MOYEN_FACTOR_SOURCE = 'x^2 + 6x + 9';
+const MOYEN_FACTOR_SOURCE = 'x^2 + 6x + 9';
 
 /** Le chemin des متراجحات est plus court : deux chemins doivent tenir ensemble sous le plafond. */
 export const MAX_INEQUALITY_STEPS = 30;
@@ -58,9 +58,9 @@ const MAX_TEXT = 200;
 /** Un exercice de quatrième tient en quelques pas ; au-delà, on oublie les plus anciens. */
 export const MAX_STEPS = 60;
 
-export const DEFAULT_SOURCE = '2x + 3 = 11';
+const DEFAULT_SOURCE = '2x + 3 = 11';
 
-export const OPERATION_KINDS = Object.freeze(['add', 'subtract', 'multiply', 'divide']);
+const OPERATION_KINDS = Object.freeze(['add', 'subtract', 'multiply', 'divide']);
 
 /** La droite graduée : une fenêtre centrée, jamais dégénérée. */
 export const NUMBER_LINE_MIN_SPAN = 2;
@@ -71,7 +71,7 @@ function isPlainObject(value) {
 }
 
 /** Un `{n, d}` stocké → un rationnel sûr, ou null. */
-export function normalizeRational(raw) {
+function normalizeRational(raw) {
   if (!isPlainObject(raw)) return null;
   const { n, d } = raw;
   if (!Number.isInteger(n) || !Number.isInteger(d) || d === 0) return null;
@@ -93,7 +93,7 @@ function normalizeForm(raw) {
 }
 
 /** Une équation stockée → sûre, ou null. */
-export function normalizeEquation(raw) {
+function normalizeEquation(raw) {
   if (!isPlainObject(raw)) return null;
   const left = normalizeForm(raw.left);
   const right = normalizeForm(raw.right);
@@ -129,7 +129,7 @@ function normalizeNumberLine(raw) {
  * Le panneau de paramètres (`a·x + b = c`) : trois entiers de manuel, ou
  * null quand le panneau est fermé. `a = 0` effacerait l'inconnue — refusé.
  */
-export function normalizeParameters(raw) {
+function normalizeParameters(raw) {
   if (!isPlainObject(raw)) return null;
   const read = (value, fallback) => (Number.isInteger(value) && Math.abs(value) <= 99 ? value : fallback);
   const a = read(raw.a, 2) || 2;
@@ -142,7 +142,7 @@ export function normalizeParameters(raw) {
  * interrompt la relecture : on garde le chemin jusqu'à lui, jamais un
  * historique troué qui ne raconterait plus rien.
  */
-export function normalizePath(raw, { defaultSource = DEFAULT_SOURCE, maxSteps = MAX_STEPS } = {}) {
+function normalizePath(raw, { defaultSource = DEFAULT_SOURCE, maxSteps = MAX_STEPS } = {}) {
   const source = isPlainObject(raw) ? raw : {};
   const steps = [];
 
@@ -179,7 +179,7 @@ function readText(value, fallback, max = MAX_TEXT) {
   return typeof value === 'string' && value.trim() ? value.slice(0, max) : fallback;
 }
 
-export function normalizeSystems(raw) {
+function normalizeSystems(raw) {
   const source = isPlainObject(raw) ? raw : {};
 
   return {
@@ -189,7 +189,7 @@ export function normalizeSystems(raw) {
   };
 }
 
-export function normalizeFunctions(raw) {
+function normalizeFunctions(raw) {
   const source = isPlainObject(raw) ? raw : {};
   const family = FUNCTION_FAMILIES.includes(source.family) ? source.family : DEFAULT_FUNCTION.family;
   let a = normalizeCoefficient(source.a, 'a', DEFAULT_FUNCTION.a);
@@ -251,7 +251,7 @@ export function createAlgebraData(seed = undefined, context = {}) {
 }
 
 /** Le pas affiché. */
-export function currentStep(data) {
+function currentStep(data) {
   return data.steps[data.cursor] ?? data.steps[data.steps.length - 1];
 }
 
@@ -301,11 +301,6 @@ export function resetTo(data, equation, source) {
 }
 
 // ── V2 : les sections ─────────────────────────────────────────────────────
-
-/** Le sous-objet d'une section-CHEMIN : le niveau supérieur pour les معادلات. */
-export function pathOf(data, section) {
-  return section === 'inequalities' ? data.inequalities : data;
-}
 
 /** Applique `updater` au chemin d'une section, sans toucher aux autres. */
 export function updatePath(data, section, updater) {

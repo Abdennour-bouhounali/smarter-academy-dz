@@ -22,8 +22,6 @@ import * as S from '@smarter-academy/core/arithmetic/substitution.js';
 import { rat, parseRat, eq, ratText, sign } from '@smarter-academy/core/arithmetic/powers.js';
 import { termsTex } from '@smarter-academy/core/arithmetic/polynomials.js';
 
-export const WORLDS = Object.freeze(['run', 'twins']);
-
 /* ═════════════ Les billes ═════════════ */
 
 /** Une bille : { id, v (rationnel), fmt: 'int'|'frac'|'dec' } ; `id` est son texte (« -1/2 »). */
@@ -64,7 +62,7 @@ export const TWIN_TASKS = Object.freeze([
 ]);
 /** « جرّب أعدادك » : les six cartes d'expression. */
 export const FREE_CARDS = Object.freeze(['3x-4', 'x²+1', '-x²', '(x-1)(x+2)', '2x²-x', '5-3x']);
-export const FREE_RANGE = Object.freeze({ int: [-9, 9], num: [1, 9], den: [1, 9] });
+const FREE_RANGE = Object.freeze({ int: [-9, 9], num: [1, 9], den: [1, 9] });
 
 const TREES = new Map();
 export function treeOf(text) {
@@ -116,20 +114,18 @@ export const lettersOf = (s) => (s.world === 'run' ? S.letters(s.tree) : ['x']);
 export const slotsOf = (s) => (s.world === 'run' ? S.slots(s.tree) : []);
 export const filled = (s) => lettersOf(s).every((l) => s.env[l]);
 export const canRun = (s) => s.world === 'run' && filled(s) && (!s.predict || s.custom || !!s.predicted);
-export const envValues = (s) => Object.fromEntries(Object.entries(s.env).map(([k, m]) => [k, m]));
 export const stationsOf = (s) => (s.world === 'run' ? S.trace(s.tree, filled(s) ? s.env : zeroEnv(s)).map((st) => ({ id: st.id, op: st.op, n: st.n, ready: filled(s), args: st.args, value: st.value })) : []);
 function zeroEnv(s) { return Object.fromEntries(S.letters(s.tree).map((l) => [l, rat(0)])); }
 /** Les stations SANS valeurs (avant le lâcher) : l'ordre de calcul seul. */
 export const stationSkeleton = (s) => S.trace(s.tree, zeroEnv(s)).map((st) => ({ id: st.id, op: st.op, n: st.n, implicit: st.implicit }));
-export const targetMatches = (s) => {
+const targetMatches = (s) => {
   const tk = s.tasks[s.ti];
   if (s.custom || !tk?.target) return false;
   return Object.entries(tk.target).every(([l, t]) => s.env[l] && eq(s.env[l].v, parseRat(t)));
 };
 export const lineTokens = (s) => S.writeLine(s.tree, s.env, s.choices);
-export const defectOf = (s, i) => (filled(s) ? S.slotDefect(s.tree, s.env, s.choices, i) : null);
 export const negativeSlots = (s) => slotsOf(s).filter((sl) => s.env[sl.name] && sign(s.env[sl.name].v) < 0).map((sl) => sl.i);
-export const everyNegativeBracketed = (s) => negativeSlots(s).every((i) => s.choices[i]?.brackets);
+const everyNegativeBracketed = (s) => negativeSlots(s).every((i) => s.choices[i]?.brackets);
 export const truthOfTwin = (s) => (s.world === 'twins' && s.a && s.b ? S.samePolynomial(s.a, s.b) : null);
 
 /* ═════════════ Monde « run » ═════════════ */
@@ -224,7 +220,7 @@ export function claim(s, kind) {
 
 /* ═════════════ Commun ═════════════ */
 
-export const nextUnsolved = (s) => { for (let k = 1; k <= s.tasks.length; k += 1) { const i = (s.ti + k) % s.tasks.length; if (!s.done[i]) return i; } return -1; };
+const nextUnsolved = (s) => { for (let k = 1; k <= s.tasks.length; k += 1) { const i = (s.ti + k) % s.tasks.length; if (!s.done[i]) return i; } return -1; };
 export const canNext = (s) => (s.custom ? s.done.some((d) => !d) : s.solvedNow && nextUnsolved(s) >= 0);
 export function nextTask(s) {
   if (!canNext(s)) return s;

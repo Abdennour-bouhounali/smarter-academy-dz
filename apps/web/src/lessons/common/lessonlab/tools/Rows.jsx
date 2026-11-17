@@ -2,7 +2,7 @@
  * « صفوف القسمة » — a counters set in rows of b. The student's hand holds the WALL: its place IS the divisor.
  * Full rows are teal, the counters left over are amber; when nothing is left the whole tray turns green.
  */
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { VW, VH, useDrag, useChime, Tool, M } from '../kit';
 import { rowsLayout } from '../logic';
 

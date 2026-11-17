@@ -6,7 +6,7 @@
  *   a line opens on the detail — each الكفاءة in words, each exercise with what he got right, and right at the first try.
  * The order is « who needs me first », never a ranking. Read-only; nothing here is written anywhere.
  */
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Check, ChevronDown, Eye, RefreshCw, RotateCcw, X } from 'lucide-react';
 import MathText from '../../lessons/common/components/MathText';
 import RichText from '../practice/RichText';

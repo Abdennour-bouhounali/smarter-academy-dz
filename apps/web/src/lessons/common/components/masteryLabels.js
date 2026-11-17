@@ -16,8 +16,8 @@ import i18n from '../../../i18n';
  */
 
 export const MASTERY_STATE_KEYS = ['unassessed', 'gap', 'reinforce', 'mastered'];
-export const STATUS_REASONS = ['threshold', 'insufficient_evidence', 'needs_assessment'];
-export const FRESHNESS_LEVELS = ['fresh', 'aging', 'stale'];
+const STATUS_REASONS = ['threshold', 'insufficient_evidence', 'needs_assessment'];
+const FRESHNESS_LEVELS = ['fresh', 'aging', 'stale'];
 
 /**
  * Le nombre d'items distincts que le moteur exige par défaut (plan §14,

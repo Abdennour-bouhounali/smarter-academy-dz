@@ -11,21 +11,16 @@
  *                 (2 et 3 : aucun dixième ne remplit ; la touche √ donne √13 exact).
  * Les essais de « جرّب أعدادك » portent `free: true` et ne comptent jamais pour les tâches ni la découverte.
  */
-import { frac, cmp, add } from '@smarter-academy/core/arithmetic/linear.js';
+import { frac, cmp } from '@smarter-academy/core/arithmetic/linear.js';
 import * as PY from '@smarter-academy/core/arithmetic/pythagoras.js';
 
 export const ANGLE_MIN = 30;
 export const ANGLE_MAX = 150;
 export const FREE_MIN = 1;
 export const FREE_MAX = 12;
-export const ROOT_AFTER = 2;
+const ROOT_AFTER = 2;
 /** Le ruban (mode longueur) couvre les longueurs BC des angles 50° … 130° : le grand bassin reste à la taille de la scène. */
 export const TAPE_ANGLES = [50, 130]; // la touche √ s'ouvre après deux versements sans succès (la tâche `surd`)
-
-export const TASKS = Object.freeze({
-  angle: ['fill', 'compare'],
-  length: ['thirteen', 'surd'],
-});
 
 const num = (x) => { const f = typeof x === 'object' ? x : frac(Math.round(Number(String(x).replace(',', '.')) * 1000), 1000); return f.n / f.d; };
 const legTxt = (x) => String(x).replace('.', ',');
@@ -38,7 +33,7 @@ export function init(numbers) {
 }
 
 /** Les tâches d'un mode : angle → `fill` puis `compare` sur la même machine ; longueur → `thirteen` puis `surd` (2 et 3 : √13). */
-export function defaultTasks(mode, b, c) {
+function defaultTasks(mode, b, c) {
   return mode === 'length'
     ? [{ id: 'thirteen', b: b ?? '5', c: c ?? '12' }, { id: 'surd', b: '2', c: '3' }]
     : [{ id: 'fill', b: b ?? '3', c: c ?? '4' }, { id: 'compare', b: b ?? '3', c: c ?? '4' }];
@@ -130,7 +125,7 @@ export function setTenths(s, t) {
 export const nudge = (s, d) => (s.mode === 'angle' ? setAngle(s, s.angle + d) : setTenths(s, (s.exact ? Math.round(bcOf(s).value * 10) : s.tenths) + d));
 
 /** Les versements de la tâche en cours (hors essais libres). */
-export const taskTrials = (s) => s.trials.filter((t) => !t.free && t.task === taskOf(s));
+const taskTrials = (s) => s.trials.filter((t) => !t.free && t.task === taskOf(s));
 
 /** La touche √ est-elle disponible ? (mode longueur : dans la tâche `surd` après deux versements, toujours en libre). */
 export function canRoot(s) {
@@ -185,11 +180,8 @@ export function pour(s) {
   return r;
 }
 
-/** Le versement est-il terminé (l'animation est un détail de la vue) ? La machine se remplit dès qu'on bouge. */
-export const poured = (s) => Boolean(s.pour);
-
 export const taskDone = (s) => !s.free && Boolean(s.done[s.ti]);
-export const allDone = (s) => s.done.every(Boolean);
+const allDone = (s) => s.done.every(Boolean);
 export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 1;
 
 /** « أعِد التجربة » (carte de questions) : la MÊME tâche repart — ses versements sont effacés, la machine revient au départ. */
@@ -258,7 +250,7 @@ const sub2 = (p, q) => [p[0] - q[0], p[1] - q[1]];
 const add2 = (p, q) => [p[0] + q[0], p[1] + q[1]];
 
 /** Le carré construit à l'EXTÉRIEUR du triangle sur [PQ] (R est le troisième sommet) : [P, Q, Q', P']. */
-export function outerSquare(P, Q, R) {
+function outerSquare(P, Q, R) {
   const d = sub2(Q, P);
   let n = [-d[1], d[0]];
   const toR = sub2(R, P);
@@ -381,7 +373,7 @@ export function pourFrame(s, t) {
  */
 /** Le guide montre la CARTE de commande (−/+ ET sa lecture), jamais la poignée sur la scène : sa bulle ne couvre ni le triangle ni
  * les bassins, et la carte entière ne donne aucun sens (« + » ou « − ») à suivre. */
-export const STEPPER = '[data-pt-stepper]';
+const STEPPER = '[data-pt-stepper]';
 
 export function coachOf(s) {
   if (s.free) return null;
@@ -402,5 +394,3 @@ export function coachOf(s) {
   return { id: 'again', target: STEPPER, gesture: 'drag' };
 }
 
-/** Pour les tests et l'e2e : la somme exacte de l'eau (fraction). */
-export const waterExact = (s) => add(PY.square(legsOf(s).b), PY.square(legsOf(s).c));

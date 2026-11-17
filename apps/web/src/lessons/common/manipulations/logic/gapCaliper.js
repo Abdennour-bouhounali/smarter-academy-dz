@@ -15,13 +15,13 @@
  */
 import * as R from '@smarter-academy/core/arithmetic/relative.js';
 
-export const MIN = -1000n;
+const MIN = -1000n;
 export const MAX = 1200n;
 const abs = (x) => (x < 0n ? -x : x);
 const T = (v) => R.text(v);
 
 /** Les tâches normalisées en centièmes. Lève si mal formées. */
-export function normalizeTasks(list) {
+function normalizeTasks(list) {
   return list.map((t, i) => {
     const id = t.id ?? `t${i}`;
     const anchor = R.parse(t.anchor);
@@ -40,7 +40,7 @@ export function normalizeTasks(list) {
   });
 }
 
-export const PRESETS = Object.freeze({
+const PRESETS = Object.freeze({
   beginner: { tasks: [
     { id: 'g1', anchor: '-4', target: '9' }, { id: 'g2', anchor: '-7', target: '-2' }, { id: 'g3', anchor: '3', target: '11' }, { id: 'g4', anchor: '-6', target: '0' },
   ] },
@@ -67,7 +67,7 @@ export const taskDone = (s, i = s.ti) => !!s.done[i];
 export const discoveryReady = (s) => s.tasks.every((_, i) => !!s.done[i]);
 export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 1;
 export const isAdvanced = (s) => s.tasks.some((t) => t.predict || t.kind === 'swing');
-export const stepOf = (s) => (isAdvanced(s) ? 50n : 100n);
+const stepOf = (s) => (isAdvanced(s) ? 50n : 100n);
 /** L'ancre et la graine visée du moment (mode libre : les deux lectures de l'élève). */
 export const anchorOf = (s) => (s.free ? s.free.a : taskOf(s).anchor);
 export const targetOf = (s) => (s.free ? s.free.b : taskOf(s).kind === 'swing' ? null : taskOf(s).target);
@@ -107,13 +107,12 @@ function modelOf(t, v) {
 const read = (raw) => { try { return R.parse(String(raw ?? '').replace(/[⁦⁩]/g, '')); } catch { return null; } };
 
 /** Le jugement d'une distance écrite : { ok, model, value } — `model` ∈ right | neg | subDist | addSame | other | format. */
-export function judgeGap(task, raw) {
+function judgeGap(task, raw) {
   const v = read(raw);
   if (v === null) return { ok: false, model: 'format', value: null };
   const model = modelOf(task, v);
   return { ok: model === 'right', model, value: v };
 }
-export const judgePredict = judgeGap;
 
 /* ── Fixer la mâchoire ── */
 export function fix(s) {
@@ -160,10 +159,8 @@ export function setDir(s, dir) {
   const trial = Object.freeze({ kind: 'swing', task: s.ti, dir });
   return { ...s, dir, moved: true, trials: [...s.trials, trial], last: trial, ghost: null };
 }
-/** Le point où la mâchoire se pose pour la direction courante. */
-export const swingLanding = (s) => { const t = taskOf(s); return s.dir === 'up' ? t.anchor + t.d : t.anchor - t.d; };
 
-export function judgeFound(task, dir, raw) {
+function judgeFound(task, dir, raw) {
   const v = read(raw);
   const want = dir === 'up' ? task.anchor + task.d : task.anchor - task.d;
   const other = dir === 'up' ? task.anchor - task.d : task.anchor + task.d;

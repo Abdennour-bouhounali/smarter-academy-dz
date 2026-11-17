@@ -2,7 +2,6 @@
  * « آلة الجمل الأربع » — two numbers go in, four sentences come out: true TOGETHER or false TOGETHER, with the equality that
  * proves it. The lever swaps the two numbers: the classic trap (« 6 قاسم للعدد 42 » against « 42 قاسم للعدد 6 ») is one pull away.
  */
-import React from 'react';
 import { Tool, Txt, useChime } from '../kit';
 import { sentences } from '../logic';
 

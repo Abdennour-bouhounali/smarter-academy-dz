@@ -12,7 +12,7 @@ import { apiMessage } from './apiMessage';
  * pas dans la requête —, l'idempotence, et l'arithmétique de la maîtrise.
  */
 
-async function call(path, options, fallbackMessage) {
+async function call(path, options) {
   const { ok, status, data } = await apiRequest(path, options);
   if (!ok) {
     const error = new ApiError(apiMessage('practice', data, status), classifyStatus(status), status);

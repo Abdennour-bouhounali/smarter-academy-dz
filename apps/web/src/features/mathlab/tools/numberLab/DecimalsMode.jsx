@@ -5,7 +5,7 @@ import { LabPanel } from '../../shared/LabKit.jsx';
 import FractionShape from './FractionShape.jsx';
 import ValueInput from './ValueInput.jsx';
 import {
-  decimalToFrac, simplify, fracToText, fracToDecimal, simplifyFactor,
+  decimalToFrac, fracToText, fracToDecimal,
 } from './fraction.js';
 import { fracToPercent } from './proportion.js';
 import { placeValues } from './numberTheory.js';

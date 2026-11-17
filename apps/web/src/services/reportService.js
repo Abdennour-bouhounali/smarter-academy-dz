@@ -50,7 +50,7 @@ export async function submitReport(token, { source, context = {}, category, note
  * d'affichage, pas de quoi identifier quelqu'un. Le serveur ne conserve ces
  * champs que pour les catégories qui décrivent une panne.
  */
-export function collectDiagnostics() {
+function collectDiagnostics() {
   if (typeof window === 'undefined') return {};
 
   return {

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Group } from 'three';
 import * as linear from '@smarter-academy/core/arithmetic/linear.js';
@@ -286,7 +286,6 @@ function Slicer({ lab, setLab, k, theme, solved, formal, letter, foot, overlay }
   const S = budget;
   drawnH.current = S;
   const stage = lab.stage;
-  const st = lab.cfg.stages[stage];
   const solid = L.SOLID_OF[stage];
   const actions = useRef(null);
   actions.current = {
@@ -375,7 +374,7 @@ function Tabs({ lab, setLab, k, narrow }) {
 
 /* ════════════════════════════ le rail (la variable, HTML) ════════════════════════════ */
 
-function Rail({ lab, setLab, k, S, letter, narrow }) {
+function Rail({ lab, setLab, k, letter, narrow }) {
   const stage = lab.stage;
   const st = lab.cfg.stages[stage];
   const vertical = !!VERTICAL[stage];

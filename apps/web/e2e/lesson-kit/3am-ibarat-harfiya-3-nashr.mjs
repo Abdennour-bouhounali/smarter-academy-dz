@@ -175,12 +175,11 @@ if (!process.env.GLANCE_ONLY) {
   await page.screenshot({ path: `${OUT}/lab-cut.png` });
 
   // les signes : on essaie « + » puis, si refusé, « − » ; un refus donne les deux aires
-  let refusedSign = 0;
   for (const id of await lab.locator('[data-as-patch]').evaluateAll((els) => els.map((e) => e.dataset.asPatch))) {
     const card = lab.locator(`[data-as-patch="${id}"]`).first();
     await card.locator('[data-as-sign=plus]').click();
     await page.waitForTimeout(250);
-    if (await lab.locator('[data-as-refused=sign]').count()) { refusedSign += 1; await card.locator('[data-as-sign=minus]').click(); await page.waitForTimeout(250); }
+    if (await lab.locator('[data-as-refused=sign]').count()) { await card.locator('[data-as-sign=minus]').click(); await page.waitForTimeout(250); }
   }
   await page.waitForTimeout(300);
   check(await lab.getAttribute('data-solved') === 'true', 'p1 : toutes les parcelles décidées → tâche cochée');

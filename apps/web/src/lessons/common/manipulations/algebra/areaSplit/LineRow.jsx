@@ -1,4 +1,3 @@
-import React from 'react';
 import { termTex, termsTex } from '@smarter-academy/core/arithmetic/expansion.js';
 import MathText from '../../../components/MathText';
 import * as L from '../../logic/areaSplit';
@@ -12,7 +11,7 @@ const ring = 'outline-none focus-visible:ring-4 focus-visible:ring-indigo-300';
 const M = (s) => <MathText>{`$${s}$`}</MathText>;
 const Box = () => <span aria-hidden="true" className="inline-block h-7 w-12 rounded-md border-2 border-dashed border-emerald-300 bg-emerald-50/60 align-middle" />;
 
-export function CoefStepper({ lab, setLab, p, k }) {
+function CoefStepper({ lab, setLab, p, k }) {
   const v = L.coefOf(lab, p);
   const judged = lab.checked[p];
   const locked = lab.solvedNow;

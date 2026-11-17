@@ -20,8 +20,7 @@ import {
 } from './geoMath.js';
 
 export const SNAP_PX = 12;
-export const EDGE_PX = 14;
-export const DIRECTION_TOLERANCE = toRadians(2.5);
+const DIRECTION_TOLERANCE = toRadians(2.5);
 
 /** Un objet de la scène contient-il le point de paramètre t (droite) ? */
 const onLinear = (l, t) => (l.kind === 'segment' ? t >= -1e-6 && t <= 1 + 1e-6 : l.kind === 'ray' ? t >= -1e-6 : true);
@@ -110,9 +109,6 @@ export function snapToEdge(p, edges, tolerance) {
 
   return { edge: best.edge, point: projectOnLine(p, best.edge.a, best.edge.b).point };
 }
-
-/** Garde `p` sur la droite de `edge` : le crayon glisse le long de la règle. */
-export const slideOnEdge = (p, edge) => projectOnLine(p, edge.a, edge.b).point;
 
 /**
  * Aimante la DIRECTION d'un trait qui part de `start` : horizontale,

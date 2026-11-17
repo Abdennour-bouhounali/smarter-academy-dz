@@ -3,7 +3,7 @@
  * where, the teams) and the TEST of the lesson (the platform's default, his own copy, his own questions).
  * An adult's screen: calm, nothing to learn before using it, every action undoable.
  */
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ArrowDown, ArrowUp, Plus, RotateCcw, Trash2, Pencil, Users, Minus, Check } from 'lucide-react';
 import MathText from '../../lessons/common/components/MathText';
 import {

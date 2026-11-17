@@ -1,21 +1,3 @@
-/**
- * LES MÉDAILLES (propriétaire, 2026-10-06 : « motiver l'élève qui répond juste,
- * plusieurs niveaux, du bronze à l'or ») — logique PURE, sans React.
- *
- * Une médaille récompense une réponse JUSTE (`correct` / `equivalent_correct`)
- * à une étape de feuille d'examen :
- *  - 🥇 or      : sans aucun إرشاد ET dans le temps de l'étape ;
- *  - 🥈 argent  : un seul « défaut » — un إرشاد, OU le temps dépassé ;
- *  - 🥉 bronze  : deux défauts ou plus.
- * Une « بيّن أن » (auto-évaluée) ne rapporte RIEN : l'élève s'y note lui-même —
- * pas plus qu'une copie en photo auto-notée (`evaluatedBy: 'self'`). Corrigée
- * par l'ENSEIGNANT (`evaluatedBy: 'teacher'`, « تصحيح الأستاذ »), elle compte.
- * Points : or 3, argent 2, bronze 1 → un RANG.
- *
- * Le serveur applique la MÊME règle (App\Domain\Practice\Medals) pour la
- * خزانة الميداليات ; les deux lisent la fixture `medals.fixture.json`.
- */
-export const MEDALS = Object.freeze(['gold', 'silver', 'bronze']);
 export const MEDAL_POINTS = Object.freeze({ gold: 3, silver: 2, bronze: 1 });
 
 const SUCCESS = new Set(['correct', 'equivalent_correct']);
@@ -43,7 +25,7 @@ export function medalReason({ hintsUsed = 0, seconds = null, limit = null }) {
 }
 
 /** Les rangs, par total de points (or 3 / argent 2 / bronze 1). */
-export const RANKS = Object.freeze([
+const RANKS = Object.freeze([
   { key: 'novice', min: 0 },
   { key: 'diligent', min: 15 },
   { key: 'excellent', min: 40 },

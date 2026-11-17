@@ -28,7 +28,7 @@ import { differenceSteps, euclidSteps } from '@smarter-academy/core/arithmetic/d
 /** Au-delà, on ne DESSINE plus les pas (on les compte, et on le dit). */
 export const DISPLAY_CAP = 200;
 /** La borne des deux nombres : ce sont des nombres de collège, pas des clés RSA. */
-export const DIFF_MAX_VALUE = 1_000_000;
+const DIFF_MAX_VALUE = 1_000_000;
 
 /**
  * Lire un nombre tapé par l'élève pour la méthode des différences.

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { Minus, Plus, ChevronDown, ChevronUp, RotateCcw } from 'lucide-react';
@@ -602,7 +602,7 @@ export const QUESTIONS = {
       explain: Mx(k, 'count.explain', { ...o, calc: dl(`${f.gs.map((g) => g.n).join(' + ')} = ${f.N}`) }),
     };
   },
-  how: (lab, k, ctx) => {
+  how: (lab, k) => {
     const tr = lab.trials[0];
     const f = factsOf(lab, tr);
     const lvl = ST.approx(f.level, 2).replace(',', '{,}');
@@ -647,7 +647,6 @@ export const QUESTIONS = {
     };
   },
   cmp: (lab, k, ctx) => {
-    const lv = lab.classes.map((c) => L.level(lab, c.id));
     const tie = L.sameLevels(lab);
     const best = lab.classes.reduce((x, c) => (LIN.cmp(L.level(lab, c.id), L.level(lab, x)) > 0 ? c.id : x), 0);
     const A = ctx.cName(0); const B = ctx.cName(1);

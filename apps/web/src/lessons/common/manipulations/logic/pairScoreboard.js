@@ -32,7 +32,7 @@ const VARS = ['x', 'y'];
 /* ── Lecture de la jumla ─────────────────────────────────────────────────────────────── */
 
 /** « x+y=32|2(x-5)=y-3 » → les deux équations écrites, leurs membres, la jumla exacte. */
-export function parseSystem(system, vars = VARS) {
+function parseSystem(system, vars = VARS) {
   const src = String(system).split('|').map((s) => s.trim());
   if (src.length !== 2) throw new Error(`pair-scoreboard: une jumla a deux équations (« ${system} »)`);
   const sys = LS.system(src[0], src[1], vars);
@@ -59,7 +59,7 @@ const num = (p) => Lin.toNumber(p);
  *           « après » qui grise a hommes et b femmes et compare y − b à m fois x − a ;
  *   none    toute autre jumla : les deux jauges seules.
  */
-export function shapeOf(P) {
+function shapeOf(P) {
   const [e1, e2] = P.sys;
   const one = (p) => Lin.eq(p, 1);
   const countEq1 = one(e1.a) && one(e1.b) && isInt(e1.c) && num(e1.c) > 0;
@@ -82,14 +82,14 @@ export function shapeOf(P) {
 }
 
 /** Le monde affiché : le thème demandé s'il convient à la structure, sinon le dessin neutre. */
-export function worldOf(theme, shape) {
+function worldOf(theme, shape) {
   if (shape.kind === 'after') return 'staff';
   if (shape.kind === 'count') return theme === 'coins' ? 'coins' : 'football';
   return 'abstract';
 }
 
 /** Les bornes de chaque poignée : celles de l'histoire (on ne part pas à la retraite à 4 hommes). */
-export function rangesFor(shape, override) {
+function rangesFor(shape, override) {
   if (override) return { x: { ...override.x }, y: { ...override.y } };
   if (shape.kind === 'after') return { x: { min: shape.a, max: shape.N }, y: { min: shape.b, max: shape.N } };
   if (shape.kind === 'count') {
@@ -280,7 +280,7 @@ const numTex = (raw) => raw.replace(/[.,]/g, '{,}');
  * Un membre écrit en LaTeX, tel quel (`vals` absent : « 2(x - 5) ») ou avec les valeurs
  * substituées (« 2(13 - 5) », « 3 \times 6 + 4 », « 20 \times 24 + 10 \times 13 »).
  */
-export function sideTex(src, vars = VARS, vals = null) {
+function sideTex(src, vars = VARS, vals = null) {
   const tk = tokens(src, vars);
   let out = '';
   tk.forEach((tok, idx) => {

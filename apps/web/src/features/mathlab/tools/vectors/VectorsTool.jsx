@@ -19,7 +19,6 @@ import {
 } from './vectorState.js';
 import { removeObjects } from './vectorScene.js';
 import { getExperiment } from './experiments.js';
-import { useCompactCharts } from '../probabilityStats/useMediaQuery.js';
 import { clampToFeatures, vectorsFeatures } from './scope.js';
 
 /** Le délai entre un changement et sa remise à la coquille (qui attend encore avant d'enregistrer). */
@@ -48,7 +47,6 @@ export default function VectorsTool({ initialData, onChange, onReady, capabiliti
     : createVectorsData(), features));
   const [panelOpen, setPanelOpen] = useState(true);
   const [announcement, setAnnouncement] = useState('');
-  const compact = useCompactCharts();
 
   const planeRef = useRef(null);
   const timerRef = useRef(null);

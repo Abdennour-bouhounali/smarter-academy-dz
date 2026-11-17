@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Sprout, Rocket } from 'lucide-react';
 

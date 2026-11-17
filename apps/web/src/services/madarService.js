@@ -26,8 +26,6 @@ export function madarApi(classId = null) {
   };
 }
 
-const student = madarApi();
-export const { fetchMadar, startRun, reviveRun, finishRun, chooseShip } = student;
 export const fetchRefuel = (token) => call('/madar/refuel', send('POST', token), KEY);
 export const answerRefuel = (token, refuelId, answer, left = false) => call(`/madar/refuel/${encodeURIComponent(refuelId)}/answer`, send('POST', token, { answer, left }), KEY);
 /** La page a été quittée pendant la question (au retour, avec la durée de l'absence). */

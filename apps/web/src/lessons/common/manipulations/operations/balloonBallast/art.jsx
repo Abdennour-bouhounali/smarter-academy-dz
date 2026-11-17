@@ -1,11 +1,10 @@
-import React from 'react';
 import KidFigure from '../../primitives/KidFigure';
 
 /**
  * Le décor de `balloon-ballast` (« أكياس المنطاد », thème `balloonvalley`) : le plateau de grès du Tassili (arches, cyprès sahariens), le canyon, l'échelle d'altitude,
  * le montgolfière (enveloppe rayée, nacelle d'osier), les flammes (+1) et les sacs de sable (−1). Tout est SVG (jamais d'image raster) ; aucun chiffre n'est écrit ici.
  */
-export const COL = {
+const COL = {
   skyTop: '#FDE68A', skyLow: '#FEF3C7', rock: '#C2713A', rockDark: '#9A4F24', rockLight: '#E39A5E', canyon: '#7C3A1B', tree: '#3F7D4E', ink: '#0F172A',
   flame: '#F97316', flameCore: '#FDE047', sack: '#92612B', sackDark: '#6B4420', basket: '#B7791F', basketDark: '#8B5A14', glow: '#FDE68A', rope: '#475569',
 };

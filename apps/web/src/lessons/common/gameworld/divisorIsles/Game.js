@@ -1145,7 +1145,6 @@ export class DivisorIslesGame {
       else if (seg.boss) o = seg.complete && this.flags.bossPaid ? T.objective.bossCross : T.objective.bossGo;
       else if (seg.complete) o = T.objective.cross;
       else if (seg.kind === 'rail') o = this.flags.statues ? T.objective.board : T.objective.statues;
-      else if (seg.boss) o = T.objective.boss;
       else if (seg.id === 's48' && this.flags.storm) o = T.objective.storm;
       else if (seg.id === 's7') o = T.objective.stubborn;
       else o = T.objective.bridge(seg.a);
@@ -1160,7 +1159,6 @@ export class DivisorIslesGame {
     if (this.state.held != null && k !== 1) this.take(null);
     this.refreshObjective();
     this.save();
-    const openQuiz = (id) => this.set({ phase: 'dialog', overlay: { type: 'quiz', id } });
     const openTablet = (key) => {
       this.audio.play('key');
       this.set({ phase: 'dialog', overlay: { type: 'tablet', key } });

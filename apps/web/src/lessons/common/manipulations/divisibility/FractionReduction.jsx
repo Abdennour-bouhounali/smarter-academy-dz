@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as divisibility from '@smarter-academy/core/arithmetic/divisibility.js';
 import ManipulationShell from '../ManipulationShell';

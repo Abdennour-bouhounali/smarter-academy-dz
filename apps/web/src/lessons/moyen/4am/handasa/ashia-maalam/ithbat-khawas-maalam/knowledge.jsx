@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { REMARKS, TRIANGLE, PERP, QUAD, CIRCLE, METHOD_PROOF, METHOD_UNKNOWN } from './content/textbook';
 

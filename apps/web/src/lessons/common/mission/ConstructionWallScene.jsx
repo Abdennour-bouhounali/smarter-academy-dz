@@ -1,4 +1,3 @@
-import React from 'react';
 import KidFigure from '../manipulations/primitives/KidFigure';
 
 const BRICKS = ['#C2410C', '#EA580C', '#B45309', '#DC2626', '#D97706'];

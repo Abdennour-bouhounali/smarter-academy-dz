@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChoiceGrid } from '../components/LessonUI';
 import { playSfx } from '../utils/playEffect';
 import '../mission/mission.css';
 
 /** Le temps pour se raviser après un toucher (« غيّر إجابتي »), puis le signal reste le temps d'être vu. */
-export const UNDO_MS = 1000;
+const UNDO_MS = 1000;
 export const SIGNAL_MS = 900;
 
 /**

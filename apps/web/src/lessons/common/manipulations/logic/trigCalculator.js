@@ -150,7 +150,7 @@ const freeze = (o) => Object.freeze(o);
 const withTrial = (lab, trial) => ({ trials: freeze([...lab.trials, freeze({ n: lab.n + 1, ...trial })]), n: lab.n + 1 });
 
 /** La précision demandée pour le résultat en attente. */
-export function requiredPrecisions(lab, pending = lab.pending) {
+function requiredPrecisions(lab, pending = lab.pending) {
   if (!pending) return [];
   return pending.target.type === 'cell' ? [lab.digits] : [...PRECISIONS];
 }

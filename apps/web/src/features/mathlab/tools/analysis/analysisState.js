@@ -35,9 +35,7 @@
  */
 
 import { DEFAULT_LAYERS, LAYER_KEYS } from './layers.js';
-import { getPreset, PRESETS } from './presets.js';
-
-export { DEFAULT_LAYERS, LAYER_KEYS };
+import { getPreset } from './presets.js';
 
 export const ANALYSIS_SCHEMA_VERSION = 1;
 
@@ -46,7 +44,7 @@ export const ANALYSIS_SCHEMA_VERSION = 1;
  * avec de l'air autour. Elle est ORTHONORMÉE à l'affichage (le plan élargit
  * l'axe le plus court), donc ses proportions ne sont qu'une intention.
  */
-export const DEFAULT_OPENING_VIEW = Object.freeze({ xMin: -2, xMax: 6, yMin: -2, yMax: 9 });
+const DEFAULT_OPENING_VIEW = Object.freeze({ xMin: -2, xMax: 6, yMin: -2, yMax: 9 });
 
 /** Les laboratoires de §4, dans l'ordre où l'instrument les présente. */
 export const LABS = Object.freeze(['secant', 'tangent', 'derivative', 'limit', 'integral', 'study', 'transform']);
@@ -65,7 +63,7 @@ export const MIN_RIEMANN_N = 1;
 export const MAX_RIEMANN_N = 200;
 
 /** Les couleurs des courbes — celles du grapheur, pour qu'un élève les reconnaisse. */
-export const CURVE_COLORS = Object.freeze(['#2563eb', '#db2777']);
+const CURVE_COLORS = Object.freeze(['#2563eb', '#db2777']);
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 const finiteOr = (value, fallback) => (Number.isFinite(value) ? value : fallback);
@@ -120,7 +118,7 @@ function makeFunction(id, source, index) {
 }
 
 /** Une expression saisie → une chaîne sûre et bornée. */
-export function normalizeSource(source) {
+function normalizeSource(source) {
   return String(source ?? '').slice(0, MAX_SOURCE_LENGTH);
 }
 
@@ -357,4 +355,3 @@ export function clearAnalysisData() {
   return createAnalysisData();
 }
 
-export { PRESETS };

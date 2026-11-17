@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { parseDec } from '@smarter-academy/core';
 import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
@@ -84,7 +84,7 @@ export default function Module01Nashat() {
                 done={<span>في المهمة 3 كانت <Ltr>{lo?.c}</Ltr> طلقات أفتح من المرجع و <Ltr>{hi?.c}</Ltr> طلقات أغمق منه.</span>}
                 todo="أنجز المهمة 3 في الآلة (جرّب العددين المتجاورين حول المطابقة)، ثم عُد إلى هذا السؤال." />
               <TapQuestion
-                prompt={<MathText>{'قارن $3\\times10$ و $7\\times4$ ، ثمّ أكمل: $\\frac{7}{10}\;\\square\;\\frac{3}{4}$ :'}</MathText>}
+                prompt={<MathText>{'قارن $3\\times10$ و $7\\times4$ ، ثمّ أكمل: $\\frac{7}{10}\\;\\square\\;\\frac{3}{4}$ :'}</MathText>}
                 options={[M('$30>28$ ، إذن $\\frac{7}{10}<\\frac{3}{4}$'), M('$30>28$ ، إذن $\\frac{7}{10}>\\frac{3}{4}$'), M('$30=28$ ، إذن $\\frac{7}{10}=\\frac{3}{4}$')]}
                 correct={0} cols={1} requires={['muqarana-kasrayn-2am']}
                 explain={<MathText>{'مع $10$ علب أبيض كان $7$ طلقات أفتح من المرجع $\\frac{3}{4}$ ، أي أصغر نسبةً للأزرق، وهذا ما يقوله الجداء الأصغر: $7\\times4=28<30=3\\times10$ .'}</MathText>}

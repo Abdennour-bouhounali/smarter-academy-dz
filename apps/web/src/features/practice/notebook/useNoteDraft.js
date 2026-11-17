@@ -40,7 +40,7 @@ export function readDraft(key) {
   }
 }
 
-export function writeDraft(key, draft) {
+function writeDraft(key, draft) {
   try {
     window.localStorage.setItem(key, JSON.stringify({ ...draft, at: Date.now() }));
   } catch {
@@ -48,7 +48,7 @@ export function writeDraft(key, draft) {
   }
 }
 
-export function clearDraft(key) {
+function clearDraft(key) {
   try {
     window.localStorage.removeItem(key);
   } catch {

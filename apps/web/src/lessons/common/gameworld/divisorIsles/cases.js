@@ -41,8 +41,6 @@ const PLACE = ['مكان واحد', 'مكانان', 'أماكن', 'مكانًا'
 const KIDS = ['طفل واحد', 'طفلان', 'أطفال', 'طفلًا'];
 const TILE = ['بلاطة واحدة', 'بلاطتان', 'بلاطات', 'بلاطة'];
 const PACK = ['علبة واحدة', 'علبتان', 'علب', 'علبة'];
-/** « 18 صندوقًا » / « 5 شاحنات »: the containers of a packing, for the legend of the equality. */
-export const containers = (q, trucks = false) => count(trucks ? TRUCK : BOX, q);
 /** The legend of the equality a = b × q + r in each kind of packing (what q counts). */
 export const simUnit = (q, mode) =>
   mode === 'share'
@@ -52,7 +50,7 @@ export const simUnit = (q, mode) =>
       : mode === 'boxes'
         ? count(PACK, q)
         : count(mode === 'trucks' ? TRUCK : BOX, q);
-export const GOODS = {
+const GOODS = {
   dates: {
     id: 'dates',
     name: 'علب التمر',

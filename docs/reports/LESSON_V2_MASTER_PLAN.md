@@ -123,20 +123,20 @@ converted.
 
 ---
 
-## 3. Decisions the owner must take before Phase 0 ends
+## 3. The owner's decisions
 
-Each has a default; the work proceeds on the default unless he says otherwise.
+**All decided on 2026-11-17** (D1 and D2 on 2026-11-16). Nothing here is open any more.
 
-| # | Question | Default |
+| # | Question | Decision |
 |---|---|---|
 | D1 | « AM lessons » = 4AM? | **DECIDED (owner, 2026-11-16): yes** |
 | D2 | One game world per lesson, or one world per UNIT with one island (mechanic) per lesson? | **DECIDED (owner, 2026-11-16): one world per unit; a lesson that needs its own world gets its own.** The reason for a separate world is written in the lesson's pack |
-| D3 | When a lesson is converted, is its mission player (`?view=classic`) kept? | Kept only for « إختبار أولي » until the kit carries it, then removed |
-| D4 | Billing pages (§2.4): delete or keep? | Delete; git keeps them |
-| D5 | Do prerequisite lessons of 1AM–3AM get the full v2, teacher side included? | Yes, as instructed |
-| D6 | Is the pilot's v2 now BINDING (docs say « not validated »)? | Yes: his message is the validation |
-| D7 | Three of the pilot's four rules are still told, not forged. Finish the pilot first? | Yes, in Phase 0: the reference must be complete |
-| D8 | Do v2 lessons open on phones? | Student side yes, teacher side no. A first pass is on the pilot (`GAME_WORLD.md` § « On a phone »); the owner tests it on a real phone, then it becomes a requirement of the kit or not |
+| D3 | When a lesson is converted, is its mission player (`?view=classic`) kept? | **DECIDED: no.** « Rebuild everything as we did with the first lesson; never depend on the existing code or the docs. » A v2 lesson depends on nothing of the mission player: the kit itself carries « إختبار أولي ». The pilot's `?view=classic` goes when the kit does |
+| D4 | Billing pages (§2.4): delete or keep? | **DECIDED: delete.** Done on 2026-11-17 (five files) |
+| D5 | Do prerequisite lessons of 1AM–3AM get the full v2, teacher side included? | **DECIDED: yes, exactly as lesson 1** — rebuilt from scratch. Existing maths is reused when it is useful, « because it is useful, not because it is there » |
+| D6 | Is the pilot's v2 now BINDING (docs say « not validated »)? | **DECIDED: yes.** The contracts are marked at Phase 0 step 9 |
+| D7 | Three of the pilot's four rules are still told, not forged. Finish the pilot first? | **DECIDED: yes**, in Phase 0 |
+| D8 | Do v2 lessons open on phones? | **DECIDED: student side yes, teacher side no.** A first pass is on the pilot (`GAME_WORLD.md` § « On a phone »); the owner tests it on a real phone, then it becomes a requirement of the kit |
 
 ---
 
@@ -224,17 +224,25 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
   unit 1.
 - **B9 — first half DONE**: the old tour of the lesson page is no longer declared on a lesson that has its board. Its
   rewrite waits for the navigation rebuild.
-- **Phase 0 step 2 — formatter DONE, linter NOT**: Prettier (`.prettierrc.json`, 120 columns) with `npm run format:v2`
+- **Navigation rebuild — COMMITTED** (`099d3f9b`, 2026-11-17, not pushed): the tree was clean before Phase 0 went on.
+- **Phase 0 step 2 — linter DONE (2026-11-17)**: ESLint on the whole tree and « nothing unused » (exports, i18n keys,
+  string tables; classes, actions and `use` lines of the API), all in CI — contract `docs/architecture/CODE_HEALTH.md`.
+  First run: 2,312 unused imports, 389 unused variables, 1,949 unused exports, 211 unused i18n keys, 30 dead sentences
+  were found; lint is at 0, and 553 lines wait in a baseline that may only shrink (494 exports that only a test
+  imports, 59 i18n keys to look at). The linter also found LaTeX that reached students broken (`'\;'` shown as « ; »):
+  fixed. What a person must still look at: `docs/reports/LINT_FIRST_RUN_2026-11-17.md`.
+- **D4 — DONE**: the five billing files are deleted.
+- **Phase 0 step 2 — formatter DONE**: Prettier (`.prettierrc.json`, 120 columns) with `npm run format:v2`
   and `npm run check:format` (in CI). The pilot's areas are formatted: 109 files; `features/classSession/` went from
   2,229 lines to about 6,300 — its real size. After it: web tests, the seven laptop walks and the phone world walk give
-  the same results as before. ESLint and the unused-export tool are still to add. A new area enters the two scripts when
+  the same results as before. A new area enters the two scripts when
   its code is written or rebuilt; the rest of the tree is formatted lesson by lesson, never in one sweep.
 - **Phase 0 step 3 — dead files DONE**: 49 files deleted (22 shared: the two unused geometry libraries and `useLabState`
   with their tests, eleven unused lab primitives, six unused components; 27 unused files inside 4AM lessons). After it:
   17,959 web tests, the build, `check:lessons`, the route and index checks pass. `npm run check:unreached` (in CI) now
-  FAILS on any file the app does not reach; its `KEPT` list names the 11 exceptions with their reason — the five billing
-  files (decision D4) and six test helpers. Still not covered: unused exports inside a live file, `apps/api`,
-  `packages/core`.
+  FAILS on any file the app does not reach; its `KEPT` list names six test helpers (the five billing files were deleted
+  on 2026-11-17, decision D4). Unused exports, `apps/api` and `packages/core` are covered since 2026-11-17 by
+  `check:unused`.
 - **Tests at the commit**: web 18,067 and core 1,577 pass. API: 1,464 of 1,473 pass, 6 fail — `MathLabFileFlowTest` (the
   lock query; it fails the same way without this work's change) and five of `DbBackupCommandTest` (a command this work
   never touched; cause not investigated).

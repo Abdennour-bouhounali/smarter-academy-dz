@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { CircleCheckBig, TriangleAlert, Database } from 'lucide-react';
 import { AdminPage, AdminSection, Loading, ErrorBox, Num } from '../adminUi';

@@ -82,7 +82,7 @@ describe('juice-line — متقدم : le réservoir sous la main', () => {
     s = L.stretch(s, 600); s = L.pressFill(s); expect(L.taskDone(s)).toBe(true);
   });
   it('a3 : deux étapes — le contenu 10, puis ce qu’on presse en plus 6 ; (40 − 4) × 0,25 = 9 est UNDOFIRST', () => {
-    let s = L.nextTask(L.nextTask((() => { let t = adv(); for (const [i, op] of [['24×0,25', 600], ['15×1,5', 2250]].entries()) { t = L.writeOperation(t, op[0]); t = L.stretch(t, op[1]); t = L.pressFill(t); t = L.nextTask(t); } return t; })()));
+    let s = L.nextTask(L.nextTask((() => { let t = adv(); for (const [, op] of [['24×0,25', 600], ['15×1,5', 2250]].entries()) { t = L.writeOperation(t, op[0]); t = L.stretch(t, op[1]); t = L.pressFill(t); t = L.nextTask(t); } return t; })()));
     expect(L.taskOf(s).id).toBe('a3');
     expect(L.writeOperation(s, '40÷0,25').flag.model).toBe('divide');
     s = L.writeOperation(s, '40×0,25'); expect(s.w.stage).toBe('final'); expect(s.w.phase).toBe('slate');

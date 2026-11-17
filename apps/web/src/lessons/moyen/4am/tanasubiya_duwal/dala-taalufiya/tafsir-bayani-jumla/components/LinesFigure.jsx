@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Une FIGURE dessinée (jamais une image) : un معلم gradué et des droites y = ax + b (pas forcément par O),

@@ -116,7 +116,7 @@ function termTex(tree, path, factors) {
  * « 3/5 × 2/4 » → \frac{3 \times 2}{5 \times 4} = \frac{6}{20} ; des décimaux
  * → leur produit décimal ; un mélange → la fraction exacte.
  */
-export function productTex(tree, path, factors, product) {
+function productTex(tree, path, factors, product) {
   const sources = factors.map((_, i) => String(branchAt(tree, path.slice(0, i + 1)).p ?? '').replace(/\s+/g, ''));
   const fractions = sources.map((source) => source.match(/^(\d+)\/(\d+)$/));
   if (fractions.every(Boolean)) {

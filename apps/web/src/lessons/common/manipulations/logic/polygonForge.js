@@ -25,7 +25,7 @@ export const RADIUS = Object.freeze({ min: 500, max: 1200 });
 /** Le premier sommet A est en haut du cercle (90°), les images tournent dans le sens direct. */
 export const START_DEG = 90;
 /** Au-delà de deux tours sans retomber sur A, le tour s'arrête (« ne se ferme jamais »). */
-export const MAX_TURNS = 2;
+const MAX_TURNS = 2;
 
 const ENDED = new Set(['closed', 'other', 'flat', 'star', 'spiral']);
 
@@ -54,8 +54,8 @@ export function init(numbers = {}) {
   };
 }
 
-export const clampAlpha = (a) => Math.min(ALPHA.max, Math.max(ALPHA.min, Math.round(Number(a))));
-export const clampRadius = (h) => Math.min(RADIUS.max, Math.max(RADIUS.min, Math.round(Number(h))));
+const clampAlpha = (a) => Math.min(ALPHA.max, Math.max(ALPHA.min, Math.round(Number(a))));
+const clampRadius = (h) => Math.min(RADIUS.max, Math.max(RADIUS.min, Math.round(Number(h))));
 
 /**
  * Le cadran ne tourne pas PENDANT un tour : la MÊME rotation s'applique à chaque image. Un tour terminé (fermé,
@@ -75,7 +75,7 @@ export const release = (lab) => ({ ...lab, images: 0, run: null, last: { kind: '
 export const canTurn = (lab) => (lab.stage !== 'forge' ? 'stage' : ENDED.has(lab.run) ? 'ended' : true);
 
 /** L'issue de la k-ième image pour l'angle α (rotation.js décide). */
-export function outcomeAt(alpha, k, target) {
+function outcomeAt(alpha, k, target) {
   const total = k * alpha;
   const n = Rot.sidesFromCentral(alpha);
   if (n != null && k === n) return n === target ? 'closed' : 'other';
@@ -125,8 +125,6 @@ export function runAlpha(lab, a) {
 
 /** Les angles (degrés, depuis l'axe des abscisses) des sommets posés : A puis ses images. */
 export const vertexDegrees = (lab, start = START_DEG) => Array.from({ length: lab.images + 1 }, (_, j) => start + j * lab.alpha);
-/** La prochaine image (le fantôme que l'élève fait tourner au cadran). */
-export const ghostDegree = (lab, start = START_DEG) => start + (lab.images + 1) * lab.alpha;
 /** Le nombre de sommets distincts dessinés (un tour fermé ne redessine pas A). */
 export const closedN = (lab) => (lab.run === 'closed' || lab.run === 'other' ? lab.images : null);
 
@@ -182,7 +180,7 @@ export const goStage = (lab, stage) => {
 };
 
 /** La distance entre deux pointes consécutives pour R (centièmes) : 2R·sin(180°/n). */
-export const chordFor = (lab, h) => Rot.chord(lab.target, h / 100, 1);
+const chordFor = (lab, h) => Rot.chord(lab.target, h / 100, 1);
 /** Un rayon proposé (glisser, clavier, −/+, saisie) : la distance mesurée au centième, juste ⇔ = d. */
 export function commitRadius(lab, h) {
   if (lab.stage !== 'radius') return lab;
@@ -204,7 +202,7 @@ export const radiusText = (h) => T.roundTo(h / 100, 2);
 export const chordText = (lab, h) => T.roundTo(chordFor(lab, h), 2);
 
 /** La pointe touchée : une branche de l'étoile (un sommet sur `starStep`) — un côté du pentagone est refusé. */
-export function canStroke(lab, j) {
+function canStroke(lab, j) {
   if (lab.stage !== 'draw') return 'stage';
   const n = lab.target;
   if (j === lab.pen) return '';
@@ -214,7 +212,7 @@ export function canStroke(lab, j) {
   if (lab.strokes.includes(strokeKey(lab.pen, j))) return 'again';
   return true;
 }
-export const strokeKey = (a, b) => `${Math.min(a, b)}-${Math.max(a, b)}`;
+const strokeKey = (a, b) => `${Math.min(a, b)}-${Math.max(a, b)}`;
 export function tapTip(lab, j) {
   const ok = canStroke(lab, j);
   if (ok === '') return lab;
@@ -227,7 +225,7 @@ export const starDone = (lab) => lab.mode === 'star' && lab.strokes.length === l
 /* ── découverte et essais ─────────────────────────────────────────────────── */
 
 /** Un essai de CONTRASTE : un tour qui ne donne pas la figure cherchée (ouvert, autre polygone, segment, étoile). */
-export const hasContrast = (lab) => lab.trials.some((t) => t.outcome !== 'closed') || lab.radiusTrials.some((t) => t.verdict !== 'ok');
+const hasContrast = (lab) => lab.trials.some((t) => t.outcome !== 'closed') || lab.radiusTrials.some((t) => t.verdict !== 'ok');
 
 /**
  * La découverte s'ouvre quand la relation est VISIBLE :

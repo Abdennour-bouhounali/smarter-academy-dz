@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { BookOpen, Compass, Wand2, ListChecks, Landmark, Lock, ChevronDown, Flag } from 'lucide-react';

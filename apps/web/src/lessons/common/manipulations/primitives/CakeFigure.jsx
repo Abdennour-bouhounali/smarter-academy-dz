@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import { useId } from 'react';
 
 /**
  * UN GÂTEAU ROND, VU D'EN HAUT (2026-10-15, labo `fair-share`, 1AM) — un `<g>` à poser DANS une scène SVG.

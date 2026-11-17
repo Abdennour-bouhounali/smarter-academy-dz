@@ -22,12 +22,10 @@
  */
 import * as E from '@smarter-academy/core/arithmetic/expansion.js';
 
-export const WORLDS = Object.freeze(['plot', 'arrows']);
-export const X_MIN = E.X_MIN;
 export const X_MAX = E.X_MAX;
-export const X_DEFAULT = E.X_DEFAULT;
-export const ARROWS_X_MIN = 2;
-export const ARROWS_X_DEFAULT = 5;
+const X_DEFAULT = E.X_DEFAULT;
+const ARROWS_X_MIN = 2;
+const ARROWS_X_DEFAULT = 5;
 export const COEF_MIN = -99;
 export const COEF_MAX = 99;
 /** Le panneau « جرّب أعدادك » : les bornes des steppers. */
@@ -124,14 +122,14 @@ function load(s, ti) {
 export const taskOf = (s) => (s.custom ? 'custom' : s.tasks[s.ti]?.id ?? '');
 export const allDone = (s) => s.done.every(Boolean);
 export const sideOf = (s, k) => (k === 'h' ? s.h : s.w);
-export const lengthOf = (s, k) => E.drawnLength(sideOf(s, k), s.x);
+const lengthOf = (s, k) => E.drawnLength(sideOf(s, k), s.x);
 export const cuttable = (s) => ['w', 'h'].filter((k) => E.isCuttable(sideOf(s, k)));
 export const cutsPending = (s) => cuttable(s).filter((k) => !s.cuts[k]?.ok);
 export const cutDone = (s) => s.world === 'plot' && cutsPending(s).length === 0;
 export const patchOf = (s, id) => s.patches.find((p) => p.id === id) ?? null;
 export const decided = (s) => s.patches.filter((p) => s.signs[p.id]);
 export const undecided = (s) => s.patches.filter((p) => !s.signs[p.id]);
-export const allDecided = (s) => s.world === 'plot' && cutDone(s) && undecided(s).length === 0;
+const allDecided = (s) => s.world === 'plot' && cutDone(s) && undecided(s).length === 0;
 /** La phase du terrain : cut → sign → reduce (متقدم) → done. */
 export function phaseOf(s) {
   if (s.solvedNow) return 'done';
@@ -143,7 +141,7 @@ export function phaseOf(s) {
   if (!allDecided(s)) return 'sign';
   return 'reduce';
 }
-export const linkedCount = (s) => s.arrows.filter((a) => s.linked[a.id]).length;
+const linkedCount = (s) => s.arrows.filter((a) => s.linked[a.id]).length;
 export const signedArrows = (s) => s.arrows.filter((a) => s.linked[a.id]?.sign != null);
 
 /** L'expression écrite : la valeur à x, l'aire comptée du terrain (plot) / la valeur de l'expression (arrows). */
@@ -157,10 +155,10 @@ export const bothEqual = (s) => (s.world === 'arrows' ? signedArrows(s).length =
 
 /** Les termes de l'expansion avant réduction, et la forme réduite. */
 export const expansionTerms = (s) => (s.world === 'arrows' ? E.arrowTerms(s.expr) : E.expansionTerms(s.patches));
-export const reducedTerms = (s) => (s.world === 'arrows' ? E.reducedExprTerms(s.expr) : E.reducedTerms(s.patches));
+const reducedTerms = (s) => (s.world === 'arrows' ? E.reducedExprTerms(s.expr) : E.reducedTerms(s.patches));
 export const powersOf = (s) => E.usedPowers(expansionTerms(s));
 export const exprTex = (s) => (s.world === 'arrows' ? E.exprTex(s.expr) : `${E.sideFactorTex(s.h)}(${E.sideTex(s.w)})`);
-export const expandedTex = (s) => E.termsTex(expansionTerms(s));
+const expandedTex = (s) => E.termsTex(expansionTerms(s));
 export const resultTex = (s) => E.termsTex(reducedTerms(s));
 /** Combien de termes l'expansion écrit déjà (la ligne qui grandit) : les parcelles décidées / les produits signés. */
 export function writtenTerms(s) {
@@ -271,14 +269,14 @@ export function chipsOf(s) {
   });
   return { origins, targets };
 }
-export const originProduct = (s, oi) => chipsOf(s).origins[oi]?.k ?? -1;
-export const targetProduct = (s, tj) => chipsOf(s).targets[tj]?.k ?? -1;
+const originProduct = (s, oi) => chipsOf(s).origins[oi]?.k ?? -1;
+const targetProduct = (s, tj) => chipsOf(s).targets[tj]?.k ?? -1;
 export const targetsLeft = (s, oi) => {
   const { targets } = chipsOf(s);
   const k = originProduct(s, oi);
   return targets.filter((q) => q.k === k && !s.linked[`${oi}>${q.tj}`]);
 };
-export const canLink = (s) => s.world === 'arrows' && !s.solvedNow;
+const canLink = (s) => s.world === 'arrows' && !s.solvedNow;
 
 /**
  * La main relie l'origine `oi` à la cible `tj` (un terme de l'AUTRE parenthèse du même produit). Une flèche valide fait apparaître la
@@ -327,7 +325,7 @@ export function setProductSign(s, id, sign) {
 /* ── les coefficients de la forme réduite ── */
 
 /** La valeur par défaut d'un réglage : jamais la réponse (MANIPULATION_CONTRACT §6bis « default parameters »). */
-export function defaultCoef(s, p) {
+function defaultCoef(s, p) {
   const terms = expansionTerms(s).filter((q) => q.p === p);
   const answer = E.coefOf(expansionTerms(s), p);
   const cands = [terms[0]?.c ?? 1, terms.reduce((a, q) => a + Math.abs(q.c), 0), answer + 1, answer - 1];
@@ -390,7 +388,7 @@ export function nextTask(s) {
 /* ── « جرّب أعدادك » : l'élève construit SON terrain / SON expression ── */
 
 /** Le terrain / l'expression libre est-il valide ? (plot : jamais dégénéré ; arrows : chaque facteur a un terme non nul) */
-export function freeValid(world, f) {
+function freeValid(world, f) {
   if (world === 'arrows') return [f.f1, f.f2].every((q) => q.a !== 0 || q.b !== 0);
   return E.isValidPlot(f.h, f.w);
 }
@@ -420,11 +418,6 @@ function buildCustom(s, free) {
   const f = taskFresh(base, tk);
   const n = { ...base, ...f, custom: true, free, coefs: {}, coefTouched: {}, checked: {}, solvedNow: false, held: null, last: { event: 'custom' } };
   return push(n, { kind: 'custom', world: s.world });
-}
-/** Ouvre le panneau libre avec ses valeurs courantes (premier pas : le terrain libre remplace la tâche). */
-export function startCustom(s) {
-  if (s.custom) return s;
-  return buildCustom(s, freeOf(s));
 }
 /** Les valeurs du panneau libre : celles du terrain libre, sinon celles de la tâche courante (quand elles s'y écrivent), sinon de départ. */
 export function freeOf(s) {

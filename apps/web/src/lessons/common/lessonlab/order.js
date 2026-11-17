@@ -18,7 +18,6 @@ GRADES.forEach((g, gi) => (ORDER[g] ?? []).forEach((code, i) => RANK.set(code, {
 
 /** { grade, rank } of a lesson code, or null when the lesson is unknown to the catalogue. */
 export const placeOf = (code) => RANK.get(code) ?? null;
-export const gradeOf = (code) => RANK.get(code)?.grade ?? null;
 /** Is lesson `x` the lesson `of` itself or one studied before it? Unknown lessons are never « before ». */
 export const isReached = (x, of) => {
   const a = RANK.get(x);

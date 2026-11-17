@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useLayoutEffect, useRef } from 'react';
+import { useCallback, useContext, useEffect, useLayoutEffect, useRef } from 'react';
 import { useClassroomMode } from './ClassroomContext';
 import { pageBudget, planPages, planOnePerPage, clampPage, SMALL_BLOCK } from './classroomPages';
 
@@ -68,7 +68,7 @@ const textOf = (el) => {
 };
 const isEl = (el) => Boolean(el && el.nodeType === 1);
 /** Un bloc qui MONTRE une ou plusieurs figures (seules, ou dans un énoncé) et ne demande rien. */
-export function holdsFigure(el) {
+function holdsFigure(el) {
   if (!isEl(el)) return false;
   if (!el.matches?.(FIGURE_SEL) && !el.querySelector?.(FIGURE_SEL)) return false;
   return !el.querySelector?.(ANSWER_SEL) && !el.querySelector?.(LAB_SEL);

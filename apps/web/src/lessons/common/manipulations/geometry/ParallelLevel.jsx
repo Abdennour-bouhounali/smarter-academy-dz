@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { ChevronUp, ChevronDown } from 'lucide-react';
@@ -887,7 +887,6 @@ export const chainOf = (step, mode) => {
 };
 
 const fx = (n, d) => `\\dfrac{${n}}{${d}}`;
-const fr = (n, d) => LIN.fracLatex(LIN.frac(n, d));
 const sameFrac = (a, b) => LIN.eq(a, b);
 
 /** Une fraction → ses options (la bonne + deux distracteurs distincts, chacun avec son `why`). */
@@ -1026,7 +1025,7 @@ export const chainsOfPlayer = (mode) => CHAINS_PLAYER[mode] ?? [];
 
 /** Une pastille de rapport à une place qui tourne avec les nombres (jamais toujours la première). */
 const spinList = (xs, seed) => { const s = ((seed % xs.length) + xs.length) % xs.length; return xs.map((_, i) => xs[(i + s) % xs.length]); };
-const ratioField = (lab, end, at, k) => {
+const ratioField = (lab, end, at) => {
   const opts = L.chipOptions(lab, end, at);
   return {
     label: <MathText>{end === 'B' ? "$\\dfrac{AB'}{AB}$" : "$\\dfrac{AC'}{AC}$"}</MathText>,

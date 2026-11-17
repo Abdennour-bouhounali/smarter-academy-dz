@@ -14,7 +14,7 @@
 import * as P from '@smarter-academy/core/arithmetic/percent3.js';
 import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 
-export const KINDS = Object.freeze(['of', 'rate', 'change', 'whole']);
+const KINDS = Object.freeze(['of', 'rate', 'change', 'whole']);
 export const MAX_T = 100;
 
 export const PRESETS = Object.freeze({
@@ -79,8 +79,6 @@ export const basketNow = (s) => P.partOf(stockOf(s), s.t);
 export const needsGuess = (s) => !s.free && taskOf(s).kind !== 'rate';
 /** Le panier est-il visible ? en direct pour `rate`, `whole` (le panier montre `part`) et en libre ; sinon après l'essai. */
 export const revealed = (s) => s.free || taskOf(s).kind === 'rate' || taskOf(s).kind === 'whole' || !!s.opened[s.ti];
-/** Le nombre de cases que la tâche demande de peindre (null : à chercher). */
-export const askedT = (s) => (s.free || taskOf(s).kind === 'rate' ? null : taskOf(s).t);
 
 /* ── Gestes ──────────────────────────────────────────────────────────────────────────────────── */
 
@@ -90,14 +88,14 @@ export const stepT = (s, d) => setT(s, s.t + d);
 export const clearT = (s) => setT(s, 0);
 /** La réponse écrite : chiffres arabes ou latins, virgule ou point. */
 export const setGuess = (s, raw) => ({ ...s, guess: String(raw).replace(/[^0-9٠-٩.,٫/]/g, '').slice(0, 8), last: null });
-export function parseGuess(raw) {
+function parseGuess(raw) {
   try {
     const q = String(raw).replace(/[٠-٩]/g, (d) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))).replace('٫', ',').trim();
     if (!/^\d+([.,]\d{1,3})?$/.test(q)) return null;
     return Lin.parseNumber(q);
   } catch { return null; }
 }
-export const guessValue = (s) => parseGuess(s.guess);
+const guessValue = (s) => parseGuess(s.guess);
 export const canGo = (s) => {
   if (s.free) return false;
   if (taskDone(s)) return false;
@@ -136,7 +134,7 @@ export function nextTask(s) {
   return { ...s, ti: s.ti + 1, t: startT(task), guess: '', last: null };
 }
 /** « إعادة » : la même tâche, plateau propre ; les essais restent. */
-export const restartTask = (s) => (s.free ? { ...s, t: 0, last: null } : { ...s, t: startT(taskOf(s)), guess: '', last: null, opened: { ...s.opened, [s.ti]: false } });
+const restartTask = (s) => (s.free ? { ...s, t: 0, last: null } : { ...s, t: startT(taskOf(s)), guess: '', last: null, opened: { ...s.opened, [s.ti]: false } });
 
 /** « أعِد التجربة » (carte de questions) : la même tâche repart — plateau propre, panier refermé, et la tâche n'est plus « faite » (la carte se rouvrira à la prochaine réussite). */
 export const retryTask = (s) => (s.free ? restartTask(s) : { ...restartTask(s), done: { ...s.done, [s.ti]: false } });
@@ -151,7 +149,7 @@ export const toGuided = (s) => (s.free ? { ...s, free: null, t: startT(taskOf(s)
 /* ── Lecture ─────────────────────────────────────────────────────────────────────────────────── */
 
 export const trialEvidence = (tr) => ({ ...tr });
-export const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => t.kind === 'go' && !t.free && t.task === i);
+const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => t.kind === 'go' && !t.free && t.task === i);
 
 /**
  * Le prochain geste utile — jamais la réponse : `paint` (le premier geste : peindre), `guess` (écrire la réponse avant d'ouvrir), `go` (« انقل »),

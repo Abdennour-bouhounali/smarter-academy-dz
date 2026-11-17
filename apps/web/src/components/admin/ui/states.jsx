@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Loader2, AlertTriangle, Inbox, BarChart3 } from 'lucide-react';
 

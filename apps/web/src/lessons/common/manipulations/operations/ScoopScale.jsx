@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Minus, Plus, RotateCcw, Scale } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -85,9 +85,6 @@ export function numbersFor({ tasks, level }) {
   const asked = LEVELS['scoop-scale'][lv].numbers;
   return { tasks: tasks ?? asked.tasks };
 }
-
-/** « 1,25 » → « 1,25 » ; un nombre de rang : la lecture telle que l'écran l'écrit. */
-const fmt = (txt) => String(txt);
 
 export default function ScoopScale({
   tasks, title, lead, level, levels: withLevels = true, coach: coachOn = true, checkpoints: cpOn = true,
@@ -536,7 +533,7 @@ function FreeCard({ lab, setLab, k }) {
 /* ══════════════ La découverte et la règle ══════════════ */
 
 /** Les masses d'une lecture : r, r + une unité de rang (« 1,3 » → « 1,4 »). */
-const nextReading = (r, rank) => {
+const nextReading = (r) => {
   const v = D.parse(r);
   return v ? D.format(D.make(v.n + 1, v.k)) : r;
 };
@@ -555,7 +552,7 @@ export function discoveryOptions(lab, k) {
 const texNum = (txt) => String(txt).replace(',', '{,}');
 export function Formal({ lab, k }) {
   const w = L.witnesses(lab);
-  const line = (p, rankTxt) => (p ? `$${texNum(p.lo.mass)} \\leq m < ${texNum(p.hi.neighbour.mass)}$` : null);
+  const line = (p) => (p ? `$${texNum(p.lo.mass)} \\leq m < ${texNum(p.hi.neighbour.mass)}$` : null);
   const main = w.main;
   const coarse = w.pairs[0];
   const lines = [];

@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import { useId } from 'react';
 
 /**
  * « نجمة العلم الجزائري » — le drapeau du تحدّ (p. 151 : le manuel montre une PHOTO du drapeau, aucune figure

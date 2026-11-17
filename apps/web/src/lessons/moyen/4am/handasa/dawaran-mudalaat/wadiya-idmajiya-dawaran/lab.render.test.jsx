@@ -1,5 +1,4 @@
 import { it, expect } from 'vitest';
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 import * as ROT from '@smarter-academy/core/arithmetic/rotation.js';
 import * as TR from '@smarter-academy/core/arithmetic/trigonometry.js';

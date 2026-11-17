@@ -1,4 +1,3 @@
-import React from 'react';
 import SpaceFigure from '../../../../../../common/components/SpaceFigure';
 import { CHALLENGE_FIGURE } from '../content/figures';
 

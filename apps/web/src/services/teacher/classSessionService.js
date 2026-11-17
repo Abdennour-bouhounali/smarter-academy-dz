@@ -20,7 +20,7 @@ export const fetchLessonTracking = (token, classId, lessonCode) => call(`${cls(c
 /** « ملفّ الدرس »: the lesson → the teacher's whiteboard document of the Math Lab (`documentId`, null until first opened). */
 export const fetchLessonFile = (token, lessonCode) => call(`/teacher/lesson-files/${encodeURIComponent(lessonCode)}`, get(token), 'classroomLoad').then((d) => d.file);
 export const saveLessonFile = (token, lessonCode, body) => call(`/teacher/lesson-files/${encodeURIComponent(lessonCode)}`, send('PUT', token, body), 'classroomSave').then((d) => d.file);
-export const storeClassSession = (token, classId, record) => call(`${cls(classId)}/class-sessions`, send('POST', token, record), 'classroomSave').then((d) => d.session);
+const storeClassSession = (token, classId, record) => call(`${cls(classId)}/class-sessions`, send('POST', token, record), 'classroomSave').then((d) => d.session);
 
 const OUTBOX = 'smarter_class_session_outbox';
 const readOutbox = () => { try { return JSON.parse(localStorage.getItem(OUTBOX) ?? '[]'); } catch { return []; } };
@@ -44,4 +44,3 @@ export async function flushOutbox(token) {
   writeOutbox(left);
   return left.length;
 }
-export const outboxSize = () => readOutbox().length;

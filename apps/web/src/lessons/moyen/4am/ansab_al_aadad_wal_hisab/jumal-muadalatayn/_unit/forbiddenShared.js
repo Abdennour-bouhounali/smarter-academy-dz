@@ -8,7 +8,7 @@ import * as LS from '@smarter-academy/core/arithmetic/linearSystem.js';
 import { fracText } from '@smarter-academy/core/arithmetic/linear.js';
 
 /** Le moins typographique U+2212 et le tiret sont lus pareil. */
-export const normMinus = (s) => String(s).replace(/−/g, '-');
+const normMinus = (s) => String(s).replace(/−/g, '-');
 
 /** Vrai si une chaîne montre l'une des signatures (le moins est normalisé). */
 export const showsAny = (sigs, s) => sigs.some((re) => re.test(String(s)) || re.test(normMinus(s)));
@@ -27,7 +27,7 @@ export const visibleLines = (src) => src
  *   - deux chaînes `['x + y = 7', '3x + y = 17']` ;
  *   - une jumla déjà construite par `LS.system(…)` (deux objets { a, b, c }).
  */
-export function toSystem(s) {
+function toSystem(s) {
   if (typeof s === 'string') {
     const parts = s.split(/[|∣]/);
     if (parts.length !== 2) throw new Error(`toSystem: deux équations séparées par « | » attendues dans « ${s} »`);

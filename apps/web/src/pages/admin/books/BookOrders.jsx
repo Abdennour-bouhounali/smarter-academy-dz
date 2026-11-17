@@ -3,7 +3,6 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { PackageSearch } from 'lucide-react';
 import { AdminPage, formatDate, Num } from '../adminUi';
 import DataTable from '../../../components/admin/ui/DataTable';
-import StatusBadge from '../../../components/admin/ui/StatusBadge';
 import { EmptyState } from '../../../components/admin/ui/states';
 import { FilterBar, SearchInput, SelectFilter, Pagination } from '../../../components/admin/ui/FilterBar';
 import { useAdminResource } from '../../../hooks/useAdminResource';

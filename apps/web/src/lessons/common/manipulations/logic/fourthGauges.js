@@ -19,8 +19,7 @@
 import * as F from '@smarter-academy/core/arithmetic/fourthProportional.js';
 import { add, sub } from '@smarter-academy/core/arithmetic/linear.js';
 
-export const WORLDS = Object.freeze(['market']);
-export const GAUGE_IDS = Object.freeze(['unit', 'between', 'cross']);
+const WORLDS = Object.freeze(['market']);
 const DEFAULT_ROWS = Object.freeze(['الكمية', 'الثمن']);
 
 /** Les tâches par défaut de chaque niveau — les mêmes que `levels.js`. */
@@ -86,8 +85,6 @@ export const guidedTask = (s) => s.tasks[s.ti];
 export const holeOf = (s) => taskOf(s).hole;
 /** Le texte du nombre tenu par la main. */
 export const hText = (s) => T(s.hh);
-/** Les nombres connus + le trou (fractions) pour la valeur `hh`. */
-export const tableAt = (s, hh = s.hh) => F.table(holeOf(s), taskOf(s).nums, F.fromHundredths(hh));
 /** Les balances pour la valeur `hh` (la quatrième seulement dans une tâche à leurre, jamais en libre). */
 export const gaugesAt = (s, hh = s.hh) => {
   const t = taskOf(s);
@@ -100,8 +97,6 @@ export function gaugesShown(s) {
   const t = taskOf(s);
   return gaugesAt(s, !s.free && t.covered ? s.shown : s.hh);
 }
-/** Un nombre à l'écran (virgule, fraction si non décimal). */
-export const show = F.showValue;
 export const taskDone = (s, i = s.ti) => !!s.done[i];
 export const discoveryReady = (s) => s.tasks.every((_, i) => !!s.done[i]);
 export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 1;
@@ -115,7 +110,7 @@ export const holeIsQuantity = (s) => holeOf(s) === 'a' || holeOf(s) === 'c';
 
 const clamp = (s, hh) => Math.max(0, Math.min(taskOf(s).maxH, hh));
 /** La valeur la plus proche sur la règle (multiple du pas, de 0 à max). */
-export const snapH = (s, hh) => {
+const snapH = (s, hh) => {
   const step = taskOf(s).stepH;
   return clamp(s, Math.round(hh / step) * step);
 };
@@ -184,7 +179,7 @@ export function keyRelease(s, key) {
 }
 
 /** « 780 », « ٧٨٠,٥ » → centièmes ou null (≤ 2 décimales, 0 … max). */
-export function parseTyped(s, raw) {
+function parseTyped(s, raw) {
   try {
     const f = F.parse(String(raw));
     const hh = (f.n * 100) / f.d;
@@ -218,7 +213,6 @@ export function toggleGauge(s, id) {
 
 /* ── « جرّب أعدادك » : a, b, c de l'élève, le trou est d ───────────────────────────────────────── */
 
-export const parseFreeNumber = F.parseFree;
 /** Les trois nombres lus → { a, b, c, res } ou null s'ils sont illisibles / trop grands / trop petits pour la règle. */
 export function freeFrom(a, b, c) {
   const na = F.parseFree(a); const nb = F.parseFree(b); const nc = F.parseFree(c);

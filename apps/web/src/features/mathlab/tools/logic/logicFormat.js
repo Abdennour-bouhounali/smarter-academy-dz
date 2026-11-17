@@ -62,14 +62,6 @@ export function connectorExpression(connector, p = 'P', q = 'Q') {
   return `${p} ${SYMBOLS[connector]} ${q}`;
 }
 
-/** Un intervalle tel qu'on l'écrit au tableau : ]−∞ ; 2[, [0 ; 1]. */
-export function intervalText({ from, to, openFrom = false, openTo = false }) {
-  const left = openFrom ? ']' : '[';
-  const right = openTo ? '[' : ']';
-
-  return `${left}${formatNumber(from)} ; ${formatNumber(to)}${right}`;
-}
-
 /** Une liste de valeurs pour l'affichage : « 2 ; 4 ; 6 » (point-virgule arabe usuel). */
 export function valueList(values, max = 8) {
   const shown = values.slice(0, max).map((v) => formatNumber(v));

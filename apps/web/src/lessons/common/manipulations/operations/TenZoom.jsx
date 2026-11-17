@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CheckCircle2, Sparkles, Hand, FlaskConical, Undo2, RotateCcw, ChevronLeft, ShieldAlert, Plus } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -62,7 +62,6 @@ import { CSS, VB_W, VB_H, CX, CY, R_IN, R_OUT, FRAME, NOTCH_DEG, Bench, Ring, Fr
  */
 const NS = 'manipulation.tenZoom';
 const ring = 'outline-none focus-visible:ring-4 focus-visible:ring-amber-300';
-const ltr = (s) => <bdi dir="ltr">{s}</bdi>;
 const sp = (n) => T.decText({ m: BigInt(n), e: 0 });
 /** Un décimal exact en LaTeX (îlot LTR dans le texte arabe) : 10\,000 · 0{,}001 */
 const texs = (v) => { const [w, f] = T.decText(v).split(','); return w.replace(/\u00A0/g, '\\,') + (f ? `{,}${f}` : ''); };
@@ -570,7 +569,6 @@ export const CHAINS = Object.freeze({
 const $ = (s) => `$${s}$`;
 const Cq = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
 const sideOf = (n) => tex(T.pow10(n));
-const minus = (n) => String(n).replace('-', '−');
 /** La bonne option à la place `want` ; une seule bonne. */
 const place = (opts, want) => {
   const ci = opts.findIndex((o) => o.correct);

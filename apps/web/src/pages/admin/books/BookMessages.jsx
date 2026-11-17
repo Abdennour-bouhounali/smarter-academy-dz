@@ -9,15 +9,9 @@ import { useAdminResource } from '../../../hooks/useAdminResource';
 import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
 import { fetchBookMessages, updateBookMessage } from '../../../features/books/bookService';
 import { S } from '../../../features/books/strings';
-import { Pill } from './BookOrders';
 
 const A = S.admin;
 const C = S.contact;
-const TONES = {
-  new: 'bg-blue-50 text-blue-700 border-blue-200', in_progress: 'bg-amber-50 text-amber-700 border-amber-200',
-  replied: 'bg-emerald-50 text-emerald-700 border-emerald-200', closed: 'bg-slate-100 text-slate-600 border-slate-200',
-  archived: 'bg-slate-200 text-slate-700 border-slate-300',
-};
 
 /** « رسائل الكتب » : la boîte de réception des pages livres. */
 export default function AdminBookMessages() {

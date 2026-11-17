@@ -137,11 +137,6 @@ const answerCheckpoints = async (page, max = 12) => {
   }
   return answered;
 };
-const svgPoint = async (page, x, y) => page.evaluate(({ x, y }) => {
-  const svg = [...document.querySelectorAll('[data-jt-svg]')].find((e) => e.getBoundingClientRect().width > 0);
-  const vb = svg.viewBox.baseVal; const r = svg.getBoundingClientRect();
-  return { x: r.left + ((x - vb.x) / vb.width) * r.width, y: r.top + ((y - vb.y) / vb.height) * r.height };
-}, { x, y });
 
 for (const vp of SIZES) {
   const ctx = await contextFor(browser, token, vp);
@@ -168,15 +163,6 @@ for (const vp of SIZES) {
   const questions = await answerCheckpoints(page);
   check(questions >= 1, `${tag} b1 : la carte de questions s'ouvre PAR-DESSUS le labo après l'unité (${questions} questions)`);
   await shot('lab-beginner-unit');
-  // b1 étape 2 : planter le drapeau du premier saut (2,4 = tick 24) au mauvais endroit (4,2 = tick 42) puis au bon, par tap-tap
-  const place = async (cardId, tick) => {
-    await click(page, `[data-jt-card="${cardId}"]`);
-    const u = await vis(page, '[data-jump-tape]').evaluate((el) => Number(el.getAttribute('data-unit') || 0)).catch(() => 0);
-    const p = await svgPoint(page, 20 + (tick * (u || 110)) / 10, 150);
-    await page.mouse.click(p.x, p.y);
-    await page.waitForTimeout(300);
-  };
-  async function click(pg, sel) { const el = vis(pg, sel); await el.evaluate((e) => e.scrollIntoView({ block: 'center', behavior: 'instant' })); await el.click(); await pg.waitForTimeout(80); }
   const cards = await page.locator('[data-jt-card]:visible').count();
   check(cards === 3, `${tag} b1 : trois cartes de saut dans le bac (${cards})`);
   await shot('lab-beginner-tray');

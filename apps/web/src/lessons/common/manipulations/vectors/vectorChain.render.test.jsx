@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 import VectorChain from './VectorChain';
 import ManipulationWorkspace from '../ManipulationWorkspace';
@@ -77,7 +76,6 @@ describe('vector-chain — rendu', () => {
 
 const k = (key, o) => i18n.t(`lesson:manipulation.vectorChain.${key}`, o);
 const PRE = /manipulation\.[a-zA-Z]/;
-const noop = (s) => s;
 
 describe('vector-chain — questions pendant le labo (LabCheckpoint)', () => {
   const build = async (lab, ctxOf) => {
@@ -96,11 +94,10 @@ describe('vector-chain — questions pendant le labo (LabCheckpoint)', () => {
       return [qid, q];
     });
   };
-  const ctxFor = (lab) => ({ prompt: 'dPromptBeginner', options: [{ text: 'a', correct: true }, { text: 'b', why: 'w' }], formal: <span>f</span> });
+  const ctxFor = () => ({ prompt: 'dPromptBeginner', options: [{ text: 'a', correct: true }, { text: 'b', why: 'w' }], formal: <span>f</span> });
 
   it('مبتدئ : la mission 1 (BC + AB) pose couple · final, la mission 2 (AB + AD) couple · swap · final', async () => {
     let s = L.init(LEVELS['vector-chain'].beginner.numbers);
-    const train = (lab, id, end) => L.couple(lab, id, end);
     s = L.couple(s, 'm0c0', 'tail');   // BC sur le train
     s = L.couple(s, 'm0c1', 'head');   // AB devant : AB + BC = AC
     expect(L.current(s).train).toBe('AC');

@@ -219,20 +219,6 @@ export async function resetPassword({ token, email, password, passwordConfirmati
 }
 
 /**
- * Les versions des documents légaux qui ont cours, d'après le SERVEUR.
- * Affichage seulement — le client ne décide jamais d'une version.
- */
-export async function fetchLegalVersions() {
-  const { ok, status, data } = await apiRequest('/legal/versions');
-
-  if (!ok) {
-    throw new ApiError(apiMessage('legalVersions', data, status), classifyStatus(status), status);
-  }
-
-  return data.versions;
-}
-
-/**
  * L'URL de départ vers Google.
  *
  * Une NAVIGATION (window.location), et non un fetch : l'authentification se

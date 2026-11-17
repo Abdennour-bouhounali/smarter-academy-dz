@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Une séquence de touches de calculatrice (طرائق p. 119 : ON 2,5 ÷ sin 25) et ce qu'affiche l'écran. Les touches

@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../../common/components/MathText';
 
 /**
@@ -10,7 +9,7 @@ import MathText from '../../../../../../common/components/MathText';
 const vt = (n) => (n === '0' ? '\\overrightarrow{0}' : `\\overrightarrow{${n}}`);
 const REFUSAL = { chainTail: 'لا يتتابعان', chainHead: 'لا يتتابعان', notGiven: 'غير معطاة: الشكل لا يبرهن', nowhere: 'لا يصل إلى محطة' };
 
-export function evidenceLine(e) {
+function evidenceLine(e) {
   if (!e) return null;
   if (e.mode === 'construct') {
     const centre = `E_${e.build + 1}`;

@@ -78,5 +78,3 @@ export const DICTIONARY = Object.freeze([
 /** Les entrées d'un groupe, dans l'ordre de déclaration. */
 export const entriesOfGroup = (group) => DICTIONARY.filter((entry) => entry.group === group);
 
-/** Une entrée par son identifiant, ou `null` — jamais une exception. */
-export const dictionaryEntry = (id) => DICTIONARY.find((entry) => entry.id === id) ?? null;

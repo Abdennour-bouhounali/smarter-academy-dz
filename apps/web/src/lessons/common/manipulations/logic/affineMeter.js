@@ -22,12 +22,12 @@ import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
  * Tout le calcul vient de packages/core/arithmetic/affine.js ; ce module ne fait que l'INTERACTION.
  */
 
-export const MODES = Object.freeze(['image', 'antecedent', 'classify']);
+const MODES = Object.freeze(['image', 'antecedent', 'classify']);
 const with_ = (s, patch) => Object.freeze({ ...s, ...patch });
 const F = (v) => (typeof v === 'object' && v !== null ? v : Number.isInteger(v) ? Lin.frac(v) : Lin.parseNumber(v));
 
 /** « image|antecedent|classify » → ['image', 'antecedent', 'classify'] (ordre du manuel imposé). */
-export function parseModes(mode = 'image') {
+function parseModes(mode = 'image') {
   const list = String(mode).split('|').map((m) => m.trim()).filter(Boolean);
   if (!list.length || list.some((m) => !MODES.includes(m))) throw new Error(`affine-meter: mode illisible « ${mode} »`);
   return Object.freeze(MODES.filter((m) => list.includes(m)));

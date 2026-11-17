@@ -14,8 +14,8 @@ import {
   streak,
   nudge,
   discoveryLevel,
-  useCase,
-  useRight,
+  keyCase,
+  keyRight,
   complete,
   outcome,
 } from './ruleForge';
@@ -178,12 +178,12 @@ describe('مصهر القاعدة — the rule forge', () => {
   it('ends on a gap too long to count, decided by the rule', () => {
     const seen = new Set();
     for (let seed = 1; seed <= 60; seed += 1) {
-      const c = useCase(rng(seed * 104729));
+      const c = keyCase(rng(seed * 104729));
       seen.add(c.held);
       expect(c.a).toBeGreaterThan(90);
-      expect(useRight(c, c.q, String(c.r), c.held)).toBe(true);
-      expect(useRight(c, c.q, c.r, !c.held)).toBe(false);
-      expect(useRight(c, c.q - 1, c.r + c.b, c.held)).toBe(false);
+      expect(keyRight(c, c.q, String(c.r), c.held)).toBe(true);
+      expect(keyRight(c, c.q, c.r, !c.held)).toBe(false);
+      expect(keyRight(c, c.q - 1, c.r + c.b, c.held)).toBe(false);
     }
     expect(seen.size).toBe(2);
   });

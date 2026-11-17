@@ -21,16 +21,16 @@
 export const LAB_SCOPES = Object.freeze(['moyen', 'secondaire']);
 
 /** L'instrument d'usage commun, hors des مخابر (la سبّورة). */
-export const COMMON_SCOPE = 'common';
+const COMMON_SCOPE = 'common';
 
 /** Le paramètre d'URL qui porte le مخبر : `/espace/atelier?lab=moyen`. */
-export const LAB_SCOPE_PARAM = 'lab';
+const LAB_SCOPE_PARAM = 'lab';
 
 /** La clé que la coquille réserve dans `data` pour se souvenir du مخبر. */
-export const LAB_SCOPE_DATA_KEY = 'labScope';
+const LAB_SCOPE_DATA_KEY = 'labScope';
 
 /** Le dernier مخبر choisi dans ce navigateur (une préférence, jamais une vérité). */
-export const LAB_SCOPE_STORAGE_KEY = 'sa-ml-lab';
+const LAB_SCOPE_STORAGE_KEY = 'sa-ml-lab';
 
 export function isLabScope(value) {
   return LAB_SCOPES.includes(value);

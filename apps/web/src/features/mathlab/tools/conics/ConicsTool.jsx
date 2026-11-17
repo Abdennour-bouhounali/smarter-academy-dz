@@ -12,7 +12,6 @@ import ConicControls from './ConicControls.jsx';
 import ConicInspector from './ConicInspector.jsx';
 import PracticePanel from './PracticePanel.jsx';
 import * as C from './conicMath.js';
-import * as I from './intersections.js';
 import { analyseScene } from './sceneAnalysis.js';
 import {
   normalizeConicsData, serializeConicsData, createConicsData,
@@ -68,7 +67,6 @@ export default function ConicsTool({ initialData, onChange, onReady }) {
   const timerRef = useRef(null);
   const dataRef = useRef(data);
   const onChangeRef = useRef(onChange);
-  const dragRef = useRef(null);
   onChangeRef.current = onChange;
   dataRef.current = data;
 
@@ -647,7 +645,7 @@ function TabButton({ id, active, onSelect, icon: Icon, label }) {
  * geste → paramètre → équation lisible.
  */
 function ConicHandles({
-  conic, features, selected, onSelect, onDragCenter, onDragRadius, onDragSemiAxis,
+  conic, selected, onSelect, onDragCenter, onDragRadius, onDragSemiAxis,
   onDragCoefficient, onDragEnd, onNudge, t,
 }) {
   const center = { x: conic.h, y: conic.k };

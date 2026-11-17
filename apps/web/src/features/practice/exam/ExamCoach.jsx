@@ -6,7 +6,7 @@
  *   CoachAfter    what follows an answer: the paper notebook after a mistake, then GUIDE (never the answer) or EXPLAIN (the
  *                 solution told step by step: what is asked, which rule, each line, the trap, the exam tip).
  */
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { PenLine, VolumeX, Compass, BookOpenCheck, NotebookPen, Smartphone, Clock, ArrowLeft, Check, AlertTriangle, Target } from 'lucide-react';
 import RichText from '../RichText';
 import { scopedStorage as storage } from '../../../utils/storage';

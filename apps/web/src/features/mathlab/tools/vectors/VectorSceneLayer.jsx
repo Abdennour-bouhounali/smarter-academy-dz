@@ -22,7 +22,7 @@ import { CONSTRUCTION_COLOR, POINT_COLOR } from './vectorScene.js';
  * les poignées — ce qu'on attrape est toujours au-dessus.
  */
 export default function VectorSceneLayer({
-  resolved, scene, view, selection, relations, settings,
+  resolved, view, selection, relations, settings,
   onDragPoint, onDragVectorTip, onDragVectorOrigin, onDragEnd, onSelectPoint, onSelectVector,
 }) {
   const { t } = useTranslation('mathlab');

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CheckCircle2, Sparkles, Hand, FlaskConical, Undo2, RotateCcw, ChevronLeft, Plus, Minus, ShieldAlert, ArrowLeftRight, Check } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -210,7 +210,6 @@ function Lab({ lab, setLab, k, lead, cp }) {
   const reading = L.readingOf(lab);
   const shut = L.shutterClosed(lab);
   const shown = L.needleShown(lab);
-  const last = lab.last;
   const letters = race ? ['A', 'B'] : ['a', 'b'];
   const names = { a: letters[0], b: letters[1] };
 
@@ -575,7 +574,7 @@ function CoefPanel({ lab, setLab, k }) {
   );
 }
 
-function regionTex(r, form) {
+function regionTex(r) {
   if (r.kind === 'all') return null;
   const c = ratTex(r.bound);
   return r.kind === 'lt' ? `x<${c}` : r.kind === 'eq' ? `x=${c}` : `x>${c}`;

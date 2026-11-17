@@ -8,7 +8,7 @@
  * be reached from the rail, nothing is ever locked, the footer whispers one oral question, the board tools (class, pen,
  * pointer, curtain, timer) are the same on every screen. Nothing scrolls; nothing here is a student's progress.
  */
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowLeft,
   ArrowRight,

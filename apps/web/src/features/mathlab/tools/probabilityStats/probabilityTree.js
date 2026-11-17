@@ -28,8 +28,8 @@ import {
 
 export const MAX_STAGES = 3;
 export const MAX_BRANCHES = 4;
-export const MAX_LABEL_LENGTH = 24;
-export const MAX_PROBABILITY_TEXT = 16;
+const MAX_LABEL_LENGTH = 24;
+const MAX_PROBABILITY_TEXT = 16;
 /** Au-delà de neuf décimales, personne n'écrit une probabilité d'exercice. */
 const MAX_DECIMALS = 9;
 
@@ -138,6 +138,7 @@ function styleOf(text) {
  * (`$ \ { } ^ _ & % # ~`) sont retirés ; longueur bornée.
  */
 export function normalizeLabel(text) {
+  // eslint-disable-next-line no-control-regex -- control characters are exactly what is removed from a pasted label
   let label = String(text ?? '').replace(/[\u0000-\u001f]/g, '').trim();
   const bar = label.match(/^\\(?:bar|overline)\s*\{?\s*([A-Za-z])\s*\}?$/) || label.match(/^ليس\s+([A-Za-z])$/);
   if (bar) return `${bar[1]}${MACRON}`;
@@ -761,14 +762,6 @@ export function toStoredTree(tree) {
   const strip = (branches) => branches.map((b) => ({ id: b.id, label: b.label, p: b.p, children: strip(b.children) }));
 
   return { stages: tree.stages, branches: strip(tree.branches), presetId: tree.presetId, query: tree.query };
-}
-
-/** Un rationnel → `{ latex, decimal, percent }` à afficher (la fraction exacte, puis ses lectures). */
-export function probabilityReadings(r) {
-  if (!r) return null;
-  const value = toNumber(r);
-
-  return { rational: r, value, latex: rationalLatex(r) };
 }
 
 export function rationalLatex(r) {

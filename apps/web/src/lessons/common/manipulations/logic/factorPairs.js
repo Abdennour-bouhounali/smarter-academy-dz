@@ -1,6 +1,6 @@
 import * as divisibility from '@smarter-academy/core/arithmetic/divisibility.js';
 
-const { divmod, divisionTestBound, divisors, factorPairs } = divisibility;
+const { divmod, divisionTestBound, divisors } = divisibility;
 
 /**
  * factor-pairs — ranger `n` points en `d` colonnes.
@@ -15,7 +15,7 @@ export function init({ n }) {
   return { n, cols: null, rows: null, rest: null, pairs: [], tested: [], bound: divisionTestBound(n) };
 }
 
-export function canTest(state, d) {
+function canTest(state, d) {
   if (!Number.isInteger(d) || d < 1) return 'notNatural';
   if (d > state.n) return 'largerThanN';
   return true;
@@ -106,17 +106,13 @@ export function allDivisors(state) {
   return divisors(state.n);
 }
 
-export function expectedPairs(state) {
-  return factorPairs(state.n);
-}
-
 /* ── Le guide d'onboarding (LabCoach, MANIPULATION_CONTRACT §8quater) ─────────────────────────────────────────── */
 
 /**
  * La prochaine largeur à essayer, SANS la nommer à l'élève : le plus petit d de 1 … √n pas encore testé ; quand tous le
  * sont, le plus petit d au-delà pas encore testé (le rectangle couché qui montre qu'on peut s'arrêter). `null` : rien à tester.
  */
-export function nextWidth(state, range) {
+function nextWidth(state, range) {
   const todo = (from, to) => { for (let v = from; v <= to; v += 1) if (!state.tested.some((t) => t.d === v)) return v; return null; };
   return todo(1, state.bound) ?? todo(state.bound + 1, range.max);
 }

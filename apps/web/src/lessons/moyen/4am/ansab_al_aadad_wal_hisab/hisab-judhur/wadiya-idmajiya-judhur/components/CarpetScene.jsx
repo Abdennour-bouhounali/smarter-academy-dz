@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * La vignette de la carte d'activité du module 1 : une زربية de وادي سوف posée

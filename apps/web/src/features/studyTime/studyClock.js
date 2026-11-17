@@ -41,7 +41,7 @@ export function createClock(now) {
   return { lastAt: now, mode: 'active', streak: 0, buckets: {} };
 }
 
-export function modeFor({ now, visible, focused, lastInputAt }) {
+function modeFor({ now, visible, focused, lastInputAt }) {
   if (!visible || !focused) return 'away';
   return now - lastInputAt <= IDLE_AFTER_MS ? 'active' : 'idle';
 }

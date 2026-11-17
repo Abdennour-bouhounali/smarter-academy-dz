@@ -147,7 +147,7 @@ const HARD_YES = {
   5: () => true,
   3: (n) => ![3, 6, 9].includes(n % 10),
   9: (n) => n % 10 !== 9,
-  4: (n) => true,
+  4: () => true,
 };
 
 function rulesSort(rand, k, first) {

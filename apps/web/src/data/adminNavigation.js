@@ -155,5 +155,3 @@ export function adminNavSectionsFor(role) {
     .filter((section) => section.links.length > 0);
 }
 
-/** Où atterrit le gestionnaire de la librairie. */
-export const BOOK_MANAGER_HOME = '/admin/livres/commandes';

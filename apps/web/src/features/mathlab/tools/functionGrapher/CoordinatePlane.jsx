@@ -99,7 +99,7 @@ const CoordinatePlane = forwardRef(function CoordinatePlane({
   const zoomBy = useCallback((factor) => applyGesture((v) => zoomViewport(v, factor)), [applyGesture]);
 
   // ── Le tap : quelle courbe est sous le doigt ? ─────────────────────────
-  const handleTap = useCallback(([x, y], [px, py]) => {
+  const handleTap = useCallback(([x, y], [, py]) => {
     const current = viewRef.current;
     const { width, height } = sizeRef.current;
     if (!current || !onTap) return;

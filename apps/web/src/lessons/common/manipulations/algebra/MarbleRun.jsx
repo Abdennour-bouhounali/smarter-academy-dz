@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand } from 'lucide-react';
 import * as S from '@smarter-academy/core/arithmetic/substitution.js';
@@ -335,7 +335,6 @@ export default function MarbleRun({
     const letters = L.lettersOf(lab);
     const names = (st) => (st.op === 'pow' ? k(st.n === 3 ? 'stations.pow3' : 'stations.pow2') : k(`stations.${st.op}`));
     const scaffold = !lab.predict;
-    const slotList = L.slotsOf(lab);
     const guiltySlot = lit != null ? ran.slot : null;
     const wall = (
       <Pegboard data-mr-wall>

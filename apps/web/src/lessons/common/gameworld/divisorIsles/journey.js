@@ -20,7 +20,7 @@ export const examOpen = (keys, practice) =>
     practice,
   );
 export const examLevelOpen = (exam, n) => n === 1 || (exam.best?.[n - 1]?.stars ?? 0) > 0;
-export const examLevelsPassed = (exam) => LEVELS.filter((l) => (exam.best?.[l.n]?.stars ?? 0) > 0).length;
+const examLevelsPassed = (exam) => LEVELS.filter((l) => (exam.best?.[l.n]?.stars ?? 0) > 0).length;
 export const nextExamLevel = (exam) => LEVELS.find((l) => !((exam.best?.[l.n]?.stars ?? 0) > 0))?.n ?? null;
 
 /**

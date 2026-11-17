@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ContentModule, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
-import MathText from '../../../../../../common/components/MathText';
 import { MethodSteps, TextbookExercise } from '../../../../../../common/textbook';
 import RayFigure from '../components/RayFigure';
 import GraphChoice from '../components/GraphChoice';

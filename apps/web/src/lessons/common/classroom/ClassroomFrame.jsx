@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import { createContext, useContext } from 'react';
 import { useClassroomMode } from './ClassroomContext';
 
 /**
@@ -25,7 +25,7 @@ import { useClassroomMode } from './ClassroomContext';
  * Une manipulation qui calcule elle-même sa mise en page pour la zone offerte
  * (la bibliothèque) NE se met PAS dans un cadre : elle lit `--sa-classroom-*`.
  */
-export const CLASSROOM_FRAME_BASE = 1.3;
+const CLASSROOM_FRAME_BASE = 1.3;
 
 const FrameContext = createContext(false);
 

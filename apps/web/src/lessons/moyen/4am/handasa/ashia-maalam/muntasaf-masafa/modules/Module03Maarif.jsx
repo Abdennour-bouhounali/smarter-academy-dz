@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
@@ -6,7 +6,7 @@ import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { SourceTag, TextbookBox, PairQuestion } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { CHALLENGE, CHALLENGE_LINES, KNOW_MID, KNOW_DIST, KNOW_LINES, PLATFORM_SOURCE } from '../content/textbook';
+import { CHALLENGE, CHALLENGE_LINES, KNOW_MID, KNOW_LINES, PLATFORM_SOURCE } from '../content/textbook';
 import { FIG_CHALLENGE, FIG_KNOW_DIST } from '../content/figures';
 
 /**

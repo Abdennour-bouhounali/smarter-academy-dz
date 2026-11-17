@@ -23,12 +23,12 @@ import * as LS from '@smarter-academy/core/arithmetic/linearSystem.js';
 const { frac, mul, add, sub, neg, cmp, isZero, isInteger, eq } = Lin;
 const coefOf = (e, v) => (v === 'x' ? e.a : e.b);
 
-export const REFUSALS = Object.freeze(['sameCard', 'wrongUnknown', 'noCancel', 'both']);
+const REFUSALS = Object.freeze(['sameCard', 'wrongUnknown', 'noCancel', 'both']);
 /** Un refus qui compte comme un essai (« zero », « notNow », « noUnknownHere », « scaleRange », « noOther » sont des gardes, pas des idées). */
 export const isRefusal = (reason) => REFUSALS.includes(reason);
 
 /** Une écriture TeX ramenée à sa forme nue : sans espaces, « − » → « - ». */
-export const bare = (v) => String(v).replace(/\s+/g, '').replace(/−/g, '-');
+const bare = (v) => String(v).replace(/\s+/g, '').replace(/−/g, '-');
 
 /** La clé d'un état (pour reconnaître le même refus deux fois dans le même état). */
 export const stateKey = (lab) => `${lab.stage}|${lab.scale[1]}|${lab.scale[2]}|${lab.expr ? `${lab.expr.from}${lab.expr.v}` : ''}`;
@@ -163,7 +163,7 @@ const atDone = (lab) => lab.stage === 'done' && Boolean(lab.result);
 const atBoth = (lab) => atDone(lab) && E.discoveryReady(lab);
 
 /** Chaque suite du lecteur : { id, reached(lab), qs }. L'id est le point d'étape de la manche (`{ checkpoint: id }`). */
-export const CHAIN_SPECS = Object.freeze({
+const CHAIN_SPECS = Object.freeze({
   r1: [
     { id: 'build', reached: atOne(null), qs: ['see', 'build'] },
     { id: 'pair', reached: atDone, qs: ['pair'] },
@@ -193,7 +193,7 @@ export const buildIdFor = (name, method) => chainsOf(name).find((sp) => sp.qs.in
 export const PREDICT_KEYS = Object.freeze(['vanish', 'samePair', 'multiplier']);
 
 /** Le multiplicateur de la carte (2) qui rend les coefficients de y OPPOSÉS à ceux de la carte (1) (null s'il n'est pas entier). */
-export function yMultiplier(src) {
+function yMultiplier(src) {
   const [e1, e2] = E.parseSystem(src);
   if (isZero(e2.b)) return null;
   const k = Lin.div(neg(e1.b), e2.b);
@@ -233,7 +233,7 @@ export function predictAsked(lab, key, ctx = {}) {
   return Boolean(ctx.untouched);
 }
 /** La prédiction est-elle JUGÉE (l'événement dont elle parle a eu lieu) ? `ctx` : { stackTried, stackDone }. */
-export function predictJudged(lab, key, ctx = {}) {
+function predictJudged(lab, key, ctx = {}) {
   if (key === 'vanish') return Boolean(ctx.stackTried);
   if (key === 'multiplier') return Boolean(ctx.stackDone);
   if (key === 'samePair') return E.discoveryReady(lab);

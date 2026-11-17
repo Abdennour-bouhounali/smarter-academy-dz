@@ -23,7 +23,6 @@ const STUB = !!process.env.QA_STUB;
 const CH = '/courses/moyen/3am/ansab_al_aadad_wal_hisab';
 const LESSON = 'amaliyat-natiqa';
 const MODULES = ['astaidd', 'nashat', 'maarif', 'tariqa', 'atamarran', 'masala-1', 'masala-2', 'masala-3', 'itqan'];
-const W = 470;
 mkdirSync(OUT, { recursive: true });
 
 const failures = [];

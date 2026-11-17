@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ContentModule, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { TextbookExercise } from '../../../../../../common/textbook';
@@ -11,7 +11,7 @@ import { partsOf } from '../content/exercises';
  * le silo (P3, l'axe), la couche de l'imprimante (P4, la réduction). AUTOMATIZE puis TRANSFER (des objets du quotidien).
  * Une étape par exercice, faite quand chaque partie a reçu une réponse.
  */
-function Block({ g, requires, done, mark }) {
+function Block({ g, requires, mark }) {
   return partsOf(g).map((ex) => <TextbookExercise key={ex.id} exercise={ex} requires={requires} onAnswered={mark(ex.id)} />);
 }
 

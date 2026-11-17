@@ -21,7 +21,7 @@ import { itemProgress, BANDS } from '@smarter-academy/core/compass/engine.js';
 
 export { BANDS };
 export const CAP = Object.freeze({ seconds: 300, questions: 12, tools: 4, freshDays: 21, workshopNeeds: 50 });
-export const SEGMENTS = Object.freeze({ solid: 2, consolidate: 1, start: 0, unseen: 0 });
+const SEGMENTS = Object.freeze({ solid: 2, consolidate: 1, start: 0, unseen: 0 });
 const DAY = 86400000;
 
 /**

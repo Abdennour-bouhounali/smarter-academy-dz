@@ -24,7 +24,7 @@ import { formatTerm, termName } from './sequenceFormat.js';
  * termes arrivent déjà calculés (§46).
  */
 export default function SequenceLayer({
-  terms, layers, cursor, startIndex, even = [], odd = [], range = null,
+  terms, layers, cursor, even = [], odd = [], range = null,
   secondaryTerms = [], fixedPoints = [], trendValue = null, onPickIndex = null,
 }) {
   const { viewTransform } = useTransformContext();

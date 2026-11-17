@@ -4,7 +4,7 @@
  *   Promotion     the moment BETWEEN two levels: stars, confetti, sound — the game returns here, never inside the sitting;
  *   ProgressPage  « تقدّمي » — the road of the lesson, the four الكفاءات, an honest exam readiness, and the ONE next thing.
  */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Star,
   Lock,

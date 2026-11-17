@@ -917,7 +917,7 @@ export const ORACLE = {};
 for (const [key, spec] of Object.entries(DATA.oracle)) { const r = decide(spec); if (r) ORACLE[key] = r; }
 
 /* ── lecture du texte visible ─────────────────────────────────────────── */
-const plain = (t) => String(t ?? '').replace(/\\left|\\right|\\,|\\ |\\!|\;/g, '').replace(/\{,\}/g, '.');
+const plain = (t) => String(t ?? '').replace(/\\left|\\right|\\,|\\ |\\!|\\?;/g, '').replace(/\{,\}/g, '.');
 const numbers = (t) => new Set([...plain(t).matchAll(/\d+(?:\.\d+)?/g)].map((m) => m[0]));
 const claimNumbers = (c) => numbers(String(c).replace(/N\[[^\]]*\]/g, ' '));
 const specNumbers = (spec) => {

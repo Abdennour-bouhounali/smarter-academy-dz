@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { KeyRound, BadgeCheck, Inbox, History } from 'lucide-react';
 import StatusBadge from '../ui/StatusBadge';

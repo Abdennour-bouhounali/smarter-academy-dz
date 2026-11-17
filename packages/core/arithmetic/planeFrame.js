@@ -28,8 +28,6 @@ const neg = (t) => (t === 0 ? 0 : -t);
 export const reflectX = (p) => ({ x: p.x, y: neg(p.y) });
 export const reflectY = (p) => ({ x: neg(p.x), y: p.y });
 export const reflectO = (p) => ({ x: neg(p.x), y: neg(p.y) });
-/** Le signe d'une coordonnée : 1, −1 ou 0. */
-export const signOf = (t) => Math.sign(t);
 /** Le quart de plan numéroté comme le repère habituel : 1 (+ ; +), 2 (− ; +), 3 (− ; −), 4 (+ ; −) ; `null` si le point est sur un axe. */
 export function quadrant(p) {
   if (p.x === 0 || p.y === 0) return null;

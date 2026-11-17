@@ -520,7 +520,7 @@ export function audit(bank) {
   for (const { key, q } of bank) {
     const S = SPEC[key];
     if (!S) { problems.push(`${key} : aucune spec d'oracle`); continue; }
-    const [sid] = key.split(':'); const sh = sheets[sid]; const allText = sheetText(sid);
+    const [sid] = key.split(':'); const allText = sheetText(sid);
     const P = (m) => problems.push(`${key} : ${m}`);
     const texts = [q.statement, q.answerFormat, ...(q.hints ?? []).map((h) => h.content), q.feedback?.correct, q.feedback?.incorrect, ...(q.solution?.lines ?? []), q.solution?.result, ...(q.choices ?? []).map((c) => c.content)];
     for (const t of texts) {

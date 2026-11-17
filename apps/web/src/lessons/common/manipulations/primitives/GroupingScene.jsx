@@ -1,4 +1,3 @@
-import React from 'react';
 import ItemFigure from './ItemFigure';
 import { ITEM_THEMES, resolveItemTheme } from './itemThemes';
 import { groupingLayout, itemSizeCss, GROUP_SCALE, PILE_SCALE } from './groupingLayout';

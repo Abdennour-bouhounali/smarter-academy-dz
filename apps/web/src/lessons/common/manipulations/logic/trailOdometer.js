@@ -31,10 +31,9 @@ export const PRESETS = Object.freeze({
 
 /* ── Fractions entières (petits entiers) ─────────────────────────────────────────────────────── */
 
-const gcd = (a, b) => { let x = Math.abs(a); let y = Math.abs(b); while (y) [x, y] = [y, x % y]; return x || 1; };
 const arabicToLatin = (v) => String(v ?? '').replace(/[٠-٩]/g, (d) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))).replace(/[⁦⁩\s]/g, '').replace('٫', ',').replace(/[−–]/g, '-').replace('⁄', '/');
 /** « 5/12 » ou « -2/5 » ou « 1 » → { num, den, sign } (num ≥ 0). */
-export function parseLeg(txt) {
+function parseLeg(txt) {
   const raw = arabicToLatin(txt);
   const m = /^(-?)(\d+)(?:\/(\d+))?$/.exec(raw);
   if (!m) return null;
@@ -43,12 +42,11 @@ export function parseLeg(txt) {
   return { num: Number(m[2]), den, dir: m[1] ? -1 : 1 };
 }
 /** Un écrit de l'élève : « 8/12 », « ٨/١٢ », « 2/3 », « 1 » → { num, den } ou null. */
-export function parseWriting(txt) {
+function parseWriting(txt) {
   const p = parseLeg(txt);
   return p && p.dir === 1 ? { num: p.num, den: p.den } : null;
 }
-export const sameValue = (a, b) => a.num * b.den === b.num * a.den;
-export const reduce = (f) => { const g = gcd(f.num, f.den); return { num: f.num / g, den: f.den / g }; };
+const sameValue = (a, b) => a.num * b.den === b.num * a.den;
 
 /* ── Le sentier : paramétré par la longueur d'arc (des fractions égales = des longueurs égales) ── */
 
@@ -143,22 +141,18 @@ export const isFree = (s) => !!s.free;
 export const taskDone = (s, i = s.ti) => (s.free ? !!s.free.done : !!s.done[i]);
 export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 1;
 export const discoveryReady = (s) => s.tasks.every((_, i) => !!s.done[i]);
-export const levelOf = (s) => (s.tasks[0].predict ? 'advanced' : 'beginner');
 
 /* ── Lecture ─────────────────────────────────────────────────────────────────────────────────── */
 
-export const target = (s) => { const t = taskOf(s); return t.targets[Math.min(s.w.li, t.legs.length - 1)]; };
 /** Le sentier est verrouillé tant que l'élève n'a pas écrit sa prédiction (متقدم). */
 export const hikerLocked = (s) => s.w.phase === 'predict' || s.w.phase === 'write' || s.w.phase === 'done';
 export const counters = (s) => {
   const t = taskOf(s); const pos = s.w.pos;
   return { white: pos, red: t.k ? Math.floor(pos / t.k) : 0, leftover: t.k ? pos % t.k : 0, hasRed: !!t.k };
 };
-/** La fraction de tour où se tient la scoute (en tours : 0 … laps). */
-export const tOf = (s) => s.w.pos / taskOf(s).n;
 export const legsState = (s) => taskOf(s).legs.map((l, i) => (i < s.w.li ? 'done' : i === s.w.li && s.w.phase === 'walk' ? 'current' : 'todo'));
-export const arrivalFrac = (task) => ({ num: task.end, den: task.n });
-export const restFrac = (task) => ({ num: task.n - task.end, den: task.n });
+const arrivalFrac = (task) => ({ num: task.end, den: task.n });
+const restFrac = (task) => ({ num: task.n - task.end, den: task.n });
 
 /* ── Gestes ──────────────────────────────────────────────────────────────────────────────────── */
 
@@ -290,7 +284,7 @@ export const toGuided = (s) => (s.free ? { ...s, free: null, w: initW(s.tasks[s.
 /* ── Lecture ─────────────────────────────────────────────────────────────────────────────────── */
 
 export const trialEvidence = (tr) => ({ ...tr });
-export const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => !t.free && t.task === i);
+const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => !t.free && t.task === i);
 
 /** Le prochain geste utile — jamais la réponse. */
 export function coachOf(s) {

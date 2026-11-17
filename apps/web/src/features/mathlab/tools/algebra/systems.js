@@ -28,7 +28,7 @@ import {
   rangeCode, makePoly, subPoly, polyDegree, joinPieces, termBody, lcmInt,
 } from './polynomial.js';
 
-export const SYSTEM_VARIABLES = Object.freeze(['x', 'y']);
+const SYSTEM_VARIABLES = Object.freeze(['x', 'y']);
 export const DEFAULT_SYSTEM = Object.freeze({ first: 'x + y = 10', second: 'x - y = 2' });
 
 // ── Lecture d'une équation ────────────────────────────────────────────────

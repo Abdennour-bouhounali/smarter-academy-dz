@@ -1,5 +1,4 @@
 import { it, expect, describe } from 'vitest';
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import i18n from '../../../../i18n';

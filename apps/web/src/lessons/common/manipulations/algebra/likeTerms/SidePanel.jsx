@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ChevronLeft, Check, Eraser, FlaskConical } from 'lucide-react';
 import MathText from '../../../components/MathText';
 import { RoundButton, VerdictBanner } from '../../primitives/LabKit';

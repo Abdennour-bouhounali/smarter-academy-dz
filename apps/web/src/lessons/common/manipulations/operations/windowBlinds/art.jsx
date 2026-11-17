@@ -1,4 +1,3 @@
-import React from 'react';
 import KidFigure from '../../primitives/KidFigure';
 
 /**
@@ -11,7 +10,7 @@ export const COL = {
   frame: '#F8FAFC', frameEdge: '#94A3B8', rail: '#64748B', ring: '#E2E8F0', curtain: '#4338CA', blind: '#B45309', ink: '#0F172A', cord: '#475569', flag: '#EA580C',
 };
 
-export function Palm({ x, y, s = 1 }) {
+function Palm({ x, y, s = 1 }) {
   return (
     <g transform={`translate(${x} ${y}) scale(${s})`} aria-hidden="true">
       <path d="M-2 0 Q-4 -18 0 -34 L3 -34 Q0 -18 3 0 Z" fill={COL.trunk} />

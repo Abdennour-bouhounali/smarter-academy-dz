@@ -40,7 +40,7 @@ export function nextShipGoal(ships) {
 }
 
 /** Les jeux qui ne coûtent aucun cœur (le serveur fait foi : `games[].free`). */
-export const FREE_GAMES = ['sniper', 'odd', 'mental'];
+const FREE_GAMES = ['sniper', 'odd', 'mental'];
 
 /** Les jeux de mathématiques : 50 niveaux partagés, une position par élève et par jeu. */
 export const MATH_GAMES = ['sniper', 'odd', 'mental'];
@@ -88,7 +88,7 @@ export function timerTone(remaining, total) {
 }
 
 /** Une absence de la page qui compte (une notification ou le clavier ne comptent pas). */
-export const LEAVE_MIN_MS = 1500;
+const LEAVE_MIN_MS = 1500;
 
 export function countsAsLeft(awayMs) {
   return awayMs >= LEAVE_MIN_MS;

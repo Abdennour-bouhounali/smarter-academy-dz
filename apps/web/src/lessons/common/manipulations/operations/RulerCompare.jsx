@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Ruler, CheckCircle2, XCircle, Sparkles, ChevronLeft, FlaskConical, Undo2, Check, Hand, Lightbulb, LockKeyhole, Flag } from 'lucide-react';
+import { Ruler, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Check, Hand, LockKeyhole, Flag } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import * as D from '@smarter-academy/core/arithmetic/decimals.js';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
@@ -293,7 +293,6 @@ function Lab({ lab, setLab, k, width, screenH, glanceRef, lead, cp }) {
   const free = a.free;
   const order = a.kind === 'order';
   const done = !free && L.taskDone(lab);
-  const ready = L.discoveryReady(lab);
   const narrow = width < 560;
   const compact = screenH < 800;
   const decided = L.decidedNow(lab);
@@ -416,7 +415,7 @@ function SandSpeckle({ uid }) {
 
 /* ══════════════ Compare : les deux pistes ══════════════ */
 
-function Lanes({ lab, a, k, readings, jumpers, mood, width, compact, uid, done }) {
+function Lanes({ k, readings, jumpers, mood, width, compact, uid, done }) {
   const narrow = width < 640;
   return (
     <div className="space-y-2">
@@ -548,7 +547,7 @@ function RulerControl({ g, setG, k, compact, decided }) {
 }
 
 /** Les traits d'une graduation : 1 gros trait au mètre, 10 au décimètre, 20 au centimètre, 40 au millimètre (la densité EST le niveau de détail). */
-function TickIcon({ i, h, active }) {
+function TickIcon({ i, active }) {
   const n = [2, 9, 19, 39][i];
   const long = [1, 3, 5, 10][i];
   return (
@@ -745,11 +744,10 @@ function Tray({ lab, a, k, readings, jumpers, setLab, width, compact, held, setH
   );
 }
 
-function Podium({ lab, a, k, readings, jumpers, setLab, width, compact, decided, held, setHeld }) {
+function Podium({ lab, a, k, readings, jumpers, setLab, width, compact, held, setHeld }) {
   const n = a.vals.length;
   const w = tokenWidth(width, n);
   const done = !a.free && L.taskDone(lab);
-  const full = L.slotsFull(lab);
   const wrongAt = (() => {
     const l = lab.last;
     if (l && l.event === 'check' && l.ok === false && Boolean(l.free) === Boolean(a.free)) return [l.inversion, l.inversion + 1];

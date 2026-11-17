@@ -7,14 +7,14 @@ import { Apple, Heart, Monitor, Router, ShieldCheck, Smartphone } from 'lucide-r
  * polices viennent de Google Fonts (index.html) ; Google seulement pour la
  * connexion Google. À tenir à jour si un domaine est ajouté (PARENT_SPACE.md §6).
  */
-export const ALLOWED_HOSTS = [
+const ALLOWED_HOSTS = [
   { host: 'smarter-academy.com', key: 'allowMain' },
   { host: 'fonts.googleapis.com, fonts.gstatic.com', key: 'allowFonts' },
   { host: 'accounts.google.com', key: 'allowGoogle' },
 ];
 
 /** Cloudflare for Families — filtre les logiciels malveillants ET les contenus pour adultes. */
-export const FAMILY_DNS = ['1.1.1.3', '1.0.0.3'];
+const FAMILY_DNS = ['1.1.1.3', '1.0.0.3'];
 
 const DEVICES = [
   { id: 'windows', icon: Monitor, steps: ['s1', 's2', 's3', 's4', 's5', 's6'] },

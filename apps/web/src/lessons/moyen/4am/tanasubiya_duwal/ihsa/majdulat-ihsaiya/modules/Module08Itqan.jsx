@@ -1,4 +1,3 @@
-import React from 'react';
 import { BossFinal } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';

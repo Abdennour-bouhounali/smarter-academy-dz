@@ -68,7 +68,6 @@
     "classes": "الأقسام",
     "students": "التلاميذ",
     "plan": "عرضك",
-    "planUnlimited": "دون تاريخ انتهاء",
     "overLimit": "تجاوزت سعة التلاميذ في عرضك الحالي: أقسامك وتلاميذك محفوظون، لكن لا يمكنك إضافة تلميذ جديد.",
     "pendingRequest": "طلبك للعرض « {{plan}} » مسجّل. سيتواصل معك فريق الإدارة.",
     "newClass": "قسم جديد",
@@ -233,7 +232,6 @@
     "masteredPoints": "كفاءات متقنة",
     "ofPoints": "من {{count}} كفاءة",
     "exercisesOnly": "التمارين فقط",
-    "masteryCountsTitle": "الحصيلة",
     "why": "لماذا؟",
     "masteryFacts": "{{distinct}} أسئلة متنوعة · {{assessment}} في الاختبار · أقصى مستوى {{level}}",
     "masteryReason": {
@@ -437,7 +435,6 @@
       "recalculated": "إعادة حساب",
       "notebookTitle": "من كرّاسه في هذه الكفاءة",
       "noNotes": "لا ملاحظات في الكرّاس على هذه الكفاءة.",
-      "notebookTotal": "{{count}} ملاحظة",
       "openNotebook": "افتح الكرّاس",
       "interventionsTitle": "تدخّلاتك على هذه الكفاءة",
       "noInterventions": "لا تدخّل على هذه الكفاءة."
@@ -464,8 +461,6 @@
     },
     "limits": "حدودك",
     "features": "الميزات",
-    "featureOn": "مشمولة",
-    "featureOff": "غير مشمولة",
     "featureLabels": {
       "lessons.visibility": "إتاحة/إخفاء الدروس",
       "lessons.bulk_actions": "إجراءات جماعية على الدروس",
@@ -477,8 +472,7 @@
     },
     "limitLabels": {
       "classes": "الأقسام",
-      "students": "سعة التلاميذ",
-      "studentsPerClass": "التلاميذ في القسم الواحد"
+      "students": "سعة التلاميذ"
     },
     "plansTitle": "العروض",
     "howToTitle": "كيف أحصل على عرض؟",
@@ -551,7 +545,6 @@
     "email": "البريد الإلكتروني",
     "role": "الدور",
     "teacher": "أستاذ",
-    "memberSince": "عضو منذ {{date}}",
     "logout": "تسجيل الخروج"
   },
   "notebook": {
@@ -627,7 +620,6 @@
     "neverStarted": "لم يبدأ بعد",
     "lastActivity": "آخر نشاط: {{date}}",
     "studentFacts": "{{failures}} خاطئة من {{answered}} إجابة حديثة",
-    "ruleVersion": "إصدار قواعد الإشارات",
     "changes": {
       "title": "ما الذي تغيّر؟",
       "subtitle": "حالات الكفاءات بين بداية الفترة واليوم — لا بين يوم وآخر.",
@@ -651,7 +643,6 @@
     "openInterventions_few": "{{count}} تدخّلات مفتوحة",
     "openInterventions_many": "{{count}} تدخّلًا مفتوحًا",
     "openInterventions_other": "{{count}} تدخّل مفتوح",
-    "openInterventionsLink": "التدخّلات",
     "showAll": "عرض الكل ({{count}})",
     "showLess": "عرض أقلّ",
     "neverStartedCount_zero": "",
@@ -694,7 +685,6 @@
       "selectAll": "الكلّ",
       "selectNone": "لا أحد",
       "point": "الكفاءة",
-      "pointNone": "بدون كفاءة محدّدة",
       "lesson": "الدرس",
       "note": "ملاحظتك",
       "notePlaceholder": "ماذا لاحظت؟ ماذا ستفعل؟",
@@ -708,7 +698,6 @@
       "submit": "سجّل التدخّل",
       "saving": "جارٍ الحفظ…",
       "needPoint": "هذا النوع يتطلّب كفاءة.",
-      "needLesson": "اقتراح درس يتطلّب درسًا.",
       "noStudents": "اختر تلميذًا واحدًا على الأقلّ."
     },
     "status": {

@@ -284,7 +284,6 @@ const SPECS = {
   "ex-2am-muqarana-kasrayn-l5-010:q5": {"k": "calc", "e": ["*", "1/3", "60"]},
 };
 
-const L = 'ex-2am-muqarana-kasrayn';
 const LET = 'ABCDEF';
 const CASE_ORDER_TEXT = {
   den: 'نقارن بين البسطين لأنّ المقامين متساويان',
@@ -382,7 +381,6 @@ export function audit(bank) {
     const keyId = (() => { const a = answer(sp); return a && a.choiceId; })();
     const markedOk = good.map((c) => c.id);
     if (qu.answerType === 'choice' && keyId && !(markedOk.length === 1 && markedOk[0] === keyId)) push(`${key} : l'option juste du contenu est ${markedOk} mais l'oracle dit ${keyId}`);
-    const claimOk = (c, id, expect) => { if (c.misconceptionId === `MISC-MUQKASR-${id}` && !expect) push(`${key} : l'option ${c.id} porte ${id} mais la relation lue ne correspond pas à l'erreur`); };
 
     if (sp.k === 'rel') {
       push(pairProblem(sp.a, sp.b, key, 'la paire'));
@@ -417,7 +415,6 @@ export function audit(bank) {
       const dir = sp.dir; const sym = dir === 'asc' ? '<' : '>';
       const items = sp.opts[0].slice().sort(); // l'ensemble des fractions
       for (let i = 0; i < items.length; i++) for (let j = i + 1; j < items.length; j++) push(pairProblem(items[i], items[j], key, 'la paire'));
-      const trueChain = sorted(sp.opts[0], dir, (x) => q(x));
       const dist = new Set(sp.opts[0].map((x) => String(q(x)))); if (dist.size !== sp.opts[0].length) push(`${key} : deux valeurs égales dans l'ordre`);
       const strict = sorted(sp.opts[0], dir, (x) => q(x));
       qu.choices.forEach((c, i) => {

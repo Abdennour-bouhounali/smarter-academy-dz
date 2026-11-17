@@ -5,10 +5,8 @@ import { PHYSICS } from './constants.js';
  * meilleur score qu'une partie de cette durée peut faire. Sert aux tests du
  * moteur — une partie simulée ne doit jamais la dépasser.
  */
-const TOLERANCE = 1.25;
-const SLACK = 200;
 
-export function maxDistanceRad(durationMs) {
+function maxDistanceRad(durationMs) {
   const t = Math.max(0, durationMs) / 1000;
   const { omegaStart: w0, omegaAccel: a, omegaMax: wMax } = PHYSICS;
   const tCap = Math.max(0, (wMax - w0) / a);
@@ -16,7 +14,7 @@ export function maxDistanceRad(durationMs) {
   return w0 * tCap + (a * tCap * tCap) / 2 + wMax * (t - tCap);
 }
 
-export function maxPointsPerRad() {
+function maxPointsPerRad() {
   const p = PHYSICS;
   return p.pointsPerRad + (p.starPoints * p.maxMultiplier) / p.starMinGapRad + p.nearMissPoints / p.obstacleMinGapRad;
 }
@@ -26,6 +24,3 @@ export function perfectScore(durationMs) {
   return Math.floor(maxDistanceRad(durationMs) * maxPointsPerRad());
 }
 
-export function maxPlausible(durationMs) {
-  return Math.ceil(maxDistanceRad(durationMs) * maxPointsPerRad() * TOLERANCE) + SLACK;
-}

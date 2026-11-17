@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Minus, Plus, Repeat, CheckCheck, Lock } from 'lucide-react';
 import ManipulationShell from '../ManipulationShell';
@@ -31,7 +31,7 @@ import { MatchCard, Coin, ValueBar, Deco } from './PairScoreboard';
  *   - Journal « 📋 جدول تجاربك » et verdict dans la colonne ; commandes figées pendant une prédiction ou une question (`aria-disabled`) ;
  *     région vivante TOUJOURS montée ; AUCUN défilement : le monde est une BANDE dont la hauteur vient de la zone du lecteur.
  */
-export const PRED_HOLD_MS = 1600;
+const PRED_HOLD_MS = 1600;
 const PLAYER_CHROME = 150;
 const ringP = 'focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2';
 const $ = (x) => `$${x}$`;

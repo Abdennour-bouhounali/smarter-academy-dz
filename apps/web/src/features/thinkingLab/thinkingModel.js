@@ -5,7 +5,7 @@
  */
 
 /** Les phases SMART + 👁 + ↩, leur couleur (jamais de rouge) et leur signe. */
-export const PHASES = Object.freeze({
+const PHASES = Object.freeze({
   S: { sign: 'S', tone: 'bg-sky-50 text-sky-800 ring-sky-200', dot: 'bg-sky-500' },
   M: { sign: 'M', tone: 'bg-violet-50 text-violet-800 ring-violet-200', dot: 'bg-violet-500' },
   A: { sign: 'A', tone: 'bg-nav-accent-soft text-nav-accent ring-indigo-200', dot: 'bg-indigo-500' },

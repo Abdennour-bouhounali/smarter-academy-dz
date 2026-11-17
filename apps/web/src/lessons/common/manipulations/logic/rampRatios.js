@@ -20,11 +20,11 @@
  */
 import * as TR from '@smarter-academy/core/arithmetic/trigonometry.js';
 
-export const ROLES = Object.freeze(['hypotenuse', 'opposite', 'adjacent']);
+const ROLES = Object.freeze(['hypotenuse', 'opposite', 'adjacent']);
 export const SIDES = Object.freeze(['AB', 'AC', 'BC']);
 export const KINDS = Object.freeze(['cos', 'sin', 'tan']);
 export const SLOTS = Object.freeze(['num', 'den']);
-export const RANGE = Object.freeze({ name: Object.freeze([10, 65]), scale: Object.freeze([20, 65]) });
+const RANGE = Object.freeze({ name: Object.freeze([10, 65]), scale: Object.freeze([20, 65]) });
 /** La planche en demi-mètres (متقدم) : 2 m … 9 m. */
 export const LEN_RANGE = Object.freeze([4, 18]);
 const LEN_START = 10; // 5 m : jamais une rampe du manuel (4, 6, 8)
@@ -188,7 +188,7 @@ export function record(s) {
   return { ...s, pending: { b: s.b, i: s.i }, last: { kind: 'ask' } };
 }
 /** La vérité : les rapports d'une rampe ne dépendent que de son angle. */
-export const sameRatios = (r1, r2) => r1.b === r2.b;
+const sameRatios = (r1, r2) => r1.b === r2.b;
 /** Juger : 'same' (« لم تتغيّر النسبتان ») ou 'changed' (« تغيّرتا »), par rapport à la rampe précédente. */
 export function claim(s, says) {
   if (!s.pending) return s;
@@ -259,7 +259,7 @@ export function evidenceOf(s, item) {
  * la rampe la plus raide et les deux « fantômes » de la planche (couchée sur le sol, debout le long de la hauteur) ;
  * en متقدم la plus grande planche à tous les angles.
  */
-export function box(s, { compact = false } = {}) {
+function box(s, { compact = false } = {}) {
   if (s.mode === 'name') {
     const big = s.run / TR.cosDeg(s.range[1]);
     // compact (téléphone) : la boîte s'arrête un peu après A — l'arc couché sur le sol peut sortir du cadre à droite,
@@ -287,7 +287,7 @@ export function vertices(s, b = s.b, i = s.i) {
   return { B: [0, 0], A: [len.AB, 0], C: [len.AB, len.AC] };
 }
 /** Poignée de hauteur (مبتدئ) : un point → l'angle b au degré (le sol AB est fixe). */
-export function bFromPoint(s, [x, y]) {
+export function bFromPoint(s, [, y]) {
   const yy = Math.max(0.05, y);
   return clamp((Math.atan2(yy, s.run) * 180) / Math.PI, s.range);
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
@@ -39,8 +39,6 @@ import { useSavedAnswer } from '../../../../../../common/answers/useSavedAnswer'
  * gagnée) est GARDÉ (answers/useSavedAnswer + étoiles) : un rechargement ne bloque jamais une étape. Hors lecteur : inchangé.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
-const NONE = 'لا تقبل أي حل';
-const pm = (r) => `$x = ${r}$ أو $x = -${r}$`;
 
 export default function Module01Nashat() {
   const [q, setQ] = useState({});

@@ -34,7 +34,7 @@ import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
  * Garder une seule part de chaque côté, c'est diviser les deux membres par k.
  */
 
-const { frac, add, sub, mul, div, eq, cmp, isZero, isInteger, toNumber, linear, lin, linLatex, linAt, solveEquation, fracLatex, fracText } = Lin;
+const { frac, add, sub, div, eq, cmp, isZero, isInteger, toNumber, linear, lin, linLatex, linAt, solveEquation, fracLatex, fracText } = Lin;
 
 export const MAX_BAGS = 12;
 export const MAX_UNITS = 40;

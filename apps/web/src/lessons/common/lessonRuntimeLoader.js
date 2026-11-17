@@ -22,7 +22,7 @@ import { loadLessonLoaders } from '../registry';
  * textes et la petite table des chargeurs de leçons (lessonLoaders.js) : le
  * clic sur une leçon n'attend plus que SES routes.
  */
-export const loadLessonRuntime = () => Promise.all([import('./lessonRuntime'), loadLessonManipulationStrings()]).then(([runtime]) => runtime);
+const loadLessonRuntime = () => Promise.all([import('./lessonRuntime'), loadLessonManipulationStrings()]).then(([runtime]) => runtime);
 
 /**
  * Le runtime SEUL, sans attendre les textes des manipulations (2026-10-17).
@@ -56,7 +56,7 @@ export function prefetchLessonStringsWhenIdle(delayMs = 2000) {
 
 let requested = false;
 
-export function prefetchLessonRuntimeWhenIdle() {
+function prefetchLessonRuntimeWhenIdle() {
   if (requested || typeof window === 'undefined') return;
   requested = true;
   const run = () => Promise.all([loadLessonRuntime(), loadLessonLoaders()]).catch(() => { requested = false; });

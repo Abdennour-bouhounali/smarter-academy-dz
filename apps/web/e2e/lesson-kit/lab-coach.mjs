@@ -29,7 +29,7 @@ async function open(vp) {
 const view = (page) => page.evaluate(() => document.querySelector('[data-manipulation-level-panel=beginner] [data-rx-glance]').scrollIntoView({ block: 'start', behavior: 'instant' }));
 const lab = (page) => page.locator('[data-manipulation-level-panel=beginner]');
 const bubble = (page) => lab(page).locator('[data-lab-coach]');
-const inside = async (page, sel) => page.evaluate((s) => {
+const inside = async (page) => page.evaluate((s) => {
   const b = document.querySelector(s); if (!b) return false;
   const g = b.closest('[data-rx-glance]').getBoundingClientRect(); const x = b.getBoundingClientRect();
   return x.left >= g.left - 1 && x.right <= g.right + 1;

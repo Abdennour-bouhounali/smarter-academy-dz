@@ -2,7 +2,7 @@
  * « كاشف قابلية القسمة » — the number is a PADLOCK of digits the student rolls; six lamps (2, 3, 4, 5, 9, 10) light when the
  * number is divisible. Tap a lamp: the digits ITS rule reads rise on the padlock, with what the rule reads in them.
  */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 import { Tool, useChime } from '../kit';
 import { digitRules, rollDigit } from '../logic';

@@ -24,8 +24,6 @@
 import { rat, ratText } from '@smarter-academy/core/arithmetic/powers.js';
 import * as O from '@smarter-academy/core/arithmetic/orderSign.js';
 
-export const WORLDS = Object.freeze(['rail', 'race']);
-export const CARDS = Object.freeze(['gt', 'lt', 'eq']);
 export const RAIL_W = 600;
 export const TAG_W = 74;
 export const MERGED_W = 224;
@@ -48,7 +46,6 @@ export const PRESETS = Object.freeze({
     { id: 'e3', A: 'x²+3', B: 'x²+x', xmax: 8 },
   ] },
 });
-export const STRIKES = 3;
 
 const frac = (r) => Number(r.n) / Number(r.d);
 
@@ -214,7 +211,7 @@ export function chooseCard(s, card) {
   return n;
 }
 /** Après un verdict juste, une tâche `mustSwap` attend encore « بدّل المجسّين » : la dernière action la termine. */
-export function finishSwap(s) {
+function finishSwap(s) {
   const t = taskOf(s);
   if (s.free || taskDone(s) || !t.mustSwap || !s.verdict || !s.taskSwapped) return s;
   return note({ ...s, done: { ...s.done, [s.ti]: true } }, { kind: 'solved', world: 'rail' });
@@ -315,7 +312,7 @@ export function discoveryKind(s) {
   if (needs) return s.tasks.every((_, i) => !!s.done[i]) ? 'need' : null;
   return s.tasks.every((_, i) => !!s.done[i]) && s.swapTried ? 'side' : null;
 }
-export const discoveryReady = (s) => discoveryKind(s) !== null;
+const discoveryReady = (s) => discoveryKind(s) !== null;
 
 /** Le prochain geste utile — jamais la valeur. */
 export function coachOf(s) {

@@ -8,7 +8,7 @@
  * No person is drawn: the friends are their plates and their names, the tiler is his tools.
  */
 import * as THREE from 'three';
-import { makeIsland, makeTree, makeRock, std, glow, textSprite, seeded } from '../engine/builders';
+import { makeIsland, makeTree, makeRock, std, textSprite, seeded } from '../engine/builders';
 import { divide } from './logic';
 
 const easeOut = (t) => 1 - (1 - t) ** 3;

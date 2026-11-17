@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { MODEL_RULE, STEPS, INEQUALITY_RULE, REALITY_RULE, METHOD_MODELLING } from './content/textbook';
 

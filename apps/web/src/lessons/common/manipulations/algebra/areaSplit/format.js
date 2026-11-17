@@ -14,7 +14,7 @@ export const tex = (t) => termTex(t);
 /** Un terme en texte simple pour le dessin et les aria-label : « −2x² », « x », « 4 ». */
 export const plain = (t) => termTex(t).replace('^2', '²').replace(/^(-?)1x/, '$1x').replace(/-/g, '−');
 /** Un terme entre parenthèses quand il est négatif (les dimensions d'une parcelle : « (−2) × (−3) »). */
-export const paren = (t) => (t.c < 0 ? `(${plain(t)})` : plain(t));
+const paren = (t) => (t.c < 0 ? `(${plain(t)})` : plain(t));
 export const dimsOf = (p) => `${paren(p.hTerm)} × ${paren(p.wTerm)}`;
 /** Le signe d'un produit partiel au dessin : « −6x », « +8x ». */
 export const signed = (t, lead = false) => (lead ? plain(t) : `${t.c < 0 ? '−' : '+'} ${plain({ c: Math.abs(t.c), p: t.p })}`);

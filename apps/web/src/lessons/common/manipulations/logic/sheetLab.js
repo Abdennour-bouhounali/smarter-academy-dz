@@ -31,10 +31,10 @@ import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 import * as S from '@smarter-academy/core/arithmetic/statistics.js';
 
 export const COLS = 'ABCDEFGHIJKL';
-export const MAX_CELLS = 12;
+const MAX_CELLS = 12;
 
 /** Les noms du manuel (français) et leurs équivalents anglais — même calcul. */
-export const FUNCTIONS = Object.freeze({
+const FUNCTIONS = Object.freeze({
   MAX: 'max', MIN: 'min',
   MEDIANE: 'median', MEDIAN: 'median',
   MOYENNE: 'mean', AVERAGE: 'mean',
@@ -56,9 +56,9 @@ export function cellText(v) {
   if (typeof v === 'object' && v.error) return v.error;
   return Lin.fracDecimal(v, 3) ?? S.approx(v, 2);
 }
-export const exact = (v) => (v && !v.error ? Lin.fracDecimal(v, 3) != null : false);
+const exact = (v) => (v && !v.error ? Lin.fracDecimal(v, 3) != null : false);
 export const addr = (i, row = 1) => `${COLS[i]}${row}`;
-export function rangeText(sel) {
+function rangeText(sel) {
   if (!sel) return '';
   const a = Math.min(sel.a, sel.b); const b = Math.max(sel.a, sel.b);
   return a === b ? addr(a) : `${addr(a)}:${addr(b)}`;
@@ -66,12 +66,12 @@ export function rangeText(sel) {
 
 /* ── la donnée ────────────────────────────────────────────────────────── */
 
-export function parseCells(text) {
+function parseCells(text) {
   const vals = String(text).split('|').map((t) => t.trim()).filter(Boolean).map(F);
   if (vals.length < 2 || vals.length > MAX_CELLS) throw new Error(`sheet-lab: 2 à ${MAX_CELLS} cellules (« ${text} »)`);
   return vals;
 }
-export function parseAsk(text) {
+function parseAsk(text) {
   const kinds = String(text).split('|').map((t) => t.trim().toUpperCase()).filter(Boolean).map((t) => {
     if (!ASK[t]) throw new Error(`sheet-lab: indicateur inconnu « ${t} »`);
     return ASK[t];
@@ -80,7 +80,7 @@ export function parseAsk(text) {
   return kinds;
 }
 /** « البلاستيك:60|الزجاج:40|الورق:50 » → [{ label, value }]. */
-export function parsePairs(text) {
+function parsePairs(text) {
   return String(text).split('|').map((t) => t.trim()).filter(Boolean).map((t) => {
     const i = t.lastIndexOf(':');
     if (i < 1) throw new Error(`sheet-lab: paire « ${t} »`);
@@ -88,7 +88,7 @@ export function parsePairs(text) {
   });
 }
 /** « 7-8:6|8-9:1|9-10:4 » → [{ lo, hi, value }] — des classes CONTIGUËS. */
-export function parseClasses(text) {
+function parseClasses(text) {
   const out = String(text).split('|').map((t) => t.trim()).filter(Boolean).map((t) => {
     const m = t.match(/^([\d,.]+)-([\d,.]+):([\d,.]+)$/);
     if (!m) throw new Error(`sheet-lab: classe « ${t} »`);
@@ -189,7 +189,7 @@ export function parseFormula(raw) {
 const covered = (values, a, b) => values.filter((v, i) => i >= a && i <= b && v != null);
 
 /** Évalue un دستور analysé sur la ligne 1. */
-export function evaluate(parsed, values) {
+function evaluate(parsed, values) {
   let acc = Lin.frac(0);
   for (const t of parsed.terms) {
     const v = t.num ?? applyFn(t.kind, covered(values, t.a, t.b));
@@ -210,7 +210,7 @@ export function classify(parsed) {
   return 'other';
 }
 /** Toutes les fonctions couvrent-elles EXACTEMENT les n données (A1 … dernière) ? Sinon les cellules oubliées. */
-export function coverage(parsed, n) {
+function coverage(parsed, n) {
   const missing = new Set();
   const extra = [];
   for (const t of parsed.terms.filter((x) => x.fn)) {
@@ -220,7 +220,7 @@ export function coverage(parsed, n) {
   return { full: missing.size === 0, missing: [...missing].sort((x, y) => x - y), beyond: extra.length > 0 };
 }
 /** L'écriture canonique (celle du manuel, sans espaces). */
-export function canonical(parsed) {
+function canonical(parsed) {
   return `=${parsed.terms.map((t, i) => {
     const s = t.sign < 0 ? '-' : (i ? '+' : '');
     return t.num ? `${s}${cellText(t.num)}` : `${s}${t.fn}(${rangeText({ a: t.a, b: t.b })})`;
@@ -412,7 +412,7 @@ export const save = (s) => ({ ...s, saved: true, last: { kind: 'saved' } });
 
 /* ── l'étape « graphique » ───────────────────────────────────────────── */
 
-export const CHART_FIT = { bars: 'bars', pie: 'pie', histogram: 'histogram' };
+const CHART_FIT = { bars: 'bars', pie: 'pie', histogram: 'histogram' };
 
 /** Le petit tableau (2 lignes) d'un jeu de données : les étiquettes et les valeurs. */
 export function datasetOf(s, id) {
@@ -440,7 +440,7 @@ export function chartSelect(s, rect) {
 const norm = (r) => ({ c0: Math.min(r.c0, r.c1), c1: Math.max(r.c0, r.c1), r0: Math.min(r.r0, r.r1), r1: Math.max(r.r0, r.r1) });
 
 /** Ce que la sélection laisse dehors : colonnes oubliées, ligne des noms ou des valeurs absente. */
-export function selectionGaps(ds, sel) {
+function selectionGaps(ds, sel) {
   if (!sel) return { none: true };
   const k = ds.values.length;
   const missingCols = [];

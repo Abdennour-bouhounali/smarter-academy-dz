@@ -1,4 +1,3 @@
-import React from 'react';
 import { W, SVG_H, ROPE_Y, PAD, xOfValue, integersOf } from './pegArt';
 
 /**

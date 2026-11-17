@@ -10,27 +10,13 @@
  * The top bar is one calm line: where he is, and the three things he does from here (the class session, his lesson
  * file, print). Same palette as his card: white, dark ink, one dark tone for what is pressed.
  */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  ArrowLeft,
-  ArrowRight,
-  Check,
-  Clock,
-  Eye,
-  HelpCircle,
-  MessageCircle,
-  NotebookPen,
-  Presentation,
-  Printer,
-  TriangleAlert,
-} from 'lucide-react';
-import { getLessonPath } from '@smarter-academy/core';
+import { ArrowLeft, Check, Clock, Eye, HelpCircle, MessageCircle, Printer, TriangleAlert } from 'lucide-react';
 import MathText from '../../lessons/common/components/MathText';
 import '../teacher/lessonMemo/memo.css';
 import { MEMO_PARTS, partKeys, openingFacts } from './lessonMemos';
 import { classSessionPath } from './boardLessons';
-import { lessonFilePagePath } from './lessonFileDoc';
 import MemoFigure from './MemoFigures';
 import { LessonToolPage } from './LessonToolsBar';
 

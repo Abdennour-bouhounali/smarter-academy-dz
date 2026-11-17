@@ -64,9 +64,6 @@ const BETWEEN = [
   { lo: '2,5', hi: '2,6', good: '2,55', wrongs: ['2,65', '2,45', '2,6'] },
 ];
 
-/* ── 8. l'ouverture (opener) : les températures extrêmes de la Terre ───────────────────────────────────────────────── */
-const EXTREMES = [['فيرخويانسك', '-67,8'], ['وادي الموت', '56,7'], ['عين صالح', '50'], ['جبل الهقّار شتاءً', '-2']];
-
 const ex = (id, source, learningPointId, difficulty, extra) => ({ id, source, learningPointId, difficulty, ...extra });
 
 export const EXERCISES = [

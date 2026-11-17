@@ -6,11 +6,11 @@
  *   p = 0  un CUBE d'arête u ; n cubes = une grille d'au plus `cubeCols(n)` colonnes.
  * Chaque pièce est dessinée UNE fois, aucune ne sort du cadre (balayé dans le test pour n = 1…12, x = 1…6).
  */
-export const SEAM = 1;
-export const plateOffset = (u) => Math.max(3, Math.round(u * 0.34));
-export const cubeGap = (u) => Math.max(1, Math.round(u * 0.14));
+const SEAM = 1;
+const plateOffset = (u) => Math.max(3, Math.round(u * 0.34));
+const cubeGap = (u) => Math.max(1, Math.round(u * 0.14));
 export const cubeDepth = (u) => Math.max(2, Math.round(u * 0.28));
-export const cubeCols = (n) => (n <= 6 ? n : Math.ceil(n / 2));
+const cubeCols = (n) => (n <= 6 ? n : Math.ceil(n / 2));
 
 /** La pile de `n` pièces de forme `p`, à la longueur `x` et à l'unité `u` : `{ w, h, pieces: [{ x, y, w, h }] }`. */
 export function bundleLayout({ n, p, x, u }) {
@@ -36,7 +36,7 @@ export function bundleLayout({ n, p, x, u }) {
 }
 
 /** Le plus grand encombrement d'une pile sur toute la plage de x (pour que la table ne saute pas quand la main change x). */
-export function maxBundleBox({ n, p, u, xMax = 6 }) {
+function maxBundleBox({ n, p, u, xMax = 6 }) {
   const l = bundleLayout({ n, p, x: xMax, u });
   return { w: l.w, h: l.h };
 }

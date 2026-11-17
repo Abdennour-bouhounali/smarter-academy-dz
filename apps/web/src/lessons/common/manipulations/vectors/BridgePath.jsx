@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { Minus, Plus } from 'lucide-react';
@@ -501,7 +501,7 @@ function Tick({ a, b, color }) {
 }
 
 /** Le fond : trottoirs, cité et cour d'école (rue) ou falaises et oued (gorge). Aucune information mathématique. */
-function World({ world, G, lab, yTop, yBot }) {
+function World({ world, G, yTop, yBot }) {
   if (world === 'bridge') {
     return (
       <g aria-hidden="true">

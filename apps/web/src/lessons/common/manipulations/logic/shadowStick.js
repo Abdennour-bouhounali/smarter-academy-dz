@@ -105,8 +105,6 @@ export function placePole(s, j0) {
   return Object.freeze({ ...s, j, poleTrials, last: Object.freeze({ kind: 'pole', pole }) });
 }
 
-/** La perche est-elle disponible (les ombres coïncident) ? Sa première place est le bâton lui-même (k = 1). */
-export const poleReady = (s) => meets(s);
 export const poleIndex = (s) => (s.j == null ? s.jMin : s.j);
 
 /**

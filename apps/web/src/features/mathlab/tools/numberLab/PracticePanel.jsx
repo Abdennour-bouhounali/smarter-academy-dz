@@ -6,7 +6,6 @@ import {
   generateChallenge, checkAnswer, nextHint, explainError, revealAnswer,
 } from './practice.js';
 import FractionShape from './FractionShape.jsx';
-import { fracToNumber, fracToText, parseNumberInput } from './fraction.js';
 import { frameValues, formatNumber } from './numberValue.js';
 import {
   factorPairs, divisors, multiples, gcd, lcm, isPrime, divisibilityBy, roundingDetail,
@@ -224,7 +223,7 @@ export default function PracticePanel({ level, stats, onLevelChange, onAttempt, 
         {/* §52 : les indices, un par un. */}
         {hints.length > 0 && (
           <ul className="sa-ml-nb__hints">
-            {hints.map((key, index) => (
+            {hints.map((key) => (
               <li key={key}>
                 <Lightbulb size={13} aria-hidden="true" />
                 {t(key, challenge.promptParams ?? {})}

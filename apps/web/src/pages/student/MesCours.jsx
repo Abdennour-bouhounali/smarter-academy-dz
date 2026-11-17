@@ -16,7 +16,6 @@ export default function MesCours() {
   // l'inactivité, le clic ne l'attend pas (lessonRuntimeLoader.js).
   usePrefetchLessonRuntime();
   const { t } = useTranslation('student');
-  const { t: tc } = useTranslation('common');
   useDocumentMeta(t('courses.metaTitle'), t('courses.metaDescription'));
   const { user } = useContext(AuthContext);
   // Le ميدان vient de l'URL (`?chapter=`) : le fil d'Ariane d'une unité,

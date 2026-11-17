@@ -28,7 +28,7 @@ import { resolveCenter, resolveAxis } from './transformModel.js';
  * et blanc (impression) aussi.
  */
 export default function SceneLayer({
-  figures, steps, settings, activeStepId, selection,
+  figures, steps, settings, activeStepId,
   animationFigures = null, patternFigures = null, targetFigure = null, hideImage = false, view,
 }) {
   const { viewTransform } = useTransformContext();

@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { evaluateAnswer, OUTCOMES } from './answerEvaluator.js';
+import { evaluateAnswer } from './answerEvaluator.js';
 import { dzCourseLevels } from '../curriculum/coursesData.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../../content/practice');

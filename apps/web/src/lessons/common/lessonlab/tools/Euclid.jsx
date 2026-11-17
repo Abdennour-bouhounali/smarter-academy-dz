@@ -3,7 +3,7 @@
  * squares is one Euclidean division, written as it is cut. The side of the LAST square measures both sides: the PGCD.
  * The student's hand holds the CORNER of the rectangle.
  */
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { VW, VH, useDrag, useChime, Tool, M } from '../kit';
 import { euclidSquares, euclidLines } from '../logic';
 

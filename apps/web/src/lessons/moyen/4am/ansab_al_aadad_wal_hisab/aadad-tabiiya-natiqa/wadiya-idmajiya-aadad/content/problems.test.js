@@ -7,17 +7,6 @@ import { LESSON_CONFIG } from '../lesson.config';
 const div = (a, b) => ({ q: Math.floor(a / b), r: a % b });
 const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
 
-/** Les différences successives, comme le manuel : on soustrait le petit du grand jusqu'au 0. */
-function differences(a, b) {
-  const steps = [];
-  let [x, y] = a >= b ? [a, b] : [b, a];
-  for (;;) {
-    const d = x - y;
-    steps.push({ x, y, d });
-    if (d === 0) return steps;
-    [x, y] = y >= d ? [y, d] : [d, y];
-  }
-}
 /** Les divisions successives d'Euclide jusqu'au reste nul. */
 function euclid(a, b) {
   const steps = [];
@@ -29,8 +18,6 @@ function euclid(a, b) {
   }
   return steps;
 }
-const lastNonZeroDifference = (a, b) => differences(a, b).filter((s) => s.d !== 0).at(-1).d;
-const lastNonZeroRemainder = (a, b) => euclid(a, b).filter((s) => s.r !== 0).at(-1).r;
 
 const steps = (id, part) => PROBLEM[id].parts[part].steps;
 const expectedOf = (id, part) => steps(id, part).filter((s) => s.kind === 'numeric').map((s) => s.expected);

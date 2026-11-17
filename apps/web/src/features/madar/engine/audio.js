@@ -7,7 +7,7 @@
  */
 const MUTE_KEY = 'madar.muted';
 
-export function readMuted() {
+function readMuted() {
   try {
     return window.localStorage.getItem(MUTE_KEY) === '1';
   } catch {
@@ -15,7 +15,7 @@ export function readMuted() {
   }
 }
 
-export function writeMuted(muted) {
+function writeMuted(muted) {
   try {
     window.localStorage.setItem(MUTE_KEY, muted ? '1' : '0');
   } catch {

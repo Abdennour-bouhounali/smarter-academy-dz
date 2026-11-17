@@ -51,7 +51,7 @@ function constantValue(name) {
  * document trafiqué, pas d'un élève qui a cliqué sur des boutons. Il est
  * rejeté au lieu de faire exploser la pile à l'évaluation.
  */
-export const MAX_RULE_DEPTH = 8;
+const MAX_RULE_DEPTH = 8;
 
 export function normalizeRule(raw, depth = 0) {
   if (!isPlainObject(raw) || depth > MAX_RULE_DEPTH) return null;
@@ -196,7 +196,7 @@ function write(node, parentPrecedence, symbolOf) {
 }
 
 /** Un nombre de règle : virgule décimale et vrai signe moins, comme partout. */
-export function formatNumber(value) {
+function formatNumber(value) {
   if (!Number.isFinite(value)) return '…';
   const rounded = Number(value.toFixed(4));
 
@@ -213,14 +213,14 @@ export function formatNumber(value) {
  * écart absolu. Une règle juste doit passer même quand l'élève mesure à la
  * graduation près (§27), une règle fausse doit échouer franchement.
  */
-export const RULE_TOLERANCE = 0.02;
+const RULE_TOLERANCE = 0.02;
 
 /**
  * Confronte une règle à UNE observation.
  *
  * @returns {{predicted: number, measured: number, matches: boolean, gap: number}}
  */
-export function testAgainstObservation(node, observation, targetKey) {
+function testAgainstObservation(node, observation, targetKey) {
   const values = observation?.values ?? {};
   const predicted = evaluateRule(node, values);
   const measured = Number.isFinite(values[targetKey]) ? values[targetKey] : NaN;

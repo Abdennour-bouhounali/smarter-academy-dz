@@ -78,7 +78,6 @@ export function trueOf(s) {
 }
 /** ce que produit l'erreur nommée `id` sur la spec `s` (null = l'erreur n'existe pas pour ce genre) */
 export function errOf(s, id) {
-  const n = (x) => String(x);
   switch (id) {
     case 'MISC-JAMKASR-ACROSS': case 'MISC-JAMKASR-NOSCALE': case 'MISC-JAMKASR-DENSUM': {
       if (s.k !== 'sum') return null; const ts = terms(s.t); if (ts.length < 2 || ts.some((t) => !isFr(t.body))) return null;
@@ -454,7 +453,7 @@ const symbolOf = (content) => { const m = /\s([<>])\s/.exec(islands(content)[0].
 
 export function audit(bank) {
   const problems = [];
-  for (const { key, q: qq } of bank) {
+  for (const { key } of bank) {
     const [exId, qId] = key.split(':'); const ex = BANK.get(exId); const qc = ex?.questions.find((x) => x.id === qId);
     if (!qc) { problems.push(`${key} : introuvable dans le banc de l'oracle`); continue; }
     const sp = SPEC[key]; if (!sp) { problems.push(`${key} : aucune spec d'oracle`); continue; }
@@ -509,7 +508,7 @@ export function audit(bank) {
         const isYN = ['ynRel', 'ynVal', 'ynPlain'].includes(sp.k);
         if (isYN) { if (ch.map((c) => c.content).join('|') !== `${sp.yes}|${sp.no}`) problems.push(`${key} : options نعم / لا attendues`); }
         else if (ch.length !== sp.opts.length) problems.push(`${key} : ${ch.length} options dans le contenu, ${sp.opts.length} dans la spec`);
-        ch.forEach((c, i) => { if ((c.id === letter) !== c.isCorrect) problems.push(`${key} : l'option ${c.id} est mal marquée (juste : ${letter})`); if (c.isCorrect && c.misconceptionId) problems.push(`${key} : l'option juste ${c.id} porte une étiquette`); if (!c.isCorrect && !c.misconceptionId) problems.push(`${key} : l'option fausse ${c.id} n'a pas d'étiquette`); if (c.misconceptionId && !MISC.test(c.misconceptionId)) problems.push(`${key} : étiquette ${c.misconceptionId} hors du jeu autorisé`); });
+        ch.forEach((c) => { if ((c.id === letter) !== c.isCorrect) problems.push(`${key} : l'option ${c.id} est mal marquée (juste : ${letter})`); if (c.isCorrect && c.misconceptionId) problems.push(`${key} : l'option juste ${c.id} porte une étiquette`); if (!c.isCorrect && !c.misconceptionId) problems.push(`${key} : l'option fausse ${c.id} n'a pas d'étiquette`); if (c.misconceptionId && !MISC.test(c.misconceptionId)) problems.push(`${key} : étiquette ${c.misconceptionId} hors du jeu autorisé`); });
         const truth = (() => { try { return sp.k === 'ynRel' ? relTest(sp.rel, V(sp.l), V(sp.r)) : sp.k === 'ynVal' ? relTest(sp.rel, trueOf(sp.base), V(sp.thr)) : sp.k === 'ynPlain' ? relTest(sp.rel, V(sp.l), V(sp.r)) : null; } catch { return null; } })();
         if (isYN) {
           const wrong = ch.find((c) => !c.isCorrect); const id = wrong?.misconceptionId;

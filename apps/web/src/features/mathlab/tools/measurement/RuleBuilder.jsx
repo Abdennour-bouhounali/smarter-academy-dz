@@ -36,7 +36,6 @@ export default function RuleBuilder({ investigation, rule, onChange, onTest, dis
     return found?.symbol ?? name;
   }, [investigation]);
 
-  const targetName = t(`tools.measurement.quantities.${investigation.target}`, investigation.target);
   const complete = R.isComplete(rule);
 
   /**

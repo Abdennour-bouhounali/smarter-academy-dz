@@ -41,7 +41,7 @@ export const ClassroomContext = createContext(null);
 
 const noop = () => {};
 
-export const CLASSROOM_INACTIVE = Object.freeze({
+const CLASSROOM_INACTIVE = Object.freeze({
   isClassroomMode: false,
   isNativeFullscreen: false,
   isNested: false,

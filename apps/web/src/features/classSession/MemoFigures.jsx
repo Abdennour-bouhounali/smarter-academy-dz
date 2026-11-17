@@ -5,7 +5,6 @@
  * No person is drawn (people are the platform's one shared character, kept for the lessons). Calm palette; amber marks
  * what is LEFT, green what fits exactly.
  */
-import React from 'react';
 import { openingFacts } from './lessonMemos';
 
 const INK = '#0f172a';

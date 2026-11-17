@@ -4,7 +4,7 @@
  */
 import { scopedStorage } from '../../../utils/storage';
 
-export const KEY = 'smarter_launch_kit';
+const KEY = 'smarter_launch_kit';
 export const loadKit = () => {
   try {
     return JSON.parse(scopedStorage.getItem(KEY) ?? 'null') ?? {};

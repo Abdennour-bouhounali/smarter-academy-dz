@@ -43,7 +43,6 @@ const extreme = (vals, better) => {
 };
 const cheapest = (x, offers) => extreme(offers.map((L) => at(L, x)), lt);
 const richest = (x, offers) => extreme(offers.map((L) => at(L, x)), (a, b) => lt(b, a));
-const smaller = (amounts) => extreme(amounts.map((a) => q(a)), lt);
 const firstInt = (k) => { const v = q(k); const f = v.n >= 0n ? v.n / v.d : -((-v.n + v.d - 1n) / v.d); return q(f + 1n); };
 const maxInt = (L, budget) => { const v = inv(L, budget); return q(v.n >= 0n ? v.n / v.d : -((-v.n + v.d - 1n) / v.d)); };
 const r = (v) => R(q(v).toString());

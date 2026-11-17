@@ -64,7 +64,7 @@ export const countsForMastery = (question) => question?.answerType !== 'selfChec
 // les accolades (les corrections de la leçon écrivent « \{8 ; 12 ; 24\} »),
 // la conjonction « و » (le manuel écrit « 1 و 60 ») et un point final.
 // Un point AU MILIEU reste une erreur : « 1.5 » n'est pas l'ensemble {1, 5}.
-export function normalizeIntegerSetInput(raw) {
+function normalizeIntegerSetInput(raw) {
   const s = toLatinDigits(raw)
     .replace(/\\[{}]/g, ' ')
     .replace(/[{}]/g, ' ')
@@ -343,7 +343,7 @@ export function evaluateAnswer(answer, question) {
 }
 
 /** Deux écritures identiques au séparateur décimal près (« , » « . » « ٫ ») — jumeau PHP AnswerEvaluator::sameWriting. */
-export function sameWriting(a, b) {
+function sameWriting(a, b) {
   const norm = (v) => String(v ?? '').trim().replace(/[.٫]/g, ',');
   return norm(a) === norm(b);
 }

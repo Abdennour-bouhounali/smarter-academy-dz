@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { parseDec } from '@smarter-academy/core';
 import { ContentModule, TapQuestion, BatchChoiceQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
@@ -57,7 +57,7 @@ function Evidence({ trials, level, empty }) {
 }
 
 export default function Module07AlWadiya() {
-  const [bigTrials, setBigTrials] = useState([]);
+  const [, setBigTrials] = useState([]);
   const [smallTrials, setSmallTrials] = useState([]);
   const [q, setQ] = useState({});
   const mark = (n) => () => setQ((s) => ({ ...s, [n]: true }));

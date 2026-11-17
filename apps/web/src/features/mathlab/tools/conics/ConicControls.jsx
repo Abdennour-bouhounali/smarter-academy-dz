@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import {
-  Circle, Parentheses, Egg, Spline, Minus, Plus, Trash2, Eye, EyeOff,
+  Circle, Parentheses, Egg, Spline, Minus, Trash2, Eye, EyeOff,
   MoveHorizontal, FlipHorizontal, RotateCw, Crosshair,
 } from 'lucide-react';
 import * as C from './conicMath.js';

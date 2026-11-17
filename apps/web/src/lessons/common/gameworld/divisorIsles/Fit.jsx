@@ -9,7 +9,7 @@
  *   room: by default the height of the box itself (a flex child with a fixed share); `avail(box)` gives it otherwise
  *         (`cardRoom` for a pop-up card whose height follows its content).
  */
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { SHORT_SCREEN } from '../engine/phoneScreen';
 
 const PHONE_FLOOR = 0.9;

@@ -33,7 +33,7 @@ import { compileExpression } from '../functionGrapher/expressionEvaluator.js';
 import { differentiate } from './symbolicDerivative.js';
 import { printExpression } from './expressionPrinter.js';
 import {
-  averageRate, findCriticalPoints, findRoots, definiteIntegral, riemannSum, twoSidedLimit,
+  averageRate, findRoots, definiteIntegral, riemannSum, twoSidedLimit,
 } from './analysisMath.js';
 import { MAX_RIEMANN_N } from './analysisState.js';
 
@@ -188,7 +188,7 @@ function horizontalTangentChallenge(rng, difficulty) {
 }
 
 /** §30 : la fonction croît-elle ou décroît-elle ici ? (§17, sans confondre f et f′) */
-function slopeSignChallenge(rng, difficulty) {
+function slopeSignChallenge(rng) {
   const source = pick(rng, ['x^2-4x+3', 'x^3-3x', 'x^2', '4-x^2', 'x^3']);
   const model = build(source);
   const probe = Number((randomInt(rng, -20, 20) / 10).toFixed(1));
@@ -213,7 +213,7 @@ function slopeSignChallenge(rng, difficulty) {
 }
 
 /** §30 : « estimate lim x→2 f(x) using the graph ». */
-function readLimitChallenge(rng, difficulty) {
+function readLimitChallenge(rng) {
   const a = randomInt(rng, 1, 3);
   // Une expression à TROU : (x² − a²)/(x − a) se simplifie en x + a.
   const source = `\\frac{x^2-${a * a}}{x-${a}}`;
@@ -271,7 +271,7 @@ function derivativeValueChallenge(rng, difficulty) {
  * Pour k(x − r₁)(x − r₂), f′(x) = k(2x − r₁ − r₂) : négative avant le
  * sommet si k > 0, APRÈS le sommet si k < 0.
  */
-function monotonicChallenge(rng, difficulty) {
+function monotonicChallenge(rng) {
   const root1 = randomInt(rng, -3, 0);
   const root2 = root1 + randomInt(rng, 2, 4);
   const leading = rng() < 0.5 ? -1 : 1;
@@ -307,7 +307,7 @@ function monotonicChallenge(rng, difficulty) {
  *     100, et `n ≥ expected` refusait alors 12 à 19 pour √x sur [0 ; 1],
  *     où 12 suffit déjà.
  */
-function riemannChallenge(rng, difficulty) {
+function riemannChallenge(rng) {
   const source = pick(rng, ['x^2', 'x^3', '\\sqrt{x}']);
   const model = build(source);
   const b = randomInt(rng, 1, 3);
@@ -339,7 +339,7 @@ function riemannChallenge(rng, difficulty) {
 }
 
 /** §30 : combien de solutions à f(x) = 0 ? (§27 : la lecture graphique d'abord) */
-function rootCountChallenge(rng, difficulty) {
+function rootCountChallenge(rng) {
   const source = pick(rng, ['x^2-4x+3', 'x^2+1', 'x^3-3x', 'x^2', '4-x^2']);
   const model = build(source);
   const roots = findRoots(model.fn, -8, 8);
@@ -589,10 +589,6 @@ export const EXPERIMENTS = Object.freeze([
   },
 ]);
 
-export function getExperiment(id) {
-  return EXPERIMENTS.find((experiment) => experiment.id === id) ?? null;
-}
-
 /**
  * Les questions de PRÉDICTION de §28 : posées AVANT de révéler, jamais après.
  *
@@ -654,7 +650,7 @@ const signWord = (value) => (Math.abs(value) < 1e-9 ? 'zero' : value > 0 ? 'posi
  * Ce qui SE PASSE sur la scène d'une prédiction, mesuré par le moteur du
  * laboratoire — la même lecture que l'élève fera en révélant.
  */
-export function predictionOutcome(prediction) {
+function predictionOutcome(prediction) {
   const model = build(prediction.source);
   if (!model) return null;
   const { fn, derivative } = model;
@@ -695,6 +691,3 @@ export const PREDICTIONS = Object.freeze(PREDICTION_SCENES.map((scene) => Object
   expected: predictionOutcome(scene),
 })));
 
-export function getPrediction(id) {
-  return PREDICTIONS.find((prediction) => prediction.id === id) ?? null;
-}

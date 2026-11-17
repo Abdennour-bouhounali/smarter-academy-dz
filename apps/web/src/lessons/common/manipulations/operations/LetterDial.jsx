@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Minus, Plus } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -186,7 +186,7 @@ export const valsText = (letters, env) => letters.map((l) => `⁦${l} = ${env[l]
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-function Lab({ lab, setLab, k, lead, cp, advanced }) {
+function Lab({ lab, setLab, k, lead, cp }) {
   const task = L.taskOf(lab);
   const free = L.isFree(lab);
   const done = L.taskDone(lab);
@@ -286,7 +286,7 @@ function Lab({ lab, setLab, k, lead, cp, advanced }) {
 /* ══════════════ La carte de règle, la bande de calcul ══════════════ */
 
 /** Les jetons d'une ligne : nombres, signes, parenthèses, fentes (lettre imprimée) ou valeurs (tuile colorée qui tombe). */
-function Tokens({ toks, letters, filled, big }) {
+function Tokens({ toks, letters, big }) {
   const fs = big ? 'text-xl' : 'text-base';
   const slotH = big ? 'min-h-[34px] min-w-[34px]' : 'min-h-[26px] min-w-[28px]';
   return (
@@ -312,7 +312,7 @@ function Tokens({ toks, letters, filled, big }) {
   );
 }
 
-function Board({ task, k, view }) {
+function Board({ task, k }) {
   const letters = task.letters;
   const lhs = task.kind === 'claim' ? k('lhs.claim') : k(`lhs.${task.name}`, { defaultValue: '' });
   if (task.kind === 'claim') {

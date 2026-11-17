@@ -67,5 +67,3 @@ export function usePremiumStatus() {
     };
   }, [access, user]);
 }
-
-export default usePremiumStatus;

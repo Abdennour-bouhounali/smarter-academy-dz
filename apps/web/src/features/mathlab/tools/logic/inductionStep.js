@@ -28,11 +28,11 @@
  */
 
 import {
-  buildContext, compileTerm, valueAt, compare, nextRankName, RELATIONS, TOLERANCE,
+  buildContext, compileTerm, valueAt, compare, nextRankName, RELATIONS,
 } from './inductionModel.js';
 
 /** Les rangs sur lesquels une étape est vérifiée. Petits : on reste exact. */
-export const VERIFY_RANGE = Object.freeze([0, 1, 2, 3, 4, 5]);
+const VERIFY_RANGE = Object.freeze([0, 1, 2, 3, 4, 5]);
 
 /**
  * @typedef {object} StepTransform
@@ -211,4 +211,3 @@ export function proofVerdict({ baseHolds, stepComplete }) {
   return 'none';
 }
 
-export { TOLERANCE };

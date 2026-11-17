@@ -4,7 +4,7 @@ import { Check, X, FlaskConical } from 'lucide-react';
 import { LabPanel } from '../../shared/LabKit.jsx';
 import ValueInput from './ValueInput.jsx';
 import SendToMenu from './SendToMenu.jsx';
-import { divisibilityTable, digitSum, digitSumChain, DIVISIBILITY_RULES } from './numberTheory.js';
+import { divisibilityTable, digitSumChain, DIVISIBILITY_RULES } from './numberTheory.js';
 import { runExperiment } from './practice.js';
 import { formatNumber } from './numberValue.js';
 import { divisibilityReason } from './divisibilityReasons.js';

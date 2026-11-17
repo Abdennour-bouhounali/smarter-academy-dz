@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Minus, Plus, ClipboardCheck } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -195,7 +195,7 @@ const readingText = (k, scene, v) => `${v < 0 ? '−' : ''}${Math.abs(v)}${unitO
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-function Lab({ lab, setLab, k, width, lead, cp, advanced }) {
+function Lab({ lab, setLab, k, lead, cp, advanced }) {
   const task = L.taskOf(lab);
   const free = L.isFree(lab);
   const done = L.taskDone(lab);

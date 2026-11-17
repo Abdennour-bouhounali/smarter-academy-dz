@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { scopedStorage as storage } from '../../../utils/storage';
 import { useLessonKnowledge } from '../knowledge';

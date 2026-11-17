@@ -107,7 +107,7 @@ export function exprTex({ k, m }, u, decimal = false) {
  * Le membre où l'inconnue `v` est REMPLACÉE par le paquet (expr) : « 3x - 2(7 - 2x) »,
  * « 3x + (x - 2) », « (y + 2) + y ». Rien n'est développé : c'est la ligne du manuel.
  */
-export function substitutedLeftTex(e, v, expr, decimal = false) {
+function substitutedLeftTex(e, v, expr, decimal = false) {
   const own = coefOf(e, v);
   const oth = coefOf(e, other(v));
   const bundle = `(${exprTex(expr, other(v), decimal)})`;
@@ -124,7 +124,7 @@ export function substitutedLeftTex(e, v, expr, decimal = false) {
 }
 
 /** « 2 \times 2{,}6 + y » : la valeur portée dans une carte de départ (le manuel : 4x + 2 × 3 = 9). */
-export function valueInTex(e, v, value, decimal = false) {
+function valueInTex(e, v, value, decimal = false) {
   const own = coefOf(e, v);
   const oth = coefOf(e, other(v));
   const negative = cmp(own, 0) < 0;

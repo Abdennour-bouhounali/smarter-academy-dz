@@ -6,7 +6,7 @@
  *   Place  a flag dragged on a number line.
  * Nothing moves by itself and nothing is timed: the question waits. A gesture never says right or wrong.
  */
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Delete } from 'lucide-react';
 import MathText from '../components/MathText';
 import { svgPoint } from '../lessonlab/kit';

@@ -23,7 +23,7 @@
  */
 
 /** La tolérance d'une comparaison de mesures : deux longueurs égales à 1e-9 près le sont. */
-export const EPSILON = 1e-9;
+const EPSILON = 1e-9;
 
 /**
  * Efface la poussière des flottants sans toucher à la valeur.
@@ -57,14 +57,14 @@ export function clamp(value, min, max) {
 // ── Longueurs et angles ──────────────────────────────────────────────────
 
 /** La distance entre deux points — la mesure que donne la règle. */
-export function distance(a, b) {
+function distance(a, b) {
   if (!isPoint(a) || !isPoint(b)) return NaN;
 
   return cleanNumber(Math.hypot(b.x - a.x, b.y - a.y));
 }
 
 /** Un point valide ? (la frontière avec le JSON relu) */
-export function isPoint(p) {
+function isPoint(p) {
   return Boolean(p) && typeof p === 'object' && Number.isFinite(p.x) && Number.isFinite(p.y);
 }
 
@@ -148,19 +148,6 @@ export function footOfAltitude(a, b, c) {
   const t = ((c.x - a.x) * dx + (c.y - a.y) * dy) / lengthSquared;
 
   return { x: cleanNumber(a.x + t * dx), y: cleanNumber(a.y + t * dy), t: cleanNumber(t) };
-}
-
-/** Le périmètre d'un polygone fermé. */
-export function polygonPerimeter(vertices) {
-  if (!Array.isArray(vertices) || vertices.length < 2) return NaN;
-  let total = 0;
-  for (let i = 0; i < vertices.length; i += 1) {
-    const d = distance(vertices[i], vertices[(i + 1) % vertices.length]);
-    if (!Number.isFinite(d)) return NaN;
-    total += d;
-  }
-
-  return cleanNumber(total);
 }
 
 // ── Le cercle ────────────────────────────────────────────────────────────
@@ -294,7 +281,7 @@ export function isRightAngled(a, b, c, toleranceDegrees = 0.5) {
  * L'élève n'apprend pas ce tableau : il le RECONSTRUIT en subdivisant un
  * segment (§14).
  */
-export const LENGTH_UNITS = Object.freeze({
+const LENGTH_UNITS = Object.freeze({
   km: 1000, m: 1, dm: 0.1, cm: 0.01, mm: 0.001,
 });
 

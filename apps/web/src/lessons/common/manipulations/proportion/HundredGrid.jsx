@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Minus, Plus, Eraser, Check } from 'lucide-react';
+import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Eraser, Check } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import * as P from '@smarter-academy/core/arithmetic/percent3.js';
 import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
@@ -132,7 +132,7 @@ export default function HundredGrid({
     resetKey: scene.inits,
     onRetry: () => setLab(L.retryTask),
     onEvent: (ev) => state.report(onTrial, ev),
-    onDone: (id) => { if (chain?.includes('rule')) { state.discover(); state.formalize(); } },
+    onDone: () => { if (chain?.includes('rule')) { state.discover(); state.formalize(); } },
   });
   const ready = L.discoveryReady(lab) && !ruleByCheckpoint;
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps

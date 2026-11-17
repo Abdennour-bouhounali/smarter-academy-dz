@@ -9,8 +9,8 @@
  *   back  the copy handed back: red marks, the total, then — question by question — the scheme to tick against the paper and
  *         the two helps: « أرشدني » (never the answer) or « اشرح لي » (the model copy).
  */
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Flag, Clock, PenLine, VolumeX, Check, X, Compass, BookOpenCheck, NotebookPen, LogOut } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Flag, Clock, PenLine, VolumeX, X, Compass, BookOpenCheck, NotebookPen, LogOut } from 'lucide-react';
 import MathText from '../../components/MathText';
 import Fit from './Fit';
 import {

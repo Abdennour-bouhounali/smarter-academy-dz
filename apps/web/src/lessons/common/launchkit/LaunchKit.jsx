@@ -9,7 +9,7 @@
  *   - logic `engine.js` + `families.js` (pure, tested); the toolbox `store.js` (browser only in phase 1: not evidence).
  * One component for every lesson: it needs only the lesson's code. Nothing scrolls (designed 1280 × 720 / 1000 × 740, zoomed).
  */
-import React, { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { isShortScreen } from '../gameworld/engine/phoneScreen';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';

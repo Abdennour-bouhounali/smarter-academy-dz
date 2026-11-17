@@ -34,7 +34,7 @@
  */
 import * as V from '@smarter-academy/core/arithmetic/vectors.js';
 
-export const MODES = Object.freeze(['reduce', 'construct']);
+const MODES = Object.freeze(['reduce', 'construct']);
 
 /* ── noms ─────────────────────────────────────────────────────────────────── */
 
@@ -171,7 +171,6 @@ function missionStart(mission, mi) {
 /* ── lecture de l'état d'une mission ──────────────────────────────────────── */
 
 export const current = (lab) => lab.ms[lab.m];
-export const mission = (lab) => lab.missions[lab.m];
 /** L'expression courante : le train (s'il existe), puis les tickets restants, dans leur ordre. */
 export function expression(ms) {
   return [...(ms.train != null ? [ms.train] : []), ...ms.tray.map((c) => c.name)];
@@ -206,7 +205,7 @@ export function canCouple(lab, cardId, end) {
 }
 
 /** Les deux stations qui ne se raccordent pas (pour le refus). */
-export function chainGap(lab, cardId, end) {
+function chainGap(lab, cardId, end) {
   const ms = current(lab); const card = cardOf(ms, cardId);
   const [ts, te] = ends(ms.train); const [cs, ce] = ends(card.name);
   return end === 'tail' ? { arrive: te, depart: cs } : { arrive: ce, depart: ts };
@@ -441,7 +440,7 @@ function undoConstruct(lab) {
 }
 
 /** Le vecteur somme d'une construction, exact (pour la lecture « EE₁ = AB + AC »). */
-export const buildSum = (lab, bi = lab.b) => value(lab, lab.builds[bi].terms);
+const buildSum = (lab, bi = lab.b) => value(lab, lab.builds[bi].terms);
 
 /* ── la carte : cadre et échelle (purs, testés) ───────────────────────────── */
 

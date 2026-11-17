@@ -38,7 +38,7 @@ export function init({ total, groups }) {
 }
 
 /** La cible d'équilibre : ce que chaque équipe doit contenir à la fin. */
-export function targetPerTeam(state) {
+function targetPerTeam(state) {
   return groupInto(state.total, state.groups).perGroup;
 }
 

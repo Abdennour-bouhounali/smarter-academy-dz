@@ -1,4 +1,3 @@
-import React from 'react';
 import * as C from '@smarter-academy/core/arithmetic/chainOps.js';
 import KidFigure from '../../primitives/KidFigure';
 
@@ -32,7 +31,7 @@ export const CSS = `
 `;
 
 /** x des arrêts : répartis sur la largeur, la rame (≈ 150 px) tient entre deux. */
-export function stationXs(n, width) {
+function stationXs(n, width) {
   if (n <= 1) return [width / 2];
   const pad = Math.min(96, width * 0.17);
   return Array.from({ length: n }, (_, i) => pad + (i * (width - 2 * pad)) / (n - 1));
@@ -152,7 +151,7 @@ function Tram({ x, scale, counter, veiled, label, tone, pop }) {
   );
 }
 
-export function Kiosk({ width, task, replayValue, tone, k, ghost, mood }) {
+function Kiosk({ width, task, replayValue, tone, k, ghost, mood }) {
   const cx = width / 2;
   const nums = task.numbers;           // « 150 ÷ 6 × 4 » : [150 DA, 6 tickets au carnet, 4 tickets voulus]
   return (
@@ -176,7 +175,7 @@ export function Kiosk({ width, task, replayValue, tone, k, ghost, mood }) {
   );
 }
 
-export default function TramScene({ plain = false, maxH, width, task, replay, at, counter, veiled, tone, k, uid, mood, ghostStation }) {
+export default function TramScene({ plain = false, maxH, width, task, replay, at, counter, veiled, tone, k, uid, mood }) {
   const H = SCENE_H;
   const terms = task.terms;
   const n = task.kind === 'kiosk' ? 1 : terms.length;

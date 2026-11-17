@@ -41,10 +41,9 @@
 import * as V from '@smarter-academy/core/arithmetic/vectors.js';
 import * as Lq from '@smarter-academy/core/arithmetic/linear.js';
 
-export const MODES = Object.freeze(['triangle', 'unknown']);
-export const TRI_CARDS = Object.freeze(['pyth:A', 'pyth:B', 'pyth:C', 'iso:A', 'iso:B', 'iso:C']);
-export const QUAD_CARDS = Object.freeze(['vec', 'mid', 'diag', 'side', 'circ']);
-export const QUAD_CLAIMS = Object.freeze(['para', 'rect', 'rhombus', 'square', 'circle']);
+const TRI_CARDS = Object.freeze(['pyth:A', 'pyth:B', 'pyth:C', 'iso:A', 'iso:B', 'iso:C']);
+const QUAD_CARDS = Object.freeze(['vec', 'mid', 'diag', 'side', 'circ']);
+const QUAD_CLAIMS = Object.freeze(['para', 'rect', 'rhombus', 'square', 'circle']);
 const PARA = Object.freeze(['vec', 'mid']);
 
 /** Les cartes nécessaires : une liste de GROUPES (chaque groupe exige l'une de ses cartes). */
@@ -214,7 +213,7 @@ export function judge(s, claim = s.claim, picked = s.picked) {
 // ── les gestes ───────────────────────────────────────────────────────────────
 
 /** Le nœud entier le plus proche, borné au cadre (et à la droite de C à l'étape `tri` du mode `unknown`). */
-export function nodeAt(s, x, y) {
+function nodeAt(s, x, y) {
   const w = s.win;
   let cx = Math.min(Math.floor(w.xMax), Math.max(Math.ceil(w.xMin), Math.round(x)));
   let cy = Math.min(Math.floor(w.yMax), Math.max(Math.ceil(w.yMin), Math.round(y)));
@@ -320,7 +319,6 @@ export function discoveryReady(s) {
 
 /** Le premier refus « faux » de l'élève (pour réfuter « il a l'air droit » avec SES nombres). */
 export const firstFalse = (s) => s.trials.find((t) => t.kind === 'false') ?? null;
-export const lastTrial = (s, pred) => [...s.trials].reverse().find(pred) ?? null;
 
 /** Ce que le module affiche de l'essai (`onTrial`). */
 export function evidenceOf(s) {

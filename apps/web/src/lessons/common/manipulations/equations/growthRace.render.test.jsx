@@ -1,5 +1,4 @@
 import { it, expect, describe } from 'vitest';
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import i18n from '../../../../i18n';
@@ -84,7 +83,7 @@ function ctxOf(lab, goal, maxX) {
 }
 
 /** Un labo « fini » : modèle vérifié, course ouverte, essais autour de la rencontre (ou trois essais dont 0). */
-function finished(left, right, goal = 'equal') {
+function finished(left, right) {
   let lab = L.init(left, right);
   lab = L.check({ ...lab, carried: L.storyCarried(lab.model) });
   lab = L.openRace(lab);

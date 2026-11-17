@@ -41,7 +41,7 @@ export const LEVELS = Object.freeze([1, 2, 3, 4, 5, 6]);
 
 /** Les niveaux d'une متراجحة : les quatre premiers, le sens tiré au hasard. */
 export const INEQUALITY_LEVELS = Object.freeze([1, 2, 3, 4]);
-export const INEQUALITY_RELATIONS = Object.freeze(['<', '>', '<=', '>=']);
+const INEQUALITY_RELATIONS = Object.freeze(['<', '>', '<=', '>=']);
 export const DEFAULT_LEVEL = 3;
 
 const SOLUTION_MIN = -10;

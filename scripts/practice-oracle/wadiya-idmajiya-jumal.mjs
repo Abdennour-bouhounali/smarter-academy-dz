@@ -68,7 +68,6 @@ const sweets = story([[5, 3, 380], [8, 6, 650]]);
 const sweetsStory = story([[5, 3, 380], [4, 3, 325]]);
 
 /* ── Niveau 4 ── */
-const n41 = story([[1, 1, 50], [1, '4/3', 55]]);
 const n41b = story([[1, 1, 50], [3, 4, 165]]);
 const plot = story([[2, 2, 96], [1, '-0.6', 0]]);
 const shirts = story([[2, 3, 5100], [1, 5, 3250]]);

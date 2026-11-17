@@ -16,10 +16,10 @@
 import * as G from '@smarter-academy/core/arithmetic/graphs3.js';
 import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 
-export const KINDS = Object.freeze(['plot', 'given', 'read']);
-export const O_ID = 0;
+const KINDS = Object.freeze(['plot', 'given', 'read']);
+const O_ID = 0;
 
-export const PRESETS = Object.freeze({
+const PRESETS = Object.freeze({
   beginner: { tasks: [
     { mode: 'plot', shop: 'one', xs: [2, 6, 12, 14], rule: { a: '5' }, frame: { xMax: 16, yMax: 80, xStep: 2, yStep: 10, unit: 5 } },
     { mode: 'given', shop: 'two', xs: [2, 6, 12, 14], rule: { a: '2.5', b: '10' }, frame: { xMax: 16, yMax: 80, xStep: 2, yStep: 10, unit: 5 } },
@@ -74,7 +74,7 @@ export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 
 export const discoveryReady = (s) => s.tasks.every((_, i) => !!s.done[i]);
 
 /** Les punaise posés : { col, x, y }. */
-export const placedPins = (s) => taskOf(s).points.map((p, col) => ({ col, x: p.x, y: s.pins[col] })).filter((q) => q.y != null);
+const placedPins = (s) => taskOf(s).points.map((p, col) => ({ col, x: p.x, y: s.pins[col] })).filter((q) => q.y != null);
 export const allPlaced = (s) => s.pins.every((y) => y != null);
 /** Les nœuds où la règle peut s'accrocher : 0 = O, puis les punaise posés (1 + col). */
 export function nodes(s) {
@@ -82,19 +82,19 @@ export function nodes(s) {
   placedPins(s).forEach((q) => out.push({ id: 1 + q.col, x: q.x, y: q.y, label: `P${q.col + 1}` }));
   return out;
 }
-export const nodeById = (s, id) => nodes(s).find((n) => n.id === id) ?? null;
+const nodeById = (s, id) => nodes(s).find((n) => n.id === id) ?? null;
 export const rodOpen = (s) => taskOf(s).mode !== 'plot' || allPlaced(s);
 
 /* ── Gestes : un punaise sur sa rainure ───────────────────────────────────────────────────────── */
 
 /** Arrondit une ordonnée à l'unité de la rainure et la borne au cadre. */
-export function snapY(task, raw) {
+function snapY(task, raw) {
   const u = unitOf(task);
   const v = Math.max(0, Math.min(task.frame.yMax, Lin.toNumber(num(raw))));
   const k = Math.round(v / Lin.toNumber(u));
   return Lin.mul(u, Lin.frac(k));
 }
-export function snapX(task, raw) {
+function snapX(task, raw) {
   const u = unitOf(task);
   const v = Math.max(0, Math.min(task.frame.xMax, Lin.toNumber(num(raw))));
   const k = Math.round(v / Lin.toNumber(u));
@@ -120,7 +120,7 @@ export function placePin(s, col, yRaw) {
 
 const rodKey = (a, b) => (a < b ? `${a}-${b}` : `${b}-${a}`);
 /** La droite de la règle posée sur les nœuds a et b (null si l'un manque ou si elle serait verticale). */
-export function rodLine(s, a = s.rod[0], b = s.rod[1]) {
+function rodLine(s, a = s.rod[0], b = s.rod[1]) {
   const A = a != null ? nodeById(s, a) : null;
   const B = b != null ? nodeById(s, b) : null;
   if (!A || !B) return null;
@@ -168,7 +168,7 @@ function judgeRod(s) {
 }
 
 /** La situation est-elle JUGÉE par ce que l'élève a essayé ? */
-export function decided(s) {
+function decided(s) {
   const task = taskOf(s);
   if (task.mode === 'read') return false;
   const rods = s.rods;
@@ -227,7 +227,7 @@ export const toGuided = (s) => (s.free ? { ...s, free: null, ...fresh(s.tasks[s.
 /* ── Lecture ─────────────────────────────────────────────────────────────────────────────────── */
 
 export const trialEvidence = (tr) => ({ ...tr });
-export const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => !t.free && t.task === i && t.kind !== 'refused');
+const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => !t.free && t.task === i && t.kind !== 'refused');
 
 /**
  * Le prochain geste utile — jamais la réponse : `pin` (lever le premier punaise), `rod` (poser la règle : une extrémité), `again` (essayer une autre

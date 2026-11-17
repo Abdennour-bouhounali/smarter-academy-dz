@@ -72,6 +72,7 @@ to read them.
 | Work on a manipulation | [`architecture/MANIPULATION_CONTRACT.md`](./architecture/MANIPULATION_CONTRACT.md) |
 | Work on exercises or the practice engine | [`architecture/EXERCISE_CONTRACT.md`](./architecture/EXERCISE_CONTRACT.md) |
 | Write Arabic UI or lesson text | [`architecture/ARABIC_RTL_CONTRACT.md`](./architecture/ARABIC_RTL_CONTRACT.md) |
+| Remove code, silence a lint finding, or ask « why does CI say this is unused? » (ESLint, unused exports / i18n keys / sentences, the baseline that only shrinks) | [`architecture/CODE_HEALTH.md`](./architecture/CODE_HEALTH.md) |
 | Add a provider, a route, a heavy dependency, an `import.meta.glob` or an i18n namespace — or ask « why is this in the bundle? » | [`architecture/BUNDLE_BOUNDARIES.md`](./architecture/BUNDLE_BOUNDARIES.md) |
 | Work on the Math Lab (مختبر الرياضيات) or add an instrument to it | [`architecture/MATH_LAB.md`](./architecture/MATH_LAB.md) |
 | « مختبري », the lab OF A LESSON (2026-11-16, not validated): the instruments of the lesson and of every lesson BEFORE it, shared numbers, « جرّب »; add an instrument for a lesson | [`architecture/LESSON_LAB.md`](./architecture/LESSON_LAB.md) |
@@ -114,6 +115,7 @@ may describe it, but they defer to this one.
 | Arabic, RTL, typography, terminology, bidi rules | [`architecture/ARABIC_RTL_CONTRACT.md`](./architecture/ARABIC_RTL_CONTRACT.md) |
 | Exercise validation boundary, answer shapes, practice engine | [`architecture/EXERCISE_CONTRACT.md`](./architecture/EXERCISE_CONTRACT.md) |
 | What the entry bundle may contain, lazy boundaries (lesson route boundary + generated lesson index, lesson runtime, lab strings, Math Lab overlay, notebook window, on-demand i18n namespaces), prefetch points, the entry BUDGET gate (245 KB gzip since 2026-10-26), measured before/after | [`architecture/BUNDLE_BOUNDARIES.md`](./architecture/BUNDLE_BOUNDARIES.md); the 2026-10-14 entry fix (629 → 322 KB gzip): [`reports/BUNDLE_ENTRY_REPORT_2026-10-14.md`](./reports/BUNDLE_ENTRY_REPORT_2026-10-14.md) |
+| Lint, format and « nothing unused »: what each check enforces, the deliberate exceptions, the baseline | [`architecture/CODE_HEALTH.md`](./architecture/CODE_HEALTH.md) |
 | Question metadata, evidence, assessment rules for generated lessons | [`architecture/AI_LESSON_CONTRACT.md`](./architecture/AI_LESSON_CONTRACT.md) |
 | The « مسائل » modules: design, `content/problems.js` schema, one answer per demand, written answers, rollout | [`lessons/MASAIL_GENERATION_GUIDE.md`](./lessons/MASAIL_GENERATION_GUIDE.md) |
 | « أتوقّع القاعدة » — the student writes a rule before reading it (`KnowledgeBrick` default, `PredictRule`, `predictPrompt`) | [`architecture/KNOWLEDGE_DEPENDENCY.md`](./architecture/KNOWLEDGE_DEPENDENCY.md) § « أتوقّع القاعدة » |

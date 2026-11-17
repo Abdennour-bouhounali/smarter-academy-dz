@@ -1,4 +1,3 @@
-import React from 'react';
 import { kidGeometry, SKINS, HAIRS, OUTFITS, SCARVES } from './kidFigure.js';
 
 /**

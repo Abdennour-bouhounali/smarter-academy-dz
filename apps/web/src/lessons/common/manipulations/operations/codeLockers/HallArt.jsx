@@ -1,4 +1,3 @@
-import React from 'react';
 import KidFigure from '../../primitives/KidFigure';
 import { lockerSlots, booksOf, LOCKER_W, LOCKER_H } from './geometry';
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, Minus, Plus, RotateCcw, ChevronDown } from 'lucide-react';
 import ManipulationShell from '../ManipulationShell';

@@ -25,7 +25,7 @@
  *   sideFromRadius(6, 4) → 4 ; sideFromRadius(4, 3) → 3√2 ; sideFromRadius(5, 8) → { exact: null, number }
  */
 import { frac, parseNumber, add, sub, mul, div, eq, cmp, toNumber, isInteger } from './linear.js';
-import { surd, surdMul, surdDiv, surdNumber, sinDeg, cosDeg } from './trigonometry.js';
+import { surd, surdMul, surdDiv, sinDeg, cosDeg } from './trigonometry.js';
 import { point, vec, distanceSquared } from './vectors.js';
 
 const F = (v) => (typeof v === 'object' && v !== null && 'n' in v ? v : Number.isInteger(v) ? frac(v) : parseFrac(v));
@@ -40,7 +40,6 @@ const xy = (p) => (p && typeof p.x === 'number' ? p : { x: num(P(p).x), y: num(P
 
 export const DIRECT = 'direct';
 export const INDIRECT = 'indirect';
-export const DIRECTIONS = Object.freeze([DIRECT, INDIRECT]);
 /** Le signe d'une orientation : +1 direct (contre les aiguilles), −1 indirect. */
 export const signOf = (direction) => {
   if (direction !== DIRECT && direction !== INDIRECT) throw new Error(`orientation inconnue : ${direction}`);
@@ -74,9 +73,9 @@ export const bearing = (O, M) => { O = xy(O); M = xy(M); return normalize((Math.
 // ── Le دوران ─────────────────────────────────────────────────────────────────
 
 /** L'angle signé effectif (degrés) : α dans le sens direct, −α dans le sens indirect. */
-export const signedAngle = (alpha, direction = DIRECT) => signOf(direction) * num(alpha);
+const signedAngle = (alpha, direction = DIRECT) => signOf(direction) * num(alpha);
 /** α est-il un multiple de 90° (image exacte sur quadrillage) ? */
-export const isQuarterTurn = (alpha) => isInteger(div(F(alpha), frac(90)));
+const isQuarterTurn = (alpha) => isInteger(div(F(alpha), frac(90)));
 
 /**
  * L'image EXACTE de M par le دوران de centre O, d'angle α (multiple de 90°) et d'orientation donnée.
@@ -147,9 +146,6 @@ export function findRotation(O, M, M2, { tol = 1e-6 } = {}) {
   return Object.freeze({ alpha: Math.abs(t), direction: t === 180 ? null : t > 0 ? DIRECT : INDIRECT });
 }
 
-/** Le centre d'un دوران de 180° qui envoie M sur M2 : le milieu (التناظر المركزي, cas particulier). */
-export const isHalfTurnOf = (alpha) => normalize(alpha) === 180;
-
 // ── Angles inscrits et au centre ─────────────────────────────────────────────
 
 /** الزاوية المحيطية = نصف الزاوية المركزية التي تحصر معها نفس القوس. Exact (fraction) si l'entrée l'est. */
@@ -203,7 +199,7 @@ export function secondIntersection(O, P, M) {
   return { x: p.x + s * d[0], y: p.y + s * d[1] };
 }
 /** L'arc (degrés, angle au centre) de P à Q qui NE contient PAS X — sur le cercle de centre O. */
-export function arcAvoiding(O, P, Q, X) {
+function arcAvoiding(O, P, Q, X) {
   const a = bearing(O, P); const b = bearing(O, Q); const x = bearing(O, X);
   const span = normalize(b - a);
   const inside = normalize(x - a) < span;

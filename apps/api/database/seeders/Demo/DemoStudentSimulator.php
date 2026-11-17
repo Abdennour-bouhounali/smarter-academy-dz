@@ -6,13 +6,11 @@ use App\Domain\Progress\ProgressEngine;
 use App\Models\ExerciseAttempt;
 use App\Models\HintEvent;
 use App\Models\LessonFinalTestAttempt;
-use App\Models\NotebookNote;
 use App\Models\PracticeSession;
 use App\Models\QuestionAttempt;
 use App\Models\StudentLessonProgress;
 use App\Models\User;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 /**

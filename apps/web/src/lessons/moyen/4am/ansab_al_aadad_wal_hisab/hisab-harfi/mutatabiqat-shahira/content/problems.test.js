@@ -169,7 +169,7 @@ describe('les مسائل du درس « المتطابقات الشهيرة »', (
     let checked = 0;
     for (const p of PROBLEMS) {
       checked += checkText(p.statement, `${p.id} statement`);
-      p.parts.forEach((part, pi) => {
+      p.parts.forEach((part) => {
         checked += checkText(part.question, `${p.id} ${part.label} question`);
         part.steps.forEach((s, si) => {
           const where = `${p.id} ${part.label} step ${si + 1}`;

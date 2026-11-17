@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Mail } from 'lucide-react';
 import { AdminPage, useAdminLabels, formatDate, Num } from '../adminUi';

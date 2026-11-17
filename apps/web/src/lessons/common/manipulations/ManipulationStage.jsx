@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * L'AIRE DE MANIPULATION — le centre visuel de la manipulation. Elle réserve

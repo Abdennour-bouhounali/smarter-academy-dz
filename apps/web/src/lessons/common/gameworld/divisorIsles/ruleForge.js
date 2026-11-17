@@ -66,7 +66,7 @@ export const outcome = (a, b) => {
 };
 export const sameCase = (x, y) => x.a === y.a && x.b === y.b;
 export const EVIDENCE_MAX = 8;
-export const OWN_MAX = 5;
+const OWN_MAX = 5;
 
 /**
  * The evidence: one line per different bridge, oldest first — the student's OWN crossing first (its last five bridges are
@@ -174,7 +174,7 @@ export function nudge(n, rows) {
 export const discoveryLevel = (nudges) => (nudges === 0 ? 'alone' : nudges < 3 ? 'nudged' : 'guided');
 
 /** The last step: a gap too long to count. Half the time it holds. */
-export function useCase(rand = Math.random) {
+export function keyCase(rand = Math.random) {
   const list = [
     [96, 8],
     [91, 7],
@@ -187,4 +187,4 @@ export function useCase(rand = Math.random) {
   return outcome(a, b);
 }
 /** Is the division he wrote for the last step THE Euclidean division? */
-export const useRight = (c, q, r, verdict) => Number(q) === c.q && Number(r) === c.r && verdict === c.held;
+export const keyRight = (c, q, r, verdict) => Number(q) === c.q && Number(r) === c.r && verdict === c.held;

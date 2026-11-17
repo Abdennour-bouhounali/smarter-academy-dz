@@ -1,4 +1,3 @@
-import React from 'react';
 import ItemFigure from '../manipulations/primitives/ItemFigure';
 import { GENERIC_SCENES } from './situationDrawings';
 

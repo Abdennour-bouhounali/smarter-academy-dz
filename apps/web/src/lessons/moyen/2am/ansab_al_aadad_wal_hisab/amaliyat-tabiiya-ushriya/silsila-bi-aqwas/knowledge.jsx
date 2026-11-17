@@ -1,6 +1,5 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
-import { KNOWLEDGE, METHOD, GUIDE } from './content/textbook';
+import { KNOWLEDGE, METHOD } from './content/textbook';
 
 // La carte progressive de la leçon (structure, relations, aides) — KNOWLEDGE_MAP.md, Part A.
 export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
@@ -29,7 +28,7 @@ export const LESSON_KNOWLEDGE = {
           example: `(45+15)\\div4=${R('60')}\\div4=15`,
           trap: 'دون قوسين تقسم الآلة $15\\div4$ وحده: $45+15\\div4=48{,}75$',
           exam: 'اكتب القوسين حول ما يجب حسابه أوّلًا',
-          chip: `${R('(\;)')}\;\\to\;\\times\\div\;\\to\;+-`,
+          chip: `${R('(\\;)')}\\;\\to\\;\\times\\div\\;\\to\\;+-`,
           quiz: [
             { q: '$(8 + 4) \\times 3 =$', options: ['$36$', '$20$', '$15$'], correct: 0 },
             { q: 'ما بين القوسين يُحسب:', options: ['أوّلًا', 'آخرًا', 'عشوائيًّا'], correct: 0 },
@@ -65,7 +64,7 @@ export const LESSON_KNOWLEDGE = {
           example: `2\\times[50-(12+8)]=2\\times[50-20]=60`,
           trap: 'قوس واحد فقط يعطي $2\\times(50-12)+8=84$',
           exam: 'اكتب الأقواس الخارجية معقوفين [ ] لتسهل القراءة',
-          chip: `[\;(\;)\;]`,
+          chip: `[\\;(\\;)\\;]`,
           quiz: [
             { q: '$2 \\times [10 - (3 + 2)] =$', options: ['$10$', '$5$', '$15$'], correct: 0 },
             { q: 'في الأقواس المتداخلة نبدأ بـ:', options: ['الداخلية', 'الخارجية', 'اليسار'], correct: 0 },
@@ -98,12 +97,12 @@ export const LESSON_KNOWLEDGE = {
       {
         id: 'qaidat-aqwas', type: 'regles', title: 'قاعدة الأقواس', predict: false,
         memo: {
-          rule: `(\;)\\succ\\times\\div\\succ+-`,
+          rule: `(\\;)\\succ\\times\\div\\succ+-`,
           hook: 'الأقواس أوّلًا · ثم × ÷ · ثم + −',
           example: `E=6\\times(15-9)=6\\times6=36`,
           trap: 'دون قوسين يتغيّر ما تحسبه الآلة أوّلًا',
           exam: 'اكتب كلّ مرحلة في سطر، وابدأ بأعمق قوس',
-          chip: `(\;)\\succ\\times\\div\\succ+-`,
+          chip: `(\\;)\\succ\\times\\div\\succ+-`,
           quiz: [
             { q: '$(7 + 5) \\times (20 - 4) =$', options: ['$192$', '$47$', '$100$'], correct: 0 },
             { q: '$3 \\times [20 - (4 + 6)] =$', options: ['$30$', '$50$', '$14$'], correct: 0 },
@@ -122,7 +121,7 @@ export const LESSON_KNOWLEDGE = {
           example: `4\\times[18-(2+3)\\times3]=4\\times[18-15]=12`,
           trap: 'لا تحسب $18-2$ أوّلًا: القوس الداخلي هو الأوّل',
           exam: 'اكتب ما تبقّى بعد كلّ مرحلة في سطر',
-          chip: `(\;)\\to[\;]\\to\\times\\div\\to+-`,
+          chip: `(\\;)\\to[\\;]\\to\\times\\div\\to+-`,
           quiz: [
             { q: '$A = 4 \\times [18 - (2 + 3) \\times 3] =$', options: ['$12$', '$60$', '$36$'], correct: 0 },
             { q: 'داخل المعقوفين نحسب أوّلًا:', options: ['القوس الداخلي ثم الضرب', 'الطرح', 'الجمع'], correct: 0 },

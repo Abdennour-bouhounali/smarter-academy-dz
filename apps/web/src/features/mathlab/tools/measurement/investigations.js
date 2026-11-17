@@ -329,7 +329,7 @@ const unitConversion = defineInvestigation({
  * Le facteur est lu dans le moteur de conversion (`lengthFactor`), pas
  * recopié : la scène, le tableau et le moteur disent le même nombre.
  */
-export const SCALE_UNITS = Object.freeze({
+const SCALE_UNITS = Object.freeze({
   1: Object.freeze(['dm', 'cm']),
   2: Object.freeze(['m', 'cm']),
   3: Object.freeze(['m', 'mm']),
@@ -460,15 +460,6 @@ export function getInvestigation(id) {
 
 /** L'enquête d'ouverture : l'aire du rectangle, la plus élémentaire. */
 export const DEFAULT_INVESTIGATION = 'rectangle-area';
-
-/**
- * Les champs qu'une interface N'A PAS le droit de lire avant la découverte
- * (§23). `investigations.test.js` s'en sert pour vérifier qu'aucun libellé
- * ne trahit la formule.
- */
-export function investigationSecretKeys() {
-  return Object.freeze(['solution', 'alternateSolutions', 'invariantValue', 'revealsConstant', 'definition']);
-}
 
 /** Les paramètres d'ouverture d'une enquête. */
 export function initialParams(investigation) {

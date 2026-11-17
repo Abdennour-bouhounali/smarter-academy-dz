@@ -10,7 +10,6 @@ const cent = (s) => {
   const v = BigInt(m[2]) * 100n + BigInt((m[3] ?? '').padEnd(2, '0') || '0');
   return m[1] === '-' ? -v : v;
 };
-const abs = (x) => (x < 0n ? -x : x);
 const expectedOf = (id, part) => PROBLEM[id].parts[part].steps.filter((s) => s.kind === 'numeric').map((s) => s.expected);
 const batchOf = (id, part) => PROBLEM[id].parts[part].steps.find((s) => s.kind === 'batch');
 const choicesOf = (id, part) => PROBLEM[id].parts[part].steps.filter((s) => s.kind === 'choice');

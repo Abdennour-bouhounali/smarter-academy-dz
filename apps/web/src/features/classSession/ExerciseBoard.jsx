@@ -7,7 +7,7 @@
  * Nothing is graded and nothing is recorded: it is the class working together. The text fits the board by itself (a long
  * statement is drawn smaller, never cut, never scrolled). Same shell and same dock as every other board screen.
  */
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, Eye, EyeOff, Lightbulb, NotebookPen, X } from 'lucide-react';
 import ExerciseStatement from '../practice/ExerciseStatement';
 import RichText from '../practice/RichText';

@@ -1,4 +1,3 @@
-import React from 'react';
 import KidFigure from '../manipulations/primitives/KidFigure';
 import { PitchBackdrop, PitchPlot, TurfStrips, PitchLines, Goal, TurfRollStack, TurfRoll, TapeMeasure } from './pitchSceneKit';
 

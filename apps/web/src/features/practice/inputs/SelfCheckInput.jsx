@@ -21,7 +21,7 @@ import { mathToPlain } from '../../../utils/mathPlain';
  * note éventuelle.
  */
 // Une vraie tentative avant le corrigé type : quelques signes ne suffisent pas.
-export const MIN_PROOF_CHARS = 15;
+const MIN_PROOF_CHARS = 15;
 const proofLength = (s) => (s ?? '').replace(/\s+/g, '').length;
 
 export default function SelfCheckInput({ question, value, onChange, disabled, onSelfMark, mark = null, busy = false, showSolution = true }) {

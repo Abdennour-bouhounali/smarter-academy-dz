@@ -251,7 +251,7 @@ const EX2T = { '①': TRI([-4, 0], [-2, -0.8], [-2, 0.8]), '②': TRI([0, 4], [-
 export const FIG_EX2 = {
   points: {
     O: [0, 0], ...Object.fromEntries(Object.entries(EX2T).map(([n, t]) => [n, t.apex])),
-    ...Object.fromEntries(Object.entries(EX2T).flatMap(([n, t], i) => [[`b${i}1`, t.b1], [`b${i}2`, t.b2]])),
+    ...Object.fromEntries(Object.entries(EX2T).flatMap(([, t], i) => [[`b${i}1`, t.b1], [`b${i}2`, t.b2]])),
     e1: [-2, 0], e2: [2, 0], e3: [0, 2], e4: [0, -2],
   },
   hidden: ['b01', 'b02', 'b11', 'b12', 'b21', 'b22', 'b31', 'b32', 'e1', 'e2', 'e3', 'e4'],

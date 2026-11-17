@@ -15,7 +15,6 @@ const parse = (s) => {
 };
 const same = (a, b) => { const [x, y] = parse(a); const [u, v] = parse(b); return x * v === u * y; };
 const key = (r) => r.options[r.correct];
-const times = (f, k) => { const [n, d] = parse(f); return same(`${n * k}/${d}`, `${n}/${d}`) ? [n * k, d] : [n * k, d]; };
 const isDecimalFraction = (n, d) => { let q = d / gcd(n, d); for (const p of [2, 5]) while (q % p === 0) q /= p; return q === 1; };
 
 describe('« حاصل القسمة والكسر » — chaque clé recalculée en fractions exactes', () => {

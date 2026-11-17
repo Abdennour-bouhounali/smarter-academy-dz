@@ -22,8 +22,6 @@ function presentationRoot() {
 }
 import { PICKER } from './overlayState.js';
 
-export { PICKER };
-
 /**
  * Le calque est chargé À LA DEMANDE — jamais au démarrage.
  *

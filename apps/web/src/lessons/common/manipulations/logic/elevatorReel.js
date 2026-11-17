@@ -24,9 +24,9 @@ import * as P from '@smarter-academy/core/arithmetic/powers.js';
 import * as R from '@smarter-academy/core/arithmetic/relativeOps.js';
 
 export const RANGE_T = Object.freeze([-3, 3]);
-export const RANGE_R = Object.freeze([-3, 3]);
-export const FLOOR_LIMIT = 9;
-export const FREE_R = Object.freeze([-3, 3]);
+const RANGE_R = Object.freeze([-3, 3]);
+const FLOOR_LIMIT = 9;
+const FREE_R = Object.freeze([-3, 3]);
 
 /** Les missions par défaut de chaque niveau (la leçon peut passer les siennes). */
 export const PRESETS = Object.freeze({
@@ -52,7 +52,7 @@ export const PRESETS = Object.freeze({
 });
 
 /** Quelle conviction fausse porte chaque carte de la prédiction (clé = texte de la carte) — celle de a1 ; une mission peut porter les siennes (`misc`). */
-export const CARD_MISC = Object.freeze({ '-6': 'MISC-JIDAA-NEGNEG', '-5': 'MISC-JIDAA-ADD', 1: 'MISC-JIDAA-SUB' });
+const CARD_MISC = Object.freeze({ '-6': 'MISC-JIDAA-NEGNEG', '-5': 'MISC-JIDAA-ADD', 1: 'MISC-JIDAA-SUB' });
 
 const rat = (x) => R.parseRel(String(x));
 const num = (x) => { const q = rat(x); return Number(q.n) / Number(q.d); }; // exact, puis nombre (entiers et demis seulement)
@@ -61,8 +61,6 @@ const text = (x) => R.relText(x);
 /* ── Lectures de base ───────────────────────────────────────────────────────────────────────── */
 
 export const floorAt = (r, t) => r * t;
-/** La cabine reste dans la tour (−9 … 9) : garanti par les bornes (|r| ≤ 3, |t| ≤ 3). */
-export const inTower = (r, t) => Math.abs(floorAt(r, t)) <= FLOOR_LIMIT;
 
 /** Le temps unique t (sur le rail de pas `step`) pour lequel r × t = floor, ou null. */
 export function timeFor(r, floor, step = 1) {
@@ -142,7 +140,7 @@ export const floorOf = (s) => floorAt(rOf(s), tOf(s));
 export const taskDone = (s, i = s.ti) => !!s.done[i];
 export const discoveryReady = (s) => s.tasks.every((_, i) => !!s.done[i]);
 export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 1;
-export const isPredict = (s) => !s.free && taskOf(s).kind === 'predict';
+const isPredict = (s) => !s.free && taskOf(s).kind === 'predict';
 /** Le levier et le −/+ de la vitesse sont à la main (متقدم, mission `both` seulement). */
 export const speedEditable = (s) => !s.free && taskOf(s).kind === 'both';
 /** Les cartes de prédiction sont à l'écran (avant la bonne réponse). */
@@ -165,7 +163,7 @@ export const wrongSide = (trial) => !!trial && trial.kind === 'release' && !tria
   && trial.floor !== 0 && Math.sign(trial.floor) !== Math.sign(trial.goal);
 
 /** La mission est-elle réussie par (r, t) ? */
-export function judge(task, r, t) {
+function judge(task, r, t) {
   const floor = floorAt(r, t);
   const ok = task.kind === 'predict' ? false : floor === task.floor && (task.lockedR ? r === task.r : r !== 0);
   return { ok, floor, calc: calcTex(r, t) };
@@ -248,7 +246,7 @@ export function nextTask(s) {
 }
 
 /** « إعادة » : la cabine repart du temps 0, les essais restent. */
-export function restartTask(s) {
+function restartTask(s) {
   const task = taskOf(s);
   return { ...s, t: 0, r: task.kind === 'both' ? 2 : task.r, last: null, picked: null };
 }
@@ -288,7 +286,7 @@ export const toGuided = (s) => (s.free ? { ...s, free: null, last: null } : s);
 /* ── Preuves (onTrial) ──────────────────────────────────────────────────────────────────────── */
 
 export const trialEvidence = (tr) => ({ ...tr });
-export const guidedTrials = (s, i = s.ti) => s.trials.filter((x) => !x.free && x.task === i);
+const guidedTrials = (s, i = s.ti) => s.trials.filter((x) => !x.free && x.task === i);
 
 /** Les lignes du « سجلّ الكاميرا » : une par mission réussie, dans l'ordre. */
 export function recordRows(s) {

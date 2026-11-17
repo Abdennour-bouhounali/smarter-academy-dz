@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { REMARKS, PROOF_STEPS, METHOD_PROOF, CONCLUSIONS, CONSTRUCT, MIDPOINT_OPPOSITE } from './content/textbook';
 

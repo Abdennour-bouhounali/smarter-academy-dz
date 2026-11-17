@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, ArrowUp, ArrowDown, CheckCircle2, Flag, Minus, Plus, Paintbrush } from 'lucide-react';
@@ -841,7 +841,7 @@ function noticeOf(lab, { k, tw, planName, units, chipText }) {
 }
 
 /* ── la découverte : la conjecture se choisit ; les « toujours » sont réfutés par les essais ── */
-function discoveryFor(lab, { k, tw, planName, units }) {
+function discoveryFor(lab, { k, tw, planName }) {
   const M = (s) => <MathText>{s}</MathText>;
   const P = lab.plans;
   const costsAt = (x) => L.costsAt(lab, x);

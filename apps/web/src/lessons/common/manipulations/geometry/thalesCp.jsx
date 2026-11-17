@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import MathText from '../../components/MathText';
 import { playSfx } from '../../utils/playEffect';
 
@@ -11,9 +11,6 @@ export const $ = (s) => `$${s}$`;
 
 /** Le texte d'une clé `cp.<key>` du labo (île KaTeX). */
 export const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
-
-/** Un nombre en écriture décimale arabe-latine à virgule KaTeX : 7.25 → 7{,}25. */
-export const ft = (v) => String(Math.round(v * 1e6) / 1e6).replace('.', '{,}');
 
 /**
  * Jusqu'à `n` distracteurs distincts de `right` (comparés par `same`, `===` par défaut), pris dans l'ordre de `cands`
@@ -41,7 +38,7 @@ export function useTick(name = 'tooth') {
  * La bonne réponse d'une question à choix ne doit pas toujours être la première : `spread` la range à une place qui dépend de l'id de la
  * question et d'une graine tirée des nombres du labo (stable d'un rendu à l'autre, jamais au hasard). Les questions `number` passent telles quelles.
  */
-export function spread(q, seed = 0) {
+function spread(q, seed = 0) {
   if (!q || q.kind !== 'choice' || !Array.isArray(q.options) || q.options.length < 2) return q;
   let h = Math.abs(Math.round(Number(seed) || 0));
   for (const c of String(q.id)) h = (h * 31 + c.charCodeAt(0)) >>> 0;

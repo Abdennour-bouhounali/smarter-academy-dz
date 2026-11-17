@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../../common/components/MathText';
 import { ACT_4, CHALLENGE, METHOD_SPRING } from '../content/textbook';
 

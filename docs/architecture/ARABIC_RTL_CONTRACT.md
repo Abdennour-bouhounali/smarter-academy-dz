@@ -441,7 +441,7 @@ units). Every such DISPLAY now goes through **`MathLabel`** (`lessons/common/com
 when a string carries a formula, the fallback meanwhile being `mathToPlain`. Where only a STRING fits (`<option>`,
 `title` / `aria-label`, a template literal), use **`mathToPlain(text)`** (`utils/mathPlain.js`, dependency-free):
 each island becomes isolated Unicode (« x ⟼ ax + b », « (f(x₁) − f(x₂))/(x₁ − x₂) »). The kit does the same for a
-STRING prompt, batch-row label or option (`TapQuestion`, `BatchChoiceQuestion`, `ChoiceGrid`, `PredictionChips`).
+STRING prompt, batch-row label or option (`TapQuestion`, `BatchChoiceQuestion`, `ChoiceGrid`).
 Applied in: `LessonIndex`, `ModuleLayout`, `LessonUI`, `KnowledgeBrick`, `KnowledgeSnapshot`, `KnowledgeMap`,
 `LinearKnowledgeView`, `UnitPage`, `UnitGroup`, `LessonCard`, `LessonRow`, the home's `CompassHomeSections`, the progression tree, practice
 hub / summary, the teacher's memo, lessons, learning-points and overview tabs. **Never print a content string with

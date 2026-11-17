@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import { useId } from 'react';
 
 /**
  * UNE AMPOULE DESSINÉE (2026-10-14, 1AM « قواعد قابلية القسمة ») — le voyant d'une affirmation, en SVG pur (aucune
@@ -20,7 +20,7 @@ const LOOK = {
 };
 
 /** La silhouette du verre (viewBox 0 0 48 60) : un globe qui se resserre vers le culot. */
-export const GLASS_PATH = 'M17 40 C17 34 7 31 7 21 A17 17 0 0 1 41 21 C41 31 31 34 31 40 Z';
+const GLASS_PATH = 'M17 40 C17 34 7 31 7 21 A17 17 0 0 1 41 21 C41 31 31 34 31 40 Z';
 
 export default function BulbFigure({ state = 'closed', label, size = 48, className = '', ...rest }) {
   const uid = useId().replace(/:/g, '');

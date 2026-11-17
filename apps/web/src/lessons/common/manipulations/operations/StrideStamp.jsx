@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, Sparkles, ChevronLeft, ChevronRight, FlaskConical, Undo2, ClipboardCheck } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -14,7 +14,7 @@ import { useLabCheckpoint } from '../primitives/LabCheckpoint';
 import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
 import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
 import { playSfx } from '../../utils/playEffect';
-import { W, H, LY, OX, COL, HOUSE_COLORS, RAIL_XS, RAIL_BOX, xOf, tAt, geoOf, Backdrop, Tick, Axis, Stick, Rail, House, Reading, DistanceBar, Frame, Flag, GivenMark, Observer, KidChip } from './strideStamp/art';
+import { W, H, LY, COL, HOUSE_COLORS, RAIL_XS, RAIL_BOX, xOf, tAt, geoOf, Backdrop, Tick, Axis, Stick, Rail, House, Reading, DistanceBar, Frame, Flag, GivenMark, Observer, KidChip } from './strideStamp/art';
 import { LEVELS } from '../levels';
 import * as L from '../logic/strideStamp';
 
@@ -192,7 +192,7 @@ export function askText(k, task, read) {
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-function Lab({ lab, setLab, k, width, lead, cp, advanced }) {
+function Lab({ lab, setLab, k, lead, cp, advanced }) {
   const task = L.taskOf(lab);
   const free = L.isFree(lab);
   const done = L.taskDone(lab);
@@ -305,7 +305,6 @@ function Stage({ lab, setLab, k, svgRef, mood }) {
   const [drag, setDrag] = useState(null); // 'knob' | 'rail'
   const locked = !free && L.taskDone(lab);
   const live = !free && !locked;
-  const read = L.readOf(lab);
   const reads = task.reads;
 
   const posFromX = (x) => {
@@ -415,7 +414,7 @@ const PLACE_UNITS = 4;
 const advanced0 = (lab) => L.isAdvanced(lab);
 
 /** `twin` : le bâtiment de départ, les cotes de distance à O de chacun des deux et la ligne de la station. */
-function TwinScene({ lab, ox, u, read, pos }) {
+function TwinScene({ ox, u, read, pos }) {
   return (
     <g data-ss-twin>
       <House x={xOf(ox, u, read.of)} color={HOUSE_COLORS[0]} id="anchor" />
@@ -577,7 +576,7 @@ const choice = (k, id, vars, at, extra = {}) => ({
 });
 
 /** Les nombres de l'élève : les lectures de la tâche. */
-function varsOf(task, k) {
+function varsOf(task) {
   const x = (i) => task.reads[i]?.x ?? task.reads[i]?.of ?? task.reads[i]?.at ?? 0;
   const first = x(0);
   const last = x(task.reads.length - 1);

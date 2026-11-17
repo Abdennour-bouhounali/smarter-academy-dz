@@ -1,4 +1,3 @@
-import React from 'react';
 import { pillWidth } from '../../primitives/SvgPill';
 
 /**
@@ -14,7 +13,7 @@ const FONT = 'ui-sans-serif, system-ui, sans-serif';
 const LTR = { direction: 'ltr', unicodeBidi: 'isolate' };
 export const minus = (s) => String(s).replace(/-/g, '−');
 
-export function TowerDefs({ uid }) {
+function TowerDefs({ uid }) {
   return (
     <defs>
       <linearGradient id={`${uid}-sky`} x1="0" y1="0" x2="0" y2="1">

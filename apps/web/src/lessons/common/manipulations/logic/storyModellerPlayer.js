@@ -26,7 +26,7 @@ export const countRow = (model) => model.facts.findIndex((f) => f.kind === 'coun
 export const moneyRow = (model) => model.facts.findIndex((f) => f.kind === 'money') + 1;
 
 /** Les deux « 1 » du rang qui compte (les cases a et b), le second membre vide. */
-export function placeOnes(lab, model) {
+function placeOnes(lab, model) {
   const r = countRow(model);
   if (!r) return lab;
   return { ...lab, slots: { ...lab.slots, [r]: { ...lab.slots[r], a: L.ONE, b: L.ONE } } };
@@ -48,7 +48,7 @@ export const uselessKeys = (chips) => (chips ?? []).map((c, i) => (c.useless ? `
  * La raison d'un rang refusé, vue par le lecteur : celle de la page (`checkRow`), sauf quand le rang porte un jeton muet — la raison
  * `unused` (« «8 أيام» لا تذكره المعلومة ») avant toute autre : c'est le nombre en trop qui rend le rang faux.
  */
-export function playerRowVerdict(lab, model, row, useless = []) {
+function playerRowVerdict(lab, model, row, useless = []) {
   const v = L.checkRow(lab, model, row);
   if (v.ok) return v;
   const s = L.SLOTS.find((sl) => useless.includes(lab.slots[row][sl]));
@@ -103,7 +103,7 @@ export const MOMENTS = Object.freeze({
  *   none (⭐, libres)
  * `answerBuild` : l'étape « الإجابة » se fait en BÂTISSANT la phrase (pas de choix de phrase).
  */
-export const CHAIN_SPECS = Object.freeze({
+const CHAIN_SPECS = Object.freeze({
   first: { specs: [{ id: 'solveTyped', at: 'typed', qs: ['solveTyped'] }, { id: 'buildCheck', at: 'replayOk', qs: ['buildCheck'] }, { id: 'answerWhy', at: 'answered', qs: ['answerWhy'] }] },
   second: { answerBuild: true, specs: [{ id: 'solveTyped', at: 'typed', qs: ['solveTyped'] }, { id: 'verifySwap', at: 'replayOk', qs: ['verifySwap'] }, { id: 'buildAnswer', at: 'answerOpen', qs: ['buildAnswer'] }, { id: 'rule', at: 'answerOpen', qs: ['rule'] }] },
   easyFirst: { specs: [{ id: 'answerWhy', at: 'answered', qs: ['answerWhy'] }] },
@@ -209,7 +209,7 @@ export function predictTruth(model, key) {
   return null;
 }
 /** La prédiction est-elle JUGÉE ? `dearer` : la jumla résolue (les deux valeurs écrites) ; `which` : l'histoire rejouée avec les valeurs justes. */
-export function predictJudged(lab, key, plan) {
+function predictJudged(lab, key, plan) {
   if (key === 'dearer') return !!plan && L.solved(lab, plan) && lab.stage !== 'model';
   if (key === 'which') return lab.stage !== 'solve' && trialExact(lab.replay);
   return false;

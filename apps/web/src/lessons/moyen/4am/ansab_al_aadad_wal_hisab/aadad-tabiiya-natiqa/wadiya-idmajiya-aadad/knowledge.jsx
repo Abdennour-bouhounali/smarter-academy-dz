@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 
 // La carte progressive de la leçon (structure, relations, aides) — KNOWLEDGE_MAP.md, Part A.

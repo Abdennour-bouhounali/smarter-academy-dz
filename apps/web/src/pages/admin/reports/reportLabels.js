@@ -8,7 +8,7 @@
  */
 
 /** D'où part un signalement — la clé de catalogue, pas le libellé. */
-export const SOURCE_KEYS = {
+const SOURCE_KEYS = {
   lesson: 'reports.sourceLesson',
   module: 'reports.sourceModule',
   exercise: 'reports.sourceExercise',

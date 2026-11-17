@@ -1,4 +1,3 @@
-import React from 'react';
 import KidFigure from '../../primitives/KidFigure';
 import * as P from '@smarter-academy/core/arithmetic/planeFrame.js';
 
@@ -9,20 +8,20 @@ import * as P from '@smarter-academy/core/arithmetic/planeFrame.js';
  */
 export const W = 640;
 export const H = 442;
-export const U = 46;                    // une unité = une dalle
-export const OX = 320;                  // le x écran de l'origine
-export const OY = 222;                  // le y écran de l'origine
-export const XMAX = 5;                  // |x| ≤ 5 unités
-export const YMAX = 4;                  // |y| ≤ 4 unités
+const U = 46;                    // une unité = une dalle
+const OX = 320;                  // le x écran de l'origine
+const OY = 222;                  // le y écran de l'origine
+const XMAX = 5;                  // |x| ≤ 5 unités
+const YMAX = 4;                  // |y| ≤ 4 unités
 
-export const COL = {
+const COL = {
   floor: '#F1E7D5', floorDark: '#E3D3B8', wall: '#B8A88F', ink: '#0F172A', paint: '#F59E0B', paintDark: '#B45309',
   drone: '#0F172A', rotor: '#38BDF8', guide: '#6366F1', east: '#D97706', west: '#0EA5E9', ok: '#059669', bad: '#DC2626',
 };
 
 /** Où se pose une coordonnée (dixièmes) à l'écran : x vers la droite, y vers le HAUT. */
-export const sx = (t) => OX + (t * U) / P.TENTH;
-export const sy = (t) => OY - (t * U) / P.TENTH;
+const sx = (t) => OX + (t * U) / P.TENTH;
+const sy = (t) => OY - (t * U) / P.TENTH;
 export const tx = (px) => ((px - OX) * P.TENTH) / U;
 export const ty = (py) => ((OY - py) * P.TENTH) / U;
 
@@ -191,7 +190,7 @@ export function Reading({ x, y, text, tone = 'plain' }) {
 }
 
 /** Le pied de la verticale sur l'axe horizontal : l'abscisse fixée, écrite sous la ligne (jamais l'ordonnée). */
-export function Feet({ x, y, phase }) {
+export function Feet({ x, phase }) {
   return (
     <g data-cd-feet aria-hidden="true">
       {phase === 'y' && (

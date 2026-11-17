@@ -28,10 +28,10 @@ import * as PR from '@smarter-academy/core/arithmetic/proportional.js';
  * que le doigt traverse.
  */
 
-const { frac, parseNumber, mul, div, add, sub, eq, isZero, cmp, toNumber, fracDecimal } = Lin;
+const { frac, parseNumber, mul, div, sub, eq, isZero, cmp, toNumber, fracDecimal } = Lin;
 const F = (v) => (typeof v === 'object' && v !== null ? v : Number.isInteger(v) ? frac(v) : parseNumber(v));
 
-export const MODES = Object.freeze(['draw', 'read', 'fit', 'pivot']);
+const MODES = Object.freeze(['draw', 'read', 'fit', 'pivot']);
 export const THEMES = Object.freeze(['cablecar', 'spring', 'budget']);
 
 /* ── lecture des props (chaînes écrites comme le manuel) ───────────────── */
@@ -66,8 +66,6 @@ export function parseReads(raw) {
 
 /* ── petite arithmétique de grille (exacte) ────────────────────────────── */
 
-const fl = (p) => { p = F(p); return Math.floor(p.n / p.d); };
-const ce = (p) => { p = F(p); return Math.ceil(p.n / p.d); };
 const absF = (p) => (cmp(p, 0) < 0 ? sub(0, p) : F(p));
 /** p est-il un multiple entier de s (s ≠ 0) ? */
 export const isMultiple = (p, s) => F(div(p, s)).d === 1;
@@ -101,7 +99,7 @@ export function subdivide(step, values = []) {
  * La fenêtre par défaut d'un mode (quand la leçon ne la fixe pas) — elle contient toujours O, les
  * points donnés, les cibles de lecture, le plafond et, pour une droite connue, un tronçon lisible.
  */
-export function defaultWindow({ a, mode, points = [], reads = [], cap = null }) {
+function defaultWindow({ a, mode, points = [], reads = [], cap = null }) {
   const xs = points.map((p) => toNumber(p.x));
   const ys = points.map((p) => toNumber(p.y));
   const A = a ? toNumber(a) : null;
@@ -200,7 +198,7 @@ export function init(props = {}) {
 }
 
 /** L'abscisse de la poignée de pivot : le bord de la fenêtre du côté des données (sinon la droite). */
-export function pivotAbscissa(win, points = []) {
+function pivotAbscissa(win, points = []) {
   const neg = points.length > 0 && points.every((p) => cmp(p.x, 0) < 0);
   const x = neg ? win.xMin : win.xMax;
   return parseValue(String(x === 0 ? (neg ? -1 : 1) : x));
@@ -472,8 +470,6 @@ export function approxText(p) {
 }
 /** La lecture d'un antécédent écrite comme le manuel : « f(8{,}75) = 3{,}5 ». */
 export const readYTex = (y, x) => `f(${fracDecimal(F(x), 4) != null ? numTex(x) : `${Lin.fracLatex(F(x))}`}) = ${numTex(y)}`;
-
-export { fl as floorFrac, ce as ceilFrac };
 
 /* ── Valeurs PAR DÉFAUT (2026-10-09) : jamais une réponse, jamais un essai ───────────────── */
 

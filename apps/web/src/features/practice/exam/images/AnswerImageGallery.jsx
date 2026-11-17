@@ -90,7 +90,7 @@ function ImageViewer({ image, loader, onAnnotate }) {
 }
 
 /** Une image privée : chargée par le `loader` authentifié, affichée par URL d'objet. */
-export function BlobImage({ loader, id, annotated = false, className = '', alt = '' }) {
+function BlobImage({ loader, id, annotated = false, className = '', alt = '' }) {
   const [url, setUrl] = useState(null);
   const [failed, setFailed] = useState(false);
   useEffect(() => {

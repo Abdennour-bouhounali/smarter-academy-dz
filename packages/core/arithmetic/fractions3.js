@@ -334,8 +334,6 @@ export function sortRationals(list) {
   return list.map((w, i) => ({ w, i, v: rat_(w) })).sort((p, q) => (eq(p.v, q.v) ? p.i - q.i : sign(sub(p.v, q.v)))).map((o) => o.w);
 }
 
-export { sign };
-
 /* ── Leçon 5 `amaliyat-natiqa` (2026-10-26) : les quatre opérations sur les rationnels, les enchaînements ───────────────────────────────────── */
 
 /**

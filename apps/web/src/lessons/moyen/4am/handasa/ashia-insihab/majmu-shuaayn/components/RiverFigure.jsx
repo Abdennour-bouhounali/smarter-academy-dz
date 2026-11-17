@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * « (الشكل) » du تحدّ (p. 127) : un fleuve entre deux rives, A sur la rive basse et B en face sur la rive haute, le

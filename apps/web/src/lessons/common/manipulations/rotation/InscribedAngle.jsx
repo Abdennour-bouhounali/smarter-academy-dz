@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { RotateCcw, RotateCw } from 'lucide-react';
@@ -416,7 +416,6 @@ function ShootingLab({ lab, setLab, m, k, theme, solved, blocking = false }) {
 
   /* ── l'étape de مزيان : le diamètre, le triangle isocèle AOB, le triangle rectangle ABD ── */
   const atDiameter = lab.mode === 'act4' && lab.stage === 'mezian' && meas.diameter;
-  const mz = atDiameter ? L.mezianNumbers(lab) : null;
 
   /* ── la lecture ── */
   const last = lab.last;

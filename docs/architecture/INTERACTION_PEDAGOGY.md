@@ -524,7 +524,7 @@ The three openings, as a precedent bank (reuse the *quality*, never the widget):
 > When meaningful, ask the student to predict before manipulating.
 
 When the manipulation itself will answer, collect the prediction **without a verdict**
-(`PredictionChips`: aria-pressed chips, no correction) and let the experiment speak; the closing
+(chips with `aria-pressed`, no correction — the component `PredictionChips` was deleted on 2026-11-17, unused: each lab draws its own) and let the experiment speak; the closing
 `TapQuestion` then quotes the student's own prediction (« Ta prédiction : … L'expérience te
 contredit »). Use a graded `TapQuestion` for a prediction only when no manipulation follows.
 

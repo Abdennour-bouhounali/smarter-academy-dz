@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, Minus, Plus, RotateCcw, ChevronDown } from 'lucide-react';
 import ManipulationShell from '../ManipulationShell';
@@ -41,8 +41,8 @@ import { Tile, QUESTIONS as PAGE_QUESTIONS, discoveryOptions } from './Eliminati
  *   - Journal « 📋 جدول تجاربك » et verdict dans la colonne ; commandes figées pendant une prédiction ou une question (`aria-disabled` + garde) ;
  *     région vivante TOUJOURS montée ; aucun pas, aucune fête (le lecteur a ses étoiles).
  */
-export const PRED_MAX = 2;
-export const PRED_HOLD_MS = 1600;
+const PRED_MAX = 2;
+const PRED_HOLD_MS = 1600;
 const ringP = 'focus-visible:ring-indigo-600 focus-visible:ring-offset-2';
 const TILE_MAX = 4;
 const $ = (x) => `$${x}$`;

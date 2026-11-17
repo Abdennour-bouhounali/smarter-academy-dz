@@ -20,11 +20,10 @@
  * VECTORS_SCHEMA_VERSION est la version de CE format.
  */
 
-import * as V from './vectorMath.js';
 import {
   POINT_KINDS, VECTOR_KINDS, MAX_POINTS, MAX_VECTORS, MAX_POLYGONS, MAX_POLYGON_VERTICES,
   VECTOR_PALETTE, CONSTRUCTION_COLOR, clampCoord, newId, nextName, nextColor,
-  POINT_NAMES, VECTOR_NAMES, resolveScene,
+  POINT_NAMES, VECTOR_NAMES,
 } from './vectorScene.js';
 import { normalizeViewport, isValidViewport } from '../functionGrapher/viewport.js';
 
@@ -188,7 +187,7 @@ export function normalizeScene(raw) {
  * Écarte tout objet qui désigne un identifiant absent, en boucle : ⃗AB perd
  * A, donc la somme perd ⃗AB, donc l'image perd la somme.
  */
-export function pruneDanglingReferences(scene) {
+function pruneDanglingReferences(scene) {
   let points = scene.points;
   let vectors = scene.vectors;
   let changed = true;
@@ -565,34 +564,6 @@ export function setScalar(scene, vectorId, k) {
   };
 }
 
-/** La méthode de construction d'une somme : bout à bout (§11) ou parallélogramme (§12). */
-export function setCombinationMethod(scene, vectorId, method) {
-  return {
-    ...scene,
-    vectors: scene.vectors.map((v) => ((v.id === vectorId && (v.kind === 'sum' || v.kind === 'difference'))
-      ? { ...v, method: method === 'parallelogram' ? 'parallelogram' : 'tipToTail' }
-      : v)),
-  };
-}
-
-export function renameObject(scene, id, name) {
-  const clean = readName(name, null);
-  if (!clean) return scene;
-
-  return {
-    ...scene,
-    points: scene.points.map((p) => (p.id === id ? { ...p, name: clean } : p)),
-    vectors: scene.vectors.map((v) => (v.id === id ? { ...v, name: clean } : v)),
-  };
-}
-
-export function setVectorColor(scene, id, color) {
-  const clean = readColor(color, null);
-  if (!clean) return scene;
-
-  return { ...scene, vectors: scene.vectors.map((v) => (v.id === id ? { ...v, color: clean } : v)) };
-}
-
 // ── L'ouverture ───────────────────────────────────────────────────────────
 
 /** Une scène vide. */
@@ -628,19 +599,3 @@ export function createVectorsData(seed = undefined) {
   };
 }
 
-/** Les lectures d'un شعاع résolu — ce que le panneau (§25) affiche. */
-export function readVector(resolved) {
-  if (!resolved?.components) return null;
-
-  return {
-    components: resolved.components,
-    norm: V.norm(resolved.components),
-    exactNorm: V.exactNorm(resolved.components),
-    direction: V.direction(resolved.components),
-  };
-}
-
-/** La scène résolue, pour un `data` (raccourci de lecture). */
-export function resolveData(data) {
-  return resolveScene(currentScene(data));
-}

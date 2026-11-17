@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
@@ -25,7 +25,7 @@ import PlayerSwitch from '../../../../../../common/mission/PlayerSwitch';
  * la manche 17 et 18 (`needsRound`). Hors lecteur : inchangé.
  */
 export default function Module01SabaataAsharWaThamaniyataAshar() {
-  const [c1, setC1] = useState(false);
+  const [, setC1] = useState(false);
   const [trials, setTrials] = useState([]);
   const [q2, setQ2] = useState(false);
   // les questions posées PAR-DESSUS le labo (LabCheckpoint) : l'étape 1 est faite quand la suite des trousses l'est

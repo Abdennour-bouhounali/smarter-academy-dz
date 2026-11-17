@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { Minus, Plus, ChevronUp, ChevronDown, Camera } from 'lucide-react';
@@ -446,7 +446,6 @@ export default function Clinometer(props) {
 
   if (mode === 'height') {
     const H = Number(lab.H.n) / Number(lab.H.d);
-    const dM = I;
     const aRad = (A * Math.PI) / 180;
     const rayLen = Math.hypot(svgW, svgH);
     const rayEnd = [phoneX - rayLen * Math.cos(aRad), phoneY - rayLen * Math.sin(aRad)];

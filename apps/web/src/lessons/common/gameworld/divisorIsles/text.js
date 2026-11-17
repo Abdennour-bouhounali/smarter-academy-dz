@@ -3,7 +3,6 @@ export const TX = {
   hub: {
     title: 'فضاء التدريب',
     open: 'فضاء التدريب',
-    sub: 'سباقات البوّابات أوّلًا، ثمّ مهمّات «تعاونية الواحة»: من الأسهل إلى الأصعب.',
     toKnow: 'خريطة المعارف',
   },
   levels: {
@@ -43,7 +42,6 @@ export const TX = {
     },
   },
   tip: 'حيلة',
-  sitting: { open: 'امتحان أبيض', locked: 'اكسب المفاتيح الأربعة في المغامرة أوّلًا.' },
   // the two practice spaces: the game first, then the real exam — the game lives BETWEEN the levels of the exam, never inside
   spaces: {
     game: 'فضاء اللعب',
@@ -104,18 +102,12 @@ export const TX = {
     },
   },
   depot: {
-    name: 'تعاونية الواحة',
-    order: (i, n) => `الطلبيّة ${i} من ${n}`,
     step: (i, n) => `الخطوة ${i} من ${n}`,
-    earned: 'أرباح اليوم',
-    money: 'الأرباح',
-    dj: 'دج',
     check: 'تحقّق',
     pack: 'وضّب',
     busy: 'المستودع يوضّب…',
     guide: 'لنفهم ما حدث',
     retry: 'أجرّب من جديد',
-    shipped: 'الشاحنة ترحل!',
     history: 'الخطوات السابقة:',
     review: 'مراجعة خطوة سابقة',
     mine: 'جوابك',

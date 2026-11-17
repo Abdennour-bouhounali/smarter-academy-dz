@@ -26,7 +26,6 @@ const addRule = (a, b) => {
 };
 const subRule = (a, b) => addRule(a, -b);
 const rows = (id) => EX[id].question.rows;
-const rightOf = (r) => r.options[r.correct];
 const checkNumeric = (id, wants) => {
   rows(id).slice(0, wants.length).forEach((r, i) => {
     r.options.forEach((o, k) => expect(num(o) === wants[i], `${id} ligne ${i} option ${o}`).toBe(k === r.correct));

@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import { Suspense, lazy } from 'react';
 import { bidi } from '../../../utils/bidi';
 import { hasMath, mathToPlain } from '../../../utils/mathPlain';
 

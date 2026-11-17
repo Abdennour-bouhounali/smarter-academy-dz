@@ -185,7 +185,7 @@ for (const vp of SIZES) {
   check(await vis(page, '[data-tr-op="1"]').getAttribute('data-ticket') === '', 'labo : un second appui reprend le ticket');
   // t1 : + d'abord → refusé, 13 contre 21
   let v = await plan([1, 0]);
-  check(v === 'refused', `t1 : le plan « + d\'abord » est refusé (${v})`);
+  check(v === 'refused', `t1 : le plan « + d'abord » est refusé (${v})`);
   check(await planValue() === '13' && await counterValue() === '17', `t1 : « حسابك » 13, le compteur au quai fautif (${await counterValue()})`);
   const verdictText = await vis(page, '[data-tr-verdict]').innerText();
   check(/13/.test(verdictText) && /21/.test(verdictText) && /9/.test(verdictText), `t1 : le monde dit l'absurde « نزل 13 ؟ لم ينزل إلا 9 » (${verdictText.replace(/\s+/g, ' ').slice(0, 90)})`);

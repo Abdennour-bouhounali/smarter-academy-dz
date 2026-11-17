@@ -1,4 +1,3 @@
-import React from 'react';
 import { GuidedProblem } from '../../../../../../common/problems';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { PROBLEM } from '../content/problems';

@@ -507,7 +507,7 @@ export function audit(bank) {
       if (j.flags[markedIdx] !== true) problems.push(`${key} : l'oracle juge ${j.answer.choiceId}, la feuille marque ${q.choices[markedIdx]?.id}`);
       const isl0 = (c) => lx2a(islands(c.content)[0] ?? '');
       const exempt = sp.k === 'dec' || (sp.k === 'yn' && sp.claim[0] === 'cmp');
-      q.choices.forEach((c, k) => {
+      q.choices.forEach((c) => {
         if (c.isCorrect) { if (c.misconceptionId) problems.push(`${key} : l'option juste ${c.id} porte une misconception`); return; }
         if (c.misconceptionId && !KNOWN.has(c.misconceptionId)) problems.push(`${key} : ${c.misconceptionId} inconnue`);
         if (!exempt && !c.misconceptionId && !(sp.k === 'yn')) problems.push(`${key} : le distracteur ${c.id} ne porte pas de misconception nommée`);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ContentModule, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
@@ -25,7 +25,6 @@ import BallsCutaway from '../components/BallsCutaway';
  * DEUX niveaux ; l'étape 1 demande POURQUOI la جلّة accepte ce que la كرة refuse (elle ne redemande pas la classification du labo) ;
  * le cercle / disque du manuel, les objets du quotidien et les deux phrases viennent APRÈS, la brique après la phrase complétée.
  */
-const M = (s) => <MathText key={s}>{s}</MathText>;
 const WHERE = { surface: 'على الكرة', inside: 'داخل الجلة', outside: 'خارج الجلة' };
 const pt = (n, p) => `$${n}(${p[0]}\\,;\\,${p[1]}\\,;\\,${p[2]})$`;
 

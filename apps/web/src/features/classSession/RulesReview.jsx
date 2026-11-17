@@ -4,7 +4,7 @@
  * taps a desk of his class (the platform proposes nobody), or he reads it himself. The example stays hidden until he asks
  * for it, so that the class can try to give one first. Quick: no question is graded, nothing is saved.
  */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowLeft, ArrowRight, BookOpenCheck, Lightbulb, UserRound, Users, X } from 'lucide-react';
 import MathText from '../../lessons/common/components/MathText';
 import { ClassWindow, Speaker, BoardTools, BoardLayers, useBoardTools, BL } from './board';

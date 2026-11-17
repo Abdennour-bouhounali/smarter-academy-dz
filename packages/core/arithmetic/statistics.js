@@ -24,7 +24,7 @@ const sumF = (list) => list.reduce((s, v) => add(s, v), frac(0));
 const isCount = (f) => Number.isInteger(f) && f >= 0;
 
 /** Les valeurs d'une série, lues exactes (« 8,5 », 154, { n, d }). */
-export const series = (values) => values.map(F);
+const series = (values) => values.map(F);
 
 /** Le tableau des effectifs d'une série brute : valeurs DISTINCTES croissantes et leurs تكرارات. */
 export function tableOf(values) {

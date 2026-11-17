@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
@@ -160,7 +160,6 @@ export default function ShadowMeet({
   const cpSettings = useLabCheckpointSettings('shadow-meet');
   const cpEnabled = cpOn && cpSettings.enabled;
   const chainList = chainsOf(chainsMode);
-  const lastChain = chainList.at(-1);
   // les prédictions JUGÉES : posées après l'étape `from`, jugées quand l'étape suivante est rencontrée
   const judgedPreds = Object.entries(preds).filter(([, p]) => L.predictionJudged(lab, p.from)).map(([key]) => key);
   const pendingPreds = judgedPreds.filter((key) => !heardPred.current.has(key));

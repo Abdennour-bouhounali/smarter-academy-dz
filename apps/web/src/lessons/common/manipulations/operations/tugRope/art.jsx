@@ -1,4 +1,3 @@
-import React from 'react';
 import KidFigure from '../../primitives/KidFigure';
 
 /**
@@ -8,7 +7,7 @@ import KidFigure from '../../primitives/KidFigure';
 export const COL = { sky: '#E0F2FE', skyLow: '#F0F9FF', grass: '#BBF7D0', grassDark: '#86EFAC', ground: '#FDE68A', groundDark: '#CA8A04', rope: '#92400E', plus: '#16A34A', minus: '#EA580C', ribbon: '#DC2626', ink: '#0F172A' };
 
 /** La plage de la bande : de −20 à +20. `u` = pixels par unité. */
-export const RANGE = 20;
+const RANGE = 20;
 export const unitFor = (W) => Math.max(6, (W - 28) / (2 * RANGE));
 export const clampMark = (m) => Math.max(-RANGE, Math.min(RANGE, m));
 
@@ -86,4 +85,3 @@ export function Kid({ i, mood = 'happy', size = 40, dim }) {
     </svg>
   );
 }
-export const isGirl = (i) => CAST[i % CAST.length].girl;

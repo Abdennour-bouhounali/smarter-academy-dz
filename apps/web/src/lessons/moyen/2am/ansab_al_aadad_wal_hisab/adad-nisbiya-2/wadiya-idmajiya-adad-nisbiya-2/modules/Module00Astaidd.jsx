@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { getLessonPath } from '@smarter-academy/core';
 import { PrerequisiteDiagnostic } from '../../../../../../common/kit';

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import * as Rot from '@smarter-academy/core/arithmetic/rotation.js';
@@ -600,7 +600,7 @@ function PointLabel({ at, name, from, color, small = false }) {
 }
 
 /** La figure de la طريقة p. 155 : OAB et OCD rectangles isocèles en O, [AC] et [BD]. */
-function ProveFigure({ lab, P, W, Opx, landed }) {
+function ProveFigure({ P, W, Opx, landed }) {
   const A = P(W('A')); const B = P(W('B')); const C = P(W('C')); const D = P(W('D'));
   const sq = (u, v) => {
     const s = 11; const lu = Math.hypot(u[0] - Opx[0], u[1] - Opx[1]); const lv = Math.hypot(v[0] - Opx[0], v[1] - Opx[1]);

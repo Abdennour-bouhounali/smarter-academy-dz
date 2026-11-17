@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Minus, Plus, Hammer, Undo2 } from 'lucide-react';
 import { InstancedMesh, BoxGeometry, MeshStandardMaterial, Object3D, Color, Group } from 'three';
@@ -431,8 +431,8 @@ function Readings({ lab, rd, built, k, dimsTex, formal, narrow }) {
         </div>
         <div className="grid grid-cols-[auto_1fr_1fr_auto] items-center gap-x-2 px-2 py-1" data-sb-row="length">
           <span className="font-bold text-slate-700">{k('rowEdges')}</span>
-          <span className="text-slate-600"><MathText>{`$${dimsTex(p.dims)}\,\mathrm{cm}$`}</MathText></span>
-          <span className="font-bold text-rose-800"><MathText>{`$${dimsTex(p.image)}\,\mathrm{cm}$`}</MathText></span>
+          <span className="text-slate-600"><MathText>{`$${dimsTex(p.dims)}\\,\\mathrm{cm}$`}</MathText></span>
+          <span className="font-bold text-rose-800"><MathText>{`$${dimsTex(p.image)}\\,\\mathrm{cm}$`}</MathText></span>
           <span className="font-bold text-rose-800" data-sb-ratio="plus"><MathText>{`$${p.ratios.map(qTexFrac).join(' \\;;\\; ')}$`}</MathText></span>
         </div>
       </div>

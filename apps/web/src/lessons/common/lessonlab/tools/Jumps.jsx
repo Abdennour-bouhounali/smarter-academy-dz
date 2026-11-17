@@ -3,7 +3,7 @@
  * The student's hand holds the FLAG (the number) and the FIRST LANDING (the length of a jump). The jumps land on the multiples
  * of b: on the flag exactly, or just before it — and what is missing can be read on the line.
  */
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { VW, VH, useDrag, useChime, Tool, M } from '../kit';
 import { jumpsOf } from '../logic';
 
@@ -135,7 +135,7 @@ export default function Jumps({ a, b, setA, setB, play, range }) {
         <text x={x(0)} y={Y + 30} textAnchor="middle" fontSize="18">
           0
         </text>
-        {J.landings.slice(0, shown).map((v, i) => (
+        {J.landings.slice(0, shown).map((v) => (
           <path
             key={`${v}-${still}`}
             d={arc(v - b, v)}

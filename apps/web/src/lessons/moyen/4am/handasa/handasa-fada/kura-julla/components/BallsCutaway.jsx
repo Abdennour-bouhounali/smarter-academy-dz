@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import { useId } from 'react';
 
 /**
  * Le نشاط 1 en image — le manuel montre deux PHOTOS (un ballon de handball, une boule de pétanque « الكرة الحديدية ») ; la

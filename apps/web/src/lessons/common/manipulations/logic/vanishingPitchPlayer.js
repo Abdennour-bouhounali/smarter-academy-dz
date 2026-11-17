@@ -9,7 +9,7 @@ import * as L from './vanishingPitch.js';
  * Bouger x, re-épingler le même x, « already », `notSwept` et la revendication acceptée ne sont PAS des essais.
  */
 
-export const judged = (s) => [...s.pins, ...s.refused];
+const judged = (s) => [...s.pins, ...s.refused];
 /** `v` : le x qu'on s'apprête à épingler (par défaut le x courant) — jamais jugé dans la manche. */
 export const isNewPin = (s, v = s.x) => v != null && !judged(s).includes(v);
 export const claimKey = (s) => s.pins.join(',');
@@ -59,12 +59,6 @@ export function judgedPredictions(s, keys, all = false) {
 
 /* ── les QUESTIONS du lecteur : leurs parties, CALCULÉES ── */
 
-/** « أيّ ضلع صار طوله 0 ؟ » pour la première épingle de l'élève : l'indice du côté (0, 1) ; `both` pour un carré. */
-export function whichParts(s) {
-  const v = s.pins[0];
-  const zs = L.zeroSides(s, v);
-  return { v, zs, both: zs.length === 2, answer: zs.length === 2 ? 2 : zs[0] };
-}
 /** « وكم طول الضلع الآخر ؟ » : la valeur du côté qui reste à la première épingle, et des leurres (0 = le côté nul, x lui-même). */
 export function restParts(s) {
   const v = s.pins[0];

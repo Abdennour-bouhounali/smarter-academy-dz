@@ -22,7 +22,7 @@ import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
 const { frac, add, mul, div, cmp, eq, toNumber, parseNumber, isInteger } = LIN;
 
 /** « 15:10|18:13|14:12,5|19:11 » → [{ n, m }] (n entier ≥ 1, m exact ≥ 0). */
-export function parseGroups(src) {
+function parseGroups(src) {
   const parts = String(src ?? '').split('|').map((p) => p.trim()).filter(Boolean);
   if (parts.length < 2) throw new Error(`group-tanks: au moins deux groupes (« ${src} »)`);
   return parts.map((p) => {
@@ -36,7 +36,7 @@ export function parseGroups(src) {
 }
 
 /** « 2|2 » → [[0, 1], [2, 3]] ; absent → une seule classe avec tous les groupes. */
-export function parseClasses(src, count) {
+function parseClasses(src, count) {
   if (!src) return [Array.from({ length: count }, (_, i) => i)];
   const sizes = String(src).split('|').map(Number);
   if (sizes.some((k) => !Number.isInteger(k) || k < 2) || sizes.reduce((a, b) => a + b, 0) !== count) {
@@ -79,7 +79,7 @@ export const count = (s, ci) => countOf(classGroups(s, ci));
 /** Le pari k (entier) en nombre exact. */
 export const betValue = (s, k) => mul(s.step, k);
 /** La graduation de la grille la plus proche d'une valeur exacte (½ arrondi vers le haut). */
-export const nearestK = (s, v) => Math.floor(toNumber(div(v, s.step)) + 0.5 + 1e-9);
+const nearestK = (s, v) => Math.floor(toNumber(div(v, s.step)) + 0.5 + 1e-9);
 export const classOfGroup = (s, gi) => s.classes.findIndex((c) => c.members.includes(gi));
 
 const put = (s, patch) => Object.freeze({ ...s, ...patch });
@@ -137,7 +137,7 @@ export function setSize(s, gi, n) {
 }
 
 /** Chaque classe a-t-elle été versée au moins une fois ? */
-export const allOpenedOnce = (s) => s.classes.every((c) => s.trials.some((t) => t.ci === c.id));
+const allOpenedOnce = (s) => s.classes.every((c) => s.trials.some((t) => t.ci === c.id));
 
 /**
  * La découverte s'ouvre — une classe (مبتدئ) : la vanne ouverte ET un effectif changé (le niveau qui

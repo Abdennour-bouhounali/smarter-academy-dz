@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Le dessin de « عدسة القوى » (ten-zoom) : la table du club de sciences, la lentille de laiton, la BAGUE crantée, le cadre carré et le décor à son
@@ -15,9 +14,8 @@ export const R_OUT = 162;
 export const FRAME = 150;
 export const NOTCH_DEG = 30;
 /** La cellule en surbrillance de la grille 10 × 10 du cadre (colonne 4, rangée 4 à partir du coin) : le cadre voisin y rentre ou en sort. */
-export const CELL = { col: 4, row: 4 };
-export const AMBER = '#F59E0B';
-export const BRASS = '#B45309';
+const CELL = { col: 4, row: 4 };
+const AMBER = '#F59E0B';
 const FX = CX - FRAME / 2;
 const FY = CY - FRAME / 2;
 
@@ -106,7 +104,6 @@ export function Vignette({ n }) {
 }
 
 const sky = (c = '#DBEAFE') => <rect x="0" y="0" width="200" height="200" fill={c} />;
-const land = (c, y = 120) => <rect x="0" y={y} width="200" height={200 - y} fill={c} />;
 
 const SCENES = {
   // −7 : un virus (≈ 100 nm) — une sphère à pointes

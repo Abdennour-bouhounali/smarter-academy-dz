@@ -11,7 +11,7 @@ const stepsOf = (id, part, kind) => PROBLEM[id].parts[part].steps.filter((s) => 
 /** Toutes les égalités « a = b × c » / « a = b × c + r » écrites dans un texte (explain, lines, options). */
 const EQ = /(?<![\d.,]|\\times\s*|[+\-(]\s*)(\d+)\s*=\s*(\d+)\s*\\times\s*(\d+)(?!\d|\s*\\times)(?:\s*\+\s*(\d+)(?!\d))?/g;
 /** Toutes les opérations « x × y = z », « x + y = z », « x − y = z » écrites (une seule opération à gauche). */
-const OP = /(?<![\d.,]|\\times\s*|[+\-(]\s*)(\d+)\s*(\\times|\+|-)\s*(\d+)\s*=\s*(\d+)(?![\d.,]|\s*\\times|\s*[+\-])/g;
+const OP = /(?<![\d.,]|\\times\s*|[+\-(]\s*)(\d+)\s*(\\times|\+|-)\s*(\d+)\s*=\s*(\d+)(?![\d.,]|\s*\\times|\s*[+-])/g;
 const apply = (x, op, y) => (op === '+' ? x + y : op === '-' ? x - y : x * y);
 const textsOf = (p) => p.parts.flatMap((part) => [part.question, ...part.steps.flatMap((s) => [s.prompt, s.explain, ...(s.lines ?? []), ...(s.options ?? [])])]).filter(Boolean);
 

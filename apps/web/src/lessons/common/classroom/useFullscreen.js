@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
  * le navigateur n'en a aucune (Safari iOS sur autre chose qu'une vidéo).
  * Calculée à la demande : `document` n'existe pas au rendu serveur.
  */
-export function fullscreenApi() {
+function fullscreenApi() {
   if (typeof document === 'undefined') return null;
   if (document.fullscreenEnabled && typeof document.exitFullscreen === 'function') {
     return {

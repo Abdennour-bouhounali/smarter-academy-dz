@@ -316,8 +316,6 @@ export default function AnalysisTool({ initialData, onChange, onReady }) {
     commit((current) => recordPractice(current, solved));
   }, [commit]);
 
-  const secondFunction = data.functions[1] ?? null;
-
   return (
     <div className={`sa-ml-an${panelOpen ? '' : ' sa-ml-an--collapsed'}`} data-ml-analysis data-ml-lab={data.lab}>
       {/* ── Le choix du laboratoire : un seul environnement, sept regards (§4) ── */}

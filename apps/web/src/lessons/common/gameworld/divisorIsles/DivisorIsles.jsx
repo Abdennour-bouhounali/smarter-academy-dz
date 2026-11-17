@@ -6,7 +6,7 @@
  * props: config (LESSON_CONFIG), basePath, exitTo (catalogue), classicHref (the mission player), onModule(n) (marks a module done),
  *        completedModules (the lesson's synced progress: it opens the practice nodes on a device that never played the story).
  */
-import React, { Suspense, lazy, useContext, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { Suspense, lazy, useContext, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import {
@@ -89,7 +89,6 @@ const hasWebGL = () => {
     return false;
   }
 };
-const EMPTY = () => () => {};
 // « مختبري »: the lab of the lesson, the same for every lesson (lessons/common/lessonlab) — loaded when opened
 const LessonLab = lazy(() => import('../../lessonlab/LessonLab'));
 const LaunchKit = lazy(() => import('../../launchkit/LaunchKit'));

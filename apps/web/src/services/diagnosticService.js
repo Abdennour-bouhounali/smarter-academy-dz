@@ -14,7 +14,7 @@ import { apiMessage } from './apiMessage';
  * backend still enforces this independently (§2 of the brief: no 5e/4e/3e
  * diagnostic yet) — this constant only controls whether the UI offers it.
  */
-export const DIAGNOSTIC_AVAILABLE_GRADES = ['6e'];
+const DIAGNOSTIC_AVAILABLE_GRADES = ['6e'];
 
 export function isDiagnosticAvailableForGrade(grade) {
   return DIAGNOSTIC_AVAILABLE_GRADES.includes(grade);

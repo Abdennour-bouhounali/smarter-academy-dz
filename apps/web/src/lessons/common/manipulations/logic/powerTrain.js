@@ -19,11 +19,11 @@
  */
 import * as P from '@smarter-academy/core/arithmetic/powers.js';
 
-export const WORLDS = Object.freeze(['build', 'couple']);
+const WORLDS = Object.freeze(['build', 'couple']);
 /** La plage de l'exposant tenu par la main (le rail a 11 places : −4 … 6 ; B dans `couple` : −6 … 6). */
 export const RANGE = Object.freeze({ build: [-4, 6], couple: [-6, 6] });
 /** Bases permises dans « جرّب أعدادك » : un entier relatif non nul de −9 à 9. */
-export const FREE_BASE = Object.freeze([-9, 9]);
+const FREE_BASE = Object.freeze([-9, 9]);
 
 /** Les tâches par défaut de chaque monde et de chaque niveau (la leçon peut passer les siennes). */
 export const PRESETS = Object.freeze({
@@ -41,7 +41,7 @@ const clamp = (v, [lo, hi]) => Math.max(lo, Math.min(hi, v));
 const text = (x) => P.ratText(x);
 
 /** Les tâches normalisées : `build` → { id, target (texte), goal (exposant) } ; `couple` → { id, m, target, op, goal (n) }. */
-export function normalizeTasks(world, base, list) {
+function normalizeTasks(world, base, list) {
   if (world === 'couple') {
     return list.map((t, i) => {
       const goal = t.op === 'divide' ? t.m - t.target : t.target - t.m;
@@ -133,7 +133,7 @@ export function nextTask(s) {
 }
 
 /** « إعادة » sur la même tâche : le train repart vide, les essais restent (la découverte s'en sert). */
-export function restartTask(s) { return { ...s, n: 0, last: null }; }
+function restartTask(s) { return { ...s, n: 0, last: null }; }
 
 /** « جرّب أعدادك » : une base entière non nulle de −9 à 9 (texte libre de l'élève, « −4 » accepté). null si illisible. */
 export function parseFreeBase(raw) {
@@ -154,7 +154,7 @@ export const toGuided = (s) => (s.free ? { ...s, free: null, n: 0, last: null } 
 /* ── Preuves (onTrial) ───────────────────────────────────────────────────────────────────────── */
 
 export const trialEvidence = (tr) => ({ kind: 'release', ...tr });
-export const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => !t.free && t.task === i);
+const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => !t.free && t.task === i);
 
 /* ── Onboarding (LabCoach) ───────────────────────────────────────────────────────────────────── */
 

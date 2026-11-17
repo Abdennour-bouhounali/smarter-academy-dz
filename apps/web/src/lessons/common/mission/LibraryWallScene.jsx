@@ -1,4 +1,3 @@
-import React from 'react';
 import KidFigure from '../manipulations/primitives/KidFigure';
 
 const SPINES = ['#4F46E5', '#0EA5E9', '#F59E0B', '#10B981', '#E11D48', '#8B5CF6', '#14B8A6', '#F97316'];

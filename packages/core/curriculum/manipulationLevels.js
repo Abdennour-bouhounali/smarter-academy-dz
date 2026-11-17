@@ -53,7 +53,7 @@ export const ADAPTATION_REASONS = Object.freeze([
  * s'impose que lorsqu'il SERT la structure (§11 du brief : ne jamais forcer
  * un contexte qui rend la mathématique moins claire).
  */
-export const VISUAL_THEMES = Object.freeze({
+const VISUAL_THEMES = Object.freeze({
   library: { kind: 'objects', shows: 'كتب ورفوف' },
   football: { kind: 'people', shows: 'لاعبون وفرق' },
   garden: { kind: 'objects', shows: 'زهور وباقات' },
@@ -87,7 +87,7 @@ export const VISUAL_THEMES = Object.freeze({
   staff: { kind: 'people', shows: 'عمّال مصلحة قبل وبعد الإحالة على التقاعد' },
   coins: { kind: 'objects', shows: 'قطع نقدية من فئتي 20DA و 10DA' },
   snack: { kind: 'objects', shows: 'كرنتيكة ومشروب: سعران مجهولان' },
-  stadium: { kind: 'people', shows: 'مناصرون يدخلون الملعب بتذاكر الكبار والصغار' },
+  // `stadium` was written here too, with another scene; an object keeps ONE value per key and the later one (below) won.
   museum: { kind: 'people', shows: 'زوّار متحف بتذاكر البالغين والصغار' },
   party: { kind: 'objects', shows: 'علب عصير وقطع حلوى حفل' },
   // Unité 6 « الدالة الخطية والتناسبية » (2026-10-02) :
@@ -98,7 +98,7 @@ export const VISUAL_THEMES = Object.freeze({
   //   mall      les soldes du centre commercial (étiquette étirée)
   //   tank      le réservoir d'eau vidé puis rempli (changements successifs)
   scooter: { kind: 'objects', shows: 'تروتينات كهربائية تؤجَّر بالدقيقة' },
-  souk: { kind: 'objects', shows: 'سلع بأسعار قبل وبعد تخفيض العيد' },
+  // `souk` was written here too, with another scene; an object keeps ONE value per key and the later one (below) won.
   cablecar: { kind: 'objects', shows: 'مصعد هوائي يسير على حبل مستقيم' },
   spring: { kind: 'objects', shows: 'نابض تعلّق به كتل' },
   mall: { kind: 'objects', shows: 'أحذية رياضية بأسعار التخفيضات' },
@@ -145,7 +145,7 @@ export const VISUAL_THEMES = Object.freeze({
   mural: { kind: 'objects', shows: 'سلّم مزدوج لرسّامي الجداريات وعارضة أفقية' },
   minaret: { kind: 'objects', shows: 'مئذنة وعصا وظلاهما' },
   cornet: { kind: 'objects', shows: 'مخروط مثلجات وعلبة أسطوانية داخله' },
-  river: { kind: 'objects', shows: 'تقدير عرض وادٍ بالتسديد البصري' },
+  // `river` was written here too, with another scene; an object keeps ONE value per key and the later one (below) won.
   //   tifo     la banderole géante des ultras du quartier, partagée en bandes égales (ou p : q) au compas (segment-divider)
   tifo: { kind: 'lengths', shows: 'لافتة تيفو للأنصار تُقسَّم إلى أشرطة بالمسطرة غير المدرّجة والمدور' },
   // Unité 10 « حساب المثلثات في المثلث القائم » (2026-10-04) :

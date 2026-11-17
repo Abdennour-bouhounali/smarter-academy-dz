@@ -1,4 +1,3 @@
-import React from 'react';
 import KidFigure from '../manipulations/primitives/KidFigure';
 import { SceneBackdrop, Sun, PlainTower, SunRay, GroundShadow } from './thalesSceneKit';
 

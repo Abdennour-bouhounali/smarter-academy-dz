@@ -25,12 +25,12 @@ export const FAR_N = 40;
 const vkey = (x, y) => `${x},${y}`;
 const hexVertices = (cx, cy) => [[cx, cy - 2], [cx + 1, cy - 1], [cx + 1, cy + 1], [cx, cy + 2], [cx - 1, cy + 1], [cx - 1, cy - 1]];
 /** Les arêtes d'une cellule centrée en (cx, cy) : paires de sommets triées (la clé identifie la tige). */
-export function hexEdges(cx, cy) {
+function hexEdges(cx, cy) {
   const v = hexVertices(cx, cy).map(([x, y]) => vkey(x, y));
   return v.map((a, i) => [a, v[(i + 1) % 6]].sort().join('|'));
 }
 /** Les centres d'un rang de n cellules (rang r : décalé de (+1, +3) par rang). */
-export const rowCenters = (n, r = 0) => Array.from({ length: n }, (_, i) => [2 * i + r, 3 * r]);
+const rowCenters = (n, r = 0) => Array.from({ length: n }, (_, i) => [2 * i + r, 3 * r]);
 
 /** Le décompte des tiges d'une liste de centres : { count, edges: Map(clé → nombre de cellules qui la portent), shared: clés portées par 2 cellules }. */
 export function rodsOf(centers) {
@@ -82,8 +82,6 @@ export const isFree = (s) => !!s.free;
 export const taskDone = (s, i = s.ti) => (s.free ? !!s.free.done : !!s.done[i]);
 export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 1;
 export const discoveryReady = (s) => s.tasks.every((_, i) => !!s.done[i]);
-export const levelOf = (s) => (s.tasks[0].predict ? 'advanced' : 'beginner');
-export const trayLeft = (s) => TRAY_RODS - 0 * s.w.n;
 
 /** Le compteur du rang construit : le DESSIN (jamais la formule). */
 export const drawn = (s) => { const t = taskOf(s); return t.kind === 'two' ? rodsOfBoth(s.w.n, s.w.m) : rodsOfRow(s.w.n, t.strip); };
@@ -113,7 +111,7 @@ function advance(s) {
   }
   return s;
 }
-export function setCells(s, n) {
+function setCells(s, n) {
   const t = taskOf(s);
   const v = Math.max(0, Math.min(t.max, Math.round(n)));
   if (s.w.phase === 'done' || v === s.w.n) return s;
@@ -149,7 +147,7 @@ const normalizeRule = (txt) => String(txt).replace(/[٠-٩]/g, (d) => '٠١٢٣�
 export const judgeColumns = (s) => [...new Set([...s.w.visited, 1, 2, 3, 4])].filter((n) => n >= 1 && n <= taskOf(s).max).sort((a, b) => a - b);
 
 /** Juge `text` : { ok, model, column, columns, rows, unreadable }. `model` : 'right' | 'perCell' | 'noFirst' | 'plusSix' | 'other'. */
-export function judgeRule(task, columns, text, pair) {
+function judgeRule(task, columns, text, pair) {
   const raw = String(text).trim();
   if (!raw || !LETTER_OK.test(raw)) return { ok: false, model: 'other', unreadable: true, column: null, columns, rows: [] };
   const t = normalizeRule(raw);
@@ -201,7 +199,7 @@ export function writeRule(s, text) {
 }
 
 /** « a2 » : les deux écritures (celle de Yacine, celle de Rania) sur les rangs construits : les deux tableaux sont les mêmes. */
-export const COMPARE = Object.freeze({ yacine: '5n+1', rania: '6+5(n-1)' });
+const COMPARE = Object.freeze({ yacine: '5n+1', rania: '6+5(n-1)' });
 export function compareWritings(s) {
   const t = taskOf(s);
   if (t.kind !== 'compare' || s.w.phase !== 'compare') return s;
@@ -246,7 +244,6 @@ export function freeTask(s) {
 export const toGuided = (s) => (s.free ? { ...s, free: null, w: initW(s.tasks[s.ti]), last: null, flag: null } : s);
 
 export const trialEvidence = (tr) => ({ ...tr });
-export const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => !t.free && t.task === i);
 
 /** Le prochain geste utile — jamais la réponse. */
 export function coachOf(s) {

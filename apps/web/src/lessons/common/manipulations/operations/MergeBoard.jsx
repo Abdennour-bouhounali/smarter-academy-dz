@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CheckCircle2, Sparkles, Hand, FlaskConical, Undo2, RotateCcw, ChevronLeft, Plus, ShieldAlert, FlipHorizontal2 } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -17,7 +17,7 @@ import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
 import { playSfx } from '../../utils/playEffect';
 import { LEVELS } from '../levels';
 import * as L from '../logic/mergeBoard';
-import { CSS, SignBar, Magnet, MiniLine, colorOf } from './mergeBoard/boardArt';
+import { CSS, SignBar, Magnet, MiniLine } from './mergeBoard/boardArt';
 
 /**
  * merge-board — LE SIGNE PRÉDIT SOUS LA MAIN : « لوحة الدمج » (3AM, unité 2 « العمليات على الكسور والأعداد الناطقة », درس « العمليات على الأعداد الناطقة », 2026-10-26).

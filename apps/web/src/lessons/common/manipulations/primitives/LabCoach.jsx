@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Hand, MousePointerClick, Lightbulb, X, Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { placeBubble, readLearned, writeLearned, readOff, writeOff } from './labCoach';

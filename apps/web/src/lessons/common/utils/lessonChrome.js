@@ -26,7 +26,7 @@ export const VISITOR_HEADER_H = 16;
 export const STUDENT_MOBILE_HEADER_H = 14;
 
 /** Aucun élément persistant en haut : bureau élève (≥ md). */
-export const NO_HEADER_H = 0;
+const NO_HEADER_H = 0;
 
 // Tailwind ne peut pas interpréter `top-${n}` : les classes doivent exister
 // littéralement dans la source. Ces tables sont l'unique endroit où les

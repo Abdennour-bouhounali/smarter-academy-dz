@@ -50,7 +50,7 @@ export function functionLatex(fn) {
   return `f(x) = ${polyLatex(fromCoefficients(fn.coefs, 'x'))}`;
 }
 
-export function evaluate(fn, x) {
+function evaluate(fn, x) {
   let acc = R.ZERO;
   for (let i = fn.coefs.length - 1; i >= 0; i -= 1) acc = R.add(R.multiply(acc, x), fn.coefs[i]);
 

@@ -40,7 +40,7 @@ const SERIALIZE_MS = 300;
  * Toute la mathématique est dans les modules purs ; ce composant ne fait que
  * les appeler — aucun calcul dans le JSX.
  */
-export default function MeasurementTool({ initialData, title, onChange, onReady }) {
+export default function MeasurementTool({ initialData, onChange, onReady }) {
   const { t } = useTranslation('mathlab');
   const [data, setData] = useState(() => (initialData && Object.keys(initialData).length
     ? normalizeMeasurementData(initialData)

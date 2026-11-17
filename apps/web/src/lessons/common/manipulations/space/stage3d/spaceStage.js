@@ -35,7 +35,7 @@ export function viewDirection({ azimuth = -62, elevation = 18 } = {}) {
 }
 
 /** Libère récursivement géométries, matériaux et étiquettes DOM d'un objet. */
-export function disposeObject(obj) {
+function disposeObject(obj) {
   obj.traverse?.((child) => {
     child.geometry?.dispose?.();
     if (child.material) (Array.isArray(child.material) ? child.material : [child.material]).forEach((m) => m.dispose?.());
@@ -45,7 +45,7 @@ export function disposeObject(obj) {
 }
 
 /** Une étiquette DOM (nom de point, cote) : LTR, lisible sur tout fond, jamais cliquable. */
-export function makeLabel(text, { color = '#0f172a', size = 14, weight = 700, background = null } = {}) {
+function makeLabel(text, { color = '#0f172a', size = 14, weight = 700, background = null } = {}) {
   const el = document.createElement('div');
   el.dir = 'ltr';
   el.textContent = text;

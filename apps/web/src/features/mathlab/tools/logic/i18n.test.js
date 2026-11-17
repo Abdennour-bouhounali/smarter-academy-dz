@@ -16,8 +16,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import {
-  STATEMENTS, IMPLICATIONS, EQUIVALENCES, COUNTEREXAMPLE_CHALLENGES, CONDITIONS,
-  QUANTIFIER_STATEMENTS, PROOFS, FALLACIES, FALLACY_KINDS,
+  STATEMENTS, COUNTEREXAMPLE_CHALLENGES, PROOFS, FALLACIES, FALLACY_KINDS,
 } from './presets.js';
 import { AREAS, VERDICTS, IMPLICATION_FORMS, PROOF_MODES, NEGATION_KINDS, MAX_PRACTICE_LEVEL } from './logicState.js';
 import { CONNECTORS } from './logicMath.js';

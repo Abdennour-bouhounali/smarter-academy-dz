@@ -12,12 +12,12 @@
  */
 import * as P from '@smarter-academy/core/arithmetic/planeFrame.js';
 
-export const KINDS = Object.freeze(['fly', 'read']);
-export const PAPERS = Object.freeze(['squared', 'plain']);
+const KINDS = Object.freeze(['fly', 'read']);
+const PAPERS = Object.freeze(['squared', 'plain']);
 /** Les objets de la cour qu'une lecture peut désigner (le décor les dessine). */
-export const THINGS = Object.freeze(['fountain', 'door', 'bench', 'tap', 'gate', 'kiosk', 'tree', 'board', 'chair', 'well']);
+const THINGS = Object.freeze(['fountain', 'door', 'bench', 'tap', 'gate', 'kiosk', 'tree', 'board', 'chair', 'well']);
 /** Le cadre de la cour : |x| ≤ 5, |y| ≤ 4 (en dixièmes). */
-export const BOX = Object.freeze({ x: 50, y: 40 });
+const BOX = Object.freeze({ x: 50, y: 40 });
 export const FREE_LIMIT = Object.freeze({ x: 50, y: 40 });
 
 const bad = (m) => { throw new Error(`courtyard-drone : ${m}`); };
@@ -45,7 +45,7 @@ export function normalizeTasks(list) {
   });
 }
 
-export const PRESETS = Object.freeze({
+const PRESETS = Object.freeze({
   beginner: { tasks: [
     { id: 'b1', kind: 'fly', paper: 'squared', reads: [{ x: 30, y: -20, what: 'fountain' }, { x: -40, y: 10, what: 'door' }] },
     { id: 'b2', kind: 'fly', paper: 'squared', reads: [{ x: 40, y: 0, what: 'bench' }, { x: 0, y: -30, what: 'tap' }] },
@@ -77,11 +77,10 @@ export const taskDone = (s, i = s.ti) => !!s.done[i];
 export const discoveryReady = (s) => s.tasks.every((_, i) => !!s.done[i]);
 export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 1;
 export const isAdvanced = (s) => s.tasks.some((t) => t.advanced);
-export const readOf = (s) => (s.free || taskDone(s) ? null : taskOf(s).reads[s.ri]);
 /** Le point où se trouve le drone (dixièmes). */
 export const dronePos = (s) => (s.free ? { x: s.free.x, y: s.free.y } : { x: s.x, y: s.y });
 /** Le pas de la main : une case (un demi-case au niveau متقدم) ; la droite libre : un dixième. */
-export const grainOf = (s) => (s.free ? 1 : taskOf(s).grain);
+const grainOf = (s) => (s.free ? 1 : taskOf(s).grain);
 export const axisOf = (s) => (s.phase === 'x' ? 'x' : 'y');
 export const limitOf = (axis) => (axis === 'x' ? BOX.x : BOX.y);
 

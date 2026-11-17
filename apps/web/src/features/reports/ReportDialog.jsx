@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { X, Check, TriangleAlert, Camera, ImagePlus, Send } from 'lucide-react';
@@ -32,7 +32,7 @@ import ScreenSnipper from './ScreenSnipper';
  * problème descend en pastilles facultatives — sans choix, « other » part au
  * serveur. Une image se colle (Ctrl+V) ou se dépose aussi sur la zone.
  */
-export const NOTE_MIN_LENGTH = 3;
+const NOTE_MIN_LENGTH = 3;
 
 export default function ReportDialog({ open, onClose, onSubmit, busy, error, submitted }) {
   const { t } = useTranslation('common');

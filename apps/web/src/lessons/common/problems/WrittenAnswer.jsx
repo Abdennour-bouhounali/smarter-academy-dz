@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSavedAnswer } from '../answers/useSavedAnswer';
 import SavedAnswerChip from '../answers/SavedAnswerChip';
 import { useTranslation } from 'react-i18next';
@@ -6,7 +6,7 @@ import MathText from '../components/MathText';
 import MathTextArea, { writtenLength } from '../components/MathTextArea';
 
 /** Le minimum écrit avant de pouvoir comparer : quelques mots, pas une lettre. */
-export const MIN_WRITTEN_CHARS = 8;
+const MIN_WRITTEN_CHARS = 8;
 
 /**
  * WrittenAnswer — une réponse LONGUE qu'aucune machine ne peut valider

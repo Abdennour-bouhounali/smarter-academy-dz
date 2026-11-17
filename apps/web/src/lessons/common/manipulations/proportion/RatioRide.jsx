@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
-import { Minus, Plus, ReceiptText, Eraser, Eye, CheckCheck } from 'lucide-react';
+import { Minus, Plus, ReceiptText, Eraser, Eye } from 'lucide-react';
 import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
@@ -338,7 +338,6 @@ export default function RatioRide({
       {d < 0 ? <Minus className="h-5 w-5" aria-hidden="true" /> : <Plus className="h-5 w-5" aria-hidden="true" />}
     </button>
   );
-  const tableFull = lab.columns.length >= L.MAX_COLUMNS;
   const clearBtn = (
     <button type="button" onClick={() => setLab((s) => L.clear(s))} data-ride-clear
       className="inline-flex min-h-[44px] items-center gap-1 rounded-xl border-2 border-slate-300 bg-white px-2 text-xs font-bold text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
@@ -564,7 +563,7 @@ function Promenade({ width, height, edge, range, x, stretch, recorded, handleLab
           <circle cx={width - 30} cy={Math.max(14, seaY * 0.4)} r={Math.max(8, seaY * 0.22)} fill="#FDE047" opacity="0.9" />
           <rect x="0" y={seaY} width={width} height={roadY - seaY} fill="url(#rr-sea)" />
           {[0.3, 0.62].map((f) => (
-            <path key={f} d={`M0 ${seaY + (roadY - seaY) * f} ${Array.from({ length: Math.ceil(width / 24) + 1 }, (_, i) => `q 6 -3 12 0 t 12 0`).join(' ')}`}
+            <path key={f} d={`M0 ${seaY + (roadY - seaY) * f} ${Array.from({ length: Math.ceil(width / 24) + 1 }, () => `q 6 -3 12 0 t 12 0`).join(' ')}`}
               fill="none" stroke="#BAE6FD" strokeWidth="1.2" opacity="0.7" />
           ))}
           {/* le kornich : garde-corps et pavés */}

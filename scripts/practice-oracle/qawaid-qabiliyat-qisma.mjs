@@ -31,8 +31,6 @@ const setOf = (nums, ds) => {
   if (!s.length) throw new Error(`setOf ${nums} ÷ ${ds}: vide`);
   return R(s.join(', '));
 };
-/** QCM : la seule option (liste de nombres) égale à l'ensemble des divisibles. */
-const setKey = (nums, ds, opts) => only(opts.map((o, i) => (same(o, nums.filter((n) => all(n, ds))) ? i : -1)).filter((i) => i >= 0), `setKey ${ds}`);
 /** Les chiffres x (0..9) tels que le nombre écrit `tpl` avec x à la place de □ soit divisible par tous les d. */
 const digits = (tpl, ds) => {
   const out = [];
@@ -46,7 +44,6 @@ const digits = (tpl, ds) => {
 const digitSet = (tpl, ds) => { const s = digits(tpl, ds); if (!s.length) throw new Error(`digitSet ${tpl}`); return R(s.join(', ')); };
 const digitMin = (tpl, ds) => R(Math.min(...digits(tpl, ds)));
 const digitMax = (tpl, ds) => R(Math.max(...digits(tpl, ds)));
-const digitKey = (tpl, ds, opts) => only(opts.map((o, i) => (same(o, digits(tpl, ds)) ? i : -1)).filter((i) => i >= 0), `digitKey ${tpl}`);
 /** Tous les nombres formés avec toutes les cartes, sans répétition, sans zéro en tête. */
 const perms = (cards) => {
   if (cards.length <= 1) return [cards.join('')];

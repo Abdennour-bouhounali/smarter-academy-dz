@@ -212,16 +212,6 @@ export function squareTex(v, scale) {
   return sq.den === 1 ? String(sq.num) : `\\dfrac{${sq.num}}{${sq.den}}`;
 }
 
-/** √a si elle est rationnelle, en LaTeX, sinon null. */
-export function rootTexIfRational(area) {
-  const r = rationalSqrt(area);
-  if (!r) return null;
-  if (r.den === 1) return String(r.num);
-  const d = digitsOf(area.den) != null ? digitsOf(r.den) : null;
-  if (d != null) return exactDecimal(r.num, d).replace(',', '{,}');
-  return `\\dfrac{${r.num}}{${r.den}}`;
-}
-
 /** Longueur à DESSINER (jamais à juger). */
 export const drawSide = (v, scale) => v / scale;
 export const drawRoot = ({ num, den }) => Math.sqrt(num / den);

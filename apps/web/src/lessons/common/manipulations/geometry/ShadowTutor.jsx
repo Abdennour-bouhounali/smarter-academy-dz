@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Check, X, Lightbulb, MessageCircle, Target, ChevronDown, ChevronUp } from 'lucide-react';
-import MathText from '../../components/MathText';
 
 /**
  * Le PANNEAU DU TUTEUR de « ساحة الحيّ » (shadow-world) — refondu le 2026-10-13 à la demande du propriétaire :

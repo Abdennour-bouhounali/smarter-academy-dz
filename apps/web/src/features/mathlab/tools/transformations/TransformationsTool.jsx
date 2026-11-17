@@ -12,11 +12,11 @@ import TransformControls from './TransformControls.jsx';
 import StepStack from './StepStack.jsx';
 import PracticePanel from './PracticePanel.jsx';
 import * as M from './transformMath.js';
-import { matrixAtFraction, resolveCenter, resolveAxis, finalFigure } from './transformModel.js';
+import { matrixAtFraction, resolveCenter, finalFigure } from './transformModel.js';
 import {
   normalizeTransformationsData, serializeTransformationsData, createTransformationsData,
   currentScene, pushScene, replaceScene, undo, redo, canUndo, canRedo, resolveData,
-  addFigure, removeFigure, moveVertex, moveFigure, addStep, updateStep, removeStep,
+  addFigure, moveVertex, addStep, updateStep, removeStep,
   toggleStep, moveStep, setSteps, emptyScene, defaultScene,
   MAX_FIGURES, DEFAULT_TRANSFORM_VIEWPORT, VERTEX_NAMES,
 } from './transformState.js';
@@ -24,7 +24,6 @@ import {
   generateChallenge, checkAnswer, getPuzzle, puzzleTarget, isPuzzleSolved,
   getExperiment, patternCopies, isImageHidden, maskImages, practiceFrame,
 } from './practice.js';
-import { useCompactCharts } from '../probabilityStats/useMediaQuery.js';
 import { clampToFeatures, transformationsFeatures } from './scope.js';
 
 /** Le délai entre un changement et sa remise à la coquille (qui attend encore avant d'enregistrer). */
@@ -67,7 +66,6 @@ export default function TransformationsTool({ initialData, onChange, onReady, ca
   const [pattern, setPattern] = useState(0);
   const [announcement, setAnnouncement] = useState('');
   const [reducedMotion, setReducedMotion] = useState(false);
-  const compact = useCompactCharts();
 
   const planeRef = useRef(null);
   const timerRef = useRef(null);

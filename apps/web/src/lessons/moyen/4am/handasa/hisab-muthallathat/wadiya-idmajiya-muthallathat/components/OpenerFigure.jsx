@@ -1,4 +1,3 @@
-import React from 'react';
 import SightLineFigure from './SightLineFigure';
 import { SITUATION } from '../content/textbook';
 

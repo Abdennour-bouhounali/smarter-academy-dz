@@ -93,7 +93,7 @@ export function openRotate(s) {
 export const backToHand = (s) => (s.phase === 'hand' ? s : Object.freeze({ ...s, phase: 'hand', last: null }));
 
 /** α signé de P₁ vers P₂ (degrés entiers, ]−180 ; 180]) : > 0 sens direct, < 0 sens indirect. */
-export const alphaSigned = (s) => signed(s.rot.p2 - s.rot.p1);
+const alphaSigned = (s) => signed(s.rot.p2 - s.rot.p1);
 export const alphaOf = (s) => Math.abs(alphaSigned(s));
 export const senseOf = (s) => (alphaSigned(s) >= 0 ? ROT.DIRECT : ROT.INDIRECT);
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { AlertTriangle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';

@@ -1,5 +1,4 @@
 import { it, expect } from 'vitest';
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 import * as affine from '@smarter-academy/core/arithmetic/affine.js';
 import '../../../../../../i18n';

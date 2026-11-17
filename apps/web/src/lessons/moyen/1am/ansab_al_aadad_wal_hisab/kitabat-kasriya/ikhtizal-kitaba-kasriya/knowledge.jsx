@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { KNOWLEDGE, DECIMAL_FRACTION, METHOD, GUIDE } from './content/textbook';
 

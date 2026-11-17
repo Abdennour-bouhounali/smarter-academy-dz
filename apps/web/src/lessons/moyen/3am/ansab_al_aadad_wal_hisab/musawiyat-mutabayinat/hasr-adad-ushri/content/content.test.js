@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { EXERCISES, FINAL, E1, E2, E3, E4, E5, E6, E7 } from './exercises';
+import { EXERCISES, FINAL, E1, E2, E3, E4, E6, E7 } from './exercises';
 import { PREP_ITEMS, PREP_PLATFORM_ITEMS, METHOD, KNOWLEDGE } from './textbook';
 
 /**
@@ -74,7 +74,7 @@ function checkFromRounding({ name, r, rank, key, wrongs, options, correct, label
   wrongs.forEach((w) => expect(options).toContain(T(w)));
 }
 
-function checkAboutNumber({ name, x, rank, key, wrongs, options, correct, label }) {
+function checkAboutNumber({ name, x, rank, wrongs, options, correct, label }) {
   options.forEach((o, i) => {
     const holdsFor = claim(o, name, x);
     if (i === correct) {

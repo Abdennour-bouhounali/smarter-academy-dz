@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * « الشكل » de la وضعية (p. 124) : le monument (à gauche), le poteau électrique, l'observateur (à droite), la ligne

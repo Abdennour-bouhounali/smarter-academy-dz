@@ -8,7 +8,7 @@
  *   PaperModel  a model sheet: a division POSED as on paper, one step per tap, each step said aloud, then the check and the
  *               sentence to write. Before answering it shows a TWIN example; after the correction, the student's own question.
  */
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { PenLine, VolumeX, Timer, ArrowLeft, RotateCcw } from 'lucide-react';
 import MathText from '../../components/MathText';
@@ -37,7 +37,7 @@ export const PT = {
   readFix: 'اقرأ التحرير النموذجي',
 };
 
-export function MethodStrip({ now }) {
+function MethodStrip({ now }) {
   return (
     <ol className="di-method" aria-label="منهجيّة الجواب">
       {METHOD.map((m, i) => (

@@ -205,7 +205,6 @@ const quo = (a, b) => { if (a % b !== 0n) throw new Error(`${a} non divisible pa
 const PT = (a) => [D(a[0]), D(a[1])];
 const swapP = (p) => [p[1], p[0]];
 const eqP = (a, b) => a[0] === b[0] && a[1] === b[1];
-const ptTxt = (p) => [txt(p[0]), txt(p[1])];
 const figPts = (s) => Object.fromEntries(Object.entries(s.pts).map(([k, v]) => [k, PT(v)]));
 
 const CHOICE_KINDS = new Set(['whichpt', 'region', 'axiscls', 'figaxis', 'fit', 'frametype', 'extreme', 'order', 'oppcoord', 'whichregion', 'quadtype', 'symOyesno']);

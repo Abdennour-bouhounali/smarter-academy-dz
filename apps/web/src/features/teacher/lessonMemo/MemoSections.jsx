@@ -22,7 +22,7 @@ import { mathToPlain } from '../../../utils/mathPlain';
  */
 
 /** Texte du contenu : les `$…$` passent par KaTeX, en ltr isolé (MathText). */
-export const M = ({ children }) => (typeof children === 'string' ? <MathText>{children}</MathText> : children ?? null);
+const M = ({ children }) => (typeof children === 'string' ? <MathText>{children}</MathText> : children ?? null);
 
 const STAGE_TONE = {
   prerequisite_check: { dot: 'bg-sky-600', ring: 'border-sky-200', soft: 'bg-sky-50', text: 'text-sky-800' },
@@ -35,7 +35,7 @@ const STAGE_TONE = {
 };
 const toneOf = (stage) => STAGE_TONE[stage] ?? STAGE_TONE.discovery;
 
-export function Section({ id, icon: Icon, title, lead, children, className = '' }) {
+function Section({ id, icon: Icon, title, lead, children, className = '' }) {
   return (
     <section id={id} className={`sa-memo-section scroll-mt-28 rounded-3xl border border-slate-200 bg-white p-5 shadow-xs sm:p-6 ${className}`} aria-labelledby={`${id}-title`} data-memo-section={id.replace(/^memo-/, '')}>
       <header className="mb-4">

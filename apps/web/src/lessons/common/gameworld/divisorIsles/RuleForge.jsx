@@ -5,7 +5,7 @@
  * becomes his key. The verdict is always a bridge that holds or crumbles in front of him, never « wrong ».
  * One screen, nothing scrolls (designed 1280 × 720, zoomed to the window).
  */
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Check, Hammer, Sparkles, Bot } from 'lucide-react';
 import MathText from '../../components/MathText';
 import {
@@ -19,8 +19,8 @@ import {
   PREDICT_NEED,
   nudge,
   discoveryLevel,
-  useCase,
-  useRight,
+  keyCase,
+  keyRight,
   ruleSays,
   ruleText,
   explain,
@@ -75,7 +75,7 @@ const L = {
   words: 'قلها بكلماتك (اختياري)',
   wordsHint: 'مثال: الجسر يثبت إذا…',
   sealIt: 'أختم مفتاحي',
-  use: (a, b) => `جرّب مفتاحك حيث لا تستطيع العدّ: هوّة من ${a} خانة، ولوح طوله ${b}. المرآة لا تبني هذه المرّة.`,
+  tryKey: (a, b) => `جرّب مفتاحك حيث لا تستطيع العدّ: هوّة من ${a} خانة، ولوح طوله ${b}. المرآة لا تبني هذه المرّة.`,
   quotient: 'حاصل القسمة',
   rest: 'الباقي',
   check: 'تحقّق',
@@ -309,12 +309,12 @@ export default function RuleForge({ game, log, onSeal }) {
   // ── 5. seal, 6. use ──
   const toUse = () => {
     play('ui');
-    setUse({ c: useCase(), q: '', r: '', verdict: null, fb: null });
+    setUse({ c: keyCase(), q: '', r: '', verdict: null, fb: null });
     setPhase('use');
   };
   const checkUse = () => {
     const { c, q, r, verdict } = use;
-    if (useRight(c, q, r, verdict)) {
+    if (keyRight(c, q, r, verdict)) {
       play('success');
       setUse({ ...use, fb: 'ok' });
       later(
@@ -704,7 +704,7 @@ export default function RuleForge({ game, log, onSeal }) {
 
             {phase === 'use' && use && (
               <>
-                <p className="rf-q">{L.use(use.c.a, use.c.b)}</p>
+                <p className="rf-q">{L.tryKey(use.c.a, use.c.b)}</p>
                 <div className="rf-use" dir="ltr">
                   <b>{use.c.a}</b>
                   <b>=</b>

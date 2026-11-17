@@ -8,7 +8,6 @@
  * à la demande, comme `mathlab`.
  */
 export const S = {
-  navLabel: 'الكتب',
   list: {
     metaTitle: 'الكتب',
     metaDescription: 'كتب سمارتر أكاديمي المطبوعة: اطلب نسختك واستلمها في بيتك.',
@@ -23,7 +22,6 @@ export const S = {
     notFound: 'هذا الكتاب غير موجود.',
     back: 'كل الكتب',
     orderCta: 'اطلب نسختك',
-    contactCta: 'اطرح سؤالًا',
     perCopy: 'للنسخة',
     // Ce qui rassure AVANT le clic — trois faits vérifiés (BOOKS_STORE.md §2–§3) :
     // aucun paiement en ligne, un appel de confirmation, toutes les wilayas acceptées
@@ -32,7 +30,6 @@ export const S = {
     // Les mêmes trois garanties en mots courts : une seule ligne sur téléphone.
     trustShort: ['دون دفع إلكتروني', 'نتصل بك', 'كل الولايات'],
     stickyHint: 'دون دفع إلكتروني',
-    howItWorks: 'كيف يتم الطلب؟',
     steps: [
       'تملأ نموذج الطلب أدناه (دون أي دفع إلكتروني).',
       'نتصل بك هاتفيًا لتأكيد الطلب وتحديد تكلفة التوصيل.',
@@ -90,7 +87,6 @@ export const S = {
     optionalMore: '+ بريد إلكتروني أو ملاحظة (اختياري)',
     quantity: 'عدد النسخ',
     price: 'سعر النسخة',
-    subtotal: 'مجموع الكتب',
     delivery: 'التوصيل',
     deliveryLater: 'تُحدَّد تكلفته لاحقًا عند الاتصال بك',
     submit: 'أرسل الطلب',

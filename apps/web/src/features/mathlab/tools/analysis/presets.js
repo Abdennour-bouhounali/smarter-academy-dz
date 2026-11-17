@@ -126,10 +126,6 @@ export const PARAMETRIC_PRESETS = Object.freeze([
   },
 ]);
 
-export function getParametricPreset(id) {
-  return PARAMETRIC_PRESETS.find((preset) => preset.id === id) ?? null;
-}
-
 /**
  * Les TRANSFORMATIONS de §25 : f(x) + k, f(x − k), a·f(x), f(ax), −f(x), f(−x).
  *

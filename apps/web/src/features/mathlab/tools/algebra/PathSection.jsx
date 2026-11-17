@@ -298,7 +298,7 @@ export default function PathSection({
             <div>
               <p className="sa-ml-alg__flip-title">{t('tools.algebra.inequality.flipTitle')}</p>
               <p className="sa-ml-alg__flip-symbols" dir="ltr">
-                <MathText>{`$${RELATION_LATEX[flipRelation(step.equation.relation)]} \;\\longrightarrow\; ${RELATION_LATEX[step.equation.relation]}$`}</MathText>
+                <MathText>{`$${RELATION_LATEX[flipRelation(step.equation.relation)]} \\;\\longrightarrow\\; ${RELATION_LATEX[step.equation.relation]}$`}</MathText>
               </p>
             </div>
           </div>

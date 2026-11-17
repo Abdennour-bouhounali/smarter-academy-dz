@@ -17,7 +17,7 @@ const S = (id, page, section = 'أوظّف تعلّماتي') => src(id, page, s
 const T = (p) => { const [a, b] = String(p).split('/'); return b === undefined || b === '1' ? `${a}` : `\\frac{${a}}{${b}}`; };
 const M = (p) => `$${T(p)}$`;
 /** Les expressions sont des listes de termes « + a/b » / « − a/b » ou d'entiers : `['+', '7/8', '-', '1/6']`. */
-const expr = (terms) => terms.map((t, i) => (t === '+' || t === '-' ? (t === '+' ? '+' : '-') : T(t))).join('');
+const expr = (terms) => terms.map((t) => (t === '+' || t === '-' ? (t === '+' ? '+' : '-') : T(t))).join('');
 /** Une ligne de calcul : l'expression, la clé et deux distracteurs ; la clé est placée à la position `at` (0, 1 ou 2) pour ne pas être toujours la première. */
 const row = (terms, key, wrongs, at, correction) => {
   const options = [...wrongs];

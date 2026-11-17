@@ -4,7 +4,7 @@ import { TrendingUp, TrendingDown, Minus as MinusIcon } from 'lucide-react';
 import { LabPanel } from '../../shared/LabKit.jsx';
 import ValueInput from './ValueInput.jsx';
 import {
-  percentageOf, percentageLadder, percentageChange, applyChange, inverseChange,
+  percentageOf, percentageLadder, percentageChange, inverseChange,
   reversePercentage, percentToFrac,
 } from './proportion.js';
 import { simplify, fracToText } from './fraction.js';

@@ -50,7 +50,7 @@ export const MAX_OBSERVATIONS = 20;
 export const MAX_TESTS = 10;
 
 /** Les étapes de la découverte (§21 : l'observation n'est pas la preuve). */
-export const STAGES = Object.freeze(['exploring', 'conjecturing', 'testing', 'found', 'explained']);
+const STAGES = Object.freeze(['exploring', 'conjecturing', 'testing', 'found', 'explained']);
 
 /** Les graduations proposées (§27) : exact, au dixième, au centième. */
 export const PRECISIONS = Object.freeze([0, 0.1, 0.01]);
@@ -202,7 +202,7 @@ export function createMeasurementData(seed = undefined) {
 
 // ── Les lectures ─────────────────────────────────────────────────────────
 
-export const currentInvestigation = (data) => getInvestigation(data?.investigation) ?? getInvestigation(DEFAULT_INVESTIGATION);
+const currentInvestigation = (data) => getInvestigation(data?.investigation) ?? getInvestigation(DEFAULT_INVESTIGATION);
 export const currentParams = (data) => data?.objects?.[data?.investigation] ?? {};
 export const currentRecord = (data) => data?.records?.[data?.investigation] ?? null;
 

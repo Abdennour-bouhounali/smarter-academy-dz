@@ -31,7 +31,6 @@ const place = (right, wrongs, at) => { const opts = [...wrongs]; const i = at % 
 const row = (label, right, wrongs, at, correction, data) => ({ label, ...place(right, wrongs, at), correction, data });
 /** Un nombre entre parenthèses dans une écriture si négatif : « (−\frac16) » pour une soustraction. */
 const paren = (s) => (fr(s).n < 0n ? `\\left(${T(s)}\\right)` : T(s));
-const ORD = { '>': 'a>b', '<': 'a<b' };
 
 /** « a − b » de deux fractions : la phrase juste et deux distracteurs (l'ordre inversé ; la différence faite en soustrayant les termes). */
 function diffRow(a, b, at, { names = ['a', 'b'] } = {}) {

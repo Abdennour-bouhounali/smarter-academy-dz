@@ -68,12 +68,6 @@ export function discoveryReady(s) {
   return valid.filter((t) => t.k > 1).length >= Math.min(2, validKs(s).length - 1) && s.tried.some((t) => !t.valid);
 }
 
-/** Le côté d'une dalle d'aire b, écrit : « 6 » (carré parfait) ou « \sqrt{7} ». */
-export function tileSideTex(b) {
-  const r = integerSqrt(b);
-  return r != null ? String(r) : `\\sqrt{${b}}`;
-}
-
 /** L'égalité du pavage : \sqrt{288} = \sqrt{12^2 \times 2} = \sqrt{12^2} \times \sqrt{2} = 12\sqrt{2} (… = entier si b carré). */
 export function equationTex(n, t) {
   if (!t.valid) return null;
@@ -139,7 +133,7 @@ export function coachOf(s) {
 }
 
 /** Le côté d'une dalle d'aire b, en texte : « 3 » (carré parfait) ou « √3 ». */
-export const rootText = (b) => { const r = integerSqrt(b); return r != null ? String(r) : `√${b}`; };
+const rootText = (b) => { const r = integerSqrt(b); return r != null ? String(r) : `√${b}`; };
 /** Le quotient n ÷ k² d'un pavage refusé, NON réduit (lecteur) : exact, et sans faire surgir un autre nombre (98 ÷ 36, jamais 49/18). */
 export const refusedPlain = (n, k) => `${n} ÷ ${k * k}`;
 export const refusedPlainTex = (n, k) => `${n} \\div ${k}^2 = \\dfrac{${n}}{${k * k}}`;

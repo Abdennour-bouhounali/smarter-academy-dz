@@ -4,7 +4,6 @@ import MainLayout from './components/layout/MainLayout';
 import HomeRedirect from './components/auth/HomeRedirect';
 import StudentLayout from './components/layout/StudentLayout';
 import CourseLayout from './components/layout/CourseLayout';
-import Home from './pages/Home';
 const Methode = lazy(() => import('./pages/Methode'));
 const About = lazy(() => import('./pages/About'));
 const Courses = lazy(() => import('./pages/Courses'));

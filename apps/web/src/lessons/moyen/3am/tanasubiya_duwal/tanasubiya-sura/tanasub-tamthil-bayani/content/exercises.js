@@ -20,7 +20,6 @@ export const LP = {
 
 const S = (id, page, section = 'أوظّف تعلّماتي') => src(id, page, section);
 const num = (v) => Lin.toNumber(v);
-const T = (s) => `$${s}$`;
 const VERDICT = ['نقط على مستقيم يمرّ بـ $O$ : وضعية تناسبية', 'نقط على مستقيم لا يمرّ بـ $O$ : ليست تناسبية', 'نقط ليست على استقامة : ليست تناسبية'];
 const KIND_INDEX = { prop: 0, aligned: 1, bent: 2 };
 

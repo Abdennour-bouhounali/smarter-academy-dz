@@ -29,11 +29,11 @@ import { isContinuous } from '../functionGrapher/functionSampler.js';
 const finite = Number.isFinite;
 
 /** Le balayage par défaut : assez fin pour ne pas manquer une racine simple. */
-export const SCAN_SAMPLES = 900;
+const SCAN_SAMPLES = 900;
 /** La précision d'une racine ou d'un extremum, en unités du plan. */
-export const REFINE_TOLERANCE = 1e-10;
+const REFINE_TOLERANCE = 1e-10;
 /** Deux abscisses plus proches que cela sont LE MÊME point remarquable. */
-export const MERGE_EPSILON = 1e-6;
+const MERGE_EPSILON = 1e-6;
 
 /* ══════════════════════════════════════════════════════════════════════════
    1. LE BALAYAGE — la base de tout le reste
@@ -44,7 +44,7 @@ export const MERGE_EPSILON = 1e-6;
  *
  * @returns {{xs: number[], ys: number[]}}  ys porte NaN là où f n'est pas définie
  */
-export function scan(fn, a, b, samples = SCAN_SAMPLES) {
+function scan(fn, a, b, samples = SCAN_SAMPLES) {
   const count = Math.max(2, Math.floor(samples));
   const xs = new Array(count + 1);
   const ys = new Array(count + 1);
@@ -65,7 +65,7 @@ export function scan(fn, a, b, samples = SCAN_SAMPLES) {
  * là où Newton peut diverger — et un élève qui voit une racine à l'écran ne
  * doit pas dépendre de la chance d'un départ.
  */
-export function bisect(fn, a, b, tolerance = REFINE_TOLERANCE) {
+function bisect(fn, a, b, tolerance = REFINE_TOLERANCE) {
   let low = a;
   let high = b;
   let fLow = fn(low);
@@ -804,7 +804,7 @@ function extrapolateToPoint(table, steps, last, tail) {
  * Un vrai saut (sign, partie entière, |x|/x) a des côtés CONSTANTS : barres
  * d'erreur nulles, et un écart de 2 ou de 1 reste un écart.
  */
-export function limitsAgree(left, right) {
+function limitsAgree(left, right) {
   if (left?.kind !== 'finite' || right?.kind !== 'finite') return false;
   const uncertain = left.uncertain || right.uncertain;
   const scale = 1 + Math.max(Math.abs(left.value), Math.abs(right.value));
@@ -1017,8 +1017,6 @@ export function tangentInfo(fn, a, symbolic = null) {
 /* ══════════════════════════════════════════════════════════════════════════
    7. L'INTÉGRALE ET LES SOMMES DE RIEMANN (§19 – §23)
    ═════════════════════════════════════════════════════════════════════════ */
-
-export const RIEMANN_MODES = Object.freeze(['left', 'right', 'midpoint', 'trapezoid']);
 
 /**
  * Les RECTANGLES d'une somme de Riemann — les objets que §20 fait dessiner.

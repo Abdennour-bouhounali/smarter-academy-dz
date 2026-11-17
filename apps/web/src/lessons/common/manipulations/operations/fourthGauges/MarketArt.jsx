@@ -1,4 +1,3 @@
-import React from 'react';
 import { textW, gaugeGeo, labelLines, CARD_FONT, KNOB_R, SMALL } from './geometry';
 
 /**
@@ -89,7 +88,7 @@ export function Backdrop({ uid, geo }) {
 }
 
 /** Une cagette de bois avec ses fruits (tomates, oranges, pommes de terre, dattes). */
-export function Crate({ x, y, w = 40, kind = 'tomato' }) {
+function Crate({ x, y, w = 40, kind = 'tomato' }) {
   const h = w * 0.62;
   const colors = { tomato: ['#EF4444', '#B91C1C'], orange: ['#FB923C', '#C2410C'], potato: ['#D6B38A', '#A07A4D'], date: ['#92400E', '#451A03'] }[kind];
   const r = w * 0.115;
@@ -107,7 +106,7 @@ export function Crate({ x, y, w = 40, kind = 'tomato' }) {
 }
 
 /** La balance de marchand, de laiton, à deux plateaux : un décor (les trois balances d'égalité en sont les petites sœurs). */
-export function MerchantScale({ x, y, s = 1, uid }) {
+function MerchantScale({ x, y, s = 1, uid }) {
   return (
     <g aria-hidden="true" transform={`translate(${x} ${y}) scale(${s})`}>
       <rect x={-3} y={-32} width={6} height={44} rx={3} fill={`url(#${uid}-brass)`} />

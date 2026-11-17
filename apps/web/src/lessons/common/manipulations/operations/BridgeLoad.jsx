@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Minus, Plus, Scale, Check, X as XIcon, PenLine } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -177,7 +177,7 @@ const loadWords = (k, c, task) => {
   return k('loadOne', { x: iso(c.x) });
 };
 
-function Lab({ lab, setLab, k, width, screenH, lead, cp, advanced }) {
+function Lab({ lab, setLab, k, width, lead, cp, advanced }) {
   const wide = width >= WIDE_MIN;
   const task = L.taskOf(lab);
   const free = L.isFree(lab);
@@ -332,7 +332,7 @@ function Lab({ lab, setLab, k, width, screenH, lead, cp, advanced }) {
 /* ══════════════ Le dépôt, le camion, le pèse-camion, la barrière ══════════════ */
 
 /** Ce que la scène dessine : une voie (un camion) ou deux (A et B, UNE charge x pour les deux). */
-function sceneModel(lab, k) {
+function sceneModel(lab) {
   const free = L.isFree(lab);
   const task = L.taskOf(lab);
   const bed = L.bedOf(lab);
@@ -348,7 +348,6 @@ function sceneModel(lab, k) {
 
 function Scene({ lab, setLab, k, width, mood, girl }) {
   const free = L.isFree(lab);
-  const task = L.taskOf(lab);
   const m = sceneModel(lab, k);
   const twin = m.lanes.length === 2;
   const H = twin ? H2 : H1;
@@ -577,7 +576,6 @@ function Tools({ lab, setLab, k }) {
 }
 
 function Predict({ lab, setLab, k }) {
-  const task = L.taskOf(lab);
   const [a, setA] = useState('');
   const [b, setB] = useState('');
   const pend = lab.w.pending;

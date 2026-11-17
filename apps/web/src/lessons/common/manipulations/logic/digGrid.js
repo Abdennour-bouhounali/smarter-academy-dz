@@ -23,10 +23,10 @@ export const ROWS = 7; // mètres sud-nord
 /** Les trouvailles : position monde (colonne, rangée) en mètres, cachée de l'élève. */
 export const FINDS = Object.freeze({ jar: [5, 4], lamp: [2, 5], plate: [2, 1], coin: [6, 2], tile: [4, 6], bead: [3, 1] });
 const P = (x, y) => R.point(x, y);
-export const worldOf = (id) => P(FINDS[id][0], FINDS[id][1]);
+const worldOf = (id) => P(FINDS[id][0], FINDS[id][1]);
 const tx = (p) => R.pointText(p);
 
-export const PRESETS = Object.freeze({
+const PRESETS = Object.freeze({
   beginner: { tasks: [
     { id: 'd1', kind: 'stake', start: [1, 1], notes: [{ find: 'jar', want: '2;1' }] },
     { id: 'd2', kind: 'stake', start: [6, 1], notes: [{ find: 'lamp', want: '-3;2' }] },
@@ -43,7 +43,7 @@ export const PRESETS = Object.freeze({
 const pt = (s) => { const [x, y] = String(s).split(';'); return P(x, y); };
 
 /** Les tâches normalisées en centièmes. Lève si mal formées. */
-export function normalizeTasks(list) {
+function normalizeTasks(list) {
   return list.map((t, i) => {
     const id = t.id ?? `t${i}`;
     if (t.kind === 'stake') {
@@ -76,7 +76,7 @@ function fresh(s) {
 /* ── Lectures ── */
 export const taskOf = (s) => s.tasks[s.ti];
 export const isFree = (s) => !!s.free;
-export const isStakeTask = (s) => !s.free && taskOf(s).kind === 'stake';
+const isStakeTask = (s) => !s.free && taskOf(s).kind === 'stake';
 export const taskDone = (s, i = s.ti) => !!s.done[i];
 export const discoveryReady = (s) => s.tasks.every((_, i) => !!s.done[i]);
 export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 1;
@@ -129,7 +129,7 @@ export function pressNone(s) {
 }
 
 /* ── Écrire un point ── */
-export const parseTyped = (raw) => R.parsePoint(raw);
+const parseTyped = (raw) => R.parsePoint(raw);
 
 /** Le jugement d'un relevé écrit : { ok, model, want, value } — `model` ∈ right | swap | onAxis | signAxis | signLeft | same | symMix | other | format. */
 export function judgeTyped(s, raw) {

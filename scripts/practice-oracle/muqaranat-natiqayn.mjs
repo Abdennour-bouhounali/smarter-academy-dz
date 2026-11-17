@@ -4105,7 +4105,6 @@ export const ORACLE = {};
 for (const [key, spec] of Object.entries(DATA.oracle)) { const r = decide(spec); if (r) ORACLE[key] = r; }
 
 /* ── lecture des nombres de l'énoncé ───────────────────────────────────── */
-const islands = (t) => [...String(t ?? '').matchAll(/\$([^$]+)\$/g)].map((m) => m[1]);
 function textAtoms(txt) {
   const out = new Set();
   let s = String(txt).replace(/\\left|\\right/g, '').replace(/\\,/g, '');

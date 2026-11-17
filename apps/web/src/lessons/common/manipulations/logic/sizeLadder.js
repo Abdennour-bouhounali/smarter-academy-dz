@@ -19,17 +19,17 @@ import * as T from '@smarter-academy/core/arithmetic/tenPowers.js';
 export const RUNG_MIN = -9;
 export const RUNG_MAX = 11;
 export const CELLS = Object.freeze([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-export const FREE_DIGITS = 15;
-export const FREE_P = 12;
+const FREE_DIGITS = 15;
+const FREE_P = 12;
 
 /** Position d'une graduation k (1 … 10) sur un barreau, en fraction de sa longueur : échelle LOGARITHMIQUE. */
 export const markFrac = (k) => Math.log10(k);
 /** La case (1 … 9) sous une abscisse fractionnaire du barreau. */
 export const cellAt = (frac) => Math.min(9, Math.max(1, Math.floor(10 ** Math.min(0.999999, Math.max(0, frac)))));
-export const clampRung = (n) => Math.max(RUNG_MIN, Math.min(RUNG_MAX, n));
+const clampRung = (n) => Math.max(RUNG_MIN, Math.min(RUNG_MAX, n));
 
 /** La valeur d'une carte, en mètres, exacte. */
-export function valueOf(card) {
+function valueOf(card) {
   const v = T.parseDec(card.given);
   if (!v || v.m <= 0n) throw new RangeError(`carte illisible : ${card.given}`);
   return T.timesPow10(v, T.UNIT_SCALE[card.unit ?? 'm']);
@@ -86,10 +86,10 @@ export function activeIndex(s) {
   const t = taskOf(s);
   return t.cards.findIndex((c, i) => !cardDone(c, s.cs[i]));
 }
-export const cardDone = (card, st) => st.phase === 'placed' && (!card.magnet || st.magnetUsed);
+const cardDone = (card, st) => st.phase === 'placed' && (!card.magnet || st.magnetUsed);
 export const activeCard = (s) => taskOf(s).cards[Math.max(0, activeIndex(s))];
 export const activeState = (s) => s.cs[Math.max(0, activeIndex(s))];
-export const allPlaced = (s) => taskOf(s).cards.every((c, i) => s.cs[i].phase === 'placed');
+const allPlaced = (s) => taskOf(s).cards.every((c, i) => s.cs[i].phase === 'placed');
 /** Y a-t-il une carte à choisir (tâche « compare » : les deux sont posées) ? */
 export const pickPending = (s) => {
   const t = taskOf(s);
@@ -172,8 +172,6 @@ export function dockCell(s) {
   return { ...setActive(n, { hoverCell: null }), last: { kind: 'refused', reason: before ? 'cell-before' : 'cell-after', cell: c, bound: T.decText(before ? mark : mark1), value: T.decText(card.value) }, flash: s.flash + 1 };
 }
 
-/* ── Aimant ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-export const magnetTarget = (card) => card.order;
 export function toggleMagnet(s) {
   // l'aimant se manie sur la carte posée la plus récente qui n'est pas encore « terminée » ; sinon sur la dernière carte posée
   const placed = s.cs.map((c, i) => [c, i]).filter(([c]) => c.phase === 'placed');
@@ -192,7 +190,7 @@ export function toggleMagnet(s) {
 
 /* ── متقدم : on écrit a et n avant de suspendre ───────────────────────────────────────────────────────────────────────────────── */
 /** Lit « 4,8 » (a) et « -5 » (n) ; `null` si illisible. */
-export function readTyped(aText, nText) {
+function readTyped(aText, nText) {
   const a = T.parseDec(String(aText ?? '').trim());
   const nn = String(nText ?? '').trim().replace(/[−–]/g, '-');
   if (!a || a.m === 0n || !/^-?\d{1,2}$/.test(nn)) return null;
@@ -288,7 +286,7 @@ export function toGuided(s) {
 
 /* ── Découverte et onboarding ────────────────────────────────────────────────────────────────────────────────────────────────── */
 export const discoveryKind = (s) => (!s.free && s.discovery && allDone(s) ? s.discovery : null);
-export const discoveryReady = (s) => discoveryKind(s) !== null;
+const discoveryReady = (s) => discoveryKind(s) !== null;
 
 /** L'étape du guide : fonction pure de l'état ; elle ne nomme jamais une règle. */
 export function coachOf(s) {

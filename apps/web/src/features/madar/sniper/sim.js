@@ -68,8 +68,6 @@ export function createSniper(seed, { autopilot = false, start = 0, warmup = true
   };
 }
 
-export const scoreOf = (game) => game.score;
-
 /** La position verticale (0 en haut, 1 au sol) d'une carte à l'instant t. */
 export function cardY(card, t) {
   return (t - card.born) / card.fall;

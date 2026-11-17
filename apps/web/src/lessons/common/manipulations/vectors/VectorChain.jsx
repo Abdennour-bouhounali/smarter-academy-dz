@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { Undo2 } from 'lucide-react';
@@ -234,7 +234,7 @@ export default function VectorChain({
     resetKey: state.epoch,
     onRetry: () => setLab(L.restartStep),
     onEvent: (ev) => state.report(onTrial, ev),
-    onDone: (id, log) => { if (chain.includes('rule')) { state.discover(); state.formalize(); } },
+    onDone: () => { if (chain.includes('rule')) { state.discover(); state.formalize(); } },
   });
   const stepDone = Array.from({ length: nTabs }, (_, i) => doneOf(i) && (i !== idx || !cp.blocking));
   const party = useStepCelebration();

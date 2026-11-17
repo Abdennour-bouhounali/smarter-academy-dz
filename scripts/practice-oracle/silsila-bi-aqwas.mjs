@@ -122,8 +122,6 @@ const show = (n) => {
 };
 const norm = (s) => show(parse(s));
 const hasGrp = (n) => (n.t === 'grp') || (n.t === 'bar' && (hasGrp(n.n) || hasGrp(n.d))) || (n.t === 'chain' && n.o.some(hasGrp));
-const hasNested = (n) => (n.t === 'grp' && (hasGrp(n.e) || hasNested(n.e))) || (n.t === 'bar' && (hasNested(n.n) || hasNested(n.d))) || (n.t === 'chain' && n.o.some(hasNested));
-const hasBar = (n) => (n.t === 'bar') || (n.t === 'grp' && hasBar(n.e)) || (n.t === 'chain' && n.o.some(hasBar));
 const joinChain = (n, f) => n.o.map(f).reduce((a, s, i) => (i ? `${a} ${n.p[i - 1]} ${s}` : s), '');
 const stripS = (n) => (n.t === 'num' ? D(n.v) : n.t === 'grp' ? stripS(n.e) : n.t === 'bar' ? `{${stripS(n.n)}|${stripS(n.d)}}` : joinChain(n, stripS));
 const dropOuterS = (n, depth = 0) => {
@@ -483,7 +481,6 @@ function conventionOk(n) {
   if (n.t === 'chain') return n.o.every(conventionOk);
   return true;
 }
-const cleanContent = (c) => (c ?? '');
 
 export function audit(bank) {
   const problems = [];
@@ -501,7 +498,7 @@ export function audit(bank) {
       if (!t) continue;
       if (FORBIDDEN.test(t)) problems.push(`${key} : texte interdit dans « ${t} »`);
       for (const isl of islands(t)) {
-        if (level <= 3 && /[0-9}\])]\s*[(\[]/.test(isl.replace(/\{,\}/g, ','))) problems.push(`${key} : multiplication implicite dans « ${isl} »`);
+        if (level <= 3 && /[0-9}\])]\s*[([]/.test(isl.replace(/\{,\}/g, ','))) problems.push(`${key} : multiplication implicite dans « ${isl} »`);
         const seg = segments(isl);
         if (!seg) continue;
         const asts = seg.map(parse);
@@ -563,7 +560,7 @@ export function audit(bank) {
           if (tryParse(raw) === null || norm(raw) !== norm(a)) problems.push(`${key} : l'option ${opt(k).id} relue « ${raw} » ≠ « ${a} »`);
           if (how) {
             if (opt(k).misconceptionId !== MISC[how]) problems.push(`${key} : ${opt(k).id} devrait porter ${MISC[how]}`);
-            const ref = sp.truth ?? sp.flat; const right = sp.opts[correctIdx][0];
+            const right = sp.opts[correctIdx][0];
             if (sp.k === 'chain') {
               if (how === 'IGNORED' && norm(stripS(parse(sp.truth))) !== norm(a)) problems.push(`${key} : « ${a} » n'est pas la lecture IGNORED de « ${sp.truth} »`);
               if (how === 'DROPOUTER' && norm(dropOuterS(parse(sp.truth))) !== norm(a)) problems.push(`${key} : « ${a} » n'est pas la lecture DROPOUTER de « ${sp.truth} »`);
@@ -657,7 +654,7 @@ export function audit(bank) {
     const all = [ex.metadata.title, ...(ex.metadata.tags ?? []), ex.statement.content];
     for (const t of all) if (t && FORBIDDEN.test(t)) problems.push(`${ex.id} : texte interdit dans « ${String(t).slice(0, 60)} »`);
     for (const t of all) for (const isl of islands(t)) {
-      if (ex.level <= 3 && /[0-9}\])]\s*[(\[]/.test(isl.replace(/\{,\}/g, ','))) problems.push(`${ex.id} : multiplication implicite dans « ${isl} »`);
+      if (ex.level <= 3 && /[0-9}\])]\s*[([]/.test(isl.replace(/\{,\}/g, ','))) problems.push(`${ex.id} : multiplication implicite dans « ${isl} »`);
       const seg = segments(isl); if (seg) for (const a of seg.map(parse)) if (!conventionOk(a)) problems.push(`${ex.id} : convention [ ( ) ] dans « ${isl} »`);
     }
     if (s.type === 'term_exam' && !TERM_SOURCES.has(`${s.file}:${s.exercise}`)) problems.push(`${ex.id} : sujet ${s.file} ex ${s.exercise} non lu pour cette banque`);

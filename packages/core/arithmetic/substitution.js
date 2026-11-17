@@ -21,7 +21,7 @@ const ZERO = rat(0);
 /* ═════════════ Analyse d'une expression écrite ═════════════ */
 
 const DIGITS = { '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4', '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9' };
-export const MAX_EXPR_LENGTH = 24;
+const MAX_EXPR_LENGTH = 24;
 
 function normalize(text) {
   return String(text)
@@ -34,7 +34,7 @@ function normalize(text) {
 }
 
 /** Les lettres acceptées par défaut (3AM) ; les leçons de 2AM (unité 4) passent `{ letters: LETTERS_2AM }` (2026-10-29, `ibara-harfiya-intaj`). */
-export const DEFAULT_LETTERS = ['x', 'y'];
+const DEFAULT_LETTERS = ['x', 'y'];
 export const LETTERS_2AM = ['n', 'x', 'y', 'a', 'b', 'c', 'm'];
 
 function tokenize(src, letters = DEFAULT_LETTERS) {
@@ -139,7 +139,6 @@ function number(root) {
 
 /* ═════════════ Lecture de l'arbre ═════════════ */
 
-export const isVar = (n) => n.t === 'var';
 export const letters = (tree) => {
   const set = [];
   const walk = (n) => { if (n.t === 'var') { if (!set.includes(n.name)) set.push(n.name); } else { if (n.a) walk(n.a); if (n.b) walk(n.b); } };
@@ -379,7 +378,6 @@ export function readLine(tokens) {
   let p = 0;
   const fail = (at) => { const e = new Error('syntax'); e.at = at; throw e; };
   const peek = () => toks[p];
-  const isBin = (t) => t && t.k === 'op';
   function parseSum() {
     let a = parseTerm(true);
     while (peek() && peek().k === 'op' && (peek().s === '+' || peek().s === '-')) {
@@ -458,7 +456,7 @@ export function readLine(tokens) {
  * Le défaut d'une case : 'unbracketed' (une valeur négative, ou une fraction sous une puissance, sans parenthèses) ou 'fused' (le « × »
  * manquant devant une valeur positive sans parenthèses : les chiffres se fondent). null si la case est écrite sans défaut.
  */
-export function slotDefect(tree, env, choices, i) {
+function slotDefect(tree, env, choices, i) {
   const s = slots(tree)[i];
   const e = env[s.name];
   if (e == null) return null;

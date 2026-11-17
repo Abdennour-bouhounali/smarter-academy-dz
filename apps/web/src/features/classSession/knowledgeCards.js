@@ -14,7 +14,7 @@ export const KNOWLEDGE_LOADERS = {
 };
 export const hasKnowledgeCards = (lessonCode) => Boolean(KNOWLEDGE_LOADERS[lessonCode]);
 
-const math = (m) => (m ? `\$${m}\$` : null);
+const math = (m) => (m ? `$${m}$` : null);
 
 /**
  * One card per knowledge item that has a memo sheet, in the order of the lesson: the rule (a formula), the sentence that

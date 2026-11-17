@@ -1,4 +1,3 @@
-import React from 'react';
 import KidFigure from '../../primitives/KidFigure';
 import * as L from '../../logic/shadeMatch';
 import { shadeColor, liquidLevel, tallyRungs } from './shadeArt';
@@ -11,8 +10,8 @@ import { shadeColor, liquidLevel, tallyRungs } from './shadeArt';
  *  - chaque mesure de bleu versée tombe du bec (une goutte), et la manette s'abaisse tant qu'on appuie.
  * Repère de conception : 440 × 232, tout est en unités de conception ; le composant parent le met à l'échelle.
  */
-export const W = 440;
-export const H = 232;
+const W = 440;
+const H = 232;
 const GROUND = 214;
 const AX = 118;
 const BX = 252;
@@ -66,7 +65,7 @@ function Bucket({ cx, w0 = 46, w1 = 36, level, color, sealed, label, children, t
   );
 }
 
-export default function PaintScene({ lab, k, uid, width, scale, mood, pressed, drop, grabProps, svgRef }) {
+export default function PaintScene({ lab, k, uid, scale, mood, pressed, drop, grabProps, svgRef }) {
   const t = L.taskOf(lab);
   const free = L.isFree(lab);
   const B = L.bucketB(lab);

@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Une zone qui ACCUEILLE un objet porté. Quatre états, lisibles sans texte :

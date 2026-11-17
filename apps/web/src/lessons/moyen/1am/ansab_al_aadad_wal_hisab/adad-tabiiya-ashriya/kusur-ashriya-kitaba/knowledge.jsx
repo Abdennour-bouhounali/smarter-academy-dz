@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { KNOWLEDGE, METHOD_CONVERT, METHOD_SHIFT, GUIDE } from './content/textbook';
 

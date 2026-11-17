@@ -143,7 +143,7 @@ export function buildModel(data) {
  * par-dessus tout ce qui se passe dans [0, 1]). La fenêtre suit donc les
  * termes — c'est aussi ce que l'élève regarde.
  */
-export function cobwebWindow(terms) {
+function cobwebWindow(terms) {
   if (!terms.length) return { min: -10, max: 10 };
   const values = terms.map((term) => term.value);
   const low = Math.min(...values);
@@ -169,7 +169,7 @@ export function cobwebWindow(terms) {
  * valeurs absolues, en gardant au moins de quoi montrer une croissance
  * franche (le facteur 8 laisse voir 1, 2, 4, 8, 16 sans rien couper).
  */
-export function framingCap(values) {
+function framingCap(values) {
   const magnitudes = values.map(Math.abs).sort((left, right) => left - right);
   if (!magnitudes.length) return 1;
   const middle = magnitudes.length >> 1;

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { Minus, Plus, RotateCcw, RotateCw, Video } from 'lucide-react';
@@ -963,7 +963,7 @@ function Skater({ lay, P, t = 0.62 }) {
 }
 
 /** Le décor du skatepark : mur de graffitis, sol, téléphone qui filme. Jamais une information. */
-function Decor({ lay, P, scale }) {
+function Decor({ lay, P }) {
   const reduce = useReducedMotion();
   const ground = P.B[1];
   const phoneX = Math.min(lay.W - 30, Math.max(P.A[0] + 70, lay.W * 0.82));

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ContentModule, TapQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { KNOW3, KNOW2_REMINDER, MISTAKES, PLATFORM_SOURCE } from '../content/textbook';
+import { KNOW2_REMINDER, MISTAKES, PLATFORM_SOURCE } from '../content/textbook';
 import { FIG_KNOW3 } from '../content/figures';
 
 /**

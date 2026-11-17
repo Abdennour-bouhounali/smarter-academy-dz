@@ -1,4 +1,3 @@
-import React from 'react';
 import DraggableObject from './DraggableObject';
 
 const TONES = {

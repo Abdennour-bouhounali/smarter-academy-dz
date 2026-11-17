@@ -109,7 +109,6 @@ for (const [w, h] of process.env.QA_SKIP_MOUNT ? [] : SIZES) {
 const ROOT = resolve(new URL('.', import.meta.url).pathname, '../../src/lessons/moyen/3am/ansab_al_aadad_wal_hisab/musawiyat-mutabayinat/wadiya-idmajiya-musawiyat-mutabayinat');
 const { PROBLEM } = await import(pathToFileURL(`${ROOT}/content/problems.js`).href);
 const { FINAL, SITUATION } = await import(pathToFileURL(`${ROOT}/content/textbook.js`).href);
-const norm = (s) => s.replace(/\s+/g, ' ').trim();
 
 async function tapSort(page, items) {
   for (const it of items) {
@@ -146,7 +145,6 @@ async function playProblem(page, id, wrongAt) {
       break;
     }
     const step = pb.parts[cur.p].steps[cur.i];
-    const li = page.locator('[data-problem-substep]').filter({ has: page.locator('xpath=self::*') }).nth(0);
     const row = page.locator(`[data-problem-part="${cur.p + 1}"] [data-problem-substep]`).nth(cur.i);
     if (step.kind === 'sort') { if (!sortedOnce) { sortedOnce = true; await tapSort(page, pb.data); } await page.waitForTimeout(500); }
     else if (step.kind === 'choice') {

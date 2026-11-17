@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Les FIGURES du manuel redessinées en SVG (jamais une image) : le مخطط بالأعمدة des âges (نشاط 1), les

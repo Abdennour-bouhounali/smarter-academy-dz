@@ -21,13 +21,13 @@ import { solveForm } from '@smarter-academy/core/arithmetic/equation2.js';
 
 export const MOULD_MIN = 5;      // cl
 export const MOULD_MAX = 200;    // cl
-export const MOULD_STEP = 5;     // 0,05 L
+const MOULD_STEP = 5;     // 0,05 L
 export const TANK_MAX = 3000;    // cl = 30 L
-export const TANK_STEP = 50;     // 0,5 L
+const TANK_STEP = 50;     // 0,5 L
 export const SHOWN_BOTTLES = 12;
 
 const toRat = (v) => (typeof v === 'number' ? rat(Math.round(v * 100), 100) : parseRat(v));
-export const cl = (litres) => { const r = mul(toRat(litres), rat(100)); if (r.d !== 1n) throw new Error('juiceLine: pas un nombre entier de centilitres'); return Number(r.n); };
+const cl = (litres) => { const r = mul(toRat(litres), rat(100)); if (r.d !== 1n) throw new Error('juiceLine: pas un nombre entier de centilitres'); return Number(r.n); };
 /** Centilitres → texte « 1,5 » (virgule algérienne), sans zéros inutiles. */
 export function lText(c) {
   const neg = c < 0; const a = Math.abs(c);
@@ -93,13 +93,12 @@ export const isFree = (s) => !!s.free;
 export const taskDone = (s, i = s.ti) => !!s.done[i];
 export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 1;
 export const discoveryReady = (s) => s.tasks.every((_, i) => !!s.done[i]);
-export const levelOf = (s) => (s.tasks[0].kind === 'tank' ? 'advanced' : 'beginner');
 
 const rec = (s, ev) => ({ ...s, trials: [...s.trials, Object.freeze(ev)] });
 const tid = (s) => (s.free ? -1 : s.ti);
 
 /** Ce que le réservoir contient et la taille de la bouteille, pour l'état courant (tâche guidée). */
-export function setup(s) {
+function setup(s) {
   const t = taskOf(s);
   return t.kind === 'mould' ? { content: t.total, size: s.w.x } : { content: t.carry + s.w.x, size: t.size };
 }
@@ -151,7 +150,7 @@ export function openSlate(s) {
 const ARABIC = '٠١٢٣٤٥٦٧٨٩';
 const normalize = (txt) => String(txt).replace(/[٠-٩]/g, (d) => String(ARABIC.indexOf(d))).replace(/\s+/g, '').replace(/[,،]/g, '.').replace(/[×·*]/g, '*').replace(/[÷:]/g, '/').replace(/[−–]/g, '-');
 /** Lit « 1,5 », « 18÷12 », « 12*x » refusé… : un nombre ou UNE opération entre deux nombres. → rationnel ou null. */
-export function readValue(text) {
+function readValue(text) {
   const t = normalize(text);
   if (!t) return null;
   try {
@@ -171,7 +170,7 @@ const litres = (c) => rat(c, 100);
 const clOf = (r) => { const v = mul(r, rat(100)); return Number(v.n) / Number(v.d); };
 
 /** Les modèles faux, recalculés depuis les nombres de la tâche. */
-export function modelOf(task, stage, value) {
+function modelOf(task, stage, value) {
   const N = rat(task.bottles);
   if (task.kind === 'mould') {
     const T = litres(task.total);
@@ -200,7 +199,7 @@ export function modelOf(task, stage, value) {
 }
 
 /** Juge `text` pour l'état courant. → { ok, model, value, unreadable }. */
-export function judgeX(s, text) {
+function judgeX(s, text) {
   const t = taskOf(s);
   const value = readValue(text);
   if (value == null || sign(value) <= 0) return { ok: false, model: 'other', value: null, unreadable: true };
@@ -286,8 +285,8 @@ export const restartTask = (s) => ({ ...s, w: initW(taskOf(s)), last: null, flag
 
 /* ── « جرّب أعدادك » : toujours ouvert, jamais compté ─────────────────────────────────────────── */
 
-export const FREE_TOTAL = { min: 50, max: 3000, step: 50 };
-export const FREE_ORDER = { min: 2, max: 60 };
+const FREE_TOTAL = { min: 50, max: 3000, step: 50 };
+const FREE_ORDER = { min: 2, max: 60 };
 export function freeTask(s) {
   const free = { total: 1800, bottles: 12, x: 150, lastFill: null };
   return { ...s, free, last: null, flag: null, trials: [...s.trials, Object.freeze({ kind: 'custom', free: true })] };

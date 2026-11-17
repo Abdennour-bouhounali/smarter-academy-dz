@@ -18,7 +18,6 @@ import * as S from '@smarter-academy/core/arithmetic/statistics.js';
 import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 
 export const THEMES = Object.freeze(['esport', 'heatwave', 'medals']);
-export const STAGES = Object.freeze(['range', 'mean', 'median', 'contrast', 'hidden']);
 
 const { frac, add, sub, mul, div, cmp, eq } = Lin;
 const P = (raw) => Lin.parseNumber(raw);
@@ -77,7 +76,7 @@ export function parseHidden(src) {
 }
 
 /** Une graduation « ronde » proche de `raw` : 1, 2, 5, 10, 20… (ou 0,1, 0,2, 0,5). */
-export function niceStep(raw) {
+function niceStep(raw) {
   if (!(raw > 0)) return frac(1);
   const e = Math.floor(Math.log10(raw));
   const base = raw / 10 ** e;
@@ -97,7 +96,7 @@ const floorTo = (p, step) => mul(frac(Math.floor(toNum(div(p, step)) + 1e-9)), s
 const ceilTo = (p, step) => mul(frac(Math.ceil(toNum(div(p, step)) - 1e-9)), step);
 
 /** L'axe par défaut : une graduation ronde, une case de marge de chaque côté, jamais sous 0 pour une série ≥ 0. */
-export function defaultAxis(lo, hi, room = 0) {
+function defaultAxis(lo, hi, room = 0) {
   const span = Math.max(toNum(sub(hi, lo)), 1e-9);
   const step = niceStep((span + room) / 8);
   let min = sub(floorTo(lo, step), step);
@@ -382,7 +381,7 @@ export const holeIndex = (lab, h, v) => Math.round(toNum(div(sub(v, lab.holes[h]
 export const holeAt = (lab, h, k) => add(lab.holes[h].lo, mul(lab.vstep, k));
 export const holeRange = (lab, h) => ({ min: 0, max: Math.round(toNum(div(sub(lab.holes[h].hi, lab.holes[h].lo), lab.vstep))) });
 /** La main veut poser la valeur cachée h à v : hors des bornes du tableau, c'est REFUSÉ (l'ordre du tableau). */
-export function canPlaceHole(lab, h, v) {
+function canPlaceHole(lab, h, v) {
   const { lo, hi } = lab.holes[h];
   if (cmp(v, lo) < 0 || cmp(v, hi) > 0) return 'outOfOrder';
   return true;
@@ -437,8 +436,8 @@ export function meanOnlyWitness(lab) {
 
 /* ── étapes et découverte ─────────────────────────────────────────────── */
 
-export const stageDone = (lab, s = stageOf(lab)) => !!lab.done[s];
-export const allDone = (lab) => lab.stages.every((s) => lab.done[s]);
+const stageDone = (lab, s = stageOf(lab)) => !!lab.done[s];
+const allDone = (lab) => lab.stages.every((s) => lab.done[s]);
 export const canAdvance = (lab) => stageDone(lab) && lab.stage < lab.stages.length - 1;
 export function goStage(lab, i) {
   if (i < 0 || i >= lab.stages.length) return lab;

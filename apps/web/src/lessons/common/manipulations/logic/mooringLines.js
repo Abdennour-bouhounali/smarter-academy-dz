@@ -35,7 +35,7 @@ export const PRESETS = Object.freeze({
 });
 
 export const UNITS = Object.freeze(['m', 'dm', 'cm']);
-export const unitExp = (u) => UNITS.indexOf(u);
+const unitExp = (u) => UNITS.indexOf(u);
 
 function buildTask(raw, i) {
   const a = D.parse(String(raw.a)); const b = D.parse(String(raw.b));
@@ -62,7 +62,6 @@ export const isFree = (s) => !!s.free;
 export const taskDone = (s, i = s.ti) => (s.free ? !!s.free.done : !!s.done[i]);
 export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 1;
 export const discoveryReady = (s) => s.tasks.every((_, i) => !!s.done[i]);
-export const kindOf = (s) => taskOf(s).kind;
 
 /* ── Lecture de l'état ───────────────────────────────────────────────────────────────────────── */
 
@@ -72,7 +71,7 @@ export const stepText = (s) => D.format(D.make(1, s.w.rank));
 /** Le verdict du candidat courant (b × q contre a) : { product, verdict, gap }. */
 export const measure = (s, qn = s.w.qn) => { const t = taskOf(s); return F.fitsAtRank(t.a, t.b, qAt(s, qn)); };
 export const bracketFound = (s) => { const w = s.w; return w.exact || (w.lo != null && w.hi != null && w.hi - w.lo === 1); };
-export const finalRank = (s) => s.w.rank >= taskOf(s).maxRank;
+const finalRank = (s) => s.w.rank >= taskOf(s).maxRank;
 export const exactLanded = (s) => !!s.w.exact;
 /** Le cadran n'ouvre le rang suivant qu'après l'encadrement du rang courant (et jamais après un atterrissage exact). */
 export const dialUnlocked = (s, r) => r <= s.w.rank || (r === s.w.rank + 1 && bracketFound(s) && !s.w.exact && r <= taskOf(s).maxRank);
@@ -94,9 +93,9 @@ export function shiftText(txt, e) {
   const f = String(frac).padStart(k, '0').replace(/0+$/, '');
   return `${whole},${f}`;
 }
-export const isNaturalText = (txt) => !String(txt).includes(',');
+const isNaturalText = (txt) => !String(txt).includes(',');
 /** La longueur d'une corde / la longueur à couper est-elle un naturel dans l'unité u ? */
-export const divisorNaturalIn = (s, u) => isNaturalText(shiftText(taskOf(s).b, unitExp(u)));
+const divisorNaturalIn = (s, u) => isNaturalText(shiftText(taskOf(s).b, unitExp(u)));
 
 /* ── Gestes ──────────────────────────────────────────────────────────────────────────────────── */
 
@@ -211,10 +210,3 @@ export function coachOf(s) {
   return { id: 'lay', target: '[data-ml-lay]', gesture: 'tap' };
 }
 
-/** Les témoins de la découverte : le dernier encadrement trouvé à chaque rang pour la tâche principale. */
-export function witnesses(s) {
-  const bs = s.trials.filter((t) => t.kind === 'bracket' && !t.free && !t.exact);
-  const last = bs.findLast((t) => t.rank === 2) ?? bs.at(-1) ?? null;
-  const lays = s.trials.filter((t) => t.kind === 'lay' && !t.free);
-  return { bracket: last, lays, over: lays.findLast((t) => t.verdict === 'over') ?? null, fit: lays.findLast((t) => t.verdict === 'fits') ?? null };
-}

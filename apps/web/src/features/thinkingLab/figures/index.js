@@ -18,10 +18,6 @@ const MODULES = import.meta.glob(['./*.jsx', '!./*.test.jsx']);
 
 export const FIGURE_NAMES = Object.keys(MODULES).map((path) => path.slice(2, -4)).sort();
 
-export function hasFigure(name) {
-  return Boolean(MODULES[`./${name}.jsx`]);
-}
-
 /** @returns {Promise<{default: Function, LAYERS: string[], BASE_LAYERS: string[]}>} */
 export function loadFigure(name) {
   const load = MODULES[`./${name}.jsx`];

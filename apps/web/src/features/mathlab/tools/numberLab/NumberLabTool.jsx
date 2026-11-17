@@ -58,7 +58,7 @@ const SERIALIZE_MS = 300;
  * Toute la mathématique est dans les modules purs ; ce composant ne fait que
  * les appeler — aucun calcul dans le JSX.
  */
-export default function NumberLabTool({ initialData, title, onChange, onReady, capabilities = null }) {
+export default function NumberLabTool({ initialData, onChange, onReady, capabilities = null }) {
   const { t } = useTranslation('mathlab');
   // Le مخبر (scope.js) : les modes qu'il montre — aujourd'hui les seize partout.
   const modes = useMemo(() => numberLabModes(capabilities), [capabilities]);

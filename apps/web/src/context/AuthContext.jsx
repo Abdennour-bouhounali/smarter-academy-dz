@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import { fetchCurrentUser, logout as logoutRequest, updateGrade as updateGradeRequest, updateProfile as updateProfileRequest } from '../services/authService';
 import { storage, migrateLegacyStorageToUser } from '../utils/storage';
 import { setCurrentUserId } from '../utils/authUserId';

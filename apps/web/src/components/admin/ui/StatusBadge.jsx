@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 /**
@@ -61,7 +60,7 @@ export const STATUS_TONES = {
   student: 'bg-blue-50 text-blue-700 border-blue-200',
 };
 
-export const STATUS_LABELS = {
+const STATUS_LABELS = {
   current: 'Courante',
   superseded: 'Remplacée',
   fulfilled: 'Activée',
@@ -92,7 +91,6 @@ export const STATUS_LABELS = {
   available: 'Disponible',
   activated: 'Activé',
   revoked: 'Révoqué',
-  cancelled: 'Annulé',
   pending: 'En attente',
   critical: 'Critique',
   high: 'Haute',

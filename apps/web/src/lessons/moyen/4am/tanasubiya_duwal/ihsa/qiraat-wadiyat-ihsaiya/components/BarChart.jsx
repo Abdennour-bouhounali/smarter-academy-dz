@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Un مخطط بالأعمدة DESSINÉ (SVG paramétré, jamais une image) : l'axe vertical gradué de `step` en `step`

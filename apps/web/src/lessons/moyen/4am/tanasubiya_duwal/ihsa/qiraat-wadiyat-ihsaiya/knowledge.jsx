@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { GROUPS_RULE, WHOLE_RULE, READ_RULE, TABLE_RULE, COMPARE_RULE, OUTLIER_RULE, METHOD } from './content/textbook';
 

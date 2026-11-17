@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { PROPORTIONAL_GRAPH, NOT_PROPORTIONAL, METHOD_SPRING, BRIDGE, INTERPRET } from './content/textbook';
 

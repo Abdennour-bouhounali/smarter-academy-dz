@@ -15,7 +15,7 @@ const same = (p, q) => cmp(p, q) === 0;
 const choiceOf = (id, part) => PROBLEM[id].parts[part].steps.find((s) => s.kind === 'choice');
 const right = (id, part) => { const c = choiceOf(id, part); return c.options[c.correct]; };
 const holds = (a, rel, b) => (rel === '<' ? cmp(a, b) < 0 : cmp(a, b) <= 0);
-function chain(tex, name, x, k = {}) {
+function chain(tex, name, x) {
   const parts = String(tex).replace(/\$/g, '').replace(/\\leq\s?/g, '≤').split(/(≤|<)/);
   if (parts.length !== 5 || parts[2] !== name) throw new Error(`illisible : ${tex}`);
   const v = (t) => dec(t.replace(/\\ /g, '').trim());

@@ -37,10 +37,7 @@ export const MIN_STEPS = 3;
  * mais `n(n+1)/2` passe par une division et `2^n` par une puissance : une
  * comparaison stricte sur des flottants refuserait une règle juste.
  */
-export const TOLERANCE = 1e-9;
-
-/** L'état d'une marche. `locked` n'est pas utilisé : rien ne se verrouille (§14). */
-export const STEP_STATUS = Object.freeze(['untested', 'testing', 'correct', 'incorrect']);
+const TOLERANCE = 1e-9;
 
 /**
  * Compile la règle de l'élève.

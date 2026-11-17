@@ -256,6 +256,11 @@ shared with the student too, on the link page as well. The parent pages are phon
   (`BUNDLE_BOUNDARIES.md` §3–§4, since 2026-10-14).
 - **No dead file** (since 2026-11-16): `npm run check:unreached` (CI) fails when a file of `apps/web/src` is reached by nothing from
   `main.jsx`. Delete what a change makes useless in the SAME change; a file kept on purpose is named in the script's `KEPT` with its reason.
+- **Lint and « nothing unused »** (since 2026-11-17, CI): `npm run lint` (ESLint, whole tree: unused imports and variables, undefined
+  names, duplicated keys) and `npm run check:unused` (unused exports, i18n keys and sentences of `strings.js` / `text.js`; unused classes
+  and unrouted actions of the API). Its baseline only SHRINKS — never park new code in it. LaTeX in an ordinary string takes TWO
+  backslashes (`'\\;'`): one is dropped and the student sees « ; ». A function that is not a hook is never named `use…`.
+  Contract: `docs/architecture/CODE_HEALTH.md`.
 - **Formatted code** (since 2026-11-16): the areas listed in `package.json › format:v2` (the pilot's game world, launch kit, « مختبري »,
   class session and teacher tools) are kept in Prettier style, 120 columns — run `npm run format:v2` after editing them; `npm run check:format`
   runs in CI. One statement per line, one component per block: never a whole component on one line. A new or rebuilt area is added to both scripts.
@@ -387,8 +392,8 @@ content.** If a manipulation needs a new visual, extend its SVG. Four reasons:
 
 1. **It must react.** A shelf re-shelves 420 books while the student drags its
    bookend; a player shakes when a full team refuses it. A flat JPG takes no
-   props. See the hand-drawn book at `manipulations/primitives/BookFigure.jsx`
-   and the shelf in `manipulations/divisibility/DivisorExplorerBooks.jsx`.
+   props. See the shelf and its hand-drawn books in
+   `manipulations/divisibility/DivisorExplorerBooks.jsx`.
 2. **Arabic.** Diffusion models mangle Latin text and cannot render RTL Arabic
    at all. Labels like `رفّ ناقص` are DOM text so they stay correct and selectable.
 3. **Determinism.** `logic/bookshelf.test.js` asserts on computed geometry.

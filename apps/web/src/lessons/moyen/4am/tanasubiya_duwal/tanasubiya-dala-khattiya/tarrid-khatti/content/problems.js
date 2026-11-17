@@ -30,7 +30,6 @@ export const PROBLEMS = [
     emoji: '🪝',
     source: SOURCE,
     illustration: LESSON_CONFIG.lessonProblem.illustration,
-    illustration: LESSON_CONFIG.lessonProblem.illustration,
     statement: LESSON_CONFIG.lessonProblem.statement,
     data: [
       { id: 'm1', text: 'كتلة 6g تعطي استطالة 1,5cm', useful: true },

@@ -10,11 +10,6 @@ export function fetchReport(token, id) {
     .then((data) => data.report);
 }
 
-export function fetchReportClusters(token) {
-  return call('/admin/reports/clusters', get(token), 'Impossible de charger les groupes.')
-    .then((data) => data.clusters);
-}
-
 /** @param {{status?: string, priority?: string, assignedTo?: number|null, duplicateOfId?: number|null}} changes */
 export function updateReport(token, id, changes) {
   return call(

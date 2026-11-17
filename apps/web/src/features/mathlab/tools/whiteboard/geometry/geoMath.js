@@ -17,19 +17,18 @@
 export const UNITS_PER_CM = 40;
 export const UNITS_PER_MM = UNITS_PER_CM / 10;
 
-export const EPS = 1e-9;
+const EPS = 1e-9;
 
-export const vec = (x, y) => ({ x, y });
 export const add = (a, b) => ({ x: a.x + b.x, y: a.y + b.y });
 export const sub = (a, b) => ({ x: a.x - b.x, y: a.y - b.y });
 export const scale = (a, k) => ({ x: a.x * k, y: a.y * k });
 export const dot = (a, b) => a.x * b.x + a.y * b.y;
-export const cross = (a, b) => a.x * b.y - a.y * b.x;
+const cross = (a, b) => a.x * b.y - a.y * b.x;
 export const len = (a) => Math.hypot(a.x, a.y);
 export const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
 export const unit = (angle) => ({ x: Math.cos(angle), y: Math.sin(angle) });
 export const angleOf = (a) => Math.atan2(a.y, a.x);
-export const lerp = (a, b, t) => ({ x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t });
+const lerp = (a, b, t) => ({ x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t });
 export const isPoint = (p) => Boolean(p) && Number.isFinite(p.x) && Number.isFinite(p.y);
 
 /** La normale « au-dessus » d'une direction u : u tournée de −90° à l'écran (vers le haut quand u pointe à droite). */
@@ -72,11 +71,6 @@ export function projectOnLine(p, a, b) {
   const t = dot(sub(p, a), d) / l2;
 
   return { point: add(a, scale(d, t)), t };
-}
-
-/** La distance de p à la droite (a, b). */
-export function distanceToLine(p, a, b) {
-  return dist(p, projectOnLine(p, a, b).point);
 }
 
 /** La distance de p au SEGMENT [a, b]. */
@@ -169,7 +163,6 @@ export function arcPoints(center, r, start, sweep, maxPoints = 180) {
 
 /** Des unités de scène vers des « cm » du bureau. */
 export const unitsToCm = (units) => units / UNITS_PER_CM;
-export const cmToUnits = (cm) => cm * UNITS_PER_CM;
 
 /**
  * Un nombre à l'arabe-algérienne : virgule décimale, signe moins typographique,
@@ -187,5 +180,3 @@ export function formatNumber(value, digits = 1) {
 /** Une longueur de scène lue en cm du bureau, au dixième. */
 export const formatLength = (units) => formatNumber(unitsToCm(units), 1);
 
-/** Un angle (radians) lu en degrés entiers — ce qu'une منقلة scolaire permet de lire. */
-export const formatDegrees = (rad) => `${formatNumber(toDegrees(rad), 0)}°`;

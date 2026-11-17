@@ -10,7 +10,6 @@
  * Toutes les étiquettes ont une place qui ne dépend QUE de la largeur de la scène et du nombre de balances ; la mise en page est
  * rendue par `FourthGauges.jsx` à partir des MÊMES boîtes (`labelBoxes`), jamais recalculées dans la vue.
  */
-import { pillWidth } from '../../primitives/SvgPill';
 
 export const CARD_FONT = 22;
 export const SMALL = 11;
@@ -187,7 +186,7 @@ export function labelBoxes(geo, state) {
   return out;
 }
 
-export const intersects = (p, q) => p.x0 < q.x1 && q.x0 < p.x1 && p.y0 < q.y1 && q.y0 < p.y1;
+const intersects = (p, q) => p.x0 < q.x1 && q.x0 < p.x1 && p.y0 < q.y1 && q.y0 < p.y1;
 
 /** Les paires d'étiquettes qui se chevauchent (vide = conforme). Les plateaux d'une balance ne comptent pas contre sa propre lampe. */
 export function overlaps(boxes) {
@@ -204,4 +203,3 @@ export function overlaps(boxes) {
   return bad;
 }
 
-export { pillWidth };

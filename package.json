@@ -41,7 +41,11 @@
     "check:explorer-levels": "node scripts/games/build-explorer-levels.mjs --check",
     "format:v2": "prettier --write --log-level warn apps/web/src/features/classSession apps/web/src/lessons/common/gameworld apps/web/src/lessons/common/launchkit apps/web/src/lessons/common/lessonlab apps/web/src/pages/teacher/ClassSessionPage.jsx apps/web/src/pages/teacher/LessonFilePage.jsx apps/web/src/pages/teacher/LessonToolPages.jsx apps/web/src/pages/teacher/practice/TeacherBankGate.jsx apps/web/src/pages/teacher/practice/TeacherExerciseBank.jsx apps/web/src/components/auth/phoneLessons.js apps/web/src/components/auth/RequireLargeScreen.jsx apps/web/src/components/common/TurnPhone.jsx scripts/v2-rollout-order.mjs apps/web/src/components/common/WorkspaceNav.jsx apps/web/src/components/student/StudentNavbar.jsx apps/web/src/components/teacher/TeacherNavbar.jsx apps/web/src/data/doors.js apps/web/src/data/doors.test.js apps/web/src/data/studentNavigation.js apps/web/src/data/teacherNavigation.js apps/web/src/features/teacher/today apps/web/src/pages/teacher/TeacherHome.jsx apps/web/src/pages/UnitPage.jsx apps/web/src/components/student/LessonCard.jsx apps/web/src/components/student/LessonRow.jsx apps/web/src/components/student/UnitGroup.jsx apps/web/src/components/student/lessonTileParts.jsx apps/web/src/pages/teacher/ClassGroupDetail.jsx apps/web/src/features/teacher/overview/OverviewTab.jsx apps/web/src/features/teacher/members/MembersTab.jsx apps/web/src/features/teacher/learningPoints/LearningPointsTab.jsx apps/web/src/features/teacher/classGroupLessons/LessonsTab.jsx apps/web/src/features/teacher/learningPoints/LessonPicker.jsx",
     "check:format": "prettier --check apps/web/src/features/classSession apps/web/src/lessons/common/gameworld apps/web/src/lessons/common/launchkit apps/web/src/lessons/common/lessonlab apps/web/src/pages/teacher/ClassSessionPage.jsx apps/web/src/pages/teacher/LessonFilePage.jsx apps/web/src/pages/teacher/LessonToolPages.jsx apps/web/src/pages/teacher/practice/TeacherBankGate.jsx apps/web/src/pages/teacher/practice/TeacherExerciseBank.jsx apps/web/src/components/auth/phoneLessons.js apps/web/src/components/auth/RequireLargeScreen.jsx apps/web/src/components/common/TurnPhone.jsx scripts/v2-rollout-order.mjs apps/web/src/components/common/WorkspaceNav.jsx apps/web/src/components/student/StudentNavbar.jsx apps/web/src/components/teacher/TeacherNavbar.jsx apps/web/src/data/doors.js apps/web/src/data/doors.test.js apps/web/src/data/studentNavigation.js apps/web/src/data/teacherNavigation.js apps/web/src/features/teacher/today apps/web/src/pages/teacher/TeacherHome.jsx apps/web/src/pages/UnitPage.jsx apps/web/src/components/student/LessonCard.jsx apps/web/src/components/student/LessonRow.jsx apps/web/src/components/student/UnitGroup.jsx apps/web/src/components/student/lessonTileParts.jsx apps/web/src/pages/teacher/ClassGroupDetail.jsx apps/web/src/features/teacher/overview/OverviewTab.jsx apps/web/src/features/teacher/members/MembersTab.jsx apps/web/src/features/teacher/learningPoints/LearningPointsTab.jsx apps/web/src/features/teacher/classGroupLessons/LessonsTab.jsx apps/web/src/features/teacher/learningPoints/LessonPicker.jsx",
-    "check:unreached": "node scripts/check-unreached.mjs"
+    "check:unreached": "node scripts/check-unreached.mjs",
+    "lint": "NODE_OPTIONS=--max-old-space-size=6144 eslint .",
+    "lint:fix": "NODE_OPTIONS=--max-old-space-size=6144 eslint . --fix",
+    "check:unused": "node scripts/check-unused.mjs && node scripts/check-unused-php.mjs",
+    "check:unused:php-imports": "cd apps/api && php vendor/bin/pint --test --config pint.unused.json app routes database config bootstrap tests"
   },
   "devDependencies": {
     "@babel/parser": "^7.29.0",
@@ -51,6 +55,11 @@
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
     "concurrently": "^10.0.4",
+    "eslint": "9.39.1",
+    "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-react-hooks": "5.2.0",
+    "eslint-plugin-unused-imports": "4.3.0",
+    "globals": "16.5.0",
     "playwright": "^1.62.1",
     "postcss": "^8.4.38",
     "prettier": "3.3.3",

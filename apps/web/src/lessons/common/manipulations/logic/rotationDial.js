@@ -28,7 +28,6 @@
  */
 import * as RT from '@smarter-academy/core/arithmetic/rotation.js';
 
-export const SCENES = Object.freeze(['wheel', 'plane']);
 /** Demi-côté du cadre (unités de la figure) : la scène est un CARRÉ centré sur O. */
 export const BOX = Object.freeze({ wheel: 4.4, plane: 6 });
 /** Tolérances : nœuds exacts sur la roue ; sur la feuille, au degré (la منقلة) et à 2 % près (le compas). */
@@ -167,7 +166,7 @@ export function setRay(lab, deg) {
   return { ...lab, ray: d };
 }
 /** La direction absolue de la règle (degrés depuis l'axe des abscisses). */
-export const rayBearing = (lab) => (lab.ray == null || !sourcePoint(lab) ? null : RT.bearing(O, sourcePoint(lab)) + lab.ray);
+const rayBearing = (lab) => (lab.ray == null || !sourcePoint(lab) ? null : RT.bearing(O, sourcePoint(lab)) + lab.ray);
 /** L'intersection du cercle de l'élève et de SA demi-droite, quand les deux existent. */
 export const crossing = (lab) => (lab.radius == null || lab.ray == null || !sourcePoint(lab) ? null : polar(lab.radius, rayBearing(lab)));
 

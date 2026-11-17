@@ -8,7 +8,7 @@ const gcd = (a, b) => (b === 0n ? (a < 0n ? -a : a) : gcd(b, a % b));
 const fr = (n, d = 1n) => { const g = gcd(n, d) || 1n; return { n: n / g, d: d / g }; };
 const fourth = (a, b, c) => fr(BigInt(b) * BigInt(c), BigInt(a));
 const val = (p) => Number(p.n) / Number(p.d);
-const numeric = (id, part, ask) => PROBLEM[id].parts[part].steps.filter((s) => s.kind === 'numeric');
+const numeric = (id, part) => PROBLEM[id].parts[part].steps.filter((s) => s.kind === 'numeric');
 const choice = (id, part, i = 0) => PROBLEM[id].parts[part].steps.filter((s) => s.kind === 'choice')[i];
 
 describe('les مسائل du درس « حساب الرابع المتناسب »', () => {

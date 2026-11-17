@@ -65,9 +65,6 @@ const norm = (s, subs = null) => {
 
 /* ── analyse en arbre ──────────────────────────────────────────────────────── */
 // nœuds : {t:'n',v} {t:'x'} {t:'u',c} {t:'p',c} {t:'b',op,l,r}
-function parse(src) {
-  const t = norm(src); return parseNorm(t, src);
-}
 function parseNorm(t, src = t) {
   let i = 0; const peek = () => t[i];
   const expr = () => { let v = term(); while (peek() === '+' || peek() === '-') { const op = t[i++]; v = { t: 'b', op, l: v, r: term() }; } return v; };
@@ -145,7 +142,6 @@ const letterOf = (qq, k) => qq.choices[k].id;
 const optText = (qq) => qq.choices.map((c) => c.content.replace(/\$/g, '').trim());
 const WORD = { 'موجب': 1, 'سالب': -1 };
 const YN = (txt) => (/^(صحيح|نعم)/.test(txt) ? true : /^(خاطئ|لا)/.test(txt) ? false : null);
-const signWord = (s) => (s > 0 ? 'موجب' : 'سالب');
 
 /** Remplace les étiquettes de définitions (A, B, V, E…) d'une expression ASCII retapée par leur contenu lu dans la feuille. */
 function withDefs(ex, e) {
@@ -197,7 +193,7 @@ function holeValue(src) {
   if (!ev(u, 'ok', x).eq(c)) throw new Error(`${src} : la case ${x} ne vérifie pas l'égalité`);
   return { x, ...trace };
 }
-function holeCands({ x, form, k, c }) {
+function holeCands({ x, k, c }) {
   const out = { SIGN: [x.neg()], ORDER: [], DIST: [c.sub(k), c.add(k), c.mul(k), k.sub(c)], DECIMAL: [], PRIORITY: [], SUBNEG: [] };
   if (c.sign() !== 0) out.ORDER.push(k.div(c));
   if (k.sign() !== 0) out.ORDER.push(c.div(k));

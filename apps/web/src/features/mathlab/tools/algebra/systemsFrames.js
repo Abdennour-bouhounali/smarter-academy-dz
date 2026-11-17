@@ -46,7 +46,7 @@ function termLatex(k, v, first) {
 }
 
 /** Les jetons d'une équation `a·x + b·y = c` ; ids `${p}x`, `${p}y`, `${p}eq`, `${p}c`. */
-export function systemRow(eq, p, tones = {}) {
+function systemRow(eq, p, tones = {}) {
   const tokens = [];
   for (const v of ['x', 'y']) {
     const k = coefOf(eq, v);

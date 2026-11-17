@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { SourceTag } from '../../../../../common/textbook';
 import { ACTIVITY, KNOW1, METHOD_DRAW, METHOD_POINT, METHOD_DISTANCE } from './content/textbook';

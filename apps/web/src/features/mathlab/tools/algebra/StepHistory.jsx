@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { CornerDownLeft } from 'lucide-react';
 import MathText from '../../../../lessons/common/components/MathText.jsx';
-import * as R from './rational.js';
 import { equationToLatex, equationToText } from './equation.js';
 import { operationLatex } from './equationDisplay.js';
 

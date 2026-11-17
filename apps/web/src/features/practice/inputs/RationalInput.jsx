@@ -12,7 +12,7 @@ import { mathToPlain } from '../../../utils/mathPlain';
  * l'écriture que lit Rational.parse — sans parenthèses autour d'un nombre, la
  * virgule décimale, sans espaces.
  */
-export function asciiToAnswer(ascii) {
+function asciiToAnswer(ascii) {
   return String(ascii ?? '')
     .replace(/\{,\}/g, ',')
     .replace(/\s+/g, '')

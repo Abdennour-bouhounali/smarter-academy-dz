@@ -13,7 +13,6 @@ const mul = (a, b) => Q(a.n * b.n, a.d * b.d);
 const div = (a, b) => Q(a.n * b.d, a.d * b.n);
 const eq = (a, b) => a.n === b.n && a.d === b.d;
 const lt = (a, b) => a.n * b.d < b.n * a.d;
-const num = (x) => D(String(x));
 
 /** Évalue une chaîne ASCII « 6 * 340 / 1000 » (parenthèses, priorités), en rationnels exacts. */
 function ev(s) {

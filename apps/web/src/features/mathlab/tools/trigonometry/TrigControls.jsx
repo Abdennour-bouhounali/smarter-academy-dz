@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Play, Pause, RotateCcw, RotateCw, ChevronsLeft, ChevronsRight, Minus, Plus,
+  Play, Pause, RotateCcw, RotateCw, ChevronsLeft, Minus, Plus,
 } from 'lucide-react';
 import { SPECIAL_DEGREES } from './exactValues.js';
 import { PRESETS, EXPERIMENTS } from './presets.js';
@@ -443,7 +443,7 @@ function Section({ id, title, defaultOpen = false, children }) {
 }
 
 /** Les données du triangle (§9) : ce qu'on donne, et ce qui s'en déduit. */
-function TriangleControls({ triangle, state, onTriangleValue, t }) {
+function TriangleControls({ triangle, onTriangleValue, t }) {
   const fields = {
     'angle-hyp': ['angle', 'hypotenuse'],
     'angle-opp': ['angle', 'opposite'],
@@ -574,7 +574,7 @@ function InverseReadout({ inverse, onInverse, onAngle, t }) {
 }
 
 /** Deux angles, leurs valeurs, et leur écart (§33, §34). */
-function CompareReadout({ data, state, onCompare, t }) {
+function CompareReadout({ data, state, onCompare }) {
   const other = data.compare.angle;
   const delta = other - data.angle;
   const otherState = {

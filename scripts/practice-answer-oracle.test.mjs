@@ -191,23 +191,9 @@ const gradeRoots = readdirSync(practiceRoot).filter((g) => /^[1-4]am$/.test(g)).
 
 /* ── Arithmétique indépendante ─────────────────────────────────────────── */
 const gcd = (a, b) => { a = Math.abs(a); b = Math.abs(b); while (b) [a, b] = [b, a % b]; return a; };
-const divisors = (n) => { const out = []; for (let d = 1; d <= n; d++) if (n % d === 0) out.push(d); return out; };
-const common = (a, b) => divisors(a).filter((d) => b % d === 0);
-const frac = (n, d) => { const g = gcd(n, d); const s = Math.sign(n) * Math.sign(d); return `${s * Math.abs(n) / g}/${Math.abs(d) / g}`; };
-const reduce = (n, d) => { const g = gcd(n, d); return (d / g === 1) ? String(n / g) : frac(n, d); };
-/** a/b − c/d etc. en entiers : [numérateur, dénominateur] */
-const sub = ([a, b], [c, d]) => [a * d - c * b, b * d];
-const mul = ([a, b], [c, d]) => [a * c, b * d];
-const add = ([a, b], [c, d]) => [a * d + c * b, b * d];
-const div = ([a, b], [c, d]) => [a * d, b * c];
-const gcd3 = (a, b, c) => gcd(gcd(a, b), c);
-/** nombre d'étapes de l'algorithme d'Euclide */
-const euclidSteps = (a, b) => { let n = 0; while (b) { [a, b] = [b, a % b]; n++; } return n; };
 const range = (lo, hi) => Array.from({ length: hi - lo + 1 }, (_, i) => lo + i);
 
 /* ── L'oracle : item → réponse de l'élève qui DOIT être acceptée ────────── */
-const R = (v) => ({ value: String(v) });
-const S = (arr) => ({ value: arr.join(', ') });
 const C = (id) => ({ choiceId: id });
 
 const ORACLE = {

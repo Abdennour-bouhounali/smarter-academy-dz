@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useId, useState } from 'react';
+import { createContext, useContext, useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLearningViewer } from '../../../features/learning/learningViewer';
 import { useClassroomMode } from '../classroom/ClassroomContext';

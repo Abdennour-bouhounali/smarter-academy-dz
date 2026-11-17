@@ -28,7 +28,7 @@ import { formatDegrees } from './trigFormat.js';
  * (« Observe → Manipulate → Predict → Reveal → Verify »).
  */
 export default function PracticePanel({
-  practice, valueMode, onAnswer, onSubmit, onReveal, onHint, onNext, onClose,
+  practice, onAnswer, onSubmit, onReveal, onHint, onNext, onClose,
 }) {
   const { t } = useTranslation('mathlab');
   const { challenge, phase, answer, attempts, hintsUsed, solved, seen } = practice;

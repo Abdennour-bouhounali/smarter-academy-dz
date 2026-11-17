@@ -20,17 +20,15 @@
  */
 import * as S from '@smarter-academy/core/arithmetic/surfaces.js';
 
-export const WORLDS = Object.freeze(['yard', 'floor']);
-export const MODES = Object.freeze(['fence', 'rope']);
 export const ROWS = 7;
 export const COLS = 10;
 export const TILES = 12; // les carreaux du mode `fence`
 export const ROPE = 12; // les bâtons du rouleau (mode `rope`)
-export const HEAP = 12; // les carreaux du tas (mode `rope`)
-export const YARD_TASKS = Object.freeze({ fence: Object.freeze(['shortest', 'twenty']), rope: Object.freeze(['biggest', 'smallest']) });
+const HEAP = 12; // les carreaux du tas (mode `rope`)
+const YARD_TASKS = Object.freeze({ fence: Object.freeze(['shortest', 'twenty']), rope: Object.freeze(['biggest', 'smallest']) });
 /** La clôture à atteindre / le nombre de carreaux à atteindre, par tâche (la machine ne les dit jamais à l'élève). */
 export const TASK_GOAL = Object.freeze({ shortest: { fence: 14 }, twenty: { fence: 20 }, biggest: { tiles: 9 }, smallest: { tiles: 5 } });
-export const FLOOR_SCENES = Object.freeze(['terrace-halves', 'terrace-double']);
+const FLOOR_SCENES = Object.freeze(['terrace-halves', 'terrace-double']);
 
 const sameCell = (a, b) => a[0] === b[0] && a[1] === b[1];
 
@@ -83,7 +81,7 @@ const cellsOf = (s) => s.tiles.map((t) => [t.r, t.c]);
 
 /* ═════════════ Lecture : monde yard ═════════════ */
 
-export const isYard = (s) => s.world === 'yard';
+const isYard = (s) => s.world === 'yard';
 export const isFloor = (s) => s.world === 'floor';
 export const taskOf = (s) => s.tasks[s.ti];
 export const taskDone = (s) => !!s.done[s.ti];
@@ -96,7 +94,7 @@ export const tilesOf = (s) => s.tiles.length;
 export const fenceOf = (s) => S.perimeter(cellsOf(s));
 export const heapOf = (s) => HEAP - s.tiles.length;
 export const ropeLeft = (s) => (s.rope == null ? null : s.rope - fenceOf(s));
-export const shapeOf = (s) => S.canonical(cellsOf(s));
+const shapeOf = (s) => S.canonical(cellsOf(s));
 export const tileAt = (s, r, c) => s.tiles.find((t) => t.r === r && t.c === c) ?? null;
 export const inGrid = (s, r, c) => r >= 0 && r < s.rows && c >= 0 && c < s.cols;
 
@@ -257,7 +255,7 @@ export function discoveryReady(s) {
 }
 
 /** L'étendue d'un cour (le plus grand côté de son rectangle englobant) : « le plus long à voir ». */
-export function reach(cells) {
+function reach(cells) {
   let r0 = Infinity; let r1 = -Infinity; let c0 = Infinity; let c1 = -Infinity;
   for (const [r, c] of cells) { r0 = Math.min(r0, r); r1 = Math.max(r1, r); c0 = Math.min(c0, c); c1 = Math.max(c1, c); }
   return Math.max(r1 - r0 + 1, c1 - c0 + 1);
@@ -300,9 +298,9 @@ export function boxOf(s) {
   if (s.phase === 'two') return ['two', 'halfTwo'];
   return sceneOf(s).halves.length ? ['one', 'half'] : ['one'];
 }
-export const unitOf = (kind) => (kind === 'one' ? 'one' : kind === 'half' || kind === 'halfTwo' ? 'half' : 'two');
+const unitOf = (kind) => (kind === 'one' ? 'one' : kind === 'half' || kind === 'halfTwo' ? 'half' : 'two');
 
-export const pieceCells = (kind, at, orient = 'h') => (kind === 'two' ? [at, orient === 'v' ? [at[0] + 1, at[1]] : [at[0], at[1] + 1]] : [at]);
+const pieceCells = (kind, at, orient = 'h') => (kind === 'two' ? [at, orient === 'v' ? [at[0] + 1, at[1]] : [at[0], at[1] + 1]] : [at]);
 
 /** Les cellules occupées (clé → pièce). */
 export function occupied(s) {
@@ -320,7 +318,7 @@ export function reading(s) {
   return { unit, halves, value: S.formatHalves(halves), cells };
 }
 /** Le sol entier en cellules : toutes les entières + les demies. */
-export const floorCells = (sc) => [...sc.whole, ...sc.halves.map(({ r, c }) => [r, c])];
+const floorCells = (sc) => [...sc.whole, ...sc.halves.map(({ r, c }) => [r, c])];
 export const covered = (s) => isFloor(s) && occupied(s).size === floorCells(sceneOf(s)).length;
 export const sceneDone = (s) => !!s.done[s.ti];
 export const finished = (s) => isFloor(s) && s.done.every(Boolean);

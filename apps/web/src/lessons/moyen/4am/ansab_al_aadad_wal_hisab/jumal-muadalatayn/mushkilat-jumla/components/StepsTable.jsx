@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../../common/components/MathText';
 import { bidi } from '../../../../../../../utils/bidi';
 import { ACTIVITY, STEPS_TABLE } from '../content/textbook';

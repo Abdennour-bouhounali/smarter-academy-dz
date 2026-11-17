@@ -48,13 +48,13 @@ export const RELATIONS = Object.freeze(['=', '≠', '<', '>', '≤', '≥']);
  * divisions (⅓, ¾) : `u₃ = 2.9999999999999996 < 3` doit rester vrai, et
  * `w₅ = −2.0000000000000004 = −2` aussi.
  */
-export const TOLERANCE = 1e-9;
+const TOLERANCE = 1e-9;
 
 /** Au-delà, un nombre n'est plus exact et une comparaison serait une loterie. */
-export const OVERFLOW_LIMIT = 1e12;
+const OVERFLOW_LIMIT = 1e12;
 
 /** Combien de termes on accepte de dérouler pour atteindre un rang. */
-export const MAX_ITERATIONS = 2000;
+const MAX_ITERATIONS = 2000;
 
 /**
  * Pourquoi un calcul n'a pas abouti. Ce sont des clés i18n : ce module ne

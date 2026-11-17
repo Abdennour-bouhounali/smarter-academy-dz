@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Minus, Plus, Egg as EggIcon, Lock, Hand, CheckCircle2, XCircle, Target, PackagePlus, ThumbsUp, ThumbsDown } from 'lucide-react';
 import MathText from '../../components/MathText';
@@ -746,7 +746,7 @@ function ClaimCard({ lab, k, compact, inline = false, onAnswer, eggs }) {
 
 /* ══════════════ la scène : le mur, le tapis, les plateaux, la règle, le zoom ══════════════ */
 
-function FarmScene({ lab, k, W, g, ax, belt, zl, grid, st, sf, tray, compact, charW, bump, v, fillLocked, frameLocked, strip, eggs, units }) {
+function FarmScene({ lab, k, W, g, ax, belt, zl, st, sf, tray, compact, charW, bump, v, fillLocked, frameLocked, strip, eggs, units }) {
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
   const { a, b, count, frame } = lab;
   const pack = L.packOf(count, b);

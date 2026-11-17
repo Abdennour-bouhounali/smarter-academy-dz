@@ -23,7 +23,7 @@ const toSafe = (b) => {
   return n;
 };
 
-export const MAX_DIGITS = 15;
+const MAX_DIGITS = 15;
 
 /** 10^k, exact tant que k ≤ 15. */
 export const pow10 = (k) => toSafe(P10(k));
@@ -315,9 +315,6 @@ export function firstDifferingRank(a, b) {
 export function paddedText(v, k) {
   return format(make(toSafe(big(v.n) * P10(Math.max(0, k - v.k))), Math.max(k, v.k)));
 }
-
-/** Le nombre de chiffres après la virgule dans l'écriture de v (zéros de fin compris, comme écrit). */
-export const decimalsOf = (v) => v.k;
 
 /** La plus petite graduation qui sépare TOUTES les paires d'une liste de valeurs ; `null` si aucune (plus de 3 décimales). */
 export function rowGraduation(values) {

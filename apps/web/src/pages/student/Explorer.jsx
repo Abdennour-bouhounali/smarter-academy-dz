@@ -12,7 +12,6 @@ import GradeLessonSearch, { filterLessonsByQuery } from '../../components/studen
 
 export default function Explorer() {
   const { t } = useTranslation('student');
-  const { t: tc } = useTranslation('common');
   useDocumentMeta(t('explorer.metaTitle'), t('explorer.metaDescription'));
   const { user } = useContext(AuthContext);
 

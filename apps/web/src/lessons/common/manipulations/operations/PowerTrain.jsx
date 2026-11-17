@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Check } from 'lucide-react';
+import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2 } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import * as P from '@smarter-academy/core/arithmetic/powers.js';
 import MathText from '../../components/MathText';
@@ -264,7 +264,6 @@ function Lab({ lab, setLab, k, width, screenH, advanced, lead, overlay, stepsNod
   const last = lab.last;
   const onTarget = L.onTarget(lab);
   const load = P.ratText(L.loadOf(lab));
-  const aTex = P.baseTex(a);
   const aTxt = minus(P.ratText(a));
 
   /* ── la consigne : le contexte (tous les nombres), puis UNE question ── */
@@ -886,7 +885,7 @@ export const QUESTIONS = {
   },
   /* monde couple : combien de wagons dans le train B */
   coupleN: (lab, task, k) => {
-    const a = lab.base; const n = task.goal;
+    const n = task.goal;
     return {
       id: 'coupleN', kind: 'number', expected: String(n), answer: <MathText>{num(n)}</MathText>,
       prompt: Cq(k, 'coupleN.prompt', { m: num(task.m), target: num(task.target) }),

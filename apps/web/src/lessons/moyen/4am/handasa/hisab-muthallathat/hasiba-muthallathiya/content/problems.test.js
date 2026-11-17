@@ -12,7 +12,6 @@ import { LESSON_CONFIG } from '../lesson.config';
  * degrés quand l'angle porte ^{\circ}, en RADIANS sinon : le piège de la touche R).
  */
 const num = (s) => Number(String(s).replace(',', '.'));
-const screenOf = (x) => num(TR.screen(x));
 // L'arrondi « à k chiffres » (TR.roundTo pour la précision de la leçon ; au-delà, son epsilon relatif est trop grand).
 const round = (x, k) => (k <= 3 ? num(TR.roundTo(x, k)) : Number((Math.round(x * 10 ** k) / 10 ** k).toFixed(k)));
 const steps = (id, part) => PROBLEM[id].parts[part].steps;

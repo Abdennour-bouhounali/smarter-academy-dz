@@ -9,7 +9,7 @@ const seedOf = (ctx, id) => {
   return nums.reduce((s, n) => s + n, 0) + [...String(id)].reduce((s, c) => s + c.charCodeAt(0), 0);
 };
 
-export function moveCorrect(options, seed) {
+function moveCorrect(options, seed) {
   const at = options.findIndex((o) => o.correct);
   if (at < 0) return options;
   const to = seed % options.length;

@@ -63,7 +63,7 @@ export function commit(tried, total, b) {
  * AU MOINS trois longueurs, dont une qui vide le sol ET une qui laisse des
  * livres : c'est le contraste qui enseigne, pas une longueur chanceuse.
  */
-export const MIN_TRIALS = 3;
+const MIN_TRIALS = 3;
 export function remainderDiscoveryReady(tried) {
   const seen = Object.values(tried);
   return seen.length >= MIN_TRIALS && seen.some((v) => v.exact) && seen.some((v) => !v.exact);
@@ -129,11 +129,11 @@ export function exactCapacities(total, range) {
  *   ghost    { x, y, w, books: [{ id, x }], slots: [x] } | null
  *   pile     { x, y, books: [{ id, x, y }] } | null — avant le premier geste
  */
-export const SHELF_PAD = 1;       // en unités de dos, de chaque côté du rayon
-export const COL_GAP = 8;
-export const ROW_GAP = 8;
+const SHELF_PAD = 1;       // en unités de dos, de chaque côté du rayon
+const COL_GAP = 8;
+const ROW_GAP = 8;
 export const PLANK = 4;
-export const BOOK_RATIO = 3.2;    // hauteur d'un dos / sa largeur
+const BOOK_RATIO = 3.2;    // hauteur d'un dos / sa largeur
 
 export function bookcaseLayout({ total, b, width, unit }) {
   const bookH = Math.round(unit * BOOK_RATIO);

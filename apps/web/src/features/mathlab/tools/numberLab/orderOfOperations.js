@@ -37,9 +37,9 @@
 import * as Q from './bigRational.js';
 
 export const MAX_EXPRESSION_LENGTH = 120;
-export const MAX_OPERATIONS = 40;
-export const MAX_EXPONENT = 20;
-export const MAX_DIGITS = 60;
+const MAX_OPERATIONS = 40;
+const MAX_EXPONENT = 20;
+const MAX_DIGITS = 60;
 
 /* ── 1. Les jetons ─────────────────────────────────────────────────────── */
 
@@ -61,7 +61,7 @@ function normalizeChars(source) {
  * @returns {{ tokens: Array<{type, value?, text?, pos, end, spaceBefore}> } | { error: { code, pos } }}
  *   `pos` est l'indice (0-based) dans la chaîne tapée.
  */
-export function tokenize(source) {
+function tokenize(source) {
   const text = normalizeChars(String(source ?? ''));
   const tokens = [];
   let i = 0;
@@ -554,7 +554,7 @@ function numberLatex(n) {
  *
  * @param {object} ctx  `leading` : le nœud ouvre-t-il son expression ? `powBase` : est-il sous une puissance ?
  */
-export function toLatex(n, highlight = null, ctx = { leading: true, powBase: false }) {
+function toLatex(n, highlight = null, ctx = { leading: true, powBase: false }) {
   const mark = (latex) => (n.id === highlight ? `\\textcolor{${HIGHLIGHT_COLOR}}{${latex}}` : latex);
   switch (n.type) {
     case 'num': {

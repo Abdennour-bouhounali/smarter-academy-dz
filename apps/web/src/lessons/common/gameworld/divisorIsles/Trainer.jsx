@@ -4,7 +4,7 @@
  * verbs, the answer typed in its own shape) — so the student gets used to the sheet of the real exam while still playing.
  * A wrong answer gets a hint first (what the answer gives), then the written correction.
  */
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Star, RotateCcw, Gamepad2, FileText, ArrowLeft } from 'lucide-react';
 import MathText from '../../components/MathText';
 import { makeSession, check, solution, sessionStars, answerLabel, PHRASES, SESSION } from './trainer';

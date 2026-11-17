@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatFr, parseFr } from '@smarter-academy/core';
 import { Feedback, ChoiceGrid, ValidateButton, NumberField, XPBurst } from '../components/LessonUI';
@@ -54,7 +54,7 @@ export function TapQuestion({
   correctionLabel, // libellé de la bonne réponse si options[correct] n'est pas affichable tel quel
   explain,         // rappel de la règle, affiché juste ou faux
   explainWrong,    // remplace `explain` en cas d'erreur (optionnel)
-  requires,        // string[] — connaissances supposées acquises (contrat d'audit, sans effet runtime)
+  // requires : string[] — connaissances supposées acquises (contrat d'audit, sans effet runtime)
   xp = 10,
   solved = false,  // revisite : grille figée, pas de re-réponse
   onAnswered,      // (isCorrect, index) => void — inconditionnel
@@ -126,7 +126,7 @@ export function BatchChoiceQuestion({
   intro,          // ReactNode au-dessus des lignes
   rows,           // [{ id, label, options: [ReactNode], correct, correction? }]
   feedback,       // ({ allRight, nCorrect, total }) => ReactNode — un seul bloc de feedback
-  requires,       // string[] — connaissances supposées acquises (contrat d'audit, sans effet runtime)
+  // requires : string[] — connaissances supposées acquises (contrat d'audit, sans effet runtime)
   xp = 10,
   solved = false,
   onAnswered,     // (allRight) => void — inconditionnel
@@ -265,7 +265,7 @@ export function NumericQuestion({
   display,         // affichage de la bonne réponse (déf. formatFr(expected))
   explain,         // rappel de règle, juste ou faux
   explainFor,      // (n) => ReactNode — feedback ciblé selon l'erreur (pièges)
-  requires,        // string[] — connaissances supposées acquises (contrat d'audit, sans effet runtime)
+  // requires : string[] — connaissances supposées acquises (contrat d'audit, sans effet runtime)
   width = 'w-32',
   size = 'sm',
   solved = false,

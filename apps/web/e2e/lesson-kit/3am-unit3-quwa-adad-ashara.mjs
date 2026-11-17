@@ -351,7 +351,7 @@ async function main() {
     const page = await ctx.newPage();
     await goto(page, `${BASE}${LESSON}/maarif`);
     check((await lab(page).getAttribute('data-world')) === 'prefixes', `${w}: prefixes — monde posé seul`);
-    check(await page.evaluate(() => { const l = document.querySelector('[data-manipulation="ten-zoom"]'); const first = document.querySelector('.space-y-3'); return !!l; }), `${w}: prefixes — le labo est monté`);
+    check(await page.evaluate(() => { const l = document.querySelector('[data-manipulation="ten-zoom"]'); return !!l; }), `${w}: prefixes — le labo est monté`);
     check((await page.locator('[data-tz-brick], [data-knowledge-brick]').count()) === 0, `${w}: prefixes — aucune brique avant la réponse`);
     check(/كيلومتر واحد/.test(await vis(page, '[data-tz-card]').textContent()), `${w}: prefixes — la première carte est كيلومتر`);
     await more(page, 3);

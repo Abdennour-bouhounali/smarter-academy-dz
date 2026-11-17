@@ -38,7 +38,7 @@ const GROUP_ORDER = ['arith', 'compare', 'powers', 'letters', 'geometry'];
 const LATEX_WORD = /\\[a-zA-Z]+/g;
 
 /** Toutes les chaînes d'un nœud : texte, tableaux, éléments React (enfants et props textuelles). */
-export function collectText(node, out = [], depth = 0) {
+function collectText(node, out = [], depth = 0) {
   if (node == null || node === false || depth > 12) return out;
   if (typeof node === 'string' || typeof node === 'number') { out.push(String(node)); return out; }
   if (Array.isArray(node)) { node.forEach((n) => collectText(n, out, depth + 1)); return out; }

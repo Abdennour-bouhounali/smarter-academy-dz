@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { KNOW, ACT5_ANSWERS, ACTIVITY_6, METHOD_PERCENT, METHOD_COMPOUND, TAHWIL, BIDALALA } from './content/textbook';
 

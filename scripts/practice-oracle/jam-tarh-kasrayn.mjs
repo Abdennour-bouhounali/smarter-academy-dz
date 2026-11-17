@@ -46,7 +46,6 @@ const DIV = (a, b) => q(a).div(q(b));
 const EQ = (a, b) => q(a).eq(q(b));
 const LT = (a, b) => q(a).lt(q(b));
 const NOT = (b) => !b;
-const AND = (a, b) => a && b;
 /** Plus petit multiple commun strictement positif de deux entiers. */
 const LCM = (a, b) => { const x = q(a).n, y = q(b).n; return new Q((x / gcd(x, y)) * y); };
 const MAX = (list) => list.map(q).reduce((m, x) => (m.lt(x) ? x : m));
@@ -120,7 +119,7 @@ export function audit(bank) {
       if (/^احسب/.test(qu.statement)) {
         const first = islands(qu.statement)[0];
         const expr = first === undefined ? '' : first.replace(/^\s*[A-Za-z]\s*=\s*/, '');
-        if (expr && /(\\dfrac|\\times|\\div|[+\-])/.test(expr) && !/[a-zA-Z]/.test(expr.replace(/\\dfrac|\\times|\\div|\\left|\\right/g, '').replace(/\\text\{[^}]*\}/g, ''))) {
+        if (expr && /(\\dfrac|\\times|\\div|[+-])/.test(expr) && !/[a-zA-Z]/.test(expr.replace(/\\dfrac|\\times|\\div|\\left|\\right/g, '').replace(/\\text\{[^}]*\}/g, ''))) {
           try { if (!evalExpr(expr.replace(/\\left|\\right/g, '')).eq(q(e))) problems.push(`${key} : l'expression « ${expr} » ne vaut pas la clé ${e}`); } catch (err) { problems.push(`${key} : ${err.message}`); }
         }
       }

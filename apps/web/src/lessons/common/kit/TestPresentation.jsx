@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CheckCircle2, XCircle, Eye } from 'lucide-react';
 import { useClassroomMode, useClassroomStage, ClassroomFrame } from '../classroom';
 import { Feedback, ValidateButton } from '../components/LessonUI';
 import ModuleOverview from './ModuleOverview';
 import {
-  QUESTION_STATE, testQuestionStates, revealAll, revealOne, allRevealed,
+  QUESTION_STATE, testQuestionStates, allRevealed,
   clampQuestion, resolveTestNavigation, revealedTally,
 } from './testPresentation';
 
@@ -373,4 +373,3 @@ export function useTestPresentation() {
   return { presenting: isClassroomMode };
 }
 
-export { revealAll, revealOne };

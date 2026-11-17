@@ -3,7 +3,7 @@
  * `fh` = hauteur d'un étage (≥ 20 px, budgétée sur l'écran par le composant). Le niveau f occupe la bande
  * [edge(f), edge(f) + fh] ; la cabine à l'étage f (peut être fractionnaire) est centrée sur `y(f)`.
  */
-export const TOP = 9;
+const TOP = 9;
 export const LEVELS = 19; // −9 … 9
 
 /** Hauteur d'un étage budgétée sur la hauteur de l'écran : 20 px au moins, 30 au plus. */

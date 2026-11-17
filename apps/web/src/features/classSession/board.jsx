@@ -9,7 +9,7 @@
  *   « مختبري »   the lesson's own lab opened over the board.
  * They sit in ONE dock (`BoardTools`), the same on every board screen. An adult's tools: each does one thing, none has to be learnt.
  */
-import React, { createContext, lazy, Suspense, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, lazy, Suspense, useContext, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import {
   Maximize2,
@@ -151,7 +151,7 @@ export function Speaker({ name, team = null, label = BL.turn, wait = null, onCle
 
 const PENS = ['#dc2626', '#1d4ed8', '#0f172a'];
 /** Ink over the board. While it is open the pen takes every touch; « أغلق القلم » gives the board back. */
-export function Whiteboard({ onClose }) {
+function Whiteboard({ onClose }) {
   const [strokes, setStrokes] = useState([]);
   const [color, setColor] = useState(PENS[0]);
   const [page, setPage] = useState(false);
@@ -248,7 +248,7 @@ export function Whiteboard({ onClose }) {
 }
 
 /** A calm countdown: a tap goes off → 1 → 2 → 5 minutes → off. A soft bell at the end, never an alarm. */
-export function BoardTimer() {
+function BoardTimer() {
   const [left, setLeft] = useState(null);
   const [step, setStep] = useState(0);
   const PRESETS = [null, 60, 120, 300];

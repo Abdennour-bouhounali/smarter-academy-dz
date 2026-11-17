@@ -257,7 +257,7 @@ const flatten = (s) =>
   String(s)
     .toLowerCase()
     .replace(/[−‒–—―]/g, '-')
-    .replace(/\\left|\\right|\\,|\;|\\!|\\dfrac|\\frac|\\text|[{}$\s]/g, '')
+    .replace(/\\left|\\right|\\,|\\?;|\\!|\\dfrac|\\frac|\\text|[{}$\s]/g, '')
     .replace(/,/g, '.');
 
 /** Les écritures d'une réponse attendue qu'un indice ne doit pas contenir. */

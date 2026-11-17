@@ -42,12 +42,7 @@ export function isPoint(p) {
   return Boolean(p) && finite(p.x) && finite(p.y);
 }
 
-/** Un point sûr, ou null — la frontière entre le JSON relu et le calcul. */
-export function makePoint(x, y) {
-  return finite(x) && finite(y) ? { x, y } : null;
-}
-
-export function isMatrix(m) {
+function isMatrix(m) {
   return Boolean(m) && finite(m.a) && finite(m.b) && finite(m.c) && finite(m.d) && finite(m.e) && finite(m.f);
 }
 
@@ -100,7 +95,7 @@ export function rotation(angleDeg, center = ORIGIN) {
  * juste, et l'affichage l'arrondit. Sur les quatre, on rend −1, 0 ou 1 tels
  * quels, pour que « rotation de 180° » soit exactement `(x,y) ↦ (−x,−y)`.
  */
-export function exactCosSin(angleDeg) {
+function exactCosSin(angleDeg) {
   const normalized = normalizeAngle(angleDeg);
   if (Math.abs(normalized % 90) < EPSILON) {
     const quarter = ((Math.round(normalized / 90) % 4) + 4) % 4;
@@ -345,7 +340,7 @@ export function angleAt(a, b, c) {
  * à l'élève est sa valeur absolue (`area`), mais le signe, lui, est un fait
  * mathématique que l'instrument ne jette pas.
  */
-export function signedArea(vertices) {
+function signedArea(vertices) {
   if (!Array.isArray(vertices) || vertices.length < 3) return 0;
   let sum = 0;
   for (let i = 0; i < vertices.length; i += 1) {

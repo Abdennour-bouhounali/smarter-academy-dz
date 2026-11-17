@@ -32,7 +32,7 @@ Built and checked at 390×844, 768×1024 and 1366×768, for both accounts:
 - three unused imports (`Timer`, `ArrowRight`, `getLessonPath`).
 
 How it was found: `npm run check:unreached` (files) plus a one-off scan of exports, imports and string keys against the
-last commit. **Not yet a CI check**: unused exports and unused string keys still need the linter planned in Phase 0.
+last commit. Since 2026-11-17 this is a CI check: `npm run lint` and `npm run check:unused` (`CODE_HEALTH.md`).
 
 Rules that are now CODE, not proposal:
 

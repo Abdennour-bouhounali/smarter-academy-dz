@@ -109,8 +109,6 @@ const FIND = (pred, lo, hi, den = 1) => {
 };
 /** « quelle équation traduit l'énoncé ? » : chaque option évaluée en x0 (le nombre trouvé en rejouant l'énoncé). */
 const EQT = (eqs, x0, v = 'x') => eqs.map((e) => HOLDS(e, x0, v));
-/** options NUMÉRIQUES : celles qui sont solution de eq. */
-const NUMSOL = (eq, opts, v = 'x') => opts.map((o) => HOLDS(eq, o, v));
 /** options NUMÉRIQUES comparées à la solution. */
 const NUMEQ = (eq, opts, v = 'x') => opts.map((o) => solveQ(eq, v).eq(num(o)));
 /** classification : 'none' (pas de =), 'deg2' (puissance), 'first'. */
@@ -135,8 +133,6 @@ const DERIVE = (base, ops, options, v = 'x') => {
   let cur = parseEq(base, v); for (const op of ops) cur = applyOp(cur, op, v);
   return options.map((o) => { const [l, r] = parseEq(o, v); return l.eq(cur[0]) && r.eq(cur[1]); });
 };
-/** même solution que la base ? (équations équivalentes) */
-const SAMESOL = (base, options, v = 'x') => options.map((o) => solveQ(o, v).eq(solveQ(base, v)));
 /** identité polynomiale (valeurs entières) : quelles options sont égales à `expr` pour tout x testé ? */
 const POLYSAME = (expr, options) => {
   const f = (s) => new Function('x', `return ${s.replace(/\^/g, '**').replace(/(\d)\s*x/g, '$1*x').replace(/(\d)\s*\(/g, '$1*(').replace(/\)\s*\(/g, ')*(')};`);

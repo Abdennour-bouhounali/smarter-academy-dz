@@ -18,8 +18,8 @@
  */
 
 export const BANDS = Object.freeze({ SOLID: 'solid', CONSOLIDATE: 'consolidate', START: 'start', UNSEEN: 'unseen' });
-export const MAX_STEP = 2;
-export const DEFAULTS = Object.freeze({ maxQuestions: 36, roundSize: 12, prereqsPerItem: 2 });
+const MAX_STEP = 2;
+const DEFAULTS = Object.freeze({ maxQuestions: 36, roundSize: 12, prereqsPerItem: 2 });
 
 /**
  * L'état d'un item après ses réponses (dans l'ordre).

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import KidFigure from '../../primitives/KidFigure';
 import * as L from '../../logic/gearCrank';
 import { pitchRadius, gearPath, chainGeometry, chainOffset, arcPath } from './gearArt';
@@ -12,21 +12,20 @@ import { pitchRadius, gearPath, chainGeometry, chainOffset, arcPath } from './ge
  *    vert autour du moyeu avant à chaque tour de roue.
  * Repère de conception : hauteur 244, largeur Wd = (largeur du labo) / échelle ; tout est en unités de conception.
  */
-export const H = 244;
-export const GROUND = 216;
+const H = 244;
+const GROUND = 216;
 const RT = 50; // rayon extérieur du pneu
-export const CIRC = 2 * Math.PI * RT; // un tour de roue
+const CIRC = 2 * Math.PI * RT; // un tour de roue
 const HY = GROUND - RT; // hauteur des moyeux
 const RX = 76; // moyeu arrière
 const WB = 165; // empattement
-export const AX = RX + WB; // moyeu avant : l'ancre de la caméra
+const AX = RX + WB; // moyeu avant : l'ancre de la caméra
 export const BB = { x: RX + 86, y: HY + 14 }; // le pédalier
 const REAR = { x: RX, y: HY };
 const CRANK = 32;
 const CRANK0 = -35; // la manivelle au départ (degrés, sens horaire)
 const GRAB = 58; // le disque de prise (≥ 56 px à l'écran avec l'échelle minimale)
 
-const INK = '#1E1B4B';
 const FRAME = '#4F46E5';
 const ORANGE = '#F59E0B';
 const TEAL = '#0D9488';
@@ -137,7 +136,6 @@ export default function BikeScene({ lab, k, uid, width, scale, fl, mood, grabPro
   const flagAt = mapX0 + mapW * 0.8;
   const bikeAt = mapX0 + Math.min(mapW, mapW * 0.8 * (dist / Xf));
 
-  const riding = teeth > 0 && !lab.settled;
   const sweat = settled && j.over;
 
   return (

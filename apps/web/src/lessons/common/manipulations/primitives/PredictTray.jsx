@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useRef } from 'react';
+import { useEffect, useId, useRef } from 'react';
 
 /**
  * Le panneau de PRÉDICTION d'un labo joué dans le lecteur de mission (pilote 2026-11-07, étendu 2026-11-08) : même place que les

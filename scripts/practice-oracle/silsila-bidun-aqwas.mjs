@@ -525,7 +525,7 @@ export function audit(bank) {
         if (!KNOWN.test(s.id)) problems.push(`${key} : signature ${s.id} hors MISC-SILSILA-*`);
         if (dq(s.value).eq(dq(e))) problems.push(`${key} : la signature ${s.id} est la bonne réponse`);
       }
-      for (const [kind, ref, id, how, expr] of sigs) {
+      for (const [kind, ref, , how, expr] of sigs) {
         if (kind !== 'sig') continue;
         if (how === 'MISSING') continue;
         const w = WRONG(how, expr);

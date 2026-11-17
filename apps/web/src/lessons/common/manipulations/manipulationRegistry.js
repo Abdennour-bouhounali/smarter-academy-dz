@@ -200,7 +200,7 @@ export const MANIPULATION_COMPONENTS = {
   'fourth-gauges': lazy(() => import('./operations/FourthGauges')),
 };
 
-export const REGISTERED_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_COMPONENTS));
+const REGISTERED_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_COMPONENTS));
 
 export function assertRegistryComplete() {
   const missing = MANIPULATION_TYPE_IDS.filter((id) => !MANIPULATION_COMPONENTS[id]);

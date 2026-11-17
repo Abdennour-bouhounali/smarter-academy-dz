@@ -1,13 +1,13 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { marbleText, valueText } from '../../logic/marbleRun';
+import { useCallback, useRef, useState } from 'react';
+import { marbleText } from '../../logic/marbleRun';
 
 /**
  * Le décor de « مسار الكريات » : les billes (visage = le nombre ; vert d'eau positif, rouge négatif avec son « − »), le réservoir à
  * entonnoir de chaque lettre, les stations (copieuse, presse, basculeur, jonction), la corbeille de résultat et le mur à chevilles
  * du نادي العلوم. Tout est dessiné en SVG / DOM, paramétré par les props, texte arabe vivant.
  */
-export const LRI = '⁦';
-export const PDI = '⁩';
+const LRI = '⁦';
+const PDI = '⁩';
 export const iso = (s) => `${LRI}${s}${PDI}`;
 
 const TEAL = ['#5EEAD4', '#0D9488', '#115E59'];
@@ -176,4 +176,3 @@ export function Pegboard({ children, className = '', ...rest }) {
   );
 }
 
-export { valueText };

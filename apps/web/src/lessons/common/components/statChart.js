@@ -21,13 +21,13 @@
  * - le corps du diagramme se lit de GAUCHE à DROITE (ARABIC_RTL_CONTRACT « Charts read left to right ») ;
  *   les titres d'axes et les noms de catégories restent du texte arabe.
  */
-export const STAT_CHART_TYPES = Object.freeze(['bar', 'histogram', 'line', 'pie']);
-export const STAT_CHART_KEYS = Object.freeze([
+const STAT_CHART_TYPES = Object.freeze(['bar', 'histogram', 'line', 'pie']);
+const STAT_CHART_KEYS = Object.freeze([
   'kind', 'type', 'ariaLabel', 'caption', 'xTitle', 'yTitle', 'maxWidth',
   'y', 'values', 'bars', 'edges', 'polygon', 'missing', 'x', 'points', 'parts', 'half', 'show',
 ]);
-export const PIE_SHOW = Object.freeze(['none', 'value', 'angle', 'percent']);
-export const MAX_BARS = 12;
+const PIE_SHOW = Object.freeze(['none', 'value', 'angle', 'percent']);
+const MAX_BARS = 12;
 const EPS = 1e-9;
 const isNum = (v) => typeof v === 'number' && Number.isFinite(v);
 const onStep = (v, step) => Math.abs(v / step - Math.round(v / step)) < 1e-7;
@@ -136,7 +136,7 @@ export function validateStatChart(c) {
 
 /* ── Mise en page ─────────────────────────────────────────────────────── */
 
-export const CHART_W = 340;
+const CHART_W = 340;
 const PAD = { l: 38, r: 14, t: 12, b: 32 };
 const PLOT_H = 176;
 

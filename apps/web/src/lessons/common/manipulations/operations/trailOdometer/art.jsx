@@ -1,4 +1,3 @@
-import React from 'react';
 import KidFigure from '../../primitives/KidFigure';
 
 /**
@@ -12,7 +11,7 @@ export const COL = {
   leg: ['#10B981', '#2563EB', '#F97316'],
 };
 
-export function Cedar({ x, y, s = 1 }) {
+function Cedar({ x, y, s = 1 }) {
   return (
     <g transform={`translate(${x} ${y}) scale(${s})`} aria-hidden="true">
       <rect x={-2} y={0} width={4} height={9} fill={COL.trunk} />

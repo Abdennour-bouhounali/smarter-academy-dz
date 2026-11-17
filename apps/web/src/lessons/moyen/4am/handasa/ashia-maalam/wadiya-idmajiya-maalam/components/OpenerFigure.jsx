@@ -1,4 +1,3 @@
-import React from 'react';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { SITUATION_FIGURE } from '../content/figures';
 

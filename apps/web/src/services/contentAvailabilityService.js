@@ -32,21 +32,3 @@ export async function fetchClosedContent(token) {
   return { ...data.closed, access: data.access ?? null };
 }
 
-/**
- * L'inventaire des exercices d'une leçon — servi par le REGISTRE.
- *
- * Remplace la lecture directe de l'index embarqué : un exercice masqué ne
- * doit plus apparaître dans la liste, et pas seulement échouer à l'ouverture.
- */
-export async function fetchLessonExercises(token, lessonCode) {
-  const { ok, status, data } = await apiRequest(
-    `/lessons/${encodeURIComponent(lessonCode)}/exercises`,
-    { headers: { Authorization: `Bearer ${token}` } },
-  );
-
-  if (!ok) {
-    throw new ApiError(apiMessage('exercisesLoad', data, status), classifyStatus(status), status);
-  }
-
-  return data;
-}

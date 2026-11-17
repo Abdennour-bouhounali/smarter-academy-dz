@@ -40,11 +40,6 @@ export function updatePlanVersion(token, versionId, { entitlements, price, notes
   return call(`/admin/plan-versions/${encodeURIComponent(versionId)}`, send('PATCH', token, { entitlements, price, notes, pricingTiers }), 'Impossible de modifier la version.').then((d) => d.version);
 }
 
-/** La grille de prix par élève d'une version (brouillon), remplacée d'un bloc. */
-export function replacePricingTiers(token, versionId, pricingTiers) {
-  return call(`/admin/plan-versions/${encodeURIComponent(versionId)}/pricing`, send('PUT', token, { pricingTiers }), 'Impossible d’enregistrer la grille.').then((d) => d.version);
-}
-
 /** L'aperçu SERVEUR : pour N élèves, le palier, le prix unitaire et le total — par le calcul qui fait foi. */
 export function fetchPricingQuote(token, versionId, seats) {
   return call(`/admin/plan-versions/${encodeURIComponent(versionId)}/pricing/quote?seats=${encodeURIComponent(seats)}`, get(token), 'Impossible de calculer l’aperçu.').then((d) => d.quote);

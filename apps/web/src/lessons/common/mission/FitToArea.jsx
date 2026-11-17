@@ -1,14 +1,14 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FitRefitContext } from './missionPlayerContext';
 
 /** En dessous, le texte devient illisible : on accepte alors un défilement interne (dernier recours, rare). */
 export const MIN_FIT = 0.6;
 /** Au-dessus, un texte court deviendrait démesuré : on agrandit jusque-là, pas plus (owner, 2026-11-04 : « plus grand »). */
-export const MAX_GROW = 1.9;
+const MAX_GROW = 1.9;
 /** Un contenu agrandi vise cette part de la hauteur : il remplit l'écran sans toucher ses bords. */
-export const GROW_TARGET = 0.92;
+const GROW_TARGET = 0.92;
 /** Agrandir d'un pas plus petit ne vaut pas la ré-agencement (et ferait osciller) : on garde la taille actuelle. */
-export const GROW_STEP = 0.1;
+const GROW_STEP = 0.1;
 
 /**
  * UNE TAILLE POUR TOUTE LA LEÇON (propriétaire, 2026-11-04 : « la cohérence de taille des éléments semblables n'est pas
@@ -16,8 +16,8 @@ export const GROW_STEP = 0.1;
  * La taille ne dépend que de l'ÉCRAN : une colonne de lecture de READ_WIDTH, un écran de référence de READ_HEIGHT ; entre 1 et
  * UNIFORM_MAX, par pas de 0,05. Le découpage en pages se fait à cette taille ; seul un bloc trop haut pour un écran rétrécit.
  */
-export const READ_WIDTH = 1100;
-export const READ_HEIGHT = 560;
+const READ_WIDTH = 1100;
+const READ_HEIGHT = 560;
 export const UNIFORM_MAX = 1.6;
 export function uniformZoom(width, height) {
   if (!(width > 0) || !(height > 0)) return 1;
@@ -26,7 +26,7 @@ export function uniformZoom(width, height) {
 }
 
 /** Le temps qu'un écran met à se poser (polices, KaTeX, découpage) ; ensuite, ce qui est à l'écran ne bouge plus. */
-export const SETTLE_MS = 700;
+const SETTLE_MS = 700;
 
 /**
  * UN ÉCRAN POSÉ NE BOUGE PLUS (propriétaire, 2026-11-04 : « le nouveau contenu change la position, la taille de la police
@@ -37,7 +37,7 @@ export const SETTLE_MS = 700;
  * Jamais d'agrandissement : un écran ne grandit qu'à son arrivée. Pur — testé seul.
  */
 /** Le contenu n'occupe plus que moins de 70 % de la hauteur à sa taille actuelle : il a beaucoup rétréci. Pur — testé seul. */
-export const SHRINK_REFIT = 0.7;
+const SHRINK_REFIT = 0.7;
 export function shrunkALot({ natural, zoom, height }) {
   return natural > 0 && height > 0 && natural * zoom < height * SHRINK_REFIT;
 }

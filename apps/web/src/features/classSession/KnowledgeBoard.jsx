@@ -9,7 +9,7 @@
  * And for the TEACHER, on every card: the earlier lessons this الكفاءة is connected with, each one tap away.
  * Same shell, same dock as every board screen. Nothing is graded, nothing is recorded.
  */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AlertTriangle, ArrowLeft, ArrowRight, Brain, GraduationCap, Lightbulb, Link2, X } from 'lucide-react';
 import MathText from '../../lessons/common/components/MathText';

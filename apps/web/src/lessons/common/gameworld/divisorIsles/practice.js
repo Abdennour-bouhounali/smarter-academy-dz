@@ -11,7 +11,7 @@
  */
 import { divide } from './logic';
 
-export const WAVES_PER_LEVEL = 6;
+const WAVES_PER_LEVEL = 6;
 export const MAX_WAVES = 8; // a mistake brings the same kind of question back, as long as a gate is free on the rail
 export const PRACTICE_HEARTS = 3;
 

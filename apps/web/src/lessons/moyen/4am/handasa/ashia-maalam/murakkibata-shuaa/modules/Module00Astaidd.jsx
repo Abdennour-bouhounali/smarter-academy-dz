@@ -1,4 +1,3 @@
-import React from 'react';
 import { PrerequisiteDiagnostic } from '../../../../../../common/kit';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { prepQuestion } from '../../_unit/prepDiagnostic';

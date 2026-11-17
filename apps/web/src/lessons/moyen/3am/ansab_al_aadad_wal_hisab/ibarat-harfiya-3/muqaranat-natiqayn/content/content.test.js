@@ -5,7 +5,7 @@ import { LEVELS } from '../../../../../../common/manipulations/levels';
 import { PRESETS } from '../../../../../../common/manipulations/logic/differenceMeter';
 import { validateGeoFigure } from '../../../../../../common/components/geoFigure';
 import { LAB, KNOWLEDGE, METHOD_DIFF, PREP_ITEMS, GUIDE, RECALL_FRACTIONS } from './textbook';
-import { EXERCISES, EX, FINAL, FIGURE_E1, FIGURE_E8, ROWS_E1, ROWS_E2, ROWS_E3, ROWS_E4, ROWS_E5, ROWS_E6, ROWS_E7, ROWS_E8, PAIRS_E1, PAIRS_E4, LP } from './exercises';
+import { EXERCISES, FINAL, FIGURE_E1, FIGURE_E8, ROWS_E1, ROWS_E2, ROWS_E3, ROWS_E4, ROWS_E5, ROWS_E6, ROWS_E7, ROWS_E8, PAIRS_E1, PAIRS_E4, LP } from './exercises';
 import itqan from '../modules/Module08Itqan.jsx?raw';
 import astaidd from '../modules/Module00Astaidd.jsx?raw';
 import knowledgeSrc from '../knowledge.jsx?raw';

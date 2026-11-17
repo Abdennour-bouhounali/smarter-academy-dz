@@ -43,7 +43,7 @@ export const SHAPES = Object.freeze([
 
 export const SHAPE_IDS = Object.freeze(SHAPES.map((shape) => shape.id));
 
-export const DEFAULT_SHAPE = 'cube';
+const DEFAULT_SHAPE = 'cube';
 
 /** La lettre de chaque dimension dans les formules et sur le solide — celle des manuels. */
 export const PARAM_SYMBOLS = Object.freeze({ side: 'a', length: 'L', width: 'l', height: 'h', radius: 'r' });

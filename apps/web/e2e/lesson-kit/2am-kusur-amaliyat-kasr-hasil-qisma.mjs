@@ -143,7 +143,7 @@ for (const vp of SIZES) {
   await lay(page, 7); check((await verdict(page)) === 'over', `${tag} 2,7 ne suffit pas`);
   await vis(page, '[data-ml-rank="2"]').click();
   await page.waitForTimeout(200);
-  await lay(page, 66 - 60 + 0 > 0 ? 6 : 6);
+  await lay(page, 6);
   await page.screenshot({ path: `${OUT}/lab-beginner-cm-${vp.width}x${vp.height}.png` });
   // au rang 0,01 la fenêtre est [2,60 ; 2,70] : 2,66 = Home + 6 pas ; 2,67 = 7 pas
   check((await vis(page, '[data-ml-clip]').getAttribute('data-q')) === '2,66', `${tag} 2,66 : la fenêtre a zoomé`);

@@ -33,7 +33,7 @@ export const K25 = Object.freeze([25, 26, 27, 30, 33, 40, 46, 57]);
 export const TEXTBOOK_HOUR = 5; // 15:00, k = 1,6
 
 /** Tolérance d'un pronostic (cm) : le drapeau se pose au pas de 5 cm. */
-export const PREDICT_TOL = 10;
+const PREDICT_TOL = 10;
 /** Le pas du bâton et du drapeau (cm). */
 export const STEP = 5;
 
@@ -45,7 +45,7 @@ export const OBJECTS = Object.freeze([
   { id: 'lamp', lane: 3, x: 700, H: 300, known: true, install: true },
   { id: 'farid', lane: 4, x: 1250, H: 150, known: true },
 ]);
-export const INSTALL_ORDER = Object.freeze(['lamp', 'flag']);
+const INSTALL_ORDER = Object.freeze(['lamp', 'flag']);
 export const LANES = 5;
 export const STICK_MIN = 150;
 export const STICK_MAX = 1500;
@@ -68,8 +68,6 @@ export function parseHundredths(raw) {
   if (!/^\d+(\.\d{0,2})?$/.test(s)) return null;
   return Math.round(Number(s) * 100);
 }
-/** k écrit (« 1,6 ») pour l'heure i. */
-export const kText = (i) => m(K25[i] * 4);
 
 /* ── le monde ───────────────────────────────────────────────────────────── */
 
@@ -77,10 +75,6 @@ export const kText = (i) => m(K25[i] * 4);
 export function heightOf(s, id) {
   if (id === 'minaret') return s.minaret;
   return OBJECTS.find((o) => o.id === id).H;
-}
-export function footOf(s, id) {
-  if (id === 'stick') return s.stickX;
-  return OBJECTS.find((o) => o.id === id).x;
 }
 /** L'ombre (cm, entière) d'un objet de hauteur H à l'heure i. */
 export const shadowAt = (H, i) => (H * K25[i]) / 25;
@@ -209,7 +203,7 @@ export function setFlag(s, p) {
  * `discriminating` : à cette heure, « ajouter » et « multiplier » donnent-ils des ombres vraiment différentes ? Sinon
  * un pronostic juste NE PROUVE RIEN (à 12 h 30, k = 1).
  */
-export function classify(H, i, p) {
+function classify(H, i, p) {
   const truth = shadowAt(H, i);
   const stick = shadowAt(100, i);
   const models = [
@@ -248,7 +242,7 @@ export function install(s) {
 export const rulePredict = (rule, H) => (rule.op === '+' ? H + rule.num : (H * rule.num) / 100);
 
 /** La règle confrontée à TOUS les objets de hauteur connue présents, à l'heure i — exactement (pas de tolérance). */
-export function ruleCheck(s, rule, i = s.hour) {
+function ruleCheck(s, rule, i = s.hour) {
   const fits = present(s).filter((id) => OBJECTS.find((o) => o.id === id).known).map((id) => {
     const H = heightOf(s, id);
     const truth = shadowAt(H, i);
@@ -274,7 +268,7 @@ export function applyRule(s, op, num) {
  * Juger une hauteur proposée (cm) et RECONNAÎTRE la démarche fautive à partir du carnet de l'élève : l'ombre prise
  * pour la hauteur, le rapport retourné, la différence ajoutée, deux heures mélangées, la distance AB du manuel.
  */
-export function judgeHeight(s, hcm) {
+function judgeHeight(s, hcm) {
   const near = (v) => Math.abs(hcm - v) <= 1;
   if (near(s.minaret)) return fz({ kind: 'right' });
   const mins = s.notebook.filter((r) => r.obj === 'minaret');
@@ -409,7 +403,7 @@ export const QUIZZES = Object.freeze({
   trend: judgeTrend, fastest: judgeFastest, ratioSeed: judgeRatioSeed, predictReflect: judgePredictReflect, ruleReflect: judgeRuleReflect,
 });
 /** L'ordre pédagogique des checkpoints : مقران les pose dans cet ordre, un à la fois, dès qu'ils ont une réponse à juger. */
-export const CHECKPOINT_ORDER = Object.freeze(['trend', 'fastest', 'ratioSeed', 'predictReflect', 'ruleReflect']);
+const CHECKPOINT_ORDER = Object.freeze(['trend', 'fastest', 'ratioSeed', 'predictReflect', 'ruleReflect']);
 
 /**
  * Le PROCHAIN checkpoint que l'élève doit répondre pour avancer (null si aucun n'est encore posable, ou si tous

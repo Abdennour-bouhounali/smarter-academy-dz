@@ -46,7 +46,6 @@ function evalExpr(tex) {
   return v;
 }
 const optValue = (o) => num(o.replace(/\$/g, ''));
-const eachWrongFalse = (rows, key) => rows.forEach((r) => r.options.forEach((o, i) => expect(eqF(optValue(o), key(r)), `${r.label} ${o}`).toBe(i === r.correct)));
 const flip = (x) => negF(x);
 
 describe('حاصل قسمة عددين نسبيين — les exercices (clés recalculées en BigInt)', () => {

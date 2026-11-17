@@ -1,5 +1,5 @@
 import { getAllGrades } from '@smarter-academy/core';
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { AdminPage, useAdminLabels, Num } from '../adminUi';

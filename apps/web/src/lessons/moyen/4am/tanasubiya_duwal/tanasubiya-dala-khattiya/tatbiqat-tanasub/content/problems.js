@@ -30,7 +30,6 @@ export const PROBLEMS = [
     emoji: '💧',
     source: SOURCE,
     illustration: LESSON_CONFIG.lessonProblem.illustration,
-    illustration: LESSON_CONFIG.lessonProblem.illustration,
     statement: LESSON_CONFIG.lessonProblem.statement,
     data: [
       { id: 'cap', text: 'سعة الصهريج 40 مترًا مكعبًا، وكان مملوءًا تمامًا', useful: true },

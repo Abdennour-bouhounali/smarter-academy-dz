@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useProgress } from '../hooks/useProgress';
 import { useWorkspaceLayout } from '../../../context/WorkspaceLayoutContext';
 import { useLearningViewer } from '../../../features/learning/learningViewer';

@@ -13,7 +13,6 @@ const S = (arr) => ({ value: [...arr].sort((a, b) => a - b).join(', ') });
 /** division euclidienne par soustractions : [quotient, reste] */
 const ediv = (a, b) => { let qq = 0, r = a; while (r >= b) { r -= b; qq++; } return [qq, r]; };
 const rem = (a, b) => ediv(a, b)[1];
-const quo = (a, b) => ediv(a, b)[0];
 const divides = (d, n) => rem(n, d) === 0;
 /** k tel que x = n × k — lève si n ne divise pas x */
 const k = (x, n) => { const [qq, r] = ediv(x, n); if (r !== 0) throw new Error(`${n} ne divise pas ${x}`); return qq; };

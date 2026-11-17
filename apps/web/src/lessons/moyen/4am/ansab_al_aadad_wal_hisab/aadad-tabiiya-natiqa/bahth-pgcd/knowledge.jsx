@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { PROPERTIES, METHOD_DIFF, METHOD_EUCLID } from './content/textbook';
 

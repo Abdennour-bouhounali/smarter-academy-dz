@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Plus, Minus } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -415,7 +415,7 @@ function Bin({ kind, lab, setLab, k }) {
   );
 }
 
-function Shelf({ lab, setLab, k, advanced }) {
+function Shelf({ lab, setLab, k }) {
   const showPair = lab.tasks.some((tk) => tk.predict) || L.isFree(lab);
   return (
     <div className="flex items-stretch gap-1.5" data-bb-shelves>
@@ -428,7 +428,7 @@ function Shelf({ lab, setLab, k, advanced }) {
 
 /* ══════════════ La carte, le journal et l'altitude écrite ══════════════ */
 
-function CardRow({ lab, setLab, k, advanced }) {
+function CardRow({ lab, setLab, k }) {
   const [text, setText] = useState('');
   const free = L.isFree(lab);
   const task = L.taskOf(lab);
@@ -523,7 +523,7 @@ export function ruleOptions(lab, k, advanced) {
   return opt([k(`discovery.${key}.right`), k(`discovery.${key}.wrongA`), k(`discovery.${key}.wrongB`)], 0, [null, k(`discovery.${key}.whyA`), k(`discovery.${key}.whyB`)], advanced ? 1 : 2);
 }
 
-export function Formal({ lab, k, advanced }) {
+export function Formal({ k, advanced }) {
   if (advanced) {
     return (
       <div className="space-y-2 text-sm font-bold text-emerald-950" data-bb-formal="diff">

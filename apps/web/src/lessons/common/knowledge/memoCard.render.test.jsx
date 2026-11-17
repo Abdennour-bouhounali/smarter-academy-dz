@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import React from 'react';
 import katex from 'katex';
 import { renderToString } from 'react-dom/server';
 import '../../../i18n';

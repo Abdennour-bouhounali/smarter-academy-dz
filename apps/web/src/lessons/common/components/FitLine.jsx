@@ -1,10 +1,10 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 
 /** Jamais plus petit : sous ce facteur la formule devient illisible. */
-export const MIN_FIT = 0.55;
+const MIN_FIT = 0.55;
 
 /** Le facteur qui fait tenir une ligne de largeur naturelle `natural` dans `room` (≤ 1, ≥ MIN_FIT, arrondi au centième inférieur). */
-export function fitScale(natural, room, min = MIN_FIT) {
+function fitScale(natural, room, min = MIN_FIT) {
   if (!(natural > 0) || !(room > 0) || natural <= room) return 1;
   return Math.max(min, Math.floor((room / natural) * 100) / 100);
 }

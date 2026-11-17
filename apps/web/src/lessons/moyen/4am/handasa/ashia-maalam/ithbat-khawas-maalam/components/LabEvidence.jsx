@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../../common/components/MathText';
 
 /**
@@ -17,7 +16,7 @@ const WHY = {
   missing: (e) => ({ para: 'ينقص دليل متوازي الأضلاع', diag: 'ينقص دليل القطرين', side: 'ينقص دليل الضلعين المتتاليين', circ: 'ينقص دليل البعد عن المركز' }[e.need] ?? 'دليل ناقص'),
 };
 
-export function evidenceLine(e) {
+function evidenceLine(e) {
   if (!e) return null;
   const at = `$${e.held}(${e.at[0]}\\,;\\,${e.at[1]})$`;
   const claim = CLAIM[e.claim] ?? '';

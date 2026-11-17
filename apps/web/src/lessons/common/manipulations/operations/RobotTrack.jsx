@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Play, Eraser, Plus as PlusIcon, Ban } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -237,7 +237,7 @@ function Tile({ v, size, onFlip, flippable, k, id, drag = null, label = '' }) {
   );
 }
 
-function Lab({ lab, setLab, k, width, screenH, advanced, lead, cp }) {
+function Lab({ lab, setLab, k, width, advanced, lead, cp }) {
   const uid = `rt${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
   const free = L.isFree(lab);
   const task = L.taskOf(lab);

@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { LazyLessonKnowledgeProvider } from '../../lessons/common/knowledge/LazyKnowledgeProvider';
 import LessonIndex from '../../lessons/common/components/LessonIndex';

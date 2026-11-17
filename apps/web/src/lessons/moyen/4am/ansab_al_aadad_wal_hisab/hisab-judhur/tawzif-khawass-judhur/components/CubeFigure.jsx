@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Le cube ABCDEFGH de l'exercice 32 (p. 29), dessiné comme dans le manuel :

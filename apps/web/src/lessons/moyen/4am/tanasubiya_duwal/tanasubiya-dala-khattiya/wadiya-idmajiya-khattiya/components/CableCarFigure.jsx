@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Les figures de la synthèse, DESSINÉES (jamais une image) :

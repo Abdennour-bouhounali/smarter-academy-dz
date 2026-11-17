@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * LE TERRAIN — un vrai terrain de football, dessiné.
@@ -120,60 +119,3 @@ export default function PitchBackdrop({ variant = 'full', stripes = 9, className
   );
 }
 
-/**
- * LA SCÈNE — la vignette PAYSAGE d'une carte d'activité football.
- *
- * Ce n'est pas une aire de jeu : rien ne s'y pose, elle situe la situation en
- * un coup d'œil (gradins, pelouse tondue, but, ballon). Elle remplit son
- * cadre sans laisser de blanc, ce qu'un terrain vertical ne peut pas faire
- * dans une vignette large — d'où un dessin distinct plutôt qu'un recadrage.
- *
- * Décorative au sens strict : `aria-hidden`, aucune information
- * mathématique. Dessinée, jamais générée (root CLAUDE.md).
- */
-export function PitchScene({ className = '' }) {
-  return (
-    <svg viewBox="0 0 160 90" preserveAspectRatio="xMidYMid slice"
-      className={`h-full w-full ${className}`} aria-hidden="true" focusable="false">
-      <defs>
-        <linearGradient id="pitch-scene-sky" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#BFDBFE" /><stop offset="1" stopColor="#E0F2FE" />
-        </linearGradient>
-      </defs>
-
-      {/* ciel et gradins — ils cadrent, ils ne racontent rien */}
-      <rect x="0" y="0" width="160" height="34" fill="url(#pitch-scene-sky)" />
-      <rect x="0" y="23" width="160" height="11" fill="#CBD5E1" />
-      {Array.from({ length: 16 }, (_, i) => (
-        <rect key={i} x={i * 10 + 1.5} y="25.5" width="7.5" height="6" rx="1" fill="#94A3B8" />
-      ))}
-
-      {/* pelouse en bandes de tonte */}
-      <rect x="0" y="34" width="160" height="56" fill="#2F9E4F" />
-      {Array.from({ length: 7 }, (_, i) => (
-        <rect key={i} x={i * 23} y="34" width="23" height="56" fill={i % 2 === 0 ? '#36AC59' : '#2C9349'} />
-      ))}
-
-      {/* tracés, vus de côté */}
-      <g fill="none" stroke="#FFFFFF" strokeWidth="1.4" opacity="0.9">
-        <line x1="0" y1="41" x2="160" y2="41" />
-        <line x1="80" y1="41" x2="80" y2="90" />
-        <ellipse cx="80" cy="67" rx="20" ry="10" />
-        <rect x="6" y="49" width="26" height="30" />
-        <rect x="128" y="49" width="26" height="30" />
-      </g>
-
-      {/* le but, au fond */}
-      <rect x="12" y="29" width="26" height="12" fill="#FFFFFF" fillOpacity="0.2" stroke="#FFFFFF" strokeWidth="1.4" />
-
-      {/* le ballon, posé sur la pelouse */}
-      <g transform="translate(108 62)">
-        <ellipse cx="0" cy="9" rx="9" ry="2.4" fill="#0F172A" opacity="0.2" />
-        <circle cx="0" cy="0" r="8.5" fill="#FFFFFF" stroke="#1E293B" strokeWidth="1.2" />
-        <path d="M0 -4.6 L3 -2.4 L1.8 1.2 L-1.8 1.2 L-3 -2.4 Z" fill="#1E293B" />
-        <path d="M0 -8.5 L0 -4.6 M8.3 -2.2 L3 -2.4 M5.2 6.8 L1.8 1.2 M-5.2 6.8 L-1.8 1.2 M-8.3 -2.2 L-3 -2.4"
-          stroke="#1E293B" strokeWidth="1" strokeLinecap="round" />
-      </g>
-    </svg>
-  );
-}

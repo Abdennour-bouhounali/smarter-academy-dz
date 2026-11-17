@@ -4,7 +4,7 @@
  * At the end: what the class holds, the الكفاءات to revise, and the podium of the teams (the first in the middle).
  * Readable from the last row; nothing scrolls; never « wrong » as a verdict; nobody is shown as last.
  */
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, Check, Delete, Eye, X } from 'lucide-react';
 import MathText from '../../lessons/common/components/MathText';
 import KidFigure from '../../lessons/common/manipulations/primitives/KidFigure';

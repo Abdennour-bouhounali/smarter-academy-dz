@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { Timer, X, CheckCircle2, XCircle, RotateCcw, Trophy, ChevronLeft, Volume2, VolumeX } from 'lucide-react';

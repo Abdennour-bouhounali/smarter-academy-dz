@@ -27,18 +27,17 @@
 import * as V from '@smarter-academy/core/arithmetic/vectors.js';
 import * as Q from '@smarter-academy/core/arithmetic/linear.js';
 
-export const STAGES = Object.freeze(['meet', 'distance']);
-export const MEET_STEP = 0.5;
-export const CLAIMS = Object.freeze(['taxi', 'square', 'root']);
+const MEET_STEP = 0.5;
+const CLAIMS = Object.freeze(['taxi', 'square', 'root']);
 
 const toPt = (p) => (p && typeof p.x === 'object' ? p : V.point(p[0], p[1]));
 export const xy = (p) => V.coords(toPt(p));
-export const same = (p, q) => V.vecEq(toPt(p), toPt(q));
+const same = (p, q) => V.vecEq(toPt(p), toPt(q));
 const absF = (p) => (Q.cmp(p, 0) < 0 ? Q.neg(p) : p);
 const ORIGIN = V.point(0, 0);
 
 /** Le cadre (unités entières) qui contient des points, l'origine O et une maille de marge, rendu presque carré. */
-export function windowOf(points, { maxAspect = 1.6 } = {}) {
+function windowOf(points, { maxAspect = 1.6 } = {}) {
   const cs = [ORIGIN, ...points].map(xy);
   const xs = cs.map((c) => c[0]); const ys = cs.map((c) => c[1]);
   let xMin = Math.floor(Math.min(...xs)) - 1; let xMax = Math.ceil(Math.max(...xs)) + 1;
@@ -61,7 +60,7 @@ const insideOf = (win) => (p) => { const [x, y] = xy(p); return x >= win.xMin &&
 
 // ── l'étape « meet » (المنتصف) ───────────────────────────────────────────────
 
-export function initMeet({ A = [1, -1], B = [4, 3], names = ['A', 'B', 'I'] } = {}) {
+function initMeet({ A = [1, -1], B = [4, 3], names = ['A', 'B', 'I'] } = {}) {
   const a = toPt(A); const b = toPt(B);
   if (V.vecEq(a, b)) throw new Error('midpoint-distance: A = B');
   const I = V.midpoint(a, b);
@@ -101,14 +100,14 @@ export function judgeMeet(m, P = m.M) {
 }
 
 /** Le nœud (demi-maille) le plus proche d'un point continu, borné au cadre. */
-export function meetNodeAt(m, x, y) {
+function meetNodeAt(m, x, y) {
   const snap = (v, lo, hi) => Math.min(hi, Math.max(lo, Math.round(v / MEET_STEP) * MEET_STEP));
   return V.point(String(snap(x, m.win.xMin, m.win.xMax)), String(snap(y, m.win.yMin, m.win.yMax)));
 }
 
 // ── l'étape « distance » (المسافة) ───────────────────────────────────────────
 
-export function initDistance({ A = [1, -1], B = [4, 3], names = ['A', 'B', 'C'] } = {}) {
+function initDistance({ A = [1, -1], B = [4, 3], names = ['A', 'B', 'C'] } = {}) {
   const a = toPt(A); const b = toPt(B);
   const d = V.vec(a, b);
   if (Q.isZero(d.x) || Q.isZero(d.y)) throw new Error('midpoint-distance: [AB] parallèle à un axe, pas d’escalier');
@@ -144,7 +143,7 @@ export function judgeCorner(s, P = s.C) {
   return Object.freeze({ kind: 'offStreet' });
 }
 
-export function distNodeAt(s, x, y) {
+function distNodeAt(s, x, y) {
   const cx = Math.min(s.win.xMax, Math.max(s.win.xMin, Math.round(x)));
   const cy = Math.min(s.win.yMax, Math.max(s.win.yMin, Math.round(y)));
   return V.point(cx, cy);
@@ -274,7 +273,6 @@ export function distShortLatex(s) {
   return exact === `\\sqrt{${sq}}` ? `${a}${b} = ${exact}` : `${a}${b} = \\sqrt{${sq}} = ${exact}`;
 }
 export const rootLatex = (s) => V.distanceLatex(s.A, s.B);
-export const rootNumber = (s) => V.distanceNumber(s.A, s.B);
 /** La distance exacte en texte (« 5 », « 2√13 ») pour une étiquette SVG. */
 export const rootPlain = (s) => V.distanceText(s.A, s.B);
 

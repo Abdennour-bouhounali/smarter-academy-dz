@@ -8,12 +8,11 @@
  * (métadonnées EXIF/GPS retirées) — ceci n'est qu'un confort de débit.
  */
 export const MAX_IMAGES_PER_STEP = 3;
-export const MAX_SIDE = 1600;
-export const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
-export const JPEG_QUALITY = 0.85;
+const MAX_SIDE = 1600;
+const JPEG_QUALITY = 0.85;
 
 /** Les codes de refus du serveur qui ont leur phrase (sinon : `generic`). */
-export const IMAGE_ERROR_CODES = Object.freeze(['image_unsupported', 'image_too_large', 'image_limit_reached', 'answer_locked']);
+const IMAGE_ERROR_CODES = Object.freeze(['image_unsupported', 'image_too_large', 'image_limit_reached', 'answer_locked']);
 
 /** Les dimensions ramenées dans un carré de `max` (jamais agrandies). */
 export function fitWithin(width, height, max = MAX_SIDE) {

@@ -12,7 +12,7 @@ export const UPRIGHT_PHONE = '(max-width: 767px) and (orientation: portrait)';
  * (2026-11-16, « font size must be always readable »). At 13 the smallest label of the game (.82rem) is still 10.7 px;
  * what no longer fits scrolls inside its box (Fit.jsx) — it is never shrunk further.
  */
-export const COMPACT_ROOT_PX = 13;
+const COMPACT_ROOT_PX = 13;
 /** The colour behind the game: a phone shows the page's background beside its camera cut-out. */
 const NIGHT = '#0b1a3a';
 

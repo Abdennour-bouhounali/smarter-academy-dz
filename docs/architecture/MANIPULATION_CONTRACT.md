@@ -52,7 +52,7 @@ manipulations/
 ├── themeWords.js               the Arabic words of a theme (lesson.manipulation.json) merged with a lesson's `context`
 ├── primitives/                 shared building blocks, never duplicated by a type
 │   ├── PlayerFigure.jsx + PitchBackdrop.jsx   a drawn footballer and a real-proportioned pitch (2:3)
-│   ├── BookFigure.jsx + BookRectangle.jsx     the library's book, and n of them in shelves of `cols`
+│   ├── BookFigure.jsx                         `BOOK_PALETTE`, the cover tints shared by the labs that draw books
 │   ├── ItemFigure.jsx + itemThemes.js         the drawn objects of the other worlds (flower, ball,
 │   │                                          shirt, pen, notebook, spoon, cup) and which theme draws which
 │   ├── GroupingScene.jsx + groupingLayout.js  a and b objects in k identical groups, the rest apart
@@ -106,7 +106,7 @@ tile, a drop zone, or a piece of mathematics.
 
 **One unit, one set of objects.** Types that share a lesson's story draw the *same* objects:
 `divisor-explorer-books` shelves 420 books and `factor-pairs` lays the same books out as
-rectangles (`BookRectangle`), both coloured from `primitives/BookFigure.jsx`'s `BOOK_PALETTE`,
+rectangles, both coloured from `primitives/BookFigure.jsx`'s `BOOK_PALETTE`,
 so the student recognises the library from one module to the next instead of learning a
 second abstraction. (The palette was duplicated in the old standalone lab and locked by a
 test; the duplication and the test are gone since 2026-09-30.)
@@ -2344,7 +2344,7 @@ Ten steps, in this order. Steps 1, 2 and 5 are enforced by tests that fail other
 8. **Extend the e2e** `manipulations.mjs` with the drag, the tap alternative, the keyboard path,
    reset, and the no-mode-toggle assertion.
 9. If the manipulation must **draw a real object**, extend parameterised inline SVG (see
-   `primitives/BookFigure.jsx`, `PlayerFigure.jsx`) and put any exact geometry in a pure,
+   `primitives/PlayerFigure.jsx`, `KidFigure.jsx`) and put any exact geometry in a pure,
    unit-tested module swept over its whole range (see `logic/bookshelf.js` →
    `bookcaseLayout`, `teamFormation.js`). Never a raster image — root `CLAUDE.md`.
 10. **Write the design sheet** of `MANIPULATION_DNA.md` §7 in the header, next to the five

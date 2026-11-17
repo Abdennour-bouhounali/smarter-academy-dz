@@ -28,7 +28,7 @@ const TRACK = 92;
  * x de gauche à droite et contredirait la courbe. Seuls les libellés de
  * ligne (« اتجاه التغيّر ») suivent la page.
  */
-export default function VariationTable({ table, functionName = 'f', derivativeSource = null, rows = 4 }) {
+export default function VariationTable({ table, functionName = 'f', rows = 4 }) {
   const { t } = useTranslation('mathlab');
 
   if (!table?.ok) {

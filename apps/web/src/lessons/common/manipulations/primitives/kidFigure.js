@@ -40,8 +40,8 @@ export const SCARVES = {
 };
 
 /** La tête agrandie et le tronc descendu d'autant (en centièmes de la taille). */
-export const HEAD_SCALE = 1.14;
-export const TORSO_DROP = 8 * (HEAD_SCALE - 1) * 2;
+const HEAD_SCALE = 1.14;
+const TORSO_DROP = 8 * (HEAD_SCALE - 1) * 2;
 
 /** Les repères verticaux et horizontaux du corps, dans les coordonnées de la scène. */
 export function kidGeometry({ cx, top, foot }) {

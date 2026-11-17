@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useReducedMotion } from 'framer-motion';
 
@@ -21,7 +21,7 @@ const PILL_NAME = (name) => name.replace(/^ال/, '');
 
 export default function CommaSlip({
   role, str, pos, zl = 0, zr = 0, layout, ranks, editable = false, onRelease, onRemoveZero, changed = null,
-  written, labels, showRanks = true, knobSize = 48, laneH = 60, idx = {},
+  written, labels, showRanks = true, knobSize = 48, laneH = 60,
 }) {
   const reduce = useReducedMotion();
   const len = str.length;

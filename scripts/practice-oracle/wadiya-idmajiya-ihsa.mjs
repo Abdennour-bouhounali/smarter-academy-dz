@@ -175,7 +175,6 @@ function freqByMean(v, f, idx, m) {
 function round0(x) { const v = q(x); let n = v.n / v.d; if (v.sub(q(String(n))).sub(q('1/2')).n >= 0n) n += 1n; return q(String(n)); }
 
 const F = D.fig; const S = D.s;
-const barV = (fig, label) => { const b = fig.bars.find((x) => x.label === label); if (!b || b.missing) throw new Error(`barre « ${label} » absente`); return q(b.value); };
 const barsV = (fig) => fig.bars.map((b) => b.value);
 const barLabels = (fig) => fig.bars.map((b) => Number(b.label));
 const pts = (fig) => fig.points.map((p) => p[1]);

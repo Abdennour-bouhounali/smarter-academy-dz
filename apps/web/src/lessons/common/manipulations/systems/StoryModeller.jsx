@@ -11,7 +11,6 @@ import DraggableObject from '../primitives/DraggableObject';
 import DropZone from '../primitives/DropZone';
 import LabFold from '../primitives/LabFold';
 import MovablePanel from '../primitives/MovablePanel';
-import EquationDisplay from '../primitives/EquationDisplay';
 import MathText from '../../components/MathText';
 import { useLabCheckpoint } from '../primitives/LabCheckpoint';
 import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';

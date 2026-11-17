@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { Check, Minus, Plus, ChevronLeft } from 'lucide-react';
@@ -187,7 +187,6 @@ export default function ComponentCalc({
   const fr = L.frame(lab, { width: sceneW, height: sceneH, pad: mapPad });
 
   /* ── la pose : le point tenu, nœud par nœud ── */
-  const held = calc ? null : m.point;
   const [dragging, setDragging] = useState(false);
   const settle = useRef(null);
   useEffect(() => () => { if (settle.current) clearTimeout(settle.current); }, []);

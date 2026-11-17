@@ -22,7 +22,6 @@ const round = (v, d) => Math.round(v * 10 ** d) / 10 ** d;
 const expectedOf = (id, part) => PROBLEM[id].parts[part].steps.filter((s) => s.kind === 'numeric').map((s) => s.expected);
 const choicesOf = (id, part) => PROBLEM[id].parts[part].steps.filter((s) => s.kind === 'choice');
 const correctOf = (id, part, k) => { const s = choicesOf(id, part)[k]; return s.options[s.correct]; };
-const ptTex = (name, [x, y]) => `$${name}(${x}\\,;\\,${y})$`;
 
 // ── Vérificateur des RELATIONS écrites (statement, prompt, explain, options, lines) ──
 // Chaque formule $…$ est découpée sur = < > \neq \approx ; chaque membre purement numérique (entiers, décimaux 2{,}24,

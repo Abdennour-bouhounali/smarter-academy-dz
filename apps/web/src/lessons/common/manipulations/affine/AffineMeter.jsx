@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { Minus, Plus, ArrowLeft } from 'lucide-react';
@@ -767,7 +767,7 @@ export const QUESTIONS = {
       explain: Cq(k, 'fixed.explainDouble', { ...o, b: D(L.numTex(b)) }),
     };
   },
-  step: (lab, k, w, FN) => {
+  step: (lab, k, w) => {
     const [x1, x2] = lab.trials;
     const f1 = L.meterAt({ ...lab, stage: 'image' }, x1);
     const f2 = L.meterAt({ ...lab, stage: 'image' }, x2);

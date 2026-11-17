@@ -21,8 +21,8 @@
  *   scaleEffect('3/5')                     → { length: 3/5, area: 9/25, volume: 27/125 }               (نشاط 6)
  *   frustumVolume({ R: 20, r: 15, h: 28 }) → π/3·h·(R² + Rr + r²)                                      (تحدّ)
  */
-import { frac, parseNumber, add, sub, mul, div, cmp, eq, toNumber, isInteger, fracLatex } from './linear.js';
-import { surd, sqrt, square, surdMul, surdNumber, surdLatex, surdEq, roundTo } from './trigonometry.js';
+import { frac, parseNumber, add, sub, mul, div, cmp, eq, toNumber, fracLatex } from './linear.js';
+import { surd, sqrt, surdMul, surdNumber, surdLatex, surdEq, roundTo } from './trigonometry.js';
 
 const F = (v) => (typeof v === 'object' && v !== null && 'n' in v ? v : Number.isInteger(v) ? frac(v) : parseFrac(v));
 function parseFrac(v) {
@@ -38,7 +38,7 @@ export { roundTo };
 // ── Points de l'espace ───────────────────────────────────────────────────────
 
 /** Un point [x, y, z] (ou { x, y, z }) → trois fractions. */
-export const point3 = (p) => {
+const point3 = (p) => {
   const a = Array.isArray(p) ? p : [p.x, p.y, p.z];
   if (a.length !== 3) throw new Error('un point de l’espace a trois coordonnées');
   return Object.freeze(a.map(F));
@@ -73,9 +73,9 @@ export const piRound = (k, digits = 2) => roundTo(toNumber(F(k)) * Math.PI, digi
 
 // ── 1. La كرة et la جلّة ─────────────────────────────────────────────────────
 
-export const SURFACE = 'surface';
-export const INSIDE = 'inside';
-export const OUTSIDE = 'outside';
+const SURFACE = 'surface';
+const INSIDE = 'inside';
+const OUTSIDE = 'outside';
 /**
  * La position d'un point M par rapport à la sphère (δ) et à la boule (β) de centre O et de rayon R — comparaison EXACTE
  * de OM² et R² : `surface` (M ∈ (δ), donc M ∈ (β)), `inside` (OM < R : M ∈ (β) mais M ∉ (δ)), `outside` (ni l'une ni l'autre).
@@ -114,7 +114,7 @@ export function cubeRoot(p) {
   return a === null || b === null ? null : frac(a, b);
 }
 /** La racine carrée EXACTE d'une fraction (9/25 → 3/5), sinon null. */
-export function squareRootRational(p) {
+function squareRootRational(p) {
   const s = sqrt(F(p));
   return s.r === 1 ? s.q : null;
 }
@@ -165,7 +165,6 @@ export function frustumVolume({ R, r, h }) {
 
 // ── 3. Les sections planes ───────────────────────────────────────────────────
 
-export const SECTION_KINDS = Object.freeze(['none', 'point', 'circle', 'great-circle', 'rectangle', 'segment', 'square', 'polygon']);
 /**
  * Section d'une sphère de rayon R par un plan à la distance h du centre (manuel : h = OA) :
  * h > R → 'none' ; h = R → 'point' (tangence) ; 0 < h < R → 'circle' de rayon √(R² − h²) (Pythagore dans OAM) ;
@@ -300,4 +299,3 @@ export const m3ToLitres = (v) => mul(F(v), frac(1000));
 export const lengthLatex = (x) => (x && typeof x === 'object' && 'r' in x ? surdLatex(x) : fracLatex(F(x)));
 /** Valeur décimale d'une longueur exacte (fraction ou surd). */
 export const lengthNumber = (x) => (x && typeof x === 'object' && 'r' in x ? surdNumber(x) : num(x));
-export { isInteger, square };

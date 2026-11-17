@@ -518,7 +518,6 @@ function HeredityBuilder({ exercise, placed, allGreen, onChange, announce, t }) 
       {/* Ce qui est posé, dans l'ordre. */}
       <ol className="sa-ml-lg__chain" data-ml-lg-rec-placed>
         {placed.map((id, i) => {
-          const link = chain.find((item) => item.id === id);
           const wrong = order.firstWrong === i;
 
           return (
@@ -577,7 +576,7 @@ function HeredityBuilder({ exercise, placed, allGreen, onChange, announce, t }) 
 /* ── La notation ───────────────────────────────────────────────────────── */
 
 /** `uₙ < 3` — la proposition telle qu'elle s'écrit. */
-export function propositionText(proposition) {
+function propositionText(proposition) {
   return `${proposition.left} ${proposition.relation} ${proposition.right}`;
 }
 
@@ -587,7 +586,7 @@ export function propositionText(proposition) {
  * On remplace l'indice `ₙ` par le chiffre en indice : c'est ce que l'élève
  * écrit dans son cahier, et c'est ce qui rend la marche lisible.
  */
-export function claimText(proposition, n) {
+function claimText(proposition, n) {
   const at = (side) => String(side ?? '').replace(/ₙ/g, subscript(n));
 
   return `${at(proposition.left)} ${proposition.relation} ${at(proposition.right)}`;
@@ -596,14 +595,14 @@ export function claimText(proposition, n) {
 const SUBSCRIPTS = '₀₁₂₃₄₅₆₇₈₉';
 
 /** Un entier en chiffres indices : 12 → ₁₂. */
-export function subscript(n) {
+function subscript(n) {
   const value = Math.abs(Math.floor(n));
 
   return String(value).split('').map((d) => SUBSCRIPTS[Number(d)]).join('');
 }
 
 /** La définition d'une suite, telle qu'elle se lit au tableau (§37). */
-export function definitionText(sequence) {
+function definitionText(sequence) {
   const { name } = sequence;
   if (sequence.kind === 'derived') return `${name}ₙ = ${pretty(sequence.rule)}`;
   if (sequence.kind === 'explicit') return `${name}ₙ = ${pretty(sequence.rule)}`;

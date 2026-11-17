@@ -13,7 +13,7 @@
  * white surfaces, dark ink, grey for what is secondary; the dark tone marks only what is pressed (the main button, the
  * numbers of the hour, a door under the hand). No gradient, no colour per tool; green only on « أساسي », where it means something.
  */
-import React, { lazy, Suspense, useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { lessonFilePagePath } from './lessonFileDoc';
 import {

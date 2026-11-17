@@ -17,7 +17,7 @@ const B = (v) => BigInt(v);
 const gcd = (a, b) => { a = a < 0n ? -a : a; b = b < 0n ? -b : b; while (b) [a, b] = [b, a % b]; return a; };
 const Q = (n, d = 1n) => { if (d < 0n) { n = -n; d = -d; } const g = gcd(n, d) || 1n; return { n: n / g, d: d / g }; };
 const lit = (s) => {
-  const t = String(s).replace(/\{,\}/g, '.').replace(/[\$,]/g, (c) => (c === ',' ? '.' : '')).replace(/−/g, '-').trim();
+  const t = String(s).replace(/\{,\}/g, '.').replace(/[$,]/g, (c) => (c === ',' ? '.' : '')).replace(/−/g, '-').trim();
   const neg = t.startsWith('-'); const [i, f = ''] = t.replace('-', '').split('.');
   return Q((neg ? -1n : 1n) * B(i + f), 10n ** B(f.length));
 };

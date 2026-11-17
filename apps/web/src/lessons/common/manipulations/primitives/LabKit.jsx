@@ -1,4 +1,3 @@
-import React from 'react';
 import { Minus, Plus, Check } from 'lucide-react';
 
 /**
@@ -36,7 +35,7 @@ export function StageFrame({ className = '', children, ...rest }) {
 }
 
 /** La puce de question (« من الأطول؟ ») : une icône lucide + un texte court. */
-export function QuestionChip({ icon: Icon, children, className = '' }) {
+function QuestionChip({ icon: Icon, children, className = '' }) {
   return (
     <span className={`inline-flex items-center gap-1.5 rounded-full bg-indigo-50 px-3 py-1 text-sm font-bold text-indigo-700 ${className}`}>
       {Icon && <Icon className="h-4 w-4" aria-hidden="true" />}
@@ -190,17 +189,6 @@ export function NamePill({ active = false, className = '', children, ...rest }) 
     <span className={`inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-1 text-base font-black ${active ? 'bg-gradient-to-b from-indigo-500 to-indigo-600 text-white shadow-[0_6px_14px_-8px_rgba(79,70,229,0.9)]' : 'bg-indigo-100 text-indigo-900'} ${className}`} {...rest}>
       {children}
     </span>
-  );
-}
-
-/** Une note douce (lavande) avec une icône : elle GUIDE le geste, elle ne donne jamais la règle. */
-export function LabNote({ icon: Icon, tone = 'indigo', className = '', children, ...rest }) {
-  const tones = { indigo: 'bg-[#F1F2FF] text-indigo-900', amber: 'bg-amber-50 text-amber-900', emerald: 'bg-emerald-50 text-emerald-900', rose: 'bg-rose-50 text-rose-900' };
-  return (
-    <div className={`flex items-start gap-2.5 rounded-2xl px-3.5 py-2.5 text-sm font-semibold leading-relaxed ${tones[tone] ?? tones.indigo} ${className}`} {...rest}>
-      {Icon && <Icon className="mt-0.5 h-5 w-5 shrink-0 opacity-80" aria-hidden="true" />}
-      <div className="min-w-0">{children}</div>
-    </div>
   );
 }
 

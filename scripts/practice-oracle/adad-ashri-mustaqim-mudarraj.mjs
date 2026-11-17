@@ -15,13 +15,11 @@
 import { R, C } from './helpers.mjs';
 import { val } from './muqaranat-adad-ashriya.mjs';
 
-const B = (v) => BigInt(v);
 const eqQ = (x, y) => x.n === y.n && x.d === y.d;
 const cmpQ = (x, y) => { const l = x.n * y.d; const r = y.n * x.d; return l < r ? -1 : l > r ? 1 : 0; };
 const lit = (s) => val(String(s));
 const mulQ = (x, y) => val(`(${x.n}/${x.d})*(${y.n}/${y.d})`);
 const floorQ = (x) => { const q = x.n / x.d; return x.n % x.d !== 0n && x.n < 0n ? q - 1n : q; };
-const asInt = (x) => { if (x.d !== 1n) throw new Error(`${x.n}/${x.d} n'est pas entier`); return x.n; };
 const decText = (x) => {
   let d = x.d; for (const p of [2n, 5n]) while (d % p === 0n) d /= p;
   if (d !== 1n) throw new Error(`${x.n}/${x.d} n'est pas un nombre décimal`);

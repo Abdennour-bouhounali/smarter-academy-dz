@@ -25,7 +25,7 @@ import { toLatinDigits } from '../numberFormat.js';
  * BigInt : la comparaison reste EXACTE, et la borne est celle du nombre lui-même.
  * Miroir : apps/api/app/Domain/Practice/Support/Rational.php (bcmath).
  */
-export const MAX_SAFE_COMPONENT = Number.MAX_SAFE_INTEGER; // 2^53 − 1
+const MAX_SAFE_COMPONENT = Number.MAX_SAFE_INTEGER; // 2^53 − 1
 
 const bigGcd = (a, b) => {
   a = a < 0n ? -a : a;
@@ -67,7 +67,7 @@ export function normalizeNumeric(raw) {
     .replace(/\u2215/g, '/')
     .replace(/[−‒–—―]/g, '-')
     .replace(/[\s   ]/g, '')
-    .replace(/\\left|\\right|\\,|\;|\\!|\\ /g, '')
+    .replace(/\\left|\\right|\\,|\\?;|\\!|\\ /g, '')
     .replace(/^\$|\$$/g, '')
     .replace(/,/g, '.');
 }

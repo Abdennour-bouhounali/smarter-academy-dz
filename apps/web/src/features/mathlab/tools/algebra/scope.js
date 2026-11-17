@@ -1,4 +1,4 @@
-import { ALGEBRA_SECTIONS, DEFAULT_FACTOR_SOURCE, MOYEN_FACTOR_SOURCE } from './algebraState.js';
+import { ALGEBRA_SECTIONS } from './algebraState.js';
 import { FUNCTION_FAMILIES } from './functions.js';
 import { FACTOR_EXAMPLES, FUNCTION_EXAMPLES, SIMPLIFY_EXAMPLES } from './examples.js';
 
@@ -98,7 +98,3 @@ export function clampToFeatures(data, features) {
   return next;
 }
 
-/** L'ouverture d'un document neuf dans ce مخبر. */
-export function initialFactorSource(capabilities) {
-  return capabilities?.factor?.methods === 'moyen' ? MOYEN_FACTOR_SOURCE : DEFAULT_FACTOR_SOURCE;
-}

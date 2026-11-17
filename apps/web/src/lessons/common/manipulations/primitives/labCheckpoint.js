@@ -28,7 +28,7 @@ export const MAX_TRIES = 3;
 export const fresh = () => ({ qi: 0, tries: 0, wrong: [], status: 'ask', done: false, log: [] });
 
 /** Chiffres arabes → latins, « ÷ » → « / », espaces retirés. */
-export function latinAnswer(text) {
+function latinAnswer(text) {
   return String(text ?? '')
     .replace(/[٠-٩]/g, (d) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)))
     .replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)))

@@ -19,13 +19,11 @@ export function Q(n, d = 1) {
   const g = gcd(n, d);
   return Object.freeze({ n: (s * n) / g, d: (s * d) / g });
 }
-export const ZERO = Q(0);
 export const add = (x, y) => Q(x.n * y.d + y.n * x.d, x.d * y.d);
-export const sub = (x, y) => Q(x.n * y.d - y.n * x.d, x.d * y.d);
-export const mul = (x, y) => Q(x.n * y.n, x.d * y.d);
+const sub = (x, y) => Q(x.n * y.d - y.n * x.d, x.d * y.d);
+const mul = (x, y) => Q(x.n * y.n, x.d * y.d);
 export const div = (x, y) => { if (y.n === 0) throw new Error('division par zéro'); return Q(x.n * y.d, x.d * y.n); };
 export const eq = (x, y) => x.n === y.n && x.d === y.d;
-export const lt = (x, y) => x.n * y.d < y.n * x.d;
 export const isNeg = (x) => x.n < 0;
 export const isInt = (x) => x.d === 1;
 
@@ -68,7 +66,7 @@ export function latex(x) {
 }
 
 export const KINDS = Object.freeze(['add', 'sub', 'rsub', 'mul', 'div']);
-export const INVERSE = Object.freeze({ add: 'sub', sub: 'add', rsub: 'rsub', mul: 'div', div: 'mul' });
+const INVERSE = Object.freeze({ add: 'sub', sub: 'add', rsub: 'rsub', mul: 'div', div: 'mul' });
 export const inverseKind = (kind) => { if (!INVERSE[kind]) throw new Error(`carte inconnue : ${kind}`); return INVERSE[kind]; };
 /** La famille d'une carte : additive (+ − et « a − ») ou multiplicative (× ÷). */
 export const family = (kind) => (kind === 'mul' || kind === 'div' ? 'multiplicative' : 'additive');
@@ -81,7 +79,7 @@ export function card(kind, a) {
   if ((kind === 'mul' || kind === 'div') && q.n === 0) throw new Error('un facteur nul');
   return Object.freeze({ kind, a: q });
 }
-export const inverse = (c) => card(inverseKind(c.kind), c.a);
+const inverse = (c) => card(inverseKind(c.kind), c.a);
 
 /** Ce que rend la machine quand on lui donne `x`. */
 export function run(c, x) {
@@ -128,5 +126,3 @@ export function judgePick(c, pickKind, out) {
   return { ok: false, model, found, fwd };
 }
 
-/** La contre-épreuve d'un nombre trouvé : ce qui sort de la machine (peut être négatif ou fractionnaire quand le trou est mal rempli). */
-export const forward = (c, x) => run(c, x);

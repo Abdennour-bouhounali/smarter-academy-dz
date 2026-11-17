@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { POINTER_COLORS, DEFAULT_POINTER_COLOR, pointerDiameter, spotlightRadius } from './classroomPointer';
 
 /**

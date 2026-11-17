@@ -11,7 +11,7 @@ import {
 import { TREE_PRESETS, getTreePreset } from './treePresets.js';
 
 /** Le nom lisible d'un nœud : « الجذر », ou le chemin qui y mène (« A ثم B »). */
-export function nodeName(tree, key, t) {
+function nodeName(tree, key, t) {
   if (key === '') return t('tools.probabilityStats.tree.root');
   const path = parsePathKey(key);
   const labels = path.map((_, i) => normalizeLabel(branchAt(tree, path.slice(0, i + 1))?.label ?? '?'));

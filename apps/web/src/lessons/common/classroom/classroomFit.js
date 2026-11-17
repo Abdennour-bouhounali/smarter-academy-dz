@@ -42,7 +42,7 @@ export const FIT_EPSILON = 0.015;
  * Part de la zone qu'on laisse volontairement libre avant d'oser regrandir :
  * regrandir puis déborder puis réduire ferait vibrer la présentation.
  */
-export const GROW_SLACK = 0.06;
+const GROW_SLACK = 0.06;
 
 /** Ramène une échelle utilisateur sur un palier connu (le plus proche). */
 export function clampScale(value) {

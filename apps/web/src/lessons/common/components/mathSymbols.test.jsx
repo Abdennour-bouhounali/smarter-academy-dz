@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import React from 'react';
 import { symbolsFor } from './mathSymbols';
 
 const flat = (groups) => Object.fromEntries(groups.map((g) => [g.id, g.symbols]));

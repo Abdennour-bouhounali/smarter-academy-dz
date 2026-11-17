@@ -18,7 +18,7 @@ import { primeFactorization } from './numberTheory.js';
 /** Les bornes : un exposant de collège, une base lisible, un résultat qui tient à l'écran. */
 export const MAX_BASE = 1000;
 export const MAX_EXPONENT = 30;
-export const MAX_RESULT_DIGITS = 60;
+const MAX_RESULT_DIGITS = 60;
 /** Au-delà, le produit développé s'abrège : `2 \times 2 \times \cdots \times 2` (n facteurs). */
 export const EXPAND_LIMIT = 8;
 export const MAX_ROOT = 10_000_000;
@@ -42,7 +42,7 @@ export function readIntegerInRange(raw, max) {
 }
 
 /** Le produit développé `a × a × … × a` (n facteurs), abrégé au-delà d'EXPAND_LIMIT. */
-export function expandedProduct(base, n) {
+function expandedProduct(base, n) {
   const b = baseLatex(base);
   if (n <= 0) return '';
   if (n === 1) return b;

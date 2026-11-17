@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import i18n from '../../../../i18n';
@@ -248,7 +247,7 @@ describe('rank-exchange — onboarding (prop `coach`, prototype)', () => {
 
 describe('rank-exchange — questions pendant le labo (LabCheckpoint)', () => {
   const k = (key, o) => i18n.t(`lesson:manipulation.rankExchange.${key}`, o);
-  const nm = (world) => [0, 1, 2, 3, 4, 5, 6].map((r) => ({
+  const nm = () => [0, 1, 2, 3, 4, 5, 6].map((r) => ({
     count: (c) => `${c}`, the: `r${r}`, one: `واحد${r}`, col: `عمود${r}`,
   }));
   const cases = [
