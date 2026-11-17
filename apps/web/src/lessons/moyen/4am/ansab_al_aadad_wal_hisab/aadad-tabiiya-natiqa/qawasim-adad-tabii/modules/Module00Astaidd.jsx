@@ -18,7 +18,9 @@ export default function Module00Astaidd() {
       moduleSubtitle="أصحيح أم خاطئ؟ برّر إجابتك. تشخيص قصير لا يمنعك من متابعة الدرس."
       estimatedTime="8 دقائق"
       brief={{
-        tag: 'أستعدّ — قبل النشاط 2', title: 'عشر عبارات قبل البحث عن القواسم', tone: 'teal',
+        tag: 'أستعدّ — قبل النشاط 2',
+        title: 'عشر عبارات قبل البحث عن القواسم',
+        tone: 'teal',
         body: <p>ليست اختبارًا: الغاية أن تعرف أنت ما ينبغي أن تراجعه قبل أن تبدأ.</p>,
       }}
       skills={{
@@ -27,9 +29,30 @@ export default function Module00Astaidd() {
         qawaid: { label: 'قواعد قابلية القسمة', emoji: '🔎', lesson: 'qawaid-qabiliyat-qisma' },
       }}
       levels={{
-        fragile: { emoji: '🌱', title: 'مكتسباتك لا تزال هشّة.', body: 'لا بأس: النشاط 2 يبدأ بكتابة 60 على شكل جداء، خطوة بخطوة.', advice: 'راجع الدرس 1: b قاسم لـ a معناه a = b × q مع q عدد طبيعي.', cta: 'أبدأ الدرس على كل حال', tone: 'from-emerald-500 to-teal-500' },
-        progres: { emoji: '👍', title: 'مكتسباتك في الطريق الصحيح.', body: 'بعض التردّدات ستُصحَّح أثناء الدرس.', advice: 'انتبه إلى قاعدة 4: تُقرأ من رقمي العشرات والآحاد معًا.', cta: 'أبدأ النشاط 2', tone: 'from-teal-500 to-cyan-500' },
-        pret: { emoji: '🚀', title: 'أنت جاهز!', body: 'معنى القاسم وقواعد قابلية القسمة متحكَّم فيهما.', advice: 'حاول حلّ النشاط 2 دون مساعدة.', cta: 'أنا جاهز!', tone: 'from-cyan-500 to-blue-500' },
+        fragile: {
+          emoji: '🌱',
+          title: 'مكتسباتك لا تزال هشّة.',
+          body: 'لا بأس: النشاط 2 يبدأ بكتابة 60 على شكل جداء، خطوة بخطوة.',
+          advice: 'راجع الدرس 1: b قاسم لـ a معناه a = b × q مع q عدد طبيعي.',
+          cta: 'أبدأ الدرس على كل حال',
+          tone: 'from-emerald-500 to-teal-500',
+        },
+        progres: {
+          emoji: '👍',
+          title: 'مكتسباتك في الطريق الصحيح.',
+          body: 'بعض التردّدات ستُصحَّح أثناء الدرس.',
+          advice: 'انتبه إلى قاعدة 4: تُقرأ من رقمي العشرات والآحاد معًا.',
+          cta: 'أبدأ النشاط 2',
+          tone: 'from-teal-500 to-cyan-500',
+        },
+        pret: {
+          emoji: '🚀',
+          title: 'أنت جاهز!',
+          body: 'معنى القاسم وقواعد قابلية القسمة متحكَّم فيهما.',
+          advice: 'حاول حلّ النشاط 2 دون مساعدة.',
+          cta: 'أنا جاهز!',
+          tone: 'from-cyan-500 to-blue-500',
+        },
       }}
       questions={[
         { ...prepQuestion(PREP_LADDER[0]), id: 'prep-1', requires: ['qasim-jidaa'] },

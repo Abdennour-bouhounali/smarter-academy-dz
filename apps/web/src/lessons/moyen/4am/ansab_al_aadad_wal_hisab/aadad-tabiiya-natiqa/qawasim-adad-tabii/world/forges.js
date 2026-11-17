@@ -60,7 +60,15 @@ function second(rule, first) {
   const L = PT[rule.p].of(a, d, e);
   const N = CN[rule.n].of(a, d, e);
   const c = outcome(a, L);
-  return { ...c, from: { d, e }, want: N, fits: c.held, held: c.held && c.q === N };
+  const kept = c.held && c.q === N;
+  return {
+    ...c,
+    from: { d, e },
+    want: N,
+    fits: c.held,
+    held: kept,
+    tag: kept ? 'كما وعدت' : c.held ? 'ثبت بعدد آخر' : 'انهار',
+  };
 }
 /** A question of the predictions: « this bridge held — will that plank hold too? » (no count is promised yet). */
 const willHold = (first, L) => ({ ...outcome(first.a, L), from: { d: first.b, e: first.q } });
@@ -531,7 +539,7 @@ const READINGS = {
         .split('')
         .reduce((s, d) => s + Number(d), 0),
   },
-  last2: { label: 'العدد المكوَّن من الرقمين الأخيرين', of: (a) => a % 100 },
+  last2: { label: 'الرقمان الأخيران', of: (a) => a % 100 },
   tens: { label: 'رقم العشرات', of: (a) => Math.floor(a / 10) % 10 },
 };
 /**

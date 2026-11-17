@@ -1,8 +1,12 @@
 /**
  * How THIS world draws a case of a rule forge (kit/RuleForge.jsx › `parts`): a bridge — a gap of `a` cells, planks of `b`.
  * A case may carry a `text` (a sentence about the bridge): it is then written above the bridge and in its line.
+ * In some forges the truth of a case (`held`) is not « the bridge holds » — a promise kept, a plank that had to be tried:
+ * the case then says whether the bridge itself holds in `fits`, and what its line shows in `tag`.
  */
 const WHICH = 'أيّ جسر تعنيه؟ المرآة ستبنيه بعد جوابك.';
+/** Does the BRIDGE of the case hold? (its own `fits`, or the truth of the case when they are the same thing) */
+const fitsOf = (c) => c.fits ?? c.held;
 const cells = (n) => (n <= 10 ? `${n} خانات` : `${n} خانة`);
 
 /** The bridge in the mirror: `a` cells, planks of `b`, what is left in amber. `stage`: ask (the gap and one plank) | build | done. */
@@ -33,7 +37,7 @@ function Mirror({ c, stage, fast }) {
       )}
       <svg
         viewBox={`0 0 ${W} 150`}
-        className={`rf-bridge is-${stage} ${done ? (c.held ? 'is-held' : 'is-fell') : ''} ${c.text ? 'has-sentence' : ''}`}
+        className={`rf-bridge is-${stage} ${done ? (fitsOf(c) ? 'is-held' : 'is-fell') : ''} ${c.text ? 'has-sentence' : ''}`}
         data-rf-bridge={`${c.a}:${c.b}`}
         data-rf-stage={stage}
       >
@@ -92,7 +96,7 @@ const Mini = ({ c }) => {
           width={Math.max(1, cell * c.b - 1)}
           height="12"
           rx="2.5"
-          className={c.held ? 'is-held' : ''}
+          className={fitsOf(c) ? 'is-held' : ''}
         />
       ))}
       {c.r > 0 && (
@@ -142,7 +146,7 @@ function Line({ c, children }) {
             <strong dir="ltr">{c.a}</strong> <span>{L.plank(c.b)}</span>
           </>
         )}
-        <em>{c.text ? (c.held ? L.true : L.false) : c.held ? L.held : L.fell(c)}</em>
+        <em>{c.tag ?? (c.text ? (c.held ? L.true : L.false) : fitsOf(c) ? L.held : L.fell(c))}</em>
       </div>
       <div className="rf-line2">
         <Mini c={c} />

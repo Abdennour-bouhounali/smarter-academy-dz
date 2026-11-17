@@ -24,7 +24,11 @@ describe('PREP_LADDER — « أستعدّ » de la plateforme : 10 affirmations 
   });
   it('les égalités citées dans les explications existent', () => {
     // 20 = 5 × 4, 84 = 7 × 12, 65 = 5 × 13, 18 = 4 × 4 + 2, 2314 = 4 × 578 + 2
-    expect(5 * 4).toBe(20); expect(7 * 12).toBe(84); expect(5 * 13).toBe(65);
-    expect(4 * 4 + 2).toBe(18); expect(4 * 578 + 2).toBe(2314); expect(3 * 4).toBe(12);
+    expect(5 * 4).toBe(20);
+    expect(7 * 12).toBe(84);
+    expect(5 * 13).toBe(65);
+    expect(4 * 4 + 2).toBe(18);
+    expect(4 * 578 + 2).toBe(2314);
+    expect(3 * 4).toBe(12);
   });
 });
