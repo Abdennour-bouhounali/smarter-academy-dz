@@ -235,6 +235,7 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
   The strings of the admin panel and of the teacher space now load with their own space (−30.5 KB), and the shell
   animates with the light half of framer-motion (−11.1 KB). Two tests hold it (`i18n/onDemandNamespaces.test.js`,
   `entryGraph.test.js`). Contract and measures: `docs/architecture/BUNDLE_BOUNDARIES.md` §3, §4 rules 5 and 10, §5.
+  The same day the owner had the command palette (Ctrl+K) deleted — no global search either: entry 197.7 KB.
 - **D4 — DONE**: the five billing files are deleted.
 - **Phase 0 step 2 — formatter DONE**: Prettier (`.prettierrc.json`, 120 columns) with `npm run format:v2`
   and `npm run check:format` (in CI). The pilot's areas are formatted: 109 files; `features/classSession/` went from

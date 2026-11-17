@@ -279,7 +279,7 @@ function ClassroomSession({
   // Le document sait qu'une présentation est active — et comment. En REPLI,
   // la racine fixe reste prisonnière du contexte d'empilement de ses ancêtres
   // (le <main> des coquilles est `relative z-10`) : un chrome fixe posé plus
-  // haut (palette de commandes, barre de navigation, carte, cahier) passerait
+  // haut (barre de navigation, carte, cahier) passerait
   // DEVANT et intercepterait les clics. classroom.css cache donc, en repli,
   // tout élément fixe hors de la présentation — exactement ce que fait déjà
   // le plein écran natif avec sa couche supérieure.

@@ -185,11 +185,10 @@ floating above it. The two heights are a single system — moving one without
 the other makes the pills overlap. *(Until 2026-09-24 a third pill, « ⛶ عرض »,
 sat in the angle below them; it moved to the marker row as « وضع القسم ».)*
 
-The corner is free because the site's old « Ctrl+K » pill was **removed**
-(`components/common/CommandPalette.jsx`). It was placed with `end-6`, which
+The corner is free because the site's old « Ctrl+K » pill was **removed**. It was placed with `end-6`, which
 under RTL resolves to the *physical left*, so it occupied this exact spot and
-swallowed the ground-floor clicks. The palette keeps its keyboard shortcut and
-opens on Ctrl/⌘+K as before; only the floating pill is gone.
+swallowed the ground-floor clicks. The command palette itself was deleted on 2026-11-17 (owner: no command
+palette, no global search).
 
 `left` is a **physical** value, never `start`: under RTL the student sidebar
 owns the right edge and would swallow the clicks (the lesson recorded in
@@ -544,7 +543,7 @@ Rules (all asserted — `classroomPointer.test.js`, `e2e/teacher-memo.mjs`):
 3. API missing (iOS Safari on non-video) or refused → the root stays `position: fixed; inset: 0;
    z-index: 70`. In this mode `html[data-sa-classroom="fallback"]` hides everything outside the
    presentation, because a fixed root cannot escape its ancestors' stacking context and page chrome
-   (command palette, footer, navbar) would otherwise sit on top and swallow clicks. Escape is
+   (footer, navbar) would otherwise sit on top and swallow clicks. Escape is
    handled by the shell here, and yields when a drag object is held.
 4. Exit / unmount / leaving `routeScope` → fullscreen released, scroll lock restored, focus returned
    to the entry button. `screen.orientation.lock('landscape')` is attempted **only in native

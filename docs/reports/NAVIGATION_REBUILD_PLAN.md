@@ -19,7 +19,7 @@ Built and checked at 390×844, 768×1024 and 1366×768, for both accounts:
 | The teacher's pages in the tokens | `pages/teacher`, `features/teacher`, `components/teacher` (teal removed) | built |
 | The lesson card, lesson row, unit card | `components/student/LessonCard.jsx`, `LessonRow.jsx`, `UnitGroup.jsx`, `lessonTileParts.jsx` | built (section 5ter) |
 | The unit page | `pages/UnitPage.jsx` | built (section 5ter) |
-| The year map (`LessonNavigator`), the lesson bar with previous / next, the student's home, search in the teacher's space, the colour check | — | **Not yet implemented** |
+| The year map (`LessonNavigator`), the lesson bar with previous / next, the student's home, the colour check | — | **Not yet implemented** (the global search is cancelled: principle 4) |
 
 **Cleaned after the rebuild (2026-11-16)** — so that a later generation does not copy what is gone:
 
@@ -65,7 +65,7 @@ Rules that are now CODE, not proposal:
 | Pages that list lessons, each with its own list | 7 or more: `Courses`, `MesCours`, `Explorer`, `UnitPage`, `StudentHome`, `Progression`, the teacher's lessons, the class pages |
 | « Next lesson » / « previous lesson » inside a lesson | none |
 | « Continue where I stopped » | none for the teacher |
-| Search (`CommandPalette`) | student and public shells only, not the teacher's |
+| Search (`CommandPalette`) | student and public shells only, not the teacher's — **deleted on 2026-11-17** (owner: no command palette, no global search) |
 
 What is wrong, in one sentence each:
 
@@ -82,7 +82,8 @@ What is wrong, in one sentence each:
 1. **Four doors, named by what the person wants**, the same count on a phone and on a laptop.
 2. **One map of the year** — « خريطة السنة » — is the only way lessons are listed, everywhere, for both accounts.
 3. **One lesson bar** on every lesson: where I am, previous, next, back to the map.
-4. **One search** for everything, in both spaces.
+4. ~~**One search** for everything, in both spaces.~~ **CANCELLED by the owner on 2026-11-17**: no command palette and no
+   global search. The search field of a lesson list (« ابحث عن درس ») stays: it filters the page it is on.
 
 Everything else is reached from inside a door, never from the menu.
 
@@ -346,10 +347,10 @@ Rules:
 |---|---|---|
 | 0 | Decisions N1–N9 | the owner has answered |
 | 1a | The tokens of section 6bis as code, and the check that forbids a raw colour in the navigation | the check passes on the new shells |
-| 1 | The model: ONE file describes the doors per account and what each contains; both menus, the bottom bar and the search read it | no menu entry is written anywhere else |
+| 1 | The model: ONE file describes the doors per account and what each contains; both menus and the bottom bar read it (the global search is cancelled: principle 4) | no menu entry is written anywhere else |
 | 2 | `LessonNavigator` and the year map, student and teacher readings | every lesson of 4AM is reached in two taps from « دروسي » on a phone and on a laptop |
 | 3 | The lesson bar with previous / next, on every lesson; lessons inside the person's space | from any lesson, the next one is one tap away |
-| 4 | The two shells: four doors, the avatar menu, search in the teacher's space | the old menus are deleted |
+| 4 | The two shells: four doors, the avatar menu (no global search: principle 4) | the old menus are deleted |
 | 5 | Replace the seven lists by the navigator; old addresses redirect | no second list of lessons exists in the code |
 | 6 | The two homes « اليوم » (section 5bis): the student's one next step and week; the teacher's week class by class | a student starts his next step in one tap; a teacher reaches this week's lesson card in one tap |
 | 7 | Walks at 390×844, 800×370, 1366×768; contract `docs/architecture/NAVIGATION.md`; the superseded docs marked | the walks pass and the docs match |

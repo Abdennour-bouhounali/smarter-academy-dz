@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom';
  * de navigation et le pied de page : il ne doit en ajouter aucun.
  */
 
-// Des CLÉS : constant de module, donc résolu au rendu (voir CommandPalette).
+// Des CLÉS : constant de module, donc résolu au rendu.
 const LEGAL_LINKS = [
   { to: '/confidentialite', labelKey: 'legal.privacyShort' },
   { to: '/cgu', labelKey: 'legal.termsShort' },

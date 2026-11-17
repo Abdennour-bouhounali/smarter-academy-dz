@@ -261,24 +261,6 @@
     "rights": "© {{year}} Smarter Academy — جميع الحقوق محفوظة",
     "motto": "جرِّب. اكتشف. افهم. أتقِن."
   },
-  "palette": {
-    "placeholder": "ابحث عن قسم أو إجراء...",
-    "noResults": "لا نتائج",
-    "navigate": "تنقّل",
-    "select": "اختيار",
-    "close": "إغلاق",
-    "groupMain": "إجراءات رئيسية",
-    "groupNavigation": "التصفّح",
-    "groupContact": "اتصال",
-    "startFree": "ابدأ مجانًا",
-    "login": "تسجيل الدخول",
-    "home": "الرئيسية",
-    "method": "منهجيتنا",
-    "courses": "الدروس",
-    "about": "من نحن",
-    "faq": "الأسئلة الشائعة",
-    "sendEmail": "أرسل بريدًا إلكترونيًا"
-  },
   "consent": {
     "iAccept": "أوافق على",
     "terms": "شروط الاستعمال",

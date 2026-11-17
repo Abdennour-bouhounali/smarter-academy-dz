@@ -55,7 +55,7 @@
 /* REPLI (pas de plein écran natif) : la racine fixe ne peut pas sortir du
    contexte d'empilement de ses ancêtres (le <main> des coquilles est
    `relative z-10`, et son pied de page voisin aussi) : tout ce qui est posé
-   hors de la présentation — palette de commandes, barre de navigation, pied
+   hors de la présentation — barre de navigation, pied
    de page, carte, cahier — pourrait la recouvrir et intercepter les clics.
    On cache donc TOUT ce qui n'est ni la présentation, ni dedans, ni un de
    ses ancêtres — exactement ce que fait la couche supérieure du plein écran
@@ -309,8 +309,8 @@ html[data-sa-classroom="fallback"] body *:not(.sa-classroom-root--active):not(.s
 
    Le coin est libre : l'ancienne pastille « Ctrl+K » du site, posée en
    `end-6` (donc physiquement à GAUCHE sous RTL), l'occupait et interceptait
-   les clics de cet étage. Elle a été retirée — la palette garde son
-   raccourci clavier (components/common/CommandPalette.jsx).
+   les clics de cet étage. Elle a été retirée, puis la palette elle-même
+   (2026-11-17, décision du propriétaire : pas de recherche globale).
 
    Les trois hauteurs se tiennent : changer l'une sans les autres fait se
    recouvrir deux pastilles.

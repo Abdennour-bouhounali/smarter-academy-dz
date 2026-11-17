@@ -12,9 +12,8 @@ import PageTourProvider from '../../features/tours/PageTourProvider';
 
 /**
  * The authenticated student area's shell — a workspace (sidebar + content),
- * not the visitor's marketing shell (MainLayout). No Footer, no
- * CommandPalette: those are visitor-site affordances the workspace doesn't
- * need since its own nav is always visible.
+ * not the visitor's marketing shell (MainLayout). No Footer: a visitor-site
+ * affordance the workspace doesn't need since its own nav is always visible.
  *
  * Registration no longer collects a grade, so any student can reach this
  * shell with `user.grade === null` — not just right after signing up (e.g.

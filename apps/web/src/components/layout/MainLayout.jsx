@@ -3,7 +3,6 @@ import { Outlet } from 'react-router-dom';
 import Navbar from '../navigation/Navbar';
 import Footer from '../navigation/Footer';
 import BackgroundLayer from '../common/BackgroundLayer';
-import CommandPalette from '../common/CommandPalette';
 import ScrollToTop from '../common/ScrollToTop';
 import { useWorkspaceLayout } from '../../context/WorkspaceLayoutContext';
 
@@ -24,9 +23,6 @@ export default function MainLayout() {
 
       {/* Fixed Top Navigation — z-50 */}
       <Navbar />
-
-      {/* Floating Command Palette — z-50 */}
-      <CommandPalette />
 
       {/* Page Content — z-10 */}
       <main
