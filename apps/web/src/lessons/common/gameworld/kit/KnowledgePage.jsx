@@ -1,15 +1,14 @@
 /**
  * « خريطة المعارف » — the FULL-PAGE knowledge map of the lesson inside the game world.
- * It is the lesson's own mind map (`knowledgeGraph.js`: 13 nodes — the idea, the two definitions, the reminder, the examples,
- * the check, the four sentences, 1 and the number itself, the two common mistakes, the warning, the summary — and their
- * labelled links) with the memo sheet of the four rules (`knowledge.jsx`: rule, hook, example, trap, exam tip, memory test).
- * NOTHING is retyped here: a change in the lesson changes this page.
+ * It is the lesson's own mind map (its `knowledgeGraph.js`: the nodes and their labelled links) with the memo sheet of its
+ * rules (its `knowledge.jsx`: rule, hook, example, trap, exam tip, memory test), read through `useLesson().knowledge`.
+ * NOTHING is retyped here, and this page names no lesson: a change in the lesson changes this page.
  *
  * TWO VIEWS of the same cards:
  *   the JOURNEY (« رحلة الاكتشاف », the way the page opens until everything is found — owner, 2026-11-15): ONE card at a time,
  *     large and comfortable to read, in the middle of the screen; beside it the MYSTERY cards of what follows (the lesson's
  *     own `reveals`), each turned over by a tap and then becoming the card being read; above, the trail of what was found.
- *   the MAP (« الخريطة كاملة »): the thirteen cards and their links at once, a card's content in the side panel.
+ *   the MAP (« الخريطة كاملة »): all the cards and their links at once, a card's content in the side panel.
  * The whole page is scaled to the screen (`useFit`): a big screen gets big text, never a small page lost in the middle.
  * Gamified: a card is locked until its key is owned, ticked once read, and a rule is sealed in gold by its memory test.
  */
@@ -28,39 +27,31 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import MathText from '../../components/MathText';
-import {
-  KNOWLEDGE_GRAPH,
-  LESSON_KNOWLEDGE,
-} from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/knowledge';
 import Trainer from './Trainer';
 import Fit from './Fit';
+import { useLesson } from './LessonContext';
 import { TX } from './text';
 
-/** Where each node sits on the MAP (percent of the map box, drawn left-to-right; the lesson's « start » lane is on the RIGHT). */
-const POS = {
-  qasim: [50, 7],
-  baqi: [76, 20],
-  jidaa: [24, 20],
-  tadhakkar: [82, 37],
-  ex120: [17, 37],
-  ex143: [74, 53],
-  'khata-amil': [18, 56],
-  tahaqqaq: [83, 71],
-  siyagh: [48, 50],
-  'khata-ittijah': [64, 75],
-  wahid: [33, 71],
-  intabih: [18, 81],
-  khulasa: [48, 92],
-};
-const ITEMS = Object.fromEntries(
-  Object.values(LESSON_KNOWLEDGE.modules)
-    .flat()
-    .map((it) => [it.id, it]),
-);
-const NODES = KNOWLEDGE_GRAPH.nodes;
-const byId = (id) => NODES.find((n) => n.id === id);
+/**
+ * The lesson's knowledge, as this page reads it (`useLesson().knowledge`): its graph (nodes and labelled links), its memo
+ * items by id, and where each node sits on the MAP (percent of the map box).
+ */
+function useKnowledge() {
+  const { knowledge } = useLesson();
+  return useMemo(() => {
+    const NODES = knowledge.graph.nodes;
+    const EDGES = knowledge.graph.edges;
+    const ITEMS = Object.fromEntries(
+      Object.values(knowledge.modules)
+        .flat()
+        .map((it) => [it.id, it]),
+    );
+    const byId = (id) => NODES.find((n) => n.id === id);
+    const edgeLabel = (from, to) => EDGES.find((e) => e.from === from && e.to === to)?.label ?? '';
+    return { NODES, EDGES, ITEMS, POS: knowledge.positions, byId, edgeLabel };
+  }, [knowledge]);
+}
 const kindOf = (n) => TX.know.kinds[n.kind] ?? ['•', '', 'core'];
-const edgeLabel = (from, to) => KNOWLEDGE_GRAPH.edges.find((e) => e.from === from && e.to === to)?.label ?? '';
 const Tex = ({ children }) => (
   <span dir="ltr" className="di-math">
     <MathText>{`$${children}$`}</MathText>
@@ -80,6 +71,7 @@ function useFit() {
 }
 
 export default function KnowledgePage({ s, game, sel }) {
+  const { NODES, EDGES, ITEMS, POS, byId } = useKnowledge();
   const keys = s.openKeys;
   const { read, sealed, trained = {} } = s.know;
   const isOpen = (n) => keys.includes(n.requires);
@@ -184,7 +176,7 @@ export default function KnowledgePage({ s, game, sel }) {
           <div className={`di-page__body ${tab !== 'card' && open ? 'is-training' : ''}`}>
             <div className="di-kmap" dir="ltr" data-di-kmap="full">
               <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                {KNOWLEDGE_GRAPH.edges.map((e) => (
+                {EDGES.map((e) => (
                   <line
                     key={`${e.from}-${e.to}`}
                     x1={POS[e.from][0]}
@@ -196,7 +188,7 @@ export default function KnowledgePage({ s, game, sel }) {
                   />
                 ))}
               </svg>
-              {KNOWLEDGE_GRAPH.edges.map((e) => (
+              {EDGES.map((e) => (
                 <span
                   key={`${e.from}-${e.to}`}
                   className="di-kmap__edge"
@@ -265,6 +257,7 @@ export default function KnowledgePage({ s, game, sel }) {
  * A mystery card is turned over by a tap: it is found, and it becomes the card being read.
  */
 function Journey({ node, found, isOpen, setId, onFull, game, ...body }) {
+  const { NODES, byId, edgeLabel } = useKnowledge();
   const { open, id } = body;
   const next = node.reveals.map(byId);
   // the cards already found that still hide something: where to go when this branch ends

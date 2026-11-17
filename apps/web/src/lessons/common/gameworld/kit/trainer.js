@@ -11,14 +11,27 @@
  *   plans     { [plan]: [[kind, ...args] × 6] } — what a session asks, slot by slot of SESSION
  *   planOf    { [cardId]: plan } — which plan a card of the lesson's mind map trains
  *   fallback  the plan of a card that names none
- * and keeps for itself how an answer is judged (`check`), its solution and its one-line label: they are its mathematics.
+ *   check, solution, answerLabel   how an answer is judged (hint, then correction), the right answer, the answer in one
+ *                                  line — its mathematics, carried to the screen as they are
+ *
+ * THE SHAPE OF A QUESTION, which the screen (Trainer.jsx) draws without knowing the lesson:
+ *   tap   { kind: 'tap', options: [n, n, n] }          the answer is the option tapped
+ *   tf    { kind: 'tf', statement, truth, reasons? }   the answer is { truth, reason? }
+ *   a form — every other kind: { form: { tip, model?, single?, review?, lines } }
+ *     lines   [{ ltr?, tokens }] — a token is a sign or a word (string), { strong: n } a number of the statement,
+ *             { text, rtl? } a word inside a line of numbers, { num: slot, label } a box to fill,
+ *             { choice: slot, options: [{ value, text, id? }] } a word to choose
+ *     the answer is { [slot]: value }, or the value of ONE slot when `single` names it
+ *     tip     which advice the paper gate gives (`tipDivision`, `tipWrite` of Paper.jsx › PT)
+ *     model   { a, b }: a long division the paper model can pose — a twin before the answer, itself after
+ *     review  what to add beside the prompt when the question is read again
  */
 export const SESSION = ['game', 'game', 'exam', 'game', 'exam', 'exam'];
 
 /** Stars of a session: the questions right at the FIRST try. */
 export const sessionStars = (firstTry) => (firstTry >= 6 ? 3 : firstTry >= 4 ? 2 : firstTry >= 2 ? 1 : 0);
 
-export function createTrainer({ kinds, plans, planOf, fallback }) {
+export function createTrainer({ kinds, plans, planOf, fallback, check, solution, answerLabel }) {
   /** The six questions of a session on card `nodeId`. */
   function makeSession(rand, nodeId) {
     const plan = plans[planOf[nodeId] ?? fallback];
@@ -27,5 +40,5 @@ export function createTrainer({ kinds, plans, planOf, fallback }) {
       return kinds[kind](rand, format, ...args);
     });
   }
-  return { makeSession };
+  return { makeSession, check, solution, answerLabel };
 }

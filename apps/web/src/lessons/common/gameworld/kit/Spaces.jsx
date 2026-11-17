@@ -1,5 +1,6 @@
 /**
- * The student's road, on screen (logic: journey.js, 2026-11-16):
+ * The student's road, on screen (logic: journey.js, 2026-11-16). These screens name no lesson: its levels, its road, its
+ * rules and the cards that train them come from `useLesson()`.
  *   ExamLadder    « فضاء الامتحان » — the five levels of exam sittings, as rising steps; the next sheet is adapted to him;
  *   Promotion     the moment BETWEEN two levels: stars, confetti, sound — the game returns here, never inside the sitting;
  *   ProgressPage  « تقدّمي » — the road of the lesson, the four الكفاءات, an honest exam readiness, and the ONE next thing.
@@ -21,20 +22,11 @@ import {
   Gamepad2,
 } from 'lucide-react';
 import Fit, { cardRoom } from './Fit';
-import { LEVELS } from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/sitting';
-import {
-  examOpen,
-  nextExamLevel,
-  lessonProgress,
-  nextStep,
-} from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/journey';
-import { examLevelOpen } from '../kit/journey';
-import { T } from './strings';
+import { examLevelOpen } from './journey';
+import { useLesson } from './LessonContext';
 import { TX } from './text';
 
 const fmt = (n) => String(n).replace('.', ',');
-const total = (L) => L.plan.reduce((t, [k]) => t + { division: 3, product: 3, cost: 4, trip: 5 }[k], 0);
-const CARD_OF = { division: 'baqi', product: 'jidaa', cost: 'tahaqqaq', trip: 'tadhakkar' };
 const Stars = ({ n, size = 18 }) => (
   <span className="di-stars3" dir="ltr">
     {[1, 2, 3].map((i) => (
@@ -44,9 +36,10 @@ const Stars = ({ n, size = 18 }) => (
 );
 
 export function ExamLadder({ s, game }) {
+  const { journey, sittings } = useLesson();
   const exam = s.exam;
-  const open = examOpen(s.openKeys, s.practice);
-  const next = nextExamLevel(exam);
+  const open = journey.examOpen(s.openKeys, s.practice);
+  const next = journey.nextExamLevel(exam);
   if (!open)
     return (
       <div className="di-ladder di-ladder--locked" data-di-ladder="locked">
@@ -58,7 +51,7 @@ export function ExamLadder({ s, game }) {
     <div className="di-ladder" data-di-ladder="open">
       <p className="di-dim">{TX.spaces.passAt}</p>
       <ol className="di-rungs">
-        {LEVELS.map((L, i) => {
+        {sittings.levels.map((L, i) => {
           const can = examLevelOpen(exam, L.n);
           const best = exam.best?.[L.n];
           const focus = (exam.weak?.[L.n] ?? []).length > 0;
@@ -78,7 +71,7 @@ export function ExamLadder({ s, game }) {
                 <b className="di-rung__n">{can ? L.n : <Lock size={18} />}</b>
                 <strong>{L.title}</strong>
                 <small>
-                  <Clock size={13} /> {TX.spaces.minutes(L.minutes)} · {TX.spaces.points(total(L))}
+                  <Clock size={13} /> {TX.spaces.minutes(L.minutes)} · {TX.spaces.points(sittings.levelPoints(L))}
                 </small>
                 <Stars n={best?.stars ?? 0} />
                 {best && (
@@ -104,6 +97,7 @@ export function ExamLadder({ s, game }) {
 
 /** Between two levels: the celebration (or the encouragement), then where to go. */
 export function Promotion({ o, game }) {
+  const { cards } = useLesson();
   const r = o.result;
   const up = r.passed;
   return (
@@ -165,7 +159,7 @@ export function Promotion({ o, game }) {
               <button
                 type="button"
                 className="di-btn di-btn--primary"
-                onClick={() => game.openKnow(CARD_OF[r.weak[0]] ?? 'baqi')}
+                onClick={() => game.openKnow(cards.ofExercise[r.weak[0]] ?? cards.fallback)}
                 data-di-promo-train
               >
                 <Compass size={17} /> {TX.spaces.train}
@@ -191,8 +185,9 @@ export function Promotion({ o, game }) {
   );
 }
 
-/** « تقدّمي »: one full page — the road, the readiness, the four الكفاءات, the next thing. `mastery` = the platform's status per learning point, when known. */
-export function ProgressPage({ s, game, mastery = null, lessonId }) {
+/** « تقدّمي »: one full page — the road, the readiness, the الكفاءات of the lesson, the next thing. `mastery` = the platform's status per learning point, when known. */
+export function ProgressPage({ s, game, mastery = null, lessonId, lessonTitle }) {
+  const { journey, rules, cards, evidence } = useLesson();
   const [z, setZ] = useState(1);
   useEffect(() => {
     const fit = () => setZ(Math.max(1, Math.min(1.8, Math.min(window.innerWidth / 1280, window.innerHeight / 720))));
@@ -200,8 +195,8 @@ export function ProgressPage({ s, game, mastery = null, lessonId }) {
     window.addEventListener('resize', fit);
     return () => window.removeEventListener('resize', fit);
   }, []);
-  const p = lessonProgress(s);
-  const step = nextStep(s);
+  const p = journey.lessonProgress(s);
+  const step = journey.nextStep(s);
   const P = TX.progress;
   const go = () => {
     if (step.do === 'story') {
@@ -209,12 +204,7 @@ export function ProgressPage({ s, game, mastery = null, lessonId }) {
       if (s.phase === 'title') game.start();
     } else if (step.do === 'game') game.startPractice(step.node, step.level);
     else if (step.do === 'exam') game.openSitting(step.level);
-    else if (step.do === 'train')
-      game.openKnow(
-        { 'qasim-baqi': 'baqi', 'qasim-jidaa': 'jidaa', 'siyagh-mutakafia': 'siyagh', 'wahid-wa-nafsuh': 'wahid' }[
-          step.key
-        ],
-      );
+    else if (step.do === 'train') game.openKnow(cards.ofKey[step.key]);
     else game.openKnow();
   };
   const label = step.do === 'exam' ? P.do.exam(step.level) : P.do[step.do];
@@ -224,13 +214,13 @@ export function ProgressPage({ s, game, mastery = null, lessonId }) {
         <header className="di-page__head">
           <div>
             <h2>{P.title}</h2>
-            <p>{P.sub}</p>
+            <p>{lessonTitle}</p>
           </div>
           <button
             type="button"
             className="di-icon"
             onClick={() => game.closeMap()}
-            aria-label={T.map.close}
+            aria-label={TX.close}
             data-di-progress-close
           >
             <X size={20} />
@@ -275,9 +265,9 @@ export function ProgressPage({ s, game, mastery = null, lessonId }) {
               <span>{P.cols.exam}</span>
               {mastery && <span>{P.cols.server}</span>}
             </div>
-            {p.rows.map((r, i) => {
-              const t = T.tablets[r.key];
-              const st = mastery?.[`4am_${lessonId}_P${i + 1}`];
+            {p.rows.map((r) => {
+              const t = rules[r.key];
+              const st = mastery?.[evidence.learningPointOf(lessonId, r.key)];
               return (
                 <div key={r.key} className={`di-ptable__row ${r.earned ? '' : 'is-off'}`} data-di-prow={r.key}>
                   <span>

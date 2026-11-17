@@ -13,17 +13,11 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Flag, Clock, PenLine, VolumeX, X, Compass, BookOpenCheck, NotebookPen, LogOut } from 'lucide-react';
 import MathText from '../../components/MathText';
 import Fit from './Fit';
-import {
-  makeSubject,
-  mark,
-  totalMark,
-  model,
-  scheme,
-  evidenceOf,
-} from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/sitting';
-import { allQuestions, answered, forgotten, pace, appreciation } from '../kit/sitting';
-import { PHRASES } from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/trainer';
-import { T } from './strings';
+import { useLesson } from './LessonContext';
+import { allQuestions, answered, forgotten, pace, appreciation } from './sitting';
+
+/** A token written in Arabic letters (a unit, a word) reads right to left; a number or a sign, left to right. */
+const dirOf = (text) => (/[\u0600-\u06FF]/.test(text) ? 'rtl' : 'ltr');
 
 const L = {
   seat: 'المقعد',
@@ -55,8 +49,6 @@ const L = {
   notebookTip: 'اكتب في كرّاسك، بخطّ يدك:',
   finish: 'أنهيتُ',
   perfect: 'ورقة كاملة: لا شيء تكتبه في دفتر الأخطاء!',
-  yesDiv: 'قاسم',
-  noDiv: 'ليس قاسمًا',
   choose: '— اختر —',
   quit: 'خروج',
   quitTitle: 'تخرج من الامتحان؟',
@@ -128,18 +120,11 @@ function Field({ q, value, onChange, disabled }) {
               data-xs-select={q.id}
             >
               <option value="">{L.choose}</option>
-              {p.choose ? (
-                <>
-                  <option value="yes">{L.yesDiv}</option>
-                  <option value="no">{L.noDiv}</option>
-                </>
-              ) : (
-                PHRASES.map((ph) => (
-                  <option key={ph.id} value={ph.id}>
-                    {ph.text}
-                  </option>
-                ))
-              )}
+              {p.choice.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.text}
+                </option>
+              ))}
             </select>
           ),
         )}
@@ -150,7 +135,7 @@ function Field({ q, value, onChange, disabled }) {
     <span className="xs-line" dir="ltr">
       {q.tokens.map((t, i) =>
         typeof t === 'string' ? (
-          <b key={i} dir={t === 'دج' ? 'rtl' : 'ltr'}>
+          <b key={i} dir={dirOf(t)}>
             {t}
           </b>
         ) : (
@@ -171,10 +156,7 @@ function Written({ q, value }) {
           typeof p === 'string' ? (
             <span key={i}> {p} </span>
           ) : (
-            <u key={i}>
-              {' '}
-              {p.choose ? (value === 'yes' ? L.yesDiv : L.noDiv) : PHRASES.find((ph) => ph.id === value)?.text}{' '}
-            </u>
+            <u key={i}> {p.choice.find((option) => option.value === value)?.text} </u>
           ),
         )}
       </span>
@@ -183,7 +165,7 @@ function Written({ q, value }) {
     <span className="xs-ink" dir="ltr">
       {q.tokens.map((t, i) =>
         typeof t === 'string' ? (
-          <span key={i} dir={t === 'دج' ? 'rtl' : 'ltr'}>
+          <span key={i} dir={dirOf(t)}>
             {' '}
             {t}{' '}
           </span>
@@ -196,6 +178,8 @@ function Written({ q, value }) {
 }
 
 export default function ExamSitting({ game, level = 4, weak = [], onFinish, onQuit }) {
+  const { sittings, rules } = useLesson();
+  const { makeSubject, totalMark, mark, model, scheme, evidenceOf } = sittings;
   const subject = useMemo(() => makeSubject(Math.random, level, weak), []); // eslint-disable-line react-hooks/exhaustive-deps
   const qs = useMemo(() => allQuestions(subject), [subject]);
   const total = subject.minutes * 60;
@@ -602,7 +586,7 @@ export default function ExamSitting({ game, level = 4, weak = [], onFinish, onQu
                             <ol>
                               {keys.map((k) => (
                                 <li key={k}>
-                                  <b>{T.tablets[k].title}:</b> {T.tablets[k].notes.at(-1)}
+                                  <b>{rules[k].title}:</b> {rules[k].notes.at(-1)}
                                 </li>
                               ))}
                             </ol>
@@ -632,7 +616,7 @@ export default function ExamSitting({ game, level = 4, weak = [], onFinish, onQu
                   const m = mark(q, answers[q.id]);
                   const full = m === q.points;
                   const h = help[q.id] ?? (full ? 'explain' : null);
-                  const rule = q.key ? T.tablets[q.key] : null;
+                  const rule = q.key ? rules[q.key] : null;
                   return (
                     <div className="xs-detail" data-xs-detail={q.id}>
                       <h3>

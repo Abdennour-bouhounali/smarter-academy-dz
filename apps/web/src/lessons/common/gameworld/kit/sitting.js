@@ -8,11 +8,15 @@
  * The lesson gives (`createSittings`):
  *   levels  [{ n, title, minutes, plan: [[kind, tier], …] }] — from one exercise to a full short exam
  *   build   { [kind]: (rand, tier) => exercise } — { kind, title, points, statement, situation?, questions: [question] }
+ *   points  { [kind]: the points of an exercise of that kind } — the same number its builder writes
  *   mark    (question, answer) => points, by its marking scheme
- * and keeps for itself the model copy, the scheme and the evidence of each type of question: they are its mathematics.
+ *   model, scheme, evidenceOf   per question: the lines of the model copy, what the corrector looks for on the paper,
+ *                               the claim sent to the server (or null) — its mathematics, carried to the screen as they are
+
  *
- * A question is answered in ONE of two shapes: a `sentence` (the answer is one word chosen: a string) or `tokens`
- * (the answer is { [slot]: value } for every token built with `slot`).
+ * A question is answered in ONE of two shapes:
+ *   `sentence` — words around ONE choice `{ choice: [{ value, text }] }`: the answer is the value chosen (a string);
+ *   `tokens`   — signs and numbers around boxes built with `slot`: the answer is { [slot]: value }.
  */
 export const PASS = 0.8;
 const ORDINAL = ['الأوّل', 'الثاني', 'الثالث', 'الرابع'];
@@ -62,7 +66,10 @@ export const appreciation = (m, total) =>
         ? 'متوسّط: راجع أخطاءك'
         : 'يحتاج إلى عمل: لا تيأس';
 
-export function createSittings({ levels, build, mark }) {
+export function createSittings({ levels, build, mark, points, model, scheme, evidenceOf }) {
+  /** The points of a whole level, known before any subject is generated: the ladder shows them on each step. */
+  const levelPoints = (level) => level.plan.reduce((sum, [kind]) => sum + points[kind], 0);
+
   /**
    * The subject of a sitting at `level` (1 … levels.length). ADAPTED to the student: `weak` = the kinds of exercise where he
    * lost points at his last try of this level — they come FIRST on the new sheet (fresh mind), with new numbers (a similar
@@ -99,5 +106,5 @@ export function createSittings({ levels, build, mark }) {
 
   const totalMark = (subject, answers) => allQuestions(subject).reduce((sum, q) => sum + mark(q, answers[q.id]), 0);
 
-  return { levels, makeSubject, weakKinds, totalMark };
+  return { levels, levelPoints, makeSubject, weakKinds, totalMark, mark, model, scheme, evidenceOf };
 }

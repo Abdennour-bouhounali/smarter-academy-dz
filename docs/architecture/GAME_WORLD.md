@@ -341,6 +341,14 @@ state line under the tables):
 | `evidenceSend.js` | the POST to `/lessons/{code}/game-evidence` and the retry queue (§4) | — |
 | `tips.js` (+ test) | « حيلة »: the calculation shortcuts, given only when one clearly helps | — |
 | `longDivision.js` (+ test) | the long division as it is written and said on paper, its twin (used by `Paper.jsx` and by « مختبري ») | — |
+| `LessonContext.jsx` | `<LessonProvider lesson={…}>` and `useLesson()`: the ONE way a screen of the kit reaches the lesson | the pack (below) |
+| `text.js` | `TX`: the chrome of the kit's screens (spaces, « تقدّمي », a case, the knowledge page). No sentence of a lesson | — |
+| `Fit.jsx` | the box of every panel: it never scrolls, it fits (§2ter) | — |
+| `Paper.jsx` | the paper mode: the gate, the sign, the long-division model sheet | — |
+| `Spaces.jsx` | `ExamLadder`, `Promotion`, `ProgressPage` (« تقدّمي ») | `journey`, `sittings`, `rules`, `cards`, `evidence` |
+| `ExamSitting.jsx`, `examSitting.css` | the screen of « الامتحان الأبيض » (§2quater) | `sittings` (with `mark`, `model`, `scheme`, `evidenceOf`), `rules` |
+| `Trainer.jsx` | the screen of « تدرّب »: it draws a tap, a true / false, or a FORM the lesson describes | `trainer` |
+| `KnowledgePage.jsx` | the full-page « خريطة المعارف » | `knowledge`: `{ graph, modules, positions }` |
 
 **The pilot's content** (`…/qasim-adad-tabii/world/`, each with its test)
 
@@ -351,6 +359,9 @@ state line under the tables):
 | `sitting.js` | the four exercises by tier, the five levels, `mark`, `model`, `scheme`, `evidenceOf` |
 | `journey.js` | the four keys, bound to the ladder and the levels |
 | `evidence.js` | the الكفاءة of each key, the claims, `verify` (the same rule as the server) |
+| `knowledge.js` | the lesson's graph and memo sheets (imported from the lesson, never retyped) and where each card sits on the map |
+| `text.js` | the names of its levels and of its real-world worlds |
+| `index.js` | **the pack**: `lesson = { keys, rules, ladder, sittings, trainer, journey, evidence, cards, knowledge, text }` |
 
 **The world** (`gameworld/divisorIsles/`)
 
@@ -358,28 +369,33 @@ state line under the tables):
 |---|---|
 | `logic.js` (+ test) | PURE: Euclidean division, prediction options, stars, the islands and segments data, dash waves, world layout |
 | `Game.js` | the three.js scene, the loop, the robot controller, forge / storm / dash / last bridge, the state store |
-| `DivisorIsles.jsx`, `divisorIsles.css` | React shell: HUD and overlays, read from the game's state |
+| `DivisorIsles.jsx`, `divisorIsles.css` | React shell: HUD and overlays, read from the game's state; it mounts `<LessonProvider>` with the pilot's pack (the ONE place of the world that names the lesson) |
 | `cases.js` (+ test) | PURE: the orders of « تعاونية الواحة », their steps, `judge` and its explanations |
 | `Depot.js`, `Worlds.js` | the 3D worlds of the cases: the depot, the friends' table, the tiler's site; `runSim` shows what was decided |
-| `KnowledgePage.jsx` | the full-page « خريطة المعارف », fed by the lesson's `knowledge.jsx` / `knowledgeGraph.js` |
-| `Paper.jsx` | the paper mode: the gate, the sign, the model sheet (logic: `kit/longDivision.js`) |
 | `ruleForge.js` (+ test), `RuleForge.jsx`, `ruleForge.css` | « مصهر القاعدة »: the rule the student forges and defends on island D (§2sexies) |
-| `ExamSitting.jsx`, `examSitting.css` | the screen of « الامتحان الأبيض » (§2quater) |
-| `Spaces.jsx` | the screens of the two spaces and of « تقدّمي » (§2quinquies) |
-| `Trainer.jsx` | the screen of « تدرّب » on a card |
-| `Fit.jsx` | the box of every panel: it never scrolls, it fits (see §2ter) |
-| `text.js` | strings of the practice space, the depot and the knowledge page |
 | `strings.js` | every Arabic sentence, the sentence of a practice wave (`waveSay`) and the guidance after a mistake (`explain`) |
 | `../engine/builders.js`, `robot.js`, `audio.js`, `input.js` | reusable: low-poly builders, the robot, synthesised sound, keyboard + touch input |
 | `../../lessonlab/` | « مختبري », the lab of every lesson — its own contract: `LESSON_LAB.md` |
 
-**State of the extraction (2026-11-17).** Done: the pure logic (the six frames above). Not done yet: the React screens
-still import the pilot's content by path, `Game.js` is still one class for the runtime and the mechanic, `cases.js`,
-`ruleForge.js` and the two string tables still mix kit and lesson, and the lesson's content still reads `logic.js` and
-`strings.js` of the world. A lesson's content will be gathered in ONE `lesson.pack.js` (plan §4 step 5).
+**State of the extraction (2026-11-17).** Done: the pure logic (the six frames) and six screens — the two spaces and
+« تقدّمي », the paper mode, the exam sitting, « تدرّب », the knowledge page — which read the lesson through
+`useLesson()`. Not done yet: the SHELL (`DivisorIsles.jsx`: title screen, HUD, practice hub, result and end screens) and
+`Game.js` are still one piece for the runtime and the mechanic — they share the overlay protocol and are split together;
+`cases.js`, `ruleForge.js` / `RuleForge.jsx` and `strings.js` still mix kit and lesson (the forge is generalised when
+the pilot's three other rules are forged, plan §4 step 7); the lesson's content still reads `logic.js` and `strings.js`
+of the world; the CSS is still one file `divisorIsles.css` for kit screens and world overlays. A lesson's content will
+be gathered in ONE `lesson.pack.js` (plan §4 step 5): today it is `world/index.js`.
 
-**Rules of the kit.** A frame is a `create…(lesson data)` function, or a pure helper; it never imports a lesson, a
-world or a string table of one. What is mathematics — when a gate is right, how an answer is marked, what a claim
+**The shape of an exam answer is DATA.** The kit draws what the lesson describes, and never knows its mathematics:
+- a sitting question is `sentence` (words around ONE `{ choice: [{ value, text }] }`) or `tokens` (signs around boxes
+  made with `slot`) — `kit/sitting.js`;
+- a trainer question is a `tap` (`options`), a true / false (`statement`, `truth`, `reasons?`), or a `form` — lines of
+  tokens: a string, `{ strong }`, `{ text, rtl? }`, `{ num, label }`, `{ choice, options }` — `kit/trainer.js`.
+The lesson keeps how an answer is judged (`check`, `mark`), its model copy and its claims.
+
+**Rules of the kit.** A frame is a `create…(lesson data)` function, or a pure helper; a screen reads the lesson with
+`useLesson()`; neither ever imports a lesson, a world or a string table of one (`kit.test.js` reads every file of the
+kit for it). What is mathematics — when a gate is right, how an answer is marked, what a claim
 proves — stays with the lesson. New generated content takes `rand` and is tested with `rng(seed)`.
 
 Everything is drawn in code (no model, no image, no sound file); Arabic in the scene is canvas text. No person is drawn.
@@ -435,6 +451,22 @@ between the camera and the robot ducks down, and a sign too close to the lens hi
   student, nor on a real tablet or a real GPU**: speed, the touch stick and the sound were not judged by a human ear or hand.
 - Strings live in `strings.js`, not in the i18n namespace; the lab kit (`LabCoach`, rounds, memo card) is not used.
 - The save is local to the browser: another device starts from the first island.
+- **Other screen sizes, measured on 2026-11-17** (all eight walks of the pilot, Chromium emulation; every failure below
+  is the SAME on the commit before the kit extraction — none comes from it):
+  - 1024×768: six walks pass. `gameworld-field` fails on the knowledge journey (« its text is big on screen: title ≥ 34 px,
+    explanation ≥ 22 px »: the card's text is smaller than the walk demands at this size) and `class-session` fails on
+    « the header of the lesson's tools is IDENTICAL on the five tool pages » after 24 checks.
+  - 1840×900: seven walks pass. `gameworld-field` fails INTERMITTENTLY at the end of the knowledge journey (a card cut:
+    261–278 px of content in a 233 px box; 3 failures in 9 runs, before and after) — the last card on screen depends on
+    the walk's own clicks, and one card does not fit.
+  - phone sideways (touch, 800×370): none of the six student walks passes — story 61 checks then island H (also at
+    844×390), practice « the map fits the window », field « no scrolling at depot-special », sitting « the subject is
+    comfortable to read », launch kit « bag scrolls », « مختبري » « the text is comfortable to read ». See « On a phone ».
+  Not fixed: these are layout defects of the screens, to be repaired on the kit's screens once they are extracted
+  (plan §4ter-0).
+- **Seen on the knowledge page at 1366×768 (2026-11-17, identical before the extraction):** with the side panel on
+  « تدرّب », the card « نحسب الباقي » is cut by the right edge of the map and the legend overlaps the last cards. Same
+  repair pass.
 
 ## On a phone (TRIAL, owner 2026-11-16 — pilot lesson only)
 

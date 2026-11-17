@@ -13,6 +13,16 @@ import { PHRASES } from './trainer';
 
 const eq = (a, b, q, r) => (r ? `$${a} = ${b} \\times ${q} + ${r}$` : `$${a} = ${b} \\times ${q}$`);
 
+/** The two words a verdict is chosen from, and the four phrasings of « أكمل بالعبارة المناسبة ». */
+const VERDICT = [
+  { value: 'yes', text: 'قاسم' },
+  { value: 'no', text: 'ليس قاسمًا' },
+];
+const PHRASE_CHOICE = PHRASES.map((p) => ({ value: p.id, text: p.text }));
+
+/** The points of each kind of exercise (the ladder shows a level's total before any subject exists). */
+const POINTS = { division: 3, product: 3, cost: 4, trip: 5 };
+
 // ── the exercises, by tier of difficulty (1 = small numbers … 3 = exam size) ──
 const TIER = {
   division: [
@@ -35,7 +45,7 @@ function exDivision(rand, tier) {
   return {
     kind: 'division',
     title: 'القسمة والقاسم',
-    points: 3,
+    points: POINTS.division,
     statement: `نعتبر العددين الطبيعيين ${a} و ${b}.`,
     questions: [
       {
@@ -54,7 +64,7 @@ function exDivision(rand, tier) {
         a,
         b,
         text: `هل ${b} قاسم للعدد ${a}؟ علّل.`,
-        sentence: [String(b), { choose: true }, 'للعدد', String(a)],
+        sentence: [String(b), { choice: VERDICT }, 'للعدد', String(a)],
       },
     ],
   };
@@ -72,7 +82,7 @@ function exProduct(rand, tier) {
   return {
     kind: 'product',
     title: 'القاسم والجداء',
-    points: 3,
+    points: POINTS.product,
     statement: `نعطي المساواة: ${eq(a, b, q, 0).replace(String(q), '\\square')}.`,
     questions: [
       {
@@ -103,7 +113,7 @@ function exProduct(rand, tier) {
         y: smallFirst ? a : b,
         smallFirst,
         text: 'أكمل بالعبارة المناسبة.',
-        sentence: [String(smallFirst ? b : a), { phrase: true }, String(smallFirst ? a : b)],
+        sentence: [String(smallFirst ? b : a), { choice: PHRASE_CHOICE }, String(smallFirst ? a : b)],
       },
     ],
   };
@@ -122,7 +132,7 @@ function exCost(rand, tier) {
     kind: 'cost',
     situation: true,
     title: 'وضعيّة: الصناديق',
-    points: 4,
+    points: POINTS.cost,
     statement: `طلبت مدرسة ${n} علبة تمر من تعاونية الواحة، في صناديق مملوءة تمامًا. في المخزن نوعان من الصناديق: نوع يتّسع لـ ${bad} علبة ونوع يتّسع لـ ${b} علبة. ثمن الصندوق الواحد ${price} دج.`,
     questions: [
       {
@@ -166,7 +176,7 @@ function exTrip(rand) {
     kind: 'trip',
     situation: true,
     title: 'وضعيّة: الشاحنات',
-    points: 5,
+    points: POINTS.trip,
     statement: `${n} صندوقًا جاهزة للتصدير. الشاحنة الواحدة تحمل ${b} صندوقًا، وكراؤها ${price} دج. كلّ الصناديق يجب أن ترحل.`,
     questions: [
       {
@@ -284,8 +294,6 @@ export function mark(q, v) {
       return 0;
   }
 }
-export const { makeSubject, weakKinds, totalMark } = createSittings({ levels: LEVELS, build: BUILD, mark });
-
 /** The model copy of a question: what a full-mark paper carries, line by line. */
 export function model(q) {
   switch (q.type) {
@@ -378,3 +386,15 @@ export function evidenceOf(q, v) {
       return null;
   }
 }
+
+/** The sittings of this lesson: its levels, its exercises and its marking, bound to the kit's frame. */
+export const sittings = createSittings({
+  levels: LEVELS,
+  build: BUILD,
+  points: POINTS,
+  mark,
+  model,
+  scheme,
+  evidenceOf,
+});
+export const { weakKinds, totalMark } = sittings;

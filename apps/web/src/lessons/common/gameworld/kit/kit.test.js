@@ -77,7 +77,7 @@ const build = {
 };
 const mark = (q, v) =>
   !answered(q, v) ? 0 : (q.type === 'word' ? v === q.expected : Number(v.x) === q.expected) ? q.points : 0;
-const sittings = createSittings({ levels, build, mark });
+const sittings = createSittings({ levels, build, mark, points: { count: 2, say: 1 } });
 const journey = createJourney({ keys: ['tens', 'odd'], ladder, levels, stages: 3, cards: 5 });
 
 describe('kit/random', () => {

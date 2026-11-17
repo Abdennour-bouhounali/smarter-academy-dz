@@ -59,21 +59,24 @@ import {
 } from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/practice';
 import { answerOf, simUnit } from './cases';
 import { divisionTip, ruleTip } from '../kit/tips';
-import KnowledgePage from './KnowledgePage';
-import ExamSitting from './ExamSitting';
+import KnowledgePage from '../kit/KnowledgePage';
+import ExamSitting from '../kit/ExamSitting';
 import RuleForge from './RuleForge';
-import { ExamLadder, Promotion, ProgressPage } from './Spaces';
+import { ExamLadder, Promotion, ProgressPage } from '../kit/Spaces';
 import { examOpen } from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/journey';
 import { launchDone } from '../../launchkit/store';
 import {
   totalMark,
   weakKinds,
 } from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/sitting';
-import './examSitting.css';
-import Fit, { cardRoom, stepRoom } from './Fit';
-import { PaperGate, PaperModel, PaperChip, PT } from './Paper';
+import '../kit/examSitting.css';
+import Fit, { cardRoom, stepRoom } from '../kit/Fit';
+import { PaperGate, PaperModel, PaperChip, PT } from '../kit/Paper';
 import { twin } from '../kit/longDivision';
-import { TX } from './text';
+import { TX } from '../kit/text';
+import { LessonProvider } from '../kit/LessonContext';
+// The ONE lesson this world plays today. It becomes a prop when the shell moves to the kit (plan §4, step 4).
+import { lesson as LESSON } from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world';
 import './divisorIsles.css';
 
 const saveKey = (id) => `smarter_world_${id}`;
@@ -227,16 +230,18 @@ export default function DivisorIsles({
       <canvas ref={canvas} className="di-canvas" />
       {!game && <div className="di-loading">{T.loading}</div>}
       {game && (
-        <Shell
-          game={game}
-          rootRef={root}
-          exitTo={exitTo}
-          classicHref={classicHref}
-          basePath={basePath}
-          config={config}
-          onRestart={restart}
-          mastery={mastery}
-        />
+        <LessonProvider lesson={LESSON}>
+          <Shell
+            game={game}
+            rootRef={root}
+            exitTo={exitTo}
+            classicHref={classicHref}
+            basePath={basePath}
+            config={config}
+            onRestart={restart}
+            mastery={mastery}
+          />
+        </LessonProvider>
       )}
     </div>,
     document.body,
@@ -465,7 +470,9 @@ function Shell({ game, rootRef, exitTo, classicHref, basePath, config, onRestart
         />
       )}
       {o?.type === 'promotion' && <Promotion o={o} game={game} />}
-      {o?.type === 'progress' && <ProgressPage s={s} game={game} mastery={mastery} lessonId={config.id} />}
+      {o?.type === 'progress' && (
+        <ProgressPage s={s} game={game} mastery={mastery} lessonId={config.id} lessonTitle={config.title} />
+      )}
       {o?.type === 'lab' && (
         <Suspense fallback={null}>
           <LessonLab inline lessonCode={config.id} lessonTitle={config.title} onClose={() => game.closeMap()} />
@@ -1118,7 +1125,7 @@ function KnowledgeMap({ s, game, sel: selFrom, space0 }) {
                           </span>
                           <span className="di-level__name">
                             <b>{T.map.level(l + 1)}</b>
-                            <small>{TX.levels[node.id][l]}</small>
+                            <small>{LESSON.text.levels[node.id][l]}</small>
                           </span>
                           <span className="di-level__score">
                             <Stars n={st} />
@@ -1143,7 +1150,7 @@ function KnowledgeMap({ s, game, sel: selFrom, space0 }) {
                   data-di-next
                 >
                   <Play size={18} fill="currentColor" /> {T.map.next}:{' '}
-                  {TX.levels[PRACTICE_NODES[next.node].id][next.level]}
+                  {LESSON.text.levels[PRACTICE_NODES[next.node].id][next.level]}
                 </button>
               ) : (
                 <p className="di-dim">{keys.length ? T.map.allDone : T.map.locked}</p>
@@ -1241,7 +1248,7 @@ function Guide({ o, game }) {
  */
 function DepotHud({ d, eq, game, paused }) {
   const step = d.step;
-  const W = TX.worlds[d.world] ?? TX.worlds.depot;
+  const W = LESSON.text.worlds[d.world] ?? LESSON.text.worlds.depot;
   const [picked, setPicked] = useState([]);
   const [vals, setVals] = useState({});
   const [model, setModel] = useState(null);
@@ -1381,7 +1388,7 @@ function DepotHud({ d, eq, game, paused }) {
               )}
               <p className="di-step__prompt">
                 {step && d.steps > 1 && <small>{TX.depot.step(d.stepIndex + 1, d.steps)}</small>}
-                {!step ? W.done : d.busy ? TX.depot.busy : step.prompt}
+                {!step ? W.done : d.busy ? LESSON.text.busy : step.prompt}
               </p>
               {!d.busy && step && (
                 <div className="di-step__row">
@@ -1512,7 +1519,7 @@ function Result({ o, s, game }) {
   return (
     <Card wide tone={o.win ? 'di-card--gold' : ''}>
       <p className="di-card__eyebrow">
-        {meta.icon} {meta.title} · {T.map.level(o.level + 1)} — {TX.levels[PRACTICE_NODES[o.node].id][o.level]}
+        {meta.icon} {meta.title} · {T.map.level(o.level + 1)} — {LESSON.text.levels[PRACTICE_NODES[o.node].id][o.level]}
       </p>
       <h2 data-di-result={o.win ? 'win' : 'lose'}>{o.win ? T.practice.win[o.stars - 1] : T.practice.lose}</h2>
       {o.win ? (
@@ -1532,13 +1539,13 @@ function Result({ o, s, game }) {
           <b>
             {o.money ? (
               <>
-                <span dir="ltr">{o.score}</span> {(TX.worlds[o.world] ?? TX.worlds.depot).unit}
+                <span dir="ltr">{o.score}</span> {(LESSON.text.worlds[o.world] ?? LESSON.text.worlds.depot).unit}
               </>
             ) : (
               <span dir="ltr">{o.score}</span>
             )}
           </b>
-          <span>{o.money ? (TX.worlds[o.world] ?? TX.worlds.depot).earned : T.practice.score}</span>
+          <span>{o.money ? (LESSON.text.worlds[o.world] ?? LESSON.text.worlds.depot).earned : T.practice.score}</span>
           {o.newBest && <em>{T.practice.newBest}</em>}
         </div>
         {!o.money && (

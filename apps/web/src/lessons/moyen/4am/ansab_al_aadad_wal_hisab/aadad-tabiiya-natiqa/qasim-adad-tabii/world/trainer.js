@@ -21,12 +21,59 @@ export const PHRASES = [
 ];
 const eq = (a, b, q, r) => (r ? `$${a} = ${b} \\times ${q} + ${r}$` : `$${a} = ${b} \\times ${q}$`);
 
+// ───────────────────────────── the answer of an exam question, in its own shape ─────────────────────────────
+// A form is what the kit's trainer draws (kit/trainer.js › « a form »): lines of signs, boxes (`num`) and choices.
+const num = (name, label) => ({ num: name, label });
+const strong = (n) => ({ strong: n });
+const VERDICT = [
+  { id: 'yes', value: true, text: 'قاسم' },
+  { id: 'no', value: false, text: 'ليس قاسمًا' },
+];
+/** « a = b × [q] + [r] », then « إذن b [قاسم / ليس قاسمًا] للعدد a ». The long division of a by b can be posed as a model. */
+const divisionForm = (a, b) => ({
+  tip: 'tipDivision',
+  model: { a, b },
+  lines: [
+    { ltr: true, tokens: [String(a), '=', String(b), '×', num('q', 'حاصل القسمة'), '+', num('r', 'الباقي')] },
+    { tokens: ['إذن', strong(b), { choice: 'fits', options: VERDICT }, 'للعدد', strong(a)] },
+  ],
+});
+/** « a = b × [q] », then « قاسم آخر للعدد a: [x] ». */
+const showForm = (a, b) => ({
+  tip: 'tipDivision',
+  model: { a, b },
+  lines: [
+    { ltr: true, tokens: [String(a), '=', String(b), '×', num('q', 'العدد الناقص')] },
+    { tokens: ['قاسم آخر للعدد', strong(a), ':', num('x', 'قاسم آخر')] },
+  ],
+});
+/** « x [العبارة] y »: the answer is the phrase chosen. */
+const completeForm = (x, y) => ({
+  tip: 'tipWrite',
+  single: 'phrase',
+  review: `${x} … ${y}`,
+  lines: [
+    {
+      tokens: [
+        strong(x),
+        { choice: 'phrase', options: PHRASES.map((p) => ({ value: p.id, text: p.text })) },
+        strong(y),
+      ],
+    },
+  ],
+});
+/** « [x] و [y] ». */
+const TWO_FORM = {
+  tip: 'tipWrite',
+  lines: [{ ltr: true, tokens: [num('x', 'القاسم الأوّل'), { text: 'و', rtl: true }, num('y', 'القاسم الثاني')] }],
+};
+
 // ───────────────────────────── the kinds of question ─────────────────────────────
 const Q = {
   /** game — one sentence, three gates (the gate dash, standing still). */
   tap(rand, f, kind, params) {
     const wave = waveOf(rand, kind, params);
-    return { format: 'game', kind: 'tap', key: wave.key, wave, prompt: waveSay(wave) };
+    return { format: 'game', kind: 'tap', key: wave.key, wave, options: wave.gates, prompt: waveSay(wave) };
   },
 
   /** true / false. game: one tap. exam: « صحيح أم خطأ؟ علّل » — the truth AND its reason. */
@@ -128,6 +175,7 @@ const Q = {
       q,
       r,
       prompt: `أجرِ القسمة الإقليدية للعدد ${a} على ${b}، ثمّ استنتج: هل ${b} قاسم للعدد ${a}؟`,
+      form: divisionForm(a, b),
     };
   },
 
@@ -147,6 +195,7 @@ const Q = {
       b,
       q,
       prompt: `بيّن أنّ ${b} قاسم للعدد ${b * q}، ثمّ استنتج قاسمًا آخر للعدد ${b * q}.`,
+      form: showForm(b * q, b),
     };
   },
 
@@ -167,13 +216,21 @@ const Q = {
       y: smallFirst ? a : b,
       smallFirst,
       prompt: 'أكمل بالعبارة المناسبة:',
+      form: completeForm(smallFirst ? b : a, smallFirst ? a : b),
     };
   },
 
   /** exam — « دون أيّ حساب، اذكر قاسمين للعدد a ». */
   two(rand) {
     const a = pick(rand, [53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 113]);
-    return { format: 'exam', kind: 'two', key: K.wahid, a, prompt: `دون أيّ حساب، اذكر قاسمين للعدد ${a}.` };
+    return {
+      format: 'exam',
+      kind: 'two',
+      key: K.wahid,
+      a,
+      prompt: `دون أيّ حساب، اذكر قاسمين للعدد ${a}.`,
+      form: TWO_FORM,
+    };
   },
 };
 
@@ -236,8 +293,6 @@ export const PLAN_OF = {
   wahid: 'wahid',
   intabih: 'wahid',
 };
-
-export const { makeSession } = createTrainer({ kinds: Q, plans: PLANS, planOf: PLAN_OF, fallback: 'mix' });
 
 /** The right answer of a question — for the tests and the automated walk, never shown before the correction. */
 export function solution(q) {
@@ -357,3 +412,14 @@ export function answerLabel(q, v) {
       return '';
   }
 }
+
+/** The trainer of this lesson: its questions and how they are judged, bound to the kit's frame. */
+export const trainer = createTrainer({
+  kinds: Q,
+  plans: PLANS,
+  planOf: PLAN_OF,
+  fallback: 'mix',
+  check,
+  solution,
+  answerLabel,
+});

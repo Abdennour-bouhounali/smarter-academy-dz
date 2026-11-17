@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { rng } from '../../../../../../common/gameworld/kit/random';
 import { verify } from './evidence';
 import { PHRASES } from './trainer';
-import { makeSubject, mark, totalMark, model, scheme, evidenceOf, LEVELS, weakKinds } from './sitting';
+import { sittings, mark, totalMark, model, scheme, evidenceOf, LEVELS, weakKinds } from './sitting';
 import {
   allQuestions,
   answered,
@@ -12,6 +12,8 @@ import {
   forgotten,
   touched,
 } from '../../../../../../common/gameworld/kit/sitting';
+
+const { makeSubject } = sittings;
 
 /** The full-mark answer of a question. */
 const right = (q) => {
@@ -162,5 +164,15 @@ describe('الامتحان الأبيض — the sitting', () => {
       'يحتاج إلى عمل: لا تيأس',
     ]);
     expect([pace(0, 720), pace(360, 720), pace(900, 720)]).toEqual([0, 0.5, 1]);
+  });
+});
+
+describe('the points the ladder shows', () => {
+  it('are the points of the subject that level really gives', async () => {
+    const { sittings } = await import('./sitting');
+    const { rng: seeded } = await import('../../../../../../common/gameworld/kit/random');
+    for (const level of sittings.levels)
+      for (let seed = 1; seed <= 5; seed += 1)
+        expect(sittings.makeSubject(seeded(seed), level.n).total).toBe(sittings.levelPoints(level));
   });
 });

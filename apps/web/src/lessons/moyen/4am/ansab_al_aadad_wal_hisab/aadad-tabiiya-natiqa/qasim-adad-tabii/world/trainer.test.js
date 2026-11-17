@@ -1,8 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import { rng } from '../../../../../../common/gameworld/kit/random';
 import { MENTAL } from './practice';
-import { makeSession, solution, check, answerLabel, PLAN_OF, PHRASES } from './trainer';
+import { trainer, solution, check, answerLabel, PLAN_OF, PHRASES } from './trainer';
 import { sessionStars, SESSION } from '../../../../../../common/gameworld/kit/trainer';
+
+const { makeSession } = trainer;
 
 const NODES = Object.keys(PLAN_OF);
 
@@ -81,5 +83,32 @@ describe('خريطة المعارف — the trainer on a card', () => {
 
   it('gives stars for the questions right at the first try', () => {
     expect([0, 1, 2, 3, 4, 5, 6].map(sessionStars)).toEqual([0, 0, 1, 1, 2, 2, 3]);
+  });
+});
+
+describe('the shape of every question, as the kit draws it', () => {
+  it('is a tap, a true / false, or a form whose boxes are exactly what the solution fills', async () => {
+    const { PT } = await import('../../../../../../common/gameworld/kit/Paper');
+    for (const card of Object.keys(PLAN_OF))
+      for (let seed = 1; seed <= 12; seed += 1)
+        for (const q of makeSession(rng(seed * 31), card)) {
+          if (q.kind === 'tap') {
+            expect(q.options).toEqual(q.wave.gates);
+            continue;
+          }
+          if (q.kind === 'tf') {
+            expect(typeof q.statement).toBe('string');
+            continue;
+          }
+          const { form } = q;
+          expect(PT[form.tip], `${q.kind}: tip`).toEqual(expect.any(String));
+          const slots = form.lines.flatMap((line) => line.tokens.map((t) => t.num ?? t.choice).filter(Boolean));
+          const answer = solution(q);
+          if (form.single) expect(slots).toEqual([form.single]);
+          else expect(slots.sort()).toEqual(Object.keys(answer).sort());
+          for (const line of form.lines)
+            for (const t of line.tokens) if (t.choice) expect(t.options.map((o) => o.text).every(Boolean)).toBe(true);
+          if (form.model) expect(form.model).toEqual({ a: q.a, b: q.b });
+        }
   });
 });

@@ -12,7 +12,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { PenLine, VolumeX, Timer, ArrowLeft, RotateCcw } from 'lucide-react';
 import MathText from '../../components/MathText';
-import { longDivision, paperRows, quotientSoFar, thinking, conclusion, METHOD } from '../kit/longDivision';
+import { longDivision, paperRows, quotientSoFar, thinking, conclusion, METHOD } from './longDivision';
 import Fit, { cardRoom } from './Fit';
 
 export const PT = {

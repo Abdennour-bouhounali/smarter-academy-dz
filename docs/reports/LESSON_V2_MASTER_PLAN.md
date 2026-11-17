@@ -247,6 +247,14 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
   `Spaces`, `Paper`, `RuleForge`, the title screen and HUD of `DivisorIsles.jsx`), the two string tables are split into
   kit chrome and lesson sentences, `cases.js` and `ruleForge.js` are split the same way; sub-step 3 — `Game.js` becomes
   the world runtime plus the lesson's mechanic. Files and rules: `docs/architecture/GAME_WORLD.md` §3.
+- **Phase 0 step 4 — sub-step 2, the screens (2026-11-17): six of them DONE.** The lesson's data reaches the screens
+  through ONE object (`<LessonProvider>` / `useLesson()`; the pilot's pack is `world/index.js`). In the kit now: the two
+  spaces and « تقدّمي », the paper mode, the fit box, the exam sitting, « تدرّب » and the knowledge page. The shape of an
+  exam answer became data the lesson describes (a `form`, a `sentence`, `tokens`), so the kit draws any lesson's
+  answers. The SHELL (title screen, HUD, practice hub, result, end) is NOT split yet: it shares the overlay protocol
+  with `Game.js` and is done with sub-step 3. The same day the other screen sizes were measured (owner's request):
+  failures at 1024×768, 1840×900 and on a phone, ALL present before the extraction (`GAME_WORLD.md` §6); owner's
+  decision: they are repaired on the kit's screens right after this step, before lesson 2.
 - **D4 — DONE**: the five billing files are deleted.
 - **Phase 0 step 2 — formatter DONE**: Prettier (`.prettierrc.json`, 120 columns) with `npm run format:v2`
   and `npm run check:format` (in CI). The pilot's areas are formatted: 109 files; `features/classSession/` went from

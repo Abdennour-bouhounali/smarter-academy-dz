@@ -1,23 +1,21 @@
 /**
- * « تدرّب » — the trainer that opens ON a card of « خريطة المعارف », without leaving the page (logic: trainer.js).
+ * « تدرّب » — the trainer that opens ON a card of « خريطة المعارف », without leaving the page (frame: trainer.js).
  * Six questions in two looks that alternate: the GAME look (dark, gates to tap) and the EXAM look (a white sheet, the exam's
  * verbs, the answer typed in its own shape) — so the student gets used to the sheet of the real exam while still playing.
  * A wrong answer gets a hint first (what the answer gives), then the written correction.
+ *
+ * This screen names no lesson. It draws three shapes of question, and the lesson (`useLesson().trainer`) says which:
+ *   tap   { options: [n, n, n] }                      — one sentence, gates to tap;
+ *   tf    { statement, truth, reasons? }              — true / false; with `reasons` on the exam sheet;
+ *   form  { tip, model?, single?, review?, lines }    — an exam answer in its own shape (see trainer.js › « a form »).
  */
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { Star, RotateCcw, Gamepad2, FileText, ArrowLeft } from 'lucide-react';
 import MathText from '../../components/MathText';
-import {
-  makeSession,
-  check,
-  solution,
-  answerLabel,
-  PHRASES,
-} from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/trainer';
-import { sessionStars, SESSION } from '../kit/trainer';
+import { useLesson } from './LessonContext';
+import { sessionStars, SESSION } from './trainer';
 import { PaperGate, PaperModel, PaperChip, PT } from './Paper';
-import { trainerEvidence } from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/evidence';
-import { twin } from '../kit/longDivision';
+import { twin } from './longDivision';
 
 /** The statement of an exam question with its data underlined — the first gesture of the method: « أقرأ وأسطّر المعطيات ». */
 const Marked = ({ text }) =>
@@ -49,16 +47,13 @@ const L = {
   true: 'صحيح',
   false: 'خطأ',
   why: 'التعليل:',
-  so: 'إذن',
-  isDiv: 'قاسم',
-  notDiv: 'ليس قاسمًا',
-  forNum: 'للعدد',
-  other: 'قاسم آخر',
   pick: '— اختر —',
   done: ['واصل التدريب!', 'بداية جيّدة!', 'أحسنت!', 'تدريب مثاليّ!'],
   first: 'صحيحة من المحاولة الأولى',
   best: 'أفضل نتيجة',
 };
+/** The value an option is known by in the page: its `id`, or its value written out. */
+const idOf = (option) => option.id ?? String(option.value);
 const Num = ({ value, onChange, w = 3, ...rest }) => (
   <input
     className="di-num di-num--tr"
@@ -73,6 +68,7 @@ const Num = ({ value, onChange, w = 3, ...rest }) => (
 );
 
 export default function Trainer({ nodeId, best = 0, onDone, onPaper, onEvidence }) {
+  const { makeSession, check, solution, answerLabel, evidenceOf } = useLesson().trainer;
   const [run, setRun] = useState(0);
   const qs = useMemo(() => makeSession(Math.random, nodeId), [nodeId, run]);
   const [i, setI] = useState(0);
@@ -109,7 +105,7 @@ export default function Trainer({ nodeId, best = 0, onDone, onPaper, onEvidence 
     if (fb?.final) return;
     const res = check(q, value);
     // الكفاءات: only the FIRST try of an exam-format question, with no help opened before (evidence.js) — right or wrong
-    onEvidence?.(trainerEvidence(q, value, { firstTry: tries === 0, helped: helped.current }));
+    onEvidence?.(evidenceOf(q, value, { firstTry: tries === 0, helped: helped.current }));
     const rec = log.current[i] ?? (log.current[i] = { attempts: [], fix: res.fix, tip: null });
     rec.attempts.push({ label: answerLabel(q, value), ok: res.ok });
     rec.tip = res.tip ?? null;
@@ -199,13 +195,8 @@ export default function Trainer({ nodeId, best = 0, onDone, onPaper, onEvidence 
           </p>
           <p className="di-review__q">
             <MathText>{qs[rev].kind === 'tf' ? `«${qs[rev].statement}»` : qs[rev].prompt}</MathText>
-            {qs[rev].kind === 'tap' && <span dir="ltr"> — {qs[rev].wave.gates.join(' · ')}</span>}
-            {qs[rev].kind === 'complete' && (
-              <span dir="ltr">
-                {' '}
-                {qs[rev].x} … {qs[rev].y}
-              </span>
-            )}
+            {qs[rev].kind === 'tap' && <span dir="ltr"> — {qs[rev].options.join(' · ')}</span>}
+            {qs[rev].form?.review && <span dir="ltr"> {qs[rev].form.review}</span>}
           </p>
           {log.current[rev].attempts.map((at, k) => (
             <p key={k} className={`di-review__a ${at.ok ? 'is-ok' : 'is-ko'}`}>
@@ -246,7 +237,7 @@ export default function Trainer({ nodeId, best = 0, onDone, onPaper, onEvidence 
             onSubmit={submit}
             onModel={() => {
               helped.current = true;
-              setModel({ ...twin(q.a, q.b), own: false });
+              setModel({ ...twin(q.form.model.a, q.form.model.b), own: false });
             }}
           />
         )}
@@ -275,11 +266,11 @@ export default function Trainer({ nodeId, best = 0, onDone, onPaper, onEvidence 
             >
               {i + 1 >= qs.length ? L.finish : L.next} <ArrowLeft size={16} />
             </button>
-            {!fb.ok && (q.kind === 'division' || q.kind === 'show') && (
+            {!fb.ok && q.form?.model && (
               <button
                 type="button"
                 className="di-link"
-                onClick={() => setModel({ a: q.a, b: q.b, own: true })}
+                onClick={() => setModel({ ...q.form.model, own: true })}
                 data-di-tr-model
               >
                 {PT.readFix}
@@ -319,7 +310,7 @@ function Question({ q, index, locked, onSubmit, onModel }) {
           <MathText>{q.prompt}</MathText>
         </p>
         <div className="di-tap__gates" dir="ltr">
-          {q.wave.gates.map((n) => (
+          {q.options.map((n) => (
             <button key={n} type="button" disabled={locked} onClick={() => onSubmit(n)} data-di-tr-opt={n}>
               {n}
             </button>
@@ -380,98 +371,69 @@ function Question({ q, index, locked, onSubmit, onModel }) {
       </form>
     );
   }
-  if (q.kind === 'division') {
+  // every other exam question is a FORM the lesson describes: lines of signs, boxes and choices
+  const { form } = q;
+  const slots = form.lines.flatMap((line) => line.tokens.filter((t) => t.num || t.choice));
+  const ready = slots.every((t) => (t.num ? (v[t.num] ?? '') !== '' : v[t.choice] != null));
+  const token = (t, i, ltr) => {
+    if (typeof t === 'string') return ltr ? <span key={i}>{t}</span> : <Fragment key={i}>{t} </Fragment>;
+    if (t.strong != null)
+      return (
+        <b key={i} dir="ltr">
+          {t.strong}
+        </b>
+      );
+    if (t.text != null)
+      return (
+        <span key={i} dir={t.rtl ? 'rtl' : undefined}>
+          {t.text}
+        </span>
+      );
+    if (t.num)
+      return (
+        <Num
+          key={i}
+          value={v[t.num] ?? ''}
+          onChange={set(t.num)}
+          disabled={locked}
+          aria-label={t.label}
+          data-di-tr={t.num}
+        />
+      );
+    const chosen = t.options.find((o) => o.value === v[t.choice]);
     return (
-      <form className="di-sheet" onSubmit={send}>
-        {head}
-        <PaperGate tip={PT.tipDivision} onModel={onModel}>
-          <div className="di-sheet__line" dir="ltr">
-            <span>{q.a}</span>
-            <span>=</span>
-            <span>{q.b}</span>
-            <span>×</span>
-            <Num value={v.q ?? ''} onChange={set('q')} disabled={locked} aria-label="حاصل القسمة" data-di-tr="q" />
-            <span>+</span>
-            <Num value={v.r ?? ''} onChange={set('r')} disabled={locked} aria-label="الباقي" data-di-tr="r" />
-          </div>
-          <div className="di-sheet__line">
-            {L.so} <b dir="ltr">{q.b}</b>
-            <select
-              value={v.fits == null ? '' : v.fits ? 'yes' : 'no'}
-              onChange={(e) => set('fits')(e.target.value === '' ? null : e.target.value === 'yes')}
-              disabled={locked}
-              data-di-tr="fits"
-            >
-              <option value="">{L.pick}</option>
-              <option value="yes">{L.isDiv}</option>
-              <option value="no">{L.notDiv}</option>
-            </select>
-            {L.forNum} <b dir="ltr">{q.a}</b>
-          </div>
-          {checkBtn((v.q ?? '') !== '' && (v.r ?? '') !== '' && v.fits != null)}
-        </PaperGate>
-      </form>
-    );
-  }
-  if (q.kind === 'show') {
-    return (
-      <form className="di-sheet" onSubmit={send}>
-        {head}
-        <PaperGate tip={PT.tipDivision} onModel={onModel}>
-          <div className="di-sheet__line" dir="ltr">
-            <span>{q.a}</span>
-            <span>=</span>
-            <span>{q.b}</span>
-            <span>×</span>
-            <Num value={v.q ?? ''} onChange={set('q')} disabled={locked} aria-label="العدد الناقص" data-di-tr="q" />
-          </div>
-          <div className="di-sheet__line">
-            {L.other} {L.forNum} <b dir="ltr">{q.a}</b>:{' '}
-            <Num value={v.x ?? ''} onChange={set('x')} disabled={locked} aria-label={L.other} data-di-tr="x" />
-          </div>
-          {checkBtn((v.q ?? '') !== '' && (v.x ?? '') !== '')}
-        </PaperGate>
-      </form>
-    );
-  }
-  if (q.kind === 'complete') {
-    return (
-      <form
-        className="di-sheet"
-        onSubmit={(e) => {
-          e.preventDefault();
-          onSubmit(v.p);
-        }}
+      <select
+        key={i}
+        value={chosen ? idOf(chosen) : ''}
+        onChange={(e) => set(t.choice)(t.options.find((o) => idOf(o) === e.target.value)?.value ?? null)}
+        disabled={locked}
+        data-di-tr={t.choice}
       >
-        {head}
-        <PaperGate tip={PT.tipWrite}>
-          <div className="di-sheet__line">
-            <b dir="ltr">{q.x}</b>
-            <select value={v.p ?? ''} onChange={(e) => set('p')(e.target.value)} disabled={locked} data-di-tr="phrase">
-              <option value="">{L.pick}</option>
-              {PHRASES.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.text}
-                </option>
-              ))}
-            </select>
-            <b dir="ltr">{q.y}</b>
-          </div>
-          {checkBtn(Boolean(v.p))}
-        </PaperGate>
-      </form>
+        <option value="">{L.pick}</option>
+        {t.options.map((o) => (
+          <option key={idOf(o)} value={idOf(o)}>
+            {o.text}
+          </option>
+        ))}
+      </select>
     );
-  }
+  };
   return (
-    <form className="di-sheet" onSubmit={send}>
+    <form
+      className="di-sheet"
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit(form.single ? v[form.single] : v);
+      }}
+    >
       {head}
-      <PaperGate tip={PT.tipWrite}>
-        <div className="di-sheet__line" dir="ltr">
-          <Num value={v.x ?? ''} onChange={set('x')} disabled={locked} aria-label="القاسم الأوّل" data-di-tr="x" />
-          <span dir="rtl">و</span>
-          <Num value={v.y ?? ''} onChange={set('y')} disabled={locked} aria-label="القاسم الثاني" data-di-tr="y" />
-        </div>
-        {checkBtn((v.x ?? '') !== '' && (v.y ?? '') !== '')}
+      <PaperGate tip={PT[form.tip]} onModel={form.model ? onModel : undefined}>
+        {form.lines.map((line, k) => (
+          <div key={k} className="di-sheet__line" dir={line.ltr ? 'ltr' : undefined}>
+            {line.tokens.map((t, i) => token(t, i, line.ltr))}
+          </div>
+        ))}
+        {checkBtn(ready)}
       </PaperGate>
     </form>
   );

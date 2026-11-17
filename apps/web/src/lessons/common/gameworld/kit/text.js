@@ -1,46 +1,14 @@
-/** Strings of the practice space, of « تعاونية الواحة » and of the full-page « خريطة المعارف » (the story's strings are in strings.js). */
+/**
+ * The CHROME of the kit's screens: the two practice spaces, « تقدّمي », a real-world case, « خريطة المعارف ».
+ * Nothing here speaks of a lesson's mathematics or of its world: those sentences are the lesson's (`lesson.text`).
+ */
 export const TX = {
   hub: {
     title: 'فضاء التدريب',
     open: 'فضاء التدريب',
     toKnow: 'خريطة المعارف',
   },
-  levels: {
-    'qasim-baqi': ['سباق: أعداد صغيرة', 'سباق: الباقي والأعداد الكبيرة', 'تعاونية الواحة: أيّ صندوق؟'],
-    'qasim-jidaa': ['سباق: العامل الناقص', 'سباق: اقرأ الجداء', 'تعاونية الواحة: سعة الصندوق'],
-    'siyagh-mutakafia': ['سباق: مضاعف ويقبل القسمة', 'سباق: الجمل الأربع وفخاخها', 'تعاونية الواحة: أيّ طلبيّة؟'],
-    'wahid-wa-nafsuh': ['سباق: 1 والعدد نفسه', 'سباق: أعداد عنيدة', 'تعاونية الواحة: الطلبيّة العنيدة'],
-    exam: [
-      'سباق: مراجعة شاملة',
-      'تعاونية الواحة: يوم كامل',
-      'قعدة الأصدقاء: القسمة بالعدل',
-      'ورشة التبليط: العمل المتقن',
-    ],
-  },
-  // the three worlds of the real cases: its name, how an order is called there, and what a right order earns
-  worlds: {
-    depot: {
-      name: 'تعاونية الواحة',
-      order: (i, n) => `الطلبيّة ${i} من ${n}`,
-      earned: 'أرباح اليوم',
-      unit: 'دج',
-      done: 'الشاحنة ترحل!',
-    },
-    share: {
-      name: 'قعدة الأصدقاء',
-      order: (i, n) => `القسمة ${i} من ${n}`,
-      earned: 'نقاط العدل',
-      unit: 'نقطة',
-      done: 'قسمة عادلة: بالهناء!',
-    },
-    tiling: {
-      name: 'ورشة التبليط',
-      order: (i, n) => `الورشة ${i} من ${n}`,
-      earned: 'نقاط الإتقان',
-      unit: 'نقطة',
-      done: 'عمل متقن!',
-    },
-  },
+  close: 'إغلاق',
   tip: 'حيلة',
   // the two practice spaces: the game first, then the real exam — the game lives BETWEEN the levels of the exam, never inside
   spaces: {
@@ -74,7 +42,6 @@ export const TX = {
   progress: {
     open: 'تقدّمي',
     title: 'تقدّمي في هذا الدرس',
-    sub: 'التعرّف على قاسم لعدد طبيعي',
     road: { story: 'المغامرة', keys: 'المفاتيح', game: 'نجوم اللعب', exam: 'درجات الامتحان', know: 'بطاقات المعارف' },
     readiness: 'جاهزيّتي للامتحان',
     readinessTip:
@@ -105,7 +72,6 @@ export const TX = {
     step: (i, n) => `الخطوة ${i} من ${n}`,
     check: 'تحقّق',
     pack: 'وضّب',
-    busy: 'المستودع يوضّب…',
     guide: 'لنفهم ما حدث',
     retry: 'أجرّب من جديد',
     history: 'الخطوات السابقة:',
@@ -116,7 +82,7 @@ export const TX = {
   know: {
     title: 'خريطة المعارف',
     open: 'خريطة المعارف',
-    sub: 'كلّ قواعد الدرس وأمثلته وأخطائه الشائعة. افتح كلّ بطاقة، واختم القواعد الأربع بالذهب.',
+    sub: 'كلّ قواعد الدرس وأمثلته وأخطائه الشائعة. افتح كلّ بطاقة، واختم كلّ قاعدة بالذهب.',
     cards: 'بطاقات مقروءة',
     seals: 'قواعد مختومة',
     locked: 'هذه البطاقة تُفتح عندما تكسب مفتاحها في المغامرة.',

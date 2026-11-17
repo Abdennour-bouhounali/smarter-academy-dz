@@ -1,10 +1,12 @@
 import { describe, it, expect } from 'vitest';
 import { rng } from '../../../../../../common/gameworld/kit/random';
-import { makeSession, solution, check, PLAN_OF } from './trainer';
+import { trainer, solution, check, PLAN_OF } from './trainer';
 import { MISSIONS, makeMission, judge, answerOf } from '../../../../../../common/gameworld/divisorIsles/cases';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { trainerEvidence, caseEvidence, verify, payloadOf } from './evidence';
+
+const { makeSession } = trainer;
 
 const FIXTURE = JSON.parse(
   readFileSync(
