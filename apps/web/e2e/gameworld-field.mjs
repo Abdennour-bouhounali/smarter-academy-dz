@@ -19,17 +19,17 @@ const KEYS = ['qasim-baqi', 'qasim-jidaa', 'siyagh-mutakafia', 'wahid-wa-nafsuh'
 const shrunk = new Map();
 async function noScroll(page, where) {
   await page.waitForTimeout(250);
-  const res = await page.evaluate(() => {
+  const measure = () => page.evaluate(() => {
     const bad = []; const small = [];
     const name = (el) => `${el.tagName.toLowerCase()}.${String(el.className).split(' ').slice(0, 2).join('.')}`;
     for (const el of document.querySelectorAll('.di-root *')) {
       const cs = getComputedStyle(el);
-      if (/(auto|scroll)/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 2) bad.push(`scrolls: ${name(el)}`);
-      if (/(auto|scroll)/.test(cs.overflowX) && el.scrollWidth > el.clientWidth + 2) bad.push(`scrolls sideways: ${name(el)}`);
+      if (/(auto|scroll)/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 2 && !el.hasAttribute('data-di-fit-scroll')) bad.push(`scrolls: ${name(el)}`); // on a phone held sideways a Fit box slides INSIDE itself (GAME_WORLD.md « On a phone », rule 3): it marks itself
+      if (/(auto|scroll)/.test(cs.overflowX) && el.scrollWidth > el.clientWidth + 2 && !el.hasAttribute('data-di-slides')) bad.push(`scrolls sideways: ${name(el)}`); // a line marked `data-di-slides` is ONE line that slides on a phone (the trail of the journey)
     }
     for (const box of document.querySelectorAll('[data-di-fitbox]')) {
       const o = box.getBoundingClientRect(); const i = box.firstElementChild.getBoundingClientRect();
-      if (o.height > 0 && i.height > o.height + 3) bad.push(`cut: ${name(box.parentElement)} (${Math.round(i.height)} in ${Math.round(o.height)})`);
+      if (o.height > 0 && i.height > o.height + 3 && !box.hasAttribute('data-di-fit-scroll')) bad.push(`cut: ${name(box.parentElement)} (${Math.round(i.height)} in ${Math.round(o.height)}, scale ${box.dataset.diFitz})`);
       if (Number(box.dataset.diFitz) < 0.8 && o.height > 0) small.push(`${name(box.parentElement)} ×${box.dataset.diFitz}`);
     }
     for (const sel of ['.di-card', '.di-step', '.di-order', '.di-page__fit', '.di-jcard', '.di-next', '.di-kpanel']) for (const el of document.querySelectorAll(sel)) {
@@ -38,9 +38,15 @@ async function noScroll(page, where) {
     if (document.documentElement.scrollHeight > window.innerHeight + 1 || document.documentElement.scrollWidth > window.innerWidth + 1) bad.push('the page itself scrolls');
     return { bad, small };
   });
+  let res = await measure();
+  // a Fit box settles in a few frames, and here the world behind it is drawn by a software renderer (a frame can be slow):
+  // a « cut » that is only a fit in progress gets a moment — a real cut stays and fails
+  for (let i = 0; i < 5 && res.bad.length && res.bad.every((b) => b.startsWith('cut:')); i += 1) { await page.waitForTimeout(300); res = await measure(); }
   for (const x of res.small) shrunk.set(x, where);
   if (res.bad.length) { console.log('FAIL no scrolling at «', where, '»:', res.bad.join(' | ')); process.exitCode = 1; throw new Error(`scroll at ${where}`); }
 }
+/** Picks a card on the full map. On a phone the map steps aside while a memo, a memory test or a training is open: the tab « البطاقة » brings it back. */
+const knode = async (page, id) => { const n = page.locator(`[data-di-knode="${id}"]`); if (!(await n.isVisible())) await page.click('[data-di-tab="card"]'); await n.click(); };
 const browser = await chromium.launch({ args: ['--no-sandbox', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
 const errors = []; let n = 0;
 const expect = (cond, msg) => { if (!cond) { console.log('FAIL', msg); process.exitCode = 1; throw new Error(msg); } console.log('ok  ', msg); };
@@ -235,7 +241,9 @@ expect(await a.page.locator('[data-di-journey]').count() === 1 && await a.page.l
   const m = await a.page.evaluate(() => { const px = (sel) => { const el = document.querySelector(sel); return el ? parseFloat(getComputedStyle(el).fontSize) * Number(document.querySelector('[data-di-fit]').dataset.diFit) : 0; }; const c = document.querySelector('[data-di-jcard]').getBoundingClientRect(); return { title: px('[data-di-jcard] h3'), text: px('[data-di-jcard] .di-ctx p'), next: px('.di-nextcard strong'), trail: px('[data-di-trail-card]'), share: c.width / window.innerWidth, fit: document.querySelector('[data-di-fit]').dataset.diFit }; });
   console.log('    sizes on screen (px):', JSON.stringify(m));
   // a window up to 1100 px wide (a tablet held sideways) gets the page's own narrower sizes: still large, one step down
-  const min = SIZE[0] <= 1100 ? { title: 27, text: 19, next: 17, trail: 13 } : { title: 34, text: 22, next: 20, trail: 15 };
+  // a phone held sideways has ONE scale, its root font at 13 px (GAME_WORLD.md « On a phone », rule 1): 10.7 px is its smallest label
+  const PHONE = process.env.E2E_TOUCH === '1' && SIZE[1] <= 500;
+  const min = PHONE ? { title: 20, text: 15, next: 13, trail: 10.5 } : SIZE[0] <= 1100 ? { title: 27, text: 19, next: 17, trail: 13 } : { title: 34, text: 22, next: 20, trail: 15 };
   expect(m.title >= min.title && m.text >= min.text && m.next >= min.next && m.trail >= min.trail, `its text is big on screen: title ≥ ${min.title} px, explanation ≥ ${min.text} px, the next card ≥ ${min.next} px`);
   expect(m.share > 0.5, 'the card takes more than half of the screen');
 }
@@ -259,15 +267,15 @@ expect(await a.page.locator('[data-di-kmap="full"]').count() === 1, '« شاهد
 expect(await a.page.locator('[data-di-knode]').count() === 13 && await a.page.locator('[data-di-knode][data-open="true"]').count() === 13, 'the page shows the 13 cards of the lesson, all open with the four keys');
 expect(await a.page.evaluate(() => { const p = document.querySelector('[data-di-know]'); const r = p.getBoundingClientRect(); return r.width >= window.innerWidth - 1 && r.height >= window.innerHeight - 1 && p.scrollHeight <= p.clientHeight + 1; }), 'it is a FULL page and it does not scroll');
 expect(await a.page.evaluate(() => [...document.querySelectorAll('[data-di-knode]')].every((el) => { const r = el.getBoundingClientRect(); const m = document.querySelector('.di-kmap').getBoundingClientRect(); return r.left >= m.left - 2 && r.right <= m.right + 2 && r.top >= m.top - 2 && r.bottom <= m.bottom + 2; })), 'every card of the map is inside the map');
-for (const id of ['qasim', 'baqi', 'jidaa', 'tadhakkar', 'ex120', 'ex143', 'tahaqqaq', 'siyagh', 'wahid', 'intabih', 'khulasa']) await a.page.click(`[data-di-knode="${id}"]`);
-await a.page.click('[data-di-knode="khata-ittijah"]'); await a.page.waitForTimeout(300); await a.shot('know-mistake-hidden');
+for (const id of ['qasim', 'baqi', 'jidaa', 'tadhakkar', 'ex120', 'ex143', 'tahaqqaq', 'siyagh', 'wahid', 'intabih', 'khulasa']) await knode(a.page, id);
+await knode(a.page, 'khata-ittijah'); await a.page.waitForTimeout(300); await a.shot('know-mistake-hidden');
 expect(!(await a.st()).know.read.includes('khata-ittijah'), 'a common mistake is not « read » before its error is uncovered');
 await a.page.click('[data-di-uncover]'); await a.page.waitForTimeout(300); await a.shot('know-mistake-shown');
 expect((await a.page.textContent('.di-parts')).includes('الصواب'), 'uncovering shows why it is wrong and the right sentence');
-await a.page.click('[data-di-knode="khata-amil"]'); await a.page.click('[data-di-uncover]');
+await knode(a.page, 'khata-amil'); await a.page.click('[data-di-uncover]');
 expect((await a.st()).know.read.length === 13, 'the 13 cards are read');
 // the memo sheet and the memory test of a rule
-await a.page.click('[data-di-knode="baqi"]'); await a.page.click('[data-di-tab="memo"]'); await a.page.waitForTimeout(300); await a.shot('know-memo');
+await knode(a.page, 'baqi'); await a.page.click('[data-di-tab="memo"]'); await a.page.waitForTimeout(300); await a.shot('know-memo');
 const memo = await a.page.textContent('.di-memo');
 expect(memo.includes('القاعدة') && memo.includes('الفخّ') && memo.includes('في الامتحان'), 'the memo sheet gives the rule, its trap and the exam tip');
 await a.page.click('[data-di-tab="quiz"]'); await a.page.click('[data-di-quiz="0-0"]'); await a.page.click('[data-di-quiz="1-0"]'); await a.page.click('[data-di-quiz-check]');
@@ -285,7 +293,7 @@ const reply = async (q, v) => {
   for (const [k, x] of Object.entries(v)) { if (k === 'fits') await a.page.selectOption('[data-di-tr="fits"]', x ? 'yes' : 'no'); else await a.page.fill(`[data-di-tr="${k}"]`, String(x)); }
   await a.page.click('[data-di-tr-check]');
 };
-await a.page.click('[data-di-knode="baqi"]'); await a.page.click('[data-di-tab="card"]'); await a.page.click('[data-di-know-train]'); await a.page.waitForSelector('[data-di-trainer]');
+await knode(a.page, 'baqi'); await a.page.click('[data-di-tab="card"]'); await a.page.click('[data-di-know-train]'); await a.page.waitForSelector('[data-di-trainer]');
 expect(await a.page.locator('[data-di-know]').count() === 1 && await a.page.locator('[data-di-mapcard]').count() === 0, '« تدرّب على هذه البطاقة » opens the exercise INSIDE the knowledge page');
 const formats = [];
 for (let i = 0; i < 6; i += 1) {
@@ -330,7 +338,7 @@ expect(await a.page.locator('[data-di-trainer="done"][data-di-tr-stars="2"]').co
 }
 // the other families of cards: the four sentences (complete, true/false with its reason), 1 and the number itself, the mix
 for (const id of ['siyagh', 'wahid', 'jidaa', 'khulasa']) {
-  await a.page.click(`[data-di-knode="${id}"]`); await a.page.click('[data-di-tab="train"]'); await a.page.waitForSelector('[data-di-trainer]');
+  await knode(a.page, id); await a.page.click('[data-di-tab="train"]'); await a.page.waitForSelector('[data-di-trainer]');
   for (let i = 0; i < 6; i += 1) { const t = await tr(); await reply(t.q, t.solution); if ((await tr()).fb !== 'ok') throw new Error(`${id} question ${i + 1} ${t.q.kind} refused`); if (id === 'siyagh' && i === 4) { await a.page.waitForTimeout(300); await a.shot('train-tf-exam'); } await a.page.click('[data-di-tr-next]'); }
   expect((await a.st()).know.trained[id] === 3, `card « ${id} »: a session all right at the first try gives 3 stars`);
 }

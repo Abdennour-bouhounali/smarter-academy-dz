@@ -60,9 +60,13 @@ export default function Fit({ className = '', innerClass = '', avail = null, min
     ro.observe(i);
     window.addEventListener('resize', later);
     fit();
+    // a card that has just opened may still be growing when it is first measured (an icon that arrives, a line that
+    // appears with its animation) and, held to the card's height, its box no longer changes size with it: look twice more
+    const again = [setTimeout(later, 250), setTimeout(later, 900)];
     return () => {
       ro.disconnect();
       cancelAnimationFrame(raf);
+      again.forEach(clearTimeout);
       window.removeEventListener('resize', later);
     };
   }, [min]);

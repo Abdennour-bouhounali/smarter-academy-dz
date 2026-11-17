@@ -12,7 +12,7 @@
  * The whole page is scaled to the screen (`useFit`): a big screen gets big text, never a small page lost in the middle.
  * Gamified: a card is locked until its key is owned, ticked once read, and a rule is sealed in gold by its memory test.
  */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   X,
   Lock,
@@ -261,6 +261,15 @@ export default function KnowledgePage({ s, game, sel }) {
 function Journey({ node, found, isOpen, setId, onFull, game, ...body }) {
   const { NODES, byId, edgeLabel } = useKnowledge();
   const { open, id } = body;
+  // on a phone the trail is ONE line that slides (world.css): the card being read is brought into sight
+  const trail = useRef(null);
+  useEffect(() => {
+    const line = trail.current;
+    const now = line?.querySelector('.is-now');
+    if (!line || !now || line.scrollWidth <= line.clientWidth) return;
+    line.scrollLeft +=
+      now.getBoundingClientRect().left - line.getBoundingClientRect().left - (line.clientWidth - now.clientWidth) / 2;
+  }, [id, found.length]);
   const next = node.reveals.map(byId);
   // the cards already found that still hide something: where to go when this branch ends
   const frontier = found
@@ -275,7 +284,7 @@ function Journey({ node, found, isOpen, setId, onFull, game, ...body }) {
   const all = found.length === NODES.length;
   return (
     <div className="di-journey" data-di-journey>
-      <nav className="di-trail" aria-label={TX.know.trail} data-di-trail>
+      <nav className="di-trail" aria-label={TX.know.trail} data-di-trail data-di-slides ref={trail}>
         {found.map((fid, k) => {
           const n = byId(fid);
           const [icon] = kindOf(n);

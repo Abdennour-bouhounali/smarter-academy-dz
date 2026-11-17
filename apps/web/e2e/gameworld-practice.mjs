@@ -19,17 +19,17 @@ const KEYS = ['qasim-baqi', 'qasim-jidaa', 'siyagh-mutakafia', 'wahid-wa-nafsuh'
 const shrunk = new Map();
 async function noScroll(page, where) {
   await page.waitForTimeout(250);
-  const res = await page.evaluate(() => {
+  const measure = () => page.evaluate(() => {
     const bad = []; const small = [];
     const name = (el) => `${el.tagName.toLowerCase()}.${String(el.className).split(' ').slice(0, 2).join('.')}`;
     for (const el of document.querySelectorAll('.di-root *')) {
       const cs = getComputedStyle(el);
-      if (/(auto|scroll)/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 2) bad.push(`scrolls: ${name(el)}`);
-      if (/(auto|scroll)/.test(cs.overflowX) && el.scrollWidth > el.clientWidth + 2) bad.push(`scrolls sideways: ${name(el)}`);
+      if (/(auto|scroll)/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 2 && !el.hasAttribute('data-di-fit-scroll')) bad.push(`scrolls: ${name(el)}`); // on a phone held sideways a Fit box slides INSIDE itself (GAME_WORLD.md « On a phone », rule 3): it marks itself
+      if (/(auto|scroll)/.test(cs.overflowX) && el.scrollWidth > el.clientWidth + 2 && !el.hasAttribute('data-di-slides')) bad.push(`scrolls sideways: ${name(el)}`); // a line marked `data-di-slides` is ONE line that slides on a phone (the trail of the journey)
     }
     for (const box of document.querySelectorAll('[data-di-fitbox]')) {
       const o = box.getBoundingClientRect(); const i = box.firstElementChild.getBoundingClientRect();
-      if (o.height > 0 && i.height > o.height + 3) bad.push(`cut: ${name(box.parentElement)} (${Math.round(i.height)} in ${Math.round(o.height)})`);
+      if (o.height > 0 && i.height > o.height + 3 && !box.hasAttribute('data-di-fit-scroll')) bad.push(`cut: ${name(box.parentElement)} (${Math.round(i.height)} in ${Math.round(o.height)}, scale ${box.dataset.diFitz})`);
       if (Number(box.dataset.diFitz) < 0.8 && o.height > 0) small.push(`${name(box.parentElement)} ×${box.dataset.diFitz}`);
     }
     for (const sel of ['.di-card', '.di-step', '.di-order', '.di-page__fit', '.di-jcard', '.di-next', '.di-kpanel']) for (const el of document.querySelectorAll(sel)) {
@@ -38,6 +38,10 @@ async function noScroll(page, where) {
     if (document.documentElement.scrollHeight > window.innerHeight + 1 || document.documentElement.scrollWidth > window.innerWidth + 1) bad.push('the page itself scrolls');
     return { bad, small };
   });
+  let res = await measure();
+  // a Fit box settles in a few frames, and here the world behind it is drawn by a software renderer (a frame can be slow):
+  // a « cut » that is only a fit in progress gets a moment — a real cut stays and fails
+  for (let i = 0; i < 5 && res.bad.length && res.bad.every((b) => b.startsWith('cut:')); i += 1) { await page.waitForTimeout(300); res = await measure(); }
   for (const x of res.small) shrunk.set(x, where);
   if (res.bad.length) { console.log('FAIL no scrolling at «', where, '»:', res.bad.join(' | ')); process.exitCode = 1; throw new Error(`scroll at ${where}`); }
 }
