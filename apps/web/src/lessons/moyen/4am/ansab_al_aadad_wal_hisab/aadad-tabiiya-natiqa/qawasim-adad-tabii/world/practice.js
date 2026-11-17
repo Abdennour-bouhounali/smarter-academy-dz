@@ -118,7 +118,7 @@ const K = { jidaa: 'jidaa-aamilayn', rappel: 'qasim-rappel', tariqa: 'tariqa-qaw
 const COUNTED = [6, 8, 9, 10, 12, 14, 15, 16, 18, 20, 21, 25];
 
 /** The map: five nodes in the order of the lesson's mind map, levels from the easiest. */
-export const EXAM = SUMMARY;
+const EXAM = SUMMARY;
 export const PRACTICE_NODES = [
   {
     id: K.jidaa,

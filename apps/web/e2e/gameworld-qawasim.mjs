@@ -8,8 +8,7 @@ import { tmpdir } from 'node:os';
 
 const BASE = process.env.E2E_BASE || 'http://localhost:5173';
 const LESSON = `${BASE}/courses/moyen/4am/ansab_al_aadad_wal_hisab/qawasim-adad-tabii`;
-const OUT = process.argv[2] && !process.argv[2].startsWith('--') ? process.argv[2] : `${tmpdir()}/gameworld-divisor-isles`;
-const UNTIL = Number((process.argv.find((a) => a.startsWith('--until=')) || '--until=99').split('=')[1]);
+const OUT = process.argv[2] && !process.argv[2].startsWith('--') ? process.argv[2] : `${tmpdir()}/gameworld-qawasim`;
 const SIZE = (process.env.E2E_SIZE || '1366x768').split('x').map(Number);
 mkdirSync(OUT, { recursive: true });
 
