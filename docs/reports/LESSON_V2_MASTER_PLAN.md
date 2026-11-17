@@ -325,27 +325,23 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
   7. [x] The root `CLAUDE.md` is cut from 479 lines (56.7 KB) to 298 (19.5 KB): a map of what binds every task, with
      the documentation rule and the images rules kept word for word — DONE 2026-11-17. The file as it was is kept
      whole: `docs/reports/CLAUDE_MD_BEFORE_CUT_2026-11-17.md`.
-  8. [~] THE GATE — lesson 2 `qawasim-adad-tabii`, rebuilt with the kit only. STATE on 2026-11-17 (work in progress,
-     NOT yet played in a browser — do not call it ready):
-     - DONE and tested by unit tests: the story a world plays is the lesson's (`lesson.story`; `Game.js` names no
-       island number and no key; the pilot's walks pass unchanged); lesson 2's `world/` — `story.js` (9 islands:
-       24 → 24 again with 8 → 40 → forge 🧱 → 31 and the workshop → forge 🔑 → 36 → the dash → forge 🔍 → 60 → the
-       stone (252, five planks) → forge ⚡ → the last bridge: 96 books, shelves of 20 or 12, 1400 دج), `forges.js` (four
-       forges; `forges.test.js` passes: one rule holds in each, 16 / 16 / 16 / 243 rules), `practice.js`, `trainer.js`,
-       `sitting.js`, `journey.js`, `evidence.js`, `knowledge.js`, `text.js`, `index.js`; its `lesson.pack.js` (world,
-       knowledge, coach — the lesson index is regenerated: A STUDENT NOW OPENS THE WORLD on lesson 2); the default
-       class test (`content/class-tests/4am/qawasim-adad-tabii.json`); four claim kinds on both sides (`pair`,
-       `divisors`, `stop`, `divisible`); two new dash questions in the world's words (`lastTry`, `countOf`).
-     - LEFT, in order: (1) play it — write `apps/web/e2e/gameworld-qawasim.mjs` from the pilot's story walk (same
-       helpers; lesson 2's steps are in this list) and fix what the browser shows: the forges' drawings need `c.fits`
-       and `c.tag` in `divisorIsles/forgeParts.jsx` (a case whose `held` is not « the bridge holds »: forges 1 and 3 of
-       lesson 2), five slots in `kit/ruleForge.css`, the stone's quiz with five options; (2) tests for `practice`,
-       `trainer`, `sitting`, `journey`, `evidence` (the status script asks for them); (3) delete the stub
-       `world/parts.js`; (4) `board/script.js`, `board/memo.js`, `board` in the pack; (5) a launch-kit family for
-       `4am.m1.r01`; (6) walks at the four sizes, screenshots looked at, `phone: true`; (7) `status:lesson-v2` ✅;
-       (8) docs, the report asked by the gate (real time, lines written by hand, what was copied from the pilot).
-     - NOT in lesson 2 and to be said in the report: no real-world case world (S5) — the pilot's cases are written
-       for lesson 1; the practice ladder has ten dash levels instead.
+  8. [~] THE GATE — lesson 2 `qawasim-adad-tabii`, rebuilt with the kit only. STATE on 2026-11-17, late:
+     - **THE STUDENT'S WORLD PLAYS**, measured: `apps/web/e2e/gameworld-qawasim.mjs` (52 checks: the story from the
+       title to the last bridge, its four forges each with a false rule refuted and a last step typed wrong then right,
+       the workshop, the dash, the stone) passes at 1366×768, 1024×768, 1840×900 and on a phone held sideways
+       (800×370, touch); the pilot's story walk still gives 104. `status:lesson-v2` prints 12 of 15 parts.
+       Two defects were seen on screenshots and fixed (the five-slot forge overflowed; a case whose truth is not
+       « the bridge holds » was labelled « ثبت »): `forgeParts.jsx › fits, tag`, `kit/ruleForge.css` five slots.
+     - **NOT DONE — lesson 2 is not finished:** (1) tests for `world/practice`, `trainer`, `sitting`, `journey`,
+       `evidence` (only `forges.test.js` and the pack test cover its content: the trainer, the sittings and the
+       practice hub of lesson 2 were NEVER opened in a browser); (2) the practice hub, « تدرّب », an exam sitting and
+       « تقدّمي » walked for lesson 2; (3) `board/script.js`, `board/memo.js` and `board` in the pack — the teacher
+       still gets the OLD lesson page; (4) a launch-kit family for `4am.m1.r01` — lesson 2 has no « عُدّة الانطلاق »
+       check of lesson 1's الكفاءة, and its world walk seeds the launch as already played; (5) screenshots of every
+       screen looked at (only the forges were); (6) the old modules are still there (`?view=classic`, « إختبار أولي »);
+       (7) the gate's report: real time, lines written by hand, what was copied from the pilot.
+     - NOT in lesson 2 by choice, to be said in the report: no real-world case world (S5); ten dash levels instead.
+     - The walk is assembled from the pilot walk's helpers (copied, not shared): a shared helper module is owed.
 - **D4 — DONE**: the five billing files are deleted.
 - **Phase 0 step 2 — formatter DONE**: Prettier (`.prettierrc.json`, 120 columns) with `npm run format:v2`
   and `npm run check:format` (in CI). The pilot's areas are formatted: 109 files; `features/classSession/` went from

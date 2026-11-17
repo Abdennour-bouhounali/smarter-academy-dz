@@ -6,6 +6,8 @@
  */
 export const LESSON_PACK = {
   id: 'qawasim-adad-tabii',
+  // its home was walked on a phone held sideways (GAME_WORLD.md « On a phone »)
+  phone: true,
   // the student's game world: the unit's world, played with this lesson's story and content
   world: { id: 'divisor-isles', content: () => import('./world').then((m) => m.lesson) },
   // the lesson's knowledge sheets — « بطاقة المعارف » on the board, the rule the exam coach reminds
