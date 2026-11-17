@@ -1,57 +1,21 @@
 /**
- * « حلبة التدريب » — PURE logic of the practice game of « أرخبيل القواسم » (no three.js, no React).
- *
- * The practice is the gate dash, level by level. Its levels hang on the LESSON'S MIND MAP: one node per knowledge item
- * (the four keys of the story) plus the summary node « تحدّي الامتحان »; a node holds its levels from the easiest to the most
- * advanced: runs of the gate dash first (a run is waves; a wave is one sentence, three gates, exactly one right), then a
- * real-world mission of « تعاونية الواحة » (`game: 'depot'`, logic in ./cases.js).
+ * « حلبة التدريب » of lesson `qasim-adad-tabii` — the CONTENT of its practice ladder (PURE: no three.js, no React).
+ * The ladder itself — what a run is, what is open, the next level, the stars — is the kit's (`gameworld/kit/ladder.js`).
+ * Here: the kinds of question of THIS lesson (`G`), when a gate is right (`isRight`), and the map of its levels.
  *
  * A wave is DATA: { type, key, a?, b?, q?, r?, gates: [n, n, n], good: index }. The sentences and the guidance after a
- * mistake are written from it in strings.js — nothing is typed twice.
+ * mistake are written from it in the world's strings.js — nothing is typed twice.
  */
-import { divide } from './logic';
+import { divide } from '../../../../../../common/gameworld/divisorIsles/logic';
+import { int, pick, shuffle } from '../../../../../../common/gameworld/kit/random';
+import { buildWave as wave, createLadder, SUMMARY } from '../../../../../../common/gameworld/kit/ladder';
 
-const WAVES_PER_LEVEL = 6;
-export const MAX_WAVES = 8; // a mistake brings the same kind of question back, as long as a gate is free on the rail
-export const PRACTICE_HEARTS = 3;
-
-/** Deterministic random numbers (mulberry32): the tests replay the same levels. */
-export function rng(seed) {
-  let t = seed >>> 0;
-  return () => {
-    t += 0x6d2b79f5;
-    let x = Math.imul(t ^ (t >>> 15), 1 | t);
-    x ^= x + Math.imul(x ^ (x >>> 7), 61 | x);
-    return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
-  };
-}
-const int = (rand, lo, hi) => lo + Math.floor(rand() * (hi - lo + 1));
-const pick = (rand, list) => list[Math.floor(rand() * list.length)];
-const shuffle = (rand, list) => {
-  const a = list.slice();
-  for (let i = a.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(rand() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-};
 const divisorsOf = (a) => {
   const out = [];
   for (let d = 1; d <= a; d += 1) if (a % d === 0) out.push(d);
   return out;
 };
 const PRIMES = [11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47];
-
-/** Builds a wave from the right value and a pool of wrong ones; refuses (null) when two wrong values cannot be found. */
-function wave(rand, base, right, wrongPool) {
-  const wrong = shuffle(
-    rand,
-    [...new Set(wrongPool)].filter((n) => n !== right && n >= 0),
-  ).slice(0, 2);
-  if (wrong.length < 2) return null;
-  const gates = shuffle(rand, [right, ...wrong]);
-  return { ...base, gates, good: gates.indexOf(right) };
-}
 
 /** Is gate value n right for this wave? ONE definition, used to build the wave, to judge the student and by the tests. */
 export function isRight(w, n) {
@@ -173,7 +137,7 @@ const K = { baqi: 'qasim-baqi', jidaa: 'qasim-jidaa', siyagh: 'siyagh-mutakafia'
  * question it draws from (`mix`: [generator, params]) and its speed. `EXAM` has no key of its own: every wave carries the key
  * of the rule it uses, so the reminder always opens the right tablet.
  */
-export const EXAM = 'exam';
+export const EXAM = SUMMARY;
 /**
  * THE GATE DASH IS MENTAL ARITHMETIC (owner, 2026-11-15): a gate arrives in a few seconds, so every number the student must
  * work with stays inside the multiplication tables — a ≤ 100, a divisor or a factor ≤ 10. Nothing here needs paper; problems
@@ -274,65 +238,9 @@ export const PRACTICE_NODES = [
     ],
   },
 ];
-/** Is this level the real-world game (« تعاونية الواحة ») rather than a run of the gate dash? */
-export const isDepot = (nodeIndex, level) => PRACTICE_NODES[nodeIndex].levels[level].game === 'depot';
-
-export const levelId = (nodeIndex, level) => `${PRACTICE_NODES[nodeIndex].id}:${level + 1}`;
-/** Every level in playing order: the easiest of the first node … the last of the exam. */
-export const LEVEL_ORDER = PRACTICE_NODES.flatMap((n, i) =>
-  n.levels.map((_, l) => ({ node: i, level: l, id: levelId(i, l) })),
-);
-export const MAX_PRACTICE_STARS = LEVEL_ORDER.length * 3;
-
-/** One wave of ONE kind of question (always a valid one) — used by the trainer of the knowledge page. */
-export function waveOf(rand, kind, params) {
-  for (let tries = 0; tries < 400; tries += 1) {
-    const w = G[kind](rand, params);
-    if (w && w.gates.filter((n) => isRight(w, n)).length === 1) return w;
-  }
-  throw new Error(`practice: no wave of kind ${kind}`);
-}
-
-/** One wave of a level (always a valid one: the generator is asked again when it refuses). */
-export function makeWave(rand, nodeIndex, level, avoid = null) {
-  const { mix } = PRACTICE_NODES[nodeIndex].levels[level];
-  for (let tries = 0; tries < 400; tries += 1) {
-    const [kind, params] = pick(rand, mix);
-    const w = G[kind](rand, params);
-    if (!w || w.gates.filter((n) => isRight(w, n)).length !== 1) continue;
-    if (avoid && avoid.type === w.type && avoid.a === w.a && avoid.b === w.b) continue;
-    return w;
-  }
-  throw new Error(`practice: no wave for ${levelId(nodeIndex, level)}`);
-}
-
-/** The waves of a run: the level's kinds of question in turn, never the same numbers twice in a row. */
-export function makeRun(rand, nodeIndex, level, count = WAVES_PER_LEVEL) {
-  const out = [];
-  while (out.length < count) out.push(makeWave(rand, nodeIndex, level, out.at(-1)));
-  return out;
-}
-
-/**
- * What is open. A node opens with its key (earned in the story, on this device or another); the exam node opens once the
- * first level of each of the four nodes is passed. Inside a node the levels open one after the other.
- * `progress` = { [levelId]: { stars, best } }.
- */
-export function nodeOpen(nodeIndex, keys, progress) {
-  const node = PRACTICE_NODES[nodeIndex];
-  if (node.id !== EXAM) return keys.includes(node.id);
-  return PRACTICE_NODES.every((n, i) => n.id === EXAM || (progress[levelId(i, 0)]?.stars ?? 0) > 0);
-}
-export function levelOpen(nodeIndex, level, keys, progress) {
-  if (!nodeOpen(nodeIndex, keys, progress)) return false;
-  return level === 0 || (progress[levelId(nodeIndex, level - 1)]?.stars ?? 0) > 0;
-}
-/** The next level to play: the first open one not yet passed; when everything is passed, the first one below three stars. */
-export function nextLevel(keys, progress) {
-  const open = LEVEL_ORDER.filter((x) => levelOpen(x.node, x.level, keys, progress));
-  return open.find((x) => !(progress[x.id]?.stars > 0)) ?? open.find((x) => (progress[x.id]?.stars ?? 0) < 3) ?? null;
-}
-export const practiceStars = (progress) => LEVEL_ORDER.reduce((sum, x) => sum + (progress[x.id]?.stars ?? 0), 0);
-
-/** Points of a right gate: 100, more with the streak (×1, ×1.5 from 3 in a row, ×2 from 5). */
-export const gatePoints = (streak) => Math.round(100 * (streak >= 5 ? 2 : streak >= 3 ? 1.5 : 1));
+/** The ladder of this lesson: its levels, bound to its nodes and its generators. */
+export const ladder = createLadder({ nodes: PRACTICE_NODES, generators: G, isRight });
+export const { levelId, MAX_PRACTICE_STARS, waveOf, makeWave, makeRun, nodeOpen, levelOpen, nextLevel, practiceStars } =
+  ladder;
+/** Is this level the real-world game (« تعاونية الواحة » and its two other worlds) rather than a run of the gate dash? */
+export const isDepot = ladder.isCase;

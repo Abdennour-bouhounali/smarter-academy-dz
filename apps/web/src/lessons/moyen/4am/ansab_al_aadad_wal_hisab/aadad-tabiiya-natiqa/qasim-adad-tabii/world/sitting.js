@@ -1,20 +1,17 @@
 /**
- * « الامتحان الأبيض » — PURE logic of the exam SITTING (prototype, 2026-11-16): a real exam in three phases.
- *   read  the whole subject, a minute to read and underline — nothing can be answered yet;
- *   sit   silence: the student works on PAPER and copies only his final answers; NO verdict, no hint, no sound;
- *   back  the copy handed back: a mark per question (the marking scheme), the model copy, his own paper to check.
- * A subject is three exercises of the lesson (10 points, 12 minutes), generated: no two sittings are alike.
- * `mark` gives the points of an answer; `model` the lines of the model copy; `scheme` what the corrector looks for on the
- * paper; `evidenceOf` the claim sent to the server (first and only try, unassisted: the strongest evidence of the game).
+ * « الامتحان الأبيض » of lesson `qasim-adad-tabii` — the CONTENT of its exam sittings (PURE). The frame — the three phases,
+ * a subject adapted to what was missed, the stars — is the kit's (`gameworld/kit/sitting.js`).
+ * Here: the exercises of THIS lesson by tier of difficulty, the ladder of its five levels, and for each type of question:
+ * `mark` the points of an answer, `model` the lines of the model copy, `scheme` what the corrector looks for on the paper,
+ * `evidenceOf` the claim sent to the server (first and only try, unassisted: the strongest evidence of the game).
  */
-import { divide } from './logic';
-import { longDivision, conclusion } from './paper';
+import { divide } from '../../../../../../common/gameworld/divisorIsles/logic';
+import { longDivision, conclusion } from '../../../../../../common/gameworld/kit/longDivision';
+import { int, pick } from '../../../../../../common/gameworld/kit/random';
+import { answered, createSittings, slot as S } from '../../../../../../common/gameworld/kit/sitting';
 import { PHRASES } from './trainer';
 
-const int = (rand, lo, hi) => lo + Math.floor(rand() * (hi - lo + 1));
-const pick = (rand, list) => list[Math.floor(rand() * list.length)];
 const eq = (a, b, q, r) => (r ? `$${a} = ${b} \\times ${q} + ${r}$` : `$${a} = ${b} \\times ${q}$`);
-const S = (slot, label, w) => ({ slot, label, w });
 
 // ── the exercises, by tier of difficulty (1 = small numbers … 3 = exam size) ──
 const TIER = {
@@ -123,6 +120,7 @@ function exCost(rand, tier) {
     ) ?? b + 1;
   return {
     kind: 'cost',
+    situation: true,
     title: 'وضعيّة: الصناديق',
     points: 4,
     statement: `طلبت مدرسة ${n} علبة تمر من تعاونية الواحة، في صناديق مملوءة تمامًا. في المخزن نوعان من الصناديق: نوع يتّسع لـ ${bad} علبة ونوع يتّسع لـ ${b} علبة. ثمن الصندوق الواحد ${price} دج.`,
@@ -166,6 +164,7 @@ function exTrip(rand) {
   const price = pick(rand, [4500, 6000, 7500]);
   return {
     kind: 'trip',
+    situation: true,
     title: 'وضعيّة: الشاحنات',
     points: 5,
     statement: `${n} صندوقًا جاهزة للتصدير. الشاحنة الواحدة تحمل ${b} صندوقًا، وكراؤها ${price} دج. كلّ الصناديق يجب أن ترحل.`,
@@ -257,67 +256,6 @@ export const LEVELS = [
     ],
   },
 ];
-export const PASS = 0.8;
-const ORDINAL = ['الأوّل', 'الثاني', 'الثالث', 'الرابع'];
-
-/**
- * The subject of a sitting at `level` (1–5). ADAPTED to the student: `weak` = the kinds of exercise where he lost points at
- * his last try of this level — they come FIRST on the new sheet (fresh mind), with new numbers (a similar sheet, never the same).
- */
-export function makeSubject(rand, level = 4, weak = []) {
-  const L = LEVELS[Math.max(1, Math.min(LEVELS.length, level)) - 1];
-  const plan = [...L.plan].sort((x, y) => (weak.includes(y[0]) ? 1 : 0) - (weak.includes(x[0]) ? 1 : 0));
-  const exercises = plan.map(([kind, tier], i) => {
-    const e = BUILD[kind](rand, tier);
-    const id = `e${i + 1}`;
-    return {
-      ...e,
-      id,
-      title: `التمرين ${ORDINAL[i]}${e.kind === 'cost' || e.kind === 'trip' ? ' (وضعيّة)' : ''}`,
-      topic: e.title,
-      focus: weak.includes(kind),
-      questions: e.questions.map((q, k) => ({ ...q, id: `${id}q${k + 1}` })),
-    };
-  });
-  return {
-    level: L.n,
-    minutes: L.minutes,
-    total: exercises.reduce((t, e) => t + e.points, 0),
-    title: `امتحان أبيض — الدرجة ${L.n}`,
-    lesson: L.title,
-    exercises,
-  };
-}
-/** The kinds of exercise where points were lost: what the next sheet of this level will put first. */
-export const weakKinds = (subject, answers) =>
-  subject.exercises.filter((e) => e.questions.some((q) => mark(q, answers[q.id]) < q.points)).map((e) => e.kind);
-/** Stars of a sitting: none under 80 % of the points; then 1, 2 (≥ 90 %), 3 (a full paper). */
-export const sittingStars = (m, total) => (m >= total ? 3 : m >= total * 0.9 ? 2 : m >= total * PASS ? 1 : 0);
-
-export const allQuestions = (subject) =>
-  subject.exercises.flatMap((e) => e.questions.map((q) => ({ ...q, exercise: e.id })));
-/** Is the answer complete enough to be read (every box filled)? An empty answer earns 0 and is shown as « لم تُجب ». */
-export function answered(q, v) {
-  if (v == null) return false;
-  if (q.type === 'verdict' || q.type === 'phrase') return typeof v === 'string' && v !== '';
-  return (q.tokens ?? []).filter((t) => typeof t === 'object').every((t) => v[t.slot] !== '' && v[t.slot] != null);
-}
-
-/** Has the student written ANYTHING for this question (one box is enough)? */
-export function touched(q, v) {
-  if (v == null) return false;
-  if (typeof v === 'string') return v !== '';
-  return Object.values(v).some((x) => x !== '' && x != null);
-}
-/**
- * The exercises left completely empty, as indexes — except the one on screen, which the student sees. A student who hands in
- * with such an exercise has most likely FORGOTTEN it (one exercise per page): the sitting shows it to him once before accepting.
- */
-export const forgotten = (subject, answers, onScreen = -1) =>
-  subject.exercises
-    .map((e, i) => i)
-    .filter((i) => i !== onScreen && subject.exercises[i].questions.every((q) => !touched(q, answers[q.id])));
-
 /** The points of an answer, by the marking scheme. Half the points of a division for the quotient, half for the remainder. */
 export function mark(q, v) {
   if (!answered(q, v)) return 0;
@@ -346,8 +284,7 @@ export function mark(q, v) {
       return 0;
   }
 }
-export const totalMark = (subject, answers) =>
-  allQuestions(subject).reduce((sum, q) => sum + mark(q, answers[q.id]), 0);
+export const { makeSubject, weakKinds, totalMark } = createSittings({ levels: LEVELS, build: BUILD, mark });
 
 /** The model copy of a question: what a full-mark paper carries, line by line. */
 export function model(q) {
@@ -441,15 +378,3 @@ export function evidenceOf(q, v) {
       return null;
   }
 }
-
-/** Where the student should be: the share of the points he should have covered when `elapsed` of `total` seconds are gone. */
-export const pace = (elapsed, total) => Math.max(0, Math.min(1, elapsed / total));
-/** The appreciation written on the copy. */
-export const appreciation = (m, total) =>
-  m >= total * 0.9
-    ? 'ممتاز'
-    : m >= total * 0.7
-      ? 'جيّد'
-      : m >= total * 0.5
-        ? 'متوسّط: راجع أخطاءك'
-        : 'يحتاج إلى عمل: لا تيأس';

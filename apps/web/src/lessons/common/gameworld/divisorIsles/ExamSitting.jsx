@@ -15,18 +15,14 @@ import MathText from '../../components/MathText';
 import Fit from './Fit';
 import {
   makeSubject,
-  allQuestions,
   mark,
   totalMark,
   model,
   scheme,
   evidenceOf,
-  answered,
-  forgotten,
-  pace,
-  appreciation,
-} from './sitting';
-import { PHRASES } from './trainer';
+} from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/sitting';
+import { allQuestions, answered, forgotten, pace, appreciation } from '../kit/sitting';
+import { PHRASES } from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/trainer';
 import { T } from './strings';
 
 const L = {

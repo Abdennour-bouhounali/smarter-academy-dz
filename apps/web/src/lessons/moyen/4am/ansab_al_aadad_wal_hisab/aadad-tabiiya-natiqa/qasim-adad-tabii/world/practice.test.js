@@ -1,25 +1,26 @@
 import { describe, it, expect } from 'vitest';
+import { rng } from '../../../../../../common/gameworld/kit/random';
 import {
-  rng,
   makeRun,
   makeWave,
   isRight,
   isDepot,
   MENTAL,
   PRACTICE_NODES,
-  LEVEL_ORDER,
+  ladder,
   levelId,
   nodeOpen,
   levelOpen,
   nextLevel,
   practiceStars,
-  gatePoints,
   EXAM,
   MAX_PRACTICE_STARS,
 } from './practice';
-import { MISSIONS } from './cases';
-import { explain, waveSay, T } from './strings';
+import { gatePoints } from '../../../../../../common/gameworld/kit/ladder';
+import { MISSIONS } from '../../../../../../common/gameworld/divisorIsles/cases';
+import { explain, waveSay, T } from '../../../../../../common/gameworld/divisorIsles/strings';
 
+const { LEVEL_ORDER } = ladder;
 const KEYS = PRACTICE_NODES.filter((n) => n.id !== EXAM).map((n) => n.id);
 const DASH = LEVEL_ORDER.filter((x) => !isDepot(x.node, x.level));
 

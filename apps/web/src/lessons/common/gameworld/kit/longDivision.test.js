@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { longDivision, twin, paperRows, quotientSoFar, thinking, conclusion, METHOD } from './paper';
+import { longDivision, twin, paperRows, quotientSoFar, thinking, conclusion, METHOD } from './longDivision';
 
 describe('وضع الورقة — the division as it is written on paper', () => {
   it('poses 756 ÷ 36 in two steps: 75 then 36', () => {

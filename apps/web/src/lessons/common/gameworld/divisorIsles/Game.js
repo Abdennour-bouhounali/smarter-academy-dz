@@ -47,16 +47,21 @@ import {
   levelOpen,
   nextLevel,
   levelId,
-  gatePoints,
   isDepot,
   PRACTICE_NODES,
-  PRACTICE_HEARTS,
-  MAX_WAVES,
-} from './practice';
+} from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/practice';
+import { gatePoints, PRACTICE_HEARTS, MAX_WAVES } from '../kit/ladder';
 import { makeMission, judge, facts, answerParts, WORLD_OF, ORDER_PAY, MISTAKE_COST, CASE_HEARTS } from './cases';
 import { Depot } from './Depot';
-import { caseEvidence, verify } from './evidence';
-import { applySitting, examOpen, examLevelOpen, emptyExam } from './journey';
+import {
+  caseEvidence,
+  verify,
+} from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/evidence';
+import {
+  applySitting,
+  examOpen,
+} from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/journey';
+import { examLevelOpen, emptyExam } from '../kit/journey';
 import { ShareScene, TileScene } from './Worlds';
 
 /** The 3D worlds of the real cases, built the first time they are played. */

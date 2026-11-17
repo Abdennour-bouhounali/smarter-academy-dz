@@ -1,19 +1,21 @@
 import { describe, it, expect } from 'vitest';
-import { rng } from './practice';
+import { rng } from '../../../../../../common/gameworld/kit/random';
 import { makeSession, solution, check, PLAN_OF } from './trainer';
-import { MISSIONS, makeMission, judge, answerOf } from './cases';
+import { MISSIONS, makeMission, judge, answerOf } from '../../../../../../common/gameworld/divisorIsles/cases';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { trainerEvidence, caseEvidence, verify, learningPointOf, payloadOf } from './evidence';
+import { trainerEvidence, caseEvidence, verify, payloadOf } from './evidence';
 
 const FIXTURE = JSON.parse(
   readFileSync(
-    fileURLToPath(new URL('../../../../../../api/tests/Fixtures/game-claims.json', import.meta.url)),
+    fileURLToPath(new URL('../../../../../../../../../api/tests/Fixtures/game-claims.json', import.meta.url)),
     'utf8',
   ),
 );
 
 const FIRST = { firstTry: true, helped: false };
+/** The الكفاءة a key proves, read from what would be sent to the server. */
+const learningPointOf = (lessonId, key) => payloadOf(lessonId, 'case', { key, claim: {} }, 'id')?.learningPoint ?? null;
 
 describe('which game answers count toward الكفاءات', () => {
   it('maps the four keys to the four learning points of the lesson', () => {

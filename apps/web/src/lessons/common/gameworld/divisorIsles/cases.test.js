@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { rng } from './practice';
+import { rng } from '../kit/random';
 import { MISSIONS, WORLD_OF, makeMission, makeOrder, judge, answerOf, answerParts, count, facts } from './cases';
 
 describe('تعاونية الواحة — the real-world cases', () => {

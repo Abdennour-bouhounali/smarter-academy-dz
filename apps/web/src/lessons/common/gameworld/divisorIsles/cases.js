@@ -18,7 +18,7 @@
  * never the answer.
  */
 import { divide } from './logic';
-import { divisionTip, productTip } from './tips';
+import { divisionTip, productTip } from '../kit/tips';
 
 const int = (rand, lo, hi) => lo + Math.floor(rand() * (hi - lo + 1));
 const pick = (rand, list) => list[Math.floor(rand() * list.length)];

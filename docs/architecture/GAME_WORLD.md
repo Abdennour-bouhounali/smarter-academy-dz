@@ -102,7 +102,7 @@ A wrong answer gets a HINT first — what the answer gives, never the answer —
 « التصحيح » (`check` → `hint`, `fix`). Stars = questions right at the first try, kept per card (`know.trained`). The 13 cards map
 to five plans (`PLAN_OF`): by remainder, by product, the four sentences, 1 and the number itself, and a mix for the idea and the summary.
 
-### « وضع الورقة » — the paper mode (`Paper.jsx`, logic `paper.js`; owner, 2026-11-15)
+### « وضع الورقة » — the paper mode (`Paper.jsx`, logic `kit/longDivision.js`; owner, 2026-11-15)
 
 An exam has no music and no gates: it has a sheet, a pen and a method. **Every screen that asks for written work is in paper
 mode**: the exam-format questions of the trainer, the calculation steps of the depot, and — in the story — the store of the last
@@ -120,7 +120,7 @@ bridge (the only place of the story that needs paper). The game formats stay pla
 - **It never gives the answer**: before answering, the model shows a TWIN division (`twin`: same nature, other numbers); only
   after the written correction may the student read « التحرير النموذجي » of his OWN question.
 
-### « فضاء التدريب » — the practice space (`KnowledgeMap` in `DivisorIsles.jsx`, logic `practice.js`)
+### « فضاء التدريب » — the practice space (`KnowledgeMap` in `DivisorIsles.jsx`, logic `kit/ladder.js` + the lesson's `world/practice.js`)
 
 Five nodes in the order of the mind map; 16 levels, 48 ★, easiest first. Each key: two runs of the gate dash, then a field mission
 at the depot. The summary node « 🏆 تحدّي الامتحان »: one mixed run, then three full cases. « واصل التدريب » always proposes the next level.
@@ -169,7 +169,7 @@ A value is part of the SITUATION (it is what makes the remainder matter: an unfa
 sentence added on top. No person is drawn: the friends are their plates and names, the tiler is his tools. A step never asks for
 a number the world has just shown by packing.
 
-**« حيلة » — a calculation shortcut after the answer** (`tips.js`; owner, 2026-11-15): when a clean one exists for the numbers at
+**« حيلة » — a calculation shortcut after the answer** (`kit/tips.js`; owner, 2026-11-15): when a clean one exists for the numbers at
 hand — lean on a round product, as in 180 ÷ 19: « 19 × 10 = 190، ثمّ 190 − 19 = 171؛ من 171 إلى 180 يبقى 9: الباقي 9 »; a rule of
 divisibility (digit sum for 3 and 9, last digit for 2, 5, 10); a product split in tens and units for an invoice. It is shown ONLY
 after a right answer or the final correction (before, it would give the result away), and the function returns null when no
@@ -318,29 +318,69 @@ and the island's mirror judges it with bridges** (`RuleForge.jsx`, logic `ruleFo
 
 ## 3. Files
 
-`apps/web/src/lessons/common/gameworld/`
+Since 2026-11-17 the code is in THREE places (Phase 0 of the lesson v2 rollout, kit extraction — in progress, see the
+state line under the tables):
+
+1. **the kit** `apps/web/src/lessons/common/gameworld/kit/` — lesson-independent; it names no lesson and imports none
+   (`kit.test.js` drives it with a toy lesson and reads its files for the boundary);
+2. **the lesson's content** `<lesson folder>/world/` — the pilot's is
+   `lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/`;
+3. **the world** `gameworld/divisorIsles/` — the three.js scene and its mechanic, and, until the next sub-steps move
+   them, the React screens.
+
+**The kit** (`gameworld/kit/`)
+
+| File | What it is | What the lesson gives it |
+|---|---|---|
+| `random.js` | `rng(seed)`, `int`, `pick`, `shuffle`: everything generated takes a `rand`, so the tests replay it | — |
+| `ladder.js` | the practice ladder: fair waves, runs, what is open, the next level, the stars; `buildWave` for generators | `createLadder({ nodes, generators, isRight })` |
+| `trainer.js` | « تدرّب »: six questions, game, game, exam, game, exam, exam; the stars of a session | `createTrainer({ kinds, plans, planOf, fallback })` |
+| `sitting.js` | « الامتحان الأبيض »: a subject from a level, weak kinds first, the two shapes of an answer, the stars | `createSittings({ levels, build, mark })` |
+| `journey.js` | the road: when the exam space opens, a promotion, « تقدّمي », the ONE next step | `createJourney({ keys, ladder, levels, stages, cards })` |
+| `evidence.js` | which answers count (first try, no help), the id of the الكفاءة, the payload sent | `createEvidence({ grade, points })` |
+| `evidenceSend.js` | the POST to `/lessons/{code}/game-evidence` and the retry queue (§4) | — |
+| `tips.js` (+ test) | « حيلة »: the calculation shortcuts, given only when one clearly helps | — |
+| `longDivision.js` (+ test) | the long division as it is written and said on paper, its twin (used by `Paper.jsx` and by « مختبري ») | — |
+
+**The pilot's content** (`…/qasim-adad-tabii/world/`, each with its test)
+
+| File | What it holds |
+|---|---|
+| `practice.js` | the kinds of wave of the lesson, `isRight`, the five nodes and sixteen levels; exports the bound `ladder` |
+| `trainer.js` | the kinds of question, the plan of each card, `check` (hint, then correction), `solution`, `answerLabel`, `PHRASES` |
+| `sitting.js` | the four exercises by tier, the five levels, `mark`, `model`, `scheme`, `evidenceOf` |
+| `journey.js` | the four keys, bound to the ladder and the levels |
+| `evidence.js` | the الكفاءة of each key, the claims, `verify` (the same rule as the server) |
+
+**The world** (`gameworld/divisorIsles/`)
 
 | File | Role |
 |---|---|
-| `divisorIsles/logic.js` (+ test) | PURE: Euclidean division, prediction options, stars, the islands and segments data, dash waves, world layout |
-| `divisorIsles/Game.js` | the three.js scene, the loop, the robot controller, forge / storm / dash / last bridge, the state store |
-| `divisorIsles/DivisorIsles.jsx`, `divisorIsles.css` | React shell: HUD and overlays, read from the game's state |
-| `divisorIsles/practice.js` (+ test) | PURE: the map's nodes and levels, the question generators, what is open, points |
-| `divisorIsles/cases.js` (+ test) | PURE: the orders of « تعاونية الواحة », their steps, `judge` and its explanations |
-| `divisorIsles/Depot.js`, `Worlds.js` | the 3D worlds of the cases: the depot, the friends' table, the tiler's site; `runSim` shows what was decided |
-| `divisorIsles/tips.js` (+ test) | « حيلة »: the calculation shortcuts, given only when one clearly helps |
-| `divisorIsles/KnowledgePage.jsx` | the full-page « خريطة المعارف », fed by the lesson's `knowledge.jsx` / `knowledgeGraph.js` |
-| `divisorIsles/paper.js` (+ test), `Paper.jsx` | the paper mode: the long division posed and narrated, the twin, the gate, the sign, the model sheet |
-| `divisorIsles/evidence.js` (+ test), `evidenceSend.js` | which answers count toward الكفاءات, the claim sent, the retry queue (§4) |
-| `divisorIsles/ruleForge.js` (+ test), `RuleForge.jsx`, `ruleForge.css` | « مصهر القاعدة »: the rule the student forges and defends on island D (§2sexies) |
-| `divisorIsles/sitting.js` (+ test), `ExamSitting.jsx`, `examSitting.css` | « الامتحان الأبيض »: the exam sitting prototype (§2quater), the five levels and the adapted sheet |
-| `divisorIsles/journey.js` (+ test), `Spaces.jsx` | the two spaces: when the exam opens, the ladder, `applySitting`, « تقدّمي » and the next step (§2quinquies) |
-| `../lessonlab/` | « مختبري », the lab of every lesson — its own contract: `LESSON_LAB.md` |
-| `divisorIsles/Fit.jsx` | the box of every panel: it never scrolls, it fits (see §2ter) |
-| `divisorIsles/trainer.js` (+ test), `Trainer.jsx` | « تدرّب » on a card: the six questions in game and exam formats, `check` (hint, then correction) |
-| `divisorIsles/text.js` | strings of the practice space, the depot and the knowledge page |
-| `divisorIsles/strings.js` | every Arabic sentence, the sentence of a practice wave (`waveSay`) and the guidance after a mistake (`explain`) |
-| `engine/builders.js`, `robot.js`, `audio.js`, `input.js` | reusable: low-poly builders, the robot, synthesised sound, keyboard + touch input |
+| `logic.js` (+ test) | PURE: Euclidean division, prediction options, stars, the islands and segments data, dash waves, world layout |
+| `Game.js` | the three.js scene, the loop, the robot controller, forge / storm / dash / last bridge, the state store |
+| `DivisorIsles.jsx`, `divisorIsles.css` | React shell: HUD and overlays, read from the game's state |
+| `cases.js` (+ test) | PURE: the orders of « تعاونية الواحة », their steps, `judge` and its explanations |
+| `Depot.js`, `Worlds.js` | the 3D worlds of the cases: the depot, the friends' table, the tiler's site; `runSim` shows what was decided |
+| `KnowledgePage.jsx` | the full-page « خريطة المعارف », fed by the lesson's `knowledge.jsx` / `knowledgeGraph.js` |
+| `Paper.jsx` | the paper mode: the gate, the sign, the model sheet (logic: `kit/longDivision.js`) |
+| `ruleForge.js` (+ test), `RuleForge.jsx`, `ruleForge.css` | « مصهر القاعدة »: the rule the student forges and defends on island D (§2sexies) |
+| `ExamSitting.jsx`, `examSitting.css` | the screen of « الامتحان الأبيض » (§2quater) |
+| `Spaces.jsx` | the screens of the two spaces and of « تقدّمي » (§2quinquies) |
+| `Trainer.jsx` | the screen of « تدرّب » on a card |
+| `Fit.jsx` | the box of every panel: it never scrolls, it fits (see §2ter) |
+| `text.js` | strings of the practice space, the depot and the knowledge page |
+| `strings.js` | every Arabic sentence, the sentence of a practice wave (`waveSay`) and the guidance after a mistake (`explain`) |
+| `../engine/builders.js`, `robot.js`, `audio.js`, `input.js` | reusable: low-poly builders, the robot, synthesised sound, keyboard + touch input |
+| `../../lessonlab/` | « مختبري », the lab of every lesson — its own contract: `LESSON_LAB.md` |
+
+**State of the extraction (2026-11-17).** Done: the pure logic (the six frames above). Not done yet: the React screens
+still import the pilot's content by path, `Game.js` is still one class for the runtime and the mechanic, `cases.js`,
+`ruleForge.js` and the two string tables still mix kit and lesson, and the lesson's content still reads `logic.js` and
+`strings.js` of the world. A lesson's content will be gathered in ONE `lesson.pack.js` (plan §4 step 5).
+
+**Rules of the kit.** A frame is a `create…(lesson data)` function, or a pure helper; it never imports a lesson, a
+world or a string table of one. What is mathematics — when a gate is right, how an answer is marked, what a claim
+proves — stays with the lesson. New generated content takes `rand` and is tested with `rng(seed)`.
 
 Everything is drawn in code (no model, no image, no sound file); Arabic in the scene is canvas text. No person is drawn.
 

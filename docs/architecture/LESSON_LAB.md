@@ -96,7 +96,7 @@ returns the quests the state has just proved. Nothing is ticked before the stude
 | `divisors` « قوس القواسم » | 4AM `qawasim-adad-tabii` | the lens | each divisor rises with its partner; an arc joins them |
 | `common` « القواسم المشتركة » | 4AM `qasim-mushtarak-akbar` | the two numbers; a tap on a divisor | three trays; the greatest common one wears the crown |
 | `euclid` « مربّعات إقليدس » | 4AM `bahth-pgcd` | the corner of the rectangle; the scissors | each family of squares writes its division; the last side is the PGCD |
-| `paper` « القسمة على الورقة » | 1AM `qisma-iqlidiya-baqi` | the step button | the division as written on a sheet, with what one says at each step (`gameworld/divisorIsles/paper.js`) |
+| `paper` « القسمة على الورقة » | 1AM `qisma-iqlidiya-baqi` | the step button | the division as written on a sheet, with what one says at each step (`gameworld/kit/longDivision.js`) |
 | `rules` « كاشف قابلية القسمة » | 1AM `qawaid-qabiliyat-qisma` | the digits of a padlock; a tap on a lamp | six lamps (2, 3, 4, 5, 9, 10) and the digits each rule reads |
 
 **To add an instrument**: write `tools/<Name>.jsx`, add its `TOOLS` entry (lesson code + exact title), its maths in `logic.js`

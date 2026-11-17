@@ -39,8 +39,8 @@ import {
 import MathText from '../../components/MathText';
 import { scopedStorage as storage } from '../../../../utils/storage';
 import { AuthContext } from '../../../../context/AuthContext';
-import { payloadOf } from './evidence';
-import { sendGameEvidence, flushGameEvidence, newAttemptId } from './evidenceSend';
+import { payloadOf } from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/evidence';
+import { sendGameEvidence, flushGameEvidence, newAttemptId } from '../kit/evidenceSend';
 import { DivisorIslesGame } from './Game';
 import { usePhoneScreen } from '../engine/phoneScreen';
 import TurnPhone from '../../../../components/common/TurnPhone';
@@ -56,20 +56,23 @@ import {
   practiceStars,
   isDepot,
   MAX_PRACTICE_STARS,
-} from './practice';
+} from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/practice';
 import { answerOf, simUnit } from './cases';
-import { divisionTip, ruleTip } from './tips';
+import { divisionTip, ruleTip } from '../kit/tips';
 import KnowledgePage from './KnowledgePage';
 import ExamSitting from './ExamSitting';
 import RuleForge from './RuleForge';
 import { ExamLadder, Promotion, ProgressPage } from './Spaces';
-import { examOpen } from './journey';
+import { examOpen } from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/journey';
 import { launchDone } from '../../launchkit/store';
-import { totalMark, weakKinds } from './sitting';
+import {
+  totalMark,
+  weakKinds,
+} from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/sitting';
 import './examSitting.css';
 import Fit, { cardRoom, stepRoom } from './Fit';
 import { PaperGate, PaperModel, PaperChip, PT } from './Paper';
-import { twin } from './paper';
+import { twin } from '../kit/longDivision';
 import { TX } from './text';
 import './divisorIsles.css';
 

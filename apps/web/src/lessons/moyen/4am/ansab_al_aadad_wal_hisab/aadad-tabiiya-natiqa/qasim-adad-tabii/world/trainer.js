@@ -1,30 +1,18 @@
 /**
- * « تدرّب » inside « خريطة المعارف » — PURE logic of the trainer that opens ON the card, without leaving the page.
- *
- * A session is six questions on the point of the card, in TWO FORMATS that alternate and drift toward the exam:
- *   game — the quick formats of the games: tap the right gate, true / false in one tap (small numbers, mental arithmetic);
- *   exam — the written formats of a real exam sheet: « أجرِ القسمة الإقليدية … ثمّ استنتج », « بيّن أنّ … », « أكمل »,
- *          « صحيح أم خطأ؟ علّل », « اذكر … » (paper numbers, the answer typed in its own shape).
- * The order of a session is game, game, exam, game, exam, exam: the student meets the exam wording early, and ends on it.
- * `check` judges an answer: first a HINT that says what the answer produces (never the answer), then the written correction.
+ * « تدرّب » of lesson `qasim-adad-tabii` — the CONTENT of its trainer (PURE). The frame — six questions, two formats that
+ * drift toward the exam, the stars — is the kit's (`gameworld/kit/trainer.js`).
+ * Here: the kinds of question of THIS lesson, the plan of each card of its mind map, and how an answer is judged:
+ * `check` gives first a HINT that says what the answer produces (never the answer), then the written correction.
+ *   exam formats: « أجرِ القسمة الإقليدية … ثمّ استنتج », « بيّن أنّ … », « أكمل », « صحيح أم خطأ؟ علّل », « اذكر … ».
  */
-import { divide } from './logic';
+import { divide } from '../../../../../../common/gameworld/divisorIsles/logic';
+import { explain, waveSay } from '../../../../../../common/gameworld/divisorIsles/strings';
+import { divisionTip } from '../../../../../../common/gameworld/kit/tips';
+import { int, pick, shuffle } from '../../../../../../common/gameworld/kit/random';
+import { createTrainer } from '../../../../../../common/gameworld/kit/trainer';
 import { waveOf, isRight } from './practice';
-import { explain, waveSay } from './strings';
-import { divisionTip } from './tips';
 
-const int = (rand, lo, hi) => lo + Math.floor(rand() * (hi - lo + 1));
-const pick = (rand, list) => list[Math.floor(rand() * list.length)];
-const shuffle = (rand, list) => {
-  const a = list.slice();
-  for (let i = a.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(rand() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-};
 const K = { baqi: 'qasim-baqi', jidaa: 'qasim-jidaa', siyagh: 'siyagh-mutakafia', wahid: 'wahid-wa-nafsuh' };
-export const SESSION = ['game', 'game', 'exam', 'game', 'exam', 'exam'];
 export const PHRASES = [
   { id: 'qasim', text: 'قاسم للعدد', small: true },
   { id: 'yaqsim', text: 'يقسم', small: true },
@@ -249,14 +237,7 @@ export const PLAN_OF = {
   intabih: 'wahid',
 };
 
-/** The six questions of a session on card `nodeId`. */
-export function makeSession(rand, nodeId) {
-  const plan = PLANS[PLAN_OF[nodeId] ?? 'mix'];
-  return SESSION.map((format, i) => {
-    const [kind, ...args] = plan[i];
-    return Q[kind](rand, format, ...args);
-  });
-}
+export const { makeSession } = createTrainer({ kinds: Q, plans: PLANS, planOf: PLAN_OF, fallback: 'mix' });
 
 /** The right answer of a question — for the tests and the automated walk, never shown before the correction. */
 export function solution(q) {
@@ -376,6 +357,3 @@ export function answerLabel(q, v) {
       return '';
   }
 }
-
-/** Stars of a session: the questions right at the FIRST try. */
-export const sessionStars = (firstTry) => (firstTry >= 6 ? 3 : firstTry >= 4 ? 2 : firstTry >= 2 ? 1 : 0);

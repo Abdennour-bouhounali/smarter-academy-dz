@@ -1,12 +1,14 @@
 /**
- * WHICH GAME ANSWERS COUNT TOWARD « الكفاءات » (owner decision, 2026-11-15) — PURE.
- * Only an answer that looks like an exam answer is evidence: written format, FIRST try, in paper mode, with no help opened
- * before it (no rule reminder, no model sheet). Right or wrong, the first try is what is reported — later tries, the gate
- * dash, the story and every game-format question count for nothing. The SERVER re-computes the result from the numbers
- * (`claim`): the browser's own verdict is never trusted.
+ * The EVIDENCE of lesson `qasim-adad-tabii` — PURE. Which answers count (written format, first try, no help) and what is
+ * sent is the kit's rule (`gameworld/kit/evidence.js`). Here: the الكفاءة each key proves, the CLAIM each kind of answer
+ * makes about a Euclidean division, and `verify` — the verdict of a claim from its numbers alone, the same rule the
+ * server applies (it never trusts the browser's verdict).
  */
-const LP = { 'qasim-baqi': 'P1', 'qasim-jidaa': 'P2', 'siyagh-mutakafia': 'P3', 'wahid-wa-nafsuh': 'P4' };
-export const learningPointOf = (lessonId, key) => (LP[key] ? `4am_${lessonId}_${LP[key]}` : null);
+import { counts, createEvidence } from '../../../../../../common/gameworld/kit/evidence';
+
+/** The الكفاءة each key proves (the codes of the lesson's `learningPoints`). */
+const POINTS = { 'qasim-baqi': 'P1', 'qasim-jidaa': 'P2', 'siyagh-mutakafia': 'P3', 'wahid-wa-nafsuh': 'P4' };
+export const { payloadOf } = createEvidence({ grade: '4am', points: POINTS });
 
 /** The calculation steps of the real cases that prove a learning point (an invoice or a sum proves arithmetic, not the lesson). */
 const STEP_KEY = {
@@ -20,18 +22,12 @@ const STEP_KEY = {
   'tiling.boxes': 'qasim-baqi',
 };
 
-/** What is sent to the server for one answer that counts: POST /lessons/{lesson}/game-evidence (GameEvidenceController). */
-export function payloadOf(lessonId, context, ev, attemptId) {
-  const learningPoint = ev && learningPointOf(lessonId, ev.key);
-  return learningPoint ? { attemptId, learningPoint, context, claim: ev.claim } : null;
-}
-
 /**
  * Evidence of a TRAINER answer, or null when it does not count.
  * ctx = { firstTry, helped } — helped: a model sheet or the rule was opened before this answer.
  */
 export function trainerEvidence(q, value, ctx) {
-  if (q.format !== 'exam' || !ctx.firstTry || ctx.helped) return null;
+  if (q.format !== 'exam' || !counts(ctx)) return null;
   const n = (k) => Number(value?.[k]);
   switch (q.kind) {
     case 'division':
@@ -55,7 +51,7 @@ export function trainerEvidence(q, value, ctx) {
 export function caseEvidence(order, stepIndex, value, ctx) {
   const step = order.steps[stepIndex];
   const key = STEP_KEY[`${order.kind}.${step.id}`];
-  if (!key || step.type !== 'number' || !step.div || !ctx.firstTry || ctx.helped) return null;
+  if (!key || step.type !== 'number' || !step.div || !counts(ctx)) return null;
   const [a, b] = step.div;
   const n = (k) => (value?.[k] == null ? null : Number(value[k]));
   // what the student wrote, as a claim about the Euclidean division of a by b

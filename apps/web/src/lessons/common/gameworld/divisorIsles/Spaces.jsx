@@ -21,8 +21,14 @@ import {
   Gamepad2,
 } from 'lucide-react';
 import Fit, { cardRoom } from './Fit';
-import { LEVELS } from './sitting';
-import { examOpen, examLevelOpen, nextExamLevel, lessonProgress, nextStep } from './journey';
+import { LEVELS } from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/sitting';
+import {
+  examOpen,
+  nextExamLevel,
+  lessonProgress,
+  nextStep,
+} from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/journey';
+import { examLevelOpen } from '../kit/journey';
 import { T } from './strings';
 import { TX } from './text';
 

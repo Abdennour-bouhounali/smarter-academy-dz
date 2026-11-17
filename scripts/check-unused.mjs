@@ -60,7 +60,10 @@ const isStringTable = (file) => /(^|\/)(strings|text)\.js$/.test(file);
  * Kept on purpose. `'<file>'` keeps every export of the file, `'<file>#<name>'` one export, `'i18n:<path>'` a key
  * (a path ending with `.` keeps everything under it), `'table:<file>#<path>'` an entry. Each line says why.
  */
-const KEPT = {};
+const KEPT = {
+  'apps/web/src/lessons/common/gameworld/kit/random.js#rng':
+    'the seeded generator: every lesson\'s tests replay its generated content with it (the app itself draws with Math.random)',
+};
 
 const SKIP_DIRS = new Set(['node_modules', 'dist', 'public', 'vendor', '.git']);
 const isCode = (file) => /\.(jsx?|mjs)$/.test(file);

@@ -1,16 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { LEVEL_ORDER, levelId } from './practice';
-import {
-  KEYS,
-  emptyExam,
-  examOpen,
-  examLevelOpen,
-  nextExamLevel,
-  applySitting,
-  lessonProgress,
-  nextStep,
-} from './journey';
+import { ladder, levelId } from './practice';
+import { KEYS, examOpen, nextExamLevel, applySitting, lessonProgress, nextStep } from './journey';
+import { emptyExam, examLevelOpen } from '../../../../../../common/gameworld/kit/journey';
 
+const { LEVEL_ORDER } = ladder;
 const four = Object.fromEntries([0, 1, 2, 3].map((i) => [levelId(i, 0), { stars: 2, best: 600 }]));
 
 describe("the student's road: the two practice spaces and the progress", () => {
@@ -98,5 +91,13 @@ describe("the student's road: the two practice spaces and the progress", () => {
         tally: { 'qasim-jidaa': { ok: 0, n: 3 }, 'qasim-baqi': { ok: 3, n: 3 } },
       }),
     ).toEqual({ do: 'train', key: 'qasim-jidaa', level: 1 });
+  });
+});
+
+describe('the numbers the road is bound to', () => {
+  it('counts the cards of the knowledge map of the lesson', async () => {
+    const { KNOWLEDGE_GRAPH } = await import('../knowledgeGraph');
+    const { KNOWLEDGE_CARDS } = await import('./journey');
+    expect(KNOWLEDGE_GRAPH.nodes).toHaveLength(KNOWLEDGE_CARDS);
   });
 });

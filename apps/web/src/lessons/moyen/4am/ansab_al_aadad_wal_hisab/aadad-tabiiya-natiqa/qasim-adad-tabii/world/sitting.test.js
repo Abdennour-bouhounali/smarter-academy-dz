@@ -1,24 +1,17 @@
 import { describe, it, expect } from 'vitest';
-import { rng } from './practice';
+import { rng } from '../../../../../../common/gameworld/kit/random';
 import { verify } from './evidence';
 import { PHRASES } from './trainer';
+import { makeSubject, mark, totalMark, model, scheme, evidenceOf, LEVELS, weakKinds } from './sitting';
 import {
-  makeSubject,
   allQuestions,
-  mark,
-  totalMark,
-  model,
-  scheme,
-  evidenceOf,
   answered,
   appreciation,
   pace,
-  LEVELS,
-  weakKinds,
   sittingStars,
   forgotten,
   touched,
-} from './sitting';
+} from '../../../../../../common/gameworld/kit/sitting';
 
 /** The full-mark answer of a question. */
 const right = (q) => {

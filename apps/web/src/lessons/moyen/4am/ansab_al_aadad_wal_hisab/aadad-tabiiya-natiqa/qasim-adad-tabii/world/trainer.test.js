@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { rng, MENTAL } from './practice';
-import { makeSession, solution, check, sessionStars, answerLabel, SESSION, PLAN_OF, PHRASES } from './trainer';
+import { rng } from '../../../../../../common/gameworld/kit/random';
+import { MENTAL } from './practice';
+import { makeSession, solution, check, answerLabel, PLAN_OF, PHRASES } from './trainer';
+import { sessionStars, SESSION } from '../../../../../../common/gameworld/kit/trainer';
 
 const NODES = Object.keys(PLAN_OF);
 

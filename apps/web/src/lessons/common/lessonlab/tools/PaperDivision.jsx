@@ -1,10 +1,10 @@
 /**
  * « القسمة على الورقة » — the Euclidean division as it is WRITTEN on a sheet, one step at a time, with the student's own
- * numbers; beside it, what one says to oneself at that step. (The steps and the sentences: gameworld/divisorIsles/paper.js.)
+ * numbers; beside it, what one says to oneself at that step. (The steps and the sentences: gameworld/kit/longDivision.js.)
  */
 import React, { useEffect, useMemo, useState } from 'react';
 import { Tool, Txt, useChime } from '../kit';
-import { longDivision, paperRows, quotientSoFar, thinking, conclusion } from '../../gameworld/divisorIsles/paper';
+import { longDivision, paperRows, quotientSoFar, thinking, conclusion } from '../../gameworld/kit/longDivision';
 
 export default function PaperDivision({ a, b, play, report }) {
   const d = useMemo(() => longDivision(a, b), [a, b]);

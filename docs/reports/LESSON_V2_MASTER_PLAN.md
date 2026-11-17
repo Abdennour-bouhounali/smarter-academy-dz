@@ -236,6 +236,17 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
   animates with the light half of framer-motion (−11.1 KB). Two tests hold it (`i18n/onDemandNamespaces.test.js`,
   `entryGraph.test.js`). Contract and measures: `docs/architecture/BUNDLE_BOUNDARIES.md` §3, §4 rules 5 and 10, §5.
   The same day the owner had the command palette (Ctrl+K) deleted — no global search either: entry 197.7 KB.
+- **Phase 0 step 4 — kit extraction, sub-step 1 of 3 DONE (2026-11-17): the pure logic.** `gameworld/kit/` holds six
+  frames that name no lesson (practice ladder, trainer, exam sitting, the road, evidence, random numbers) plus the
+  calculation shortcuts and the long-division model; the pilot's content moved to its own folder
+  `…/qasim-adad-tabii/world/` and is bound to them. `kit.test.js` drives the kit with a toy lesson and holds the boundary
+  (no kit file imports or names a lesson). After it: 17,936 web tests, lint, `check:unused`, `check:unreached`,
+  `check:format`, `check:lessons` pass, and the pilot's eight walks pass (533 checks: story 92, practice 30, field 102,
+  sitting 45, launch kit 56, « مختبري » 47, class lesson 59, class session 102). **Still to do in step 4:** sub-step 2
+  — the React screens take the lesson's data instead of importing the pilot (`KnowledgePage`, `Trainer`, `ExamSitting`,
+  `Spaces`, `Paper`, `RuleForge`, the title screen and HUD of `DivisorIsles.jsx`), the two string tables are split into
+  kit chrome and lesson sentences, `cases.js` and `ruleForge.js` are split the same way; sub-step 3 — `Game.js` becomes
+  the world runtime plus the lesson's mechanic. Files and rules: `docs/architecture/GAME_WORLD.md` §3.
 - **D4 — DONE**: the five billing files are deleted.
 - **Phase 0 step 2 — formatter DONE**: Prettier (`.prettierrc.json`, 120 columns) with `npm run format:v2`
   and `npm run check:format` (in CI). The pilot's areas are formatted: 109 files; `features/classSession/` went from

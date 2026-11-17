@@ -7,10 +7,17 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Star, RotateCcw, Gamepad2, FileText, ArrowLeft } from 'lucide-react';
 import MathText from '../../components/MathText';
-import { makeSession, check, solution, sessionStars, answerLabel, PHRASES, SESSION } from './trainer';
+import {
+  makeSession,
+  check,
+  solution,
+  answerLabel,
+  PHRASES,
+} from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/trainer';
+import { sessionStars, SESSION } from '../kit/trainer';
 import { PaperGate, PaperModel, PaperChip, PT } from './Paper';
-import { trainerEvidence } from './evidence';
-import { twin } from './paper';
+import { trainerEvidence } from '../../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world/evidence';
+import { twin } from '../kit/longDivision';
 
 /** The statement of an exam question with its data underlined — the first gesture of the method: « أقرأ وأسطّر المعطيات ». */
 const Marked = ({ text }) =>
