@@ -705,10 +705,36 @@ export function makeQuestion(rand, item, level, form, opts = {}) {
   return { ...q, item, level, form };
 }
 
+/**
+ * The forms of a level in the order a launch asks them. At level 2 a family's `sort` comes FIRST (2026-11-18): the
+ * level-2 question of a tool is asked ONCE per station, the workshop repeats the form that was missed and the capsule
+ * asks level 1 only — so a level-2 form listed second was never asked in a launch, and the sort is where a family keeps
+ * its traps and the cards to ACCEPT (« $9 = 14 \times 0 + 9$ », `quotient-zero`). A family with no level-2 `sort` keeps
+ * its own order.
+ */
+const formsOf = (item, level) => {
+  const forms = FAMILIES[item].forms[level];
+  return level === 2 && forms.includes('sort') ? ['sort', ...forms.filter((f) => f !== 'sort')] : forms;
+};
+
 /** The form of the next question of a level: one not used yet in this launch when the family has another. */
 export function pickForm(item, level, used = []) {
-  const forms = FAMILIES[item].forms[level];
+  const forms = formsOf(item, level);
   return forms.find((f) => !used.includes(`${level}:${f}`)) ?? forms[used.length % forms.length];
+}
+
+/**
+ * The form of the question `step` (`nextStep`) asks, given the answers so far and the forms `used` in this launch: a
+ * workshop question repeats the form of the tool's last station miss when that form exists at the workshop's level (two
+ * questions LIKE the one he missed); otherwise `pickForm`.
+ */
+export function nextForm(step, answers, used = []) {
+  const missed = [...answers]
+    .reverse()
+    .find((a) => a.item === step.item && a.phase === 'station' && !(a.correct && !a.unsure));
+  if (step.phase === 'workshop' && missed && FAMILIES[step.item].forms[step.level].includes(missed.form))
+    return missed.form;
+  return pickForm(step.item, step.level, used);
 }
 
 const num = (x) => (x === '' || x == null ? NaN : Number(x));

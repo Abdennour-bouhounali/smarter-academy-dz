@@ -382,21 +382,23 @@ export default function LessonIndex({ config, basePath }) {
     );
   }
 
-  // Le monde de jeu remplace l'accueil de mission pour l'ÉLÈVE seulement ; `?view=classic` rouvre le lecteur de mission.
+  // Le monde de jeu EST l'accueil d'une leçon v2 pour l'ÉLÈVE (LESSON_V2.md §2) : ni lecteur de mission, ni pages de module
+  // (supprimées ; leurs adresses renvoient ici), ni `?view=classic` (retiré le 2026-11-18, ordre du propriétaire).
   // « جرّب كتلميذ » : l'enseignant ouvre le monde de l'élève en APERÇU (`?apercu=eleve`) — rien n'est enregistré ni envoyé (CLASS_SESSION.md §2).
   const pack = lessonPackFlags(config.id);
   const teacherCard = viewer.isTeacher && !presenting && Boolean(pack.board || pack.world);
   // The TEACHER of a lesson that has its board (owner, 2026-11-18: « no need for these any more »): his page is the title and
   // his card « للأستاذ » — the old sections of the lesson home (progress, الكفاءات / المتطلبات / المناولات, مسألة الدرس,
-  // مسار المحاور) are not shown to him. Students and the other lessons are untouched; the module routes still exist.
+  // مسار المحاور) are not shown to him. The other lessons are untouched; a v2 lesson's module addresses redirect to this page (its module pages are deleted).
   const teacherBoard = teacherCard && hasClassBoard(config.id);
   const previewAsStudent = viewer.freeNavigation && !presenting && searchParams.get('apercu') === 'eleve' && Boolean(pack.world);
-  const worldId = (missionOn || previewAsStudent) && searchParams.get('view') !== 'classic' ? (pack.world ?? null) : null;
+  const studentWorld = !viewer.freeNavigation && !presenting;
+  const worldId = studentWorld || previewAsStudent ? (pack.world ?? null) : null;
   if (worldId) {
     return (
       <Suspense fallback={null}>
         <LessonGameWorld
-          worldId={worldId} config={config} basePath={basePath} classicHref={`${basePath}?view=classic`}
+          worldId={worldId} config={config} basePath={basePath}
           exitTo={previewAsStudent ? basePath : catalogueHref({ level: config.level, grade: config.grade, chapter: config.chapter })}
           onModule={(n) => { if (!previewAsStudent) markModuleCompleted(String(n)); }}
           completedModules={completedModules} preview={previewAsStudent}

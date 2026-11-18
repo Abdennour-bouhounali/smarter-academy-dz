@@ -20,57 +20,10 @@ export const LESSON_CONFIG = {
   unit: 'aadad-tabiiya-natiqa',
   unitTitle: 'الأعداد الطبيعيّة والأعداد النّاطقة',
   sequentialUnlock: true,
-  // Regard de l'élève : 'mission' (modèle du pilote qasim-adad-tabii, VALIDÉ par le propriétaire le 2026-11-08 ; rollout leçon par
-  // leçon, docs/reports/MISSION_ROLLOUT_PROGRESS.md) — implique le regard « focus » ; l'enseignant et le mode classe ne voient aucun changement.
-  studentView: 'mission',
-  // LA MISSION : l'ouverture avoue qu'on ne sait pas encore la résoudre ; les outils sont les connaissances de knowledge.jsx ; les points
-  // d'étape RAPPROCHENT de la mission sans en résoudre aucune question (la مسألة 1 du module 5 reste entière : ils parlent de 6, 7, 18,
-  // de n — jamais de la brique de 25, ni des murs de 875 et 350) ; formatifs, jamais une preuve de maîtrise.
-  mission: {
-    scene: 'construction-wall',
-    title: 'ورشة البناء',
-    opening: {
-      text: 'يبني البنّاء في الورشة جدارين بطوب طول الطوبة الواحدة منه 25 سم، ويرصّ كل صفّ دون أن يقطع أيّ طوبة. هل يستطيع أن يعرف، من غير أن يقسم من جديد، أنّ الجدارين معًا — وما بينهما من فرق — مبنيّان أيضًا بطوب كامل؟',
-      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
-    },
-    tools: [
-      { id: 'qasim-mushtarak-rappel', icon: '🧱', label: 'n يقسم a' },
-      { id: 'khassiya-1', icon: '➕', label: 'المجموع والفرق' },
-      { id: 'khassiya-2', icon: '➗', label: 'باقي القسمة' },
-      { id: 'burhan-idha-fainna', icon: '✍️', label: 'البرهان' },
-    ],
-    climaxModule: 5,
-    checkpoints: [
-      {
-        id: 'cp-jidaa', afterModule: 1,
-        prompt: 'جدارا بنّاء آخر مبنيّان بطوب طوله 6 سم: طولاهما 30 سم و 18 سم. ماذا يعرف عن طولهما معًا، أي عن العدد 48؟',
-        options: ['6 يقسم 48 أيضًا: الجدار الملصوق مبنيّ بطوب كامل', 'قد تظهر نصف طوبة في الجدار الملصوق', 'لا يعرف شيئًا قبل أن يجري القسمة'],
-        correct: 0,
-        explain: 'كل جدار مبنيّ بطوب كامل، فالجداران معًا طوب كامل. هذه هي الفكرة التي ستستعملها في المهمة الكبرى.',
-      },
-      {
-        id: 'cp-khassiya', afterModule: 2,
-        prompt: '7 يقسم 63 ويقسم 28. أيّ هذه الأعداد يقسمه 7 دون أن نجري قسمة جديدة؟',
-        options: ['الفرق 35 والمجموع 91', 'العدد 63 + 1', 'العدد 28 − 1'],
-        correct: 0,
-        explain: 'خاصية 1: العدد الذي يقسم عددين يقسم مجموعهما وفرقهما: $63 - 28 = 35 = 7 \\times 5$ و $63 + 28 = 91 = 7 \\times 13$.',
-      },
-      {
-        id: 'cp-burhan', afterModule: 3,
-        prompt: 'لبرهان أنّ عددًا طبيعيًّا $d$ يقسم عددًا $m$، ماذا يكفي أن نجد؟',
-        options: ['عددًا طبيعيًّا $k$ حيث $m = d \\times k$', 'عددًا أصغر من $m$ فقط', 'مثالًا عدديًّا واحدًا يتحقّق'],
-        correct: 0,
-        explain: 'هذه هي جملة الطريقة: نفرض الشرط ونصل إلى $m = d \\times k$ بحروف لا بأعداد معيّنة.',
-      },
-      {
-        id: 'cp-khitta', afterModule: 4,
-        prompt: 'يريد البنّاء أن يتأكّد أنّ طولًا مثل $a + b$ مبنيّ بطوب طوله $n$ كامل. ما أفضل خطّة؟',
-        options: ['يكتب $a$ و $b$ جداءين في $n$ ثم يجمع', 'يرسم الجدار كلّه ويعدّ الطوب', 'يقسّم الجدار إلى نصفين'],
-        correct: 0,
-        explain: 'إذا كان $a = n \\times q$ و $b = n \\times q\'$ فإنّ $a + b = n \\times (q + q\')$: لا حاجة إلى قسمة جديدة. هذه خطّتك في المسألة التالية.',
-      },
-    ],
-  },
+  // A v2 lesson (docs/architecture/LESSON_V2.md §2, owner's order of 2026-11-18): the student's home is the game world of
+  // `lesson.pack.js`. Its module PAGES, the mission player (`studentView: 'mission'`, `mission`), « مسألة الدرس »
+  // (`lessonProblem`) and `?view=classic` are deleted. The `modules` below stay as DATA: their ids and numbers are how
+  // progress is stored (the world marks them, `onModule`), every report reads them, and their addresses redirect home.
   title: 'خواص قواسم عدد طبيعي',
   description: 'خواص قواسم عدد طبيعي: القاسم المشترك لعددين يقسم مجموعهما وفرقهما وباقي القسمة الإقليدية لأحدهما على الآخر، وتعلّم البرهنة على خاصية من الشكل «إذا … فإنّ …».',
   level: 'moyen',
@@ -91,15 +44,6 @@ export const LESSON_CONFIG = {
   teachingScope: {
     include: ['خاصية 1 وخاصية 2 من الكتاب', 'البرهنة: المعطيات، المطلوب، البرهان'],
     exclude: ['القاسم المشترك الأكبر (الدرس 4)', 'خوارزميات البحث عن PGCD (الدرس 6) — تُبرَّر لاحقًا بهذه الخواص'],
-  },
-  // « مسألة الدرس » (rollout مسائل, 2026-10-06) : montrée dès le sommaire,
-  // rappelée au module 1, résolue pas à pas au module 5 (content/problems.js).
-  // Prolonge le chantier du niveau متقدم : murs en briques entières, d'autres nombres.
-  lessonProblem: {
-    module: 5,
-    title: 'ورشة البناء: جداران بطوب طوله 25 سم',
-    statement: 'في ورشة بناء مسكن بالبليدة، يحرص البنّاء على إتقان عمله وأداء الأمانة التي أُوكلت إليه، فيبني جدارين بطوب طول الطوبة الواحدة منه 25 سم، ويرصّ كل صفّ على طول الجدار دون أن يقطع أيّ طوبة. طول الجدار الأول 875 سم وطول الجدار الثاني 350 سم، وفي كل جدار 15 صفًّا من الطوب. يشتغل في الورشة 4 عمّال، وثمن الطوبة الواحدة 40 دج.',
-    illustration: { kind: 'scene', icon: 'tile', bg: 'rose', chips: [{ label: 'طول الطوبة', value: 25, unit: 'سم' }, { label: 'الجدار الأول', value: 875, unit: 'سم' }, { label: 'الجدار الثاني', value: 350, unit: 'سم' }, { label: 'ثمن الطوبة', value: 40, unit: 'دج', tone: 'green' }], ariaLabel: 'جداران من الطوب: طول الطوبة 25 سم وطولا الجدارين 875 سم و 350 سم' },
   },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
@@ -135,7 +79,7 @@ export const LESSON_CONFIG = {
     { kind: 'method', code: 'method-proof', module: 3, title: 'أتعلّم البرهنة: «إذا … فإنّ …»',
       learningPointIds: ['4am_khawass-qawasim_P4'], sourceElementIds: ['method-proof'] },
     // Modules 5–7 — les « مسائل » : exercices complets de type امتحان, ajouts
-    // de la plateforme (content/problems.js), sans aucune preuve de maîtrise.
+    // de la plateforme (leurs pages et content/problems.js sont supprimés depuis la v2 — des données ici), sans aucune preuve de maîtrise.
     { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — ورشة البناء: جداران بطوب من 25 سم', learningPointIds: ['4am_khawass-qawasim_P1', '4am_khawass-qawasim_P3'] },
     { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — تعاونية زيت الزيتون: صفائح من 15 لترًا', learningPointIds: ['4am_khawass-qawasim_P1', '4am_khawass-qawasim_P2'] },
     { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — النادي الرياضي: أفواج متساوية', learningPointIds: ['4am_khawass-qawasim_P1', '4am_khawass-qawasim_P4'] },

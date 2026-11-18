@@ -327,7 +327,10 @@ for (const lessonDir of findLessonDirs(lessonsRoot)) {
 
     // Le contenu des « مسائل » : content/problems.js, un problème par module
     // « problem », dans l'ordre, chacun conforme au contrat GuidedProblem.
-    const problemModules = modules.filter((m) => m.track === 'problem');
+    // A v2 lesson (`retiredModules: true` in its routes.jsx, LESSON_V2.md §2) has no module page: its « مسائل » modules are
+    // DATA (progress is stored by their numbers), and their content/problems.js is deleted with the pages.
+    const retiredPages = existsSync(join(lessonDir, 'routes.jsx')) && /retiredModules:\s*true/.test(readFileSync(join(lessonDir, 'routes.jsx'), 'utf-8'));
+    const problemModules = retiredPages ? [] : modules.filter((m) => m.track === 'problem');
     if (problemModules.length > 0) {
       const problemsFile = join(lessonDir, 'content', 'problems.js');
       if (!existsSync(problemsFile)) {
@@ -451,6 +454,18 @@ for (const lessonDir of findLessonDirs(lessonsRoot)) {
         }
       },
     });
+  }
+
+  // ── A v2 lesson: its assessment evidence is the world's ─────────────────────
+  // Its module pages (and the final test « إختبار أولي » with them) are deleted (`retiredModules: true`, LESSON_V2.md §2).
+  // What proves a الكفاءة is an exam-format answer of the game world, sent as a claim the SERVER re-computes (§1bis):
+  // `world/evidence.js` names, for each key, the الكفاءة it proves (`const POINTS = { <key>: 'P<n>' }`). A الكفاءة that no
+  // key proves stays uncovered below — the same error as a lesson whose final test forgets it.
+  if (existsSync(join(lessonDir, 'routes.jsx')) && /retiredModules:\s*true/.test(readFileSync(join(lessonDir, 'routes.jsx'), 'utf-8'))) {
+    const evidenceFile = join(lessonDir, 'world', 'evidence.js');
+    const points = existsSync(evidenceFile) ? readFileSync(evidenceFile, 'utf-8').match(/const POINTS = \{([^}]*)\}/)?.[1] ?? '' : '';
+    migratedCoverage.set(indexKey, new Set([...points.matchAll(/'(P\d+)'/g)].map((m) => `${gradeId}_${code}_${m[1]}`)));
+    continue;
   }
 
   // ── Question-level assessment metadata ────────────────────────────────────

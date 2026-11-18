@@ -43,7 +43,7 @@ export const LESSON_PACK = {
 | `id` | the lesson's id — the generator fails when it differs from the folder | — |
 | `phone` | its home was designed AND walked on a phone held sideways (`GAME_WORLD.md` « On a phone ») | `components/auth/phoneLessons.js`, the launch kit |
 | `world` | `id` = a world of `gameworld/LessonGameWorld.jsx › WORLDS`; `content` = what the world is played with (`GAME_WORLD.md` §3 « The pilot's content ») | `LessonIndex.jsx`, `LessonGameWorld.jsx` |
-| `knowledge` | the lesson's knowledge sheets (`LESSON_KNOWLEDGE`); it may live in `world/knowledge.js` when the lesson's older `knowledge.jsx` still serves its old modules (`khawass-qawasim`) | « بطاقة المعارف » on the board, the exam coach |
+| `knowledge` | the lesson's knowledge sheets (`LESSON_KNOWLEDGE`); it may live in `world/knowledge.js` when the lesson's older `knowledge.jsx` still feeds the knowledge map of the lesson page (`khawass-qawasim`) | « بطاقة المعارف » on the board, the exam coach |
 | `coach` | `{ <الكفاءة>: <knowledge item id> }` — the sheet « مدرّب الامتحان » reminds; needs `knowledge` | `features/practice/exam/examCoach.js` |
 | `board` | « حصّة القسم »: the lesson on the board (`script`) and its written memo (`memo`) — both or none. The teacher's card shows « في القسم » only for a lesson that has it; a class session with the tests alone, without a script, cannot be declared (the old `classSession: true` of the config is gone) | `boardLessons.js`, `ClassSessionPage`, `LessonMemoPage`, the teacher's card |
 
@@ -116,10 +116,12 @@ table):
 every world (135 KB gzip, measured); the pilot's world is 73 KB gzip of code and 17 KB of styles; a lesson adds its own
 content. A budget per lesson is `Planned` (the status script, §3).
 
-**Progress, mastery and the reports still read MODULES — and a v2 lesson still has them.** Its `lesson.config.js` keeps
-its modules and its الكفاءات; the world marks a module done when the story reaches what that module taught
-(`onModule`), and the exam-format answers are evidence (§1bis). So « بوصلتي », the parent's « التقدّم بالتفصيل », the
-school's reports and the teacher's tracking need no change for a v2 lesson.
+**Progress, mastery and the reports still read MODULES — and a v2 lesson still has them, as DATA.** Its
+`lesson.config.js` keeps its modules (ids, numbers, slugs, titles, stages) and its الكفاءات; the world marks a module
+done when the story reaches what that module taught (`onModule`), and the exam-format answers are evidence (§1bis). So
+« بوصلتي », the parent's « التقدّم بالتفصيل », the school's reports and the teacher's tracking need no change for a v2
+lesson. Its module PAGES are deleted (§2): every module address redirects to the home. Traced reader by reader on
+2026-11-18: `docs/reports/OLD_VERSION_TRACE_2026-11-18.md`.
 
 **When a lesson in use is rebuilt as v2** (rule taken from the pilot — it was never decided otherwise; the owner may
 change it):
@@ -134,7 +136,7 @@ change it):
 
 ```
 <lesson>/
-  lesson.config.js     modules, الكفاءات, mission (the frozen lesson contract, LESSON_DEVELOPMENT_GUIDE §14)
+  lesson.config.js     modules (as DATA), الكفاءات, resources — no `studentView`, no `mission`, no `lessonProblem`
   lesson.pack.js       the pack (§1)
   knowledge.jsx        the knowledge sheets and the mind map
   world/               what the game world is played with — index.js exports `lesson`: its keys and their tablets, its
@@ -142,8 +144,31 @@ change it):
                        the exam sittings, the journey, the evidence, the knowledge page, its sentences (GAME_WORLD.md §3)
   board/script.js      « الدرس على السبّورة » (CLASS_SESSION.md §5ter)
   board/memo.js        the written memo (CLASS_SESSION.md §2quater)
-  modules/, content/   the modules a v2 lesson still shows through the classic player (decision D3 retires them per lesson)
+  routes.jsx           `buildLessonRoutes({ …, retiredModules: true })`: the home, and each module address → the home
+  knowledge.jsx, knowledgeGraph.js, content/textbook.js, content/exercises.js
+                       the knowledge map of the lesson page (and `validate:lessons`' graph check) — kept
 ```
+
+**The old version is deleted when the lesson becomes v2** (owner, 2026-11-18: « for each lesson that is updated to the
+gaming version, delete the old version »; decision D3). Done for `qasim-adad-tabii`, `qawasim-adad-tabii`,
+`khawass-qawasim`; the trace of every reader: `docs/reports/OLD_VERSION_TRACE_2026-11-18.md`. What goes, in the same
+commit as the conversion:
+
+- `modules/` (every module page, « إختبار أولي » included), `moduleContext.js`, and the `content/` files only the pages
+  read (`prep`, `peerSheet`, `problems`, the activities' own data) with their tests;
+- `studentView: 'mission'`, `mission` and `lessonProblem` in `lesson.config.js`; its mission scene in
+  `lessons/common/mission/MissionScene.jsx` when no other lesson uses it;
+- the module routes: `routes.jsx` passes `retiredModules: true` instead of its `import.meta.glob` — each module ADDRESS
+  stays a route that redirects to the home (an old link never ends on a 404);
+- the walks of the deleted pages.
+
+What stays: the `modules` of the config as data (progress is stored by their numbers; the DB rows `lesson_modules`, the
+reports, the compass read them), `resources` (exported to the DB), the knowledge map files, the practice bank
+(`content/practice/`), the class test. The checks know a v2 lesson by `retiredModules: true`: `validate:lessons` takes
+its الكفاءات coverage from `world/evidence.js › POINTS` (the final test is gone) and does not ask for
+`content/problems.js`; `audit:knowledge` skips it (no exposure stream); the status script checks that the old version is
+gone. At the next deploy the content registry retires (`retired_at`, never deleted) the final-test items of the deleted
+« إختبار أولي » — follow-up 1 of the trace.
 
 ## 3. Is a lesson done? — the status script and the definition of done
 
@@ -168,6 +193,7 @@ npm run status:lesson-v2 -- --lesson <id>     # one lesson, part by part; exit 1
 | the phone | **PAUSED (owner, 2026-11-18)**: `pack.phone` stays `false`; not part of « done ». Set only after its home was designed and walked on a phone, when phones resume |
 | a walk | a walk of `apps/web/e2e/` that names the lesson and plays its world |
 | published | status `available` in the catalogue |
+| the old version is deleted | no `modules/`, `retiredModules: true` in `routes.jsx`, no `studentView: 'mission'` / `mission` in the config (§2) |
 
 **A lesson is done when** (plan §6):
 
@@ -177,12 +203,15 @@ npm run status:lesson-v2 -- --lesson <id>     # one lesson, part by part; exit 1
 3. its walk passes at 1366×768, 1024×768 and 1840×900 (**the phone walk, `E2E_TOUCH=1 E2E_SIZE=800x370`, is PAUSED since 2026-11-18** — phones are built later, see `GAME_WORLD.md` « On a phone »);
 4. its screenshots were looked at with the eyes, student and teacher;
 5. `check:lessons`, the entry budget, lint, `check:unused`, `check:unreached` and `check:format` pass;
-6. what it replaced is deleted in the same change; its docs are updated; it is committed `feat(lessons): <id> — v2`.
+6. what it replaced is deleted in the same change (§2 « The old version is deleted »; the status script checks it); its
+   docs are updated; it is committed `feat(lessons): <id> — v2`.
 
 **The retirement ledger** is printed by the same script: how many lessons still stand on each old system (the mission
 player, the older lesson page, « أستعدّ », « وضع القسم » and the derived memo). A legacy system is deleted in the commit
 that converts its last lesson — never before, never later. On 2026-11-17: 140 lessons built, 1 with a v2 world, 31 on the
-mission player only, 108 on the older lesson page, 139 without a board.
+mission player only, 108 on the older lesson page, 139 without a board. On 2026-11-18: 3 with a v2 world, all three with
+their old version deleted; 29 on the mission player only, 108 on the older lesson page, 137 with an « أستعدّ » module,
+137 without a board.
 
 NOT in the script yet: a weight budget per lesson; the content checks of `check:lessons` (respect of Islam, independence
 from the book, « دج », counters, formulas) do not read a lesson's `world/` and `board/` folders — plan B8.

@@ -22,58 +22,10 @@ export const LESSON_CONFIG = {
   unit: 'aadad-tabiiya-natiqa',
   unitTitle: 'الأعداد الطبيعيّة والأعداد النّاطقة',
   sequentialUnlock: true,
-  // Regard de l'élève : 'mission' (modèle du pilote qasim-adad-tabii, VALIDÉ par le propriétaire le 2026-11-08 ; rollout leçon par
-  // leçon, docs/reports/MISSION_ROLLOUT_PROGRESS.md) — implique le regard « focus » ; l'enseignant et le mode classe ne voient aucun changement.
-  studentView: 'mission',
-  // LA MISSION (LESSON_DEVELOPMENT_GUIDE « Le mode mission ») : l'ouverture avoue qu'on ne sait pas encore la résoudre ; les outils sont
-  // les connaissances de knowledge.jsx ; les points d'étape RAPPROCHENT de la mission sans en résoudre aucune question (la مسألة 1 du
-  // module 4 reste entière : ils parlent de 30, 50, de n — jamais de 96) ; formatifs, jamais une preuve de maîtrise.
-  mission: {
-    scene: 'library-wall',
-    title: 'جدار المكتبة: 96 كتابًا',
-    opening: {
-      text: 'تلقّت المكتبة هديّة من 96 كتابًا، ويريد القيّم عرضها على الجدار في صفوف متساوية تمامًا، دون صفّ ناقص. كم كتابًا في الصفّ الواحد؟ وهل توجد إمكانيات أخرى؟',
-      cta: 'لا أعرف بعد… هيا نجمع الأدوات',
-    },
-    tools: [
-      { id: 'jidaa-aamilayn', icon: '🧱', label: 'جداء عاملين' },
-      { id: 'qasim-rappel', icon: '🔑', label: 'تذكير: القاسم' },
-      { id: 'tariqa-qawasim', icon: '🔍', label: 'أين نتوقّف' },
-      { id: 'qawaid-qisma', icon: '⚡', label: 'قواعد القسمة' },
-    ],
-    climaxModule: 4,
-    checkpoints: [
-      {
-        id: 'cp-jidaa',
-        afterModule: 1,
-        prompt: 'لو رتّب القيّم 30 كتابًا في صفوف تامّة وكتب $30 = 5 \\times 6$، فماذا يعرف عن العددين 5 و 6؟',
-        options: ['كلاهما قاسم للعدد 30', 'العدد 5 وحده قاسم للعدد 30', 'لا يعرف شيئًا حتى يجرّب كل الأعداد'],
-        correct: 0,
-        explain:
-          'كل جداء يعطي قاسمين معًا: صفوف من 5 كتب عددها 6، وصفوف من 6 كتب عددها 5. هذه هي الفكرة التي ستستعملها في المهمة الكبرى.',
-      },
-      {
-        id: 'cp-tawaqquf',
-        afterModule: 2,
-        prompt: 'لتعيين قواسم عدد مثل 50، إلى أيّ عدد يكفي أن نختبر القسمة؟',
-        options: ['إلى 7، لأنّ $7^2 = 49 \\leq 50 < 8^2$', 'إلى 25، أي نصف العدد', 'إلى 50 نفسه'],
-        correct: 0,
-        explain: 'بعد المربّع، كل مستطيل تامّ هو مستطيل سابق مقلوب: نتوقّف عند العدد الذي مربّعه أقرب أسفل العدد.',
-      },
-      {
-        id: 'cp-khitta',
-        afterModule: 3,
-        prompt: 'القيّم يريد كل ترتيبات صفوف تامّة لعدد $n$ من الكتب. ما أفضل خطّة؟',
-        options: [
-          'يختبر الأعداد التي مربّعها ≤ n، ويضيف إلى كل قسمة تامّة قاسمها الشريك',
-          'يختبر كل الأعداد من 1 إلى n',
-          'يختبر الأعداد الأولية فقط',
-        ],
-        correct: 0,
-        explain: 'هذه خطّتك في المهمة الكبرى التالية: اختبار قصير، وكل قسمة تامّة تعطي قاسمين.',
-      },
-    ],
-  },
+  // A v2 lesson (docs/architecture/LESSON_V2.md §2, owner's order of 2026-11-18): the student's home is the game world of
+  // `lesson.pack.js`. Its module PAGES, the mission player (`studentView: 'mission'`, `mission`), « مسألة الدرس »
+  // (`lessonProblem`) and `?view=classic` are deleted. The `modules` below stay as DATA: their ids and numbers are how
+  // progress is stored (the world marks them, `onModule`), every report reads them, and their addresses redirect home.
   title: 'قواسم عدد طبيعي',
   description:
     'تعيين كل قواسم عدد طبيعي بكتابته على شكل جداء عاملين بكل الأشكال الممكنة، وبطريقة اختبار الأعداد التي مربعها أصغر من العدد أو يساويه.',
@@ -98,37 +50,6 @@ export const LESSON_CONFIG = {
       'طريقة الكتاب: اختبار الأعداد التي مربعها ≤ العدد، وقواعد قابلية القسمة',
     ],
     exclude: ['التحليل إلى عوامل أولية (موضوع رسمي آخر)', 'القواسم المشتركة (الدرس 4)'],
-  },
-  // « مسألة الدرس » : montrée dès le sommaire, rappelée au module 1, résolue
-  // pas à pas au module 4 (content/problems.js). Prolonge le niveau متقدم du
-  // module 1 : les mêmes livres en rangées formant un rectangle parfait.
-  lessonProblem: {
-    module: 4,
-    title: 'جدار المكتبة: 96 كتابًا في صفوف متساوية',
-    statement:
-      'حرصًا على نشر حبّ القراءة بين التلاميذ، تلقّت مكتبة المتوسطة 96 كتابًا جديدًا هديّةً من بلدية المدينة، ويريد القيّم، إتقانًا لعمله، عرضها على جدار المكتبة في صفوف متساوية: كل صفّ يحمل العدد نفسه من الكتب، فتشكّل الكتب مستطيلًا تامًّا دون صفّ ناقص. يوضع كل صفّ على رفّ عرض. في المخزن نوعان من رفوف العرض: رفّ قصير يتّسع لـ 12 كتابًا على الأكثر ثمنه 1400 دج، ورفّ طويل يتّسع لـ 20 كتابًا على الأكثر ثمنه 2200 دج. يدوم معرض الكتب 3 أسابيع.',
-    illustration: {
-      kind: 'tags',
-      cards: [
-        {
-          title: 'رفّ قصير',
-          icon: 'book',
-          lines: [
-            { label: 'يتّسع لـ', value: 12, unit: 'كتابًا' },
-            { label: 'الثمن', value: 1400, unit: 'دج' },
-          ],
-        },
-        {
-          title: 'رفّ طويل',
-          icon: 'book',
-          lines: [
-            { label: 'يتّسع لـ', value: 20, unit: 'كتابًا' },
-            { label: 'الثمن', value: 2200, unit: 'دج' },
-          ],
-        },
-      ],
-      ariaLabel: 'رفّان للعرض: قصير يتّسع لـ 12 كتابًا بـ 1400 دج وطويل يتّسع لـ 20 كتابًا بـ 2200 دج',
-    },
   },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
@@ -179,7 +100,7 @@ export const LESSON_CONFIG = {
       sourceElementIds: ['method-divisors'],
     },
     // Modules 4–6 — les « مسائل » : exercices complets de type امتحان, ajouts
-    // de la plateforme (content/problems.js), sans aucune preuve de maîtrise.
+    // de la plateforme (leurs pages et content/problems.js sont supprimés depuis la v2 — des données ici), sans aucune preuve de maîtrise.
     {
       kind: 'situation',
       code: 'masala-1',

@@ -3,8 +3,8 @@
  * links), the memo sheet of each of its four keys, and where each card sits on the full map.
  *
  * Written for the v2 lesson FROM SCRATCH, with the story's own numbers (`NUMBERS` of story.js — never retyped). The
- * lesson folder's older `knowledge.jsx` / `knowledgeGraph.js` (ids `khassiya-1`, `burhan-idha-fainna`…) still serve the
- * mission player of the old modules and are left untouched; the memo items here carry the ids of the four KEYS, which is
+ * lesson folder's older `knowledge.jsx` / `knowledgeGraph.js` (ids `khassiya-1`, `burhan-idha-fainna`…) are left untouched
+ * (the old module pages are deleted; they still feed the lesson page's knowledge map); the memo items here carry the ids of the four KEYS, which is
  * what `pack.coach` and the board's « بطاقة المعارف » name.
  * A card is open when its key is held (`requires` is always a key); a card with `notebook` shows the memo sheet of its key.
  */

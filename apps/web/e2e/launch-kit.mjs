@@ -59,6 +59,8 @@ const A = '1am.m3.r01'; const B = '1am.m3.r02';
 
 /** A wrong place for the flag that is still ON the line: one jump too far, or just after the number when the line ends first. */
 const beyond = (q) => (q.target + q.b <= q.max ? q.target + q.b : q.a + 1);
+/** The box of a sort card, computed apart from what it shows: an equality « $a = b \times q ± r$ » is THE Euclidean division of a by b or not (the 1AM level-2 sort); a number is divisible by the rule's k or not. */
+const boxOf = (q, c) => { const m = /^\$(\d+) = (\d+) \\times (\d+) ([+-]) (\d+)\$$/.exec(c.text ?? ''); if (!m) return c.n % q.k === 0 ? 'yes' : 'no'; const [a, b, k, r] = [m[1], m[2], m[3], m[5]].map(Number); return m[4] === '+' && a === b * k + r && r < b ? 'yes' : 'no'; };
 /** Fills the answer of the question on screen — right or wrong — with real taps, WITHOUT handing it in. Returns the question. */
 async function fill(right) {
   const { q } = await cur();
@@ -67,7 +69,7 @@ async function fill(right) {
     for (const d of String(vq)) await page.click(`[data-lk-key="${d}"]`);
     await page.click('[data-lk-slot="r"]'); for (const d of String(vr)) await page.click(`[data-lk-key="${d}"]`);
   } else if (q.gesture === 'sort') {
-    for (const c of q.cards) await page.click(`[data-lk-send="${right ? c.bin : c.bin === 'yes' ? 'no' : 'yes'}"]`);
+    for (const c of q.cards) { const bin = boxOf(q, c); if (bin !== c.bin) expect(false, `the box of « ${c.text} », computed apart, is the game's (${bin} / ${c.bin})`); await page.click(`[data-lk-send="${right ? bin : bin === 'yes' ? 'no' : 'yes'}"]`); }
   } else {
     const box = await page.locator('[data-lk-line]').boundingBox(); const k = Math.min(box.width / 940, box.height / 250); const ox = box.x + (box.width - 940 * k) / 2; const oy = box.y + (box.height - 250 * k) / 2;
     const at = (v) => ({ x: ox + (46 + (v / q.max) * 848) * k, y: oy + 168 * k });
@@ -169,7 +171,7 @@ await page.click('[data-ll-close]'); await page.waitForFunction(() => !document.
 await page.click('[data-lk-recheck]'); await page.waitForSelector('[data-lk-question]');
 q = (await cur()).q; expect(q.item === A && q.level === 1, '« أعد فحص الأداة » asks that tool again, from the easy question');
 await fill(true); await hand(); await settle();
-q = (await cur()).q; expect(q.item === A && q.level === 2, 'then the harder one');
+q = (await cur()).q; expect(q.item === A && q.level === 2 && q.gesture === 'sort' && q.cards.length === 3, 'then the harder one: the level-2 SORT of three equalities (asked first at level 2 since 2026-11-18 — unreachable before)');
 await fill(true); await shot(`recheck-${q.gesture}`);
 await hand(); await page.waitForSelector('[data-lk-result]');
 expect(await page.getAttribute('[data-lk-score]', 'data-lk-score') === '4/4' && await page.locator('[data-lk-revise]').count() === 0 && (await page.textContent('.lk-result h3')).includes('كاملة'), 'the kit is complete: nothing to revise');

@@ -49,8 +49,9 @@ function evaluationModules() {
 describe('synthèse finale — الحوصلة', () => {
   const modules = evaluationModules();
 
-  it('les unités ont bien 9 + 6 + 4 + 5 + 4 + 6 + 6 + 5 + 4 + 5 + 5 + 5 + 5 + 5 modules d’évaluation', () => {
-    expect(modules.length).toBe(74);
+  // unité 1 : 6 depuis le 2026-11-18 — les leçons 1–3 sont v2, leurs pages de module (et leur « إختبار أولي ») sont supprimées
+  it('les unités ont bien 6 + 6 + 4 + 5 + 4 + 6 + 6 + 5 + 4 + 5 + 5 + 5 + 5 + 5 modules d’évaluation', () => {
+    expect(modules.length).toBe(71);
   });
 
   it.each(modules)('%s : la synthèse lit la carte, elle n’est pas vide', (_lesson, rel) => {

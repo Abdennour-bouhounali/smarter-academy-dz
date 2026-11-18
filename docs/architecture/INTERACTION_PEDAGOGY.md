@@ -344,7 +344,7 @@ REAL SITUATION → CURIOSITY → PREDICTION → MANIPULATION → OBSERVATION →
 Only after this arc may explanation begin. **Naming happens after the gesture, never before it:**
 in the 4AM unit, the Module 1 of each of the eight concept lessons ends its manipulation step with
 a `KnowledgeBrick` (default `variant="new"`) that names what the student has just caused — e.g.
-`qasim-adad-tabii/modules/Module01AlMaktaba.jsx` lays `qasim-baqi` after the books are shelved
+`qasim-mushtarak-akbar/modules/Module01Baqat.jsx` lays `qawasim-mushtaraka` after the bouquets are made (the example was `qasim-adad-tabii` until its module pages were deleted, 2026-11-18, `LESSON_V2.md` §2)
 (KNOWLEDGE_DEPENDENCY.md « teach before the demand »). A `synthesis` lesson (the unit's
 وضعية إدماجية, `wadiya-idmajiya-aadad`) has **no opening manipulation**: since 2026-10-13 its Modules 1–6 are
 training situations (`GuidedProblem`), Module 7 is the analysis of the final situation (with `variant="rappel"` bricks only)

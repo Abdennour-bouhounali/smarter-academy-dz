@@ -59,6 +59,6 @@ export function LargeScreenOnlyNotice() {
  */
 export default function RequireLargeScreen() {
   const phone = useIsPhoneScreen();
-  const { pathname, search } = useLocation();
-  return phone && !isPhoneLessonPath(pathname, search) ? <LargeScreenOnlyNotice /> : <Outlet />;
+  const { pathname } = useLocation();
+  return phone && !isPhoneLessonPath(pathname) ? <LargeScreenOnlyNotice /> : <Outlet />;
 }

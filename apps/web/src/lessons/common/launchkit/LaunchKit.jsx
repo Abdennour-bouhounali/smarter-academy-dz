@@ -34,7 +34,7 @@ import { GRADE_NAMES } from '../lessonlab/order';
 import { setReturnTo } from '../mission/returnToLesson';
 import { useIsPhoneScreen } from '../../../components/auth/RequireLargeScreen';
 import { PHONE_LESSONS } from '../../../components/auth/phoneLessons';
-import { FAMILIES, MISTAKES, familyFor, makeQuestion, pickForm, complete, grade } from './families';
+import { FAMILIES, MISTAKES, familyFor, makeQuestion, pickForm, nextForm, complete, grade } from './families';
 import {
   planTools,
   nextStep,
@@ -316,10 +316,7 @@ export default function LaunchKit({ lessonCode, lessonTitle, onDone, onClose, in
       return;
     }
     const used = (run.current.used[step.item] ??= []);
-    const form =
-      step.phase === 'workshop' && missed && f.forms[step.level].includes(missed.form)
-        ? missed.form
-        : pickForm(step.item, step.level, used);
+    const form = nextForm(step, list, used);
     used.push(`${step.level}:${form}`);
     setCur({
       kind: 'question',

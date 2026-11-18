@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { Children, isValidElement } from 'react';
 import {
   isLessonBuilt, getTotalModules, getModulePath, getBuiltLessons, getLessonBasePath,
-  loadLessonConfig, loadLessonRoutesFactory, getLoadedLessonConfig,
+  loadLessonConfig, loadLessonRoutesFactory, getLoadedLessonConfig, lessonPackFlags,
 } from './registry';
 import { ACTIVE_GRADE_IDS } from '@smarter-academy/core';
 
@@ -102,5 +102,10 @@ describe('registry — every indexed lesson loads with its own routes', () => {
     expect(paths.length).toBe(1 + config.modules.length - unmounted.length);
     // Le constructeur de routes la rend lisible synchrone pour les pages de la leçon.
     expect(getLoadedLessonConfig(id)).toBe(config);
+    // A v2 lesson (a world in its pack) has no module page: each module address redirects to its home (LESSON_V2.md §2).
+    if (lessonPackFlags(id).world) {
+      const modules = flattenRoutes(factory()).filter((p) => p.path && p.path !== basePath);
+      for (const route of modules) expect(route.element?.props?.to, `${id} ${route.path}`).toBe(basePath);
+    }
   });
 });

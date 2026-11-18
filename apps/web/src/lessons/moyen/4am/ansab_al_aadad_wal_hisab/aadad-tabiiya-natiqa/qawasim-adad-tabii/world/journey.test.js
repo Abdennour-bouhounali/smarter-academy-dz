@@ -5,7 +5,7 @@ import { KNOWLEDGE } from './knowledge';
 import { STORY, TABLETS } from './story';
 import { FORGES } from './forges';
 import { lesson } from './index';
-import { LESSON_CONFIG } from '../lesson.config';
+import { LESSON_PACK } from '../lesson.pack';
 
 describe('the road of « قواسم عدد طبيعي »', () => {
   it('its four keys are the lesson’s own knowledge items, each with its tablet, its forge and its card', () => {
@@ -13,7 +13,8 @@ describe('the road of « قواسم عدد طبيعي »', () => {
       .flat()
       .map((it) => it.id);
     expect(KEYS).toEqual(items);
-    expect(KEYS).toEqual(LESSON_CONFIG.mission.tools.map((t) => t.id));
+    // the exam coach reminds the sheet of each key (the mission player's tools, which said the same, are deleted)
+    expect([...Object.values(LESSON_PACK.coach)].sort()).toEqual([...KEYS].sort());
     expect(Object.keys(TABLETS)).toEqual(KEYS);
     expect(Object.keys(FORGES)).toEqual(KEYS);
     for (const key of KEYS) {

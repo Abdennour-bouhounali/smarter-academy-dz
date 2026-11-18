@@ -5,7 +5,7 @@
  * student's choices back.
  *
  * props: world (what the world gives, below), lesson (its pack), config (LESSON_CONFIG), basePath, exitTo (catalogue),
- *        classicHref (the mission player), onModule(n) (marks a module done), completedModules (the lesson's synced progress:
+ *        onModule(n) (marks a module done), completedModules (the lesson's synced progress:
  *        it opens the practice nodes on a device that never played the story), mastery, preview.
  *
  * A WORLD gives the shell:
@@ -68,7 +68,6 @@ export default function LessonWorld({
   config,
   basePath,
   exitTo,
-  classicHref,
   onModule,
   completedModules,
   mastery = null,
@@ -167,8 +166,8 @@ export default function LessonWorld({
     return (
       <div className="di-fallback" dir="rtl">
         <p>{KT.noWebgl}</p>
-        <Link to={classicHref} className="di-btn di-btn--primary">
-          {KT.hud.classic}
+        <Link to={exitTo} className="di-btn di-btn--primary">
+          {KT.hud.exit}
         </Link>
       </div>
     );
@@ -192,7 +191,6 @@ export default function LessonWorld({
               game={game}
               rootRef={root}
               exitTo={exitTo}
-              classicHref={classicHref}
               basePath={basePath}
               config={config}
               onRestart={restart}
@@ -206,7 +204,7 @@ export default function LessonWorld({
   );
 }
 
-function Shell({ world, game, rootRef, exitTo, classicHref, basePath, config, onRestart, mastery }) {
+function Shell({ world, game, rootRef, exitTo, basePath, config, onRestart, mastery }) {
   const { keys, rules, sittings } = useLesson();
   const s = useSyncExternalStore(game.subscribe, game.getState);
   const [full, setFull] = useState(false);
@@ -375,7 +373,6 @@ function Shell({ world, game, rootRef, exitTo, classicHref, basePath, config, on
           lessonTitle={config.title}
           onBegin={() => (launchDone(config.id) ? game.start() : game.openLaunch(true))}
           onRestart={onRestart}
-          classicHref={classicHref}
           coarse={coarse}
         />
       )}

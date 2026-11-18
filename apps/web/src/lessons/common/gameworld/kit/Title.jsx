@@ -2,11 +2,10 @@
  * The TITLE SCREEN of a lesson's game world: the lesson's name, the world's own title and story, « ابدأ » / « واصل », and the
  * doors that open without replaying the story — the knowledge map, the practice space, « تقدّمي », « مختبري », « عُدّتي ».
  */
-import { Link } from 'react-router-dom';
 import { RotateCcw, Map as MapIcon, BookOpen, Trophy, FlaskConical, Backpack } from 'lucide-react';
 import { KT, TX } from './text';
 
-export default function Title({ s, game, world, lessonTitle, onBegin, onRestart, classicHref, coarse }) {
+export default function Title({ s, game, world, lessonTitle, onBegin, onRestart, coarse }) {
   return (
     <div className="di-title">
       <div className="di-title__box">
@@ -69,9 +68,6 @@ export default function Title({ s, game, world, lessonTitle, onBegin, onRestart,
             </li>
           </ul>
         )}
-        <Link to={classicHref} className="di-link di-link--dim">
-          {KT.hud.classic}
-        </Link>
       </div>
     </div>
   );

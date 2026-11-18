@@ -7,7 +7,7 @@ not measured is said so. Contract: `docs/architecture/LESSON_V2.md` §6; plan: `
 
 **`npm run status:lesson-v2 -- --lesson khawass-qawasim` prints ✅ on every line but the paused phone line.** Laptop and
 tablet only. **No student has played it and the owner has not validated it.** The old modules and `?view=classic` are
-still there (the owner's decision, still open).
+still there (the owner's decision, still open). **Update 2026-11-18: DELETED on the owner's order — `OLD_VERSION_TRACE_2026-11-18.md`.**
 
 ## What was measured
 
@@ -68,7 +68,7 @@ numbers, a width for the font floor), the class test's shape. A shared helper fo
 
 ## Not done, and why
 
-- **The old modules and `?view=classic` are still there** (the owner's decision, open).
+- **The old modules and `?view=classic` are still there** (the owner's decision, open). **Update 2026-11-18: DELETED on the owner's order — `OLD_VERSION_TRACE_2026-11-18.md`.**
 - **The proof key (P4) produces no evidence.** A proof written with letters cannot be re-checked from numbers, and the claim
   kinds have none for it (`claims.js`, the server's `ClaimVerifier.php` and their fixture would change).
 - ~~**The practice dash uses only the sentence types of `divisorIsles/strings.js`**~~ — **DONE 2026-11-18**: a wave may carry its own sentence and help (`why`); the lesson's ladder asks « عدد يقسم a + b », « a − b », « قاسم مشترك للعددين », « عدد يقسم باقي القسمة ».

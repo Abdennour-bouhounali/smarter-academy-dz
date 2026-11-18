@@ -72,8 +72,8 @@ pilot lesson only** — the other lessons keep everything until each gets its sc
   « اعرض » links of the memo are not shown (`canPresentPath`);
 - **the teacher's lesson page is the title and his card**: the progress box, « الكفاءات / المتطلبات / المناولات »,
   « مسألة الدرس », « مسار المحاور » and the practice card are not rendered for him (`LessonIndex › teacherBoard`); the
-  floating « بطاقتي » and « كرّاسي » buttons are hidden — both are doors of the card. Students are untouched and the
-  module routes still exist.
+  floating « بطاقتي » and « كرّاسي » buttons are hidden — both are doors of the card. Students see the world. A v2
+  lesson has no module page any more (deleted 2026-11-18, `LESSON_V2.md` §2): its module addresses redirect here.
 
 To retire the old mode on another lesson: write its script and its memo in its folder (`board/script.js`,
 `board/memo.js`), name them in its pack (`board: { script, memo }`), run `npm run generate:lesson-index`.

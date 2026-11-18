@@ -950,6 +950,9 @@ Before / after numbers of the pilot: `docs/reports/STUDENT_FOCUS_VIEW_2026-11-03
 
 ### 4septies. The mission mode — `studentView: 'mission'` (owner pilot, 2026-11-04, lesson `qasim-adad-tabii`; stage 1 of 3)
 
+> The pilot's mission player was deleted on 2026-11-18 with its module pages (the lesson is v2 — see the note at §9); the
+> mission mode itself still serves 29 lessons: read it on one of them (e.g. `qasim-mushtarak-akbar`).
+
 The lesson becomes a JOURNEY toward its « مسألة الدرس ». The student opens the lesson on the mission, collects the lesson's
 ideas as « tools », answers a short mission question between modules, and wins the mission in its مسألة module. Mission mode
 IMPLIES the focus view (§4sexies). The teacher (`freeNavigation`) and Classroom Mode see no change (`isMissionView`).
@@ -2228,10 +2231,18 @@ All under
 `lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/`. These are
 references, not templates: read them for the pattern, never copy-and-modify.
 
+> **2026-11-18 — the module pages of `qasim-adad-tabii`, `qawasim-adad-tabii` and `khawass-qawasim` are DELETED.** These
+> three lessons are v2 (a game world, `docs/architecture/LESSON_V2.md`); on the owner's order their old version —
+> module pages, mission player, `content/prep|problems|peerSheet…`, `?view=classic` — is gone (`LESSON_V2.md` §2,
+> `docs/reports/OLD_VERSION_TRACE_2026-11-18.md`). Wherever this guide cites one of their MODULES or content files as a
+> reference, read the same pattern in a lesson of the unit still on the module system — `qasim-mushtarak-akbar` has the
+> same shape (« أستعدّ », a trigger module with its lab, معارف, أوظّف, three مسائل, « إختبار أولي »). Their config
+> (`modules` as data, `resources`), their knowledge map and their practice bank are still there.
+
 | Lesson | Read it for |
 |---|---|
-| **`qasim-adad-tabii`** | the complete canonical shape: module 0 diagnostic, a `trigger` module opening on a concrete manipulation, a `معارف` module laying knowledge bricks, practice, evaluation. The best first read. |
-| **`qasim-adad-tabii` module 1** | the **manipulation quality reference** (redesigned 2026-09-30, `MANIPULATION_DNA.md`): the **two-level workspace** (مبتدئ = the football pitch, partition, carry gesture; متقدم = since 2026-11-04 the SAME pitch with 42 players, 5 or 6 teams — the owner replaced the library shelf (420 books, quotition) by the football lab for the whole lesson); the refusal-as-definition and the ghost shelf as resistance; contrast-gated discovery; `DivisionRoles` and the two-readings bridge; the student's own trials listed above the question. A quality bar, **not a visual template**. Module 2 is the worked-example pattern (`levels={false}`): 48 players, 6 teams then 8, so 48 = 6 × 8 = 8 × 6. One lab for the whole lesson: the numbers live in `content/teams.js`. |
+| **`qasim-mushtarak-akbar`** (was `qasim-adad-tabii` until its pages were deleted, 2026-11-18) | the complete canonical shape: module 0 diagnostic, a `trigger` module opening on a concrete manipulation, a `معارف` module laying knowledge bricks, practice, evaluation. The best first read. |
+| **`qasim-adad-tabii` module 1** — PAGE DELETED 2026-11-18 (the `team-builder` component and its tests remain in `manipulations/divisibility/`) | the **manipulation quality reference** (redesigned 2026-09-30, `MANIPULATION_DNA.md`): the **two-level workspace** (مبتدئ = the football pitch, partition, carry gesture; متقدم = since 2026-11-04 the SAME pitch with 42 players, 5 or 6 teams — the owner replaced the library shelf (420 books, quotition) by the football lab for the whole lesson); the refusal-as-definition and the ghost shelf as resistance; contrast-gated discovery; `DivisionRoles` and the two-readings bridge; the student's own trials listed above the question. A quality bar, **not a visual template**. Module 2 is the worked-example pattern (`levels={false}`): 48 players, 6 teams then 8, so 48 = 6 × 8 = 8 × 6. One lab for the whole lesson: the numbers live in `content/teams.js`. |
 | **`team-builder`** | a platform context replacing a textbook one, declared and traceable: equal teams on a real drawn pitch, where the remainder is a player left standing outside. Pure model in `packages/core/arithmetic/equalGrouping.js`, formation geometry swept by `teamFormation.test.js`. |
 | **`bahth-pgcd`** | two manipulations in one lesson (successive differences, then Euclid), and the longest module sequence in the unit. |
 | **`ikhtizal-kasr`** | a manipulation with two comparable paths (divide repeatedly vs divide once by the GCD), and the `Module00Astaidd` prerequisite diagnostic. |

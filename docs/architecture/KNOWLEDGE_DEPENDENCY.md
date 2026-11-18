@@ -286,7 +286,7 @@ notation.
 
 ## Exemple de référence
 
-`apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx`
+`apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-mushtarak-akbar/modules/Module02Maarif.jsx`
 est l'implémentation de référence (chaque question déclare `requires={[…]}`) :
 
 ```text

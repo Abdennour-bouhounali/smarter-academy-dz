@@ -2,8 +2,9 @@
 // (simulated session, no API), played by launch-kit-qawasim.mjs and launch-kit-khawass.mjs. Since 2026-11-18 the learning net
 // gives both lessons the SAME two core tools: A = 4am.m1.r01 (« قاسم عدد طبيعي », the lesson before) then B = 2am.m1.r04
 // (« القسمة الإقليدية على أيّ عدد », 2AM). Four students:
-//   1. knows everything: four answers (A: write, sentences; B: write, write with a three-digit number), 4 / 4, take-off;
-//   2. slips on A's sentences and on B's first equality: B's flag on the line, B « تحتاج تثبيتًا » in three answers, the
+//   1. knows everything: four answers (A: write, sentences; B: write, then its level-2 SORT of three equalities — since
+//      2026-11-18 a family's level-2 sort is asked first, `families.js › pickForm`), 4 / 4, take-off;
+//   2. slips on A's sentences and on B's first equality: B's flag on the line, B's sort, B « تحتاج تثبيتًا » in three answers, the
 //      workshop repairs A — and the tool NOT repaired is the one to revise first;
 //   3. misses everything: 0 / 4, ONE capsule (the first core tool, A), the door opens — B stays « نبدأ منها », no second lock;
 //   4. knows A, misses B: B's workshop (its worked example, the flag again), the capsule of B (its card, its example, the
@@ -38,7 +39,8 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
   };
   const browser = await chromium.launch({ args: GL_ARGS });
   const errors = [];
-  const seenB = new Set(); // the forms of B the walk met: the 2AM sort is reported if it never came up
+  const seenB = new Set(); // the forms of B the walk met: the 2AM level-2 sort must come up
+  let zeroSeen = false; // a card « s = b × 0 + s » (to ACCEPT) was on screen and sorted by its computed box
   let n = 0;
   let page;
 
@@ -280,6 +282,11 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
       for (const c of q.cards) {
         const bin = euclid(c.text) ?? c.bin; // an equality is judged here; a number or a sentence keeps its box
         if (bin !== c.bin) expect(false, `the box of « ${c.text} », computed apart, is the game's (${bin} / ${c.bin})`);
+        if (/\\times 0 \+/.test(c.text)) {
+          zeroSeen = true;
+          if (bin !== 'yes')
+            expect(false, `a quotient 0 is THE Euclidean division of a smaller number (« ${c.text} »)`);
+        }
         await page.click(`[data-lk-send="${right ? bin : bin === 'yes' ? 'no' : 'yes'}"]`);
       }
     } else {
@@ -337,9 +344,16 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
       { timeout: 15000 },
     );
   };
-  /** B's level-1 equality: a two-digit divisor (11–19), a quotient of 2 to 5; B's level 2: a three-digit number by 12–25. */
+  /** B's level-1 equality: a two-digit divisor (11–19), a quotient of 2 to 5. */
   const easyB = (q) => q.b >= 11 && q.b <= 19 && Math.floor(q.a / q.b) >= 2 && Math.floor(q.a / q.b) <= 5;
-  const hardB = (q) => q.a >= 100 && q.a <= 999 && q.b >= 12 && q.b <= 25 && Math.floor(q.a / q.b) >= 10;
+  /** B's level-2 sort: three EQUALITIES with a divisor of 12–25, each one's box computable from its own numbers. */
+  const sortB = (q) =>
+    q.form === 'sort' &&
+    q.cards.length === 3 &&
+    q.cards.every((c) => {
+      const m = /^\$\d+ = (\d+) \\times \d+ [+-] \d+\$$/.exec(c.text);
+      return m && Number(m[1]) >= 12 && Number(m[1]) <= 25;
+    });
 
   // ══ 1. a student who knows: the bag holds TWO core tools; four answers charge both; take-off ══
   await open(ids[0]);
@@ -425,11 +439,12 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
   await settle();
   q = (await cur()).q;
   expect(
-    q.item === B && q.level === 2 && q.gesture === 'write' && hardB(q),
-    `then a harder one: a three-digit number by a two-digit divisor (« ${q.a} = ${q.b} × ▢ + ▢ », a two-digit quotient)`,
+    q.item === B && q.level === 2 && q.gesture === 'sort' && sortB(q),
+    `then a harder one, by another gesture: three equalities to sort — is each THE Euclidean division? (${q.cards.map((c) => c.text).join(' · ')})`,
   );
+  await shot('b-sort');
   await fill(true);
-  await shot('b-write-hard');
+  await shot('b-sort-placed');
   await hand();
   await settle();
   await page.waitForSelector('[data-lk-result]');
@@ -502,8 +517,8 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
   await settle();
   q = (await cur()).q;
   expect(
-    q.item === B && q.level === 2 && q.gesture === 'write' && hardB(q),
-    'missed then right: a third question, the harder one',
+    q.item === B && q.level === 2 && q.gesture === 'sort' && sortB(q),
+    'missed then right: a third question, the harder one — the sort of three equalities',
   );
   await answer(true);
   expect(
@@ -760,9 +775,10 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
   await takeOff();
   expect(true, 'take-off after the capsule: the world of the lesson starts');
 
-  if (!seenB.has('2:sort'))
+  expect(seenB.has('2:sort'), 'the 2AM level-2 sort was asked in a launch (it opens level 2 since 2026-11-18)');
+  if (!zeroSeen)
     console.log(
-      'note  the 2AM sort (« 9 = 14 × 0 + 9 » to ACCEPT) never came up: at level 2 the station asks « write » first and the workshop repeats the missed form',
+      'note  no card « s = b × 0 + s » came up in the two sorts of this run (one shape in five has none): re-run to see it',
     );
   expect(errors.length === 0, `no page error (${errors.length})`);
   await browser.close();

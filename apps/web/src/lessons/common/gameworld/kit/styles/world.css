@@ -714,10 +714,6 @@
 .di-link:hover {
   opacity: 1;
 }
-.di-link--dim {
-  opacity: 0.6;
-  font-size: 0.85rem;
-}
 
 .di-chips {
   display: flex;

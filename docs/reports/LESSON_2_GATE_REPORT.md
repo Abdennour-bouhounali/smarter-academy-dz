@@ -51,7 +51,7 @@ corrections are not validated yet).
 
 - **The old modules and `?view=classic` are still there** (§6.3). Decision D3 says the pilot's classic view « goes when
   the kit does », and `LESSON_V2.md` §1ter says a v2 lesson keeps its modules because every report reads them (A4: not traced
-  page by page). Deleting them is the owner's call; it was not done for either lesson.
+  page by page). Deleting them is the owner's call; it was not done for either lesson. **Update 2026-11-18: DELETED on the owner's order — `OLD_VERSION_TRACE_2026-11-18.md`.**
 - **Phone**: paused. The debt, measured at 800×370 on 2026-11-18, is in the plan (step 8).
 - **No measured weight budget per lesson**; **no walk runs in CI**.
 - **The owner's validation**, and a real tablet and a real phone, were never part of this work.

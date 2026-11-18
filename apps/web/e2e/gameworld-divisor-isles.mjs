@@ -455,14 +455,14 @@ s = await page.evaluate(() => { const st0 = window.__world.getState(); return { 
 expect(s.hasSave && s.stage === 8 && s.keys === 4 && s.finished, 'after a reload the save is offered (stage 8, four keys)');
 await page.waitForTimeout(800); await shot('title-resume');
 
-// ── `?view=classic` opens the mission player, not the world ──
+// ── the old version is deleted (owner, 2026-11-18): a module address and `?view=classic` lead to the world, never a 404 ──
+await page.goto(`${LESSON}/maarif`, { waitUntil: 'networkidle' });
+await page.waitForSelector('[data-gameworld]', { timeout: 30000 });
+expect(new URL(page.url()).pathname === new URL(LESSON).pathname, 'a module address of the deleted pages redirects to the lesson home');
 await page.goto(`${LESSON}?view=classic`, { waitUntil: 'networkidle' });
-await page.waitForTimeout(1500);
-expect(await page.locator('[data-gameworld]').count() === 0, '?view=classic shows no game world');
-// on a phone the classic player is CLOSED (components/auth/phoneLessons.js): the message « open it on a computer », nothing of the lesson behind it
-if (TOUCH) expect(await page.locator('[role="alert"]').count() === 1 && !(await page.textContent('body')).includes('756'), '?view=classic on a phone: the message « على الحاسوب », and nothing of the mission behind it');
-else expect((await page.textContent('body')).includes('756'), '?view=classic shows the mission of the lesson');
-await shot('classic');
+await page.waitForSelector('[data-gameworld]', { timeout: 30000 });
+expect(!(await page.textContent('body')).includes('756'), '?view=classic opens the world: no mission player behind it');
+await shot('old-address');
 
 // ── a TEACHER never sees the world ──
 const tctx = await browser.newContext({ viewport: { width: SIZE[0], height: SIZE[1] } });

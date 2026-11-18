@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { toolsForLesson, getItem } from '@smarter-academy/core/curriculum/dz/net/learningNet.js';
-import { FAMILIES, MISTAKES, familyFor, makeQuestion, pickForm, complete, grade } from './families';
+import { FAMILIES, MISTAKES, familyFor, makeQuestion, pickForm, nextForm, complete, grade } from './families';
 import {
   planTools,
   nextStep,
@@ -279,8 +279,176 @@ describe('عُدّة الانطلاق — the question families', () => {
   it('changes the form of the question inside a launch', () => {
     expect(pickForm('1am.m3.r01', 1, [])).toBe('write');
     expect(pickForm('1am.m3.r01', 1, ['1:write'])).toBe('place');
-    expect(pickForm('1am.m3.r01', 2, ['1:write'])).toBe('write');
+    expect(pickForm('1am.m3.r01', 2, ['1:write'])).toBe('sort'); // level 2 opens on the family's sort (2026-11-18)
+    expect(pickForm('1am.m3.r01', 2, ['1:write', '2:sort'])).toBe('write');
     expect(pickForm('1am.m3.r02', 2, ['2:three', '2:nine'])).toBe('four');
+  });
+
+  it('asks the level-2 forms of every family in a known order: a family with a level-2 sort opens on it', () => {
+    const order = (item, level) => {
+      const used = [];
+      for (let i = 0; i < FAMILIES[item].forms[level].length; i += 1)
+        used.push(`${level}:${pickForm(item, level, used)}`);
+      return used.map((u) => u.slice(2));
+    };
+    expect(Object.fromEntries(Object.keys(FAMILIES).map((item) => [item, order(item, 2)]))).toEqual({
+      '1am.m3.r01': ['sort', 'write'],
+      '2am.m1.r04': ['sort', 'write'],
+      '1am.m3.r02': ['three', 'nine', 'four'], // no form named `sort`: its own order
+      '4am.m1.r01': ['sentences', 'pick'], // no form named `sort`: its own order
+    });
+    for (const item of Object.keys(FAMILIES)) {
+      expect(order(item, 1), item).toEqual(FAMILIES[item].forms[1]); // level 1 is never reordered
+      expect(new Set(order(item, 2)), item).toEqual(new Set(FAMILIES[item].forms[2])); // every form is still asked
+      if (FAMILIES[item].forms[2].includes('sort')) expect(pickForm(item, 2, ['1:write']), item).toBe('sort');
+    }
+  });
+});
+
+/**
+ * A whole launch played by the PURE pieces the component chains (`nextStep` → `nextForm` → `makeQuestion` → `grade`), with
+ * a seeded draw: `wants(q, i, phase)` says whether the i-th answer is right, or returns the answer itself. A worked example is
+ * « seen » at once, as the student's « جرّب » does. `recheck` replays « أعد فحص الأداة » on the answers of a launch.
+ */
+function playLaunch(tools, wants, { seed = 1, answers = [], skipWorkshop = false } = {}) {
+  const rand = rng(seed);
+  const list = [...answers];
+  const used = {};
+  let exampleSeen = skipWorkshop;
+  for (let i = 0; i < 30; i += 1) {
+    const step = nextStep({ tools, answers: list, elapsed: 30, exampleSeen, skipWorkshop });
+    if (step.type === 'result') return list;
+    if (step.type === 'example') {
+      exampleSeen = true;
+      continue;
+    }
+    const u = (used[step.item] ??= []);
+    const form = nextForm(step, list, u);
+    u.push(`${step.level}:${form}`);
+    const q = makeQuestion(rand, step.item, step.level, form, { first: step.first });
+    const w = wants(q, list.length - answers.length, step.phase);
+    const answer = w === true ? rightOf(q) : w === false ? wrongOf(q) : w;
+    const g = grade(q, answer);
+    list.push({ item: q.item, level: q.level, form, k: q.k ?? null, ...g, unsure: false, phase: step.phase, q });
+  }
+  throw new Error('a launch never ends');
+}
+const rightOf = (q) =>
+  q.gesture === 'write'
+    ? { q: String(Math.floor(q.a / q.b)), r: String(q.a % q.b) }
+    : q.gesture === 'place'
+      ? { x: q.b * Math.floor(q.a / q.b), moved: true }
+      : Object.fromEntries(q.cards.map((c) => [c.id, c.bin]));
+const wrongOf = (q) =>
+  q.gesture === 'write'
+    ? { q: String(Math.floor(q.a / q.b) + 1), r: String(q.a % q.b) }
+    : q.gesture === 'place'
+      ? { x: q.a + 1, moved: true }
+      : Object.fromEntries(q.cards.map((c) => [c.id, c.bin === 'yes' ? 'no' : 'yes']));
+const trail = (list) =>
+  list.map(
+    (a) =>
+      `${a.item === list[0].item ? 'A' : 'B'}${a.level}:${a.form}${a.phase === 'station' ? '' : `/${a.phase}`}${a.correct ? '+' : '-'}`,
+  );
+
+describe('عُدّة الانطلاق — whole launches (the documented students)', () => {
+  const has = (id) => Boolean(familyFor(id));
+  const two = planTools(toolsForLesson('qawasim-adad-tabii'), has); // lessons 2 and 3: A = 4am.m1.r01, B = 2am.m1.r04
+  const pilot = planTools(toolsForLesson('qasim-adad-tabii'), has); // A = 1am.m3.r01, B = 1am.m3.r02
+  const seq = (n) => (q, i) => !n.includes(i);
+
+  it('lessons 2 and 3: the four students of the walk — same bands and scores, the level-2 sort of the division asked', () => {
+    for (let seed = 1; seed <= 40; seed += 1) {
+      const knows = playLaunch(two, () => true, { seed });
+      expect(trail(knows)).toEqual(['A1:write+', 'A2:sentences+', 'B1:write+', 'B2:sort+']); // was B2:write before 2026-11-18
+      expect(scoreOf(kitOf(two, knows))).toEqual({ lit: 4, total: 4, percent: 100 });
+
+      const slips = playLaunch(two, seq([1, 2]), { seed });
+      expect(trail(slips)).toEqual([
+        'A1:write+',
+        'A2:sentences-',
+        'B1:write-',
+        'B1:place+',
+        'B2:sort+', // was B2:write
+        'A2:sentences/workshop+',
+        'A2:sentences/workshop+',
+      ]);
+      expect(kitOf(two, slips).map((t) => [t.band, t.repaired])).toEqual([
+        [BANDS.CONSOLIDATE, true],
+        [BANDS.CONSOLIDATE, false],
+      ]);
+      expect(scoreOf(kitOf(two, slips)).percent).toBe(50);
+
+      const misses = playLaunch(two, () => false, { seed });
+      expect(trail(misses)).toEqual([
+        'A1:write-',
+        'A1:pick-',
+        'B1:write-',
+        'B1:place-',
+        'A1:pick/workshop-',
+        'A1:pick/workshop-',
+      ]);
+      expect(scoreOf(kitOf(two, misses)).percent).toBe(0);
+      expect(gateOf(kitOf(two, misses)).item).toBe(two[0].item);
+
+      const missesB = playLaunch(two, (q) => q.item === two[0].item, { seed });
+      expect(trail(missesB)).toEqual([
+        'A1:write+',
+        'A2:sentences+',
+        'B1:write-',
+        'B1:place-',
+        'B1:place/workshop-',
+        'B1:place/workshop-',
+      ]);
+      expect(gateOf(kitOf(two, missesB)).item).toBe(two[1].item);
+    }
+  });
+
+  it('the pilot: the student of the walk — the workshop on the flag, then a re-check that now reaches the 1AM sort', () => {
+    for (let seed = 1; seed <= 40; seed += 1) {
+      const first = playLaunch(pilot, (q, i, phase) => q.item === pilot[1].item || phase === 'workshop', { seed });
+      expect(trail(first).map((s) => s.replace(/B2:(three|nine|four)/, 'B2:rule'))).toEqual([
+        'A1:write-',
+        'A1:place-',
+        'B1:two+',
+        'B2:rule+',
+        'A1:place/workshop+',
+        'A1:place/workshop+',
+      ]);
+      expect(scoreOf(kitOf(pilot, first)).percent).toBe(75);
+      const kept = first.filter((a) => a.item !== pilot[0].item || a.phase === 'capsule');
+      const again = playLaunch(pilot, () => true, { seed: seed + 1, answers: kept, skipWorkshop: true });
+      expect(trail(again.slice(kept.length))).toEqual(['A1:write+', 'A2:sort+']); // was A2:write: the 1AM sort is reachable
+      expect(scoreOf(kitOf(pilot, again)).percent).toBe(100);
+    }
+  });
+
+  it('a launch can now produce `quotient-zero`: refusing « $s = b \\times 0 + s$ » names it, and the workshop opens on it', () => {
+    let produced = 0;
+    for (let seed = 1; seed <= 60; seed += 1) {
+      const B = two[1].item;
+      const list = playLaunch(
+        two,
+        (q, i, phase) => {
+          if (q.item !== B || q.level !== 2 || phase === 'workshop') return true;
+          // right on every card but the one of the quotient 0, refused
+          return Object.fromEntries(q.cards.map((c) => [c.id, c.miss === 'quotient-zero' ? 'no' : c.bin]));
+        },
+        { seed: seed * 104729 + 17 },
+      );
+      const asked = list.find((a) => a.item === B && a.level === 2 && a.phase === 'station');
+      expect(asked.form).toBe('sort');
+      if (!asked.q.cards.some((c) => c.miss === 'quotient-zero')) continue; // one shape in five has no quotient-0 card
+      produced += 1;
+      expect(asked).toMatchObject({ correct: false, mistake: 'quotient-zero' });
+      const kit = kitOf(two, list);
+      expect(kit[1]).toMatchObject({ band: BANDS.CONSOLIDATE, mistakes: ['quotient-zero'] });
+      expect(workshopTool(two, list)).toEqual({ item: B, level: 2 }); // A is « ثابتة »: the workshop is B's, on its sort
+      expect(list.filter((a) => a.phase === 'workshop').map((a) => a.form)).toEqual(['sort', 'sort']);
+      const ex = FAMILIES[B].example(rng(seed), 2, { mistake: asked.mistake });
+      expect(ex.steps.at(-1)).toMatch(/\\times 0 \+/); // the worked example of the workshop answers that mistake
+    }
+    expect(produced).toBeGreaterThan(30);
   });
 });
 

@@ -11,7 +11,8 @@ export const LESSON_PACK = {
   // the student's game world: the unit's world, played with this lesson's story and content
   world: { id: 'divisor-isles', content: () => import('./world').then((m) => m.lesson) },
   // the lesson's knowledge sheets — « بطاقة المعارف » on the board, the rule the exam coach reminds.
-  // They live in the world's folder: the lesson's older `knowledge.jsx` still serves the mission player of its old modules.
+  // They live in the world's folder: the lesson's older `knowledge.jsx` (its module pages are deleted) still feeds the
+  // knowledge map of the lesson page and the knowledge-graph check of validate:lessons.
   knowledge: () => import('./world/knowledge.js').then((m) => m.LESSON_KNOWLEDGE),
   // « مدرّب الامتحان »: the knowledge sheet behind each الكفاءة of the lesson
   coach: { P1: 'jam-wal-farq', P2: 'madaaf', P3: 'baqi-qisma', P4: 'burhan' },

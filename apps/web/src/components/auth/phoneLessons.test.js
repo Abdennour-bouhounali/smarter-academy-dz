@@ -7,7 +7,7 @@ const HOME = `${BASE}/qasim-adad-tabii`;
 /**
  * PHONES ARE PAUSED (owner, 2026-11-18): every pack says `phone: false`, so a phone opens NO lesson. When phones resume,
  * set `phone: true` in the pack of a lesson whose home was walked on a phone and restore the checks that were here: its
- * home opens (student and teacher's preview), a module and `?view=classic` stay closed, and only the memo and the lesson
+ * home opens (student and teacher's preview), and only the memo and the lesson
  * file of that lesson open for a teacher (never « حصّة القسم », « متابعة القسم » or « بطاقة المعارف »).
  */
 describe('the pages a phone may open — while phones are paused', () => {
@@ -15,7 +15,6 @@ describe('the pages a phone may open — while phones are paused', () => {
     expect(PHONE_LESSONS).toEqual([]);
     for (const id of ['qasim-adad-tabii', 'qawasim-adad-tabii']) {
       expect(isPhoneLessonPath(`${BASE}/${id}`), id).toBe(false);
-      expect(isPhoneLessonPath(`${BASE}/${id}`, '?apercu=eleve'), id).toBe(false);
     }
   });
 
@@ -30,9 +29,8 @@ describe('the pages a phone may open — while phones are paused', () => {
     for (const path of paths) expect(isPhoneLessonPath(path), path).toBe(false);
   });
 
-  it('keeps a module, the classic player, every other lesson and every page that is not a lesson closed', () => {
+  it('keeps a module address, every other lesson and every page that is not a lesson closed', () => {
     expect(isPhoneLessonPath(`${HOME}/itqan`)).toBe(false);
-    expect(isPhoneLessonPath(HOME, '?view=classic')).toBe(false);
     expect(isPhoneLessonPath(`${BASE}/khawass-qawasim`)).toBe(false);
     expect(isPhoneLessonPath('/espace/pratique/qasim-adad-tabii')).toBe(false);
     expect(isPhoneLessonPath(undefined)).toBe(false);

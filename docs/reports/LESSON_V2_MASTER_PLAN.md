@@ -313,7 +313,8 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
      - B1 DONE in part: three.js already is ONE shared chunk (135 KB gzip, measured); the world now opens on a
        loading screen with progress and a retry. NOT done: a measured budget per lesson (step 6).
      - A4 — no change needed: a v2 lesson keeps its modules and marks them from the world; every report reads them as
-       before (`LESSON_V2.md` §1ter). NOT traced page by page.
+       before (`LESSON_V2.md` §1ter). TRACED reader by reader on 2026-11-18 (`OLD_VERSION_TRACE_2026-11-18.md`): the
+       module ids and numbers stay as data, the module PAGES are deleted.
      - A5 — a rule is WRITTEN (taken from the pilot, never decided by the owner): nothing earned is taken, the keys
        his progress proves are his, the story starts at the first island (`LESSON_V2.md` §1ter).
      - A3 — in step 6 (the contract and the status script).
@@ -325,7 +326,7 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
   7. [x] The root `CLAUDE.md` is cut from 479 lines (56.7 KB) to 298 (19.5 KB): a map of what binds every task, with
      the documentation rule and the images rules kept word for word — DONE 2026-11-17. The file as it was is kept
      whole: `docs/reports/CLAUDE_MD_BEFORE_CUT_2026-11-17.md`.
-  8. [x] THE GATE — lesson 2 `qawasim-adad-tabii`, rebuilt with the kit only — DONE 2026-11-18 (the owner's validation and the retirement of the old modules remain; report `LESSON_2_GATE_REPORT.md`). STATE on 2026-11-17, late:
+  8. [x] THE GATE — lesson 2 `qawasim-adad-tabii`, rebuilt with the kit only — DONE 2026-11-18 (the owner's validation remains; the old modules are DELETED since, step 10; report `LESSON_2_GATE_REPORT.md`). STATE on 2026-11-17, late:
      - **THE STUDENT'S WORLD PLAYS**, measured: `apps/web/e2e/gameworld-qawasim.mjs` (52 checks: the story from the
        title to the last bridge, its four forges each with a false rule refuted and a last step typed wrong then right,
        the workshop, the dash, the stone) passes at 1366×768, 1024×768, 1840×900 and on a phone held sideways
@@ -356,10 +357,8 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
        list is in the report; (6) « published locally » read from the database (lesson `available`, 8 modules and 50
        exercises `published`, for both lessons); (7) the gate's report: `LESSON_2_GATE_REPORT.md` (real time from git,
        lines written, what was copied from the pilot, one load-sensitive flake of the world walk). The pilot's eight
-       walks were re-run after the kit was touched and pass. STILL OPEN, for the OWNER: the old modules and
-       `?view=classic` of BOTH lessons (D3 says « goes when the kit does », the contract keeps the modules because the
-       reports read them — A4, not traced page by page: deleting is his decision) and his validation of lesson 2; the
-       phone debt below.
+       walks were re-run after the kit was touched and pass. STILL OPEN, for the OWNER: his validation of lesson 2;
+       the phone debt below. (The old modules and `?view=classic` were DELETED on his order the same day — step 10.)
        MEASURED after the formula check was repaired: the board walk (12 screens) and the hub, sitting and trainer walks
        (199 / 142 / 421 checks) pass at 1366×768, 1024×768 and 1840×900.
      - **Older state, 2026-11-17 (kept for the history): NOT DONE — lesson 2 is not finished:** (1) the trainer, the sittings and the practice hub of lesson 2 were
@@ -434,12 +433,22 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
   lock query; it fails the same way without this work's change) and five of `DbBackupCommandTest` (a command this work
   never touched; cause not investigated).
   9. [x] LESSON 3 `khawass-qawasim` (خواص قواسم عدد طبيعي) — DONE 2026-11-18, report `LESSON_3_GATE_REPORT.md` (the
-     owner's validation and the retirement of the old modules remain). It prints ✅ on `status:lesson-v2`; its six walks
+     owner's validation remains; the old modules are DELETED, step 10). It prints ✅ on `status:lesson-v2`; its six walks
      pass at 1366×768, 1024×768 and 1840×900. Its four keys are FORGED on four NEW investigation kinds added to the kit
      (`join`, `stack`, `peel`, `letters`: `GAME_WORLD.md` « The eight kinds »). Open, for the owner: the proof key gives no evidence; the dash's sentence types; the 10.5–11.5 px text the
      kit still has at 1024×768 (shared with lessons 1–2). Done 2026-11-18: the Euclidean division (`2am.m1.r04`) is a core
      prerequisite of `4am.m1.r02` in the net, so lessons 2 and 3 launch with two tools (its family added); their launch
      walks must be updated and re-run.
+  10. [x] THE OLD VERSION OF LESSONS 1–3 IS DELETED — 2026-11-18, on the owner's order (« for each lesson that is updated
+     to the gaming version, delete the old version »). Trace of every reader, decisions and follow-ups:
+     `OLD_VERSION_TRACE_2026-11-18.md`. Deleted: the 25 module pages (« إختبار أولي » included), the three
+     `moduleContext.js`, the 20 `content/` files only the pages read (with their tests), the three mission scenes, the
+     mission player keys of the three configs (`studentView`, `mission`, `lessonProblem`), `?view=classic` and the
+     kit's link to it, the walk `lesson-kit/masail-pilot.mjs`. The module ids and numbers STAY as data (progress, the
+     reports, the DB rows); every module address redirects to the home (`buildLessonRoutes › retiredModules`).
+     `status:lesson-v2` now checks that the old version is gone (all three ✅). NOT run: any walk — nine older walks
+     still open the deleted pages and must be re-targeted or cut (trace, follow-up 4); the pilot's story walk was
+     edited to check the redirect.
 
 ## 4ter. When each item of 4bis is done
 
@@ -593,7 +602,9 @@ STEP 4 — the gate. `npm run status:lesson-v2 -- --lesson qasim-mushtarak-akbar
 check:unused, check:unreached, check:format and lint on what you changed pass; publish it locally (lesson `available`,
 modules and exercises `published`); write docs/reports/LESSON_4_GATE_REPORT.md (real time from git, lines written,
 what was copied from earlier lessons, what failed). Commit `feat(lessons): qasim-mushtarak-akbar — v2`. STOP: I validate it.
-Do NOT delete the old modules or `?view=classic` (my decision, still open).
+DELETE its old version in the same commit (owner, 2026-11-18: « for each lesson that is updated to the gaming version,
+delete the old version »): its module pages, its mission player, `?view=classic` — the recipe is LESSON_V2.md §2 « The
+old version is deleted », the status script checks it.
 
 WORKING LIMITS:
 - Fable orchestrates; code is written by agents on `opus`, except the 3D and a task judged complicated.

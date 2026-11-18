@@ -98,6 +98,15 @@ async function statusOf(entry) {
   add('a walk plays its world', mine.some((w) => w.text.includes('data-di-start')), mine.length ? `${mine.length} walk(s) name it` : 'no walk names it');
   const cat = catalogue.get(entry.id);
   add('published: status « available » in the catalogue', cat?.status === 'available', cat ? cat.status : 'not in the catalogue');
+  // what it replaced is deleted (owner, 2026-11-18: « for each lesson that is updated to the gaming version, delete the old
+  // version »): no module page, the module addresses redirect home, no mission player in its config (LESSON_V2.md §2)
+  const config = read(path.join(dir, 'lesson.config.js')) ?? '';
+  const left = [
+    has('modules') && 'modules/',
+    !/retiredModules:\s*true/.test(read(path.join(dir, 'routes.jsx')) ?? '') && 'routes.jsx without retiredModules',
+    /^\s*studentView:\s*'mission'|^\s*mission:\s*\{/m.test(config) && 'the mission player in lesson.config.js',
+  ].filter(Boolean);
+  add('the old version is deleted: module pages, mission player', left.length === 0, left.join(', '));
 
   const failed = checks.filter((c) => c.ok === false).length;
   const unknown = checks.filter((c) => c.ok === null && !c.paused).length; // a PAUSED part (the phone) is shown ➖ and never counts
@@ -131,7 +140,8 @@ for (const [id, dir] of folders) {
   const entry = index.find((l) => l.id === id);
   if (!entry) continue;
   const text = read(path.join(dir, 'lesson.config.js')) ?? '';
-  configs.push({ entry, mission: /studentView:\s*'mission'/.test(text) });
+  const retired = /retiredModules:\s*true/.test(read(path.join(dir, 'routes.jsx')) ?? '');
+  configs.push({ entry, retired, mission: /studentView:\s*'mission'/.test(text) });
 }
 const count = (fn) => configs.filter(fn).length;
 const ledger = [
@@ -139,7 +149,8 @@ const ledger = [
   ['v2: a pack with a world', count((c) => c.entry.pack?.world)],
   ['still on the mission player only (no world)', count((c) => c.mission && !c.entry.pack?.world)],
   ['still on the older lesson page (no mission, no world)', count((c) => !c.mission && !c.entry.pack?.world)],
-  ['still open with an « أستعدّ » module', count((c) => c.entry.modules.some(([, slug]) => slug === 'astaidd'))],
+  ['still open with an « أستعدّ » module', count((c) => !c.retired && c.entry.modules.some(([, slug]) => slug === 'astaidd'))],
+  ['v2 whose old version is deleted (module pages, mission player)', count((c) => c.retired)],
   ['still without a board (old « وضع القسم », derived memo)', count((c) => !c.entry.pack?.board)],
 ];
 if (args.includes('--json')) console.log(JSON.stringify({ packed, ledger: Object.fromEntries(ledger) }, null, 2));

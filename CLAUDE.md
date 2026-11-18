@@ -271,6 +271,8 @@ and one left out) then `apps/web/scripts/crop-methode.py` →
 `apps/web/public/images/methode/lesson/*.webp`. The copy beside each capture
 describes only what that lesson really does; if the lesson changes, re-run both
 scripts and re-read the story strings (`marketing.json › method.steps.*.story`).
+**Since 2026-11-18 the captured module pages no longer exist** (the lesson is v2, its old version deleted): the
+captures and `capture-methode.mjs` are out of date until the page is re-captured on the world (plan C2).
 The page uses NO generated image at all (owner decision, 2026-10-07): hero and
 summit are typographic — simple and professional.
 

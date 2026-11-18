@@ -11,13 +11,16 @@ he has not judged one by one; they are binding all the same, as built.
 A student who opens the lesson enters **« أرخبيل القواسم »**: a chain of nine floating islands in a three.js scene, played in a
 full window with a small hovering robot, « زيرو ». The teacher and Classroom Mode see no change.
 
-- Switch: `world: { id: 'divisor-isles', content }` in the lesson's PACK (`lesson.pack.js`, `LESSON_V2.md` §1), beside
-  `studentView: 'mission'` in its config. Removing the key ends the trial.
-- Mount: `LessonIndex.jsx` renders the world instead of `MissionHome` when the mission view is on (student, not Classroom Mode).
+- Switch: `world: { id: 'divisor-isles', content }` in the lesson's PACK (`lesson.pack.js`, `LESSON_V2.md` §1). The config
+  has no `studentView` / `mission` any more (deleted with the old version, 2026-11-18).
+- Mount: `LessonIndex.jsx` renders the world for a STUDENT (not a teacher, not Classroom Mode) of any lesson whose pack
+  names a world, and for the teacher's preview (`?apercu=eleve`).
   `gameworld/LessonGameWorld.jsx` loads the WORLD (its `WORLDS` map: one entry per world, never per lesson) and the
   lesson's content (its pack) together, lazily — three.js never enters the entry bundle. A world names no lesson.
-- **The mission player is not deleted.** `?view=classic` on the lesson URL opens it (a link on the title screen), and the module
-  routes (`/astaidd`, `/itqan`, …) still play there. A device without WebGL gets a message and that link.
+- **The old version is deleted (owner, 2026-11-18).** A v2 lesson has no mission player, no module page and no
+  `?view=classic`: its module addresses (`/astaidd`, `/itqan`, …) redirect to the home, which is the world
+  (`buildLessonRoutes › retiredModules`, `LESSON_V2.md` §2). A device without WebGL gets a message and the way out
+  (`exitTo`). Trace: `docs/reports/OLD_VERSION_TRACE_2026-11-18.md`.
 
 ## 2. The mathematical idea of the world
 
@@ -703,7 +706,8 @@ eleven screens. What is NOT extracted, and why:
   `Game.js` names no island by its number and no key any more. STILL the pilot's inside the world: its story DATA
   (`logic.js › ISLANDS, SEGMENTS, DASH_WAVES, STATUES`) and its story WORDS (`strings.js`: the robot's sentences, the
   stone's question, the store, the tablets) — a second lesson gives its own and overrides them;
-- **the title screen still links to the classic mission player** (`classicHref`): decision D3 retires it per lesson.
+- ~~the title screen still links to the classic mission player (`classicHref`)~~ — gone 2026-11-18 with the old version
+  of the three v2 lessons (decision D3).
 A lesson declares its content in ONE `lesson.pack.js` (`LESSON_V2.md` §1, 2026-11-17); what its world is played with is
 `world/index.js`, named there (`world.content`). The world receives it as the `lesson` prop.
 
@@ -757,7 +761,8 @@ Until that day the game wrote no learning evidence; it now does, on strict terms
 
 `node apps/web/e2e/gameworld-divisor-isles.mjs [outDir]` (dev server up) plays the whole game as a simulated student — every bridge,
 the storm, the guardians, the dash, the workshop, the last bridge, the ending — then checks that a reload offers the save, that
-`?view=classic` shows the mission player and that a TEACHER never gets the world. It fails on a missed stage or a page error.
+a module address and `?view=classic` both land on the world (the old version is deleted) and that a TEACHER never gets
+the world. It fails on a missed stage or a page error.
 `node apps/web/e2e/gameworld-field.mjs [outDir]` plays every mission of the depot (wrong crate packed and explained, the classic
 truck mistake, a lost day) and reads the knowledge page card by card (13 cards, a mistake uncovered, a rule sealed, the locks of a
 student without keys, full page without scrolling) and trains on five cards without leaving the page (the order of the formats,
@@ -797,8 +802,7 @@ for mobile; for the others display the message »):
 - the lesson's HOME — the student's game world, the teacher's card;
 - for the teacher, **« المذكّرة الكاملة » and « ملفّ الدرس »** (to read and to note, anywhere) and « جرّب الدرس كتلميذ ».
 
-Everything else keeps the message « محتوى الدروس يظهر فقط في شاشة الحاسوب »: a module page, the classic player
-(`?view=classic`), « حصّة القسم », the bank, the tracking, the knowledge card. **On the teacher's card and in the common
+Everything else keeps the message « محتوى الدروس يظهر فقط في شاشة الحاسوب »: « حصّة القسم », the bank, the tracking, the knowledge card. **On the teacher's card and in the common
 header those tools are shown closed — a dashed line and the badge « على الحاسوب » — never a link that leads to the
 message** (`Door › closed`, `PHONE_TOOL_IDS`). A lesson enters the list when these pages have been looked at on a phone.
 
