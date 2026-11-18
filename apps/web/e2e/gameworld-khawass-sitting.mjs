@@ -15,7 +15,7 @@ const NB = '\u00a0/\u00a0';
 const w = createWalk('gameworld-khawass-sitting', {
   foreign: QAWASIM_WORDS,
   foreignNumbers: QAWASIM_NUMBERS,
-  fontFloor: 1300,
+  fontFloor: true,
 });
 const { expect, check, shot } = w;
 const SHEET_OUT = { exit: ['[data-xs-quit]', '[data-xs-close]'] };

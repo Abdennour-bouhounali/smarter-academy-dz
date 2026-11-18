@@ -15,7 +15,7 @@ import { createWalk, lessonUrl, QAWASIM_WORDS, QAWASIM_NUMBERS } from './lib/wal
 
 const ID = 'khawass-qawasim';
 const URL = lessonUrl('ansab_al_aadad_wal_hisab', ID);
-const w = createWalk('gameworld-khawass', { foreign: QAWASIM_WORDS, foreignNumbers: QAWASIM_NUMBERS, fontFloor: 1300 });
+const w = createWalk('gameworld-khawass', { foreign: QAWASIM_WORDS, foreignNumbers: QAWASIM_NUMBERS, fontFloor: true });
 const { expect, check } = w;
 /** The way out of any screen of the world: the top bar's ✕, the forge's own ✕, the ✕ drawn over a dialog. */
 const OUT = { exit: ['[data-di-exit]', '.di-top a.di-icon'], numbers: true };

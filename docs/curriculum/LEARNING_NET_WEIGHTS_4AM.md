@@ -9,7 +9,7 @@ order a launch (« عُدّة الانطلاق ») would measure it: at most fou
 - **core** — a student cannot pass the exercises of the lesson while failing this one. It can be NAMED as the cause of a difficulty, and a success on the lesson lets us deduce it « looks solid ».
 - **support** — it helps, explains or serves a proof, but the lesson can be passed without it. The reason is written. Nothing is deduced through it.
 
-Classified links: **122** (85 core, 37 support). Classified grades: 4am.
+Classified links: **123** (86 core, 37 support). Classified grades: 4am.
 
 **To correct a line**, tell me the lesson and the الكفاءة: « in jidhr-tarbii, Pythagoras is core ».
 
@@ -27,12 +27,14 @@ Classified links: **122** (85 core, 37 support). Classified grades: 4am.
 | # | Weight | Earlier الكفاءة | Its lesson | Why (support only) |
 |---|---|---|---|---|
 | 1 | **core** | التعرّف على قاسم لعدد طبيعي. (`4am.m1.r01`) | التعرّف على قاسم لعدد طبيعي — السنة الرابعة متوسط |  |
+| 2 | **core** | تعيين حاصل وباقي القسمة الإقليدية لعدد على عدد غير معدوم. (`2am.m1.r04`) | القسمة الإقليدية وحصر حاصل القسمة — السنة الثانية متوسط |  |
 
 ### خواص قواسم عدد طبيعي — `khawass-qawasim`
 
 | # | Weight | Earlier الكفاءة | Its lesson | Why (support only) |
 |---|---|---|---|---|
 | 1 | **core** | التعرّف على قاسم لعدد طبيعي. (`4am.m1.r01`) | التعرّف على قاسم لعدد طبيعي — السنة الرابعة متوسط |  |
+| 2 | **core** | تعيين حاصل وباقي القسمة الإقليدية لعدد على عدد غير معدوم. (`2am.m1.r04`) | القسمة الإقليدية وحصر حاصل القسمة — السنة الثانية متوسط |  |
 
 ### القاسم المشترك الأكبر لعددين طبيعيين — `qasim-mushtarak-akbar`
 

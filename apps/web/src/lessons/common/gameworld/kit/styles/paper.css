@@ -110,7 +110,7 @@
   height: 1.25rem;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.2);
-  font-size: 0.72rem;
+  font-size: max(var(--di-min-font, 12px), 0.72rem);
 }
 .di-method li.is-now {
   opacity: 1;
@@ -147,7 +147,7 @@
 .di-pmodel__sheet small,
 .di-pmodel__talk small {
   display: block;
-  font-size: 0.74rem;
+  font-size: max(var(--di-min-font, 12px), 0.74rem);
   font-weight: 800;
   color: #64748b;
   margin-bottom: 0.2rem;

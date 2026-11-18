@@ -11,6 +11,7 @@ import {
   STATUES,
   isDivisor,
 } from './logic';
+import { explain, waveSay } from './strings';
 
 describe('أرخبيل القواسم — logic', () => {
   it('divides: a = b × q + r with r < b', () => {
@@ -78,5 +79,20 @@ describe('أرخبيل القواسم — logic', () => {
     expect(checkDivision(756, 32, 24, 0)).toBe('long'); // 24 planks of 32 = 768 cells: longer than the gap
     expect(checkDivision(756, 36, 21, 0)).toBe('ok');
     expect(STATUES.big).toBe(STATUES.small * STATUES.q);
+  });
+});
+
+describe('أرخبيل القواسم — a practice wave the lesson wrote itself', () => {
+  it('a type this world does not know speaks its own `say` and its own guidance `why`', () => {
+    const w = {
+      type: 'lessonOwn',
+      say: 'عدد يقسم $21 + 35$',
+      why: { right: '7 يقسم 21 و 35', wrong: { 3: '3 لا يقسم 56', 5: '5 لا يقسم 56' } },
+      gates: [3, 7, 5],
+      good: 1,
+    };
+    expect(waveSay(w)).toBe('عدد يقسم $21 + 35$');
+    expect(explain(w, 5)).toEqual({ wrong: '5 لا يقسم 56', right: '7 يقسم 21 و 35' });
+    expect(explain({ type: 'lessonOwn', say: 'x', gates: [1, 2, 3], good: 0 }, 2)).toEqual({ wrong: '', right: '' });
   });
 });

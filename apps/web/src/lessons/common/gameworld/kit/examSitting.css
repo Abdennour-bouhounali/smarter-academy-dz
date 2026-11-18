@@ -161,8 +161,9 @@
 .xs-ex h3 i,
 .xs-ex li i {
   font-style: normal;
+  /* the sheet is zoomed to fit (×0.7 at 1024×768): 1.2rem still reads 12 px there */
   font:
-    700 0.95rem 'Cairo',
+    700 1.2rem 'Cairo',
     sans-serif;
   color: #4b5563;
 }
@@ -236,7 +237,7 @@
 }
 .xs-box small {
   font:
-    600 0.7rem 'Cairo',
+    600 max(var(--di-min-font, 12px), 0.7rem) 'Cairo',
     sans-serif;
   color: #6b7280;
   white-space: nowrap;

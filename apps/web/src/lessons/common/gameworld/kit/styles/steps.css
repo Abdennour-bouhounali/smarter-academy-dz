@@ -79,7 +79,7 @@
   width: 100%;
 }
 .di-hist small {
-  font-size: 0.74rem;
+  font-size: max(var(--di-min-font, 12px), 0.74rem);
   font-weight: 700;
   opacity: 0.8;
 }

@@ -12,12 +12,13 @@
 //   cut         no text of the game is cut by the edge of the window (except inside a box that slides on a phone);
 //   rawLatex    no `$` and no backslash command readable on screen outside a drawn formula (`.katex`);
 //   formulas    every drawn formula reads left to right (KaTeX's atoms in order) and keeps ONE line;
-//   fontFloor   on a phone, no visible text under 12 px (computed size × every CSS zoom above it);
+//   fontFloor   no visible text under 12 px (computed size × every CSS zoom above it): on a phone, and at every size for a
+//               walk created with `fontFloor: true` (the knowledge map's labels, scaled to its panel, stay exempt);
 //   wayOut      a way out (the selectors given) is on screen and nothing covers it; `sound: true` asks the sound button too;
 //   foreign     no word of ANOTHER lesson (`FOREIGN`), no « نقطة التعلّم », money only in « دج ».
 //
 // createWalk(name, { foreign, foreignNumbers, fontFloor }) — per walk: more words and numbers of other lessons than the
-// pilot's (a later lesson adds the lessons before it), and `fontFloor: true` to apply the 12 px floor at EVERY size (or a number: from that width — the kit still has 10.5–11.5 px text at 1024).
+// pilot's (a later lesson adds the lessons before it), and `fontFloor: true` to apply the 12 px floor at EVERY size (or a number: from that width only). The kit holds 12 px at every size since 2026-11-18 (GAME_WORLD.md « 12 px floor »).
 import { chromium } from 'playwright';
 import { GL_ARGS } from './gpu.mjs';
 import { mkdirSync } from 'node:fs';

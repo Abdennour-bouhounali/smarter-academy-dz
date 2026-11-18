@@ -250,8 +250,8 @@ describe('poids des liens — core / support', () => {
       if (link.weight === 'core') expect(link.weightNote).toBeUndefined();
     }
     const into4 = LINKS.filter((k) => gradeOf(k.to) === '4am');
-    expect(into4.length).toBe(119);
-    expect(into4.filter((k) => k.weight === 'core').length).toBe(83);
+    expect(into4.length).toBe(120);
+    expect(into4.filter((k) => k.weight === 'core').length).toBe(84); // + 2am.m1.r04 → 4am.m1.r02 (2026-11-18)
   });
 
   it('donne à chaque كفاءة d’une année classée au moins un prérequis « core »', () => {
@@ -267,6 +267,11 @@ describe('poids des liens — core / support', () => {
     expect(toolsForLesson('qasim-adad-tabii').map((t) => [t.id, t.weight, t.lesson.code])).toEqual([
       ['1am.m3.r01', 'core', 'qisma-iqlidiya-baqi'], ['1am.m3.r02', 'support', 'qawaid-qabiliyat-qisma'],
     ]);
+    // « قواسم عدد طبيعي » and « خواص قواسم » share 4am.m1.r02: the divisor (4AM) first, then the Euclidean division (2AM)
+    for (const code of ['qawasim-adad-tabii', 'khawass-qawasim'])
+      expect(toolsForLesson(code).map((t) => [t.id, t.weight, t.lesson.code])).toEqual([
+        ['4am.m1.r01', 'core', 'qasim-adad-tabii'], ['2am.m1.r04', 'core', 'qisma-iqlidiya-hasr'],
+      ]);
     expect(toolsForLesson('jidaa-maadum').map((t) => [t.id, t.weight])).toEqual([['4am.m3.r02', 'core'], ['3am.m5.r06', 'core']]);
     const sections = toolsForLesson('maqati-mustawiya'); // six prérequis : les quatre « core » passent, les deux « support » restent dehors
     expect(sections).toHaveLength(4); expect(sections.every((t) => t.weight === 'core')).toBe(true);

@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **369** liens (328 requires, 31 extends, 10 consolidates) · **140** leçons publiées · **130** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **370** liens (329 requires, 31 extends, 10 consolidates) · **140** leçons publiées · **130** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -84,6 +84,7 @@ flowchart LR
   n_1am_m3_r01 --> n_4am_m1_r01
   n_1am_m3_r02 ==>|يمدّد| n_4am_m1_r01
   n_4am_m1_r01 --> n_4am_m1_r02
+  n_2am_m1_r04 --> n_4am_m1_r02
   n_4am_m1_r02 --> n_4am_m1_r03
   n_2am_m1_r04 --> n_4am_m1_r03
   n_4am_m1_r03 --> n_4am_m1_r04
@@ -1067,7 +1068,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | item | المورد المعرفي (نص البرنامج) | leçon d’accueil | repart de |
 |---|---|---|---|
 | `4am.m1.r01` | التعرّف على قاسم لعدد طبيعي. | `qasim-adad-tabii` | `1am.m3.r01`، يمدّد `1am.m3.r02` |
-| `4am.m1.r02` | تعيين مجموعة قواسم عدد طبيعي. | `qawasim-adad-tabii` | `4am.m1.r01` |
+| `4am.m1.r02` | تعيين مجموعة قواسم عدد طبيعي. | `qawasim-adad-tabii` | `4am.m1.r01`، `2am.m1.r04` |
 | `4am.m1.r03` | تعيين القاسم المشترك الأكبر لعددين. | `qasim-mushtarak-akbar` | `4am.m1.r02`، `2am.m1.r04` |
 | `4am.m1.r04` | التعرّف على عددين أوليين فيما بينهما. | `awwaliyan-fima-baynahuma` | `4am.m1.r03` |
 | `4am.m1.r05` | كتابة كسر على الشكل غير القابل للاختزال. | `ikhtizal-kasr` | `4am.m1.r03`، `4am.m1.r04`، يمدّد `1am.m5.r02` |

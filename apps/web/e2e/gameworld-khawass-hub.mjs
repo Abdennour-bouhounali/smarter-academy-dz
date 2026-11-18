@@ -10,11 +10,21 @@ import { TEXT } from '../src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-ta
 const ID = 'khawass-qawasim';
 const URL = lessonUrl('ansab_al_aadad_wal_hisab', ID);
 const KEYS = ['jam-wal-farq', 'madaaf', 'baqi-qisma', 'burhan'];
-const WAVE_TYPES = ['missing', 'divides', 'multipleOf', 'divisibleBy', 'remainder'];
+const WAVE_TYPES = [
+  'missing',
+  'divides',
+  'multipleOf',
+  'divisibleBy',
+  'remainder',
+  'dividesSum',
+  'dividesDiff',
+  'commonDivisor',
+  'dividesRest',
+];
 const w = createWalk('gameworld-khawass-hub', {
   foreign: QAWASIM_WORDS,
   foreignNumbers: QAWASIM_NUMBERS,
-  fontFloor: 1300,
+  fontFloor: true,
 });
 const { expect, check, shot, ff } = w;
 const TOP = { exit: ['.di-top a.di-icon', '[data-di-exit]'], sound: true };
@@ -51,6 +61,10 @@ const right = (x, n) =>
     multipleOf: () => n >= 1 && n % x.b === 0,
     divisibleBy: () => n >= 1 && n % x.b === 0,
     remainder: () => n === x.a % x.b,
+    dividesSum: () => n >= 1 && (x.a + x.b) % n === 0,
+    dividesDiff: () => n >= 1 && (x.a - x.b) % n === 0,
+    commonDivisor: () => n >= 1 && x.a % n === 0 && x.b % n === 0,
+    dividesRest: () => n >= 1 && x.r % n === 0,
   })[x.type]?.();
 /** Moves the board to `lane` with the arrow buttons of the screen, one tap at a time. */
 const toLane = async (page, lane) => {

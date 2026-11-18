@@ -9,6 +9,10 @@
   color: #0f172a;
   font-family: 'Cairo', 'Tajawal', system-ui, sans-serif;
 }
+/* the 12 px floor at every size (GAME_WORLD.md « 12 px floor »): a <small> with no size of its own never goes under it */
+:where(.cs-root) small {
+  font-size: max(var(--di-min-font, 12px), 0.833em);
+}
 .cs-root *,
 .cs-root *::before {
   box-sizing: border-box;
@@ -1256,7 +1260,7 @@
   font-size: 0.92rem;
 }
 .cs-root--narrow .cs-mini button {
-  font-size: 0.68rem;
+  font-size: max(var(--di-min-font, 12px), 0.68rem);
   padding: 0;
   letter-spacing: -0.01em;
 }
@@ -3116,7 +3120,7 @@
 }
 .cs-root--narrow .cs-tool {
   min-width: 3.4rem;
-  font-size: 0.7rem;
+  font-size: max(var(--di-min-font, 12px), 0.7rem);
 }
 .cs-root--narrow .cs-dock {
   gap: 0.3rem;

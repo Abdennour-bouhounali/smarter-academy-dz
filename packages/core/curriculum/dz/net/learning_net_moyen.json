@@ -1657,6 +1657,12 @@
       "weight": "core"
     },
     {
+      "from": "2am.m1.r04",
+      "to": "4am.m1.r02",
+      "type": "requires",
+      "weight": "core"
+    },
+    {
       "from": "4am.m1.r02",
       "to": "4am.m1.r03",
       "type": "requires",

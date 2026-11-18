@@ -250,9 +250,9 @@ const shot = async (name, wait = 450) => {
     }
     return { tiny: [...new Set(tiny)], covered: [...new Set(covered)], exit };
   });
-  // the 12 px floor is checked from 1300 px wide: the kit's toolbar labels are 11.5 px at 1024 (phones are paused)
+  // the 12 px floor holds at every size (GAME_WORLD.md « 12 px floor »; phones are paused)
   check(
-    SIZE[0] < 1300 || soft.tiny.length === 0,
+    soft.tiny.length === 0,
     `${name}: no text under 12 px${soft.tiny.length ? ' — ' + soft.tiny.slice(0, 6).join(' | ') : ''}`,
   );
   check(

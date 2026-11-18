@@ -80,7 +80,7 @@ lazy: the lesson runtime (`kit/ReviewLinks.jsx`, static import) or a dynamic `im
 | `extends` | same notion further up the spiral: `to` **starts from** `from` and teaches only the added value | `addedValueAr` | the no-rebuild rule (§4), review links |
 | `consolidates` | the programme repeats `from`: `to` recalls and consolidates it (الإرساء), **never rebuilds it** | `noteAr` | the no-rebuild rule, review links |
 
-Counts on 2026-11-17: 328 `requires`, 31 `extends`, 10 `consolidates` (312 / 31 / 10 on 2026-10-13). Links are meant to be
+Counts on 2026-11-18: 329 `requires`, 31 `extends`, 10 `consolidates` (328 on 2026-11-17; 312 / 31 / 10 on 2026-10-13). Links are meant to be
 **direct**: an item lists the step just below it, never the whole staircase. This is a writing rule, not a tested one: 36
 links join two items that another path already joins (audit of 2026-11-17). Most are true direct needs (the Euclidean division
 is needed by « قاسم » itself, not only through the divisibility rules), so no automatic rule removes them.
@@ -176,7 +176,7 @@ link may carry a weight, whatever its type:
 
 - **Classified year by year.** `WEIGHTED_GRADES` (`['4am']` today) lists the grades whose incoming links are ALL classified —
   the links into their items, and into the items of another year that their lessons teach (the recall lesson `muadala-ula`
-  → `3am.m5.r06`). On 2026-11-17: **122 links classified, 85 core and 37 support**; the 1AM–3AM links are classified when
+  → `3am.m5.r06`). On 2026-11-18: **123 links classified, 86 core and 37 support** (122 / 85 on 2026-11-17); the 1AM–3AM links are classified when
   their lessons get a launch. An unclassified link counts as core in `toolsForLesson` (a grade not yet classified loses no tool).
 - **Every الكفاءة of a classified grade keeps at least one core prerequisite** (tested): otherwise nothing could be named as a
   cause.
@@ -186,6 +186,11 @@ link may carry a weight, whatever its type:
   a first-degree equation (`3am.m5.r06 → 4am.m3.r04`, core); twelve supports (the identities after the expansion, the linear
   and affine functions after the equation, the affine function from two points after the system, the trigonometric ratios
   after Thales, the sections and the enlargement after Thales and the sphere…).
+- **One more on 2026-11-18: `2am.m1.r04 → 4am.m1.r02`, core** (Euclidean division by any number → the set of divisors).
+  Listing the divisors of a number is dividing it and reading the remainder, and the third property of « خواص قواسم » (a
+  common divisor of $a$ and $b$ divides the remainder of $a$ by $b$) cannot be used without it. The 2AM item, not the 1AM
+  `1am.m3.r01`: it already `extends` the 1AM one (one direct step, §2.2). Since `qawasim-adad-tabii` and `khawass-qawasim`
+  share `4am.m1.r02`, both launches now measure two core tools (`LAUNCH_KIT.md` §4).
 
 ## 3. Navigation — what the resolver gives
 

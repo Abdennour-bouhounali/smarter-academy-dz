@@ -120,7 +120,7 @@
 }
 .di-rungs em {
   font-style: normal;
-  font-size: 0.72rem;
+  font-size: max(var(--di-min-font, 12px), 0.72rem);
   font-weight: 700;
   color: #b45309;
   text-align: center;

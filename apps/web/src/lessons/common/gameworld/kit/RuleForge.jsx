@@ -275,7 +275,8 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
       data-rf-tries={tries}
       data-rf-nudges={nudges}
     >
-      <div className="rf-fit" style={{ zoom: z }}>
+      {/* --di-min-font: the 12 px floor in the units of this zoom (GAME_WORLD.md « 12 px floor »): 15 px drawn at 0.8 */}
+      <div className="rf-fit" style={{ zoom: z, '--di-min-font': `${Math.ceil(1200 / z) / 100}px` }}>
         <header className="rf-head">
           <div className="rf-brand">
             <i>🪞</i>

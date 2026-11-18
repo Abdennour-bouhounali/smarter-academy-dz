@@ -139,6 +139,13 @@ at the depot. The summary node « 🏆 تحدّي الامتحان »: one mixed
 - **A run**: 6 gates, 3 shields, stars = shields left, points with a streak bonus. Questions are GENERATED (`makeRun`, nine
   kinds; `isRight` is the one definition used to build, judge and test). A wrong gate STOPS the run on a card — the chosen number
   with the division that proves it, the right one with its own — and a question of the same kind is added.
+- **A wave the lesson writes itself** (2026-11-18): the world's `strings.js` writes the sentence and the guidance of the types it
+  knows (`missing`, `divides`, `multipleOf`, `remainder`…). A lesson whose rule needs another sentence gives the wave a type of
+  ITS OWN (judged by its own `isRight`) and carries the words as data: `say` (the sentence, `$…$` for maths, LaTeX with two
+  backslashes) and `why: { right, wrong: { [gate]: line } }` (one line per wrong gate). `waveSay` and `explain` fall back to
+  them for any type they do not know. Reference: `khawass-qawasim/world/practice.js` (« عدد يقسم $21 + 35$ », « قاسم مشترك
+  للعددين 21 و 35 », « عدد يقسم باقي قسمة 42 على 12 »: the right gate is the common divisor, the wrong ones divide only one
+  of the numbers).
 - **The rule is never far**: « القاعدة » during any run or case (it pauses), « ذكّرني بالقاعدة » on every guidance card, and the rule
   shown by itself after two mistakes. It is always the rule the CURRENT question uses.
 - **الكفاءات**: a run of the gate dash writes no evidence; see §4 for what does.
@@ -380,6 +387,13 @@ and the island's mirror judges it with bridges** (screen `kit/RuleForge.jsx`, fr
   question, the attack, the last step and the rule applied to a case with it.
 - **On a phone** the forge does not zoom itself (one scale): it has a compact layout in `kit/ruleForge.css`, and its list
   and its panel slide inside themselves.
+- **12 px floor at every size** (2026-11-18 — not a phone-only rule): no visible text of the kit, the forge or the class
+  board is under 12 px ON THE SCREEN (computed size × every CSS zoom). A small label is written
+  `max(var(--di-min-font, 12px), <its size>)`; a frame that zooms itself below 1 sets `--di-min-font` to 12 px in its
+  own units (the forge: `RuleForge › rf-fit`, 15 px at the 0.8 of 1024×768); a `<small>` with no size of its own is
+  floored by `:where(.di-root) small` / `:where(.cs-root) small`. Exempt: the labels of the knowledge map (`.di-kmap`,
+  placed in % and scaled with its panel) and what `Fit` shrinks to make a too-tall card fit. The walks check it with
+  `fontFloor: true` (`e2e/lib/walk.mjs`).
 - NOT done: the class board (`LessonBoard`) forges only the first rule with the class; the three others are still asked
   and proved there. How a rule was found is kept in the browser only.
 

@@ -115,13 +115,16 @@ Families on 2026-11-17 (the two prerequisites of the pilot lesson, then the pilo
 |---|---|---|---|---|
 | `1am.m3.r01` | القسمة الإقليدية | write « 47 = 6 × ▢ + ▢ »; place the greatest multiple not beyond the number | write with a two-digit divisor; sort three equalities (is it THE Euclidean division?) | `paper` |
 | `1am.m3.r02` | قواعد قابلية القسمة | sort by 2, by 5 | sort by 3, by 9, by 4 — with numbers chosen to trap the wrong rule | `rules` |
+| `2am.m1.r04` | القسمة الإقليدية على أيّ عدد (2AM, 2026-11-18) | write « 47 = 13 × ▢ + ▢ » (a two-digit divisor, quotient ≤ 5; the first one ≤ 29); place the greatest multiple of 11–15 on the 0–60 line | write a three-digit number by 12–25 (a two-digit quotient, remainder 0 possible); sort three equalities where « $9 = 14 \times 0 + 9$ » must be ACCEPTED (`miss` `quotient-zero`) beside the traps of the remainder. Its worked example estimates the quotient by tens first | `paper` |
 | `4am.m1.r01` | قاسم عدد طبيعي | write « 42 = 6 × ▢ » (the equality that shows a divisor); sort three numbers: divisor of 36 or not — a multiple of it is a trap | sort three sentences « صحيحة / خاطئة » (« قاسم », « مضاعف », « يقبل القسمة »: true, turned round, or with a remainder); sort numbers where 1 or the number itself appears | `rows` |
 
-Lesson 3 « خواص قواسم عدد طبيعي » (`khawass-qawasim`, 2026-11-18) needs NO new family: its programme item is the same as
-lesson 2's (`4am.m1.r02`), so the net gives it the same single core tool, `4am.m1.r01` (`launchkit.test.js` checks it, and
-that every core link has a family). **Not in the net**: the Euclidean division, which its third property (the remainder)
-uses — no link `1am.m3.r01` / `2am.m1.r04` → `4am.m1.r02` exists, and adding one would change lesson 2's launch as well
-(they share the item). That is a learning-net decision (`LEARNING_NET.md`), not taken here.
+Lessons 2 « قواسم عدد طبيعي » and 3 « خواص قواسم عدد طبيعي » (`qawasim-adad-tabii`, `khawass-qawasim`) share their
+programme item `4am.m1.r02`, so the net gives them the same tools. Since 2026-11-18 there are TWO, both core: `4am.m1.r01`
+(the lesson before), then `2am.m1.r04` (the Euclidean division by any number — lesson 3's third property, a common divisor
+divides the remainder, uses it; link added in the net, `LEARNING_NET.md` §2.2bis). `launchkit.test.js` checks both lists and
+that every core link has a family. The `2am.m1.r04` family also gives the three PGCD lessons the core tool they had no family
+for. **Re-walked 2026-11-18**: `launch-kit-qawasim.mjs` and `launch-kit-khawass.mjs` (rewritten for the two tools, one shared
+scenario, `e2e/lib/launchKitTwoTools.mjs`) pass at 1366×768, 1024×768 and 1840×900 (§7).
 
 **A lesson with no family for its tools opens an EMPTY kit** (« عُدّتك جاهزة », 0 / 0 — seen by the owner on lesson 2,
 2026-11-17): a family per core tool is part of a lesson's definition of done (`status:lesson-v2`, part S1).
@@ -144,21 +147,29 @@ Phase 1 is a prototype to judge the feel. **Not built** (plan, phases 2–4):
 - the gate (§3bis) lives in the browser like the rest: a teacher does not see who needed a capsule;
 - no picture of a الكفاءة with its sources (measured / deduced), no window of earlier الكفاءات, no automatic update from a
   later success, no « prerequisite or new idea? » diagnosis, no class grid;
-- three families: a lesson whose tools have none has no launch.
+- four families: a lesson whose tools have none has no launch.
 
 ## 7. Check
 
-- Unit: `npx vitest run src/lessons/common/launchkit` in `apps/web` (20 tests: families true and in range, the tools of lessons 2 and 3 read from the net, named mistakes,
+- Unit: `npx vitest run src/lessons/common/launchkit` in `apps/web` (21 tests: families true and in range — the 2AM division with its own ranges —, the tools of lessons 2 and 3 read from the net, named mistakes,
   the engine — never one answer, the workshop, the caps, the fresh tools, the gate and its capsule, the honesty star — and
   the sounds).
 - Walk: `node apps/web/e2e/launch-kit.mjs [outDir]` (dev server up; also `E2E_SIZE=1024x768` and `1840x900`): 56 checks — the
   first « ابدأ », the three gestures with real taps and drags, the two verdicts, the workshop, the kit, the lab opened on the
   instrument, a tool re-checked, the take-off, « played once », a student who misses everything: the gate, the four steps of
   the capsule, the door open after two missed answers, then the earlier lesson and the return. At every screenshot nothing scrolls and nothing leaves its panel; the walk also listens to the sounds played.
-- Walk of lesson 2's launch: `node apps/web/e2e/launch-kit-qawasim.mjs [outDir]` — 30 checks, three students (one who
-  knows: two answers and take-off; one who slips on the sentences: the workshop; one who misses everything: the capsule on
-  the instrument `rows`, then the door open). It adds to the layout rules: a sentence stays in its card on two lines at
-  most, a placed card stays in its box, the boxes never lie under the buttons of the question.
+- Walks of lessons 2 and 3's launch: `node apps/web/e2e/launch-kit-qawasim.mjs [outDir]` and `launch-kit-khawass.mjs` —
+  ONE scenario for both (`e2e/lib/launchKitTwoTools.mjs`; the two lessons have the same two core tools), rewritten for the
+  two tools on 2026-11-18 and **passing at the three sizes** (one run of the khawass walk at 1840×900 died on a 30 s page load of the second student and passed on the re-run). Four students: one who knows (four answers — A's equality and sentences, B's
+  equality and its three-digit one —, 4 / 4, take-off); one who slips (A's sentences, B's first equality: B's flag, both
+  « تحتاج تثبيتًا », the workshop on A, the tool NOT repaired named first to revise, 2 / 4); one who misses everything
+  (0 / 4, ONE capsule — A's, on `rows` —, the door open, B left « نبدأ منها » without a second lock); one who misses only B
+  (B's workshop on the flag, B's capsule on `paper` answered right: « أُصلحت الآن », 3 / 4, take-off). Answers are computed
+  from the numbers on screen. It adds to the layout rules: a sentence stays in its card on two lines at most, a placed card
+  stays in its box, the boxes never lie under the buttons of the question; and soft checks on every screen (no raw formula,
+  no text under 12 px, the ✕ reachable, and for lesson 3 no word of lesson 2). B's level-2 sort (« 9 = 14 × 0 + 9 ») is
+  not reachable in a launch today — at level 2 the station asks « write » first (`pickForm`) and the workshop repeats the
+  missed form — so no walk plays it (the same holds for the 1AM division's sort); the walk prints a `note` line about it.
 - The older game-world walks seed the launch as already played (`u_<id>_smarter_launch_kit`).
 - **On a phone held sideways** (`E2E_TOUCH=1 E2E_SIZE=800x370`: 55 checks; rules in `GAME_WORLD.md` « On a phone »): the bag
   is compact, a capsule's body slides inside itself, and « الدرس كاملًا » of an earlier lesson is a link only when that

@@ -436,9 +436,10 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
   9. [x] LESSON 3 `khawass-qawasim` (خواص قواسم عدد طبيعي) — DONE 2026-11-18, report `LESSON_3_GATE_REPORT.md` (the
      owner's validation and the retirement of the old modules remain). It prints ✅ on `status:lesson-v2`; its six walks
      pass at 1366×768, 1024×768 and 1840×900. Its four keys are FORGED on four NEW investigation kinds added to the kit
-     (`join`, `stack`, `peel`, `letters`: `GAME_WORLD.md` « The eight kinds »). Open, for the owner: Euclidean division
-     is no prerequisite in the net; the proof key gives no evidence; the dash's sentence types; the 10.5–11.5 px text the
-     kit still has at 1024×768 (shared with lessons 1–2).
+     (`join`, `stack`, `peel`, `letters`: `GAME_WORLD.md` « The eight kinds »). Open, for the owner: the proof key gives no evidence; the dash's sentence types; the 10.5–11.5 px text the
+     kit still has at 1024×768 (shared with lessons 1–2). Done 2026-11-18: the Euclidean division (`2am.m1.r04`) is a core
+     prerequisite of `4am.m1.r02` in the net, so lessons 2 and 3 launch with two tools (its family added); their launch
+     walks must be updated and re-run.
 
 ## 4ter. When each item of 4bis is done
 

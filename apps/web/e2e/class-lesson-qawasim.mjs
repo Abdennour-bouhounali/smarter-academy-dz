@@ -60,12 +60,12 @@ const shot = async (name, wait = 450) => {
   if (bad.length) { n += 1; await page.screenshot({ path: `${OUT}/${String(n).padStart(2, '0')}-FAIL-${name}.png` }); console.log('FAIL at «', name, '»:', bad.join(' | ')); process.exitCode = 1; throw new Error(`layout at ${name}`); }
   n += 1; await page.screenshot({ path: `${OUT}/${String(n).padStart(2, '0')}-${name}.png` });
 };
-const api = () => page.evaluate(() => window.__api);
-const hour = () => page.evaluate(() => window.__classHour);
-const board = () => page.evaluate(() => ({ step: window.__classLesson.step.id, memo: window.__classLesson.memo, speaker: window.__classLesson.speaker }));
+const _api = () => page.evaluate(() => window.__api);
+const _hour = () => page.evaluate(() => window.__classHour);
+const _board = () => page.evaluate(() => ({ step: window.__classLesson.step.id, memo: window.__classLesson.memo, speaker: window.__classLesson.speaker }));
 const attr = (sel, a) => page.getAttribute(sel, a);
 const text = async (sel) => ((await page.textContent(sel)) ?? '').trim();
-const px = (sel) => page.evaluate((s) => { const el = document.querySelector(s); const z = Number(document.querySelector('.cs-fit').style.zoom || 1); return el ? Math.round(parseFloat(getComputedStyle(el).fontSize) * z) : 0; }, sel);
+const _px = (sel) => page.evaluate((s) => { const el = document.querySelector(s); const z = Number(document.querySelector('.cs-fit').style.zoom || 1); return el ? Math.round(parseFloat(getComputedStyle(el).fontSize) * z) : 0; }, sel);
 const next = () => page.click('[data-cs-lesson-next]');
 const stepIs = async (id) => { await page.waitForSelector(`[data-cs-lesson-step="${id}"]`); };
 

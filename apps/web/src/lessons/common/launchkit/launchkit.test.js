@@ -80,6 +80,7 @@ describe('عُدّة الانطلاق — the question families', () => {
 
   it('keeps the numbers of each level where they belong', () => {
     each((f, level, form, q, seed) => {
+      if (f.item === '2am.m1.r04') return; // the 2AM division has its own ranges (a two-digit divisor), checked below
       if (q.gesture === 'write' && level === 1) {
         expect(q.b).toBeLessThanOrEqual(9);
         expect(Math.floor(q.a / q.b)).toBeLessThanOrEqual(9);
@@ -144,6 +145,63 @@ describe('عُدّة الانطلاق — the question families', () => {
       }
   });
 
+  it('« القسمة الإقليدية على أيّ عدد » (2AM): a two-digit divisor, a quotient of two digits at level 2, the quotient 0 accepted', () => {
+    const item = '2am.m1.r04';
+    const seen = new Set();
+    each((f, level, form, q, seed) => {
+      if (f.item !== item) return;
+      if (q.gesture === 'write') {
+        expect(q.b).toBeGreaterThanOrEqual(10);
+        expect(q.b).toBeLessThanOrEqual(25);
+        expect(withRest(q)).toBe(true);
+        if (level === 1) expect(Math.floor(q.a / q.b)).toBeLessThanOrEqual(5);
+        if (level === 1 && seed % 5 === 0) expect(q.a).toBeLessThanOrEqual(29); // the very first question: a near-certain win
+        if (level === 2) {
+          expect(Math.floor(q.a / q.b)).toBeGreaterThanOrEqual(10);
+          expect(q.a).toBeLessThan(1000);
+        }
+      }
+      if (q.gesture === 'place') {
+        expect(q.b).toBeGreaterThanOrEqual(11);
+        expect(q.a).toBeLessThan(q.max);
+        expect(q.target).toBe(q.b * Math.floor(q.a / q.b));
+        expect(q.a % q.b).toBeGreaterThan(0);
+      }
+    });
+    // the sort, also on spread seeds (the first draw of a small seed is near 0 and always picks the first shape)
+    for (let seed = 1; seed <= 200; seed += 1) {
+      const q = makeQuestion(rng(seed * 104729 + 17), item, 2, 'sort');
+      expect(new Set(q.cards.map((c) => c.text)).size).toBe(3);
+      expect(q.cards.some((c) => c.bin === 'yes') && q.cards.some((c) => c.bin === 'no')).toBe(true);
+      for (const c of q.cards) {
+        const m = c.text.match(/^\$(\d+) = (\d+) \\times (\d+) ([+-]) (\d+)\$$/);
+        expect(Number(m[2]), c.text).toBeGreaterThanOrEqual(12);
+        expect(c.bin, c.text).toBe(accepts(q, c) ? 'yes' : 'no');
+        if (m[3] === '0') {
+          expect(c.miss).toBe('quotient-zero');
+          expect(grade(q, { ...right(q), [c.id]: 'no' })).toEqual({ correct: false, mistake: 'quotient-zero' });
+        }
+        if (c.trap) seen.add(c.trap);
+        if (c.miss) seen.add(c.miss);
+      }
+    }
+    expect([...seen].sort()).toEqual(['equality-false', 'quotient-zero', 'rest-negative', 'rest-too-big']);
+    for (let seed = 1; seed <= 80; seed += 1)
+      for (const level of [1, 2])
+        for (const mistake of [null, 'quotient-zero', 'rest-too-big']) {
+          const e = FAMILIES[item].example(rng(seed), level, { mistake });
+          const [a, b] = e.title.match(/\d+/g).map(Number);
+          const m = e.steps.at(-1).match(/\$(\d+) = (\d+) \\times (\d+) \+ (\d+)\$/);
+          expect([Number(m[1]), Number(m[2])]).toEqual([a, b]);
+          expect(Number(m[3])).toBe(Math.floor(a / b));
+          expect(Number(m[4])).toBe(a % b);
+          if (mistake === 'quotient-zero') expect(Number(m[3])).toBe(0);
+          if (level === 2 && !mistake) expect(e.steps).toHaveLength(4); // the quotient estimated by tens first
+          expect(e.steps.join(' ')).not.toMatch(/undefined|NaN/);
+        }
+    expect(MISTAKES['quotient-zero']).toBeTruthy();
+  });
+
   it('« التعرّف على قاسم »: its questions, its traps and its worked example say the truth', () => {
     const item = '4am.m1.r01';
     const seen = new Set();
@@ -199,15 +257,21 @@ describe('عُدّة الانطلاق — the question families', () => {
     for (const m of FAMILIES[item].mistakes) expect(MISTAKES[m], m).toBeTruthy();
   });
 
-  it('takes the tool of « قواسم عدد طبيعي » from the learning net: the الكفاءة of the lesson before it', () => {
+  it('takes the tools of « قواسم عدد طبيعي » from the learning net: the الكفاءة of the lesson before it, then the 2AM division', () => {
     const tools = planTools(toolsForLesson('qawasim-adad-tabii'), (id) => Boolean(familyFor(id)));
-    expect(tools.map((t) => [t.item, t.lesson.code, t.weight])).toEqual([['4am.m1.r01', 'qasim-adad-tabii', 'core']]);
+    expect(tools.map((t) => [t.item, t.lesson.code, t.weight])).toEqual([
+      ['4am.m1.r01', 'qasim-adad-tabii', 'core'],
+      ['2am.m1.r04', 'qisma-iqlidiya-hasr', 'core'], // the Euclidean division (2AM), core since 2026-11-18
+    ]);
   });
 
-  it('takes the tool of « خواص قواسم عدد طبيعي » from the learning net: the same core الكفاءة, which has its family', () => {
+  it('takes the tools of « خواص قواسم عدد طبيعي » from the learning net: the same two core الكفاءات, each with its family', () => {
     const links = toolsForLesson('khawass-qawasim');
     const tools = planTools(links, (id) => Boolean(familyFor(id)));
-    expect(tools.map((t) => [t.item, t.lesson.code, t.weight])).toEqual([['4am.m1.r01', 'qasim-adad-tabii', 'core']]);
+    expect(tools.map((t) => [t.item, t.lesson.code, t.weight])).toEqual([
+      ['4am.m1.r01', 'qasim-adad-tabii', 'core'],
+      ['2am.m1.r04', 'qisma-iqlidiya-hasr', 'core'], // its third property (a common divisor divides the remainder) needs it
+    ]);
     // every CORE link of the net has a family: the launch of lesson 3 is never an empty kit (LAUNCH_KIT.md §4)
     for (const t of links.filter((l) => l.weight !== 'support')) expect(familyFor(t.id), t.id).toBeTruthy();
   });

@@ -55,11 +55,11 @@ walk, and fixed what they found.
 7. The title screen's key hints were 11.5 px: a 12 px floor in the kit (`world.css`).
 8. Walk faults, found by running them: a `$` of the lesson counted as raw by the walk's own regex; reading numbers from KaTeX
    annotations (`\displaystyle`); a 30-second wait on an element that does not exist for a right answer; no-break spaces
-   lost in a constant. The walks' 12 px floor was applied at every size by the agent; the owner's rule is a PHONE rule
-   (paused), so it now applies from 1300 px wide. **At 1024×768 the kit still has text of 10.5–11.5 px** (the stepper numbers
-   of the investigation, the mirror's small labels, the board's toolbar labels), shared with lessons 1 and 2; not repaired.
-   The knowledge map's labels are exempt on purpose (the kit scales the map to its panel). That exemption also reaches the
-   phone check of lesson 2's walks, which share `lib/walk.mjs`.
+   lost in a constant. **The 12 px floor, first applied only from 1300 px, now holds at EVERY size** (follow-up the same
+   day): the kit's small text (step numbers, the mirror's `rf-says` and log, the sheet's field labels, the board's
+   toolbar, the paper's points label) was raised to 12 px, with the zoom of the frame it sits in counted (the rule forge
+   is drawn at ×0.8 at 1024×768). Exempt, on purpose: the knowledge map (the kit scales it to its panel). Text that a
+   `Fit` frame shrinks dynamically cannot be floored by CSS.
 
 ## Copied from lesson 2, on purpose
 
@@ -71,11 +71,16 @@ numbers, a width for the font floor), the class test's shape. A shared helper fo
 - **The old modules and `?view=classic` are still there** (the owner's decision, open).
 - **The proof key (P4) produces no evidence.** A proof written with letters cannot be re-checked from numbers, and the claim
   kinds have none for it (`claims.js`, the server's `ClaimVerifier.php` and their fixture would change).
-- **The practice dash uses only the sentence types of `divisorIsles/strings.js`**: it cannot say « عدد يقسم 21 + 35 ».
+- ~~**The practice dash uses only the sentence types of `divisorIsles/strings.js`**~~ — **DONE 2026-11-18**: a wave may carry its own sentence and help (`why`); the lesson's ladder asks « عدد يقسم a + b », « a − b », « قاسم مشترك للعددين », « عدد يقسم باقي القسمة ».
 - **The last bridge's store still has the student divide 1015** after the « without dividing » choice; the « without
   dividing » idea lives in the stone's question.
-- **Euclidean division is not a prerequisite of this lesson in the learning net** although its third key uses it: adding a
-  link also changes lesson 2's launch (`LEARNING_NET.md`, then `generate:learning-net`). The owner's decision.
+- ~~**Euclidean division is not a prerequisite of this lesson in the learning net**~~ — **DONE 2026-11-18**: the link
+  `2am.m1.r04 → 4am.m1.r02` (`requires`, weight **core**) was added to `learning_net_moyen.json` (the 2AM item, not the
+  1AM one: the 2AM item already extends it and divides by any number), the maps and the weights table regenerated. Lessons 2
+  AND 3 (they share `4am.m1.r02`) now have TWO core tools in their launch: `4am.m1.r01` then `2am.m1.r04`, which got its
+  question family in `launchkit/families.js` (« القسمة الإقليدية على أيّ عدد », instrument `paper`) — it also serves the
+  three PGCD lessons, where it was already core but had no family. **To re-run**: the launch walks of lessons 2 and 3
+  (`launch-kit-qawasim.mjs`, `launch-kit-khawass.mjs`) were written for ONE tool (one slot in the bag, scores 2/2, 0/2).
 - **The sitting's exercises are generated** (in the bank's shapes, answers computed by code); the 50 exercises of the old
   bank are not read by it.
 - The `stack` ask on the board draws 600 planks of 3 in one bar: it reads as stripes (seen at 1366×768), not as planks.

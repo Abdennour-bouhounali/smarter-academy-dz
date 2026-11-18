@@ -338,7 +338,7 @@
   background: rgba(255, 255, 255, 0.06);
 }
 .di-parts small {
-  font-size: 0.74rem;
+  font-size: max(var(--di-min-font, 12px), 0.74rem);
   font-weight: 800;
   opacity: 0.85;
 }
@@ -371,7 +371,7 @@
   background: rgba(255, 255, 255, 0.06);
 }
 .di-memo dt {
-  font-size: 0.74rem;
+  font-size: max(var(--di-min-font, 12px), 0.74rem);
   font-weight: 800;
   color: #7dfcff;
 }

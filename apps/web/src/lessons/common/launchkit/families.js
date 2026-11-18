@@ -12,7 +12,8 @@
  *
  * Adding a family = one entry in FAMILIES keyed by the item id of the net, with tests in launchkit.test.js (every generated
  * question is re-computed there). Phase 1 (2026-11-17): the two prerequisites of « التعرّف على قاسم لعدد طبيعي », then
- * « التعرّف على قاسم » itself, which the next lesson stands on.
+ * « التعرّف على قاسم » itself, which the next lesson stands on; 2026-11-18: the 2AM Euclidean division (any divisor), the
+ * second core tool of « قواسم عدد طبيعي » and « خواص قواسم » and a core tool of the PGCD lessons.
  * A sort card is a number or an equality (`text`), or a SENTENCE in Arabic (`say: true`, drawn right-to-left, smaller).
  * A card the student must ACCEPT may name the mistake of refusing it (`miss`), as a `trap` names the mistake of accepting.
  */
@@ -51,6 +52,7 @@ export const MISTAKES = {
   'multiple-for-divisor': 'انتبه: لا تخلط بين القاسم والمضاعف — قاسم العدد لا يتجاوزه.',
   'sentence-reversed': 'انتبه: ترتيب العددين مهمّ — نقول « 6 قاسم للعدد 42 » و « 42 مضاعف للعدد 6 ».',
   'one-and-itself': 'انتبه: العدد 1 والعدد نفسه قاسمان دائمًا.',
+  'quotient-zero': 'انتبه: إذا كان العدد أصغر من المقسوم عليه، فالحاصل 0 والباقي هو العدد نفسه.',
 };
 
 // ───────────────────────── 1am.m3.r01 — القسمة الإقليدية ─────────────────────────
@@ -243,6 +245,118 @@ function rulesExample(rand, level, { k: asked } = {}) {
       `أجمع أرقام ${n}: $${sumText(n)} = ${s}$.`,
       `هل ${s} من مضاعفات ${k}؟ ${s % k === 0 ? 'نعم' : 'لا'}.`,
       verdict,
+    ],
+  };
+}
+
+// ───────────────────────── 2am.m1.r04 — القسمة الإقليدية على أيّ عدد غير معدوم ─────────────────────────
+// What 2AM adds to the 1AM division (the net's `extends`): the divisor is ANY number — two digits here, a quotient of two
+// digits at level 2 — and the remainder keeps 0 ≤ r < b, a number smaller than the divisor included (quotient 0).
+function anyWrite(rand, level, first) {
+  const [b, q, r] = (() => {
+    if (level === 2) {
+      const d = int(rand, 12, 25);
+      return [d, int(rand, 10, 25), int(rand, 0, d - 1)];
+    }
+    if (first) return [int(rand, 10, 12), 2, int(rand, 1, 5)];
+    const d = int(rand, 11, 19);
+    return [d, int(rand, 2, 5), int(rand, 1, d - 1)];
+  })();
+  const a = b * q + r;
+  return { gesture: 'write', a, b, prompt: `أكمل القسمة الإقليدية للعدد ${a} على ${b}.`, tokens: divisionTokens(a, b) };
+}
+
+/** The flag on the greatest multiple of a two-digit divisor — the line stays the 0–60 one, so the quotient is small. */
+function anyPlace(rand) {
+  const b = int(rand, 11, 15);
+  const q = int(rand, 2, Math.floor(57 / b));
+  const r = int(rand, 1, Math.min(b - 1, 59 - b * q));
+  const a = b * q + r;
+  return {
+    gesture: 'place',
+    a,
+    b,
+    max: 60,
+    target: b * q,
+    prompt: `العدد ${a} مثبَّت على المستقيم. اسحب الراية إلى أكبر مضاعف للعدد ${b} لا يتجاوز ${a}.`,
+  };
+}
+
+/** Three equalities with a two-digit divisor; a number SMALLER than the divisor (quotient 0) must be accepted. */
+function anySort(rand) {
+  const make = (kind, id) => {
+    const b = int(rand, 12, 25);
+    const q = int(rand, 3, 9);
+    const r = int(rand, 2, b - 2);
+    const a = b * q + r;
+    const card = (text, bin, trap = null, miss = null) => ({ id, text, bin, trap, miss });
+    if (kind === 'small') {
+      const s = int(rand, 2, b - 1);
+      return card(`$${s} = ${b} \\times 0 + ${s}$`, 'yes', null, 'quotient-zero');
+    }
+    if (kind === 'exact') return card(`$${b * q} = ${b} \\times ${q} + 0$`, 'yes');
+    if (kind === 'ok') return card(`$${a} = ${b} \\times ${q} + ${r}$`, 'yes');
+    if (kind === 'big') return card(`$${a} = ${b} \\times ${q - 1} + ${r + b}$`, 'no', 'rest-too-big');
+    if (kind === 'neg') return card(`$${a} = ${b} \\times ${q + 1} - ${b - r}$`, 'no', 'rest-negative');
+    return card(`$${a} = ${b} \\times ${q} + ${r + 1}$`, 'no', 'equality-false');
+  };
+  const kinds = shuffle(
+    rand,
+    pick(rand, [
+      ['ok', 'big', 'small'],
+      ['small', 'neg', 'false'],
+      ['ok', 'big', 'neg'],
+      ['exact', 'big', 'small'],
+      ['small', 'big', 'ok'],
+    ]),
+  );
+  const cards = [];
+  for (const kind of kinds) {
+    let c = make(kind, `c${cards.length + 1}`);
+    for (let i = 0; i < 20 && cards.some((o) => o.text === c.text); i += 1) c = make(kind, c.id);
+    cards.push(c);
+  }
+  return {
+    gesture: 'sort',
+    prompt: 'في كلّ مساواة، العدد الأوّل في الجداء هو المقسوم عليه. أرسل كلّ مساواة إلى صندوقها.',
+    bins: [
+      { id: 'yes', label: 'قسمة إقليدية' },
+      { id: 'no', label: 'ليست قسمة إقليدية' },
+    ],
+    cards,
+  };
+}
+
+/** The worked example: the quotient estimated by tens (level 2), then the greatest multiple; or the quotient 0 when that was missed. */
+function anyExample(rand, level, { mistake = null } = {}) {
+  if (mistake === 'quotient-zero') {
+    const b = int(rand, 12, 25);
+    const a = int(rand, 2, b - 1);
+    return {
+      title: `القسمة الإقليدية للعدد ${a} على ${b}`,
+      steps: [
+        `العدد ${a} أصغر من المقسوم عليه ${b}: لا يحتوي ${a} على ${b} ولا مرّة واحدة.`,
+        `إذن الحاصل 0، والباقي هو ${a} نفسه، وهو أصغر من ${b}.`,
+        `أكتب: $${a} = ${b} \\times 0 + ${a}$.`,
+      ],
+    };
+  }
+  const b = level === 1 ? int(rand, 11, 19) : int(rand, 12, 25);
+  const q = level === 1 ? int(rand, 2, 6) : int(rand, 11, 29);
+  const r = int(rand, 1, b - 1);
+  const a = b * q + r;
+  const t = Math.floor(q / 10) * 10;
+  return {
+    title: `القسمة الإقليدية للعدد ${a} على ${b}`,
+    steps: [
+      ...(level === 2
+        ? [
+            `أقدّر الحاصل بالعشرات: $${b} \\times ${t} = ${b * t}$ و $${b} \\times ${t + 10} = ${b * (t + 10)}$، إذن الحاصل بين ${t} و ${t + 10}.`,
+          ]
+        : []),
+      `أبحث عن أكبر مضاعف للعدد ${b} لا يتجاوز ${a}: $${b} \\times ${q} = ${b * q}$ (و $${b} \\times ${q + 1} = ${b * (q + 1)}$ أكبر من ${a}).`,
+      `أحسب ما يبقى: $${a} - ${b * q} = ${r}$، و ${r} أصغر من ${b}.`,
+      `أكتب: $${a} = ${b} \\times ${q} + ${r}$.`,
     ],
   };
 }
@@ -503,6 +617,40 @@ export const FAMILIES = {
       'القسمة الإقليدية للعدد $a$ على $b$ تعطي حاصلًا $q$ وباقيًا $r$: $a = b \\times q + r$.',
       'الباقي $r$ دائمًا أصغر من المقسوم عليه $b$.',
       'مثال: $47 = 6 \\times 7 + 5$، و $5 < 6$.',
+    ],
+  },
+  '2am.m1.r04': {
+    item: '2am.m1.r04',
+    lesson: 'qisma-iqlidiya-hasr',
+    name: 'القسمة الإقليدية على أيّ عدد',
+    icon: '🧮',
+    labTool: 'paper',
+    mistakes: ['rest-too-big', 'quotient-zero', 'swapped'],
+    forms: { 1: ['write', 'place'], 2: ['write', 'sort'] },
+    make: (rand, level, form, { first = false } = {}) =>
+      form === 'place' ? anyPlace(rand) : form === 'sort' ? anySort(rand) : anyWrite(rand, level, first),
+    example: anyExample,
+    rules: [
+      {
+        id: 'any-divisor',
+        title: 'القسمة على أيّ عدد غير معدوم',
+        text: 'لكلّ عدد طبيعي $a$ وعدد طبيعي غير معدوم $b$، مهما كان عدد أرقامه، حاصل $q$ وباقٍ $r$: $a = b \\times q + r$ مع $0 \\le r < b$',
+        example: '$347 = 23 \\times 15 + 2$: الحاصل 15 والباقي 2، و $2 < 23$.',
+        check: { a: 347, b: 23, q: 15, r: 2 },
+      },
+      {
+        id: 'smaller',
+        title: 'عدد أصغر من المقسوم عليه',
+        text: 'إذا كان $a < b$ فإنّ $a = b \\times 0 + a$: الحاصل 0 والباقي $a$ نفسه.',
+        example: '$9 = 14 \\times 0 + 9$: الحاصل 0 والباقي 9.',
+        check: { a: 9, b: 14, q: 0, r: 9 },
+      },
+    ],
+    memo: [
+      'قسمة $a$ على أيّ عدد غير معدوم $b$: $a = b \\times q + r$ مع $0 \\le r < b$.',
+      'أقدّر الحاصل بالعشرات أوّلًا: $23 \\times 10 = 230$ و $23 \\times 20 = 460$، إذن حاصل قسمة 347 على 23 بين 10 و 20.',
+      'إذا كان $a < b$: الحاصل 0 والباقي $a$.',
+      'مثال: $347 = 23 \\times 15 + 2$، و $2 < 23$.',
     ],
   },
   '1am.m3.r02': {

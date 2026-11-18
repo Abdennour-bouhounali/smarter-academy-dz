@@ -16,7 +16,10 @@ const cells = (r) =>
 
 const div = (a, b) => ({ q: Math.floor(a / b), r: a % b });
 
-/** The sentence of a practice wave (shown big above the rail). `$…$` is maths. */
+/**
+ * The sentence of a practice wave (shown big above the rail). `$…$` is maths. A wave of a type this world does not know
+ * is one the lesson wrote itself: its own `say` (and its own guidance `why`, read by `explain`).
+ */
 export function waveSay(w) {
   switch (w.type) {
     case 'divisorOf':
@@ -136,7 +139,9 @@ export function explain(w, n) {
       };
     }
     default:
-      return { wrong: '', right: '' };
+      // a wave the lesson WROTE itself (a type this world does not know): it carries its sentence `say` and its guidance
+      // `why: { right, wrong: { [gate]: line } }` — data, one line per wrong gate
+      return w.why ? { wrong: w.why.wrong?.[n] ?? '', right: w.why.right ?? '' } : { wrong: '', right: '' };
   }
 }
 
