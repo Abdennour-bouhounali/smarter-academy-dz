@@ -289,7 +289,7 @@ walks of the game world seed the launch as already played.
    **A full screen that covers the top bar draws its two buttons again** (owner, 2026-11-17: « add also the quit button
    and the sound on off in these kind of views »): the rule forge shows, at the end of its header and in every phase,
    the sound button and the ✕ — `kit/parts.jsx › SoundToggle` and `ExitLink`, the SAME components the top bar and the
-   dialogs use (one button, one stored choice `smarter_world_sound`). A new full screen of a world does the same.
+   dialogs use (one button, one stored choice `smarter_world_sound`). A new full screen of a world does the same. The knowledge page and « تقدّمي » carry it too (2026-11-18). ONE exception: the exam sitting (`kit/ExamSitting.jsx`) is silent by design (« صامت » in its header), so it has no sound button.
    **Checked** in lesson 2's walk: the ✕ is over the dialog and a click reaches it; the payment step closes and reopens;
    in the forge (while he writes his rule, and on the chart) the ✕ and the sound button are on screen, uncovered, beside
    the steps, and the sound is turned off and on from there.

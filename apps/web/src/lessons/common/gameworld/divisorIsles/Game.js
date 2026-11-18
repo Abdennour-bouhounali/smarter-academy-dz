@@ -1629,7 +1629,8 @@ export class DivisorIslesGame extends WorldRuntime {
   }
 
   /** « ذكّرني بالقاعدة »: the tablet of the rule the current question uses — from the HUD of a run, or from the guidance. */
-  showRule(key) {
+  /** `from` — the hub's own place ({ sel, space }): closing the tablet comes back to the same node. */
+  showRule(key, from) {
     const d = this.dash;
     const c = this.caseRun;
     this.markHelped();
@@ -1638,7 +1639,17 @@ export class DivisorIslesGame extends WorldRuntime {
     this.audio.play('ui');
     this.set({
       phase: d || c ? 'dialog' : this.state.phase,
-      overlay: { type: 'rule', key: k, back: c ? 'case' : d ? 'run' : this.state.overlay },
+      overlay: {
+        type: 'rule',
+        key: k,
+        back: c
+          ? 'case'
+          : d
+            ? 'run'
+            : from && this.state.overlay
+              ? { ...this.state.overlay, ...from }
+              : this.state.overlay,
+      },
     });
   }
 

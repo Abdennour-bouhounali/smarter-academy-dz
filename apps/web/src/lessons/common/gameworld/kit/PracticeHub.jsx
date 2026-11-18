@@ -176,7 +176,7 @@ export default function PracticeHub({ s, game, sel: selFrom, space0 }) {
                   <div className="di-map__rule">
                     <M>{meta.math[0]}</M>
                     <p>{meta.notes[0]}</p>
-                    <button type="button" className="di-link" onClick={() => game.showRule(node.id)}>
+                    <button type="button" className="di-link" onClick={() => game.showRule(node.id, { sel, space })}>
                       <Lightbulb size={15} /> {KT.map.rule}
                     </button>
                   </div>

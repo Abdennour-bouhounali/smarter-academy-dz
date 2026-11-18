@@ -24,6 +24,7 @@ import {
 import Fit, { cardRoom } from './Fit';
 import { examLevelOpen } from './journey';
 import { useLesson } from './LessonContext';
+import { SoundToggle } from './parts';
 import { TX } from './text';
 
 const fmt = (n) => String(n).replace('.', ',');
@@ -216,6 +217,7 @@ export function ProgressPage({ s, game, mastery = null, lessonId, lessonTitle })
             <h2>{P.title}</h2>
             <p>{lessonTitle}</p>
           </div>
+          <SoundToggle game={game} />
           <button
             type="button"
             className="di-icon"

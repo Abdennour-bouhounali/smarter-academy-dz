@@ -259,6 +259,11 @@
   color: #fff;
   border: 0;
 }
+.di-btn.di-sheet__check,
+.di-btn.di-sheet__check:hover {
+  background: #1e293b;
+  transition: opacity 0.15s;
+}
 .di-sheet__check:disabled {
   opacity: 0.4;
   cursor: not-allowed;

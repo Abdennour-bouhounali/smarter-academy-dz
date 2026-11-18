@@ -216,6 +216,8 @@ function Quiz({ o, game }) {
 
 /** After a wrong gate the run stops: why the chosen number does not fit, why the right one does — and the rule when lost. */
 function Guide({ o, game }) {
+  const { rules } = useLesson();
+  const rule = rules[o.wave.key];
   const g = explain(o.wave, o.picked);
   const right = o.wave.gates[o.wave.good];
   return (
@@ -249,12 +251,12 @@ function Guide({ o, game }) {
           <p className="di-card__eyebrow">{KT.practice.lost}</p>
           <div className="di-map__rule">
             <strong>
-              {T.tablets[o.wave.key].icon} {T.tablets[o.wave.key].title}
+              {rule.icon} {rule.title}
             </strong>
             <p>
-              <MathText>{T.tablets[o.wave.key].lines[0]}</MathText>
+              <MathText>{rule.lines[0]}</MathText>
             </p>
-            <M>{T.tablets[o.wave.key].math[0]}</M>
+            <M>{rule.math[0]}</M>
           </div>
         </div>
       )}
@@ -517,7 +519,7 @@ function DepotHud({ d, eq, game, paused }) {
 
 /** After a wrong step of a case: what the answer PRODUCED (never the answer), the rule when lost, and « try again ». */
 function CaseGuide({ o, game }) {
-  const t = T.tablets[o.key];
+  const t = useLesson().rules[o.key];
   return (
     <Card wide>
       <p className="di-card__eyebrow">{TX.depot.guide}</p>

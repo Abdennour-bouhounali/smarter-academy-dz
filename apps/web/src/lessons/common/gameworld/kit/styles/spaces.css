@@ -307,9 +307,14 @@
   gap: 0.4rem;
   flex-wrap: wrap;
 }
+.di-ptable__row > span:first-child {
+  flex-wrap: nowrap;
+  min-width: 0;
+}
 .di-ptable__row i {
   font-style: normal;
   font-size: 1.6rem;
+  flex: none;
 }
 .di-ptable__row strong {
   font-size: 1.1rem;

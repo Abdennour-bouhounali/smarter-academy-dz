@@ -29,6 +29,7 @@ import {
 import MathText from '../../components/MathText';
 import Trainer from './Trainer';
 import Fit from './Fit';
+import { SoundToggle } from './parts';
 import { useLesson } from './LessonContext';
 import { TX } from './text';
 
@@ -159,6 +160,7 @@ export default function KnowledgePage({ s, game, sel }) {
           <button type="button" className="di-btn di-btn--map" onClick={() => game.openMap()} data-di-know-hub>
             <Gamepad2 size={17} /> {TX.hub.open}
           </button>
+          <SoundToggle game={game} />
           <button
             type="button"
             className="di-icon"

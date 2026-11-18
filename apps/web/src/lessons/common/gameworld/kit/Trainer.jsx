@@ -339,7 +339,9 @@ function Question({ q, index, locked, onSubmit, onModel }) {
     if (!exam)
       return (
         <div className="di-tap">
-          <p className="di-tap__say di-tap__say--quote">«{q.statement}»</p>
+          <p className="di-tap__say di-tap__say--quote">
+            <MathText>{`«${q.statement}»`}</MathText>
+          </p>
           {tf}
         </div>
       );
@@ -348,7 +350,9 @@ function Question({ q, index, locked, onSubmit, onModel }) {
         <p className="di-sheet__q">
           <b>{L.question(index + 1)}</b> صحيح أم خطأ؟ علّل.
         </p>
-        <p className="di-sheet__statement">«{q.statement}»</p>
+        <p className="di-sheet__statement">
+          <MathText>{`«${q.statement}»`}</MathText>
+        </p>
         <PaperGate tip={PT.tipWrite}>
           {tf}
           <div className="di-sheet__reasons">
