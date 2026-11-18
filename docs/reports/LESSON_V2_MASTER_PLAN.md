@@ -325,7 +325,7 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
   7. [x] The root `CLAUDE.md` is cut from 479 lines (56.7 KB) to 298 (19.5 KB): a map of what binds every task, with
      the documentation rule and the images rules kept word for word — DONE 2026-11-17. The file as it was is kept
      whole: `docs/reports/CLAUDE_MD_BEFORE_CUT_2026-11-17.md`.
-  8. [~] THE GATE — lesson 2 `qawasim-adad-tabii`, rebuilt with the kit only. STATE on 2026-11-17, late:
+  8. [x] THE GATE — lesson 2 `qawasim-adad-tabii`, rebuilt with the kit only — DONE 2026-11-18 (the owner's validation and the retirement of the old modules remain; report `LESSON_2_GATE_REPORT.md`). STATE on 2026-11-17, late:
      - **THE STUDENT'S WORLD PLAYS**, measured: `apps/web/e2e/gameworld-qawasim.mjs` (52 checks: the story from the
        title to the last bridge, its four forges each with a false rule refuted and a last step typed wrong then right,
        the workshop, the dash, the stone) passes at 1366×768, 1024×768, 1840×900 and on a phone held sideways
@@ -352,8 +352,14 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
        number; the walk `class-lesson-qawasim.mjs` passes at the three sizes and the pilot's `class-lesson.mjs` still
        passes. Also found: the walks' « formulas read left to right » check matched NO atom of a `\displaystyle`
        formula (so it could never fail) — fixed in `e2e/lib/walk.mjs`. The gate's `phone` line is paused, not failed.
-       STILL TO DO for lesson 2: (5) the screenshots of every screen looked at (done for the board's hard screens,
-       the progress screen and the memo's first page); (6) the old modules; (7) the gate's report; the phone debt below.
+       DONE since, 2026-11-18 (third part of the same day): (5) the screenshots looked at — student and teacher, the
+       list is in the report; (6) « published locally » read from the database (lesson `available`, 8 modules and 50
+       exercises `published`, for both lessons); (7) the gate's report: `LESSON_2_GATE_REPORT.md` (real time from git,
+       lines written, what was copied from the pilot, one load-sensitive flake of the world walk). The pilot's eight
+       walks were re-run after the kit was touched and pass. STILL OPEN, for the OWNER: the old modules and
+       `?view=classic` of BOTH lessons (D3 says « goes when the kit does », the contract keeps the modules because the
+       reports read them — A4, not traced page by page: deleting is his decision) and his validation of lesson 2; the
+       phone debt below.
        MEASURED after the formula check was repaired: the board walk (12 screens) and the hub, sitting and trainer walks
        (199 / 142 / 421 checks) pass at 1366×768, 1024×768 and 1840×900.
      - **Older state, 2026-11-17 (kept for the history): NOT DONE — lesson 2 is not finished:** (1) the trainer, the sittings and the practice hub of lesson 2 were
