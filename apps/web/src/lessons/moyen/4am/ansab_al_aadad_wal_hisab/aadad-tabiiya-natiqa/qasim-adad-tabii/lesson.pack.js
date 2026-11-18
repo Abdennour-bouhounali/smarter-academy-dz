@@ -6,8 +6,9 @@
  */
 export const LESSON_PACK = {
   id: 'qasim-adad-tabii',
-  // its home was designed and walked on a phone held sideways (GAME_WORLD.md « On a phone »)
-  phone: true,
+  // PAUSED (owner, 2026-11-18): phones are not built for now — the lesson is for the laptop and the tablet.
+  // Its home was walked on a phone held sideways before the pause (GAME_WORLD.md « On a phone »); set `true` when phones resume.
+  phone: false,
   // the student's game world: the WORLD (a mechanic of `gameworld/`) played with this lesson's content
   world: { id: 'divisor-isles', content: () => import('./world').then((m) => m.lesson) },
   // the lesson's knowledge sheets — « بطاقة المعارف » on the board, the rule the exam coach reminds

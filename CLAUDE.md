@@ -41,7 +41,7 @@ Every lesson is being rebuilt like the pilot `qasim-adad-tabii` — FROM SCRATCH
   « استكشف »: he tries, predicts, claims, and the world answers with facts), starting from what he has just done; a help
   never narrows to a choice between written rules. `GAME_WORLD.md` « استكشف »; reference: `qawasim-adad-tabii`.
 - A lesson is done when `npm run status:lesson-v2 -- --lesson <id>` prints ✅ AND its tests, its walks at 1366×768,
-  1024×768, 1840×900 and on a phone held sideways pass AND its screenshots were looked at with the eyes.
+  1024×768 and 1840×900 pass AND its screenshots were looked at with the eyes.
 - Contracts: `LESSON_V2.md` (the pack, the folder, the definition of done), `GAME_WORLD.md` (the kit, a world, the
   forge, the phone rules), `LAUNCH_KIT.md`, `LESSON_LAB.md`, `CLASS_SESSION.md`.
 
@@ -105,6 +105,7 @@ onboarding `LabCoach`, the questions over the lab after each step, one screen, a
 
 **Screens and writing**
 
+- **PHONES ARE PAUSED (owner, 2026-11-18): lessons are built for the laptop and the tablet only; every pack says `phone: false`, the phone walk is not part of « done ». The phone rules below are kept for when phones resume (known phone debt of `qawasim-adad-tabii`: `docs/reports/LESSON_V2_MASTER_PLAN.md` §4ter-0 step 8).**
 - **Laptop first, then tablet, then phone.** Lessons are behind `components/auth/RequireLargeScreen.jsx`; a phone opens
   only the HOME of a lesson whose pack says `phone: true` (its world, played sideways) and the pages listed as
   exceptions: `/books`, the parent pages (`/w/:token`, `/wali/*`, `/himaya`), the game space. The teacher's side is not

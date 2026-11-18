@@ -337,7 +337,8 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
        answer; a full-mark paper earns every point; every claim sent is re-computed true) — commit `f4040bd0`;
        `status:lesson-v2` printed 13 of 15 parts (missing: the launch-kit family, the board) — 14 of 15 since the
        family below (missing: the board).
-     - **NOT DONE — lesson 2 is not finished:** (1) the trainer, the sittings and the practice hub of lesson 2 were
+     - **PHONE PAUSED (owner, 2026-11-18)**: `phone: false` in both packs; not part of « done ». PHONE DEBT of lesson 2, measured 2026-11-18 at 800×370 touch with the three new walks (`gameworld-qawasim-hub/-sitting/-trainer`): text under the 12 px floor on the map (`.di-map__edge` 9.4 px), progress, trainer tabs, sitting (`.xs-quiet`, `.xs-tip`, answer-sheet `small`); the trainer leaves the screen on pairs / show / rule questions; « تحقّق » covered on pairs questions 5–6; the title screen's door labels cut at the bottom edge. The same three walks PASS at 1366×768, 1024×768, 1840×900 (199 / 142 / 421 checks).
+- **NOT DONE — lesson 2 is not finished:** (1) the trainer, the sittings and the practice hub of lesson 2 were
        NEVER opened in a browser (unit-tested only); (2) the practice hub, « تدرّب », an exam sitting and
        « تقدّمي » walked for lesson 2; (3) `board/script.js`, `board/memo.js` and `board` in the pack — the teacher
        still gets the OLD lesson page; ~~(4) a launch-kit family for `4am.m1.r01`~~ **DONE 2026-11-17** (the owner

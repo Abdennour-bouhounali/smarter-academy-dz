@@ -165,7 +165,7 @@ npm run status:lesson-v2 -- --lesson <id>     # one lesson, part by part; exit 1
 | S1 the launch kit | every CORE tool of the learning net for the lesson has a family in `launchkit/families.js` |
 | T1–T3 the board | `pack.board`, `board/script.js`, `board/memo.js` |
 | T2 the class test | `content/class-tests/<grade>/<id>.json` |
-| the phone | `pack.phone` (set only after its home was designed and walked on a phone) |
+| the phone | **PAUSED (owner, 2026-11-18)**: `pack.phone` stays `false`; not part of « done ». Set only after its home was designed and walked on a phone, when phones resume |
 | a walk | a walk of `apps/web/e2e/` that names the lesson and plays its world |
 | published | status `available` in the catalogue |
 
@@ -174,7 +174,7 @@ npm run status:lesson-v2 -- --lesson <id>     # one lesson, part by part; exit 1
 1. the status script prints ✅ for it;
 2. its unit tests pass — in particular `world/forges.test.js`: for every forge exactly one rule holds and every other is
    refuted in front of the student;
-3. its walk passes at 1366×768, 1024×768 and 1840×900, and on a phone held sideways (`E2E_TOUCH=1 E2E_SIZE=800x370`);
+3. its walk passes at 1366×768, 1024×768 and 1840×900 (**the phone walk, `E2E_TOUCH=1 E2E_SIZE=800x370`, is PAUSED since 2026-11-18** — phones are built later, see `GAME_WORLD.md` « On a phone »);
 4. its screenshots were looked at with the eyes, student and teacher;
 5. `check:lessons`, the entry budget, lint, `check:unused`, `check:unreached` and `check:format` pass;
 6. what it replaced is deleted in the same change; its docs are updated; it is committed `feat(lessons): <id> — v2`.

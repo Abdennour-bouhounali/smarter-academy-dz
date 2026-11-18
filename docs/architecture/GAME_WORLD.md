@@ -657,7 +657,7 @@ between the camera and the robot ducks down, and a sign too close to the lens hi
   named there may slide inside themselves. **Still not judged by a human on a real device**: touch comfort, the stick,
   the sound, a notch, a browser bar that hides and shows.
 
-## On a phone (TRIAL, owner 2026-11-16 — pilot lesson only)
+## On a phone (TRIAL, owner 2026-11-16 — pilot lesson only; **PAUSED 2026-11-18**: both packs say `phone: false`, nothing new is built or walked for phones until the owner resumes it)
 
 **What opens.** Lessons are closed on phones (`RequireLargeScreen`). For a lesson listed in
 `components/auth/phoneLessons.js › PHONE_LESSONS` a phone opens exactly (owner: « allow only the pages that are designed
