@@ -338,7 +338,25 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
        `status:lesson-v2` printed 13 of 15 parts (missing: the launch-kit family, the board) — 14 of 15 since the
        family below (missing: the board).
      - **PHONE PAUSED (owner, 2026-11-18)**: `phone: false` in both packs; not part of « done ». PHONE DEBT of lesson 2, measured 2026-11-18 at 800×370 touch with the three new walks (`gameworld-qawasim-hub/-sitting/-trainer`): text under the 12 px floor on the map (`.di-map__edge` 9.4 px), progress, trainer tabs, sitting (`.xs-quiet`, `.xs-tip`, answer-sheet `small`); the trainer leaves the screen on pairs / show / rule questions; « تحقّق » covered on pairs questions 5–6; the title screen's door labels cut at the bottom edge. The same three walks PASS at 1366×768, 1024×768, 1840×900 (199 / 142 / 421 checks).
-- **NOT DONE — lesson 2 is not finished:** (1) the trainer, the sittings and the practice hub of lesson 2 were
+- **STATE 2026-11-18 (second session): lesson 2 prints ✅ on `status:lesson-v2` (phone paused).** DONE: (1)–(2) the
+       practice hub, « تدرّب », an exam sitting and « تقدّمي » are PLAYED through their screens by three walks
+       (`gameworld-qawasim-hub` 199 checks, `-sitting` 142, `-trainer` 421: they pass at 1366×768, 1024×768 and
+       1840×900; they found and fixed: the guide card read the PILOT's strings and crashed on lesson 2's keys, the rule
+       tablet opened from the hub lost its node, no sound button on « المعارف » and « تقدّمي », progress rows that
+       wrapped off the screen, raw `$…$` in a true / false statement, the sheet's « تحقّق » turning white under the
+       mouse); (3) THE BOARD: `board/script.js` (11 stations: a situation, four questions each proved by bridges and
+       each followed by its rule's name, two copybook pages), `board/memo.js` (four openings, a 45-minute hour, six
+       anticipated answers, three exit questions) and `board` in the pack; the board now reads the lesson's own
+       `rules` (it read the pilot's strings), the plank row takes up to six choices, a long tablet shrinks inside
+       its card, the copybook splits in two pages (`CLASS_SESSION.md` §5ter); `board/board.test.js` computes every
+       number; the walk `class-lesson-qawasim.mjs` passes at the three sizes and the pilot's `class-lesson.mjs` still
+       passes. Also found: the walks' « formulas read left to right » check matched NO atom of a `\displaystyle`
+       formula (so it could never fail) — fixed in `e2e/lib/walk.mjs`. The gate's `phone` line is paused, not failed.
+       STILL TO DO for lesson 2: (5) the screenshots of every screen looked at (done for the board's hard screens,
+       the progress screen and the memo's first page); (6) the old modules; (7) the gate's report; the phone debt below.
+       MEASURED after the formula check was repaired: the board walk (12 screens) and the hub, sitting and trainer walks
+       (199 / 142 / 421 checks) pass at 1366×768, 1024×768 and 1840×900.
+     - **Older state, 2026-11-17 (kept for the history): NOT DONE — lesson 2 is not finished:** (1) the trainer, the sittings and the practice hub of lesson 2 were
        NEVER opened in a browser (unit-tested only); (2) the practice hub, « تدرّب », an exam sitting and
        « تقدّمي » walked for lesson 2; (3) `board/script.js`, `board/memo.js` and `board` in the pack — the teacher
        still gets the OLD lesson page; ~~(4) a launch-kit family for `4am.m1.r01`~~ **DONE 2026-11-17** (the owner

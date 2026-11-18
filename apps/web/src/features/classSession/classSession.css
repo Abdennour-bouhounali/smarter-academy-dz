@@ -2419,6 +2419,26 @@
   background: #f8faff;
   border: 2px solid #c7d2fe;
 }
+/* a tablet with five items or more (the divisibility rules): the same card, smaller type, so it never leaves it */
+.cs-name__card[data-dense] {
+  gap: 0.4rem;
+  padding-block: 0.4rem;
+}
+.cs-lesson .cs-name__card[data-dense] .cs-name__lines p {
+  font-size: 1.5rem;
+  line-height: 1.6;
+}
+.cs-lesson .cs-name__card[data-dense] .cs-name__lines li {
+  font-size: 1.3rem;
+  padding-block: 0.15rem;
+}
+.cs-lesson .cs-name__card[data-dense] .cs-name__pairs p {
+  font-size: 1.4rem;
+  padding-block: 0.15rem;
+}
+.cs-name__card[data-dense] .cs-name__pairs small {
+  font-size: 1rem;
+}
 .cs-lesson .cs-name__lines p {
   font-size: 1.95rem;
   font-weight: 800;
@@ -2448,6 +2468,15 @@
   display: flex;
   justify-content: center;
   gap: 1.2rem;
+}
+/* a long equality (the search of lesson 2: « 60 = 1 × 60 = 2 × 30 = … ») takes a row of its own: the pairs stack */
+.cs-name__pairs[data-long] {
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+.cs-lesson .cs-name__pairs[data-long] p {
+  font-size: 1.6rem;
 }
 .cs-lesson .cs-name__pairs p {
   display: grid;
@@ -2499,9 +2528,22 @@
 .cs-planks {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(var(--n, 4), 1fr);
   gap: 0.8rem;
   min-height: 0;
+}
+/* five or six planks on ONE row (lesson 2 asks about whole gaps): smaller type, the same cards */
+.cs-planks[data-many] {
+  gap: 0.5rem;
+}
+.cs-planks[data-many] .cs-plankcard b {
+  font-size: 3rem;
+}
+.cs-planks[data-many] .cs-plankcard span {
+  font-size: 1rem;
+}
+.cs-planks[data-many] .cs-plankcard em {
+  font-size: 1.1rem;
 }
 .cs-root .cs-plankcard {
   display: flex;
@@ -2704,9 +2746,14 @@
 }
 .cs-copy article > div {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 0.3rem 1.5rem;
   font-size: 1.3rem;
+}
+/* a long equality (« 60 = 1 × 60 = 2 × 30 = … ») stays on ONE line: smaller, never broken */
+.cs-copy article > div[data-long] {
+  font-size: 1.05rem;
 }
 .cs-copy ul {
   display: grid;

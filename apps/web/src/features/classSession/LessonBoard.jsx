@@ -28,7 +28,6 @@ import {
 } from 'lucide-react';
 import MathText from '../../lessons/common/components/MathText';
 import { playSfx } from '../../lessons/common/utils/playEffect';
-import { T } from '../../lessons/common/gameworld/divisorIsles/strings';
 import {
   QUANTITIES,
   CONDITIONS,
@@ -613,8 +612,11 @@ function Forge({ memo, patch, goBack }) {
 }
 
 /** The rule gets its NAME: the tablet of the lesson, read aloud. « من يتذكّر؟ » hides its key words: the class says them. */
-function Name({ step, memo, onPick, onMe }) {
-  const t = T.tablets[step.tablet];
+/** A chain of equalities (« 60 = 1 × 60 = 2 × 30 = … »): too wide for half a card, so it takes a row — counted in `=`, never in characters (colour macros inflate those). */
+const isChain = (m) => (m.match(/=/g) ?? []).length >= 4;
+
+function Name({ step, memo, onPick, onMe, rules }) {
+  const t = rules[step.tablet];
   const [recall, setRecall] = useState(false);
   const [open, setOpen] = useState([]);
   const words = recall ? (step.recall ?? []) : [];
@@ -645,7 +647,7 @@ function Name({ step, memo, onPick, onMe }) {
           <small>{LL.theirs}</small>
         </p>
       )}
-      <div className="cs-name__card">
+      <div className="cs-name__card" data-dense={(t.list?.length ?? 0) >= 5 ? '' : undefined}>
         <div className="cs-name__lines">
           {t.lines.map((l, k) => (
             <p key={l}>{line(l, `l${k}`)}</p>
@@ -660,7 +662,7 @@ function Name({ step, memo, onPick, onMe }) {
         </div>
         {/* an example and what it says stay together: the equality above its sentence */}
         {t.math.length === t.notes.length ? (
-          <div className="cs-name__pairs">
+          <div className="cs-name__pairs" data-long={t.math.some(isChain) ? '' : undefined}>
             {t.math.map((m, k) => (
               <p key={m}>
                 <span dir="ltr">
@@ -724,7 +726,11 @@ function Ask({ step }) {
         <MathText>{step.text}</MathText>
       </p>
       <p className="cs-quest">{step.question}</p>
-      <div className="cs-planks">
+      <div
+        className="cs-planks"
+        style={{ '--n': step.options.length }}
+        data-many={step.options.length > 4 ? '' : undefined}
+      >
         {step.options.map((o) => {
           const c = outcome(step.a, o);
           return (
@@ -849,11 +855,11 @@ function Statements({ step }) {
 }
 
 /** What goes in the copybook: the keys of the lesson on one page, in the wording the class has just read. */
-function Trace({ step }) {
+function Trace({ step, rules }) {
   return (
     <div className="cs-copy" data-cs-trace={step.tablets.length}>
       {step.tablets.map((id, k) => {
-        const t = T.tablets[id];
+        const t = rules[id];
         return (
           <article key={id}>
             <h3>
@@ -872,7 +878,7 @@ function Trace({ step }) {
                 ))}
               </ul>
             )}
-            <div dir="ltr">
+            <div dir="ltr" data-long={t.math.some(isChain) ? '' : undefined}>
               {t.math.map((m) => (
                 <span key={m}>
                   <MathText>{`$${calm(m)}$`}</MathText>
@@ -886,7 +892,7 @@ function Trace({ step }) {
   );
 }
 
-export default function LessonBoard({ script, students, seating, memo, setMemo, onEndTest, onExit }) {
+export default function LessonBoard({ script, rules, students, seating, memo, setMemo, onEndTest, onExit }) {
   const tools = useBoardTools();
   const [classOpen, setClassOpen] = useState(false);
   const [speaker, setSpeaker] = useState(null);
@@ -937,7 +943,7 @@ export default function LessonBoard({ script, students, seating, memo, setMemo, 
     setClassOpen(false);
   };
   const names = steps.filter((s) => s.kind === 'name');
-  const title = step.kind === 'name' ? T.tablets[step.tablet].title : step.title;
+  const title = step.kind === 'name' ? rules[step.tablet].title : step.title;
   const nextKind = steps[i + 1]?.kind;
   const nextLabel =
     i + 1 >= steps.length
@@ -972,7 +978,7 @@ export default function LessonBoard({ script, students, seating, memo, setMemo, 
                   type="button"
                   className={`${k === i ? 'is-now' : k < i ? 'is-done' : ''} ${steps[k].kind === 'name' ? 'is-name' : ''}`}
                   onClick={() => go(k)}
-                  aria-label={steps[k].kind === 'name' ? T.tablets[steps[k].tablet].title : steps[k].title}
+                  aria-label={steps[k].kind === 'name' ? rules[steps[k].tablet].title : steps[k].title}
                   aria-current={k === i ? 'step' : undefined}
                   data-cs-rail={k}
                 />
@@ -1000,7 +1006,7 @@ export default function LessonBoard({ script, students, seating, memo, setMemo, 
         <header className="cs-scene__head">
           <span className="cs-chip cs-chip--chapter">{step.chapter}</span>
           <h2>
-            {step.kind === 'name' && <i>{T.tablets[step.tablet].icon}</i>}
+            {step.kind === 'name' && <i>{rules[step.tablet].icon}</i>}
             {title}
           </h2>
           {step.kind === 'name' && <span className="cs-chip">{LL.key(names.indexOf(step) + 1, names.length)}</span>}
@@ -1011,11 +1017,17 @@ export default function LessonBoard({ script, students, seating, memo, setMemo, 
         {step.kind === 'bridges' && <Bridges step={step} memo={memo} patch={patch} />}
         {step.kind === 'forge' && <Forge memo={memo} patch={patch} goBack={() => go(i - 1)} />}
         {step.kind === 'name' && (
-          <Name step={step} memo={memo} onPick={() => setClassOpen(true)} onMe={() => setSpeaker('teacher')} />
+          <Name
+            step={step}
+            rules={rules}
+            memo={memo}
+            onPick={() => setClassOpen(true)}
+            onMe={() => setSpeaker('teacher')}
+          />
         )}
         {step.kind === 'ask' && <Ask step={step} />}
         {step.kind === 'statements' && <Statements step={step} />}
-        {step.kind === 'trace' && <Trace step={step} />}
+        {step.kind === 'trace' && <Trace step={step} rules={rules} />}
       </main>
 
       <footer className="cs-lesson__foot">

@@ -113,11 +113,12 @@ const itemLabel = (item) => (item ? (homeLessonOf(item)?.titleAr ?? getItem(item
 export default function ClassSessionPage() {
   const { lessonId } = useParams();
   const script = usePackPart(lessonId, 'script');
-  if (script === undefined) return null;
-  return <ClassSession key={lessonId} lessonId={lessonId} script={script} />;
+  const world = usePackPart(lessonId, 'world'); // the lesson's own rule tablets: one wording for his world and for the board
+  if (script === undefined || world === undefined) return null;
+  return <ClassSession key={lessonId} lessonId={lessonId} script={script} rules={world?.rules ?? {}} />;
 }
 
-function ClassSession({ lessonId, script }) {
+function ClassSession({ lessonId, script, rules }) {
   const [params, setParams] = useSearchParams();
   const navigate = useNavigate();
   const { token } = useContext(AuthContext);
@@ -452,6 +453,7 @@ function ClassSession({ lessonId, script }) {
           {view === 'lesson' && students && script && (
             <LessonBoard
               script={script}
+              rules={rules}
               students={students}
               seating={seating}
               memo={memo}

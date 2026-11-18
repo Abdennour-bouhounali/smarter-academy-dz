@@ -15,4 +15,9 @@ export const LESSON_PACK = {
   knowledge: () => import('./knowledge.jsx').then((m) => m.LESSON_KNOWLEDGE),
   // « مدرّب الامتحان »: the knowledge sheet behind each الكفاءة of the lesson
   coach: { P1: 'jidaa-aamilayn', P2: 'qasim-rappel', P3: 'tariqa-qawasim', P4: 'qawaid-qisma' },
+  // « حصّة القسم »: the lesson on the board and its written memo
+  board: {
+    script: () => import('./board/script.js').then((m) => m.SCRIPT),
+    memo: () => import('./board/memo.js').then((m) => m.MEMO),
+  },
 };

@@ -9,7 +9,7 @@
  *
  * It reads FILES and markers — it judges nothing: a lesson that prints ✅ has every part of a v2 lesson in its place.
  * Whether those parts are GOOD is decided by its tests, its walks at every screen size, and eyes on its screenshots.
- *   ✅ in place   ❌ missing   ➖ could not be checked here (said so, never counted as done)
+ *   ✅ in place   ❌ missing   ➖ could not be checked here (said so, never counted as done) or PAUSED by the owner (the phone: never counted at all)
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -67,7 +67,7 @@ async function statusOf(entry) {
   const world = path.join(dir, 'world');
   const has = (...p) => fs.existsSync(path.join(dir, ...p));
   const checks = [];
-  const add = (part, ok, note = '') => checks.push({ part, ok, note });
+  const add = (part, ok, note = '', paused = false) => checks.push({ part, ok, note, paused });
 
   add('pack: lesson.pack.js, its flags in the generated index', has('lesson.pack.js') && Boolean(entry.pack));
   add('S2 world: named in the pack', Boolean(flags.world), flags.world ?? 'no world');
@@ -92,14 +92,15 @@ async function statusOf(entry) {
   }
   add('T1–T3 board: script and written memo', Boolean(flags.board) && has('board', 'script.js') && has('board', 'memo.js'));
   add('T2 class test: its default', fs.existsSync(path.join(ROOT, 'content/class-tests', entry.grade, `${entry.id}.json`)));
-  add('phone: its home designed and walked', Boolean(flags.phone), flags.phone ? '' : 'pack.phone is not true');
+  // PHONES ARE PAUSED (owner, 2026-11-18): a lesson whose pack says `phone: false` is not judged on it — only a `true` is checked
+  add('phone: its home designed and walked (PAUSED since 2026-11-18)', flags.phone ? true : null, flags.phone ? '' : 'paused: pack.phone is false', !flags.phone);
   const mine = walks.filter((w) => w.text.includes(`/${entry.id}\``) || w.text.includes(`/${entry.id}'`) || w.text.includes(`'${entry.id}'`));
   add('a walk plays its world', mine.some((w) => w.text.includes('data-di-start')), mine.length ? `${mine.length} walk(s) name it` : 'no walk names it');
   const cat = catalogue.get(entry.id);
   add('published: status « available » in the catalogue', cat?.status === 'available', cat ? cat.status : 'not in the catalogue');
 
   const failed = checks.filter((c) => c.ok === false).length;
-  const unknown = checks.filter((c) => c.ok === null).length;
+  const unknown = checks.filter((c) => c.ok === null && !c.paused).length; // a PAUSED part (the phone) is shown ➖ and never counts
   return { id: entry.id, grade: entry.grade, checks, done: failed === 0 && unknown === 0, failed, unknown };
 }
 
@@ -117,7 +118,7 @@ if (one) {
     console.log(`\nLesson v2 — ${s.id} (${s.grade})\n`);
     for (const c of s.checks) console.log(`  ${mark(c.ok)} ${c.part}${c.note ? `  — ${c.note}` : ''}`);
     console.log(`\n${s.done ? '✅ every part of a v2 lesson is in its place' : `❌ ${s.failed} part(s) missing${s.unknown ? `, ${s.unknown} not checked` : ''}`}.`);
-    console.log('   Not judged here: its tests, its walks at 1366×768, 1024×768, 1840×900 and on a phone, the screenshots.\n');
+    console.log('   Not judged here: its tests, its walks at 1366×768, 1024×768 and 1840×900 (the phone is paused), the screenshots.\n');
   }
   process.exit(s.done ? 0 : 1);
 }

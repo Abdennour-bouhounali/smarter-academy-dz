@@ -10,7 +10,9 @@ describe('حصّة القسم — the lessons that have their own board (and no 
     expect(BOARD_LESSONS).toContain('qasim-adad-tabii');
     for (const id of BOARD_LESSONS) expect(lessonPackFlags(id).board, id).toBe(true);
     expect(hasClassBoard('qasim-adad-tabii')).toBe(true);
-    expect(hasClassBoard('qawasim-adad-tabii')).toBe(false);
+    expect(BOARD_LESSONS).toContain('qawasim-adad-tabii'); // lesson 2 joined with its script and memo (2026-11-18)
+    expect(hasClassBoard('qawasim-adad-tabii')).toBe(true);
+    expect(hasClassBoard('khawass-qawasim')).toBe(false);
     expect(hasClassBoard(undefined)).toBe(false);
     const config = LESSON_CONFIG;
     expect(config.id).toBe('qasim-adad-tabii');
@@ -33,16 +35,23 @@ describe('حصّة القسم — the lessons that have their own board (and no 
       session: true,
     });
     expect(classDoor('qawasim-adad-tabii', `${base}/qawasim-adad-tabii`)).toEqual({
-      to: `${base}/qawasim-adad-tabii`,
+      to: '/enseignant/hissa/qawasim-adad-tabii',
+      state: undefined,
+      session: true,
+    });
+    expect(classDoor('khawass-qawasim', `${base}/khawass-qawasim`)).toEqual({
+      to: `${base}/khawass-qawasim`,
       state: CLASSROOM_START_STATE,
       session: false,
     });
     expect(boardLessonOfPath(`${base}/qasim-adad-tabii/2`)).toBe('qasim-adad-tabii');
     expect(boardLessonOfPath(`${base}/qasim-adad-tabii?view=classic`)).toBe('qasim-adad-tabii');
-    expect(boardLessonOfPath(`${base}/qawasim-adad-tabii/2`)).toBe(null);
+    expect(boardLessonOfPath(`${base}/qawasim-adad-tabii/2`)).toBe('qawasim-adad-tabii');
+    expect(boardLessonOfPath(`${base}/khawass-qawasim/2`)).toBe(null);
     expect(boardLessonOfPath(null)).toBe(null);
     expect(canPresentPath(`${base}/qasim-adad-tabii/2`)).toBe(false);
-    expect(canPresentPath(`${base}/qawasim-adad-tabii/2`)).toBe(true);
+    expect(canPresentPath(`${base}/qawasim-adad-tabii/2`)).toBe(false);
+    expect(canPresentPath(`${base}/khawass-qawasim/2`)).toBe(true);
     expect(canPresentPath(undefined)).toBe(false);
   });
 });

@@ -1,32 +1,39 @@
 import { describe, expect, it } from 'vitest';
 import { PHONE_LESSONS, isPhoneLessonPath } from './phoneLessons';
 
-const HOME = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/qasim-adad-tabii';
+const BASE = '/courses/moyen/4am/ansab_al_aadad_wal_hisab';
+const HOME = `${BASE}/qasim-adad-tabii`;
 
-describe('the pages a phone may open', () => {
-  it("opens the home of the pilot lesson, for the student and for the teacher's preview", () => {
-    expect(PHONE_LESSONS).toContain('qasim-adad-tabii');
-    expect(isPhoneLessonPath(HOME)).toBe(true);
-    expect(isPhoneLessonPath(`${HOME}/`)).toBe(true);
-    expect(isPhoneLessonPath(HOME, '?apercu=eleve')).toBe(true);
+/**
+ * PHONES ARE PAUSED (owner, 2026-11-18): every pack says `phone: false`, so a phone opens NO lesson. When phones resume,
+ * set `phone: true` in the pack of a lesson whose home was walked on a phone and restore the checks that were here: its
+ * home opens (student and teacher's preview), a module and `?view=classic` stay closed, and only the memo and the lesson
+ * file of that lesson open for a teacher (never « حصّة القسم », « متابعة القسم » or « بطاقة المعارف »).
+ */
+describe('the pages a phone may open — while phones are paused', () => {
+  it('opens no lesson: no pack asks for a phone', () => {
+    expect(PHONE_LESSONS).toEqual([]);
+    for (const id of ['qasim-adad-tabii', 'qawasim-adad-tabii']) {
+      expect(isPhoneLessonPath(`${BASE}/${id}`), id).toBe(false);
+      expect(isPhoneLessonPath(`${BASE}/${id}`, '?apercu=eleve'), id).toBe(false);
+    }
   });
 
-  it('keeps the pages that were not designed for a phone closed: a module, the classic player', () => {
+  it('opens no teacher tool of a lesson either', () => {
+    const paths = [
+      '/enseignant/cours/qasim-adad-tabii/memoire',
+      '/enseignant/milaff/qasim-adad-tabii',
+      '/enseignant/hissa/qasim-adad-tabii',
+      '/enseignant/mutabaa/qasim-adad-tabii',
+      '/enseignant/bitaqa/qasim-adad-tabii',
+    ];
+    for (const path of paths) expect(isPhoneLessonPath(path), path).toBe(false);
+  });
+
+  it('keeps a module, the classic player, every other lesson and every page that is not a lesson closed', () => {
     expect(isPhoneLessonPath(`${HOME}/itqan`)).toBe(false);
     expect(isPhoneLessonPath(HOME, '?view=classic')).toBe(false);
-  });
-
-  it('opens two tools of the teacher on that lesson — the memo and the lesson file — and no other', () => {
-    expect(isPhoneLessonPath('/enseignant/cours/qasim-adad-tabii/memoire')).toBe(true);
-    expect(isPhoneLessonPath('/enseignant/milaff/qasim-adad-tabii')).toBe(true);
-    expect(isPhoneLessonPath('/enseignant/hissa/qasim-adad-tabii')).toBe(false);
-    expect(isPhoneLessonPath('/enseignant/mutabaa/qasim-adad-tabii')).toBe(false);
-    expect(isPhoneLessonPath('/enseignant/bitaqa/qasim-adad-tabii')).toBe(false);
-    expect(isPhoneLessonPath('/enseignant/cours/qawasim-adad-tabii/memoire')).toBe(false);
-  });
-
-  it('keeps every other lesson, and every page that is not a lesson, closed', () => {
-    expect(isPhoneLessonPath('/courses/moyen/4am/ansab_al_aadad_wal_hisab/khawass-qawasim')).toBe(false);
+    expect(isPhoneLessonPath(`${BASE}/khawass-qawasim`)).toBe(false);
     expect(isPhoneLessonPath('/espace/pratique/qasim-adad-tabii')).toBe(false);
     expect(isPhoneLessonPath(undefined)).toBe(false);
   });

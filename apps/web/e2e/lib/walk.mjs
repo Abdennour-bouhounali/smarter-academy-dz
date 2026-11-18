@@ -242,7 +242,7 @@ export function createWalk(name) {
         for (const k of document.querySelectorAll('.katex-html')) {
           const r0 = k.getBoundingClientRect();
           if (r0.width < 2 || r0.bottom < 0 || r0.top > window.innerHeight) continue;
-          const atoms = [...k.querySelectorAll('.base > .mord, .base > .mrel, .base > .mbin, .base > .mpunct')].map((a) => a.getBoundingClientRect()).filter((r) => r.width > 0);
+          const atoms = [...k.querySelectorAll('.mord, .mrel, .mbin, .mpunct')].filter((a) => !a.querySelector('.mord, .mrel, .mbin, .mpunct')).map((a) => a.getBoundingClientRect()).filter((r) => r.width > 0);
           if (atoms.length < 3) continue;
           // the atoms of one line (a wrapped formula is a different defect)
           const line = atoms.filter((r) => Math.abs(r.top - atoms[0].top) < r.height);

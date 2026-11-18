@@ -251,10 +251,10 @@ shown in the footer for the teacher. Kinds, each drawn by one component of `Less
 | `situation` | the problem that opens the lesson, with a bridge the board can build (`bridge`) |
 | `bridges` | **experiments**: it chooses a gap and a plank (two big steppers, or a suggested bridge), PREDICTS « يثبت / ينهار » (or builds without predicting), the board builds; the bridge joins « جسور القسم » (the class's evidence, the last 8); a right prediction earns the class a star; the equality $a = b \times q + r$ is written under each bridge |
 | `forge` | **concludes**: its bridges become a table (planks laid, cells left, held or not); it writes a rule with two tiles (the same tiles as the student's rule forge, `ruleForge.js`); the board runs the rule on every line, then ATTACKS it with a gap the class has not built. A rule contradicted by a line, or broken by the attack, goes back to the class — the bridge that broke it joins the evidence. The rule that survives two attacks is sealed « قاعدة القسم صمدت » |
-| `name` | the rule gets its name: the tablet of the lesson (`tablet` = a key of the game's `T.tablets` — **one wording for the student's world and for the board**), read aloud by a student the teacher picks or by the teacher; after a `forge` the class's own rule is shown above it. « من يتذكّر؟ » hides the key words (`recall`), never inside a formula: the class says them, a tap shows them |
-| `ask` | one question whose choices are planks; « نتحقّق بالجسور » builds every choice in one line (bar + equality) |
+| `name` | the rule gets its name: the tablet of the lesson (`tablet` = a key of the lesson's own `rules` — its `world/` content, handed to the board by `ClassSessionPage` through `usePackPart(lessonId, 'world')`: **one wording for the student's world and for the board**; before 2026-11-18 the board read the pilot's strings), read aloud by a student the teacher picks or by the teacher; after a `forge` the class's own rule is shown above it. « من يتذكّر؟ » hides the key words (`recall`), never inside a formula: the class says them, a tap shows them |
+| `ask` | one question whose choices are planks (`a` = the gap, `options`, `answer` = the planks that fill it — **a test must compute it**); « نتحقّق بالجسور » builds every choice in one line (bar + equality). Up to SIX choices stand on ONE row (`.cs-planks[data-many]`, smaller type from five) |
 | `statements` | sentences judged « صحيح / خطأ » one after the other; each verdict comes with its reason (`proofOf`) |
-| `trace` | what goes in the copybook: the keys of the lesson on one page, in the wording just read |
+| `trace` | what goes in the copybook: the keys of the lesson, in the wording just read. A lesson whose tablets are long splits the copybook into SEVERAL `trace` steps of two keys (lesson 2: `trace-1`, `trace-2`). A chain of four `=` or more (« 60 = 1 × 60 = 2 × 30 = … ») takes its own row and a smaller size (`data-long`); a tablet of five items or more shrinks its card (`data-dense`) — never cut, never broken |
 
 Rules of this screen:
 
@@ -278,6 +278,14 @@ Rules of this screen:
 **To give another lesson its board**: write its `board/script.js` with the existing kinds; a lesson whose manipulation is
 not a bridge needs its own `bridges`/`forge`-like kinds (a new component per kind in `LessonBoard.jsx`, its pure logic
 tested in `lessonScripts.test.js`). Do not copy the pilot's numbers.
+**A lesson need not use `bridges` and `forge`** (those two are the pilot's remainder mirror: the class writes its rule with
+two tiles). `qawasim-adad-tabii` (2026-11-18) is the reference for a lesson whose four rules are each forged by the
+student in his own world: its script is `situation` → (`ask` → `name`) four times → `trace` ×2, each question made for its
+rule (the partner of a plank, the part of a plank, the planks to try, the planks a number tells at a glance) and PROVED by the
+bridges the board builds. Its tests (`board/board.test.js`) compute every answer, every equality, every memo number and check
+that each `recall` word is in its tablet; its walk is `apps/web/e2e/class-lesson-qawasim.mjs` (the lesson opened alone, every
+step played through the UI, the layout, no raw formula and no word of the pilot on screen, formulas read left to right — at
+1366×768, 1024×768 and 1840×900). The pilot's hour (start test → rules → lesson → end test) stays in `class-lesson.mjs`.
 
 ## 5quater. The teacher's exercise bank, and an exercise on the board
 

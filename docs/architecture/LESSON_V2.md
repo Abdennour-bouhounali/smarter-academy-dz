@@ -163,7 +163,7 @@ npm run status:lesson-v2 -- --lesson <id>     # one lesson, part by part; exit 1
 | S4 the practice bank is the BEM exam sheet | the lesson is in `content/practice/exam-style.json` |
 | S8 « مختبري » | an instrument tagged with the lesson in `lessonlab/registry.js` |
 | S1 the launch kit | every CORE tool of the learning net for the lesson has a family in `launchkit/families.js` |
-| T1–T3 the board | `pack.board`, `board/script.js`, `board/memo.js` |
+| T1–T3 the board | `pack.board`, `board/script.js`, `board/memo.js`; a board test that computes every number (`board/board.test.js`) and a board walk (reference: `qawasim-adad-tabii`, CLASS_SESSION.md §5ter) |
 | T2 the class test | `content/class-tests/<grade>/<id>.json` |
 | the phone | **PAUSED (owner, 2026-11-18)**: `pack.phone` stays `false`; not part of « done ». Set only after its home was designed and walked on a phone, when phones resume |
 | a walk | a walk of `apps/web/e2e/` that names the lesson and plays its world |
