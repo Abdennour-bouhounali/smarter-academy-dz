@@ -144,7 +144,7 @@ onboarding `LabCoach`, the questions over the lab after each step, one screen, a
 | `npm run check:lessons` | lesson and exercise validators, the generated indexes, the calendar, the entry budget |
 | `npm run check:entry-budget` | the entry bundle: 212 KB gzip (measured 197.8). No entry module imports a catalogue name; lessons mount through ONE lazy boundary |
 | `npm test` (core, web, scripts) — or `npx vitest run` in `apps/web` / `packages/core` | unit tests |
-| `node apps/web/e2e/<walk>.mjs` | the walks (dev server on :5173): `E2E_SIZE=WxH`, `E2E_TOUCH=1 E2E_SIZE=800x370` for a phone. NOT in CI yet |
+| `node apps/web/e2e/<walk>.mjs` | the walks (dev server on :5173): `E2E_SIZE=WxH`, `E2E_TOUCH=1 E2E_SIZE=800x370` for a phone (paused). WebGL is drawn by the GPU when the machine has one (`e2e/lib/gpu.mjs`; `E2E_GPU=0` forces software): measured 15× less CPU than software rendering, which had frozen the laptop. NOT in CI yet |
 
 Generators to run after a change: `generate:lesson-index` (a lesson, its modules or its pack), `generate:lab-order`
 (a lesson added or re-ordered), `generate:learning-net` (a link of the net), `generate:compass-index`.

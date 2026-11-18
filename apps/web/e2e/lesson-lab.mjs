@@ -4,6 +4,7 @@
 // instrument and the cabinet of two grades. Nothing may scroll, at any moment.
 // Run (dev server up): [E2E_SIZE=1366x768] node apps/web/e2e/lesson-lab.mjs [outDir]
 import { chromium } from 'playwright';
+import { GL_ARGS } from './lib/gpu.mjs';
 import { mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 
@@ -12,7 +13,7 @@ const OUT = process.argv[2] || `${tmpdir()}/lesson-lab`;
 const SIZE = (process.env.E2E_SIZE || '1366x768').split('x').map(Number);
 mkdirSync(OUT, { recursive: true });
 const expect = (cond, msg) => { if (!cond) { console.log('FAIL', msg); process.exitCode = 1; if (process.env.E2E_SOFT !== '1') throw new Error(msg); return; } console.log('ok  ', msg); };
-const browser = await chromium.launch({ args: ['--no-sandbox', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
+const browser = await chromium.launch({ args: GL_ARGS });
 const ctx = await browser.newContext({ viewport: { width: SIZE[0], height: SIZE[1] }, ...(process.env.E2E_TOUCH === '1' ? { hasTouch: true, isMobile: true } : {}) });
 await ctx.addInitScript(() => {
   localStorage.setItem('token', 'qa-fake-token');

@@ -5,6 +5,7 @@
 // podium, the end test with « before / now », and a session kept when the connection is lost.
 // Run (dev server up): [E2E_SIZE=1366x768] node apps/web/e2e/class-session.mjs [outDir]
 import { chromium } from 'playwright';
+import { GL_ARGS } from './lib/gpu.mjs';
 import { mkdirSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 
@@ -19,7 +20,7 @@ const NAMES = [['عمر', 'بن علي'], ['مريم', 'حدّاد'], ['ياسي
 const STUDENTS = NAMES.map(([firstName, lastName], i) => ({ id: 500 + i, firstName, lastName, grade: '4am' }));
 const BIG = Array.from({ length: 35 }, (_, i) => ({ id: 700 + i, firstName: NAMES[i % 12][0] + (i >= 12 ? ` ${i}` : ''), lastName: NAMES[(i * 5) % 12][1], grade: '4am' }));
 
-const browser = await chromium.launch({ args: ['--no-sandbox', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
+const browser = await chromium.launch({ args: GL_ARGS });
 const ctx = await browser.newContext({ viewport: { width: SIZE[0], height: SIZE[1] } });
 await ctx.addInitScript(([students, def, big]) => {
   localStorage.setItem('token', 'qa-fake-token');

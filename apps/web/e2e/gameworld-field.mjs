@@ -3,6 +3,7 @@
 // page is read card by card, a rule is sealed by its memory test, and the locks of a student without keys are checked.
 // Run (dev server up): node apps/web/e2e/gameworld-field.mjs [outDir]
 import { chromium } from 'playwright';
+import { GL_ARGS } from './lib/gpu.mjs';
 import { mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 
@@ -49,7 +50,7 @@ async function noScroll(page, where) {
 }
 /** Picks a card on the full map. On a phone the map steps aside while a memo, a memory test or a training is open: the tab « البطاقة » brings it back. */
 const knode = async (page, id) => { const n = page.locator(`[data-di-knode="${id}"]`); if (!(await n.isVisible())) await page.click('[data-di-tab="card"]'); await n.click(); };
-const browser = await chromium.launch({ args: ['--no-sandbox', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
+const browser = await chromium.launch({ args: GL_ARGS });
 const errors = []; let n = 0;
 const expect = (cond, msg) => { if (!cond) { console.log('FAIL', msg); process.exitCode = 1; throw new Error(msg); } console.log('ok  ', msg); };
 

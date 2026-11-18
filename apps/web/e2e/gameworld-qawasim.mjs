@@ -3,6 +3,7 @@
 // tried; what to read instead of dividing). The set-up and the helpers are those of gameworld-divisor-isles.mjs.
 // Run (dev server up): [E2E_SIZE=1366x768] [E2E_TOUCH=1] node apps/web/e2e/gameworld-qawasim.mjs [outDir]
 import { chromium } from 'playwright';
+import { GL_ARGS } from './lib/gpu.mjs';
 import { mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 
@@ -50,7 +51,7 @@ async function noScroll(page, where) {
   if (TOUCH) res.bad = res.bad.filter((b) => !b.startsWith('scrolls: ') && !b.startsWith('cut: ') && !b.startsWith('leaves the screen'));
   if (res.bad.length) { console.log('FAIL no scrolling at «', where, '»:', res.bad.join(' | ')); process.exitCode = 1; throw new Error(`scroll at ${where}`); }
 }
-const browser = await chromium.launch({ args: ['--no-sandbox', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
+const browser = await chromium.launch({ args: GL_ARGS });
 // E2E_TOUCH=1: a phone (touch screen, coarse pointer) — with E2E_SIZE=844x390 (sideways) or 390x844 (upright)
 const TOUCH = process.env.E2E_TOUCH === '1';
 const ctx = await browser.newContext({ viewport: { width: SIZE[0], height: SIZE[1] }, deviceScaleFactor: 1, ...(TOUCH ? { hasTouch: true, isMobile: true } : {}) });

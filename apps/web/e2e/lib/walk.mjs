@@ -16,6 +16,7 @@
 //   wayOut      a way out (the selectors given) is on screen and nothing covers it; `sound: true` asks the sound button too;
 //   foreign     no word of ANOTHER lesson (`FOREIGN`), no « نقطة التعلّم », money only in « دج ».
 import { chromium } from 'playwright';
+import { GL_ARGS } from './gpu.mjs';
 import { mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 
@@ -47,7 +48,7 @@ export const FOREIGN = [
 ];
 export const FOREIGN_NUMBERS = [756, 1850];
 
-const LAUNCH = ['--no-sandbox', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'];
+const LAUNCH = GL_ARGS; // the GPU when the machine has one, software otherwise (lib/gpu.mjs)
 
 export function createWalk(name) {
   const out = process.argv[2] && !process.argv[2].startsWith('--') ? process.argv[2] : `${tmpdir()}/${name}`;
