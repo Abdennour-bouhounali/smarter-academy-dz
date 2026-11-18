@@ -536,67 +536,60 @@ Rules of the order:
 
 ## 9. Prompt for the next session
 
-Updated 2026-11-16, after the navigation, the cards, the unit page and the class page were rebuilt
-(`NAVIGATION_REBUILD_PLAN.md` §0). Paste it as the first message of a new session.
+Rewritten 2026-11-18, after lessons 1 and 2 were finished (Phase 0 is done; phones are paused; the walks run on the
+GPU). Paste it as the first message of a new session. For the NEXT lesson after lesson 3, change the lesson id and its
+title, and make the reference lesson the most recent one that is done. The earlier prompt (Phase 0, the gate on lesson 2)
+is in git history (`git log -p -- docs/reports/LESSON_V2_MASTER_PLAN.md`).
 
 ```text
-We start Phase 0 of the lesson v2 rollout, then the lessons, one by one.
+Build lesson 3 of the v2 rollout: `khawass-qawasim` (خواص قواسم عدد طبيعي), 4AM, unit
+aadad-tabiiya-natiqa. Lessons 1 (`qasim-adad-tabii`) and 2 (`qawasim-adad-tabii`) are DONE and print ✅; lesson 2 is
+your reference for how a lesson is built on the kit.
 
 READ FIRST, in this order, before touching anything:
-1. CLAUDE.md
-2. docs/reports/LESSON_V2_MASTER_PLAN.md — all of it; §4 (Phase 0), §4bis (A1–A6, B1–B9, C1–C6),
-   §4ter-0 (what is already done), §5 (what gets retired), §6 (definition of done, who writes what), §7 (order)
-3. docs/curriculum/V2_ROLLOUT_ORDER.md — the work order (174 lessons: 118 rebuild, 56 new)
-4. docs/reports/NAVIGATION_REBUILD_PLAN.md §0, §5ter, §5quater — what the workspace looks like now
-5. docs/architecture/GAME_WORLD.md, LAUNCH_KIT.md, LESSON_LAB.md, CLASS_SESSION.md — the pilot's contracts
-6. the pilot's code: apps/web/src/lessons/common/gameworld/, launchkit/, lessonlab/,
-   apps/web/src/features/classSession/, and the lesson `qasim-adad-tabii`
+1. CLAUDE.md (the rules that bind every task; phones are PAUSED, laptop and tablet only)
+2. docs/reports/LESSON_V2_MASTER_PLAN.md §4ter-0 (live state), §6 (definition of done)
+3. docs/architecture/LESSON_V2.md, GAME_WORLD.md (the kit, a world, the forge, « استكشف »), LAUNCH_KIT.md,
+   LESSON_LAB.md, CLASS_SESSION.md §5ter (the board)
+4. docs/reports/LESSON_2_GATE_REPORT.md — what lesson 2 took, what had to be copied, what the walks found
+5. the code of lesson 2 (apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/
+   qawasim-adad-tabii/: lesson.pack.js, world/, board/) and the kit it stands on (lessons/common/gameworld/kit/)
+6. the unit's sources and the learning net for this lesson (docs/curriculum/…, LEARNING_NET.md): the الكفاءات
+   come from there; the textbook is the reference, never the script, and never send a student to the book
 
-STEP 0 — the repository. Run `git status` and `git log -5`. If the working tree is not clean, show me what
-is there and ask before committing. Never push and never merge to main without my word (main deploys to
-production).
+STEP 0 — the repository: `git status`, `git log -5`. Work on `dev`. Never push and never merge to main without my word.
 
-STEP 1 — decisions. Ask me the open decisions D3–D7 of the master plan §3 in ONE question, each with your
-recommendation. Do not ask again what is marked decided.
+STEP 1 — design, before any code. Write me a short plan: the lesson's الكفاءات (from the learning net), and for EACH
+rule its own way of discovery — a rule that is a search, a pattern or a procedure is FOUND by an experiment made for it
+(`forge.inquiry`, « استكشف »), never the same mirror re-skinned, never a choice between written rules, never told.
+Say which world mechanic you reuse (the unit's `divisor-isles` unless the lesson needs its own), what the story and
+numbers are (own contexts, own numbers, own wording), and the lesson's board (script + memo). STOP and wait for my
+« go » on the design.
 
-STEP 2 — Phase 0, in the order of the plan §4. What remains (§4ter-0 says what is done):
-- extract the lesson kit out of `gameworld/divisorIsles/` so a lesson is DATA plus ONE world mechanic;
-- one `lesson.pack.js` per lesson and its generated index;
-- remove the pilot's id from the shared files that name it;
-- finish the pilot: its three rules that are still told, not forged;
-- A1–A6: the generic server verdict, the journey saved on the server, validators for v2, progress and
-  reports reading v2, the progress-migration rule, one pack-driven walk in CI;
-- `lesson-v2-status.mjs` (a lesson is done when it prints ✅) and `docs/architecture/LESSON_V2.md`;
-- cut the root CLAUDE.md down to what a new session must know.
-One step at a time. After each step: run its checks, update its docs, tell me what you measured, and wait
-for my « commit ».
+STEP 2 — build, in this order, one part at a time, testing each:
+world content (story, forges, practice ladder, trainer, exam sitting, journey, evidence, knowledge) → pack
+(`npm run generate:lesson-index`) → launch-kit family → class test → « مختبري » instrument → board (script.js,
+memo.js, a board.test.js that COMPUTES every answer and every number) → docs.
+Reuse the kit; fix a kit defect in the kit, never in the lesson. A lesson's content is drawn in code, people only
+through KidFigure, respect Islam in every string, money « دج », shapes in the brand blue, a formula never breaks,
+an answer is typed in its own shape, nothing scrolls, a card is four lines at most.
 
-STEP 3 — the gate. Rebuild lesson 2, `qawasim-adad-tabii`, with the kit only. Report the real time it
-took, the lines written by hand, and what still had to be copied from the pilot. STOP there: I validate
-lesson 2 on the laptop and on the phone before lesson 3.
+STEP 3 — walks. Write the lesson's walks from lesson 2's (world, hub, trainer, sitting, board, launch kit) and PLAY
+every screen through its UI. They must pass at 1366×768, 1024×768 and 1840×900 (no phone). Look at the screenshots
+with your own eyes, student and teacher, and say which ones you did not look at. The walks check: no raw LaTeX,
+no number or word of another lesson, a way out on every screen, formulas read left to right, nothing cut.
 
-STEP 4 — the lessons. Follow V2_ROLLOUT_ORDER.md line by line: the 4AM lessons of الفصل الأول, then
-their core and support prerequisites, then الفصل الثاني, الفصل الثالث, then 3AM the same way. An existing
-lesson is rebuilt completely, without being held back by its old code or old docs; a missing one is
-generated from scratch. One game world per unit, unless a lesson needs its own.
-For each lesson: meet the definition of done of §6, publish it in the local database (nothing stays
-draft), run `lesson-v2-status.mjs --lesson <id>`, delete what the rebuild makes useless in the same
-change, then commit `feat(lessons): <id>` and go to the next one.
+STEP 4 — the gate. `npm run status:lesson-v2 -- --lesson khawass-qawasim` prints ✅; unit tests, check:lessons,
+check:unused, check:unreached, check:format and lint on what you changed pass; publish it locally (lesson `available`,
+modules and exercises `published`); write docs/reports/LESSON_3_GATE_REPORT.md (real time from git, lines written,
+what was copied from earlier lessons, what failed). Commit `feat(lessons): khawass-qawasim — v2`. STOP: I validate it.
+Do NOT delete the old modules or `?view=classic` (my decision, still open).
 
-RULES THAT HOLD THROUGHOUT:
-- Show me your limit: a lesson that merely works is not done.
-- The textbook is the reference of the الكفاءات, never the script; never send a student to the book.
-- Drawn in code, never a generated image; people only through KidFigure; respect Islam in every string.
-- Shapes in the brand blue (`nav-accent`), dark navy for text only; small content; fold, never delete.
-- Laptop first, then tablet, then phone; a formula never breaks; an answer is typed in its own shape;
-  money is « دج ».
-- Fable orchestrates; the code is written by agents on `opus`, except the 3D and a task judged complicated (owner,
-  2026-11-17 — it replaces « at most 2 agents at once »). ONE heavy check at a time (check:lessons, build, e2e) until two
-  at once have been tried in the terminal.
+WORKING LIMITS:
+- Fable orchestrates; code is written by agents on `opus`, except the 3D and a task judged complicated.
+- Walks draw on the GPU by default (e2e/lib/gpu.mjs). Check `uptime` and `free -m` before and after every heavy run;
+  one heavy run at a time until I say two at once are allowed; never edit source while a walk runs. If the load or
+  memory gets close to freezing the laptop, stop and tell me.
 - Every task ends with the docs updated and a « Documentation Sync » section.
-- Report honestly: what failed, what you did not check, what you are unsure of. Never « all green »
-  on something you did not run.
+- Report honestly: what failed, what you did not check, what you are unsure of. Never « all green » on what you did not run.
 ```
-
-Before pasting it: the working tree must be committed (today's navigation, cards, class page and clean-up are
-uncommitted at the time of writing), or STEP 0 will stop on it.
